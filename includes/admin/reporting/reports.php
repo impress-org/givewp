@@ -574,19 +574,15 @@ function give_reports_tab_logs() {
 
 	require( GIVE_PLUGIN_DIR . 'includes/admin/reporting/logs.php' );
 
-	$current_view = 'sales';
-	$log_views    = give_log_default_views();
-
-	if ( isset( $_GET['view'] ) && array_key_exists( $_GET['view'], $log_views ) ) {
-		$current_view = $_GET['view'];
-	}
+	// Get current section.
+	$current_section = $_GET['section'] = give_get_current_setting_section();
 
 	/**
 	 * Fires the in report page logs view.
 	 *
 	 * @since 1.0
 	 */
-	do_action( "give_logs_view_{$current_view}" );
+	do_action( "give_logs_view_{$current_section}" );
 }
 
 /**
