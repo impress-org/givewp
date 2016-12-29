@@ -65,12 +65,12 @@ class Give_Email_Notifications {
 	 * @since 1.8
 	 */
 	public function init() {
-		// Load email notifications.
-		$this->add_emails_notifications();
-
 		// Load ajax handler.
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/ajax-handler.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/filters.php';
+
+		// Load email notifications.
+		$this->add_emails_notifications();
 
 		add_action( 'init', array( $this, 'preview_email' ) );
 		add_action( 'init', array( $this, 'send_preview_email' ) );
