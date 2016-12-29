@@ -149,7 +149,7 @@ function give_email_preview_buttons_callback( $field ) {
 	);
 
 	echo sprintf(
-		'<a href="%1$s" aria-label="%2$s" class="button-secondary">%3$s</a>',
+		' <a href="%1$s" aria-label="%2$s" class="button-secondary">%3$s</a>',
 		wp_nonce_url(
 				add_query_arg( array(
 			'give_action'  => 'send_preview_email',
