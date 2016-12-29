@@ -1833,6 +1833,9 @@ a.give-delete {
 .give_emails_notification th:first-child {
   width: 1em; }
 
+.give_emails_notification .give-email-notification-settings-column-setting {
+  width: 75px; }
+
 .give_emails_notification .give-email-notification-status span {
   color: white;
   border-radius: 1em;
