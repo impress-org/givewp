@@ -352,12 +352,12 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @return string
 		 */
 		function get_email_message_field_description() {
-			$desc = esc_html__( 'Enter the subject line for email.', 'give' );
+			$desc = esc_html__( 'Enter the email message.', 'give' );
 
-			if ( ! empty( give_get_email_tags() ) ) {
+			if ( $email_tag_list = $this->get_emails_tags_list_html() ) {
 				$desc = sprintf(
 					esc_html__( 'Enter the email that is sent to users after completing a successful donation. HTML is accepted. Available template tags: %s', 'give' ),
-					give_get_emails_tags_list()
+					$email_tag_list
 				);
 
 			}
