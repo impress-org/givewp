@@ -93,6 +93,13 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		protected $email_type = 'text/html';
 
 		/**
+		 * @var     string|array $email_tag_context List of template tags which we can add to email notification.
+		 * @access  protected
+		 * @since   1.8
+		 */
+		protected $email_tag_context = 'all';
+
+		/**
 		 * @var     string $recipient_email Donor email.
 		 * @access  protected
 		 * @since   1.8
@@ -356,6 +363,55 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			}
 
 			return $desc;
+		}
+
+		/**
+		 * Get a formatted HTML list of all available email tags
+		 *
+		 * @since 1.0
+		 *
+		 * @return string
+		 */
+		function get_emails_tags_list_html() {
+
+			// Get all email tags.
+			$email_tags = Give()->email_tags->get_tags();
+
+			// Skip if all email template tags context setup exit.
+			if ( $this->email_tag_context && 'all' !== $this->email_tag_context ) {
+				if ( is_array( $this->email_tag_context ) ) {
+					foreach ( $email_tags as $index => $email_tag ) {
+						if ( in_array( $email_tag['context'], $this->email_tag_context ) ) {
+							continue;
+						}
+
+						unset( $email_tags[ $index ] );
+					}
+
+				} else {
+					foreach ( $email_tags as $index => $email_tag ) {
+						if ( $this->email_tag_context === $email_tag['context'] ) {
+							continue;
+						}
+
+						unset( $email_tags[ $index ] );
+					}
+				}
+			}
+
+			ob_start();
+			if ( count( $email_tags ) > 0 ) : ?>
+				<div class="give-email-tags-wrap">
+					<?php foreach ( $email_tags as $email_tag ) : ?>
+						<span class="give_<?php echo $email_tag['tag']; ?>_tag">
+					<code>{<?php echo $email_tag['tag']; ?>}</code> - <?php echo $email_tag['description']; ?>
+				</span>
+					<?php endforeach; ?>
+				</div>
+			<?php endif;
+
+			// Return the list.
+			return ob_get_clean();
 		}
 
 
