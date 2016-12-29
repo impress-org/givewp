@@ -70,6 +70,7 @@ class Give_Email_Notifications {
 
 		// Load ajax handler.
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/ajax-handler.php';
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/filters.php';
 
 		add_action( 'init', array( $this, 'preview_email' ) );
 		add_action( 'init', array( $this, 'send_preview_email' ) );
@@ -178,13 +179,13 @@ class Give_Email_Notifications {
 		);
 		?>
 		<?php if( ! empty( $row_actions ) ) : $index = 0; ?>
-			<?php $sep = 0 < $index ? '&nbsp;|&nbsp;' : ''; ?>
 			<div class="row-actions">
 				<?php foreach ( $row_actions as $action => $link ) : ?>
+					<?php $sep = 0 < $index ? '&nbsp;|&nbsp;' : ''; ?>
 					<span class="<?php echo $action; ?>">
 						<?php echo $sep . $link; ?>
 					</span>
-				<?php endforeach; ?>
+				<?php $index++; endforeach; ?>
 			</div>
 		<?php
 		endif;
