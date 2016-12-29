@@ -37,6 +37,9 @@
   white-space: nowrap;
   vertical-align: baseline;
   border-radius: .25em; }
+  .give-item-label:hover {
+    color: #fff;
+    text-decoration: none; }
 
 .give-item-label-gray {
   background-color: #929292; }
@@ -53,6 +56,9 @@
   white-space: nowrap;
   vertical-align: baseline;
   border-radius: .25em; }
+  .give-item-label:hover {
+    color: #fff;
+    text-decoration: none; }
 
 /**
  * Give Frontend Fonts SCSS

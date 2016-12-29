@@ -34,6 +34,9 @@
   white-space: nowrap;
   vertical-align: baseline;
   border-radius: .25em; }
+  .give-item-label:hover {
+    color: #fff;
+    text-decoration: none; }
 
 .give-item-label-gray, #give-payments-filter .give-payment-id {
   background-color: #929292; }
@@ -50,6 +53,9 @@
   white-space: nowrap;
   vertical-align: baseline;
   border-radius: .25em; }
+  .give-item-label:hover {
+    color: #fff;
+    text-decoration: none; }
 
 /**
  * Give CSS Variables
@@ -1936,6 +1942,9 @@ tr.status-refunded td {
   background-color: #ffba00;
   margin: 0 15px;
   vertical-align: middle; }
+  #test-payment-label:hover {
+    color: #fff;
+    text-decoration: none; }
 
 #give-payments-filter .give-payment-id {
   padding: .2em .4em .3em;
@@ -1947,6 +1956,9 @@ tr.status-refunded td {
   vertical-align: baseline;
   border-radius: .25em;
   font-weight: normal; }
+  #give-payments-filter .give-payment-id:hover {
+    color: #fff;
+    text-decoration: none; }
 
 #give-payments-filter .column-details {
   padding-right: 30px; }
