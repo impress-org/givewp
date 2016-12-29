@@ -131,6 +131,13 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			// Set email preview header status.
 			$this->has_preview_header = $this->has_preview && $this->has_preview_header ? true : false;
 
+			// Initialize email context for email notification.
+			$this->email_tag_context = apply_filters(
+				"give{$this->id}_email_tag_context",
+				$this->email_tag_context,
+				$this
+			);
+
 			// Setup setting fields.
 			add_filter( 'give_get_settings_emails', array( $this, 'add_setting_fields' ), 10, 2 );
 		}
