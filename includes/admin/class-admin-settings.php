@@ -737,14 +737,14 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		}
 
 		/**
-		 * Helper function to get the formated description for a given form field.
+		 * Helper function to get the formatted description for a given form field.
 		 * Plugins can call this when implementing their own custom settings types.
 		 *
 		 * @since  1.8
 		 *
 		 * @param  array $value The form field value array
 		 *
-		 * @return array The description and tip as a 2 element array
+		 * @return string
 		 */
 		public static function get_field_description( $value ) {
 			$description = '';
