@@ -20,7 +20,7 @@ if ( ! class_exists( 'Give_Settings_Logs' ) ) :
 	 *
 	 * @sine 1.8
 	 */
-	class Give_Settings_Logs {
+	class Give_Settings_Logs extends Give_Settings_Page {
 
 		/**
 		 * Setting page id.
@@ -45,8 +45,9 @@ if ( ! class_exists( 'Give_Settings_Logs' ) ) :
 			$this->id    = 'logs';
 			$this->label = esc_html__( 'Logs', 'give' );
 
-			add_filter( 'give-tools_tabs_array', array( $this, 'add_settings_page' ), 20 );
-			add_action( "give-tools_settings_{$this->id}_page", array( $this, 'output' ) );
+			$this->default_tab = 'sales';
+
+			parent::__construct();
 
 			// Do not use main form for this tab.
 			if( give_get_current_setting_tab() === $this->id ) {
@@ -108,6 +109,24 @@ if ( ! class_exists( 'Give_Settings_Logs' ) ) :
 
 			// Output.
 			return $settings;
+		}
+
+		/**
+		 * Get sections.
+		 *
+		 * @since 1.8
+		 * @return array
+		 */
+		public function get_sections() {
+			$sections = array(
+				'sales'          => esc_html__( 'Donations', 'give' ),
+				'gateway_errors' => esc_html__( 'Payment Errors', 'give' ),
+				'api_requests'   => esc_html__( 'API Requests', 'give' )
+			);
+
+			$sections = apply_filters( 'give_log_views', $sections );
+
+			return apply_filters( 'give_get_sections_' . $this->id, $sections );
 		}
 
 		/**
