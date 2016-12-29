@@ -264,7 +264,7 @@ class Give_Email_Notifications {
 	public function get_setting_column( Give_Email_Notification $email ) {
 		?>
 		<td class="give-email-notification-settings-table-actions">
-			<a class="dashicons dashicons-admin-generic alignright" href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=' . $email->get_id() ) ); ?>"></a>
+			<a class="button button-small" data-tooltip="<?php echo __( 'Edit', 'give' ); ?> <?php echo $email->get_label(); ?>" href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=' . $email->get_id() ) ); ?>"><span class="dashicons dashicons-admin-generic"></span></a>
 		</td>
 		<?php
 	}
