@@ -131,8 +131,20 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			// Set email preview header status.
 			$this->has_preview_header = $this->has_preview && $this->has_preview_header ? true : false;
 
+			// setup filters.
+			$this->setup_filters();
+		}
+
+
+		/**
+		 * Setup filters.
+		 *
+		 * @since  1.9
+		 * @access public
+		 */
+		private function setup_filters() {
 			// Apply filter only for current email notification section.
-			if( give_get_current_setting_section() === $this->id ) {
+			if ( give_get_current_setting_section() === $this->id ) {
 				// Initialize email context for email notification.
 				$this->email_tag_context = apply_filters(
 					"give_{$this->id}_email_tag_context",
