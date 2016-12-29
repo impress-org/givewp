@@ -133,7 +133,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 
 			// Initialize email context for email notification.
 			$this->email_tag_context = apply_filters(
-				"give{$this->id}_email_tag_context",
+				"give_{$this->id}_email_tag_context",
 				$this->email_tag_context,
 				$this
 			);
