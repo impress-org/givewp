@@ -455,6 +455,17 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @access public
 		 * @return string
 		 */
+		public function is_email_preview() {
+			return $this->has_preview;
+		}
+
+		/**
+		 * Check email preview header active or not.
+		 *
+		 * @since  1.8
+		 * @access public
+		 * @return string
+		 */
 		public function is_email_preview_has_header() {
 			return $this->has_preview_header;
 		}
@@ -464,7 +475,6 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 *
 		 * @since  1.8
 		 * @access public
-		 * @return string
 		 */
 		public function send_preview_email() {}
 	}
