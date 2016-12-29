@@ -393,7 +393,7 @@ function give_setup_email_tags() {
 
 	// Add email tags
 	foreach ( $email_tags as $email_tag ) {
-		give_add_email_tag( $email_tag['tag'], $email_tag['description'], $email_tag['function'] );
+		give_add_email_tag( $email_tag['tag'], $email_tag['description'], $email_tag['function'], $email_tag['context'] );
 	}
 
 }
