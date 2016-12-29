@@ -112,7 +112,7 @@ function give_log_views() {
 	$current_section = give_get_current_setting_section();
 
 	// If there are not any event attach to action then do not show form.
-	if( ! has_action( 'give_log_view_actions' ) ) {
+	if ( ! has_action( 'give_log_view_actions' ) ) {
 		return;
 	}
 	?>
