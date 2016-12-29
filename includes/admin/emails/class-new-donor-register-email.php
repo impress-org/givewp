@@ -40,6 +40,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 			$this->has_recipient_field = true;
 			$this->notification_status = 'enabled';
 			$this->has_preview_header  = false;
+			$this->email_tag_context   = 'donor';
 
 			parent::__construct();
 

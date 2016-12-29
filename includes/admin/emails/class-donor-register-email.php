@@ -39,6 +39,7 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 
 			$this->notification_status  = 'enabled';
 			$this->recipient_group_name = __( 'Donor', 'give' );
+			$this->email_tag_context    = 'donor';
 
 			parent::__construct();
 
