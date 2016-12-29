@@ -145,6 +145,8 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 			/* @var Give_Email_Notifications $email_notifications */
 			$email_notifications = Give_Email_Notifications::get_instance();
 			$emails              = $email_notifications->get_email_notifications();
+
+			// @todo: fix responsiveness of email notification table.
 			?>
 			<table class="give_emails_notification wp-list-table widefat fixed striped">
 				<thead>
