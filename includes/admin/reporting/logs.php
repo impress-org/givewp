@@ -102,25 +102,6 @@ function give_logs_view_api_requests() {
 
 add_action( 'give_logs_view_api_requests', 'give_logs_view_api_requests' );
 
-
-/**
- * Default Log Views
- *
- * @since 1.0
- * @return array $views Log Views
- */
-function give_log_default_views() {
-	$views = array(
-		'sales'          => esc_html__( 'Donations', 'give' ),
-		'gateway_errors' => esc_html__( 'Payment Errors', 'give' ),
-		'api_requests'   => esc_html__( 'API Requests', 'give' )
-	);
-
-	$views = apply_filters( 'give_log_views', $views );
-
-	return $views;
-}
-
 /**
  * Renders the Reports page views drop down
  *
