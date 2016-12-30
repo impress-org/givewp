@@ -380,7 +380,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
 
 						?>
-						<tr valign="top">
+						<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
 						<th scope="row" class="titledesc">
 							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
 						</th>
@@ -404,7 +404,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
 
 						?>
-						<tr valign="top">
+						<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
 						<th scope="row" class="titledesc">
 							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
 						</th>
@@ -430,7 +430,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
 
 						?>
-						<tr valign="top">
+						<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
 						<th scope="row" class="titledesc">
 							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
 						</th>
@@ -475,7 +475,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					case 'radio' :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
 						?>
-						<tr valign="top">
+						<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
 						<th scope="row" class="titledesc">
 							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
 						</th>
@@ -508,7 +508,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					case 'checkbox' :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
 						?>
-						<tr valign="top">
+						<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
 							<th scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
 							</th>
@@ -533,7 +533,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
 						$option_value = is_array( $option_value ) ? $option_value : array();
 						?>
-						<tr valign="top">
+						<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
 							<th scope="row" class="titledesc">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
 							</th>
@@ -571,7 +571,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					case 'file' :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
 						?>
-						<tr valign="top">
+						<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
 						<th scope="row" class="titledesc">
 							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
 						</th>
@@ -606,7 +606,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						// Get editor settings.
 						$editor_settings = ! empty( $value['options'] ) ? $value['options'] : array();
 						?>
-						<tr valign="top">
+						<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
 						<th scope="row" class="titledesc">
 							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
 						</th>
@@ -620,7 +620,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					// Custom: System setting field.
 					case 'system_info' :
 						?>
-						<tr valign="top">
+						<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
 						<th scope="row" class="titledesc">
 							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
 						</th>
@@ -635,7 +635,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					case 'default_gateway' :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
 						?>
-						<tr valign="top">
+						<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
 						<th scope="row" class="titledesc">
 							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
 						</th>
@@ -650,7 +650,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					case 'enabled_gateways' :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
 						?>
-						<tr valign="top">
+						<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
 						<th scope="row" class="titledesc">
 							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
 						</th>
@@ -664,7 +664,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					// Custom: Email preview buttons field.
 					case 'email_preview_buttons' :
 						?>
-						<tr valign="top">
+						<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
 						<th scope="row" class="titledesc">
 							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
 						</th>
@@ -697,7 +697,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					// Custom: Give Docs Link field type.
 					case 'give_docs_link' :
 						?>
-						<tr valign="top">
+						<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
 						<td class="give-docs-link" colspan="2">
 						<?php
 							echo '<p class="give-docs-link"><a href="' . esc_url( $value['url'] )
