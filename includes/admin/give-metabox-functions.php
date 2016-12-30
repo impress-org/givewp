@@ -89,7 +89,7 @@ function give_get_field_callback( $field ) {
 }
 
 /**
- * This function add backward compatibility to render cmb2 type field type.
+ * This function adds backward compatibility to render cmb2 type field type.
  *
  * @since  1.8
  *
@@ -98,6 +98,7 @@ function give_get_field_callback( $field ) {
  * @return bool
  */
 function give_render_field( $field ) {
+
 	$func_name = give_get_field_callback( $field );
 
 	// Check if render callback exist or not.
