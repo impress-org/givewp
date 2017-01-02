@@ -73,7 +73,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		 * Case 1: Full name from payment.
 		 */
 		$payment_id = Give_Helper_Payment::create_simple_payment();
-		$fullname  = give_email_tag_fullname( array( 'payment_id' => $payment_id ) );
+		$fullname   = give_email_tag_fullname( array( 'payment_id' => $payment_id ) );
 
 		$this->assertEquals( 'Admin User', $fullname );
 
@@ -123,7 +123,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		 * Case 1: User name from payment.
 		 */
 		$payment_id = Give_Helper_Payment::create_simple_payment();
-		$username  = give_email_tag_username( array( 'payment_id' => $payment_id ) );
+		$username   = give_email_tag_username( array( 'payment_id' => $payment_id ) );
 
 		$this->assertEquals( 'admin', $username );
 
@@ -173,7 +173,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		 * Case 1: User email from payment.
 		 */
 		$payment_id = Give_Helper_Payment::create_simple_payment();
-		$user_email  = give_email_tag_user_email( array( 'payment_id' => $payment_id ) );
+		$user_email = give_email_tag_user_email( array( 'payment_id' => $payment_id ) );
 
 		$this->assertEquals( 'admin@example.org', $user_email );
 
@@ -222,8 +222,8 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		/*
 		 * Case 1: Billing Address from payment.
 		 */
-		$payment_id = Give_Helper_Payment::create_simple_payment();
-		$billing_address  = give_email_tag_billing_address( array( 'payment_id' => $payment_id ) );
+		$payment_id      = Give_Helper_Payment::create_simple_payment();
+		$billing_address = give_email_tag_billing_address( array( 'payment_id' => $payment_id ) );
 
 		$this->assertEquals( '', trim( str_replace( "\n", '', $billing_address ) ) );
 
@@ -267,7 +267,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		 * Case 1: Date from payment.
 		 */
 		$payment_id = Give_Helper_Payment::create_simple_payment();
-		$date  = give_email_tag_date( array( 'payment_id' => $payment_id ) );
+		$date       = give_email_tag_date( array( 'payment_id' => $payment_id ) );
 
 		$this->assertEquals( 'January 2, 2017', $date );
 
@@ -311,7 +311,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		 * Case 1: Amount from payment.
 		 */
 		$payment_id = Give_Helper_Payment::create_simple_payment();
-		$amount  = give_email_tag_amount( array( 'payment_id' => $payment_id ) );
+		$amount     = give_email_tag_amount( array( 'payment_id' => $payment_id ) );
 
 		$this->assertEquals( '$20.00', $amount );
 

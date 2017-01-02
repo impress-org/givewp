@@ -62,7 +62,7 @@ class Give_Email_Template_Tags {
 				'tag'         => $tag,
 				'description' => $description,
 				'func'        => $func,
-				'context'     => give_check_variable( $context, 'empty', 'general' )
+				'context'     => give_check_variable( $context, 'empty', 'general' ),
 			);
 		}
 	}
@@ -162,7 +162,7 @@ class Give_Email_Template_Tags {
  * @param string   $tag         Email tag to be replace in email
  * @param string   $description Description of the email tag added
  * @param callable $func        Hook to run when email tag is found
- * @param string $context     Email tag category
+ * @param string   $context     Email tag category
  */
 function give_add_email_tag( $tag, $description, $func, $context = '' ) {
 	Give()->email_tags->add( $tag, $description, $func, $context );
@@ -244,7 +244,7 @@ function give_get_emails_tags_list() {
  */
 function give_do_email_tags( $content, $tag_args ) {
 	// Backward compatibility < 1.9
-	if( ! is_array( $tag_args ) ){
+	if ( ! is_array( $tag_args ) ) {
 		$tag_args = array( 'payment_id' => $tag_args );
 	}
 
@@ -297,67 +297,67 @@ function give_setup_email_tags() {
 			'tag'         => 'donation',
 			'description' => esc_html__( 'The donation form name, and the donation level (if applicable).', 'give' ),
 			'function'    => 'give_email_tag_donation',
-			'context'     => 'donation'
+			'context'     => 'donation',
 		),
 		array(
 			'tag'         => 'amount',
 			'description' => esc_html__( 'The total donation amount with currency sign.', 'give' ),
 			'function'    => 'give_email_tag_amount',
-			'context'     => 'donation'
+			'context'     => 'donation',
 		),
 		array(
 			'tag'         => 'price',
 			'description' => esc_html__( 'The total donation amount with currency sign.', 'give' ),
 			'function'    => 'give_email_tag_price',
-			'context'     => 'donation'
+			'context'     => 'donation',
 		),
 		array(
 			'tag'         => 'billing_address',
 			'description' => esc_html__( 'The donor\'s billing address.', 'give' ),
 			'function'    => 'give_email_tag_billing_address',
-			'context'     => 'donation'
+			'context'     => 'donation',
 		),
 		array(
 			'tag'         => 'date',
 			'description' => esc_html__( 'The date of the donation.', 'give' ),
 			'function'    => 'give_email_tag_date',
-			'context'     => 'donation'
+			'context'     => 'donation',
 		),
 		array(
 			'tag'         => 'payment_id',
 			'description' => esc_html__( 'The unique ID number for this donation.', 'give' ),
 			'function'    => 'give_email_tag_payment_id',
-			'context'     => 'donation'
+			'context'     => 'donation',
 		),
 		array(
 			'tag'         => 'payment_method',
 			'description' => esc_html__( 'The method of payment used for this donation.', 'give' ),
 			'function'    => 'give_email_tag_payment_method',
-			'context'     => 'donation'
+			'context'     => 'donation',
 		),
 		array(
 			'tag'         => 'payment_total',
 			'description' => esc_html__( 'The payment total for this donation.', 'give' ),
 			'function'    => 'give_email_tag_payment_total',
-			'context'     => 'donation'
+			'context'     => 'donation',
 		),
 		array(
 			'tag'         => 'receipt_id',
 			'description' => esc_html__( 'The unique ID number for this donation receipt.', 'give' ),
 			'function'    => 'give_email_tag_receipt_id',
-			'context'     => 'donation'
+			'context'     => 'donation',
 		),
 		array(
 			'tag'         => 'receipt_link',
 			'description' => esc_html__( 'The donation receipt direct link, to view the receipt on the website.', 'give' ),
 			'function'    => 'give_email_tag_receipt_link',
-			'context'     => 'donation'
+			'context'     => 'donation',
 		),
 		array(
 			'tag'         => 'receipt_link_url',
 			'description' => esc_html__( 'The donation receipt direct URL, to view the receipt on the website.', 'give' ),
 			'function'    => 'give_email_tag_receipt_link_url',
-			'context'     => 'donation'
+			'context'     => 'donation',
 		),
 
 		/* Donation Form */
@@ -432,10 +432,10 @@ function give_email_tag_first_name( $tag_args ) {
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
-			$payment     = new Give_Payment( $tag_args['payment_id'] );
+			$payment = new Give_Payment( $tag_args['payment_id'] );
 
 			// Get firstname.
-			if( ! empty( $payment->user_info ) ) {
+			if ( ! empty( $payment->user_info ) ) {
 				$email_names = give_get_email_names( $payment->user_info );
 				$firstname   = $email_names['name'];
 			}
@@ -472,7 +472,7 @@ function give_email_tag_first_name( $tag_args ) {
  * @return string $fullname
  */
 function give_email_tag_fullname( $tag_args ) {
-	$fullname ='';
+	$fullname = '';
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
@@ -487,7 +487,7 @@ function give_email_tag_fullname( $tag_args ) {
 
 		case give_check_variable( $tag_args, 'isset', 0, 'user_id' ):
 			$user_info = get_user_by( 'id', $tag_args['user_id'] );
-			$fullname = trim( "{$user_info->first_name} {$user_info->last_name}" );
+			$fullname  = trim( "{$user_info->first_name} {$user_info->last_name}" );
 			break;
 
 		default:
@@ -564,12 +564,12 @@ function give_email_tag_user_email( $tag_args ) {
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
 			$payment = new Give_Payment( $tag_args['payment_id'] );
-			$email = $payment->email;
+			$email   = $payment->email;
 			break;
 
 		case give_check_variable( $tag_args, 'isset', 0, 'user_id' ):
 			$user_info = get_user_by( 'id', $tag_args['user_id'] );
-			$email  = $user_info->user_email;
+			$email     = $user_info->user_email;
 			break;
 
 		default:
@@ -651,7 +651,7 @@ function give_email_tag_date( $tag_args ) {
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
 			$payment = new Give_Payment( $tag_args['payment_id'] );
-			$date = date_i18n( give_date_format(), strtotime( $payment->date ) );
+			$date    = date_i18n( give_date_format(), strtotime( $payment->date ) );
 			break;
 
 		default:
@@ -843,7 +843,7 @@ function give_email_tag_receipt_link( $payment_id ) {
 
 	$receipt_url = esc_url( add_query_arg( array(
 		'payment_key' => give_get_payment_key( $payment_id ),
-		'give_action' => 'view_receipt'
+		'give_action' => 'view_receipt',
 	), home_url() ) );
 	$formatted   = sprintf(
 		'<a href="%1$s">%2$s</a>',
@@ -874,7 +874,7 @@ function give_email_tag_receipt_link_url( $payment_id ) {
 
 	$receipt_url = esc_url( add_query_arg( array(
 		'payment_key' => give_get_payment_key( $payment_id ),
-		'give_action' => 'view_receipt'
+		'give_action' => 'view_receipt',
 	), home_url() ) );
 
 	return $receipt_url;
