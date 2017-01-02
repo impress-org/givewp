@@ -478,7 +478,7 @@ function give_email_tag_fullname( $tag_args ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
 			$payment = new Give_Payment( $tag_args['payment_id'] );
 
-			// Get firstname.
+			// Get fullname.
 			if ( ! empty( $payment->user_info ) ) {
 				$email_names = give_get_email_names( $payment->user_info );
 				$fullname    = $email_names['fullname'];

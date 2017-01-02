@@ -63,7 +63,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Test function give_email_tag_first_name
+	 * Test function give_email_tag_fullname
 	 *
 	 * @since 1.9
 	 * @cover give_email_tag_fullname
@@ -113,14 +113,14 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Test function give_email_tag_first_name
+	 * Test function give_email_tag_username
 	 *
 	 * @since 1.9
 	 * @cover give_email_tag_username
 	 */
 	function test_give_email_tag_username() {
 		/*
-		 * Case 1: Full name from payment.
+		 * Case 1: User name from payment.
 		 */
 		$payment_id = Give_Helper_Payment::create_simple_payment();
 		$username  = give_email_tag_username( array( 'payment_id' => $payment_id ) );
@@ -128,13 +128,13 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$this->assertEquals( 'admin', $username );
 
 		/*
-		 * Case 2: Full name from user_id.
+		 * Case 2: User name from user_id.
 		 */
 		$username = give_email_tag_username( array( 'user_id' => 1 ) );
 		$this->assertEquals( 'admin', $username );
 
 		/*
-		 * Case 3: Full name with filter
+		 * Case 3: User name with filter
 		 */
 		add_filter( 'give_email_tag_username', array( $this, 'give_username' ), 10, 2 );
 
