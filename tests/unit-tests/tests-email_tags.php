@@ -299,4 +299,48 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 
 		return $date;
 	}
+
+	/**
+	 * Test function give_email_tag_amount
+	 *
+	 * @since 1.9
+	 * @cover give_email_tag_amount
+	 */
+	function test_give_email_tag_amount() {
+		/*
+		 * Case 1: User email from payment.
+		 */
+		$payment_id = Give_Helper_Payment::create_simple_payment();
+		$amount  = give_email_tag_amount( array( 'payment_id' => $payment_id ) );
+
+		$this->assertEquals( '$20.00', $amount );
+
+		/*
+		 * Case 2: User email with filter
+		 */
+		add_filter( 'give_email_tag_amount', array( $this, 'give_amount' ), 10, 2 );
+
+		$amount = give_email_tag_amount( array( 'user_id' => 1 ) );
+		$this->assertEquals( '$30.00', $amount );
+
+		remove_filter( 'give_email_tag_amount', array( $this, 'give_amount' ), 10 );
+	}
+
+	/**
+	 * Add give_email_tag_amount filter to give_email_tag_amount function.
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $amount
+	 * @param array  $tag_args
+	 *
+	 * @return string
+	 */
+	public function give_amount( $amount, $tag_args ) {
+		if ( array_key_exists( 'user_id', $tag_args ) ) {
+			$amount = '$30.00';
+		}
+
+		return $amount;
+	}
 }

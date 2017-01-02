@@ -674,15 +674,34 @@ function give_email_tag_date( $tag_args ) {
  *
  * The total amount of the donation given.
  *
- * @param int $payment_id
+ * @param array $tag_args
  *
  * @return string amount
  */
-function give_email_tag_amount( $payment_id ) {
-	$payment     = new Give_Payment( $payment_id );
-	$give_amount = give_currency_filter( give_format_amount( $payment->total ), $payment->currency );
+function give_email_tag_amount( $tag_args ) {
+	$amount = '';
 
-	return html_entity_decode( $give_amount, ENT_COMPAT, 'UTF-8' );
+	switch ( true ) {
+		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
+			$payment     = new Give_Payment( $tag_args['payment_id'] );
+			$give_amount = give_currency_filter( give_format_amount( $payment->total ), $payment->currency );
+			$amount      = html_entity_decode( $give_amount, ENT_COMPAT, 'UTF-8' );
+			break;
+
+		default:
+			/**
+			 * Filter the {amount} email template tag output.
+			 *
+			 * @since 1.9
+			 *
+			 * @param string $amount
+			 * @param array  $tag_args
+			 */
+			$amount = apply_filters( 'give_email_tag_amount', $amount, $tag_args );
+	}
+
+
+	return $amount;
 }
 
 /**
