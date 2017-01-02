@@ -40,11 +40,11 @@ class Give_Email_Template_Tags {
 	private $tags;
 
 	/**
-	 * Payment ID
+	 * Tags arguments
 	 *
-	 * @since 1.0
+	 * @since 1.9
 	 */
-	private $payment_id;
+	private $tag_args;
 
 	/**
 	 * Add an email tag.
@@ -105,25 +105,27 @@ class Give_Email_Template_Tags {
 	/**
 	 * Search content for email tags and filter email tags through their hooks.
 	 *
-	 * @param string $content    Content to search for email tags.
-	 * @param int    $payment_id The payment id.
+	 * @param string $content  Content to search for email tags.
+	 * @param array  $tag_args Email template tag arguments.
 	 *
 	 * @since 1.0
+	 * @since 1.9 $payment_id deprecated.
+	 * @since 1.9 $tag_args added.
 	 *
 	 * @return string Content with email tags filtered out.
 	 */
-	public function do_tags( $content, $payment_id ) {
+	public function do_tags( $content, $tag_args ) {
 
 		// Check if there is at least one tag added.
 		if ( empty( $this->tags ) || ! is_array( $this->tags ) ) {
 			return $content;
 		}
 
-		$this->payment_id = $payment_id;
+		$this->tag_args = $tag_args;
 
 		$new_content = preg_replace_callback( "/{([A-z0-9\-\_]+)}/s", array( $this, 'do_tag' ), $content );
 
-		$this->payment_id = null;
+		$this->tag_args = null;
 
 		return $new_content;
 	}
@@ -147,7 +149,7 @@ class Give_Email_Template_Tags {
 			return $m[0];
 		}
 
-		return call_user_func( $this->tags[ $tag ]['func'], $this->payment_id, $tag );
+		return call_user_func( $this->tags[ $tag ]['func'], $this->tag_args, $tag );
 	}
 
 }
@@ -231,19 +233,33 @@ function give_get_emails_tags_list() {
 /**
  * Search content for email tags and filter email tags through their hooks.
  *
- * @param string $content    Content to search for email tags.
- * @param int    $payment_id The payment id.
+ * @param string    $content  Content to search for email tags.
+ * @param array|int $tag_args Email template tag arguments.
  *
  * @since 1.0
+ * @since 1.9 $payment_id deprecated.
+ * @since 1.9 $tag_args added.
  *
  * @return string Content with email tags filtered out.
  */
-function give_do_email_tags( $content, $payment_id ) {
+function give_do_email_tags( $content, $tag_args ) {
+	// Backward compatibility < 1.9
+	if( ! is_array( $tag_args ) ){
+		$tag_args['payment_id'] = $tag_args;
+	}
 
 	// Replace all tags
-	$content = Give()->email_tags->do_tags( $content, $payment_id );
+	$content = Give()->email_tags->do_tags( $content, $tag_args );
 
-	$content = apply_filters( 'give_email_template_tags', $content, give_get_payment_meta( $payment_id ), $payment_id );
+	/**
+	 * Filter the filtered content text.
+	 *
+	 * @since 1.0
+	 * @since 1.9 $payment_meta removed.
+	 * @since 1.9 $payment_id removed.
+	 * @since 1.9 $tag_args added.
+	 */
+	$content = apply_filters( 'give_email_template_tags', $content, $tag_args );
 
 	// Return content
 	return $content;
