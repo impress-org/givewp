@@ -782,11 +782,11 @@ function give_email_tag_donation( $tag_args ) {
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
-			$payment      = new Give_Payment( $tag_args['payment_id'] );
-			$payment_meta = $payment->payment_meta;
-			$level_title  = give_has_variable_prices( $payment->form_id );
-			$separator    = $level_title ? '-' : '';
-			$donation_form_title   = strip_tags( give_check_variable( give_get_payment_form_title( $payment_meta, false, $separator ), 'empty', '' ) );
+			$payment             = new Give_Payment( $tag_args['payment_id'] );
+			$payment_meta        = $payment->payment_meta;
+			$level_title         = give_has_variable_prices( $payment->form_id );
+			$separator           = $level_title ? '-' : '';
+			$donation_form_title = strip_tags( give_check_variable( give_get_payment_form_title( $payment_meta, false, $separator ), 'empty', '' ) );
 			break;
 	}
 
@@ -819,9 +819,9 @@ function give_email_tag_form_title( $tag_args ) {
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
-			$payment      = new Give_Payment( $tag_args['payment_id'] );
-			$payment_meta = $payment->payment_meta;
-			$donation_form_title   = strip_tags( give_check_variable( $payment_meta, 'empty', '', 'form_title' ) );
+			$payment             = new Give_Payment( $tag_args['payment_id'] );
+			$payment_meta        = $payment->payment_meta;
+			$donation_form_title = strip_tags( give_check_variable( $payment_meta, 'empty', '', 'form_title' ) );
 			break;
 	}
 

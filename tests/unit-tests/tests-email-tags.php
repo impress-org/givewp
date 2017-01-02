@@ -457,7 +457,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$this->assertEquals( 'Multi-level Test Donation Form - Mid-size Gift', $donation_form_title );
 
 		/*
-		 * Case 2: Donation form title with filter
+		 * Case 3: Donation form title with filter
 		 */
 		add_filter( 'give_email_tag_donation', array( $this, 'give_donation' ) );
 		$donation_form_title = give_email_tag_donation( array( 'payment_id' => $donation ) );
@@ -504,7 +504,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$this->assertEquals( 'Multi-level Test Donation Form', $form_title );
 
 		/*
-		 * Case 2: Form title with filter
+		 * Case 3: Form title with filter
 		 */
 		add_filter( 'give_email_tag_form_title', array( $this, 'give_form_title' ) );
 		$form_title = give_email_tag_form_title( array( 'payment_id' => $payment ) );
