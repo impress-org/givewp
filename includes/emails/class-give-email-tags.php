@@ -845,14 +845,34 @@ function give_email_tag_form_title( $tag_args ) {
  *
  * The method of payment used for this donation.
  *
- * @param int $payment_id
+ * @param array $tag_args
  *
  * @return string gateway
  */
-function give_email_tag_payment_method( $payment_id ) {
-	$payment = new Give_Payment( $payment_id );
+function give_email_tag_payment_method( $tag_args ) {
+	$payment_method = '';
 
-	return give_get_gateway_checkout_label( $payment->gateway );
+	switch ( true ) {
+		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
+			$payment        = new Give_Payment( $tag_args['payment_id'] );
+			$payment_method = $payment->gateway;
+			break;
+	}
+
+	/**
+	 * Filter the {payment_method} email template tag output.
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $payment_method
+	 * @param array  $tag_args
+	 */
+	return apply_filters(
+		'give_email_tag_payment_method',
+		$payment_method,
+		$tag_args
+	);
+
 }
 
 /**
