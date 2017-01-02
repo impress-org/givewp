@@ -773,19 +773,36 @@ function give_email_tag_receipt_id( $tag_args ) {
  *
  * Output the donation form name, and the donation level (if applicable).
  *
- * @param int $payment_id
+ * @param array $tag_args
  *
  * @return string $form_title
  */
-function give_email_tag_donation( $payment_id ) {
-	$payment      = new Give_Payment( $payment_id );
-	$payment_meta = $payment->payment_meta;
-	$level_title  = give_has_variable_prices( $payment->form_id );
-	$separator    = $level_title ? '-' : '';
-	$form_title   = strip_tags( give_get_payment_form_title( $payment_meta, false, $separator ) );
+function give_email_tag_donation( $tag_args ) {
+	$donation_form_title = '';
 
-	return ! empty( $form_title ) ? $form_title : '';
+	switch ( true ) {
+		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
+			$payment      = new Give_Payment( $tag_args['payment_id'] );
+			$payment_meta = $payment->payment_meta;
+			$level_title  = give_has_variable_prices( $payment->form_id );
+			$separator    = $level_title ? '-' : '';
+			$donation_form_title   = strip_tags( give_get_payment_form_title( $payment_meta, false, $separator ) );
+			break;
+	}
 
+	/**
+	 * Filter the {donation_form_title} email template tag output.
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $donation_form_title
+	 * @param array  $tag_args
+	 */
+	return apply_filters(
+		'give_email_tag_donation',
+		give_check_variable( $donation_form_title, 'empty', '' ),
+		$tag_args
+	);
 }
 
 /**
