@@ -245,7 +245,7 @@ function give_get_emails_tags_list() {
 function give_do_email_tags( $content, $tag_args ) {
 	// Backward compatibility < 1.9
 	if( ! is_array( $tag_args ) ){
-		$tag_args['payment_id'] = $tag_args;
+		$tag_args = array( 'payment_id' => $tag_args );
 	}
 
 	// Replace all tags
