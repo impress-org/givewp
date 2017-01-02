@@ -627,7 +627,7 @@ function give_email_tag_billing_address( $tag_args ) {
 			 *
 			 * @since 1.9
 			 *
-			 * @param string $email
+			 * @param string $address
 			 * @param array  $tag_args
 			 */
 			$address = apply_filters( 'give_email_tag_billing_address', $address, $tag_args );
