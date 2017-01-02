@@ -974,17 +974,47 @@ function give_email_tag_receipt_link( $payment_id ) {
  *
  * @since 1.7
  *
- * @param int $payment_id
+ * @param array $tag_args
  *
  * @return string receipt_url
  */
-function give_email_tag_receipt_link_url( $payment_id ) {
+function give_email_tag_receipt_link_url( $tag_args ) {
+	$receipt_link_url = give_get_receipt_url( give_check_variable( $tag_args, 'empty', 0, 'payment_id' ) );
 
-	$receipt_url = esc_url( add_query_arg( array(
-		'payment_key' => give_get_payment_key( $payment_id ),
-		'give_action' => 'view_receipt',
-	), home_url() ) );
+	/**
+	 * Filter the {receipt_link_url} email template tag output.
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $receipt_link_url
+	 * @param array        $tag_args
+	 */
+	return apply_filters(
+		'give_email_tag_receipt_link_url',
+		$receipt_link_url,
+		$tag_args
+	);
+}
+
+
+/**
+ * Get receipt_url
+ *
+ * @since 1.9
+ *
+ * @param int $payment_id
+ *
+ * @return string
+ */
+function give_get_receipt_url( $payment_id ) {
+	$receipt_url = '';
+
+	if( $payment_id ) {
+		$receipt_url = esc_url( add_query_arg( array(
+			'payment_key' => give_get_payment_key( $payment_id ),
+			'give_action' => 'view_receipt',
+		), home_url() ) );
+	}
 
 	return $receipt_url;
-
 }
