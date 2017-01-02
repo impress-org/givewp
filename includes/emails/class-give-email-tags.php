@@ -511,21 +511,42 @@ function give_email_tag_fullname( $tag_args ) {
  *
  * The donor's user name on the site, if they registered an account.
  *
- * @param int $payment_id
+ * @param array $tag_args
  *
  * @return string username.
  */
-function give_email_tag_username( $payment_id ) {
-	$payment   = new Give_Payment( $payment_id );
-	$user_info = $payment->user_info;
+function give_email_tag_username( $tag_args ) {
+	$username = '';
 
-	if ( empty( $user_info ) ) {
-		return '';
+	switch ( true ) {
+		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
+			$payment = new Give_Payment( $tag_args['payment_id'] );
+
+			// Get username.
+			if ( ! empty( $payment->user_info ) ) {
+				$email_names = give_get_email_names( $payment->user_info );
+				$username    = $email_names['username'];
+			}
+			break;
+
+		case give_check_variable( $tag_args, 'isset', 0, 'user_id' ):
+			$user_info = get_user_by( 'id', $tag_args['user_id'] );
+			$username  = $user_info->user_login;
+			break;
+
+		default:
+			/**
+			 * Filter the {username} email template tag output.
+			 *
+			 * @since 1.9
+			 *
+			 * @param string $username
+			 * @param array  $tag_args
+			 */
+			$username = apply_filters( 'give_email_tag_username', $username, $tag_args );
 	}
 
-	$email_name = give_get_email_names( $user_info );
-
-	return $email_name['username'];
+	return $username;
 }
 
 /**

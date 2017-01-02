@@ -111,4 +111,54 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 
 		return $fullname;
 	}
+
+	/**
+	 * Test function give_email_tag_first_name
+	 *
+	 * @since 1.9
+	 * @cover give_email_tag_username
+	 */
+	function test_give_email_tag_username() {
+		/*
+		 * Case 1: Full name from payment.
+		 */
+		$payment_id = Give_Helper_Payment::create_simple_payment();
+		$username  = give_email_tag_username( array( 'payment_id' => $payment_id ) );
+
+		$this->assertEquals( 'admin', $username );
+
+		/*
+		 * Case 2: Full name from user_id.
+		 */
+		$username = give_email_tag_username( array( 'user_id' => 1 ) );
+		$this->assertEquals( 'admin', $username );
+
+		/*
+		 * Case 3: Full name with filter
+		 */
+		add_filter( 'give_email_tag_username', array( $this, 'give_username' ), 10, 2 );
+
+		$username = give_email_tag_username( array( 'donor_id' => 1 ) );
+		$this->assertEquals( 'give', $username );
+
+		remove_filter( 'give_email_tag_username', array( $this, 'give_username' ), 10 );
+	}
+
+	/**
+	 * Add give_email_tag_username filter to give_email_tag_username function.
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $username
+	 * @param array  $tag_args
+	 *
+	 * @return string
+	 */
+	public function give_username( $username, $tag_args ) {
+		if ( array_key_exists( 'donor_id', $tag_args ) ) {
+			$username = 'give';
+		}
+
+		return $username;
+	}
 }
