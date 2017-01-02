@@ -305,6 +305,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	 *
 	 * @since 1.9
 	 * @cover give_email_tag_amount
+	 * @cover give_email_tag_price
 	 */
 	function test_give_email_tag_amount() {
 		/*

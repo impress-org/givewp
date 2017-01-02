@@ -709,12 +709,12 @@ function give_email_tag_amount( $tag_args ) {
  *
  * The total price of the donation.
  *
- * @param int $payment_id
+ * @param array $tag_args
  *
  * @return string price
  */
-function give_email_tag_price( $payment_id ) {
-	return give_email_tag_amount( $payment_id );
+function give_email_tag_price( $tag_args ) {
+	return give_email_tag_amount( $tag_args );
 }
 
 /**
