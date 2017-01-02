@@ -722,14 +722,29 @@ function give_email_tag_price( $tag_args ) {
  *
  * The unique ID number for this donation.
  *
- * @param int $payment_id
+ * @param array $tag_args
  *
  * @return int payment_id
  */
-function give_email_tag_payment_id( $payment_id ) {
-	$payment = new Give_Payment( $payment_id );
+function give_email_tag_payment_id( $tag_args ) {
+	$payment_id = '';
 
-	return $payment->number;
+	switch ( true ) {
+		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
+			$payment    = new Give_Payment( $tag_args['payment_id'] );
+			$payment_id = $payment->number;
+			break;
+	}
+
+	/**
+	 * Filter the {payment_id} email template tag output.
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $payment_id
+	 * @param array  $tag_args
+	 */
+	return apply_filters( 'give_email_tag_payment_id', $payment_id, $tag_args );
 }
 
 /**

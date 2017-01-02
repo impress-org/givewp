@@ -344,4 +344,48 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 
 		return $amount;
 	}
+
+	/**
+	 * Test function give_email_tag_payment_id
+	 *
+	 * @since 1.9
+	 * @cover give_email_tag_payment_id
+	 */
+	function test_give_email_tag_payment_id() {
+		/*
+		 * Case 1: Payment ID from payment.
+		 */
+		$payment_id = Give_Helper_Payment::create_simple_payment();
+		$payment_id = give_email_tag_payment_id( array( 'payment_id' => $payment_id ) );
+
+		$this->assertEquals( 'GIVE-1', $payment_id );
+
+		/*
+		 * Case 2: Payment ID with filter
+		 */
+		add_filter( 'give_email_tag_payment_id', array( $this, 'give_payment_id' ), 10, 2 );
+
+		$payment_id = give_email_tag_payment_id( array( 'user_id' => 1 ) );
+		$this->assertEquals( 'GIVE-1 [Pending]', $payment_id );
+
+		remove_filter( 'give_email_tag_payment_id', array( $this, 'give_payment_id' ), 10 );
+	}
+
+	/**
+	 * Add give_email_tag_payment_id filter to give_email_tag_payment_id function.
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $payment_id
+	 * @param array  $tag_args
+	 *
+	 * @return string
+	 */
+	public function give_payment_id( $payment_id, $tag_args ) {
+		if ( array_key_exists( 'user_id', $tag_args ) ) {
+			$payment_id = 'GIVE-1 [Pending]';
+		}
+
+		return $payment_id;
+	}
 }
