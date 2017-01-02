@@ -467,21 +467,43 @@ function give_email_tag_first_name( $tag_args ) {
  *
  * The donor's full name, first and last.
  *
- * @param int $payment_id
+ * @param array $tag_args
  *
  * @return string fullname
  */
-function give_email_tag_fullname( $payment_id ) {
-	$payment   = new Give_Payment( $payment_id );
-	$user_info = $payment->user_info;
+function give_email_tag_fullname( $tag_args ) {
+	$fullname ='';
 
-	if ( empty( $user_info ) ) {
-		return '';
+	switch ( true ) {
+		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
+			$payment = new Give_Payment( $tag_args['payment_id'] );
+
+			// Get firstname.
+			if ( ! empty( $payment->user_info ) ) {
+				$email_names = give_get_email_names( $payment->user_info );
+				$fullname    = $email_names['fullname'];
+			}
+			break;
+
+		case give_check_variable( $tag_args, 'isset', 0, 'user_id' ):
+			$user_info = get_user_by( 'id', $tag_args['user_id'] );
+			$fullname = trim( "{$user_info->first_name} {$user_info->last_name}" );
+			break;
+
+		default:
+			/**
+			 * Filter the {fullname} email template tag output.
+			 *
+			 * @since 1.9
+			 *
+			 * @param string $fullname
+			 * @param array  $tag_args
+			 */
+			$fullname = apply_filters( 'give_email_tag_fullname', $fullname, $tag_args );
 	}
 
-	$email_name = give_get_email_names( $user_info );
 
-	return $email_name['fullname'];
+	return $fullname;
 }
 
 /**
