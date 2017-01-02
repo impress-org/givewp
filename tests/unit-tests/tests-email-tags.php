@@ -642,4 +642,23 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 
 		return $sitename;
 	}
+
+	/**
+	 * Test function give_email_tag_receipt_link_url
+	 *
+	 * @since 1.9
+	 * @cover give_get_receipt_url
+	 * @cover give_email_tag_receipt_link_url
+	 */
+	function test_give_email_tag_receipt_link_url() {
+		$payment = Give_Helper_Payment::create_simple_payment();
+
+
+		$receipt_link_url = give_email_tag_receipt_link_url( array( 'payment_id' => $payment ) );
+
+		$this->assertRegExp(
+			'/give_action=view_receipt/',
+			$receipt_link_url
+		);
+	}
 }
