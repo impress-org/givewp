@@ -554,14 +554,37 @@ function give_email_tag_username( $tag_args ) {
  *
  * The donor's email address
  *
- * @param int $payment_id
+ * @param array $tag_args
  *
  * @return string user_email
  */
-function give_email_tag_user_email( $payment_id ) {
-	$payment = new Give_Payment( $payment_id );
+function give_email_tag_user_email( $tag_args ) {
+	$email = '';
 
-	return $payment->email;
+	switch ( true ) {
+		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
+			$payment = new Give_Payment( $tag_args['payment_id'] );
+			$email = $payment->email;
+			break;
+
+		case give_check_variable( $tag_args, 'isset', 0, 'user_id' ):
+			$user_info = get_user_by( 'id', $tag_args['user_id'] );
+			$email  = $user_info->user_email;
+			break;
+
+		default:
+			/**
+			 * Filter the {email} email template tag output.
+			 *
+			 * @since 1.9
+			 *
+			 * @param string $email
+			 * @param array  $tag_args
+			 */
+			$email = apply_filters( 'give_email_tag_user_email', $email, $tag_args );
+	}
+
+	return $email;
 }
 
 /**

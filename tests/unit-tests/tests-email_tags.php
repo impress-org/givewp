@@ -161,4 +161,54 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 
 		return $username;
 	}
+
+	/**
+	 * Test function give_email_tag_user_email
+	 *
+	 * @since 1.9
+	 * @cover give_email_tag_user_email
+	 */
+	function test_give_email_tag_user_email() {
+		/*
+		 * Case 1: User email from payment.
+		 */
+		$payment_id = Give_Helper_Payment::create_simple_payment();
+		$user_email  = give_email_tag_user_email( array( 'payment_id' => $payment_id ) );
+
+		$this->assertEquals( 'admin@example.org', $user_email );
+
+		/*
+		 * Case 2: User email from user_id.
+		 */
+		$user_email = give_email_tag_user_email( array( 'user_id' => 1 ) );
+		$this->assertEquals( 'admin@example.org', $user_email );
+
+		/*
+		 * Case 3: User email with filter
+		 */
+		add_filter( 'give_email_tag_user_email', array( $this, 'give_user_email' ), 10, 2 );
+
+		$user_email = give_email_tag_user_email( array( 'donor_id' => 1 ) );
+		$this->assertEquals( 'give@givewp.com', $user_email );
+
+		remove_filter( 'give_email_tag_user_email', array( $this, 'give_user_email' ), 10 );
+	}
+
+	/**
+	 * Add give_email_tag_user_email filter to give_email_tag_user_email function.
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $user_email
+	 * @param array  $tag_args
+	 *
+	 * @return string
+	 */
+	public function give_user_email( $user_email, $tag_args ) {
+		if ( array_key_exists( 'donor_id', $tag_args ) ) {
+			$user_email = 'give@givewp.com';
+		}
+
+		return $user_email;
+	}
 }
