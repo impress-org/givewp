@@ -882,15 +882,33 @@ function give_email_tag_payment_method( $tag_args ) {
  *
  * @since 1.8
  *
- * @param int $payment_id
+ * @param array $tag_args
  *
  * @return string
  */
-function give_email_tag_payment_total( $payment_id ) {
-	/* @var Give_Payment $payment */
-	$payment = new Give_Payment( $payment_id );
+function give_email_tag_payment_total( $tag_args ) {
+	$payment_total = '';
 
-	return give_currency_filter( $payment->total );
+	switch ( true ) {
+		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
+			$payment        = new Give_Payment( $tag_args['payment_id'] );
+			$payment_total = give_currency_filter( $payment->total );
+			break;
+	}
+
+	/**
+	 * Filter the {payment_total} email template tag output.
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $payment_total
+	 * @param array  $tag_args
+	 */
+	return apply_filters(
+		'give_email_tag_payment_total',
+		$payment_total,
+		$tag_args
+	);
 }
 
 /**
