@@ -592,29 +592,48 @@ function give_email_tag_user_email( $tag_args ) {
  *
  * The donor's billing address
  *
- * @param int $payment_id
+ * @param array $tag_args
  *
  * @return string billing_address
  */
-function give_email_tag_billing_address( $payment_id ) {
-	$user_info    = give_get_payment_meta_user_info( $payment_id );
-	$user_address = ! empty( $user_info['address'] ) ? $user_info['address'] : array(
-		'line1'   => '',
-		'line2'   => '',
-		'city'    => '',
-		'country' => '',
-		'state'   => '',
-		'zip'     => ''
-	);
+function give_email_tag_billing_address( $tag_args ) {
+	$address = '';
 
-	$return = $user_address['line1'] . "\n";
-	if ( ! empty( $user_address['line2'] ) ) {
-		$return .= $user_address['line2'] . "\n";
+	switch ( true ) {
+		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
+			$user_info    = give_get_payment_meta_user_info( $tag_args['payment_id'] );
+			$user_address = ! empty( $user_info['address'] ) ? $user_info['address'] : array(
+				'line1'   => '',
+				'line2'   => '',
+				'city'    => '',
+				'country' => '',
+				'state'   => '',
+				'zip'     => '',
+			);
+
+			$address = $user_address['line1'] . "\n";
+
+			if ( ! empty( $user_address['line2'] ) ) {
+				$address .= $user_address['line2'] . "\n";
+			}
+
+			$address .= $user_address['city'] . ' ' . $user_address['zip'] . ' ' . $user_address['state'] . "\n";
+			$address .= $user_address['country'];
+			break;
+
+		default:
+			/**
+			 * Filter the {billing_address} email template tag output.
+			 *
+			 * @since 1.9
+			 *
+			 * @param string $email
+			 * @param array  $tag_args
+			 */
+			$address = apply_filters( 'give_email_tag_billing_address', $address, $tag_args );
 	}
-	$return .= $user_address['city'] . ' ' . $user_address['zip'] . ' ' . $user_address['state'] . "\n";
-	$return .= $user_address['country'];
 
-	return $return;
+	return $address;
 }
 
 /**

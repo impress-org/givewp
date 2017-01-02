@@ -211,4 +211,48 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 
 		return $user_email;
 	}
+
+	/**
+	 * Test function give_email_tag_billing_address
+	 *
+	 * @since 1.9
+	 * @cover give_email_tag_billing_address
+	 */
+	function test_give_email_tag_billing_address() {
+		/*
+		 * Case 1: User email from payment.
+		 */
+		$payment_id = Give_Helper_Payment::create_simple_payment();
+		$billing_address  = give_email_tag_billing_address( array( 'payment_id' => $payment_id ) );
+
+		$this->assertEquals( '', trim( str_replace( "\n", '', $billing_address ) ) );
+
+		/*
+		 * Case 2: User email with filter
+		 */
+		add_filter( 'give_email_tag_billing_address', array( $this, 'give_billing_address' ), 10, 2 );
+
+		$billing_address = give_email_tag_billing_address( array( 'user_id' => 1 ) );
+		$this->assertEquals( 'San Diego, CA', $billing_address );
+
+		remove_filter( 'give_email_tag_billing_address', array( $this, 'give_billing_address' ), 10 );
+	}
+
+	/**
+	 * Add give_email_tag_billing_address filter to give_email_tag_billing_address function.
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $billing_address
+	 * @param array  $tag_args
+	 *
+	 * @return string
+	 */
+	public function give_billing_address( $billing_address, $tag_args ) {
+		if ( array_key_exists( 'user_id', $tag_args ) ) {
+			$billing_address = 'San Diego, CA';
+		}
+
+		return $billing_address;
+	}
 }
