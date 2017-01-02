@@ -916,12 +916,26 @@ function give_email_tag_payment_total( $tag_args ) {
  *
  * The name of the site.
  *
- * @param int $payment_id
+ * @param array $tag_args
  *
- * @return string sitename
+ * @return string
  */
-function give_email_tag_sitename( $payment_id ) {
-	return wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES );
+function give_email_tag_sitename( $tag_args = array() ) {
+	$sitename = wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES );
+
+	/**
+	 * Filter the {sitename} email template tag output.
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $sitename
+	 * @param array  $tag_args
+	 */
+	return apply_filters(
+		'give_email_tag_sitename',
+		$sitename,
+		$tag_args
+	);
 }
 
 /**
