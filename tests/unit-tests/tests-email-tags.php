@@ -526,4 +526,43 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 
 		return $form_title;
 	}
+
+	/**
+	 * Test function give_email_tag_payment_method
+	 *
+	 * @since 1.9
+	 * @cover give_email_tag_payment_method
+	 */
+	function test_give_email_tag_payment_method() {
+		/*
+		 * Case 1: Payment method from simple payment_method.
+		 */
+		$payment        = Give_Helper_Payment::create_simple_payment();
+		$payment_method = give_email_tag_payment_method( array( 'payment_id' => $payment ) );
+
+		$this->assertEquals( '', $payment_method );
+
+		/*
+		 * Case 2: Payment method with filter
+		 */
+		add_filter( 'give_email_tag_payment_method', array( $this, 'give_payment_method' ) );
+		$payment_method = give_email_tag_payment_method( array( 'payment_id' => $payment ) );
+		$this->assertEquals( 'Manual', $payment_method );
+		remove_filter( 'give_email_tag_payment_method', array( $this, 'give_payment_method' ), 10 );
+	}
+
+	/**
+	 * Add give_email_tag_payment_method filter to give_email_tag_payment_method function.
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $payment_method
+	 *
+	 * @return string
+	 */
+	public function give_payment_method( $payment_method ) {
+		$payment_method = 'Manual';
+
+		return $payment_method;
+	}
 }
