@@ -445,19 +445,17 @@ function give_email_tag_first_name( $tag_args ) {
 			$user_info = get_user_by( 'id', $tag_args['user_id'] );
 			$firstname = $user_info->first_name;
 			break;
-
-		default:
-			/**
-			 * Filter the {firstname} email template tag output.
-			 *
-			 * @since 1.9
-			 *
-			 * @param string $firstname
-			 * @param array  $tag_args
-			 */
-			$firstname = apply_filters( 'give_email_tag_first_name', $firstname, $tag_args );
-			break;
 	}
+
+	/**
+	 * Filter the {firstname} email template tag output.
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $firstname
+	 * @param array  $tag_args
+	 */
+	$firstname = apply_filters( 'give_email_tag_first_name', $firstname, $tag_args );
 
 	return $firstname;
 }
@@ -489,19 +487,17 @@ function give_email_tag_fullname( $tag_args ) {
 			$user_info = get_user_by( 'id', $tag_args['user_id'] );
 			$fullname  = trim( "{$user_info->first_name} {$user_info->last_name}" );
 			break;
-
-		default:
-			/**
-			 * Filter the {fullname} email template tag output.
-			 *
-			 * @since 1.9
-			 *
-			 * @param string $fullname
-			 * @param array  $tag_args
-			 */
-			$fullname = apply_filters( 'give_email_tag_fullname', $fullname, $tag_args );
 	}
 
+	/**
+	 * Filter the {fullname} email template tag output.
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $fullname
+	 * @param array  $tag_args
+	 */
+	$fullname = apply_filters( 'give_email_tag_fullname', $fullname, $tag_args );
 
 	return $fullname;
 }
@@ -533,18 +529,17 @@ function give_email_tag_username( $tag_args ) {
 			$user_info = get_user_by( 'id', $tag_args['user_id'] );
 			$username  = $user_info->user_login;
 			break;
-
-		default:
-			/**
-			 * Filter the {username} email template tag output.
-			 *
-			 * @since 1.9
-			 *
-			 * @param string $username
-			 * @param array  $tag_args
-			 */
-			$username = apply_filters( 'give_email_tag_username', $username, $tag_args );
 	}
+
+	/**
+	 * Filter the {username} email template tag output.
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $username
+	 * @param array  $tag_args
+	 */
+	$username = apply_filters( 'give_email_tag_username', $username, $tag_args );
 
 	return $username;
 }
@@ -571,18 +566,17 @@ function give_email_tag_user_email( $tag_args ) {
 			$user_info = get_user_by( 'id', $tag_args['user_id'] );
 			$email     = $user_info->user_email;
 			break;
-
-		default:
-			/**
-			 * Filter the {email} email template tag output.
-			 *
-			 * @since 1.9
-			 *
-			 * @param string $email
-			 * @param array  $tag_args
-			 */
-			$email = apply_filters( 'give_email_tag_user_email', $email, $tag_args );
 	}
+
+	/**
+	 * Filter the {email} email template tag output.
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $email
+	 * @param array  $tag_args
+	 */
+	$email = apply_filters( 'give_email_tag_user_email', $email, $tag_args );
 
 	return $email;
 }
@@ -620,18 +614,17 @@ function give_email_tag_billing_address( $tag_args ) {
 			$address .= $user_address['city'] . ' ' . $user_address['zip'] . ' ' . $user_address['state'] . "\n";
 			$address .= $user_address['country'];
 			break;
-
-		default:
-			/**
-			 * Filter the {billing_address} email template tag output.
-			 *
-			 * @since 1.9
-			 *
-			 * @param string $address
-			 * @param array  $tag_args
-			 */
-			$address = apply_filters( 'give_email_tag_billing_address', $address, $tag_args );
 	}
+
+	/**
+	 * Filter the {billing_address} email template tag output.
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $address
+	 * @param array  $tag_args
+	 */
+	$address = apply_filters( 'give_email_tag_billing_address', $address, $tag_args );
 
 	return $address;
 }
@@ -653,18 +646,17 @@ function give_email_tag_date( $tag_args ) {
 			$payment = new Give_Payment( $tag_args['payment_id'] );
 			$date    = date_i18n( give_date_format(), strtotime( $payment->date ) );
 			break;
-
-		default:
-			/**
-			 * Filter the {date} email template tag output.
-			 *
-			 * @since 1.9
-			 *
-			 * @param string $date
-			 * @param array  $tag_args
-			 */
-			$date = apply_filters( 'give_email_tag_date', $date, $tag_args );
 	}
+
+	/**
+	 * Filter the {date} email template tag output.
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $date
+	 * @param array  $tag_args
+	 */
+	$date = apply_filters( 'give_email_tag_date', $date, $tag_args );
 
 	return $date;
 }
@@ -687,19 +679,17 @@ function give_email_tag_amount( $tag_args ) {
 			$give_amount = give_currency_filter( give_format_amount( $payment->total ), $payment->currency );
 			$amount      = html_entity_decode( $give_amount, ENT_COMPAT, 'UTF-8' );
 			break;
-
-		default:
-			/**
-			 * Filter the {amount} email template tag output.
-			 *
-			 * @since 1.9
-			 *
-			 * @param string $amount
-			 * @param array  $tag_args
-			 */
-			$amount = apply_filters( 'give_email_tag_amount', $amount, $tag_args );
 	}
 
+	/**
+	 * Filter the {amount} email template tag output.
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $amount
+	 * @param array  $tag_args
+	 */
+	$amount = apply_filters( 'give_email_tag_amount', $amount, $tag_args );
 
 	return $amount;
 }
