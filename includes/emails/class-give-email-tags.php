@@ -596,13 +596,18 @@ function give_email_tag_billing_address( $tag_args ) {
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
 			$user_info    = give_get_payment_meta_user_info( $tag_args['payment_id'] );
-			$user_address = ! empty( $user_info['address'] ) ? $user_info['address'] : array(
-				'line1'   => '',
-				'line2'   => '',
-				'city'    => '',
-				'country' => '',
-				'state'   => '',
-				'zip'     => '',
+			$user_address = give_check_variable(
+				$user_info,
+				'isset',
+				array(
+					'line1'   => '',
+					'line2'   => '',
+					'city'    => '',
+					'country' => '',
+					'state'   => '',
+					'zip'     => '',
+				),
+				'address'
 			);
 
 			$address = $user_address['line1'] . "\n";
