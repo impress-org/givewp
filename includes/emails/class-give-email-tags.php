@@ -641,14 +641,32 @@ function give_email_tag_billing_address( $tag_args ) {
  *
  * Date of donation
  *
- * @param int $payment_id
+ * @param array $tag_args
  *
  * @return string date
  */
-function give_email_tag_date( $payment_id ) {
-	$payment = new Give_Payment( $payment_id );
+function give_email_tag_date( $tag_args ) {
+	$date = '';
 
-	return date_i18n( give_date_format(), strtotime( $payment->date ) );
+	switch ( true ) {
+		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
+			$payment = new Give_Payment( $tag_args['payment_id'] );
+			$date = date_i18n( give_date_format(), strtotime( $payment->date ) );
+			break;
+
+		default:
+			/**
+			 * Filter the {date} email template tag output.
+			 *
+			 * @since 1.9
+			 *
+			 * @param string $date
+			 * @param array  $tag_args
+			 */
+			$date = apply_filters( 'give_email_tag_date', $date, $tag_args );
+	}
+
+	return $date;
 }
 
 /**

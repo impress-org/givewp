@@ -255,4 +255,48 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 
 		return $billing_address;
 	}
+
+	/**
+	 * Test function give_email_tag_date
+	 *
+	 * @since 1.9
+	 * @cover give_email_tag_date
+	 */
+	function test_give_email_tag_date() {
+		/*
+		 * Case 1: User email from payment.
+		 */
+		$payment_id = Give_Helper_Payment::create_simple_payment();
+		$date  = give_email_tag_date( array( 'payment_id' => $payment_id ) );
+
+		$this->assertEquals( 'January 2, 2017', $date );
+
+		/*
+		 * Case 2: User email with filter
+		 */
+		add_filter( 'give_email_tag_date', array( $this, 'give_date' ), 10, 2 );
+
+		$date = give_email_tag_date( array( 'user_id' => 1 ) );
+		$this->assertEquals( 'December 7, 2014', $date );
+
+		remove_filter( 'give_email_tag_date', array( $this, 'give_date' ), 10 );
+	}
+
+	/**
+	 * Add give_email_tag_date filter to give_email_tag_date function.
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $date
+	 * @param array  $tag_args
+	 *
+	 * @return string
+	 */
+	public function give_date( $date, $tag_args ) {
+		if ( array_key_exists( 'user_id', $tag_args ) ) {
+			$date = 'December 7, 2014';
+		}
+
+		return $date;
+	}
 }
