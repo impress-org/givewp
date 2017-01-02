@@ -31,6 +31,7 @@ function give_get_email_templates() {
 
 /**
  * Email Template Tags.
+ * @todo Modify this function to remove payment id dependency.
  *
  * @since 1.0
  *
