@@ -424,7 +424,7 @@ add_action( 'give_add_email_tags', 'give_setup_email_tags' );
  *
  * @param array $tag_args Email template tag arguments.
  *
- * @return string name
+ * @return string $firstname
  */
 function give_email_tag_first_name( $tag_args ) {
 	$user_info = array();
@@ -469,7 +469,7 @@ function give_email_tag_first_name( $tag_args ) {
  *
  * @param array $tag_args
  *
- * @return string fullname
+ * @return string $fullname
  */
 function give_email_tag_fullname( $tag_args ) {
 	$fullname ='';
