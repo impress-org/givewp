@@ -943,28 +943,38 @@ function give_email_tag_sitename( $tag_args = array() ) {
  *
  * The donation receipt direct link, to view the receipt on the website.
  *
- * @param int $payment_id
+ * @param array $tag_args
  *
  * @return string receipt_link
  */
-function give_email_tag_receipt_link( $payment_id ) {
+function give_email_tag_receipt_link( $tag_args ) {
 
-	$receipt_url = esc_url( add_query_arg( array(
-		'payment_key' => give_get_payment_key( $payment_id ),
-		'give_action' => 'view_receipt',
-	), home_url() ) );
+	$receipt_url = give_get_receipt_url( give_check_variable( $tag_args, 'empty', 0, 'payment_id' ) );
+
+	// Bailout.
+	if ( give_get_option( 'email_template' ) === 'none' ) {
+		return $receipt_url;
+	}
+
 	$formatted   = sprintf(
 		'<a href="%1$s">%2$s</a>',
 		$receipt_url,
 		esc_html__( 'View it in your browser', 'give' )
 	);
 
-	if ( give_get_option( 'email_template' ) !== 'none' ) {
-		return $formatted;
-	} else {
-		return $receipt_url;
-	}
-
+	/**
+	 * Filter the {receipt_link} email template tag output.
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $formatted
+	 * @param array  $tag_args
+	 */
+	return apply_filters(
+		'give_email_tag_receipt_link',
+		$formatted,
+		$tag_args
+	);
 }
 
 /**
