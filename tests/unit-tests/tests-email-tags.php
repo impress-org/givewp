@@ -604,4 +604,42 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 
 		return $payment_total;
 	}
+
+	/**
+	 * Test function give_email_tag_sitename
+	 *
+	 * @since 1.9
+	 * @cover give_email_tag_sitename
+	 */
+	function test_give_email_tag_sitename() {
+		/*
+		 * Case 1: From WordPress function.
+		 */
+		$sitename = give_email_tag_sitename();
+
+		$this->assertEquals( 'Test Blog', $sitename );
+
+		/*
+		 * Case 2: With filter
+		 */
+		add_filter( 'give_email_tag_sitename', array( $this, 'give_sitename' ) );
+		$sitename = give_email_tag_sitename( );
+		$this->assertEquals( 'Test Blog | Give', $sitename );
+		remove_filter( 'give_email_tag_sitename', array( $this, 'give_sitename' ), 10 );
+	}
+
+	/**
+	 * Add give_email_tag_sitename filter to give_email_tag_sitename function.
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $sitename
+	 *
+	 * @return string
+	 */
+	public function give_sitename( $sitename ) {
+		$sitename = 'Test Blog | Give';
+
+		return $sitename;
+	}
 }
