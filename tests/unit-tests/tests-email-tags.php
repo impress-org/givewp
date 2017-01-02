@@ -432,4 +432,51 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 
 		return $receipt_id;
 	}
+
+	/**
+	 * Test function give_email_tag_donation
+	 *
+	 * @since 1.9
+	 * @cover give_email_tag_donation
+	 */
+	function test_give_email_tag_donation() {
+		/*
+		 * Case 1: Donation form title from simple donation.
+		 */
+		$donation            = Give_Helper_Payment::create_simple_payment();
+		$donation_form_title = give_email_tag_donation( array( 'payment_id' => $donation ) );
+
+		$this->assertEquals( 'Test Donation Form', $donation_form_title );
+
+		/*
+		 * Case 2: Donation form title from multi type donation.
+		 */
+		$donation            = Give_Helper_Payment::create_multilevel_payment();
+		$donation_form_title = give_email_tag_donation( array( 'payment_id' => $donation ) );
+
+		$this->assertEquals( 'Multi-level Test Donation Form - Mid-size Gift', $donation_form_title );
+
+		/*
+		 * Case 2: Donation form title with filter
+		 */
+		add_filter( 'give_email_tag_donation', array( $this, 'give_donation' ) );
+		$donation_form_title = give_email_tag_donation( array( 'payment_id' => $donation ) );
+		$this->assertEquals( 'GIVE', $donation_form_title );
+		remove_filter( 'give_email_tag_donation', array( $this, 'give_donation' ), 10 );
+	}
+
+	/**
+	 * Add give_email_tag_donation filter to give_email_tag_donation function.
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $donation_form_title
+	 *
+	 * @return string
+	 */
+	public function give_donation( $donation_form_title ) {
+		$donation_form_title = 'GIVE';
+
+		return $donation_form_title;
+	}
 }
