@@ -619,12 +619,12 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @since  1.9
 		 * @access public
 		 *
-		 * @param $message
-		 * @param $subject
-		 * @param $message
-		 * @param $attachments
+		 * @param string       $to
+		 * @param string       $subject
+		 * @param string       $message
+		 * @param array|string $attachments
 		 */
-		public function send_email( $message, $subject, $message, $attachments ) {
+		public function send_email( $to, $subject, $message, $attachments ) {
 			/**
 			 * Fire action after before email send.
 			 *
@@ -633,7 +633,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			do_action( "give_{$this->id}_email_send_before", $this );
 
 			// Send email.
-			$email_status = $this->email->send( $message, $subject, $message, $attachments );
+			$email_status = $this->email->send( $to, $subject, $message, $attachments );
 
 			/**
 			 * Fire action after after email send.
