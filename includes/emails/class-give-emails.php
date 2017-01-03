@@ -140,10 +140,10 @@ class Give_Emails {
 	 * @since 1.0
 	 */
 	public function get_content_type() {
-		if ( ! $this->content_type && $this->html ) {
-			$this->content_type = apply_filters( 'give_email_default_content_type', 'text/html', $this );
-		} else if ( ! $this->html ) {
-			$this->content_type = 'text/plain';
+		if ( ! $this->content_type  ) {
+			$this->content_type = $this->html
+				? apply_filters( 'give_email_default_content_type', 'text/html', $this )
+				: 'text/plain';
 		}
 
 		return apply_filters( 'give_email_content_type', $this->content_type, $this );
