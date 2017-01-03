@@ -794,8 +794,12 @@ class Give_MetaBox_Form_Data {
 	 * @return string
 	 */
 	function get_field_type( $field_id, $group_id = '' ) {
+		$settings = $this->get_setting_field( $field_id, $group_id );
+		$type     = array_key_exists( 'type', $this->get_setting_field( $field_id, $group_id ) )
+			? $settings['type']
+			: '';
 
-		return $this->get_setting_field( $field_id, $group_id )['type'];
+		return $type;
 	}
 
 	/**
