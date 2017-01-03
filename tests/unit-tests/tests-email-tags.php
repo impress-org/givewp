@@ -269,7 +269,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$payment_id = Give_Helper_Payment::create_simple_payment();
 		$date       = give_email_tag_date( array( 'payment_id' => $payment_id ) );
 
-		$this->assertEquals( 'January 2, 2017', $date );
+		$this->assertEquals( date( 'F j, Y', current_time( 'timestamp' ) ), $date );
 
 		/*
 		 * Case 2: Date with filter
