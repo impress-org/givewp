@@ -822,7 +822,7 @@ class Give_MetaBox_Form_Data {
 			foreach ( $this->settings as $setting ) {
 				if ( ! empty( $setting['fields'] ) ) {
 					foreach ( $setting['fields'] as $field ) {
-						if ( $field['id'] === $field_id ) {
+						if ( array_key_exists( 'id', $field ) && $field['id'] === $field_id ) {
 							$setting_field = $field;
 						}
 					}
@@ -834,7 +834,7 @@ class Give_MetaBox_Form_Data {
 		// Get field from group.
 		if ( ! empty( $group_id ) ) {
 			foreach ( $setting_field['fields'] as $field ) {
-				if ( $field['id'] === $_field_id ) {
+				if ( array_key_exists( 'id', $field ) && $field['id'] === $_field_id ) {
 					$setting_field = $field;
 				}
 			}
