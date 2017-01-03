@@ -573,6 +573,17 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		}
 
 		/**
+		 * Get the recipient attachments.
+		 *
+		 * @since  1.9
+		 * @access public
+		 * @return array
+		 */
+		public function get_attachments(){
+			return apply_filters( "give_{$this->id}_email_attachments", array(), $this );
+		}
+
+		/**
 		 * Check email active or not.
 		 *
 		 * @since  1.8
