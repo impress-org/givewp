@@ -137,6 +137,20 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 
 
 		/**
+		 * Set key value.
+		 *
+		 * @since  1.9
+		 * @access public
+		 *
+		 * @param $key
+		 * @param $value
+		 */
+		public function __set( $key, $value ) {
+			$this->$key = $value;
+		}
+
+
+		/**
 		 * Setup filters.
 		 *
 		 * @since  1.9
