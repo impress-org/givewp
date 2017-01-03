@@ -81,6 +81,14 @@ class Give_Emails {
 	private $heading = '';
 
 	/**
+	 * Email template tags argument.
+	 * This helps to decode email template tags,
+	 *
+	 * @since  1.0
+	 */
+	public $tag_args = array();
+
+	/**
 	 * Get things going.
 	 *
 	 * @since 1.0

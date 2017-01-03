@@ -50,3 +50,23 @@ function give_email_notification_row_actions_callback( $row_actions, $email ) {
 	return $row_actions;
 }
 add_filter( 'give_email_notification_row_actions', 'give_email_notification_row_actions_callback', 10, 2 );
+
+/**
+ * This help to decode all email template tags.
+ *
+ * @since 1.9
+ *
+ * @param string      $message
+ * @param Give_Emails $email_obj
+ *
+ * @return string
+ */
+function give_decode_email_tags( $message, $email_obj ) {
+	if ( ! empty( $email_obj->tag_args ) ) {
+		$message = give_do_email_tags( $message, $email_obj->tag_args );
+	}
+
+	return $message;
+}
+
+add_filter( 'give_email_message', 'give_decode_email_tags', 10, 2 );
