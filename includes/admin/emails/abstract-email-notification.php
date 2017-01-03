@@ -642,6 +642,20 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 */
 			do_action( "give_{$this->id}_email_send_after", $email_status, $this );
 		}
+
+
+		/**
+		 * Decaode preview email template tags.
+		 *
+		 * @since 1.9
+		 *
+		 * @param $message
+		 *
+		 * @return string
+		 */
+		public function preview_email_template_tags( $message ) {
+			return $message;
+		}
 	}
 
 endif; // End class_exists check
