@@ -323,7 +323,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		public function get_recipient() {
 			$recipient = $this->recipient_email;
 
-			if ( $this->has_recipient_field ) {
+			if ( ! $recipient && $this->has_recipient_field ) {
 				$recipient = give_get_option( "{$this->id}_recipient", array( $this->get_default_recipient() ) );
 			}
 
