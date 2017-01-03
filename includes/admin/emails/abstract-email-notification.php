@@ -644,6 +644,28 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		}
 
 		/**
+		 * Send email notification
+		 *
+		 * @since  1.9
+		 * @access public
+		 *
+		 * @param array $email_tag_args Arguments which helps to decode email template tags.
+		 */
+		public function send_email_notification( $email_tag_args = array() ){
+			$this->email->__set( 'heading', $this->get_email_subject() );
+
+			$attachments = $this->get_attachments();
+			$message     = give_do_email_tags( $this->get_email_message(), $email_tag_args );
+			$subject     = give_do_email_tags( $this->get_email_subject(), $email_tag_args );
+
+			if( 'text/html' === $this->email_type ) {
+				$message = wpautop( $message );
+			}
+
+			$this->send_email( $this->get_recipient(), $subject, $message, $attachments );
+		}
+
+		/**
 		 * Send email
 		 *
 		 * @since  1.9
