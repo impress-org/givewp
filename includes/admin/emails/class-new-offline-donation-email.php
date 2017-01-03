@@ -39,8 +39,11 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 			$this->label       = __( 'New Offline Donation', 'give' );
 			$this->description = __( 'Donation Notification will be sent to admin when new offline donation received.', 'give' );
 
-			$this->has_recipient_field = true;
-			$this->notification_status = 'enabled';
+			$this->has_recipient_field       = true;
+			$this->notification_status       = 'enabled';
+			$this->preview_email_tags_values = array(
+				'payment_method' => esc_html__( 'Offline', 'give' ),
+			);
 
 			parent::__construct();
 		}
