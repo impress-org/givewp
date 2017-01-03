@@ -178,7 +178,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		 * @access public
 		 * @return array
 		 */
-		public function get_receipt_attachments() {
+		public function get_attachments() {
 			$payment = new Give_Payment( $this->payment_id );
 
 			/**
@@ -198,10 +198,10 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		public function send_preview_email() {
 			$subject     = $this->get_email_subject();
 			$subject     = give_do_email_tags( $subject, 0 );
-			$attachments = $this->get_receipt_attachments();
+			$attachments = $this->get_attachments();
 			$message     = $this->preview_email_template_tags( $this->get_email_message() );
 
-			$this->email->__set( 'heading', esc_html__( 'Donation Receipt', 'give' ) );
+			$this->email->__set( 'heading', $this->get_email_subject() );
 
 			$this->send_email( $this->get_preview_email_recipient(), $subject, $message, $attachments );
 		}
