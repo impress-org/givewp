@@ -46,7 +46,7 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 			// Setup action hook.
 			add_action(
 				"give_{$this->action}_email_notification",
-				array( $this, 'send_email_notification' ),
+				array( $this, 'setup_email_notification' ),
 				10,
 				2
 			);
@@ -92,7 +92,7 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 
 
 		/**
-		 * Send new donor register notifications.
+		 * Setup and send new donor register notifications.
 		 *
 		 * @since  1.8
 		 * @access public
@@ -102,12 +102,9 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 		 *
 		 * @return string
 		 */
-		public function send_email_notification( $user_id, $user_data ) {
-			$subject = $this->get_email_subject();
-			$message = $this->get_email_message();
-
-			// Send email.
-			Give()->emails->send( $user_data['user_email'], $subject, $message );
+		public function setup_email_notification( $user_id, $user_data ) {
+			$this->recipient_email = $user_data['user_email'];
+			$this->send_email_notification( array( 'user_id' => $user_id ) );
 		}
 	}
 
