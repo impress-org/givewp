@@ -476,7 +476,7 @@ class Give_Email_Notifications {
 
 		/* @var Give_Email_Notification $email */
 		foreach ( $this->get_email_notifications() as $email ) {
-			if( $email_type === $email->get_id() ) {
+			if( $email_type === $email->get_id() && $email->is_email_preview() ) {
 				$email->send_preview_email();
 				break;
 			}
