@@ -570,6 +570,36 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @access public
 		 */
 		public function send_preview_email() {}
+
+		/**
+		 * Send email
+		 *
+		 * @since  1.9
+		 * @access public
+		 *
+		 * @param $message
+		 * @param $subject
+		 * @param $message
+		 * @param $attachments
+		 */
+		public function send_email( $message, $subject, $message, $attachments ) {
+			/**
+			 * Fire action after before email send.
+			 *
+			 * @since 1.9
+			 */
+			do_action( "give_{$this->id}_email_send_before", $this );
+
+			// Send email.
+			$email_status = $this->email->send( $message, $subject, $message, $attachments );
+
+			/**
+			 * Fire action after after email send.
+			 *
+			 * @since 1.9
+			 */
+			do_action( "give_{$this->id}_email_send_after", $email_status, $this );
+		}
 	}
 
 endif; // End class_exists check
