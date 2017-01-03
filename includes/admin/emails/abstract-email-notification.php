@@ -680,7 +680,6 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @since 1.9
 		 *
 		 * @param string $message
-		 * @param array  $tags_values
 		 *
 		 * @return string
 		 */
