@@ -611,7 +611,8 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @since  1.8
 		 * @access public
 		 */
-		public function send_preview_email() {}
+		public function send_preview_email() {
+		}
 
 		/**
 		 * Send email

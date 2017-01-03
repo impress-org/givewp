@@ -81,6 +81,7 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			 * Filter the new donation email message
 			 *
 			 * @since 1.8
+			 *
 			 * @param string $message
 			 */
 			return apply_filters( 'give_default_new_donation_email', $message );
