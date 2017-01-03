@@ -544,6 +544,34 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			);
 		}
 
+
+		/**
+		 * Get preview email recipients.
+		 *
+		 * @since  1.9
+		 * @access public
+		 * @return array|string
+		 */
+		public function get_preview_email_recipient() {
+			$recipients = $this->get_recipient();
+
+			if ( empty( $recipients ) ) {
+				$recipients = get_bloginfo( 'admin_email' );
+			}
+
+			/**
+			 * Filter the preview email recipients.
+			 *
+			 * @since 1.9
+			 *
+			 * @param string|array            $recipients List of recipients.
+			 * @param Give_Email_Notification $this
+			 */
+			$recipients = apply_filters( 'give_get_preview_email_recipient', $recipients, $this );
+
+			return $recipients;
+		}
+
 		/**
 		 * Check email active or not.
 		 *
