@@ -774,6 +774,10 @@ class Give_MetaBox_Form_Data {
 		foreach ( $this->settings as $setting ) {
 			if ( ! empty( $setting['fields'] ) ) {
 				foreach ( $setting['fields'] as $field ) {
+					if( ! array_key_exists( 'id', $field ) ) {
+						continue;
+					}
+
 					$meta_keys[] = $field['id'];
 				}
 			}
