@@ -39,8 +39,11 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 			$this->label       = __( 'Offline Donation Instruction', 'give' );
 			$this->description = __( 'Offline Donation Instruction will be sent to recipient(s) when offline donation received.', 'give' );
 
-			$this->notification_status  = 'enabled';
-			$this->recipient_group_name = __( 'Donor', 'give' );
+			$this->notification_status       = 'enabled';
+			$this->recipient_group_name      = __( 'Donor', 'give' );
+			$this->preview_email_tags_values = array(
+				'payment_method' => esc_html__( 'Offline', 'give' ),
+			);
 
 			parent::__construct();
 		}
