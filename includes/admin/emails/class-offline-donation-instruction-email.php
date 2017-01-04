@@ -46,6 +46,8 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 			);
 
 			parent::__construct();
+
+			add_action( 'give_offline_donation_created', array( $this, 'setup_email_notification' ) );
 		}
 
 		/**
@@ -94,6 +96,24 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 			 * @param string $message
 			 */
 			return apply_filters( 'give_default_offline_donation_instruction_email', $message );
+		}
+
+		/**
+		 * Setup email notification.
+		 *
+		 * @since  1.9
+		 * @access public
+		 *
+		 * @param int $payment_id
+		 */
+		public function setup_email_notification( $payment_id ) {
+			$payment = new Give_Payment( $payment_id );
+
+			// Set recipient email.
+			$this->recipient_email = $payment->user_info['email'];
+
+			// Send email.
+			$this->send_email_notification( array( 'payment_id' => $payment_id ) );
 		}
 	}
 
