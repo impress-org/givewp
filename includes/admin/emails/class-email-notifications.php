@@ -67,6 +67,7 @@ class Give_Email_Notifications {
 	public function init() {
 		// Load ajax handler.
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/ajax-handler.php';
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/class-email-setting-field.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/filters.php';
 
 		// Load email notifications.

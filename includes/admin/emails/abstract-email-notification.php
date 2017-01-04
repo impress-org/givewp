@@ -8,7 +8,7 @@
  * @subpackage  Classes/Emails
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       1.8
+ * @since       1.9
  */
 
 // Exit if access directly.
@@ -22,7 +22,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 	 * Give_Email_Notification
 	 *
 	 * @abstract
-	 * @since       1.8
+	 * @since       1.9
 	 */
 	abstract class Give_Email_Notification {
 
@@ -39,84 +39,84 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * @var     string $label Name of the email.
 		 * @access  protected
-		 * @since   1.8
+		 * @since   1.9
 		 */
 		protected $label = '';
 
 		/**
 		 * @var     string $label Name of the email.
 		 * @access  protected
-		 * @since   1.8
+		 * @since   1.9
 		 */
 		protected $description = '';
 
 		/**
 		 * @var     Give_Emails $email Mailer.
 		 * @access  protected
-		 * @since   1.8
+		 * @since   1.9
 		 */
 		protected $email;
 
 		/**
 		 * @var     bool $has_preview Flag to check if email notification has preview setting field.
 		 * @access  protected
-		 * @since   1.8
+		 * @since   1.9
 		 */
 		protected $has_preview = true;
 
 		/**
 		 * @var     bool $has_preview Flag to check if email notification has preview header.
 		 * @access  protected
-		 * @since   1.8
+		 * @since   1.9
 		 */
 		protected $has_preview_header = true;
 
 		/**
 		 * @var     bool $preview_email_tags_values Default value to replace email template tags in preview email.
 		 * @access  protected
-		 * @since   1.8
+		 * @since   1.9
 		 */
 		protected $preview_email_tags_values = true;
 
 		/**
 		 * @var     bool $has_recipient_field Flag to check if email notification has recipient setting field.
 		 * @access  protected
-		 * @since   1.8
+		 * @since   1.9
 		 */
 		protected $has_recipient_field = false;
 
 		/**
 		 * @var     string $notification_status Flag to check if email notification enabled or not.
 		 * @access  protected
-		 * @since   1.8
+		 * @since   1.9
 		 */
 		protected $notification_status = 'disabled';
 
 		/**
 		 * @var     string $email_type Flag to check email type.
 		 * @access  protected
-		 * @since   1.8
+		 * @since   1.9
 		 */
 		protected $email_type = 'text/html';
 
 		/**
 		 * @var     string|array $email_tag_context List of template tags which we can add to email notification.
 		 * @access  protected
-		 * @since   1.8
+		 * @since   1.9
 		 */
 		protected $email_tag_context = 'all';
 
 		/**
 		 * @var     string $recipient_email Donor email.
 		 * @access  protected
-		 * @since   1.8
+		 * @since   1.9
 		 */
 		protected $recipient_email = '';
 
 		/**
 		 * @var     string $recipient_group_name Categories single or group of recipient.
 		 * @access  protected
-		 * @since   1.8
+		 * @since   1.9
 		 */
 		protected $recipient_group_name = '';
 
@@ -126,7 +126,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @param   mixed[] $objects
 		 *
 		 * @access  public
-		 * @since   1.8
+		 * @since   1.9
 		 */
 		public function __construct( $objects = array() ) {
 			// Setup email class.
@@ -181,7 +181,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Register email settings.
 		 *
-		 * @since  1.8
+		 * @since  1.9
 		 * @access public
 		 *
 		 * @param   array $settings
@@ -190,7 +190,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 */
 		public function add_setting_fields( $settings ) {
 			if ( $this->id === give_get_current_setting_section() ) {
-				$settings = $this->get_setting_fields();
+				$settings = Give_Email_Setting_Field::get_setting_fields( $this );
 			}
 
 			return $settings;
@@ -198,43 +198,9 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 
 
 		/**
-		 * Get setting field.
-		 *
-		 * @since  1.8
-		 * @access public
-		 * @return array|int
-		 */
-		public function get_setting_fields() {
-			$setting_fields = $this->get_default_setting_fields();
-
-			// Add extra setting field.
-			if ( $extra_setting_field = $this->get_extra_setting_fields() ) {
-				$setting_fields = array_merge( $setting_fields, $extra_setting_field );
-			}
-
-			// Recipient field.
-			if ( $this->has_recipient_field ) {
-				$setting_fields[] = $this->get_recipient_setting_field();
-			}
-
-			// Preview field.
-			if ( $this->has_preview ) {
-				$setting_fields[] = $this->get_preview_setting_field();
-			}
-
-			// Add section end field.
-			$setting_fields[] = array(
-				'id'   => "give_title_email_settings_{$this->id}",
-				'type' => 'sectionend',
-			);
-
-			return $setting_fields;
-		}
-
-		/**
 		 * Get extra setting field.
 		 *
-		 * @since  1.8
+		 * @since  1.9
 		 * @access public
 		 * @return array
 		 */
@@ -243,45 +209,9 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		}
 
 		/**
-		 * Get recipient setting field.
-		 *
-		 * @since  1.8
-		 * @access public
-		 * @return array
-		 */
-		function get_recipient_setting_field() {
-			return array(
-				'id'               => "{$this->id}_recipient",
-				'name'             => esc_html__( 'Donation Notification Emails', 'give' ),
-				'desc'             => __( 'Enter the email address(es) that should receive a notification anytime a donation is made, please only enter <span class="give-underline">one email address per line</span> and <strong>not separated by commas</strong>.', 'give' ),
-				'type'             => 'email',
-				'default'          => $this->get_default_recipient(),
-				'repeat'           => true,
-				'repeat_btn_title' => esc_html__( 'Add Recipient', 'give' ),
-			);
-		}
-
-
-		/**
-		 * Get preview setting field.
-		 *
-		 * @since  1.8
-		 * @access public
-		 * @return array
-		 */
-		public function get_preview_setting_field() {
-			return array(
-				'name' => esc_html__( 'Preview Email', 'give' ),
-				'desc' => esc_html__( 'Click the buttons to preview emails.', 'give' ),
-				'id'   => "{$this->id}_preview_buttons",
-				'type' => 'email_preview_buttons',
-			);
-		}
-
-		/**
 		 * Get id.
 		 *
-		 * @since  1.8
+		 * @since  1.9
 		 * @access public
 		 * @return string
 		 */
@@ -292,7 +222,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Get label.
 		 *
-		 * @since  1.8
+		 * @since  1.9
 		 * @access public
 		 * @return string
 		 */
@@ -303,7 +233,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Get description.
 		 *
-		 * @since  1.8
+		 * @since  1.9
 		 * @access public
 		 * @return string
 		 */
@@ -316,7 +246,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 *
 		 * Note: in case of admin notification this fx will return array of emails otherwise empty string or email of donor.
 		 *
-		 * @since  1.8
+		 * @since  1.9
 		 * @access public
 		 * @return string|array
 		 */
@@ -333,7 +263,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Get recipient(s) group name.
 		 **
-		 * @since  1.8
+		 * @since  1.9
 		 * @access public
 		 * @return string|array
 		 */
@@ -344,7 +274,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Get notification status.
 		 *
-		 * @since  1.8
+		 * @since  1.9
 		 * @access public
 		 * @return bool
 		 */
@@ -355,7 +285,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Get notification status.
 		 *
-		 * @since  1.8
+		 * @since  1.9
 		 * @access public
 		 * @return string
 		 */
@@ -367,7 +297,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Get email subject.
 		 *
-		 * @since  1.8
+		 * @since  1.9
 		 * @access public
 		 * @return string
 		 */
@@ -378,7 +308,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Get email message.
 		 *
-		 * @since  1.8
+		 * @since  1.9
 		 * @access public
 		 * @return string
 		 */
@@ -390,7 +320,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Get email message field description
 		 *
-		 * @since 1.8
+		 * @since 1.9
 		 * @acess public
 		 * @return string
 		 */
@@ -476,7 +406,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Get default recipient.
 		 *
-		 * @since  1.8
+		 * @since  1.9
 		 * @access public
 		 * @return string
 		 */
@@ -487,7 +417,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Get default email subject.
 		 *
-		 * @since  1.8
+		 * @since  1.9
 		 * @access public
 		 * @return string
 		 */
@@ -498,7 +428,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Get default email message.
 		 *
-		 * @since  1.8
+		 * @since  1.9
 		 * @access public
 		 *
 		 * @param array $args Email arguments.
@@ -507,48 +437,6 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 */
 		function get_default_email_message( $args = array() ) {
 			return '';
-		}
-
-		/**
-		 * Get default setting field.
-		 *
-		 * @since  1.8
-		 * @access public
-		 * @return array
-		 */
-		function get_default_setting_fields() {
-			return array(
-				array(
-					'id'    => "give_title_email_settings_{$this->id}",
-					'type'  => 'title',
-					'title' => $this->label,
-				),
-				array(
-					'name'    => esc_html__( 'Notification', 'give' ),
-					'desc'    => esc_html__( 'Choose option if you want to send email notification or not.', 'give' ),
-					'id'      => "{$this->id}_notification",
-					'type'    => 'radio_inline',
-					'default' => $this->notification_status,
-					'options' => array(
-						'enabled'  => __( 'Enabled', 'give' ),
-						'disabled' => __( 'Disabled', 'give' ),
-					),
-				),
-				array(
-					'id'      => "{$this->id}_email_subject",
-					'name'    => esc_html__( 'Email Subject', 'give' ),
-					'desc'    => esc_html__( 'Enter the subject line for email.', 'give' ),
-					'default' => $this->get_default_email_subject(),
-					'type'    => 'text',
-				),
-				array(
-					'id'      => "{$this->id}_email_message",
-					'name'    => esc_html__( 'Email message', 'give' ),
-					'desc'    => $this->get_email_message_field_description(),
-					'type'    => 'wysiwyg',
-					'default' => $this->get_default_email_message(),
-				),
-			);
 		}
 
 
@@ -586,14 +474,14 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @access public
 		 * @return array
 		 */
-		public function get_attachments(){
+		public function get_attachments() {
 			return apply_filters( "give_{$this->id}_email_attachments", array(), $this );
 		}
 
 		/**
 		 * Check email active or not.
 		 *
-		 * @since  1.8
+		 * @since  1.9
 		 * @access public
 		 * @return string
 		 */
@@ -604,7 +492,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Check email preview header active or not.
 		 *
-		 * @since  1.8
+		 * @since  1.9
 		 * @access public
 		 * @return bool
 		 */
@@ -615,7 +503,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Check email preview header active or not.
 		 *
-		 * @since  1.8
+		 * @since  1.9
 		 * @access public
 		 * @return bool
 		 */
@@ -626,7 +514,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Send preview email.
 		 *
-		 * @since  1.8
+		 * @since  1.9
 		 * @access public
 		 */
 		public function send_preview_email() {
@@ -634,13 +522,36 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			$message     = $this->preview_email_template_tags( $this->get_email_message() );
 			$subject     = $this->preview_email_template_tags( $this->get_email_subject() );
 
-			if( 'text/html' === $this->email_type ) {
+			if ( 'text/html' === $this->email_type ) {
 				$message = wpautop( $message );
 			}
 
 			$this->email->__set( 'heading', $this->get_email_subject() );
 
 			$this->send_email( $this->get_preview_email_recipient(), $subject, $message, $attachments );
+		}
+
+
+		/**
+		 * Check if notification has recipient field or not.
+		 *
+		 * @since  1.9
+		 * @access public
+		 * @return bool
+		 */
+		public function has_recipient_field() {
+			return $this->has_recipient_field;
+		}
+
+		/**
+		 * Check if notification has preview field or not.
+		 *
+		 * @since  1.9
+		 * @access public
+		 * @return bool
+		 */
+		public function has_preview() {
+			return $this->has_preview;
 		}
 
 		/**
@@ -651,9 +562,9 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 *
 		 * @param array $email_tag_args Arguments which helps to decode email template tags.
 		 */
-		public function send_email_notification( $email_tag_args = array() ){
+		public function send_email_notification( $email_tag_args = array() ) {
 			// Do not send email if notification is disable.
-			if( ! give_is_setting_enabled( $this->get_notification_status() ) ) {
+			if ( ! give_is_setting_enabled( $this->get_notification_status() ) ) {
 				return;
 			}
 
@@ -663,7 +574,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			$message     = give_do_email_tags( $this->get_email_message(), $email_tag_args );
 			$subject     = give_do_email_tags( $this->get_email_subject(), $email_tag_args );
 
-			if( 'text/html' === $this->email_type ) {
+			if ( 'text/html' === $this->email_type ) {
 				$message = wpautop( $message );
 			}
 
