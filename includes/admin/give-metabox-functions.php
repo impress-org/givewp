@@ -89,7 +89,7 @@ function give_get_field_callback( $field ) {
 }
 
 /**
- * This function add backward compatibility to render cmb2 type field type.
+ * This function adds backward compatibility to render cmb2 type field type.
  *
  * @since  1.8
  *
@@ -98,6 +98,7 @@ function give_get_field_callback( $field ) {
  * @return bool
  */
 function give_render_field( $field ) {
+
 	$func_name = give_get_field_callback( $field );
 
 	// Check if render callback exist or not.
@@ -604,11 +605,14 @@ function give_default_gateway( $field ) {
 	global $thepostid, $post;
 
 	// get all active payment gateways.
-	$gateways = give_get_enabled_payment_gateways( $thepostid );
+	$gateways         = give_get_enabled_payment_gateways( $thepostid );
+	$field['options'] = array();
 
 	// Set field option value.
-	foreach ( $gateways as $key => $option ) {
-		$field['options'][ $key ] = $option['admin_label'];
+	if( ! empty( $gateways ) ) {
+		foreach ( $gateways as $key => $option ) {
+			$field['options'][ $key ] = $option['admin_label'];
+		}
 	}
 
 	//Add a field to the Give Form admin single post view of this field
@@ -620,6 +624,32 @@ function give_default_gateway( $field ) {
 	give_select( $field );
 }
 
+/**
+  * Output the documentation link.
+  *
+  * @since  1.8
+  * @param  array $field {
+  *     Optional. Array of customizable link attributes.
+  *
+  *     @type string             $name            Name of input field. Default ''.
+  *     @type string             $type            Type of input field. Default 'text'.
+  *     @type string             $url             Value to be passed as a link. Default 'https://givewp.com/documentation'.
+  *     @type string             $title           Value to be passed as text of link. Default 'Documentation'.
+  *     @type array              $attributes      List of attributes of input field. Default array().
+  *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class' => '****' )
+  * }
+  * @return void
+*/
+
+function give_docs_link($field) {
+	$field['url']   = isset($field['url']) ? $field['url'] : 'https://givewp.com/documentation';
+	$field['title'] = isset($field['title']) ? $field['title'] : 'Documentation';
+
+	echo '<p class="give-docs-link"><a href="' . esc_url($field['url'])
+		. '" target="_blank">'
+		. sprintf(esc_html__('Need Help? See docs on "%s"'), $field['title'])
+		. '<span class="dashicons dashicons-editor-help"></span></a></p>';
+}
 
 /**
  * Get setting field value.

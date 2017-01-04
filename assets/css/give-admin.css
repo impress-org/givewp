@@ -34,6 +34,9 @@
   white-space: nowrap;
   vertical-align: baseline;
   border-radius: .25em; }
+  .give-item-label:hover {
+    color: #fff;
+    text-decoration: none; }
 
 .give-item-label-gray, #give-payments-filter .give-payment-id {
   background-color: #929292; }
@@ -50,6 +53,9 @@
   white-space: nowrap;
   vertical-align: baseline;
   border-radius: .25em; }
+  .give-item-label:hover {
+    color: #fff;
+    text-decoration: none; }
 
 /**
  * Give CSS Variables
@@ -1117,6 +1123,21 @@ Export Form
 #give-export-payments div.chosen-container:first-of-type {
   margin-top: 10px; }
 
+/*-------------------------------------
+DOCS LINKS
+-------------------------------------*/
+.give-docs-link {
+  text-align: right;
+  margin-right: 15px; }
+  .give-docs-link a {
+    color: #999;
+    text-decoration: none;
+    font-style: italic; }
+    .give-docs-link a:hover {
+      color: #0073aa; }
+    .give-docs-link a span {
+      font-style: normal; }
+
 /**
  * Give Add-ons SCSS
  *
@@ -1967,6 +1988,9 @@ tr.status-refunded td {
   background-color: #ffba00;
   margin: 0 15px;
   vertical-align: middle; }
+  #test-payment-label:hover {
+    color: #fff;
+    text-decoration: none; }
 
 #give-payments-filter .give-payment-id {
   padding: .2em .4em .3em;
@@ -1978,6 +2002,9 @@ tr.status-refunded td {
   vertical-align: baseline;
   border-radius: .25em;
   font-weight: normal; }
+  #give-payments-filter .give-payment-id:hover {
+    color: #fff;
+    text-decoration: none; }
 
 #give-payments-filter .column-details {
   padding-right: 30px; }

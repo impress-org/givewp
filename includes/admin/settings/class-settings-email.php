@@ -33,7 +33,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 
 			parent::__construct();
 
-			add_action( 'give_admin_field_email_notification', array( $this, 'email_notification_setting') );
+			add_action( 'give_admin_field_email_notification', array( $this, 'email_notification_setting' ) );
 		}
 
 		/**
@@ -52,10 +52,10 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 
 						// Section 1: Email Notification Listing.
 						array(
-							'title' => __( 'Email Notifications', 'give' ),
-							'desc'  => __( 'Email notifications sent from Give are listed below. Click on an email to configure it.', 'give' ),
-							'type'  => 'title',
-							'id'    => 'give_email_notification_settings',
+							'title'      => __( 'Email Notifications', 'give' ),
+							'desc'       => __( 'Email notifications sent from Give are listed below. Click on an email to configure it.', 'give' ),
+							'type'       => 'title',
+							'id'         => 'give_email_notification_settings',
 							'table_html' => false,
 						),
 						array(
@@ -100,7 +100,95 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 							'type'    => 'text',
 						),
 						array(
+							'name'  => esc_html__( 'Email Settings Docs Link', 'give' ),
+							'id'    => 'email_settings_docs_link',
+							'url'   => esc_url( 'http://docs.givewp.com/emailsettings' ),
+							'title' => __( 'Email Settings', 'give' ),
+							'type'  => 'give_docs_link',
+						),
+						array(
 							'id'   => 'give_title_email_settings_1',
+							'type' => 'sectionend',
+						),
+					);
+					break;
+
+				case 'donation-receipt':
+					$settings = array(
+						// Section 2: donation.
+						array(
+							'id'   => 'give_title_email_settings_2',
+							'type' => 'title',
+						),
+						array(
+							'id'      => 'donation_subject',
+							'name'    => esc_html__( 'Donation Email Subject', 'give' ),
+							'desc'    => esc_html__( 'Enter the subject line for the donation receipt email.', 'give' ),
+							'default' => esc_attr__( 'Donation Receipt', 'give' ),
+							'type'    => 'text',
+						),
+						array(
+							'id'      => 'donation_receipt',
+							'name'    => esc_html__( 'Donation Receipt', 'give' ),
+							'desc'    => sprintf(
+							/* translators: %s: emails tags list */
+								esc_html__( 'Enter the email that is sent to users after completing a successful donation. HTML is accepted. Available template tags: %s', 'give' ),
+								'<br/>' . give_get_emails_tags_list()
+							),
+							'type'    => 'wysiwyg',
+							'default' => give_get_default_donation_receipt_email(),
+						),
+						array(
+							'name'  => esc_html__( 'Donation Receipt Settings Docs Link', 'give' ),
+							'id'    => 'donation_receipt_settings_docs_link',
+							'url'   => esc_url( 'http://docs.givewp.com/donationreceipt' ),
+							'title' => __( 'Donation Receipt Settings', 'give' ),
+							'type'  => 'give_docs_link',
+						),
+						array(
+							'id'   => 'give_title_email_settings_2',
+							'type' => 'sectionend',
+						),
+					);
+					break;
+
+				case 'new-donation-notification':
+					$settings = array(
+						// Section 3: New Donation.
+						array(
+							'id'   => 'give_title_email_settings_3',
+							'type' => 'title',
+						),
+						array(
+							'id'      => 'admin_notices',
+							'name'    => esc_html__( 'Admin Notifications', 'give' ),
+							'desc'    => esc_html__( 'Check this box if you do not want to receive emails when new donations are made.', 'give' ),
+							'type'    => 'radio_inline',
+							'default' => 'enabled',
+							'options' => array(
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							),
+						),
+						array(
+							'id'   => 'donation_notification_subject',
+							'name' => esc_html__( 'Donation Notification Subject', 'give' ),
+							'desc' => esc_html__( 'Enter the subject line for the donation notification email.', 'give' ),
+							'type' => 'text',
+						),
+						array(
+							'id'   => 'give_title_email_settings_1',
+							'type' => 'sectionend',
+						),
+						array(
+							'name'  => esc_html__( 'Donation Notification Settings Docs Link', 'give' ),
+							'id'    => 'donation_notification_settings_docs_link',
+							'url'   => esc_url( 'http://docs.givewp.com/donationnotification' ),
+							'title' => __( 'Donation Notification Settings', 'give' ),
+							'type'  => 'give_docs_link',
+						),
+						array(
+							'id'   => 'give_title_email_settings_3',
 							'type' => 'sectionend',
 						),
 					);

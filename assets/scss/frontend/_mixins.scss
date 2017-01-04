@@ -48,6 +48,11 @@
   white-space: nowrap;
   vertical-align: baseline;
   border-radius: .25em;
+  
+  &:hover {
+    color:#fff;
+    text-decoration: none;
+  }
 }
 
 @mixin give-label-gray() {
