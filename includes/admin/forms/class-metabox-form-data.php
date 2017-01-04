@@ -774,6 +774,10 @@ class Give_MetaBox_Form_Data {
 		foreach ( $this->settings as $setting ) {
 			if ( ! empty( $setting['fields'] ) ) {
 				foreach ( $setting['fields'] as $field ) {
+					if( ! array_key_exists( 'id', $field ) ) {
+						continue;
+					}
+
 					$meta_keys[] = $field['id'];
 				}
 			}
@@ -794,8 +798,12 @@ class Give_MetaBox_Form_Data {
 	 * @return string
 	 */
 	function get_field_type( $field_id, $group_id = '' ) {
+		$settings = $this->get_setting_field( $field_id, $group_id );
+		$type     = array_key_exists( 'type', $this->get_setting_field( $field_id, $group_id ) )
+			? $settings['type']
+			: '';
 
-		return $this->get_setting_field( $field_id, $group_id )['type'];
+		return $type;
 	}
 
 	/**
@@ -818,7 +826,7 @@ class Give_MetaBox_Form_Data {
 			foreach ( $this->settings as $setting ) {
 				if ( ! empty( $setting['fields'] ) ) {
 					foreach ( $setting['fields'] as $field ) {
-						if ( $field['id'] === $field_id ) {
+						if ( array_key_exists( 'id', $field ) && $field['id'] === $field_id ) {
 							$setting_field = $field;
 						}
 					}
@@ -830,7 +838,7 @@ class Give_MetaBox_Form_Data {
 		// Get field from group.
 		if ( ! empty( $group_id ) ) {
 			foreach ( $setting_field['fields'] as $field ) {
-				if ( $field['id'] === $_field_id ) {
+				if ( array_key_exists( 'id', $field ) && $field['id'] === $_field_id ) {
 					$setting_field = $field;
 				}
 			}
