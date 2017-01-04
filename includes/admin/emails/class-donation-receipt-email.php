@@ -51,6 +51,8 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			$this->recipient_group_name = __( 'Donor', 'give' );
 
 			parent::__construct();
+
+			add_action( 'give_complete_donation', array( $this, 'setup_email_notification' ) );
 		}
 
 		/**
@@ -134,6 +136,24 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			 * @since 1.9
 			 */
 			return apply_filters( 'give_receipt_attachments', array(), $payment->ID, $payment->payment_meta );
+		}
+
+		/**
+		 * Setup email notification.
+		 *
+		 * @since  1.9
+		 * @access public
+		 *
+		 * @param int $payment_id
+		 */
+		public function setup_email_notification( $payment_id ) {
+			$payment = new Give_Payment( $payment_id );
+
+			// Set recipient email.
+			$this->recipient_email = $payment->user_info['email'];
+
+			// Send email.
+			$this->send_email_notification( array( 'payment_id' => $payment_id ) );
 		}
 	}
 

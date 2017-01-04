@@ -33,7 +33,7 @@ function give_trigger_donation_receipt( $payment_id ) {
 	give_email_donation_receipt( $payment_id );
 }
 
-add_action( 'give_complete_donation', 'give_trigger_donation_receipt', 999, 1 );
+// add_action( 'give_complete_donation', 'give_trigger_donation_receipt', 999, 1 );
 
 /**
  * Resend the Email Donation Receipt. (This can be done from the Donation History Page)
