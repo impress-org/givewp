@@ -129,14 +129,6 @@ function give_offline_process_payment( $purchase_data ) {
 	$payment = give_insert_payment( $payment_data );
 
 	if ( $payment ) {
-		/**
-		 * Fire action when offline donation created.
-		 *
-		 * @since 1.9
-		 * @param int $payment Payment ID.
-		 */
-		do_action( 'give_offline_donation_created', $payment );
-
 		give_send_to_success_page();
 	} else {
 		// if errors are present, send the user back to the donation form so they can be corrected
