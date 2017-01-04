@@ -55,6 +55,14 @@ function give_manual_payment( $purchase_data ) {
 	$payment = give_insert_payment( $payment_data );
 
 	if ( $payment ) {
+		/**
+		 * Fire action when manual donation created.
+		 *
+		 * @since 1.9
+		 * @param int $payment Payment ID.
+		 */
+		do_action( 'give_manual_donation_created', $payment );
+
 		give_update_payment_status( $payment, 'publish' );
 		give_send_to_success_page();
 	} else {

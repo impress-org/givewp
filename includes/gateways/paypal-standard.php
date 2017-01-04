@@ -54,6 +54,14 @@ function give_process_paypal_payment( $payment_data ) {
 		give_send_back_to_checkout( '?payment-mode=' . $payment_data['post_data']['give-gateway'] );
 	}
 
+	/**
+	 * Fire action when paypal donation created.
+	 *
+	 * @since 1.9
+	 * @param int $payment Payment ID.
+	 */
+	do_action( 'give_manual_donation_created', $payment_id );
+
 	// Redirect to PayPal.
 	wp_redirect( give_build_paypal_url( $payment_id, $payment_data ) );
 	exit;
