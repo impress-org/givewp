@@ -43,6 +43,8 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			$this->notification_status = 'enabled';
 
 			parent::__construct();
+
+			add_action( 'give_complete_donation', array( $this, 'setup_email_notification' ) );
 		}
 
 		/**
@@ -85,6 +87,19 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			 * @param string $message
 			 */
 			return apply_filters( 'give_default_new_donation_email', $message );
+		}
+
+		/**
+		 * Setup email notification.
+		 *
+		 * @since  1.9
+		 * @access public
+		 *
+		 * @param int $payment_id
+		 */
+		public function setup_email_notification( $payment_id ) {
+			// Send email.
+			$this->send_email_notification( array( 'payment_id' => $payment_id ) );
 		}
 	}
 
