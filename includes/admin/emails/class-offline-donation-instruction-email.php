@@ -47,7 +47,7 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 
 			parent::__construct();
 
-			add_action( 'give_offline_donation_created', array( $this, 'setup_email_notification' ) );
+			add_action( 'give_insert_payment', array( $this, 'setup_email_notification' ) );
 		}
 
 		/**
@@ -108,6 +108,11 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 		 */
 		public function setup_email_notification( $payment_id ) {
 			$payment = new Give_Payment( $payment_id );
+
+			// Exit if not donation was not with offline donation.
+			if( 'offline' !== $payment->gateway ) {
+				return;
+			}
 
 			// Set recipient email.
 			$this->recipient_email = $payment->user_info['email'];
