@@ -652,6 +652,11 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @param array $email_tag_args Arguments which helps to decode email template tags.
 		 */
 		public function send_email_notification( $email_tag_args = array() ){
+			// Do not send email if notification is disable.
+			if( ! give_is_setting_enabled( $this->get_notification_status() ) ) {
+				return;
+			}
+
 			$this->email->__set( 'heading', $this->get_email_subject() );
 
 			$attachments = $this->get_attachments();
