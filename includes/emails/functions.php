@@ -242,7 +242,7 @@ function give_admin_email_notice( $payment_id = 0, $payment_data = array() ) {
 
 }
 
-add_action( 'give_admin_donation_email', 'give_admin_email_notice', 10, 2 );
+// add_action( 'give_admin_donation_email', 'give_admin_email_notice', 10, 2 );
 
 /**
  * Retrieves the emails for which admin notifications are sent to (these can be changed in the Give Settings).
