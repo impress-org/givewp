@@ -6,7 +6,7 @@
  * @subpackage  Classes/Emails
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       1.8
+ * @since       1.9
  */
 
 // Exit if access directly.
@@ -20,7 +20,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 	 * Give_New_Donor_Register_Email
 	 *
 	 * @abstract
-	 * @since       1.8
+	 * @since       1.9
 	 */
 	class Give_New_Donor_Register_Email extends Give_Email_Notification {
 
@@ -30,7 +30,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 		 * @param   mixed[] $objects
 		 *
 		 * @access  public
-		 * @since   1.8
+		 * @since   1.9
 		 */
 		public function __construct( $objects = array() ) {
 			$this->id          = 'new-donor-register';
@@ -58,7 +58,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 		/**
 		 * Get default email subject.
 		 *
-		 * @since  1.8
+		 * @since  1.9
 		 * @access public
 		 * @return string
 		 */
@@ -73,7 +73,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 		/**
 		 * Get default email message.
 		 *
-		 * @since  1.8
+		 * @since  1.9
 		 * @access public
 		 *
 		 * @param array $args Email Arguments.
@@ -93,7 +93,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 		/**
 		 * Send new donor register notifications.
 		 *
-		 * @since  1.8
+		 * @since  1.9
 		 * @access public
 		 *
 		 * @param int   $user_id   User ID.
@@ -110,7 +110,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 		/**
 		 * email preview header.
 		 *
-		 * @since  1.8
+		 * @since  1.9
 		 * @access public
 		 *
 		 * @param string $email_preview_header

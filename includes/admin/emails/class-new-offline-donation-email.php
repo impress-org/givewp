@@ -8,7 +8,7 @@
  * @subpackage  Classes/Emails
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       1.8
+ * @since       1.9
  */
 
 // Exit if access directly.
@@ -22,7 +22,7 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 	 * Give_New_Offline_Donation_Email
 	 *
 	 * @abstract
-	 * @since       1.8
+	 * @since       1.9
 	 */
 	class Give_New_Offline_Donation_Email extends Give_Email_Notification {
 
@@ -32,7 +32,7 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 		 * @param   mixed[] $objects
 		 *
 		 * @access  public
-		 * @since   1.8
+		 * @since   1.9
 		 */
 		public function __construct( $objects = array() ) {
 			$this->id          = 'new-offline-donation';
@@ -53,7 +53,7 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 		/**
 		 * Get default email subject.
 		 *
-		 * @since  1.8
+		 * @since  1.9
 		 * @access public
 		 * @return string
 		 */
@@ -65,7 +65,7 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 		/**
 		 * Get default email message.
 		 *
-		 * @since  1.8
+		 * @since  1.9
 		 * @access public
 		 *
 		 * @param array $args Email arguments.{
@@ -95,7 +95,7 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 			/**
 			 * Filter the donation receipt email message
 			 *
-			 * @since 1.8
+			 * @since 1.9
 			 *
 			 * @param string $message
 			 */

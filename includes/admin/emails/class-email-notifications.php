@@ -8,7 +8,7 @@
  * @subpackage  Classes/Emails
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       1.8
+ * @since       1.9
  */
 
 /**
@@ -18,7 +18,7 @@ class Give_Email_Notifications {
 	/**
 	 * Instance.
 	 *
-	 * @since  1.8
+	 * @since  1.9
 	 * @access static
 	 * @var
 	 */
@@ -27,7 +27,7 @@ class Give_Email_Notifications {
 	/**
 	 * Array of email notifications.
 	 *
-	 * @since  1.8
+	 * @since  1.9
 	 * @access private
 	 * @var array
 	 */
@@ -36,7 +36,7 @@ class Give_Email_Notifications {
 	/**
 	 * Singleton pattern.
 	 *
-	 * @since  1.8
+	 * @since  1.9
 	 * @access private
 	 * Give_Payumoney_API constructor.
 	 */
@@ -47,7 +47,7 @@ class Give_Email_Notifications {
 	/**
 	 * Get instance.
 	 *
-	 * @since  1.8
+	 * @since  1.9
 	 * @access static
 	 * @return static
 	 */
@@ -62,7 +62,7 @@ class Give_Email_Notifications {
 	/**
 	 * Setup dependencies
 	 *
-	 * @since 1.8
+	 * @since 1.9
 	 */
 	public function init() {
 		// Load ajax handler.
@@ -91,7 +91,7 @@ class Give_Email_Notifications {
 	/**
 	 * Add email notifications
 	 *
-	 * @since  1.8
+	 * @since  1.9
 	 * @access private
 	 */
 	private function add_emails_notifications() {
@@ -109,7 +109,7 @@ class Give_Email_Notifications {
 		/**
 		 * Filter the email notifications.
 		 *
-		 * @since 1.8
+		 * @since 1.9
 		 */
 		$this->emails = apply_filters( 'give_email_notifications', $this->emails );
 	}
@@ -118,7 +118,7 @@ class Give_Email_Notifications {
 	/**
 	 * Get list of email notifications.
 	 *
-	 * @since  1.8
+	 * @since  1.9
 	 * @access public
 	 * @return array
 	 */
@@ -131,7 +131,7 @@ class Give_Email_Notifications {
 		/**
 		 * Filter the table columns
 		 *
-		 * @since 1.8
+		 * @since 1.9
 		 */
 		return apply_filters( 'give_email_notification_setting_columns', array(
 			'status'     => '',
@@ -146,7 +146,7 @@ class Give_Email_Notifications {
 	/**
 	 * Get name column.
 	 *
-	 * @since 1.8
+	 * @since 1.9
 	 * @access public
 	 * @param Give_Email_Notification $email
 	 */
@@ -167,7 +167,7 @@ class Give_Email_Notifications {
 	/**
 	 * Print row actions.
 	 *
-	 * @since 1.8
+	 * @since 1.9
 	 * @access private
 	 * @param Give_Email_Notification $email
 	 */
@@ -195,7 +195,7 @@ class Give_Email_Notifications {
 	/**
 	 * Get recipient column.
 	 *
-	 * @since 1.8
+	 * @since 1.9
 	 * @access public
 	 * @param Give_Email_Notification $email
 	 */
@@ -221,7 +221,7 @@ class Give_Email_Notifications {
 	/**
 	 * Get status column.
 	 *
-	 * @since 1.8
+	 * @since 1.9
 	 * @access public
 	 * @param Give_Email_Notification $email
 	 */
@@ -242,7 +242,7 @@ class Give_Email_Notifications {
 	/**
 	 * Get email_type column.
 	 *
-	 * @since 1.8
+	 * @since 1.9
 	 * @access public
 	 * @param Give_Email_Notification $email
 	 */
@@ -257,7 +257,7 @@ class Give_Email_Notifications {
 	/**
 	 * Get setting column.
 	 *
-	 * @since  1.8
+	 * @since  1.9
 	 * @access public
 	 *
 	 * @param Give_Email_Notification $email
@@ -273,7 +273,7 @@ class Give_Email_Notifications {
 	/**
 	 * Render column.
 	 *
-	 * @since  1.8
+	 * @since  1.9
 	 * @access public
 	 *
 	 * @param Give_Email_Notification $email
@@ -290,7 +290,7 @@ class Give_Email_Notifications {
 	/**
 	 * Check if admin preview email or not
 	 *
-	 * @since  1.8
+	 * @since  1.9
 	 * @access public
 	 * @return bool   $is_preview
 	 */
@@ -311,7 +311,7 @@ class Give_Email_Notifications {
 	/**
 	 * Check if admin preview email or not
 	 *
-	 * @since  1.8
+	 * @since  1.9
 	 * @access public
 	 * @return bool   $is_preview
 	 */
@@ -332,7 +332,7 @@ class Give_Email_Notifications {
 	/**
 	 * Displays the email preview
 	 *
-	 * @since  1.8
+	 * @since  1.9
 	 * @access public
 	 * @return bool|null
 	 */
@@ -360,7 +360,7 @@ class Give_Email_Notifications {
 				/**
 				 * Filter the email preview data
 				 *
-				 * @since 1.8
+				 * @since 1.9
 				 *
 				 * @param array
 				 */
@@ -369,14 +369,14 @@ class Give_Email_Notifications {
 				/**
 				 * Fire the give_{$email_type}_email_preview action
 				 *
-				 * @since 1.8
+				 * @since 1.9
 				 */
 				do_action( "give_{$email_type}_email_preview", $email );
 
 				/**
 				 * Filter the email message
 				 *
-				 * @since 1.8
+				 * @since 1.9
 				 *
 				 * @param string                  $email_message
 				 * @param array                   $email_preview_data
@@ -393,7 +393,7 @@ class Give_Email_Notifications {
 	/**
 	 * Add header to donation receipt email preview
 	 *
-	 * @since   1.8
+	 * @since   1.9
 	 * @access  public
 	 *
 	 * @param Give_Email_Notification $email
@@ -402,7 +402,7 @@ class Give_Email_Notifications {
 		/**
 		 * Filter the all email preview headers.
 		 *
-		 * @since 1.8
+		 * @since 1.9
 		 *
 		 * @param Give_Email_Notification $email
 		 */
@@ -411,7 +411,7 @@ class Give_Email_Notifications {
 		/**
 		 * Filter the specific email preview header.
 		 *
-		 * @since 1.8
+		 * @since 1.9
 		 *
 		 * @param Give_Email_Notification $email
 		 */
@@ -423,7 +423,7 @@ class Give_Email_Notifications {
 	/**
 	 * Add email preview data
 	 *
-	 * @since   1.8
+	 * @since   1.9
 	 * @access  public
 	 *
 	 * @param array $email_preview_data
@@ -439,7 +439,7 @@ class Give_Email_Notifications {
 	/**
 	 * Replace email template tags.
 	 *
-	 * @since   1.8
+	 * @since   1.9
 	 * @access  public
 	 *
 	 * @param string $email_message
@@ -458,7 +458,7 @@ class Give_Email_Notifications {
 	/**
 	 * Displays the email preview
 	 *
-	 * @since  1.8
+	 * @since  1.9
 	 * @access public
 	 * @return bool|null
 	 */
