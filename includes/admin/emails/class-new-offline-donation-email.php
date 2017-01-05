@@ -68,13 +68,9 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 		 * @since  1.9
 		 * @access public
 		 *
-		 * @param array $args Email arguments.{
-		 *      @type  int $payment_id Payment ID.
-		 * }
-		 *
 		 * @return string
 		 */
-		public function get_default_email_message( $args = array() ) {
+		public function get_default_email_message() {
 			$payment_id = isset( $args['payment_id'] ) ? absint( $args['payment_id'] ) : 0;
 
 			$message = __( 'Dear Admin,', 'give' ) . "\n\n";

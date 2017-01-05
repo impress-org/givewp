@@ -68,11 +68,9 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 		 * @since  1.9
 		 * @access public
 		 *
-		 * @param array $args Email Arguments.
-		 *
 		 * @return string
 		 */
-		public function get_default_email_message( $args = array() ) {
+		public function get_default_email_message() {
 			$message = esc_html__( 'Dear', 'give' ) . " {name},\n\n";
 			$message .= esc_html__( 'Thank you for your donation. Your generosity is appreciated! Here are the details of your donation:', 'give' ) . "\n\n";
 			$message .= '<strong>' . esc_html__( 'Donor:', 'give' ) . '</strong> {fullname}' . "\n";

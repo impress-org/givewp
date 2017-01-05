@@ -73,11 +73,9 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 		 * @since  1.9
 		 * @access public
 		 *
-		 * @param array $args Email Arguments.
-		 *
 		 * @return string
 		 */
-		function get_default_email_message( $args = array() ) {
+		function get_default_email_message() {
 			$message = esc_attr__( 'Username: {username}', 'give' ) . "\r\n";
 			$message .= sprintf(
 				esc_attr__( 'Password: %s', 'give' ),

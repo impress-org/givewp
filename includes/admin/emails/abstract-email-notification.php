@@ -304,7 +304,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @access public
 		 * @return string
 		 */
-		function get_email_message() {
+		public function get_email_message() {
 			return give_get_option( "{$this->id}_email_message", $this->get_default_email_message() );
 		}
 
