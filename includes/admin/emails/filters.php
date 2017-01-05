@@ -22,7 +22,7 @@
 function give_email_notification_row_actions_callback( $row_actions, $email ) {
 	if( $email->is_email_preview() ) {
 		$preview_link = sprintf(
-			'<a href="%1$s">%2$s</a>',
+			'<a href="%1$s" target="_blank">%2$s</a>',
 			wp_nonce_url(
 				add_query_arg(
 					array( 'give_action' => 'preview_email', 'email_type' => $email->get_id() ),
