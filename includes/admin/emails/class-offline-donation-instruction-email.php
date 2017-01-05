@@ -25,6 +25,8 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 	 * @since       1.9
 	 */
 	class Give_Offline_Donation_Instruction_Email extends Give_Email_Notification {
+		/* @var Give_Payment $payment */
+		private $payment;
 
 		/**
 		 * Create a class instance.
@@ -48,6 +50,81 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 			parent::__construct();
 
 			add_action( 'give_insert_payment', array( $this, 'setup_email_notification' ) );
+		}
+
+
+		/**
+		 * Get email message
+		 *
+		 * @since 1.9
+		 * @return string
+		 */
+		public function get_email_message() {
+			$post_offline_customization_option = get_post_meta(
+				$this->payment->form_id,
+				'_give_customize_offline_donations',
+				true
+			);
+
+			//Customize email content depending on whether the single form has been customized
+			$message = wp_strip_all_tags(
+				give_get_option( "{$this->id}_email_message",
+					$this->get_default_email_subject()
+				)
+			);
+
+			if ( give_is_setting_enabled( $post_offline_customization_option, 'enabled' ) ) {
+				$message = get_post_meta( $this->payment->form_id, '_give_offline_donation_email', true );
+			}
+
+			return $message;
+		}
+
+		/**
+		 * Get email message
+		 *
+		 * @since 1.9
+		 * @return string
+		 */
+		public function get_email_subject() {
+			$post_offline_customization_option = get_post_meta(
+				$this->payment->form_id,
+				'_give_customize_offline_donations',
+				true
+			);
+
+			$subject = give_get_option(
+				"{$this->id}_email_subject",
+				$this->get_default_email_subject()
+			);
+
+			if ( give_is_setting_enabled( $post_offline_customization_option, 'enabled' ) ) {
+				$subject = get_post_meta( $this->payment->form_id, '_give_offline_donation_subject', true );
+			}
+
+			return $subject;
+		}
+
+		/**
+		 * Get attachments.
+		 *
+		 * @since 1.9
+		 * @return array
+		 */
+		public function get_email_attachments() {
+			/**
+			 * Filter the attachments.
+			 *
+			 * @since 1.0
+			 */
+			$attachment = apply_filters(
+				'give_offline_donation_attachments',
+				array(),
+				$this->payment->ID,
+				$this->payment->payment_meta
+			);
+
+			return $attachment;
 		}
 
 		/**
@@ -105,18 +182,38 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 		 * @param int $payment_id
 		 */
 		public function setup_email_notification( $payment_id ) {
-			$payment = new Give_Payment( $payment_id );
+			$this->payment = new Give_Payment( $payment_id );
 
 			// Exit if not donation was not with offline donation.
-			if( 'offline' !== $payment->gateway ) {
+			if ( 'offline' !== $this->payment->gateway ) {
 				return;
 			}
 
 			// Set recipient email.
-			$this->recipient_email = $payment->user_info['email'];
+			$this->recipient_email = $this->payment->email;
+
+			/**
+			 * Filters the from name.
+			 *
+			 * @since 1.7
+			 */
+			$from_name = apply_filters( 'give_donation_from_name', $this->email->get_from_name(), $this->payment->ID, $this->payment->payment_meta );
+
+			/**
+			 * Filters the from email.
+			 *
+			 * @since 1.7
+			 */
+			$from_email = apply_filters( 'give_donation_from_address', $this->email->get_from_address(), $this->payment->ID, $this->payment->payment_meta );
+
+
+			$this->email->__set( 'from_name', $from_name );
+			$this->email->__set( 'from_email', $from_email );
+			$this->email->__set( 'heading', __( 'Offline Donation Instructions', 'give' ) );
+			$this->email->__set( 'headers', apply_filters( 'give_receipt_headers', $this->email->get_headers(), $this->payment->ID, $this->payment->payment_meta ) );
 
 			// Send email.
-			$this->send_email_notification( array( 'payment_id' => $payment_id ) );
+			$this->send_email_notification( array( 'payment_id' => $this->payment->ID ) );
 		}
 	}
 
