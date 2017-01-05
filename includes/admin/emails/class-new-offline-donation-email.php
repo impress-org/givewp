@@ -25,6 +25,8 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 	 * @since       1.9
 	 */
 	class Give_New_Offline_Donation_Email extends Give_Email_Notification {
+		/* @var Give_Payment $payment */
+		private $payment;
 
 		/**
 		 * Create a class instance.
@@ -58,7 +60,15 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 		 * @return string
 		 */
 		public function get_default_email_subject() {
-			return __( 'New Pending Donation', 'give' );
+			/**
+			 * Filter the default subject
+			 *
+			 * @since 1.0
+			 */
+			return apply_filters(
+				'give_offline_admin_donation_notification_subject',
+				__( 'New Pending Donation', 'give' )
+			);
 		}
 
 
@@ -91,11 +101,56 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 			/**
 			 * Filter the donation receipt email message
 			 *
-			 * @since 1.9
+			 * @since 1.0
 			 *
 			 * @param string $message
 			 */
-			return apply_filters( 'give_default_new_offline_donation_email', $message, $payment_id );
+			return apply_filters(
+				'give_default_new_offline_donation_email',
+				$message,
+				$this->payment->ID
+			);
+		}
+
+
+		/**
+		 * Get message
+		 *
+		 * @since 1.9
+		 * @return string
+		 */
+		public function get_email_message() {
+			$message = give_get_option( "{$this->id}_email_message", $this->get_default_email_message() );
+
+
+			/**
+			 * Filter the email message
+			 *
+			 * @since 1.0
+			 */
+			return apply_filters( 'give_offline_admin_donation_notification', $message );
+		}
+
+
+		/**
+		 * Get attachments.
+		 *
+		 * @since 1.9
+		 * @return array
+		 */
+		public function get_email_attachments() {
+			/**
+			 * Filter the attachments.
+			 *
+			 * @since 1.0
+			 */
+			$attachment = apply_filters(
+				'give_offline_admin_donation_notification_attachments',
+				array(),
+				$this->payment->ID
+			);
+
+			return $attachment;
 		}
 
 		/**
@@ -107,19 +162,30 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 		 * @param int $payment_id
 		 */
 		public function setup_email_notification( $payment_id ) {
-			$payment = new Give_Payment( $payment_id );
+			$this->payment = new Give_Payment( $payment_id );
 
 
 			// Exit if not donation was not with offline donation.
-			if( 'offline' !== $payment->gateway ) {
+			if ( 'offline' !== $this->payment->gateway ) {
 				return;
 			}
 
 			// Set recipient email.
-			$this->recipient_email = $payment->user_info['email'];
+			$this->recipient_email = $this->payment->user_info['email'];
+
+
+			// Set header.
+			$this->email->__set(
+				'headers',
+				apply_filters(
+					'give_offline_admin_donation_notification_headers',
+					$this->email->get_headers(),
+					$this->payment->ID
+				)
+			);
 
 			// Send email.
-			$this->send_email_notification( array( 'payment_id' => $payment_id ) );
+			$this->send_email_notification( array( 'payment_id' => $this->payment->ID ) );
 		}
 	}
 
