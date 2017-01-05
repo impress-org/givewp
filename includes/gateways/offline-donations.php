@@ -208,68 +208,6 @@ function give_offline_send_donor_instructions( $payment_id = 0 ) {
 
 
 /**
- * Send Offline Donation Admin Notice.
- *
- * Sends a notice to site admins about the pending donation.
- *
- * @since       1.0
- *
- * @param int $payment_id
- *
- * @return void
- *
- */
-function give_offline_send_admin_notice( $payment_id = 0 ) {
-
-	/* Send an email notification to the admin */
-	$admin_email = give_get_admin_notice_emails();
-	$user_info   = give_get_payment_meta_user_info( $payment_id );
-
-	if ( isset( $user_info['id'] ) && $user_info['id'] > 0 ) {
-		$user_data = get_userdata( $user_info['id'] );
-		$name      = $user_data->display_name;
-	} elseif ( isset( $user_info['first_name'] ) && isset( $user_info['last_name'] ) ) {
-		$name = $user_info['first_name'] . ' ' . $user_info['last_name'];
-	} else {
-		$name = $user_info['email'];
-	}
-
-	$amount = give_currency_filter( give_format_amount( give_get_payment_amount( $payment_id ) ) );
-
-	$admin_subject = apply_filters( 'give_offline_admin_donation_notification_subject', __( 'New Pending Donation', 'give' ), $payment_id );
-
-	$admin_message = __( 'Dear Admin,', 'give' ) . "\n\n";
-	$admin_message .= __( 'An offline donation has been made on your website:', 'give' ) . ' ' . get_bloginfo( 'name' ) . ' ';
-	$admin_message .= __( 'Hooray! The donation is in a pending status and is awaiting payment. Donation instructions have been emailed to the donor. Once you receive payment, be sure to mark the donation as complete using the link below.', 'give' ) . "\n\n";
-
-
-	$admin_message .= '<strong>' . __( 'Donor:', 'give' ) . '</strong> {fullname}' . "\n";
-	$admin_message .= '<strong>' . __( 'Amount:', 'give' ) . '</strong> {amount}' . "\n\n";
-
-	$admin_message .= sprintf(
-		'<a href="%1$s">%2$s</a>',
-		admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $payment_id ),
-		__( 'Click Here to View and/or Update Donation Details', 'give' )
-	) . "\n\n";
-
-	$admin_message = apply_filters( 'give_offline_admin_donation_notification', $admin_message, $payment_id );
-	$admin_message = give_do_email_tags( $admin_message, $payment_id );
-
-	$attachments   = apply_filters( 'give_offline_admin_donation_notification_attachments', array(), $payment_id );
-	$admin_headers = apply_filters( 'give_offline_admin_donation_notification_headers', array(), $payment_id );
-
-	//Send Email
-	$emails = Give()->emails;
-	if ( ! empty( $admin_headers ) ) {
-		$emails->__set( 'headers', $admin_headers );
-	}
-
-	$emails->send( $admin_email, $admin_subject, $admin_message, $attachments );
-
-}
-
-
-/**
  * Register gateway settings.
  *
  * @param $settings
