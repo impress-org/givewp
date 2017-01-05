@@ -171,7 +171,7 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 			}
 
 			// Set recipient email.
-			$this->recipient_email = $this->payment->user_info['email'];
+			$this->recipient_email = $this->payment->email;
 
 
 			// Set header.
