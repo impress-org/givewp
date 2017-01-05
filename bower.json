@@ -10,6 +10,6 @@
     "flot.orderbars": "*",
     "jquery.payment": "latest",
     "magnific-popup": "latest",
-    "qtip2": "latest"
+    "hint.css": "^2.4.1"
   }
 }

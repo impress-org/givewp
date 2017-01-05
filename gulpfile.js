@@ -228,7 +228,8 @@ gulp.task('default', function () {
         "Flot": {main: ['jquery.flot.js', 'jquery.flot.time.js', 'jquery.flot.resize.js']},
         "flot.orderbars": {main: ['js/jquery.flot.orderBars.js']},
         "jquery": {ignore: true},
-        "magnific-popup": {main: ['dist/jquery.magnific-popup.js', 'src/css/*.scss']}
+        "magnific-popup": {main: ['dist/jquery.magnific-popup.js', 'src/css/*.scss']},
+        "hintcss": {main: ['src/hint.scss']}
     };
 
     // run bower install
