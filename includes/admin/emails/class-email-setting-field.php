@@ -20,7 +20,7 @@ class Give_Email_Setting_Field {
 	 *
 	 * @return array|int
 	 */
-	static public function get_setting_fields( Give_Email_Notification $email ) {
+	public static function get_setting_fields( Give_Email_Notification $email ) {
 		$setting_fields = self::get_default_setting_fields( $email );
 
 		// Recipient field.
@@ -54,7 +54,7 @@ class Give_Email_Setting_Field {
 	 *
 	 * @return bool
 	 */
-	static function has_section_end( $setting ) {
+	public static function has_section_end( $setting ) {
 		$last_field      = end( $setting );
 		$has_section_end = false;
 
@@ -76,7 +76,7 @@ class Give_Email_Setting_Field {
 	 *
 	 * @return array
 	 */
-	static function add_section_end( $setting, Give_Email_Notification $email ) {
+	public static function add_section_end( $setting, Give_Email_Notification $email ) {
 		if ( ! self::has_section_end( $setting ) ) {
 			// Add section end field.
 			$setting[] = array(
@@ -98,7 +98,7 @@ class Give_Email_Setting_Field {
 	 *
 	 * @return array
 	 */
-	static public function get_default_setting_fields( Give_Email_Notification $email ) {
+	public static function get_default_setting_fields( Give_Email_Notification $email ) {
 		return array(
 			array(
 				'id'    => "give_title_email_settings_{$email->get_id()}",
@@ -143,7 +143,7 @@ class Give_Email_Setting_Field {
 	 *
 	 * @return array
 	 */
-	static public function get_recipient_setting_field( Give_Email_Notification $email ) {
+	public static function get_recipient_setting_field( Give_Email_Notification $email ) {
 		return array(
 			'id'               => "{$email->get_id()}_recipient",
 			'name'             => esc_html__( 'Donation Notification Emails', 'give' ),
@@ -165,7 +165,7 @@ class Give_Email_Setting_Field {
 	 *
 	 * @return array
 	 */
-	static public function get_preview_setting_field( Give_Email_Notification $email ) {
+	public static function get_preview_setting_field( Give_Email_Notification $email ) {
 		return array(
 			'name' => esc_html__( 'Preview Email', 'give' ),
 			'desc' => esc_html__( 'Click the buttons to preview emails.', 'give' ),
