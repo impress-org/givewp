@@ -555,8 +555,8 @@ function give_new_user_notification( $user_id = 0, $user_data = array() ) {
 		return;
 	}
 
-	do_action( 'give_new_donor_register_email_notification', $user_id, $user_data );
-	do_action( 'give_donor_register_email_notification', $user_id, $user_data );
+	do_action( 'give_new-donor-register_email_notification', $user_id, $user_data );
+	do_action( 'give_donor-register_email_notification', $user_id, $user_data );
 }
 
 add_action( 'give_insert_user', 'give_new_user_notification', 10, 2 );

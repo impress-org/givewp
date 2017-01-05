@@ -46,7 +46,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 
 			// Setup action hook.
 			add_action(
-				"give_{$this->action}_email_notification",
+				"give_{$this->get_id()}_email_notification",
 				array( $this, 'setup_email_notification' ),
 				10,
 				2

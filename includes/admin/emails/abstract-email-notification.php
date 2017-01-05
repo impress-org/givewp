@@ -32,11 +32,6 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		protected $id = '';
 
 		/**
-		 * @var     string $id The email's action unique identifier.
-		 */
-		protected $action = '';
-
-		/**
 		 * @var     string $label Name of the email.
 		 * @access  protected
 		 * @since   1.9
@@ -124,9 +119,6 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		public function __construct( $objects = array() ) {
 			// Setup email class.
 			$this->email = new Give_Emails();
-
-			// Get email action.
-			$this->action = give_check_variable( $this->action, 'empty', str_replace( '-', '_', $this->id ) );
 
 			// Set email preview header status.
 			$this->has_preview_header = $this->has_preview && $this->has_preview_header ? true : false;

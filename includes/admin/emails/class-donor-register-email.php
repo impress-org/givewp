@@ -45,7 +45,7 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 
 			// Setup action hook.
 			add_action(
-				"give_{$this->action}_email_notification",
+				"give_{$this->get_id()}_email_notification",
 				array( $this, 'setup_email_notification' ),
 				10,
 				2
@@ -61,7 +61,7 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 		 */
 		function get_default_email_subject() {
 			return sprintf(
-			/* translators: %s: site name */
+				/* translators: %s: site name */
 				esc_attr__( '[%s] Your username and password', 'give' ),
 				get_bloginfo( 'name' )
 			);
@@ -83,7 +83,6 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 			) . "\r\n";
 
 			$message .= '<a href="' . wp_login_url() . '"> ' . esc_attr__( 'Click Here to Login &raquo;', 'give' ) . '</a>' . "\r\n";
-
 
 			return $message;
 		}
