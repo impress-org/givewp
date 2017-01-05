@@ -90,6 +90,13 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'default' => '',
 							'type'    => 'text'
 						),
+                        array(
+                            'name'  => esc_html__( 'Access Control Docs Link', 'give' ),
+                            'id'    => 'access_control_docs_link',
+                            'url'   => esc_url( 'http://docs.givewp.com/accesscontrol' ),
+                            'title' => __( 'Access Control', 'give' ),
+                            'type'  => 'give_docs_link',
+                        ),
 						array(
 							'id'   => 'give_title_session_control_1',
 							'type' => 'sectionend'
@@ -155,6 +162,13 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'default'         => 2,
 							'css'             => 'width:12em;',
 						),
+                        array(
+                            'name'  => esc_html__( 'Currency Options Docs Link', 'give' ),
+                            'id'    => 'currency_settings_docs_link',
+                            'url'   => esc_url( 'https://docs.givewp.com/currencysettings' ),
+                            'title' => __( 'Currency Settings', 'give' ),
+                            'type'  => 'give_docs_link',
+                        ),
 						array(
 							'type' => 'title',
 							'id'   => 'give_title_general_settings_2'
@@ -214,6 +228,13 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'type'    => 'select',
 							'options' => give_get_country_list(),
 						),
+                        array(
+                            'name'  => esc_html__( 'General Options Docs Link', 'give' ),
+                            'id'    => 'general_options_docs_link',
+                            'url'   => esc_url( 'https://docs.givewp.com/generaloptions' ),
+                            'title' => __( 'General Options', 'give' ),
+                            'type'  => 'give_docs_link',
+                        ),
 						array(
 							'type' => 'sectionend',
 							'id'   => 'give_title_general_settings_1'

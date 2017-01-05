@@ -35,7 +35,7 @@ if( ! empty( $tabs ) ) :
 	?>
 	<div class="wrap give-settings-page <?php echo self::$setting_filter_prefix . '-setting-page'; ?>">
 		<?php echo $form_open_tag; ?>
-			<h2 class="nav-tab-wrapper woo-nav-tab-wrapper">
+			<h2 class="nav-tab-wrapper give-nav-tab-wrapper">
 				<?php
 				foreach ( $tabs as $name => $label ) {
 					echo '<a href="' . admin_url( "edit.php?post_type=give_forms&page=" . self::$setting_filter_prefix . "&tab={$name}" ) . '" class="nav-tab ' . ( $current_tab == $name ? 'nav-tab-active' : '' ) . '">' . $label . '</a>';

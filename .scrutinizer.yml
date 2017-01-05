@@ -1,26 +1,21 @@
 filter:
-    excluded_paths: [vendor/*, tests/*, languages/*, includes/libraries/*, bin/*, assets/*, templates/* ]
+    excluded_paths:
+    - vendor/*
+    - tests/*
+    - languages/*
+    - includes/libraries/*
+    - bin/*
+    - assets/*
+    - templates/*
+
 before_commands:
     - 'composer install --dev --prefer-source'
 tools:
     external_code_coverage:
-            timeout: 900    # wait for 15 minutes instead of 5
-    php_mess_detector:
-        config:
-            code_size_rules:
-                cyclomatic_complexity:  false
-                npath_complexity:     false
-                excessive_method_length:  false
-                excessive_class_length:  false
-                excessive_parameter_list:  false
-                excessive_public_count:  false
-                too_many_fields:      false
-                too_many_methods:     false
-                excessive_class_complexity:  false
-
+            timeout: 900
     php_code_sniffer: true
-    sensiolabs_security_checker: true
     php_code_coverage: true
+    sensiolabs_security_checker: true
     php_pdepend: true
     php_loc:
         enabled: true
