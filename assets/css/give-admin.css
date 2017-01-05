@@ -438,6 +438,12 @@
   -moz-transition: opacity 0.3s ease, visibility 0.3s ease, -moz-transform 0.3s cubic-bezier(0.71, 1.7, 0.77, 1.24);
   transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s cubic-bezier(0.71, 1.7, 0.77, 1.24); }
 
+.hint--top:after {
+  white-space: inherit;
+  min-width: 16em;
+  max-width: 250px;
+  line-height: 1.4; }
+
 /**
  * Give Frontend Fonts SCSS
  *
