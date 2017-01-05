@@ -164,54 +164,6 @@ function give_email_preview_buttons_callback( $field ) {
 	echo ob_get_clean();
 }
 
-/**
- * Displays the email preview
- *
- * @since 1.0
- * @return void
- */
-function give_display_email_template_preview() {
-
-	if ( empty( $_GET['give_action'] ) ) {
-		return;
-	}
-
-	if ( 'preview_email' !== $_GET['give_action'] ) {
-		return;
-	}
-
-	if ( ! current_user_can( 'manage_give_settings' ) ) {
-		return;
-	}
-
-
-	Give()->emails->heading = esc_html__( 'Donation Receipt', 'give' );
-
-	$payment_id = (int) isset( $_GET['preview_id'] ) ? $_GET['preview_id'] : '';
-
-	echo give_get_preview_email_header();
-
-	//Are we previewing an actual payment?
-	if ( ! empty( $payment_id ) ) {
-
-		$content = give_get_email_body_content( $payment_id );
-
-		$preview_content = give_do_email_tags( $content, $payment_id );
-
-	} else {
-
-		//No payment ID, use sample preview content
-		$preview_content = give_email_preview_template_tags( give_get_email_body_content( 0, array() ) );
-	}
-
-
-	echo Give()->emails->build_email( $preview_content );
-
-	exit;
-
-}
-
-// add_action( 'init', 'give_display_email_template_preview' );
 
 /**
  * Email Template Body.

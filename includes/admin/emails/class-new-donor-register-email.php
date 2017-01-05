@@ -39,7 +39,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 
 			$this->has_recipient_field = true;
 			$this->notification_status = 'enabled';
-			$this->has_preview_header  = false;
+			$this->has_preview_header  = true;
 			$this->email_tag_context   = 'donor';
 
 			parent::__construct();
@@ -52,7 +52,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 				2
 			);
 
-			add_filter( 'give_email_preview_new-donor-register_header', array( $this, 'email_preview_header' ) );
+			add_filter( "give_email_preview_{$this->get_id()}_header", array( $this, 'email_preview_header' ) );
 		}
 
 		/**
@@ -117,7 +117,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 		 */
 		public function email_preview_header( $email_preview_header ) {
 			//Payment receipt switcher
-			$donor_id = give_check_variable( give_clean( $_GET ), 'isset', 0, 'donor_id' );
+			$user_id = give_check_variable( give_clean( $_GET ), 'isset', 0, 'user_id' );
 
 			//Get payments.
 			$donors  = new Give_API();
@@ -146,10 +146,10 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 			$request_url = $_SERVER['REQUEST_URI'];
 
 			// Remove payment id query param if set from request url.
-			if ( $donor_id ) {
+			if ( $user_id ) {
 				$request_url_data = wp_parse_url( $_SERVER['REQUEST_URI'] );
 				$query            = $request_url_data['query'];
-				$query            = str_replace( "&donor_id={$donor_id}", '', $query );
+				$query            = str_replace( "&user_id={$user_id}", '', $query );
 
 				$request_url = home_url( '/?' . str_replace( '', '', $query ) );
 			}
@@ -157,22 +157,22 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 
 			$email_preview_header .= '<script>
 				 function change_preview(){
-				  var transactions = document.getElementById("give_preview_email_donor_id");
+				  var transactions = document.getElementById("give_preview_email_user_id");
 			        var selected_trans = transactions.options[transactions.selectedIndex];
 				        if (selected_trans){
-				            var url_string = "' . $request_url . '&donor_id=" + selected_trans.value;
+				            var url_string = "' . $request_url . '&user_id=" + selected_trans.value;
 				                window.location = url_string;
 				        }
 				    }
 			    </script>';
 
-			$email_preview_header .= '<label for="give_preview_email_donor_id" style="font-size:12px;color:#333;margin:0 4px 0 0;">' . esc_html__( 'Preview email with a donor:', 'give' ) . '</label>';
+			$email_preview_header .= '<label for="give_preview_email_user_id" style="font-size:12px;color:#333;margin:0 4px 0 0;">' . esc_html__( 'Preview email with a donor:', 'give' ) . '</label>';
 
 			//The select field with 100 latest transactions
 			$email_preview_header .= Give()->html->select( array(
-				'name'             => 'preview_email_donor_id',
-				'selected'         => $donor_id,
-				'id'               => 'give_preview_email_donor_id',
+				'name'             => 'preview_email_user_id',
+				'selected'         => $user_id,
+				'id'               => 'give_preview_email_user_id',
 				'class'            => 'give-preview-email-donor-id',
 				'options'          => $options,
 				'chosen'           => false,
@@ -186,8 +186,6 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 
 			echo $email_preview_header;
 		}
-
-		/* @todo Update email template tags in email preview on basis of selected donor */
 	}
 
 endif; // End class_exists check

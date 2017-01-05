@@ -84,7 +84,7 @@ class Give_Email_Notifications {
 
 			add_action( "give_{$email->get_id()}_email_preview", array( $this, 'email_preview_header' ) );
 			add_filter( "give_{$email->get_id()}_email_preview_data", array( $this, 'email_preview_data' ) );
-			add_filter( "give_{$email->get_id()}_email_preview_message", array( $this, 'email_preview_message' ), 1, 2 );
+			add_filter( "give_{$email->get_id()}_email_preview_message", array( $this, 'email_preview_message', ), 1, 2 );
 		}
 	}
 
@@ -146,8 +146,9 @@ class Give_Email_Notifications {
 	/**
 	 * Get name column.
 	 *
-	 * @since 1.9
+	 * @since  1.9
 	 * @access public
+	 *
 	 * @param Give_Email_Notification $email
 	 */
 	public function get_name_column( Give_Email_Notification $email ) {
@@ -167,36 +168,38 @@ class Give_Email_Notifications {
 	/**
 	 * Print row actions.
 	 *
-	 * @since 1.9
+	 * @since  1.9
 	 * @access private
+	 *
 	 * @param Give_Email_Notification $email
 	 */
 	private function print_row_actions( $email ) {
-		$edit_url = esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=' . $email->get_id() ) );
+		$edit_url    = esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=' . $email->get_id() ) );
 		$row_actions = apply_filters(
 			'give_email_notification_row_actions',
 			array( 'edit' => "<a href=\"{$edit_url}\">" . __( 'Edit', 'give' ) . "</a>" ),
 			$email
 		);
 		?>
-		<?php if( ! empty( $row_actions ) ) : $index = 0; ?>
+		<?php if ( ! empty( $row_actions ) ) : $index = 0; ?>
 			<div class="row-actions">
 				<?php foreach ( $row_actions as $action => $link ) : ?>
 					<?php $sep = 0 < $index ? '&nbsp;|&nbsp;' : ''; ?>
 					<span class="<?php echo $action; ?>">
 						<?php echo $sep . $link; ?>
 					</span>
-				<?php $index++; endforeach; ?>
+					<?php $index ++; endforeach; ?>
 			</div>
-		<?php
+			<?php
 		endif;
 	}
 
 	/**
 	 * Get recipient column.
 	 *
-	 * @since 1.9
+	 * @since  1.9
 	 * @access public
+	 *
 	 * @param Give_Email_Notification $email
 	 */
 	public function get_recipient_column( Give_Email_Notification $email ) {
@@ -210,7 +213,7 @@ class Give_Email_Notifications {
 				if ( is_array( $recipients ) ) {
 					$recipients = implode( '<br>', $recipients );
 				}
-				
+
 				echo $recipients;
 			}
 			?>
@@ -221,15 +224,16 @@ class Give_Email_Notifications {
 	/**
 	 * Get status column.
 	 *
-	 * @since 1.9
+	 * @since  1.9
 	 * @access public
+	 *
 	 * @param Give_Email_Notification $email
 	 */
 	public function get_status_column( Give_Email_Notification $email ) {
 		?>
 		<td class="give-email-notification-status">
 			<?php
-			$notification_status = $email->get_notification_status();
+			$notification_status       = $email->get_notification_status();
 			$notification_status_class = $email->is_email_notification_active()
 				? 'dashicons-yes'
 				: 'dashicons-no-alt';
@@ -242,8 +246,9 @@ class Give_Email_Notifications {
 	/**
 	 * Get email_type column.
 	 *
-	 * @since 1.9
+	 * @since  1.9
 	 * @access public
+	 *
 	 * @param Give_Email_Notification $email
 	 */
 	public function get_email_type_column( Give_Email_Notification $email ) {
@@ -432,6 +437,7 @@ class Give_Email_Notifications {
 	 */
 	public function email_preview_data( $email_preview_data ) {
 		$email_preview_data['payment_id'] = absint( give_check_variable( give_clean( $_GET ), 'isset', 0, 'preview_id' ) );
+		$email_preview_data['user_id']   = absint( give_check_variable( give_clean( $_GET ), 'isset', 0, 'user_id' ) );
 
 		return $email_preview_data;
 	}
@@ -448,8 +454,11 @@ class Give_Email_Notifications {
 	 * @return string
 	 */
 	public function email_preview_message( $email_message, $email_preview_data ) {
-		if ( $email_preview_data['payment_id'] ) {
-			$email_message = give_do_email_tags( $email_message, $email_preview_data['payment_id'] );
+		if(
+			! empty( $email_preview_data['payment_id'] )
+			|| ! empty( $email_preview_data['user_id'] )
+		) {
+			$email_message = give_do_email_tags( $email_message, $email_preview_data );
 		}
 
 		return $email_message;
@@ -473,11 +482,11 @@ class Give_Email_Notifications {
 
 
 		// Get email type.
-		$email_type = give_check_variable( give_clean( $_GET ), 'isset', '', 'email_type');
+		$email_type = give_check_variable( give_clean( $_GET ), 'isset', '', 'email_type' );
 
 		/* @var Give_Email_Notification $email */
 		foreach ( $this->get_email_notifications() as $email ) {
-			if( $email_type === $email->get_id() && $email->is_email_preview() ) {
+			if ( $email_type === $email->get_id() && $email->is_email_preview() ) {
 				$email->send_preview_email();
 				break;
 			}
