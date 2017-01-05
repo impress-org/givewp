@@ -61,7 +61,7 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 		 * @access public
 		 * @return string
 		 */
-		function get_default_email_subject() {
+		public function get_default_email_subject() {
 			return sprintf(
 				/* translators: %s: site name */
 				esc_attr__( '[%s] Your username and password', 'give' ),

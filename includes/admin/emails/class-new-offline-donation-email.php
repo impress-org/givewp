@@ -81,8 +81,6 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 		 * @return string
 		 */
 		public function get_default_email_message() {
-			$payment_id = isset( $args['payment_id'] ) ? absint( $args['payment_id'] ) : 0;
-
 			$message = __( 'Dear Admin,', 'give' ) . "\n\n";
 			$message .= __( 'An offline donation has been made on your website:', 'give' ) . ' ' . get_bloginfo( 'name' ) . ' ';
 			$message .= __( 'Hooray! The donation is in a pending status and is awaiting payment. Donation instructions have been emailed to the donor. Once you receive payment, be sure to mark the donation as complete using the link below.', 'give' ) . "\n\n";
@@ -93,7 +91,7 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 
 			$message .= sprintf(
 				'<a href="%1$s">%2$s</a>',
-				admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $payment_id ),
+				admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $this->payment->ID ),
 				__( 'Click Here to View and/or Update Donation Details', 'give' )
 			) . "\n\n";
 
