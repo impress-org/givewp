@@ -22,7 +22,7 @@ function give_offline_register_gateway( $gateways ) {
 	// Format: ID => Name
 	$gateways['offline'] = array(
 		'admin_label'    => esc_attr__( 'Offline Donation', 'give' ),
-		'checkout_label' => esc_attr__( 'Offline Donation', 'give' )
+		'checkout_label' => esc_attr__( 'Offline Donation', 'give' ),
 	);
 
 	return $gateways;
@@ -83,7 +83,7 @@ function give_offline_billing_fields( $form_id ) {
 	$post_offline_cc_fields        = get_post_meta( $form_id, '_give_offline_donation_enable_billing_fields_single', true );
 	$post_offline_customize_option = get_post_meta( $form_id, '_give_customize_offline_donations', true );
 
-	$global_offline_cc_fields      = give_get_option( 'give_offline_donation_enable_billing_fields' );
+	$global_offline_cc_fields = give_get_option( 'give_offline_donation_enable_billing_fields' );
 
 	//Output CC Address fields if global option is on and user hasn't elected to customize this form's offline donation options
 	if (
@@ -121,7 +121,7 @@ function give_offline_process_payment( $purchase_data ) {
 		'currency'        => give_get_currency(),
 		'user_info'       => $purchase_data['user_info'],
 		'status'          => 'pending',
-		'gateway'         => 'offline'
+		'gateway'         => 'offline',
 	);
 
 
@@ -183,7 +183,7 @@ function give_offline_send_donor_instructions( $payment_id = 0 ) {
 	$to_email = give_get_payment_user_email( $payment_id );
 
 	$subject = give_get_option( 'offline_donation_subject', __( 'Offline Donation Instructions', 'give' ) );
-	if ( give_is_setting_enabled( $post_offline_customization_option,  'enabled' ) ) {
+	if ( give_is_setting_enabled( $post_offline_customization_option, 'enabled' ) ) {
 		$subject = get_post_meta( $payment_data['form_id'], '_give_offline_donation_subject', true );
 	}
 
@@ -264,7 +264,7 @@ function give_offline_add_settings( $settings ) {
 			'row_classes' => 'give-subfield',
 			'options'     => array(
 				'textarea_rows' => 6,
-			)
+			),
 		),
 		array(
 			'id'          => $prefix . 'offline_donation_subject',
@@ -272,7 +272,7 @@ function give_offline_add_settings( $settings ) {
 			'desc'        => __( 'Enter the subject line for the donation receipt email.', 'give' ),
 			'default'     => __( '{form_title} - Offline Donation Instructions', 'give' ),
 			'row_classes' => 'give-subfield',
-			'type'        => 'text'
+			'type'        => 'text',
 		),
 		array(
 			'id'          => $prefix . 'offline_donation_email',
@@ -283,13 +283,13 @@ function give_offline_add_settings( $settings ) {
 			'row_classes' => 'give-subfield',
 			'options'     => array(
 				'textarea_rows' => 6,
-			)
+			),
 		),
 		array(
-			'name'         => 'offline_docs',
-			'type'         => 'docs_link',
-			'url'          => 'http://docs.givewp.com/offlinegateway',
-			'title'        => __('Offline Donations', 'give'),
+			'name'  => 'offline_docs',
+			'type'  => 'docs_link',
+			'url'   => 'http://docs.givewp.com/offlinegateway',
+			'title' => __( 'Offline Donations', 'give' ),
 		),
 	);
 
@@ -314,14 +314,14 @@ function give_get_default_offline_donation_content() {
 	$default_text .= '<ol>';
 	$default_text .= '<li>';
 	$default_text .= sprintf(
-		/* translators: %s: site name */
+	/* translators: %s: site name */
 		__( 'Make a check payable to "%s"', 'give' ),
 		$sitename
 	);
 	$default_text .= '</li>';
 	$default_text .= '<li>';
 	$default_text .= sprintf(
-		/* translators: %s: site name */
+	/* translators: %s: site name */
 		__( 'On the memo line of the check, please indicate that the donation is for "%s"', 'give' ),
 		$sitename
 	);
@@ -346,20 +346,20 @@ function give_get_default_offline_donation_content() {
  */
 function give_get_default_offline_donation_email_content() {
 
-	$sitename      = get_bloginfo( 'sitename' );
-	$default_text  = '<p>' . __( 'Dear {name},', 'give' ) . '</p>';
+	$sitename     = get_bloginfo( 'sitename' );
+	$default_text = '<p>' . __( 'Dear {name},', 'give' ) . '</p>';
 	$default_text .= '<p>' . __( 'Thank you for your offline donation request! Your generosity is greatly appreciated. In order to make an offline donation we ask that you please follow these instructions:', 'give' ) . '</p>';
 	$default_text .= '<ol>';
 	$default_text .= '<li>';
 	$default_text .= sprintf(
-		/* translators: %s: site name */
+	/* translators: %s: site name */
 		__( 'Make a check payable to "%s"', 'give' ),
 		$sitename
 	);
 	$default_text .= '</li>';
 	$default_text .= '<li>';
 	$default_text .= sprintf(
-		/* translators: %s: site name */
+	/* translators: %s: site name */
 		__( 'On the memo line of the check, please indicate that the donation is for "%s"', 'give' ),
 		$sitename
 	);
@@ -474,7 +474,11 @@ function give_get_offline_payment_instruction( $form_id, $wpautop = false ) {
  * @return array
  */
 function give_filter_offline_gateway( $gateway_list, $form_id ) {
-	if ( $form_id && ! give_is_setting_enabled( get_post_meta( $form_id, '_give_customize_offline_donations', true ), array( 'enabled', 'global' ) ) ) {
+	if ( $form_id && ! give_is_setting_enabled( get_post_meta( $form_id, '_give_customize_offline_donations', true ), array(
+			'enabled',
+			'global',
+		) )
+	) {
 		unset( $gateway_list['offline'] );
 	}
 
@@ -490,9 +494,9 @@ add_filter( 'give_enabled_payment_gateways', 'give_filter_offline_gateway', 10, 
  *
  * @since 1.8
  *
- * @param  string $meta_key Meta key.
+ * @param  string $meta_key   Meta key.
  * @param  string $meta_value Meta value.
- * @param  int    $postid Form ID.
+ * @param  int    $postid     Form ID.
  *
  * @return void
  */
