@@ -815,8 +815,8 @@ function give_reports_refresh_button() {
 
 	echo '<a href="'
 	     . esc_url_raw( $url )
-	     . '" data-tooltip="'. esc_attr__( 'Clicking this will clear the reports cache.', 'give' )
-	     . '" data-tooltip-my-position="right center"  data-tooltip-target-position="left center" class="button alignright give-admin-button give-tooltip">'
+	     . '" aria-label="'. esc_attr__( 'Clicking this will clear the reports cache.', 'give' )
+	     . '" class="button alignright give-admin-button give-tooltip hint--left">'
 	     . '<span class="give-admin-button-icon give-admin-button-icon-update"></span>'
 	     . esc_html__( 'Refresh Report Data', 'give' )
 	     . '</a>';

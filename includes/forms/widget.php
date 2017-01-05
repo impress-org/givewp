@@ -64,10 +64,6 @@ class Give_Forms_Widget extends WP_Widget{
 		// Widget Script
 		if ( $hook == 'widgets.php' ) {
 
-			wp_enqueue_style( 'give-qtip-css', $css_dir . 'jquery.qtip' . $suffix . '.css' );
-
-			wp_enqueue_script( 'give-qtip', $js_plugins . 'jquery.qtip' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
-
 			wp_enqueue_script( 'give-admin-widgets-scripts', $js_dir . 'admin-widgets' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
 		}
 	}

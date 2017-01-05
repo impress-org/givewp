@@ -9,7 +9,8 @@
 */
 @import '../frontend/mixins';
 @import '../frontend/variables';
-@import '../plugins/qtip';
+@import '../plugins/hint.min';
+@import '../plugins/hint-custom';
 @import '../frontend/fonts';
 @import 'fonts';
 @import 'forms';

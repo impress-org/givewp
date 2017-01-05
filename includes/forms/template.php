@@ -646,8 +646,8 @@ function give_user_info_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'give_first', $form_id ) ) : ?>
 					<span class="give-required-indicator">*</span>
 				<?php endif ?>
-				<span class="give-tooltip give-icon give-icon-question"
-				      data-tooltip="<?php esc_attr_e( 'We will use this to personalize your account experience.', 'give' ); ?>"></span>
+				<span class="give-tooltip hint--top"
+				      aria-label="<?php esc_attr_e( 'We will use this to personalize your account experience.', 'give' ); ?>"><i class="give-icon give-icon-question"></i></span>
 			</label>
 			<input
 				class="give-input required"
@@ -666,8 +666,8 @@ function give_user_info_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'give_last', $form_id ) ) : ?>
 					<span class="give-required-indicator">*</span>
 				<?php endif ?>
-				<span class="give-tooltip give-icon give-icon-question"
-				      data-tooltip="<?php esc_attr_e( 'We will use this as well to personalize your account experience.', 'give' ); ?>"></span>
+				<span class="give-tooltip hint--top"
+				      aria-label="<?php esc_attr_e( 'We will use this as well to personalize your account experience.', 'give' ); ?>"><i class="give-icon give-icon-question"></i></span>
 			</label>
 
 			<input
@@ -695,8 +695,8 @@ function give_user_info_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'give_email', $form_id ) ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
-				<span class="give-tooltip give-icon give-icon-question"
-				      data-tooltip="<?php esc_attr_e( 'We will send the donation receipt to this address.', 'give' ); ?>"></span>
+				<span class="give-tooltip hint--top"
+				      aria-label="<?php esc_attr_e( 'We will send the donation receipt to this address.', 'give' ); ?>"><i class="give-icon give-icon-question"></i></span>
 			</label>
 
 			<input
@@ -772,8 +772,8 @@ function give_get_cc_form( $form_id ) {
 			<label for="card_number-<?php echo $form_id ?>" class="give-label">
 				<?php esc_html_e( 'Card Number', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
-				<span class="give-tooltip give-icon give-icon-question"
-				      data-tooltip="<?php esc_attr_e( 'The (typically) 16 digits on the front of your credit card.', 'give' ); ?>"></span>
+				<span class="give-tooltip hint--top"
+				      aria-label="<?php esc_attr_e( 'The (typically) 16 digits on the front of your credit card.', 'give' ); ?>"><i class="give-icon give-icon-question"></i></span>
 				<span class="card-type"></span>
 			</label>
 
@@ -786,8 +786,8 @@ function give_get_cc_form( $form_id ) {
 			<label for="card_cvc-<?php echo $form_id ?>" class="give-label">
 				<?php esc_html_e( 'CVC', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
-				<span class="give-tooltip give-icon give-icon-question"
-				      data-tooltip="<?php esc_attr_e( 'The 3 digit (back) or 4 digit (front) value on your card.', 'give' ); ?>"></span>
+				<span class="give-tooltip hint--top"
+				      aria-label="<?php esc_attr_e( 'The 3 digit (back) or 4 digit (front) value on your card.', 'give' ); ?>"><i class="give-icon give-icon-question"></i></span>
 			</label>
 
 			<input type="tel" size="4" autocomplete="off" name="card_cvc" id="card_cvc-<?php echo $form_id ?>"
@@ -799,8 +799,8 @@ function give_get_cc_form( $form_id ) {
 			<label for="card_name-<?php echo $form_id ?>" class="give-label">
 				<?php esc_html_e( 'Name on the Card', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
-				<span class="give-tooltip give-icon give-icon-question"
-				      data-tooltip="<?php esc_attr_e( 'The name printed on the front of your credit card.', 'give' ); ?>"></span>
+				<span class="give-tooltip hint--top"
+				      aria-label="<?php esc_attr_e( 'The name printed on the front of your credit card.', 'give' ); ?>"><i class="give-icon give-icon-question"></i></span>
 			</label>
 
 			<input type="text" autocomplete="off" name="card_name" id="card_name-<?php echo $form_id ?>"
@@ -821,8 +821,8 @@ function give_get_cc_form( $form_id ) {
 			<label for="card_expiry-<?php echo $form_id ?>" class="give-label">
 				<?php esc_html_e( 'Expiration', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
-				<span class="give-tooltip give-icon give-icon-question"
-				      data-tooltip="<?php esc_attr_e( 'The date your credit card expires, typically on the front of the card.', 'give' ); ?>"></span>
+				<span class="give-tooltip hint--top"
+				      aria-label="<?php esc_attr_e( 'The date your credit card expires, typically on the front of the card.', 'give' ); ?>"><i class="give-icon give-icon-question"></i></span>
 			</label>
 
 			<input type="hidden" id="card_exp_month-<?php echo $form_id ?>" name="card_exp_month"
@@ -904,8 +904,8 @@ function give_default_cc_address_fields( $form_id ) {
 				if ( give_field_is_required( 'card_address', $form_id ) ) : ?>
 					<span class="give-required-indicator">*</span>
 				<?php endif; ?>
-				<span class="give-tooltip give-icon give-icon-question"
-				      data-tooltip="<?php esc_attr_e( 'The primary billing address for your credit card.', 'give' ); ?>"></span>
+				<span class="give-tooltip hint--top"
+				      aria-label="<?php esc_attr_e( 'The primary billing address for your credit card.', 'give' ); ?>"><i class="give-icon give-icon-question"></i></span>
 			</label>
 
 			<input
@@ -925,8 +925,8 @@ function give_default_cc_address_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'card_address_2', $form_id ) ) : ?>
 					<span class="give-required-indicator">*</span>
 				<?php endif; ?>
-				<span class="give-tooltip give-icon give-icon-question"
-				      data-tooltip="<?php esc_attr_e( '(optional) The suite, apt no, PO box, etc, associated with your billing address.', 'give' ); ?>"></span>
+				<span class="give-tooltip hint--top"
+				      aria-label="<?php esc_attr_e( '(optional) The suite, apt no, PO box, etc, associated with your billing address.', 'give' ); ?>"><i class="give-icon give-icon-question"></i></span>
 			</label>
 
 			<input
@@ -946,8 +946,8 @@ function give_default_cc_address_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'card_city', $form_id ) ) : ?>
 					<span class="give-required-indicator">*</span>
 				<?php endif; ?>
-				<span class="give-tooltip give-icon give-icon-question"
-				      data-tooltip="<?php esc_attr_e( 'The city for your billing address.', 'give' ); ?>"></span>
+				<span class="give-tooltip hint--top"
+				      aria-label="<?php esc_attr_e( 'The city for your billing address.', 'give' ); ?>"><i class="give-icon give-icon-question"></i></span>
 			</label>
 			<input
 				type="text"
@@ -966,8 +966,8 @@ function give_default_cc_address_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'card_zip', $form_id ) ) : ?>
 					<span class="give-required-indicator">*</span>
 				<?php endif; ?>
-				<span class="give-tooltip give-icon give-icon-question"
-				      data-tooltip="<?php esc_attr_e( 'The zip or postal code for your billing address.', 'give' ); ?>"></span>
+				<span class="give-tooltip hint--top"
+				      aria-label="<?php esc_attr_e( 'The zip or postal code for your billing address.', 'give' ); ?>"><i class="give-icon give-icon-question"></i></span>
 			</label>
 
 			<input
@@ -988,8 +988,8 @@ function give_default_cc_address_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'billing_country', $form_id ) ) : ?>
 					<span class="give-required-indicator">*</span>
 				<?php endif; ?>
-				<span class="give-tooltip give-icon give-icon-question"
-				      data-tooltip="<?php esc_attr_e( 'The country for your billing address.', 'give' ); ?>"></span>
+				<span class="give-tooltip hint--top"
+				      aria-label="<?php esc_attr_e( 'The country for your billing address.', 'give' ); ?>"><i class="give-icon give-icon-question"></i></span>
 			</label>
 
 			<select
@@ -1020,8 +1020,8 @@ function give_default_cc_address_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'card_state', $form_id ) ) : ?>
 					<span class="give-required-indicator">*</span>
 				<?php endif; ?>
-				<span class="give-tooltip give-icon give-icon-question"
-				      data-tooltip="<?php esc_attr_e( 'The state or province for your billing address.', 'give' ); ?>"></span>
+				<span class="give-tooltip hint--top"
+				      aria-label="<?php esc_attr_e( 'The state or province for your billing address.', 'give' ); ?>"><i class="give-icon give-icon-question"></i></span>
 			</label>
 
 			<?php
@@ -1136,8 +1136,8 @@ function give_get_register_fields( $form_id ) {
 					<?php if ( give_logged_in_only( $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
-					<span class="give-tooltip give-icon give-icon-question"
-					      data-tooltip="<?php esc_attr_e( 'The username you will use to log into your account.', 'give' ); ?>"></span>
+					<span class="give-tooltip hint--top"
+					      aria-label="<?php esc_attr_e( 'The username you will use to log into your account.', 'give' ); ?>"><i class="give-icon give-icon-question"></i></span>
 				</label>
 
 				<input name="give_user_login" id="give-user-login-<?php echo $form_id; ?>" class="give-input"
@@ -1151,8 +1151,8 @@ function give_get_register_fields( $form_id ) {
 					<?php if ( give_logged_in_only( $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
-					<span class="give-tooltip give-icon give-icon-question"
-					      data-tooltip="<?php esc_attr_e( 'The password used to access your account.', 'give' ); ?>"></span>
+					<span class="give-tooltip hint--top"
+					      aria-label="<?php esc_attr_e( 'The password used to access your account.', 'give' ); ?>"><i class="give-icon give-icon-question"></i></span>
 				</label>
 
 				<input name="give_user_pass" id="give-user-pass-<?php echo $form_id; ?>" class="give-input"
@@ -1167,8 +1167,8 @@ function give_get_register_fields( $form_id ) {
 					<?php if ( give_logged_in_only( $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
-					<span class="give-tooltip give-icon give-icon-question"
-					      data-tooltip="<?php esc_attr_e( 'Please retype your password to confirm.', 'give' ); ?>"></span>
+					<span class="give-tooltip hint--top"
+					      aria-label="<?php esc_attr_e( 'Please retype your password to confirm.', 'give' ); ?>"><i class="give-icon give-icon-question"></i></span>
 				</label>
 
 				<input name="give_user_pass_confirm" id="give-user-pass-confirm-<?php echo $form_id; ?>"
