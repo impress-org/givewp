@@ -151,13 +151,13 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			return apply_filters( 'give_receipt_attachments', array(), $this->payment->ID, $this->payment->payment_meta );
 		}
 
+
 		/**
-		 * Setup email notification.
+		 * Set email data.
 		 *
-		 * @since  1.9
-		 * @access public
+		 * @since 1.9
 		 */
-		public function setup_email_notification() {
+		public function set_email_data() {
 			// Set recipient email.
 			$this->recipient_email = $this->payment->email;
 
@@ -184,7 +184,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			Give()->emails->__set( 'from_name', $from_name );
 			Give()->emails->__set( 'from_email', $from_email );
 			Give()->emails->__set( 'heading', esc_html__( 'Donation Receipt', 'give' ) );
-			
+
 			/**
 			 * Filters the donation receipt's email headers.
 			 *
@@ -197,10 +197,8 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 
 			Give()->emails->__set( 'headers', $headers );
 
-			// Send email.
-			$this->send_email_notification( array( 'payment_id' => $this->payment->ID ) );
+			error_log( print_r( Give()->emails, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
 		}
-
 
 		/**
 		 * Send donation receipt
@@ -211,7 +209,12 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		 */
 		public function send_donation_receipt( $payment_id ) {
 			$this->payment = new Give_Payment( $payment_id );
-			$this->setup_email_notification();
+
+			// Setup email data.
+			$this->set_email_data();
+
+			// Send email.
+			$this->send_email_notification( array( 'payment_id' => $this->payment->ID ) );
 		}
 
 		/**
@@ -236,7 +239,11 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 				wp_die( esc_html__( 'You do not have permission to edit payments.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 			}
 
-			$this->setup_email_notification();
+			// Setup email data.
+			$this->set_email_data();
+
+			// Send email.
+			$this->send_email_notification( array( 'payment_id' => $this->payment->ID ) );
 
 			wp_redirect( add_query_arg( array(
 				'give-message' => 'email_sent',

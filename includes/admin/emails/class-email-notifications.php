@@ -360,6 +360,9 @@ class Give_Email_Notifications {
 				continue;
 			}
 
+			// Call setup email data to apply filter and other thing to email.
+			$email->set_email_data();
+
 			if ( $email_message = Give()->emails->build_email( $email->get_email_message() ) ) {
 
 				/**

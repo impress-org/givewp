@@ -645,6 +645,14 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 
 			return apply_filters( 'give_email_preview_template_tags', $message );
 		}
+
+		/**
+		 * Setup email data
+		 *
+		 * @since 1.9
+		 */
+		public function set_email_data() {
+		}
 	}
 
 endif; // End class_exists check
