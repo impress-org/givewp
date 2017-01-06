@@ -69,9 +69,10 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 			//Customize email content depending on whether the single form has been customized
 			$message = wp_strip_all_tags(
 				give_get_option( "{$this->id}_email_message",
-					$this->get_default_email_subject()
+					$this->get_default_email_message()
 				)
 			);
+
 
 			if ( give_is_setting_enabled( $post_offline_customization_option, 'enabled' ) ) {
 				$message = get_post_meta( $this->payment->form_id, '_give_offline_donation_email', true );
