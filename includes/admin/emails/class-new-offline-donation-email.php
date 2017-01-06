@@ -1,6 +1,6 @@
 <?php
 /**
- * New Donation Email
+ * New Offline Donation Email
  *
  * This class handles all email notification settings.
  *

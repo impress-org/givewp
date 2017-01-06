@@ -1,6 +1,6 @@
 <?php
 /**
- * New Donation Email
+ * Donation Receipt Email
  *
  * This class handles all email notification settings.
  *
