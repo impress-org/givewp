@@ -47,6 +47,9 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 				'payment_method' => esc_html__( 'Offline', 'give' ),
 			);
 
+			// Initialize empty payment.
+			$this->payment = new Give_Payment(0);
+
 			parent::__construct();
 
 			add_action( 'give_insert_payment', array( $this, 'setup_email_notification' ) );
