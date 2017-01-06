@@ -49,7 +49,6 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 
 			parent::__construct();
 
-			add_action( 'give_complete_donation', array( $this, 'setup_email_notification' ) );
 			add_action( "give_{$this->id}_email_notification", array( $this, 'setup_email_notification' ) );
 		}
 
@@ -159,11 +158,6 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		 * @param int $payment_id
 		 */
 		public function setup_email_notification( $payment_id ) {
-			// Make sure we don't send a receipt while editing a donation.
-			if ( isset( $_POST['give-action'] ) && 'edit_payment' == $_POST['give-action'] ) {
-				return;
-			}
-
 			$this->payment = new Give_Payment( $payment_id );
 
 			/**

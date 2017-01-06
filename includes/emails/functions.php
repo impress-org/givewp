@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0
  *
- * @param int $payment_id Payment ID.
+ * @param int  $payment_id   Payment ID.
  * @param bool $admin_notice Whether to send the admin email notification or not (default: true).
  *
  * @return void
@@ -48,6 +48,31 @@ function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 		do_action( 'give_new-donation_email_notification', $payment_id, $payment->payment_meta );
 	}
 }
+
+/**
+ * Sends the Admin Sale Notification Email
+ *
+ * @since 1.0
+ *
+ * @param int $payment_id Payment ID (default: 0)
+ *
+ * @return void
+ */
+function give_admin_email_notice( $payment_id ) {
+	/**
+	 * Fires in the donation email receipt.
+	 *
+	 * When admin email notices are not disabled, you can add new email notices.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int   $payment_id   Payment id.
+	 * @param mixed $payment_data Payment meta data.
+	 */
+	do_action( 'give_new-donation_email_notification', $payment_id );
+}
+
+add_action( 'give_admin_donation_email', 'give_admin_email_notice' );
 
 /**
  * Retrieves the emails for which admin notifications are sent to (these can be changed in the Give Settings).
