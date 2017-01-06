@@ -463,7 +463,7 @@ function give_v17_upgrade_addon_license_data() {
 			'edd_action' => 'activate_license', //never change from "edd_" to "give_"!
 			'license'    => $addon_license,
 			'item_name'  => urlencode( $addon_name ),
-			'url'        => home_url()
+			'url'        => home_url(),
 		);
 
 		// Call the API.
@@ -472,7 +472,7 @@ function give_v17_upgrade_addon_license_data() {
 			array(
 				'timeout'   => 15,
 				'sslverify' => false,
-				'body'      => $api_params
+				'body'      => $api_params,
 			)
 		);
 
@@ -659,7 +659,7 @@ function give_v18_upgrades_form_metadata() {
 				'_give_customize_offline_donations',
 
 				// Billing fields.
-				'_give_offline_donation_enable_billing_fields_single'
+				'_give_offline_donation_enable_billing_fields_single',
 			);
 
 
