@@ -33,52 +33,6 @@ function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 	do_action( 'give_donation-receipt_email_notification', $payment_id );
 }
 
-/**
- * Email the donation confirmation to the admin accounts for testing.
- *
- * @since 1.0
- *
- * @return void
- */
-function give_email_test_donation_receipt() {
-
-	$from_name = give_get_option( 'from_name', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) );
-
-	/**
-	 * Filters the from name.
-	 *
-	 * @since 1.7
-	 */
-	$from_name = apply_filters( 'give_donation_from_name', $from_name, 0, array() );
-
-	$from_email = give_get_option( 'from_email', get_bloginfo( 'admin_email' ) );
-
-	/**
-	 * Filters the from email.
-	 *
-	 * @since 1.7
-	 */
-	$from_email = apply_filters( 'give_donation_from_address', $from_email, 0, array() );
-
-	$subject = give_get_option( 'donation_subject', esc_html__( 'Donation Receipt', 'give' ) );
-	$subject = apply_filters( 'give_donation_subject', wp_strip_all_tags( $subject ), 0 );
-	$subject = give_do_email_tags( $subject, 0 );
-
-	$attachments = apply_filters( 'give_receipt_attachments', array(), 0, array() );
-
-	$message = give_email_preview_template_tags( give_get_email_body_content( 0, array() ) );
-
-	$emails = Give()->emails;
-	$emails->__set( 'from_name', $from_name );
-	$emails->__set( 'from_email', $from_email );
-	$emails->__set( 'heading', esc_html__( 'Donation Receipt', 'give' ) );
-
-	$headers = apply_filters( 'give_receipt_headers', $emails->get_headers(), 0, array() );
-	$emails->__set( 'headers', $headers );
-
-	$emails->send( give_get_admin_notice_emails(), $subject, $message, $attachments );
-
-}
 
 /**
  * Sends the Admin Sale Notification Email
