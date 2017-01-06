@@ -25,6 +25,8 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 	 * @since       1.9
 	 */
 	class Give_New_Donation_Email extends Give_Email_Notification {
+		/* @var Give_Payment $payment */
+		private $payment;
 
 		/**
 		 * Create a class instance.
@@ -41,6 +43,9 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 
 			$this->has_recipient_field = true;
 			$this->notification_status = 'enabled';
+
+			// Initialize empty payment.
+			$this->payment = new Give_Payment(0);
 
 			parent::__construct();
 
@@ -96,6 +101,13 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		 * @param int $payment_id
 		 */
 		public function setup_email_notification( $payment_id ) {
+			// Make sure we don't send a receipt while editing a donation.
+			if ( isset( $_POST['give-action'] ) && 'edit_payment' == $_POST['give-action'] ) {
+				return;
+			}
+			
+			$this->payment = new Give_Payment( $payment_id );
+
 			// Send email.
 			$this->send_email_notification( array( 'payment_id' => $payment_id ) );
 		}
