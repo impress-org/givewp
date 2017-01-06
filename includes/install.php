@@ -141,21 +141,21 @@ function give_run_install() {
 		$options['number_decimals']    = 2;
 
 		// Display options.
-		$options['css']                  = 'enabled';
-		$options['floatlabels']          = 'disabled';
-		$options['welcome']              = 'enabled';
-		$options['forms_singular']       = 'enabled';
-		$options['forms_archives']       = 'enabled';
-		$options['forms_excerpt']        = 'enabled';
-		$options['form_featured_img']    = 'enabled';
-		$options['form_sidebar']         = 'enabled';
-		$options['categories']           = 'disabled';
-		$options['tags']                 = 'disabled';
-		$options['terms']                = 'disabled';
-		$options['admin_notices']        = 'enabled';
-		$options['uninstall_on_delete']  = 'disabled';
-		$options['the_content_filter']   = 'enabled';
-		$options['scripts_footer']       = 'disabled';
+		$options['css']                       = 'enabled';
+		$options['floatlabels']               = 'disabled';
+		$options['welcome']                   = 'enabled';
+		$options['forms_singular']            = 'enabled';
+		$options['forms_archives']            = 'enabled';
+		$options['forms_excerpt']             = 'enabled';
+		$options['form_featured_img']         = 'enabled';
+		$options['form_sidebar']              = 'enabled';
+		$options['categories']                = 'disabled';
+		$options['tags']                      = 'disabled';
+		$options['terms']                     = 'disabled';
+		$options['new-donation_notification'] = 'enabled';
+		$options['uninstall_on_delete']       = 'disabled';
+		$options['the_content_filter']        = 'enabled';
+		$options['scripts_footer']            = 'disabled';
 
 		// Paypal IPN verification.
 		$options['paypal_verification']       = 'enabled';
@@ -172,10 +172,10 @@ function give_run_install() {
 		$options['give_offline_donation_enable_billing_fields'] = 'disabled';
 
 		// Default donation notification email.
-		$options['donation_notification'] = give_get_default_donation_notification_email();
+		$options['new-donation_email_message'] = give_get_default_donation_notification_email();
 
 		// Default email receipt message.
-		$options['donation_receipt'] = give_get_default_donation_receipt_email();
+		$options['donation-receipt_email_message'] = give_get_default_donation_receipt_email();
 
 	}
 
