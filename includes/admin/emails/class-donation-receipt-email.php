@@ -59,6 +59,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 
 			add_action( 'give_complete_donation', array( $this, 'setup_email_notification' ) );
 			add_action( 'give_email_links', array( $this, 'resend_donation_receipt' ) );
+			add_action( 'give_donation-receipt_email_notification', array( $this, 'resend_donation_receipt_by_bulk_action') );
 		}
 
 		/**
@@ -167,7 +168,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 
 
 		/**
-		 * Resend payment receipt.
+		 * Resend payment receipt by row action.
 		 *
 		 * @since  1.9
 		 * @access public
@@ -200,6 +201,25 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 				'purchase_id'  => false,
 			) ) );
 			exit;
+		}
+
+		/**
+		 * Resend payment receipt by bulk action.
+		 *
+		 * @since  1.9
+		 * @access public
+		 *
+		 * @param int $payment_id
+		 */
+		public function resend_donation_receipt_by_bulk_action( $payment_id ) {
+			// Get donation payment information.
+			$this->payment = new Give_Payment( $payment_id );
+
+			// Set recipient email.
+			$this->recipient_email = $this->payment->email;
+
+			// Send email.
+			$this->send_email_notification( array( 'payment_id' => $this->payment->ID ) );
 		}
 	}
 
