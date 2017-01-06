@@ -63,10 +63,19 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 		 * @return string
 		 */
 		function get_default_email_subject() {
-			return sprintf(
-			/* translators: %s: site name */
-				esc_attr__( 'New user registration on your site %s:', 'give' ),
-				get_bloginfo( 'name' )
+			/**
+			 * Filter the default email subject
+			 *
+			 * @since 1.9
+			 */
+			return apply_filters(
+				"give_{$this->id}_get_default_email_subject",
+				sprintf(
+				/* translators: %s: site name */
+					esc_attr__( 'New user registration on your site %s:', 'give' ),
+					get_bloginfo( 'name' )
+				),
+				$this
 			);
 		}
 
@@ -83,8 +92,12 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 			$message .= esc_attr__( 'Username: {username}', 'give' ) . "\r\n\r\n";
 			$message .= esc_attr__( 'E-mail: {user_email}', 'give' ) . "\r\n";
 
-
-			return $message;
+			/**
+			 * Filter the default email message
+			 *
+			 * @since 1.9
+			 */
+			return apply_filters( "give_{$this->id}_get_default_email_message", $message, $this );
 		}
 
 

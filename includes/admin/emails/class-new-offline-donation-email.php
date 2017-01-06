@@ -64,14 +64,22 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 		 */
 		public function get_default_email_subject() {
 			/**
-			 * Filter the default subject
+			 * Filter the default subject.
+			 * Note: This filter will deprecate soon.
 			 *
 			 * @since 1.0
 			 */
-			return apply_filters(
+			$subject = apply_filters(
 				'give_offline_admin_donation_notification_subject',
 				__( 'New Pending Donation', 'give' )
 			);
+
+			/**
+			 * Filter the default subject
+			 *
+			 * @since 1.9
+			 */
+			return apply_filters( "give_{$this->id}_get_default_email_subject", $subject, $this );
 		}
 
 
@@ -101,16 +109,24 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 
 			/**
 			 * Filter the donation receipt email message
+			 * Note: This filter will deprecate soon.
 			 *
 			 * @since 1.0
 			 *
 			 * @param string $message
 			 */
-			return apply_filters(
+			$message =  apply_filters(
 				'give_default_new_offline_donation_email',
 				$message,
 				$this->payment->ID
 			);
+
+			/**
+			 * Filter the default message
+			 *
+			 * @since 1.9
+			 */
+			return apply_filters( "give_{$this->id}_get_default_email_message", $message, $this );
 		}
 
 
@@ -125,11 +141,19 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 
 
 			/**
-			 * Filter the email message
+			 * Filter the email message.
+			 * Note: This filter will deprecate soon.
 			 *
 			 * @since 1.0
 			 */
-			return apply_filters( 'give_offline_admin_donation_notification', $message );
+			$message = apply_filters( 'give_offline_admin_donation_notification', $message, $this->payment->ID );
+
+			/**
+			 * Filter the email message
+			 *
+			 * @since 1.9
+			 */
+			return apply_filters( "give_{$this->id}_get_email_message", $message, $this );
 		}
 
 
@@ -142,6 +166,7 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 		public function get_email_attachments() {
 			/**
 			 * Filter the attachments.
+			 * Note: This filter will deprecate soon.
 			 *
 			 * @since 1.0
 			 */
@@ -151,7 +176,12 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 				$this->payment->ID
 			);
 
-			return $attachment;
+			/**
+			 * Filter the attachments.
+			 *
+			 * @since 1.9
+			 */
+			return apply_filters( "give_{$this->id}_get_email_attachments", $attachment, $this );
 		}
 
 

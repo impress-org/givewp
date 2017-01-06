@@ -86,7 +86,12 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 
 			$message .= '<a href="' . wp_login_url() . '"> ' . esc_attr__( 'Click Here to Login &raquo;', 'give' ) . '</a>' . "\r\n";
 
-			return $message;
+			/**
+			 * Filter the default email message
+			 *
+			 * @since 1.9
+			 */
+			return apply_filters( "give_{$this->id}_get_default_email_message", $message, $this );
 		}
 
 

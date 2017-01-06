@@ -237,7 +237,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 *
 			 * @since 1.9
 			 */
-			return apply_filters( 'give_get_recipients', $recipient, $this );
+			return apply_filters( "give_{$this->id}_get_recipients", $recipient, $this );
 		}
 
 		/**
@@ -265,7 +265,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 *
 			 * @since 1.8
 			 */
-			return apply_filters( 'give_get_notification_status', give_get_option( "{$this->id}_notification", $this->notification_status ), $this );
+			return apply_filters( "give_{$this->id}_get_notification_status", give_get_option( "{$this->id}_notification", $this->notification_status ), $this );
 		}
 
 		/**
@@ -283,7 +283,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 *
 			 * @since 1.9
 			 */
-			return apply_filters( 'give_get_email_subject', $subject, $this );
+			return apply_filters( "give_{$this->id}_get_email_subject", $subject, $this );
 		}
 
 		/**
@@ -301,7 +301,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 *
 			 * @since 1.9
 			 */
-			return apply_filters( 'give_get_email_message', $message, $this );
+			return apply_filters( "give_{$this->id}_get_email_message", $message, $this );
 		}
 
 
@@ -398,7 +398,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @return string
 		 */
 		function get_default_email_subject() {
-			return '';
+			return apply_filters( "give_{$this->id}give_get_default_email_subject", '', $this );
 		}
 
 		/**
@@ -410,7 +410,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @return string
 		 */
 		function get_default_email_message() {
-			return '';
+			return apply_filters( "give_{$this->id}give_get_default_email_message", '', $this );
 		}
 
 
@@ -450,7 +450,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 *
 			 * @since 1.9
 			 */
-			return apply_filters( 'get_email_attachments', array(), $this );
+			return apply_filters( "give_{$this->id}_get_email_attachments", array(), $this );
 		}
 
 

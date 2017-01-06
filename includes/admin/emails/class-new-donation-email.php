@@ -65,10 +65,18 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 
 			/**
 			 * Filters the donation notification subject.
+			 * Note: This filter will deprecate soon.
 			 *
 			 * @since 1.0
 			 */
 			$subject = apply_filters( 'give_admin_donation_notification_subject', $subject, $this->payment );
+
+			/**
+			 * Filters the donation notification subject.
+			 *
+			 * @since 1.9
+			 */
+			$subject = apply_filters( "give_{$this->id}_get_email_subject", $subject, $this );
 
 			return $subject;
 		}
@@ -83,7 +91,21 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		 */
 		public function get_email_message() {
 			$message = give_get_option( "{$this->id}_email_message", $this->get_default_email_message() );
+
+			/**
+			 * Filter the email message
+			 * Note: This filter will deprecate soon.
+			 *
+			 * @since 1.0
+			 */
 			$message = apply_filters( 'give_donation_notification', $message, $this->payment->ID, $this->payment->payment_meta );
+
+			/**
+			 * Filter the email message
+			 *
+			 * @since 1.9
+			 */
+			$message = apply_filters( "give_{$this->id}_get_default_email_message", $message, $this );
 
 			return $message;
 		}
@@ -98,11 +120,21 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		 */
 		public function get_email_attachments() {
 			/**
-			 * Filters the donation notification email attachments. By default, there is no attachment but plugins can hook in to provide one more multiple.
+			 * Filters the donation notification email attachments.
+			 * By default, there is no attachment but plugins can hook in to provide one more multiple.
+			 * Note: This filter will deprecate soon.
 			 *
 			 * @since 1.0
 			 */
 			$attachments = apply_filters( 'give_admin_donation_notification_attachments', array(), $this->payment->ID, $this->payment->payment_meta );
+
+			/**
+			 * Filters the donation notification email attachments.
+			 * By default, there is no attachment but plugins can hook in to provide one more multiple.
+			 *
+			 * @since 1.9
+			 */
+			$attachments = apply_filters( "give_{$this->id}_get_email_attachments", $attachments, $this );
 
 			return $attachments;
 		}
@@ -115,7 +147,12 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		 * @return string
 		 */
 		public function get_default_email_subject() {
-			return esc_attr__( 'New Donation - #{payment_id}', 'give' );
+			/**
+			 * Filter the defaul email subject.
+			 *
+			 * @since 1.9
+			 */
+			return apply_filters( "give_{$this->id}_get_default_email_subject", esc_attr__( 'New Donation - #{payment_id}', 'give' ), $this );
 		}
 
 
@@ -135,7 +172,7 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			 *
 			 * @param string $message
 			 */
-			return apply_filters( 'give_get_default_email_message', give_get_default_donation_notification_email(), $this );
+			return apply_filters( "give_{$this->id}_get_default_email_message", give_get_default_donation_notification_email(), $this );
 		}
 
 
@@ -147,6 +184,7 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		public function setup_email_data() {
 			/**
 			 * Filters the from name.
+			 * Note: This filter will deprecate soon.
 			 *
 			 * @since 1.0
 			 */
@@ -154,6 +192,7 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 
 			/**
 			 * Filters the from email.
+			 * Note: This filter will deprecate soon.
 			 *
 			 * @since 1.0
 			 */

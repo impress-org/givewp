@@ -48,7 +48,7 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 			);
 
 			// Initialize empty payment.
-			$this->payment = new Give_Payment(0);
+			$this->payment = new Give_Payment( 0 );
 
 			parent::__construct();
 
@@ -81,6 +81,13 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 				$message = get_post_meta( $this->payment->form_id, '_give_offline_donation_email', true );
 			}
 
+			/**
+			 * Filter the email message.
+			 *
+			 * @since 1.9
+			 */
+			$message = apply_filters( "give_{$this->id}_get_email_message", $message, $this );
+
 			return $message;
 		}
 
@@ -106,6 +113,13 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 				$subject = get_post_meta( $this->payment->form_id, '_give_offline_donation_subject', true );
 			}
 
+			/**
+			 * Filter the email subject.
+			 *
+			 * @since 1.9
+			 */
+			$subject = apply_filters( "give_{$this->id}_get_email_subject", $subject, $this );
+
 			return $subject;
 		}
 
@@ -118,6 +132,7 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 		public function get_email_attachments() {
 			/**
 			 * Filter the attachments.
+			 * Note: This filter will deprecate soon.
 			 *
 			 * @since 1.0
 			 */
@@ -127,6 +142,13 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 				$this->payment->ID,
 				$this->payment->payment_meta
 			);
+
+			/**
+			 * Filter the email attachment.
+			 *
+			 * @since 1.9
+			 */
+			$attachment = apply_filters( "give_{$this->id}_get_email_attachment", $attachment, $this );
 
 			return $attachment;
 		}
@@ -139,7 +161,12 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 		 * @return string
 		 */
 		public function get_default_email_subject() {
-			return esc_attr__( '{form_title} - Offline Donation Instructions', 'give' );
+			/**
+			 * Filter the default subject.
+			 *
+			 * @since 1.9
+			 */
+			return apply_filters( "give_{$this->id}_get_default_email_subject", esc_attr__( '{form_title} - Offline Donation Instructions', 'give' ), $this );
 		}
 
 
@@ -174,7 +201,7 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 			 *
 			 * @param string $message
 			 */
-			return apply_filters( 'give_default_offline_donation_instruction_email', $message );
+			return apply_filters( 'give_default_offline_donation_instruction_email', $message, $this );
 		}
 
 

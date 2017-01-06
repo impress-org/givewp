@@ -61,7 +61,12 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		 * @return string
 		 */
 		public function get_default_email_subject() {
-			return esc_attr__( 'Donation Receipt', 'give' );
+			/**
+			 * Filter the default subject.
+			 *
+			 * @since 1.9
+			 */
+			return apply_filters( "give_{$this->id}_get_default_email_subject", esc_attr__( 'Donation Receipt', 'give' ), $this );
 		}
 
 
@@ -81,7 +86,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			 *
 			 * @param string $message
 			 */
-			return apply_filters( 'give_get_default_email_message', give_get_default_donation_receipt_email(), $this );
+			return apply_filters( "give_{$this->id}_get_default_email_message", give_get_default_donation_receipt_email(), $this );
 		}
 
 
@@ -97,10 +102,18 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 
 			/**
 			 * Filters the donation email receipt subject.
+			 * Note: This filter will deprecate soon.
 			 *
 			 * @since 1.0
 			 */
 			$subject = apply_filters( 'give_donation_subject', $subject, $this->payment->ID );
+
+			/**
+			 * Filters the donation email receipt subject.
+			 *
+			 * @since 1.9
+			 */
+			$subject = apply_filters( "give_{$this->id}_get_email_subject", $subject, $this );
 
 			return $subject;
 		}
@@ -114,10 +127,31 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		 * @return string
 		 */
 		public function get_email_message() {
-			$email_body = give_get_option( "{$this->id}_email_message", $this->get_default_email_message() );
-			$email_body = apply_filters( 'give_donation_receipt_' . Give()->emails->get_template(), $email_body, $this->payment->ID, $this->payment->payment_meta );
+			$message = give_get_option( "{$this->id}_email_message", $this->get_default_email_message() );
 
-			return apply_filters( 'give_donation_receipt', $email_body, $this->payment->ID, $this->payment->payment_meta );
+			/**
+			 * Filter message on basis of email template
+			 * Note: This filter will deprecate soon.
+			 *
+			 * @since 1.0
+			 */
+			$message = apply_filters( 'give_donation_receipt_' . Give()->emails->get_template(), $message, $this->payment->ID, $this->payment->payment_meta );
+
+			/**
+			 * Filter the message
+			 * Note: This filter will deprecate soon.
+			 *
+			 * @since 1.0
+			 */
+			$message = apply_filters( 'give_donation_receipt', $message, $this->payment->ID, $this->payment->payment_meta );
+
+			/**
+			 * Filter the message
+			 *
+			 * @since 1.9
+			 */
+			$message = apply_filters( "give_{$this->id}_get_email_message", $message, $this );
+			return $message;
 		}
 
 		/**
@@ -127,13 +161,23 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		 * @access public
 		 * @return array
 		 */
-		public function get_attachments() {
+		public function get_email_attachments() {
+			/**
+			 * Filter the attachments.
+			 * Note: this filter will deprecate soon.
+			 *
+			 * @since 1.0
+			 */
+			$attachments = apply_filters( 'give_receipt_attachments', array(), $this->payment->ID, $this->payment->payment_meta );
+
 			/**
 			 * Filter the attachments.
 			 *
 			 * @since 1.9
 			 */
-			return apply_filters( 'give_receipt_attachments', array(), $this->payment->ID, $this->payment->payment_meta );
+			$attachments = apply_filters( "give_{$this->id}_get_email_attachments", $attachments, $this );
+
+			return $attachments;
 		}
 
 
