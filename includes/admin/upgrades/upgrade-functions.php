@@ -727,7 +727,7 @@ function give_v19_upgrades() {
  */
 function give_v19_upgrades_email_setting() {
 	$all_setting = give_get_settings();
-	$settings = array(
+	$settings    = array(
 		'offline_donation_subject'      => 'offline-donation-instruction_email_subject',
 		'global_offline_donation_email' => 'offline-donation-instruction_email_message',
 		'donation_subject'              => 'donation-receipt_email_subject',
@@ -735,17 +735,17 @@ function give_v19_upgrades_email_setting() {
 		'donation_notification_subject' => 'new-donation_email_subject',
 		'donation_notification'         => 'new-donation_email_message',
 		'admin_notice_emails'           => 'new-donation_recipient',
-		'disable_admin_notices'         => 'new-donation_notification',
+		'admin_notices'                 => 'new-donation_notification',
 	);
 
 	foreach ( $settings as $old_setting => $new_setting ) {
 		// Do not update already modified
-		if( array_key_exists( $new_setting, $all_setting ) ) {
+		if ( array_key_exists( $new_setting, $all_setting ) ) {
 			continue;
 		}
 
 		switch ( $old_setting ) {
-			case 'disable_admin_notices':
+			case 'admin_notices':
 				$notification_status = give_get_option( $old_setting, 'disabled' );
 
 				give_update_option( $new_setting, $notification_status );
