@@ -58,6 +58,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			parent::__construct();
 
 			add_action( 'give_complete_donation', array( $this, 'setup_email_notification' ) );
+			add_action( 'give_email_links', array( $this, 'resend_donation_receipt' ) );
 		}
 
 		/**
@@ -162,6 +163,43 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 
 			// Send email.
 			$this->send_email_notification( array( 'payment_id' => $payment_id ) );
+		}
+
+
+		/**
+		 * Resend payment receipt.
+		 *
+		 * @since  1.9
+		 * @access public
+		 *
+		 * @param array $data
+		 */
+		public function resend_donation_receipt( $data ) {
+			$purchase_id = absint( $data['purchase_id'] );
+
+			if ( empty( $purchase_id ) ) {
+				return;
+			}
+
+			// Get donation payment information.
+			$this->payment = new Give_Payment( $purchase_id );
+
+			if ( ! current_user_can( 'edit_give_payments', $this->payment->ID ) ) {
+				wp_die( esc_html__( 'You do not have permission to edit payments.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+			}
+
+			// Set recipient email.
+			$this->recipient_email = $this->payment->email;
+
+			// Send email.
+			$this->send_email_notification( array( 'payment_id' => $this->payment->ID ) );
+
+			wp_redirect( add_query_arg( array(
+				'give-message' => 'email_sent',
+				'give-action'  => false,
+				'purchase_id'  => false,
+			) ) );
+			exit;
 		}
 	}
 
