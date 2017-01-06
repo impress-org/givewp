@@ -164,47 +164,6 @@ function give_email_preview_buttons_callback( $field ) {
 	echo ob_get_clean();
 }
 
-/**
- * Donation Notification Template Body.
- *
- * @since  1.0
- *
- * @param int   $payment_id Payment ID
- * @param array $payment_data Payment Data
- *
- * @return string $email_body Body of the email
- */
-function give_get_donation_notification_body_content( $payment_id = 0, $payment_data = array() ) {
-
-	$user_info = maybe_unserialize( $payment_data['user_info'] );
-	$email     = give_get_payment_user_email( $payment_id );
-
-	if ( isset( $user_info['id'] ) && $user_info['id'] > 0 ) {
-		$user_data = get_userdata( $user_info['id'] );
-		$name      = $user_data->display_name;
-	} elseif ( isset( $user_info['first_name'] ) && isset( $user_info['last_name'] ) ) {
-		$name = $user_info['first_name'] . ' ' . $user_info['last_name'];
-	} else {
-		$name = $email;
-	}
-
-	$gateway = give_get_gateway_admin_label( get_post_meta( $payment_id, '_give_payment_gateway', true ) );
-
-	$default_email_body = esc_html__( 'Hello', 'give' ) . "\n\n";
-	$default_email_body .= esc_html__( 'A donation has been made.', 'give' ) . "\n\n";
-	$default_email_body .= esc_html__( 'Donation:', 'give' ) . "\n\n";
-	$default_email_body .= esc_html__( 'Donor:', 'give' ) . ' ' . html_entity_decode( $name, ENT_COMPAT, 'UTF-8' ) . "\n";
-	$default_email_body .= esc_html__( 'Amount:', 'give' ) . ' ' . html_entity_decode( give_currency_filter( give_format_amount( give_get_payment_amount( $payment_id ) ) ), ENT_COMPAT, 'UTF-8' ) . "\n";
-	$default_email_body .= esc_html__( 'Payment Method:', 'give' ) . ' ' . $gateway . "\n\n";
-	$default_email_body .= esc_html__( 'Thank you', 'give' );
-
-	$email = give_get_option( 'donation_notification' );
-	$email = isset( $email ) ? stripslashes( $email ) : $default_email_body;
-
-	$email_body = give_do_email_tags( $email, $payment_id );
-
-	return apply_filters( 'give_donation_notification', wpautop( $email_body ), $payment_id, $payment_data );
-}
 
 /**
  * Render Receipt in the Browser.
