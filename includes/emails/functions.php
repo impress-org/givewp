@@ -27,90 +27,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
-
-	$payment_data = give_get_payment_meta( $payment_id );
-
-	$from_name = give_get_option( 'from_name', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) );
-
 	/**
-	 * Filters the from name.
-	 *
-	 * @param int $payment_id Payment id.
-	 * @param mixed $payment_data Payment meta data.
-	 *
-	 * @since 1.0
+	 * Fire the action
 	 */
-	$from_name = apply_filters( 'give_donation_from_name', $from_name, $payment_id, $payment_data );
-
-	$from_email = give_get_option( 'from_email', get_bloginfo( 'admin_email' ) );
-
-	/**
-	 * Filters the from email.
-	 *
-	 * @param int $payment_id Payment id.
-	 * @param mixed $payment_data Payment meta data.
-	 *
-	 * @since 1.0
-	 */
-	$from_email = apply_filters( 'give_donation_from_address', $from_email, $payment_id, $payment_data );
-
-	$to_email = give_get_payment_user_email( $payment_id );
-
-	$subject = give_get_option( 'donation_subject', esc_html__( 'Donation Receipt', 'give' ) );
-
-	/**
-	 * Filters the donation email receipt subject.
-	 *
-	 * @since 1.0
-	 */
-	$subject = apply_filters( 'give_donation_subject', wp_strip_all_tags( $subject ), $payment_id );
-	$subject = give_do_email_tags( $subject, $payment_id );
-
-	/**
-	 * Filters the donation email receipt attachments. By default, there is no attachment but plugins can hook in to provide one more multiple for the donor. Examples would be a printable ticket or PDF receipt.
-	 *
-	 * @param int $payment_id Payment id.
-	 * @param mixed $payment_data Payment meta data.
-	 *
-	 * @since 1.0
-	 */
-	$attachments = apply_filters( 'give_receipt_attachments', array(), $payment_id, $payment_data );
-	$message     = give_do_email_tags( give_get_email_body_content( $payment_id, $payment_data ), $payment_id );
-
-	$emails = Give()->emails;
-
-	$emails->__set( 'from_name', $from_name );
-	$emails->__set( 'from_email', $from_email );
-	$emails->__set( 'heading', esc_html__( 'Donation Receipt', 'give' ) );
-
-	/**
-	 * Filters the donation receipt's email headers.
-	 *
-	 * @param int $payment_id Payment id.
-	 * @param mixed $payment_data Payment meta data.
-	 *
-	 * @since 1.0
-	 */
-	$headers = apply_filters( 'give_receipt_headers', $emails->get_headers(), $payment_id, $payment_data );
-	$emails->__set( 'headers', $headers );
-
-	//Send the donation receipt.
-	$emails->send( $to_email, $subject, $message, $attachments );
-
-	//If admin notifications are on, send the admin notice.
-	if ( $admin_notice && ! give_admin_notices_disabled( $payment_id ) ) {
-		/**
-		 * Fires in the donation email receipt.
-		 *
-		 * When admin email notices are not disabled, you can add new email notices.
-		 *
-		 * @since 1.0
-		 *
-		 * @param int $payment_id Payment id.
-		 * @param mixed $payment_data Payment meta data.
-		 */
-		do_action( 'give_admin_donation_email', $payment_id, $payment_data );
-	}
+	do_action( 'give_donation-receipt_email_notification', $payment_id );
 }
 
 /**
