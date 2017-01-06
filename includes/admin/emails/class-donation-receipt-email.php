@@ -29,14 +29,6 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		public $payment;
 
 		/**
-		 * Payment id
-		 *
-		 * @since 1.9
-		 * @var int
-		 */
-		private $payment_id = 0;
-
-		/**
 		 * Create a class instance.
 		 *
 		 * @param   mixed[] $objects
@@ -57,9 +49,8 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 
 			parent::__construct();
 
-			add_action( 'give_complete_donation', array( $this, 'send_donation_receipt' ) );
+			add_action( "give_{$this->id}_email_notification", array( $this, 'send_donation_receipt' ) );
 			add_action( 'give_email_links', array( $this, 'resend_donation_receipt' ) );
-			add_action( 'give_donation-receipt_email_notification', array( $this, 'resend_donation_receipt_by_bulk_action') );
 		}
 
 		/**
@@ -207,7 +198,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			$this->email->__set( 'headers', $headers );
 
 			// Send email.
-			$this->send_email_notification( array( 'payment_id' => $this->payment ) );
+			$this->send_email_notification( array( 'payment_id' => $this->payment->ID ) );
 		}
 
 
@@ -219,11 +210,6 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		 * @param $payment_id
 		 */
 		public function send_donation_receipt( $payment_id ) {
-			// Make sure we don't send a receipt while editing a donation.
-			if ( isset( $_POST['give-action'] ) && 'edit_payment' == $_POST['give-action'] ) {
-				return;
-			}
-
 			$this->payment = new Give_Payment( $payment_id );
 			$this->setup_email_notification();
 		}
@@ -258,21 +244,6 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 				'purchase_id'  => false,
 			) ) );
 			exit;
-		}
-
-		/**
-		 * Resend payment receipt by bulk action.
-		 *
-		 * @since  1.9
-		 * @access public
-		 *
-		 * @param int $payment_id
-		 */
-		public function resend_donation_receipt_by_bulk_action( $payment_id ) {
-			// Get donation payment information.
-			$this->payment = new Give_Payment( $payment_id );
-
-			$this->setup_email_notification();
 		}
 	}
 

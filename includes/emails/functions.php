@@ -27,10 +27,26 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
+	$payment = new Give_Payment( $payment_id );
 	/**
 	 * Fire the action
 	 */
 	do_action( 'give_donation-receipt_email_notification', $payment_id );
+
+	//If admin notifications are on, send the admin notice.
+	if ( $admin_notice && ! give_admin_notices_disabled( $payment_id ) ) {
+		/**
+		 * Fires in the donation email receipt.
+		 *
+		 * When admin email notices are not disabled, you can add new email notices.
+		 *
+		 * @since 1.0
+		 *
+		 * @param int   $payment_id   Payment id.
+		 * @param mixed $payment_data Payment meta data.
+		 */
+		do_action( 'give_new-donation_email_notification', $payment_id, $payment->payment_meta );
+	}
 }
 
 /**
