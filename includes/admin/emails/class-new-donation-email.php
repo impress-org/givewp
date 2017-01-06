@@ -149,17 +149,13 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			return apply_filters( 'give_default_new_donation_email', $message );
 		}
 
-		/**
-		 * Setup email notification.
-		 *
-		 * @since  1.9
-		 * @access public
-		 *
-		 * @param int $payment_id
-		 */
-		public function setup_email_notification( $payment_id ) {
-			$this->payment = new Give_Payment( $payment_id );
 
+		/**
+		 * Set email data
+		 *
+		 * @since 1.9
+		 */
+		public function set_email_data() {
 			/**
 			 * Filters the from name.
 			 *
@@ -185,6 +181,21 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			$headers = apply_filters( 'give_admin_donation_notification_headers', Give()->emails->get_headers(), $this->payment->ID, $this->payment->payment_meta );
 
 			Give()->emails->__set( 'headers', $headers );
+		}
+
+		/**
+		 * Setup email notification.
+		 *
+		 * @since  1.9
+		 * @access public
+		 *
+		 * @param int $payment_id
+		 */
+		public function setup_email_notification( $payment_id ) {
+			$this->payment = new Give_Payment( $payment_id );
+
+			// Set email data.
+			$this->set_email_data();
 
 			// Send email.
 			$this->send_email_notification( array( 'payment_id' => $payment_id ) );
