@@ -97,8 +97,6 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		 * @return array
 		 */
 		public function get_email_attachments() {
-			$attachments = 	array();
-
 			/**
 			 * Filters the donation notification email attachments. By default, there is no attachment but plugins can hook in to provide one more multiple.
 			 *
