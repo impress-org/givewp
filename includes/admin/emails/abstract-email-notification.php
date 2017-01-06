@@ -538,6 +538,11 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @param array $email_tag_args Arguments which helps to decode email template tags.
 		 */
 		public function send_email_notification( $email_tag_args = array() ) {
+			// Do not send email if notification is disable.
+			if ( ! give_is_setting_enabled( $this->get_notification_status() ) ) {
+				return;
+			}
+			
 			/**
 			 * Fire action after before email send.
 			 *
@@ -545,14 +550,26 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 */
 			do_action( "give_{$this->id}_email_send_before", $this );
 
-			// Do not send email if notification is disable.
-			if ( ! give_is_setting_enabled( $this->get_notification_status() ) ) {
-				return;
-			}
+			/**
+			 * Filter the email attachments.
+			 *
+			 * @since 1.9
+			 */
+			$attachments = apply_filters( 'get_email_attachments', $this->get_email_attachments(), $this );
 
-			$attachments = $this->get_email_attachments();
-			$message     = give_do_email_tags( $this->get_email_message(), $email_tag_args );
-			$subject     = give_do_email_tags( $this->get_email_subject(), $email_tag_args );
+			/**
+			 * Filter the email message
+			 *
+			 * @since 1.9
+			 */
+			$message     = give_do_email_tags( apply_filters( 'give_get_email_message', $this->get_email_message(), $this ), $email_tag_args );
+
+			/**
+			 * Filter the email subject.
+			 *
+			 * @since 1.9
+			 */
+			$subject     = give_do_email_tags( apply_filters( 'give_get_email_subject', $this->get_email_subject(), $this ), $email_tag_args );
 
 			if ( 'text/html' === $this->email->get_content_type() ) {
 				$message = wpautop( $message );
