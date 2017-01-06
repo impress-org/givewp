@@ -44,6 +44,7 @@ function give_deprecated_actions() {
 		'give_complete_donation'                   => 'give_complete_purchase',
 		'give_ajax_donation_errors'                => 'give_ajax_checkout_errors',
 		'give_admin_donation_email'                => 'give_admin_sale_notice',
+		'give_new-donation_email_notification'     => 'give_admin_donation_email',
 	);
 
 	return $give_deprecated_actions;
