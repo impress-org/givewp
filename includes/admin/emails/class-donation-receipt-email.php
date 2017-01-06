@@ -169,7 +169,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			 *
 			 * @since 1.0
 			 */
-			$from_name = apply_filters( 'give_donation_from_name', $this->email->get_from_name(), $this->payment->ID, $this->payment->payment_meta );
+			$from_name = apply_filters( 'give_donation_from_name', Give()->emails->get_from_name(), $this->payment->ID, $this->payment->payment_meta );
 
 			/**
 			 * Filters the from email.
@@ -179,11 +179,11 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			 *
 			 * @since 1.0
 			 */
-			$from_email = apply_filters( 'give_donation_from_address', $this->email->get_from_address(), $this->payment->ID, $this->payment->payment_meta );
+			$from_email = apply_filters( 'give_donation_from_address', Give()->emails->get_from_address(), $this->payment->ID, $this->payment->payment_meta );
 
-			$this->email->__set( 'from_name', $from_name );
-			$this->email->__set( 'from_email', $from_email );
-			$this->email->__set( 'heading', esc_html__( 'Donation Receipt', 'give' ) );
+			Give()->emails->__set( 'from_name', $from_name );
+			Give()->emails->__set( 'from_email', $from_email );
+			Give()->emails->__set( 'heading', esc_html__( 'Donation Receipt', 'give' ) );
 			
 			/**
 			 * Filters the donation receipt's email headers.
@@ -193,9 +193,9 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			 *
 			 * @since 1.0
 			 */
-			$headers = apply_filters( 'give_receipt_headers', $this->email->get_headers(), $this->payment->ID, $this->payment->payment_meta );
+			$headers = apply_filters( 'give_receipt_headers', Give()->emails->get_headers(), $this->payment->ID, $this->payment->payment_meta );
 
-			$this->email->__set( 'headers', $headers );
+			Give()->emails->__set( 'headers', $headers );
 
 			// Send email.
 			$this->send_email_notification( array( 'payment_id' => $this->payment->ID ) );

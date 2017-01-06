@@ -176,11 +176,11 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 
 
 			// Set header.
-			$this->email->__set(
+			Give()->emails->__set(
 				'headers',
 				apply_filters(
 					'give_offline_admin_donation_notification_headers',
-					$this->email->get_headers(),
+					Give()->emails->get_headers(),
 					$this->payment->ID
 				)
 			);

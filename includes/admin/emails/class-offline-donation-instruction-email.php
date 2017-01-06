@@ -201,20 +201,20 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 			 *
 			 * @since 1.7
 			 */
-			$from_name = apply_filters( 'give_donation_from_name', $this->email->get_from_name(), $this->payment->ID, $this->payment->payment_meta );
+			$from_name = apply_filters( 'give_donation_from_name', Give()->emails->get_from_name(), $this->payment->ID, $this->payment->payment_meta );
 
 			/**
 			 * Filters the from email.
 			 *
 			 * @since 1.7
 			 */
-			$from_email = apply_filters( 'give_donation_from_address', $this->email->get_from_address(), $this->payment->ID, $this->payment->payment_meta );
+			$from_email = apply_filters( 'give_donation_from_address', Give()->emails->get_from_address(), $this->payment->ID, $this->payment->payment_meta );
 
 
-			$this->email->__set( 'from_name', $from_name );
-			$this->email->__set( 'from_email', $from_email );
-			$this->email->__set( 'heading', __( 'Offline Donation Instructions', 'give' ) );
-			$this->email->__set( 'headers', apply_filters( 'give_receipt_headers', $this->email->get_headers(), $this->payment->ID, $this->payment->payment_meta ) );
+			Give()->emails->__set( 'from_name', $from_name );
+			Give()->emails->__set( 'from_email', $from_email );
+			Give()->emails->__set( 'heading', __( 'Offline Donation Instructions', 'give' ) );
+			Give()->emails->__set( 'headers', apply_filters( 'give_receipt_headers', Give()->emails->get_headers(), $this->payment->ID, $this->payment->payment_meta ) );
 
 			// Send email.
 			$this->send_email_notification( array( 'payment_id' => $this->payment->ID ) );

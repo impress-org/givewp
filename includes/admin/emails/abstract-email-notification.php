@@ -46,13 +46,6 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		protected $description = '';
 
 		/**
-		 * @var     Give_Emails $email Mailer.
-		 * @access  protected
-		 * @since   1.9
-		 */
-		protected $email;
-
-		/**
 		 * @var     bool $has_preview Flag to check if email notification has preview setting field.
 		 * @access  protected
 		 * @since   1.9
@@ -117,9 +110,6 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @since   1.9
 		 */
 		public function __construct( $objects = array() ) {
-			// Setup email class.
-			$this->email = new Give_Emails();
-
 			// Set email preview header status.
 			$this->has_preview_header = $this->has_preview && $this->has_preview_header ? true : false;
 
@@ -236,7 +226,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @return string|array
 		 */
 		public function get_recipient() {
-			$recipient = give_check_variable( $this->recipient_email, 'empty', $this->email->get_from_address() );
+			$recipient = give_check_variable( $this->recipient_email, 'empty', Give()->emails->get_from_address() );
 
 			if ( ! $recipient && $this->has_recipient_field ) {
 				$recipient = give_get_option( "{$this->id}_recipient" );
@@ -453,7 +443,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @return string
 		 */
 		public function get_email_type() {
-			return $this->email->get_content_type();
+			return Give()->emails->get_content_type();
 		}
 
 		/**
@@ -522,11 +512,11 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			$message     = $this->preview_email_template_tags( $this->get_email_message() );
 			$subject     = $this->preview_email_template_tags( $this->get_email_subject() );
 
-			if ( 'text/html' === $this->email->get_content_type() ) {
+			if ( 'text/html' === Give()->emails->get_content_type() ) {
 				$message = wpautop( $message );
 			}
 
-			$this->email->send( $this->get_preview_email_recipient(), $subject, $message, $attachments );
+			Give()->emails->send( $this->get_preview_email_recipient(), $subject, $message, $attachments );
 		}
 
 		/**
@@ -571,12 +561,12 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 */
 			$subject     = give_do_email_tags( apply_filters( 'give_get_email_subject', $this->get_email_subject(), $this ), $email_tag_args );
 
-			if ( 'text/html' === $this->email->get_content_type() ) {
+			if ( 'text/html' === Give()->emails->get_content_type() ) {
 				$message = wpautop( $message );
 			}
 
 			// Send email.
-			$email_status = $this->email->send( $this->get_recipient(), $subject, $message, $attachments );
+			$email_status = Give()->emails->send( $this->get_recipient(), $subject, $message, $attachments );
 
 			/**
 			 * Fire action after after email send.
