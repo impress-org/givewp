@@ -26,7 +26,7 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 	 */
 	class Give_Offline_Donation_Instruction_Email extends Give_Email_Notification {
 		/* @var Give_Payment $payment */
-		private $payment;
+		public $payment;
 
 		/**
 		 * Create a class instance.

@@ -26,7 +26,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 	 */
 	class Give_Donation_Receipt_Email extends Give_Email_Notification {
 		/* @var Give_Payment $payment*/
-		private $payment;
+		public $payment;
 
 		/**
 		 * Payment id
