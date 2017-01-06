@@ -57,7 +57,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 
 			parent::__construct();
 
-			add_action( 'give_complete_donation', array( $this, 'setup_email_notification' ) );
+			add_action( 'give_complete_donation', array( $this, 'send_donation_receipt' ) );
 			add_action( 'give_email_links', array( $this, 'resend_donation_receipt' ) );
 			add_action( 'give_donation-receipt_email_notification', array( $this, 'resend_donation_receipt_by_bulk_action') );
 		}
@@ -110,6 +110,27 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 
 
 		/**
+		 * Get email subject.
+		 *
+		 * @since 1.9
+		 * @access public
+		 * @return string
+		 */
+		public function get_email_subject() {
+			$subject = wp_strip_all_tags( give_get_option( "{$this->id}_email_subject", $this->get_default_email_subject() ) );
+
+			/**
+			 * Filters the donation email receipt subject.
+			 *
+			 * @since 1.0
+			 */
+			$subject = apply_filters( 'give_donation_subject', $subject, $this->payment->ID );
+
+			return $subject;
+		}
+
+
+		/**
 		 * Get email message.
 		 *
 		 * @since  1.9
@@ -117,12 +138,10 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		 * @return string
 		 */
 		public function get_email_message() {
-			$payment = new Give_Payment( $this->payment_id );
+			$email_body = give_get_option( "{$this->id}_email_message", $this->get_default_email_message() );
+			$email_body = apply_filters( 'give_donation_receipt_' . Give()->emails->get_template(), $email_body, $this->payment->ID, $this->payment->payment_meta );
 
-			$email_body = wpautop( give_get_option( "{$this->id}_email_message", $this->get_default_email_message() ) );
-			$email_body = apply_filters( 'give_donation_receipt_' . Give()->emails->get_template(), $email_body, $payment->ID, $payment->payment_meta );
-
-			return apply_filters( 'give_donation_receipt', $email_body, $payment->ID, $payment->payment_meta );
+			return apply_filters( 'give_donation_receipt', $email_body, $this->payment->ID, $this->payment->payment_meta );
 		}
 
 		/**
@@ -133,14 +152,12 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		 * @return array
 		 */
 		public function get_attachments() {
-			$payment = new Give_Payment( $this->payment_id );
-
 			/**
 			 * Filter the attachments.
 			 *
 			 * @since 1.9
 			 */
-			return apply_filters( 'give_receipt_attachments', array(), $payment->ID, $payment->payment_meta );
+			return apply_filters( 'give_receipt_attachments', array(), $this->payment->ID, $this->payment->payment_meta );
 		}
 
 		/**
@@ -148,24 +165,67 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		 *
 		 * @since  1.9
 		 * @access public
-		 *
-		 * @param int $payment_id
 		 */
-		public function setup_email_notification( $payment_id ) {
+		public function setup_email_notification() {
+			// Set recipient email.
+			$this->recipient_email = $this->payment->email;
+
+			/**
+			 * Filters the from name.
+			 *
+			 * @param int $payment_id Payment id.
+			 * @param mixed $payment_data Payment meta data.
+			 *
+			 * @since 1.0
+			 */
+			$from_name = apply_filters( 'give_donation_from_name', $this->email->get_from_name(), $this->payment->ID, $this->payment->payment_meta );
+
+			/**
+			 * Filters the from email.
+			 *
+			 * @param int $payment_id Payment id.
+			 * @param mixed $payment_data Payment meta data.
+			 *
+			 * @since 1.0
+			 */
+			$from_email = apply_filters( 'give_donation_from_address', $this->email->get_from_address(), $this->payment->ID, $this->payment->payment_meta );
+
+			/**
+			 * Filters the donation receipt's email headers.
+			 *
+			 * @param int $payment_id Payment id.
+			 * @param mixed $payment_data Payment meta data.
+			 *
+			 * @since 1.0
+			 */
+			$headers = apply_filters( 'give_receipt_headers', $this->email->get_headers(), $this->payment->ID, $this->payment->payment_meta );
+
+			$this->email->__set( 'from_name', $from_name );
+			$this->email->__set( 'from_email', $from_email );
+			$this->email->__set( 'heading', esc_html__( 'Donation Receipt', 'give' ) );
+			$this->email->__set( 'headers', $headers );
+
+			// Send email.
+			$this->send_email_notification( array( 'payment_id' => $this->payment ) );
+		}
+
+
+		/**
+		 * Send donation receipt
+		 * @since  1.9
+		 * @access public
+		 *
+		 * @param $payment_id
+		 */
+		public function send_donation_receipt( $payment_id ) {
 			// Make sure we don't send a receipt while editing a donation.
 			if ( isset( $_POST['give-action'] ) && 'edit_payment' == $_POST['give-action'] ) {
 				return;
 			}
 
 			$this->payment = new Give_Payment( $payment_id );
-
-			// Set recipient email.
-			$this->recipient_email = $this->payment->email;
-
-			// Send email.
-			$this->send_email_notification( array( 'payment_id' => $payment_id ) );
+			$this->setup_email_notification();
 		}
-
 
 		/**
 		 * Resend payment receipt by row action.
@@ -189,11 +249,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 				wp_die( esc_html__( 'You do not have permission to edit payments.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 			}
 
-			// Set recipient email.
-			$this->recipient_email = $this->payment->email;
-
-			// Send email.
-			$this->send_email_notification( array( 'payment_id' => $this->payment->ID ) );
+			$this->setup_email_notification();
 
 			wp_redirect( add_query_arg( array(
 				'give-message' => 'email_sent',
@@ -215,11 +271,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			// Get donation payment information.
 			$this->payment = new Give_Payment( $payment_id );
 
-			// Set recipient email.
-			$this->recipient_email = $this->payment->email;
-
-			// Send email.
-			$this->send_email_notification( array( 'payment_id' => $this->payment->ID ) );
+			$this->setup_email_notification();
 		}
 	}
 
