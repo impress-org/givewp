@@ -190,6 +190,10 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			 */
 			$from_email = apply_filters( 'give_donation_from_address', $this->email->get_from_address(), $this->payment->ID, $this->payment->payment_meta );
 
+			$this->email->__set( 'from_name', $from_name );
+			$this->email->__set( 'from_email', $from_email );
+			$this->email->__set( 'heading', esc_html__( 'Donation Receipt', 'give' ) );
+			
 			/**
 			 * Filters the donation receipt's email headers.
 			 *
@@ -200,9 +204,6 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			 */
 			$headers = apply_filters( 'give_receipt_headers', $this->email->get_headers(), $this->payment->ID, $this->payment->payment_meta );
 
-			$this->email->__set( 'from_name', $from_name );
-			$this->email->__set( 'from_email', $from_email );
-			$this->email->__set( 'heading', esc_html__( 'Donation Receipt', 'give' ) );
 			$this->email->__set( 'headers', $headers );
 
 			// Send email.
