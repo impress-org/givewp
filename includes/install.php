@@ -86,7 +86,7 @@ function give_run_install() {
 				'post_status'    => 'publish',
 				'post_author'    => 1,
 				'post_type'      => 'page',
-				'comment_status' => 'closed'
+				'comment_status' => 'closed',
 			)
 		);
 
@@ -105,7 +105,7 @@ function give_run_install() {
 				'post_status'    => 'publish',
 				'post_author'    => 1,
 				'post_type'      => 'page',
-				'comment_status' => 'closed'
+				'comment_status' => 'closed',
 			)
 		);
 
@@ -122,7 +122,7 @@ function give_run_install() {
 				'post_status'    => 'publish',
 				'post_author'    => 1,
 				'post_type'      => 'page',
-				'comment_status' => 'closed'
+				'comment_status' => 'closed',
 			)
 		);
 
@@ -133,12 +133,12 @@ function give_run_install() {
 	if ( empty( $current_version ) ) {
 
 		// General.
-		$options['base_country']       = 'US';
-		$options['test_mode']          = 'enabled';
-		$options['currency']           = 'USD';
-		$options['session_lifetime']   = '604800';
-		$options['email_access']       = 'disabled';
-		$options['number_decimals']    = 2;
+		$options['base_country']     = 'US';
+		$options['test_mode']        = 'enabled';
+		$options['currency']         = 'USD';
+		$options['session_lifetime'] = '604800';
+		$options['email_access']     = 'disabled';
+		$options['number_decimals']  = 2;
 
 		// Display options.
 		$options['css']                       = 'enabled';
@@ -158,7 +158,7 @@ function give_run_install() {
 		$options['scripts_footer']            = 'disabled';
 
 		// Paypal IPN verification.
-		$options['paypal_verification']       = 'enabled';
+		$options['paypal_verification'] = 'enabled';
 
 		// Default is manual gateway.
 		$options['gateways']['manual'] = 1;
@@ -209,7 +209,7 @@ function give_run_install() {
 		$upgrade_routines = array(
 			'upgrade_give_user_caps_cleanup',
 			'upgrade_give_payment_customer_id',
-			'upgrade_give_offline_status'
+			'upgrade_give_offline_status',
 		);
 
 		foreach ( $upgrade_routines as $upgrade ) {
