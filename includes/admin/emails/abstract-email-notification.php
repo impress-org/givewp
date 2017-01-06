@@ -441,7 +441,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @return array
 		 */
 		public function get_email_attachments() {
-			return apply_filters( "give_get_email_attachments", array(), $this );
+			return array();
 		}
 
 
