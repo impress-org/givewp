@@ -177,22 +177,13 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 			return apply_filters( 'give_default_offline_donation_instruction_email', $message );
 		}
 
+
 		/**
-		 * Setup email notification.
+		 * Set email data.
 		 *
-		 * @since  1.9
-		 * @access public
-		 *
-		 * @param int $payment_id
+		 * @since 1.9
 		 */
-		public function setup_email_notification( $payment_id ) {
-			$this->payment = new Give_Payment( $payment_id );
-
-			// Exit if not donation was not with offline donation.
-			if ( 'offline' !== $this->payment->gateway ) {
-				return;
-			}
-
+		public function set_email_data() {
 			// Set recipient email.
 			$this->recipient_email = $this->payment->email;
 
@@ -215,6 +206,27 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 			Give()->emails->__set( 'from_email', $from_email );
 			Give()->emails->__set( 'heading', __( 'Offline Donation Instructions', 'give' ) );
 			Give()->emails->__set( 'headers', apply_filters( 'give_receipt_headers', Give()->emails->get_headers(), $this->payment->ID, $this->payment->payment_meta ) );
+
+		}
+
+		/**
+		 * Setup email notification.
+		 *
+		 * @since  1.9
+		 * @access public
+		 *
+		 * @param int $payment_id
+		 */
+		public function setup_email_notification( $payment_id ) {
+			$this->payment = new Give_Payment( $payment_id );
+
+			// Exit if not donation was not with offline donation.
+			if ( 'offline' !== $this->payment->gateway ) {
+				return;
+			}
+
+			// Set email data.
+			$this->set_email_data();
 
 			// Send email.
 			$this->send_email_notification( array( 'payment_id' => $this->payment->ID ) );

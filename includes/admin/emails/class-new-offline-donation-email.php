@@ -154,6 +154,28 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 			return $attachment;
 		}
 
+
+		/**
+		 * Set email data.
+		 *
+		 * @since 1.9
+		 */
+		public function set_email_data() {
+			// Set recipient email.
+			$this->recipient_email = $this->payment->email;
+
+
+			// Set header.
+			Give()->emails->__set(
+				'headers',
+				apply_filters(
+					'give_offline_admin_donation_notification_headers',
+					Give()->emails->get_headers(),
+					$this->payment->ID
+				)
+			);
+		}
+
 		/**
 		 * Setup email notification.
 		 *
@@ -171,19 +193,8 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 				return;
 			}
 
-			// Set recipient email.
-			$this->recipient_email = $this->payment->email;
-
-
-			// Set header.
-			Give()->emails->__set(
-				'headers',
-				apply_filters(
-					'give_offline_admin_donation_notification_headers',
-					Give()->emails->get_headers(),
-					$this->payment->ID
-				)
-			);
+			// Set email data.
+			$this->set_email_data();
 
 			// Send email.
 			$this->send_email_notification( array( 'payment_id' => $this->payment->ID ) );
