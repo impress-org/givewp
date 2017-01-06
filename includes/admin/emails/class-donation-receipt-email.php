@@ -181,8 +181,6 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			$headers = apply_filters( 'give_receipt_headers', Give()->emails->get_headers(), $this->payment->ID, $this->payment->payment_meta );
 
 			Give()->emails->__set( 'headers', $headers );
-
-			error_log( print_r( Give()->emails, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
 		}
 
 		/**
