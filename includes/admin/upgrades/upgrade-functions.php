@@ -45,6 +45,9 @@ function give_do_automatic_upgrades() {
 		case version_compare( $give_version, '1.8', '<' ) :
 			give_v18_upgrades();
 			$did_upgrade = true;
+		case version_compare( $give_version, '1.9', '<' ) :
+			give_v19_upgrades();
+			$did_upgrade = true;
 	}
 
 	if ( $did_upgrade ) {
@@ -700,4 +703,66 @@ function give_v18_renamed_core_settings() {
 		'enable_categories'           => 'categories',
 		'enable_tags'                 => 'tags',
 	);
+}
+
+/**
+ * 1.9 Upgrades.
+ *
+ * @since  1.9
+ * @return void
+ */
+function give_v19_upgrades() {
+	// Upgrade email settings.
+	give_v19_upgrades_email_setting();
+}
+
+/**
+ * Move old email api settings to new email setting api for following emails:
+ *    1. new offline donation         [This was hard coded]
+ *    2. offline donation instruction
+ *    3. new donation
+ *    4. donation receipt
+ *
+ * @since 1.9
+ */
+function give_v19_upgrades_email_setting() {
+	$all_setting = give_get_settings();
+	$settings = array(
+		'offline_donation_subject'      => 'offline-donation-instruction_email_subject',
+		'global_offline_donation_email' => 'offline-donation-instruction_email_message',
+		'donation_subject'              => 'donation-receipt_email_subject',
+		'donation_receipt'              => 'donation-receipt_email_message',
+		'donation_notification_subject' => 'new-donation_email_subject',
+		'donation_notification'         => 'new-donation_email_message',
+		'admin_notice_emails'           => 'new-donation_recipient',
+		'disable_admin_notices'         => 'new-donation_notification',
+	);
+
+	foreach ( $settings as $old_setting => $new_setting ) {
+		// Do not update already modified
+		if( array_key_exists( $new_setting, $all_setting ) ) {
+			continue;
+		}
+
+		switch ( $old_setting ) {
+			case 'disable_admin_notices':
+				$notification_status = give_get_option( $old_setting, 'disabled' );
+
+				give_update_option( $new_setting, $notification_status );
+				give_delete_option( $old_setting );
+				break;
+
+			case 'admin_notice_emails':
+				$recipients = give_get_option( $old_setting );
+				$recipients = ! empty( $recipients ) ? array_map( 'trim', explode( ',', $recipients ) ) : $recipients;
+
+				give_update_option( $new_setting, $recipients );
+				give_delete_option( $old_setting );
+				break;
+
+			default:
+				give_update_option( $new_setting, give_get_option( $old_setting ) );
+				give_delete_option( $old_setting );
+		}
+	}
 }
