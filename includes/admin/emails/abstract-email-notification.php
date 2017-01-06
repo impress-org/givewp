@@ -651,7 +651,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 *
 		 * @since 1.9
 		 */
-		public function set_email_data() {
+		public function setup_email_data() {
 		}
 	}
 

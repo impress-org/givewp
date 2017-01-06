@@ -155,7 +155,7 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		 *
 		 * @since 1.9
 		 */
-		public function set_email_data() {
+		public function setup_email_data() {
 			/**
 			 * Filters the from name.
 			 *
@@ -195,7 +195,7 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			$this->payment = new Give_Payment( $payment_id );
 
 			// Set email data.
-			$this->set_email_data();
+			$this->setup_email_data();
 
 			// Send email.
 			$this->send_email_notification( array( 'payment_id' => $payment_id ) );

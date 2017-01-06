@@ -157,7 +157,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		 *
 		 * @since 1.9
 		 */
-		public function set_email_data() {
+		public function setup_email_data() {
 			// Set recipient email.
 			$this->recipient_email = $this->payment->email;
 
@@ -211,7 +211,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			$this->payment = new Give_Payment( $payment_id );
 
 			// Setup email data.
-			$this->set_email_data();
+			$this->setup_email_data();
 
 			// Send email.
 			$this->send_email_notification( array( 'payment_id' => $this->payment->ID ) );
@@ -240,7 +240,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			}
 
 			// Setup email data.
-			$this->set_email_data();
+			$this->setup_email_data();
 
 			// Send email.
 			$this->send_email_notification( array( 'payment_id' => $this->payment->ID ) );
