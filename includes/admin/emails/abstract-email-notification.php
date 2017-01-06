@@ -276,7 +276,14 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @return string
 		 */
 		function get_email_subject() {
-			return wp_strip_all_tags( give_get_option( "{$this->id}_email_subject", $this->get_default_email_subject() ) );
+			$subject = wp_strip_all_tags( give_get_option( "{$this->id}_email_subject", $this->get_default_email_subject() ) );
+
+			/**
+			 * Filter the subject.
+			 *
+			 * @since 1.9
+			 */
+			return apply_filters( 'give_get_email_subject', $subject, $this );
 		}
 
 		/**
@@ -287,7 +294,14 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @return string
 		 */
 		public function get_email_message() {
-			return give_get_option( "{$this->id}_email_message", $this->get_default_email_message() );
+			$message = give_get_option( "{$this->id}_email_message", $this->get_default_email_message() );
+
+			/**
+			 * Filter the message.
+			 *
+			 * @since 1.9
+			 */
+			return apply_filters( 'give_get_email_message', $message, $this );
 		}
 
 
@@ -431,7 +445,12 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @return array
 		 */
 		public function get_email_attachments() {
-			return array();
+			/**
+			 * Filter the attachment.
+			 *
+			 * @since 1.9
+			 */
+			return apply_filters( 'get_email_attachments', array(), $this );
 		}
 
 
@@ -540,26 +559,10 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 */
 			do_action( "give_{$this->id}_email_send_before", $this );
 
-			/**
-			 * Filter the email attachments.
-			 *
-			 * @since 1.9
-			 */
-			$attachments = apply_filters( 'get_email_attachments', $this->get_email_attachments(), $this );
 
-			/**
-			 * Filter the email message
-			 *
-			 * @since 1.9
-			 */
-			$message = give_do_email_tags( apply_filters( 'give_get_email_message', $this->get_email_message(), $this ), $email_tag_args );
-
-			/**
-			 * Filter the email subject.
-			 *
-			 * @since 1.9
-			 */
-			$subject = give_do_email_tags( apply_filters( 'give_get_email_subject', $this->get_email_subject(), $this ), $email_tag_args );
+			$attachments = $this->get_email_attachments();
+			$message     = give_do_email_tags( $this->get_email_message(), $email_tag_args );
+			$subject     = give_do_email_tags( $this->get_email_subject(), $email_tag_args );
 
 			if ( 'text/html' === Give()->emails->get_content_type() ) {
 				$message = wpautop( $message );
