@@ -532,7 +532,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			if ( ! give_is_setting_enabled( $this->get_notification_status() ) ) {
 				return;
 			}
-			
+
 			/**
 			 * Fire action after before email send.
 			 *
@@ -552,14 +552,14 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 *
 			 * @since 1.9
 			 */
-			$message     = give_do_email_tags( apply_filters( 'give_get_email_message', $this->get_email_message(), $this ), $email_tag_args );
+			$message = give_do_email_tags( apply_filters( 'give_get_email_message', $this->get_email_message(), $this ), $email_tag_args );
 
 			/**
 			 * Filter the email subject.
 			 *
 			 * @since 1.9
 			 */
-			$subject     = give_do_email_tags( apply_filters( 'give_get_email_subject', $this->get_email_subject(), $this ), $email_tag_args );
+			$subject = give_do_email_tags( apply_filters( 'give_get_email_subject', $this->get_email_subject(), $this ), $email_tag_args );
 
 			if ( 'text/html' === Give()->emails->get_content_type() ) {
 				$message = wpautop( $message );
