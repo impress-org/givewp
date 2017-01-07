@@ -495,8 +495,19 @@ function give_reports_tab_export() {
 											<label for="give-export-donation-sum"><input type="checkbox" checked name="give_export_option[donation_sum]" id="give-export-donation-sum"><?php esc_html_e( 'Total Donated', 'give' ); ?>
 											</label>
 										</li>
+										<?php
+										$custom_cols = [];
+										$custom_cols = apply_filters( 'give_export_csv_cols_customers', $custom_cols );
+										foreach($custom_cols as $col_id => $col_name):
+										?>
+										  <li>
+										    <label for="give-export-<?= str_replace('_','-',$col_id) ?>"><input type="checkbox" class="give_custom_field" checked="checked" readonly="readonly" name="give_export_option[<?= $col_id ?>]" id="give-export-<?= str_replace('_','-',$col_id) ?>"><?php esc_html_e( $col_name, 'give' ); ?>
+										    </label>
+										  </li>
+										<?php endforeach; ?>
 									</ul>
 								</div>
+
 								<?php wp_nonce_field( 'give_ajax_export', 'give_ajax_export' ); ?>
 								<input type="hidden" name="give-export-class" value="Give_Batch_Customers_Export"/>
 								<input type="hidden" name="give-action" value="email_export"/>
