@@ -95,32 +95,6 @@ function give_email_preview_template_tags( $message ) {
 	return wpautop( apply_filters( 'give_email_preview_template_tags', $message ) );
 }
 
-/**
- * Filter for Email Template Preview Buttons.
- *
- * @param array $array
- *
- * @access private
- * @since  1.0
- * @return array|bool
- */
-function give_email_template_preview( $array ) {
-
-	if ( ! current_user_can( 'manage_give_settings' ) ) {
-		return false;
-	}
-	$custom_field = array(
-		'name' => esc_html__( 'Preview Email', 'give' ),
-		'desc' => esc_html__( 'Click the buttons to preview emails.', 'give' ),
-		'id'   => 'give_email_preview_buttons',
-		'type' => 'email_preview_buttons'
-	);
-
-	return give_settings_array_insert( $array, 'donation_subject', array( $custom_field ) );
-
-}
-
-add_filter( 'give_settings_emails', 'give_email_template_preview' );
 
 /**
  * Output Email Template Preview Buttons.
