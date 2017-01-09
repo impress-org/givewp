@@ -166,7 +166,7 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 			 *
 			 * @since 1.9
 			 */
-			return apply_filters( "give_{$this->id}_get_default_email_subject", esc_attr__( '{form_title} - Offline Donation Instructions', 'give' ), $this );
+			return apply_filters( "give_{$this->id}_get_default_email_subject", esc_attr__( '{donation} - Offline Donation Instructions', 'give' ), $this );
 		}
 
 
