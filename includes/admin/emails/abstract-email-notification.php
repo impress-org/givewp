@@ -527,6 +527,9 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @access public
 		 */
 		public function send_preview_email() {
+			// setup email data.
+			$this->setup_email_data();
+
 			$attachments = $this->get_email_attachments();
 			$message     = $this->preview_email_template_tags( $this->get_email_message() );
 			$subject     = $this->preview_email_template_tags( $this->get_email_subject() );

@@ -216,6 +216,7 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 			Give()->emails->__set( 'heading', __( 'Offline Donation Instructions', 'give' ) );
 			Give()->emails->__set( 'headers', apply_filters( 'give_receipt_headers', Give()->emails->get_headers(), $this->payment->ID, $this->payment->payment_meta ) );
 
+			error_log( print_r( Give()->emails, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
 		}
 
 		/**
