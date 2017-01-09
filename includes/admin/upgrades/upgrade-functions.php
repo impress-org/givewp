@@ -734,7 +734,11 @@ function give_v19_upgrades_email_setting() {
 		'donation_receipt'              => 'donation-receipt_email_message',
 		'donation_notification_subject' => 'new-donation_email_subject',
 		'donation_notification'         => 'new-donation_email_message',
-		'admin_notice_emails'           => 'new-donation_recipient',
+		'admin_notice_emails'           => array(
+			'new-donation_recipient',
+			'new-offline-donation_recipient',
+			'new-donor-register_recipient',
+		),
 		'admin_notices'                 => 'new-donation_notification',
 	);
 
@@ -753,10 +757,12 @@ function give_v19_upgrades_email_setting() {
 				break;
 
 			case 'admin_notice_emails':
-				$recipients = give_get_option( $old_setting );
-				$recipients = ! empty( $recipients ) ? array_map( 'trim', explode( ',', $recipients ) ) : $recipients;
+				$recipients = give_get_admin_notice_emails();
 
-				give_update_option( $new_setting, $recipients );
+				foreach ( $new_setting as $setting ){
+					give_update_option( $setting, $recipients );
+				}
+
 				give_delete_option( $old_setting );
 				break;
 
