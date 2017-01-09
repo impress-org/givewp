@@ -127,10 +127,7 @@ function give_get_default_donation_notification_email() {
 	$default_email_body .= esc_html__( 'Thank you,', 'give' ) . "\n\n";
 	$default_email_body .= '{sitename}' . "\n";
 
-	$custom_message = give_get_option( 'donation_notification' );
-	$message        = ! empty( $custom_message ) ? $custom_message : $default_email_body;
-
-	return apply_filters( 'give_default_donation_notification_email', $message );
+	return apply_filters( 'give_default_donation_notification_email', $default_email_body );
 }
 
 
