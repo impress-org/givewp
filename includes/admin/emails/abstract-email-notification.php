@@ -531,10 +531,6 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			$message     = $this->preview_email_template_tags( $this->get_email_message() );
 			$subject     = $this->preview_email_template_tags( $this->get_email_subject() );
 
-			if ( 'text/html' === Give()->emails->get_content_type() ) {
-				$message = wpautop( $message );
-			}
-
 			Give()->emails->send( $this->get_preview_email_recipient(), $subject, $message, $attachments );
 		}
 
@@ -563,10 +559,6 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			$attachments = $this->get_email_attachments();
 			$message     = give_do_email_tags( $this->get_email_message(), $email_tag_args );
 			$subject     = give_do_email_tags( $this->get_email_subject(), $email_tag_args );
-
-			if ( 'text/html' === Give()->emails->get_content_type() ) {
-				$message = wpautop( $message );
-			}
 
 			// Send email.
 			$email_status = Give()->emails->send( $this->get_recipient(), $subject, $message, $attachments );
