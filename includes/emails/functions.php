@@ -103,7 +103,7 @@ function give_admin_notices_disabled( $payment_id = 0 ) {
 
 	return apply_filters(
 		'give_admin_notices_disabled',
-		! give_is_setting_enabled( give_get_option( 'donation-receipt_notification' ) ),
+		! give_is_setting_enabled( give_get_option( 'new-donation_notification' ) ),
 		$payment_id
 	);
 }
