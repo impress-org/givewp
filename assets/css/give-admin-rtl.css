@@ -1859,7 +1859,7 @@ a.give-delete {
     margin-right: 5px; }
 
 #give-payments-filter ul.subsubsub {
-  margin: 0 0 12px; }
+  margin-bottom: 12px; }
 
 #give-payments-filter .tablenav.top {
   float: none; }
