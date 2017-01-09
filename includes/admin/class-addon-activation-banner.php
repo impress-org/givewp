@@ -306,7 +306,11 @@ class Give_Addon_Activation_Banner {
 
 			// Check addon file path.
 			if ( ! empty( $this->banner_details['file'] ) ) {
-				$file_name = explode( '/', explode( '/plugins/', $this->banner_details['file'] )[1] )[0];
+				$file_name = '';
+				if ( $file_path = explode( '/plugins/', $this->banner_details['file'] ) ) {
+					$file_path = array_pop( $file_path );
+					$file_name = current( explode( '/', $file_path ) );
+				}
 
 				foreach ( $active_plugins as $plugin ) {
 					if ( false !== strpos( $plugin, $file_name ) ) {
