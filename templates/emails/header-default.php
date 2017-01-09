@@ -78,19 +78,21 @@ $header_img = give_get_option( 'email_logo', '' );
 						</div>
 					<?php endif; ?>
 					<table border="0" cellpadding="0" cellspacing="0" width="600" id="template_container" style="<?php echo $template_container; ?>">
+						<?php if ( $email_content_heading = Give()->emails->get_heading() ) : ?>
 						<tr>
 							<td align="center" valign="top">
 								<!-- Header -->
 								<table border="0" cellpadding="0" cellspacing="0" width="600" id="template_header" style="<?php echo $template_header; ?>" bgcolor="#ffffff">
 									<tr>
 										<td>
-											<h1 style="<?php echo $header_content_h1; ?>"><?php echo Give()->emails->get_heading(); ?></h1>
+											<h1 style="<?php echo $header_content_h1; ?>"><?php echo $email_content_heading; ?></h1>
 										</td>
 									</tr>
 								</table>
 								<!-- End Header -->
 							</td>
 						</tr>
+						<?php endif; ?>
 						<tr>
 							<td align="center" valign="top">
 								<!-- Body -->
