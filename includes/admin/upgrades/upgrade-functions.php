@@ -727,6 +727,12 @@ function give_v19_upgrades() {
  */
 function give_v19_upgrades_email_setting() {
 	$all_setting = give_get_settings();
+
+	// Bailout on fresh install.
+	if( empty( $all_setting ) ) {
+		return;
+	}
+
 	$settings    = array(
 		'offline_donation_subject'      => 'offline-donation-instruction_email_subject',
 		'global_offline_donation_email' => 'offline-donation-instruction_email_message',
@@ -744,8 +750,10 @@ function give_v19_upgrades_email_setting() {
 
 	foreach ( $settings as $old_setting => $new_setting ) {
 		// Do not update already modified
-		if ( array_key_exists( $new_setting, $all_setting ) ) {
-			continue;
+		if( ! is_array( $new_setting ) ) {
+			if ( array_key_exists( $new_setting, $all_setting ) ) {
+				continue;
+			}
 		}
 
 		switch ( $old_setting ) {
@@ -760,6 +768,11 @@ function give_v19_upgrades_email_setting() {
 				$recipients = give_get_admin_notice_emails();
 
 				foreach ( $new_setting as $setting ){
+					// bailout if setting already exist.
+					if( array_key_exists( $setting, $all_setting ) ) {
+						continue;
+					}
+
 					give_update_option( $setting, $recipients );
 				}
 
