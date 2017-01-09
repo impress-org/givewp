@@ -57,8 +57,9 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 		 * @return array
 		 */
 		public function add_settings_page( $pages ) {
+			$setting = $this->get_settings();
 			// Bailout: Do not add licenses setting tab if it does not contain any setting fields.
-			if( ! empty( $this->get_settings() ) ) {
+			if( ! empty( $setting ) ) {
 				$pages[ $this->id ] = $this->label;
 			}
 
