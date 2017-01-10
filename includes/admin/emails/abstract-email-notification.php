@@ -569,11 +569,13 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @access public
 		 *
 		 * @param array $email_tag_args Arguments which helps to decode email template tags.
+		 * 
+		 * @return bool
 		 */
 		public function send_email_notification( $email_tag_args = array() ) {
 			// Do not send email if notification is disable.
 			if ( ! give_is_setting_enabled( $this->get_notification_status() ) ) {
-				return;
+				return false;
 			}
 
 			/**
@@ -597,6 +599,8 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 * @since 1.9
 			 */
 			do_action( "give_{$this->id}_email_send_after", $email_status, $this );
+
+			return $email_status;
 		}
 
 
