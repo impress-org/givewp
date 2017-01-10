@@ -31,12 +31,10 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 		/**
 		 * Create a class instance.
 		 *
-		 * @param   mixed[] $objects
-		 *
 		 * @access  public
 		 * @since   1.9
 		 */
-		public function __construct( $objects = array() ) {
+		public function init() {
 			$this->id          = 'offline-donation-instruction';
 			$this->label       = __( 'Offline Donation Instruction', 'give' );
 			$this->description = __( 'Offline Donation Instruction will be sent to recipient(s) when offline donation received.', 'give' );
@@ -50,7 +48,7 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 			// Initialize empty payment.
 			$this->payment = new Give_Payment( 0 );
 
-			parent::__construct();
+			parent::load();
 
 			add_action( 'give_insert_payment', array( $this, 'setup_email_notification' ) );
 		}
@@ -243,4 +241,4 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 
 endif; // End class_exists check
 
-return new Give_Offline_Donation_Instruction_Email();
+return Give_Offline_Donation_Instruction_Email::get_instance();

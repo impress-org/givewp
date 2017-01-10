@@ -25,6 +25,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 	 * @since       1.9
 	 */
 	abstract class Give_Email_Notification {
+		static private $singleton = array();
 
 		/**
 		 * @var     string $id The email's unique identifier.
@@ -102,14 +103,38 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		protected $recipient_group_name = '';
 
 		/**
-		 * Create a class instance.
+		 * Setup email notification.
 		 *
-		 * @param   mixed[] $objects
+		 * @since 1.9
+		 */
+		public function init(){
+
+		}
+
+
+		/**
+		 * Get instance.
+		 *
+		 * @since 1.9
+		 * @access public
+		 * @return Give_Email_Notification
+		 */
+		public static function get_instance() {
+			$class = get_called_class();
+			if ( ! array_key_exists( $class, self::$singleton ) || is_null( self::$singleton[ $class ] ) ) {
+				self::$singleton[ $class ] = new $class();
+			}
+
+			return self::$singleton[ $class ];
+		}
+
+		/**
+		 * Create a class instance.
 		 *
 		 * @access  public
 		 * @since   1.9
 		 */
-		public function __construct( $objects = array() ) {
+		public function load() {
 			// Set email preview header status.
 			$this->has_preview_header = $this->has_preview && $this->has_preview_header ? true : false;
 

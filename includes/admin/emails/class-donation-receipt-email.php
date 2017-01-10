@@ -31,12 +31,10 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		/**
 		 * Create a class instance.
 		 *
-		 * @param   mixed[] $objects
-		 *
 		 * @access  public
 		 * @since   1.9
 		 */
-		public function __construct( $objects = array() ) {
+		public function init() {
 			$this->id          = 'donation-receipt';
 			$this->label       = __( 'Donation Receipt', 'give' );
 			$this->description = __( 'Donation Receipt Notification will be sent to donor when new donation received.', 'give' );
@@ -47,7 +45,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			// Initialize empty payment.
 			$this->payment = new Give_Payment(0);
 
-			parent::__construct();
+			parent::load();
 
 			add_action( "give_{$this->id}_email_notification", array( $this, 'send_donation_receipt' ) );
 			add_action( 'give_email_links', array( $this, 'resend_donation_receipt' ) );
@@ -283,4 +281,4 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 
 endif; // End class_exists check
 
-return new Give_Donation_Receipt_Email();
+return Give_Donation_Receipt_Email::get_instance();

@@ -112,6 +112,16 @@ class Give_Email_Notifications {
 		 * @since 1.9
 		 */
 		$this->emails = apply_filters( 'give_email_notifications', $this->emails, $this );
+
+		// Bailout.
+		if( empty( $this->emails ) ) {
+			return;
+		}
+
+		// Initiate email notifications.
+		foreach ( $this->emails as $email ) {
+			$email->init();
+		}
 	}
 
 

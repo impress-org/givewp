@@ -27,12 +27,10 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 		/**
 		 * Create a class instance.
 		 *
-		 * @param   mixed[] $objects
-		 *
 		 * @access  public
 		 * @since   1.9
 		 */
-		public function __construct( $objects = array() ) {
+		public function init() {
 			$this->id          = 'new-donor-register';
 			$this->label       = __( 'New Donor Register', 'give' );
 			$this->description = __( 'New Donor Register Notification will be sent to recipient(s) when new donor registered.', 'give' );
@@ -42,7 +40,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 			$this->has_preview_header  = true;
 			$this->email_tag_context   = 'donor';
 
-			parent::__construct();
+			parent::load();
 
 			// Setup action hook.
 			add_action(
@@ -203,4 +201,4 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 
 endif; // End class_exists check
 
-return new Give_New_Donor_Register_Email();
+return Give_New_Donor_Register_Email::get_instance();
