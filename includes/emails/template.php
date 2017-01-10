@@ -120,7 +120,7 @@ function give_email_preview_buttons_callback( $field ) {
 				home_url()
 			), 'give-preview-email'
 		),
-		esc_html__( 'Preview Donation Receipt', 'give' )
+		$field['name']
 	);
 
 	echo sprintf(
@@ -131,7 +131,7 @@ function give_email_preview_buttons_callback( $field ) {
 			'email_type' => $field_id,
 			'give-message' => 'sent-test-email',
 		) ), 'give-send-preview-email' ),
-		esc_attr__( 'Send test email.', 'give' ),
+		esc_attr__( 'Send Test Email.', 'give' ),
 		esc_html__( 'Send Test Email', 'give' )
 	);
 
