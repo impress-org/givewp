@@ -79,7 +79,7 @@ class Give_Email_Notifications {
 		/* @var Give_Email_Notification $email */
 		foreach ( $this->get_email_notifications() as $email ) {
 			if ( ! $email->is_email_preview_has_header() ) {
-				return false;
+				continue;
 			}
 
 			add_action( "give_{$email->get_id()}_email_preview", array( $this, 'email_preview_header' ) );
