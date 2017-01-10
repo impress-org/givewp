@@ -105,17 +105,7 @@ class Give_Email_Setting_Field {
 				'type'  => 'title',
 				'title' => $email->get_label(),
 			),
-			array(
-				'name'    => esc_html__( 'Notification', 'give' ),
-				'desc'    => esc_html__( 'Choose option if you want to send email notification or not.', 'give' ),
-				'id'      => "{$email->get_id()}_notification",
-				'type'    => 'radio_inline',
-				'default' => $email->get_notification_status(),
-				'options' => array(
-					'enabled'  => __( 'Enabled', 'give' ),
-					'disabled' => __( 'Disabled', 'give' ),
-				),
-			),
+			self::get_notification_status_field( $email ),
 			array(
 				'id'      => "{$email->get_id()}_email_subject",
 				'name'    => esc_html__( 'Email Subject', 'give' ),
@@ -132,6 +122,31 @@ class Give_Email_Setting_Field {
 			),
 		);
 	}
+
+	/**
+	 * Get notification status setting field.
+	 *
+	 * @since  1.9
+	 * @access static
+	 *
+	 * @param Give_Email_Notification $email
+	 *
+	 * @return array
+	 */
+	public static function get_notification_status_field( Give_Email_Notification $email ) {
+		return array(
+			'name'    => esc_html__( 'Notification', 'give' ),
+			'desc'    => esc_html__( 'Choose option if you want to send email notification or not.', 'give' ),
+			'id'      => "{$email->get_id()}_notification",
+			'type'    => 'radio_inline',
+			'default' => $email->get_notification_status(),
+			'options' => array(
+				'enabled'  => __( 'Enabled', 'give' ),
+				'disabled' => __( 'Disabled', 'give' ),
+			),
+		);
+	}
+
 
 	/**
 	 * Get recipient setting field.
