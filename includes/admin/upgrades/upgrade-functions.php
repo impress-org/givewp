@@ -764,6 +764,7 @@ function give_v19_upgrades_email_setting() {
 				give_delete_option( $old_setting );
 				break;
 
+			// @todo: Delete this option later ( version > 1.9 ) because we need this for backward compatibility give_get_admin_notice_emails.
 			case 'admin_notice_emails':
 				$recipients = give_get_admin_notice_emails();
 
@@ -775,8 +776,6 @@ function give_v19_upgrades_email_setting() {
 
 					give_update_option( $setting, $recipients );
 				}
-
-				give_delete_option( $old_setting );
 				break;
 
 			default:
