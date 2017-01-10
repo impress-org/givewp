@@ -107,13 +107,7 @@ class Give_Email_Setting_Field {
 			),
 			self::get_notification_status_field( $email ),
 			self::get_email_subject_field( $email ),
-			array(
-				'id'      => "{$email->get_id()}_email_message",
-				'name'    => esc_html__( 'Email message', 'give' ),
-				'desc'    => $email->get_email_message_field_description(),
-				'type'    => 'wysiwyg',
-				'default' => $email->get_default_email_message(),
-			),
+			self::get_email_message_field( $email ),
 		);
 	}
 
@@ -158,6 +152,26 @@ class Give_Email_Setting_Field {
 			'desc'    => esc_html__( 'Enter the subject line for email.', 'give' ),
 			'default' => $email->get_default_email_subject(),
 			'type'    => 'text',
+		);
+	}
+
+	/**
+	 * Get email message setting field.
+	 *
+	 * @since  1.9
+	 * @access static
+	 *
+	 * @param Give_Email_Notification $email
+	 *
+	 * @return array
+	 */
+	public static function get_email_message_field( Give_Email_Notification $email ) {
+		return array(
+			'id'      => "{$email->get_id()}_email_message",
+			'name'    => esc_html__( 'Email message', 'give' ),
+			'desc'    => $email->get_email_message_field_description(),
+			'type'    => 'wysiwyg',
+			'default' => $email->get_default_email_message(),
 		);
 	}
 
