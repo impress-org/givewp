@@ -45,7 +45,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			// Initialize empty payment.
 			$this->payment = new Give_Payment(0);
 
-			parent::load();
+			$this->load();
 
 			add_action( "give_{$this->id}_email_notification", array( $this, 'send_donation_receipt' ) );
 			add_action( 'give_email_links', array( $this, 'resend_donation_receipt' ) );

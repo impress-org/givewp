@@ -40,7 +40,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 			$this->has_preview_header  = true;
 			$this->email_tag_context   = 'donor';
 
-			parent::load();
+			$this->load();
 
 			// Setup action hook.
 			add_action(

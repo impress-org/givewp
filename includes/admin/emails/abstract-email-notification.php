@@ -129,7 +129,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		}
 
 		/**
-		 * Create a class instance.
+		 * Setup action and filters.
 		 *
 		 * @access  public
 		 * @since   1.9

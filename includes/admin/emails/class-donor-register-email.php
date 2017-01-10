@@ -39,7 +39,7 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 			$this->recipient_group_name = __( 'Donor', 'give' );
 			$this->email_tag_context    = 'donor';
 
-			parent::load();
+			$this->load();
 
 			// Setup action hook.
 			add_action(
