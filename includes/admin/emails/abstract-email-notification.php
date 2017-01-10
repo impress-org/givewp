@@ -251,7 +251,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @return string|array
 		 */
 		public function get_recipient() {
-			$recipient = give_check_variable( $this->recipient_email, 'empty', Give()->emails->get_from_address() );
+			$recipient = $this->recipient_email;
 
 			if ( ! $recipient && $this->has_recipient_field ) {
 				$recipient = give_get_option( "{$this->id}_recipient" );
@@ -262,7 +262,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 *
 			 * @since 1.9
 			 */
-			return apply_filters( "give_{$this->id}_get_recipients", $recipient, $this );
+			return apply_filters( "give_{$this->id}_get_recipients", give_check_variable( $recipient, 'empty', Give()->emails->get_from_address() ), $this );
 		}
 
 		/**
