@@ -614,7 +614,8 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @return string
 		 */
 		public function preview_email_template_tags( $message ) {
-			$user       = wp_get_current_user();
+			$user_id    = give_check_variable( give_clean( $_GET ), 'isset_empty', 0, 'user_id' );
+			$user       = ! empty( $user_id ) ? get_user_by( 'id', $user_id ) : wp_get_current_user();
 			$receipt_id = strtolower( md5( uniqid() ) );
 
 			$receipt_link_url = esc_url( add_query_arg( array(
