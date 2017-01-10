@@ -635,7 +635,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 					'payment_total'    => give_currency_filter( give_format_amount( 10.50 ) ),
 					'payment_method'   => 'Paypal',
 					'receipt_id'       => $receipt_id,
-					'payment_id'       => rand( 2000, 2050 ),
+					'payment_id' => give_check_variable( give_clean( $_GET ), 'isset_empty', rand( 2000, 2050 ), 'preview_id' ),
 					'receipt_link_url' => $receipt_link_url,
 					'receipt_link'     => $receipt_link,
 					'user'             => $user,
