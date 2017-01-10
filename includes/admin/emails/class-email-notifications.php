@@ -373,7 +373,10 @@ class Give_Email_Notifications {
 			// Call setup email data to apply filter and other thing to email.
 			$email->setup_email_data();
 
-			if ( $email_message = Give()->emails->build_email( $email->get_email_message() ) ) {
+			// Decode message.
+			$email_message = $email->preview_email_template_tags( $email->get_email_message() );
+
+			if ( $email_message = Give()->emails->build_email( $email_message ) ) {
 
 				/**
 				 * Filter the email preview data
