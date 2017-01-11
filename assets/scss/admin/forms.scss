@@ -430,13 +430,17 @@ Tooltips
 				text-decoration: none;
 				line-height: 20px !important;
 				border-bottom: 1px solid #eee;
-
 			}
 
 		}
 
+		.give-metabox-sub-tabs li {
+			background-color: #f1f1f1;
+			a {  border-bottom-color: #e5e5e5;  }
+		}
+
 		li.active {
-			a {
+			> a {
 				color: #555;
 				position: relative;
 				background-color: #eee;
