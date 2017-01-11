@@ -1006,6 +1006,12 @@ Tooltips
     color: #555;
     position: relative;
     background-color: #eee; }
+  #give-metabox-form-data .give-metabox-tabs li.has-sub-fields:not(.active):hover ul.give-metabox-sub-tabs {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 166px;
+    width: 165px; }
 
 #give-metabox-form-data .give_options_panel {
   float: left;
