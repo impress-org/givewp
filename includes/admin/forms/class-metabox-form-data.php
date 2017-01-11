@@ -226,11 +226,11 @@ class Give_MetaBox_Form_Data {
 							),
 						),
 						array(
-							'name'		  => 'donation_options_docs',
-							'type'        => 'docs_link',
-							'url'		  => 'http://docs.givewp.com/donationoptions',
-							'title'		  => esc_html__('Donation Options', 'give'),
-						)
+							'name'  => 'donation_options_docs',
+							'type'  => 'docs_link',
+							'url'   => 'http://docs.givewp.com/donationoptions',
+							'title' => esc_html__( 'Donation Options', 'give' ),
+						),
 					)
 				),
 			) ),
@@ -317,10 +317,10 @@ class Give_MetaBox_Form_Data {
 								'default' => 'global',
 							),
 							array(
-								'name'		  => 'form_display_docs',
-								'type'        => 'docs_link',
-								'url'		  => 'http://docs.givewp.com/formdisplay',
-								'title'		  => esc_html__('Form Display', 'give'),
+								'name'  => 'form_display_docs',
+								'type'  => 'docs_link',
+								'url'   => 'http://docs.givewp.com/formdisplay',
+								'title' => esc_html__( 'Form Display', 'give' ),
 							),
 						)
 					),
@@ -399,10 +399,10 @@ class Give_MetaBox_Form_Data {
 						),
 					),
 					array(
-						'name'		  => 'donation_goal_docs',
-						'type'        => 'docs_link',
-						'url'		  => 'http://docs.givewp.com/donationgoal',
-						'title'		  => esc_html__('Donation Goal', 'give'),
+						'name'  => 'donation_goal_docs',
+						'type'  => 'docs_link',
+						'url'   => 'http://docs.givewp.com/donationgoal',
+						'title' => esc_html__( 'Donation Goal', 'give' ),
 					),
 				) ),
 			) ),
@@ -448,10 +448,10 @@ class Give_MetaBox_Form_Data {
 							'type'        => 'wysiwyg',
 						),
 						array(
-							'name'		  => 'form_content_docs',
-							'type'        => 'docs_link',
-							'url'		  => 'http://docs.givewp.com/formcontent',
-							'title'		  => esc_html__('Form Content', 'give'),
+							'name'  => 'form_content_docs',
+							'type'  => 'docs_link',
+							'url'   => 'http://docs.givewp.com/formcontent',
+							'title' => esc_html__( 'Form Content', 'give' ),
 						),
 					)
 				),
@@ -495,10 +495,10 @@ class Give_MetaBox_Form_Data {
 							'type' => 'wysiwyg',
 						),
 						array(
-							'name'		  => 'terms_docs',
-							'type'        => 'docs_link',
-							'url'		  => 'http://docs.givewp.com/terms',
-							'title'		  => esc_html__('Terms & Conditions', 'give'),
+							'name'  => 'terms_docs',
+							'type'  => 'docs_link',
+							'url'   => 'http://docs.givewp.com/terms',
+							'title' => esc_html__( 'Terms & Conditions', 'give' ),
 						),
 					)
 				),
@@ -587,7 +587,7 @@ class Give_MetaBox_Form_Data {
 				);
 
 				if ( $this->has_sub_tab( $setting ) ) {
-					if( empty( $setting['sub-fields'] ) ) {
+					if ( empty( $setting['sub-fields'] ) ) {
 						$tab = array();
 					} else {
 						foreach ( $setting['sub-fields'] as $sub_fields ) {
@@ -599,7 +599,7 @@ class Give_MetaBox_Form_Data {
 					}
 				}
 
-				if( ! empty( $tab ) ) {
+				if ( ! empty( $tab ) ) {
 					$tabs[] = $tab;
 				}
 			}
@@ -624,7 +624,7 @@ class Give_MetaBox_Form_Data {
 					<?php foreach ( $form_data_tabs as $index => $form_data_tab ) : ?>
 						<li class="<?php echo "{$form_data_tab['id']}_tab" . ( ! $index ? ' active' : '' ) . ( $this->has_sub_tab( $form_data_tab ) ? ' has-sub-fields' : '' ); ?>">
 							<a href="#<?php echo $form_data_tab['id']; ?>"><?php echo $form_data_tab['label']; ?></a>
-							<?php if( $this->has_sub_tab( $form_data_tab ) ) : ?>
+							<?php if ( $this->has_sub_tab( $form_data_tab ) ) : ?>
 								<ul class="give-metabox-sub-tabs give-hidden">
 									<?php foreach ( $form_data_tab['sub-fields'] as $sub_tab ) : ?>
 										<li class="<?php echo "{$sub_tab['id']}_tab"; ?>">
@@ -639,10 +639,11 @@ class Give_MetaBox_Form_Data {
 
 				<?php $show_first_tab_content = true; ?>
 				<?php foreach ( $this->settings as $setting ) : ?>
-					<?php if( ! $this->has_sub_tab( $setting ) ) : ?>
+					<?php if ( ! $this->has_sub_tab( $setting ) ) : ?>
 						<?php do_action( "give_before_{$setting['id']}_settings" ); ?>
 
-						<div id="<?php echo $setting['id']; ?>" class="panel give_options_panel<?php echo( $show_first_tab_content ? '' : ' give-hidden' );$show_first_tab_content = false; ?>">
+						<div id="<?php echo $setting['id']; ?>" class="panel give_options_panel<?php echo( $show_first_tab_content ? '' : ' give-hidden' );
+						$show_first_tab_content = false; ?>">
 							<?php if ( ! empty( $setting['fields'] ) ) : ?>
 								<?php foreach ( $setting['fields'] as $field ) : ?>
 									<?php give_render_field( $field ); ?>
@@ -834,7 +835,7 @@ class Give_MetaBox_Form_Data {
 		foreach ( $this->settings as $setting ) {
 			if ( ! empty( $setting['fields'] ) ) {
 				foreach ( $setting['fields'] as $field ) {
-					if( ! array_key_exists( 'id', $field ) ) {
+					if ( ! array_key_exists( 'id', $field ) ) {
 						continue;
 					}
 
