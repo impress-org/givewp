@@ -825,6 +825,74 @@ class Give_MetaBox_Form_Data {
 
 
 	/**
+	 * Get field ID.
+	 *
+	 * @since 1.8
+	 * @param array $field
+	 *
+	 * @return string
+	 */
+	private function get_field_id( $field ) {
+		$field_id = '';
+
+		if ( array_key_exists( 'id', $field ) ) {
+			$field_id = $field['id'];
+
+		}
+
+		return $field_id;
+	}
+
+	/**
+	 * Get fields ID.
+	 *
+	 * @since 1.8
+	 * @param $setting
+	 *
+	 * @return array
+	 */
+	private function get_fields_id( $setting ) {
+		$meta_keys = array();
+
+		if( ! empty( $setting ) ) {
+			foreach ( $setting['fields'] as $field ) {
+				if ( $field_id = $this->get_field_id( $field ) ) {
+					$meta_keys[] = $field_id;
+				}
+			}
+		}
+
+		return $meta_keys;
+	}
+
+	/**
+	 * Get sub fields ID.
+	 *
+	 * @since 1.8
+	 * @param $setting
+	 *
+	 * @return array
+	 */
+	private function get_sub_fields_id( $setting ) {
+		$meta_keys = array();
+
+		if ( $this->has_sub_tab( $setting ) && ! empty( $setting['sub-fields'] ) ) {
+			foreach ( $setting['sub-fields'] as $fields ) {
+				if ( ! empty( $fields['fields'] ) ) {
+					foreach ( $fields['fields'] as $field ) {
+						if ( $field_id = $this->get_field_id( $field ) ) {
+							$meta_keys[] = $field_id;
+						}
+					}
+				}
+			}
+		}
+
+		return $meta_keys;
+	}
+
+
+	/**
 	 * Get all setting field ids.
 	 *
 	 * @since  1.8
@@ -832,16 +900,15 @@ class Give_MetaBox_Form_Data {
 	 */
 	private function get_meta_keys_from_settings() {
 		$meta_keys = array();
-		foreach ( $this->settings as $setting ) {
-			if ( ! empty( $setting['fields'] ) ) {
-				foreach ( $setting['fields'] as $field ) {
-					if ( ! array_key_exists( 'id', $field ) ) {
-						continue;
-					}
 
-					$meta_keys[] = $field['id'];
-				}
+		foreach ( $this->settings as $setting ) {
+			if ( $this->has_sub_tab( $setting ) ) {
+				$meta_key = $this->get_sub_fields_id( $setting );
+			} else {
+				$meta_key = $this->get_fields_id( $setting );
 			}
+
+			$meta_keys = array_merge( $meta_keys, $meta_key );
 		}
 
 		return $meta_keys;
@@ -859,12 +926,64 @@ class Give_MetaBox_Form_Data {
 	 * @return string
 	 */
 	function get_field_type( $field_id, $group_id = '' ) {
-		$settings = $this->get_setting_field( $field_id, $group_id );
-		$type     = array_key_exists( 'type', $this->get_setting_field( $field_id, $group_id ) )
-			? $settings['type']
+		$field = $this->get_setting_field( $field_id, $group_id );
+
+		$type  = array_key_exists( 'type', $field )
+			? $field['type']
 			: '';
 
 		return $type;
+	}
+
+
+	/**
+	 * Get Field
+	 *
+	 * @since 1.8
+	 *
+	 * @param array  $setting
+	 * @param string $field_id
+	 *
+	 * @return array
+	 */
+	private function get_field( $setting, $field_id ) {
+		$setting_field = array();
+
+		if ( ! empty( $setting['fields'] ) ) {
+			foreach ( $setting['fields'] as $field ) {
+				if ( array_key_exists( 'id', $field ) && $field['id'] === $field_id ) {
+					$setting_field = $field;
+					break;
+				}
+			}
+		}
+
+		return $setting_field;
+	}
+
+	/**
+	 * Get Sub Field
+	 *
+	 * @since 1.8
+	 *
+	 * @param array  $setting
+	 * @param string $field_id
+	 *
+	 * @return array
+	 */
+	private function get_sub_field( $setting, $field_id ) {
+		$setting_field = array();
+
+		if ( ! empty( $setting['sub-fields'] ) ) {
+			foreach ( $setting['sub-fields'] as $fields ) {
+				if ( $field = $this->get_field( $fields, $field_id ) ) {
+					$setting_field = $field;
+					break;
+				}
+			}
+		}
+		
+		return $setting_field;
 	}
 
 	/**
@@ -882,15 +1001,15 @@ class Give_MetaBox_Form_Data {
 
 		$_field_id = $field_id;
 		$field_id  = empty( $group_id ) ? $field_id : $group_id;
-
+		
 		if ( ! empty( $this->settings ) ) {
 			foreach ( $this->settings as $setting ) {
-				if ( ! empty( $setting['fields'] ) ) {
-					foreach ( $setting['fields'] as $field ) {
-						if ( array_key_exists( 'id', $field ) && $field['id'] === $field_id ) {
-							$setting_field = $field;
-						}
-					}
+				if( $this->has_sub_tab( $setting ) ) {
+					$setting_field = $this->get_sub_field( $setting, $field_id );
+					break;
+				} elseif ( $field = $this->get_field( $setting, $field_id ) ) {
+					$setting_field = $field;
+					break;
 				}
 			}
 		}
