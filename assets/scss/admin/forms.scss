@@ -404,7 +404,7 @@ Tooltips
 		border-right: 1px solid #eee;
 		box-sizing: border-box;
 
-		:after {
+		&:after {
 			content: "";
 			display: block;
 			width: 100%;
@@ -454,6 +454,8 @@ Tooltips
 				bottom: 0;
 				left: 166px;
 				width: 165px;
+				height: 250px;
+				overflow-y: scroll;
 			}
 		}
 	}
