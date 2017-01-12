@@ -86,7 +86,12 @@ function give_get_field_callback( $field ) {
 			}
 	}
 
-	$func_name = apply_filters( 'give_setting_callback', $func_name, $field );
+	/**
+	 * Filter the metabox setting render function
+	 *
+	 * @since 1.8
+	 */
+	$func_name = apply_filters( 'give_get_field_callback', $func_name, $field );
 
 	// Exit if not any function exist.
 	// Check if render callback exist or not.
@@ -98,7 +103,7 @@ function give_get_field_callback( $field ) {
 		return false;
 	}
 
-	return apply_filters( 'give_setting_callback', $func_name, $field );
+	return $func_name;
 }
 
 /**

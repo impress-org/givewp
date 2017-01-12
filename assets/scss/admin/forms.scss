@@ -404,7 +404,7 @@ Tooltips
 		border-right: 1px solid #eee;
 		box-sizing: border-box;
 
-		:after {
+		&:after {
 			content: "";
 			display: block;
 			width: 100%;
@@ -430,16 +430,32 @@ Tooltips
 				text-decoration: none;
 				line-height: 20px !important;
 				border-bottom: 1px solid #eee;
-
 			}
 
 		}
 
+		.give-metabox-sub-tabs li {
+			background-color: #f1f1f1;
+			a {  border-bottom-color: #e5e5e5;  }
+		}
+
 		li.active {
-			a {
+			> a {
 				color: #555;
 				position: relative;
 				background-color: #eee;
+			}
+		}
+
+		li.has-sub-fields:not(.active):hover{
+			ul.give-metabox-sub-tabs{
+				display: block;
+				position: absolute;
+				bottom: 0;
+				left: 166px;
+				width: 165px;
+				max-height: 250px;
+				overflow-y: scroll;
 			}
 		}
 	}
