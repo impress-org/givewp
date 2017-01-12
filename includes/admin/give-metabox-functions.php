@@ -75,13 +75,26 @@ function give_get_field_callback( $field ) {
 			break;
 
 		default:
-			$func_name = "{$func_name_prefix}_{$field['type']}";
+
+			if (
+				array_key_exists( 'callback', $field )
+				&& ! empty( $field['callback'] )
+			) {
+				$func_name = $field['callback'];
+			} else {
+				$func_name = "{$func_name_prefix}_{$field['type']}";
+			}
 	}
 
 	$func_name = apply_filters( 'give_setting_callback', $func_name, $field );
 
+	// Exit if not any function exist.
 	// Check if render callback exist or not.
-	if ( ! function_exists( "$func_name" ) || empty( $func_name ) ) {
+	if ( empty( $func_name ) ) {
+		return false;
+	} elseif ( is_string( $func_name ) && ! function_exists( "$func_name" ) ) {
+		return false;
+	} elseif ( is_array( $func_name ) && ! method_exists( $func_name[0], "$func_name[1]" ) ) {
 		return false;
 	}
 
@@ -178,7 +191,11 @@ function give_render_field( $field ) {
 		: ( ! empty( $field['desc'] ) ? $field['desc'] : '' ) );
 
 	// Call render function.
-	$func_name( $field );
+	if ( is_array( $func_name ) ) {
+		$func_name[0]->$func_name[1]( $field );
+	} else {
+		$func_name( $field );
+	}
 
 	return true;
 }
