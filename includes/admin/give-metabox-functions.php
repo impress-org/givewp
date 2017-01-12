@@ -99,10 +99,8 @@ function give_get_field_callback( $field ) {
  */
 function give_render_field( $field ) {
 
-	$func_name = give_get_field_callback( $field );
-
 	// Check if render callback exist or not.
-	if ( ! $func_name ) {
+	if ( ! ( $func_name = give_get_field_callback( $field ) ) ) {
 		return false;
 	}
 
