@@ -176,6 +176,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 
 			// Setup setting fields.
 			add_filter( 'give_get_settings_emails', array( $this, 'add_setting_fields' ), 10, 2 );
+			add_filter( 'give_email_notification_options_metabox_fields', array( $this, 'add_metabox_setting_field' ), 10, 2 );
 		}
 
 		/**
@@ -190,8 +191,46 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 */
 		public function add_setting_fields( $settings ) {
 			if ( $this->id === give_get_current_setting_section() ) {
-				$settings = Give_Email_Setting_Field::get_setting_fields( $this );
+				$settings = $this->get_setting_fields();
 			}
+
+			return $settings;
+		}
+
+
+		/**
+		 * Get setting fields
+		 *
+		 * @since  1.9
+		 * @access public
+		 *
+		 * @param int $form_id
+		 *
+		 * @return array
+		 */
+		public function get_setting_fields( $form_id = 0 ) {
+			return Give_Email_Setting_Field::get_setting_fields( $this, $form_id );
+		}
+
+
+		/**
+		 * Register email settings to form metabox.
+		 *
+		 * @since  1.9
+		 * @access public
+		 *
+		 * @param array $settings
+		 * @param int   $post_id
+		 *
+		 * @return array
+		 */
+		public function add_metabox_setting_field( $settings, $post_id ) {
+
+			$settings[] = array(
+				'id'     => $this->id,
+				'title'  => $this->label,
+				'fields' => $this->get_setting_fields( $post_id )
+			);
 
 			return $settings;
 		}
@@ -202,9 +241,12 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 *
 		 * @since  1.9
 		 * @access public
+		 *
+		 * @param int $form_id
+		 *
 		 * @return array
 		 */
-		public function get_extra_setting_fields() {
+		public function get_extra_setting_fields( $form_id = 0 ) {
 			return array();
 		}
 

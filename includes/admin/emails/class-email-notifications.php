@@ -73,6 +73,7 @@ class Give_Email_Notifications {
 		// Load email notifications.
 		$this->add_emails_notifications();
 
+		add_filter( 'give_metabox_form_data_settings', array( $this, 'add_metabox__setting_sields' ), 10, 2 );
 		add_action( 'init', array( $this, 'preview_email' ) );
 		add_action( 'init', array( $this, 'send_preview_email' ) );
 
@@ -86,6 +87,42 @@ class Give_Email_Notifications {
 			add_filter( "give_{$email->get_id()}_email_preview_data", array( $this, 'email_preview_data' ) );
 			add_filter( "give_{$email->get_id()}_email_preview_message", array( $this, 'email_preview_message', ), 1, 2 );
 		}
+	}
+
+
+	/**
+	 * Add setting to metabox.
+	 *
+	 * @since  1.9
+	 * @access public
+	 *
+	 * @param array $settings
+	 * @param int   $post_id
+	 *
+	 * @return array
+	 */
+	public function add_metabox__setting_sields( $settings, $post_id ) {
+		$emails = $this->get_email_notifications();
+
+		// Bailout.
+		if ( empty( $emails ) ) {
+			return $settings;
+		}
+
+		// Email notification setting.
+		$settings['email_notification_options'] = array(
+			'id'         => "email_notification_options",
+			'title'      => __( 'Email Notification', 'give' ),
+
+			/**
+			 * Filter the email notification settings.
+			 *
+			 * @since 1.9
+			 */
+			'sub-fields' => apply_filters( 'give_email_notification_options_metabox_fields', array(), $post_id ),
+		);
+
+		return $settings;
 	}
 
 	/**
