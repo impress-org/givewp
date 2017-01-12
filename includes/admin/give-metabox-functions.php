@@ -78,6 +78,11 @@ function give_get_field_callback( $field ) {
 			$func_name = "{$func_name_prefix}_{$field['type']}";
 	}
 
+	/**
+	 * Filter the metabox setting render function
+	 *
+	 * @since 1.8
+	 */
 	$func_name = apply_filters( 'give_setting_callback', $func_name, $field );
 
 	// Check if render callback exist or not.
@@ -85,7 +90,7 @@ function give_get_field_callback( $field ) {
 		return false;
 	}
 
-	return apply_filters( 'give_setting_callback', $func_name, $field );
+	return $func_name;
 }
 
 /**
