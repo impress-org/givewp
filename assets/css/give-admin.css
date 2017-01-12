@@ -998,10 +998,20 @@ Tooltips
       text-decoration: none;
       line-height: 20px !important;
       border-bottom: 1px solid #eee; }
-  #give-metabox-form-data .give-metabox-tabs li.active a {
+  #give-metabox-form-data .give-metabox-tabs .give-metabox-sub-tabs li {
+    background-color: #f1f1f1; }
+    #give-metabox-form-data .give-metabox-tabs .give-metabox-sub-tabs li a {
+      border-bottom-color: #e5e5e5; }
+  #give-metabox-form-data .give-metabox-tabs li.active > a {
     color: #555;
     position: relative;
     background-color: #eee; }
+  #give-metabox-form-data .give-metabox-tabs li.has-sub-fields:not(.active):hover ul.give-metabox-sub-tabs {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 166px;
+    width: 165px; }
 
 #give-metabox-form-data .give_options_panel {
   float: left;
@@ -1906,7 +1916,7 @@ a.give-delete {
     margin-left: 5px; }
 
 #give-payments-filter ul.subsubsub {
-  margin: 0 0 12px; }
+  margin-bottom: 12px; }
 
 #give-payments-filter .tablenav.top {
   float: none; }

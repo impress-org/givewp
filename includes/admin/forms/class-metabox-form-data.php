@@ -226,11 +226,11 @@ class Give_MetaBox_Form_Data {
 							),
 						),
 						array(
-							'name'		  => 'donation_options_docs',
-							'type'        => 'docs_link',
-							'url'		  => 'https://docs.givewp.com/donationoptions',
-							'title'		  => esc_html__('Donation Options', 'give'),
-						)
+							'name'  => 'donation_options_docs',
+							'type'  => 'docs_link',
+							'url'   => 'http://docs.givewp.com/donationoptions',
+							'title' => esc_html__( 'Donation Options', 'give' ),
+						),
 					)
 				),
 			) ),
@@ -317,10 +317,10 @@ class Give_MetaBox_Form_Data {
 								'default' => 'global',
 							),
 							array(
-								'name'		  => 'form_display_docs',
-								'type'        => 'docs_link',
-								'url'		  => 'https://docs.givewp.com/formdisplay',
-								'title'		  => esc_html__('Form Display', 'give'),
+								'name'  => 'form_display_docs',
+								'type'  => 'docs_link',
+								'url'   => 'http://docs.givewp.com/formdisplay',
+								'title' => esc_html__( 'Form Display', 'give' ),
 							),
 						)
 					),
@@ -399,10 +399,10 @@ class Give_MetaBox_Form_Data {
 						),
 					),
 					array(
-						'name'		  => 'donation_goal_docs',
-						'type'        => 'docs_link',
-						'url'		  => 'https://docs.givewp.com/donationgoal',
-						'title'		  => esc_html__('Donation Goal', 'give'),
+						'name'  => 'donation_goal_docs',
+						'type'  => 'docs_link',
+						'url'   => 'http://docs.givewp.com/donationgoal',
+						'title' => esc_html__( 'Donation Goal', 'give' ),
 					),
 				) ),
 			) ),
@@ -448,10 +448,10 @@ class Give_MetaBox_Form_Data {
 							'type'        => 'wysiwyg',
 						),
 						array(
-							'name'		  => 'form_content_docs',
-							'type'        => 'docs_link',
-							'url'		  => 'http://docs.givewp.com/formcontent',
-							'title'		  => esc_html__('Form Content', 'give'),
+							'name'  => 'form_content_docs',
+							'type'  => 'docs_link',
+							'url'   => 'http://docs.givewp.com/formcontent',
+							'title' => esc_html__( 'Form Content', 'give' ),
 						),
 					)
 				),
@@ -495,10 +495,10 @@ class Give_MetaBox_Form_Data {
 							'type' => 'wysiwyg',
 						),
 						array(
-							'name'		  => 'terms_docs',
-							'type'        => 'docs_link',
-							'url'		  => 'https://docs.givewp.com/terms',
-							'title'		  => esc_html__('Terms & Conditions', 'give'),
+							'name'  => 'terms_docs',
+							'type'  => 'docs_link',
+							'url'   => 'http://docs.givewp.com/terms',
+							'title' => esc_html__( 'Terms & Conditions', 'give' ),
 						),
 					)
 				),
@@ -581,11 +581,27 @@ class Give_MetaBox_Form_Data {
 				if ( ! isset( $setting['id'] ) || ! isset( $setting['title'] ) ) {
 					continue;
 				}
-
-				$tabs[] = array(
+				$tab = array(
 					'id'    => $setting['id'],
 					'label' => $setting['title'],
 				);
+
+				if ( $this->has_sub_tab( $setting ) ) {
+					if ( empty( $setting['sub-fields'] ) ) {
+						$tab = array();
+					} else {
+						foreach ( $setting['sub-fields'] as $sub_fields ) {
+							$tab['sub-fields'][] = array(
+								'id'    => $sub_fields['id'],
+								'label' => $sub_fields['title'],
+							);
+						}
+					}
+				}
+
+				if ( ! empty( $tab ) ) {
+					$tabs[] = $tab;
+				}
 			}
 		}
 
@@ -606,29 +622,74 @@ class Give_MetaBox_Form_Data {
 			<div class="give-metabox-panel-wrap">
 				<ul class="give-form-data-tabs give-metabox-tabs">
 					<?php foreach ( $form_data_tabs as $index => $form_data_tab ) : ?>
-						<li class="<?php echo "{$form_data_tab['id']}_tab" . ( ! $index ? ' active' : '' ); ?>">
+						<li class="<?php echo "{$form_data_tab['id']}_tab" . ( ! $index ? ' active' : '' ) . ( $this->has_sub_tab( $form_data_tab ) ? ' has-sub-fields' : '' ); ?>">
 							<a href="#<?php echo $form_data_tab['id']; ?>"><?php echo $form_data_tab['label']; ?></a>
+							<?php if ( $this->has_sub_tab( $form_data_tab ) ) : ?>
+								<ul class="give-metabox-sub-tabs give-hidden">
+									<?php foreach ( $form_data_tab['sub-fields'] as $sub_tab ) : ?>
+										<li class="<?php echo "{$sub_tab['id']}_tab"; ?>">
+											<a href="#<?php echo $sub_tab['id']; ?>"><?php echo $sub_tab['label']; ?></a>
+										</li>
+									<?php endforeach; ?>
+								</ul>
+							<?php endif; ?>
 						</li>
 					<?php endforeach; ?>
 				</ul>
 
 				<?php $show_first_tab_content = true; ?>
 				<?php foreach ( $this->settings as $setting ) : ?>
-					<?php do_action( "give_before_{$setting['id']}_settings" ); ?>
+					<?php if ( ! $this->has_sub_tab( $setting ) ) : ?>
+						<?php do_action( "give_before_{$setting['id']}_settings" ); ?>
 
-					<div id="<?php echo $setting['id']; ?>" class="panel give_options_panel <?php echo( $show_first_tab_content ? '' : 'give-hidden' );$show_first_tab_content = false; ?>">
-						<?php if ( ! empty( $setting['fields'] ) ) : ?>
-							<?php foreach ( $setting['fields'] as $field ) : ?>
-								<?php give_render_field( $field ); ?>
-							<?php endforeach; ?>
+						<div id="<?php echo $setting['id']; ?>" class="panel give_options_panel<?php echo( $show_first_tab_content ? '' : ' give-hidden' );
+						$show_first_tab_content = false; ?>">
+							<?php if ( ! empty( $setting['fields'] ) ) : ?>
+								<?php foreach ( $setting['fields'] as $field ) : ?>
+									<?php give_render_field( $field ); ?>
+								<?php endforeach; ?>
+							<?php endif; ?>
+						</div>
+
+						<?php do_action( "give_after_{$setting['id']}_settings" ); ?>
+					<?php else: ?>
+						<?php if ( $this->has_sub_tab( $setting ) ) : ?>
+							<?php if ( ! empty( $setting['sub-fields'] ) ) : ?>
+								<?php foreach ( $setting['sub-fields'] as $index => $sub_fields ) : ?>
+									<div id="<?php echo $sub_fields['id']; ?>" class="panel give_options_panel give-hidden">
+										<?php if ( ! empty( $sub_fields['fields'] ) ) : ?>
+											<?php foreach ( $sub_fields['fields'] as $sub_field ) : ?>
+												<?php give_render_field( $sub_field ); ?>
+											<?php endforeach; ?>
+										<?php endif; ?>
+									</div>
+								<?php endforeach; ?>
+							<?php endif; ?>
 						<?php endif; ?>
-					</div>
-
-					<?php do_action( "give_after_{$setting['id']}_settings" ); ?>
+					<?php endif; ?>
 				<?php endforeach; ?>
 			</div>
 			<?php
 		}
+	}
+
+
+	/**
+	 * Check if setting field has sub tabs/fields
+	 *
+	 * @since 1.8
+	 *
+	 * @param $field_setting
+	 *
+	 * @return bool
+	 */
+	private function has_sub_tab( $field_setting ) {
+		$has_sub_tab = false;
+		if ( array_key_exists( 'sub-fields', $field_setting ) ) {
+			$has_sub_tab = true;
+		}
+
+		return $has_sub_tab;
 	}
 
 	/**
@@ -764,6 +825,74 @@ class Give_MetaBox_Form_Data {
 
 
 	/**
+	 * Get field ID.
+	 *
+	 * @since 1.8
+	 * @param array $field
+	 *
+	 * @return string
+	 */
+	private function get_field_id( $field ) {
+		$field_id = '';
+
+		if ( array_key_exists( 'id', $field ) ) {
+			$field_id = $field['id'];
+
+		}
+
+		return $field_id;
+	}
+
+	/**
+	 * Get fields ID.
+	 *
+	 * @since 1.8
+	 * @param $setting
+	 *
+	 * @return array
+	 */
+	private function get_fields_id( $setting ) {
+		$meta_keys = array();
+
+		if( ! empty( $setting ) ) {
+			foreach ( $setting['fields'] as $field ) {
+				if ( $field_id = $this->get_field_id( $field ) ) {
+					$meta_keys[] = $field_id;
+				}
+			}
+		}
+
+		return $meta_keys;
+	}
+
+	/**
+	 * Get sub fields ID.
+	 *
+	 * @since 1.8
+	 * @param $setting
+	 *
+	 * @return array
+	 */
+	private function get_sub_fields_id( $setting ) {
+		$meta_keys = array();
+
+		if ( $this->has_sub_tab( $setting ) && ! empty( $setting['sub-fields'] ) ) {
+			foreach ( $setting['sub-fields'] as $fields ) {
+				if ( ! empty( $fields['fields'] ) ) {
+					foreach ( $fields['fields'] as $field ) {
+						if ( $field_id = $this->get_field_id( $field ) ) {
+							$meta_keys[] = $field_id;
+						}
+					}
+				}
+			}
+		}
+
+		return $meta_keys;
+	}
+
+
+	/**
 	 * Get all setting field ids.
 	 *
 	 * @since  1.8
@@ -771,16 +900,15 @@ class Give_MetaBox_Form_Data {
 	 */
 	private function get_meta_keys_from_settings() {
 		$meta_keys = array();
-		foreach ( $this->settings as $setting ) {
-			if ( ! empty( $setting['fields'] ) ) {
-				foreach ( $setting['fields'] as $field ) {
-					if( ! array_key_exists( 'id', $field ) ) {
-						continue;
-					}
 
-					$meta_keys[] = $field['id'];
-				}
+		foreach ( $this->settings as $setting ) {
+			if ( $this->has_sub_tab( $setting ) ) {
+				$meta_key = $this->get_sub_fields_id( $setting );
+			} else {
+				$meta_key = $this->get_fields_id( $setting );
 			}
+
+			$meta_keys = array_merge( $meta_keys, $meta_key );
 		}
 
 		return $meta_keys;
@@ -798,12 +926,64 @@ class Give_MetaBox_Form_Data {
 	 * @return string
 	 */
 	function get_field_type( $field_id, $group_id = '' ) {
-		$settings = $this->get_setting_field( $field_id, $group_id );
-		$type     = array_key_exists( 'type', $this->get_setting_field( $field_id, $group_id ) )
-			? $settings['type']
+		$field = $this->get_setting_field( $field_id, $group_id );
+
+		$type  = array_key_exists( 'type', $field )
+			? $field['type']
 			: '';
 
 		return $type;
+	}
+
+
+	/**
+	 * Get Field
+	 *
+	 * @since 1.8
+	 *
+	 * @param array  $setting
+	 * @param string $field_id
+	 *
+	 * @return array
+	 */
+	private function get_field( $setting, $field_id ) {
+		$setting_field = array();
+
+		if ( ! empty( $setting['fields'] ) ) {
+			foreach ( $setting['fields'] as $field ) {
+				if ( array_key_exists( 'id', $field ) && $field['id'] === $field_id ) {
+					$setting_field = $field;
+					break;
+				}
+			}
+		}
+
+		return $setting_field;
+	}
+
+	/**
+	 * Get Sub Field
+	 *
+	 * @since 1.8
+	 *
+	 * @param array  $setting
+	 * @param string $field_id
+	 *
+	 * @return array
+	 */
+	private function get_sub_field( $setting, $field_id ) {
+		$setting_field = array();
+
+		if ( ! empty( $setting['sub-fields'] ) ) {
+			foreach ( $setting['sub-fields'] as $fields ) {
+				if ( $field = $this->get_field( $fields, $field_id ) ) {
+					$setting_field = $field;
+					break;
+				}
+			}
+		}
+		
+		return $setting_field;
 	}
 
 	/**
@@ -821,15 +1001,15 @@ class Give_MetaBox_Form_Data {
 
 		$_field_id = $field_id;
 		$field_id  = empty( $group_id ) ? $field_id : $group_id;
-
+		
 		if ( ! empty( $this->settings ) ) {
 			foreach ( $this->settings as $setting ) {
-				if ( ! empty( $setting['fields'] ) ) {
-					foreach ( $setting['fields'] as $field ) {
-						if ( array_key_exists( 'id', $field ) && $field['id'] === $field_id ) {
-							$setting_field = $field;
-						}
-					}
+				if( $this->has_sub_tab( $setting ) ) {
+					$setting_field = $this->get_sub_field( $setting, $field_id );
+					break;
+				} elseif ( $field = $this->get_field( $setting, $field_id ) ) {
+					$setting_field = $field;
+					break;
 				}
 			}
 		}
