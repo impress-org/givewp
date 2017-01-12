@@ -975,7 +975,7 @@ Tooltips
   background-color: #fafafa;
   border-left: 1px solid #eee;
   box-sizing: border-box; }
-  #give-metabox-form-data .give-metabox-tabs :after {
+  #give-metabox-form-data .give-metabox-tabs:after {
     content: "";
     display: block;
     width: 100%;
@@ -1011,7 +1011,9 @@ Tooltips
     position: absolute;
     bottom: 0;
     right: 166px;
-    width: 165px; }
+    width: 165px;
+    max-height: 250px;
+    overflow-y: scroll; }
 
 #give-metabox-form-data .give_options_panel {
   float: right;
