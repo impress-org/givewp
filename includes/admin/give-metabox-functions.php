@@ -83,7 +83,7 @@ function give_get_field_callback( $field ) {
 	 *
 	 * @since 1.8
 	 */
-	$func_name = apply_filters( 'give_setting_callback', $func_name, $field );
+	$func_name = apply_filters( 'give_get_field_callback', $func_name, $field );
 
 	// Check if render callback exist or not.
 	if ( ! function_exists( "$func_name" ) || empty( $func_name ) ) {
