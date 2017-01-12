@@ -1012,7 +1012,7 @@ Tooltips
     bottom: 0;
     left: 166px;
     width: 165px;
-    height: 250px;
+    max-height: 250px;
     overflow-y: scroll; }
 
 #give-metabox-form-data .give_options_panel {
