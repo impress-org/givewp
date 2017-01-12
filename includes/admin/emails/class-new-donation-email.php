@@ -41,6 +41,7 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 
 			$this->has_recipient_field = true;
 			$this->notification_status = 'enabled';
+			$this->form_metabox_setting = true;
 
 			// Initialize empty payment.
 			$this->payment = new Give_Payment( 0 );

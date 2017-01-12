@@ -41,9 +41,8 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 
 			$this->notification_status       = 'enabled';
 			$this->recipient_group_name      = __( 'Donor', 'give' );
-			$this->preview_email_tags_values = array(
-				'payment_method' => esc_html__( 'Offline', 'give' ),
-			);
+			$this->form_metabox_setting      = true;
+			$this->preview_email_tags_values = array( 'payment_method' => esc_html__( 'Offline', 'give' ) );
 
 			// Initialize empty payment.
 			$this->payment = new Give_Payment( 0 );
