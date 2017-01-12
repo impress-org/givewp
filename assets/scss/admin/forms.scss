@@ -404,7 +404,7 @@ Tooltips
 		border-right: 1px solid #eee;
 		box-sizing: border-box;
 
-		:after {
+		&:after {
 			content: "";
 			display: block;
 			width: 100%;
@@ -446,7 +446,7 @@ Tooltips
 				background-color: #eee;
 			}
 		}
-
+		
 		li.has-sub-fields:not(.active):hover{
 			ul.give-metabox-sub-tabs{
 				display: block;
@@ -454,6 +454,8 @@ Tooltips
 				bottom: 0;
 				left: 166px;
 				width: 165px;
+				height: 250px;
+				overflow-y: scroll;
 			}
 		}
 	}
