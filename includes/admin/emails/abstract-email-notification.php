@@ -103,6 +103,13 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		protected $recipient_group_name = '';
 
 		/**
+		 * @var     bool $form_metabox_setting Flag to check if email notification setting add to form or not.
+		 * @access  protected
+		 * @since   1.9
+		 */
+		protected $form_metabox_setting = false;
+
+		/**
 		 * Setup email notification.
 		 *
 		 * @since 1.9
@@ -176,7 +183,15 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 
 			// Setup setting fields.
 			add_filter( 'give_get_settings_emails', array( $this, 'add_setting_fields' ), 10, 2 );
-			add_filter( 'give_email_notification_options_metabox_fields', array( $this, 'add_metabox_setting_field' ), 10, 2 );
+
+			if( $this->form_metabox_setting ) {
+				add_filter(
+						'give_email_notification_options_metabox_fields',
+					array( $this, 'add_metabox_setting_field' ),
+					10,
+					2
+				);
+			}
 		}
 
 		/**
