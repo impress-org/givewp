@@ -1006,6 +1006,8 @@ Tooltips
     color: #555;
     position: relative;
     background-color: #eee; }
+  #give-metabox-form-data .give-metabox-tabs li.has-sub-fields.active > a {
+    background-color: #ddd; }
   #give-metabox-form-data .give-metabox-tabs li.has-sub-fields:not(.active):hover ul.give-metabox-sub-tabs {
     display: block;
     position: absolute;
