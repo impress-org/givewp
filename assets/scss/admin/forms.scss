@@ -447,6 +447,10 @@ Tooltips
 			}
 		}
 
+		li.has-sub-fields.active > a{
+			background-color: #ddd;
+		}
+
 		li.has-sub-fields:not(.active):hover{
 			ul.give-metabox-sub-tabs{
 				display: block;
