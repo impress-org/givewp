@@ -37,7 +37,6 @@
   table table input[type="text"] {
     width: 15em;
   }
-
 }
 
 .give-setting-tab-header {
@@ -63,6 +62,11 @@
   li:first-child {
     margin-left: 0;
   }
+}
+
+// Tools page: fix ajax search user list hide bug
+.give-tools-setting-page .bulkactions{
+  overflow: visible;
 }
 
 //Ugly but necessary to override WP core styles.

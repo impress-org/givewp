@@ -1593,6 +1593,9 @@ table.give-table td.row-title p {
 .give-radio-inline li:first-child {
   margin-left: 0; }
 
+.give-tools-setting-page .bulkactions {
+  overflow: visible; }
+
 .form-table td.give-radio-inline fieldset li > label {
   margin: 5px 0 0 !important; }
 
