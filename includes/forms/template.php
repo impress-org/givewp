@@ -1831,8 +1831,8 @@ function give_filter_success_page_content( $content ) {
 	$give_options = give_get_settings();
 
 	if ( isset( $give_options['success_page'] ) && isset( $_GET['payment-confirmation'] ) && is_page( $give_options['success_page'] ) ) {
-		if ( has_filter( 'give_donation_confirm_' . $_GET['payment-confirmation'] ) ) {
-			$content = apply_filters( 'give_donation_confirm_' . $_GET['payment-confirmation'], $content );
+		if ( has_filter( 'give_payment_confirm_' . $_GET['payment-confirmation'] ) ) {
+			$content = apply_filters( 'give_payment_confirm_' . $_GET['payment-confirmation'], $content );
 		}
 	}
 

@@ -34,6 +34,9 @@
   white-space: nowrap;
   vertical-align: baseline;
   border-radius: .25em; }
+  .give-item-label:hover {
+    color: #fff;
+    text-decoration: none; }
 
 .give-item-label-gray, #give-payments-filter .give-payment-id {
   background-color: #929292; }
@@ -50,6 +53,9 @@
   white-space: nowrap;
   vertical-align: baseline;
   border-radius: .25em; }
+  .give-item-label:hover {
+    color: #fff;
+    text-decoration: none; }
 
 /**
  * Give CSS Variables
@@ -969,7 +975,7 @@ Tooltips
   background-color: #fafafa;
   border-left: 1px solid #eee;
   box-sizing: border-box; }
-  #give-metabox-form-data .give-metabox-tabs :after {
+  #give-metabox-form-data .give-metabox-tabs:after {
     content: "";
     display: block;
     width: 100%;
@@ -992,10 +998,24 @@ Tooltips
       text-decoration: none;
       line-height: 20px !important;
       border-bottom: 1px solid #eee; }
-  #give-metabox-form-data .give-metabox-tabs li.active a {
+  #give-metabox-form-data .give-metabox-tabs .give-metabox-sub-tabs li {
+    background-color: #f1f1f1; }
+    #give-metabox-form-data .give-metabox-tabs .give-metabox-sub-tabs li a {
+      border-bottom-color: #e5e5e5; }
+  #give-metabox-form-data .give-metabox-tabs li.active > a {
     color: #555;
     position: relative;
     background-color: #eee; }
+  #give-metabox-form-data .give-metabox-tabs li.has-sub-fields.active > a {
+    background-color: #ddd; }
+  #give-metabox-form-data .give-metabox-tabs li.has-sub-fields:not(.active):hover ul.give-metabox-sub-tabs {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    right: 166px;
+    width: 165px;
+    max-height: 250px;
+    overflow-y: scroll; }
 
 #give-metabox-form-data .give_options_panel {
   float: right;
@@ -1573,6 +1593,9 @@ table.give-table td.row-title p {
 .give-radio-inline li:first-child {
   margin-right: 0; }
 
+.give-tools-setting-page .bulkactions {
+  overflow: visible; }
+
 .form-table td.give-radio-inline fieldset li > label {
   margin: 5px 0 0 !important; }
 
@@ -1853,7 +1876,7 @@ a.give-delete {
     margin-right: 5px; }
 
 #give-payments-filter ul.subsubsub {
-  margin: 0 0 12px; }
+  margin-bottom: 12px; }
 
 #give-payments-filter .tablenav.top {
   float: none; }
@@ -1935,6 +1958,9 @@ tr.status-refunded td {
   background-color: #ffba00;
   margin: 0 15px;
   vertical-align: middle; }
+  #test-payment-label:hover {
+    color: #fff;
+    text-decoration: none; }
 
 #give-payments-filter .give-payment-id {
   padding: .2em .4em .3em;
@@ -1946,6 +1972,9 @@ tr.status-refunded td {
   vertical-align: baseline;
   border-radius: .25em;
   font-weight: normal; }
+  #give-payments-filter .give-payment-id:hover {
+    color: #fff;
+    text-decoration: none; }
 
 #give-payments-filter .column-details {
   padding-left: 30px; }

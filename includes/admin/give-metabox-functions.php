@@ -75,21 +75,39 @@ function give_get_field_callback( $field ) {
 			break;
 
 		default:
-			$func_name = "{$func_name_prefix}_{$field['type']}";
+
+			if (
+				array_key_exists( 'callback', $field )
+				&& ! empty( $field['callback'] )
+			) {
+				$func_name = $field['callback'];
+			} else {
+				$func_name = "{$func_name_prefix}_{$field['type']}";
+			}
 	}
 
-	$func_name = apply_filters( 'give_setting_callback', $func_name, $field );
+	/**
+	 * Filter the metabox setting render function
+	 *
+	 * @since 1.8
+	 */
+	$func_name = apply_filters( 'give_get_field_callback', $func_name, $field );
 
+	// Exit if not any function exist.
 	// Check if render callback exist or not.
-	if ( ! function_exists( "$func_name" ) || empty( $func_name ) ) {
+	if ( empty( $func_name ) ) {
+		return false;
+	} elseif ( is_string( $func_name ) && ! function_exists( "$func_name" ) ) {
+		return false;
+	} elseif ( is_array( $func_name ) && ! method_exists( $func_name[0], "$func_name[1]" ) ) {
 		return false;
 	}
 
-	return apply_filters( 'give_setting_callback', $func_name, $field );
+	return $func_name;
 }
 
 /**
- * This function add backward compatibility to render cmb2 type field type.
+ * This function adds backward compatibility to render cmb2 type field type.
  *
  * @since  1.8
  *
@@ -98,10 +116,9 @@ function give_get_field_callback( $field ) {
  * @return bool
  */
 function give_render_field( $field ) {
-	$func_name = give_get_field_callback( $field );
 
 	// Check if render callback exist or not.
-	if ( ! $func_name ) {
+	if ( ! ( $func_name = give_get_field_callback( $field ) ) ) {
 		return false;
 	}
 
@@ -170,10 +187,6 @@ function give_render_field( $field ) {
 				'default' => __( 'Default' ),
 			);
 			break;
-
-		case 'docs_link':
-			$field['type'] = 'docs_link';
-			break;
 	}
 
 	// CMB2 compatibility: Add support to define field description by desc & description param.
@@ -183,7 +196,11 @@ function give_render_field( $field ) {
 		: ( ! empty( $field['desc'] ) ? $field['desc'] : '' ) );
 
 	// Call render function.
-	$func_name( $field );
+	if ( is_array( $func_name ) ) {
+		$func_name[0]->$func_name[1]( $field );
+	} else {
+		$func_name( $field );
+	}
 
 	return true;
 }
@@ -608,11 +625,14 @@ function give_default_gateway( $field ) {
 	global $thepostid, $post;
 
 	// get all active payment gateways.
-	$gateways = give_get_enabled_payment_gateways( $thepostid );
+	$gateways         = give_get_enabled_payment_gateways( $thepostid );
+	$field['options'] = array();
 
 	// Set field option value.
-	foreach ( $gateways as $key => $option ) {
-		$field['options'][ $key ] = $option['admin_label'];
+	if( ! empty( $gateways ) ) {
+		foreach ( $gateways as $key => $option ) {
+			$field['options'][ $key ] = $option['admin_label'];
+		}
 	}
 
 	//Add a field to the Give Form admin single post view of this field

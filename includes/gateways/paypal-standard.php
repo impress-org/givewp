@@ -441,18 +441,18 @@ function give_process_paypal_refund( $data, $payment_id = 0 ) {
 function give_get_paypal_redirect( $ssl_check = false ) {
 
 	if ( is_ssl() || ! $ssl_check ) {
-		$protocal = 'https://';
+		$protocol = 'https://';
 	} else {
-		$protocal = 'http://';
+		$protocol = 'http://';
 	}
 
 	// Check the current payment mode
 	if ( give_is_test_mode() ) {
 		// Test mode
-		$paypal_uri = $protocal . 'www.sandbox.paypal.com/cgi-bin/webscr';
+		$paypal_uri = $protocol . 'www.sandbox.paypal.com/cgi-bin/webscr';
 	} else {
 		// Live mode
-		$paypal_uri = $protocal . 'www.paypal.com/cgi-bin/webscr';
+		$paypal_uri = $protocol . 'www.paypal.com/cgi-bin/webscr';
 	}
 
 	return apply_filters( 'give_paypal_uri', $paypal_uri );

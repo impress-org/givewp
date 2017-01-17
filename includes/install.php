@@ -136,6 +136,7 @@ function give_run_install() {
 		$options['base_country']       = 'US';
 		$options['test_mode']          = 'enabled';
 		$options['currency']           = 'USD';
+		$options['currency_position']   = 'before';
 		$options['session_lifetime']   = '604800';
 		$options['email_access']       = 'disabled';
 		$options['number_decimals']    = 2;

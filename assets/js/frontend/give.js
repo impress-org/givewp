@@ -58,8 +58,17 @@ jQuery(function ($) {
 		e.preventDefault();
 		var this_button = $(this);
 		var this_form = $(this).parents('form');
+		var payment_field_id = '#give-payment-mode-select',
+			$payment_field = $(payment_field_id),
+			show_field_ids = '';
 		this_button.hide();
-		this_form.find('#give-payment-mode-select, #give_purchase_form_wrap').slideDown();
+
+		// Show payment field if active payment gateway count greater then one.
+		if( $( 'li', $payment_field ).length > 1 ) {
+			show_field_ids = payment_field_id + ', ';
+		}
+
+		this_form.find( show_field_ids + '#give_purchase_form_wrap' ).slideDown();
 		return false;
 	});
 
