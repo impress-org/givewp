@@ -166,6 +166,12 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 = 1.8 =
 
+= 1.7.2: December 21, 2016 =
+* Fix: The login within the donation form doesn't refresh due to a bug introduced in 1.7 - it's now fixed and working properly again. [#1341](https://github.com/WordImpress/Give/issues/1341)
+* Fix: The donation form's "Preview" option doesn't work while the donation form is in "Draft" post status. [#1343](https://github.com/WordImpress/Give/issues/1343)
+* Fix: Compatibility with the new TwentySeventeen default WP theme. [#1353](https://github.com/WordImpress/Give/issues/1353)
+* Tweak: Merged similar strings for easier i18n. [#1349](https://github.com/WordImpress/Give/issues/1349)
+
 = 1.7.1: December 10, 2016 =
 * Fix: PayPal gateway is not properly passing the donation form name. [#1334](https://github.com/WordImpress/Give/issues/1334)
 * Fix: Add filter for Magnific modal options to close when the background is clicked and customize the modal's CSS class name. [#1328](https://github.com/WordImpress/Give/issues/1328)
