@@ -134,19 +134,6 @@ class Give_HTML_Elements {
 			$options[0] = esc_html__( 'No forms found.', 'give' );
 		}
 
-		// This ensures that any selected forms are included in the drop down
-		if ( is_array( $args['selected'] ) ) {
-			foreach ( $args['selected'] as $item ) {
-				if ( ! in_array( $item, $options ) ) {
-					$options[ $item ] = get_the_title( $item );
-				}
-			}
-		} elseif ( is_numeric( $args['selected'] ) && $args['selected'] !== 0 ) {
-			if ( ! in_array( $args['selected'], $options ) ) {
-				$options[ $args['selected'] ] = get_the_title( $args['selected'] );
-			}
-		}
-
 		$output = $this->select( array(
 			'name'             => $args['name'],
 			'selected'         => $args['selected'],
