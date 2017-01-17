@@ -405,7 +405,7 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 
 					if ( in_array( $cmb2_filter_name, $wp_filter_keys ) ) {
 
-						if( 0 <= version_compare( 4.7, get_bloginfo('version') ) &&  ! empty( $wp_filter[$cmb2_filter_name]->callbacks ) ) {
+						if( 0 >= version_compare( 4.7, get_bloginfo('version') ) &&  ! empty( $wp_filter[$cmb2_filter_name]->callbacks ) ) {
 							$cmb2_filter_arr = current( $wp_filter[$cmb2_filter_name]->callbacks );
 						} else {
 							$cmb2_filter_arr = current( $wp_filter[ $cmb2_filter_name ] );
