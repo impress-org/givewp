@@ -127,7 +127,8 @@ class Give_HTML_Elements {
 		if ( $forms ) {
 			$options[0] = esc_attr__( 'Select a Donation Form', 'give' );
 			foreach ( $forms as $form ) {
-				$options[ absint( $form->ID ) ] = esc_html( $form->post_title );
+				$form_title = empty( $form->post_title ) ? sprintf( __( 'Untitled (#%s)', 'give' ), $form->ID ) : $form->post_title;
+				$options[ absint( $form->ID ) ] = esc_html( $form_title );
 			}
 		} else {
 			$options[0] = esc_html__( 'No forms found.', 'give' );
