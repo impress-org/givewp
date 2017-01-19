@@ -25,7 +25,7 @@ $plugins      = give_get_plugins();
 	<p><?php _e( 'Please copy and paste this information in your ticket when contacting support:', 'give' ); ?> </p>
 	<p class="submit">
 		<a class="button-primary js-give-debug-report-button" href="#"><?php _e( 'Get System Report', 'give' ); ?></a>
-		<a class="button-secondary docs" href="https://givewp.com/documentation/core/settings/system-info/" target="_blank"><?php _e( 'Understanding the System Report', 'give' ); ?></a>
+		<a class="button-secondary docs" href="http://docs.givewp.com/systeminfo" target="_blank"><?php _e( 'Understanding the System Report', 'give' ); ?></a>
 	</p>
 	<div class="give-debug-report js-give-debug-report">
 		<textarea readonly="readonly"></textarea>
