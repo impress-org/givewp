@@ -179,9 +179,9 @@ class Give_Forms_Widget extends WP_Widget{
 			<small class="give-field-description">
 				<?php
 				printf(
-					/* translators: %s: https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels */
+					/* translators: %s: http://docs.givewp.com/floatinglabels */
 					__( 'Override the <a href="%s" target="_blank">floating labels</a> setting for this Give form.', 'give' ),
-					esc_url( 'https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels' )
+					esc_url( 'http://docs.givewp.com/floatinglabels' )
 				);
 			?></small>
 		</p>
