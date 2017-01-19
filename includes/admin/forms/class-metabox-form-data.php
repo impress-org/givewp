@@ -306,8 +306,8 @@ class Give_MetaBox_Form_Data {
 							),
 							array(
 								'name'    => esc_html__( 'Floating Labels', 'give' ),
-								/* translators: %s: forms https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels */
-								'desc'    => sprintf( __( 'Select the <a href="%s" target="_blank">floating labels</a> setting for this Give form. Be aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), esc_url( 'https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels' ) ),
+								/* translators: %s: forms http://docs.givewp.com/formdisplay */
+								'desc'    => sprintf( __( 'Select the <a href="%s" target="_blank">floating labels</a> setting for this Give form. Be aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), esc_url( 'http://docs.givewp.com/formdisplay' ) ),
 								'id'      => $prefix . 'form_floating_labels',
 								'type'    => 'radio_inline',
 								'options' => array(
