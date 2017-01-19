@@ -302,7 +302,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 				'display-settings'    => esc_html__( 'Display', 'give' ),
 				'post-types'          => esc_html__( 'Post Types', 'give' ),
 				'taxonomies'          => esc_html__( 'Taxonomies', 'give' ),
-				'term-and-conditions' => esc_html__( 'Term and Conditions', 'give' )
+				'term-and-conditions' => esc_html__( 'Terms and Conditions', 'give' )
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );
