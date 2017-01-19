@@ -181,7 +181,7 @@ $plugins      = give_get_plugins();
 					$php_version = phpversion();
 
 					if ( version_compare( $php_version, '5.6', '<' ) ) {
-						echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf( __( '%s - We recommend a minimum PHP version of 5.6. See: %s', 'give' ), esc_html( $php_version ), '<a href="https://givewp.com/documentation/core/settings/system-info/" target="_blank">' . __( 'PHP Requirements in Give', 'give' ) . '</a>' ) . '</mark>';
+						echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf( __( '%s - We recommend a minimum PHP version of 5.6. See: %s', 'give' ), esc_html( $php_version ), '<a href="http://docs.givewp.com/systeminfo" target="_blank">' . __( 'PHP Requirements in Give', 'give' ) . '</a>' ) . '</mark>';
 					} else {
 						echo '<mark class="yes">' . esc_html( $php_version ) . '</mark>';
 					}
