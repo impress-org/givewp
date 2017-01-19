@@ -900,7 +900,9 @@ add_filter( 'give_form_goal', 'give_currency_filter', 20 );
  * @return bool  $ret Whether or not the logged_in_only setting is set
  */
 function give_logged_in_only( $form_id ) {
-	$ret = give_is_setting_enabled( get_post_meta( $form_id, '_give_logged_in_only', true ) );
+	// If _give_logged_in_only is set to enable then guest can donate from that specific form.
+	// Other wise it is member only donation form.
+	$ret = ! give_is_setting_enabled( get_post_meta( $form_id, '_give_logged_in_only', true ) );
 
 	return (bool) apply_filters( 'give_logged_in_only', $ret, $form_id );
 
