@@ -502,7 +502,7 @@ class Give_MetaBox_Form_Data {
 						array(
 							'name'  => 'terms_docs',
 							'type'  => 'docs_link',
-							'url'   => 'http://docs.givewp.com/terms',
+							'url'   => 'http://docs.givewp.com/form-terms',
 							'title' => esc_html__( 'Terms & Conditions', 'give' ),
 						),
 					),
