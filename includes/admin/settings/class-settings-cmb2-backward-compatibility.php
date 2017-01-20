@@ -587,6 +587,13 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 		public function output_sections() {
 			$sections = $this->get_sections();
 
+			// Show section settings only if setting section exist.
+			if( ! in_array( $this->current_tab , array_keys( $sections ) ) ) {
+				echo '<div class="error"><p>' . __( 'Oops, this settings page does not exist.', 'give' ) . '</p></div>';
+				return;
+			}
+
+			// Bailout.
 			if ( empty( $sections ) ) {
 				return;
 			}
