@@ -154,7 +154,7 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 				echo '<li><a href="' . admin_url( 'edit.php?post_type=give_forms&page=' . $this->current_setting_page . '&tab=' . $this->id . '&section=' . sanitize_title( $id ) ) . '" class="' . ( $current_section == $id ? 'current' : '' ) . '">' . $label . '</a> ' . ( end( $array_keys ) == $id ? '' : '|' ) . ' </li>';
 			}
 
-			echo '</ul><br class="clear" />';
+			echo '</ul><br class="clear" /><hr>';
 		}
 
 		/**
