@@ -137,7 +137,7 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 
 
 			// Bailout.
-			if ( empty( $sections ) || 1 === sizeof( $sections ) ) {
+			if ( empty( $sections ) ) {
 				return;
 			}
 

@@ -587,7 +587,7 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 		public function output_sections() {
 			$sections = $this->get_sections();
 
-			if ( empty( $sections ) || 1 === sizeof( $sections ) ) {
+			if ( empty( $sections ) ) {
 				return;
 			}
 
