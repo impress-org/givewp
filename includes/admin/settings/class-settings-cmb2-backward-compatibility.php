@@ -402,8 +402,7 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 				// Third party plugin backward compatibility.
 				$wp_filter_keys = array_keys( $wp_filter );
 				foreach ( $new_setting_fields as $index => $field ) {
-
-					if ( in_array( $field['type'], array( 'title', 'sectionend' ) ) ) {
+					if ( ! isset( $field['type'] ) || in_array( $field['type'], array( 'title', 'sectionend' ) ) ) {
 						continue;
 					}
 
