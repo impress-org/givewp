@@ -318,6 +318,12 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 
 						case 'give_title' :
 							$field['type'] = 'title';
+
+							// Since we are showing sections, so there now ned to show horizontal rules.
+							if( '<hr>' === $field['desc'] ) {
+								$field['desc'] = '';
+							}
+
 							break;
 					}
 
