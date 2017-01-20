@@ -73,7 +73,9 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 		 * Default setting tab.
 		 *
 		 * @since  1.8
+		 *
 		 * @param  $setting_tab
+		 *
 		 * @return string
 		 */
 		function set_default_setting_tab( $setting_tab ) {
@@ -84,7 +86,9 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 		 * Add this page to settings.
 		 *
 		 * @since  1.8
+		 *
 		 * @param  array $pages Lst of pages.
+		 *
 		 * @return array
 		 */
 		public function add_settings_page( $pages ) {
@@ -104,6 +108,7 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 			 * Filter the settings.
 			 *
 			 * @since  1.8
+			 *
 			 * @param  array $settings
 			 */
 			$settings = apply_filters( 'give_get_settings_' . $this->id, array() );
@@ -129,24 +134,25 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 		 * @return void
 		 */
 		public function output_sections() {
-			//Get current section.
+			// Get current section.
 			$current_section = give_get_current_setting_section();
 
-			//Get all sections.
+			// Get all sections.
 			$sections = $this->get_sections();
 
-			//Show section settings only if setting section exist.
-			if( ! in_array( $current_section , array_keys( $sections ) ) ) {
+			// Show section settings only if setting section exist.
+			if ( ! in_array( $current_section, array_keys( $sections ) ) ) {
 				echo '<div class="error"><p>' . __( 'Oops, this settings page does not exist.', 'give' ) . '</p></div>';
+
 				return;
 			}
 
-			//Bailout.
+			// Bailout.
 			if ( empty( $sections ) ) {
 				return;
 			}
 
-			if( is_null( $this->current_setting_page ) ) {
+			if ( is_null( $this->current_setting_page ) ) {
 				$this->current_setting_page = give_get_current_setting_page();
 			}
 
@@ -181,7 +187,7 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 		 * @return void
 		 */
 		public function save() {
-			$settings = $this->get_settings();
+			$settings        = $this->get_settings();
 			$current_section = give_get_current_setting_section();
 
 			Give_Admin_Settings::save_fields( $settings, 'give_settings' );
