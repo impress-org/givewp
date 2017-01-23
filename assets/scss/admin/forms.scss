@@ -431,13 +431,19 @@ Tooltips
 				text-decoration: none;
 				line-height: 20px !important;
 				border-bottom: 1px solid #eee;
+				overflow: hidden;
+
+				span{
+					width: 122px;
+					float: right;
+				}
 			}
 
 		}
 
 		.give-metabox-sub-tabs li {
 			background-color: #f1f1f1;
-			a {  border-bottom-color: #e5e5e5;  }
+			a { border-bottom-color: #e5e5e5;  }
 		}
 
 		li.active {
@@ -457,7 +463,7 @@ Tooltips
 				display: block;
 				position: absolute;
 				bottom: 0;
-				left: 166px;
+				left: 162px;
 				width: 165px;
 				max-height: 250px;
 				overflow-y: scroll;
