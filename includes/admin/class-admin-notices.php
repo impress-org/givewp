@@ -164,7 +164,7 @@ class Give_Notices {
 						break;
 
 					case 'primary-email-updated' :
-						$this->notices['updated']['give-customer-primary-email-updated'] = esc_attr__( 'Primary email updated for donors', 'give' );
+						$this->notices['updated']['give-customer-primary-email-updated'] = esc_attr__( 'Primary email updated for donor', 'give' );
 						break;
 
 					case 'primary-email-failed' :
