@@ -1647,5 +1647,123 @@ jQuery.noConflict();
 			$(this).val(price_string);
 		});
 
+		/**
+		 * Responsive setting tab features.
+		 */
+
+		// Show/Hide sub tab nav.
+		$('#give-mainform').on('click', '#give-show-sub-nav', function (e) {
+			e.preventDefault();
+
+			var $sub_tab_nav = $(this).next();
+			$sub_tab_nav.toggleClass('give-hidden');
+
+			return false;
+		});
+
+		// Render setting tab.
+		give_render_responsinve_tabs();
 	});
 })(jQuery);
+
+/**
+ * Responsive js.
+ */
+jQuery(window).resize(function () {
+	give_render_responsinve_tabs();
+});
+
+/**
+ * Render responsive tabs
+ */
+function give_render_responsinve_tabs() {
+	var $setting_page_form      = jQuery('#give-mainform'),
+		$main_tab_nav           = jQuery('h2.give-nav-tab-wrapper'),
+		setting_page_form_width = $setting_page_form.width(),
+		$sub_tab_nav_wrapper    = jQuery('.give-sub-nav-tab-wrapper'),
+		$sub_tab_nav            = jQuery('nav', $sub_tab_nav_wrapper),
+		$setting_tab_links      = jQuery('h2.give-nav-tab-wrapper>a:not(give-not-tab)'),
+		$show_tabs              = [],
+		$hide_tabs              = [],
+		tab_width               = 200;
+
+	// Bailout.
+	if( ! $setting_page_form.length ) {
+		return false;
+	}
+
+	// Collect tabs to show or hide.
+	jQuery.each($setting_tab_links, function (index, $tab_link) {
+		$tab_link = jQuery($tab_link);
+		tab_width = tab_width + parseInt($tab_link.outerWidth());
+
+		if (tab_width < setting_page_form_width) {
+			$show_tabs.push($tab_link);
+		} else {
+			$hide_tabs.push($tab_link);
+		}
+	});
+
+	// Remove current tab from sub menu and add this to main menu if exist and get last tab from main menu and add this to sub menu.
+	if ($hide_tabs.length && ( -1 != window.location.search.indexOf('&tab=') )) {
+		var $current_tab_nav = {},
+			query_params     = get_url_params();
+
+		$hide_tabs = $hide_tabs.filter(function ($tab_link) {
+			var is_current_nav_item = ( -1 != parseInt($tab_link.attr('href').indexOf( '&tab=' + query_params['tab'] ) ) );
+
+			if (is_current_nav_item) {
+				$current_tab_nav = $tab_link;
+			}
+
+			return ( !is_current_nav_item );
+		});
+
+		if ($current_tab_nav.length) {
+			$hide_tabs.unshift($show_tabs.pop());
+			$show_tabs.push($current_tab_nav);
+		}
+	}
+
+	// Show main menu tabs.
+	if ($show_tabs.length) {
+		jQuery.each($show_tabs, function (index, $tab_link) {
+			$tab_link = jQuery($tab_link);
+
+			if ($tab_link.hasClass('give-hidden')) {
+				$tab_link.removeClass('give-hidden');
+			}
+		});
+	}
+
+	// Hide sub menu tabs.
+	if ($hide_tabs.length) {
+		$sub_tab_nav.html('');
+
+		jQuery.each($hide_tabs, function (index, $tab_link) {
+			$tab_link = jQuery($tab_link);
+			$tab_link.addClass('give-hidden');
+			$tab_link.clone().removeClass().appendTo($sub_tab_nav);
+		});
+
+		if (!jQuery('.give-sub-nav-tab-wrapper', $main_tab_nav).length) {
+			$sub_tab_nav_wrapper.removeClass('give-hidden');
+			$main_tab_nav.append($sub_tab_nav_wrapper);
+		}
+	}
+}
+
+/**
+ * Get url query params.
+ *
+ * @returns {Array}
+ */
+function get_url_params() {
+	var vars   = [], hash;
+	var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+	for (var i = 0; i < hashes.length; i++) {
+		hash = hashes[i].split('=');
+		vars[hash[0]] = hash[1];
+	}
+	return vars;
+}
