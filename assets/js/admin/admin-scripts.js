@@ -1692,6 +1692,12 @@ function give_render_responsinve_tabs() {
 		return false;
 	}
 
+	// Update tab wrapper css.
+	$main_tab_nav.css({
+		height: 'auto',
+		overflow: 'visible'
+	});
+
 	// Collect tabs to show or hide.
 	jQuery.each($setting_tab_links, function (index, $tab_link) {
 		$tab_link = jQuery($tab_link);

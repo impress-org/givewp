@@ -445,9 +445,23 @@ a.give-delete {
   margin: 0;
   padding-top: .5em;
 }
+
+
+// Setting page tab
+h2.nav-tab-wrapper{
+  overflow: hidden;
+  height: 35px;
+}
+
+@media screen and (max-width: 600px){
+  h2.nav-tab-wrapper{
+    height: 50px;
+  }
+}
 .give-sub-nav-tab-wrapper{
   position: relative;
   display: inline-block;
+  z-index: 9999;
   nav.give-sub-nav-tab {
     border: 1px solid #ccc;
     border-bottom: 0;
