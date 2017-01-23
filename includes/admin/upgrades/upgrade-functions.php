@@ -53,7 +53,6 @@ function give_do_automatic_upgrades() {
 }
 
 add_action( 'admin_init', 'give_do_automatic_upgrades' );
-add_action( 'give_core_upgrades', 'give_do_automatic_upgrades' );
 
 /**
  * Display Upgrade Notices
