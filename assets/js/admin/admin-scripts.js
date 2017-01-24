@@ -194,7 +194,7 @@ jQuery.noConflict();
 
 		new_donor: function () {
 
-			$('#give-customer-details').on('click', '.give-payment-new-customer, .give-payment-new-customer-cancel', function (e) {
+			$('#give-donor-details').on('click', '.give-payment-new-customer, .give-payment-new-customer-cancel', function (e) {
 				e.preventDefault();
 				$('.customer-info').toggle();
 				$('.new-customer').toggle();
