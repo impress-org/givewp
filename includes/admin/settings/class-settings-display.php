@@ -65,8 +65,8 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						),
 						array(
 							'name' => esc_html__( 'Floating Labels', 'give' ),
-							/* translators: %s: https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels */
-							'desc' => sprintf( wp_kses( __( '<a href="%s" target="_blank">Floating labels</a> in set form labels within fields and can improve the donor experience. Note that if the "Disable CSS" option is enabled, you will need to style the floating labels yourself.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( 'https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels' ) ),
+							/* translators: %s: http://docs.givewp.com/form-floating-labels */
+							'desc' => sprintf( wp_kses( __( '<a href="%s" target="_blank">Floating labels</a> in set form labels within fields and can improve the donor experience. Note that if the "Disable CSS" option is enabled, you will need to style the floating labels yourself.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( 'http://docs.givewp.com/form-floating-labels' ) ),
 							'id'   => 'floatlabels',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
@@ -90,7 +90,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
                         array(
                             'name'  => esc_html__( 'Display Settings Docs Link', 'give' ),
                             'id'    => 'display_settings_docs_link',
-                            'url'   => esc_url( 'http://docs.givewp.com/displayoptions' ),
+                            'url'   => esc_url( 'http://docs.givewp.com/form-display-options' ),
                             'title' => __( 'Display Options Settings', 'give' ),
                             'type'  => 'give_docs_link',
                         ),
@@ -173,7 +173,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
                         array(
                             'name'  => esc_html__( 'Post Types Docs Link', 'give' ),
                             'id'    => 'post_types_settings_docs_link',
-                            'url'   => esc_url( 'http://docs.givewp.com/posttypessettings' ),
+                            'url'   => esc_url( 'http://docs.givewp.com/settings-post-types' ),
                             'title' => __( 'Post Types Settings', 'give' ),
                             'type'  => 'give_docs_link',
                         ),
@@ -215,7 +215,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
                         array(
                             'name'  => esc_html__( 'Taxonomies Docs Link', 'give' ),
                             'id'    => 'taxonomies_settings_docs_link',
-                            'url'   => esc_url( 'http://docs.givewp.com/taxonomiessettings' ),
+                            'url'   => esc_url( 'http://docs.givewp.com/settings-taxonomies' ),
                             'title' => __( 'Taxonomies Settings', 'give' ),
                             'type'  => 'give_docs_link',
                         ),
@@ -261,7 +261,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
                         array(
                             'name'  => esc_html__( 'Terms and Conditions Docs Link', 'give' ),
                             'id'    => 'terms_settings_docs_link',
-                            'url'   => esc_url( 'http://docs.givewp.com/termssettings' ),
+                            'url'   => esc_url( 'http://docs.givewp.com/settings-terms' ),
                             'title' => __( 'Terms and Conditions Settings', 'give' ),
                             'type'  => 'give_docs_link',
                         ),

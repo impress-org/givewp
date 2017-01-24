@@ -27,7 +27,7 @@ class Give_Addon_Activation_Banner {
 	 *                               'file'              => __FILE__, // (required) Directory path to the main plugin file
 	 *                               'name'              => __( 'Authorize.net Gateway', 'give-authorize' ), // (required) Name of the Add-on
 	 *                               'version'           => GIVE_AUTHORIZE_VERSION, // (required)The most current version
-	 *                               'documentation_url' => 'https://givewp.com/documentation/add-ons/authorize-net-gateway/',// (required)
+	 *                               'documentation_url' => 'http://docs.givewp.com/addon-authorize',// (required)
 	 *                               'support_url'       => 'https://givewp.com/support/', // (required)Location of Add-on settings page, leave blank to hide
 	 *                               'testing'           => false, // (required) Never leave as "true" in production!!!
 	 *                               }

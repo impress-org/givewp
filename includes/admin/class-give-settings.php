@@ -428,8 +428,8 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'name' => esc_html__( 'Enable Floating Labels', 'give' ),
-							/* translators: %s: https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels */
-							'desc' => sprintf( wp_kses( __( 'Enable <a href="%s" target="_blank">floating labels</a> in Give\'s donation forms. Note that if the "Disable CSS" option is enabled, you will need to style the floating labels yourself.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( 'https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels' ) ),
+							/* translators: %s: http://docs.givewp.com/form-floating-labels */
+							'desc' => sprintf( wp_kses( __( 'Enable <a href="%s" target="_blank">floating labels</a> in Give\'s donation forms. Note that if the "Disable CSS" option is enabled, you will need to style the floating labels yourself.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( 'http://docs.givewp.com/form-floating-labels' ) ),
 							'id'   => 'floatlabels',
 							'type' => 'checkbox'
 						),
@@ -1414,10 +1414,10 @@ function give_api_callback() {
 	?>
 	<span class="cmb2-metabox-description api-description">
 		<?php echo sprintf(
-		/* translators: 1: https://givewp.com/documentation/give-api-reference/ 2: https://givewp.com/addons/zapier/ */
+		/* translators: 1: http://docs.givewp.com/api 2: http://docs.givewp.com/addon-zapier */
 			__( 'You can create API keys for individual users within their profile edit screen. API keys allow users to use the <a href="%1$s" target="_blank">Give REST API</a> to retrieve donation data in JSON or XML for external applications or devices, such as <a href="%2$s" target="_blank">Zapier</a>.', 'give' ),
-			esc_url( 'https://givewp.com/documentation/give-api-reference/' ),
-			esc_url( 'https://givewp.com/addons/zapier/' )
+			esc_url( 'http://docs.givewp.com/api' ),
+			esc_url( 'http://docs.givewp.com/addon-zapier' )
 		); ?>
 	</span>
 	<?php
