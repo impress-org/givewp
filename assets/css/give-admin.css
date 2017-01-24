@@ -998,7 +998,11 @@ Tooltips
       box-shadow: none;
       text-decoration: none;
       line-height: 20px !important;
-      border-bottom: 1px solid #eee; }
+      border-bottom: 1px solid #eee;
+      overflow: hidden; }
+      #give-metabox-form-data .give-metabox-tabs li a span {
+        width: 122px;
+        float: right; }
   #give-metabox-form-data .give-metabox-tabs .give-metabox-sub-tabs li {
     background-color: #f1f1f1; }
     #give-metabox-form-data .give-metabox-tabs .give-metabox-sub-tabs li a {
@@ -1013,7 +1017,7 @@ Tooltips
     display: block;
     position: absolute;
     bottom: 0;
-    left: 166px;
+    left: 162px;
     width: 165px;
     max-height: 250px;
     overflow-y: scroll; }
