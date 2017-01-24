@@ -175,6 +175,8 @@ jQuery(document).ready(function ($) {
 				this_form.find('.give_errors').remove();
 				//Submit form for normal processing
 				$(give_purchase_form).submit();
+
+				this_form.trigger( 'give_form_validation_passed' );
 			} else {
 				//There was an error / remove old errors and prepend new ones
 				this_form.find('#give-purchase-button').val(complete_purchase_val);
