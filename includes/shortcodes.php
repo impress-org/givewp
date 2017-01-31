@@ -79,8 +79,8 @@ function give_form_shortcode( $atts ) {
 	), $atts, 'give_form' );
 
 	// Convert string to bool.
-	$atts['show_title'] = (bool) $atts['show_title'];
-	$atts['show_goal']  = (bool) $atts['show_goal'];
+	$atts['show_title'] = filter_var( $atts['show_title'], FILTER_VALIDATE_BOOLEAN );
+	$atts['show_goal'] = filter_var( $atts['show_goal'], FILTER_VALIDATE_BOOLEAN );
 
 	//get the Give Form
 	ob_start();
