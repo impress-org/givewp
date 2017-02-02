@@ -459,7 +459,7 @@ function give_get_default_offline_donation_email_content() {
 function give_offline_donation_receipt_status_notice( $notice, $id ) {
 	$payment = new Give_Payment( $id );
 
-	if ( 'offline' !== $payment->gateway ) {
+	if ( 'offline' !== $payment->gateway || $payment->is_completed() ) {
 		return $notice;
 	}
 
