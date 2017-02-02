@@ -678,6 +678,7 @@ function give_v18_upgrades_form_metadata() {
 	}
 
 	wp_reset_postdata();
+	give_set_upgrade_complete( 'v18_upgrades_form_metadata' );
 }
 
 /**
