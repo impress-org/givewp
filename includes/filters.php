@@ -21,33 +21,35 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since  1.8
  *
- * @param  array  $settings    Array of settings.
- * @param  string $option_name Setting name.
+ * @param  array  $old_settings Array of settings.
+ * @param  array  $settings     Array of settings.
+ * @param  string $option_name  Setting name.
  *
  * @return void
  */
-function give_set_settings_with_disable_prefix( $settings, $option_name ) {
+function give_set_settings_with_disable_prefix( $old_settings, $settings, $option_name ) {
 	// Get old setting names.
-	$old_settings   = give_v18_renamed_core_settings();
+	$old_settings   = array_flip( give_v18_renamed_core_settings() );
 	$update_setting = false;
 
 	foreach ( $settings as $key => $value ) {
 
 		// Check 1. Check if new option is really updated or not.
 		// Check 2. Continue if key is not renamed.
-		if (
-			! isset( $_POST[ $key ] )
-			|| false === ( $old_setting_name = array_search( $key, $old_settings ) )
-		) {
+		if ( ! isset( $old_settings[ $key ] ) ) {
 			continue;
 		}
 
 		// Set old setting.
-		$settings[ $old_setting_name ] = 'on';
+		$settings[ $old_settings[ $key ] ] = 'on';
 
 		// Do not need to set old setting if new setting is not set.
-		if ( give_is_setting_enabled( $value ) ) {
-			unset( $settings[ $old_setting_name ] );
+		if (
+			( give_is_setting_enabled( $value ) && ( false !== strpos( $old_settings[ $key ], 'disable_' ) ) )
+			|| ( ! give_is_setting_enabled( $value ) && ( false !== strpos( $old_settings[ $key ], 'enable_' ) ) )
+
+		) {
+			unset( $settings[ $old_settings[ $key ] ] );
 		}
 
 		// Tell bot to update setting.
@@ -59,5 +61,4 @@ function give_set_settings_with_disable_prefix( $settings, $option_name ) {
 		update_option( $option_name, $settings );
 	}
 }
-
-add_filter( 'give_save_settings_give_settings', 'give_set_settings_with_disable_prefix', 10, 2 );
+add_action( 'update_option_give_settings', 'give_set_settings_with_disable_prefix', 10, 3 );
