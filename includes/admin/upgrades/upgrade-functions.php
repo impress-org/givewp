@@ -689,7 +689,7 @@ function give_v18_renamed_core_settings() {
 		'disable_paypal_verification' => 'paypal_verification',
 		'disable_css'                 => 'css',
 		'disable_welcome'             => 'welcome',
-		'disable_forms_singular'      => 'forms_singlar',
+		'disable_forms_singular'      => 'forms_singular',
 		'disable_forms_archives'      => 'forms_archives',
 		'disable_forms_excerpt'       => 'forms_excerpt',
 		'disable_form_featured_img'   => 'form_featured_img',
