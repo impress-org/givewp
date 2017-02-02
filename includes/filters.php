@@ -23,11 +23,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @param  array  $old_settings Array of settings.
  * @param  array  $settings     Array of settings.
- * @param  string $option_name  Setting name.
  *
  * @return void
  */
-function give_set_settings_with_disable_prefix( $old_settings, $settings, $option_name ) {
+function give_set_settings_with_disable_prefix( $old_settings, $settings ) {
 	// Get old setting names.
 	$old_settings   = array_flip( give_v18_renamed_core_settings() );
 	$update_setting = false;
@@ -58,7 +57,7 @@ function give_set_settings_with_disable_prefix( $old_settings, $settings, $optio
 
 	// Update setting if any old setting set.
 	if ( $update_setting ) {
-		update_option( $option_name, $settings );
+		update_option( 'give_settings', $settings );
 	}
 }
-add_action( 'update_option_give_settings', 'give_set_settings_with_disable_prefix', 10, 3 );
+add_action( 'update_option_give_settings', 'give_set_settings_with_disable_prefix', 10, 2 );
