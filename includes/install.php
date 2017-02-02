@@ -383,6 +383,7 @@ function give_get_default_settings() {
 
 		// Offline gateway setup.
 		'global_offline_donation_content'             => give_get_default_offline_donation_content(),
+		'global_offline_donation_email'               => give_get_default_offline_donation_content(),
 
 		// Billing address.
 		'give_offline_donation_enable_billing_fields' => 'disabled',
