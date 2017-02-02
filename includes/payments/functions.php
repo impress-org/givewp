@@ -212,6 +212,46 @@ function give_insert_payment( $payment_data = array() ) {
 }
 
 /**
+ * Create payment.
+ *
+ * @param $payment_data
+ *
+ * @return bool|int
+ */
+function give_create_payment( $payment_data ) {
+
+	$form_id  = intval( $payment_data['post_data']['give-form-id'] );
+	$price_id = isset( $payment_data['post_data']['give-price-id'] ) ? $payment_data['post_data']['give-price-id'] : '';
+
+	// Collect payment data.
+	$insert_payment_data = array(
+		'price'           => $payment_data['price'],
+		'give_form_title' => $payment_data['post_data']['give-form-title'],
+		'give_form_id'    => $form_id,
+		'give_price_id'   => $price_id,
+		'date'            => $payment_data['date'],
+		'user_email'      => $payment_data['user_email'],
+		'purchase_key'    => $payment_data['purchase_key'],
+		'currency'        => give_get_currency(),
+		'user_info'       => $payment_data['user_info'],
+		'status'          => 'pending',
+		'gateway'         => 'paypal',
+	);
+
+	/**
+	 * Filter the payment params.
+	 *
+	 * @since 1.8
+	 *
+	 * @param array $insert_payment_data
+	 */
+	$insert_payment_data = apply_filters( 'give_create_payment', $insert_payment_data );
+
+	// Record the pending payment.
+	return give_insert_payment( $insert_payment_data );
+}
+
+/**
  * Updates a payment status.
  *
  * @since  1.0
@@ -1868,7 +1908,7 @@ function give_get_form_dropdown( $args = array(), $echo = false ) {
  * @param array $args Arguments for form dropdown.
  * @param bool  $echo This parameter decide if print form dropdown html output or not.
  *
- * @return string|void
+ * @return string|bool
  */
 function give_get_form_variable_price_dropdown( $args = array(), $echo = false ) {
 

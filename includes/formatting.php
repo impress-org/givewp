@@ -59,7 +59,6 @@ function give_get_price_decimal_separator() {
  * @param  int|bool         $dp         Number of decimals
  * @param  bool             $trim_zeros From end of string
  *
- *
  * @return string $amount Newly sanitized amount
  */
 function give_sanitize_amount( $number, $dp = false, $trim_zeros = false ) {
@@ -217,26 +216,6 @@ function give_format_decimal( $amount, $dp = false ) {
 	return apply_filters( 'give_format_decimal', $formatted_amount, $amount, $decimal_separator );
 }
 
-
-/**
- * Format Multi-level Amount
- *
- * Loops through CMB2 repeater field and updates amount field using give_format_amount()
- *
- * @param $field_args
- * @param $field
- *
- * @return bool
- */
-function give_format_admin_multilevel_amount( $field_args, $field ) {
-
-	if ( empty( $field->value ) ) {
-		return false;
-	}
-
-	$field->value = give_format_decimal( $field->value );
-}
-
 /**
  * Formats the currency display
  *
@@ -264,7 +243,7 @@ function give_currency_filter( $price = '', $currency = '' ) {
 
 	$symbol = give_currency_symbol( $currency );
 
-	switch ( $currency ):
+	switch ( $currency ) :
 		case 'GBP' :
 		case 'BRL' :
 		case 'EUR' :
@@ -313,7 +292,6 @@ function give_currency_filter( $price = '', $currency = '' ) {
 	 *
 	 *           and if currency is USD and currency position is after then
 	 *           filter name will be give_usd_currency_filter_after
-	 *
 	 */
 	$formatted = apply_filters( 'give_' . strtolower( $currency ) . "_currency_filter_{$position}", $formatted, $currency, $price );
 
@@ -330,7 +308,7 @@ function give_currency_filter( $price = '', $currency = '' ) {
  *
  * @since 1.0
  * @since 1.6 $decimals parameter removed from function params
- **
+ * *
  * @return int $decimals
  */
 function give_currency_decimal_filter() {
@@ -341,7 +319,6 @@ function give_currency_decimal_filter() {
 	$decimals = give_get_price_decimals();
 
 	add_filter( 'give_sanitize_amount_decimals', 'give_currency_decimal_filter' );
-
 
 	// Get number of decimals with backward compatibility ( version < 1.6 )
 	if ( 1 <= func_num_args() ) {
@@ -366,118 +343,17 @@ function give_currency_decimal_filter() {
 add_filter( 'give_sanitize_amount_decimals', 'give_currency_decimal_filter' );
 add_filter( 'give_format_amount_decimals', 'give_currency_decimal_filter' );
 
-/**
- * Sanitize thousand separator
- *
- * @since   1.6
- * @used-by Give_Plugin_Settings::give_settings()
- *
- * @param   string $value
- * @param   array  $field_args
- * @param   object $field
- *
- * @return mixed
- */
-function give_sanitize_thousand_separator( $value, $field_args, $field ) {
-	return stripslashes( $value );
-}
-
-
-/**
- * Sanitize number of decimals
- *
- * @since   1.6
- * @used-by Give_Plugin_Settings::give_settings()
- *
- * @param   string $value
- * @param   array  $field_args
- * @param   object $field
- *
- * @return  mixed
- */
-function give_sanitize_number_decimals( $value, $field_args, $field ) {
-	return absint( $value );
-}
-
-/**
- * Sanitize price file value
- *
- * @since   1.6
- * @used-by give_single_forms_cmb2_metaboxes()
- *
- * @param   string $value
- * @param   array  $field_args
- * @param   object $field
- *
- * @return  mixed
- */
-function give_sanitize_price_field_value( $value, $field_args, $field ) {
-	return give_sanitize_amount( $value );
-}
-
-
-/**
- * Manually render amount field.
- *
- * @since  1.7
- *
- * @param  array      $field_args Array of field arguments.
- * @param  CMB2_Field $field      The field object
- *
- * @return void
- */
-function give_cmb_amount_field_render_row_cb( $field_args, $field ) {
-
-	// Get args.
-	$id                = $field->args( 'id' );
-	$label             = $field->args( 'name' );
-	$name              = $field->args( '_name' );
-	$description       = $field->args( 'description' );
-	$attributes        = $field->args( 'attributes' );
-	$attributes_string = '';
-	$row_class         = $field->row_classes();
-
-	// Get attributes.
-	if ( ! empty( $attributes ) ) {
-		foreach ( $attributes as $attribute_name => $attribute_val ) {
-			$attributes_string[] = "$attribute_name=\"$attribute_val\"";
-		}
-
-		$attributes_string = implode( ' ', $attributes_string );
-	}
-
-	// Get row class.
-	if ( ! empty( $row_class ) && is_array( $row_class ) ) {
-		$row_class = implode( ' ', $row_class );
-	}
-	?>
-	<div class="cmb-row <?php echo $row_class; ?>">
-		<div class="cmb-th">
-			<label for="<?php echo $id; ?>"><?php echo $label; ?></label>
-		</div>
-		<div class="cmb-td">
-			<?php echo( give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol give-money-symbol-before">' . give_currency_symbol() . '</span>' : '' ); ?>
-			<input id="<?php echo $id; ?>" type="text" name="<?php echo $name; ?>" <?php echo $attributes_string ?>/>
-			<?php echo( give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '' ); ?>
-
-			<span class="cmb2-metabox-description"><?php echo $description; ?></span>
-		</div>
-	</div>
-	<?php
-}
-
 
 /**
  * Get date format string on basis of given context.
  *
- *
  * @since 1.7
  *
- * @param  string $date_context    Date format context name.
+ * @param  string $date_context Date format context name.
  *
  * @return string                  Date format string
  */
-function give_date_format ( $date_context = '' ) {
+function give_date_format( $date_context = '' ) {
 	/**
 	 * Filter the date context
 	 *
@@ -501,11 +377,10 @@ function give_date_format ( $date_context = '' ) {
 	$date_format_contexts = apply_filters( 'give_date_format_contexts', array() );
 
 	// Set date format to default date format.
-	$date_format = get_option('date_format');
-
+	$date_format = get_option( 'date_format' );
 
 	// Update date format if we have non empty date format context array and non empty date format string for that context.
-	if( $date_context &&  ! empty( $date_format_contexts ) && array_key_exists( $date_context, $date_format_contexts ) ) {
+	if ( $date_context && ! empty( $date_format_contexts ) && array_key_exists( $date_context, $date_format_contexts ) ) {
 		$date_format = ! empty( $date_format_contexts[ $date_context ] )
 			? $date_format_contexts[ $date_context ]
 			: $date_format;
@@ -520,15 +395,126 @@ function give_date_format ( $date_context = '' ) {
  * @since  1.7
  *
  * @param  string $action     Cache key prefix.
- * @param array   $query_args Query array.
+ * @param array  $query_args Query array.
  *
  * @return string
  */
 function give_get_cache_key( $action, $query_args ) {
 	// Bailout.
-	if( ! is_array( $query_args ) || empty( $query_args ) ) {
+	if ( ! is_array( $query_args ) || empty( $query_args ) ) {
 		return '';
 	}
 
 	return "give_cache_{$action}_" . substr( md5( serialize( $query_args ) ), 0, 15 );
+}
+
+/**
+ * Clean variables using sanitize_text_field. Arrays are cleaned recursively.
+ * Non-scalar values are ignored.
+ *
+ * @since  1.8
+ *
+ * @param  string|array $var
+ *
+ * @return string|array
+ */
+function give_clean( $var ) {
+	if ( is_array( $var ) ) {
+		return array_map( 'give_clean', $var );
+	} else {
+		return is_scalar( $var ) ? sanitize_text_field( $var ) : $var;
+	}
+}
+
+/**
+ * Transforms php.ini notation for numbers (like '2M') to an integer.
+ *
+ * @since 1.8
+ *
+ * @param $size
+ *
+ * @return int
+ */
+function give_let_to_num( $size ) {
+	$l   = substr( $size, - 1 );
+	$ret = substr( $size, 0, - 1 );
+	switch ( strtoupper( $l ) ) {
+		case 'P':
+			$ret *= 1024;
+		case 'T':
+			$ret *= 1024;
+		case 'G':
+			$ret *= 1024;
+		case 'M':
+			$ret *= 1024;
+		case 'K':
+			$ret *= 1024;
+	}
+
+	return $ret;
+}
+
+/**
+ * Verify nonce.
+ *
+ * @since 1.8
+ *
+ * @param        $nonce
+ * @param int   $action
+ * @param array $wp_die_args
+ */
+function give_validate_nonce( $nonce, $action = - 1, $wp_die_args = array() ) {
+
+	$default_wp_die_args = array(
+		'message' => esc_html__( 'Nonce verification has failed.', 'give' ),
+		'title'   => esc_html__( 'Error', 'give' ),
+		'args'    => array( 'response' => 403 ),
+	);
+
+	$wp_die_args = wp_parse_args( $wp_die_args, $default_wp_die_args );
+
+	if ( ! wp_verify_nonce( $nonce, $action ) ) {
+		wp_die(
+			$wp_die_args['message'],
+			$wp_die_args['title'],
+			$wp_die_args['args']
+		);
+	}
+}
+
+/**
+ * Check variable and get default or valid value.
+ *
+ * Helper function to check if a variable is set, empty, etc.
+ *
+ * @since 1.8
+ *
+ * @param                   $variable
+ * @param string (optional) $conditional , default value: isset
+ * @param bool (optional)   $default     , default value: false
+ *
+ * @return mixed
+ */
+function give_check_variable( $variable, $conditional = '', $default = false ) {
+
+	switch ( $conditional ) {
+		case 'isset_empty':
+			$variable = ( isset( $variable ) && ! empty( $variable ) ) ? $variable : $default;
+			break;
+
+		case 'empty':
+			$variable = ! empty( $variable ) ? $variable : $default;
+			break;
+
+		case 'null':
+			$variable = ! is_null( $variable ) ? $variable : $default;
+			break;
+
+		default:
+			$variable = isset( $variable ) ? $variable : $default;
+
+	}
+
+	return $variable;
+
 }

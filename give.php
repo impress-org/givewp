@@ -5,7 +5,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: WordImpress
  * Author URI: https://wordimpress.com
- * Version: 1.7.2
+ * Version: 1.8
  * Text Domain: give
  * Domain Path: /languages
  * GitHub Plugin URI: https://github.com/WordImpress/Give
@@ -204,7 +204,7 @@ if ( ! class_exists( 'Give' ) ) :
 				self::$instance->includes();
 				self::$instance->roles           = new Give_Roles();
 				self::$instance->api             = new Give_API();
-				self::$instance->give_settings   = new Give_Plugin_Settings();
+				self::$instance->give_settings   = new Give_Admin_Settings();
 				self::$instance->session         = new Give_Session();
 				self::$instance->html            = new Give_HTML_Elements();
 				self::$instance->emails          = new Give_Emails();
@@ -260,7 +260,7 @@ if ( ! class_exists( 'Give' ) ) :
 
 			// Plugin version
 			if ( ! defined( 'GIVE_VERSION' ) ) {
-				define( 'GIVE_VERSION', '1.7.2' );
+				define( 'GIVE_VERSION', '1.8' );
 			}
 
 			// Plugin Folder Path
@@ -300,13 +300,16 @@ if ( ! class_exists( 'Give' ) ) :
 		private function includes() {
 			global $give_options;
 
+			require_once GIVE_PLUGIN_DIR . 'includes/admin/class-admin-settings.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/class-give-settings.php';
 			$give_options = give_get_settings();
 
+			require_once GIVE_PLUGIN_DIR . 'includes/admin/give-metabox-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/post-types.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/scripts.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/ajax-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/actions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/filters.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/api/class-give-api.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-roles.php';
@@ -373,6 +376,7 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/class-api-keys-table.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/class-i18n-module.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-actions.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-filters.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/system-info.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/add-ons.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/plugins.php';
@@ -385,6 +389,7 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/customers/customer-functions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/customers/customer-actions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/metabox.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/class-metabox-form-data.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/dashboard-columns.php';
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/export/export-functions.php';

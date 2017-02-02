@@ -35,7 +35,6 @@ function give_test_ajax_works() {
 			if ( $airplane->enabled() ) {
 				return true;
 			}
-
 		} else {
 
 			if ( $airplane->check_status() == 'on' ) {
@@ -54,11 +53,12 @@ function give_test_ajax_works() {
 		'sslverify' => false,
 		'timeout'   => 30,
 		'body'      => array(
-			'action' => 'give_test_ajax'
-		)
+			'action' => 'give_test_ajax',
+		),
 	);
 
-	$ajax  = wp_remote_post( give_get_ajax_url(), $params );
+	$ajax = wp_remote_post( give_get_ajax_url(), $params );
+
 	$works = true;
 
 	if ( is_wp_error( $ajax ) ) {
@@ -82,7 +82,6 @@ function give_test_ajax_works() {
 		if ( ! isset( $ajax['body'] ) || 0 !== (int) $ajax['body'] ) {
 			$works = false;
 		}
-
 	}
 
 	if ( $works ) {
@@ -207,7 +206,7 @@ function give_ajax_get_states_field() {
 			'class'            => $_POST['field_name'] . '  give-select',
 			'options'          => give_get_states( $_POST['country'] ),
 			'show_option_all'  => false,
-			'show_option_none' => false
+			'show_option_none' => false,
 		);
 
 		$response = Give()->html->select( $args );
@@ -249,15 +248,14 @@ function give_ajax_form_search() {
 
 			$results[] = array(
 				'id'   => $item->ID,
-				'name' => $item->post_title
+				'name' => $item->post_title,
 			);
 		}
-
 	} else {
 
 		$items[] = array(
 			'id'   => 0,
-			'name' => esc_html__( 'No forms found.', 'give' )
+			'name' => esc_html__( 'No forms found.', 'give' ),
 		);
 
 	}
@@ -294,15 +292,14 @@ function give_ajax_donor_search() {
 
 			$results[] = array(
 				'id'   => $donor->id,
-				'name' => $donor->name . '(' . $donor->email . ')'
+				'name' => $donor->name . '(' . $donor->email . ')',
 			);
 		}
-
 	} else {
 
 		$donors[] = array(
 			'id'   => 0,
-			'name' => esc_html__( 'No donors found.', 'give' )
+			'name' => esc_html__( 'No donors found.', 'give' ),
 		);
 
 	}
@@ -331,7 +328,7 @@ function give_ajax_search_users() {
 
 		$get_users_args = array(
 			'number' => 9999,
-			'search' => $search_query . '*'
+			'search' => $search_query . '*',
 		);
 
 		if ( ! empty( $exclude ) ) {
@@ -395,13 +392,12 @@ function give_check_for_form_price_variations() {
 			foreach ( $variable_prices as $key => $price ) {
 
 				$level_text = ! empty( $price['_give_text'] ) ? esc_html( $price['_give_text'] ) : give_currency_filter( give_format_amount( $price['_give_amount'] ) );
-				
+
 				$ajax_response .= '<option value="' . esc_attr( $price['_give_id']['level_id'] ) . '">' . $level_text . '</option>';
 			}
 			$ajax_response .= '</select>';
 			echo $ajax_response;
 		}
-
 	}
 
 	give_die();
@@ -422,38 +418,48 @@ function give_check_for_form_price_variations_html() {
 		wp_die();
 	}
 
-	$form_id = intval( $_POST['form_id'] );
+	$form_id    = intval( $_POST['form_id'] );
 	$payment_id = intval( $_POST['payment_id'] );
-	$form    = get_post( $form_id );
+	$form       = get_post( $form_id );
 
 	if ( 'give_forms' != $form->post_type ) {
 		wp_die();
 	}
 
-    if ( ! give_has_variable_prices( $form_id ) ) {
-        esc_html_e( 'n/a', 'give' );
-    } else {
-        // Payment object.
-        $payment = new Give_Payment( $payment_id );
-
-        // Payment meta.
-        $payment_meta = $payment->get_meta();
+	if ( ! give_has_variable_prices( $form_id ) ) {
+		esc_html_e( 'n/a', 'give' );
+	} else {
+		// Payment object.
+		$payment = new Give_Payment( $payment_id );
 
 
-        // Variable price dropdown options.
-        $variable_price_dropdown_option =  array(
-            'id'                => $form_id,
-            'name'              => 'give-variable-price',
-            'chosen'            => true,
-            'show_option_all'   => '',
-            'selected'          => $payment_meta['price_id'],
-        );
+		$prices_atts = '';
+		if( $variable_prices = give_get_variable_prices( $form_id ) ) {
+			foreach ( $variable_prices as $variable_price ) {
+				$prices_atts[$variable_price['_give_id']['level_id']] = give_format_amount( $variable_price['_give_amount'] );
+			}
+		}
 
-        // Render variable prices select tag html.
-        give_get_form_variable_price_dropdown( $variable_price_dropdown_option, true );
-    }
 
-    give_die();
+		// Payment meta.
+		$payment_meta = $payment->get_meta();
+
+		// Variable price dropdown options.
+		$variable_price_dropdown_option = array(
+			'id'               => $form_id,
+			'name'             => 'give-variable-price',
+			'chosen'           => true,
+			'show_option_all'  => '',
+			'show_option_none' => '',
+			'select_atts'      => 'data-prices=' . esc_attr( json_encode( $prices_atts ) ),
+			'selected'         => $payment_meta['price_id'],
+		);
+
+		// Render variable prices select tag html.
+		give_get_form_variable_price_dropdown( $variable_price_dropdown_option, true );
+	}
+
+	give_die();
 }
 
 add_action( 'wp_ajax_give_check_for_form_price_variations_html', 'give_check_for_form_price_variations_html' );

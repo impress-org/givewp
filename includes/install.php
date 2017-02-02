@@ -15,7 +15,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- *
  * Install
  *
  * Runs on plugin install by setting up the post types, custom taxonomies, flushing rewrite rules to initiate the new 'donations' slug and also creates the plugin and populates the settings fields for those plugin pages. After successful install, the user is redirected to the Give Welcome screen.
@@ -132,24 +131,52 @@ function give_run_install() {
 
 	//Fresh Install? Setup Test Mode, Base Country (US), Test Gateway, Currency.
 	if ( empty( $current_version ) ) {
-		$options['base_country']       = 'US';
-		$options['test_mode']          = 'on';
-		$options['currency']           = 'USD';
-		$options['session_lifetime']   = '604800';
-		$options['gateways']['manual'] = 1;
-		$options['default_gateway']    = 'manual'; //default is manual gateway.
 
-		//Offline gateway setup.
+		// General.
+		$options['base_country']       = 'US';
+		$options['test_mode']          = 'enabled';
+		$options['currency']           = 'USD';
+		$options['currency_position']   = 'before';
+		$options['session_lifetime']   = '604800';
+		$options['email_access']       = 'disabled';
+		$options['number_decimals']    = 2;
+
+		// Display options.
+		$options['css']                  = 'enabled';
+		$options['floatlabels']          = 'disabled';
+		$options['welcome']              = 'enabled';
+		$options['forms_singular']       = 'enabled';
+		$options['forms_archives']       = 'enabled';
+		$options['forms_excerpt']        = 'enabled';
+		$options['form_featured_img']    = 'enabled';
+		$options['form_sidebar']         = 'enabled';
+		$options['categories']           = 'disabled';
+		$options['tags']                 = 'disabled';
+		$options['terms']                = 'disabled';
+		$options['admin_notices']        = 'enabled';
+		$options['uninstall_on_delete']  = 'disabled';
+		$options['the_content_filter']   = 'enabled';
+		$options['scripts_footer']       = 'disabled';
+
+		// Paypal IPN verification.
+		$options['paypal_verification']       = 'enabled';
+
+		// Default is manual gateway.
+		$options['gateways']['manual'] = 1;
+		$options['default_gateway']    = 'manual';
+
+		// Offline gateway setup.
 		$options['gateways']['offline']             = 1;
 		$options['global_offline_donation_content'] = give_get_default_offline_donation_content();
+		$options['global_offline_donation_email']   = give_get_default_offline_donation_content();
 
-		//Default number of decimals.
-		$options['number_decimals'] = 2;
+		// Billing address.
+		$options['give_offline_donation_enable_billing_fields'] = 'disabled';
 
-		//Default donation notification email.
+		// Default donation notification email.
 		$options['donation_notification'] = give_get_default_donation_notification_email();
 
-		//Default email receipt message.
+		// Default email receipt message.
 		$options['donation_receipt'] = give_get_default_donation_receipt_email();
 
 	}

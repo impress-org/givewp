@@ -237,8 +237,27 @@ jQuery(function ($) {
 
 	// Add a class to the currently selected gateway on click
 	doc.on('click', '#give-payment-mode-select input', function () {
-		$('#give-payment-mode-select li.give-gateway-option-selected').removeClass('give-gateway-option-selected');
-		$('#give-payment-mode-select input:checked').parent().addClass('give-gateway-option-selected');
+		var $form                = $(this).parents('form'),
+			$gateways_li         = $('#give-payment-mode-select li'),
+			old_payment_gateway  = $('#give-payment-mode-select li.give-gateway-option-selected input[name="payment-mode"]').val(),
+			new_payment_gateways = '';
+
+		// Unselect all payment gateways.
+		$gateways_li.removeClass('give-gateway-option-selected');
+		$gateways_li.prop('checked', false);
+
+		// Select payment gateway.
+		$(this).prop('checked', true);
+		$(this).parent().addClass('give-gateway-option-selected');
+
+		// Get new payment gateway.
+		new_payment_gateways = $('#give-payment-mode-select li.give-gateway-option-selected input[name="payment-mode"]').val();
+
+		// Change form action.
+		$form.attr('action', $form.attr('action').replace(
+			'payment-mode=' + old_payment_gateway,
+			'payment-mode=' + new_payment_gateways)
+		);
 	});
 
 	/**
@@ -528,30 +547,7 @@ jQuery(function ($) {
 
 		//This form is modal display so show the modal
 		if (display_modal) {
-
-			//@TODO: Make this DRYer - repeated in give.js
-			$.magnificPopup.open({
-				mainClass: give_global_vars.magnific_options.main_class,
-				closeOnBgClick: give_global_vars.magnific_options.close_on_bg_click,
-				items: {
-					src: form,
-					type: 'inline'
-				},
-				callbacks: {
-					open: function () {
-						// Will fire when this exact popup is opened
-						// this - is Magnific Popup object
-						if ($('.mfp-content').outerWidth() >= 500) {
-							$('.mfp-content').addClass('give-responsive-mfp-content');
-						}
-					},
-					close: function () {
-						//Remove popup class
-						form.removeClass('mfp-hide');
-
-					}
-				}
-			});
+			give_open_form_modal(form_wrap, form);
 		}
 		//This is a reveal form, show it
 		else if (display_reveal) {

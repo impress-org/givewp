@@ -9,7 +9,6 @@
  * @since       1.0
  *
  * NOTICE: When adding new upgrade notices, please be sure to put the action into the upgrades array during install: /includes/install.php @ Appox Line 156
- *
  */
 
 // Exit if accessed directly.
@@ -42,6 +41,10 @@ function give_do_automatic_upgrades() {
 		case version_compare( $give_version, '1.7', '<' ) :
 			give_v17_upgrades();
 			$did_upgrade = true;
+
+		case version_compare( $give_version, '1.8', '<' ) :
+			give_v18_upgrades();
+			$did_upgrade = true;
 	}
 
 	if ( $did_upgrade ) {
@@ -58,15 +61,15 @@ add_action( 'admin_init', 'give_do_automatic_upgrades' );
  * @return void
  */
 function give_show_upgrade_notices() {
-
+	// Don't show notices on the upgrades page.
 	if ( isset( $_GET['page'] ) && $_GET['page'] == 'give-upgrades' ) {
 		return;
-	} // Don't show notices on the upgrades page
+	}
 
 	$give_version = get_option( 'give_version' );
 
 	if ( ! $give_version ) {
-		// 1.0 is the first version to use this option so we must add it
+		// 1.0 is the first version to use this option so we must add it.
 		$give_version = '1.0';
 	}
 
@@ -80,7 +83,7 @@ function give_show_upgrade_notices() {
 	 *
 	 */
 
-	//v1.3.2 Upgrades
+	// v1.3.2 Upgrades
 	if ( version_compare( $give_version, '1.3.2', '<' ) || ! give_has_upgrade_completed( 'upgrade_give_payment_customer_id' ) ) {
 		printf(
 		/* translators: %s: upgrade URL */
@@ -89,7 +92,7 @@ function give_show_upgrade_notices() {
 		);
 	}
 
-	//v1.3.4 Upgrades //ensure the user has gone through 1.3.4
+	// v1.3.4 Upgrades //ensure the user has gone through 1.3.4.
 	if ( version_compare( $give_version, '1.3.4', '<' ) || ( ! give_has_upgrade_completed( 'upgrade_give_offline_status' ) && give_has_upgrade_completed( 'upgrade_give_payment_customer_id' ) ) ) {
 		printf(
 		/* translators: %s: upgrade URL */
@@ -98,10 +101,7 @@ function give_show_upgrade_notices() {
 		);
 	}
 
-
-	// End 'Stepped' upgrade process notices
-
-
+	// End 'Stepped' upgrade process notices.
 }
 
 add_action( 'admin_notices', 'give_show_upgrade_notices' );
@@ -123,7 +123,7 @@ function give_trigger_upgrades() {
 	$give_version = get_option( 'give_version' );
 
 	if ( ! $give_version ) {
-		// 1.0 is the first version to use this option so we must add it
+		// 1.0 is the first version to use this option so we must add it.
 		$give_version = '1.0';
 		add_option( 'give_version', $give_version );
 	}
@@ -132,7 +132,7 @@ function give_trigger_upgrades() {
 
 	if ( DOING_AJAX ) {
 		die( 'complete' );
-	} // Let AJAX know that the upgrade is complete
+	} // Let AJAX know that the upgrade is complete.
 }
 
 add_action( 'wp_ajax_give_trigger_upgrades', 'give_trigger_upgrades' );
@@ -176,7 +176,7 @@ function give_set_upgrade_complete( $upgrade_action = '' ) {
 	$completed_upgrades   = give_get_completed_upgrades();
 	$completed_upgrades[] = $upgrade_action;
 
-	// Remove any blanks, and only show uniques
+	// Remove any blanks, and only show uniques.
 	$completed_upgrades = array_unique( array_values( $completed_upgrades ) );
 
 	return update_option( 'give_completed_upgrades', $completed_upgrades );
@@ -206,7 +206,6 @@ function give_get_completed_upgrades() {
  * Standardizes the discrepancies between two metakeys `_give_payment_customer_id` and `_give_payment_donor_id`
  *
  * @since      1.3.2
- *
  */
 function give_v132_upgrade_give_payment_customer_id() {
 	global $wpdb;
@@ -220,7 +219,7 @@ function give_v132_upgrade_give_payment_customer_id() {
 		@set_time_limit( 0 );
 	}
 
-	//UPDATE DB METAKEYS
+	// UPDATE DB METAKEYS.
 	$sql   = "UPDATE $wpdb->postmeta SET meta_key = '_give_payment_customer_id' WHERE meta_key = '_give_payment_donor_id'";
 	$query = $wpdb->query( $sql );
 
@@ -229,7 +228,6 @@ function give_v132_upgrade_give_payment_customer_id() {
 	delete_option( 'give_doing_upgrade' );
 	wp_redirect( admin_url() );
 	exit;
-
 
 }
 
@@ -241,7 +239,6 @@ add_action( 'give_upgrade_give_payment_customer_id', 'give_v132_upgrade_give_pay
  * Reverses the issue where offline donations in "pending" status where inappropriately marked as abandoned
  *
  * @since      1.3.4
- *
  */
 function give_v134_upgrade_give_offline_status() {
 
@@ -257,7 +254,7 @@ function give_v134_upgrade_give_offline_status() {
 		@set_time_limit( 0 );
 	}
 
-	// Get abandoned offline payments
+	// Get abandoned offline payments.
 	$select = "SELECT ID FROM $wpdb->posts p ";
 	$join   = "LEFT JOIN $wpdb->postmeta m ON p.ID = m.post_id ";
 	$where  = "WHERE p.post_type = 'give_payment' ";
@@ -267,20 +264,17 @@ function give_v134_upgrade_give_offline_status() {
 	$sql            = $select . $join . $where;
 	$found_payments = $wpdb->get_col( $sql );
 
-
 	foreach ( $found_payments as $payment ) {
 
-		//Only change ones marked abandoned since our release last week
-		//because the admin may have marked some abandoned themselves
+		// Only change ones marked abandoned since our release last week because the admin may have marked some abandoned themselves.
 		$modified_time = get_post_modified_time( 'U', false, $payment );
 
-		//1450124863 =  12/10/2015 20:42:25
+		// 1450124863 =  12/10/2015 20:42:25.
 		if ( $modified_time >= 1450124863 ) {
 
 			give_update_payment_status( $payment, 'pending' );
 
 		}
-
 	}
 
 	update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
@@ -288,7 +282,6 @@ function give_v134_upgrade_give_offline_status() {
 	delete_option( 'give_doing_upgrade' );
 	wp_redirect( admin_url() );
 	exit;
-
 
 }
 
@@ -306,17 +299,17 @@ function give_v152_cleanup_users() {
 	$give_version = get_option( 'give_version' );
 
 	if ( ! $give_version ) {
-		// 1.0 is the first version to use this option so we must add it
+		// 1.0 is the first version to use this option so we must add it.
 		$give_version = '1.0';
 	}
 
 	$give_version = preg_replace( '/[^0-9.].*/', '', $give_version );
 
-	//v1.5.2 Upgrades
+	// v1.5.2 Upgrades
 	if ( version_compare( $give_version, '1.5.2', '<' ) || ! give_has_upgrade_completed( 'upgrade_give_user_caps_cleanup' ) ) {
 
-		//Delete all caps with "ss"
-		//Also delete all unused "campaign" roles
+		// Delete all caps with "ss".
+		// Also delete all unused "campaign" roles.
 		$delete_caps = array(
 			'delete_give_formss',
 			'delete_others_give_formss',
@@ -366,12 +359,12 @@ function give_v152_cleanup_users() {
 			}
 		}
 
-		// Create Give plugin roles
+		// Create Give plugin roles.
 		$roles = new Give_Roles();
 		$roles->add_roles();
 		$roles->add_caps();
 
-		//The Update Ran
+		// The Update Ran.
 		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
 		give_set_upgrade_complete( 'upgrade_give_user_caps_cleanup' );
 		delete_option( 'give_doing_upgrade' );
@@ -394,8 +387,10 @@ function give_v16_upgrades() {
 }
 
 /**
- * 1.7 Upgrade.
- *   a. Update license api data for plugin addons.
+ * 1.7 Upgrades.
+ *
+ * a. Update license api data for plugin addons.
+ * b. Cleanup user roles.
  *
  * @since  1.7
  * @return void
@@ -468,7 +463,7 @@ function give_v17_upgrade_addon_license_data() {
 			'url'        => home_url()
 		);
 
-		// Call the API
+		// Call the API.
 		$response = wp_remote_post(
 			$api_url,
 			array(
@@ -478,16 +473,16 @@ function give_v17_upgrade_addon_license_data() {
 			)
 		);
 
-		// Make sure there are no errors
+		// Make sure there are no errors.
 		if ( is_wp_error( $response ) ) {
 			delete_option( $addon_license_option_name );
 			continue;
 		}
 
-		// Tell WordPress to look for updates
+		// Tell WordPress to look for updates.
 		set_site_transient( 'update_plugins', null );
 
-		// Decode license data
+		// Decode license data.
 		$license_data = json_decode( wp_remote_retrieve_body( $response ) );
 		update_option( $addon_license_option_name, $license_data );
 	}
@@ -530,4 +525,179 @@ function give_v17_cleanup_roles() {
 	$roles->add_roles();
 	$roles->add_caps();
 
+}
+
+/**
+ * 1.8 Upgrades.
+ *
+ * a. Upgrade checkbox settings to radio button settings..
+ * a. Update form meta for new metabox settings.
+ *
+ * @since  1.8
+ * @return void
+ */
+function give_v18_upgrades() {
+	// Upgrade checkbox settings to radio button settings.
+	give_v18_upgrades_core_setting();
+	// Upgrade form metadata.
+	give_v18_upgrades_form_metadata();
+}
+
+/**
+ * Upgrade core settings.
+ *
+ * @since  1.8
+ * @return void
+ */
+function give_v18_upgrades_core_setting() {
+	// Core settings which changes from checkbox to radio.
+	$core_setting_names = array_merge(
+		array_keys( give_v18_renamed_core_settings() ),
+		array(
+			'uninstall_on_delete',
+			'scripts_footer',
+			'test_mode',
+			'email_access',
+			'terms',
+			'give_offline_donation_enable_billing_fields',
+		)
+	);
+
+	// Bailout: If not any setting define.
+	if ( $give_settings = get_option( 'give_settings' ) ) {
+
+		$setting_changed = false;
+
+		// Loop: check each setting field.
+		foreach ( $core_setting_names as $setting_name ) {
+			// New setting name.
+			$new_setting_name = preg_replace( '/^(enable_|disable_)/', '', $setting_name );
+
+			// Continue: If setting already set.
+			if (
+				array_key_exists( $new_setting_name, $give_settings )
+				&& in_array( $give_settings[ $new_setting_name ], array( 'enabled', 'disabled' ) )
+			) {
+				continue;
+			}
+
+			// Set checkbox value to radio value.
+			$give_settings[ $setting_name ] = ( ! empty( $give_settings[ $setting_name ] ) && 'on' === $give_settings[ $setting_name ] ? 'enabled' : 'disabled' );
+
+			// @see https://github.com/WordImpress/Give/issues/1063
+			if ( false !== strpos( $setting_name, 'disable_' ) ) {
+
+				$give_settings[ $new_setting_name ] = ( give_is_setting_enabled( $give_settings[ $setting_name ] ) ? 'disabled' : 'enabled' );
+			} elseif ( false !== strpos( $setting_name, 'enable_' ) ) {
+
+				$give_settings[ $new_setting_name ] = ( give_is_setting_enabled( $give_settings[ $setting_name ] ) ? 'enable' : 'disabled' );
+			}
+
+			// Tell bot to update core setting to db.
+			if ( ! $setting_changed ) {
+				$setting_changed = true;
+			}
+		}
+
+		// Update setting only if they changed.
+		if ( $setting_changed ) {
+			update_option( 'give_settings', $give_settings );
+		}
+	}
+}
+
+/**
+ * Upgrade form metadata for new metabox settings.
+ *
+ * @since  1.8
+ * @return void
+ */
+function give_v18_upgrades_form_metadata() {
+	$forms = new WP_Query( array(
+			'post_type'      => 'give_forms',
+			'posts_per_page' => - 1,
+		)
+	);
+
+	if ( $forms->have_posts() ) {
+		while ( $forms->have_posts() ) {
+			$forms->the_post();
+
+			// Form content.
+			// Note in version 1.8 display content setting split into display content and content placement setting.
+			$show_content = get_post_meta( get_the_ID(), '_give_content_option', true );
+			if ( $show_content && ! get_post_meta( get_the_ID(), '_give_display_content', true ) ) {
+				$field_value = ( 'none' !== $show_content ? 'enabled' : 'disabled' );
+				update_post_meta( get_the_ID(), '_give_display_content', $field_value );
+
+				$field_value = ( 'none' !== $show_content ? $show_content : 'give_pre_form' );
+				update_post_meta( get_the_ID(), '_give_content_option', $field_value );
+			}
+
+
+			// Convert yes/no setting field to enabled/disabled.
+			$form_radio_settings = array(
+				// Custom Amount.
+				'_give_custom_amount',
+
+				// Donation Gaol.
+				'_give_goal_option',
+
+				// Close Form.
+				'_give_close_form_when_goal_achieved',
+
+				// Guest Donation.
+				'_give_logged_in_only',
+
+				// Term & conditions.
+				'_give_terms_option',
+
+				// Offline donation.
+				'_give_customize_offline_donations',
+
+				// Billing fields.
+				'_give_offline_donation_enable_billing_fields_single'
+			);
+
+
+			foreach ( $form_radio_settings as $meta_key ) {
+				// Get value.
+				$field_value = get_post_meta( get_the_ID(), $meta_key, true );
+
+				// Convert meta value only if it is in yes/no/none.
+				if ( in_array( $field_value, array( 'yes', 'on', 'no', 'none' ) ) ) {
+
+					$field_value = ( in_array( $field_value, array( 'yes', 'on' ) ) ? 'enabled' : 'disabled' );
+					update_post_meta( get_the_ID(), $meta_key, $field_value );
+				}
+
+			}
+		}
+	}
+
+	wp_reset_postdata();
+}
+
+/**
+ * Get list of core setting which is renamed in version 1.8.
+ *
+ * @since  1.8
+ * @return array
+ */
+function give_v18_renamed_core_settings() {
+	return array(
+		'disable_paypal_verification' => 'paypal_verification',
+		'disable_css'                 => 'css',
+		'disable_welcome'             => 'welcome',
+		'disable_forms_singular'      => 'forms_singlar',
+		'disable_forms_archives'      => 'forms_archives',
+		'disable_forms_excerpt'       => 'forms_excerpt',
+		'disable_form_featured_img'   => 'form_featured_img',
+		'disable_form_sidebar'        => 'form_sidebar',
+		'disable_admin_notices'       => 'admin_notices',
+		'disable_the_content_filter'  => 'the_content_filter',
+		'enable_floatlabels'          => 'floatlabels',
+		'enable_categories'           => 'categories',
+		'enable_tags'                 => 'tags',
+	);
 }

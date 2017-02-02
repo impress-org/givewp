@@ -812,7 +812,7 @@ class GIVE_CLI_COMMAND {
 	 * @param    bool   $colon   Check if add colon between heading and message.
 	 * @param    string $color   Heading color.
 	 *
-	 * @return    mixed
+	 * @return   string
 	 */
 	private function color_message( $heading, $message = '', $colon = true, $color = 'g' ) {
 		// Add colon.

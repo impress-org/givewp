@@ -64,7 +64,7 @@ add_shortcode( 'donation_history', 'give_donation_history' );
  *
  * @since  1.0
  *
- * @param  array  $atts Shortcode attributes
+ * @param  array $atts Shortcode attributes
  *
  * @return string
  */
@@ -78,33 +78,9 @@ function give_form_shortcode( $atts ) {
 		'display_style' => '',
 	), $atts, 'give_form' );
 
-	foreach ( $atts as $key => $value ) {
-		//convert shortcode_atts values to booleans
-		if ( $key == 'show_title' ) {
-			$atts[ $key ] = filter_var( $atts[ $key ], FILTER_VALIDATE_BOOLEAN );
-		} elseif ( $key == 'show_goal' ) {
-			$atts[ $key ] = filter_var( $atts[ $key ], FILTER_VALIDATE_BOOLEAN );
-		}
-
-		//validate show_content value
-		if ( $key == 'show_content' ) {
-			if ( ! in_array( $value, array( 'none', 'above', 'below' ) ) ) {
-				$atts[ $key ] = '';
-			} else if ( $value == 'above' ) {
-				$atts[ $key ] = 'give_pre_form';
-			} else if ( $value == 'below' ) {
-				$atts[ $key ] = 'give_post_form';
-			}
-		}
-
-		//validate display_style and float_labels value
-		if ( ( $key == 'display_style' && ! in_array( $value, array( 'onpage', 'reveal', 'modal' ) ) )
-		     || ( $key == 'float_labels' && ! in_array( $value, array( 'enabled', 'disabled' ) ) )
-		) {
-
-			$atts[ $key ] = '';
-		}
-	}
+	// Convert string to bool.
+	$atts['show_title'] = filter_var( $atts['show_title'], FILTER_VALIDATE_BOOLEAN );
+	$atts['show_goal']  = filter_var( $atts['show_goal'], FILTER_VALIDATE_BOOLEAN );
 
 	//get the Give Form
 	ob_start();
@@ -123,7 +99,7 @@ add_shortcode( 'give_form', 'give_form_shortcode' );
  *
  * @since  1.0
  *
- * @param  array  $atts Shortcode attributes.
+ * @param  array $atts Shortcode attributes.
  *
  * @return string
  */
@@ -144,8 +120,8 @@ function give_goal_shortcode( $atts ) {
 	}
 
 	//Sanity check 2: Check the form even has Goals enabled.
-	$goal_option = get_post_meta( $atts['id'], '_give_goal_option', true );
-	if ( empty( $goal_option ) || $goal_option !== 'yes' ) {
+	if ( ! give_is_setting_enabled( get_post_meta( $atts['id'], '_give_goal_option', true ) ) ) {
+
 		give_output_error( esc_html__( 'The form does not have Goals enabled.', 'give' ), true );
 	} else {
 		//Passed all sanity checks: output Goal.
@@ -168,7 +144,7 @@ add_shortcode( 'give_goal', 'give_goal_shortcode' );
  *
  * @since  1.0
  *
- * @param  array  $atts Shortcode attributes.
+ * @param  array $atts Shortcode attributes.
  *
  * @uses   give_login_form()
  *
@@ -176,15 +152,15 @@ add_shortcode( 'give_goal', 'give_goal_shortcode' );
  */
 function give_login_form_shortcode( $atts ) {
 	$atts = shortcode_atts( array(
-        // Add backward compatibility for redirect attribute.
-        'redirect'          => '',
+		// Add backward compatibility for redirect attribute.
+		'redirect' => '',
 
-		'login-redirect'    => '',
-		'logout-redirect'   => '',
+		'login-redirect'  => '',
+		'logout-redirect' => '',
 	), $atts, 'give_login' );
 
-    // Check login-redirect attribute first, if it empty or not found then check for redirect attribute and add value of this to login-redirect attribute.
-    $atts['login-redirect'] = ! empty( $atts['login-redirect'] ) ? $atts['login-redirect'] : ( ! empty( $atts['redirect' ] ) ? $atts['redirect'] : '' );
+	// Check login-redirect attribute first, if it empty or not found then check for redirect attribute and add value of this to login-redirect attribute.
+	$atts['login-redirect'] = ! empty( $atts['login-redirect'] ) ? $atts['login-redirect'] : ( ! empty( $atts['redirect'] ) ? $atts['redirect'] : '' );
 
 	return give_login_form( $atts['login-redirect'], $atts['logout-redirect'] );
 }
@@ -198,7 +174,7 @@ add_shortcode( 'give_login', 'give_login_form_shortcode' );
  *
  * @since  1.0
  *
- * @param  array  $atts Shortcode attributes.
+ * @param  array $atts Shortcode attributes.
  *
  * @uses   give_register_form()
  *
@@ -221,7 +197,7 @@ add_shortcode( 'give_register', 'give_register_form_shortcode' );
  *
  * @since  1.0
  *
- * @param  array  $atts Shortcode attributes.
+ * @param  array $atts Shortcode attributes.
  *
  * @return string
  */
@@ -335,7 +311,7 @@ add_shortcode( 'give_receipt', 'give_receipt_shortcode' );
  *
  * @since  1.0
  *
- * @param  array  $atts Shortcode attributes.
+ * @param  array $atts Shortcode attributes.
  *
  * @return string Output generated from the profile editor
  */
@@ -393,7 +369,7 @@ function give_process_profile_editor_updates( $data ) {
 		'first_name'   => $first_name,
 		'last_name'    => $last_name,
 		'display_name' => $display_name,
-		'user_email'   => $email
+		'user_email'   => $email,
 	);
 
 
@@ -403,7 +379,7 @@ function give_process_profile_editor_updates( $data ) {
 		'city'    => $city,
 		'state'   => $state,
 		'zip'     => $zip,
-		'country' => $country
+		'country' => $country,
 	);
 
 	/**
@@ -425,15 +401,15 @@ function give_process_profile_editor_updates( $data ) {
 		}
 	}
 
-	if( empty( $email ) ) {
+	if ( empty( $email ) ) {
 		// Make sure email should not be empty.
 		give_set_error( 'email_empty', esc_html__( 'The email you entered is empty.', 'give' ) );
 
-	}else if ( ! is_email( $email ) ){
+	} else if ( ! is_email( $email ) ) {
 		// Make sure email should be valid.
 		give_set_error( 'email_not_valid', esc_html__( 'The email you entered is not valid. Please use another', 'give' ) );
 
-	}else if ( $email != $old_user_data->user_email ) {
+	} else if ( $email != $old_user_data->user_email ) {
 		// Make sure the new email doesn't belong to another user
 		if ( email_exists( $email ) ) {
 			give_set_error( 'email_exists', esc_html__( 'The email you entered belongs to another user. Please use another.', 'give' ) );

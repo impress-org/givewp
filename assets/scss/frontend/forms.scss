@@ -68,6 +68,10 @@ Layout
     margin: 0 0 20px;
   }
 
+  div.give-form-content-wrap.give_post_form-content {
+    margin: 20px 0 0 0;
+  }
+
   &.give-display-reveal, &.give-display-modal {
     .give-btn {
       margin: 0 0 15px;
@@ -90,9 +94,7 @@ Single Forms
   }
 
   .give_forms {
-
     @include clearfix;
-
   }
 
 }
@@ -125,8 +127,7 @@ Gravatar List
 Base Form Styles
 --------------------------------------*/
 
-form[id*='give-form'], #give-recurring-form, form.give-form {
-  color: $dark;
+form[id*='give-form'] {
   margin: 0 0 25px;
   padding: 0;
 
@@ -338,62 +339,12 @@ form[id*='give-form'] {
 
 }
 
-/*---------------------------------
-Notices, Warnings & Errors
------------------------------------*/
-
-.give_error, .give_success {
-  position: relative;
-  margin: 15px 0;
-  background: #F9F9F9;
-  padding: 1em 1em 1em 2em;
-  border-left: 4px solid $red;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.125);
-  clear: both;
-
-  > p {
-    margin: 0 !important;
-  }
-
-  &:before {
-    @include iconstyle();
-    position: absolute;
-    top: 50%;
-    font-size: 16px;
-    margin-top: -15px;
-    left: -17px;
-    background-color: $red;
-    color: #FFF;
-    width: 30px;
-    height: 30px;
-    font-size: 16px;
-    border-radius: 100%;
-    text-align: center;
-    line-height: 30px;
-    text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
-    content: '\f02d';
-  }
-
-  &.give_warning {
-    border-color: $orange;
-
-    &:before {
-      background-color: $orange;
-      text-shadow: 1px 1px rgba(0, 0, 0, 0.1);
-    }
-
-  }
+.give-display-button-only > *:not(form) {
+  display: none !important;
 }
 
-.give_success {
-  border-color: $green;
-
-  &:before {
-    background-color: $green;
-    content: '\e601';
-    text-shadow: 1px 1px rgba(0, 0, 0, 0.2);
-  }
-
+.give-display-button-only form > *:not(.give-btn-modal) {
+  display: none !important;
 }
 
 /*---------------------------------
@@ -444,6 +395,7 @@ Radio Lists
       cursor: pointer;
       display: inline;
     }
+
     input[type="radio"] {
       margin: 0 2px 0 0;
       outline: none;
@@ -697,10 +649,6 @@ div.give-form-wrap.mfp-hide {
 }
 
 div.mfp-content {
-  .give-form-content-wrap, .give-donation-amount, .give-select-level {
-    display: none;
-  }
-
   //Basic Styles
   fieldset {
     p, ol, ul {

@@ -23,21 +23,32 @@ class Give_Addon_Activation_Banner {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param $_banner_details
+	 * @param array $_banner_details {
+	 *                               'file'              => __FILE__, // (required) Directory path to the main plugin file
+	 *                               'name'              => __( 'Authorize.net Gateway', 'give-authorize' ), // (required) Name of the Add-on
+	 *                               'version'           => GIVE_AUTHORIZE_VERSION, // (required)The most current version
+	 *                               'documentation_url' => 'http://docs.givewp.com/addon-authorize',// (required)
+	 *                               'support_url'       => 'https://givewp.com/support/', // (required)Location of Add-on settings page, leave blank to hide
+	 *                               'testing'           => false, // (required) Never leave as "true" in production!!!
+	 *                               }
 	 */
 	function __construct( $_banner_details ) {
-
 		$current_user = wp_get_current_user();
 
-		$this->banner_details = $_banner_details;
-		$this->test_mode      = ( $this->banner_details['testing'] == 'true' ) ? true : false;
-		$this->nag_meta_key   = 'give_addon_activation_ignore_' . sanitize_title( $this->banner_details['name'] );
+		$this->plugin_activate_by   = 0;
+		$this->banner_details       = $_banner_details;
+		$this->test_mode            = ( $this->banner_details['testing'] == 'true' ) ? true : false;
+		$this->nag_meta_key         = 'give_addon_activation_ignore_' . sanitize_title( $this->banner_details['name'] );
+		$this->activate_by_meta_key = 'give_addon_' . sanitize_title( $this->banner_details['name'] ) . '_active_by_user';
 
 		//Get current user
 		$this->user_id = $current_user->ID;
 
 		// Set up hooks.
 		$this->init();
+
+		// Store user id who activate plugin.
+		$this->add_addon_activate_meta();
 	}
 
 	/**
@@ -59,7 +70,24 @@ class Give_Addon_Activation_Banner {
 		add_action( 'current_screen', array( $this, 'give_addon_notice_ignore' ) );
 		add_action( 'admin_notices', array( $this, 'give_addon_activation_admin_notice' ) );
 
+		// File path of addon must be included in banner detail other addon activate meta will not delete.
+		add_action( 'deactivate_' . $this->get_plugin_file_name(), array( $this, 'remove_addon_activate_meta' ) );
 	}
+
+
+	/**
+	 * Check if current page is plugin page or not.
+	 *
+	 * @since  1.8
+	 * @access private
+	 * @return bool
+	 */
+	private function is_plugin_page() {
+		$screen = get_current_screen();
+
+		return ( $screen->parent_file === 'plugins.php' );
+	}
+
 
 	/**
 	 * Give Addon Activation Banner
@@ -68,11 +96,10 @@ class Give_Addon_Activation_Banner {
 	 * @access public
 	 */
 	public function give_addon_activation_admin_notice() {
-		$screen = get_current_screen();
 
-		//Make sure we're on the plugins page.
-		if ( $screen->parent_file !== 'plugins.php' ) {
-			return false;
+		// Bailout.
+		if ( ! $this->is_plugin_page() || $this->user_id !== $this->plugin_activate_by ) {
+			return;
 		}
 
 		// If the user hasn't already dismissed the alert, output activation banner.
@@ -174,7 +201,8 @@ class Give_Addon_Activation_Banner {
 						<?php //Point them to your settings page.
 						if ( isset( $this->banner_details['settings_url'] ) ) { ?>
 							<a href="<?php echo $this->banner_details['settings_url']; ?>">
-								<span class="dashicons dashicons-admin-settings"></span><?php esc_html_e( 'Go to Settings', 'give' ); ?></a>
+								<span class="dashicons dashicons-admin-settings"></span><?php esc_html_e( 'Go to Settings', 'give' ); ?>
+							</a>
 						<?php } ?>
 
 						<?php
@@ -225,10 +253,85 @@ class Give_Addon_Activation_Banner {
 
 			//Get the global user
 			$current_user = wp_get_current_user();
-			$user_id = $current_user->ID;
+			$user_id      = $current_user->ID;
 
 			add_user_meta( $user_id, $this->nag_meta_key, 'true', true );
 		}
+	}
+
+	/**
+	 * Setup user id to option
+	 *
+	 * @since  1.8
+	 * @access private
+	 */
+	private function add_addon_activate_meta() {
+		$user_id                  = get_option( $this->activate_by_meta_key );
+		$this->plugin_activate_by = (int) $user_id;
+
+		if ( ! $user_id ) {
+			add_option( $this->activate_by_meta_key, $this->user_id, '', 'no' );
+			$this->plugin_activate_by = (int) $this->user_id;
+		}
+	}
+
+
+	/**
+	 * Delete user id from option if plugin deactivated.
+	 *
+	 * @since  1.8
+	 * @access public
+	 */
+	public function remove_addon_activate_meta() {
+		$user_id = get_option( $this->activate_by_meta_key );
+
+		if ( $user_id ) {
+			delete_option( $this->activate_by_meta_key );
+		}
+	}
+
+
+	/**
+	 * Get plugin file name.
+	 *
+	 * @since   1.8
+	 * @access  private
+	 * @return mixed
+	 */
+	private function get_plugin_file_name() {
+		$active_plugins = get_option( 'active_plugins' );
+		$file_name      = '';
+
+		try {
+
+			// Check addon file path.
+			if ( ! empty( $this->banner_details['file'] ) ) {
+				$file_name = '';
+				if ( $file_path = explode( '/plugins/', $this->banner_details['file'] ) ) {
+					$file_path = array_pop( $file_path );
+					$file_name = current( explode( '/', $file_path ) );
+				}
+
+				foreach ( $active_plugins as $plugin ) {
+					if ( false !== strpos( $plugin, $file_name ) ) {
+						$file_name = $plugin;
+						break;
+					}
+				}
+			} else {
+				throw new Exception( __( "File path must be added of {$this->banner_details['name']} addon in banner details.", 'give' ) );
+			}
+
+			// Check plugin path calculated by addon file path.
+			if ( empty( $file_name ) ) {
+				throw new Exception( __( "Empty Addon plugin path for {$this->banner_details['name']} addon.", 'give' ) );
+			}
+
+		} catch ( Exception $e ) {
+			echo $e->getMessage();
+		}
+
+		return $file_name;
 	}
 
 }

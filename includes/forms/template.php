@@ -90,22 +90,23 @@ function give_get_donation_form( $args = array() ) {
 			$display_thankyou_message = ! empty( $display_thankyou_message ) ? $display_thankyou_message : esc_html__( 'Thank you to all our donors, we have met our fundraising goal.', 'give' );
 
 			//Print thank you message.
-			apply_filters( 'give_goal_closed_output', give_output_error( $display_thankyou_message, true, 'success' ) );
+			echo apply_filters( 'give_goal_closed_output', give_output_error( $display_thankyou_message, false, 'success' ), $form->ID );
 
 		} else {
-
-			if ( isset( $args['show_title'] ) && $args['show_title'] == true ) {
-
-				/**
-				 * Filter the title
-				 *
-				 * @since 1.7
-				 *
-				 * @param int              $form_id
-				 * @param Give_Donate_Form $form
-				 */
-				echo apply_filters( 'give_form_title', '<h2 class="give-form-title">' . get_the_title( $form_id ) . '</h2>', $form_id,  $form );
-
+			/**
+			 * Show form title:
+			 * 1. if show_title params set to true
+			 * 2. if admin set form display_style to button
+			 */
+			$form_title = apply_filters( 'give_form_title', '<h2 class="give-form-title">' . get_the_title( $form_id ) . '</h2>' );
+			if (
+				(
+					( isset( $args['show_title'] ) && $args['show_title'] == true )
+					|| ( 'button' === get_post_meta( $form_id, '_give_payment_display', true ) )
+				)
+				&& ! doing_action( 'give_single_form_summary' )
+			) {
+				echo $form_title;
 			}
 
 			/**
@@ -405,8 +406,8 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 	 */
 	do_action( 'give_before_donation_levels', $form_id, $args );
 
-	//Set Price, No Custom Amount Allowed means hidden price field.
-	if ( $allow_custom_amount == 'no' ) {
+	//Set Price, No Custom Amount Allowed means hidden price field
+	if ( ! give_is_setting_enabled( $allow_custom_amount ) ) {
 		?>
 		<label class="give-hidden" for="give-amount-hidden"><?php esc_html_e( 'Donation Amount:', 'give' ); ?></label>
 		<input id="give-amount" class="give-amount-hidden" type="hidden" name="give-amount"
@@ -449,8 +450,8 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 	 */
 	do_action( 'give_after_donation_amount', $form_id, $args );
 
-	//Custom Amount Text.
-	if ( ! $variable_pricing && $allow_custom_amount == 'yes' && ! empty( $custom_amount_text ) ) { ?>
+	//Custom Amount Text
+	if ( ! $variable_pricing &&  give_is_setting_enabled( $allow_custom_amount ) && ! empty( $custom_amount_text ) ) { ?>
 		<p class="give-custom-amount-text"><?php echo $custom_amount_text; ?></p>
 	<?php }
 
@@ -514,7 +515,7 @@ function give_output_levels( $form_id ) {
 			}
 
 			//Custom Amount.
-			if ( $custom_amount === 'yes' && ! empty( $custom_amount_text ) ) {
+			if ( give_is_setting_enabled( $custom_amount ) && ! empty( $custom_amount_text ) ) {
 				$output .= '<li>';
 				$output .= '<button type="button" data-price-id="custom" class="give-donation-level-btn give-btn give-btn-level-custom" value="custom">';
 				$output .= $custom_amount_text;
@@ -543,7 +544,7 @@ function give_output_levels( $form_id ) {
 			}
 
 			//Custom Amount.
-			if ( $custom_amount === 'yes' && ! empty( $custom_amount_text ) ) {
+			if ( give_is_setting_enabled( $custom_amount ) && ! empty( $custom_amount_text ) ) {
 				$output .= '<li>';
 				$output .= '<input type="radio" data-price-id="custom" class="give-radio-input give-radio-input-level give-radio-level-custom" name="give-radio-donation-level" id="give-radio-level-custom" value="custom">';
 				$output .= '<label for="give-radio-level-custom">' . $custom_amount_text . '</label>';
@@ -571,7 +572,7 @@ function give_output_levels( $form_id ) {
 			}
 
 			//Custom Amount.
-			if ( $custom_amount === 'yes' && ! empty( $custom_amount_text ) ) {
+			if ( give_is_setting_enabled( $custom_amount ) && ! empty( $custom_amount_text ) ) {
 				$output .= '<option data-price-id="custom" class="give-donation-level-custom" value="custom">' . $custom_amount_text . '</option>';
 			}
 
@@ -601,9 +602,10 @@ function give_display_checkout_button( $form_id, $args ) {
 		? $args['display_style']
 		: get_post_meta( $form_id, '_give_payment_display', true );
 
-	//no btn for onpage.
-	if ( $display_option === 'onpage' ) {
-		return;
+	if( 'button' === $display_option ) {
+		$display_option = 'modal';
+	}elseif ( $display_option === 'onpage' ) {
+		return '';
 	}
 
 	$display_label_field = get_post_meta( $form_id, '_give_reveal_label', true );
@@ -1035,9 +1037,7 @@ function give_default_cc_address_fields( $form_id ) {
 					name="card_state"
 					id="card_state"
 					class="card_state give-select<?php echo( give_field_is_required( 'card_state', $form_id ) ? ' required' : '' ); ?>"
-					<?php if ( give_field_is_required( 'card_state', $form_id ) ? ' required aria-required="true" ' : '' ) {
-						;
-					} ?>>
+					<?php echo( give_field_is_required( 'card_state', $form_id ) ? ' required aria-required="true" ' : '' ); ?>>
 					<?php
 					foreach ( $states as $state_code => $state ) {
 						echo '<option value="' . $state_code . '"' . selected( $state_code, $selected_state, false ) . '>' . $state . '</option>';
@@ -1340,7 +1340,7 @@ add_action( 'give_donation_form_login_fields', 'give_get_login_fields', 10, 1 );
  */
 function give_payment_mode_select( $form_id ) {
 
-	$gateways = give_get_enabled_payment_gateways();
+	$gateways = give_get_enabled_payment_gateways( $form_id );
 
 	/**
 	 * Fires while selecting payment gateways, before the fields.
@@ -1468,27 +1468,33 @@ add_action( 'give_payment_mode_select', 'give_payment_mode_select' );
  *
  * @param  int $form_id The form ID.
  *
- * @return void|bool
+ * @return bool
  */
 function give_terms_agreement( $form_id ) {
 	$form_option = get_post_meta( $form_id, '_give_terms_option', true );
 
 	// Bailout if per form and global term and conditions is not setup.
-	if ( 'yes' !== $form_option ) {
+	if (
+		give_is_setting_enabled( $form_option, 'global' )
+		&& give_is_setting_enabled( give_get_option( 'terms' ) )
+	) {
+		$label         = give_get_option( 'agree_to_terms_label', esc_html__( 'Agree to Terms?', 'give' ) );
+		$terms         = $terms = give_get_option( 'agreement_text', '' );
+		$edit_term_url = admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=display&section=term-and-conditions' );
+
+	} elseif ( give_is_setting_enabled( $form_option ) ) {
+		$label         = ( $label = get_post_meta( $form_id, '_give_agree_label', true ) ) ? stripslashes( $label ) : esc_html__( 'Agree to Terms?', 'give' );
+		$terms         = get_post_meta( $form_id, '_give_agree_text', true );
+		$edit_term_url = admin_url( 'post.php?post=' . $form_id . '&action=edit#form_terms_options' );
+
+	} else {
 		return false;
 	}
 
-	$label = ( $label = get_post_meta( $form_id, '_give_agree_label', true ) ) ? stripslashes( $label ) : give_get_option( 'agree_to_terms_label', esc_html__( 'Agree to Terms?', 'give' ) );
-	$terms = ( $terms = get_post_meta( $form_id, '_give_agree_text', true ) ) ? $terms : give_get_option( 'agreement_text', '' );
-
-	// Set term and conditions label and text on basis of per form and global setting.
-	// $label = ( $label = get_post_meta( $form_id, '_give_agree_label', true ) ) ? stripslashes( $label ) : give_get_option( 'agree_to_terms_label', esc_html__( 'Agree to Terms?', 'give' ) );
-	// $terms = ( $terms = get_post_meta( $form_id, '_give_agree_text', true ) ) ? $terms : give_get_option( 'agreement_text', '' );
-
 	// Bailout: Check if term and conditions text is empty or not.
 	if ( empty( $terms ) ) {
-		if ( is_user_logged_in() && current_user_can( 'manage_options' ) ) {
-			echo sprintf( __( 'Please enter term and conditions in <a href="%s">this form\'s settings</a>.', 'give' ), admin_url( 'post.php?post=' . $form_id . '&action=edit' ) );
+		if ( is_user_logged_in() && current_user_can( 'edit_give_forms' ) ) {
+			echo sprintf( __( 'Please enter valid terms and conditions in <a href="%s">this form\'s settings</a>.', 'give' ), $edit_term_url );
 		}
 
 		return false;
@@ -1643,7 +1649,7 @@ function give_agree_to_terms_js( $form_id ) {
 
 	$form_option = get_post_meta( $form_id, '_give_terms_option', true );
 
-	if ( $form_option === 'yes' ) {
+	if ( give_is_setting_enabled( $form_option, array( 'enabled', 'global' ) ) ) {
 		?>
 		<script type="text/javascript">
 			jQuery(document).ready(function ($) {
@@ -1685,6 +1691,38 @@ function give_show_goal_progress( $form_id, $args ) {
 
 add_action( 'give_pre_form', 'give_show_goal_progress', 10, 2 );
 
+
+/**
+ * Get form content position.
+ *
+ * @since  1.8
+ * @param  $form_id
+ * @param  $args
+ * @return mixed|string
+ */
+function give_get_form_content_placement( $form_id, $args ) {
+	$show_content = '';
+
+	if ( isset( $args['show_content'] ) && ! empty( $args['show_content'] ) ) {
+		// Content positions.
+		$content_placement = array(
+			'above' => 'give_pre_form',
+			'below' => 'give_post_form',
+		);
+
+		// Check if content position already decoded.
+		if ( in_array( $args['show_content'], $content_placement ) ) {
+			return $args['show_content'];
+		}
+
+		$show_content = ( 'none' !== $args['show_content'] ? $content_placement[ $args['show_content'] ] : '' );
+	} elseif ( give_is_setting_enabled( get_post_meta( $form_id, '_give_display_content', true ) ) ) {
+		$show_content = get_post_meta( $form_id, '_give_content_placement', true );
+	}
+
+	return $show_content;
+}
+
 /**
  * Adds Actions to Render Form Content.
  *
@@ -1693,18 +1731,19 @@ add_action( 'give_pre_form', 'give_show_goal_progress', 10, 2 );
  * @param  int   $form_id The form ID.
  * @param  array $args    An array of form arguments.
  *
- * @return void
+ * @return void|bool
  */
 function give_form_content( $form_id, $args ) {
 
-	$show_content = ( isset( $args['show_content'] ) && ! empty( $args['show_content'] ) )
-		? $args['show_content']
-		: get_post_meta( $form_id, '_give_content_option', true );
+	$show_content = give_get_form_content_placement( $form_id, $args );
 
-	if ( $show_content !== 'none' ) {
-		//add action according to value.
-		add_action( $show_content, 'give_form_display_content', 10, 2 );
+	// Bailout.
+	if( empty( $show_content ) ) {
+		return false;
 	}
+
+	// Add action according to value.
+	add_action( $show_content, 'give_form_display_content', 10, 2 );
 }
 
 add_action( 'give_pre_form_output', 'give_form_content', 10, 2 );
@@ -1724,15 +1763,13 @@ add_action( 'give_pre_form_output', 'give_form_content', 10, 2 );
 function give_form_display_content( $form_id, $args ) {
 
 	$content      = wpautop( get_post_meta( $form_id, '_give_form_content', true ) );
-	$show_content = ( isset( $args['show_content'] ) && ! empty( $args['show_content'] ) )
-		? $args['show_content']
-		: get_post_meta( $form_id, '_give_content_option', true );
+	$show_content = give_get_form_content_placement( $form_id, $args );
 
-	if ( give_get_option( 'disable_the_content_filter' ) !== 'on' ) {
+	if ( give_is_setting_enabled( give_get_option( 'the_content_filter' ) ) ) {
 		$content = apply_filters( 'the_content', $content );
 	}
 
-	$output = '<div id="give-form-content-' . $form_id . '" class="give-form-content-wrap" >' . $content . '</div>';
+	$output = '<div id="give-form-content-' . $form_id . '" class="give-form-content-wrap ' . $show_content . '-content">' . $content . '</div>';
 
 	echo apply_filters( 'give_form_content_output', $output );
 
@@ -1794,8 +1831,8 @@ function give_filter_success_page_content( $content ) {
 	$give_options = give_get_settings();
 
 	if ( isset( $give_options['success_page'] ) && isset( $_GET['payment-confirmation'] ) && is_page( $give_options['success_page'] ) ) {
-		if ( has_filter( 'give_donation_confirm_' . $_GET['payment-confirmation'] ) ) {
-			$content = apply_filters( 'give_donation_confirm_' . $_GET['payment-confirmation'], $content );
+		if ( has_filter( 'give_payment_confirm_' . $_GET['payment-confirmation'] ) ) {
+			$content = apply_filters( 'give_payment_confirm_' . $_GET['payment-confirmation'], $content );
 		}
 	}
 
