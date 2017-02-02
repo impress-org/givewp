@@ -168,6 +168,7 @@ function give_run_install() {
 		// Offline gateway setup.
 		$options['gateways']['offline']             = 1;
 		$options['global_offline_donation_content'] = give_get_default_offline_donation_content();
+		$options['global_offline_donation_email']   = give_get_default_offline_donation_content();
 
 		// Billing address.
 		$options['give_offline_donation_enable_billing_fields'] = 'disabled';
