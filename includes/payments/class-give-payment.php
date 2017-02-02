@@ -2234,7 +2234,7 @@ final class Give_Payment {
 	 * @return bool
 	 */
 	public function is_completed() {
-		return ( 'complete' === $this->status && $this->completed_date );
+		return ( 'publish' === $this->status && $this->completed_date );
 	}
 
 	/**
