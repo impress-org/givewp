@@ -680,7 +680,8 @@ x:-o-prefocus, .qtip .qtip-tip {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 12px;
-  vertical-align: baseline;
+  vertical-align: top;
+  line-height: 20px;
   margin: 0 5px 0 0;
   content: "\e903"; }
 
@@ -1002,7 +1003,7 @@ Tooltips
       overflow: hidden; }
       #give-metabox-form-data .give-metabox-tabs li a span {
         width: 122px;
-        float: right; }
+        display: inline-block; }
   #give-metabox-form-data .give-metabox-tabs .give-metabox-sub-tabs li {
     background-color: #f1f1f1; }
     #give-metabox-form-data .give-metabox-tabs .give-metabox-sub-tabs li a {
