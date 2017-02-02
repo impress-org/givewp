@@ -136,7 +136,18 @@ function give_run_install() {
 
 	// Populate the default values.
 	update_option( 'give_settings', array_merge( $give_options, $options ) );
-	update_option( 'give_version', GIVE_VERSION );
+
+	/**
+	 * Run plugin upgrades.
+	 *
+	 * @since 1.8
+	 */
+	do_action( 'give_upgrades' );
+
+
+	if( GIVE_VERSION !== get_option( 'give_version' ) ) {
+		update_option( 'give_version', GIVE_VERSION );
+	}
 
 	// Create Give roles.
 	$roles = new Give_Roles();
