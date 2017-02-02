@@ -164,7 +164,8 @@ function give_run_install() {
 		$upgrade_routines = array(
 			'upgrade_give_user_caps_cleanup',
 			'upgrade_give_payment_customer_id',
-			'upgrade_give_offline_status'
+			'upgrade_give_offline_status',
+			'v18_upgrades_core_setting'
 		);
 
 		foreach ( $upgrade_routines as $upgrade ) {
@@ -380,6 +381,6 @@ function give_get_default_settings() {
 		// Default email receipt message.
 		'donation_receipt'                            => give_get_default_donation_receipt_email(),
 	);
-	
+
 	return $options;
 }

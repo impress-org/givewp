@@ -604,6 +604,8 @@ function give_v18_upgrades_core_setting() {
 			update_option( 'give_settings', $give_settings );
 		}
 	}
+
+	give_set_upgrade_complete( 'v18_upgrades_core_setting' );
 }
 
 /**
