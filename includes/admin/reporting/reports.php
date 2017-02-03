@@ -33,7 +33,7 @@ function give_reports_page() {
 	$active_tab   = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'earnings';
 	$views        = give_reports_default_views();
 	?>
-	<div class="wrap">
+	<div class="wrap give-settings-page">
 
 		<h1 class="screen-reader-text"><?php echo get_admin_page_title(); ?></h1>
 
