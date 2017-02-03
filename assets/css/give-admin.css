@@ -1564,7 +1564,8 @@ table.give-table td.row-title p {
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 .give-settings-page .nav-tab-wrapper {
-  margin-bottom: 5px; }
+  margin-bottom: 5px;
+  overflow: visible; }
 
 .give-settings-page .cmb2-wrap .cmb-type-checkbox input[type="checkbox"] {
   display: block;
