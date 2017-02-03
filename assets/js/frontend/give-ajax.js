@@ -49,18 +49,18 @@ jQuery(document).ready(function ($) {
 	// Register/Login Cancel
 	$(document).on('click', '.give-checkout-register-cancel', function (e) {
 		e.preventDefault();
-		//User cancelled login
+		// User cancelled login.
 		var $this     = $(this);
 		var this_form = $(this).parents('form');
 		var data      = {
 			action : $this.data('action'),
 			form_id: $(this_form).find('[name="give-form-id"]').val()
 		};
-		//AJAX get the payment fields
+		// AJAX get the payment fields.
 		$.post(give_scripts.ajaxurl, data, function (checkout_response) {
 			//Show fields
 			$(this_form).find('[id^=give-checkout-login-register]').html($.parseJSON(checkout_response.fields));
-			$(this_form).find('[id^=give_purchase_submit]').append($.parseJSON(checkout_response.submit));
+			$(this_form).find('input[type="submit"].give-submit').append($.parseJSON(checkout_response.submit));
 		}).done(function () {
 			// Trigger float-labels
 			give_fl_trigger();
@@ -132,13 +132,13 @@ jQuery(document).ready(function ($) {
 	 *
 	 * @description: Process the donation submit
 	 */
-	$('body').on('click touchend', '#give-purchase-button', function (e) {
+	$('body').on('click touchend', 'form.give-form input[type="submit"].give-submit', function (e) {
 
 		//this form object
 		var this_form = $(this).parents('form.give-form');
 
 		//loading animation
-		var loading_animation = this_form.find('#give_purchase_submit .give-loading-animation');
+		var loading_animation = this_form.find('input[type="submit"].give-submit + .give-loading-animation');
 		loading_animation.fadeIn();
 
 		//this form selector
@@ -179,10 +179,10 @@ jQuery(document).ready(function ($) {
 				this_form.trigger( 'give_form_validation_passed' );
 			} else {
 				//There was an error / remove old errors and prepend new ones
-				this_form.find('#give-purchase-button').val(complete_purchase_val);
+				this_form.find('input[type="submit"].give-submit').val(complete_purchase_val);
 				loading_animation.fadeOut();
 				this_form.find('.give_errors').remove();
-				this_form.find('#give_purchase_submit').before(data);
+				this_form.find('input[type="submit"].give-submit').before(data);
 			}
 
 		});
