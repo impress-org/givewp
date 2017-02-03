@@ -83,7 +83,11 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 	}
 
 	/**
-	 * @param $column
+	 * CSV file columns.
+	 *
+	 * @param array $columns
+	 *
+	 * @return array
 	 */
 	private function get_cols( $columns ) {
 
