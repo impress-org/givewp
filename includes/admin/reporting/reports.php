@@ -528,7 +528,8 @@ function give_reports_tab_export() {
 									</div>
 									<?php wp_nonce_field( 'give_ajax_export', 'give_ajax_export' ); ?>
 									<input type="hidden" name="give-export-class" value="Give_Batch_Customers_Export"/>
-									<input type="hidden" name="give-action" value="email_export"/>
+									<input type="hidden" name="give_export_option[query_id]" value="<?php echo uniqid( 'give_' ); ?>"/>
+									<input type="hidden" name="give_action" value="email_export"/>
 								</form>
 							</td>
 						</tr>
