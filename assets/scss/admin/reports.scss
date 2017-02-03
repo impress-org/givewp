@@ -21,6 +21,10 @@
     .give_forms_page_give-reports & {
       padding-left: 0;
     }
+
+    #give-graphs-filter {
+      float:none;
+    }
   }
 
   .postbox {
@@ -45,8 +49,9 @@
 
 }
 
+
 #give-graphs-filter {
-  float: right;
+  float:right;
 
   .tablenav {
     margin: 0 0 0 17px;
