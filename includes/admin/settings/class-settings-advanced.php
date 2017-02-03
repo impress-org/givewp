@@ -90,7 +90,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
                         array(
                             'name'  => esc_html__( 'Advanced Settings Docs Link', 'give' ),
                             'id'    => 'advanced_settings_docs_link',
-                            'url'   => esc_url( 'http://docs.givewp.com/advancedsettings' ),
+                            'url'   => esc_url( 'http://docs.givewp.com/settings-advanced' ),
                             'title' => __( 'Advanced Settings', 'give' ),
                             'type'  => 'give_docs_link',
                         ),

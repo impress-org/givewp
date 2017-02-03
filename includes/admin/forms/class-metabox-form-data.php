@@ -228,7 +228,7 @@ class Give_MetaBox_Form_Data {
 						array(
 							'name'  => 'donation_options_docs',
 							'type'  => 'docs_link',
-							'url'   => 'http://docs.givewp.com/donationoptions',
+							'url'   => 'http://docs.givewp.com/form-donation-options',
 							'title' => esc_html__( 'Donation Options', 'give' ),
 						),
 					),
@@ -306,8 +306,8 @@ class Give_MetaBox_Form_Data {
 							),
 							array(
 								'name'    => esc_html__( 'Floating Labels', 'give' ),
-								/* translators: %s: forms https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels */
-								'desc'    => sprintf( __( 'Select the <a href="%s" target="_blank">floating labels</a> setting for this Give form. Be aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), esc_url( 'https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels' ) ),
+								/* translators: %s: forms http://docs.givewp.com/form-floating-labels */
+								'desc'    => sprintf( __( 'Select the <a href="%s" target="_blank">floating labels</a> setting for this Give form. Be aware that if you have the "Disable CSS" option enabled, you will need to style the floating labels yourself.', 'give' ), esc_url( 'http://docs.givewp.com/form-floating-labels' ) ),
 								'id'      => $prefix . 'form_floating_labels',
 								'type'    => 'radio_inline',
 								'options' => array(
@@ -320,7 +320,7 @@ class Give_MetaBox_Form_Data {
 							array(
 								'name'  => 'form_display_docs',
 								'type'  => 'docs_link',
-								'url'   => 'http://docs.givewp.com/formdisplay',
+								'url'   => 'http://docs.givewp.com/form-display-options',
 								'title' => esc_html__( 'Form Display', 'give' ),
 							),
 						),
@@ -403,7 +403,7 @@ class Give_MetaBox_Form_Data {
 						array(
 							'name'  => 'donation_goal_docs',
 							'type'  => 'docs_link',
-							'url'   => 'http://docs.givewp.com/donationgoal',
+							'url'   => 'http://docs.givewp.com/form-donation-goal',
 							'title' => esc_html__( 'Donation Goal', 'give' ),
 						),
 					),
@@ -454,7 +454,7 @@ class Give_MetaBox_Form_Data {
 						array(
 							'name'  => 'form_content_docs',
 							'type'  => 'docs_link',
-							'url'   => 'http://docs.givewp.com/formcontent',
+							'url'   => 'http://docs.givewp.com/form-content',
 							'title' => esc_html__( 'Form Content', 'give' ),
 						),
 					),

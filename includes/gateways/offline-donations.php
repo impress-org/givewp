@@ -357,7 +357,7 @@ function give_offline_add_settings( $settings ) {
 		array(
 			'name'         => 'offline_docs',
 			'type'         => 'docs_link',
-			'url'          => 'http://docs.givewp.com/offlinegateway',
+			'url'          => 'http://docs.givewp.com/settings-gateway-offline-donations',
 			'title'        => __('Offline Donations', 'give'),
 		),
 	);
@@ -459,7 +459,7 @@ function give_get_default_offline_donation_email_content() {
 function give_offline_donation_receipt_status_notice( $notice, $id ) {
 	$payment = new Give_Payment( $id );
 
-	if ( 'offline' !== $payment->gateway ) {
+	if ( 'offline' !== $payment->gateway || $payment->is_completed() ) {
 		return $notice;
 	}
 

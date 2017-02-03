@@ -89,7 +89,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
                         array(
                             'name'  => esc_html__( 'PayPal Standard Gateway Settings Docs Link', 'give' ),
                             'id'    => 'paypal_standard_gateway_settings_docs_link',
-                            'url'   => esc_url( 'http://docs.givewp.com/paypalstandard' ),
+                            'url'   => esc_url( 'http://docs.givewp.com/settings-gateway-paypal-standard' ),
                             'title' => __( 'PayPal Standard Gateway Settings', 'give' ),
                             'type'  => 'give_docs_link',
                         ),
@@ -148,7 +148,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
                         array(
                             'name'  => esc_html__( 'Offline Donations Settings Docs Link', 'give' ),
                             'id'    => 'offline_gateway_settings_docs_link',
-                            'url'   => esc_url( 'http://docs.givewp.com/offlinegateway' ),
+                            'url'   => esc_url( 'http://docs.givewp.com/settings-gateway-offline-donations' ),
                             'title' => __( 'Offline Gateway Settings', 'give' ),
                             'type'  => 'give_docs_link',
                         ),
@@ -192,7 +192,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
                         array(
                             'name'  => esc_html__( 'Gateways Docs Link', 'give' ),
                             'id'    => 'gateway_settings_docs_link',
-                            'url'   => esc_url( 'http://docs.givewp.com/gatewayssettings' ),
+                            'url'   => esc_url( 'http://docs.givewp.com/settings-gateways' ),
                             'title' => __( 'Gateway Settings', 'give' ),
                             'type'  => 'give_docs_link',
                         ),

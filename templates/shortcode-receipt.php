@@ -25,7 +25,7 @@ $status       = $payment->post_status;
 $status_label = give_get_payment_status( $payment, true );
 
 // Show payment status notice based on shortcode attribute.
-if ( true === $give_receipt_args['status_notice'] ) {
+if ( filter_var( $give_receipt_args['status_notice'], FILTER_VALIDATE_BOOLEAN ) ) {
 	$notice_message = '';
 	$notice_type    = 'warning';
 

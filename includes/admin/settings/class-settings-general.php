@@ -93,7 +93,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
                         array(
                             'name'  => esc_html__( 'Access Control Docs Link', 'give' ),
                             'id'    => 'access_control_docs_link',
-                            'url'   => esc_url( 'http://docs.givewp.com/accesscontrol' ),
+                            'url'   => esc_url( 'http://docs.givewp.com/settings-access-control' ),
                             'title' => __( 'Access Control', 'give' ),
                             'type'  => 'give_docs_link',
                         ),
@@ -165,7 +165,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
                         array(
                             'name'  => esc_html__( 'Currency Options Docs Link', 'give' ),
                             'id'    => 'currency_settings_docs_link',
-                            'url'   => esc_url( 'http://docs.givewp.com/currencysettings' ),
+                            'url'   => esc_url( 'http://docs.givewp.com/settings-currency' ),
                             'title' => __( 'Currency Settings', 'give' ),
                             'type'  => 'give_docs_link',
                         ),
@@ -231,7 +231,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
                         array(
                             'name'  => esc_html__( 'General Options Docs Link', 'give' ),
                             'id'    => 'general_options_docs_link',
-                            'url'   => esc_url( 'http://docs.givewp.com/generaloptions' ),
+                            'url'   => esc_url( 'http://docs.givewp.com/settings-general' ),
                             'title' => __( 'General Options', 'give' ),
                             'type'  => 'give_docs_link',
                         ),

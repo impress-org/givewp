@@ -53,6 +53,7 @@ function give_do_automatic_upgrades() {
 }
 
 add_action( 'admin_init', 'give_do_automatic_upgrades' );
+add_action( 'give_upgrades', 'give_do_automatic_upgrades' );
 
 /**
  * Display Upgrade Notices
@@ -590,7 +591,7 @@ function give_v18_upgrades_core_setting() {
 				$give_settings[ $new_setting_name ] = ( give_is_setting_enabled( $give_settings[ $setting_name ] ) ? 'disabled' : 'enabled' );
 			} elseif ( false !== strpos( $setting_name, 'enable_' ) ) {
 
-				$give_settings[ $new_setting_name ] = ( give_is_setting_enabled( $give_settings[ $setting_name ] ) ? 'enable' : 'disabled' );
+				$give_settings[ $new_setting_name ] = ( give_is_setting_enabled( $give_settings[ $setting_name ] ) ? 'enabled' : 'disabled' );
 			}
 
 			// Tell bot to update core setting to db.
@@ -604,6 +605,8 @@ function give_v18_upgrades_core_setting() {
 			update_option( 'give_settings', $give_settings );
 		}
 	}
+
+	give_set_upgrade_complete( 'v18_upgrades_core_setting' );
 }
 
 /**
@@ -625,13 +628,14 @@ function give_v18_upgrades_form_metadata() {
 
 			// Form content.
 			// Note in version 1.8 display content setting split into display content and content placement setting.
+			// You can delete _give_content_option in future
 			$show_content = get_post_meta( get_the_ID(), '_give_content_option', true );
 			if ( $show_content && ! get_post_meta( get_the_ID(), '_give_display_content', true ) ) {
 				$field_value = ( 'none' !== $show_content ? 'enabled' : 'disabled' );
 				update_post_meta( get_the_ID(), '_give_display_content', $field_value );
 
 				$field_value = ( 'none' !== $show_content ? $show_content : 'give_pre_form' );
-				update_post_meta( get_the_ID(), '_give_content_option', $field_value );
+				update_post_meta( get_the_ID(), '_give_content_placement', $field_value );
 			}
 
 
@@ -676,6 +680,7 @@ function give_v18_upgrades_form_metadata() {
 	}
 
 	wp_reset_postdata();
+	give_set_upgrade_complete( 'v18_upgrades_form_metadata' );
 }
 
 /**
@@ -689,7 +694,7 @@ function give_v18_renamed_core_settings() {
 		'disable_paypal_verification' => 'paypal_verification',
 		'disable_css'                 => 'css',
 		'disable_welcome'             => 'welcome',
-		'disable_forms_singular'      => 'forms_singlar',
+		'disable_forms_singular'      => 'forms_singular',
 		'disable_forms_archives'      => 'forms_archives',
 		'disable_forms_excerpt'       => 'forms_excerpt',
 		'disable_form_featured_img'   => 'form_featured_img',
