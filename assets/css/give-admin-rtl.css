@@ -1847,13 +1847,17 @@ a.give-delete {
   margin: 0;
   padding-top: .5em; }
 
-h2.nav-tab-wrapper {
+h2.give-nav-tab-wrapper {
   overflow: hidden;
   height: 35px; }
 
 @media screen and (max-width: 600px) {
-  h2.nav-tab-wrapper {
+  h2.give-nav-tab-wrapper {
     height: 50px; } }
+
+@media screen and (max-width: 414px) {
+  .give-nav-tab-wrapper > a {
+    width: 75%; } }
 
 .give-sub-nav-tab-wrapper {
   position: relative;
