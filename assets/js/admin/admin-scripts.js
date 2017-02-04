@@ -1652,11 +1652,14 @@ jQuery.noConflict();
 		 */
 
 		// Show/Hide sub tab nav.
-		$('#give-mainform').on('click', '#give-show-sub-nav', function (e) {
+		$('#give-mainform').on('click blur', '#give-show-sub-nav', function (e) {
 			e.preventDefault();
 
 			var $sub_tab_nav = $(this).next();
-			$sub_tab_nav.toggleClass('give-hidden');
+
+			if( ! $sub_tab_nav.is(':hover') ) {
+				$sub_tab_nav.toggleClass('give-hidden');
+			}
 
 			return false;
 		});
