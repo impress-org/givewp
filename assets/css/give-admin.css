@@ -680,7 +680,8 @@ x:-o-prefocus, .qtip .qtip-tip {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 12px;
-  vertical-align: baseline;
+  vertical-align: top;
+  line-height: 20px;
   margin: 0 5px 0 0;
   content: "\e903"; }
 
@@ -1002,7 +1003,7 @@ Tooltips
       overflow: hidden; }
       #give-metabox-form-data .give-metabox-tabs li a span {
         width: 122px;
-        float: right; }
+        display: inline-block; }
   #give-metabox-form-data .give-metabox-tabs .give-metabox-sub-tabs li {
     background-color: #f1f1f1; }
     #give-metabox-form-data .give-metabox-tabs .give-metabox-sub-tabs li a {
@@ -1238,17 +1239,14 @@ DOCS LINKS
   /* counteract extra padding in Income Report graph */ }
   .give_forms_page_give-reports #give-dashboard-widgets-wrap .inside {
     padding-left: 0; }
+  #give-dashboard-widgets-wrap .inside #give-graphs-filter {
+    float: none; }
 
 #give-dashboard-widgets-wrap .postbox {
   margin-bottom: 10px; }
 
 #give-dashboard-widgets-wrap table.reports-table {
   clear: none; }
-
-#give-dashboard-widgets-wrap #give-graphs-filter .tablenav {
-  margin: 0 0 0 17px; }
-  #give-dashboard-widgets-wrap #give-graphs-filter .tablenav .actions {
-    padding: 0; }
 
 #give-dashboard-widgets-wrap #give-date-range-options {
   float: left; }
@@ -1257,6 +1255,13 @@ DOCS LINKS
     line-height: 30px;
     font-style: italic;
     padding: 0 5px 0 0; }
+
+#give-graphs-filter {
+  float: right; }
+  #give-graphs-filter .tablenav {
+    margin: 0 0 0 17px; }
+    #give-graphs-filter .tablenav .actions {
+      padding: 0; }
 
 .give-graph .y1Axis {
   color: #66bb6a !important; }
@@ -1563,7 +1568,8 @@ table.give-table td.row-title p {
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 .give-settings-page .nav-tab-wrapper {
-  margin-bottom: 5px; }
+  margin-bottom: 5px;
+  overflow: visible; }
 
 .give-settings-page .cmb2-wrap .cmb-type-checkbox input[type="checkbox"] {
   display: block;

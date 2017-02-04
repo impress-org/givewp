@@ -164,12 +164,11 @@ function give_send_to_success_page( $query_string = null ) {
 function give_send_back_to_checkout( $args = array() ) {
 
 	$url = isset( $_POST['give-current-url'] ) ? sanitize_text_field( $_POST['give-current-url'] ) : '';
+	$form_id = 0;
 
 	// Set the form_id.
 	if ( isset( $_POST['give-form-id'] ) ) {
 		$form_id = sanitize_text_field( $_POST['give-form-id'] );
-	} else {
-		$form_id = 0;
 	}
 
 	// Need a URL to continue. If none, redirect back to single form.
@@ -181,6 +180,11 @@ function give_send_back_to_checkout( $args = array() ) {
 	$defaults = array(
 		'form-id' => (int) $form_id,
 	);
+
+	// Set the $level_id.
+	if ( isset( $_POST['give-price-id'] ) ) {
+		$defaults['level-id'] = sanitize_text_field( $_POST['give-price-id'] );
+	}
 
 	// Check for backward compatibility.
 	if ( is_string( $args ) ) {

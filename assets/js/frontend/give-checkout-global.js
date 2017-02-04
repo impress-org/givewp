@@ -237,9 +237,9 @@ jQuery(function ($) {
 
 	// Add a class to the currently selected gateway on click
 	doc.on('click', '#give-payment-mode-select input', function () {
-		var $form                = $(this).parents('form'),
-			$gateways_li         = $('#give-payment-mode-select li'),
-			old_payment_gateway  = $('#give-payment-mode-select li.give-gateway-option-selected input[name="payment-mode"]').val(),
+		var $form = $(this).parents('form'),
+			$gateways_li = $('#give-payment-mode-select li'),
+			old_payment_gateway = $('#give-payment-mode-select li.give-gateway-option-selected input[name="payment-mode"]').val(),
 			new_payment_gateways = '';
 
 		// Unselect all payment gateways.
@@ -531,7 +531,7 @@ jQuery(function ($) {
 		var form_id = give_get_parameter_by_name('form-id');
 		var payment_mode = give_get_parameter_by_name('payment-mode');
 
-		//Sanity check - only proceed if query strings in place
+		// Sanity check - only proceed if query strings in place.
 		if (!form_id || !payment_mode) {
 			return false;
 		}
@@ -541,22 +541,26 @@ jQuery(function ($) {
 		var display_modal = form_wrap.hasClass('give-display-modal');
 		var display_reveal = form_wrap.hasClass('give-display-reveal');
 
-		//Update payment mode radio so it's correctly checked
+		// Update payment mode radio so it's correctly checked.
 		form.find('#give-gateway-radio-list label').removeClass('give-gateway-option-selected');
 		form.find('input[name=payment-mode][value=' + payment_mode + ']').prop('checked', true).parent().addClass('give-gateway-option-selected');
 
-		//This form is modal display so show the modal
+		// Select the proper level for Multi-level forms.
+		// It can either be a dropdown, buttons, or radio list. Default is buttons field type.
+		var level_id = give_get_parameter_by_name('level-id');
+		var level_field = form.find('*[data-price-id="' + level_id + '"]');
+		if (level_field.length > 0) {
+			update_multiselect_vals(level_field);
+		}
+
+		// This form is modal display so show the modal.
 		if (display_modal) {
 			give_open_form_modal(form_wrap, form);
-		}
-		//This is a reveal form, show it
-		else if (display_reveal) {
-
+		} else if (display_reveal) {
+			// This is a reveal form, show it.
 			form.find('.give-btn-reveal').hide();
 			form.find('#give-payment-mode-select, #give_purchase_form_wrap').slideDown();
-
 		}
-
 
 	}
 

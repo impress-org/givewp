@@ -15,6 +15,7 @@
 
 	.nav-tab-wrapper {
 		margin-bottom: 5px;
+		overflow: visible;
 	}
 
 	.cmb2-wrap .cmb-type-checkbox input[type="checkbox"] {
@@ -398,7 +399,6 @@ a.give-delete {
 	.give-license-status-notice.give-license-expired a:hover {
 		text-decoration: none;
 	}
-
 }
 
 /* Responsive fixes: Addon grid design */
