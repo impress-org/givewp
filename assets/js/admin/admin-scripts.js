@@ -1756,6 +1756,7 @@ function give_render_responsinve_tabs() {
 			resolve(true);
 		});
 
+
 		show_tabs.then(function (is_show_tabs) {
 			// Hide sub menu tabs.
 			if ($hide_tabs.length) {
@@ -1768,9 +1769,12 @@ function give_render_responsinve_tabs() {
 				});
 
 				if (!jQuery('.give-sub-nav-tab-wrapper', $main_tab_nav).length) {
-					$sub_tab_nav_wrapper.removeClass('give-hidden');
 					$main_tab_nav.append($sub_tab_nav_wrapper);
 				}
+
+				$sub_tab_nav_wrapper.removeClass('give-hidden');
+			} else {
+				$sub_tab_nav_wrapper.addClass('give-hidden');
 			}
 		});
 	});
