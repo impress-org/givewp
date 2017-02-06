@@ -894,7 +894,7 @@ function give_default_cc_address_fields( $form_id ) {
 		 */
 		do_action( 'give_cc_billing_top' );
 		?>
-		<p id="give-card-address-wrap" class="form-row form-row-two-thirds">
+		<p id="give-card-address-wrap" class="form-row form-row-wide">
 			<label for="card_address" class="give-label">
 				<?php esc_html_e( 'Address 1', 'give' ); ?>
 				<?php
@@ -916,7 +916,7 @@ function give_default_cc_address_fields( $form_id ) {
 			/>
 		</p>
 
-		<p id="give-card-address-2-wrap" class="form-row form-row-one-third">
+		<p id="give-card-address-2-wrap" class="form-row form-row-wide">
 			<label for="card_address_2" class="give-label">
 				<?php esc_html_e( 'Address 2', 'give' ); ?>
 				<?php if ( give_field_is_required( 'card_address_2', $form_id ) ) : ?>
@@ -937,7 +937,7 @@ function give_default_cc_address_fields( $form_id ) {
 			/>
 		</p>
 
-		<p id="give-card-city-wrap" class="form-row form-row-two-thirds">
+		<p id="give-card-city-wrap" class="form-row form-row-first form-row-responsive">
 			<label for="card_city" class="give-label">
 				<?php esc_html_e( 'City', 'give' ); ?>
 				<?php if ( give_field_is_required( 'card_city', $form_id ) ) : ?>
@@ -957,7 +957,7 @@ function give_default_cc_address_fields( $form_id ) {
 			/>
 		</p>
 
-		<p id="give-card-zip-wrap" class="form-row form-row-one-third">
+		<p id="give-card-zip-wrap" class="form-row form-row-last form-row-responsive">
 			<label for="card_zip" class="give-label">
 				<?php esc_html_e( 'Zip / Postal Code', 'give' ); ?>
 				<?php if ( give_field_is_required( 'card_zip', $form_id ) ) : ?>
@@ -979,7 +979,7 @@ function give_default_cc_address_fields( $form_id ) {
 			/>
 		</p>
 
-		<p id="give-card-country-wrap" class="form-row form-row-first">
+		<p id="give-card-country-wrap" class="form-row form-row-first form-row-responsive">
 			<label for="billing_country" class="give-label">
 				<?php esc_html_e( 'Country', 'give' ); ?>
 				<?php if ( give_field_is_required( 'billing_country', $form_id ) ) : ?>
@@ -1011,7 +1011,7 @@ function give_default_cc_address_fields( $form_id ) {
 			</select>
 		</p>
 
-		<p id="give-card-state-wrap" class="form-row form-row-last">
+		<p id="give-card-state-wrap" class="form-row form-row-last form-row-responsive">
 			<label for="card_state" class="give-label">
 				<?php esc_html_e( 'State / Province', 'give' ); ?>
 				<?php if ( give_field_is_required( 'card_state', $form_id ) ) : ?>

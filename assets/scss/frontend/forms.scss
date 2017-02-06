@@ -169,6 +169,7 @@ form[id*='give-form'] {
     @include clearfix();
     @include box-sizing(border-box);
     margin: 0 0 15px;
+    overflow: visible;
     padding: 0;
 
     label {
@@ -203,16 +204,24 @@ form[id*='give-form'] {
   }
 
   .form-row-first,
-  .form-row-last,
-  .form-row-two-thirds {
+  .form-row-last {
     float: left;
     width: 48.5%;
-    overflow: visible;
+  }
+
+  .form-row-last {
+    float: right;
+  }
+
+  .form-row-wide {
+    @include clearfix();
+    clear: both;
   }
 
   .form-row-two-thirds {
     float: left;
     width: 65.75%;
+
     &.form-row-first {
       margin-left: 0;
     }
@@ -228,13 +237,12 @@ form[id*='give-form'] {
     }
   }
 
-  .form-row-last {
-    float: right;
-  }
-
-  .form-row-wide {
-    @include clearfix();
-    clear: both;
+  .form-row-responsive {
+    // Full-width on small viewports.
+    @media ( max-width: 480px ) {
+      margin: 0;
+      width: 100%;
+    }
   }
 
   .give-error,
