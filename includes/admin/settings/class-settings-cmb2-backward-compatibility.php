@@ -587,8 +587,9 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			$sections = $this->get_sections();
 
 			// Show section settings only if setting section exist.
-			if ( ! in_array( $this->current_section, array_keys( $sections ) ) ) {
+			if ( $this->current_section && ! in_array( $this->current_section, array_keys( $sections ) ) ) {
 				echo '<div class="error"><p>' . __( 'Oops, this settings page does not exist.', 'give' ) . '</p></div>';
+				$GLOBALS['give_hide_save_button'] = true;
 
 				return;
 			}

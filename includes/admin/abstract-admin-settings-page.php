@@ -141,8 +141,9 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 			$sections = $this->get_sections();
 
 			// Show section settings only if setting section exist.
-			if ( ! in_array( $current_section, array_keys( $sections ) ) ) {
+			if ( $current_section && ! in_array( $current_section, array_keys( $sections ) ) ) {
 				echo '<div class="error"><p>' . __( 'Oops, this settings page does not exist.', 'give' ) . '</p></div>';
+				$GLOBALS['give_hide_save_button'] = true;
 
 				return;
 			}
