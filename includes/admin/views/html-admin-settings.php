@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 // Bailout: Do not output anything if setting tab is not defined.
-if( ! empty( $tabs ) ) :
+if( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs ) ) :
 	/**
 	 * Filter the form action.
 	 *
@@ -95,4 +95,5 @@ if( ! empty( $tabs ) ) :
 			<?php endif; ?>
 		<?php echo $form_close_tag; ?>
 	</div>
+	<?php else : echo '<div class="error"><p>' . __( 'Oops, this settings page does not exist.', 'give' ) . '</p></div>'; ?>
 <?php endif; ?>
