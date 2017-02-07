@@ -804,6 +804,9 @@ Layout
 [id*='give-form'].give-display-reveal #give-payment-mode-select, [id*='give-form'].give-display-reveal #give_purchase_form_wrap, [id*='give-form'].give-display-modal #give-payment-mode-select, [id*='give-form'].give-display-modal #give_purchase_form_wrap {
   display: none; }
 
+[id*='give-form'] .cc-address {
+  margin-bottom: 15px; }
+
 /*------------------------------------
 Single Forms
 --------------------------------------*/
@@ -869,12 +872,15 @@ form[id*='give-form'] {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     margin: 0 0 15px;
+    overflow: visible;
     padding: 0; }
     form[id*='give-form'] .form-row:before, form[id*='give-form'] .form-row:after {
       content: " ";
       display: table; }
     form[id*='give-form'] .form-row:after {
       clear: both; }
+    form[id*='give-form'] .form-row:last-child {
+      margin-bottom: 15px; }
     form[id*='give-form'] .form-row label {
       display: block;
       margin: 0 0 5px;
@@ -890,17 +896,27 @@ form[id*='give-form'] {
       border-radius: 0;
       outline: none;
       color: #333;
-      background-color: #FDFDFD; }
+      background-color: #FDFDFD;
+      border: 1px solid #ccc;
+      padding: .5em; }
       form[id*='give-form'] .form-row select:focus, form[id*='give-form'] .form-row textarea:focus, form[id*='give-form'] .form-row input[type="text"]:focus, form[id*='give-form'] .form-row input[type="tel"]:focus, form[id*='give-form'] .form-row input[type="email"]:focus, form[id*='give-form'] .form-row input[type="password"]:focus {
         background-color: #fff; }
       form[id*='give-form'] .form-row select.required, form[id*='give-form'] .form-row textarea.required, form[id*='give-form'] .form-row input[type="text"].required, form[id*='give-form'] .form-row input[type="tel"].required, form[id*='give-form'] .form-row input[type="email"].required, form[id*='give-form'] .form-row input[type="password"].required {
         color: #333; }
   form[id*='give-form'] .form-row-first,
-  form[id*='give-form'] .form-row-last,
-  form[id*='give-form'] .form-row-two-thirds {
+  form[id*='give-form'] .form-row-last {
     float: right;
-    width: 48.5%;
-    overflow: visible; }
+    width: 48.5%; }
+  form[id*='give-form'] .form-row-last {
+    float: left; }
+  form[id*='give-form'] .form-row-wide {
+    *zoom: 1;
+    clear: both; }
+    form[id*='give-form'] .form-row-wide:before, form[id*='give-form'] .form-row-wide:after {
+      content: " ";
+      display: table; }
+    form[id*='give-form'] .form-row-wide:after {
+      clear: both; }
   form[id*='give-form'] .form-row-two-thirds {
     float: right;
     width: 65.75%; }
@@ -912,16 +928,11 @@ form[id*='give-form'] {
     margin-right: 3%; }
     form[id*='give-form'] .form-row-one-third.form-row-first {
       margin-right: 0; }
-  form[id*='give-form'] .form-row-last {
-    float: left; }
-  form[id*='give-form'] .form-row-wide {
-    *zoom: 1;
-    clear: both; }
-    form[id*='give-form'] .form-row-wide:before, form[id*='give-form'] .form-row-wide:after {
-      content: " ";
-      display: table; }
-    form[id*='give-form'] .form-row-wide:after {
-      clear: both; }
+  @media (max-width: 480px) {
+    form[id*='give-form'] .form-row-responsive {
+      margin-right: 0;
+      margin-left: 0;
+      width: 100%; } }
   form[id*='give-form'] .give-error,
   form[id*='give-form'] .give-required-indicator {
     color: #a00; }
@@ -999,7 +1010,7 @@ form[id*='give-form'] #give_terms_agreement legend {
   display: none; }
 
 form[id*='give-form'] #give-final-total-wrap {
-  margin: 25px 0;
+  margin: 10px 0 25px;
   padding: 0;
   *zoom: 1; }
   form[id*='give-form'] #give-final-total-wrap:before, form[id*='give-form'] #give-final-total-wrap:after {
@@ -1308,7 +1319,7 @@ Basic Button Style
   padding: 8px 10px;
   cursor: pointer;
   line-height: 1.2em;
-  font-size: 14px; }
+  font-size: 1em; }
   .give-btn:hover {
     background: #dbdbdb; }
 
