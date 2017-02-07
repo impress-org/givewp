@@ -240,7 +240,8 @@ form[id*='give-form'] {
   .form-row-responsive {
     // Full-width on small viewports.
     @media ( max-width: 480px ) {
-      margin: 0;
+      margin-left: 0;
+      margin-right: 0;
       width: 100%;
     }
   }
@@ -326,7 +327,7 @@ form[id*='give-form'] {
   }
 
   #give-final-total-wrap {
-    margin: 25px 0;
+    margin: 10px 0 25px;
     padding: 0;
     @include clearfix();
 
