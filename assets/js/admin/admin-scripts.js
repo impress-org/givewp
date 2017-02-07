@@ -1688,7 +1688,11 @@ function give_render_responsinve_tabs() {
 		$setting_tab_links      = jQuery('h2.give-nav-tab-wrapper>a:not(give-not-tab)'),
 		$show_tabs              = [],
 		$hide_tabs              = [],
-		tab_width               = 200;
+		tab_width               = 0;
+
+	if( 414 < jQuery(window).outerWidth() ) {
+		tab_width = 200;
+	}
 
 	// Bailout.
 	if (!$setting_page_form.length) {
