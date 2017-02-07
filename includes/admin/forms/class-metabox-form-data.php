@@ -1019,11 +1019,10 @@ class Give_MetaBox_Form_Data {
 
 		if ( ! empty( $this->settings ) ) {
 			foreach ( $this->settings as $setting ) {
-				if ( $this->has_sub_tab( $setting ) ) {
-					$setting_field = $this->get_sub_field( $setting, $field_id );
-					break;
-				} elseif ( $field = $this->get_field( $setting, $field_id ) ) {
-					$setting_field = $field;
+				if (
+					( $this->has_sub_tab( $setting ) && ( $setting_field = $this->get_sub_field( $setting, $field_id ) ) )
+					|| ( $setting_field = $this->get_field( $setting, $field_id ) )
+				) {
 					break;
 				}
 			}
