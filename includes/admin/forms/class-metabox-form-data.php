@@ -777,6 +777,7 @@ class Give_MetaBox_Form_Data {
 				if ( isset( $_POST[ $form_meta_key ] ) ) {
 					if ( $field_type = $this->get_field_type( $form_meta_key ) ) {
 						switch ( $field_type ) {
+							case 'textarea':
 							case 'wysiwyg':
 								$form_meta_value = wp_kses_post( $_POST[ $form_meta_key ] );
 								update_post_meta( $post_id, $form_meta_key, $form_meta_value );
