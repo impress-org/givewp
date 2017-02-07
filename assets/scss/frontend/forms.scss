@@ -172,6 +172,11 @@ form[id*='give-form'] {
     overflow: visible;
     padding: 0;
 
+    // Prevent some themes from removing margin on last-child.
+    &:last-child {
+      margin-bottom: 15px;
+    }
+
     label {
       display: block;
       margin: 0 0 5px;
