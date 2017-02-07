@@ -765,7 +765,7 @@ function give_get_cc_form( $form_id ) {
 				<span><?php esc_html_e( 'This is a secure SSL encrypted payment.', 'give' ); ?></span>
 			</div>
 		<?php endif; ?>
-		<p id="give-card-number-wrap-<?php echo $form_id ?>" class="form-row form-row-two-thirds">
+		<p id="give-card-number-wrap-<?php echo $form_id ?>" class="form-row form-row-two-thirds form-row-responsive">
 			<label for="card_number-<?php echo $form_id ?>" class="give-label">
 				<?php esc_html_e( 'Card Number', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
@@ -779,7 +779,7 @@ function give_get_cc_form( $form_id ) {
 			       required aria-required="true"/>
 		</p>
 
-		<p id="give-card-cvc-wrap-<?php echo $form_id ?>" class="form-row form-row-one-third">
+		<p id="give-card-cvc-wrap-<?php echo $form_id ?>" class="form-row form-row-one-third form-row-responsive">
 			<label for="card_cvc-<?php echo $form_id ?>" class="give-label">
 				<?php esc_html_e( 'CVC', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
@@ -792,7 +792,7 @@ function give_get_cc_form( $form_id ) {
 			       required aria-required="true"/>
 		</p>
 
-		<p id="give-card-name-wrap-<?php echo $form_id ?>" class="form-row form-row-two-thirds">
+		<p id="give-card-name-wrap-<?php echo $form_id ?>" class="form-row form-row-two-thirds form-row-responsive">
 			<label for="card_name-<?php echo $form_id ?>" class="give-label">
 				<?php esc_html_e( 'Name on the Card', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
@@ -814,7 +814,7 @@ function give_get_cc_form( $form_id ) {
 		 */
 		do_action( 'give_before_cc_expiration' );
 		?>
-		<p class="card-expiration form-row form-row-one-third">
+		<p class="card-expiration form-row form-row-one-third form-row-responsive">
 			<label for="card_expiry-<?php echo $form_id ?>" class="give-label">
 				<?php esc_html_e( 'Expiration', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
