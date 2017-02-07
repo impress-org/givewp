@@ -333,6 +333,11 @@ function give_load_admin_scripts( $hook ) {
 				'resend_receipts'         => __( 'Are you sure you want to resend the emails receipt to {payment_count} recipients?', 'give' ),
 			),
 		),
+		'metabox_fields' => array(
+			'media' => array(
+				'button_title' => esc_html__( 'Choose Attachment', 'give' ),
+			)
+		)
 	) );
 
 	if ( function_exists( 'wp_enqueue_media' ) && version_compare( get_bloginfo( 'version' ), '3.5', '>=' ) ) {
