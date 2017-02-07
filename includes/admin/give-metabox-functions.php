@@ -612,6 +612,41 @@ function give_colorpicker( $field ) {
 	echo '</p>';
 }
 
+
+/**
+ * Output a media upload field.
+ *
+ * @since  1.8
+ *
+ * @param array $field
+ *
+ */
+function give_media( $field ) {
+	global $thepostid, $post;
+
+	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
+	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
+	$field['value']         = give_get_field_value( $field, $thepostid );
+	$field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
+	$field['type']          = 'text';
+	?>
+	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+		<label for="<?php echo $field['id'] ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
+		<input
+			name="<?php echo esc_attr( $field['id'] ); ?>"
+			id="<?php echo esc_attr( $field['id'] ); ?>"
+			type="text"
+			class="give-input-field<?php echo esc_attr( isset( $field['class'] ) ? ' ' . $field['class'] : '' ); ?> give-text-medium"
+			value="<?php echo $field['value']; ?>"
+			style="<?php echo esc_attr( $field['style'] ); ?>"
+			<?php echo give_get_custom_attributes( $field ); ?>
+		/>&nbsp;&nbsp;&nbsp;&nbsp;<input class="give-media-upload button" type="button" value="<?php echo esc_html__( 'Add or Upload File', 'give' ); ?>">
+		<?php echo give_get_field_description( $field ); ?>
+	</p>
+	<?php
+}
+
 /**
  * Output a select field with payment options list.
  *
