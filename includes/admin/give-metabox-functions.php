@@ -403,9 +403,7 @@ function give_wysiwyg( $field ) {
 		$editor_attributes
 	);
 
-	if ( ! empty( $field['description'] ) ) {
-		echo '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
-	}
+	echo give_get_field_description( $field );
 	echo '</div>';
 }
 
