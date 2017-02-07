@@ -876,6 +876,8 @@ form[id*='give-form'] {
       display: table; }
     form[id*='give-form'] .form-row:after {
       clear: both; }
+    form[id*='give-form'] .form-row:last-child {
+      margin-bottom: 15px; }
     form[id*='give-form'] .form-row label {
       display: block;
       margin: 0 0 5px;
@@ -892,7 +894,8 @@ form[id*='give-form'] {
       outline: none;
       color: #333;
       background-color: #FDFDFD;
-      border: 1px solid #ccc; }
+      border: 1px solid #ccc;
+      padding: .5em; }
       form[id*='give-form'] .form-row select:focus, form[id*='give-form'] .form-row textarea:focus, form[id*='give-form'] .form-row input[type="text"]:focus, form[id*='give-form'] .form-row input[type="tel"]:focus, form[id*='give-form'] .form-row input[type="email"]:focus, form[id*='give-form'] .form-row input[type="password"]:focus {
         background-color: #fff; }
       form[id*='give-form'] .form-row select.required, form[id*='give-form'] .form-row textarea.required, form[id*='give-form'] .form-row input[type="text"].required, form[id*='give-form'] .form-row input[type="tel"].required, form[id*='give-form'] .form-row input[type="email"].required, form[id*='give-form'] .form-row input[type="password"].required {
