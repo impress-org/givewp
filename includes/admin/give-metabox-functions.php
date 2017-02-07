@@ -709,6 +709,47 @@ function give_get_field_value( $field, $postid ) {
 	return $field_value;
 }
 
+
+/**
+ * Get field description html.
+ *
+ * @since 1.8
+ * @param $field
+ *
+ * @return string
+ */
+function give_get_field_description( $field ) {
+	$field_desc_html = '';
+	if ( ! empty( $field['description'] ) ) {
+		$field_desc_html = '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
+	}
+
+	return $field_desc_html;
+}
+
+
+/**
+ * Get field custom attributes as string.
+ *
+ * @since 1.8
+ * @param $field
+ *
+ * @return string
+ */
+function give_get_custom_attributes( $field ) {
+	// Custom attribute handling
+	$custom_attributes = array();
+
+	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
+
+		foreach ( $field['attributes'] as $attribute => $value ) {
+			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
+		}
+	}
+
+	return implode( ' ', $custom_attributes );
+}
+
 /**
  * Get repeater field value.
  *
