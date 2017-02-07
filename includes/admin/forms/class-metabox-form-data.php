@@ -774,6 +774,15 @@ class Give_MetaBox_Form_Data {
 		// Save form meta data.
 		if ( ! empty( $form_meta_keys ) ) {
 			foreach ( $form_meta_keys as $form_meta_key ) {
+
+				// Set default value for checkbox fields.
+				if (
+					! isset( $_POST[ $form_meta_key ] )
+					&& ( 'checkbox' === $this->get_field_type( $form_meta_key ) )
+				) {
+					$_POST[ $form_meta_key ] = '';
+				}
+
 				if ( isset( $_POST[ $form_meta_key ] ) ) {
 					if ( $field_type = $this->get_field_type( $form_meta_key ) ) {
 						switch ( $field_type ) {
