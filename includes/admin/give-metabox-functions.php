@@ -305,8 +305,16 @@ function give_hidden_input( $field ) {
 			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
 		}
 	}
+	?>
 
-	echo '<input type="hidden" name="' . give_get_field_name( $field ) . '" id="' . esc_attr( $field['id'] ) . '" value="' . esc_attr( $field['value'] ) . '" ' . implode( ' ', $custom_attributes ) . '/> ';
+	<input
+		type="hidden"
+		name="<?php echo give_get_field_name( $field ); ?>"
+		id="<?php echo esc_attr( $field['id'] ); ?>"
+		value="<?php echo esc_attr( $field['value'] ); ?>"
+		<?php echo give_get_custom_attributes( $field ); ?>
+	/>
+	<?php
 }
 
 /**
