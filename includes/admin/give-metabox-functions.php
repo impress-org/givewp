@@ -353,12 +353,19 @@ function give_textarea_input( $field ) {
 			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
 		}
 	}
-
-	echo '<p class="give-field-wrap ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . give_get_field_name( $field ) . '">' . wp_kses_post( $field['name'] ) . '</label><textarea style="' . esc_attr( $field['style'] ) . '"  name="' . give_get_field_name( $field ) . '" id="' . esc_attr( $field['id'] ) . '" rows="10" cols="20" ' . implode( ' ', $custom_attributes ) . '>' . esc_textarea( $field['value'] ) . '</textarea> ';
-
-	if ( ! empty( $field['description'] ) ) {
-		echo '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
-	}
+	?>
+	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+		<label for="<?php echo give_get_field_name( $field ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
+		<textarea
+			style="<?php echo esc_attr( $field['style'] ); ?>"
+			name="<?php echo give_get_field_name( $field ); ?>"
+			id="<?php echo esc_attr( $field['id'] ); ?>"
+			rows="10"
+			cols="20"
+			<?php echo give_get_custom_attributes( $field ); ?>
+		><?php echo esc_textarea( $field['value'] ); ?></textarea>
+	<?php
+	echo give_get_field_description( $field );
 	echo '</p>';
 }
 
