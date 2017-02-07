@@ -282,7 +282,7 @@ class Give_MetaBox_Form_Data {
 						),
 						array(
 							'name'    => esc_html__( 'Guest Donations', 'give' ),
-							'desc'    => esc_html__( 'Do you want to enable non-logged-in users to make donations?', 'give' ),
+							'desc'    => esc_html__( 'Do you want to allow non-logged-in users to make donations?', 'give' ),
 							'id'      => $prefix . 'logged_in_only',
 							'type'    => 'radio_inline',
 							'default' => 'enabled',
