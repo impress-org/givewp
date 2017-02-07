@@ -435,23 +435,20 @@ function give_checkbox( $field ) {
 	$field['value']         = give_get_field_value( $field, $thepostid );
 	$field['cbvalue']       = isset( $field['cbvalue'] ) ? $field['cbvalue'] : 'on';
 	$field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
-
-	// Custom attribute handling.
-	$custom_attributes = array();
-
-	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
-
-		foreach ( $field['attributes'] as $attribute => $value ) {
-			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
-		}
-	}
-
-	echo '<p class="give-field-wrap ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . give_get_field_name( $field ) . '">' . wp_kses_post( $field['name'] ) . '</label><input type="checkbox" style="' . esc_attr( $field['style'] ) . '" name="' . give_get_field_name( $field ) . '" id="' . esc_attr( $field['id'] ) . '" value="' . esc_attr( $field['cbvalue'] ) . '" ' . checked( $field['value'], $field['cbvalue'], false ) . '  ' . implode( ' ', $custom_attributes ) . '/> ';
-
-	if ( ! empty( $field['description'] ) ) {
-		echo '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
-	}
-
+	?>
+	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+		<label for="<?php echo give_get_field_name( $field ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
+		<input
+			type="checkbox"
+			style="<?php echo esc_attr( $field['style'] ); ?>"
+			name="<?php echo give_get_field_name( $field ); ?>"
+			id="<?php echo esc_attr( $field['id'] ); ?>"
+			value="<?php echo esc_attr( $field['cbvalue'] ); ?>"
+			<?php echo checked( $field['value'], $field['cbvalue'], false ); ?>
+			<?php echo give_get_custom_attributes( $field ); ?>
+		/>
+	<?php
+	echo give_get_field_description( $field );
 	echo '</p>';
 }
 
