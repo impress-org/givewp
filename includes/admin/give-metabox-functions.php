@@ -527,16 +527,6 @@ function give_radio( $field ) {
 	$field['value']         = give_get_field_value( $field, $thepostid );
 	$field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
 
-	// Custom attribute handling
-	$custom_attributes = array();
-
-	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
-
-		foreach ( $field['attributes'] as $attribute => $value ) {
-			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
-		}
-	}
-
 	echo '<fieldset class="give-field-wrap ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><span class="give-field-label">' . wp_kses_post( $field['name'] ) . '</span><legend class="screen-reader-text">' . wp_kses_post( $field['name'] ) . '</legend><ul class="give-radios">';
 
 	foreach ( $field['options'] as $key => $value ) {
@@ -547,16 +537,13 @@ function give_radio( $field ) {
 				type="radio"
 				style="' . esc_attr( $field['style'] ) . '"
 				' . checked( esc_attr( $field['value'] ), esc_attr( $key ), false ) . ' '
-				. implode( ' ', $custom_attributes ) . '
+				. give_get_custom_attributes( $field ) . '
 				/> ' . esc_html( $value ) . '</label>
 		</li>';
 	}
 	echo '</ul>';
 
-	if ( ! empty( $field['description'] ) ) {
-		echo '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
-	}
-
+	echo give_get_field_description( $field );
 	echo '</fieldset>';
 }
 
