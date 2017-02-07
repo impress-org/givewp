@@ -1652,11 +1652,14 @@ jQuery.noConflict();
 		 */
 
 		// Show/Hide sub tab nav.
-		$('#give-mainform').on('click', '#give-show-sub-nav', function (e) {
+		$('#give-mainform').on('click blur', '#give-show-sub-nav', function (e) {
 			e.preventDefault();
 
 			var $sub_tab_nav = $(this).next();
-			$sub_tab_nav.toggleClass('give-hidden');
+
+			if( ! $sub_tab_nav.is(':hover') ) {
+				$sub_tab_nav.toggleClass('give-hidden');
+			}
 
 			return false;
 		});
@@ -1688,75 +1691,96 @@ function give_render_responsinve_tabs() {
 		tab_width               = 200;
 
 	// Bailout.
-	if( ! $setting_page_form.length ) {
+	if (!$setting_page_form.length) {
 		return false;
 	}
 
 	// Update tab wrapper css.
 	$main_tab_nav.css({
-		height: 'auto',
+		height  : 'auto',
 		overflow: 'visible'
 	});
 
-	// Collect tabs to show or hide.
-	jQuery.each($setting_tab_links, function (index, $tab_link) {
-		$tab_link = jQuery($tab_link);
-		tab_width = tab_width + parseInt($tab_link.outerWidth());
+	// Show all tab if anyone hidden to calculate correct tab width.
+	$setting_tab_links.removeClass('give-hidden');
 
-		if (tab_width < setting_page_form_width) {
-			$show_tabs.push($tab_link);
-		} else {
-			$hide_tabs.push($tab_link);
+	var refactor_tabs = new Promise(
+		function (resolve, reject) {
+			// Collect tabs to show or hide.
+			jQuery.each($setting_tab_links, function (index, $tab_link) {
+				$tab_link = jQuery($tab_link);
+				tab_width = tab_width + parseInt($tab_link.outerWidth());
+
+				if (tab_width < setting_page_form_width) {
+					$show_tabs.push($tab_link);
+				} else {
+					$hide_tabs.push($tab_link);
+				}
+			});
+
+			resolve(true);
 		}
+	);
+
+	refactor_tabs.then(function (is_refactor_tabs) {
+		// Remove current tab from sub menu and add this to main menu if exist and get last tab from main menu and add this to sub menu.
+		if ($hide_tabs.length && ( -1 != window.location.search.indexOf('&tab=') )) {
+			var $current_tab_nav = {},
+				query_params     = get_url_params();
+
+			$hide_tabs = $hide_tabs.filter(function ($tab_link) {
+				var is_current_nav_item = ( -1 != parseInt($tab_link.attr('href').indexOf('&tab=' + query_params['tab'])) );
+
+				if (is_current_nav_item) {
+					$current_tab_nav = $tab_link;
+				}
+
+				return ( !is_current_nav_item );
+			});
+
+			if ($current_tab_nav.length) {
+				$hide_tabs.unshift($show_tabs.pop());
+				$show_tabs.push($current_tab_nav);
+			}
+		}
+
+		var show_tabs = new Promise(function (resolve, reject) {
+			// Show main menu tabs.
+			if ($show_tabs.length) {
+				jQuery.each($show_tabs, function (index, $tab_link) {
+					$tab_link = jQuery($tab_link);
+
+					if ($tab_link.hasClass('give-hidden')) {
+						$tab_link.removeClass('give-hidden');
+					}
+				});
+			}
+
+			resolve(true);
+		});
+
+
+		show_tabs.then(function (is_show_tabs) {
+			// Hide sub menu tabs.
+			if ($hide_tabs.length) {
+				$sub_tab_nav.html('');
+
+				jQuery.each($hide_tabs, function (index, $tab_link) {
+					$tab_link = jQuery($tab_link);
+					$tab_link.addClass('give-hidden');
+					$tab_link.clone().removeClass().appendTo($sub_tab_nav);
+				});
+
+				if (!jQuery('.give-sub-nav-tab-wrapper', $main_tab_nav).length) {
+					$main_tab_nav.append($sub_tab_nav_wrapper);
+				}
+
+				$sub_tab_nav_wrapper.removeClass('give-hidden');
+			} else {
+				$sub_tab_nav_wrapper.addClass('give-hidden');
+			}
+		});
 	});
-
-	// Remove current tab from sub menu and add this to main menu if exist and get last tab from main menu and add this to sub menu.
-	if ($hide_tabs.length && ( -1 != window.location.search.indexOf('&tab=') )) {
-		var $current_tab_nav = {},
-			query_params     = get_url_params();
-
-		$hide_tabs = $hide_tabs.filter(function ($tab_link) {
-			var is_current_nav_item = ( -1 != parseInt($tab_link.attr('href').indexOf( '&tab=' + query_params['tab'] ) ) );
-
-			if (is_current_nav_item) {
-				$current_tab_nav = $tab_link;
-			}
-
-			return ( !is_current_nav_item );
-		});
-
-		if ($current_tab_nav.length) {
-			$hide_tabs.unshift($show_tabs.pop());
-			$show_tabs.push($current_tab_nav);
-		}
-	}
-
-	// Show main menu tabs.
-	if ($show_tabs.length) {
-		jQuery.each($show_tabs, function (index, $tab_link) {
-			$tab_link = jQuery($tab_link);
-
-			if ($tab_link.hasClass('give-hidden')) {
-				$tab_link.removeClass('give-hidden');
-			}
-		});
-	}
-
-	// Hide sub menu tabs.
-	if ($hide_tabs.length) {
-		$sub_tab_nav.html('');
-
-		jQuery.each($hide_tabs, function (index, $tab_link) {
-			$tab_link = jQuery($tab_link);
-			$tab_link.addClass('give-hidden');
-			$tab_link.clone().removeClass().appendTo($sub_tab_nav);
-		});
-
-		if (!jQuery('.give-sub-nav-tab-wrapper', $main_tab_nav).length) {
-			$sub_tab_nav_wrapper.removeClass('give-hidden');
-			$main_tab_nav.append($sub_tab_nav_wrapper);
-		}
-	}
 }
 
 /**
