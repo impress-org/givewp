@@ -630,17 +630,17 @@ function give_media( $field ) {
 	$field['value']         = give_get_field_value( $field, $thepostid );
 	$field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
 	$field['type']          = 'text';
+	$field['attributes']['class'] = "{$field['attributes']['class']} give-text-medium";
 
 	// Allow developer to save attachment ID or attachment url as metadata.
 	$field['fvalue']        = isset( $field['fvalue'] ) ? $field['fvalue'] : 'url';
 	?>
 	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
-		<label for="<?php echo $field['id'] ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
+		<label for="<?php echo give_get_field_name( $field ) ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
 		<input
-			name="<?php echo esc_attr( $field['id'] ); ?>"
+			name="<?php echo give_get_field_name( $field ); ?>"
 			id="<?php echo esc_attr( $field['id'] ); ?>"
 			type="text"
-			class="give-input-field<?php echo esc_attr( isset( $field['class'] ) ? ' ' . $field['class'] : '' ); ?> give-text-medium"
 			value="<?php echo $field['value']; ?>"
 			style="<?php echo esc_attr( $field['style'] ); ?>"
 			data-fvalue="<?php echo $field['fvalue']; ?>"
