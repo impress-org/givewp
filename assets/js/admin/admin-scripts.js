@@ -1002,8 +1002,11 @@ jQuery.noConflict();
 
 				// When a file is selected, grab the URL and set it as the text field's value
 				mediaUploader.on('select', function () {
-					var attachment = mediaUploader.state().get('selection').first().toJSON();
-					$this.prev().val(attachment.url);
+					var attachment = mediaUploader.state().get('selection').first().toJSON(),
+						$input_field = $this.prev(),
+						fvalue= ( 'id' === $input_field.data('fvalue') ? attachment.id : attachment.url );
+
+					$input_field.val(fvalue);
 				});
 				// Open the uploader dialog
 				mediaUploader.open();
