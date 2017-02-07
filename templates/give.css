@@ -804,6 +804,9 @@ Layout
 [id*='give-form'].give-display-reveal #give-payment-mode-select, [id*='give-form'].give-display-reveal #give_purchase_form_wrap, [id*='give-form'].give-display-modal #give-payment-mode-select, [id*='give-form'].give-display-modal #give_purchase_form_wrap {
   display: none; }
 
+[id*='give-form'] .cc-address {
+  margin-bottom: 15px; }
+
 /*------------------------------------
 Single Forms
 --------------------------------------*/
