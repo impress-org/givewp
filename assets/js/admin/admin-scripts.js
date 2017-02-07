@@ -874,7 +874,7 @@ jQuery.noConflict();
 	var Edit_Form_Screen = {
 		init: function () {
 			this.handle_metabox_tab_click();
-			this.setup_colorpicker();
+			this.setup_colorpicker_fields();
 			this.setup_media_fields();
 			this.setup_repeatable_fields();
 			this.handle_repeater_group_events();
@@ -961,7 +961,7 @@ jQuery.noConflict();
 		/**
 		 * Initialize colorpicker.
 		 */
-		setup_colorpicker: function () {
+		setup_colorpicker_fields: function () {
 			$(document).ready(function () {
 				var $colorpicker_fields = $('.give-colorpicker');
 
