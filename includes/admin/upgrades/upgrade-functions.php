@@ -102,6 +102,31 @@ function give_show_upgrade_notices() {
 		);
 	}
 
+	// Check if we have a stalled upgrade.
+	$resume_upgrade = give_maybe_resume_upgrade();
+	if ( ! empty( $resume_upgrade ) ) {
+		$resume_url = add_query_arg( $resume_upgrade, admin_url( 'index.php' ) );
+		echo Give_Notices::notice_html(
+			sprintf(
+				__( 'Give needs to complete a database upgrade that was previously started, click <a href="%s">here</a> to resume the upgrade.', 'give' ),
+				esc_url( $resume_url )
+			)
+		);
+
+		return;
+	}
+
+	// v1.8 form metadata upgrades.
+	if ( version_compare( $give_version, '1.8', '<' ) || ! give_has_upgrade_completed( 'v18_upgrades_form_metadata' ) ) {
+		echo Give_Notices::notice_html(
+			sprintf(
+				esc_html__( 'Give needs to upgrade the form database, click %1$shere%2$s to start the upgrade.', 'give' ),
+				'<a href="' . esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=give_v18_upgrades_form_metadata' ) ) . '">',
+				'</a>'
+			)
+		);
+	}
+
 	// End 'Stepped' upgrade process notices.
 }
 
@@ -132,6 +157,7 @@ function give_trigger_upgrades() {
 	}
 
 	update_option( 'give_version', GIVE_VERSION );
+	delete_option( 'give_doing_upgrade' );
 
 	if ( DOING_AJAX ) {
 		die( 'complete' );
@@ -699,6 +725,8 @@ function give_v18_upgrades_form_metadata() {
 	wp_reset_postdata();
 	give_set_upgrade_complete( 'v18_upgrades_form_metadata' );
 }
+
+add_action( 'give_give_v18_upgrades_form_metadata', 'give_v18_upgrades_form_metadata' );
 
 /**
  * Get list of core setting which is renamed in version 1.8.
