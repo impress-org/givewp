@@ -271,10 +271,7 @@ class Give_Notices {
 		ob_start();
 		?>
 		<div class="<?php echo $type; ?>">
-			<p>
-				<img src="<?php echo GIVE_PLUGIN_URL . '/assets/images/svg/give-icon-full-circle.svg'; ?>" class="give-logo" style="width: 22px;vertical-align: middle;padding-right: 6px;">
-				<?php echo $message; ?>
-			</p>
+			<p><?php echo $message; ?></p>
 		</div>
 		<?php
 
