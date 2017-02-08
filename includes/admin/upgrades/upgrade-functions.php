@@ -662,11 +662,30 @@ function give_v18_upgrades_core_setting() {
  * @return void
  */
 function give_v18_upgrades_form_metadata() {
+	if ( ! current_user_can( 'manage_give_settings' ) ) {
+		wp_die( esc_html__( 'You do not have permission to do Give upgrades.', 'give' ), esc_html__( 'Error', 'give' ), array(
+			'response' => 403,
+		) );
+	}
+
+	ignore_user_abort( true );
+
+	if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
+		@set_time_limit( 0 );
+	}
+
+	$step = isset( $_GET['step'] ) ? absint( $_GET['step'] ) : 1;
+
+	// form query
 	$forms = new WP_Query( array(
+			'paged'          => $step,
+			'status'         => 'any',
+			'order'          => 'ASC',
 			'post_type'      => 'give_forms',
-			'posts_per_page' => - 1,
+			'posts_per_page' => 20,
 		)
 	);
+
 
 	if ( $forms->have_posts() ) {
 		while ( $forms->have_posts() ) {
@@ -720,10 +739,29 @@ function give_v18_upgrades_form_metadata() {
 				}
 			}
 		}// End while().
-	}// End if().
 
-	wp_reset_postdata();
-	give_set_upgrade_complete( 'v18_upgrades_form_metadata' );
+		wp_reset_postdata();
+
+		// Forms found so upgrade them
+		$step ++;
+		$redirect = add_query_arg( array(
+			'page'         => 'give-upgrades',
+			'give-upgrade' => 'give_v18_upgrades_form_metadata',
+			'step'         => $step,
+		), admin_url( 'index.php' ) );
+		wp_redirect( $redirect );
+		exit();
+
+	} else {
+		// No more forms found, finish up.
+		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
+		delete_option( 'give_doing_upgrade' );
+		give_set_upgrade_complete( 'v18_upgrades_form_metadata' );
+
+
+		wp_redirect( admin_url() );
+		exit;
+	}
 }
 
 add_action( 'give_give_v18_upgrades_form_metadata', 'give_v18_upgrades_form_metadata' );
