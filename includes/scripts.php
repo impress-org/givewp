@@ -250,7 +250,7 @@ function give_load_admin_scripts( $hook ) {
 	// CSS.
 	wp_register_style( 'jquery-ui-css', $css_dir . 'jquery-ui-fresh' . $suffix . '.css' );
 	wp_enqueue_style( 'jquery-ui-css' );
-	wp_register_style( 'give-admin', $css_dir . 'give-admin' . $direction . $suffix . '.css', GIVE_VERSION );
+	wp_register_style( 'give-admin', $css_dir . 'give-admin' . $direction . $suffix . '.css', array(), GIVE_VERSION );
 	wp_enqueue_style( 'give-admin' );
 	wp_register_style( 'jquery-chosen', $css_dir . 'chosen' . $suffix . '.css', array(), GIVE_VERSION );
 	wp_enqueue_style( 'jquery-chosen' );
