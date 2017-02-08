@@ -272,7 +272,7 @@ class Give_Notices {
 		?>
 		<div class="<?php echo $type; ?>">
 			<p>
-				<img src="http://give.dev/wp-content/plugins/Give/assets/images/svg/give-icon-full-circle.svg" class="give-logo" style="width: 22px;vertical-align: middle;padding-right: 6px;">
+				<img src="<?php echo GIVE_PLUGIN_URL . '/assets/images/svg/give-icon-full-circle.svg'; ?>" class="give-logo" style="width: 22px;vertical-align: middle;padding-right: 6px;">
 				<?php echo $message; ?>
 			</p>
 		</div>
