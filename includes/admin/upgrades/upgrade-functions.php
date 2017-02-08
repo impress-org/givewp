@@ -546,8 +546,6 @@ function give_v17_cleanup_roles() {
 function give_v18_upgrades() {
 	// Upgrade checkbox settings to radio button settings.
 	give_v18_upgrades_core_setting();
-	// Upgrade form metadata.
-	give_v18_upgrades_form_metadata();
 }
 
 /**
