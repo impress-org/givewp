@@ -162,6 +162,22 @@ function give_has_upgrade_completed( $upgrade_action = '' ) {
 }
 
 /**
+ * For use when doing 'stepped' upgrade routines, to see if we need to start somewhere in the middle
+ *
+ * @since 1.8
+ *
+ * @return mixed   When nothing to resume returns false, otherwise starts the upgrade where it left off
+ */
+function give_maybe_resume_upgrade() {
+	$doing_upgrade = get_option( 'give_doing_upgrade', false );
+	if ( empty( $doing_upgrade ) ) {
+		return false;
+	}
+
+	return $doing_upgrade;
+}
+
+/**
  * Adds an upgrade action to the completed upgrades array
  *
  * @since  1.0
