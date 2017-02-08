@@ -531,7 +531,7 @@ function give_v17_cleanup_roles() {
 /**
  * 1.8 Upgrades.
  *
- * a. Upgrade checkbox settings to radio button settings..
+ * a. Upgrade checkbox settings to radio button settings.
  * a. Update form meta for new metabox settings.
  *
  * @since  1.8
