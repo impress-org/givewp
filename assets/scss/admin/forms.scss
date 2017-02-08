@@ -26,7 +26,7 @@ Forms CPT
 #_give_donation_levels_repeat .cmb-group-title,
 #_give_donation_levels_repeat .cmb-row > .cmb-remove-group-row,
 #_give_donation_levels_repeat .cmb-row > .handlediv {
-	display: none !important;
+	display: none;
 }
 
 /* Donation Levels Repeating Field */
@@ -396,7 +396,7 @@ Tooltips
 
 	.give-metabox-tabs {
 		margin: 0;
-		width: 22%;
+        min-width: 170px;
 		float: left;
 		line-height: 1em;
 		padding: 0 0 10px;
@@ -472,9 +472,7 @@ Tooltips
 	}
 
 	.give_options_panel {
-		float: left;
-		width: 78%;
-		min-width: 175px;
+		padding-left:170px;
 
 		.give-field-wrap {
 			padding: 1em 20px 1em 162px !important;
@@ -483,7 +481,7 @@ Tooltips
 
 			> label, > span.give-field-label {
 				float: left;
-				width: 150px;
+				width: 135px;
 				padding: 0;
 				margin: 0 0 0 -150px;
 				line-height: 24px;
@@ -528,11 +526,7 @@ Tooltips
 		.give-inline-radio-fields {
 			li {
 				display: inline-block;
-				margin-left: 15px;
-			}
-
-			li:first-child {
-				margin-left: 0;
+				margin-right: 15px;
 			}
 		}
 
