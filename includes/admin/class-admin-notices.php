@@ -270,7 +270,7 @@ class Give_Notices {
 	public static function notice_html( $message, $type = 'updated' ) {
 		ob_start();
 		?>
-		<div class="<?php echo $type; ?>">
+		<div class="<?php echo $type; ?> notice">
 			<p><?php echo $message; ?></p>
 		</div>
 		<?php
