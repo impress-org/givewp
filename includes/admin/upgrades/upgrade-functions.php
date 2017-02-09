@@ -789,7 +789,7 @@ function give_v18_upgrades_form_metadata() {
 add_action( 'give_give_v18_upgrades_form_metadata', 'give_v18_upgrades_form_metadata' );
 
 /**
- * Get list of core setting which is renamed in version 1.8.
+ * Get list of core setting renamed in version 1.8.
  *
  * @since  1.8
  * @return array
