@@ -722,6 +722,12 @@ function give_v18_upgrades_form_metadata() {
 				update_post_meta( get_the_ID(), '_give_content_placement', $field_value );
 			}
 
+			// "Disable" Guest Donation. Checkbox
+            // See: https://github.com/WordImpress/Give/issues/1470
+			$guest_donation = get_post_meta( get_the_ID(), '_give_logged_in_only', true );
+			$guest_donation_newval = ( in_array( $guest_donation, array( 'yes', 'on' ) ) ? 'disabled' : 'enabled' );
+			update_post_meta( get_the_ID(), '_give_logged_in_only', $guest_donation_newval );
+
 			// Convert yes/no setting field to enabled/disabled.
 			$form_radio_settings = array(
 				// Custom Amount.
@@ -732,9 +738,6 @@ function give_v18_upgrades_form_metadata() {
 
 				// Close Form.
 				'_give_close_form_when_goal_achieved',
-
-				// Guest Donation.
-				'_give_logged_in_only',
 
 				// Term & conditions.
 				'_give_terms_option',
