@@ -121,13 +121,32 @@ function give_show_upgrade_notices() {
 		echo Give_Notices::notice_html(
 			sprintf(
 				esc_html__( 'Give needs to upgrade the form database, click %1$shere%2$s to start the upgrade.', 'give' ),
-				'<a href="' . esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=give_v18_upgrades_form_metadata' ) ) . '">',
+				'<a class="give-upgrade-link" href="' . esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=give_v18_upgrades_form_metadata' ) ) . '">',
 				'</a>'
 			)
 		);
 	}
 
 	// End 'Stepped' upgrade process notices.
+	?>
+	<script>
+		jQuery(document).ready(function($){
+			var $upgrdae_links = $('.give-upgrade-link');
+			if( $upgrdae_links.length ) {
+				$upgrdae_links.on( 'click', function(e){
+					e.preventDefault();
+
+					if( ! window.confirm( give_vars.upgrade_confirmation ) ) {
+						return;
+					}
+
+					// Redirect to upgrdae link.
+					window.location.assign( $(this).attr('href') );
+				});
+			}
+		});
+	</script>
+	<?php
 }
 
 add_action( 'admin_notices', 'give_show_upgrade_notices' );
