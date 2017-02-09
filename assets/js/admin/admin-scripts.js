@@ -874,7 +874,8 @@ jQuery.noConflict();
 	var Edit_Form_Screen = {
 		init: function () {
 			this.handle_metabox_tab_click();
-			this.setup_colorpicker();
+			this.setup_colorpicker_fields();
+			this.setup_media_fields();
 			this.setup_repeatable_fields();
 			this.handle_repeater_group_events();
 
@@ -960,7 +961,7 @@ jQuery.noConflict();
 		/**
 		 * Initialize colorpicker.
 		 */
-		setup_colorpicker: function () {
+		setup_colorpicker_fields: function () {
 			$(document).ready(function () {
 				var $colorpicker_fields = $('.give-colorpicker');
 
@@ -976,6 +977,41 @@ jQuery.noConflict();
 						$item.wpColorPicker();
 					});
 				}
+			})
+		},
+
+		setup_media_fields: function() {
+			var give_media_uploader;
+
+			$('body').on( 'click', '.give-media-upload', function (e) {
+				e.preventDefault();
+				window.give_media_uploader_input_field = $(this);
+
+				// If the uploader object has already been created, reopen the dialog
+				if (give_media_uploader) {
+					give_media_uploader.open();
+					return;
+				}
+				// Extend the wp.media object
+				give_media_uploader = wp.media.frames.file_frame = wp.media({
+					title: give_vars.metabox_fields.media.button_title,
+					button: {
+						text: give_vars.metabox_fields.media.button_title
+					}, multiple: false
+				});
+
+				// When a file is selected, grab the URL and set it as the text field's value
+				give_media_uploader.on('select', function () {
+					var attachment = give_media_uploader.state().get('selection').first().toJSON(),
+						$input_field = window.give_media_uploader_input_field.prev(),
+						fvalue= ( 'id' === $input_field.data('fvalue') ? attachment.id : attachment.url );
+					
+					console.log($input_field);
+
+					$input_field.val(fvalue);
+				});
+				// Open the uploader dialog
+				give_media_uploader.open();
 			})
 		},
 
@@ -1688,7 +1724,11 @@ function give_render_responsinve_tabs() {
 		$setting_tab_links      = jQuery('h2.give-nav-tab-wrapper>a:not(give-not-tab)'),
 		$show_tabs              = [],
 		$hide_tabs              = [],
-		tab_width               = 200;
+		tab_width               = 0;
+
+	if( 414 < jQuery(window).outerWidth() ) {
+		tab_width = 200;
+	}
 
 	// Bailout.
 	if (!$setting_page_form.length) {

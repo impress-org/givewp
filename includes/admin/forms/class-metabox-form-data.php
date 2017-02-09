@@ -282,7 +282,7 @@ class Give_MetaBox_Form_Data {
 						),
 						array(
 							'name'    => esc_html__( 'Guest Donations', 'give' ),
-							'desc'    => esc_html__( 'Do you want to enable non-logged-in users to make donations?', 'give' ),
+							'desc'    => esc_html__( 'Do you want to allow non-logged-in users to make donations?', 'give' ),
 							'id'      => $prefix . 'logged_in_only',
 							'type'    => 'radio_inline',
 							'default' => 'enabled',
@@ -774,9 +774,19 @@ class Give_MetaBox_Form_Data {
 		// Save form meta data.
 		if ( ! empty( $form_meta_keys ) ) {
 			foreach ( $form_meta_keys as $form_meta_key ) {
+
+				// Set default value for checkbox fields.
+				if (
+					! isset( $_POST[ $form_meta_key ] )
+					&& ( 'checkbox' === $this->get_field_type( $form_meta_key ) )
+				) {
+					$_POST[ $form_meta_key ] = '';
+				}
+
 				if ( isset( $_POST[ $form_meta_key ] ) ) {
 					if ( $field_type = $this->get_field_type( $form_meta_key ) ) {
 						switch ( $field_type ) {
+							case 'textarea':
 							case 'wysiwyg':
 								$form_meta_value = wp_kses_post( $_POST[ $form_meta_key ] );
 								update_post_meta( $post_id, $form_meta_key, $form_meta_value );
@@ -1019,11 +1029,10 @@ class Give_MetaBox_Form_Data {
 
 		if ( ! empty( $this->settings ) ) {
 			foreach ( $this->settings as $setting ) {
-				if ( $this->has_sub_tab( $setting ) ) {
-					$setting_field = $this->get_sub_field( $setting, $field_id );
-					break;
-				} elseif ( $field = $this->get_field( $setting, $field_id ) ) {
-					$setting_field = $field;
+				if (
+					( $this->has_sub_tab( $setting ) && ( $setting_field = $this->get_sub_field( $setting, $field_id ) ) )
+					|| ( $setting_field = $this->get_field( $setting, $field_id ) )
+				) {
 					break;
 				}
 			}

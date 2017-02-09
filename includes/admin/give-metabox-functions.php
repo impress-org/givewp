@@ -243,8 +243,8 @@ function give_text_input( $field ) {
 		case 'price' :
 			$field['value'] = ( ! empty( $field['value'] ) ? give_format_amount( $field['value'] ) : $field['value'] );
 
-			$field['before_field'] = ! empty( $field['before_field'] ) ? $field['before_field'] : ( give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol give-money-symbol-before">' . give_currency_symbol() . '</span>' : '' );
-			$field['after_field']  = ! empty( $field['after_field'] ) ? $field['after_field'] : ( give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '' );
+			$field['before_field'] = ! empty( $field['before_field'] ) ? $field['before_field'] : ( give_get_option( 'currency_position', 'before' ) == 'before' ? '<span class="give-money-symbol give-money-symbol-before">' . give_currency_symbol() . '</span>' : '' );
+			$field['after_field']  = ! empty( $field['after_field'] ) ? $field['after_field'] : ( give_get_option( 'currency_position', 'before' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '' );
 			break;
 
 		case 'decimal' :
@@ -256,21 +256,21 @@ function give_text_input( $field ) {
 			break;
 	}
 
-	// Custom attribute handling
-	$custom_attributes = array();
-
-	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
-
-		foreach ( $field['attributes'] as $attribute => $value ) {
-			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
-		}
-	}
-
-	echo '<p class="give-field-wrap ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . give_get_field_name( $field ) . '">' . wp_kses_post( $field['name'] ) . '</label>' . $field['before_field'] . '<input type="' . esc_attr( $field['type'] ) . '" style="' . esc_attr( $field['style'] ) . '" name="' . give_get_field_name( $field ) . '" id="' . esc_attr( $field['id'] ) . '" value="' . esc_attr( $field['value'] ) . '" ' . implode( ' ', $custom_attributes ) . ' />' . $field['after_field'];
-
-	if ( ! empty( $field['description'] ) ) {
-		echo '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
-	}
+	?>
+	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+		<label for="<?php echo give_get_field_name( $field ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
+		<?php echo $field['before_field']; ?>
+		<input
+			type="<?php echo esc_attr( $field['type'] ); ?>"
+			style="<?php echo esc_attr( $field['style'] ); ?>"
+			name="<?php echo give_get_field_name( $field ); ?>"
+			id="<?php echo esc_attr( $field['id'] ); ?>"
+			value="<?php echo esc_attr( $field['value'] ); ?>"
+			<?php echo give_get_custom_attributes( $field ); ?>
+		/>
+		<?php echo $field['after_field']; ?>
+	<?php
+	echo give_get_field_description( $field );
 	echo '</p>';
 }
 
@@ -305,8 +305,16 @@ function give_hidden_input( $field ) {
 			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
 		}
 	}
+	?>
 
-	echo '<input type="hidden" name="' . give_get_field_name( $field ) . '" id="' . esc_attr( $field['id'] ) . '" value="' . esc_attr( $field['value'] ) . '" ' . implode( ' ', $custom_attributes ) . '/> ';
+	<input
+		type="hidden"
+		name="<?php echo give_get_field_name( $field ); ?>"
+		id="<?php echo esc_attr( $field['id'] ); ?>"
+		value="<?php echo esc_attr( $field['value'] ); ?>"
+		<?php echo give_get_custom_attributes( $field ); ?>
+	/>
+	<?php
 }
 
 /**
@@ -336,21 +344,19 @@ function give_textarea_input( $field ) {
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
 	$field['value']         = give_get_field_value( $field, $thepostid );
 
-	// Custom attribute handling
-	$custom_attributes = array();
-
-	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
-
-		foreach ( $field['attributes'] as $attribute => $value ) {
-			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
-		}
-	}
-
-	echo '<p class="give-field-wrap ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . give_get_field_name( $field ) . '">' . wp_kses_post( $field['name'] ) . '</label><textarea style="' . esc_attr( $field['style'] ) . '"  name="' . give_get_field_name( $field ) . '" id="' . esc_attr( $field['id'] ) . '" rows="10" cols="20" ' . implode( ' ', $custom_attributes ) . '>' . esc_textarea( $field['value'] ) . '</textarea> ';
-
-	if ( ! empty( $field['description'] ) ) {
-		echo '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
-	}
+	?>
+	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+		<label for="<?php echo give_get_field_name( $field ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
+		<textarea
+			style="<?php echo esc_attr( $field['style'] ); ?>"
+			name="<?php echo give_get_field_name( $field ); ?>"
+			id="<?php echo esc_attr( $field['id'] ); ?>"
+			rows="10"
+			cols="20"
+			<?php echo give_get_custom_attributes( $field ); ?>
+		><?php echo esc_textarea( $field['value'] ); ?></textarea>
+	<?php
+	echo give_get_field_description( $field );
 	echo '</p>';
 }
 
@@ -397,9 +403,7 @@ function give_wysiwyg( $field ) {
 		$editor_attributes
 	);
 
-	if ( ! empty( $field['description'] ) ) {
-		echo '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
-	}
+	echo give_get_field_description( $field );
 	echo '</div>';
 }
 
@@ -431,23 +435,20 @@ function give_checkbox( $field ) {
 	$field['value']         = give_get_field_value( $field, $thepostid );
 	$field['cbvalue']       = isset( $field['cbvalue'] ) ? $field['cbvalue'] : 'on';
 	$field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
-
-	// Custom attribute handling.
-	$custom_attributes = array();
-
-	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
-
-		foreach ( $field['attributes'] as $attribute => $value ) {
-			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
-		}
-	}
-
-	echo '<p class="give-field-wrap ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . give_get_field_name( $field ) . '">' . wp_kses_post( $field['name'] ) . '</label><input type="checkbox" style="' . esc_attr( $field['style'] ) . '" name="' . give_get_field_name( $field ) . '" id="' . esc_attr( $field['id'] ) . '" value="' . esc_attr( $field['cbvalue'] ) . '" ' . checked( $field['value'], $field['cbvalue'], false ) . '  ' . implode( ' ', $custom_attributes ) . '/> ';
-
-	if ( ! empty( $field['description'] ) ) {
-		echo '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
-	}
-
+	?>
+	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+		<label for="<?php echo give_get_field_name( $field ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
+		<input
+			type="checkbox"
+			style="<?php echo esc_attr( $field['style'] ); ?>"
+			name="<?php echo give_get_field_name( $field ); ?>"
+			id="<?php echo esc_attr( $field['id'] ); ?>"
+			value="<?php echo esc_attr( $field['cbvalue'] ); ?>"
+			<?php echo checked( $field['value'], $field['cbvalue'], false ); ?>
+			<?php echo give_get_custom_attributes( $field ); ?>
+		/>
+	<?php
+	echo give_get_field_description( $field );
 	echo '</p>';
 }
 
@@ -479,28 +480,21 @@ function give_select( $field ) {
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
 	$field['value']         = give_get_field_value( $field, $thepostid );
 	$field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
-
-	// Custom attribute handling
-	$custom_attributes = array();
-
-	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
-
-		foreach ( $field['attributes'] as $attribute => $value ) {
-			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
-		}
-	}
-
-	echo '<p class="give-field-wrap ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . give_get_field_name( $field ) . '">' . wp_kses_post( $field['name'] ) . '</label><select id="' . esc_attr( $field['id'] ) . '" name="' . give_get_field_name( $field ) . '" style="' . esc_attr( $field['style'] ) . '" ' . implode( ' ', $custom_attributes ) . '>';
-
+	?>
+	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+		<label for="<?php echo give_get_field_name( $field ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
+		<select
+			id="<?php echo esc_attr( $field['id'] ); ?>"
+			name="<?php echo give_get_field_name( $field ); ?>"
+			style="<?php echo esc_attr( $field['style'] ) ?>"
+			<?php echo give_get_custom_attributes( $field ); ?>
+		>
+	<?php
 	foreach ( $field['options'] as $key => $value ) {
 		echo '<option value="' . esc_attr( $key ) . '" ' . selected( esc_attr( $field['value'] ), esc_attr( $key ), false ) . '>' . esc_html( $value ) . '</option>';
 	}
-
-	echo '</select> ';
-
-	if ( ! empty( $field['description'] ) ) {
-		echo '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
-	}
+	echo '</select>';
+	echo give_get_field_description( $field );
 	echo '</p>';
 }
 
@@ -533,16 +527,6 @@ function give_radio( $field ) {
 	$field['value']         = give_get_field_value( $field, $thepostid );
 	$field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
 
-	// Custom attribute handling
-	$custom_attributes = array();
-
-	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
-
-		foreach ( $field['attributes'] as $attribute => $value ) {
-			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
-		}
-	}
-
 	echo '<fieldset class="give-field-wrap ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><span class="give-field-label">' . wp_kses_post( $field['name'] ) . '</span><legend class="screen-reader-text">' . wp_kses_post( $field['name'] ) . '</legend><ul class="give-radios">';
 
 	foreach ( $field['options'] as $key => $value ) {
@@ -553,16 +537,13 @@ function give_radio( $field ) {
 				type="radio"
 				style="' . esc_attr( $field['style'] ) . '"
 				' . checked( esc_attr( $field['value'] ), esc_attr( $key ), false ) . ' '
-				. implode( ' ', $custom_attributes ) . '
+				. give_get_custom_attributes( $field ) . '
 				/> ' . esc_html( $value ) . '</label>
 		</li>';
 	}
 	echo '</ul>';
 
-	if ( ! empty( $field['description'] ) ) {
-		echo '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
-	}
-
+	echo give_get_field_description( $field );
 	echo '</fieldset>';
 }
 
@@ -593,23 +574,58 @@ function give_colorpicker( $field ) {
 	$field['value']         = give_get_field_value( $field, $thepostid );
 	$field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
 	$field['type']          = 'text';
-
-	// Custom attribute handling
-	$custom_attributes = array();
-
-	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
-
-		foreach ( $field['attributes'] as $attribute => $value ) {
-			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
-		}
-	}
-
-	echo '<p class="give-field-wrap ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . give_get_field_name( $field ) . '">' . wp_kses_post( $field['name'] ) . '</label><input type="' . esc_attr( $field['type'] ) . '" style="' . esc_attr( $field['style'] ) . '" name="' . give_get_field_name( $field ) . '" id="' . esc_attr( $field['id'] ) . '" value="' . esc_attr( $field['value'] ) . '" ' . implode( ' ', $custom_attributes ) . ' /> ';
-
-	if ( ! empty( $field['description'] ) ) {
-		echo '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
-	}
+	?>
+	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+		<label for="<?php echo give_get_field_name( $field ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
+		<input
+			type="<?php echo esc_attr( $field['type'] ); ?>"
+			style="<?php echo esc_attr( $field['style'] ); ?>"
+			name="<?php echo give_get_field_name( $field ); ?>"
+			id="' . esc_attr( $field['id'] ) . '" value="<?php echo esc_attr( $field['value'] ); ?>"
+			<?php echo give_get_custom_attributes( $field ); ?>
+		/>
+	<?php
+	echo give_get_field_description( $field );
 	echo '</p>';
+}
+
+
+/**
+ * Output a media upload field.
+ *
+ * @since  1.8
+ *
+ * @param array $field
+ *
+ */
+function give_media( $field ) {
+	global $thepostid, $post;
+
+	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
+	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
+	$field['value']         = give_get_field_value( $field, $thepostid );
+	$field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
+	$field['type']          = 'text';
+	$field['attributes']['class'] = "{$field['attributes']['class']} give-text-medium";
+
+	// Allow developer to save attachment ID or attachment url as metadata.
+	$field['fvalue']        = isset( $field['fvalue'] ) ? $field['fvalue'] : 'url';
+	?>
+	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+		<label for="<?php echo give_get_field_name( $field ) ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
+		<input
+			name="<?php echo give_get_field_name( $field ); ?>"
+			id="<?php echo esc_attr( $field['id'] ); ?>"
+			type="text"
+			value="<?php echo $field['value']; ?>"
+			style="<?php echo esc_attr( $field['style'] ); ?>"
+			data-fvalue="<?php echo $field['fvalue']; ?>"
+			<?php echo give_get_custom_attributes( $field ); ?>
+		/>&nbsp;&nbsp;&nbsp;&nbsp;<input class="give-media-upload button" type="button" value="<?php echo esc_html__( 'Add or Upload File', 'give' ); ?>">
+		<?php echo give_get_field_description( $field ); ?>
+	</p>
+	<?php
 }
 
 /**
@@ -707,6 +723,47 @@ function give_get_field_value( $field, $postid ) {
 	}
 
 	return $field_value;
+}
+
+
+/**
+ * Get field description html.
+ *
+ * @since 1.8
+ * @param $field
+ *
+ * @return string
+ */
+function give_get_field_description( $field ) {
+	$field_desc_html = '';
+	if ( ! empty( $field['description'] ) ) {
+		$field_desc_html = '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
+	}
+
+	return $field_desc_html;
+}
+
+
+/**
+ * Get field custom attributes as string.
+ *
+ * @since 1.8
+ * @param $field
+ *
+ * @return string
+ */
+function give_get_custom_attributes( $field ) {
+	// Custom attribute handling
+	$custom_attributes = array();
+
+	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
+
+		foreach ( $field['attributes'] as $attribute => $value ) {
+			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
+		}
+	}
+
+	return implode( ' ', $custom_attributes );
 }
 
 /**

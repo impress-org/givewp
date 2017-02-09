@@ -81,6 +81,9 @@ Layout
     }
   }
 
+  .cc-address {
+    margin-bottom: 15px;
+  }
 }
 
 /*------------------------------------
@@ -169,7 +172,13 @@ form[id*='give-form'] {
     @include clearfix();
     @include box-sizing(border-box);
     margin: 0 0 15px;
+    overflow: visible;
     padding: 0;
+
+    // Prevent some themes from removing margin on last-child.
+    &:last-child {
+      margin-bottom: 15px;
+    }
 
     label {
       display: block;
@@ -190,6 +199,8 @@ form[id*='give-form'] {
       outline: none;
       color: $dark;
       background-color: #FDFDFD;
+      border: 1px solid $borders;
+      padding: .5em;
 
       &:focus {
         background-color: #fff;
@@ -203,16 +214,24 @@ form[id*='give-form'] {
   }
 
   .form-row-first,
-  .form-row-last,
-  .form-row-two-thirds {
+  .form-row-last {
     float: left;
     width: 48.5%;
-    overflow: visible;
+  }
+
+  .form-row-last {
+    float: right;
+  }
+
+  .form-row-wide {
+    @include clearfix();
+    clear: both;
   }
 
   .form-row-two-thirds {
     float: left;
     width: 65.75%;
+
     &.form-row-first {
       margin-left: 0;
     }
@@ -228,13 +247,13 @@ form[id*='give-form'] {
     }
   }
 
-  .form-row-last {
-    float: right;
-  }
-
-  .form-row-wide {
-    @include clearfix();
-    clear: both;
+  .form-row-responsive {
+    // Full-width on small viewports.
+    @media ( max-width: 480px ) {
+      margin-left: 0;
+      margin-right: 0;
+      width: 100%;
+    }
   }
 
   .give-error,
@@ -318,7 +337,7 @@ form[id*='give-form'] {
   }
 
   #give-final-total-wrap {
-    margin: 25px 0;
+    margin: 10px 0 25px;
     padding: 0;
     @include clearfix();
 
@@ -670,7 +689,7 @@ Basic Button Style
   padding: 8px 10px;
   cursor: pointer;
   line-height: 1.2em;
-  font-size: 14px;
+  font-size: 1em;
 
   &:hover {
     background: #dbdbdb;

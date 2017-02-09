@@ -250,7 +250,7 @@ function give_load_admin_scripts( $hook ) {
 	// CSS.
 	wp_register_style( 'jquery-ui-css', $css_dir . 'jquery-ui-fresh' . $suffix . '.css' );
 	wp_enqueue_style( 'jquery-ui-css' );
-	wp_register_style( 'give-admin', $css_dir . 'give-admin' . $direction . $suffix . '.css', GIVE_VERSION );
+	wp_register_style( 'give-admin', $css_dir . 'give-admin' . $direction . $suffix . '.css', array(), GIVE_VERSION );
 	wp_enqueue_style( 'give-admin' );
 	wp_register_style( 'jquery-chosen', $css_dir . 'chosen' . $suffix . '.css', array(), GIVE_VERSION );
 	wp_enqueue_style( 'jquery-chosen' );
@@ -333,7 +333,12 @@ function give_load_admin_scripts( $hook ) {
 				'resend_receipts'         => __( 'Are you sure you want to resend the emails receipt to {payment_count} recipients?', 'give' ),
 			),
 		),
-		'upgrade_confirmation' => __( 'Did you already create database backup before processing upgrade.', 'give' )
+		'upgrade_confirmation' => __( 'Did you already create database backup before processing upgrade.', 'give' ),
+		'metabox_fields' => array(
+			'media' => array(
+				'button_title' => esc_html__( 'Choose Attachment', 'give' ),
+			)
+		)
 	) );
 
 	if ( function_exists( 'wp_enqueue_media' ) && version_compare( get_bloginfo( 'version' ), '3.5', '>=' ) ) {
