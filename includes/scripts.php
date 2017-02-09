@@ -333,7 +333,7 @@ function give_load_admin_scripts( $hook ) {
 				'resend_receipts'         => __( 'Are you sure you want to resend the emails receipt to {payment_count} recipients?', 'give' ),
 			),
 		),
-		'upgrade_confirmation' => __( 'Did you already create database backup before processing upgrade.', 'give' ),
+		'upgrade_confirmation' => __( 'Did you already create database backup before processing upgrade?', 'give' ),
 		'metabox_fields' => array(
 			'media' => array(
 				'button_title' => esc_html__( 'Choose Attachment', 'give' ),
