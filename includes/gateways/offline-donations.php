@@ -306,7 +306,7 @@ function give_offline_add_settings( $settings ) {
 			'type'    => 'radio_inline',
 			'default' => 'global',
 			'options' => apply_filters( 'give_forms_content_options_select', array(
-					'global'   => __( 'Global Options', 'give' ),
+					'global'   => __( 'Global Option', 'give' ),
 					'enabled'  => __( 'Customize', 'give' ),
 					'disabled' => __( 'Disable', 'give' ),
 				)
