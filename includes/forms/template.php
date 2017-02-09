@@ -1713,8 +1713,13 @@ function give_get_form_content_placement( $form_id, $args ) {
 		}
 
 		$show_content = ( 'none' !== $args['show_content'] ? $content_placement[ $args['show_content'] ] : '' );
+
 	} elseif ( give_is_setting_enabled( get_post_meta( $form_id, '_give_display_content', true ) ) ) {
 		$show_content = get_post_meta( $form_id, '_give_content_placement', true );
+
+	} elseif ( 'none' !== get_post_meta( $form_id, '_give_content_option', true ) ) {
+		// Backward compatibility for _give_content_option for v18.
+		$show_content = get_post_meta( $form_id, '_give_content_option', true );
 	}
 
 	return $show_content;

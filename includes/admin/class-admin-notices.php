@@ -254,6 +254,29 @@ class Give_Notices {
 
 		return $this->notices;
 	}
+
+
+	/**
+	 * Get give style admin notice.
+	 *
+	 * @since  1.8
+	 * @access public
+	 *
+	 * @param string $message
+	 * @param string $type
+	 *
+	 * @return string
+	 */
+	public static function notice_html( $message, $type = 'updated' ) {
+		ob_start();
+		?>
+		<div class="<?php echo $type; ?> notice">
+			<p><?php echo $message; ?></p>
+		</div>
+		<?php
+
+		return ob_get_clean();
+	}
 }
 
 new Give_Notices();
