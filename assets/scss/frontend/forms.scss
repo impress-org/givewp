@@ -749,17 +749,19 @@ form#give-email-access-form {
 Responsiveness
 -----------------------------------*/
 @media (max-width: 768px) {
-
-  /* Layout */
+  
+  // Multi-column layout for single forms.
   [id*='give-form'] {
-
     div.images, div.summary {
       width: 100%;
       float: none;
     }
 
+    div#give-sidebar-left {
+      width: 100%;
+      float: none;
+    }
   }
-
 }
 
 /*---------------------------------
