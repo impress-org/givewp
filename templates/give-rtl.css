@@ -1033,6 +1033,10 @@ form[id*='give-form'] #give-final-total-wrap {
     box-sizing: border-box;
     float: right;
     border: 1px solid #ccc; }
+    @media (max-width: 480px) {
+      form[id*='give-form'] #give-final-total-wrap .give-donation-total-label {
+        display: block;
+        float: none; } }
   form[id*='give-form'] #give-final-total-wrap .give-final-total-amount {
     font-size: 18px;
     border: 1px solid #ccc;
@@ -1048,6 +1052,12 @@ form[id*='give-form'] #give-final-total-wrap {
     box-sizing: border-box;
     border-right: none;
     float: right; }
+    @media (max-width: 480px) {
+      form[id*='give-form'] #give-final-total-wrap .give-final-total-amount {
+        border: 1px solid #ccc;
+        border-top: 0;
+        display: block;
+        float: none; } }
 
 .give-display-button-only > *:not(form) {
   display: none !important; }
@@ -1066,13 +1076,14 @@ Radio Lists
   #give-donation-level-radio-list > li {
     list-style-type: none;
     list-style-image: none;
-    margin: 0 0 5px;
+    margin: 0;
     padding: 0; }
     #give-donation-level-radio-list > li label {
       cursor: pointer;
-      display: inline-block; }
+      display: inline-block;
+      margin: 0; }
     #give-donation-level-radio-list > li input[type="radio"] {
-      margin: 0 0 0 2px;
+      margin: 0 0 0 .5em;
       outline: none;
       width: auto; }
 
@@ -1087,16 +1098,19 @@ Radio Lists
   #give-gateway-radio-list:after {
     clear: both; }
   #give-gateway-radio-list > li {
-    display: inline-block;
-    margin-left: 15px;
-    margin-right: 0;
     list-style-type: none;
     list-style-image: none; }
+    @media (min-width: 480px) {
+      #give-gateway-radio-list > li {
+        display: inline-block;
+        margin-left: 15px;
+        margin-right: 0; } }
     #give-gateway-radio-list > li label.give-gateway-option {
       cursor: pointer;
-      display: inline; }
+      display: inline;
+      margin: 0; }
     #give-gateway-radio-list > li input[type="radio"] {
-      margin: 0 0 0 2px;
+      margin: 0 0 0 .25em;
       outline: none;
       width: auto;
       display: inline; }
