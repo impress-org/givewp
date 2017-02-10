@@ -383,6 +383,10 @@ form[id*='give-form'] {
 Radio Lists
 -----------------------------------*/
 form[id*='give-form'] {
+  input[type="radio"] {
+    margin: 0 .5em 0 0;
+  }
+
   #give-donation-level-radio-list {
     //this is the radio list for the various user set donation levels
     margin: 0 0 15px;
@@ -442,6 +446,15 @@ form[id*='give-form'] {
 
     }
 
+  }
+}
+
+/*---------------------------------
+Checkboxes
+-----------------------------------*/
+form[id*='give-form'] {
+  input[type="checkbox"] {
+    margin: 0 .25em 0 0;
   }
 }
 
