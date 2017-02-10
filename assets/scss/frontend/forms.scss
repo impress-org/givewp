@@ -154,7 +154,7 @@ form[id*='give-form'] {
     font-weight: bold;
     margin: 10px 0 15px;
     padding: 0 0 10px;
-    border-bottom: 1px solid $light-gray;
+    border-bottom: 1px solid rgba( 0, 0, 0, .2 );
     width: 100%;
 
     span.sub-text {
