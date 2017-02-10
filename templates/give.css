@@ -856,6 +856,7 @@ form[id*='give-form'] {
     form[id*='give-form'] .give-tooltip:hover {
       color: #333; }
   form[id*='give-form'] legend, form[id*='give-form'] h3.give-section-break, form[id*='give-form'] h4.give-section-break {
+    font-size: 1.25em;
     font-weight: bold;
     margin: 10px 0 15px;
     padding: 0 0 10px;
@@ -864,8 +865,9 @@ form[id*='give-form'] {
     form[id*='give-form'] legend span.sub-text, form[id*='give-form'] h3.give-section-break span.sub-text, form[id*='give-form'] h4.give-section-break span.sub-text {
       font-style: italic;
       font-weight: normal; }
-  form[id*='give-form'] div[id^='section-'] .give-section-break {
-    margin: 0; }
+  form[id*='give-form'] h3.give-section-break,
+  form[id*='give-form'] h4.give-section-break {
+    margin: 10px 0 0; }
   form[id*='give-form'] .form-row {
     *zoom: 1;
     -webkit-box-sizing: border-box;
