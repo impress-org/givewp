@@ -543,7 +543,15 @@ function give_get_offline_payment_instruction( $form_id, $wpautop = false ) {
  * @return array
  */
 function give_filter_offline_gateway( $gateway_list, $form_id ) {
-	if ( $form_id && ! give_is_setting_enabled( get_post_meta( $form_id, '_give_customize_offline_donations', true ), array( 'enabled', 'global' ) ) ) {
+	if (
+		// Show offline payment gateway if enable for new donation form.
+		( false === strpos( $_SERVER['REQUEST_URI'], '/wp-admin/post-new.php?post_type=give_forms' ) )
+		&& $form_id
+		&& ! give_is_setting_enabled( get_post_meta( $form_id, '_give_customize_offline_donations', true ), array(
+			'enabled',
+			'global',
+		) )
+	) {
 		unset( $gateway_list['offline'] );
 	}
 
