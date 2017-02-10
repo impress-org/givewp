@@ -201,6 +201,7 @@ form[id*='give-form'] {
       color: $dark;
       background-color: #FDFDFD;
       border: 1px solid $borders;
+      margin: 0;
       padding: .5em;
 
       &:focus {
