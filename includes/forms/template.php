@@ -637,7 +637,7 @@ function give_user_info_fields( $form_id ) {
 	?>
 	<fieldset id="give_checkout_user_info">
 		<legend><?php echo apply_filters( 'give_checkout_personal_info_text', esc_html__( 'Personal Info', 'give' ) ); ?></legend>
-		<p id="give-first-name-wrap" class="form-row form-row-first">
+		<p id="give-first-name-wrap" class="form-row form-row-first form-row-responsive">
 			<label class="give-label" for="give-first">
 				<?php esc_html_e( 'First Name', 'give' ); ?>
 				<?php if ( give_field_is_required( 'give_first', $form_id ) ) : ?>
@@ -657,7 +657,7 @@ function give_user_info_fields( $form_id ) {
 			/>
 		</p>
 
-		<p id="give-last-name-wrap" class="form-row form-row-last">
+		<p id="give-last-name-wrap" class="form-row form-row-last form-row-responsive">
 			<label class="give-label" for="give-last">
 				<?php esc_html_e( 'Last Name', 'give' ); ?>
 				<?php if ( give_field_is_required( 'give_last', $form_id ) ) : ?>
