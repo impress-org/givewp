@@ -345,6 +345,11 @@ form[id*='give-form'] {
       @include give-currency();
       float: left;
       border: 1px solid $borders;
+
+      @media ( max-width: 480px ) {
+        display: block;
+        float: none;
+      }
     }
 
     .give-final-total-amount {
@@ -352,6 +357,13 @@ form[id*='give-form'] {
       @include give-input();
       border-left: none;
       float: left;
+
+      @media ( max-width: 480px ) {
+        border: 1px solid $borders;
+        border-top: 0;
+        display: block;
+        float: none;
+      }
     }
 
   }
