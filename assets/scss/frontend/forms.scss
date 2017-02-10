@@ -38,6 +38,7 @@ Layout
 
   div.images {
     margin: 0 0 15px;
+
     img {
       display: block;
       width: 100%;
@@ -149,7 +150,9 @@ form[id*='give-form'] {
     }
   }
 
-  legend, h3.give-section-break, h4.give-section-break {
+  legend,
+  h3.give-section-break,
+  h4.give-section-break {
     font-size: 1.25em;
     font-weight: bold;
     margin: 10px 0 15px;
@@ -161,11 +164,6 @@ form[id*='give-form'] {
       font-style: italic;
       font-weight: normal;
     }
-  }
-
-  h3.give-section-break,
-  h4.give-section-break {
-    margin: 10px 0 0;
   }
 
   //Form Layout
@@ -762,4 +760,14 @@ Responsiveness
 
   }
 
+}
+
+/*---------------------------------
+Section Breaks
+-----------------------------------*/
+
+// Headings are commonly styled by themes, so we need to be extra-specific.
+.give-form-wrap .give-form h3.give-section-break,
+.give-form-wrap .give-form h4.give-section-break {
+  margin: 10px 0 0;
 }
