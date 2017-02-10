@@ -1688,7 +1688,7 @@ jQuery.noConflict();
 		 */
 
 		// Show/Hide sub tab nav.
-		$('#give-mainform').on('click blur', '#give-show-sub-nav', function (e) {
+		$('.give-settings-page').on('click blur', '#give-show-sub-nav', function (e) {
 			e.preventDefault();
 
 			var $sub_tab_nav = $(this).next();
@@ -1716,7 +1716,7 @@ jQuery(window).resize(function () {
  * Render responsive tabs
  */
 function give_render_responsinve_tabs() {
-	var $setting_page_form      = jQuery('#give-mainform'),
+	var $setting_page_form      = jQuery('.give-settings-page'),
 		$main_tab_nav           = jQuery('h2.give-nav-tab-wrapper'),
 		setting_page_form_width = $setting_page_form.width(),
 		$sub_tab_nav_wrapper    = jQuery('.give-sub-nav-tab-wrapper'),
@@ -1815,9 +1815,9 @@ function give_render_responsinve_tabs() {
 					$main_tab_nav.append($sub_tab_nav_wrapper);
 				}
 
-				$sub_tab_nav_wrapper.removeClass('give-hidden');
+				$sub_tab_nav_wrapper.show();
 			} else {
-				$sub_tab_nav_wrapper.addClass('give-hidden');
+				$sub_tab_nav_wrapper.hide();
 			}
 		});
 	});
