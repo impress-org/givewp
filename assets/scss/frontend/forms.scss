@@ -382,66 +382,67 @@ form[id*='give-form'] {
 /*---------------------------------
 Radio Lists
 -----------------------------------*/
-#give-donation-level-radio-list {
-  //this is the radio list for the various user set donation levels
-  margin: 0 0 15px;
-  padding: 0;
-  list-style: none;
-  clear: both;
-
-  > li {
-    list-style-type: none;
-    list-style-image: none;
-    margin: 0;
+form[id*='give-form'] {
+  #give-donation-level-radio-list {
+    //this is the radio list for the various user set donation levels
+    margin: 0 0 15px;
     padding: 0;
+    list-style: none;
+    clear: both;
 
-    label {
-      cursor: pointer;
-      display: inline-block;
+    > li {
+      list-style-type: none;
+      list-style-image: none;
       margin: 0;
-    }
+      padding: 0;
 
-    input[type="radio"] {
-      margin: 0 .5em 0 0;
-      outline: none;
-      width: auto;
+      label {
+        cursor: pointer;
+        display: inline-block;
+        margin: 0;
+      }
+
+      input[type="radio"] {
+        margin: 0 .5em 0 0;
+        outline: none;
+        width: auto;
+      }
     }
   }
 
-}
+  #give-gateway-radio-list {
+    //this is the radio list for to select a gateway
+    @include clearfix();
+    margin: 0 0 15px;
+    padding: 0;
+    list-style: none;
 
-#give-gateway-radio-list {
-  //this is the radio list for to select a gateway
-  @include clearfix();
-  margin: 0 0 25px;
-  padding: 0;
-  list-style: none;
+    > li {
+      list-style-type: none;
+      list-style-image: none;
 
-  > li {
-    list-style-type: none;
-    list-style-image: none;
+      @media ( min-width: 480px ) {
+        display: inline-block;
+        margin-right: 15px;
+        margin-left: 0;
+      }
 
-    @media ( min-width: 480px ) {
-      display: inline-block;
-      margin-right: 15px;
-      margin-left: 0;
-    }
+        label.give-gateway-option {
+        cursor: pointer;
+        display: inline;
+        margin: 0;
+      }
 
-      label.give-gateway-option {
-      cursor: pointer;
-      display: inline;
-      margin: 0;
-    }
+      input[type="radio"] {
+        margin: 0 .25em 0 0;
+        outline: none;
+        width: auto;
+        display: inline;
+      }
 
-    input[type="radio"] {
-      margin: 0 .25em 0 0;
-      outline: none;
-      width: auto;
-      display: inline;
     }
 
   }
-
 }
 
 /*---------------------------------
