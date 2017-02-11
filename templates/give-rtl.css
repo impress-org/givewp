@@ -855,19 +855,20 @@ form[id*='give-form'] {
     color: rgba(51, 51, 51, 0.5); }
     form[id*='give-form'] .give-tooltip:hover {
       color: #333; }
-  form[id*='give-form'] legend, form[id*='give-form'] h3.give-section-break, form[id*='give-form'] h4.give-section-break {
+  form[id*='give-form'] legend,
+  form[id*='give-form'] h3.give-section-break,
+  form[id*='give-form'] h4.give-section-break {
     font-size: 1.25em;
     font-weight: bold;
     margin: 10px 0 15px;
     padding: 0 0 10px;
-    border-bottom: 1px solid #EDEDED;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     width: 100%; }
-    form[id*='give-form'] legend span.sub-text, form[id*='give-form'] h3.give-section-break span.sub-text, form[id*='give-form'] h4.give-section-break span.sub-text {
+    form[id*='give-form'] legend span.sub-text,
+    form[id*='give-form'] h3.give-section-break span.sub-text,
+    form[id*='give-form'] h4.give-section-break span.sub-text {
       font-style: italic;
       font-weight: normal; }
-  form[id*='give-form'] h3.give-section-break,
-  form[id*='give-form'] h4.give-section-break {
-    margin: 10px 0 0; }
   form[id*='give-form'] .form-row {
     *zoom: 1;
     -webkit-box-sizing: border-box;
@@ -900,6 +901,7 @@ form[id*='give-form'] {
       color: #333;
       background-color: #FDFDFD;
       border: 1px solid #ccc;
+      margin: 0;
       padding: .5em; }
       form[id*='give-form'] .form-row select:focus, form[id*='give-form'] .form-row textarea:focus, form[id*='give-form'] .form-row input[type="text"]:focus, form[id*='give-form'] .form-row input[type="tel"]:focus, form[id*='give-form'] .form-row input[type="email"]:focus, form[id*='give-form'] .form-row input[type="password"]:focus {
         background-color: #fff; }
@@ -1070,52 +1072,63 @@ form[id*='give-form'] #give-final-total-wrap {
 /*---------------------------------
 Radio Lists
 -----------------------------------*/
-#give-donation-level-radio-list {
+form[id*='give-form'] input[type="radio"] {
+  margin: 0 0 0 .5em; }
+
+form[id*='give-form'] #give-donation-level-radio-list {
   margin: 0 0 15px;
   padding: 0;
   list-style: none;
   clear: both; }
-  #give-donation-level-radio-list > li {
+  form[id*='give-form'] #give-donation-level-radio-list > li {
     list-style-type: none;
     list-style-image: none;
     margin: 0;
     padding: 0; }
-    #give-donation-level-radio-list > li label {
+    form[id*='give-form'] #give-donation-level-radio-list > li label {
       cursor: pointer;
       display: inline-block;
       margin: 0; }
-    #give-donation-level-radio-list > li input[type="radio"] {
+    form[id*='give-form'] #give-donation-level-radio-list > li input[type="radio"] {
       margin: 0 0 0 .5em;
       outline: none;
       width: auto; }
 
-#give-gateway-radio-list {
+form[id*='give-form'] #give-gateway-radio-list {
   *zoom: 1;
-  margin: 0 0 25px;
+  margin: 0 0 15px;
   padding: 0;
   list-style: none; }
-  #give-gateway-radio-list:before, #give-gateway-radio-list:after {
+  form[id*='give-form'] #give-gateway-radio-list:before, form[id*='give-form'] #give-gateway-radio-list:after {
     content: " ";
     display: table; }
-  #give-gateway-radio-list:after {
+  form[id*='give-form'] #give-gateway-radio-list:after {
     clear: both; }
-  #give-gateway-radio-list > li {
+  form[id*='give-form'] #give-gateway-radio-list > li {
     list-style-type: none;
-    list-style-image: none; }
+    list-style-image: none;
+    margin: 0;
+    padding: 0; }
     @media (min-width: 480px) {
-      #give-gateway-radio-list > li {
+      form[id*='give-form'] #give-gateway-radio-list > li {
         display: inline-block;
         margin-left: 15px;
         margin-right: 0; } }
-    #give-gateway-radio-list > li label.give-gateway-option {
+    form[id*='give-form'] #give-gateway-radio-list > li label.give-gateway-option {
       cursor: pointer;
       display: inline;
       margin: 0; }
-    #give-gateway-radio-list > li input[type="radio"] {
+    form[id*='give-form'] #give-gateway-radio-list > li input[type="radio"] {
       margin: 0 0 0 .25em;
       outline: none;
       width: auto;
       display: inline; }
+
+/*---------------------------------
+Checkboxes
+-----------------------------------*/
+form[id*='give-form'] input[type="checkbox"] {
+  margin: 0 0 0 .25em; }
 
 /*---------------------------------
 Donation Level: Dropdown/Select
@@ -1127,7 +1140,10 @@ form[id*='give-form'] select.give-select-level {
   border: 1px solid #ccc;
   margin: 0 0 15px;
   display: block;
-  clear: both; }
+  clear: both;
+  color: #333;
+  background-color: #FDFDFD;
+  padding: .5em; }
 
 /*---------------------------------
 Buttons
@@ -1242,9 +1258,12 @@ Loading Animation
   100% {
     opacity: 0; } }
 
-form[id*='give-form'] p.give-loading-text, form[id*='give-form'] span.give-loading-text {
+form[id*='give-form'] p.give-loading-text,
+form[id*='give-form'] span.give-loading-text {
   display: none;
   float: left;
+  height: 16px;
+  width: 16px;
   margin: 0;
   padding: 0;
   font-style: italic;
@@ -1263,9 +1282,9 @@ form[id*='give-form'] .give-loading-animation {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   float: right;
+  height: 16px;
   width: 16px;
-  height: 20px;
-  line-height: 20px;
+  line-height: 1;
   font-size: 16px;
   margin: 0 0 0 5px;
   background-size: 20px 20px;
@@ -1293,14 +1312,17 @@ form[id*='give-form'] .give-payment-mode-label .give-loading-text {
     float: left; }
 
 /* User Login */
-[id^='give-user-login-submit'] input.give-cancel-login, .give-submit-button-wrap input.give-cancel-login {
+[id^='give-user-login-submit'] input.give-cancel-login,
+.give-submit-button-wrap input.give-cancel-login {
   margin-right: 5px; }
 
-[id^='give-user-login-submit'] span.give-loading-animation, .give-submit-button-wrap span.give-loading-animation {
-  margin: 3px 6px;
+[id^='give-user-login-submit'] span.give-loading-animation,
+.give-submit-button-wrap span.give-loading-animation {
+  margin: 0 .5em 0 0;
   display: none; }
 
-[id^='give-user-login-submit'] .give-submit, .give-submit-button-wrap .give-submit {
+[id^='give-user-login-submit'] .give-submit,
+.give-submit-button-wrap .give-submit {
   float: right; }
 
 p.give-recurring-login-toggle {
@@ -1352,10 +1374,19 @@ form#give-email-access-form input#give-email {
 Responsiveness
 -----------------------------------*/
 @media (max-width: 768px) {
-  /* Layout */
   [id*='give-form'] div.images, [id*='give-form'] div.summary {
     width: 100%;
+    float: none; }
+  [id*='give-form'] div#give-sidebar-left {
+    width: 100%;
     float: none; } }
+
+/*---------------------------------
+Section Breaks
+-----------------------------------*/
+.give-form-wrap .give-form h3.give-section-break,
+.give-form-wrap .give-form h4.give-section-break {
+  margin: 10px 0 0; }
 
 /*---------------------------------
 Notices, Warnings & Errors
