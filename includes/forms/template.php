@@ -1263,7 +1263,7 @@ function give_get_login_fields( $form_id ) {
 		 */
 		do_action( 'give_checkout_login_fields_before', $form_id );
 		?>
-		<div id="give-user-login-wrap-<?php echo $form_id; ?>" class="form-row form-row-first">
+		<div id="give-user-login-wrap-<?php echo $form_id; ?>" class="form-row form-row-first form-row-responsive">
 			<label class="give-label" for="give-user-login-<?php echo $form_id; ?>">
 				<?php esc_html_e( 'Username', 'give' ); ?>
 				<?php if ( give_logged_in_only( $form_id ) ) { ?>
@@ -1276,7 +1276,7 @@ function give_get_login_fields( $form_id ) {
 			       placeholder="<?php esc_attr_e( 'Your username', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
 		</div>
 
-		<div id="give-user-pass-wrap-<?php echo $form_id; ?>" class="give_login_password form-row form-row-last">
+		<div id="give-user-pass-wrap-<?php echo $form_id; ?>" class="give_login_password form-row form-row-last form-row-responsive">
 			<label class="give-label" for="give-user-pass-<?php echo $form_id; ?>">
 				<?php esc_html_e( 'Password', 'give' ); ?>
 				<?php if ( give_logged_in_only( $form_id ) ) { ?>

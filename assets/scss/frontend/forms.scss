@@ -644,28 +644,45 @@ form[id*='give-form'] {
   }
 }
 
-/* Login Wrap */
+/*---------------------------------
+User Login
+-----------------------------------*/
 
-.give-login-account-wrap, [id^="give-login-fields"] {
-  @include clearfix();
-
-  > p.give-new-account-link, > p.give-login-message {
-    float: left;
+/*
+ * User Login within Donation Form
+ * (visible when Form Display > Login is enabled)
+ */
+[id*='give-form'] {
+  .give-login-account-wrap {
     margin: 0 0 15px;
-    padding: 0;
+    position: relative;
+
+    .give-login-message {
+      margin: 0;
+      padding: 0;
+    }
+
+    .give-loading-text {
+      position: absolute;
+      right: 0;
+      top: .25em;
+    }
   }
 
-  p.give-login-message {
-    margin-right: 10px;
+  fieldset[id^="give-login-fields"] {
+    margin: 0 0 15px;
+  }
+
+  .give-new-account-link {
+    margin: 0 0 15px;
+    padding: 0;
   }
 
   .give_login_forgot_password {
     float: right;
   }
-
 }
 
-/* User Login */
 [id^='give-user-login-submit'],
 .give-submit-button-wrap {
 
@@ -682,13 +699,9 @@ form[id*='give-form'] {
   }
 }
 
-p.give-recurring-login-toggle {
-  font-style: italic;
-}
-
 /* Login Shortcode Form */
-#give-login-form, #give-register-form {
-
+#give-login-form,
+#give-register-form {
   legend, div.give-login {
     line-height: 2;
     margin-bottom: 15px;
