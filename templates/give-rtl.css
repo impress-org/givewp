@@ -1398,24 +1398,34 @@ form[id*='give-form'] .give-loading-animation {
 form[id*='give-form'] .give-payment-mode-label .give-loading-text {
   float: left; }
 
-/* Login Wrap */
-.give-login-account-wrap, [id^="give-login-fields"] {
-  *zoom: 1; }
-  .give-login-account-wrap:before, .give-login-account-wrap:after, [id^="give-login-fields"]:before, [id^="give-login-fields"]:after {
-    content: " ";
-    display: table; }
-  .give-login-account-wrap:after, [id^="give-login-fields"]:after {
-    clear: both; }
-  .give-login-account-wrap > p.give-new-account-link, .give-login-account-wrap > p.give-login-message, [id^="give-login-fields"] > p.give-new-account-link, [id^="give-login-fields"] > p.give-login-message {
-    float: right;
-    margin: 0 0 15px;
+/*---------------------------------
+User Login
+-----------------------------------*/
+/*
+ * User Login within Donation Form
+ * (visible when Form Display > Login is enabled)
+ */
+[id*='give-form'] .give-login-account-wrap {
+  margin: 0 0 15px;
+  position: relative; }
+  [id*='give-form'] .give-login-account-wrap .give-login-message {
+    margin: 0;
     padding: 0; }
-  .give-login-account-wrap p.give-login-message, [id^="give-login-fields"] p.give-login-message {
-    margin-left: 10px; }
-  .give-login-account-wrap .give_login_forgot_password, [id^="give-login-fields"] .give_login_forgot_password {
-    float: left; }
+  [id*='give-form'] .give-login-account-wrap .give-loading-text {
+    position: absolute;
+    left: 0;
+    top: .25em; }
 
-/* User Login */
+[id*='give-form'] fieldset[id^="give-login-fields"] {
+  margin: 0 0 15px; }
+
+[id*='give-form'] .give-new-account-link {
+  margin: 0 0 15px;
+  padding: 0; }
+
+[id*='give-form'] .give_login_forgot_password {
+  float: left; }
+
 [id^='give-user-login-submit'] input.give-cancel-login,
 .give-submit-button-wrap input.give-cancel-login {
   margin-right: 5px; }
@@ -1429,15 +1439,15 @@ form[id*='give-form'] .give-payment-mode-label .give-loading-text {
 .give-submit-button-wrap .give-submit {
   float: right; }
 
-p.give-recurring-login-toggle {
-  font-style: italic; }
-
 /* Login Shortcode Form */
-#give-login-form legend, #give-login-form div.give-login, #give-register-form legend, #give-register-form div.give-login {
+#give-login-form legend, #give-login-form div.give-login,
+#give-register-form legend,
+#give-register-form div.give-login {
   line-height: 2;
   margin-bottom: 15px; }
 
-#give-login-form label, #give-register-form label {
+#give-login-form label,
+#give-register-form label {
   min-width: 100px;
   display: inline-block; }
 
@@ -2243,9 +2253,6 @@ body.give-twentysixteen button.give-btn {
 
 body.give-twentysixteen .give-submit {
   color: #FFF; }
-
-body.give-twentysixteen form[id*="give"] fieldset {
-  margin-bottom: 0; }
 
 body.give-twentysixteen fieldset#give_terms_agreement {
   padding-right: 0; }
