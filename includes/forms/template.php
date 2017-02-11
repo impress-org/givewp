@@ -153,7 +153,7 @@ function give_get_donation_form( $args = array() ) {
 				<?php }
 
 				/**
-				 * Fires while outputing donation form, before all other fields.
+				 * Fires while outputting donation form, before all other fields.
 				 *
 				 * @since 1.0
 				 *
