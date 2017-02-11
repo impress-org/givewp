@@ -423,6 +423,8 @@ form[id*='give-form'] {
     > li {
       list-style-type: none;
       list-style-image: none;
+      margin: 0;
+      padding: 0;
 
       @media ( min-width: 480px ) {
         display: inline-block;
