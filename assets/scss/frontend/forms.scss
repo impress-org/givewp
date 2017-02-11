@@ -131,7 +131,9 @@ Gravatar List
 Base Form Styles
 --------------------------------------*/
 
-form[id*='give-form'] {
+form[id*='give-form'],
+#give-recurring-form,
+form.give-form {
   margin: 0 0 25px;
   padding: 0;
 
