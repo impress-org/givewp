@@ -1093,7 +1093,8 @@ function give_get_register_fields( $form_id ) {
 					   data-action="give_checkout_login"><?php esc_html_e( 'Login', 'give' ); ?></a>
 				</p>
 				<p class="give-loading-text">
-					<span class="give-loading-animation"></span> <?php esc_html_e( 'Loading...', 'give' ); ?></p>
+					<span class="give-loading-animation"></span>
+                </p>
 			</div>
 		<?php } ?>
 
@@ -1127,7 +1128,7 @@ function give_get_register_fields( $form_id ) {
 			 */
 			do_action( 'give_register_account_fields_before', $form_id );
 			?>
-			<div id="give-user-login-wrap-<?php echo $form_id; ?>" class="form-row form-row-one-third form-row-first">
+			<div id="give-user-login-wrap-<?php echo $form_id; ?>" class="form-row form-row-one-third form-row-first form-row-responsive">
 				<label for="give-user-login-<?php echo $form_id; ?>">
 					<?php esc_html_e( 'Username', 'give' ); ?>
 					<?php if ( give_logged_in_only( $form_id ) ) { ?>
@@ -1142,7 +1143,7 @@ function give_get_register_fields( $form_id ) {
 				       placeholder="<?php esc_attr_e( 'Username', 'give' ); ?>"<?php echo ( give_logged_in_only( $form_id ) ) ? ' required aria-required="true" ' : ''; ?>/>
 			</div>
 
-			<div id="give-user-pass-wrap-<?php echo $form_id; ?>" class="form-row form-row-one-third">
+			<div id="give-user-pass-wrap-<?php echo $form_id; ?>" class="form-row form-row-one-third form-row-responsive">
 				<label for="give-user-pass-<?php echo $form_id; ?>">
 					<?php esc_html_e( 'Password', 'give' ); ?>
 					<?php if ( give_logged_in_only( $form_id ) ) { ?>
@@ -1158,7 +1159,7 @@ function give_get_register_fields( $form_id ) {
 			</div>
 
 			<div id="give-user-pass-confirm-wrap-<?php echo $form_id; ?>"
-			     class="give-register-password form-row form-row-one-third">
+			     class="give-register-password form-row form-row-one-third form-row-responsive">
 				<label for="give-user-pass-confirm-<?php echo $form_id; ?>">
 					<?php esc_html_e( 'Confirm PW', 'give' ); ?>
 					<?php if ( give_logged_in_only( $form_id ) ) { ?>
@@ -1249,7 +1250,8 @@ function give_get_login_fields( $form_id ) {
 				</a>
 			</p>
 			<p class="give-loading-text">
-				<span class="give-loading-animation"></span> <?php esc_html_e( 'Loading...', 'give' ); ?> </p>
+				<span class="give-loading-animation"></span>
+            </p>
 		<?php } ?>
 		<?php
 		/**
@@ -1367,7 +1369,8 @@ function give_payment_mode_select( $form_id ) {
 
 		<div id="give-payment-mode-wrap">
 			<span class="give-loading-text"><span
-					class="give-loading-animation"></span> <?php esc_html_e( 'Loading...', 'give' ); ?></span>
+					class="give-loading-animation"></span>
+            </span>
 
 			<?php
 			/**
