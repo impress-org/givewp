@@ -40,13 +40,30 @@ function give_add_options_links() {
 	$give_donors_page = add_submenu_page( 'edit.php?post_type=give_forms', esc_html__( 'Donors', 'give' ), esc_html__( 'Donors', 'give' ), 'view_give_reports', 'give-donors', 'give_customers_page' );
 
 	//Reports`
-	$give_reports_page = add_submenu_page( 'edit.php?post_type=give_forms', esc_html__( 'Donation Reports', 'give' ), esc_html__( 'Reports', 'give' ), 'view_give_reports', 'give-reports', 'give_reports_page' );
+	$give_reports_page = add_submenu_page(
+		'edit.php?post_type=give_forms',
+		esc_html__( 'Donation Reports', 'give' ),
+		esc_html__( 'Reports', 'give' ),
+		'view_give_reports',
+		'give-reports',
+		array(
+			Give()->give_settings,
+			'output',
+		)
+	);
 
 	//Settings
-	$give_settings_page = add_submenu_page( 'edit.php?post_type=give_forms', esc_html__( 'Give Settings', 'give' ), esc_html__( 'Settings', 'give' ), 'manage_give_settings', 'give-settings', array(
-		Give()->give_settings,
-		'output'
-	) );
+	$give_settings_page = add_submenu_page(
+		'edit.php?post_type=give_forms',
+		esc_html__( 'Give Settings', 'give' ),
+		esc_html__( 'Settings', 'give' ),
+		'manage_give_settings',
+		'give-settings',
+		array(
+			Give()->give_settings,
+			'output',
+		)
+	);
 
 	//Tools.
 	$give_tools_page = add_submenu_page( 'edit.php?post_type=give_forms', esc_html__( 'Give Tools', 'give' ), esc_html__( 'Tools', 'give' ), 'manage_give_settings', 'give-tools', array(
@@ -370,6 +387,38 @@ add_filter( 'give-settings_get_settings_pages', 'give_settings_page_pages', 0, 1
  * @param  array $settings
  * @return array
  */
+function give_reports_page_pages( $settings ) {
+	include( 'abstract-admin-settings-page.php' );
+
+	$settings = array(
+		// Earnings.
+		include( 'reporting/class-settings-earnings.php' ),
+
+		// Forms.
+		include( 'reporting/class-settings-forms.php' ),
+
+		// Donors.
+		include( 'reporting/class-settings-donors.php' ),
+
+		// Gateways.
+		include( 'reporting/class-settings-gateways.php' ),
+
+		// Export.
+		include( 'reporting/class-settings-export.php' ),
+	);
+
+	// Output.
+	return $settings;
+}
+add_filter( 'give-reports_get_settings_pages', 'give_reports_page_pages', 0, 1 );
+
+/**
+ * Add setting tab to give-settings page
+ *
+ * @since  1.8
+ * @param  array $settings
+ * @return array
+ */
 function give_tools_page_pages( $settings ) {
 	include( 'abstract-admin-settings-page.php' );
 
@@ -403,3 +452,16 @@ function give_set_default_tab_form_tools_page( $default_tab ) {
 	return 'system-info';
 }
 add_filter( 'give_default_setting_tab_give-tools', 'give_set_default_tab_form_tools_page', 10, 1 );
+
+
+/**
+ * Set default reports page tab.
+ *
+ * @since  1.8
+ * @param  string $default_tab Default tab name.
+ * @return string
+ */
+function give_set_default_tab_form_reports_page( $default_tab ) {
+	return 'earnings';
+}
+add_filter( 'give_default_setting_tab_give-reports', 'give_set_default_tab_form_reports_page', 10, 1 );
