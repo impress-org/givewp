@@ -872,11 +872,11 @@ form.give-form {
   form.give-form legend,
   form.give-form h3.give-section-break,
   form.give-form h4.give-section-break {
-    font-size: 1.25em;
+    font-size: 1.15em;
     font-weight: bold;
     margin: 10px 0 15px;
-    padding: 0 0 10px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 0 0 5px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     width: 100%; }
     form[id*='give-form'] legend span.sub-text,
     form[id*='give-form'] h3.give-section-break span.sub-text,
@@ -1116,6 +1116,9 @@ form[id*='give-form'] .give-donation-amount {
 
 form[id*='give-form'] #give_terms_agreement legend {
   display: none; }
+
+form[id*='give-form'] #give_terms_agreement label {
+  display: inline-block; }
 
 form[id*='give-form'] #give-final-total-wrap {
   margin: 10px 0 25px;
