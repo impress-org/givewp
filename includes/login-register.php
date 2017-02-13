@@ -70,18 +70,19 @@ function give_login_form( $login_redirect = '', $logout_redirect = '' ) {
  * @return string Register form
  */
 function give_register_form( $redirect = '' ) {
-	global $give_register_redirect;
-
 	if ( empty( $redirect ) ) {
 		$redirect = give_get_current_page_url();
 	}
 
-	$give_register_redirect = $redirect;
-
 	ob_start();
 
 	if ( ! is_user_logged_in() ) {
-		give_get_template_part( 'shortcode', 'register' );
+		give_get_template(
+			'shortcode-register',
+			array(
+				'give_register_redirect' => $redirect
+			)
+		);
 	}
 
 	return apply_filters( 'give_register_form', ob_get_clean() );
