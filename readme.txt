@@ -165,6 +165,27 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 == Changelog ==
 
 = 1.8 =
+* New: Enhanced admin UI provides easier donation form creation and settings organization overview. [#281](https://github.com/WordImpress/Give/issues/281), [#668](https://github.com/WordImpress/Give/issues/668)
+* New: Display "Donate Now" buttons that open donation forms with the click of a button with the new button display mode. [#520](https://github.com/WordImpress/Give/issues/520)
+* New: Additional "Tools" menu added to WP-admin. [#1046](https://github.com/WordImpress/Give/issues/1046)
+* New: Improved System Info page now provides more helpful server and WordPress information which will help support more quickly identify potential issues. [#826](https://github.com/WordImpress/Give/issues/826)
+* New: Improved UX/UI for Reports pages. [#1114](https://github.com/WordImpress/Give/issues/1114)
+* New: Improved UX for admin settings screens that have many tabs to prevent them from bumping to two lines. [#1466](https://github.com/WordImpress/Give/issues/1466
+* New: Added support to create links to donation forms with a pre-selected donation level. [#1422](https://github.com/WordImpress/Give/issues/1422
+* Tweak: Give's donation form widget now includes the "Display Option" functionality. [#1269](https://github.com/WordImpress/Give/issues/1269)
+* Tweak: CMB2 has now been deprecated in favor for Give's settings API. [#991](https://github.com/WordImpress/Give/issues/991)
+* Tweak: Only show Add-on activation banner for user who activated the plugin. [#1036](https://github.com/WordImpress/Give/issues/1036)
+* Tweak: Added backend and frontend validation to prevent the admin from saving the same success and failure page. [#724](https://github.com/WordImpress/Give/issues/724)
+* Tweak: Responsive and general CSS improvements for frontend donation forms. [#1453](https://github.com/WordImpress/Give/issues/1453), [#1258](https://github.com/WordImpress/Give/issues/1258), [#1441](https://github.com/WordImpress/Give/issues/1441)
+* Tweak: Plugin incompatibility with PHP version 7.1. [#1453](https://github.com/WordImpress/Give/issues/1453), [#1258](https://github.com/WordImpress/Give/issues/1258), [#1441](https://github.com/WordImpress/Give/issues/1441)
+* Tweak: Linked the donor's name to their donor profile within donor's report listing screen. [#1448](https://github.com/WordImpress/Give/issues/1448)
+* Tweak: Field descriptions updated for better user understanding and clarity. [#1488](https://github.com/WordImpress/Give/issues/1488)
+* Tweak: Bulk deleting transactions does not display a notification enhancement. [#850](https://github.com/WordImpress/Give/issues/850)
+* Tweak: Auto fill total donation amount when admin user changes the donation level on the payment edit screen. [#884](https://github.com/WordImpress/Give/issues/884)
+* Tweak: If only one payment gateway is enabled the "Select Payment Method" fieldset is now hidden. [#1122](https://github.com/WordImpress/Give/issues/1122)
+* Tweak: Links to shortcodes are now using offsite shortlinks that can be updated without a plugin update to prevent 404s due to doc structure changes. [#1405](https://github.com/WordImpress/Give/issues/1405)
+* Fix: "Export Donors" creating multiple instances of the same donor. [#1426](https://github.com/WordImpress/Give/issues/1426)
+* Fix: Show "untitled donation form" as the default title for untitled forms in the admin. [#1276](https://github.com/WordImpress/Give/issues/1276)
 
 = 1.7.2: December 21, 2016 =
 * Fix: The login within the donation form doesn't refresh due to a bug introduced in 1.7 - it's now fixed and working properly again. [#1341](https://github.com/WordImpress/Give/issues/1341)
