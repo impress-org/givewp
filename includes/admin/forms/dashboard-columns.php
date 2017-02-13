@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_form_columns( $give_form_columns ) {
 
-	//Standard columns
+	// Standard columns
 	$give_form_columns = array(
 		'cb'            => '<input type="checkbox"/>',
 		'title'         => esc_html__( 'Name', 'give' ),
@@ -43,11 +43,11 @@ function give_form_columns( $give_form_columns ) {
 		'date'          => esc_html__( 'Date', 'give' ),
 	);
 
-	//Does the user want categories / tags?
-	if ( give_get_option( 'enable_categories' ) !== 'on' ) {
+	// Does the user want categories / tags?
+	if ( ! give_is_setting_enabled( give_get_option( 'categories', 'disabled' ) ) ) {
 		unset( $give_form_columns['form_category'] );
 	}
-	if ( give_get_option( 'enable_tags' ) !== 'on' ) {
+	if ( ! give_is_setting_enabled( give_get_option( 'tags', 'disabled' ) ) ) {
 		unset( $give_form_columns['form_tag'] );
 	}
 
@@ -85,8 +85,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 				}
 				break;
 			case 'goal':
-				$goal_option = get_post_meta( $post_id, '_give_goal_option', true );
-				if ( ! empty( $goal_option ) && $goal_option === 'yes' ) {
+				if ( give_is_setting_enabled( get_post_meta( $post_id, '_give_goal_option', true ) ) ) {
 					echo give_goal( $post_id, false );
 				} else {
 					esc_html_e( 'No Goal Set', 'give' );
@@ -96,7 +95,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 				break;
 			case 'donations':
 				if ( current_user_can( 'view_give_form_stats', $post_id ) ) {
-					echo '<a href="' . esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=logs&view=sales&form=' . $post_id ) ) . '">';
+					echo '<a href="' . esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-tools&tab=logs&form=' . $post_id ) ) . '">';
 					echo give_get_form_sales_stats( $post_id );
 					echo '</a>';
 				} else {
@@ -245,7 +244,6 @@ function give_filter_forms( $vars ) {
 			);
 
 		}
-
 	}
 
 	return $vars;
@@ -297,7 +295,7 @@ add_filter( 'months_dropdown_results', 'give_remove_month_filter', 99 );
  *
  * @param int $post_id Download (Post) ID
  *
- * @return void
+ * @return int|null
  */
 function give_price_save_quick_edit( $post_id ) {
 	if ( ! isset( $_POST['post_type'] ) || 'give_forms' !== $_POST['post_type'] ) {

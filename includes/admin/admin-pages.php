@@ -30,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function give_add_options_links() {
-	global $give_settings_page, $give_payments_page, $give_reports_page, $give_add_ons_page, $give_upgrades_screen, $give_donors_page;
+	global $give_settings_page, $give_payments_page, $give_reports_page, $give_add_ons_page, $give_upgrades_screen, $give_donors_page, $give_tools_page;
 
 	//Payments
 	$give_payment       = get_post_type_object( 'give_payment' );
@@ -40,12 +40,35 @@ function give_add_options_links() {
 	$give_donors_page = add_submenu_page( 'edit.php?post_type=give_forms', esc_html__( 'Donors', 'give' ), esc_html__( 'Donors', 'give' ), 'view_give_reports', 'give-donors', 'give_customers_page' );
 
 	//Reports`
-	$give_reports_page = add_submenu_page( 'edit.php?post_type=give_forms', esc_html__( 'Donation Reports', 'give' ), esc_html__( 'Reports', 'give' ), 'view_give_reports', 'give-reports', 'give_reports_page' );
+	$give_reports_page = add_submenu_page(
+		'edit.php?post_type=give_forms',
+		esc_html__( 'Donation Reports', 'give' ),
+		esc_html__( 'Reports', 'give' ),
+		'view_give_reports',
+		'give-reports',
+		array(
+			Give()->give_settings,
+			'output',
+		)
+	);
 
 	//Settings
-	$give_settings_page = add_submenu_page( 'edit.php?post_type=give_forms', esc_html__( 'Give Settings', 'give' ), esc_html__( 'Settings', 'give' ), 'manage_give_settings', 'give-settings', array(
+	$give_settings_page = add_submenu_page(
+		'edit.php?post_type=give_forms',
+		esc_html__( 'Give Settings', 'give' ),
+		esc_html__( 'Settings', 'give' ),
+		'manage_give_settings',
+		'give-settings',
+		array(
+			Give()->give_settings,
+			'output',
+		)
+	);
+
+	//Tools.
+	$give_tools_page = add_submenu_page( 'edit.php?post_type=give_forms', esc_html__( 'Give Tools', 'give' ), esc_html__( 'Tools', 'give' ), 'manage_give_settings', 'give-tools', array(
 		Give()->give_settings,
-		'admin_page_display'
+		'output'
 	) );
 
 	//Add-ons
@@ -287,7 +310,7 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 			}
 			break;
 		default:
-			global $give_payments_page, $give_settings_page, $give_reports_page, $give_system_info_page, $give_add_ons_page, $give_settings_export, $give_upgrades_screen, $give_customers_page;
+			global $give_payments_page, $give_settings_page, $give_reports_page, $give_system_info_page, $give_add_ons_page, $give_settings_export, $give_upgrades_screen, $give_customers_page, $give_tools_page;
 
 			$admin_pages = apply_filters( 'give_admin_pages', array(
 				$give_payments_page,
@@ -298,9 +321,9 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 				$give_upgrades_screen,
 				$give_settings_export,
 				$give_customers_page,
+				$give_tools_page,
 				'widgets.php'
-				
-			) );
+		) );
 			if ( 'give_forms' == $typenow || 'index.php' == $pagenow || 'post-new.php' == $pagenow || 'post.php' == $pagenow ) {
 				$found = true;
 				if ( 'give-upgrades' === $page ) {
@@ -315,3 +338,130 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 	return (bool) apply_filters( 'give_is_admin_page', $found, $page, $view, $passed_page, $passed_view );
 
 }
+
+
+/**
+ * Add setting tab to give-settings page
+ *
+ * @since  1.8
+ * @param  array $settings
+ * @return array
+ */
+function give_settings_page_pages( $settings ) {
+	include( 'abstract-admin-settings-page.php' );
+	include( 'settings/class-settings-cmb2-backward-compatibility.php' );
+
+	$settings = array(
+		// General settings.
+		include( 'settings/class-settings-general.php' ),
+
+		// Payment Gateways Settings.
+		include( 'settings/class-settings-gateways.php' ),
+
+		// Display settings.
+		include( 'settings/class-settings-display.php' ),
+
+		// Emails settings.
+		include( 'settings/class-settings-email.php' ),
+
+		// Addons settings.
+		include( 'settings/class-settings-addon.php' ),
+
+		// License settings.
+		include( 'settings/class-settings-license.php' ),
+
+		// Advanced settinns.
+		include( 'settings/class-settings-advanced.php' )
+	);
+
+	// Output.
+	return $settings;
+}
+add_filter( 'give-settings_get_settings_pages', 'give_settings_page_pages', 0, 1 );
+
+
+/**
+ * Add setting tab to give-settings page
+ *
+ * @since  1.8
+ * @param  array $settings
+ * @return array
+ */
+function give_reports_page_pages( $settings ) {
+	include( 'abstract-admin-settings-page.php' );
+
+	$settings = array(
+		// Earnings.
+		include( 'reporting/class-settings-earnings.php' ),
+
+		// Forms.
+		include( 'reporting/class-settings-forms.php' ),
+
+		// Donors.
+		include( 'reporting/class-settings-donors.php' ),
+
+		// Gateways.
+		include( 'reporting/class-settings-gateways.php' ),
+
+		// Export.
+		include( 'reporting/class-settings-export.php' ),
+	);
+
+	// Output.
+	return $settings;
+}
+add_filter( 'give-reports_get_settings_pages', 'give_reports_page_pages', 0, 1 );
+
+/**
+ * Add setting tab to give-settings page
+ *
+ * @since  1.8
+ * @param  array $settings
+ * @return array
+ */
+function give_tools_page_pages( $settings ) {
+	include( 'abstract-admin-settings-page.php' );
+
+	$settings = array(
+		// System Info.
+		include( 'tools/class-settings-system-info.php' ),
+
+		// Logs.
+		include( 'tools/class-settings-logs.php' ),
+
+		// API.
+		include( 'tools/class-settings-api.php' ),
+
+		// Data.
+		include( 'tools/class-settings-data.php' ),
+	);
+
+	// Output.
+	return $settings;
+}
+add_filter( 'give-tools_get_settings_pages', 'give_tools_page_pages', 0, 1 );
+
+/**
+ * Set default tools page tab.
+ *
+ * @since  1.8
+ * @param  string $default_tab Default tab name.
+ * @return string
+ */
+function give_set_default_tab_form_tools_page( $default_tab ) {
+	return 'system-info';
+}
+add_filter( 'give_default_setting_tab_give-tools', 'give_set_default_tab_form_tools_page', 10, 1 );
+
+
+/**
+ * Set default reports page tab.
+ *
+ * @since  1.8
+ * @param  string $default_tab Default tab name.
+ * @return string
+ */
+function give_set_default_tab_form_reports_page( $default_tab ) {
+	return 'earnings';
+}
+add_filter( 'give_default_setting_tab_give-reports', 'give_set_default_tab_form_reports_page', 10, 1 );

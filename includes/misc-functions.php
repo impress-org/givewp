@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_is_test_mode() {
 
-	$ret = give_get_option('test_mode', false);
+	$ret = give_is_setting_enabled( give_get_option( 'test_mode' ) );
 
 	return (bool) apply_filters( 'give_is_test_mode', $ret );
 
@@ -942,5 +942,89 @@ if ( ! function_exists( 'cal_days_in_month' ) ) {
 	 */
 	function cal_days_in_month( $calendar, $month, $year ) {
 		return date( 't', mktime( 0, 0, 0, $month, 1, $year ) );
+	}
+}
+
+/**
+ * Get plugin info including status, type, and license validation.
+ *
+ * This is an enhanced version of get_plugins() that returns the status
+ * (`active` or `inactive`) of all plugins, type of plugin (`add-on` or `other`
+ * and license validation for Give add-ons (`true` or `false`). Does not include
+ * MU plugins.
+ *
+ * @since 1.8.0
+ *
+ * @return array Plugin info plus status, type, and license validation if
+ *               available.
+ */
+function give_get_plugins() {
+	$plugins             = get_plugins();
+	$active_plugin_paths = (array) get_option( 'active_plugins', array() );
+
+	if ( is_multisite() ) {
+		$network_activated_plugin_paths = array_keys( get_site_option( 'active_sitewide_plugins', array() ) );
+		$active_plugin_paths            = array_merge( $active_plugin_paths, $network_activated_plugin_paths );
+	}
+
+	foreach ( $plugins as $plugin_path => $plugin_data ) {
+		// Is plugin active?
+		if ( in_array( $plugin_path, $active_plugin_paths ) ) {
+			$plugins[ $plugin_path ]['Status'] = 'active';
+		} else {
+			$plugins[ $plugin_path ]['Status'] = 'inactive';
+		}
+
+		$dirname = strtolower( dirname( $plugin_path ) );
+
+		// Is plugin a Give add-on by WordImpress?
+		if ( strstr( $dirname, 'give-' ) && strstr( $plugin_data['AuthorURI'], 'wordimpress.com' ) ) {
+			// Plugin is a Give-addon.
+			$plugins[ $plugin_path ]['Type'] = 'add-on';
+
+			// Get license info from database.
+			$plugin_name    = str_replace( 'Give - ', '', $plugin_data['Name'] );
+			$db_option      = 'give_' . preg_replace( '/[^a-zA-Z0-9_\s]/', '', str_replace( ' ', '_', strtolower( $plugin_name ) ) ) . '_license_active';
+			$license_active = get_option( $db_option );
+
+			// Does a valid license exist?
+			if ( ! empty( $license_active ) && 'valid' === $license_active->license ) {
+				$plugins[ $plugin_path ]['License'] = true;
+			} else {
+				$plugins[ $plugin_path ]['License'] = false;
+			}
+		} else {
+			// Plugin is not a Give add-on.
+			$plugins[ $plugin_path ]['Type'] = 'other';
+		}
+	}
+
+	return $plugins;
+}
+
+
+/**
+ * Check if terms enabled or not for form.
+ *
+ * @since 1.8
+ *
+ * @param $form_id
+ *
+ * @return bool
+ */
+function give_is_terms_enabled( $form_id ) {
+	$form_option = get_post_meta( $form_id, '_give_terms_option', true );
+
+	if (
+		give_is_setting_enabled( $form_option, 'global' )
+		&& give_is_setting_enabled( give_get_option( 'terms' ) )
+	) {
+		return true;
+
+	} elseif ( give_is_setting_enabled( $form_option ) ) {
+		return true;
+
+	} else {
+		return false;
 	}
 }

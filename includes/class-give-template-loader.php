@@ -75,10 +75,8 @@ class Give_Template_Loader {
 	 */
 	public function give_set_single_summary_classes( $classes ) {
 
-		$sidebar_option = give_get_option( 'disable_form_sidebar' );
-
 		//Add full width class when feature image is disabled AND no widgets are present
-		if ( $sidebar_option == 'on' ) {
+		if ( ! give_is_setting_enabled( give_get_option( 'form_sidebar' ) ) ) {
 			$classes .= ' give-full-width';
 		}
 
@@ -98,10 +96,8 @@ class Give_Template_Loader {
 	 */
 	public function give_output_sidebar_option() {
 
-		$sidebar_option = give_get_option( 'disable_form_sidebar' );
-
 		//Add full width class when feature image is disabled AND no widgets are present
-		if ( $sidebar_option !== 'on' ) {
+		if ( give_is_setting_enabled( give_get_option( 'form_sidebar' ) ) ) {
 			add_action( 'give_before_single_form_summary', 'give_left_sidebar_pre_wrap', 5 );
 			add_action( 'give_before_single_form_summary', 'give_show_form_images', 10 );
 			add_action( 'give_before_single_form_summary', 'give_get_forms_sidebar', 20 );

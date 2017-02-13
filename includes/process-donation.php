@@ -271,8 +271,7 @@ function give_purchase_form_validate_fields() {
 	}
 
 	// Validate agree to terms
-	$terms_option = get_post_meta( $form_id, '_give_terms_option', true );
-	if ( isset( $terms_option ) && $terms_option === 'yes' ) {
+	if ( give_is_terms_enabled( $form_id ) ) {
 		give_purchase_form_validate_agree_to_terms();
 	}
 
@@ -330,6 +329,7 @@ function give_purchase_form_validate_gateway() {
 			give_set_error(
 				'invalid_donation_minimum',
 				sprintf(
+					/* translators: %s: minimum donation amount */
 					esc_html__( 'This form has a minimum donation amount of %s.', 'give' ),
 					give_currency_filter( give_format_amount( give_get_form_minimum_price( $form_id ) ) )
 				)
@@ -543,25 +543,34 @@ function give_purchase_form_validate_logged_in_user() {
  * @return      array
  */
 function give_purchase_form_validate_new_user() {
+	// Default user data.
+	$default_user_data = array(
+		'give-form-id'           => '',
+		'user_id'                => - 1, // Assume there will be errors.
+		'user_first'             => '',
+		'user_last'              => '',
+		'give_user_login'        => false,
+		'give_email'             => false,
+		'give_user_pass'         => false,
+		'give_user_pass_confirm' => false,
+	);
 
+	// Get user data.
+	$user_data = wp_parse_args( array_map( 'trim', give_clean( $_POST ) ), $default_user_data );
 	$registering_new_user = false;
-	$form_id              = isset( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : '';
+	$form_id              = absint( $user_data['give-form-id'] );
 
 	// Start an empty array to collect valid user data.
 	$valid_user_data = array(
 		// Assume there will be errors.
 		'user_id'    => - 1,
-		// Get first name.
-		'user_first' => isset( $_POST['give_first'] ) ? sanitize_text_field( $_POST['give_first'] ) : '',
-		// Get last name.
-		'user_last'  => isset( $_POST['give_last'] ) ? sanitize_text_field( $_POST['give_last'] ) : '',
-	);
 
-	// Check the new user's credentials against existing ones.
-	$user_login   = isset( $_POST['give_user_login'] ) ? trim( $_POST['give_user_login'] ) : false;
-	$user_email   = isset( $_POST['give_email'] ) ? trim( $_POST['give_email'] ) : false;
-	$user_pass    = isset( $_POST['give_user_pass'] ) ? trim( $_POST['give_user_pass'] ) : false;
-	$pass_confirm = isset( $_POST['give_user_pass_confirm'] ) ? trim( $_POST['give_user_pass_confirm'] ) : false;
+		// Get first name.
+		'user_first' => $user_data['give_first'],
+
+		// Get last name.
+		'user_last'  => $user_data['give_last'],
+	);
 
 	// Loop through required fields and show error messages.
 	foreach ( give_get_required_fields( $form_id ) as $field_name => $value ) {
@@ -571,65 +580,20 @@ function give_purchase_form_validate_new_user() {
 	}
 
 	// Check if we have an username to register.
-	if ( $user_login && strlen( $user_login ) > 0 ) {
+	if( give_validate_username( $user_data['give_user_login'] ) ) {
 		$registering_new_user = true;
-
-		// We have an user name, check if it already exists.
-		if ( username_exists( $user_login ) ) {
-			// Username already registered.
-			give_set_error( 'username_unavailable', esc_html__( 'Username already taken.', 'give' ) );
-			// Check if it's valid.
-		} elseif ( ! give_validate_username( $user_login ) ) {
-			// Invalid username.
-			if ( is_multisite() ) {
-				give_set_error( 'username_invalid', esc_html__( 'Invalid username. Only lowercase letters (a-z) and numbers are allowed.', 'give' ) );
-			} else {
-				give_set_error( 'username_invalid', esc_html__( 'Invalid username.', 'give' ) );
-			}
-		} else {
-			// All the checks have run and it's good to go.
-			$valid_user_data['user_login'] = $user_login;
-		}
-	} elseif ( give_logged_in_only( $form_id ) ) {
-		give_set_error( 'registration_required', esc_html__( 'You must register or login to complete your donation.', 'give' ) );
+		$valid_user_data['user_login'] = $user_data['give_user_login'];
 	}
 
 	// Check if we have an email to verify.
-	if ( $user_email && strlen( $user_email ) > 0 ) {
-		// Validate email.
-		if ( ! is_email( $user_email ) ) {
-			give_set_error( 'email_invalid', esc_html__( 'Invalid email.', 'give' ) );
-			// Check if email exists.
-		} elseif ( email_exists( $user_email ) && $registering_new_user ) {
-			give_set_error( 'email_used', esc_html__( 'The email already active for another user.', 'give' ) );
-		} else {
-			// All the checks have run and it's good to go.
-			$valid_user_data['user_email'] = $user_email;
-		}
-	} else {
-		// No email.
-		give_set_error( 'email_empty', esc_html__( 'Enter an email.', 'give' ) );
+	if( give_validate_user_email( $user_data['give_email'], $registering_new_user ) ) {
+		$valid_user_data['user_email'] = $user_data['give_email'];
 	}
 
 	// Check password.
-	if ( $user_pass && $pass_confirm ) {
-		// Verify confirmation matches.
-		if ( $user_pass != $pass_confirm ) {
-			// Passwords do not match
-			give_set_error( 'password_mismatch', esc_html__( 'Passwords don\'t match.', 'give' ) );
-		} else {
-			// All is good to go.
-			$valid_user_data['user_pass'] = $user_pass;
-		}
-	} else {
-		// Password or confirmation missing.
-		if ( ! $user_pass && $registering_new_user ) {
-			// The password is invalid.
-			give_set_error( 'password_empty', esc_html__( 'Enter a password.', 'give' ) );
-		} elseif ( ! $pass_confirm && $registering_new_user ) {
-			// Confirmation password is invalid.
-			give_set_error( 'confirmation_empty', esc_html__( 'Enter the password confirmation.', 'give' ) );
-		}
+	if( give_validate_user_password( $user_data['give_user_pass'],  $user_data['give_user_pass_confirm'], $registering_new_user)){
+		// All is good to go.
+		$valid_user_data['user_pass'] = $user_data['give_user_pass'];
 	}
 
 	return $valid_user_data;
@@ -1009,7 +973,7 @@ function give_purchase_form_validate_cc_zip( $zip = 0, $country_code = '' ) {
 		'CX' => '6798',
 		'CY' => '\d{4}',
 		'CZ' => '\d{3}[ ]?\d{2}',
-		'DE' => "\b((?:0[1-46-9]\d{3})|(?:[1-357-9]\d{4})|(?:[4][0-24-9]\d{3})|(?:[6][013-9]\d{3}))\b",
+		'DE' => '\b((?:0[1-46-9]\d{3})|(?:[1-357-9]\d{4})|(?:[4][0-24-9]\d{3})|(?:[6][013-9]\d{3}))\b',
 		'DK' => '^([D-d][K-k])?( |-)?[1-9]{1}[0-9]{3}$',
 		'DO' => '\d{5}',
 		'DZ' => '\d{5}',
@@ -1194,7 +1158,7 @@ function give_validate_multi_donation_form_level( $valid_data, $data ) {
 		// If yes then set price id to custom if amount is greater then custom minimum amount (if any).
 		if (
 			! $donation_level_matched
-			&& ( 'yes' === get_post_meta( $data['give-form-id'], '_give_custom_amount', true ) )
+			&& ( give_is_setting_enabled( get_post_meta( $data['give-form-id'], '_give_custom_amount', true ) ) )
 		) {
 			// Sanitize custom minimum amount.
 			$custom_minimum_amount = give_sanitize_amount( get_post_meta( $data['give-form-id'], '_give_custom_amount_minimum', true ), $default_decimals );

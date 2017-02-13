@@ -84,7 +84,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 * @return false
 	 */
 	public function search_box( $text, $input_id ) {
-		return;
+		return false;
 	}
 
 	/**
@@ -126,18 +126,22 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 */
 	protected function display_tablenav( $which ) {
 
-		if ( 'top' == $which ) {
+		if ( 'top' === $which ) {
 			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
 		}
 		?>
 		<div class="tablenav give-clearfix <?php echo esc_attr( $which ); ?>">
 
-			<h3 class="alignleft reports-earnings-title"><span><?php esc_html_e( 'Donors Report', 'give' ); ?></span></h3>
+			<?php if ( 'top' === $which ) { ?>
+				<h3 class="alignleft reports-earnings-title">
+					<span><?php esc_html_e( 'Donors Report', 'give' ); ?></span>
+				</h3>
+			<?php } ?>
 
 			<div class="alignright tablenav-right">
 				<div class="actions bulkactions">
 					<?php
-					if ( 'top' == $which ) {
+					if ( 'top' === $which ) {
 						$this->give_search_box( esc_html__( 'Search Donors', 'give' ), 'give-donors-report-search' );
 					}
 
@@ -169,12 +173,20 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 * @return string Column Name
 	 */
 	public function column_default( $item, $column_name ) {
+	    
 		switch ( $column_name ) {
 
-			case 'num_purchases' :
+			case 'name' :
+				$name = '#' . $item['id'] . ' ';
+				$name .= ! empty( $item['name'] ) ? $item['name'] : '<em>' . esc_html__( 'Unnamed Donor', 'give' ) . '</em>';
+				$view_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $item['id'] );
+				$value = '<a href="' . esc_url( $view_url ) . '">' . $name . '</a>';
+				break;
+				
+			case 'num_donations' :
 				$value = '<a href="' .
 				         admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $item['email'] )
-				         ) . '">' . esc_html( $item['num_purchases'] ) . '</a>';
+				         ) . '">' . esc_html( $item['num_donations'] ) . '</a>';
 				break;
 
 			case 'amount_spent' :
@@ -199,10 +211,9 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	public function get_columns() {
 		$columns = array(
 			'name'          => esc_html__( 'Name', 'give' ),
-			'id'            => esc_html__( 'ID', 'give' ),
 			'email'         => esc_html__( 'Email', 'give' ),
-			'num_purchases' => esc_html__( 'Purchases', 'give' ),
-			'amount_spent'  => esc_html__( 'Total Spent', 'give' )
+			'num_donations' => esc_html__( 'Donations', 'give' ),
+			'amount_spent'  => esc_html__( 'Total Donated', 'give' )
 		);
 
 		return apply_filters( 'give_report_donor_columns', $columns );
@@ -220,7 +231,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 		return array(
 			'id'            => array( 'id', true ),
 			'name'          => array( 'name', true ),
-			'num_purchases' => array( 'purchase_count', false ),
+			'num_donations' => array( 'purchase_count', false ),
 			'amount_spent'  => array( 'purchase_value', false ),
 		);
 	}
@@ -233,8 +244,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 * @return void
 	 */
 	public function bulk_actions( $which = '' ) {
-		// These aren't really bulk actions but this outputs the markup in the right place
-		give_report_views();
+
 	}
 
 	/**
@@ -306,7 +316,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 					'user_id'       => $user_id,
 					'name'          => $donor->name,
 					'email'         => $donor->email,
-					'num_purchases' => $donor->purchase_count,
+					'num_donations' => $donor->purchase_count,
 					'amount_spent'  => $donor->purchase_value
 				);
 			}

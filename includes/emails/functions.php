@@ -271,9 +271,11 @@ function give_get_admin_notice_emails() {
  */
 function give_admin_notices_disabled( $payment_id = 0 ) {
 
-	$retval = give_get_option( 'disable_admin_notices' );
-
-	return apply_filters( 'give_admin_notices_disabled', $retval, $payment_id );
+	return apply_filters(
+		'give_admin_notices_disabled',
+		! give_is_setting_enabled( give_get_option( 'admin_notices' ) ),
+		$payment_id
+	);
 }
 
 /**

@@ -1,7 +1,7 @@
 /**
  * Give Frontend Fonts SCSS
  *
- * @description: Fonts are from icomoon and the src paths need to be relative to template directory
+ * Fonts are from icomoon and the src paths need to be relative to template directory.
  * @package     Give
  * @subpackage  SCSS/Frontend
  * @copyright   Copyright (c) 2016, WordImpress
@@ -26,7 +26,7 @@
   text-transform: none;
   line-height: 1;
 
-  /* Better Font Rendering =========== */
+  // Better Font Rendering
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -88,6 +88,7 @@
   content: "\e800";
 }
 
+// --------------------------
 // Spinning Icons
 // --------------------------
 
@@ -95,6 +96,7 @@
   -webkit-animation: spin 1000ms infinite linear;
   animation: spin 1000ms infinite linear;
 }
+
 @-webkit-keyframes spin {
   0% {
     -webkit-transform: rotate(0deg);
@@ -105,6 +107,7 @@
     transform: rotate(359deg);
   }
 }
+
 @keyframes spin {
   0% {
     -webkit-transform: rotate(0deg);

@@ -144,7 +144,7 @@ add_action( 'wp_enqueue_scripts', 'give_load_scripts' );
  */
 function give_register_styles() {
 
-	if ( give_get_option( 'disable_css', false ) ) {
+	if ( ! give_is_setting_enabled( give_get_option( 'css' ) ) ) {
 		return;
 	}
 
@@ -250,7 +250,7 @@ function give_load_admin_scripts( $hook ) {
 	// CSS.
 	wp_register_style( 'jquery-ui-css', $css_dir . 'jquery-ui-fresh' . $suffix . '.css' );
 	wp_enqueue_style( 'jquery-ui-css' );
-	wp_register_style( 'give-admin', $css_dir . 'give-admin' . $direction . $suffix . '.css', GIVE_VERSION );
+	wp_register_style( 'give-admin', $css_dir . 'give-admin' . $direction . $suffix . '.css', array(), GIVE_VERSION );
 	wp_enqueue_style( 'give-admin' );
 	wp_register_style( 'jquery-chosen', $css_dir . 'chosen' . $suffix . '.css', array(), GIVE_VERSION );
 	wp_enqueue_style( 'jquery-chosen' );
@@ -271,6 +271,9 @@ function give_load_admin_scripts( $hook ) {
 
 	wp_register_script( 'give-qtip', $js_plugins . 'jquery.qtip' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
 	wp_enqueue_script( 'give-qtip' );
+
+	wp_register_script( 'give-repeatable-fields', $js_plugins . 'repeatable-fields' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
+	wp_enqueue_script( 'give-repeatable-fields' );
 
 	wp_enqueue_script( 'jquery-ui-datepicker' );
 	wp_enqueue_script( 'thickbox' );
@@ -293,35 +296,49 @@ function give_load_admin_scripts( $hook ) {
 
 	// Localize strings & variables for JS.
 	wp_localize_script( 'give-admin-scripts', 'give_vars', array(
-		'post_id'                 => isset( $post->ID ) ? $post->ID : null,
-		'give_version'            => GIVE_VERSION,
-		'thousands_separator'     => $thousand_separator,
-		'decimal_separator'       => $decimal_separator,
-		'quick_edit_warning'      => __( 'Not available for variable priced forms.', 'give' ),
-		'delete_payment'          => __( 'Are you sure you wish to delete this payment?', 'give' ),
-		'delete_payment_note'     => __( 'Are you sure you wish to delete this note?', 'give' ),
-		'revoke_api_key'          => __( 'Are you sure you wish to revoke this API key?', 'give' ),
-		'regenerate_api_key'      => __( 'Are you sure you wish to regenerate this API key?', 'give' ),
-		'resend_receipt'          => __( 'Are you sure you wish to resend the donation receipt?', 'give' ),
-		'copy_download_link_text' => __( 'Copy these links to your clipboard and give them to your donor.', 'give' ),
-		'delete_payment_download' => __( 'Are you sure you wish to delete this form?', 'give' ),
-		'one_price_min'           => __( 'You must have at least one price.', 'give' ),
-		'one_file_min'            => __( 'You must have at least one file.', 'give' ),
-		'one_field_min'           => __( 'You must have at least one field.', 'give' ),
-		'one_option'              => __( 'Choose a form', 'give' ),
-		'one_or_more_option'      => __( 'Choose one or more forms', 'give' ),
-		'numeric_item_price'      => __( 'Item price must be numeric.', 'give' ),
-		'numeric_quantity'        => __( 'Quantity must be numeric.', 'give' ),
-		'currency_sign'           => give_currency_filter( '' ),
-		'currency_pos'            => isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before',
-		'currency_decimals'       => give_currency_decimal_filter( give_get_price_decimals() ),
-		'new_media_ui'            => apply_filters( 'give_use_35_media_ui', 1 ),
-		'remove_text'             => __( 'Remove', 'give' ),
-		'type_to_search'          => __( 'Type to search forms', 'give' ),
-		'batch_export_no_class'   => __( 'You must choose a method.', 'give' ),
-		'batch_export_no_reqs'    => __( 'Required fields not completed.', 'give' ),
-		'reset_stats_warn'        => __( 'Are you sure you want to reset Give? This process is <strong><em>not reversible</em></strong> and will delete all data regardless of test or live mode. Please be sure you have a recent backup before proceeding.', 'give' ),
-		'price_format_guide'      => sprintf( __( 'Please enter amount in monetary decimal ( %1$s ) format without thousand separator ( %2$s ) .', 'give' ), $decimal_separator, $thousand_separator ),
+		'post_id'                        => isset( $post->ID ) ? $post->ID : null,
+		'give_version'                   => GIVE_VERSION,
+		'thousands_separator'            => $thousand_separator,
+		'decimal_separator'              => $decimal_separator,
+		'quick_edit_warning'             => __( 'Not available for variable priced forms.', 'give' ),
+		'delete_payment'                 => __( 'Are you sure you wish to delete this payment?', 'give' ),
+		'delete_payment_note'            => __( 'Are you sure you wish to delete this note?', 'give' ),
+		'revoke_api_key'                 => __( 'Are you sure you wish to revoke this API key?', 'give' ),
+		'regenerate_api_key'             => __( 'Are you sure you wish to regenerate this API key?', 'give' ),
+		'resend_receipt'                 => __( 'Are you sure you wish to resend the donation receipt?', 'give' ),
+		'logo'                           => __( 'Logo', 'give' ),
+		'use_this_image'                 => __( 'Use this image', 'give' ),
+		'one_option'                     => __( 'Choose a form', 'give' ),
+		'one_or_more_option'             => __( 'Choose one or more forms', 'give' ),
+		'currency_sign'                  => give_currency_filter( '' ),
+		'currency_pos'                   => isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before',
+		'currency_decimals'              => give_currency_decimal_filter( give_get_price_decimals() ),
+		'batch_export_no_class'          => __( 'You must choose a method.', 'give' ),
+		'batch_export_no_reqs'           => __( 'Required fields not completed.', 'give' ),
+		'reset_stats_warn'               => __( 'Are you sure you want to reset Give? This process is <strong><em>not reversible</em></strong> and will delete all data regardless of test or live mode. Please be sure you have a recent backup before proceeding.', 'give' ),
+		'price_format_guide'             => sprintf( __( 'Please enter amount in monetary decimal ( %1$s ) format without thousand separator ( %2$s ) .', 'give' ), $decimal_separator, $thousand_separator ),
+		/* translators : %s: Donation form options metabox */
+		'confirm_before_remove_row_text' => __( 'Do you want to delete this level?', 'give' ),
+		'matched_success_failure_page'   => __( 'You cannot set the success and failed pages to the same page', 'give' ),
+		'dismiss_notice_text'            => __( 'Dismiss this notice.', 'give' ),
+		'bulk_action' => array(
+			'delete'         => array(
+				'zero_payment_selected' => __( 'You must choose at least one or more payments to delete.', 'give' ),
+				'delete_payment'        => __( 'Are you sure you want to permanently delete this donation?', 'give' ),
+				'delete_payments'       => __( 'Are you sure you want to permanently delete the selected {payment_count} donations?', 'give' ),
+			),
+			'resend_receipt' => array(
+				'zero_recipient_selected' => __( 'You must choose at least one or more recipients to resend the email receipt.', 'give' ),
+				'resend_receipt'          => __( 'Are you sure you want to resend the email receipt to this recipient?', 'give' ),
+				'resend_receipts'         => __( 'Are you sure you want to resend the emails receipt to {payment_count} recipients?', 'give' ),
+			),
+		),
+		'upgrade_confirmation' => __( 'Please make sure to create a database backup before initiating the upgrade.', 'give' ),
+		'metabox_fields' => array(
+			'media' => array(
+				'button_title' => esc_html__( 'Choose Attachment', 'give' ),
+			)
+		)
 	) );
 
 	if ( function_exists( 'wp_enqueue_media' ) && version_compare( get_bloginfo( 'version' ), '3.5', '>=' ) ) {
@@ -389,8 +406,8 @@ function give_admin_hide_notice_shortly_js() {
 			$('.give-license-notice').on('click', 'button.notice-dismiss', function (e) {
 				e.preventDefault();
 
-				var parent = $(this).parents('.give-license-notice'),
-					dismiss_notice_url = parent.data('dismiss-notice-shortly');
+				var parent             = $(this).parents('.give-license-notice'),
+				    dismiss_notice_url = parent.data('dismiss-notice-shortly');
 
 				if (dismiss_notice_url) {
 					window.location.assign(dismiss_notice_url);

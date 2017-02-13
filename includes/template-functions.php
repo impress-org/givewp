@@ -394,11 +394,10 @@ if ( ! function_exists( 'give_get_forms_sidebar' ) ) {
 if ( ! function_exists( 'give_show_form_images' ) ) {
 
 	/**
-	 * Output the product image before the single product summary.
+	 * Output the donation form featured image.
 	 */
 	function give_show_form_images() {
-		$featured_image_option = give_get_option( 'disable_form_featured_img' );
-		if ( $featured_image_option !== 'on' ) {
+		if ( give_is_setting_enabled( give_get_option( 'form_featured_img' ) ) ) {
 			give_get_template_part( 'single-give-form/featured-image' );
 		}
 	}
@@ -407,7 +406,7 @@ if ( ! function_exists( 'give_show_form_images' ) ) {
 if ( ! function_exists( 'give_template_single_title' ) ) {
 
 	/**
-	 * Output the product title.
+	 * Output the form title.
 	 */
 	function give_template_single_title() {
 		give_get_template_part( 'single-give-form/title' );

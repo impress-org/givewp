@@ -83,12 +83,6 @@ class Give_Forms_Widget extends WP_Widget{
 		$title = !empty( $instance['title'] ) ? $instance['title'] : '';
 		$title = apply_filters( 'widget_title', $title, $instance, $this->id_base );
 
-
-		// If user set float labels to global then check global float label setting and update donation form widget accordingly.
-		if( ( 'global' === $instance['float_labels'] ) ) {
-			$instance['float_labels'] = ( 'on' === give_get_option( 'enable_floatlabels', '' ) ) ? 'enabled' : 'disabled';
-		}
-
 		echo $args['before_widget'];
 
 		/**
@@ -125,6 +119,7 @@ class Give_Forms_Widget extends WP_Widget{
 			'id'            => '',
 			'float_labels'  => 'global',
 			'display_style' => 'modal',
+			'show_content'  => 'none',
 		);
 
 		$instance = wp_parse_args( (array) $instance, $defaults );
@@ -156,7 +151,8 @@ class Give_Forms_Widget extends WP_Widget{
 			<select class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'id' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'id' ) ); ?>">
 				<option value="current"><?php esc_html_e( '- Select -', 'give' ); ?></option>
 				<?php foreach ( $give_forms as $give_form ) { ?>
-					<option <?php selected( absint( $instance['id'] ), $give_form->ID ); ?> value="<?php echo esc_attr( $give_form->ID ); ?>"><?php echo $give_form->post_title; ?></option>
+					<?php $form_title = empty( $give_form->post_title ) ? sprintf( __( 'Untitled (#%s)', 'give' ), $give_form->ID ) : $give_form->post_title; ?>
+					<option <?php selected( absint( $instance['id'] ), $give_form->ID ); ?> value="<?php echo esc_attr( $give_form->ID ); ?>"><?php echo $form_title; ?></option>
 				<?php } ?>
 			</select><br>
 			<small class="give-field-description"><?php esc_html_e( 'Select a Give Form to embed in this widget.', 'give' ); ?></small>
@@ -164,10 +160,11 @@ class Give_Forms_Widget extends WP_Widget{
 
 		<?php // Widget: Display Style ?>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'display_style' ) ); ?>"><?php esc_html_e( 'Display style:', 'give' ); ?></label><br>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'display_style' ) ); ?>"><?php esc_html_e( 'Display Style:', 'give' ); ?></label><br>
 			<label for="<?php echo $this->get_field_id( 'display_style' ); ?>-onpage"><input type="radio" class="widefat" id="<?php echo $this->get_field_id( 'display_style' ); ?>-onpage" name="<?php echo $this->get_field_name( 'display_style' ); ?>" value="onpage" <?php checked( $instance['display_style'], 'onpage' ); ?>> <?php echo esc_html__( 'All Fields', 'give' ); ?></label>
 			&nbsp;&nbsp;<label for="<?php echo $this->get_field_id( 'display_style' ); ?>-reveal"><input type="radio" class="widefat" id="<?php echo $this->get_field_id( 'display_style' ); ?>-reveal" name="<?php echo $this->get_field_name( 'display_style' ); ?>" value="reveal" <?php checked( $instance['display_style'], 'reveal' ); ?>> <?php echo esc_html__( 'Reveal', 'give' ); ?></label>
-			&nbsp;&nbsp;<label for="<?php echo $this->get_field_id( 'display_style' ); ?>-modal"><input type="radio" class="widefat" id="<?php echo $this->get_field_id( 'display_style' ); ?>-modal" name="<?php echo $this->get_field_name( 'display_style' ); ?>" value="modal" <?php checked( $instance['display_style'], 'modal' ); ?>> <?php echo esc_html__( 'Modal', 'give' ); ?></label><br>
+			&nbsp;&nbsp;<label for="<?php echo $this->get_field_id( 'display_style' ); ?>-modal"><input type="radio" class="widefat" id="<?php echo $this->get_field_id( 'display_style' ); ?>-modal" name="<?php echo $this->get_field_name( 'display_style' ); ?>" value="modal" <?php checked( $instance['display_style'], 'modal' ); ?>> <?php echo esc_html__( 'Modal', 'give' ); ?></label>
+			&nbsp;&nbsp;<label for="<?php echo $this->get_field_id( 'display_style' ); ?>-button"><input type="radio" class="widefat" id="<?php echo $this->get_field_id( 'display_style' ); ?>-button" name="<?php echo $this->get_field_name( 'display_style' ); ?>" value="button" <?php checked( $instance['display_style'], 'button' ); ?>> <?php echo esc_html__( 'Button', 'give' ); ?></label><br>
 			 <small class="give-field-description">
 				<?php echo esc_html__( 'Select a Give Form style.', 'give' ); ?>
 			</small>
@@ -176,18 +173,27 @@ class Give_Forms_Widget extends WP_Widget{
 		<?php // Widget: Floating Labels ?>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'float_labels' ) ); ?>"><?php esc_html_e( 'Floating Labels (optional):', 'give' ); ?></label><br>
-			<label for="<?php echo $this->get_field_id( 'float_labels' ); ?>-global"><input type="radio" class="widefat" id="<?php echo $this->get_field_id( 'float_labels' ); ?>-global" name="<?php echo $this->get_field_name( 'float_labels' ); ?>" value="global" <?php checked( $instance['float_labels'], 'global' ); ?>> <?php echo esc_html__( 'Global Options', 'give' ); ?></label>
+			<label for="<?php echo $this->get_field_id( 'float_labels' ); ?>-global"><input type="radio" class="widefat" id="<?php echo $this->get_field_id( 'float_labels' ); ?>-global" name="<?php echo $this->get_field_name( 'float_labels' ); ?>" value="global" <?php checked( $instance['float_labels'], 'global' ); ?>> <?php echo esc_html__( 'Global Option', 'give' ); ?></label>
 			&nbsp;&nbsp;<label for="<?php echo $this->get_field_id( 'float_labels' ); ?>-enabled"><input type="radio" class="widefat" id="<?php echo $this->get_field_id( 'float_labels' ); ?>-enabled" name="<?php echo $this->get_field_name( 'float_labels' ); ?>" value="enabled" <?php checked( $instance['float_labels'], 'enabled' ); ?>> <?php echo esc_html__( 'Yes', 'give' ); ?></label>
 			&nbsp;&nbsp;<label for="<?php echo $this->get_field_id( 'float_labels' ); ?>-disabled"><input type="radio" class="widefat" id="<?php echo $this->get_field_id( 'float_labels' ); ?>-disabled" name="<?php echo $this->get_field_name( 'float_labels' ); ?>" value="disabled" <?php checked( $instance['float_labels'], 'disabled' ); ?>> <?php echo esc_html__( 'No', 'give' ); ?></label><br>
 			<small class="give-field-description">
 				<?php
 				printf(
-					/* translators: %s: https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels */
+					/* translators: %s: http://docs.givewp.com/form-floating-labels */
 					__( 'Override the <a href="%s" target="_blank">floating labels</a> setting for this Give form.', 'give' ),
-					esc_url( 'https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels' )
+					esc_url( 'http://docs.givewp.com/form-floating-labels' )
 				);
 			?></small>
-		</p><?php
+		</p>
+
+		<?php // Widget: Display Content ?>
+		<p>
+		<label for="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>"><?php esc_html_e( 'Display Content (optional):', 'give' ); ?></label><br>
+		<label for="<?php echo $this->get_field_id( 'show_content' ); ?>-none"><input type="radio" class="widefat" id="<?php echo $this->get_field_id( 'show_content' ); ?>-none" name="<?php echo $this->get_field_name( 'show_content' ); ?>" value="none" <?php checked( $instance['show_content'], 'none' ); ?>> <?php echo esc_html__( 'None', 'give' ); ?></label>
+		&nbsp;&nbsp;<label for="<?php echo $this->get_field_id( 'show_content' ); ?>-above"><input type="radio" class="widefat" id="<?php echo $this->get_field_id( 'show_content' ); ?>-above" name="<?php echo $this->get_field_name( 'show_content' ); ?>" value="above" <?php checked( $instance['show_content'], 'above' ); ?>> <?php echo esc_html__( 'Above', 'give' ); ?></label>
+		&nbsp;&nbsp;<label for="<?php echo $this->get_field_id( 'show_content' ); ?>-below"><input type="radio" class="widefat" id="<?php echo $this->get_field_id( 'show_content' ); ?>-below" name="<?php echo $this->get_field_name( 'show_content' ); ?>" value="below" <?php checked( $instance['show_content'], 'below' ); ?>> <?php echo esc_html__( 'Below', 'give' ); ?></label><br>
+		<small class="give-field-description"><?php esc_html_e( 'Override the display content setting for this Give form.', 'give' ); ?></small>
+		<?php
 	}
 
 	/**

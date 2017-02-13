@@ -31,7 +31,7 @@ function give_admin_rate_us( $footer_text ) {
 		$rate_text = sprintf(
 			/* translators: %s: Link to 5 star rating */
 			__( 'If you like <strong>Give</strong> please leave us a %s rating. It takes a minute and helps a lot. Thanks in advance!', 'give' ),
-			'<a href="https://wordpress.org/support/view/plugin-reviews/give?filter=5#postform" target="_blank" class="give-rating-link" data-rated="' . esc_attr__( 'Thanks :)', 'give' ) . '">&#9733;&#9733;&#9733;&#9733;&#9733;</a>'
+			'<a href="https://wordpress.org/support/view/plugin-reviews/give?filter=5#postform" target="_blank" class="give-rating-link" style="text-decoration:none;" data-rated="' . esc_attr__( 'Thanks :)', 'give' ) . '">&#9733;&#9733;&#9733;&#9733;&#9733;</a>'
 		);
 
 		return $rate_text;

@@ -127,23 +127,11 @@ class Give_HTML_Elements {
 		if ( $forms ) {
 			$options[0] = esc_attr__( 'Select a Donation Form', 'give' );
 			foreach ( $forms as $form ) {
-				$options[ absint( $form->ID ) ] = esc_html( $form->post_title );
+				$form_title = empty( $form->post_title ) ? sprintf( __( 'Untitled (#%s)', 'give' ), $form->ID ) : $form->post_title;
+				$options[ absint( $form->ID ) ] = esc_html( $form_title );
 			}
 		} else {
 			$options[0] = esc_html__( 'No forms found.', 'give' );
-		}
-
-		// This ensures that any selected forms are included in the drop down
-		if ( is_array( $args['selected'] ) ) {
-			foreach ( $args['selected'] as $item ) {
-				if ( ! in_array( $item, $options ) ) {
-					$options[ $item ] = get_the_title( $item );
-				}
-			}
-		} elseif ( is_numeric( $args['selected'] ) && $args['selected'] !== 0 ) {
-			if ( ! in_array( $args['selected'], $options ) ) {
-				$options[ $args['selected'] ] = get_the_title( $args['selected'] );
-			}
 		}
 
 		$output = $this->select( array(
@@ -247,10 +235,11 @@ class Give_HTML_Elements {
 	 *
 	 * @param  string $name     Name attribute of the dropdown. Default is 'give_forms_categories'.
 	 * @param  int    $selected Category to select automatically. Default is 0.
+	 * @param  array  $args     Select box options.
 	 *
 	 * @return string           Categories dropdown.
 	 */
-	public function category_dropdown( $name = 'give_forms_categories', $selected = 0 ) {
+	public function category_dropdown( $name = 'give_forms_categories', $selected = 0, $args = array() ) {
 		$categories = get_terms( 'give_forms_category', apply_filters( 'give_forms_category_dropdown', array() ) );
 		$options    = array();
 
@@ -258,12 +247,51 @@ class Give_HTML_Elements {
 			$options[ absint( $category->term_id ) ] = esc_html( $category->name );
 		}
 
-		$output = $this->select( array(
-			'name'             => $name,
-			'selected'         => $selected,
-			'options'          => $options,
-			'show_option_all'  => esc_html__( 'All Categories', 'give' ),
-			'show_option_none' => false
+		$output = $this->select( wp_parse_args(
+			$args,
+			array(
+				'name'             => $name,
+				'selected'         => $selected,
+				'options'          => $options,
+				'show_option_all'  => esc_html__( 'All Categories', 'give' ),
+				'show_option_none' => false
+			)
+		) );
+
+		return $output;
+	}
+
+	/**
+	 * Tags Dropdown
+	 *
+	 * Renders an HTML Dropdown of all the Tags.
+	 *
+	 * @since  1.8
+	 * @access public
+	 *
+	 * @param  string $name     Name attribute of the dropdown. Default is 'give_forms_tags'.
+	 * @param  int    $selected Tag to select automatically. Default is 0.
+	 * @param  array  $args     Select box options.
+	 *
+	 * @return string           Tags dropdown.
+	 */
+	public function tags_dropdown( $name = 'give_forms_tags', $selected = 0, $args = array() ) {
+		$tags    = get_terms( 'give_forms_tag', apply_filters( 'give_forms_tag_dropdown', array() ) );
+		$options = array();
+
+		foreach ( $tags as $tag ) {
+			$options[ absint( $tag->term_id ) ] = esc_html( $tag->name );
+		}
+
+		$output = $this->select( wp_parse_args(
+			$args,
+			array(
+				'name'             => $name,
+				'selected'         => $selected,
+				'options'          => $options,
+				'show_option_all'  => esc_html__( 'All Tags', 'give' ),
+				'show_option_none' => false,
+			)
 		) );
 
 		return $output;

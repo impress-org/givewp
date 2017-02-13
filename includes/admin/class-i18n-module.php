@@ -134,7 +134,7 @@ class Give_i18n_Banner {
 		if ( $this->translation_exists && $this->translation_loaded && $this->percent_translated < 90 ) {
 			$message = __( 'As you can see, there is a translation of this plugin in %1$s. This translation is currently %3$d%% complete. We need your help to make it complete and to fix any errors. Please register at %4$s to help %5$s to %1$s!', 'give' );
 		} elseif ( ! $this->translation_loaded && $this->translation_exists ) {
-			$message = __( 'You\'re using WordPress in %1$s. While %2$s has been translated to %1$s for %3$d%%, it\'s not been shipped with the plugin yet. You can help! Register at %4$s to help complete the translation to %1$s!', 'give' );
+			$message = __( 'You\'re using WordPress in %1$s. While %2$s has been %3$d%% translated to %1$s, it has not been shipped with the plugin yet. You can help! Register at %4$s to help complete the translation to %1$s!', 'give' );
 		} elseif ( ! $this->translation_exists ) {
 			$message = __( 'You\'re using WordPress in a language we don\'t support yet. We\'d love for %2$s to be translated in that language too, but unfortunately, it isn\'t right now. You can change that! Register at %4$s to help translate it!', 'give' );
 		}
@@ -144,7 +144,7 @@ class Give_i18n_Banner {
 		$translations_link = sprintf( '<a href="%1$s" target="_blank">%2$s</a>', 'https://translate.wordpress.org/projects/wp-plugins/give', esc_html__( 'complete the translation', 'give' ) );
 
 		//Message.
-		$message = sprintf( $message, esc_html( $this->locale_name ), esc_html( 'Give' ), $this->percent_translated, $registration_link, $translations_link );
+		$message = sprintf( $message, $this->locale_name, 'Give', $this->percent_translated, $registration_link, $translations_link );
 
 
 		return $message;

@@ -2224,6 +2224,19 @@ final class Give_Payment {
 		return get_object_vars( $this );
 	}
 
+
+	/**
+	 * Flag to check if donation is completed or not.
+	 *
+	 * @since  1.8
+	 * @access public
+	 *
+	 * @return bool
+	 */
+	public function is_completed() {
+		return ( 'publish' === $this->status && $this->completed_date );
+	}
+
 	/**
 	 * Retrieve payment completion date
 	 *

@@ -35,5 +35,30 @@ function give_no_guest_checkout( $form_id ) {
 
 	$ret = get_post_meta( $form_id, '_give_logged_in_only', true );
 
-	return (bool) apply_filters( 'give_no_guest_checkout', $ret );
+	return (bool) apply_filters( 'give_no_guest_checkout', give_is_setting_enabled( $ret ) );
+}
+
+
+/**
+ * Default Log Views
+ *
+ * @since      1.0
+ * @deprecated 1.8
+ * @return array $views Log Views
+ */
+function give_log_default_views() {
+
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '1.8', null, $backtrace );
+
+	$views = array(
+		'sales'          => esc_html__( 'Donations', 'give' ),
+		'gateway_errors' => esc_html__( 'Payment Errors', 'give' ),
+		'api_requests'   => esc_html__( 'API Requests', 'give' ),
+	);
+
+	$views = apply_filters( 'give_log_views', $views );
+
+	return $views;
 }

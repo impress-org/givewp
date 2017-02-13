@@ -27,33 +27,34 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string Login form
  */
 function give_login_form( $login_redirect = '', $logout_redirect = '' ) {
-	global $give_login_redirect, $give_logout_redirect;
-
 	if ( empty( $login_redirect ) ) {
 		$login_redirect = add_query_arg('give-login-success', 'true', give_get_current_page_url());
 	}
 
-    if ( empty( $logout_redirect ) ) {
-        $logout_redirect = add_query_arg( 'give-logout-success', 'true', give_get_current_page_url() );
-    }
+	if ( empty( $logout_redirect ) ) {
+		$logout_redirect = add_query_arg( 'give-logout-success', 'true', give_get_current_page_url() );
+	}
 
 
-    // Add user_logout action to logout url.
-    $logout_redirect = add_query_arg(
-        array(
-            'give_action'       => 'user_logout',
-            'give_logout_nonce' => wp_create_nonce( 'give-logout-nonce' ),
-            'give_logout_redirect' => urlencode( $logout_redirect )
-        ),
-        home_url('/')
-    );
-
-	$give_login_redirect = $login_redirect;
-	$give_logout_redirect = $logout_redirect;
+	// Add user_logout action to logout url.
+	$logout_redirect = add_query_arg(
+		array(
+			'give_action'          => 'user_logout',
+			'give_logout_nonce'    => wp_create_nonce( 'give-logout-nonce' ),
+			'give_logout_redirect' => urlencode( $logout_redirect ),
+		),
+		home_url( '/' )
+	);
 
 	ob_start();
 
-	give_get_template_part( 'shortcode', 'login' );
+	give_get_template(
+		'shortcode-login',
+		array(
+			'give_login_redirect' => $login_redirect,
+			'give_logout_redirect' => $logout_redirect
+		)
+	);
 
 	return apply_filters( 'give_login_form', ob_get_clean() );
 }
@@ -69,18 +70,19 @@ function give_login_form( $login_redirect = '', $logout_redirect = '' ) {
  * @return string Register form
  */
 function give_register_form( $redirect = '' ) {
-	global $give_register_redirect;
-
 	if ( empty( $redirect ) ) {
 		$redirect = give_get_current_page_url();
 	}
 
-	$give_register_redirect = $redirect;
-
 	ob_start();
 
 	if ( ! is_user_logged_in() ) {
-		give_get_template_part( 'shortcode', 'register' );
+		give_get_template(
+			'shortcode-register',
+			array(
+				'give_register_redirect' => $redirect
+			)
+		);
 	}
 
 	return apply_filters( 'give_register_form', ob_get_clean() );

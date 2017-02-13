@@ -15,7 +15,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- *
  * Install
  *
  * Runs on plugin install by setting up the post types, custom taxonomies, flushing rewrite rules to initiate the new 'donations' slug and also creates the plugin and populates the settings fields for those plugin pages. After successful install, the user is redirected to the Give Welcome screen.
@@ -132,31 +131,23 @@ function give_run_install() {
 
 	//Fresh Install? Setup Test Mode, Base Country (US), Test Gateway, Currency.
 	if ( empty( $current_version ) ) {
-		$options['base_country']       = 'US';
-		$options['test_mode']          = 'on';
-		$options['currency']           = 'USD';
-		$options['session_lifetime']   = '604800';
-		$options['gateways']['manual'] = 1;
-		$options['default_gateway']    = 'manual'; //default is manual gateway.
-
-		//Offline gateway setup.
-		$options['gateways']['offline']             = 1;
-		$options['global_offline_donation_content'] = give_get_default_offline_donation_content();
-
-		//Default number of decimals.
-		$options['number_decimals'] = 2;
-
-		//Default donation notification email.
-		$options['donation_notification'] = give_get_default_donation_notification_email();
-
-		//Default email receipt message.
-		$options['donation_receipt'] = give_get_default_donation_receipt_email();
-
+		$options = array_merge( $options, give_get_default_settings() );
 	}
 
 	// Populate the default values.
 	update_option( 'give_settings', array_merge( $give_options, $options ) );
-	update_option( 'give_version', GIVE_VERSION );
+
+	/**
+	 * Run plugin upgrades.
+	 *
+	 * @since 1.8
+	 */
+	do_action( 'give_upgrades' );
+
+
+	if( GIVE_VERSION !== get_option( 'give_version' ) ) {
+		update_option( 'give_version', GIVE_VERSION );
+	}
 
 	// Create Give roles.
 	$roles = new Give_Roles();
@@ -184,7 +175,9 @@ function give_run_install() {
 		$upgrade_routines = array(
 			'upgrade_give_user_caps_cleanup',
 			'upgrade_give_payment_customer_id',
-			'upgrade_give_offline_status'
+			'upgrade_give_offline_status',
+			'v18_upgrades_core_setting',
+			'v18_upgrades_form_metadata'
 		);
 
 		foreach ( $upgrade_routines as $upgrade ) {
@@ -346,3 +339,61 @@ function give_install_roles_on_network() {
 }
 
 add_action( 'admin_init', 'give_install_roles_on_network' );
+
+/**
+ * Default core setting values.
+ *
+ * @since 1.8
+ * @return array
+ */
+function give_get_default_settings() {
+	$options = array(
+		// General.
+		'base_country'                                => 'US',
+		'test_mode'                                   => 'enabled',
+		'currency'                                    => 'USD',
+		'currency_position'                           => 'before',
+		'session_lifetime'                            => '604800',
+		'email_access'                                => 'disabled',
+		'number_decimals'                             => 2,
+
+		// Display options.
+		'css'                                         => 'enabled',
+		'floatlabels'                                 => 'disabled',
+		'welcome'                                     => 'enabled',
+		'forms_singular'                              => 'enabled',
+		'forms_archives'                              => 'enabled',
+		'forms_excerpt'                               => 'enabled',
+		'form_featured_img'                           => 'enabled',
+		'form_sidebar'                                => 'enabled',
+		'categories'                                  => 'disabled',
+		'tags'                                        => 'disabled',
+		'terms'                                       => 'disabled',
+		'admin_notices'                               => 'enabled',
+		'uninstall_on_delete'                         => 'disabled',
+		'the_content_filter'                          => 'enabled',
+		'scripts_footer'                              => 'disabled',
+
+		// Paypal IPN verification.
+		'paypal_verification'                         => 'enabled',
+
+		// Default is manual gateway.
+		'gateways'                                    => array( 'manual' => 1, 'offline' => 1 ),
+		'default_gateway'                             => 'manual',
+
+		// Offline gateway setup.
+		'global_offline_donation_content'             => give_get_default_offline_donation_content(),
+		'global_offline_donation_email'               => give_get_default_offline_donation_content(),
+
+		// Billing address.
+		'give_offline_donation_enable_billing_fields' => 'disabled',
+
+		// Default donation notification email.
+		'donation_notification'                       => give_get_default_donation_notification_email(),
+
+		// Default email receipt message.
+		'donation_receipt'                            => give_get_default_donation_receipt_email(),
+	);
+
+	return $options;
+}

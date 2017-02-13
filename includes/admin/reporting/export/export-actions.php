@@ -33,7 +33,7 @@ function give_process_batch_export_form() {
 	 *
 	 * @since 1.5
 	 *
-	 * @param atring $class Export class.
+	 * @param string $class Export class.
 	 */
 	do_action( 'give_batch_export_class_include', $_REQUEST['class'] );
 

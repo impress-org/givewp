@@ -24,6 +24,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 
 	/**
 	 * Our export type. Used for export-type specific filters/actions
+	 *
 	 * @var string
 	 * @since 1.5
 	 */
@@ -31,6 +32,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 
 	/**
 	 * Allows for a non-form batch processing to be run.
+	 *
 	 * @since  1.5
 	 * @var boolean
 	 */
@@ -38,6 +40,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 
 	/**
 	 * Sets the number of items to pull on each step
+	 *
 	 * @since  1.5
 	 * @var integer
 	 */
@@ -50,7 +53,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	 * @since  1.5
 	 * @global object $wpdb Used to query the database using the WordPress
 	 *                      Database API
-	 * @return array $data The data for the CSV file
+	 * @return bool   $data The data for the CSV file
 	 */
 	public function get_data() {
 		global $wpdb;
@@ -86,7 +89,6 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 						$step_ids[ $item_type ][] = $item['id'];
 						break;
 				}
-
 			}
 
 			$sql = array();
@@ -121,8 +123,6 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 					// and add items to the query list, for the IDs found in their post type.
 					$sql = apply_filters( "give_reset_add_queries_{$type}", $sql, $ids );
 				}
-
-
 			}
 
 			if ( ! empty( $sql ) ) {

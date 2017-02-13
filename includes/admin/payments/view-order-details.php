@@ -388,13 +388,21 @@ $payment_mode   = $payment->mode;
 													if ( empty( $var_prices ) ) {
 														esc_html_e( 'n/a', 'give' );
 													} else {
+														$prices_atts = '';
+														if( $variable_prices = give_get_variable_prices( $payment_meta['form_id'] ) ) {
+															foreach ( $variable_prices as $variable_price ) {
+																$prices_atts[$variable_price['_give_id']['level_id']] = give_format_amount( $variable_price['_give_amount'] );
+															}
+														}
 														// Variable price dropdown options.
 														$variable_price_dropdown_option = array(
-															'id'              => $payment_meta['form_id'],
-															'name'            => 'give-variable-price',
-															'chosen'          => true,
-															'show_option_all' => '',
-															'selected'        => $payment_meta['price_id'],
+															'id'               => $payment_meta['form_id'],
+															'name'             => 'give-variable-price',
+															'chosen'           => true,
+															'show_option_all'  => '',
+															'show_option_none' => '',
+															'select_atts'      => 'data-prices=' . esc_attr( json_encode( $prices_atts ) ),
+															'selected'         => $payment_meta['price_id'],
 														);
 														// Render variable prices select tag html.
 														give_get_form_variable_price_dropdown( $variable_price_dropdown_option, true );
@@ -602,11 +610,11 @@ $payment_mode   = $payment->mode;
 											<div class="data column-container">
 												<div class="column">
 													<div class="give-wrap-address-line1">
-														<label for="give-payment-address-line1" class="order-data-address"><?php esc_html_e( 'Address 1', 'give' ); ?>:</label>
+														<label for="give-payment-address-line1" class="order-data-address"><?php esc_html_e( 'Address 1:', 'give' ); ?></label>
 														<input id="give-payment-address-line1" type="text" name="give-payment-address[0][line1]" value="<?php echo esc_attr( $address['line1'] ); ?>" class="medium-text"/>
 													</div>
 													<div class="give-wrap-address-line2">
-														<label for="give-payment-address-line2" class="order-data-address-line"><?php esc_html_e( 'Address 2', 'give' ); ?>:</label>
+														<label for="give-payment-address-line2" class="order-data-address-line"><?php esc_html_e( 'Address 2:', 'give' ); ?></label>
 														<input id="give-payment-address-line2" type="text" name="give-payment-address[0][line2]" value="<?php echo esc_attr( $address['line2'] ); ?>" class="medium-text"/>
 													</div>
 												</div>

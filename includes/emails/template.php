@@ -110,7 +110,7 @@ function give_email_template_preview( $array ) {
 	}
 	$custom_field = array(
 		'name' => esc_html__( 'Preview Email', 'give' ),
-		'desc' => esc_html__( 'Click the buttons to preview emails.', 'give' ),
+		'desc' => esc_html__( 'Click the buttons to preview or send test emails.', 'give' ),
 		'id'   => 'give_email_preview_buttons',
 		'type' => 'email_preview_buttons'
 	);

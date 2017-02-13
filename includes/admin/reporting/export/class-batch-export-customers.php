@@ -40,6 +40,22 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 	private $data = array();
 
 	/**
+	 * Array of donor ids which is already included in csv file.
+	 *
+	 * @since 1.8
+	 * @var array
+	 */
+	private $donor_ids = array();
+
+	/**
+	 * Export query id.
+	 *
+	 * @since 1.8
+	 * @var array
+	 */
+	private $query_id = '';
+
+	/**
 	 * Set the properties specific to the Customers export
 	 *
 	 * @since 1.5
@@ -48,12 +64,22 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 	 */
 	public function set_properties( $request ) {
 
-		//Set data from form submission
+		// Set data from form submission
 		if ( isset( $_POST['form'] ) ) {
 			parse_str( $_POST['form'], $this->data );
 		}
 
 		$this->form = $this->data['forms'];
+
+		// Setup donor ids cache.
+		if( ! empty( $this->form ) ) {
+			// Cache donor ids to output unique list of donor.
+			$this->query_id = give_clean( $_REQUEST['give_export_option']['query_id'] );
+			if( ! ( $this->donor_ids = get_transient( $this->query_id ) ) ) {
+				$this->donor_ids = array();
+				set_transient( $this->query_id, $this->donor_ids, HOUR_IN_SECONDS );
+			}
+		}
 
 		$this->price_id = ! empty( $request['give_price_option'] ) && 0 !== $request['give_price_option'] ? absint( $request['give_price_option'] ) : null;
 
@@ -63,7 +89,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 	 * Set the CSV columns.
 	 *
 	 * @access public
-	 * @since 1.5
+	 * @since  1.5
 	 * @return array|bool $cols All the columns.
 	 */
 	public function csv_cols() {
@@ -72,7 +98,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 
 		$columns = isset( $this->data['give_export_option'] ) ? $this->data['give_export_option'] : array();
 
-		//We need columns.
+		// We need columns.
 		if ( empty( $columns ) ) {
 			return false;
 		}
@@ -83,7 +109,11 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 	}
 
 	/**
-	 * @param $column
+	 * CSV file columns.
+	 *
+	 * @param array $columns
+	 *
+	 * @return array
 	 */
 	private function get_cols( $columns ) {
 
@@ -148,16 +178,16 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 				'post_parent'    => absint( $this->form ),
 				'log_type'       => 'sale',
 				'posts_per_page' => 30,
-				'paged'          => $this->step
+				'paged'          => $this->step,
 			);
 
-			//Check for price option
+			// Check for price option
 			if ( null !== $this->price_id ) {
 				$args['meta_query'] = array(
 					array(
 						'key'   => '_give_log_price_id',
-						'value' => (int) $this->price_id
-					)
+						'value' => (int) $this->price_id,
+					),
 				);
 			}
 
@@ -167,12 +197,22 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 				foreach ( $logs as $log ) {
 					$payment_id = get_post_meta( $log->ID, '_give_log_payment_id', true );
 					$payment    = new Give_Payment( $payment_id );
+
+					// Continue if donor already included.
+					if( in_array( $payment->customer_id , $this->donor_ids ) ) {
+						continue;
+					}
+
+					$this->donor_ids[] = $payment->customer_id;
+
 					$donor      = Give()->customers->get_customer_by( 'id', $payment->customer_id );
 					$data[]     = $this->set_donor_data( $i, $data, $donor );
 					$i ++;
 				}
-			}
 
+				// Cache donor ids only if admin export donor for specific form.
+				set_transient( $this->query_id, array_unique( $this->donor_ids ), HOUR_IN_SECONDS );
+			}
 		} else {
 
 			// Export all customers
@@ -185,6 +225,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 				$i ++;
 			}
 		}
+
 
 		$data = apply_filters( 'give_export_get_data', $data );
 		$data = apply_filters( "give_export_get_data_{$this->export_type}", $data );
@@ -212,7 +253,6 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 				$percentage = ( ( 30 * $this->step ) / $total ) * 100;
 
 			}
-
 		}
 
 		if ( $percentage > 100 ) {
@@ -225,19 +265,23 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 	/**
 	 * Set Donor Data
 	 *
-	 * @param $donor
+	 * @param int           $i
+	 * @param array         $data
+	 * @param Give_Customer $donor
+	 *
+	 * @return mixed
 	 */
 	private function set_donor_data( $i, $data, $donor ) {
 
 		$columns = $this->csv_cols();
 
-		//Set address variable
+		// Set address variable
 		$address = '';
 		if ( isset( $donor->user_id ) && $donor->user_id > 0 ) {
 			$address = give_get_donor_address( $donor->user_id );
 		}
 
-		//Set columns
+		// Set columns
 		if ( ! empty( $columns['full_name'] ) ) {
 			$data[ $i ]['full_name'] = $donor->name;
 		}
