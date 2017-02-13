@@ -231,7 +231,7 @@ function give_load_gateway(form_object, payment_mode) {
 			jQuery(form_object).unblock();
 			jQuery(form_object).find('#give_purchase_form_wrap').html(response);
 			jQuery('.give-no-js').hide();
-			jQuery(form_object).find('#give-payment-mode-wrap .give-loading-text').fadeOut();
+			jQuery(form_object).find('#give-payment-mode-select .give-loading-text').fadeOut();
 			setup_give_tooltips();
 
 			// trigger an event on success for hooks

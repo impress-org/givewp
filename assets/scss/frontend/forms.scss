@@ -155,11 +155,11 @@ form.give-form {
   legend,
   h3.give-section-break,
   h4.give-section-break {
-    font-size: 1.25em;
+    font-size: 1.15em;
     font-weight: bold;
     margin: 10px 0 15px;
-    padding: 0 0 10px;
-    border-bottom: 1px solid rgba( 0, 0, 0, .2 );
+    padding: 0 0 5px;
+    border-bottom: 1px solid rgba( 0, 0, 0, .1 );
     width: 100%;
 
     span.sub-text {
@@ -334,6 +334,10 @@ form[id*='give-form'] {
 
     legend {
       display: none;
+    }
+    
+    label {
+      display: inline-block;
     }
 
   }

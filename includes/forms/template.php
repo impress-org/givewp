@@ -1365,13 +1365,13 @@ function give_payment_mode_select( $form_id ) {
 		do_action( 'give_payment_mode_before_gateways_wrap' );
 		?>
 		<legend
-			class="give-payment-mode-label"><?php echo apply_filters( 'give_checkout_payment_method_text', esc_html__( 'Select Payment Method', 'give' ) ); ?></legend>
+			class="give-payment-mode-label"><?php echo apply_filters( 'give_checkout_payment_method_text', esc_html__( 'Select Payment Method', 'give' ) ); ?>
+            <span class="give-loading-text"><span
+                        class="give-loading-animation"></span>
+            </span>
+        </legend>
 
 		<div id="give-payment-mode-wrap">
-			<span class="give-loading-text"><span
-					class="give-loading-animation"></span>
-            </span>
-
 			<?php
 			/**
 			 * Fires while selecting payment gateways, befire the gateways list.
