@@ -38,6 +38,7 @@ Layout
 
   div.images {
     margin: 0 0 15px;
+
     img {
       display: block;
       width: 100%;
@@ -130,7 +131,9 @@ Gravatar List
 Base Form Styles
 --------------------------------------*/
 
-form[id*='give-form'] {
+form[id*='give-form'],
+#give-recurring-form,
+form.give-form {
   margin: 0 0 25px;
   padding: 0;
 
@@ -149,22 +152,20 @@ form[id*='give-form'] {
     }
   }
 
-  legend, h3.give-section-break, h4.give-section-break {
+  legend,
+  h3.give-section-break,
+  h4.give-section-break {
+    font-size: 1.25em;
     font-weight: bold;
     margin: 10px 0 15px;
     padding: 0 0 10px;
-    border-bottom: 1px solid $light-gray;
+    border-bottom: 1px solid rgba( 0, 0, 0, .2 );
     width: 100%;
 
     span.sub-text {
       font-style: italic;
       font-weight: normal;
     }
-
-  }
-
-  div[id^='section-'] .give-section-break {
-    margin: 0;
   }
 
   //Form Layout
@@ -200,6 +201,7 @@ form[id*='give-form'] {
       color: $dark;
       background-color: #FDFDFD;
       border: 1px solid $borders;
+      margin: 0;
       padding: .5em;
 
       &:focus {
@@ -345,6 +347,11 @@ form[id*='give-form'] {
       @include give-currency();
       float: left;
       border: 1px solid $borders;
+
+      @media ( max-width: 480px ) {
+        display: block;
+        float: none;
+      }
     }
 
     .give-final-total-amount {
@@ -352,6 +359,13 @@ form[id*='give-form'] {
       @include give-input();
       border-left: none;
       float: left;
+
+      @media ( max-width: 480px ) {
+        border: 1px solid $borders;
+        border-top: 0;
+        display: block;
+        float: none;
+      }
     }
 
   }
@@ -369,61 +383,82 @@ form[id*='give-form'] {
 /*---------------------------------
 Radio Lists
 -----------------------------------*/
-#give-donation-level-radio-list {
-  //this is the radio list for the various user set donation levels
-  margin: 0 0 15px;
-  padding: 0;
-  list-style: none;
-  clear: both;
+form[id*='give-form'] {
+  input[type="radio"] {
+    margin: 0 .5em 0 0;
+  }
 
-  > li {
-    list-style-type: none;
-    list-style-image: none;
-    margin: 0 0 5px;
+  #give-donation-level-radio-list {
+    //this is the radio list for the various user set donation levels
+    margin: 0 0 15px;
     padding: 0;
+    list-style: none;
+    clear: both;
 
-    label {
-      cursor: pointer;
-      display: inline-block;
-    }
+    > li {
+      list-style-type: none;
+      list-style-image: none;
+      margin: 0;
+      padding: 0;
 
-    input[type="radio"] {
-      margin: 0 2px 0 0;
-      outline: none;
-      width: auto;
+      label {
+        cursor: pointer;
+        display: inline-block;
+        margin: 0;
+      }
+
+      input[type="radio"] {
+        margin: 0 .5em 0 0;
+        outline: none;
+        width: auto;
+      }
     }
   }
 
+  #give-gateway-radio-list {
+    //this is the radio list for to select a gateway
+    @include clearfix();
+    margin: 0 0 15px;
+    padding: 0;
+    list-style: none;
+
+    > li {
+      list-style-type: none;
+      list-style-image: none;
+      margin: 0;
+      padding: 0;
+
+      @media ( min-width: 480px ) {
+        display: inline-block;
+        margin-right: 15px;
+        margin-left: 0;
+      }
+
+        label.give-gateway-option {
+        cursor: pointer;
+        display: inline;
+        margin: 0;
+      }
+
+      input[type="radio"] {
+        margin: 0 .25em 0 0;
+        outline: none;
+        width: auto;
+        display: inline;
+      }
+
+    }
+
+  }
 }
 
-#give-gateway-radio-list {
-  //this is the radio list for to select a gateway
-  @include clearfix();
-  margin: 0 0 25px;
-  padding: 0;
-  list-style: none;
-
-  > li {
-    display: inline-block;
-    margin-right: 15px;
-    margin-left: 0;
-    list-style-type: none;
-    list-style-image: none;
-
-    label.give-gateway-option {
-      cursor: pointer;
-      display: inline;
-    }
-
-    input[type="radio"] {
-      margin: 0 2px 0 0;
-      outline: none;
-      width: auto;
-      display: inline;
-    }
-
+/*---------------------------------
+Checkboxes
+-----------------------------------*/
+form[id*='give-form'] {
+  input[type="checkbox"] {
+    margin: 0 .25em 0 0;
   }
-
 }
 
 /*---------------------------------
@@ -438,6 +473,9 @@ form[id*='give-form'] {
     margin: 0 0 15px;
     display: block;
     clear: both;
+    color: $dark;
+    background-color: #FDFDFD;
+    padding: .5em;
   }
 }
 
@@ -571,10 +609,12 @@ Loading Animation
 }
 
 form[id*='give-form'] {
-
-  p.give-loading-text, span.give-loading-text {
+  p.give-loading-text,
+  span.give-loading-text {
     display: none;
     float: right;
+    height: 16px;
+    width: 16px;
     margin: 0;
     padding: 0;
     font-style: italic;
@@ -582,12 +622,13 @@ form[id*='give-form'] {
     font-size: 16px;
     font-weight: normal;
   }
+
   .give-loading-animation {
     @include iconstyle();
     float: left;
+    height: 16px;
     width: 16px;
-    height: 20px;
-    line-height: 20px;
+    line-height: 1;
     font-size: 16px;
     margin: 0 5px 0 0;
     background-size: 20px 20px;
@@ -596,43 +637,61 @@ form[id*='give-form'] {
     @extend .give-icon-spinner2;
     @extend .fa-spin;
   }
+
   .give-payment-mode-label
   .give-loading-text {
     float: right;
   }
-
 }
 
-/* Login Wrap */
+/*---------------------------------
+User Login
+-----------------------------------*/
 
-.give-login-account-wrap, [id^="give-login-fields"] {
-  @include clearfix();
-
-  > p.give-new-account-link, > p.give-login-message {
-    float: left;
+/*
+ * User Login within Donation Form
+ * (visible when Form Display > Login is enabled)
+ */
+[id*='give-form'] {
+  .give-login-account-wrap {
     margin: 0 0 15px;
-    padding: 0;
+    position: relative;
+
+    .give-login-message {
+      margin: 0;
+      padding: 0;
+    }
+
+    .give-loading-text {
+      position: absolute;
+      right: 0;
+      top: .25em;
+    }
   }
 
-  p.give-login-message {
-    margin-right: 10px;
+  fieldset[id^="give-login-fields"] {
+    margin: 0 0 15px;
+  }
+
+  .give-new-account-link {
+    margin: 0 0 15px;
+    padding: 0;
   }
 
   .give_login_forgot_password {
     float: right;
   }
-
 }
 
-/* User Login */
-[id^='give-user-login-submit'], .give-submit-button-wrap {
+[id^='give-user-login-submit'],
+.give-submit-button-wrap {
 
   input.give-cancel-login {
     margin-left: 5px;
   }
 
   span.give-loading-animation {
-    margin: 3px 6px;
+    margin: 0 0 0 .5em;
     display: none;
   }
   .give-submit {
@@ -640,13 +699,9 @@ form[id*='give-form'] {
   }
 }
 
-p.give-recurring-login-toggle {
-  font-style: italic;
-}
-
 /* Login Shortcode Form */
-#give-login-form, #give-register-form {
-
+#give-login-form,
+#give-register-form {
   legend, div.give-login {
     line-height: 2;
     margin-bottom: 15px;
@@ -714,15 +769,26 @@ form#give-email-access-form {
 Responsiveness
 -----------------------------------*/
 @media (max-width: 768px) {
-
-  /* Layout */
+  // Multi-column layout for single forms.
   [id*='give-form'] {
-
     div.images, div.summary {
       width: 100%;
       float: none;
     }
 
+    div#give-sidebar-left {
+      width: 100%;
+      float: none;
+    }
   }
+}
 
+/*---------------------------------
+Section Breaks
+-----------------------------------*/
+
+// Headings are commonly styled by themes, so we need to be extra-specific.
+.give-form-wrap .give-form h3.give-section-break,
+.give-form-wrap .give-form h4.give-section-break {
+  margin: 10px 0 0;
 }
