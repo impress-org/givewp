@@ -113,13 +113,19 @@ final class Give_Shortcode_Button {
 	/**
 	 * Adds the "Donation Form" button above the TinyMCE Editor on add/edit screens.
 	 *
-	 * @return string
+	 * @return string|bool
 	 *
 	 * @since 1.0
 	 */
 	public function shortcode_button() {
 
 		$screen = get_current_screen();
+
+		// If we load wp editor by ajax then $screen will be empty which generate notice if we treat $screen as WP_Screen object.
+		// For example we are loading wp editor by ajax in repeater field.
+		if ( ! ( $screen instanceof WP_Screen ) ) {
+			return false;
+		}
 
 		$shortcode_button_pages = apply_filters( 'give_shortcode_button_pages', array(
 			'post.php',

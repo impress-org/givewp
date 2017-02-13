@@ -1045,7 +1045,7 @@ class Give_Customer {
 	 *
 	 * @param  string $email The email address to remove from the customer
 	 *
-	 * @return bool          If the email was removeed successfully
+	 * @return bool          If the email was removed successfully
 	 */
 	public function remove_email( $email = '' ) {
 		if( ! is_email( $email ) ) {

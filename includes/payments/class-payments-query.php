@@ -76,7 +76,7 @@ class Give_Payments_Query extends Give_Stats {
 			'search_in_notes' => false,
 			'children'        => false,
 			'fields'          => null,
-			'give_forms'      => null
+			'give_forms'      => null,
 		);
 
 		$this->args = wp_parse_args( $args, $defaults );
@@ -127,6 +127,7 @@ class Give_Payments_Query extends Give_Stats {
 		add_action( 'give_post_get_payments', array( $this, 'date_filter_post' ) );
 
 		add_action( 'give_pre_get_payments', array( $this, 'orderby' ) );
+		add_filter( 'posts_orderby', array( $this, 'custom_orderby' ), 10, 2 );
 		add_action( 'give_pre_get_payments', array( $this, 'status' ) );
 		add_action( 'give_pre_get_payments', array( $this, 'month' ) );
 		add_action( 'give_pre_get_payments', array( $this, 'per_page' ) );
@@ -320,10 +321,47 @@ class Give_Payments_Query extends Give_Stats {
 				$this->__set( 'orderby', 'meta_value_num' );
 				$this->__set( 'meta_key', '_give_payment_total' );
 				break;
+
+			case 'status' :
+				$this->__set( 'orderby', 'post_status' );
+				break;
+
+			case 'donation_form' :
+				$this->__set( 'orderby', 'meta_value' );
+				$this->__set( 'meta_key', '_give_payment_form_title' );
+				break;
+
 			default :
 				$this->__set( 'orderby', $this->args['orderby'] );
 				break;
 		}
+	}
+
+	/**
+	 * Custom orderby.
+	 * Note: currently custom sorting is only used for donation listing page.
+	 *
+	 * @since  1.8
+	 * @access public
+	 *
+	 * @param string   $order
+	 * @param WP_Query $query
+	 *
+	 * @return mixed
+	 */
+	public function custom_orderby( $order, $query ) {
+		$post_types = is_array( $query->query['post_type'] ) ? $query->query['post_type'] : array( $query->query['post_type'] );
+		if ( ! in_array( 'give_payment', $post_types ) || is_array( $query->query['orderby'] ) ) {
+			return $order;
+		}
+
+		switch ( $query->query['orderby'] ) {
+			case 'post_status':
+				$order = 'wp_posts.post_status ' . strtoupper( $query->query['order'] );
+				break;
+		}
+
+		return $order;
 	}
 
 	/**
@@ -347,7 +385,7 @@ class Give_Payments_Query extends Give_Stats {
 
 		$this->__set( 'meta_query', array(
 			'key'   => $user_key,
-			'value' => $this->args['user']
+			'value' => $this->args['user'],
 		) );
 	}
 
@@ -393,7 +431,7 @@ class Give_Payments_Query extends Give_Stats {
 			$search_meta = array(
 				'key'     => $key,
 				'value'   => $search,
-				'compare' => 'LIKE'
+				'compare' => 'LIKE',
 			);
 
 			$this->__set( 'meta_query', $search_meta );
@@ -403,7 +441,7 @@ class Give_Payments_Query extends Give_Stats {
 
 			$search_meta = array(
 				'key'   => '_give_payment_user_id',
-				'value' => trim( str_replace( 'user:', '', strtolower( $search ) ) )
+				'value' => trim( str_replace( 'user:', '', strtolower( $search ) ) ),
 			);
 
 			$this->__set( 'meta_query', $search_meta );
@@ -413,7 +451,7 @@ class Give_Payments_Query extends Give_Stats {
 				$search_meta = array(
 					'key'     => '_give_payment_number',
 					'value'   => $search,
-					'compare' => 'LIKE'
+					'compare' => 'LIKE',
 				);
 
 				$this->__set( 'meta_query', $search_meta );
@@ -435,7 +473,7 @@ class Give_Payments_Query extends Give_Stats {
 			$search_meta = array(
 				'key'     => '_give_payment_number',
 				'value'   => $search,
-				'compare' => 'LIKE'
+				'compare' => 'LIKE',
 			);
 
 			$this->__set( 'meta_query', $search_meta );
@@ -452,7 +490,6 @@ class Give_Payments_Query extends Give_Stats {
 				$this->__set( 'post__in', $arr );
 				$this->__unset( 's' );
 			}
-
 		} elseif ( '#' == substr( $search, 0, 1 ) ) {
 
 			$search = str_replace( '#:', '', $search );
@@ -484,7 +521,7 @@ class Give_Payments_Query extends Give_Stats {
 
 		$this->__set( 'meta_query', array(
 			'key'   => '_give_payment_mode',
-			'value' => $this->args['mode']
+			'value' => $this->args['mode'],
 		) );
 	}
 
@@ -527,8 +564,8 @@ class Give_Payments_Query extends Give_Stats {
 			array(
 				'key'     => '_give_payment_form_id',
 				'value'   => $this->args['give_forms'],
-				'compare' => $compare
-			)
+				'compare' => $compare,
+			),
 		) );
 
 		$this->__unset( 'give_forms' );

@@ -193,7 +193,7 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 			) );
 
 			$this->done    = true;
-			$this->message = esc_html__( 'Donor stats successfully recounted.', 'give' );
+			$this->message = esc_html__( 'Donor stats have been successfully recounted.', 'give' );
 
 			return false;
 		}

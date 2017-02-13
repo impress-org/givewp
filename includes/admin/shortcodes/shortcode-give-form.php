@@ -24,8 +24,8 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 	 */
 	public function __construct() {
 
-		$this->shortcode['title']   = esc_html__( 'Donation Form', 'give' );
-		$this->shortcode['label']   = esc_html__( 'Donation Form', 'give' );
+		$this->shortcode['title'] = esc_html__( 'Donation Form', 'give' );
+		$this->shortcode['label'] = esc_html__( 'Donation Form', 'give' );
 
 		parent::__construct( 'give_form' );
 	}
@@ -38,7 +38,7 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 	public function define_fields() {
 
 		$create_form_link = sprintf(
-			/* translators: %s: create new form URL */
+		/* translators: %s: create new form URL */
 			__( '<a href="%s">Create</a> a new Donation Form.', 'give' ),
 			admin_url( 'post-new.php?post_type=give_forms' )
 		);
@@ -51,7 +51,7 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 				),
 				'name'        => 'id',
 				'tooltip'     => esc_attr__( 'Select a Donation Form', 'give' ),
-				'placeholder' => esc_attr__( '- Select a Form -', 'give' ),
+				'placeholder' => '- ' . esc_attr__( 'Select a Donation Form', 'give' ) . ' -',
 				'required'    => array(
 					'alert' => esc_html__( 'You must first select a Form!', 'give' ),
 					'error' => sprintf( '<p class="strong">%s</p><p class="no-margin">%s</p>', esc_html__( 'No forms found.', 'give' ), $create_form_link ),
@@ -82,12 +82,12 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 				),
 			),
 			array(
-				'type'    => 'listbox',
-				'name'    => 'show_content',
+				'type'     => 'listbox',
+				'name'     => 'show_content',
 				'minWidth' => 240,
-				'label'   => esc_attr__( 'Display Content:', 'give' ),
-				'tooltip' => esc_attr__( 'Do you want to display the form content?', 'give' ),
-				'options' => array(
+				'label'    => esc_attr__( 'Display Content:', 'give' ),
+				'tooltip'  => esc_attr__( 'Do you want to display the form content?', 'give' ),
+				'options'  => array(
 					'none'  => esc_html__( 'No Content', 'give' ),
 					'above' => esc_html__( 'Display content ABOVE the fields', 'give' ),
 					'below' => esc_html__( 'Display content BELOW the fields', 'give' ),
@@ -96,22 +96,13 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 			array(
 				'type'    => 'listbox',
 				'name'    => 'display_style',
-				'label'   => esc_attr__( 'Donation Fields:', 'give' ),
+				'label'   => esc_attr__( 'Donation Options:', 'give' ),
 				'tooltip' => esc_attr__( 'How would you like to display donation information?', 'give' ),
 				'options' => array(
-					'onpage' => esc_html__( 'Show on Page', 'give' ),
-					'reveal' => esc_html__( 'Reveal Upon Click', 'give' ),
-					'modal'  => esc_html__( 'Modal Window Upon Click', 'give' ),
-				),
-			),
-			array(
-				'type'    => 'listbox',
-				'name'    => 'float_labels',
-				'label'   => esc_attr__( 'Floating Labels:', 'give' ),
-				'tooltip' => esc_attr__( 'Override the default floating labels setting for this form.', 'give' ),
-				'options' => array(
-					'enabled'  => esc_html__( 'Enabled', 'give' ),
-					'disabled' => esc_html__( 'Disabled', 'give' ),
+					'onpage' => esc_html__( 'All Fields', 'give' ),
+					'modal'  => esc_html__( 'Modal', 'give' ),
+					'reveal' => esc_html__( 'Reveal', 'give' ),
+					'button' => esc_html__( 'Button', 'give' ),
 				),
 			),
 		);

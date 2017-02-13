@@ -34,38 +34,17 @@ add_action( 'give_paypal_cc_form', '__return_false' );
  */
 function give_process_paypal_payment( $payment_data ) {
 
-	if ( ! wp_verify_nonce( $payment_data['gateway_nonce'], 'give-gateway' ) ) {
-		wp_die( esc_html__( 'Nonce verification has failed.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
-	}
-
-	$form_id  = intval( $payment_data['post_data']['give-form-id'] );
-	$price_id = isset( $payment_data['post_data']['give-price-id'] ) ? $payment_data['post_data']['give-price-id'] : '';
-
-	// Collect payment data.
-	$payment_data = array(
-		'price'           => $payment_data['price'],
-		'give_form_title' => $payment_data['post_data']['give-form-title'],
-		'give_form_id'    => $form_id,
-		'give_price_id'   => $price_id,
-		'date'            => $payment_data['date'],
-		'user_email'      => $payment_data['user_email'],
-		'purchase_key'    => $payment_data['purchase_key'],
-		'currency'        => give_get_currency(),
-		'user_info'       => $payment_data['user_info'],
-		'status'          => 'pending',
-		'gateway'         => 'paypal'
-	);
-
-	// Record the pending payment.
-	$payment_id = give_insert_payment( $payment_data );
+	// Validate nonce.
+	give_validate_nonce( $payment_data['gateway_nonce'], 'give-gateway' );
+	$payment_id = give_create_payment( $payment_data );
 
 	// Check payment.
-	if ( ! $payment_id ) {
+	if ( empty( $payment_id ) ) {
 		// Record the error.
 		give_record_gateway_error(
 			esc_html__( 'Payment Error', 'give' ),
 			sprintf(
-			/* translators: %s: payment data */
+				/* translators: %s: payment data */
 				esc_html__( 'Payment creation failed before sending donor to PayPal. Payment data: %s', 'give' ),
 				json_encode( $payment_data )
 			),
@@ -73,108 +52,11 @@ function give_process_paypal_payment( $payment_data ) {
 		);
 		// Problems? Send back.
 		give_send_back_to_checkout( '?payment-mode=' . $payment_data['post_data']['give-gateway'] );
-
-	} else {
-
-		// Only send to PayPal if the pending payment is created successfully.
-		$listener_url = add_query_arg( 'give-listener', 'IPN', home_url( 'index.php' ) );
-
-		// Get the success url.
-		$return_url = add_query_arg( array(
-			'payment-confirmation' => 'paypal',
-			'payment-id'           => $payment_id
-
-		), get_permalink( give_get_option( 'success_page' ) ) );
-
-		// Get the PayPal redirect uri.
-		$paypal_redirect = trailingslashit( give_get_paypal_redirect() ) . '?';
-
-		//Item name - pass level name if variable priced.
-		$item_name = $payment_data['post_data']['give-form-title'];
-
-		//Verify has variable prices.
-		if ( give_has_variable_prices( $form_id ) && isset( $payment_data['post_data']['give-price-id'] ) ) {
-
-			$item_price_level_text = give_get_price_option_name( $form_id, $payment_data['post_data']['give-price-id'] );
-
-			$price_level_amount = give_get_price_option_amount( $form_id, $payment_data['post_data']['give-price-id'] );
-
-			//Donation given doesn't match selected level (must be a custom amount).
-			if ( $price_level_amount != give_sanitize_amount( $payment_data['price'] ) ) {
-				$custom_amount_text = get_post_meta( $form_id, '_give_custom_amount_text', true );
-				//user custom amount text if any, fallback to default if not.
-				$item_name .= ' - ' . ( ! empty( $custom_amount_text ) ? $custom_amount_text : esc_html__( 'Custom Amount', 'give' ) );
-
-			} //Is there any donation level text?
-			elseif ( ! empty( $item_price_level_text ) ) {
-				$item_name .= ' - ' . $item_price_level_text;
-			}
-
-		} //Single donation: Custom Amount.
-		elseif ( give_get_form_price( $form_id ) !== give_sanitize_amount( $payment_data['price'] ) ) {
-			$custom_amount_text = get_post_meta( $form_id, '_give_custom_amount_text', true );
-			//user custom amount text if any, fallback to default if not.
-			$item_name .= ' - ' . ( ! empty( $custom_amount_text ) ? $custom_amount_text : esc_html__( 'Custom Amount', 'give' ) );
-		}
-
-		// Setup PayPal API params.
-		$paypal_args = array(
-			'business'      => give_get_option( 'paypal_email', false ),
-			'first_name'    => $payment_data['user_info']['first_name'],
-			'last_name'     => $payment_data['user_info']['last_name'],
-			'email'         => $payment_data['user_email'],
-			'invoice'       => $payment_data['purchase_key'],
-			'amount'        => $payment_data['price'],
-			'item_name'     => stripslashes( $item_name ),
-			'no_shipping'   => '1',
-			'shipping'      => '0',
-			'no_note'       => '1',
-			'currency_code' => give_get_currency(),
-			'charset'       => get_bloginfo( 'charset' ),
-			'custom'        => $payment_id,
-			'rm'            => '2',
-			'return'        => $return_url,
-			'cancel_return' => give_get_failed_transaction_uri( '?payment-id=' . $payment_id ),
-			'notify_url'    => $listener_url,
-			'page_style'    => give_get_paypal_page_style(),
-			'cbt'           => get_bloginfo( 'name' ),
-			'bn'            => 'givewp_SP'
-		);
-
-		//Add user address if present.
-		if ( ! empty( $payment_data['user_info']['address'] ) ) {
-			$paypal_args['address1'] = isset( $payment_data['user_info']['address']['line1'] ) ? $payment_data['user_info']['address']['line1'] : '';
-			$paypal_args['address2'] = isset( $payment_data['user_info']['address']['line2'] ) ? $payment_data['user_info']['address']['line2'] : '';
-			$paypal_args['city']     = isset( $payment_data['user_info']['address']['city'] ) ? $payment_data['user_info']['address']['city'] : '';
-			$paypal_args['state']    = isset( $payment_data['user_info']['address']['state'] ) ? $payment_data['user_info']['address']['state'] : '';
-			$paypal_args['country']  = isset( $payment_data['user_info']['address']['country'] ) ? $payment_data['user_info']['address']['country'] : '';
-		}
-
-		//Donations or regular transactions?
-		if ( give_get_option( 'paypal_button_type' ) === 'standard' ) {
-			$paypal_extra_args = array(
-				'cmd' => '_xclick',
-			);
-		} else {
-			$paypal_extra_args = array(
-				'cmd' => '_donations',
-			);
-		}
-
-		$paypal_args = array_merge( $paypal_extra_args, $paypal_args );
-		$paypal_args = apply_filters( 'give_paypal_redirect_args', $paypal_args, $payment_data );
-
-		// Build query.
-		$paypal_redirect .= http_build_query( $paypal_args );
-
-		// Fix for some sites that encode the entities.
-		$paypal_redirect = str_replace( '&amp;', '&', $paypal_redirect );
-
-		// Redirect to PayPal.
-		wp_redirect( $paypal_redirect );
-		exit;
 	}
 
+	// Redirect to PayPal.
+	wp_redirect( give_build_paypal_url( $payment_id, $payment_data ) );
+	exit;
 }
 
 add_action( 'give_gateway_paypal', 'give_process_paypal_payment' );
@@ -258,11 +140,10 @@ function give_process_paypal_ipn() {
 			unset( $encoded_data_array[ $key ] );
 			$encoded_data_array[ $new_key ] = $value;
 		}
-
 	}
 
-	//Validate IPN request w/ PayPal if user hasn't disabled this security measure.
-	if ( ! give_get_option( 'disable_paypal_verification' ) ) {
+	// Validate IPN request w/ PayPal if user hasn't disabled this security measure
+	if ( give_is_setting_enabled( give_get_option( 'paypal_verification' ) ) ) {
 
 		$remote_post_vars = array(
 			'method'      => 'POST',
@@ -278,7 +159,7 @@ function give_process_paypal_ipn() {
 
 			),
 			'sslverify'   => false,
-			'body'        => $encoded_data_array
+			'body'        => $encoded_data_array,
 		);
 
 		// Validate the IPN.
@@ -288,7 +169,7 @@ function give_process_paypal_ipn() {
 			give_record_gateway_error(
 				esc_html__( 'IPN Error', 'give' ),
 				sprintf(
-				/* translators: %s: Paypal IPN response */
+					/* translators: %s: Paypal IPN response */
 					esc_html__( 'Invalid IPN verification response. IPN data: %s', 'give' ),
 					json_encode( $api_response )
 				)
@@ -297,11 +178,11 @@ function give_process_paypal_ipn() {
 			return; // Something went wrong
 		}
 
-		if ( $api_response['body'] !== 'VERIFIED' && give_get_option( 'disable_paypal_verification', false ) ) {
+		if ( $api_response['body'] !== 'VERIFIED' ) {
 			give_record_gateway_error(
 				esc_html__( 'IPN Error', 'give' ),
 				sprintf(
-				/* translators: %s: Paypal IPN response */
+					/* translators: %s: Paypal IPN response */
 					esc_html__( 'Invalid IPN verification response. IPN data: %s', 'give' ),
 					json_encode( $api_response )
 				)
@@ -309,7 +190,6 @@ function give_process_paypal_ipn() {
 
 			return; // Response not okay
 		}
-
 	}
 
 	// Check if $post_data_array has been populated
@@ -319,7 +199,7 @@ function give_process_paypal_ipn() {
 
 	$defaults = array(
 		'txn_type'       => '',
-		'payment_status' => ''
+		'payment_status' => '',
 	);
 
 	$encoded_data_array = wp_parse_args( $encoded_data_array, $defaults );
@@ -369,12 +249,12 @@ add_action( 'give_verify_paypal_ipn', 'give_process_paypal_ipn' );
  */
 function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 
-	//Only allow through these transaction types.
+	// Only allow through these transaction types.
 	if ( $data['txn_type'] != 'web_accept' && $data['txn_type'] != 'cart' && strtolower( $data['payment_status'] ) != 'refunded' ) {
 		return;
 	}
 
-	//Need $payment_id to continue.
+	// Need $payment_id to continue.
 	if ( empty( $payment_id ) ) {
 		return;
 	}
@@ -397,7 +277,7 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 		give_record_gateway_error(
 			esc_html__( 'IPN Error', 'give' ),
 			sprintf(
-			/* translators: %s: Paypal IPN response */
+				/* translators: %s: Paypal IPN response */
 				esc_html__( 'Invalid business email in IPN response. IPN data: %s', 'give' ),
 				json_encode( $data )
 			),
@@ -415,7 +295,7 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 		give_record_gateway_error(
 			esc_html__( 'IPN Error', 'give' ),
 			sprintf(
-			/* translators: %s: Paypal IPN response */
+				/* translators: %s: Paypal IPN response */
 				esc_html__( 'Invalid currency in IPN response. IPN data: %s', 'give' ),
 				json_encode( $data )
 			),
@@ -427,7 +307,7 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 		return;
 	}
 
-	//Process refunds & reversed.
+	// Process refunds & reversed.
 	if ( $payment_status == 'refunded' || $payment_status == 'reversed' ) {
 		give_process_paypal_refund( $data, $payment_id );
 
@@ -442,13 +322,13 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 	// Retrieve the total donation amount (before PayPal).
 	$payment_amount = give_get_payment_amount( $payment_id );
 
-	//Check that the donation PP and local db amounts match.
+	// Check that the donation PP and local db amounts match.
 	if ( number_format( (float) $paypal_amount, 2 ) < number_format( (float) $payment_amount, 2 ) ) {
 		// The prices don't match
 		give_record_gateway_error(
 			esc_html__( 'IPN Error', 'give' ),
 			sprintf(
-			/* translators: %s: Paypal IPN response */
+				/* translators: %s: Paypal IPN response */
 				esc_html__( 'Invalid payment amount in IPN response. IPN data: %s', 'give' ),
 				json_encode( $data )
 			),
@@ -460,13 +340,13 @@ function give_process_paypal_web_accept_and_cart( $data, $payment_id ) {
 		return;
 	}
 
-	//Process completed donations.
+	// Process completed donations.
 	if ( $payment_status == 'completed' || give_is_test_mode() ) {
 
 		give_insert_payment_note(
 			$payment_id,
 			sprintf(
-			/* translators: %s: Paypal transaction ID */
+				/* translators: %s: Paypal transaction ID */
 				esc_html__( 'PayPal Transaction ID: %s', 'give' ),
 				$data['txn_id']
 			)
@@ -503,7 +383,6 @@ add_action( 'give_paypal_web_accept', 'give_process_paypal_web_accept_and_cart',
 function give_process_paypal_refund( $data, $payment_id = 0 ) {
 
 	// Collect payment details
-
 	if ( empty( $payment_id ) ) {
 		return;
 	}
@@ -520,7 +399,7 @@ function give_process_paypal_refund( $data, $payment_id = 0 ) {
 		give_insert_payment_note(
 			$payment_id,
 			sprintf(
-			/* translators: %s: Paypal parent transaction ID */
+				/* translators: %s: Paypal parent transaction ID */
 				esc_html__( 'Partial PayPal refund processed: %s', 'give' ),
 				$data['parent_txn_id']
 			)
@@ -533,7 +412,7 @@ function give_process_paypal_refund( $data, $payment_id = 0 ) {
 	give_insert_payment_note(
 		$payment_id,
 		sprintf(
-		/* translators: 1: Paypal parent transaction ID 2. Paypal reason code */
+			/* translators: 1: Paypal parent transaction ID 2. Paypal reason code */
 			esc_html__( 'PayPal Payment #%1$s Refunded for reason: %2$s', 'give' ),
 			$data['parent_txn_id'],
 			$data['reason_code']
@@ -542,7 +421,7 @@ function give_process_paypal_refund( $data, $payment_id = 0 ) {
 	give_insert_payment_note(
 		$payment_id,
 		sprintf(
-		/* translators: %s: Paypal transaction ID */
+			/* translators: %s: Paypal transaction ID */
 			esc_html__( 'PayPal Refund Transaction ID: %s', 'give' ),
 			$data['txn_id']
 		)
@@ -562,18 +441,18 @@ function give_process_paypal_refund( $data, $payment_id = 0 ) {
 function give_get_paypal_redirect( $ssl_check = false ) {
 
 	if ( is_ssl() || ! $ssl_check ) {
-		$protocal = 'https://';
+		$protocol = 'https://';
 	} else {
-		$protocal = 'http://';
+		$protocol = 'http://';
 	}
 
 	// Check the current payment mode
 	if ( give_is_test_mode() ) {
 		// Test mode
-		$paypal_uri = $protocal . 'www.sandbox.paypal.com/cgi-bin/webscr';
+		$paypal_uri = $protocol . 'www.sandbox.paypal.com/cgi-bin/webscr';
 	} else {
 		// Live mode
-		$paypal_uri = $protocal . 'www.paypal.com/cgi-bin/webscr';
+		$paypal_uri = $protocol . 'www.paypal.com/cgi-bin/webscr';
 	}
 
 	return apply_filters( 'give_paypal_uri', $paypal_uri );
@@ -601,7 +480,6 @@ function give_get_paypal_page_style() {
  * @param $content
  *
  * @return string
- *
  */
 function give_paypal_success_page_content( $content ) {
 
@@ -756,4 +634,151 @@ function give_paypal_get_pending_donation_note( $pending_reason ) {
 
 	return $note;
 
+}
+
+/**
+ * Build paypal url
+ *
+ * @param int   $payment_id   Payment ID
+ * @param array $payment_data Array of payment data.
+ *
+ * @return mixed|string
+ */
+function give_build_paypal_url( $payment_id, $payment_data ) {
+	// Only send to PayPal if the pending payment is created successfully.
+	$listener_url = add_query_arg( 'give-listener', 'IPN', home_url( 'index.php' ) );
+
+	// Get the success url.
+	$return_url = add_query_arg( array(
+		'payment-confirmation' => 'paypal',
+		'payment-id'           => $payment_id,
+
+	), get_permalink( give_get_option( 'success_page' ) ) );
+
+	// Get the PayPal redirect uri.
+	$paypal_redirect = trailingslashit( give_get_paypal_redirect() ) . '?';
+
+	// Item name.
+	$item_name = give_build_paypal_item_title( $payment_data );
+
+	// Setup PayPal API params.
+	$paypal_args = array(
+		'business'      => give_get_option( 'paypal_email', false ),
+		'first_name'    => $payment_data['user_info']['first_name'],
+		'last_name'     => $payment_data['user_info']['last_name'],
+		'email'         => $payment_data['user_email'],
+		'invoice'       => $payment_data['purchase_key'],
+		'amount'        => $payment_data['price'],
+		'item_name'     => stripslashes( $item_name ),
+		'no_shipping'   => '1',
+		'shipping'      => '0',
+		'no_note'       => '1',
+		'currency_code' => give_get_currency(),
+		'charset'       => get_bloginfo( 'charset' ),
+		'custom'        => $payment_id,
+		'rm'            => '2',
+		'return'        => $return_url,
+		'cancel_return' => give_get_failed_transaction_uri( '?payment-id=' . $payment_id ),
+		'notify_url'    => $listener_url,
+		'page_style'    => give_get_paypal_page_style(),
+		'cbt'           => get_bloginfo( 'name' ),
+		'bn'            => 'givewp_SP',
+	);
+
+	// Add user address if present.
+	if ( ! empty( $payment_data['user_info']['address'] ) ) {
+		$default_address = array(
+			'line1'   => '',
+			'line2'   => '',
+			'city'    => '',
+			'state'   => '',
+			'country' => '',
+		);
+
+		$address = wp_parse_args( $payment_data['user_info']['address'], $default_address );
+
+		$paypal_args['address1'] = $address['line1'];
+		$paypal_args['address2'] = $address['line2'];
+		$paypal_args['city']     = $address['city'];
+		$paypal_args['state']    = $address['state'];
+		$paypal_args['country']  = $address['country'];
+	}
+
+	// Donations or regular transactions?
+	$paypal_args['cmd'] = give_get_paypal_button_type();
+
+	/**
+	 * Filter the paypal redirect args.
+	 *
+	 * @since 1.8
+	 *
+	 * @param array $paypal_args
+	 * @param array $payment_data
+	 */
+	$paypal_args = apply_filters( 'give_paypal_redirect_args', $paypal_args, $payment_data );
+
+	// Build query.
+	$paypal_redirect .= http_build_query( $paypal_args );
+
+	// Fix for some sites that encode the entities.
+	$paypal_redirect = str_replace( '&amp;', '&', $paypal_redirect );
+
+	return $paypal_redirect;
+}
+
+
+/**
+ * Get paypal button type.
+ *
+ * @since 1.8
+ * @return string
+ */
+function give_get_paypal_button_type() {
+	// paypal_button_type can be donation or standard.
+	$paypal_button_type = '_donations';
+	if ( give_get_option( 'paypal_button_type' ) === 'standard' ) {
+		$paypal_button_type = '_xclick';
+	}
+
+	return $paypal_button_type;
+}
+
+
+/**
+ * Build item title for paypal.
+ *
+ * @since 1.8
+ * @param $payment_data
+ *
+ * @return string
+ */
+function give_build_paypal_item_title( $payment_data ) {
+	$form_id   = intval( $payment_data['post_data']['give-form-id'] );
+	$item_name = $payment_data['post_data']['give-form-title'];
+
+	// Verify has variable prices.
+	if ( give_has_variable_prices( $form_id ) && isset( $payment_data['post_data']['give-price-id'] ) ) {
+
+		$item_price_level_text = give_get_price_option_name( $form_id, $payment_data['post_data']['give-price-id'] );
+		$price_level_amount    = give_get_price_option_amount( $form_id, $payment_data['post_data']['give-price-id'] );
+
+		// Donation given doesn't match selected level (must be a custom amount).
+		if ( $price_level_amount != give_sanitize_amount( $payment_data['price'] ) ) {
+			$custom_amount_text = get_post_meta( $form_id, '_give_custom_amount_text', true );
+			// user custom amount text if any, fallback to default if not.
+			$item_name .= ' - ' . give_check_variable( $custom_amount_text, 'empty', esc_html__( 'Custom Amount', 'give' ) );
+
+		} //Is there any donation level text?
+		elseif ( ! empty( $item_price_level_text ) ) {
+			$item_name .= ' - ' . $item_price_level_text;
+		}
+
+	} //Single donation: Custom Amount.
+	elseif ( give_get_form_price( $form_id ) !== give_sanitize_amount( $payment_data['price'] ) ) {
+		$custom_amount_text = get_post_meta( $form_id, '_give_custom_amount_text', true );
+		// user custom amount text if any, fallback to default if not.
+		$item_name .= ' - ' . give_check_variable( $custom_amount_text, 'empty', esc_html__( 'Custom Amount', 'give' ) );
+	}
+
+	return $item_name;
 }

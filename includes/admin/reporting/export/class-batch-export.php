@@ -290,6 +290,13 @@ class Give_Batch_Export extends Give_Export {
 
 		echo $file;
 
+		/**
+		 * Fire action after file output.
+		 *
+		 * @since 1.8
+		 */
+		do_action( 'give_file_export_complete', $_REQUEST );
+
 		give_die();
 	}
 

@@ -122,5 +122,3 @@ function give_tools_recount_stats_display() {
 	 */
 	do_action( 'give_tools_recount_stats_after' );
 }
-
-add_action( 'give_reports_tab_tools', 'give_tools_recount_stats_display' );

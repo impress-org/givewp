@@ -28,12 +28,6 @@ function give_deprecated_filters() {
 		'give_reset_items'                           => 'give_reset_store_items',
 	);
 
-	// Dynamic filters.
-	switch ( true ) {
-		case ( ! empty( $_GET['payment-confirmation'] ) ) :
-			$give_deprecated_filters["give_donation_confirm_{$_GET['payment-confirmation']}"] = "give_payment_confirm_{$_GET['payment-confirmation']}";
-	}
-
 	return $give_deprecated_filters;
 }
 
@@ -45,7 +39,7 @@ function give_deprecated_filters() {
  * @param string $arg_2
  * @param string $arg_3
  *
- * @return mixed|void
+ * @return mixed
  */
 function give_deprecated_filter_mapping( $data, $arg_1 = '', $arg_2 = '', $arg_3 = '' ) {
 	$give_map_deprecated_filters = give_deprecated_filters();

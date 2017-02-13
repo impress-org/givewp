@@ -373,9 +373,9 @@ class Give_Welcome {
 				<div class="content feature-section-item">
 					<h3><?php esc_html_e( 'STEP 1: Create a New Form', 'give' ); ?></h3>
 
-					<p><?php esc_html_e( 'Give is driven by it\'s powerful form building features. But it is not simply a "form". From the "Add Form" page you\'ll be able to choose how and where you want to receive your donations. You\'ll be able to set the donation amounts. You even get to choose whether you want to create a whole page for your form, or embed it on a different page of your site.', 'give' ); ?></p>
+					<p><?php esc_html_e( 'Give is driven by it\'s powerful donation form building features. However, it is much more than just a "donation form". From the "Add Form" page you\'ll be able to choose how and where you want to receive your donations. You will also be able to set the preferred donation amounts.', 'give' ); ?></p>
 
-					<p><?php esc_html_e( 'But all of these features begin simply by going to the menu and choosing "Add Form".', 'give' ); ?></p>
+					<p><?php esc_html_e( 'All of these features begin by simply going to the menu and choosing "Donations > Add Form".', 'give' ); ?></p>
 				</div>
 
 				<div class="content feature-section-item last-feature">
@@ -392,9 +392,9 @@ class Give_Welcome {
 				</div>
 
 				<div class="content feature-section-item last-feature">
-					<h3><?php esc_html_e( 'STEP 2: Choose Your Levels', 'give' ); ?></h3>
+					<h3><?php esc_html_e( 'STEP 2: Customize Your Donation Forms', 'give' ); ?></h3>
 
-					<p><?php esc_html_e( 'Each Form can be set to receive either a pre-determined amount or have multiple suggested levels of giving. Choosing "Multi-level Donation" opens up the levels section where you can add as many levels as you like with your own custom names and amounts.', 'give' ); ?></p>
+					<p><?php esc_html_e( 'Each donation form you create can be customized to receive either a pre-determined set donation amount or have multiple suggested levels of giving. Choosing "Multi-level Donation" opens up the donation levels view where you can add as many levels as you\'d like with your own custom names and suggested amounts. As well, you can allow donors to give a custom amount and even set up donation goals.', 'give' ); ?></p>
 				</div>
 
 			</div>
@@ -403,11 +403,11 @@ class Give_Welcome {
 			<div class="feature-section clearfix">
 
 				<div class="content feature-section-item add-content">
-					<h3><?php esc_html_e( 'STEP 3: Landing Page or Shortcode Mode?', 'give' ); ?></h3>
+					<h3><?php esc_html_e( 'STEP 3: Add Additional Content', 'give' ); ?></h3>
 
-					<p><?php esc_html_e( 'Every form you create in Give can either become it\'s own stand-alone page, or it can be inserted into any other page or post throughout your site as a Shortcode.', 'give' ); ?></p>
+					<p><?php esc_html_e( 'Every donation form you create with Give can be used on its own stand-alone page, or it can be inserted into any other page or post throughout your site via a shortcode or widget.', 'give' ); ?></p>
 
-					<p><?php esc_html_e( 'You can choose these different modes by going to the "Form Content" section. From there, you can choose to add content before or after the Donation form on a page, or if you choose "None" perhaps you want to instead use the shortcode. You can find the shortcode in the top right column directly under the Publish/Save button. This feature gives you the most amount of flexibility with controlling your content on your website all within the same page.', 'give' ); ?></p>
+					<p><?php esc_html_e( 'You can choose these different modes by going to the "Form Content" section. From there, you can choose to add content before or after the donation form on a page, or if you choose "None" perhaps you want to instead use the shortcode. You can find the shortcode in the top right column directly under the Publish/Save button. This feature gives you the most amount of flexibility with controlling your content on your website all within the same page.', 'give' ); ?></p>
 				</div>
 
 				<div class="content feature-section-item last-feature">
@@ -426,7 +426,7 @@ class Give_Welcome {
 				<div class="content feature-section-item last-feature">
 					<h3><?php esc_html_e( 'STEP 4: Configure Your Display Options', 'give' ); ?></h3>
 
-					<p><?php esc_html_e( 'Lastly, you can present the form in a lot of different ways. With the "Display Options" section you can configure how the credit card field appears, the submit button text, which Gateway you want to use, whether Guests (non-logged in users) can donate or not, and a log-in form.', 'give' ); ?></p>
+					<p><?php esc_html_e( 'Lastly, you can present the form in a number of different ways that each create their own unique donor experience. The "Modal" display mode opens the credit card fieldset within a popup window. The "Reveal" mode will slide into place the additional fields. If you\'re looking for a simple button, then "Button" more is the way to go. This allows you to create a customizable "Donate Now" button which will open the donation form upon clicking. There\'s tons of possibilities here, give it a try!', 'give' ); ?></p>
 				</div>
 
 
@@ -609,7 +609,7 @@ class Give_Welcome {
 		if ( ! $upgrade ) { // First time install
 			wp_safe_redirect( admin_url( 'index.php?page=give-about' ) );
 			exit;
-		} elseif( isset( $give_options['disable_welcome'] ) ) { // Welcome is disabled in settings
+		} elseif( ! give_is_setting_enabled( give_get_option( 'welcome' ) ) ) { // Welcome is disabled in settings
 
 		} else { // Welcome is NOT disabled in settings
 			wp_safe_redirect(admin_url('index.php?page=give-about'));

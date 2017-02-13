@@ -189,6 +189,7 @@ function give_reports_graph() {
 		<div class="metabox-holder" style="padding-top: 0;">
 			<div class="postbox">
 				<div class="inside">
+					<?php give_reports_graph_controls(); ?>
 					<?php
 					$graph = new Give_Graph( $data );
 					$graph->set( 'x_mode', 'time' );
@@ -201,7 +202,6 @@ function give_reports_graph() {
 					?>
 				</div>
 			</div>
-			<?php give_reports_graph_controls(); ?>
 			<table class="widefat reports-table alignleft" style="max-width:450px">
 				<tbody>
 				<tr>
@@ -431,44 +431,45 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 	<h3><span><?php
 		printf(
 			/* translators: %s: form title */
-			esc_html__( 'Income Over Time for %s', 'give' ),
+			esc_html__( 'Income Report for %s', 'give' ),
 			get_the_title( $form_id )
 		);
 	?></span></h3>
-
-	<div class="metabox-holder" style="padding-top: 0;">
-		<div class="postbox">
-			<div class="inside">
-				<?php
-				$graph = new Give_Graph( $data );
-				$graph->set( 'x_mode', 'time' );
-				$graph->set( 'multiple_y_axes', true );
-				$graph->display();
-				?>
+	<div id="give-dashboard-widgets-wrap">
+		<div class="metabox-holder" style="padding-top: 0;">
+			<div class="postbox">
+				<div class="inside">
+					<?php give_reports_graph_controls(); ?>
+					<?php
+					$graph = new Give_Graph( $data );
+					$graph->set( 'x_mode', 'time' );
+					$graph->set( 'multiple_y_axes', true );
+					$graph->display();
+					?>
+				</div>
 			</div>
+			<!--/.postbox -->
+			<table class="widefat reports-table alignleft" style="max-width:450px">
+				<tbody>
+				<tr>
+					<th scope="row"><strong><?php esc_html_e( 'Total income for period:', 'give' ); ?></strong></th>
+					<td><?php echo give_currency_filter( give_format_amount( $earnings_totals ) ); ?></td>
+				</tr>
+				<tr class="alternate">
+					<th scope="row"><strong><?php esc_html_e( 'Total donations for period:', 'give' ); ?></strong></th>
+					<td><?php echo $sales_totals; ?></td>
+				</tr>
+				<tr>
+					<th scope="row"><strong><?php esc_html_e( 'Average monthly income:', 'give' ); ?></strong></th>
+					<td><?php echo give_currency_filter( give_format_amount( give_get_average_monthly_form_earnings( $form_id ) ) ); ?></td>
+				</tr>
+				<tr class="alternate">
+					<th scope="row"><strong><?php esc_html_e( 'Average monthly donations:', 'give' ); ?></strong></th>
+					<td><?php echo number_format( give_get_average_monthly_form_sales( $form_id ), 0 ); ?></td>
+				</tr>
+				</tbody>
+			</table>
 		</div>
-		<!--/.postbox -->
-		<table class="widefat reports-table alignleft" style="max-width:450px">
-			<tbody>
-			<tr>
-				<th scope="row"><strong><?php esc_html_e( 'Total income for period:', 'give' ); ?></strong></th>
-				<td><?php echo give_currency_filter( give_format_amount( $earnings_totals ) ); ?></td>
-			</tr>
-			<tr class="alternate">
-				<th scope="row"><strong><?php esc_html_e( 'Total donations for period:', 'give' ); ?></strong></th>
-				<td><?php echo $sales_totals; ?></td>
-			</tr>
-			<tr>
-				<th scope="row"><strong><?php esc_html_e( 'Average monthly income:', 'give' ); ?></strong></th>
-				<td><?php echo give_currency_filter( give_format_amount( give_get_average_monthly_form_earnings( $form_id ) ) ); ?></td>
-			</tr>
-			<tr class="alternate">
-				<th scope="row"><strong><?php esc_html_e( 'Average monthly donations:', 'give' ); ?></strong></th>
-				<td><?php echo number_format( give_get_average_monthly_form_sales( $form_id ), 0 ); ?></td>
-			</tr>
-			</tbody>
-		</table>
-		<?php give_reports_graph_controls(); ?>
 	</div>
 	<?php
 	echo ob_get_clean();
@@ -477,7 +478,9 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 /**
  * Show report graph date filters
  *
- * @since 1.0
+ * @since 1.0.0
+ * @since 1.8.0 The hidden `view` field is replaced with `tab` field.
+ *
  * @return void
  */
 function give_reports_graph_controls() {
@@ -496,8 +499,8 @@ function give_reports_graph_controls() {
 	) );
 
 	$dates   = give_get_report_dates();
-	$display = $dates['range'] == 'other' ? '' : 'style="display:none;"';
-	$view    = give_get_reporting_view();
+	$display = $dates['range'] == 'other' ? '' : 'display: none;';
+	$tab     = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'earnings';
 
 	if ( empty( $dates['day_end'] ) ) {
 		$dates['day_end'] = cal_days_in_month( CAL_GREGORIAN, date( 'n' ), date( 'Y' ) );
@@ -510,61 +513,62 @@ function give_reports_graph_controls() {
 	 */
 	do_action( 'give_report_graph_controls_before' );
 	?>
-	<form id="give-graphs-filter" method="get" class="alignright">
-		<div class="tablenav top alignright">
+	<form id="give-graphs-filter" method="get">
+		<div class="tablenav top">
 			<div class="actions">
 
 				<input type="hidden" name="post_type" value="give_forms" />
 				<input type="hidden" name="page" value="give-reports" />
-				<input type="hidden" name="view" value="<?php echo esc_attr( $view ); ?>" />
+				<input type="hidden" name="tab" value="<?php echo esc_attr( $tab ); ?>" />
 
 				<?php if ( isset( $_GET['form-id'] ) ) : ?>
 					<input type="hidden" name="form-id" value="<?php echo absint( $_GET['form-id'] ); ?>" />
 				<?php endif; ?>
 
-				<div id="give-graphs-date-options-wrap" class="alignright">
+				<div id="give-graphs-date-options-wrap">
 					<select id="give-graphs-date-options" name="range">
 						<?php foreach ( $date_options as $key => $option ) : ?>
 							<option value="<?php echo esc_attr( $key ); ?>"<?php selected( $key, $dates['range'] ); ?>><?php echo esc_html( $option ); ?></option>
 						<?php endforeach; ?>
 					</select>
 
-					<input type="submit" class="button-secondary" value="<?php esc_attr_e( 'Filter', 'give' ); ?>" />
-				</div>
+					<div id="give-date-range-options" style="<?php echo esc_attr( $display ); ?>">
+						<span class="screen-reader-text"><?php esc_html_e( 'From', 'give' ); ?>&nbsp;</span>
+						<select id="give-graphs-month-start" name="m_start" aria-label="Start Month">
+							<?php for ( $i = 1; $i <= 12; $i ++ ) : ?>
+								<option value="<?php echo absint( $i ); ?>" <?php echo esc_attr( selected( $i, $dates['m_start'] ) ); ?>><?php echo esc_html( give_month_num_to_name( $i ) ); ?></option>
+							<?php endfor; ?>
+						</select>
+						<select id="give-graphs-day-start" name="day" aria-label="Start Day">
+							<?php for ( $i = 1; $i <= 31; $i ++ ) : ?>
+								<option value="<?php echo absint( $i ); ?>" <?php echo esc_attr( selected( $i, $dates['day'] ) ); ?>><?php echo esc_html( $i ); ?></option>
+							<?php endfor; ?>
+						</select>
+						<select id="give-graphs-year-start" name="year" aria-label="Start Year">
+							<?php for ( $i = 2007; $i <= date( 'Y' ); $i ++ ) : ?>
+								<option value="<?php echo absint( $i ); ?>" <?php echo esc_attr( selected( $i, $dates['year'] ) ); ?>><?php echo esc_html( $i ); ?></option>
+							<?php endfor; ?>
+						</select>
+						<span class="screen-reader-text"><?php esc_html_e( 'To', 'give' ); ?>&nbsp;</span>
+						<span>&ndash;</span>
+						<select id="give-graphs-month-end" name="m_end" aria-label="End Month">
+							<?php for ( $i = 1; $i <= 12; $i ++ ) : ?>
+								<option value="<?php echo absint( $i ); ?>" <?php echo esc_attr( selected( $i, $dates['m_end'] ) ); ?>><?php echo esc_html( give_month_num_to_name( $i ) ); ?></option>
+							<?php endfor; ?>
+						</select>
+						<select id="give-graphs-day-end" name="day_end" aria-label="End Day">
+							<?php for ( $i = 1; $i <= 31; $i ++ ) : ?>
+								<option value="<?php echo absint( $i ); ?>" <?php echo esc_attr( selected( $i, $dates['day_end'] ) ); ?>><?php echo esc_html( $i ); ?></option>
+							<?php endfor; ?>
+						</select>
+						<select id="give-graphs-year-end" name="year_end" aria-label="End Year">
+							<?php for ( $i = 2007; $i <= date( 'Y' ); $i ++ ) : ?>
+								<option value="<?php echo absint( $i ); ?>" <?php echo esc_attr( selected( $i, $dates['year_end'] ) ); ?>><?php echo esc_html( $i ); ?></option>
+							<?php endfor; ?>
+						</select>
+					</div>
 
-				<div id="give-date-range-options" <?php echo $display; ?>>
-					<span><?php esc_html_e( 'From', 'give' ); ?>&nbsp;</span>
-					<select id="give-graphs-month-start" name="m_start">
-						<?php for ( $i = 1; $i <= 12; $i ++ ) : ?>
-							<option value="<?php echo absint( $i ); ?>" <?php selected( $i, $dates['m_start'] ); ?>><?php echo give_month_num_to_name( $i ); ?></option>
-						<?php endfor; ?>
-					</select>
-					<select id="give-graphs-day-start" name="day">
-						<?php for ( $i = 1; $i <= 31; $i ++ ) : ?>
-							<option value="<?php echo absint( $i ); ?>" <?php selected( $i, $dates['day'] ); ?>><?php echo $i; ?></option>
-						<?php endfor; ?>
-					</select>
-					<select id="give-graphs-year-start" name="year">
-						<?php for ( $i = 2007; $i <= date( 'Y' ); $i ++ ) : ?>
-							<option value="<?php echo absint( $i ); ?>" <?php selected( $i, $dates['year'] ); ?>><?php echo $i; ?></option>
-						<?php endfor; ?>
-					</select>
-					<span><?php esc_html_e( 'To', 'give' ); ?>&nbsp;</span>
-					<select id="give-graphs-month-end" name="m_end">
-						<?php for ( $i = 1; $i <= 12; $i ++ ) : ?>
-							<option value="<?php echo absint( $i ); ?>" <?php selected( $i, $dates['m_end'] ); ?>><?php echo give_month_num_to_name( $i ); ?></option>
-						<?php endfor; ?>
-					</select>
-					<select id="give-graphs-day-end" name="day_end">
-						<?php for ( $i = 1; $i <= 31; $i ++ ) : ?>
-							<option value="<?php echo absint( $i ); ?>" <?php selected( $i, $dates['day_end'] ); ?>><?php echo $i; ?></option>
-						<?php endfor; ?>
-					</select>
-					<select id="give-graphs-year-end" name="year_end">
-						<?php for ( $i = 2007; $i <= date( 'Y' ); $i ++ ) : ?>
-							<option value="<?php echo absint( $i ); ?>" <?php selected( $i, $dates['year_end'] ); ?>><?php echo $i; ?></option>
-						<?php endfor; ?>
-					</select>
+					<input type="submit" class="button-secondary" value="<?php esc_attr_e( 'Filter', 'give' ); ?>" />
 				</div>
 
 				<input type="hidden" name="give_action" value="filter_reports" />
@@ -776,7 +780,8 @@ function give_get_report_dates() {
 /**
  * Grabs all of the selected date info and then redirects appropriately
  *
- * @since 1.0
+ * @since 1.0.0
+ * @since 1.8.0 The `tab` query arg is added to the redirect.
  *
  * @param $data
  */
@@ -784,9 +789,10 @@ function give_parse_report_dates( $data ) {
 	$dates = give_get_report_dates();
 
 	$view = give_get_reporting_view();
+	$tab  = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'earnings';
 	$id   = isset( $_GET['form-id'] ) ? $_GET['form-id'] : null;
 
-	wp_redirect( add_query_arg( $dates, admin_url( 'edit.php?post_type=give_forms&page=give-reports&view=' . esc_attr( $view ) . '&form-id=' . absint( $id ) ) ) );
+	wp_redirect( add_query_arg( $dates, admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=' . esc_attr( $tab ) . '&view=' . esc_attr( $view ) . '&form-id=' . absint( $id ) ) ) );
 	give_die();
 }
 
@@ -807,7 +813,13 @@ function give_reports_refresh_button() {
 		'give-message' => 'refreshed-reports'
 	) ), 'give-refresh-reports' );
 
-	echo '<a href="' . $url . '" data-tooltip="' . esc_attr__( 'Clicking this will clear the reports cache.', 'give' ) . '" data-tooltip-my-position="right center"  data-tooltip-target-position="left center" class="button alignright give-refresh-reports-button give-tooltip">' . esc_html__( 'Refresh Reports', 'give' ) . '</a>';
+	echo '<a href="'
+	     . esc_url_raw( $url )
+	     . '" data-tooltip="'. esc_attr__( 'Clicking this will clear the reports cache.', 'give' )
+	     . '" data-tooltip-my-position="right center"  data-tooltip-target-position="left center" class="button alignright give-admin-button give-tooltip">'
+	     . '<span class="give-admin-button-icon give-admin-button-icon-update"></span>'
+	     . esc_html__( 'Refresh Report Data', 'give' )
+	     . '</a>';
 
 }
 

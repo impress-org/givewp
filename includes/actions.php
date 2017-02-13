@@ -143,3 +143,23 @@ function give_validate_license_when_site_migrated() {
 }
 add_action( 'init', 'give_validate_license_when_site_migrated' );
 add_action( 'admin_init', 'give_validate_license_when_site_migrated' );
+
+
+/**
+ * Processing after donor batch export complete
+ *
+ * @since 1.8
+ * @param $data
+ */
+function give_donor_batch_export_complete( $data ) {
+	// Remove donor ids cache.
+	if(
+		isset( $data['class'] )
+		&& 'Give_Batch_Customers_Export' === $data['class']
+		&& ! empty( $data['forms'] )
+		&& isset( $data['give_export_option']['query_id'] )
+	) {
+		delete_transient( $data['give_export_option']['query_id'] );
+	}
+}
+add_action('give_file_export_complete', 'give_donor_batch_export_complete' );

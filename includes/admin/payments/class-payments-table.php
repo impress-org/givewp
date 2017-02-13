@@ -347,9 +347,9 @@ class Give_Payment_History_Table extends WP_List_Table {
 				break;
 
 			case 'donation_form' :
-
-				$value = empty( $payment->form_title ) ? __( 'Untitled', 'give' ) : '<a href="' . admin_url( 'post.php?post=' . $payment->form_id . '&action=edit' ) . '">' . $payment->form_title . '</a>';
-				$level = give_get_payment_form_title( $payment->meta, true );
+				$form_title = empty( $payment->form_title ) ? sprintf( __( 'Untitled (#%s)', 'give' ), $payment->form_id ) : $payment->form_title;
+				$value      = '<a href="' . admin_url( 'post.php?post=' . $payment->form_id . '&action=edit' ) . '">' . $form_title . '</a>';
+				$level      = give_get_payment_form_title( $payment->meta, true );
 
 				if ( ! empty( $level ) ) {
 					$value .= $level;
@@ -411,6 +411,8 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 *
 	 * @since 1.6
 	 *
+	 * @param Give_Payment $payment
+	 *
 	 * @return mixed|void
 	 */
 	function get_row_actions( $payment ) {
@@ -439,7 +441,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 					'give_payment_nonce'
 				),
 				sprintf( esc_attr__( 'Resend Donation %s Receipt', 'give' ), $payment->ID ),
-				esc_html__( 'Resend Donation Receipt', 'give' )
+				esc_html__( 'Resend Receipt', 'give' )
 			);
 
 		}

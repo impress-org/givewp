@@ -56,7 +56,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 		parent::__construct( array(
 			'singular' => esc_html__( 'API Key', 'give' ),     // Singular name of the listed records
 			'plural'   => esc_html__( 'API Keys', 'give' ),    // Plural name of the listed records
-			'ajax'     => false                       // Does this table support ajax?
+			'ajax'     => false,// Does this table support ajax?
 		) );
 
 		$this->query();
@@ -68,7 +68,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 * @access public
 	 * @since  1.1
 	 *
-	 * @param array $item Contains all the data of the keys
+	 * @param array  $item        Contains all the data of the keys
 	 * @param string $column_name The name of the column
 	 *
 	 * @return string Column Name
@@ -84,7 +84,6 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 * @since  1.1
 	 *
 	 * @param array $item Contains all the data of the keys
-	 * @param string $column_name The name of the column
 	 *
 	 * @return string Column Name
 	 */
@@ -99,7 +98,6 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 * @since  1.1
 	 *
 	 * @param array $item Contains all the data of the keys
-	 * @param string $column_name The name of the column
 	 *
 	 * @return string Column Name
 	 */
@@ -114,7 +112,6 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 * @since  1.1
 	 *
 	 * @param array $item Contains all the data of the keys
-	 * @param string $column_name The name of the column
 	 *
 	 * @return string Column Name
 	 */
@@ -127,7 +124,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.1
-	 * @return void
+	 * @return string
 	 */
 	public function column_user( $item ) {
 
@@ -137,11 +134,11 @@ class Give_API_Keys_Table extends WP_List_Table {
 			$actions['view'] = sprintf(
 				'<a href="%s">%s</a>',
 				esc_url( add_query_arg( array(
-					'view'      => 'api_requests',
+					'section'   => 'api_requests',
 					'post_type' => 'give_forms',
-					'page'      => 'give-reports',
+					'page'      => 'give-tools',
 					'tab'       => 'logs',
-					's'         => $item['email']
+					's'         => $item['email'],
 				), 'edit.php' ) ),
 				esc_html__( 'View API Log', 'give' )
 			);
@@ -152,7 +149,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 			esc_url( wp_nonce_url( add_query_arg( array(
 				'user_id'          => $item['id'],
 				'give_action'      => 'process_api_key',
-				'give_api_process' => 'regenerate'
+				'give_api_process' => 'regenerate',
 			) ), 'give-api-nonce' ) ),
 			esc_html__( 'Reissue', 'give' )
 		);
@@ -161,7 +158,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 			esc_url( wp_nonce_url( add_query_arg( array(
 				'user_id'          => $item['id'],
 				'give_action'      => 'process_api_key',
-				'give_api_process' => 'revoke'
+				'give_api_process' => 'revoke',
 			) ), 'give-api-nonce' ) ),
 			esc_html__( 'Revoke', 'give' )
 		);
@@ -169,6 +166,18 @@ class Give_API_Keys_Table extends WP_List_Table {
 		$actions = apply_filters( 'give_api_row_actions', array_filter( $actions ) );
 
 		return sprintf( '%1$s %2$s', $item['user'], $this->row_actions( $actions ) );
+	}
+
+	/**
+	 * Gets the name of the primary column.
+	 *
+	 * @since  1.5
+	 * @access protected
+	 *
+	 * @return string Name of the primary column.
+	 */
+	protected function get_primary_column_name() {
+		return 'user';
 	}
 
 	/**
@@ -183,7 +192,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 			'user'   => esc_html__( 'Username', 'give' ),
 			'key'    => esc_html__( 'Public Key', 'give' ),
 			'token'  => esc_html__( 'Token', 'give' ),
-			'secret' => esc_html__( 'Secret Key', 'give' )
+			'secret' => esc_html__( 'Secret Key', 'give' ),
 		);
 
 		return $columns;
@@ -192,8 +201,9 @@ class Give_API_Keys_Table extends WP_List_Table {
 	/**
 	 * Generate the table navigation above or below the table
 	 *
-	 * @since 3.1.0
+	 * @since  3.1.0
 	 * @access protected
+	 *
 	 * @param string $which
 	 */
 	protected function display_tablenav( $which ) {
@@ -212,7 +222,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 			$this->pagination( $which );
 			?>
 
-			<br class="clear" />
+			<br class="clear"/>
 		</div>
 		<?php
 	}
@@ -222,7 +232,9 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.1
+	 *
 	 * @param  string $which
+	 *
 	 * @return void
 	 */
 	function bulk_actions( $which = '' ) {
@@ -264,7 +276,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 		$users = get_users( array(
 			'meta_value' => 'give_user_secret_key',
 			'number'     => $this->per_page,
-			'offset'     => $this->per_page * ( $this->get_paged() - 1 )
+			'offset'     => $this->per_page * ( $this->get_paged() - 1 ),
 		) );
 		$keys  = array();
 
@@ -314,7 +326,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 		$hidden   = array(); // No hidden columns
 		$sortable = array(); // Not sortable... for now
 
-		$this->_column_headers = array( $columns, $hidden, $sortable, 'id' );
+		$this->_column_headers = array( $columns, $hidden, $sortable );
 
 		$data = $this->query();
 
@@ -325,7 +337,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 		$this->set_pagination_args( array(
 				'total_items' => $total_items,
 				'per_page'    => $this->per_page,
-				'total_pages' => ceil( $total_items / $this->per_page )
+				'total_pages' => ceil( $total_items / $this->per_page ),
 			)
 		);
 	}

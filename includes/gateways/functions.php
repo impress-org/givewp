@@ -24,12 +24,12 @@ function give_get_payment_gateways() {
 	// Default, built-in gateways
 	$gateways = array(
 		'paypal' => array(
-			'admin_label'    => esc_html__( 'PayPal Standard', 'give' ),
-			'checkout_label' => esc_html__( 'PayPal', 'give' ),
+			'admin_label'    => __( 'PayPal Standard', 'give' ),
+			'checkout_label' => __( 'PayPal', 'give' ),
 		),
 		'manual' => array(
-			'admin_label'    => esc_html__( 'Test Donation', 'give' ),
-			'checkout_label' => esc_html__( 'Test Donation', 'give' )
+			'admin_label'    => __( 'Test Donation', 'give' ),
+			'checkout_label' => __( 'Test Donation', 'give' )
 		),
 	);
 
@@ -40,10 +40,13 @@ function give_get_payment_gateways() {
 /**
  * Returns a list of all enabled gateways.
  *
- * @since 1.0
+ * @since  1.0
+ *
+ * @param  int $form_id Form ID
+ *
  * @return array $gateway_list All the available gateways
  */
-function give_get_enabled_payment_gateways() {
+function give_get_enabled_payment_gateways( $form_id = 0 ) {
 
 	$gateways = give_get_payment_gateways();
 
@@ -60,7 +63,7 @@ function give_get_enabled_payment_gateways() {
 	// Set order of payment gateway in list.
 	$gateway_list = give_get_ordered_payment_gateways( $gateway_list );
 
-	return apply_filters( 'give_enabled_payment_gateways', $gateway_list );
+	return apply_filters( 'give_enabled_payment_gateways', $gateway_list, $form_id );
 }
 
 /**
@@ -95,12 +98,12 @@ function give_get_default_gateway( $form_id ) {
 	$default      = isset( $give_options['default_gateway'] ) && give_is_gateway_active( $give_options['default_gateway'] ) ? $give_options['default_gateway'] : 'paypal';
 	$form_default = get_post_meta( $form_id, '_give_default_gateway', true );
 
-	//Single Form settings varies compared to the Global default settings.
+	// Single Form settings varies compared to the Global default settings.
 	if ( ! empty( $form_default ) &&
-	     $form_id !== null &&
-	     $default !== $form_default &&
-	     $form_default !== 'global' &&
-	     give_is_gateway_active( $form_default )
+		 $form_id !== null &&
+		 $default !== $form_default &&
+		 $form_default !== 'global' &&
+		 give_is_gateway_active( $form_default )
 	) {
 		$default = $form_default;
 	}
@@ -124,7 +127,7 @@ function give_get_gateway_admin_label( $gateway ) {
 
 	if ( $gateway == 'manual' && $payment ) {
 		if ( give_get_payment_amount( $payment ) == 0 ) {
-			$label = esc_html__( 'Test Donation', 'give' );
+			$label = __( 'Test Donation', 'give' );
 		}
 	}
 
@@ -145,7 +148,7 @@ function give_get_gateway_checkout_label( $gateway ) {
 	$label    = isset( $gateways[ $gateway ] ) ? $gateways[ $gateway ]['checkout_label'] : $gateway;
 
 	if ( $gateway == 'manual' ) {
-		$label = esc_html__( 'Test Donation', 'give' );
+		$label = __( 'Test Donation', 'give' );
 	}
 
 	return apply_filters( 'give_gateway_checkout_label', $label, $gateway );
@@ -208,7 +211,7 @@ function give_get_chosen_gateway( $form_id ) {
 
 	$request_form_id = isset( $_REQUEST['give_form_id'] ) ? $_REQUEST['give_form_id'] : 0;
 
-	//Back to check if 'form-id' is present.
+	// Back to check if 'form-id' is present.
 	if ( empty( $request_form_id ) ) {
 		$request_form_id = isset( $_REQUEST['form-id'] ) ? $_REQUEST['form-id'] : 0;
 	}
@@ -216,11 +219,11 @@ function give_get_chosen_gateway( $form_id ) {
 	$request_payment_mode = isset( $_REQUEST['payment-mode'] ) ? $_REQUEST['payment-mode'] : '';
 	$chosen               = false;
 
-	//If both 'payment-mode' and 'form-id' then set for only this form.
+	// If both 'payment-mode' and 'form-id' then set for only this form.
 	if ( ! empty( $request_form_id ) && $form_id == $request_form_id ) {
 		$chosen = $request_payment_mode;
 	} elseif ( empty( $request_form_id ) && $request_payment_mode ) {
-		//If no 'form-id' but there is 'payment-mode'.
+		// If no 'form-id' but there is 'payment-mode'.
 		$chosen = $request_payment_mode;
 	}
 
@@ -272,7 +275,7 @@ function give_count_sales_by_gateway( $gateway_id = 'paypal', $status = 'publish
 		'nopaging'    => true,
 		'post_type'   => 'give_payment',
 		'post_status' => $status,
-		'fields'      => 'ids'
+		'fields'      => 'ids',
 	);
 
 	$payments = new WP_Query( $args );
@@ -296,7 +299,7 @@ function give_count_sales_by_gateway( $gateway_id = 'paypal', $status = 'publish
  */
 function give_get_ordered_payment_gateways( $gateways ) {
 
-	//  Get gateways setting.
+	// Get gateways setting.
 	$gateways_setting = isset( $_POST['gateways'] ) ? $_POST['gateways'] : give_get_option( 'gateways' );
 
 	// Return from here if we do not have gateways setting.

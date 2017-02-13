@@ -16,6 +16,15 @@
   .inside {
     padding-top: 0;
     padding-bottom: 0;
+
+    /* counteract extra padding in Income Report graph */
+    .give_forms_page_give-reports & {
+      padding-left: 0;
+    }
+
+    #give-graphs-filter {
+      float:none;
+    }
   }
 
   .postbox {
@@ -26,19 +35,8 @@
     clear: none;
   }
 
-  #give-graphs-filter {
-    .tablenav {
-      margin: 0;
-      .actions {
-        padding: 0;
-      }
-    }
-  }
-
   #give-date-range-options {
-    clear: both;
-    overflow: hidden;
-    padding: 8px 0;
+    float: left;
 
     > span {
       float: left;
@@ -47,18 +45,20 @@
       padding: 0 5px 0 0;
     }
 
-    #give-graphs-year-end {
-      margin-right: 0;
+  }
+
+}
+
+
+#give-graphs-filter {
+  float:right;
+
+  .tablenav {
+    margin: 0 0 0 17px;
+    .actions {
+      padding: 0;
     }
-
   }
-
-  a.give-refresh-reports-button {
-    display: inline-block;
-    clear: right;
-    margin: 8px 0 0;
-  }
-
 }
 
 //---------------------------------------------------------
@@ -186,7 +186,7 @@ body.give_forms_page_give-reports table.export-options-table {
 #export-donor-options-wrap {
   p {
     padding: 20px 0 0;
-    margin:0;
+    margin: 0;
     font-weight: bold;
   }
   ul {
@@ -194,11 +194,11 @@ body.give_forms_page_give-reports table.export-options-table {
     overflow: hidden;
 
     li {
-	  margin: 0;
+      margin: 0;
       padding: 0 5px 5px 0;
-      box-sizing:border-box;
-      float:left;
-      width:33%;
+      box-sizing: border-box;
+      float: left;
+      width: 33%;
     }
   }
 
@@ -316,7 +316,6 @@ body.give_forms_page_give-reports table.export-options-table {
 //---------------------------------------------------------
 //Table List Styles
 //---------------------------------------------------------
-
 
 table.give-table {
 

@@ -1,0 +1,98 @@
+/**
+ * Give System Info SCSS
+ *
+ * @description System Info Styles
+ * @package     Give
+ * @subpackage  SCSS/Admin
+ * @copyright   Copyright (c) 2016, WordImpress
+ * @license     https://opensource.org/licenses/gpl-3.0/ GNU Public License
+ *
+ * The following code is a derivative work of the code from the WooCommerce
+ * plugin, which is licensed GPLv3. This code therefore is also licensed under
+ * the terms of the GNU Public License, version 3.
+ *
+ * Copyright (c) 2015 WooThemes
+ * Copyright (c) 2016 WordImpress, LLC
+*/
+
+.give-status-table {
+  margin-bottom: 1em;
+
+  h2 {
+    font-size: 14px;
+    margin: 0;
+  }
+
+  tr {
+    &:nth-child(2n) {
+      th,
+      td {
+        background: #fcfcfc;
+      }
+    }
+  }
+
+  th {
+    font-weight: 700;
+    padding: 9px;
+  }
+
+  td:first-child {
+    width: 33%;
+  }
+
+  td.help {
+    width: 1em;
+  }
+
+  td {
+    padding: 9px;
+    font-size: 1.1em;
+
+    mark {
+      background: transparent none;
+    }
+
+    mark.yes {
+      color: $green;
+    }
+
+    mark.no {
+      color: #999;
+    }
+
+    mark.error {
+      color: $red;
+    }
+
+    ul {
+      margin: 0;
+    }
+  }
+}
+
+.wrap div.give-debug-report-wrapper {
+  margin-top: 1em;
+}
+
+.give-debug-report {
+  display: none;
+  margin: 10px 0;
+  padding: 0;
+  position: relative;
+
+  textarea {
+    font-family: monospace;
+    width: 100%;
+    margin: 0;
+    height: 300px;
+    padding: 20px;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    resize: none;
+    font-size: 12px;
+    line-height: 20px;
+    outline: 0;
+  }
+}

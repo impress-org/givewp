@@ -30,3 +30,33 @@
   padding-right: 10px;
   padding-left: 10px;
 }
+
+/*=Admin Buttons w/ Icons
+--------------------------------------*/
+
+/* extends .wp-core-ui .button */
+.wp-core-ui .give-admin-button {
+  padding-left: 7px;
+  padding-right: 7px;
+}
+
+/* matches style of Add Media and Give Shortcodes buttons */
+.give-admin-button-icon {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  vertical-align: text-top;
+  margin: 0 2px;
+
+  &:before {
+    font: 400 18px/1 dashicons;
+    speak: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* specific DashIcon styles */
+  &-update:before {
+    content: "\f463";
+  }
+}

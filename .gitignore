@@ -6,6 +6,7 @@
 .sass-cache/*
 /bower
 /node_modules
+/vendor
 
 # Unit tests
 /tmp
