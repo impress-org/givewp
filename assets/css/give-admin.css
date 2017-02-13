@@ -1889,6 +1889,9 @@ h2.give-nav-tab-wrapper {
     .give-sub-nav-tab-wrapper nav.give-sub-nav-tab a:hover {
       background: #e5e5e5; }
 
+.give-sub-nav-tab-wrapper {
+  display: none; }
+
 #give-show-sub-nav {
   text-decoration: none;
   padding: 3px 5px;
