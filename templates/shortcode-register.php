@@ -2,8 +2,6 @@
 /**
  * This template is used to display the registration form with [give_register]
  */
-global $give_register_redirect;
-
 give_print_errors( 0 ); ?>
 
 <form id="give-register-form" class="give-form" action="" method="post">
