@@ -2,7 +2,6 @@
 /**
  * This template is used to display the login form with [give_login]
  */
-global $give_login_redirect, $give_logout_redirect;
 if ( ! is_user_logged_in() ) {
 
 	// Show any error messages after form submission
