@@ -79,14 +79,14 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'id'      => 'recaptcha_key',
 							'name'    => esc_html__( 'reCAPTCHA Site Key', 'give' ),
 							/* translators: %s: https://www.google.com/recaptcha/ */
-							'desc'    => sprintf( __( 'If you would like to prevent spam on the email access form navigate to <a href="%s" target="_blank">the reCAPTCHA website</a> and sign up for an API key. The reCAPTCHA uses Google\'s user-friendly single click verification method.', 'give' ), esc_url( 'http://docs.givewp.com/recaptcha' ) ),
+							'desc'    => sprintf( __( 'Please paste your reCAPTCHA site key here. <br />If you would like to prevent spam on the email access form navigate to <a href="%s" target="_blank">the reCAPTCHA website</a> and sign up for an API key. The reCAPTCHA uses Google\'s user-friendly single click verification method.', 'give' ), esc_url( 'http://docs.givewp.com/recaptcha' ) ),
 							'default' => '',
 							'type'    => 'text'
 						),
 						array(
 							'id'      => 'recaptcha_secret',
 							'name'    => esc_html__( 'reCAPTCHA Secret Key', 'give' ),
-							'desc'    => esc_html__( 'Please paste the reCAPTCHA secret key here from your manage reCAPTCHA API Keys panel.', 'give' ),
+							'desc'    => esc_html__( 'Please paste the reCAPTCHA secret key here from your  reCAPTCHA API Keys panel.', 'give' ),
 							'default' => '',
 							'type'    => 'text'
 						),
