@@ -55,7 +55,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 						array(
 							'id'      => 'email_template',
 							'name'    => esc_html__( 'Email Template', 'give' ),
-							'desc'    => esc_html__( 'Choose a template. Click "Save Changes" then "Preview Donation Receipt" to see the new template.', 'give' ),
+							'desc'    => esc_html__( 'Choose your template from the available registered template types.', 'give' ),
 							'type'    => 'select',
 							'options' => give_get_email_templates()
 						),
@@ -68,14 +68,14 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 						array(
 							'id'      => 'from_name',
 							'name'    => esc_html__( 'From Name', 'give' ),
-							'desc'    => esc_html__( 'The name which appears in the "From" field in donation receipt emails.', 'give' ),
+							'desc'    => esc_html__( 'The name which appears in the "From" field in all Give donation emails.', 'give' ),
 							'default' => get_bloginfo( 'name' ),
 							'type'    => 'text'
 						),
 						array(
 							'id'      => 'from_email',
 							'name'    => esc_html__( 'From Email', 'give' ),
-							'desc'    => esc_html__( 'Email to send donation receipts from. This will act as the "from" and "reply-to" address.', 'give' ),
+							'desc'    => esc_html__( 'Email address from which all Give emails are sent from. This will act as the "from" and "reply-to" email address.', 'give' ),
 							'default' => get_bloginfo( 'admin_email' ),
 							'type'    => 'text'
 						),
@@ -112,7 +112,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 							'name'    => esc_html__( 'Donation Receipt', 'give' ),
 							'desc'    => sprintf(
 							/* translators: %s: emails tags list */
-								esc_html__( 'Enter the email that is sent to users after completing a successful donation. HTML is accepted. Available template tags: %s', 'give' ),
+								__( 'Enter the email that is sent to users after completing a successful donation. HTML is accepted.<br /><strong>Available template tags:</strong> %s', 'give' ),
 								'<br/>'.give_get_emails_tags_list()
 							),
 							'type'    => 'wysiwyg',
@@ -142,7 +142,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 						array(
 							'id'      => 'admin_notices',
 							'name'    => esc_html__( 'Admin Notifications', 'give' ),
-							'desc'    => esc_html__( 'Check this box if you do not want to receive emails when new donations are made.', 'give' ),
+							'desc'    => esc_html__( 'Enable/Disable all admin notifications from Give completely.', 'give' ),
 							'type'    => 'radio_inline',
 							'default' => 'enabled',
 							'options' => array(
@@ -153,7 +153,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 						array(
 							'id'      => 'donation_notification_subject',
 							'name'    => esc_html__( 'Donation Notification Subject', 'give' ),
-							'desc'    => esc_html__( 'Enter the subject line for the donation notification email.', 'give' ),
+							'desc'    => esc_html__( 'Enter the subject line for the admin donation notification email.', 'give' ),
 							'type'    => 'text',
 							'default' => esc_attr__( 'New Donation - #{payment_id}', 'give' )
 						),
@@ -162,7 +162,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 							'name'    => esc_html__( 'Donation Notification', 'give' ),
 							'desc'    => sprintf(
 							/* translators: %s: emails tags list */
-								esc_html__( 'Enter the email that is sent to donation notification emails after completion of a donation. HTML is accepted. Available template tags: %s', 'give' ),
+								__( 'Enter the content of the email that is sent to notify an admin of a new donation. HTML is accepted. <br /><strong>Available template tags:</strong> %s', 'give' ),
 								'<br/>'.give_get_emails_tags_list()
 							),
 							'type'    => 'wysiwyg',
