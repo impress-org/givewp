@@ -54,17 +54,17 @@ Give's goal is to "Democratize Generosity". We want to make it easy for *everyon
 
 = Easy to Customize and Enhance =
 
-Give is built by [WordImpress](https://wordimpress.com "Visit the developers of Give - WordImpress"), our plugins are built from the ground up to be intuitive and easy to use. By following along with our [Getting Stated Guide](https://givewp.com/documentation/core/give-101/ "Give 101 - Getting started using Give to accept donations on WordPress"), setting up Give to accept donations on WordPress is simple and easy.
+Give is built by [WordImpress](https://wordimpress.com "Visit the developers of Give - WordImpress"), our plugins are built from the ground up to be intuitive and easy to use. By following along with our [Getting Stated Guide](http://docs.givewp.com/give101 "Give 101 - Getting started using Give to accept donations on WordPress"), setting up Give to accept donations on WordPress is simple and easy.
 
 Are you a developer? Give is fully extendable. We built in an advanced templating system similar to the ones found in many of WordPress' top plugins that makes customizing many of Give's frontend elements upgrade proof and extremely flexible. Run into some trouble? We're here to help! Along with the plugin is a support team that is dedicated, fast to respond, and always willing to squash bugs and help troubleshoot.
 
 Here's some great developer-oriented tutorials and docs to help you customize Give to your liking:
 
-* [Create Dramatic Donation Email Receipts](https://givewp.com/create-dramatic-donation-email-receipts/)
-* [Load a Whole Donation Form in a Popup](https://givewp.com/load-donation-form-popup-give/)
-* [Using the Give API to Create Charts with ChartJS](https://givewp.com/using-give-api-create-charts-chartjs/)
-* [Themeing with Give](https://givewp.com/documentation/developers/themeing-with-give/)
-* [How to Create Custom Form Fields](https://givewp.com/documentation/developers/how-to-create-custom-form-fields/)
+* [Create Dramatic Donation Email Receipts](http://docs.givewp.com/blog-email-templates)
+* [Populate Donor Info with One Click](http://docs.givewp.com/blog-auto-populate)
+* [Using the Give API to Create Charts with ChartJS](http://docs.givewp.com/blog-chartjs)
+* [Themeing with Give](http://docs.givewp.com/themeing)
+* [How to Create Custom Form Fields](http://docs.givewp.com/custom-fields)
 
 = Connect with Give =
 
@@ -116,7 +116,7 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 
 = Where can I learn more about how to use Give? =
 
-We have extensive documentation on installing and configuring Give [on our website](https://givewp.com/documentation/). We suggest starting with the [Give 101 article](https://givewp.com/documentation/core/give-101/).
+We have extensive documentation on installing and configuring Give [on our website](https://givewp.com/documentation/). We suggest starting with the [Give 101 article](http://docs.givewp.com/give101).
 
 = How can I get support for Give? =
 
