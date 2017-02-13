@@ -60,7 +60,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 						),
 						array(
 							'name' => esc_html__( 'PayPal Page Style', 'give' ),
-							'desc' => esc_html__( 'Enter the name of the page style to use, or leave blank to use the default.', 'give' ),
+							'desc' => esc_html__( 'Enter the name of the PayPal page style to use, or leave blank to use the default.', 'give' ),
 							'id'   => 'paypal_page_style',
 							'type' => 'text',
 						),
