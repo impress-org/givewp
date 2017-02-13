@@ -622,3 +622,5 @@ function give_estimated_monthly_stats() {
 
 	return maybe_unserialize( $estimated );
 }
+
+// @TODO: After release 1.8 Donations -> Reports generates with new setting api, so we can remove some old code from this file.
