@@ -186,6 +186,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Tweak: Links to shortcodes are now using offsite shortlinks that can be updated without a plugin update to prevent 404s due to doc structure changes. [#1405](https://github.com/WordImpress/Give/issues/1405)
 * Fix: "Export Donors" creating multiple instances of the same donor. [#1426](https://github.com/WordImpress/Give/issues/1426)
 * Fix: Show "untitled donation form" as the default title for untitled forms in the admin. [#1276](https://github.com/WordImpress/Give/issues/1276)
+* Fix: Show correct donor count on donor listing page. [#1497](https://github.com/WordImpress/Give/issues/1497)
 
 = 1.7.2: December 21, 2016 =
 * Fix: The login within the donation form doesn't refresh due to a bug introduced in 1.7 - it's now fixed and working properly again. [#1341](https://github.com/WordImpress/Give/issues/1341)
