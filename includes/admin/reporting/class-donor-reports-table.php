@@ -299,6 +299,8 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 			$args['email'] = $search;
 		} elseif ( is_numeric( $search ) ) {
 			$args['id'] = $search;
+		} else {
+			$args['name'] = $search;
 		}
 
 		$donors = Give()->customers->get_customers( $args );
