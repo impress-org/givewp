@@ -271,28 +271,10 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	public function reports_data() {
 		global $wpdb;
 
-		$data    = array();
-		$paged   = $this->get_paged();
-		$offset  = $this->per_page * ( $paged - 1 );
-		$search  = $this->get_search();
-		$order   = isset( $_GET['order'] ) ? sanitize_text_field( $_GET['order'] ) : 'DESC';
-		$orderby = isset( $_GET['orderby'] ) ? sanitize_text_field( $_GET['orderby'] ) : 'id';
+		$data = array();
 
-		$args = array(
-			'number'  => $this->per_page,
-			'offset'  => $offset,
-			'order'   => $order,
-			'orderby' => $orderby
-		);
-
-		if ( is_email( $search ) ) {
-			$args['email'] = $search;
-		} elseif ( is_numeric( $search ) ) {
-			$args['id'] = $search;
-		} else {
-			$args['name'] = $search;
-		}
-
+		// Get donor query.
+		$args      = $this->get_donor_query();
 		$customers = Give()->customers->get_customers( $args );
 
 		if ( $customers ) {
@@ -317,6 +299,56 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	}
 
 	/**
+	 * Get donor count.
+	 *
+	 * @since 1.8.1
+	 * @access private
+	 */
+	private function get_donor_count() {
+		// Get donor query.
+		$_donor_query = $this->get_donor_query();
+
+		$_donor_query['number'] = -1;
+		$donors = Give()->customers->get_customers( $_donor_query );
+
+		return count( $donors );
+	}
+
+	/**
+	 * Get donor query.
+	 *
+	 * @since  1.8.1
+	 * @access public
+	 * @return array
+	 */
+	public function get_donor_query() {
+		$paged   = $this->get_paged();
+		$offset  = $this->per_page * ( $paged - 1 );
+		$search  = $this->get_search();
+		$order   = isset( $_GET['order'] ) ? sanitize_text_field( $_GET['order'] ) : 'DESC';
+		$orderby = isset( $_GET['orderby'] ) ? sanitize_text_field( $_GET['orderby'] ) : 'id';
+
+		$args = array(
+			'number'  => $this->per_page,
+			'offset'  => $offset,
+			'order'   => $order,
+			'orderby' => $orderby,
+		);
+
+		if( $search ) {
+			if ( is_email( $search ) ) {
+				$args['email'] = $search;
+			} elseif ( is_numeric( $search ) ) {
+				$args['id'] = $search;
+			} else {
+				$args['name'] = $search;
+			}
+		}
+
+		return $args;
+	}
+
+	/**
 	 * Setup the final data for the table.
 	 *
 	 * @access public
@@ -337,7 +369,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 
 		$this->items = $this->reports_data();
 
-		$this->total = give_count_total_customers();
+		$this->total = $this->get_donor_count();
 
 		$this->set_pagination_args( array(
 			'total_items' => $this->total,
