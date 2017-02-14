@@ -65,7 +65,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 		parent::__construct( array(
 			'singular' => esc_html__( 'Donor', 'give' ),     // Singular name of the listed records
 			'plural'   => esc_html__( 'Donors', 'give' ),    // Plural name of the listed records
-			'ajax'     => false                        // Does this table support ajax?
+			'ajax'     => false,// Does this table support ajax?
 		) );
 
 	}
@@ -155,10 +155,10 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 			</div>
 
 
-			<br class="clear" />
+			<br class="clear"/>
 
 		</div>
-	<?php
+		<?php
 	}
 
 	/**
@@ -173,16 +173,16 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 * @return string Column Name
 	 */
 	public function column_default( $item, $column_name ) {
-	    
+
 		switch ( $column_name ) {
 
 			case 'name' :
 				$name = '#' . $item['id'] . ' ';
 				$name .= ! empty( $item['name'] ) ? $item['name'] : '<em>' . esc_html__( 'Unnamed Donor', 'give' ) . '</em>';
 				$view_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $item['id'] );
-				$value = '<a href="' . esc_url( $view_url ) . '">' . $name . '</a>';
+				$value    = '<a href="' . esc_url( $view_url ) . '">' . $name . '</a>';
 				break;
-				
+
 			case 'num_donations' :
 				$value = '<a href="' .
 				         admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $item['email'] )
@@ -213,7 +213,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 			'name'          => esc_html__( 'Name', 'give' ),
 			'email'         => esc_html__( 'Email', 'give' ),
 			'num_donations' => esc_html__( 'Donations', 'give' ),
-			'amount_spent'  => esc_html__( 'Total Donated', 'give' )
+			'amount_spent'  => esc_html__( 'Total Donated', 'give' ),
 		);
 
 		return apply_filters( 'give_report_donor_columns', $columns );
@@ -292,7 +292,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 			'number'  => $this->per_page,
 			'offset'  => $offset,
 			'order'   => $order,
-			'orderby' => $orderby
+			'orderby' => $orderby,
 		);
 
 		if ( is_email( $search ) ) {
@@ -319,7 +319,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 					'name'          => $donor->name,
 					'email'         => $donor->email,
 					'num_donations' => $donor->purchase_count,
-					'amount_spent'  => $donor->purchase_value
+					'amount_spent'  => $donor->purchase_value,
 				);
 			}
 		}
@@ -353,7 +353,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 		$this->set_pagination_args( array(
 			'total_items' => $this->total,
 			'per_page'    => $this->per_page,
-			'total_pages' => ceil( $this->total / $this->per_page )
+			'total_pages' => ceil( $this->total / $this->per_page ),
 		) );
 	}
 }
