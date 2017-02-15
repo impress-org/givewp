@@ -43,7 +43,6 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 		$meta = array(
 			'give_price'               => '0.00',
 			'_give_price_option'       => 'multi',
-			'_give_price_options_mode' => 'on',
 			'_give_donation_levels'    => array_values( $_multi_level_donations ),
 			'give_product_notes'       => 'Donation Notes',
 			'_give_product_type'       => 'default'

@@ -100,7 +100,6 @@ class Give_Helper_Form extends WP_UnitTestCase {
 			'_give_set_price'          => '0.00', //Multi-level Pricing; not set
 			'_give_price_option'       => 'multi',
 			'_give_display_style'      => 'buttons',
-			'_give_price_options_mode' => 'on',
 			'_give_donation_levels'    => array_values( $_multi_level_donations ),
 			'_give_form_earnings'      => 120,
 			'_give_form_sales'         => 6,
