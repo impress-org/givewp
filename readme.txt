@@ -4,7 +4,7 @@ Donate link: https://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.2
 Tested up to: 4.7.2
-Stable tag: 1.8
+Stable tag: 1.8.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -163,6 +163,10 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 1.8.1 =
+* Fix: Issue with conditionals now using new give_is_setting_enabled() function. [#1498](https://github.com/WordImpress/Give/issues/1498)
+* Fix: Function is_single_price_mode() was not using the correct metakey and returning incorrectly. [#1500](https://github.com/WordImpress/Give/pull/1500)
 
 = 1.8 =
 * New: Enhanced admin UI provides easier donation form creation and settings organization overview. [#281](https://github.com/WordImpress/Give/issues/281), [#668](https://github.com/WordImpress/Give/issues/668)
