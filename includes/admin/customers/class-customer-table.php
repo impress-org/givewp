@@ -179,7 +179,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * @return array Array of all the sortable columns.
 	 */
 	public function get_sortable_columns() {
-	    
+
 		$columns = array(
 			'date_created'  => array( 'date_created', true ),
 			'name'          => array( 'name', true ),
@@ -265,15 +265,14 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Build all the reports data.
+	 * Retrieves the donor data from db.
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @global object $wpdb Used to query the database using the WordPress.
-	 *                      Database API
-	 * @return array $reports_data All the data for customer reports.
+     *
+	 * @return array $data The Donor data.
 	 */
-	public function reports_data() {
+	public function donor_data() {
 
 		$data = array();
 
@@ -371,7 +370,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 
-		$this->items = $this->reports_data();
+		$this->items = $this->donor_data();
 
 		$this->total = $this->get_donor_count();
 
