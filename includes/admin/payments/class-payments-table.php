@@ -130,7 +130,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Add donation serach filter.
+	 * Add donation search filter.
 	 *
 	 * @return void
 	 */
