@@ -27,7 +27,7 @@ function give_load_scripts() {
 
 	$js_dir         = GIVE_PLUGIN_URL . 'assets/js/frontend/';
 	$js_plugins     = GIVE_PLUGIN_URL . 'assets/js/plugins/';
-	$scripts_footer = ( give_get_option( 'scripts_footer' ) == 'on' ) ? true : false;
+	$scripts_footer = ( give_is_setting_enabled( give_get_option( 'scripts_footer' ) ) ) ? true : false;
 
 	// Use minified libraries if SCRIPT_DEBUG is turned off.
 	$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';

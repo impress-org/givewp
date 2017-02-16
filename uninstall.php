@@ -20,7 +20,7 @@ include_once( 'give.php' );
 global $wpdb, $wp_roles;
 
 
-if ( give_get_option( 'uninstall_on_delete' ) === 'on' ) {
+if ( give_is_setting_enabled( give_get_option( 'uninstall_on_delete' ) ) ) {
 
 	// Delete All the Custom Post Types.
 	$give_taxonomies = array( 'form_category', 'form_tag', 'give_log_type' );

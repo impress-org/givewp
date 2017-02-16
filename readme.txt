@@ -4,7 +4,7 @@ Donate link: https://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.2
 Tested up to: 4.7.2
-Stable tag: 1.8
+Stable tag: 1.8.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -164,6 +164,10 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 
 == Changelog ==
 
+= 1.8.1 =
+* Fix: Issue with conditionals now using new give_is_setting_enabled() function. [#1498](https://github.com/WordImpress/Give/issues/1498)
+* Fix: Function is_single_price_mode() was not using the correct metakey and returning incorrectly. [#1500](https://github.com/WordImpress/Give/pull/1500)
+
 = 1.8 =
 * New: Enhanced admin UI provides easier donation form creation and settings organization overview. [#281](https://github.com/WordImpress/Give/issues/281), [#668](https://github.com/WordImpress/Give/issues/668)
 * New: Display "Donate Now" buttons that open donation forms with the click of a button with the new button display mode. [#520](https://github.com/WordImpress/Give/issues/520)
@@ -186,6 +190,7 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 * Tweak: Links to shortcodes are now using offsite shortlinks that can be updated without a plugin update to prevent 404s due to doc structure changes. [#1405](https://github.com/WordImpress/Give/issues/1405)
 * Fix: "Export Donors" creating multiple instances of the same donor. [#1426](https://github.com/WordImpress/Give/issues/1426)
 * Fix: Show "untitled donation form" as the default title for untitled forms in the admin. [#1276](https://github.com/WordImpress/Give/issues/1276)
+* Fix: Show correct donor count on donor listing page. [#1497](https://github.com/WordImpress/Give/issues/1497)
 
 = 1.7.2: December 21, 2016 =
 * Fix: The login within the donation form doesn't refresh due to a bug introduced in 1.7 - it's now fixed and working properly again. [#1341](https://github.com/WordImpress/Give/issues/1341)

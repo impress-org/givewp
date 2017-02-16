@@ -70,7 +70,6 @@ class Tests_API extends Give_Unit_Test_Case {
 		$meta = array(
 			'give_price'               => '0.00',
 			'_give_price_option'       => 'multi',
-			'_give_price_options_mode' => 'on',
 			'_give_donation_levels'    => array_values( $_multi_level_donations ),
 			'_give_form_earnings'      => 120,
 			'_give_form_sales'         => 59,

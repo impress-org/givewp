@@ -114,7 +114,7 @@ class Give_Email_Access {
 		$is_enabled = give_get_option( 'email_access' );
 
 		//Non-logged in users only
-		if ( is_user_logged_in() || $is_enabled !== 'on' || is_admin() ) {
+		if ( is_user_logged_in() || give_is_setting_enabled( $is_enabled ) || is_admin() ) {
 			return;
 		}
 

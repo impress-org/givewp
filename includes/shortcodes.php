@@ -43,7 +43,7 @@ function give_donation_history() {
 
 		return ob_get_clean();
 	} //Is Email-based access enabled?
-	elseif ( $email_access == 'on' ) {
+	elseif ( give_is_setting_enabled( $email_access ) ) {
 
 		ob_start();
 		give_get_template_part( 'email', 'login-form' );
@@ -232,7 +232,7 @@ function give_receipt_shortcode( $atts ) {
 	$email_access = give_get_option( 'email_access' );
 
 	// No payment_key found & Email Access is Turned on:
-	if ( ! isset( $payment_key ) && $email_access == 'on' && ! Give()->email_access->token_exists ) {
+	if ( ! isset( $payment_key ) && give_is_setting_enabled( $email_access ) && ! Give()->email_access->token_exists ) {
 
 		ob_start();
 
@@ -250,7 +250,7 @@ function give_receipt_shortcode( $atts ) {
 	$user_can_view = give_can_view_receipt( $payment_key );
 
 	// Key was provided, but user is logged out. Offer them the ability to login and view the receipt.
-	if ( ! $user_can_view && $email_access == 'on' && ! Give()->email_access->token_exists ) {
+	if ( ! $user_can_view && give_is_setting_enabled( $email_access ) && ! Give()->email_access->token_exists ) {
 
 		ob_start();
 
