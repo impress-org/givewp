@@ -3,14 +3,14 @@
  * This template is used to display the donation history of the current user.
  */
 
-//User's Donations
+// User's Donations
 if ( is_user_logged_in() ) {
 	$donations = give_get_users_purchases( get_current_user_id(), 20, true, 'any' );
 } elseif ( Give()->email_access->token_exists ) {
-	//Email Access Token?
+	// Email Access Token?
 	$donations = give_get_users_purchases( 0, 20, true, 'any' );
 } elseif ( Give()->session->get_session_expiration() !== false ) {
-	//Session active?
+	// Session active?
 	$email     = Give()->session->get( 'give_email' );
 	$donations = give_get_users_purchases( $email, 20, true, 'any' );
 }
@@ -18,7 +18,7 @@ if ( is_user_logged_in() ) {
 if ( $donations ) : ?>
 	<table id="give_user_history" class="give-table">
 		<thead>
-		<tr class="give_purchase_row">
+		<tr class="give-donation-row">
 			<?php
 			/**
 			 * Fires in current user donation history table, before the header row start.
@@ -29,10 +29,10 @@ if ( $donations ) : ?>
 			 */
 			do_action( 'give_donation_history_header_before' );
 			?>
-			<th scope="col" class="give_purchase_id"><?php esc_html_e( 'ID', 'give' ); ?></th>
-			<th scope="col" class="give_purchase_date"><?php esc_html_e( 'Date', 'give' ); ?></th>
-			<th scope="col" class="give_purchase_amount"><?php esc_html_e( 'Amount', 'give' ); ?></th>
-			<th scope="col" class="give_purchase_details"><?php esc_html_e( 'Details', 'give' ); ?></th>
+			<th scope="col" class="give-donation-id"><?php esc_html_e( 'ID', 'give' ); ?></th>
+			<th scope="col" class="give-donation-date"><?php esc_html_e( 'Date', 'give' ); ?></th>
+			<th scope="col" class="give-donation-amount"><?php esc_html_e( 'Amount', 'give' ); ?></th>
+			<th scope="col" class="give-donation-details"><?php esc_html_e( 'Details', 'give' ); ?></th>
 			<?php
 			/**
 			 * Fires in current user donation history table, after the header row ends.
@@ -47,7 +47,7 @@ if ( $donations ) : ?>
 		</thead>
 		<?php foreach ( $donations as $post ) : setup_postdata( $post ); ?>
 			<?php $donation_data = give_get_payment_meta( $post->ID ); ?>
-			<tr class="give_purchase_row">
+			<tr class="give-donation-row">
 				<?php
 				/**
 				 * Fires in current user donation history table, before the row statrs.
@@ -61,16 +61,16 @@ if ( $donations ) : ?>
 				 */
 				do_action( 'give_donation_history_row_start', $post->ID, $donation_data );
 				?>
-				<td class="give_purchase_id">#<?php echo give_get_payment_number( $post->ID ); ?></td>
-				<td class="give_purchase_date"><?php echo date_i18n( give_date_format(), strtotime( get_post_field( 'post_date', $post->ID ) ) ); ?></td>
-				<td class="give_purchase_amount">
-					<span class="give_purchase_amount"><?php echo give_currency_filter( give_format_amount( give_get_payment_amount( $post->ID ) ) ); ?></span>
+				<td class="give-donation-id">#<?php echo give_get_payment_number( $post->ID ); ?></td>
+				<td class="give-donation-date"><?php echo date_i18n( give_date_format(), strtotime( get_post_field( 'post_date', $post->ID ) ) ); ?></td>
+				<td class="give-donation-amount">
+					<span class="give-donation-amount"><?php echo give_currency_filter( give_format_amount( give_get_payment_amount( $post->ID ) ) ); ?></span>
 				</td>
-				<td class="give_purchase_details">
+				<td class="give-donation-details">
 					<?php if ( $post->post_status != 'publish' && $post->post_status != 'subscription' ) : ?>
-						<a href="<?php echo esc_url( add_query_arg( 'payment_key', give_get_payment_key( $post->ID ), give_get_history_page_uri() ) ); ?>"><span class="give_purchase_status <?php echo $post->post_status; ?>"><?php echo give_get_payment_status( $post, true ); ?></span></a>
+						<a href="<?php echo esc_url( add_query_arg( 'payment_key', give_get_payment_key( $post->ID ), give_get_history_page_uri() ) ); ?>"><span class="give-donation-status <?php echo $post->post_status; ?>"><?php echo give_get_payment_status( $post, true ); ?></span></a>
 					<?php else: ?>
-						<a href="<?php echo esc_url( add_query_arg( 'payment_key', give_get_payment_key( $post->ID ), give_get_history_page_uri() ) ); ?>"><?php esc_html_e( 'View Receipt', 'give' ); ?></a>
+						<a href="<?php echo esc_url( add_query_arg( 'payment_key', give_get_payment_key( $post->ID ), give_get_history_page_uri() ) ); ?>"><?php esc_html_e( 'View Receipt &raquo;', 'give' ); ?></a>
 					<?php endif; ?>
 				</td>
 				<?php
@@ -89,7 +89,7 @@ if ( $donations ) : ?>
 			</tr>
 		<?php endforeach; ?>
 	</table>
-	<div id="give_purchase_history_pagination" class="give_pagination navigation">
+	<div id="give-donation-history-pagination" class="give_pagination navigation">
 		<?php
 		$big = 999999;
 		echo paginate_links( array(
