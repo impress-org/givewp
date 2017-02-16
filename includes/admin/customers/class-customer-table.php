@@ -75,7 +75,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param string $text Label for the search box.
+	 * @param string $text     Label for the search box.
 	 * @param string $input_id ID of the search box.
 	 *
 	 * @return void
@@ -90,11 +90,11 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 			echo '<input type="hidden" name="order" value="' . esc_attr( $_REQUEST['order'] ) . '" />';
 		}
 		?>
-		<p class="search-box" role="search">
-			<label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
-			<input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>"/>
+        <p class="search-box" role="search">
+            <label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
+            <input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>"/>
 			<?php submit_button( $text, 'button', false, false, array( 'ID' => 'search-submit' ) ); ?>
-		</p>
+        </p>
 		<?php
 	}
 
@@ -104,7 +104,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @param array  $item Contains all the data of the customers.
+	 * @param array  $item        Contains all the data of the customers.
 	 * @param string $column_name The name of the column.
 	 *
 	 * @return string Column Name.
@@ -232,9 +232,12 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Outputs the reporting views.
+	 * Outputs bulk reviews
 	 *
 	 * @access public
+	 *
+	 * @param $which
+	 *
 	 * @since  1.0
 	 * @return void
 	 */
@@ -269,7 +272,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
-     *
+	 *
 	 * @return array $data The Donor data.
 	 */
 	public function donor_data() {
@@ -298,21 +301,21 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 			}
 		}
 
-		return $data;
+		return apply_filters( 'give_donors_column_query_data', $data );
 	}
 
 	/**
 	 * Get donor count.
 	 *
-	 * @since 1.8.1
+	 * @since  1.8.1
 	 * @access private
 	 */
 	private function get_donor_count() {
 		// Get donor query.
 		$_donor_query = $this->get_donor_query();
 
-		$_donor_query['number'] = -1;
-		$donors = Give()->customers->get_customers( $_donor_query );
+		$_donor_query['number'] = - 1;
+		$donors                 = Give()->customers->get_customers( $_donor_query );
 
 		return count( $donors );
 	}
@@ -338,7 +341,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 			'orderby' => $orderby,
 		);
 
-		if( $search ) {
+		if ( $search ) {
 			if ( is_email( $search ) ) {
 				$args['email'] = $search;
 			} elseif ( is_numeric( $search ) ) {
