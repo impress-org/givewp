@@ -179,12 +179,15 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * @return array Array of all the sortable columns.
 	 */
 	public function get_sortable_columns() {
-		return array(
+	    
+		$columns = array(
 			'date_created'  => array( 'date_created', true ),
 			'name'          => array( 'name', true ),
 			'num_donations' => array( 'purchase_count', false ),
 			'amount_spent'  => array( 'purchase_value', false ),
 		);
+
+		return apply_filters( 'give_report_sortable_customer_columns', $columns );
 	}
 
 	/**
@@ -192,6 +195,8 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 *
 	 * @since  1.7
 	 * @access public
+	 *
+	 * @param $item
 	 *
 	 * @return array An array of action links.
 	 */
