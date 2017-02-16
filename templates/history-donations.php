@@ -68,10 +68,14 @@ if ( $donations ) : ?>
                     <span class="give-donation-amount"><?php echo give_currency_filter( give_format_amount( give_get_payment_amount( $post->ID ) ) ); ?></span>
                 </td>
                 <td class="give-donation-details">
-					<?php if ( $post->post_status != 'publish' && $post->post_status != 'subscription' ) : ?>
+					<?php
+					// Display View Receipt or
+					if ( 'publish' !== $post->post_status
+					     && 'subscription' !== $post->post_status
+					) : ?>
                         <a href="<?php echo esc_url( add_query_arg( 'payment_key', give_get_payment_key( $post->ID ), give_get_history_page_uri() ) ); ?>"><span
-                                    class="give-donation-status <?php echo $post->post_status; ?>"><?php echo give_get_payment_status( $post, true ); ?></span></a>
-					<?php else: ?>
+                                    class="give-donation-status <?php echo $post->post_status; ?>"><?php echo esc_html__( 'View', 'give' ) . ' ' . give_get_payment_status( $post, true ) . ' &raquo;'; ?></span></a>
+					<?php else : ?>
                         <a href="<?php echo esc_url( add_query_arg( 'payment_key', give_get_payment_key( $post->ID ), give_get_history_page_uri() ) ); ?>"><?php esc_html_e( 'View Receipt &raquo;', 'give' ); ?></a>
 					<?php endif; ?>
                 </td>
