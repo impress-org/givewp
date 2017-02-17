@@ -110,6 +110,7 @@ class Give_MetaBox_Form_Data {
 			'form_field_options'    => apply_filters( 'give_forms_field_options', array(
 				'id'     => 'form_field_options',
 				'title'  => esc_html__( 'Donation Options', 'give' ),
+				'icon-html' => '<span class="give-icon give-icon-heart"></span>',
 				'fields' => apply_filters( 'give_forms_donation_form_metabox_fields', array(
 					// Donation Option
 					array(
@@ -242,6 +243,7 @@ class Give_MetaBox_Form_Data {
 			'form_display_options'  => apply_filters( 'give_form_display_options', array(
 					'id'     => 'form_display_options',
 					'title'  => esc_html__( 'Form Display', 'give' ),
+					'icon-html' => '<span class="give-icon give-icon-display"></span>',
 					'fields' => apply_filters( 'give_forms_display_options_metabox_fields', array(
 						array(
 							'name'    => esc_html__( 'Display Options', 'give' ),
@@ -335,6 +337,7 @@ class Give_MetaBox_Form_Data {
 			'donation_goal_options' => apply_filters( 'give_donation_goal_options', array(
 				'id'     => 'donation_goal_options',
 				'title'  => esc_html__( 'Donation Goal', 'give' ),
+				'icon-html' => '<span class="give-icon give-icon-target"></span>',
 				'fields' => apply_filters( 'give_forms_donation_goal_metabox_fields', array(
 					// Goals
 					array(
@@ -417,6 +420,7 @@ class Give_MetaBox_Form_Data {
 			'form_content_options'  => apply_filters( 'give_forms_content_options', array(
 				'id'     => 'form_content_options',
 				'title'  => esc_html__( 'Form Content', 'give' ),
+				'icon-html' => '<span class="give-icon give-icon-edit"></span>',
 				'fields' => apply_filters( 'give_forms_content_options_metabox_fields', array(
 
 					// Donation content.
@@ -468,6 +472,7 @@ class Give_MetaBox_Form_Data {
 			'form_terms_options'    => apply_filters( 'give_forms_terms_options', array(
 				'id'     => 'form_terms_options',
 				'title'  => esc_html__( 'Terms & Conditions', 'give' ),
+				'icon-html' => '<span class="give-icon give-icon-checklist"></span>',
 				'fields' => apply_filters( 'give_forms_terms_options_metabox_fields', array(
 					// Donation Option
 					array(
@@ -1074,6 +1079,7 @@ class Give_MetaBox_Form_Data {
 			$settings['offline_donations_options'] = apply_filters( 'give_forms_offline_donations_options', array(
 				'id'     => 'offline_donations_options',
 				'title'  => esc_html__( 'Offline Donations', 'give' ),
+				'icon-html' => '<span class="give-icon give-icon-purse"></span>',
 				'fields' => apply_filters( 'give_forms_offline_donations_metabox_fields', array() ),
 			) );
 		}
