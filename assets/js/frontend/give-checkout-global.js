@@ -297,19 +297,12 @@ jQuery(function ($) {
 	 *
 	 */
 	doc.on('blur', '.give-donation-amount .give-text-input', function (e, $parent_form, donation_amount, price_id) {
-
-		var parent_form = (
-				$parent_form != undefined
-			) ? $parent_form : $(this).closest('form'),
+		var parent_form = ($parent_form != undefined) ? $parent_form : $(this).closest('form'),
 			pre_focus_amount = $(this).data('amount'),
-			this_value = (
-				donation_amount != undefined
-			) ? donation_amount : $(this).val(),
+			this_value = (donation_amount != undefined) ? donation_amount : $(this).val(),
 			$minimum_amount = parent_form.find('input[name="give-form-minimum"]'),
 			value_min = give_unformat_currency($minimum_amount.val()),
-			value_now = (
-				this_value == 0
-			) ? value_min : give_unformat_currency(this_value),
+			value_now = (this_value == 0) ? value_min : give_unformat_currency(this_value),
 			variable_prices = give_get_variable_prices($(this).parents('form')),
 			error_msg = '';
 
@@ -340,9 +333,10 @@ jQuery(function ($) {
 		$(this).val(formatted_total);
 
 		// Find price id with amount in variable prices.
-		if (variable_prices.length && !(
-				-1 < price_id
-			)) {
+		if (
+			variable_prices.length
+			&& !(-1 < price_id )
+		) {
 
 			// Find amount in donation levels.
 			$.each(variable_prices, function (index, variable_price) {
@@ -353,21 +347,19 @@ jQuery(function ($) {
 			});
 
 			// Set level to custom.
-			if (!(
-					-1 < price_id
-				) && (
-					value_min <= value_now
-				)) {
+			if (
+				!(-1 < price_id)
+				&& (value_min <= value_now)
+			) {
 				price_id = 'custom';
 			}
 		}
 
 		//Does this number have an accepted minimum value?
-		if ((
-				value_now < value_min || value_now < 1
-			) && (
-				-1 === price_id
-			)) {
+		if (
+			(value_now < value_min || value_now < 1)
+			&& (-1 === price_id)
+		) {
 
 			//It doesn't... Invalid Minimum
 			$(this).addClass('give-invalid-amount');
@@ -398,7 +390,6 @@ jQuery(function ($) {
 			parent_form.find('.give-submit').prop('disabled', false);
 
 		}
-
 
 		//If values don't match up then proceed with updating donation total value
 		if (pre_focus_amount !== value_now) {
@@ -508,6 +499,15 @@ jQuery(function ($) {
 		//update custom amount field
 		$parent_form.find('.give-amount-top').val(this_amount);
 		$parent_form.find('span.give-amount-top').text(this_amount);
+
+		// Cache previous amount and set data amount.
+		$('.give-donation-amount .give-text-input', $parent_form)
+			.data(
+				'amount',
+				give_unformat_currency(
+					$parent_form.find('.give-final-total-amount').data('total')
+				)
+			);
 
 		// Manually trigger blur event with two params:
 		// (a) form jquery object
