@@ -608,6 +608,7 @@ class Give_MetaBox_Form_Data {
 							$tab['sub-fields'][] = array(
 								'id'    => $sub_fields['id'],
 								'label' => $sub_fields['title'],
+								'icon-html' => ( ! empty( $sub_fields['icon-html'] ) ? $sub_fields['icon-html'] : '' ),
 							);
 						}
 					}
@@ -650,6 +651,11 @@ class Give_MetaBox_Form_Data {
 									<?php foreach ( $form_data_tab['sub-fields'] as $sub_tab ) : ?>
                                         <li class="<?php echo "{$sub_tab['id']}_tab"; ?>">
                                             <a href="#<?php echo $sub_tab['id']; ?>">
+	                                            <?php if ( ! empty( $sub_tab['icon-html'] ) ) : ?>
+		                                            <?php echo $sub_tab['icon-html']; ?>
+	                                            <?php else : ?>
+													<span class="give-icon give-icon-default"></span>
+	                                            <?php endif; ?>
                                                 <span class="give-label"><?php echo $sub_tab['label']; ?></span>
                                             </a>
                                         </li>
