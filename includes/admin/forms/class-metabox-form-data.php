@@ -592,6 +592,7 @@ class Give_MetaBox_Form_Data {
 				$tab = array(
 					'id'    => $setting['id'],
 					'label' => $setting['title'],
+					'icon-html' => ( ! empty( $setting['icon-html'] ) ? $setting['icon-html'] : '' ),
 				);
 
 				if ( $this->has_sub_tab( $setting ) ) {
@@ -631,13 +632,20 @@ class Give_MetaBox_Form_Data {
                 <ul class="give-form-data-tabs give-metabox-tabs">
 					<?php foreach ( $form_data_tabs as $index => $form_data_tab ) : ?>
                         <li class="<?php echo "{$form_data_tab['id']}_tab" . ( ! $index ? ' active' : '' ) . ( $this->has_sub_tab( $form_data_tab ) ? ' has-sub-fields' : '' ); ?>">
-                            <a href="#<?php echo $form_data_tab['id']; ?>"><span><?php echo $form_data_tab['label']; ?></span></a>
+                            <a href="#<?php echo $form_data_tab['id']; ?>">
+								<?php if ( ! empty( $form_data_tab['icon-html'] ) ) : ?>
+									<?php echo $form_data_tab['icon-html']; ?>
+								<?php else : ?>
+									<span class="give-icon give-icon-default"></span>
+								<?php endif; ?>
+								<span class="give-label"><?php echo $form_data_tab['label']; ?></span>
+							</a>
 							<?php if ( $this->has_sub_tab( $form_data_tab ) ) : ?>
                                 <ul class="give-metabox-sub-tabs give-hidden">
 									<?php foreach ( $form_data_tab['sub-fields'] as $sub_tab ) : ?>
                                         <li class="<?php echo "{$sub_tab['id']}_tab"; ?>">
                                             <a href="#<?php echo $sub_tab['id']; ?>">
-                                                <span><?php echo $sub_tab['label']; ?></span>
+                                                <span class="give-label"><?php echo $sub_tab['label']; ?></span>
                                             </a>
                                         </li>
 									<?php endforeach; ?>
