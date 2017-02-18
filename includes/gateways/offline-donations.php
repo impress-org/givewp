@@ -519,7 +519,7 @@ function give_get_offline_payment_instruction( $form_id, $wpautop = false ) {
 	$global_offline_instruction        = give_get_option( 'global_offline_donation_content' );
 	$offline_instructions              = $global_offline_instruction;
 
-	if ( $post_offline_customization_option == 'yes' ) {
+	if ( give_is_setting_enabled( $post_offline_customization_option ) ) {
 		$offline_instructions = $post_offline_instructions;
 	}
 
