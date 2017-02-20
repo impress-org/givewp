@@ -137,7 +137,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 						),
 						array(
 							'name'    => esc_html__( 'Offline Donation Email Instructions', 'give' ),
-							'desc'    => esc_html__( 'Enter the instructions you want emailed to the donor after they have submitted the donation form. Most likely this would include important information like mailing address and who to make the check out to.', 'give' ),
+							'desc'    => esc_html__( 'Enter the instructions you want emailed to the donor after they have submitted the donation form. Most likely this would include important information like mailing address and who to make the check out to.', 'give' ) . ' ' . __( 'Available template tags:', 'give' ) . give_get_emails_tags_list(),
 							'id'      => 'global_offline_donation_email',
 							'default' => give_get_default_offline_donation_email_content(),
 							'type'    => 'wysiwyg',
