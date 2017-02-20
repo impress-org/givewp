@@ -60,7 +60,7 @@ jQuery(document).ready(function ($) {
 		$.post(give_scripts.ajaxurl, data, function (checkout_response) {
 			//Show fields
 			$(this_form).find('[id^=give-checkout-login-register]').html($.parseJSON(checkout_response.fields));
-			$( 'input[name="give-gateway"]', this_form).append($.parseJSON(checkout_response.submit));
+			$( '#give-final-total-wrap', this_form).after($.parseJSON(checkout_response.submit));
 		}).done(function () {
 			// Trigger float-labels
 			give_fl_trigger();
