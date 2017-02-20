@@ -218,7 +218,7 @@ class Give_Emails {
 	 *
 	 * @param $message
 	 *
-	 * @return mixed|void
+	 * @return string
 	 */
 	public function build_email( $message ) {
 
