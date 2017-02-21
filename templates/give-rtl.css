@@ -2036,6 +2036,7 @@ Avada
  */
 form.floated-labels .floatlabel {
   position: relative; }
+  form.floated-labels .floatlabel input[type="text"], form.floated-labels .floatlabel input[type="tel"], form.floated-labels .floatlabel input[type="email"], form.floated-labels .floatlabel input[type="password"],
   form.floated-labels .floatlabel input,
   form.floated-labels .floatlabel select,
   form.floated-labels .floatlabel textarea {
