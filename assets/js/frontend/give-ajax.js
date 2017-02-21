@@ -33,7 +33,7 @@ jQuery(document).ready(function ($) {
 
 			//Clear form HTML and add AJAX response containing fields
 			$(this_form).find('[id^=give-checkout-login-register]').html(checkout_response);
-			$(this_form).find('.give-submit-button-wrap').remove();
+			$(this_form).find('.give-submit-button-wrap').hide();
 
 		}).done(function () {
 			// Hide the ajax loader
@@ -60,7 +60,7 @@ jQuery(document).ready(function ($) {
 		$.post(give_scripts.ajaxurl, data, function (checkout_response) {
 			//Show fields
 			$(this_form).find('[id^=give-checkout-login-register]').html($.parseJSON(checkout_response.fields));
-			$(this_form).find('input[type="submit"].give-submit').append($.parseJSON(checkout_response.submit));
+			$(this_form).find('.give-submit-button-wrap').show();
 		}).done(function () {
 			// Trigger float-labels
 			give_fl_trigger();
@@ -132,7 +132,7 @@ jQuery(document).ready(function ($) {
 	 *
 	 * @description: Process the donation submit
 	 */
-	$('body').on('click touchend', 'form.give-form input[type="submit"].give-submit', function (e) {
+	$('body').on('click touchend', 'form.give-form input[name="give-purchase"].give-submit', function (e) {
 
 		//this form object
 		var this_form = $(this).parents('form.give-form');
