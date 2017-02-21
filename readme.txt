@@ -4,7 +4,7 @@ Donate link: https://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.2
 Tested up to: 4.7.2
-Stable tag: 1.8.1
+Stable tag: 1.8.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -163,6 +163,16 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 1.8.2 =
+* New: A login field will show by default now if a non-logged in user attempts to view the donation history page without email access enabled. [#1485](https://github.com/WordImpress/Give/issues/1485)
+* New: Form Metabox API now has the ability to set a custom icon using HTML. [#1506](https://github.com/WordImpress/Give/issues/1506)
+* Fix: Offline Donations email edit field should have the available email tags listed beneath the editor. [#1516](https://github.com/WordImpress/Give/issues/1516)
+* Fix: Issue with new Metabox API where the TinyMCE WYSIWYG editor would have a height issue between the edit fields and the editor itself. [#1522](https://github.com/WordImpress/Give/issues/1522)
+* Fix: The donate button did not reappear if a visitor clicked to login on a donation form then cancelled. [#1482](https://github.com/WordImpress/Give/issues/1482)
+* Fix: Floating labels text fields would increase a few pixel in height when being completed. [#1511](https://github.com/WordImpress/Give/issues/1511)
+* Fix: If you select to override the default offline donation instructions on a donation form, the text does not change. [#1513](https://github.com/WordImpress/Give/issues/1513)
+* Fix: When rapidly clicking through donation levels it's possible to rend the final total donation amount incorrect. [#1502](https://github.com/WordImpress/Give/issues/1502)
 
 = 1.8.1 =
 * Fix: Issue with conditionals now using new give_is_setting_enabled() function. [#1498](https://github.com/WordImpress/Give/issues/1498)
