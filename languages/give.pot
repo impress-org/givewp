@@ -279,7 +279,7 @@ msgstr ""
 msgid "Payment Gateways"
 msgstr ""
 
-#: includes/admin/class-give-settings.php:197, includes/admin/forms/class-metabox-form-data.php:247, includes/admin/settings/class-settings-display.php:30
+#: includes/admin/class-give-settings.php:197, includes/admin/forms/class-metabox-form-data.php:249, includes/admin/settings/class-settings-display.php:30
 msgid "Display Options"
 msgstr ""
 
@@ -415,7 +415,7 @@ msgstr ""
 msgid "Enable your payment gateway. Can be ordered by dragging."
 msgstr ""
 
-#: includes/admin/class-give-settings.php:657, includes/admin/forms/class-metabox-form-data.php:278, includes/admin/settings/class-settings-gateways.php:187
+#: includes/admin/class-give-settings.php:657, includes/admin/forms/class-metabox-form-data.php:280, includes/admin/settings/class-settings-gateways.php:187
 msgid "Default Gateway"
 msgstr ""
 
@@ -467,7 +467,7 @@ msgstr ""
 msgid "If donations are not getting marked as complete, use a slightly less secure method of verifying donations."
 msgstr ""
 
-#: includes/admin/class-give-settings.php:739, includes/admin/forms/class-metabox-form-data.php:1068, includes/gateways/offline-donations.php:303, includes/gateways/offline-donations.php:361
+#: includes/admin/class-give-settings.php:739, includes/admin/forms/class-metabox-form-data.php:1087, includes/gateways/offline-donations.php:303, includes/gateways/offline-donations.php:361
 msgid "Offline Donations"
 msgstr ""
 
@@ -619,11 +619,11 @@ msgstr ""
 msgid "The label shown next to the agree to terms check box. Add your own to customize or leave blank to use the default text placeholder. Note: You can customize the label per form as needed."
 msgstr ""
 
-#: includes/admin/class-give-settings.php:1043, includes/admin/forms/class-metabox-form-data.php:493, includes/admin/settings/class-settings-display.php:251, includes/forms/template.php:1481, includes/forms/template.php:1486
+#: includes/admin/class-give-settings.php:1043, includes/admin/forms/class-metabox-form-data.php:498, includes/admin/settings/class-settings-display.php:251, includes/forms/template.php:1481, includes/forms/template.php:1486
 msgid "Agree to Terms?"
 msgstr ""
 
-#: includes/admin/class-give-settings.php:1053, includes/admin/forms/class-metabox-form-data.php:498, includes/admin/settings/class-settings-display.php:256
+#: includes/admin/class-give-settings.php:1053, includes/admin/forms/class-metabox-form-data.php:503, includes/admin/settings/class-settings-display.php:256
 msgid "Agreement Text"
 msgstr ""
 
@@ -955,27 +955,27 @@ msgstr ""
 msgid "Date Created"
 msgstr ""
 
-#: includes/admin/customers/class-customer-table.php:205
+#: includes/admin/customers/class-customer-table.php:210
 msgid "View \"%s\""
 msgstr ""
 
-#: includes/admin/customers/class-customer-table.php:206
+#: includes/admin/customers/class-customer-table.php:211
 msgid "View Donor"
 msgstr ""
 
-#: includes/admin/customers/class-customer-table.php:212
+#: includes/admin/customers/class-customer-table.php:217
 msgid "Notes for \"%s\""
 msgstr ""
 
-#: includes/admin/customers/class-customer-table.php:213, includes/admin/customers/customers.php:642
+#: includes/admin/customers/class-customer-table.php:218, includes/admin/customers/customers.php:642
 msgid "Notes"
 msgstr ""
 
-#: includes/admin/customers/class-customer-table.php:219
+#: includes/admin/customers/class-customer-table.php:224
 msgid "Delete \"%s\""
 msgstr ""
 
-#: includes/admin/customers/class-customer-table.php:220, includes/admin/payments/class-payments-table.php:462, includes/admin/payments/class-payments-table.php:554, includes/payments/functions.php:1633
+#: includes/admin/customers/class-customer-table.php:225, includes/admin/payments/class-payments-table.php:462, includes/admin/payments/class-payments-table.php:554, includes/payments/functions.php:1633
 msgid "Delete"
 msgstr ""
 
@@ -1115,7 +1115,7 @@ msgstr ""
 msgid "User ID:"
 msgstr ""
 
-#: includes/admin/customers/customers.php:268, includes/admin/forms/class-metabox-form-data.php:300, includes/class-give-html-elements.php:396, includes/forms/widget.php:192
+#: includes/admin/customers/customers.php:268, includes/admin/forms/class-metabox-form-data.php:302, includes/class-give-html-elements.php:396, includes/forms/widget.php:192
 msgid "None"
 msgstr ""
 
@@ -1197,11 +1197,11 @@ msgstr ""
 msgid "Recent Donations"
 msgstr ""
 
-#: includes/admin/customers/customers.php:501, includes/admin/forms/class-metabox-form-data.php:198, includes/admin/reporting/class-export.php:72, includes/admin/reporting/export/class-batch-export-forms.php:44, includes/admin/reporting/export/class-batch-export-payments.php:42, templates/history-donations.php:32
+#: includes/admin/customers/customers.php:501, includes/admin/forms/class-metabox-form-data.php:199, includes/admin/reporting/class-export.php:72, includes/admin/reporting/export/class-batch-export-forms.php:44, includes/admin/reporting/export/class-batch-export-payments.php:42, templates/history-donations.php:32
 msgid "ID"
 msgstr ""
 
-#: includes/admin/customers/customers.php:502, includes/admin/forms/class-metabox-form-data.php:203, includes/admin/forms/class-metabox-form-data.php:371, includes/admin/forms/dashboard-columns.php:38, includes/admin/payments/class-payments-table.php:276, includes/admin/reporting/export/class-batch-export-payments.php:55, templates/history-donations.php:34
+#: includes/admin/customers/customers.php:502, includes/admin/forms/class-metabox-form-data.php:204, includes/admin/forms/class-metabox-form-data.php:374, includes/admin/forms/dashboard-columns.php:38, includes/admin/payments/class-payments-table.php:276, includes/admin/reporting/export/class-batch-export-payments.php:55, templates/history-donations.php:34
 msgid "Amount"
 msgstr ""
 
@@ -1316,303 +1316,303 @@ msgstr ""
 msgid "Donation Form Options"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:112, includes/admin/forms/class-metabox-form-data.php:232
+#: includes/admin/forms/class-metabox-form-data.php:112, includes/admin/forms/class-metabox-form-data.php:233
 msgid "Donation Options"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:116
+#: includes/admin/forms/class-metabox-form-data.php:117
 msgid "Donation Option"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:117
+#: includes/admin/forms/class-metabox-form-data.php:118
 msgid "Do you want this form to have one set donation price or multiple levels (for example, $10, $20, $50)?"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:122, includes/admin/forms/class-metabox-form-data.php:127
+#: includes/admin/forms/class-metabox-form-data.php:123, includes/admin/forms/class-metabox-form-data.php:128
 msgid "Set Donation"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:123
+#: includes/admin/forms/class-metabox-form-data.php:124
 msgid "Multi-level Donation"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:128
+#: includes/admin/forms/class-metabox-form-data.php:129
 msgid "This is the set donation amount for this form. If you have a \"Custom Amount Minimum\" set, make sure it is less than this amount."
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:140
+#: includes/admin/forms/class-metabox-form-data.php:141
 msgid "Display Style"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:141
+#: includes/admin/forms/class-metabox-form-data.php:142
 msgid "Set how the donations levels will display on the form."
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:146
+#: includes/admin/forms/class-metabox-form-data.php:147
 msgid "Buttons"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:147
+#: includes/admin/forms/class-metabox-form-data.php:148
 msgid "Radios"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:148
+#: includes/admin/forms/class-metabox-form-data.php:149
 msgid "Dropdown"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:153, includes/gateways/paypal-standard.php:769, includes/gateways/paypal-standard.php:780, includes/payments/functions.php:1832
+#: includes/admin/forms/class-metabox-form-data.php:154, includes/gateways/paypal-standard.php:769, includes/gateways/paypal-standard.php:780, includes/payments/functions.php:1832
 msgid "Custom Amount"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:154
+#: includes/admin/forms/class-metabox-form-data.php:155
 msgid "Do you want the user to be able to input their own donation amount?"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:159, includes/admin/forms/class-metabox-form-data.php:290, includes/admin/forms/class-metabox-form-data.php:315, includes/admin/forms/class-metabox-form-data.php:347, includes/admin/forms/class-metabox-form-data.php:390, includes/admin/forms/class-metabox-form-data.php:429, includes/admin/settings/class-settings-advanced.php:75, includes/admin/settings/class-settings-display.php:62, includes/admin/settings/class-settings-display.php:74, includes/admin/settings/class-settings-display.php:86, includes/admin/settings/class-settings-display.php:117, includes/admin/settings/class-settings-display.php:128, includes/admin/settings/class-settings-display.php:139, includes/admin/settings/class-settings-display.php:150, includes/admin/settings/class-settings-display.php:169, includes/admin/settings/class-settings-display.php:200, includes/admin/settings/class-settings-display.php:211, includes/admin/settings/class-settings-display.php:242, includes/admin/settings/class-settings-email.php:149, includes/admin/settings/class-settings-gateways.php:85, includes/admin/settings/class-settings-gateways.php:117, includes/admin/settings/class-settings-gateways.php:176, includes/admin/settings/class-settings-general.php:74, includes/admin/tools/views/html-admin-page-system-info.php:421, includes/admin/tools/views/html-admin-page-system-info.php:494, includes/admin/tools/views/html-admin-page-system-info.php:499, includes/admin/tools/views/html-admin-page-system-info.php:514, includes/admin/tools/views/html-admin-page-system-info.php:519, includes/admin/tools/views/html-admin-page-system-info.php:540, includes/admin/tools/views/html-admin-page-system-info.php:545, includes/gateways/offline-donations.php:323
+#: includes/admin/forms/class-metabox-form-data.php:160, includes/admin/forms/class-metabox-form-data.php:292, includes/admin/forms/class-metabox-form-data.php:317, includes/admin/forms/class-metabox-form-data.php:350, includes/admin/forms/class-metabox-form-data.php:393, includes/admin/forms/class-metabox-form-data.php:433, includes/admin/settings/class-settings-advanced.php:75, includes/admin/settings/class-settings-display.php:62, includes/admin/settings/class-settings-display.php:74, includes/admin/settings/class-settings-display.php:86, includes/admin/settings/class-settings-display.php:117, includes/admin/settings/class-settings-display.php:128, includes/admin/settings/class-settings-display.php:139, includes/admin/settings/class-settings-display.php:150, includes/admin/settings/class-settings-display.php:169, includes/admin/settings/class-settings-display.php:200, includes/admin/settings/class-settings-display.php:211, includes/admin/settings/class-settings-display.php:242, includes/admin/settings/class-settings-email.php:149, includes/admin/settings/class-settings-gateways.php:85, includes/admin/settings/class-settings-gateways.php:117, includes/admin/settings/class-settings-gateways.php:176, includes/admin/settings/class-settings-general.php:74, includes/admin/tools/views/html-admin-page-system-info.php:421, includes/admin/tools/views/html-admin-page-system-info.php:494, includes/admin/tools/views/html-admin-page-system-info.php:499, includes/admin/tools/views/html-admin-page-system-info.php:514, includes/admin/tools/views/html-admin-page-system-info.php:519, includes/admin/tools/views/html-admin-page-system-info.php:540, includes/admin/tools/views/html-admin-page-system-info.php:545, includes/gateways/offline-donations.php:323
 msgid "Enabled"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:160, includes/admin/forms/class-metabox-form-data.php:291, includes/admin/forms/class-metabox-form-data.php:316, includes/admin/forms/class-metabox-form-data.php:348, includes/admin/forms/class-metabox-form-data.php:391, includes/admin/forms/class-metabox-form-data.php:430, includes/admin/settings/class-settings-advanced.php:76, includes/admin/settings/class-settings-display.php:63, includes/admin/settings/class-settings-display.php:75, includes/admin/settings/class-settings-display.php:87, includes/admin/settings/class-settings-display.php:118, includes/admin/settings/class-settings-display.php:129, includes/admin/settings/class-settings-display.php:140, includes/admin/settings/class-settings-display.php:151, includes/admin/settings/class-settings-display.php:170, includes/admin/settings/class-settings-display.php:201, includes/admin/settings/class-settings-display.php:212, includes/admin/settings/class-settings-display.php:243, includes/admin/settings/class-settings-email.php:150, includes/admin/settings/class-settings-gateways.php:86, includes/admin/settings/class-settings-gateways.php:118, includes/admin/settings/class-settings-gateways.php:177, includes/admin/settings/class-settings-general.php:75, includes/admin/tools/views/html-admin-page-system-info.php:421, includes/admin/tools/views/html-admin-page-system-info.php:494, includes/admin/tools/views/html-admin-page-system-info.php:499, includes/admin/tools/views/html-admin-page-system-info.php:514, includes/admin/tools/views/html-admin-page-system-info.php:519, includes/admin/tools/views/html-admin-page-system-info.php:540, includes/admin/tools/views/html-admin-page-system-info.php:545, includes/gateways/offline-donations.php:324
+#: includes/admin/forms/class-metabox-form-data.php:161, includes/admin/forms/class-metabox-form-data.php:293, includes/admin/forms/class-metabox-form-data.php:318, includes/admin/forms/class-metabox-form-data.php:351, includes/admin/forms/class-metabox-form-data.php:394, includes/admin/forms/class-metabox-form-data.php:434, includes/admin/settings/class-settings-advanced.php:76, includes/admin/settings/class-settings-display.php:63, includes/admin/settings/class-settings-display.php:75, includes/admin/settings/class-settings-display.php:87, includes/admin/settings/class-settings-display.php:118, includes/admin/settings/class-settings-display.php:129, includes/admin/settings/class-settings-display.php:140, includes/admin/settings/class-settings-display.php:151, includes/admin/settings/class-settings-display.php:170, includes/admin/settings/class-settings-display.php:201, includes/admin/settings/class-settings-display.php:212, includes/admin/settings/class-settings-display.php:243, includes/admin/settings/class-settings-email.php:150, includes/admin/settings/class-settings-gateways.php:86, includes/admin/settings/class-settings-gateways.php:118, includes/admin/settings/class-settings-gateways.php:177, includes/admin/settings/class-settings-general.php:75, includes/admin/tools/views/html-admin-page-system-info.php:421, includes/admin/tools/views/html-admin-page-system-info.php:494, includes/admin/tools/views/html-admin-page-system-info.php:499, includes/admin/tools/views/html-admin-page-system-info.php:514, includes/admin/tools/views/html-admin-page-system-info.php:519, includes/admin/tools/views/html-admin-page-system-info.php:540, includes/admin/tools/views/html-admin-page-system-info.php:545, includes/gateways/offline-donations.php:324
 msgid "Disabled"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:164
+#: includes/admin/forms/class-metabox-form-data.php:165
 msgid "Minimum Amount"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:165
+#: includes/admin/forms/class-metabox-form-data.php:166
 msgid "Enter the minimum custom donation amount."
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:176
+#: includes/admin/forms/class-metabox-form-data.php:177
 msgid "Custom Amount Text"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:177
+#: includes/admin/forms/class-metabox-form-data.php:178
 msgid "This text appears as a label below the custom amount field for set donation forms. For multi-level forms the text will appear as it's own level (ie button, radio, or select option)."
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:182, includes/forms/template.php:490
+#: includes/admin/forms/class-metabox-form-data.php:183, includes/forms/template.php:490
 msgid "Give a Custom Amount"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:190
+#: includes/admin/forms/class-metabox-form-data.php:191
 msgid "Add Level"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:191, includes/admin/forms/class-metabox-form-data.php:217
+#: includes/admin/forms/class-metabox-form-data.php:192, includes/admin/forms/class-metabox-form-data.php:218
 msgid "Donation Level"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:213
+#: includes/admin/forms/class-metabox-form-data.php:214
 msgid "Text"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:222, includes/admin/tools/views/html-admin-page-system-info.php:112
+#: includes/admin/forms/class-metabox-form-data.php:223, includes/admin/tools/views/html-admin-page-system-info.php:112
 msgid "Default"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:244, includes/admin/forms/class-metabox-form-data.php:324
+#: includes/admin/forms/class-metabox-form-data.php:245, includes/admin/forms/class-metabox-form-data.php:326
 msgid "Form Display"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:248
+#: includes/admin/forms/class-metabox-form-data.php:250
 msgid "How would you like to display donation information for this form?"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:252, includes/admin/shortcodes/shortcode-give-form.php:102, includes/forms/widget.php:164
+#: includes/admin/forms/class-metabox-form-data.php:254, includes/admin/shortcodes/shortcode-give-form.php:102, includes/forms/widget.php:164
 msgid "All Fields"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:253, includes/admin/shortcodes/shortcode-give-form.php:103, includes/forms/widget.php:166
+#: includes/admin/forms/class-metabox-form-data.php:255, includes/admin/shortcodes/shortcode-give-form.php:103, includes/forms/widget.php:166
 msgid "Modal"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:254, includes/admin/shortcodes/shortcode-give-form.php:104, includes/forms/widget.php:165
+#: includes/admin/forms/class-metabox-form-data.php:256, includes/admin/shortcodes/shortcode-give-form.php:104, includes/forms/widget.php:165
 msgid "Reveal"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:255, includes/admin/shortcodes/shortcode-give-form.php:105, includes/forms/widget.php:167
+#: includes/admin/forms/class-metabox-form-data.php:257, includes/admin/shortcodes/shortcode-give-form.php:105, includes/forms/widget.php:167
 msgid "Button"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:261
+#: includes/admin/forms/class-metabox-form-data.php:263
 msgid "Continue Button"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:262
+#: includes/admin/forms/class-metabox-form-data.php:264
 msgid "The button label for displaying the additional payment fields."
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:265, includes/admin/forms/class-metabox-form-data.php:274, includes/forms/template.php:609, includes/forms/template.php:1626
+#: includes/admin/forms/class-metabox-form-data.php:267, includes/admin/forms/class-metabox-form-data.php:276, includes/forms/template.php:609, includes/forms/template.php:1626
 msgid "Donate Now"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:270
+#: includes/admin/forms/class-metabox-form-data.php:272
 msgid "Submit Button"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:271
+#: includes/admin/forms/class-metabox-form-data.php:273
 msgid "The button label for completing a donation."
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:279
+#: includes/admin/forms/class-metabox-form-data.php:281
 msgid "By default, the gateway for this form will inherit the global default gateway (set under Give > Settings > Payment Gateways). This option allows you to customize the default gateway for this form only."
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:284
+#: includes/admin/forms/class-metabox-form-data.php:286
 msgid "Guest Donations"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:285
+#: includes/admin/forms/class-metabox-form-data.php:287
 msgid "Do you want to allow non-logged-in users to make donations?"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:295, includes/admin/forms/class-metabox-form-data.php:301
+#: includes/admin/forms/class-metabox-form-data.php:297, includes/admin/forms/class-metabox-form-data.php:303
 msgid "Registration"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:296
+#: includes/admin/forms/class-metabox-form-data.php:298
 msgid "Display the registration and login forms in the payment section for non-logged-in users."
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:302, includes/admin/shortcodes/shortcode-give-login.php:24, includes/admin/shortcodes/shortcode-give-login.php:25, includes/forms/template.php:1093, includes/forms/template.php:1301
+#: includes/admin/forms/class-metabox-form-data.php:304, includes/admin/shortcodes/shortcode-give-login.php:24, includes/admin/shortcodes/shortcode-give-login.php:25, includes/forms/template.php:1093, includes/forms/template.php:1301
 msgid "Login"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:303
+#: includes/admin/forms/class-metabox-form-data.php:305
 msgid "Registration + Login"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:308, includes/admin/settings/class-settings-display.php:67
+#: includes/admin/forms/class-metabox-form-data.php:310, includes/admin/settings/class-settings-display.php:67
 msgid "Floating Labels"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:310
+#: includes/admin/forms/class-metabox-form-data.php:312
 msgid "Select the <a href=\"%s\" target=\"_blank\">floating labels</a> setting for this Give form. Be aware that if you have the \"Disable CSS\" option enabled, you will need to style the floating labels yourself."
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:314, includes/admin/forms/class-metabox-form-data.php:479, includes/forms/widget.php:176, includes/gateways/offline-donations.php:309
+#: includes/admin/forms/class-metabox-form-data.php:316, includes/admin/forms/class-metabox-form-data.php:484, includes/forms/widget.php:176, includes/gateways/offline-donations.php:309
 msgid "Global Option"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:337, includes/admin/forms/class-metabox-form-data.php:341, includes/admin/forms/class-metabox-form-data.php:407
+#: includes/admin/forms/class-metabox-form-data.php:339, includes/admin/forms/class-metabox-form-data.php:344, includes/admin/forms/class-metabox-form-data.php:410
 msgid "Donation Goal"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:342
+#: includes/admin/forms/class-metabox-form-data.php:345
 msgid "Do you want to set a donation goal for this form?"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:352
+#: includes/admin/forms/class-metabox-form-data.php:355
 msgid "Goal Amount"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:353
+#: includes/admin/forms/class-metabox-form-data.php:356
 msgid "This is the monetary goal amount you want to reach for this form."
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:365
+#: includes/admin/forms/class-metabox-form-data.php:368
 msgid "Goal Format"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:366
+#: includes/admin/forms/class-metabox-form-data.php:369
 msgid "Do you want to display the total amount raised based on your monetary goal or a percentage? For instance, \"$500 of $1,000 raised\" or \"50% funded\"."
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:372
+#: includes/admin/forms/class-metabox-form-data.php:375
 msgid "Percentage"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:376
+#: includes/admin/forms/class-metabox-form-data.php:379
 msgid "Progress Bar Color"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:377
+#: includes/admin/forms/class-metabox-form-data.php:380
 msgid "Customize the color of the goal progress bar."
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:384
+#: includes/admin/forms/class-metabox-form-data.php:387
 msgid "Close Form"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:385
+#: includes/admin/forms/class-metabox-form-data.php:388
 msgid "Do you want to close the donation forms and stop accepting donations once this goal has been met?"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:395
+#: includes/admin/forms/class-metabox-form-data.php:398
 msgid "Goal Achieved Message"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:396
+#: includes/admin/forms/class-metabox-form-data.php:399
 msgid "Do you want to display a custom message when the goal is closed? If none is provided the default message will be displayed"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:400, includes/forms/template.php:90
+#: includes/admin/forms/class-metabox-form-data.php:403, includes/forms/template.php:90
 msgid "Thank you to all our donors, we have met our fundraising goal."
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:419, includes/admin/forms/class-metabox-form-data.php:458
+#: includes/admin/forms/class-metabox-form-data.php:422, includes/admin/forms/class-metabox-form-data.php:462
 msgid "Form Content"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:424
+#: includes/admin/forms/class-metabox-form-data.php:428
 msgid "Display Content"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:425
+#: includes/admin/forms/class-metabox-form-data.php:429
 msgid "Do you want to add custom content to this form?"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:437
+#: includes/admin/forms/class-metabox-form-data.php:441
 msgid "Content Placement"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:438
+#: includes/admin/forms/class-metabox-form-data.php:442
 msgid "This option controls where the content appears within the donation form."
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:442
+#: includes/admin/forms/class-metabox-form-data.php:446
 msgid "Above fields"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:443
+#: includes/admin/forms/class-metabox-form-data.php:447
 msgid "Below fields"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:449
+#: includes/admin/forms/class-metabox-form-data.php:453
 msgid "Content"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:450
+#: includes/admin/forms/class-metabox-form-data.php:454
 msgid "This content will display on the single give form page."
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:470, includes/admin/forms/class-metabox-form-data.php:474, includes/admin/forms/class-metabox-form-data.php:506
+#: includes/admin/forms/class-metabox-form-data.php:474, includes/admin/forms/class-metabox-form-data.php:479, includes/admin/forms/class-metabox-form-data.php:511
 msgid "Terms & Conditions"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:475
+#: includes/admin/forms/class-metabox-form-data.php:480
 msgid "Do you want to require the donor to accept terms prior to being able to complete their donation?"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:480, includes/gateways/offline-donations.php:310
+#: includes/admin/forms/class-metabox-form-data.php:485, includes/gateways/offline-donations.php:310
 msgid "Customize"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:481, includes/gateways/offline-donations.php:311
+#: includes/admin/forms/class-metabox-form-data.php:486, includes/gateways/offline-donations.php:311
 msgid "Disable"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:488
+#: includes/admin/forms/class-metabox-form-data.php:493
 msgid "Agreement Label"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:489
+#: includes/admin/forms/class-metabox-form-data.php:494
 msgid "The label shown next to the agree to terms check box. Add your own to customize or leave blank to use the default text placeholder."
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:499
+#: includes/admin/forms/class-metabox-form-data.php:504
 msgid "This is the actual text which the user will have to agree to in order to make a donation."
 msgstr ""
 
@@ -2822,6 +2822,10 @@ msgstr ""
 
 #: includes/admin/settings/class-settings-gateways.php:93
 msgid "PayPal Standard Gateway Settings"
+msgstr ""
+
+#: includes/admin/settings/class-settings-gateways.php:140, includes/gateways/offline-donations.php:349
+msgid "Available template tags:"
 msgstr ""
 
 #: includes/admin/settings/class-settings-gateways.php:149
@@ -6806,35 +6810,35 @@ msgstr ""
 msgid "You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with."
 msgstr ""
 
-#: includes/shortcodes.php:119
+#: includes/shortcodes.php:121
 msgid "The shortcode is missing Donation Form ID attribute."
 msgstr ""
 
-#: includes/shortcodes.php:125
+#: includes/shortcodes.php:127
 msgid "The form does not have Goals enabled."
 msgstr ""
 
-#: includes/shortcodes.php:209
+#: includes/shortcodes.php:211
 msgid "You are missing the payment key to view this donation receipt."
 msgstr ""
 
-#: includes/shortcodes.php:269
+#: includes/shortcodes.php:271
 msgid "You must be logged in to view this donation receipt."
 msgstr ""
 
-#: includes/shortcodes.php:398
+#: includes/shortcodes.php:400
 msgid "The passwords you entered do not match. Please try again."
 msgstr ""
 
-#: includes/shortcodes.php:406
+#: includes/shortcodes.php:408
 msgid "The email you entered is empty."
 msgstr ""
 
-#: includes/shortcodes.php:410
+#: includes/shortcodes.php:412
 msgid "The email you entered is not valid. Please use another"
 msgstr ""
 
-#: includes/shortcodes.php:415
+#: includes/shortcodes.php:417
 msgid "The email you entered belongs to another user. Please use another."
 msgstr ""
 
@@ -6922,11 +6926,15 @@ msgstr ""
 msgid "An email with an access link has been sent to %s."
 msgstr ""
 
-#: templates/history-donations.php:73
-msgid "View Receipt"
+#: templates/history-donations.php:77
+msgid "View"
 msgstr ""
 
-#: templates/history-donations.php:105
+#: templates/history-donations.php:79
+msgid "View Receipt &raquo;"
+msgstr ""
+
+#: templates/history-donations.php:111
 msgid "It looks like you haven't made any donations."
 msgstr ""
 

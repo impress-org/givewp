@@ -52,6 +52,8 @@ function give_donation_history() {
 	} else {
 		$message = esc_html__( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' );
 		echo apply_filters( 'give_donation_history_nonuser_message', give_output_error( $message, false ), $message );
+		echo do_shortcode( '[give_login]' );
+
 	}
 }
 

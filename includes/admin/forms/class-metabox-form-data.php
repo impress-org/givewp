@@ -108,9 +108,10 @@ class Give_MetaBox_Form_Data {
 			 * Repeatable Field Groups
 			 */
 			'form_field_options'    => apply_filters( 'give_forms_field_options', array(
-				'id'     => 'form_field_options',
-				'title'  => esc_html__( 'Donation Options', 'give' ),
-				'fields' => apply_filters( 'give_forms_donation_form_metabox_fields', array(
+				'id'        => 'form_field_options',
+				'title'     => esc_html__( 'Donation Options', 'give' ),
+				'icon-html' => '<span class="give-icon give-icon-heart"></span>',
+				'fields'    => apply_filters( 'give_forms_donation_form_metabox_fields', array(
 					// Donation Option
 					array(
 						'name'        => esc_html__( 'Donation Option', 'give' ),
@@ -176,7 +177,7 @@ class Give_MetaBox_Form_Data {
 						'name'        => esc_html__( 'Custom Amount Text', 'give' ),
 						'description' => esc_html__( 'This text appears as a label below the custom amount field for set donation forms. For multi-level forms the text will appear as it\'s own level (ie button, radio, or select option).', 'give' ),
 						'id'          => $prefix . 'custom_amount_text',
-						'type'        => 'text',
+						'type'        => 'text_medium',
 						'attributes'  => array(
 							'rows'        => 3,
 							'placeholder' => esc_attr__( 'Give a Custom Amount', 'give' ),
@@ -240,9 +241,10 @@ class Give_MetaBox_Form_Data {
 			 * Display Options
 			 */
 			'form_display_options'  => apply_filters( 'give_form_display_options', array(
-					'id'     => 'form_display_options',
-					'title'  => esc_html__( 'Form Display', 'give' ),
-					'fields' => apply_filters( 'give_forms_display_options_metabox_fields', array(
+					'id'        => 'form_display_options',
+					'title'     => esc_html__( 'Form Display', 'give' ),
+					'icon-html' => '<span class="give-icon give-icon-display"></span>',
+					'fields'    => apply_filters( 'give_forms_display_options_metabox_fields', array(
 						array(
 							'name'    => esc_html__( 'Display Options', 'give' ),
 							'desc'    => sprintf( __( 'How would you like to display donation information for this form?', 'give' ), '#' ),
@@ -333,9 +335,10 @@ class Give_MetaBox_Form_Data {
 			 * Donation Goals
 			 */
 			'donation_goal_options' => apply_filters( 'give_donation_goal_options', array(
-				'id'     => 'donation_goal_options',
-				'title'  => esc_html__( 'Donation Goal', 'give' ),
-				'fields' => apply_filters( 'give_forms_donation_goal_metabox_fields', array(
+				'id'        => 'donation_goal_options',
+				'title'     => esc_html__( 'Donation Goal', 'give' ),
+				'icon-html' => '<span class="give-icon give-icon-target"></span>',
+				'fields'    => apply_filters( 'give_forms_donation_goal_metabox_fields', array(
 					// Goals
 					array(
 						'name'        => esc_html__( 'Donation Goal', 'give' ),
@@ -415,9 +418,10 @@ class Give_MetaBox_Form_Data {
 			 * Content Field
 			 */
 			'form_content_options'  => apply_filters( 'give_forms_content_options', array(
-				'id'     => 'form_content_options',
-				'title'  => esc_html__( 'Form Content', 'give' ),
-				'fields' => apply_filters( 'give_forms_content_options_metabox_fields', array(
+				'id'        => 'form_content_options',
+				'title'     => esc_html__( 'Form Content', 'give' ),
+				'icon-html' => '<span class="give-icon give-icon-edit"></span>',
+				'fields'    => apply_filters( 'give_forms_content_options_metabox_fields', array(
 
 					// Donation content.
 					array(
@@ -466,9 +470,10 @@ class Give_MetaBox_Form_Data {
 			 * Terms & Conditions
 			 */
 			'form_terms_options'    => apply_filters( 'give_forms_terms_options', array(
-				'id'     => 'form_terms_options',
-				'title'  => esc_html__( 'Terms & Conditions', 'give' ),
-				'fields' => apply_filters( 'give_forms_terms_options_metabox_fields', array(
+				'id'        => 'form_terms_options',
+				'title'     => esc_html__( 'Terms & Conditions', 'give' ),
+				'icon-html' => '<span class="give-icon give-icon-checklist"></span>',
+				'fields'    => apply_filters( 'give_forms_terms_options_metabox_fields', array(
 					// Donation Option
 					array(
 						'name'        => esc_html__( 'Terms & Conditions', 'give' ),
@@ -590,8 +595,9 @@ class Give_MetaBox_Form_Data {
 					continue;
 				}
 				$tab = array(
-					'id'    => $setting['id'],
-					'label' => $setting['title'],
+					'id'        => $setting['id'],
+					'label'     => $setting['title'],
+					'icon-html' => ( ! empty( $setting['icon-html'] ) ? $setting['icon-html'] : '' ),
 				);
 
 				if ( $this->has_sub_tab( $setting ) ) {
@@ -600,8 +606,9 @@ class Give_MetaBox_Form_Data {
 					} else {
 						foreach ( $setting['sub-fields'] as $sub_fields ) {
 							$tab['sub-fields'][] = array(
-								'id'    => $sub_fields['id'],
-								'label' => $sub_fields['title'],
+								'id'        => $sub_fields['id'],
+								'label'     => $sub_fields['title'],
+								'icon-html' => ( ! empty( $sub_fields['icon-html'] ) ? $sub_fields['icon-html'] : '' ),
 							);
 						}
 					}
@@ -627,60 +634,72 @@ class Give_MetaBox_Form_Data {
 		if ( $form_data_tabs = $this->get_tabs() ) {
 			wp_nonce_field( 'give_save_form_meta', 'give_form_meta_nonce' );
 			?>
-            <div class="give-metabox-panel-wrap">
-                <ul class="give-form-data-tabs give-metabox-tabs">
+			<div class="give-metabox-panel-wrap">
+				<ul class="give-form-data-tabs give-metabox-tabs">
 					<?php foreach ( $form_data_tabs as $index => $form_data_tab ) : ?>
-                        <li class="<?php echo "{$form_data_tab['id']}_tab" . ( ! $index ? ' active' : '' ) . ( $this->has_sub_tab( $form_data_tab ) ? ' has-sub-fields' : '' ); ?>">
-                            <a href="#<?php echo $form_data_tab['id']; ?>"><span><?php echo $form_data_tab['label']; ?></span></a>
+						<li class="<?php echo "{$form_data_tab['id']}_tab" . ( ! $index ? ' active' : '' ) . ( $this->has_sub_tab( $form_data_tab ) ? ' has-sub-fields' : '' ); ?>">
+							<a href="#<?php echo $form_data_tab['id']; ?>">
+								<?php if ( ! empty( $form_data_tab['icon-html'] ) ) : ?>
+									<?php echo $form_data_tab['icon-html']; ?>
+								<?php else : ?>
+									<span class="give-icon give-icon-default"></span>
+								<?php endif; ?>
+								<span class="give-label"><?php echo $form_data_tab['label']; ?></span>
+							</a>
 							<?php if ( $this->has_sub_tab( $form_data_tab ) ) : ?>
-                                <ul class="give-metabox-sub-tabs give-hidden">
+								<ul class="give-metabox-sub-tabs give-hidden">
 									<?php foreach ( $form_data_tab['sub-fields'] as $sub_tab ) : ?>
-                                        <li class="<?php echo "{$sub_tab['id']}_tab"; ?>">
-                                            <a href="#<?php echo $sub_tab['id']; ?>">
-                                                <span><?php echo $sub_tab['label']; ?></span>
-                                            </a>
-                                        </li>
+										<li class="<?php echo "{$sub_tab['id']}_tab"; ?>">
+											<a href="#<?php echo $sub_tab['id']; ?>">
+												<?php if ( ! empty( $sub_tab['icon-html'] ) ) : ?>
+													<?php echo $sub_tab['icon-html']; ?>
+												<?php else : ?>
+													<span class="give-icon give-icon-default"></span>
+												<?php endif; ?>
+												<span class="give-label"><?php echo $sub_tab['label']; ?></span>
+											</a>
+										</li>
 									<?php endforeach; ?>
-                                </ul>
+								</ul>
 							<?php endif; ?>
-                        </li>
+						</li>
 					<?php endforeach; ?>
-                </ul>
+				</ul>
 
 				<?php $show_first_tab_content = true; ?>
 				<?php foreach ( $this->settings as $setting ) : ?>
 					<?php if ( ! $this->has_sub_tab( $setting ) ) : ?>
 						<?php do_action( "give_before_{$setting['id']}_settings" ); ?>
 
-                        <div id="<?php echo $setting['id']; ?>"
-                             class="panel give_options_panel<?php echo( $show_first_tab_content ? '' : ' give-hidden' );
+						<div id="<?php echo $setting['id']; ?>"
+							 class="panel give_options_panel<?php echo( $show_first_tab_content ? '' : ' give-hidden' );
 						     $show_first_tab_content = false; ?>">
 							<?php if ( ! empty( $setting['fields'] ) ) : ?>
 								<?php foreach ( $setting['fields'] as $field ) : ?>
 									<?php give_render_field( $field ); ?>
 								<?php endforeach; ?>
 							<?php endif; ?>
-                        </div>
+						</div>
 
 						<?php do_action( "give_after_{$setting['id']}_settings" ); ?>
 					<?php else: ?>
 						<?php if ( $this->has_sub_tab( $setting ) ) : ?>
 							<?php if ( ! empty( $setting['sub-fields'] ) ) : ?>
 								<?php foreach ( $setting['sub-fields'] as $index => $sub_fields ) : ?>
-                                    <div id="<?php echo $sub_fields['id']; ?>"
-                                         class="panel give_options_panel give-hidden">
+									<div id="<?php echo $sub_fields['id']; ?>"
+										 class="panel give_options_panel give-hidden">
 										<?php if ( ! empty( $sub_fields['fields'] ) ) : ?>
 											<?php foreach ( $sub_fields['fields'] as $sub_field ) : ?>
 												<?php give_render_field( $sub_field ); ?>
 											<?php endforeach; ?>
 										<?php endif; ?>
-                                    </div>
+									</div>
 								<?php endforeach; ?>
 							<?php endif; ?>
 						<?php endif; ?>
 					<?php endif; ?>
 				<?php endforeach; ?>
-            </div>
+			</div>
 			<?php
 		}
 	}
@@ -1064,9 +1083,10 @@ class Give_MetaBox_Form_Data {
 	function add_offline_donations_setting_tab( $settings ) {
 		if ( give_is_gateway_active( 'offline' ) ) {
 			$settings['offline_donations_options'] = apply_filters( 'give_forms_offline_donations_options', array(
-				'id'     => 'offline_donations_options',
-				'title'  => esc_html__( 'Offline Donations', 'give' ),
-				'fields' => apply_filters( 'give_forms_offline_donations_metabox_fields', array() ),
+				'id'        => 'offline_donations_options',
+				'title'     => esc_html__( 'Offline Donations', 'give' ),
+				'icon-html' => '<span class="give-icon give-icon-purse"></span>',
+				'fields'    => apply_filters( 'give_forms_offline_donations_metabox_fields', array() ),
 			) );
 		}
 

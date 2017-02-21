@@ -667,7 +667,7 @@ x:-o-prefocus, .qtip .qtip-tip {
   font-weight: normal;
   font-style: normal; }
 
-.give-metabox-tabs li a:before {
+.give-metabox-tabs li .give-icon:before {
   font-family: 'give-icomoon';
   src: url("../assets/fonts/icomoon.eot?kdnr3d");
   src: url("../assets/fonts/icomoon.eot?kdnr3d#iefix") format("embedded-opentype"), url("../assets/fonts/icomoon.woff?kdnr3d") format("woff"), url("../assets/fonts/icomoon.svg?kdnr3d#icomoon") format("svg");
@@ -682,27 +682,29 @@ x:-o-prefocus, .qtip .qtip-tip {
   font-size: 12px;
   vertical-align: top;
   line-height: 20px;
-  margin: 0 0 0 5px;
+  margin: 0 0 0 5px; }
+
+.give-metabox-tabs li .give-icon-default:before {
   content: "\e903"; }
 
-.give-metabox-tabs li.form_field_options_tab > a:before {
+.give-metabox-tabs li .give-icon-heart:before {
   content: "\e604"; }
 
-.give-metabox-tabs li.donation_goal_options_tab > a:before {
+.give-metabox-tabs li .give-icon-target:before {
   content: "\e901"; }
 
-.give-metabox-tabs li.form_display_options_tab > a:before {
+.give-metabox-tabs li .give-icon-display:before {
   content: "\e90c"; }
 
-.give-metabox-tabs li.form_content_options_tab > a:before {
+.give-metabox-tabs li .give-icon-edit:before {
   content: "\e902"; }
 
-.give-metabox-tabs li.form_terms_options_tab > a:before {
+.give-metabox-tabs li .give-icon-checklist:before {
   position: relative;
   top: 1px;
   content: "\e900"; }
 
-.give-metabox-tabs li.offline_donations_options_tab > a:before {
+.give-metabox-tabs li .give-icon-purse:before {
   content: "\e8df"; }
 
 /**
@@ -986,6 +988,9 @@ ASIDE
       margin: 0; }
     #give-metabox-form-data .give_options_panel .give-field-wrap .mce-container iframe, #give-metabox-form-data .give_options_panel .give-field-wrap textarea {
       min-height: 250px !important; }
+    #give-metabox-form-data .give_options_panel .give-field-wrap .wp-editor-wrap {
+      display: inline-block;
+      width: 100%; }
   #give-metabox-form-data .give_options_panel .give-field-wrap:last-child {
     border-bottom: 0; }
   #give-metabox-form-data .give_options_panel textarea.give-field {
@@ -1096,7 +1101,7 @@ ASIDE
       line-height: 20px !important;
       border-bottom: 1px solid #eee;
       overflow: hidden; }
-      #give-metabox-form-data .give-metabox-tabs li a span {
+      #give-metabox-form-data .give-metabox-tabs li a span.give-label {
         width: 122px;
         display: inline-block; }
   #give-metabox-form-data .give-metabox-tabs .give-metabox-sub-tabs li {

@@ -55,9 +55,9 @@ function give_offline_payment_cc_form( $form_id ) {
 	 */
 	do_action( 'give_before_offline_info_fields', $form_id );
 	?>
-	<fieldset id="give_offline_payment_info">
+    <fieldset id="give_offline_payment_info">
 		<?php echo stripslashes( $offline_instructions ); ?>
-	</fieldset>
+    </fieldset>
 	<?php
 	/**
 	 * Fires after the offline info fields.
@@ -83,7 +83,7 @@ function give_offline_billing_fields( $form_id ) {
 	$post_offline_cc_fields        = get_post_meta( $form_id, '_give_offline_donation_enable_billing_fields_single', true );
 	$post_offline_customize_option = get_post_meta( $form_id, '_give_customize_offline_donations', true );
 
-	$global_offline_cc_fields      = give_get_option( 'give_offline_donation_enable_billing_fields' );
+	$global_offline_cc_fields = give_get_option( 'give_offline_donation_enable_billing_fields' );
 
 	//Output CC Address fields if global option is on and user hasn't elected to customize this form's offline donation options
 	if (
@@ -185,7 +185,7 @@ function give_offline_send_donor_instructions( $payment_id = 0 ) {
 	$to_email = give_get_payment_user_email( $payment_id );
 
 	$subject = give_get_option( 'offline_donation_subject', __( 'Offline Donation Instructions', 'give' ) );
-	if ( give_is_setting_enabled( $post_offline_customization_option,  'enabled' ) ) {
+	if ( give_is_setting_enabled( $post_offline_customization_option, 'enabled' ) ) {
 		$subject = get_post_meta( $payment_data['form_id'], '_give_offline_donation_subject', true );
 	}
 
@@ -249,10 +249,10 @@ function give_offline_send_admin_notice( $payment_id = 0 ) {
 	$admin_message .= '<strong>' . __( 'Amount:', 'give' ) . '</strong> {amount}' . "\n\n";
 
 	$admin_message .= sprintf(
-		'<a href="%1$s">%2$s</a>',
-		admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $payment_id ),
-		__( 'Click Here to View and/or Update Donation Details', 'give' )
-	) . "\n\n";
+		                  '<a href="%1$s">%2$s</a>',
+		                  admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $payment_id ),
+		                  __( 'Click Here to View and/or Update Donation Details', 'give' )
+	                  ) . "\n\n";
 
 	$admin_message = apply_filters( 'give_offline_admin_donation_notification', $admin_message, $payment_id );
 	$admin_message = give_do_email_tags( $admin_message, $payment_id );
@@ -346,7 +346,7 @@ function give_offline_add_settings( $settings ) {
 		array(
 			'id'          => $prefix . 'offline_donation_email',
 			'name'        => __( 'Email Instructions', 'give' ),
-			'desc'        => __( 'Enter the instructions you want emailed to the donor after they have submitted the donation form. Most likely this would include important information like mailing address and who to make the check out to.', 'give' ),
+			'desc'        => __( 'Enter the instructions you want emailed to the donor after they have submitted the donation form. Most likely this would include important information like mailing address and who to make the check out to.', 'give' ) . ' ' . __( 'Available template tags:', 'give' ) . give_get_emails_tags_list(),
 			'default'     => give_get_default_offline_donation_email_content(),
 			'type'        => 'wysiwyg',
 			'row_classes' => 'give-subfield',
@@ -355,10 +355,10 @@ function give_offline_add_settings( $settings ) {
 			)
 		),
 		array(
-			'name'         => 'offline_docs',
-			'type'         => 'docs_link',
-			'url'          => 'http://docs.givewp.com/settings-gateway-offline-donations',
-			'title'        => __('Offline Donations', 'give'),
+			'name'  => 'offline_docs',
+			'type'  => 'docs_link',
+			'url'   => 'http://docs.givewp.com/settings-gateway-offline-donations',
+			'title' => __( 'Offline Donations', 'give' ),
 		),
 	);
 
@@ -383,14 +383,14 @@ function give_get_default_offline_donation_content() {
 	$default_text .= '<ol>';
 	$default_text .= '<li>';
 	$default_text .= sprintf(
-		/* translators: %s: site name */
+	/* translators: %s: site name */
 		__( 'Make a check payable to "%s"', 'give' ),
 		$sitename
 	);
 	$default_text .= '</li>';
 	$default_text .= '<li>';
 	$default_text .= sprintf(
-		/* translators: %s: site name */
+	/* translators: %s: site name */
 		__( 'On the memo line of the check, please indicate that the donation is for "%s"', 'give' ),
 		$sitename
 	);
@@ -415,20 +415,20 @@ function give_get_default_offline_donation_content() {
  */
 function give_get_default_offline_donation_email_content() {
 
-	$sitename      = get_bloginfo( 'sitename' );
-	$default_text  = '<p>' . __( 'Dear {name},', 'give' ) . '</p>';
+	$sitename     = get_bloginfo( 'sitename' );
+	$default_text = '<p>' . __( 'Dear {name},', 'give' ) . '</p>';
 	$default_text .= '<p>' . __( 'Thank you for your offline donation request! Your generosity is greatly appreciated. In order to make an offline donation we ask that you please follow these instructions:', 'give' ) . '</p>';
 	$default_text .= '<ol>';
 	$default_text .= '<li>';
 	$default_text .= sprintf(
-		/* translators: %s: site name */
+	/* translators: %s: site name */
 		__( 'Make a check payable to "%s"', 'give' ),
 		$sitename
 	);
 	$default_text .= '</li>';
 	$default_text .= '<li>';
 	$default_text .= sprintf(
-		/* translators: %s: site name */
+	/* translators: %s: site name */
 		__( 'On the memo line of the check, please indicate that the donation is for "%s"', 'give' ),
 		$sitename
 	);
@@ -463,7 +463,7 @@ function give_offline_donation_receipt_status_notice( $notice, $id ) {
 		return $notice;
 	}
 
-	return give_output_error( __('Payment Pending: Please follow the instructions below to complete your donation.', 'give'), false, 'warning' );
+	return give_output_error( __( 'Payment Pending: Please follow the instructions below to complete your donation.', 'give' ), false, 'warning' );
 }
 
 add_filter( 'give_receipt_status_notice', 'give_offline_donation_receipt_status_notice', 10, 2 );
@@ -487,12 +487,12 @@ function give_offline_payment_receipt_after( $payment ) {
 	}
 
 	?>
-	<tr>
-		<td scope="row"><strong><?php esc_html_e( 'Offline Payment Instruction:', 'give' ); ?></strong></td>
-		<td>
+    <tr>
+        <td scope="row"><strong><?php esc_html_e( 'Offline Payment Instruction:', 'give' ); ?></strong></td>
+        <td>
 			<?php echo give_get_offline_payment_instruction( $payment->form_id, true ); ?>
-		</td>
-	</tr>
+        </td>
+    </tr>
 	<?php
 }
 
@@ -519,7 +519,7 @@ function give_get_offline_payment_instruction( $form_id, $wpautop = false ) {
 	$global_offline_instruction        = give_get_option( 'global_offline_donation_content' );
 	$offline_instructions              = $global_offline_instruction;
 
-	if ( $post_offline_customization_option == 'yes' ) {
+	if ( give_is_setting_enabled( $post_offline_customization_option ) ) {
 		$offline_instructions = $post_offline_instructions;
 	}
 
@@ -567,14 +567,14 @@ add_filter( 'give_enabled_payment_gateways', 'give_filter_offline_gateway', 10, 
  *
  * @since 1.8
  *
- * @param  string $meta_key Meta key.
+ * @param  string $meta_key   Meta key.
  * @param  string $meta_value Meta value.
- * @param  int    $postid Form ID.
+ * @param  int    $postid     Form ID.
  *
  * @return void
  */
 function _give_customize_offline_donations_on_save_callback( $meta_key, $meta_value, $postid ) {
-	if ( ( 'no' === $meta_value ) && ( 'offline' === get_post_meta( $postid, '_give_default_gateway', true ) ) ) {
+	if ( ! give_is_setting_enabled( $meta_value ) && ( 'offline' === get_post_meta( $postid, '_give_default_gateway', true ) ) ) {
 		update_post_meta( $postid, '_give_default_gateway', 'global' );
 	}
 }
