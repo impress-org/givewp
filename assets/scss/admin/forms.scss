@@ -432,6 +432,11 @@ ASIDE
       .mce-container iframe, textarea {
         min-height: 250px !important;
       }
+
+		.wp-editor-wrap{
+			display: inline-block;
+			width: 100%;
+		}
     }
 
     .give-field-wrap:last-child {
