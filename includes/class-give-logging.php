@@ -358,12 +358,15 @@ class Give_Logging {
 	public function get_log_count( $object_id = 0, $type = null, $meta_query = null, $date_query = null ) {
 
 		$query_args = array(
-			'post_parent'    => $object_id,
 			'post_type'      => 'give_log',
 			'posts_per_page' => - 1,
 			'post_status'    => 'publish',
 			'fields'         => 'ids',
 		);
+
+		if( $object_id ) {
+			$query_args['post_parent'] = $object_id;
+		}
 
 		if ( ! empty( $type ) && $this->valid_type( $type ) ) {
 			$query_args['tax_query'] = array(
