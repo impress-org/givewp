@@ -681,6 +681,29 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						echo $description;
 						break;
 
+					// Custom: Gateway API key.
+					case 'api_key' :
+						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
+						$type = !empty($option_name) ? 'password' : 'text';
+						?>
+                    <tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
+                        <th scope="row" class="titledesc">
+                            <label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
+                        </th>
+                        <td class="give-forminp give-forminp-<?php echo sanitize_title( $value['type'] ) ?>">
+                            <input
+                                    name="<?php echo esc_attr( $value['id'] ); ?>"
+                                    id="<?php echo esc_attr( $value['id'] ); ?>"
+                                    type="<?php echo esc_attr( $type ); ?>"
+                                    style="<?php echo esc_attr( $value['css'] ); ?>"
+                                    value="<?php echo esc_attr( $option_value ); ?>"
+                                    class="give-input-field<?php echo( empty( $value['class'] ) ? '' : ' ' . esc_attr( $value['class'] ) ); ?>"
+								<?php echo implode( ' ', $custom_attributes ); ?>
+                            /> <?php echo $description; ?>
+                        </td>
+                        </tr><?php
+						break;
+
 					// Custom: Log field.
 					case 'logs' :
 						// Note: there are no need to check for html field param because we want custom html to this field.
