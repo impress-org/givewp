@@ -522,7 +522,8 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 								$function_name = $field['func']['function'][1];
 								$classname->$function_name( $field_obj, $saved_value, '', '', $field_type_obj );
 							} else {
-								$field['func']['function']( $field_obj, $saved_value, '', '', $field_type_obj );
+								$function_name = $field['func']['function'];
+								$function_name( $field_obj, $saved_value, '', '', $field_type_obj );
 							}
 							?>
 						</td>
