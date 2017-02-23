@@ -366,10 +366,10 @@ function give_admin_icon() {
         <?php if ( version_compare( get_bloginfo( 'version' ), '3.8-RC', '>=' ) || version_compare( get_bloginfo( 'version' ), '3.8', '>=' ) ) { ?>
         @font-face {
             font-family: 'give-icomoon';
-            src: url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.eot?-ngjl88'; ?>');
-            src: url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.eot?#iefix-ngjl88'?>') format('embedded-opentype'),
-            url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.woff?-ngjl88'; ?>') format('woff'),
-            url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.svg?-ngjl88#icomoon'; ?>') format('svg');
+            src: url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.eot?ngjl88'; ?>');
+            src: url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.eot?#iefixngjl88'?>') format('embedded-opentype'),
+            url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.woff?ngjl88'; ?>') format('woff'),
+            url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.svg?ngjl88#icomoon'; ?>') format('svg');
             font-weight: normal;
             font-style: normal;
         }
