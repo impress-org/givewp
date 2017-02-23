@@ -37,10 +37,12 @@ function give_do_automatic_upgrades() {
 		case version_compare( $give_version, '1.6', '<' ) :
 			give_v16_upgrades();
 			$did_upgrade = true;
+			break;
 
 		case version_compare( $give_version, '1.7', '<' ) :
 			give_v17_upgrades();
 			$did_upgrade = true;
+            break;
 
 		case version_compare( $give_version, '1.8', '<' ) :
 			give_v18_upgrades();
@@ -131,9 +133,9 @@ function give_show_upgrade_notices() {
 	?>
 	<script>
 		jQuery(document).ready(function($){
-			var $upgrdae_links = $('.give-upgrade-link');
-			if( $upgrdae_links.length ) {
-				$upgrdae_links.on( 'click', function(e){
+			var $upgrade_links = $('.give-upgrade-link');
+			if( $upgrade_links.length ) {
+				$upgrade_links.on( 'click', function(e){
 					e.preventDefault();
 
 					if( ! window.confirm( give_vars.upgrade_confirmation ) ) {

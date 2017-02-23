@@ -233,7 +233,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 			$sections = array(
 				'gateways-settings' => __( 'Gateways', 'give' ),
 				'paypal-standard'   => __( 'PayPal Standard', 'give' ),
-				'offline-donations' => __( 'Offline', 'give' )
+				'offline-donations' => __( 'Offline Donations', 'give' )
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );
