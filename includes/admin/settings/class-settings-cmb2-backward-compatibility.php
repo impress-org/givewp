@@ -445,7 +445,7 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 		function get_section_settings( $tab_settings ) {
 			$current_section = give_get_current_setting_section();
 
-			// Note: If we are opening default tabe for addon setting then it is possible that we will get empty string as current section
+			// Note: If we are opening default tab for addon setting then it is possible that we will get empty string as current section
 			// because default section filter added after save hook fire, so we will always get problem to save first section [default] or if there are only on section
 			// This is hack to fix this.
 			if ( empty( $current_section ) ) {
@@ -473,7 +473,7 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 				}
 			}
 
-			// Remove title from setting, pevent it from render in setting tab.
+			// Remove title from setting, prevent it from render in setting tab.
 			$section_only_setting_fields[0]['title'] = '';
 
 			return apply_filters( "give_get_settings_{$this->current_tab}_{$current_section}", $section_only_setting_fields, $tab_settings );
