@@ -518,7 +518,9 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 						<td class="give-forminp" <?php echo $colspan; ?>>
 							<?php
 							if ( is_array( $field['func']['function'] ) ) {
-								$field['func']['function'][0]->$field['func']['function'][1]( $field_obj, $saved_value, '', '', $field_type_obj );
+								$classname = $field['func']['function'][0];
+								$function_name = $field['func']['function'][1];
+								$classname->$function_name( $field_obj, $saved_value, '', '', $field_type_obj );
 							} else {
 								$field['func']['function']( $field_obj, $saved_value, '', '', $field_type_obj );
 							}
