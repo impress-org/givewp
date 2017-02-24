@@ -1688,7 +1688,7 @@ jQuery.noConflict();
 		 */
 
 		// Show/Hide sub tab nav.
-		$('.give-settings-page').on('click blur', '#give-show-sub-nav', function (e) {
+		$('.give-settings-page').on('click', '#give-show-sub-nav', function (e) {
 			e.preventDefault();
 
 			var $sub_tab_nav = $(this).next();
@@ -1698,6 +1698,9 @@ jQuery.noConflict();
 			}
 
 			return false;
+		}).on( 'blur', function(){
+			var $sub_tab_nav = $(this).next();
+			$sub_tab_nav.removeClass('give-hidden');
 		});
 
 		// Render setting tab.
