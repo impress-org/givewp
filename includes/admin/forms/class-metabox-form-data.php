@@ -395,13 +395,11 @@ class Give_MetaBox_Form_Data {
 						),
 					),
 					array(
-						'name'       => esc_html__( 'Goal Achieved Message', 'give' ),
-						'desc'       => esc_html__( 'Do you want to display a custom message when the goal is closed? If none is provided the default message will be displayed', 'give' ),
+						'name'       => __( 'Goal Achieved Message', 'give' ),
+						'desc'       => __( 'Do you want to display a custom message when the goal is closed?', 'give' ),
 						'id'         => $prefix . 'form_goal_achieved_message',
 						'type'       => 'wysiwyg',
-						'attributes' => array(
-							'placeholder' => esc_attr__( 'Thank you to all our donors, we have met our fundraising goal.', 'give' ),
-						),
+                        'default' => __( 'Thank you to all our donors, we have met our fundraising goal.', 'give' ),
 					),
 					array(
 						'name'  => 'donation_goal_docs',
