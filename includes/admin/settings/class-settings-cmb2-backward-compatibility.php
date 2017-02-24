@@ -197,6 +197,22 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 
 
 		/**
+		 * Do not translate string
+		 *
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @param $translation
+		 * @param $text
+		 *
+		 * @return mixed
+		 */
+		public function en_translation( $translation, $text ) {
+			return $text;
+		}
+
+
+		/**
 		 * Get addon sections.
 		 *
 		 * @since  1.8
@@ -209,35 +225,49 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			// New sections.
 			$new_sections = array();
 			$sections_ID  = array_keys( $sections );
+			$setting_fields = $this->prev_settings->give_settings( $this->current_tab );
 
-			if ( ( $setting_fields = $this->prev_settings->give_settings( $this->current_tab ) ) && ! empty( $setting_fields['fields'] ) ) {
+			// We need untranslated settings for backward compatibility.
+			add_filter( 'gettext', array( $this, 'en_translation' ), 10, 2 );
+			$en_setting_fields = $this->prev_settings->give_settings( $this->current_tab );
+			remove_filter( 'gettext', array( $this, 'en_translation' ), 10, 2 );
+			
+			if ( ! empty( $setting_fields ) && ! empty( $setting_fields['fields'] ) ) {
 
-				foreach ( $setting_fields['fields'] as $field ) {
+				foreach ( $setting_fields['fields'] as $index => $field ) {
+					// Collect new sections from addons.
+					if ( 'give_title' !== $field['type'] ) {
+						continue;
+					}
+
+					// Untranslated setting name.
+					$en_setting_field_name = isset( $en_setting_fields['fields'][ $index ]['name'] ) ? $en_setting_fields['fields'][ $index ]['name'] : '';
+
 					// Section name.
 					$field['name'] = isset( $field['name'] ) ? $field['name'] : '';
 					$section_name  = $this->get_section_name( $field['name'] );
 
 					// Check if section name exit and section title array is not empty.
-					if ( ! empty( $sections ) && ! empty( $field['name'] ) ) {
+					if ( ! empty( $sections ) && ! empty( $en_setting_field_name ) ) {
 
 						// Bailout: Do not load section if it is already exist.
 						if (
-							in_array( sanitize_title( $field['name'] ), $sections_ID ) // Check section id.
-							|| in_array( $section_name, $sections )                    // Check section name.
+							in_array( sanitize_title( $en_setting_field_name ), $sections_ID ) // Check section id.
+							|| in_array( $section_name, $sections )                            // Check section name.
 						) {
 							continue;
 						}
 					}
 
 					// Collect new sections from addons.
-					if ( 'give_title' == $field['type'] ) {
-						$new_sections[ sanitize_title( $field['name'] ) ] = $section_name;
-					}
+					$new_sections[ sanitize_title( $field['name'] ) ] = $section_name;
 				}
 			}
 
 			// Add new section.
-			$sections = array_merge( $sections, $new_sections );
+			if ( ! empty( $new_sections ) ) {
+				$sections = array_merge( $sections, $new_sections );
+			}
 
 			// Output.
 			return $sections;
