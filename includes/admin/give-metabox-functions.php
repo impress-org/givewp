@@ -388,8 +388,7 @@ function give_wysiwyg( $field ) {
 	global $thepostid, $post;
 
 	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
-	$default_content        = isset( $value['default'] ) ? $value['default'] : '';
-	$field['value']         = ! empty( give_get_field_value( $field, $thepostid ) ) ? give_get_field_value( $field, $thepostid ) : $default_content;
+	$field['value']         = give_get_field_value( $field, $thepostid );
 	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
 
