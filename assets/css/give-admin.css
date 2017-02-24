@@ -1874,7 +1874,8 @@ h2.give-nav-tab-wrapper {
 .give-sub-nav-tab-wrapper {
   position: relative;
   display: inline-block;
-  z-index: 9999; }
+  z-index: 9999;
+  float: left; }
   .give-sub-nav-tab-wrapper nav.give-sub-nav-tab {
     border: 1px solid #ccc;
     border-bottom: 0;
