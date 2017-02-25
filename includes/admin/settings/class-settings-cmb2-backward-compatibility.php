@@ -197,6 +197,22 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 
 
 		/**
+		 * Do not translate string
+		 *
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @param $translation
+		 * @param $text
+		 *
+		 * @return mixed
+		 */
+		public function en_translation( $translation, $text ) {
+			return $text;
+		}
+
+
+		/**
 		 * Get addon sections.
 		 *
 		 * @since  1.8
@@ -209,35 +225,49 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			// New sections.
 			$new_sections = array();
 			$sections_ID  = array_keys( $sections );
+			$setting_fields = $this->prev_settings->give_settings( $this->current_tab );
 
-			if ( ( $setting_fields = $this->prev_settings->give_settings( $this->current_tab ) ) && ! empty( $setting_fields['fields'] ) ) {
+			// We need untranslated settings for backward compatibility.
+			add_filter( 'gettext', array( $this, 'en_translation' ), 10, 2 );
+			$en_setting_fields = $this->prev_settings->give_settings( $this->current_tab );
+			remove_filter( 'gettext', array( $this, 'en_translation' ), 10, 2 );
+			
+			if ( ! empty( $setting_fields ) && ! empty( $setting_fields['fields'] ) ) {
 
-				foreach ( $setting_fields['fields'] as $field ) {
+				foreach ( $setting_fields['fields'] as $index => $field ) {
+					// Collect new sections from addons.
+					if ( 'give_title' !== $field['type'] ) {
+						continue;
+					}
+
+					// Untranslated setting name.
+					$en_setting_field_name = isset( $en_setting_fields['fields'][ $index ]['name'] ) ? $en_setting_fields['fields'][ $index ]['name'] : '';
+
 					// Section name.
 					$field['name'] = isset( $field['name'] ) ? $field['name'] : '';
 					$section_name  = $this->get_section_name( $field['name'] );
 
 					// Check if section name exit and section title array is not empty.
-					if ( ! empty( $sections ) && ! empty( $field['name'] ) ) {
+					if ( ! empty( $sections ) && ! empty( $en_setting_field_name ) ) {
 
 						// Bailout: Do not load section if it is already exist.
 						if (
-							in_array( sanitize_title( $field['name'] ), $sections_ID ) // Check section id.
-							|| in_array( $section_name, $sections )                    // Check section name.
+							in_array( sanitize_title( $en_setting_field_name ), $sections_ID ) // Check section id.
+							|| in_array( $section_name, $sections )                            // Check section name.
 						) {
 							continue;
 						}
 					}
 
 					// Collect new sections from addons.
-					if ( 'give_title' == $field['type'] ) {
-						$new_sections[ sanitize_title( $field['name'] ) ] = $section_name;
-					}
+					$new_sections[ sanitize_title( $field['name'] ) ] = $section_name;
 				}
 			}
 
 			// Add new section.
-			$sections = array_merge( $sections, $new_sections );
+			if ( ! empty( $new_sections ) ) {
+				$sections = array_merge( $sections, $new_sections );
+			}
 
 			// Output.
 			return $sections;
@@ -445,7 +475,7 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 		function get_section_settings( $tab_settings ) {
 			$current_section = give_get_current_setting_section();
 
-			// Note: If we are opening default tabe for addon setting then it is possible that we will get empty string as current section
+			// Note: If we are opening default tab for addon setting then it is possible that we will get empty string as current section
 			// because default section filter added after save hook fire, so we will always get problem to save first section [default] or if there are only on section
 			// This is hack to fix this.
 			if ( empty( $current_section ) ) {
@@ -473,7 +503,7 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 				}
 			}
 
-			// Remove title from setting, pevent it from render in setting tab.
+			// Remove title from setting, prevent it from render in setting tab.
 			$section_only_setting_fields[0]['title'] = '';
 
 			return apply_filters( "give_get_settings_{$this->current_tab}_{$current_section}", $section_only_setting_fields, $tab_settings );
@@ -522,7 +552,8 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 								$function_name = $field['func']['function'][1];
 								$classname->$function_name( $field_obj, $saved_value, '', '', $field_type_obj );
 							} else {
-								$field['func']['function']( $field_obj, $saved_value, '', '', $field_type_obj );
+								$function_name = $field['func']['function'];
+								$function_name( $field_obj, $saved_value, '', '', $field_type_obj );
 							}
 							?>
 						</td>

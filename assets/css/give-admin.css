@@ -1874,7 +1874,8 @@ h2.give-nav-tab-wrapper {
 .give-sub-nav-tab-wrapper {
   position: relative;
   display: inline-block;
-  z-index: 9999; }
+  z-index: 9999;
+  float: left; }
   .give-sub-nav-tab-wrapper nav.give-sub-nav-tab {
     border: 1px solid #ccc;
     border-bottom: 0;
@@ -1899,11 +1900,16 @@ h2.give-nav-tab-wrapper {
 
 #give-show-sub-nav {
   text-decoration: none;
-  padding: 3px 5px;
+  padding: 3px 4px;
   border-bottom: 1px solid #ccc;
   line-height: 0;
   background: white;
-  border-radius: 4px; }
+  border-radius: 4px;
+  margin-top: 5px; }
+  #give-show-sub-nav > span.dashicons {
+    font-size: 16px;
+    height: 16px;
+    width: 16px; }
 
 #give-show-sub-nav:hover, #give-show-sub-nav:active {
   outline: none;

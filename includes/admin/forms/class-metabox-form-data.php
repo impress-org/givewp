@@ -395,13 +395,11 @@ class Give_MetaBox_Form_Data {
 						),
 					),
 					array(
-						'name'       => esc_html__( 'Goal Achieved Message', 'give' ),
-						'desc'       => esc_html__( 'Do you want to display a custom message when the goal is closed? If none is provided the default message will be displayed', 'give' ),
+						'name'       => __( 'Goal Achieved Message', 'give' ),
+						'desc'       => __( 'Do you want to display a custom message when the goal is closed?', 'give' ),
 						'id'         => $prefix . 'form_goal_achieved_message',
-						'type'       => 'textarea',
-						'attributes' => array(
-							'placeholder' => esc_attr__( 'Thank you to all our donors, we have met our fundraising goal.', 'give' ),
-						),
+						'type'       => 'wysiwyg',
+                        'default' => __( 'Thank you to all our donors, we have met our fundraising goal.', 'give' ),
 					),
 					array(
 						'name'  => 'donation_goal_docs',
@@ -476,7 +474,7 @@ class Give_MetaBox_Form_Data {
 				'fields'    => apply_filters( 'give_forms_terms_options_metabox_fields', array(
 					// Donation Option
 					array(
-						'name'        => esc_html__( 'Terms & Conditions', 'give' ),
+						'name'        => esc_html__( 'Terms and Conditions', 'give' ),
 						'description' => esc_html__( 'Do you want to require the donor to accept terms prior to being able to complete their donation?', 'give' ),
 						'id'          => $prefix . 'terms_option',
 						'type'        => 'radio_inline',
@@ -508,7 +506,7 @@ class Give_MetaBox_Form_Data {
 						'name'  => 'terms_docs',
 						'type'  => 'docs_link',
 						'url'   => 'http://docs.givewp.com/form-terms',
-						'title' => esc_html__( 'Terms & Conditions', 'give' ),
+						'title' => esc_html__( 'Terms and Conditions', 'give' ),
 					),
 				),
 					$post_id

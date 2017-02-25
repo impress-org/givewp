@@ -70,7 +70,9 @@ class Give_Sales_Log_Table extends WP_List_Table {
 
 		switch ( $column_name ) {
 			case 'form' :
-				return '<a href="' . esc_url( add_query_arg( 'form', $item[ $column_name ] ) ) . '" >' . get_the_title( $item[ $column_name ] ) . '</a>';
+				$form_title = get_the_title( $item[ $column_name ] );
+				$form_title = empty( $form_title ) ? sprintf( __( 'Untitled (#%s)', 'give' ), $item[ $column_name ] ) : $form_title;
+				return '<a href="' . esc_url( add_query_arg( 'form', $item[ $column_name ] ) ) . '" >' . $form_title . '</a>';
 
 			case 'user_id' :
 				return '<a href="' .
@@ -304,7 +306,9 @@ class Give_Sales_Log_Table extends WP_List_Table {
 			echo '<select name="form" id="give-log-form-filter">';
 			echo '<option value="0">' . esc_html__( 'All', 'give' ) . '</option>';
 			foreach ( $give_forms as $form ) {
-				echo '<option value="' . $form . '"' . selected( $form, $this->get_filtered_give_form() ) . '>' . esc_html( get_the_title( $form ) ) . '</option>';
+				$form_title = get_the_title( $form );
+				$form_title = empty( $form_title ) ? sprintf( __( 'Untitled (#%s)', 'give' ), $form ) : $form_title;
+				echo '<option value="' . $form . '"' . selected( $form, $this->get_filtered_give_form() ) . '>' . esc_html( $form_title ) . '</option>';
 			}
 			echo '</select>';
 		}

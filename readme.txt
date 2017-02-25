@@ -4,7 +4,7 @@ Donate link: https://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.2
 Tested up to: 4.7.2
-Stable tag: 1.8.2
+Stable tag: 1.8.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -18,8 +18,8 @@ Democratizing Generosity - Empower your cause: start accepting donations on Word
 
 = Features Include: =
 
-* Accept Single, Custom, and Multi-level donations
-* Robust reporting features
+* Accept single, custom, and multi-level donations
+* Robust reporting features and donor management
 * Goal tracking for your campaigns
 * Single-page, simple, and hassle-free donor giving
 * Zero commission charges
@@ -31,8 +31,9 @@ Democratizing Generosity - Empower your cause: start accepting donations on Word
 * Custom user roles for administration
 * Flexible public API for developers
 * Dedicated US-based support
+* Fast codebase with support for PHP7
 * Continually developed and improved
-* Updated and thorough **[documentation](https://givewp.com/documentation "Visit the Give documentation")**
+* Consistently updated and thorough **[documentation](https://givewp.com/documentation "Visit the Give documentation")**
 
 Find out more on the **[Give website](https://givewp.com "Visit the Give website")**.
 
@@ -163,6 +164,14 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 1.8.3 =
+* New: The new Goal Complete message has been turned into a WYSIWYG that also render oEmbeds like YouTube and WordPress shortcodes. This means now you can display a custom video or any content you'd like when a goal has completed. [#1504](https://github.com/WordImpress/Give/issues/1504), [#1545](https://github.com/WordImpress/Give/issues/1545)
+* New: The Give Settings API received a new API Key field type that we will be rolling out into each of the payment gateways for additional security. [#1540](https://github.com/WordImpress/Give/issues/1540)
+* Tweak: Mod_security on some servers was flagging Give's icomoon custom font icons in WP-admin so we removed the hyphen causing the security flag. [#1535](https://github.com/WordImpress/Give/issues/1535)
+* Fix: Show correct log counts in WP-Admin under Donations > Tools > Logs. [#1531](https://github.com/WordImpress/Give/issues/1531)
+* Fix: The gateway and donation ID was not properly displaying under Donations > Tools > Logs. [#1529](https://github.com/WordImpress/Give/issues/1529)
+* Fix: The new Give Settings in 1.8+ would sometimes return an incorrect tab when using non-English languages such as Dutch and Hebrew. [#1510](https://github.com/WordImpress/Give/issues/1510)
 
 = 1.8.2 =
 * New: A login field will show by default now if a non-logged in user attempts to view the donation history page without email access enabled. [#1485](https://github.com/WordImpress/Give/issues/1485)

@@ -68,9 +68,9 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 			case 'ID' :
 				return $item['ID_label'];
 			case 'payment_id' :
-				return empty( $item->payment_id ) ? esc_html__( 'n/a', 'give' ) : $item->payment_id;
+				return empty( $item['payment_id'] ) ? esc_html__( 'n/a', 'give' ) : sprintf( "<a href=\"%s\" target=\"_blank\">{$item['payment_id']}</a>", get_edit_post_link( $item['payment_id'] ) );
 			case 'gateway' :
-				return empty( $item->gateway ) ? esc_html__( 'n/a', 'give' ) : $item->gateway;
+				return empty( $item['gateway'] ) ? esc_html__( 'n/a', 'give' ) : $item['gateway'];
 			case 'error' :
 				return get_the_title( $item['ID'] ) ? get_the_title( $item['ID'] ) : esc_html__( 'Payment Error', 'give' );
 			default:
