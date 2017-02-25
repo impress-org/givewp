@@ -246,12 +246,10 @@ class Give_Email_Access {
 		// Must have a token.
 		if ( ! empty( $token ) ) {
 
-			// Token & verify key must be valid.
-			if (
-				! $this->is_valid_token( $token )
-				|| ! $this->is_valid_verify_key( $token )
-			) {
-				return false;
+			if ( ! $this->is_valid_token( $token ) ) {
+				if ( ! $this->is_valid_verify_key( $token ) ) {
+					return;
+				}
 			}
 
 			$this->token_exists = true;
