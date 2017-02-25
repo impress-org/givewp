@@ -36,24 +36,32 @@ function give_donation_history() {
 
 	$email_access = give_get_option( 'email_access' );
 
-	//Is user logged in? Does a session exist? Does an email-access token exist?
-	if ( is_user_logged_in() || Give()->session->get_session_expiration() !== false || ( $email_access == 'on' && Give()->email_access->token_exists ) ) {
+	/**
+	 * Determine access
+	 *
+	 * a. Check if a user is logged in or does a session exist?
+	 * b. Does an email-access token exist?
+	 */
+	if (
+		is_user_logged_in() || false !== Give()->session->get_session_expiration()
+		|| ( give_is_setting_enabled( $email_access ) && Give()->email_access->token_exists )
+	) {
 		ob_start();
 		give_get_template_part( 'history', 'donations' );
 
 		return ob_get_clean();
-	} //Is Email-based access enabled?
-	elseif ( give_is_setting_enabled( $email_access ) ) {
 
+	} elseif ( give_is_setting_enabled( $email_access ) ) {
+		//Is Email-based access enabled?
 		ob_start();
 		give_get_template_part( 'email', 'login-form' );
 
 		return ob_get_clean();
 	} else {
-		$message = esc_html__( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' );
-		echo apply_filters( 'give_donation_history_nonuser_message', give_output_error( $message, false ), $message );
-		echo do_shortcode( '[give_login]' );
 
+		echo apply_filters( 'give_donation_history_nonuser_message', give_output_error( __( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' ), false ) );
+		echo do_shortcode( '[give_login]' );
+		
 	}
 }
 
