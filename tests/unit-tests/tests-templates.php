@@ -25,7 +25,6 @@ class Tests_Templates extends Give_Unit_Test_Case {
 	 */
 	public function test_get_donation_form() {
 
-
 		$this->go_to( '/' );
 
 		$args = array(
@@ -37,7 +36,7 @@ class Tests_Templates extends Give_Unit_Test_Case {
 		give_get_donation_form( $args );
 
 		$form = ob_get_clean();
-		// Remove form whitespace.
+		// Remove html form whitespace.
 		$form = preg_replace( '/\s+/S', ' ', $form );
 
 		$this->assertInternalType( 'string', $form );
