@@ -175,7 +175,7 @@ class Give_Email_Access {
 			);
 
 			if ( $row_id < 1 ) {
-				give_set_error( 'give_email_access_attempts_exhausted', esc_html__( 'Please wait a few minutes before requesting a new email access link.', 'give' ) );
+				give_set_error( 'give_email_access_attempts_exhausted', __( 'Please wait a few minutes before requesting a new email access link.', 'give' ) );
 
 				return false;
 			}
@@ -213,7 +213,7 @@ class Give_Email_Access {
 		$subject = apply_filters( 'give_email_access_token_subject', sprintf( __( 'Your Access Link to %s', 'give' ), get_bloginfo( 'name' ) ) );
 
 		$message = __( 'You or someone in your organization requested an access link be sent to this email address. This is a temporary access link for you to view your donation information. Click on the link below to view:', 'give' ) . "\n\n";
-		$message .= '<a href="' . esc_url( $access_url ) . '" target="_blank">' . __( 'Access My Donation Details &raquo;', 'give' ) . '</a>' . "\n\n";
+		$message .= '<a href="' . esc_url( $access_url ) . '" target="_blank">' . __( 'Access Donation Details &raquo;', 'give' ) . '</a>' . "\n\n";
 		$message .= "\n\n";
 		$message .= __( 'Sincerely,', 'give' ) . "\n";
 		$message .= get_bloginfo( 'name' ) . "\n";
@@ -255,7 +255,7 @@ class Give_Email_Access {
 			}
 
 			$this->token_exists = true;
-			// Set cookie
+			// Set cookie.
 			$lifetime = current_time( 'timestamp' ) + Give()->session->set_expiration_time();
 			@setcookie( 'give_nl', $token, $lifetime, COOKIEPATH, COOKIE_DOMAIN, false );
 
@@ -283,14 +283,10 @@ class Give_Email_Access {
 		$email = $wpdb->get_row(
 			$wpdb->prepare( "SELECT email FROM {$wpdb->prefix}give_customers WHERE token = %s AND verify_throttle >= %s LIMIT 1", $token, $expires )
 		);
-echo "<pre>";
-var_dump($email);
-var_dump($wpdb->prepare( "SELECT email FROM {$wpdb->prefix}give_customers WHERE token = %s AND verify_throttle >= %s LIMIT 1", $token, $expires ));
-echo "</pre>";
+
 		if ( ! empty( $email ) ) {
 			$this->token_email = $email;
 			$this->token       = $token;
-
 			return true;
 		}
 
@@ -325,12 +321,12 @@ echo "</pre>";
 			$wpdb->prepare( "SELECT id FROM {$wpdb->prefix}give_customers WHERE id = %d LIMIT 1", $customer_id )
 		);
 
-		// Update
+		// Update.
 		if ( ! empty( $row_id ) ) {
 			$wpdb->query(
 				$wpdb->prepare( "UPDATE {$wpdb->prefix}give_customers SET verify_key = %s, verify_throttle = %s WHERE id = %d LIMIT 1", $verify_key, $now, $row_id )
 			);
-		} // Insert
+		} // Insert.
 		else {
 			$wpdb->query(
 				$wpdb->prepare( "INSERT INTO {$wpdb->prefix}give_customers ( verify_key, verify_throttle) VALUES (%s, %s)", $verify_key, $now )
@@ -356,10 +352,7 @@ echo "</pre>";
 		$row = $wpdb->get_row(
 			$wpdb->prepare( "SELECT id, email FROM {$wpdb->prefix}give_customers WHERE verify_key = %s LIMIT 1", $token )
 		);
-		echo "<pre>";
-		var_dump( $row );
-		var_dump( $wpdb->prepare( "SELECT id, email FROM {$wpdb->prefix}give_customers WHERE verify_key = %s LIMIT 1", $token ) );
-		echo "</pre>";
+
 		$now = date( 'Y-m-d H:i:s' );
 
 		// Set token and remove verify key.
@@ -385,7 +378,7 @@ echo "</pre>";
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  $args User Donations arguments.
+	 * @param  $args array User Donations arguments.
 	 *
 	 * @return mixed
 	 */
