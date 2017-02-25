@@ -278,12 +278,12 @@ class Give_Email_Access {
 		// Make sure token isn't expired.
 		$expires = date( 'Y-m-d H:i:s', time() - $this->token_expiration );
 
-		$email = $wpdb->get_row(
+		$row = $wpdb->get_row(
 			$wpdb->prepare( "SELECT email FROM {$wpdb->prefix}give_customers WHERE token = %s AND verify_throttle >= %s LIMIT 1", $token, $expires )
 		);
 
-		if ( ! empty( $email ) ) {
-			$this->token_email = $email;
+		if ( ! empty( $row ) ) {
+			$this->token_email = $row->email;
 			$this->token       = $token;
 			return true;
 		}
