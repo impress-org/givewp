@@ -4093,31 +4093,31 @@ msgstr ""
 msgid "New Donation Form"
 msgstr ""
 
-#: includes/class-give-email-access.php:169
+#: includes/class-give-email-access.php:178
 msgid "Please wait a few minutes before requesting a new email access link."
 msgstr ""
 
-#: includes/class-give-email-access.php:204
+#: includes/class-give-email-access.php:213
 msgid "Your Access Link to %s"
 msgstr ""
 
-#: includes/class-give-email-access.php:206
+#: includes/class-give-email-access.php:215
 msgid "You or someone in your organization requested an access link be sent to this email address. This is a temporary access link for you to view your donation information. Click on the link below to view:"
 msgstr ""
 
-#: includes/class-give-email-access.php:207
-msgid "Access My Donation Details &raquo;"
+#: includes/class-give-email-access.php:216
+msgid "Access Donation Details &raquo;"
 msgstr ""
 
-#: includes/class-give-email-access.php:209, includes/emails/functions.php:328, includes/gateways/offline-donations.php:442
+#: includes/class-give-email-access.php:218, includes/emails/functions.php:328, includes/gateways/offline-donations.php:442
 msgid "Sincerely,"
 msgstr ""
 
-#: includes/class-give-email-access.php:215
+#: includes/class-give-email-access.php:224
 msgid "Your Access Link"
 msgstr ""
 
-#: includes/class-give-email-access.php:281
+#: includes/class-give-email-access.php:293
 msgid "Your access token has expired. Please request a new one below:"
 msgstr ""
 
@@ -6786,39 +6786,39 @@ msgstr ""
 msgid "Return to All Donations"
 msgstr ""
 
-#: includes/shortcodes.php:53
+#: includes/shortcodes.php:62
 msgid "You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with."
 msgstr ""
 
-#: includes/shortcodes.php:121
+#: includes/shortcodes.php:129
 msgid "The shortcode is missing Donation Form ID attribute."
 msgstr ""
 
-#: includes/shortcodes.php:127
+#: includes/shortcodes.php:135
 msgid "The form does not have Goals enabled."
 msgstr ""
 
-#: includes/shortcodes.php:211
+#: includes/shortcodes.php:219
 msgid "You are missing the payment key to view this donation receipt."
 msgstr ""
 
-#: includes/shortcodes.php:271
+#: includes/shortcodes.php:279
 msgid "You must be logged in to view this donation receipt."
 msgstr ""
 
-#: includes/shortcodes.php:400
+#: includes/shortcodes.php:408
 msgid "The passwords you entered do not match. Please try again."
 msgstr ""
 
-#: includes/shortcodes.php:408
+#: includes/shortcodes.php:416
 msgid "The email you entered is empty."
 msgstr ""
 
-#: includes/shortcodes.php:412
+#: includes/shortcodes.php:420
 msgid "The email you entered is not valid. Please use another"
 msgstr ""
 
-#: includes/shortcodes.php:417
+#: includes/shortcodes.php:425
 msgid "The email you entered belongs to another user. Please use another."
 msgstr ""
 
