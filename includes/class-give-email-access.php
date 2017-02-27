@@ -246,12 +246,10 @@ class Give_Email_Access {
 		// Must have a token.
 		if ( ! empty( $token ) ) {
 
-			// Token & verify key must be valid.
-			if (
-				! $this->is_valid_token( $token )
-				|| ! $this->is_valid_verify_key( $token )
-			) {
-				return false;
+			if ( ! $this->is_valid_token( $token ) ) {
+				if ( ! $this->is_valid_verify_key( $token ) ) {
+					return;
+				}
 			}
 
 			$this->token_exists = true;
@@ -280,7 +278,7 @@ class Give_Email_Access {
 		// Make sure token isn't expired.
 		$expires = date( 'Y-m-d H:i:s', time() - $this->token_expiration );
 
-		$email = $wpdb->get_row(
+		$email = $wpdb->get_var(
 			$wpdb->prepare( "SELECT email FROM {$wpdb->prefix}give_customers WHERE token = %s AND verify_throttle >= %s LIMIT 1", $token, $expires )
 		);
 
