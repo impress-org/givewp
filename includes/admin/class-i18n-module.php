@@ -64,16 +64,15 @@ class Give_i18n_Banner {
 	 * Give_i18n constructor.
 	 *
 	 * @param $args
-	 *
 	 */
 	public function __construct( $args ) {
 
-		//Only for admins.
+		// Only for admins.
 		if ( ! is_admin() ) {
 			return;
 		}
 
-		//This plugin is en_US native.
+		// This plugin is en_US native.
 		$this->locale = get_locale();
 		if ( 'en_US' === $this->locale ) {
 			return;
@@ -130,7 +129,7 @@ class Give_i18n_Banner {
 	private function promo_message() {
 		$message = false;
 
-		//Using a translation less than 90% complete.
+		// Using a translation less than 90% complete.
 		if ( $this->translation_exists && $this->translation_loaded && $this->percent_translated < 90 ) {
 			$message = __( 'As you can see, there is a translation of this plugin in %1$s. This translation is currently %3$d%% complete. We need your help to make it complete and to fix any errors. Please register at %4$s to help %5$s to %1$s!', 'give' );
 		} elseif ( ! $this->translation_loaded && $this->translation_exists ) {
@@ -139,13 +138,12 @@ class Give_i18n_Banner {
 			$message = __( 'You\'re using WordPress in a language we don\'t support yet. We\'d love for %2$s to be translated in that language too, but unfortunately, it isn\'t right now. You can change that! Register at %4$s to help translate it!', 'give' );
 		}
 
-		//Links.
+		// Links.
 		$registration_link = sprintf( '<a href="%1$s" target="_blank">%2$s</a>', 'https://wordpress.org/support/register.php', esc_html__( 'WordPress.org', 'give' ) );
 		$translations_link = sprintf( '<a href="%1$s" target="_blank">%2$s</a>', 'https://translate.wordpress.org/projects/wp-plugins/give', esc_html__( 'complete the translation', 'give' ) );
 
-		//Message.
+		// Message.
 		$message = sprintf( $message, $this->locale_name, 'Give', $this->percent_translated, $registration_link, $translations_link );
-
 
 		return $message;
 
@@ -207,14 +205,14 @@ class Give_i18n_Banner {
 					color: #333;
 				}
 
-                /* RTL Styles for banner */
-                body.rtl .give-i18n-notice-content {
-                    margin: 0 125px 0 30px;
-                }
-                body.rtl div.give-addon-alert .dismiss {
-                    left:20px;
-                    right:auto;
-                }
+				/* RTL Styles for banner */
+				body.rtl .give-i18n-notice-content {
+					margin: 0 125px 0 30px;
+				}
+				body.rtl div.give-addon-alert .dismiss {
+					left:20px;
+					right:auto;
+				}
 
 			</style>
 			<div id="give-i18n-notice" class="give-addon-alert updated" style="">
