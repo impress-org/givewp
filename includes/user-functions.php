@@ -320,7 +320,7 @@ function give_validate_username( $username, $form_id = 0 ) {
 		}
 	} else {
 		// Username is empty.
-		give_set_error( 'username_empty', esc_html__( 'Enter an username.', 'give' ) );
+		give_set_error( 'username_empty', esc_html__( 'Enter a username.', 'give' ) );
 		$valid = false;
 
 		// Check if guest checkout is disable for form.
