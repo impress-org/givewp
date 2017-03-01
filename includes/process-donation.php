@@ -277,7 +277,7 @@ function give_purchase_form_validate_fields() {
 
 	// Stop processing donor registration, if donor registration is optional and donor can do guest checkout.
 	// If registration form username field is empty that means donor do not want to registration instead want guest checkout.
-	if(
+	if (
 		! give_logged_in_only( $form_id )
 		&& isset( $_POST['give-purchase-var'] )
 		&& $_POST['give-purchase-var'] == 'needs-to-register'
@@ -567,7 +567,7 @@ function give_purchase_form_validate_new_user() {
 	);
 
 	// Get user data.
-	$user_data = wp_parse_args( array_map( 'trim', give_clean( $_POST ) ), $default_user_data );
+	$user_data            = wp_parse_args( array_map( 'trim', give_clean( $_POST ) ), $default_user_data );
 	$registering_new_user = false;
 	$form_id              = absint( $user_data['give-form-id'] );
 
@@ -591,18 +591,18 @@ function give_purchase_form_validate_new_user() {
 	}
 
 	// Check if we have an username to register.
-	if( give_validate_username( $user_data['give_user_login'] ) ) {
-		$registering_new_user = true;
+	if ( give_validate_username( $user_data['give_user_login'] ) ) {
+		$registering_new_user          = true;
 		$valid_user_data['user_login'] = $user_data['give_user_login'];
 	}
 
 	// Check if we have an email to verify.
-	if( give_validate_user_email( $user_data['give_email'], $registering_new_user ) ) {
+	if ( give_validate_user_email( $user_data['give_email'], $registering_new_user ) ) {
 		$valid_user_data['user_email'] = $user_data['give_email'];
 	}
 
 	// Check password.
-	if( give_validate_user_password( $user_data['give_user_pass'],  $user_data['give_user_pass_confirm'], $registering_new_user)){
+	if ( give_validate_user_password( $user_data['give_user_pass'], $user_data['give_user_pass_confirm'], $registering_new_user ) ) {
 		// All is good to go.
 		$valid_user_data['user_pass'] = $user_data['give_user_pass'];
 	}
