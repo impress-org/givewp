@@ -206,6 +206,16 @@ class Give_i18n_Banner {
 				div.give-addon-alert .dismiss:hover {
 					color: #333;
 				}
+
+                /* RTL Styles for banner */
+                body.rtl .give-i18n-notice-content {
+                    margin: 0 125px 0 30px;
+                }
+                body.rtl div.give-addon-alert .dismiss {
+                    left:20px;
+                    right:auto;
+                }
+
 			</style>
 			<div id="give-i18n-notice" class="give-addon-alert updated" style="">
 
