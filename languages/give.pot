@@ -875,31 +875,31 @@ msgstr ""
 msgid "You can create API keys for individual users within their profile edit screen. API keys allow users to use the <a href=\"%1$s\" target=\"_blank\">Give REST API</a> to retrieve donation data in JSON or XML for external applications or devices, such as <a href=\"%2$s\" target=\"_blank\">Zapier</a>."
 msgstr ""
 
-#: includes/admin/class-i18n-module.php:135
+#: includes/admin/class-i18n-module.php:134
 msgid "As you can see, there is a translation of this plugin in %1$s. This translation is currently %3$d%% complete. We need your help to make it complete and to fix any errors. Please register at %4$s to help %5$s to %1$s!"
 msgstr ""
 
-#: includes/admin/class-i18n-module.php:137
+#: includes/admin/class-i18n-module.php:136
 msgid "You're using WordPress in %1$s. While %2$s has been %3$d%% translated to %1$s, it has not been shipped with the plugin yet. You can help! Register at %4$s to help complete the translation to %1$s!"
 msgstr ""
 
-#: includes/admin/class-i18n-module.php:139
+#: includes/admin/class-i18n-module.php:138
 msgid "You're using WordPress in a language we don't support yet. We'd love for %2$s to be translated in that language too, but unfortunately, it isn't right now. You can change that! Register at %4$s to help translate it!"
 msgstr ""
 
-#: includes/admin/class-i18n-module.php:143
+#: includes/admin/class-i18n-module.php:142
 msgid "WordPress.org"
 msgstr ""
 
-#: includes/admin/class-i18n-module.php:144
+#: includes/admin/class-i18n-module.php:143
 msgid "complete the translation"
 msgstr ""
 
-#: includes/admin/class-i18n-module.php:217
+#: includes/admin/class-i18n-module.php:225
 msgid "Help Translate Give to %s"
 msgstr ""
 
-#: includes/admin/class-i18n-module.php:220
+#: includes/admin/class-i18n-module.php:228
 msgid "Register now &raquo;"
 msgstr ""
 
@@ -959,7 +959,7 @@ msgstr ""
 msgid "You do not have permission to edit this donor."
 msgstr ""
 
-#: includes/admin/customers/customer-actions.php:31, includes/admin/customers/customer-actions.php:43, includes/admin/customers/customer-actions.php:195, includes/admin/customers/customer-actions.php:207, includes/admin/customers/customer-actions.php:273, includes/admin/customers/customer-actions.php:286, includes/admin/customers/customer-actions.php:368, includes/admin/customers/customer-actions.php:379, includes/admin/customers/customer-actions.php:545, includes/admin/customers/customer-actions.php:589, includes/admin/EDD_SL_Plugin_Updater.php:328, includes/admin/forms/dashboard-columns.php:237, includes/admin/payments/actions.php:31, includes/admin/payments/actions.php:88, includes/admin/payments/actions.php:99, includes/admin/payments/actions.php:314, includes/admin/payments/actions.php:334, includes/admin/payments/actions.php:367, includes/admin/payments/actions.php:389, includes/admin/payments/view-order-details.php:24, includes/admin/payments/view-order-details.php:34, includes/admin/reporting/class-api-requests-logs-list-table.php:141, includes/admin/reporting/class-export.php:177, includes/admin/reporting/class-gateway-error-logs-list-table.php:128, includes/admin/reporting/export/class-batch-export.php:133, includes/admin/reporting/export/export-actions.php:26, includes/admin/reporting/pdf-reports.php:31, includes/admin/reporting/pdf-reports.php:35, includes/admin/reporting/tools/class-give-tools-delete-test-transactions.php:157, includes/admin/reporting/tools/class-give-tools-recount-all-stats.php:206, includes/admin/reporting/tools/class-give-tools-recount-customer-stats.php:195, includes/admin/reporting/tools/class-give-tools-recount-form-stats.php:220, includes/admin/reporting/tools/class-give-tools-recount-income.php:157, includes/admin/reporting/tools/class-give-tools-recount-single-customer-stats.php:152, includes/admin/reporting/tools/class-give-tools-reset-stats.php:185, includes/admin/upgrades/upgrade-functions.php:167, includes/admin/upgrades/upgrade-functions.php:279, includes/admin/upgrades/upgrade-functions.php:316, includes/admin/upgrades/upgrade-functions.php:687, includes/api/class-give-api.php:1691, includes/api/class-give-api.php:1696, includes/api/class-give-api.php:1714, includes/api/class-give-api.php:1724, includes/class-give-license-handler.php:323, includes/class-give-license-handler.php:421, includes/emails/actions.php:56, includes/emails/template.php:270, includes/error-tracking.php:50, includes/formatting.php:470, includes/gateways/manual.php:38
+#: includes/admin/customers/customer-actions.php:31, includes/admin/customers/customer-actions.php:43, includes/admin/customers/customer-actions.php:195, includes/admin/customers/customer-actions.php:207, includes/admin/customers/customer-actions.php:273, includes/admin/customers/customer-actions.php:286, includes/admin/customers/customer-actions.php:368, includes/admin/customers/customer-actions.php:379, includes/admin/customers/customer-actions.php:545, includes/admin/customers/customer-actions.php:589, includes/admin/forms/dashboard-columns.php:237, includes/admin/payments/actions.php:31, includes/admin/payments/actions.php:88, includes/admin/payments/actions.php:99, includes/admin/payments/actions.php:314, includes/admin/payments/actions.php:334, includes/admin/payments/actions.php:367, includes/admin/payments/actions.php:389, includes/admin/payments/view-order-details.php:24, includes/admin/payments/view-order-details.php:34, includes/admin/reporting/class-api-requests-logs-list-table.php:141, includes/admin/reporting/class-export.php:177, includes/admin/reporting/class-gateway-error-logs-list-table.php:128, includes/admin/reporting/export/class-batch-export.php:133, includes/admin/reporting/export/export-actions.php:26, includes/admin/reporting/pdf-reports.php:31, includes/admin/reporting/pdf-reports.php:35, includes/admin/reporting/tools/class-give-tools-delete-test-transactions.php:157, includes/admin/reporting/tools/class-give-tools-recount-all-stats.php:206, includes/admin/reporting/tools/class-give-tools-recount-customer-stats.php:195, includes/admin/reporting/tools/class-give-tools-recount-form-stats.php:220, includes/admin/reporting/tools/class-give-tools-recount-income.php:157, includes/admin/reporting/tools/class-give-tools-recount-single-customer-stats.php:152, includes/admin/reporting/tools/class-give-tools-reset-stats.php:185, includes/admin/upgrades/upgrade-functions.php:167, includes/admin/upgrades/upgrade-functions.php:279, includes/admin/upgrades/upgrade-functions.php:316, includes/admin/upgrades/upgrade-functions.php:687, includes/api/class-give-api.php:1691, includes/api/class-give-api.php:1696, includes/api/class-give-api.php:1714, includes/api/class-give-api.php:1724, includes/class-give-license-handler.php:323, includes/class-give-license-handler.php:421, includes/emails/actions.php:56, includes/emails/template.php:270, includes/error-tracking.php:50, includes/formatting.php:470, includes/gateways/manual.php:38
 msgid "Error"
 msgstr ""
 
@@ -1015,7 +1015,7 @@ msgstr ""
 msgid "Nonce verification failed."
 msgstr ""
 
-#: includes/admin/customers/customer-actions.php:472, includes/login-register.php:254, includes/process-donation.php:526, includes/process-donation.php:700, includes/user-functions.php:368
+#: includes/admin/customers/customer-actions.php:472, includes/login-register.php:254, includes/process-donation.php:537, includes/process-donation.php:711, includes/user-functions.php:368
 msgid "Invalid email."
 msgstr ""
 
@@ -1275,18 +1275,6 @@ msgid "%s Give Form"
 msgid_plural "%s Give Forms"
 msgstr[0] ""
 msgstr[1] ""
-
-#: includes/admin/EDD_SL_Plugin_Updater.php:175
-msgid "There is a new version of %1$s available. <a target=\"_blank\" class=\"thickbox\" href=\"%2$s\">View version %3$s details</a>."
-msgstr ""
-
-#: includes/admin/EDD_SL_Plugin_Updater.php:183
-msgid "There is a new version of %1$s available. <a target=\"_blank\" class=\"thickbox\" href=\"%2$s\">View version %3$s details</a> or <a href=\"%4$s\">update now</a>."
-msgstr ""
-
-#: includes/admin/EDD_SL_Plugin_Updater.php:328
-msgid "You do not have permission to install plugin updates."
-msgstr ""
 
 #: includes/admin/forms/class-metabox-form-data.php:49
 msgid "Donation Form Options"
@@ -5853,7 +5841,7 @@ msgstr ""
 msgid "Your password"
 msgstr ""
 
-#: includes/forms/template.php:1300, includes/process-donation.php:643, templates/shortcode-login.php:40
+#: includes/forms/template.php:1300, includes/process-donation.php:654, templates/shortcode-login.php:40
 msgid "Reset Password"
 msgstr ""
 
@@ -6157,11 +6145,11 @@ msgstr ""
 msgid "We're sorry, your donation failed to process. Please try again or contact site support."
 msgstr ""
 
-#: includes/login-register.php:112, includes/process-donation.php:641
+#: includes/login-register.php:112, includes/process-donation.php:652
 msgid "The password you entered is incorrect."
 msgstr ""
 
-#: includes/login-register.php:115, includes/process-donation.php:664
+#: includes/login-register.php:115, includes/process-donation.php:675
 msgid "The username you entered does not exist."
 msgstr ""
 
@@ -6590,71 +6578,71 @@ msgstr ""
 msgid "Honeypot field detected. Go away bad bot!"
 msgstr ""
 
-#: includes/process-donation.php:324
+#: includes/process-donation.php:335
 msgid "Please insert a valid donation amount."
 msgstr ""
 
-#: includes/process-donation.php:333
+#: includes/process-donation.php:344
 msgid "This form has a minimum donation amount of %s."
 msgstr ""
 
-#: includes/process-donation.php:346
+#: includes/process-donation.php:357
 msgid "The selected payment gateway is not enabled."
 msgstr ""
 
-#: includes/process-donation.php:398, includes/scripts.php:66
+#: includes/process-donation.php:409, includes/scripts.php:66
 msgid "You must agree to the terms and conditions."
 msgstr ""
 
-#: includes/process-donation.php:419, includes/scripts.php:62
+#: includes/process-donation.php:430, includes/scripts.php:62
 msgid "Please enter a valid email address."
 msgstr ""
 
-#: includes/process-donation.php:423, includes/scripts.php:61
+#: includes/process-donation.php:434, includes/scripts.php:61
 msgid "Please enter your first name."
 msgstr ""
 
-#: includes/process-donation.php:432
+#: includes/process-donation.php:443
 msgid "Please enter your primary billing address."
 msgstr ""
 
-#: includes/process-donation.php:436
+#: includes/process-donation.php:447
 msgid "Please enter your zip / postal code."
 msgstr ""
 
-#: includes/process-donation.php:440
+#: includes/process-donation.php:451
 msgid "Please enter your billing city."
 msgstr ""
 
-#: includes/process-donation.php:444
+#: includes/process-donation.php:455
 msgid "Please select your billing country."
 msgstr ""
 
-#: includes/process-donation.php:448
+#: includes/process-donation.php:459
 msgid "Please enter billing state / province."
 msgstr ""
 
-#: includes/process-donation.php:530
+#: includes/process-donation.php:541
 msgid "The user information is invalid."
 msgstr ""
 
-#: includes/process-donation.php:619, includes/user-functions.php:328
+#: includes/process-donation.php:630, includes/user-functions.php:328
 msgid "You must register or login to complete your donation."
 msgstr ""
 
-#: includes/process-donation.php:660, includes/scripts.php:64, includes/user-functions.php:416
+#: includes/process-donation.php:671, includes/scripts.php:64, includes/user-functions.php:416
 msgid "Enter a password."
 msgstr ""
 
-#: includes/process-donation.php:689
+#: includes/process-donation.php:700
 msgid "You must be logged in to donate."
 msgstr ""
 
-#: includes/process-donation.php:713, includes/user-functions.php:363
+#: includes/process-donation.php:724, includes/user-functions.php:363
 msgid "Enter an email."
 msgstr ""
 
-#: includes/process-donation.php:887
+#: includes/process-donation.php:898
 msgid "The zip / postal code you entered for your billing address is invalid."
 msgstr ""
 
@@ -6831,7 +6819,7 @@ msgid "Give Placeholder Image"
 msgstr ""
 
 #: includes/user-functions.php:323
-msgid "Enter an username."
+msgid "Enter a username."
 msgstr ""
 
 #: includes/user-functions.php:373
