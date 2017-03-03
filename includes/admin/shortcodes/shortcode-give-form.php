@@ -115,4 +115,4 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 	}
 }
 
-new Give_Shortcode_Donation_Form;
+new Give_Shortcode_Donation_Form();

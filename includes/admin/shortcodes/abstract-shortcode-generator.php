@@ -64,7 +64,6 @@ abstract class Give_Shortcode_Generator {
 	 */
 	public function __construct( $shortcode ) {
 
-
 		$this->shortcode_tag = $shortcode;
 
 		add_action( 'admin_init', array( $this, 'init' ) );
