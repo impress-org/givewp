@@ -1698,9 +1698,12 @@ jQuery.noConflict();
 			}
 
 			return false;
-		}).on( 'blur', function(){
+		}).on( 'blur', '#give-show-sub-nav', function(){
 			var $sub_tab_nav = $(this).next();
-			$sub_tab_nav.removeClass('give-hidden');
+
+			if( ! $sub_tab_nav.is(':hover') ) {
+				$sub_tab_nav.addClass('give-hidden');
+			}
 		});
 
 		// Render setting tab.
