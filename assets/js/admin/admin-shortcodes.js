@@ -18,8 +18,7 @@ var scShortcode, scButton;
 
 var scForm = {
 
-	open: function( editor_id )
-	{
+	open: function( editor_id ) {
 		var editor = tinymce.get( editor_id );
 
 		if ( ! editor ) {
@@ -33,8 +32,8 @@ var scForm = {
 			shortcode : scShortcode
 		};
 
-		jq.post( ajaxurl, data, function( response )
-			{
+		jq.post( ajaxurl, data, function( response ) {
+
 			// what happens if response === false?
 			if ( ! response.body ) {
 				console.error( 'Bad AJAX response!' );
@@ -54,49 +53,45 @@ var scForm = {
 				body    : response.body,
 				classes: 'sc-popup',
 				minWidth: 320,
-				buttons : [
-					{
-						text    : response.ok,
-						classes : 'primary sc-primary',
-						onclick : function()
-						{
-							// Get the top most window object
-							win = editor.windowManager.getWindows()[0];
+				buttons : [ {
+					text    : response.ok,
+					classes : 'primary sc-primary',
+					onclick : function() {
+						// Get the top most window object
+						win = editor.windowManager.getWindows()[0];
 
-							// Get the shortcode required attributes
-							required = scShortcodes[ scShortcode ];
+						// Get the shortcode required attributes
+						required = scShortcodes[ scShortcode ];
 
-							valid = true;
+						valid = true;
 
-							// Do some validation voodoo
-							for ( var id in required ) {
-								if ( required.hasOwnProperty( id ) ) {
+						// Do some validation voodoo
+						for ( var id in required ) {
+							if ( required.hasOwnProperty( id ) ) {
 
-									field = win.find( '#' + id )[0];
+								field = win.find( '#' + id )[0];
 
-									if ( typeof field !== 'undefined' && field.state.data.value === '' ) {
+								if ( typeof field !== 'undefined' && field.state.data.value === '' ) {
 
-										valid = false;
+									valid = false;
 
-										alert( required[ id ] );
+									alert( required[ id ] );
 
-										break;
-									}
+									break;
 								}
 							}
-
-							if ( valid ) {
-								win.submit();
-							}
 						}
+
+						if ( valid ) {
+							win.submit();
+						}
+					}
 				},
 					{
 						text    : response.close,
 						onclick : 'close'
-				},
-				],
-				onsubmit: function( e )
-				{
+				}, ],
+				onsubmit: function( e ) {
 					var attributes = '';
 
 					for ( var key in e.data ) {
@@ -108,14 +103,12 @@ var scForm = {
 					// Insert shortcode into the WP_Editor
 					window.send_to_editor( '[' + response.shortcode + attributes + ']' );
 				},
-				onclose: function()
-				{
+				onclose: function() {
 					scForm.destroy();
 				},
-				onopen: function()
-				{
+				onopen: function() {
 					// Conditional fields.
-
+					console.log( response );
 				}
 			};
 
@@ -130,8 +123,7 @@ var scForm = {
 		});
 	},
 
-	destroy: function()
-	{
+	destroy: function() {
 		var tmp = jq( '#scTemp' );
 
 		if ( tmp.length ) {
@@ -141,29 +133,24 @@ var scForm = {
 	}
 };
 
-jq( function( $ )
-	{
-	var scOpen = function()
-	{
+jq( function( $ ) {
+	var scOpen = function() {
 		scButton.addClass( 'active' ).parent().find( '.sc-menu' ).show();
 	};
 
-	var scClose = function()
-	{
+	var scClose = function() {
 		if ( typeof scButton !== 'undefined' ) {
 			scButton.removeClass( 'active' ).parent().find( '.sc-menu' ).hide();
 		}
 	};
 
-	$( document ).on( 'click', function( e )
-		{
+	$( document ).on( 'click', function( e ) {
 		if ( ! $( e.target ).closest( '.sc-wrap' ).length ) {
 			scClose();
 		}
 	});
 
-	$( document ).on( 'click', '.sc-button', function( e )
-		{
+	$( document ).on( 'click', '.sc-button', function( e ) {
 		e.preventDefault();
 
 		scButton = $( this );
@@ -175,8 +162,7 @@ jq( function( $ )
 		}
 	});
 
-	$( document ).on( 'click', '.sc-shortcode', function( e )
-		{
+	$( document ).on( 'click', '.sc-shortcode', function( e ) {
 		e.preventDefault();
 
 		// scShortcode is used by scForm to trigger the correct popup
