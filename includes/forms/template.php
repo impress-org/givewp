@@ -607,7 +607,7 @@ function give_display_checkout_button( $form_id, $args ) {
 	}
 
 	$display_label_field = get_post_meta( $form_id, '_give_reveal_label', true );
-	$display_label       = ( ! empty( $display_label_field ) ? $display_label_field : esc_html__( 'Donate Now', 'give' ) );
+	$display_label       = ! empty( $args['continue_button_title'] ) ? $args['continue_button_title'] : ( ! empty( $display_label_field ) ? $display_label_field : esc_html__( 'Donate Now', 'give' ) );
 
 	$output = '<button type="button" class="give-btn give-btn-' . $display_option . '">' . $display_label . '</button>';
 

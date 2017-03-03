@@ -80,12 +80,13 @@ add_shortcode( 'donation_history', 'give_donation_history' );
  */
 function give_form_shortcode( $atts ) {
 	$atts = shortcode_atts( array(
-		'id'            => '',
-		'show_title'    => true,
-		'show_goal'     => true,
-		'show_content'  => '',
-		'float_labels'  => '',
-		'display_style' => '',
+		'id'                    => '',
+		'show_title'            => true,
+		'show_goal'             => true,
+		'show_content'          => '',
+		'float_labels'          => '',
+		'display_style'         => '',
+		'continue_button_title' => '',
 	), $atts, 'give_form' );
 
 	// Convert string to bool.

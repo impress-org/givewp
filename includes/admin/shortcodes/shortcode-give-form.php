@@ -105,6 +105,12 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 					'button' => esc_html__( 'Button', 'give' ),
 				),
 			),
+			array(
+				'type'    => 'textbox',
+				'name'    => 'continue_button_title',
+				'label'   => esc_attr__( 'Continue Button Title:', 'give' ),
+				'tooltip' => esc_attr__( 'Do you want to change button label for displaying the additional payment fields?', 'give' ),
+			),
 		);
 	}
 }
