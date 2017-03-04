@@ -1895,6 +1895,10 @@ h2.give-nav-tab-wrapper {
     .give-sub-nav-tab-wrapper nav.give-sub-nav-tab a:hover {
       background: #e5e5e5; }
 
+@media screen and (max-width: 400px) {
+  .give-sub-nav-tab-wrapper nav.give-sub-nav-tab a {
+    min-width: 260px; } }
+
 .give-sub-nav-tab-wrapper {
   display: none; }
 
