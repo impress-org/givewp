@@ -255,6 +255,8 @@ function give_load_admin_scripts( $hook ) {
 	wp_register_style( 'jquery-chosen', $css_dir . 'chosen' . $suffix . '.css', array(), GIVE_VERSION );
 	wp_enqueue_style( 'jquery-chosen' );
 	wp_enqueue_style( 'thickbox' );
+	wp_enqueue_style( 'wp-color-picker' );
+
 
 	// JS.
 	wp_register_script( 'jquery-chosen', $js_plugins . 'chosen.jquery' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
@@ -263,7 +265,11 @@ function give_load_admin_scripts( $hook ) {
 	wp_register_script( 'give-accounting', $js_plugins . 'accounting' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
 	wp_enqueue_script( 'give-accounting' );
 
-	wp_register_script( 'give-admin-scripts', $js_dir . 'admin-scripts' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
+	wp_enqueue_script( 'wp-color-picker' );
+	wp_enqueue_script( 'jquery-ui-datepicker' );
+	wp_enqueue_script( 'thickbox' );
+
+	wp_register_script( 'give-admin-scripts', $js_dir . 'admin-scripts' . $suffix . '.js', array( 'jquery', 'jquery-ui-datepicker', 'wp-color-picker' ), GIVE_VERSION, false );
 	wp_enqueue_script( 'give-admin-scripts' );
 
 	wp_register_script( 'jquery-flot', $js_plugins . 'jquery.flot' . $suffix . '.js' );
@@ -274,9 +280,6 @@ function give_load_admin_scripts( $hook ) {
 
 	wp_register_script( 'give-repeatable-fields', $js_plugins . 'repeatable-fields' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
 	wp_enqueue_script( 'give-repeatable-fields' );
-
-	wp_enqueue_script( 'jquery-ui-datepicker' );
-	wp_enqueue_script( 'thickbox' );
 
 	// Forms CPT Script.
 	if ( $post_type === 'give_forms' ) {
