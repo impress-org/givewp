@@ -54,9 +54,6 @@ class Give_MetaBox_Form_Data {
 		// Add metabox.
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ), 30 );
 
-		// Load required scripts.
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_script' ) );
-
 		// Save form meta.
 		add_action( 'save_post_give_forms', array( $this, 'save' ), 10, 2 );
 
@@ -552,8 +549,7 @@ class Give_MetaBox_Form_Data {
 		global $post;
 
 		if ( is_object( $post ) && 'give_forms' === $post->post_type ) {
-			wp_enqueue_style( 'wp-color-picker' );
-			wp_enqueue_script( 'wp-color-picker' );
+
 		}
 	}
 
