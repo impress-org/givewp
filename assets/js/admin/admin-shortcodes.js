@@ -62,6 +62,9 @@ var scForm = {
 				return;
 			}
 
+			/**
+			 * Render continue button title setting field on basis of display style value.
+			 */
 			jq.each( response.body, function( index, item ){
 
 				if( 'display_style' === item.name ) {
