@@ -16,6 +16,20 @@ var jq = jQuery.noConflict();
 
 var scShortcode, scButton;
 
+/**
+ * Show continue button title setting field only if display style is not All Fields.
+ */
+var render_conitnue_button_title_field = function() {
+	var selected_display_style = jq('.mce-txt', '.mce-give-display-style').text(),
+		expected_display_styles = [ '- Select -', 'All Fields' ];
+
+	if( -1 !== jq.inArray( selected_display_style, expected_display_styles ) ) {
+		jq('.mce-give-continue-button-title').closest('.mce-container' ).hide()
+	} else {
+		jq('.mce-give-continue-button-title').closest('.mce-container' ).show()
+	}
+};
+
 var scForm = {
 
 	open: function( editor_id ) {
@@ -47,6 +61,15 @@ var scForm = {
 
 				return;
 			}
+
+			jq.each( response.body, function( index, item ){
+
+				if( 'display_style' === item.name ) {
+					response.body[index].onselect = function(){
+						render_conitnue_button_title_field();
+					};
+				}
+			});
 
 			var popup = {
 				title   : response.title,
@@ -109,6 +132,8 @@ var scForm = {
 				onopen: function() {
 					// Conditional fields.
 					console.log( response );
+
+					render_conitnue_button_title_field();
 				}
 			};
 
