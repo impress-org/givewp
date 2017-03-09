@@ -88,6 +88,7 @@ add_action( 'plugins_loaded', 'give_register_batch_exporters' );
 
 /**
  * Register the payments batch exporter
+ *
  * @since  1.5
  */
 function give_register_payments_batch_export() {
@@ -115,6 +116,7 @@ function give_include_payments_batch_processor( $class ) {
 
 /**
  * Register the customers batch exporter
+ *
  * @since  1.5.2
  */
 function give_register_customers_batch_export() {
