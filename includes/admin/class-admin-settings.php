@@ -88,7 +88,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 			if ( empty( $_REQUEST['_give-save-settings'] ) || ! wp_verify_nonce( $_REQUEST['_give-save-settings'], 'give-save-settings' ) ) {
 				echo '<div class="notice error"><p>' . __( 'Action failed. Please refresh the page and retry.', 'give' ) . '</p></div>';
-				die( );
+				die();
 			}
 
 			/**
