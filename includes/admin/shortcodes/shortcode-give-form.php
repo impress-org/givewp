@@ -96,6 +96,7 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 			array(
 				'type'    => 'listbox',
 				'name'    => 'display_style',
+				'classes' => 'give-display-style',
 				'label'   => esc_attr__( 'Display Options', 'give' ),
 				'tooltip' => esc_attr__( 'How would you like to display donation information?', 'give' ),
 				'options' => array(
@@ -107,7 +108,7 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 			),
 			array(
 				'type'    => 'textbox',
-				'classes' => 'give-hidden',
+				'classes' => 'give-hidden give-continue-button-title',
 				'name'    => 'continue_button_title',
 				'label'   => esc_attr__( 'Button Text', 'give' ),
 				'tooltip' => esc_attr__( 'The button label for displaying the additional payment fields.', 'give' ),
