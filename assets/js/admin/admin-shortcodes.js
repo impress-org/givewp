@@ -19,7 +19,7 @@ var scShortcode, scButton;
 /**
  * Show continue button title setting field only if display style is not All Fields.
  */
-var render_conitnue_button_title_field = function() {
+var render_continue_button_title_field = function() {
 	var selected_display_style = jq('.mce-txt', '.mce-give-display-style').text(),
 		expected_display_styles = [ '- Select -', 'All Fields' ];
 
@@ -69,7 +69,7 @@ var scForm = {
 
 				if( 'display_style' === item.name ) {
 					response.body[index].onselect = function(){
-						render_conitnue_button_title_field();
+						render_continue_button_title_field();
 					};
 				}
 			});
@@ -136,7 +136,7 @@ var scForm = {
 					// Conditional fields.
 					console.log( response );
 
-					render_conitnue_button_title_field();
+					render_continue_button_title_field();
 				}
 			};
 
