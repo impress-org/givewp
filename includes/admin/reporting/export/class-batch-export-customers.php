@@ -213,7 +213,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 			}
 		} else {
 
-			// Export all customers
+			// Export all donors.
 			$offset = 30 * ( $this->step - 1 );
 			$donors = Give()->customers->get_customers( array( 'number' => 30, 'offset' => $offset ) );
 
