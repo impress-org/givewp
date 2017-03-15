@@ -163,7 +163,7 @@ function give_send_to_success_page( $query_string = null ) {
  */
 function give_send_back_to_checkout( $args = array() ) {
 
-	$url = isset( $_POST['give-current-url'] ) ? sanitize_text_field( $_POST['give-current-url'] ) : '';
+	$url     = isset( $_POST['give-current-url'] ) ? sanitize_text_field( $_POST['give-current-url'] ) : '';
 	$form_id = 0;
 
 	// Set the form_id.
@@ -902,8 +902,11 @@ add_filter( 'give_form_goal', 'give_currency_filter', 20 );
  */
 function give_logged_in_only( $form_id ) {
 	// If _give_logged_in_only is set to enable then guest can donate from that specific form.
-	// Other wise it is member only donation form.
-	$ret = ! give_is_setting_enabled( get_post_meta( $form_id, '_give_logged_in_only', true ) );
+	// Otherwise it is member only donation form.
+	$val = get_post_meta( $form_id, '_give_logged_in_only', true );
+	$val = ! empty( $val ) ? $val : 'enabled';
+
+	$ret = ! give_is_setting_enabled( $val );
 
 	return (bool) apply_filters( 'give_logged_in_only', $ret, $form_id );
 }
