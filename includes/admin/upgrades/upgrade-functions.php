@@ -42,7 +42,7 @@ function give_do_automatic_upgrades() {
 		case version_compare( $give_version, '1.7', '<' ) :
 			give_v17_upgrades();
 			$did_upgrade = true;
-            break;
+			break;
 
 		case version_compare( $give_version, '1.8', '<' ) :
 			give_v18_upgrades();
@@ -138,7 +138,7 @@ function give_show_upgrade_notices() {
 				$upgrade_links.on( 'click', function(e){
 					e.preventDefault();
 
-					if( ! window.confirm( '<?php _e( 'Please make sure to create a database backup before initiating the upgrade.', 'give'); ?>' ) ) {
+					if( ! window.confirm( '<?php _e( 'Please make sure to create a database backup before initiating the upgrade.', 'give' ); ?>' ) ) {
 						return;
 					}
 
@@ -707,7 +707,6 @@ function give_v18_upgrades_form_metadata() {
 		)
 	);
 
-
 	if ( $forms->have_posts() ) {
 		while ( $forms->have_posts() ) {
 			$forms->the_post();
@@ -730,12 +729,12 @@ function give_v18_upgrades_form_metadata() {
 			$guest_donation_newval = ( in_array( $guest_donation, array( 'yes', 'on' ) ) ? 'disabled' : 'enabled' );
 			update_post_meta( get_the_ID(), '_give_logged_in_only', $guest_donation_newval );
 
-            // Offline Donations
+			// Offline Donations
 			// See: https://github.com/WordImpress/Give/issues/1579
 			$offline_donation = get_post_meta( get_the_ID(), '_give_customize_offline_donations', true );
-			if('no' === $offline_donation ) {
+			if ( 'no' === $offline_donation ) {
 				$offline_donation_newval = 'global';
-			} elseif('yes' === $offline_donation) {
+			} elseif ( 'yes' === $offline_donation ) {
 				$offline_donation_newval = 'enabled';
 			} else {
 				$offline_donation_newval = 'disabled';
@@ -790,7 +789,6 @@ function give_v18_upgrades_form_metadata() {
 		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
 		delete_option( 'give_doing_upgrade' );
 		give_set_upgrade_complete( 'v18_upgrades_form_metadata' );
-
 
 		wp_redirect( admin_url() );
 		exit;
