@@ -723,12 +723,24 @@ function give_v18_upgrades_form_metadata() {
 				$field_value = ( 'none' !== $show_content ? $show_content : 'give_pre_form' );
 				update_post_meta( get_the_ID(), '_give_content_placement', $field_value );
 			}
-            
+
 			// "Disable" Guest Donation. Checkbox
 			// See: https://github.com/WordImpress/Give/issues/1470
 			$guest_donation = get_post_meta( get_the_ID(), '_give_logged_in_only', true );
 			$guest_donation_newval = ( in_array( $guest_donation, array( 'yes', 'on' ) ) ? 'disabled' : 'enabled' );
 			update_post_meta( get_the_ID(), '_give_logged_in_only', $guest_donation_newval );
+
+            // Offline Donations
+			// See: https://github.com/WordImpress/Give/issues/1579
+			$offline_donation = get_post_meta( get_the_ID(), '_give_customize_offline_donations', true );
+			if('no' === $offline_donation ) {
+				$offline_donation_newval = 'global';
+			} elseif('yes' === $offline_donation) {
+				$offline_donation_newval = 'enabled';
+			} else {
+				$offline_donation_newval = 'disabled';
+			}
+			update_post_meta( get_the_ID(), '_give_customize_offline_donations', $offline_donation_newval );
 
 			// Convert yes/no setting field to enabled/disabled.
 			$form_radio_settings = array(
@@ -743,9 +755,6 @@ function give_v18_upgrades_form_metadata() {
 
 				// Term & conditions.
 				'_give_terms_option',
-
-				// Offline donation.
-				'_give_customize_offline_donations',
 
 				// Billing fields.
 				'_give_offline_donation_enable_billing_fields_single',
