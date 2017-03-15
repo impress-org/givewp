@@ -138,7 +138,7 @@ function give_show_upgrade_notices() {
 				$upgrade_links.on( 'click', function(e){
 					e.preventDefault();
 
-					if( ! window.confirm( give_vars.upgrade_confirmation ) ) {
+					if( ! window.confirm( '<?php _e( 'Please make sure to create a database backup before initiating the upgrade.', 'give'); ?>' ) ) {
 						return;
 					}
 
