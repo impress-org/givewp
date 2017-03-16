@@ -76,6 +76,17 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 							'default' => 'donation',
 						),
 						array(
+							'name'    => __( 'Billing Details', 'give' ),
+							'desc'    => __( 'This option will enable the billing details section for PayPal Standard which requires the donor\'s address to complete the donation. These fields are not required by PayPal to process the transaction, but you may have a need to collect the data.', 'give' ),
+							'id'      => 'paypal_standard_billing_details',
+							'type'    => 'radio_inline',
+							'default' => 'disabled',
+							'options' => array(
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							)
+						),
+						array(
 							'name'    => __( 'PayPal IPN Verification', 'give' ),
 							'desc'    => __( 'If donations are not getting marked as complete, use a slightly less secure method of verifying donations.', 'give' ),
 							'id'      => 'paypal_verification',
