@@ -53,9 +53,9 @@ The easiest way to install the plugin is through the [WordPress.org plugin repos
 
 ### Automatic installation ###
 
-Automatic installation is the easiest option as WordPress handles the file transfers itself and you don't need to leave your web browser. To do an automatic install of Give, log in to your WordPress dashboard, navigate to the Plugins menu and click "Add New."
+Automatic installation is the easiest option as WordPress handles the file transfers itself and you don't need to leave your web browser. To do an automatic install of Give, log in to your WordPress dashboard, navigate to the Plugins menu and click "Add New".
 
-In the search field type "Give" and click Search Plugins. Once you have found the plugin you can view details about it such as the point release, rating, and description, as well as install it by simply clicking "Install Now."
+In the search field type "Give" and click Search Plugins. Once you have found the plugin you can view details about it such as the point release, rating, and description, as well as install it by simply clicking "Install Now".
 
 ### Manual installation ###
 
@@ -77,7 +77,7 @@ Yes! We have several live examples of Give with [popular WordPress Themes here](
 
 ### Do you have Case Studies of Nonprofits using Give? ###
 
-Yes! We call them "Give Stories." [You can read them all here](https://givewp.com/give-stories/).
+Yes! We call them "Give Stories". [You can read them all here](https://givewp.com/give-stories/).
 
 ### How is Give better than *Gravity Forms* for accepting donations through WordPress? ###
 
@@ -85,4 +85,4 @@ First off, we love Gravity Forms. It's a great plugin and has a lot of good feat
 
 ### How is Give better than *WooCommerce* for accepting donations on WordPress? ###
 
-It's true. We also really like WooCommerce. It's hands-down the most robust eCommerce platform for WordPress. But that's also the issue. When accepting donations, you don't need a cart system, shipping, or tax calculations. Additionally, customizing the plugin functionality and terminology for nonprofit needs is often a daunting task. You never want your users to receive an "invoice" for the donation as a "product" they "purchased." Rather, you'd like for them to receive a tax deductible receipt for the donation they gave. WooCommerce *can* make donations, but it was not designed for it. Nor is it very easy to setup and maintain across the various major version releases. 
+It's true. We also really like WooCommerce. It's hands-down the most robust eCommerce platform for WordPress. But that's also the issue. When accepting donations, you don't need a cart system, shipping, or tax calculations. Additionally, customizing the plugin functionality and terminology for nonprofit needs is often a daunting task. You never want your users to receive an "invoice" for the donation as a "product" they "purchased". Rather, you'd like for them to receive a tax deductible receipt for the donation they gave. WooCommerce *can* make donations, but it was not designed for it. Nor is it very easy to setup and maintain across the various major version releases. 
