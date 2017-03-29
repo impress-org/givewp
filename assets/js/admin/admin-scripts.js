@@ -1360,9 +1360,10 @@ jQuery.noConflict();
 
 				// Get max level id.
 				$('input[type="hidden"].give-levels_id', $this).each(function (index, item) {
-					var $item = $(item);
-					if (max_level_id < $item.val()) {
-						max_level_id = $item.val();
+					var $item = $(item),
+						current_level = parseInt( $item.val() );
+					if (max_level_id < current_level ) {
+						max_level_id = current_level;
 					}
 				});
 
