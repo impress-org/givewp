@@ -57,7 +57,7 @@ $payment_mode   = $payment->mode;
 			$number
 		);
 		if ( $payment_mode == 'test' ) {
-			echo '<span id="test-payment-label" class="give-item-label give-item-label-orange" data-tooltip="' . esc_attr__( 'This donation was made in test mode.', 'give' ) . '" data-tooltip-my-position="center left" data-tooltip-target-position="center right">' . esc_html__( 'Test Donation', 'give' ) . '</span>';
+			echo '<span id="test-payment-label" class="give-item-label give-item-label-orange hint--right" aria-label="' . esc_attr__( 'This donation was made in test mode.', 'give' ) . '">' . esc_html__( 'Test Donation', 'give' ) . '</span>';
 		}
 		?></h1>
 

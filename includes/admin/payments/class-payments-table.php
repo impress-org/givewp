@@ -330,7 +330,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 		switch ( $column_name ) {
 			case 'donation' :
 				$value = sprintf(
-					'<a href="%1$s" data-tooltip="%2$s">#%3$s</a>&nbsp;%4$s&nbsp;%5$s<br>',
+					'<a href="%1$s" aria-label="%2$s" class="hint--top">#%3$s</a>&nbsp;%4$s&nbsp;%5$s<br>',
 					$single_donation_url,
 					sprintf( esc_attr__( 'View Donation %s', 'give' ), $payment->ID ),
 					$payment->ID,
@@ -368,7 +368,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 			case 'details' :
 				$value = sprintf(
-					'<div class="give-payment-details-link-wrap"><a href="%1$s" class="give-payment-details-link button button-small" data-tooltip="%2$s" aria-label="%2$s"><span class="dashicons dashicons-visibility"></span></a></div>',
+					'<div class="give-payment-details-link-wrap"><a href="%1$s" class="give-payment-details-link button button-small hint--top" aria-label="%2$s" aria-label="%2$s"><span class="dashicons dashicons-visibility"></span></a></div>',
 					$single_donation_url,
 					sprintf( esc_attr__( 'View Donation %s', 'give' ), $payment->ID )
 				);
@@ -401,7 +401,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			$email = esc_html__( '(unknown)', 'give' );
 		}
 
-		$value = '<a href="mailto:' . $email . '" data-tooltip="' . esc_attr__( 'Email donor', 'give' ) . '">' . $email . '</a>';
+		$value = '<a href="mailto:' . $email . '" aria-label="' . esc_attr__( 'Email donor', 'give' ) . '" class="hint--top">' . $email . '</a>';
 
 		return apply_filters( 'give_payments_table_column', $value, $payment->ID, 'email' );
 	}
@@ -479,7 +479,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	function get_payment_status( $payment ) {
 		$value = '<div class="give-donation-status status-' . sanitize_title( give_get_payment_status( $payment, true ) ) . '"><span class="give-donation-status-icon"></span> ' . give_get_payment_status( $payment, true ) . '</div>';
 		if ( $payment->mode == 'test' ) {
-			$value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label" data-tooltip="' . esc_attr__( 'This donation was made in test mode.', 'give' ) . '">' . esc_html__( 'Test', 'give' ) . '</span>';
+			$value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label hint--top" aria-label="' . esc_attr__( 'This donation was made in test mode.', 'give' ) . '">' . esc_html__( 'Test', 'give' ) . '</span>';
 		}
 
 		return $value;
