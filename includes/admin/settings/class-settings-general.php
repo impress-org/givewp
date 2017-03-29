@@ -170,7 +170,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
                             'type'  => 'give_docs_link',
                         ),
 						array(
-							'type' => 'title',
+							'type' => 'sectionend',
 							'id'   => 'give_title_general_settings_2'
 						)
 					);
