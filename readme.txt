@@ -4,7 +4,7 @@ Donate link: https://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.2
 Tested up to: 4.7.2
-Stable tag: 1.8.4
+Stable tag: 1.8.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -164,6 +164,14 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 1.8.5 =
+* New: Added a "Billing Details" as an option in PayPal Standard gateways which adds address fields to the gateway. The field data is then passed to PayPal and pre-filled on the PayPal payment form. [#1573](https://github.com/WordImpress/Give/issues/1573)
+* New: Button only display mode now has an option to customize the donate button text. [#1494](https://github.com/WordImpress/Give/issues/1494)
+* New: There is now a colorpicker setting field in the Give Setting API. [#1566](https://github.com/WordImpress/Give/issues/1566)
+* Fix: If Give is upgraded from pre-1.8 to the latest version upgrades but does not run the manual upgrade routine the donation forms will continue to remain open for guest donations. [#1578](https://github.com/WordImpress/Give/issues/1578)
+* Fix: There was an issue with the 1.8 upgrade routine where it was incorrectly disabling the Offline Donations gateway per form. [#1579](https://github.com/WordImpress/Give/issues/1579)
+* Fix: The upgrade routine would not properly run on pages outside of Give in wp-admin. This has been fixed, now users can upgrade the db anywhere in wp-admin. [#1580](https://github.com/WordImpress/Give/issues/1580)
 
 = 1.8.4 =
 * Fix: When a donation form has guest donations enabled and the registration + login option enabled the optional fields were being incorrect required. [#1553](https://github.com/WordImpress/Give/issues/1553)

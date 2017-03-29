@@ -235,6 +235,7 @@ abstract class Give_Shortcode_Generator {
 			'tooltip'  => '',
 			'type'     => '',
 			'value'    => '',
+			'classes'  => ''
 		), $field );
 
 		if ( $this->validate( $field ) ) {
@@ -328,6 +329,7 @@ abstract class Give_Shortcode_Generator {
 			'tooltip'   => '',
 			'type'      => '',
 			'value'     => '',
+			'classes'   => ''
 		), $field );
 
 		if ( $this->validate( $field ) ) {

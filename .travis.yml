@@ -25,6 +25,7 @@ matrix:
 before_script:
 - bash tests/bin/install.sh wordpress_test root '' localhost $WP_VERSION
 - bash tests/bin/travis.sh before
+- composer install
 
 script: phpunit -c phpunit.xml
 
