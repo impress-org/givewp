@@ -7,17 +7,17 @@ We know how important fundraising online is to accomplish your goals. For many n
 
 ### Why Give? ###
 
-Prior to Give there was no single go-to solution for accepting donations on WordPress. Sure, Gravity Forms and WooCommerce are great plugins but they're not developed to work specifically for donations. This can often lead to your users being confused by unnecessary cart systems, incorrect terminology, or lack of flexibility. As an admin, you may have wrestled with the various other WordPress donation plugins. Dealing with the lack of documentation and unreliable support can be an all too common occurrence and a real pain.
+Before Give there was no single go-to solution for accepting donations on WordPress. Sure, Gravity Forms and WooCommerce are great plugins, but they're not developed to work specifically for donations. This can often lead to your users being confused by unnecessary cart systems, incorrect terminology, or lack of flexibility. As an admin, you may have wrestled with the various other WordPress donation plugins. Dealing with the lack of documentation and unreliable support can be an all too common occurrence and a real pain.
 
 There's a better way. Now you have Give.
 
-### Simple and Pain Free Giving ###
+### Simple and Pain-Free Giving ###
 
-Give works great right in WordPress in a way that you're already familiar in working. Simply install and activate the plugin to get started. The backbone of Give lies within its forms. Forms are what allow you to accept donations anywhere on your website. When creating a form you may specify whether the form is a single or multi-level amount. As well, forms can accept a user provided donation amount.
+Give works great right in WordPress in a way that you're already familiar with working. Simply install and activate the plugin to get started. The backbone of Give lies within its forms. Forms are what allow you to accept donations anywhere on your website. When creating a form, you may specify whether the form is a single or multi-level amount. As well, forms can accept a user provided donation amount.
 
 ### First Time Users ###
 
-For new users, we suggest reviewing our [documentation](https://givewp.com/documentation "Visit the Give docs") to get an understanding of how the plugin works prior to using it. If you run into any trouble, [support](https://givewp.com/support "Visit the Give support page") is here to help you with your issues, questions, and concerns.
+For new users, we suggest reviewing our [documentation](https://givewp.com/documentation "Visit the Give docs") to get an understanding of how the plugin works before using it. If you run into any trouble, [support](https://givewp.com/support "Visit the Give support page") is here to help you with your issues, questions, and concerns.
 
 ### Zero Commission Charges ###
 
@@ -25,7 +25,7 @@ We earn money by selling add-ons, not from the money you raise. What you raise i
 
 ### Easy to Customize and Enhance ###
 
-Give is built by [WordImpress](https://wordimpress.com "Visit the the developers of Give - WordImpress"), our plugins are built from the ground up to be intuitive and easy to use. Along with the plugin is a support team that is dedicated, fast to respond, and always willing to squash bugs and help troubleshoot.
+Give is built by [WordImpress](https://wordimpress.com "Visit the the developers of Give - WordImpress"), our plugins are built from the ground up to be intuitive and easy to use. Along with the plugin is a support team that is dedicated, fast to respond, and always willing to squash bugs and helps troubleshoot.
 
 ### Connect with Give ###
 
@@ -55,7 +55,7 @@ The easiest way to install the plugin is through the [WordPress.org plugin repos
 
 Automatic installation is the easiest option as WordPress handles the file transfers itself and you don't need to leave your web browser. To do an automatic install of Give, log in to your WordPress dashboard, navigate to the Plugins menu and click "Add New".
 
-In the search field type "Give" and click Search Plugins. Once you have found the plugin you can view details about it such as the the point release, rating and description, as well as install it by simply clicking "Install Now".
+In the search field type "Give" and click Search Plugins. Once you have found the plugin you can view details about it such as the point release, rating, and description, as well as install it by simply clicking "Install Now".
 
 ### Manual installation ###
 
@@ -63,7 +63,7 @@ The manual installation method involves downloading the plugin and uploading it 
 
 ### Updating ###
 
-Automatic updates should work like a charm; as always though, ensure you backup your site just in case.
+Automatic updates should work like a charm; as always, though, ensure you backup your site just in case.
 
 ## Frequently Asked Questions ##
 
@@ -81,8 +81,8 @@ Yes! We call them "Give Stories". [You can read them all here](https://givewp.co
 
 ### How is Give better than *Gravity Forms* for accepting donations through WordPress? ###
 
-First off, we love Gravity Forms. It's a great plugin and has a lot of good features for accepting donations. That being said, it lacks substantial reporting features many nonprofits find crucial to cause. In addition, there's a larger barrier to entry than Give. It's a premium only plugin and requires a developer license ($199/yr) to accept credit card and recurring payments on site.
+First off, we love Gravity Forms. It's a great plugin and has a lot of good features for accepting donations. That being said, it lacks substantial reporting features many nonprofits find crucial to the cause. In addition, there's a larger barrier to entry than Give. It's a premium only plugin and requires a developer license ($199/yr) to accept credit card and recurring payments on site.
 
 ### How is Give better than *WooCommerce* for accepting donations on WordPress? ###
 
-It's true. We also really like WooCommerce. It's hands-down the most robust eCommerce platform for WordPress. But that's also the issue. When accepting donations you don't need a cart system, shipping, or tax calculations. Additionally, customizing the plugin functionality and terminology for nonprofit needs is often a daunting task. You never want your users to receive an "invoice" for the donation as a "product" they "purchased." Rather, you'd like for them to receive a tax deductible receipt for the donation they gave. WooCommerce *can* do donations, but it was not designed for it. Nor is it very easy to setup and maintain across the various major version releases. 
+It's true. We also really like WooCommerce. It's hands-down the most robust eCommerce platform for WordPress. But that's also the issue. When accepting donations, you don't need a cart system, shipping, or tax calculations. Additionally, customizing the plugin functionality and terminology for nonprofit needs is often a daunting task. You never want your users to receive an "invoice" for the donation as a "product" they "purchased". Rather, you'd like for them to receive a tax deductible receipt for the donation they gave. WooCommerce *can* make donations, but it was not designed for it. Nor is it very easy to setup and maintain across the various major version releases. 

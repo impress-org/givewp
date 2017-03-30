@@ -42,7 +42,6 @@ $customer_id    = $payment->customer_id;
 $payment_date   = strtotime( $payment->date );
 $user_info      = give_get_payment_meta_user_info( $payment_id );
 $address        = $payment->address;
-$gateway        = $payment->gateway;
 $currency_code  = $payment->currency;
 $gateway        = $payment->gateway;
 $currency_code  = $payment->currency;
