@@ -149,7 +149,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @return object
+	 * @return array
 	 */
 	public function get_payments() {
 

@@ -64,25 +64,6 @@ add_action( 'give_earnings_export', 'give_export_earnings' );
 
 
 /**
- * Export all the customers to a CSV file.
- *
- * Note: The WordPress Database API is being used directly for performance
- * reasons (workaround of calling all posts and fetch data respectively)
- *
- * @since 1.5
- * @return void
- */
-function give_export_all_customers() {
-	require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/class-export-customers.php';
-
-	$customer_export = new Give_Donors_Export();
-
-	$customer_export->export();
-}
-
-add_action( 'give_email_export', 'give_export_all_customers' );
-
-/**
  * Add a hook allowing extensions to register a hook on the batch export process
  *
  * @since  1.5
@@ -107,6 +88,7 @@ add_action( 'plugins_loaded', 'give_register_batch_exporters' );
 
 /**
  * Register the payments batch exporter
+ *
  * @since  1.5
  */
 function give_register_payments_batch_export() {
@@ -134,6 +116,7 @@ function give_include_payments_batch_processor( $class ) {
 
 /**
  * Register the customers batch exporter
+ *
  * @since  1.5.2
  */
 function give_register_customers_batch_export() {
