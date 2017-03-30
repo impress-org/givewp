@@ -2123,9 +2123,6 @@ table.give-table {
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
-.give-divi .qtip-tipsy {
-  z-index: 1000002 !important; }
-
 body.give-twentysixteen div.entry-summary {
   margin: 0; }
 
