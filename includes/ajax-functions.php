@@ -386,7 +386,7 @@ function give_check_for_form_price_variations() {
 			$ajax_response = '<select class="give_price_options_select give-select give-select" name="give_price_option">';
 
 			if ( isset( $_POST['all_prices'] ) ) {
-				$ajax_response .= '<option value="">' . esc_html__( 'All Levels', 'give' ) . '</option>';
+				$ajax_response .= '<option value="all">' . esc_html__( 'All Levels', 'give' ) . '</option>';
 			}
 
 			foreach ( $variable_prices as $key => $price ) {
