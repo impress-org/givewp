@@ -312,7 +312,7 @@ jQuery(function ($) {
 		 * Note: Value of this variable will be:
 		 *  a. -1      if no any level found.
 		 *  b. [0-*]   Any number from zero if donation level found.
-		 *  c  custom  if donation level not found and donation amount is greater then the custom minimum amount.
+		 *  c  custom  if donation level not found and donation amount is greater than the custom minimum amount.
 		 *
 		 * @type {number/string} Donation level ID.
 		 */
