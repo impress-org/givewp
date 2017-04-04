@@ -288,7 +288,10 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 
 		//Add a multi-level donation amount
 		$payment->add_donation( $form->ID, array( 'price_id' => 2 ) );
-		$this->assertEquals( '25', $payment->total );
+		$this->assertEquals(
+			give_sanitize_amount( '25', true ),
+			give_sanitize_amount( $payment->total, true )
+		);
 		$payment->status = 'complete';
 		$payment->save();
 
