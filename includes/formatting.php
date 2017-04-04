@@ -111,7 +111,7 @@ function give_sanitize_amount( $number, $dp = false, $trim_zeros = false ) {
 
 	// Format number by custom number of decimals.
 	if ( false !== $dp ) {
-		$dp     = intval( empty( $dp ) ? $default_dp : $dp );
+		$dp     = intval( is_bool( $dp ) ? $default_dp : $dp );
 		$dp     = apply_filters( 'give_sanitize_amount_decimals', $dp, $number );
 		$number = number_format( floatval( $number ), $dp, '.', '' );
 	}
