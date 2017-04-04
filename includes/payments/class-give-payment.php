@@ -1881,7 +1881,8 @@ final class Give_Payment {
 			}
 		}
 
-		return $amount;
+
+		return round( floatval( $amount ), give_currency_decimal_filter() );
 	}
 
 	/**
