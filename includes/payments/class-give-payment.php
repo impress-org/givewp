@@ -1520,6 +1520,7 @@ final class Give_Payment {
 		$meta = get_post_meta( $this->ID, $meta_key, $single );
 
 		if ( $meta_key === '_give_payment_meta' ) {
+			$meta = (array) $meta;
 
 			if ( empty( $meta['key'] ) ) {
 				$meta['key'] = $this->setup_payment_key();
