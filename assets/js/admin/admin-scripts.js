@@ -222,7 +222,12 @@ jQuery.noConflict();
 					variable_prices_html_container = $('.give-donation-level');
 
 				// Check for form ID.
-				if (!( give_form_id = $(this).val() )) {
+				if ( ! ( give_form_id = $(this).val() )) {
+					return false;
+				}
+
+				// Bailout.
+				if( ! variable_prices_html_container.length ) {
 					return false;
 				}
 
