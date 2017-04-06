@@ -584,4 +584,15 @@ jQuery(function ($) {
 		return decodeURIComponent(results[2].replace(/\+/g, " "));
 	}
 
+	/**
+	 * Show/Hide term and condition
+	 */
+	doc.on('click', '.give_terms_links', function (e) {
+		e.preventDefault();
+		var $fieldset_wrapper = $(this).closest('fieldset');
+		$('[class^=give_terms-]', $fieldset_wrapper).slideToggle();
+		$('a.give_terms_links', $fieldset_wrapper).toggle();
+		return false;
+	});
+
 });
