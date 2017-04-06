@@ -195,7 +195,7 @@ function give_render_field( $field ) {
 
 	// Call render function.
 	if ( is_array( $func_name ) ) {
-		$func_name[0]->$func_name[1]( $field );
+		$func_name[0]->{$func_name[1]}( $field );
 	} else {
 		$func_name( $field );
 	}
