@@ -1738,7 +1738,7 @@ function give_render_responsive_tabs() {
 		$hide_tabs              = [],
 		tab_width               = 0;
 
-	if( 414 < jQuery(window).outerWidth() ) {
+	if( 600 < jQuery(window).outerWidth() ) {
 		tab_width = 200;
 	}
 
