@@ -31,8 +31,8 @@ elif [ $1 == 'during' ]; then
 		# -n flag: Do not print warnings. (shortcut for --warning-severity=0)
 		# --standard: Use WordPress as the standard.
 		# --extensions: Only sniff PHP files.
-		#./vendor/bin/phpcs -p -s -n ./*.php --standard=./phpcs.ruleset.xml --extensions=php
-		#./vendor/bin/phpcs -p -s -n ./**/*.php --standard=./phpcs.ruleset.xml --extensions=php --ignore=./vendor/*.php --ignore=./tests/*.php
+		./vendor/bin/phpcs -p -s -n ./*.php --standard=./phpcs.ruleset.xml --extensions=php
+		./vendor/bin/phpcs -p -s -n ./**/*.php --standard=./phpcs.ruleset.xml --extensions=php --ignore=./includes/libraries/*.php --ignore=./tests/*.php
 		#./vendor/bin/phpcs -p -s -n ./**/**/*.php --standard=./phpcs.ruleset.xml --extensions=php --ignore=./vendor/**/*.php --ignore=./tests/**/*.php
 		#./vendor/bin/phpcs -p -s -n ./**/**/**/*.php --standard=./phpcs.ruleset.xml --extensions=php --ignore=./vendor/**/**/*.php --ignore=./tests/**/**/*.php
 		#./vendor/bin/phpcs -p -s -n ./**/**/**/**/*.php --standard=./phpcs.ruleset.xml --extensions=php --ignore=./vendor/**/**/*.php --ignore=./tests/**/**/*.php
