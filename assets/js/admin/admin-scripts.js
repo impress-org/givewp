@@ -1713,7 +1713,7 @@ jQuery.noConflict();
 		});
 
 		// Render setting tab.
-		give_render_responsinve_tabs();
+		give_render_responsive_tabs();
 	});
 })(jQuery);
 
@@ -1721,13 +1721,13 @@ jQuery.noConflict();
  * Responsive js.
  */
 jQuery(window).resize(function () {
-	give_render_responsinve_tabs();
+	give_render_responsive_tabs();
 });
 
 /**
  * Render responsive tabs
  */
-function give_render_responsinve_tabs() {
+function give_render_responsive_tabs() {
 	var $setting_page_form      = jQuery('.give-settings-page'),
 		$main_tab_nav           = jQuery('h2.give-nav-tab-wrapper'),
 		setting_page_form_width = $setting_page_form.width(),
@@ -1738,7 +1738,7 @@ function give_render_responsinve_tabs() {
 		$hide_tabs              = [],
 		tab_width               = 0;
 
-	if( 414 < jQuery(window).outerWidth() ) {
+	if( 600 < jQuery(window).outerWidth() ) {
 		tab_width = 200;
 	}
 
