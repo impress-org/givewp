@@ -18,10 +18,10 @@ if [ $1 == 'before' ]; then
 	composer self-update
 	composer install --no-interaction
 
-elif [ $1 == 'during' ]; then
+#elif [ $1 == 'during' ]; then
 
 	## Only run on latest stable PHP box (defined in .travis.yml).
-	if [[ ${TRAVIS_PHP_VERSION} == ${PHP_LATEST_STABLE} ]]; then
+	#if [[ ${TRAVIS_PHP_VERSION} == ${PHP_LATEST_STABLE} ]]; then
 		# WordPress Coding Standards.
 		# @link https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards
 		# @link http://pear.php.net/package/PHP_CodeSniffer/
@@ -31,12 +31,12 @@ elif [ $1 == 'during' ]; then
 		# -n flag: Do not print warnings. (shortcut for --warning-severity=0)
 		# --standard: Use WordPress as the standard.
 		# --extensions: Only sniff PHP files.
-		./vendor/bin/phpcs -p -s -n ./*.php --standard=./phpcs.ruleset.xml --extensions=php
-		./vendor/bin/phpcs -p -s -n ./**/*.php --standard=./phpcs.ruleset.xml --extensions=php --ignore=./includes/libraries/*.php --ignore=./tests/*.php
+		#./vendor/bin/phpcs -p -s -n ./*.php --standard=./phpcs.ruleset.xml --extensions=php
+		#./vendor/bin/phpcs -p -s -n ./**/*.php --standard=./phpcs.ruleset.xml --extensions=php --ignore=./includes/libraries/*.php --ignore=./tests/*.php
 		#./vendor/bin/phpcs -p -s -n ./**/**/*.php --standard=./phpcs.ruleset.xml --extensions=php --ignore=./vendor/**/*.php --ignore=./tests/**/*.php
 		#./vendor/bin/phpcs -p -s -n ./**/**/**/*.php --standard=./phpcs.ruleset.xml --extensions=php --ignore=./vendor/**/**/*.php --ignore=./tests/**/**/*.php
 		#./vendor/bin/phpcs -p -s -n ./**/**/**/**/*.php --standard=./phpcs.ruleset.xml --extensions=php --ignore=./vendor/**/**/*.php --ignore=./tests/**/**/*.php
-	fi
+	#fi
 
 elif [ $1 == 'after' ]; then
 
