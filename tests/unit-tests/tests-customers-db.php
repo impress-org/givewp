@@ -251,8 +251,8 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 
 		$args = array(
 			'date' => array(
-				'start' => 'January 1 ' . date( 'Y' ) + 1,
-				'end'   => 'January 1 ' . date( 'Y' ) + 2,
+				'start' => 'January 1 ' . ( date( 'Y' ) + 1 ),
+				'end'   => 'January 1 ' . ( date( 'Y' ) + 2 ),
 			)
 		);
 
