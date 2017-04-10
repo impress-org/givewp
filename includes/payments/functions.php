@@ -142,7 +142,7 @@ function give_insert_payment( $payment_data = array() ) {
 	$gateway    = ! empty( $payment_data['gateway'] ) ? $payment_data['gateway'] : '';
 	$gateway    = empty( $gateway ) && isset( $_POST['give-gateway'] ) ? $_POST['give-gateway'] : $gateway;
 	$form_id    = isset( $payment_data['give_form_id'] ) ? $payment_data['give_form_id'] : 0;
-	$price_id   = isset( $payment_data['give_price_id'] ) ? $payment_data['give_price_id'] : give_get_price_id( $payment_data['give_form_id'], $payment_data['price'] );
+	$price_id   = give_get_payment_meta_price_id( $payment_data );
 	$form_title = isset( $payment_data['give_form_title'] ) ? $payment_data['give_form_title'] : get_the_title( $form_id );
 
 	// Set properties.
@@ -454,7 +454,7 @@ function give_count_payments( $args = array() ) {
 				$field = '_give_payment_purchase_key';
 			}
 
-			$join = "LEFT JOIN $wpdb->postmeta m ON (p.ID = m.post_id)";
+			$join  = "LEFT JOIN $wpdb->postmeta m ON (p.ID = m.post_id)";
 			$where .= $wpdb->prepare( '
                 AND m.meta_key = %s
                 AND m.meta_value = %s',
@@ -469,13 +469,13 @@ function give_count_payments( $args = array() ) {
 
 			$select = 'SELECT p2.post_status,count( * ) AS num_posts ';
 			$join   = "LEFT JOIN $wpdb->postmeta m ON m.meta_key = '_give_log_payment_id' AND m.post_id = p.ID ";
-			$join .= "INNER JOIN $wpdb->posts p2 ON m.meta_value = p2.ID ";
-			$where = "WHERE p.post_type = 'give_log' ";
-			$where .= $wpdb->prepare( 'AND p.post_parent = %d} ', $search );
+			$join   .= "INNER JOIN $wpdb->posts p2 ON m.meta_value = p2.ID ";
+			$where  = "WHERE p.post_type = 'give_log' ";
+			$where  .= $wpdb->prepare( 'AND p.post_parent = %d} ', $search );
 
 		} elseif ( is_numeric( $args['s'] ) ) {
 
-			$join = "LEFT JOIN $wpdb->postmeta m ON (p.ID = m.post_id)";
+			$join  = "LEFT JOIN $wpdb->postmeta m ON (p.ID = m.post_id)";
 			$where .= $wpdb->prepare( "
 				AND m.meta_key = '_give_payment_user_id'
 				AND m.meta_value = %d",
@@ -506,7 +506,7 @@ function give_count_payments( $args = array() ) {
 		$is_date = checkdate( $month, $day, $year );
 		if ( false !== $is_date ) {
 
-			$date = new DateTime( $args['start-date'] );
+			$date  = new DateTime( $args['start-date'] );
 			$where .= $wpdb->prepare( " AND p.post_date >= '%s'", $date->format( 'Y-m-d' ) );
 
 		}
@@ -528,7 +528,7 @@ function give_count_payments( $args = array() ) {
 		$is_date = checkdate( $month, $day, $year );
 		if ( false !== $is_date ) {
 
-			$date = new DateTime( $args['end-date'] );
+			$date  = new DateTime( $args['end-date'] );
 			$where .= $wpdb->prepare( " AND p.post_date <= '%s'", $date->format( 'Y-m-d' ) );
 
 		}
@@ -889,7 +889,7 @@ function give_get_total_earnings() {
 
 				if ( ! empty( $payments ) ) {
 					$payments = implode( ',', $payments );
-					$total += $wpdb->get_var( "SELECT SUM(meta_value) FROM $wpdb->postmeta WHERE meta_key = '_give_payment_total' AND post_id IN({$payments})" );
+					$total    += $wpdb->get_var( "SELECT SUM(meta_value) FROM $wpdb->postmeta WHERE meta_key = '_give_payment_total' AND post_id IN({$payments})" );
 				}
 			}
 
@@ -1306,7 +1306,8 @@ function give_remove_payment_prefix_postfix( $number ) {
 /**
  * Get Payment Amount
  *
- * Get the fully formatted payment amount. The payment amount is retrieved using give_get_payment_amount() and is then sent through give_currency_filter() and  give_format_amount() to format the amount correctly.
+ * Get the fully formatted payment amount. The payment amount is retrieved using give_get_payment_amount() and is then
+ * sent through give_currency_filter() and  give_format_amount() to format the amount correctly.
  *
  * @since       1.0
  *
@@ -1340,7 +1341,8 @@ function give_get_payment_amount( $payment_id ) {
 /**
  * Payment Subtotal
  *
- * Retrieves subtotal for payment (this is the amount before fees) and then returns a full formatted amount. This function essentially calls give_get_payment_subtotal()
+ * Retrieves subtotal for payment (this is the amount before fees) and then returns a full formatted amount. This
+ * function essentially calls give_get_payment_subtotal()
  *
  * @since 1.5
  *
@@ -1801,9 +1803,9 @@ function give_filter_where_older_than_week( $where = '' ) {
  *
  * @since 1.5
  *
- * @param array  $payment_meta       Payment meta data.
- * @param bool   $only_level         If set to true will only return the level name if multi-level enabled.
- * @param string $separator          The separator between the .
+ * @param array  $payment_meta Payment meta data.
+ * @param bool   $only_level   If set to true will only return the level name if multi-level enabled.
+ * @param string $separator    The separator between the .
  *
  * @return string $form_title Returns the full title if $only_level is false, otherwise returns the levels title.
  */
@@ -1829,7 +1831,7 @@ function give_get_payment_form_title( $payment_meta, $only_level = false, $separ
 
 		if ( $price_id == 'custom' ) {
 			$custom_amount_text = get_post_meta( $form_id, '_give_custom_amount_text', true );
-			$form_title .= ! empty( $custom_amount_text ) ? $custom_amount_text : __( 'Custom Amount', 'give' );
+			$form_title         .= ! empty( $custom_amount_text ) ? $custom_amount_text : __( 'Custom Amount', 'give' );
 		} else {
 			$form_title .= give_get_price_option_name( $form_id, $price_id );
 		}
@@ -1948,4 +1950,30 @@ function give_get_form_variable_price_dropdown( $args = array(), $echo = false )
 	}
 
 	echo $form_dropdown_html;
+}
+
+/**
+ * Get the price_id from the payment meta.
+ *
+ * Some gateways use `give_price_id` and others were using just `price_id`;
+ * This checks for the difference and falls back to retrieving it from the form as a last resort.
+ *
+ * @since 1.8.6
+ *
+ * @param $payment_meta
+ *
+ * @return string
+ */
+function give_get_payment_meta_price_id( $payment_meta ) {
+
+	if(isset($payment_meta['give_price_id'])) {
+		$price_id =  $payment_meta['give_price_id'];
+	} elseif(isset($payment_meta['price_id'])) {
+		$price_id =  $payment_meta['price_id'];
+	} else {
+		$price_id = give_get_price_id( $payment_meta['give_form_id'], $payment_meta['price'] );
+	}
+
+	return apply_filters('give_get_payment_meta_price_id', $price_id);
+
 }

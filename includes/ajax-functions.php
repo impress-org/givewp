@@ -386,7 +386,7 @@ function give_check_for_form_price_variations() {
 			$ajax_response = '<select class="give_price_options_select give-select give-select" name="give_price_option">';
 
 			if ( isset( $_POST['all_prices'] ) ) {
-				$ajax_response .= '<option value="">' . esc_html__( 'All Levels', 'give' ) . '</option>';
+				$ajax_response .= '<option value="all">' . esc_html__( 'All Levels', 'give' ) . '</option>';
 			}
 
 			foreach ( $variable_prices as $key => $price ) {
@@ -418,31 +418,23 @@ function give_check_for_form_price_variations_html() {
 		wp_die();
 	}
 
-	$form_id    = intval( $_POST['form_id'] );
-	$payment_id = intval( $_POST['payment_id'] );
+	$form_id    = ! empty( $_POST['form_id']  ) ? intval( $_POST['form_id'] ) : 0;
+	$payment_id = ! empty( $_POST['payment_id'] ) ? intval( $_POST['payment_id'] ) : 0;
 	$form       = get_post( $form_id );
 
 	if ( 'give_forms' != $form->post_type ) {
 		wp_die();
 	}
 
-	if ( ! give_has_variable_prices( $form_id ) ) {
+	if ( ! give_has_variable_prices( $form_id ) || ! $form_id ) {
 		esc_html_e( 'n/a', 'give' );
 	} else {
-		// Payment object.
-		$payment = new Give_Payment( $payment_id );
-
-
 		$prices_atts = '';
 		if( $variable_prices = give_get_variable_prices( $form_id ) ) {
 			foreach ( $variable_prices as $variable_price ) {
 				$prices_atts[$variable_price['_give_id']['level_id']] = give_format_amount( $variable_price['_give_amount'] );
 			}
 		}
-
-
-		// Payment meta.
-		$payment_meta = $payment->get_meta();
 
 		// Variable price dropdown options.
 		$variable_price_dropdown_option = array(
@@ -452,8 +444,16 @@ function give_check_for_form_price_variations_html() {
 			'show_option_all'  => '',
 			'show_option_none' => '',
 			'select_atts'      => 'data-prices=' . esc_attr( json_encode( $prices_atts ) ),
-			'selected'         => $payment_meta['price_id'],
 		);
+
+		if( $payment_id ) {
+			// Payment object.
+			$payment = new Give_Payment( $payment_id );
+
+			// Payment meta.
+			$payment_meta = $payment->get_meta();
+			$variable_price_dropdown_option['selected'] = $payment_meta['price_id'];
+		}
 
 		// Render variable prices select tag html.
 		give_get_form_variable_price_dropdown( $variable_price_dropdown_option, true );

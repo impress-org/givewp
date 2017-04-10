@@ -222,7 +222,12 @@ jQuery.noConflict();
 					variable_prices_html_container = $('.give-donation-level');
 
 				// Check for form ID.
-				if (!( give_form_id = $(this).val() )) {
+				if ( ! ( give_form_id = $(this).val() )) {
+					return false;
+				}
+
+				// Bailout.
+				if( ! variable_prices_html_container.length ) {
 					return false;
 				}
 
@@ -1360,9 +1365,10 @@ jQuery.noConflict();
 
 				// Get max level id.
 				$('input[type="hidden"].give-levels_id', $this).each(function (index, item) {
-					var $item = $(item);
-					if (max_level_id < $item.val()) {
-						max_level_id = $item.val();
+					var $item = $(item),
+						current_level = parseInt( $item.val() );
+					if (max_level_id < current_level ) {
+						max_level_id = current_level;
 					}
 				});
 
@@ -1707,7 +1713,7 @@ jQuery.noConflict();
 		});
 
 		// Render setting tab.
-		give_render_responsinve_tabs();
+		give_render_responsive_tabs();
 	});
 })(jQuery);
 
@@ -1715,13 +1721,13 @@ jQuery.noConflict();
  * Responsive js.
  */
 jQuery(window).resize(function () {
-	give_render_responsinve_tabs();
+	give_render_responsive_tabs();
 });
 
 /**
  * Render responsive tabs
  */
-function give_render_responsinve_tabs() {
+function give_render_responsive_tabs() {
 	var $setting_page_form      = jQuery('.give-settings-page'),
 		$main_tab_nav           = jQuery('h2.give-nav-tab-wrapper'),
 		setting_page_form_width = $setting_page_form.width(),
@@ -1732,7 +1738,7 @@ function give_render_responsinve_tabs() {
 		$hide_tabs              = [],
 		tab_width               = 0;
 
-	if( 414 < jQuery(window).outerWidth() ) {
+	if( 600 < jQuery(window).outerWidth() ) {
 		tab_width = 200;
 	}
 

@@ -27,7 +27,12 @@ class Give_Unit_Tests_Bootstrap {
 
 		ini_set( 'display_errors', 'on' );
 		error_reporting( E_ALL );
-		
+
+		// Ensure server variable is set for WP email functions.
+		if ( ! isset( $_SERVER['SERVER_NAME'] ) ) {
+			$_SERVER['SERVER_NAME'] = 'localhost';
+		}
+
 		$this->tests_dir 	= dirname( __FILE__ );
 		$this->plugin_dir	= dirname( $this->tests_dir );
 		$this->wp_tests_dir = getenv( 'WP_TESTS_DIR' ) ? getenv( 'WP_TESTS_DIR' ) : '/tmp/wordpress-tests-lib';
@@ -70,17 +75,16 @@ class Give_Unit_Tests_Bootstrap {
 		define( 'WP_UNINSTALL_PLUGIN', true );
 		include( $this->plugin_dir . '/uninstall.php' );
 
-		echo "Installing Give..." . PHP_EOL;
+		echo 'Installing Give...' . PHP_EOL;
 
 		give_install();
 
 		// reload capabilities after install, see https://core.trac.wordpress.org/ticket/28374
-		$GLOBALS['wp_roles']->reinit();
-		$current_user = new WP_User(1);
-		$current_user->set_role('administrator');
+		$current_user = new WP_User( 1 );
+		$current_user->set_role( 'administrator' );
 		wp_update_user( array( 'ID' => 1, 'first_name' => 'Admin', 'last_name' => 'User' ) );
 		add_filter( 'give_log_email_errors', '__return_false' );
-		
+
 	}
 
 	/**
@@ -93,7 +97,7 @@ class Give_Unit_Tests_Bootstrap {
 		// test cases
 		require_once( $this->tests_dir . '/framework/class-give-unit-test-case.php' );
 
-		//Helpers
+		// Helpers
 		require_once( $this->tests_dir . '/framework/helpers/shims.php' );
 		require_once( $this->tests_dir . '/framework/helpers/class-helper-form.php' );
 		require_once( $this->tests_dir . '/framework/helpers/class-helper-payment.php' );

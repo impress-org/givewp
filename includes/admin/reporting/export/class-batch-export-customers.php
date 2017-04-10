@@ -81,7 +81,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 			}
 		}
 
-		$this->price_id = ! empty( $request['give_price_option'] ) && 0 !== $request['give_price_option'] ? absint( $request['give_price_option'] ) : null;
+		$this->price_id = ! empty( $request['give_price_option'] ) && 'all' !== $request['give_price_option'] ? absint( $request['give_price_option'] ) : null;
 
 	}
 
@@ -93,8 +93,6 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 	 * @return array|bool $cols All the columns.
 	 */
 	public function csv_cols() {
-
-		$cols = array();
 
 		$columns = isset( $this->data['give_export_option'] ) ? $this->data['give_export_option'] : array();
 
@@ -215,7 +213,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 			}
 		} else {
 
-			// Export all customers
+			// Export all donors.
 			$offset = 30 * ( $this->step - 1 );
 			$donors = Give()->customers->get_customers( array( 'number' => 30, 'offset' => $offset ) );
 

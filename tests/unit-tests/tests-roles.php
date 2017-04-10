@@ -1,12 +1,17 @@
 <?php
 
 /**
+ * Class Tests_Roles
+ *
  * @group give_roles
  */
 class Tests_Roles extends Give_Unit_Test_Case {
 
 	protected $_roles;
 
+	/**
+	 * Setup
+	 */
 	public function setUp() {
 		parent::setUp();
 
@@ -15,6 +20,9 @@ class Tests_Roles extends Give_Unit_Test_Case {
 		$this->_roles->add_caps();
 	}
 
+	/**
+	 * Test roles.
+	 */
 	public function test_roles() {
 
 		global $wp_roles;
@@ -25,6 +33,9 @@ class Tests_Roles extends Give_Unit_Test_Case {
 
 	}
 
+	/**
+	 * Test manager capabilities.
+	 */
 	public function test_give_manager_caps() {
 		global $wp_roles;
 
@@ -68,6 +79,9 @@ class Tests_Roles extends Give_Unit_Test_Case {
 
 	}
 
+	/**
+	 * Test admin capabilities.
+	 */
 	public function test_administrator_caps() {
 		global $wp_roles;
 

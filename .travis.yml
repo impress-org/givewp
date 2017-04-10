@@ -3,33 +3,28 @@ language: php
 sudo: false
 
 php:
-- 5.2
-- 5.3
-- 5.4
-- 5.5
-- 5.6
-- 7.0
-- hhvm
+  - 5.3
+  - 5.6
+  - 7.0
+  - 7.1
+  - hhvm
 
 env:
-- WP_VERSION=latest WP_MULTISITE=0
-- WP_VERSION=4.5 WP_MULTISITE=0
-- WP_VERSION=4.4 WP_MULTISITE=0
-- WP_VERSION=4.3 WP_MULTISITE=0
+  - WP_VERSION=latest WP_MULTISITE=0 PHP_LATEST_STABLE=7.1
 
 matrix:
   include:
-    - php: 5.6
-      env: WP_VERSION=latest WP_MULTISITE=1
+  - php: 5.6
+    env: WP_VERSION=latest WP_MULTISITE=1 PHP_LATEST_STABLE=7.1
 
 before_script:
-- bash tests/bin/install.sh wordpress_test root '' localhost $WP_VERSION
-- bash tests/bin/travis.sh before
+  - export PATH="$HOME/.composer/vendor/bin:$PATH"
+  - bash tests/bin/install.sh give_test root '' localhost $WP_VERSION
+  - bash tests/bin/travis.sh before
 
-script: phpunit -c phpunit.xml
+script:
+  - bash tests/bin/phpunit.sh
+  - bash tests/bin/travis.sh during
 
 after_script:
-- bash tests/bin/travis.sh after
-
-notifications:
- slack: givewp:AgWxvdTjTkSjd8FHM5ndeSH5
+  - bash tests/bin/travis.sh after

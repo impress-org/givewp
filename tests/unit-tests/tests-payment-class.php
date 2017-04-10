@@ -275,33 +275,6 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 
 	}
 
-
-	/**
-	 * Test Remove Donation Payment by Price ID
-	 */
-	public function test_remove_with_multi_price_points_by_price_id() {
-
-		Give_Helper_Payment::delete_payment( $this->_payment_id );
-
-		$form    = Give_Helper_Form::create_multilevel_form();
-		$payment = new Give_Payment();
-
-		//Add a multi-level donation amount
-		$payment->add_donation( $form->ID, array( 'price_id' => 2 ) );
-		$this->assertEquals( 25, $payment->total );
-		$payment->status = 'complete';
-		$payment->save();
-
-		//Now remove it
-		$payment->remove_donation( $form->ID, array( 'price_id' => 2 ) );
-		$payment->save();
-
-		$this->assertEmpty( $payment->price_id );
-		$this->assertEquals( 0, $payment->total );
-
-
-	}
-
 	/**
 	 * Test Refund Affecting Stats
 	 */
@@ -480,6 +453,36 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		remove_filter( 'give_decrease_customer_value_on_pending', '__return_false' );
 		remove_filter( 'give_decrease_customer_purchase_count_on_pending', '__return_false' );
 		remove_filter( 'give_decrease_store_earnings_on_pending', '__return_false ' );
+	}
+
+	/**
+	 * Test Remove Donation Payment by Price ID
+	 */
+	public function test_remove_with_multi_price_points_by_price_id() {
+
+		Give_Helper_Payment::delete_payment( $this->_payment_id );
+
+		$form    = Give_Helper_Form::create_multilevel_form();
+		$payment = new Give_Payment();
+
+		//Add a multi-level donation amount
+		$payment->add_donation( $form->ID, array( 'price_id' => 2 ) );
+		$this->assertEquals(
+			give_sanitize_amount( '25', true ),
+			give_sanitize_amount( $payment->total, true )
+		);
+		$payment->status = 'complete';
+		$payment->save();
+
+		// Auto delete this payment after all test run.
+		$this->_payment_id = $payment->ID;
+
+		//Now remove it
+		$payment->remove_donation( $form->ID, array( 'price_id' => 2 ) );
+		$payment->save();
+
+		$this->assertEmpty( $payment->price_id );
+		$this->assertEquals( 0, $payment->total );
 	}
 
 }
