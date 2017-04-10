@@ -43,11 +43,11 @@ class Give_Tests_Customers extends Give_Unit_Test_Case {
 		);
 
 		$meta = array(
-			'give_price'               => '0.00',
-			'_give_price_option'       => 'multi',
-			'_give_donation_levels'    => array_values( $_multi_level_donations ),
-			'give_product_notes'       => 'Donation Notes',
-			'_give_product_type'       => 'default'
+			'give_price'            => '0.00',
+			'_give_price_option'    => 'multi',
+			'_give_donation_levels' => array_values( $_multi_level_donations ),
+			'give_product_notes'    => 'Donation Notes',
+			'_give_product_type'    => 'default'
 		);
 		foreach ( $meta as $key => $value ) {
 			update_post_meta( $this->_post_id, $key, $value );
@@ -231,6 +231,9 @@ class Give_Tests_Customers extends Give_Unit_Test_Case {
 
 	}
 
+	/**
+	 * Test stats decrement.
+	 */
 	public function test_decrement_stats() {
 
 		$customer = new Give_Customer( 'testadmin@domain.com' );
@@ -251,8 +254,8 @@ class Give_Tests_Customers extends Give_Unit_Test_Case {
 		$customer->decrease_purchase_count( 100 );
 		$customer->decrease_value( 100000 );
 
-		$this->assertEquals( $customer->purchase_value, '0' );
-		$this->assertEquals( $customer->purchase_count, '0' );
+		$this->assertEquals( intval( $customer->purchase_value ), intval( '0' ) );
+		$this->assertEquals( intval( $customer->purchase_count ), intval( '0' ) );
 
 	}
 

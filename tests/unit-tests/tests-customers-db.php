@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @group give_customers
  */
@@ -41,11 +42,11 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 		);
 
 		$meta = array(
-			'give_price'               => '0.00',
-			'_give_price_option'       => 'multi',
-			'_give_donation_levels'    => array_values( $_multi_level_donations ),
-			'give_product_notes'       => 'Donation Notes',
-			'_give_product_type'       => 'default'
+			'give_price'            => '0.00',
+			'_give_price_option'    => 'multi',
+			'_give_donation_levels' => array_values( $_multi_level_donations ),
+			'give_product_notes'    => 'Donation Notes',
+			'_give_product_type'    => 'default'
 		);
 
 		foreach ( $meta as $key => $value ) {
@@ -246,12 +247,12 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 	 */
 	public function test_count_customers() {
 
-		$this->assertEquals( 1, Give()->customers->count() );
+		$this->assertEquals( 1, intval( Give()->customers->count() ) );
 
 		$args = array(
 			'date' => array(
-				'start' => 'January 1 ' . date( 'Y' ) + 1,
-				'end'   => 'January 1 ' . date( 'Y' ) + 2,
+				'start' => 'January 1 ' . ( date( 'Y' ) + 1 ),
+				'end'   => 'January 1 ' . ( date( 'Y' ) + 2 ),
 			)
 		);
 

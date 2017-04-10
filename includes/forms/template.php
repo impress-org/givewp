@@ -1641,39 +1641,6 @@ function give_checkout_button_purchase( $form_id ) {
 }
 
 /**
- * Give Agree to Terms.
- *
- * Outputs the JavaScript code for the Agree to Terms section to toggle the T&Cs text.
- *
- * @since  1.0
- *
- * @param  int $form_id The form ID.
- *
- * @return void
- */
-function give_agree_to_terms_js( $form_id ) {
-
-	$form_option = get_post_meta( $form_id, '_give_terms_option', true );
-
-	if ( give_is_setting_enabled( $form_option, array( 'enabled', 'global' ) ) ) {
-		?>
-        <script type="text/javascript">
-			jQuery(document).ready(function ($) {
-				$('body').on('click', '.give_terms_links-<?php echo $form_id;?>', function (e) {
-					e.preventDefault();
-					$('.give_terms-<?php echo $form_id;?>').slideToggle();
-					$('.give_terms_links-<?php echo $form_id;?>').toggle();
-					return false;
-				});
-			});
-        </script>
-		<?php
-	}
-}
-
-add_action( 'give_checkout_form_top', 'give_agree_to_terms_js', 10, 2 );
-
-/**
  * Show Give Goals.
  *
  * @since  1.0

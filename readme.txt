@@ -3,8 +3,8 @@ Contributors: givewp, wordimpress, dlocc, webdevmattcrom
 Donate link: https://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.2
-Tested up to: 4.7.2
-Stable tag: 1.8.5
+Tested up to: 4.7.3
+Stable tag: 1.8.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -164,6 +164,13 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 1.8.6 =
+* Fix: Provide a fallback for using `price_id` rather than `give_price_id`. Some gateways were incorrectly assigning it as a donation level within the receipt despite the correct custom amount being processed. [#1598](https://github.com/WordImpress/Give/issues/1598)
+* Fix: Multi-level donation forms with 10+ options were selecting the wrong option on click due to an incorrect incrementing logic. [#1592](https://github.com/WordImpress/Give/issues/1592)
+* Fix: Prevent multiple slide animations when a donor toggles the donation terms if more than one donation form is on page that is using "Terms and Conditions" enabled. [#1602](https://github.com/WordImpress/Give/issues/1602)
+* Tweak: The give_get_current_page_url() now uses trailingslashit so urls end with a slash to prevent issues with some custom htaccess redirects. [#1589](https://github.com/WordImpress/Give/issues/1589)
+* Tweak: Code cleanup and removal of unused functions. [#1571](https://github.com/WordImpress/Give/issues/1571)
 
 = 1.8.5 =
 * New: Added a "Billing Details" as an option in PayPal Standard gateways which adds address fields to the gateway. The field data is then passed to PayPal and pre-filled on the PayPal payment form. [#1573](https://github.com/WordImpress/Give/issues/1573)
