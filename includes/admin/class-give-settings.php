@@ -11,7 +11,6 @@
  * @link       https://github.com/webdevstudios/Custom-Metaboxes-and-Fields-for-WordPress
  *
  * @property $key
- * @property $option_metabox
  * @property $title
  * @property $options_page
  */
@@ -23,13 +22,6 @@ class Give_Plugin_Settings {
 	 * @var string
 	 */
 	private $key = 'give_settings';
-
-	/**
-	 * Array of metaboxes/fields.
-	 *
-	 * @var array
-	 */
-	protected $option_metabox = array();
 
 	/**
 	 * Options Page title.
@@ -802,9 +794,6 @@ class Give_Plugin_Settings {
 		// Allowed fields to retrieve
 		if ( in_array( $field, array( 'key', 'fields', 'give_title', 'options_page' ), true ) ) {
 			return $this->{$field};
-		}
-		if ( 'option_metabox' === $field ) {
-			return $this->option_metabox();
 		}
 
 		throw new Exception( sprintf( esc_html__( 'Invalid property: %s', 'give' ), $field ) );
