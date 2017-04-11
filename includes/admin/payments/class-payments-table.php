@@ -696,7 +696,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @return object all the data for the payments
+	 * @return array  objects in array containing all the data for the payments
 	 */
 	public function payments_data() {
 
@@ -735,10 +735,8 @@ class Give_Payment_History_Table extends WP_List_Table {
 		);
 
 		if ( is_string( $search ) && false !== strpos( $search, 'txn:' ) ) {
-
 			$args['search_in_notes'] = true;
 			$args['s']               = trim( str_replace( 'txn:', '', $args['s'] ) );
-
 		}
 
 		$p_query = new Give_Payments_Query( $args );
