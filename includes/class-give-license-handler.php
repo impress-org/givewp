@@ -674,27 +674,31 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @return void
 		 */
 		public function notices() {
+			if( ! current_user_can( 'manage_give_settings' ) ) {
+				return;
+			}
+
+			// Do not show licenses notices on license tab.
+			if( 'licenses' === give_get_current_setting_tab() ) {
+				return;
+			}
+
 			static $showed_invalid_message;
 			static $showed_subscriptions_message;
 			static $addon_license_key_in_subscriptions;
 
 			// Set default value.
 			$addon_license_key_in_subscriptions = ! empty( $addon_license_key_in_subscriptions ) ? $addon_license_key_in_subscriptions : array();
-
-			if( empty( $this->license ) ) {
-				return;
-			}
-
-			if( ! current_user_can( 'manage_shop_settings' ) ) {
-				return;
-			}
-
-			// Do not show licenses notices on license tab.
-			if( ! empty( $_GET['tab'] ) && 'licenses' === $_GET['tab'] ) {
-				return;
-			}
-
 			$messages = array();
+
+			if( empty( $this->license ) && empty( $showed_invalid_message ) ) {
+				$messages['general'] = sprintf(
+					__( 'You have invalid or expired license keys for Give Addon. Please go to the <a href="%s">licenses page</a> to correct this issue.', 'give' ),
+					admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' )
+				);
+				$showed_invalid_message = true;
+
+			}
 
 			// Get subscriptions.
 			$subscriptions = get_option( 'give_subscriptions' );
@@ -745,7 +749,12 @@ if ( ! class_exists( 'Give_License' ) ) :
 			}
 
 			// Show non subscription addon messages.
-			if( ! in_array( $this->license, $addon_license_key_in_subscriptions ) && ! $this->__is_notice_dismissed( 'general' ) && ! $this->is_valid_license() && empty( $showed_invalid_message ) ) {
+			if(
+				! in_array( $this->license, $addon_license_key_in_subscriptions )
+				&& ! $this->__is_notice_dismissed( 'general' )
+				&& ! $this->is_valid_license()
+				&& empty( $showed_invalid_message )
+			) {
 
 				$messages['general'] = sprintf(
 					__( 'You have invalid or expired license keys for Give Addon. Please go to the <a href="%s">licenses page</a> to correct this issue.', 'give' ),
@@ -754,13 +763,16 @@ if ( ! class_exists( 'Give_License' ) ) :
 				$showed_invalid_message = true;
 
 			}
-
+			
 			// Print messages.
 			if( ! empty( $messages ) ) {
 				foreach( $messages as $notice_id => $message ) {
-					echo '<div class="notice notice-error is-dismissible give-license-notice" data-dismiss-notice-shortly="' . esc_url( add_query_arg( '_give_hide_license_notices_shortly', $notice_id, $_SERVER['REQUEST_URI'] ) ) . '">';
-					echo '<p>' . $message . '</p>';
-					echo '</div>';
+
+					echo sprintf(
+						'<div class="notice notice-error is-dismissible give-license-notice" data-dismiss-notice-shortly="%1$s"><p>%2$s</p></div>',
+						esc_url( add_query_arg( '_give_hide_license_notices_shortly', $notice_id, $_SERVER['REQUEST_URI'] ) ),
+						$message
+					);
 				}
 			}
 		}
