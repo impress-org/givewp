@@ -1204,7 +1204,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 
 			if ( $subscription_expires < current_time( 'timestamp', 1 ) ) {
 				$messages[]     = sprintf(
-					__( 'Your subscription (<a href="%1$s" target="_blank">#%2$d</a>) expired. Please <a href="%1$s" target="_blank" title="Renew your license key">renew your license key</a>', 'give' ),
+					__( 'Your subscription (<a href="%1$s" target="_blank">#%2$d</a>) expired. Please <a href="%3$s" target="_blank" title="Renew your license key">renew your license key</a>', 'give' ),
 					urldecode( $subscriptions[ $is_in_subscription ]['invoice_url'] ),
 					$subscriptions[ $is_in_subscription ]['payment_id'],
 					$checkout_page_link . '?edd_license_key=' . $subscriptions[ $is_in_subscription ]['license_key'] . '&utm_campaign=admin&utm_source=licenses&utm_medium=expired'
@@ -1212,7 +1212,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 				$license_status = 'license-expired';
 			} elseif ( strtotime( '- 7 days', $subscription_expires ) < current_time( 'timestamp', 1 ) ) {
 				$messages[]     = sprintf(
-					__( 'Your subscription (<a href="%1$s" target="_blank">#%2$d</a>) will %1$s in %1$s.', 'give' ),
+					__( 'Your subscription (<a href="%1$s" target="_blank">#%2$d</a>) will %3$s in %4$s.', 'give' ),
 					urldecode( $subscriptions[ $is_in_subscription ]['invoice_url'] ),
 					$subscriptions[ $is_in_subscription ]['payment_id'],
 					$subscription_status,
@@ -1221,7 +1221,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 				$license_status = 'license-expires-soon';
 			} else {
 				$messages[]     = sprintf(
-					__( 'Your subscription (<a href="%1$s" target="_blank">#%2$d</a>) will %1$s on %1$s.', 'give' ),
+					__( 'Your subscription (<a href="%1$s" target="_blank">#%2$d</a>) will %3$s on %4$s.', 'give' ),
 					urldecode( $subscriptions[ $is_in_subscription ]['invoice_url'] ),
 					$subscriptions[ $is_in_subscription ]['payment_id'],
 					$subscription_status,
@@ -1236,7 +1236,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 				case 'expired' :
 					$class          = $license->error;
 					$messages[]     = sprintf(
-						__( 'Your license key expired on %1$s. Please <a href="%1$s" target="_blank" title="Renew your license key">renew your license key</a>.', 'give' ),
+						__( 'Your license key expired on %1$s. Please <a href="%2$s" target="_blank" title="Renew your license key">renew your license key</a>.', 'give' ),
 						date_i18n( get_option( 'date_format' ), strtotime( $license->expires, current_time( 'timestamp' ) ) ),
 						$checkout_page_link . '?edd_license_key=' . $license_key . '&utm_campaign=admin&utm_source=licenses&utm_medium=expired'
 					);
@@ -1255,7 +1255,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 				case 'invalid' :
 					$class          = $license->error;
 					$messages[]     = sprintf(
-						__( 'Your %1$s is not active for this URL. Please <a href="%1$s" target="_blank" title="Visit account page">visit your account page</a> to manage your license key URLs.', 'give' ),
+						__( 'Your %1$s is not active for this URL. Please <a href="%2$s" target="_blank" title="Visit account page">visit your account page</a> to manage your license key URLs.', 'give' ),
 						$addon_name,
 						$account_page_link . '?utm_campaign=admin&utm_source=licenses&utm_medium=invalid'
 					);
@@ -1265,7 +1265,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 				case 'site_inactive' :
 					$class          = $license->error;
 					$messages[]     = sprintf(
-						__( 'Your %1$s is not active for this URL. Please <a href="%1$s" target="_blank" title="Visit account page">visit your account page</a> to manage your license key URLs.', 'give' ),
+						__( 'Your %1$s is not active for this URL. Please <a href="%2$s" target="_blank" title="Visit account page">visit your account page</a> to manage your license key URLs.', 'give' ),
 						$addon_name,
 						$account_page_link . '?utm_campaign=admin&utm_source=licenses&utm_medium=invalid'
 					);
@@ -1274,7 +1274,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 
 				case 'item_name_mismatch' :
 					$class          = $license->error;
-					$messages[]     = sprintf( __( 'This license %1$s does not belong to %1$s.', 'give' ), $license_key, $addon_name );
+					$messages[]     = sprintf( __( 'This license %1$s does not belong to %2$s.', 'give' ), $license_key, $addon_name );
 					$license_status = 'license-' . $class;
 					break;
 
@@ -1297,7 +1297,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 						$license_status = 'license-lifetime-notice';
 					} elseif ( $expiration > $now && $expiration - $now < ( DAY_IN_SECONDS * 30 ) ) {
 						$messages[]     = sprintf(
-							__( 'Your license key expires soon! It expires on %1$s. <a href="%1$s" target="_blank" title="Renew license">Renew your license key</a>.', 'give' ),
+							__( 'Your license key expires soon! It expires on %1$s. <a href="%2$s" target="_blank" title="Renew license">Renew your license key</a>.', 'give' ),
 							date_i18n( get_option( 'date_format' ), strtotime( $license->expires, current_time( 'timestamp' ) ) ),
 							$checkout_page_link . '?edd_license_key=' . $license_key . '&utm_campaign=admin&utm_source=licenses&utm_medium=renew'
 						);
