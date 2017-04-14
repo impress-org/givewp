@@ -476,16 +476,16 @@ class Give_Logging {
 		global $wpdb;
 
 		// Add log related keys to delete.
-		$cache_option_names = $wpdb->get_results(
+		$cache_option_names = $wpdb->get_col(
 			$wpdb->prepare(
-				"SELECT option_name
+				"SELECT *
 						FROM {$wpdb->options}
 						where option_name LIKE '%%%s%%'
 						OR option_name LIKE '%%%s%%'",
 				'give_cache_get_logs',
 				'give_cache_get_log_count'
 			),
-			ARRAY_A
+			1 // option_name
 		);
 
 		// Bailout.
@@ -493,10 +493,7 @@ class Give_Logging {
 			return false;
 		}
 
-		// Delete log cache.
-		foreach ( $cache_option_names as $option_name ) {
-			Give_Cache::delete( $option_name['option_name'] );
-		}
+		Give_Cache::delete( $cache_option_names );
 	}
 }
 
