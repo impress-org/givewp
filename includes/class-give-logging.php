@@ -460,7 +460,8 @@ class Give_Logging {
 	 * @param int $post_id
 	 */
 	public function background_process_delete_cache( $post_id ) {
-		wp_schedule_single_event( time(), 'give_delete_log_cache' );
+		// Delete log cache immediately
+		wp_schedule_single_event( time() - 5, 'give_delete_log_cache' );
 	}
 
 	/**
@@ -473,10 +474,16 @@ class Give_Logging {
 	 */
 	public function delete_cache() {
 		global $wpdb;
+
+		// Add log related keys to delete.
 		$cache_option_names = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT option_name FROM {$wpdb->options} where option_name LIKE '%%%s%%'",
-				'give_cache'
+				"SELECT option_name
+						FROM {$wpdb->options}
+						where option_name LIKE '%%%s%%'
+						OR option_name LIKE '%%%s%%'",
+				'give_cache_get_logs',
+				'give_cache_get_log_count'
 			),
 			ARRAY_A
 		);
