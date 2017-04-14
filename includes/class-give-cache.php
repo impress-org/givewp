@@ -101,7 +101,7 @@ class Give_Cache {
 		$option = get_option( $cache_key );
 
 		// Backward compatibility.
-		if ( ! is_array( $option ) || empty( $option ) ) {
+		if ( ! is_array( $option ) || empty( $option ) || ! array_key_exists( 'expiration', $option ) ) {
 			return $option;
 		}
 
@@ -201,6 +201,7 @@ class Give_Cache {
 
 			if (
 				! is_array( $option['option_value'] )
+				|| ! array_key_exists( 'expiration', $option['option_value'] )
 				|| empty( $option['option_value']['expiration'] )
 				|| ( $current_time < $option['option_value']['expiration'] )
 			) {
