@@ -742,7 +742,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 						}
 					}
 
-					// Stop validation for these licencse keys.
+					// Stop validation for these license keys.
 					$addon_license_key_in_subscriptions = array_merge( $addon_license_key_in_subscriptions, $subscription['licenses'] );
 				}
 				$showed_subscriptions_message = true;
