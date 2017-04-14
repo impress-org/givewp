@@ -58,7 +58,7 @@ class Give_Cache {
 	 */
 	public function setup_hooks() {
 		// weekly delete all expired cache.
-		add_action( 'give_weekly_scheduled_events', array( $this, 'delete_all' ) );
+		add_action( 'give_weekly_scheduled_events', array( $this, 'delete_all_expired' ) );
 	}
 
 	/**
@@ -105,8 +105,8 @@ class Give_Cache {
 			return $option;
 		}
 
+		// Get current time.
 		$current_time = current_time( 'timestamp', 1 );
-		$option       = maybe_unserialize( $option );
 
 		if ( empty( $option['expiration'] ) || ( $current_time < $option['expiration'] ) ) {
 			$option = $option['data'];
@@ -151,19 +151,19 @@ class Give_Cache {
 	 *
 	 * @since  1.8.7
 	 *
-	 * @param  string $cache_key
-	 *
-	 * @return mixed
+	 * @param  string|array $cache_keys
 	 */
 
-	public static function delete( $cache_key ) {
-		if ( ! self::is_valid_cache_key( $cache_key ) ) {
-			return new WP_Error( '', __( 'Cache key format should be give_cache_*', 'give' ) );
+	public static function delete( $cache_keys ) {
+		if( ! empty( $cache_keys ) ) {
+			$cache_keys = is_array( $cache_keys ) ? $cache_keys : array( $cache_keys );
+
+			foreach ( $cache_keys as $cache_key ) {
+				if( self::is_valid_cache_key( $cache_key ) ){
+					delete_option( $cache_key );
+				}
+			}
 		}
-
-		$result = delete_option( $cache_key );
-
-		return (bool) $result;
 	}
 
 	/**
@@ -175,7 +175,7 @@ class Give_Cache {
 	 *
 	 * @return bool
 	 */
-	public static function delete_all() {
+	public static function delete_all_expired() {
 		global $wpdb;
 		$options = $wpdb->get_results(
 			$wpdb->prepare(
