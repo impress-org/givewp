@@ -394,12 +394,12 @@ class Give_Logging {
 		$cache_key = Give_Cache::get_key( 'get_log_count', $query_args );
 
 		// check if cache already exist or not.
-		if ( ! ( $logs_count = get_option( $cache_key ) ) ) {
+		if ( ! ( $logs_count = Give_Cache::get( $cache_key ) ) ) {
 			$logs       = new WP_Query( $query_args );
 			$logs_count = (int) $logs->post_count;
 
 			// Cache results.
-			add_option( $cache_key, $logs_count, '', 'no' );
+			Give_Cache::set( $cache_key, $logs_count );
 		}
 
 		return $logs_count;
@@ -495,7 +495,7 @@ class Give_Logging {
 
 		// Delete log cache.
 		foreach ( $cache_option_names as $option_name ) {
-			delete_option( $option_name['option_name'] );
+			Give_Cache::delete( $option_name['option_name'] );
 		}
 	}
 }
