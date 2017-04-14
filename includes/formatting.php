@@ -401,7 +401,7 @@ function give_date_format( $date_context = '' ) {
  * @return string
  */
 function give_get_cache_key( $action, $query_args ) {
-	return Give_Cache::get_cache_key( $action, $query_args );
+	return Give_Cache::get_key( $action, $query_args );
 }
 
 /**
