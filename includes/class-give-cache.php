@@ -181,10 +181,13 @@ class Give_Cache {
 
 		// Delete log cache.
 		foreach ( $options as $option ) {
-			$option['option_value'] = unserialize( $option['option_value'] );
+			$option['option_value'] = maybe_unserialize( $option['option_value'] );
 
-			// Do not
-			if ( is_null( $option['option_value']['expiration'] ) || ( $current_time < $option['option_value']['expiration'] ) ) {
+			if (
+				! is_array( $option['option_value'] )
+				|| empty( $option['option_value']['expiration'] )
+				|| ( $current_time < $option['option_value']['expiration'] )
+			) {
 				continue;
 			}
 
