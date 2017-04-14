@@ -1299,7 +1299,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 						$messages[]     = sprintf(
 							__( 'Your license key expires soon! It expires on %1$s. <a href="%1$s" target="_blank" title="Renew license">Renew your license key</a>.', 'give' ),
 							date_i18n( get_option( 'date_format' ), strtotime( $license->expires, current_time( 'timestamp' ) ) ),
-							$checkout_page_link . '?edd_license_key=' . $value . '&utm_campaign=admin&utm_source=licenses&utm_medium=renew'
+							$checkout_page_link . '?edd_license_key=' . $license_key . '&utm_campaign=admin&utm_source=licenses&utm_medium=renew'
 						);
 						$license_status = 'license-expires-soon';
 					} else {
