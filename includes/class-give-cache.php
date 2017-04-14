@@ -89,7 +89,7 @@ class Give_Cache{
 	 *
 	 * @return bool
 	 */
-	public function delete_cache() {
+	public function delete_all_cache() {
 		global $wpdb;
 		$cache_option_names = $wpdb->get_results(
 			$wpdb->prepare(
@@ -98,8 +98,6 @@ class Give_Cache{
 			),
 			ARRAY_A
 		);
-
-		error_log( print_r( $cache_option_names, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
 
 		// Bailout.
 		if ( empty( $cache_option_names ) ) {
