@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class Give_Cache{
+class Give_Cache {
 	/**
 	 * Instance.
 	 *
@@ -39,10 +39,10 @@ class Give_Cache{
 	 * Get instance.
 	 *
 	 * @since  1.8.7
-	 * @access static
+	 * @access public
 	 * @return static
 	 */
-	static function get_instance() {
+	public static function get_instance() {
 		if ( null === static::$instance ) {
 			self::$instance = new static();
 		}
@@ -53,12 +53,12 @@ class Give_Cache{
 	/**
 	 * Setup hooks.
 	 *
-	 * @since 1.8.7
+	 * @since  1.8.7
 	 * @access public
 	 */
 	public function setup_hooks() {
-		// Delete give cache weekly.
-		// add_action( 'give_weekly_scheduled_events', array( $this, 'delete_cache' ) );
+		// weekly delete all expired cache.
+		add_action( 'give_weekly_scheduled_events', array( $this, 'delete_all' ) );
 	}
 
 	/**
@@ -72,13 +72,82 @@ class Give_Cache{
 	 * @return string
 	 */
 
-	public static function get_cache_key( $action, $query_args ) {
+	public static function get_key( $action, $query_args ) {
+		$cache_key = "give_cache_{$action}";
+
 		// Bailout.
-		if ( ! is_array( $query_args ) || empty( $query_args ) ) {
-			return '';
+		if ( ! empty( $query_args ) ) {
+			$cache_key = "{$cache_key}_" . substr( md5( serialize( $query_args ) ), 0, 15 );
 		}
 
-		return "give_cache_{$action}_" . substr( md5( serialize( $query_args ) ), 0, 15 );
+		return $cache_key;
+	}
+
+	/**
+	 * Get cache.
+	 *
+	 * @since  1.8.7
+	 *
+	 * @param  string $cache_key .
+	 *
+	 * @return mixed
+	 */
+
+	public static function get( $cache_key ) {
+		if ( ! self::is_valid_cache_key( $cache_key ) ) {
+			return new WP_Error( 'give_invalid_cache_key', __( 'Cache key format should be give_cache_*', 'give' ) );
+		}
+
+		return get_option( $cache_key );
+	}
+
+	/**
+	 * Set cache.
+	 *
+	 * @since  1.8.7
+	 *
+	 * @param  string   $cache_key
+	 * @param  mixed    $data
+	 * @param  int|null $expiration Timestamp should be in GMT format.
+	 *
+	 * @return mixed
+	 */
+
+	public static function set( $cache_key, $data, $expiration = null ) {
+		if ( ! self::is_valid_cache_key( $cache_key ) ) {
+			return new WP_Error( 'give_invalid_cache_key', __( 'Cache key format should be give_cache_*', 'give' ) );
+		}
+
+		$option_value = array(
+			'data'       => $data,
+			'expiration' => ! is_null( $expiration )
+				? ( $expiration + current_time( 'timestamp', 1 ) )
+				: null,
+		);
+
+		$result = add_option( $cache_key, $option_value, '', 'no' );
+
+		return $result;
+	}
+
+	/**
+	 * Delete cache.
+	 *
+	 * @since  1.8.7
+	 *
+	 * @param  string $cache_key
+	 *
+	 * @return mixed
+	 */
+
+	public static function delete( $cache_key ) {
+		if ( ! self::is_valid_cache_key( $cache_key ) ) {
+			return new WP_Error( '', __( 'Cache key format should be give_cache_*', 'give' ) );
+		}
+
+		$result = delete_option( $cache_key );
+
+		return (bool) $result;
 	}
 
 	/**
@@ -86,28 +155,56 @@ class Give_Cache{
 	 *
 	 * @since  1.8.7
 	 * @access public
+	 * @global wpdb $wpdb
 	 *
 	 * @return bool
 	 */
-	public function delete_all_cache() {
+	public static function delete_all() {
 		global $wpdb;
-		$cache_option_names = $wpdb->get_results(
+		$options = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT option_name FROM {$wpdb->options} where option_name LIKE '%%%s%%'",
+				"SELECT option_name, option_value
+						FROM {$wpdb->options}
+						Where option_name
+						LIKE '%%%s%%'",
 				'give_cache'
 			),
 			ARRAY_A
 		);
 
 		// Bailout.
-		if ( empty( $cache_option_names ) ) {
+		if ( empty( $options ) ) {
 			return false;
 		}
 
+		$current_time = current_time( 'timestamp', 1 );
+
 		// Delete log cache.
-		foreach ( $cache_option_names as $option_name ) {
-			delete_option( $option_name['option_name'] );
+		foreach ( $options as $option ) {
+			$option['option_value'] = unserialize( $option['option_value'] );
+
+			// Do not
+			if ( is_null( $option['option_value']['expiration'] ) || ( $current_time < $option['option_value']['expiration'] ) ) {
+				continue;
+			}
+
+			self::delete( $option['option_name'] );
 		}
+	}
+
+
+	/**
+	 * Check cache key validity.
+	 *
+	 * @since  1.8.7
+	 * @access public
+	 *
+	 * @param $cache_key
+	 *
+	 * @return bool|int
+	 */
+	public static function is_valid_cache_key( $cache_key ) {
+		return ( false !== strpos( $cache_key, 'give_cache_' ) );
 	}
 }
 
