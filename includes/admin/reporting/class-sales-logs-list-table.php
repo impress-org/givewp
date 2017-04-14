@@ -338,7 +338,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 			'meta_query'  => $this->get_meta_query(),
 		);
 
-		$cache_key = give_get_cache_key( 'get_logs', $log_query );
+		$cache_key = Give_Cache::get_key( 'get_logs', $log_query );
 
 		// Return result from cache if exist.
 		if ( ! ( $logs_data = get_option( $cache_key ) ) ) {

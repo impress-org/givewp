@@ -104,7 +104,8 @@ class Tests_Cache extends Give_Unit_Test_Case {
 	 * @dataProvider give_set_provider
 	 */
 	function test_set( $cache_key, $data, $expiration = 0, $expected ) {
-		$result = is_wp_error( Give_Cache::set( $cache_key, $data, $expiration ) );
+		Give_Cache::set( $cache_key, $data, $expiration );
+		$result = (bool) Give_Cache::get( $cache_key );
 
 		$this->assertEquals( $expected, $result );
 	}
@@ -119,9 +120,10 @@ class Tests_Cache extends Give_Unit_Test_Case {
 	 */
 	function give_set_provider() {
 		return array(
-			array( 'give_cache_get_forms', array( 1647, 1550 ), 0, false ),
-			array( 'give_cache_get_payments', array( 1547, 1650 ), HOUR_IN_SECONDS, false ),
-			array( 'give_get_payments', array( 1547, 1650 ), HOUR_IN_SECONDS, true ),
+			array( 'give_cache_get_reports', true, HOUR_IN_SECONDS, true ),
+			array( 'give_cache_get_forms', true, null, true ),
+			array( 'give_cache_get_reports', true, 0, false ),
+			array( 'give_cache_get_logs', 1647, -1, false ),
 		);
 	}
 

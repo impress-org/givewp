@@ -98,7 +98,23 @@ class Give_Cache {
 			return new WP_Error( 'give_invalid_cache_key', __( 'Cache key format should be give_cache_*', 'give' ) );
 		}
 
-		return get_option( $cache_key );
+		$option = get_option( $cache_key );
+
+		// Backward compatibility.
+		if ( ! is_array( $option ) || empty( $option ) ) {
+			return $option;
+		}
+
+		$current_time = current_time( 'timestamp', 1 );
+		$option       = maybe_unserialize( $option );
+
+		if ( empty( $option['expiration'] ) || ( $current_time < $option['expiration'] ) ) {
+			$option = $option['data'];
+		} else {
+			$option = false;
+		}
+		
+		return $option;
 	}
 
 	/**

@@ -391,7 +391,7 @@ class Give_Logging {
 		}
 
 		// Get cache key for current query.
-		$cache_key = give_get_cache_key( 'get_log_count', $query_args );
+		$cache_key = Give_Cache::get_key( 'get_log_count', $query_args );
 
 		// check if cache already exist or not.
 		if ( ! ( $logs_count = get_option( $cache_key ) ) ) {
