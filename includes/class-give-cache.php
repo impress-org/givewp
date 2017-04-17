@@ -111,8 +111,6 @@ class Give_Cache {
 			return $option;
 		}
 
-		error_log( print_r( $option, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-
 		// Get current time.
 		$current_time = current_time( 'timestamp', 1 );
 
