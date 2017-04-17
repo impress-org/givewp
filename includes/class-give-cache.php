@@ -100,7 +100,7 @@ class Give_Cache {
 
 		$option = get_option( $cache_key );
 
-		// Backward compatibility.
+		// Backward compatibility (<1.8.7).
 		if ( ! is_array( $option ) || empty( $option ) || ! array_key_exists( 'expiration', $option ) ) {
 			return $option;
 		}
@@ -113,7 +113,7 @@ class Give_Cache {
 		} else {
 			$option = false;
 		}
-		
+
 		return $option;
 	}
 
@@ -155,11 +155,11 @@ class Give_Cache {
 	 */
 
 	public static function delete( $cache_keys ) {
-		if( ! empty( $cache_keys ) ) {
+		if ( ! empty( $cache_keys ) ) {
 			$cache_keys = is_array( $cache_keys ) ? $cache_keys : array( $cache_keys );
 
 			foreach ( $cache_keys as $cache_key ) {
-				if( self::is_valid_cache_key( $cache_key ) ){
+				if ( self::is_valid_cache_key( $cache_key ) ) {
 					delete_option( $cache_key );
 				}
 			}
@@ -200,8 +200,8 @@ class Give_Cache {
 			$option['option_value'] = maybe_unserialize( $option['option_value'] );
 
 			if (
-				! is_array( $option['option_value'] )
-				|| ! array_key_exists( 'expiration', $option['option_value'] )
+				! is_array( $option['option_value'] ) // Backward compatibility (<1.8.7).
+				|| ! array_key_exists( 'expiration', $option['option_value'] ) // Backward compatibility (<1.8.7).
 				|| empty( $option['option_value']['expiration'] )
 				|| ( $current_time < $option['option_value']['expiration'] )
 			) {
