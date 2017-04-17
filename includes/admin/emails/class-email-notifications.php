@@ -73,7 +73,7 @@ class Give_Email_Notifications {
 		// Load email notifications.
 		$this->add_emails_notifications();
 
-		add_filter( 'give_metabox_form_data_settings', array( $this, 'add_metabox__setting_sields' ), 10, 2 );
+		add_filter( 'give_metabox_form_data_settings', array( $this, 'add_metabox_setting_fields' ), 10, 2 );
 		add_action( 'init', array( $this, 'preview_email' ) );
 		add_action( 'init', array( $this, 'send_preview_email' ) );
 
@@ -104,7 +104,7 @@ class Give_Email_Notifications {
 	 *
 	 * @return array
 	 */
-	public function add_metabox__setting_sields( $settings, $post_id ) {
+	public function add_metabox_setting_fields( $settings, $post_id ) {
 		$emails = $this->get_email_notifications();
 
 		// Bailout.
