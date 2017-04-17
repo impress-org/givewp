@@ -53,7 +53,6 @@ function give_get_field_callback( $field ) {
 			$func_name = "{$func_name_prefix}_text_input";
 			break;
 
-
 		case 'textarea' :
 			$func_name = "{$func_name_prefix}_textarea_input";
 			break;
@@ -134,7 +133,6 @@ function give_render_field( $field ) {
 	$field['attributes']['class'] = trim( "give-field {$field['attributes']['class']} give-{$field['type']} {$field['class']}" );
 	unset( $field['class'] );
 
-
 	// CMB2 compatibility: Set wrapper class if any.
 	if ( ! empty( $field['row_classes'] ) ) {
 		$field['wrapper_class'] = $field['row_classes'];
@@ -197,7 +195,7 @@ function give_render_field( $field ) {
 
 	// Call render function.
 	if ( is_array( $func_name ) ) {
-		$func_name[0]->$func_name[1]( $field );
+		$func_name[0]->{$func_name[1]}( $field );
 	} else {
 		$func_name( $field );
 	}
@@ -209,21 +207,23 @@ function give_render_field( $field ) {
  * Output a text input box.
  *
  * @since  1.8
- * @param  array $field {
- *     Optional. Array of text input field arguments.
  *
- *     @type string             $id              Field ID. Default ''.
- *     @type string             $style           CSS style for input field. Default ''.
- *     @type string             $wrapper_class   CSS class to use for wrapper of input field. Default ''.
- *     @type string             $value           Value of input field. Default ''.
- *     @type string             $name            Name of input field. Default ''.
- *     @type string             $type            Type of input field. Default 'text'.
- *     @type string             $before_field    Text/HTML to add before input field. Default ''.
- *     @type string             $after_field     Text/HTML to add after input field. Default ''.
- *     @type string             $data_type       Define data type for value of input to filter it properly. Default ''.
- *     @type string             $description     Description of input field. Default ''.
- *     @type array              $attributes      List of attributes of input field. Default array().
- *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class' => '****' )
+ * @param  array $field         {
+ *                              Optional. Array of text input field arguments.
+ *
+ * @type string  $id            Field ID. Default ''.
+ * @type string  $style         CSS style for input field. Default ''.
+ * @type string  $wrapper_class CSS class to use for wrapper of input field. Default ''.
+ * @type string  $value         Value of input field. Default ''.
+ * @type string  $name          Name of input field. Default ''.
+ * @type string  $type          Type of input field. Default 'text'.
+ * @type string  $before_field  Text/HTML to add before input field. Default ''.
+ * @type string  $after_field   Text/HTML to add after input field. Default ''.
+ * @type string  $data_type     Define data type for value of input to filter it properly. Default ''.
+ * @type string  $description   Description of input field. Default ''.
+ * @type array   $attributes    List of attributes of input field. Default array().
+ *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class'
+ *                                               => '****' )
  * }
  * @return void
  */
@@ -243,8 +243,8 @@ function give_text_input( $field ) {
 		case 'price' :
 			$field['value'] = ( ! empty( $field['value'] ) ? give_format_amount( $field['value'] ) : $field['value'] );
 
-			$field['before_field'] = ! empty( $field['before_field'] ) ? $field['before_field'] : ( give_get_option( 'currency_position' ) == 'before' ? '<span class="give-money-symbol give-money-symbol-before">' . give_currency_symbol() . '</span>' : '' );
-			$field['after_field']  = ! empty( $field['after_field'] ) ? $field['after_field'] : ( give_get_option( 'currency_position' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '' );
+			$field['before_field'] = ! empty( $field['before_field'] ) ? $field['before_field'] : ( give_get_option( 'currency_position', 'before' ) == 'before' ? '<span class="give-money-symbol give-money-symbol-before">' . give_currency_symbol() . '</span>' : '' );
+			$field['after_field']  = ! empty( $field['after_field'] ) ? $field['after_field'] : ( give_get_option( 'currency_position', 'before' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '' );
 			break;
 
 		case 'decimal' :
@@ -256,21 +256,21 @@ function give_text_input( $field ) {
 			break;
 	}
 
-	// Custom attribute handling
-	$custom_attributes = array();
-
-	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
-
-		foreach ( $field['attributes'] as $attribute => $value ) {
-			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
-		}
-	}
-
-	echo '<p class="give-field-wrap ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . give_get_field_name( $field ) . '">' . wp_kses_post( $field['name'] ) . '</label>' . $field['before_field'] . '<input type="' . esc_attr( $field['type'] ) . '" style="' . esc_attr( $field['style'] ) . '" name="' . give_get_field_name( $field ) . '" id="' . esc_attr( $field['id'] ) . '" value="' . esc_attr( $field['value'] ) . '" ' . implode( ' ', $custom_attributes ) . ' />' . $field['after_field'];
-
-	if ( ! empty( $field['description'] ) ) {
-		echo '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
-	}
+	?>
+	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+	<label for="<?php echo give_get_field_name( $field ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
+	<?php echo $field['before_field']; ?>
+	<input
+			type="<?php echo esc_attr( $field['type'] ); ?>"
+			style="<?php echo esc_attr( $field['style'] ); ?>"
+			name="<?php echo give_get_field_name( $field ); ?>"
+			id="<?php echo esc_attr( $field['id'] ); ?>"
+			value="<?php echo esc_attr( $field['value'] ); ?>"
+		<?php echo give_get_custom_attributes( $field ); ?>
+	/>
+	<?php echo $field['after_field']; ?>
+	<?php
+	echo give_get_field_description( $field );
 	echo '</p>';
 }
 
@@ -278,15 +278,17 @@ function give_text_input( $field ) {
  * Output a hidden input box.
  *
  * @since  1.8
- * @param  array $field {
- *     Optional. Array of hidden text input field arguments.
  *
- *     @type string             $id              Field ID. Default ''.
- *     @type string             $value           Value of input field. Default ''.
- *     @type string             $name            Name of input field. Default ''.
- *     @type string             $type            Type of input field. Default 'text'.
- *     @type array              $attributes      List of attributes of input field. Default array().
- *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class' => '****' )
+ * @param  array $field      {
+ *                           Optional. Array of hidden text input field arguments.
+ *
+ * @type string  $id         Field ID. Default ''.
+ * @type string  $value      Value of input field. Default ''.
+ * @type string  $name       Name of input field. Default ''.
+ * @type string  $type       Type of input field. Default 'text'.
+ * @type array   $attributes List of attributes of input field. Default array().
+ *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class'
+ *                                               => '****' )
  * }
  * @return void
  */
@@ -305,8 +307,16 @@ function give_hidden_input( $field ) {
 			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
 		}
 	}
+	?>
 
-	echo '<input type="hidden" name="' . give_get_field_name( $field ) . '" id="' . esc_attr( $field['id'] ) . '" value="' . esc_attr( $field['value'] ) . '" ' . implode( ' ', $custom_attributes ) . '/> ';
+	<input
+			type="hidden"
+			name="<?php echo give_get_field_name( $field ); ?>"
+			id="<?php echo esc_attr( $field['id'] ); ?>"
+			value="<?php echo esc_attr( $field['value'] ); ?>"
+		<?php echo give_get_custom_attributes( $field ); ?>
+	/>
+	<?php
 }
 
 /**
@@ -314,17 +324,19 @@ function give_hidden_input( $field ) {
  *
  * @since  1.8
  * @since  1.8
- * @param  array $field {
- *     Optional. Array of textarea input field arguments.
  *
- *     @type string             $id              Field ID. Default ''.
- *     @type string             $style           CSS style for input field. Default ''.
- *     @type string             $wrapper_class   CSS class to use for wrapper of input field. Default ''.
- *     @type string             $value           Value of input field. Default ''.
- *     @type string             $name            Name of input field. Default ''.
- *     @type string             $description     Description of input field. Default ''.
- *     @type array              $attributes      List of attributes of input field. Default array().
- *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class' => '****' )
+ * @param  array $field         {
+ *                              Optional. Array of textarea input field arguments.
+ *
+ * @type string  $id            Field ID. Default ''.
+ * @type string  $style         CSS style for input field. Default ''.
+ * @type string  $wrapper_class CSS class to use for wrapper of input field. Default ''.
+ * @type string  $value         Value of input field. Default ''.
+ * @type string  $name          Name of input field. Default ''.
+ * @type string  $description   Description of input field. Default ''.
+ * @type array   $attributes    List of attributes of input field. Default array().
+ *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class'
+ *                                               => '****' )
  * }
  * @return void
  */
@@ -336,21 +348,19 @@ function give_textarea_input( $field ) {
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
 	$field['value']         = give_get_field_value( $field, $thepostid );
 
-	// Custom attribute handling
-	$custom_attributes = array();
-
-	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
-
-		foreach ( $field['attributes'] as $attribute => $value ) {
-			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
-		}
-	}
-
-	echo '<p class="give-field-wrap ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . give_get_field_name( $field ) . '">' . wp_kses_post( $field['name'] ) . '</label><textarea style="' . esc_attr( $field['style'] ) . '"  name="' . give_get_field_name( $field ) . '" id="' . esc_attr( $field['id'] ) . '" rows="10" cols="20" ' . implode( ' ', $custom_attributes ) . '>' . esc_textarea( $field['value'] ) . '</textarea> ';
-
-	if ( ! empty( $field['description'] ) ) {
-		echo '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
-	}
+	?>
+	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+	<label for="<?php echo give_get_field_name( $field ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
+	<textarea
+			style="<?php echo esc_attr( $field['style'] ); ?>"
+			name="<?php echo give_get_field_name( $field ); ?>"
+			id="<?php echo esc_attr( $field['id'] ); ?>"
+			rows="10"
+			cols="20"
+		<?php echo give_get_custom_attributes( $field ); ?>
+	><?php echo esc_textarea( $field['value'] ); ?></textarea>
+	<?php
+	echo give_get_field_description( $field );
 	echo '</p>';
 }
 
@@ -358,38 +368,45 @@ function give_textarea_input( $field ) {
  * Output a wysiwyg.
  *
  * @since  1.8
- * @param  array $field {
- *     Optional. Array of WordPress editor field arguments.
  *
- *     @type string             $id              Field ID. Default ''.
- *     @type string             $style           CSS style for input field. Default ''.
- *     @type string             $wrapper_class   CSS class to use for wrapper of input field. Default ''.
- *     @type string             $value           Value of input field. Default ''.
- *     @type string             $name            Name of input field. Default ''.
- *     @type string             $description     Description of input field. Default ''.
- *     @type array              $attributes      List of attributes of input field. Default array().
- *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class' => '****' )
+ * @param  array $field         {
+ *                              Optional. Array of WordPress editor field arguments.
+ *
+ * @type string  $id            Field ID. Default ''.
+ * @type string  $style         CSS style for input field. Default ''.
+ * @type string  $wrapper_class CSS class to use for wrapper of input field. Default ''.
+ * @type string  $value         Value of input field. Default ''.
+ * @type string  $name          Name of input field. Default ''.
+ * @type string  $description   Description of input field. Default ''.
+ * @type array   $attributes    List of attributes of input field. Default array().
+ *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class'
+ *                                               => '****' )
  * }
  * @return void
  */
 function give_wysiwyg( $field ) {
 	global $thepostid, $post;
 
-	$thepostid                = empty( $thepostid ) ? $post->ID : $thepostid;
-	$field['style']           = isset( $field['style'] ) ? $field['style'] : '';
-	$field['wrapper_class']   = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
-	$field['value']           = give_get_field_value( $field, $thepostid );
+	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+	$field['value']         = give_get_field_value( $field, $thepostid );
+	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
+	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
+
 	$field['unique_field_id'] = give_get_field_name( $field );
 	$editor_attributes        = array(
 		'textarea_name' => isset( $field['repeatable_field_id'] ) ? $field['repeatable_field_id'] : $field['id'],
 		'textarea_rows' => '10',
 		'editor_css'    => esc_attr( $field['style'] ),
-		'editor_class'  => $field['attributes']['class']
+		'editor_class'  => $field['attributes']['class'],
 	);
-	$data_wp_editor           = ' data-wp-editor="'. base64_encode( json_encode( array( $field['value'], $field['unique_field_id'],$editor_attributes ) ) ) .'"';
+	$data_wp_editor           = ' data-wp-editor="' . base64_encode( json_encode( array(
+			$field['value'],
+			$field['unique_field_id'],
+			$editor_attributes,
+	) ) ) . '"';
 	$data_wp_editor           = isset( $field['repeatable_field_id'] ) ? $data_wp_editor : '';
 
-	echo '<div class="give-field-wrap ' . $field['unique_field_id'] . '_field ' . esc_attr( $field['wrapper_class'] ) . '"'.$data_wp_editor.'><label for="' . $field['unique_field_id'] . '">' . wp_kses_post( $field['name'] ) . '</label>';
+	echo '<div class="give-field-wrap ' . $field['unique_field_id'] . '_field ' . esc_attr( $field['wrapper_class'] ) . '"' . $data_wp_editor . '><label for="' . $field['unique_field_id'] . '">' . wp_kses_post( $field['name'] ) . '</label>';
 
 	wp_editor(
 		$field['value'],
@@ -397,9 +414,7 @@ function give_wysiwyg( $field ) {
 		$editor_attributes
 	);
 
-	if ( ! empty( $field['description'] ) ) {
-		echo '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
-	}
+	echo give_get_field_description( $field );
 	echo '</div>';
 }
 
@@ -407,18 +422,20 @@ function give_wysiwyg( $field ) {
  * Output a checkbox input box.
  *
  * @since  1.8
- * @param  array $field {
- *     Optional. Array of checkbox field arguments.
  *
- *     @type string             $id              Field ID. Default ''.
- *     @type string             $style           CSS style for input field. Default ''.
- *     @type string             $wrapper_class   CSS class to use for wrapper of input field. Default ''.
- *     @type string             $value           Value of input field. Default ''.
- *     @type string             $cbvalue         Checkbox value. Default 'on'.
- *     @type string             $name            Name of input field. Default ''.
- *     @type string             $description     Description of input field. Default ''.
- *     @type array              $attributes      List of attributes of input field. Default array().
- *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class' => '****' )
+ * @param  array $field         {
+ *                              Optional. Array of checkbox field arguments.
+ *
+ * @type string  $id            Field ID. Default ''.
+ * @type string  $style         CSS style for input field. Default ''.
+ * @type string  $wrapper_class CSS class to use for wrapper of input field. Default ''.
+ * @type string  $value         Value of input field. Default ''.
+ * @type string  $cbvalue       Checkbox value. Default 'on'.
+ * @type string  $name          Name of input field. Default ''.
+ * @type string  $description   Description of input field. Default ''.
+ * @type array   $attributes    List of attributes of input field. Default array().
+ *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class'
+ *                                               => '****' )
  * }
  * @return void
  */
@@ -431,23 +448,20 @@ function give_checkbox( $field ) {
 	$field['value']         = give_get_field_value( $field, $thepostid );
 	$field['cbvalue']       = isset( $field['cbvalue'] ) ? $field['cbvalue'] : 'on';
 	$field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
-
-	// Custom attribute handling.
-	$custom_attributes = array();
-
-	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
-
-		foreach ( $field['attributes'] as $attribute => $value ) {
-			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
-		}
-	}
-
-	echo '<p class="give-field-wrap ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . give_get_field_name( $field ) . '">' . wp_kses_post( $field['name'] ) . '</label><input type="checkbox" style="' . esc_attr( $field['style'] ) . '" name="' . give_get_field_name( $field ) . '" id="' . esc_attr( $field['id'] ) . '" value="' . esc_attr( $field['cbvalue'] ) . '" ' . checked( $field['value'], $field['cbvalue'], false ) . '  ' . implode( ' ', $custom_attributes ) . '/> ';
-
-	if ( ! empty( $field['description'] ) ) {
-		echo '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
-	}
-
+	?>
+	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+	<label for="<?php echo give_get_field_name( $field ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
+	<input
+			type="checkbox"
+			style="<?php echo esc_attr( $field['style'] ); ?>"
+			name="<?php echo give_get_field_name( $field ); ?>"
+			id="<?php echo esc_attr( $field['id'] ); ?>"
+			value="<?php echo esc_attr( $field['cbvalue'] ); ?>"
+		<?php echo checked( $field['value'], $field['cbvalue'], false ); ?>
+		<?php echo give_get_custom_attributes( $field ); ?>
+	/>
+	<?php
+	echo give_get_field_description( $field );
 	echo '</p>';
 }
 
@@ -455,18 +469,20 @@ function give_checkbox( $field ) {
  * Output a select input box.
  *
  * @since  1.8
- * @param  array $field {
- *     Optional. Array of select field arguments.
  *
- *     @type string             $id              Field ID. Default ''.
- *     @type string             $style           CSS style for input field. Default ''.
- *     @type string             $wrapper_class   CSS class to use for wrapper of input field. Default ''.
- *     @type string             $value           Value of input field. Default ''.
- *     @type string             $name            Name of input field. Default ''.
- *     @type string             $description     Description of input field. Default ''.
- *     @type array              $attributes      List of attributes of input field. Default array().
- *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class' => '****' )
- *     @type array              $options         List of options. Default array().
+ * @param  array $field         {
+ *                              Optional. Array of select field arguments.
+ *
+ * @type string  $id            Field ID. Default ''.
+ * @type string  $style         CSS style for input field. Default ''.
+ * @type string  $wrapper_class CSS class to use for wrapper of input field. Default ''.
+ * @type string  $value         Value of input field. Default ''.
+ * @type string  $name          Name of input field. Default ''.
+ * @type string  $description   Description of input field. Default ''.
+ * @type array   $attributes    List of attributes of input field. Default array().
+ *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class'
+ *                                               => '****' )
+ * @type array   $options       List of options. Default array().
  *                                               for example: 'options' => array( '' => 'None', 'yes' => 'Yes' )
  * }
  * @return void
@@ -479,28 +495,21 @@ function give_select( $field ) {
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
 	$field['value']         = give_get_field_value( $field, $thepostid );
 	$field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
-
-	// Custom attribute handling
-	$custom_attributes = array();
-
-	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
-
-		foreach ( $field['attributes'] as $attribute => $value ) {
-			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
-		}
-	}
-
-	echo '<p class="give-field-wrap ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . give_get_field_name( $field ) . '">' . wp_kses_post( $field['name'] ) . '</label><select id="' . esc_attr( $field['id'] ) . '" name="' . give_get_field_name( $field ) . '" style="' . esc_attr( $field['style'] ) . '" ' . implode( ' ', $custom_attributes ) . '>';
-
+	?>
+	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+	<label for="<?php echo give_get_field_name( $field ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
+	<select
+	id="<?php echo esc_attr( $field['id'] ); ?>"
+	name="<?php echo give_get_field_name( $field ); ?>"
+	style="<?php echo esc_attr( $field['style'] ) ?>"
+	<?php echo give_get_custom_attributes( $field ); ?>
+	>
+	<?php
 	foreach ( $field['options'] as $key => $value ) {
 		echo '<option value="' . esc_attr( $key ) . '" ' . selected( esc_attr( $field['value'] ), esc_attr( $key ), false ) . '>' . esc_html( $value ) . '</option>';
 	}
-
-	echo '</select> ';
-
-	if ( ! empty( $field['description'] ) ) {
-		echo '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
-	}
+	echo '</select>';
+	echo give_get_field_description( $field );
 	echo '</p>';
 }
 
@@ -508,19 +517,22 @@ function give_select( $field ) {
  * Output a radio input box.
  *
  * @since  1.8
- * @param  array $field {
- *     Optional. Array of radio field arguments.
  *
- *     @type string             $id              Field ID. Default ''.
- *     @type string             $style           CSS style for input field. Default ''.
- *     @type string             $wrapper_class   CSS class to use for wrapper of input field. Default ''.
- *     @type string             $value           Value of input field. Default ''.
- *     @type string             $name            Name of input field. Default ''.
- *     @type string             $description     Description of input field. Default ''.
- *     @type array              $attributes      List of attributes of input field. Default array().
- *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class' => '****' )
- *     @type array              $options         List of options. Default array().
- *                                               for example: 'options' => array( 'enable' => 'Enable', 'disable' => 'Disable' )
+ * @param  array $field         {
+ *                              Optional. Array of radio field arguments.
+ *
+ * @type string  $id            Field ID. Default ''.
+ * @type string  $style         CSS style for input field. Default ''.
+ * @type string  $wrapper_class CSS class to use for wrapper of input field. Default ''.
+ * @type string  $value         Value of input field. Default ''.
+ * @type string  $name          Name of input field. Default ''.
+ * @type string  $description   Description of input field. Default ''.
+ * @type array   $attributes    List of attributes of input field. Default array().
+ *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class'
+ *                                               => '****' )
+ * @type array   $options       List of options. Default array().
+ *                                               for example: 'options' => array( 'enable' => 'Enable', 'disable' =>
+ *                                               'Disable' )
  * }
  * @return void
  */
@@ -533,16 +545,6 @@ function give_radio( $field ) {
 	$field['value']         = give_get_field_value( $field, $thepostid );
 	$field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
 
-	// Custom attribute handling
-	$custom_attributes = array();
-
-	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
-
-		foreach ( $field['attributes'] as $attribute => $value ) {
-			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
-		}
-	}
-
 	echo '<fieldset class="give-field-wrap ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><span class="give-field-label">' . wp_kses_post( $field['name'] ) . '</span><legend class="screen-reader-text">' . wp_kses_post( $field['name'] ) . '</legend><ul class="give-radios">';
 
 	foreach ( $field['options'] as $key => $value ) {
@@ -553,16 +555,13 @@ function give_radio( $field ) {
 				type="radio"
 				style="' . esc_attr( $field['style'] ) . '"
 				' . checked( esc_attr( $field['value'] ), esc_attr( $key ), false ) . ' '
-				. implode( ' ', $custom_attributes ) . '
+		     . give_get_custom_attributes( $field ) . '
 				/> ' . esc_html( $value ) . '</label>
 		</li>';
 	}
 	echo '</ul>';
 
-	if ( ! empty( $field['description'] ) ) {
-		echo '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
-	}
-
+	echo give_get_field_description( $field );
 	echo '</fieldset>';
 }
 
@@ -570,17 +569,19 @@ function give_radio( $field ) {
  * Output a colorpicker.
  *
  * @since  1.8
- * @param  array $field {
- *     Optional. Array of colorpicker field arguments.
  *
- *     @type string             $id              Field ID. Default ''.
- *     @type string             $style           CSS style for input field. Default ''.
- *     @type string             $wrapper_class   CSS class to use for wrapper of input field. Default ''.
- *     @type string             $value           Value of input field. Default ''.
- *     @type string             $name            Name of input field. Default ''.
- *     @type string             $description     Description of input field. Default ''.
- *     @type array              $attributes      List of attributes of input field. Default array().
- *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class' => '****' )
+ * @param  array $field         {
+ *                              Optional. Array of colorpicker field arguments.
+ *
+ * @type string  $id            Field ID. Default ''.
+ * @type string  $style         CSS style for input field. Default ''.
+ * @type string  $wrapper_class CSS class to use for wrapper of input field. Default ''.
+ * @type string  $value         Value of input field. Default ''.
+ * @type string  $name          Name of input field. Default ''.
+ * @type string  $description   Description of input field. Default ''.
+ * @type array   $attributes    List of attributes of input field. Default array().
+ *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class'
+ *                                               => '****' )
  * }
  * @return void
  */
@@ -593,23 +594,58 @@ function give_colorpicker( $field ) {
 	$field['value']         = give_get_field_value( $field, $thepostid );
 	$field['name']          = isset( $field['name'] ) ? $field['name'] : $field['id'];
 	$field['type']          = 'text';
-
-	// Custom attribute handling
-	$custom_attributes = array();
-
-	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
-
-		foreach ( $field['attributes'] as $attribute => $value ) {
-			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
-		}
-	}
-
-	echo '<p class="give-field-wrap ' . esc_attr( $field['id'] ) . '_field ' . esc_attr( $field['wrapper_class'] ) . '"><label for="' . give_get_field_name( $field ) . '">' . wp_kses_post( $field['name'] ) . '</label><input type="' . esc_attr( $field['type'] ) . '" style="' . esc_attr( $field['style'] ) . '" name="' . give_get_field_name( $field ) . '" id="' . esc_attr( $field['id'] ) . '" value="' . esc_attr( $field['value'] ) . '" ' . implode( ' ', $custom_attributes ) . ' /> ';
-
-	if ( ! empty( $field['description'] ) ) {
-		echo '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
-	}
+	?>
+	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+	<label for="<?php echo give_get_field_name( $field ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
+	<input
+			type="<?php echo esc_attr( $field['type'] ); ?>"
+			style="<?php echo esc_attr( $field['style'] ); ?>"
+			name="<?php echo give_get_field_name( $field ); ?>"
+			id="' . esc_attr( $field['id'] ) . '" value="<?php echo esc_attr( $field['value'] ); ?>"
+		<?php echo give_get_custom_attributes( $field ); ?>
+	/>
+	<?php
+	echo give_get_field_description( $field );
 	echo '</p>';
+}
+
+
+/**
+ * Output a media upload field.
+ *
+ * @since  1.8
+ *
+ * @param array $field
+ */
+function give_media( $field ) {
+	global $thepostid, $post;
+
+	$thepostid                    = empty( $thepostid ) ? $post->ID : $thepostid;
+	$field['style']               = isset( $field['style'] ) ? $field['style'] : '';
+	$field['wrapper_class']       = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
+	$field['value']               = give_get_field_value( $field, $thepostid );
+	$field['name']                = isset( $field['name'] ) ? $field['name'] : $field['id'];
+	$field['type']                = 'text';
+	$field['attributes']['class'] = "{$field['attributes']['class']} give-text-medium";
+
+	// Allow developer to save attachment ID or attachment url as metadata.
+	$field['fvalue'] = isset( $field['fvalue'] ) ? $field['fvalue'] : 'url';
+	?>
+	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+		<label for="<?php echo give_get_field_name( $field ) ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
+		<input
+				name="<?php echo give_get_field_name( $field ); ?>"
+				id="<?php echo esc_attr( $field['id'] ); ?>"
+				type="text"
+				value="<?php echo $field['value']; ?>"
+				style="<?php echo esc_attr( $field['style'] ); ?>"
+				data-fvalue="<?php echo $field['fvalue']; ?>"
+			<?php echo give_get_custom_attributes( $field ); ?>
+		/>&nbsp;&nbsp;&nbsp;&nbsp;<input class="give-media-upload button" type="button"
+										 value="<?php echo esc_html__( 'Add or Upload File', 'give' ); ?>">
+		<?php echo give_get_field_description( $field ); ?>
+	</p>
+	<?php
 }
 
 /**
@@ -629,13 +665,13 @@ function give_default_gateway( $field ) {
 	$field['options'] = array();
 
 	// Set field option value.
-	if( ! empty( $gateways ) ) {
+	if ( ! empty( $gateways ) ) {
 		foreach ( $gateways as $key => $option ) {
 			$field['options'][ $key ] = $option['admin_label'];
 		}
 	}
 
-	//Add a field to the Give Form admin single post view of this field
+	// Add a field to the Give Form admin single post view of this field
 	if ( is_object( $post ) && 'give_forms' === $post->post_type ) {
 		$field['options'] = array_merge( array( 'global' => esc_html__( 'Global Default', 'give' ) ), $field['options'] );
 	}
@@ -645,30 +681,32 @@ function give_default_gateway( $field ) {
 }
 
 /**
-  * Output the documentation link.
-  *
-  * @since  1.8
-  * @param  array $field {
-  *     Optional. Array of customizable link attributes.
-  *
-  *     @type string             $name            Name of input field. Default ''.
-  *     @type string             $type            Type of input field. Default 'text'.
-  *     @type string             $url             Value to be passed as a link. Default 'https://givewp.com/documentation'.
-  *     @type string             $title           Value to be passed as text of link. Default 'Documentation'.
-  *     @type array              $attributes      List of attributes of input field. Default array().
-  *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class' => '****' )
-  * }
-  * @return void
-*/
+ * Output the documentation link.
+ *
+ * @since  1.8
+ *
+ * @param  array $field      {
+ *                           Optional. Array of customizable link attributes.
+ *
+ * @type string  $name       Name of input field. Default ''.
+ * @type string  $type       Type of input field. Default 'text'.
+ * @type string  $url        Value to be passed as a link. Default 'https://givewp.com/documentation'.
+ * @type string  $title      Value to be passed as text of link. Default 'Documentation'.
+ * @type array   $attributes List of attributes of input field. Default array().
+ *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class'
+ *                                               => '****' )
+ * }
+ * @return void
+ */
 
-function give_docs_link($field) {
-	$field['url']   = isset($field['url']) ? $field['url'] : 'https://givewp.com/documentation';
-	$field['title'] = isset($field['title']) ? $field['title'] : 'Documentation';
+function give_docs_link( $field ) {
+	$field['url']   = isset( $field['url'] ) ? $field['url'] : 'https://givewp.com/documentation';
+	$field['title'] = isset( $field['title'] ) ? $field['title'] : 'Documentation';
 
-	echo '<p class="give-docs-link"><a href="' . esc_url($field['url'])
-		. '" target="_blank">'
-		. sprintf(esc_html__('Need Help? See docs on "%s"'), $field['title'])
-		. '<span class="dashicons dashicons-editor-help"></span></a></p>';
+	echo '<p class="give-docs-link"><a href="' . esc_url( $field['url'] )
+	     . '" target="_blank">'
+	     . sprintf( esc_html__( 'Need Help? See docs on "%s"' ), $field['title'] )
+	     . '<span class="dashicons dashicons-editor-help"></span></a></p>';
 }
 
 
@@ -747,13 +785,55 @@ function give_get_field_value( $field, $postid ) {
 	 */
 	$field_value = apply_filters( "{$field['id']}_field_value", $field_value, $field, $postid );
 
-
 	// Set default value if no any data saved to db.
 	if ( ! $field_value && isset( $field['default'] ) ) {
 		$field_value = $field['default'];
 	}
 
 	return $field_value;
+}
+
+
+/**
+ * Get field description html.
+ *
+ * @since 1.8
+ *
+ * @param $field
+ *
+ * @return string
+ */
+function give_get_field_description( $field ) {
+	$field_desc_html = '';
+	if ( ! empty( $field['description'] ) ) {
+		$field_desc_html = '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
+	}
+
+	return $field_desc_html;
+}
+
+
+/**
+ * Get field custom attributes as string.
+ *
+ * @since 1.8
+ *
+ * @param $field
+ *
+ * @return string
+ */
+function give_get_custom_attributes( $field ) {
+	// Custom attribute handling
+	$custom_attributes = array();
+
+	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
+
+		foreach ( $field['attributes'] as $attribute => $value ) {
+			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
+		}
+	}
+
+	return implode( ' ', $custom_attributes );
 }
 
 /**
@@ -821,7 +901,6 @@ function give_get_repeater_field_id( $field, $fields, $default = false ) {
 	 */
 	$field_id = apply_filters( "give_get_repeater_field_{$field['id']}_id", $field_id, $field, $fields, $default );
 
-
 	/**
 	 * Filter the repeater field id
 	 *
@@ -862,6 +941,7 @@ function give_get_field_name( $field ) {
 /**
  * Output repeater field or multi donation type form on donation from edit screen.
  * Note: internal use only.
+ *
  * @TODO   : Add support for wysiwyg type field.
  *
  * @since  1.8
@@ -879,9 +959,10 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 	}
 
 	$group_numbering = isset( $fields['options']['group_numbering'] ) ? (int) $fields['options']['group_numbering'] : 0;
-	$close_tabs      = isset( $fields['options']['close_tabs'] )      ? (int) $fields['options']['close_tabs']      : 0;
+	$close_tabs      = isset( $fields['options']['close_tabs'] ) ? (int) $fields['options']['close_tabs'] : 0;
 	?>
-	<div class="give-repeatable-field-section" id="<?php echo "{$fields['id']}_field"; ?>" data-group-numbering="<?php echo $group_numbering; ?>" data-close-tabs="<?php echo $close_tabs; ?>">
+	<div class="give-repeatable-field-section" id="<?php echo "{$fields['id']}_field"; ?>"
+		 data-group-numbering="<?php echo $group_numbering; ?>" data-close-tabs="<?php echo $close_tabs; ?>">
 		<?php if ( ! empty( $fields['name'] ) ) : ?>
 			<p class="give-repeater-field-name"><?php echo $fields['name']; ?></p>
 		<?php endif; ?>
@@ -908,73 +989,39 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 			}
 			?>
 			<tbody class="container"<?php echo " data-rf-row-count=\"{$fields_count}\""; ?>>
-				<!--Repeater field group template-->
-				<tr class="give-template give-row">
-					<td class="give-repeater-field-wrap give-column" colspan="2">
-						<div class="give-row-head give-move">
-							<button type="button" class="handlediv button-link"><span class="toggle-indicator"></span>
-							</button>
-							<span class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-</span>
-							<h2>
-								<span data-header-title="<?php echo $header_title; ?>"><?php echo $header_title; ?></span>
-							</h2>
-						</div>
-						<div class="give-row-body">
-							<?php foreach ( $fields['fields'] as $field ) : ?>
-								<?php if ( ! give_is_field_callback_exist( $field ) ) {
-									continue;
-								} ?>
-								<?php
-								$field['repeat']              = true;
-								$field['repeatable_field_id'] = give_get_repeater_field_id( $field, $fields );
-								$field['id']                  = str_replace( array( '[', ']' ), array(
-									'_',
-									'',
-								), $field['repeatable_field_id'] );
-								?>
-								<?php give_render_field( $field ); ?>
-							<?php endforeach; ?>
-						</div>
-					</td>
-				</tr>
+			<!--Repeater field group template-->
+			<tr class="give-template give-row">
+				<td class="give-repeater-field-wrap give-column" colspan="2">
+					<div class="give-row-head give-move">
+						<button type="button" class="handlediv button-link"><span class="toggle-indicator"></span>
+						</button>
+						<span class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-</span>
+						<h2>
+							<span data-header-title="<?php echo $header_title; ?>"><?php echo $header_title; ?></span>
+						</h2>
+					</div>
+					<div class="give-row-body">
+						<?php foreach ( $fields['fields'] as $field ) : ?>
+							<?php if ( ! give_is_field_callback_exist( $field ) ) {
+								continue;
+} ?>
+							<?php
+							$field['repeat']              = true;
+							$field['repeatable_field_id'] = give_get_repeater_field_id( $field, $fields );
+							$field['id']                  = str_replace( array( '[', ']' ), array(
+								'_',
+								'',
+							), $field['repeatable_field_id'] );
+							?>
+							<?php give_render_field( $field ); ?>
+						<?php endforeach; ?>
+					</div>
+				</td>
+			</tr>
 
-				<?php if ( ! empty( $repeater_field_values ) ) : ?>
-					<!--Stored repeater field group-->
-					<?php foreach ( $repeater_field_values as $index => $field_group ) : ?>
-						<tr class="give-row">
-							<td class="give-repeater-field-wrap give-column" colspan="2">
-								<div class="give-row-head give-move">
-									<button type="button" class="handlediv button-link">
-										<span class="toggle-indicator"></span></button>
-									<sapn class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-
-									</sapn>
-									<h2>
-										<span data-header-title="<?php echo $header_title; ?>"><?php echo $header_title; ?></span>
-									</h2>
-								</div>
-								<div class="give-row-body">
-									<?php foreach ( $fields['fields'] as $field ) : ?>
-										<?php if ( ! give_is_field_callback_exist( $field ) ) {
-											continue;
-										} ?>
-										<?php
-										$field['repeat']              = true;
-										$field['repeatable_field_id'] = give_get_repeater_field_id( $field, $fields, $index );
-										$field['attributes']['value'] = give_get_repeater_field_value( $field, $field_group, $fields );
-										$field['id']                  = str_replace( array( '[', ']' ), array(
-											'_',
-											'',
-										), $field['repeatable_field_id'] );
-										?>
-										<?php give_render_field( $field ); ?>
-									<?php endforeach; ?>
-								</div>
-							</td>
-						</tr>
-					<?php endforeach;; ?>
-
-				<?php elseif ( $add_default_donation_field ) : ?>
-					<!--Default repeater field group-->
+			<?php if ( ! empty( $repeater_field_values ) ) : ?>
+				<!--Stored repeater field group-->
+				<?php foreach ( $repeater_field_values as $index => $field_group ) : ?>
 					<tr class="give-row">
 						<td class="give-repeater-field-wrap give-column" colspan="2">
 							<div class="give-row-head give-move">
@@ -987,38 +1034,73 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 								</h2>
 							</div>
 							<div class="give-row-body">
-								<?php
-								foreach ( $fields['fields'] as $field ) :
-									if ( ! give_is_field_callback_exist( $field ) ) {
+								<?php foreach ( $fields['fields'] as $field ) : ?>
+									<?php if ( ! give_is_field_callback_exist( $field ) ) {
 										continue;
-									}
-
+} ?>
+									<?php
 									$field['repeat']              = true;
-									$field['repeatable_field_id'] = give_get_repeater_field_id( $field, $fields, 0 );
-									$field['attributes']['value'] = apply_filters( "give_default_field_group_field_{$field['id']}_value", ( ! empty( $field['default'] ) ? $field['default'] : '' ), $field );
+									$field['repeatable_field_id'] = give_get_repeater_field_id( $field, $fields, $index );
+									$field['attributes']['value'] = give_get_repeater_field_value( $field, $field_group, $fields );
 									$field['id']                  = str_replace( array( '[', ']' ), array(
 										'_',
 										'',
 									), $field['repeatable_field_id'] );
-									give_render_field( $field );
-								endforeach;
-								?>
+									?>
+									<?php give_render_field( $field ); ?>
+								<?php endforeach; ?>
 							</div>
 						</td>
 					</tr>
-				<?php endif; ?>
-			</tbody>
-			<tfoot>
-				<tr>
-					<?php
-					$add_row_btn_title = isset( $fields['options']['add_button'] )
-						? $add_row_btn_title = $fields['options']['add_button']
-						: esc_html__( 'Add Row', 'give' );
-					?>
-					<td colspan="2" class="give-add-repeater-field-section-row-wrap">
-						<span class="button button-primary give-add-repeater-field-section-row"><?php echo $add_row_btn_title; ?></span>
+				<?php endforeach;
+; ?>
+
+			<?php elseif ( $add_default_donation_field ) : ?>
+				<!--Default repeater field group-->
+				<tr class="give-row">
+					<td class="give-repeater-field-wrap give-column" colspan="2">
+						<div class="give-row-head give-move">
+							<button type="button" class="handlediv button-link">
+								<span class="toggle-indicator"></span></button>
+							<sapn class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-
+							</sapn>
+							<h2>
+								<span data-header-title="<?php echo $header_title; ?>"><?php echo $header_title; ?></span>
+							</h2>
+						</div>
+						<div class="give-row-body">
+							<?php
+							foreach ( $fields['fields'] as $field ) :
+								if ( ! give_is_field_callback_exist( $field ) ) {
+									continue;
+								}
+
+								$field['repeat']              = true;
+								$field['repeatable_field_id'] = give_get_repeater_field_id( $field, $fields, 0 );
+								$field['attributes']['value'] = apply_filters( "give_default_field_group_field_{$field['id']}_value", ( ! empty( $field['default'] ) ? $field['default'] : '' ), $field );
+								$field['id']                  = str_replace( array( '[', ']' ), array(
+									'_',
+									'',
+								), $field['repeatable_field_id'] );
+								give_render_field( $field );
+							endforeach;
+							?>
+						</div>
 					</td>
 				</tr>
+			<?php endif; ?>
+			</tbody>
+			<tfoot>
+			<tr>
+				<?php
+				$add_row_btn_title = isset( $fields['options']['add_button'] )
+					? $add_row_btn_title = $fields['options']['add_button']
+					: esc_html__( 'Add Row', 'give' );
+				?>
+				<td colspan="2" class="give-add-repeater-field-section-row-wrap">
+					<span class="button button-primary give-add-repeater-field-section-row"><?php echo $add_row_btn_title; ?></span>
+				</td>
+			</tr>
 			</tfoot>
 		</table>
 	</div>
@@ -1075,7 +1157,7 @@ function give_get_current_setting_section() {
 	// Get current section.
 	$current_section = empty( $_REQUEST['section'] ) ? $default_current_section : urldecode( $_REQUEST['section'] );
 
-	//Output.
+	// Output.
 	return $current_section;
 }
 
@@ -1089,14 +1171,15 @@ function give_get_current_setting_page() {
 	// Get current page.
 	$setting_page = ! empty( $_GET['page'] ) ? urldecode( $_GET['page'] ) : '';
 
-	//Output.
+	// Output.
 	return $setting_page;
 }
 
 /**
  * Set value for Form content --> Display content field setting.
  *
- * Backward compatibility:  set value by _give_content_option form meta field value if _give_display_content is not set yet.
+ * Backward compatibility:  set value by _give_content_option form meta field value if _give_display_content is not set
+ * yet.
  *
  * @since  1.8
  *
@@ -1126,7 +1209,8 @@ add_filter( '_give_display_content_field_value', '_give_display_content_field_va
 /**
  * Set value for Form content --> Content placement field setting.
  *
- * Backward compatibility:  set value by _give_content_option form meta field value if _give_content_placement is not set yet.
+ * Backward compatibility:  set value by _give_content_option form meta field value if _give_content_placement is not
+ * set yet.
  *
  * @since  1.8
  *
@@ -1181,7 +1265,8 @@ add_filter( '_give_terms_option_field_value', '_give_terms_option_field_value', 
 /**
  * Set value for Form Display --> Offline Donation --> Billing Fields.
  *
- * Backward compatibility:  set value by _give_offline_donation_enable_billing_fields_single form meta field value if it's value is on.
+ * Backward compatibility:  set value by _give_offline_donation_enable_billing_fields_single form meta field value if
+ * it's value is on.
  *
  * @since  1.8
  *
@@ -1258,7 +1343,8 @@ add_filter( '_give_goal_option_field_value', '_give_goal_option_field_value', 10
 /**
  * Set value for Donation Goal --> close Form.
  *
- * Backward compatibility:  set value by _give_close_form_when_goal_achieved form meta field value if it's value is yes or no.
+ * Backward compatibility:  set value by _give_close_form_when_goal_achieved form meta field value if it's value is yes
+ * or no.
  *
  * @since  1.8
  *
@@ -1309,7 +1395,8 @@ add_filter( '_give_logged_in_only_field_value', '_give_logged_in_only_value', 10
 /**
  * Set value for Offline Donations --> Offline Donations.
  *
- * Backward compatibility:  set value by _give_customize_offline_donations form meta field value if it's value is yes or no.
+ * Backward compatibility:  set value by _give_customize_offline_donations form meta field value if it's value is yes
+ * or no.
  *
  * @since  1.8
  *
@@ -1346,7 +1433,7 @@ add_filter( '_give_customize_offline_donations_field_value', '_give_customize_of
  */
 function _give_set_multi_level_repeater_field_id( $field_id, $field, $fields, $default ) {
 	$row_placeholder = false !== $default ? $default : '{{row-count-placeholder}}';
-	$field_id = "{$fields['id']}[{$row_placeholder}][{$field['id']}][level_id]";
+	$field_id        = "{$fields['id']}[{$row_placeholder}][{$field['id']}][level_id]";
 
 	return $field_id;
 }
@@ -1414,10 +1501,11 @@ add_filter( 'give_default_field_group_field__give_default_value', '_give_set_fie
  * @return string
  */
 function give_repeater_field_set_editor_id( $field_name, $field ) {
-	if ( isset( $field['repeatable_field_id'] ) &&  'wysiwyg' == $field['type'] ) {
+	if ( isset( $field['repeatable_field_id'] ) && 'wysiwyg' == $field['type'] ) {
 		$field_name = '_give_repeater_' . uniqid() . '_wysiwyg';
 	}
 
 	return $field_name;
 }
+
 add_filter( 'give_get_field_name', 'give_repeater_field_set_editor_id', 10, 2 );

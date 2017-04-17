@@ -25,7 +25,7 @@ $status       = $payment->post_status;
 $status_label = give_get_payment_status( $payment, true );
 
 // Show payment status notice based on shortcode attribute.
-if ( true === $give_receipt_args['status_notice'] ) {
+if ( filter_var( $give_receipt_args['status_notice'], FILTER_VALIDATE_BOOLEAN ) ) {
 	$notice_message = '';
 	$notice_type    = 'warning';
 
@@ -35,15 +35,15 @@ if ( true === $give_receipt_args['status_notice'] ) {
 			$notice_type    = 'success';
 			break;
 		case 'pending':
-			$notice_message = esc_html__( 'Payment Pending: Please contact the site owner for assistance.', 'give' );
+			$notice_message = esc_html__( 'Payment Pending: Your donation is currently processing..', 'give' );
 			$notice_type    = 'warning';
 			break;
 		case 'refunded':
-			$notice_message = esc_html__( 'Payment Refunded: Please contact the site owner for assistance.', 'give' );
+			$notice_message = esc_html__( 'Payment Refunded: Your donation has been refunded.', 'give' );
 			$notice_type    = 'warning';
 			break;
 		case 'preapproval':
-			$notice_message = esc_html__( 'Payment Preapproved: Please contact the site owner for assistance.', 'give' );
+			$notice_message = esc_html__( 'Payment Preapproved: Thank you for your donation.', 'give' );
 			$notice_type    = 'warning';
 			break;
 		case 'failed':
@@ -51,11 +51,11 @@ if ( true === $give_receipt_args['status_notice'] ) {
 			$notice_type    = 'error';
 			break;
 		case 'cancelled':
-			$notice_message = esc_html__( 'Payment Cancelled: Please contact the site owner for assistance.', 'give' );
+			$notice_message = esc_html__( 'Payment Cancelled: Your donation has been cancelled.', 'give' );
 			$notice_type    = 'error';
 			break;
 		case 'abandoned':
-			$notice_message = esc_html__( 'Payment Abandoned: Please contact the site owner for assistance.', 'give' );
+			$notice_message = esc_html__( 'Payment Abandoned: The this donation was not been completed.', 'give' );
 			$notice_type    = 'error';
 			break;
 		case 'revoked':

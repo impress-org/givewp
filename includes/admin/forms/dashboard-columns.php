@@ -95,7 +95,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 				break;
 			case 'donations':
 				if ( current_user_can( 'view_give_form_stats', $post_id ) ) {
-					echo '<a href="' . esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=logs&view=sales&form=' . $post_id ) ) . '">';
+					echo '<a href="' . esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-tools&tab=logs&form=' . $post_id ) ) . '">';
 					echo give_get_form_sales_stats( $post_id );
 					echo '</a>';
 				} else {

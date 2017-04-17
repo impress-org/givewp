@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 // Bailout: Do not output anything if setting tab is not defined.
-if( ! empty( $tabs ) ) :
+if( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs ) ) :
 	/**
 	 * Filter the form action.
 	 *
@@ -53,6 +53,10 @@ if( ! empty( $tabs ) ) :
 				do_action( self::$setting_filter_prefix . '_tabs' );
 				?>
 			</h2>
+			<div class="give-sub-nav-tab-wrapper">
+				<a href="#" id="give-show-sub-nav" class="nav-tab give-not-tab" title="<?php _e( 'View remaining setting tabs', 'give' ); ?>"><span class="dashicons dashicons-arrow-down-alt2"></span></span></a>
+				<nav class="give-sub-nav-tab give-hidden"></nav>
+			</div>
 			<h1 class="screen-reader-text"><?php echo esc_html( $tabs[ $current_tab ] ); ?></h1>
 			<?php
 
@@ -91,4 +95,5 @@ if( ! empty( $tabs ) ) :
 			<?php endif; ?>
 		<?php echo $form_close_tag; ?>
 	</div>
+	<?php else : echo '<div class="error"><p>' . __( 'Oops, this settings page does not exist.', 'give' ) . '</p></div>'; ?>
 <?php endif; ?>

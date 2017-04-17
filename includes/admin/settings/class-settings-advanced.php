@@ -54,13 +54,13 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 						),
 						array(
 							'name'    => esc_html__( 'Remove Data on Uninstall', 'give' ),
-							'desc'    => esc_html__( 'When the plugin is deleted, completely remove all Give data.', 'give' ),
+							'desc'    => esc_html__( 'When the plugin is deleted, completely remove all Give data. This includes all Give settings, forms, form meta, donor, donor data, donations. Everything.', 'give' ),
 							'id'      => 'uninstall_on_delete',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
 							'options' => array(
-								'enabled'  => __( 'Enabled', 'give' ),
-								'disabled' => __( 'Disabled', 'give' ),
+								'enabled'  => __( 'Yes, Remove all data', 'give' ),
+								'disabled' => __( 'No, keep my Give settings and donation data this time', 'give' ),
 							)
 						),
 						array(
@@ -77,20 +77,20 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							)
 						),
 						array(
-							'name'    => esc_html__( 'Load Scripts in Footer?', 'give' ),
-							'desc'    => esc_html__( 'Check this box if you would like Give to load all frontend JavaScript files in the footer.', 'give' ),
+							'name'    => esc_html__( 'Script Loading Location', 'give' ),
+							'desc'    => __( 'This allows you to load your Give scripts either in the <code>&lt;head&gt;</code> or footer of your website.', 'give' ),
 							'id'      => 'scripts_footer',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
 							'options' => array(
-								'enabled'  => __( 'Enabled', 'give' ),
-								'disabled' => __( 'Disabled', 'give' ),
+								'enabled'  => __( 'Footer', 'give' ),
+								'disabled' => __( 'Head', 'give' ),
 							)
 						),
                         array(
                             'name'  => esc_html__( 'Advanced Settings Docs Link', 'give' ),
                             'id'    => 'advanced_settings_docs_link',
-                            'url'   => esc_url( 'http://docs.givewp.com/advancedsettings' ),
+                            'url'   => esc_url( 'http://docs.givewp.com/settings-advanced' ),
                             'title' => __( 'Advanced Settings', 'give' ),
                             'type'  => 'give_docs_link',
                         ),

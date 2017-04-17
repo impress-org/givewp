@@ -15,6 +15,7 @@
 
 	.nav-tab-wrapper {
 		margin-bottom: 5px;
+		overflow: visible;
 	}
 
 	.cmb2-wrap .cmb-type-checkbox input[type="checkbox"] {
@@ -71,13 +72,9 @@
 	overflow: hidden;
 	margin: 30px 0;
 
-	h2 {
-		margin-top: 8px;
-	}
+	h2 {  margin-top: 8px;  }
 
-	p {
-		margin-bottom: 0;
-	}
+	p {  margin-bottom: 0;  }
 }
 
 .give-radio-inline {
@@ -93,6 +90,11 @@
 	li:first-child {
 		margin-left: 0;
 	}
+}
+
+// Tools page: fix ajax search user list hide bug
+.give-tools-setting-page .bulkactions {
+	overflow: visible;
 }
 
 //Ugly but necessary to override WP core styles.
@@ -424,7 +426,6 @@ a.give-delete {
 	.give-license-status-notice.give-license-expired a:hover {
 		text-decoration: none;
 	}
-
 }
 
 /* Responsive fixes: Addon grid design */
@@ -478,7 +479,7 @@ a.give-delete {
 		width: 1em;
 	}
 
-	.give-email-notification-settings-column-setting{
+	.give-email-notification-settings-column-setting {
 		width: 75px;
 	}
 
@@ -496,8 +497,110 @@ a.give-delete {
 		background: #bbbbbb;
 	}
 
-	.spinner.is-active{
+	.spinner.is-active {
 		margin: 0;
 		float: none;
 	}
+}
+
+// Setting page tab
+h2.give-nav-tab-wrapper {
+	overflow: hidden;
+	height: 35px;
+}
+
+@media screen and (max-width: 600px) {
+	.give-nav-tab-wrapper {
+		position: relative;
+		padding-top:0 !important;
+
+		> a {
+			width: 100%;
+			box-sizing: border-box;
+			margin:0;
+			&:hover {
+				border-bottom: 1px solid #ccc;
+			}
+		}
+
+		div.give-sub-nav-tab-wrapper {
+			position: absolute;
+			top:0;
+			right:0;
+
+			#give-show-sub-nav {
+				height: 28px;
+				width: 30px;
+				border-radius: 0;
+				margin:0;
+				> span.dashicons {
+					margin: 6px auto 0;
+					display: block;
+				}
+
+			}
+
+			nav.give-sub-nav-tab {
+				top:35px;
+			}
+		}
+
+	}
+}
+
+.give-sub-nav-tab-wrapper {
+	position: relative;
+	display: inline-block;
+	z-index: 9999;
+	float: left;
+
+	nav.give-sub-nav-tab {
+		border: 1px solid #ccc;
+		border-bottom: 0;
+		position: absolute;
+		top: 32px;
+		right: 0;
+
+		a {
+			float: left;
+			background: white;
+			padding: 6px 10px;
+			clear: both;
+			text-decoration: none;
+			border-bottom: 1px solid #ccc;
+			min-width: 170px;
+			color: #555;
+			font-size: 14px;
+		}
+
+		a:hover {
+			background: #e5e5e5;
+		}
+	}
+}
+
+// By default hide setting tab wrapper.
+.give-sub-nav-tab-wrapper{
+	display:none;
+}
+
+#give-show-sub-nav {
+	text-decoration: none;
+	padding: 3px 4px;
+	border-bottom: 1px solid #ccc;
+	line-height: 0;
+	background: white;
+	border-radius: 4px;
+    margin-top:5px;
+
+	> span.dashicons {
+      font-size:16px;
+      height:16px;
+      width:16px;
+	}
+}
+
+#give-show-sub-nav:hover, #give-show-sub-nav:active {
+	outline: none;
+	box-shadow: inset 0px 0px 4px #ddd;
 }

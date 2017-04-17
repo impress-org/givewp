@@ -25,7 +25,7 @@ $plugins      = give_get_plugins();
 	<p><?php _e( 'Please copy and paste this information in your ticket when contacting support:', 'give' ); ?> </p>
 	<p class="submit">
 		<a class="button-primary js-give-debug-report-button" href="#"><?php _e( 'Get System Report', 'give' ); ?></a>
-		<a class="button-secondary docs" href="https://givewp.com/documentation/core/settings/system-info/" target="_blank"><?php _e( 'Understanding the System Report', 'give' ); ?></a>
+		<a class="button-secondary docs" href="http://docs.givewp.com/settings-system-info" target="_blank"><?php _e( 'Understanding the System Report', 'give' ); ?></a>
 	</p>
 	<div class="give-debug-report js-give-debug-report">
 		<textarea readonly="readonly"></textarea>
@@ -181,7 +181,7 @@ $plugins      = give_get_plugins();
 					$php_version = phpversion();
 
 					if ( version_compare( $php_version, '5.6', '<' ) ) {
-						echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf( __( '%s - We recommend a minimum PHP version of 5.6. See: %s', 'give' ), esc_html( $php_version ), '<a href="https://givewp.com/documentation/core/settings/system-info/" target="_blank">' . __( 'PHP Requirements in Give', 'give' ) . '</a>' ) . '</mark>';
+						echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf( __( '%s - We recommend a minimum PHP version of 5.6. See: %s', 'give' ), esc_html( $php_version ), '<a href="http://docs.givewp.com/settings-system-info" target="_blank">' . __( 'PHP Requirements in Give', 'give' ) . '</a>' ) . '</mark>';
 					} else {
 						echo '<mark class="yes">' . esc_html( $php_version ) . '</mark>';
 					}

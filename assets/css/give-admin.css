@@ -667,7 +667,7 @@ x:-o-prefocus, .qtip .qtip-tip {
   font-weight: normal;
   font-style: normal; }
 
-.give-metabox-tabs li a:before {
+.give-metabox-tabs li .give-icon:before {
   font-family: 'give-icomoon';
   src: url("../assets/fonts/icomoon.eot?kdnr3d");
   src: url("../assets/fonts/icomoon.eot?kdnr3d#iefix") format("embedded-opentype"), url("../assets/fonts/icomoon.woff?kdnr3d") format("woff"), url("../assets/fonts/icomoon.svg?kdnr3d#icomoon") format("svg");
@@ -680,28 +680,31 @@ x:-o-prefocus, .qtip .qtip-tip {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 12px;
-  vertical-align: baseline;
-  margin: 0 5px 0 0;
+  vertical-align: top;
+  line-height: 20px;
+  margin: 0 5px 0 0; }
+
+.give-metabox-tabs li .give-icon-default:before {
   content: "\e903"; }
 
-.give-metabox-tabs li.form_field_options_tab > a:before {
+.give-metabox-tabs li .give-icon-heart:before {
   content: "\e604"; }
 
-.give-metabox-tabs li.donation_goal_options_tab > a:before {
+.give-metabox-tabs li .give-icon-target:before {
   content: "\e901"; }
 
-.give-metabox-tabs li.form_display_options_tab > a:before {
+.give-metabox-tabs li .give-icon-display:before {
   content: "\e90c"; }
 
-.give-metabox-tabs li.form_content_options_tab > a:before {
+.give-metabox-tabs li .give-icon-edit:before {
   content: "\e902"; }
 
-.give-metabox-tabs li.form_terms_options_tab > a:before {
+.give-metabox-tabs li .give-icon-checklist:before {
   position: relative;
   top: 1px;
   content: "\e900"; }
 
-.give-metabox-tabs li.offline_donations_options_tab > a:before {
+.give-metabox-tabs li .give-icon-purse:before {
   content: "\e8df"; }
 
 /**
@@ -891,9 +894,6 @@ input.give-text_medium {
     margin: 0;
     width: 100%; }
 
-/*-------------------------------------
-Content Options
--------------------------------------*/
 .cmb2-id--give-content-option,
 .cmb2-id--give-terms-option,
 .cmb2-id--give-offline-donation-enable-billing-fields-single,
@@ -939,11 +939,9 @@ ASIDE
 
 .cmb2-metabox-description {
   font-size: 13px;
-  line-height: 1.5; }
+  line-height: 1.5;
+  display: block; }
 
-/*-------------------------------------
-Tooltips
--------------------------------------*/
 .give-tooltip {
   margin: 0 3px;
   padding: 0;
@@ -1016,19 +1014,17 @@ Tooltips
     overflow-y: scroll; }
 
 #give-metabox-form-data .give_options_panel {
-  float: left;
-  width: 78%;
-  min-width: 175px; }
+  padding-left: 170px; }
   #give-metabox-form-data .give_options_panel .give-field-wrap {
     padding: 1em 20px 1em 162px !important;
     margin: 0;
     border-bottom: 1px solid #eee; }
     #give-metabox-form-data .give_options_panel .give-field-wrap > label, #give-metabox-form-data .give_options_panel .give-field-wrap > span.give-field-label {
       float: left;
-      width: 150px;
+      width: 135px;
       padding: 0;
-      margin: 0 0 0 -150px;
-      line-height: 24px;
+      margin: 2px 0 0 -150px;
+      line-height: 18px;
       font-size: 12px;
       font-weight: 400; }
     #give-metabox-form-data .give_options_panel .give-field-wrap .give-field-description {
@@ -1042,6 +1038,9 @@ Tooltips
       margin: 0; }
     #give-metabox-form-data .give_options_panel .give-field-wrap .mce-container iframe, #give-metabox-form-data .give_options_panel .give-field-wrap textarea {
       min-height: 250px !important; }
+    #give-metabox-form-data .give_options_panel .give-field-wrap .wp-editor-wrap {
+      display: inline-block;
+      width: 100%; }
   #give-metabox-form-data .give_options_panel .give-field-wrap:last-child {
     border-bottom: 0; }
   #give-metabox-form-data .give_options_panel textarea.give-field {
@@ -1052,9 +1051,7 @@ Tooltips
     border-bottom: 0; }
   #give-metabox-form-data .give_options_panel .give-inline-radio-fields li {
     display: inline-block;
-    margin-left: 15px; }
-  #give-metabox-form-data .give_options_panel .give-inline-radio-fields li:first-child {
-    margin-left: 0; }
+    margin-right: 15px; }
   #give-metabox-form-data .give_options_panel .give-repeatable-field-section {
     padding: 10px;
     background: #f5f5f5; }
@@ -1120,9 +1117,75 @@ Tooltips
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-row.ui-sortable-helper {
       border-bottom: 0; }
 
-/*-------------------------------------
-Export Form
--------------------------------------*/
+#give-metabox-form-data .give-metabox-tabs {
+  margin: 0;
+  min-width: 170px;
+  float: left;
+  line-height: 1em;
+  padding: 0 0 10px;
+  position: relative;
+  background-color: #fafafa;
+  border-right: 1px solid #eee;
+  box-sizing: border-box; }
+  #give-metabox-form-data .give-metabox-tabs:after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 9999em;
+    position: absolute;
+    bottom: -9999em;
+    left: 0;
+    background-color: #fafafa;
+    border-right: 1px solid #eee; }
+  #give-metabox-form-data .give-metabox-tabs li {
+    margin: 0;
+    padding: 0;
+    display: block;
+    position: relative; }
+    #give-metabox-form-data .give-metabox-tabs li a {
+      margin: 0;
+      padding: 10px;
+      display: block;
+      box-shadow: none;
+      text-decoration: none;
+      line-height: 20px !important;
+      border-bottom: 1px solid #eee;
+      overflow: hidden; }
+      #give-metabox-form-data .give-metabox-tabs li a span.give-label {
+        width: 122px;
+        display: inline-block; }
+  #give-metabox-form-data .give-metabox-tabs .give-metabox-sub-tabs li {
+    background-color: #f1f1f1; }
+    #give-metabox-form-data .give-metabox-tabs .give-metabox-sub-tabs li a {
+      border-bottom-color: #e5e5e5; }
+  #give-metabox-form-data .give-metabox-tabs li.active > a {
+    color: #555;
+    position: relative;
+    background-color: #eee; }
+  #give-metabox-form-data .give-metabox-tabs li.has-sub-fields.active > a {
+    background-color: #ddd; }
+  #give-metabox-form-data .give-metabox-tabs li.has-sub-fields:not(.active):hover ul.give-metabox-sub-tabs {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 170px;
+    width: 170px;
+    max-height: 250px;
+    overflow-y: scroll; }
+
+@media only screen and (min-width: 851px) and (max-width: 1025px), (max-width: 550px) {
+  #give-metabox-form-data ul.give-metabox-tabs {
+    min-width: 40px; }
+    #give-metabox-form-data ul.give-metabox-tabs li > a {
+      text-align: center; }
+      #give-metabox-form-data ul.give-metabox-tabs li > a:before {
+        margin-right: 0;
+        font-size: 15px; }
+      #give-metabox-form-data ul.give-metabox-tabs li > a span {
+        display: none; }
+  #give-metabox-form-data .give_options_panel {
+    padding-left: 40px; } }
+
 #give-export-payments .give_forms_categories,
 #give-export-payments .give_forms_tags {
   min-width: 250px;
@@ -1136,7 +1199,7 @@ Export Form
   margin-top: 10px; }
 
 /*-------------------------------------
-DOCS LINKS
+Doc Links
 -------------------------------------*/
 .give-docs-link {
   text-align: right;
@@ -1231,17 +1294,14 @@ DOCS LINKS
   /* counteract extra padding in Income Report graph */ }
   .give_forms_page_give-reports #give-dashboard-widgets-wrap .inside {
     padding-left: 0; }
+  #give-dashboard-widgets-wrap .inside #give-graphs-filter {
+    float: none; }
 
 #give-dashboard-widgets-wrap .postbox {
   margin-bottom: 10px; }
 
 #give-dashboard-widgets-wrap table.reports-table {
   clear: none; }
-
-#give-dashboard-widgets-wrap #give-graphs-filter .tablenav {
-  margin: 0 0 0 17px; }
-  #give-dashboard-widgets-wrap #give-graphs-filter .tablenav .actions {
-    padding: 0; }
 
 #give-dashboard-widgets-wrap #give-date-range-options {
   float: left; }
@@ -1250,6 +1310,13 @@ DOCS LINKS
     line-height: 30px;
     font-style: italic;
     padding: 0 5px 0 0; }
+
+#give-graphs-filter {
+  float: right; }
+  #give-graphs-filter .tablenav {
+    margin: 0 0 0 17px; }
+    #give-graphs-filter .tablenav .actions {
+      padding: 0; }
 
 .give-graph .y1Axis {
   color: #66bb6a !important; }
@@ -1556,7 +1623,8 @@ table.give-table td.row-title p {
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 .give-settings-page .nav-tab-wrapper {
-  margin-bottom: 5px; }
+  margin-bottom: 5px;
+  overflow: visible; }
 
 .give-settings-page .cmb2-wrap .cmb-type-checkbox input[type="checkbox"] {
   display: block;
@@ -1615,6 +1683,9 @@ table.give-table td.row-title p {
 
 .give-radio-inline li:first-child {
   margin-left: 0; }
+
+.give-tools-setting-page .bulkactions {
+  overflow: visible; }
 
 .form-table td.give-radio-inline fieldset li > label {
   margin: 5px 0 0 !important; }
@@ -1883,6 +1954,79 @@ a.give-delete {
 .give_emails_notification .spinner.is-active {
   margin: 0;
   float: none; }
+
+h2.give-nav-tab-wrapper {
+  overflow: hidden;
+  height: 35px; }
+
+@media screen and (max-width: 600px) {
+  .give-nav-tab-wrapper {
+    position: relative;
+    padding-top: 0 !important; }
+    .give-nav-tab-wrapper > a {
+      width: 100%;
+      box-sizing: border-box;
+      margin: 0; }
+      .give-nav-tab-wrapper > a:hover {
+        border-bottom: 1px solid #ccc; }
+    .give-nav-tab-wrapper div.give-sub-nav-tab-wrapper {
+      position: absolute;
+      top: 0;
+      right: 0; }
+      .give-nav-tab-wrapper div.give-sub-nav-tab-wrapper #give-show-sub-nav {
+        height: 28px;
+        width: 30px;
+        border-radius: 0;
+        margin: 0; }
+        .give-nav-tab-wrapper div.give-sub-nav-tab-wrapper #give-show-sub-nav > span.dashicons {
+          margin: 6px auto 0;
+          display: block; }
+      .give-nav-tab-wrapper div.give-sub-nav-tab-wrapper nav.give-sub-nav-tab {
+        top: 35px; } }
+
+.give-sub-nav-tab-wrapper {
+  position: relative;
+  display: inline-block;
+  z-index: 9999;
+  float: left; }
+  .give-sub-nav-tab-wrapper nav.give-sub-nav-tab {
+    border: 1px solid #ccc;
+    border-bottom: 0;
+    position: absolute;
+    top: 32px;
+    right: 0; }
+    .give-sub-nav-tab-wrapper nav.give-sub-nav-tab a {
+      float: left;
+      background: white;
+      padding: 6px 10px;
+      clear: both;
+      text-decoration: none;
+      border-bottom: 1px solid #ccc;
+      min-width: 170px;
+      color: #555;
+      font-size: 14px; }
+    .give-sub-nav-tab-wrapper nav.give-sub-nav-tab a:hover {
+      background: #e5e5e5; }
+
+.give-sub-nav-tab-wrapper {
+  display: none; }
+
+#give-show-sub-nav {
+  text-decoration: none;
+  padding: 3px 4px;
+  border-bottom: 1px solid #ccc;
+  line-height: 0;
+  background: white;
+  border-radius: 4px;
+  margin-top: 5px; }
+  #give-show-sub-nav > span.dashicons {
+    font-size: 16px;
+    height: 16px;
+    width: 16px; }
+
+#give-show-sub-nav:hover, #give-show-sub-nav:active {
+  outline: none;
+  box-shadow: inset 0px 0px 4px #ddd; }
 
 /**
  * Give Payment History SCSS

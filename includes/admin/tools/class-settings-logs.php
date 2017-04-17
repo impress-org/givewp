@@ -82,7 +82,7 @@ if ( ! class_exists( 'Give_Settings_Logs' ) ) :
 			$GLOBALS['give_hide_save_button'] = true;
 
 			// Get settings.
-			$settings = apply_filters( 'give_settings_system', array(
+			$settings = apply_filters( 'give_settings_logs', array(
 				array(
 					'id'         => 'give_tools_logs',
 					'type'       => 'title',

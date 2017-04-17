@@ -33,7 +33,7 @@ function give_reports_page() {
 	$active_tab   = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'earnings';
 	$views        = give_reports_default_views();
 	?>
-	<div class="wrap">
+	<div class="wrap give-settings-page">
 
 		<h1 class="screen-reader-text"><?php echo get_admin_page_title(); ?></h1>
 
@@ -446,7 +446,6 @@ function give_reports_tab_export() {
 												'placeholder'     => __( 'Choose one or more from categories', 'give' ),
 											)
 										);
-										$add_break = true;
 									}
 
 									if ( give_is_setting_enabled( give_get_option( 'tags' ) ) ) {
@@ -462,7 +461,6 @@ function give_reports_tab_export() {
 												'placeholder'     => __( 'Choose one or more from tags', 'give' ),
 											)
 										);
-										$add_break = true;
 									}
 
 									wp_nonce_field( 'give_ajax_export', 'give_ajax_export' );
@@ -528,7 +526,7 @@ function give_reports_tab_export() {
 									</div>
 									<?php wp_nonce_field( 'give_ajax_export', 'give_ajax_export' ); ?>
 									<input type="hidden" name="give-export-class" value="Give_Batch_Customers_Export"/>
-									<input type="hidden" name="give-action" value="email_export"/>
+									<input type="hidden" name="give_export_option[query_id]" value="<?php echo uniqid( 'give_' ); ?>"/>
 								</form>
 							</td>
 						</tr>
@@ -621,3 +619,5 @@ function give_estimated_monthly_stats() {
 
 	return maybe_unserialize( $estimated );
 }
+
+// @TODO: After release 1.8 Donations -> Reports generates with new setting api, so we can remove some old code from this file.

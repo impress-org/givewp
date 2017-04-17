@@ -1,21 +1,18 @@
 {
   "name": "wordimpress/give",
   "type": "wordpress-plugin",
-  "license": "GPL",
-  "description": "Give - Democratizing Generosity",
-  "homepage": "https://givewp.com",
-  "authors": [
-    {
-      "name": "Devin Walker",
-      "email": "devin@givewp.com",
-      "homepage": "https://givewp.com"
-    },
-    {
-      "name": "Matt Cromwell",
-      "email": "matt@givewp.com",
-      "homepage": "https://givewp.com"
-    }
-  ],
+  "license": "GPL-2.0+",
+  "description": "Give - a WordPress Donation Plugin and Fundraising Platform",
+  "homepage": "https://givewp.com/",
+  "require": {
+    "composer/installers": "~1.2"
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "*",
+    "wp-coding-standards/wpcs": "0.10.0",
+    "wimg/php-compatibility": "*",
+    "simplyadmire/composer-plugins" : "@dev"
+  },
   "keywords": [
     "wordpress",
     "plugin",
@@ -24,8 +21,12 @@
   "support": {
     "issues": "https://github.com/WordImpress/Give/issues"
   },
-  "require": {
-    "php": ">=5.3.0",
-    "composer/installers": "~1.0.6"
+  "scripts": {
+    "post-install-cmd": [
+      "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs"
+    ],
+    "post-update-cmd": [
+      "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs"
+    ]
   }
 }

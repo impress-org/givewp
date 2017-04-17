@@ -54,7 +54,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						),
 						array(
 							'name'    => esc_html__( 'Default Give Styles', 'give' ),
-							'desc'    => esc_html__( 'Give includes default styles for donation forms and other frontend elements.', 'give' ),
+							'desc'    => esc_html__( 'You can disable Give\'s default styles for donation forms and other frontend elements.', 'give' ),
 							'id'      => 'css',
 							'type'    => 'radio_inline',
 							'default' => 'enabled',
@@ -65,8 +65,8 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						),
 						array(
 							'name' => esc_html__( 'Floating Labels', 'give' ),
-							/* translators: %s: https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels */
-							'desc' => sprintf( wp_kses( __( '<a href="%s" target="_blank">Floating labels</a> in set form labels within fields and can improve the donor experience. Note that if the "Disable CSS" option is enabled, you will need to style the floating labels yourself.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( 'https://givewp.com/documentation/core/give-forms/creating-give-forms/#floating-labels' ) ),
+							/* translators: %s: http://docs.givewp.com/form-floating-labels */
+							'desc' => sprintf( wp_kses( __( '<a href="%s" target="_blank">Floating labels</a> allows your lables to be inset within the form fields to provide a cleaner form appearance. Note that if the "Disable CSS" option is enabled, you will need to style the floating labels yourself.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( 'http://docs.givewp.com/form-floating-labels' ) ),
 							'id'   => 'floatlabels',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
@@ -78,7 +78,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						array(
 							'name'    => esc_html__( 'Welcome Screen', 'give' ),
 							/* translators: %s: about page URL */
-							'desc'    => sprintf( wp_kses( __( 'Enable this option if you would like to disable the <a href="%s" target="_blank">Give Welcome screen</a> that display each time Give is activated or updated.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( admin_url( 'index.php?page=give-about' ) ) ),
+							'desc'    => sprintf( wp_kses( __( 'Enable this option if you would like to disable the <a href="%s" target="_blank">Give Welcome screen</a> that displays each time Give is activated or updated.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( admin_url( 'index.php?page=give-about' ) ) ),
 							'id'      => 'welcome',
 							'type'    => 'radio_inline',
 							'default' => 'enabled',
@@ -90,7 +90,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
                         array(
                             'name'  => esc_html__( 'Display Settings Docs Link', 'give' ),
                             'id'    => 'display_settings_docs_link',
-                            'url'   => esc_url( 'http://docs.givewp.com/displayoptions' ),
+                            'url'   => esc_url( 'http://docs.givewp.com/form-display-options' ),
                             'title' => __( 'Display Options Settings', 'give' ),
                             'type'  => 'give_docs_link',
                         ),
@@ -120,7 +120,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						),
 						array(
 							'name'    => esc_html__( 'Form Archives', 'give' ),
-							'desc'    => esc_html__( 'Archives pages list all the donation forms you have created. This option will disable only the form\'s archive page(s). The single form\'s view will remain in place. Note: you will need to refresh your permalinks after this option has been enabled.', 'give' ),
+							'desc'    => sprintf( wp_kses( __( 'Archives pages list all the donation forms you have created. This option will disable only the form\'s archive page(s). The single form\'s view will remain in place. Note: you will need to <a href="%s">refresh your permalinks</a> after this option has been enabled.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( admin_url( 'options-permalink.php' ) ) ),
 							'id'      => 'forms_archives',
 							'type'    => 'radio_inline',
 							'default' => 'enabled',
@@ -173,7 +173,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
                         array(
                             'name'  => esc_html__( 'Post Types Docs Link', 'give' ),
                             'id'    => 'post_types_settings_docs_link',
-                            'url'   => esc_url( 'http://docs.givewp.com/posttypessettings' ),
+                            'url'   => esc_url( 'http://docs.givewp.com/settings-post-types' ),
                             'title' => __( 'Post Types Settings', 'give' ),
                             'type'  => 'give_docs_link',
                         ),
@@ -192,7 +192,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						),
 						array(
 							'name' => esc_html__( 'Form Categories', 'give' ),
-							'desc' => esc_html__( 'Enable the "Category" taxonomy for all Give forms.', 'give' ),
+							'desc' => esc_html__( 'Enable Categories for all Give forms.', 'give' ),
 							'id'   => 'categories',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
@@ -203,7 +203,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						),
 						array(
 							'name' => esc_html__( 'Form Tags', 'give' ),
-							'desc' => esc_html__( 'Enable the "Tag" taxonomy for all Give forms.', 'give' ),
+							'desc' => esc_html__( 'Enable Tags for all Give forms.', 'give' ),
 							'id'   => 'tags',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
@@ -215,7 +215,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
                         array(
                             'name'  => esc_html__( 'Taxonomies Docs Link', 'give' ),
                             'id'    => 'taxonomies_settings_docs_link',
-                            'url'   => esc_url( 'http://docs.givewp.com/taxonomiessettings' ),
+                            'url'   => esc_url( 'http://docs.givewp.com/settings-taxonomies' ),
                             'title' => __( 'Taxonomies Settings', 'give' ),
                             'type'  => 'give_docs_link',
                         ),
@@ -234,7 +234,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						),
 						array(
 							'name'    => esc_html__( 'Terms and Conditions', 'give' ),
-							'desc'    => esc_html__( 'Would you like donors to have to agree to your terms when making a donation? Note: You can toggle this option and customize the terms per form.', 'give' ),
+							'desc'    => esc_html__( 'Would you like donors to require that donors agree to your terms when donating? Note: You can enable/disable this option and customize the terms per form as well.', 'give' ),
 							'id'      => 'terms',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
@@ -245,7 +245,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						),
 						array(
 							'name' => esc_html__( 'Agree to Terms Label', 'give' ),
-							'desc' => esc_html__( 'The label shown next to the agree to terms check box. Add your own to customize or leave blank to use the default text placeholder. Note: You can customize the label per form as needed.', 'give' ),
+							'desc' => esc_html__( 'The label shown next to the agree to terms check box. Customize it here or leave blank to use the default placeholder text. Note: You can customize the label per form.', 'give' ),
 							'id'   => 'agree_to_terms_label',
 							'attributes'  => array(
 								'placeholder' => esc_attr__( 'Agree to Terms?', 'give' ),
@@ -254,14 +254,14 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						),
 						array(
 							'name' => esc_html__( 'Agreement Text', 'give' ),
-							'desc' => esc_html__( 'This is the actual text which the user will have to agree to in order to make a donation. Note: You can customize the content per form as needed.', 'give' ),
+							'desc' => esc_html__( 'This is the actual text which the user will be asked to agree to in order to donate. Note: You can customize the content per form as needed.', 'give' ),
 							'id'   => 'agreement_text',
 							'type' => 'wysiwyg'
 						),
                         array(
                             'name'  => esc_html__( 'Terms and Conditions Docs Link', 'give' ),
                             'id'    => 'terms_settings_docs_link',
-                            'url'   => esc_url( 'http://docs.givewp.com/termssettings' ),
+                            'url'   => esc_url( 'http://docs.givewp.com/settings-terms' ),
                             'title' => __( 'Terms and Conditions Settings', 'give' ),
                             'type'  => 'give_docs_link',
                         ),
@@ -302,7 +302,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 				'display-settings'    => esc_html__( 'Display', 'give' ),
 				'post-types'          => esc_html__( 'Post Types', 'give' ),
 				'taxonomies'          => esc_html__( 'Taxonomies', 'give' ),
-				'term-and-conditions' => esc_html__( 'Term and Conditions', 'give' )
+				'term-and-conditions' => esc_html__( 'Terms and Conditions', 'give' )
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );

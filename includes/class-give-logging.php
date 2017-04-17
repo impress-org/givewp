@@ -48,10 +48,10 @@ class Give_Logging {
 		// Create types taxonomy and default types
 		add_action( 'init', array( $this, 'register_taxonomy' ), 1 );
 
-		add_action( 'save_post_give_payment', array( $this, 'background_process_delete_cache') );
-		add_action( 'save_post_give_forms', array( $this, 'background_process_delete_cache') );
-		add_action( 'save_post_give_log', array( $this, 'background_process_delete_cache') );
-		add_action( 'give_delete_log_cache', array( $this, 'delete_cache') );
+		add_action( 'save_post_give_payment', array( $this, 'background_process_delete_cache' ) );
+		add_action( 'save_post_give_forms', array( $this, 'background_process_delete_cache' ) );
+		add_action( 'save_post_give_log', array( $this, 'background_process_delete_cache' ) );
+		add_action( 'give_delete_log_cache', array( $this, 'delete_cache' ) );
 	}
 
 	/**
@@ -67,7 +67,9 @@ class Give_Logging {
 	public function register_post_type() {
 		/* Logs post type */
 		$log_args = array(
-			'labels'              => array( 'name' => esc_html__( 'Logs', 'give' ) ),
+			'labels'              => array(
+				'name' => esc_html__( 'Logs', 'give' ),
+			),
 			'public'              => false,
 			'exclude_from_search' => true,
 			'publicly_queryable'  => false,
@@ -93,7 +95,9 @@ class Give_Logging {
 	 * @return void
 	 */
 	public function register_taxonomy() {
-		register_taxonomy( 'give_log_type', 'give_log', array( 'public' => false ) );
+		register_taxonomy( 'give_log_type', 'give_log', array(
+			'public' => false,
+		) );
 	}
 
 	/**
@@ -358,12 +362,15 @@ class Give_Logging {
 	public function get_log_count( $object_id = 0, $type = null, $meta_query = null, $date_query = null ) {
 
 		$query_args = array(
-			'post_parent'    => $object_id,
 			'post_type'      => 'give_log',
 			'posts_per_page' => - 1,
 			'post_status'    => 'publish',
 			'fields'         => 'ids',
 		);
+
+		if ( $object_id ) {
+			$query_args['post_parent'] = $object_id;
+		}
 
 		if ( ! empty( $type ) && $this->valid_type( $type ) ) {
 			$query_args['tax_query'] = array(
@@ -383,13 +390,12 @@ class Give_Logging {
 			$query_args['date_query'] = $date_query;
 		}
 
-
 		// Get cache key for current query.
-		$cache_key =  give_get_cache_key( 'get_log_count', $query_args );
+		$cache_key = give_get_cache_key( 'get_log_count', $query_args );
 
 		// check if cache already exist or not.
-		if( ! ( $logs_count = get_option( $cache_key ) ) ) {
-			$logs = new WP_Query( $query_args );
+		if ( ! ( $logs_count = get_option( $cache_key ) ) ) {
+			$logs       = new WP_Query( $query_args );
 			$logs_count = (int) $logs->post_count;
 
 			// Cache results.
@@ -476,10 +482,9 @@ class Give_Logging {
 		);
 
 		// Bailout.
-		if( empty( $cache_option_names ) ) {
+		if ( empty( $cache_option_names ) ) {
 			return false;
 		}
-
 
 		// Delete log cache.
 		foreach ( $cache_option_names as $option_name ) {

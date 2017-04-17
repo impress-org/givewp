@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since       1.0
  * @return      false|null
  */
-function give_process_purchase_form() {
+function give_process_donation_form() {
 
 	/**
 	 * Fires before processing the donation form.
@@ -160,9 +160,9 @@ function give_process_purchase_form() {
 
 }
 
-add_action( 'give_purchase', 'give_process_purchase_form' );
-add_action( 'wp_ajax_give_process_checkout', 'give_process_purchase_form' );
-add_action( 'wp_ajax_nopriv_give_process_checkout', 'give_process_purchase_form' );
+add_action( 'give_purchase', 'give_process_donation_form' );
+add_action( 'wp_ajax_give_process_donation', 'give_process_donation_form' );
+add_action( 'wp_ajax_nopriv_give_process_donation', 'give_process_donation_form' );
 
 
 /**
@@ -234,8 +234,8 @@ function give_process_form_login() {
 	}
 }
 
-add_action( 'wp_ajax_give_process_checkout_login', 'give_process_form_login' );
-add_action( 'wp_ajax_nopriv_give_process_checkout_login', 'give_process_form_login' );
+add_action( 'wp_ajax_give_process_donation_login', 'give_process_form_login' );
+add_action( 'wp_ajax_nopriv_give_process_donation_login', 'give_process_form_login' );
 
 /**
  * Donation Form Validate Fields
@@ -273,6 +273,17 @@ function give_purchase_form_validate_fields() {
 	// Validate agree to terms
 	if ( give_is_terms_enabled( $form_id ) ) {
 		give_purchase_form_validate_agree_to_terms();
+	}
+
+	// Stop processing donor registration, if donor registration is optional and donor can do guest checkout.
+	// If registration form username field is empty that means donor do not want to registration instead want guest checkout.
+	if (
+		! give_logged_in_only( $form_id )
+		&& isset( $_POST['give-purchase-var'] )
+		&& $_POST['give-purchase-var'] == 'needs-to-register'
+		&& empty( $_POST['give_user_login'] )
+	) {
+		unset( $_POST['give-purchase-var'] );
 	}
 
 	if ( is_user_logged_in() ) {
@@ -556,7 +567,7 @@ function give_purchase_form_validate_new_user() {
 	);
 
 	// Get user data.
-	$user_data = wp_parse_args( array_map( 'trim', give_clean( $_POST ) ), $default_user_data );
+	$user_data            = wp_parse_args( array_map( 'trim', give_clean( $_POST ) ), $default_user_data );
 	$registering_new_user = false;
 	$form_id              = absint( $user_data['give-form-id'] );
 
@@ -580,18 +591,18 @@ function give_purchase_form_validate_new_user() {
 	}
 
 	// Check if we have an username to register.
-	if( give_validate_username( $user_data['give_user_login'] ) ) {
-		$registering_new_user = true;
+	if ( give_validate_username( $user_data['give_user_login'] ) ) {
+		$registering_new_user          = true;
 		$valid_user_data['user_login'] = $user_data['give_user_login'];
 	}
 
 	// Check if we have an email to verify.
-	if( give_validate_user_email( $user_data['give_email'], $registering_new_user ) ) {
+	if ( give_validate_user_email( $user_data['give_email'], $registering_new_user ) ) {
 		$valid_user_data['user_email'] = $user_data['give_email'];
 	}
 
 	// Check password.
-	if( give_validate_user_password( $user_data['give_user_pass'],  $user_data['give_user_pass_confirm'], $registering_new_user)){
+	if ( give_validate_user_password( $user_data['give_user_pass'], $user_data['give_user_pass_confirm'], $registering_new_user ) ) {
 		// All is good to go.
 		$valid_user_data['user_pass'] = $user_data['give_user_pass'];
 	}
@@ -1158,7 +1169,7 @@ function give_validate_multi_donation_form_level( $valid_data, $data ) {
 		// If yes then set price id to custom if amount is greater then custom minimum amount (if any).
 		if (
 			! $donation_level_matched
-			&& ( 'yes' === get_post_meta( $data['give-form-id'], '_give_custom_amount', true ) )
+			&& ( give_is_setting_enabled( get_post_meta( $data['give-form-id'], '_give_custom_amount', true ) ) )
 		) {
 			// Sanitize custom minimum amount.
 			$custom_minimum_amount = give_sanitize_amount( get_post_meta( $data['give-form-id'], '_give_custom_amount_minimum', true ), $default_decimals );

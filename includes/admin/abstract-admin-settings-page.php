@@ -73,7 +73,9 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 		 * Default setting tab.
 		 *
 		 * @since  1.8
+		 *
 		 * @param  $setting_tab
+		 *
 		 * @return string
 		 */
 		function set_default_setting_tab( $setting_tab ) {
@@ -84,7 +86,9 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 		 * Add this page to settings.
 		 *
 		 * @since  1.8
+		 *
 		 * @param  array $pages Lst of pages.
+		 *
 		 * @return array
 		 */
 		public function add_settings_page( $pages ) {
@@ -104,6 +108,7 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 			 * Filter the settings.
 			 *
 			 * @since  1.8
+			 *
 			 * @param  array $settings
 			 */
 			$settings = apply_filters( 'give_get_settings_' . $this->id, array() );
@@ -135,13 +140,20 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 			// Get all sections.
 			$sections = $this->get_sections();
 
+			// Show section settings only if setting section exist.
+			if ( $current_section && ! in_array( $current_section, array_keys( $sections ) ) ) {
+				echo '<div class="error"><p>' . __( 'Oops, this settings page does not exist.', 'give' ) . '</p></div>';
+				$GLOBALS['give_hide_save_button'] = true;
 
-			// Bailout.
-			if ( empty( $sections ) || 1 === sizeof( $sections ) ) {
 				return;
 			}
 
-			if( is_null( $this->current_setting_page ) ) {
+			// Bailout.
+			if ( empty( $sections ) ) {
+				return;
+			}
+
+			if ( is_null( $this->current_setting_page ) ) {
 				$this->current_setting_page = give_get_current_setting_page();
 			}
 
@@ -154,7 +166,7 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 				echo '<li><a href="' . admin_url( 'edit.php?post_type=give_forms&page=' . $this->current_setting_page . '&tab=' . $this->id . '&section=' . sanitize_title( $id ) ) . '" class="' . ( $current_section == $id ? 'current' : '' ) . '">' . $label . '</a> ' . ( end( $array_keys ) == $id ? '' : '|' ) . ' </li>';
 			}
 
-			echo '</ul><br class="clear" />';
+			echo '</ul><br class="clear" /><hr>';
 		}
 
 		/**
@@ -176,7 +188,7 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 		 * @return void
 		 */
 		public function save() {
-			$settings = $this->get_settings();
+			$settings        = $this->get_settings();
 			$current_section = give_get_current_setting_section();
 
 			Give_Admin_Settings::save_fields( $settings, 'give_settings' );

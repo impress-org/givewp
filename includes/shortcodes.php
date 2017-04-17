@@ -36,22 +36,32 @@ function give_donation_history() {
 
 	$email_access = give_get_option( 'email_access' );
 
-	//Is user logged in? Does a session exist? Does an email-access token exist?
-	if ( is_user_logged_in() || Give()->session->get_session_expiration() !== false || ( $email_access == 'on' && Give()->email_access->token_exists ) ) {
+	/**
+	 * Determine access
+	 *
+	 * a. Check if a user is logged in or does a session exist?
+	 * b. Does an email-access token exist?
+	 */
+	if (
+		is_user_logged_in() || false !== Give()->session->get_session_expiration()
+		|| ( give_is_setting_enabled( $email_access ) && Give()->email_access->token_exists )
+	) {
 		ob_start();
 		give_get_template_part( 'history', 'donations' );
 
 		return ob_get_clean();
-	} //Is Email-based access enabled?
-	elseif ( $email_access == 'on' ) {
 
+	} elseif ( give_is_setting_enabled( $email_access ) ) {
+		//Is Email-based access enabled?
 		ob_start();
 		give_get_template_part( 'email', 'login-form' );
 
 		return ob_get_clean();
 	} else {
-		$message = esc_html__( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' );
-		echo apply_filters( 'give_donation_history_nonuser_message', give_output_error( $message, false ), $message );
+
+		echo apply_filters( 'give_donation_history_nonuser_message', give_output_error( __( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' ), false ) );
+		echo do_shortcode( '[give_login]' );
+		
 	}
 }
 
@@ -70,17 +80,18 @@ add_shortcode( 'donation_history', 'give_donation_history' );
  */
 function give_form_shortcode( $atts ) {
 	$atts = shortcode_atts( array(
-		'id'            => '',
-		'show_title'    => true,
-		'show_goal'     => true,
-		'show_content'  => '',
-		'float_labels'  => '',
-		'display_style' => '',
+		'id'                    => '',
+		'show_title'            => true,
+		'show_goal'             => true,
+		'show_content'          => '',
+		'float_labels'          => '',
+		'display_style'         => '',
+		'continue_button_title' => '',
 	), $atts, 'give_form' );
 
 	// Convert string to bool.
-	$atts['show_title'] = (bool) $atts['show_title'];
-	$atts['show_goal']  = (bool) $atts['show_goal'];
+	$atts['show_title'] = filter_var( $atts['show_title'], FILTER_VALIDATE_BOOLEAN );
+	$atts['show_goal']  = filter_var( $atts['show_goal'], FILTER_VALIDATE_BOOLEAN );
 
 	//get the Give Form
 	ob_start();
@@ -232,7 +243,7 @@ function give_receipt_shortcode( $atts ) {
 	$email_access = give_get_option( 'email_access' );
 
 	// No payment_key found & Email Access is Turned on:
-	if ( ! isset( $payment_key ) && $email_access == 'on' && ! Give()->email_access->token_exists ) {
+	if ( ! isset( $payment_key ) && give_is_setting_enabled( $email_access ) && ! Give()->email_access->token_exists ) {
 
 		ob_start();
 
@@ -250,7 +261,7 @@ function give_receipt_shortcode( $atts ) {
 	$user_can_view = give_can_view_receipt( $payment_key );
 
 	// Key was provided, but user is logged out. Offer them the ability to login and view the receipt.
-	if ( ! $user_can_view && $email_access == 'on' && ! Give()->email_access->token_exists ) {
+	if ( ! $user_can_view && give_is_setting_enabled( $email_access ) && ! Give()->email_access->token_exists ) {
 
 		ob_start();
 

@@ -40,6 +40,22 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 	private $data = array();
 
 	/**
+	 * Array of donor ids which is already included in csv file.
+	 *
+	 * @since 1.8
+	 * @var array
+	 */
+	private $donor_ids = array();
+
+	/**
+	 * Export query id.
+	 *
+	 * @since 1.8
+	 * @var array
+	 */
+	private $query_id = '';
+
+	/**
 	 * Set the properties specific to the Customers export
 	 *
 	 * @since 1.5
@@ -55,7 +71,17 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 
 		$this->form = $this->data['forms'];
 
-		$this->price_id = ! empty( $request['give_price_option'] ) && 0 !== $request['give_price_option'] ? absint( $request['give_price_option'] ) : null;
+		// Setup donor ids cache.
+		if( ! empty( $this->form ) ) {
+			// Cache donor ids to output unique list of donor.
+			$this->query_id = give_clean( $_REQUEST['give_export_option']['query_id'] );
+			if( ! ( $this->donor_ids = get_transient( $this->query_id ) ) ) {
+				$this->donor_ids = array();
+				set_transient( $this->query_id, $this->donor_ids, HOUR_IN_SECONDS );
+			}
+		}
+
+		$this->price_id = ! empty( $request['give_price_option'] ) && 'all' !== $request['give_price_option'] ? absint( $request['give_price_option'] ) : null;
 
 	}
 
@@ -67,8 +93,6 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 	 * @return array|bool $cols All the columns.
 	 */
 	public function csv_cols() {
-
-		$cols = array();
 
 		$columns = isset( $this->data['give_export_option'] ) ? $this->data['give_export_option'] : array();
 
@@ -83,7 +107,11 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 	}
 
 	/**
-	 * @param $column
+	 * CSV file columns.
+	 *
+	 * @param array $columns
+	 *
+	 * @return array
 	 */
 	private function get_cols( $columns ) {
 
@@ -167,14 +195,25 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 				foreach ( $logs as $log ) {
 					$payment_id = get_post_meta( $log->ID, '_give_log_payment_id', true );
 					$payment    = new Give_Payment( $payment_id );
+
+					// Continue if donor already included.
+					if( in_array( $payment->customer_id , $this->donor_ids ) ) {
+						continue;
+					}
+
+					$this->donor_ids[] = $payment->customer_id;
+
 					$donor      = Give()->customers->get_customer_by( 'id', $payment->customer_id );
 					$data[]     = $this->set_donor_data( $i, $data, $donor );
 					$i ++;
 				}
+
+				// Cache donor ids only if admin export donor for specific form.
+				set_transient( $this->query_id, array_unique( $this->donor_ids ), HOUR_IN_SECONDS );
 			}
 		} else {
 
-			// Export all customers
+			// Export all donors.
 			$offset = 30 * ( $this->step - 1 );
 			$donors = Give()->customers->get_customers( array( 'number' => 30, 'offset' => $offset ) );
 
@@ -184,6 +223,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 				$i ++;
 			}
 		}
+
 
 		$data = apply_filters( 'give_export_get_data', $data );
 		$data = apply_filters( "give_export_get_data_{$this->export_type}", $data );

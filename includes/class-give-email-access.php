@@ -111,24 +111,32 @@ class Give_Email_Access {
 	 */
 	public function init() {
 
-		$is_enabled = give_get_option( 'email_access' );
-
-		//Non-logged in users only
-		if ( is_user_logged_in() || $is_enabled !== 'on' || is_admin() ) {
+		/**
+		 * Do NOT pass go if:
+		 *
+		 * a. User is logged in
+		 * b. Email access setting is not enabled
+		 * c. You're in the admin
+		 */
+		if (
+			is_user_logged_in()
+			|| ! give_is_setting_enabled( give_get_option( 'email_access' ) )
+			|| is_admin()
+		) {
 			return;
 		}
 
-		//Are db columns setup?
+		// Are db columns setup?
 		$is_setup = give_get_option( 'email_access_installed' );
 		if ( empty( $is_setup ) ) {
 			$this->create_columns();
 		}
 
-		// Timeouts
+		// Timeouts.
 		$this->verify_throttle  = apply_filters( 'give_nl_verify_throttle', 300 );
 		$this->token_expiration = apply_filters( 'give_nl_token_expiration', 7200 );
 
-		// Setup login
+		// Setup login.
 		$this->check_for_token();
 
 		if ( $this->token_exists ) {
@@ -136,6 +144,7 @@ class Give_Email_Access {
 			add_filter( 'give_user_pending_verification', '__return_false' );
 			add_filter( 'give_get_users_donations_args', array( $this, 'users_donations_args' ) );
 		}
+
 	}
 
 	/**
@@ -144,7 +153,7 @@ class Give_Email_Access {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  $customer_id Customer id.
+	 * @param  $customer_id string Customer id.
 	 *
 	 * @return bool
 	 */
@@ -166,7 +175,7 @@ class Give_Email_Access {
 			);
 
 			if ( $row_id < 1 ) {
-				give_set_error( 'give_email_access_attempts_exhausted', esc_html__( 'Please wait a few minutes before requesting a new email access link.', 'give' ) );
+				give_set_error( 'give_email_access_attempts_exhausted', __( 'Please wait a few minutes before requesting a new email access link.', 'give' ) );
 
 				return false;
 			}
@@ -181,8 +190,8 @@ class Give_Email_Access {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  $customer_id Customer id.
-	 * @param  $email       Customer email.
+	 * @param  $customer_id string Customer id.
+	 * @param  $email       string Customer email.
 	 *
 	 * @return void
 	 */
@@ -200,19 +209,19 @@ class Give_Email_Access {
 			'give_nl' => $verify_key,
 		), get_permalink( $page_id ) );
 
-		//Nice subject and message
-		$subject = apply_filters( 'give_email_access_token_subject', sprintf( esc_html__( 'Your Access Link to %s', 'give' ), get_bloginfo( 'name' ) ) );
+		// Nice subject and message.
+		$subject = apply_filters( 'give_email_access_token_subject', sprintf( __( 'Your Access Link to %s', 'give' ), get_bloginfo( 'name' ) ) );
 
-		$message = esc_html__( 'You or someone in your organization requested an access link be sent to this email address. This is a temporary access link for you to view your donation information. Click on the link below to view:', 'give' ) . "\n\n";
-		$message .= '<a href="' . esc_url( $access_url ) . '" target="_blank">' . esc_html__( 'Access My Donation Details &raquo;', 'give' ) . '</a>' . "\n\n";
+		$message = __( 'You or someone in your organization requested an access link be sent to this email address. This is a temporary access link for you to view your donation information. Click on the link below to view:', 'give' ) . "\n\n";
+		$message .= '<a href="' . esc_url( $access_url ) . '" target="_blank">' . __( 'Access Donation Details &raquo;', 'give' ) . '</a>' . "\n\n";
 		$message .= "\n\n";
-		$message .= esc_html__( 'Sincerely,', 'give' ) . "\n";
+		$message .= __( 'Sincerely,', 'give' ) . "\n";
 		$message .= get_bloginfo( 'name' ) . "\n";
 
 		$message = apply_filters( 'give_email_access_token_message', $message );
 
-		// Send the email
-		Give()->emails->__set( 'heading', apply_filters( 'give_email_access_token_heading', esc_html__( 'Your Access Link', 'give' ) ) );
+		// Send the email.
+		Give()->emails->__set( 'heading', apply_filters( 'give_email_access_token_heading', __( 'Your Access Link', 'give' ) ) );
 		Give()->emails->send( $email, $subject, $message );
 
 	}
@@ -223,18 +232,20 @@ class Give_Email_Access {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @return void
+	 * @return bool
 	 */
 	public function check_for_token() {
 
 		$token = isset( $_GET['give_nl'] ) ? $_GET['give_nl'] : '';
 
-		// Check for cookie
+		// Check for cookie.
 		if ( empty( $token ) ) {
 			$token = isset( $_COOKIE['give_nl'] ) ? $_COOKIE['give_nl'] : '';
 		}
 
+		// Must have a token.
 		if ( ! empty( $token ) ) {
+
 			if ( ! $this->is_valid_token( $token ) ) {
 				if ( ! $this->is_valid_verify_key( $token ) ) {
 					return;
@@ -242,9 +253,11 @@ class Give_Email_Access {
 			}
 
 			$this->token_exists = true;
-			// Set cookie
+			// Set cookie.
 			$lifetime = current_time( 'timestamp' ) + Give()->session->set_expiration_time();
 			@setcookie( 'give_nl', $token, $lifetime, COOKIEPATH, COOKIE_DOMAIN, false );
+
+			return true;
 		}
 	}
 
@@ -254,7 +267,7 @@ class Give_Email_Access {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  $token The token.
+	 * @param  $token string The token.
 	 *
 	 * @return bool
 	 */
@@ -262,7 +275,7 @@ class Give_Email_Access {
 
 		global $wpdb;
 
-		// Make sure token isn't expired
+		// Make sure token isn't expired.
 		$expires = date( 'Y-m-d H:i:s', time() - $this->token_expiration );
 
 		$email = $wpdb->get_var(
@@ -272,13 +285,12 @@ class Give_Email_Access {
 		if ( ! empty( $email ) ) {
 			$this->token_email = $email;
 			$this->token       = $token;
-
 			return true;
 		}
 
-		//Set error only if email access form isn't being submitted
+		// Set error only if email access form isn't being submitted
 		if ( ! isset( $_POST['give_email'] ) && ! isset( $_POST['_wpnonce'] ) ) {
-			give_set_error( 'give_email_token_expired', apply_filters( 'give_email_token_expired_message', esc_html__( 'Your access token has expired. Please request a new one below:', 'give' ) ) );
+			give_set_error( 'give_email_token_expired', apply_filters( 'give_email_token_expired_message', __( 'Your access token has expired. Please request a new one below:', 'give' ) ) );
 		}
 
 		return false;
@@ -291,9 +303,9 @@ class Give_Email_Access {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  $customer_id Customer id.
-	 * @param  $email       Customer email.
-	 * @param  $verify_key  The verification key.
+	 * @param  $customer_id string Customer id.
+	 * @param  $email       string Customer email.
+	 * @param  $verify_key  string The verification key.
 	 *
 	 * @return void
 	 */
@@ -307,12 +319,12 @@ class Give_Email_Access {
 			$wpdb->prepare( "SELECT id FROM {$wpdb->prefix}give_customers WHERE id = %d LIMIT 1", $customer_id )
 		);
 
-		// Update
+		// Update.
 		if ( ! empty( $row_id ) ) {
 			$wpdb->query(
 				$wpdb->prepare( "UPDATE {$wpdb->prefix}give_customers SET verify_key = %s, verify_throttle = %s WHERE id = %d LIMIT 1", $verify_key, $now, $row_id )
 			);
-		} // Insert
+		} // Insert.
 		else {
 			$wpdb->query(
 				$wpdb->prepare( "INSERT INTO {$wpdb->prefix}give_customers ( verify_key, verify_throttle) VALUES (%s, %s)", $verify_key, $now )
@@ -326,7 +338,7 @@ class Give_Email_Access {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  $token The token.
+	 * @param  $token string The token.
 	 *
 	 * @return bool
 	 */
@@ -334,14 +346,14 @@ class Give_Email_Access {
 		/* @var WPDB $wpdb */
 		global $wpdb;
 
-		// See if the verify_key exists
+		// See if the verify_key exists.
 		$row = $wpdb->get_row(
 			$wpdb->prepare( "SELECT id, email FROM {$wpdb->prefix}give_customers WHERE verify_key = %s LIMIT 1", $token )
 		);
 
 		$now = date( 'Y-m-d H:i:s' );
 
-		// Set token
+		// Set token and remove verify key.
 		if ( ! empty( $row ) ) {
 			$wpdb->query(
 				$wpdb->prepare( "UPDATE {$wpdb->prefix}give_customers SET verify_key = '', token = %s, verify_throttle = %s WHERE id = %d LIMIT 1", $token, $now, $row->id )
@@ -364,7 +376,7 @@ class Give_Email_Access {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  $args User Donations arguments.
+	 * @param  $args array User Donations arguments.
 	 *
 	 * @return mixed
 	 */
@@ -388,10 +400,10 @@ class Give_Email_Access {
 
 		global $wpdb;
 
-		//Create columns in customers table
+		// Create columns in customers table
 		$query = $wpdb->query( "ALTER TABLE {$wpdb->prefix}give_customers ADD `token` VARCHAR(255) CHARACTER SET utf8 NOT NULL, ADD `verify_key` VARCHAR(255) CHARACTER SET utf8 NOT NULL AFTER `token`, ADD `verify_throttle` DATETIME NOT NULL AFTER `verify_key`" );
 
-		//Columns added properly
+		// Columns added properly
 		if ( $query ) {
 			give_update_option( 'email_access_installed', 1 );
 		}

@@ -64,7 +64,7 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 			array(
 				'type'    => 'listbox',
 				'name'    => 'show_title',
-				'label'   => esc_attr__( 'Show Title:', 'give' ),
+				'label'   => esc_attr__( 'Show Title', 'give' ),
 				'tooltip' => esc_attr__( 'Do you want to display the form title?', 'give' ),
 				'options' => array(
 					'true'  => esc_html__( 'Show', 'give' ),
@@ -74,7 +74,7 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 			array(
 				'type'    => 'listbox',
 				'name'    => 'show_goal',
-				'label'   => esc_attr__( 'Show Goal:', 'give' ),
+				'label'   => esc_attr__( 'Show Goal', 'give' ),
 				'tooltip' => esc_attr__( 'Do you want to display the donation goal?', 'give' ),
 				'options' => array(
 					'true'  => esc_html__( 'Show', 'give' ),
@@ -85,7 +85,7 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 				'type'     => 'listbox',
 				'name'     => 'show_content',
 				'minWidth' => 240,
-				'label'    => esc_attr__( 'Display Content:', 'give' ),
+				'label'    => esc_attr__( 'Display Content', 'give' ),
 				'tooltip'  => esc_attr__( 'Do you want to display the form content?', 'give' ),
 				'options'  => array(
 					'none'  => esc_html__( 'No Content', 'give' ),
@@ -96,7 +96,8 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 			array(
 				'type'    => 'listbox',
 				'name'    => 'display_style',
-				'label'   => esc_attr__( 'Donation Options:', 'give' ),
+				'classes' => 'give-display-style',
+				'label'   => esc_attr__( 'Display Options', 'give' ),
 				'tooltip' => esc_attr__( 'How would you like to display donation information?', 'give' ),
 				'options' => array(
 					'onpage' => esc_html__( 'All Fields', 'give' ),
@@ -105,8 +106,15 @@ class Give_Shortcode_Donation_Form extends Give_Shortcode_Generator {
 					'button' => esc_html__( 'Button', 'give' ),
 				),
 			),
+			array(
+				'type'    => 'textbox',
+				'classes' => 'give-hidden give-continue-button-title',
+				'name'    => 'continue_button_title',
+				'label'   => esc_attr__( 'Button Text', 'give' ),
+				'tooltip' => esc_attr__( 'The button label for displaying the additional payment fields.', 'give' ),
+			),
 		);
 	}
 }
 
-new Give_Shortcode_Donation_Form;
+new Give_Shortcode_Donation_Form();

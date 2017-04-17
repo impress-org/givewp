@@ -75,7 +75,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 						array(
 							'id'      => 'email_template',
 							'name'    => esc_html__( 'Email Template', 'give' ),
-							'desc'    => esc_html__( 'Choose a template. Click "Save Changes" then "Preview Donation Receipt" to see the new template.', 'give' ),
+							'desc'    => esc_html__( 'Choose your template from the available registered template types.', 'give' ),
 							'type'    => 'select',
 							'options' => give_get_email_templates(),
 						),
@@ -88,26 +88,26 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 						array(
 							'id'      => 'from_name',
 							'name'    => esc_html__( 'From Name', 'give' ),
-							'desc'    => esc_html__( 'The name which appears in the "From" field in donation receipt emails.', 'give' ),
+							'desc'    => esc_html__( 'The name which appears in the "From" field in all Give donation emails.', 'give' ),
 							'default' => get_bloginfo( 'name' ),
 							'type'    => 'text',
 						),
 						array(
 							'id'      => 'from_email',
 							'name'    => esc_html__( 'From Email', 'give' ),
-							'desc'    => esc_html__( 'Email to send donation receipts from. This will act as the "from" and "reply-to" address.', 'give' ),
+							'desc'    => esc_html__( 'Email address from which all Give emails are sent from. This will act as the "from" and "reply-to" email address.', 'give' ),
 							'default' => get_bloginfo( 'admin_email' ),
 							'type'    => 'text',
 						),
 						array(
-							'name'  => esc_html__( 'Email Settings Docs Link', 'give' ),
-							'id'    => 'email_settings_docs_link',
-							'url'   => esc_url( 'http://docs.givewp.com/emailsettings' ),
-							'title' => __( 'Email Settings', 'give' ),
+							'name'  => esc_html__( 'Donation Notification Settings Docs Link', 'give' ),
+							'id'    => 'donation_notification_settings_docs_link',
+							'url'   => esc_url( 'http://docs.givewp.com/settings-donation-notification' ),
+							'title' => __( 'Donation Notification Settings', 'give' ),
 							'type'  => 'give_docs_link',
 						),
 						array(
-							'id'   => 'give_title_email_settings_1',
+							'id'   => 'give_title_email_settings_3',
 							'type' => 'sectionend',
 						),
 					);

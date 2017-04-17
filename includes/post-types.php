@@ -355,7 +355,7 @@ add_action( 'init', 'give_register_post_type_statuses' );
 function give_updated_messages( $messages ) {
 	global $post, $post_ID;
 
-	if ( give_get_option( 'disable_forms_singular' ) === 'on' ) {
+	if ( give_is_setting_enabled( give_get_option( 'forms_singular' ) ) ) {
 
 		$messages['give_forms'] = array(
 			1 => esc_html__( 'Form updated.', 'give' ),

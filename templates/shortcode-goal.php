@@ -9,8 +9,8 @@ $goal        = $form->goal;
 $goal_format = get_post_meta( $form_id, '_give_goal_format', true );
 $income      = $form->get_earnings();
 $color       = get_post_meta( $form_id, '_give_goal_color', true );
-$show_text   = (bool) isset( $args['show_text'] ) ? filter_var( $args['show_text'], FILTER_VALIDATE_BOOLEAN ) : true;
-$show_bar    = (bool) isset( $args['show_bar'] ) ? filter_var( $args['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
+$show_text   = isset( $args['show_text'] ) ? filter_var( $args['show_text'], FILTER_VALIDATE_BOOLEAN ) : true;
+$show_bar    = isset( $args['show_bar'] ) ? filter_var( $args['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
 
 //Sanity check - respect shortcode args
 if ( isset( $args['show_goal'] ) && $args['show_goal'] === false ) {

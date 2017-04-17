@@ -27,7 +27,7 @@ function give_load_scripts() {
 
 	$js_dir         = GIVE_PLUGIN_URL . 'assets/js/frontend/';
 	$js_plugins     = GIVE_PLUGIN_URL . 'assets/js/plugins/';
-	$scripts_footer = ( give_get_option( 'scripts_footer' ) == 'on' ) ? true : false;
+	$scripts_footer = ( give_is_setting_enabled( give_get_option( 'scripts_footer' ) ) ) ? true : false;
 
 	// Use minified libraries if SCRIPT_DEBUG is turned off.
 	$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
@@ -250,11 +250,13 @@ function give_load_admin_scripts( $hook ) {
 	// CSS.
 	wp_register_style( 'jquery-ui-css', $css_dir . 'jquery-ui-fresh' . $suffix . '.css' );
 	wp_enqueue_style( 'jquery-ui-css' );
-	wp_register_style( 'give-admin', $css_dir . 'give-admin' . $direction . $suffix . '.css', GIVE_VERSION );
+	wp_register_style( 'give-admin', $css_dir . 'give-admin' . $direction . $suffix . '.css', array(), GIVE_VERSION );
 	wp_enqueue_style( 'give-admin' );
 	wp_register_style( 'jquery-chosen', $css_dir . 'chosen' . $suffix . '.css', array(), GIVE_VERSION );
 	wp_enqueue_style( 'jquery-chosen' );
 	wp_enqueue_style( 'thickbox' );
+	wp_enqueue_style( 'wp-color-picker' );
+
 
 	// JS.
 	wp_register_script( 'jquery-chosen', $js_plugins . 'chosen.jquery' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
@@ -263,7 +265,11 @@ function give_load_admin_scripts( $hook ) {
 	wp_register_script( 'give-accounting', $js_plugins . 'accounting' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
 	wp_enqueue_script( 'give-accounting' );
 
-	wp_register_script( 'give-admin-scripts', $js_dir . 'admin-scripts' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
+	wp_enqueue_script( 'wp-color-picker' );
+	wp_enqueue_script( 'jquery-ui-datepicker' );
+	wp_enqueue_script( 'thickbox' );
+
+	wp_register_script( 'give-admin-scripts', $js_dir . 'admin-scripts' . $suffix . '.js', array( 'jquery', 'jquery-ui-datepicker', 'wp-color-picker' ), GIVE_VERSION, false );
 	wp_enqueue_script( 'give-admin-scripts' );
 
 	wp_register_script( 'jquery-flot', $js_plugins . 'jquery.flot' . $suffix . '.js' );
@@ -274,9 +280,6 @@ function give_load_admin_scripts( $hook ) {
 
 	wp_register_script( 'give-repeatable-fields', $js_plugins . 'repeatable-fields' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
 	wp_enqueue_script( 'give-repeatable-fields' );
-
-	wp_enqueue_script( 'jquery-ui-datepicker' );
-	wp_enqueue_script( 'thickbox' );
 
 	// Forms CPT Script.
 	if ( $post_type === 'give_forms' ) {
@@ -333,6 +336,11 @@ function give_load_admin_scripts( $hook ) {
 				'resend_receipts'         => __( 'Are you sure you want to resend the emails receipt to {payment_count} recipients?', 'give' ),
 			),
 		),
+		'metabox_fields' => array(
+			'media' => array(
+				'button_title' => esc_html__( 'Choose Attachment', 'give' ),
+			)
+		)
 	) );
 
 	if ( function_exists( 'wp_enqueue_media' ) && version_compare( get_bloginfo( 'version' ), '3.5', '>=' ) ) {
@@ -360,10 +368,10 @@ function give_admin_icon() {
         <?php if ( version_compare( get_bloginfo( 'version' ), '3.8-RC', '>=' ) || version_compare( get_bloginfo( 'version' ), '3.8', '>=' ) ) { ?>
         @font-face {
             font-family: 'give-icomoon';
-            src: url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.eot?-ngjl88'; ?>');
-            src: url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.eot?#iefix-ngjl88'?>') format('embedded-opentype'),
-            url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.woff?-ngjl88'; ?>') format('woff'),
-            url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.svg?-ngjl88#icomoon'; ?>') format('svg');
+            src: url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.eot?ngjl88'; ?>');
+            src: url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.eot?#iefixngjl88'?>') format('embedded-opentype'),
+            url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.woff?ngjl88'; ?>') format('woff'),
+            url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.svg?ngjl88#icomoon'; ?>') format('svg');
             font-weight: normal;
             font-style: normal;
         }

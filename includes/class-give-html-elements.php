@@ -127,23 +127,11 @@ class Give_HTML_Elements {
 		if ( $forms ) {
 			$options[0] = esc_attr__( 'Select a Donation Form', 'give' );
 			foreach ( $forms as $form ) {
-				$options[ absint( $form->ID ) ] = esc_html( $form->post_title );
+				$form_title = empty( $form->post_title ) ? sprintf( __( 'Untitled (#%s)', 'give' ), $form->ID ) : $form->post_title;
+				$options[ absint( $form->ID ) ] = esc_html( $form_title );
 			}
 		} else {
 			$options[0] = esc_html__( 'No forms found.', 'give' );
-		}
-
-		// This ensures that any selected forms are included in the drop down
-		if ( is_array( $args['selected'] ) ) {
-			foreach ( $args['selected'] as $item ) {
-				if ( ! in_array( $item, $options ) ) {
-					$options[ $item ] = get_the_title( $item );
-				}
-			}
-		} elseif ( is_numeric( $args['selected'] ) && $args['selected'] !== 0 ) {
-			if ( ! in_array( $args['selected'], $options ) ) {
-				$options[ $args['selected'] ] = get_the_title( $args['selected'] );
-			}
 		}
 
 		$output = $this->select( array(

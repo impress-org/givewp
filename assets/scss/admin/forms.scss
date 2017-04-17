@@ -35,7 +35,7 @@ Forms CPT
 }
 
 //-----------------------------
-//Table Rows
+// Table Rows
 //-----------------------------
 div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
 	padding: 0 !important;
@@ -46,7 +46,7 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
 }
 
 //-----------------------------
-//Multilevel Repeater Header
+// Multilevel Repeater Header
 //-----------------------------
 .cmb2-id--give-levels-header {
 	padding: 10px 12px 0 !important;
@@ -112,7 +112,7 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
 }
 
 //---------------------------------------------------
-//Field One Offs
+// Field One Offs
 //---------------------------------------------------
 .give-time-field {
 	width: 65px;
@@ -171,7 +171,7 @@ input.give-text_medium {
 }
 
 //---------------------------------------------------
-//Responsive
+// Responsive
 //---------------------------------------------------
 @media only screen and (min-width: 851px) {
 
@@ -273,7 +273,7 @@ input.give-text_medium {
 }
 
 //-------------------------------------
-//Publish Metabox
+// Publish Metabox
 //-------------------------------------
 
 /*Shortcode Input */
@@ -294,9 +294,9 @@ input.give-text_medium {
 
 }
 
-/*-------------------------------------
-Content Options
--------------------------------------*/
+//-------------------------------------
+// Content Options
+//-------------------------------------
 
 .cmb2-id--give-content-option,
 .cmb2-id--give-terms-option,
@@ -362,11 +362,12 @@ ASIDE
 .cmb2-metabox-description {
 	font-size: 13px;
 	line-height: 1.5;
+	display: block;
 }
 
-/*-------------------------------------
-Tooltips
--------------------------------------*/
+//-------------------------------------
+// Tooltips
+//-------------------------------------
 .give-tooltip {
 	margin: 0 3px;
 	padding: 0;
@@ -382,7 +383,11 @@ Tooltips
 
 }
 
+//-------------------------------------
+// Metabox Form
+// -------------------------------------
 #give-metabox-form-data {
+
 	.inside {
 		margin: 0;
 		padding: 0;
@@ -461,9 +466,7 @@ Tooltips
 	}
 
 	.give_options_panel {
-		float: left;
-		width: 78%;
-		min-width: 175px;
+		padding-left: 170px;
 
 		.give-field-wrap {
 			padding: 1em 20px 1em 162px !important;
@@ -472,10 +475,10 @@ Tooltips
 
 			> label, > span.give-field-label {
 				float: left;
-				width: 150px;
+				width: 135px;
 				padding: 0;
-				margin: 0 0 0 -150px;
-				line-height: 24px;
+				margin: 2px 0 0 -150px;
+				line-height: 18px;
 				font-size: 12px;
 				font-weight: 400;
 			}
@@ -495,6 +498,11 @@ Tooltips
 
 			.mce-container iframe, textarea {
 				min-height: 250px !important;
+			}
+
+			.wp-editor-wrap {
+				display: inline-block;
+				width: 100%;
 			}
 		}
 
@@ -517,11 +525,7 @@ Tooltips
 		.give-inline-radio-fields {
 			li {
 				display: inline-block;
-				margin-left: 15px;
-			}
-
-			li:first-child {
-				margin-left: 0;
+				margin-right: 15px;
 			}
 		}
 
@@ -619,7 +623,7 @@ Tooltips
 
 			// Sortable jquery css fix.
 			.ui-sortable-helper {
-				display: table!important;
+				display: table !important;
 			}
 			.give-row.ui-sortable-helper {
 				border-bottom: 0;
@@ -628,14 +632,128 @@ Tooltips
 	}
 }
 
-/*-------------------------------------
-Export Form
--------------------------------------*/
+//-------------------------------------
+// Metabox Tabs
+//-------------------------------------
+#give-metabox-form-data {
 
-#give-export-payments{
+	.give-metabox-tabs {
+		margin: 0;
+		min-width: 170px;
+		float: left;
+		line-height: 1em;
+		padding: 0 0 10px;
+		position: relative;
+		background-color: #fafafa;
+		border-right: 1px solid #eee;
+		box-sizing: border-box;
+
+		&:after {
+			content: "";
+			display: block;
+			width: 100%;
+			height: 9999em;
+			position: absolute;
+			bottom: -9999em;
+			left: 0;
+			background-color: #fafafa;
+			border-right: 1px solid #eee;
+		}
+
+		li {
+			margin: 0;
+			padding: 0;
+			display: block;
+			position: relative;
+
+			a {
+				margin: 0;
+				padding: 10px;
+				display: block;
+				box-shadow: none;
+				text-decoration: none;
+				line-height: 20px !important;
+				border-bottom: 1px solid #eee;
+				overflow: hidden;
+
+				span.give-label {
+					width: 122px;
+					display: inline-block;
+				}
+			}
+
+		}
+
+		.give-metabox-sub-tabs li {
+			background-color: #f1f1f1;
+			a {
+				border-bottom-color: #e5e5e5;
+			}
+		}
+
+		li.active {
+			> a {
+				color: #555;
+				position: relative;
+				background-color: #eee;
+			}
+		}
+
+		li.has-sub-fields.active > a {
+			background-color: #ddd;
+		}
+
+		li.has-sub-fields:not(.active):hover {
+			ul.give-metabox-sub-tabs {
+				display: block;
+				position: absolute;
+				bottom: 0;
+				left: 170px;
+				width: 170px;
+				max-height: 250px;
+				overflow-y: scroll;
+			}
+		}
+	}
+
+}
+
+// Icons only display for tight resolutions.
+@media only screen and (min-width: 851px) and (max-width: 1025px),
+(max-width: 550px) {
+
+	#give-metabox-form-data {
+		ul.give-metabox-tabs {
+			min-width: 40px;
+
+			li > a {
+				text-align: center;
+				&:before {
+					margin-right: 0;
+					font-size: 15px;
+				}
+				span {
+					display: none;
+				}
+			}
+
+		}
+		.give_options_panel {
+			padding-left: 40px;
+		}
+
+	}
+	//#give-metabox-form-data
+}
+
+//-------------------------------------
+// Export Form
+// -------------------------------------
+
+#give-export-payments {
 	.give_forms_categories,
-	.give_forms_tags{
-		input{
+	.give_forms_tags {
+		input {
 			color: #999;
 		}
 
@@ -644,13 +762,13 @@ Export Form
 		display: block;
 	}
 
-	div.chosen-container:first-of-type{
+	div.chosen-container:first-of-type {
 		margin-top: 10px;
 	}
 }
 
 /*-------------------------------------
-DOCS LINKS
+Doc Links
 -------------------------------------*/
 
 .give-docs-link {
@@ -662,7 +780,9 @@ DOCS LINKS
 		text-decoration: none;
 		font-style: italic;
 
-		&:hover {color: rgb(0, 115, 170);}
+		&:hover {
+			color: rgb(0, 115, 170);
+		}
 		span {
 			font-style: normal;
 		}

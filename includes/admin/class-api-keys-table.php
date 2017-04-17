@@ -134,7 +134,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 			$actions['view'] = sprintf(
 				'<a href="%s">%s</a>',
 				esc_url( add_query_arg( array(
-					'view'      => 'api_requests',
+					'section'   => 'api_requests',
 					'post_type' => 'give_forms',
 					'page'      => 'give-tools',
 					'tab'       => 'logs',
