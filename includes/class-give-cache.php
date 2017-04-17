@@ -166,18 +166,36 @@ class Give_Cache {
 	 * @since  1.8.7
 	 *
 	 * @param  string|array $cache_keys
+	 *
+	 * @return bool|WP_Error
 	 */
 
 	public static function delete( $cache_keys ) {
+		$result = true;
+		$invalid_keys = array();
+
 		if ( ! empty( $cache_keys ) ) {
 			$cache_keys = is_array( $cache_keys ) ? $cache_keys : array( $cache_keys );
 
 			foreach ( $cache_keys as $cache_key ) {
-				if ( self::is_valid_cache_key( $cache_key ) ) {
-					delete_option( $cache_key );
+				if ( ! self::is_valid_cache_key( $cache_key ) ) {
+					$invalid_keys[] = $cache_key;
+					$result = false;
 				}
+
+				delete_option( $cache_key );
 			}
 		}
+
+		if( ! $result ) {
+			$result = new WP_Error(
+				'give_invalid_cache_key',
+					__( 'Cache key format should be give_cache_*', 'give' ),
+					$invalid_keys
+			);
+		}
+
+		return $result;
 	}
 
 	/**
