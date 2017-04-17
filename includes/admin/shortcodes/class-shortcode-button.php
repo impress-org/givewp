@@ -154,10 +154,10 @@ final class Give_Shortcode_Button {
 				if ( apply_filters( sanitize_title( $shortcode ) . '_condition', true ) ) {
 
 					$shortcodes[ $shortcode ] = sprintf(
-						'<div class="sc-shortcode mce-menu-item give-shortcode-item-%1$s" data-shortcode="%s">%s</div>',
+						'<div class="sc-shortcode mce-menu-item give-shortcode-item-%1$s" data-shortcode="%2$s">%3$s</div>',
 						$shortcode,
-						$values['label'],
-						$shortcode
+						$shortcode,
+						$values['label']
 					);
 				}
 			}

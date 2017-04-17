@@ -404,7 +404,7 @@ function give_undo_purchase( $form_id = false, $payment_id ) {
  *
  * @param  array $args Arguments passed.
  *
- * @return array $count Number of payments sorted by payment status.
+ * @return object $stats Contains the number of payments per payment status.
  */
 function give_count_payments( $args = array() ) {
 

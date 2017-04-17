@@ -141,7 +141,7 @@ class Give_Customer {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  bool $_id_or_email 
+	 * @param  bool $_id_or_email
 	 * @param  bool $by_user_id
 	 */
 	public function __construct( $_id_or_email = false, $by_user_id = false ) {
@@ -201,7 +201,6 @@ class Give_Customer {
 					break;
 
 			}
-
 		}
 
 		// Get donor's all email including primary email.
@@ -255,7 +254,7 @@ class Give_Customer {
 		}
 
 		$defaults = array(
-			'payment_ids' => ''
+			'payment_ids' => '',
 		);
 
 		$args = wp_parse_args( $data, $defaults );
@@ -422,7 +421,6 @@ class Give_Customer {
 
 				$this->increase_purchase_count();
 			}
-
 		}
 
 		/**
@@ -508,7 +506,6 @@ class Give_Customer {
 
 				$this->decrease_purchase_count();
 			}
-
 		}
 
 		/**
@@ -714,12 +711,12 @@ class Give_Customer {
 
 	/**
 	 * Decrease/Increase a customer's lifetime value.
-     *
-     * This function will update donation stat on basis of current amount and new amount donation difference.
-     * Difference value can positive or negative. Negative value will decrease user donation stat while positive value increase donation stat.
-     *
+	 *
+	 * This function will update donation stat on basis of current amount and new amount donation difference.
+	 * Difference value can positive or negative. Negative value will decrease user donation stat while positive value increase donation stat.
+	 *
 	 * @since  1.0
-     * @access public
+	 * @access public
 	 *
 	 * @param  float $curr_amount Current Donation amount.
 	 * @param  float $new_amount  New (changed) Donation amount.
@@ -727,35 +724,34 @@ class Give_Customer {
 	 * @return mixed              If successful, the new donation stat value, otherwise false.
 	 */
 	public function update_donation_value( $curr_amount, $new_amount ) {
-        /**
-         * Payment total difference value can be:
-         *  zero   (in case amount not change)
-         *  or -ve (in case amount decrease)
-         *  or +ve (in case amount increase)
-         */
-        $payment_total_diff = $new_amount - $curr_amount;
+		/**
+		 * Payment total difference value can be:
+		 *  zero   (in case amount not change)
+		 *  or -ve (in case amount decrease)
+		 *  or +ve (in case amount increase)
+		 */
+		$payment_total_diff = $new_amount - $curr_amount;
 
-        // We do not need to update donation stat if donation did not change.
-        if( ! $payment_total_diff ) {
-            return false;
-        }
+		// We do not need to update donation stat if donation did not change.
+		if ( ! $payment_total_diff ) {
+			return false;
+		}
 
+		if ( $payment_total_diff > 0 ) {
+			$this->increase_value( $payment_total_diff );
+		} else {
+			// Pass payment total difference as +ve value to decrease amount from user lifetime stat.
+			$this->decrease_value( -$payment_total_diff );
+		}
 
-        if( $payment_total_diff > 0 ) {
-            $this->increase_value( $payment_total_diff );
-        } else {
-            // Pass payment total difference as +ve value to decrease amount from user lifetime stat.
-            $this->decrease_value( -$payment_total_diff );
-        }
-
-        return $this->purchase_value;
+		return $this->purchase_value;
 	}
 
 	/**
 	 * Get the parsed notes for a customer as an array.
 	 *
 	 * @since  1.0
-     * @access public
+	 * @access public
 	 *
 	 * @param  int $length The number of notes to get.
 	 * @param  int $paged  What note to start at.
@@ -780,7 +776,7 @@ class Give_Customer {
 	 * Get the total number of notes we have after parsing.
 	 *
 	 * @since  1.0
-     * @access public
+	 * @access public
 	 *
 	 * @return int The number of notes for the customer.
 	 */
@@ -797,7 +793,7 @@ class Give_Customer {
 	 * Add a note for the customer.
 	 *
 	 * @since  1.0
-     * @access public
+	 * @access public
 	 *
 	 * @param  string $note   The note to add. Default is empty.
 	 *
@@ -856,7 +852,7 @@ class Give_Customer {
 	 * Get the notes column for the customer
 	 *
 	 * @since  1.0
-     * @access private
+	 * @access private
 	 *
 	 * @return string The Notes for the customer, non-parsed.
 	 */
@@ -934,7 +930,7 @@ class Give_Customer {
 	 * Sanitize the data for update/create
 	 *
 	 * @since  1.0
-     * @access private
+	 * @access private
 	 *
 	 * @param  array $data The data to sanitize.
 	 *
@@ -988,7 +984,6 @@ class Give_Customer {
 					break;
 
 			}
-
 		}
 
 		return $data;
@@ -1006,12 +1001,12 @@ class Give_Customer {
 	 * @return bool            If the email was added successfully
 	 */
 	public function add_email( $email = '', $primary = false ) {
-		if( ! is_email( $email ) ) {
+		if ( ! is_email( $email ) ) {
 			return false;
 		}
 		$existing = new Give_Customer( $email );
 
-		if( $existing->id > 0 ) {
+		if ( $existing->id > 0 ) {
 			// Email address already belongs to another customer
 			return false;
 		}
@@ -1048,7 +1043,7 @@ class Give_Customer {
 	 * @return bool          If the email was removed successfully
 	 */
 	public function remove_email( $email = '' ) {
-		if( ! is_email( $email ) ) {
+		if ( ! is_email( $email ) ) {
 			return false;
 		}
 
@@ -1074,7 +1069,7 @@ class Give_Customer {
 	 * @return bool                      If the email was set as primary successfully
 	 */
 	public function set_primary_email( $new_primary_email = '' ) {
-		if( ! is_email( $new_primary_email ) ) {
+		if ( ! is_email( $new_primary_email ) ) {
 			return false;
 		}
 
@@ -1082,7 +1077,7 @@ class Give_Customer {
 
 		$existing = new Give_Customer( $new_primary_email );
 
-		if( $existing->id > 0 && (int) $existing->id !== (int) $this->id ) {
+		if ( $existing->id > 0 && (int) $existing->id !== (int) $this->id ) {
 			// This email belongs to another customer
 			return false;
 		}
@@ -1100,7 +1095,7 @@ class Give_Customer {
 
 		$ret = $update && $remove && $add;
 
-		if( $ret ) {
+		if ( $ret ) {
 			$this->email = $new_primary_email;
 		}
 
