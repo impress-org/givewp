@@ -232,7 +232,8 @@ class Give_Cache {
 			$option['option_value'] = maybe_unserialize( $option['option_value'] );
 
 			if (
-				! is_array( $option['option_value'] ) // Backward compatibility (<1.8.7).
+				! self::is_valid_cache_key( $option['option_name'] )
+				|| ! is_array( $option['option_value'] ) // Backward compatibility (<1.8.7).
 				|| ! array_key_exists( 'expiration', $option['option_value'] ) // Backward compatibility (<1.8.7).
 				|| empty( $option['option_value']['expiration'] )
 				|| ( $current_time < $option['option_value']['expiration'] )
