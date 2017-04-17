@@ -123,7 +123,7 @@ class Tests_Cache extends Give_Unit_Test_Case {
 			array( 'give_cache_get_reports', true, HOUR_IN_SECONDS, true ),
 			array( 'give_cache_get_forms', true, null, true ),
 			array( 'give_cache_get_reports', true, 0, false ),
-			array( 'give_cache_get_logs', 1647, -1, false ),
+			array( 'give_cache_get_logs', 1647, - 1, false ),
 		);
 	}
 
@@ -133,6 +133,7 @@ class Tests_Cache extends Give_Unit_Test_Case {
 	 * @since        1.8.7
 	 *
 	 * @param string $cache_key
+	 * @param bool   $expected
 	 *
 	 * @cover        Give_Cache::delete
 	 * @dataProvider give_delete_provider
@@ -176,8 +177,8 @@ class Tests_Cache extends Give_Unit_Test_Case {
 			array( 'give_cache_get_reports', array( 1647, 1550 ), HOUR_IN_SECONDS, false ),
 			array( 'give_cache_get_forms', array( 1647, 1550 ), null, false ),
 			array( 'give_cache_get_reports', array( 1647, 1550 ), 0, false ),
-			array( 'give_cache_get_logs', array( 1647, 1550 ), -1, false ),
-			array( 'give_cache_get_payments', array( 1547, 1650 ), -3600, false ),
+			array( 'give_cache_get_logs', array( 1647, 1550 ), - 1, false ),
+			array( 'give_cache_get_payments', array( 1547, 1650 ), - 3600, false ),
 		);
 
 		foreach ( $options as $option ) {
