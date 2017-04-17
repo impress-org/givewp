@@ -714,12 +714,12 @@ function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour
 	}
 
 	$args = apply_filters( 'give_get_earnings_by_date_args', $args );
-	$key  = 'give_stats_' . substr( md5( serialize( $args ) ), 0, 15 );
+	$key  = Give_Cache::get_key( 'give_stats', $args );
 
 	if ( ! empty( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'give-refresh-reports' ) ) {
 		$earnings = false;
 	} else {
-		$earnings = get_transient( $key );
+		$earnings = Give_Cache::get( $key );
 	}
 
 	if ( false === $earnings ) {
@@ -732,7 +732,7 @@ function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour
 
 		}
 		// Cache the results for one hour.
-		set_transient( $key, $earnings, HOUR_IN_SECONDS );
+		Give_Cache::set( $key, $earnings, HOUR_IN_SECONDS );
 	}
 
 	return round( $earnings, 2 );
@@ -790,19 +790,19 @@ function give_get_sales_by_date( $day = null, $month_num = null, $year = null, $
 
 	$args = apply_filters( 'give_get_sales_by_date_args', $args );
 
-	$key = 'give_stats_' . substr( md5( serialize( $args ) ), 0, 15 );
+	$key  = Give_Cache::get_key( 'give_stats', $args );
 
 	if ( ! empty( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'give-refresh-reports' ) ) {
 		$count = false;
 	} else {
-		$count = get_transient( $key );
+		$count = Give_Cache::get( $key );
 	}
 
 	if ( false === $count ) {
 		$sales = new WP_Query( $args );
 		$count = (int) $sales->post_count;
 		// Cache the results for one hour.
-		set_transient( $key, $count, HOUR_IN_SECONDS );
+		Give_Cache::set( $key, $count, HOUR_IN_SECONDS );
 	}
 
 	return $count;
