@@ -122,7 +122,6 @@ class Tests_Cache extends Give_Unit_Test_Case {
 		return array(
 			array( 'give_cache_get_reports', true, HOUR_IN_SECONDS, true ),
 			array( 'give_cache_get_forms', true, null, true ),
-			array( 'give_cache_get_reports', true, 0, false ),
 			array( 'give_cache_get_logs', 1647, - 1, false ),
 		);
 	}
@@ -176,7 +175,6 @@ class Tests_Cache extends Give_Unit_Test_Case {
 		$options = array(
 			array( 'give_cache_get_reports', array( 1647, 1550 ), HOUR_IN_SECONDS, false ),
 			array( 'give_cache_get_forms', array( 1647, 1550 ), null, false ),
-			array( 'give_cache_get_reports', array( 1647, 1550 ), 0, false ),
 			array( 'give_cache_get_logs', array( 1647, 1550 ), - 1, false ),
 			array( 'give_cache_get_payments', array( 1547, 1650 ), - 3600, false ),
 		);
@@ -205,10 +203,36 @@ class Tests_Cache extends Give_Unit_Test_Case {
 
 		$remaining_options = array( 'give_cache_get_reports', 'give_cache_get_forms', 'give_cache_get_payment_logs' );
 
-
 		$this->assertEquals( 3, count( $options ) );
 		$this->assertTrue( in_array( (string) $options[0]['option_name'], $remaining_options ) );
 		$this->assertTrue( in_array( (string) $options[1]['option_name'], $remaining_options ) );
+	}
+
+
+	/**
+	 * Test function get_options_like
+	 *
+	 * @since        1.8.7
+	 *
+	 * @cover        Give_Cache::get_options_like
+	 */
+	public function test_get_options_like() {
+		$options = array(
+			array( 'get_reports', array( 1647, 1550 ), HOUR_IN_SECONDS, false ),
+			array( 'get_reports_count', array( 1647, 1550 ), null, false ),
+			array( 'get_logs', array( 1647, 1550 ), - 1, false ),
+			array( 'get_payments', array( 1547, 1650 ), - 3600, false ),
+		);
+
+		foreach ( $options as $option ) {
+			Give_Cache::set( $option[0], $option[1], $option[2], true );
+		}
+
+		$report_options_list = Give_Cache::get_options_like( 'get_reports' );
+
+		$this->assertEquals( 2, count( $report_options_list ) );
+		$this->assertEquals( true, in_array( 'give_cache_get_reports', $report_options_list ) );
+		$this->assertEquals( true, in_array( 'give_cache_get_reports', $report_options_list ) );
 	}
 
 
