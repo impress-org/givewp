@@ -81,6 +81,7 @@ class Give_Email_Notifications {
 		foreach ( $this->get_email_notifications() as $email ) {
 			// Add section.
 			add_filter( 'give_get_sections_emails', array( $email, 'add_section' ) );
+			add_filter( "give_hide_section_{$email->get_id()}_on_emails_page", array( $email, 'hide_section' ) );
 
 			if ( ! $email->is_email_preview_has_header() ) {
 				continue;

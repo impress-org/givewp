@@ -210,6 +210,21 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		}
 
 		/**
+		 * Add sections.
+		 *
+		 * @since 1.9
+		 *
+		 * @param bool $hide_section
+		 *
+		 * @return bool
+		 */
+		public function hide_section( $hide_section ) {
+			$hide_section = true;
+
+			return $hide_section;
+		}
+
+		/**
 		 * Register email settings.
 		 *
 		 * @since  1.9
