@@ -230,7 +230,7 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			// We need untranslated settings for backward compatibility.
 			add_filter( 'gettext', array( $this, 'en_translation' ), 10, 2 );
 			$en_setting_fields = $this->prev_settings->give_settings( $this->current_tab );
-			remove_filter( 'gettext', array( $this, 'en_translation' ), 10, 2 );
+			remove_filter( 'gettext', array( $this, 'en_translation' ), 10 );
 			
 			if ( ! empty( $setting_fields ) && ! empty( $setting_fields['fields'] ) ) {
 
