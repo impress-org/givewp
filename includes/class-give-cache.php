@@ -214,6 +214,60 @@ class Give_Cache {
 
 
 	/**
+	 * Get list of options like.
+	 *
+	 * @since  1.8.7
+	 * @access public
+	 *
+	 * @param string $option_name
+	 * @param bool   $fields
+	 *
+	 * @return array
+	 */
+	public static function get_options_like( $option_name, $fields = false ) {
+		global $wpdb;
+
+		if ( empty( $option_name ) ) {
+			return array();
+		}
+
+		$field_names = $fields ? 'option_name, option_value' : 'option_name';
+
+		if( $fields ) {
+			$options = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT {$field_names }
+						FROM {$wpdb->options}
+						Where option_name
+						LIKE '%%%s%%'",
+					"give_cache_{$option_name}"
+				),
+				ARRAY_A
+			);
+		} else {
+			$options = $wpdb->get_col(
+				$wpdb->prepare(
+					"SELECT *
+						FROM {$wpdb->options}
+						Where option_name
+						LIKE '%%%s%%'",
+					"give_cache_{$option_name}"
+				),
+				1
+			);
+		}
+
+		if ( ! empty( $options ) && $fields ) {
+			foreach ( $options as $index => $option ) {
+				$option['option_value'] = maybe_unserialize( $option['option_value'] );
+				$options[ $index ]      = $option;
+			}
+		}
+
+		return $options;
+	}
+
+	/**
 	 * Check cache key validity.
 	 *
 	 * @since  1.8.7
