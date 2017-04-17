@@ -88,14 +88,20 @@ class Give_Cache {
 	 *
 	 * @since  1.8.7
 	 *
-	 * @param  string $cache_key .
+	 * @param  string $cache_key
+	 * @param  bool   $custom_key
+	 * @param  mixed  $query_args
 	 *
 	 * @return mixed
 	 */
 
-	public static function get( $cache_key ) {
+	public static function get( $cache_key, $custom_key = false, $query_args = array() ) {
 		if ( ! self::is_valid_cache_key( $cache_key ) ) {
-			return new WP_Error( 'give_invalid_cache_key', __( 'Cache key format should be give_cache_*', 'give' ) );
+			if ( ! $custom_key ) {
+				return new WP_Error( 'give_invalid_cache_key', __( 'Cache key format should be give_cache_*', 'give' ) );
+			}
+
+			$cache_key = self::get_key( $cache_key, $query_args );
 		}
 
 		$option = get_option( $cache_key );
@@ -104,6 +110,8 @@ class Give_Cache {
 		if ( ! is_array( $option ) || empty( $option ) || ! array_key_exists( 'expiration', $option ) ) {
 			return $option;
 		}
+
+		error_log( print_r( $option, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
 
 		// Get current time.
 		$current_time = current_time( 'timestamp', 1 );
@@ -125,13 +133,19 @@ class Give_Cache {
 	 * @param  string   $cache_key
 	 * @param  mixed    $data
 	 * @param  int|null $expiration Timestamp should be in GMT format.
+	 * @param  bool     $custom_key
+	 * @param  mixed    $query_args
 	 *
 	 * @return mixed
 	 */
 
-	public static function set( $cache_key, $data, $expiration = null ) {
+	public static function set( $cache_key, $data, $expiration = null, $custom_key = false, $query_args = array() ) {
 		if ( ! self::is_valid_cache_key( $cache_key ) ) {
-			return new WP_Error( 'give_invalid_cache_key', __( 'Cache key format should be give_cache_*', 'give' ) );
+			if ( ! $custom_key ) {
+				return new WP_Error( 'give_invalid_cache_key', __( 'Cache key format should be give_cache_*', 'give' ) );
+			}
+
+			$cache_key = self::get_key( $cache_key, $query_args );
 		}
 
 		$option_value = array(
@@ -233,7 +247,7 @@ class Give_Cache {
 
 		$field_names = $fields ? 'option_name, option_value' : 'option_name';
 
-		if( $fields ) {
+		if ( $fields ) {
 			$options = $wpdb->get_results(
 				$wpdb->prepare(
 					"SELECT {$field_names }
