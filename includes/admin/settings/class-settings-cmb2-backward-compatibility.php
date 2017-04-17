@@ -270,11 +270,11 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			}
 
 			// Remove section tab conditionally.
-			switch ( give_get_current_setting_tab() ) {
-				case 'emails':
-					unset( $sections['donation-receipt'] );
-					unset( $sections['new-donation-notification'] );
-			}
+			// switch ( give_get_current_setting_tab() ) {
+			// 	case 'emails':
+			// 		unset( $sections['donation-receipt'] );
+			// 		unset( $sections['new-donation-notification'] );
+			// }
 
 			// Output.
 			return $sections;

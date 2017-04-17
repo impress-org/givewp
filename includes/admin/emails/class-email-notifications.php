@@ -79,6 +79,9 @@ class Give_Email_Notifications {
 
 		/* @var Give_Email_Notification $email */
 		foreach ( $this->get_email_notifications() as $email ) {
+			// Add section.
+			add_filter( 'give_get_sections_emails', array( $email, 'add_section' ) );
+
 			if ( ! $email->is_email_preview_has_header() ) {
 				continue;
 			}
@@ -154,7 +157,7 @@ class Give_Email_Notifications {
 		if( empty( $this->emails ) ) {
 			return;
 		}
-
+		
 		// Initiate email notifications.
 		foreach ( $this->emails as $email ) {
 			$email->init();

@@ -195,6 +195,21 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		}
 
 		/**
+		 * Add sections.
+		 *
+		 * @since 1.9
+		 *
+		 * @param array $sections
+		 *
+		 * @return array
+		 */
+		public function add_section( $sections ) {
+			$sections[ $this->id ] = $this->label;
+
+			return $sections;
+		}
+
+		/**
 		 * Register email settings.
 		 *
 		 * @since  1.9
