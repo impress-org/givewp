@@ -188,7 +188,7 @@ class Tests_Cache extends Give_Unit_Test_Case {
 		add_option( 'give_cache_get_payment_logs', array( 1547, 1650 ) );
 
 		// Delete options
-		Give_Cache::delete_all();
+		Give_Cache::delete_all_expired();
 
 		// Get remaining options.
 		$options = $wpdb->get_results(
