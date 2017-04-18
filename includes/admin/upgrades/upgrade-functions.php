@@ -855,7 +855,8 @@ function give_v187_upgrades(){
 				'_transient_give_i18n_give_',
 				'_transient__give_installed',
 				'_transient__give_activation_redirect',
-				'_transient__give_hide_license_notices_shortly_'
+				'_transient__give_hide_license_notices_shortly_',
+				'give_income_total'
 			)
 		),
 		1
