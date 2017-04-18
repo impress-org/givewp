@@ -268,7 +268,7 @@ function give_after_install() {
 		return;
 	}
 
-	$give_options     = get_transient( '_give_installed' );
+	$give_options     = Give_Cache::get( '_give_installed', true );
 	$give_table_check = get_option( '_give_table_check', false );
 
 	if ( false === $give_table_check || current_time( 'timestamp' ) > $give_table_check ) {
@@ -302,7 +302,7 @@ function give_after_install() {
 
 	// Delete the transient
 	if ( false !== $give_options ) {
-		delete_transient( '_give_installed' );
+		Give_Cache::delete( Give_Cache::get_key( '_give_installed' ) );
 	}
 
 

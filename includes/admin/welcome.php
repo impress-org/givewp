@@ -592,12 +592,12 @@ class Give_Welcome {
 		$give_options = give_get_settings();
 
 		// Bail if no activation redirect
-		if ( ! get_transient( '_give_activation_redirect' ) ) {
+		if ( ! Give_Cache::get( '_give_activation_redirect', true ) ) {
 			return;
 		}
 
 		// Delete the redirect transient
-		delete_transient( '_give_activation_redirect' );
+		Give_Cache::delete( Give_Cache::get_key( '_give_activation_redirect' ) );
 
 		// Bail if activating from network, or bulk
 		if ( is_network_admin() || isset( $_GET['activate-multi'] ) ) {

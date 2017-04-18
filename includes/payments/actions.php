@@ -83,7 +83,7 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 	give_increase_purchase_count( $form_id );
 
 	// Clear the total earnings cache.
-	delete_transient( 'give_earnings_total' );
+	Give_Cache::delete( Give_Cache::get_key( 'give_earnings_total' ) );
 	// Clear the This Month earnings (this_monththis_month is NOT a typo).
 	delete_transient( md5( 'give_earnings_this_monththis_month' ) );
 	delete_transient( md5( 'give_earnings_todaytoday' ) );
@@ -283,9 +283,9 @@ function give_refresh_thismonth_stat_transients( $payment_ID ) {
 	$stats = new Give_Payment_Stats();
 
 	// Delete transients.
-	delete_transient( 'give_estimated_monthly_stats' );
-	delete_transient( 'give_earnings_total' );
-	delete_transient( $stats->get_earnings_cache_key( 0, 'this_month' ) );
+	Give_Cache::delete( Give_Cache::get_key( 'give_estimated_monthly_stats' ) );
+	Give_Cache::delete( Give_Cache::get_key('give_earnings_total' ) );
+	Give_Cache::delete( Give_Cache::get_key( $stats->get_earnings_cache_key( 0, 'this_month' ) ) );
 }
 
 add_action( 'save_post_give_payment', 'give_refresh_thismonth_stat_transients' );

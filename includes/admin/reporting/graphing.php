@@ -841,8 +841,8 @@ function give_run_refresh_reports_transients( $data ) {
 	}
 
 	//Delete transients
-	delete_transient( 'give_estimated_monthly_stats' );
-	delete_transient( 'give_earnings_total' );
+	Give_Cache::delete( Give_Cache::get_key( 'give_estimated_monthly_stats' ) );
+	Give_Cache::delete( Give_Cache::get_key( 'give_earnings_total' ) );
 	delete_transient( md5( 'give_earnings_this_monththis_month' ) );
 	delete_transient( md5( 'give_earnings_todaytoday' ) );
 

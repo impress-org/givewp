@@ -850,7 +850,6 @@ function give_v187_upgrades(){
 				'_transient_give_i18n_give_promo_hide',
 				'_transient_give_contributors',
 				'_transient_give_estimated_monthly_stats',
-				'_transient_give_estimated_monthly_stats',
 				'_transient_give_earnings_total',
 				'_transient_give_i18n_give_',
 				'_transient__give_installed',

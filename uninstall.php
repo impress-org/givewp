@@ -88,30 +88,21 @@ if ( give_is_setting_enabled( give_get_option( 'uninstall_on_delete' ) ) ) {
 	wp_clear_scheduled_hook( 'give_weekly_cron' );
 
 	// Get all options.
-	$give_option_names = $wpdb->get_results(
+	$give_option_names = $wpdb->get_col(
 		$wpdb->prepare(
 			"SELECT option_name FROM {$wpdb->options} where option_name LIKE '%%%s%%'",
 			'give'
-		),
-		ARRAY_A
+		)
 	);
 
 	if ( ! empty( $give_option_names ) ) {
 		// Convert option name to transient or option name.
 		$new_give_option_names = array();
 
-		foreach ( $give_option_names as $option ) {
-			$new_give_option_names[] = ( false !== strpos( $option['option_name'], '_transient_' ) )
-				? str_replace( '_transient_', '', $option['option_name'] )
-				: $option['option_name'];
-		}
-
-		$give_option_names = $new_give_option_names;
-
 		// Delete all the Plugin Options.
 		foreach ( $give_option_names as $option ) {
-			if ( false !== strpos( $option, '_transient_' ) ) {
-				delete_transient( $option );
+			if ( false !== strpos( $option, 'give_cache' ) ) {
+				Give_Cache::delete( $option );
 			} else {
 				delete_option( $option );
 			}

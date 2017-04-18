@@ -159,7 +159,7 @@ function give_donor_batch_export_complete( $data ) {
 		&& ! empty( $data['forms'] )
 		&& isset( $data['give_export_option']['query_id'] )
 	) {
-		delete_transient( $data['give_export_option']['query_id'] );
+		Give_Cache::delete( Give_Cache::get_key( $data['give_export_option']['query_id'] ) );
 	}
 }
 add_action('give_file_export_complete', 'give_donor_batch_export_complete' );
