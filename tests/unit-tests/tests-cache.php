@@ -165,10 +165,10 @@ class Tests_Cache extends Give_Unit_Test_Case {
 	 * @since        1.8.7
 	 * @access       public
 	 *
-	 * @cover        Give_Cache::delete
+	 * @cover        Give_Cache::delete_all_expired
 	 * @return bool
 	 */
-	public function test_delete_all() {
+	public function test_delete_all_expired() {
 		global $wpdb;
 
 		// Set options
@@ -206,6 +206,23 @@ class Tests_Cache extends Give_Unit_Test_Case {
 		$this->assertEquals( 3, count( $options ) );
 		$this->assertTrue( in_array( (string) $options[0]['option_name'], $remaining_options ) );
 		$this->assertTrue( in_array( (string) $options[1]['option_name'], $remaining_options ) );
+
+		// Delete all options
+		Give_Cache::delete_all_expired( true );
+
+		// Get remaining options.
+		$options = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT option_name
+						FROM {$wpdb->options}
+						Where option_name
+						LIKE '%%%s%%'",
+				'give_cache'
+			),
+			ARRAY_A
+		);
+
+		$this->assertEquals( 0, count( $options ) );
 	}
 
 
