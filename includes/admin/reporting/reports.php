@@ -591,7 +591,7 @@ function give_reports_tab_logs() {
  */
 function give_estimated_monthly_stats() {
 
-	$estimated = get_transient( 'give_estimated_monthly_stats' );
+	$estimated = Give_Cache::get( 'give_estimated_monthly_stats', true );
 
 	if ( false === $estimated ) {
 
@@ -614,7 +614,7 @@ function give_estimated_monthly_stats() {
 		$estimated['sales']    = ( $to_date_sales / $current_day ) * $days_in_month;
 
 		// Cache for one day
-		set_transient( 'give_estimated_monthly_stats', $estimated, 86400 );
+		Give_Cache::set( 'give_estimated_monthly_stats', $estimated, DAY_IN_SECONDS, true );
 	}
 
 	return maybe_unserialize( $estimated );
