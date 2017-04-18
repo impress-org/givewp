@@ -556,7 +556,7 @@ class Give_Welcome {
 	 * @return array $contributors List of contributors
 	 */
 	public function get_contributors() {
-		$contributors = get_transient( 'give_contributors' );
+		$contributors = Give_Cache::get( 'give_contributors', true );
 
 		if ( false !== $contributors ) {
 			return $contributors;
@@ -574,7 +574,7 @@ class Give_Welcome {
 			return array();
 		}
 
-		set_transient( 'give_contributors', $contributors, 3600 );
+		Give_Cache::set( 'give_contributors', $contributors, HOUR_IN_SECONDS, true );
 
 		return $contributors;
 	}
