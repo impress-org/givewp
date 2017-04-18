@@ -862,7 +862,7 @@ function give_get_total_earnings() {
 
 		global $wpdb;
 
-		$total = get_transient( 'give_earnings_total' );
+		$total = Give_Cache::get( 'give_earnings_total', true );
 
 		if ( false === $total ) {
 
@@ -894,7 +894,7 @@ function give_get_total_earnings() {
 			}
 
 			// Cache results for 1 day. This cache is cleared automatically when a payment is made.
-			set_transient( 'give_earnings_total', $total, 86400 );
+			Give_Cache::set( 'give_earnings_total', $total, DAY_IN_SECONDS, true );
 
 			// Store the total for the first time.
 			update_option( 'give_earnings_total', $total );
