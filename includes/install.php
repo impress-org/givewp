@@ -165,7 +165,7 @@ function give_run_install() {
 	Give()->session->use_php_sessions();
 
 	// Add a temporary option to note that Give pages have been created.
-	set_transient( '_give_installed', $options, 30 );
+	Give_Cache::set( '_give_installed', $options, 30, true );
 
 	if ( ! $current_version ) {
 
@@ -191,7 +191,7 @@ function give_run_install() {
 	}
 
 	// Add the transient to redirect.
-	set_transient( '_give_activation_redirect', true, 30 );
+	Give_Cache::set( '_give_activation_redirect', true, 30, true );
 
 }
 
