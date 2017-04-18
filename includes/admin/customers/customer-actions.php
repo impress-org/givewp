@@ -595,7 +595,7 @@ function give_set_donor_primary_email() {
 		$url        = add_query_arg( 'give-message', 'primary-email-updated', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ) );
 		$user       = wp_get_current_user();
 		$user_login = ! empty( $user->user_login ) ? $user->user_login : esc_html__( 'System', 'give' );
-		$donor_note = sprintf( __( 'Email address %1$s set as primary by %1$s', 'give' ), $_GET['email'], $user_login );
+		$donor_note = sprintf( __( 'Email address %1$s set as primary by %2$s', 'give' ), $_GET['email'], $user_login );
 
 		$donor->add_note( $donor_note );
 	} else {
