@@ -67,12 +67,12 @@ class Give_Cache {
 	 * @since  1.8.7
 	 *
 	 * @param  string $action     Cache key prefix.
-	 * @param  array  $query_args Query array.
+	 * @param  array  $query_args (optional) Query array.
 	 *
 	 * @return string
 	 */
 
-	public static function get_key( $action, $query_args ) {
+	public static function get_key( $action, $query_args = null ) {
 		$cache_key = "give_cache_{$action}";
 
 		// Bailout.
