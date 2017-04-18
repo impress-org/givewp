@@ -361,11 +361,11 @@ class Give_API {
 			return false;
 		}
 
-		$user = get_transient( md5( 'give_api_user_' . $key ) );
+		$user = Give_Cache::get( md5( 'give_api_user_' . $key ), true );
 
 		if ( false === $user ) {
 			$user = $wpdb->get_var( $wpdb->prepare( "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = %s LIMIT 1", $key ) );
-			set_transient( md5( 'give_api_user_' . $key ), $user, DAY_IN_SECONDS );
+			Give_Cache::set( md5( 'give_api_user_' . $key ), $user, DAY_IN_SECONDS, true );
 		}
 
 		if ( $user != null ) {
@@ -385,11 +385,11 @@ class Give_API {
 		}
 
 		$cache_key       = md5( 'give_api_user_public_key' . $user_id );
-		$user_public_key = get_transient( $cache_key );
+		$user_public_key = Give_Cache::get( $cache_key, true );
 
 		if ( empty( $user_public_key ) ) {
 			$user_public_key = $wpdb->get_var( $wpdb->prepare( "SELECT meta_key FROM $wpdb->usermeta WHERE meta_value = 'give_user_public_key' AND user_id = %d", $user_id ) );
-			set_transient( $cache_key, $user_public_key, HOUR_IN_SECONDS );
+			Give_Cache::set( $cache_key, $user_public_key, HOUR_IN_SECONDS, true );
 		}
 
 		return $user_public_key;
@@ -403,11 +403,11 @@ class Give_API {
 		}
 
 		$cache_key       = md5( 'give_api_user_secret_key' . $user_id );
-		$user_secret_key = get_transient( $cache_key );
+		$user_secret_key = Give_Cache::get( $cache_key, true );
 
 		if ( empty( $user_secret_key ) ) {
 			$user_secret_key = $wpdb->get_var( $wpdb->prepare( "SELECT meta_key FROM $wpdb->usermeta WHERE meta_value = 'give_user_secret_key' AND user_id = %d", $user_id ) );
-			set_transient( $cache_key, $user_secret_key, HOUR_IN_SECONDS );
+			Give_Cache::set( $cache_key, $user_secret_key, HOUR_IN_SECONDS, true );
 		}
 
 		return $user_secret_key;

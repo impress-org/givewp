@@ -862,6 +862,25 @@ function give_v187_upgrades(){
 		1
 	);
 
+	// User related transients.
+	$user_apikey_options = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT user_id, meta_key
+			FROM $wpdb->usermeta
+			WHERE meta_value=%s",
+			'give_user_public_key'
+		),
+		ARRAY_A
+	);
+
+	if( ! empty( $user_apikey_options ) ) {
+		foreach ( $user_apikey_options as $user ) {
+			$cached_options[] = '_transient_' . md5( 'give_api_user_' . $user['meta_key'] );
+			$cached_options[] = '_transient_' . md5( 'give_api_user_public_key' . $user['user_id'] );
+			$cached_options[] = '_transient_' . md5( 'give_api_user_secret_key' . $user['user_id'] );
+		}
+	}
+
 	if ( ! empty( $cached_options ) ) {
 		foreach ( $cached_options as $option ) {
 			switch ( true ) {
