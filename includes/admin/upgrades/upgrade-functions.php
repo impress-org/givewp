@@ -47,6 +47,10 @@ function give_do_automatic_upgrades() {
 		case version_compare( $give_version, '1.8', '<' ) :
 			give_v18_upgrades();
 			$did_upgrade = true;
+
+		case version_compare( $give_version, '1.8.7', '<' ) :
+			give_v187_upgrades();
+			$did_upgrade = true;
 	}
 
 	if ( $did_upgrade ) {
@@ -819,4 +823,43 @@ function give_v18_renamed_core_settings() {
 		'enable_categories'           => 'categories',
 		'enable_tags'                 => 'tags',
 	);
+}
+
+
+/**
+ * Upgrade core settings.
+ *
+ * @since  1.8.7
+ * @return void
+ */
+function give_v187_upgrades(){
+	global $wpdb;
+
+	/**
+	 * Upgrade 1: Remove stat and cache transients.
+	 */
+	$cached_options = $wpdb->get_col(
+		$wpdb->prepare(
+			"SELECT * FROM {$wpdb->options} where (option_name LIKE '%%%s%%' OR option_name LIKE '%%%s%%')",
+			array(
+				'_transient_give_stats_',
+				'give_cache',
+			)
+		),
+		1
+	);
+
+	if ( ! empty( $cached_options ) ) {
+		foreach ( $cached_options as $option ) {
+			switch ( true ) {
+				case ( false !== strpos( $option, 'transient' ) ):
+					$option = str_replace( '_transient_', '', $option );
+					delete_transient( $option );
+					break;
+
+				default:
+					delete_option( $option );
+			}
+		}
+	}
 }

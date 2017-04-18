@@ -143,8 +143,8 @@ class Give_Payment_Stats extends Give_Stats {
 			}
 
 			$args = apply_filters( 'give_stats_earnings_args', $args );
-			$key  = 'give_stats_' . substr( md5( serialize( $args ) ), 0, 15 );
-			$earnings = get_transient( $key );
+			$key  = Give_Cache::get_key( 'give_stats', $args );
+			$earnings = Give_Cache::get( $key );
 			
 			if ( false === $earnings ) {
 				$sales    = get_posts( $args );
@@ -154,7 +154,7 @@ class Give_Payment_Stats extends Give_Stats {
 					$earnings += $wpdb->get_var( "SELECT SUM(meta_value) FROM $wpdb->postmeta WHERE meta_key = '_give_payment_total' AND post_id IN({$sales})" );
 				}
 				// Cache the results for one hour
-				set_transient( $key, $earnings, HOUR_IN_SECONDS );
+				Give_Cache::set( $key, $earnings, HOUR_IN_SECONDS );
 			}
 
 		} else {
@@ -175,9 +175,9 @@ class Give_Payment_Stats extends Give_Stats {
 				// This is not a valid query arg, but is used for cache keying
 			);
 			$args = apply_filters( 'give_stats_earnings_args', $args );
-			$key  = 'give_stats_' . substr( md5( serialize( $args ) ), 0, 15 );
+			$key  = Give_Cache::get_key( 'give_stats', $args );
 			//Set transient for faster stats
-			$earnings = get_transient( $key );
+			$earnings = Give_Cache::get( $key );
 
 			if ( false === $earnings ) {
 
@@ -196,7 +196,7 @@ class Give_Payment_Stats extends Give_Stats {
 				}
 
 				// Cache the results for one hour
-				set_transient( $key, $earnings, 60 * 60 );
+				Give_Cache::set( $key, $earnings, 60 * 60 );
 			}
 		}
 
@@ -261,7 +261,7 @@ class Give_Payment_Stats extends Give_Stats {
 			}
 
 			$args = apply_filters( 'give_stats_earnings_args', $args );
-			$key  = 'give_stats_' . substr( md5( serialize( $args ) ), 0, 15 );
+			$key  = Give_Cache::get_key( 'give_stats', $args );
 
 		} else {
 
@@ -280,8 +280,9 @@ class Give_Payment_Stats extends Give_Stats {
 				'give_transient_type' => 'give_earnings',
 				// This is not a valid query arg, but is used for cache keying
 			);
+
 			$args = apply_filters( 'give_stats_earnings_args', $args );
-			$key  = 'give_stats_' . substr( md5( serialize( $args ) ), 0, 15 );
+			$key  = Give_Cache::get_key( 'give_stats', $args );
 		}
 
 		//remove our filter
