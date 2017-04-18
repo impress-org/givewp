@@ -844,6 +844,15 @@ function give_v187_upgrades(){
 			array(
 				'_transient_give_stats_',
 				'give_cache',
+				'_transient_give_add_ons_feed',
+				'_transient__give_ajax_works'.
+				'_transient_give_total_api_keys',
+				'_transient_give_i18n_give_promo_hide',
+				'_transient_give_contributors',
+				'_transient_give_estimated_monthly_stats',
+				'_transient_give_estimated_monthly_stats',
+				'_transient_give_earnings_total',
+				'_transient_give_i18n_give_'
 			)
 		),
 		1
