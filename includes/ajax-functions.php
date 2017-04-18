@@ -45,7 +45,7 @@ function give_test_ajax_works() {
 
 	add_filter( 'block_local_requests', '__return_false' );
 
-	if ( get_transient( '_give_ajax_works' ) ) {
+	if ( Give_Cache::get( '_give_ajax_works', true ) ) {
 		return true;
 	}
 
@@ -85,7 +85,7 @@ function give_test_ajax_works() {
 	}
 
 	if ( $works ) {
-		set_transient( '_give_ajax_works', '1', DAY_IN_SECONDS );
+		Give_Cache::set( '_give_ajax_works', '1', DAY_IN_SECONDS, true );
 	}
 
 	return $works;
