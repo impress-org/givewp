@@ -286,11 +286,26 @@ class Give_Email_Notifications {
 		<td class="give-email-notification-status">
 			<?php
 			$notification_status       = $email->get_notification_status();
-			$notification_status_class = $email->is_email_notification_active()
-				? 'dashicons-yes'
-				: 'dashicons-no-alt';
-			echo "<span class=\"give-email-notification-{$notification_status} dashicons {$notification_status_class}\" data-status=\"{$notification_status}\" data-id=\"{$email->get_id()}\"></span><span class=\"spinner\"></span>";
+			$default_class = "give-email-notification-{$notification_status} dashicons";
+			$attributes['class'] = $email->is_email_notification_active()
+				? "{$default_class} dashicons-yes"
+				: "{$default_class} dashicons-no-alt";
+
+			$attributes['data-status'] = "{$notification_status}";
+			$attributes['data-id'] = "{$email->get_id()}";
+
+			$attributes['data-edit'] = (int) $email->is_user_can_edit_notification_status();
+
+			if( ! $attributes['data-edit'] ) {
+				$attributes['data-tooltip'] = __( 'You can not edit this notification directly. This will be enable or disable automatically on basis of plugin settings.', 'give' );
+			}
+
+			$attribute_str = '';
+			foreach ( $attributes as $tag => $value ) {
+				$attribute_str .= " {$tag}=\"{$value}\"";
+			}
 			?>
+			<span<?php echo $attribute_str;?>></span><span class=\"spinner\"></span>
 		</td>
 		<?php
 	}

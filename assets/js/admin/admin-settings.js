@@ -197,6 +197,11 @@ jQuery(document).ready(function ($) {
 			set_notification_status = $(this).hasClass( 'give-email-notification-enabled' ) ? 'disabled' : 'enabled',
 			notification_id = $(this).data('id');
 
+		// Bailout if admin can not edit notification status setting.
+		if( ! parseInt( $this.data('edit') ) ) {
+			return false;
+		}
+
 		$.ajax({
 			url: ajaxurl,
 			method: 'POST',

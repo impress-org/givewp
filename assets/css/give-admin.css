@@ -1951,6 +1951,9 @@ a.give-delete {
 .give_emails_notification .give-email-notification-disabled {
   background: #bbbbbb; }
 
+.give_emails_notification .give-email-notification-status [data-edit="0"] {
+  cursor: not-allowed; }
+
 .give_emails_notification .spinner.is-active {
   margin: 0;
   float: none; }

@@ -101,16 +101,20 @@ class Give_Email_Setting_Field {
 	 * @return array
 	 */
 	public static function get_default_setting_fields( Give_Email_Notification $email, $form_id = 0 ) {
-		return array(
-			array(
-				'id'    => "give_title_email_settings_{$email->get_id()}",
-				'type'  => 'title',
-				'title' => $email->get_label(),
-			),
-			self::get_notification_status_field( $email, $form_id ),
-			self::get_email_subject_field( $email, $form_id ),
-			self::get_email_message_field( $email, $form_id ),
+		$settings[] = array(
+			'id'    => "give_title_email_settings_{$email->get_id()}",
+			'type'  => 'title',
+			'title' => $email->get_label(),
 		);
+
+		if ( $email->is_user_can_edit_notification_status() ) {
+			$settings = self::get_notification_status_field( $email, $form_id );
+		}
+
+		$settings[] = self::get_email_subject_field( $email, $form_id );
+		$settings[] = self::get_email_message_field( $email, $form_id );
+
+		return $settings;
 	}
 
 	/**

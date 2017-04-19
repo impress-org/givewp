@@ -40,14 +40,16 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 			$this->description = __( 'Email Access Notification will be sent to recipient(s) when want to access their donation history using only email.', 'give' );
 
 			// $this->has_recipient_field = true;
-			$this->recipient_group_name = __( 'Donor', 'give' );
-			$this->notification_status  = give_get_option( 'email_access' );
-			$this->form_metabox_setting = true;
-			$this->email_tag_context    = 'donor';
+			$this->recipient_group_name                 = __( 'Donor', 'give' );
+			$this->notification_status                  = give_get_option( 'email_access' );
+			$this->form_metabox_setting                 = true;
+			$this->is_user_can_edit_notification_status = false;
+			$this->email_tag_context                    = 'donor';
 
 			$this->load();
 
 			add_action( "give_{$this->id}_email_notification", array( $this, 'setup_email_notification' ) );
+			add_action( 'give_save_settings_give_settings', array( $this, 'set_notification_status' ), 10, 2 );
 		}
 
 
@@ -247,9 +249,26 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 							get_permalink( give_get_option( 'history_page' ) )
 						),
 						__( 'Access Donation Details &raquo;', 'give' )
-					)
+					),
 				)
 			);
+		}
+
+
+		/**
+		 * Set notification status
+		 *
+		 * @since  2.0
+		 * @access public
+		 *
+		 * @param $update_options
+		 * @param $option_name
+		 */
+		public function set_notification_status( $update_options, $option_name ) {
+			if ( ! empty( $update_options['email_access'] ) ) {
+				$update_options["{$this->id}_notification"] = $update_options['email_access'];
+				update_option( $option_name, $update_options );
+			}
 		}
 	}
 

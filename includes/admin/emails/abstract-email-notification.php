@@ -110,6 +110,15 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		protected $form_metabox_setting = false;
 
 		/**
+		 * Flag to check if admin can edit notification status or not,
+		 *
+		 * @var     bool $form_metabox_setting Flag to check if email notification setting add to form or not.
+		 * @access  protected
+		 * @since   2.0
+		 */
+		protected $is_user_can_edit_notification_status = true;
+
+		/**
 		 * Setup email notification.
 		 *
 		 * @since 2.0
@@ -608,6 +617,17 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 */
 		public function is_email_preview_has_header() {
 			return $this->has_preview_header;
+		}
+
+		/**
+		 * Check if admin can edit notification status or not.
+		 *
+		 * @since  2.0
+		 * @access public
+		 * @return bool
+		 */
+		public function is_user_can_edit_notification_status() {
+			return $this->is_user_can_edit_notification_status;
 		}
 
 		/**

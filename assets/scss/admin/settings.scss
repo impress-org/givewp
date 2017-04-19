@@ -497,6 +497,10 @@ a.give-delete {
 		background: #bbbbbb;
 	}
 
+	.give-email-notification-status [data-edit="0"] {
+		cursor: not-allowed;
+	}
+
 	.spinner.is-active {
 		margin: 0;
 		float: none;
