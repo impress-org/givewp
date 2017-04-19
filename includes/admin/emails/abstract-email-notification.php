@@ -716,44 +716,45 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 				esc_html__( 'View the receipt in your browser &raquo;', 'give' )
 			);
 
-
+			// Set default values for tags.
 			$this->preview_email_tags_values = wp_parse_args(
 				$this->preview_email_tags_values,
 				array(
-					'payment_total'    => give_currency_filter( give_format_amount( 10.50 ) ),
-					'payment_method'   => 'Paypal',
-					'receipt_id'       => $receipt_id,
-					'payment_id' => give_check_variable( give_clean( $_GET ), 'isset_empty', rand( 2000, 2050 ), 'preview_id' ),
-					'receipt_link_url' => $receipt_link_url,
-					'receipt_link'     => $receipt_link,
-					'user'             => $user,
-					'date'             => date( give_date_format(), current_time( 'timestamp' ) ),
-					'donation'         => esc_html__( 'Sample Donation Form Title', 'give' ),
-					'form_title'       => esc_html__( 'Sample Donation Form Title - Sample Donation Level', 'give' ),
-					'sitename'         => get_bloginfo( 'name' ),
-					'pdf_receipt'      => '<a href="#">Download Receipt</a>',
-					'billing_address'  => '',
+					'name'              => $user->display_name,
+					'fullname'          => $user->display_name,
+					'username'          => $user->user_login,
+					'user_email'        => $user->user_email,
+					'payment_total'     => give_currency_filter( give_format_amount( 10.50 ) ),
+					'amount'            => give_currency_filter( give_format_amount( 10.50 ) ),
+					'price'             => give_currency_filter( give_format_amount( 10.50 ) ),
+					'payment_method'    => 'Paypal',
+					'receipt_id'        => $receipt_id,
+					'payment_id'        => give_check_variable( give_clean( $_GET ), 'isset_empty', rand( 2000, 2050 ), 'preview_id' ),
+					'receipt_link_url'  => $receipt_link_url,
+					'receipt_link'      => $receipt_link,
+					'date'              => date( give_date_format(), current_time( 'timestamp' ) ),
+					'donation'          => esc_html__( 'Sample Donation Form Title', 'give' ),
+					'form_title'        => esc_html__( 'Sample Donation Form Title - Sample Donation Level', 'give' ),
+					'sitename'          => get_bloginfo( 'name' ),
+					'pdf_receipt'       => '<a href="#">Download Receipt</a>',
+					'billing_address'   => '',
+					'email_access_link' => sprintf(
+						'<a href="%1$s">%2$s</a>',
+						add_query_arg(
+							array( 'give_nl' => uniqid() ),
+							get_permalink( give_get_option( 'history_page' ) )
+						),
+						__( 'Access Donation Details &raquo;', 'give' )
+					),
 				)
 			);
 
-
-			$message = str_replace( '{name}', $this->preview_email_tags_values['user']->display_name, $message );
-			$message = str_replace( '{fullname}', $this->preview_email_tags_values['user']->display_name, $message );
-			$message = str_replace( '{username}', $this->preview_email_tags_values['user']->user_login, $message );
-			$message = str_replace( '{user_email}', $this->preview_email_tags_values['user']->user_email, $message );
-			$message = str_replace( '{date}', $this->preview_email_tags_values['date'], $message );
-			$message = str_replace( '{amount}', $this->preview_email_tags_values['payment_total'], $message );
-			$message = str_replace( '{price}', $this->preview_email_tags_values['payment_total'], $message );
-			$message = str_replace( '{payment_total}', $this->preview_email_tags_values['payment_total'], $message );
-			$message = str_replace( '{donation}', $this->preview_email_tags_values['donation'], $message );
-			$message = str_replace( '{form_title}', $this->preview_email_tags_values['form_title'], $message );
-			$message = str_replace( '{receipt_id}', $this->preview_email_tags_values['receipt_id'], $message );
-			$message = str_replace( '{payment_method}', $this->preview_email_tags_values['payment_method'], $message );
-			$message = str_replace( '{sitename}', $this->preview_email_tags_values['sitename'], $message );
-			$message = str_replace( '{payment_id}', $this->preview_email_tags_values['payment_id'], $message );
-			$message = str_replace( '{receipt_link}', $this->preview_email_tags_values['receipt_link'], $message );
-			$message = str_replace( '{receipt_link_url}', $this->preview_email_tags_values['receipt_link_url'], $message );
-			$message = str_replace( '{pdf_receipt}', $this->preview_email_tags_values['pdf_receipt'], $message );
+			// Decode tags.
+			foreach ( $this->preview_email_tags_values as $preview_tag => $value ) {
+				if( isset( $this->preview_email_tags_values[$preview_tag]) ) {
+					$message = str_replace( "{{$preview_tag}}", $this->preview_email_tags_values[$preview_tag], $message );
+				}
+			}
 
 			return apply_filters( 'give_email_preview_template_tags', $message );
 		}
