@@ -55,6 +55,12 @@ class Give_Cron {
 			'display'  => esc_html__( 'Once Weekly', 'give' )
 		);
 
+		// Cron for background process.
+		$schedules['asyncly'] = array(
+			'interval' => - 3600,
+			'display'  => esc_html__( 'Background Process', 'give' )
+		);
+
 		return $schedules;
 	}
 
@@ -69,6 +75,7 @@ class Give_Cron {
 	public function schedule_events() {
 		$this->weekly_events();
 		$this->daily_events();
+		$this->asyncly_events();
 	}
 
 	/**
@@ -99,6 +106,19 @@ class Give_Cron {
 		}
 	}
 
+	/**
+	 * Schedule asyncly events
+	 *
+	 * @since  1.3.2
+	 * @access private
+	 *
+	 * @return void
+	 */
+	private function asyncly_events() {
+		if ( ! wp_next_scheduled( 'give_asyncly_scheduled_events' ) ) {
+			wp_schedule_event( current_time( 'timestamp' ), 'asyncly', 'give_asyncly_scheduled_events' );
+		}
+	}
 }
 
 $give_cron = new Give_Cron;
