@@ -37,12 +37,10 @@ function give_do_automatic_upgrades() {
 		case version_compare( $give_version, '1.6', '<' ) :
 			give_v16_upgrades();
 			$did_upgrade = true;
-			break;
 
 		case version_compare( $give_version, '1.7', '<' ) :
 			give_v17_upgrades();
 			$did_upgrade = true;
-			break;
 
 		case version_compare( $give_version, '1.8', '<' ) :
 			give_v18_upgrades();
