@@ -393,6 +393,12 @@ function give_setup_email_tags() {
 			'function'    => 'give_email_tag_user_email',
 			'context'     => 'donor',
 		),
+		array(
+			'tag'         => 'email_access_link',
+			'description' => esc_html__( 'The donor\'s email access link.', 'give' ),
+			'function'    => 'give_email_tag_email_access_link',
+			'context'     => 'donor',
+		),
 
 		/* General */
 		array(
@@ -1032,4 +1038,31 @@ function give_get_receipt_url( $payment_id ) {
 	}
 
 	return $receipt_url;
+}
+
+
+
+/**
+ * Email template tag: {email_access_link}
+ *
+ * @since 2.0
+ *
+ * @param array $tag_args
+ *
+ * @return string
+ */
+function give_email_tag_email_access_link( $tag_args ){
+
+	error_log( print_r( 'pass', true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
+	error_log( print_r( $tag_args, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
+
+	/**
+	 * Filter the {email_access_link} email template tag output.
+	 *
+	 * @since 2.0
+	 *
+	 * @param string $receipt_link_url
+	 * @param array  $tag_args
+	 */
+	return apply_filters( 'give_email_tag_email_access_link', '#' );
 }
