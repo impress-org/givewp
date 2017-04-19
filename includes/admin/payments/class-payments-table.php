@@ -631,7 +631,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 				case 'resend-receipt':
 					/**
 					 * Fire the action
-					 * @since 1.9
+					 * @since 2.0
 					 */
 					do_action( 'give_donation-receipt_email_notification', $id );
 					break;

@@ -6,13 +6,13 @@
  * @subpackage  Classes/Emails
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       1.9
+ * @since       2.0
  */
 
 /**
  * Add extra row actions to email notification table.
  *
- * @since 1.9
+ * @since 2.0
  *
  * @param array                   $row_actions
  * @param Give_Email_Notification $email
@@ -54,7 +54,7 @@ add_filter( 'give_email_notification_row_actions', 'give_email_notification_row_
 /**
  * This help to decode all email template tags.
  *
- * @since 1.9
+ * @since 2.0
  *
  * @param string      $message
  * @param Give_Emails $email_obj

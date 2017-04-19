@@ -457,7 +457,7 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 *
 	 * Test give_check_variable function.
 	 *
-	 * @since        1.9
+	 * @since        2.0
 	 *
 	 * @param mixed  $expected
 	 * @param mixed  $variable
@@ -479,7 +479,7 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	/**
 	 * Data provider for give_check_variable function.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @return array
 	 */

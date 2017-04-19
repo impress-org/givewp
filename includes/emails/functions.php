@@ -78,7 +78,7 @@ add_action( 'give_admin_donation_email', 'give_admin_email_notice' );
  * Retrieves the emails for which admin notifications are sent to (these can be changed in the Give Settings).
  *
  * @since 1.0
- * @since 1.9 Adds $email_notification_id param.
+ * @since 2.0 Adds $email_notification_id param.
  *
  * @param string $email_notitfication_id Email ID.
  *

@@ -16,7 +16,7 @@ class Tests_Emails extends Give_Unit_Test_Case {
 	/**
 	 * Test get_content_type function
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 * @cover Give_Emails::get_content_type
 	 */
 	public function test_get_content_type() {

@@ -16,7 +16,7 @@ class Tests_Email_Notification_Filters extends Give_Unit_Test_Case {
 	/**
 	 * Test give_decode_email_tags function
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 * @cover give_decode_email_tags
 	 */
 	public function test_give_decode_email_tags() {

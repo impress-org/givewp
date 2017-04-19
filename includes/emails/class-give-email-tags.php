@@ -42,7 +42,7 @@ class Give_Email_Template_Tags {
 	/**
 	 * Tags arguments
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 */
 	private $tag_args;
 
@@ -109,8 +109,8 @@ class Give_Email_Template_Tags {
 	 * @param array  $tag_args Email template tag arguments.
 	 *
 	 * @since 1.0
-	 * @since 1.9 $payment_id deprecated.
-	 * @since 1.9 $tag_args added.
+	 * @since 2.0 $payment_id deprecated.
+	 * @since 2.0 $tag_args added.
 	 *
 	 * @return string Content with email tags filtered out.
 	 */
@@ -237,13 +237,13 @@ function give_get_emails_tags_list() {
  * @param array|int $tag_args Email template tag arguments.
  *
  * @since 1.0
- * @since 1.9 $payment_id deprecated.
- * @since 1.9 $tag_args added.
+ * @since 2.0 $payment_id deprecated.
+ * @since 2.0 $tag_args added.
  *
  * @return string Content with email tags filtered out.
  */
 function give_do_email_tags( $content, $tag_args ) {
-	// Backward compatibility < 1.9
+	// Backward compatibility < 2.0
 	if ( ! is_array( $tag_args ) ) {
 		$tag_args = array( 'payment_id' => $tag_args );
 	}
@@ -255,9 +255,9 @@ function give_do_email_tags( $content, $tag_args ) {
 	 * Filter the filtered content text.
 	 *
 	 * @since 1.0
-	 * @since 1.9 $payment_meta removed.
-	 * @since 1.9 $payment_id removed.
-	 * @since 1.9 $tag_args added.
+	 * @since 2.0 $payment_meta removed.
+	 * @since 2.0 $payment_id removed.
+	 * @since 2.0 $tag_args added.
 	 */
 	$content = apply_filters( 'give_email_template_tags', $content, $tag_args );
 
@@ -450,7 +450,7 @@ function give_email_tag_first_name( $tag_args ) {
 	/**
 	 * Filter the {firstname} email template tag output.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @param string $firstname
 	 * @param array  $tag_args
@@ -492,7 +492,7 @@ function give_email_tag_fullname( $tag_args ) {
 	/**
 	 * Filter the {fullname} email template tag output.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @param string $fullname
 	 * @param array  $tag_args
@@ -534,7 +534,7 @@ function give_email_tag_username( $tag_args ) {
 	/**
 	 * Filter the {username} email template tag output.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @param string $username
 	 * @param array  $tag_args
@@ -571,7 +571,7 @@ function give_email_tag_user_email( $tag_args ) {
 	/**
 	 * Filter the {email} email template tag output.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @param string $email
 	 * @param array  $tag_args
@@ -624,7 +624,7 @@ function give_email_tag_billing_address( $tag_args ) {
 	/**
 	 * Filter the {billing_address} email template tag output.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @param string $address
 	 * @param array  $tag_args
@@ -656,7 +656,7 @@ function give_email_tag_date( $tag_args ) {
 	/**
 	 * Filter the {date} email template tag output.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @param string $date
 	 * @param array  $tag_args
@@ -689,7 +689,7 @@ function give_email_tag_amount( $tag_args ) {
 	/**
 	 * Filter the {amount} email template tag output.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @param string $amount
 	 * @param array  $tag_args
@@ -734,7 +734,7 @@ function give_email_tag_payment_id( $tag_args ) {
 	/**
 	 * Filter the {payment_id} email template tag output.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @param string $payment_id
 	 * @param array  $tag_args
@@ -765,7 +765,7 @@ function give_email_tag_receipt_id( $tag_args ) {
 	/**
 	 * Filter the {receipt_id} email template tag output.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @param string $receipt_id
 	 * @param array  $tag_args
@@ -798,7 +798,7 @@ function give_email_tag_donation( $tag_args ) {
 	/**
 	 * Filter the {donation_form_title} email template tag output.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @param string $donation_form_title
 	 * @param array  $tag_args
@@ -833,7 +833,7 @@ function give_email_tag_form_title( $tag_args ) {
 	/**
 	 * Filter the {form_title} email template tag output.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @param string $form_title
 	 * @param array  $tag_args
@@ -867,7 +867,7 @@ function give_email_tag_payment_method( $tag_args ) {
 	/**
 	 * Filter the {payment_method} email template tag output.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @param string $payment_method
 	 * @param array  $tag_args
@@ -904,7 +904,7 @@ function give_email_tag_payment_total( $tag_args ) {
 	/**
 	 * Filter the {payment_total} email template tag output.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @param string $payment_total
 	 * @param array  $tag_args
@@ -931,7 +931,7 @@ function give_email_tag_sitename( $tag_args = array() ) {
 	/**
 	 * Filter the {sitename} email template tag output.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @param string $sitename
 	 * @param array  $tag_args
@@ -970,7 +970,7 @@ function give_email_tag_receipt_link( $tag_args ) {
 	/**
 	 * Filter the {receipt_link} email template tag output.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @param string $formatted
 	 * @param array  $tag_args
@@ -999,7 +999,7 @@ function give_email_tag_receipt_link_url( $tag_args ) {
 	/**
 	 * Filter the {receipt_link_url} email template tag output.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @param string $receipt_link_url
 	 * @param array  $tag_args
@@ -1015,7 +1015,7 @@ function give_email_tag_receipt_link_url( $tag_args ) {
 /**
  * Get receipt_url
  *
- * @since 1.9
+ * @since 2.0
  *
  * @param int $payment_id
  *

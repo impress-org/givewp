@@ -8,7 +8,7 @@
  * @subpackage  Classes/Emails
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       1.9
+ * @since       2.0
  */
 
 // Exit if access directly.
@@ -22,7 +22,7 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 	 * Give_New_Donation_Email
 	 *
 	 * @abstract
-	 * @since       1.9
+	 * @since       2.0
 	 */
 	class Give_New_Donation_Email extends Give_Email_Notification {
 		/* @var Give_Payment $payment */
@@ -32,7 +32,7 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		 * Create a class instance.
 		 *
 		 * @access  public
-		 * @since   1.9
+		 * @since   2.0
 		 */
 		public function init() {
 			$this->id          = 'new-donation';
@@ -55,7 +55,7 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		/**
 		 * Get email subject.
 		 *
-		 * @since 1.9
+		 * @since 2.0
 		 * @access public
 		 * @return string
 		 */
@@ -73,7 +73,7 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			/**
 			 * Filters the donation notification subject.
 			 *
-			 * @since 1.9
+			 * @since 2.0
 			 */
 			$subject = apply_filters( "give_{$this->id}_get_email_subject", $subject, $this );
 
@@ -84,7 +84,7 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		/**
 		 * Get email attachment.
 		 *
-		 * @since 1.9
+		 * @since 2.0
 		 * @access public
 		 * @return string
 		 */
@@ -102,7 +102,7 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			/**
 			 * Filter the email message
 			 *
-			 * @since 1.9
+			 * @since 2.0
 			 */
 			$message = apply_filters( "give_{$this->id}_get_default_email_message", $message, $this );
 
@@ -113,7 +113,7 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		/**
 		 * Get email attachment.
 		 *
-		 * @since 1.9
+		 * @since 2.0
 		 * @access public
 		 * @return array
 		 */
@@ -131,7 +131,7 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			 * Filters the donation notification email attachments.
 			 * By default, there is no attachment but plugins can hook in to provide one more multiple.
 			 *
-			 * @since 1.9
+			 * @since 2.0
 			 */
 			$attachments = apply_filters( "give_{$this->id}_get_email_attachments", $attachments, $this );
 
@@ -141,7 +141,7 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		/**
 		 * Get default email subject.
 		 *
-		 * @since  1.9
+		 * @since  2.0
 		 * @access public
 		 * @return string
 		 */
@@ -149,7 +149,7 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			/**
 			 * Filter the defaul email subject.
 			 *
-			 * @since 1.9
+			 * @since 2.0
 			 */
 			return apply_filters( "give_{$this->id}_get_default_email_subject", esc_attr__( 'New Donation - #{payment_id}', 'give' ), $this );
 		}
@@ -158,7 +158,7 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		/**
 		 * Get default email message.
 		 *
-		 * @since  1.9
+		 * @since  2.0
 		 * @access public
 		 *
 		 * @return string
@@ -167,7 +167,7 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			/**
 			 * Filter the new donation email message
 			 *
-			 * @since 1.9
+			 * @since 2.0
 			 *
 			 * @param string $message
 			 */
@@ -178,7 +178,7 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		/**
 		 * Set email data
 		 *
-		 * @since 1.9
+		 * @since 2.0
 		 */
 		public function setup_email_data() {
 			/**
@@ -213,7 +213,7 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		/**
 		 * Setup email notification.
 		 *
-		 * @since  1.9
+		 * @since  2.0
 		 * @access public
 		 *
 		 * @param int $payment_id

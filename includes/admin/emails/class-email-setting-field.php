@@ -7,13 +7,13 @@
  * @subpackage  Classes/Emails
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       1.9
+ * @since       2.0
  */
 class Give_Email_Setting_Field {
 	/**
 	 * Get setting field.
 	 *
-	 * @since  1.9
+	 * @since  2.0
 	 * @access public
 	 *
 	 * @param Give_Email_Notification $email
@@ -48,7 +48,7 @@ class Give_Email_Setting_Field {
 	/**
 	 * Check if email notification setting has section end or not.
 	 *
-	 * @since  1.9
+	 * @since  2.0
 	 * @access private
 	 *
 	 * @param $setting
@@ -69,7 +69,7 @@ class Give_Email_Setting_Field {
 	/**
 	 * Check if email notification setting has section end or not.
 	 *
-	 * @since  1.9
+	 * @since  2.0
 	 * @access private
 	 *
 	 * @param array                   $setting
@@ -92,7 +92,7 @@ class Give_Email_Setting_Field {
 	/**
 	 * Get default setting field.
 	 *
-	 * @since  1.9
+	 * @since  2.0
 	 * @access static
 	 *
 	 * @param Give_Email_Notification $email
@@ -116,7 +116,7 @@ class Give_Email_Setting_Field {
 	/**
 	 * Get notification status setting field.
 	 *
-	 * @since  1.9
+	 * @since  2.0
 	 * @access static
 	 *
 	 * @param Give_Email_Notification $email
@@ -156,7 +156,7 @@ class Give_Email_Setting_Field {
 	/**
 	 * Get email subject setting field.
 	 *
-	 * @since  1.9
+	 * @since  2.0
 	 * @access static
 	 *
 	 * @param Give_Email_Notification $email
@@ -177,7 +177,7 @@ class Give_Email_Setting_Field {
 	/**
 	 * Get email message setting field.
 	 *
-	 * @since  1.9
+	 * @since  2.0
 	 * @access static
 	 *
 	 * @param Give_Email_Notification $email
@@ -199,7 +199,7 @@ class Give_Email_Setting_Field {
 	/**
 	 * Get recipient setting field.
 	 *
-	 * @since  1.9
+	 * @since  2.0
 	 * @access static
 	 *
 	 * @param Give_Email_Notification $email
@@ -222,7 +222,7 @@ class Give_Email_Setting_Field {
 	/**
 	 * Get preview setting field.
 	 *
-	 * @since  1.9
+	 * @since  2.0
 	 * @access static
 	 *
 	 * @param Give_Email_Notification $email

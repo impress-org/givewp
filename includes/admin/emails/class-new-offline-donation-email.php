@@ -8,7 +8,7 @@
  * @subpackage  Classes/Emails
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       1.9
+ * @since       2.0
  */
 
 // Exit if access directly.
@@ -22,7 +22,7 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 	 * Give_New_Offline_Donation_Email
 	 *
 	 * @abstract
-	 * @since       1.9
+	 * @since       2.0
 	 */
 	class Give_New_Offline_Donation_Email extends Give_Email_Notification {
 		/* @var Give_Payment $payment */
@@ -32,7 +32,7 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 		 * Create a class instance.
 		 *
 		 * @access  public
-		 * @since   1.9
+		 * @since   2.0
 		 */
 		public function init() {
 			$this->id          = 'new-offline-donation';
@@ -55,7 +55,7 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 		/**
 		 * Get default email subject.
 		 *
-		 * @since  1.9
+		 * @since  2.0
 		 * @access public
 		 * @return string
 		 */
@@ -74,7 +74,7 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 			/**
 			 * Filter the default subject
 			 *
-			 * @since 1.9
+			 * @since 2.0
 			 */
 			return apply_filters( "give_{$this->id}_get_default_email_subject", $subject, $this );
 		}
@@ -83,7 +83,7 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 		/**
 		 * Get default email message.
 		 *
-		 * @since  1.9
+		 * @since  2.0
 		 * @access public
 		 *
 		 * @return string
@@ -121,7 +121,7 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 			/**
 			 * Filter the default message
 			 *
-			 * @since 1.9
+			 * @since 2.0
 			 */
 			return apply_filters( "give_{$this->id}_get_default_email_message", $message, $this );
 		}
@@ -130,7 +130,7 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 		/**
 		 * Get message
 		 *
-		 * @since 1.9
+		 * @since 2.0
 		 * @return string
 		 */
 		public function get_email_message() {
@@ -148,7 +148,7 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 			/**
 			 * Filter the email message
 			 *
-			 * @since 1.9
+			 * @since 2.0
 			 */
 			return apply_filters( "give_{$this->id}_get_email_message", $message, $this );
 		}
@@ -157,7 +157,7 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 		/**
 		 * Get attachments.
 		 *
-		 * @since 1.9
+		 * @since 2.0
 		 * @return array
 		 */
 		public function get_email_attachments() {
@@ -176,7 +176,7 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 			/**
 			 * Filter the attachments.
 			 *
-			 * @since 1.9
+			 * @since 2.0
 			 */
 			return apply_filters( "give_{$this->id}_get_email_attachments", $attachment, $this );
 		}
@@ -185,7 +185,7 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 		/**
 		 * Set email data.
 		 *
-		 * @since 1.9
+		 * @since 2.0
 		 */
 		public function setup_email_data() {
 			// Set recipient email.
@@ -206,7 +206,7 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 		/**
 		 * Setup email notification.
 		 *
-		 * @since  1.9
+		 * @since  2.0
 		 * @access public
 		 *
 		 * @param int $payment_id

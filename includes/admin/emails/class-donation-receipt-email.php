@@ -8,7 +8,7 @@
  * @subpackage  Classes/Emails
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       1.9
+ * @since       2.0
  */
 
 // Exit if access directly.
@@ -22,7 +22,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 	 * Give_Donation_Receipt_Email
 	 *
 	 * @abstract
-	 * @since       1.9
+	 * @since       2.0
 	 */
 	class Give_Donation_Receipt_Email extends Give_Email_Notification {
 		/* @var Give_Payment $payment*/
@@ -32,7 +32,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		 * Create a class instance.
 		 *
 		 * @access  public
-		 * @since   1.9
+		 * @since   2.0
 		 */
 		public function init() {
 			$this->id          = 'donation-receipt';
@@ -55,7 +55,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		/**
 		 * Get default email subject.
 		 *
-		 * @since  1.9
+		 * @since  2.0
 		 * @access public
 		 * @return string
 		 */
@@ -63,7 +63,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			/**
 			 * Filter the default subject.
 			 *
-			 * @since 1.9
+			 * @since 2.0
 			 */
 			return apply_filters( "give_{$this->id}_get_default_email_subject", esc_attr__( 'Donation Receipt', 'give' ), $this );
 		}
@@ -72,7 +72,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		/**
 		 * Get default email message.
 		 *
-		 * @since  1.9
+		 * @since  2.0
 		 * @access public
 		 *
 		 * @return string
@@ -81,7 +81,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			/**
 			 * Filter the donation receipt email message
 			 *
-			 * @since 1.9
+			 * @since 2.0
 			 *
 			 * @param string $message
 			 */
@@ -92,7 +92,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		/**
 		 * Get email subject.
 		 *
-		 * @since 1.9
+		 * @since 2.0
 		 * @access public
 		 * @return string
 		 */
@@ -110,7 +110,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			/**
 			 * Filters the donation email receipt subject.
 			 *
-			 * @since 1.9
+			 * @since 2.0
 			 */
 			$subject = apply_filters( "give_{$this->id}_get_email_subject", $subject, $this );
 
@@ -121,7 +121,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		/**
 		 * Get email message.
 		 *
-		 * @since  1.9
+		 * @since  2.0
 		 * @access public
 		 * @return string
 		 */
@@ -147,7 +147,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			/**
 			 * Filter the message
 			 *
-			 * @since 1.9
+			 * @since 2.0
 			 */
 			$message = apply_filters( "give_{$this->id}_get_email_message", $message, $this );
 			return $message;
@@ -156,7 +156,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		/**
 		 * Get the recipient attachments.
 		 *
-		 * @since  1.9
+		 * @since  2.0
 		 * @access public
 		 * @return array
 		 */
@@ -172,7 +172,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			/**
 			 * Filter the attachments.
 			 *
-			 * @since 1.9
+			 * @since 2.0
 			 */
 			$attachments = apply_filters( "give_{$this->id}_get_email_attachments", $attachments, $this );
 
@@ -183,7 +183,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		/**
 		 * Set email data.
 		 *
-		 * @since 1.9
+		 * @since 2.0
 		 */
 		public function setup_email_data() {
 			// Set recipient email.
@@ -228,7 +228,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 
 		/**
 		 * Send donation receipt
-		 * @since  1.9
+		 * @since  2.0
 		 * @access public
 		 *
 		 * @param $payment_id
@@ -246,7 +246,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		/**
 		 * Resend payment receipt by row action.
 		 *
-		 * @since  1.9
+		 * @since  2.0
 		 * @access public
 		 *
 		 * @param array $data

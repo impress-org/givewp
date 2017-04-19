@@ -713,7 +713,7 @@ function give_docs_link( $field ) {
 /**
  * Output preview buttons.
  *
- * @since 1.9
+ * @since 2.0
  * @param $field
  */
 function give_email_preview_buttons( $field ){

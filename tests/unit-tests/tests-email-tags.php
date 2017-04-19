@@ -15,7 +15,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Test function give_email_tag_first_name
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 * @cover give_email_tag_first_name
 	 */
 	function test_give_email_tag_first_name() {
@@ -47,7 +47,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Add give_email_tag_first_name filter to give_email_tag_first_name function.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @param string $firstname
 	 * @param array  $tag_args
@@ -65,7 +65,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Test function give_email_tag_fullname
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 * @cover give_email_tag_fullname
 	 */
 	function test_give_email_tag_fullname() {
@@ -97,7 +97,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Add give_email_tag_fullname filter to give_email_tag_fullname function.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @param string $fullname
 	 * @param array  $tag_args
@@ -115,7 +115,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Test function give_email_tag_username
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 * @cover give_email_tag_username
 	 */
 	function test_give_email_tag_username() {
@@ -147,7 +147,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Add give_email_tag_username filter to give_email_tag_username function.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @param string $username
 	 * @param array  $tag_args
@@ -165,7 +165,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Test function give_email_tag_user_email
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 * @cover give_email_tag_user_email
 	 */
 	function test_give_email_tag_user_email() {
@@ -197,7 +197,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Add give_email_tag_user_email filter to give_email_tag_user_email function.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @param string $user_email
 	 * @param array  $tag_args
@@ -215,7 +215,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Test function give_email_tag_billing_address
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 * @cover give_email_tag_billing_address
 	 */
 	function test_give_email_tag_billing_address() {
@@ -241,7 +241,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Add give_email_tag_billing_address filter to give_email_tag_billing_address function.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @param string $billing_address
 	 * @param array  $tag_args
@@ -259,7 +259,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Test function give_email_tag_date
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 * @cover give_email_tag_date
 	 */
 	function test_give_email_tag_date() {
@@ -285,7 +285,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Add give_email_tag_date filter to give_email_tag_date function.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @param string $date
 	 * @param array  $tag_args
@@ -303,7 +303,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Test function give_email_tag_amount
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 * @cover give_email_tag_amount
 	 * @cover give_email_tag_price
 	 */
@@ -330,7 +330,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Add give_email_tag_amount filter to give_email_tag_amount function.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @param string $amount
 	 * @param array  $tag_args
@@ -348,7 +348,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Test function give_email_tag_payment_id
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 * @cover give_email_tag_payment_id
 	 */
 	function test_give_email_tag_payment_id() {
@@ -374,7 +374,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Add give_email_tag_payment_id filter to give_email_tag_payment_id function.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @param string $payment_id
 	 * @param array  $tag_args
@@ -392,7 +392,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Test function give_email_tag_receipt_id
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 * @cover give_email_tag_receipt_id
 	 */
 	function test_give_email_tag_receipt_id() {
@@ -418,7 +418,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Add give_email_tag_receipt_id filter to give_email_tag_receipt_id function.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @param string $receipt_id
 	 * @param array  $tag_args
@@ -436,7 +436,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Test function give_email_tag_donation
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 * @cover give_email_tag_donation
 	 */
 	function test_give_email_tag_donation() {
@@ -468,7 +468,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Add give_email_tag_donation filter to give_email_tag_donation function.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @param string $donation_form_title
 	 *
@@ -483,7 +483,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Test function give_email_tag_form_title
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 * @cover give_email_tag_form_title
 	 */
 	function test_give_email_tag_form_title() {
@@ -515,7 +515,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Add give_email_tag_form_title filter to give_email_tag_form_title function.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @param string $form_title
 	 *
@@ -530,7 +530,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Test function give_email_tag_payment_method
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 * @cover give_email_tag_payment_method
 	 */
 	function test_give_email_tag_payment_method() {
@@ -554,7 +554,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Add give_email_tag_payment_method filter to give_email_tag_payment_method function.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @param string $payment_method
 	 *
@@ -569,7 +569,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Test function give_email_tag_payment_total
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 * @cover give_email_tag_payment_total
 	 */
 	function test_give_email_tag_payment_total() {
@@ -593,7 +593,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Add give_email_tag_payment_total filter to give_email_tag_payment_total function.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @param string $payment_total
 	 *
@@ -608,7 +608,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Test function give_email_tag_sitename
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 * @cover give_email_tag_sitename
 	 */
 	function test_give_email_tag_sitename() {
@@ -631,7 +631,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Add give_email_tag_sitename filter to give_email_tag_sitename function.
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 *
 	 * @param string $sitename
 	 *
@@ -646,7 +646,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Test function give_email_tag_receipt_link_url
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 * @cover give_get_receipt_url
 	 * @cover give_email_tag_receipt_link_url
 	 */
@@ -665,7 +665,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Test function give_email_tag_receipt_link
 	 *
-	 * @since 1.9
+	 * @since 2.0
 	 * @cover give_email_tag_receipt_link
 	 */
 	function test_give_email_tag_receipt_link() {
