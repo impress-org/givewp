@@ -108,7 +108,7 @@ class Give_Email_Setting_Field {
 		);
 
 		if ( $email->is_user_can_edit_notification_status() ) {
-			$settings = self::get_notification_status_field( $email, $form_id );
+			$settings[] = self::get_notification_status_field( $email, $form_id );
 		}
 
 		$settings[] = self::get_email_subject_field( $email, $form_id );
