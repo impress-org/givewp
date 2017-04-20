@@ -39,10 +39,11 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 			$this->label       = __( 'Offline Donation Instruction', 'give' );
 			$this->description = __( 'Offline Donation Instruction will be sent to recipient(s) when offline donation received.', 'give' );
 
-			$this->notification_status       = 'enabled';
-			$this->recipient_group_name      = __( 'Donor', 'give' );
-			$this->form_metabox_setting      = true;
-			$this->preview_email_tags_values = array( 'payment_method' => esc_html__( 'Offline', 'give' ) );
+			$this->notification_status                  = 'enabled';
+			$this->recipient_group_name                 = __( 'Donor', 'give' );
+			$this->form_metabox_setting                 = true;
+			$this->is_user_can_edit_notification_status = false;
+			$this->preview_email_tags_values            = array( 'payment_method' => esc_html__( 'Offline', 'give' ) );
 
 			// Initialize empty payment.
 			$this->payment = new Give_Payment( 0 );
@@ -50,6 +51,7 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 			$this->load();
 
 			add_action( 'give_insert_payment', array( $this, 'setup_email_notification' ) );
+			add_action( 'give_save_settings_give_settings', array( $this, 'set_notification_status' ), 10, 2 );
 		}
 
 
@@ -235,6 +237,30 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 
 			// Send email.
 			$this->send_email_notification( array( 'payment_id' => $this->payment->ID ) );
+		}
+
+		/**
+		 * Set notification status
+		 *
+		 * @since  2.0
+		 * @access public
+		 *
+		 * @param $update_options
+		 * @param $option_name
+		 */
+		public function set_notification_status( $update_options, $option_name ) {
+			// Get updated settings.
+			$update_options = give_get_settings();
+
+			$notification_status = isset( $update_options['gateways']['offline'] ) ? 'enabled' : 'disabled';
+
+			if (
+				empty( $update_options["{$this->id}_notification"] )
+				|| $notification_status !== $update_options["{$this->id}_notification"]
+			) {
+				$update_options["{$this->id}_notification"] = $notification_status;
+				update_option( $option_name, $update_options );
+			}
 		}
 	}
 
