@@ -265,7 +265,13 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 		 * @param $option_name
 		 */
 		public function set_notification_status( $update_options, $option_name ) {
-			if ( ! empty( $update_options['email_access'] ) ) {
+			// Get updated settings.
+			$update_options = give_get_settings();
+
+			if (
+				! empty( $update_options['email_access'] )
+				&& $update_options['email_access'] !== $update_options["{$this->id}_notification"]
+			) {
 				$update_options["{$this->id}_notification"] = $update_options['email_access'];
 				update_option( $option_name, $update_options );
 			}
