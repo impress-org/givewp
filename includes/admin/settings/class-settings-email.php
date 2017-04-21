@@ -147,40 +147,22 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );
 		}
 
-
+		/**
+		 * Render email_notification field type
+		 *
+		 * @since  2.0
+		 * @access public
+		 */
 		public function email_notification_setting() {
-			/* @var Give_Email_Notifications $email_notifications */
-			$email_notifications = Give_Email_Notifications::get_instance();
-			$emails              = $email_notifications->get_email_notifications();
+			// Load email notification table.
+			require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/class-email-notification-table.php';
 
-			// @todo: fix responsiveness of email notification table.
-			?>
-			<table class="give_emails_notification wp-list-table widefat fixed striped">
-				<thead>
-					<tr>
-						<?php
-						$columns = Give_Email_Notifications::get_instance()->get_columns();
-						foreach ( $columns as $key => $column ) {
-							echo '<th class="give-email-notification-settings-column-' . esc_attr( $key ) . '">' . esc_html( $column ) . '</th>';
-						}
-						?>
-				</thead>
-				<tbody>
-					<?php
-					/* @var Give_Email_Notification $email */
-					foreach ( $emails as $email ) :
-						echo '<tr>';
+			// Init table.
+			$email_notifications_table = new Give_Email_Notification_Table();
 
-						foreach ( $columns as $column_name => $column ) {
-							$email_notifications->render_column( $email, $column_name );
-						}
-
-						echo '</tr>';
-					endforeach;;
-					?>
-				</tbody>
-			</table>
-			<?php
+			// Print table.
+			$email_notifications_table->prepare_items();
+			$email_notifications_table->display();
 		}
 	}
 

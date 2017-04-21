@@ -474,31 +474,31 @@ a.give-delete {
 }
 
 // Email notification list.
-.give_emails_notification {
-	th:first-child {
-		width: 1em;
+.giveemailnotifications {
+	td.check-column input {
+		//width: 1em;
+		display: none;
 	}
 
-	.give-email-notification-settings-column-setting {
-		width: 75px;
-	}
+	th.check-column {
+		.give-email-notification-status{
+			color: white;
+			border-radius: 1em;
+			cursor: pointer;
+			padding: 2px;
+		}
 
-	.give-email-notification-status span {
-		color: white;
-		border-radius: 1em;
-		cursor: pointer;
-	}
+		.give-email-notification-enabled {
+			background: #46b450;
+		}
 
-	.give-email-notification-enabled {
-		background: #46b450;
-	}
+		.give-email-notification-disabled {
+			background: #bbbbbb;
+		}
 
-	.give-email-notification-disabled {
-		background: #bbbbbb;
-	}
-
-	.give-email-notification-status [data-edit="0"] {
-		cursor: not-allowed;
+		.give-email-notification-status[data-edit="0"] {
+			cursor: not-allowed;
+		}
 	}
 
 	.spinner.is-active {

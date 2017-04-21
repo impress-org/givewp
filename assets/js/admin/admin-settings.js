@@ -191,7 +191,7 @@ jQuery(document).ready(function ($) {
 	/**
 	 * Enabled & disable email notification event.
 	 */
-	$( 'td.give-email-notification-status span').on( 'click', function(){
+	$( '.give-email-notification-status', 'table.giveemailnotifications' ).on( 'click', function(){
 		var $this = $(this),
 			$loader = $(this).next(),
 			set_notification_status = $(this).hasClass( 'give-email-notification-enabled' ) ? 'disabled' : 'enabled',

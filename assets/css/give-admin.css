@@ -1934,27 +1934,25 @@ a.give-delete {
   margin: 0;
   padding-top: .5em; }
 
-.give_emails_notification th:first-child {
-  width: 1em; }
+.giveemailnotifications td.check-column input {
+  display: none; }
 
-.give_emails_notification .give-email-notification-settings-column-setting {
-  width: 75px; }
-
-.give_emails_notification .give-email-notification-status span {
+.giveemailnotifications th.check-column .give-email-notification-status {
   color: white;
   border-radius: 1em;
-  cursor: pointer; }
+  cursor: pointer;
+  padding: 2px; }
 
-.give_emails_notification .give-email-notification-enabled {
+.giveemailnotifications th.check-column .give-email-notification-enabled {
   background: #46b450; }
 
-.give_emails_notification .give-email-notification-disabled {
+.giveemailnotifications th.check-column .give-email-notification-disabled {
   background: #bbbbbb; }
 
-.give_emails_notification .give-email-notification-status [data-edit="0"] {
+.giveemailnotifications th.check-column .give-email-notification-status[data-edit="0"] {
   cursor: not-allowed; }
 
-.give_emails_notification .spinner.is-active {
+.giveemailnotifications .spinner.is-active {
   margin: 0;
   float: none; }
 
