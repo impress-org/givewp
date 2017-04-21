@@ -39,11 +39,13 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 			$this->label       = __( 'New Offline Donation', 'give' );
 			$this->description = __( 'Donation Notification will be sent to admin when new offline donation received.', 'give' );
 
-			$this->has_recipient_field                  = true;
-			$this->notification_status                  = 'enabled';
-			$this->is_user_can_edit_notification_status = false;
-			$this->form_metabox_setting                 = true;
-			$this->preview_email_tags_values            = array( 'payment_method' => esc_html__( 'Offline', 'give' ) );
+			$this->has_recipient_field             = true;
+			$this->notification_status             = 'enabled';
+			$this->is_notification_status_editable = false;
+			$this->form_metabox_setting            = true;
+			$this->preview_email_tags_values       = array(
+				'payment_method' => esc_html__( 'Offline', 'give' ),
+			);
 
 			// Initialize empty payment.
 			$this->payment = new Give_Payment( 0 );
@@ -95,16 +97,14 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 			$message .= __( 'An offline donation has been made on your website:', 'give' ) . ' ' . get_bloginfo( 'name' ) . ' ';
 			$message .= __( 'Hooray! The donation is in a pending status and is awaiting payment. Donation instructions have been emailed to the donor. Once you receive payment, be sure to mark the donation as complete using the link below.', 'give' ) . "\n\n";
 
-
 			$message .= '<strong>' . __( 'Donor:', 'give' ) . '</strong> {fullname}' . "\n";
 			$message .= '<strong>' . __( 'Amount:', 'give' ) . '</strong> {amount}' . "\n\n";
 
 			$message .= sprintf(
-				            '<a href="%1$s">%2$s</a>',
-				            admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $this->payment->ID ),
-				            __( 'Click Here to View and/or Update Donation Details', 'give' )
-			            ) . "\n\n";
-
+				'<a href="%1$s">%2$s</a>',
+				admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $this->payment->ID ),
+				__( 'Click Here to View and/or Update Donation Details', 'give' )
+			) . "\n\n";
 
 			/**
 			 * Filter the donation receipt email message
@@ -137,7 +137,6 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 		 */
 		public function get_email_message() {
 			$message = give_get_option( "{$this->id}_email_message", $this->get_default_email_message() );
-
 
 			/**
 			 * Filter the email message.
@@ -193,7 +192,6 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 			// Set recipient email.
 			$this->recipient_email = $this->payment->email;
 
-
 			// Set header.
 			Give()->emails->__set(
 				'headers',
@@ -216,7 +214,6 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 		public function setup_email_notification( $payment_id ) {
 			$this->payment = new Give_Payment( $payment_id );
 
-
 			// Exit if not donation was not with offline donation.
 			if ( 'offline' !== $this->payment->gateway ) {
 				return;
@@ -226,7 +223,9 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 			$this->setup_email_data();
 
 			// Send email.
-			$this->send_email_notification( array( 'payment_id' => $this->payment->ID ) );
+			$this->send_email_notification( array(
+				'payment_id' => $this->payment->ID,
+			) );
 		}
 
 		/**
@@ -245,10 +244,10 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 			$notification_status = isset( $update_options['gateways']['offline'] ) ? 'enabled' : 'disabled';
 
 			if (
-				empty( $update_options["{$this->id}_notification"] )
-				|| $notification_status !== $update_options["{$this->id}_notification"]
+				empty( $update_options[ "{$this->id}_notification" ] )
+				|| $notification_status !== $update_options[ "{$this->id}_notification" ]
 			) {
-				$update_options["{$this->id}_notification"] = $notification_status;
+				$update_options[ "{$this->id}_notification" ] = $notification_status;
 				update_option( $option_name, $update_options );
 			}
 		}

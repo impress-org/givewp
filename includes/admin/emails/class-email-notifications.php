@@ -83,13 +83,13 @@ class Give_Email_Notifications {
 			add_filter( 'give_get_sections_emails', array( $email, 'add_section' ) );
 			add_filter( "give_hide_section_{$email->get_id()}_on_emails_page", array( $email, 'hide_section' ) );
 
-			if ( ! $email->is_email_preview_has_header() ) {
+			if ( ! Give_Email_Notification_Util::is_email_preview_has_header( $email ) ) {
 				continue;
 			}
 
 			add_action( "give_{$email->get_id()}_email_preview", array( $this, 'email_preview_header' ) );
 			add_filter( "give_{$email->get_id()}_email_preview_data", array( $this, 'email_preview_data' ) );
-			add_filter( "give_{$email->get_id()}_email_preview_message", array( $this, 'email_preview_message', ), 1, 2 );
+			add_filter( "give_{$email->get_id()}_email_preview_message", array( $this, 'email_preview_message' ), 1, 2 );
 		}
 	}
 
@@ -115,7 +115,7 @@ class Give_Email_Notifications {
 
 		// Email notification setting.
 		$settings['email_notification_options'] = array(
-			'id'         => "email_notification_options",
+			'id'         => 'email_notification_options',
 			'title'      => __( 'Email Notification', 'give' ),
 
 			/**
@@ -137,6 +137,7 @@ class Give_Email_Notifications {
 	 */
 	private function add_emails_notifications() {
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/abstract-email-notification.php';
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/class-email-notification-util.php';
 
 		$this->emails = array(
 			include GIVE_PLUGIN_DIR . 'includes/admin/emails/class-new-donation-email.php',
@@ -156,10 +157,10 @@ class Give_Email_Notifications {
 		$this->emails = apply_filters( 'give_email_notifications', $this->emails, $this );
 
 		// Bailout.
-		if( empty( $this->emails ) ) {
+		if ( empty( $this->emails ) ) {
 			return;
 		}
-		
+
 		// Initiate email notifications.
 		foreach ( $this->emails as $email ) {
 			$email->init();
@@ -229,7 +230,9 @@ class Give_Email_Notifications {
 		$edit_url    = esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=' . $email->get_id() ) );
 		$row_actions = apply_filters(
 			'give_email_notification_row_actions',
-			array( 'edit' => "<a href=\"{$edit_url}\">" . __( 'Edit', 'give' ) . "</a>" ),
+			array(
+				'edit' => "<a href=\"{$edit_url}\">" . __( 'Edit', 'give' ) . '</a>',
+			),
 			$email
 		);
 		?>
@@ -240,7 +243,8 @@ class Give_Email_Notifications {
 					<span class="<?php echo $action; ?>">
 						<?php echo $sep . $link; ?>
 					</span>
-					<?php $index ++; endforeach; ?>
+					<?php $index ++;
+endforeach; ?>
 			</div>
 			<?php
 		endif;
@@ -287,16 +291,16 @@ class Give_Email_Notifications {
 			<?php
 			$notification_status       = $email->get_notification_status();
 			$default_class = "give-email-notification-{$notification_status} dashicons";
-			$attributes['class'] = $email->is_email_notification_active()
+			$attributes['class'] = Give_Email_Notification_Util::is_email_notification_active( $email )
 				? "{$default_class} dashicons-yes"
 				: "{$default_class} dashicons-no-alt";
 
 			$attributes['data-status'] = "{$notification_status}";
 			$attributes['data-id'] = "{$email->get_id()}";
 
-			$attributes['data-edit'] = (int) $email->is_user_can_edit_notification_status();
+			$attributes['data-edit'] = (int) Give_Email_Notification_Util::is_notification_status_editable( $email );
 
-			if( ! $attributes['data-edit'] ) {
+			if ( ! $attributes['data-edit'] ) {
 				$attributes['data-tooltip'] = __( 'You can not edit this notification directly. This will be enable or disable automatically on basis of plugin settings.', 'give' );
 			}
 
@@ -417,7 +421,6 @@ class Give_Email_Notifications {
 		// Security check.
 		give_validate_nonce( $_GET['_wpnonce'], 'give-preview-email' );
 
-
 		// Get email type.
 		$email_type = isset( $_GET['email_type'] ) ? esc_attr( $_GET['email_type'] ) : '';
 
@@ -527,7 +530,7 @@ class Give_Email_Notifications {
 	 * @return string
 	 */
 	public function email_preview_message( $email_message, $email_preview_data ) {
-		if(
+		if (
 			! empty( $email_preview_data['payment_id'] )
 			|| ! empty( $email_preview_data['user_id'] )
 		) {
@@ -553,13 +556,12 @@ class Give_Email_Notifications {
 		// Security check.
 		give_validate_nonce( $_GET['_wpnonce'], 'give-send-preview-email' );
 
-
 		// Get email type.
 		$email_type = give_check_variable( give_clean( $_GET ), 'isset', '', 'email_type' );
 
 		/* @var Give_Email_Notification $email */
 		foreach ( $this->get_email_notifications() as $email ) {
-			if ( $email_type === $email->get_id() && $email->is_email_preview() ) {
+			if ( $email_type === $email->get_id() && Give_Email_Notification_Util::is_email_preview( $email ) ) {
 				$email->send_preview_email();
 				break;
 			}

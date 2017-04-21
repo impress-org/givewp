@@ -225,7 +225,9 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			$this->setup_email_data();
 
 			// Send email.
-			$this->send_email_notification( array( 'payment_id' => $payment_id ) );
+			$this->send_email_notification( array(
+				'payment_id' => $payment_id,
+			) );
 		}
 	}
 

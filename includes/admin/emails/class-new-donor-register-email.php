@@ -69,7 +69,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 			return apply_filters(
 				"give_{$this->id}_get_default_email_subject",
 				sprintf(
-				/* translators: %s: site name */
+					/* translators: %s: site name */
 					esc_attr__( 'New user registration on your site %s:', 'give' ),
 					get_bloginfo( 'name' )
 				),
@@ -112,7 +112,9 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 		 */
 		public function setup_email_notification( $user_id, $user_data ) {
 			$this->recipient_email = $user_data['user_email'];
-			$this->send_email_notification( array( 'user_id' => $user_id ) );
+			$this->send_email_notification( array(
+				'user_id' => $user_id,
+			) );
 		}
 
 
@@ -127,10 +129,10 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 		 * @return bool
 		 */
 		public function email_preview_header( $email_preview_header ) {
-			//Payment receipt switcher
+			// Payment receipt switcher
 			$user_id = give_check_variable( give_clean( $_GET ), 'isset', 0, 'user_id' );
 
-			//Get payments.
+			// Get payments.
 			$donors  = new Give_API();
 			$donors  = give_check_variable( $donors->get_customers(), 'empty', array(), 'donors' );
 			$options = array();
@@ -138,7 +140,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 			// Default option.
 			$options[0] = esc_html__( 'No donor(s) found.', 'give' );
 
-			//Provide nice human readable options.
+			// Provide nice human readable options.
 			if ( $donors ) {
 				$options[0] = esc_html__( '- Select a donor -', 'give' );
 				foreach ( $donors as $donor ) {
@@ -150,10 +152,10 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 				}
 			}
 
-			//Start constructing HTML output.
+			// Start constructing HTML output.
 			$email_preview_header = '<div style="margin:0;padding:10px 0;width:100%;background-color:#FFF;border-bottom:1px solid #eee; text-align:center;">';
 
-			//Inline JS function for switching donations.
+			// Inline JS function for switching donations.
 			$request_url = $_SERVER['REQUEST_URI'];
 
 			// Remove payment id query param if set from request url.
@@ -164,7 +166,6 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 
 				$request_url = home_url( '/?' . str_replace( '', '', $query ) );
 			}
-
 
 			$email_preview_header .= '<script>
 				 function change_preview(){
@@ -179,7 +180,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 
 			$email_preview_header .= '<label for="give_preview_email_user_id" style="font-size:12px;color:#333;margin:0 4px 0 0;">' . esc_html__( 'Preview email with a donor:', 'give' ) . '</label>';
 
-			//The select field with 100 latest transactions
+			// The select field with 100 latest transactions
 			$email_preview_header .= Give()->html->select( array(
 				'name'             => 'preview_email_user_id',
 				'selected'         => $user_id,
@@ -192,7 +193,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 				'show_option_none' => false,
 			) );
 
-			//Closing tag
+			// Closing tag
 			$email_preview_header .= '</div>';
 
 			echo $email_preview_header;

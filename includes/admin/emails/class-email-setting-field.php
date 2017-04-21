@@ -25,12 +25,12 @@ class Give_Email_Setting_Field {
 		$setting_fields = self::get_default_setting_fields( $email, $form_id );
 
 		// Recipient field.
-		if ( $email->has_recipient_field() ) {
+		if ( Give_Email_Notification_Util::has_recipient_field( $email ) ) {
 			$setting_fields[] = self::get_recipient_setting_field( $email, $form_id );
 		}
 
 		// Preview field.
-		if ( $email->has_preview() ) {
+		if ( Give_Email_Notification_Util::has_preview( $email ) ) {
 			$setting_fields[] = self::get_preview_setting_field( $email, $form_id );
 		}
 
@@ -107,7 +107,7 @@ class Give_Email_Setting_Field {
 			'title' => $email->get_label(),
 		);
 
-		if ( $email->is_user_can_edit_notification_status() ) {
+		if ( Give_Email_Notification_Util::is_notification_status_editable( $email ) ) {
 			$settings[] = self::get_notification_status_field( $email, $form_id );
 		}
 

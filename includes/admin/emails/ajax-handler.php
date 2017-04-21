@@ -15,8 +15,8 @@
  *
  * @since 2.0
  */
-function give_set_notification_status_handler(){
-	if( give_update_option( give_clean( $_POST['notification_id'] ) . '_notification', give_clean( $_POST['status'] ) ) ) {
+function give_set_notification_status_handler() {
+	if ( give_update_option( give_clean( $_POST['notification_id'] ) . '_notification', give_clean( $_POST['status'] ) ) ) {
 		wp_send_json_success();
 	}
 

@@ -51,14 +51,14 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @access  protected
 		 * @since   2.0
 		 */
-		protected $has_preview = true;
+		public $has_preview = true;
 
 		/**
 		 * @var     bool $has_preview Flag to check if email notification has preview header.
 		 * @access  protected
 		 * @since   2.0
 		 */
-		protected $has_preview_header = true;
+		public $has_preview_header = true;
 
 		/**
 		 * @var     bool $preview_email_tags_values Default value to replace email template tags in preview email.
@@ -72,7 +72,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @access  protected
 		 * @since   2.0
 		 */
-		protected $has_recipient_field = false;
+		public $has_recipient_field = false;
 
 		/**
 		 * @var     string $notification_status Flag to check if email notification enabled or not.
@@ -116,14 +116,14 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @access  protected
 		 * @since   2.0
 		 */
-		protected $is_user_can_edit_notification_status = true;
+		public $is_notification_status_editable = true;
 
 		/**
 		 * Setup email notification.
 		 *
 		 * @since 2.0
 		 */
-		public function init(){
+		public function init() {
 
 		}
 
@@ -193,9 +193,9 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			// Setup setting fields.
 			add_filter( 'give_get_settings_emails', array( $this, 'add_setting_fields' ), 10, 2 );
 
-			if( $this->form_metabox_setting ) {
+			if ( $this->form_metabox_setting ) {
 				add_filter(
-						'give_email_notification_options_metabox_fields',
+					'give_email_notification_options_metabox_fields',
 					array( $this, 'add_metabox_setting_field' ),
 					10,
 					2
@@ -283,7 +283,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			$settings[] = array(
 				'id'     => $this->id,
 				'title'  => $this->label,
-				'fields' => $this->get_setting_fields( $post_id )
+				'fields' => $this->get_setting_fields( $post_id ),
 			);
 
 			return $settings;
@@ -363,7 +363,8 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 
 		/**
 		 * Get recipient(s) group name.
-		 **
+		 * *
+		 *
 		 * @since  2.0
 		 * @access public
 		 * @return string|array
@@ -496,7 +497,6 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 
 						unset( $email_tags[ $index ] );
 					}
-
 				} else {
 					foreach ( $email_tags as $index => $email_tag ) {
 						if ( $this->email_tag_context === $email_tag['context'] ) {
@@ -586,71 +586,6 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			return Give()->emails->get_content_type();
 		}
 
-		/**
-		 * Check email active or not.
-		 *
-		 * @since  2.0
-		 * @access public
-		 * @return string
-		 */
-		public function is_email_notification_active() {
-			return give_is_setting_enabled( $this->get_notification_status() );
-		}
-
-		/**
-		 * Check email preview header active or not.
-		 *
-		 * @since  2.0
-		 * @access public
-		 * @return bool
-		 */
-		public function is_email_preview() {
-			return $this->has_preview;
-		}
-
-		/**
-		 * Check email preview header active or not.
-		 *
-		 * @since  2.0
-		 * @access public
-		 * @return bool
-		 */
-		public function is_email_preview_has_header() {
-			return $this->has_preview_header;
-		}
-
-		/**
-		 * Check if admin can edit notification status or not.
-		 *
-		 * @since  2.0
-		 * @access public
-		 * @return bool
-		 */
-		public function is_user_can_edit_notification_status() {
-			return $this->is_user_can_edit_notification_status;
-		}
-
-		/**
-		 * Check if notification has recipient field or not.
-		 *
-		 * @since  2.0
-		 * @access public
-		 * @return bool
-		 */
-		public function has_recipient_field() {
-			return $this->has_recipient_field;
-		}
-
-		/**
-		 * Check if notification has preview field or not.
-		 *
-		 * @since  2.0
-		 * @access public
-		 * @return bool
-		 */
-		public function has_preview() {
-			return $this->has_preview;
-		}
 
 		/**
 		 * Send preview email.
@@ -676,7 +611,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @access public
 		 *
 		 * @param array $email_tag_args Arguments which helps to decode email template tags.
-		 * 
+		 *
 		 * @return bool
 		 */
 		public function send_email_notification( $email_tag_args = array() ) {
@@ -691,7 +626,6 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 * @since 2.0
 			 */
 			do_action( "give_{$this->id}_email_send_before", $this );
-
 
 			$attachments = $this->get_email_attachments();
 			$message     = give_do_email_tags( $this->get_email_message(), $email_tag_args );
@@ -761,18 +695,20 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 					'email_access_link' => sprintf(
 						'<a href="%1$s">%2$s</a>',
 						add_query_arg(
-							array( 'give_nl' => uniqid() ),
+							array(
+								'give_nl' => uniqid(),
+							),
 							get_permalink( give_get_option( 'history_page' ) )
 						),
 						__( 'Access Donation Details &raquo;', 'give' )
 					),
 				)
 			);
-
+			
 			// Decode tags.
 			foreach ( $this->preview_email_tags_values as $preview_tag => $value ) {
-				if( isset( $this->preview_email_tags_values[$preview_tag]) ) {
-					$message = str_replace( "{{$preview_tag}}", $this->preview_email_tags_values[$preview_tag], $message );
+				if ( isset( $this->preview_email_tags_values[ $preview_tag ] ) ) {
+					$message = str_replace( "{{$preview_tag}}", $this->preview_email_tags_values[ $preview_tag ], $message );
 				}
 			}
 

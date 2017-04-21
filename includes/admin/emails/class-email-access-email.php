@@ -40,11 +40,11 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 			$this->description = __( 'Email Access Notification will be sent to recipient(s) when want to access their donation history using only email.', 'give' );
 
 			// $this->has_recipient_field = true;
-			$this->recipient_group_name                 = __( 'Donor', 'give' );
-			$this->notification_status                  = give_get_option( 'email_access' );
-			$this->form_metabox_setting                 = true;
-			$this->is_user_can_edit_notification_status = false;
-			$this->email_tag_context                    = 'donor';
+			$this->recipient_group_name            = __( 'Donor', 'give' );
+			$this->notification_status             = give_get_option( 'email_access' );
+			$this->form_metabox_setting            = true;
+			$this->is_notification_status_editable = false;
+			$this->email_tag_context               = 'donor';
 
 			$this->load();
 
@@ -245,7 +245,9 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 					'access_url' => sprintf(
 						'<a href="%1$s">%2$s</a>',
 						add_query_arg(
-							array( 'give_nl' => $verify_key ),
+							array(
+								'give_nl' => $verify_key,
+							),
 							get_permalink( give_get_option( 'history_page' ) )
 						),
 						__( 'Access Donation Details &raquo;', 'give' )
@@ -270,9 +272,9 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 
 			if (
 				! empty( $update_options['email_access'] )
-				&& $update_options['email_access'] !== $update_options["{$this->id}_notification"]
+				&& $update_options['email_access'] !== $update_options[ "{$this->id}_notification" ]
 			) {
-				$update_options["{$this->id}_notification"] = $update_options['email_access'];
+				$update_options[ "{$this->id}_notification" ] = $update_options['email_access'];
 				update_option( $option_name, $update_options );
 			}
 		}

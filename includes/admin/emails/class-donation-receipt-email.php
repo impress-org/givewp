@@ -44,7 +44,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			$this->form_metabox_setting = true;
 
 			// Initialize empty payment.
-			$this->payment = new Give_Payment(0);
+			$this->payment = new Give_Payment( 0 );
 
 			$this->load();
 
@@ -228,6 +228,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 
 		/**
 		 * Send donation receipt
+		 *
 		 * @since  2.0
 		 * @access public
 		 *
@@ -240,7 +241,9 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			$this->setup_email_data();
 
 			// Send email.
-			$this->send_email_notification( array( 'payment_id' => $this->payment->ID ) );
+			$this->send_email_notification( array(
+				'payment_id' => $this->payment->ID,
+			) );
 		}
 
 		/**
@@ -262,14 +265,18 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			$this->payment = new Give_Payment( $purchase_id );
 
 			if ( ! current_user_can( 'edit_give_payments', $this->payment->ID ) ) {
-				wp_die( esc_html__( 'You do not have permission to edit payments.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+				wp_die( esc_html__( 'You do not have permission to edit payments.', 'give' ), esc_html__( 'Error', 'give' ), array(
+					'response' => 403,
+				) );
 			}
 
 			// Setup email data.
 			$this->setup_email_data();
 
 			// Send email.
-			$this->send_email_notification( array( 'payment_id' => $this->payment->ID ) );
+			$this->send_email_notification( array(
+				'payment_id' => $this->payment->ID,
+			) );
 
 			wp_redirect( add_query_arg( array(
 				'give-message' => 'email_sent',

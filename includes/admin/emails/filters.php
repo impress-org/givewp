@@ -20,7 +20,7 @@
  * @return array
  */
 function give_email_notification_row_actions_callback( $row_actions, $email ) {
-	if( $email->is_email_preview() ) {
+	if( Give_Email_Notification_Util::is_email_preview( $email ) ) {
 		$preview_link = sprintf(
 			'<a href="%1$s" target="_blank">%2$s</a>',
 			wp_nonce_url(
