@@ -31,25 +31,28 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 		 * @since   2.0
 		 */
 		public function init() {
-			$this->id          = 'donor-register';
-			$this->label       = __( 'Donor Register', 'give' );
-			$this->description = __( 'Donor Register Notification will be sent to donor when new donor registered.', 'give' );
-
-			$this->notification_status  = 'enabled';
 			$this->recipient_group_name = __( 'Donor', 'give' );
-			$this->email_tag_context    = 'donor';
 
-			$this->load();
+			$this->load( array(
+				'id'                  => 'donor-register',
+				'label'               => __( 'Donor Register', 'give' ),
+				'description'         => __( 'Donor Register Notification will be sent to donor when new donor registered.', 'give' ),
+				'notification_status' => 'enabled',
+				'email_tag_contex'    => 'donor',
+			) );
 
 			// Setup action hook.
 			add_action(
-				"give_{$this->get_id()}_email_notification",
+				"give_{$this->config['id']}_email_notification",
 				array( $this, 'setup_email_notification' ),
 				10,
 				2
 			);
 
-			add_filter( "give_email_preview_{$this->get_id()}_header", array( $this, 'email_preview_header' ) );
+			add_filter(
+				"give_email_preview_{$this->config['id']}_header",
+				array( $this, 'email_preview_header' )
+			);
 		}
 
 		/**
@@ -89,7 +92,10 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 			 *
 			 * @since 2.0
 			 */
-			return apply_filters( "give_{$this->id}_get_default_email_message", $message, $this );
+			return apply_filters(
+				"give_{$this->config['id']}_get_default_email_message",
+				$message, $this
+			);
 		}
 
 

@@ -35,32 +35,32 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		 * @since   2.0
 		 */
 		public function init() {
-			$this->id          = 'new-donation';
-			$this->label       = __( 'New Donation', 'give' );
-			$this->description = __( 'Donation Notification will be sent to recipient(s) when new donation received except offline donation.', 'give' );
-
-			$this->has_recipient_field = true;
-			$this->notification_status = 'enabled';
-			$this->form_metabox_setting = true;
-
 			// Initialize empty payment.
 			$this->payment = new Give_Payment( 0 );
 
-			$this->load();
+			$this->load( array(
+				'id'                   => 'new-donation',
+				'label'                => __( 'New Donation', 'give' ),
+				'description'          => __( 'Donation Notification will be sent to recipient(s) when new donation received except offline donation.', 'give' ),
+				'has_recipient_field'  => true,
+				'notification_status'  => 'enabled',
+				'form_metabox_setting' => true,
 
-			add_action( "give_{$this->id}_email_notification", array( $this, 'setup_email_notification' ) );
+			) );
+
+			add_action( "give_{$this->config['id']}_email_notification", array( $this, 'setup_email_notification' ) );
 		}
 
 
 		/**
 		 * Get email subject.
 		 *
-		 * @since 2.0
+		 * @since  2.0
 		 * @access public
 		 * @return string
 		 */
 		public function get_email_subject() {
-			$subject = wp_strip_all_tags( give_get_option( "{$this->id}_email_subject", $this->get_default_email_subject() ) );
+			$subject = wp_strip_all_tags( give_get_option( "{$this->config['id']}_email_subject", $this->get_default_email_subject() ) );
 
 			/**
 			 * Filters the donation notification subject.
@@ -75,7 +75,7 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			 *
 			 * @since 2.0
 			 */
-			$subject = apply_filters( "give_{$this->id}_get_email_subject", $subject, $this );
+			$subject = apply_filters( "give_{$this->config['id']}_get_email_subject", $subject, $this );
 
 			return $subject;
 		}
@@ -84,12 +84,12 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		/**
 		 * Get email attachment.
 		 *
-		 * @since 2.0
+		 * @since  2.0
 		 * @access public
 		 * @return string
 		 */
 		public function get_email_message() {
-			$message = give_get_option( "{$this->id}_email_message", $this->get_default_email_message() );
+			$message = give_get_option( "{$this->config['id']}_email_message", $this->get_default_email_message() );
 
 			/**
 			 * Filter the email message
@@ -97,14 +97,23 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			 *
 			 * @since 1.0
 			 */
-			$message = apply_filters( 'give_donation_notification', $message, $this->payment->ID, $this->payment->payment_meta );
+			$message = apply_filters(
+				'give_donation_notification',
+				$message,
+				$this->payment->ID,
+				$this->payment->payment_meta
+			);
 
 			/**
 			 * Filter the email message
 			 *
 			 * @since 2.0
 			 */
-			$message = apply_filters( "give_{$this->id}_get_default_email_message", $message, $this );
+			$message = apply_filters(
+				"give_{$this->config['id']}_get_default_email_message",
+				$message,
+				$this
+			);
 
 			return $message;
 		}
@@ -113,7 +122,7 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		/**
 		 * Get email attachment.
 		 *
-		 * @since 2.0
+		 * @since  2.0
 		 * @access public
 		 * @return array
 		 */
@@ -125,7 +134,12 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			 *
 			 * @since 1.0
 			 */
-			$attachments = apply_filters( 'give_admin_donation_notification_attachments', array(), $this->payment->ID, $this->payment->payment_meta );
+			$attachments = apply_filters(
+				'give_admin_donation_notification_attachments',
+				array(),
+				$this->payment->ID,
+				$this->payment->payment_meta
+			);
 
 			/**
 			 * Filters the donation notification email attachments.
@@ -133,7 +147,11 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			 *
 			 * @since 2.0
 			 */
-			$attachments = apply_filters( "give_{$this->id}_get_email_attachments", $attachments, $this );
+			$attachments = apply_filters(
+				"give_{$this->config['id']}_get_email_attachments",
+				$attachments,
+				$this
+			);
 
 			return $attachments;
 		}
@@ -151,7 +169,11 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			 *
 			 * @since 2.0
 			 */
-			return apply_filters( "give_{$this->id}_get_default_email_subject", esc_attr__( 'New Donation - #{payment_id}', 'give' ), $this );
+			return apply_filters(
+				"give_{$this->config['id']}_get_default_email_subject",
+				esc_attr__( 'New Donation - #{payment_id}', 'give' ),
+				$this
+			);
 		}
 
 
@@ -171,7 +193,11 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			 *
 			 * @param string $message
 			 */
-			return apply_filters( "give_{$this->id}_get_default_email_message", give_get_default_donation_notification_email(), $this );
+			return apply_filters(
+				"give_{$this->config['id']}_get_default_email_message",
+				give_get_default_donation_notification_email(),
+				$this
+			);
 		}
 
 
@@ -187,7 +213,12 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			 *
 			 * @since 1.0
 			 */
-			$from_name = apply_filters( 'give_donation_from_name', Give()->emails->get_from_name(), $this->payment->ID, $this->payment->payment_meta );
+			$from_name = apply_filters(
+				'give_donation_from_name',
+				Give()->emails->get_from_name(),
+				$this->payment->ID,
+				$this->payment->payment_meta
+			);
 
 			/**
 			 * Filters the from email.
@@ -195,7 +226,12 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			 *
 			 * @since 1.0
 			 */
-			$from_email = apply_filters( 'give_donation_from_address', Give()->emails->get_from_address(), $this->payment->ID, $this->payment->payment_meta );
+			$from_email = apply_filters(
+				'give_donation_from_address',
+				Give()->emails->get_from_address(),
+				$this->payment->ID,
+				$this->payment->payment_meta
+			);
 
 			Give()->emails->__set( 'from_name', $from_name );
 			Give()->emails->__set( 'from_email', $from_email );
@@ -205,7 +241,12 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			 *
 			 * @since 1.0
 			 */
-			$headers = apply_filters( 'give_admin_donation_notification_headers', Give()->emails->get_headers(), $this->payment->ID, $this->payment->payment_meta );
+			$headers = apply_filters(
+				'give_admin_donation_notification_headers',
+				Give()->emails->get_headers(),
+				$this->payment->ID,
+				$this->payment->payment_meta
+			);
 
 			Give()->emails->__set( 'headers', $headers );
 		}

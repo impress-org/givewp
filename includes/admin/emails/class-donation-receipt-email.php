@@ -25,7 +25,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 	 * @since       2.0
 	 */
 	class Give_Donation_Receipt_Email extends Give_Email_Notification {
-		/* @var Give_Payment $payment*/
+		/* @var Give_Payment $payment */
 		public $payment;
 
 		/**
@@ -35,20 +35,20 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		 * @since   2.0
 		 */
 		public function init() {
-			$this->id          = 'donation-receipt';
-			$this->label       = __( 'Donation Receipt', 'give' );
-			$this->description = __( 'Donation Receipt Notification will be sent to donor when new donation received.', 'give' );
-
-			$this->notification_status  = 'enabled';
 			$this->recipient_group_name = __( 'Donor', 'give' );
-			$this->form_metabox_setting = true;
 
 			// Initialize empty payment.
 			$this->payment = new Give_Payment( 0 );
 
-			$this->load();
+			$this->load( array(
+				'id'                   => 'donation-receipt',
+				'label'                => __( 'Donation Receipt', 'give' ),
+				'description'          => __( 'Donation Receipt Notification will be sent to donor when new donation received.', 'give' ),
+				'notification_status'  => 'enabled',
+				'form_metabox_setting' => true,
+			) );
 
-			add_action( "give_{$this->id}_email_notification", array( $this, 'send_donation_receipt' ) );
+			add_action( "give_{$this->config['id']}_email_notification", array( $this, 'send_donation_receipt' ) );
 			add_action( 'give_email_links', array( $this, 'resend_donation_receipt' ) );
 		}
 
@@ -65,7 +65,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			 *
 			 * @since 2.0
 			 */
-			return apply_filters( "give_{$this->id}_get_default_email_subject", esc_attr__( 'Donation Receipt', 'give' ), $this );
+			return apply_filters( "give_{$this->config['id']}_get_default_email_subject", esc_attr__( 'Donation Receipt', 'give' ), $this );
 		}
 
 
@@ -85,19 +85,19 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			 *
 			 * @param string $message
 			 */
-			return apply_filters( "give_{$this->id}_get_default_email_message", give_get_default_donation_receipt_email(), $this );
+			return apply_filters( "give_{$this->config['id']}_get_default_email_message", give_get_default_donation_receipt_email(), $this );
 		}
 
 
 		/**
 		 * Get email subject.
 		 *
-		 * @since 2.0
+		 * @since  2.0
 		 * @access public
 		 * @return string
 		 */
 		public function get_email_subject() {
-			$subject = wp_strip_all_tags( give_get_option( "{$this->id}_email_subject", $this->get_default_email_subject() ) );
+			$subject = wp_strip_all_tags( give_get_option( "{$this->config['id']}_email_subject", $this->get_default_email_subject() ) );
 
 			/**
 			 * Filters the donation email receipt subject.
@@ -112,7 +112,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			 *
 			 * @since 2.0
 			 */
-			$subject = apply_filters( "give_{$this->id}_get_email_subject", $subject, $this );
+			$subject = apply_filters( "give_{$this->config['id']}_get_email_subject", $subject, $this );
 
 			return $subject;
 		}
@@ -126,7 +126,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		 * @return string
 		 */
 		public function get_email_message() {
-			$message = give_get_option( "{$this->id}_email_message", $this->get_default_email_message() );
+			$message = give_get_option( "{$this->config['id']}_email_message", $this->get_default_email_message() );
 
 			/**
 			 * Filter message on basis of email template
@@ -134,7 +134,12 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			 *
 			 * @since 1.0
 			 */
-			$message = apply_filters( 'give_donation_receipt_' . Give()->emails->get_template(), $message, $this->payment->ID, $this->payment->payment_meta );
+			$message = apply_filters(
+				'give_donation_receipt_' . Give()->emails->get_template(),
+				$message,
+				$this->payment->ID,
+				$this->payment->payment_meta
+			);
 
 			/**
 			 * Filter the message
@@ -142,14 +147,24 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			 *
 			 * @since 1.0
 			 */
-			$message = apply_filters( 'give_donation_receipt', $message, $this->payment->ID, $this->payment->payment_meta );
+			$message = apply_filters(
+				'give_donation_receipt',
+				$message,
+				$this->payment->ID,
+				$this->payment->payment_meta
+			);
 
 			/**
 			 * Filter the message
 			 *
 			 * @since 2.0
 			 */
-			$message = apply_filters( "give_{$this->id}_get_email_message", $message, $this );
+			$message = apply_filters(
+				"give_{$this->config['id']}_get_email_message",
+				$message,
+				$this
+			);
+
 			return $message;
 		}
 
@@ -167,14 +182,23 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			 *
 			 * @since 1.0
 			 */
-			$attachments = apply_filters( 'give_receipt_attachments', array(), $this->payment->ID, $this->payment->payment_meta );
+			$attachments = apply_filters(
+				'give_receipt_attachments',
+				array(),
+				$this->payment->ID,
+				$this->payment->payment_meta
+			);
 
 			/**
 			 * Filter the attachments.
 			 *
 			 * @since 2.0
 			 */
-			$attachments = apply_filters( "give_{$this->id}_get_email_attachments", $attachments, $this );
+			$attachments = apply_filters(
+				"give_{$this->config['id']}_get_email_attachments",
+				$attachments,
+				$this
+			);
 
 			return $attachments;
 		}
@@ -192,22 +216,32 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			/**
 			 * Filters the from name.
 			 *
-			 * @param int $payment_id Payment id.
+			 * @param int   $payment_id   Payment id.
 			 * @param mixed $payment_data Payment meta data.
 			 *
 			 * @since 1.0
 			 */
-			$from_name = apply_filters( 'give_donation_from_name', Give()->emails->get_from_name(), $this->payment->ID, $this->payment->payment_meta );
+			$from_name = apply_filters(
+				'give_donation_from_name',
+				Give()->emails->get_from_name(),
+				$this->payment->ID,
+				$this->payment->payment_meta
+			);
 
 			/**
 			 * Filters the from email.
 			 *
-			 * @param int $payment_id Payment id.
+			 * @param int   $payment_id   Payment id.
 			 * @param mixed $payment_data Payment meta data.
 			 *
 			 * @since 1.0
 			 */
-			$from_email = apply_filters( 'give_donation_from_address', Give()->emails->get_from_address(), $this->payment->ID, $this->payment->payment_meta );
+			$from_email = apply_filters(
+				'give_donation_from_address',
+				Give()->emails->get_from_address(),
+				$this->payment->ID,
+				$this->payment->payment_meta
+			);
 
 			Give()->emails->__set( 'from_name', $from_name );
 			Give()->emails->__set( 'from_email', $from_email );
@@ -216,12 +250,17 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			/**
 			 * Filters the donation receipt's email headers.
 			 *
-			 * @param int $payment_id Payment id.
+			 * @param int   $payment_id   Payment id.
 			 * @param mixed $payment_data Payment meta data.
 			 *
 			 * @since 1.0
 			 */
-			$headers = apply_filters( 'give_receipt_headers', Give()->emails->get_headers(), $this->payment->ID, $this->payment->payment_meta );
+			$headers = apply_filters(
+				'give_receipt_headers',
+				Give()->emails->get_headers(),
+				$this->payment->ID,
+				$this->payment->payment_meta
+			);
 
 			Give()->emails->__set( 'headers', $headers );
 		}

@@ -35,22 +35,21 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 		 * @since   2.0
 		 */
 		public function init() {
-			$this->id          = 'new-offline-donation';
-			$this->label       = __( 'New Offline Donation', 'give' );
-			$this->description = __( 'Donation Notification will be sent to admin when new offline donation received.', 'give' );
-
-			$this->has_recipient_field             = true;
-			$this->notification_status             = 'enabled';
-			$this->is_notification_status_editable = false;
-			$this->form_metabox_setting            = true;
-			$this->preview_email_tags_values       = array(
-				'payment_method' => esc_html__( 'Offline', 'give' ),
-			);
-
 			// Initialize empty payment.
 			$this->payment = new Give_Payment( 0 );
 
-			$this->load();
+			$this->load( array(
+				'id'                              => 'new-offline-donation',
+				'label'                           => __( 'New Offline Donation', 'give' ),
+				'description'                     => __( 'Donation Notification will be sent to admin when new offline donation received.', 'give' ),
+				'has_recipient_Field'             => true,
+				'notification_status'             => 'enabled',
+				'notification_status_editable' => false,
+				'form_metabox_setting'            => true,
+				'preview_email_tags_values'       => array(
+					'payment_method' => esc_html__( 'Offline', 'give' ),
+				),
+			) );
 
 			add_action( 'give_insert_payment', array( $this, 'setup_email_notification' ) );
 			add_action( 'give_save_settings_give_settings', array( $this, 'set_notification_status' ), 10, 2 );
@@ -80,7 +79,11 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 			 *
 			 * @since 2.0
 			 */
-			return apply_filters( "give_{$this->id}_get_default_email_subject", $subject, $this );
+			return apply_filters(
+				"give_{$this->config['id']}_get_default_email_subject",
+				$subject,
+				$this
+			);
 		}
 
 
@@ -125,7 +128,11 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 			 *
 			 * @since 2.0
 			 */
-			return apply_filters( "give_{$this->id}_get_default_email_message", $message, $this );
+			return apply_filters(
+				"give_{$this->config['id']}_get_default_email_message",
+				$message,
+				$this
+			);
 		}
 
 
@@ -136,7 +143,7 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 		 * @return string
 		 */
 		public function get_email_message() {
-			$message = give_get_option( "{$this->id}_email_message", $this->get_default_email_message() );
+			$message = give_get_option( "{$this->config['id']}_email_message", $this->get_default_email_message() );
 
 			/**
 			 * Filter the email message.
@@ -144,14 +151,22 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 			 *
 			 * @since 1.0
 			 */
-			$message = apply_filters( 'give_offline_admin_donation_notification', $message, $this->payment->ID );
+			$message = apply_filters(
+				'give_offline_admin_donation_notification',
+				$message,
+				$this->payment->ID
+			);
 
 			/**
 			 * Filter the email message
 			 *
 			 * @since 2.0
 			 */
-			return apply_filters( "give_{$this->id}_get_email_message", $message, $this );
+			return apply_filters(
+				"give_{$this->config['id']}_get_email_message",
+				$message,
+				$this
+			);
 		}
 
 
@@ -179,7 +194,11 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 			 *
 			 * @since 2.0
 			 */
-			return apply_filters( "give_{$this->id}_get_email_attachments", $attachment, $this );
+			return apply_filters(
+				"give_{$this->config['id']}_get_email_attachments",
+				$attachment,
+				$this
+			);
 		}
 
 
@@ -244,10 +263,10 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 			$notification_status = isset( $update_options['gateways']['offline'] ) ? 'enabled' : 'disabled';
 
 			if (
-				empty( $update_options[ "{$this->id}_notification" ] )
-				|| $notification_status !== $update_options[ "{$this->id}_notification" ]
+				empty( $update_options[ "{$this->config['id']}_notification" ] )
+				|| $notification_status !== $update_options[ "{$this->config['id']}_notification" ]
 			) {
-				$update_options[ "{$this->id}_notification" ] = $notification_status;
+				$update_options[ "{$this->config['id']}_notification" ] = $notification_status;
 				update_option( $option_name, $update_options );
 			}
 		}

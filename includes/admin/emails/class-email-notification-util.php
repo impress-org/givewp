@@ -65,7 +65,7 @@ class Give_Email_Notification_Util {
 	 * @return bool
 	 */
 	public static function has_preview( Give_Email_Notification $email ) {
-		return $email->has_preview;
+		return $email->config['has_preview'];
 	}
 
 	/**
@@ -79,7 +79,7 @@ class Give_Email_Notification_Util {
 	 * @return bool
 	 */
 	public static function has_recipient_field( Give_Email_Notification $email ) {
-		return $email->has_recipient_field;
+		return $email->config['has_recipient_field'];
 	}
 
 	/**
@@ -92,8 +92,8 @@ class Give_Email_Notification_Util {
 	 *
 	 * @return bool
 	 */
-	public static function is_notification_status_editable( Give_Email_Notification $email ) {
-		return $email->is_notification_status_editable;
+	public static function notification_status_editable( Give_Email_Notification $email ) {
+		return $email->config['notification_status_editable'];
 	}
 
 	/**
@@ -107,7 +107,7 @@ class Give_Email_Notification_Util {
 	 * @return bool
 	 */
 	public static function is_email_preview_has_header( Give_Email_Notification $email ) {
-		return $email->has_preview_header;
+		return $email->config['has_preview_header'];
 	}
 
 	/**
@@ -121,7 +121,7 @@ class Give_Email_Notification_Util {
 	 * @return bool
 	 */
 	public static function is_email_preview( Give_Email_Notification $email ) {
-		return $email->has_preview;
+		return $email->config['has_preview'];
 	}
 
 

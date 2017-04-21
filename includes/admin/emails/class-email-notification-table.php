@@ -79,14 +79,14 @@ class Give_Email_Notification_Table extends WP_List_Table {
 	 * @return  string
 	 */
 	public function column_name( $email ) {
-		$edit_url = esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=' . $email->get_id() ) );
+		$edit_url = esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=' . $email->config['id'] ) );
 		$actions  = $this->get_row_actions( $email );
 
 		ob_start();
 		?>
-		<a class="row-title" href="<?php echo $edit_url; ?>"><?php echo $email->get_label(); ?></a>
+		<a class="row-title" href="<?php echo $edit_url; ?>"><?php echo $email->config['label']; ?></a>
 
-		<?php if ( $desc = $email->get_description() ) : ?>
+		<?php if ( $desc = $email->config['description'] ) : ?>
 			<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( $desc ); ?>"></span>
 		<?php endif; ?>
 
@@ -144,9 +144,9 @@ class Give_Email_Notification_Table extends WP_List_Table {
 			: "{$default_class} dashicons-no-alt";
 
 		$attributes['data-status'] = "{$notification_status}";
-		$attributes['data-id']     = "{$email->get_id()}";
+		$attributes['data-id']     = "{$email->config['id']}";
 
-		$attributes['data-edit'] = (int) Give_Email_Notification_Util::is_notification_status_editable( $email );
+		$attributes['data-edit'] = (int) Give_Email_Notification_Util::notification_status_editable( $email );
 
 		if ( ! $attributes['data-edit'] ) {
 			$attributes['data-tooltip'] = __( 'You can not edit this notification directly. This will be enable or disable automatically on basis of plugin settings.', 'give' );
@@ -192,7 +192,7 @@ class Give_Email_Notification_Table extends WP_List_Table {
 	public function column_setting( Give_Email_Notification $email ) {
 		ob_start();
 		?>
-		<a class="button button-small" data-tooltip="<?php echo __( 'Edit', 'give' ); ?> <?php echo $email->get_label(); ?>" href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=' . $email->get_id() ) ); ?>"><span class="dashicons dashicons-admin-generic"></span></a>
+		<a class="button button-small" data-tooltip="<?php echo __( 'Edit', 'give' ); ?> <?php echo $email->config['label']; ?>" href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=' . $email->config['id'] ) ); ?>"><span class="dashicons dashicons-admin-generic"></span></a>
 		<?php
 		return ob_get_clean();
 	}
@@ -209,7 +209,7 @@ class Give_Email_Notification_Table extends WP_List_Table {
 	 * @return array
 	 */
 	private function get_row_actions( $email ) {
-		$edit_url = esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=' . $email->get_id() ) );
+		$edit_url = esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=' . $email->config['id'] ) );
 
 		/**
 		 * Filter the row actions

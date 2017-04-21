@@ -31,26 +31,28 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 		 * @since   2.0
 		 */
 		public function init() {
-			$this->id          = 'new-donor-register';
-			$this->label       = __( 'New Donor Register', 'give' );
-			$this->description = __( 'New Donor Register Notification will be sent to recipient(s) when new donor registered.', 'give' );
-
-			$this->has_recipient_field = true;
-			$this->notification_status = 'enabled';
-			$this->has_preview_header  = true;
-			$this->email_tag_context   = 'donor';
-
-			$this->load();
+			$this->load( array(
+				'id'                  => 'new-donor-register',
+				'label'               => __( 'New Donor Register', 'give' ),
+				'description'         => __( 'New Donor Register Notification will be sent to recipient(s) when new donor registered.', 'give' ),
+				'has_recipient_field' => true,
+				'notification_status' => 'enabled',
+				'has_preview_header'  => true,
+				'email_tag_context'   => 'donor',
+			) );
 
 			// Setup action hook.
 			add_action(
-				"give_{$this->get_id()}_email_notification",
+				"give_{$this->config['id']}_email_notification",
 				array( $this, 'setup_email_notification' ),
 				10,
 				2
 			);
 
-			add_filter( "give_email_preview_{$this->get_id()}_header", array( $this, 'email_preview_header' ) );
+			add_filter(
+				"give_email_preview_{$this->config['id']}_header",
+				array( $this, 'email_preview_header' )
+			);
 		}
 
 		/**
@@ -67,7 +69,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 			 * @since 2.0
 			 */
 			return apply_filters(
-				"give_{$this->id}_get_default_email_subject",
+				"give_{$this->config['id']}_get_default_email_subject",
 				sprintf(
 					/* translators: %s: site name */
 					esc_attr__( 'New user registration on your site %s:', 'give' ),
@@ -95,7 +97,11 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 			 *
 			 * @since 2.0
 			 */
-			return apply_filters( "give_{$this->id}_get_default_email_message", $message, $this );
+			return apply_filters(
+				"give_{$this->config['id']}_get_default_email_message",
+				$message,
+				$this
+			);
 		}
 
 

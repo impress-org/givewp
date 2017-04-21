@@ -25,68 +25,36 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 	 * @since       2.0
 	 */
 	abstract class Give_Email_Notification {
-		static private $singleton = array();
+		/**
+		 * Array of instances
+		 *
+		 * @since  2.0
+		 * @access private
+		 * @var array
+		 */
+		private static $singleton = array();
+
 
 		/**
-		 * @var     string $id The email's unique identifier.
+		 * Array of notification settings.
+		 *
+		 * @since  2.0
+		 * @access public
+		 * @var array
 		 */
-		protected $id = '';
-
-		/**
-		 * @var     string $label Name of the email.
-		 * @access  protected
-		 * @since   2.0
-		 */
-		protected $label = '';
-
-		/**
-		 * @var     string $label Name of the email.
-		 * @access  protected
-		 * @since   2.0
-		 */
-		protected $description = '';
-
-		/**
-		 * @var     bool $has_preview Flag to check if email notification has preview setting field.
-		 * @access  protected
-		 * @since   2.0
-		 */
-		public $has_preview = true;
-
-		/**
-		 * @var     bool $has_preview Flag to check if email notification has preview header.
-		 * @access  protected
-		 * @since   2.0
-		 */
-		public $has_preview_header = true;
-
-		/**
-		 * @var     bool $preview_email_tags_values Default value to replace email template tags in preview email.
-		 * @access  protected
-		 * @since   2.0
-		 */
-		protected $preview_email_tags_values = true;
-
-		/**
-		 * @var     bool $has_recipient_field Flag to check if email notification has recipient setting field.
-		 * @access  protected
-		 * @since   2.0
-		 */
-		public $has_recipient_field = false;
-
-		/**
-		 * @var     string $notification_status Flag to check if email notification enabled or not.
-		 * @access  protected
-		 * @since   2.0
-		 */
-		protected $notification_status = 'disabled';
-
-		/**
-		 * @var     string|array $email_tag_context List of template tags which we can add to email notification.
-		 * @access  protected
-		 * @since   2.0
-		 */
-		protected $email_tag_context = 'all';
+		public $config = array(
+			'id'                           => '',
+			'label'                        => '',
+			'description'                  => '',
+			'has_recipient_field'          => false,
+			'notification_status'          => 'disabled',
+			'notification_status_editable' => true,
+			'has_preview'                  => true,
+			'has_preview_header'           => true,
+			'preview_email_tags_values'    => array(),
+			'email_tag_context'            => 'all',
+			'form_metabox_setting'         => true,
+		);
 
 		/**
 		 * @var     string $recipient_email Donor email.
@@ -103,22 +71,6 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		protected $recipient_group_name = '';
 
 		/**
-		 * @var     bool $form_metabox_setting Flag to check if email notification setting add to form or not.
-		 * @access  protected
-		 * @since   2.0
-		 */
-		protected $form_metabox_setting = false;
-
-		/**
-		 * Flag to check if admin can edit notification status or not,
-		 *
-		 * @var     bool $form_metabox_setting Flag to check if email notification setting add to form or not.
-		 * @access  protected
-		 * @since   2.0
-		 */
-		public $is_notification_status_editable = true;
-
-		/**
 		 * Setup email notification.
 		 *
 		 * @since 2.0
@@ -131,7 +83,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Get instance.
 		 *
-		 * @since 2.0
+		 * @since  2.0
 		 * @access public
 		 * @return Give_Email_Notification
 		 */
@@ -149,27 +101,18 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 *
 		 * @access  public
 		 * @since   2.0
+		 *
+		 * @param array $config
 		 */
-		public function load() {
+		public function load( $config ) {
+			// Set notification configuration.
+			$this->config = wp_parse_args( $config, $this->config );
+
 			// Set email preview header status.
-			$this->has_preview_header = $this->has_preview && $this->has_preview_header ? true : false;
+			$this->config['has_preview_header'] = $this->config['has_preview'] && $this->config['has_preview_header'] ? true : false;
 
 			// setup filters.
 			$this->setup_filters();
-		}
-
-
-		/**
-		 * Set key value.
-		 *
-		 * @since  2.0
-		 * @access public
-		 *
-		 * @param $key
-		 * @param $value
-		 */
-		public function __set( $key, $value ) {
-			$this->$key = $value;
 		}
 
 
@@ -181,11 +124,11 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 */
 		private function setup_filters() {
 			// Apply filter only for current email notification section.
-			if ( give_get_current_setting_section() === $this->id ) {
+			if ( give_get_current_setting_section() === $this->config['id'] ) {
 				// Initialize email context for email notification.
-				$this->email_tag_context = apply_filters(
-					"give_{$this->id}_email_tag_context",
-					$this->email_tag_context,
+				$this->config['email_tag_context'] = apply_filters(
+					"give_{$this->config['id']}_email_tag_context",
+					$this->config['email_tag_context'],
 					$this
 				);
 			}
@@ -193,7 +136,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			// Setup setting fields.
 			add_filter( 'give_get_settings_emails', array( $this, 'add_setting_fields' ), 10, 2 );
 
-			if ( $this->form_metabox_setting ) {
+			if ( $this->config['form_metabox_setting'] ) {
 				add_filter(
 					'give_email_notification_options_metabox_fields',
 					array( $this, 'add_metabox_setting_field' ),
@@ -213,7 +156,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @return array
 		 */
 		public function add_section( $sections ) {
-			$sections[ $this->id ] = $this->label;
+			$sections[ $this->config['id'] ] = $this->config['label'];
 
 			return $sections;
 		}
@@ -244,7 +187,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @return  array
 		 */
 		public function add_setting_fields( $settings ) {
-			if ( $this->id === give_get_current_setting_section() ) {
+			if ( $this->config['id'] === give_get_current_setting_section() ) {
 				$settings = $this->get_setting_fields();
 			}
 
@@ -281,8 +224,8 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		public function add_metabox_setting_field( $settings, $post_id ) {
 
 			$settings[] = array(
-				'id'     => $this->id,
-				'title'  => $this->label,
+				'id'     => $this->config['id'],
+				'title'  => $this->config['label'],
 				'fields' => $this->get_setting_fields( $post_id ),
 			);
 
@@ -304,38 +247,6 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			return array();
 		}
 
-		/**
-		 * Get id.
-		 *
-		 * @since  2.0
-		 * @access public
-		 * @return string
-		 */
-		public function get_id() {
-			return $this->id;
-		}
-
-		/**
-		 * Get label.
-		 *
-		 * @since  2.0
-		 * @access public
-		 * @return string
-		 */
-		public function get_label() {
-			return $this->label;
-		}
-
-		/**
-		 * Get description.
-		 *
-		 * @since  2.0
-		 * @access public
-		 * @return string
-		 */
-		public function get_description() {
-			return $this->description;
-		}
 
 		/**
 		 * Get recipient(s).
@@ -349,8 +260,8 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		public function get_recipient() {
 			$recipient = $this->recipient_email;
 
-			if ( ! $recipient && $this->has_recipient_field ) {
-				$recipient = give_get_option( "{$this->id}_recipient" );
+			if ( ! $recipient && $this->config['has_recipient_field'] ) {
+				$recipient = give_get_option( "{$this->config['id']}_recipient" );
 			}
 
 			/**
@@ -358,7 +269,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 *
 			 * @since 2.0
 			 */
-			return apply_filters( "give_{$this->id}_get_recipients", give_check_variable( $recipient, 'empty', Give()->emails->get_from_address() ), $this );
+			return apply_filters( "give_{$this->config['id']}_get_recipients", give_check_variable( $recipient, 'empty', Give()->emails->get_from_address() ), $this );
 		}
 
 		/**
@@ -387,7 +298,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 *
 			 * @since 1.8
 			 */
-			return apply_filters( "give_{$this->id}_get_notification_status", give_get_option( "{$this->id}_notification", $this->notification_status ), $this );
+			return apply_filters( "give_{$this->config['id']}_get_notification_status", give_get_option( "{$this->config['id']}_notification", $this->config['notification_status'] ), $this );
 		}
 
 		/**
@@ -398,14 +309,14 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @return string
 		 */
 		function get_email_subject() {
-			$subject = wp_strip_all_tags( give_get_option( "{$this->id}_email_subject", $this->get_default_email_subject() ) );
+			$subject = wp_strip_all_tags( give_get_option( "{$this->config['id']}_email_subject", $this->get_default_email_subject() ) );
 
 			/**
 			 * Filter the subject.
 			 *
 			 * @since 2.0
 			 */
-			return apply_filters( "give_{$this->id}_get_email_subject", $subject, $this );
+			return apply_filters( "give_{$this->config['id']}_get_email_subject", $subject, $this );
 		}
 
 		/**
@@ -416,14 +327,14 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @return string
 		 */
 		public function get_email_message() {
-			$message = give_get_option( "{$this->id}_email_message", $this->get_default_email_message() );
+			$message = give_get_option( "{$this->config['id']}_email_message", $this->get_default_email_message() );
 
 			/**
 			 * Filter the message.
 			 *
 			 * @since 2.0
 			 */
-			return apply_filters( "give_{$this->id}_get_email_message", $message, $this );
+			return apply_filters( "give_{$this->config['id']}_get_email_message", $message, $this );
 		}
 
 
@@ -488,10 +399,10 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			$email_tags = Give()->email_tags->get_tags();
 
 			// Skip if all email template tags context setup exit.
-			if ( $this->email_tag_context && 'all' !== $this->email_tag_context ) {
-				if ( is_array( $this->email_tag_context ) ) {
+			if ( $this->config['email_tag_context'] && 'all' !== $this->config['email_tag_context'] ) {
+				if ( is_array( $this->config['email_tag_context'] ) ) {
 					foreach ( $email_tags as $index => $email_tag ) {
-						if ( in_array( $email_tag['context'], $this->email_tag_context ) ) {
+						if ( in_array( $email_tag['context'], $this->config['email_tag_context'] ) ) {
 							continue;
 						}
 
@@ -499,7 +410,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 					}
 				} else {
 					foreach ( $email_tags as $index => $email_tag ) {
-						if ( $this->email_tag_context === $email_tag['context'] ) {
+						if ( $this->config['email_tag_context'] === $email_tag['context'] ) {
 							continue;
 						}
 
@@ -519,7 +430,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @return string
 		 */
 		function get_default_email_subject() {
-			return apply_filters( "give_{$this->id}give_get_default_email_subject", '', $this );
+			return apply_filters( "give_{$this->config['id']}give_get_default_email_subject", '', $this );
 		}
 
 		/**
@@ -531,7 +442,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @return string
 		 */
 		function get_default_email_message() {
-			return apply_filters( "give_{$this->id}give_get_default_email_message", '', $this );
+			return apply_filters( "give_{$this->config['id']}give_get_default_email_message", '', $this );
 		}
 
 
@@ -571,7 +482,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 *
 			 * @since 2.0
 			 */
-			return apply_filters( "give_{$this->id}_get_email_attachments", array(), $this );
+			return apply_filters( "give_{$this->config['id']}_get_email_attachments", array(), $this );
 		}
 
 
@@ -625,7 +536,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 *
 			 * @since 2.0
 			 */
-			do_action( "give_{$this->id}_email_send_before", $this );
+			do_action( "give_{$this->config['id']}_email_send_before", $this );
 
 			$attachments = $this->get_email_attachments();
 			$message     = give_do_email_tags( $this->get_email_message(), $email_tag_args );
@@ -639,7 +550,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 *
 			 * @since 2.0
 			 */
-			do_action( "give_{$this->id}_email_send_after", $email_status, $this );
+			do_action( "give_{$this->config['id']}_email_send_after", $email_status, $this );
 
 			return $email_status;
 		}
@@ -671,8 +582,8 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			);
 
 			// Set default values for tags.
-			$this->preview_email_tags_values = wp_parse_args(
-				$this->preview_email_tags_values,
+			$this->config['preview_email_tags_values'] = wp_parse_args(
+				$this->config['preview_email_tags_values'],
 				array(
 					'name'              => $user->display_name,
 					'fullname'          => $user->display_name,
@@ -704,11 +615,11 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 					),
 				)
 			);
-			
+
 			// Decode tags.
-			foreach ( $this->preview_email_tags_values as $preview_tag => $value ) {
-				if ( isset( $this->preview_email_tags_values[ $preview_tag ] ) ) {
-					$message = str_replace( "{{$preview_tag}}", $this->preview_email_tags_values[ $preview_tag ], $message );
+			foreach ( $this->config['preview_email_tags_values'] as $preview_tag => $value ) {
+				if ( isset( $this->config['preview_email_tags_values'][ $preview_tag ] ) ) {
+					$message = str_replace( "{{$preview_tag}}", $this->config['preview_email_tags_values'][ $preview_tag ], $message );
 				}
 			}
 

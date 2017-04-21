@@ -35,22 +35,20 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 		 * @since   2.0
 		 */
 		public function init() {
-			$this->id          = 'offline-donation-instruction';
-			$this->label       = __( 'Offline Donation Instruction', 'give' );
-			$this->description = __( 'Offline Donation Instruction will be sent to recipient(s) when offline donation received.', 'give' );
-
-			$this->notification_status             = 'enabled';
-			$this->recipient_group_name            = __( 'Donor', 'give' );
-			$this->form_metabox_setting            = true;
-			$this->is_notification_status_editable = false;
-			$this->preview_email_tags_values       = array(
-				'payment_method' => esc_html__( 'Offline', 'give' ),
-			);
-
 			// Initialize empty payment.
 			$this->payment = new Give_Payment( 0 );
 
-			$this->load();
+			$this->load( array(
+				'id'                              => 'offline-donation-instruction',
+				'label'                           => __( 'Offline Donation Instruction', 'give' ),
+				'description'                     => __( 'Offline Donation Instruction will be sent to recipient(s) when offline donation received.', 'give' ),
+				'notification_status'             => 'enabled',
+				'form_metabox_setting'            => true,
+				'notification_status_editable' => false,
+				'preview_email_tag_values'        => array(
+					'payment_method' => esc_html__( 'Offline', 'give' ),
+				),
+			) );
 
 			add_action( 'give_insert_payment', array( $this, 'setup_email_notification' ) );
 			add_action( 'give_save_settings_give_settings', array( $this, 'set_notification_status' ), 10, 2 );
@@ -71,7 +69,7 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 			);
 
 			// Customize email content depending on whether the single form has been customized
-			$message = give_get_option( "{$this->id}_email_message", $this->get_default_email_message() );
+			$message = give_get_option( "{$this->config['id']}_email_message", $this->get_default_email_message() );
 
 			if ( give_is_setting_enabled( $post_offline_customization_option, 'enabled' ) ) {
 				$message = get_post_meta( $this->payment->form_id, '_give_offline_donation_email', true );
@@ -82,7 +80,11 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 			 *
 			 * @since 2.0
 			 */
-			$message = apply_filters( "give_{$this->id}_get_email_message", $message, $this );
+			$message = apply_filters(
+				"give_{$this->config['id']}_get_email_message",
+				$message,
+				$this
+			);
 
 			return $message;
 		}
@@ -101,7 +103,7 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 			);
 
 			$subject = give_get_option(
-				"{$this->id}_email_subject",
+				"{$this->config['id']}_email_subject",
 				$this->get_default_email_subject()
 			);
 
@@ -114,7 +116,11 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 			 *
 			 * @since 2.0
 			 */
-			$subject = apply_filters( "give_{$this->id}_get_email_subject", $subject, $this );
+			$subject = apply_filters(
+				"give_{$this->config['id']}_get_email_subject",
+				$subject,
+				$this
+			);
 
 			return $subject;
 		}
@@ -144,7 +150,11 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 			 *
 			 * @since 2.0
 			 */
-			$attachment = apply_filters( "give_{$this->id}_get_email_attachment", $attachment, $this );
+			$attachment = apply_filters(
+				"give_{$this->config['id']}_get_email_attachment",
+				$attachment,
+				$this
+			);
 
 			return $attachment;
 		}
@@ -162,7 +172,11 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 			 *
 			 * @since 2.0
 			 */
-			return apply_filters( "give_{$this->id}_get_default_email_subject", esc_attr__( '{donation} - Offline Donation Instructions', 'give' ), $this );
+			return apply_filters(
+				"give_{$this->config['id']}_get_default_email_subject",
+				esc_attr__( '{donation} - Offline Donation Instructions', 'give' ),
+				$this
+			);
 		}
 
 
@@ -184,7 +198,11 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 			 *
 			 * @param string $message
 			 */
-			return apply_filters( "give_{$this->id}_get_default_email_message", $message, $this );
+			return apply_filters(
+				"give_{$this->config['id']}_get_default_email_message",
+				$message,
+				$this
+			);
 		}
 
 
@@ -202,14 +220,24 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 			 *
 			 * @since 1.7
 			 */
-			$from_name = apply_filters( 'give_donation_from_name', Give()->emails->get_from_name(), $this->payment->ID, $this->payment->payment_meta );
+			$from_name = apply_filters(
+				'give_donation_from_name',
+				Give()->emails->get_from_name(),
+				$this->payment->ID,
+				$this->payment->payment_meta
+			);
 
 			/**
 			 * Filters the from email.
 			 *
 			 * @since 1.7
 			 */
-			$from_email = apply_filters( 'give_donation_from_address', Give()->emails->get_from_address(), $this->payment->ID, $this->payment->payment_meta );
+			$from_email = apply_filters(
+				'give_donation_from_address',
+				Give()->emails->get_from_address(),
+				$this->payment->ID,
+				$this->payment->payment_meta
+			);
 
 			Give()->emails->__set( 'from_name', $from_name );
 			Give()->emails->__set( 'from_email', $from_email );
@@ -258,10 +286,10 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 			$notification_status = isset( $update_options['gateways']['offline'] ) ? 'enabled' : 'disabled';
 
 			if (
-				empty( $update_options[ "{$this->id}_notification" ] )
-				|| $notification_status !== $update_options[ "{$this->id}_notification" ]
+				empty( $update_options[ "{$this->config['id']}_notification" ] )
+				|| $notification_status !== $update_options[ "{$this->config['id']}_notification" ]
 			) {
-				$update_options[ "{$this->id}_notification" ] = $notification_status;
+				$update_options[ "{$this->config['id']}_notification" ] = $notification_status;
 				update_option( $option_name, $update_options );
 			}
 		}

@@ -81,15 +81,18 @@ class Give_Email_Notifications {
 		foreach ( $this->get_email_notifications() as $email ) {
 			// Add section.
 			add_filter( 'give_get_sections_emails', array( $email, 'add_section' ) );
-			add_filter( "give_hide_section_{$email->get_id()}_on_emails_page", array( $email, 'hide_section' ) );
+			add_filter( "give_hide_section_{$email->config['id']}_on_emails_page", array( $email, 'hide_section' ) );
 
 			if ( ! Give_Email_Notification_Util::is_email_preview_has_header( $email ) ) {
 				continue;
 			}
 
-			add_action( "give_{$email->get_id()}_email_preview", array( $this, 'email_preview_header' ) );
-			add_filter( "give_{$email->get_id()}_email_preview_data", array( $this, 'email_preview_data' ) );
-			add_filter( "give_{$email->get_id()}_email_preview_message", array( $this, 'email_preview_message' ), 1, 2 );
+			add_action( "give_{$email->config['id']}_email_preview", array( $this, 'email_preview_header' ) );
+			add_filter( "give_{$email->config['id']}_email_preview_data", array( $this, 'email_preview_data' ) );
+			add_filter( "give_{$email->config['id']}_email_preview_message", array(
+				$this,
+				'email_preview_message',
+			), 1, 2 );
 		}
 	}
 
@@ -243,7 +246,7 @@ class Give_Email_Notifications {
 
 		/* @var Give_Email_Notification $email */
 		foreach ( $this->get_email_notifications() as $email ) {
-			if ( $email_type !== $email->get_id() ) {
+			if ( $email_type !== $email->config['id'] ) {
 				continue;
 			}
 
@@ -313,7 +316,7 @@ class Give_Email_Notifications {
 		 *
 		 * @param Give_Email_Notification $email
 		 */
-		$email_preview_header = apply_filters( "give_email_preview_{$email->get_id()}_header", $email_preview_header, $email );
+		$email_preview_header = apply_filters( "give_email_preview_{$email->config['id']}_header", $email_preview_header, $email );
 
 		echo $email_preview_header;
 	}
@@ -330,7 +333,7 @@ class Give_Email_Notifications {
 	 */
 	public function email_preview_data( $email_preview_data ) {
 		$email_preview_data['payment_id'] = absint( give_check_variable( give_clean( $_GET ), 'isset', 0, 'preview_id' ) );
-		$email_preview_data['user_id']   = absint( give_check_variable( give_clean( $_GET ), 'isset', 0, 'user_id' ) );
+		$email_preview_data['user_id']    = absint( give_check_variable( give_clean( $_GET ), 'isset', 0, 'user_id' ) );
 
 		return $email_preview_data;
 	}
@@ -378,7 +381,7 @@ class Give_Email_Notifications {
 
 		/* @var Give_Email_Notification $email */
 		foreach ( $this->get_email_notifications() as $email ) {
-			if ( $email_type === $email->get_id() && Give_Email_Notification_Util::is_email_preview( $email ) ) {
+			if ( $email_type === $email->config['id'] && Give_Email_Notification_Util::is_email_preview( $email ) ) {
 				$email->send_preview_email();
 				break;
 			}

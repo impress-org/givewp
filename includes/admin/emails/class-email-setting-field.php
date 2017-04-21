@@ -81,7 +81,7 @@ class Give_Email_Setting_Field {
 		if ( ! self::has_section_end( $setting ) ) {
 			// Add section end field.
 			$setting[] = array(
-				'id'   => "give_title_email_settings_{$email->get_id()}",
+				'id'   => "give_title_email_settings_{$email->config['id']}",
 				'type' => 'sectionend',
 			);
 		}
@@ -102,12 +102,12 @@ class Give_Email_Setting_Field {
 	 */
 	public static function get_default_setting_fields( Give_Email_Notification $email, $form_id = 0 ) {
 		$settings[] = array(
-			'id'    => "give_title_email_settings_{$email->get_id()}",
+			'id'    => "give_title_email_settings_{$email->config['id']}",
 			'type'  => 'title',
-			'title' => $email->get_label(),
+			'title' => $email->config['label'],
 		);
 
-		if ( Give_Email_Notification_Util::is_notification_status_editable( $email ) ) {
+		if ( Give_Email_Notification_Util::notification_status_editable( $email ) ) {
 			$settings[] = self::get_notification_status_field( $email, $form_id );
 		}
 
@@ -150,7 +150,7 @@ class Give_Email_Setting_Field {
 		return array(
 			'name'    => esc_html__( 'Notification', 'give' ),
 			'desc'    => esc_html__( 'Choose option if you want to send email notification or not.', 'give' ),
-			'id'      => "{$email->get_id()}_notification",
+			'id'      => "{$email->config['id']}_notification",
 			'type'    => 'radio_inline',
 			'default' => $default_value,
 			'options' => $option,
@@ -170,7 +170,7 @@ class Give_Email_Setting_Field {
 	 */
 	public static function get_email_subject_field( Give_Email_Notification $email, $form_id = 0 ) {
 		return array(
-			'id'      => "{$email->get_id()}_email_subject",
+			'id'      => "{$email->config['id']}_email_subject",
 			'name'    => esc_html__( 'Email Subject', 'give' ),
 			'desc'    => esc_html__( 'Enter the subject line for email.', 'give' ),
 			'default' => $email->get_default_email_subject(),
@@ -191,7 +191,7 @@ class Give_Email_Setting_Field {
 	 */
 	public static function get_email_message_field( Give_Email_Notification $email, $form_id = 0 ) {
 		return array(
-			'id'      => "{$email->get_id()}_email_message",
+			'id'      => "{$email->config['id']}_email_message",
 			'name'    => esc_html__( 'Email message', 'give' ),
 			'desc'    => $email->get_email_message_field_description(),
 			'type'    => 'wysiwyg',
@@ -213,7 +213,7 @@ class Give_Email_Setting_Field {
 	 */
 	public static function get_recipient_setting_field( Give_Email_Notification $email, $form_id = 0 ) {
 		return array(
-			'id'               => "{$email->get_id()}_recipient",
+			'id'               => "{$email->config['id']}_recipient",
 			'name'             => esc_html__( 'Email Recipients', 'give' ),
 			'desc'             => __( 'Enter the email address(es) that should receive a notification anytime a donation is made.', 'give' ),
 			'type'             => 'email',
@@ -238,7 +238,7 @@ class Give_Email_Setting_Field {
 		return array(
 			'name' => esc_html__( 'Preview Email', 'give' ),
 			'desc' => esc_html__( 'Click the buttons to preview emails.', 'give' ),
-			'id'   => "{$email->get_id()}_preview_buttons",
+			'id'   => "{$email->config['id']}_preview_buttons",
 			'type' => 'email_preview_buttons',
 		);
 	}

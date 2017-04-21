@@ -35,20 +35,19 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 		 * @since   2.0
 		 */
 		public function init() {
-			$this->id          = 'email-access';
-			$this->label       = __( 'Email access', 'give' );
-			$this->description = __( 'Email Access Notification will be sent to recipient(s) when want to access their donation history using only email.', 'give' );
+			$this->recipient_group_name = __( 'Donor', 'give' );
 
-			// $this->has_recipient_field = true;
-			$this->recipient_group_name            = __( 'Donor', 'give' );
-			$this->notification_status             = give_get_option( 'email_access' );
-			$this->form_metabox_setting            = true;
-			$this->is_notification_status_editable = false;
-			$this->email_tag_context               = 'donor';
+			$this->load( array(
+				'id'                           => 'email-access',
+				'label'                        => __( 'Email access', 'give' ),
+				'description'                  => __( 'Email Access Notification will be sent to recipient(s) when want to access their donation history using only email.', 'give' ),
+				'notification_status'          => 'enabled',
+				'form_metabox_setting'         => true,
+				'notification_status_editable' => false,
+				'email_tag_context'            => 'donor',
+			) );
 
-			$this->load();
-
-			add_action( "give_{$this->id}_email_notification", array( $this, 'setup_email_notification' ) );
+			add_action( "give_{$this->config['id']}_email_notification", array( $this, 'setup_email_notification' ) );
 			add_action( 'give_save_settings_give_settings', array( $this, 'set_notification_status' ), 10, 2 );
 		}
 
@@ -61,7 +60,7 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 		 * @return string
 		 */
 		public function get_email_subject() {
-			$subject = wp_strip_all_tags( give_get_option( "{$this->id}_email_subject", $this->get_default_email_subject() ) );
+			$subject = wp_strip_all_tags( give_get_option( "{$this->config['id']}_email_subject", $this->get_default_email_subject() ) );
 
 			/**
 			 * Filters the donation notification subject.
@@ -76,7 +75,7 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 			 *
 			 * @since 2.0
 			 */
-			$subject = apply_filters( "give_{$this->id}_get_email_subject", $subject, $this );
+			$subject = apply_filters( "give_{$this->config['id']}_get_email_subject", $subject, $this );
 
 			return $subject;
 		}
@@ -90,7 +89,7 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 		 * @return string
 		 */
 		public function get_email_message() {
-			$message = give_get_option( "{$this->id}_email_message", $this->get_default_email_message() );
+			$message = give_get_option( "{$this->config['id']}_email_message", $this->get_default_email_message() );
 
 			/**
 			 * Filter the email message
@@ -105,7 +104,7 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 			 *
 			 * @since 2.0
 			 */
-			$message = apply_filters( "give_{$this->id}_get_default_email_message", $message, $this );
+			$message = apply_filters( "give_{$this->config['id']}_get_default_email_message", $message, $this );
 
 			return $message;
 		}
@@ -134,7 +133,7 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 			 *
 			 * @since 2.0
 			 */
-			$attachments = apply_filters( "give_{$this->id}_get_email_attachments", $attachments, $this );
+			$attachments = apply_filters( "give_{$this->config['id']}_get_email_attachments", $attachments, $this );
 
 			return $attachments;
 		}
@@ -152,7 +151,7 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 			 *
 			 * @since 2.0
 			 */
-			return apply_filters( "give_{$this->id}_get_default_email_subject", sprintf( __( 'Your Access Link to %s', 'give' ), get_bloginfo( 'name' ) ), $this );
+			return apply_filters( "give_{$this->config['id']}_get_default_email_subject", sprintf( __( 'Your Access Link to %s', 'give' ), get_bloginfo( 'name' ) ), $this );
 		}
 
 
@@ -178,7 +177,7 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 			 *
 			 * @param string $message
 			 */
-			return apply_filters( "give_{$this->id}_get_default_email_message", $message, $this );
+			return apply_filters( "give_{$this->config['id']}_get_default_email_message", $message, $this );
 		}
 
 
@@ -272,9 +271,9 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 
 			if (
 				! empty( $update_options['email_access'] )
-				&& $update_options['email_access'] !== $update_options[ "{$this->id}_notification" ]
+				&& $update_options['email_access'] !== $update_options[ "{$this->config['id']}_notification" ]
 			) {
-				$update_options[ "{$this->id}_notification" ] = $update_options['email_access'];
+				$update_options[ "{$this->config['id']}_notification" ] = $update_options['email_access'];
 				update_option( $option_name, $update_options );
 			}
 		}
