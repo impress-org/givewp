@@ -107,7 +107,7 @@ class Give_Email_Setting_Field {
 			'title' => $email->config['label'],
 		);
 
-		if ( Give_Email_Notification_Util::notification_status_editable( $email ) ) {
+		if ( Give_Email_Notification_Util::is_notification_status_editable( $email ) ) {
 			$settings[] = self::get_notification_status_field( $email, $form_id );
 		}
 

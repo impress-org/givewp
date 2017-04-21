@@ -184,48 +184,6 @@ class Give_Email_Notifications {
 
 
 	/**
-	 * Check if admin preview email or not
-	 *
-	 * @since  2.0
-	 * @access public
-	 * @return bool   $is_preview
-	 */
-	public function is_preview_email() {
-		$is_preview = false;
-
-		if (
-			current_user_can( 'manage_give_settings' )
-			&& ! empty( $_GET['give_action'] )
-			&& 'preview_email' === $_GET['give_action']
-		) {
-			$is_preview = true;
-		}
-
-		return $is_preview;
-	}
-
-	/**
-	 * Check if admin preview email or not
-	 *
-	 * @since  2.0
-	 * @access public
-	 * @return bool   $is_preview
-	 */
-	public function is_send_preview_email() {
-		$is_preview = false;
-
-		if (
-			current_user_can( 'manage_give_settings' )
-			&& ! empty( $_GET['give_action'] )
-			&& 'send_preview_email' === $_GET['give_action']
-		) {
-			$is_preview = true;
-		}
-
-		return $is_preview;
-	}
-
-	/**
 	 * Displays the email preview
 	 *
 	 * @since  2.0
@@ -234,7 +192,7 @@ class Give_Email_Notifications {
 	 */
 	public function preview_email() {
 		// Bailout.
-		if ( ! $this->is_preview_email() ) {
+		if ( ! Give_Email_Notification_Util::can_preview_email() ) {
 			return false;
 		}
 
@@ -369,7 +327,7 @@ class Give_Email_Notifications {
 	 */
 	public function send_preview_email() {
 		// Bailout.
-		if ( ! $this->is_send_preview_email() ) {
+		if ( ! Give_Email_Notification_Util::can_send_preview_email() ) {
 			return false;
 		}
 

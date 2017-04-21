@@ -92,7 +92,7 @@ class Give_Email_Notification_Util {
 	 *
 	 * @return bool
 	 */
-	public static function notification_status_editable( Give_Email_Notification $email ) {
+	public static function is_notification_status_editable( Give_Email_Notification $email ) {
 		return $email->config['notification_status_editable'];
 	}
 
@@ -137,5 +137,47 @@ class Give_Email_Notification_Util {
 	 */
 	public static function is_email_notification_active( Give_Email_Notification $email ) {
 		return give_is_setting_enabled( $email->get_notification_status() );
+	}
+
+	/**
+	 * Check if admin preview email or not
+	 *
+	 * @since  2.0
+	 * @access public
+	 * @return bool   $is_preview
+	 */
+	public static function can_preview_email() {
+		$is_preview = false;
+
+		if (
+			current_user_can( 'manage_give_settings' )
+			&& ! empty( $_GET['give_action'] )
+			&& 'preview_email' === $_GET['give_action']
+		) {
+			$is_preview = true;
+		}
+
+		return $is_preview;
+	}
+
+	/**
+	 * Check if admin preview email or not
+	 *
+	 * @since  2.0
+	 * @access public
+	 * @return bool   $is_preview
+	 */
+	public static function can_send_preview_email() {
+		$is_preview = false;
+
+		if (
+			current_user_can( 'manage_give_settings' )
+			&& ! empty( $_GET['give_action'] )
+			&& 'send_preview_email' === $_GET['give_action']
+		) {
+			$is_preview = true;
+		}
+
+		return $is_preview;
 	}
 }
