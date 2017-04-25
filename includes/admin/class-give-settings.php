@@ -895,9 +895,7 @@ function give_delete_option( $key = '' ) {
 
 	// Next let's try to update the value
 	if ( isset( $options[ $key ] ) ) {
-
 		unset( $options[ $key ] );
-
 	}
 
 	$did_update = update_option( 'give_settings', $options );
