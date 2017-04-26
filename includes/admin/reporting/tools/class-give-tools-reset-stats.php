@@ -193,8 +193,6 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 			return true;
 		} else {
 			update_option( 'give_earnings_total', 0 );
-
-			Give_Cache::delete( Give_Cache::get_key('give_earnings_total' ) );
 			Give_Cache::delete( Give_Cache::get_key('give_estimated_monthly_stats' ) );
 
 			$this->delete_data( 'give_temp_reset_ids' );

@@ -249,6 +249,9 @@ add_action( 'give_weekly_scheduled_events', 'give_mark_abandoned_donations' );
  * @return void
  */
 function give_refresh_thismonth_stat_transients( $payment_ID ) {
+	// Monthly stats.
+	Give_Cache::delete( Give_Cache::get_key( 'give_estimated_monthly_stats' ) );
+
 	// @todo: Refresh only range related stat cache
 	give_delete_donation_stats();
 }

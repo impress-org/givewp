@@ -1067,12 +1067,6 @@ function give_is_terms_enabled( $form_id ) {
  * @return WP_Error|bool
  */
 function give_delete_donation_stats( $date_range = '', $args = array() ) {
-	// Monthly stats.
-	Give_Cache::delete( Give_Cache::get_key( 'give_estimated_monthly_stats' ) );
-
-	// Total earning.
-	Give_Cache::delete( Give_Cache::get_key( 'give_earnings_total' ) );
-
 	// Delete all cache.
 	$status = Give_Cache::delete( Give_Cache::get_options_like( 'give_stats' ) );
 

@@ -840,6 +840,12 @@ function give_run_refresh_reports_transients( $data ) {
 		return;
 	}
 
+	// Monthly stats.
+	Give_Cache::delete( Give_Cache::get_key( 'give_estimated_monthly_stats' ) );
+
+	// Total earning.
+	delete_option( 'give_earnings_total' );
+
 	// @todo: Refresh only range related stat cache
 	give_delete_donation_stats();
 }

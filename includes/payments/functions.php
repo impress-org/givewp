@@ -41,7 +41,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @type string $meta_key Custom field key. Default is null.
  * }
  *
- * @return object $payments Payments retrieved from the database
+ * @return array $payments Payments retrieved from the database
  */
 function give_get_payments( $args = array() ) {
 
@@ -856,50 +856,40 @@ function give_get_total_sales() {
  */
 function give_get_total_earnings() {
 
-	$total = get_option( 'give_earnings_total', false );
+	$total = get_option( 'give_earnings_total', 0 );
 
-	// If no total stored in DB, use old method of calculating total earnings.
-	if ( false === $total ) {
-
+	// Calculate total earnings.
+	if ( ! $total ) {
 		global $wpdb;
 
-		$total = Give_Cache::get( 'give_earnings_total', true );
+		$total = (float) 0;
 
-		if ( false === $total ) {
+		$args = apply_filters( 'give_get_total_earnings_args', array(
+			'offset' => 0,
+			'number' => - 1,
+			'status' => array( 'publish' ),
+			'fields' => 'ids',
+		) );
 
-			$total = (float) 0;
+		$payments = give_get_payments( $args );
+		if ( $payments ) {
 
-			$args = apply_filters( 'give_get_total_earnings_args', array(
-				'offset' => 0,
-				'number' => - 1,
-				'status' => array( 'publish' ),
-				'fields' => 'ids',
-			) );
-
-			$payments = give_get_payments( $args );
-			if ( $payments ) {
-
-				/**
-				 * If performing a donation, we need to skip the very last payment in the database,
-				 * since it calls give_increase_total_earnings() on completion,
-				 * which results in duplicated earnings for the very first donation.
-				 */
-				if ( did_action( 'give_update_payment_status' ) ) {
-					array_pop( $payments );
-				}
-
-				if ( ! empty( $payments ) ) {
-					$payments = implode( ',', $payments );
-					$total    += $wpdb->get_var( "SELECT SUM(meta_value) FROM $wpdb->postmeta WHERE meta_key = '_give_payment_total' AND post_id IN({$payments})" );
-				}
+			/**
+			 * If performing a donation, we need to skip the very last payment in the database,
+			 * since it calls give_increase_total_earnings() on completion,
+			 * which results in duplicated earnings for the very first donation.
+			 */
+			if ( did_action( 'give_update_payment_status' ) ) {
+				array_pop( $payments );
 			}
 
-			// Cache results for 1 day. This cache is cleared automatically when a payment is made.
-			Give_Cache::set( 'give_earnings_total', $total, DAY_IN_SECONDS, true );
-
-			// Store the total for the first time.
-			update_option( 'give_earnings_total', $total );
+			if ( ! empty( $payments ) ) {
+				$payments = implode( ',', $payments );
+				$total    += $wpdb->get_var( "SELECT SUM(meta_value) FROM $wpdb->postmeta WHERE meta_key = '_give_payment_total' AND post_id IN({$payments})" );
+			}
 		}
+
+		update_option( 'give_earnings_total', $total, 'no' );
 	}
 
 	if ( $total < 0 ) {
