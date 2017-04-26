@@ -90,6 +90,7 @@ add_action( 'init', 'give_post_actions' );
  * @return void
  */
 function give_connect_donor_to_wpuser( $user_id, $user_data ){
+	/* @var Give_Customer $donor */
 	$donor = new Give_Customer( $user_data['user_email'] );
 
 	// Validate donor id and check if do nor is already connect to wp user or not.
