@@ -149,32 +149,6 @@ add_action( 'give_update_payment_status', 'give_record_status_change', 100, 3 );
 
 
 /**
- * Clear User History Cache
- *
- * Flushes the current user's donation history transient when a payment status
- * is updated.
- *
- * @since  1.0
- *
- * @param  int    $payment_id The ID number of the payment.
- * @param  string $new_status The status of the payment, probably "publish".
- * @param  string $old_status The status of the payment prior to being marked as "complete", probably "pending".
- *
- * @return void
- */
-function give_clear_user_history_cache( $payment_id, $new_status, $old_status ) {
-
-	$payment = new Give_Payment( $payment_id );
-
-	if ( ! empty( $payment->user_id ) ) {
-		delete_transient( 'give_user_' . $payment->user_id . '_purchases' );
-	}
-
-}
-
-add_action( 'give_update_payment_status', 'give_clear_user_history_cache', 10, 3 );
-
-/**
  * Update Old Payments Totals
  *
  * Updates all old payments, prior to 1.2, with new meta for the total donation amount.
