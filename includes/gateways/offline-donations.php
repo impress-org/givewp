@@ -241,8 +241,8 @@ function give_offline_send_admin_notice( $payment_id = 0 ) {
 	$admin_subject = apply_filters( 'give_offline_admin_donation_notification_subject', __( 'New Pending Donation', 'give' ), $payment_id );
 
 	$admin_message = __( 'Dear Admin,', 'give' ) . "\n\n";
-	$admin_message .= __( 'An offline donation has been made on your website:', 'give' ) . ' ' . get_bloginfo( 'name' ) . ' ';
-	$admin_message .= __( 'Hooray! The donation is in a pending status and is awaiting payment. Donation instructions have been emailed to the donor. Once you receive payment, be sure to mark the donation as complete using the link below.', 'give' ) . "\n\n";
+	$admin_message .= sprintf(__( 'A new offline donation has been made on your website for %s.', 'give' ), $amount) . "\n\n";
+	$admin_message .= __( 'The donation is in a pending status and is awaiting payment. Donation instructions have been emailed to the donor. Once you receive payment, be sure to mark the donation as complete using the link below.', 'give' ) . "\n\n";
 
 
 	$admin_message .= '<strong>' . __( 'Donor:', 'give' ) . '</strong> {fullname}' . "\n";
@@ -251,7 +251,7 @@ function give_offline_send_admin_notice( $payment_id = 0 ) {
 	$admin_message .= sprintf(
 		                  '<a href="%1$s">%2$s</a>',
 		                  admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $payment_id ),
-		                  __( 'Click Here to View and/or Update Donation Details', 'give' )
+		                  __( 'View Donation Details &raquo;', 'give' )
 	                  ) . "\n\n";
 
 	$admin_message = apply_filters( 'give_offline_admin_donation_notification', $admin_message, $payment_id );
@@ -262,6 +262,8 @@ function give_offline_send_admin_notice( $payment_id = 0 ) {
 
 	//Send Email
 	$emails = Give()->emails;
+	$emails->__set( 'heading', __( 'New Offline Donation', 'give' ) );
+
 	if ( ! empty( $admin_headers ) ) {
 		$emails->__set( 'headers', $admin_headers );
 	}
