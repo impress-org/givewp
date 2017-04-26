@@ -840,12 +840,8 @@ function give_run_refresh_reports_transients( $data ) {
 		return;
 	}
 
-	//Delete transients
-	Give_Cache::delete( Give_Cache::get_key( 'give_estimated_monthly_stats' ) );
-	Give_Cache::delete( Give_Cache::get_key( 'give_earnings_total' ) );
-	delete_transient( md5( 'give_earnings_this_monththis_month' ) );
-	delete_transient( md5( 'give_earnings_todaytoday' ) );
-
+	// @todo: Refresh only range related stat cache
+	give_delete_donation_stats();
 }
 
 add_action( 'give_refresh_reports_transients', 'give_run_refresh_reports_transients' );

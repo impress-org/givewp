@@ -82,11 +82,8 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 	give_increase_earnings( $form_id, $amount );
 	give_increase_purchase_count( $form_id );
 
-	// Clear the total earnings cache.
-	Give_Cache::delete( Give_Cache::get_key( 'give_earnings_total' ) );
-	// Clear the This Month earnings (this_monththis_month is NOT a typo).
-	delete_transient( md5( 'give_earnings_this_monththis_month' ) );
-	delete_transient( md5( 'give_earnings_todaytoday' ) );
+	// @todo: Refresh only range related stat cache
+	give_delete_donation_stats();
 
 	// Increase the donor's donation stats.
 	$customer = new Give_Customer( $customer_id );
@@ -252,14 +249,8 @@ add_action( 'give_weekly_scheduled_events', 'give_mark_abandoned_donations' );
  * @return void
  */
 function give_refresh_thismonth_stat_transients( $payment_ID ) {
-
-	/* @var Give_Payment_Stats $stats Give_Payment_Stats class object.  */
-	$stats = new Give_Payment_Stats();
-
-	// Delete transients.
-	Give_Cache::delete( Give_Cache::get_key( 'give_estimated_monthly_stats' ) );
-	Give_Cache::delete( Give_Cache::get_key('give_earnings_total' ) );
-	Give_Cache::delete( Give_Cache::get_key( $stats->get_earnings_cache_key( 0, 'this_month' ) ) );
+	// @todo: Refresh only range related stat cache
+	give_delete_donation_stats();
 }
 
 add_action( 'save_post_give_payment', 'give_refresh_thismonth_stat_transients' );

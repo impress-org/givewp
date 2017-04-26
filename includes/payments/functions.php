@@ -305,8 +305,9 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
 
 		// Only decrease earnings if they haven't already been decreased (or were never increased for this payment).
 		give_decrease_total_earnings( $amount );
-		// Clear the This Month earnings (this_monththis_month is NOT a typo).
-		delete_transient( md5( 'give_earnings_this_monththis_month' ) );
+
+		// @todo: Refresh only range related stat cache
+		give_delete_donation_stats();
 
 		if ( $customer->id && $update_customer ) {
 
