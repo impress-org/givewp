@@ -46,7 +46,6 @@ function give_get_actions() {
 }
 
 add_action( 'init', 'give_get_actions' );
-add_action( 'admin_init', 'give_get_actions' );
 
 /**
  * Hooks Give actions, when present in the $_POST superglobal. Every give_action
@@ -81,7 +80,6 @@ function give_post_actions() {
 }
 
 add_action( 'init', 'give_post_actions' );
-add_action( 'admin_init', 'give_post_actions' );
 
 /**
  * Connect WordPress user with Donor.
