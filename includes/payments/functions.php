@@ -852,14 +852,16 @@ function give_get_total_sales() {
  *
  * @since  1.0
  *
+ * @param bool $recalculate Recalculate earnings forcefully.
+ *
  * @return float $total Total earnings.
  */
-function give_get_total_earnings() {
+function give_get_total_earnings( $recalculate = false ) {
 
 	$total = get_option( 'give_earnings_total', 0 );
 
 	// Calculate total earnings.
-	if ( ! $total ) {
+	if ( ! $total || $recalculate ) {
 		global $wpdb;
 
 		$total = (float) 0;
