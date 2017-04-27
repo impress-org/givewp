@@ -113,6 +113,7 @@ class Give_Email_Setting_Field {
 
 		$settings[] = self::get_email_subject_field( $email, $form_id );
 		$settings[] = self::get_email_message_field( $email, $form_id );
+		$settings[] = self::get_email_content_type_field( $email, $form_id );
 
 		return $settings;
 	}
@@ -196,6 +197,31 @@ class Give_Email_Setting_Field {
 			'desc'    => $email->get_email_message_field_description(),
 			'type'    => 'wysiwyg',
 			'default' => $email->get_default_email_message(),
+		);
+	}
+
+	/**
+	 * Get email message setting field.
+	 *
+	 * @since  2.0
+	 * @access static
+	 *
+	 * @param Give_Email_Notification $email
+	 * @param int                     $form_id
+	 *
+	 * @return array
+	 */
+	public static function get_email_content_type_field( Give_Email_Notification $email, $form_id = 0 ) {
+		return array(
+			'id'      => "{$email->config['id']}_email_content_type",
+			'name'    => esc_html__( 'Email Content Type', 'give' ),
+			'desc'    => __( 'Choose email content type.', 'give' ),
+			'type'    => 'select',
+			'options' => array(
+				'text/html'  => Give_Email_Notification_Util::get_formatted_email_type( 'text/html' ),
+				'text/plain' => Give_Email_Notification_Util::get_formatted_email_type( 'text/plain' ),
+			),
+			'default' => $email->config['content_type'],
 		);
 	}
 
