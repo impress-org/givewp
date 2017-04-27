@@ -269,3 +269,5 @@ class Give_Email_Setting_Field {
 		);
 	}
 }
+
+// @todo: add per email sender options
