@@ -180,4 +180,24 @@ class Give_Email_Notification_Util {
 
 		return $is_preview;
 	}
+
+
+	/**
+	 * Get formatted text for email content type.
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param string $content_type
+	 *
+	 * @return string
+	 */
+	public static function get_formatted_email_type( $content_type ) {
+		$email_contents = array(
+			'text/html'  => __( 'HTML', 'give' ),
+			'text/plain' => __( 'Plain', 'give' ),
+		);
+
+		return $email_contents[ $content_type ];
+	}
 }
