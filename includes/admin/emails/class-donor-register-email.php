@@ -34,11 +34,12 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 			$this->recipient_group_name = __( 'Donor', 'give' );
 
 			$this->load( array(
-				'id'                  => 'donor-register',
-				'label'               => __( 'Donor Register', 'give' ),
-				'description'         => __( 'Donor Register Notification will be sent to donor when new donor registered.', 'give' ),
-				'notification_status' => 'enabled',
-				'email_tag_contex'    => 'donor',
+				'id'                   => 'donor-register',
+				'label'                => __( 'Donor Register', 'give' ),
+				'description'          => __( 'Donor Register Notification will be sent to donor when new donor registered.', 'give' ),
+				'notification_status'  => 'enabled',
+				'email_tag_contex'     => 'donor',
+				'form_metabox_setting' => false,
 			) );
 
 			// Setup action hook.
@@ -64,7 +65,7 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 		 */
 		public function get_default_email_subject() {
 			return sprintf(
-				/* translators: %s: site name */
+			/* translators: %s: site name */
 				esc_attr__( '[%s] Your username and password', 'give' ),
 				get_bloginfo( 'name' )
 			);
@@ -81,9 +82,9 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 		function get_default_email_message() {
 			$message = esc_attr__( 'Username: {username}', 'give' ) . "\r\n";
 			$message .= sprintf(
-				esc_attr__( 'Password: %s', 'give' ),
-				esc_attr__( '[Password entered during donation]', 'give' )
-			) . "\r\n";
+				            esc_attr__( 'Password: %s', 'give' ),
+				            esc_attr__( '[Password entered during donation]', 'give' )
+			            ) . "\r\n";
 
 			$message .= '<a href="' . wp_login_url() . '"> ' . esc_attr__( 'Click Here to Login &raquo;', 'give' ) . '</a>' . "\r\n";
 
