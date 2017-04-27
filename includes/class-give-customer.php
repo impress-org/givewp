@@ -99,7 +99,7 @@ class Give_Customer {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @var    array
+	 * @var    string
 	 */
 	public $payment_ids;
 

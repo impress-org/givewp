@@ -691,7 +691,11 @@ if ( ! class_exists( 'Give_License' ) ) :
 			$addon_license_key_in_subscriptions = ! empty( $addon_license_key_in_subscriptions ) ? $addon_license_key_in_subscriptions : array();
 			$messages = array();
 
-			if( empty( $this->license ) && empty( $showed_invalid_message ) ) {
+			if(
+				empty( $this->license )
+				&& ! $this->__is_notice_dismissed( 'general' )
+			    && empty( $showed_invalid_message )
+			) {
 				$messages['general'] = sprintf(
 					__( 'You have invalid or expired license keys for Give Addon. Please go to the <a href="%s">licenses page</a> to correct this issue.', 'give' ),
 					admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' )
@@ -898,7 +902,10 @@ if ( ! class_exists( 'Give_License' ) ) :
 				: array();
 
 
-			if( in_array( $notice_id, $already_dismiss_notices ) || get_transient( "_give_hide_license_notices_shortly_{$current_user->ID}_{$notice_id}" ) ) {
+			if(
+				in_array( $notice_id, $already_dismiss_notices )
+				|| Give_Cache::get( "_give_hide_license_notices_shortly_{$current_user->ID}_{$notice_id}", true )
+			) {
 				$is_notice_dismissed =  true;
 			}
 

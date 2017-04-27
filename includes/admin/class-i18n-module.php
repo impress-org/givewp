@@ -107,11 +107,11 @@ class Give_i18n_Banner {
 	 * @return bool
 	 */
 	private function hide_promo() {
-		$hide_promo = get_transient( 'give_i18n_give_promo_hide' );
+		$hide_promo = Give_Cache::get( 'give_i18n_give_promo_hide', true );
 		if ( ! $hide_promo ) {
 			if ( filter_input( INPUT_GET, 'remove_i18n_promo', FILTER_VALIDATE_INT ) === 1 ) {
 				// No expiration time, so this would normally not expire, but it wouldn't be copied to other sites etc.
-				set_transient( 'give_i18n_give_promo_hide', true );
+				Give_Cache::set( 'give_i18n_give_promo_hide', true, null, true );
 				$hide_promo = true;
 			}
 		}
@@ -242,11 +242,11 @@ class Give_i18n_Banner {
 	 */
 	private function find_or_initialize_translation_details() {
 
-		$set = get_transient( 'give_i18n_give_' . $this->locale );
+		$set = Give_Cache::get( "give_i18n_give_{$this->locale}", true );
 
 		if ( ! $set ) {
 			$set = $this->retrieve_translation_details();
-			set_transient( 'give_i18n_give_' . $this->locale, $set, DAY_IN_SECONDS );
+			Give_Cache::set( "give_i18n_give_{$this->locale}", $set, DAY_IN_SECONDS, true );
 		}
 
 		return $set;

@@ -1626,8 +1626,8 @@ final class Give_Payment {
 		$this->maybe_alter_stats( $decrease_store_earnings, $decrease_customer_value, $decrease_purchase_count );
 		$this->delete_sales_logs();
 
-		// Clear the This Month earnings (this_monththis_month is NOT a typo).
-		delete_transient( md5( 'give_earnings_this_monththis_month' ) );
+		// @todo: Refresh only range related stat cache
+		give_delete_donation_stats();
 
 		/**
 		 * Fires after refunding payment.
@@ -1684,8 +1684,8 @@ final class Give_Payment {
 		$this->completed_date = false;
 		$this->update_meta( '_give_completed_date', '' );
 
-		// Clear the This Month earnings (this_monththis_month is NOT a typo).
-		delete_transient( md5( 'give_earnings_this_monththis_month' ) );
+		// @todo: Refresh only range related stat cache
+		give_delete_donation_stats();
 	}
 
 	/**
@@ -1721,8 +1721,8 @@ final class Give_Payment {
 		$this->completed_date = false;
 		$this->update_meta( '_give_completed_date', '' );
 
-		// Clear the This Month earnings (this_monththis_month is NOT a typo).
-		delete_transient( md5( 'give_earnings_this_monththis_month' ) );
+		// @todo: Refresh only range related stat cache
+		give_delete_donation_stats();
 	}
 
 	/**
@@ -1756,8 +1756,8 @@ final class Give_Payment {
 		$this->completed_date = false;
 		$this->update_meta( '_give_completed_date', '' );
 
-		// Clear the This Month earnings (this_monththis_month is NOT a typo).
-		delete_transient( md5( 'give_earnings_this_monththis_month' ) );
+		// @todo: Refresh only range related stat cache
+		give_delete_donation_stats();
 	}
 
 	/**

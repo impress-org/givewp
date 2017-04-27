@@ -842,10 +842,41 @@ function give_v187_upgrades(){
 			array(
 				'_transient_give_stats_',
 				'give_cache',
+				'_transient_give_add_ons_feed',
+				'_transient__give_ajax_works'.
+				'_transient_give_total_api_keys',
+				'_transient_give_i18n_give_promo_hide',
+				'_transient_give_contributors',
+				'_transient_give_estimated_monthly_stats',
+				'_transient_give_earnings_total',
+				'_transient_give_i18n_give_',
+				'_transient__give_installed',
+				'_transient__give_activation_redirect',
+				'_transient__give_hide_license_notices_shortly_',
+				'give_income_total'
 			)
 		),
 		1
 	);
+
+	// User related transients.
+	$user_apikey_options = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT user_id, meta_key
+			FROM $wpdb->usermeta
+			WHERE meta_value=%s",
+			'give_user_public_key'
+		),
+		ARRAY_A
+	);
+
+	if( ! empty( $user_apikey_options ) ) {
+		foreach ( $user_apikey_options as $user ) {
+			$cached_options[] = '_transient_' . md5( 'give_api_user_' . $user['meta_key'] );
+			$cached_options[] = '_transient_' . md5( 'give_api_user_public_key' . $user['user_id'] );
+			$cached_options[] = '_transient_' . md5( 'give_api_user_secret_key' . $user['user_id'] );
+		}
+	}
 
 	if ( ! empty( $cached_options ) ) {
 		foreach ( $cached_options as $option ) {

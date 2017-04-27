@@ -164,10 +164,9 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 
 			return true;
 		} else {
-			update_option( 'give_earnings_total', 0 );
-			delete_transient( 'give_earnings_total' );
-			delete_transient( 'give_estimated_monthly_stats' . true );
-			delete_transient( 'give_estimated_monthly_stats' . false );
+			update_option( 'give_earnings_total', give_get_total_earnings( true ) );
+			Give_Cache::delete( Give_Cache::get_key('give_estimated_monthly_stats' ) );
+
 			$this->delete_data( 'give_temp_reset_ids' );
 
 			// Reset the sequential order numbers

@@ -67,12 +67,12 @@ class Give_Cache {
 	 * @since  1.8.7
 	 *
 	 * @param  string $action     Cache key prefix.
-	 * @param  array  $query_args Query array.
+	 * @param  array  $query_args (optional) Query array.
 	 *
 	 * @return string
 	 */
 
-	public static function get_key( $action, $query_args ) {
+	public static function get_key( $action, $query_args = null ) {
 		$cache_key = "give_cache_{$action}";
 
 		// Bailout.
@@ -203,9 +203,11 @@ class Give_Cache {
 	 * @access public
 	 * @global wpdb $wpdb
 	 *
+	 * @param bool $force If set to true then all cached values will be delete instead of only expired
+	 *
 	 * @return bool
 	 */
-	public static function delete_all_expired() {
+	public static function delete_all_expired( $force = false ) {
 		global $wpdb;
 		$options = $wpdb->get_results(
 			$wpdb->prepare(
@@ -230,11 +232,14 @@ class Give_Cache {
 			$option['option_value'] = maybe_unserialize( $option['option_value'] );
 
 			if (
-				! self::is_valid_cache_key( $option['option_name'] )
-				|| ! is_array( $option['option_value'] ) // Backward compatibility (<1.8.7).
-				|| ! array_key_exists( 'expiration', $option['option_value'] ) // Backward compatibility (<1.8.7).
-				|| empty( $option['option_value']['expiration'] )
-				|| ( $current_time < $option['option_value']['expiration'] )
+				(
+					! self::is_valid_cache_key( $option['option_name'] )
+					|| ! is_array( $option['option_value'] ) // Backward compatibility (<1.8.7).
+					|| ! array_key_exists( 'expiration', $option['option_value'] ) // Backward compatibility (<1.8.7).
+					|| empty( $option['option_value']['expiration'] )
+					|| ( $current_time < $option['option_value']['expiration'] )
+				)
+				&& ! $force
 			) {
 				continue;
 			}

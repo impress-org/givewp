@@ -1050,3 +1050,35 @@ function give_is_terms_enabled( $form_id ) {
 		return false;
 	}
 }
+
+
+/**
+ * Delete donation stats cache.
+ * @todo Resolve stats cache key naming issue. Currently it is difficult to regenerate cache key.
+ *
+ * @since 1.8.7
+ *
+ * @param string|array $date_range Date for stats.
+ *                           Date value should be in today, yesterday, this_week, last_week, this_month, last_month, this_quarter, last_quarter, this_year, last_year.
+ *                           For date value other, all cache will be removed.
+ *
+ * @param array  $args
+ *
+ * @return WP_Error|bool
+ */
+function give_delete_donation_stats( $date_range = '', $args = array() ) {
+	// Delete all cache.
+	$status = Give_Cache::delete( Give_Cache::get_options_like( 'give_stats' ) );
+
+	/**
+	 * Fire the action when donation stats delete.
+	 *
+	 * @since 1.8.7
+	 *
+	 * @param string|array $date_range
+	 * @param array  $args
+	 */
+	do_action( 'give_delete_donation_stats', $status, $date_range, $args );
+
+	return $status;
+}

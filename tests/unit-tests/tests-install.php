@@ -66,7 +66,7 @@ class Tests_Activation extends Give_Unit_Test_Case {
 		$this->assertInstanceOf( 'WP_Role', get_role( 'give_accountant' ) );
 		$this->assertInstanceOf( 'WP_Role', get_role( 'give_worker' ) );
 
-		$this->assertNotFalse( get_transient( '_give_activation_redirect' ) );
+		$this->assertNotFalse( Give_Cache::get( '_give_activation_redirect', true ) );
 
 
 		// Reset to origin
@@ -104,16 +104,16 @@ class Tests_Activation extends Give_Unit_Test_Case {
 		$give_options = give_get_settings();
 
 		// Prepare for test
-		set_transient( '_give_installed', $give_options, 30 );
+		Give_Cache::set( '_give_installed', $give_options, 30, true );
 
 		// Fake admin screen
 		set_current_screen( 'dashboard' );
 
-		$this->assertNotFalse( get_transient( '_give_installed' ) );
+		$this->assertNotFalse( Give_Cache::get( '_give_installed', true ) );
 
 		give_after_install();
 
-		$this->assertFalse( get_transient( '_give_installed' ) );
+		$this->assertFalse( Give_Cache::get( '_give_installed', true ) );
 
 	}
 
@@ -128,10 +128,10 @@ class Tests_Activation extends Give_Unit_Test_Case {
 
 		// Prepare for test
 		set_current_screen( 'front' );
-		set_transient( '_give_installed', $give_options, 30 );
+		Give_Cache::set( '_give_installed', $give_options, 30, true );
 
 		give_after_install();
-		$this->assertNotFalse( get_transient( '_give_installed' ) );
+		$this->assertNotFalse( Give_Cache::get( '_give_installed', true ) );
 
 	}
 
@@ -149,13 +149,12 @@ class Tests_Activation extends Give_Unit_Test_Case {
 		// Fake admin screen
 		set_current_screen( 'dashboard' );
 
-		delete_transient( '_give_installed' );
+		Give_Cache::delete( Give_Cache::get_key( '_give_installed' ) );
 
 		$this->assertNull( give_after_install() );
 
 		// Reset to origin
-		set_transient( '_give_installed', $give_options, 30 );
-
+		Give_Cache::set( '_give_installed', $give_options, 30, true );
 	}
 
 	/**
