@@ -113,10 +113,23 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			$this->config['has_preview_header'] = $this->config['has_preview'] && $this->config['has_preview_header'] ? true : false;
 
 			// Set email content type
-			$this->config['content_type'] = empty( $this->config['content_type'] ) || ! in_array( $this->config['content_type'], array( 'text/html', 'text/plain') )
+			$this->config['content_type'] = empty( $this->config['content_type'] ) || ! in_array( $this->config['content_type'], array(
+				'text/html',
+				'text/plain',
+			) )
 				? 'text/html' // @todo: use Give()->emails->get_content_Type() get email content type.
 				: $this->config['content_type'];
 			$this->config['content_type'] = give_get_option( "{$this->config['id']}_email_content_type", $this->config['content_type'] );
+
+			/**
+			 *  Filter the notification config.
+			 *
+			 * @since 2.0
+			 *
+			 * @param array                   Give_Email_Notification::config
+			 * @param Give_Email_Notification $this
+			 */
+			$this->config = apply_filters( 'give_email_api_notification_config', $this->config, $this );
 
 			// Setup filters.
 			$this->setup_filters();
@@ -517,7 +530,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			// Setup email content type.
 			Give()->emails->__set( 'content_type', $this->config['content_type'] );
 
-			if( 'text/plain' === $this->config['content_type'] ) {
+			if ( 'text/plain' === $this->config['content_type'] ) {
 				Give()->emails->__set( 'html', false );
 				Give()->emails->__set( 'template', 'none' );
 				$message = strip_tags( $message );
@@ -563,7 +576,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			// Setup email content type.
 			Give()->emails->__set( 'content_type', $this->config['content_type'] );
 
-			if( 'text/plain' === $this->config['content_type'] ) {
+			if ( 'text/plain' === $this->config['content_type'] ) {
 				Give()->emails->__set( 'html', false );
 				Give()->emails->__set( 'template', 'none' );
 				$message = strip_tags( $message );
