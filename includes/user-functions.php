@@ -563,7 +563,7 @@ function give_new_user_notification( $user_id = 0, $user_data = array() ) {
 	/* translators: %s: user email */
 	$message .= sprintf( esc_attr__( 'E-mail: %s', 'give' ), $user_data['user_email'] ) . "\r\n";
 
-	@wp_mail(
+	Give()->emails->send(
 		get_option( 'admin_email' ),
 		sprintf(
 			/* translators: %s: site name */
@@ -580,7 +580,7 @@ function give_new_user_notification( $user_id = 0, $user_data = array() ) {
 
 	$message .= '<a href="' . wp_login_url() . '"> ' . esc_attr__( 'Click Here to Login &raquo;', 'give' ) . '</a>' . "\r\n";
 
-	wp_mail(
+	Give()->emails->send(
 		$user_data['user_email'],
 		sprintf(
 			/* translators: %s: site name */

@@ -57,12 +57,12 @@ function give_hide_subscription_notices() {
 		// Transient key name.
 		$transient_key = "_give_hide_license_notices_shortly_{$current_user->ID}_{$notice_id}";
 
-		if ( get_transient( $transient_key ) ) {
+		if ( Give_Cache::get( $transient_key, true ) ) {
 			return;
 		}
 
 		// Hide notice for 24 hours.
-		set_transient( $transient_key, true, 24 * HOUR_IN_SECONDS );
+		Give_Cache::set( $transient_key, true, DAY_IN_SECONDS, true );
 
 		// Redirect user.
 		wp_safe_redirect( remove_query_arg( '_give_hide_license_notices_shortly', $_SERVER['REQUEST_URI'] ) );

@@ -556,7 +556,7 @@ class Give_Welcome {
 	 * @return array $contributors List of contributors
 	 */
 	public function get_contributors() {
-		$contributors = get_transient( 'give_contributors' );
+		$contributors = Give_Cache::get( 'give_contributors', true );
 
 		if ( false !== $contributors ) {
 			return $contributors;
@@ -574,7 +574,7 @@ class Give_Welcome {
 			return array();
 		}
 
-		set_transient( 'give_contributors', $contributors, 3600 );
+		Give_Cache::set( 'give_contributors', $contributors, HOUR_IN_SECONDS, true );
 
 		return $contributors;
 	}
@@ -592,12 +592,12 @@ class Give_Welcome {
 		$give_options = give_get_settings();
 
 		// Bail if no activation redirect
-		if ( ! get_transient( '_give_activation_redirect' ) ) {
+		if ( ! Give_Cache::get( '_give_activation_redirect', true ) ) {
 			return;
 		}
 
 		// Delete the redirect transient
-		delete_transient( '_give_activation_redirect' );
+		Give_Cache::delete( Give_Cache::get_key( '_give_activation_redirect' ) );
 
 		// Bail if activating from network, or bulk
 		if ( is_network_admin() || isset( $_GET['activate-multi'] ) ) {

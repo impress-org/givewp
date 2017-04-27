@@ -304,13 +304,19 @@ class Give_API_Keys_Table extends WP_List_Table {
 	public function total_items() {
 		global $wpdb;
 
-		if ( ! get_transient( 'give_total_api_keys' ) ) {
-			$total_items = $wpdb->get_var( "SELECT count(user_id) FROM $wpdb->usermeta WHERE meta_value='give_user_secret_key'" );
+		if ( ! ( $total_items = Give_Cache::get( 'give_total_api_keys', true ) ) ) {
+			$total_items = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT count(user_id)
+					FROM {$wpdb->usermeta} WHERE meta_value='%s'",
+					'give_user_secret_key'
+				)
+			);
 
-			set_transient( 'give_total_api_keys', $total_items, 60 * 60 );
+			Give_Cache::set( 'give_total_api_keys', $total_items, HOUR_IN_SECONDS, true );
 		}
 
-		return get_transient( 'give_total_api_keys' );
+		return $total_items;
 	}
 
 	/**

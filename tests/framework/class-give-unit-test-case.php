@@ -29,6 +29,13 @@ class Give_Unit_Test_Case extends WP_UnitTestCase {
 		$give_options = get_option( 'give_settings' );
 	}
 
+	public function tearDown() {
+		parent::tearDown();
+
+		// Delete all cached values.
+		Give_Cache::delete_all_expired( true );
+	}
+
 	/**
 	 * Strip newlines and tabs when using expectedOutputString() as otherwise.
 	 * the most template-related tests will fail due to indentation/alignment in.
