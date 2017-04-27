@@ -200,4 +200,29 @@ class Give_Email_Notification_Util {
 
 		return $email_contents[ $content_type ];
 	}
+
+
+	/**
+	 * Get email notification option value.
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param string $option_name
+	 * @param int    $form_id
+	 * @param mixed  $default
+	 *
+	 * @return mixed
+	 */
+	public static function get_value( $option_name, $form_id = null, $default = false ) {
+		if ( is_null( $form_id ) ) {
+			$option_value = give_get_option( $option_name, $default );
+		} else {
+			$option_value = get_post_meta( $form_id, $option_name, true );
+		}
+
+		$option_value = empty( $option_value ) ? $default : $option_value;
+
+		return $option_value;
+	}
 }
