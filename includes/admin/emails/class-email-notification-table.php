@@ -175,8 +175,7 @@ class Give_Email_Notification_Table extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_email_type( Give_Email_Notification $email ) {
-		return $email->get_email_type();
-
+		return Give_Email_Notification_Util::get_formatted_email_type( $email->config['content_type'] );
 	}
 
 	/**
