@@ -90,9 +90,10 @@ class Tests_Post_Types extends Give_Unit_Test_Case {
 		$wp_post_statuses = get_post_stati( array(), 'objects' );
 
 		$this->assertInternalType( 'object', $wp_post_statuses['refunded'] );
-		$this->assertInternalType( 'object', $wp_post_statuses['revoked'] );
 		$this->assertInternalType( 'object', $wp_post_statuses['failed'] );
+		$this->assertInternalType( 'object', $wp_post_statuses['revoked'] );
 		$this->assertInternalType( 'object', $wp_post_statuses['cancelled'] );
 		$this->assertInternalType( 'object', $wp_post_statuses['abandoned'] );
+		$this->assertInternalType( 'object', $wp_post_statuses['processing'] );
 	}
 }

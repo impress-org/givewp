@@ -59,7 +59,7 @@ function give_setup_post_types() {
 		'title',
 		'thumbnail',
 		'excerpt',
-		'revisions'
+		'revisions',
 		'author',
 	);
 
@@ -336,6 +336,14 @@ function give_register_post_type_statuses() {
 		'show_in_admin_status_list' => true,
 		'label_count'               => _n_noop( 'Abandoned <span class="count">(%s)</span>', 'Abandoned <span class="count">(%s)</span>', 'give' ),
 	) );
+	register_post_status( 'processing', array(
+		'label'                     => _x( 'Processing', 'Processing payment status', 'give' ),
+		'public'                    => true,
+		'exclude_from_search'       => false,
+		'show_in_admin_all_list'    => true,
+		'show_in_admin_status_list' => true,
+		'label_count'               => _n_noop( 'Processing <span class="count">(%s)</span>', 'Processing <span class="count">(%s)</span>', 'give' )
+	)  );
 
 }
 
