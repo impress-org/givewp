@@ -73,7 +73,7 @@ function give_get_currencies() {
 		'BRL'  => __( 'Brazilian Real (R$)', 'give' ),
 		'CAD'  => __( 'Canadian Dollars ($)', 'give' ),
 		'CZK'  => __( 'Czech Koruna (Kč)', 'give' ),
-		'DKK'  => __( 'Danish Krone (kr)', 'give' ),
+		'DKK'  => __( 'Danish Krone (kr.)', 'give' ),
 		'HKD'  => __( 'Hong Kong Dollar ($)', 'give' ),
 		'HUF'  => __( 'Hungarian Forint (Ft)', 'give' ),
 		'ILS'  => __( 'Israeli Shekel (₪)', 'give' ),
@@ -166,7 +166,7 @@ function give_currency_symbol( $currency = '' ) {
 			break;
 		case 'DKK' :
 		case 'SEK' :
-			$symbol = 'kr';
+			$symbol = '&nbsp;kr.&nbsp;';
 			break;
 		case 'PLN' :
 			$symbol = 'zł';
