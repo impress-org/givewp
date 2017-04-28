@@ -426,7 +426,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 				return;
 			}
 
-			// Allow third party addon developers to handle license deactivation.
+			// Allow third party add-on developers to handle license deactivation.
 			if( $this->__is_third_party_addon() ){
 				do_action( 'give_deactivate_license', $this );
 				return;
@@ -488,7 +488,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 				return false;
 			}
 
-			// Allow third party addon developers to handle their license check.
+			// Allow third party add-on developers to handle their license check.
 			if( $this->__is_third_party_addon() ){
 				do_action( 'give_weekly_license_check', $this );
 				return false;
@@ -546,7 +546,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 				return false;
 			}
 
-			// Allow third party addon developers to handle there subscription check.
+			// Allow third party add-on developers to handle their subscription check.
 			if( $this->__is_third_party_addon() ){
 				do_action( 'give_weekly_subscription_check', $this );
 				return false;
@@ -557,9 +557,9 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			// Data to send in our API request.
 			$api_params = array(
-				// Do not get confuse with edd_action check_subscription.
+				// Do not get confused with edd_action check_subscription.
 				// By default edd software licensing api does not have api to check subscription.
-				// This is custom feature to check subscriptions.
+				// This is a custom feature to check subscriptions.
 				'edd_action'=> 'check_subscription',
 				'license' 	=> $this->license,
 				'item_name' => urlencode( $this->item_name ),
@@ -621,9 +621,9 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			// Data to send in our API request.
 			$api_params = array(
-				// Do not get confuse with edd_action check_subscription.
+				// Do not get confused with edd_action check_subscription.
 				// By default edd software licensing api does not have api to check subscription.
-				// This is custom feature to check subscriptions.
+				// This is a custom feature to check subscriptions.
 				'edd_action'=> 'check_subscription',
 				'license' 	=> $this->license,
 				'item_name' => urlencode( $this->item_name ),
@@ -697,7 +697,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			    && empty( $showed_invalid_message )
 			) {
 				$messages['general'] = sprintf(
-					__( 'You have invalid or expired license keys for Give Addon. Please go to the <a href="%s">licenses page</a> to correct this issue.', 'give' ),
+					__( 'You have invalid or expired license keys for one or more Give Add-ons. Please go to the <a href="%s">licenses page</a> to correct this issue.', 'give' ),
 					admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' )
 				);
 				$showed_invalid_message = true;
@@ -728,7 +728,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 						if( strtotime( $subscription['expires'] ) < current_time( 'timestamp', 1 ) ) {// Check if license already expired.
 							$messages[$subscription['id']] = sprintf(
-								__( 'You Give addon license expired for payment <a href="%s" target="_blank">#%d</a>. <a href="%s" target="_blank">Click to renew an existing license</a> or <a href="%s">Click here if already renewed</a>.', 'give' ),
+								__( 'Your Give add-on license expired for payment <a href="%s" target="_blank">#%d</a>. <a href="%s" target="_blank">Click to renew an existing license</a> or <a href="%s">Click here if already renewed</a>.', 'give' ),
 								urldecode( $subscription['invoice_url'] ),
 								$subscription['payment_id'],
 								"{$this->checkout_url}?edd_license_key={$subscription['license_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired",
@@ -736,7 +736,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 							);
 						}else{
 							$messages[$subscription['id']] = sprintf(
-								__( 'You Give addon license will expire in %s for payment <a href="%s" target="_blank">#%d</a>. <a href="%s" target="_blank">Click to renew an existing license</a> or <a href="%s">Click here if already renewed</a>.', 'give' ),
+								__( 'Your Give add-on license will expire in %s for payment <a href="%s" target="_blank">#%d</a>. <a href="%s" target="_blank">Click to renew an existing license</a> or <a href="%s">Click here if already renewed</a>.', 'give' ),
 								human_time_diff( current_time( 'timestamp', 1 ), strtotime( $subscription['expires'] ) ),
 								urldecode( $subscription['invoice_url'] ),
 								$subscription['payment_id'],
@@ -761,7 +761,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			) {
 
 				$messages['general'] = sprintf(
-					__( 'You have invalid or expired license keys for Give Addon. Please go to the <a href="%s">licenses page</a> to correct this issue.', 'give' ),
+					__( 'You have invalid or expired license keys for one or more Give Add-ons. Please go to the <a href="%s">licenses page</a> to correct this issue.', 'give' ),
 					admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' )
 				);
 				$showed_invalid_message = true;
