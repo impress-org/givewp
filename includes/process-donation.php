@@ -43,7 +43,7 @@ function give_process_donation_form() {
 	 * @since 1.0
 	 *
 	 * @param bool|array $valid_data Validate fields.
-	 * @param array      $_POST      Array of variables passed via the HTTP POST.
+	 * @param array $_POST Array of variables passed via the HTTP POST.
 	 */
 	do_action( 'give_checkout_error_checks', $valid_data, $_POST );
 
@@ -124,8 +124,8 @@ function give_process_donation_form() {
 	 *
 	 * @since 1.0
 	 *
-	 * @param array      $_POST      Array of variables passed via the HTTP POST.
-	 * @param array      $user_info  Array containing basic user information.
+	 * @param array $_POST Array of variables passed via the HTTP POST.
+	 * @param array $user_info Array containing basic user information.
 	 * @param bool|array $valid_data Validate fields.
 	 */
 	do_action( 'give_checkout_before_gateway', $_POST, $user_info, $valid_data );
@@ -171,30 +171,33 @@ add_action( 'wp_ajax_nopriv_give_process_donation', 'give_process_donation_form'
  * @since  1.7
  *
  * @param  array $valid_data Validated data submitted for the purchase
- * @param  array $post       Additional $_POST data submitted
+ * @param  array $post Additional $_POST data submitted
  *
  * @return void
  */
-function give_checkout_check_existing_email( $valid_data, $post ) {
+function give_check_logged_in_user_for_existing_email( $valid_data, $post ) {
 
 	// Verify that the email address belongs to this customer.
 	if ( is_user_logged_in() ) {
 
-		$email    = $valid_data['logged_in_user']['user_email'];
+		$submitted_email    = $valid_data['logged_in_user']['user_email'];
 		$customer = new Give_Customer( get_current_user_id(), true );
 
 		// If this email address is not registered with this customer, see if it belongs to any other customer
-		if ( $email !== $customer->email && ( is_array( $customer->emails ) && ! in_array( $email, $customer->emails ) ) ) {
-			$found_customer = new Give_Customer( $email );
+		if (
+			$submitted_email !== $customer->email
+			&& ( is_array( $customer->emails ) && ! in_array( $submitted_email, $customer->emails ) )
+		) {
+			$found_customer = new Give_Customer( $submitted_email );
 
 			if ( $found_customer->id > 0 ) {
-				give_set_error( 'give-customer-email-exists', sprintf( esc_html__( 'The email address %s is already in use.', 'give' ), $email ) );
+				give_set_error( 'give-customer-email-exists', sprintf(__('You are logged in as %1$s, and are submitting a donation as %2$s, which is an existing donor. To ensure that the email address is tied to the correct donor, please submit this donation from a logged-out browser, or choose another email address.'), $customer->email, $submitted_email) );
 			}
 		}
 	}
 }
 
-add_action( 'give_checkout_error_checks', 'give_checkout_check_existing_email', 10, 2 );
+add_action( 'give_checkout_error_checks', 'give_check_logged_in_user_for_existing_email', 10, 2 );
 
 /**
  * Process the checkout login form
@@ -340,7 +343,7 @@ function give_purchase_form_validate_gateway() {
 			give_set_error(
 				'invalid_donation_minimum',
 				sprintf(
-					/* translators: %s: minimum donation amount */
+				/* translators: %s: minimum donation amount */
 					esc_html__( 'This form has a minimum donation amount of %s.', 'give' ),
 					give_currency_filter( give_format_amount( give_get_form_minimum_price( $form_id ) ) )
 				)
@@ -779,7 +782,7 @@ function give_register_and_login_new_user( $user_data = array() ) {
 	 *
 	 * @since 1.0
 	 *
-	 * @param int   $user_id   User id.
+	 * @param int $user_id User id.
 	 * @param array $user_data Array containing user data.
 	 */
 	do_action( 'give_insert_user', $user_id, $user_data );
@@ -939,7 +942,7 @@ function give_get_purchase_cc_info() {
  *
  * @since  1.0
  *
- * @param int    $zip
+ * @param int $zip
  * @param string $country_code
  *
  * @return bool|mixed|void
