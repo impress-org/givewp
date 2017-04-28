@@ -550,7 +550,7 @@ function give_get_donor_address( $user_id = 0 ) {
  * @return        void
  */
 function give_new_user_notification( $user_id = 0, $user_data = array() ) {
-
+	// Bailout.
 	if ( empty( $user_id ) || empty( $user_data ) ) {
 		return;
 	}

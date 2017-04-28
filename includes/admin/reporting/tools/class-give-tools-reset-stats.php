@@ -193,9 +193,8 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 			return true;
 		} else {
 			update_option( 'give_earnings_total', 0 );
-			delete_transient( 'give_earnings_total' );
-			delete_transient( 'give_estimated_monthly_stats' . true );
-			delete_transient( 'give_estimated_monthly_stats' . false );
+			Give_Cache::delete( Give_Cache::get_key('give_estimated_monthly_stats' ) );
+
 			$this->delete_data( 'give_temp_reset_ids' );
 
 			// Reset the sequential order numbers

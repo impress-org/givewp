@@ -37,15 +37,17 @@ function give_do_automatic_upgrades() {
 		case version_compare( $give_version, '1.6', '<' ) :
 			give_v16_upgrades();
 			$did_upgrade = true;
-			break;
 
 		case version_compare( $give_version, '1.7', '<' ) :
 			give_v17_upgrades();
 			$did_upgrade = true;
-			break;
 
 		case version_compare( $give_version, '1.8', '<' ) :
 			give_v18_upgrades();
+			$did_upgrade = true;
+
+		case version_compare( $give_version, '1.8.7', '<' ) :
+			give_v187_upgrades();
 			$did_upgrade = true;
 
 		case version_compare( $give_version, '2.0', '<' ) :
@@ -823,6 +825,76 @@ function give_v18_renamed_core_settings() {
 		'enable_categories'           => 'categories',
 		'enable_tags'                 => 'tags',
 	);
+}
+
+
+/**
+ * Upgrade core settings.
+ *
+ * @since  1.8.7
+ * @return void
+ */
+function give_v187_upgrades(){
+	global $wpdb;
+
+	/**
+	 * Upgrade 1: Remove stat and cache transients.
+	 */
+	$cached_options = $wpdb->get_col(
+		$wpdb->prepare(
+			"SELECT * FROM {$wpdb->options} where (option_name LIKE '%%%s%%' OR option_name LIKE '%%%s%%')",
+			array(
+				'_transient_give_stats_',
+				'give_cache',
+				'_transient_give_add_ons_feed',
+				'_transient__give_ajax_works'.
+				'_transient_give_total_api_keys',
+				'_transient_give_i18n_give_promo_hide',
+				'_transient_give_contributors',
+				'_transient_give_estimated_monthly_stats',
+				'_transient_give_earnings_total',
+				'_transient_give_i18n_give_',
+				'_transient__give_installed',
+				'_transient__give_activation_redirect',
+				'_transient__give_hide_license_notices_shortly_',
+				'give_income_total'
+			)
+		),
+		1
+	);
+
+	// User related transients.
+	$user_apikey_options = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT user_id, meta_key
+			FROM $wpdb->usermeta
+			WHERE meta_value=%s",
+			'give_user_public_key'
+		),
+		ARRAY_A
+	);
+
+	if( ! empty( $user_apikey_options ) ) {
+		foreach ( $user_apikey_options as $user ) {
+			$cached_options[] = '_transient_' . md5( 'give_api_user_' . $user['meta_key'] );
+			$cached_options[] = '_transient_' . md5( 'give_api_user_public_key' . $user['user_id'] );
+			$cached_options[] = '_transient_' . md5( 'give_api_user_secret_key' . $user['user_id'] );
+		}
+	}
+
+	if ( ! empty( $cached_options ) ) {
+		foreach ( $cached_options as $option ) {
+			switch ( true ) {
+				case ( false !== strpos( $option, 'transient' ) ):
+					$option = str_replace( '_transient_', '', $option );
+					delete_transient( $option );
+					break;
+
+				default:
+					delete_option( $option );
+			}
+		}
+	}
 }
 
 /**

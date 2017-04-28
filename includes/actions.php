@@ -27,8 +27,8 @@ function give_get_actions() {
 
 	$_get_action = ! empty( $_GET['give_action'] ) ? $_GET['give_action'] : null;
 
-	// Add backward compatibility to give-action param ( $_GET or $_POST )
-	if(  doing_action( 'admin_init' ) && empty( $_get_action ) ) {
+	// Add backward compatibility to give-action param ( $_GET )
+	if(  empty( $_get_action ) ) {
 		$_get_action = ! empty( $_GET['give-action'] ) ? $_GET['give-action'] : null;
 	}
 
@@ -46,10 +46,9 @@ function give_get_actions() {
 }
 
 add_action( 'init', 'give_get_actions' );
-add_action( 'admin_init', 'give_get_actions' );
 
 /**
- * Hooks Give actions, when present in the $_POST superglobal. Every give_action
+ * Hooks Give actions, when present in the $_POST super global. Every give_action
  * present in $_POST is called using WordPress's do_action function. These
  * functions are called on init.
  *
@@ -62,8 +61,8 @@ function give_post_actions() {
 	$_post_action = ! empty( $_POST['give_action'] ) ? $_POST['give_action'] : null;
 
 
-	// Add backward compatibility to give-action param ( $_GET or $_POST )
-	if(  doing_action( 'admin_init' ) && empty( $_post_action ) ) {
+	// Add backward compatibility to give-action param ( $_POST )
+	if(  empty( $_post_action ) ) {
 		$_post_action = ! empty( $_POST['give-action'] ) ? $_POST['give-action'] : null;
 	}
 
@@ -81,7 +80,6 @@ function give_post_actions() {
 }
 
 add_action( 'init', 'give_post_actions' );
-add_action( 'admin_init', 'give_post_actions' );
 
 /**
  * Connect WordPress user with Donor.
@@ -92,6 +90,7 @@ add_action( 'admin_init', 'give_post_actions' );
  * @return void
  */
 function give_connect_donor_to_wpuser( $user_id, $user_data ){
+	/* @var Give_Customer $donor */
 	$donor = new Give_Customer( $user_data['user_email'] );
 
 	// Validate donor id and check if do nor is already connect to wp user or not.
@@ -159,7 +158,7 @@ function give_donor_batch_export_complete( $data ) {
 		&& ! empty( $data['forms'] )
 		&& isset( $data['give_export_option']['query_id'] )
 	) {
-		delete_transient( $data['give_export_option']['query_id'] );
+		Give_Cache::delete( Give_Cache::get_key( $data['give_export_option']['query_id'] ) );
 	}
 }
 add_action('give_file_export_complete', 'give_donor_batch_export_complete' );
