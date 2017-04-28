@@ -66,36 +66,36 @@ function give_get_currency_position() {
 
 function give_get_currencies() {
 	$currencies = array(
-		'USD'  => esc_html__( 'US Dollars ($)', 'give' ),
-		'EUR'  => esc_html__( 'Euros (€)', 'give' ),
-		'GBP'  => esc_html__( 'Pounds Sterling (£)', 'give' ),
-		'AUD'  => esc_html__( 'Australian Dollars ($)', 'give' ),
-		'BRL'  => esc_html__( 'Brazilian Real (R$)', 'give' ),
-		'CAD'  => esc_html__( 'Canadian Dollars ($)', 'give' ),
-		'CZK'  => esc_html__( 'Czech Koruna (Kč)', 'give' ),
-		'DKK'  => esc_html__( 'Danish Krone (kr)', 'give' ),
-		'HKD'  => esc_html__( 'Hong Kong Dollar ($)', 'give' ),
-		'HUF'  => esc_html__( 'Hungarian Forint (Ft)', 'give' ),
-		'ILS'  => esc_html__( 'Israeli Shekel (₪)', 'give' ),
-		'JPY'  => esc_html__( 'Japanese Yen (¥)', 'give' ),
-		'MYR'  => esc_html__( 'Malaysian Ringgits (RM)', 'give' ),
-		'MXN'  => esc_html__( 'Mexican Peso ($)', 'give' ),
-		'MAD'  => esc_html__( 'Moroccan Dirham (&#x2e;&#x62f;&#x2e;&#x645;)', 'give' ),
-		'NZD'  => esc_html__( 'New Zealand Dollar ($)', 'give' ),
-		'NOK'  => esc_html__( 'Norwegian Krone (Kr.)', 'give' ),
-		'PHP'  => esc_html__( 'Philippine Pesos (₱)', 'give' ),
-		'PLN'  => esc_html__( 'Polish Zloty (zł)', 'give' ),
-		'SGD'  => esc_html__( 'Singapore Dollar ($)', 'give' ),
-		'KRW'  => esc_html__( 'South Korean Won (₩)', 'give' ),
-		'ZAR'  => esc_html__( 'South African Rand (R)', 'give' ),
-		'SEK'  => esc_html__( 'Swedish Krona (kr)', 'give' ),
-		'CHF'  => esc_html__( 'Swiss Franc (CHF)', 'give' ),
-		'TWD'  => esc_html__( 'Taiwan New Dollars (NT$)', 'give' ),
-		'THB'  => esc_html__( 'Thai Baht (฿)', 'give' ),
-		'INR'  => esc_html__( 'Indian Rupee (₹)', 'give' ),
-		'TRY'  => esc_html__( 'Turkish Lira (₺)', 'give' ),
-		'RIAL' => esc_html__( 'Iranian Rial (﷼)', 'give' ),
-		'RUB'  => esc_html__( 'Russian Rubles (руб)', 'give' )
+		'USD'  => __( 'US Dollars ($)', 'give' ),
+		'EUR'  => __( 'Euros (€)', 'give' ),
+		'GBP'  => __( 'Pounds Sterling (£)', 'give' ),
+		'AUD'  => __( 'Australian Dollars ($)', 'give' ),
+		'BRL'  => __( 'Brazilian Real (R$)', 'give' ),
+		'CAD'  => __( 'Canadian Dollars ($)', 'give' ),
+		'CZK'  => __( 'Czech Koruna (Kč)', 'give' ),
+		'DKK'  => __( 'Danish Krone (kr.)', 'give' ),
+		'HKD'  => __( 'Hong Kong Dollar ($)', 'give' ),
+		'HUF'  => __( 'Hungarian Forint (Ft)', 'give' ),
+		'ILS'  => __( 'Israeli Shekel (₪)', 'give' ),
+		'JPY'  => __( 'Japanese Yen (¥)', 'give' ),
+		'MYR'  => __( 'Malaysian Ringgits (RM)', 'give' ),
+		'MXN'  => __( 'Mexican Peso ($)', 'give' ),
+		'MAD'  => __( 'Moroccan Dirham (&#x2e;&#x62f;&#x2e;&#x645;)', 'give' ),
+		'NZD'  => __( 'New Zealand Dollar ($)', 'give' ),
+		'NOK'  => __( 'Norwegian Krone (Kr.)', 'give' ),
+		'PHP'  => __( 'Philippine Pesos (₱)', 'give' ),
+		'PLN'  => __( 'Polish Zloty (zł)', 'give' ),
+		'SGD'  => __( 'Singapore Dollar ($)', 'give' ),
+		'KRW'  => __( 'South Korean Won (₩)', 'give' ),
+		'ZAR'  => __( 'South African Rand (R)', 'give' ),
+		'SEK'  => __( 'Swedish Krona (kr)', 'give' ),
+		'CHF'  => __( 'Swiss Franc (CHF)', 'give' ),
+		'TWD'  => __( 'Taiwan New Dollars (NT$)', 'give' ),
+		'THB'  => __( 'Thai Baht (฿)', 'give' ),
+		'INR'  => __( 'Indian Rupee (₹)', 'give' ),
+		'TRY'  => __( 'Turkish Lira (₺)', 'give' ),
+		'RIAL' => __( 'Iranian Rial (﷼)', 'give' ),
+		'RUB'  => __( 'Russian Rubles (руб)', 'give' )
 	);
 
 	return apply_filters( 'give_currencies', $currencies );
@@ -166,7 +166,7 @@ function give_currency_symbol( $currency = '' ) {
 			break;
 		case 'DKK' :
 		case 'SEK' :
-			$symbol = 'kr';
+			$symbol = '&nbsp;kr.&nbsp;';
 			break;
 		case 'PLN' :
 			$symbol = 'zł';
