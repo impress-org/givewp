@@ -214,14 +214,15 @@ if ( ! class_exists( 'Give' ) ) :
 				self::$instance->template_loader = new Give_Template_Loader();
 				self::$instance->email_access    = new Give_Email_Access();
 
-			}
 
-			/**
-			 * Fire the action after Give core loads
-			 *
-			 * @since 1.8.7
-			 */
-			do_action( 'give_init', self::$instance );
+				/**
+				 * Fire the action after Give core loads
+				 *
+				 * @since 1.8.7
+				 */
+				do_action( 'give_init', self::$instance );
+
+			}
 
 			return self::$instance;
 		}
