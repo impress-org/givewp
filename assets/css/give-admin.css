@@ -963,56 +963,6 @@ ASIDE
   background: #fff;
   overflow: hidden; }
 
-#give-metabox-form-data .give-metabox-tabs {
-  margin: 0;
-  width: 22%;
-  float: left;
-  line-height: 1em;
-  padding: 0 0 10px;
-  position: relative;
-  background-color: #fafafa;
-  border-right: 1px solid #eee;
-  box-sizing: border-box; }
-  #give-metabox-form-data .give-metabox-tabs:after {
-    content: "";
-    display: block;
-    width: 100%;
-    height: 9999em;
-    position: absolute;
-    bottom: -9999em;
-    left: 0;
-    background-color: #fafafa;
-    border-right: 1px solid #eee; }
-  #give-metabox-form-data .give-metabox-tabs li {
-    margin: 0;
-    padding: 0;
-    display: block;
-    position: relative; }
-    #give-metabox-form-data .give-metabox-tabs li a {
-      margin: 0;
-      padding: 10px;
-      display: block;
-      box-shadow: none;
-      text-decoration: none;
-      line-height: 20px !important;
-      border-bottom: 1px solid #eee; }
-  #give-metabox-form-data .give-metabox-tabs .give-metabox-sub-tabs li {
-    background-color: #f1f1f1; }
-    #give-metabox-form-data .give-metabox-tabs .give-metabox-sub-tabs li a {
-      border-bottom-color: #e5e5e5; }
-  #give-metabox-form-data .give-metabox-tabs li.active > a {
-    color: #555;
-    position: relative;
-    background-color: #eee; }
-  #give-metabox-form-data .give-metabox-tabs li.has-sub-fields:not(.active):hover ul.give-metabox-sub-tabs {
-    display: block;
-    position: absolute;
-    bottom: 0;
-    left: 166px;
-    width: 165px;
-    max-height: 250px;
-    overflow-y: scroll; }
-
 #give-metabox-form-data .give_options_panel {
   padding-left: 170px; }
   #give-metabox-form-data .give_options_panel .give-field-wrap {
