@@ -716,7 +716,7 @@ function give_docs_link( $field ) {
  * @since 2.0
  * @param $field
  */
-function give_email_preview_buttons( $field ){
+function give_email_preview_buttons( $field ) {
 	/* @var WP_Post $post */
 	global $post;
 
@@ -730,7 +730,11 @@ function give_email_preview_buttons( $field ){
 		'<a href="%1$s" class="button-secondary" target="_blank">%2$s</a>',
 		wp_nonce_url(
 			add_query_arg(
-				array( 'give_action' => 'preview_email', 'email_type' => $field_id ),
+				array(
+					'give_action' => 'preview_email',
+					'email_type'  => $field_id,
+					'form_id'     => $post->ID,
+				),
 				home_url()
 			), 'give-preview-email'
 		),
@@ -741,7 +745,12 @@ function give_email_preview_buttons( $field ){
 		' <a href="%1$s" aria-label="%2$s" class="button-secondary">%3$s</a>',
 		wp_nonce_url(
 			add_query_arg(
-				array( 'give_action'  => 'send_preview_email', 'email_type' => $field_id, 'give-message' => 'sent-test-email' )
+				array(
+					'give_action'  => 'send_preview_email',
+					'email_type'   => $field_id,
+					'give-message' => 'sent-test-email',
+					'form_id'      => $post->ID,
+				)
 			), 'give-send-preview-email' ),
 		esc_attr__( 'Send Test Email.', 'give' ),
 		esc_html__( 'Send Test Email', 'give' )

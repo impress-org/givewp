@@ -60,7 +60,8 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			'default_email_message'        => '',
 		);
 
-		/* @var     string $recipient_email Donor email.
+		/**
+		 * @var     string $recipient_email Donor email.
 		 * @access  protected
 		 * @since   2.0
 		 */
@@ -160,7 +161,6 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 					2
 				);
 			}
-
 
 			/**
 			 * Filter the default email subject.
@@ -467,10 +467,12 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 *
 		 * @since  2.0
 		 * @access public
+		 *
+		 * @param int $form_id
 		 * @return array|string
 		 */
-		public function get_preview_email_recipient() {
-			$recipients = $this->get_recipient();
+		public function get_preview_email_recipient( $form_id = 0 ) {
+			$recipients = $this->get_recipient( $form_id );
 
 			/**
 			 * Filter the preview email recipients.
@@ -516,12 +518,14 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 */
 			do_action( "give_{$this->config['id']}_email_send_before", $this );
 
+			$form_id = absint( $_GET['form_id'] );
+
 			// setup email data.
 			$this->setup_email_data();
 
 			$attachments = $this->get_email_attachments();
-			$message     = $this->preview_email_template_tags( $this->get_email_message() );
-			$subject     = $this->preview_email_template_tags( $this->get_email_subject() );
+			$message     = $this->preview_email_template_tags( $this->get_email_message( $form_id ) );
+			$subject     = $this->preview_email_template_tags( $this->get_email_subject( $form_id ) );
 
 			// Setup email content type.
 			Give()->emails->__set( 'content_type', $this->config['content_type'] );
@@ -532,7 +536,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 				$message = strip_tags( $message );
 			}
 
-			$email_status = Give()->emails->send( $this->get_preview_email_recipient(), $subject, $message, $attachments );
+			$email_status = Give()->emails->send( $this->get_preview_email_recipient( $form_id ), $subject, $message, $attachments );
 
 			/**
 			 * Fire action after after email send.

@@ -205,11 +205,14 @@ class Give_Email_Notifications {
 				continue;
 			}
 
+			// Set form id.
+			$form_id = empty( $_GET['form_id']  ) ? null : absint( $_GET['form_id'] );
+
 			// Call setup email data to apply filter and other thing to email.
 			$email->setup_email_data();
 
 			// Decode message.
-			$email_message = $email->preview_email_template_tags( $email->get_email_message() );
+			$email_message = $email->preview_email_template_tags( $email->get_email_message( $form_id ) );
 
 			if ( $email_message = Give()->emails->build_email( $email_message ) ) {
 

@@ -220,7 +220,7 @@ class Give_Email_Notification_Util {
 
 		if (
 			! empty( $form_id )
-			&& give_is_setting_enabled( get_post_meta( $form_id, "{$email->config['id']}_notification" ) )
+			&& give_is_setting_enabled( get_post_meta( $form_id, "{$email->config['id']}_notification", true ) )
 		) {
 			$option_value = get_post_meta( $form_id, $option_name, true );
 		}
