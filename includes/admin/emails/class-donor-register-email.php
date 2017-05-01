@@ -31,15 +31,20 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 		 * @since   2.0
 		 */
 		public function init() {
-			$this->recipient_group_name = __( 'Donor', 'give' );
-
 			$this->load( array(
-				'id'                   => 'donor-register',
-				'label'                => __( 'Donor Register', 'give' ),
-				'description'          => __( 'Donor Register Notification will be sent to donor when new donor registered.', 'give' ),
-				'notification_status'  => 'enabled',
-				'email_tag_contex'     => 'donor',
-				'form_metabox_setting' => false,
+				'id'                    => 'donor-register',
+				'label'                 => __( 'Donor Register', 'give' ),
+				'description'           => __( 'Donor Register Notification will be sent to donor when new donor registered.', 'give' ),
+				'notification_status'   => 'enabled',
+				'email_tag_contex'      => 'donor',
+				'form_metabox_setting'  => false,
+				'recipient_group_name'  => __( 'Donor', 'give' ),
+				'default_email_subject' => sprintf(
+				/* translators: %s: site name */
+					esc_attr__( '[%s] Your username and password', 'give' ),
+					get_bloginfo( 'name' )
+				),
+				'default_email_message' => $this->get_default_email_message(),
 			) );
 
 			// Setup action hook.
@@ -53,21 +58,6 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 			add_filter(
 				"give_email_preview_{$this->config['id']}_header",
 				array( $this, 'email_preview_header' )
-			);
-		}
-
-		/**
-		 * Get default email subject.
-		 *
-		 * @since  2.0
-		 * @access public
-		 * @return string
-		 */
-		public function get_default_email_subject() {
-			return sprintf(
-			/* translators: %s: site name */
-				esc_attr__( '[%s] Your username and password', 'give' ),
-				get_bloginfo( 'name' )
 			);
 		}
 

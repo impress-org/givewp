@@ -174,7 +174,7 @@ class Give_Email_Setting_Field {
 			'id'      => "{$email->config['id']}_email_subject",
 			'name'    => esc_html__( 'Email Subject', 'give' ),
 			'desc'    => esc_html__( 'Enter the subject line for email.', 'give' ),
-			'default' => $email->get_default_email_subject(),
+			'default' => $email->config['default_email_subject'],
 			'type'    => 'text',
 		);
 	}
@@ -191,12 +191,22 @@ class Give_Email_Setting_Field {
 	 * @return array
 	 */
 	public static function get_email_message_field( Give_Email_Notification $email, $form_id = 0 ) {
+		$desc = esc_html__( 'Enter the email message.', 'give' );
+
+		if ( $email_tag_list = $email->get_allowed_email_tags( true ) ) {
+			$desc = sprintf(
+				esc_html__( 'Enter the email that is sent to users after completing a successful donation. HTML is accepted. Available template tags: %s', 'give' ),
+				$email_tag_list
+			);
+
+		}
+
 		return array(
 			'id'      => "{$email->config['id']}_email_message",
 			'name'    => esc_html__( 'Email message', 'give' ),
-			'desc'    => $email->get_email_message_field_description(),
+			'desc'    => $desc,
 			'type'    => 'wysiwyg',
-			'default' => $email->get_default_email_message(),
+			'default' => $email->config['default_email_message'],
 		);
 	}
 

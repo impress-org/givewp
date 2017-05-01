@@ -89,10 +89,7 @@ class Give_Email_Notifications {
 
 			add_action( "give_{$email->config['id']}_email_preview", array( $this, 'email_preview_header' ) );
 			add_filter( "give_{$email->config['id']}_email_preview_data", array( $this, 'email_preview_data' ) );
-			add_filter( "give_{$email->config['id']}_email_preview_message", array(
-				$this,
-				'email_preview_message',
-			), 1, 2 );
+			add_filter( "give_{$email->config['id']}_email_preview_message", array( $this, 'email_preview_message' ), 1, 2 );
 		}
 	}
 
@@ -345,10 +342,21 @@ class Give_Email_Notifications {
 			}
 		}
 	}
+
+
+	/**
+	 * Load Give_Email_Notifications
+	 *
+	 * @since  2.0
+	 * @access public
+	 */
+	public function load() {
+		add_action( 'give_init', array( $this, 'init' ) );
+	}
 }
 
 
 /**
  * Initialize functionality.
  */
-Give_Email_Notifications::get_instance()->init();
+Give_Email_Notifications::get_instance()->load();

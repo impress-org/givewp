@@ -39,16 +39,18 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 			$this->payment = new Give_Payment( 0 );
 
 			$this->load( array(
-				'id'                              => 'new-offline-donation',
-				'label'                           => __( 'New Offline Donation', 'give' ),
-				'description'                     => __( 'Donation Notification will be sent to admin when new offline donation received.', 'give' ),
-				'has_recipient_Field'             => true,
-				'notification_status'             => 'enabled',
+				'id'                           => 'new-offline-donation',
+				'label'                        => __( 'New Offline Donation', 'give' ),
+				'description'                  => __( 'Donation Notification will be sent to admin when new offline donation received.', 'give' ),
+				'has_recipient_Field'          => true,
+				'notification_status'          => 'enabled',
 				'notification_status_editable' => false,
-				'form_metabox_setting'            => true,
-				'preview_email_tags_values'       => array(
+				'form_metabox_setting'         => true,
+				'preview_email_tags_values'    => array(
 					'payment_method' => esc_html__( 'Offline', 'give' ),
 				),
+				'default_email_subject'        => $this->get_default_email_subject(),
+				'default_email_message'        => $this->get_default_email_message(),
 			) );
 
 			add_action( 'give_insert_payment', array( $this, 'setup_email_notification' ) );
@@ -104,10 +106,10 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 			$message .= '<strong>' . __( 'Amount:', 'give' ) . '</strong> {amount}' . "\n\n";
 
 			$message .= sprintf(
-				'<a href="%1$s">%2$s</a>',
-				admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $this->payment->ID ),
-				__( 'Click Here to View and/or Update Donation Details', 'give' )
-			) . "\n\n";
+				            '<a href="%1$s">%2$s</a>',
+				            admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $this->payment->ID ),
+				            __( 'Click Here to View and/or Update Donation Details', 'give' )
+			            ) . "\n\n";
 
 			/**
 			 * Filter the donation receipt email message
@@ -140,10 +142,13 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 		 * Get message
 		 *
 		 * @since 2.0
+		 *
+		 * @param int $form_id
+		 *
 		 * @return string
 		 */
-		public function get_email_message() {
-			$message = give_get_option( "{$this->config['id']}_email_message", $this->get_default_email_message() );
+		public function get_email_message( $form_id = 0 ) {
+			$message = give_get_option( "{$this->config['id']}_email_message", $this->config['default_email_message'] );
 
 			/**
 			 * Filter the email message.
@@ -263,10 +268,10 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 			$notification_status = isset( $update_options['gateways']['offline'] ) ? 'enabled' : 'disabled';
 
 			if (
-				empty( $update_options[ "{$this->config['id']}_notification" ] )
-				|| $notification_status !== $update_options[ "{$this->config['id']}_notification" ]
+				empty( $update_options["{$this->config['id']}_notification"] )
+				|| $notification_status !== $update_options["{$this->config['id']}_notification"]
 			) {
-				$update_options[ "{$this->config['id']}_notification" ] = $notification_status;
+				$update_options["{$this->config['id']}_notification"] = $notification_status;
 				update_option( $option_name, $update_options );
 			}
 		}

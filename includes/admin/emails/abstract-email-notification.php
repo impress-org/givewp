@@ -47,6 +47,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			'label'                        => '',
 			'description'                  => '',
 			'has_recipient_field'          => false,
+			'recipient_group_name'         => '',
 			'notification_status'          => 'disabled',
 			'notification_status_editable' => true,
 			'has_preview'                  => true,
@@ -55,21 +56,16 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			'email_tag_context'            => 'all',
 			'form_metabox_setting'         => true,
 			'content_type'                 => '',
+			'default_email_subject'        => '',
+			'default_email_message'        => '',
 		);
 
-		/**
-		 * @var     string $recipient_email Donor email.
+		/* @var     string $recipient_email Donor email.
 		 * @access  protected
 		 * @since   2.0
 		 */
 		protected $recipient_email = '';
 
-		/**
-		 * @var     string $recipient_group_name Categories single or group of recipient.
-		 * @access  protected
-		 * @since   2.0
-		 */
-		protected $recipient_group_name = '';
 
 		/**
 		 * Setup email notification.
@@ -126,7 +122,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 *
 			 * @since 2.0
 			 *
-			 * @param array                   Give_Email_Notification::config
+			 * @param                         array                   Give_Email_Notification::config
 			 * @param Give_Email_Notification $this
 			 */
 			$this->config = apply_filters( 'give_email_api_notification_config', $this->config, $this );
@@ -164,6 +160,29 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 					2
 				);
 			}
+
+
+			/**
+			 * Filter the default email subject.
+			 *
+			 * @since 2.0
+			 */
+			$this->config['default_email_subject'] = apply_filters(
+				"give_{$this->config['id']}_get_default_email_subject", '',
+				$this->config['default_email_subject'],
+				$this
+			);
+
+			/**
+			 * Filter the default email message.
+			 *
+			 * @since 2.0
+			 */
+			$this->config['default_email_message'] = apply_filters(
+				"give_{$this->config['id']}_get_default_email_message", '',
+				$this->config['default_email_message'],
+				$this
+			);
 		}
 
 		/**
@@ -275,13 +294,14 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 *
 		 * @since  2.0
 		 * @access public
+		 *
+		 * @param int $form_id
+		 *
 		 * @return string|array
 		 */
-		public function get_recipient() {
-			$recipient = $this->recipient_email;
-
-			if ( ! $recipient && $this->config['has_recipient_field'] ) {
-				$recipient = give_get_option( "{$this->config['id']}_recipient" );
+		public function get_recipient( $form_id = null ) {
+			if ( empty( $this->recipient_email ) && $this->config['has_recipient_field'] ) {
+				$this->recipient_email = Give_Email_Notification_Util::get_value( $this, "{$this->config['id']}_recipient", $form_id );
 			}
 
 			/**
@@ -289,19 +309,15 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 *
 			 * @since 2.0
 			 */
-			return apply_filters( "give_{$this->config['id']}_get_recipients", give_check_variable( $recipient, 'empty', Give()->emails->get_from_address() ), $this );
-		}
-
-		/**
-		 * Get recipient(s) group name.
-		 * *
-		 *
-		 * @since  2.0
-		 * @access public
-		 * @return string|array
-		 */
-		public function get_recipient_group_name() {
-			return $this->recipient_group_name;
+			return apply_filters(
+				"give_{$this->config['id']}_get_recipients",
+				give_check_variable(
+					$this->recipient_email,
+					'empty',
+					Give()->emails->get_from_address()
+				),
+				$this
+			);
 		}
 
 		/**
@@ -309,16 +325,28 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 *
 		 * @since  2.0
 		 * @access public
+		 *
+		 * @param int $form_id
+		 *
 		 * @return bool
 		 */
-		public function get_notification_status() {
+		public function get_notification_status( $form_id = 0 ) {
 
 			/**
 			 * Filter the notification status.
 			 *
 			 * @since 1.8
 			 */
-			return apply_filters( "give_{$this->config['id']}_get_notification_status", give_get_option( "{$this->config['id']}_notification", $this->config['notification_status'] ), $this );
+			return apply_filters(
+				"give_{$this->config['id']}_get_notification_status",
+				Give_Email_Notification_Util::get_value(
+					$this,
+					"{$this->config['id']}_notification",
+					$form_id,
+					$this->config['notification_status']
+				),
+				$this
+			);
 		}
 
 		/**
@@ -326,17 +354,31 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 *
 		 * @since  2.0
 		 * @access public
+		 *
+		 * @param int $form_id
+		 *
 		 * @return string
 		 */
-		function get_email_subject() {
-			$subject = wp_strip_all_tags( give_get_option( "{$this->config['id']}_email_subject", $this->get_default_email_subject() ) );
+		function get_email_subject( $form_id = 0 ) {
+			$subject = wp_strip_all_tags(
+				Give_Email_Notification_Util::get_value(
+					$this,
+					"{$this->config['id']}_email_subject",
+					$form_id,
+					$this->config['default_email_subject']
+				)
+			);
 
 			/**
 			 * Filter the subject.
 			 *
 			 * @since 2.0
 			 */
-			return apply_filters( "give_{$this->config['id']}_get_email_subject", $subject, $this );
+			return apply_filters(
+				"give_{$this->config['id']}_get_email_subject",
+				$subject,
+				$this
+			);
 		}
 
 		/**
@@ -344,66 +386,29 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 *
 		 * @since  2.0
 		 * @access public
+		 *
+		 * @param int $form_id
+		 *
 		 * @return string
 		 */
-		public function get_email_message() {
-			$message = give_get_option( "{$this->config['id']}_email_message", $this->get_default_email_message() );
+		public function get_email_message( $form_id = 0 ) {
+			$message = Give_Email_Notification_Util::get_value(
+				$this,
+				"{$this->config['id']}_email_message",
+				$form_id,
+				$this->config['default_email_message']
+			);
 
 			/**
 			 * Filter the message.
 			 *
 			 * @since 2.0
 			 */
-			return apply_filters( "give_{$this->config['id']}_get_email_message", $message, $this );
-		}
-
-
-		/**
-		 * Get email message field description
-		 *
-		 * @since 2.0
-		 * @acess public
-		 * @return string
-		 */
-		public function get_email_message_field_description() {
-			$desc = esc_html__( 'Enter the email message.', 'give' );
-
-			if ( $email_tag_list = $this->get_emails_tags_list_html() ) {
-				$desc = sprintf(
-					esc_html__( 'Enter the email that is sent to users after completing a successful donation. HTML is accepted. Available template tags: %s', 'give' ),
-					$email_tag_list
-				);
-
-			}
-
-			return $desc;
-		}
-
-		/**
-		 * Get a formatted HTML list of all available email tags
-		 *
-		 * @since 1.0
-		 *
-		 * @return string
-		 */
-		function get_emails_tags_list_html() {
-
-			// Get all email tags.
-			$email_tags = $this->get_allowed_email_tags();
-
-			ob_start();
-			if ( count( $email_tags ) > 0 ) : ?>
-				<div class="give-email-tags-wrap">
-					<?php foreach ( $email_tags as $email_tag ) : ?>
-						<span class="give_<?php echo $email_tag['tag']; ?>_tag">
-					<code>{<?php echo $email_tag['tag']; ?>}</code> - <?php echo $email_tag['description']; ?>
-				</span>
-					<?php endforeach; ?>
-				</div>
-			<?php endif;
-
-			// Return the list.
-			return ob_get_clean();
+			return apply_filters(
+				"give_{$this->config['id']}_get_email_message",
+				$message,
+				$this
+			);
 		}
 
 
@@ -412,9 +417,12 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 *
 		 * @since  2.0
 		 * @access private
+		 *
+		 * @param bool $formatted
+		 *
 		 * @return array
 		 */
-		private function get_allowed_email_tags() {
+		public function get_allowed_email_tags( $formatted = false ) {
 			// Get all email tags.
 			$email_tags = Give()->email_tags->get_tags();
 
@@ -439,32 +447,20 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 				}
 			}
 
+			if ( count( $email_tags ) && $formatted ) : ob_start() ?>
+				<div class="give-email-tags-wrap">
+					<?php foreach ( $email_tags as $email_tag ) : ?>
+						<span class="give_<?php echo $email_tag['tag']; ?>_tag">
+							<code>{<?php echo $email_tag['tag']; ?>}</code> - <?php echo $email_tag['description']; ?>
+						</span>
+					<?php endforeach; ?>
+				</div>
+				<?php
+				$email_tags = ob_get_clean();
+			endif;
+
 			return $email_tags;
 		}
-
-		/**
-		 * Get default email subject.
-		 *
-		 * @since  2.0
-		 * @access public
-		 * @return string
-		 */
-		function get_default_email_subject() {
-			return apply_filters( "give_{$this->config['id']}give_get_default_email_subject", '', $this );
-		}
-
-		/**
-		 * Get default email message.
-		 *
-		 * @since  2.0
-		 * @access public
-		 *
-		 * @return string
-		 */
-		function get_default_email_message() {
-			return apply_filters( "give_{$this->config['id']}give_get_default_email_message", '', $this );
-		}
-
 
 		/**
 		 * Get preview email recipients.

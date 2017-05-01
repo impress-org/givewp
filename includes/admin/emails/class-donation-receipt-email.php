@@ -35,8 +35,6 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		 * @since   2.0
 		 */
 		public function init() {
-			$this->recipient_group_name = __( 'Donor', 'give' );
-
 			// Initialize empty payment.
 			$this->payment = new Give_Payment( 0 );
 
@@ -46,46 +44,13 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 				'description'          => __( 'Donation Receipt Notification will be sent to donor when new donation received.', 'give' ),
 				'notification_status'  => 'enabled',
 				'form_metabox_setting' => true,
+				'recipient_group_name' => __( 'Donor', 'give' ),
+				'default_email_subject' => esc_attr__( 'Donation Receipt', 'give' ),
+				'default_email_message' => give_get_default_donation_receipt_email()
 			) );
 
 			add_action( "give_{$this->config['id']}_email_notification", array( $this, 'send_donation_receipt' ) );
 			add_action( 'give_email_links', array( $this, 'resend_donation_receipt' ) );
-		}
-
-		/**
-		 * Get default email subject.
-		 *
-		 * @since  2.0
-		 * @access public
-		 * @return string
-		 */
-		public function get_default_email_subject() {
-			/**
-			 * Filter the default subject.
-			 *
-			 * @since 2.0
-			 */
-			return apply_filters( "give_{$this->config['id']}_get_default_email_subject", esc_attr__( 'Donation Receipt', 'give' ), $this );
-		}
-
-
-		/**
-		 * Get default email message.
-		 *
-		 * @since  2.0
-		 * @access public
-		 *
-		 * @return string
-		 */
-		public function get_default_email_message() {
-			/**
-			 * Filter the donation receipt email message
-			 *
-			 * @since 2.0
-			 *
-			 * @param string $message
-			 */
-			return apply_filters( "give_{$this->config['id']}_get_default_email_message", give_get_default_donation_receipt_email(), $this );
 		}
 
 
@@ -94,10 +59,12 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		 *
 		 * @since  2.0
 		 * @access public
+		 *
+		 * @param int $form_id
 		 * @return string
 		 */
-		public function get_email_subject() {
-			$subject = wp_strip_all_tags( give_get_option( "{$this->config['id']}_email_subject", $this->get_default_email_subject() ) );
+		public function get_email_subject( $form_id = 0 ) {
+			$subject = wp_strip_all_tags( give_get_option( "{$this->config['id']}_email_subject", $this->config['default_email_subject'] ) );
 
 			/**
 			 * Filters the donation email receipt subject.
@@ -123,10 +90,12 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		 *
 		 * @since  2.0
 		 * @access public
+		 *
+		 * @param int $form_id
 		 * @return string
 		 */
-		public function get_email_message() {
-			$message = give_get_option( "{$this->config['id']}_email_message", $this->get_default_email_message() );
+		public function get_email_message( $form_id = 0 ) {
+			$message = give_get_option( "{$this->config['id']}_email_message", $this->config['default_email_message'] );
 
 			/**
 			 * Filter message on basis of email template

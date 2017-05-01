@@ -208,16 +208,20 @@ class Give_Email_Notification_Util {
 	 * @since  2.0
 	 * @access public
 	 *
-	 * @param string $option_name
-	 * @param int    $form_id
-	 * @param mixed  $default
+	 * @param Give_Email_Notification $email
+	 * @param string                   $option_name
+	 * @param int                      $form_id
+	 * @param mixed                    $default
 	 *
 	 * @return mixed
 	 */
-	public static function get_value( $option_name, $form_id = null, $default = false ) {
-		if ( is_null( $form_id ) ) {
-			$option_value = give_get_option( $option_name, $default );
-		} else {
+	public static function get_value( Give_Email_Notification $email, $option_name, $form_id = null, $default = false ) {
+		$option_value = give_get_option( $option_name, $default );
+
+		if (
+			! empty( $form_id )
+			&& give_is_setting_enabled( get_post_meta( $form_id, "{$email->config['id']}_notification" ) )
+		) {
 			$option_value = get_post_meta( $form_id, $option_name, true );
 		}
 

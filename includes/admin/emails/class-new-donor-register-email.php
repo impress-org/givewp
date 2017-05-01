@@ -32,14 +32,20 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 		 */
 		public function init() {
 			$this->load( array(
-				'id'                   => 'new-donor-register',
-				'label'                => __( 'New Donor Register', 'give' ),
-				'description'          => __( 'New Donor Register Notification will be sent to recipient(s) when new donor registered.', 'give' ),
-				'has_recipient_field'  => true,
-				'notification_status'  => 'enabled',
-				'has_preview_header'   => true,
-				'email_tag_context'    => 'donor',
-				'form_metabox_setting' => false,
+				'id'                    => 'new-donor-register',
+				'label'                 => __( 'New Donor Register', 'give' ),
+				'description'           => __( 'New Donor Register Notification will be sent to recipient(s) when new donor registered.', 'give' ),
+				'has_recipient_field'   => true,
+				'notification_status'   => 'enabled',
+				'has_preview_header'    => true,
+				'email_tag_context'     => 'donor',
+				'form_metabox_setting'  => false,
+				'default_email_subject' => sprintf(
+				/* translators: %s: site name */
+					esc_attr__( 'New user registration on your site %s:', 'give' ),
+					get_bloginfo( 'name' )
+				),
+				'default_email_massage' => $this->get_default_email_message()
 			) );
 
 			// Setup action hook.
@@ -53,30 +59,6 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 			add_filter(
 				"give_email_preview_{$this->config['id']}_header",
 				array( $this, 'email_preview_header' )
-			);
-		}
-
-		/**
-		 * Get default email subject.
-		 *
-		 * @since  2.0
-		 * @access public
-		 * @return string
-		 */
-		function get_default_email_subject() {
-			/**
-			 * Filter the default email subject
-			 *
-			 * @since 2.0
-			 */
-			return apply_filters(
-				"give_{$this->config['id']}_get_default_email_subject",
-				sprintf(
-				/* translators: %s: site name */
-					esc_attr__( 'New user registration on your site %s:', 'give' ),
-					get_bloginfo( 'name' )
-				),
-				$this
 			);
 		}
 

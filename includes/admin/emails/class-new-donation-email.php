@@ -39,12 +39,14 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			$this->payment = new Give_Payment( 0 );
 
 			$this->load( array(
-				'id'                   => 'new-donation',
-				'label'                => __( 'New Donation', 'give' ),
-				'description'          => __( 'Donation Notification will be sent to recipient(s) when new donation received except offline donation.', 'give' ),
-				'has_recipient_field'  => true,
-				'notification_status'  => 'enabled',
-				'form_metabox_setting' => true,
+				'id'                    => 'new-donation',
+				'label'                 => __( 'New Donation', 'give' ),
+				'description'           => __( 'Donation Notification will be sent to recipient(s) when new donation received except offline donation.', 'give' ),
+				'has_recipient_field'   => true,
+				'notification_status'   => 'enabled',
+				'form_metabox_setting'  => true,
+				'default_email_subject' => esc_attr__( 'New Donation - #{payment_id}', 'give' ),
+				'default_email_message' => give_get_default_donation_notification_email(),
 
 			) );
 
@@ -57,10 +59,13 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		 *
 		 * @since  2.0
 		 * @access public
+		 *
+		 * @param int $form_id
+		 *
 		 * @return string
 		 */
-		public function get_email_subject() {
-			$subject = wp_strip_all_tags( give_get_option( "{$this->config['id']}_email_subject", $this->get_default_email_subject() ) );
+		public function get_email_subject( $form_id = 0 ) {
+			$subject = wp_strip_all_tags( give_get_option( "{$this->config['id']}_email_subject", $this->config['default_email_subject'] ) );
 
 			/**
 			 * Filters the donation notification subject.
@@ -86,10 +91,13 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		 *
 		 * @since  2.0
 		 * @access public
+		 *
+		 * @param int $form_id
+		 *
 		 * @return string
 		 */
-		public function get_email_message() {
-			$message = give_get_option( "{$this->config['id']}_email_message", $this->get_default_email_message() );
+		public function get_email_message( $form_id = 0 ) {
+			$message = give_get_option( "{$this->config['id']}_email_message", $this->config['default_email_message'] );
 
 			/**
 			 * Filter the email message
@@ -155,51 +163,6 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 
 			return $attachments;
 		}
-
-		/**
-		 * Get default email subject.
-		 *
-		 * @since  2.0
-		 * @access public
-		 * @return string
-		 */
-		public function get_default_email_subject() {
-			/**
-			 * Filter the defaul email subject.
-			 *
-			 * @since 2.0
-			 */
-			return apply_filters(
-				"give_{$this->config['id']}_get_default_email_subject",
-				esc_attr__( 'New Donation - #{payment_id}', 'give' ),
-				$this
-			);
-		}
-
-
-		/**
-		 * Get default email message.
-		 *
-		 * @since  2.0
-		 * @access public
-		 *
-		 * @return string
-		 */
-		public function get_default_email_message() {
-			/**
-			 * Filter the new donation email message
-			 *
-			 * @since 2.0
-			 *
-			 * @param string $message
-			 */
-			return apply_filters(
-				"give_{$this->config['id']}_get_default_email_message",
-				give_get_default_donation_notification_email(),
-				$this
-			);
-		}
-
 
 		/**
 		 * Set email data

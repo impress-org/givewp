@@ -107,10 +107,10 @@ class Give_Email_Notification_Table extends WP_List_Table {
 	 */
 	public function column_recipient( $email ) {
 		ob_start();
-		?>
-		<?php
-		if ( $email->get_recipient_group_name() ) {
-			echo $email->get_recipient_group_name();
+
+		if ( ! empty( $email->config['recipient_group_name'] ) ) {
+			echo $email->config['recipient_group_name'];
+
 		} else {
 			$recipients = $email->get_recipient();
 			if ( is_array( $recipients ) ) {
@@ -119,8 +119,7 @@ class Give_Email_Notification_Table extends WP_List_Table {
 
 			echo $recipients;
 		}
-		?>
-		<?php
+
 		return ob_get_clean();
 	}
 
