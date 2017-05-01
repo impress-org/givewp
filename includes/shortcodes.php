@@ -52,16 +52,18 @@ function give_donation_history() {
 		return ob_get_clean();
 
 	} elseif ( give_is_setting_enabled( $email_access ) ) {
-		//Is Email-based access enabled?
+		// Is Email-based access enabled?
 		ob_start();
 		give_get_template_part( 'email', 'login-form' );
 
 		return ob_get_clean();
+
 	} else {
 
-		echo apply_filters( 'give_donation_history_nonuser_message', give_output_error( __( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' ), false ) );
-		echo do_shortcode( '[give_login]' );
-		
+		$output = apply_filters( 'give_donation_history_nonuser_message', give_output_error( __( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' ), false ) );
+		$output .= do_shortcode( '[give_login]' );
+
+		return $output;
 	}
 }
 
@@ -398,7 +400,7 @@ function give_process_profile_editor_updates( $data ) {
 	 *
 	 * @since 1.0
 	 *
-	 * @param int   $user_id  The ID of the user.
+	 * @param int $user_id The ID of the user.
 	 * @param array $userdata User info, including ID, first name, last name, display name and email.
 	 */
 	do_action( 'give_pre_update_user_profile', $user_id, $userdata );
@@ -447,7 +449,7 @@ function give_process_profile_editor_updates( $data ) {
 		 *
 		 * @since 1.0
 		 *
-		 * @param int   $user_id  The ID of the user.
+		 * @param int $user_id The ID of the user.
 		 * @param array $userdata User info, including ID, first name, last name, display name and email.
 		 */
 		do_action( 'give_user_profile_updated', $user_id, $userdata );
