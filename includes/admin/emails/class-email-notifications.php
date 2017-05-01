@@ -267,15 +267,6 @@ class Give_Email_Notifications {
 		 */
 		$email_preview_header = apply_filters( 'give_email_preview_header', give_get_preview_email_header(), $email );
 
-		/**
-		 * Filter the specific email preview header.
-		 *
-		 * @since 2.0
-		 *
-		 * @param Give_Email_Notification $email
-		 */
-		$email_preview_header = apply_filters( "give_email_preview_{$email->config['id']}_header", $email_preview_header, $email );
-
 		echo $email_preview_header;
 	}
 
