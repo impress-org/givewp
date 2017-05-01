@@ -168,7 +168,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 * @since 2.0
 			 */
 			$this->config['default_email_subject'] = apply_filters(
-				"give_{$this->config['id']}_get_default_email_subject", '',
+				"give_{$this->config['id']}_get_default_email_subject",
 				$this->config['default_email_subject'],
 				$this
 			);
@@ -179,7 +179,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 * @since 2.0
 			 */
 			$this->config['default_email_message'] = apply_filters(
-				"give_{$this->config['id']}_get_default_email_message", '',
+				"give_{$this->config['id']}_get_default_email_message",
 				$this->config['default_email_message'],
 				$this
 			);
