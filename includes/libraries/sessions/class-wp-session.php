@@ -104,7 +104,7 @@ final class WP_Session extends Recursive_ArrayAccess {
 		/*
 		 * Only set the cookie manually, on form submission.
 		 */
-		//$this->set_cookie();
+		$this->set_cookie();
 
 	}
 
