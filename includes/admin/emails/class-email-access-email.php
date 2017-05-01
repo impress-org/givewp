@@ -50,6 +50,7 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 
 			add_action( "give_{$this->config['id']}_email_notification", array( $this, 'setup_email_notification' ) );
 			add_action( 'give_save_settings_give_settings', array( $this, 'set_notification_status' ), 10, 2 );
+			add_filter( 'give_email_preview_header', array( $this, 'email_preview_header' ), 10, 2 );
 		}
 
 
@@ -262,11 +263,30 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 
 			if (
 				! empty( $update_options['email_access'] )
-				&& $update_options['email_access'] !== $update_options["{$this->config['id']}_notification"]
+				&& $update_options['email_access'] !== $update_options[ "{$this->config['id']}_notification" ]
 			) {
-				$update_options["{$this->config['id']}_notification"] = $update_options['email_access'];
+				$update_options[ "{$this->config['id']}_notification" ] = $update_options['email_access'];
 				update_option( $option_name, $update_options );
 			}
+		}
+
+
+		/**
+		 * email preview header.
+		 *
+		 * @since  2.0
+		 * @access public
+		 *
+		 * @param string                  $email_preview_header
+		 * @param Give_Email_Access_Email $email
+		 * @return string
+		 */
+		public function email_preview_header( $email_preview_header, $email ) {
+			if( $this->config['id'] === $email->config['id'] ) {
+				$email_preview_header = '';
+			}
+
+			return $email_preview_header;
 		}
 	}
 

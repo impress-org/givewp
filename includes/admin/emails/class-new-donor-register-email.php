@@ -41,11 +41,11 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 				'email_tag_context'     => 'donor',
 				'form_metabox_setting'  => false,
 				'default_email_subject' => sprintf(
-				/* translators: %s: site name */
+					/* translators: %s: site name */
 					esc_attr__( 'New user registration on your site %s:', 'give' ),
 					get_bloginfo( 'name' )
 				),
-				'default_email_massage' => $this->get_default_email_message()
+				'default_email_massage' => $this->get_default_email_message(),
 			) );
 
 			// Setup action hook.
@@ -57,8 +57,10 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 			);
 
 			add_filter(
-				"give_email_preview_{$this->config['id']}_header",
-				array( $this, 'email_preview_header' )
+				'give_email_preview_header',
+				array( $this, 'email_preview_header' ),
+				10,
+				2
 			);
 		}
 
@@ -113,11 +115,16 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 		 * @since  2.0
 		 * @access public
 		 *
-		 * @param string $email_preview_header
-		 *
-		 * @return bool
+		 * @param string                        $email_preview_header
+		 * @param Give_New_Donor_Register_Email $email
+		 * @return string
 		 */
-		public function email_preview_header( $email_preview_header ) {
+		public function email_preview_header( $email_preview_header, $email ) {
+			// Bailout.
+			if ( $this->config['id'] !== $email->config['id'] ) {
+				return $email_preview_header;
+			}
+
 			// Payment receipt switcher
 			$user_id = give_check_variable( give_clean( $_GET ), 'isset', 0, 'user_id' );
 

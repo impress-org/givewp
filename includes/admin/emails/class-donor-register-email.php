@@ -40,7 +40,7 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 				'form_metabox_setting'  => false,
 				'recipient_group_name'  => __( 'Donor', 'give' ),
 				'default_email_subject' => sprintf(
-				/* translators: %s: site name */
+					/* translators: %s: site name */
 					esc_attr__( '[%s] Your username and password', 'give' ),
 					get_bloginfo( 'name' )
 				),
@@ -56,8 +56,10 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 			);
 
 			add_filter(
-				"give_email_preview_{$this->config['id']}_header",
-				array( $this, 'email_preview_header' )
+				'give_email_preview_header',
+				array( $this, 'email_preview_header' ),
+				10,
+				2
 			);
 		}
 
@@ -72,9 +74,9 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 		function get_default_email_message() {
 			$message = esc_attr__( 'Username: {username}', 'give' ) . "\r\n";
 			$message .= sprintf(
-				            esc_attr__( 'Password: %s', 'give' ),
-				            esc_attr__( '[Password entered during donation]', 'give' )
-			            ) . "\r\n";
+				esc_attr__( 'Password: %s', 'give' ),
+				esc_attr__( '[Password entered during donation]', 'give' )
+			) . "\r\n";
 
 			$message .= '<a href="' . wp_login_url() . '"> ' . esc_attr__( 'Click Here to Login &raquo;', 'give' ) . '</a>' . "\r\n";
 
@@ -114,11 +116,16 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 		 * @since  2.0
 		 * @access public
 		 *
-		 * @param string $email_preview_header
-		 *
+		 * @param string                    $email_preview_header
+		 * @param Give_Donor_Register_Email $email
 		 * @return bool
 		 */
-		public function email_preview_header( $email_preview_header ) {
+		public function email_preview_header( $email_preview_header, $email ) {
+			// Bailout.
+			if ( $this->config['id'] !== $email->config['id'] ) {
+				return $email_preview_header;
+			}
+
 			// Payment receipt switcher
 			$user_id = give_check_variable( give_clean( $_GET ), 'isset', 0, 'user_id' );
 
