@@ -39,7 +39,7 @@ class Give_Email_Setting_Field {
 			$setting_fields = array_merge( $setting_fields, $extra_setting_field );
 		}
 
-		$setting_fields = self::add_section_end( $setting_fields, $email );
+		$setting_fields = self::add_section_end( $email, $setting_fields );
 
 		return $setting_fields;
 	}
@@ -72,12 +72,34 @@ class Give_Email_Setting_Field {
 	 * @since  2.0
 	 * @access private
 	 *
+	 * @param Give_Email_Notification $email
+	 * @param int                     $form_id
+	 *
+	 * @return array
+	 */
+	public static function get_section_start( Give_Email_Notification $email, $form_id = 0 ) {
+		// Add section end field.
+		$setting = array(
+			'id'    => "give_title_email_settings_{$email->config['id']}",
+			'type'  => 'title',
+			'title' => $email->config['label'],
+		);
+
+		return $setting;
+	}
+
+	/**
+	 * Check if email notification setting has section end or not.
+	 *
+	 * @since  2.0
+	 * @access private
+	 *
 	 * @param array                   $setting
 	 * @param Give_Email_Notification $email
 	 *
 	 * @return array
 	 */
-	public static function add_section_end( $setting, Give_Email_Notification $email ) {
+	public static function add_section_end( Give_Email_Notification $email, $setting ) {
 		if ( ! self::has_section_end( $setting ) ) {
 			// Add section end field.
 			$setting[] = array(
@@ -101,11 +123,7 @@ class Give_Email_Setting_Field {
 	 * @return array
 	 */
 	public static function get_default_setting_fields( Give_Email_Notification $email, $form_id = 0 ) {
-		$settings[] = array(
-			'id'    => "give_title_email_settings_{$email->config['id']}",
-			'type'  => 'title',
-			'title' => $email->config['label'],
-		);
+		$settings[] = self::get_section_start( $email, $form_id );
 
 		if ( Give_Email_Notification_Util::is_notification_status_editable( $email ) ) {
 			$settings[] = self::get_notification_status_field( $email, $form_id );
