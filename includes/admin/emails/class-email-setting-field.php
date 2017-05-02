@@ -149,12 +149,13 @@ class Give_Email_Setting_Field {
 		}
 
 		return array(
-			'name'    => esc_html__( 'Notification', 'give' ),
-			'desc'    => esc_html__( 'Choose option if you want to send email notification or not.', 'give' ),
-			'id'      => "{$email->config['id']}_notification",
-			'type'    => 'radio_inline',
-			'default' => $default_value,
-			'options' => $option,
+			'name'          => esc_html__( 'Notification', 'give' ),
+			'desc'          => esc_html__( 'Choose option if you want to send email notification or not.', 'give' ),
+			'id'            => "{$email->config['id']}_notification",
+			'type'          => 'radio_inline',
+			'default'       => $default_value,
+			'options'       => $option,
+			'wrapper_class' => 'give_email_api_notification_status_setting',
 		);
 	}
 
