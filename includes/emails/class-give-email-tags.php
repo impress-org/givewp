@@ -1074,10 +1074,6 @@ function give_get_receipt_url( $payment_id ) {
  * @return string
  */
 function give_email_tag_email_access_link( $tag_args ){
-
-	error_log( print_r( 'pass', true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-	error_log( print_r( $tag_args, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-
 	/**
 	 * Filter the {email_access_link} email template tag output.
 	 *
