@@ -132,11 +132,19 @@ class Give_Email_Notification_Util {
 	 * @access public
 	 *
 	 * @param Give_Email_Notification $email
+	 * @param int $form_id
 	 *
 	 * @return string
 	 */
-	public static function is_email_notification_active( Give_Email_Notification $email ) {
-		return give_is_setting_enabled( $email->get_notification_status() );
+	public static function is_email_notification_active( Give_Email_Notification $email, $form_id = null ) {
+		$notification_status = $email->get_notification_status( $form_id );
+
+
+		$notification_status = empty( $form_id )
+			? give_is_setting_enabled( $notification_status )
+			: give_is_setting_enabled( $email->get_notification_status(), array( 'enabled', 'global' ) );
+
+		return $notification_status;
 	}
 
 	/**
