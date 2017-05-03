@@ -95,11 +95,33 @@ class Give_Email_Template_Tags {
 	 * Returns a list of all email tags
 	 *
 	 * @since 1.0
+	 * @since 2.0 Add $context_type param to get specific  contect email tags.
+	 *
+	 * @param string $context_type
+	 * @param string $field
 	 *
 	 * @return array
 	 */
-	public function get_tags() {
-		return $this->tags;
+	public function get_tags( $context_type = 'all', $field = '' ) {
+		$tags = $this->tags;
+
+		if( 'all' !== $context_type ) {
+			$tags = array();
+
+			foreach ( $this->tags as $tag ) {
+				if( empty( $tag['context'] ) || $context_type !== $tag['context'] ) {
+					continue;
+				}
+
+				$tags[ $tag['tag'] ] = $tag;
+			}
+		}
+
+		if( ! empty( $tags ) && ! empty( $field )  ) {
+			$tags = wp_list_pluck( $tags, $field );
+		}
+
+		return $tags;
 	}
 
 	/**
