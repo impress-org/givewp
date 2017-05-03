@@ -509,14 +509,8 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @access public
 		 */
 		public function send_preview_email() {
-			/**
-			 * Fire action after before email send.
-			 *
-			 * @since 2.0
-			 */
-			do_action( "give_{$this->config['id']}_email_send_before", $this );
-
-			$form_id = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
+			// Get form id
+			$form_id = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : null;
 
 			// setup email data.
 			$this->setup_email_data();
@@ -528,21 +522,16 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			// Setup email content type.
 			Give()->emails->__set( 'content_type', $this->config['content_type'] );
 
+			// Format plain content type email.
 			if ( 'text/plain' === $this->config['content_type'] ) {
 				Give()->emails->__set( 'html', false );
 				Give()->emails->__set( 'template', 'none' );
 				$message = strip_tags( $message );
 			}
 
-			$email_status = Give()->emails->send( $this->get_preview_email_recipient( $form_id ), $subject, $message, $attachments );
-
-			/**
-			 * Fire action after after email send.
-			 *
-			 * @since 2.0
-			 */
-			do_action( "give_{$this->config['id']}_email_send_after", $email_status, $this );
+			return Give()->emails->send( $this->get_preview_email_recipient( $form_id ), $subject, $message, $attachments );
 		}
+
 
 		/**
 		 * Send email notification.
@@ -561,8 +550,19 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @return bool
 		 */
 		public function send_email_notification( $email_tag_args = array() ) {
+			/**
+			 * Filter the email tag args
+			 *
+			 * @since 2.0
+			 */
+			$email_tag_args = apply_filters( "give_{$this->config['id']}_email_tag_args", $email_tag_args, $this );
+
+			// Get form id.
+			$form_id = ! empty( $email_tag_args['form_id'] ) ? absint( $email_tag_args['form_id'] ) : null;
+
+
 			// Do not send email if notification is disable.
-			if ( ! give_is_setting_enabled( $this->get_notification_status() ) ) {
+			if ( ! Give_Email_Notification_Util::is_email_notification_active( $this, $form_id ) ) {
 				return false;
 			}
 
@@ -571,11 +571,11 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 *
 			 * @since 2.0
 			 */
-			do_action( "give_{$this->config['id']}_email_send_before", $this );
+			do_action( "give_{$this->config['id']}_email_send_before", $this, $form_id );
 
 			$attachments = $this->get_email_attachments();
-			$message     = give_do_email_tags( $this->get_email_message(), $email_tag_args );
-			$subject     = give_do_email_tags( $this->get_email_subject(), $email_tag_args );
+			$message     = give_do_email_tags( $this->get_email_message( $form_id ), $email_tag_args );
+			$subject     = give_do_email_tags( $this->get_email_subject( $form_id ), $email_tag_args );
 
 			// Setup email content type.
 			Give()->emails->__set( 'content_type', $this->config['content_type'] );
@@ -587,14 +587,14 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			}
 
 			// Send email.
-			$email_status = Give()->emails->send( $this->get_recipient(), $subject, $message, $attachments );
+			$email_status = Give()->emails->send( $this->get_recipient( $form_id ), $subject, $message, $attachments );
 
 			/**
 			 * Fire action after after email send.
 			 *
 			 * @since 2.0
 			 */
-			do_action( "give_{$this->config['id']}_email_send_after", $email_status, $this );
+			do_action( "give_{$this->config['id']}_email_send_after", $email_status, $this, $form_id );
 
 			return $email_status;
 		}
