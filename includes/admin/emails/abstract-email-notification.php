@@ -331,6 +331,9 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @return bool
 		 */
 		public function get_notification_status( $form_id = 0 ) {
+			$notification_status = empty( $form_id )
+				? give_get_option( "{$this->config['id']}_notification", $this->config['notification_status'] )
+				: get_post_meta( $form_id,"{$this->config['id']}_notification", true  );
 
 			/**
 			 * Filter the notification status.
@@ -339,12 +342,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 */
 			return apply_filters(
 				"give_{$this->config['id']}_get_notification_status",
-				Give_Email_Notification_Util::get_value(
-					$this,
-					"{$this->config['id']}_notification",
-					$form_id,
-					$this->config['notification_status']
-				),
+				$notification_status,
 				$this
 			);
 		}
