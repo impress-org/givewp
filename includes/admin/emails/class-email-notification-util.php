@@ -142,7 +142,7 @@ class Give_Email_Notification_Util {
 
 		$notification_status = empty( $form_id )
 			? give_is_setting_enabled( $notification_status )
-			: give_is_setting_enabled( $email->get_notification_status(), array( 'enabled', 'global' ) );
+			: give_is_setting_enabled( $notification_status, array( 'enabled', 'global' ) );
 
 		return $notification_status;
 	}
