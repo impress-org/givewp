@@ -518,7 +518,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 */
 			do_action( "give_{$this->config['id']}_email_send_before", $this );
 
-			$form_id = absint( $_GET['form_id'] );
+			$form_id = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
 
 			// setup email data.
 			$this->setup_email_data();
