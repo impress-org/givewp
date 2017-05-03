@@ -1072,6 +1072,7 @@ function give_get_receipt_url( $payment_id ) {
  * @param array $tag_args
  *
  * @return string
+ * @todo implement email tag
  */
 function give_email_tag_email_access_link( $tag_args ){
 	/**
