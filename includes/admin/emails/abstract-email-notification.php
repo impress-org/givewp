@@ -547,7 +547,13 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		}
 
 		/**
-		 * Send email notification
+		 * Send email notification.
+		 *
+		 * Note: To render email tags certain parameter is necessary for other core:
+		 * 	1. payment_id (required)
+		 * 	2. user_id    (required)
+		 * 	3. form_id    (required)
+		 * 	3. for third party email tags you can pass necessary param along above parameters other value replace by empty string.
 		 *
 		 * @since  2.0
 		 * @access public
