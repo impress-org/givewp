@@ -392,6 +392,9 @@ if ( ! class_exists( 'Give_License' ) ) :
 			// Tell WordPress to look for updates
 			set_site_transient( 'update_plugins', null );
 
+			// Add license key.
+			give_update_option( "{$this->item_shortname}_license_key", $license );
+
 			// Decode license data
 			$this->license_data = json_decode( wp_remote_retrieve_body( $response ) );
 			update_option( $this->item_shortname . '_license_active', $this->license_data );
