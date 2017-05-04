@@ -964,7 +964,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			if ( ! $this->is_valid_license() ) {
 				$message_data['message'] = sprintf(
-					'Please <a href=""%s">activate your license</a> for updates and support',
+					'Please <a href=""%s">activate your license</a> for updates and support.',
 					esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' ) )
 				);
 			}
