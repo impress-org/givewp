@@ -102,6 +102,10 @@ class Give_Session {
 				require_once GIVE_PLUGIN_DIR . 'includes/libraries/sessions/class-recursive-arrayaccess.php';
 			}
 
+			// Include utilities class
+			if ( ! class_exists( 'WP_Session_Utils' ) ) {
+				require_once GIVE_PLUGIN_DIR . 'includes/libraries/sessions/class-wp-session-utils.php';
+			}
 			if ( ! class_exists( 'WP_Session' ) ) {
 				require_once GIVE_PLUGIN_DIR . 'includes/libraries/sessions/class-wp-session.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/libraries/sessions/wp-session.php';

@@ -77,13 +77,13 @@ class Give_Notices {
 
 		if ( ! give_test_ajax_works() && ! get_user_meta( get_current_user_id(), '_give_admin_ajax_inaccessible_dismissed', true ) && current_user_can( 'manage_give_settings' ) ) {
 			echo '<div class="error">';
-			echo '<p>' . esc_html__( 'Your site appears to be blocking the WordPress ajax interface. This may cause issues with Give.', 'give' ) . '</p>';
+			echo '<p>' . __( 'Your site appears to be blocking the WordPress ajax interface. This may cause issues with Give.', 'give' ) . '</p>';
 			/* translators: %s: http://docs.givewp.com/ajax-blocked */
 			echo '<p>' . sprintf( __( 'Please see <a href="%s" target="_blank">this reference</a> for possible solutions.', 'give' ), esc_url( 'http://docs.givewp.com/ajax-blocked' ) ) . '</p>';
 			echo '<p><a href="' . add_query_arg( array(
 					'give_action' => 'dismiss_notices',
 					'give_notice' => 'admin_ajax_inaccessible',
-				) ) . '">' . esc_html__( 'Dismiss Notice', 'give' ) . '</a></p>';
+				) ) . '">' . __( 'Dismiss Notice', 'give' ) . '</a></p>';
 			echo '</div>';
 		}
 
@@ -93,16 +93,16 @@ class Give_Notices {
 			if ( current_user_can( 'view_give_reports' ) ) {
 				switch ( $_GET['give-message'] ) {
 					case 'donation_deleted' :
-						$this->notices['updated']['give-donation-deleted'] = esc_attr__( 'The donation has been deleted.', 'give' );
+						$this->notices['updated']['give-donation-deleted'] = __( 'The donation has been deleted.', 'give' );
 						break;
 					case 'email_sent' :
-						$this->notices['updated']['give-payment-sent'] = esc_attr__( 'The donation receipt has been resent.', 'give' );
+						$this->notices['updated']['give-payment-sent'] = __( 'The donation receipt has been resent.', 'give' );
 						break;
 					case 'refreshed-reports' :
-						$this->notices['updated']['give-refreshed-reports'] = esc_attr__( 'The reports cache has been cleared.', 'give' );
+						$this->notices['updated']['give-refreshed-reports'] = __( 'The reports cache has been cleared.', 'give' );
 						break;
 					case 'donation-note-deleted' :
-						$this->notices['updated']['give-donation-note-deleted'] = esc_attr__( 'The donation note has been deleted.', 'give' );
+						$this->notices['updated']['give-donation-note-deleted'] = __( 'The donation note has been deleted.', 'give' );
 						break;
 				}
 			}
@@ -111,35 +111,35 @@ class Give_Notices {
 			if ( current_user_can( 'manage_give_settings' ) ) {
 				switch ( $_GET['give-message'] ) {
 					case 'settings-imported' :
-						$this->notices['updated']['give-settings-imported'] = esc_attr__( 'The settings have been imported.', 'give' );
+						$this->notices['updated']['give-settings-imported'] = __( 'The settings have been imported.', 'give' );
 						break;
 					case 'api-key-generated' :
-						$this->notices['updated']['give-api-key-generated'] = esc_attr__( 'API keys have been generated.', 'give' );
+						$this->notices['updated']['give-api-key-generated'] = __( 'API keys have been generated.', 'give' );
 						break;
 					case 'api-key-exists' :
-						$this->notices['error']['give-api-key-exists'] = esc_attr__( 'The specified user already has API keys.', 'give' );
+						$this->notices['error']['give-api-key-exists'] = __( 'The specified user already has API keys.', 'give' );
 						break;
 					case 'api-key-regenerated' :
-						$this->notices['updated']['give-api-key-regenerated'] = esc_attr__( 'API keys have been regenerated.', 'give' );
+						$this->notices['updated']['give-api-key-regenerated'] = __( 'API keys have been regenerated.', 'give' );
 						break;
 					case 'api-key-revoked' :
-						$this->notices['updated']['give-api-key-revoked'] = esc_attr__( 'API keys have been revoked.', 'give' );
+						$this->notices['updated']['give-api-key-revoked'] = __( 'API keys have been revoked.', 'give' );
 						break;
 					case 'sent-test-email' :
-						$this->notices['updated']['give-sent-test-email'] = esc_attr__( 'The test email has been sent.', 'give' );
+						$this->notices['updated']['give-sent-test-email'] = __( 'The test email has been sent.', 'give' );
 						break;
 					case 'matched-success-failure-page':
-						$this->notices['updated']['give-matched-success-failure-page'] = esc_html__( 'You cannot set the success and failed pages to the same page', 'give' );
+						$this->notices['updated']['give-matched-success-failure-page'] = __( 'You cannot set the success and failed pages to the same page', 'give' );
 				}
 			}
 			// Payments errors.
 			if ( current_user_can( 'edit_give_payments' ) ) {
 				switch ( $_GET['give-message'] ) {
 					case 'note-added' :
-						$this->notices['updated']['give-note-added'] = esc_attr__( 'The donation note has been added.', 'give' );
+						$this->notices['updated']['give-note-added'] = __( 'The donation note has been added.', 'give' );
 						break;
 					case 'payment-updated' :
-						$this->notices['updated']['give-payment-updated'] = esc_attr__( 'The donation has been updated.', 'give' );
+						$this->notices['updated']['give-payment-updated'] = __( 'The donation has been updated.', 'give' );
 						break;
 				}
 			}
@@ -148,27 +148,27 @@ class Give_Notices {
 			if ( current_user_can( 'edit_give_payments' ) ) {
 				switch ( $_GET['give-message'] ) {
 					case 'customer-deleted' :
-						$this->notices['updated']['give-customer-deleted'] = esc_attr__( 'The donor has been deleted.', 'give' );
+						$this->notices['updated']['give-customer-deleted'] = __( 'The donor has been deleted.', 'give' );
 						break;
 
 					case 'email-added' :
-						$this->notices['updated']['give-customer-email-added'] = esc_attr__( 'Donor email added', 'give' );
+						$this->notices['updated']['give-customer-email-added'] = __( 'Donor email added', 'give' );
 						break;
 
 					case 'email-removed' :
-						$this->notices['updated']['give-customer-email-removed'] = esc_attr__( 'Donor email removed', 'give' );
+						$this->notices['updated']['give-customer-email-removed'] = __( 'Donor email removed', 'give' );
 						break;
 
 					case 'email-remove-failed' :
-						$this->notices['error']['give-customer-email-remove-failed'] = esc_attr__( 'Failed to remove donor email', 'give' );
+						$this->notices['error']['give-customer-email-remove-failed'] = __( 'Failed to remove donor email', 'give' );
 						break;
 
 					case 'primary-email-updated' :
-						$this->notices['updated']['give-customer-primary-email-updated'] = esc_attr__( 'Primary email updated for donor', 'give' );
+						$this->notices['updated']['give-customer-primary-email-updated'] = __( 'Primary email updated for donor', 'give' );
 						break;
 
 					case 'primary-email-failed' :
-						$this->notices['error']['give-customer-primary-email-failed'] = esc_attr__( 'Failed to set primary email', 'give' );
+						$this->notices['error']['give-customer-primary-email-failed'] = __( 'Failed to set primary email', 'give' );
 
 				}
 			}
@@ -200,7 +200,7 @@ class Give_Notices {
 	 * @return void
 	 */
 	function give_admin_addons_notices() {
-		add_settings_error( 'give-notices', 'give-addons-feed-error', esc_attr__( 'There seems to be an issue with the server. Please try again in a few minutes.', 'give' ), 'error' );
+		add_settings_error( 'give-notices', 'give-addons-feed-error', __( 'There seems to be an issue with the server. Please try again in a few minutes.', 'give' ), 'error' );
 		settings_errors( 'give-notices' );
 	}
 
