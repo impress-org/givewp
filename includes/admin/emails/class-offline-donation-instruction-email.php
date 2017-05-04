@@ -66,7 +66,7 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 		 *
 		 * @return string
 		 */
-		public function get_email_message( $form_id = 0 ) {
+		public function get_email_message( $form_id = null ) {
 			$post_offline_customization_option = get_post_meta(
 				$this->payment->form_id,
 				'_give_customize_offline_donations',
@@ -88,7 +88,8 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 			$message = apply_filters(
 				"give_{$this->config['id']}_get_email_message",
 				$message,
-				$this
+				$this,
+				$form_id
 			);
 
 			return $message;
@@ -103,7 +104,7 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 		 *
 		 * @return string
 		 */
-		public function get_email_subject( $form_id = 0 ) {
+		public function get_email_subject( $form_id = null ) {
 			$post_offline_customization_option = get_post_meta(
 				$this->payment->form_id,
 				'_give_customize_offline_donations',
@@ -127,7 +128,8 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 			$subject = apply_filters(
 				"give_{$this->config['id']}_get_email_subject",
 				$subject,
-				$this
+				$this,
+				$form_id
 			);
 
 			return $subject;
@@ -137,9 +139,11 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 		 * Get attachments.
 		 *
 		 * @since 2.0
+		 *
+		 * @param int $form_id
 		 * @return array
 		 */
-		public function get_email_attachments() {
+		public function get_email_attachments( $form_id = null ) {
 			/**
 			 * Filter the attachments.
 			 * Note: This filter will deprecate soon.
@@ -161,7 +165,8 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 			$attachment = apply_filters(
 				"give_{$this->config['id']}_get_email_attachment",
 				$attachment,
-				$this
+				$this,
+				$form_id
 			);
 
 			return $attachment;

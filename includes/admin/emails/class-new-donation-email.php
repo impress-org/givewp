@@ -64,7 +64,7 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		 *
 		 * @return string
 		 */
-		public function get_email_subject( $form_id = 0 ) {
+		public function get_email_subject( $form_id = null ) {
 			$subject = wp_strip_all_tags( give_get_option( "{$this->config['id']}_email_subject", $this->config['default_email_subject'] ) );
 
 			/**
@@ -80,7 +80,7 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			 *
 			 * @since 2.0
 			 */
-			$subject = apply_filters( "give_{$this->config['id']}_get_email_subject", $subject, $this );
+			$subject = apply_filters( "give_{$this->config['id']}_get_email_subject", $subject, $this, $form_id );
 
 			return $subject;
 		}
@@ -96,7 +96,7 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		 *
 		 * @return string
 		 */
-		public function get_email_message( $form_id = 0 ) {
+		public function get_email_message( $form_id = null ) {
 			$message = Give_Email_Notification_Util::get_value(
 				$this,
 				"{$this->config['id']}_email_message",
@@ -125,7 +125,8 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			$message = apply_filters(
 				"give_{$this->config['id']}_get_default_email_message",
 				$message,
-				$this
+				$this,
+				$form_id
 			);
 
 			return $message;
@@ -137,9 +138,11 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		 *
 		 * @since  2.0
 		 * @access public
+		 *
+		 * @param int $form_id
 		 * @return array
 		 */
-		public function get_email_attachments() {
+		public function get_email_attachments( $form_id = null ) {
 			/**
 			 * Filters the donation notification email attachments.
 			 * By default, there is no attachment but plugins can hook in to provide one more multiple.
@@ -163,7 +166,8 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			$attachments = apply_filters(
 				"give_{$this->config['id']}_get_email_attachments",
 				$attachments,
-				$this
+				$this,
+				$form_id
 			);
 
 			return $attachments;

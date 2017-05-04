@@ -241,7 +241,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 *
 		 * @return array
 		 */
-		public function get_setting_fields( $form_id = 0 ) {
+		public function get_setting_fields( $form_id = null ) {
 			return Give_Email_Setting_Field::get_setting_fields( $this, $form_id );
 		}
 
@@ -279,7 +279,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 *
 		 * @return array
 		 */
-		public function get_extra_setting_fields( $form_id = 0 ) {
+		public function get_extra_setting_fields( $form_id = null ) {
 			return array();
 		}
 
@@ -313,7 +313,8 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 					'empty',
 					Give()->emails->get_from_address()
 				),
-				$this
+				$this,
+				$form_id
 			);
 		}
 
@@ -327,7 +328,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 *
 		 * @return bool
 		 */
-		public function get_notification_status( $form_id = 0 ) {
+		public function get_notification_status( $form_id = null ) {
 			$notification_status = empty( $form_id )
 				? give_get_option( "{$this->config['id']}_notification", $this->config['notification_status'] )
 				: get_post_meta( $form_id,"{$this->config['id']}_notification", true  );
@@ -340,7 +341,8 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			return apply_filters(
 				"give_{$this->config['id']}_get_notification_status",
 				$notification_status,
-				$this
+				$this,
+				$form_id
 			);
 		}
 
@@ -354,7 +356,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 *
 		 * @return string
 		 */
-		function get_email_subject( $form_id = 0 ) {
+		function get_email_subject( $form_id = null ) {
 			$subject = wp_strip_all_tags(
 				Give_Email_Notification_Util::get_value(
 					$this,
@@ -372,7 +374,8 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			return apply_filters(
 				"give_{$this->config['id']}_get_email_subject",
 				$subject,
-				$this
+				$this,
+				$form_id
 			);
 		}
 
@@ -386,7 +389,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 *
 		 * @return string
 		 */
-		public function get_email_message( $form_id = 0 ) {
+		public function get_email_message( $form_id = null ) {
 			$message = Give_Email_Notification_Util::get_value(
 				$this,
 				"{$this->config['id']}_email_message",
@@ -402,7 +405,8 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			return apply_filters(
 				"give_{$this->config['id']}_get_email_message",
 				$message,
-				$this
+				$this,
+				$form_id
 			);
 		}
 
@@ -466,7 +470,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @param int $form_id
 		 * @return array|string
 		 */
-		public function get_preview_email_recipient( $form_id = 0 ) {
+		public function get_preview_email_recipient( $form_id = null ) {
 			$recipients = $this->get_recipient( $form_id );
 
 			/**
@@ -477,7 +481,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 * @param string|array            $recipients List of recipients.
 			 * @param Give_Email_Notification $this
 			 */
-			$recipients = apply_filters( 'give_get_preview_email_recipient', $recipients, $this );
+			$recipients = apply_filters( 'give_get_preview_email_recipient', $recipients, $this, $form_id );
 
 			return $recipients;
 		}
@@ -487,15 +491,17 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 *
 		 * @since  2.0
 		 * @access public
+		 *
+		 * @param int $form_id
 		 * @return array
 		 */
-		public function get_email_attachments() {
+		public function get_email_attachments( $form_id = null ) {
 			/**
 			 * Filter the attachment.
 			 *
 			 * @since 2.0
 			 */
-			return apply_filters( "give_{$this->config['id']}_get_email_attachments", array(), $this );
+			return apply_filters( "give_{$this->config['id']}_get_email_attachments", array(), $this, $form_id );
 		}
 
 

@@ -147,7 +147,7 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 		 *
 		 * @return string
 		 */
-		public function get_email_message( $form_id = 0 ) {
+		public function get_email_message( $form_id = null ) {
 			$message = give_get_option( "{$this->config['id']}_email_message", $this->config['default_email_message'] );
 
 			/**
@@ -170,7 +170,8 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 			return apply_filters(
 				"give_{$this->config['id']}_get_email_message",
 				$message,
-				$this
+				$this,
+				$form_id
 			);
 		}
 
@@ -179,9 +180,11 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 		 * Get attachments.
 		 *
 		 * @since 2.0
+		 *
+		 * @param int $form_id
 		 * @return array
 		 */
-		public function get_email_attachments() {
+		public function get_email_attachments( $form_id = null ) {
 			/**
 			 * Filter the attachments.
 			 * Note: This filter will deprecate soon.
