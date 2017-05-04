@@ -943,7 +943,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			) );
 			remove_action( "after_plugin_row_$plugin_file", 'wp_plugin_update_row' );
 
-			$update_notice_wrap = '<tr class="plugin-update-tr give-invalid-license active"><td colspan="3" class="plugin-update colspanchange"><div class="notice inline notice-warning notice-alt"><p><span class="dashicons dashicons-info"></span> %s</p></div></td></tr>';
+			$update_notice_wrap = '<tr class="give-addon-notice-tr active"><td colspan="3" class="colspanchange"><div class="notice inline notice-warning notice-alt give-invalid-license"><p><span class="dashicons dashicons-info"></span> %s</p></div></td></tr>';
 			$message            = $this->license_state_message();
 
 			if ( ! empty( $message['message'] ) ) {
