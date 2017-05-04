@@ -119,7 +119,7 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 	 */
 	public function get_percentage_complete() {
 
-		$items = $this->get_stored_data( 'give_temp_reset_test_ids', false );
+		$items = $this->get_stored_data( 'give_temp_delete_test_ids', false );
 		$total = count( $items );
 
 		$percentage = 100;
@@ -167,7 +167,7 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 			update_option( 'give_earnings_total', give_get_total_earnings( true ) );
 			Give_Cache::delete( Give_Cache::get_key('give_estimated_monthly_stats' ) );
 
-			$this->delete_data( 'give_temp_reset_test_ids' );
+			$this->delete_data( 'give_temp_delete_test_ids' );
 
 			// Reset the sequential order numbers
 			if ( give_get_option( 'enable_sequential' ) ) {
@@ -213,10 +213,10 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 	public function pre_fetch() {
 
 		if ( $this->step == 1 ) {
-			$this->delete_data( 'give_temp_reset_test_ids' );
+			$this->delete_data( 'give_temp_delete_test_ids' );
 		}
 
-		$items = get_option( 'give_temp_reset_test_ids', false );
+		$items = get_option( 'give_temp_delete_test_ids', false );
 
 		if ( false === $items ) {
 			$items = array();
@@ -240,9 +240,9 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 
 			// Allow filtering of items to remove with an unassociative array for each item.
 			// The array contains the unique ID of the item, and a 'type' for you to use in the execution of the get_data method.
-			$items = apply_filters( 'give_reset_test_items', $items );
+			$items = apply_filters( 'give_delete_test_items', $items );
 
-			$this->store_data( 'give_temp_reset_test_ids', $items );
+			$this->store_data( 'give_temp_delete_test_ids', $items );
 		}
 
 	}
