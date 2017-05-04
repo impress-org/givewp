@@ -181,9 +181,20 @@ function give_admin_quick_css() {
 			?>
 			<style>
 				tr.active.update + tr.give-addon-notice-tr td{
-					border-top: 1px solid #e5e5e5;
+                    box-shadow:none;
+                    -webkit-box-shadow:none;
 				}
+				tr.active + tr.give-addon-notice-tr td{
+                    position: relative;
+				    top:-1px;
+                }
+				tr.active + tr.give-addon-notice-tr .notice{
+                    margin: 5px 20px 15px 40px;
+                }
 
+				tr.give-addon-notice-tr .dashicons {
+                    color: #f56e28;
+                }
 				tr.give-addon-notice-tr td{
 					border-left: 4px solid #00a0d2;
 				}
@@ -192,8 +203,8 @@ function give_admin_quick_css() {
 					padding: 0!important;
 				}
 
-				tr.give-addon-notice-tr .notice{
-					margin: 15px 20px 15px 40px;
+                tr.active.update + tr.give-addon-notice-tr .notice{
+					margin: 5px 20px 5px 40px;
 				}
 			</style>
 			<?php
