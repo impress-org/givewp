@@ -143,6 +143,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @param string  $_account_url
 		 */
 		public function __construct( $_file, $_item_name, $_version, $_author, $_optname = null, $_api_url = null, $_checkout_url = null, $_account_url = null ) {
+
 			$give_options = give_get_settings();
 
 			$this->file           = $_file;
@@ -159,8 +160,11 @@ if ( ! class_exists( 'Give_License' ) ) :
 			// Setup hooks
 			$this->includes();
 			$this->hooks();
-			//$this->auto_updater();
+			$this->auto_updater();
+
 		}
+
+
 
 		/**
 		 * Includes
@@ -173,6 +177,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @return void
 		 */
 		private function includes() {
+
 			if ( ! class_exists( 'EDD_SL_Plugin_Updater' ) ) {
 				require_once 'admin/EDD_SL_Plugin_Updater.php';
 			}
@@ -211,7 +216,9 @@ if ( ! class_exists( 'Give_License' ) ) :
 			// Check subscription weekly.
 			add_action( 'give_weekly_scheduled_events', array( $this, 'weekly_subscription_check' ) );
 			add_action( 'give_validate_license_when_site_migrated', array( $this, 'weekly_subscription_check' ) );
+
 		}
+
 
 		/**
 		 * Auto Updater
@@ -219,16 +226,12 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @access private
 		 * @since  1.0
 		 *
-		 * @return bool
+		 * @return void
 		 */
 		public function auto_updater() {
 
-			if ( ! $this->is_valid_license() ) {
-				return false;
-			}
-
 			// Setup the updater
-			$give_updater = new EDD_SL_Plugin_Updater(
+			new EDD_SL_Plugin_Updater(
 				$this->api_url,
 				$this->file,
 				array(
@@ -291,7 +294,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			$give_license_settings = array(
 				array(
-					'name' => esc_html__( 'Add-on Licenses', 'give' ),
+					'name' => __( 'Add-on Licenses', 'give' ),
 					'desc' => '<hr>',
 					'type' => 'give_title',
 					'id'   => 'give_title'
@@ -320,7 +323,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			// Security check.
 			if ( ! wp_verify_nonce( $_REQUEST[ $this->item_shortname . '_license_key-nonce' ], $this->item_shortname . '_license_key-nonce' ) ) {
 
-				wp_die( esc_html__( 'Nonce verification failed.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+				wp_die( __( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 
 			}
 
@@ -418,7 +421,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			if ( ! wp_verify_nonce( $_REQUEST[ $this->item_shortname . '_license_key-nonce' ], $this->item_shortname . '_license_key-nonce' ) ) {
 
-				wp_die( esc_html__( 'Nonce verification failed.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+				wp_die( __( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 
 			}
 
@@ -674,6 +677,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @return void
 		 */
 		public function notices() {
+
 			if( ! current_user_can( 'manage_give_settings' ) ) {
 				return;
 			}
@@ -767,7 +771,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 				$showed_invalid_message = true;
 
 			}
-			
+
 			// Print messages.
 			if( ! empty( $messages ) ) {
 				foreach( $messages as $notice_id => $message ) {
