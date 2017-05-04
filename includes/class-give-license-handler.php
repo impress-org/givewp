@@ -399,6 +399,9 @@ if ( ! class_exists( 'Give_License' ) ) :
 			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
 			update_option( $this->item_shortname . '_license_active', $license_data );
 
+			// Add license key.
+			give_update_option( "{$this->item_shortname}_license_key", $license );
+
 			// Check subscription for license key and store this to db (if any).
 			$this->__single_subscription_check();
 		}
@@ -468,6 +471,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 					// Remove license data.
 					delete_option( $this->item_shortname . '_license_active' );
+					
 					give_delete_option( $this->item_shortname . '_license_key' );
 
 					// Remove license key from subscriptions if exist.
