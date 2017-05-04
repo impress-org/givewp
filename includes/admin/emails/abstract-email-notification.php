@@ -554,6 +554,9 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @return bool
 		 */
 		public function send_email_notification( $email_tag_args = array() ) {
+			// Add email content type email tags.
+			$email_tag_args['email_content_type'] = $this->config['content_type'];
+
 			/**
 			 * Filter the email tag args
 			 *
