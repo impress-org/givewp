@@ -253,16 +253,16 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @access public
 		 *
 		 * @param array $settings
-		 * @param int   $post_id
+		 * @param int   $form_id
 		 *
 		 * @return array
 		 */
-		public function add_metabox_setting_field( $settings, $post_id ) {
+		public function add_metabox_setting_field( $settings, $form_id ) {
 
 			$settings[] = array(
 				'id'     => $this->config['id'],
 				'title'  => $this->config['label'],
-				'fields' => $this->get_setting_fields( $post_id ),
+				'fields' => $this->get_setting_fields( $form_id ),
 			);
 
 			return $settings;
