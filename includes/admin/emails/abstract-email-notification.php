@@ -110,11 +110,8 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			$this->config['has_preview_header'] = $this->config['has_preview'] && $this->config['has_preview_header'] ? true : false;
 
 			// Set email content type
-			$this->config['content_type'] = empty( $this->config['content_type'] ) || ! in_array( $this->config['content_type'], array(
-				'text/html',
-				'text/plain',
-			) )
-				? 'text/html' // @todo: use Give()->emails->get_content_Type() get email content type.
+			$this->config['content_type'] = empty( $this->config['content_type'] ) || ! in_array( $this->config['content_type'], array( 'text/html', 'text/plain', ) )
+				? Give()->emails->get_content_type()
 				: $this->config['content_type'];
 			$this->config['content_type'] = give_get_option( "{$this->config['id']}_email_content_type", $this->config['content_type'] );
 
