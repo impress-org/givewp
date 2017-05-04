@@ -370,7 +370,7 @@ function give_validate_user_email( $email, $registering_new_user = false ) {
 
 	} elseif ( $registering_new_user && email_exists( $email ) ) {
 		// Check if email exists.
-		give_set_error( 'email_used', __( 'The email already active for another user.', 'give' ) );
+		give_set_error( 'email_used', __( 'The email address provided is already active for another user.', 'give' ) );
 		$valid = false;
 	}
 
