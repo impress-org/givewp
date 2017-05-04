@@ -1063,7 +1063,6 @@ function give_get_receipt_url( $payment_id ) {
 }
 
 
-
 /**
  * Email template tag: {email_access_link}
  *
@@ -1072,9 +1071,48 @@ function give_get_receipt_url( $payment_id ) {
  * @param array $tag_args
  *
  * @return string
- * @todo implement email tag
  */
-function give_email_tag_email_access_link( $tag_args ){
+function give_email_tag_email_access_link( $tag_args ) {
+	$donor_id          = 0;
+	$donor             = array();
+	$email_access_link = '';
+
+	switch ( true ) {
+		case ! empty( $tag_args['donor_id'] ):
+			$donor_id = $tag_args['donor_id'];
+			$donor    = Give()->customers->get_by( 'id', $tag_args['donor_id'] );
+			break;
+
+		case ! empty( $tag_args['user_id'] ):
+			$donor    = Give()->customers->get_by( 'user_id', $tag_args['user_id'] );
+			$donor_id = $donor->id;
+			break;
+
+		default:
+			$email_access_link = '';
+	}
+
+	// Set email access link if donor exist.
+	if ( $donor_id ) {
+		$verify_key = wp_generate_password( 20, false );
+
+		// Generate a new verify key
+		Give()->email_access->set_verify_key( $donor_id, $donor->email, $verify_key );
+
+		$access_url = add_query_arg(
+			array(
+				'give_nl' => $verify_key,
+			),
+			get_permalink( give_get_option( 'history_page' ) )
+		);
+
+		$email_access_link = sprintf(
+			'<a href="%1$s" target="_blank">%2$s</a>',
+			esc_url( $access_url ),
+			__( 'Access Donation Details &raquo;', 'give' )
+		);
+	}
+
 	/**
 	 * Filter the {email_access_link} email template tag output.
 	 *
@@ -1083,5 +1121,9 @@ function give_email_tag_email_access_link( $tag_args ){
 	 * @param string $receipt_link_url
 	 * @param array  $tag_args
 	 */
-	return apply_filters( 'give_email_tag_email_access_link', '#' );
+	return apply_filters(
+		'give_email_tag_email_access_link',
+		$email_access_link,
+		$tag_args
+	);
 }

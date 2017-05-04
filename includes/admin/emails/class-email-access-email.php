@@ -25,9 +25,6 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 	 * @since       2.0
 	 */
 	class Give_Email_Access_Email extends Give_Email_Notification {
-		private $donor_id = 0;
-		private $donor_email = '';
-
 		/**
 		 * Create a class instance.
 		 *
@@ -48,7 +45,7 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 				'default_email_message'        => $this->get_default_email_message(),
 			) );
 
-			add_action( "give_{$this->config['id']}_email_notification", array( $this, 'setup_email_notification' ) );
+			add_action( "give_{$this->config['id']}_email_notification", array( $this, 'setup_email_notification' ), 10, 2 );
 			add_action( 'give_save_settings_give_settings', array( $this, 'set_notification_status' ), 10, 2 );
 			add_filter( 'give_email_preview_header', array( $this, 'email_preview_header' ), 10, 2 );
 		}
@@ -221,12 +218,8 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 		 * @param string $email
 		 */
 		public function setup_email_notification( $donor_id, $email ) {
-			$this->donor_id    = $donor_id;
-			$this->donor_email = $email;
-			$verify_key        = wp_generate_password( 20, false );
-
-			// Set verify key.
-			Give()->email_access->set_verify_key( $this->donor_id, $this->donor_email, $verify_key );
+			$donor = Give()->customers->get_by( 'id', $donor_id );
+			$this->recipient_email = $email;
 
 			// Set email data.
 			$this->setup_email_data();
@@ -234,17 +227,8 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 			// Send email.
 			$this->send_email_notification(
 				array(
-					'verify_key' => $verify_key,
-					'access_url' => sprintf(
-						'<a href="%1$s">%2$s</a>',
-						add_query_arg(
-							array(
-								'give_nl' => $verify_key,
-							),
-							get_permalink( give_get_option( 'history_page' ) )
-						),
-						__( 'Access Donation Details &raquo;', 'give' )
-					),
+					'donor_id' => $donor_id,
+					'user_id'  => $donor->user_id
 				)
 			);
 		}
