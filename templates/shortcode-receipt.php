@@ -55,7 +55,7 @@ if ( filter_var( $give_receipt_args['status_notice'], FILTER_VALIDATE_BOOLEAN ) 
 			$notice_type    = 'error';
 			break;
 		case 'abandoned':
-			$notice_message = esc_html__( 'Payment Abandoned: The this donation was not been completed.', 'give' );
+			$notice_message = esc_html__( 'Payment Abandoned: This donation has not been completed.', 'give' );
 			$notice_type    = 'error';
 			break;
 		case 'revoked':

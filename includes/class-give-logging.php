@@ -391,15 +391,15 @@ class Give_Logging {
 		}
 
 		// Get cache key for current query.
-		$cache_key = give_get_cache_key( 'get_log_count', $query_args );
+		$cache_key = Give_Cache::get_key( 'get_log_count', $query_args );
 
 		// check if cache already exist or not.
-		if ( ! ( $logs_count = get_option( $cache_key ) ) ) {
+		if ( ! ( $logs_count = Give_Cache::get( $cache_key ) ) ) {
 			$logs       = new WP_Query( $query_args );
 			$logs_count = (int) $logs->post_count;
 
 			// Cache results.
-			add_option( $cache_key, $logs_count, '', 'no' );
+			Give_Cache::set( $cache_key, $logs_count );
 		}
 
 		return $logs_count;
@@ -460,7 +460,8 @@ class Give_Logging {
 	 * @param int $post_id
 	 */
 	public function background_process_delete_cache( $post_id ) {
-		wp_schedule_single_event( time(), 'give_delete_log_cache' );
+		// Delete log cache immediately
+		wp_schedule_single_event( time() - 5, 'give_delete_log_cache' );
 	}
 
 	/**
@@ -473,12 +474,18 @@ class Give_Logging {
 	 */
 	public function delete_cache() {
 		global $wpdb;
-		$cache_option_names = $wpdb->get_results(
+
+		// Add log related keys to delete.
+		$cache_option_names = $wpdb->get_col(
 			$wpdb->prepare(
-				"SELECT option_name FROM {$wpdb->options} where option_name LIKE '%%%s%%'",
-				'give_cache'
+				"SELECT *
+						FROM {$wpdb->options}
+						where option_name LIKE '%%%s%%'
+						OR option_name LIKE '%%%s%%'",
+				'give_cache_get_logs',
+				'give_cache_get_log_count'
 			),
-			ARRAY_A
+			1 // option_name
 		);
 
 		// Bailout.
@@ -486,10 +493,7 @@ class Give_Logging {
 			return false;
 		}
 
-		// Delete log cache.
-		foreach ( $cache_option_names as $option_name ) {
-			delete_option( $option_name['option_name'] );
-		}
+		Give_Cache::delete( $cache_option_names );
 	}
 }
 

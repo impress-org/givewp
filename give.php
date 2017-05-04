@@ -5,7 +5,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: WordImpress
  * Author URI: https://wordimpress.com
- * Version: 1.8.6
+ * Version: 1.8.7
  * Text Domain: give
  * Domain Path: /languages
  * GitHub Plugin URI: https://github.com/WordImpress/Give
@@ -214,6 +214,14 @@ if ( ! class_exists( 'Give' ) ) :
 				self::$instance->template_loader = new Give_Template_Loader();
 				self::$instance->email_access    = new Give_Email_Access();
 
+
+				/**
+				 * Fire the action after Give core loads
+				 *
+				 * @since 1.8.7
+				 */
+				do_action( 'give_init', self::$instance );
+
 			}
 
 			return self::$instance;
@@ -260,7 +268,7 @@ if ( ! class_exists( 'Give' ) ) :
 
 			// Plugin version
 			if ( ! defined( 'GIVE_VERSION' ) ) {
-				define( 'GIVE_VERSION', '1.8.6' );
+				define( 'GIVE_VERSION', '1.8.7' );
 			}
 
 			// Plugin Folder Path
@@ -305,6 +313,7 @@ if ( ! class_exists( 'Give' ) ) :
 			$give_options = give_get_settings();
 
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/give-metabox-functions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-cache.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/post-types.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/scripts.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/ajax-functions.php';

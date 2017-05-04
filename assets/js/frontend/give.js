@@ -106,6 +106,8 @@ function give_open_form_modal($form_wrap, $form) {
 	jQuery.magnificPopup.open({
 		mainClass   : give_global_vars.magnific_options.main_class,
 		closeOnBgClick : give_global_vars.magnific_options.close_on_bg_click,
+		fixedContentPos: true,
+		fixedBgPos: true,
 		items: {
 			src: $form,
 			type: 'inline'

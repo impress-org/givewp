@@ -338,11 +338,10 @@ class Give_Sales_Log_Table extends WP_List_Table {
 			'meta_query'  => $this->get_meta_query(),
 		);
 
-		$cache_key = give_get_cache_key( 'get_logs', $log_query );
+		$cache_key = Give_Cache::get_key( 'get_logs', $log_query );
 
 		// Return result from cache if exist.
-		if ( ! ( $logs_data = get_option( $cache_key ) ) ) {
-
+		if ( ! ( $logs_data = Give_Cache::get( $cache_key ) ) ) {
 			$logs = $give_logs->get_connected_logs( $log_query );
 
 			if ( $logs ) {
@@ -370,7 +369,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 
 				// Cache results.
 				if ( ! empty( $logs_data ) ) {
-					add_option( $cache_key, $logs_data, '', 'no' );
+					Give_Cache::set( $cache_key, $logs_data );
 				}
 			}
 		}
