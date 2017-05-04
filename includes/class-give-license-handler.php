@@ -257,11 +257,11 @@ if ( ! class_exists( 'Give_License' ) ) :
 			$give_license_settings = array(
 				array(
 					'name'    => $this->item_name,
-					'id'      => $this->item_shortname . '_license_key',
+					'id'      => "{$this->item_shortname}_license_key",
 					'desc'    => '',
 					'type'    => 'license_key',
 					'options' => array(
-						'license'       => get_option( $this->item_shortname . '_license_active' ),
+						'license'       => $this->license_data,
 						'shortname'     => $this->item_shortname,
 						'item_name'     => $this->item_name,
 						'api_url'       => $this->api_url,
@@ -393,8 +393,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 			set_site_transient( 'update_plugins', null );
 
 			// Decode license data
-			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
-			update_option( $this->item_shortname . '_license_active', $license_data );
+			$this->license_data = json_decode( wp_remote_retrieve_body( $response ) );
+			update_option( $this->item_shortname . '_license_active', $this->license_data );
 
 			// Check subscription for license key and store this to db (if any).
 			$this->__single_subscription_check();
@@ -458,8 +458,11 @@ if ( ! class_exists( 'Give_License' ) ) :
 					return;
 				}
 
-				// Decode the license data
-				$license_data = json_decode( wp_remote_retrieve_body( $response ) );
+				// Unset license data.
+				$this->license_data = '';
+
+				// Remove licence key.
+				give_delete_option( "{$this->item_shortname}_license_key" );
 
 				// Remove license data.
 				delete_option( $this->item_shortname . '_license_active' );
@@ -475,7 +478,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @access public
 		 * @since  1.7
 		 *
-		 * @return bool|void
+		 * @return bool
 		 */
 		public function weekly_license_check() {
 
@@ -517,8 +520,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 				return false;
 			}
 
-			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
-			update_option( $this->item_shortname . '_license_active', $license_data );
+			$this->license_data = json_decode( wp_remote_retrieve_body( $response ) );
+			update_option( $this->item_shortname . '_license_active', $this->license_data );
 		}
 
 		/**
@@ -527,7 +530,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @access public
 		 * @since  1.7
 		 *
-		 * @return bool|void
+		 * @return bool
 		 */
 		public function weekly_subscription_check() {
 
@@ -607,7 +610,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @access private
 		 * @since  1.7
 		 *
-		 * @return bool|void
+		 * @return bool
 		 */
 		private function __single_subscription_check() {
 			// Do not fire if license key is not set.
@@ -818,7 +821,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @access private
 		 * @since  1.7
 		 *
-		 * @return void|bool
+		 * @return bool
 		 */
 		private function __remove_license_key_from_subscriptions(){
 			$subscriptions = get_option( 'give_subscriptions', array() );
