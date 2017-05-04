@@ -91,22 +91,22 @@ class Give_Plugin_Settings {
 		$settings = $this->give_settings( null );
 
 		$tabs             = array();
-		$tabs['general']  = esc_html__( 'General', 'give' );
-		$tabs['gateways'] = esc_html__( 'Payment Gateways', 'give' );
-		$tabs['display']  = esc_html__( 'Display Options', 'give' );
-		$tabs['emails']   = esc_html__( 'Emails', 'give' );
+		$tabs['general']  = __( 'General', 'give' );
+		$tabs['gateways'] = __( 'Payment Gateways', 'give' );
+		$tabs['display']  = __( 'Display Options', 'give' );
+		$tabs['emails']   = __( 'Emails', 'give' );
 
 		if ( ! empty( $settings['addons']['fields'] ) ) {
-			$tabs['addons'] = esc_html__( 'Add-ons', 'give' );
+			$tabs['addons'] = __( 'Add-ons', 'give' );
 		}
 
 		if ( ! empty( $settings['licenses']['fields'] ) ) {
-			$tabs['licenses'] = esc_html__( 'Licenses', 'give' );
+			$tabs['licenses'] = __( 'Licenses', 'give' );
 		}
 
-		$tabs['advanced']    = esc_html__( 'Advanced', 'give' );
-		$tabs['api']         = esc_html__( 'API', 'give' );
-		$tabs['system_info'] = esc_html__( 'System Info', 'give' );
+		$tabs['advanced']    = __( 'Advanced', 'give' );
+		$tabs['api']         = __( 'API', 'give' );
+		$tabs['system_info'] = __( 'System Info', 'give' );
 
 		return apply_filters( 'give_settings_tabs', $tabs );
 	}
@@ -196,17 +196,17 @@ class Give_Plugin_Settings {
 			 */
 			'general'     => array(
 				'id'         => 'general_settings',
-				'give_title' => esc_html__( 'General Settings', 'give' ),
+				'give_title' => __( 'General Settings', 'give' ),
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key ) ),
 				'fields'     => apply_filters( 'give_settings_general', array(
 						array(
-							'name' => esc_html__( 'General Settings', 'give' ),
+							'name' => __( 'General Settings', 'give' ),
 							'desc' => '',
 							'type' => 'give_title',
 							'id'   => 'give_title_general_settings_1',
 						),
 						array(
-							'name'    => esc_html__( 'Success Page', 'give' ),
+							'name'    => __( 'Success Page', 'give' ),
 							/* translators: %s: [give_receipt] */
 							'desc'    => sprintf( __( 'The page donors are sent to after completing their donations. The %s shortcode should be on this page.', 'give' ), '<code>[give_receipt]</code>' ),
 							'id'      => 'success_page',
@@ -217,8 +217,8 @@ class Give_Plugin_Settings {
 							) ),
 						),
 						array(
-							'name'    => esc_html__( 'Failed Donation Page', 'give' ),
-							'desc'    => esc_html__( 'The page donors are sent to if their donation is cancelled or fails.', 'give' ),
+							'name'    => __( 'Failed Donation Page', 'give' ),
+							'desc'    => __( 'The page donors are sent to if their donation is cancelled or fails.', 'give' ),
 							'id'      => 'failure_page',
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
@@ -227,7 +227,7 @@ class Give_Plugin_Settings {
 							) ),
 						),
 						array(
-							'name'    => esc_html__( 'Donation History Page', 'give' ),
+							'name'    => __( 'Donation History Page', 'give' ),
 							/* translators: %s: [donation_history] */
 							'desc'    => sprintf( __( 'The page showing a complete donation history for the current user. The %s shortcode should be on this page.', 'give' ), '<code>[donation_history]</code>' ),
 							'id'      => 'history_page',
@@ -238,57 +238,57 @@ class Give_Plugin_Settings {
 							) ),
 						),
 						array(
-							'name'    => esc_html__( 'Base Country', 'give' ),
-							'desc'    => esc_html__( 'The country your site operates from.', 'give' ),
+							'name'    => __( 'Base Country', 'give' ),
+							'desc'    => __( 'The country your site operates from.', 'give' ),
 							'id'      => 'base_country',
 							'type'    => 'select',
 							'options' => give_get_country_list(),
 						),
 						array(
-							'name' => esc_html__( 'Currency Settings', 'give' ),
+							'name' => __( 'Currency Settings', 'give' ),
 							'desc' => '',
 							'type' => 'give_title',
 							'id'   => 'give_title_general_settings_2',
 						),
 						array(
-							'name'    => esc_html__( 'Currency', 'give' ),
-							'desc'    => esc_html__( 'The donation currency. Note that some payment gateways have currency restrictions.', 'give' ),
+							'name'    => __( 'Currency', 'give' ),
+							'desc'    => __( 'The donation currency. Note that some payment gateways have currency restrictions.', 'give' ),
 							'id'      => 'currency',
 							'type'    => 'select',
 							'options' => give_get_currencies(),
 							'default' => 'USD',
 						),
 						array(
-							'name'    => esc_html__( 'Currency Position', 'give' ),
-							'desc'    => esc_html__( 'The position of the currency symbol.', 'give' ),
+							'name'    => __( 'Currency Position', 'give' ),
+							'desc'    => __( 'The position of the currency symbol.', 'give' ),
 							'id'      => 'currency_position',
 							'type'    => 'select',
 							'options' => array(
 								/* translators: %s: currency symbol */
-								'before' => sprintf( esc_html__( 'Before - %s10', 'give' ), give_currency_symbol( give_get_currency() ) ),
+								'before' => sprintf( __( 'Before - %s10', 'give' ), give_currency_symbol( give_get_currency() ) ),
 								/* translators: %s: currency symbol */
-								'after'  => sprintf( esc_html__( 'After - 10%s', 'give' ), give_currency_symbol( give_get_currency() ) ),
+								'after'  => sprintf( __( 'After - 10%s', 'give' ), give_currency_symbol( give_get_currency() ) ),
 							),
 							'default' => 'before',
 						),
 						array(
-							'name'            => esc_html__( 'Thousands Separator', 'give' ),
-							'desc'            => esc_html__( 'The symbol (usually , or .) to separate thousands.', 'give' ),
+							'name'            => __( 'Thousands Separator', 'give' ),
+							'desc'            => __( 'The symbol (usually , or .) to separate thousands.', 'give' ),
 							'id'              => 'thousands_separator',
 							'type'            => 'text_small',
 							'sanitization_cb' => 'give_sanitize_thousand_separator',
 							'default'         => ',',
 						),
 						array(
-							'name'    => esc_html__( 'Decimal Separator', 'give' ),
-							'desc'    => esc_html__( 'The symbol (usually , or .) to separate decimal points.', 'give' ),
+							'name'    => __( 'Decimal Separator', 'give' ),
+							'desc'    => __( 'The symbol (usually , or .) to separate decimal points.', 'give' ),
 							'id'      => 'decimal_separator',
 							'type'    => 'text_small',
 							'default' => '.',
 						),
 						array(
-							'name'            => esc_html__( 'Number of Decimals', 'give' ),
-							'desc'            => esc_html__( 'The number of decimal points displayed in amounts.', 'give' ),
+							'name'            => __( 'Number of Decimals', 'give' ),
+							'desc'            => __( 'The number of decimal points displayed in amounts.', 'give' ),
 							'id'              => 'number_decimals',
 							'type'            => 'text_small',
 							'default'         => 2,
@@ -302,83 +302,83 @@ class Give_Plugin_Settings {
 			 */
 			'gateways'    => array(
 				'id'         => 'payment_gateways',
-				'give_title' => esc_html__( 'Payment Gateways', 'give' ),
+				'give_title' => __( 'Payment Gateways', 'give' ),
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key ) ),
 				'fields'     => apply_filters( 'give_settings_gateways', array(
 						array(
-							'name' => esc_html__( 'Gateways Settings', 'give' ),
+							'name' => __( 'Gateways Settings', 'give' ),
 							'desc' => '',
 							'id'   => 'give_title_gateway_settings_1',
 							'type' => 'give_title',
 						),
 						array(
-							'name' => esc_html__( 'Test Mode', 'give' ),
-							'desc' => esc_html__( 'While in test mode no live donations are processed. To fully use test mode, you must have a sandbox (test) account for the payment gateway you are testing.', 'give' ),
+							'name' => __( 'Test Mode', 'give' ),
+							'desc' => __( 'While in test mode no live donations are processed. To fully use test mode, you must have a sandbox (test) account for the payment gateway you are testing.', 'give' ),
 							'id'   => 'test_mode',
 							'type' => 'checkbox',
 						),
 						array(
-							'name' => esc_html__( 'Enabled Gateways', 'give' ),
-							'desc' => esc_html__( 'Enable your payment gateway. Can be ordered by dragging.', 'give' ),
+							'name' => __( 'Enabled Gateways', 'give' ),
+							'desc' => __( 'Enable your payment gateway. Can be ordered by dragging.', 'give' ),
 							'id'   => 'gateways',
 							'type' => 'enabled_gateways',
 						),
 						array(
-							'name' => esc_html__( 'Default Gateway', 'give' ),
-							'desc' => esc_html__( 'The gateway that will be selected by default.', 'give' ),
+							'name' => __( 'Default Gateway', 'give' ),
+							'desc' => __( 'The gateway that will be selected by default.', 'give' ),
 							'id'   => 'default_gateway',
 							'type' => 'default_gateway',
 						),
 						array(
-							'name' => esc_html__( 'PayPal Standard', 'give' ),
+							'name' => __( 'PayPal Standard', 'give' ),
 							'desc' => '',
 							'type' => 'give_title',
 							'id'   => 'give_title_gateway_settings_2',
 						),
 						array(
-							'name' => esc_html__( 'PayPal Email', 'give' ),
-							'desc' => esc_html__( 'Enter your PayPal account\'s email.', 'give' ),
+							'name' => __( 'PayPal Email', 'give' ),
+							'desc' => __( 'Enter your PayPal account\'s email.', 'give' ),
 							'id'   => 'paypal_email',
 							'type' => 'text_email',
 						),
 						array(
-							'name' => esc_html__( 'PayPal Page Style', 'give' ),
-							'desc' => esc_html__( 'Enter the name of the page style to use, or leave blank to use the default.', 'give' ),
+							'name' => __( 'PayPal Page Style', 'give' ),
+							'desc' => __( 'Enter the name of the page style to use, or leave blank to use the default.', 'give' ),
 							'id'   => 'paypal_page_style',
 							'type' => 'text',
 						),
 						array(
-							'name'    => esc_html__( 'PayPal Transaction Type', 'give' ),
-							'desc'    => esc_html__( 'Nonprofits must verify their status to withdraw donations they receive via PayPal. PayPal users that are not verified nonprofits must demonstrate how their donations will be used, once they raise more than $10,000. By default, Give transactions are sent to PayPal as donations. You may change the transaction type using this option if you feel you may not meet PayPal\'s donation requirements.', 'give' ),
+							'name'    => __( 'PayPal Transaction Type', 'give' ),
+							'desc'    => __( 'Nonprofits must verify their status to withdraw donations they receive via PayPal. PayPal users that are not verified nonprofits must demonstrate how their donations will be used, once they raise more than $10,000. By default, Give transactions are sent to PayPal as donations. You may change the transaction type using this option if you feel you may not meet PayPal\'s donation requirements.', 'give' ),
 							'id'      => 'paypal_button_type',
 							'type'    => 'radio_inline',
 							'options' => array(
-								'donation' => esc_html__( 'Donation', 'give' ),
-								'standard' => esc_html__( 'Standard Transaction', 'give' ),
+								'donation' => __( 'Donation', 'give' ),
+								'standard' => __( 'Standard Transaction', 'give' ),
 							),
 							'default' => 'donation',
 						),
 						array(
-							'name' => esc_html__( 'Disable PayPal IPN Verification', 'give' ),
-							'desc' => esc_html__( 'If donations are not getting marked as complete, use a slightly less secure method of verifying donations.', 'give' ),
+							'name' => __( 'Disable PayPal IPN Verification', 'give' ),
+							'desc' => __( 'If donations are not getting marked as complete, use a slightly less secure method of verifying donations.', 'give' ),
 							'id'   => 'disable_paypal_verification',
 							'type' => 'checkbox',
 						),
 						array(
-							'name' => esc_html__( 'Offline Donations', 'give' ),
+							'name' => __( 'Offline Donations', 'give' ),
 							'desc' => '',
 							'type' => 'give_title',
 							'id'   => 'give_title_gateway_settings_3',
 						),
 						array(
-							'name' => esc_html__( 'Collect Billing Details', 'give' ),
-							'desc' => esc_html__( 'Enable to request billing details for offline donations. Will appear above offline donation instructions. Can be enabled/disabled per form.', 'give' ),
+							'name' => __( 'Collect Billing Details', 'give' ),
+							'desc' => __( 'Enable to request billing details for offline donations. Will appear above offline donation instructions. Can be enabled/disabled per form.', 'give' ),
 							'id'   => 'give_offline_donation_enable_billing_fields',
 							'type' => 'checkbox',
 						),
 						array(
-							'name'    => esc_html__( 'Offline Donation Instructions', 'give' ),
-							'desc'    => esc_html__( 'The following content will appear for all forms when the user selects the offline donation payment option. Note: You may customize the content per form as needed.', 'give' ),
+							'name'    => __( 'Offline Donation Instructions', 'give' ),
+							'desc'    => __( 'The following content will appear for all forms when the user selects the offline donation payment option. Note: You may customize the content per form as needed.', 'give' ),
 							'id'      => 'global_offline_donation_content',
 							'default' => give_get_default_offline_donation_content(),
 							'type'    => 'wysiwyg',
@@ -387,15 +387,15 @@ class Give_Plugin_Settings {
 							),
 						),
 						array(
-							'name'    => esc_html__( 'Offline Donation Email Instructions Subject', 'give' ),
-							'desc'    => esc_html__( 'Enter the subject line for the donation receipt email.', 'give' ),
+							'name'    => __( 'Offline Donation Email Instructions Subject', 'give' ),
+							'desc'    => __( 'Enter the subject line for the donation receipt email.', 'give' ),
 							'id'      => 'offline_donation_subject',
 							'default' => esc_attr__( '{donation} - Offline Donation Instructions', 'give' ),
 							'type'    => 'text',
 						),
 						array(
-							'name'    => esc_html__( 'Offline Donation Email Instructions', 'give' ),
-							'desc'    => esc_html__( 'Enter the instructions you want emailed to the donor after they have submitted the donation form. Most likely this would include important information like mailing address and who to make the check out to.', 'give' ),
+							'name'    => __( 'Offline Donation Email Instructions', 'give' ),
+							'desc'    => __( 'Enter the instructions you want emailed to the donor after they have submitted the donation form. Most likely this would include important information like mailing address and who to make the check out to.', 'give' ),
 							'id'      => 'global_offline_donation_email',
 							'default' => give_get_default_offline_donation_email_content(),
 							'type'    => 'wysiwyg',
@@ -409,23 +409,23 @@ class Give_Plugin_Settings {
 			/** Display Settings */
 			'display'     => array(
 				'id'         => 'display_settings',
-				'give_title' => esc_html__( 'Display Settings', 'give' ),
+				'give_title' => __( 'Display Settings', 'give' ),
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key ) ),
 				'fields'     => apply_filters( 'give_settings_display', array(
 						array(
-							'name' => esc_html__( 'Display Settings', 'give' ),
+							'name' => __( 'Display Settings', 'give' ),
 							'desc' => '',
 							'id'   => 'give_title_display_settings_1',
 							'type' => 'give_title',
 						),
 						array(
-							'name' => esc_html__( 'Disable CSS', 'give' ),
-							'desc' => esc_html__( 'Enable this option if you would like to disable all of Give\'s included CSS stylesheets.', 'give' ),
+							'name' => __( 'Disable CSS', 'give' ),
+							'desc' => __( 'Enable this option if you would like to disable all of Give\'s included CSS stylesheets.', 'give' ),
 							'id'   => 'disable_css',
 							'type' => 'checkbox',
 						),
 						array(
-							'name' => esc_html__( 'Enable Floating Labels', 'give' ),
+							'name' => __( 'Enable Floating Labels', 'give' ),
 							/* translators: %s: http://docs.givewp.com/form-floating-labels */
 							'desc' => sprintf( wp_kses( __( 'Enable <a href="%s" target="_blank">floating labels</a> in Give\'s donation forms. Note that if the "Disable CSS" option is enabled, you will need to style the floating labels yourself.', 'give' ), array(
 								'a' => array(
@@ -437,7 +437,7 @@ class Give_Plugin_Settings {
 							'type' => 'checkbox',
 						),
 						array(
-							'name' => esc_html__( 'Disable Welcome Screen', 'give' ),
+							'name' => __( 'Disable Welcome Screen', 'give' ),
 							/* translators: %s: about page URL */
 							'desc' => sprintf( wp_kses( __( 'Enable this option if you would like to disable the <a href="%s" target="_blank">Give Welcome screen</a> every time Give is activated and/or updated.', 'give' ), array(
 								'a' => array(
@@ -449,64 +449,64 @@ class Give_Plugin_Settings {
 							'type' => 'checkbox',
 						),
 						array(
-							'name' => esc_html__( 'Post Types', 'give' ),
+							'name' => __( 'Post Types', 'give' ),
 							'desc' => '',
 							'id'   => 'give_title_display_settings_2',
 							'type' => 'give_title',
 						),
 						array(
-							'name' => esc_html__( 'Disable Form Single Views', 'give' ),
-							'desc' => esc_html__( 'By default, all forms have single views enabled which create a specific URL on your website for that form. This option disables the singular and archive views from being publicly viewable. Note: you will need to embed forms using a shortcode or widget if enabled.', 'give' ),
+							'name' => __( 'Disable Form Single Views', 'give' ),
+							'desc' => __( 'By default, all forms have single views enabled which create a specific URL on your website for that form. This option disables the singular and archive views from being publicly viewable. Note: you will need to embed forms using a shortcode or widget if enabled.', 'give' ),
 							'id'   => 'disable_forms_singular',
 							'type' => 'checkbox',
 						),
 						array(
-							'name' => esc_html__( 'Disable Form Archives', 'give' ),
-							'desc' => esc_html__( 'Archives pages list all the forms you have created. This option will disable only the form\'s archive page(s). The single form\'s view will remain in place. Note: you will need to refresh your permalinks after this option has been enabled.', 'give' ),
+							'name' => __( 'Disable Form Archives', 'give' ),
+							'desc' => __( 'Archives pages list all the forms you have created. This option will disable only the form\'s archive page(s). The single form\'s view will remain in place. Note: you will need to refresh your permalinks after this option has been enabled.', 'give' ),
 							'id'   => 'disable_forms_archives',
 							'type' => 'checkbox',
 						),
 						array(
-							'name' => esc_html__( 'Disable Form Excerpts', 'give' ),
-							'desc' => esc_html__( 'The excerpt is an optional summary or description of a donation form; in short, a summary as to why the user should give.', 'give' ),
+							'name' => __( 'Disable Form Excerpts', 'give' ),
+							'desc' => __( 'The excerpt is an optional summary or description of a donation form; in short, a summary as to why the user should give.', 'give' ),
 							'id'   => 'disable_forms_excerpt',
 							'type' => 'checkbox',
 						),
 						array(
-							'name'    => esc_html__( 'Featured Image Size', 'give' ),
-							'desc'    => esc_html__( 'The Featured Image is an image that is chosen as the representative image for a donation form. Some themes may have custom featured image sizes. Please select the size you would like to display for your single donation form\'s featured image.', 'give' ),
+							'name'    => __( 'Featured Image Size', 'give' ),
+							'desc'    => __( 'The Featured Image is an image that is chosen as the representative image for a donation form. Some themes may have custom featured image sizes. Please select the size you would like to display for your single donation form\'s featured image.', 'give' ),
 							'id'      => 'featured_image_size',
 							'type'    => 'select',
 							'default' => 'large',
 							'options' => give_get_featured_image_sizes(),
 						),
 						array(
-							'name' => esc_html__( 'Disable Form Featured Image', 'give' ),
-							'desc' => esc_html__( 'If you do not wish to use the featured image functionality you can disable it using this option and it will not be displayed for single donation forms.', 'give' ),
+							'name' => __( 'Disable Form Featured Image', 'give' ),
+							'desc' => __( 'If you do not wish to use the featured image functionality you can disable it using this option and it will not be displayed for single donation forms.', 'give' ),
 							'id'   => 'disable_form_featured_img',
 							'type' => 'checkbox',
 						),
 						array(
-							'name' => esc_html__( 'Disable Single Form Sidebar', 'give' ),
-							'desc' => esc_html__( 'The sidebar allows you to add additional widget to the Give single form view. If you don\'t plan on using the sidebar you may disable it with this option.', 'give' ),
+							'name' => __( 'Disable Single Form Sidebar', 'give' ),
+							'desc' => __( 'The sidebar allows you to add additional widget to the Give single form view. If you don\'t plan on using the sidebar you may disable it with this option.', 'give' ),
 							'id'   => 'disable_form_sidebar',
 							'type' => 'checkbox',
 						),
 						array(
-							'name' => esc_html__( 'Taxonomies', 'give' ),
+							'name' => __( 'Taxonomies', 'give' ),
 							'desc' => '',
 							'id'   => 'give_title_display_settings_3',
 							'type' => 'give_title',
 						),
 						array(
-							'name' => esc_html__( 'Enable Form Categories', 'give' ),
-							'desc' => esc_html__( 'Enables the "Category" taxonomy for all Give forms.', 'give' ),
+							'name' => __( 'Enable Form Categories', 'give' ),
+							'desc' => __( 'Enables the "Category" taxonomy for all Give forms.', 'give' ),
 							'id'   => 'categories',
 							'type' => 'checkbox',
 						),
 						array(
-							'name' => esc_html__( 'Enable Form Tags', 'give' ),
-							'desc' => esc_html__( 'Enables the "Tag" taxonomy for all Give forms.', 'give' ),
+							'name' => __( 'Enable Form Tags', 'give' ),
+							'desc' => __( 'Enables the "Tag" taxonomy for all Give forms.', 'give' ),
 							'id'   => 'tags',
 							'type' => 'checkbox',
 						),
@@ -519,85 +519,85 @@ class Give_Plugin_Settings {
 			 */
 			'emails'      => array(
 				'id'         => 'email_settings',
-				'give_title' => esc_html__( 'Email Settings', 'give' ),
+				'give_title' => __( 'Email Settings', 'give' ),
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key ) ),
 				'fields'     => apply_filters( 'give_settings_emails', array(
 						array(
-							'name' => esc_html__( 'Email Settings', 'give' ),
+							'name' => __( 'Email Settings', 'give' ),
 							'desc' => '',
 							'id'   => 'give_title_email_settings_1',
 							'type' => 'give_title',
 						),
 						array(
 							'id'      => 'email_template',
-							'name'    => esc_html__( 'Email Template', 'give' ),
-							'desc'    => esc_html__( 'Choose a template. Click "Save Changes" then "Preview Donation Receipt" to see the new template.', 'give' ),
+							'name'    => __( 'Email Template', 'give' ),
+							'desc'    => __( 'Choose a template. Click "Save Changes" then "Preview Donation Receipt" to see the new template.', 'give' ),
 							'type'    => 'select',
 							'options' => give_get_email_templates(),
 						),
 						array(
 							'id'   => 'email_logo',
-							'name' => esc_html__( 'Logo', 'give' ),
-							'desc' => esc_html__( 'Upload or choose a logo to be displayed at the top of the donation receipt emails. Displayed on HTML emails only.', 'give' ),
+							'name' => __( 'Logo', 'give' ),
+							'desc' => __( 'Upload or choose a logo to be displayed at the top of the donation receipt emails. Displayed on HTML emails only.', 'give' ),
 							'type' => 'file',
 						),
 						array(
 							'id'      => 'from_name',
-							'name'    => esc_html__( 'From Name', 'give' ),
-							'desc'    => esc_html__( 'The name that appears in the "From" field in donation receipt emails.', 'give' ),
+							'name'    => __( 'From Name', 'give' ),
+							'desc'    => __( 'The name that appears in the "From" field in donation receipt emails.', 'give' ),
 							'default' => get_bloginfo( 'name' ),
 							'type'    => 'text',
 						),
 						array(
 							'id'      => 'from_email',
-							'name'    => esc_html__( 'From Email', 'give' ),
-							'desc'    => esc_html__( 'Email to send donation receipts from. This will act as the "from" and "reply-to" address.', 'give' ),
+							'name'    => __( 'From Email', 'give' ),
+							'desc'    => __( 'Email to send donation receipts from. This will act as the "from" and "reply-to" address.', 'give' ),
 							'default' => get_bloginfo( 'admin_email' ),
 							'type'    => 'text',
 						),
 						array(
-							'name' => esc_html__( 'Donation Receipt', 'give' ),
+							'name' => __( 'Donation Receipt', 'give' ),
 							'desc' => '',
 							'id'   => 'give_title_email_settings_2',
 							'type' => 'give_title',
 						),
 						array(
 							'id'      => 'donation_subject',
-							'name'    => esc_html__( 'Donation Email Subject', 'give' ),
-							'desc'    => esc_html__( 'Enter the subject line for the donation receipt email.', 'give' ),
+							'name'    => __( 'Donation Email Subject', 'give' ),
+							'desc'    => __( 'Enter the subject line for the donation receipt email.', 'give' ),
 							'default' => esc_attr__( 'Donation Receipt', 'give' ),
 							'type'    => 'text',
 						),
 						array(
 							'id'      => 'donation_receipt',
-							'name'    => esc_html__( 'Donation Receipt', 'give' ),
+							'name'    => __( 'Donation Receipt', 'give' ),
 							'desc'    => sprintf(
 								/* translators: %s: emails tags list */
-								esc_html__( 'Enter the email that is sent to users after completing a successful donation. HTML is accepted. Available template tags: %s', 'give' ),
+								__( 'Enter the email that is sent to users after completing a successful donation. HTML is accepted. Available template tags: %s', 'give' ),
 								'<br/>' . give_get_emails_tags_list()
 							),
 							'type'    => 'wysiwyg',
 							'default' => give_get_default_donation_receipt_email(),
 						),
 						array(
-							'name' => esc_html__( 'New Donation Notification', 'give' ),
+							'name' => __( 'New Donation Notification', 'give' ),
 							'desc' => '',
 							'id'   => 'give_title_email_settings_3',
 							'type' => 'give_title',
 						),
 						array(
 							'id'      => 'donation_notification_subject',
-							'name'    => esc_html__( 'Donation Notification Subject', 'give' ),
-							'desc'    => esc_html__( 'Enter the subject line for the donation notification email.', 'give' ),
+							'name'    => __( 'Donation Notification Subject', 'give' ),
+							'desc'    => __( 'Enter the subject line for the donation notification email.', 'give' ),
 							'type'    => 'text',
 							'default' => esc_attr__( 'New Donation - #{payment_id}', 'give' ),
 						),
 						array(
 							'id'      => 'donation_notification',
-							'name'    => esc_html__( 'Donation Notification', 'give' ),
+							'name'    => __( 'Donation Notification', 'give' ),
 							'desc'    => sprintf(
 								/* translators: %s: emails tags list */
-								esc_html__( 'Enter the email that is sent to donation notification emails after completion of a donation. HTML is accepted. Available template tags: %s', 'give' ),
+								__( 'Enter the email that is sent to donation notification emails after completion of a donation. HTML is accepted. Available template tags: %s', 'give' ),
 								'<br/>' . give_get_emails_tags_list()
 							),
 							'type'    => 'wysiwyg',
@@ -605,15 +605,15 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'id'      => 'admin_notice_emails',
-							'name'    => esc_html__( 'Donation Notification Emails', 'give' ),
+							'name'    => __( 'Donation Notification Emails', 'give' ),
 							'desc'    => __( 'Enter the email address(es) that should receive a notification anytime a donation is made, please only enter <span class="give-underline">one email address per line</span> and <strong>not separated by commas</strong>.', 'give' ),
 							'type'    => 'textarea',
 							'default' => get_bloginfo( 'admin_email' ),
 						),
 						array(
 							'id'   => 'disable_admin_notices',
-							'name' => esc_html__( 'Disable Admin Notifications', 'give' ),
-							'desc' => esc_html__( 'Check this box if you do not want to receive emails when new donations are made.', 'give' ),
+							'name' => __( 'Disable Admin Notifications', 'give' ),
+							'desc' => __( 'Check this box if you do not want to receive emails when new donations are made.', 'give' ),
 							'type' => 'checkbox',
 						),
 					)
@@ -622,7 +622,7 @@ class Give_Plugin_Settings {
 			/** Extension Settings */
 			'addons'      => array(
 				'id'         => 'addons',
-				'give_title' => esc_html__( 'Give Add-ons Settings', 'give' ),
+				'give_title' => __( 'Give Add-ons Settings', 'give' ),
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key ) ),
 				'fields'     => apply_filters( 'give_settings_addons', array()
 				),
@@ -630,7 +630,7 @@ class Give_Plugin_Settings {
 			/** Licenses Settings */
 			'licenses'    => array(
 				'id'         => 'licenses',
-				'give_title' => esc_html__( 'Give Licenses', 'give' ),
+				'give_title' => __( 'Give Licenses', 'give' ),
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key ) ),
 				'fields'     => apply_filters( 'give_settings_licenses', array()
 				),
@@ -638,36 +638,36 @@ class Give_Plugin_Settings {
 			/** Advanced Options */
 			'advanced'    => array(
 				'id'         => 'advanced_options',
-				'give_title' => esc_html__( 'Advanced Options', 'give' ),
+				'give_title' => __( 'Advanced Options', 'give' ),
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key ) ),
 				'fields'     => apply_filters( 'give_settings_advanced', array(
 						array(
-							'name' => esc_html__( 'Access Control', 'give' ),
+							'name' => __( 'Access Control', 'give' ),
 							'desc' => '',
 							'id'   => 'give_title_session_control_1',
 							'type' => 'give_title',
 						),
 						array(
 							'id'      => 'session_lifetime',
-							'name'    => esc_html__( 'Session Lifetime', 'give' ),
-							'desc'    => esc_html__( 'The length of time a user\'s session is kept alive. Give starts a new session per user upon donation. Sessions allow donors to view their donation receipts without being logged in.', 'give' ),
+							'name'    => __( 'Session Lifetime', 'give' ),
+							'desc'    => __( 'The length of time a user\'s session is kept alive. Give starts a new session per user upon donation. Sessions allow donors to view their donation receipts without being logged in.', 'give' ),
 							'type'    => 'select',
 							'options' => array(
-								'86400'  => esc_html__( '24 Hours', 'give' ),
-								'172800' => esc_html__( '48 Hours', 'give' ),
-								'259200' => esc_html__( '72 Hours', 'give' ),
-								'604800' => esc_html__( '1 Week', 'give' ),
+								'86400'  => __( '24 Hours', 'give' ),
+								'172800' => __( '48 Hours', 'give' ),
+								'259200' => __( '72 Hours', 'give' ),
+								'604800' => __( '1 Week', 'give' ),
 							),
 						),
 						array(
-							'name' => esc_html__( 'Email Access', 'give' ),
-							'desc' => esc_html__( 'Would you like your donors to be able to access their donation history using only email? Donors whose sessions have expired and do not have an account may still access their donation history via a temporary email access link.', 'give' ),
+							'name' => __( 'Email Access', 'give' ),
+							'desc' => __( 'Would you like your donors to be able to access their donation history using only email? Donors whose sessions have expired and do not have an account may still access their donation history via a temporary email access link.', 'give' ),
 							'id'   => 'email_access',
 							'type' => 'checkbox',
 						),
 						array(
 							'id'      => 'recaptcha_key',
-							'name'    => esc_html__( 'reCAPTCHA Site Key', 'give' ),
+							'name'    => __( 'reCAPTCHA Site Key', 'give' ),
 							/* translators: %s: https://www.google.com/recaptcha/ */
 							'desc'    => sprintf( __( 'If you would like to prevent spam on the email access form navigate to <a href="%s" target="_blank">the reCAPTCHA website</a> and sign up for an API key. The reCAPTCHA uses Google\'s user-friendly single click verification method.', 'give' ), esc_url( 'https://www.google.com/recaptcha/' ) ),
 							'default' => '',
@@ -675,25 +675,25 @@ class Give_Plugin_Settings {
 						),
 						array(
 							'id'      => 'recaptcha_secret',
-							'name'    => esc_html__( 'reCAPTCHA Secret Key', 'give' ),
-							'desc'    => esc_html__( 'Please paste the reCAPTCHA secret key here from your manage reCAPTCHA API Keys panel.', 'give' ),
+							'name'    => __( 'reCAPTCHA Secret Key', 'give' ),
+							'desc'    => __( 'Please paste the reCAPTCHA secret key here from your manage reCAPTCHA API Keys panel.', 'give' ),
 							'default' => '',
 							'type'    => 'text',
 						),
 						array(
-							'name' => esc_html__( 'Data Control', 'give' ),
+							'name' => __( 'Data Control', 'give' ),
 							'desc' => '',
 							'id'   => 'give_title_data_control_2',
 							'type' => 'give_title',
 						),
 						array(
-							'name' => esc_html__( 'Remove All Data on Uninstall?', 'give' ),
-							'desc' => esc_html__( 'When the plugin is deleted, completely remove all Give data.', 'give' ),
+							'name' => __( 'Remove All Data on Uninstall?', 'give' ),
+							'desc' => __( 'When the plugin is deleted, completely remove all Give data.', 'give' ),
 							'id'   => 'uninstall_on_delete',
 							'type' => 'checkbox',
 						),
 						array(
-							'name' => esc_html__( 'Filter Control', 'give' ),
+							'name' => __( 'Filter Control', 'give' ),
 							'desc' => '',
 							'id'   => 'give_title_filter_control',
 							'type' => 'give_title',
@@ -707,14 +707,14 @@ class Give_Plugin_Settings {
 							'type' => 'checkbox',
 						),
 						array(
-							'name' => esc_html__( 'Script Loading', 'give' ),
+							'name' => __( 'Script Loading', 'give' ),
 							'desc' => '',
 							'id'   => 'give_title_script_control',
 							'type' => 'give_title',
 						),
 						array(
-							'name' => esc_html__( 'Load Scripts in Footer?', 'give' ),
-							'desc' => esc_html__( 'Check this box if you would like Give to load all frontend JavaScript files in the footer.', 'give' ),
+							'name' => __( 'Load Scripts in Footer?', 'give' ),
+							'desc' => __( 'Check this box if you would like Give to load all frontend JavaScript files in the footer.', 'give' ),
 							'id'   => 'scripts_footer',
 							'type' => 'checkbox',
 						),
@@ -724,13 +724,13 @@ class Give_Plugin_Settings {
 			/** API Settings */
 			'api'         => array(
 				'id'         => 'api',
-				'give_title' => esc_html__( 'API', 'give' ),
+				'give_title' => __( 'API', 'give' ),
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key ) ),
 				'show_names' => false, // Hide field names on the left
 				'fields'     => apply_filters( 'give_settings_system', array(
 						array(
 							'id'   => 'api',
-							'name' => esc_html__( 'API', 'give' ),
+							'name' => __( 'API', 'give' ),
 							'type' => 'api',
 						),
 					)
@@ -739,13 +739,13 @@ class Give_Plugin_Settings {
 			/** Licenses Settings */
 			'system_info' => array(
 				'id'         => 'system_info',
-				'give_title' => esc_html__( 'System Info', 'give' ),
+				'give_title' => __( 'System Info', 'give' ),
 				'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->key ) ),
 				'fields'     => apply_filters( 'give_settings_system', array(
 						array(
 							'id'   => 'system-info-textarea',
-							'name' => esc_html__( 'System Info', 'give' ),
-							'desc' => esc_html__( 'Please copy and paste this information in your ticket when contacting support.', 'give' ),
+							'name' => __( 'System Info', 'give' ),
+							'desc' => __( 'Please copy and paste this information in your ticket when contacting support.', 'give' ),
 							'type' => 'system_info',
 						),
 					)
@@ -774,7 +774,7 @@ class Give_Plugin_Settings {
 			return;
 		}
 
-		add_settings_error( 'give-notices', 'global-settings-updated', esc_html__( 'Settings updated.', 'give' ), 'updated' );
+		add_settings_error( 'give-notices', 'global-settings-updated', __( 'Settings updated.', 'give' ), 'updated' );
 
 	}
 
@@ -796,7 +796,7 @@ class Give_Plugin_Settings {
 			return $this->{$field};
 		}
 
-		throw new Exception( sprintf( esc_html__( 'Invalid property: %s', 'give' ), $field ) );
+		throw new Exception( sprintf( __( 'Invalid property: %s', 'give' ), $field ) );
 	}
 
 
@@ -1194,10 +1194,10 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 	if ( $is_license_key ) {
 		if ( $is_in_subscription ) {
 			$subscription_expires = strtotime( $subscriptions[ $is_in_subscription ]['expires'] );
-			$subscription_status  = esc_html__( 'renew', 'give' );
+			$subscription_status  = __( 'renew', 'give' );
 
 			if ( ( 'active' !== $subscriptions[ $is_in_subscription ]['status'] ) ) {
-				$subscription_status = esc_html__( 'expire', 'give' );
+				$subscription_status = __( 'expire', 'give' );
 			}
 
 			if ( $subscription_expires < current_time( 'timestamp', 1 ) ) {
@@ -1291,7 +1291,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 					$expiration = strtotime( $license->expires, current_time( 'timestamp' ) );
 
 					if ( 'lifetime' === $license->expires ) {
-						$messages[]     = esc_html__( 'License key never expires.', 'give' );
+						$messages[]     = __( 'License key never expires.', 'give' );
 						$license_status = 'license-lifetime-notice';
 					} elseif ( $expiration > $now && $expiration - $now < ( DAY_IN_SECONDS * 30 ) ) {
 						$messages[]     = sprintf(
@@ -1340,7 +1340,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 
 	// If no messages found then inform user that to get updated in future register yourself.
 	if ( empty( $messages ) ) {
-		$messages[] = apply_filters( "{$shortname}_default_addon_notice", esc_html__( 'To receive updates, please enter your valid license key.', 'give' ) );
+		$messages[] = apply_filters( "{$shortname}_default_addon_notice", __( 'To receive updates, please enter your valid license key.', 'give' ) );
 	}
 
 	foreach ( $messages as $message ) {
