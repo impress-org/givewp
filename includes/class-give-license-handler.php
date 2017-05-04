@@ -216,7 +216,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			// Show addon notice on plugin page.
 			$plugin_name = end( explode( 'plugins/', $this->file ) );
-			add_action( "after_plugin_row_{$plugin_name}", array( $this, 'plugin_page_notices' ), - 1, 3 );
+			add_action( "after_plugin_row_{$plugin_name}", array( $this, 'plugin_page_notices' ), 10, 3 );
 
 		}
 
@@ -936,13 +936,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 				return false;
 			}
 
-			// Remove already attached notices.
-			remove_action( "after_plugin_row_$plugin_file", array(
-				$this->auto_updater_obj,
-				'show_update_notification',
-			) );
-			remove_action( "after_plugin_row_$plugin_file", 'wp_plugin_update_row' );
-
 			$update_notice_wrap = '<tr class="give-addon-notice-tr active"><td colspan="3" class="colspanchange"><div class="notice inline notice-warning notice-alt give-invalid-license"><p><span class="dashicons dashicons-info"></span> %s</p></div></td></tr>';
 			$message            = $this->license_state_message();
 
@@ -963,9 +956,11 @@ if ( ! class_exists( 'Give_License' ) ) :
 			$message_data = array();
 
 			if ( ! $this->is_valid_license() ) {
+
 				$message_data['message'] = sprintf(
-					'Please <a href=""%s">activate your license</a> for updates and support.',
-					esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' ) )
+					'Please <a href="%1$s">activate your license</a> to receive updates and support for the %2$s add-on.',
+					esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' ) ),
+					$this->item_name
 				);
 			}
 
