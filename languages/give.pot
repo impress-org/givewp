@@ -960,7 +960,7 @@ msgstr ""
 msgid "You do not have permission to edit this donor."
 msgstr ""
 
-#: includes/admin/customers/customer-actions.php:31, includes/admin/customers/customer-actions.php:43, includes/admin/customers/customer-actions.php:195, includes/admin/customers/customer-actions.php:207, includes/admin/customers/customer-actions.php:273, includes/admin/customers/customer-actions.php:286, includes/admin/customers/customer-actions.php:368, includes/admin/customers/customer-actions.php:379, includes/admin/customers/customer-actions.php:545, includes/admin/customers/customer-actions.php:589, includes/admin/forms/dashboard-columns.php:237, includes/admin/payments/actions.php:31, includes/admin/payments/actions.php:88, includes/admin/payments/actions.php:99, includes/admin/payments/actions.php:314, includes/admin/payments/actions.php:334, includes/admin/payments/actions.php:367, includes/admin/payments/actions.php:389, includes/admin/payments/view-order-details.php:24, includes/admin/payments/view-order-details.php:34, includes/admin/reporting/class-api-requests-logs-list-table.php:141, includes/admin/reporting/class-export.php:177, includes/admin/reporting/class-gateway-error-logs-list-table.php:128, includes/admin/reporting/export/class-batch-export.php:133, includes/admin/reporting/export/export-actions.php:26, includes/admin/reporting/pdf-reports.php:31, includes/admin/reporting/pdf-reports.php:35, includes/admin/reporting/tools/class-give-tools-delete-test-transactions.php:157, includes/admin/reporting/tools/class-give-tools-recount-all-stats.php:206, includes/admin/reporting/tools/class-give-tools-recount-customer-stats.php:195, includes/admin/reporting/tools/class-give-tools-recount-form-stats.php:220, includes/admin/reporting/tools/class-give-tools-recount-income.php:156, includes/admin/reporting/tools/class-give-tools-recount-single-customer-stats.php:152, includes/admin/reporting/tools/class-give-tools-reset-stats.php:185, includes/admin/upgrades/upgrade-functions.php:169, includes/admin/upgrades/upgrade-functions.php:281, includes/admin/upgrades/upgrade-functions.php:318, includes/admin/upgrades/upgrade-functions.php:689, includes/api/class-give-api.php:1691, includes/api/class-give-api.php:1696, includes/api/class-give-api.php:1714, includes/api/class-give-api.php:1724, includes/class-give-license-handler.php:326, includes/class-give-license-handler.php:426, includes/emails/actions.php:56, includes/emails/template.php:270, includes/error-tracking.php:50, includes/formatting.php:466, includes/gateways/manual.php:38
+#: includes/admin/customers/customer-actions.php:31, includes/admin/customers/customer-actions.php:43, includes/admin/customers/customer-actions.php:195, includes/admin/customers/customer-actions.php:207, includes/admin/customers/customer-actions.php:273, includes/admin/customers/customer-actions.php:286, includes/admin/customers/customer-actions.php:368, includes/admin/customers/customer-actions.php:379, includes/admin/customers/customer-actions.php:545, includes/admin/customers/customer-actions.php:589, includes/admin/forms/dashboard-columns.php:237, includes/admin/payments/actions.php:31, includes/admin/payments/actions.php:88, includes/admin/payments/actions.php:99, includes/admin/payments/actions.php:314, includes/admin/payments/actions.php:334, includes/admin/payments/actions.php:367, includes/admin/payments/actions.php:389, includes/admin/payments/view-order-details.php:24, includes/admin/payments/view-order-details.php:34, includes/admin/reporting/class-api-requests-logs-list-table.php:141, includes/admin/reporting/class-export.php:177, includes/admin/reporting/class-gateway-error-logs-list-table.php:128, includes/admin/reporting/export/class-batch-export.php:133, includes/admin/reporting/export/export-actions.php:26, includes/admin/reporting/pdf-reports.php:31, includes/admin/reporting/pdf-reports.php:35, includes/admin/reporting/tools/class-give-tools-delete-test-transactions.php:157, includes/admin/reporting/tools/class-give-tools-recount-all-stats.php:206, includes/admin/reporting/tools/class-give-tools-recount-customer-stats.php:195, includes/admin/reporting/tools/class-give-tools-recount-form-stats.php:220, includes/admin/reporting/tools/class-give-tools-recount-income.php:156, includes/admin/reporting/tools/class-give-tools-recount-single-customer-stats.php:152, includes/admin/reporting/tools/class-give-tools-reset-stats.php:185, includes/admin/upgrades/upgrade-functions.php:169, includes/admin/upgrades/upgrade-functions.php:281, includes/admin/upgrades/upgrade-functions.php:318, includes/admin/upgrades/upgrade-functions.php:689, includes/api/class-give-api.php:1691, includes/api/class-give-api.php:1696, includes/api/class-give-api.php:1714, includes/api/class-give-api.php:1724, includes/class-give-license-handler.php:327, includes/class-give-license-handler.php:427, includes/emails/actions.php:56, includes/emails/template.php:270, includes/error-tracking.php:50, includes/formatting.php:466, includes/gateways/manual.php:38
 msgid "Error"
 msgstr ""
 
@@ -1012,7 +1012,7 @@ msgstr ""
 msgid "An error has occurred. Please try again."
 msgstr ""
 
-#: includes/admin/customers/customer-actions.php:467, includes/admin/reporting/export/export-actions.php:26, includes/admin/reporting/pdf-reports.php:35, includes/api/class-give-api.php:1691, includes/class-give-license-handler.php:326, includes/class-give-license-handler.php:426, includes/gateways/manual.php:38
+#: includes/admin/customers/customer-actions.php:467, includes/admin/reporting/export/export-actions.php:26, includes/admin/reporting/pdf-reports.php:35, includes/api/class-give-api.php:1691, includes/class-give-license-handler.php:327, includes/class-give-license-handler.php:427, includes/gateways/manual.php:38
 msgid "Nonce verification failed."
 msgstr ""
 
@@ -4210,19 +4210,19 @@ msgstr ""
 msgid "Enter username"
 msgstr ""
 
-#: includes/class-give-license-handler.php:298
+#: includes/class-give-license-handler.php:299
 msgid "Add-on Licenses"
 msgstr ""
 
-#: includes/class-give-license-handler.php:715, includes/class-give-license-handler.php:779
+#: includes/class-give-license-handler.php:716, includes/class-give-license-handler.php:780
 msgid "You have invalid or expired license keys for one or more Give Add-ons. Please go to the <a href=\"%s\">licenses page</a> to correct this issue."
 msgstr ""
 
-#: includes/class-give-license-handler.php:746
+#: includes/class-give-license-handler.php:747
 msgid "Your Give add-on license expired for payment <a href=\"%1$s\" target=\"_blank\">#%2$d</a>. <a href=\"%3$s\" target=\"_blank\">Click to renew an existing license</a> or <a href=\"%4$s\">Click here if already renewed</a>."
 msgstr ""
 
-#: includes/class-give-license-handler.php:754
+#: includes/class-give-license-handler.php:755
 msgid "Your Give add-on license will expire in %1$s for payment <a href=\"%2$s\" target=\"_blank\">#%3$d</a>. <a href=\"%4$s\" target=\"_blank\">Click to renew an existing license</a> or <a href=\"%5$s\">Click here if already renewed</a>."
 msgstr ""
 

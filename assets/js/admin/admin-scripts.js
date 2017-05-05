@@ -54,18 +54,17 @@ jQuery.noConflict();
 	 * @returns {string}
 	 */
 	function give_unformat_currency(price, dp) {
-		price                = accounting.unformat(price, give_vars.decimal_separator).toString();
+		price = accounting.unformat(price, give_vars.decimal_separator).toString();
+		dp    = ( 'undefined' == dp ? false : dp );
+
 		var decimal_position = price.indexOf('.');
 
 		// Set default value for number of decimals.
-		if (false != dp) {
+		if ( false !== dp ) {
 			price = parseFloat(price).toFixed(dp);
 
-			// If price do not have decimal value then set default number of decimals.
-		} else if (
-			( -1 === decimal_position )
-			|| ( give_vars.currency_decimals > price.substr(decimal_position + 1).length )
-		) {
+		// If price do not have decimal value then set default number of decimals.
+		} else {
 			price = parseFloat(price).toFixed(give_vars.currency_decimals);
 		}
 
@@ -1669,10 +1668,10 @@ jQuery.noConflict();
 
 		// Format price sting of input field on focusout.
 		$('#poststuff').on('focusout', 'input.give-money-field, input.give-price-field', function () {
-			price_string = give_unformat_currency($(this).val(), false);
+			price_string = give_unformat_currency( $(this).val(), false );
 
 			// Back out.
-			if (!parseInt(price_string)) {
+			if ( give_unformat_currency( '0', false ) === give_unformat_currency( $(this).val(), false ) ) {
 				$(this).val('');
 				return false;
 			}
