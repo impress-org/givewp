@@ -576,7 +576,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		/*
 		 * Case 1: Payment total from simple payment_total.
 		 */
-		$payment        = Give_Helper_Payment::create_simple_payment();
+		$payment       = Give_Helper_Payment::create_simple_payment();
 		$payment_total = give_email_tag_payment_total( array( 'payment_id' => $payment ) );
 
 		$this->assertEquals( '$20', $payment_total );
@@ -623,7 +623,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		 * Case 2: With filter
 		 */
 		add_filter( 'give_email_tag_sitename', array( $this, 'give_sitename' ) );
-		$sitename = give_email_tag_sitename( );
+		$sitename = give_email_tag_sitename();
 		$this->assertEquals( 'Test Blog | Give', $sitename );
 		remove_filter( 'give_email_tag_sitename', array( $this, 'give_sitename' ), 10 );
 	}
@@ -678,5 +678,36 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 			'/give_action=view_receipt">View it in your browser<\/a>/',
 			$receipt_link
 		);
+	}
+
+
+	/**
+	 * Test function give_email_tag_email_access_link
+	 *
+	 * @since 2.0
+	 * @cover give_email_tag_email_access_link
+	 */
+	function test_give_email_tag_email_access_link() {
+		Give_Helper_Payment::create_simple_payment();
+
+		$link = give_email_tag_email_access_link( array( 'user_id' => 1 ) );
+
+		$this->assertRegExp(
+			'/target="_blank">Access Donation Details &raquo;<\/a>/',
+			$link
+		);
+
+		$this->assertRegExp(
+			'/<a href="\?give_nl=/',
+			$link
+		);
+
+		$link = give_email_tag_email_access_link( array( 'user_id' => 1, 'email_content_type' => 'text/plain' ) );
+
+		$this->assertRegExp(
+			'/Access Donation Details: \?give_nl=/',
+			$link
+		);
+
 	}
 }
