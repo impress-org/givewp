@@ -277,9 +277,7 @@ function give_do_email_tags( $content, $tag_args ) {
 	 * Filter the filtered content text.
 	 *
 	 * @since 1.0
-	 * @since 2.0 $payment_meta removed.
-	 * @since 2.0 $payment_id removed.
-	 * @since 2.0 $tag_args added.
+	 * @since 2.0 $payment_meta, $payment_id removed and $tag_args added.
 	 */
 	$content = apply_filters( 'give_email_template_tags', $content, $tag_args );
 
