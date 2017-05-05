@@ -1069,7 +1069,7 @@ ASIDE
 
 #give-metabox-form-data .give-metabox-tabs {
   margin: 0;
-  min-width: 170px;
+  max-width: 170px;
   float: right;
   line-height: 1em;
   padding: 0 0 10px;
