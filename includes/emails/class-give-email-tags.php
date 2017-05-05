@@ -1104,7 +1104,7 @@ function give_email_tag_email_access_link( $tag_args ) {
 			get_permalink( give_get_option( 'history_page' ) )
 		);
 
-		if( 'text/html' === $tag_args['email_content_type'] ) {
+		if( empty( $tag_args['email_content_type'] ) || 'text/html' === $tag_args['email_content_type'] ) {
 			$email_access_link = sprintf(
 				'<a href="%1$s" target="_blank">%2$s</a>',
 				esc_url( $access_url ),
