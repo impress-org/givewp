@@ -304,28 +304,28 @@ function give_validate_username( $username, $form_id = 0 ) {
 		// We have an user name, check if it already exists.
 		if ( username_exists( $username ) ) {
 			// Username already registered.
-			give_set_error( 'username_unavailable', esc_html__( 'Username already taken.', 'give' ) );
+			give_set_error( 'username_unavailable', __( 'Username already taken.', 'give' ) );
 			$valid = false;
 
 			// Check if it's valid.
 		} elseif ( $sanitized_user_name !== $username ) {
 			// Invalid username.
 			if ( is_multisite() ) {
-				give_set_error( 'username_invalid', esc_html__( 'Invalid username. Only lowercase letters (a-z) and numbers are allowed.', 'give' ) );
+				give_set_error( 'username_invalid', __( 'Invalid username. Only lowercase letters (a-z) and numbers are allowed.', 'give' ) );
 				$valid = false;
 			} else {
-				give_set_error( 'username_invalid', esc_html__( 'Invalid username.', 'give' ) );
+				give_set_error( 'username_invalid', __( 'Invalid username.', 'give' ) );
 				$valid = false;
 			}
 		}
 	} else {
 		// Username is empty.
-		give_set_error( 'username_empty', esc_html__( 'Enter a username.', 'give' ) );
+		give_set_error( 'username_empty', __( 'Enter a username.', 'give' ) );
 		$valid = false;
 
 		// Check if guest checkout is disable for form.
 		if ( $form_id && give_logged_in_only( $form_id ) ) {
-			give_set_error( 'registration_required', esc_html__( 'You must register or login to complete your donation.', 'give' ) );
+			give_set_error( 'registration_required', __( 'You must register or login to complete your donation.', 'give' ) );
 			$valid = false;
 		}
 	}
@@ -360,17 +360,17 @@ function give_validate_user_email( $email, $registering_new_user = false ) {
 
 	if ( empty( $email ) ) {
 		// No email.
-		give_set_error( 'email_empty', esc_html__( 'Enter an email.', 'give' ) );
+		give_set_error( 'email_empty', __( 'Enter an email.', 'give' ) );
 		$valid = false;
 
 	} elseif ( ! is_email( $email ) ) {
 		// Validate email.
-		give_set_error( 'email_invalid', esc_html__( 'Invalid email.', 'give' ) );
+		give_set_error( 'email_invalid', __( 'Invalid email.', 'give' ) );
 		$valid = false;
 
 	} elseif ( $registering_new_user && email_exists( $email ) ) {
 		// Check if email exists.
-		give_set_error( 'email_used', esc_html__( 'The email already active for another user.', 'give' ) );
+		give_set_error( 'email_used', __( 'The email address provided is already active for another user.', 'give' ) );
 		$valid = false;
 	}
 
@@ -406,18 +406,18 @@ function give_validate_user_password( $password = '', $confirm_password = '', $r
 		// Verify confirmation matches.
 		if ( $password != $confirm_password ) {
 			// Passwords do not match
-			give_set_error( 'password_mismatch', esc_html__( 'Passwords don\'t match.', 'give' ) );
+			give_set_error( 'password_mismatch', __( 'Passwords don\'t match.', 'give' ) );
 			$valid = false;
 		}
 	} elseif ( $registering_new_user ) {
 		// Password or confirmation missing.
 		if ( ! $password ) {
 			// The password is invalid.
-			give_set_error( 'password_empty', esc_html__( 'Enter a password.', 'give' ) );
+			give_set_error( 'password_empty', __( 'Enter a password.', 'give' ) );
 			$valid = false;
 		} elseif ( ! $confirm_password ) {
 			// Confirmation password is invalid.
-			give_set_error( 'confirmation_empty', esc_html__( 'Enter the password confirmation.', 'give' ) );
+			give_set_error( 'confirmation_empty', __( 'Enter the password confirmation.', 'give' ) );
 			$valid = false;
 		}
 	}

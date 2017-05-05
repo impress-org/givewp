@@ -3,8 +3,8 @@ Contributors: givewp, wordimpress, dlocc, webdevmattcrom
 Donate link: https://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.2
-Tested up to: 4.7.3
-Stable tag: 1.8.6
+Tested up to: 4.7.4
+Stable tag: 1.8.7
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -164,6 +164,19 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 1.8.7 =
+* New: Revamped how Give handles caching with a new cache API. [#1617](https://github.com/WordImpress/Give/issues/1617)
+* New: The "New User Notification" email is now formatted like other Give emails and is also now filterable. [#1623](https://github.com/WordImpress/Give/issues/1623), [#1577](https://github.com/WordImpress/Give/issues/1577)
+* New: Added the "Processing" status into Give core in preparation for future enhancements. [#1615](https://github.com/WordImpress/Give/issues/1615)
+* Tweak: Update WP Session Manager library to the latest version. [#1646](https://github.com/WordImpress/Give/issues/1646)
+* Tweak: Stop echoing shortcodes in favor of returning their output for better WP REST API compatibility. [#1614](https://github.com/WordImpress/Give/issues/1614)
+* Tweak: Improved verbiage for the "Email already in use" notice. [#1624](https://github.com/WordImpress/Give/issues/1624)
+* Tweak: Updated the placeholder address for the "Offline Donations" gateway to an unmailable address. This is in the hopes that folks will better notice and update it to their actual mailing address. [#1623](https://github.com/WordImpress/Give/issues/1623)
+* Fix: Improved mobile responsiveness of the Give donation form modal display mode. [#1636](https://github.com/WordImpress/Give/issues/1636)
+* Fix: Formatting was incorrect for the Danish Kroner. [#1632](https://github.com/WordImpress/Give/issues/1632)
+* Fix: If an add-on doesn't have a license active it now displays plugin update notifications regardless of license status. [#1649](https://github.com/WordImpress/Give/issues/1649)
+* Fix: Ensure that Give core updates run in consecutive order. [#1626](https://github.com/WordImpress/Give/issues/1626)
 
 = 1.8.6 =
 * Fix: Provide a fallback for using `price_id` rather than `give_price_id`. Some gateways were incorrectly assigning it as a donation level within the receipt despite the correct custom amount being processed. [#1598](https://github.com/WordImpress/Give/issues/1598)
