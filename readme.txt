@@ -4,7 +4,7 @@ Donate link: https://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.2
 Tested up to: 4.7.4
-Stable tag: 1.8.7
+Stable tag: 1.8.7.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -164,6 +164,10 @@ We also really like WooCommerce. It's hands-down the most robust eCommerce platf
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 1.8.7.1 =
+* Fix: A license notice appears and is not dismissible when it's expiration timestamp is out of date which can be annoying to the admin. [#1658](https://github.com/WordImpress/Give/issues/1658)
+* Fix: PHP Strict Standards warning no longer displays when you have add-ons installed. [#1659](https://github.com/WordImpress/Give/issues/1659)
 
 = 1.8.7 =
 * New: Revamped how Give handles caching with a new cache API. [#1617](https://github.com/WordImpress/Give/issues/1617)
