@@ -918,7 +918,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			if (
 				in_array( $notice_id, $already_dismiss_notices )
-				|| Give_Cache::get( "_give_hide_license_notices_shortly_{$current_user->ID}_{$notice_id}", true )
+				|| false !== Give_Cache::get( "_give_hide_license_notices_shortly_{$current_user->ID}_{$notice_id}", true )
 			) {
 				$is_notice_dismissed = true;
 			}
