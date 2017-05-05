@@ -758,8 +758,18 @@ function give_get_field_value( $field, $postid ) {
  */
 function give_get_field_description( $field ) {
 	$field_desc_html = '';
-	if ( ! empty( $field['description'] ) ) {
-		$field_desc_html = '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
+	$description     = '';
+
+	// Check for both `description` and `desc`.
+	if ( isset( $field['description'] ) ) {
+		$description = $field['description'];
+	} elseif ( isset( $field['desc'] ) ) {
+		$description = $field['desc'];
+	}
+
+	// Set if there is a description.
+	if ( ! empty( $description ) ) {
+		$field_desc_html = '<span class="give-field-description">' . wp_kses_post( $description ) . '</span>';
 	}
 
 	return $field_desc_html;
