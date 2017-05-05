@@ -215,7 +215,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 			add_action( 'give_validate_license_when_site_migrated', array( $this, 'weekly_subscription_check' ) );
 
 			// Show addon notice on plugin page.
-			$plugin_name = end( explode( 'plugins/', $this->file ) );
+			$plugin_name = explode( 'plugins/', $this->file );
+			$plugin_name = end( $plugin_name );
 			add_action( "after_plugin_row_{$plugin_name}", array( $this, 'plugin_page_notices' ), 10, 3 );
 
 		}
