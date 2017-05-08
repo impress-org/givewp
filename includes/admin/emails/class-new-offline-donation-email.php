@@ -45,7 +45,6 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 				'has_recipient_Field'          => true,
 				'notification_status'          => 'enabled',
 				'notification_status_editable' => false,
-				'form_metabox_setting'         => true,
 				'preview_email_tags_values'    => array(
 					'payment_method' => esc_html__( 'Offline', 'give' ),
 				),
