@@ -565,7 +565,9 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			$email_tag_args = apply_filters( "give_{$this->config['id']}_email_tag_args", $email_tag_args, $this );
 
 			// Get form id.
-			$form_id = ! empty( $email_tag_args['form_id'] ) ? absint( $email_tag_args['form_id'] ) : null;
+			$form_id = ! empty( $email_tag_args['form_id'] )
+				? absint( $email_tag_args['form_id'] )
+				: ( ! empty( $email_tag_args['payment_id'] ) ? give_get_payment_form_id( $email_tag_args['payment_id'] ) : null );
 
 
 			// Do not send email if notification is disable.
