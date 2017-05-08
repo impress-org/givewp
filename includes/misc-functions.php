@@ -203,6 +203,28 @@ function give_currency_symbol( $currency = '' ) {
 
 
 /**
+ * Get currency name.
+ *
+ * @since 1.8.8
+ *
+ * @param string $currency_code
+ *
+ * @return string
+ */
+function give_get_currency_name( $currency_code ) {
+	$currency_name = '';
+	$currency_names = give_get_currencies();
+
+	if( $currency_code && array_key_exists( $currency_code, $currency_names ) ) {
+		$currency_name = explode( '(',  $currency_names[$currency_code] );
+		$currency_name = trim( current( $currency_name ) );
+	}
+
+	return apply_filters( 'give_currency_name', $currency_name, $currency_code );
+}
+
+
+/**
  * Get the current page URL
  *
  * @since 1.0
