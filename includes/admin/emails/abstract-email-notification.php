@@ -550,15 +550,16 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			// setup email data.
 			$this->setup_email_data();
 
-			$attachments = $this->get_email_attachments();
-			$message     = $this->preview_email_template_tags( $this->get_email_message( $form_id ) );
-			$subject     = $this->preview_email_template_tags( $this->get_email_subject( $form_id ) );
+			$attachments  = $this->get_email_attachments();
+			$message      = $this->preview_email_template_tags( $this->get_email_message( $form_id ) );
+			$subject      = $this->preview_email_template_tags( $this->get_email_subject( $form_id ) );
+			$content_type = $this->get_email_content_type( $form_id );
 
 			// Setup email content type.
-			Give()->emails->__set( 'content_type', $this->config['content_type'] );
+			Give()->emails->__set( 'content_type', $content_type );
 
 			// Format plain content type email.
-			if ( 'text/plain' === $this->config['content_type'] ) {
+			if ( 'text/plain' === $content_type ) {
 				Give()->emails->__set( 'html', false );
 				Give()->emails->__set( 'template', 'none' );
 				$message = strip_tags( $message );
