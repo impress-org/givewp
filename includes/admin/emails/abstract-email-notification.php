@@ -412,6 +412,38 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 
 
 		/**
+		 * Get meial content type.
+		 *
+		 * @since 2.0
+		 * @access public
+		 *
+		 * @param $form_id
+		 *
+		 * @return string
+		 */
+		public function get_email_content_type( $form_id ) {
+			$content_type = Give_Email_Notification_Util::get_value(
+				$this,
+				"{$this->config['id']}_email_content_type",
+				$form_id,
+				$this->config['content_type']
+			);
+
+			/**
+			 * Filter the email content type.
+			 *
+			 * @since 2.0
+			 */
+			return apply_filters(
+				"give_{$this->config['id']}_get_email_message",
+				$content_type,
+				$this,
+				$form_id
+			);
+		}
+
+
+		/**
 		 * Get allowed email tags for current email notification.
 		 *
 		 * @since  2.0
@@ -582,14 +614,15 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 */
 			do_action( "give_{$this->config['id']}_email_send_before", $this, $form_id );
 
-			$attachments = $this->get_email_attachments();
-			$message     = give_do_email_tags( $this->get_email_message( $form_id ), $email_tag_args );
-			$subject     = give_do_email_tags( $this->get_email_subject( $form_id ), $email_tag_args );
+			$attachments  = $this->get_email_attachments();
+			$message      = give_do_email_tags( $this->get_email_message( $form_id ), $email_tag_args );
+			$subject      = give_do_email_tags( $this->get_email_subject( $form_id ), $email_tag_args );
+			$content_type = $this->get_email_content_type( $form_id );
 
 			// Setup email content type.
-			Give()->emails->__set( 'content_type', $this->config['content_type'] );
+			Give()->emails->__set( 'content_type', $content_type );
 
-			if ( 'text/plain' === $this->config['content_type'] ) {
+			if ( 'text/plain' === $content_type ) {
 				Give()->emails->__set( 'html', false );
 				Give()->emails->__set( 'template', 'none' );
 				$message = strip_tags( $message );
