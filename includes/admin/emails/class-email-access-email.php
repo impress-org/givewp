@@ -2,7 +2,6 @@
 /**
  * New Donation Email
  *
- * This class handles all email notification settings.
  *
  * @package     Give
  * @subpackage  Classes/Emails
