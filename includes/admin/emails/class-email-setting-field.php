@@ -41,7 +41,12 @@ class Give_Email_Setting_Field {
 
 		$setting_fields = self::add_section_end( $email, $setting_fields );
 
-		return $setting_fields;
+		/**
+		 * Filter the email notification settings.
+		 *
+		 * @since 2.0
+		 */
+		return apply_filters( 'give_email_notification_setting_fields', $setting_fields, $email, $form_id );
 	}
 
 
