@@ -42,7 +42,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 				'form_metabox_setting'  => false,
 				'default_email_subject' => sprintf(
 					/* translators: %s: site name */
-					esc_attr__( 'New user registration on your site %s:', 'give' ),
+					esc_attr__( '[%s] New User Registration', 'give' ),
 					get_bloginfo( 'name' )
 				),
 				'default_email_massage' => $this->get_default_email_message(),
