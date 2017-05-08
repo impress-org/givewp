@@ -64,7 +64,14 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		 * @return string
 		 */
 		public function get_email_subject( $form_id = null ) {
-			$subject = wp_strip_all_tags( give_get_option( "{$this->config['id']}_email_subject", $this->config['default_email_subject'] ) );
+			$subject = wp_strip_all_tags(
+				Give_Email_Notification_Util::get_value(
+					$this,
+					"{$this->config['id']}_email_subject",
+					$form_id,
+					$this->config['default_email_subject']
+				)
+			);
 
 			/**
 			 * Filters the donation email receipt subject.
@@ -95,7 +102,12 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		 * @return string
 		 */
 		public function get_email_message( $form_id = null ) {
-			$message = give_get_option( "{$this->config['id']}_email_message", $this->config['default_email_message'] );
+			$message = Give_Email_Notification_Util::get_value(
+				$this,
+				"{$this->config['id']}_email_message",
+				$form_id,
+				$this->config['default_email_message']
+			);
 
 			/**
 			 * Filter message on basis of email template
