@@ -1,6 +1,6 @@
 <?php
 /**
- * New Donation Email
+ * Email access notification
  *
  *
  * @package     Give
