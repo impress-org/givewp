@@ -222,9 +222,6 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 		 * @since 2.0
 		 */
 		public function setup_email_data() {
-			// Set recipient email.
-			$this->recipient_email = $this->payment->email;
-
 			// Set header.
 			Give()->emails->__set(
 				'headers',
