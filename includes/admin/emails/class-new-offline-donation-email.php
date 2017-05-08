@@ -42,7 +42,7 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 				'id'                           => 'new-offline-donation',
 				'label'                        => __( 'New Offline Donation', 'give' ),
 				'description'                  => __( 'Donation Notification will be sent to admin when new offline donation received.', 'give' ),
-				'has_recipient_Field'          => true,
+				'has_recipient_field'          => true,
 				'notification_status'          => 'enabled',
 				'notification_status_editable' => false,
 				'preview_email_tags_values'    => array(
