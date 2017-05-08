@@ -97,6 +97,20 @@ class Give_Email_Notification_Util {
 	}
 
 	/**
+	 * Check if admin can edit notification status or not.
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param Give_Email_Notification $email
+	 *
+	 * @return bool
+	 */
+	public static function is_content_type_editable( Give_Email_Notification $email ) {
+		return $email->config['content_type_editable'];
+	}
+
+	/**
 	 * Check email preview header active or not.
 	 *
 	 * @since  2.0
