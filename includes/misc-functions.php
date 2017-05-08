@@ -563,10 +563,17 @@ function _give_deprecated_function( $function, $version, $replacement = null, $b
  * @return string $post_id
  */
 function give_get_admin_post_id() {
-	$post_id = isset( $_GET['post'] ) ? $_GET['post'] : null;
-	if ( ! $post_id && isset( $_POST['post_id'] ) ) {
-		$post_id = $_POST['post_id'];
-	}
+	$post_id = isset( $_REQUEST['post'] )
+		? absint( $_REQUEST['post'] )
+		: null;
+
+	$post_id = ! empty( $post_id )
+		? $post_id
+		: ( isset( $_REQUEST['post_id'] ) ? absint( $_REQUEST['post_id'] ) : null );
+
+	$post_id = ! empty( $post_id )
+		? $post_id
+		: ( isset( $_REQUEST['post_ID'] ) ? absint( $_REQUEST['post_ID'] ) : null );
 
 	return $post_id;
 }
