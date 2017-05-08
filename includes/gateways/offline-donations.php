@@ -337,25 +337,6 @@ function give_offline_add_settings( $settings ) {
 			),
 		),
 		array(
-			'id'          => $prefix . 'offline_donation_subject',
-			'name'        => __( 'Email Subject', 'give' ),
-			'desc'        => __( 'Enter the subject line for the donation receipt email.', 'give' ),
-			'default'     => __( '{form_title} - Offline Donation Instructions', 'give' ),
-			'row_classes' => 'give-subfield',
-			'type'        => 'text',
-		),
-		array(
-			'id'          => $prefix . 'offline_donation_email',
-			'name'        => __( 'Email Instructions', 'give' ),
-			'desc'        => __( 'Enter the instructions you want emailed to the donor after they have submitted the donation form. Most likely this would include important information like mailing address and who to make the check out to.', 'give' ) . ' ' . __( 'Available template tags:', 'give' ) . give_get_emails_tags_list(),
-			'default'     => give_get_default_offline_donation_email_content(),
-			'type'        => 'wysiwyg',
-			'row_classes' => 'give-subfield',
-			'options'     => array(
-				'textarea_rows' => 6,
-			),
-		),
-		array(
 			'name'  => 'offline_docs',
 			'type'  => 'docs_link',
 			'url'   => 'http://docs.givewp.com/settings-gateway-offline-donations',
