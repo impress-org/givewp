@@ -652,8 +652,17 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @return string
 		 */
 		public function preview_email_template_tags( $message ) {
-			$user_id    = give_check_variable( give_clean( $_GET ), 'isset_empty', 0, 'user_id' );
-			$user       = ! empty( $user_id ) ? get_user_by( 'id', $user_id ) : wp_get_current_user();
+			// Set Payment.
+			$payment_id = give_check_variable( give_clean( $_GET ), 'isset_empty', 0, 'preview_id' );
+			$payment    = $payment_id ? new Give_Payment( $payment_id ) : new stdClass();
+
+			// Set donor.
+			$user_id = $payment_id
+				? $payment->user_id
+				: give_check_variable( give_clean( $_GET ), 'isset_empty', 0, 'user_id' );
+			$user_id = $user_id ? $user_id : wp_get_current_user()->ID;
+
+			// Set receipt.
 			$receipt_id = strtolower( md5( uniqid() ) );
 
 			$receipt_link_url = esc_url( add_query_arg( array(
@@ -671,24 +680,36 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			$this->config['preview_email_tags_values'] = wp_parse_args(
 				$this->config['preview_email_tags_values'],
 				array(
-					'name'              => $user->display_name,
-					'fullname'          => $user->display_name,
-					'username'          => $user->user_login,
-					'user_email'        => $user->user_email,
-					'payment_total'     => give_currency_filter( give_format_amount( 10.50 ) ),
-					'amount'            => give_currency_filter( give_format_amount( 10.50 ) ),
-					'price'             => give_currency_filter( give_format_amount( 10.50 ) ),
-					'payment_method'    => 'Paypal',
+					'name'              => give_email_tag_first_name( array(
+						'payment_id' => $payment_id,
+						'user_id'    => $user_id,
+					) ),
+					'fullname'          => give_email_tag_fullname( array(
+						'payment_id' => $payment_id,
+						'user_id'    => $user_id,
+					) ),
+					'username'          => give_email_tag_username( array(
+						'payment_id' => $payment_id,
+						'user_id'    => $user_id,
+					) ),
+					'user_email'        => give_email_tag_user_email( array(
+						'payment_id' => $payment_id,
+						'user_id'    => $user_id,
+					) ),
+					'payment_total'     => $payment_id ? give_email_tag_payment_total( array( 'payment_id' => $payment_id ) ) : give_currency_filter( '10.50' ),
+					'amount'            => $payment_id ? give_email_tag_amount( array( 'payment_id' => $payment_id ) ) : give_currency_filter( '10.50' ),
+					'price'             => $payment_id ? give_email_tag_price( array( 'payment_id' => $payment_id ) ) : give_currency_filter( '10.50' ),
+					'payment_method'    => $payment_id ? give_email_tag_payment_method( array( 'payment_id' => $payment_id ) ) : __( 'PayPal', 'give' ),
 					'receipt_id'        => $receipt_id,
-					'payment_id'        => give_check_variable( give_clean( $_GET ), 'isset_empty', rand( 2000, 2050 ), 'preview_id' ),
+					'payment_id'        => $payment_id ? $payment_id : rand( 2000, 2050 ),
 					'receipt_link_url'  => $receipt_link_url,
 					'receipt_link'      => $receipt_link,
-					'date'              => date( give_date_format(), current_time( 'timestamp' ) ),
-					'donation'          => esc_html__( 'Sample Donation Form Title', 'give' ),
-					'form_title'        => esc_html__( 'Sample Donation Form Title - Sample Donation Level', 'give' ),
-					'sitename'          => get_bloginfo( 'name' ),
+					'date'              => $payment_id ? date( give_date_format(), strtotime( $payment->date ) ) : date( give_date_format(), current_time( 'timestamp' ) ),
+					'donation'          => $payment_id ? give_email_tag_donation( array( 'payment_id' => $payment_id ) ) : esc_html__( 'Sample Donation Form Title', 'give' ),
+					'form_title'        => $payment_id ? give_email_tag_form_title( array( 'payment_id' => $payment_id ) ) : esc_html__( 'Sample Donation Form Title - Sample Donation Level', 'give' ),
+					'sitename'          => $payment_id ? give_email_tag_sitename( array( 'payment_id' => $payment_id ) ) : get_bloginfo( 'name' ),
 					'pdf_receipt'       => '<a href="#">Download Receipt</a>',
-					'billing_address'   => '',
+					'billing_address'   => $payment_id ? give_email_tag_billing_address( array( 'payment_id' => $payment_id ) ) : '',
 					'email_access_link' => sprintf(
 						'<a href="%1$s">%2$s</a>',
 						add_query_arg(
