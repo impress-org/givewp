@@ -129,9 +129,16 @@ class Give_Email_Setting_Field {
 	 */
 	public static function get_default_setting_fields( Give_Email_Notification $email, $form_id = 0 ) {
 		$settings[] = self::get_section_start( $email, $form_id );
+		$settings[] = self::get_notification_status_field( $email, $form_id );
 
-		if ( Give_Email_Notification_Util::is_notification_status_editable( $email ) ) {
-			$settings[] = self::get_notification_status_field( $email, $form_id );
+		if ( ! Give_Email_Notification_Util::is_notification_status_editable( $email ) ) {
+			if( $form_id ){
+				// Do not allow admin to disable notification on perform basis.
+				unset( $settings[1]['options']['disabled'] );
+			} else{
+				// Do not allow admin to edit notification status globally.
+				unset( $settings[1] );
+			}
 		}
 
 		$settings[] = self::get_email_subject_field( $email, $form_id );

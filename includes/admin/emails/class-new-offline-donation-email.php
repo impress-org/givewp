@@ -54,7 +54,6 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 
 			add_action( 'give_insert_payment', array( $this, 'setup_email_notification' ) );
 			add_action( 'give_save_settings_give_settings', array( $this, 'set_notification_status' ), 10, 2 );
-			add_filter( 'give_email_notification_setting_fields', array( $this, 'add_custom_notification_status_setting' ), 10, 3 );
 		}
 
 		/**
@@ -280,38 +279,6 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 				$update_options[ "{$this->config['id']}_notification" ] = $notification_status;
 				update_option( $option_name, $update_options );
 			}
-		}
-
-
-		/**
-		 * Add custom notification status setting.
-		 *
-		 * @since  2.0
-		 * @access public
-		 *
-		 * @param array                   $setting_fields
-		 * @param Give_Email_Notification $email
-		 * @param int                     $form_id
-		 *
-		 * @return mixed
-		 */
-		public function add_custom_notification_status_setting( $setting_fields, $email, $form_id ) {
-			if ( ! $form_id || $this->config['id'] !== $email->config['id'] ) {
-				return $setting_fields;
-			}
-
-			// Set notification status field.
-			$notification_setitng_field = Give_Email_Setting_Field::get_notification_status_field( $this, $form_id );
-
-			// Admin does not allow to manually disable this notification.
-			unset( $notification_setitng_field['options']['disabled'] );
-
-			$setting_fields = array_merge(
-				array( $notification_setitng_field ),
-				$setting_fields
-			);
-
-			return $setting_fields;
 		}
 	}
 
