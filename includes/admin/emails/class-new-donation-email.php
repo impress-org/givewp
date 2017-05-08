@@ -66,7 +66,14 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		 * @return string
 		 */
 		public function get_email_subject( $form_id = null ) {
-			$subject = wp_strip_all_tags( give_get_option( "{$this->config['id']}_email_subject", $this->config['default_email_subject'] ) );
+			$subject = wp_strip_all_tags(
+				Give_Email_Notification_Util::get_value(
+					$this,
+					"{$this->config['id']}_email_subject",
+					$form_id,
+					$this->config['default_email_subject']
+				)
+			);
 
 			/**
 			 * Filters the donation notification subject.
