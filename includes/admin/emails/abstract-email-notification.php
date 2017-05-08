@@ -593,6 +593,10 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 
 			// Setup email content type.
 			Give()->emails->__set( 'content_type', $content_type );
+			Give()->emails->__set( 'html', true );
+
+			// Setup email template
+			Give()->emails->__set( 'template', $this->get_email_template( $form_id ) );
 
 			// Format plain content type email.
 			if ( 'text/plain' === $content_type ) {
@@ -658,6 +662,10 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 
 			// Setup email content type.
 			Give()->emails->__set( 'content_type', $content_type );
+			Give()->emails->__set( 'html', true );
+
+			// Set email template.
+			Give()->emails->__set( 'template', $this->get_email_template( $form_id ) );
 
 			if ( 'text/plain' === $content_type ) {
 				Give()->emails->__set( 'html', false );
