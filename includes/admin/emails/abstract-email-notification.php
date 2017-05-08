@@ -50,6 +50,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			'recipient_group_name'         => '',
 			'notification_status'          => 'disabled',
 			'notification_status_editable' => true,
+			'content_type_editable'        => true,
 			'has_preview'                  => true,
 			'has_preview_header'           => true,
 			'preview_email_tags_values'    => array(),
