@@ -116,9 +116,15 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 				: $this->config['content_type'];
 			$this->config['content_type'] = give_get_option( "{$this->config['id']}_email_content_type", $this->config['content_type'] );
 
+			// Set email template type.
 			$this->config['email_template'] = empty( $this->config['email_template'] )
 				? give_get_option( 'email_template' )
 				: $this->config['email_template'];
+
+			// Set recipient group name.
+			$this->config['recipient_group_name'] = empty( $this->config['recipient_group_name'] )
+				? ( ! Give_Email_Notification_Util::has_recipient_field( $this ) ? __( 'Donor', 'give' ) : '' )
+				: $this->config['recipient_group_name'];
 
 			/**
 			 *  Filter the notification config.
