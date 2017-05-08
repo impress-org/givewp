@@ -260,6 +260,7 @@ class Give_Email_Setting_Field {
 	 *
 	 * @since  2.0
 	 * @access static
+	 * @todo check this field in form metabox setting after form api merge.
 	 *
 	 * @param Give_Email_Notification $email
 	 * @param int                     $form_id
