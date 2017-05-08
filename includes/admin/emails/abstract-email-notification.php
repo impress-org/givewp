@@ -56,6 +56,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			'email_tag_context'            => 'all',
 			'form_metabox_setting'         => true,
 			'content_type'                 => '',
+			'email_template'               => '',
 			'default_email_subject'        => '',
 			'default_email_message'        => '',
 		);
@@ -114,6 +115,10 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 				? Give()->emails->get_content_type()
 				: $this->config['content_type'];
 			$this->config['content_type'] = give_get_option( "{$this->config['id']}_email_content_type", $this->config['content_type'] );
+
+			$this->config['email_template'] = empty( $this->config['email_template'] )
+				? give_get_option( 'email_template' )
+				: $this->config['email_template'];
 
 			/**
 			 *  Filter the notification config.
@@ -412,7 +417,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 
 
 		/**
-		 * Get meial content type.
+		 * Get email content type.
 		 *
 		 * @since 2.0
 		 * @access public
@@ -435,7 +440,38 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 * @since 2.0
 			 */
 			return apply_filters(
-				"give_{$this->config['id']}_get_email_message",
+				"give_{$this->config['id']}_get_email_content_type",
+				$content_type,
+				$this,
+				$form_id
+			);
+		}
+
+		/**
+		 * Get email template.
+		 *
+		 * @since 2.0
+		 * @access public
+		 *
+		 * @param $form_id
+		 *
+		 * @return string
+		 */
+		public function get_email_template( $form_id ) {
+			$content_type = Give_Email_Notification_Util::get_value(
+				$this,
+				"{$this->config['id']}_email_template",
+				$form_id,
+				$this->config['email_template']
+			);
+
+			/**
+			 * Filter the email template.
+			 *
+			 * @since 2.0
+			 */
+			return apply_filters(
+				"give_{$this->config['id']}_get_email_template",
 				$content_type,
 				$this,
 				$form_id
