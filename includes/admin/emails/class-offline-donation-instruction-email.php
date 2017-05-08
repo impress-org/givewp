@@ -67,18 +67,12 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 		 * @return string
 		 */
 		public function get_email_message( $form_id = null ) {
-			$post_offline_customization_option = get_post_meta(
-				$this->payment->form_id,
-				'_give_customize_offline_donations',
-				true
+			$message = Give_Email_Notification_Util::get_value(
+				$this,
+				"{$this->config['id']}_email_message",
+				$form_id,
+				$this->config['default_email_message']
 			);
-
-			// Customize email content depending on whether the single form has been customized
-			$message = give_get_option( "{$this->config['id']}_email_message", $this->config['default_email_message'] );
-
-			if ( give_is_setting_enabled( $post_offline_customization_option, 'enabled' ) ) {
-				$message = get_post_meta( $this->payment->form_id, '_give_offline_donation_email', true );
-			}
 
 			/**
 			 * Filter the email message.
@@ -105,20 +99,14 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 		 * @return string
 		 */
 		public function get_email_subject( $form_id = null ) {
-			$post_offline_customization_option = get_post_meta(
-				$this->payment->form_id,
-				'_give_customize_offline_donations',
-				true
+			$subject = wp_strip_all_tags(
+				Give_Email_Notification_Util::get_value(
+					$this,
+					"{$this->config['id']}_email_subject",
+					$form_id,
+					$this->config['default_email_subject']
+				)
 			);
-
-			$subject = give_get_option(
-				"{$this->config['id']}_email_subject",
-				$this->config['default_email_subject']
-			);
-
-			if ( give_is_setting_enabled( $post_offline_customization_option, 'enabled' ) ) {
-				$subject = get_post_meta( $this->payment->form_id, '_give_offline_donation_subject', true );
-			}
 
 			/**
 			 * Filter the email subject.
