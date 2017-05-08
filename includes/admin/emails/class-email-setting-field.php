@@ -143,7 +143,10 @@ class Give_Email_Setting_Field {
 
 		$settings[] = self::get_email_subject_field( $email, $form_id );
 		$settings[] = self::get_email_message_field( $email, $form_id );
-		$settings[] = self::get_email_content_type_field( $email, $form_id );
+
+		if( Give_Email_Notification_Util::is_content_type_editable( $email ) ) {
+			$settings[] = self::get_email_content_type_field( $email, $form_id );
+		}
 
 		return $settings;
 	}
