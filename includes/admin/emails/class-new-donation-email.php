@@ -2,7 +2,8 @@
 /**
  * New Donation Email
  *
- * This class handles all email notification settings.
+ * Donation Notification will be sent to recipient(s) when new donation received except offline donation.
+ *
  *
  * @package     Give
  * @subpackage  Classes/Emails
