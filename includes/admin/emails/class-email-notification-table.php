@@ -148,7 +148,7 @@ class Give_Email_Notification_Table extends WP_List_Table {
 		$attributes['data-edit'] = (int) Give_Email_Notification_Util::is_notification_status_editable( $email );
 
 		if ( ! $attributes['data-edit'] ) {
-			$attributes['data-tooltip'] = __( 'You can not edit this notification directly. This will be enable or disable automatically on basis of plugin settings.', 'give' );
+			$attributes['data-tooltip'] = $email->config['notices']['non-notification-status-editable'];
 		}
 
 		$attribute_str = '';
