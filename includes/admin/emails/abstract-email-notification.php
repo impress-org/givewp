@@ -113,7 +113,10 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			$this->config['has_preview_header'] = $this->config['has_preview'] && $this->config['has_preview_header'] ? true : false;
 
 			// Set email content type
-			$this->config['content_type'] = empty( $this->config['content_type'] ) || ! in_array( $this->config['content_type'], array( 'text/html', 'text/plain', ) )
+			$this->config['content_type'] = empty( $this->config['content_type'] ) || ! in_array( $this->config['content_type'], array(
+				'text/html',
+				'text/plain',
+			) )
 				? Give()->emails->get_content_type()
 				: $this->config['content_type'];
 			$this->config['content_type'] = give_get_option( "{$this->config['id']}_email_content_type", $this->config['content_type'] );
@@ -349,7 +352,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		public function get_notification_status( $form_id = null ) {
 			$notification_status = empty( $form_id )
 				? give_get_option( "{$this->config['id']}_notification", $this->config['notification_status'] )
-				: get_post_meta( $form_id,"{$this->config['id']}_notification", true  );
+				: get_post_meta( $form_id, "{$this->config['id']}_notification", true );
 
 			/**
 			 * Filter the notification status.
@@ -432,7 +435,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Get email content type.
 		 *
-		 * @since 2.0
+		 * @since  2.0
 		 * @access public
 		 *
 		 * @param $form_id
@@ -463,7 +466,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Get email template.
 		 *
-		 * @since 2.0
+		 * @since  2.0
 		 * @access public
 		 *
 		 * @param $form_id
@@ -549,6 +552,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @access public
 		 *
 		 * @param int $form_id
+		 *
 		 * @return array|string
 		 */
 		public function get_preview_email_recipient( $form_id = null ) {
@@ -574,6 +578,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @access public
 		 *
 		 * @param int $form_id
+		 *
 		 * @return array
 		 */
 		public function get_email_attachments( $form_id = null ) {
@@ -626,11 +631,11 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * Send email notification.
 		 *
 		 * Note: To render email tags in all context certain parameters are necessary for core (includes/emails/class-give-emails):
-		 * 	1. payment_id
-		 * 	2. user_id
-		 * 	3. form_id
-		 * 	4. donor_id
-		 * 	5. for third party email tags you can pass necessary param along above parameters other value replace by empty string.
+		 *    1. payment_id
+		 *    2. user_id
+		 *    3. form_id
+		 *    4. donor_id
+		 *    5. for third party email tags you can pass necessary param along above parameters other value replace by empty string.
 		 *
 		 * @since  2.0
 		 * @access public
