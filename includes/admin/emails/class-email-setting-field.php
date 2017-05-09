@@ -132,7 +132,7 @@ class Give_Email_Setting_Field {
 		$settings[] = self::get_notification_status_field( $email, $form_id );
 
 		if ( ! Give_Email_Notification_Util::is_notification_status_editable( $email ) ) {
-			if( $form_id ){
+			if( $form_id || give_is_add_new_form_page() ){
 				// Do not allow admin to disable notification on perform basis.
 				unset( $settings[1]['options']['disabled'] );
 			} else{
@@ -171,7 +171,7 @@ class Give_Email_Setting_Field {
 		$default_value = $email->get_notification_status();
 
 		// Add global options.
-		if ( $form_id ) {
+		if ( $form_id || give_is_add_new_form_page() ) {
 			$option = array(
 				'global'   => __( 'Global Options' ),
 				'enabled'  => __( 'Customize', 'give' ),
