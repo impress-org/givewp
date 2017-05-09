@@ -46,7 +46,7 @@ add_filter( 'give_offline-donation-instruction_get_notification_status', '_give_
 function _give_bc_offline_donation_instruction_email_setting_values( $option_value, $option_name, $email, $form_id ) {
 	// Bailout.
 	if ( empty( $form_id ) || 'offline-donation-instruction' !== $email->config['id'] ) {
-		return $option_name;
+		return $option_value;
 	}
 
 	switch ( $option_name ) {
