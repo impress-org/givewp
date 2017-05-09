@@ -954,7 +954,7 @@ function give_v20_upgrades_email_setting() {
 	foreach ( $settings as $old_setting => $new_setting ) {
 		// Do not update already modified
 		if( ! is_array( $new_setting ) ) {
-			if ( array_key_exists( $new_setting, $all_setting ) ) {
+			if ( array_key_exists( $new_setting, $all_setting ) || ! array_key_exists( $old_setting, $all_setting ) ) {
 				continue;
 			}
 		}
