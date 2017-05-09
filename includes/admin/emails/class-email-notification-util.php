@@ -250,6 +250,11 @@ class Give_Email_Notification_Util {
 
 		$option_value = empty( $option_value ) ? $default : $option_value;
 
-		return $option_value;
+		/**
+		 * Filter the setting value
+		 *
+		 * @since 2.0
+		 */
+		return apply_filters( 'give_email_setting_value', $option_value, $option_name, $email, $form_id, $default );
 	}
 }
