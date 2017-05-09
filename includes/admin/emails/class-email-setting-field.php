@@ -21,7 +21,7 @@ class Give_Email_Setting_Field {
 	 *
 	 * @return array
 	 */
-	public static function get_setting_fields( Give_Email_Notification $email, $form_id = 0 ) {
+	public static function get_setting_fields( Give_Email_Notification $email, $form_id = null ) {
 		$setting_fields = self::get_default_setting_fields( $email, $form_id );
 
 		// Recipient field.
@@ -82,7 +82,7 @@ class Give_Email_Setting_Field {
 	 *
 	 * @return array
 	 */
-	public static function get_section_start( Give_Email_Notification $email, $form_id = 0 ) {
+	public static function get_section_start( Give_Email_Notification $email, $form_id = null ) {
 		// Add section end field.
 		$setting = array(
 			'id'    => "give_title_email_settings_{$email->config['id']}",
@@ -127,7 +127,7 @@ class Give_Email_Setting_Field {
 	 *
 	 * @return array
 	 */
-	public static function get_default_setting_fields( Give_Email_Notification $email, $form_id = 0 ) {
+	public static function get_default_setting_fields( Give_Email_Notification $email, $form_id = null ) {
 		$settings[] = self::get_section_start( $email, $form_id );
 		$settings[] = self::get_notification_status_field( $email, $form_id );
 
@@ -162,7 +162,7 @@ class Give_Email_Setting_Field {
 	 *
 	 * @return array
 	 */
-	public static function get_notification_status_field( Give_Email_Notification $email, $form_id = 0 ) {
+	public static function get_notification_status_field( Give_Email_Notification $email, $form_id = null ) {
 		$option = array(
 			'enabled'  => __( 'Enabled', 'give' ),
 			'disabled' => __( 'Disabled', 'give' ),
@@ -203,7 +203,7 @@ class Give_Email_Setting_Field {
 	 *
 	 * @return array
 	 */
-	public static function get_email_subject_field( Give_Email_Notification $email, $form_id = 0 ) {
+	public static function get_email_subject_field( Give_Email_Notification $email, $form_id = null ) {
 		return array(
 			'id'      => "{$email->config['id']}_email_subject",
 			'name'    => esc_html__( 'Email Subject', 'give' ),
@@ -224,7 +224,7 @@ class Give_Email_Setting_Field {
 	 *
 	 * @return array
 	 */
-	public static function get_email_message_field( Give_Email_Notification $email, $form_id = 0 ) {
+	public static function get_email_message_field( Give_Email_Notification $email, $form_id = null ) {
 		$desc = esc_html__( 'Enter the email message.', 'give' );
 
 		if ( $email_tag_list = $email->get_allowed_email_tags( true ) ) {
@@ -255,7 +255,7 @@ class Give_Email_Setting_Field {
 	 *
 	 * @return array
 	 */
-	public static function get_email_content_type_field( Give_Email_Notification $email, $form_id = 0 ) {
+	public static function get_email_content_type_field( Give_Email_Notification $email, $form_id = null ) {
 		return array(
 			'id'      => "{$email->config['id']}_email_content_type",
 			'name'    => esc_html__( 'Email Content Type', 'give' ),
@@ -282,7 +282,7 @@ class Give_Email_Setting_Field {
 	 *
 	 * @return array
 	 */
-	public static function get_recipient_setting_field( Give_Email_Notification $email, $form_id = 0 ) {
+	public static function get_recipient_setting_field( Give_Email_Notification $email, $form_id = null ) {
 		return array(
 			'id'               => "{$email->config['id']}_recipient",
 			'name'             => esc_html__( 'Email Recipients', 'give' ),
@@ -305,7 +305,7 @@ class Give_Email_Setting_Field {
 	 *
 	 * @return array
 	 */
-	public static function get_preview_setting_field( Give_Email_Notification $email, $form_id = 0 ) {
+	public static function get_preview_setting_field( Give_Email_Notification $email, $form_id = null ) {
 		return array(
 			'name' => esc_html__( 'Preview Email', 'give' ),
 			'desc' => esc_html__( 'Click the buttons to preview emails.', 'give' ),
