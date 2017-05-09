@@ -50,6 +50,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			'recipient_group_name'         => '',
 			'notification_status'          => 'disabled',
 			'notification_status_editable' => true,
+			'notices'                      => array(),
 			'content_type_editable'        => true,
 			'has_preview'                  => true,
 			'has_preview_header'           => true,
@@ -126,6 +127,11 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			$this->config['recipient_group_name'] = empty( $this->config['recipient_group_name'] )
 				? ( ! Give_Email_Notification_Util::has_recipient_field( $this ) ? __( 'Donor', 'give' ) : '' )
 				: $this->config['recipient_group_name'];
+
+			// Non notification status editable notice.
+			$this->config['notices']['non-notification-status-editable'] = empty( $this->config['notices']['non-notification-status-editable'] )
+				? __( 'You can not edit this notification directly. This will be enable or disable automatically on basis of plugin settings.', 'give' )
+				: $this->config['notices']['non-notification-status-editable'];
 
 			/**
 			 *  Filter the notification config.
