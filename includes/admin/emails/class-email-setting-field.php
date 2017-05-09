@@ -170,7 +170,7 @@ class Give_Email_Setting_Field {
 
 		$default_value = $email->get_notification_status();
 
-		// Remove global options.
+		// Add global options.
 		if ( $form_id ) {
 			$option = array(
 				'global'   => __( 'Global Options' ),
