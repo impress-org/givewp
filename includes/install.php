@@ -134,50 +134,50 @@ function give_run_install() {
 		$options = array_merge( $options, give_get_default_settings() );
 	}
 
-		// General.
-		$options['base_country']     = 'US';
-		$options['test_mode']        = 'enabled';
-		$options['currency']         = 'USD';
-		$options['session_lifetime'] = '604800';
-		$options['email_access']     = 'disabled';
-		$options['number_decimals']  = 2;
+	// General.
+	$options['base_country']     = 'US';
+	$options['test_mode']        = 'enabled';
+	$options['currency']         = 'USD';
+	$options['session_lifetime'] = '604800';
+	$options['email_access']     = 'disabled';
+	$options['number_decimals']  = 2;
 
-		// Display options.
-		$options['css']                       = 'enabled';
-		$options['floatlabels']               = 'disabled';
-		$options['welcome']                   = 'enabled';
-		$options['forms_singular']            = 'enabled';
-		$options['forms_archives']            = 'enabled';
-		$options['forms_excerpt']             = 'enabled';
-		$options['form_featured_img']         = 'enabled';
-		$options['form_sidebar']              = 'enabled';
-		$options['categories']                = 'disabled';
-		$options['tags']                      = 'disabled';
-		$options['terms']                     = 'disabled';
-		$options['new-donation_notification'] = 'enabled';
-		$options['uninstall_on_delete']       = 'disabled';
-		$options['the_content_filter']        = 'enabled';
-		$options['scripts_footer']            = 'disabled';
+	// Display options.
+	$options['css']                       = 'enabled';
+	$options['floatlabels']               = 'disabled';
+	$options['welcome']                   = 'enabled';
+	$options['forms_singular']            = 'enabled';
+	$options['forms_archives']            = 'enabled';
+	$options['forms_excerpt']             = 'enabled';
+	$options['form_featured_img']         = 'enabled';
+	$options['form_sidebar']              = 'enabled';
+	$options['categories']                = 'disabled';
+	$options['tags']                      = 'disabled';
+	$options['terms']                     = 'disabled';
+	$options['new-donation_notification'] = 'enabled';
+	$options['uninstall_on_delete']       = 'disabled';
+	$options['the_content_filter']        = 'enabled';
+	$options['scripts_footer']            = 'disabled';
 
-		// Paypal IPN verification.
-		$options['paypal_verification'] = 'enabled';
+	// Paypal IPN verification.
+	$options['paypal_verification'] = 'enabled';
 
-		// Default is manual gateway.
-		$options['gateways']['manual'] = 1;
-		$options['default_gateway']    = 'manual';
+	// Default is manual gateway.
+	$options['gateways']['manual'] = 1;
+	$options['default_gateway']    = 'manual';
 
-		// Offline gateway setup.
-		$options['gateways']['offline']             = 1;
-		$options['global_offline_donation_content'] = give_get_default_offline_donation_content();
+	// Offline gateway setup.
+	$options['gateways']['offline']             = 1;
+	$options['global_offline_donation_content'] = give_get_default_offline_donation_content();
 
-		// Billing address.
-		$options['give_offline_donation_enable_billing_fields'] = 'disabled';
+	// Billing address.
+	$options['give_offline_donation_enable_billing_fields'] = 'disabled';
 
-		// Default donation notification email.
-		$options['new-donation_email_message'] = give_get_default_donation_notification_email();
+	// Default donation notification email.
+	$options['new-donation_email_message'] = give_get_default_donation_notification_email();
 
-		// Default email receipt message.
-		$options['donation-receipt_email_message'] = give_get_default_donation_receipt_email();
+	// Default email receipt message.
+	$options['donation-receipt_email_message'] = give_get_default_donation_receipt_email();
 	// Populate the default values.
 	update_option( 'give_settings', array_merge( $give_options, $options ) );
 
@@ -189,7 +189,7 @@ function give_run_install() {
 	do_action( 'give_upgrades' );
 
 
-	if( GIVE_VERSION !== get_option( 'give_version' ) ) {
+	if ( GIVE_VERSION !== get_option( 'give_version' ) ) {
 		update_option( 'give_version', GIVE_VERSION );
 	}
 
@@ -222,7 +222,7 @@ function give_run_install() {
 			'upgrade_give_offline_status',
 			'v18_upgrades_core_setting',
 			'v18_upgrades_form_metadata',
-			'v20_upgrades_form_metadata'
+			'v20_upgrades_form_metadata',
 		);
 
 		foreach ( $upgrade_routines as $upgrade ) {
