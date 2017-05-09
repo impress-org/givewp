@@ -1089,3 +1089,19 @@ function give_delete_donation_stats( $date_range = '', $args = array() ) {
 
 	return $status;
 }
+
+/**
+ * Check if admin creating new donation form or not.
+ *
+ * @since 2.0
+ * @return bool
+ */
+function give_is_add_new_form_page() {
+	$status = false;
+
+	if ( false !== strpos( $_SERVER['REQUEST_URI'], '/wp-admin/post-new.php?post_type=give_forms' ) ) {
+		$status = true;
+	}
+
+	return $status;
+}
