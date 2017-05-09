@@ -66,7 +66,6 @@ class Give_Email_Notifications {
 	 */
 	public function init() {
 		// Load files.
-		require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/backward-compatibility.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/ajax-handler.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/class-email-setting-field.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/filters.php';
@@ -350,6 +349,8 @@ class Give_Email_Notifications {
 	}
 }
 
+// Add backward compatibility.
+require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/backward-compatibility.php';
 
 /**
  * Initialize functionality.
