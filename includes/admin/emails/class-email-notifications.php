@@ -136,9 +136,6 @@ class Give_Email_Notifications {
 	 * @access private
 	 */
 	private function add_emails_notifications() {
-		require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/abstract-email-notification.php';
-		require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/class-email-notification-util.php';
-
 		$this->emails = array(
 			include GIVE_PLUGIN_DIR . 'includes/admin/emails/class-new-donation-email.php',
 			include GIVE_PLUGIN_DIR . 'includes/admin/emails/class-donation-receipt-email.php',
@@ -345,9 +342,13 @@ class Give_Email_Notifications {
 	 * @access public
 	 */
 	public function load() {
-		add_action( 'give_init', array( $this, 'init' ) );
+		add_action( 'init', array( $this, 'init' ), -1 );
 	}
 }
+
+// Helper class.
+require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/abstract-email-notification.php';
+require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/class-email-notification-util.php';
 
 // Add backward compatibility.
 require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/backward-compatibility.php';
