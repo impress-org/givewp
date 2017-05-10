@@ -21,7 +21,7 @@ class Give_Email_Notification_Util {
 	/**
 	 * Instance.
 	 *
-	 * @since  1.0
+	 * @since  2.0
 	 * @access static
 	 * @var
 	 */
@@ -30,7 +30,7 @@ class Give_Email_Notification_Util {
 	/**
 	 * Singleton pattern.
 	 *
-	 * @since  1.0
+	 * @since  2.0
 	 * @access private
 	 * Give_Email_Notification_Util constructor.
 	 */
@@ -41,7 +41,7 @@ class Give_Email_Notification_Util {
 	/**
 	 * Get instance.
 	 *
-	 * @since  1.0
+	 * @since  2.0
 	 * @access static
 	 * @return static
 	 */
