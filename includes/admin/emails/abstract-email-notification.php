@@ -320,6 +320,15 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		public function get_recipient( $form_id = null ) {
 			if ( empty( $this->recipient_email ) && $this->config['has_recipient_field'] ) {
 				$this->recipient_email = Give_Email_Notification_Util::get_value( $this, "{$this->config['id']}_recipient", $form_id );
+
+
+				/**
+				 * Filter the admin notice emails.
+				 *
+				 * @since 1.0
+				 * @deprecated 2.0
+				 */
+				$this->recipient_email = apply_filters( 'give_admin_notice_emails', $this->recipient_email, $this, $form_id );
 			}
 
 			/**
