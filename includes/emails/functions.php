@@ -78,25 +78,14 @@ add_action( 'give_admin_donation_email', 'give_admin_email_notice' );
  * Retrieves the emails for which admin notifications are sent to (these can be changed in the Give Settings).
  *
  * @since 1.0
- * @since 2.0 Adds $email_notification_id param.
- *
- * @param string $email_notitfication_id Email ID.
- *
  * @return mixed
  */
-function give_get_admin_notice_emails( $email_notitfication_id = '' ) {
-	$emails = array();
+function give_get_admin_notice_emails() {
 
-	if( ! empty( $email_notitfication_id ) ) {
-		$emails = give_check_variable( give_get_option( "{$email_notitfication_id}_recipient", '' ), 'empty', array() );
-	}
+	$email_option = give_get_option( 'admin_notice_emails' );
 
-	// Backward compatibility.
-	if( empty( $emails) ) {
-		$email_option = give_get_option( 'admin_notice_emails' );
-		$emails = ! empty( $email_option ) && strlen( trim( $email_option ) ) > 0 ? $email_option : get_bloginfo( 'admin_email' );
-		$emails = array_map( 'trim', explode( "\n", $emails ) );
-	}
+	$emails = ! empty( $email_option ) && strlen( trim( $email_option ) ) > 0 ? $email_option : get_bloginfo( 'admin_email' );
+	$emails = array_map( 'trim', explode( "\n", $emails ) );
 
 	return apply_filters( 'give_admin_notice_emails', $emails );
 }
