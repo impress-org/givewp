@@ -86,15 +86,31 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 *
 		 * @since  2.0
 		 * @access public
+		 *
+		 * @param string $email_notification_id
+		 *
 		 * @return Give_Email_Notification
 		 */
-		public static function get_instance() {
-			$class = get_called_class();
-			if ( ! array_key_exists( $class, self::$singleton ) || is_null( self::$singleton[ $class ] ) ) {
+		public static function get_instance( $email_notification_id = '' ) {
+			$class = '';
+
+			if ( ! empty( $email_notification_id ) ) {
+				/* @var Give_Email_Notification $class */
+				foreach ( self::$singleton as $class ) {
+					if ( $email_notification_id === $class->config['id'] ) {
+						$class = get_class( $class );
+						break;
+					}
+				}
+			} else {
+				$class = get_called_class();
+			}
+
+			if ( ! empty( $class ) && ( ! array_key_exists( $class, self::$singleton ) || is_null( self::$singleton[ $class ] ) ) ) {
 				self::$singleton[ $class ] = new $class();
 			}
 
-			return self::$singleton[ $class ];
+			return ( isset( self::$singleton[ $class ] ) ? self::$singleton[ $class ] : null );
 		}
 
 		/**
