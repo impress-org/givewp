@@ -93,7 +93,7 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 		 * @return string
 		 */
 		public function get_email_message( $form_id = null ) {
-			$message = give_get_option( "{$this->config['id']}_email_message", $this->get_default_email_message() );
+			$message = give_get_option( "{$this->config['id']}_email_message", $this->config['default_email_message'] );
 
 			/**
 			 * Filter the email message
