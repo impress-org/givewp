@@ -29,14 +29,15 @@ class Give_Email_Setting_Field {
 			$setting_fields[] = self::get_recipient_setting_field( $email, $form_id );
 		}
 
-		// Preview field.
-		if ( Give_Email_Notification_Util::has_preview( $email ) ) {
-			$setting_fields[] = self::get_preview_setting_field( $email, $form_id );
-		}
 
 		// Add extra setting field.
 		if ( $extra_setting_field = $email->get_extra_setting_fields( $form_id ) ) {
 			$setting_fields = array_merge( $setting_fields, $extra_setting_field );
+		}
+
+		// Preview field.
+		if ( Give_Email_Notification_Util::has_preview( $email ) ) {
+			$setting_fields[] = self::get_preview_setting_field( $email, $form_id );
 		}
 
 		$setting_fields = self::add_section_end( $email, $setting_fields );
