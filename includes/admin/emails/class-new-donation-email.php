@@ -81,7 +81,7 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			 *
 			 * @since 1.0
 			 */
-			$subject = apply_filters( 'give_admin_donation_notification_subject', $subject, $this->payment );
+			$subject = apply_filters( 'give_admin_donation_notification_subject', $subject, $this->payment->ID );
 
 			/**
 			 * Filters the donation notification subject.
