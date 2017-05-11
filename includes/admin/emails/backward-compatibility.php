@@ -17,7 +17,7 @@ function _give_bc_offline_donation_instruction_notification_status( $notificatio
 		return $notification_status;
 	}
 
-	if ( ! get_post_meta( $form_id, 'offline-donation-instruction_notification', true ) ) {
+	if ( ! get_post_meta( $form_id, '_give_offline-donation-instruction_notification', true ) ) {
 		$old_value           = get_post_meta( $form_id, '_give_customize_offline_donations', true );
 		$notification_status = give_is_setting_enabled( $old_value, array( 'enabled', 'global' ) )
 			? $old_value
@@ -28,7 +28,7 @@ function _give_bc_offline_donation_instruction_notification_status( $notificatio
 	return $notification_status;
 }
 
-add_filter( 'give_offline-donation-instruction_get_notification_status', '_give_bc_offline_donation_instruction_notification_status', 10, 3 );
+add_filter( 'give__give_offline-donation-instruction_get_notification_status', '_give_bc_offline_donation_instruction_notification_status', 10, 3 );
 
 
 /**
@@ -50,13 +50,13 @@ function _give_bc_offline_donation_instruction_email_setting_values( $option_val
 	}
 
 	switch ( $option_name ) {
-		case 'offline-donation-instruction_email_message':
+		case '_give_offline-donation-instruction_email_message':
 			if ( ! get_post_meta( $form_id, $option_name, true ) && give_is_setting_enabled( $email->get_notification_status( $form_id ) ) ) {
 				$option_value = get_post_meta( $form_id, '_give_offline_donation_email', true );
 			}
 			break;
 
-		case 'offline-donation-instruction_email_subject':
+		case '_give_offline-donation-instruction_email_subject':
 			if ( ! get_post_meta( $form_id, $option_name, true ) && give_is_setting_enabled( $email->get_notification_status( $form_id ) ) ) {
 				$option_value = get_post_meta( $form_id, '_give_offline_donation_subject', true );
 			}
@@ -91,7 +91,7 @@ function _give_bc_offline_instruction_status_setting_value( $field_value, $field
 	return $field_value;
 }
 
-add_filter( 'offline-donation-instruction_notification_field_value', '_give_bc_offline_instruction_status_setting_value', 10, 3 );
+add_filter( '_give_offline-donation-instruction_notification_field_value', '_give_bc_offline_instruction_status_setting_value', 10, 3 );
 
 
 /**
@@ -113,7 +113,7 @@ function _offline_donation_instruction_email_subject_setting_value( $field_value
 	return $field_value;
 }
 
-add_filter( 'offline-donation-instruction_email_subject_field_value', '_offline_donation_instruction_email_subject_setting_value', 10, 3 );
+add_filter( '_give_offline-donation-instruction_email_subject_field_value', '_offline_donation_instruction_email_subject_setting_value', 10, 3 );
 
 
 /**
@@ -135,4 +135,4 @@ function _give_bc_offline_donation_instruction_email_message_setting_value( $fie
 	return $field_value;
 }
 
-add_filter( 'offline-donation-instruction_email_message_field_value', '_give_bc_offline_donation_instruction_email_message_setting_value', 10, 3 );
+add_filter( '_give_offline-donation-instruction_email_message_field_value', '_give_bc_offline_donation_instruction_email_message_setting_value', 10, 3 );

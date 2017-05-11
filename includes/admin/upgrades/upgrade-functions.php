@@ -1029,12 +1029,12 @@ function give_v20_upgrades_form_metadata() {
 			$offline_instruction_notification_status = give_is_setting_enabled( $offline_instruction_notification_status, array( 'enabled', 'global' ) )
 				? $offline_instruction_notification_status
 				: 'global';
-			update_post_meta( get_the_ID(), 'offline-donation-instruction_notification', $offline_instruction_notification_status );
+			update_post_meta( get_the_ID(), '_give_offline-donation-instruction_notification', $offline_instruction_notification_status );
 
 			// Update offline instruction email message.
 			update_post_meta(
 				get_the_ID(),
-				'offline-donation-instruction_email_message',
+				'_give_offline-donation-instruction_email_message',
 				get_post_meta(
 					get_the_ID(),
 					// @todo: Delete this option later ( version > 2.0 ).
@@ -1046,7 +1046,7 @@ function give_v20_upgrades_form_metadata() {
 			// Update offline instruction email subject.
 			update_post_meta(
 				get_the_ID(),
-				'offline-donation-instruction_email_subject',
+				'_give_offline-donation-instruction_email_subject',
 				get_post_meta(
 					get_the_ID(),
 					// @todo: Delete this option later ( version > 2.0 ).

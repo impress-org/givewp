@@ -135,7 +135,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			) )
 				? Give()->emails->get_content_type()
 				: $this->config['content_type'];
-			$this->config['content_type'] = give_get_option( "{$this->config['id']}_email_content_type", $this->config['content_type'] );
+			$this->config['content_type'] = give_get_option( Give_Email_Setting_Field::get_prefix( $this ) . 'email_content_type', $this->config['content_type'] );
 
 			// Set email template type.
 			$this->config['email_template'] = empty( $this->config['email_template'] )
@@ -335,7 +335,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 */
 		public function get_recipient( $form_id = null ) {
 			if ( empty( $this->recipient_email ) && $this->config['has_recipient_field'] ) {
-				$this->recipient_email = Give_Email_Notification_Util::get_value( $this, "{$this->config['id']}_recipient", $form_id );
+				$this->recipient_email = Give_Email_Notification_Util::get_value( $this, Give_Email_Setting_Field::get_prefix( $this, $form_id ) . 'recipient', $form_id );
 
 
 				/**
@@ -377,7 +377,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		public function get_notification_status( $form_id = null ) {
 			$notification_status = empty( $form_id )
 				? give_get_option( "{$this->config['id']}_notification", $this->config['notification_status'] )
-				: get_post_meta( $form_id, "{$this->config['id']}_notification", true );
+				: get_post_meta( $form_id, Give_Email_Setting_Field::get_prefix( $this, $form_id ) . 'notification', true );
 
 			/**
 			 * Filter the notification status.
@@ -406,7 +406,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			$subject = wp_strip_all_tags(
 				Give_Email_Notification_Util::get_value(
 					$this,
-					"{$this->config['id']}_email_subject",
+					Give_Email_Setting_Field::get_prefix( $this, $form_id ) . 'email_subject',
 					$form_id,
 					$this->config['default_email_subject']
 				)
@@ -438,7 +438,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		public function get_email_message( $form_id = null ) {
 			$message = Give_Email_Notification_Util::get_value(
 				$this,
-				"{$this->config['id']}_email_message",
+				Give_Email_Setting_Field::get_prefix( $this, $form_id ) . 'email_message',
 				$form_id,
 				$this->config['default_email_message']
 			);
@@ -470,7 +470,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		public function get_email_content_type( $form_id ) {
 			$content_type = Give_Email_Notification_Util::get_value(
 				$this,
-				"{$this->config['id']}_email_content_type",
+				Give_Email_Setting_Field::get_prefix( $this, $form_id ) . 'email_content_type',
 				$form_id,
 				$this->config['content_type']
 			);
@@ -501,7 +501,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		public function get_email_template( $form_id ) {
 			$content_type = Give_Email_Notification_Util::get_value(
 				$this,
-				"{$this->config['id']}_email_template",
+				Give_Email_Setting_Field::get_prefix( $this, $form_id ) .'email_template',
 				$form_id,
 				$this->config['email_template']
 			);

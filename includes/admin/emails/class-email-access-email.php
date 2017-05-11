@@ -61,7 +61,14 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 		 * @return string
 		 */
 		public function get_email_subject( $form_id = null ) {
-			$subject = wp_strip_all_tags( give_get_option( "{$this->config['id']}_email_subject", $this->config['default_email_subject'] ) );
+			$subject = wp_strip_all_tags(
+				Give_Email_Notification_Util::get_value(
+					$this,
+					Give_Email_Setting_Field::get_prefix( $this, $form_id ) . 'email_subject',
+					$form_id,
+					$this->config['default_email_subject']
+				)
+			);
 
 			/**
 			 * Filters the donation notification subject.
@@ -93,7 +100,12 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 		 * @return string
 		 */
 		public function get_email_message( $form_id = null ) {
-			$message = give_get_option( "{$this->config['id']}_email_message", $this->config['default_email_message'] );
+			$message = Give_Email_Notification_Util::get_value(
+				$this,
+				Give_Email_Setting_Field::get_prefix( $this, $form_id ) . 'email_message',
+				$form_id,
+				$this->config['default_email_message']
+			);
 
 			/**
 			 * Filter the email message

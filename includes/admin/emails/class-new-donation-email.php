@@ -69,7 +69,7 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			$subject = wp_strip_all_tags(
 				Give_Email_Notification_Util::get_value(
 					$this,
-					"{$this->config['id']}_email_subject",
+					Give_Email_Setting_Field::get_prefix( $this, $form_id ) . 'email_subject',
 					$form_id,
 					$this->config['default_email_subject']
 				)
@@ -107,7 +107,7 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 		public function get_email_message( $form_id = null ) {
 			$message = Give_Email_Notification_Util::get_value(
 				$this,
-				"{$this->config['id']}_email_message",
+				Give_Email_Setting_Field::get_prefix( $this, $form_id ) . 'email_message',
 				$form_id,
 				$this->config['default_email_message']
 			);

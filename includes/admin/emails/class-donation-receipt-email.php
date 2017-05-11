@@ -66,7 +66,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			$subject = wp_strip_all_tags(
 				Give_Email_Notification_Util::get_value(
 					$this,
-					"{$this->config['id']}_email_subject",
+					Give_Email_Setting_Field::get_prefix( $this, $form_id ) . 'email_subject',
 					$form_id,
 					$this->config['default_email_subject']
 				)
@@ -78,14 +78,23 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			 *
 			 * @since 1.0
 			 */
-			$subject = apply_filters( 'give_donation_subject', $subject, $this->payment->ID );
+			$subject = apply_filters(
+				'give_donation_subject',
+				$subject,
+				$this->payment->ID
+			);
 
 			/**
 			 * Filters the donation email receipt subject.
 			 *
 			 * @since 2.0
 			 */
-			$subject = apply_filters( "give_{$this->config['id']}_get_email_subject", $subject, $this, $form_id );
+			$subject = apply_filters(
+				"give_{$this->config['id']}_get_email_subject",
+				$subject,
+				$this,
+				$form_id
+			);
 
 			return $subject;
 		}
@@ -103,7 +112,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 		public function get_email_message( $form_id = null ) {
 			$message = Give_Email_Notification_Util::get_value(
 				$this,
-				"{$this->config['id']}_email_message",
+				Give_Email_Setting_Field::get_prefix( $this, $form_id ) . 'email_message',
 				$form_id,
 				$this->config['default_email_message']
 			);

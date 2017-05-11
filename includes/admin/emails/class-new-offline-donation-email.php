@@ -149,7 +149,7 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 		public function get_email_message( $form_id = null ) {
 			$message = Give_Email_Notification_Util::get_value(
 				$this,
-				"{$this->config['id']}_email_message",
+				Give_Email_Setting_Field::get_prefix( $this, $form_id ) . 'email_message',
 				$form_id,
 				$this->config['default_email_message']
 			);

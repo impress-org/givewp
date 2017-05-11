@@ -185,7 +185,7 @@ class Give_Email_Setting_Field {
 		return array(
 			'name'          => esc_html__( 'Notification', 'give' ),
 			'desc'          => esc_html__( 'Choose option if you want to send email notification or not.', 'give' ),
-			'id'            => "{$email->config['id']}_notification",
+			'id'            => self::get_prefix( $email, $form_id ) . 'notification',
 			'type'          => 'radio_inline',
 			'default'       => $default_value,
 			'options'       => $option,
@@ -206,7 +206,7 @@ class Give_Email_Setting_Field {
 	 */
 	public static function get_email_subject_field( Give_Email_Notification $email, $form_id = null ) {
 		return array(
-			'id'      => "{$email->config['id']}_email_subject",
+			'id'      => self::get_prefix( $email, $form_id ) . 'email_subject',
 			'name'    => esc_html__( 'Email Subject', 'give' ),
 			'desc'    => esc_html__( 'Enter the subject line for email.', 'give' ),
 			'default' => $email->config['default_email_subject'],
@@ -237,7 +237,7 @@ class Give_Email_Setting_Field {
 		}
 
 		return array(
-			'id'      => "{$email->config['id']}_email_message",
+			'id'      => self::get_prefix( $email, $form_id ) . 'email_message',
 			'name'    => esc_html__( 'Email message', 'give' ),
 			'desc'    => $desc,
 			'type'    => 'wysiwyg',
@@ -258,7 +258,7 @@ class Give_Email_Setting_Field {
 	 */
 	public static function get_email_content_type_field( Give_Email_Notification $email, $form_id = null ) {
 		return array(
-			'id'      => "{$email->config['id']}_email_content_type",
+			'id'      => self::get_prefix( $email, $form_id ) . 'email_content_type',
 			'name'    => esc_html__( 'Email Content Type', 'give' ),
 			'desc'    => __( 'Choose email content type.', 'give' ),
 			'type'    => 'select',
@@ -285,7 +285,7 @@ class Give_Email_Setting_Field {
 	 */
 	public static function get_recipient_setting_field( Give_Email_Notification $email, $form_id = null ) {
 		return array(
-			'id'               => "{$email->config['id']}_recipient",
+			'id'               => self::get_prefix( $email, $form_id ) . 'recipient',
 			'name'             => esc_html__( 'Email Recipients', 'give' ),
 			'desc'             => __( 'Enter the email address(es) that should receive a notification anytime a donation is made.', 'give' ),
 			'type'             => 'email',
@@ -310,9 +310,31 @@ class Give_Email_Setting_Field {
 		return array(
 			'name' => esc_html__( 'Preview Email', 'give' ),
 			'desc' => esc_html__( 'Click the buttons to preview emails.', 'give' ),
-			'id'   => "{$email->config['id']}_preview_buttons",
+			'id'   => self::get_prefix( $email, $form_id ) . 'preview_buttons',
 			'type' => 'email_preview_buttons',
 		);
+	}
+
+
+	/**
+	 * Get form metabox setting field prefix.
+	 *
+	 * @since  2.0
+	 * @access static
+	 *
+	 * @param Give_Email_Notification $email
+	 * @param int                     $form_id
+	 *
+	 * @return string
+	 */
+	public static function get_prefix( Give_Email_Notification $email, $form_id = null  ) {
+		$meta_key = "{$email->config['id']}_";
+
+		if( $form_id || give_is_add_new_form_page() ) {
+			$meta_key = "_give_{$email->config['id']}_";
+		}
+
+		return $meta_key;
 	}
 }
 
