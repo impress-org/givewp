@@ -1104,3 +1104,67 @@ function give_delete_donation_stats( $date_range = '', $args = array() ) {
 
 	return $status;
 }
+
+
+/**
+ * Get Form/Payment meta.
+ * @todo: implement in core
+ *
+ * @since 1.8.8
+ *
+ * @param int    $id
+ * @param string $meta_key
+ * @param bool   $single
+ * @param bool   $default
+ *
+ * @return mixed
+ */
+function give_get_meta( $id, $meta_key, $single = false, $default = false ) {
+	$meta_value = get_post_meta( $id, $meta_key, $single );
+
+	if (
+		( empty( $meta_key ) || empty( $meta_value ) )
+		&& $default
+	) {
+		$meta_value = $default;
+	}
+
+
+	return apply_filters( 'give_get_meta', $meta_value, $id, $meta_key, $default );
+}
+
+/**
+ * Update Form/Payment meta.
+ * @todo: implement in core
+ *
+ * @since 1.8.8
+ *
+ * @param int    $id
+ * @param string $meta_key
+ * @param string $meta_value
+ *
+ * @return mixed
+ */
+function give_update_meta( $id, $meta_key, $meta_value ) {
+	$status = update_post_meta( $id, $meta_key, $meta_value );
+
+	return apply_filters( 'give_update_meta', $status, $id, $meta_key, $meta_value );
+}
+
+/**
+ * Delete Form/Payment meta.
+ * @todo: implement in core
+ *
+ * @since 1.8.8
+ *
+ * @param int    $id
+ * @param string $meta_key
+ * @param string $meta_value
+ *
+ * @return mixed
+ */
+function give_delete_meta( $id, $meta_key, $meta_value = '' ) {
+	$status = delete_post_meta( $id, $meta_key, $meta_value );
+
+	return apply_filters( 'give_delete_meta', $status, $id, $meta_key, $meta_value );
+}
