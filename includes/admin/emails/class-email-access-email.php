@@ -35,7 +35,7 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 				'id'                           => 'email-access',
 				'label'                        => __( 'Email access', 'give' ),
 				'description'                  => __( 'Email Access Notification will be sent to recipient(s) when want to access their donation history using only email.', 'give' ),
-				'notification_status'          => 'enabled',
+				'notification_status'          => give_get_option( 'email_access', 'disabled' ),
 				'form_metabox_setting'         => false,
 				'notification_status_editable' => false,
 				'email_tag_context'            => 'donor',
