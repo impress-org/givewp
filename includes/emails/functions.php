@@ -78,6 +78,8 @@ add_action( 'give_admin_donation_email', 'give_admin_email_notice' );
  * Retrieves the emails for which admin notifications are sent to (these can be changed in the Give Settings).
  *
  * @since 1.0
+ * @deprecated 2.0
+ *
  * @return mixed
  */
 function give_get_admin_notice_emails() {
@@ -94,6 +96,7 @@ function give_get_admin_notice_emails() {
  * Checks whether admin donation notices are disabled
  *
  * @since 1.0
+ * @deprecated 2.0
  *
  * @param int $payment_id
  *
