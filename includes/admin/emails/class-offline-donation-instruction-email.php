@@ -42,7 +42,7 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 				'id'                           => 'offline-donation-instruction',
 				'label'                        => __( 'Offline Donation Instruction', 'give' ),
 				'description'                  => __( 'Offline Donation Instruction will be sent to recipient(s) when offline donation received.', 'give' ),
-				'notification_status'          => 'enabled',
+				'notification_status'          => give_is_gateway_active( 'offline' ) ? 'enabled' : 'disabled',
 				'form_metabox_setting'         => true,
 				'notification_status_editable' => false,
 				'preview_email_tag_values'     => array(
