@@ -60,7 +60,7 @@ class Tests_User_Function extends Give_Unit_Test_Case {
 		 * Username is empty and registration required for form.
 		 */
 		// Stop guest checkout.
-		update_post_meta( $this->_simple_form->ID, '_give_logged_in_only', 'enabled' );
+		give_update_meta( $this->_simple_form->ID, '_give_logged_in_only', 'enabled' );
 
 		$output = give_validate_username( '', $this->_simple_form->ID );
 

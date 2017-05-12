@@ -196,7 +196,7 @@ do_action( 'give_payment_receipt_before_table', $payment, $give_receipt_args );
 		<?php if ( filter_var( $give_receipt_args['payment_key'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
 			<tr>
 				<td scope="row"><strong><?php esc_html_e( 'Payment Key:', 'give' ); ?></strong></td>
-				<td><?php echo get_post_meta( $payment->ID, '_give_payment_purchase_key', true ); ?></td>
+				<td><?php echo give_get_meta( $payment->ID, '_give_payment_purchase_key', true ); ?></td>
 			</tr>
 		<?php endif; ?>
 

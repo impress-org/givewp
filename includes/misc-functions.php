@@ -1057,7 +1057,7 @@ function give_get_plugins() {
  * @return bool
  */
 function give_is_terms_enabled( $form_id ) {
-	$form_option = get_post_meta( $form_id, '_give_terms_option', true );
+	$form_option = give_get_meta( $form_id, '_give_terms_option', true );
 
 	if (
 		give_is_setting_enabled( $form_option, 'global' )
@@ -1142,11 +1142,12 @@ function give_get_meta( $id, $meta_key, $single = false, $default = false ) {
  * @param int    $id
  * @param string $meta_key
  * @param string $meta_value
+ * @param string $prev_value
  *
  * @return mixed
  */
-function give_update_meta( $id, $meta_key, $meta_value ) {
-	$status = update_post_meta( $id, $meta_key, $meta_value );
+function give_update_meta( $id, $meta_key, $meta_value, $prev_value = '' ) {
+	$status = update_post_meta( $id, $meta_key, $meta_value, $prev_value );
 
 	return apply_filters( 'give_update_meta', $status, $id, $meta_key, $meta_value );
 }

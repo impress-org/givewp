@@ -33,7 +33,7 @@ function give_no_guest_checkout( $form_id ) {
 
 	_give_deprecated_function( __FUNCTION__, '1.4.1', null, $backtrace );
 
-	$ret = get_post_meta( $form_id, '_give_logged_in_only', true );
+	$ret = give_get_meta( $form_id, '_give_logged_in_only', true );
 
 	return (bool) apply_filters( 'give_no_guest_checkout', give_is_setting_enabled( $ret ) );
 }
