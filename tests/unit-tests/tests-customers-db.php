@@ -75,7 +75,7 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 
 		$total = 0;
 
-		$prices     = get_post_meta( $donation_details[0]['id'], '_give_donation_levels', true );
+		$prices     = give_get_meta( $donation_details[0]['id'], '_give_donation_levels', true );
 		$item_price = $prices[1]['_give_amount'];
 
 		$total += $item_price;

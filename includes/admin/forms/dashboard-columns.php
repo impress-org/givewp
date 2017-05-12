@@ -85,7 +85,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 				}
 				break;
 			case 'goal':
-				if ( give_is_setting_enabled( get_post_meta( $post_id, '_give_goal_option', true ) ) ) {
+				if ( give_is_setting_enabled( give_get_meta( $post_id, '_give_goal_option', true ) ) ) {
 					echo give_goal( $post_id, false );
 				} else {
 					esc_html_e( 'No Goal Set', 'give' );

@@ -1057,7 +1057,7 @@ function give_get_plugins() {
  * @return bool
  */
 function give_is_terms_enabled( $form_id ) {
-	$form_option = get_post_meta( $form_id, '_give_terms_option', true );
+	$form_option = give_get_meta( $form_id, '_give_terms_option', true );
 
 	if (
 		give_is_setting_enabled( $form_option, 'global' )

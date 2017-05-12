@@ -1043,7 +1043,7 @@ final class Give_Payment {
 
 			// Deal with variable pricing.
 			if ( give_has_variable_prices( $donation->ID ) ) {
-				$prices     = maybe_unserialize( get_post_meta( $form_id, '_give_donation_levels', true ) );
+				$prices     = maybe_unserialize( give_get_meta( $form_id, '_give_donation_levels', true ) );
 				$item_price = '';
 				// Loop through prices.
 				foreach ( $prices as $price ) {
@@ -1517,7 +1517,7 @@ final class Give_Payment {
 	 */
 	public function get_meta( $meta_key = '_give_payment_meta', $single = true ) {
 
-		$meta = get_post_meta( $this->ID, $meta_key, $single );
+		$meta = give_get_meta( $this->ID, $meta_key, $single );
 
 		if ( $meta_key === '_give_payment_meta' ) {
 			$meta = (array) $meta;
