@@ -734,7 +734,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 							<?php
 							echo '<p class="give-docs-link"><a href="' . esc_url( $value['url'] )
 							     . '" target="_blank">'
-							     . sprintf( esc_html__( 'Need Help? See docs on "%s"' ), $value['title'] )
+							     . sprintf( esc_html__( 'Need Help? See docs on "%s"', 'give' ), $value['title'] )
 							     . '<span class="dashicons dashicons-editor-help"></span></a></p>';
 							?>
                         </td>
