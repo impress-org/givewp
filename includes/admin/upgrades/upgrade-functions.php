@@ -719,17 +719,17 @@ function give_v18_upgrades_form_metadata() {
 			$show_content = give_get_meta( get_the_ID(), '_give_content_option', true );
 			if ( $show_content && ! give_get_meta( get_the_ID(), '_give_display_content', true ) ) {
 				$field_value = ( 'none' !== $show_content ? 'enabled' : 'disabled' );
-				update_post_meta( get_the_ID(), '_give_display_content', $field_value );
+				give_update_meta( get_the_ID(), '_give_display_content', $field_value );
 
 				$field_value = ( 'none' !== $show_content ? $show_content : 'give_pre_form' );
-				update_post_meta( get_the_ID(), '_give_content_placement', $field_value );
+				give_update_meta( get_the_ID(), '_give_content_placement', $field_value );
 			}
 
 			// "Disable" Guest Donation. Checkbox
 			// See: https://github.com/WordImpress/Give/issues/1470
 			$guest_donation = give_get_meta( get_the_ID(), '_give_logged_in_only', true );
 			$guest_donation_newval = ( in_array( $guest_donation, array( 'yes', 'on' ) ) ? 'disabled' : 'enabled' );
-			update_post_meta( get_the_ID(), '_give_logged_in_only', $guest_donation_newval );
+			give_update_meta( get_the_ID(), '_give_logged_in_only', $guest_donation_newval );
 
 			// Offline Donations
 			// See: https://github.com/WordImpress/Give/issues/1579
@@ -741,7 +741,7 @@ function give_v18_upgrades_form_metadata() {
 			} else {
 				$offline_donation_newval = 'disabled';
 			}
-			update_post_meta( get_the_ID(), '_give_customize_offline_donations', $offline_donation_newval );
+			give_update_meta( get_the_ID(), '_give_customize_offline_donations', $offline_donation_newval );
 
 			// Convert yes/no setting field to enabled/disabled.
 			$form_radio_settings = array(
@@ -769,7 +769,7 @@ function give_v18_upgrades_form_metadata() {
 				if ( in_array( $field_value, array( 'yes', 'on', 'no', 'none' ) ) ) {
 
 					$field_value = ( in_array( $field_value, array( 'yes', 'on' ) ) ? 'enabled' : 'disabled' );
-					update_post_meta( get_the_ID(), $meta_key, $field_value );
+					give_update_meta( get_the_ID(), $meta_key, $field_value );
 				}
 			}
 		}// End while().

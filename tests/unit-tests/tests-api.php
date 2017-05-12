@@ -75,7 +75,7 @@ class Tests_API extends Give_Unit_Test_Case {
 			'_give_form_sales'         => 59,
 		);
 		foreach ( $meta as $key => $value ) {
-			update_post_meta( $post_id, $key, $value );
+			give_update_meta( $post_id, $key, $value );
 		}
 
 		$this->_post = get_post( $post_id );
