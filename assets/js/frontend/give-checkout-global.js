@@ -26,19 +26,19 @@ jQuery(function ($) {
 
 			// If the country field has changed, we need to update the state/province field
 			var postData = {
-				action: 'give_get_states',
-				country: $this.val(),
+				action    : 'give_get_states',
+				country   : $this.val(),
 				field_name: 'card_state'
 			};
 
 			$.ajax({
-				type: 'POST',
-				data: postData,
-				url: give_global_vars.ajaxurl,
+				type     : 'POST',
+				data     : postData,
+				url      : give_global_vars.ajaxurl,
 				xhrFields: {
 					withCredentials: true
 				},
-				success: function (response) {
+				success  : function (response) {
 					if ('nostates' == response) {
 						var text_field = '<input type="text" id="card_state" name="card_state" class="cart-state give-input required" value=""/>';
 						$form.find('input[name="card_state"], select[name="card_state"]').replaceWith(text_field);
@@ -60,7 +60,6 @@ jQuery(function ($) {
 	doc.on('change', '#give_cc_address input.card_state, #give_cc_address select', update_billing_state_field
 	);
 
-
 	/**
 	 * Format CC Fields
 	 * @description Set variables and format cc fields
@@ -72,7 +71,7 @@ jQuery(function ($) {
 		//Loop through forms on page and set CC validation
 		give_form.each(function () {
 			var card_number = $(this).find('.card-number');
-			var card_cvc = $(this).find('.card-cvc');
+			var card_cvc    = $(this).find('.card-cvc');
 			var card_expiry = $(this).find('.card-expiry');
 
 			//Only validate if there is a card field
@@ -106,13 +105,13 @@ jQuery(function ($) {
 	 * Validate cc fields on change
 	 */
 	doc.on('keyup change', '.give-form .card-number, .give-form .card-cvc, .give-form .card-expiry', function () {
-		var el = $(this),
-			give_form = el.parents('form.give-form'),
-			id = el.attr('id'),
+		var el          = $(this),
+			give_form   = el.parents('form.give-form'),
+			id          = el.attr('id'),
 			card_number = give_form.find('.card-number'),
-			card_cvc = give_form.find('.card-cvc'),
+			card_cvc    = give_form.find('.card-cvc'),
 			card_expiry = give_form.find('.card-expiry'),
-			type = $.payment.cardType(card_number.val());
+			type        = $.payment.cardType(card_number.val());
 
 		if (id.indexOf('card_number') > -1) {
 
@@ -172,7 +171,6 @@ jQuery(function ($) {
 		return Math.abs(parseFloat(accounting.unformat(price, give_global_vars.decimal_separator)));
 	}
 
-
 	/**
 	 * Get formatted amount
 	 *
@@ -182,15 +180,14 @@ jQuery(function ($) {
 
 		//Set the custom amount input value format properly
 		var format_args = {
-			symbol: '',
-			decimal: give_global_vars.decimal_separator,
-			thousand: give_global_vars.thousands_separator,
+			symbol   : '',
+			decimal  : give_global_vars.decimal_separator,
+			thousand : give_global_vars.thousands_separator,
 			precision: give_global_vars.number_decimals
 		};
 
 		return accounting.formatMoney(amount, format_args);
 	}
-
 
 	/**
 	 * Get Price ID and levels for multi donation form
@@ -215,11 +212,10 @@ jQuery(function ($) {
 				) ? jQuery(item) : item
 			);
 
-
 			// Add price id and amount to collector.
 			variable_prices.push({
 				price_id: item.data('price-id'),
-				amount: give_unformat_currency(item.val())
+				amount  : give_unformat_currency(item.val())
 			});
 		});
 
@@ -237,9 +233,9 @@ jQuery(function ($) {
 
 	// Add a class to the currently selected gateway on click
 	doc.on('click', '#give-payment-mode-select input', function () {
-		var $form = $(this).parents('form'),
-			$gateways_li = $('#give-payment-mode-select li'),
-			old_payment_gateway = $('#give-payment-mode-select li.give-gateway-option-selected input[name="payment-mode"]').val(),
+		var $form                = $(this).parents('form'),
+			$gateways_li         = $('#give-payment-mode-select li'),
+			old_payment_gateway  = $('#give-payment-mode-select li.give-gateway-option-selected input[name="payment-mode"]').val(),
 			new_payment_gateways = '';
 
 		// Unselect all payment gateways.
@@ -276,7 +272,6 @@ jQuery(function ($) {
 		var current_total = parent_form.find('.give-final-total-amount').data('total');
 		$(this).data('amount', give_unformat_currency(current_total));
 
-
 		//This class is used for CSS purposes
 		$(this).parent('.give-donation-amount').addClass('give-custom-amount-focus-in');
 
@@ -297,14 +292,14 @@ jQuery(function ($) {
 	 *
 	 */
 	doc.on('blur', '.give-donation-amount .give-text-input', function (e, $parent_form, donation_amount, price_id) {
-		var parent_form = ($parent_form != undefined) ? $parent_form : $(this).closest('form'),
+		var parent_form      = ($parent_form != undefined) ? $parent_form : $(this).closest('form'),
 			pre_focus_amount = $(this).data('amount'),
-			this_value = (donation_amount != undefined) ? donation_amount : $(this).val(),
-			$minimum_amount = parent_form.find('input[name="give-form-minimum"]'),
-			value_min = give_unformat_currency($minimum_amount.val()),
-			value_now = (this_value == 0) ? value_min : give_unformat_currency(this_value),
-			variable_prices = give_get_variable_prices($(this).parents('form')),
-			error_msg = '';
+			this_value       = (donation_amount != undefined) ? donation_amount : $(this).val(),
+			$minimum_amount  = parent_form.find('input[name="give-form-minimum"]'),
+			value_min        = give_unformat_currency($minimum_amount.val()),
+			value_now        = (this_value == 0) ? value_min : give_unformat_currency(this_value),
+			variable_prices  = give_get_variable_prices($(this).parents('form')),
+			error_msg        = '';
 
 		/**
 		 * Flag Multi-levels for min. donation conditional.
@@ -312,7 +307,7 @@ jQuery(function ($) {
 		 * Note: Value of this variable will be:
 		 *  a. -1      if no any level found.
 		 *  b. [0-*]   Any number from zero if donation level found.
-		 *  c  custom  if donation level not found and donation amount is greater then the custom minimum amount.
+		 *  c  custom  if donation level not found and donation amount is greater than the custom minimum amount.
 		 *
 		 * @type {number/string} Donation level ID.
 		 */
@@ -320,12 +315,11 @@ jQuery(function ($) {
 			undefined != price_id
 		) ? price_id : -1;
 
-
 		//Set the custom amount input value format properly
 		var format_args = {
-			symbol: '',
-			decimal: give_global_vars.decimal_separator,
-			thousand: give_global_vars.thousands_separator,
+			symbol   : '',
+			decimal  : give_global_vars.decimal_separator,
+			thousand : give_global_vars.thousands_separator,
 			precision: give_global_vars.number_decimals
 		};
 
@@ -364,7 +358,7 @@ jQuery(function ($) {
 			//It doesn't... Invalid Minimum
 			$(this).addClass('give-invalid-amount');
 			format_args.symbol = give_global_vars.currency_sign;
-			error_msg = give_global_vars.bad_minimum + ' ' + give_format_currency(value_min, format_args);
+			error_msg          = give_global_vars.bad_minimum + ' ' + give_format_currency(value_min, format_args);
 
 			//Disable submit
 			parent_form.find('.give-submit').prop('disabled', true);
@@ -453,7 +447,6 @@ jQuery(function ($) {
 
 	});
 
-
 	//Multi-level Buttons: Update Amount Field based on Multi-level Donation Select
 	doc.on('click touchend', '.give-donation-level-btn', function (e) {
 		e.preventDefault(); //don't let the form submit
@@ -481,8 +474,8 @@ jQuery(function ($) {
 	function update_multiselect_vals(selected_field) {
 
 		var $parent_form = selected_field.parents('form'),
-			this_amount = selected_field.val(),
-			price_id = selected_field.data('price-id');
+			this_amount  = selected_field.val(),
+			price_id     = selected_field.data('price-id');
 
 		// Check if price ID blank because of dropdown type
 		if (!price_id) {
@@ -528,7 +521,7 @@ jQuery(function ($) {
 	 */
 	function sent_back_to_form() {
 
-		var form_id = give_get_parameter_by_name('form-id');
+		var form_id      = give_get_parameter_by_name('form-id');
 		var payment_mode = give_get_parameter_by_name('payment-mode');
 
 		// Sanity check - only proceed if query strings in place.
@@ -536,9 +529,9 @@ jQuery(function ($) {
 			return false;
 		}
 
-		var form_wrap = $('body').find('#give-form-' + form_id + '-wrap');
-		var form = form_wrap.find('form.give-form');
-		var display_modal = form_wrap.hasClass('give-display-modal');
+		var form_wrap      = $('body').find('#give-form-' + form_id + '-wrap');
+		var form           = form_wrap.find('form.give-form');
+		var display_modal  = form_wrap.hasClass('give-display-modal');
 		var display_reveal = form_wrap.hasClass('give-display-reveal');
 
 		// Update payment mode radio so it's correctly checked.
@@ -547,7 +540,7 @@ jQuery(function ($) {
 
 		// Select the proper level for Multi-level forms.
 		// It can either be a dropdown, buttons, or radio list. Default is buttons field type.
-		var level_id = give_get_parameter_by_name('level-id');
+		var level_id    = give_get_parameter_by_name('level-id');
 		var level_field = form.find('*[data-price-id="' + level_id + '"]');
 		if (level_field.length > 0) {
 			update_multiselect_vals(level_field);
@@ -579,8 +572,8 @@ jQuery(function ($) {
 		if (!url) {
 			url = window.location.href;
 		}
-		name = name.replace(/[\[\]]/g, "\\$&");
-		var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+		name        = name.replace(/[\[\]]/g, "\\$&");
+		var regex   = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
 			results = regex.exec(url);
 		if (!results) {
 			return null;
@@ -591,5 +584,15 @@ jQuery(function ($) {
 		return decodeURIComponent(results[2].replace(/\+/g, " "));
 	}
 
+	/**
+	 * Show/Hide term and condition
+	 */
+	doc.on('click', '.give_terms_links', function (e) {
+		e.preventDefault();
+		var $fieldset_wrapper = $(this).closest('fieldset');
+		$('[class^=give_terms-]', $fieldset_wrapper).slideToggle();
+		$('a.give_terms_links', $fieldset_wrapper).toggle();
+		return false;
+	});
 
 });

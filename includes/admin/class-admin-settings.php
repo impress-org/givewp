@@ -87,7 +87,8 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			$current_tab = give_get_current_setting_tab();
 
 			if ( empty( $_REQUEST['_give-save-settings'] ) || ! wp_verify_nonce( $_REQUEST['_give-save-settings'], 'give-save-settings' ) ) {
-				die( __( 'Action failed. Please refresh the page and retry.', 'give' ) );
+				echo '<div class="notice error"><p>' . __( 'Action failed. Please refresh the page and retry.', 'give' ) . '</p></div>';
+				die();
 			}
 
 			/**
@@ -733,7 +734,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 							<?php
 							echo '<p class="give-docs-link"><a href="' . esc_url( $value['url'] )
 							     . '" target="_blank">'
-							     . sprintf( esc_html__( 'Need Help? See docs on "%s"' ), $value['title'] )
+							     . sprintf( esc_html__( 'Need Help? See docs on "%s"', 'give' ), $value['title'] )
 							     . '<span class="dashicons dashicons-editor-help"></span></a></p>';
 							?>
                         </td>

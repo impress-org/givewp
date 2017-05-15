@@ -1,8 +1,8 @@
 <?php
 /**
- * Recount income
+ * Recount earnings
  *
- * This class handles batch processing of recounting income
+ * This class handles batch processing of recounting earnings
  *
  * @subpackage  Admin/Tools/Give_Tools_Recount_Income
  * @copyright   Copyright (c) 2016, WordImpress
@@ -49,24 +49,24 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 	 * @access public
 	 * @since 1.5
 	 *
-	 * @return array $data The data for the CSV file
+	 * @return bool
 	 */
 	public function get_data() {
 
 		if ( $this->step == 1 ) {
-			$this->delete_data( 'give_temp_recount_income' );
+			$this->delete_data( 'give_temp_recount_earnings' );
 		}
 
-		$total = get_option( 'give_temp_recount_income', false );
+		$total = get_option( 'give_temp_recount_earnings', false );
 
 		if ( false === $total ) {
 			$total = (float) 0;
-			$this->store_data( 'give_temp_recount_income', $total );
+			$this->store_data( 'give_temp_recount_earnings', $total );
 		}
 
 		$accepted_statuses = apply_filters( 'give_recount_accepted_statuses', array( 'publish' ) );
 
-		$args = apply_filters( 'give_recount_income_args', array(
+		$args = apply_filters( 'give_recount_earnings_args', array(
 			'number' => $this->per_step,
 			'page'   => $this->step,
 			'status' => $accepted_statuses,
@@ -89,14 +89,13 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 
 			$total = round( $total, give_currency_decimal_filter() );
 
-			$this->store_data( 'give_temp_recount_income', $total );
+			$this->store_data( 'give_temp_recount_earnings', $total );
 
 			return true;
 
 		}
 
-		update_option( 'give_income_total', $total );
-		set_transient( 'give_income_total', $total, 86400 );
+		update_option( 'give_earnings_total', $total );
 
 		return false;
 
@@ -110,16 +109,16 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 	 */
 	public function get_percentage_complete() {
 
-		$total = $this->get_stored_data( 'give_recount_income_total' );
+		$total = $this->get_stored_data( 'give_recount_earnings_total' );
 
 		if ( false === $total ) {
-			$args = apply_filters( 'give_recount_income_total_args', array() );
+			$args = apply_filters( 'give_recount_earnings_total_args', array() );
 
 			$counts = give_count_payments( $args );
 			$total  = absint( $counts->publish );
-			$total  = apply_filters( 'give_recount_store_income_total', $total );
+			$total  = apply_filters( 'give_recount_store_earnings_total', $total );
 
-			$this->store_data( 'give_recount_income_total', $total );
+			$this->store_data( 'give_recount_earnings_total', $total );
 		}
 
 		$percentage = 100;
@@ -164,8 +163,8 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 
 			return true;
 		} else {
-			$this->delete_data( 'give_recount_income_total' );
-			$this->delete_data( 'give_temp_recount_income' );
+			$this->delete_data( 'give_recount_earnings_total' );
+			$this->delete_data( 'give_temp_recount_earnings' );
 			$this->done    = true;
 			$this->message = esc_html__( 'Income stats have been successfully recounted.', 'give' );
 

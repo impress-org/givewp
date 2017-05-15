@@ -66,36 +66,36 @@ function give_get_currency_position() {
 
 function give_get_currencies() {
 	$currencies = array(
-		'USD'  => esc_html__( 'US Dollars ($)', 'give' ),
-		'EUR'  => esc_html__( 'Euros (€)', 'give' ),
-		'GBP'  => esc_html__( 'Pounds Sterling (£)', 'give' ),
-		'AUD'  => esc_html__( 'Australian Dollars ($)', 'give' ),
-		'BRL'  => esc_html__( 'Brazilian Real (R$)', 'give' ),
-		'CAD'  => esc_html__( 'Canadian Dollars ($)', 'give' ),
-		'CZK'  => esc_html__( 'Czech Koruna (Kč)', 'give' ),
-		'DKK'  => esc_html__( 'Danish Krone (kr)', 'give' ),
-		'HKD'  => esc_html__( 'Hong Kong Dollar ($)', 'give' ),
-		'HUF'  => esc_html__( 'Hungarian Forint (Ft)', 'give' ),
-		'ILS'  => esc_html__( 'Israeli Shekel (₪)', 'give' ),
-		'JPY'  => esc_html__( 'Japanese Yen (¥)', 'give' ),
-		'MYR'  => esc_html__( 'Malaysian Ringgits (RM)', 'give' ),
-		'MXN'  => esc_html__( 'Mexican Peso ($)', 'give' ),
-		'MAD'  => esc_html__( 'Moroccan Dirham (&#x2e;&#x62f;&#x2e;&#x645;)', 'give' ),
-		'NZD'  => esc_html__( 'New Zealand Dollar ($)', 'give' ),
-		'NOK'  => esc_html__( 'Norwegian Krone (Kr.)', 'give' ),
-		'PHP'  => esc_html__( 'Philippine Pesos (₱)', 'give' ),
-		'PLN'  => esc_html__( 'Polish Zloty (zł)', 'give' ),
-		'SGD'  => esc_html__( 'Singapore Dollar ($)', 'give' ),
-		'KRW'  => esc_html__( 'South Korean Won (₩)', 'give' ),
-		'ZAR'  => esc_html__( 'South African Rand (R)', 'give' ),
-		'SEK'  => esc_html__( 'Swedish Krona (kr)', 'give' ),
-		'CHF'  => esc_html__( 'Swiss Franc (CHF)', 'give' ),
-		'TWD'  => esc_html__( 'Taiwan New Dollars (NT$)', 'give' ),
-		'THB'  => esc_html__( 'Thai Baht (฿)', 'give' ),
-		'INR'  => esc_html__( 'Indian Rupee (₹)', 'give' ),
-		'TRY'  => esc_html__( 'Turkish Lira (₺)', 'give' ),
-		'RIAL' => esc_html__( 'Iranian Rial (﷼)', 'give' ),
-		'RUB'  => esc_html__( 'Russian Rubles (руб)', 'give' )
+		'USD'  => __( 'US Dollars ($)', 'give' ),
+		'EUR'  => __( 'Euros (€)', 'give' ),
+		'GBP'  => __( 'Pounds Sterling (£)', 'give' ),
+		'AUD'  => __( 'Australian Dollars ($)', 'give' ),
+		'BRL'  => __( 'Brazilian Real (R$)', 'give' ),
+		'CAD'  => __( 'Canadian Dollars ($)', 'give' ),
+		'CZK'  => __( 'Czech Koruna (Kč)', 'give' ),
+		'DKK'  => __( 'Danish Krone (kr.)', 'give' ),
+		'HKD'  => __( 'Hong Kong Dollar ($)', 'give' ),
+		'HUF'  => __( 'Hungarian Forint (Ft)', 'give' ),
+		'ILS'  => __( 'Israeli Shekel (₪)', 'give' ),
+		'JPY'  => __( 'Japanese Yen (¥)', 'give' ),
+		'MYR'  => __( 'Malaysian Ringgits (RM)', 'give' ),
+		'MXN'  => __( 'Mexican Peso ($)', 'give' ),
+		'MAD'  => __( 'Moroccan Dirham (&#x2e;&#x62f;&#x2e;&#x645;)', 'give' ),
+		'NZD'  => __( 'New Zealand Dollar ($)', 'give' ),
+		'NOK'  => __( 'Norwegian Krone (Kr.)', 'give' ),
+		'PHP'  => __( 'Philippine Pesos (₱)', 'give' ),
+		'PLN'  => __( 'Polish Zloty (zł)', 'give' ),
+		'SGD'  => __( 'Singapore Dollar ($)', 'give' ),
+		'KRW'  => __( 'South Korean Won (₩)', 'give' ),
+		'ZAR'  => __( 'South African Rand (R)', 'give' ),
+		'SEK'  => __( 'Swedish Krona (kr)', 'give' ),
+		'CHF'  => __( 'Swiss Franc (CHF)', 'give' ),
+		'TWD'  => __( 'Taiwan New Dollars (NT$)', 'give' ),
+		'THB'  => __( 'Thai Baht (฿)', 'give' ),
+		'INR'  => __( 'Indian Rupee (₹)', 'give' ),
+		'TRY'  => __( 'Turkish Lira (₺)', 'give' ),
+		'RIAL' => __( 'Iranian Rial (﷼)', 'give' ),
+		'RUB'  => __( 'Russian Rubles (руб)', 'give' )
 	);
 
 	return apply_filters( 'give_currencies', $currencies );
@@ -105,7 +105,8 @@ function give_get_currencies() {
 /**
  * Give Currency Symbol
  *
- * Given a currency determine the symbol to use. If no currency given, site default is used. If no symbol is determine, the currency string is returned.
+ * Given a currency determine the symbol to use. If no currency given, site default is used. If no symbol is determine,
+ * the currency string is returned.
  *
  * @since      1.0
  *
@@ -165,7 +166,7 @@ function give_currency_symbol( $currency = '' ) {
 			break;
 		case 'DKK' :
 		case 'SEK' :
-			$symbol = 'kr';
+			$symbol = '&nbsp;kr.&nbsp;';
 			break;
 		case 'PLN' :
 			$symbol = 'zł';
@@ -209,15 +210,24 @@ function give_currency_symbol( $currency = '' ) {
  */
 function give_get_current_page_url() {
 
-	if ( is_front_page() ) {
-		$current_url = home_url( '/' );
+	global $wp;
+
+	if ( get_option( 'permalink_structure' ) ) {
+		$base = trailingslashit( home_url( $wp->request ) );
 	} else {
-		$http_host = sanitize_text_field( $_SERVER['HTTP_HOST'] );
-		$request_uri = sanitize_text_field( $_SERVER['REQUEST_URI'] );
-		$current_url = set_url_scheme( 'http://' . $http_host . untrailingslashit( $request_uri ) );
+		$base = add_query_arg( $wp->query_string, '', trailingslashit( home_url( $wp->request ) ) );
+		$base = remove_query_arg( array( 'post_type', 'name' ), $base );
 	}
 
-	return apply_filters( 'give_get_current_page_url', $current_url );
+	$scheme      = is_ssl() ? 'https' : 'http';
+	$current_uri = set_url_scheme( $base, $scheme );
+
+	if ( is_front_page() ) {
+		$current_uri = home_url( '/' );
+	}
+
+	return apply_filters( 'give_get_current_page_url', $current_uri );
+
 }
 
 
@@ -613,44 +623,54 @@ function give_is_func_disabled( $function ) {
  */
 function give_get_newsletter() { ?>
 
-	<p class="newsletter-intro"><?php esc_html_e( 'Be sure to sign up for the Give newsletter below to stay informed of important updates and news.', 'give' ); ?></p>
+    <p class="newsletter-intro"><?php esc_html_e( 'Be sure to sign up for the Give newsletter below to stay informed of important updates and news.', 'give' ); ?></p>
 
-	<div class="give-newsletter-form-wrap">
+    <div class="give-newsletter-form-wrap">
 
-		<form action="//givewp.us3.list-manage.com/subscribe/post?u=3ccb75d68bda4381e2f45794c&amp;id=12a081aa13" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
-			<div class="give-newsletter-confirmation">
-				<p><?php esc_html_e( 'Thanks for Subscribing!', 'give' ); ?> :)</p>
-			</div>
+        <form action="//givewp.us3.list-manage.com/subscribe/post?u=3ccb75d68bda4381e2f45794c&amp;id=12a081aa13"
+              method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate"
+              target="_blank" novalidate>
+            <div class="give-newsletter-confirmation">
+                <p><?php esc_html_e( 'Thanks for Subscribing!', 'give' ); ?> :)</p>
+            </div>
 
-			<table class="form-table give-newsletter-form">
-				<tr valign="middle">
-					<td>
-						<label for="mce-EMAIL" class="screen-reader-text"><?php esc_html_e( 'Email Address (required)', 'give' ); ?></label>
-						<input type="email" name="EMAIL" id="mce-EMAIL" placeholder="<?php esc_attr_e( 'Email Address (required)', 'give' ); ?>" class="required email" value="">
-					</td>
-					<td>
-						<label for="mce-FNAME" class="screen-reader-text"><?php esc_html_e( 'First Name', 'give' ); ?></label>
-						<input type="text" name="FNAME" id="mce-FNAME" placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" class="" value="">
-					</td>
-					<td>
-						<label for="mce-LNAME" class="screen-reader-text"><?php esc_html_e( 'Last Name', 'give' ); ?></label>
-						<input type="text" name="LNAME" id="mce-LNAME" placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" class="" value="">
-					</td>
-					<td>
-						<input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button" value="<?php esc_attr_e( 'Subscribe', 'give' ); ?>">
-					</td>
-				</tr>
-			</table>
-		</form>
+            <table class="form-table give-newsletter-form">
+                <tr valign="middle">
+                    <td>
+                        <label for="mce-EMAIL"
+                               class="screen-reader-text"><?php esc_html_e( 'Email Address (required)', 'give' ); ?></label>
+                        <input type="email" name="EMAIL" id="mce-EMAIL"
+                               placeholder="<?php esc_attr_e( 'Email Address (required)', 'give' ); ?>"
+                               class="required email" value="">
+                    </td>
+                    <td>
+                        <label for="mce-FNAME"
+                               class="screen-reader-text"><?php esc_html_e( 'First Name', 'give' ); ?></label>
+                        <input type="text" name="FNAME" id="mce-FNAME"
+                               placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" class="" value="">
+                    </td>
+                    <td>
+                        <label for="mce-LNAME"
+                               class="screen-reader-text"><?php esc_html_e( 'Last Name', 'give' ); ?></label>
+                        <input type="text" name="LNAME" id="mce-LNAME"
+                               placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" class="" value="">
+                    </td>
+                    <td>
+                        <input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button"
+                               value="<?php esc_attr_e( 'Subscribe', 'give' ); ?>">
+                    </td>
+                </tr>
+            </table>
+        </form>
 
-		<div style="position: absolute; left: -5000px;">
-			<input type="text" name="b_3ccb75d68bda4381e2f45794c_12a081aa13" tabindex="-1" value="">
-		</div>
+        <div style="position: absolute; left: -5000px;">
+            <input type="text" name="b_3ccb75d68bda4381e2f45794c_12a081aa13" tabindex="-1" value="">
+        </div>
 
-	</div>
+    </div>
 
-	<script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>
-	<script type='text/javascript'>(function ($) {
+    <script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>
+    <script type='text/javascript'>(function ($) {
 			window.fnames = new Array();
 			window.ftypes = new Array();
 			fnames[0] = 'EMAIL';
@@ -677,8 +697,8 @@ function give_get_newsletter() { ?>
 		var $mcj = jQuery.noConflict(true);
 
 
-	</script>
-	<!--End mc_embed_signup-->
+    </script>
+    <!--End mc_embed_signup-->
 
 <?php }
 
@@ -689,20 +709,22 @@ function give_get_newsletter() { ?>
  * Various social media elements to Give
  */
 function give_social_media_elements() {
-?>
+	?>
 
-	<div class="social-items-wrap">
+    <div class="social-items-wrap">
 
-		<iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fwpgive&amp;send=false&amp;layout=button_count&amp;width=100&amp;show_faces=false&amp;font&amp;colorscheme=light&amp;action=like&amp;height=21&amp;appId=220596284639969" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
+        <iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fwpgive&amp;send=false&amp;layout=button_count&amp;width=100&amp;show_faces=false&amp;font&amp;colorscheme=light&amp;action=like&amp;height=21&amp;appId=220596284639969"
+                scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;"
+                allowTransparency="true"></iframe>
 
-		<a href="https://twitter.com/givewp" class="twitter-follow-button" data-show-count="false"><?php
+        <a href="https://twitter.com/givewp" class="twitter-follow-button" data-show-count="false"><?php
 			printf(
-				/* translators: %s: Give twitter user @givewp */
+			/* translators: %s: Give twitter user @givewp */
 				esc_html_e( 'Follow %s', 'give' ),
 				'@givewp'
 			);
-		?></a>
-		<script>!function (d, s, id) {
+			?></a>
+        <script>!function (d, s, id) {
 				var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
 				if (!d.getElementById(id)) {
 					js = d.createElement(s);
@@ -711,12 +733,12 @@ function give_social_media_elements() {
 					fjs.parentNode.insertBefore(js, fjs);
 				}
 			}(document, 'script', 'twitter-wjs');
-		</script>
+        </script>
 
-	</div>
-	<!--/.social-items-wrap -->
+    </div>
+    <!--/.social-items-wrap -->
 
-<?php
+	<?php
 }
 
 
@@ -781,14 +803,14 @@ if ( ! function_exists( 'array_column' ) ) {
 	 * Optionally, you may provide an $indexKey to index the values in the returned
 	 * array by the values from the $indexKey column in the input array.
 	 *
-	 * @param array $input A multi-dimensional array (record set) from which to pull
-	 *                         a column of values.
+	 * @param array      $input     A multi-dimensional array (record set) from which to pull
+	 *                              a column of values.
 	 * @param int|string $columnKey The column of values to return. This value may be the
-	 *                         integer key of the column you wish to retrieve, or it
-	 *                         may be the string key name for an associative array.
-	 * @param mixed $indexKey (Optional.) The column to use as the index/keys for
-	 *                         the returned array. This value may be the integer key
-	 *                         of the column, or it may be the string key name.
+	 *                              integer key of the column you wish to retrieve, or it
+	 *                              may be the string key name for an associative array.
+	 * @param mixed      $indexKey  (Optional.) The column to use as the index/keys for
+	 *                              the returned array. This value may be the integer key
+	 *                              of the column, or it may be the string key name.
 	 *
 	 * @return array
 	 */
@@ -1027,4 +1049,36 @@ function give_is_terms_enabled( $form_id ) {
 	} else {
 		return false;
 	}
+}
+
+
+/**
+ * Delete donation stats cache.
+ * @todo Resolve stats cache key naming issue. Currently it is difficult to regenerate cache key.
+ *
+ * @since 1.8.7
+ *
+ * @param string|array $date_range Date for stats.
+ *                           Date value should be in today, yesterday, this_week, last_week, this_month, last_month, this_quarter, last_quarter, this_year, last_year.
+ *                           For date value other, all cache will be removed.
+ *
+ * @param array  $args
+ *
+ * @return WP_Error|bool
+ */
+function give_delete_donation_stats( $date_range = '', $args = array() ) {
+	// Delete all cache.
+	$status = Give_Cache::delete( Give_Cache::get_options_like( 'give_stats' ) );
+
+	/**
+	 * Fire the action when donation stats delete.
+	 *
+	 * @since 1.8.7
+	 *
+	 * @param string|array $date_range
+	 * @param array  $args
+	 */
+	do_action( 'give_delete_donation_stats', $status, $date_range, $args );
+
+	return $status;
 }

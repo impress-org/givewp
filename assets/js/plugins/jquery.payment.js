@@ -20,78 +20,71 @@
 
   $.payment.cards = cards = [
     {
-      type: 'visaelectron',
-      pattern: /^4(026|17500|405|508|844|91[37])/,
-      format: defaultFormat,
-      length: [16],
-      cvcLength: [3],
-      luhn: true
-    }, {
       type: 'maestro',
-      pattern: /^(5(018|0[23]|[68])|6(39|7))/,
+      patterns: [5018, 502, 503, 506, 56, 58, 639, 6220, 67],
       format: defaultFormat,
       length: [12, 13, 14, 15, 16, 17, 18, 19],
       cvcLength: [3],
       luhn: true
     }, {
       type: 'forbrugsforeningen',
-      pattern: /^600/,
+      patterns: [600],
       format: defaultFormat,
       length: [16],
       cvcLength: [3],
       luhn: true
     }, {
       type: 'dankort',
-      pattern: /^5019/,
+      patterns: [5019],
       format: defaultFormat,
       length: [16],
       cvcLength: [3],
       luhn: true
     }, {
       type: 'visa',
-      pattern: /^4/,
+      patterns: [4],
       format: defaultFormat,
       length: [13, 16],
       cvcLength: [3],
       luhn: true
     }, {
       type: 'mastercard',
-      pattern: /^(5[1-5]|2[2-7])/,
+      patterns: [51, 52, 53, 54, 55, 22, 23, 24, 25, 26, 27],
       format: defaultFormat,
       length: [16],
       cvcLength: [3],
       luhn: true
     }, {
       type: 'amex',
-      pattern: /^3[47]/,
+      patterns: [34, 37],
       format: /(\d{1,4})(\d{1,6})?(\d{1,5})?/,
       length: [15],
       cvcLength: [3, 4],
       luhn: true
     }, {
       type: 'dinersclub',
-      pattern: /^3[0689]/,
+      patterns: [30, 36, 38, 39],
       format: /(\d{1,4})(\d{1,6})?(\d{1,4})?/,
       length: [14],
       cvcLength: [3],
       luhn: true
     }, {
       type: 'discover',
-      pattern: /^6([045]|22)/,
+      patterns: [60, 64, 65, 622],
       format: defaultFormat,
       length: [16],
       cvcLength: [3],
       luhn: true
     }, {
       type: 'unionpay',
-      pattern: /^(62|88)/,
+      patterns: [62, 88],
       format: defaultFormat,
       length: [16, 17, 18, 19],
       cvcLength: [3],
       luhn: false
     }, {
       type: 'jcb',
-      pattern: /^35/,
+      patterns: [35],
       format: defaultFormat,
       length: [16],
       cvcLength: [3],
@@ -100,12 +93,17 @@
   ];
 
   cardFromNumber = function(num) {
-    var card, _i, _len;
+    var card, p, pattern, _i, _j, _len, _len1, _ref;
     num = (num + '').replace(/\D/g, '');
     for (_i = 0, _len = cards.length; _i < _len; _i++) {
       card = cards[_i];
-      if (card.pattern.test(num)) {
-        return card;
+      _ref = card.patterns;
+      for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
+        pattern = _ref[_j];
+        p = pattern + '';
+        if (num.substr(0, p.length) === p) {
+          return card;
+        }
       }
     }
   };
@@ -153,7 +151,7 @@
   };
 
   safeVal = function(value, $target) {
-    var cursor, error, last;
+    var currPair, cursor, digit, error, last, prevPair;
     try {
       cursor = $target.prop('selectionStart');
     } catch (_error) {
@@ -166,13 +164,21 @@
       if (cursor === last.length) {
         cursor = value.length;
       }
+      if (last !== value) {
+        prevPair = last.slice(cursor - 1, +cursor + 1 || 9e9);
+        currPair = value.slice(cursor - 1, +cursor + 1 || 9e9);
+        digit = value[cursor];
+        if (/\d/.test(digit) && prevPair === ("" + digit + " ") && currPair === (" " + digit)) {
+          cursor = cursor + 1;
+        }
+      }
       $target.prop('selectionStart', cursor);
       return $target.prop('selectionEnd', cursor);
     }
   };
 
   replaceFullWidthChars = function(str) {
-    var char, chars, fullWidth, halfWidth, idx, value, _i, _len;
+    var chars, chr, fullWidth, halfWidth, idx, value, _i, _len;
     if (str == null) {
       str = '';
     }
@@ -181,20 +187,21 @@
     value = '';
     chars = str.split('');
     for (_i = 0, _len = chars.length; _i < _len; _i++) {
-      char = chars[_i];
-      idx = fullWidth.indexOf(char);
+      chr = chars[_i];
+      idx = fullWidth.indexOf(chr);
       if (idx > -1) {
-        char = halfWidth[idx];
+        chr = halfWidth[idx];
       }
-      value += char;
+      value += chr;
     }
     return value;
   };
 
   reFormatNumeric = function(e) {
+    var $target;
+    $target = $(e.currentTarget);
     return setTimeout(function() {
-      var $target, value;
-      $target = $(e.currentTarget);
+      var value;
       value = $target.val();
       value = replaceFullWidthChars(value);
       value = value.replace(/\D/g, '');
@@ -203,9 +210,10 @@
   };
 
   reFormatCardNumber = function(e) {
+    var $target;
+    $target = $(e.currentTarget);
     return setTimeout(function() {
-      var $target, value;
-      $target = $(e.currentTarget);
+      var value;
       value = $target.val();
       value = replaceFullWidthChars(value);
       value = $.payment.formatCardNumber(value);
@@ -275,9 +283,10 @@
   };
 
   reFormatExpiry = function(e) {
+    var $target;
+    $target = $(e.currentTarget);
     return setTimeout(function() {
-      var $target, value;
-      $target = $(e.currentTarget);
+      var value;
       value = $target.val();
       value = replaceFullWidthChars(value);
       value = $.payment.formatExpiry(value);
@@ -301,7 +310,14 @@
     } else if (/^\d\d$/.test(val)) {
       e.preventDefault();
       return setTimeout(function() {
-        return $target.val("" + val + " / ");
+        var m1, m2;
+        m1 = parseInt(val[0], 10);
+        m2 = parseInt(val[1], 10);
+        if (m2 > 2 && m1 !== 0) {
+          return $target.val("0" + m1 + " / " + m2);
+        } else {
+          return $target.val("" + val + " / ");
+        }
       });
     }
   };
@@ -351,9 +367,10 @@
   };
 
   reFormatCVC = function(e) {
+    var $target;
+    $target = $(e.currentTarget);
     return setTimeout(function() {
-      var $target, value;
-      $target = $(e.currentTarget);
+      var value;
       value = $target.val();
       value = replaceFullWidthChars(value);
       value = value.replace(/\D/g, '').slice(0, 4);

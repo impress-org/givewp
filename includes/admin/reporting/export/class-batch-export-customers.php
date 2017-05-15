@@ -75,13 +75,13 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 		if( ! empty( $this->form ) ) {
 			// Cache donor ids to output unique list of donor.
 			$this->query_id = give_clean( $_REQUEST['give_export_option']['query_id'] );
-			if( ! ( $this->donor_ids = get_transient( $this->query_id ) ) ) {
+			if( ! ( $this->donor_ids = Give_Cache::get( $this->query_id, true ) ) ) {
 				$this->donor_ids = array();
-				set_transient( $this->query_id, $this->donor_ids, HOUR_IN_SECONDS );
+				Give_Cache::set( $this->query_id, $this->donor_ids, HOUR_IN_SECONDS, true );
 			}
 		}
 
-		$this->price_id = ! empty( $request['give_price_option'] ) && 0 !== $request['give_price_option'] ? absint( $request['give_price_option'] ) : null;
+		$this->price_id = ! empty( $request['give_price_option'] ) && 'all' !== $request['give_price_option'] ? absint( $request['give_price_option'] ) : null;
 
 	}
 
@@ -93,8 +93,6 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 	 * @return array|bool $cols All the columns.
 	 */
 	public function csv_cols() {
-
-		$cols = array();
 
 		$columns = isset( $this->data['give_export_option'] ) ? $this->data['give_export_option'] : array();
 
@@ -211,11 +209,11 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 				}
 
 				// Cache donor ids only if admin export donor for specific form.
-				set_transient( $this->query_id, array_unique( $this->donor_ids ), HOUR_IN_SECONDS );
+				Give_Cache::set( $this->query_id, array_unique( $this->donor_ids ), HOUR_IN_SECONDS, true );
 			}
 		} else {
 
-			// Export all customers
+			// Export all donors.
 			$offset = 30 * ( $this->step - 1 );
 			$donors = Give()->customers->get_customers( array( 'number' => 30, 'offset' => $offset ) );
 

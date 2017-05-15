@@ -28,7 +28,7 @@ function give_plugin_action_links( $actions ) {
 		'settings' => sprintf(
 			'<a href="%1$s">%2$s</a>',
 			admin_url( 'edit.php?post_type=give_forms&page=give-settings' ),
-			esc_html__( 'Settings', 'give' )
+			__( 'Settings', 'give' )
 		),
 	);
 
@@ -62,7 +62,7 @@ function give_plugin_row_meta( $plugin_meta, $plugin_file ) {
 					'utm_campaign' => 'admin',
 				), 'https://givewp.com/documentation/' )
 			),
-			esc_html__( 'Documentation', 'give' )
+			__( 'Documentation', 'give' )
 		),
 		sprintf(
 			'<a href="%1$s" target="_blank">%2$s</a>',
@@ -72,7 +72,7 @@ function give_plugin_row_meta( $plugin_meta, $plugin_file ) {
 					'utm_campaign' => 'admin',
 				), 'https://givewp.com/addons/' )
 			),
-			esc_html__( 'Add-ons', 'give' )
+			__( 'Add-ons', 'give' )
 		),
 	);
 

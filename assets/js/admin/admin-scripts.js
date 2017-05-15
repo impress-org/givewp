@@ -54,18 +54,17 @@ jQuery.noConflict();
 	 * @returns {string}
 	 */
 	function give_unformat_currency(price, dp) {
-		price                = accounting.unformat(price, give_vars.decimal_separator).toString();
+		price = accounting.unformat(price, give_vars.decimal_separator).toString();
+		dp    = ( 'undefined' == dp ? false : dp );
+
 		var decimal_position = price.indexOf('.');
 
 		// Set default value for number of decimals.
-		if (false != dp) {
+		if ( false !== dp ) {
 			price = parseFloat(price).toFixed(dp);
 
-			// If price do not have decimal value then set default number of decimals.
-		} else if (
-			( -1 === decimal_position )
-			|| ( give_vars.currency_decimals > price.substr(decimal_position + 1).length )
-		) {
+		// If price do not have decimal value then set default number of decimals.
+		} else {
 			price = parseFloat(price).toFixed(give_vars.currency_decimals);
 		}
 
@@ -222,7 +221,12 @@ jQuery.noConflict();
 					variable_prices_html_container = $('.give-donation-level');
 
 				// Check for form ID.
-				if (!( give_form_id = $(this).val() )) {
+				if ( ! ( give_form_id = $(this).val() )) {
+					return false;
+				}
+
+				// Bailout.
+				if( ! variable_prices_html_container.length ) {
 					return false;
 				}
 
@@ -1360,9 +1364,10 @@ jQuery.noConflict();
 
 				// Get max level id.
 				$('input[type="hidden"].give-levels_id', $this).each(function (index, item) {
-					var $item = $(item);
-					if (max_level_id < $item.val()) {
-						max_level_id = $item.val();
+					var $item = $(item),
+						current_level = parseInt( $item.val() );
+					if (max_level_id < current_level ) {
+						max_level_id = current_level;
 					}
 				});
 
@@ -1663,10 +1668,10 @@ jQuery.noConflict();
 
 		// Format price sting of input field on focusout.
 		$('#poststuff').on('focusout', 'input.give-money-field, input.give-price-field', function () {
-			price_string = give_unformat_currency($(this).val(), false);
+			price_string = give_unformat_currency( $(this).val(), false );
 
 			// Back out.
-			if (!parseInt(price_string)) {
+			if ( give_unformat_currency( '0', false ) === give_unformat_currency( $(this).val(), false ) ) {
 				$(this).val('');
 				return false;
 			}
@@ -1707,7 +1712,7 @@ jQuery.noConflict();
 		});
 
 		// Render setting tab.
-		give_render_responsinve_tabs();
+		give_render_responsive_tabs();
 	});
 })(jQuery);
 
@@ -1715,13 +1720,13 @@ jQuery.noConflict();
  * Responsive js.
  */
 jQuery(window).resize(function () {
-	give_render_responsinve_tabs();
+	give_render_responsive_tabs();
 });
 
 /**
  * Render responsive tabs
  */
-function give_render_responsinve_tabs() {
+function give_render_responsive_tabs() {
 	var $setting_page_form      = jQuery('.give-settings-page'),
 		$main_tab_nav           = jQuery('h2.give-nav-tab-wrapper'),
 		setting_page_form_width = $setting_page_form.width(),
@@ -1732,7 +1737,7 @@ function give_render_responsinve_tabs() {
 		$hide_tabs              = [],
 		tab_width               = 0;
 
-	if( 414 < jQuery(window).outerWidth() ) {
+	if( 600 < jQuery(window).outerWidth() ) {
 		tab_width = 200;
 	}
 

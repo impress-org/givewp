@@ -361,11 +361,11 @@ class Give_API {
 			return false;
 		}
 
-		$user = get_transient( md5( 'give_api_user_' . $key ) );
+		$user = Give_Cache::get( md5( 'give_api_user_' . $key ), true );
 
 		if ( false === $user ) {
 			$user = $wpdb->get_var( $wpdb->prepare( "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = %s LIMIT 1", $key ) );
-			set_transient( md5( 'give_api_user_' . $key ), $user, DAY_IN_SECONDS );
+			Give_Cache::set( md5( 'give_api_user_' . $key ), $user, DAY_IN_SECONDS, true );
 		}
 
 		if ( $user != null ) {
@@ -385,11 +385,11 @@ class Give_API {
 		}
 
 		$cache_key       = md5( 'give_api_user_public_key' . $user_id );
-		$user_public_key = get_transient( $cache_key );
+		$user_public_key = Give_Cache::get( $cache_key, true );
 
 		if ( empty( $user_public_key ) ) {
 			$user_public_key = $wpdb->get_var( $wpdb->prepare( "SELECT meta_key FROM $wpdb->usermeta WHERE meta_value = 'give_user_public_key' AND user_id = %d", $user_id ) );
-			set_transient( $cache_key, $user_public_key, HOUR_IN_SECONDS );
+			Give_Cache::set( $cache_key, $user_public_key, HOUR_IN_SECONDS, true );
 		}
 
 		return $user_public_key;
@@ -403,11 +403,11 @@ class Give_API {
 		}
 
 		$cache_key       = md5( 'give_api_user_secret_key' . $user_id );
-		$user_secret_key = get_transient( $cache_key );
+		$user_secret_key = Give_Cache::get( $cache_key, true );
 
 		if ( empty( $user_secret_key ) ) {
 			$user_secret_key = $wpdb->get_var( $wpdb->prepare( "SELECT meta_key FROM $wpdb->usermeta WHERE meta_value = 'give_user_secret_key' AND user_id = %d", $user_id ) );
-			set_transient( $cache_key, $user_secret_key, HOUR_IN_SECONDS );
+			Give_Cache::set( $cache_key, $user_secret_key, HOUR_IN_SECONDS, true );
 		}
 
 		return $user_secret_key;
@@ -1729,7 +1729,7 @@ class Give_API {
 		switch ( $process ) {
 			case 'generate':
 				if ( $this->generate_api_key( $user_id ) ) {
-					delete_transient( 'give_total_api_keys' );
+					Give_Cache::delete( Give_Cache::get_key( 'give_total_api_keys' ) );
 					wp_redirect( add_query_arg( 'give-message', 'api-key-generated', 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) );
 					exit();
 				} else {
@@ -1739,13 +1739,13 @@ class Give_API {
 				break;
 			case 'regenerate':
 				$this->generate_api_key( $user_id, true );
-				delete_transient( 'give_total_api_keys' );
+				Give_Cache::delete( Give_Cache::get_key( 'give_total_api_keys' ) );
 				wp_redirect( add_query_arg( 'give-message', 'api-key-regenerated', 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) );
 				exit();
 				break;
 			case 'revoke':
 				$this->revoke_api_key( $user_id );
-				delete_transient( 'give_total_api_keys' );
+				Give_Cache::delete( Give_Cache::get_key( 'give_total_api_keys' ) );
 				wp_redirect( add_query_arg( 'give-message', 'api-key-revoked', 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) );
 				exit();
 				break;
@@ -1822,9 +1822,9 @@ class Give_API {
 		$public_key = $this->get_user_public_key( $user_id );
 		$secret_key = $this->get_user_secret_key( $user_id );
 		if ( ! empty( $public_key ) ) {
-			delete_transient( md5( 'give_api_user_' . $public_key ) );
-			delete_transient( md5( 'give_api_user_public_key' . $user_id ) );
-			delete_transient( md5( 'give_api_user_secret_key' . $user_id ) );
+			Give_Cache::delete( Give_Cache::get_key( md5( 'give_api_user_' . $public_key ) ) );
+			Give_Cache::delete( Give_Cache::get_key( md5( 'give_api_user_public_key' . $user_id ) ) );
+			Give_Cache::delete( Give_Cache::get_key( md5( 'give_api_user_secret_key' . $user_id ) ) );
 			delete_user_meta( $user_id, $public_key );
 			delete_user_meta( $user_id, $secret_key );
 		} else {
