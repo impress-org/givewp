@@ -169,7 +169,7 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 					'form_name' => isset( $payment_meta['form_title'] ) ? $payment_meta['form_title'] : '',
 					'skus'      => $skus,
 					'amount'    => html_entity_decode( give_format_amount( $total ) ),
-					'gateway'   => give_get_gateway_admin_label( get_post_meta( $payment->ID, '_give_payment_gateway', true ) ),
+					'gateway'   => give_get_gateway_admin_label( give_get_meta( $payment->ID, '_give_payment_gateway', true ) ),
 					'trans_id'  => give_get_payment_transaction_id( $payment->ID ),
 					'key'       => $payment_meta['key'],
 					'date'      => $payment->post_date,

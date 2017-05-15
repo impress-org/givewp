@@ -203,6 +203,28 @@ function give_currency_symbol( $currency = '' ) {
 
 
 /**
+ * Get currency name.
+ *
+ * @since 1.8.8
+ *
+ * @param string $currency_code
+ *
+ * @return string
+ */
+function give_get_currency_name( $currency_code ) {
+	$currency_name = '';
+	$currency_names = give_get_currencies();
+
+	if( $currency_code && array_key_exists( $currency_code, $currency_names ) ) {
+		$currency_name = explode( '(',  $currency_names[$currency_code] );
+		$currency_name = trim( current( $currency_name ) );
+	}
+
+	return apply_filters( 'give_currency_name', $currency_name, $currency_code );
+}
+
+
+/**
  * Get the current page URL
  *
  * @since 1.0
@@ -1042,7 +1064,7 @@ function give_get_plugins() {
  * @return bool
  */
 function give_is_terms_enabled( $form_id ) {
-	$form_option = get_post_meta( $form_id, '_give_terms_option', true );
+	$form_option = give_get_meta( $form_id, '_give_terms_option', true );
 
 	if (
 		give_is_setting_enabled( $form_option, 'global' )
@@ -1104,4 +1126,68 @@ function give_is_add_new_form_page() {
 	}
 
 	return $status;
+}
+
+/**
+ * Get Form/Payment meta.
+ * @todo: implement in core
+ *
+ * @since 1.8.8
+ *
+ * @param int    $id
+ * @param string $meta_key
+ * @param bool   $single
+ * @param bool   $default
+ *
+ * @return mixed
+ */
+function give_get_meta( $id, $meta_key, $single = false, $default = false ) {
+	$meta_value = get_post_meta( $id, $meta_key, $single );
+
+	if (
+		( empty( $meta_key ) || empty( $meta_value ) )
+		&& $default
+	) {
+		$meta_value = $default;
+	}
+
+
+	return apply_filters( 'give_get_meta', $meta_value, $id, $meta_key, $default );
+}
+
+/**
+ * Update Form/Payment meta.
+ * @todo: implement in core
+ *
+ * @since 1.8.8
+ *
+ * @param int    $id
+ * @param string $meta_key
+ * @param string $meta_value
+ * @param string $prev_value
+ *
+ * @return mixed
+ */
+function give_update_meta( $id, $meta_key, $meta_value, $prev_value = '' ) {
+	$status = update_post_meta( $id, $meta_key, $meta_value, $prev_value );
+
+	return apply_filters( 'give_update_meta', $status, $id, $meta_key, $meta_value );
+}
+
+/**
+ * Delete Form/Payment meta.
+ * @todo: implement in core
+ *
+ * @since 1.8.8
+ *
+ * @param int    $id
+ * @param string $meta_key
+ * @param string $meta_value
+ *
+ * @return mixed
+ */
+function give_delete_meta( $id, $meta_key, $meta_value = '' ) {
+	$status = delete_post_meta( $id, $meta_key, $meta_value );
+
+	return apply_filters( 'give_delete_meta', $status, $id, $meta_key, $meta_value );
 }

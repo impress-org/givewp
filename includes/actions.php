@@ -104,7 +104,7 @@ function give_connect_donor_to_wpuser( $user_id, $user_data ){
 			// Update user_id meta in payments.
 			if( ! empty( $donor->payment_ids ) && ( $donations = explode( ',', $donor->payment_ids ) ) ) {
 				foreach ( $donations as $donation  ) {
-					update_post_meta( $donation, '_give_payment_user_id', $user_id );
+					give_update_meta( $donation, '_give_payment_user_id', $user_id );
 				}
 			}
 		}

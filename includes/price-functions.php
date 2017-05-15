@@ -102,7 +102,7 @@ function give_get_default_form_amount( $form_id ) {
 
 	} else {
 
-		$default_amount = get_post_meta( $form_id, '_give_set_price', true );
+		$default_amount = give_get_meta( $form_id, '_give_set_price', true );
 
 	}
 
