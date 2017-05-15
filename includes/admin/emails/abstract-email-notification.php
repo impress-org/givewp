@@ -377,7 +377,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		public function get_notification_status( $form_id = null ) {
 			$notification_status = empty( $form_id )
 				? give_get_option( "{$this->config['id']}_notification", $this->config['notification_status'] )
-				: get_post_meta( $form_id, Give_Email_Setting_Field::get_prefix( $this, $form_id ) . 'notification', true );
+				: give_get_meta( $form_id, Give_Email_Setting_Field::get_prefix( $this, $form_id ) . 'notification', true, 'global' );
 
 			/**
 			 * Filter the notification status.
