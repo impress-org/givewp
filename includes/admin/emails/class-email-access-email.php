@@ -260,6 +260,7 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 
 			if (
 				! empty( $update_options['email_access'] )
+				&& ! empty( $update_options[ "{$this->config['id']}_notification" ] )
 				&& $update_options['email_access'] !== $update_options[ "{$this->config['id']}_notification" ]
 			) {
 				$update_options[ "{$this->config['id']}_notification" ] = $update_options['email_access'];
