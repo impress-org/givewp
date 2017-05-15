@@ -705,7 +705,7 @@ function give_docs_link( $field ) {
 
 	echo '<p class="give-docs-link"><a href="' . esc_url( $field['url'] )
 	     . '" target="_blank">'
-	     . sprintf( esc_html__( 'Need Help? See docs on "%s"' ), $field['title'] )
+	     . sprintf( esc_html__( 'Need Help? See docs on "%s"', 'give' ), $field['title'] )
 	     . '<span class="dashicons dashicons-editor-help"></span></a></p>';
 }
 
