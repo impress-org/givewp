@@ -550,46 +550,13 @@ function give_get_donor_address( $user_id = 0 ) {
  * @return        void
  */
 function give_new_user_notification( $user_id = 0, $user_data = array() ) {
-
+	// Bailout.
 	if ( empty( $user_id ) || empty( $user_data ) ) {
 		return;
 	}
-	$blogname = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
 
-	/* translators: %s: site name */
-	$message = sprintf( esc_attr__( 'New user registration on your site %s:', 'give' ), $blogname ) . "\r\n\r\n";
-	/* translators: %s: user login */
-	$message .= sprintf( esc_attr__( 'Username: %s', 'give' ), $user_data['user_login'] ) . "\r\n\r\n";
-	/* translators: %s: user email */
-	$message .= sprintf( esc_attr__( 'E-mail: %s', 'give' ), $user_data['user_email'] ) . "\r\n";
-
-	Give()->emails->send(
-		get_option( 'admin_email' ),
-		sprintf(
-			/* translators: %s: site name */
-			esc_attr__( '[%s] New User Registration', 'give' ),
-			$blogname
-		),
-		$message
-	);
-
-	/* translators: %s: user login */
-	$message = sprintf( esc_attr__( 'Username: %s', 'give' ), $user_data['user_login'] ) . "\r\n";
-	/* translators: %s: paswword */
-	$message .= sprintf( esc_attr__( 'Password: %s', 'give' ), esc_attr__( '[Password entered during donation]', 'give' ) ) . "\r\n";
-
-	$message .= '<a href="' . wp_login_url() . '"> ' . esc_attr__( 'Click Here to Login &raquo;', 'give' ) . '</a>' . "\r\n";
-
-	Give()->emails->send(
-		$user_data['user_email'],
-		sprintf(
-			/* translators: %s: site name */
-			esc_attr__( '[%s] Your username and password', 'give' ),
-			$blogname
-		),
-		$message
-	);
-
+	do_action( 'give_new-donor-register_email_notification', $user_id, $user_data );
+	do_action( 'give_donor-register_email_notification', $user_id, $user_data );
 }
 
 add_action( 'give_insert_user', 'give_new_user_notification', 10, 2 );

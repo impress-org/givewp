@@ -585,10 +585,17 @@ function _give_deprecated_function( $function, $version, $replacement = null, $b
  * @return string $post_id
  */
 function give_get_admin_post_id() {
-	$post_id = isset( $_GET['post'] ) ? $_GET['post'] : null;
-	if ( ! $post_id && isset( $_POST['post_id'] ) ) {
-		$post_id = $_POST['post_id'];
-	}
+	$post_id = isset( $_REQUEST['post'] )
+		? absint( $_REQUEST['post'] )
+		: null;
+
+	$post_id = ! empty( $post_id )
+		? $post_id
+		: ( isset( $_REQUEST['post_id'] ) ? absint( $_REQUEST['post_id'] ) : null );
+
+	$post_id = ! empty( $post_id )
+		? $post_id
+		: ( isset( $_REQUEST['post_ID'] ) ? absint( $_REQUEST['post_ID'] ) : null );
 
 	return $post_id;
 }
@@ -1105,6 +1112,21 @@ function give_delete_donation_stats( $date_range = '', $args = array() ) {
 	return $status;
 }
 
+/**
+ * Check if admin creating new donation form or not.
+ *
+ * @since 2.0
+ * @return bool
+ */
+function give_is_add_new_form_page() {
+	$status = false;
+
+	if ( false !== strpos( $_SERVER['REQUEST_URI'], '/wp-admin/post-new.php?post_type=give_forms' ) ) {
+		$status = true;
+	}
+
+	return $status;
+}
 
 /**
  * Get Form/Payment meta.

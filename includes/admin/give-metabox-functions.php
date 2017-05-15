@@ -709,6 +709,62 @@ function give_docs_link( $field ) {
 	     . '<span class="dashicons dashicons-editor-help"></span></a></p>';
 }
 
+
+/**
+ * Output preview buttons.
+ *
+ * @since 2.0
+ * @param $field
+ */
+function give_email_preview_buttons( $field ) {
+	/* @var WP_Post $post */
+	global $post;
+
+	$field_id = str_replace( '_preview_buttons', '', $field['id'] );
+
+	ob_start();
+
+	echo '<p class="give-field-wrap ' . esc_attr( $field['id'] ) . '_field"><label for="' . give_get_field_name( $field ) . '">' . wp_kses_post( $field['name'] ) . '</label>';
+
+	echo sprintf(
+		'<a href="%1$s" class="button-secondary" target="_blank">%2$s</a>',
+		wp_nonce_url(
+			add_query_arg(
+				array(
+					'give_action' => 'preview_email',
+					'email_type'  => $field_id,
+					'form_id'     => $post->ID,
+				),
+				home_url()
+			), 'give-preview-email'
+		),
+		$field['name']
+	);
+
+	echo sprintf(
+		' <a href="%1$s" aria-label="%2$s" class="button-secondary">%3$s</a>',
+		wp_nonce_url(
+			add_query_arg(
+				array(
+					'give_action'  => 'send_preview_email',
+					'email_type'   => $field_id,
+					'give-message' => 'sent-test-email',
+					'form_id'      => $post->ID,
+				)
+			), 'give-send-preview-email' ),
+		esc_attr__( 'Send Test Email.', 'give' ),
+		esc_html__( 'Send Test Email', 'give' )
+	);
+
+	if ( ! empty( $field['description'] ) ) {
+		echo '<span class="give-field-description">' . wp_kses_post( $field['desc'] ) . '</span>';
+	}
+
+	echo '</p>';
+
+	echo ob_get_clean();
+}
+
 /**
  * Get setting field value.
  *

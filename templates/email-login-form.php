@@ -58,7 +58,16 @@ if ( is_email( $email ) && wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
 
 		if ( isset( $customer->id ) ) {
 			if ( Give()->email_access->can_send_email( $customer->id ) ) {
-				Give()->email_access->send_email( $customer->id, $email );
+				/**
+				 *  Fire the action
+				 *
+				 * @since 2.0
+				 *
+				 * @param int    $customer ::$id
+				 * @param string $email
+				 */
+				do_action( 'give_email-access_email_notification', $customer->id, $email );
+
 				$show_form = false;
 			}
 		} else {

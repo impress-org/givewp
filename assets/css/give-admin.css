@@ -1592,12 +1592,37 @@ table.give-table td.row-title p {
 .give-settings-page table table input[type="text"] {
   width: 15em; }
 
+.give-settings-page .give-repeat-setting-field {
+  margin: 10px 0; }
+
+.give-settings-page .give-remove-setting-field {
+  width: 25px;
+  height: 25px;
+  padding: 0;
+  text-align: center;
+  line-height: 22px;
+  font-size: 21px;
+  font-weight: 300;
+  cursor: pointer;
+  margin-left: 20px;
+  display: inline-block; }
+
+.give-settings-page .give-remove-setting-field:hover {
+  background-color: red;
+  color: white;
+  border-radius: 30px; }
+
+.give-settings-page .give-forminp p:first-child .give-remove-setting-field {
+  display: none; }
+
 .give-setting-tab-header {
   clear: both;
   overflow: hidden;
   margin: 30px 0; }
   .give-setting-tab-header h2 {
     margin-top: 8px; }
+  .give-setting-tab-header p {
+    margin-bottom: 0; }
 
 .give-radio-inline ul {
   margin-top: 0; }
@@ -1858,6 +1883,39 @@ a.give-delete {
   font-style: italic;
   margin: 0;
   padding-top: .5em; }
+
+.giveemailnotifications .check-column {
+  padding: 13px 10px 0 20px !important; }
+
+.giveemailnotifications td.check-column input {
+  display: none; }
+
+.giveemailnotifications th.check-column .give-email-notification-status {
+  color: white;
+  border-radius: 1em;
+  cursor: pointer;
+  padding: 2px; }
+
+.giveemailnotifications th.check-column .give-email-notification-enabled,
+.giveemailnotifications th.check-column .give-email-notification-disabled:hover {
+  background: #46b450; }
+
+.giveemailnotifications th.check-column .give-email-notification-disabled,
+.giveemailnotifications th.check-column .give-email-notification-enabled:hover {
+  background: #bbbbbb; }
+
+.giveemailnotifications th.check-column .dashicons-no-alt:hover:before {
+  content: "\f147" !important; }
+
+.giveemailnotifications th.check-column .dashicons-yes:hover:before {
+  content: "\f335" !important; }
+
+.giveemailnotifications th.check-column .give-email-notification-status[data-edit="0"] {
+  cursor: not-allowed; }
+
+.giveemailnotifications .spinner.is-active {
+  margin: 0 0 0 2px;
+  float: none; }
 
 h2.give-nav-tab-wrapper {
   overflow: hidden;
