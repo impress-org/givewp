@@ -347,6 +347,8 @@ add_action( 'admin_init', 'give_install_roles_on_network' );
  * @return array
  */
 function give_get_default_settings() {
+	$default_agreement_text = __( 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. A adipisci delectus, eos excepturi, expedita iure maiores maxime neque non officiis perferendis possimus quae, reiciendis similique sint voluptas voluptatum. Cum, voluptates.', 'give' );
+
 	$options = array(
 		// General.
 		'base_country'                                => 'US',
@@ -373,6 +375,8 @@ function give_get_default_settings() {
 		'uninstall_on_delete'                         => 'disabled',
 		'the_content_filter'                          => 'enabled',
 		'scripts_footer'                              => 'disabled',
+		'agree_to_terms_label'                        => __( 'Agree to Terms?', 'give' ),
+		'agreement_text'                              => $default_agreement_text,
 
 		// Paypal IPN verification.
 		'paypal_verification'                         => 'enabled',
