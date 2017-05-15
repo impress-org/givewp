@@ -475,6 +475,10 @@ a.give-delete {
 
 // Email notification list.
 .giveemailnotifications {
+	.check-column{
+		padding: 13px 10px 0 20px !important;
+	}
+
 	td.check-column input {
 		//width: 1em;
 		display: none;
@@ -488,12 +492,22 @@ a.give-delete {
 			padding: 2px;
 		}
 
-		.give-email-notification-enabled {
+		.give-email-notification-enabled,
+		.give-email-notification-disabled:hover{
 			background: #46b450;
 		}
 
-		.give-email-notification-disabled {
+		.give-email-notification-disabled,
+		.give-email-notification-enabled:hover{
 			background: #bbbbbb;
+		}
+
+		.dashicons-no-alt:hover:before {
+			content: "\f147" !important;
+		}
+
+		.dashicons-yes:hover:before {
+			content: "\f335" !important;
 		}
 
 		.give-email-notification-status[data-edit="0"] {
@@ -502,7 +516,7 @@ a.give-delete {
 	}
 
 	.spinner.is-active {
-		margin: 0;
+		margin: 0 0 0 2px;
 		float: none;
 	}
 }

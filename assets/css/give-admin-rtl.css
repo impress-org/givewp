@@ -1883,6 +1883,9 @@ a.give-delete {
   margin: 0;
   padding-top: .5em; }
 
+.giveemailnotifications .check-column {
+  padding: 13px 20px 0 10px !important; }
+
 .giveemailnotifications td.check-column input {
   display: none; }
 
@@ -1892,17 +1895,25 @@ a.give-delete {
   cursor: pointer;
   padding: 2px; }
 
-.giveemailnotifications th.check-column .give-email-notification-enabled {
+.giveemailnotifications th.check-column .give-email-notification-enabled,
+.giveemailnotifications th.check-column .give-email-notification-disabled:hover {
   background: #46b450; }
 
-.giveemailnotifications th.check-column .give-email-notification-disabled {
+.giveemailnotifications th.check-column .give-email-notification-disabled,
+.giveemailnotifications th.check-column .give-email-notification-enabled:hover {
   background: #bbbbbb; }
+
+.giveemailnotifications th.check-column .dashicons-no-alt:hover:before {
+  content: "\f147" !important; }
+
+.giveemailnotifications th.check-column .dashicons-yes:hover:before {
+  content: "\f335" !important; }
 
 .giveemailnotifications th.check-column .give-email-notification-status[data-edit="0"] {
   cursor: not-allowed; }
 
 .giveemailnotifications .spinner.is-active {
-  margin: 0;
+  margin: 0 2px 0 0;
   float: none; }
 
 h2.give-nav-tab-wrapper {
