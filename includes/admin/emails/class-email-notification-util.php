@@ -239,6 +239,8 @@ class Give_Email_Notification_Util {
 	 * @return mixed
 	 */
 	public static function get_value( Give_Email_Notification $email, $option_name, $form_id = null, $default = false ) {
+		// If form id set then option name can be contain _give_ prefix which is only used for meta key,
+		// So make sure you are using correct option name.
 		$global_option_name = ( 0 === strpos( $option_name, '_give_' )
 			? str_replace( '_give_', '', $option_name )
 			: $option_name );
