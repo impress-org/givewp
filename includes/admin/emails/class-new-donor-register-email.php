@@ -38,7 +38,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 				'has_recipient_field'   => true,
 				'notification_status'   => 'enabled',
 				'has_preview_header'    => true,
-				'email_tag_context'     => 'donor',
+				'email_tag_context'     => array( 'donor', 'general' ),
 				'form_metabox_setting'  => false,
 				'default_email_subject' => sprintf(
 					/* translators: %s: site name */

@@ -39,8 +39,9 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 				'email_tag_contex'      => 'donor',
 				'form_metabox_setting'  => false,
 				'recipient_group_name'  => __( 'Donor', 'give' ),
+				'email_tag_context'     => array( 'donor', 'general' ),
 				'default_email_subject' => sprintf(
-					/* translators: %s: site name */
+				/* translators: %s: site name */
 					esc_attr__( '[%s] Your username and password', 'give' ),
 					get_bloginfo( 'name' )
 				),
@@ -74,9 +75,9 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 		function get_default_email_message() {
 			$message = esc_attr__( 'Username: {username}', 'give' ) . "\r\n";
 			$message .= sprintf(
-				esc_attr__( 'Password: %s', 'give' ),
-				esc_attr__( '[Password entered during donation]', 'give' )
-			) . "\r\n";
+				            esc_attr__( 'Password: %s', 'give' ),
+				            esc_attr__( '[Password entered during donation]', 'give' )
+			            ) . "\r\n";
 
 			$message .= '<a href="' . wp_login_url() . '"> ' . esc_attr__( 'Click Here to Login &raquo;', 'give' ) . '</a>' . "\r\n";
 
@@ -118,6 +119,7 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 		 *
 		 * @param string                    $email_preview_header
 		 * @param Give_Donor_Register_Email $email
+		 *
 		 * @return bool
 		 */
 		public function email_preview_header( $email_preview_header, $email ) {
