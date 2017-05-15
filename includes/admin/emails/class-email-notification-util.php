@@ -239,11 +239,14 @@ class Give_Email_Notification_Util {
 	 * @return mixed
 	 */
 	public static function get_value( Give_Email_Notification $email, $option_name, $form_id = null, $default = false ) {
-		$option_value = give_get_option( $option_name, $default );
+		$global_option_name = ( 0 === strpos( $option_name, '_give_' )
+			? str_replace( '_give_', '', $option_name )
+			: $option_name );
+		$option_value = give_get_option( $global_option_name, $default );
 
 		if (
 			! empty( $form_id )
-			&& give_is_setting_enabled( get_post_meta( $form_id, Give_Email_Setting_Field::get_prefix( $email, $form_id ) . 'notification', true ) )
+			&& give_is_setting_enabled( give_get_meta( $form_id, Give_Email_Setting_Field::get_prefix( $email, $form_id ) . 'notification', true, 'global' ) )
 		) {
 			$option_value = get_post_meta( $form_id, $option_name, true );
 		}
