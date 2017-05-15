@@ -705,7 +705,7 @@ function give_docs_link( $field ) {
 
 	echo '<p class="give-docs-link"><a href="' . esc_url( $field['url'] )
 	     . '" target="_blank">'
-	     . sprintf( esc_html__( 'Need Help? See docs on "%s"' ), $field['title'] )
+	     . sprintf( esc_html__( 'Need Help? See docs on "%s"', 'give' ), $field['title'] )
 	     . '<span class="dashicons dashicons-editor-help"></span></a></p>';
 }
 
@@ -727,7 +727,7 @@ function give_get_field_value( $field, $postid ) {
 	}
 
 	// Get value from db.
-	$field_value = get_post_meta( $postid, $field['id'], true );
+	$field_value = give_get_meta( $postid, $field['id'], true );
 
 	/**
 	 * Filter the field value before apply default value.
@@ -758,8 +758,18 @@ function give_get_field_value( $field, $postid ) {
  */
 function give_get_field_description( $field ) {
 	$field_desc_html = '';
-	if ( ! empty( $field['description'] ) ) {
-		$field_desc_html = '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
+	$description     = '';
+
+	// Check for both `description` and `desc`.
+	if ( isset( $field['description'] ) ) {
+		$description = $field['description'];
+	} elseif ( isset( $field['desc'] ) ) {
+		$description = $field['desc'];
+	}
+
+	// Set if there is a description.
+	if ( ! empty( $description ) ) {
+		$field_desc_html = '<span class="give-field-description">' . wp_kses_post( $description ) . '</span>';
 	}
 
 	return $field_desc_html;
@@ -926,7 +936,7 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 
 		<table class="give-repeatable-fields-section-wrapper" cellspacing="0">
 			<?php
-			$repeater_field_values = get_post_meta( $thepostid, $fields['id'], true );
+			$repeater_field_values = give_get_meta( $thepostid, $fields['id'], true );
 			$header_title          = isset( $fields['options']['header_title'] )
 				? $fields['options']['header_title']
 				: esc_attr__( 'Group', 'give' );
@@ -1143,10 +1153,10 @@ function give_get_current_setting_page() {
  * @return string
  */
 function _give_display_content_field_value( $field_value, $field, $postid ) {
-	$show_content = get_post_meta( $postid, '_give_content_option', true );
+	$show_content = give_get_meta( $postid, '_give_content_option', true );
 
 	if (
-		! get_post_meta( $postid, '_give_display_content', true )
+		! give_get_meta( $postid, '_give_display_content', true )
 		&& $show_content
 		&& ( 'none' !== $show_content )
 	) {
@@ -1174,10 +1184,10 @@ add_filter( '_give_display_content_field_value', '_give_display_content_field_va
  * @return string
  */
 function _give_content_placement_field_value( $field_value, $field, $postid ) {
-	$show_content = get_post_meta( $postid, '_give_content_option', true );
+	$show_content = give_get_meta( $postid, '_give_content_option', true );
 
 	if (
-		! get_post_meta( $postid, '_give_content_placement', true )
+		! give_get_meta( $postid, '_give_content_placement', true )
 		&& ( 'none' !== $show_content )
 	) {
 		$field_value = $show_content;
@@ -1203,7 +1213,7 @@ add_filter( '_give_content_placement_field_value', '_give_content_placement_fiel
  * @return string
  */
 function _give_terms_option_field_value( $field_value, $field, $postid ) {
-	$term_option = get_post_meta( $postid, '_give_terms_option', true );
+	$term_option = give_get_meta( $postid, '_give_terms_option', true );
 
 	if ( in_array( $term_option, array( 'none', 'yes' ) ) ) {
 		$field_value = ( 'yes' === $term_option ? 'enabled' : 'disabled' );
@@ -1230,7 +1240,7 @@ add_filter( '_give_terms_option_field_value', '_give_terms_option_field_value', 
  * @return string
  */
 function _give_offline_donation_enable_billing_fields_single_field_value( $field_value, $field, $postid ) {
-	$offline_donation = get_post_meta( $postid, '_give_offline_donation_enable_billing_fields_single', true );
+	$offline_donation = give_get_meta( $postid, '_give_offline_donation_enable_billing_fields_single', true );
 
 	if ( 'on' === $offline_donation ) {
 		$field_value = 'enabled';
@@ -1256,7 +1266,7 @@ add_filter( '_give_offline_donation_enable_billing_fields_single_field_value', '
  * @return string
  */
 function _give_custom_amount_field_value( $field_value, $field, $postid ) {
-	$custom_amount = get_post_meta( $postid, '_give_custom_amount', true );
+	$custom_amount = give_get_meta( $postid, '_give_custom_amount', true );
 
 	if ( in_array( $custom_amount, array( 'yes', 'no' ) ) ) {
 		$field_value = ( 'yes' === $custom_amount ? 'enabled' : 'disabled' );
@@ -1282,7 +1292,7 @@ add_filter( '_give_custom_amount_field_value', '_give_custom_amount_field_value'
  * @return string
  */
 function _give_goal_option_field_value( $field_value, $field, $postid ) {
-	$goal_option = get_post_meta( $postid, '_give_goal_option', true );
+	$goal_option = give_get_meta( $postid, '_give_goal_option', true );
 
 	if ( in_array( $goal_option, array( 'yes', 'no' ) ) ) {
 		$field_value = ( 'yes' === $goal_option ? 'enabled' : 'disabled' );
@@ -1308,7 +1318,7 @@ add_filter( '_give_goal_option_field_value', '_give_goal_option_field_value', 10
  * @return string
  */
 function _give_close_form_when_goal_achieved_value( $field_value, $field, $postid ) {
-	$close_form = get_post_meta( $postid, '_give_close_form_when_goal_achieved', true );
+	$close_form = give_get_meta( $postid, '_give_close_form_when_goal_achieved', true );
 
 	if ( in_array( $close_form, array( 'yes', 'no' ) ) ) {
 		$field_value = ( 'yes' === $close_form ? 'enabled' : 'disabled' );
@@ -1334,7 +1344,7 @@ add_filter( '_give_close_form_when_goal_achieved_field_value', '_give_close_form
  * @return string
  */
 function _give_logged_in_only_value( $field_value, $field, $postid ) {
-	$guest_donation = get_post_meta( $postid, '_give_logged_in_only', true );
+	$guest_donation = give_get_meta( $postid, '_give_logged_in_only', true );
 
 	if ( in_array( $guest_donation, array( 'yes', 'no' ) ) ) {
 		$field_value = ( 'yes' === $guest_donation ? 'enabled' : 'disabled' );
@@ -1360,7 +1370,7 @@ add_filter( '_give_logged_in_only_field_value', '_give_logged_in_only_value', 10
  * @return string
  */
 function _give_customize_offline_donations_value( $field_value, $field, $postid ) {
-	$customize_offline_text = get_post_meta( $postid, '_give_customize_offline_donations', true );
+	$customize_offline_text = give_get_meta( $postid, '_give_customize_offline_donations', true );
 
 	if ( in_array( $customize_offline_text, array( 'yes', 'no' ) ) ) {
 		$field_value = ( 'yes' === $customize_offline_text ? 'enabled' : 'disabled' );
