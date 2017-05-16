@@ -121,19 +121,19 @@ function give_currency_symbol( $currency = '' ) {
 	}
 	switch ( $currency ) :
 		case 'GBP' :
-			$symbol = '£';
+			$symbol = '&pound;';
 			break;
 		case 'BRL' :
-			$symbol = 'R$';
+			$symbol = '&#82;&#36;';
 			break;
 		case 'EUR' :
-			$symbol = '€';
+			$symbol = '&euro;';
 			break;
 		case 'NOK' :
-			$symbol = 'Kr.';
+			$symbol = '&#107;&#114;.';
 			break;
 		case 'INR' :
-			$symbol = '₹';
+			$symbol = '&#8377;';
 			break;
 		case 'USD' :
 		case 'AUD' :
@@ -141,53 +141,53 @@ function give_currency_symbol( $currency = '' ) {
 		case 'HKD' :
 		case 'MXN' :
 		case 'SGD' :
-			$symbol = '$';
+			$symbol = '&#36;';
 			break;
 		case 'JPY' :
-			$symbol = '¥';
+			$symbol = '&yen;';
 			break;
 		case 'THB' :
-			$symbol = '฿';
+			$symbol = '&#3647;';
 			break;
 		case 'TRY' :
-			$symbol = '₺';
+			$symbol = '&#8378;';
 			break;
 		case 'TWD' :
-			$symbol = 'NT$';
+			$symbol = '&#78;&#84;&#36;';
 			break;
 		case 'ILS' :
-			$symbol = '₪';
+			$symbol = '&#8362;';
 			break;
 		case 'RIAL' :
-			$symbol = '﷼';
+			$symbol = '&#xfdfc;';
 			break;
 		case 'RUB' :
-			$symbol = 'руб';
+			$symbol = '&#8381;';
 			break;
 		case 'DKK' :
 		case 'SEK' :
 			$symbol = '&nbsp;kr.&nbsp;';
 			break;
 		case 'PLN' :
-			$symbol = 'zł';
+			$symbol = '&#122;&#322;';
 			break;
 		case 'PHP' :
-			$symbol = '₱';
+			$symbol = '&#8369;';
 			break;
 		case 'MYR' :
-			$symbol = 'RM';
+			$symbol = '&#82;&#77;';
 			break;
 		case 'HUF' :
-			$symbol = 'Ft';
+			$symbol = '&#70;&#116;';
 			break;
 		case 'CZK' :
-			$symbol = 'Kč';
+			$symbol = '&#75;&#269;';
 			break;
 		case 'KRW' :
-			$symbol = '₩';
+			$symbol = '&#8361;';
 			break;
 		case 'ZAR' :
-			$symbol = 'R';
+			$symbol = '&#82;';
 			break;
 		case 'MAD' :
 			$symbol = '&#x2e;&#x62f;&#x2e;&#x645;';

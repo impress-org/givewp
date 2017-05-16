@@ -245,12 +245,12 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 */
 	public function give_currency_filter_provider() {
 		return array(
-			array( '10', 'USD', 'after', '10$' ),
-			array( '10', 'ZAR', 'after', '10R' ),
-			array( '10', 'NOK', 'after', '10 Kr.' ),
-			array( '10', 'USD', 'before', '$10' ),
-			array( '10', 'ZAR', 'before', 'R10' ),
-			array( '10', 'NOK', 'before', 'Kr. 10' ),
+			array( '10', 'USD', 'after', '10&#36;' ),
+			array( '10', 'ZAR', 'after', '10&#82;' ),
+			array( '10', 'NOK', 'after', '10 &#107;&#114;.' ),
+			array( '10', 'USD', 'before', '&#36;10' ),
+			array( '10', 'ZAR', 'before', '&#82;10' ),
+			array( '10', 'NOK', 'before', '&#107;&#114;. 10' ),
 		);
 	}
 
