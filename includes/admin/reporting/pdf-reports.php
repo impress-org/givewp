@@ -47,6 +47,9 @@ function give_generate_pdf( $data ) {
 		)
 	);
 
+    $categories_enabled = give_is_setting_enabled( give_get_option( 'categories', 'disabled' ) );
+    $tags_enabled = give_is_setting_enabled( give_get_option( 'tags', 'disabled' ) );
+
 	$pdf = new give_pdf();
 	$pdf->AddPage( 'L', 'A4' );
 
@@ -78,12 +81,12 @@ function give_generate_pdf( $data ) {
 	$pdf->Cell( 30, 6, utf8_decode( __( 'Price', 'give' ) ), 1, 0, 'L', true );
 
     // Display Categories Heading only, if user has opted for it.
-    if ( give_is_setting_enabled( give_get_option( 'categories', 'disabled' ) ) ) {
+    if ( $categories_enabled ) {
 	   $pdf->Cell( 45, 6, utf8_decode( __( 'Categories', 'give' ) ), 1, 0, 'L', true );
     }
 
     // Display Tags Heading only, if user has opted for it.
-    if ( give_is_setting_enabled( give_get_option( 'tags', 'disabled' ) ) ) {
+    if ( $tags_enabled ) {
 	   $pdf->Cell( 45, 6, utf8_decode( __( 'Tags', 'give' ) ), 1, 0, 'L', true );
     }
 
@@ -123,13 +126,13 @@ function give_generate_pdf( $data ) {
 			}
 
             // Display Categories Data only, if user has opted for it.
-            if ( give_is_setting_enabled( give_get_option( 'categories', 'disabled' ) ) ) {
+            if ( $categories_enabled ) {
                 $categories = get_the_term_list( $form->ID, 'give_forms_category', '', ', ', '' );
                 $categories = ! is_wp_error( $categories ) ? strip_tags( $categories ) : '';
             }
 
             // Display Tags Data only, if user has opted for it.
-            if ( give_is_setting_enabled( give_get_option( 'tags', 'disabled' ) ) ) {
+            if ( $tags_enabled ) {
                 $tags = get_the_term_list( $form->ID, 'give_forms_tag', '', ', ', '' );
                 $tags = ! is_wp_error( $tags ) ? strip_tags( $tags ) : '';
             }
@@ -150,12 +153,12 @@ function give_generate_pdf( $data ) {
             $prepare_pdf_data[] = $price;
 
             // Append Categories Data only, if user has opted for it.
-            if ( give_is_setting_enabled( give_get_option( 'categories', 'disabled' ) ) ) {
+            if ( $categories_enabled ) {
                 $prepare_pdf_data[] = $categories;
             }
 
             // Append Tags Data only, if user has opted for it.
-            if ( give_is_setting_enabled( give_get_option( 'tags', 'disabled' ) ) ) {
+            if ( $tags_enabled ) {
                 $prepare_pdf_data[] = $tags;
             }
 
