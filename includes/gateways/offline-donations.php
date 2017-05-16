@@ -22,7 +22,7 @@ function give_offline_register_gateway( $gateways ) {
 	// Format: ID => Name
 	$gateways['offline'] = array(
 		'admin_label'    => esc_attr__( 'Offline Donation', 'give' ),
-		'checkout_label' => esc_attr__( 'Offline Donation', 'give' )
+		'checkout_label' => esc_attr__( 'Offline Donation', 'give' ),
 	);
 
 	return $gateways;
@@ -80,8 +80,8 @@ add_action( 'give_offline_cc_form', 'give_offline_payment_cc_form' );
  */
 function give_offline_billing_fields( $form_id ) {
 	//Enable Default CC fields (billing info)
-	$post_offline_cc_fields        = get_post_meta( $form_id, '_give_offline_donation_enable_billing_fields_single', true );
-	$post_offline_customize_option = get_post_meta( $form_id, '_give_customize_offline_donations', true );
+	$post_offline_cc_fields        = give_get_meta( $form_id, '_give_offline_donation_enable_billing_fields_single', true );
+	$post_offline_customize_option = give_get_meta( $form_id, '_give_customize_offline_donations', true );
 
 	$global_offline_cc_fields = give_get_option( 'give_offline_donation_enable_billing_fields' );
 
@@ -121,7 +121,7 @@ function give_offline_process_payment( $purchase_data ) {
 		'currency'        => give_get_currency(),
 		'user_info'       => $purchase_data['user_info'],
 		'status'          => 'pending',
-		'gateway'         => 'offline'
+		'gateway'         => 'offline',
 	);
 
 
@@ -129,8 +129,6 @@ function give_offline_process_payment( $purchase_data ) {
 	$payment = give_insert_payment( $payment_data );
 
 	if ( $payment ) {
-		give_offline_send_admin_notice( $payment );
-		give_offline_send_donor_instructions( $payment );
 		give_send_to_success_page();
 	} else {
 		// if errors are present, send the user back to the donation form so they can be corrected
@@ -155,13 +153,13 @@ add_action( 'give_gateway_offline', 'give_offline_process_payment' );
 function give_offline_send_donor_instructions( $payment_id = 0 ) {
 
 	$payment_data                      = give_get_payment_meta( $payment_id );
-	$post_offline_customization_option = get_post_meta( $payment_data['form_id'], '_give_customize_offline_donations', true );
+	$post_offline_customization_option = give_get_meta( $payment_data['form_id'], '_give_customize_offline_donations', true );
 
 	//Customize email content depending on whether the single form has been customized
 	$email_content = give_get_option( 'global_offline_donation_email' );
 
 	if ( give_is_setting_enabled( $post_offline_customization_option, 'enabled' ) ) {
-		$email_content = get_post_meta( $payment_data['form_id'], '_give_offline_donation_email', true );
+		$email_content = give_get_meta( $payment_data['form_id'], '_give_offline_donation_email', true );
 	}
 
 	$from_name = give_get_option( 'from_name', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) );
@@ -186,7 +184,7 @@ function give_offline_send_donor_instructions( $payment_id = 0 ) {
 
 	$subject = give_get_option( 'offline_donation_subject', __( 'Offline Donation Instructions', 'give' ) );
 	if ( give_is_setting_enabled( $post_offline_customization_option, 'enabled' ) ) {
-		$subject = get_post_meta( $payment_data['form_id'], '_give_offline_donation_subject', true );
+		$subject = give_get_meta( $payment_data['form_id'], '_give_offline_donation_subject', true );
 	}
 
 	$subject = apply_filters( 'give_offline_donation_subject', wp_strip_all_tags( $subject ), $payment_id );
@@ -274,6 +272,7 @@ function give_offline_send_admin_notice( $payment_id = 0 ) {
 
 
 /**
+>>>>>>> release/2.0
  * Register gateway settings.
  *
  * @param $settings
@@ -335,26 +334,7 @@ function give_offline_add_settings( $settings ) {
 			'row_classes' => 'give-subfield',
 			'options'     => array(
 				'textarea_rows' => 6,
-			)
-		),
-		array(
-			'id'          => $prefix . 'offline_donation_subject',
-			'name'        => __( 'Email Subject', 'give' ),
-			'desc'        => __( 'Enter the subject line for the donation receipt email.', 'give' ),
-			'default'     => __( '{form_title} - Offline Donation Instructions', 'give' ),
-			'row_classes' => 'give-subfield',
-			'type'        => 'text'
-		),
-		array(
-			'id'          => $prefix . 'offline_donation_email',
-			'name'        => __( 'Email Instructions', 'give' ),
-			'desc'        => __( 'Enter the instructions you want emailed to the donor after they have submitted the donation form. Most likely this would include important information like mailing address and who to make the check out to.', 'give' ) . ' ' . __( 'Available template tags:', 'give' ) . give_get_emails_tags_list(),
-			'default'     => give_get_default_offline_donation_email_content(),
-			'type'        => 'wysiwyg',
-			'row_classes' => 'give-subfield',
-			'options'     => array(
-				'textarea_rows' => 6,
-			)
+			),
 		),
 		array(
 			'name'  => 'offline_docs',
@@ -516,8 +496,8 @@ function give_get_offline_payment_instruction( $form_id, $wpautop = false ) {
 		return '';
 	}
 
-	$post_offline_customization_option = get_post_meta( $form_id, '_give_customize_offline_donations', true );
-	$post_offline_instructions         = get_post_meta( $form_id, '_give_offline_checkout_notes', true );
+	$post_offline_customization_option = give_get_meta( $form_id, '_give_customize_offline_donations', true );
+	$post_offline_instructions         = give_get_meta( $form_id, '_give_offline_checkout_notes', true );
 	$global_offline_instruction        = give_get_option( 'global_offline_donation_content' );
 	$offline_instructions              = $global_offline_instruction;
 
@@ -549,10 +529,7 @@ function give_filter_offline_gateway( $gateway_list, $form_id ) {
 		// Show offline payment gateway if enable for new donation form.
 		( false === strpos( $_SERVER['REQUEST_URI'], '/wp-admin/post-new.php?post_type=give_forms' ) )
 		&& $form_id
-		&& ! give_is_setting_enabled( get_post_meta( $form_id, '_give_customize_offline_donations', true ), array(
-			'enabled',
-			'global',
-		) )
+		&& ! give_is_setting_enabled( give_get_meta( $form_id, '_give_customize_offline_donations', true ), array( 'enabled', 'global' ) )
 	) {
 		unset( $gateway_list['offline'] );
 	}
@@ -576,8 +553,11 @@ add_filter( 'give_enabled_payment_gateways', 'give_filter_offline_gateway', 10, 
  * @return void
  */
 function _give_customize_offline_donations_on_save_callback( $meta_key, $meta_value, $postid ) {
-	if ( ! give_is_setting_enabled( $meta_value ) && ( 'offline' === get_post_meta( $postid, '_give_default_gateway', true ) ) ) {
-		update_post_meta( $postid, '_give_default_gateway', 'global' );
+	if (
+		! give_is_setting_enabled( $meta_value )
+		&& ( 'offline' === give_get_meta( $postid, '_give_default_gateway', true ) )
+	) {
+		give_update_meta( $postid, '_give_default_gateway', 'global' );
 	}
 }
 

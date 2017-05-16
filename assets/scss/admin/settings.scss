@@ -38,6 +38,33 @@
 	table table input[type="text"] {
 		width: 15em;
 	}
+
+	.give-repeat-setting-field{
+		margin: 10px 0;
+	}
+
+	.give-remove-setting-field{
+		width: 25px;
+		height: 25px;
+		padding: 0;
+		text-align: center;
+		line-height: 22px;
+		font-size: 21px;
+		font-weight: 300;
+		cursor: pointer;
+		margin-left: 20px;
+		display: inline-block;
+	}
+
+	.give-remove-setting-field:hover{
+		background-color: red;
+		color: white;
+		border-radius: 30px;
+	}
+
+	.give-forminp p:first-child .give-remove-setting-field{
+		display: none;
+	}
 }
 
 .give-setting-tab-header {
@@ -45,9 +72,9 @@
 	overflow: hidden;
 	margin: 30px 0;
 
-	h2 {
-		margin-top: 8px;
-	}
+	h2 {  margin-top: 8px;  }
+
+	p {  margin-bottom: 0;  }
 }
 
 .give-radio-inline {
@@ -444,6 +471,54 @@ a.give-delete {
 	font-style: italic;
 	margin: 0;
 	padding-top: .5em;
+}
+
+// Email notification list.
+.giveemailnotifications {
+	.check-column{
+		padding: 13px 10px 0 20px !important;
+	}
+
+	td.check-column input {
+		//width: 1em;
+		display: none;
+	}
+
+	th.check-column {
+		.give-email-notification-status{
+			color: white;
+			border-radius: 1em;
+			cursor: pointer;
+			padding: 2px;
+		}
+
+		.give-email-notification-enabled,
+		.give-email-notification-disabled:hover{
+			background: #46b450;
+		}
+
+		.give-email-notification-disabled,
+		.give-email-notification-enabled:hover{
+			background: #bbbbbb;
+		}
+
+		.dashicons-no-alt:hover:before {
+			content: "\f147" !important;
+		}
+
+		.dashicons-yes:hover:before {
+			content: "\f335" !important;
+		}
+
+		.give-email-notification-status[data-edit="0"] {
+			cursor: not-allowed;
+		}
+	}
+
+	.spinner.is-active {
+		margin: 0 0 0 2px;
+		float: none;
+	}
 }
 
 // Setting page tab

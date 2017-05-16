@@ -245,12 +245,12 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 */
 	public function give_currency_filter_provider() {
 		return array(
-			array( '10', 'USD', 'after', '10$' ),
-			array( '10', 'ZAR', 'after', '10R' ),
-			array( '10', 'NOK', 'after', '10 Kr.' ),
-			array( '10', 'USD', 'before', '$10' ),
-			array( '10', 'ZAR', 'before', 'R10' ),
-			array( '10', 'NOK', 'before', 'Kr. 10' ),
+			array( '10', 'USD', 'after', '10&#36;' ),
+			array( '10', 'ZAR', 'after', '10&#82;' ),
+			array( '10', 'NOK', 'after', '10 &#107;&#114;.' ),
+			array( '10', 'USD', 'before', '&#36;10' ),
+			array( '10', 'ZAR', 'before', '&#82;10' ),
+			array( '10', 'NOK', 'before', '&#107;&#114;. 10' ),
 		);
 	}
 
@@ -454,19 +454,60 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Test give_validate_nonce function
 	 *
-	 * @since  1.8
+	 * Test give_check_variable function.
 	 *
-	 * @cover  give_validate_nonce
+	 * @since        2.0
+	 *
+	 * @param mixed  $expected
+	 * @param mixed  $variable
+	 * @param string $conditional
+	 * @param mixed  $default
+	 * @param string $array_key_name
+	 *
+	 * @cover        give_check_variable
+	 * @dataProvider give_check_variable_provider
 	 */
-	// function test_give_validate_nonce() {
-	// 	$input_nonce = wp_create_nonce( 'give_gateway' );
-	//
-	// 	/*
-	// 	 * If nonce does not validate successfully then WPDieException throw.
-	// 	 */
-	// 	$this->expectException( 'WPDieException' );
-	// 	give_validate_nonce( $input_nonce );
-	// }
+	public function test_give_check_variable( $expected, $variable, $conditional = '', $default = false, $array_key_name = '' ) {
+
+		$variable = give_check_variable( $variable, $conditional, $default, $array_key_name );
+
+		$this->assertSame( $expected, $variable );
+	}
+
+
+	/**
+	 * Data provider for give_check_variable function.
+	 *
+	 * @since 2.0
+	 *
+	 * @return array
+	 */
+	public function give_check_variable_provider() {
+		return array(
+			// Variable.
+			array( true, null, 'isset', true ),
+			array( false, false, 'isset', true ),
+			array( true, '', 'empty', true ),
+			array( 1, 0, 'empty', 1 ),
+			array( true, null, 'isset_empty', true ),
+			array( true, '', 'isset_empty', true ),
+			array( true, null, 'null', true ),
+			array( true, true, 'null', false ),
+
+			// Array.
+			array( false, array(), 'isset', false, 'payment_id' ),
+			array( 2347, array( 'payment_id' => 2347 ), 'isset', true, 'payment_id' ),
+			array( true, array( 'payment_id' => null ), 'isset', true, 'payment_id' ),
+			array( true, array( 'payment_id' => true ), 'isset', false, 'payment_id' ),
+			array( true, array( 'payment_id' => '' ), 'empty', true, 'payment_id' ),
+			array( 2347, array( 'payment_id' => 2347 ), 'empty', true, 'payment_id' ),
+			array( 0, array( 'payment_id' => '' ), 'isset_empty', 0, 'payment_id' ),
+			array( 2347, array( 'payment_id' => 2347 ), 'isset_empty', 0, 'payment_id' ),
+			array( 0, array( 'payment_id' => null ), 'isset_empty', 0, 'payment_id' ),
+			array( 0, array(), 'isset_empty', 0, 'payment_id' ),
+			array( 0, array( 'payment_id' => null ), 'null', 0, 'payment_id' ),
+			array( 2347, array( 'payment_id' => 2347 ), 'null', 0, 'payment_id' ),
+		);
+	}
 }

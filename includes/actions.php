@@ -104,7 +104,7 @@ function give_connect_donor_to_wpuser( $user_id, $user_data ){
 			// Update user_id meta in payments.
 			if( ! empty( $donor->payment_ids ) && ( $donations = explode( ',', $donor->payment_ids ) ) ) {
 				foreach ( $donations as $donation  ) {
-					update_post_meta( $donation, '_give_payment_user_id', $user_id );
+					give_update_meta( $donation, '_give_payment_user_id', $user_id );
 				}
 			}
 		}
@@ -162,3 +162,52 @@ function give_donor_batch_export_complete( $data ) {
 	}
 }
 add_action('give_file_export_complete', 'give_donor_batch_export_complete' );
+
+/**
+ * Print css for wordpress setting pages.
+ *
+ * @since 1.8.7
+ */
+function give_admin_quick_css() {
+	/* @var WP_Screen $screen */
+	$screen = get_current_screen();
+
+	if( ! ( $screen instanceof WP_Screen ) ) {
+		return false;
+	}
+
+	switch ( true ) {
+		case ( 'plugins' === $screen->base ):
+			?>
+			<style>
+				tr.active.update + tr.give-addon-notice-tr td{
+                    box-shadow:none;
+                    -webkit-box-shadow:none;
+				}
+				tr.active + tr.give-addon-notice-tr td{
+                    position: relative;
+				    top:-1px;
+                }
+				tr.active + tr.give-addon-notice-tr .notice{
+                    margin: 5px 20px 15px 40px;
+                }
+
+				tr.give-addon-notice-tr .dashicons {
+                    color: #f56e28;
+                }
+				tr.give-addon-notice-tr td{
+					border-left: 4px solid #00a0d2;
+				}
+
+				tr.give-addon-notice-tr td{
+					padding: 0!important;
+				}
+
+                tr.active.update + tr.give-addon-notice-tr .notice{
+					margin: 5px 20px 5px 40px;
+				}
+			</style>
+			<?php
+	}
+}
+add_action( 'admin_head', 'give_admin_quick_css' );

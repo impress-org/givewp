@@ -346,7 +346,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 
 			if ( $logs ) {
 				foreach ( $logs as $log ) {
-					$payment_id = get_post_meta( $log->ID, '_give_log_payment_id', true );
+					$payment_id = give_get_meta( $log->ID, '_give_log_payment_id', true );
 
 					// Make sure this payment hasn't been deleted
 					if ( get_post( $payment_id ) ) :

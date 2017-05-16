@@ -121,19 +121,19 @@ function give_currency_symbol( $currency = '' ) {
 	}
 	switch ( $currency ) :
 		case 'GBP' :
-			$symbol = '£';
+			$symbol = '&pound;';
 			break;
 		case 'BRL' :
-			$symbol = 'R$';
+			$symbol = '&#82;&#36;';
 			break;
 		case 'EUR' :
-			$symbol = '€';
+			$symbol = '&euro;';
 			break;
 		case 'NOK' :
-			$symbol = 'Kr.';
+			$symbol = '&#107;&#114;.';
 			break;
 		case 'INR' :
-			$symbol = '₹';
+			$symbol = '&#8377;';
 			break;
 		case 'USD' :
 		case 'AUD' :
@@ -141,53 +141,53 @@ function give_currency_symbol( $currency = '' ) {
 		case 'HKD' :
 		case 'MXN' :
 		case 'SGD' :
-			$symbol = '$';
+			$symbol = '&#36;';
 			break;
 		case 'JPY' :
-			$symbol = '¥';
+			$symbol = '&yen;';
 			break;
 		case 'THB' :
-			$symbol = '฿';
+			$symbol = '&#3647;';
 			break;
 		case 'TRY' :
-			$symbol = '₺';
+			$symbol = '&#8378;';
 			break;
 		case 'TWD' :
-			$symbol = 'NT$';
+			$symbol = '&#78;&#84;&#36;';
 			break;
 		case 'ILS' :
-			$symbol = '₪';
+			$symbol = '&#8362;';
 			break;
 		case 'RIAL' :
-			$symbol = '﷼';
+			$symbol = '&#xfdfc;';
 			break;
 		case 'RUB' :
-			$symbol = 'руб';
+			$symbol = '&#8381;';
 			break;
 		case 'DKK' :
 		case 'SEK' :
 			$symbol = '&nbsp;kr.&nbsp;';
 			break;
 		case 'PLN' :
-			$symbol = 'zł';
+			$symbol = '&#122;&#322;';
 			break;
 		case 'PHP' :
-			$symbol = '₱';
+			$symbol = '&#8369;';
 			break;
 		case 'MYR' :
-			$symbol = 'RM';
+			$symbol = '&#82;&#77;';
 			break;
 		case 'HUF' :
-			$symbol = 'Ft';
+			$symbol = '&#70;&#116;';
 			break;
 		case 'CZK' :
-			$symbol = 'Kč';
+			$symbol = '&#75;&#269;';
 			break;
 		case 'KRW' :
-			$symbol = '₩';
+			$symbol = '&#8361;';
 			break;
 		case 'ZAR' :
-			$symbol = 'R';
+			$symbol = '&#82;';
 			break;
 		case 'MAD' :
 			$symbol = '&#x2e;&#x62f;&#x2e;&#x645;';
@@ -199,6 +199,28 @@ function give_currency_symbol( $currency = '' ) {
 
 
 	return apply_filters( 'give_currency_symbol', $symbol, $currency );
+}
+
+
+/**
+ * Get currency name.
+ *
+ * @since 1.8.8
+ *
+ * @param string $currency_code
+ *
+ * @return string
+ */
+function give_get_currency_name( $currency_code ) {
+	$currency_name = '';
+	$currency_names = give_get_currencies();
+
+	if( $currency_code && array_key_exists( $currency_code, $currency_names ) ) {
+		$currency_name = explode( '(',  $currency_names[$currency_code] );
+		$currency_name = trim( current( $currency_name ) );
+	}
+
+	return apply_filters( 'give_currency_name', $currency_name, $currency_code );
 }
 
 
@@ -563,10 +585,17 @@ function _give_deprecated_function( $function, $version, $replacement = null, $b
  * @return string $post_id
  */
 function give_get_admin_post_id() {
-	$post_id = isset( $_GET['post'] ) ? $_GET['post'] : null;
-	if ( ! $post_id && isset( $_POST['post_id'] ) ) {
-		$post_id = $_POST['post_id'];
-	}
+	$post_id = isset( $_REQUEST['post'] )
+		? absint( $_REQUEST['post'] )
+		: null;
+
+	$post_id = ! empty( $post_id )
+		? $post_id
+		: ( isset( $_REQUEST['post_id'] ) ? absint( $_REQUEST['post_id'] ) : null );
+
+	$post_id = ! empty( $post_id )
+		? $post_id
+		: ( isset( $_REQUEST['post_ID'] ) ? absint( $_REQUEST['post_ID'] ) : null );
 
 	return $post_id;
 }
@@ -1035,7 +1064,7 @@ function give_get_plugins() {
  * @return bool
  */
 function give_is_terms_enabled( $form_id ) {
-	$form_option = get_post_meta( $form_id, '_give_terms_option', true );
+	$form_option = give_get_meta( $form_id, '_give_terms_option', true );
 
 	if (
 		give_is_setting_enabled( $form_option, 'global' )
@@ -1081,4 +1110,84 @@ function give_delete_donation_stats( $date_range = '', $args = array() ) {
 	do_action( 'give_delete_donation_stats', $status, $date_range, $args );
 
 	return $status;
+}
+
+/**
+ * Check if admin creating new donation form or not.
+ *
+ * @since 2.0
+ * @return bool
+ */
+function give_is_add_new_form_page() {
+	$status = false;
+
+	if ( false !== strpos( $_SERVER['REQUEST_URI'], '/wp-admin/post-new.php?post_type=give_forms' ) ) {
+		$status = true;
+	}
+
+	return $status;
+}
+
+/**
+ * Get Form/Payment meta.
+ * @todo: implement in core
+ *
+ * @since 1.8.8
+ *
+ * @param int    $id
+ * @param string $meta_key
+ * @param bool   $single
+ * @param bool   $default
+ *
+ * @return mixed
+ */
+function give_get_meta( $id, $meta_key, $single = false, $default = false ) {
+	$meta_value = get_post_meta( $id, $meta_key, $single );
+
+	if (
+		( empty( $meta_key ) || empty( $meta_value ) )
+		&& $default
+	) {
+		$meta_value = $default;
+	}
+
+
+	return apply_filters( 'give_get_meta', $meta_value, $id, $meta_key, $default );
+}
+
+/**
+ * Update Form/Payment meta.
+ * @todo: implement in core
+ *
+ * @since 1.8.8
+ *
+ * @param int    $id
+ * @param string $meta_key
+ * @param string $meta_value
+ * @param string $prev_value
+ *
+ * @return mixed
+ */
+function give_update_meta( $id, $meta_key, $meta_value, $prev_value = '' ) {
+	$status = update_post_meta( $id, $meta_key, $meta_value, $prev_value );
+
+	return apply_filters( 'give_update_meta', $status, $id, $meta_key, $meta_value );
+}
+
+/**
+ * Delete Form/Payment meta.
+ * @todo: implement in core
+ *
+ * @since 1.8.8
+ *
+ * @param int    $id
+ * @param string $meta_key
+ * @param string $meta_value
+ *
+ * @return mixed
+ */
+function give_delete_meta( $id, $meta_key, $meta_value = '' ) {
+	$status = delete_post_meta( $id, $meta_key, $meta_value );
+
+	return apply_filters( 'give_delete_meta', $status, $id, $meta_key, $meta_value );
 }

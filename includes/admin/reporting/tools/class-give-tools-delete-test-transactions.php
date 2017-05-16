@@ -48,14 +48,14 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 	 *
 	 * @access public
 	 * @since 1.5
-	 * @global object $wpdb Used to query the database using the WordPress
-	 *   Database API
-	 * @return array $data The data for the CSV file
+	 * @global object $wpdb Used to query the database using the WordPress Database API
+	 *
+	 * @return array|bool $data The data for the CSV file
 	 */
 	public function get_data() {
 		global $wpdb;
 
-		$items = $this->get_stored_data( 'give_temp_reset_ids' );
+		$items = $this->get_stored_data( 'give_temp_reset_test_ids' );
 
 		if ( ! is_array( $items ) ) {
 			return false;
@@ -119,7 +119,7 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 	 */
 	public function get_percentage_complete() {
 
-		$items = $this->get_stored_data( 'give_temp_reset_ids', false );
+		$items = $this->get_stored_data( 'give_temp_delete_test_ids', false );
 		$total = count( $items );
 
 		$percentage = 100;
@@ -154,7 +154,7 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 	public function process_step() {
 
 		if ( ! $this->can_export() ) {
-			wp_die( esc_html__( 'You do not have permission to delete test transactions.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die( __( 'You do not have permission to delete test transactions.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 		}
 
 		$had_data = $this->get_data();
@@ -167,7 +167,7 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 			update_option( 'give_earnings_total', give_get_total_earnings( true ) );
 			Give_Cache::delete( Give_Cache::get_key('give_estimated_monthly_stats' ) );
 
-			$this->delete_data( 'give_temp_reset_ids' );
+			$this->delete_data( 'give_temp_delete_test_ids' );
 
 			// Reset the sequential order numbers
 			if ( give_get_option( 'enable_sequential' ) ) {
@@ -175,7 +175,7 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 			}
 
 			$this->done    = true;
-			$this->message = esc_html__( 'Test transactions successfully deleted.', 'give' );
+			$this->message = __( 'Test transactions successfully deleted.', 'give' );
 
 			return false;
 		}
@@ -213,10 +213,10 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 	public function pre_fetch() {
 
 		if ( $this->step == 1 ) {
-			$this->delete_data( 'give_temp_reset_ids' );
+			$this->delete_data( 'give_temp_delete_test_ids' );
 		}
 
-		$items = get_option( 'give_temp_reset_ids', false );
+		$items = get_option( 'give_temp_delete_test_ids', false );
 
 		if ( false === $items ) {
 			$items = array();
@@ -225,7 +225,7 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 				'post_type'      => 'give_payment',
 				'post_status'    => 'any',
 				'posts_per_page' => - 1,
-				//ONLY TEST MODE TRANSACTIONS!!!
+				// ONLY TEST MODE TRANSACTIONS!!!
 				'meta_key'   => '_give_payment_mode',
 				'meta_value' => 'test'
 			) );
@@ -240,9 +240,9 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 
 			// Allow filtering of items to remove with an unassociative array for each item.
 			// The array contains the unique ID of the item, and a 'type' for you to use in the execution of the get_data method.
-			$items = apply_filters( 'give_reset_items', $items );
+			$items = apply_filters( 'give_delete_test_items', $items );
 
-			$this->store_data( 'give_temp_reset_ids', $items );
+			$this->store_data( 'give_temp_delete_test_ids', $items );
 		}
 
 	}
