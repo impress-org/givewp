@@ -497,6 +497,7 @@ class Give_MetaBox_Form_Data {
 						'id'   => $prefix . 'agree_text',
 						'name' => __( 'Agreement Text', 'give' ),
 						'desc' => __( 'This is the actual text which the user will have to agree to in order to make a donation.', 'give' ),
+						'default' => give_get_option('agreement_text'),
 						'type' => 'wysiwyg',
 					),
 					array(
