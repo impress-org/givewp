@@ -76,16 +76,25 @@ function give_generate_pdf( $data ) {
 	$pdf->SetFillColor( 238, 238, 238 );
 	$pdf->Cell( 70, 6, utf8_decode( __( 'Form Name', 'give' ) ), 1, 0, 'L', true );
 	$pdf->Cell( 30, 6, utf8_decode( __( 'Price', 'give' ) ), 1, 0, 'L', true );
-	$pdf->Cell( 50, 6, utf8_decode( __( 'Categories', 'give' ) ), 1, 0, 'L', true );
-	$pdf->Cell( 50, 6, utf8_decode( __( 'Tags', 'give' ) ), 1, 0, 'L', true );
+
+    // Display Categories Heading only, if user has opted for it.
+    if ( give_is_setting_enabled( give_get_option( 'categories', 'disabled' ) ) ) {
+	   $pdf->Cell( 45, 6, utf8_decode( __( 'Categories', 'give' ) ), 1, 0, 'L', true );
+    }
+
+    // Display Tags Heading only, if user has opted for it.
+    if ( give_is_setting_enabled( give_get_option( 'tags', 'disabled' ) ) ) {
+	   $pdf->Cell( 45, 6, utf8_decode( __( 'Tags', 'give' ) ), 1, 0, 'L', true );
+    }
+
 	$pdf->Cell( 45, 6, utf8_decode( __( 'Number of Donations', 'give' ) ), 1, 0, 'L', true );
-	$pdf->Cell( 35, 6, utf8_decode( __( 'Income to Date', 'give' ) ), 1, 1, 'L', true );
+	$pdf->Cell( 45, 6, utf8_decode( __( 'Income to Date', 'give' ) ), 1, 1, 'L', true );
 
 	$year       = date( 'Y' );
 	$give_forms = get_posts( array( 'post_type' => 'give_forms', 'year' => $year, 'posts_per_page' => - 1 ) );
 
 	if ( $give_forms ) {
-		$pdf->SetWidths( array( 70, 30, 50, 50, 45, 35 ) );
+		$pdf->SetWidths( array( 70, 30, 45, 45, 45, 45 ) );
 
 		foreach ( $give_forms as $form ):
 			$pdf->SetFillColor( 255, 255, 255 );
@@ -113,11 +122,17 @@ function give_generate_pdf( $data ) {
 				$price = html_entity_decode( give_currency_filter( give_get_form_price( $form->ID ) ) );
 			}
 
-			$categories = get_the_term_list( $form->ID, 'give_forms_category', '', ', ', '' );
-			$categories = ! is_wp_error( $categories ) ? strip_tags( $categories ) : '';
+            // Display Categories Data only, if user has opted for it.
+            if ( give_is_setting_enabled( give_get_option( 'categories', 'disabled' ) ) ) {
+                $categories = get_the_term_list( $form->ID, 'give_forms_category', '', ', ', '' );
+                $categories = ! is_wp_error( $categories ) ? strip_tags( $categories ) : '';
+            }
 
-			$tags = get_the_term_list( $form->ID, 'give_forms_tag', '', ', ', '' );
-			$tags = ! is_wp_error( $tags ) ? strip_tags( $tags ) : '';
+            // Display Tags Data only, if user has opted for it.
+            if ( give_is_setting_enabled( give_get_option( 'tags', 'disabled' ) ) ) {
+                $tags = get_the_term_list( $form->ID, 'give_forms_tag', '', ', ', '' );
+                $tags = ! is_wp_error( $tags ) ? strip_tags( $tags ) : '';
+            }
 
 			$sales    = give_get_form_sales_stats( $form->ID );
 			$link     = get_permalink( $form->ID );
@@ -129,7 +144,25 @@ function give_generate_pdf( $data ) {
 				$earnings = iconv( 'UTF-8', 'windows-1252', utf8_encode( $earnings ) );
 			}
 
-			$pdf->Row( array( $title, $price, $categories, $tags, $sales, $earnings ) );
+            // This will help filter data before appending it to PDF Receipt.
+            $prepare_pdf_data = array();
+            $prepare_pdf_data[] = $title;
+            $prepare_pdf_data[] = $price;
+
+            // Append Categories Data only, if user has opted for it.
+            if ( give_is_setting_enabled( give_get_option( 'categories', 'disabled' ) ) ) {
+                $prepare_pdf_data[] = $categories;
+            }
+
+            // Append Tags Data only, if user has opted for it.
+            if ( give_is_setting_enabled( give_get_option( 'tags', 'disabled' ) ) ) {
+                $prepare_pdf_data[] = $tags;
+            }
+
+            $prepare_pdf_data[] = $sales;
+            $prepare_pdf_data[] = $earnings;
+
+			$pdf->Row( $prepare_pdf_data );
 		endforeach;
 	} else {
 		$pdf->SetWidths( array( 280 ) );
