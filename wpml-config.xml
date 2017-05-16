@@ -1,0 +1,26 @@
+<wpml-config>
+  <custom-types>
+    <custom-type translate="1">give_forms</custom-type>
+    <custom-type translate="0">give_payment</custom-type>
+    <custom-type translate="0">give_log</custom-type>
+  </custom-types>
+  <taxonomies>
+    <taxonomy translate="0">give_log_type</taxonomy>
+  </taxonomies>
+  <admin-texts>
+    <key name="give_settings">
+      <key name="success_page"/>
+      <key name="failure_page"/>
+      <key name="history_page"/>
+      <key name="global_offline_donation_content"/>
+      <key name="donation_notification"/>
+      <key name="donation_receipt"/>
+      <key name="offline_donation_subject"/>
+      <key name="global_offline_donation_email"/>
+      <key name="subscription_notification_subject"/>
+      <key name="subscription_receipt_message"/>
+      <key name="subscription_cancelled_subject"/>
+      <key name="subscription_cancelled_message"/>
+    </key>
+  </admin-texts>
+</wpml-config>
