@@ -417,6 +417,6 @@ function give_get_default_agreement_text() {
 <p>The ' . $org_name . ' will respect the intent of the donor relating to gifts for restricted purposes and those relating to the desire to remain anonymous. With respect to anonymous gifts, the ' . $org_name . ' will restrict information about the donor to only those staff members with a need to know.</p>
 <p>The ' . $org_name . ' will not compensate, whether through commissions, finders\' fees, or other means, any third party for directing a gift or a donor to the ' . $org_name . '.</p>';
 
-	apply_filters( 'give_get_default_agreement_text', $agreement, $org_name );
+	return apply_filters( 'give_get_default_agreement_text', $agreement, $org_name );
 
 }
