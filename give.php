@@ -402,7 +402,10 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/class-metabox-form-data.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/dashboard-columns.php';
 
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/export/export-functions.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/export-functions.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-export.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/export-actions.php';
+
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/reports.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/tools.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/pdf-reports.php';
