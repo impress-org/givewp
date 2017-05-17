@@ -26,7 +26,7 @@ function give_process_batch_export_form() {
 		wp_die( esc_html__( 'Nonce verification failed.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
-	require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/export/class-batch-export.php';
+	require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-batch-export.php';
 
 	/**
 	 * Fires before batch export.
@@ -109,7 +109,7 @@ add_action( 'give_register_batch_exporter', 'give_register_payments_batch_export
 function give_include_payments_batch_processor( $class ) {
 
 	if ( 'Give_Batch_Payments_Export' === $class ) {
-		require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/export/class-batch-export-payments.php';
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-batch-export-payments.php';
 	}
 
 }
@@ -137,7 +137,7 @@ add_action( 'give_register_batch_exporter', 'give_register_customers_batch_expor
 function give_include_customers_batch_processor( $class ) {
 
 	if ( 'Give_Batch_Customers_Export' === $class ) {
-		require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/export/class-batch-export-customers.php';
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-batch-export-customers.php';
 	}
 
 }
@@ -165,7 +165,7 @@ add_action( 'give_register_batch_exporter', 'give_register_forms_batch_export', 
 function give_include_forms_batch_processor( $class ) {
 
 	if ( 'Give_Batch_Forms_Export' === $class ) {
-		require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/export/class-batch-export-forms.php';
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-batch-export-forms.php';
 	}
 
 }

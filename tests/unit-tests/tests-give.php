@@ -104,7 +104,7 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/customers/customer-actions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/forms/metabox.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/forms/dashboard-columns.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/reporting/export/export-functions.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/export-functions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/reporting/reports.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/reporting/pdf-reports.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/reporting/class-give-graph.php' );
