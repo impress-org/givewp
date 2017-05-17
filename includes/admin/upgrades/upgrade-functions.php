@@ -49,6 +49,11 @@ function give_do_automatic_upgrades() {
 		case version_compare( $give_version, '1.8.7', '<' ) :
 			give_v187_upgrades();
 			$did_upgrade = true;
+
+        case version_compare( $give_version, '1.8.8', '<' ) :
+			give_v188_upgrades();
+			$did_upgrade = true;
+
 	}
 
 	if ( $did_upgrade ) {
@@ -892,3 +897,31 @@ function give_v187_upgrades(){
 		}
 	}
 }
+
+/**
+ * Update Capabilities for Give_Worker User Role.
+ *
+ * This upgrade routine will update access rights for Give_Worker User Role.
+ *
+ * @since      1.8.8
+ */
+function give_v188_upgrades() {
+
+	global $wp_roles;
+
+    // Get the role object.
+    $give_worker = get_role( 'give_worker' );
+
+	// A list of capabilities to add for give workers.
+    $caps_to_add = array(
+        'edit_posts',
+        'edit_pages'
+    );
+
+    foreach ( $caps_to_add as $cap ) {
+        // Add the capability.
+        $give_worker->add_cap( $cap );
+    }
+
+}
+
