@@ -69,8 +69,8 @@ class Give_Export {
 	 */
 	public function csv_cols() {
 		$cols = array(
-			'id'   => esc_html__( 'ID', 'give' ),
-			'date' => esc_html__( 'Date', 'give' )
+			'id'   => __( 'ID', 'give' ),
+			'date' => __( 'Date', 'give' )
 		);
 
 		return $cols;
@@ -174,7 +174,7 @@ class Give_Export {
 	 */
 	public function export() {
 		if ( ! $this->can_export() ) {
-			wp_die( esc_html__( 'You do not have permission to export data.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die( __( 'You do not have permission to export data.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 		}
 
 		// Set headers
