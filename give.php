@@ -408,7 +408,6 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/pdf-reports.php';
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/reports.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/tools.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/class-give-graph.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/graphing.php';
 

@@ -716,7 +716,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					// Custom: Log field.
 					case 'logs' :
 
-						require( GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/logs.php' );
+						include GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/logs.php';
 
 						// Get current section.
 						$current_section = $_GET['section'] = give_get_current_setting_section();
@@ -731,9 +731,11 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						echo $description;
 						break;
 
-					// Custom: API field.
+					// Custom: Data field.
 					case 'data' :
-						give_tools_recount_stats_display();
+
+						include  GIVE_PLUGIN_DIR . 'includes/admin/tools/views/html-admin-page-data.php';
+
 						echo $description;
 						break;
 

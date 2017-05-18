@@ -126,7 +126,7 @@ function give_logs_view_api_requests() {
 add_action( 'give_logs_view_api_requests', 'give_logs_view_api_requests' );
 
 /**
- * Renders the Reports page views drop down
+ * Renders the log views drop down.
  *
  * @since 1.0
  * @return void
