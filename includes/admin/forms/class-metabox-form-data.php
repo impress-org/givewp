@@ -52,7 +52,7 @@ class Give_MetaBox_Form_Data {
 		add_action( 'admin_init', array( $this, 'setup' ) );
 
 		// Add metabox.
-		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ), 30 );
+		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ), 10 );
 
 		// Save form meta.
 		add_action( 'save_post_give_forms', array( $this, 'save' ), 10, 2 );
