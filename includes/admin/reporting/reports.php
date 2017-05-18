@@ -334,27 +334,6 @@ add_action( 'give_reports_view_earnings', 'give_reports_earnings' );
 
 
 /**
- * Renders the Reports page
- *
- * @since 1.0
- * @return void
- */
-function give_reports_tab_logs() {
-
-	require( GIVE_PLUGIN_DIR . 'includes/admin/reporting/logs.php' );
-
-	// Get current section.
-	$current_section = $_GET['section'] = give_get_current_setting_section();
-
-	/**
-	 * Fires the in report page logs view.
-	 *
-	 * @since 1.0
-	 */
-	do_action( "give_logs_view_{$current_section}" );
-}
-
-/**
  * Retrieves estimated monthly earnings and sales
  *
  * @since 1.0
