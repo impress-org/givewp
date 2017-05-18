@@ -683,7 +683,7 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
   margin-left: -4px; }
 
 .give-money-symbol-after {
-  margin-right: -1px; }
+  margin-right: -5px; }
 
 .give_options_panel input[type="text"] {
   padding: 5px;
@@ -995,7 +995,7 @@ ASIDE
     display: block;
     position: absolute;
     bottom: 0;
-    right: 170px;
+    right: 166px;
     width: 170px;
     max-height: 250px;
     overflow-y: scroll; }

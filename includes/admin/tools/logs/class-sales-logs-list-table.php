@@ -109,13 +109,13 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'ID'         => esc_html__( 'Log ID', 'give' ),
-			'user_id'    => esc_html__( 'Donor', 'give' ),
-			'form'       => esc_html__( 'Form', 'give' ),
-			'amount'     => esc_html__( 'Donation Amount', 'give' ),
-			'status'     => esc_html__( 'Status', 'give' ),
-			'payment_id' => esc_html__( 'Transaction ID', 'give' ),
-			'date'       => esc_html__( 'Date', 'give' ),
+			'ID'         => __( 'Log ID', 'give' ),
+			'user_id'    => __( 'Donor', 'give' ),
+			'form'       => __( 'Form', 'give' ),
+			'amount'     => __( 'Donation Amount', 'give' ),
+			'status'     => __( 'Status', 'give' ),
+			'payment_id' => __( 'Transaction ID', 'give' ),
+			'date'       => __( 'Date', 'give' ),
 		);
 
 		return $columns;
@@ -304,7 +304,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 
 		if ( $give_forms ) {
 			echo '<select name="form" id="give-log-form-filter">';
-			echo '<option value="0">' . esc_html__( 'All', 'give' ) . '</option>';
+			echo '<option value="0">' . __( 'All', 'give' ) . '</option>';
 			foreach ( $give_forms as $form ) {
 				$form_title = get_the_title( $form );
 				$form_title = empty( $form_title ) ? sprintf( __( 'Untitled (#%s)', 'give' ), $form ) : $form_title;

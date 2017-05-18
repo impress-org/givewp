@@ -15,8 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/class-export.php';
-require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/export/export-actions.php';
+
 
 /**
  * Process batch exports via ajax
@@ -26,7 +25,7 @@ require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/export/export-actions.p
  */
 function give_do_ajax_export() {
 
-	require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/export/class-batch-export.php';
+	require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-batch-export.php';
 
 	parse_str( $_POST['form'], $form );
 
