@@ -88,7 +88,8 @@ class Give_Roles {
 
 		add_role( 'give_worker', esc_html__( 'Give Worker', 'give' ), array(
 			'read'         => true,
-			'edit_posts'   => false,
+			'edit_posts'   => true,
+            'edit_pages'   => true,
 			'upload_files' => true,
 			'delete_posts' => false
 		) );

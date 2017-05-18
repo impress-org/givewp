@@ -373,9 +373,9 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/template.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/actions.php';
 
-            if( defined( 'WP_CLI' ) && WP_CLI ) {
-                require_once GIVE_PLUGIN_DIR . 'includes/class-give-cli-commands.php';
-            }
+			if ( defined( 'WP_CLI' ) && WP_CLI ) {
+				require_once GIVE_PLUGIN_DIR . 'includes/class-give-cli-commands.php';
+			}
 
 			if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 
@@ -398,17 +398,21 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/customers/customers.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/customers/customer-functions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/customers/customer-actions.php';
+
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/metabox.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/class-metabox-form-data.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/dashboard-columns.php';
 
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/export/export-functions.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/export-functions.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-export.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/export-actions.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/pdf-reports.php';
+
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/reports.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/tools.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/tools/tools-actions.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/pdf-reports.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/class-give-graph.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/graphing.php';
+
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/data/tools-actions.php';
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/abstract-shortcode-generator.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/class-shortcode-button.php';
@@ -468,8 +472,8 @@ endif; // End if class_exists check
 
 
 /**
- * Start Give 
- * 
+ * Start Give
+ *
  * The main function responsible for returning the one true Give instance to functions everywhere.
  *
  * Use this function like you would a global variable, except without needing
@@ -478,7 +482,7 @@ endif; // End if class_exists check
  * Example: <?php $give = Give(); ?>
  *
  * @since 1.0
- * @return object|Give 
+ * @return object|Give
  */
 function Give() {
 	return Give::instance();

@@ -403,8 +403,6 @@ function give_reports_page_pages( $settings ) {
 		// Gateways.
 		include( 'reporting/class-settings-gateways.php' ),
 
-		// Export.
-		include( 'reporting/class-settings-export.php' ),
 	);
 
 	// Output.
@@ -434,6 +432,9 @@ function give_tools_page_pages( $settings ) {
 
 		// Data.
 		include( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-data.php' ),
+
+		// Export.
+		include( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-export.php' ),
 	);
 
 	// Output.
