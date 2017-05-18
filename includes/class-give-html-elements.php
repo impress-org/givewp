@@ -125,6 +125,12 @@ class Give_HTML_Elements {
 
 		$options = array();
 
+		// Ensure the selected.
+		if( false !== $args['selected'] && $args['selected'] !== 0 ){
+			$options[ $args['selected'] ] = get_the_title( $args['selected'] );
+		}
+
+
 		if ( $forms ) {
 			$options[0] = esc_attr__( 'Select a Donation Form', 'give' );
 			foreach ( $forms as $form ) {
