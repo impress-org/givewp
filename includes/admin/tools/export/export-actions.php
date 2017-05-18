@@ -53,7 +53,7 @@ add_action( 'give_form_batch_export', 'give_process_batch_export_form' );
  * @return void
  */
 function give_export_earnings() {
-	require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/class-export-earnings.php';
+	require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-export-earnings.php';
 
 	$earnings_export = new Give_Earnings_Export();
 
