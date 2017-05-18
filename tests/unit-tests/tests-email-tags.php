@@ -579,14 +579,14 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$payment       = Give_Helper_Payment::create_simple_payment();
 		$payment_total = give_email_tag_payment_total( array( 'payment_id' => $payment ) );
 
-		$this->assertEquals( '$20', $payment_total );
+		$this->assertEquals( '$20', html_entity_decode( $payment_total) );
 
 		/*
 		 * Case 2: Payment total with filter
 		 */
 		add_filter( 'give_email_tag_payment_total', array( $this, 'give_payment_total' ) );
 		$payment_total = give_email_tag_payment_total( array( 'payment_id' => $payment ) );
-		$this->assertEquals( '$30', $payment_total );
+		$this->assertEquals( '$30', html_entity_decode( $payment_total  ));
 		remove_filter( 'give_email_tag_payment_total', array( $this, 'give_payment_total' ), 10 );
 	}
 
@@ -600,7 +600,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	 * @return string
 	 */
 	public function give_payment_total( $payment_total ) {
-		$payment_total = '$30';
+		$payment_total = give_currency_filter( 30 );
 
 		return $payment_total;
 	}
