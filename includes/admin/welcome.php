@@ -105,77 +105,6 @@ class Give_Welcome {
 		remove_submenu_page( 'index.php', 'give-getting-started' );
 		remove_submenu_page( 'index.php', 'give-credits' );
 
-		// Badge for welcome page
-		$badge_url = GIVE_PLUGIN_URL . 'assets/images/give-badge.png';
-
-		?>
-		<style type="text/css" media="screen">
-			/*<![CDATA[*/
-			.give-badge {
-				background: url('<?php echo $badge_url; ?>') no-repeat;
-			}
-			/*]]>*/
-		</style>
-		<script>
-			//FitVids
-			(function ( e ) {
-				"use strict";
-				e.fn.fitVids = function ( t ) {
-					var n = {customSelector: null, ignore: null};
-					if ( !document.getElementById( "fit-vids-style" ) ) {
-						var r = document.head || document.getElementsByTagName( "head" )[0];
-						var i = ".fluid-width-video-wrapper{width:100%;position:relative;padding:0;}.fluid-width-video-wrapper iframe,.fluid-width-video-wrapper object,.fluid-width-video-wrapper embed {position:absolute;top:0;left:0;width:100%;height:100%;}";
-						var s = document.createElement( "div" );
-						s.innerHTML = '<p>x</p><style id="fit-vids-style">' + i + "</style>";
-						r.appendChild( s.childNodes[1] )
-					}
-					if ( t ) {
-						e.extend( n, t )
-					}
-					return this.each( function () {
-						var t = ['iframe[src*="player.vimeo.com"]', 'iframe[src*="youtube.com"]', 'iframe[src*="youtube-nocookie.com"]', 'iframe[src*="kickstarter.com"][src*="video.html"]', "object", "embed"];
-						if ( n.customSelector ) {
-							t.push( n.customSelector )
-						}
-						var r = ".fitvidsignore";
-						if ( n.ignore ) {
-							r = r + ", " + n.ignore
-						}
-						var i = e( this ).find( t.join( "," ) );
-						i = i.not( "object object" );
-						i = i.not( r );
-						i.each( function () {
-							var t = e( this );
-							if ( t.parents( r ).length > 0 ) {
-								return
-							}
-							if ( this.tagName.toLowerCase() === "embed" && t.parent( "object" ).length || t.parent( ".fluid-width-video-wrapper" ).length ) {
-								return
-							}
-							if ( !t.css( "height" ) && !t.css( "width" ) && (isNaN( t.attr( "height" ) ) || isNaN( t.attr( "width" ) )) ) {
-								t.attr( "height", 9 );
-								t.attr( "width", 16 )
-							}
-							var n = this.tagName.toLowerCase() === "object" || t.attr( "height" ) && !isNaN( parseInt( t.attr( "height" ), 10 ) ) ? parseInt( t.attr( "height" ), 10 ) : t.height(), i = !isNaN( parseInt( t.attr( "width" ), 10 ) ) ? parseInt( t.attr( "width" ), 10 ) : t.width(), s = n / i;
-							if ( !t.attr( "id" ) ) {
-								var o = "fitvid" + Math.floor( Math.random() * 999999 );
-								t.attr( "id", o )
-							}
-							t.wrap( '<div class="fluid-width-video-wrapper"></div>' ).parent( ".fluid-width-video-wrapper" ).css( "padding-top", s * 100 + "%" );
-							t.removeAttr( "height" ).removeAttr( "width" )
-						} )
-					} )
-				}
-			})( window.jQuery || window.Zepto );
-			jQuery( document ).ready( function ( $ ) {
-
-				// Target your .container, .wrapper, .post, etc.
-				$( ".wrap" ).fitVids();
-
-			} );
-
-		</script>
-	<?php
 	}
 
 	/**
@@ -216,9 +145,8 @@ class Give_Welcome {
 		list( $display_version ) = explode( '-', GIVE_VERSION );
 		?>
 		<div class="wrap about-wrap">
-			<h1 class="welcome-h1"><?php echo get_admin_page_title(); ?></h1>
 
-			<?php give_social_media_elements() ?>
+			<?php $this->get_welcome_header() ?>
 
 			<p class="about-text"><?php
 				printf(
@@ -348,9 +276,8 @@ class Give_Welcome {
 		list( $display_version ) = explode( '-', GIVE_VERSION );
 		?>
 		<div class="wrap about-wrap get-started">
-			<h1 class="welcome-h1"><?php echo get_admin_page_title(); ?></h1>
 
-			<?php give_social_media_elements() ?>
+			<?php $this->get_welcome_header() ?>
 
 			<p class="about-text"><?php esc_html_e( 'Welcome to the getting started guide.', 'give' ); ?></p>
 
@@ -449,14 +376,11 @@ class Give_Welcome {
 		list( $display_version ) = explode( '-', GIVE_VERSION );
 		?>
 		<div class="wrap about-wrap">
-			<h1 class="welcome-h1"><?php echo get_admin_page_title(); ?></h1>
 
-			<?php give_social_media_elements() ?>
+			<?php $this->get_welcome_header() ?>
 
 			<p class="about-text"><?php esc_html_e( 'Thanks to all those who have contributed code directly or indirectly.', 'give' ); ?></p>
-
-			<p class="about-text"><?php esc_html_e( 'Welcome to the getting started guide.', 'give' ); ?></p>
-
+            
 			<?php give_get_newsletter(); ?>
 
 			<div class="give-badge"><?php
@@ -580,6 +504,126 @@ class Give_Welcome {
 	}
 
 	/**
+	 * The header section for the welcome screen.
+     *
+     * @since 1.8.8
+	 */
+	public function get_welcome_header(){
+		// Badge for welcome page
+		$badge_url = GIVE_PLUGIN_URL . 'assets/images/give-badge.png';
+	    ?>
+        <h1 class="welcome-h1"><?php echo get_admin_page_title(); ?></h1>
+        <?php $this->social_media_elements(); ?>
+
+        <style type="text/css" media="screen">
+            /*<![CDATA[*/
+            .give-badge {
+                background: url('<?php echo $badge_url; ?>') no-repeat;
+            }
+            /*]]>*/
+        </style>
+        <script>
+            //FitVids
+            (function ( e ) {
+                "use strict";
+                e.fn.fitVids = function ( t ) {
+                    var n = {customSelector: null, ignore: null};
+                    if ( !document.getElementById( "fit-vids-style" ) ) {
+                        var r = document.head || document.getElementsByTagName( "head" )[0];
+                        var i = ".fluid-width-video-wrapper{width:100%;position:relative;padding:0;}.fluid-width-video-wrapper iframe,.fluid-width-video-wrapper object,.fluid-width-video-wrapper embed {position:absolute;top:0;left:0;width:100%;height:100%;}";
+                        var s = document.createElement( "div" );
+                        s.innerHTML = '<p>x</p><style id="fit-vids-style">' + i + "</style>";
+                        r.appendChild( s.childNodes[1] )
+                    }
+                    if ( t ) {
+                        e.extend( n, t )
+                    }
+                    return this.each( function () {
+                        var t = ['iframe[src*="player.vimeo.com"]', 'iframe[src*="youtube.com"]', 'iframe[src*="youtube-nocookie.com"]', 'iframe[src*="kickstarter.com"][src*="video.html"]', "object", "embed"];
+                        if ( n.customSelector ) {
+                            t.push( n.customSelector )
+                        }
+                        var r = ".fitvidsignore";
+                        if ( n.ignore ) {
+                            r = r + ", " + n.ignore
+                        }
+                        var i = e( this ).find( t.join( "," ) );
+                        i = i.not( "object object" );
+                        i = i.not( r );
+                        i.each( function () {
+                            var t = e( this );
+                            if ( t.parents( r ).length > 0 ) {
+                                return
+                            }
+                            if ( this.tagName.toLowerCase() === "embed" && t.parent( "object" ).length || t.parent( ".fluid-width-video-wrapper" ).length ) {
+                                return
+                            }
+                            if ( !t.css( "height" ) && !t.css( "width" ) && (isNaN( t.attr( "height" ) ) || isNaN( t.attr( "width" ) )) ) {
+                                t.attr( "height", 9 );
+                                t.attr( "width", 16 )
+                            }
+                            var n = this.tagName.toLowerCase() === "object" || t.attr( "height" ) && !isNaN( parseInt( t.attr( "height" ), 10 ) ) ? parseInt( t.attr( "height" ), 10 ) : t.height(), i = !isNaN( parseInt( t.attr( "width" ), 10 ) ) ? parseInt( t.attr( "width" ), 10 ) : t.width(), s = n / i;
+                            if ( !t.attr( "id" ) ) {
+                                var o = "fitvid" + Math.floor( Math.random() * 999999 );
+                                t.attr( "id", o )
+                            }
+                            t.wrap( '<div class="fluid-width-video-wrapper"></div>' ).parent( ".fluid-width-video-wrapper" ).css( "padding-top", s * 100 + "%" );
+                            t.removeAttr( "height" ).removeAttr( "width" )
+                        } )
+                    } )
+                }
+            })( window.jQuery || window.Zepto );
+            jQuery( document ).ready( function ( $ ) {
+
+                // Target your .container, .wrapper, .post, etc.
+                $( ".wrap" ).fitVids();
+
+            } );
+
+        </script>
+    <?php }
+
+
+	/**
+	 * Social Media Like Buttons
+	 *
+	 * Various social media elements to Give
+	 */
+	public function social_media_elements() { ?>
+
+        <div class="social-items-wrap">
+
+            <iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fwpgive&amp;send=false&amp;layout=button_count&amp;width=100&amp;show_faces=false&amp;font&amp;colorscheme=light&amp;action=like&amp;height=21&amp;appId=220596284639969"
+                    scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;"
+                    allowTransparency="true"></iframe>
+
+            <a href="https://twitter.com/givewp" class="twitter-follow-button" data-show-count="false"><?php
+				printf(
+				/* translators: %s: Give twitter user @givewp */
+					esc_html_e( 'Follow %s', 'give' ),
+					'@givewp'
+				);
+				?></a>
+            <script>!function (d, s, id) {
+                    var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
+                    if (!d.getElementById(id)) {
+                        js = d.createElement(s);
+                        js.id = id;
+                        js.src = p + '://platform.twitter.com/widgets.js';
+                        fjs.parentNode.insertBefore(js, fjs);
+                    }
+                }(document, 'script', 'twitter-wjs');
+            </script>
+
+        </div>
+        <!--/.social-items-wrap -->
+
+		<?php
+	}
+
+
+
+	/**
 	 * Sends user to the Welcome page on first activation of GIVE as well as each
 	 * time GIVE is upgraded to a new version
 	 *
@@ -589,7 +633,6 @@ class Give_Welcome {
 	 * @return void
 	 */
 	public function welcome() {
-		$give_options = give_get_settings();
 
 		// Bail if no activation redirect
 		if ( ! Give_Cache::get( '_give_activation_redirect', true ) ) {
