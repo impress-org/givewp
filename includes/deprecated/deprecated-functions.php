@@ -53,9 +53,9 @@ function give_log_default_views() {
 	_give_deprecated_function( __FUNCTION__, '1.8', null, $backtrace );
 
 	$views = array(
-		'sales'          => esc_html__( 'Donations', 'give' ),
-		'gateway_errors' => esc_html__( 'Payment Errors', 'give' ),
-		'api_requests'   => esc_html__( 'API Requests', 'give' ),
+		'sales'          => __( 'Donations', 'give' ),
+		'gateway_errors' => __( 'Payment Errors', 'give' ),
+		'api_requests'   => __( 'API Requests', 'give' ),
 	);
 
 	$views = apply_filters( 'give_log_views', $views );
