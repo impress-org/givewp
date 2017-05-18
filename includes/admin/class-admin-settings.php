@@ -746,14 +746,27 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 					// Custom: Log field.
 					case 'logs' :
-						// Note: there are no need to check for html field param because we want custom html to this field.
-						give_reports_tab_logs();
+
+						include GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/logs.php';
+
+						// Get current section.
+						$current_section = $_GET['section'] = give_get_current_setting_section();
+
+						/**
+						 * Fires the in report page logs view.
+						 *
+						 * @since 1.0
+						 */
+						do_action( "give_logs_view_{$current_section}" );
+
 						echo $description;
 						break;
 
-					// Custom: API field.
+					// Custom: Data field.
 					case 'data' :
-						give_tools_recount_stats_display();
+
+						include  GIVE_PLUGIN_DIR . 'includes/admin/tools/views/html-admin-page-data.php';
+
 						echo $description;
 						break;
 

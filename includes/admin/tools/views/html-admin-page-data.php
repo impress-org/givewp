@@ -1,38 +1,23 @@
 <?php
 /**
- * Tools
- *
- * @package     Give
- * @subpackage  Admin/Reports
- * @copyright   Copyright (c) 2016, WordImpress
- * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       1.5
+ * Admin View: Exports
  */
 
-// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+if ( ! current_user_can( 'manage_give_settings' ) ) {
+	return;
+}
+
 /**
- * Display the recount stats tools
+ * Fires before displaying the recount stats tools.
  *
- * @since       1.5
- * @return      void
+ * @since 1.5
  */
-function give_tools_recount_stats_display() {
-
-	if ( ! current_user_can( 'manage_give_settings' ) ) {
-		return;
-	}
-
-	/**
-	 * Fires before displaying the recount stats tools.
-	 *
-	 * @since 1.5
-	 */
-	do_action( 'give_tools_recount_stats_before' );
-	?>
+do_action( 'give_tools_recount_stats_before' );
+?>
 	<div id="poststuff">
 		<div class="postbox">
 
@@ -114,11 +99,10 @@ function give_tools_recount_stats_display() {
 			</div><!-- .inside -->
 		</div><!-- .postbox -->
 	</div><!-- #poststuff -->
-	<?php
-	/**
-	 * Fires after displaying the recount stats tools.
-	 *
-	 * @since 1.5
-	 */
-	do_action( 'give_tools_recount_stats_after' );
-}
+<?php
+/**
+ * Fires after displaying the recount stats tools.
+ *
+ * @since 1.5
+ */
+do_action( 'give_tools_recount_stats_after' );
