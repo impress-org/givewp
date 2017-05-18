@@ -307,7 +307,7 @@ add_action( 'give_reports_view_donors', 'give_reports_donors_table' );
 function give_reports_gateways_table() {
 	include( dirname( __FILE__ ) . '/class-gateways-reports-table.php' );
 
-	$give_table = new Give_Gateawy_Reports_Table();
+	$give_table = new Give_Gateway_Reports_Table();
 	$give_table->prepare_items();
 	$give_table->display();
 }

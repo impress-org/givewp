@@ -20,13 +20,13 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 }
 
 /**
- * Give_Gateawy_Reports_Table Class
+ * Give_Gateway_Reports_Table Class
  *
  * Renders the Download Reports table
  *
  * @since 1.0
  */
-class Give_Gateawy_Reports_Table extends WP_List_Table {
+class Give_Gateway_Reports_Table extends WP_List_Table {
 
 	/**
 	 * @var int Number of items per page
