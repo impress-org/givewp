@@ -225,7 +225,7 @@ add_action( 'wp_ajax_give_get_states', 'give_ajax_get_states_field' );
 add_action( 'wp_ajax_nopriv_give_get_states', 'give_ajax_get_states_field' );
 
 /**
- * Retrieve a states drop down
+ * Retrieve donation forms via AJAX for chosen dropdown search field.
  *
  * @since  1.0
  *
@@ -235,6 +235,8 @@ function give_ajax_form_search() {
 	global $wpdb;
 
 	$search  = esc_sql( sanitize_text_field( $_GET['s'] ) );
+	$excludes = ( isset( $_GET['current_id'] ) ? (array) $_GET['current_id'] : array() );
+
 	$results = array();
 	if ( current_user_can( 'edit_give_forms' ) ) {
 		$items = $wpdb->get_results( "SELECT ID,post_title FROM $wpdb->posts WHERE `post_type` = 'give_forms' AND `post_title` LIKE '%$search%' LIMIT 50" );
@@ -255,7 +257,7 @@ function give_ajax_form_search() {
 
 		$items[] = array(
 			'id'   => 0,
-			'name' => esc_html__( 'No forms found.', 'give' ),
+			'name' => __( 'No forms found.', 'give' ),
 		);
 
 	}

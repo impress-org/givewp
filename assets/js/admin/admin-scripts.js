@@ -41,6 +41,110 @@ jQuery.noConflict();
 			$('.give-select-chosen', '#choose-give-form').css('width', '100%');
 		});
 
+        $('.give-select-chosen .chosen-search input').each( function() {
+            var type = $(this).parent().parent().parent().prev('select.give-select-chosen').data('search-type');
+            var placeholder = '';
+
+            if ( type === 'download' ) {
+                placeholder = give_vars.search_placeholder;
+            } else {
+                type = 'search_placeholder_' + type;
+                if ( give_vars[type] ) {
+                    placeholder = give_vars[type];
+                }
+            }
+
+            $(this).attr( 'placeholder', placeholder );
+        });
+        
+
+        // Variables for setting up the typing timer
+        var typingTimer;               // Timer identifier
+        var doneTypingInterval = 342;  // Time in ms, Slow - 521ms, Moderate - 342ms, Fast - 300ms
+
+        // Replace options with search results
+        $( document.body ).on( 'keyup', '.give-select.chosen-container .chosen-search input, .give-select.chosen-container .search-field input', function(e) {
+
+            var val         = $(this).val()
+            var container   = $(this).closest( '.give-select-chosen' );
+            var menu_id     = container.attr('id').replace( '_chosen', '' );
+            var select      = container.prev();
+            var no_bundles  = container.hasClass( 'no-bundles' );
+            var variations  = container.hasClass( 'variations' );
+            var lastKey     = e.which;
+            var search_type = 'give_forms_search';
+
+            // Detect if we have a defined search type, otherwise default to donation forms.
+            if ( container.prev().data('search-type') ) {
+
+                // Don't trigger AJAX if this select has all options loaded.
+                if ( 'no_ajax' == select.data('search-type') ) {
+                    return;
+                }
+
+                search_type = 'give_' + select.data('search-type') + '_search';
+            }
+
+            // Don't fire if short or is a modifier key (shift, ctrl, apple command key, or arrow keys)
+            if(
+                ( val.length <= 3 && 'give_forms_search' == search_type ) ||
+                (
+                    lastKey == 16 ||
+                    lastKey == 13 ||
+                    lastKey == 91 ||
+                    lastKey == 17 ||
+                    lastKey == 37 ||
+                    lastKey == 38 ||
+                    lastKey == 39 ||
+                    lastKey == 40
+                )
+            ) {
+                return;
+            }
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(
+                function(){
+                    $.ajax({
+                        type: 'GET',
+                        url: ajaxurl,
+                        data: {
+                            action: search_type,
+                            s: val
+                        },
+                        dataType: "json",
+                        beforeSend: function(){
+                            select.closest('ul.chosen-results').empty();
+                        },
+                        success: function( data ) {
+                            // Remove all options but those that are selected
+                            $('option:not(:selected)', select).remove();
+                            $.each( data, function( key, item ) {
+                                // Add any option that doesn't already exist
+                                if( ! $('option[value="' + item.id + '"]', select).length ) {
+                                    select.prepend( '<option value="' + item.id + '">' + item.name + '</option>' );
+                                }
+                            });
+                            // Update the options
+                            $('.give-select-chosen').trigger('chosen:updated');
+                            select.next().find('input').val(val);
+                        }
+                    }).fail(function (response) {
+                        if ( window.console && window.console.log ) {
+                            console.log( response );
+                        }
+                    }).done(function (response) {
+
+                    });
+                },
+                doneTypingInterval
+            );
+        });
+
+        // Add placeholders for Chosen input fields
+        $( '.chosen-choices' ).on( 'click', function () {
+            $(this).children('li').children('input').attr( 'placeholder', give_vars.type_to_search );
+        });
+	
 	};
 
 	/**
@@ -56,8 +160,6 @@ jQuery.noConflict();
 	function give_unformat_currency(price, dp) {
 		price = accounting.unformat(price, give_vars.decimal_separator).toString();
 		dp    = ( 'undefined' == dp ? false : dp );
-
-		var decimal_position = price.indexOf('.');
 
 		// Set default value for number of decimals.
 		if ( false !== dp ) {
@@ -1009,7 +1111,7 @@ jQuery.noConflict();
 					var attachment = give_media_uploader.state().get('selection').first().toJSON(),
 						$input_field = window.give_media_uploader_input_field.prev(),
 						fvalue= ( 'id' === $input_field.data('fvalue') ? attachment.id : attachment.url );
-					
+
 					console.log($input_field);
 
 					$input_field.val(fvalue);
@@ -1484,7 +1586,7 @@ jQuery.noConflict();
 
 				// Total payment count.
 				$payments = $payments.length.toString();
-				
+
 				switch ( current_action ) {
 					case 'delete':
 						// Check if admin did not select any payment.
@@ -1522,7 +1624,7 @@ jQuery.noConflict();
 		}
 	};
 
-	//On DOM Ready
+	// On DOM Ready.
 	$(function () {
 
 		enable_admin_datepicker();

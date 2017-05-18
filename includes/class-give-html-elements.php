@@ -31,7 +31,7 @@ class Give_HTML_Elements {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  array  $args Arguments for the dropdown.
+	 * @param  array $args Arguments for the dropdown.
 	 *
 	 * @return string       Donations dropdown.
 	 */
@@ -63,7 +63,7 @@ class Give_HTML_Elements {
 			$options[0] = esc_html__( 'Select a donation', 'give' );
 			foreach ( $payments as $payment ) {
 
-				$options[ absint( $payment->ID ) ] = esc_html( '#' . $payment->ID . ' - ' . $payment->email . ' - ' . $payment->form_title);
+				$options[ absint( $payment->ID ) ] = esc_html( '#' . $payment->ID . ' - ' . $payment->email . ' - ' . $payment->form_title );
 
 			}
 		} else {
@@ -109,8 +109,9 @@ class Give_HTML_Elements {
 			'multiple'    => false,
 			'selected'    => 0,
 			'chosen'      => false,
-			'number'      => 30,
-			'placeholder' => esc_attr__( 'Select a Donation Form', 'give' )
+			'number'      => 2,
+			'placeholder' => esc_attr__( 'Select a Donation Form', 'give' ),
+			'data'        => array( 'search-type' => 'form' ),
 		);
 
 		$args = wp_parse_args( $args, $defaults );
@@ -127,7 +128,7 @@ class Give_HTML_Elements {
 		if ( $forms ) {
 			$options[0] = esc_attr__( 'Select a Donation Form', 'give' );
 			foreach ( $forms as $form ) {
-				$form_title = empty( $form->post_title ) ? sprintf( __( 'Untitled (#%s)', 'give' ), $form->ID ) : $form->post_title;
+				$form_title                     = empty( $form->post_title ) ? sprintf( __( 'Untitled (#%s)', 'give' ), $form->ID ) : $form->post_title;
 				$options[ absint( $form->ID ) ] = esc_html( $form_title );
 			}
 		} else {
@@ -144,7 +145,8 @@ class Give_HTML_Elements {
 			'multiple'         => $args['multiple'],
 			'placeholder'      => $args['placeholder'],
 			'show_option_all'  => false,
-			'show_option_none' => false
+			'show_option_none' => false,
+			'data'             => $args['data'],
 		) );
 
 		return $output;
@@ -172,7 +174,8 @@ class Give_HTML_Elements {
 			'selected'    => 0,
 			'chosen'      => true,
 			'placeholder' => esc_attr__( 'Select a Donor', 'give' ),
-			'number'      => 30
+			'number'      => 30,
+			'data'        => array( 'search-type' => 'customer' )
 		);
 
 		$args = wp_parse_args( $args, $defaults );
@@ -219,7 +222,8 @@ class Give_HTML_Elements {
 			'multiple'         => $args['multiple'],
 			'chosen'           => $args['chosen'],
 			'show_option_all'  => false,
-			'show_option_none' => false
+			'show_option_none' => false,
+			'data'             => $args['data'],
 		) );
 
 		return $output;
@@ -233,9 +237,9 @@ class Give_HTML_Elements {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  string $name     Name attribute of the dropdown. Default is 'give_forms_categories'.
-	 * @param  int    $selected Category to select automatically. Default is 0.
-	 * @param  array  $args     Select box options.
+	 * @param  string $name Name attribute of the dropdown. Default is 'give_forms_categories'.
+	 * @param  int $selected Category to select automatically. Default is 0.
+	 * @param  array $args Select box options.
 	 *
 	 * @return string           Categories dropdown.
 	 */
@@ -269,9 +273,9 @@ class Give_HTML_Elements {
 	 * @since  1.8
 	 * @access public
 	 *
-	 * @param  string $name     Name attribute of the dropdown. Default is 'give_forms_tags'.
-	 * @param  int    $selected Tag to select automatically. Default is 0.
-	 * @param  array  $args     Select box options.
+	 * @param  string $name Name attribute of the dropdown. Default is 'give_forms_tags'.
+	 * @param  int $selected Tag to select automatically. Default is 0.
+	 * @param  array $args Select box options.
 	 *
 	 * @return string           Tags dropdown.
 	 */
@@ -305,10 +309,10 @@ class Give_HTML_Elements {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  string $name         Name attribute of the dropdown. Default is 'year'.
-	 * @param  int    $selected     Year to select automatically. Default is 0.
-	 * @param  int    $years_before Number of years before the current year the dropdown should start with. Default is 5.
-	 * @param  int    $years_after  Number of years after the current year the dropdown should finish at. Default is 0.
+	 * @param  string $name Name attribute of the dropdown. Default is 'year'.
+	 * @param  int $selected Year to select automatically. Default is 0.
+	 * @param  int $years_before Number of years before the current year the dropdown should start with. Default is 5.
+	 * @param  int $years_after Number of years after the current year the dropdown should finish at. Default is 0.
 	 *
 	 * @return string               Years dropdown.
 	 */
@@ -343,8 +347,8 @@ class Give_HTML_Elements {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  string $name     Name attribute of the dropdown. Default is 'month'.
-	 * @param  int    $selected Month to select automatically. Default is 0.
+	 * @param  string $name Name attribute of the dropdown. Default is 'month'.
+	 * @param  int $selected Month to select automatically. Default is 0.
 	 *
 	 * @return string           Months dropdown.
 	 */
@@ -393,10 +397,18 @@ class Give_HTML_Elements {
 			'multiple'         => false,
 			'select_atts'      => false,
 			'show_option_all'  => esc_html__( 'All', 'give' ),
-			'show_option_none' => esc_html__( 'None', 'give' )
+			'show_option_none' => esc_html__( 'None', 'give' ),
+			'data'             => array(),
+			'readonly'         => false,
+			'disabled'         => false,
 		);
 
 		$args = wp_parse_args( $args, $defaults );
+
+		$data_elements = '';
+		foreach ( $args['data'] as $key => $value ) {
+			$data_elements .= ' data-' . esc_attr( $key ) . '="' . esc_attr( $value ) . '"';
+		}
 
 		if ( $args['multiple'] ) {
 			$multiple = ' MULTIPLE';
@@ -415,7 +427,7 @@ class Give_HTML_Elements {
 		}
 
 
-		$output = '<select name="' . esc_attr( $args['name'] ) . '" id="' . esc_attr( sanitize_key( str_replace( '-', '_', $args['id'] ) ) ) . '" class="give-select ' . esc_attr( $args['class'] ) . '"' . $multiple . ' ' . $args['select_atts'] . ' data-placeholder="' . $placeholder . '">';
+		$output = '<select name="' . esc_attr( $args['name'] ) . '" id="' . esc_attr( sanitize_key( str_replace( '-', '_', $args['id'] ) ) ) . '" class="give-select ' . esc_attr( $args['class'] ) . '"' . $multiple . ' ' . $args['select_atts'] . ' data-placeholder="' . $placeholder . '"'. $data_elements . '>';
 
 		if ( $args['show_option_all'] ) {
 			if ( $args['multiple'] ) {
