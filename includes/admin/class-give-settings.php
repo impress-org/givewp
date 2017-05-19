@@ -1128,16 +1128,36 @@ function give_get_featured_image_sizes() {
 		$get_sizes = array( 'thumbnail', 'medium', 'medium_large', 'large' );
 	}
 
-	foreach ( $get_sizes as $_size ) {
+    // This will help us to filter special characters from a string
+    $filter_slug_items = array( '_', '-' );
 
-		if ( in_array( $_size, array( 'thumbnail', 'medium', 'medium_large', 'large' ) ) ) {
-			$sizes[ $_size ] = $_size . ' - ' . get_option( "{$_size}_size_w" ) . 'x' . get_option( "{$_size}_size_h" );
-		} elseif ( isset( $_wp_additional_image_sizes[ $_size ] ) ) {
-			$sizes[ $_size ] = $_size . ' - ' . $_wp_additional_image_sizes[ $_size ]['width'] . 'x' . $_wp_additional_image_sizes[ $_size ]['height'];
-		}
+	foreach ( $get_sizes as $_size ) {
+        $sizes[ $_size ] = give_slug_to_title( $_size, $filter_slug_items );
 	}
 
 	return apply_filters( 'give_get_featured_image_sizes', $sizes );
+}
+
+
+/**
+ *  Slug to Title
+ *
+ *  Converts a string with hyphen(-) or underscores(_) or any special character to a string with Title case
+ *
+ *  @since 1.8.8
+ *
+ *  @params $string text
+ *  @params $filter array
+ */
+function give_slug_to_title( $string, $filters = array() ){
+
+    foreach( $filters as $filter_item ){
+        $string = str_replace( $filter_item, ' ', $string );
+    }
+
+    // Return updated string after converting it to title case
+    return ucwords( $string );
+
 }
 
 
