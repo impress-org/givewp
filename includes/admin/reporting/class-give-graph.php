@@ -195,7 +195,7 @@ class Give_Graph {
 						{
 							label : "<?php echo esc_attr( $label ); ?>",
 							id    : "<?php echo sanitize_key( $label ); ?>",
-							dataType  : '<?php echo ( ! empty( $this->options['dataType'][$order] ) ? $this->options['dataType'][$order] : '' ); ?>',
+							dataType  : '<?php echo ( ! empty( $this->options['dataType'][$order] ) ? $this->options['dataType'][$order] : 'count' ); ?>',
 							// data format is: [ point on x, value on y ]
 							data  : [<?php foreach( $data as $point ) { echo '[' . implode( ',', $point ) . '],'; } ?>],
 							points: {
