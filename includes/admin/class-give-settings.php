@@ -1139,12 +1139,13 @@ function give_get_featured_image_sizes() {
             $is_image_size_responsive = true;
         }
 
+        // Converting image size slug to title case
+        $sizes[ $_size ] = give_slug_to_title( $_size, $filter_slug_items );
+
         if ( in_array( $_size, array( 'thumbnail', 'medium', 'medium_large', 'large' ) ) ) {
- 			$sizes[ $_size ] = give_slug_to_title( $_size, $filter_slug_items ) . ' (' . get_option( "{$_size}_size_w" ) . 'x' . get_option( "{$_size}_size_h" );
-
+ 			$sizes[ $_size ] .= ' (' . get_option( "{$_size}_size_w" ) . 'x' . get_option( "{$_size}_size_h" );
  		} elseif ( isset( $_wp_additional_image_sizes[ $_size ] ) ) {
- 			$sizes[ $_size ] = give_slug_to_title( $_size, $filter_slug_items ) . ' (' . $_wp_additional_image_sizes[ $_size ]['width'] . 'x' . $_wp_additional_image_sizes[ $_size ]['height'];
-
+ 			$sizes[ $_size ] .= ' (' . $_wp_additional_image_sizes[ $_size ]['width'] . 'x' . $_wp_additional_image_sizes[ $_size ]['height'];
  		}
 
         // Based on the above image height check, label the respective resolution as responsive
