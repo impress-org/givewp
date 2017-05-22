@@ -1132,7 +1132,27 @@ function give_get_featured_image_sizes() {
     $filter_slug_items = array( '_', '-' );
 
 	foreach ( $get_sizes as $_size ) {
-        $sizes[ $_size ] = give_slug_to_title( $_size, $filter_slug_items );
+
+        // Check for height of image having 0 or 9999 in pixels to label them as responsive
+        $is_image_size_responsive = false;
+        if( 0 == get_option( "{$_size}_size_h" ) || 9999 == get_option( "{$_size}_size_h" ) ){
+            $is_image_size_responsive = true;
+        }
+
+        if ( in_array( $_size, array( 'thumbnail', 'medium', 'medium_large', 'large' ) ) ) {
+ 			$sizes[ $_size ] = give_slug_to_title( $_size, $filter_slug_items ) . ' (' . get_option( "{$_size}_size_w" ) . 'x' . get_option( "{$_size}_size_h" );
+
+ 		} elseif ( isset( $_wp_additional_image_sizes[ $_size ] ) ) {
+ 			$sizes[ $_size ] = give_slug_to_title( $_size, $filter_slug_items ) . ' (' . $_wp_additional_image_sizes[ $_size ]['width'] . 'x' . $_wp_additional_image_sizes[ $_size ]['height'];
+
+ 		}
+
+        // Based on the above image height check, label the respective resolution as responsive
+        if($is_image_size_responsive){
+            $sizes[ $_size ] .= ' - responsive';
+        }
+        $sizes[ $_size ] .= ')';
+
 	}
 
 	return apply_filters( 'give_get_featured_image_sizes', $sizes );
