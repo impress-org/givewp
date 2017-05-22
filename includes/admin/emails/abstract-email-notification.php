@@ -187,7 +187,9 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			}
 
 			// Setup setting fields.
-			add_filter( 'give_get_settings_emails', array( $this, 'add_setting_fields' ), 10, 2 );
+			if( $this->config['show_on_emails_setting_page'] ) {
+				add_filter( 'give_get_settings_emails', array( $this, 'add_setting_fields' ), 10, 2 );
+			}
 
 			if ( $this->config['form_metabox_setting'] ) {
 				add_filter(
