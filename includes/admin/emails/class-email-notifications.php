@@ -79,17 +79,18 @@ class Give_Email_Notifications {
 
 		/* @var Give_Email_Notification $email */
 		foreach ( $this->get_email_notifications() as $email ) {
-			// Add section.
-			add_filter( 'give_get_sections_emails', array( $email, 'add_section' ) );
-			add_filter( "give_hide_section_{$email->config['id']}_on_emails_page", array( $email, 'hide_section' ) );
-
-			if ( ! Give_Email_Notification_Util::is_email_preview_has_header( $email ) ) {
-				continue;
+			// Setup email section.
+			if( Give_Email_Notification_Util::is_show_on_emails_setting_page( $email ) ) {
+				add_filter( 'give_get_sections_emails', array( $email, 'add_section' ) );
+				add_filter( "give_hide_section_{$email->config['id']}_on_emails_page", array( $email, 'hide_section' ) );
 			}
 
-			add_action( "give_{$email->config['id']}_email_preview", array( $this, 'email_preview_header' ) );
-			add_filter( "give_{$email->config['id']}_email_preview_data", array( $this, 'email_preview_data' ) );
-			add_filter( "give_{$email->config['id']}_email_preview_message", array( $this, 'email_preview_message' ), 1, 2 );
+			// Setup email preview.
+			if ( Give_Email_Notification_Util::is_email_preview_has_header( $email ) ) {
+				add_action( "give_{$email->config['id']}_email_preview", array( $this, 'email_preview_header' ) );
+				add_filter( "give_{$email->config['id']}_email_preview_data", array( $this, 'email_preview_data' ) );
+				add_filter( "give_{$email->config['id']}_email_preview_message", array( $this, 'email_preview_message' ), 1, 2 );
+			}
 		}
 	}
 
