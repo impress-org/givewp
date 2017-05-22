@@ -138,6 +138,20 @@ class Give_Email_Notification_Util {
 		return $email->config['has_preview'];
 	}
 
+	/**
+	 * Check if email notification setting appear on emails setting page or not.
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param Give_Email_Notification $email
+	 *
+	 * @return bool
+	 */
+	public static function is_show_on_emails_setting_page( Give_Email_Notification $email ){
+		return $email->config['show_on_emails_setting_page'];
+	}
+
 
 	/**
 	 * Check email active or not.

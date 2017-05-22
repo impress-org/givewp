@@ -238,13 +238,20 @@ class Give_Email_Notification_Table extends WP_List_Table {
 		// Set columns.
 		$columns               = $this->get_columns();
 		$hidden                = array();
+		$email_notifications   = array();
 		$sortable              = $this->get_sortable_columns();
 		$this->_column_headers = array( $columns, $hidden, $sortable, $this->get_primary_column_name() );
 
 		// Set email notifications.
-		$email_notifications = $this->email_notifications->get_email_notifications();
-		$totalItems          = count( $email_notifications );
-		$this->items         = $email_notifications;
+		/* @var Give_Email_Notification $email_notification */
+		foreach ( $this->email_notifications->get_email_notifications() as $email_notification ) {
+			if ( Give_Email_Notification_Util::is_show_on_emails_setting_page( $email_notification ) ) {
+				$email_notifications[] = $email_notification;
+			}
+		}
+
+		$totalItems  = count( $email_notifications );
+		$this->items = $email_notifications;
 		$this->set_pagination_args( array(
 			'total_items' => $totalItems,
 			'per_page'    => $this->per_page,
