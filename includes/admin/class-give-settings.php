@@ -1168,6 +1168,8 @@ function give_get_featured_image_sizes() {
  *
  *  @params $string text
  *  @params $filter array
+ *
+ *  @return text $string
  */
 function give_slug_to_title( $string, $filters = array() ){
 
