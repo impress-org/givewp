@@ -93,8 +93,8 @@ $give_receipt_args['donation_receipt']['payment_method'] = array(
  * You can easily extend the donation receipt argument using the filter give_donation_receipt_args
  *
  * @params array $give_receipt_args['donation_receipt']
- * @params integer $donation_id
- * @params integer $form_id
+ * @params int $donation_id
+ * @params int $form_id
  *
  * @since 1.8.8
  */
