@@ -2,23 +2,98 @@
 /**
  * This template is used to display the donation summary with [give_receipt]
  */
+
 global $give_receipt_args, $payment;
 
-//Validation: Ensure $payment var is set
+//Validation: Ensure $payment var is set.
 if ( empty( $payment ) && isset( $give_receipt_args['id'] ) ) {
 	$payment = get_post( $give_receipt_args['id'] );
 }
 
-//Double-Validation: Check for $payment global
+//Double-Validation: Check for $payment global.
 if ( empty( $payment ) ) {
 	give_output_error( esc_html__( 'The specified receipt ID appears to be invalid.', 'give' ) );
 
 	return;
 }
 
-$id           = $payment->ID;
-$status       = $payment->post_status;
-$status_label = give_get_payment_status( $payment, true );
+$donation_id    = $payment->ID;
+$meta           = give_get_payment_meta( $donation_id );
+$donation       = give_get_payment_form_title( $meta );
+$user           = give_get_payment_meta_user_info( $donation_id );
+$email          = give_get_payment_user_email( $donation_id );
+$status         = $payment->post_status;
+$status_label   = give_get_payment_status( $payment, true );
+
+/*
+ * Generate Donation Receipt Arguments.
+ *
+ * Added donation receipt array to global variable $give_receipt_args to manage it from single variable
+ *
+ * @since 1.8.8
+ */
+$give_receipt_args['donation_receipt'][] = array(
+    'name'      => __('Donor', 'give'),
+    'value'     => $user['first_name'].' '.$user['last_name'],
+    'display'   => $give_receipt_args['donor']
+);
+
+$give_receipt_args['donation_receipt'][] = array(
+    'name'      => __('Date', 'give'),
+    'value'     => date_i18n( give_date_format(), strtotime( $meta['date'] ) ),
+    'display'   => $give_receipt_args['date']
+);
+
+$give_receipt_args['donation_receipt'][] = array(
+    'name'      => __('Total Donation', 'give'),
+    'value'     => give_payment_amount( $donation_id ),
+    'display'   => true
+);
+
+$give_receipt_args['donation_receipt'][] = array(
+    'name'      => __('Donation', 'give'),
+    'value'     => $donation,
+    'display'   => true
+);
+
+$give_receipt_args['donation_receipt'][] = array(
+    'name'      => __('Donation Status', 'give'),
+    'value'     => esc_attr( $status ),
+    'display'   => $give_receipt_args['payment_status']
+);
+
+$give_receipt_args['donation_receipt'][] = array(
+    'name'      => __('Donation ID', 'give'),
+    'value'     => $donation_id,
+    'display'   => ($give_receipt_args['payment_id'])?true:false
+);
+
+$give_receipt_args['donation_receipt'][] = array(
+    'name'      => esc_html__( 'Payment:', 'give' ),
+    'value'     => esc_html__( 'Details:', 'give' ),
+    'display'   => ($give_receipt_args['payment_id'])?false:true
+);
+
+$give_receipt_args['donation_receipt'][] = array(
+    'name'      => __('Payment Key', 'give'),
+    'value'     => get_post_meta( $payment_id, '_give_payment_purchase_key', true ),
+    'display'   => $give_receipt_args['payment_key']
+);
+
+$give_receipt_args['donation_receipt'][] = array(
+    'name'      => __('Payment Method', 'give'),
+    'value'     => give_get_gateway_checkout_label( give_get_payment_gateway( $donation_id ) ),
+    'display'   => true
+);
+
+/*
+ * Extend Give Donation Receipt
+ *
+ * You can easily extend the donation receipt argument using the filter give_donation_receipt_args
+ *
+ * @since 1.8.8
+ */
+$give_receipt_args['donation_receipt'] = apply_filters( 'give_donation_receipt_args', $give_receipt_args['donation_receipt'] );
 
 // Show payment status notice based on shortcode attribute.
 if ( filter_var( $give_receipt_args['status_notice'], FILTER_VALIDATE_BOOLEAN ) ) {
@@ -145,8 +220,8 @@ do_action( 'give_payment_receipt_before_table', $payment, $give_receipt_args );
 		<?php foreach( $give_receipt_args['donation_receipt'] as $receipt_item ){ ?>
             <?php if ( filter_var( $receipt_item['display'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
             <tr>
-                <td scope="row"><strong><?php echo $receipt_item['name']; ?></strong></td>
-                <td><?php echo $receipt_item['value']; ?></td>
+                <td scope="row"><strong><?php esc_html_e( $receipt_item['name'], 'give' ); ?></strong></td>
+                <td><?php esc_html_e( $receipt_item['value'], 'give' ); ?></td>
             </tr>
             <?php endif; ?>
         <?php } ?>

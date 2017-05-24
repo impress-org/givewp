@@ -218,7 +218,7 @@ function give_receipt_shortcode( $atts ) {
 
 	global $give_receipt_args, $payment;
 
-	$atts = shortcode_atts( array(
+	$give_receipt_args = shortcode_atts( array(
 		'error'          => __( 'You are missing the payment key to view this donation receipt.', 'give' ),
 		'price'          => true,
 		'donor'          => true,
@@ -229,13 +229,6 @@ function give_receipt_shortcode( $atts ) {
 		'payment_status' => false,
 		'status_notice'  => true,
 	), $atts, 'give_receipt' );
-
-    // Passed few required shortcode variables to $give_receipt_args
-    $give_receipt_args['error']             = $atts['error'];
-    $give_receipt_args['payment_id']        = $atts['payment_id'];
-    $give_receipt_args['payment_key']       = $atts['payment_key'];
-    $give_receipt_args['payment_status']    = $atts['payment_status'];
-    $give_receipt_args['status_notice']     = $atts['status_notice'];
 
 	//set $session var
 	$session = give_get_purchase_session();
@@ -294,103 +287,6 @@ function give_receipt_shortcode( $atts ) {
 
 		return $login_form;
 	}
-
-    /*
-	 * Collect Data to generate donation receipt args.
-	 *
-	 * @since 1.8.8
-	 */
-    $meta                       = give_get_payment_meta( $payment_id );
-    $donation                   = give_get_payment_form_title( $meta );
-    $user                       = give_get_payment_meta_user_info( $payment_id );
-    $email                      = give_get_payment_user_email( $payment_id );
-    $donor_name                 = $user['first_name'].' '.$user['last_name'];
-    $donation_gateway           = give_get_gateway_checkout_label( $session['post_data']['give-gateway'] );
-    $give_fee_donation_amount   = give_format_amount( get_post_meta( $payment_id, '_give_fee_donation_amount', true ) );
-    $give_fee_amount            = give_format_amount( get_post_meta( $payment_id, '_give_fee_amount', true ) );
-    $total_donation             = give_payment_amount( $payment_id );
-
-    /*
-	 * Generate Donation Receipt Arguments.
-	 *
-	 * Added donation receipt array to global variable $give_receipt_args to manage it from single variable
-     *
-     * @since 1.8.8
-	 */
-    $give_receipt_args['donation_receipt'][] = array(
-        'name'      => __('Donor', 'give'),
-        'value'     => $donor_name,
-        'display'   => $atts['donor']
-    );
-
-    $give_receipt_args['donation_receipt'][] = array(
-        'name'      => __('Date', 'give'),
-        'value'     => date_i18n( give_date_format(), strtotime( $meta['date'] ) ),
-        'display'   => $atts['date']
-    );
-
-    $give_receipt_args['donation_receipt'][] = array(
-        'name'      => __('Donation Fee', 'give'),
-        'value'     => give_currency_filter( $give_fee_amount, give_get_payment_currency_code( $payment_id ) ),
-        'display'   => false
-    );
-
-    $give_receipt_args['donation_receipt'][] = array(
-        'name'      => __('Donation Amount', 'give'),
-        'value'     => give_currency_filter( $give_fee_donation_amount, give_get_payment_currency_code( $payment_id ) ),
-        'display'   => false
-    );
-
-    $give_receipt_args['donation_receipt'][] = array(
-        'name'      => __('Total Donation', 'give'),
-        'value'     => $total_donation,
-        'display'   => true
-    );
-
-    $give_receipt_args['donation_receipt'][] = array(
-        'name'      => __('Donation', 'give'),
-        'value'     => $donation,
-        'display'   => true
-    );
-
-    $give_receipt_args['donation_receipt'][] = array(
-        'name'      => __('Donation Status', 'give'),
-        'value'     => esc_attr( $status ),
-        'display'   => $atts['payment_status']
-    );
-
-    $give_receipt_args['donation_receipt'][] = array(
-        'name'      => __('Donation ID', 'give'),
-        'value'     => $payment_id,
-        'display'   => ($atts['payment_id'])?true:false
-    );
-
-    $give_receipt_args['donation_receipt'][] = array(
-        'name'      => esc_html__( 'Payment:', 'give' ),
-        'value'     => esc_html__( 'Details:', 'give' ),
-        'display'   => ($atts['payment_id'])?false:true
-    );
-
-    $give_receipt_args['donation_receipt'][] = array(
-        'name'      => __('Payment Key', 'give'),
-        'value'     => get_post_meta( $payment_id, '_give_payment_purchase_key', true ),
-        'display'   => $atts['payment_key']
-    );
-
-    $give_receipt_args['donation_receipt'][] = array(
-        'name'      => __('Payment Method', 'give'),
-        'value'     => $donation_gateway,
-        'display'   => true
-    );
-
-    /*
-	 * Extend Give Donation Receipt
-	 *
-	 * You can easily extend the donation receipt argument using the filter give_donation_receipt_args
-	 *
-	 * @since 1.8.8
-	 */
-    $give_receipt_args['donation_receipt'] = apply_filters( 'give_donation_receipt_args', $give_receipt_args['donation_receipt'] );
 
 	/*
 	 * Check if the user has permission to view the receipt.
