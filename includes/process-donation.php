@@ -275,7 +275,7 @@ function give_purchase_form_validate_fields() {
 
 	// Validate agree to terms
 	if ( give_is_terms_enabled( $form_id ) ) {
-		give_purchase_form_validate_agree_to_terms();
+		give_donation_form_validate_agree_to_terms();
 	}
 
 	// Stop processing donor registration, if donor registration is optional and donor can do guest checkout.
@@ -405,11 +405,11 @@ function give_verify_minimum_price() {
  * @since       1.0
  * @return      void
  */
-function give_purchase_form_validate_agree_to_terms() {
+function give_donation_form_validate_agree_to_terms() {
 	// Validate agree to terms.
 	if ( ! isset( $_POST['give_agree_to_terms'] ) || $_POST['give_agree_to_terms'] != 1 ) {
 		// User did not agree.
-		give_set_error( 'agree_to_terms', apply_filters( 'give_agree_to_terms_text', esc_html__( 'You must agree to the terms and conditions.', 'give' ) ) );
+		give_set_error( 'agree_to_terms', apply_filters( 'give_agree_to_terms_text', __( 'You must agree to the terms and conditions.', 'give' ) ) );
 	}
 }
 
