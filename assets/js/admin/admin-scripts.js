@@ -694,6 +694,7 @@ jQuery.noConflict();
 			this.change_country();
 			this.add_note();
 			this.delete_checked();
+			this.reconnect_user();
 		},
 		edit_customer : function () {
 			$('body').on('click', '#edit-customer', function (e) {
@@ -713,7 +714,15 @@ jQuery.noConflict();
 		remove_user   : function () {
 			$('body').on('click', '#disconnect-customer', function (e) {
 				e.preventDefault();
-				var customer_id = $('input[name="customerinfo[id]"]').val();
+
+				if (!confirm(give_vars.disconnect_user)) {
+					return false;
+				}
+				var customer_id     = $('input[name="customerinfo[id]"]').val();
+				var connected_id    = $('input[name="customerinfo[user_id]"]').val();
+
+				// Remove connected user id.
+				$('input[name="customerinfo[user_id]"]').val('');
 
 				var postData = {
 					give_action: 'disconnect-userid',
@@ -723,10 +732,19 @@ jQuery.noConflict();
 
 				$.post(ajaxurl, postData, function (response) {
 
-					window.location.href = window.location.href;
+					if (response.success === true) {
+						$('div.customer-info').find('.row-title span.info-item').eq(1).html(give_vars.reconnect_user + ' #' + connected_id + '? <a href="javascript:void(0);" id="give-reconnect_user" data-userid="' + connected_id + '">' + give_vars.reconnect_label + '</a>');
+					}
 
 				}, 'json');
 
+			});
+		},
+		reconnect_user: function () {
+			$('body').on('click', '#give-reconnect_user', function (e) {
+				var user_id = $(this).data('userid');
+				$('div.customer-info').find('input[name="customerinfo[user_id]"]').val(user_id);
+				$(this).closest("#edit-customer-info").submit();
 			});
 		},
 		cancel_edit   : function () {
@@ -1009,7 +1027,7 @@ jQuery.noConflict();
 					var attachment = give_media_uploader.state().get('selection').first().toJSON(),
 						$input_field = window.give_media_uploader_input_field.prev(),
 						fvalue= ( 'id' === $input_field.data('fvalue') ? attachment.id : attachment.url );
-					
+
 					console.log($input_field);
 
 					$input_field.val(fvalue);
@@ -1484,7 +1502,7 @@ jQuery.noConflict();
 
 				// Total payment count.
 				$payments = $payments.length.toString();
-				
+
 				switch ( current_action ) {
 					case 'delete':
 						// Check if admin did not select any payment.
