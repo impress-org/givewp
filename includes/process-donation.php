@@ -291,7 +291,7 @@ function give_purchase_form_validate_fields() {
 
 	if ( is_user_logged_in() ) {
 		// Collect logged in user data
-		$valid_data['logged_in_user'] = give_purchase_form_validate_logged_in_user();
+		$valid_data['logged_in_user'] = give_donation_form_validate_logged_in_user();
 	} elseif ( isset( $_POST['give-purchase-var'] ) && $_POST['give-purchase-var'] == 'needs-to-register' ) {
 		// Set new user registration as required
 		$valid_data['need_new_user'] = true;
@@ -497,13 +497,13 @@ function give_require_billing_address( $payment_mode ) {
 }
 
 /**
- * Donation Form Validate Logged In User
+ * Donation Form Validate Logged In User.
  *
  * @access      private
  * @since       1.0
  * @return      array
  */
-function give_purchase_form_validate_logged_in_user() {
+function give_donation_form_validate_logged_in_user() {
 	global $user_ID;
 
 	$form_id = isset( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : '';
