@@ -308,9 +308,8 @@ function give_receipt_shortcode( $atts ) {
     $donor_name = $user['first_name'].' '.$user['last_name'];
     $donation_gateway = give_get_gateway_checkout_label( $session['post_data']['give-gateway'] );
 
-    $is_donation_fee_enabled = $session['post_data']['give-fee-mode-enable'];
-    $donation_fee = $session['post_data']['give-fee-amount'];
-    $donation_amount = $session['post_data']['give-amount'];
+    $give_fee_donation_amount = give_format_amount( get_post_meta( $payment_id, '_give_fee_donation_amount', true ) );
+    $give_fee_amount          = give_format_amount( get_post_meta( $payment_id, '_give_fee_amount', true ) );
     $total_donation = give_payment_amount( $payment_id );
 
     /*
@@ -334,19 +333,19 @@ function give_receipt_shortcode( $atts ) {
 
     $give_receipt_args['donation_receipt'][] = array(
         'name'      => __('Donation Fee', 'give'),
-        'value'     => give_currency_filter( give_format_amount( $donation_fee ) ),
+        'value'     => give_currency_filter( $give_fee_amount, give_get_payment_currency_code( $payment_id ) ),
         'display'   => false
     );
 
     $give_receipt_args['donation_receipt'][] = array(
         'name'      => __('Donation Amount', 'give'),
-        'value'     => give_currency_filter( give_format_amount( $donation_amount ) ),
+        'value'     => give_currency_filter( $give_fee_donation_amount, give_get_payment_currency_code( $payment_id ) ),
         'display'   => false
     );
 
     $give_receipt_args['donation_receipt'][] = array(
         'name'      => __('Total Donation', 'give'),
-        'value'     => give_currency_filter( give_format_amount( $total_donation ) ),
+        'value'     => $total_donation,
         'display'   => true
     );
 
