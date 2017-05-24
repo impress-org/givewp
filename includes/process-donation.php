@@ -481,7 +481,7 @@ function give_get_required_fields( $form_id ) {
  *
  * @param string $payment_mode
  *
- * @return mixed|void
+ * @return bool
  */
 function give_require_billing_address( $payment_mode ) {
 
