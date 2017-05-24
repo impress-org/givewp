@@ -296,7 +296,7 @@ function give_donation_form_validate_fields() {
 		// Set new user registration as required.
 		$valid_data['need_new_user'] = true;
 		// Validate new user data.
-		$valid_data['new_user_data'] = give_purchase_form_validate_new_user();
+		$valid_data['new_user_data'] = give_donation_form_validate_new_user();
 		// Check if login validation is needed.
 	} elseif ( isset( $_POST['give-purchase-var'] ) && $_POST['give-purchase-var'] == 'needs-to-login' ) {
 		// Set user login as required.
@@ -556,7 +556,7 @@ function give_donation_form_validate_logged_in_user() {
  * @since       1.0
  * @return      array
  */
-function give_purchase_form_validate_new_user() {
+function give_donation_form_validate_new_user() {
 	// Default user data.
 	$default_user_data = array(
 		'give-form-id'           => '',

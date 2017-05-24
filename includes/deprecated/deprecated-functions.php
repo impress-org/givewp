@@ -186,7 +186,6 @@ function give_purchase_form_validate_cc_zip( $zip = 0, $country_code = '' ) {
 
 }
 
-
 /**
  * Donation form validate user login.
  *
@@ -218,6 +217,23 @@ function give_purchase_form_validate_guest_user() {
 
 	// Call new renamed function.
 	give_donation_form_validate_guest_user();
+
+}
+
+/**
+ * Donate Form Validate New User
+ *
+ * @since      1.0
+ * @deprecated 1.8.8
+ */
+function give_purchase_form_validate_new_user() {
+
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '1.8.8', null, $backtrace );
+
+	// Call new renamed function.
+	give_donation_form_validate_new_user();
 
 }
 
