@@ -33,7 +33,7 @@ function give_process_donation_form() {
 	do_action( 'give_pre_process_donation' );
 
 	// Validate the form $_POST data
-	$valid_data = give_purchase_form_validate_fields();
+	$valid_data = give_donation_form_validate_fields();
 
 	/**
 	 * Fires after validating donation form fields.
@@ -241,13 +241,13 @@ add_action( 'wp_ajax_give_process_donation_login', 'give_process_form_login' );
 add_action( 'wp_ajax_nopriv_give_process_donation_login', 'give_process_form_login' );
 
 /**
- * Donation Form Validate Fields
+ * Donation Form Validate Fields.
  *
  * @access      private
  * @since       1.0
  * @return      bool|array
  */
-function give_purchase_form_validate_fields() {
+function give_donation_form_validate_fields() {
 
 	// Check if there is $_POST
 	if ( empty( $_POST ) ) {
@@ -265,7 +265,7 @@ function give_purchase_form_validate_fields() {
 		'new_user_data'    => array(),   // New user collected data
 		'login_user_data'  => array(),   // Login user collected data
 		'guest_user_data'  => array(),   // Guest user collected data
-		'cc_info'          => give_purchase_form_validate_cc(),// Credit card info
+		'cc_info'          => give_donation_form_validate_cc(),// Credit card info
 	);
 
 	// Validate Honeypot First
@@ -885,15 +885,15 @@ function give_get_purchase_form_user( $valid_data = array() ) {
 }
 
 /**
- * Validates the credit card info
+ * Validates the credit card info.
  *
  * @access  private
  * @since   1.0
  * @return  array
  */
-function give_purchase_form_validate_cc() {
+function give_donation_form_validate_cc() {
 
-	$card_data = give_get_purchase_cc_info();
+	$card_data = give_get_donation_cc_info();
 
 	// Validate the card zip.
 	if ( ! empty( $card_data['card_zip'] ) ) {
@@ -913,13 +913,14 @@ function give_purchase_form_validate_cc() {
 }
 
 /**
- * Get Credit Card Info
+ * Get credit card info.
  *
  * @access  private
  * @since   1.0
  * @return  array
  */
-function give_get_purchase_cc_info() {
+function give_get_donation_cc_info() {
+
 	$cc_info                   = array();
 	$cc_info['card_name']      = isset( $_POST['card_name'] ) ? sanitize_text_field( $_POST['card_name'] ) : '';
 	$cc_info['card_number']    = isset( $_POST['card_number'] ) ? sanitize_text_field( $_POST['card_number'] ) : '';
@@ -933,7 +934,7 @@ function give_get_purchase_cc_info() {
 	$cc_info['card_country']   = isset( $_POST['billing_country'] ) ? sanitize_text_field( $_POST['billing_country'] ) : '';
 	$cc_info['card_zip']       = isset( $_POST['card_zip'] ) ? sanitize_text_field( $_POST['card_zip'] ) : '';
 
-	// Return cc info
+	// Return cc info.
 	return $cc_info;
 }
 
