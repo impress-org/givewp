@@ -344,7 +344,7 @@ function give_purchase_form_validate_gateway() {
 				'invalid_donation_minimum',
 				sprintf(
 				/* translators: %s: minimum donation amount */
-					esc_html__( 'This form has a minimum donation amount of %s.', 'give' ),
+					esc_html__( 'There is a minimum custom donation amount of %s.', 'give' ),
 					give_currency_filter( give_format_amount( give_get_form_minimum_price( $form_id ) ) )
 				)
 			);
@@ -380,7 +380,7 @@ function give_verify_minimum_price() {
 	$price_id        = isset( $_REQUEST['give-price-id'] ) ? $_REQUEST['give-price-id'] : 0;
 	$variable_prices = give_has_variable_prices( $form_id );
 
-	if ( $variable_prices && ! empty( $price_id ) ) {
+	if ( $variable_prices ) {
 
 		$price_level_amount = give_get_price_option_amount( $form_id, $price_id );
 
