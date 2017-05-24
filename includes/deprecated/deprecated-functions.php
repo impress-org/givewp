@@ -96,3 +96,20 @@ function give_purchase_form_validate_logged_in_user() {
 	give_donation_form_validate_logged_in_user();
 
 }
+
+/**
+ * Donation Form Validate Logged In User.
+ *
+ * @since      1.0
+ * @deprecated 1.8.8
+ */
+function give_purchase_form_validate_gateway() {
+
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '1.8.8', null, $backtrace );
+
+	// Call new renamed function.
+	give_donation_form_validate_gateway();
+
+}

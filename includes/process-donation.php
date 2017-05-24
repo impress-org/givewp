@@ -191,7 +191,7 @@ function give_check_logged_in_user_for_existing_email( $valid_data, $post ) {
 			$found_customer = new Give_Customer( $submitted_email );
 
 			if ( $found_customer->id > 0 ) {
-				give_set_error( 'give-customer-email-exists', sprintf(__('You are logged in as %1$s, and are submitting a donation as %2$s, which is an existing donor. To ensure that the email address is tied to the correct donor, please submit this donation from a logged-out browser, or choose another email address.'), $customer->email, $submitted_email) );
+				give_set_error( 'give-customer-email-exists', sprintf( __( 'You are logged in as %1$s, and are submitting a donation as %2$s, which is an existing donor. To ensure that the email address is tied to the correct donor, please submit this donation from a logged-out browser, or choose another email address.' ), $customer->email, $submitted_email ) );
 			}
 		}
 	}
@@ -258,7 +258,7 @@ function give_purchase_form_validate_fields() {
 
 	// Start an array to collect valid data
 	$valid_data = array(
-		'gateway'          => give_purchase_form_validate_gateway(), // Gateway fallback (amount is validated here)
+		'gateway'          => give_donation_form_validate_gateway(), // Gateway fallback (amount is validated here)
 		'need_new_user'    => false,     // New user flag
 		'need_user_login'  => false,     // Login user flag
 		'logged_user_data' => array(),   // Logged user collected data
@@ -321,13 +321,13 @@ function give_purchase_form_validate_fields() {
  * @since       1.0
  * @return      string
  */
-function give_purchase_form_validate_gateway() {
+function give_donation_form_validate_gateway() {
 
 	$form_id = isset( $_REQUEST['give-form-id'] ) ? $_REQUEST['give-form-id'] : 0;
 	$amount  = isset( $_REQUEST['give-amount'] ) ? give_sanitize_amount( $_REQUEST['give-amount'] ) : 0;
 	$gateway = give_get_default_gateway( $form_id );
 
-	// Check if a gateway value is present
+	// Check if a gateway value is present.
 	if ( ! empty( $_REQUEST['give-gateway'] ) ) {
 
 		$gateway = sanitize_text_field( $_REQUEST['give-gateway'] );
@@ -335,16 +335,16 @@ function give_purchase_form_validate_gateway() {
 		// Is amount being donated in LIVE mode 0.00? If so, error:
 		if ( $amount == 0 && ! give_is_test_mode() ) {
 
-			give_set_error( 'invalid_donation_amount', esc_html__( 'Please insert a valid donation amount.', 'give' ) );
+			give_set_error( 'invalid_donation_amount', __( 'Please insert a valid donation amount.', 'give' ) );
 
-		} //Check for a minimum custom amount
+		} // End if().
 		elseif ( ! give_verify_minimum_price() ) {
 			// translators: %s: minimum donation amount.
 			give_set_error(
 				'invalid_donation_minimum',
 				sprintf(
-				/* translators: %s: minimum donation amount */
-					esc_html__( 'This form has a minimum donation amount of %s.', 'give' ),
+					/* translators: %s: minimum donation amount */
+					__( 'This form has a minimum donation amount of %s.', 'give' ),
 					give_currency_filter( give_format_amount( give_get_form_minimum_price( $form_id ) ) )
 				)
 			);
@@ -357,7 +357,7 @@ function give_purchase_form_validate_gateway() {
 		} //Check if this gateway is active.
 		elseif ( ! give_is_gateway_active( $gateway ) ) {
 
-			give_set_error( 'invalid_gateway', esc_html__( 'The selected payment gateway is not enabled.', 'give' ) );
+			give_set_error( 'invalid_gateway', __( 'The selected payment gateway is not enabled.', 'give' ) );
 
 		}
 	}
@@ -430,11 +430,11 @@ function give_get_required_fields( $form_id ) {
 	$required_fields = array(
 		'give_email' => array(
 			'error_id'      => 'invalid_email',
-			'error_message' => esc_html__( 'Please enter a valid email address.', 'give' ),
+			'error_message' => __( 'Please enter a valid email address.', 'give' ),
 		),
 		'give_first' => array(
 			'error_id'      => 'invalid_first_name',
-			'error_message' => esc_html__( 'Please enter your first name.', 'give' ),
+			'error_message' => __( 'Please enter your first name.', 'give' ),
 		),
 	);
 
@@ -443,23 +443,23 @@ function give_get_required_fields( $form_id ) {
 	if ( $require_address ) {
 		$required_fields['card_address']    = array(
 			'error_id'      => 'invalid_card_address',
-			'error_message' => esc_html__( 'Please enter your primary billing address.', 'give' ),
+			'error_message' => __( 'Please enter your primary billing address.', 'give' ),
 		);
 		$required_fields['card_zip']        = array(
 			'error_id'      => 'invalid_zip_code',
-			'error_message' => esc_html__( 'Please enter your zip / postal code.', 'give' ),
+			'error_message' => __( 'Please enter your zip / postal code.', 'give' ),
 		);
 		$required_fields['card_city']       = array(
 			'error_id'      => 'invalid_city',
-			'error_message' => esc_html__( 'Please enter your billing city.', 'give' ),
+			'error_message' => __( 'Please enter your billing city.', 'give' ),
 		);
 		$required_fields['billing_country'] = array(
 			'error_id'      => 'invalid_country',
-			'error_message' => esc_html__( 'Please select your billing country.', 'give' ),
+			'error_message' => __( 'Please select your billing country.', 'give' ),
 		);
 		$required_fields['card_state']      = array(
 			'error_id'      => 'invalid_state',
-			'error_message' => esc_html__( 'Please enter billing state / province.', 'give' ),
+			'error_message' => __( 'Please enter billing state / province.', 'give' ),
 		);
 	}
 
@@ -676,7 +676,7 @@ function give_purchase_form_validate_user_login() {
 	} else {
 		// No username.
 		give_set_error( 'username_incorrect', esc_html__( 'The username you entered does not exist.', 'give' ) );
-	}
+	}// End if().
 
 	return $valid_user_data;
 }
@@ -873,7 +873,7 @@ function give_get_purchase_form_user( $valid_data = array() ) {
 
 	if ( empty( $user['address']['country'] ) ) {
 		$user['address'] = false;
-	} // Country will always be set if address fields are present.
+	} // End if().
 
 	if ( ! empty( $user['user_id'] ) && $user['user_id'] > 0 && ! empty( $user['address'] ) ) {
 		// Store the address in the user's meta so the donation form can be pre-populated with it on return purchases.
@@ -942,7 +942,7 @@ function give_get_purchase_cc_info() {
  *
  * @since  1.0
  *
- * @param int $zip
+ * @param int    $zip
  * @param string $country_code
  *
  * @return bool|mixed|void
@@ -1182,7 +1182,7 @@ function give_validate_multi_donation_form_level( $valid_data, $data ) {
 				$donation_level_matched = true;
 			}
 		}
-	}
+	}// End if().
 
 	return ( $donation_level_matched ? true : false );
 }
