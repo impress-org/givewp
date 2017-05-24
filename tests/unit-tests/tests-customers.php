@@ -50,7 +50,7 @@ class Give_Tests_Customers extends Give_Unit_Test_Case {
 			'_give_product_type'    => 'default'
 		);
 		foreach ( $meta as $key => $value ) {
-			update_post_meta( $this->_post_id, $key, $value );
+			give_update_meta( $this->_post_id, $key, $value );
 		}
 
 		//Generate Donations
@@ -75,7 +75,7 @@ class Give_Tests_Customers extends Give_Unit_Test_Case {
 
 		$total = 0;
 
-		$prices     = get_post_meta( $donation_details[0]['id'], '_give_donation_levels', true );
+		$prices     = give_get_meta( $donation_details[0]['id'], '_give_donation_levels', true );
 		$item_price = $prices[1]['_give_amount'];
 
 		$total += $item_price;

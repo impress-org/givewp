@@ -780,7 +780,7 @@ function give_build_paypal_item_title( $payment_data ) {
 
 		// Donation given doesn't match selected level (must be a custom amount).
 		if ( $price_level_amount != give_sanitize_amount( $payment_data['price'] ) ) {
-			$custom_amount_text = get_post_meta( $form_id, '_give_custom_amount_text', true );
+			$custom_amount_text = give_get_meta( $form_id, '_give_custom_amount_text', true );
 			// user custom amount text if any, fallback to default if not.
 			$item_name .= ' - ' . give_check_variable( $custom_amount_text, 'empty', esc_html__( 'Custom Amount', 'give' ) );
 
@@ -791,7 +791,7 @@ function give_build_paypal_item_title( $payment_data ) {
 
 	} //Single donation: Custom Amount.
 	elseif ( give_get_form_price( $form_id ) !== give_sanitize_amount( $payment_data['price'] ) ) {
-		$custom_amount_text = get_post_meta( $form_id, '_give_custom_amount_text', true );
+		$custom_amount_text = give_get_meta( $form_id, '_give_custom_amount_text', true );
 		// user custom amount text if any, fallback to default if not.
 		$item_name .= ' - ' . give_check_variable( $custom_amount_text, 'empty', esc_html__( 'Custom Amount', 'give' ) );
 	}

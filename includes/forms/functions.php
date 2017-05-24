@@ -68,7 +68,7 @@ function give_is_float_labels_enabled( $args ) {
 	}
 
 	if ( empty( $float_labels ) ) {
-		$float_labels = get_post_meta( $args['form_id'], '_give_form_floating_labels', true );
+		$float_labels = give_get_meta( $args['form_id'], '_give_form_floating_labels', true );
 	}
 
 	if ( empty( $float_labels ) || ( 'global' === $float_labels ) ) {
@@ -903,7 +903,7 @@ add_filter( 'give_form_goal', 'give_currency_filter', 20 );
 function give_logged_in_only( $form_id ) {
 	// If _give_logged_in_only is set to enable then guest can donate from that specific form.
 	// Otherwise it is member only donation form.
-	$val = get_post_meta( $form_id, '_give_logged_in_only', true );
+	$val = give_get_meta( $form_id, '_give_logged_in_only', true );
 	$val = ! empty( $val ) ? $val : 'enabled';
 
 	$ret = ! give_is_setting_enabled( $val );
@@ -923,7 +923,7 @@ function give_logged_in_only( $form_id ) {
  */
 function give_show_login_register_option( $form_id ) {
 
-	$show_register_form = get_post_meta( $form_id, '_give_show_register_form', true );
+	$show_register_form = give_get_meta( $form_id, '_give_show_register_form', true );
 
 	return apply_filters( 'give_show_register_form', $show_register_form, $form_id );
 

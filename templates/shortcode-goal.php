@@ -3,12 +3,12 @@
  * This template is used to display the goal with [give_goal]
  */
 
-$goal_option = get_post_meta( $form_id, '_give_goal_option', true );
+$goal_option = give_get_meta( $form_id, '_give_goal_option', true );
 $form        = new Give_Donate_Form( $form_id );
 $goal        = $form->goal;
-$goal_format = get_post_meta( $form_id, '_give_goal_format', true );
+$goal_format = give_get_meta( $form_id, '_give_goal_format', true );
 $income      = $form->get_earnings();
-$color       = get_post_meta( $form_id, '_give_goal_color', true );
+$color       = give_get_meta( $form_id, '_give_goal_color', true );
 $show_text   = isset( $args['show_text'] ) ? filter_var( $args['show_text'], FILTER_VALIDATE_BOOLEAN ) : true;
 $show_bar    = isset( $args['show_bar'] ) ? filter_var( $args['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
 
