@@ -897,8 +897,8 @@ function give_donation_form_validate_cc() {
 
 	// Validate the card zip.
 	if ( ! empty( $card_data['card_zip'] ) ) {
-		if ( ! give_purchase_form_validate_cc_zip( $card_data['card_zip'], $card_data['card_country'] ) ) {
-			give_set_error( 'invalid_cc_zip', esc_html__( 'The zip / postal code you entered for your billing address is invalid.', 'give' ) );
+		if ( ! give_donation_form_validate_cc_zip( $card_data['card_zip'], $card_data['card_country'] ) ) {
+			give_set_error( 'invalid_cc_zip', __( 'The zip / postal code you entered for your billing address is invalid.', 'give' ) );
 		}
 	}
 
@@ -946,9 +946,9 @@ function give_get_donation_cc_info() {
  * @param int    $zip
  * @param string $country_code
  *
- * @return bool|mixed|void
+ * @return bool|mixed
  */
-function give_purchase_form_validate_cc_zip( $zip = 0, $country_code = '' ) {
+function give_donation_form_validate_cc_zip( $zip = 0, $country_code = '' ) {
 	$ret = false;
 
 	if ( empty( $zip ) || empty( $country_code ) ) {

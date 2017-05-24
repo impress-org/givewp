@@ -164,3 +164,21 @@ function give_get_purchase_cc_info() {
 	give_get_donation_cc_info();
 
 }
+
+
+/**
+ * Validates the credit card info.
+ *
+ * @since      1.0
+ * @deprecated 1.8.8
+ */
+function give_purchase_form_validate_cc_zip( $zip = 0, $country_code = '' ) {
+
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '1.8.8', null, $backtrace );
+
+	// Call new renamed function.
+	give_donation_form_validate_cc_zip( $zip, $country_code );
+
+}
