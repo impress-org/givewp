@@ -18,6 +18,7 @@ if ( empty( $payment ) ) {
 }
 
 $donation_id    = $payment->ID;
+$form_id        = give_get_payment_meta( $donation_id, '_give_payment_form_id', true );
 $meta           = give_get_payment_meta( $donation_id );
 $donation       = give_get_payment_form_title( $meta );
 $user           = give_get_payment_meta_user_info( $donation_id );
@@ -32,55 +33,55 @@ $status_label   = give_get_payment_status( $payment, true );
  *
  * @since 1.8.8
  */
-$give_receipt_args['donation_receipt'][] = array(
+$give_receipt_args['donation_receipt']['donor'] = array(
     'name'      => __('Donor', 'give'),
     'value'     => $user['first_name'].' '.$user['last_name'],
     'display'   => $give_receipt_args['donor']
 );
 
-$give_receipt_args['donation_receipt'][] = array(
+$give_receipt_args['donation_receipt']['date'] = array(
     'name'      => __('Date', 'give'),
     'value'     => date_i18n( give_date_format(), strtotime( $meta['date'] ) ),
     'display'   => $give_receipt_args['date']
 );
 
-$give_receipt_args['donation_receipt'][] = array(
+$give_receipt_args['donation_receipt']['total_donation'] = array(
     'name'      => __('Total Donation', 'give'),
     'value'     => give_payment_amount( $donation_id ),
     'display'   => true
 );
 
-$give_receipt_args['donation_receipt'][] = array(
+$give_receipt_args['donation_receipt']['donation'] = array(
     'name'      => __('Donation', 'give'),
     'value'     => $donation,
     'display'   => true
 );
 
-$give_receipt_args['donation_receipt'][] = array(
+$give_receipt_args['donation_receipt']['donation_status'] = array(
     'name'      => __('Donation Status', 'give'),
     'value'     => esc_attr( $status ),
     'display'   => $give_receipt_args['payment_status']
 );
 
-$give_receipt_args['donation_receipt'][] = array(
+$give_receipt_args['donation_receipt']['donation_id'] = array(
     'name'      => __('Donation ID', 'give'),
     'value'     => $donation_id,
     'display'   => ($give_receipt_args['payment_id'])?true:false
 );
 
-$give_receipt_args['donation_receipt'][] = array(
+$give_receipt_args['donation_receipt']['payment_details'] = array(
     'name'      => esc_html__( 'Payment:', 'give' ),
     'value'     => esc_html__( 'Details:', 'give' ),
     'display'   => ($give_receipt_args['payment_id'])?false:true
 );
 
-$give_receipt_args['donation_receipt'][] = array(
+$give_receipt_args['donation_receipt']['payment_key'] = array(
     'name'      => __('Payment Key', 'give'),
-    'value'     => get_post_meta( $payment_id, '_give_payment_purchase_key', true ),
+    'value'     => get_post_meta( $donation_id, '_give_payment_purchase_key', true ),
     'display'   => $give_receipt_args['payment_key']
 );
 
-$give_receipt_args['donation_receipt'][] = array(
+$give_receipt_args['donation_receipt']['payment_method'] = array(
     'name'      => __('Payment Method', 'give'),
     'value'     => give_get_gateway_checkout_label( give_get_payment_gateway( $donation_id ) ),
     'display'   => true
@@ -91,9 +92,13 @@ $give_receipt_args['donation_receipt'][] = array(
  *
  * You can easily extend the donation receipt argument using the filter give_donation_receipt_args
  *
+ * @params array $give_receipt_args['donation_receipt']
+ * @params integer $donation_id
+ * @params integer $form_id
+ *
  * @since 1.8.8
  */
-$give_receipt_args['donation_receipt'] = apply_filters( 'give_donation_receipt_args', $give_receipt_args['donation_receipt'] );
+$give_receipt_args['donation_receipt'] = apply_filters( 'give_donation_receipt_args', $give_receipt_args['donation_receipt'], $donation_id, $form_id );
 
 // Show payment status notice based on shortcode attribute.
 if ( filter_var( $give_receipt_args['status_notice'], FILTER_VALIDATE_BOOLEAN ) ) {
