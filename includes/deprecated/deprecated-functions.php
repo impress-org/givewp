@@ -171,6 +171,9 @@ function give_get_purchase_cc_info() {
  *
  * @since      1.0
  * @deprecated 1.8.8
+ *
+ * @param int $zip
+ * @param string $country_code
  */
 function give_purchase_form_validate_cc_zip( $zip = 0, $country_code = '' ) {
 
@@ -180,5 +183,60 @@ function give_purchase_form_validate_cc_zip( $zip = 0, $country_code = '' ) {
 
 	// Call new renamed function.
 	give_donation_form_validate_cc_zip( $zip, $country_code );
+
+}
+
+
+/**
+ * Donation form validate user login.
+ *
+ * @since      1.0
+ * @deprecated 1.8.8
+ */
+function give_purchase_form_validate_user_login() {
+
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '1.8.8', null, $backtrace );
+
+	// Call new renamed function.
+	give_donation_form_validate_user_login();
+
+}
+
+/**
+ * Donation Form Validate Guest User
+ *
+ * @since      1.0
+ * @deprecated 1.8.8
+ */
+function give_purchase_form_validate_guest_user() {
+
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '1.8.8', null, $backtrace );
+
+	// Call new renamed function.
+	give_donation_form_validate_guest_user();
+
+}
+
+
+/**
+ * Get Donation Form User
+ *
+ * @since      1.0
+ * @deprecated 1.8.8
+ *
+ * @param array $valid_data
+ */
+function give_get_purchase_form_user( $valid_data = array() ) {
+
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '1.8.8', null, $backtrace );
+
+	// Call new renamed function.
+	give_get_donation_form_user( $valid_data );
 
 }

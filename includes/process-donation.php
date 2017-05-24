@@ -55,7 +55,7 @@ function give_process_donation_form() {
 	}
 
 	// Validate the user
-	$user = give_get_purchase_form_user( $valid_data );
+	$user = give_get_donation_form_user( $valid_data );
 
 	if ( false === $valid_data || give_get_errors() || ! $user ) {
 		if ( $is_ajax ) {
@@ -138,7 +138,7 @@ function give_process_donation_form() {
 	}
 
 	/**
-	 * Allow the purchase data to be modified before it is sent to the gateway
+	 * Allow the donation data to be modified before it is sent to the gateway.
 	 *
 	 * @since 1.7
 	 */
@@ -166,11 +166,11 @@ add_action( 'wp_ajax_nopriv_give_process_donation', 'give_process_donation_form'
 
 
 /**
- * Verify that when a logged in user makes a donation that the email address used doesn't belong to a different customer
+ * Verify that when a logged in user makes a donation that the email address used doesn't belong to a different customer.
  *
  * @since  1.7
  *
- * @param  array $valid_data Validated data submitted for the purchase
+ * @param  array $valid_data Validated data submitted for the donation.
  * @param  array $post Additional $_POST data submitted
  *
  * @return void
@@ -210,7 +210,7 @@ function give_process_form_login() {
 
 	$is_ajax = isset( $_POST['give_ajax'] );
 
-	$user_data = give_purchase_form_validate_user_login();
+	$user_data = give_donation_form_validate_user_login();
 
 	if ( give_get_errors() || $user_data['user_id'] < 1 ) {
 		if ( $is_ajax ) {
@@ -290,32 +290,32 @@ function give_donation_form_validate_fields() {
 	}
 
 	if ( is_user_logged_in() ) {
-		// Collect logged in user data
+		// Collect logged in user data.
 		$valid_data['logged_in_user'] = give_donation_form_validate_logged_in_user();
 	} elseif ( isset( $_POST['give-purchase-var'] ) && $_POST['give-purchase-var'] == 'needs-to-register' ) {
-		// Set new user registration as required
+		// Set new user registration as required.
 		$valid_data['need_new_user'] = true;
-		// Validate new user data
+		// Validate new user data.
 		$valid_data['new_user_data'] = give_purchase_form_validate_new_user();
-		// Check if login validation is needed
+		// Check if login validation is needed.
 	} elseif ( isset( $_POST['give-purchase-var'] ) && $_POST['give-purchase-var'] == 'needs-to-login' ) {
-		// Set user login as required
+		// Set user login as required.
 		$valid_data['need_user_login'] = true;
-		// Validate users login info
-		$valid_data['login_user_data'] = give_purchase_form_validate_user_login();
+		// Validate users login info.
+		$valid_data['login_user_data'] = give_donation_form_validate_user_login();
 	} else {
-		// Not registering or logging in, so setup guest user data
-		$valid_data['guest_user_data'] = give_purchase_form_validate_guest_user();
+		// Not registering or logging in, so setup guest user data.
+		$valid_data['guest_user_data'] = give_donation_form_validate_guest_user();
 	}
 
-	// Return collected data
+	// Return collected data.
 	return $valid_data;
 }
 
 /**
  * Donation Form Validate Gateway
  *
- * Validate the gateway and donation amount
+ * Validate the gateway and donation amount.
  *
  * @access      private
  * @since       1.0
@@ -620,17 +620,17 @@ function give_purchase_form_validate_new_user() {
  * @since       1.0
  * @return      array
  */
-function give_purchase_form_validate_user_login() {
+function give_donation_form_validate_user_login() {
 
 	// Start an array to collect valid user data.
 	$valid_user_data = array(
-		// Assume there will be errors
+		// Assume there will be errors.
 		'user_id' => - 1,
 	);
 
 	// Username.
 	if ( ! isset( $_POST['give_user_login'] ) || $_POST['give_user_login'] == '' ) {
-		give_set_error( 'must_log_in', esc_html__( 'You must register or login to complete your donation.', 'give' ) );
+		give_set_error( 'must_log_in', __( 'You must register or login to complete your donation.', 'give' ) );
 
 		return $valid_user_data;
 	}
@@ -652,9 +652,9 @@ function give_purchase_form_validate_user_login() {
 					'password_incorrect',
 					sprintf(
 						'%1$s <a href="%2$s">%3$s</a>',
-						esc_html__( 'The password you entered is incorrect.', 'give' ),
+						__( 'The password you entered is incorrect.', 'give' ),
 						wp_lostpassword_url( "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]" ),
-						esc_html__( 'Reset Password', 'give' )
+						__( 'Reset Password', 'give' )
 					)
 				);
 				// All is correct.
@@ -671,11 +671,11 @@ function give_purchase_form_validate_user_login() {
 			}
 		} else {
 			// Empty password.
-			give_set_error( 'password_empty', esc_html__( 'Enter a password.', 'give' ) );
+			give_set_error( 'password_empty', __( 'Enter a password.', 'give' ) );
 		}
 	} else {
 		// No username.
-		give_set_error( 'username_incorrect', esc_html__( 'The username you entered does not exist.', 'give' ) );
+		give_set_error( 'username_incorrect', __( 'The username you entered does not exist.', 'give' ) );
 	}// End if().
 
 	return $valid_user_data;
@@ -688,7 +688,7 @@ function give_purchase_form_validate_user_login() {
  * @since   1.0
  * @return  array
  */
-function give_purchase_form_validate_guest_user() {
+function give_donation_form_validate_guest_user() {
 
 	$form_id = isset( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : '';
 
@@ -700,7 +700,7 @@ function give_purchase_form_validate_guest_user() {
 
 	// Show error message if user must be logged in.
 	if ( give_logged_in_only( $form_id ) ) {
-		give_set_error( 'logged_in_only', esc_html__( 'You must be logged in to donate.', 'give' ) );
+		give_set_error( 'logged_in_only', __( 'You must be logged in to donate.', 'give' ) );
 	}
 
 	// Get the guest email.
@@ -711,7 +711,7 @@ function give_purchase_form_validate_guest_user() {
 		// Validate email.
 		if ( ! is_email( $guest_email ) ) {
 			// Invalid email.
-			give_set_error( 'email_invalid', esc_html__( 'Invalid email.', 'give' ) );
+			give_set_error( 'email_invalid', __( 'Invalid email.', 'give' ) );
 		} else {
 			// All is good to go.
 			$valid_user_data['user_email'] = $guest_email;
@@ -724,7 +724,7 @@ function give_purchase_form_validate_guest_user() {
 		}
 	} else {
 		// No email.
-		give_set_error( 'email_empty', esc_html__( 'Enter an email.', 'give' ) );
+		give_set_error( 'email_empty', __( 'Enter an email.', 'give' ) );
 	}
 
 	// Loop through required fields and show error messages.
@@ -801,9 +801,9 @@ function give_register_and_login_new_user( $user_data = array() ) {
  *
  * @access  private
  * @since   1.0
- * @return  array
+ * @return  array|bool
  */
-function give_get_purchase_form_user( $valid_data = array() ) {
+function give_get_donation_form_user( $valid_data = array() ) {
 
 	// Initialize user.
 	$user    = false;
@@ -825,14 +825,13 @@ function give_get_purchase_form_user( $valid_data = array() ) {
 			// User login
 		} elseif ( $valid_data['need_user_login'] === true && ! $is_ajax ) {
 
-			/*
-			 * The login form is now processed in the give_process_purchase_login() function.
+			/**
+			 * The login form is now processed in the give_process_donation_login() function.
 			 * This is still here for backwards compatibility.
 			 * This also allows the old login process to still work if a user removes the checkout login submit button.
 			 *
 			 * This also ensures that the donor is logged in correctly if they click "Donation" instead of submitting the login form, meaning the donor is logged in during the donation process.
 			 */
-
 			// Set user.
 			$user = $valid_data['login_user_data'];
 			// Login user.
@@ -876,7 +875,7 @@ function give_get_purchase_form_user( $valid_data = array() ) {
 	} // End if().
 
 	if ( ! empty( $user['user_id'] ) && $user['user_id'] > 0 && ! empty( $user['address'] ) ) {
-		// Store the address in the user's meta so the donation form can be pre-populated with it on return purchases.
+		// Store the address in the user's meta so the donation form can be pre-populated with it on return donation.
 		update_user_meta( $user['user_id'], '_give_user_address', $user['address'] );
 	}
 
