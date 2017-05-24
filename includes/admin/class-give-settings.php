@@ -1128,16 +1128,59 @@ function give_get_featured_image_sizes() {
 		$get_sizes = array( 'thumbnail', 'medium', 'medium_large', 'large' );
 	}
 
+    // This will help us to filter special characters from a string
+    $filter_slug_items = array( '_', '-' );
+
 	foreach ( $get_sizes as $_size ) {
 
-		if ( in_array( $_size, array( 'thumbnail', 'medium', 'medium_large', 'large' ) ) ) {
-			$sizes[ $_size ] = $_size . ' - ' . get_option( "{$_size}_size_w" ) . 'x' . get_option( "{$_size}_size_h" );
-		} elseif ( isset( $_wp_additional_image_sizes[ $_size ] ) ) {
-			$sizes[ $_size ] = $_size . ' - ' . $_wp_additional_image_sizes[ $_size ]['width'] . 'x' . $_wp_additional_image_sizes[ $_size ]['height'];
-		}
+        // Check for height of image having 0 or 9999 in pixels to label them as responsive
+        $is_image_size_responsive = false;
+        if( 0 == get_option( "{$_size}_size_h" ) || 9999 == get_option( "{$_size}_size_h" ) ){
+            $is_image_size_responsive = true;
+        }
+
+        // Converting image size slug to title case
+        $sizes[ $_size ] = give_slug_to_title( $_size, $filter_slug_items );
+
+        if ( in_array( $_size, array( 'thumbnail', 'medium', 'medium_large', 'large' ) ) ) {
+ 			$sizes[ $_size ] .= ' (' . get_option( "{$_size}_size_w" ) . 'x' . get_option( "{$_size}_size_h" );
+ 		} elseif ( isset( $_wp_additional_image_sizes[ $_size ] ) ) {
+ 			$sizes[ $_size ] .= ' (' . $_wp_additional_image_sizes[ $_size ]['width'] . 'x' . $_wp_additional_image_sizes[ $_size ]['height'];
+ 		}
+
+        // Based on the above image height check, label the respective resolution as responsive
+        if($is_image_size_responsive){
+            $sizes[ $_size ] .= ' - responsive';
+        }
+        $sizes[ $_size ] .= ')';
+
 	}
 
 	return apply_filters( 'give_get_featured_image_sizes', $sizes );
+}
+
+
+/**
+ *  Slug to Title
+ *
+ *  Converts a string with hyphen(-) or underscores(_) or any special character to a string with Title case
+ *
+ *  @since 1.8.8
+ *
+ *  @params $string text
+ *  @params $filter array
+ *
+ *  @return text $string
+ */
+function give_slug_to_title( $string, $filters = array() ){
+
+    foreach( $filters as $filter_item ){
+        $string = str_replace( $filter_item, ' ', $string );
+    }
+
+    // Return updated string after converting it to title case
+    return ucwords( $string );
+
 }
 
 

@@ -1005,7 +1005,7 @@ class Give_API {
 		$form['info']['modified_date'] = $form_info->post_modified;
 		$form['info']['status']        = $form_info->post_status;
 		$form['info']['link']          = html_entity_decode( $form_info->guid );
-		$form['info']['content']       = get_post_meta( $form_info->ID, '_give_form_content', true );
+		$form['info']['content']       = give_get_meta( $form_info->ID, '_give_form_content', true );
 		$form['info']['thumbnail']     = wp_get_attachment_url( get_post_thumbnail_id( $form_info->ID ) );
 
 		if ( give_is_setting_enabled( give_get_option( 'categories', 'disabled' ) ) ) {

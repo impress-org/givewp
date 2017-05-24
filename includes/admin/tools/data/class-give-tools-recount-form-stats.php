@@ -127,8 +127,8 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 		}
 
 
-		update_post_meta( $this->form_id, '_give_form_sales', $totals['sales'] );
-		update_post_meta( $this->form_id, '_give_form_earnings', $totals['earnings'] );
+		give_update_meta( $this->form_id, '_give_form_sales', $totals['sales'] );
+		give_update_meta( $this->form_id, '_give_form_earnings', $totals['earnings'] );
 
 		return false;
 
