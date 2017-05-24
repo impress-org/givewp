@@ -300,17 +300,15 @@ function give_receipt_shortcode( $atts ) {
 	 *
 	 * @since 1.8.8
 	 */
-    $meta         = give_get_payment_meta( $payment_id );
-    $donation     = give_get_payment_form_title( $meta );
-    $user         = give_get_payment_meta_user_info( $payment_id );
-    $email        = give_get_payment_user_email( $payment_id );
-
-    $donor_name = $user['first_name'].' '.$user['last_name'];
-    $donation_gateway = give_get_gateway_checkout_label( $session['post_data']['give-gateway'] );
-
-    $give_fee_donation_amount = give_format_amount( get_post_meta( $payment_id, '_give_fee_donation_amount', true ) );
-    $give_fee_amount          = give_format_amount( get_post_meta( $payment_id, '_give_fee_amount', true ) );
-    $total_donation = give_payment_amount( $payment_id );
+    $meta                       = give_get_payment_meta( $payment_id );
+    $donation                   = give_get_payment_form_title( $meta );
+    $user                       = give_get_payment_meta_user_info( $payment_id );
+    $email                      = give_get_payment_user_email( $payment_id );
+    $donor_name                 = $user['first_name'].' '.$user['last_name'];
+    $donation_gateway           = give_get_gateway_checkout_label( $session['post_data']['give-gateway'] );
+    $give_fee_donation_amount   = give_format_amount( get_post_meta( $payment_id, '_give_fee_donation_amount', true ) );
+    $give_fee_amount            = give_format_amount( get_post_meta( $payment_id, '_give_fee_amount', true ) );
+    $total_donation             = give_payment_amount( $payment_id );
 
     /*
 	 * Generate Donation Receipt Arguments.

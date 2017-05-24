@@ -142,7 +142,7 @@ do_action( 'give_payment_receipt_before_table', $payment, $give_receipt_args );
 		do_action( 'give_payment_receipt_before', $payment, $give_receipt_args );
 		?>
 
-		<?php foreach( $give_receipt_args['donation_receipt'] AS $receipt_item ){ ?>
+		<?php foreach( $give_receipt_args['donation_receipt'] as $receipt_item ){ ?>
             <?php if ( filter_var( $receipt_item['display'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
             <tr>
                 <td scope="row"><strong><?php echo $receipt_item['name']; ?></strong></td>
