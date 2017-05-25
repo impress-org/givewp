@@ -1597,7 +1597,7 @@ function give_checkout_submit( $form_id ) {
 
 		give_checkout_hidden_fields( $form_id );
 
-		echo give_checkout_button_purchase( $form_id );
+		echo give_get_donation_form_submit_button( $form_id );
 
 		/**
 		 * Fire after donation form submit.
