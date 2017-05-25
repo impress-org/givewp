@@ -67,9 +67,7 @@ jQuery.noConflict();
 
             var val         = $(this).val()
             var container   = $(this).closest( '.give-select-chosen' );
-            var menu_id     = container.attr('id').replace( '_chosen', '' );
             var select      = container.prev();
-            var no_bundles  = container.hasClass( 'no-bundles' );
             var variations  = container.hasClass( 'variations' );
             var lastKey     = e.which;
             var search_type = 'give_forms_search';
