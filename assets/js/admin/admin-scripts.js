@@ -694,7 +694,6 @@ jQuery.noConflict();
 			this.change_country();
 			this.add_note();
 			this.delete_checked();
-			this.reconnect_user();
 		},
 		edit_customer : function () {
 			$('body').on('click', '#edit-customer', function (e) {
@@ -719,7 +718,6 @@ jQuery.noConflict();
 					return false;
 				}
 				var customer_id     = $('input[name="customerinfo[id]"]').val();
-				var connected_id    = $('input[name="customerinfo[user_id]"]').val();
 
 				// Remove connected user id.
 				$('input[name="customerinfo[user_id]"]').val('');
@@ -732,19 +730,10 @@ jQuery.noConflict();
 
 				$.post(ajaxurl, postData, function (response) {
 
-					if (response.success === true) {
-						$('div.customer-info').find('.row-title span.info-item').eq(1).html(give_vars.reconnect_user + ' #' + connected_id + '? <a href="javascript:void(0);" id="give-reconnect_user" data-userid="' + connected_id + '">' + give_vars.reconnect_label + '</a>');
-					}
+                    window.location.href = window.location.href;
 
 				}, 'json');
 
-			});
-		},
-		reconnect_user: function () {
-			$('body').on('click', '#give-reconnect_user', function (e) {
-				var user_id = $(this).data('userid');
-				$('div.customer-info').find('input[name="customerinfo[user_id]"]').val(user_id);
-				$(this).closest("#edit-customer-info").submit();
 			});
 		},
 		cancel_edit   : function () {
