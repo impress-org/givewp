@@ -26,6 +26,7 @@ function give_deprecated_filters() {
 		'give_recount_donors_donation_statuses'      => 'give_recount_customer_payment_statuses',
 		'give_donor_recount_should_process_donation' => 'give_customer_recount_should_process_payment',
 		'give_reset_items'                           => 'give_reset_store_items',
+		'give_checkout_button_purchase'              => 'give_donation_form_submit_button',
 	);
 
 	return $give_deprecated_filters;
