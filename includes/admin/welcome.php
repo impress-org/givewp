@@ -204,7 +204,7 @@ class Give_Welcome {
 
                     <h4>Find Out More:</h4>
                     <ul class="ul-disc">
-                        <li><a href="https://givewp.com/features/" target="_blank"><?php esc_html_e( 'Visit the Give Website', 'give' ); ?></a></li>
+                        <li><a href="https://givewp.com/" target="_blank"><?php esc_html_e( 'Visit the Give Website', 'give' ); ?></a></li>
                         <li><a href="https://givewp.com/features/" target="_blank"><?php esc_html_e( 'View the Give Features', 'give' ); ?></a></li>
                         <li><a href="https://givewp.com/documentation/" target="_blank"><?php esc_html_e( 'Read the Documentation', 'give' ); ?></a></li>
                     </ul>

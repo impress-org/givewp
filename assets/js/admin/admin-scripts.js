@@ -221,12 +221,12 @@ jQuery.noConflict();
 					variable_prices_html_container = $('.give-donation-level');
 
 				// Check for form ID.
-				if (!( give_form_id = $(this).val() )) {
+				if ( ! ( give_form_id = $(this).val() )) {
 					return false;
 				}
 
 				// Bailout.
-				if (!variable_prices_html_container.length) {
+				if( ! variable_prices_html_container.length ) {
 					return false;
 				}
 
@@ -261,14 +261,14 @@ jQuery.noConflict();
 				var prices        = jQuery(this).data('prices'),
 					$total_amount = $('#give-payment-total')
 
-				if ($(this).val() in prices) {
+				if( $(this).val() in prices ) {
 					$total_amount
-						.val(prices[$(this).val()])
-						.css('background-color', 'yellow');
+						.val( prices[$(this).val()] )
+						.css( 'background-color', 'yellow' );
 
 					window.setTimeout(
-						function () {
-							$total_amount.css('background-color', 'white')
+						function(){
+							$total_amount.css( 'background-color', 'white' )
 						},
 						1000
 					);
@@ -713,7 +713,11 @@ jQuery.noConflict();
 		remove_user   : function () {
 			$('body').on('click', '#disconnect-customer', function (e) {
 				e.preventDefault();
-				var customer_id = $('input[name="customerinfo[id]"]').val();
+
+				if (!confirm(give_vars.disconnect_user)) {
+					return false;
+				}
+				var customer_id     = $('input[name="customerinfo[id]"]').val();
 
 				var postData = {
 					give_action: 'disconnect-userid',
@@ -902,11 +906,11 @@ jQuery.noConflict();
 					$all_sub_fields   = $('ul.give-metabox-sub-tabs'),
 					in_sub_fields     = $(this).parents('ul.give-metabox-sub-tabs').length;
 
-				if (has_sub_field) {
+				if ( has_sub_field ) {
 					$li_parent.toggleClass('active');
 					$sub_field.toggleClass('give-hidden');
 
-					var $active_subtab_li = $('li.active', 'ul.give-metabox-sub-tabs');
+					var $active_subtab_li = $( 'li.active', 'ul.give-metabox-sub-tabs' );
 
 					// Show hide sub fields if any and exit.
 					$all_sub_fields.not($sub_field).addClass('give-hidden');
@@ -915,7 +919,7 @@ jQuery.noConflict();
 					$active_subtab_li.addClass('active');
 
 					return false;
-				} else if (!in_sub_fields) {
+				} else if ( ! in_sub_fields ) {
 					// Hide all tab and sub tabs.
 					$all_tab_links_li.each(function (index, item) {
 						item = $(item);
@@ -925,7 +929,7 @@ jQuery.noConflict();
 							$('ul.give-metabox-sub-tabs', item).addClass('give-hidden');
 						}
 					});
-				} else if (in_sub_fields) {
+				} else if( in_sub_fields ) {
 					// Hide all sub tabs.
 					$('ul.give-metabox-sub-tabs').addClass('give-hidden');
 					$all_tab_links_li.removeClass('active');
@@ -984,10 +988,10 @@ jQuery.noConflict();
 			})
 		},
 
-		setup_media_fields: function () {
+		setup_media_fields: function() {
 			var give_media_uploader;
 
-			$('body').on('click', '.give-media-upload', function (e) {
+			$('body').on( 'click', '.give-media-upload', function (e) {
 				e.preventDefault();
 				window.give_media_uploader_input_field = $(this);
 
@@ -998,19 +1002,17 @@ jQuery.noConflict();
 				}
 				// Extend the wp.media object
 				give_media_uploader = wp.media.frames.file_frame = wp.media({
-					title      : give_vars.metabox_fields.media.button_title,
-					button     : {
+					title: give_vars.metabox_fields.media.button_title,
+					button: {
 						text: give_vars.metabox_fields.media.button_title
 					}, multiple: false
 				});
 
 				// When a file is selected, grab the URL and set it as the text field's value
 				give_media_uploader.on('select', function () {
-					var attachment   = give_media_uploader.state().get('selection').first().toJSON(),
+					var attachment = give_media_uploader.state().get('selection').first().toJSON(),
 						$input_field = window.give_media_uploader_input_field.prev(),
-						fvalue       = ( 'id' === $input_field.data('fvalue') ? attachment.id : attachment.url );
-
-					console.log($input_field);
+						fvalue= ( 'id' === $input_field.data('fvalue') ? attachment.id : attachment.url );
 
 					$input_field.val(fvalue);
 				});
@@ -1364,9 +1366,9 @@ jQuery.noConflict();
 
 				// Get max level id.
 				$('input[type="hidden"].give-levels_id', $this).each(function (index, item) {
-					var $item         = $(item),
-						current_level = parseInt($item.val());
-					if (max_level_id < current_level) {
+					var $item = $(item),
+						current_level = parseInt( $item.val() );
+					if (max_level_id < current_level ) {
 						max_level_id = current_level;
 					}
 				});
@@ -1463,39 +1465,39 @@ jQuery.noConflict();
 	 * Payment history listing page js
 	 */
 	var Give_Payment_History = {
-		init: function () {
+		init : function(){
 			this.handle_bulk_delete()
 		},
 
-		handle_bulk_delete: function () {
+		handle_bulk_delete: function(){
 			var $payment_filters = $('#give-payments-filter');
 
 			/**
 			 * Payment filters
 			 */
-			$payment_filters.on('submit', function (e) {
+			$payment_filters.on( 'submit', function(e){
 				var current_action        = $('select[name="action"]', $(this)).val(),
 					$payments             = [],
 					confirm_action_notice = '';
 
-				$('input[name="payment[]"]:checked', $(this)).each(function (index, item) {
-					$payments.push($(this).val());
+				$('input[name="payment[]"]:checked', $(this) ).each(function( index, item ){
+					$payments.push( $(this).val() );
 				});
 
 				// Total payment count.
 				$payments = $payments.length.toString();
 
-				switch (current_action) {
+				switch ( current_action ) {
 					case 'delete':
 						// Check if admin did not select any payment.
-						if (!parseInt($payments)) {
-							alert(give_vars.bulk_action.delete.zero_payment_selected);
+						if( ! parseInt( $payments ) ) {
+							alert( give_vars.bulk_action.delete.zero_payment_selected );
 							return false;
 						}
 
 						// Ask admin before processing.
 						confirm_action_notice = ( 1 < $payments ) ? give_vars.bulk_action.delete.delete_payments : give_vars.bulk_action.delete.delete_payment;
-						if (!window.confirm(confirm_action_notice.replace('{payment_count}', $payments))) {
+						if( ! window.confirm( confirm_action_notice.replace( '{payment_count}', $payments ) ) ) {
 							return false;
 						}
 
@@ -1503,14 +1505,14 @@ jQuery.noConflict();
 
 					case 'resend-receipt':
 						// Check if admin did not select any payment.
-						if (!parseInt($payments)) {
-							alert(give_vars.bulk_action.resend_receipt.zero_recipient_selected);
+						if( ! parseInt( $payments ) ) {
+							alert( give_vars.bulk_action.resend_receipt.zero_recipient_selected );
 							return false;
 						}
 
 						// Ask admin before processing.
 						confirm_action_notice = ( 1 < $payments ) ? give_vars.bulk_action.resend_receipt.resend_receipts : give_vars.bulk_action.resend_receipt.resend_receipt;
-						if (!window.confirm(confirm_action_notice.replace('{payment_count}', $payments))) {
+						if( ! window.confirm( confirm_action_notice.replace( '{payment_count}', $payments ) ) ) {
 							return false;
 						}
 
@@ -1698,15 +1700,15 @@ jQuery.noConflict();
 
 			var $sub_tab_nav = $(this).next();
 
-			if (!$sub_tab_nav.is(':hover')) {
+			if( ! $sub_tab_nav.is(':hover') ) {
 				$sub_tab_nav.toggleClass('give-hidden');
 			}
 
 			return false;
-		}).on('blur', '#give-show-sub-nav', function () {
+		}).on( 'blur', '#give-show-sub-nav', function(){
 			var $sub_tab_nav = $(this).next();
 
-			if (!$sub_tab_nav.is(':hover')) {
+			if( ! $sub_tab_nav.is(':hover') ) {
 				$sub_tab_nav.addClass('give-hidden');
 			}
 		});
@@ -1768,7 +1770,7 @@ function give_render_responsive_tabs() {
 		$hide_tabs              = [],
 		tab_width               = 0;
 
-	if (600 < jQuery(window).outerWidth()) {
+	if( 600 < jQuery(window).outerWidth() ) {
 		tab_width = 200;
 	}
 
@@ -1841,6 +1843,7 @@ function give_render_responsive_tabs() {
 			resolve(true);
 		});
 
+
 		show_tabs.then(function (is_show_tabs) {
 			// Hide sub menu tabs.
 			if ($hide_tabs.length) {
@@ -1873,7 +1876,7 @@ function get_url_params() {
 	var vars   = [], hash;
 	var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
 	for (var i = 0; i < hashes.length; i++) {
-		hash          = hashes[i].split('=');
+		hash = hashes[i].split('=');
 		vars[hash[0]] = hash[1];
 	}
 	return vars;

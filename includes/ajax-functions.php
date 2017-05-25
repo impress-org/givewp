@@ -155,7 +155,7 @@ function give_load_checkout_fields() {
 
 	wp_send_json( array(
 		'fields' => wp_json_encode( $fields ),
-		'submit' => wp_json_encode( give_checkout_button_purchase( $form_id ) ),
+		'submit' => wp_json_encode( give_get_donation_form_submit_button( $form_id ) ),
 	) );
 }
 

@@ -1597,7 +1597,7 @@ function give_checkout_submit( $form_id ) {
 
 		give_checkout_hidden_fields( $form_id );
 
-		echo give_checkout_button_purchase( $form_id );
+		echo give_get_donation_form_submit_button( $form_id );
 
 		/**
 		 * Fire after donation form submit.
@@ -1613,28 +1613,26 @@ function give_checkout_submit( $form_id ) {
 add_action( 'give_donation_form_after_cc_form', 'give_checkout_submit', 9999 );
 
 /**
- * Give Checkout Button.
+ * Give Donation form submit button.
  *
- * Renders the button on the Checkout.
- *
- * @since  1.0
+ * @since  1.8.8
  *
  * @param  int $form_id The form ID.
  *
  * @return string
  */
-function give_checkout_button_purchase( $form_id ) {
+function give_get_donation_form_submit_button( $form_id ) {
 
 	$display_label_field = give_get_meta( $form_id, '_give_checkout_label', true );
 	$display_label       = ( ! empty( $display_label_field ) ? $display_label_field : esc_html__( 'Donate Now', 'give' ) );
-	ob_start(); ?>
-    <div class="give-submit-button-wrap give-clearfix">
-        <input type="submit" class="give-submit give-btn" id="give-purchase-button" name="give-purchase"
-               value="<?php echo $display_label; ?>"/>
-        <span class="give-loading-animation"></span>
-    </div>
+	ob_start();
+	?>
+	<div class="give-submit-button-wrap give-clearfix">
+		<input type="submit" class="give-submit give-btn" id="give-purchase-button" name="give-purchase" value="<?php echo $display_label; ?>"/>
+		<span class="give-loading-animation"></span>
+	</div>
 	<?php
-	return apply_filters( 'give_checkout_button_purchase', ob_get_clean(), $form_id );
+	return apply_filters( 'give_donation_form_submit_button', ob_get_clean(), $form_id );
 }
 
 /**
