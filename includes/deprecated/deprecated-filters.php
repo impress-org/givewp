@@ -29,6 +29,7 @@ function give_deprecated_filters() {
 		'give_decrease_customer_purchase_count_on_pending' => 'give_decrease_donors_donation_count_on_pending',
 		'give_decrease_sales_on_undo'                      => 'give_decrease_donations_on_undo',
 		'give_decrease_customer_value_on_pending'          => 'give_decrease_donor_value_on_pending',
+		'give_decrease_store_earnings_on_pending'          => 'give_decrease_earnings_on_pending',
 	);
 
 	return $give_deprecated_filters;
