@@ -409,7 +409,7 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		add_filter( 'give_decrease_earnings_on_undo', '__return_false' );
 		add_filter( 'give_decrease_sales_on_undo', '__return_false' );
 		add_filter( 'give_decrease_customer_value_on_pending', '__return_false' );
-		add_filter( 'give_decrease_customer_purchase_count_on_pending', '__return_false' );
+		add_filter( 'give_decrease_donors_donation_count_on_pending', '__return_false' );
 		add_filter( 'give_decrease_store_earnings_on_pending', '__return_false' );
 
 		$payment         = new Give_Payment( $this->_payment_id );
@@ -451,7 +451,7 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		remove_filter( 'give_decrease_earnings_on_undo', '__return_false' );
 		remove_filter( 'give_decrease_sales_on_undo', '__return_false' );
 		remove_filter( 'give_decrease_customer_value_on_pending', '__return_false' );
-		remove_filter( 'give_decrease_customer_purchase_count_on_pending', '__return_false' );
+		remove_filter( 'give_decrease_donors_donation_count_on_pending', '__return_false' );
 		remove_filter( 'give_decrease_store_earnings_on_pending', '__return_false ' );
 	}
 

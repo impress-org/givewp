@@ -1676,7 +1676,7 @@ final class Give_Payment {
 
 		$decrease_store_earnings = apply_filters( 'give_decrease_store_earnings_on_pending', true, $this );
 		$decrease_customer_value = apply_filters( 'give_decrease_customer_value_on_pending', true, $this );
-		$decrease_purchase_count = apply_filters( 'give_decrease_customer_purchase_count_on_pending', true, $this );
+		$decrease_purchase_count = apply_filters( 'give_decrease_donors_donation_count_on_pending', true, $this );
 
 		$this->maybe_alter_stats( $decrease_store_earnings, $decrease_customer_value, $decrease_purchase_count );
 		$this->delete_sales_logs();
