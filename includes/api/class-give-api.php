@@ -215,7 +215,7 @@ class Give_API {
 	 *
 	 * @access public
 	 * @since  1.1
-	 * @return string
+	 * @return array
 	 */
 	public function get_versions() {
 		return $this->versions;
