@@ -477,7 +477,7 @@ jQuery(function ($) {
 			price_id     = selected_field.data('price-id');
 
 		// Check if price ID blank because of dropdown type
-		if (!price_id) {
+		if ( undefined == price_id ) {
 			price_id = selected_field.find('option:selected').data('price-id');
 		}
 
