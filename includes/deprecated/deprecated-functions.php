@@ -256,3 +256,32 @@ function give_get_purchase_form_user( $valid_data = array() ) {
 	give_get_donation_form_user( $valid_data );
 
 }
+
+/**
+ * Give Checkout Button.
+ *
+ * Renders the button on the Checkout.
+ *
+ * @since  1.0
+ * @deprecated 1.8.8
+ *
+ * @param  int $form_id The form ID.
+ *
+ * @return string
+ */
+function give_checkout_button_purchase( $form_id ) {
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '1.8.8', null, $backtrace );
+
+	$display_label_field = give_get_meta( $form_id, '_give_checkout_label', true );
+	$display_label       = ( ! empty( $display_label_field ) ? $display_label_field : esc_html__( 'Donate Now', 'give' ) );
+	ob_start(); ?>
+	<div class="give-submit-button-wrap give-clearfix">
+		<input type="submit" class="give-submit give-btn" id="give-purchase-button" name="give-purchase"
+		       value="<?php echo $display_label; ?>"/>
+		<span class="give-loading-animation"></span>
+	</div>
+	<?php
+	return apply_filters( 'give_checkout_button_purchase', ob_get_clean(), $form_id );
+}
