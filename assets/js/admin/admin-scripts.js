@@ -815,7 +815,11 @@ jQuery.noConflict();
 		remove_user   : function () {
 			$('body').on('click', '#disconnect-customer', function (e) {
 				e.preventDefault();
-				var customer_id = $('input[name="customerinfo[id]"]').val();
+
+				if (!confirm(give_vars.disconnect_user)) {
+					return false;
+				}
+				var customer_id     = $('input[name="customerinfo[id]"]').val();
 
 				var postData = {
 					give_action: 'disconnect-userid',
@@ -825,7 +829,7 @@ jQuery.noConflict();
 
 				$.post(ajaxurl, postData, function (response) {
 
-					window.location.href = window.location.href;
+                    window.location.href = window.location.href;
 
 				}, 'json');
 
@@ -1111,8 +1115,6 @@ jQuery.noConflict();
 					var attachment = give_media_uploader.state().get('selection').first().toJSON(),
 						$input_field = window.give_media_uploader_input_field.prev(),
 						fvalue= ( 'id' === $input_field.data('fvalue') ? attachment.id : attachment.url );
-
-					console.log($input_field);
 
 					$input_field.val(fvalue);
 				});
