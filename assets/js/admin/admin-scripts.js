@@ -1027,9 +1027,7 @@ jQuery.noConflict();
 					var attachment = give_media_uploader.state().get('selection').first().toJSON(),
 						$input_field = window.give_media_uploader_input_field.prev(),
 						fvalue= ( 'id' === $input_field.data('fvalue') ? attachment.id : attachment.url );
-
-					console.log($input_field);
-
+					
 					$input_field.val(fvalue);
 				});
 				// Open the uploader dialog
