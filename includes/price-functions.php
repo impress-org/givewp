@@ -56,6 +56,28 @@ function give_get_variable_prices( $form_id = 0 ) {
 
 }
 
+/**
+ * Retrieves the variable price ids for a form
+ *
+ * @since 1.8.8
+ *
+ * @param int $form_id ID of the Give form
+ *
+ * @return array Variable prices
+ */
+function give_get_variable_price_ids( $form_id = 0 ) {
+	if( ! ( $prices = give_get_variable_prices( $form_id ) ) ) {
+		return array();
+	}
+
+	$price_ids = array();
+	foreach ( $prices as $price ){
+		$price_ids[] = $price['_give_id']['level_id'];
+	}
+
+	return $price_ids;
+}
+
 
 /**
  * Get the default amount for multi-level forms
