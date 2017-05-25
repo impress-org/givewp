@@ -303,6 +303,7 @@ function give_load_admin_scripts( $hook ) {
 		'revoke_api_key'                 => __( 'Are you sure you wish to revoke this API key?', 'give' ),
 		'regenerate_api_key'             => __( 'Are you sure you wish to regenerate this API key?', 'give' ),
 		'resend_receipt'                 => __( 'Are you sure you wish to resend the donation receipt?', 'give' ),
+		'disconnect_user'                => __( 'Are you sure you want to disconnect the user from this donor?', 'give' ),
 		'logo'                           => __( 'Logo', 'give' ),
 		'use_this_image'                 => __( 'Use this image', 'give' ),
 		'one_option'                     => __( 'Choose a form', 'give' ),
