@@ -27,6 +27,7 @@ function give_deprecated_filters() {
 		'give_donor_recount_should_process_donation'       => 'give_customer_recount_should_process_payment',
 		'give_reset_items'                                 => 'give_reset_store_items',
 		'give_decrease_customer_purchase_count_on_pending' => 'give_decrease_donors_donation_count_on_pending',
+		'give_decrease_sales_on_undo'                      => 'give_decrease_donations_on_undo',
 	);
 
 	return $give_deprecated_filters;
@@ -35,7 +36,7 @@ function give_deprecated_filters() {
 /**
  * Deprecated filter mapping.
  *
- * @param mixed  $data
+ * @param mixed $data
  * @param string $arg_1
  * @param string $arg_2
  * @param string $arg_3
@@ -53,7 +54,7 @@ function give_deprecated_filter_mapping( $data, $arg_1 = '', $arg_2 = '', $arg_3
 			if ( ! defined( 'DOING_AJAX' ) ) {
 				_give_deprecated_function(
 					sprintf(
-						/* translators: %s: filter name */
+					/* translators: %s: filter name */
 						__( 'The %s filter' ),
 						$give_map_deprecated_filters[ $filter ]
 					),
