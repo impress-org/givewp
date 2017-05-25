@@ -238,7 +238,7 @@ function give_get_donation_notification_body_content( $payment_id = 0, $payment_
 		$name = $email;
 	}
 
-	$gateway = give_get_gateway_admin_label( get_post_meta( $payment_id, '_give_payment_gateway', true ) );
+	$gateway = give_get_gateway_admin_label( give_get_meta( $payment_id, '_give_payment_gateway', true ) );
 
 	$default_email_body = esc_html__( 'Hello', 'give' ) . "\n\n";
 	$default_email_body .= esc_html__( 'A donation has been made.', 'give' ) . "\n\n";

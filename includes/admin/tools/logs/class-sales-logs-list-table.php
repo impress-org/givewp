@@ -87,7 +87,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 				$value = '<div class="give-donation-status status-' . sanitize_title( give_get_payment_status( $payment, true ) ) . '"><span class="give-donation-status-icon"></span> ' . give_get_payment_status( $payment, true ) . '</div>';
 
 				if ( $payment->mode == 'test' ) {
-					$value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label" data-tooltip="' . esc_attr__( 'This donation was made in test mode.', 'give' ) . '">' . esc_html__( 'Test', 'give' ) . '</span>';
+					$value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label" data-tooltip="' . esc_attr__( 'This donation was made in test mode.', 'give' ) . '">' . __( 'Test', 'give' ) . '</span>';
 				}
 
 				return $value;
@@ -109,13 +109,13 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'ID'         => esc_html__( 'Log ID', 'give' ),
-			'user_id'    => esc_html__( 'Donor', 'give' ),
-			'form'       => esc_html__( 'Form', 'give' ),
-			'amount'     => esc_html__( 'Donation Amount', 'give' ),
-			'status'     => esc_html__( 'Status', 'give' ),
-			'payment_id' => esc_html__( 'Transaction ID', 'give' ),
-			'date'       => esc_html__( 'Date', 'give' ),
+			'ID'         => __( 'Log ID', 'give' ),
+			'user_id'    => __( 'Donor', 'give' ),
+			'form'       => __( 'Form', 'give' ),
+			'amount'     => __( 'Donation Amount', 'give' ),
+			'status'     => __( 'Status', 'give' ),
+			'payment_id' => __( 'Transaction ID', 'give' ),
+			'date'       => __( 'Date', 'give' ),
 		);
 
 		return $columns;
@@ -304,7 +304,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 
 		if ( $give_forms ) {
 			echo '<select name="form" id="give-log-form-filter">';
-			echo '<option value="0">' . esc_html__( 'All', 'give' ) . '</option>';
+			echo '<option value="0">' . __( 'All', 'give' ) . '</option>';
 			foreach ( $give_forms as $form ) {
 				$form_title = get_the_title( $form );
 				$form_title = empty( $form_title ) ? sprintf( __( 'Untitled (#%s)', 'give' ), $form ) : $form_title;
@@ -346,7 +346,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 
 			if ( $logs ) {
 				foreach ( $logs as $log ) {
-					$payment_id = get_post_meta( $log->ID, '_give_log_payment_id', true );
+					$payment_id = give_get_meta( $log->ID, '_give_log_payment_id', true );
 
 					// Make sure this payment hasn't been deleted
 					if ( get_post( $payment_id ) ) :

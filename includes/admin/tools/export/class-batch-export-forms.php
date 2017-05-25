@@ -142,7 +142,7 @@ class Give_Batch_Forms_Export extends Give_Batch_Export {
 
 							default :
 
-								$row[ $key ] = get_post_meta( $download->ID, $key, true );
+								$row[ $key ] = give_get_meta( $download->ID, $key, true );
 
 								break;
 

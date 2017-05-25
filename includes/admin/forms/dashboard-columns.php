@@ -85,7 +85,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 				}
 				break;
 			case 'goal':
-				if ( give_is_setting_enabled( get_post_meta( $post_id, '_give_goal_option', true ) ) ) {
+				if ( give_is_setting_enabled( give_get_meta( $post_id, '_give_goal_option', true ) ) ) {
 					echo give_goal( $post_id, false );
 				} else {
 					esc_html_e( 'No Goal Set', 'give' );
@@ -309,7 +309,7 @@ function give_price_save_quick_edit( $post_id ) {
 	}
 
 	if ( isset( $_REQUEST['_give_regprice'] ) ) {
-		update_post_meta( $post_id, '_give_set_price', strip_tags( stripslashes( $_REQUEST['_give_regprice'] ) ) );
+		give_update_meta( $post_id, '_give_set_price', strip_tags( stripslashes( $_REQUEST['_give_regprice'] ) ) );
 	}
 }
 
@@ -334,7 +334,7 @@ function give_save_bulk_edit() {
 			}
 
 			if ( ! empty( $price ) ) {
-				update_post_meta( $post_id, '_give_set_price', give_sanitize_amount( $price ) );
+				give_update_meta( $post_id, '_give_set_price', give_sanitize_amount( $price ) );
 			}
 		}
 	}
