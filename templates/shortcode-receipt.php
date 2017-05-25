@@ -12,7 +12,7 @@ if ( empty( $payment ) && isset( $give_receipt_args['id'] ) ) {
 
 //Double-Validation: Check for $payment global.
 if ( empty( $payment ) ) {
-	give_output_error( esc_html__( 'The specified receipt ID appears to be invalid.', 'give' ) );
+	give_output_error( __( 'The specified receipt ID appears to be invalid.', 'give' ) );
 
 	return;
 }
@@ -70,8 +70,8 @@ $give_receipt_args['donation_receipt']['donation_id'] = array(
 );
 
 $give_receipt_args['donation_receipt']['payment_details'] = array(
-    'name'      => esc_html__( 'Payment:', 'give' ),
-    'value'     => esc_html__( 'Details:', 'give' ),
+    'name'      => __( 'Payment:', 'give' ),
+    'value'     => __( 'Details:', 'give' ),
     'display'   => ($give_receipt_args['payment_id'])?false:true
 );
 
@@ -107,35 +107,35 @@ if ( filter_var( $give_receipt_args['status_notice'], FILTER_VALIDATE_BOOLEAN ) 
 
 	switch ( $status ) {
 		case 'publish':
-			$notice_message = esc_html__( 'Payment Complete: Thank you for your donation.', 'give' );
+			$notice_message = __( 'Payment Complete: Thank you for your donation.', 'give' );
 			$notice_type    = 'success';
 			break;
 		case 'pending':
-			$notice_message = esc_html__( 'Payment Pending: Your donation is currently processing..', 'give' );
+			$notice_message = __( 'Payment Pending: Your donation is currently processing..', 'give' );
 			$notice_type    = 'warning';
 			break;
 		case 'refunded':
-			$notice_message = esc_html__( 'Payment Refunded: Your donation has been refunded.', 'give' );
+			$notice_message = __( 'Payment Refunded: Your donation has been refunded.', 'give' );
 			$notice_type    = 'warning';
 			break;
 		case 'preapproval':
-			$notice_message = esc_html__( 'Payment Preapproved: Thank you for your donation.', 'give' );
+			$notice_message = __( 'Payment Preapproved: Thank you for your donation.', 'give' );
 			$notice_type    = 'warning';
 			break;
 		case 'failed':
-			$notice_message = esc_html__( 'Payment Failed: Please contact the site owner for assistance.', 'give' );
+			$notice_message = __( 'Payment Failed: Please contact the site owner for assistance.', 'give' );
 			$notice_type    = 'error';
 			break;
 		case 'cancelled':
-			$notice_message = esc_html__( 'Payment Cancelled: Your donation has been cancelled.', 'give' );
+			$notice_message = __( 'Payment Cancelled: Your donation has been cancelled.', 'give' );
 			$notice_type    = 'error';
 			break;
 		case 'abandoned':
-			$notice_message = esc_html__( 'Payment Abandoned: This donation has not been completed.', 'give' );
+			$notice_message = __( 'Payment Abandoned: This donation has not been completed.', 'give' );
 			$notice_type    = 'error';
 			break;
 		case 'revoked':
-			$notice_message = esc_html__( 'Payment Revoked: Please contact the site owner for assistance.', 'give' );
+			$notice_message = __( 'Payment Revoked: Please contact the site owner for assistance.', 'give' );
 			$notice_type    = 'error';
 			break;
 	}
@@ -225,8 +225,8 @@ do_action( 'give_payment_receipt_before_table', $payment, $give_receipt_args );
 		<?php foreach( $give_receipt_args['donation_receipt'] as $receipt_item ){ ?>
             <?php if ( filter_var( $receipt_item['display'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
             <tr>
-                <td scope="row"><strong><?php esc_html_e( $receipt_item['name'], 'give' ); ?></strong></td>
-                <td><?php esc_html_e( $receipt_item['value'], 'give' ); ?></td>
+                <td scope="row"><strong><?php echo $receipt_item['name']; ?></strong></td>
+                <td><?php echo $receipt_item['value']; ?></td>
             </tr>
             <?php endif; ?>
         <?php } ?>
