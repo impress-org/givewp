@@ -42,7 +42,7 @@ function give_has_variable_prices( $form_id = 0 ) {
  *
  * @param int $form_id ID of the Give form
  *
- * @return array Variable prices
+ * @return array|bool Variable prices
  */
 function give_get_variable_prices( $form_id = 0 ) {
 
