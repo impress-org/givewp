@@ -377,10 +377,10 @@ function give_verify_minimum_price() {
 
 	$amount          = give_sanitize_amount( $_REQUEST['give-amount'] );
 	$form_id         = isset( $_REQUEST['give-form-id'] ) ? $_REQUEST['give-form-id'] : 0;
-	$price_id        = isset( $_REQUEST['give-price-id'] ) ? $_REQUEST['give-price-id'] : 0;
+	$price_id        = isset( $_REQUEST['give-price-id'] ) ? $_REQUEST['give-price-id'] : null;
 	$variable_prices = give_has_variable_prices( $form_id );
 
-	if ( $variable_prices && ! empty( $price_id ) ) {
+	if ( $variable_prices && in_array( $price_id, give_get_variable_price_ids( $form_id ) ) ) {
 
 		$price_level_amount = give_get_price_option_amount( $form_id, $price_id );
 
@@ -389,9 +389,7 @@ function give_verify_minimum_price() {
 		}
 	}
 
-	$minimum = give_get_form_minimum_price( $form_id );
-
-	if ( $minimum > $amount ) {
+	if ( give_get_form_minimum_price( $form_id ) > $amount ) {
 		return false;
 	}
 
