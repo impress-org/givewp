@@ -215,7 +215,7 @@ class Give_API {
 	 *
 	 * @access public
 	 * @since  1.1
-	 * @return string
+	 * @return array
 	 */
 	public function get_versions() {
 		return $this->versions;
@@ -553,7 +553,18 @@ class Give_API {
 
 			case 'donations' :
 
-				$data = $this->routes->get_recent_donations();
+                /**
+                 *  Call to get recent donations
+                 *
+                 *  @params text date | today, yesterday or range
+                 *  @params date startdate | required when date = range and format to be YYYYMMDD (i.e. 20170524)
+                 *  @params date enddate | required when date = range and format to be YYYYMMDD (i.e. 20170524)
+                 */
+                $data = $this->routes->get_recent_donations( array(
+					'date'      => isset( $wp_query->query_vars['date'] ) ? $wp_query->query_vars['date'] : null,
+					'startdate' => isset( $wp_query->query_vars['startdate'] ) ? $wp_query->query_vars['startdate'] : null,
+					'enddate'   => isset( $wp_query->query_vars['enddate'] ) ? $wp_query->query_vars['enddate'] : null,
+				));
 
 				break;
 
@@ -1005,7 +1016,7 @@ class Give_API {
 		$form['info']['modified_date'] = $form_info->post_modified;
 		$form['info']['status']        = $form_info->post_status;
 		$form['info']['link']          = html_entity_decode( $form_info->guid );
-		$form['info']['content']       = get_post_meta( $form_info->ID, '_give_form_content', true );
+		$form['info']['content']       = give_get_meta( $form_info->ID, '_give_form_content', true );
 		$form['info']['thumbnail']     = wp_get_attachment_url( get_post_thumbnail_id( $form_info->ID ) );
 
 		if ( give_is_setting_enabled( give_get_option( 'categories', 'disabled' ) ) ) {
@@ -1336,10 +1347,18 @@ class Give_API {
 	 * @since  1.1
 	 * @return array
 	 */
-	public function get_recent_donations() {
+	public function get_recent_donations( $args = array() ) {
 		global $wp_query;
 
-		$sales = array();
+        $defaults = array(
+			'date'      => null,
+			'startdate' => null,
+			'enddate'   => null,
+		);
+
+		$args = wp_parse_args( $args, $defaults );
+
+        $sales = array();
 
 		if ( ! user_can( $this->user_id, 'view_give_reports' ) && ! $this->override ) {
 			return $sales;
@@ -1361,7 +1380,57 @@ class Give_API {
 				'status'     => 'publish',
 			);
 			$query = give_get_payments( $args );
-		} else {
+		} elseif ( isset( $wp_query->query_vars['date'] ) ) {
+
+            $current_time = current_time( 'timestamp' );
+            $dates = $this->get_dates( $args );
+
+            /**
+             *  Switch case for date query argument
+             *
+             *  @since 1.8.8
+             *
+             *  @params text date | today, yesterday or range
+             *  @params date startdate | required when date = range and format to be YYYYMMDD (i.e. 20170524)
+             *  @params date enddate | required when date = range and format to be YYYYMMDD (i.e. 20170524)
+             */
+            switch( $wp_query->query_vars['date'] ){
+
+                case 'today':
+
+                    // Set and Format Start and End Date to be date of today.
+                    $start_date = $end_date = date( 'Y/m/d', $current_time );
+
+                break;
+
+                case 'yesterday':
+
+                    // Set and Format Start and End Date to be date of yesterday.
+                    $start_date = $end_date = date( 'Y/m', $current_time ) . '/'. ( date( 'd', $current_time ) - 1 );
+
+                break;
+
+                case 'range':
+
+                    // Format Start Date and End Date for filtering payment based on date range.
+                    $start_date = $dates['year'] . '/' . $dates['m_start'] . '/' . $dates['day_start'];
+                    $end_date = $dates['year_end'] . '/' . $dates['m_end'] . '/' . $dates['day_end'];
+
+                break;
+
+            }
+
+            $args  = array(
+                'fields'     => 'ids',
+                'start_date' => $start_date,
+                'end_date'   => $end_date,
+                'number'     => $this->per_page(),
+                'page'       => $this->get_paged(),
+                'status'     => 'publish',
+            );
+
+			$query = give_get_payments( $args );
+        } else {
 			$args  = array(
 				'fields' => 'ids',
 				'number' => $this->per_page(),

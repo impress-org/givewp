@@ -228,7 +228,7 @@ class Give_Logging {
 		// Set log meta, if any
 		if ( $log_id && ! empty( $log_meta ) ) {
 			foreach ( (array) $log_meta as $key => $meta ) {
-				update_post_meta( $log_id, '_give_log_' . sanitize_key( $key ), $meta );
+				give_update_meta( $log_id, '_give_log_' . sanitize_key( $key ), $meta );
 			}
 		}
 
@@ -283,7 +283,7 @@ class Give_Logging {
 		if ( $log_id && ! empty( $log_meta ) ) {
 			foreach ( (array) $log_meta as $key => $meta ) {
 				if ( ! empty( $meta ) ) {
-					update_post_meta( $log_id, '_give_log_' . sanitize_key( $key ), $meta );
+					give_update_meta( $log_id, '_give_log_' . sanitize_key( $key ), $meta );
 				}
 			}
 		}
