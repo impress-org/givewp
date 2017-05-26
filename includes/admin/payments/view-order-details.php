@@ -512,7 +512,7 @@ $payment_mode   = $payment->mode;
 										<div class="column">
 											<p>
 												<strong><?php esc_html_e( 'Donor Name:', 'give' ); ?></strong><br>
-												<?php echo $customer->name; ?>
+												<?php echo $user_info['first_name'] . ' ' . $user_info['last_name']; ?>
 											</p>
 											<p>
 												<strong><?php esc_html_e( 'Donor Email:', 'give' ); ?></strong><br>
