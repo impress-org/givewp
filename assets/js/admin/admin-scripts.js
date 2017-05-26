@@ -91,6 +91,7 @@ jQuery.noConflict();
 			var val         = $(this).val(),
 				$container   = $(this).closest('.give-select-chosen'),
 				select      = $container.prev(),
+				$search_field = $container.find('input[type="text"]'),
 				variations  = $container.hasClass('variations'),
 				lastKey     = e.which,
 				search_type = 'give_forms_search';
@@ -137,13 +138,14 @@ jQuery.noConflict();
 						dataType  : "json",
 						beforeSend: function () {
 							select.closest('ul.chosen-results').empty();
+							$search_field.prop( 'disabled', true );
 						},
 						success   : function (data) {
 
 							$container.removeClass( 'give-select-chosen-ajax' );
 
 							// Remove all options but those that are selected
-							$('option:not(:selected)', select).remove();
+							$('option', select).remove();
 							$('option:selected', select).prop( 'selected', false );
 
 							if( data.length ) {
@@ -168,7 +170,9 @@ jQuery.noConflict();
 						if (window.console && window.console.log) {
 							console.log(response);
 						}
-					}).done(function (response) {});
+					}).done(function (response) {
+						$search_field.prop( 'disabled', false );
+					});
 				},
 				doneTypingInterval
 			);
