@@ -30,10 +30,20 @@ jQuery.noConflict();
 	 */
 	var setup_chosen_give_selects = function () {
 		// Setup Chosen Selects
-		$('.give-select-chosen').chosen({
+		var $give_chosen_containers = $('.give-select-chosen');
+
+		// Add loader with each input field.
+		$give_chosen_containers.on('chosen:ready', function () {
+			$(this).next('.chosen-container')
+				.find('input.chosen-search-input')
+				.after('<span class="spinner"></span>');
+		});
+
+		// Initiate chosen.
+		$give_chosen_containers.chosen({
 			inherit_select_classes   : true,
 			placeholder_text_single  : give_vars.one_option,
-			placeholder_text_multiple: give_vars.one_or_more_option
+			placeholder_text_multiple: give_vars.one_or_more_option,
 		});
 
 		// This fixes the Chosen box being 0px wide when the thickbox is opened
