@@ -437,7 +437,7 @@ final class Give_Payment {
 	 * @access public
 	 *
 	 * @param  string $key The property name
-	 * @param  mixed  $value The value of the property
+	 * @param  mixed $value The value of the property
 	 */
 	public function __set( $key, $value ) {
 		$ignore = array( '_ID' );
@@ -1012,7 +1012,7 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  int   $form_id The donation form to add
+	 * @param  int $form_id The donation form to add
 	 * @param  array $args Other arguments to pass to the function
 	 * @param  array $options List of donation options
 	 *
@@ -1107,7 +1107,7 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  int   $form_id The form ID to remove
+	 * @param  int $form_id The form ID to remove
 	 * @param  array $args Arguments to pass to identify (quantity, amount, price_id)
 	 *
 	 * @return bool           If the item was removed or not
@@ -1150,7 +1150,7 @@ final class Give_Payment {
 	 * @access public
 	 *
 	 * @param  array $args Array of arguments for the fee to add
-	 * @param  bool  $global
+	 * @param  bool $global
 	 *
 	 * @return bool          If the fee was added
 	 */
@@ -1203,10 +1203,10 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  string     $key The key to remove by
+	 * @param  string $key The key to remove by
 	 * @param  int|string $value The value to search for
-	 * @param  boolean    $global False - removes the first value it fines,
-	 *                               True - removes all matches.
+	 * @param  boolean $global False - removes the first value it fines,
+	 *                                  True - removes all matches.
 	 *
 	 * @return boolean            If the item is removed
 	 */
@@ -1510,7 +1510,7 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  string  $meta_key The Meta Key
+	 * @param  string $meta_key The Meta Key
 	 * @param  boolean $single Return single item or array
 	 *
 	 * @return mixed             The value from the post meta
@@ -1675,10 +1675,10 @@ final class Give_Payment {
 		}
 
 		$decrease_earnings       = apply_filters( 'give_decrease_earnings_on_pending', true, $this );
-		$decrease_customer_value = apply_filters( 'give_decrease_donor_value_on_pending', true, $this );
-		$decrease_purchase_count = apply_filters( 'give_decrease_donors_donation_count_on_pending', true, $this );
+		$decrease_donor_value    = apply_filters( 'give_decrease_donor_value_on_pending', true, $this );
+		$decrease_donation_count = apply_filters( 'give_decrease_donors_donation_count_on_pending', true, $this );
 
-		$this->maybe_alter_stats( $decrease_earnings, $decrease_customer_value, $decrease_purchase_count );
+		$this->maybe_alter_stats( $decrease_earnings, $decrease_donor_value, $decrease_donation_count );
 		$this->delete_sales_logs();
 
 		$this->completed_date = false;
@@ -1689,7 +1689,7 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Process when a payment moves to cancelled
+	 * Process when a payment moves to cancelled.
 	 *
 	 * @since  1.5
 	 * @access private
@@ -1711,11 +1711,11 @@ final class Give_Payment {
 			return;
 		}
 
-		$decrease_earnings       = apply_filters( 'give_decrease_store_earnings_on_cancelled', true, $this );
-		$decrease_customer_value = apply_filters( 'give_decrease_customer_value_on_cancelled', true, $this );
-		$decrease_purchase_count = apply_filters( 'give_decrease_customer_purchase_count_on_cancelled', true, $this );
+		$decrease_earnings       = apply_filters( 'give_decrease_earnings_on_cancelled', true, $this );
+		$decrease_donor_value    = apply_filters( 'give_decrease_donor_value_on_cancelled', true, $this );
+		$decrease_donation_count = apply_filters( 'give_decrease_donors_donation_count_on_cancelled', true, $this );
 
-		$this->maybe_alter_stats( $decrease_earnings, $decrease_customer_value, $decrease_purchase_count );
+		$this->maybe_alter_stats( $decrease_earnings, $decrease_donor_value, $decrease_donation_count );
 		$this->delete_sales_logs();
 
 		$this->completed_date = false;
@@ -1726,7 +1726,7 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Process when a payment moves to revoked
+	 * Process when a payment moves to revoked.
 	 *
 	 * @since  1.5
 	 * @return void
