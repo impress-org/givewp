@@ -29,13 +29,16 @@ function give_deprecated_filters() {
 		'give_recount_donors_donation_statuses'            => 'give_recount_customer_payment_statuses',
 		'give_donor_recount_should_process_donation'       => 'give_customer_recount_should_process_payment',
 		'give_reset_items'                                 => 'give_reset_store_items',
-		'give_decrease_donors_donation_count_on_pending'   => 'give_decrease_customer_purchase_count_on_pending',
 		'give_decrease_donations_on_undo'                  => 'give_decrease_sales_on_undo',
-		'give_decrease_donor_value_on_pending'             => 'give_decrease_customer_value_on_pending',
 		'give_decrease_earnings_on_pending'                => 'give_decrease_store_earnings_on_pending',
+		'give_decrease_donor_value_on_pending'             => 'give_decrease_customer_value_on_pending',
+		'give_decrease_donors_donation_count_on_pending'   => 'give_decrease_customer_purchase_count_on_pending',
 		'give_decrease_earnings_on_cancelled'              => 'give_decrease_store_earnings_on_cancelled',
 		'give_decrease_donor_value_on_cancelled'           => 'give_decrease_customer_value_on_cancelled',
 		'give_decrease_donors_donation_count_on_cancelled' => 'give_decrease_customer_purchase_count_on_cancelled',
+		'give_decrease_earnings_on_revoked'                => 'give_decrease_store_earnings_on_revoked',
+		'give_decrease_donor_value_on_revoked'             => 'give_decrease_customer_value_on_revoked',
+		'give_decrease_donors_donation_count_on_revoked'   => 'give_decrease_customer_purchase_count_on_revoked',
 	);
 
 	return $give_deprecated_filters;

@@ -1746,11 +1746,11 @@ final class Give_Payment {
 			return;
 		}
 
-		$decrease_earnings       = apply_filters( 'give_decrease_store_earnings_on_revoked', true, $this );
-		$decrease_customer_value = apply_filters( 'give_decrease_customer_value_on_revoked', true, $this );
-		$decrease_purchase_count = apply_filters( 'give_decrease_customer_purchase_count_on_revoked', true, $this );
+		$decrease_earnings       = apply_filters( 'give_decrease_earnings_on_revoked', true, $this );
+		$decrease_donor_value    = apply_filters( 'give_decrease_donor_value_on_revoked', true, $this );
+		$decrease_donation_count = apply_filters( 'give_decrease_donors_donation_count_on_revoked', true, $this );
 
-		$this->maybe_alter_stats( $decrease_earnings, $decrease_customer_value, $decrease_purchase_count );
+		$this->maybe_alter_stats( $decrease_earnings, $decrease_donor_value, $decrease_donation_count );
 		$this->delete_sales_logs();
 
 		$this->completed_date = false;
