@@ -538,14 +538,29 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 */
 	public function get_donor( $payment ) {
 
-		$customer_id = give_get_payment_customer_id( $payment->ID );
+		$customer_id  = give_get_payment_customer_id( $payment->ID );
+        $user_info    = give_get_payment_meta_user_info( $payment->ID );
+        $donor_name   = $user_info['first_name'] . ' ' . $user_info['last_name'];
 
+        $value = '';
 		if ( ! empty( $customer_id ) ) {
 			$customer = new Give_Customer( $customer_id );
-			$value    = '<a href="' . esc_url( admin_url( "edit.php?post_type=give_forms&page=give-donors&view=overview&id=$customer_id" ) ) . '">' . $customer->name . '</a>';
+
+            // Check whether the donor name and WP_User name is same
+            if( sanitize_title( $donor_name ) != sanitize_title( $customer->name ) ){
+                $value  .= $donor_name . ' (';
+            }
+
+			$value    .= '<a href="' . esc_url( admin_url( "edit.php?post_type=give_forms&page=give-donors&view=overview&id=$customer_id" ) ) . '">' . $customer->name . '</a>';
+
+            // Check whether the donor name and WP_User name is same
+            if( sanitize_title( $donor_name ) != sanitize_title( $customer->name ) ){
+                $value  .= ')';
+            }
+
 		} else {
 			$email = give_get_payment_user_email( $payment->ID );
-			$value = '<a href="' . esc_url( admin_url( "edit.php?post_type=give_forms&page=give-payment-history&s=$email" ) ) . '">' . esc_html__( '(donor missing)', 'give' ) . '</a>';
+			$value .= '<a href="' . esc_url( admin_url( "edit.php?post_type=give_forms&page=give-payment-history&s=$email" ) ) . '">' . esc_html__( '(donor missing)', 'give' ) . '</a>';
 		}
 
 		return apply_filters( 'give_payments_table_column', $value, $payment->ID, 'donor' );
