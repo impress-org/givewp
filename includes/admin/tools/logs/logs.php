@@ -15,6 +15,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Renders the logs tab.
+ *
+ * @since 1.0
+ * @return void
+ */
+function give_get_logs_tab() {
+
+	require( GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/logs.php' );
+
+	// Get current section.
+	$current_section = $_GET['section'] = give_get_current_setting_section();
+
+	/**
+	 * Fires the in report page logs view.
+	 *
+	 * @since 1.0
+	 */
+	do_action( "give_logs_view_{$current_section}" );
+}
+
+
+/**
  * Sales Log View
  *
  * @since 1.0
@@ -23,7 +45,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function give_logs_view_sales() {
-	include( dirname( __FILE__ ) . '/class-sales-logs-list-table.php' );
+
+	include GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/class-sales-logs-list-table.php';
 
 	$logs_table = new Give_Sales_Log_Table();
 	$logs_table->prepare_items();
@@ -43,7 +66,7 @@ add_action( 'give_logs_view_sales', 'give_logs_view_sales' );
  * @return void
  */
 function give_logs_view_gateway_errors() {
-	include( dirname( __FILE__ ) . '/class-gateway-error-logs-list-table.php' );
+	include( GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/class-gateway-error-logs-list-table.php' );
 
 	$logs_table = new Give_Gateway_Error_Log_Table();
 	$logs_table->prepare_items();
@@ -62,7 +85,7 @@ add_action( 'give_logs_view_gateway_errors', 'give_logs_view_gateway_errors' );
  * @return void
  */
 function give_logs_view_api_requests() {
-	include( dirname( __FILE__ ) . '/class-api-requests-logs-list-table.php' );
+	include( GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/class-api-requests-logs-list-table.php' );
 
 	$logs_table = new Give_API_Request_Log_Table();
 	$logs_table->prepare_items();
@@ -103,7 +126,7 @@ function give_logs_view_api_requests() {
 add_action( 'give_logs_view_api_requests', 'give_logs_view_api_requests' );
 
 /**
- * Renders the Reports page views drop down
+ * Renders the log views drop down.
  *
  * @since 1.0
  * @return void

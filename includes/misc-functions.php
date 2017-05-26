@@ -121,19 +121,19 @@ function give_currency_symbol( $currency = '' ) {
 	}
 	switch ( $currency ) :
 		case 'GBP' :
-			$symbol = '£';
+			$symbol = '&pound;';
 			break;
 		case 'BRL' :
-			$symbol = 'R$';
+			$symbol = '&#82;&#36;';
 			break;
 		case 'EUR' :
-			$symbol = '€';
+			$symbol = '&euro;';
 			break;
 		case 'NOK' :
-			$symbol = 'Kr.';
+			$symbol = '&#107;&#114;.';
 			break;
 		case 'INR' :
-			$symbol = '₹';
+			$symbol = '&#8377;';
 			break;
 		case 'USD' :
 		case 'AUD' :
@@ -141,53 +141,53 @@ function give_currency_symbol( $currency = '' ) {
 		case 'HKD' :
 		case 'MXN' :
 		case 'SGD' :
-			$symbol = '$';
+			$symbol = '&#36;';
 			break;
 		case 'JPY' :
-			$symbol = '¥';
+			$symbol = '&yen;';
 			break;
 		case 'THB' :
-			$symbol = '฿';
+			$symbol = '&#3647;';
 			break;
 		case 'TRY' :
-			$symbol = '₺';
+			$symbol = '&#8378;';
 			break;
 		case 'TWD' :
-			$symbol = 'NT$';
+			$symbol = '&#78;&#84;&#36;';
 			break;
 		case 'ILS' :
-			$symbol = '₪';
+			$symbol = '&#8362;';
 			break;
 		case 'RIAL' :
-			$symbol = '﷼';
+			$symbol = '&#xfdfc;';
 			break;
 		case 'RUB' :
-			$symbol = 'руб';
+			$symbol = '&#8381;';
 			break;
 		case 'DKK' :
 		case 'SEK' :
 			$symbol = '&nbsp;kr.&nbsp;';
 			break;
 		case 'PLN' :
-			$symbol = 'zł';
+			$symbol = '&#122;&#322;';
 			break;
 		case 'PHP' :
-			$symbol = '₱';
+			$symbol = '&#8369;';
 			break;
 		case 'MYR' :
-			$symbol = 'RM';
+			$symbol = '&#82;&#77;';
 			break;
 		case 'HUF' :
-			$symbol = 'Ft';
+			$symbol = '&#70;&#116;';
 			break;
 		case 'CZK' :
-			$symbol = 'Kč';
+			$symbol = '&#75;&#269;';
 			break;
 		case 'KRW' :
-			$symbol = '₩';
+			$symbol = '&#8361;';
 			break;
 		case 'ZAR' :
-			$symbol = 'R';
+			$symbol = '&#82;';
 			break;
 		case 'MAD' :
 			$symbol = '&#x2e;&#x62f;&#x2e;&#x645;';
@@ -199,6 +199,28 @@ function give_currency_symbol( $currency = '' ) {
 
 
 	return apply_filters( 'give_currency_symbol', $symbol, $currency );
+}
+
+
+/**
+ * Get currency name.
+ *
+ * @since 1.8.8
+ *
+ * @param string $currency_code
+ *
+ * @return string
+ */
+function give_get_currency_name( $currency_code ) {
+	$currency_name = '';
+	$currency_names = give_get_currencies();
+
+	if( $currency_code && array_key_exists( $currency_code, $currency_names ) ) {
+		$currency_name = explode( '(',  $currency_names[$currency_code] );
+		$currency_name = trim( current( $currency_name ) );
+	}
+
+	return apply_filters( 'give_currency_name', $currency_name, $currency_code );
 }
 
 
@@ -541,7 +563,7 @@ function _give_deprecated_function( $function, $version, $replacement = null, $b
 
 	$show_errors = current_user_can( 'manage_options' );
 
-	// Allow plugin to filter the output error trigger
+	// Allow plugin to filter the output error trigger.
 	if ( WP_DEBUG && apply_filters( 'give_deprecated_function_trigger_error', $show_errors ) ) {
 		if ( ! is_null( $replacement ) ) {
 			trigger_error( sprintf( __( '%1$s is <strong>deprecated</strong> since Give version %2$s! Use %3$s instead.', 'give' ), $function, $version, $replacement ) );
@@ -701,45 +723,6 @@ function give_get_newsletter() { ?>
     <!--End mc_embed_signup-->
 
 <?php }
-
-
-/**
- * Social Media Like Buttons
- *
- * Various social media elements to Give
- */
-function give_social_media_elements() {
-	?>
-
-    <div class="social-items-wrap">
-
-        <iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fwpgive&amp;send=false&amp;layout=button_count&amp;width=100&amp;show_faces=false&amp;font&amp;colorscheme=light&amp;action=like&amp;height=21&amp;appId=220596284639969"
-                scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;"
-                allowTransparency="true"></iframe>
-
-        <a href="https://twitter.com/givewp" class="twitter-follow-button" data-show-count="false"><?php
-			printf(
-			/* translators: %s: Give twitter user @givewp */
-				esc_html_e( 'Follow %s', 'give' ),
-				'@givewp'
-			);
-			?></a>
-        <script>!function (d, s, id) {
-				var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
-				if (!d.getElementById(id)) {
-					js = d.createElement(s);
-					js.id = id;
-					js.src = p + '://platform.twitter.com/widgets.js';
-					fjs.parentNode.insertBefore(js, fjs);
-				}
-			}(document, 'script', 'twitter-wjs');
-        </script>
-
-    </div>
-    <!--/.social-items-wrap -->
-
-	<?php
-}
 
 
 /**
@@ -1035,7 +1018,7 @@ function give_get_plugins() {
  * @return bool
  */
 function give_is_terms_enabled( $form_id ) {
-	$form_option = get_post_meta( $form_id, '_give_terms_option', true );
+	$form_option = give_get_meta( $form_id, '_give_terms_option', true );
 
 	if (
 		give_is_setting_enabled( $form_option, 'global' )
@@ -1081,4 +1064,66 @@ function give_delete_donation_stats( $date_range = '', $args = array() ) {
 	do_action( 'give_delete_donation_stats', $status, $date_range, $args );
 
 	return $status;
+}
+
+
+/**
+ * Get Form/Payment meta.
+ *
+ * @since 1.8.8
+ *
+ * @param int    $id
+ * @param string $meta_key
+ * @param bool   $single
+ * @param bool   $default
+ *
+ * @return mixed
+ */
+function give_get_meta( $id, $meta_key, $single = false, $default = false ) {
+	$meta_value = get_post_meta( $id, $meta_key, $single );
+
+	if (
+		( empty( $meta_key ) || empty( $meta_value ) )
+		&& $default
+	) {
+		$meta_value = $default;
+	}
+
+
+	return apply_filters( 'give_get_meta', $meta_value, $id, $meta_key, $default );
+}
+
+/**
+ * Update Form/Payment meta.
+ *
+ * @since 1.8.8
+ *
+ * @param int    $id
+ * @param string $meta_key
+ * @param string $meta_value
+ * @param string $prev_value
+ *
+ * @return mixed
+ */
+function give_update_meta( $id, $meta_key, $meta_value, $prev_value = '' ) {
+	$status = update_post_meta( $id, $meta_key, $meta_value, $prev_value );
+
+	return apply_filters( 'give_update_meta', $status, $id, $meta_key, $meta_value );
+}
+
+/**
+ * Delete Form/Payment meta.
+ *
+ * @since 1.8.8
+ *
+ * @param int    $id
+ * @param string $meta_key
+ * @param string $meta_value
+ *
+ * @return mixed
+ */
+function give_delete_meta( $id, $meta_key, $meta_value = '' ) {
+	$status = delete_post_meta( $id, $meta_key, $meta_value );
+
+	return apply_filters( 'give_delete_meta', $status, $id, $meta_key, $meta_value );
 }

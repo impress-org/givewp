@@ -55,7 +55,7 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 	public function get_data() {
 		global $wpdb;
 
-		$items = $this->get_stored_data( 'give_temp_reset_test_ids' );
+		$items = $this->get_stored_data( 'give_temp_delete_test_ids' );
 
 		if ( ! is_array( $items ) ) {
 			return false;
