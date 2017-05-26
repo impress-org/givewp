@@ -100,11 +100,11 @@ jQuery.noConflict();
 			if ($container.prev().data('search-type')) {
 
 				// Don't trigger AJAX if this select has all options loaded.
-				if ('no_ajax' == select.data('search-type')) {
+				if ('no_ajax' === select.data('search-type')) {
 					return;
 				}
 
-				search_type = 'give_' + select.data('search-type') + '_search';
+ 				search_type = 'give_' + select.data('search-type') + '_search';
 			}
 
 			// Don't fire if short or is a modifier key (shift, ctrl, apple command key, or arrow keys)
@@ -112,14 +112,30 @@ jQuery.noConflict();
 				val.length <= 3 ||
 				! search_type.length ||
 				(
-					lastKey == 16 ||
-					lastKey == 13 ||
-					lastKey == 91 ||
-					lastKey == 17 ||
-					lastKey == 37 ||
-					lastKey == 38 ||
-					lastKey == 39 ||
-					lastKey == 40
+                    (lastKey ===  9)  || // Tab
+                    (lastKey === 13)  || // Enter
+                    (lastKey === 16)  || // Shift
+                    (lastKey === 17)  || // Ctrl
+                    (lastKey === 18)  || // Alt
+                    (lastKey === 19)  || // Pause, Break
+                    (lastKey === 20)  || // CapsLock
+                    (lastKey === 27)  || // Esc
+                    (lastKey === 33)  || // Page Up
+                    (lastKey === 34)  || // Page Down
+                    (lastKey === 35)  || // End
+                    (lastKey === 36)  || // Home
+                    (lastKey === 37)  || // Left arrow
+                    (lastKey === 38)  || // Up arrow
+                    (lastKey === 39)  || // Right arrow
+                    (lastKey === 40)  || // Down arrow
+                    (lastKey === 44)  || // PrntScrn
+                    (lastKey === 45)  || // Insert
+                    (lastKey === 144) || // NumLock
+                    (lastKey === 145) || // ScrollLock
+                    (lastKey === 91)  || // WIN Key (Start)
+                    (lastKey === 93)  || // WIN Menu
+                    (lastKey === 224) || // command key
+                    (lastKey >= 112 && lastKey <= 123) // F1 to F12lastKey
 				)
 			) {
 				return;
