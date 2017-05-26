@@ -601,7 +601,7 @@ add_action( 'give_insert_user', 'give_new_user_notification', 10, 2 );
  * Retrieves the donor name based on the id and the name of the user or donation
  *
  * @access      public
- * @since       1.8.8
+ * @since       1.8.9
  *
  * @param       int     $id     The ID of donation or donor
  * @param       string  $from   From will be a string to be passed as donation or donor
