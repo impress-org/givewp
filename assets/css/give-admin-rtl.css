@@ -2238,7 +2238,7 @@ input.give-price-field {
 
 .give-select-chosen .spinner {
   position: absolute;
-  left: -3px;
+  left: 5px;
   top: 2px;
   z-index: 999; }
 
