@@ -109,6 +109,8 @@ jQuery.noConflict();
 				return;
 			}
 			clearTimeout(typingTimer);
+			$container.addClass( 'give-select-chosen-ajax' );
+
 			typingTimer = setTimeout(
 				function () {
 					$.ajax({
@@ -121,10 +123,8 @@ jQuery.noConflict();
 						dataType  : "json",
 						beforeSend: function () {
 							select.closest('ul.chosen-results').empty();
-							$container.addClass( 'give-select-chosen-ajax' );
 						},
 						success   : function (data) {
-							$container.removeClass( 'give-select-chosen-ajax' );
 
 							// Remove all options but those that are selected
 							$('option:not(:selected)', select).remove();
@@ -143,7 +143,7 @@ jQuery.noConflict();
 							console.log(response);
 						}
 					}).done(function (response) {
-
+						$container.removeClass( 'give-select-chosen-ajax' );
 					});
 				},
 				doneTypingInterval
