@@ -345,7 +345,11 @@ function give_load_admin_scripts( $hook ) {
 			'media' => array(
 				'button_title' => esc_html__( 'Choose Attachment', 'give' ),
 			)
-		)
+		),
+		'chosen' => array(
+			'no_results_msg'  => __( 'No results match {search_term}', 'give' ),
+			'ajax_search_msg' => __( 'Searching results for match {search_term}', 'give' ),
+		),
 	) );
 
 	if ( function_exists( 'wp_enqueue_media' ) && version_compare( get_bloginfo( 'version' ), '3.5', '>=' ) ) {

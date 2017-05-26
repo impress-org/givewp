@@ -39,6 +39,20 @@ jQuery.noConflict();
 				.after('<span class="spinner"></span>');
 		});
 
+		$give_chosen_containers.on( 'chosen:no_results', function(){
+			var $container = $(this).next('.chosen-container'),
+				$no_results_li = $container.find('li.no-results'),
+				error_string = '';
+
+			if( $container.hasClass('give-select-chosen-ajax' ) && $no_results_li.length ) {
+				error_string = give_vars.chosen.ajax_search_msg.replace( '{search_term}', $( 'input', $container ).val() );
+			} else {
+				error_string = give_vars.chosen.no_results_msg.replace( '{search_term}', $( 'input', $container ).val() );
+			}
+
+			$no_results_li.html( error_string );
+		});
+
 		// Initiate chosen.
 		$give_chosen_containers.chosen({
 			inherit_select_classes   : true,
@@ -126,26 +140,35 @@ jQuery.noConflict();
 						},
 						success   : function (data) {
 
+							$container.removeClass( 'give-select-chosen-ajax' );
+
 							// Remove all options but those that are selected
-							$('option:not(:selected)', select).remove();
-							$.each(data, function (key, item) {
-								// Add any option that doesn't already exist
-								if (!$('option[value="' + item.id + '"]', select).length) {
-									select.prepend('<option value="' + item.id + '">' + item.name + '</option>');
-								}
-							});
-							// Update the options
-							$container.prev('select.give-select-chosen').trigger('chosen:updated');
+							// $('option:not(:selected)', select).remove();
+							$('option:selected', select).prop( 'selected', false );
+
+							if( data.length ) {
+								$.each(data, function (key, item) {
+									// Add any option that doesn't already exist
+									if (!$('option[value="' + item.id + '"]', select).length) {
+										select.prepend('<option value="' + item.id + '">' + item.name + '</option>');
+									}
+								});
+
+								// Trigger update event.
+								$container.prev('select.give-select-chosen').trigger('chosen:updated');
+							} else{
+
+								// Trigger no result message event.
+								$container.prev('select.give-select-chosen').trigger('chosen:no_results');
+							}
+
 							select.next().find('input').val(val);
-							
 						}
 					}).fail(function (response) {
 						if (window.console && window.console.log) {
 							console.log(response);
 						}
-					}).done(function (response) {
-						$container.removeClass( 'give-select-chosen-ajax' );
-					});
+					}).done(function (response) {});
 				},
 				doneTypingInterval
 			);
