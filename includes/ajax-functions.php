@@ -285,7 +285,7 @@ function give_ajax_donor_search() {
 	if ( ! current_user_can( 'view_give_reports' ) ) {
 		$donors = array();
 	} else {
-		$donors = $wpdb->get_results( "SELECT id,name,email FROM {$wpdb->prefix}give_donors WHERE `name` LIKE '%$search%' OR `email` LIKE '%$search%' LIMIT 50" );
+		$donors = $wpdb->get_results( "SELECT id,name,email FROM {$wpdb->prefix}give_customers WHERE `name` LIKE '%$search%' OR `email` LIKE '%$search%' LIMIT 50" );
 	}
 
 	if ( $donors ) {
@@ -294,14 +294,14 @@ function give_ajax_donor_search() {
 
 			$results[] = array(
 				'id'   => $donor->id,
-				'name' => $donor->name . '(' . $donor->email . ')',
+				'name' => $donor->name . ' (' . $donor->email . ')',
 			);
 		}
 	} else {
 
 		$donors[] = array(
 			'id'   => 0,
-			'name' => esc_html__( 'No donors found.', 'give' ),
+			'name' => __( 'No donors found.', 'give' ),
 		);
 
 	}
