@@ -108,7 +108,6 @@ jQuery.noConflict();
 			}
 
 			// Don't fire if short or is a modifier key (shift, ctrl, apple command key, or arrow keys)
-			console.log(lastKey);
 			if (
 				val.length <= 3 ||
 				! search_type.length ||
