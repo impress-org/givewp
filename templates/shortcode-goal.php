@@ -27,7 +27,13 @@ if ( empty( $form->ID )
 	return false;
 }
 
-$progress = round( ( $income / $goal ) * 100, 2 );
+
+/**
+ * Filter the goal progress output
+ *
+ * @since 1.8.8
+ */
+$progress = apply_filters( 'give_goal_amount_funded_percentage_output', round( ( $income / $goal ) * 100, 2 ), $form_id, $form );
 
 if ( $income >= $goal ) {
 	$progress = 100;
@@ -57,7 +63,7 @@ if ( $income >= $goal ) {
 				echo sprintf(
 				/* translators: %s: percentage of the amount raised compared to the goal target */
 					__( '%s%% funded', 'give' ),
-					'<span class="give-percentage">' . apply_filters( 'give_goal_amount_funded_percentage_output', round( $progress ) ) . '</span>'
+					'<span class="give-percentage">' . round( $progress ) . '</span>'
 				);
 
 			endif;
