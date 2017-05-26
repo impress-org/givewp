@@ -64,12 +64,12 @@ jQuery.noConflict();
 		// Replace options with search results
 		$(document.body).on('keyup', '.give-select.chosen-container .chosen-search input, .give-select.chosen-container .search-field input', function (e) {
 
-			var val         = $(this).val()
-			var container   = $(this).closest('.give-select-chosen');
-			var select      = container.prev();
-			var variations  = container.hasClass('variations');
-			var lastKey     = e.which;
-			var search_type = 'give_forms_search';
+			var val         = $(this).val(),
+				container   = $(this).closest('.give-select-chosen'),
+				select      = container.prev(),
+				variations  = container.hasClass('variations'),
+				lastKey     = e.which,
+				search_type = 'give_forms_search';
 
 			// Detect if we have a defined search type, otherwise default to donation forms.
 			if (container.prev().data('search-type')) {
