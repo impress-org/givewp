@@ -601,16 +601,16 @@ add_action( 'give_insert_user', 'give_new_user_notification', 10, 2 );
  * Retrieves the donor name based on the id and the name of the user or donation
  *
  * @access      public
- * @since       1.0
+ * @since       1.8.8
  *
  * @param       int     $id     The ID of donation or donor
  * @param       string  $from   From will be a string to be passed as donation or donor
  *
- * @return      array
+ * @return      string
  */
 function give_get_donor_name_by( $id = 0, $from = 'donation' ) {
 
-    // ID shouldnot be empty
+    // ID shouldn't be empty
     if( empty( $id ) ){
         return;
     }
@@ -628,13 +628,13 @@ function give_get_donor_name_by( $id = 0, $from = 'donation' ) {
 
         case 'donor':
 
-            $customer = new Give_Customer( $id );
-            $name = $customer->name;
+            $donor = new Give_Customer( $id );
+            $name = $donor->name;
 
         break;
 
     }
 
-    return $name;
+    return trim( $name );
 
 }

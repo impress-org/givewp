@@ -538,22 +538,22 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 */
 	public function get_donor( $payment ) {
 
-		$customer_id    = give_get_payment_customer_id( $payment->ID );
-        $donor_name     = give_get_donor_name_by( $payment->ID, 'donation');
-        $customer_name  = give_get_donor_name_by( $customer_id, 'donor');
+		$donor_id    = give_get_payment_customer_id( $payment->ID );
+        $donor_billing_name     = give_get_donor_name_by( $payment->ID, 'donation');
+        $donor_name  = give_get_donor_name_by( $donor_id, 'donor');
 
         $value = '';
-		if ( ! empty( $customer_id ) ) {
+		if ( ! empty( $donor_id ) ) {
 
             // Check whether the donor name and WP_User name is same or not.
-            if( sanitize_title( $donor_name ) != sanitize_title( $customer_name ) ){
-                $value  .= $donor_name . ' (';
+            if( sanitize_title( $donor_billing_name ) != sanitize_title( $donor_name ) ){
+                $value  .= $donor_billing_name . ' (';
             }
 
-			$value    .= '<a href="' . esc_url( admin_url( "edit.php?post_type=give_forms&page=give-donors&view=overview&id=$customer_id" ) ) . '">' . $customer_name . '</a>';
+			$value    .= '<a href="' . esc_url( admin_url( "edit.php?post_type=give_forms&page=give-donors&view=overview&id=$donor_id" ) ) . '">' . $donor_name . '</a>';
 
             // Check whether the donor name and WP_User name is same or not.
-            if( sanitize_title( $donor_name ) != sanitize_title( $customer_name ) ){
+            if( sanitize_title( $donor_billing_name ) != sanitize_title( $donor_name ) ){
                 $value  .= ')';
             }
 
