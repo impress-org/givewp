@@ -29,7 +29,7 @@ jQuery.noConflict();
 	 * Setup Pretty Chosen Select Fields
 	 */
 	var setup_chosen_give_selects = function () {
-		// Setup Chosen Selects
+		// Setup Chosen Selects.
 		var $give_chosen_containers = $('.give-select-chosen');
 
 		// Add loader with each input field.
@@ -65,23 +65,7 @@ jQuery.noConflict();
 			$('.give-select-chosen', '#choose-give-form').css('width', '100%');
 		});
 
-		// $('.give-select-chosen .chosen-search input').each(function () {
-		// 	var type        = $(this).parent().parent().parent().prev('select.give-select-chosen').data('search-type');
-		// 	var placeholder = '';
-		//
-		// 	if (type === 'download') {
-		// 		placeholder = give_vars.search_placeholder;
-		// 	} else {
-		// 		type = 'search_placeholder_' + type;
-		// 		if (give_vars[type]) {
-		// 			placeholder = give_vars[type];
-		// 		}
-		// 	}
-		//
-		// 	$(this).attr('placeholder', placeholder);
-		// });
-
-		// Variables for setting up the typing timer
+		// Variables for setting up the typing timer.
 		var typingTimer;               // Timer identifier
 		var doneTypingInterval = 342;  // Time in ms, Slow - 521ms, Moderate - 342ms, Fast - 300ms
 
@@ -152,7 +136,7 @@ jQuery.noConflict();
 							action: search_type,
 							s     : val
 						},
-						dataType  : "json",
+						dataType  : 'json',
 						beforeSend: function () {
 							select.closest('ul.chosen-results').empty();
 							$search_field.prop( 'disabled', true );
@@ -161,13 +145,13 @@ jQuery.noConflict();
 
 							$container.removeClass( 'give-select-chosen-ajax' );
 
-							// Remove all options but those that are selected
-							$('option', select).remove();
+							// Remove all options but those that are selected.
+							$('option:not(:selected)', select).remove();
 							$('option:selected', select).prop( 'selected', false );
 
 							if( data.length ) {
 								$.each(data, function (key, item) {
-									// Add any option that doesn't already exist
+									// Add any option that doesn't already exist.
 									if (!$('option[value="' + item.id + '"]', select).length) {
 										select.prepend('<option value="' + item.id + '">' + item.name + '</option>');
 									}
@@ -195,8 +179,26 @@ jQuery.noConflict();
 			);
 		});
 
-		// Add placeholders for Chosen input fields
+        $('.give-select-chosen .chosen-search input').each( function() {
+        	var type = $(this).parent().parent().parent().prev('select.give-select-chosen').data('search-type');
+        	var placeholder = '';
+        	console.log(type);
+
+        	if ( 'form' === type ) {
+        		placeholder = give_vars.search_placeholder;
+        	} else {
+				type = 'search_placeholder_' + type;
+        		if ( give_vars[type] ) {
+        			placeholder = give_vars[type];
+        		}
+        	}
+
+        	$(this).attr( 'placeholder', placeholder );
+        });
+
+        // Add placeholders for Chosen input fields.
 		$('.chosen-choices').on('click', function () {
+			console.log('here');
 			$(this).children('li').children('input').attr('placeholder', give_vars.type_to_search);
 		});
 

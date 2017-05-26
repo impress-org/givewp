@@ -325,10 +325,10 @@ function give_load_admin_scripts( $hook ) {
 		'confirm_before_remove_row_text' => __( 'Do you want to delete this level?', 'give' ),
 		'matched_success_failure_page'   => __( 'You cannot set the success and failed pages to the same page', 'give' ),
 		'dismiss_notice_text'            => __( 'Dismiss this notice.', 'give' ),
-		'search_placeholder'             => __( 'Type to search all donation forms', 'give' ),
+		'search_placeholder'             => __( 'Type to search all forms', 'give' ),
 		'search_placeholder_donor'       => __( 'Type to search all donors', 'give' ),
 		'search_placeholder_country'     => __( 'Type to search all countries', 'give' ),
-		'search_placeholder_state'        => __( 'Type to search all states/provinces', 'give' ),
+		'search_placeholder_state'       => __( 'Type to search all states/provinces', 'give' ),
 		'bulk_action' => array(
 			'delete'         => array(
 				'zero_payment_selected' => __( 'You must choose at least one or more payments to delete.', 'give' ),
@@ -343,7 +343,7 @@ function give_load_admin_scripts( $hook ) {
 		),
 		'metabox_fields' => array(
 			'media' => array(
-				'button_title' => esc_html__( 'Choose Attachment', 'give' ),
+				'button_title' => __( 'Choose Attachment', 'give' ),
 			)
 		),
 		'chosen' => array(

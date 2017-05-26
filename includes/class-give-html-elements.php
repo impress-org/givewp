@@ -173,15 +173,15 @@ class Give_HTML_Elements {
 	public function donor_dropdown( $args = array() ) {
 
 		$defaults = array(
-			'name'        => 'customers',
-			'id'          => 'customers',
+			'name'        => 'donors',
+			'id'          => 'donors',
 			'class'       => '',
 			'multiple'    => false,
 			'selected'    => 0,
 			'chosen'      => true,
 			'placeholder' => esc_attr__( 'Select a Donor', 'give' ),
-			'number'      => 30,
-			'data'        => array( 'search-type' => 'customer' )
+			'number'      => 2,
+			'data'        => array( 'search-type' => 'donor' )
 		);
 
 		$args = wp_parse_args( $args, $defaults );
