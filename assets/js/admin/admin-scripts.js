@@ -65,14 +65,14 @@ jQuery.noConflict();
 		$(document.body).on('keyup', '.give-select.chosen-container .chosen-search input, .give-select.chosen-container .search-field input', function (e) {
 
 			var val         = $(this).val(),
-				container   = $(this).closest('.give-select-chosen'),
-				select      = container.prev(),
-				variations  = container.hasClass('variations'),
+				$container   = $(this).closest('.give-select-chosen'),
+				select      = $container.prev(),
+				variations  = $container.hasClass('variations'),
 				lastKey     = e.which,
 				search_type = 'give_forms_search';
 
 			// Detect if we have a defined search type, otherwise default to donation forms.
-			if (container.prev().data('search-type')) {
+			if ($container.prev().data('search-type')) {
 
 				// Don't trigger AJAX if this select has all options loaded.
 				if ('no_ajax' == select.data('search-type')) {
@@ -111,10 +111,10 @@ jQuery.noConflict();
 						dataType  : "json",
 						beforeSend: function () {
 							select.closest('ul.chosen-results').empty();
-							container.addClass( 'give-select-chosen-ajax' );
+							$container.addClass( 'give-select-chosen-ajax' );
 						},
 						success   : function (data) {
-							container.removeClass( 'give-select-chosen-ajax' );
+							$container.removeClass( 'give-select-chosen-ajax' );
 
 							// Remove all options but those that are selected
 							$('option:not(:selected)', select).remove();
@@ -125,7 +125,7 @@ jQuery.noConflict();
 								}
 							});
 							// Update the options
-							$('.give-select-chosen').trigger('chosen:updated');
+							$container.trigger('chosen:updated');
 							select.next().find('input').val(val);
 						}
 					}).fail(function (response) {
