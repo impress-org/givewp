@@ -65,21 +65,21 @@ jQuery.noConflict();
 			$('.give-select-chosen', '#choose-give-form').css('width', '100%');
 		});
 
-		$('.give-select-chosen .chosen-search input').each(function () {
-			var type        = $(this).parent().parent().parent().prev('select.give-select-chosen').data('search-type');
-			var placeholder = '';
-
-			if (type === 'download') {
-				placeholder = give_vars.search_placeholder;
-			} else {
-				type = 'search_placeholder_' + type;
-				if (give_vars[type]) {
-					placeholder = give_vars[type];
-				}
-			}
-
-			$(this).attr('placeholder', placeholder);
-		});
+		// $('.give-select-chosen .chosen-search input').each(function () {
+		// 	var type        = $(this).parent().parent().parent().prev('select.give-select-chosen').data('search-type');
+		// 	var placeholder = '';
+		//
+		// 	if (type === 'download') {
+		// 		placeholder = give_vars.search_placeholder;
+		// 	} else {
+		// 		type = 'search_placeholder_' + type;
+		// 		if (give_vars[type]) {
+		// 			placeholder = give_vars[type];
+		// 		}
+		// 	}
+		//
+		// 	$(this).attr('placeholder', placeholder);
+		// });
 
 		// Variables for setting up the typing timer
 		var typingTimer;               // Timer identifier
