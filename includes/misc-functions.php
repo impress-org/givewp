@@ -110,11 +110,12 @@ function give_get_currencies() {
  *
  * @since      1.0
  *
- * @param  string $currency The currency string
+ * @param  string $currency The currency string.
+ * @param  bool  $decode_currency Option to HTML decode the currency symbol.
  *
  * @return string           The symbol to use for the currency
  */
-function give_currency_symbol( $currency = '' ) {
+function give_currency_symbol( $currency = '',  $decode_currency = false ) {
 
 	if ( empty( $currency ) ) {
 		$currency = give_get_currency();
@@ -197,6 +198,7 @@ function give_currency_symbol( $currency = '' ) {
 			break;
 	endswitch;
 
+	$symbol = ( ! $decode_currency ? $symbol : html_entity_decode( $symbol ) );
 
 	return apply_filters( 'give_currency_symbol', $symbol, $currency );
 }
@@ -225,10 +227,10 @@ function give_get_currency_name( $currency_code ) {
 
 
 /**
- * Get the current page URL
+ * Get the current page URL.
  *
  * @since 1.0
- * @return string $current_url Current page URL
+ * @return string $current_url Current page URL.
  */
 function give_get_current_page_url() {
 
@@ -264,9 +266,9 @@ function give_is_cc_verify_enabled() {
 
 	$ret = true;
 
-	/*
-	 * Enable if use a single gateway other than PayPal or Manual. We have to assume it accepts credit cards
-	 * Enable if using more than one gateway if they aren't both PayPal and manual, again assuming credit card usage
+	/**
+	 * Enable if use a single gateway other than PayPal or Manual. We have to assume it accepts credit cards.
+	 * Enable if using more than one gateway if they are not both PayPal and manual, again assuming credit card usage.
 	 */
 	$gateways = give_get_enabled_payment_gateways();
 
@@ -282,27 +284,27 @@ function give_is_cc_verify_enabled() {
 }
 
 /**
- * Retrieve timezone
+ * Retrieve timezone.
  *
  * @since 1.0
- * @return string $timezone The timezone ID
+ * @return string $timezone The timezone ID.
  */
 function give_get_timezone_id() {
 
-	// if site timezone string exists, return it
+	// if site timezone string exists, return it.
 	if ( $timezone = get_option( 'timezone_string' ) ) {
 		return $timezone;
 	}
 
-	// get UTC offset, if it isn't set return UTC
+	// get UTC offset, if it isn't set return UTC.
 	if ( ! ( $utc_offset = 3600 * get_option( 'gmt_offset', 0 ) ) ) {
 		return 'UTC';
 	}
 
-	// attempt to guess the timezone string from the UTC offset
+	// attempt to guess the timezone string from the UTC offset.
 	$timezone = timezone_name_from_abbr( '', $utc_offset );
 
-	// last try, guess timezone string manually
+	// last try, guess timezone string manually.
 	if ( $timezone === false ) {
 
 		$is_dst = date( 'I' );
@@ -316,7 +318,7 @@ function give_get_timezone_id() {
 		}
 	}
 
-	// fallback
+	// Fallback.
 	return 'UTC';
 }
 
