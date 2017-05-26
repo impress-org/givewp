@@ -2248,6 +2248,9 @@ input.give-price-field {
 .give-select-chosen-ajax .chosen-search input[type="text"] {
   background-image: none !important; }
 
+.give-select-chosen-ajax.chosen-container-single .chosen-search input[type="text"] {
+  background-image: none !important; }
+
 /**
  * Give Admin Dashboard SCSS
  *
