@@ -182,7 +182,6 @@ jQuery.noConflict();
         $('.give-select-chosen .chosen-search input').each( function() {
         	var type = $(this).parent().parent().parent().prev('select.give-select-chosen').data('search-type');
         	var placeholder = '';
-        	console.log(type);
 
         	if ( 'form' === type ) {
         		placeholder = give_vars.search_placeholder;
@@ -198,7 +197,6 @@ jQuery.noConflict();
 
         // Add placeholders for Chosen input fields.
 		$('.chosen-choices').on('click', function () {
-			console.log('here');
 			$(this).children('li').children('input').attr('placeholder', give_vars.type_to_search);
 		});
 
