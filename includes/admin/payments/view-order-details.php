@@ -512,7 +512,17 @@ $payment_mode   = $payment->mode;
 										<div class="column">
 											<p>
 												<strong><?php esc_html_e( 'Donor Name:', 'give' ); ?></strong><br>
-												<?php echo $user_info['first_name'] . ' ' . $user_info['last_name']; ?>
+												<?php
+                                                $donor_name = give_get_donor_name_by( $payment_id, 'donation' );
+                                                $customer_name = give_get_donor_name_by( $customer_id, 'donor' );
+
+                                                // Check whether the donor name and WP_User name is same or not.
+                                                if( sanitize_title( $donor_name ) != sanitize_title( $customer_name ) ){
+                                                    echo $donor_name;
+                                                }else{
+                                                    echo $customer_name;
+                                                }
+                                                ?>
 											</p>
 											<p>
 												<strong><?php esc_html_e( 'Donor Email:', 'give' ); ?></strong><br>
