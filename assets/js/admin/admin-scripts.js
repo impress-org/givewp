@@ -111,8 +111,11 @@ jQuery.noConflict();
 						dataType  : "json",
 						beforeSend: function () {
 							select.closest('ul.chosen-results').empty();
+							container.addClass( 'give-select-chosen-ajax' );
 						},
 						success   : function (data) {
+							container.removeClass( 'give-select-chosen-ajax' );
+
 							// Remove all options but those that are selected
 							$('option:not(:selected)', select).remove();
 							$.each(data, function (key, item) {
