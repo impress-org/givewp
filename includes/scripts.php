@@ -415,7 +415,7 @@ function give_admin_hide_notice_shortly_js() {
                     '_give_hide_license_notices_shortly': 'general'
                 };
 
-                jQuery.post('<?php echo admin_url() . "admin-ajax.php"; ?>', data, function(response) { });
+                jQuery.post('<?php echo admin_url(); ?>admin-ajax.php', data, function(response) { });
 
 			});
 		});
