@@ -165,7 +165,7 @@ jQuery.noConflict();
 								$container.prev('select.give-select-chosen').trigger('chosen:no_results');
 							}
 
-							select.next().find('input').val(val);
+							$search_field.val(val).focus();
 						}
 					}).fail(function (response) {
 						if (window.console && window.console.log) {
