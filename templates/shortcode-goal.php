@@ -3,12 +3,12 @@
  * This template is used to display the goal with [give_goal]
  */
 
-$goal_option = get_post_meta( $form_id, '_give_goal_option', true );
+$goal_option = give_get_meta( $form_id, '_give_goal_option', true );
 $form        = new Give_Donate_Form( $form_id );
 $goal        = $form->goal;
-$goal_format = get_post_meta( $form_id, '_give_goal_format', true );
+$goal_format = give_get_meta( $form_id, '_give_goal_format', true );
 $income      = $form->get_earnings();
-$color       = get_post_meta( $form_id, '_give_goal_color', true );
+$color       = give_get_meta( $form_id, '_give_goal_color', true );
 $show_text   = isset( $args['show_text'] ) ? filter_var( $args['show_text'], FILTER_VALIDATE_BOOLEAN ) : true;
 $show_bar    = isset( $args['show_bar'] ) ? filter_var( $args['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
 
@@ -27,7 +27,13 @@ if ( empty( $form->ID )
 	return false;
 }
 
-$progress = round( ( $income / $goal ) * 100, 2 );
+
+/**
+ * Filter the goal progress output
+ *
+ * @since 1.8.8
+ */
+$progress = apply_filters( 'give_goal_amount_funded_percentage_output', round( ( $income / $goal ) * 100, 2 ), $form_id, $form );
 
 if ( $income >= $goal ) {
 	$progress = 100;
@@ -57,7 +63,7 @@ if ( $income >= $goal ) {
 				echo sprintf(
 				/* translators: %s: percentage of the amount raised compared to the goal target */
 					__( '%s%% funded', 'give' ),
-					'<span class="give-percentage">' . apply_filters( 'give_goal_amount_funded_percentage_output', round( $progress ) ) . '</span>'
+					'<span class="give-percentage">' . round( $progress ) . '</span>'
 				);
 
 			endif;

@@ -223,10 +223,11 @@ function give_format_decimal( $amount, $dp = false ) {
  *
  * @param string $price
  * @param string $currency
+ * @param bool   $decode_currency
  *
  * @return mixed|string
  */
-function give_currency_filter( $price = '', $currency = '' ) {
+function give_currency_filter( $price = '', $currency = '', $decode_currency = false ) {
 
 	if ( empty( $currency ) ) {
 		$currency = give_get_currency();
@@ -300,7 +301,7 @@ function give_currency_filter( $price = '', $currency = '' ) {
 		$formatted = '-' . $formatted;
 	}
 
-	return $formatted;
+	return ( ! $decode_currency ? $formatted : html_entity_decode( $formatted ) );
 }
 
 /**

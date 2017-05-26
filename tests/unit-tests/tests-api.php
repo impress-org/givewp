@@ -75,7 +75,7 @@ class Tests_API extends Give_Unit_Test_Case {
 			'_give_form_sales'         => 59,
 		);
 		foreach ( $meta as $key => $value ) {
-			update_post_meta( $post_id, $key, $value );
+			give_update_meta( $post_id, $key, $value );
 		}
 
 		$this->_post = get_post( $post_id );
@@ -89,7 +89,7 @@ class Tests_API extends Give_Unit_Test_Case {
 			'last_name'  => $user->last_name
 		);
 
-		$prices = get_post_meta( $post_id, '_give_donation_levels', true );
+		$prices = give_get_meta( $post_id, '_give_donation_levels', true );
 		$total  = $prices[1]['_give_amount'];
 
 		//Add a payment

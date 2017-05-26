@@ -77,7 +77,6 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 	 * @return array $data The data for the CSV file.
 	 */
 	public function get_data() {
-		global $wpdb;
 
 		$data = array();
 
@@ -144,8 +143,6 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 				$user_info    = give_get_payment_meta_user_info( $payment->ID );
 				$total        = give_get_payment_amount( $payment->ID );
 				$user_id      = isset( $user_info['id'] ) && $user_info['id'] != - 1 ? $user_info['id'] : $user_info['email'];
-				$products     = '';
-				$skus         = '';
 
 				if ( is_numeric( $user_id ) ) {
 					$user = get_userdata( $user_id );
@@ -167,9 +164,8 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 					'zip'       => isset( $user_info['address']['zip'] ) ? $user_info['address']['zip'] : '',
 					'form_id'   => isset( $payment_meta['form_id'] ) ? $payment_meta['form_id'] : '',
 					'form_name' => isset( $payment_meta['form_title'] ) ? $payment_meta['form_title'] : '',
-					'skus'      => $skus,
 					'amount'    => html_entity_decode( give_format_amount( $total ) ),
-					'gateway'   => give_get_gateway_admin_label( get_post_meta( $payment->ID, '_give_payment_gateway', true ) ),
+					'gateway'   => give_get_gateway_admin_label( give_get_meta( $payment->ID, '_give_payment_gateway', true ) ),
 					'trans_id'  => give_get_payment_transaction_id( $payment->ID ),
 					'key'       => $payment_meta['key'],
 					'date'      => $payment->post_date,

@@ -348,6 +348,11 @@ class Give_Payment_History_Table extends WP_List_Table {
 			case 'amount' :
 				$amount = ! empty( $payment->total ) ? $payment->total : 0;
 				$value  = give_currency_filter( give_format_amount( $amount ), give_get_payment_currency_code( $payment->ID ) );
+				$value  .= sprintf(
+					'<br><small>%1$s %2$s</small>',
+					__( 'via', 'give' ),
+					give_get_gateway_admin_label( $payment->gateway )
+				);
 				break;
 
 			case 'donation_form' :
