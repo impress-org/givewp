@@ -143,7 +143,7 @@ jQuery.noConflict();
 							$container.removeClass( 'give-select-chosen-ajax' );
 
 							// Remove all options but those that are selected
-							// $('option:not(:selected)', select).remove();
+							$('option:not(:selected)', select).remove();
 							$('option:selected', select).prop( 'selected', false );
 
 							if( data.length ) {
