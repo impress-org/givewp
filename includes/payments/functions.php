@@ -387,7 +387,7 @@ function give_undo_purchase( $form_id = false, $payment_id ) {
 		give_decrease_earnings( $payment->form_id, $payment->total );
 	}
 
-	$maybe_decrease_sales = apply_filters( 'give_decrease_sales_on_undo', true, $payment, $payment->form_id );
+	$maybe_decrease_sales = apply_filters( 'give_decrease_donation_on_undo', true, $payment, $payment->form_id );
 	if ( true === $maybe_decrease_sales ) {
 		// Decrease donation count.
 		give_decrease_purchase_count( $payment->form_id );
