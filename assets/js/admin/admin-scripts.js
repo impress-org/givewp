@@ -135,8 +135,9 @@ jQuery.noConflict();
 								}
 							});
 							// Update the options
-							$container.trigger('chosen:updated');
+							$container.prev('select.give-select-chosen').trigger('chosen:updated');
 							select.next().find('input').val(val);
+							
 						}
 					}).fail(function (response) {
 						if (window.console && window.console.log) {
