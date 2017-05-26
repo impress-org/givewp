@@ -239,7 +239,7 @@ add_action( 'wpmu_new_blog', 'on_create_blog', 10, 6 );
 function give_wpmu_drop_tables( $tables, $blog_id ) {
 
 	switch_to_blog( $blog_id );
-	$customers_db     = new Give_DB_Customers();
+	$customers_db     = new Give_DB_Donors();
 	$customer_meta_db = new Give_DB_Customer_Meta();
 
 	if ( $customers_db->installed() ) {

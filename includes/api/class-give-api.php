@@ -1327,7 +1327,7 @@ class Give_API {
 
 			return $earnings;
 		} elseif ( $args['type'] == 'donors' ) {
-			$customers                          = new Give_DB_Customers();
+			$customers                          = new Give_DB_Donors();
 			$stats['donations']['total_donors'] = $customers->count();
 
 			return $stats;

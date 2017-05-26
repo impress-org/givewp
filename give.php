@@ -60,7 +60,7 @@ if ( ! class_exists( 'Give' ) ) :
 		 * @since  1.0
 		 * @access private
 		 *
-		 * @var    Give The one true Give
+		 * @var    Give() The one true Give
 		 */
 		private static $instance;
 
@@ -127,14 +127,14 @@ if ( ! class_exists( 'Give' ) ) :
 		public $email_tags;
 
 		/**
-		 * Give Customers DB Object
+		 * Give Donors DB Object
 		 *
 		 * @since  1.0
 		 * @access public
 		 *
-		 * @var    Give_DB_Customers object
+		 * @var    Give_DB_Donors object
 		 */
-		public $customers;
+		public $donors;
 
 		/**
 		 * Give Customer meta DB Object
@@ -196,7 +196,7 @@ if ( ! class_exists( 'Give' ) ) :
 		 */
 		public static function instance() {
 			if ( ! isset( self::$instance ) && ! ( self::$instance instanceof Give ) ) {
-				self::$instance = new Give;
+				self::$instance = new Give();
 				self::$instance->setup_constants();
 
 				add_action( 'plugins_loaded', array( self::$instance, 'load_textdomain' ) );
@@ -209,7 +209,7 @@ if ( ! class_exists( 'Give' ) ) :
 				self::$instance->html            = new Give_HTML_Elements();
 				self::$instance->emails          = new Give_Emails();
 				self::$instance->email_tags      = new Give_Email_Template_Tags();
-				self::$instance->customers       = new Give_DB_Customers();
+				self::$instance->donors          = new Give_DB_Donors();
 				self::$instance->customer_meta   = new Give_DB_Customer_Meta();
 				self::$instance->template_loader = new Give_Template_Loader();
 				self::$instance->email_access    = new Give_Email_Access();
@@ -350,6 +350,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/login-register.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/user-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/plugin-compatibility.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/deprecated/deprecated-classes.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/deprecated/deprecated-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/deprecated/deprecated-actions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/deprecated/deprecated-filters.php';

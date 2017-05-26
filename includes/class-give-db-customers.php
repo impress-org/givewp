@@ -1,9 +1,9 @@
 <?php
 /**
- * Customers DB
+ * Donors DB
  *
  * @package     Give
- * @subpackage  Classes/Give_DB_Customers
+ * @subpackage  Classes/Give_DB_Donors
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
@@ -15,18 +15,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Give_DB_Customers Class
+ * Give_DB_Donors Class
  *
  * This class is for interacting with the customers' database table.
  *
  * @since 1.0
  */
-class Give_DB_Customers extends Give_DB {
+class Give_DB_Donors extends Give_DB {
 
 	/**
-	 * Class Constructor
+	 * Give_DB_Donors constructor.
 	 *
-	 * Set up the Give DB Customer Class.
+	 * Set up the Give DB Donor class.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -87,7 +87,7 @@ class Give_DB_Customers extends Give_DB {
 	}
 
 	/**
-	 * Add a customer
+	 * Add a donor
 	 *
 	 * @since  1.0
 	 * @access public
@@ -114,10 +114,10 @@ class Give_DB_Customers extends Give_DB {
 
 		$customer = $this->get_customer_by( 'email', $args['email'] );
 
+		// update an existing donor.
 		if ( $customer ) {
-			// update an existing customer
 
-			// Update the payment IDs attached to the customer
+			// Update the payment IDs attached to the donor
 			if ( ! empty( $args['payment_ids'] ) ) {
 
 				if ( empty( $customer->payment_ids ) ) {
@@ -150,7 +150,7 @@ class Give_DB_Customers extends Give_DB {
 	}
 
 	/**
-	 * Delete a customer
+	 * Delete a donor
 	 *
 	 * NOTE: This should not be called directly as it does not make necessary changes to
 	 * the payment meta and logs. Use give_customer_delete() instead.
@@ -184,7 +184,7 @@ class Give_DB_Customers extends Give_DB {
 	}
 
 	/**
-	 * Checks if a customer exists
+	 * Checks if a donor exists
 	 *
 	 * @since  1.0
 	 * @access public
@@ -206,7 +206,7 @@ class Give_DB_Customers extends Give_DB {
 	}
 
 	/**
-	 * Attaches a payment ID to a customer
+	 * Attaches a payment ID to a donor
 	 *
 	 * @since  1.0
 	 * @access public
@@ -230,7 +230,7 @@ class Give_DB_Customers extends Give_DB {
 	}
 
 	/**
-	 * Removes a payment ID from a customer
+	 * Removes a payment ID from a donor
 	 *
 	 * @since  1.0
 	 * @access public
@@ -254,7 +254,7 @@ class Give_DB_Customers extends Give_DB {
 	}
 
 	/**
-	 * Increments customer donation stats
+	 * Increments donor's donation stats.
 	 *
 	 * @access public
 	 *
@@ -279,7 +279,7 @@ class Give_DB_Customers extends Give_DB {
 	}
 
 	/**
-	 * Decrements customer donation stats
+	 * Decrements donor's donation stats.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -305,7 +305,7 @@ class Give_DB_Customers extends Give_DB {
 	}
 
 	/**
-	 * Updates the email address of a customer record when the email on a user is updated
+	 * Updates the email address of a donor record when the email on a user is updated
 	 *
 	 * @since  1.4.3
 	 * @access public
@@ -346,12 +346,12 @@ class Give_DB_Customers extends Give_DB {
 					}
 
 					/**
-					 * Fires after updating customer email on user update.
+					 * Fires after updating donor email on user update.
 					 *
 					 * @since 1.4.3
 					 * 
 					 * @param  WP_User       $user     WordPress User object.
-					 * @param  Give_Customer $customer Give customer object.
+					 * @param  Give_Customer $customer Give donor object.
 					 */
 					do_action( 'give_update_customer_email_on_user_update', $user, $customer );
 
@@ -364,7 +364,7 @@ class Give_DB_Customers extends Give_DB {
 	}
 	
 	/**
-	 * Retrieves a single customer from the database
+	 * Retrieves a single donor from the database
 	 *
 	 * @since  1.0
 	 * @access public
@@ -372,7 +372,7 @@ class Give_DB_Customers extends Give_DB {
 	 * @param  string $field ID or email. Default is 'id'.
 	 * @param  mixed  $value The Customer ID or email to search. Default is 0.
 	 *
-	 * @return mixed         Upon success, an object of the customer. Upon failure, NULL
+	 * @return mixed         Upon success, an object of the donor. Upon failure, NULL
 	 */
 	public function get_customer_by( $field = 'id', $value = 0 ) {
 		/* @var WPDB $wpdb */
@@ -425,7 +425,7 @@ class Give_DB_Customers extends Give_DB {
 
 		if ( ! $customer = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $this->table_name WHERE $db_field = %s LIMIT 1", $value ) ) ) {
 
-			// Look for customer from an additional email
+			// Look for donor from an additional email.
 			if( 'email' === $field ) {
 				$meta_table  = Give()->customer_meta->table_name;
 				$customer_id = $wpdb->get_var( $wpdb->prepare( "SELECT customer_id FROM {$meta_table} WHERE meta_key = 'additional_email' AND meta_value = %s LIMIT 1", $value ) );
