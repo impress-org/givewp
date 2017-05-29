@@ -1571,7 +1571,7 @@ final class Give_Payment {
 
 		} elseif ( $meta_key == 'email' || $meta_key == '_give_payment_user_email' ) {
 
-			$meta_value = apply_filters( "give_give_update_payment_meta_{$meta_key}", $meta_value, $this->ID );
+			$meta_value = apply_filters( "give_update_payment_meta_{$meta_key}", $meta_value, $this->ID );
 			give_update_meta( $this->ID, '_give_payment_user_email', $meta_value );
 
 			$current_meta                       = $this->get_meta();
