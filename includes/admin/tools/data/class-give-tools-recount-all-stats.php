@@ -147,8 +147,8 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 		}
 
 		foreach ( $totals as $key => $stats ) {
-			update_post_meta( $key, '_give_form_sales', $stats['sales'] );
-			update_post_meta( $key, '_give_form_earnings', $stats['earnings'] );
+			give_update_meta( $key, '_give_form_sales', $stats['sales'] );
+			give_update_meta( $key, '_give_form_earnings', $stats['earnings'] );
 		}
 
 		return false;

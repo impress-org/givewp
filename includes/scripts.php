@@ -41,7 +41,7 @@ function give_load_scripts() {
 		'thousands_separator' => give_get_price_thousand_separator(),
 		'decimal_separator'   => give_get_price_decimal_separator(),
 		'no_gateway'          => __( 'Please select a payment method.', 'give' ),
-		'bad_minimum'         => __( 'The minimum donation amount for this form is', 'give' ),
+		'bad_minimum'         => __( 'The minimum custom donation amount for this form is', 'give' ),
 		'general_loading'     => __( 'Loading...', 'give' ),
 		'purchase_loading'    => __( 'Please Wait...', 'give' ),
 		'number_decimals'     => give_get_price_decimals(),
@@ -309,6 +309,7 @@ function give_load_admin_scripts( $hook ) {
 		'revoke_api_key'                 => __( 'Are you sure you wish to revoke this API key?', 'give' ),
 		'regenerate_api_key'             => __( 'Are you sure you wish to regenerate this API key?', 'give' ),
 		'resend_receipt'                 => __( 'Are you sure you wish to resend the donation receipt?', 'give' ),
+		'disconnect_user'                => __( 'Are you sure you want to disconnect the user from this donor?', 'give' ),
 		'logo'                           => __( 'Logo', 'give' ),
 		'use_this_image'                 => __( 'Use this image', 'give' ),
 		'one_option'                     => __( 'Choose a form', 'give' ),
@@ -406,14 +407,16 @@ function give_admin_hide_notice_shortly_js() {
     <script>
 		jQuery(document).ready(function ($) {
 			$('.give-license-notice').on('click', 'button.notice-dismiss', function (e) {
-				e.preventDefault();
 
-				var parent             = $(this).parents('.give-license-notice'),
-				    dismiss_notice_url = parent.data('dismiss-notice-shortly');
+                e.preventDefault();
 
-				if (dismiss_notice_url) {
-					window.location.assign(dismiss_notice_url);
-				}
+                var data = {
+                    'action': 'give_hide_license_notice',
+                    '_give_hide_license_notices_shortly': 'general'
+                };
+
+                jQuery.post('<?php echo admin_url(); ?>admin-ajax.php', data, function(response) { });
+
 			});
 		});
     </script>

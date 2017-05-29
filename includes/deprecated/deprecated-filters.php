@@ -1,7 +1,10 @@
 <?php
 /**
  * Handle renamed filters
+ *
+ * @package Give
  */
+
 $give_map_deprecated_filters = give_deprecated_filters();
 
 foreach ( $give_map_deprecated_filters as $new => $old ) {
@@ -16,16 +19,26 @@ foreach ( $give_map_deprecated_filters as $new => $old ) {
 function give_deprecated_filters() {
 
 	$give_deprecated_filters = array(
-		// New filter hook                               Old filter hook.
-		'give_donation_data_before_gateway'          => 'give_purchase_data_before_gateway',
-		'give_donation_form_required_fields'         => 'give_purchase_form_required_fields',
-		'give_donation_stats_by_user'                => 'give_purchase_stats_by_user',
-		'give_donation_from_name'                    => 'give_purchase_from_name',
-		'give_donation_from_address'                 => 'give_purchase_from_address',
-		'give_get_users_donations_args'              => 'give_get_users_purchases_args',
-		'give_recount_donors_donation_statuses'      => 'give_recount_customer_payment_statuses',
-		'give_donor_recount_should_process_donation' => 'give_customer_recount_should_process_payment',
-		'give_reset_items'                           => 'give_reset_store_items',
+		// New filter hook                                 Old filter hook.
+		'give_donation_data_before_gateway'                => 'give_purchase_data_before_gateway',
+		'give_donation_form_required_fields'               => 'give_purchase_form_required_fields',
+		'give_donation_stats_by_user'                      => 'give_purchase_stats_by_user',
+		'give_donation_from_name'                          => 'give_purchase_from_name',
+		'give_donation_from_address'                       => 'give_purchase_from_address',
+		'give_get_users_donations_args'                    => 'give_get_users_purchases_args',
+		'give_recount_donors_donation_statuses'            => 'give_recount_customer_payment_statuses',
+		'give_donor_recount_should_process_donation'       => 'give_customer_recount_should_process_payment',
+		'give_reset_items'                                 => 'give_reset_store_items',
+		'give_decrease_donations_on_undo'                  => 'give_decrease_sales_on_undo',
+		'give_decrease_earnings_on_pending'                => 'give_decrease_store_earnings_on_pending',
+		'give_decrease_donor_value_on_pending'             => 'give_decrease_customer_value_on_pending',
+		'give_decrease_donors_donation_count_on_pending'   => 'give_decrease_customer_purchase_count_on_pending',
+		'give_decrease_earnings_on_cancelled'              => 'give_decrease_store_earnings_on_cancelled',
+		'give_decrease_donor_value_on_cancelled'           => 'give_decrease_customer_value_on_cancelled',
+		'give_decrease_donors_donation_count_on_cancelled' => 'give_decrease_customer_purchase_count_on_cancelled',
+		'give_decrease_earnings_on_revoked'                => 'give_decrease_store_earnings_on_revoked',
+		'give_decrease_donor_value_on_revoked'             => 'give_decrease_customer_value_on_revoked',
+		'give_decrease_donors_donation_count_on_revoked'   => 'give_decrease_customer_purchase_count_on_revoked',
 	);
 
 	return $give_deprecated_filters;
@@ -34,10 +47,10 @@ function give_deprecated_filters() {
 /**
  * Deprecated filter mapping.
  *
- * @param mixed  $data
- * @param string $arg_1
- * @param string $arg_2
- * @param string $arg_3
+ * @param mixed $data
+ * @param string $arg_1 Passed filter argument 1.
+ * @param string $arg_2 Passed filter argument 2.
+ * @param string $arg_3 Passed filter argument 3.
  *
  * @return mixed
  */

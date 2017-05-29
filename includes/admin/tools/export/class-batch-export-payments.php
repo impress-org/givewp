@@ -39,26 +39,26 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 	 */
 	public function csv_cols() {
 		$cols = array(
-			'id'        => esc_html__( 'ID', 'give' ), // unaltered payment ID (use for querying).
-			'seq_id'    => esc_html__( 'Payment Number', 'give' ), // sequential payment ID.
-			'email'     => esc_html__( 'Email', 'give' ),
-			'first'     => esc_html__( 'First Name', 'give' ),
-			'last'      => esc_html__( 'Last Name', 'give' ),
-			'address1'  => esc_html__( 'Address 1', 'give' ),
-			'address2'  => esc_html__( 'Address 2', 'give' ),
-			'city'      => esc_html__( 'City', 'give' ),
-			'state'     => esc_html__( 'State', 'give' ),
-			'country'   => esc_html__( 'Country', 'give' ),
-			'zip'       => esc_html__( 'Zip / Postal Code', 'give' ),
-			'form_id'   => esc_html__( 'Form ID', 'give' ),
-			'form_name' => esc_html__( 'Form Name', 'give' ),
-			'amount'    => esc_html__( 'Amount', 'give' ) . ' (' . html_entity_decode( give_currency_filter( '' ) ) . ')',
-			'gateway'   => esc_html__( 'Payment Method', 'give' ),
-			'trans_id'  => esc_html__( 'Transaction ID', 'give' ),
-			'key'       => esc_html__( 'Key', 'give' ),
-			'date'      => esc_html__( 'Date', 'give' ),
-			'user'      => esc_html__( 'User', 'give' ),
-			'status'    => esc_html__( 'Status', 'give' )
+			'id'        => __( 'ID', 'give' ), // unaltered payment ID (use for querying).
+			'seq_id'    => __( 'Payment Number', 'give' ), // sequential payment ID.
+			'email'     => __( 'Email', 'give' ),
+			'first'     => __( 'First Name', 'give' ),
+			'last'      => __( 'Last Name', 'give' ),
+			'address1'  => __( 'Address 1', 'give' ),
+			'address2'  => __( 'Address 2', 'give' ),
+			'city'      => __( 'City', 'give' ),
+			'state'     => __( 'State', 'give' ),
+			'country'   => __( 'Country', 'give' ),
+			'zip'       => __( 'Zip / Postal Code', 'give' ),
+			'form_id'   => __( 'Form ID', 'give' ),
+			'form_name' => __( 'Form Name', 'give' ),
+			'amount'    => __( 'Amount', 'give' ) . ' (' . give_currency_symbol( '', true ) . ')',
+			'gateway'   => __( 'Payment Method', 'give' ),
+			'trans_id'  => __( 'Transaction ID', 'give' ),
+			'key'       => __( 'Key', 'give' ),
+			'date'      => __( 'Date', 'give' ),
+			'user'      => __( 'User', 'give' ),
+			'status'    => __( 'Status', 'give' )
 		);
 
 		if ( ! give_get_option( 'enable_sequential' ) ) {
@@ -77,7 +77,6 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 	 * @return array $data The data for the CSV file.
 	 */
 	public function get_data() {
-		global $wpdb;
 
 		$data = array();
 
@@ -144,8 +143,6 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 				$user_info    = give_get_payment_meta_user_info( $payment->ID );
 				$total        = give_get_payment_amount( $payment->ID );
 				$user_id      = isset( $user_info['id'] ) && $user_info['id'] != - 1 ? $user_info['id'] : $user_info['email'];
-				$products     = '';
-				$skus         = '';
 
 				if ( is_numeric( $user_id ) ) {
 					$user = get_userdata( $user_id );
@@ -167,9 +164,8 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 					'zip'       => isset( $user_info['address']['zip'] ) ? $user_info['address']['zip'] : '',
 					'form_id'   => isset( $payment_meta['form_id'] ) ? $payment_meta['form_id'] : '',
 					'form_name' => isset( $payment_meta['form_title'] ) ? $payment_meta['form_title'] : '',
-					'skus'      => $skus,
 					'amount'    => html_entity_decode( give_format_amount( $total ) ),
-					'gateway'   => give_get_gateway_admin_label( get_post_meta( $payment->ID, '_give_payment_gateway', true ) ),
+					'gateway'   => give_get_gateway_admin_label( give_get_meta( $payment->ID, '_give_payment_gateway', true ) ),
 					'trans_id'  => give_get_payment_transaction_id( $payment->ID ),
 					'key'       => $payment_meta['key'],
 					'date'      => $payment->post_date,

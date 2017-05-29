@@ -19,36 +19,36 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * This class is for working with payments in Give.
  *
- * @property int        $ID
- * @property bool       $new
- * @property string     $number
- * @property string     $mode
- * @property string     $key
- * @property string     $form_title
+ * @property int $ID
+ * @property bool $new
+ * @property string $number
+ * @property string $mode
+ * @property string $key
+ * @property string $form_title
  * @property string|int $form_id
  * @property string|int $price_id
  * @property string|int $total
  * @property string|int $subtotal
  * @property string|int $fees
  * @property string|int $fees_total
- * @property string     $post_status
- * @property string     $date
- * @property string     $postdate
- * @property string     $status
- * @property string     $email
- * @property string     $payment_meta
- * @property string     $customer_id
- * @property string     $completed_date
- * @property string     $currency
- * @property string     $ip
- * @property array      $user_info
- * @property string     $gateway
- * @property string     $user_id
- * @property string     $first_name
- * @property string     $last_name
- * @property string     $parent_payment
- * @property string     $transaction_id
- * @property string     $old_status
+ * @property string $post_status
+ * @property string $date
+ * @property string $postdate
+ * @property string $status
+ * @property string $email
+ * @property string $payment_meta
+ * @property string $customer_id
+ * @property string $completed_date
+ * @property string $currency
+ * @property string $ip
+ * @property array $user_info
+ * @property string $gateway
+ * @property string $user_id
+ * @property string $first_name
+ * @property string $last_name
+ * @property string $parent_payment
+ * @property string $transaction_id
+ * @property string $old_status
  *
  * @since 1.5
  */
@@ -436,8 +436,8 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  string $key   The property name
-	 * @param  mixed  $value The value of the property
+	 * @param  string $key The property name
+	 * @param  mixed $value The value of the property
 	 */
 	public function __set( $key, $value ) {
 		$ignore = array( '_ID' );
@@ -507,8 +507,8 @@ final class Give_Payment {
 		 *
 		 * @since 1.5
 		 *
-		 * @param Give_Payment $this       Payment object.
-		 * @param int          $payment_id The ID of the payment.
+		 * @param Give_Payment $this Payment object.
+		 * @param int $payment_id The ID of the payment.
 		 */
 		do_action( 'give_pre_setup_payment', $this, $payment_id );
 
@@ -570,8 +570,8 @@ final class Give_Payment {
 		 *
 		 * @since 1.5
 		 *
-		 * @param Give_Payment $this       Payment object.
-		 * @param int          $payment_id The ID of the payment.
+		 * @param Give_Payment $this Payment object.
+		 * @param int $payment_id The ID of the payment.
 		 */
 		do_action( 'give_setup_payment', $this, $payment_id );
 
@@ -709,7 +709,7 @@ final class Give_Payment {
 
 			$this->update_meta( '_give_payment_meta', $this->payment_meta );
 			$this->new = true;
-		}
+		}// End if().
 
 		return $this->ID;
 
@@ -821,8 +821,8 @@ final class Give_Payment {
 									}
 									break;
 
-							}
-						}
+							}// End switch().
+						}// End foreach().
 						break;
 
 					case 'fees':
@@ -949,8 +949,8 @@ final class Give_Payment {
 						 */
 						do_action( 'give_payment_save', $this, $key );
 						break;
-				}
-			}
+				}// End switch().
+			}// End foreach().
 
 			if ( 'pending' !== $this->status ) {
 
@@ -997,7 +997,7 @@ final class Give_Payment {
 
 			$this->pending = array();
 			$saved         = true;
-		}
+		}// End if().
 
 		if ( true === $saved ) {
 			$this->setup_payment( $this->ID );
@@ -1012,8 +1012,8 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  int   $form_id The donation form to add
-	 * @param  array $args    Other arguments to pass to the function
+	 * @param  int $form_id The donation form to add
+	 * @param  array $args Other arguments to pass to the function
 	 * @param  array $options List of donation options
 	 *
 	 * @return bool           True when successful, false otherwise
@@ -1043,7 +1043,7 @@ final class Give_Payment {
 
 			// Deal with variable pricing.
 			if ( give_has_variable_prices( $donation->ID ) ) {
-				$prices     = maybe_unserialize( get_post_meta( $form_id, '_give_donation_levels', true ) );
+				$prices     = maybe_unserialize( give_get_meta( $form_id, '_give_donation_levels', true ) );
 				$item_price = '';
 				// Loop through prices.
 				foreach ( $prices as $price ) {
@@ -1107,8 +1107,8 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  int   $form_id The form ID to remove
-	 * @param  array $args    Arguments to pass to identify (quantity, amount, price_id)
+	 * @param  int $form_id The form ID to remove
+	 * @param  array $args Arguments to pass to identify (quantity, amount, price_id)
 	 *
 	 * @return bool           If the item was removed or not
 	 */
@@ -1150,7 +1150,7 @@ final class Give_Payment {
 	 * @access public
 	 *
 	 * @param  array $args Array of arguments for the fee to add
-	 * @param  bool  $global
+	 * @param  bool $global
 	 *
 	 * @return bool          If the fee was added
 	 */
@@ -1203,10 +1203,10 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  string     $key    The key to remove by
-	 * @param  int|string $value  The value to search for
-	 * @param  boolean    $global False - removes the first value it fines,
-	 *                            True - removes all matches.
+	 * @param  string $key The key to remove by
+	 * @param  int|string $value The value to search for
+	 * @param  boolean $global False - removes the first value it fines,
+	 *                                  True - removes all matches.
 	 *
 	 * @return boolean            If the item is removed
 	 */
@@ -1324,7 +1324,7 @@ final class Give_Payment {
 	 * @return void
 	 */
 	private function increase_subtotal( $amount = 0.00 ) {
-		$amount = (float) $amount;
+		$amount         = (float) $amount;
 		$this->subtotal += $amount;
 
 		$this->recalculate_total();
@@ -1341,7 +1341,7 @@ final class Give_Payment {
 	 * @return void
 	 */
 	private function decrease_subtotal( $amount = 0.00 ) {
-		$amount = (float) $amount;
+		$amount         = (float) $amount;
 		$this->subtotal -= $amount;
 
 		if ( $this->subtotal < 0 ) {
@@ -1362,7 +1362,7 @@ final class Give_Payment {
 	 * @return void
 	 */
 	private function increase_fees( $amount = 0.00 ) {
-		$amount = (float) $amount;
+		$amount           = (float) $amount;
 		$this->fees_total += $amount;
 
 		$this->recalculate_total();
@@ -1379,7 +1379,7 @@ final class Give_Payment {
 	 * @return void
 	 */
 	private function decrease_fees( $amount = 0.00 ) {
-		$amount = (float) $amount;
+		$amount           = (float) $amount;
 		$this->fees_total -= $amount;
 
 		if ( $this->fees_total < 0 ) {
@@ -1435,8 +1435,8 @@ final class Give_Payment {
 			 *
 			 * @since 1.5
 			 *
-			 * @param int    $payment_id Payments ID.
-			 * @param string $status     The new status.
+			 * @param int $payment_id Payments ID.
+			 * @param string $status The new status.
 			 * @param string $old_status The old status.
 			 */
 			do_action( 'give_before_payment_status_change', $this->ID, $status, $old_status );
@@ -1476,13 +1476,13 @@ final class Give_Payment {
 			 *
 			 * @since 1.5
 			 *
-			 * @param int    $payment_id Payment ID.
-			 * @param string $status     The new status.
+			 * @param int $payment_id Payment ID.
+			 * @param string $status The new status.
 			 * @param string $old_status The old status.
 			 */
 			do_action( 'give_update_payment_status', $this->ID, $status, $old_status );
 
-		}
+		}// End if().
 
 		return $updated;
 
@@ -1510,14 +1510,14 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  string  $meta_key The Meta Key
-	 * @param  boolean $single   Return single item or array
+	 * @param  string $meta_key The Meta Key
+	 * @param  boolean $single Return single item or array
 	 *
 	 * @return mixed             The value from the post meta
 	 */
 	public function get_meta( $meta_key = '_give_payment_meta', $single = true ) {
 
-		$meta = get_post_meta( $this->ID, $meta_key, $single );
+		$meta = give_get_meta( $this->ID, $meta_key, $single );
 
 		if ( $meta_key === '_give_payment_meta' ) {
 			$meta = (array) $meta;
@@ -1550,7 +1550,7 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  string $meta_key   The meta key to update
+	 * @param  string $meta_key The meta key to update
 	 * @param  string $meta_value The meta value
 	 * @param  string $prev_value Previous meta value
 	 *
@@ -1572,7 +1572,7 @@ final class Give_Payment {
 		} elseif ( $meta_key == 'email' || $meta_key == '_give_payment_user_email' ) {
 
 			$meta_value = apply_filters( "give_give_update_payment_meta_{$meta_key}", $meta_value, $this->ID );
-			update_post_meta( $this->ID, '_give_payment_user_email', $meta_value );
+			give_update_meta( $this->ID, '_give_payment_user_email', $meta_value );
 
 			$current_meta                       = $this->get_meta();
 			$current_meta['user_info']['email'] = $meta_value;
@@ -1584,7 +1584,7 @@ final class Give_Payment {
 
 		$meta_value = apply_filters( "give_update_payment_meta_{$meta_key}", $meta_value, $this->ID );
 
-		return update_post_meta( $this->ID, $meta_key, $meta_value, $prev_value );
+		return give_update_meta( $this->ID, $meta_key, $meta_value, $prev_value );
 	}
 
 	/**
@@ -1619,11 +1619,11 @@ final class Give_Payment {
 		 */
 		do_action( 'give_pre_refund_payment', $this );
 
-		$decrease_store_earnings = apply_filters( 'give_decrease_store_earnings_on_refund', true, $this );
+		$decrease_earnings       = apply_filters( 'give_decrease_store_earnings_on_refund', true, $this );
 		$decrease_customer_value = apply_filters( 'give_decrease_customer_value_on_refund', true, $this );
 		$decrease_purchase_count = apply_filters( 'give_decrease_customer_purchase_count_on_refund', true, $this );
 
-		$this->maybe_alter_stats( $decrease_store_earnings, $decrease_customer_value, $decrease_purchase_count );
+		$this->maybe_alter_stats( $decrease_earnings, $decrease_customer_value, $decrease_purchase_count );
 		$this->delete_sales_logs();
 
 		// @todo: Refresh only range related stat cache
@@ -1674,11 +1674,11 @@ final class Give_Payment {
 			return;
 		}
 
-		$decrease_store_earnings = apply_filters( 'give_decrease_store_earnings_on_pending', true, $this );
-		$decrease_customer_value = apply_filters( 'give_decrease_customer_value_on_pending', true, $this );
-		$decrease_purchase_count = apply_filters( 'give_decrease_customer_purchase_count_on_pending', true, $this );
+		$decrease_earnings       = apply_filters( 'give_decrease_earnings_on_pending', true, $this );
+		$decrease_donor_value    = apply_filters( 'give_decrease_donor_value_on_pending', true, $this );
+		$decrease_donation_count = apply_filters( 'give_decrease_donors_donation_count_on_pending', true, $this );
 
-		$this->maybe_alter_stats( $decrease_store_earnings, $decrease_customer_value, $decrease_purchase_count );
+		$this->maybe_alter_stats( $decrease_earnings, $decrease_donor_value, $decrease_donation_count );
 		$this->delete_sales_logs();
 
 		$this->completed_date = false;
@@ -1689,7 +1689,7 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Process when a payment moves to cancelled
+	 * Process when a payment moves to cancelled.
 	 *
 	 * @since  1.5
 	 * @access private
@@ -1711,11 +1711,11 @@ final class Give_Payment {
 			return;
 		}
 
-		$decrease_store_earnings = apply_filters( 'give_decrease_store_earnings_on_cancelled', true, $this );
-		$decrease_customer_value = apply_filters( 'give_decrease_customer_value_on_cancelled', true, $this );
-		$decrease_purchase_count = apply_filters( 'give_decrease_customer_purchase_count_on_cancelled', true, $this );
+		$decrease_earnings       = apply_filters( 'give_decrease_earnings_on_cancelled', true, $this );
+		$decrease_donor_value    = apply_filters( 'give_decrease_donor_value_on_cancelled', true, $this );
+		$decrease_donation_count = apply_filters( 'give_decrease_donors_donation_count_on_cancelled', true, $this );
 
-		$this->maybe_alter_stats( $decrease_store_earnings, $decrease_customer_value, $decrease_purchase_count );
+		$this->maybe_alter_stats( $decrease_earnings, $decrease_donor_value, $decrease_donation_count );
 		$this->delete_sales_logs();
 
 		$this->completed_date = false;
@@ -1726,7 +1726,7 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Process when a payment moves to revoked
+	 * Process when a payment moves to revoked.
 	 *
 	 * @since  1.5
 	 * @return void
@@ -1746,11 +1746,11 @@ final class Give_Payment {
 			return;
 		}
 
-		$decrease_store_earnings = apply_filters( 'give_decrease_store_earnings_on_revoked', true, $this );
-		$decrease_customer_value = apply_filters( 'give_decrease_customer_value_on_revoked', true, $this );
-		$decrease_purchase_count = apply_filters( 'give_decrease_customer_purchase_count_on_revoked', true, $this );
+		$decrease_earnings       = apply_filters( 'give_decrease_earnings_on_revoked', true, $this );
+		$decrease_donor_value    = apply_filters( 'give_decrease_donor_value_on_revoked', true, $this );
+		$decrease_donation_count = apply_filters( 'give_decrease_donors_donation_count_on_revoked', true, $this );
 
-		$this->maybe_alter_stats( $decrease_store_earnings, $decrease_customer_value, $decrease_purchase_count );
+		$this->maybe_alter_stats( $decrease_earnings, $decrease_donor_value, $decrease_donation_count );
 		$this->delete_sales_logs();
 
 		$this->completed_date = false;
@@ -1766,8 +1766,8 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @param  bool $alter_store_earnings          If the method should alter the store earnings
-	 * @param  bool $alter_customer_value          If the method should reduce the customer value
+	 * @param  bool $alter_store_earnings If the method should alter the store earnings
+	 * @param  bool $alter_customer_value If the method should reduce the customer value
 	 * @param  bool $alter_customer_purchase_count If the method should reduce the customer's purchase count
 	 *
 	 * @return void
@@ -1881,7 +1881,6 @@ final class Give_Payment {
 				$amount = $meta['amount'];
 			}
 		}
-
 
 		return round( floatval( $amount ), give_currency_decimal_filter() );
 	}
@@ -2102,7 +2101,7 @@ final class Give_Payment {
 					}
 				}
 			}
-		}
+		}// End if().
 
 		return $user_info;
 

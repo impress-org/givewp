@@ -39,27 +39,27 @@ function give_include_batch_export_class( $class ) {
 	switch ( $class ) {
 
 		case 'Give_Tools_Delete_Test_Transactions':
-			require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/tools/class-give-tools-delete-test-transactions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/data/class-give-tools-delete-test-transactions.php';
 			break;
 
 		case 'Give_Tools_Recount_Customer_Stats':
-			require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/tools/class-give-tools-recount-customer-stats.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/data/class-give-tools-recount-customer-stats.php';
 			break;
 
 		case 'Give_Tools_Reset_Stats':
-			require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/tools/class-give-tools-reset-stats.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/data/class-give-tools-reset-stats.php';
 			break;
 
 		case 'Give_Tools_Recount_All_Stats':
-			require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/tools/class-give-tools-recount-all-stats.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/data/class-give-tools-recount-all-stats.php';
 			break;
 
 		case 'Give_Tools_Recount_Form_Stats':
-			require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/tools/class-give-tools-recount-form-stats.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/data/class-give-tools-recount-form-stats.php';
 			break;
 
 		case 'Give_Tools_Recount_Income':
-			require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/tools/class-give-tools-recount-income.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/data/class-give-tools-recount-income.php';
 			break;
 	}
 }

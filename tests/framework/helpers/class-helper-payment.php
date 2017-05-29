@@ -46,7 +46,7 @@ class Give_Helper_Payment extends WP_UnitTestCase {
 			'last_name'  => $user->last_name
 		);
 
-		$simple_price = get_post_meta( $simple_form->ID, '_give_set_price', true );
+		$simple_price = give_get_meta( $simple_form->ID, '_give_set_price', true );
 
 		$purchase_data = array(
 			'price'           => number_format( (float) $simple_price, 2 ),
@@ -108,7 +108,7 @@ class Give_Helper_Payment extends WP_UnitTestCase {
 			'last_name'  => $user->last_name
 		);
 
-		$multilevel_price = maybe_unserialize( get_post_meta( $multilevel_form->ID, '_give_donation_levels', true ) );
+		$multilevel_price = maybe_unserialize( give_get_meta( $multilevel_form->ID, '_give_donation_levels', true ) );
 
 		$purchase_data = array(
 			'price'           => number_format( (float) $multilevel_price[1]['_give_amount'], 2 ), //$25
@@ -180,7 +180,7 @@ class Give_Helper_Payment extends WP_UnitTestCase {
 		);
 
 		$total        = 0;
-		$simple_price = get_post_meta( $simple_form->ID, 'give_price', true );
+		$simple_price = give_get_meta( $simple_form->ID, 'give_price', true );
 
 		$total += $simple_price;
 

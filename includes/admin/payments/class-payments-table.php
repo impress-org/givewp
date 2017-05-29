@@ -348,6 +348,11 @@ class Give_Payment_History_Table extends WP_List_Table {
 			case 'amount' :
 				$amount = ! empty( $payment->total ) ? $payment->total : 0;
 				$value  = give_currency_filter( give_format_amount( $amount ), give_get_payment_currency_code( $payment->ID ) );
+				$value  .= sprintf(
+					'<br><small>%1$s %2$s</small>',
+					__( 'via', 'give' ),
+					give_get_gateway_admin_label( $payment->gateway )
+				);
 				break;
 
 			case 'donation_form' :
@@ -533,14 +538,28 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 */
 	public function get_donor( $payment ) {
 
-		$customer_id = give_get_payment_customer_id( $payment->ID );
+		$donor_id    = give_get_payment_customer_id( $payment->ID );
+        $donor_billing_name     = give_get_donor_name_by( $payment->ID, 'donation');
+        $donor_name  = give_get_donor_name_by( $donor_id, 'donor');
 
-		if ( ! empty( $customer_id ) ) {
-			$customer = new Give_Customer( $customer_id );
-			$value    = '<a href="' . esc_url( admin_url( "edit.php?post_type=give_forms&page=give-donors&view=overview&id=$customer_id" ) ) . '">' . $customer->name . '</a>';
+        $value = '';
+		if ( ! empty( $donor_id ) ) {
+
+            // Check whether the donor name and WP_User name is same or not.
+            if( sanitize_title( $donor_billing_name ) != sanitize_title( $donor_name ) ){
+                $value  .= $donor_billing_name . ' (';
+            }
+
+			$value    .= '<a href="' . esc_url( admin_url( "edit.php?post_type=give_forms&page=give-donors&view=overview&id=$donor_id" ) ) . '">' . $donor_name . '</a>';
+
+            // Check whether the donor name and WP_User name is same or not.
+            if( sanitize_title( $donor_billing_name ) != sanitize_title( $donor_name ) ){
+                $value  .= ')';
+            }
+
 		} else {
 			$email = give_get_payment_user_email( $payment->ID );
-			$value = '<a href="' . esc_url( admin_url( "edit.php?post_type=give_forms&page=give-payment-history&s=$email" ) ) . '">' . esc_html__( '(donor missing)', 'give' ) . '</a>';
+			$value .= '<a href="' . esc_url( admin_url( "edit.php?post_type=give_forms&page=give-payment-history&s=$email" ) ) . '">' . esc_html__( '(donor missing)', 'give' ) . '</a>';
 		}
 
 		return apply_filters( 'give_payments_table_column', $value, $payment->ID, 'donor' );
