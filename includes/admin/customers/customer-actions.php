@@ -15,36 +15,40 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Processes a customer edit
+ * Processes a donor edit.
  *
  * @since  1.0
  *
  * @param  array $args The $_POST array being passed
  *
- * @return array $output Response messages
+ * @return array|bool $output Response messages
  */
-function give_edit_customer( $args ) {
+function give_edit_donor( $args ) {
 
-	$customer_edit_role = apply_filters( 'give_edit_customers_role', 'edit_give_payments' );
+	$customer_edit_role = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
 
 	if ( ! is_admin() || ! current_user_can( $customer_edit_role ) ) {
-		wp_die( esc_html__( 'You do not have permission to edit this donor.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( __( 'You do not have permission to edit this donor.', 'give' ), __( 'Error', 'give' ), array(
+			'response' => 403,
+		) );
 	}
 
 	if ( empty( $args ) ) {
-		return;
+		return false;
 	}
 
-	$customer_info = $args['customerinfo'];
-	$customer_id   = (int) $args['customerinfo']['id'];
-	$nonce         = $args['_wpnonce'];
+	$donor_info = $args['customerinfo'];
+	$donor_id   = (int) $args['customerinfo']['id'];
+	$nonce      = $args['_wpnonce'];
 
 	if ( ! wp_verify_nonce( $nonce, 'edit-customer' ) ) {
-		wp_die( esc_html__( 'Cheatin&#8217; uh?', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
+		wp_die( __( 'Cheatin&#8217; uh?', 'give' ), __( 'Error', 'give' ), array(
+			'response' => 400,
+		) );
 	}
 
-	$customer = new Give_Customer( $customer_id );
-	if ( empty( $customer->id ) ) {
+	$donor = new Give_Customer( $donor_id );
+	if ( empty( $donor->id ) ) {
 		return false;
 	}
 
@@ -53,42 +57,42 @@ function give_edit_customer( $args ) {
 		'user_id' => 0,
 	);
 
-	$customer_info = wp_parse_args( $customer_info, $defaults );
+	$donor_info = wp_parse_args( $donor_info, $defaults );
 
-	if ( (int) $customer_info['user_id'] != (int) $customer->user_id ) {
+	if ( (int) $donor_info['user_id'] != (int) $donor->user_id ) {
 
-		// Make sure we don't already have this user attached to a customer
-		if ( ! empty( $customer_info['user_id'] ) && false !== Give()->customers->get_customer_by( 'user_id', $customer_info['user_id'] ) ) {
-			give_set_error( 'give-invalid-customer-user_id', sprintf( esc_html__( 'The User ID %d is already associated with a different donor.', 'give' ), $customer_info['user_id'] ) );
+		// Make sure we don't already have this user attached to a donor.
+		if ( ! empty( $donor_info['user_id'] ) && false !== Give()->customers->get_customer_by( 'user_id', $donor_info['user_id'] ) ) {
+			give_set_error( 'give-invalid-customer-user_id', sprintf( esc_html__( 'The User ID %d is already associated with a different donor.', 'give' ), $donor_info['user_id'] ) );
 		}
 
-		// Make sure it's actually a user
-		$user = get_user_by( 'id', $customer_info['user_id'] );
-		if ( ! empty( $customer_info['user_id'] ) && false === $user ) {
-			give_set_error( 'give-invalid-user_id', sprintf( esc_html__( 'The User ID %d does not exist. Please assign an existing user.', 'give' ), $customer_info['user_id'] ) );
+		// Make sure it's actually a user.
+		$user = get_user_by( 'id', $donor_info['user_id'] );
+		if ( ! empty( $donor_info['user_id'] ) && false === $user ) {
+			give_set_error( 'give-invalid-user_id', sprintf( esc_html__( 'The User ID %d does not exist. Please assign an existing user.', 'give' ), $donor_info['user_id'] ) );
 		}
 	}
 
-	// Record this for later
-	$previous_user_id = $customer->user_id;
+	// Record this for later.
+	$previous_user_id = $donor->user_id;
 
 	if ( give_get_errors() ) {
-		return;
+		return false;
 	}
 
-	// Setup the customer address, if present
+	// Setup the donor address, if present.
 	$address = array();
-	if ( intval( $customer_info['user_id'] ) > 0 ) {
+	if ( intval( $donor_info['user_id'] ) > 0 ) {
 
-		$current_address = get_user_meta( $customer_info['user_id'], '_give_user_address', true );
+		$current_address = get_user_meta( $donor_info['user_id'], '_give_user_address', true );
 
 		if ( false === $current_address ) {
-			$address['line1']   = isset( $customer_info['line1'] ) ? $customer_info['line1'] : '';
-			$address['line2']   = isset( $customer_info['line2'] ) ? $customer_info['line2'] : '';
-			$address['city']    = isset( $customer_info['city'] ) ? $customer_info['city'] : '';
-			$address['country'] = isset( $customer_info['country'] ) ? $customer_info['country'] : '';
-			$address['zip']     = isset( $customer_info['zip'] ) ? $customer_info['zip'] : '';
-			$address['state']   = isset( $customer_info['state'] ) ? $customer_info['state'] : '';
+			$address['line1']   = isset( $donor_info['line1'] ) ? $donor_info['line1'] : '';
+			$address['line2']   = isset( $donor_info['line2'] ) ? $donor_info['line2'] : '';
+			$address['city']    = isset( $donor_info['city'] ) ? $donor_info['city'] : '';
+			$address['country'] = isset( $donor_info['country'] ) ? $donor_info['country'] : '';
+			$address['zip']     = isset( $donor_info['zip'] ) ? $donor_info['zip'] : '';
+			$address['state']   = isset( $donor_info['state'] ) ? $donor_info['state'] : '';
 		} else {
 			$current_address    = wp_parse_args( $current_address, array(
 				'line1',
@@ -98,57 +102,57 @@ function give_edit_customer( $args ) {
 				'state',
 				'country',
 			) );
-			$address['line1']   = isset( $customer_info['line1'] ) ? $customer_info['line1'] : $current_address['line1'];
-			$address['line2']   = isset( $customer_info['line2'] ) ? $customer_info['line2'] : $current_address['line2'];
-			$address['city']    = isset( $customer_info['city'] ) ? $customer_info['city'] : $current_address['city'];
-			$address['country'] = isset( $customer_info['country'] ) ? $customer_info['country'] : $current_address['country'];
-			$address['zip']     = isset( $customer_info['zip'] ) ? $customer_info['zip'] : $current_address['zip'];
-			$address['state']   = isset( $customer_info['state'] ) ? $customer_info['state'] : $current_address['state'];
+			$address['line1']   = isset( $donor_info['line1'] ) ? $donor_info['line1'] : $current_address['line1'];
+			$address['line2']   = isset( $donor_info['line2'] ) ? $donor_info['line2'] : $current_address['line2'];
+			$address['city']    = isset( $donor_info['city'] ) ? $donor_info['city'] : $current_address['city'];
+			$address['country'] = isset( $donor_info['country'] ) ? $donor_info['country'] : $current_address['country'];
+			$address['zip']     = isset( $donor_info['zip'] ) ? $donor_info['zip'] : $current_address['zip'];
+			$address['state']   = isset( $donor_info['state'] ) ? $donor_info['state'] : $current_address['state'];
 		}
 	}
 
 	// Sanitize the inputs
-	$customer_data            = array();
-	$customer_data['name']    = strip_tags( stripslashes( $customer_info['name'] ) );
-	$customer_data['user_id'] = $customer_info['user_id'];
+	$donor_data            = array();
+	$donor_data['name']    = strip_tags( stripslashes( $donor_info['name'] ) );
+	$donor_data['user_id'] = $donor_info['user_id'];
 
-	$customer_data = apply_filters( 'give_edit_customer_info', $customer_data, $customer_id );
-	$address       = apply_filters( 'give_edit_customer_address', $address, $customer_id );
+	$donor_data = apply_filters( 'give_edit_donor_info', $donor_data, $donor_id );
+	$address    = apply_filters( 'give_edit_donor_address', $address, $donor_id );
 
-	$customer_data = array_map( 'sanitize_text_field', $customer_data );
-	$address       = array_map( 'sanitize_text_field', $address );
+	$donor_data = array_map( 'sanitize_text_field', $donor_data );
+	$address    = array_map( 'sanitize_text_field', $address );
 
 	/**
-	 * Fires before editing customer.
+	 * Fires before editing a donor.
 	 *
 	 * @since 1.0
 	 *
-	 * @param int   $customer_id   The ID of the customer.
-	 * @param array $customer_data The customer data.
-	 * @param array $address       The customer address.
+	 * @param int $donor_id The ID of the donor.
+	 * @param array $donor_data The donor data.
+	 * @param array $address The donor's address.
 	 */
-	do_action( 'give_pre_edit_customer', $customer_id, $customer_data, $address );
+	do_action( 'give_pre_edit_donor', $donor_id, $donor_data, $address );
 
 	$output = array();
 
-	if ( $customer->update( $customer_data ) ) {
+	if ( $donor->update( $donor_data ) ) {
 
-		if ( ! empty( $customer->user_id ) && $customer->user_id > 0 ) {
-			update_user_meta( $customer->user_id, '_give_user_address', $address );
+		if ( ! empty( $donor->user_id ) && $donor->user_id > 0 ) {
+			update_user_meta( $donor->user_id, '_give_user_address', $address );
 		}
 
-		// Update some donation meta if we need to
-		$payments_array = explode( ',', $customer->payment_ids );
+		// Update some donation meta if we need to.
+		$payments_array = explode( ',', $donor->payment_ids );
 
-		if ( $customer->user_id != $previous_user_id ) {
+		if ( $donor->user_id != $previous_user_id ) {
 			foreach ( $payments_array as $payment_id ) {
-				give_update_payment_meta( $payment_id, '_give_payment_user_id', $customer->user_id );
+				give_update_payment_meta( $payment_id, '_give_payment_user_id', $donor->user_id );
 			}
 		}
 
 		$output['success']       = true;
-		$customer_data           = array_merge( $customer_data, $address );
-		$output['customer_info'] = $customer_data;
+		$donor_data              = array_merge( $donor_data, $address );
+		$output['customer_info'] = $donor_data;
 
 	} else {
 
@@ -157,14 +161,14 @@ function give_edit_customer( $args ) {
 	}
 
 	/**
-	 * Fires after editing customer.
+	 * Fires after editing a donor.
 	 *
 	 * @since 1.0
 	 *
-	 * @param int   $customer_id   The ID of the customer.
-	 * @param array $customer_data The customer data.
+	 * @param int $donor_id The ID of the donor.
+	 * @param array $donor_data The donor data.
 	 */
-	do_action( 'give_post_edit_customer', $customer_id, $customer_data );
+	do_action( 'give_post_edit_donor', $donor_id, $donor_data );
 
 	if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 		header( 'Content-Type: application/json' );
@@ -176,14 +180,14 @@ function give_edit_customer( $args ) {
 
 }
 
-add_action( 'give_edit-customer', 'give_edit_customer', 10, 1 );
+add_action( 'give_edit-customer', 'give_edit_donor', 10, 1 );
 
 /**
  * Save a customer note being added
  *
  * @since  1.0
  *
- * @param  array $args The $_POST array being passeed
+ * @param  array $args The $_POST array being passed.
  *
  * @return int         The Note ID that was saved, or 0 if nothing was saved
  */
@@ -192,7 +196,9 @@ function give_customer_save_note( $args ) {
 	$customer_view_role = apply_filters( 'give_view_customers_role', 'view_give_reports' );
 
 	if ( ! is_admin() || ! current_user_can( $customer_view_role ) ) {
-		wp_die( esc_html__( 'You do not have permission to edit this donor.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( esc_html__( 'You do not have permission to edit this donor.', 'give' ), esc_html__( 'Error', 'give' ), array(
+			'response' => 403,
+		) );
 	}
 
 	if ( empty( $args ) ) {
@@ -204,7 +210,9 @@ function give_customer_save_note( $args ) {
 	$nonce         = $args['add_customer_note_nonce'];
 
 	if ( ! wp_verify_nonce( $nonce, 'add-customer-note' ) ) {
-		wp_die( esc_html__( 'Cheatin&#8217; uh?', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
+		wp_die( esc_html__( 'Cheatin&#8217; uh?', 'give' ), esc_html__( 'Error', 'give' ), array(
+			'response' => 400,
+		) );
 	}
 
 	if ( empty( $customer_note ) ) {
@@ -223,8 +231,8 @@ function give_customer_save_note( $args ) {
 	 *
 	 * @since 1.0
 	 *
-	 * @param int    $customer_id The ID of the customer.
-	 * @param string $new_note    Note content.
+	 * @param int $customer_id The ID of the customer.
+	 * @param string $new_note Note content.
 	 */
 	do_action( 'give_pre_insert_customer_note', $customer_id, $new_note );
 
@@ -270,7 +278,9 @@ function give_customer_delete( $args ) {
 	$customer_edit_role = apply_filters( 'give_edit_customers_role', 'edit_give_payments' );
 
 	if ( ! is_admin() || ! current_user_can( $customer_edit_role ) ) {
-		wp_die( esc_html__( 'You do not have permission to delete donors.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( esc_html__( 'You do not have permission to delete donors.', 'give' ), esc_html__( 'Error', 'give' ), array(
+			'response' => 403,
+		) );
 	}
 
 	if ( empty( $args ) ) {
@@ -283,7 +293,9 @@ function give_customer_delete( $args ) {
 	$nonce       = $args['_wpnonce'];
 
 	if ( ! wp_verify_nonce( $nonce, 'delete-customer' ) ) {
-		wp_die( esc_html__( 'Cheatin&#8217; uh?', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
+		wp_die( esc_html__( 'Cheatin&#8217; uh?', 'give' ), esc_html__( 'Error', 'give' ), array(
+			'response' => 400,
+		) );
 	}
 
 	if ( ! $confirm ) {
@@ -302,8 +314,8 @@ function give_customer_delete( $args ) {
 	 *
 	 * @since 1.0
 	 *
-	 * @param int  $customer_id The ID of the customer.
-	 * @param bool $confirm     Delete confirmation.
+	 * @param int $customer_id The ID of the customer.
+	 * @param bool $confirm Delete confirmation.
 	 * @param bool $remove_data Records delete confirmation.
 	 */
 	do_action( 'give_pre_delete_customer', $customer_id, $confirm, $remove_data );
@@ -365,7 +377,9 @@ function give_disconnect_customer_user_id( $args ) {
 	$customer_edit_role = apply_filters( 'give_edit_customers_role', 'edit_give_payments' );
 
 	if ( ! is_admin() || ! current_user_can( $customer_edit_role ) ) {
-		wp_die( esc_html__( 'You do not have permission to edit this donor.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( esc_html__( 'You do not have permission to edit this donor.', 'give' ), esc_html__( 'Error', 'give' ), array(
+			'response' => 403,
+		) );
 	}
 
 	if ( empty( $args ) ) {
@@ -376,7 +390,9 @@ function give_disconnect_customer_user_id( $args ) {
 	$nonce       = $args['_wpnonce'];
 
 	if ( ! wp_verify_nonce( $nonce, 'edit-customer' ) ) {
-		wp_die( esc_html__( 'Cheatin&#8217; uh?', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
+		wp_die( esc_html__( 'Cheatin&#8217; uh?', 'give' ), esc_html__( 'Error', 'give' ), array(
+			'response' => 400,
+		) );
 	}
 
 	$customer = new Give_Customer( $customer_id );
@@ -392,12 +408,14 @@ function give_disconnect_customer_user_id( $args ) {
 	 * @since 1.0
 	 *
 	 * @param int $customer_id The ID of the customer.
-	 * @param int $user_id     The ID of the user.
+	 * @param int $user_id The ID of the user.
 	 */
 	do_action( 'give_pre_customer_disconnect_user_id', $customer_id, $user_id );
 
 	$output        = array();
-	$customer_args = array( 'user_id' => 0 );
+	$customer_args = array(
+		'user_id' => 0,
+	);
 
 	if ( $customer->update( $customer_args ) ) {
 		global $wpdb;
@@ -506,7 +524,7 @@ function give_add_donor_email( $args ) {
 				$customer->add_note( $customer_note );
 			}
 		}
-	}
+	}// End if().
 
 	do_action( 'give_post_add_customer_email', $customer_id, $args );
 
@@ -542,7 +560,9 @@ function give_remove_donor_email() {
 
 	$nonce = $_GET['_wpnonce'];
 	if ( ! wp_verify_nonce( $nonce, 'give-remove-donor-email' ) ) {
-		wp_die( esc_html__( 'Nonce verification failed', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( esc_html__( 'Nonce verification failed', 'give' ), esc_html__( 'Error', 'give' ), array(
+			'response' => 403,
+		) );
 	}
 
 	$customer = new Give_Customer( $_GET['id'] );
@@ -586,7 +606,9 @@ function give_set_donor_primary_email() {
 	$nonce = $_GET['_wpnonce'];
 
 	if ( ! wp_verify_nonce( $nonce, 'give-set-donor-primary-email' ) ) {
-		wp_die( esc_html__( 'Nonce verification failed', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( esc_html__( 'Nonce verification failed', 'give' ), esc_html__( 'Error', 'give' ), array(
+			'response' => 403,
+		) );
 	}
 
 	$donor = new Give_Customer( $_GET['id'] );
