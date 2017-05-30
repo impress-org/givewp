@@ -45,7 +45,7 @@ class Give_HTML_Elements {
 			'selected'    => 0,
 			'chosen'      => false,
 			'number'      => 30,
-			'placeholder' => esc_html__( 'Select a transaction', 'give' )
+			'placeholder' => esc_html__( 'Select a donation', 'give' )
 		);
 
 		$args = wp_parse_args( $args, $defaults );
