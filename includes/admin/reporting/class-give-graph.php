@@ -77,10 +77,13 @@ class Give_Graph {
 	 * Get things started
 	 *
 	 * @since 1.0
+	 *
+	 * @param array $_data
+	 * @param array $options
 	 */
-	public function __construct( $_data ) {
+	public function __construct( $_data, $options = array() ) {
 
-		$this->data = $_data;
+		$this->data      = $_data;
 
 		// Generate unique ID
 		$this->id = md5( rand() );
@@ -102,9 +105,11 @@ class Give_Graph {
 			'borderwidth'     => 1,
 			'bars'            => true,
 			'lines'           => false,
-			'points'          => true
+			'points'          => true,
+			'dataType'        => array()
 		) );
 
+		$this->options = wp_parse_args( $options, $this->options );
 	}
 
 	/**
@@ -190,6 +195,7 @@ class Give_Graph {
 						{
 							label : "<?php echo esc_attr( $label ); ?>",
 							id    : "<?php echo sanitize_key( $label ); ?>",
+							dataType  : '<?php echo ( ! empty( $this->options['dataType'][$order] ) ? $this->options['dataType'][$order] : 'count' ); ?>',
 							// data format is: [ point on x, value on y ]
 							data  : [<?php foreach( $data as $point ) { echo '[' . implode( ',', $point ) . '],'; } ?>],
 							points: {
@@ -269,15 +275,15 @@ class Give_Graph {
 					$( "#x" ).text( pos.x.toFixed( 2 ) );
 					$( "#y" ).text( pos.y.toFixed( 2 ) );
 					if ( item ) {
-						if ( previousPoint != item.dataIndex ) {
+						if ( previousPoint !== item.dataIndex ) {
 							previousPoint = item.dataIndex;
 							$( "#give-flot-tooltip" ).remove();
 							var x = item.datapoint[0].toFixed( 2 ),
                                 y = accounting.formatMoney( item.datapoint[1].toFixed( give_vars.currency_decimals ), '', give_vars.currency_decimals, give_vars.thousands_separator, give_vars.decimal_separator );
 
-							if ( item.series.id == 'income' ) {
+							if ( item.series.dataType.length &&  item.series.dataType === 'amount' ) {
 
-								if ( give_vars.currency_pos == 'before' ) {
+								if ( give_vars.currency_pos === 'before' ) {
 
 									give_flot_tooltip( item.pageX, item.pageY, item.series.label + ' ' + give_vars.currency_sign + y );
 								} else {

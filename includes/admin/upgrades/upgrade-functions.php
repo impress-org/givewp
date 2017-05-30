@@ -49,6 +49,11 @@ function give_do_automatic_upgrades() {
 		case version_compare( $give_version, '1.8.7', '<' ) :
 			give_v187_upgrades();
 			$did_upgrade = true;
+
+        case version_compare( $give_version, '1.8.8', '<' ) :
+			give_v188_upgrades();
+			$did_upgrade = true;
+
 	}
 
 	if ( $did_upgrade ) {
@@ -716,24 +721,24 @@ function give_v18_upgrades_form_metadata() {
 			// Form content.
 			// Note in version 1.8 display content setting split into display content and content placement setting.
 			// You can delete _give_content_option in future
-			$show_content = get_post_meta( get_the_ID(), '_give_content_option', true );
-			if ( $show_content && ! get_post_meta( get_the_ID(), '_give_display_content', true ) ) {
+			$show_content = give_get_meta( get_the_ID(), '_give_content_option', true );
+			if ( $show_content && ! give_get_meta( get_the_ID(), '_give_display_content', true ) ) {
 				$field_value = ( 'none' !== $show_content ? 'enabled' : 'disabled' );
-				update_post_meta( get_the_ID(), '_give_display_content', $field_value );
+				give_update_meta( get_the_ID(), '_give_display_content', $field_value );
 
 				$field_value = ( 'none' !== $show_content ? $show_content : 'give_pre_form' );
-				update_post_meta( get_the_ID(), '_give_content_placement', $field_value );
+				give_update_meta( get_the_ID(), '_give_content_placement', $field_value );
 			}
 
 			// "Disable" Guest Donation. Checkbox
 			// See: https://github.com/WordImpress/Give/issues/1470
-			$guest_donation = get_post_meta( get_the_ID(), '_give_logged_in_only', true );
+			$guest_donation = give_get_meta( get_the_ID(), '_give_logged_in_only', true );
 			$guest_donation_newval = ( in_array( $guest_donation, array( 'yes', 'on' ) ) ? 'disabled' : 'enabled' );
-			update_post_meta( get_the_ID(), '_give_logged_in_only', $guest_donation_newval );
+			give_update_meta( get_the_ID(), '_give_logged_in_only', $guest_donation_newval );
 
 			// Offline Donations
 			// See: https://github.com/WordImpress/Give/issues/1579
-			$offline_donation = get_post_meta( get_the_ID(), '_give_customize_offline_donations', true );
+			$offline_donation = give_get_meta( get_the_ID(), '_give_customize_offline_donations', true );
 			if ( 'no' === $offline_donation ) {
 				$offline_donation_newval = 'global';
 			} elseif ( 'yes' === $offline_donation ) {
@@ -741,7 +746,7 @@ function give_v18_upgrades_form_metadata() {
 			} else {
 				$offline_donation_newval = 'disabled';
 			}
-			update_post_meta( get_the_ID(), '_give_customize_offline_donations', $offline_donation_newval );
+			give_update_meta( get_the_ID(), '_give_customize_offline_donations', $offline_donation_newval );
 
 			// Convert yes/no setting field to enabled/disabled.
 			$form_radio_settings = array(
@@ -763,13 +768,13 @@ function give_v18_upgrades_form_metadata() {
 
 			foreach ( $form_radio_settings as $meta_key ) {
 				// Get value.
-				$field_value = get_post_meta( get_the_ID(), $meta_key, true );
+				$field_value = give_get_meta( get_the_ID(), $meta_key, true );
 
 				// Convert meta value only if it is in yes/no/none.
 				if ( in_array( $field_value, array( 'yes', 'on', 'no', 'none' ) ) ) {
 
 					$field_value = ( in_array( $field_value, array( 'yes', 'on' ) ) ? 'enabled' : 'disabled' );
-					update_post_meta( get_the_ID(), $meta_key, $field_value );
+					give_update_meta( get_the_ID(), $meta_key, $field_value );
 				}
 			}
 		}// End while().
@@ -892,3 +897,31 @@ function give_v187_upgrades(){
 		}
 	}
 }
+
+/**
+ * Update Capabilities for Give_Worker User Role.
+ *
+ * This upgrade routine will update access rights for Give_Worker User Role.
+ *
+ * @since      1.8.8
+ */
+function give_v188_upgrades() {
+
+	global $wp_roles;
+
+    // Get the role object.
+    $give_worker = get_role( 'give_worker' );
+
+	// A list of capabilities to add for give workers.
+    $caps_to_add = array(
+        'edit_posts',
+        'edit_pages'
+    );
+
+    foreach ( $caps_to_add as $cap ) {
+        // Add the capability.
+        $give_worker->add_cap( $cap );
+    }
+
+}
+
