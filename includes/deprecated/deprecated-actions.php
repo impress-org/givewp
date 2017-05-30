@@ -50,6 +50,8 @@ function give_deprecated_actions() {
 		'give_tools_tab_export_content_bottom'     => 'give_report_tab_export_table_bottom',
 		'give_pre_edit_donor'                      => 'give_pre_edit_customer',
 		'give_post_edit_donor'                     => 'give_post_edit_customer',
+		'give_pre_donor_disconnect_user_id'        => 'give_pre_customer_disconnect_user_id',
+		'give_post_donor_disconnect_user_id'       => 'give_post_customer_disconnect_user_id',
 	);
 
 	return $give_deprecated_actions;

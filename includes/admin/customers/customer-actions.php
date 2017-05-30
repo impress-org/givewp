@@ -25,9 +25,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_edit_donor( $args ) {
 
-	$customer_edit_role = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
+	$donor_edit_role = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
 
-	if ( ! is_admin() || ! current_user_can( $customer_edit_role ) ) {
+	if ( ! is_admin() || ! current_user_can( $donor_edit_role ) ) {
 		wp_die( __( 'You do not have permission to edit this donor.', 'give' ), __( 'Error', 'give' ), array(
 			'response' => 403,
 		) );
@@ -48,7 +48,8 @@ function give_edit_donor( $args ) {
 	}
 
 	$donor = new Give_Customer( $donor_id );
-	if ( empty( $donor->id ) ) {
+
+    if ( empty( $donor->id ) ) {
 		return false;
 	}
 
@@ -59,17 +60,17 @@ function give_edit_donor( $args ) {
 
 	$donor_info = wp_parse_args( $donor_info, $defaults );
 
-	if ( (int) $donor_info['user_id'] != (int) $donor->user_id ) {
+	if ( (int) $donor_info['user_id'] !== (int) $donor->user_id ) {
 
 		// Make sure we don't already have this user attached to a donor.
 		if ( ! empty( $donor_info['user_id'] ) && false !== Give()->customers->get_customer_by( 'user_id', $donor_info['user_id'] ) ) {
-			give_set_error( 'give-invalid-customer-user_id', sprintf( esc_html__( 'The User ID %d is already associated with a different donor.', 'give' ), $donor_info['user_id'] ) );
+			give_set_error( 'give-invalid-customer-user_id', sprintf( __( 'The User ID %d is already associated with a different donor.', 'give' ), $donor_info['user_id'] ) );
 		}
 
 		// Make sure it's actually a user.
 		$user = get_user_by( 'id', $donor_info['user_id'] );
 		if ( ! empty( $donor_info['user_id'] ) && false === $user ) {
-			give_set_error( 'give-invalid-user_id', sprintf( esc_html__( 'The User ID %d does not exist. Please assign an existing user.', 'give' ), $donor_info['user_id'] ) );
+			give_set_error( 'give-invalid-user_id', sprintf( __( 'The User ID %d does not exist. Please assign an existing user.', 'give' ), $donor_info['user_id'] ) );
 		}
 	}
 
@@ -275,7 +276,7 @@ add_action( 'give_add-customer-note', 'give_customer_save_note', 10, 1 );
  */
 function give_customer_delete( $args ) {
 
-	$customer_edit_role = apply_filters( 'give_edit_customers_role', 'edit_give_payments' );
+	$customer_edit_role = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
 
 	if ( ! is_admin() || ! current_user_can( $customer_edit_role ) ) {
 		wp_die( esc_html__( 'You do not have permission to delete donors.', 'give' ), esc_html__( 'Error', 'give' ), array(
@@ -368,60 +369,60 @@ add_action( 'give_delete-customer', 'give_customer_delete', 10, 1 );
  *
  * @since  1.0
  *
- * @param  array $args Array of arguments
+ * @param  array $args Array of arguments.
  *
- * @return bool        If the disconnect was successful
+ * @return bool|array        If the disconnect was successful.
  */
-function give_disconnect_customer_user_id( $args ) {
+function give_disconnect_donor_user_id( $args ) {
 
-	$customer_edit_role = apply_filters( 'give_edit_customers_role', 'edit_give_payments' );
+	$donor_edit_role = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
 
-	if ( ! is_admin() || ! current_user_can( $customer_edit_role ) ) {
-		wp_die( esc_html__( 'You do not have permission to edit this donor.', 'give' ), esc_html__( 'Error', 'give' ), array(
+	if ( ! is_admin() || ! current_user_can( $donor_edit_role ) ) {
+		wp_die( __( 'You do not have permission to edit this donor.', 'give' ), __( 'Error', 'give' ), array(
 			'response' => 403,
 		) );
 	}
 
 	if ( empty( $args ) ) {
-		return;
+		return false;
 	}
 
-	$customer_id = (int) $args['customer_id'];
+	$donor_id = (int) $args['customer_id'];
 	$nonce       = $args['_wpnonce'];
 
 	if ( ! wp_verify_nonce( $nonce, 'edit-customer' ) ) {
-		wp_die( esc_html__( 'Cheatin&#8217; uh?', 'give' ), esc_html__( 'Error', 'give' ), array(
+		wp_die( __( 'Cheatin&#8217; uh?', 'give' ), __( 'Error', 'give' ), array(
 			'response' => 400,
 		) );
 	}
 
-	$customer = new Give_Customer( $customer_id );
-	if ( empty( $customer->id ) ) {
+	$donor = new Give_Customer( $donor_id );
+	if ( empty( $donor->id ) ) {
 		return false;
 	}
 
-	$user_id = $customer->user_id;
+	$user_id = $donor->user_id;
 
 	/**
 	 * Fires before disconnecting user ID from a donor.
 	 *
 	 * @since 1.0
 	 *
-	 * @param int $customer_id The ID of the customer.
+	 * @param int $donor_id The ID of the donor.
 	 * @param int $user_id The ID of the user.
 	 */
-	do_action( 'give_pre_customer_disconnect_user_id', $customer_id, $user_id );
+	do_action( 'give_pre_donor_disconnect_user_id', $donor_id, $user_id );
 
 	$output        = array();
-	$customer_args = array(
+	$donor_args = array(
 		'user_id' => 0,
 	);
 
-	if ( $customer->update( $customer_args ) ) {
+	if ( $donor->update( $donor_args ) ) {
 		global $wpdb;
 
-		if ( ! empty( $customer->payment_ids ) ) {
-			$wpdb->query( "UPDATE $wpdb->postmeta SET meta_value = 0 WHERE meta_key = '_give_payment_user_id' AND post_id IN ( $customer->payment_ids )" );
+		if ( ! empty( $donor->payment_ids ) ) {
+			$wpdb->query( "UPDATE $wpdb->postmeta SET meta_value = 0 WHERE meta_key = '_give_payment_user_id' AND post_id IN ( $donor->payment_ids )" );
 		}
 
 		$output['success'] = true;
@@ -429,7 +430,7 @@ function give_disconnect_customer_user_id( $args ) {
 	} else {
 
 		$output['success'] = false;
-		give_set_error( 'give-disconnect-user-fail', esc_html__( 'Failed to disconnect user from donor.', 'give' ) );
+		give_set_error( 'give-disconnect-user-fail', __( 'Failed to disconnect user from donor.', 'give' ) );
 	}
 
 	/**
@@ -437,9 +438,9 @@ function give_disconnect_customer_user_id( $args ) {
 	 *
 	 * @since 1.0
 	 *
-	 * @param int $customer_id The ID of the customer.
+	 * @param int $donor_id The ID of the donor.
 	 */
-	do_action( 'give_post_customer_disconnect_user_id', $customer_id );
+	do_action( 'give_post_donor_disconnect_user_id', $donor_id );
 
 	if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 		header( 'Content-Type: application/json' );
@@ -451,7 +452,7 @@ function give_disconnect_customer_user_id( $args ) {
 
 }
 
-add_action( 'give_disconnect-userid', 'give_disconnect_customer_user_id', 10, 1 );
+add_action( 'give_disconnect-userid', 'give_disconnect_donor_user_id', 10, 1 );
 
 /**
  * Add an email address to the donor from within the admin and log a donor note
@@ -463,21 +464,21 @@ add_action( 'give_disconnect-userid', 'give_disconnect_customer_user_id', 10, 1 
  * @return mixed        If DOING_AJAX echos out JSON, otherwise returns array of success (bool) and message (string)
  */
 function give_add_donor_email( $args ) {
-	$customer_edit_role = apply_filters( 'give_edit_customers_role', 'edit_give_payments' );
+	$donor_edit_role = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
 
-	if ( ! is_admin() || ! current_user_can( $customer_edit_role ) ) {
-		wp_die( esc_html__( 'You do not have permission to edit this donor.', 'edit' ) );
+	if ( ! is_admin() || ! current_user_can( $donor_edit_role ) ) {
+		wp_die( __( 'You do not have permission to edit this donor.', 'edit' ) );
 	}
 
 	$output = array();
 	if ( empty( $args ) || empty( $args['email'] ) || empty( $args['customer_id'] ) ) {
 		$output['success'] = false;
 		if ( empty( $args['email'] ) ) {
-			$output['message'] = esc_html__( 'Email address is required.', 'give' );
+			$output['message'] = __( 'Email address is required.', 'give' );
 		} elseif ( empty( $args['customer_id'] ) ) {
-			$output['message'] = esc_html__( 'Customer ID is required.', 'give' );
+			$output['message'] = __( 'Donor ID is required.', 'give' );
 		} else {
-			$output['message'] = esc_html__( 'An error has occurred. Please try again.', 'give' );
+			$output['message'] = __( 'An error has occurred. Please try again.', 'give' );
 		}
 	} elseif ( ! wp_verify_nonce( $args['_wpnonce'], 'give_add_donor_email' ) ) {
 		$output = array(
@@ -498,24 +499,24 @@ function give_add_donor_email( $args ) {
 			if ( in_array( $email, $customer->emails ) ) {
 				$output = array(
 					'success' => false,
-					'message' => esc_html__( 'Email already associated with this donor.', 'give' ),
+					'message' => __( 'Email already associated with this donor.', 'give' ),
 				);
 			} else {
 				$output = array(
 					'success' => false,
-					'message' => esc_html__( 'Email address is already associated with another donor.', 'give' ),
+					'message' => __( 'Email address is already associated with another donor.', 'give' ),
 				);
 			}
 		} else {
 			$redirect = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $customer_id . '&give-message=email-added' );
 			$output   = array(
 				'success'  => true,
-				'message'  => esc_html__( 'Email successfully added to donor.', 'give' ),
+				'message'  => __( 'Email successfully added to donor.', 'give' ),
 				'redirect' => $redirect,
 			);
 
 			$user          = wp_get_current_user();
-			$user_login    = ! empty( $user->user_login ) ? $user->user_login : esc_html__( 'System', 'give' );
+			$user_login    = ! empty( $user->user_login ) ? $user->user_login : __( 'System', 'give' );
 			$customer_note = sprintf( __( 'Email address %1$s added by %2$s', 'give' ), $email, $user_login );
 			$customer->add_note( $customer_note );
 

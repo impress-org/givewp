@@ -39,9 +39,9 @@ function give_deprecated_filters() {
 		'give_decrease_earnings_on_revoked'                => 'give_decrease_store_earnings_on_revoked',
 		'give_decrease_donor_value_on_revoked'             => 'give_decrease_customer_value_on_revoked',
 		'give_decrease_donors_donation_count_on_revoked'   => 'give_decrease_customer_purchase_count_on_revoked',
-		'give_edit_donors_role'   => 'give_edit_customers_role',
-		'give_edit_donor_info'   => 'give_edit_customer_info',
-		'give_edit_donor_address'   => 'give_edit_customer_address',
+		'give_edit_donors_role'                            => 'give_edit_customers_role',
+		'give_edit_donor_info'                             => 'give_edit_customer_info',
+		'give_edit_donor_address'                          => 'give_edit_customer_address',
 	);
 
 	return $give_deprecated_filters;
