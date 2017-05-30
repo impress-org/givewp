@@ -247,8 +247,15 @@ class Give_API_Keys_Table extends WP_List_Table {
 		?>
 		<input type="hidden" name="give_action" value="process_api_key"/>
 		<input type="hidden" name="give_api_process" value="generate"/>
-		<?php wp_nonce_field( 'give-api-nonce' ); ?>
-		<?php echo Give()->html->ajax_user_search(); ?>
+		<?php wp_nonce_field( 'give-api-nonce' );
+		/**
+		 * API Key user search.
+		 */
+		$args = array(
+		  'id' => 'give-api-user-search',
+		  'name' => 'user_id',
+        );
+        echo Give()->html->ajax_user_search($args); ?>
 		<?php submit_button( esc_html__( 'Generate New API Keys', 'give' ), 'secondary', 'submit', false ); ?>
 		<?php
 		$give_api_is_bottom = true;

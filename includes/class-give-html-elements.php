@@ -60,7 +60,7 @@ class Give_HTML_Elements {
 
 		//Provide nice human readable options.
 		if ( $payments ) {
-			$options[0] = esc_html__( 'Select a donation', 'give' );
+			$options[0] = $args['placeholder'];
 			foreach ( $payments as $payment ) {
 
 				$options[ absint( $payment->ID ) ] = esc_html( '#' . $payment->ID . ' - ' . $payment->email . ' - ' . $payment->form_title );
@@ -132,7 +132,7 @@ class Give_HTML_Elements {
 
 
 		if ( $forms ) {
-			$options[0] = esc_attr__( 'Select a Donation Form', 'give' );
+			$options[0] = $args['placeholder'];
 			foreach ( $forms as $form ) {
 				$form_title                     = empty( $form->post_title ) ? sprintf( __( 'Untitled (#%s)', 'give' ), $form->ID ) : $form->post_title;
 				$options[ absint( $form->ID ) ] = esc_html( $form_title );
@@ -661,9 +661,10 @@ class Give_HTML_Elements {
 			'multiple'    => false,
 			'selected'    => 0,
 			'chosen'      => true,
-			'number'      => 60,
+			'number'      => 30,
 			'select_atts' => '',
-			'placeholder' => __( 'Select a user', 'give' )
+			'placeholder' => __( 'Select a user', 'give' ),
+			'data'        => array( 'search-type' => 'user' ),
 		);
 
 
@@ -677,6 +678,7 @@ class Give_HTML_Elements {
 		$options = array();
 
 		if ( $users ) {
+			$options[0] = $args['placeholder'];
 			foreach ( $users as $user ) {
 				$options[ absint( $user->id ) ] = esc_html( $user->user_login . ' (' . $user->user_email . ')' );
 			}
@@ -695,7 +697,8 @@ class Give_HTML_Elements {
 			'placeholder'      => $args['placeholder'],
 			'select_atts'      => $args['select_atts'],
 			'show_option_all'  => false,
-			'show_option_none' => false
+			'show_option_none' => false,
+			'data'             => $args['data'],
 		) );
 
 		return $output;

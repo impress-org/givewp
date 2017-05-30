@@ -147,9 +147,8 @@ jQuery.noConflict();
 
 							$container.removeClass( 'give-select-chosen-ajax' );
 
-							// Remove all options but those that are selected.
-							$('option:not(:selected)', select).remove();
-							$('option:selected', select).prop( 'selected', false );
+                            // Remove all options but those that are selected.
+                            $('option:not(:selected)', select).remove();
 
 							if( data.length ) {
 								$.each(data, function (key, item) {
@@ -162,7 +161,7 @@ jQuery.noConflict();
 								// Trigger update event.
 								$container.prev('select.give-select-chosen').trigger('chosen:updated');
 
-							} else{
+                            } else{
 
 								// Trigger no result message event.
 								$container.prev('select.give-select-chosen').trigger('chosen:no_results');
@@ -171,7 +170,6 @@ jQuery.noConflict();
                             // Ensure the original query is retained within the search input.
                             $search_field.prop( 'disabled', false );
                             $search_field.val(val).focus();
-
 
 						}
 					}).fail(function (response) {
@@ -843,7 +841,7 @@ jQuery.noConflict();
 	/**
 	 * Donor management screen JS
 	 */
-	var Give_Customer = {
+	var Give_Donor = {
 
 		init          : function () {
 			this.edit_customer();
@@ -863,12 +861,30 @@ jQuery.noConflict();
 			});
 		},
 		user_search   : function () {
+
 			// Upon selecting a user from the dropdown, we need to update the User ID
-			$('body').on('click.giveSelectUser', '.give_user_search_results a', function (e) {
-				e.preventDefault();
-				var user_id = $(this).data('userid');
-				$('input[name="customerinfo[user_id]"]').val(user_id);
-			});
+
+			// $('body').on('click.giveSelectUser', '.give_user_search_results a', function (e) {
+			// 	e.preventDefault();
+			// 	var user_id = $(this).data('userid');
+			// 	$('input[name="customerinfo[user_id]"]').val(user_id);
+			// });
+            //
+            // $('body').on('click.giveSelectUser', '.give_user_search_results span a', function (e) {
+             //    e.preventDefault();
+             //    var login = $(this).data('login');
+             //    $('.give-ajax-user-search').val(login);
+             //    $('.give_user_search_results').addClass('hidden');
+             //    $('.give_user_search_results span').html('');
+            // });
+            //
+            // $('body').on('click.giveCancelUserSearch', '.give_user_search_results a.give-ajax-user-cancel', function (e) {
+             //    e.preventDefault();
+             //    $('.give-ajax-user-search').val('');
+             //    $('.give_user_search_results').addClass('hidden');
+             //    $('.give_user_search_results span').html('');
+            // });
+
 		},
 		remove_user   : function () {
 			$('body').on('click', '#disconnect-customer', function (e) {
@@ -1693,7 +1709,7 @@ jQuery.noConflict();
 		Give_Edit_Donation.init();
 		Give_Settings.init();
 		Give_Reports.init();
-		Give_Customer.init();
+		Give_Donor.init();
 		API_Screen.init();
 		Give_Export.init();
 		Edit_Form_Screen.init();
@@ -1739,20 +1755,7 @@ jQuery.noConflict();
 			});
 		});
 
-		$('body').on('click.giveSelectUser', '.give_user_search_results span a', function (e) {
-			e.preventDefault();
-			var login = $(this).data('login');
-			$('.give-ajax-user-search').val(login);
-			$('.give_user_search_results').addClass('hidden');
-			$('.give_user_search_results span').html('');
-		});
 
-		$('body').on('click.giveCancelUserSearch', '.give_user_search_results a.give-ajax-user-cancel', function (e) {
-			e.preventDefault();
-			$('.give-ajax-user-search').val('');
-			$('.give_user_search_results').addClass('hidden');
-			$('.give_user_search_results span').html('');
-		});
 
 		/**
 		 *  Amount format validation form price field setting
