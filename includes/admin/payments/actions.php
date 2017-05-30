@@ -212,7 +212,7 @@ function give_update_payment_details( $data ) {
 	$payment->save();
 
 	// Get new give form ID.
-	$new_form_id     = absint( $data['forms'] );
+	$new_form_id     = absint( $data['give-payment-form-select'] );
 	$current_form_id = absint( $payment->get_meta( '_give_payment_form_id' ) );
 
 	// We are adding payment transfer code in last to remove any conflict with above functionality.

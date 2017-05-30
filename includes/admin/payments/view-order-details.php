@@ -367,11 +367,12 @@ $payment_mode   = $payment->mode;
 											</p>
 											<p>
 												<strong><?php esc_html_e( 'Donation Form Title:', 'give' ); ?></strong><br>
-												<?php give_get_form_dropdown( array(
-													'id'       => $payment_meta['form_id'],
+												<?php echo Give()->html->forms_dropdown( array(
 													'selected' => $payment_meta['form_id'],
-													'chosen'   => true,
-												), true ); ?>
+													'name'   => 'give-payment-form-select',
+													'id'     => 'give-payment-form-select',
+													'chosen' => true,
+												) ); ?>
 											</p>
 										</div>
 										<div class="column">
@@ -413,7 +414,7 @@ $payment_mode   = $payment->mode;
 										<div class="column">
 											<p>
 												<strong><?php esc_html_e( 'Total Donation:', 'give' ); ?></strong><br>
-												<?php echo esc_html( give_currency_filter( give_format_amount( $payment->total ), give_get_payment_currency_code( $payment->ID ) )  ); ?>
+												<?php echo give_currency_filter( give_format_amount( $payment->total ), give_get_payment_currency_code( $payment->ID ) ); ?>
 											</p>
 											<p>
 												<?php
@@ -640,6 +641,7 @@ $payment_mode   = $payment->mode;
 															'show_option_none' => false,
 															'chosen'           => true,
 															'placeholder'      => esc_attr__( 'Select a country', 'give' ),
+															'data'             => array( 'search-type' => 'no_ajax' ),
 														) );
 														?>
 													</div>
@@ -656,6 +658,7 @@ $payment_mode   = $payment->mode;
 																'show_option_none' => false,
 																'chosen'           => true,
 																'placeholder'      => esc_attr__( 'Select a state', 'give' ),
+																'data'             => array( 'search-type' => 'no_ajax' ),
 															) );
 														} else {
 															?>
