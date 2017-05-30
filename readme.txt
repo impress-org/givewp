@@ -208,7 +208,26 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 == Changelog ==
 
 = 1.8.8 =
+* New: Added search functionality to donor, donation form, and donation payment dropdowns in wp-admin. [#1572](https://github.com/WordImpress/Give/issues/1572)
+* New: Added a date range filter to the `/donation/` Give API endpoint. [#758](https://github.com/WordImpress/Give/issues/758)
+* New: Revamped the donation receipt template so that items can easily be reordered. [#1674](https://github.com/WordImpress/Give/issues/1674)
+* New: The donation gateway used is now displayed within the donation listing page in wp-admin. [#1682](https://github.com/WordImpress/Give/issues/1682)
+* Fix: If a donation form's minimum custom amount was set to higher than the first donation level amount the donor would incorrectly receive a custom minimum required validation error. [#1680](https://github.com/WordImpress/Give/issues/1680)
+* Fix: Clicking the Give license notice no longer refreshes the page in wp-admin. [#1694](https://github.com/WordImpress/Give/issues/1694)
+* Fix: Added a JS confirmation when disconnecting a WP user from the a donor in wp-admin. [#1720](https://github.com/WordImpress/Give/issues/1720)
+* Fix: Sometimes the expiration field within the donation form loses its auto-formatting. [#1278](https://github.com/WordImpress/Give/issues/1278)
+* Fix: Conflict with WP101 plugin. [#1710](https://github.com/WordImpress/Give/issues/1710)
+* Fix: Conflict with Yoast SEO plugin's metabox displaying above Gives. [#1658](https://github.com/WordImpress/Give/issues/1658)
+* Fix: Add-ons outside of the standard WP `/plugins/` directory causes PHP notices to appear. [#1672](https://github.com/WordImpress/Give/issues/1672)
+* Fix: Don't export categories/tags columns when they are not in use. [#1692](https://github.com/WordImpress/Give/issues/1692)
+* Fix: Disable the "View form" link if the single form views are not enabled. [#646](https://github.com/WordImpress/Give/issues/646)
+* Fix: An incorrect currency symbol is displayed on the donation detail screen if given in different currency. [#1664](https://github.com/WordImpress/Give/issues/1664)
+* Fix: Allow decimal amounts less than $1.00 in the donation form currency fields. [#1666](https://github.com/WordImpress/Give/issues/1666)
+* Tweak: Improved featured image dropdown labels to include sizes and whether it's a responsive image or not. [#1713](https://github.com/WordImpress/Give/issues/1713)
 * Tweak: Relocated the plugin setting's "Export" tab within wp-admin to Donations > Tools for better organization. [#1702](https://github.com/WordImpress/Give/issues/1702)
+* Tweak: Minor changes to the welcome screen. [#1561](https://github.com/WordImpress/Give/issues/1561)
+* Tweak: Relocated exports from Donations > Reports to Donations > Tools in wp-admin. [#1702](https://github.com/WordImpress/Give/issues/1702)
+* Tweak: Expanded the role of the Give "Worker" user role to include editing donation forms [#844](https://github.com/WordImpress/Give/issues/844)
 
 = 1.8.7.1 =
 * Fix: A license notice appears and is not dismissible when it's expiration timestamp is out of date which can be annoying to the admin. [#1658](https://github.com/WordImpress/Give/issues/1658)
