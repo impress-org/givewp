@@ -32,26 +32,28 @@ jQuery.noConflict();
 		// Setup Chosen Selects.
 		var $give_chosen_containers = $('.give-select-chosen');
 
-		// Add loader with each input field.
-		$give_chosen_containers.on('chosen:ready', function () {
-			$(this).next('.chosen-container')
-				.find('input.chosen-search-input')
-				.after('<span class="spinner"></span>');
-		});
+        // Add loader with each input field.
+        $give_chosen_containers.on('chosen:ready', function () {
+            $(this).next('.chosen-container')
+                .find('input.chosen-search-input')
+                .after('<span class="spinner"></span>');
+        });
 
-		$give_chosen_containers.on( 'chosen:no_results', function(){
-			var $container = $(this).next('.chosen-container'),
-				$no_results_li = $container.find('li.no-results'),
-				error_string = '';
+        // No results returned from search trigger.
+        $give_chosen_containers.on( 'chosen:no_results', function(){
+            var $container = $(this).next('.chosen-container'),
+                $no_results_li = $container.find('li.no-results'),
+                error_string = '';
 
-			if( $container.hasClass('give-select-chosen-ajax' ) && $no_results_li.length ) {
-				error_string = give_vars.chosen.ajax_search_msg.replace( '{search_term}', $( 'input', $container ).val() );
-			} else {
-				error_string = give_vars.chosen.no_results_msg.replace( '{search_term}', $( 'input', $container ).val() );
-			}
+            if( $container.hasClass('give-select-chosen-ajax' ) && $no_results_li.length ) {
+                error_string = give_vars.chosen.ajax_search_msg.replace( '{search_term}', $( 'input', $container ).val() );
+            } else {
+                error_string = give_vars.chosen.no_results_msg.replace( '{search_term}', $( 'input', $container ).val() );
+            }
 
-			$no_results_li.html( error_string );
-		});
+            $no_results_li.html( error_string );
+
+        });
 
 		// Initiate chosen.
 		$give_chosen_containers.chosen({
@@ -91,7 +93,7 @@ jQuery.noConflict();
  				search_type = 'give_' + select.data('search-type') + '_search';
 			}
 
-			// Don't fire if short or is a modifier key (shift, ctrl, apple command key, or arrow keys)
+			// Don't fire if short or is a modifier key (shift, ctrl, apple command key, or arrow keys).
 			if (
 				val.length <= 3 ||
 				! search_type.length ||
@@ -159,13 +161,16 @@ jQuery.noConflict();
 
 								// Trigger update event.
 								$container.prev('select.give-select-chosen').trigger('chosen:updated');
+
 							} else{
 
 								// Trigger no result message event.
 								$container.prev('select.give-select-chosen').trigger('chosen:no_results');
 							}
 
-							$search_field.val(val).focus();
+                            // Ensure the original query is retained within the search input.
+                            $search_field.val(val).focus();
+
 						}
 					}).fail(function (response) {
 						if (window.console && window.console.log) {
