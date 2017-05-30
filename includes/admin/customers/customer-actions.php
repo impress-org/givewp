@@ -64,13 +64,13 @@ function give_edit_donor( $args ) {
 
 		// Make sure we don't already have this user attached to a donor.
 		if ( ! empty( $donor_info['user_id'] ) && false !== Give()->customers->get_customer_by( 'user_id', $donor_info['user_id'] ) ) {
-			give_set_error( 'give-invalid-customer-user_id', sprintf( __( 'The User ID %d is already associated with a different donor.', 'give' ), $donor_info['user_id'] ) );
+			give_set_error( 'give-invalid-customer-user_id', sprintf( __( 'The User ID #%d is already associated with a different donor.', 'give' ), $donor_info['user_id'] ) );
 		}
 
 		// Make sure it's actually a user.
 		$user = get_user_by( 'id', $donor_info['user_id'] );
 		if ( ! empty( $donor_info['user_id'] ) && false === $user ) {
-			give_set_error( 'give-invalid-user_id', sprintf( __( 'The User ID %d does not exist. Please assign an existing user.', 'give' ), $donor_info['user_id'] ) );
+			give_set_error( 'give-invalid-user_id', sprintf( __( 'The User ID #%d does not exist. Please assign an existing user.', 'give' ), $donor_info['user_id'] ) );
 		}
 	}
 
@@ -388,6 +388,7 @@ function give_disconnect_donor_user_id( $args ) {
 	}
 
 	$donor_id = (int) $args['customer_id'];
+
 	$nonce       = $args['_wpnonce'];
 
 	if ( ! wp_verify_nonce( $nonce, 'edit-customer' ) ) {
