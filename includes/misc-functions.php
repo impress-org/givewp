@@ -1082,7 +1082,18 @@ function give_delete_donation_stats( $date_range = '', $args = array() ) {
  * @return mixed
  */
 function give_get_meta( $id, $meta_key, $single = false, $default = false ) {
-	$meta_value = get_post_meta( $id, $meta_key, $single );
+	/**
+	 * Filter the meta value
+	 *
+	 * @since 1.8.8
+	 */
+	$meta_value = apply_filters(
+			'give_get_meta',
+			get_post_meta( $id, $meta_key, $single ),
+			$id,
+			$meta_key,
+			$default
+	);
 
 	if (
 		( empty( $meta_key ) || empty( $meta_value ) )
@@ -1091,7 +1102,7 @@ function give_get_meta( $id, $meta_key, $single = false, $default = false ) {
 		$meta_value = $default;
 	}
 
-	return apply_filters( 'give_get_meta', $meta_value, $id, $meta_key, $default );
+	return $meta_value;
 }
 
 /**
@@ -1109,6 +1120,11 @@ function give_get_meta( $id, $meta_key, $single = false, $default = false ) {
 function give_update_meta( $id, $meta_key, $meta_value, $prev_value = '' ) {
 	$status = update_post_meta( $id, $meta_key, $meta_value, $prev_value );
 
+	/**
+	 * Filter the meta value update status
+	 *
+	 * @since 1.8.8
+	 */
 	return apply_filters( 'give_update_meta', $status, $id, $meta_key, $meta_value );
 }
 
@@ -1126,5 +1142,10 @@ function give_update_meta( $id, $meta_key, $meta_value, $prev_value = '' ) {
 function give_delete_meta( $id, $meta_key, $meta_value = '' ) {
 	$status = delete_post_meta( $id, $meta_key, $meta_value );
 
+	/**
+	 * Filter the meta value delete status
+	 *
+	 * @since 1.8.8
+	 */
 	return apply_filters( 'give_delete_meta', $status, $id, $meta_key, $meta_value );
 }
