@@ -46,9 +46,9 @@ jQuery.noConflict();
                 error_string = '';
 
             if( $container.hasClass('give-select-chosen-ajax' ) && $no_results_li.length ) {
-                error_string = give_vars.chosen.ajax_search_msg.replace( '{search_term}', $( 'input', $container ).val() );
+                error_string = give_vars.chosen.ajax_search_msg.replace( '{search_term}', '"' + $( 'input', $container ).val() + '"');
             } else {
-                error_string = give_vars.chosen.no_results_msg.replace( '{search_term}', $( 'input', $container ).val() );
+                error_string = give_vars.chosen.no_results_msg.replace( '{search_term}', '"' + $( 'input', $container ).val()+ '"' );
             }
 
             $no_results_li.html( error_string );
@@ -184,26 +184,26 @@ jQuery.noConflict();
 			);
 		});
 
-        $('.give-select-chosen .chosen-search input').each( function() {
-        	var type = $(this).parent().parent().parent().prev('select.give-select-chosen').data('search-type');
-        	var placeholder = '';
-
-        	if ( 'form' === type ) {
-        		placeholder = give_vars.search_placeholder;
-        	} else {
-				type = 'search_placeholder_' + type;
-        		if ( give_vars[type] ) {
-        			placeholder = give_vars[type];
-        		}
-        	}
-
-        	$(this).attr( 'placeholder', placeholder );
-        });
+        // $('.give-select-chosen .chosen-search input').each( function() {
+        // 	var type = $(this).parent().parent().parent().prev('select.give-select-chosen').data('search-type');
+        // 	var placeholder = '';
+        //
+        // 	if ( 'form' === type ) {
+        // 		placeholder = give_vars.search_placeholder;
+        // 	} else {
+			// 	type = 'search_placeholder_' + type;
+        // 		if ( give_vars[type] ) {
+        // 			placeholder = give_vars[type];
+        // 		}
+        // 	}
+        //
+        // 	$(this).attr( 'placeholder', placeholder );
+        // });
 
         // Add placeholders for Chosen input fields.
-		$('.chosen-choices').on('click', function () {
-			$(this).children('li').children('input').attr('placeholder', give_vars.type_to_search);
-		});
+        // $('.chosen-choices').on('click', function () {
+			// $(this).children('li').children('input').attr('placeholder', give_vars.type_to_search);
+        // });
 
 	};
 
