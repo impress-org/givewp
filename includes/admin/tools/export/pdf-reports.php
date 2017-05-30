@@ -120,9 +120,9 @@ function give_generate_pdf( $data ) {
 					$max = $first;
 				}
 
-				$price = html_entity_decode( give_currency_filter( give_format_amount( $min ) ) . ' - ' . give_currency_filter( give_format_amount( $max ) ) );
+				$price = give_currency_filter( give_format_amount( $min ), '', true ) . ' - ' . give_currency_filter( give_format_amount( $max ), '', true );
 			} else {
-				$price = html_entity_decode( give_currency_filter( give_get_form_price( $form->ID ) ) );
+				$price = give_currency_filter( give_get_form_price( $form->ID ), '', true );
 			}
 
             // Display Categories Data only, if user has opted for it.
@@ -139,7 +139,7 @@ function give_generate_pdf( $data ) {
 
 			$sales    = give_get_form_sales_stats( $form->ID );
 			$link     = get_permalink( $form->ID );
-			$earnings = html_entity_decode( give_currency_filter( give_get_form_earnings_stats( $form->ID ) ) );
+			$earnings = give_currency_filter( give_get_form_earnings_stats( $form->ID ), '', true );
 
 			if ( function_exists( 'iconv' ) ) {
 				// Ensure characters like euro; are properly converted.
