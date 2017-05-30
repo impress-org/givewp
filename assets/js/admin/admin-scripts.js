@@ -584,7 +584,7 @@ jQuery.noConflict();
 		donors_export: function () {
 
 			// Show / hide Donation Form option when exporting donors
-			$('#give_customer_export_form').change(function () {
+			$('#give_donor_export_form').change(function () {
 
 				var $this                  = $(this),
 					form_id                = $('option:selected', $this).val(),
@@ -608,7 +608,7 @@ jQuery.noConflict();
 
 					$.post(ajaxurl, data, function (response) {
 						price_options_select.remove();
-						$('#give_customer_export_form_chosen').after(response);
+						$('#give_donor_export_form_chosen').after(response);
 					});
 				} else {
 					price_options_select.remove();
