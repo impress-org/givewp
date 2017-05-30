@@ -169,7 +169,9 @@ jQuery.noConflict();
 							}
 
                             // Ensure the original query is retained within the search input.
+                            $search_field.prop( 'disabled', false );
                             $search_field.val(val).focus();
+
 
 						}
 					}).fail(function (response) {
@@ -184,26 +186,22 @@ jQuery.noConflict();
 			);
 		});
 
-        // $('.give-select-chosen .chosen-search input').each( function() {
-        // 	var type = $(this).parent().parent().parent().prev('select.give-select-chosen').data('search-type');
-        // 	var placeholder = '';
-        //
-        // 	if ( 'form' === type ) {
-        // 		placeholder = give_vars.search_placeholder;
-        // 	} else {
-			// 	type = 'search_placeholder_' + type;
-        // 		if ( give_vars[type] ) {
-        // 			placeholder = give_vars[type];
-        // 		}
-        // 	}
-        //
-        // 	$(this).attr( 'placeholder', placeholder );
-        // });
+        $('.give-select-chosen .chosen-search input').each( function() {
+        	var type = $(this).parent().parent().parent().prev('select.give-select-chosen').data('search-type');
+        	var placeholder = '';
 
-        // Add placeholders for Chosen input fields.
-        // $('.chosen-choices').on('click', function () {
-			// $(this).children('li').children('input').attr('placeholder', give_vars.type_to_search);
-        // });
+        	if ( 'form' === type ) {
+        		placeholder = give_vars.search_placeholder;
+        	} else {
+				type = 'search_placeholder_' + type;
+        		if ( give_vars[type] ) {
+        			placeholder = give_vars[type];
+        		}
+        	}
+
+        	$(this).attr( 'placeholder', placeholder );
+
+        });
 
 	};
 

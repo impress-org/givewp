@@ -641,6 +641,7 @@ $payment_mode   = $payment->mode;
 															'show_option_none' => false,
 															'chosen'           => true,
 															'placeholder'      => esc_attr__( 'Select a country', 'give' ),
+															'data'             => array( 'search-type' => 'country' ),
 														) );
 														?>
 													</div>
@@ -657,6 +658,7 @@ $payment_mode   = $payment->mode;
 																'show_option_none' => false,
 																'chosen'           => true,
 																'placeholder'      => esc_attr__( 'Select a state', 'give' ),
+																'data'             => array( 'search-type' => 'state' ),
 															) );
 														} else {
 															?>
