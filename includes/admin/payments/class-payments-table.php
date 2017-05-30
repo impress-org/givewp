@@ -336,7 +336,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 				$value = sprintf(
 					'<a href="%1$s" data-tooltip="%2$s">#%3$s</a>&nbsp;%4$s&nbsp;%5$s<br>',
 					$single_donation_url,
-					sprintf( esc_attr__( 'View Donation %s', 'give' ), $payment->ID ),
+					sprintf( esc_attr__( 'View Donation #%s', 'give' ), $payment->ID ),
 					$payment->ID,
 					esc_html__( 'by', 'give' ),
 					$this->get_donor( $payment )
@@ -379,7 +379,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 				$value = sprintf(
 					'<div class="give-payment-details-link-wrap"><a href="%1$s" class="give-payment-details-link button button-small" data-tooltip="%2$s" aria-label="%2$s"><span class="dashicons dashicons-visibility"></span></a></div>',
 					$single_donation_url,
-					sprintf( esc_attr__( 'View Donation %s', 'give' ), $payment->ID )
+					sprintf( esc_attr__( 'View Donation #%s', 'give' ), $payment->ID )
 				);
 				break;
 

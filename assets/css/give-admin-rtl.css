@@ -2236,6 +2236,21 @@ input.give-price-field {
 .give_forms_page_give-payment-history #give-dashboard-widgets-wrap #side-sortables {
   padding-top: 0; }
 
+.give-select-chosen .spinner {
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  z-index: 999; }
+
+.give-select-chosen-ajax .spinner {
+  visibility: visible; }
+
+.give-select-chosen-ajax .chosen-search input[type="text"] {
+  background-image: none !important; }
+
+.give-select-chosen-ajax.chosen-container-single .chosen-search input[type="text"] {
+  background-image: none !important; }
+
 /**
  * Give Admin Dashboard SCSS
  *
