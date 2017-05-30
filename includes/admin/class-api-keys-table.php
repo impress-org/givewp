@@ -238,7 +238,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 * @return void
 	 */
 	function bulk_actions( $which = '' ) {
-		// These aren't really bulk actions but this outputs the markup in the right place
+		// These aren't really bulk actions but this outputs the markup in the right place.
 		static $give_api_is_bottom;
 
 		if ( $give_api_is_bottom ) {
