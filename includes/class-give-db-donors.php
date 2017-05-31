@@ -297,7 +297,7 @@ class Give_DB_Donors extends Give_DB {
 			return false;
 		}
 
-		$decreased_count = $donor->decrease_purchase_count();
+		$decreased_count = $donor->decrease_donation_count();
 		$decreased_value = $donor->decrease_value( $amount );
 
 		return ( $decreased_count && $decreased_value ) ? true : false;

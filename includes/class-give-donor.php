@@ -171,7 +171,7 @@ class Give_Donor {
 	/**
 	 * Setup Donor
 	 *
-	 * Given the customer data, let's set the variables.
+	 * Set donor variables.
 	 *
 	 * @since  1.0
 	 * @access private
@@ -276,7 +276,7 @@ class Give_Donor {
 		 *
 		 * @param array $args Customer attributes.
 		 */
-		do_action( 'give_customer_pre_create', $args );
+		do_action( 'give_donor_pre_create', $args );
 
 		$created = false;
 
@@ -293,15 +293,14 @@ class Give_Donor {
 		}
 
 		/**
-		 * Fires after creating customers.
+		 * Fires after creating donors.
 		 *
 		 * @since 1.0
 		 *
-		 * @param bool|int $created False if not a valid creation,
-		 *                          customer ID if user is found or valid creation.
+		 * @param bool|int $created False if not a valid creation, donor ID if user is found or valid creation.
 		 * @param array $args Customer attributes.
 		 */
-		do_action( 'give_customer_post_create', $created, $args );
+		do_action( 'give_donor_post_create', $created, $args );
 
 		return $created;
 
@@ -333,7 +332,7 @@ class Give_Donor {
 		 * @param int $donor_id Donor id.
 		 * @param array $data Donor attributes.
 		 */
-		do_action( 'give_customer_pre_update', $this->id, $data );
+		do_action( 'give_donor_pre_update', $this->id, $data );
 
 		$updated = false;
 
@@ -354,7 +353,7 @@ class Give_Donor {
 		 * @param int $donor_id Donor id.
 		 * @param array $data Donor attributes.
 		 */
-		do_action( 'give_customer_post_update', $updated, $this->id, $data );
+		do_action( 'give_donor_post_update', $updated, $this->id, $data );
 
 		return $updated;
 	}
@@ -362,7 +361,7 @@ class Give_Donor {
 	/**
 	 * Attach Payment
 	 *
-	 * Attach payment to the customer then triggers increasing stats.
+	 * Attach payment to the donor then triggers increasing stats.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -404,7 +403,7 @@ class Give_Donor {
 		 * @param int $payment_id Payment id.
 		 * @param int $donor_id Customer id.
 		 */
-		do_action( 'give_customer_pre_attach_payment', $payment_id, $this->id );
+		do_action( 'give_donor_pre_attach_payment', $payment_id, $this->id );
 
 		$payment_added = $this->update( array( 'payment_ids' => $new_payment_ids ) );
 
@@ -425,15 +424,15 @@ class Give_Donor {
 		}
 
 		/**
-		 * Fires after attaching payments to customers.
+		 * Fires after attaching payments to the donor.
 		 *
 		 * @since 1.0
 		 *
-		 * @param bool $payment_added If the attachment was successfuly.
+		 * @param bool $payment_added If the attachment was successfully.
 		 * @param int $payment_id Payment id.
-		 * @param int $donor_id Customer id.
+		 * @param int $donor_id Donor id.
 		 */
-		do_action( 'give_customer_post_attach_payment', $payment_added, $payment_id, $this->id );
+		do_action( 'give_donor_post_attach_payment', $payment_added, $payment_id, $this->id );
 
 		return $payment_added;
 	}
@@ -489,7 +488,7 @@ class Give_Donor {
 		 * @param int $payment_id Payment id.
 		 * @param int $donor_id Customer id.
 		 */
-		do_action( 'give_customer_pre_remove_payment', $payment_id, $this->id );
+		do_action( 'give_donor_pre_remove_payment', $payment_id, $this->id );
 
 		$payment_removed = $this->update( array( 'payment_ids' => $new_payment_ids ) );
 
@@ -505,20 +504,20 @@ class Give_Donor {
 					$this->decrease_value( $payment_amount );
 				}
 
-				$this->decrease_purchase_count();
+				$this->decrease_donation_count();
 			}
 		}
 
 		/**
-		 * Fires after removing payments from customers.
+		 * Fires after removing payments from donors.
 		 *
 		 * @since 1.0
 		 *
-		 * @param bool $payment_removed If the removal was successfuly.
+		 * @param bool $payment_removed If the removal was successfully.
 		 * @param int $payment_id Payment id.
-		 * @param int $donor_id Customer id.
+		 * @param int $donor_id Donor id.
 		 */
-		do_action( 'give_customer_post_remove_payment', $payment_removed, $payment_id, $this->id );
+		do_action( 'give_donor_post_remove_payment', $payment_removed, $payment_id, $this->id );
 
 		return $payment_removed;
 
@@ -544,29 +543,29 @@ class Give_Donor {
 		$new_total = (int) $this->purchase_count + (int) $count;
 
 		/**
-		 * Fires before increasing customer donation count.
+		 * Fires before increasing the donor's donation count.
 		 *
 		 * @since 1.0
 		 *
 		 * @param int $count The number to increase by.
-		 * @param int $donor_id Customer id.
+		 * @param int $donor_id Donor id.
 		 */
-		do_action( 'give_customer_pre_increase_purchase_count', $count, $this->id );
+		do_action( 'give_donor_pre_increase_donation_count', $count, $this->id );
 
 		if ( $this->update( array( 'purchase_count' => $new_total ) ) ) {
 			$this->purchase_count = $new_total;
 		}
 
 		/**
-		 * Fires after increasing customer donation count.
+		 * Fires after increasing the donor's donation count.
 		 *
 		 * @since 1.0
 		 *
-		 * @param int $purchase_count Customer donation count.
+		 * @param int $purchase_count Donor donation count.
 		 * @param int $count The number increased by.
-		 * @param int $donor_id Customer id.
+		 * @param int $donor_id Donor id.
 		 */
-		do_action( 'give_customer_post_increase_purchase_count', $this->purchase_count, $count, $this->id );
+		do_action( 'give_donor_post_increase_donation_count', $this->purchase_count, $count, $this->id );
 
 		return $this->purchase_count;
 	}
@@ -581,7 +580,7 @@ class Give_Donor {
 	 *
 	 * @return mixed      If successful, the new count, otherwise false.
 	 */
-	public function decrease_purchase_count( $count = 1 ) {
+	public function decrease_donation_count( $count = 1 ) {
 
 		// Make sure it's numeric and not negative
 		if ( ! is_numeric( $count ) || $count != absint( $count ) ) {
@@ -595,35 +594,35 @@ class Give_Donor {
 		}
 
 		/**
-		 * Fires before decreasing customer donation count.
+		 * Fires before decreasing the donor's donation count.
 		 *
 		 * @since 1.0
 		 *
 		 * @param int $count The number to decrease by.
 		 * @param int $donor_id Customer id.
 		 */
-		do_action( 'give_customer_pre_decrease_purchase_count', $count, $this->id );
+		do_action( 'give_donor_pre_decrease_donation_count', $count, $this->id );
 
 		if ( $this->update( array( 'purchase_count' => $new_total ) ) ) {
 			$this->purchase_count = $new_total;
 		}
 
 		/**
-		 * Fires after decreasing customer donation count.
+		 * Fires after decreasing the donor's donation count.
 		 *
 		 * @since 1.0
 		 *
-		 * @param int $purchase_count Customer donation count.
+		 * @param int $purchase_count Donor's donation count.
 		 * @param int $count The number decreased by.
-		 * @param int $donor_id Customer id.
+		 * @param int $donor_id Donor id.
 		 */
-		do_action( 'give_customer_post_decrease_purchase_count', $this->purchase_count, $count, $this->id );
+		do_action( 'give_donor_post_decrease_donation_count', $this->purchase_count, $count, $this->id );
 
 		return $this->purchase_count;
 	}
 
 	/**
-	 * Increase the customer's lifetime value.
+	 * Increase the donor's lifetime value.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -644,7 +643,7 @@ class Give_Donor {
 		 * @param float $value The value to increase by.
 		 * @param int $donor_id Customer id.
 		 */
-		do_action( 'give_customer_pre_increase_value', $value, $this->id );
+		do_action( 'give_donor_pre_increase_value', $value, $this->id );
 
 		if ( $this->update( array( 'purchase_value' => $new_value ) ) ) {
 			$this->purchase_value = $new_value;
@@ -655,17 +654,17 @@ class Give_Donor {
 		 *
 		 * @since 1.0
 		 *
-		 * @param float $purchase_value Customer lifetime value.
+		 * @param float $purchase_value Donor's lifetime value.
 		 * @param float $value The value increased by.
-		 * @param int $donor_id Customer id.
+		 * @param int $donor_id Donor id.
 		 */
-		do_action( 'give_customer_post_increase_value', $this->purchase_value, $value, $this->id );
+		do_action( 'give_donor_post_increase_value', $this->purchase_value, $value, $this->id );
 
 		return $this->purchase_value;
 	}
 
 	/**
-	 * Decrease a customer's lifetime value.
+	 * Decrease a donor's lifetime value.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -683,35 +682,35 @@ class Give_Donor {
 		}
 
 		/**
-		 * Fires before decreaseing customer lifetime value.
+		 * Fires before decreasing donor lifetime value.
 		 *
 		 * @since 1.0
 		 *
 		 * @param float $value The value to decrease by.
-		 * @param int $donor_id Customer id.
+		 * @param int $donor_id Donor id.
 		 */
-		do_action( 'give_customer_pre_decrease_value', $value, $this->id );
+		do_action( 'give_donor_pre_decrease_value', $value, $this->id );
 
 		if ( $this->update( array( 'purchase_value' => $new_value ) ) ) {
 			$this->purchase_value = $new_value;
 		}
 
 		/**
-		 * Fires after decreaseing customer lifetime value.
+		 * Fires after decreasing donor lifetime value.
 		 *
 		 * @since 1.0
 		 *
-		 * @param float $purchase_value Customer lifetime value.
+		 * @param float $purchase_value Donor lifetime value.
 		 * @param float $value The value decreased by.
-		 * @param int $donor_id Customer id.
+		 * @param int $donor_id Donor id.
 		 */
-		do_action( 'give_customer_post_decrease_value', $this->purchase_value, $value, $this->id );
+		do_action( 'give_donor_post_decrease_value', $this->purchase_value, $value, $this->id );
 
 		return $this->purchase_value;
 	}
 
 	/**
-	 * Decrease/Increase a customer's lifetime value.
+	 * Decrease/Increase a donor's lifetime value.
 	 *
 	 * This function will update donation stat on basis of current amount and new amount donation difference.
 	 * Difference value can positive or negative. Negative value will decrease user donation stat while positive value increase donation stat.
@@ -749,7 +748,7 @@ class Give_Donor {
 	}
 
 	/**
-	 * Get the parsed notes for a customer as an array.
+	 * Get the parsed notes for a donor as an array.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -791,7 +790,7 @@ class Give_Donor {
 	}
 
 	/**
-	 * Add a note for the customer.
+	 * Add a note for the donor.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -823,9 +822,9 @@ class Give_Donor {
 		 * @since 1.0
 		 *
 		 * @param string $new_note New note to add.
-		 * @param int $donor_id Customer id.
+		 * @param int $donor_id Donor id.
 		 */
-		do_action( 'give_customer_pre_add_note', $new_note, $this->id );
+		do_action( 'give_donor_pre_add_note', $new_note, $this->id );
 
 		$updated = $this->update( array( 'notes' => $notes ) );
 
@@ -834,15 +833,15 @@ class Give_Donor {
 		}
 
 		/**
-		 * Fires after customer note added.
+		 * Fires after donor note added.
 		 *
 		 * @since 1.0
 		 *
-		 * @param array $donor_notes Customer notes.
+		 * @param array $donor_notes Donor notes.
 		 * @param string $new_note New note added.
-		 * @param int $donor_id Customer id.
+		 * @param int $donor_id Donor id.
 		 */
-		do_action( 'give_customer_post_add_note', $this->notes, $new_note, $this->id );
+		do_action( 'give_donor_post_add_note', $this->notes, $new_note, $this->id );
 
 		// Return the formatted note, so we can test, as well as update any displays
 		return $new_note;
@@ -1034,14 +1033,14 @@ class Give_Donor {
 	}
 
 	/**
-	 * Remove an email from the customer
+	 * Remove an email from the donor.
 	 *
 	 * @since  1.7
 	 * @access public
 	 *
-	 * @param  string $email The email address to remove from the customer
+	 * @param  string $email The email address to remove from the donor.
 	 *
-	 * @return bool          If the email was removed successfully
+	 * @return bool          If the email was removed successfully.
 	 */
 	public function remove_email( $email = '' ) {
 		if ( ! is_email( $email ) ) {
@@ -1058,7 +1057,7 @@ class Give_Donor {
 	}
 
 	/**
-	 * Set an email address as the customer's primary email
+	 * Set an email address as the donor's primary email
 	 *
 	 * This will move the customer's previous primary email to an additional email
 	 *

@@ -103,7 +103,7 @@ class Give_Customer {
 	 * @return mixed
 	 */
 	public function __call( $name, $arguments ) {
-		$deprecated_function_arr = array('setup_customer');
+		$deprecated_function_arr = array('setup_customer', 'decrease_purchase_count');
 
 		// If a property is renamed then it gets placed below.
 		$customer = new Give_Donor();
@@ -114,6 +114,10 @@ class Give_Customer {
 					$donor    = ! empty( $arguments[0] ) ? $arguments[0] : array();
 
 					return $customer->setup_donors( $donor );
+				case 'decrease_purchase_count':
+					$donor    = ! empty( $arguments[0] ) ? $arguments[0] : array();
+
+					return $customer->decrease_donation_count( $donor );
 			}
 		}
 	}

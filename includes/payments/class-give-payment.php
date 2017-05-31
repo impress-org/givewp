@@ -1784,14 +1784,14 @@ final class Give_Payment {
 		// Decrement the stats for the customer.
 		if ( ! empty( $this->customer_id ) ) {
 
-			$customer = new Give_Donor( $this->customer_id );
+			$donor = new Give_Donor( $this->customer_id );
 
 			if ( true === $alter_customer_value ) {
-				$customer->decrease_value( $this->total );
+				$donor->decrease_value( $this->total );
 			}
 
 			if ( true === $alter_customer_purchase_count ) {
-				$customer->decrease_purchase_count();
+				$donor->decrease_donation_count();
 			}
 		}
 

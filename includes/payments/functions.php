@@ -312,7 +312,7 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
 		if ( $customer->id && $update_customer ) {
 
 			// Decrement the stats for the donor.
-			$customer->decrease_purchase_count();
+			$customer->decrease_donation_count();
 			$customer->decrease_value( $amount );
 
 		}
@@ -390,7 +390,7 @@ function give_undo_purchase( $form_id = false, $payment_id ) {
 	$maybe_decrease_sales = apply_filters( 'give_decrease_donation_on_undo', true, $payment, $payment->form_id );
 	if ( true === $maybe_decrease_sales ) {
 		// Decrease donation count.
-		give_decrease_purchase_count( $payment->form_id );
+		give_decrease_donation_count( $payment->form_id );
 	}
 
 }

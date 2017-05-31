@@ -238,7 +238,7 @@ class Give_Tests_Customers extends Give_Unit_Test_Case {
 
 		$customer = new Give_Donor( 'testadmin@domain.com' );
 
-		$customer->decrease_purchase_count();
+		$customer->decrease_donation_count();
 		$customer->decrease_value( 10 );
 
 		$this->assertEquals( $customer->purchase_value, '10' );
@@ -248,10 +248,10 @@ class Give_Tests_Customers extends Give_Unit_Test_Case {
 		$this->assertEquals( give_purchase_total_of_user( $this->_user_id ), '10' );
 
 		// Make sure we hit the false conditions
-		$this->assertFalse( $customer->decrease_purchase_count( - 1 ) );
-		$this->assertFalse( $customer->decrease_purchase_count( 'abc' ) );
+		$this->assertFalse( $customer->decrease_donation_count( - 1 ) );
+		$this->assertFalse( $customer->decrease_donation_count( 'abc' ) );
 
-		$customer->decrease_purchase_count( 100 );
+		$customer->decrease_donation_count( 100 );
 		$customer->decrease_value( 100000 );
 
 		$this->assertEquals( intval( $customer->purchase_value ), intval( '0' ) );

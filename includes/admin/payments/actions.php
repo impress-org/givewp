@@ -157,7 +157,7 @@ function give_update_payment_details( $data ) {
 		if ( 'publish' == $status ) {
 
 			// Reduce previous user donation count and amount.
-			$previous_customer->decrease_purchase_count();
+			$previous_customer->decrease_donation_count();
 			$previous_customer->decrease_value( $curr_total );
 
 			// If donation was completed adjust stats of new customers.
