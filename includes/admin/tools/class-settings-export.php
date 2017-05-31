@@ -1,6 +1,6 @@
 <?php
 /**
- * Give Reports Page/Tab
+ * Give Exports Tab
  *
  * @package     Give
  * @subpackage  Classes/Give_Settings_Export
@@ -43,16 +43,16 @@ if ( ! class_exists( 'Give_Settings_Export' ) ) :
 		 */
 		public function __construct() {
 			$this->id    = 'export';
-			$this->label = esc_html__( 'Export', 'give' );
+			$this->label = __( 'Export', 'give' );
 
-			add_filter( 'give-reports_tabs_array', array( $this, 'add_settings_page' ), 20 );
-			add_action( "give-reports_settings_{$this->id}_page", array( $this, 'output' ) );
-			add_action( 'give_admin_field_report_export', array( $this, 'render_report_export_field' ), 10, 2 );
+			add_filter( 'give-tools_tabs_array', array( $this, 'add_settings_page' ), 20 );
+			add_action( "give-tools_settings_{$this->id}_page", array( $this, 'output' ) );
+			add_action( 'give_admin_field_tools_export', array( $this, 'render_export_field' ), 10, 2 );
 
 			// Do not use main donor for this tab.
 			if( give_get_current_setting_tab() === $this->id ) {
-				add_action( 'give-reports_open_form', '__return_empty_string' );
-				add_action( 'give-reports_close_form', '__return_empty_string' );
+				add_action( 'give-tools_open_form', '__return_empty_string' );
+				add_action( 'give-tools_close_form', '__return_empty_string' );
 			}
 		}
 
@@ -89,17 +89,17 @@ if ( ! class_exists( 'Give_Settings_Export' ) ) :
 				'give_get_settings_' . $this->id,
 				array(
 					array(
-						'id'   => 'give_reports_export',
+						'id'   => 'give_tools_export',
 						'type' => 'title',
 						'table_html' => false
 					),
 					array(
 						'id'   => 'export',
-						'name' => esc_html__( 'Export', 'give' ),
-						'type' => 'report_export',
+						'name' => __( 'Export', 'give' ),
+						'type' => 'tools_export',
 					),
 					array(
-						'id'   => 'give_reports_export',
+						'id'   => 'give_tools_export',
 						'type' => 'sectionend',
 						'table_html' => false
 					)
@@ -131,8 +131,8 @@ if ( ! class_exists( 'Give_Settings_Export' ) ) :
 		 * @param $field
 		 * @param $option_value
 		 */
-		public function render_report_export_field( $field, $option_value ) {
-			do_action( 'give_reports_tab_export');
+		public function render_export_field( $field, $option_value ) {
+			include_once( 'views/html-admin-page-exports.php' );
 		}
 	}
 

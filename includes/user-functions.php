@@ -593,3 +593,48 @@ function give_new_user_notification( $user_id = 0, $user_data = array() ) {
 }
 
 add_action( 'give_insert_user', 'give_new_user_notification', 10, 2 );
+
+
+/**
+ * Get Donor Name By
+ *
+ * Retrieves the donor name based on the id and the name of the user or donation
+ *
+ * @access      public
+ * @since       1.8.9
+ *
+ * @param       int     $id     The ID of donation or donor
+ * @param       string  $from   From will be a string to be passed as donation or donor
+ *
+ * @return      string
+ */
+function give_get_donor_name_by( $id = 0, $from = 'donation' ) {
+
+    // ID shouldn't be empty
+    if( empty( $id ) ){
+        return;
+    }
+
+    $name = '';
+
+    switch( $from ){
+
+        case 'donation':
+
+            $user_info = give_get_payment_meta_user_info( $id );
+            $name = $user_info['first_name'] . ' ' . $user_info['last_name'];
+
+        break;
+
+        case 'donor':
+
+            $donor = new Give_Customer( $id );
+            $name = $donor->name;
+
+        break;
+
+    }
+
+    return trim( $name );
+
+}
