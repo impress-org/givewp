@@ -158,7 +158,7 @@ function give_run_install() {
 
 	// Create the donor databases.
 	@Give()->donors->create_table();
-	@Give()->customer_meta->create_table();
+	@Give()->donor_meta->create_table();
 
 	// Check for PHP Session support, and enable if available.
 	Give()->session->use_php_sessions();
@@ -272,18 +272,18 @@ function give_after_install() {
 
 	if ( false === $give_table_check || current_time( 'timestamp' ) > $give_table_check ) {
 
-		if ( ! @Give()->customer_meta->installed() ) {
+		if ( ! @Give()->donor_meta->installed() ) {
 
 			// Create the customer meta database
 			// (this ensures it creates it on multisite instances where it is network activated).
-			@Give()->customer_meta->create_table();
+			@Give()->donor_meta->create_table();
 
 		}
 
-		if ( ! @Give()->customers->installed() ) {
+		if ( ! @Give()->donors->installed() ) {
 			// Create the customers database
 			// (this ensures it creates it on multisite instances where it is network activated).
-			@Give()->customers->create_table();
+			@Give()->donors->create_table();
 
 			/**
 			 * Fires after plugin installation.

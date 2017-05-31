@@ -459,8 +459,8 @@ add_action( 'admin_init', 'give_v152_cleanup_users' );
  * @return void
  */
 function give_v16_upgrades() {
-	@Give()->customers->create_table();
-	@Give()->customer_meta->create_table();
+	@Give()->donors->create_table();
+	@Give()->donor_meta->create_table();
 }
 
 /**

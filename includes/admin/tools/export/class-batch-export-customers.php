@@ -244,7 +244,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 		// We can't count the number when getting them for a specific form
 		if ( empty( $this->form ) ) {
 
-			$total = Give()->customers->count();
+			$total = Give()->donors->count();
 
 			if ( $total > 0 ) {
 

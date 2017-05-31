@@ -324,7 +324,7 @@ function give_customer_delete( $args ) {
 	if ( $customer->id > 0 ) {
 
 		$payments_array = explode( ',', $customer->payment_ids );
-		$success        = Give()->customers->delete( $customer->id );
+		$success        = Give()->donors->delete( $customer->id );
 
 		if ( $success ) {
 

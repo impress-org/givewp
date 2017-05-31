@@ -488,7 +488,7 @@ add_action( 'user_register', 'give_add_past_purchases_to_new_user' );
  * @return        int The total number of donors.
  */
 function give_count_total_customers() {
-	return Give()->customers->count();
+	return Give()->donors->count();
 }
 
 
@@ -498,7 +498,7 @@ function give_count_total_customers() {
  * @access        public
  * @since         1.0
  *
- * @param         int $user_id The donor ID.
+ * @param         int $user_id The donor ID.x
  *
  * @return        array The donor's address, if any
  */

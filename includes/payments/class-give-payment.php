@@ -2036,7 +2036,7 @@ final class Give_Payment {
 		$email = $this->get_meta( '_give_payment_user_email', true );
 
 		if ( empty( $email ) ) {
-			$email = Give()->customers->get_column( 'email', $this->customer_id );
+			$email = Give()->donors->get_column( 'email', $this->customer_id );
 		}
 
 		return $email;

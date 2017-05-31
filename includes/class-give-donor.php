@@ -44,7 +44,7 @@ class Give_Donor {
 	public $purchase_count = 0;
 
 	/**
-	 * The customer's lifetime value
+	 * The donor's lifetime value.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -54,7 +54,7 @@ class Give_Donor {
 	public $purchase_value = 0;
 
 	/**
-	 * The customer's email
+	 * The donor's email.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -205,7 +205,7 @@ class Give_Donor {
 		$this->emails = (array) $this->get_meta( 'additional_email', false );
 		$this->emails = array( 'primary' => $this->email ) + $this->emails;
 
-		// Customer ID and email are the only things that are necessary, make sure they exist.
+		// Donor ID and email are the only things that are necessary, make sure they exist.
 		if ( ! empty( $this->id ) && ! empty( $this->email ) ) {
 			return true;
 		}
@@ -232,7 +232,7 @@ class Give_Donor {
 		} else {
 
 			/* translators: %s: property key */
-			return new WP_Error( 'give-customer-invalid-property', sprintf( esc_html__( 'Can\'t get property %s.', 'give' ), $key ) );
+			return new WP_Error( 'give-donor-invalid-property', sprintf( esc_html__( 'Can\'t get property %s.', 'give' ), $key ) );
 
 		}
 
@@ -244,9 +244,9 @@ class Give_Donor {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  array $data Array of attributes for a customer.
+	 * @param  array $data Array of attributes for a donor.
 	 *
-	 * @return bool|int    False if not a valid creation, customer ID if user is found or valid creation.
+	 * @return bool|int    False if not a valid creation, donor ID if user is found or valid creation.
 	 */
 	public function create( $data = array() ) {
 
@@ -274,19 +274,19 @@ class Give_Donor {
 		 *
 		 * @since 1.0
 		 *
-		 * @param array $args Customer attributes.
+		 * @param array $args Donor attributes.
 		 */
 		do_action( 'give_donor_pre_create', $args );
 
 		$created = false;
 
-		// The DB class 'add' implies an update if the customer being asked to be created already exists
+		// The DB class 'add' implies an update if the donor being asked to be created already exists
 		if ( $this->db->add( $data ) ) {
 
-			// We've successfully added/updated the customer, reset the class vars with the new data
+			// We've successfully added/updated the donor, reset the class vars with the new data
 			$donor = $this->db->get_donor_by( 'email', $args['email'] );
 
-			// Setup the customer data with the values from DB
+			// Setup the donor data with the values from DB
 			$this->setup_donor( $donor );
 
 			$created = $this->id;
@@ -366,7 +366,7 @@ class Give_Donor {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  int $payment_id The payment ID to attach to the customer.
+	 * @param  int $payment_id The payment ID to attach to the donor.
 	 * @param  bool $update_stats For backwards compatibility, if we should increase the stats or not.
 	 *
 	 * @return bool            If the attachment was successfully.
@@ -440,7 +440,7 @@ class Give_Donor {
 	/**
 	 * Remove Payment
 	 *
-	 * Remove a payment from this customer, then triggers reducing stats.
+	 * Remove a payment from this donor, then triggers reducing stats.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -524,7 +524,7 @@ class Give_Donor {
 	}
 
 	/**
-	 * Increase the donation count of a customer.
+	 * Increase the donation count of a donor.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -571,7 +571,7 @@ class Give_Donor {
 	}
 
 	/**
-	 * Decrease the customer donation count.
+	 * Decrease the donor donation count.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -636,7 +636,7 @@ class Give_Donor {
 		$new_value = floatval( $this->purchase_value ) + $value;
 
 		/**
-		 * Fires before increasing customer lifetime value.
+		 * Fires before increasing donor lifetime value.
 		 *
 		 * @since 1.0
 		 *
@@ -650,7 +650,7 @@ class Give_Donor {
 		}
 
 		/**
-		 * Fires after increasing customer lifetime value.
+		 * Fires after increasing donor lifetime value.
 		 *
 		 * @since 1.0
 		 *
@@ -778,7 +778,7 @@ class Give_Donor {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @return int The number of notes for the customer.
+	 * @return int The number of notes for the donor.
 	 */
 	public function get_notes_count() {
 
@@ -849,12 +849,12 @@ class Give_Donor {
 	}
 
 	/**
-	 * Get the notes column for the customer
+	 * Get the notes column for the donor
 	 *
 	 * @since  1.0
 	 * @access private
 	 *
-	 * @return string The Notes for the customer, non-parsed.
+	 * @return string The Notes for the donor, non-parsed.
 	 */
 	private function get_raw_notes() {
 
@@ -995,7 +995,7 @@ class Give_Donor {
 	 * @since  1.7
 	 * @access public
 	 *
-	 * @param  string $email The email address to attach to the customer
+	 * @param  string $email The email address to attach to the donor
 	 * @param  bool $primary Allows setting the email added as the primary
 	 *
 	 * @return bool            If the email was added successfully
@@ -1007,7 +1007,7 @@ class Give_Donor {
 		$existing = new Give_Donor( $email );
 
 		if ( $existing->id > 0 ) {
-			// Email address already belongs to another customer
+			// Email address already belongs to another donor
 			return false;
 		}
 
@@ -1057,16 +1057,16 @@ class Give_Donor {
 	}
 
 	/**
-	 * Set an email address as the donor's primary email
+	 * Set an email address as the donor's primary email.
 	 *
-	 * This will move the customer's previous primary email to an additional email
+	 * This will move the donor's previous primary email to an additional email.
 	 *
 	 * @since  1.7
 	 * @access public
 	 *
-	 * @param  string $new_primary_email The email address to remove from the customer
+	 * @param  string $new_primary_email The email address to remove from the donor.
 	 *
-	 * @return bool                      If the email was set as primary successfully
+	 * @return bool                      If the email was set as primary successfully.
 	 */
 	public function set_primary_email( $new_primary_email = '' ) {
 		if ( ! is_email( $new_primary_email ) ) {
@@ -1078,19 +1078,19 @@ class Give_Donor {
 		$existing = new Give_Donor( $new_primary_email );
 
 		if ( $existing->id > 0 && (int) $existing->id !== (int) $this->id ) {
-			// This email belongs to another customer
+			// This email belongs to another donor.
 			return false;
 		}
 
 		$old_email = $this->email;
 
-		// Update customer record with new email
+		// Update donor record with new email.
 		$update = $this->update( array( 'email' => $new_primary_email ) );
 
-		// Remove new primary from list of additional emails
+		// Remove new primary from list of additional emails.
 		$remove = $this->remove_email( $new_primary_email );
 
-		// Add old email to additional emails list
+		// Add old email to additional emails list.
 		$add = $this->add_email( $old_email );
 
 		$ret = $update && $remove && $add;

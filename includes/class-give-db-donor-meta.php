@@ -213,7 +213,7 @@ class Give_DB_Donor_Meta extends Give_DB {
 
 		$donor_id = (int) $donor_id;
 
-		// We were given a non positive number
+		// We were given a non positive number.
 		if ( absint( $donor_id ) !== $donor_id ) {
 			return false;
 		}

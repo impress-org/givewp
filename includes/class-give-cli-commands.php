@@ -404,7 +404,7 @@ class GIVE_CLI_COMMAND {
 					'name'  => $name,
 				);
 
-				$customer_id = Give()->customers->add( $args );
+				$customer_id = Give()->donors->add( $args );
 
 				if ( $customer_id ) {
 					WP_CLI::line( $this->color_message( sprintf( __( 'Donor #%d created successfully', 'give' ), $customer_id ) ) );
