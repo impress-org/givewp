@@ -218,7 +218,7 @@ class Give_DB_Donors extends Give_DB {
 	 */
 	public function attach_payment( $donor_id = 0, $payment_id = 0 ) {
 
-		$donor = new Give_Customer( $donor_id );
+		$donor = new Give_Donor( $donor_id );
 
 		if ( empty( $donor->id ) ) {
 			return false;
@@ -242,7 +242,7 @@ class Give_DB_Donors extends Give_DB {
 	 */
 	public function remove_payment( $donor_id = 0, $payment_id = 0 ) {
 
-		$donor = new Give_Customer( $donor_id );
+		$donor = new Give_Donor( $donor_id );
 
 		if ( ! $donor ) {
 			return false;
@@ -265,7 +265,7 @@ class Give_DB_Donors extends Give_DB {
 	 */
 	public function increment_stats( $donor_id = 0, $amount = 0.00 ) {
 
-		$donor = new Give_Customer( $donor_id );
+		$donor = new Give_Donor( $donor_id );
 
 		if ( empty( $donor->id ) ) {
 			return false;
@@ -291,7 +291,7 @@ class Give_DB_Donors extends Give_DB {
 	 */
 	public function decrement_stats( $donor_id = 0, $amount = 0.00 ) {
 
-		$donor = new Give_Customer( $donor_id );
+		$donor = new Give_Donor( $donor_id );
 
 		if ( ! $donor ) {
 			return false;
@@ -317,7 +317,7 @@ class Give_DB_Donors extends Give_DB {
 	 */
 	public function update_donor_email_on_user_update( $user_id = 0, $old_user_data ) {
 
-		$donor = new Give_Customer( $user_id, true );
+		$donor = new Give_Donor( $user_id, true );
 
 		if( ! $donor ) {
 			return false;

@@ -20,13 +20,13 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 }
 
 /**
- * Give_Customer_Reports_Table Class.
+ * Give_Donor_Reports_Table Class.
  *
  * Renders the Customer Reports table.
  *
  * @since 1.0
  */
-class Give_Customer_Reports_Table extends WP_List_Table {
+class Give_Donor_Reports_Table extends WP_List_Table {
 
 	/**
 	 * Number of items per page.
@@ -359,10 +359,10 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @uses   Give_Customer_Reports_Table::get_columns()
+	 * @uses   Give_Donor_Reports_Table::get_columns()
 	 * @uses   WP_List_Table::get_sortable_columns()
-	 * @uses   Give_Customer_Reports_Table::get_pagenum()
-	 * @uses   Give_Customer_Reports_Table::get_total_customers()
+	 * @uses   Give_Donor_Reports_Table::get_pagenum()
+	 * @uses   Give_Donor_Reports_Table::get_total_customers()
 	 * @return void
 	 */
 	public function prepare_items() {

@@ -70,7 +70,7 @@ function give_get_users_purchases( $user = 0, $number = 20, $pagination = false,
 	}
 
 	$by_user_id = is_numeric( $user ) ? true : false;
-	$customer   = new Give_Customer( $user, $by_user_id );
+	$customer   = new Give_Donor( $user, $by_user_id );
 
 	if ( ! empty( $customer->payment_ids ) ) {
 
@@ -112,7 +112,7 @@ function give_get_users_completed_donations( $user = 0, $status = 'complete' ) {
 
 	$by_user_id = is_numeric( $user ) ? true : false;
 
-	$customer = new Give_Customer( $user, $by_user_id );
+	$customer = new Give_Donor( $user, $by_user_id );
 
 	if ( empty( $customer->payment_ids ) ) {
 		return false;
@@ -217,7 +217,7 @@ function give_get_purchase_stats_by_user( $user = '' ) {
 
 	if ( $customer ) {
 
-		$customer = new Give_Customer( $customer->id );
+		$customer = new Give_Donor( $customer->id );
 
 		$stats['purchases']   = absint( $customer->purchase_count );
 		$stats['total_spent'] = give_sanitize_amount( $customer->purchase_value );
@@ -628,7 +628,7 @@ function give_get_donor_name_by( $id = 0, $from = 'donation' ) {
 
         case 'donor':
 
-            $donor = new Give_Customer( $id );
+            $donor = new Give_Donor( $id );
             $name = $donor->name;
 
         break;

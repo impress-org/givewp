@@ -47,7 +47,7 @@ function give_edit_donor( $args ) {
 		) );
 	}
 
-	$donor = new Give_Customer( $donor_id );
+	$donor = new Give_Donor( $donor_id );
 
     if ( empty( $donor->id ) ) {
 		return false;
@@ -224,7 +224,7 @@ function give_customer_save_note( $args ) {
 		return;
 	}
 
-	$customer = new Give_Customer( $customer_id );
+	$customer = new Give_Donor( $customer_id );
 	$new_note = $customer->add_note( $customer_note );
 
 	/**
@@ -308,7 +308,7 @@ function give_customer_delete( $args ) {
 		exit;
 	}
 
-	$customer = new Give_Customer( $customer_id );
+	$customer = new Give_Donor( $customer_id );
 
 	/**
 	 * Fires before deleting customer.
@@ -397,7 +397,7 @@ function give_disconnect_donor_user_id( $args ) {
 		) );
 	}
 
-	$donor = new Give_Customer( $donor_id );
+	$donor = new Give_Donor( $donor_id );
 	if ( empty( $donor->id ) ) {
 		return false;
 	}
@@ -495,7 +495,7 @@ function give_add_donor_email( $args ) {
 		$email       = sanitize_email( $args['email'] );
 		$customer_id = (int) $args['customer_id'];
 		$primary     = 'true' === $args['primary'] ? true : false;
-		$customer    = new Give_Customer( $customer_id );
+		$customer    = new Give_Donor( $customer_id );
 		if ( false === $customer->add_email( $email, $primary ) ) {
 			if ( in_array( $email, $customer->emails ) ) {
 				$output = array(
@@ -567,7 +567,7 @@ function give_remove_donor_email() {
 		) );
 	}
 
-	$customer = new Give_Customer( $_GET['id'] );
+	$customer = new Give_Donor( $_GET['id'] );
 	if ( $customer->remove_email( $_GET['email'] ) ) {
 		$url           = add_query_arg( 'give-message', 'email-removed', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $customer->id ) );
 		$user          = wp_get_current_user();
@@ -613,7 +613,7 @@ function give_set_donor_primary_email() {
 		) );
 	}
 
-	$donor = new Give_Customer( $_GET['id'] );
+	$donor = new Give_Donor( $_GET['id'] );
 
 	if ( $donor->set_primary_email( $_GET['email'] ) ) {
 		$url        = add_query_arg( 'give-message', 'primary-email-updated', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ) );

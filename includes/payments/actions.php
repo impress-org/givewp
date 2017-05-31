@@ -86,7 +86,7 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 	give_delete_donation_stats();
 
 	// Increase the donor's donation stats.
-	$customer = new Give_Customer( $customer_id );
+	$customer = new Give_Donor( $customer_id );
 	$customer->increase_purchase_count();
 	$customer->increase_value( $amount );
 

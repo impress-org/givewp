@@ -20,7 +20,7 @@ class Tests_Customer_Meta extends WP_UnitTestCase {
 
 		$this->_customer_id = Give()->customers->add( $args );
 
-		$this->_customer = new Give_Customer( $this->_customer_id );
+		$this->_customer = new Give_Donor( $this->_customer_id );
 
 	}
 

@@ -207,7 +207,7 @@ class Give_HTML_Elements {
 
 			if ( ! array_key_exists( $args['selected'], $options ) ) {
 
-				$donor = new Give_Customer( $args['selected'] );
+				$donor = new Give_Donor( $args['selected'] );
 
 				if ( $donor ) {
 

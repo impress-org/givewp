@@ -289,7 +289,7 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
 	$amount      = give_get_payment_amount( $payment_id );
 	$status      = $payment->post_status;
 	$customer_id = give_get_payment_customer_id( $payment_id );
-	$customer    = new Give_Customer( $customer_id );
+	$customer    = new Give_Donor( $customer_id );
 
 	// Only undo donations that aren't these statuses.
 	$dont_undo_statuses = apply_filters( 'give_undo_purchase_statuses', array(

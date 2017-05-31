@@ -99,7 +99,7 @@ function give_update_payment_details( $data ) {
 			wp_die( esc_html__( 'New Customers require a name and email address.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
 		}
 
-		$customer = new Give_Customer( $email );
+		$customer = new Give_Donor( $email );
 		if ( empty( $customer->id ) ) {
 			$customer_data = array( 'name' => $names, 'email' => $email );
 			$user_id       = email_exists( $email );
@@ -110,30 +110,30 @@ function give_update_payment_details( $data ) {
 			if ( ! $customer->create( $customer_data ) ) {
 				// Failed to crete the new donor, assume the previous donor.
 				$customer_changed = false;
-				$customer         = new Give_Customer( $curr_customer_id );
+				$customer         = new Give_Donor( $curr_customer_id );
 				give_set_error( 'give-payment-new-customer-fail', esc_html__( 'Error creating new donor.', 'give' ) );
 			}
 		}
 
 		$new_customer_id = $customer->id;
 
-		$previous_customer = new Give_Customer( $curr_customer_id );
+		$previous_customer = new Give_Donor( $curr_customer_id );
 
 		$customer_changed = true;
 
 	} elseif ( $curr_customer_id !== $new_customer_id ) {
 
-		$customer = new Give_Customer( $new_customer_id );
+		$customer = new Give_Donor( $new_customer_id );
 		$email    = $customer->email;
 		$names    = $customer->name;
 
-		$previous_customer = new Give_Customer( $curr_customer_id );
+		$previous_customer = new Give_Donor( $curr_customer_id );
 
 		$customer_changed = true;
 
 	} else {
 
-		$customer = new Give_Customer( $curr_customer_id );
+		$customer = new Give_Donor( $curr_customer_id );
 		$email    = $customer->email;
 		$names    = $customer->name;
 

@@ -118,7 +118,7 @@ class Give_Tests_Customers extends Give_Unit_Test_Case {
 
 		$test_email = 'testaccount@domain.com';
 
-		$customer = new Give_Customer( $test_email );
+		$customer = new Give_Donor( $test_email );
 		$this->assertEquals( 0, $customer->id );
 
 		$data = array( 'email' => $test_email );
@@ -139,7 +139,7 @@ class Give_Tests_Customers extends Give_Unit_Test_Case {
 
 		$test_email = 'testaccount2@domain.com';
 
-		$customer    = new Give_Customer( $test_email );
+		$customer    = new Give_Donor( $test_email );
 		$customer_id = $customer->create( array( 'email' => $test_email ) );
 		$this->assertEquals( $customer_id, $customer->id );
 
@@ -160,7 +160,7 @@ class Give_Tests_Customers extends Give_Unit_Test_Case {
 	 */
 	public function test_magic_get_method() {
 
-		$customer = new Give_Customer( 'testadmin@domain.com' );
+		$customer = new Give_Donor( 'testadmin@domain.com' );
 		$this->assertEquals( 'testadmin@domain.com', $customer->email );
 		$this->assertTrue( is_wp_error( $customer->__get( 'asdf' ) ) );
 
@@ -168,7 +168,7 @@ class Give_Tests_Customers extends Give_Unit_Test_Case {
 
 	public function test_attach_payment() {
 
-		$customer = new Give_Customer( 'testadmin@domain.com' );
+		$customer = new Give_Donor( 'testadmin@domain.com' );
 		$customer->attach_payment( 5222222 );
 
 		$payment_ids = array_map( 'absint', explode( ',', $customer->payment_ids ) );
@@ -183,7 +183,7 @@ class Give_Tests_Customers extends Give_Unit_Test_Case {
 	public function test_attach_duplicate_payment() {
 
 		// Verify that if we pass a payment that's already attached we do not change stats
-		$customer = new Give_Customer( 'testadmin@domain.com' );
+		$customer = new Give_Donor( 'testadmin@domain.com' );
 		$payments = array_map( 'absint', explode( ',', $customer->payment_ids ) );
 
 		$expected_purcahse_count = $customer->purchase_count;
@@ -197,7 +197,7 @@ class Give_Tests_Customers extends Give_Unit_Test_Case {
 
 	public function test_remove_payment() {
 
-		$customer = new Give_Customer( 'testadmin@domain.com' );
+		$customer = new Give_Donor( 'testadmin@domain.com' );
 		$customer->attach_payment( 5222223, false );
 
 		$payment_ids = array_map( 'absint', explode( ',', $customer->payment_ids ) );
@@ -211,7 +211,7 @@ class Give_Tests_Customers extends Give_Unit_Test_Case {
 
 	public function test_increment_stats() {
 
-		$customer = new Give_Customer( 'testadmin@domain.com' );
+		$customer = new Give_Donor( 'testadmin@domain.com' );
 
 		$this->assertEquals( '20', $customer->purchase_value );
 		$this->assertEquals( '1', $customer->purchase_count );
@@ -236,7 +236,7 @@ class Give_Tests_Customers extends Give_Unit_Test_Case {
 	 */
 	public function test_decrement_stats() {
 
-		$customer = new Give_Customer( 'testadmin@domain.com' );
+		$customer = new Give_Donor( 'testadmin@domain.com' );
 
 		$customer->decrease_purchase_count();
 		$customer->decrease_value( 10 );
@@ -261,7 +261,7 @@ class Give_Tests_Customers extends Give_Unit_Test_Case {
 
 	public function test_customer_notes() {
 
-		$customer = new Give_Customer( 'testadmin@domain.com' );
+		$customer = new Give_Donor( 'testadmin@domain.com' );
 
 		$this->assertInternalType( 'array', $customer->notes );
 		$this->assertEquals( 0, $customer->get_notes_count() );

@@ -165,10 +165,10 @@ class Tests_Donors_DB extends Give_Unit_Test_Case {
 	 */
 	public function test_legacy_attach_payment() {
 
-		$customer = new Give_Customer( 'testadmin@domain.com' );
+		$customer = new Give_Donor( 'testadmin@domain.com' );
 		Give()->donors->attach_payment( $customer->id, 999999 );
 
-		$updated_customer = new Give_Customer( 'testadmin@domain.com' );
+		$updated_customer = new Give_Donor( 'testadmin@domain.com' );
 		$payment_ids      = array_map( 'absint', explode( ',', $updated_customer->payment_ids ) );
 
 		$this->assertTrue( in_array( 999999, $payment_ids ) );
@@ -180,15 +180,15 @@ class Tests_Donors_DB extends Give_Unit_Test_Case {
 	 */
 	public function test_legacy_remove_payment() {
 
-		$customer = new Give_Customer( 'testadmin@domain.com' );
+		$customer = new Give_Donor( 'testadmin@domain.com' );
 		Give()->donors->attach_payment( $customer->id, 91919191 );
 
-		$updated_customer = new Give_Customer( 'testadmin@domain.com' );
+		$updated_customer = new Give_Donor( 'testadmin@domain.com' );
 		$payment_ids      = array_map( 'absint', explode( ',', $updated_customer->payment_ids ) );
 		$this->assertTrue( in_array( 91919191, $payment_ids ) );
 
 		Give()->donors->remove_payment( $updated_customer->id, 91919191 );
-		$updated_customer = new Give_Customer( 'testadmin@domain.com' );
+		$updated_customer = new Give_Donor( 'testadmin@domain.com' );
 		$payment_ids      = array_map( 'absint', explode( ',', $updated_customer->payment_ids ) );
 
 		$this->assertFalse( in_array( 91919191, $payment_ids ) );
@@ -200,14 +200,14 @@ class Tests_Donors_DB extends Give_Unit_Test_Case {
 	 */
 	public function test_legacy_increment_stats() {
 
-		$customer = new Give_Customer( 'testadmin@domain.com' );
+		$customer = new Give_Donor( 'testadmin@domain.com' );
 
 		$this->assertEquals( '20', $customer->purchase_value );
 		$this->assertEquals( '1', $customer->purchase_count );
 
 		Give()->donors->increment_stats( $customer->id, 10 );
 
-		$updated_customer = new Give_Customer( 'testadmin@domain.com' );
+		$updated_customer = new Give_Donor( 'testadmin@domain.com' );
 
 		$this->assertEquals( '30', $updated_customer->purchase_value );
 		$this->assertEquals( '2', $updated_customer->purchase_count );
@@ -218,14 +218,14 @@ class Tests_Donors_DB extends Give_Unit_Test_Case {
 	 */
 	public function test_legacy_decrement_stats() {
 
-		$customer = new Give_Customer( 'testadmin@domain.com' );
+		$customer = new Give_Donor( 'testadmin@domain.com' );
 
 		$this->assertEquals( '20', $customer->purchase_value );
 		$this->assertEquals( '1', $customer->purchase_count );
 
 		Give()->donors->decrement_stats( $customer->id, 10 );
 
-		$updated_customer = new Give_Customer( 'testadmin@domain.com' );
+		$updated_customer = new Give_Donor( 'testadmin@domain.com' );
 
 		$this->assertEquals( '10', $updated_customer->purchase_value );
 		$this->assertEquals( '0', $updated_customer->purchase_count );

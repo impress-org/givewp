@@ -284,7 +284,7 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		$payment->status = 'complete';
 		$payment->save();
 
-		$customer = new Give_Customer( $payment->customer_id );
+		$customer = new Give_Donor( $payment->customer_id );
 		$form     = new Give_Donate_Form( $payment->form_id );
 
 		$customer_sales    = $customer->purchase_count;
@@ -299,7 +299,7 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		$payment->refund();
 		wp_cache_flush();
 
-		$customer = new Give_Customer( $payment->customer_id );
+		$customer = new Give_Donor( $payment->customer_id );
 		$form     = new Give_Donate_Form( $payment->form_id );
 
 		$this->assertEquals( $customer_earnings - $payment->total, $customer->purchase_value );
@@ -327,7 +327,7 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		$payment->status = 'complete';
 		$payment->save();
 
-		$customer = new Give_Customer( $payment->customer_id );
+		$customer = new Give_Donor( $payment->customer_id );
 		$form     = new Give_Donate_Form( $payment->form_id );
 
 		$customer_sales    = $customer->purchase_count;
@@ -342,7 +342,7 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		$payment->refund();
 		wp_cache_flush();
 
-		$customer = new Give_Customer( $payment->customer_id );
+		$customer = new Give_Donor( $payment->customer_id );
 		$form     = new Give_Donate_Form( $payment->form_id );
 
 		$this->assertEquals( $customer_earnings, $customer->purchase_value );
@@ -370,7 +370,7 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		$payment->status = 'complete';
 		$payment->save();
 
-		$customer = new Give_Customer( $payment->customer_id );
+		$customer = new Give_Donor( $payment->customer_id );
 		$form     = new Give_Donate_Form( $payment->form_id );
 
 		$customer_sales    = $customer->purchase_count;
@@ -389,7 +389,7 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		$payment = new Give_Payment( $this->_payment_id );
 		$this->assertEmpty( $payment->completed_date );
 
-		$customer = new Give_Customer( $payment->customer_id );
+		$customer = new Give_Donor( $payment->customer_id );
 		$form     = new Give_Donate_Form( $payment->form_id );
 
 		$this->assertEquals( $customer_earnings - $payment->total, $customer->purchase_value );
@@ -416,7 +416,7 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		$payment->status = 'complete';
 		$payment->save();
 
-		$customer = new Give_Customer( $payment->customer_id );
+		$customer = new Give_Donor( $payment->customer_id );
 		$form     = new Give_Donate_Form( $payment->form_id );
 
 		$customer_sales    = $customer->purchase_count;
@@ -435,7 +435,7 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		$payment = new Give_Payment( $this->_payment_id );
 		$this->assertEmpty( $payment->completed_date );
 
-		$customer = new Give_Customer( $payment->customer_id );
+		$customer = new Give_Donor( $payment->customer_id );
 		$form     = new Give_Donate_Form( $payment->form_id );
 
 		$this->assertEquals( $customer_earnings, $customer->purchase_value );

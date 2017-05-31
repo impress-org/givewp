@@ -69,7 +69,7 @@ function give_customer_tabs() {
 function give_customers_list() {
 	include( dirname( __FILE__ ) . '/class-customer-table.php' );
 
-	$customers_table = new Give_Customer_Reports_Table();
+	$customers_table = new Give_Donor_Reports_Table();
 	$customers_table->prepare_items();
 	?>
 	<div class="wrap">
@@ -130,7 +130,7 @@ function give_render_customer_view( $view, $callbacks ) {
 	}
 
 	$customer_id = (int) $_GET['id'];
-	$customer    = new Give_Customer( $customer_id );
+	$customer    = new Give_Donor( $customer_id );
 
 	if ( empty( $customer->id ) ) {
 		give_set_error( 'give-invalid_customer', esc_html__( 'Invalid Donor ID.', 'give' ) );

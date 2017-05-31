@@ -489,7 +489,7 @@ $payment_mode   = $payment->mode;
 
 								<div class="inside">
 
-									<?php $donor = new Give_Customer( $donor_id ); ?>
+									<?php $donor = new Give_Donor( $donor_id ); ?>
 
 									<div class="column-container customer-info">
 										<div class="column">

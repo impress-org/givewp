@@ -131,7 +131,7 @@ class Give_Tools_Recount_Customer_Stats extends Give_Batch_Export {
 					'payment_ids'    => $payment_ids,
 				);
 
-				$customer_instance = new Give_Customer( $customer->id );
+				$customer_instance = new Give_Donor( $customer->id );
 				$customer_instance->update( $customer_update_data );
 
 			}

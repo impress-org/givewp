@@ -54,7 +54,7 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 	 */
 	public function get_data() {
 
-		$customer = new Give_Customer( $this->customer_id );
+		$customer = new Give_Donor( $this->customer_id );
 		$payments = $this->get_stored_data( 'give_recount_customer_payments_' . $customer->id, array() );
 
 		$offset     = ( $this->step - 1 ) * $this->per_step;
@@ -159,7 +159,7 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 
 			return true;
 		} else {
-			$customer    = new Give_Customer( $this->customer_id );
+			$customer    = new Give_Donor( $this->customer_id );
 			$payment_ids = get_option( 'give_stats_found_payments_' . $customer->id, array() );
 			$this->delete_data( 'give_stats_found_payments_' . $customer->id );
 
@@ -234,7 +234,7 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 			$allowed_payment_status = apply_filters( 'give_recount_donors_donation_statuses', give_get_payment_status_keys() );
 
 			// Before we start, let's zero out the customer's data
-			$customer = new Give_Customer( $this->customer_id );
+			$customer = new Give_Donor( $this->customer_id );
 			$customer->update( array( 'purchase_value' => give_format_amount( 0 ), 'purchase_count' => 0 ) );
 
 			$attached_payment_ids = explode( ',', $customer->payment_ids );
