@@ -163,7 +163,7 @@ class Give_API {
 		$this->log_requests = apply_filters( 'give_api_log_requests', $this->log_requests );
 
 		// Setup Give_Payment_Stats instance
-		$this->stats = new Give_Payment_Stats;
+		$this->stats = new Give_Payment_Stats();
 
 	}
 
@@ -377,6 +377,13 @@ class Give_API {
 		return false;
 	}
 
+	/**
+     * Get user public key.
+     *
+	 * @param int $user_id
+	 *
+	 * @return mixed|null|string
+	 */
 	public function get_user_public_key( $user_id = 0 ) {
 		global $wpdb;
 
@@ -395,6 +402,13 @@ class Give_API {
 		return $user_public_key;
 	}
 
+	/**
+     * Get user secret key.
+     *
+	 * @param int $user_id
+	 *
+	 * @return mixed|null|string
+	 */
 	public function get_user_secret_key( $user_id = 0 ) {
 		global $wpdb;
 
@@ -1756,13 +1770,11 @@ class Give_API {
 	public function process_api_key( $args ) {
 
 		if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'give-api-nonce' ) ) {
-
-			wp_die( esc_html__( 'Nonce verification failed.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
-
+			wp_die( __( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 		}
 
 		if ( empty( $args['user_id'] ) ) {
-			wp_die( esc_html__( 'User ID Required.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 401 ) );
+			wp_die( __( 'User ID Required.', 'give' ), __( 'Error', 'give' ), array( 'response' => 401 ) );
 		}
 
 		if ( is_numeric( $args['user_id'] ) ) {
@@ -2029,7 +2041,7 @@ class Give_API {
 	/**
 	 * API Key Backwards Compatibility
 	 *
-	 * A Backwards Compatibility call for the change of meta_key/value for users API Keys
+	 * A Backwards Compatibility call for the change of meta_key/value for users API Keys.
 	 *
 	 * @since  1.3.6
 	 *
