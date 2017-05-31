@@ -11,7 +11,7 @@
  *
  * @param $instance Give()
  *
- * @return $instance class
+ * @return $instance Give()
  */
 function give_load_deprecated_properties( $instance ) {
 
@@ -118,6 +118,50 @@ class Give_Customer {
 					$donor    = ! empty( $arguments[0] ) ? $arguments[0] : array();
 
 					return $customer->decrease_donation_count( $donor );
+			}
+		}
+	}
+
+}
+
+
+/**
+ * Give_DB_Customer_Meta Class (Deprecated)
+ *
+ * @since 1.0
+ */
+class Give_DB_Customer_Meta {
+
+	/**
+	 * Give_DB_Customer_Meta constructor.
+	 */
+	public function __construct() {
+	}
+
+
+	/**
+	 * There are certain responsibility of this function:
+	 *  1. handle backward compatibility for deprecated functions
+	 *
+	 * @since 1.8.8
+	 *
+	 * @param $name
+	 * @param $arguments
+	 *
+	 * @return mixed
+	 */
+	public function __call( $name, $arguments ) {
+		$deprecated_function_arr = array('sanitize_customer_id');
+
+		// If a property is renamed then it gets placed below.
+		$customer = new Give_Donor();
+
+		if ( in_array( $name, $deprecated_function_arr ) ) {
+			switch ( $name ) {
+				case 'sanitize_customer_id':
+					$donor    = ! empty( $arguments[0] ) ? $arguments[0] : array();
+
+					return $customer->sanitize_donor_id( $donor_id );
 			}
 		}
 	}

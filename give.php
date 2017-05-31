@@ -218,6 +218,7 @@ if ( ! class_exists( 'Give' ) ) :
 				/**
 				 * Fire the action after Give core loads
 				 *
+				 * @param Give The Give class instance.
 				 * @since 1.8.7
 				 */
 				do_action( 'give_init', self::$instance );
@@ -326,7 +327,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donate-form.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-donors.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-customer-meta.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-donor-meta.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donor.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-stats.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-session.php';

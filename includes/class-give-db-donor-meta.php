@@ -1,9 +1,9 @@
 <?php
 /**
- * Customer Meta DB class
+ * Donor Meta DB class
  *
  * @package     Give
- * @subpackage  Classes/DB Customer Meta
+ * @subpackage  Classes/DB Donor Meta
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.6
@@ -15,16 +15,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class Give_DB_Customer_Meta
+ * Class Give_DB_Donor_Meta
  *
- * This class is for interacting with the customer meta database table
+ * This class is for interacting with the donor meta database table.
  *
  * @since 1.6
  */
-class Give_DB_Customer_Meta extends Give_DB {
+class Give_DB_Donor_Meta extends Give_DB {
 
 	/**
-	 * Get things started
+	 * Give_DB_Donor_Meta constructor.
 	 *
 	 * @access  public
 	 * @since   1.6
@@ -42,7 +42,7 @@ class Give_DB_Customer_Meta extends Give_DB {
 	}
 
 	/**
-	 * Get table columns and data types
+	 * Get table columns and data types.
 	 *
 	 * @access  public
 	 * @since   1.6
@@ -59,7 +59,7 @@ class Give_DB_Customer_Meta extends Give_DB {
 	}
 
 	/**
-	 * Register the table with $wpdb so the metadata api can find it
+	 * Register the table with $wpdb so the metadata api can find it.
 	 *
 	 * @access  public
 	 * @since   1.6
@@ -72,79 +72,79 @@ class Give_DB_Customer_Meta extends Give_DB {
 	}
 
 	/**
-	 * Retrieve customer meta field for a customer.
+	 * Retrieve donor meta field for a donor.
 	 *
 	 * For internal use only. Use Give_Customer->get_meta() for public usage.
 	 *
 	 * @access  private
 	 * @since   1.6
 	 *
-	 * @param   int    $customer_id Customer ID.
+	 * @param   int    $donor_id Donor ID.
 	 * @param   string $meta_key The meta key to retrieve.
 	 * @param   bool   $single Whether to return a single value.
 	 *
 	 * @return  mixed                 Will be an array if $single is false. Will be value of meta data field if $single is true.
 	 */
-	public function get_meta( $customer_id = 0, $meta_key = '', $single = false ) {
-		$customer_id = $this->sanitize_customer_id( $customer_id );
-		if ( false === $customer_id ) {
+	public function get_meta( $donor_id = 0, $meta_key = '', $single = false ) {
+		$donor_id = $this->sanitize_customer_id( $donor_id );
+		if ( false === $donor_id ) {
 			return false;
 		}
 
-		return get_metadata( 'customer', $customer_id, $meta_key, $single );
+		return get_metadata( 'customer', $donor_id, $meta_key, $single );
 	}
 
 	/**
-	 * Add meta data field to a customer.
+	 * Add meta data field to a donor.
 	 *
-	 * For internal use only. Use Give_Customer->add_meta() for public usage.
+	 * For internal use only. Use Give_Donor->add_meta() for public usage.
 	 *
 	 * @access  private
 	 * @since   1.6
 	 *
-	 * @param   int    $customer_id Customer ID.
+	 * @param   int    $donor_id Donor ID.
 	 * @param   string $meta_key Metadata name.
 	 * @param   mixed  $meta_value Metadata value.
 	 * @param   bool   $unique Optional, default is false. Whether the same key should not be added.
 	 *
 	 * @return  bool                  False for failure. True for success.
 	 */
-	public function add_meta( $customer_id = 0, $meta_key = '', $meta_value, $unique = false ) {
-		$customer_id = $this->sanitize_customer_id( $customer_id );
-		if ( false === $customer_id ) {
+	public function add_meta( $donor_id = 0, $meta_key = '', $meta_value, $unique = false ) {
+		$donor_id = $this->sanitize_customer_id( $donor_id );
+		if ( false === $donor_id ) {
 			return false;
 		}
 
-		return add_metadata( 'customer', $customer_id, $meta_key, $meta_value, $unique );
+		return add_metadata( 'customer', $donor_id, $meta_key, $meta_value, $unique );
 	}
 
 	/**
-	 * Update customer meta field based on Customer ID.
+	 * Update customer meta field based on Donor ID.
 	 *
 	 * For internal use only. Use Give_Customer->update_meta() for public usage.
 	 *
 	 * Use the $prev_value parameter to differentiate between meta fields with the
-	 * same key and Customer ID.
+	 * same key and Donor ID.
 	 *
-	 * If the meta field for the customer does not exist, it will be added.
+	 * If the meta field for the donor does not exist, it will be added.
 	 *
 	 * @access  private
 	 * @since   1.6
 	 *
-	 * @param   int    $customer_id Customer ID.
+	 * @param   int    $donor_id Donor ID.
 	 * @param   string $meta_key Metadata key.
 	 * @param   mixed  $meta_value Metadata value.
 	 * @param   mixed  $prev_value Optional. Previous value to check before removing.
 	 *
 	 * @return  bool                  False on failure, true if success.
 	 */
-	public function update_meta( $customer_id = 0, $meta_key = '', $meta_value, $prev_value = '' ) {
-		$customer_id = $this->sanitize_customer_id( $customer_id );
-		if ( false === $customer_id ) {
+	public function update_meta( $donor_id = 0, $meta_key = '', $meta_value, $prev_value = '' ) {
+		$donor_id = $this->sanitize_customer_id( $donor_id );
+		if ( false === $donor_id ) {
 			return false;
 		}
 
-		return update_metadata( 'customer', $customer_id, $meta_key, $meta_value, $prev_value );
+		return update_metadata( 'customer', $donor_id, $meta_key, $meta_value, $prev_value );
 	}
 
 	/**
@@ -159,14 +159,14 @@ class Give_DB_Customer_Meta extends Give_DB {
 	 * @access  private
 	 * @since   1.6
 	 *
-	 * @param   int    $customer_id Customer ID.
+	 * @param   int    $donor_id Donor ID.
 	 * @param   string $meta_key Metadata name.
 	 * @param   mixed  $meta_value Optional. Metadata value.
 	 *
 	 * @return  bool                  False for failure. True for success.
 	 */
-	public function delete_meta( $customer_id = 0, $meta_key = '', $meta_value = '' ) {
-		return delete_metadata( 'customer', $customer_id, $meta_key, $meta_value );
+	public function delete_meta( $donor_id = 0, $meta_key = '', $meta_value = '' ) {
+		return delete_metadata( 'customer', $donor_id, $meta_key, $meta_value );
 	}
 
 	/**
@@ -197,32 +197,32 @@ class Give_DB_Customer_Meta extends Give_DB {
 	}
 
 	/**
-	 * Given a customer ID, make sure it's a positive number, greater than zero before inserting or adding.
+	 * Given a donor ID, make sure it's a positive number, greater than zero before inserting or adding.
 	 *
 	 * @access private
 	 * @since  1.6
 	 *
-	 * @param  int|stripe $customer_id A passed customer ID.
+	 * @param  int|stripe $donor_id A passed donor ID.
 	 *
-	 * @return int|bool                The normalized customer ID or false if it's found to not be valid.
+	 * @return int|bool                The normalized donor ID or false if it's found to not be valid.
 	 */
-	private function sanitize_customer_id( $customer_id ) {
-		if ( ! is_numeric( $customer_id ) ) {
+	private function sanitize_donor_id( $donor_id ) {
+		if ( ! is_numeric( $donor_id ) ) {
 			return false;
 		}
 
-		$customer_id = (int) $customer_id;
+		$donor_id = (int) $donor_id;
 
 		// We were given a non positive number
-		if ( absint( $customer_id ) !== $customer_id ) {
+		if ( absint( $donor_id ) !== $donor_id ) {
 			return false;
 		}
 
-		if ( empty( $customer_id ) ) {
+		if ( empty( $donor_id ) ) {
 			return false;
 		}
 
-		return absint( $customer_id );
+		return absint( $donor_id );
 
 	}
 
