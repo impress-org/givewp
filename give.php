@@ -327,7 +327,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-donors.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-customer-meta.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/class-give-customer.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donor.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-stats.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-session.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-html-elements.php';

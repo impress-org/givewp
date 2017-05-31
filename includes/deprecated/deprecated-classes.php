@@ -23,7 +23,7 @@ function give_load_deprecated_properties( $instance ) {
 }
 // add_action( 'give_init', 'give_load_deprecated_properties', 10, 1 );
 /**
- * Give_DB_Customers Class (depren
+ * Give_DB_Customers Class (deprecated)
  *
  * This class is for interacting with the customers' database table.
  *
