@@ -3,7 +3,7 @@
 /**
  * Class Tests_Donors_DB
  */
-class Tests_Donors_DB extends Give_Unit_Test_Case {
+class Tests_Deprecated_Classes extends Give_Unit_Test_Case {
 
 	protected $_post_id = null;
 
@@ -15,6 +15,7 @@ class Tests_Donors_DB extends Give_Unit_Test_Case {
 	 * Set it Up.
 	 */
 	public function setUp() {
+
 		parent::setUp();
 
 		$this->_post_id = $this->factory->post->create( array(
@@ -234,7 +235,7 @@ class Tests_Donors_DB extends Give_Unit_Test_Case {
 	/**
 	 * Test Get Customers.
 	 */
-	public function test_get_donors() {
+	public function test_get_customers() {
 
 		$donors = Give()->donors->get_donors();
 

@@ -875,10 +875,10 @@ class Give_API {
 	 */
 	public function get_customers( $customer = null ) {
 
-		$customers = array();
+		$donors = array();
 		$error     = array();
 		if ( ! user_can( $this->user_id, 'view_give_sensitive_data' ) && ! $this->override ) {
-			return $customers;
+			return $donors;
 		}
 
 		global $wpdb;
@@ -893,18 +893,18 @@ class Give_API {
 			$field = 'email';
 		}
 
-		$customer_query = Give()->customers->get_customers( array(
+		$donor_query = Give()->donors->get_donors( array(
 			'number' => $per_page,
 			'offset' => $offset,
 			$field   => $customer,
 		) );
-		$customer_count = 0;
+		$donor_count = 0;
 
-		if ( $customer_query ) {
+		if ( $donor_query ) {
 
-			foreach ( $customer_query as $customer_obj ) {
+			foreach ( $donor_query as $donor_obj ) {
 
-				$names      = explode( ' ', $customer_obj->name );
+				$names      = explode( ' ', $donor_obj->name );
 				$first_name = ! empty( $names[0] ) ? $names[0] : '';
 				$last_name  = '';
 				if ( ! empty( $names[1] ) ) {
@@ -912,29 +912,29 @@ class Give_API {
 					$last_name = implode( ' ', $names );
 				}
 
-				$customers['donors'][ $customer_count ]['info']['user_id']      = '';
-				$customers['donors'][ $customer_count ]['info']['username']     = '';
-				$customers['donors'][ $customer_count ]['info']['display_name'] = '';
-				$customers['donors'][ $customer_count ]['info']['customer_id']  = $customer_obj->id;
-				$customers['donors'][ $customer_count ]['info']['first_name']   = $first_name;
-				$customers['donors'][ $customer_count ]['info']['last_name']    = $last_name;
-				$customers['donors'][ $customer_count ]['info']['email']        = $customer_obj->email;
+				$donors['donors'][ $donor_count ]['info']['user_id']      = '';
+				$donors['donors'][ $donor_count ]['info']['username']     = '';
+				$donors['donors'][ $donor_count ]['info']['display_name'] = '';
+				$donors['donors'][ $donor_count ]['info']['customer_id']  = $donor_obj->id;
+				$donors['donors'][ $donor_count ]['info']['first_name']   = $first_name;
+				$donors['donors'][ $donor_count ]['info']['last_name']    = $last_name;
+				$donors['donors'][ $donor_count ]['info']['email']        = $donor_obj->email;
 
-				if ( ! empty( $customer_obj->user_id ) ) {
+				if ( ! empty( $donor_obj->user_id ) ) {
 
-					$user_data = get_userdata( $customer_obj->user_id );
+					$user_data = get_userdata( $donor_obj->user_id );
 
 					// Customer with registered account.
-					$customers['donors'][ $customer_count ]['info']['user_id']      = $customer_obj->user_id;
-					$customers['donors'][ $customer_count ]['info']['username']     = $user_data->user_login;
-					$customers['donors'][ $customer_count ]['info']['display_name'] = $user_data->display_name;
+					$donors['donors'][ $donor_count ]['info']['user_id']      = $donor_obj->user_id;
+					$donors['donors'][ $donor_count ]['info']['username']     = $user_data->user_login;
+					$donors['donors'][ $donor_count ]['info']['display_name'] = $user_data->display_name;
 
 				}
 
-				$customers['donors'][ $customer_count ]['stats']['total_donations'] = $customer_obj->purchase_count;
-				$customers['donors'][ $customer_count ]['stats']['total_spent']     = $customer_obj->purchase_value;
+				$donors['donors'][ $donor_count ]['stats']['total_donations'] = $donor_obj->purchase_count;
+				$donors['donors'][ $donor_count ]['stats']['total_spent']     = $donor_obj->purchase_value;
 
-				$customer_count ++;
+				$donor_count ++;
 
 			}
 		} elseif ( $customer ) {
@@ -955,7 +955,7 @@ class Give_API {
 
 		}
 
-		return $customers;
+		return $donors;
 	}
 
 	/**

@@ -1,9 +1,9 @@
 <?php
 /**
- * Customer (Donors)
+ * Donors
  *
  * @package     Give
- * @subpackage  Admin/Customers
+ * @subpackage  Admin/Donors
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0

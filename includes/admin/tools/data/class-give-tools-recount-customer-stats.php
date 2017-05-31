@@ -60,7 +60,7 @@ class Give_Tools_Recount_Customer_Stats extends Give_Batch_Export {
 			'order'   => 'DESC',
 		);
 
-		$customers = Give()->customers->get_customers( $args );
+		$customers = Give()->donors->get_donors( $args );
 
 		if ( $customers ) {
 
@@ -157,7 +157,7 @@ class Give_Tools_Recount_Customer_Stats extends Give_Batch_Export {
 			'order'   => 'DESC',
 		);
 
-		$customers = Give()->customers->get_customers( $args );
+		$customers = Give()->donors->get_donors( $args );
 		$total     = count( $customers );
 
 		$percentage = 100;

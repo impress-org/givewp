@@ -186,16 +186,16 @@ class Give_HTML_Elements {
 
 		$args = wp_parse_args( $args, $defaults );
 
-		$customers = Give()->customers->get_customers( array(
+		$donors = Give()->donors->get_donors( array(
 			'number' => $args['number']
 		) );
 
 		$options = array();
 
-		if ( $customers ) {
+		if ( $donors ) {
 			$options[0] = esc_html__( 'No donor attached', 'give' );
-			foreach ( $customers as $customer ) {
-				$options[ absint( $customer->id ) ] = esc_html( $customer->name . ' (' . $customer->email . ')' );
+			foreach ( $donors as $donor ) {
+				$options[ absint( $donor->id ) ] = esc_html( $donor->name . ' (' . $donor->email . ')' );
 			}
 		} else {
 			$options[0] = esc_html__( 'No donors found.', 'give' );
@@ -207,11 +207,11 @@ class Give_HTML_Elements {
 
 			if ( ! array_key_exists( $args['selected'], $options ) ) {
 
-				$customer = new Give_Customer( $args['selected'] );
+				$donor = new Give_Customer( $args['selected'] );
 
-				if ( $customer ) {
+				if ( $donor ) {
 
-					$options[ absint( $args['selected'] ) ] = esc_html( $customer->name . ' (' . $customer->email . ')' );
+					$options[ absint( $args['selected'] ) ] = esc_html( $donor->name . ' (' . $donor->email . ')' );
 
 				}
 

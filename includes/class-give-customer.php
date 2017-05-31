@@ -1,6 +1,6 @@
 <?php
 /**
- * Customer (Donor)
+ * Donor
  *
  * @package     Give
  * @subpackage  Classes/Give_Customer
@@ -310,12 +310,12 @@ class Give_Customer {
 	}
 
 	/**
-	 * Update a customer record
+	 * Updates a donor record.
 	 *
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  array $data Array of data attributes for a customer (checked via whitelist).
+	 * @param  array $data Array of data attributes for a donor (checked via whitelist).
 	 *
 	 * @return bool        If the update was successful or not.
 	 */
@@ -328,7 +328,7 @@ class Give_Customer {
 		$data = $this->sanitize_columns( $data );
 
 		/**
-		 * Fires before updating customers.
+		 * Fires before updating donors.
 		 *
 		 * @since 1.0
 		 *

@@ -281,7 +281,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 
 		// Get donor query.
 		$args      = $this->get_donor_query();
-		$customers = Give()->customers->get_customers( $args );
+		$customers = Give()->donors->get_donors( $args );
 
 		if ( $customers ) {
 
@@ -315,7 +315,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 		$_donor_query = $this->get_donor_query();
 
 		$_donor_query['number'] = - 1;
-		$donors                 = Give()->customers->get_customers( $_donor_query );
+		$donors                 = Give()->donors->get_donors( $_donor_query );
 
 		return count( $donors );
 	}

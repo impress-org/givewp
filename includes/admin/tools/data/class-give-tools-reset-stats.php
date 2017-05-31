@@ -267,7 +267,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 			}
 
 			$customer_args = array( 'number' => - 1 );
-			$customers     = Give()->customers->get_customers( $customer_args );
+			$customers     = Give()->donors->get_donors( $customer_args );
 			foreach ( $customers as $customer ) {
 				$items[] = array(
 					'id'   => (int) $customer->id,

@@ -144,7 +144,6 @@ function give_run_install() {
 	 */
 	do_action( 'give_upgrades' );
 
-
 	if ( GIVE_VERSION !== get_option( 'give_version' ) ) {
 		update_option( 'give_version', GIVE_VERSION );
 	}
@@ -157,8 +156,8 @@ function give_run_install() {
 	$api = new Give_API();
 	update_option( 'give_default_api_version', 'v' . $api->get_version() );
 
-	// Create the customers databases.
-	@Give()->customers->create_table();
+	// Create the donor databases.
+	@Give()->donors->create_table();
 	@Give()->customer_meta->create_table();
 
 	// Check for PHP Session support, and enable if available.

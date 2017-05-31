@@ -17,9 +17,12 @@ class Tests_API extends Give_Unit_Test_Case {
 	protected $_api_output_sales = null;
 
 	protected $_user_id = null;
-	
+
 	protected $_payment_id = null;
 
+	/**
+	 * Set it up.
+	 */
 	public function setUp() {
 		parent::setUp();
 
@@ -27,9 +30,9 @@ class Tests_API extends Give_Unit_Test_Case {
 		$GLOBALS['wp_rewrite']->init();
 		flush_rewrite_rules( false );
 
-		$this->_api = new Give_API;
+		$this->_api = new Give_API();
 
-		$roles = new Give_Roles;
+		$roles = new Give_Roles();
 		$roles->add_roles();
 		$roles->add_caps();
 
@@ -38,32 +41,39 @@ class Tests_API extends Give_Unit_Test_Case {
 		$this->_rewrite = $wp_rewrite;
 		$this->_query   = $wp_query;
 
-
-		//Create a Donation Form
+		// Create a Donation Form
 		$post_id = $this->factory->post->create( array(
 			'post_title'  => 'Test Form',
 			'post_type'   => 'give_forms',
-			'post_status' => 'publish'
+			'post_status' => 'publish',
 		) );
 
-		$this->_user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
+		$this->_user_id = $this->factory->user->create( array(
+			'role' => 'administrator',
+		) );
 		wp_set_current_user( $this->_user_id );
 
 		$_multi_level_donations = array(
 			array(
-				'_give_id'     => array( 'level_id' => '1' ),
+				'_give_id'     => array(
+					'level_id' => '1',
+				),
 				'_give_amount' => '10.00',
-				'_give_text'   => 'Basic Level'
+				'_give_text'   => 'Basic Level',
 			),
 			array(
-				'_give_id'     => array( 'level_id' => '2' ),
+				'_give_id'     => array(
+					'level_id' => '2',
+				),
 				'_give_amount' => '20.00',
-				'_give_text'   => 'Intermediate Level'
+				'_give_text'   => 'Intermediate Level',
 			),
 			array(
-				'_give_id'     => array( 'level_id' => '3' ),
+				'_give_id'     => array(
+					'level_id' => '3',
+				),
 				'_give_amount' => '40.00',
-				'_give_text'   => 'Advanced Level'
+				'_give_text'   => 'Advanced Level',
 			),
 		);
 
@@ -86,13 +96,13 @@ class Tests_API extends Give_Unit_Test_Case {
 			'id'         => $user->ID,
 			'email'      => 'testadmin@domain.com',
 			'first_name' => $user->first_name,
-			'last_name'  => $user->last_name
+			'last_name'  => $user->last_name,
 		);
 
 		$prices = give_get_meta( $post_id, '_give_donation_levels', true );
 		$total  = $prices[1]['_give_amount'];
 
-		//Add a payment
+		// Add a payment
 		$purchase_data = array(
 			'price'           => number_format( (float) $total, 2 ),
 			'give_form_title' => get_the_title( $post_id ),
@@ -103,7 +113,7 @@ class Tests_API extends Give_Unit_Test_Case {
 			'user_info'       => $user_info,
 			'currency'        => 'USD',
 			'status'          => 'pending',
-			'gateway'         => 'manual'
+			'gateway'         => 'manual',
 		);
 
 		$_SERVER['REMOTE_ADDR'] = '10.0.0.0';
@@ -349,27 +359,26 @@ class Tests_API extends Give_Unit_Test_Case {
 	 */
 	public function test_missing_auth() {
 		$this->markTestIncomplete( 'Needs to be rewritten since this outputs xml that kills travis with a 255 error (fatal PHP error).' );
-		//$this->_api->missing_auth();
-		//$out = $this->_api->get_output();
-		//$this->assertArrayHasKey( 'error', $out );
-		//$this->assertEquals( 'You must specify both a token and API key!', $out['error'] );
-
+		// $this->_api->missing_auth();
+		// $out = $this->_api->get_output();
+		// $this->assertArrayHasKey( 'error', $out );
+		// $this->assertEquals( 'You must specify both a token and API key!', $out['error'] );
 	}
 
 	public function test_invalid_auth() {
 		$this->markTestIncomplete( 'Needs to be rewritten since this outputs xml that kills travis with a 255 error (fatal PHP error).' );
-		//$this->_api->invalid_auth();
-		//$out = $this->_api->get_output();
-		//$this->assertArrayHasKey( 'error', $out );
-		//$this->assertEquals( 'Your request could not be authenticated!', $out['error'] );
+		// $this->_api->invalid_auth();
+		// $out = $this->_api->get_output();
+		// $this->assertArrayHasKey( 'error', $out );
+		// $this->assertEquals( 'Your request could not be authenticated!', $out['error'] );
 	}
 
 	public function test_invalid_key() {
 		$this->markTestIncomplete( 'Needs to be rewritten since this outputs xml that kills travis with a 255 error (fatal PHP error).' );
-		//$out = $this->_api->invalid_key();
-		//$out = $this->_api->get_output();
-		//$this->assertArrayHasKey( 'error', $out );
-		//$this->assertEquals( 'Invalid API key!', $out['error'] );
+		// $out = $this->_api->invalid_key();
+		// $out = $this->_api->get_output();
+		// $this->assertArrayHasKey( 'error', $out );
+		// $this->assertEquals( 'Invalid API key!', $out['error'] );
 	}
 
 	/**

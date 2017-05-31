@@ -5,6 +5,25 @@
  * @package Give
  */
 
+
+/**
+ * Instantiate old properties for backwards compatibility.
+ *
+ * @param $instance Give()
+ *
+ * @return $instance class
+ */
+function give_load_deprecated_properties( $instance ) {
+
+	// If a property is renamed then it gets placed below.
+	$instance->customers = new Give_DB_Customers();
+
+	return $instance;
+
+}
+//add_action( 'give_init', 'give_load_deprecated_properties', 10, 1 );
+
+
 /**
  * Give_DB_Donors Class
  *
@@ -13,6 +32,14 @@
  * @since 1.0
  */
 class Give_DB_Customers extends Give_DB {
+
+	/**
+	 * Give_DB_Customers constructor.
+	 */
+	public function __construct() {
+	}
+
+
 
 	/**
 	 * There are certain responsibility of this function:
@@ -26,14 +53,17 @@ class Give_DB_Customers extends Give_DB {
 	 * @return mixed
 	 */
 	public function __call( $name, $arguments ) {
-		$deprecated_function_arr = [ 'get_customer_by', '' ];
-
+		$deprecated_function_arr = [ 'get_customer_by', 'give_update_donor_email_on_user_update', 'get_customers' ];
 
 		// If a property is renamed then it gets placed below.
 		$donors_db = new Give_DB_Donors();
 
 		if ( in_array( $name, $deprecated_function_arr ) ) {
 			switch ( $name ) {
+				case 'get_customers':
+					$args    = ! empty( $arguments[0] ) ? $arguments[0] : array();
+
+					return $donors_db->get_donors( $args );
 				case 'get_customer_by':
 					$field    = ! empty( $arguments[0] ) ? $arguments[0] : 'id';
 					$donor_id = ! empty( $arguments[1] ) ? $arguments[1] : 0;
@@ -49,15 +79,3 @@ class Give_DB_Customers extends Give_DB {
 	}
 
 }
-
-/**
- * Instantiate old properties for backwards compatibility.
- *
- * @param $instance Give()
- */
-function give_load_deprecated_properties( $instance ) {
-
-
-}
-
-add_action( 'give_init', 'give_load_deprecated_properties', 10, 1 );

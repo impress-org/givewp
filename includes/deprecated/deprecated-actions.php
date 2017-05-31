@@ -53,6 +53,8 @@ function give_deprecated_actions() {
 		'give_pre_donor_disconnect_user_id'        => 'give_pre_customer_disconnect_user_id',
 		'give_post_donor_disconnect_user_id'       => 'give_post_customer_disconnect_user_id',
 		'give_update_donor_email_on_user_update'   => 'give_update_customer_email_on_user_update',
+		'give_pre_insert_donor'                    => 'give_pre_insert_customer',
+		'give_post_insert_donor'                   => 'give_post_insert_customer',
 	];
 
 	return $give_deprecated_actions;
