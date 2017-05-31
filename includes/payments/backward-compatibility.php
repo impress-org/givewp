@@ -133,7 +133,11 @@ function _give_bc_get_payment_meta20( $meta_value, $id, $meta_key ) {
 	// Bailout.
 	if (
 		'give_payment' !== get_post_type( $id ) ||
-		! in_array( $meta_key, $payment_old_meta_keys ) ||
+
+		// Meta key should be new or old.
+		! in_array( $meta_key, array_merge( $payment_old_meta_keys, $payment_new_meta_keys ) ) ||
+
+		// New meta key value should be empty, this means admin did not run db upgrade yet, so provide backward compatibility.
 		( in_array( $meta_key, $payment_new_meta_keys ) && ! empty( $meta_value ) )
 	) {
 		return $meta_value;
