@@ -338,7 +338,7 @@ function give_customer_delete( $args ) {
 
 				// Just set the donations to customer_id of 0
 				foreach ( $payments_array as $payment_id ) {
-					give_update_payment_meta( $payment_id, '_give_payment_customer_id', 0 );
+					give_update_payment_meta( $payment_id, '_give_payment_donor_id', 0 );
 				}
 			}
 

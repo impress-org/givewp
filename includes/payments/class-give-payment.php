@@ -873,7 +873,7 @@ final class Give_Payment {
 						break;
 
 					case 'customer_id':
-						$this->update_meta( '_give_payment_customer_id', $this->customer_id );
+						$this->update_meta( '_give_payment_donor_id', $this->customer_id );
 						break;
 
 					case 'user_id':
@@ -2005,7 +2005,7 @@ final class Give_Payment {
 	 * @return int The Customer ID
 	 */
 	private function setup_customer_id() {
-		$customer_id = $this->get_meta( '_give_payment_customer_id', true );
+		$customer_id = $this->get_meta( '_give_payment_donor_id', true );
 
 		return $customer_id;
 	}
