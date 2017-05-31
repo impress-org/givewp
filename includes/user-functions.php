@@ -451,32 +451,32 @@ function give_validate_user_password( $password = '', $confirm_password = '', $r
  *
  * @return      void
  */
-function give_add_past_purchases_to_new_user( $user_id ) {
+// function give_add_past_purchases_to_new_user( $user_id ) {
+//
+// 	$email = get_the_author_meta( 'user_email', $user_id );
+//
+// 	$payments = give_get_payments( array( 's' => $email ) );
+//
+// 	if ( $payments ) {
+// 		foreach ( $payments as $payment ) {
+// 			if ( intval( give_get_payment_user_id( $payment->ID ) ) > 0 ) {
+// 				continue;
+// 			} // This payment already associated with an account
+//
+// 			$meta                    = give_get_payment_meta( $payment->ID );
+// 			$meta['user_info']       = maybe_unserialize( $meta['user_info'] );
+// 			$meta['user_info']['id'] = $user_id;
+// 			$meta['user_info']       = $meta['user_info'];
+//
+// 			// Store the updated user ID in the payment meta
+// 			give_update_payment_meta( $payment->ID, '_give_payment_meta', $meta );
+// 			give_update_payment_meta( $payment->ID, '_give_payment_user_id', $user_id );
+// 		}
+// 	}
+//
+// }
 
-	$email = get_the_author_meta( 'user_email', $user_id );
-
-	$payments = give_get_payments( array( 's' => $email ) );
-
-	if ( $payments ) {
-		foreach ( $payments as $payment ) {
-			if ( intval( give_get_payment_user_id( $payment->ID ) ) > 0 ) {
-				continue;
-			} // This payment already associated with an account
-
-			$meta                    = give_get_payment_meta( $payment->ID );
-			$meta['user_info']       = maybe_unserialize( $meta['user_info'] );
-			$meta['user_info']['id'] = $user_id;
-			$meta['user_info']       = $meta['user_info'];
-
-			// Store the updated user ID in the payment meta
-			give_update_payment_meta( $payment->ID, '_give_payment_meta', $meta );
-			give_update_payment_meta( $payment->ID, '_give_payment_user_id', $user_id );
-		}
-	}
-
-}
-
-add_action( 'user_register', 'give_add_past_purchases_to_new_user' );
+// add_action( 'user_register', 'give_add_past_purchases_to_new_user' );
 
 
 /**

@@ -876,9 +876,9 @@ final class Give_Payment {
 						$this->update_meta( '_give_payment_donor_id', $this->customer_id );
 						break;
 
-					case 'user_id':
-						$this->update_meta( '_give_payment_user_id', $this->user_id );
-						break;
+					// case 'user_id':
+					// 	$this->update_meta( '_give_payment_user_id', $this->user_id );
+					// 	break;
 
 					case 'form_title':
 						$this->update_meta( '_give_payment_form_title', $this->form_title );
@@ -2014,12 +2014,15 @@ final class Give_Payment {
 	 * Setup the User ID associated with the donation
 	 *
 	 * @since  1.5
+	 * @since  2.0 Get user id connect to donor from donor table instead of payment meta.
+	 *
 	 * @access private
 	 *
 	 * @return int The User ID
 	 */
 	private function setup_user_id() {
-		$user_id = $this->get_meta( '_give_payment_user_id', true );
+		$donor   = Give()->customers->get_customer_by( 'id', $this->customer_id );
+		$user_id = $donor ? absint( $donor->user_id ) : 0;
 
 		return $user_id;
 	}

@@ -1113,6 +1113,8 @@ function give_v20_upgrades_form_metadata() {
 		wp_redirect( admin_url() );
 		exit;
 	}
+
+	//  delete _give_payment_user_id now we are getting user id from donor id.
 }
 
 add_action( 'give_give_v20_upgrades_form_metadata', 'give_v20_upgrades_form_metadata' );

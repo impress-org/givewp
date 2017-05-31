@@ -93,7 +93,7 @@ function give_connect_donor_to_wpuser( $user_id, $user_data ){
 	/* @var Give_Customer $donor */
 	$donor = new Give_Customer( $user_data['user_email'] );
 
-	// Validate donor id and check if do nor is already connect to wp user or not.
+	// Validate donor id and check if do not is already connect to wp user or not.
 	if( $donor->id && ! $donor->user_id ) {
 
 		// Update donor user_id.
@@ -102,11 +102,12 @@ function give_connect_donor_to_wpuser( $user_id, $user_data ){
 			$donor->add_note( $donor_note );
 
 			// Update user_id meta in payments.
-			if( ! empty( $donor->payment_ids ) && ( $donations = explode( ',', $donor->payment_ids ) ) ) {
-				foreach ( $donations as $donation  ) {
-					give_update_meta( $donation, '_give_payment_user_id', $user_id );
-				}
-			}
+			// if( ! empty( $donor->payment_ids ) && ( $donations = explode( ',', $donor->payment_ids ) ) ) {
+			// 	foreach ( $donations as $donation  ) {
+			// 		give_update_meta( $donation, '_give_payment_user_id', $user_id );
+			// 	}
+			// }
+			// Do not need to update user_id in payment because we will get user id from donor id now.
 		}
 	}
 }
