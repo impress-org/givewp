@@ -137,14 +137,14 @@ if ( ! class_exists( 'Give' ) ) :
 		public $donors;
 
 		/**
-		 * Give Customer meta DB Object
+		 * Give Donor meta DB Object
 		 *
 		 * @since  1.6
 		 * @access public
 		 *
-		 * @var    Give_DB_Customer_Meta object
+		 * @var    Give_DB_Donor_Meta object
 		 */
-		public $customer_meta;
+		public $donor_meta;
 
 		/**
 		 * Give API Object
@@ -210,7 +210,7 @@ if ( ! class_exists( 'Give' ) ) :
 				self::$instance->emails          = new Give_Emails();
 				self::$instance->email_tags      = new Give_Email_Template_Tags();
 				self::$instance->donors          = new Give_DB_Donors();
-				self::$instance->customer_meta   = new Give_DB_Customer_Meta();
+				self::$instance->donor_meta   = new Give_DB_Donor_Meta();
 				self::$instance->template_loader = new Give_Template_Loader();
 				self::$instance->email_access    = new Give_Email_Access();
 

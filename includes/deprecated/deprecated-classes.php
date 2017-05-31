@@ -16,12 +16,15 @@
 function give_load_deprecated_properties( $instance ) {
 
 	// If a property is renamed then it gets placed below.
-	$instance->customers = new Give_DB_Customers();
+	$instance->customers     = new Give_DB_Customers();
+	$instance->customer_meta = new Give_DB_Customer_Meta();
 
 	return $instance;
 
 }
+
 add_action( 'give_init', 'give_load_deprecated_properties', 10, 1 );
+
 /**
  * Give_DB_Customers Class (deprecated)
  *
@@ -49,7 +52,11 @@ class Give_DB_Customers extends Give_DB {
 	 * @return mixed
 	 */
 	public function __call( $name, $arguments ) {
-		$deprecated_function_arr = array( 'get_customer_by', 'give_update_donor_email_on_user_update', 'get_customers' );
+		$deprecated_function_arr = array(
+			'get_customer_by',
+			'give_update_donor_email_on_user_update',
+			'get_customers',
+		);
 
 		// If a property is renamed then it gets placed below.
 		$donors_db = new Give_DB_Donors();
@@ -57,7 +64,7 @@ class Give_DB_Customers extends Give_DB {
 		if ( in_array( $name, $deprecated_function_arr ) ) {
 			switch ( $name ) {
 				case 'get_customers':
-					$args    = ! empty( $arguments[0] ) ? $arguments[0] : array();
+					$args = ! empty( $arguments[0] ) ? $arguments[0] : array();
 
 					return $donors_db->get_donors( $args );
 				case 'get_customer_by':
@@ -103,7 +110,10 @@ class Give_Customer {
 	 * @return mixed
 	 */
 	public function __call( $name, $arguments ) {
-		$deprecated_function_arr = array('setup_customer', 'decrease_purchase_count');
+		$deprecated_function_arr = array(
+			'setup_customer',
+			'decrease_purchase_count',
+		);
 
 		// If a property is renamed then it gets placed below.
 		$customer = new Give_Donor();
@@ -111,11 +121,11 @@ class Give_Customer {
 		if ( in_array( $name, $deprecated_function_arr ) ) {
 			switch ( $name ) {
 				case 'setup_customer':
-					$donor    = ! empty( $arguments[0] ) ? $arguments[0] : array();
+					$donor = ! empty( $arguments[0] ) ? $arguments[0] : array();
 
 					return $customer->setup_donors( $donor );
 				case 'decrease_purchase_count':
-					$donor    = ! empty( $arguments[0] ) ? $arguments[0] : array();
+					$donor = ! empty( $arguments[0] ) ? $arguments[0] : array();
 
 					return $customer->decrease_donation_count( $donor );
 			}
@@ -136,6 +146,12 @@ class Give_DB_Customer_Meta {
 	 * Give_DB_Customer_Meta constructor.
 	 */
 	public function __construct() {
+		/* @var WPDB $wpdb */
+		global $wpdb;
+
+		$this->table_name  = $wpdb->prefix . 'give_customermeta';
+		$this->primary_key = 'meta_id';
+		$this->version     = '1.0';
 	}
 
 
@@ -151,17 +167,17 @@ class Give_DB_Customer_Meta {
 	 * @return mixed
 	 */
 	public function __call( $name, $arguments ) {
-		$deprecated_function_arr = array('sanitize_customer_id');
+		$deprecated_function_arr = array( 'sanitize_customer_id' );
 
 		// If a property is renamed then it gets placed below.
-		$customer = new Give_Donor();
+		$meta = new Give_DB_Donor_Meta();
 
 		if ( in_array( $name, $deprecated_function_arr ) ) {
 			switch ( $name ) {
 				case 'sanitize_customer_id':
-					$donor    = ! empty( $arguments[0] ) ? $arguments[0] : array();
+					$donor_id = ! empty( $arguments[0] ) ? $arguments[0] : '';
 
-					return $customer->sanitize_donor_id( $donor_id );
+					return $meta->sanitize_donor_id( $donor_id );
 			}
 		}
 	}

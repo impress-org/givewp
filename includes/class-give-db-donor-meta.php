@@ -74,7 +74,7 @@ class Give_DB_Donor_Meta extends Give_DB {
 	/**
 	 * Retrieve donor meta field for a donor.
 	 *
-	 * For internal use only. Use Give_Customer->get_meta() for public usage.
+	 * For internal use only. Use Give_Donor->get_meta() for public usage.
 	 *
 	 * @access  private
 	 * @since   1.6
@@ -86,7 +86,7 @@ class Give_DB_Donor_Meta extends Give_DB {
 	 * @return  mixed                 Will be an array if $single is false. Will be value of meta data field if $single is true.
 	 */
 	public function get_meta( $donor_id = 0, $meta_key = '', $single = false ) {
-		$donor_id = $this->sanitize_customer_id( $donor_id );
+		$donor_id = $this->sanitize_donor_id( $donor_id );
 		if ( false === $donor_id ) {
 			return false;
 		}
@@ -110,7 +110,7 @@ class Give_DB_Donor_Meta extends Give_DB {
 	 * @return  bool                  False for failure. True for success.
 	 */
 	public function add_meta( $donor_id = 0, $meta_key = '', $meta_value, $unique = false ) {
-		$donor_id = $this->sanitize_customer_id( $donor_id );
+		$donor_id = $this->sanitize_donor_id( $donor_id );
 		if ( false === $donor_id ) {
 			return false;
 		}
@@ -119,9 +119,9 @@ class Give_DB_Donor_Meta extends Give_DB {
 	}
 
 	/**
-	 * Update customer meta field based on Donor ID.
+	 * Update donor meta field based on Donor ID.
 	 *
-	 * For internal use only. Use Give_Customer->update_meta() for public usage.
+	 * For internal use only. Use Give_Donor->update_meta() for public usage.
 	 *
 	 * Use the $prev_value parameter to differentiate between meta fields with the
 	 * same key and Donor ID.
@@ -139,7 +139,7 @@ class Give_DB_Donor_Meta extends Give_DB {
 	 * @return  bool                  False on failure, true if success.
 	 */
 	public function update_meta( $donor_id = 0, $meta_key = '', $meta_value, $prev_value = '' ) {
-		$donor_id = $this->sanitize_customer_id( $donor_id );
+		$donor_id = $this->sanitize_donor_id( $donor_id );
 		if ( false === $donor_id ) {
 			return false;
 		}
@@ -148,7 +148,7 @@ class Give_DB_Donor_Meta extends Give_DB {
 	}
 
 	/**
-	 * Remove metadata matching criteria from a customer.
+	 * Remove metadata matching criteria from a donor.
 	 *
 	 * For internal use only. Use Give_Customer->delete_meta() for public usage.
 	 *

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @group give_customers
+ * Class Give_Tests_Donors
  */
-class Give_Tests_Customers extends Give_Unit_Test_Case {
+class Give_Tests_Donors extends Give_Unit_Test_Case {
 
 	protected $_post_id = null;
 

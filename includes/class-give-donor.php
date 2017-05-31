@@ -865,7 +865,7 @@ class Give_Donor {
 	}
 
 	/**
-	 * Retrieve customer meta field for a customer.
+	 * Retrieve a meta field for a donor.
 	 *
 	 * @since  1.6
 	 * @access public
@@ -876,11 +876,11 @@ class Give_Donor {
 	 * @return mixed            Will be an array if $single is false. Will be value of meta data field if $single is true.
 	 */
 	public function get_meta( $meta_key = '', $single = true ) {
-		return Give()->customer_meta->get_meta( $this->id, $meta_key, $single );
+		return Give()->donor_meta->get_meta( $this->id, $meta_key, $single );
 	}
 
 	/**
-	 * Add meta data field to a customer.
+	 * Add a meta data field to a donor.
 	 *
 	 * @since  1.6
 	 * @access public
@@ -892,11 +892,11 @@ class Give_Donor {
 	 * @return bool               False for failure. True for success.
 	 */
 	public function add_meta( $meta_key = '', $meta_value, $unique = false ) {
-		return Give()->customer_meta->add_meta( $this->id, $meta_key, $meta_value, $unique );
+		return Give()->donor_meta->add_meta( $this->id, $meta_key, $meta_value, $unique );
 	}
 
 	/**
-	 * Update customer meta field based on customer ID.
+	 * Update a meta field based on donor ID.
 	 *
 	 * @since  1.6
 	 * @access public
@@ -908,11 +908,11 @@ class Give_Donor {
 	 * @return bool               False on failure, true if success.
 	 */
 	public function update_meta( $meta_key = '', $meta_value, $prev_value = '' ) {
-		return Give()->customer_meta->update_meta( $this->id, $meta_key, $meta_value, $prev_value );
+		return Give()->donor_meta->update_meta( $this->id, $meta_key, $meta_value, $prev_value );
 	}
 
 	/**
-	 * Remove metadata matching criteria from a customer.
+	 * Remove metadata matching criteria from a donor.
 	 *
 	 * @since  1.6
 	 * @access public
@@ -923,7 +923,7 @@ class Give_Donor {
 	 * @return bool               False for failure. True for success.
 	 */
 	public function delete_meta( $meta_key = '', $meta_value = '' ) {
-		return Give()->customer_meta->delete_meta( $this->id, $meta_key, $meta_value );
+		return Give()->donor_meta->delete_meta( $this->id, $meta_key, $meta_value );
 	}
 
 	/**

@@ -239,7 +239,7 @@ function give_wpmu_drop_tables( $tables, $blog_id ) {
 
 	switch_to_blog( $blog_id );
 	$donors_db     = new Give_DB_Donors();
-	$donor_meta_db = new Give_DB_Customer_Meta();
+	$donor_meta_db = new Give_DB_Donor_Meta();
 
 	if ( $donors_db->installed() ) {
 		$tables[] = $donors_db->table_name;
