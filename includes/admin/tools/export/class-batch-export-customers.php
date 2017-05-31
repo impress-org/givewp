@@ -193,7 +193,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 
 			if ( $logs ) {
 				foreach ( $logs as $log ) {
-					$payment_id = get_post_meta( $log->ID, '_give_log_payment_id', true );
+					$payment_id = give_get_meta( $log->ID, '_give_log_payment_id', true );
 					$payment    = new Give_Payment( $payment_id );
 
 					// Continue if donor already included.

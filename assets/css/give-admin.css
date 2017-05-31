@@ -806,7 +806,7 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
   margin-right: -4px; }
 
 .give-money-symbol-after {
-  margin-left: -1px; }
+  margin-left: -5px; }
 
 .give_options_panel input[type="text"] {
   padding: 5px;
@@ -1118,7 +1118,7 @@ ASIDE
     display: block;
     position: absolute;
     bottom: 0;
-    left: 170px;
+    left: 166px;
     width: 170px;
     max-height: 250px;
     overflow-y: scroll; }
@@ -1713,37 +1713,6 @@ p.give-field-description, .cmb2-metabox-description {
 #give-download-sysinfo {
   margin: 0; }
 
-.cmb2-id-api .cmb-td {
-  padding: 0; }
-
-.cmb2-id-api table th {
-  padding: 10px 8px; }
-
-.cmb2-id-api .give-ajax-user-search {
-  padding: 3px 5px; }
-
-.give_user_search_wrap {
-  position: relative;
-  overflow: visible; }
-
-.give_user_search_results {
-  position: absolute;
-  left: 0;
-  top: 27px;
-  z-index: 100; }
-  .give_user_search_results a.give-ajax-user-cancel {
-    position: absolute;
-    right: 6px;
-    top: 2px; }
-  .give_user_search_results ul {
-    padding: 10px 10px 4px;
-    margin: 0;
-    background: #f0f0f0;
-    border: 1px solid #DFDFDF;
-    width: 300px;
-    max-height: 200px;
-    overflow-y: scroll; }
-
 #api .tablenav .actions {
   overflow: visible; }
 
@@ -2236,6 +2205,21 @@ input.give-price-field {
 
 .give_forms_page_give-payment-history #give-dashboard-widgets-wrap #side-sortables {
   padding-top: 0; }
+
+.give-select-chosen .spinner {
+  position: absolute;
+  right: 5px;
+  top: 2px;
+  z-index: 999; }
+
+.give-select-chosen-ajax .spinner {
+  visibility: visible; }
+
+.give-select-chosen-ajax .chosen-search input[type="text"] {
+  background-image: none !important; }
+
+.give-select-chosen-ajax.chosen-container-single .chosen-search input[type="text"] {
+  background-image: none !important; }
 
 /**
  * Give Admin Dashboard SCSS
