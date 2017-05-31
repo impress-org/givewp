@@ -160,10 +160,10 @@ function give_get_donation_form( $args = array() ) {
 				 * @param int   $form_id The form ID.
 				 * @param array $args    An array of form arguments.
 				 */
-				do_action( 'give_checkout_form_top', $form->ID, $args );
+				do_action( 'give_donation_form_top', $form->ID, $args );
 
 				/**
-				 * Fires while outputing donation form, for payment gatways fields.
+				 * Fires while outputting donation form, for payment gatways fields.
 				 *
 				 * @since 1.7
 				 *
@@ -173,14 +173,14 @@ function give_get_donation_form( $args = array() ) {
 				do_action( 'give_payment_mode_select', $form->ID, $args );
 
 				/**
-				 * Fires while outputing donation form, after all other fields.
+				 * Fires while outputting donation form, after all other fields.
 				 *
 				 * @since 1.0
 				 *
 				 * @param int   $form_id The form ID.
 				 * @param array $args    An array of form arguments.
 				 */
-				do_action( 'give_checkout_form_bottom', $form->ID, $args );
+				do_action( 'give_donation_form_bottom', $form->ID, $args );
 
 				?>
             </form>

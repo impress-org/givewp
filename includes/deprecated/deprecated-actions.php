@@ -79,6 +79,8 @@ function give_deprecated_actions() {
 		'give_donor_post_remove_email'             => 'give_customer_post_remove_email',
 		'give_donor_pre_set_primary_email'         => 'give_customer_pre_set_primary_email',
 		'give_donor_post_set_primary_email'        => 'give_customer_post_set_primary_email',
+		'give_donation_form_top'                   => 'give_checkout_form_top',
+		'give_donation_form_bottom'                   => 'give_checkout_form_bottom',
 	];
 
 	return $give_deprecated_actions;
