@@ -163,7 +163,7 @@ class Give_Customer {
 			$field = 'email';
 		}
 
-		$customer = $this->db->get_customer_by( $field, $_id_or_email );
+		$customer = $this->db->get_donor_by( $field, $_id_or_email );
 
 		if ( empty( $customer ) || ! is_object( $customer ) ) {
 			return false;
@@ -286,7 +286,7 @@ class Give_Customer {
 		if ( $this->db->add( $data ) ) {
 
 			// We've successfully added/updated the customer, reset the class vars with the new data
-			$customer = $this->db->get_customer_by( 'email', $args['email'] );
+			$customer = $this->db->get_donor_by( 'email', $args['email'] );
 
 			// Setup the customer data with the values from DB
 			$this->setup_customer( $customer );
@@ -341,7 +341,7 @@ class Give_Customer {
 
 		if ( $this->db->update( $this->id, $data ) ) {
 
-			$customer = $this->db->get_customer_by( 'id', $this->id );
+			$customer = $this->db->get_donor_by( 'id', $this->id );
 			$this->setup_customer( $customer );
 
 			$updated = true;

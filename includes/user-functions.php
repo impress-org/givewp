@@ -213,7 +213,7 @@ function give_get_purchase_stats_by_user( $user = '' ) {
 	}
 
 	$stats    = array();
-	$customer = Give()->customers->get_customer_by( $field, $user );
+	$customer = Give()->donors->get_donor_by( $field, $user );
 
 	if ( $customer ) {
 

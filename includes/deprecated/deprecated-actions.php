@@ -15,7 +15,7 @@ foreach ( $give_map_deprecated_actions as $new => $old ) {
  */
 function give_deprecated_actions() {
 
-	$give_deprecated_actions = array(
+	$give_deprecated_actions = [
 		// New action hook                            Old action hook.
 		'give_donation_form_login_fields'          => 'give_purchase_form_login_fields',
 		'give_donation_form_register_login_fields' => 'give_purchase_form_register_login_fields',
@@ -52,7 +52,8 @@ function give_deprecated_actions() {
 		'give_post_edit_donor'                     => 'give_post_edit_customer',
 		'give_pre_donor_disconnect_user_id'        => 'give_pre_customer_disconnect_user_id',
 		'give_post_donor_disconnect_user_id'       => 'give_post_customer_disconnect_user_id',
-	);
+		'give_update_donor_email_on_user_update'   => 'give_update_customer_email_on_user_update',
+	];
 
 	return $give_deprecated_actions;
 }
@@ -60,7 +61,7 @@ function give_deprecated_actions() {
 /**
  * Deprecated action mapping.
  *
- * @param mixed $data
+ * @param mixed  $data
  * @param string $arg_1
  * @param string $arg_2
  * @param string $arg_3

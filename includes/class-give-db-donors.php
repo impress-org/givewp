@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Give_DB_Donors Class
  *
- * This class is for interacting with the customers' database table.
+ * This class is for interacting with the donor database table.
  *
  * @since 1.0
  */
@@ -39,7 +39,7 @@ class Give_DB_Donors extends Give_DB {
 		$this->primary_key = 'id';
 		$this->version     = '1.0';
 		
-		add_action( 'profile_update', array( $this, 'update_customer_email_on_user_update' ), 10, 2 );
+		add_action( 'profile_update', array( $this, 'update_donor_email_on_user_update' ), 10, 2 );
 
 	}
 
@@ -112,7 +112,7 @@ class Give_DB_Donors extends Give_DB {
 			$args['payment_ids'] = implode( ',', array_unique( array_values( $args['payment_ids'] ) ) );
 		}
 
-		$customer = $this->get_customer_by( 'email', $args['email'] );
+		$customer = $this->get_donor_by( 'email', $args['email'] );
 
 		// update an existing donor.
 		if ( $customer ) {
@@ -169,7 +169,7 @@ class Give_DB_Donors extends Give_DB {
 		}
 
 		$column   = is_email( $_id_or_email ) ? 'email' : 'id';
-		$customer = $this->get_customer_by( $column, $_id_or_email );
+		$customer = $this->get_donor_by( $column, $_id_or_email );
 
 		if ( $customer->id > 0 ) {
 
@@ -230,7 +230,7 @@ class Give_DB_Donors extends Give_DB {
 	}
 
 	/**
-	 * Removes a payment ID from a donor
+	 * Removes a payment ID from a donor.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -315,7 +315,7 @@ class Give_DB_Donors extends Give_DB {
 	 *
 	 * @return bool
 	 */
-	public function update_customer_email_on_user_update( $user_id = 0, $old_user_data ) {
+	public function update_donor_email_on_user_update( $user_id = 0, $old_user_data ) {
 
 		$customer = new Give_Customer( $user_id, true );
 
@@ -327,7 +327,7 @@ class Give_DB_Donors extends Give_DB {
 
 		if( ! empty( $user ) && $user->user_email !== $customer->email ) {
 
-			if( ! $this->get_customer_by( 'email', $user->user_email ) ) {
+			if( ! $this->get_donor_by( 'email', $user->user_email ) ) {
 
 				$success = $this->update( $customer->id, array( 'email' => $user->user_email ) );
 
@@ -353,7 +353,7 @@ class Give_DB_Donors extends Give_DB {
 					 * @param  WP_User       $user     WordPress User object.
 					 * @param  Give_Customer $customer Give donor object.
 					 */
-					do_action( 'give_update_customer_email_on_user_update', $user, $customer );
+					do_action( 'give_update_donor_email_on_user_update', $user, $customer );
 
 				}
 
@@ -374,7 +374,7 @@ class Give_DB_Donors extends Give_DB {
 	 *
 	 * @return mixed         Upon success, an object of the donor. Upon failure, NULL
 	 */
-	public function get_customer_by( $field = 'id', $value = 0 ) {
+	public function get_donor_by( $field = 'id', $value = 0 ) {
 		/* @var WPDB $wpdb */
 		global $wpdb;
 

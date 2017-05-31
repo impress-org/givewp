@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @group give_customers
+ * Class Tests_Donors_DB
  */
-class Tests_Customers_DB extends Give_Unit_Test_Case {
+class Tests_Donors_DB extends Give_Unit_Test_Case {
 
 	protected $_post_id = null;
 
@@ -125,7 +125,7 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 			'date_created'   => '%s',
 		);
 
-		$this->assertEquals( $columns, Give()->customers->get_columns() );
+		$this->assertEquals( $columns, Give()->donors->get_columns() );
 	}
 
 	/**
@@ -133,10 +133,10 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 	 */
 	public function test_get_by() {
 
-		$customer = Give()->customers->get_customer_by( 'email', 'testadmin@domain.com' );
+		$donor = Give()->donors->get_donor_by( 'email', 'testadmin@domain.com' );
 
-		$this->assertInternalType( 'object', $customer );
-		$this->assertObjectHasAttribute( 'email', $customer );
+		$this->assertInternalType( 'object', $donor );
+		$this->assertObjectHasAttribute( 'email', $donor );
 
 	}
 
@@ -145,7 +145,7 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 	 */
 	public function test_get_column_by() {
 
-		$customer_id = Give()->customers->get_column_by( 'id', 'email', 'testadmin@domain.com' );
+		$customer_id = Give()->donors->get_column_by( 'id', 'email', 'testadmin@domain.com' );
 
 		$this->assertGreaterThan( 0, $customer_id );
 
@@ -156,7 +156,7 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 	 */
 	public function test_exists() {
 
-		$this->assertTrue( Give()->customers->exists( 'testadmin@domain.com' ) );
+		$this->assertTrue( Give()->donors->exists( 'testadmin@domain.com' ) );
 
 	}
 
@@ -166,7 +166,7 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 	public function test_legacy_attach_payment() {
 
 		$customer = new Give_Customer( 'testadmin@domain.com' );
-		Give()->customers->attach_payment( $customer->id, 999999 );
+		Give()->donors->attach_payment( $customer->id, 999999 );
 
 		$updated_customer = new Give_Customer( 'testadmin@domain.com' );
 		$payment_ids      = array_map( 'absint', explode( ',', $updated_customer->payment_ids ) );
@@ -181,13 +181,13 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 	public function test_legacy_remove_payment() {
 
 		$customer = new Give_Customer( 'testadmin@domain.com' );
-		Give()->customers->attach_payment( $customer->id, 91919191 );
+		Give()->donors->attach_payment( $customer->id, 91919191 );
 
 		$updated_customer = new Give_Customer( 'testadmin@domain.com' );
 		$payment_ids      = array_map( 'absint', explode( ',', $updated_customer->payment_ids ) );
 		$this->assertTrue( in_array( 91919191, $payment_ids ) );
 
-		Give()->customers->remove_payment( $updated_customer->id, 91919191 );
+		Give()->donors->remove_payment( $updated_customer->id, 91919191 );
 		$updated_customer = new Give_Customer( 'testadmin@domain.com' );
 		$payment_ids      = array_map( 'absint', explode( ',', $updated_customer->payment_ids ) );
 
@@ -205,7 +205,7 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 		$this->assertEquals( '20', $customer->purchase_value );
 		$this->assertEquals( '1', $customer->purchase_count );
 
-		Give()->customers->increment_stats( $customer->id, 10 );
+		Give()->donors->increment_stats( $customer->id, 10 );
 
 		$updated_customer = new Give_Customer( 'testadmin@domain.com' );
 
@@ -223,7 +223,7 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 		$this->assertEquals( '20', $customer->purchase_value );
 		$this->assertEquals( '1', $customer->purchase_count );
 
-		Give()->customers->decrement_stats( $customer->id, 10 );
+		Give()->donors->decrement_stats( $customer->id, 10 );
 
 		$updated_customer = new Give_Customer( 'testadmin@domain.com' );
 
@@ -236,7 +236,7 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 	 */
 	public function test_get_customers() {
 
-		$customers = Give()->customers->get_customers();
+		$customers = Give()->donors->get_customers();
 
 		$this->assertEquals( 1, count( $customers ) );
 
@@ -247,7 +247,7 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 	 */
 	public function test_count_customers() {
 
-		$this->assertEquals( 1, intval( Give()->customers->count() ) );
+		$this->assertEquals( 1, intval( Give()->donors->count() ) );
 
 		$args = array(
 			'date' => array(
@@ -256,7 +256,7 @@ class Tests_Customers_DB extends Give_Unit_Test_Case {
 			)
 		);
 
-		$this->assertEquals( 0, Give()->customers->count( $args ) );
+		$this->assertEquals( 0, Give()->donors->count( $args ) );
 
 	}
 

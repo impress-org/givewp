@@ -203,7 +203,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 
 					$this->donor_ids[] = $payment->customer_id;
 
-					$donor      = Give()->customers->get_customer_by( 'id', $payment->customer_id );
+					$donor      = Give()->donors->get_donor_by( 'id', $payment->customer_id );
 					$data[]     = $this->set_donor_data( $i, $data, $donor );
 					$i ++;
 				}

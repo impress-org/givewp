@@ -63,7 +63,7 @@ function give_edit_donor( $args ) {
 	if ( (int) $donor_info['user_id'] !== (int) $donor->user_id ) {
 
 		// Make sure we don't already have this user attached to a donor.
-		if ( ! empty( $donor_info['user_id'] ) && false !== Give()->customers->get_customer_by( 'user_id', $donor_info['user_id'] ) ) {
+		if ( ! empty( $donor_info['user_id'] ) && false !== Give()->donors->get_donor_by( 'user_id', $donor_info['user_id'] ) ) {
 			give_set_error( 'give-invalid-customer-user_id', sprintf( __( 'The User ID #%d is already associated with a different donor.', 'give' ), $donor_info['user_id'] ) );
 		}
 
