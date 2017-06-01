@@ -113,12 +113,60 @@ class Give_Customer {
 			$field = 'email';
 		}
 
-		$this->customer = $this->db->get_donor_by( $field, $_id_or_email );
+		$donor = $this->db->get_donor_by( $field, $_id_or_email );
 
 		if ( empty( $donor ) || ! is_object( $donor ) ) {
 			return false;
 		}
 
+		$this->setup_customer( $donor );
+		
+	}
+
+
+	/**
+	 * Setup Donor
+	 *
+	 * Set donor variables.
+	 *
+	 * @since  1.0
+	 * @access private
+	 *
+	 * @param  object $donor The Donor Object.
+	 *
+	 * @return bool             If the setup was successful or not.
+	 */
+	private function setup_customer( $donor ) {
+
+		if ( ! is_object( $donor ) ) {
+			return false;
+		}
+
+		foreach ( $donor as $key => $value ) {
+
+			switch ( $key ) {
+
+				case 'notes':
+					$this->$key = $this->get_notes();
+					break;
+
+				default:
+					$this->$key = $value;
+					break;
+
+			}
+		}
+
+		// Get donor's all email including primary email.
+		$this->emails = (array) $this->get_meta( 'additional_email', false );
+		$this->emails = array( 'primary' => $this->email ) + $this->emails;
+
+		// Donor ID and email are the only things that are necessary, make sure they exist.
+		if ( ! empty( $this->id ) && ! empty( $this->email ) ) {
+			return true;
+		}
+
+		return false;
 
 	}
 
@@ -136,6 +184,8 @@ class Give_Customer {
 		}
 
 	}
+
+
 
 	/**
 	 * There are certain responsibility of this function:
