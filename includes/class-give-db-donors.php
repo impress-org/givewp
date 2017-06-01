@@ -309,13 +309,13 @@ class Give_DB_Donors extends Give_DB {
 	 *
 	 * @since  1.4.3
 	 * @access public
-	 * 
-	 * @param  int     $user_id       User ID.
-	 * @param  WP_User $old_user_data User data.
+	 *
+	 * @param  int          $user_id       User ID.
+	 * @param  WP_User|bool $old_user_data User data.
 	 *
 	 * @return bool
 	 */
-	public function update_donor_email_on_user_update( $user_id = 0, $old_user_data ) {
+	public function update_donor_email_on_user_update( $user_id = 0, $old_user_data = false ) {
 
 		$donor = new Give_Donor( $user_id, true );
 
