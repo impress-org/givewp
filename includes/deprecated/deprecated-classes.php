@@ -139,7 +139,7 @@ class Give_Customer extends Give_Donor {
  *
  * @since 1.0
  */
-class Give_DB_Customer_Meta {
+class Give_DB_Customer_Meta extends Give_DB_Donor_Meta {
 
 	/**
 	 * Give_DB_Customer_Meta constructor.
