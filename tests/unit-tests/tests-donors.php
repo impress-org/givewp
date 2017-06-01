@@ -328,6 +328,9 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 
 	}
 
+	/**
+	 * Test get donation total of user.
+	 */
 	public function test_get_donation_total_of_user() {
 
 		$donation_total = give_purchase_total_of_user( $this->_user_id );
@@ -335,6 +338,9 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 		$this->assertEquals( 20, $donation_total );
 	}
 
+	/**
+	 * Test validate usernmame.
+	 */
 	public function test_validate_username() {
 		$this->assertTrue( give_validate_username( 'giveuser' ) );
 		$this->assertFalse( give_validate_username( 'give12345$%&+-!@£%^&()(*&^%$£@!' ) );
