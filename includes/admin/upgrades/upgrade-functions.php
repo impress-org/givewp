@@ -136,6 +136,15 @@ function give_show_upgrade_notices() {
 		);
 	}
 
+	// v1.8.9 Upgrades
+	if ( version_compare( $give_version, '1.8.9', '<' ) || ( ! give_has_upgrade_completed( 'upgrade_give_multi_levels_post_meta' ) ) ) {
+		printf(
+		/* translators: %s: upgrade URL */
+			'<div class="updated"><p>' . __( 'Give needs to upgrade the donation forms meta-fields in database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
+			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_give_multi_levels_post_meta' ) )
+		);
+	}
+
 	// End 'Stepped' upgrade process notices.
 	?>
 	<script>
@@ -925,3 +934,93 @@ function give_v188_upgrades() {
 
 }
 
+/**
+ * Update Post meta for minimum and maximum amount for multi level donation forms
+ *
+ * This upgrade routine adds post meta for give_forms CPT for multi level donation form.
+ *
+ * @since      1.8.9
+ */
+function give_v189_add_multi_levels_post_meta() {
+
+	$give_version = get_option( 'give_version' );
+
+	if ( ! $give_version ) {
+		// 1.0 is the first version to use this option so we must add it.
+		$give_version = '1.0';
+	}
+
+	$give_version = preg_replace( '/[^0-9.].*/', '', $give_version );
+
+	// v1.8.9 Upgrades
+	if ( version_compare( $give_version, '1.8.9', '<' ) || ! give_has_upgrade_completed( 'upgrade_give_multi_levels_post_meta' ) ) {
+
+		$args = array(
+            'post_type'         => 'give_forms',
+            'posts_per_page'    => '-1',
+            'post_status'       => 'publish',
+            'meta_query'        => array(
+                'relation'      =>  'AND',
+                array(
+                    'key'       => '_give_price_option',
+                    'value'     => 'multi',
+                    'compare'   => '='
+                ),
+	            array(
+		            'key'       => '_give_levels_minimum_amount',
+                    'compare'   => 'NOT EXISTS'
+                ),
+	            array(
+		            'key'       => '_give_levels_maximum_amount',
+		            'compare'   => 'NOT EXISTS'
+	            )
+            )
+        );
+
+		$donation_forms = new WP_Query( $args );
+
+		if ( $donation_forms->have_posts() ) {
+			while ( $donation_forms->have_posts() ) {
+				$donation_forms->the_post();
+
+				$post_id = get_the_ID();
+
+
+                $donation_levels = give_get_meta( $post_id, '_give_donation_levels', true );
+
+                if( is_array( $donation_levels ) && sizeof( $donation_levels ) > 0 ) {
+
+                    $donation_levels_amount = array();
+                    foreach ( $donation_levels as $level ) {
+                        $donation_levels_amount[] = $level['_give_amount'];
+                    }
+
+                    $donation_levels_minimum_amount = min( $donation_levels_amount );
+                    $donation_levels_maximum_amount = max( $donation_levels_amount );
+
+                    // Set Minimum and Maximum amount for Multi Level Donation Forms
+                    if( !empty($donation_levels_minimum_amount) ){
+                        give_update_meta( $post_id, '_give_levels_minimum_amount', $donation_levels_minimum_amount );
+                    }
+                    if( !empty($donation_levels_maximum_amount) ){
+                        give_update_meta( $post_id, '_give_levels_maximum_amount', $donation_levels_maximum_amount );
+                    }
+
+                }
+
+			}
+
+			/* Restore original Post Data */
+			wp_reset_postdata();
+		}
+
+		// The Update Ran.
+		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
+		give_set_upgrade_complete( 'upgrade_give_multi_levels_post_meta' );
+		delete_option( 'give_doing_upgrade' );
+
+	}// End if().
+
+}
+
+add_action( 'upgrade_give_multi_levels_post_meta', 'give_v189_add_multi_levels_post_meta' );
