@@ -222,7 +222,7 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 		$this->assertEquals( '30', $donor->purchase_value );
 		$this->assertEquals( '2', $donor->purchase_count );
 
-		$this->assertEquals( give_count_purchases_of_customer( $this->_user_id ), '2' );
+		$this->assertEquals( give_count_donations_of_donor( $this->_user_id ), '2' );
 		$this->assertEquals( give_purchase_total_of_user( $this->_user_id ), '30' );
 
 		// Make sure we hit the false conditions
@@ -244,7 +244,7 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 		$this->assertEquals( $donor->purchase_value, '10' );
 		$this->assertEquals( $donor->purchase_count, '0' );
 
-		$this->assertEquals( give_count_purchases_of_customer( $this->_user_id ), '0' );
+		$this->assertEquals( give_count_donations_of_donor( $this->_user_id ), '0' );
 		$this->assertEquals( give_purchase_total_of_user( $this->_user_id ), '10' );
 
 		// Make sure we hit the false conditions
@@ -296,12 +296,12 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 		$this->assertInternalType( 'object', $out[0] );
 		$this->assertEquals( 'give_payment', $out[0]->post_type );
 		$this->assertTrue( give_has_purchases( $this->_user_id ) );
-		$this->assertEquals( 1, give_count_purchases_of_customer( $this->_user_id ) );
+		$this->assertEquals( 1, give_count_donations_of_donor( $this->_user_id ) );
 
 		$no_user = give_get_users_purchases( 0 );
 		$this->assertFalse( $no_user );
 
-		$no_user_count = give_count_purchases_of_customer();
+		$no_user_count = give_count_donations_of_donor();
 		$this->assertEquals( 0, $no_user_count );
 
 	}

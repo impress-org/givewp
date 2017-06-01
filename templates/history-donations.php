@@ -102,7 +102,7 @@ if ( $donations ) : ?>
 			'base'    => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
 			'format'  => '?paged=%#%',
 			'current' => max( 1, get_query_var( 'paged' ) ),
-			'total'   => ceil( give_count_purchases_of_customer() / 20 ) // 20 items per page
+			'total'   => ceil( give_count_donations_of_donor() / 20 ) // 20 items per page
 		) );
 		?>
     </div>

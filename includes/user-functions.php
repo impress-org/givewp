@@ -236,18 +236,18 @@ function give_get_purchase_stats_by_user( $user = '' ) {
 
 
 /**
- * Count number of donations of a donor
+ * Count number of donations of a donor.
  *
- * Returns total number of donations a donor has made
+ * Returns total number of donations a donor has made.
  *
  * @access      public
  * @since       1.0
  *
  * @param       int|string $user The ID or email of the donor.
  *
- * @return      int The total number of donations
+ * @return      int The total number of donations.
  */
-function give_count_purchases_of_customer( $user = null ) {
+function give_count_donations_of_donor( $user = null ) {
 
 	// Logged in?
 	if ( empty( $user ) ) {

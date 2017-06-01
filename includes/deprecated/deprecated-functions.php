@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Checks if Guest checkout is enabled for a particular donation form
  *
- * @since 1.0
+ * @since      1.0
  * @deprecated 1.4.1
  *
  * @param int $form_id
@@ -172,7 +172,7 @@ function give_get_purchase_cc_info() {
  * @since      1.0
  * @deprecated 1.8.8
  *
- * @param int $zip
+ * @param int    $zip
  * @param string $country_code
  */
 function give_purchase_form_validate_cc_zip( $zip = 0, $country_code = '' ) {
@@ -262,7 +262,7 @@ function give_get_purchase_form_user( $valid_data = array() ) {
  *
  * Renders the button on the Checkout.
  *
- * @since  1.0
+ * @since      1.0
  * @deprecated 1.8.8
  *
  * @param  int $form_id The form ID.
@@ -293,7 +293,7 @@ function give_get_payment_customer_id( $payment_id ) {
 
 	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_get_payment_donor_id', $backtrace );
 
-	return give_get_payment_donor_id( $payment_id ) ;
+	return give_get_payment_donor_id( $payment_id );
 }
 
 
@@ -311,4 +311,26 @@ function give_get_total_sales() {
 	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_get_total_donations', $backtrace );
 
 	return give_get_total_donations();
+}
+
+
+/**
+ * Count number of donations of a donor.
+ *
+ * Returns total number of donations a donor has made.
+ *
+ * @access      public
+ * @since       1.0
+ *
+ * @param       int|string $user The ID or email of the donor.
+ *
+ * @return      int The total number of donations
+ */
+function give_count_purchases_of_customer( $user = null ) {
+
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_count_donations_of_donor', $backtrace );
+
+	return give_count_donations_of_donor( $user );
 }
