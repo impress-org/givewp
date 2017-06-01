@@ -278,7 +278,6 @@ function give_checkout_button_purchase( $form_id ) {
 
 }
 
-
 /**
  * Get the donor ID associated with a payment.
  *
@@ -295,4 +294,21 @@ function give_get_payment_customer_id( $payment_id ) {
 	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_get_payment_donor_id', $backtrace );
 
 	return give_get_payment_donor_id( $payment_id ) ;
+}
+
+
+/**
+ * Get Total Donations.
+ *
+ * @since  1.0
+ *
+ * @return int $count Total sales.
+ */
+function give_get_total_sales() {
+
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_get_total_donations', $backtrace );
+
+	return give_get_total_donations();
 }

@@ -2009,7 +2009,7 @@ class Give_API {
 		$sales['donations']['today']         = $this->stats->get_sales( 0, 'today' );
 		$sales['donations']['current_month'] = $this->stats->get_sales( 0, 'this_month' );
 		$sales['donations']['last_month']    = $this->stats->get_sales( 0, 'last_month' );
-		$sales['donations']['totals']        = give_get_total_sales();
+		$sales['donations']['totals']        = give_get_total_donations();
 
 		return $sales;
 	}

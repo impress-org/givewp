@@ -839,9 +839,9 @@ function give_is_payment_complete( $payment_id ) {
  *
  * @since  1.0
  *
- * @return int $count Total sales.
+ * @return int $count Total number of donations.
  */
-function give_get_total_sales() {
+function give_get_total_donations() {
 
 	$payments = give_count_payments();
 

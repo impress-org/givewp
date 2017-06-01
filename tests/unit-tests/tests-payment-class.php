@@ -228,7 +228,7 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		$sales    = $form->sales;
 
 		$site_earnings = give_get_total_earnings();
-		$site_sales    = give_get_total_sales();
+		$site_sales    = give_get_total_donations();
 		$payment->refund();
 
 		wp_cache_flush();
@@ -243,7 +243,7 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		$this->assertEquals( $sales - 1, $form2->sales );
 
 		$this->assertEquals( $site_earnings - $payment->total, give_get_total_earnings() );
-		$this->assertEquals( $site_sales - 1, give_get_total_sales() );
+		$this->assertEquals( $site_sales - 1, give_get_total_donations() );
 	}
 
 	/**
@@ -294,7 +294,7 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		$form_earnings = $form->earnings;
 
 		$site_earnings = give_get_total_earnings();
-		$site_sales    = give_get_total_sales();
+		$site_sales    = give_get_total_donations();
 
 		$payment->refund();
 		wp_cache_flush();
@@ -309,7 +309,7 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		$this->assertEquals( $form_sales - 1, $form->sales );
 
 		$this->assertEquals( $site_earnings - $payment->total, give_get_total_earnings() );
-		$this->assertEquals( $site_sales - 1, give_get_total_sales() );
+		$this->assertEquals( $site_sales - 1, give_get_total_donations() );
 	}
 
 	/**
@@ -337,7 +337,7 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		$form_earnings = $form->earnings;
 
 		$site_earnings = give_get_total_earnings();
-		$site_sales    = give_get_total_sales();
+		$site_sales    = give_get_total_donations();
 
 		$payment->refund();
 		wp_cache_flush();
@@ -353,7 +353,7 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 
 		$this->assertEquals( $site_earnings, give_get_total_earnings() );
 		// Site sales are based off 'publish' & 'revoked' status. So it reduces this count
-		$this->assertEquals( $site_sales - 1, give_get_total_sales() );
+		$this->assertEquals( $site_sales - 1, give_get_total_donations() );
 
 		remove_filter( 'give_decrease_earnings_on_undo', '__return_false' );
 		remove_filter( 'give_decrease_donation_on_undo', '__return_false' );
@@ -380,7 +380,7 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		$form_earnings = $form->earnings;
 
 		$site_earnings = give_get_total_earnings();
-		$site_sales    = give_get_total_sales();
+		$site_sales    = give_get_total_donations();
 
 		$payment->status = 'pending';
 		$payment->save();
@@ -399,7 +399,7 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		$this->assertEquals( $form_sales - 1, $form->sales );
 
 		$this->assertEquals( $site_earnings - $payment->total, give_get_total_earnings() );
-		$this->assertEquals( $site_sales - 1, give_get_total_sales() );
+		$this->assertEquals( $site_sales - 1, give_get_total_donations() );
 	}
 
 	/**
@@ -426,7 +426,7 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		$form_earnings = $form->earnings;
 
 		$site_earnings = give_get_total_earnings();
-		$site_sales    = give_get_total_sales();
+		$site_sales    = give_get_total_donations();
 
 		$payment->status = 'pending';
 		$payment->save();
@@ -446,7 +446,7 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 
 		$this->assertEquals( $site_earnings, give_get_total_earnings() );
 		// Store sales are based off 'publish' & 'revoked' status. So it reduces this count
-		$this->assertEquals( $site_sales - 1, give_get_total_sales() );
+		$this->assertEquals( $site_sales - 1, give_get_total_donations() );
 
 		remove_filter( 'give_decrease_earnings_on_undo', '__return_false' );
 		remove_filter( 'give_decrease_donation_on_undo', '__return_false' );
