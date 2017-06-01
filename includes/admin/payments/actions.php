@@ -69,8 +69,8 @@ function give_update_payment_details( $data ) {
 	$new_total  = give_sanitize_amount( $data['give-payment-total'] );
 	$date       = date( 'Y-m-d', strtotime( $date ) ) . ' ' . $hour . ':' . $minute . ':00';
 
-	$curr_customer_id = sanitize_text_field( $data['give-current-customer'] );
-	$new_customer_id  = sanitize_text_field( $data['donor-id'] );
+	$curr_donor_id = sanitize_text_field( $data['give-current-customer'] );
+	$new_donor_id  = sanitize_text_field( $data['donor-id'] );
 
 	/**
 	 * Fires before updating edited donation.
@@ -110,30 +110,30 @@ function give_update_payment_details( $data ) {
 			if ( ! $donor->create( $donor_data ) ) {
 				// Failed to crete the new donor, assume the previous donor.
 				$donor_changed = false;
-				$donor         = new Give_Donor( $curr_customer_id );
+				$donor         = new Give_Donor( $curr_donor_id );
 				give_set_error( 'give-payment-new-customer-fail', esc_html__( 'Error creating new donor.', 'give' ) );
 			}
 		}
 
-		$new_customer_id = $donor->id;
+		$new_donor_id = $donor->id;
 
-		$previous_customer = new Give_Donor( $curr_customer_id );
+		$previous_donor = new Give_Donor( $curr_donor_id );
 
 		$donor_changed = true;
 
-	} elseif ( $curr_customer_id !== $new_customer_id ) {
+	} elseif ( $curr_donor_id !== $new_donor_id ) {
 
-		$donor = new Give_Donor( $new_customer_id );
+		$donor = new Give_Donor( $new_donor_id );
 		$email    = $donor->email;
 		$names    = $donor->name;
 
-		$previous_customer = new Give_Donor( $curr_customer_id );
+		$previous_donor = new Give_Donor( $curr_donor_id );
 
 		$donor_changed = true;
 
 	} else {
 
-		$donor = new Give_Donor( $curr_customer_id );
+		$donor = new Give_Donor( $curr_donor_id );
 		$email    = $donor->email;
 		$names    = $donor->name;
 
@@ -151,14 +151,14 @@ function give_update_payment_details( $data ) {
 	if ( $donor_changed ) {
 
 		// Remove the stats and payment from the previous customer and attach it to the new customer.
-		$previous_customer->remove_payment( $payment_id, false );
+		$previous_donor->remove_payment( $payment_id, false );
 		$donor->attach_payment( $payment_id, false );
 
 		if ( 'publish' == $status ) {
 
 			// Reduce previous user donation count and amount.
-			$previous_customer->decrease_donation_count();
-			$previous_customer->decrease_value( $curr_total );
+			$previous_donor->decrease_donation_count();
+			$previous_donor->decrease_value( $curr_total );
 
 			// If donation was completed adjust stats of new customers.
 			$donor->increase_purchase_count();
@@ -288,7 +288,7 @@ function give_update_payment_details( $data ) {
 	 *
 	 * @param int $payment_id The ID of the payment.
 	 */
-	do_action( 'give_updated_edited_purchase', $payment_id );
+	do_action( 'give_update_edited_donation', $payment_id );
 
 	wp_safe_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&give-message=payment-updated&id=' . $payment_id ) );
 	exit;
