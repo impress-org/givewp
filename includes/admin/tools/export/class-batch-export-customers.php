@@ -265,7 +265,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 	 *
 	 * @param int           $i
 	 * @param array         $data
-	 * @param Give_Customer $donor
+	 * @param Give_Donor $donor
 	 *
 	 * @return mixed
 	 */

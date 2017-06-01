@@ -150,7 +150,7 @@ class Give_DB_Donor_Meta extends Give_DB {
 	/**
 	 * Remove metadata matching criteria from a donor.
 	 *
-	 * For internal use only. Use Give_Customer->delete_meta() for public usage.
+	 * For internal use only. Use Give_Donor->delete_meta() for public usage.
 	 *
 	 * You can match based on the key, or key and value. Removing based on key and
 	 * value, will keep from removing duplicate metadata with the same key. It also

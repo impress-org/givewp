@@ -112,122 +112,122 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 	/**
 	 * Test Add Customer
 	 *
-	 * @covers Give_Customer::create
+	 * @covers Give_Donor::create
 	 */
 	public function test_add_customer() {
 
 		$test_email = 'testaccount@domain.com';
 
-		$customer = new Give_Donor( $test_email );
-		$this->assertEquals( 0, $customer->id );
+		$donor = new Give_Donor( $test_email );
+		$this->assertEquals( 0, $donor->id );
 
 		$data = array( 'email' => $test_email );
 
-		$customer_id = $customer->create( $data );
-		$this->assertTrue( is_numeric( $customer_id ) );
-		$this->assertEquals( $customer->email, $test_email );
-		$this->assertEquals( $customer->id, $customer_id );
+		$donor_id = $donor->create( $data );
+		$this->assertTrue( is_numeric( $donor_id ) );
+		$this->assertEquals( $donor->email, $test_email );
+		$this->assertEquals( $donor->id, $donor_id );
 
 	}
 
 	/**
 	 * Test Update Customer
 	 *
-	 * @covers Give_Customer::update
+	 * @covers Give_Donor::update
 	 */
 	public function test_update_customer() {
 
 		$test_email = 'testaccount2@domain.com';
 
-		$customer    = new Give_Donor( $test_email );
-		$customer_id = $customer->create( array( 'email' => $test_email ) );
-		$this->assertEquals( $customer_id, $customer->id );
+		$donor    = new Give_Donor( $test_email );
+		$donor_id = $donor->create( array( 'email' => $test_email ) );
+		$this->assertEquals( $donor_id, $donor->id );
 
 		$data_to_update = array( 'email' => 'testaccountupdated@domain.com', 'name' => 'Test Account' );
-		$customer->update( $data_to_update );
-		$this->assertEquals( 'testaccountupdated@domain.com', $customer->email );
-		$this->assertEquals( 'Test Account', $customer->name );
+		$donor->update( $data_to_update );
+		$this->assertEquals( 'testaccountupdated@domain.com', $donor->email );
+		$this->assertEquals( 'Test Account', $donor->name );
 
 		// Verify if we have an empty array we get false
-		$this->assertFalse( $customer->update() );
+		$this->assertFalse( $donor->update() );
 
 	}
 
 	/**
 	 * Test Magic Get Method
 	 *
-	 * @covers Give_Customer::__get
+	 * @covers Give_Donor::__get
 	 */
 	public function test_magic_get_method() {
 
-		$customer = new Give_Donor( 'testadmin@domain.com' );
-		$this->assertEquals( 'testadmin@domain.com', $customer->email );
-		$this->assertTrue( is_wp_error( $customer->__get( 'asdf' ) ) );
+		$donor = new Give_Donor( 'testadmin@domain.com' );
+		$this->assertEquals( 'testadmin@domain.com', $donor->email );
+		$this->assertTrue( is_wp_error( $donor->__get( 'asdf' ) ) );
 
 	}
 
 	public function test_attach_payment() {
 
-		$customer = new Give_Donor( 'testadmin@domain.com' );
-		$customer->attach_payment( 5222222 );
+		$donor = new Give_Donor( 'testadmin@domain.com' );
+		$donor->attach_payment( 5222222 );
 
-		$payment_ids = array_map( 'absint', explode( ',', $customer->payment_ids ) );
+		$payment_ids = array_map( 'absint', explode( ',', $donor->payment_ids ) );
 
 		$this->assertTrue( in_array( 5222222, $payment_ids ) );
 
 		// Verify if we don't send a payment, we get false
-		$this->assertFalse( $customer->attach_payment() );
+		$this->assertFalse( $donor->attach_payment() );
 
 	}
 
 	public function test_attach_duplicate_payment() {
 
 		// Verify that if we pass a payment that's already attached we do not change stats
-		$customer = new Give_Donor( 'testadmin@domain.com' );
-		$payments = array_map( 'absint', explode( ',', $customer->payment_ids ) );
+		$donor = new Give_Donor( 'testadmin@domain.com' );
+		$payments = array_map( 'absint', explode( ',', $donor->payment_ids ) );
 
-		$expected_purcahse_count = $customer->purchase_count;
-		$expected_purcahse_value = $customer->purchase_value;
+		$expected_purcahse_count = $donor->purchase_count;
+		$expected_purcahse_value = $donor->purchase_value;
 
-		$customer->attach_payment( $payments[0] );
-		$this->assertEquals( $expected_purcahse_count, $customer->purchase_count );
-		$this->assertEquals( $expected_purcahse_value, $customer->purchase_value );
+		$donor->attach_payment( $payments[0] );
+		$this->assertEquals( $expected_purcahse_count, $donor->purchase_count );
+		$this->assertEquals( $expected_purcahse_value, $donor->purchase_value );
 
 	}
 
 	public function test_remove_payment() {
 
-		$customer = new Give_Donor( 'testadmin@domain.com' );
-		$customer->attach_payment( 5222223, false );
+		$donor = new Give_Donor( 'testadmin@domain.com' );
+		$donor->attach_payment( 5222223, false );
 
-		$payment_ids = array_map( 'absint', explode( ',', $customer->payment_ids ) );
+		$payment_ids = array_map( 'absint', explode( ',', $donor->payment_ids ) );
 		$this->assertTrue( in_array( 5222223, $payment_ids ) );
 
-		$customer->remove_payment( 5222223, false );
+		$donor->remove_payment( 5222223, false );
 
-		$payment_ids = array_map( 'absint', explode( ',', $customer->payment_ids ) );
+		$payment_ids = array_map( 'absint', explode( ',', $donor->payment_ids ) );
 		$this->assertFalse( in_array( 5222223, $payment_ids ) );
 	}
 
 	public function test_increment_stats() {
 
-		$customer = new Give_Donor( 'testadmin@domain.com' );
+		$donor = new Give_Donor( 'testadmin@domain.com' );
 
-		$this->assertEquals( '20', $customer->purchase_value );
-		$this->assertEquals( '1', $customer->purchase_count );
+		$this->assertEquals( '20', $donor->purchase_value );
+		$this->assertEquals( '1', $donor->purchase_count );
 
-		$customer->increase_purchase_count();
-		$customer->increase_value( 10 );
+		$donor->increase_purchase_count();
+		$donor->increase_value( 10 );
 
-		$this->assertEquals( '30', $customer->purchase_value );
-		$this->assertEquals( '2', $customer->purchase_count );
+		$this->assertEquals( '30', $donor->purchase_value );
+		$this->assertEquals( '2', $donor->purchase_count );
 
 		$this->assertEquals( give_count_purchases_of_customer( $this->_user_id ), '2' );
 		$this->assertEquals( give_purchase_total_of_user( $this->_user_id ), '30' );
 
 		// Make sure we hit the false conditions
-		$this->assertFalse( $customer->increase_purchase_count( - 1 ) );
-		$this->assertFalse( $customer->increase_purchase_count( 'abc' ) );
+		$this->assertFalse( $donor->increase_purchase_count( - 1 ) );
+		$this->assertFalse( $donor->increase_purchase_count( 'abc' ) );
 
 	}
 
@@ -236,55 +236,55 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 	 */
 	public function test_decrement_stats() {
 
-		$customer = new Give_Donor( 'testadmin@domain.com' );
+		$donor = new Give_Donor( 'testadmin@domain.com' );
 
-		$customer->decrease_donation_count();
-		$customer->decrease_value( 10 );
+		$donor->decrease_donation_count();
+		$donor->decrease_value( 10 );
 
-		$this->assertEquals( $customer->purchase_value, '10' );
-		$this->assertEquals( $customer->purchase_count, '0' );
+		$this->assertEquals( $donor->purchase_value, '10' );
+		$this->assertEquals( $donor->purchase_count, '0' );
 
 		$this->assertEquals( give_count_purchases_of_customer( $this->_user_id ), '0' );
 		$this->assertEquals( give_purchase_total_of_user( $this->_user_id ), '10' );
 
 		// Make sure we hit the false conditions
-		$this->assertFalse( $customer->decrease_donation_count( - 1 ) );
-		$this->assertFalse( $customer->decrease_donation_count( 'abc' ) );
+		$this->assertFalse( $donor->decrease_donation_count( - 1 ) );
+		$this->assertFalse( $donor->decrease_donation_count( 'abc' ) );
 
-		$customer->decrease_donation_count( 100 );
-		$customer->decrease_value( 100000 );
+		$donor->decrease_donation_count( 100 );
+		$donor->decrease_value( 100000 );
 
-		$this->assertEquals( intval( $customer->purchase_value ), intval( '0' ) );
-		$this->assertEquals( intval( $customer->purchase_count ), intval( '0' ) );
+		$this->assertEquals( intval( $donor->purchase_value ), intval( '0' ) );
+		$this->assertEquals( intval( $donor->purchase_count ), intval( '0' ) );
 
 	}
 
-	public function test_customer_notes() {
+	public function test_donor_notes() {
 
-		$customer = new Give_Donor( 'testadmin@domain.com' );
+		$donor = new Give_Donor( 'testadmin@domain.com' );
 
-		$this->assertInternalType( 'array', $customer->notes );
-		$this->assertEquals( 0, $customer->get_notes_count() );
+		$this->assertInternalType( 'array', $donor->notes );
+		$this->assertEquals( 0, $donor->get_notes_count() );
 
-		$note_1 = $customer->add_note( 'Testing' );
-		$this->assertEquals( 0, array_search( $note_1, $customer->notes ) );
-		$this->assertEquals( 1, $customer->get_notes_count() );
+		$note_1 = $donor->add_note( 'Testing' );
+		$this->assertEquals( 0, array_search( $note_1, $donor->notes ) );
+		$this->assertEquals( 1, $donor->get_notes_count() );
 
-		$note_2 = $customer->add_note( 'Test 2nd Note' );
-		$this->assertEquals( 1, array_search( $note_1, $customer->notes ) );
-		$this->assertEquals( 0, array_search( $note_2, $customer->notes ) );
-		$this->assertEquals( 2, $customer->get_notes_count() );
+		$note_2 = $donor->add_note( 'Test 2nd Note' );
+		$this->assertEquals( 1, array_search( $note_1, $donor->notes ) );
+		$this->assertEquals( 0, array_search( $note_2, $donor->notes ) );
+		$this->assertEquals( 2, $donor->get_notes_count() );
 
 		// Verify we took out all empty rows
-		$this->assertEquals( count( $customer->notes ), count( array_values( $customer->notes ) ) );
+		$this->assertEquals( count( $donor->notes ), count( array_values( $donor->notes ) ) );
 
 		// Test 1 note per page, page 1
-		$newest_note = $customer->get_notes( 1 );
+		$newest_note = $donor->get_notes( 1 );
 		$this->assertEquals( 1, count( $newest_note ) );
 		$this->assertEquals( $newest_note[0], $note_2 );
 
 		// Test 1 note per page, page 2
-		$second_note = $customer->get_notes( 1, 2 );
+		$second_note = $donor->get_notes( 1, 2 );
 		$this->assertEquals( 1, count( $second_note ) );
 		$this->assertEquals( $second_note[0], $note_1 );
 	}

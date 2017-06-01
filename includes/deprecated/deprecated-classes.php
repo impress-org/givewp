@@ -85,7 +85,7 @@ class Give_DB_Customers extends Give_DB {
 
 
 /**
- * Give_Customers Class (Deprecated)
+ * Give_Donors Class (Deprecated)
  *
  * @since 1.0
  */

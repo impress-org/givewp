@@ -351,7 +351,7 @@ class Give_DB_Donors extends Give_DB {
 					 * @since 1.4.3
 					 * 
 					 * @param  WP_User       $user     WordPress User object.
-					 * @param  Give_Customer $donor Give donor object.
+					 * @param  Give_Donor $donor Give donor object.
 					 */
 					do_action( 'give_update_donor_email_on_user_update', $user, $donor );
 
