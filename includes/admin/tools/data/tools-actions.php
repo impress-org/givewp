@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Register the recount batch processor
+ * Register the recount batch processor.
  *
  * @since  1.5
  */
@@ -27,11 +27,11 @@ add_action( 'give_register_batch_exporter', 'give_register_batch_recount_export_
 
 
 /**
- * Loads the tools batch processing classes
+ * Loads the tools batch processing classes.
  *
  * @since  1.8
  *
- * @param  string $class The class being requested to run for the batch export
+ * @param  string $class The class being requested to run for the batch export.
  *
  * @return void
  */

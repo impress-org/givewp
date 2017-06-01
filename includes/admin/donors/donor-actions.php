@@ -64,7 +64,7 @@ function give_edit_donor( $args ) {
 
 		// Make sure we don't already have this user attached to a donor.
 		if ( ! empty( $donor_info['user_id'] ) && false !== Give()->donors->get_donor_by( 'user_id', $donor_info['user_id'] ) ) {
-			give_set_error( 'give-invalid-customer-user_id', sprintf( __( 'The User ID #%d is already associated with a different donor.', 'give' ), $donor_info['user_id'] ) );
+			give_set_error( 'give-invalid-donor-user_id', sprintf( __( 'The User ID #%d is already associated with a different donor.', 'give' ), $donor_info['user_id'] ) );
 		}
 
 		// Make sure it's actually a user.
@@ -194,9 +194,9 @@ add_action( 'give_edit-donor', 'give_edit_donor', 10, 1 );
  */
 function give_donor_save_note( $args ) {
 
-	$customer_view_role = apply_filters( 'give_view_donors_role', 'view_give_reports' );
+	$donor_view_role = apply_filters( 'give_view_donors_role', 'view_give_reports' );
 
-	if ( ! is_admin() || ! current_user_can( $customer_view_role ) ) {
+	if ( ! is_admin() || ! current_user_can( $donor_view_role ) ) {
 		wp_die( __( 'You do not have permission to edit this donor.', 'give' ), __( 'Error', 'give' ), array(
 			'response' => 403,
 		) );
@@ -206,9 +206,9 @@ function give_donor_save_note( $args ) {
 		return false;
 	}
 
-	$donor_note  = trim( sanitize_text_field( $args['donor_note'] ) );
-	$donor_id = (int) $args['customer_id'];
-	$nonce       = $args['add_donor_note_nonce'];
+	$donor_note = trim( sanitize_text_field( $args['donor_note'] ) );
+	$donor_id   = (int) $args['customer_id'];
+	$nonce      = $args['add_donor_note_nonce'];
 
 	if ( ! wp_verify_nonce( $nonce, 'add-donor-note' ) ) {
 		wp_die( __( 'Cheatin&#8217; uh?', 'give' ), __( 'Error', 'give' ), array(
@@ -224,8 +224,8 @@ function give_donor_save_note( $args ) {
 		return false;
 	}
 
-	$customer = new Give_Donor( $donor_id );
-	$new_note = $customer->add_note( $donor_note );
+	$donor    = new Give_Donor( $donor_id );
+	$new_note = $donor->add_note( $donor_note );
 
 	/**
 	 * Fires before inserting donor note.
@@ -233,11 +233,11 @@ function give_donor_save_note( $args ) {
 	 * @since 1.0
 	 *
 	 * @param int    $donor_id The ID of the donor.
-	 * @param string $new_note    Note content.
+	 * @param string $new_note Note content.
 	 */
 	do_action( 'give_pre_insert_donor_note', $donor_id, $new_note );
 
-	if ( ! empty( $new_note ) && ! empty( $customer->id ) ) {
+	if ( ! empty( $new_note ) && ! empty( $donor->id ) ) {
 
 		ob_start();
 		?>
@@ -352,7 +352,7 @@ function give_donor_delete( $args ) {
 		}
 	} else {
 
-		give_set_error( 'give-customer-delete-invalid-id', esc_html__( 'Invalid Donor ID.', 'give' ) );
+		give_set_error( 'give-donor-delete-invalid-id', esc_html__( 'Invalid Donor ID.', 'give' ) );
 		$redirect = admin_url( 'edit.php?post_type=give_forms&page=give-donors' );
 
 	}
@@ -460,7 +460,7 @@ add_action( 'give_disconnect-userid', 'give_disconnect_donor_user_id', 10, 1 );
  *
  * @since  1.7
  *
- * @param  array $args Array of arguments: nonce, customer id, and email address.
+ * @param  array $args Array of arguments: nonce, donor id, and email address.
  *
  * @return mixed        If DOING_AJAX echos out JSON, otherwise returns array of success (bool) and message (string).
  */
@@ -528,7 +528,7 @@ function give_add_donor_email( $args ) {
 		}
 	}// End if().
 
-	do_action( 'give_post_add_customer_email', $donor_id, $args );
+	do_action( 'give_post_add_donor_email', $donor_id, $args );
 
 	if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 		header( 'Content-Type: application/json' );

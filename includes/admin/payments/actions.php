@@ -79,7 +79,7 @@ function give_update_payment_details( $data ) {
 	 *
 	 * @param int $payment_id The ID of the payment.
 	 */
-	do_action( 'give_update_edited_purchase', $payment_id );
+	do_action( 'give_update_edited_donation', $payment_id );
 
 	$payment->date = $date;
 	$updated       = $payment->save();
@@ -88,7 +88,7 @@ function give_update_payment_details( $data ) {
 		wp_die( esc_html__( 'Error Updating Donation.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
 	}
 
-	$customer_changed = false;
+	$donor_changed = false;
 
 	if ( isset( $data['give-new-customer'] ) && $data['give-new-customer'] == '1' ) {
 
@@ -99,43 +99,43 @@ function give_update_payment_details( $data ) {
 			wp_die( esc_html__( 'New Customers require a name and email address.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
 		}
 
-		$customer = new Give_Donor( $email );
-		if ( empty( $customer->id ) ) {
-			$customer_data = array( 'name' => $names, 'email' => $email );
+		$donor = new Give_Donor( $email );
+		if ( empty( $donor->id ) ) {
+			$donor_data = array( 'name' => $names, 'email' => $email );
 			$user_id       = email_exists( $email );
 			if ( false !== $user_id ) {
-				$customer_data['user_id'] = $user_id;
+				$donor_data['user_id'] = $user_id;
 			}
 
-			if ( ! $customer->create( $customer_data ) ) {
+			if ( ! $donor->create( $donor_data ) ) {
 				// Failed to crete the new donor, assume the previous donor.
-				$customer_changed = false;
-				$customer         = new Give_Donor( $curr_customer_id );
+				$donor_changed = false;
+				$donor         = new Give_Donor( $curr_customer_id );
 				give_set_error( 'give-payment-new-customer-fail', esc_html__( 'Error creating new donor.', 'give' ) );
 			}
 		}
 
-		$new_customer_id = $customer->id;
+		$new_customer_id = $donor->id;
 
 		$previous_customer = new Give_Donor( $curr_customer_id );
 
-		$customer_changed = true;
+		$donor_changed = true;
 
 	} elseif ( $curr_customer_id !== $new_customer_id ) {
 
-		$customer = new Give_Donor( $new_customer_id );
-		$email    = $customer->email;
-		$names    = $customer->name;
+		$donor = new Give_Donor( $new_customer_id );
+		$email    = $donor->email;
+		$names    = $donor->name;
 
 		$previous_customer = new Give_Donor( $curr_customer_id );
 
-		$customer_changed = true;
+		$donor_changed = true;
 
 	} else {
 
-		$customer = new Give_Donor( $curr_customer_id );
-		$email    = $customer->email;
-		$names    = $customer->name;
+		$donor = new Give_Donor( $curr_customer_id );
+		$email    = $donor->email;
+		$names    = $donor->name;
 
 	}
 
@@ -148,11 +148,11 @@ function give_update_payment_details( $data ) {
 		$last_name = implode( ' ', $names );
 	}
 
-	if ( $customer_changed ) {
+	if ( $donor_changed ) {
 
 		// Remove the stats and payment from the previous customer and attach it to the new customer.
 		$previous_customer->remove_payment( $payment_id, false );
-		$customer->attach_payment( $payment_id, false );
+		$donor->attach_payment( $payment_id, false );
 
 		if ( 'publish' == $status ) {
 
@@ -161,22 +161,22 @@ function give_update_payment_details( $data ) {
 			$previous_customer->decrease_value( $curr_total );
 
 			// If donation was completed adjust stats of new customers.
-			$customer->increase_purchase_count();
-			$customer->increase_value( $new_total );
+			$donor->increase_purchase_count();
+			$donor->increase_value( $new_total );
 		}
 
-		$payment->customer_id = $customer->id;
+		$payment->customer_id = $donor->id;
 	} else {
 
 		if ( 'publish' === $status ) {
 			// Update user donation stat.
-			$customer->update_donation_value( $curr_total, $new_total );
+			$donor->update_donation_value( $curr_total, $new_total );
 		}
 	}
 
 	// Set new meta values.
-	$payment->user_id    = $customer->user_id;
-	$payment->email      = $customer->email;
+	$payment->user_id    = $donor->user_id;
+	$payment->email      = $donor->email;
 	$payment->first_name = $first_name;
 	$payment->last_name  = $last_name;
 	$payment->address    = $address;
