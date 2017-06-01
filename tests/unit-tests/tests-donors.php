@@ -17,28 +17,34 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 	public function setUp() {
 		parent::setUp();
 
-		//Create a Donation Form
+		// Create a Donation Form
 		$this->_post_id = $this->factory->post->create( array(
 			'post_title'  => 'Test Form',
 			'post_type'   => 'give_forms',
-			'post_status' => 'publish'
+			'post_status' => 'publish',
 		) );
 
 		$_multi_level_donations = array(
 			array(
-				'_give_id'     => array( 'level_id' => '1' ),
+				'_give_id'     => array(
+					'level_id' => '1',
+				),
 				'_give_amount' => '10.00',
-				'_give_text'   => 'Basic Level'
+				'_give_text'   => 'Basic Level',
 			),
 			array(
-				'_give_id'     => array( 'level_id' => '2' ),
+				'_give_id'     => array(
+					'level_id' => '2',
+				),
 				'_give_amount' => '20.00',
-				'_give_text'   => 'Intermediate Level'
+				'_give_text'   => 'Intermediate Level',
 			),
 			array(
-				'_give_id'     => array( 'level_id' => '3' ),
+				'_give_id'     => array(
+					'level_id' => '3',
+				),
 				'_give_amount' => '40.00',
-				'_give_text'   => 'Advanced Level'
+				'_give_text'   => 'Advanced Level',
 			),
 		);
 
@@ -47,30 +53,32 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 			'_give_price_option'    => 'multi',
 			'_give_donation_levels' => array_values( $_multi_level_donations ),
 			'give_product_notes'    => 'Donation Notes',
-			'_give_product_type'    => 'default'
+			'_give_product_type'    => 'default',
 		);
 		foreach ( $meta as $key => $value ) {
 			give_update_meta( $this->_post_id, $key, $value );
 		}
 
-		//Generate Donations
-		$this->_user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
+		// Generate Donations
+		$this->_user_id = $this->factory->user->create( array(
+			'role' => 'administrator',
+		) );
 		$user           = get_userdata( $this->_user_id );
 
 		$user_info = array(
 			'id'         => $user->ID,
 			'email'      => 'testadmin@domain.com',
 			'first_name' => $user->first_name,
-			'last_name'  => $user->last_name
+			'last_name'  => $user->last_name,
 		);
 
 		$donation_details = array(
 			array(
 				'id'      => $this->_post_id,
 				'options' => array(
-					'price_id' => 1
-				)
-			)
+					'price_id' => 1,
+				),
+			),
 		);
 
 		$total = 0;
@@ -90,7 +98,7 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 			'user_info'       => $user_info,
 			'currency'        => 'USD',
 			'status'          => 'pending',
-			'gateway'         => 'manual'
+			'gateway'         => 'manual',
 		);
 
 		$_SERVER['REMOTE_ADDR'] = '10.0.0.0';
@@ -110,18 +118,20 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Test Add Customer
+	 * Test Add Donor
 	 *
 	 * @covers Give_Donor::create
 	 */
-	public function test_add_customer() {
+	public function test_add_donor() {
 
 		$test_email = 'testaccount@domain.com';
 
 		$donor = new Give_Donor( $test_email );
 		$this->assertEquals( 0, $donor->id );
 
-		$data = array( 'email' => $test_email );
+		$data = array(
+			'email' => $test_email,
+		);
 
 		$donor_id = $donor->create( $data );
 		$this->assertTrue( is_numeric( $donor_id ) );
@@ -140,10 +150,15 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 		$test_email = 'testaccount2@domain.com';
 
 		$donor    = new Give_Donor( $test_email );
-		$donor_id = $donor->create( array( 'email' => $test_email ) );
+		$donor_id = $donor->create( array(
+			'email' => $test_email,
+		) );
 		$this->assertEquals( $donor_id, $donor->id );
 
-		$data_to_update = array( 'email' => 'testaccountupdated@domain.com', 'name' => 'Test Account' );
+		$data_to_update = array(
+			'email' => 'testaccountupdated@domain.com',
+			'name' => 'Test Account',
+		);
 		$donor->update( $data_to_update );
 		$this->assertEquals( 'testaccountupdated@domain.com', $donor->email );
 		$this->assertEquals( 'Test Account', $donor->name );
@@ -235,7 +250,7 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 		$this->assertEquals( '2', $donor->purchase_count );
 
 		$this->assertEquals( give_count_donations_of_donor( $this->_user_id ), '2' );
-		$this->assertEquals( give_purchase_total_of_user( $this->_user_id ), '30' );
+		$this->assertEquals( give_donation_total_of_user( $this->_user_id ), '30' );
 
 		// Make sure we hit the false conditions
 		$this->assertFalse( $donor->increase_purchase_count( - 1 ) );
@@ -257,7 +272,7 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 		$this->assertEquals( $donor->purchase_count, '0' );
 
 		$this->assertEquals( give_count_donations_of_donor( $this->_user_id ), '0' );
-		$this->assertEquals( give_purchase_total_of_user( $this->_user_id ), '10' );
+		$this->assertEquals( give_donation_total_of_user( $this->_user_id ), '10' );
 
 		// Make sure we hit the false conditions
 		$this->assertFalse( $donor->decrease_donation_count( - 1 ) );
@@ -290,30 +305,30 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 		$this->assertEquals( 0, array_search( $note_2, $donor->notes ) );
 		$this->assertEquals( 2, $donor->get_notes_count() );
 
-		// Verify we took out all empty rows
+		// Verify we took out all empty rows.
 		$this->assertEquals( count( $donor->notes ), count( array_values( $donor->notes ) ) );
 
-		// Test 1 note per page, page 1
+		// Test 1 note per page, page 1.
 		$newest_note = $donor->get_notes( 1 );
 		$this->assertEquals( 1, count( $newest_note ) );
 		$this->assertEquals( $newest_note[0], $note_2 );
 
-		// Test 1 note per page, page 2
+		// Test 1 note per page, page 2.
 		$second_note = $donor->get_notes( 1, 2 );
 		$this->assertEquals( 1, count( $second_note ) );
 		$this->assertEquals( $second_note[0], $note_1 );
 	}
 
 	/**
-	 *
+	 * Test users donations.
 	 */
-	public function test_users_purchases() {
+	public function test_users_donations() {
 
 		$out = give_get_users_donations( $this->_user_id );
 
 		$this->assertInternalType( 'object', $out[0] );
 		$this->assertEquals( 'give_payment', $out[0]->post_type );
-		$this->assertTrue( give_has_purchases( $this->_user_id ) );
+		$this->assertTrue( give_has_donations( $this->_user_id ) );
 		$this->assertEquals( 1, give_count_donations_of_donor( $this->_user_id ) );
 
 		$no_user = give_get_users_donations( 0 );
@@ -344,7 +359,6 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 	public function test_get_donation_stats_by_user() {
 
 		$donation_stats = give_get_donation_stats_by_user( $this->_user_id );
-
 		$this->assertInternalType( 'array', $donation_stats );
 		$this->assertEquals( 2, count( $donation_stats ) );
 		$this->assertTrue( isset( $donation_stats['purchases'] ) );
@@ -356,9 +370,7 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 	 * Test get donation total of user.
 	 */
 	public function test_get_donation_total_of_user() {
-
-		$donation_total = give_purchase_total_of_user( $this->_user_id );
-
+		$donation_total = give_donation_total_of_user( $this->_user_id );
 		$this->assertEquals( 20, $donation_total );
 	}
 
@@ -368,5 +380,13 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 	public function test_validate_username() {
 		$this->assertTrue( give_validate_username( 'giveuser' ) );
 		$this->assertFalse( give_validate_username( 'give12345$%&+-!@£%^&()(*&^%$£@!' ) );
+	}
+
+	/**
+	 * Test total donor count.
+	 */
+	public function test_count_total_donors() {
+		$donor_count = give_count_total_donors();
+		$this->assertEquals( 1, $donor_count );
 	}
 }

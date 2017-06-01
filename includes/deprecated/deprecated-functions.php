@@ -352,7 +352,7 @@ function give_get_purchase_stats_by_user( $user = '' ) {
 
 	$backtrace = debug_backtrace();
 
-	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_count_donations_of_donor', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_get_donation_stats_by_user', $backtrace );
 
 	return give_get_donation_stats_by_user( $user );
 
@@ -376,8 +376,65 @@ function give_get_users_purchases( $user = 0, $number = 20, $pagination = false,
 
 	$backtrace = debug_backtrace();
 
-	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_count_donations_of_donor', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_get_users_donations', $backtrace );
 
 	return give_get_users_donations( $user, $number, $pagination, $status );
 
+}
+
+
+/**
+ * Has donations
+ *
+ * Checks to see if a user has donated to at least one form.
+ *
+ * @access      public
+ * @since       1.0
+ *
+ * @param       int $user_id The ID of the user to check.
+ *
+ * @return      bool True if has donated, false other wise.
+ */
+function give_has_purchases( $user_id = null ) {
+
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_has_donations', $backtrace );
+
+	return give_has_donations( $user_id );
+}
+
+/**
+ * Counts the total number of donors.
+ *
+ * @access        public
+ * @since         1.0
+ *
+ * @return        int The total number of donors.
+ */
+function give_count_total_customers() {
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_count_total_donors', $backtrace );
+
+	return give_count_total_donors();
+}
+
+/**
+ * Calculates the total amount spent by a user.
+ *
+ * @access      public
+ * @since       1.0
+ *
+ * @param       int|string $user The ID or email of the donor.
+ *
+ * @return      float The total amount the user has spent
+ */
+function give_purchase_total_of_user( $user = null ) {
+
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_donation_total_of_user', $backtrace );
+
+	return give_donation_total_of_user($user);
 }

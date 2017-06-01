@@ -74,14 +74,14 @@ function give_get_users_donations( $user = 0, $number = 20, $pagination = false,
 
 	}
 
-	$purchases = give_get_payments( apply_filters( 'give_get_users_donations_args', $args ) );
+	$donations = give_get_payments( apply_filters( 'give_get_users_donations_args', $args ) );
 
 	// No donations
-	if ( ! $purchases ) {
+	if ( ! $donations ) {
 		return false;
 	}
 
-	return $purchases;
+	return $donations;
 }
 
 /**
@@ -130,8 +130,8 @@ function give_get_users_completed_donations( $user = 0, $status = 'complete' ) {
 
 	// Grab only the post ids "form_id" of the forms donated on this order
 	$completed_donations_ids = array();
-	foreach ( $donation_data as $purchase_meta ) {
-		$completed_donations_ids[] = isset( $purchase_meta['form_id'] ) ? $purchase_meta['form_id'] : '';
+	foreach ( $donation_data as $donation_meta ) {
+		$completed_donations_ids[] = isset( $donation_meta['form_id'] ) ? $donation_meta['form_id'] : '';
 	}
 
 	if ( empty( $completed_donations_ids ) ) {
@@ -170,16 +170,17 @@ function give_get_users_completed_donations( $user = 0, $status = 'complete' ) {
  *
  * @return      bool True if has donated, false other wise.
  */
-function give_has_purchases( $user_id = null ) {
+function give_has_donations( $user_id = null ) {
 	if ( empty( $user_id ) ) {
 		$user_id = get_current_user_id();
 	}
 
 	if ( give_get_users_donations( $user_id, 1 ) ) {
-		return true; // User has at least one donation
+		return true; // User has at least one donation.
 	}
 
-	return false; // User has never donated anything
+	// User has never donated anything.
+	return false;
 }
 
 
@@ -264,7 +265,7 @@ function give_count_donations_of_donor( $user = null ) {
  *
  * @return      float The total amount the user has spent
  */
-function give_purchase_total_of_user( $user = null ) {
+function give_donation_total_of_user( $user = null ) {
 
 	$stats = give_get_donation_stats_by_user( $user );
 
@@ -429,10 +430,9 @@ function give_validate_user_password( $password = '', $confirm_password = '', $r
 
 
 /**
- * Looks up donations by email that match the registering user
+ * Looks up donations by email that match the registering user.
  *
- * This is for users that donated as a guest and then came
- * back and created an account.
+ * This is for users that donated as a guest and then came back and created an account.
  *
  * @access      public
  * @since       1.0
@@ -441,7 +441,7 @@ function give_validate_user_password( $password = '', $confirm_password = '', $r
  *
  * @return      void
  */
-function give_add_past_purchases_to_new_user( $user_id ) {
+function give_add_past_donations_to_new_user( $user_id ) {
 
 	$email = get_the_author_meta( 'user_email', $user_id );
 
@@ -458,9 +458,8 @@ function give_add_past_purchases_to_new_user( $user_id ) {
 			$meta                    = give_get_payment_meta( $payment->ID );
 			$meta['user_info']       = maybe_unserialize( $meta['user_info'] );
 			$meta['user_info']['id'] = $user_id;
-			$meta['user_info']       = $meta['user_info'];
 
-			// Store the updated user ID in the payment meta
+			// Store the updated user ID in the payment meta.
 			give_update_payment_meta( $payment->ID, '_give_payment_meta', $meta );
 			give_update_payment_meta( $payment->ID, '_give_payment_user_id', $user_id );
 		}
@@ -468,7 +467,7 @@ function give_add_past_purchases_to_new_user( $user_id ) {
 
 }
 
-add_action( 'user_register', 'give_add_past_purchases_to_new_user' );
+add_action( 'user_register', 'give_add_past_donations_to_new_user' );
 
 
 /**
@@ -479,7 +478,7 @@ add_action( 'user_register', 'give_add_past_purchases_to_new_user' );
  *
  * @return        int The total number of donors.
  */
-function give_count_total_customers() {
+function give_count_total_donors() {
 	return Give()->donors->count();
 }
 
