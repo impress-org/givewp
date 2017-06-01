@@ -210,10 +210,10 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'name'          => esc_html__( 'Name', 'give' ),
-			'email'         => esc_html__( 'Email', 'give' ),
-			'num_donations' => esc_html__( 'Donations', 'give' ),
-			'amount_spent'  => esc_html__( 'Total Donated', 'give' ),
+			'name'          => __( 'Name', 'give' ),
+			'email'         => __( 'Email', 'give' ),
+			'num_donations' => __( 'Donations', 'give' ),
+			'amount_spent'  => __( 'Total Donated', 'give' ),
 		);
 
 		return apply_filters( 'give_report_donor_columns', $columns );
