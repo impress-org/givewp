@@ -154,7 +154,7 @@ function give_donor_batch_export_complete( $data ) {
 	// Remove donor ids cache.
 	if(
 		isset( $data['class'] )
-		&& 'Give_Batch_Customers_Export' === $data['class']
+		&& 'Give_Batch_Donors_Export' === $data['class']
 		&& ! empty( $data['forms'] )
 		&& isset( $data['give_export_option']['query_id'] )
 	) {

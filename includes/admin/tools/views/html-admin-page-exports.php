@@ -236,7 +236,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 								</div>
 								<?php wp_nonce_field( 'give_ajax_export', 'give_ajax_export' ); ?>
 								<input type="hidden" name="give-export-class"
-								       value="Give_Batch_Customers_Export"/>
+								       value="Give_Batch_Donors_Export"/>
 								<input type="hidden"
 								       name="give_export_option[query_id]"
 								       value="<?php echo uniqid( 'give_' ); ?>"/>

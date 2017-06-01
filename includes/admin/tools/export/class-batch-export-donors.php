@@ -17,11 +17,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Give_Batch_Customers_Export Class
+ * Give_Batch_Donors_Export Class
  *
  * @since 1.5
  */
-class Give_Batch_Customers_Export extends Give_Batch_Export {
+class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 	/**
 	 * Our export type. Used for export-type specific filters/actions.
@@ -29,7 +29,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 	 * @var string
 	 * @since 1.5
 	 */
-	public $export_type = 'customers';
+	public $export_type = 'donors';
 
 	/**
 	 * Form submission data
@@ -72,10 +72,10 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 		$this->form = $this->data['forms'];
 
 		// Setup donor ids cache.
-		if( ! empty( $this->form ) ) {
+		if ( ! empty( $this->form ) ) {
 			// Cache donor ids to output unique list of donor.
 			$this->query_id = give_clean( $_REQUEST['give_export_option']['query_id'] );
-			if( ! ( $this->donor_ids = Give_Cache::get( $this->query_id, true ) ) ) {
+			if ( ! ( $this->donor_ids = Give_Cache::get( $this->query_id, true ) ) ) {
 				$this->donor_ids = array();
 				Give_Cache::set( $this->query_id, $this->donor_ids, HOUR_IN_SECONDS, true );
 			}
@@ -158,8 +158,8 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @global object $give_logs Give Logs Object
-	 * @return array $data The data for the CSV file
+	 * @global object $give_logs Give Logs Object.
+	 * @return array $data The data for the CSV file.
 	 */
 	public function get_data() {
 
@@ -169,7 +169,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 
 		if ( ! empty( $this->form ) ) {
 
-			// Export donors of a specific product
+			// Export donors of a specific product.
 			global $give_logs;
 
 			$args = array(
@@ -179,7 +179,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 				'paged'          => $this->step,
 			);
 
-			// Check for price option
+			// Check for price option.
 			if ( null !== $this->price_id ) {
 				$args['meta_query'] = array(
 					array(
@@ -197,7 +197,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 					$payment    = new Give_Payment( $payment_id );
 
 					// Continue if donor already included.
-					if( in_array( $payment->customer_id , $this->donor_ids ) ) {
+					if ( in_array( $payment->customer_id , $this->donor_ids ) ) {
 						continue;
 					}
 
@@ -215,15 +215,17 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 
 			// Export all donors.
 			$offset = 30 * ( $this->step - 1 );
-			$donors = Give()->donors->get_donors( array( 'number' => 30, 'offset' => $offset ) );
+			$donors = Give()->donors->get_donors( array(
+				'number' => 30,
+				'offset' => $offset,
+			) );
 
 			foreach ( $donors as $donor ) {
 
 				$data[] = $this->set_donor_data( $i, $data, $donor );
 				$i ++;
 			}
-		}
-
+		}// End if().
 
 		$data = apply_filters( 'give_export_get_data', $data );
 		$data = apply_filters( "give_export_get_data_{$this->export_type}", $data );
@@ -232,7 +234,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 	}
 
 	/**
-	 * Return the calculated completion percentage
+	 * Return the calculated completion percentage.
 	 *
 	 * @since 1.5
 	 * @return int
@@ -241,7 +243,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 
 		$percentage = 0;
 
-		// We can't count the number when getting them for a specific form
+		// We can't count the number when getting them for a specific form.
 		if ( empty( $this->form ) ) {
 
 			$total = Give()->donors->count();
@@ -263,8 +265,8 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 	/**
 	 * Set Donor Data
 	 *
-	 * @param int           $i
-	 * @param array         $data
+	 * @param int        $i
+	 * @param array      $data
 	 * @param Give_Donor $donor
 	 *
 	 * @return mixed
