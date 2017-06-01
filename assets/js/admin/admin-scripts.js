@@ -854,8 +854,8 @@ jQuery.noConflict();
 		edit_customer : function () {
 			$('body').on('click', '#edit-customer', function (e) {
 				e.preventDefault();
-				$('#give-customer-card-wrapper .editable').hide();
-				$('#give-customer-card-wrapper .edit-item').fadeIn().css('display', 'block');
+				$('#give-donor-card-wrapper .editable').hide();
+				$('#give-donor-card-wrapper .edit-item').fadeIn().css('display', 'block');
                 $('.give-select-chosen').css('width', '100%');
 			});
 		},
@@ -883,8 +883,8 @@ jQuery.noConflict();
 		cancel_edit   : function () {
 			$('body').on('click', '#give-edit-customer-cancel', function (e) {
 				e.preventDefault();
-				$('#give-customer-card-wrapper .edit-item').hide();
-				$('#give-customer-card-wrapper .editable').show();
+				$('#give-donor-card-wrapper .edit-item').hide();
+				$('#give-donor-card-wrapper .editable').show();
 				$('.give_user_search_results').html('');
 			});
 		},

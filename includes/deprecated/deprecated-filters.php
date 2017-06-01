@@ -42,6 +42,8 @@ function give_deprecated_filters() {
 		'give_edit_donors_role'                            => 'give_edit_customers_role',
 		'give_edit_donor_info'                             => 'give_edit_customer_info',
 		'give_edit_donor_address'                          => 'give_edit_customer_address',
+		'give_donor_tabs'                                  => 'give_customer_tabs',
+		'give_donor_views'                                 => 'give_customer_views',
 	);
 
 	return $give_deprecated_filters;
@@ -50,7 +52,7 @@ function give_deprecated_filters() {
 /**
  * Deprecated filter mapping.
  *
- * @param mixed $data
+ * @param mixed  $data
  * @param string $arg_1 Passed filter argument 1.
  * @param string $arg_2 Passed filter argument 2.
  * @param string $arg_3 Passed filter argument 3.
@@ -66,15 +68,8 @@ function give_deprecated_filter_mapping( $data, $arg_1 = '', $arg_2 = '', $arg_3
 			$data = apply_filters( $give_map_deprecated_filters[ $filter ], $data, $arg_1, $arg_2, $arg_3 );
 
 			if ( ! defined( 'DOING_AJAX' ) ) {
-				_give_deprecated_function(
-					sprintf(
-					/* translators: %s: filter name */
-						__( 'The %s filter' ),
-						$give_map_deprecated_filters[ $filter ]
-					),
-					'1.7',
-					$filter
-				);
+				_give_deprecated_function( sprintf( /* translators: %s: filter name */
+					__( 'The %s filter' ), $give_map_deprecated_filters[ $filter ] ), '1.7', $filter );
 			}
 		}
 	}

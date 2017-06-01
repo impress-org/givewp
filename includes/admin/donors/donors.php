@@ -23,12 +23,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function give_customers_page() {
-	$default_views  = give_customer_views();
-	$requested_view = isset( $_GET['view'] ) ? sanitize_text_field( $_GET['view'] ) : 'customers';
+	$default_views  = give_donor_views();
+	$requested_view = isset( $_GET['view'] ) ? sanitize_text_field( $_GET['view'] ) : 'donors';
 	if ( array_key_exists( $requested_view, $default_views ) && function_exists( $default_views[ $requested_view ] ) ) {
 		give_render_donor_view( $requested_view, $default_views );
 	} else {
-		give_customers_list();
+		give_donors_list();
 	}
 }
 
@@ -38,11 +38,11 @@ function give_customers_page() {
  * @since  1.0
  * @return array Array of views and their callbacks.
  */
-function give_customer_views() {
+function give_donor_views() {
 
 	$views = array();
 
-	return apply_filters( 'give_customer_views', $views );
+	return apply_filters( 'give_donor_views', $views );
 
 }
 
@@ -52,11 +52,11 @@ function give_customer_views() {
  * @since  1.0
  * @return array Array of tabs for the donor.
  */
-function give_customer_tabs() {
+function give_donor_tabs() {
 
 	$tabs = array();
 
-	return apply_filters( 'give_customer_tabs', $tabs );
+	return apply_filters( 'give_donor_tabs', $tabs );
 
 }
 
@@ -66,7 +66,7 @@ function give_customer_tabs() {
  * @since  1.0
  * @return void
  */
-function give_customers_list() {
+function give_donors_list() {
 	include dirname( __FILE__ ) . '/class-donor-table.php';
 
 	$donors_table = new Give_Donor_List_Table();
@@ -137,7 +137,7 @@ function give_render_donor_view( $view, $callbacks ) {
 		$render = false;
 	}
 
-	$donor_tabs = give_customer_tabs();
+	$donor_tabs = give_donor_tabs();
 	?>
 
 	<div class='wrap'>
@@ -168,7 +168,7 @@ function give_render_donor_view( $view, $callbacks ) {
 			?>
 			</h2>
 
-			<div id="give-customer-card-wrapper">
+			<div id="give-donor-card-wrapper">
 				<?php $callbacks[ $view ]( $donor ) ?>
 			</div>
 
@@ -185,11 +185,11 @@ function give_render_donor_view( $view, $callbacks ) {
  *
  * @since  1.0
  *
- * @param  object $donor The Customer object being displayed.
+ * @param  object $donor The Donor object being displayed.
  *
  * @return void
  */
-function give_customers_view( $donor ) {
+function give_donor_view( $donor ) {
 
 	$donor_edit_role = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
 
@@ -356,7 +356,7 @@ function give_customers_view( $donor ) {
 
 			</div>
 
-			<span id="customer-edit-actions" class="edit-item">
+			<span id="donor-edit-actions" class="edit-item">
 				<input type="hidden" data-key="id" name="customerinfo[id]" value="<?php echo $donor->id; ?>" />
 				<?php wp_nonce_field( 'edit-customer', '_wpnonce', false, true ); ?>
 				<input type="hidden" name="give_action" value="edit-customer" />
@@ -708,7 +708,7 @@ function give_donor_notes_view( $donor ) {
  *
  * @return void
  */
-function give_donors_delete_view( $donor ) {
+function give_donor_delete_view( $donor ) {
 
 	$donor_edit_role = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
 
@@ -765,7 +765,7 @@ function give_donors_delete_view( $donor ) {
 					?>
 				</span>
 
-				<span id="customer-edit-actions">
+				<span id="donor-edit-actions">
 					<input type="hidden" name="customer_id" value="<?php echo $donor->id; ?>" />
 					<?php wp_nonce_field( 'delete-donor', '_wpnonce', false, true ); ?>
 					<input type="hidden" name="give_action" value="delete-donor" />

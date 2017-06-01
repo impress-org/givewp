@@ -26,8 +26,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_register_default_customer_views( $views ) {
 
 	$default_views = array(
-		'overview' => 'give_customers_view',
-		'delete'   => 'give_donors_delete_view',
+		'overview' => 'give_donor_view',
+		'delete'   => 'give_donor_delete_view',
 		'notes'    => 'give_donor_notes_view'
 	);
 
@@ -35,7 +35,7 @@ function give_register_default_customer_views( $views ) {
 
 }
 
-add_filter( 'give_customer_views', 'give_register_default_customer_views', 1, 1 );
+add_filter( 'give_donor_views', 'give_register_default_customer_views', 1, 1 );
 
 /**
  * Register a tab for the single customer view
@@ -56,7 +56,7 @@ function give_register_default_customer_tabs( $tabs ) {
 	return array_merge( $tabs, $default_tabs );
 }
 
-add_filter( 'give_customer_tabs', 'give_register_default_customer_tabs', 1, 1 );
+add_filter( 'give_donor_tabs', 'give_register_default_customer_tabs', 1, 1 );
 
 /**
  * Register the Delete icon as late as possible so it's at the bottom
@@ -74,4 +74,4 @@ function give_register_delete_customer_tab( $tabs ) {
 	return $tabs;
 }
 
-add_filter( 'give_customer_tabs', 'give_register_delete_customer_tab', PHP_INT_MAX, 1 );
+add_filter( 'give_donor_tabs', 'give_register_delete_customer_tab', PHP_INT_MAX, 1 );

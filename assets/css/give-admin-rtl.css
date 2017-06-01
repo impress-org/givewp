@@ -2322,43 +2322,43 @@ input.give-price-field {
   float: left;
   clear: none; }
 
-#give-customer-card-wrapper {
+#give-donor-card-wrapper {
   margin-right: -1px;
   z-index: 2;
   min-height: 200px; }
-  #give-customer-card-wrapper input {
+  #give-donor-card-wrapper input {
     font-weight: normal; }
-  #give-customer-card-wrapper .donor-section {
+  #give-donor-card-wrapper .donor-section {
     border-bottom: 1px solid #eee;
     margin-bottom: 10px; }
-  #give-customer-card-wrapper .donor-section table {
+  #give-donor-card-wrapper .donor-section table {
     margin-bottom: 0; }
-  #give-customer-card-wrapper > div:first-child {
+  #give-donor-card-wrapper > div:first-child {
     padding-top: 20px; }
-  #give-customer-card-wrapper > div:last-child {
+  #give-donor-card-wrapper > div:last-child {
     padding-bottom: 20px;
     border: none; }
-  #give-customer-card-wrapper .avatar-wrap {
+  #give-donor-card-wrapper .avatar-wrap {
     padding: 0 0 15px 15px;
     text-align: center;
     float: right; }
-    #give-customer-card-wrapper .avatar-wrap img {
+    #give-donor-card-wrapper .avatar-wrap img {
       border-radius: 3px; }
-  #give-customer-card-wrapper a.delete {
+  #give-donor-card-wrapper a.delete {
     text-decoration: none;
     color: #ff0000;
     margin-left: 5px; }
-  #give-customer-card-wrapper .donor-bio-header .customer-since {
+  #give-donor-card-wrapper .donor-bio-header .customer-since {
     margin: 10px 0;
     font-size: 16px; }
-  #give-customer-card-wrapper .donor-bio-header .customer-id {
+  #give-donor-card-wrapper .donor-bio-header .customer-id {
     display: inline-block;
     font-size: 24px;
     font-weight: 600;
     margin-left: 10px; }
-  #give-customer-card-wrapper .donor-bio-header .customer-name-wrap {
+  #give-donor-card-wrapper .donor-bio-header .customer-name-wrap {
     display: inline-block; }
-  #give-customer-card-wrapper .donor-bio-header .customer-edit-link {
+  #give-donor-card-wrapper .donor-bio-header .customer-edit-link {
     margin-bottom: 15px; }
 
 .customer-main-wrapper {
@@ -2384,19 +2384,19 @@ input.give-price-field {
     color: #F0F0F0;
     z-index: 0; }
 
-#give-customer-card-wrapper .customer-address-wrapper {
+#give-donor-card-wrapper .customer-address-wrapper {
   width: 202px; }
-  #give-customer-card-wrapper .customer-address-wrapper span[data-key="line2"] {
+  #give-donor-card-wrapper .customer-address-wrapper span[data-key="line2"] {
     display: table;
     clear: both; }
 
-#give-customer-card-wrapper .customer-address-wrapper select {
+#give-donor-card-wrapper .customer-address-wrapper select {
   width: 200px; }
 
-#give-customer-card-wrapper .donor-info {
+#give-donor-card-wrapper .donor-info {
   min-height: 185px; }
 
-#give-customer-card-wrapper .info-wrapper {
+#give-donor-card-wrapper .info-wrapper {
   min-height: 125px; }
 
 .donor-info .customer-name {
@@ -2408,22 +2408,22 @@ input.give-price-field {
   font-weight: normal;
   text-decoration: none; }
 
-#customer-edit-actions {
+#donor-edit-actions {
   text-align: center;
   margin-bottom: 20px;
   line-height: 28px; }
 
-#customer-edit-actions .button-secondary {
+#donor-edit-actions .button-secondary {
   margin-left: 10px; }
 
-#give-customer-card-wrapper .edit-item {
+#give-donor-card-wrapper .edit-item {
   display: none; }
 
-#give-customer-card-wrapper .give_user_search_results {
+#give-donor-card-wrapper .give_user_search_results {
   right: 1px;
   top: 16px; }
 
-#give-customer-card-wrapper .give_user_search_results ul {
+#give-donor-card-wrapper .give_user_search_results ul {
   width: 200px; }
 
 #customer-stats-wrapper {
