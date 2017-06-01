@@ -427,14 +427,14 @@ class Give_Payment_History_Table extends WP_List_Table {
 			$actions['email_links'] = sprintf( '<a href="%1$s" aria-label="%2$s">%3$s</a>', wp_nonce_url( add_query_arg( array(
 					'give-action' => 'email_links',
 					'purchase_id' => $payment->ID,
-				), $this->base_url ), 'give_payment_nonce' ), sprintf( esc_attr__( 'Resend Donation %s Receipt', 'give' ), $payment->ID ), esc_html__( 'Resend Receipt', 'give' ) );
+			), $this->base_url ), 'give_payment_nonce' ), sprintf( esc_attr__( 'Resend Donation %s Receipt', 'give' ), $payment->ID ), esc_html__( 'Resend Receipt', 'give' ) );
 
 		}
 
 		$actions['delete'] = sprintf( '<a href="%1$s" aria-label="%2$s">%3$s</a>', wp_nonce_url( add_query_arg( array(
 				'give-action' => 'delete_payment',
 				'purchase_id' => $payment->ID,
-			), $this->base_url ), 'give_donation_nonce' ), sprintf( esc_attr__( 'Delete Donation %s', 'give' ), $payment->ID ), esc_html__( 'Delete', 'give' ) );
+		), $this->base_url ), 'give_donation_nonce' ), sprintf( esc_attr__( 'Delete Donation %s', 'give' ), $payment->ID ), esc_html__( 'Delete', 'give' ) );
 
 		return apply_filters( 'give_payment_row_actions', $actions, $payment );
 	}
@@ -499,7 +499,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 */
 	public function get_donor( $payment ) {
 
-		$donor_id           = give_get_payment_customer_id( $payment->ID );
+		$donor_id           = give_get_payment_donor_id( $payment->ID );
 		$donor_billing_name = give_get_donor_name_by( $payment->ID, 'donation' );
 		$donor_name         = give_get_donor_name_by( $donor_id, 'donor' );
 
@@ -789,6 +789,6 @@ class Give_Payment_History_Table extends WP_List_Table {
 				// We have to determine how many items to show on a page.
 				'total_pages' => ceil( $total_items / $this->per_page ),
 				// We have to calculate the total number of pages.
-			) );
+		) );
 	}
 }

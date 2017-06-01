@@ -288,8 +288,8 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
 	$payment     = new Give_Payment( $payment_id );
 	$amount      = give_get_payment_amount( $payment_id );
 	$status      = $payment->post_status;
-	$customer_id = give_get_payment_customer_id( $payment_id );
-	$customer    = new Give_Donor( $customer_id );
+	$donor_id = give_get_payment_donor_id( $payment_id );
+	$customer    = new Give_Donor( $donor_id );
 
 	// Only undo donations that aren't these statuses.
 	$dont_undo_statuses = apply_filters( 'give_undo_purchase_statuses', array(
@@ -980,7 +980,7 @@ function give_update_payment_meta( $payment_id = 0, $meta_key = '', $meta_value 
  *
  * @param int $payment_id Payment ID.
  *
- * @return string $user_info User Info Meta Values.
+ * @return array $user_info User Info Meta Values.
  */
 function give_get_payment_meta_user_info( $payment_id ) {
 	$payment = new Give_Payment( $payment_id );
@@ -1052,15 +1052,15 @@ function give_get_payment_user_id( $payment_id ) {
 }
 
 /**
- * Get the donor ID associated with a payment
+ * Get the donor ID associated with a payment.
  *
  * @since 1.0
  *
  * @param int $payment_id Payment ID.
  *
- * @return int $customer_id Customer ID.
+ * @return int $payment->customer_id Donor ID.
  */
-function give_get_payment_customer_id( $payment_id ) {
+function give_get_payment_donor_id( $payment_id ) {
 	$payment = new Give_Payment( $payment_id );
 
 	return $payment->customer_id;

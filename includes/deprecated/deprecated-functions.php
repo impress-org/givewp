@@ -277,3 +277,22 @@ function give_checkout_button_purchase( $form_id ) {
 	return give_get_donation_form_submit_button( $form_id );
 
 }
+
+
+/**
+ * Get the donor ID associated with a payment.
+ *
+ * @since 1.0
+ *
+ * @param int $payment_id Payment ID.
+ *
+ * @return int $customer_id Customer ID.
+ */
+function give_get_payment_customer_id( $payment_id ) {
+
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_get_payment_donor_id', $backtrace );
+
+	return give_get_payment_donor_id( $payment_id ) ;
+}
