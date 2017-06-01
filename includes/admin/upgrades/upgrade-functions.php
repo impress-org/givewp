@@ -137,11 +137,11 @@ function give_show_upgrade_notices() {
 	}
 
 	// v1.8.9 Upgrades
-	if ( version_compare( $give_version, '1.8.9', '<' ) || ( ! give_has_upgrade_completed( 'upgrade_give_multi_levels_post_meta' ) ) ) {
+	if ( version_compare( $give_version, '1.8.9', '<' ) || ( ! give_has_upgrade_completed( 'v189_upgrades_levels_post_meta' ) ) ) {
 		printf(
 		/* translators: %s: upgrade URL */
 			'<div class="updated"><p>' . __( 'Give needs to upgrade the donation forms meta-fields in database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
-			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_give_multi_levels_post_meta' ) )
+			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=v189_upgrades_levels_post_meta' ) )
 		);
 	}
 
@@ -941,7 +941,7 @@ function give_v188_upgrades() {
  *
  * @since      1.8.9
  */
-function give_v189_add_multi_levels_post_meta() {
+function give_v189_upgrades_levels_post_meta_callback() {
 
 	$give_version = get_option( 'give_version' );
 
@@ -952,8 +952,10 @@ function give_v189_add_multi_levels_post_meta() {
 
 	$give_version = preg_replace( '/[^0-9.].*/', '', $give_version );
 
+	$step = isset( $_GET['step'] ) ? absint( $_GET['step'] ) : 1;
+
 	// v1.8.9 Upgrades
-	if ( version_compare( $give_version, '1.8.9', '<' ) || ! give_has_upgrade_completed( 'upgrade_give_multi_levels_post_meta' ) ) {
+	if ( version_compare( $give_version, '1.8.9', '<' ) || ! give_has_upgrade_completed( 'v189_upgrades_levels_post_meta' ) ) {
 
 		$args = array(
             'post_type'         => 'give_forms',
@@ -1012,15 +1014,27 @@ function give_v189_add_multi_levels_post_meta() {
 
 			/* Restore original Post Data */
 			wp_reset_postdata();
+
+			// Forms found so upgrade them
+			$step ++;
+			$redirect = add_query_arg( array(
+				'page'         => 'give-upgrades',
+				'give-upgrade' => 'v189_upgrades_levels_post_meta',
+				'step'         => $step,
+			), admin_url( 'index.php' ) );
+			wp_redirect( $redirect );
+			exit();
+		}else {
+        	// The Update Ran.
+			update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
+			give_set_upgrade_complete( 'v189_upgrades_levels_post_meta' );
+			delete_option( 'give_doing_upgrade' );
+
+			wp_redirect( admin_url() );
+			exit;
 		}
-
-		// The Update Ran.
-		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
-		give_set_upgrade_complete( 'upgrade_give_multi_levels_post_meta' );
-		delete_option( 'give_doing_upgrade' );
-
 	}// End if().
 
 }
 
-add_action( 'upgrade_give_multi_levels_post_meta', 'give_v189_add_multi_levels_post_meta' );
+add_action( 'give_v189_upgrades_levels_post_meta', 'give_v189_upgrades_levels_post_meta_callback' );
