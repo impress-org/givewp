@@ -2,7 +2,7 @@
 /**
  * Batch Export Class
  *
- * This is the base class for all batch export methods. Each data export type (customers, payments, etc) extend this class
+ * This is the base class for all batch export methods. Each data export type (donors, payments, etc) extend this class.
  *
  * @package     Give
  * @subpackage  Admin/Export
