@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @group give_api
+ * Class Tests_API
  */
 class Tests_API extends Give_Unit_Test_Case {
 	protected $_rewrite = null;
@@ -333,7 +333,7 @@ class Tests_API extends Give_Unit_Test_Case {
 	 * Test Get Donors
 	 */
 	public function test_get_donors() {
-		$out = $this->_api->get_customers();
+		$out = $this->_api->get_donors();
 
 		$this->assertArrayHasKey( 'donors', $out );
 		$this->assertArrayHasKey( 'info', $out['donors'][0] );
