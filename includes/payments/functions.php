@@ -725,12 +725,12 @@ function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour
 	}
 
 	if ( false === $earnings ) {
-		$sales    = get_posts( $args );
+		$donations    = get_posts( $args );
 		$earnings = 0;
-		if ( $sales ) {
-			$sales = implode( ',', $sales );
+		if ( $donations ) {
+			$donations = implode( ',', $donations );
 
-			$earnings = $wpdb->get_var( "SELECT SUM(meta_value) FROM $wpdb->postmeta WHERE meta_key = '_give_payment_total' AND post_id IN ({$sales})" );
+			$earnings = $wpdb->get_var( "SELECT SUM(meta_value) FROM $wpdb->postmeta WHERE meta_key = '_give_payment_total' AND post_id IN ({$donations})" );
 
 		}
 		// Cache the results for one hour.
@@ -801,8 +801,8 @@ function give_get_sales_by_date( $day = null, $month_num = null, $year = null, $
 	}
 
 	if ( false === $count ) {
-		$sales = new WP_Query( $args );
-		$count = (int) $sales->post_count;
+		$donations = new WP_Query( $args );
+		$count = (int) $donations->post_count;
 		// Cache the results for one hour.
 		Give_Cache::set( $key, $count, HOUR_IN_SECONDS );
 	}
@@ -1323,7 +1323,7 @@ function give_payment_amount( $payment_id = 0 ) {
  *
  * @param int $payment_id Payment ID.
  *
- * @return mixed|void
+ * @return mixed
  */
 function give_get_payment_amount( $payment_id ) {
 
