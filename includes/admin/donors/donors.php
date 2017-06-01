@@ -67,7 +67,7 @@ function give_customer_tabs() {
  * @return void
  */
 function give_customers_list() {
-	include( dirname( __FILE__ ) . '/class-customer-table.php' );
+	include dirname( __FILE__ ) . '/class-donor-table.php';
 
 	$customers_table = new Give_Donor_Reports_Table();
 	$customers_table->prepare_items();

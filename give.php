@@ -396,9 +396,9 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/actions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/payments-history.php';
 
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/customers/customers.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/customers/customer-functions.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/customers/customer-actions.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/donors/donors.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/donors/donor-functions.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/donors/donor-actions.php';
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/metabox.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/forms/class-metabox-form-data.php';

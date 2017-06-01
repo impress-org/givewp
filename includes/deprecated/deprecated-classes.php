@@ -120,7 +120,7 @@ class Give_Customer {
 		}
 
 		$this->setup_customer( $donor );
-		
+
 	}
 
 
@@ -253,7 +253,6 @@ class Give_DB_Customer_Meta {
 	 * @return mixed
 	 */
 	public function __call( $name, $arguments ) {
-
 
 	}
 
