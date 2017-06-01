@@ -334,3 +334,26 @@ function give_count_purchases_of_customer( $user = null ) {
 
 	return give_count_donations_of_donor( $user );
 }
+
+
+/**
+ * Get Donation Status for User.
+ *
+ * Retrieves the donation count and the total amount spent for a specific user.
+ *
+ * @access      public
+ * @since       1.0
+ *
+ * @param       int|string $user The ID or email of the donor to retrieve stats for.
+ *
+ * @return      array
+ */
+function give_get_purchase_stats_by_user( $user = '' ) {
+
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_count_donations_of_donor', $backtrace );
+
+	return give_get_donation_stats_by_user( $user );
+
+}

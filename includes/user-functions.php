@@ -189,43 +189,38 @@ function give_has_purchases( $user_id = null ) {
 
 
 /**
- * Get Donation Status for User
+ * Get Donation Status for User.
  *
- * Retrieves the donation count and the total amount spent for a specific user
+ * Retrieves the donation count and the total amount spent for a specific user.
  *
  * @access      public
  * @since       1.0
  *
- * @param       int|string $user The ID or email of the donor to retrieve stats for
+ * @param       int|string $user The ID or email of the donor to retrieve stats for.
  *
  * @return      array
  */
-function give_get_purchase_stats_by_user( $user = '' ) {
+function give_get_donation_stats_by_user( $user = '' ) {
+
+	$field = '';
 
 	if ( is_email( $user ) ) {
-
 		$field = 'email';
-
 	} elseif ( is_numeric( $user ) ) {
-
 		$field = 'user_id';
-
 	}
 
 	$stats    = array();
-	$customer = Give()->donors->get_donor_by( $field, $user );
+	$donor = Give()->donors->get_donor_by( $field, $user );
 
-	if ( $customer ) {
-
-		$customer = new Give_Donor( $customer->id );
-
-		$stats['purchases']   = absint( $customer->purchase_count );
-		$stats['total_spent'] = give_sanitize_amount( $customer->purchase_value );
-
+	if ( $donor ) {
+		$donor = new Give_Donor( $donor->id );
+		$stats['purchases']   = absint( $donor->purchase_count );
+		$stats['total_spent'] = give_sanitize_amount( $donor->purchase_value );
 	}
 
 	/**
-	 * Filter the donation stats
+	 * Filter the donation stats.
 	 *
 	 * @since 1.7
 	 */
@@ -259,7 +254,7 @@ function give_count_donations_of_donor( $user = null ) {
 		$user = Give()->email_access->token_email;
 	}
 
-	$stats = ! empty( $user ) ? give_get_purchase_stats_by_user( $user ) : false;
+	$stats = ! empty( $user ) ? give_get_donation_stats_by_user( $user ) : false;
 
 	return isset( $stats['purchases'] ) ? $stats['purchases'] : 0;
 }
@@ -276,7 +271,7 @@ function give_count_donations_of_donor( $user = null ) {
  */
 function give_purchase_total_of_user( $user = null ) {
 
-	$stats = give_get_purchase_stats_by_user( $user );
+	$stats = give_get_donation_stats_by_user( $user );
 
 	return $stats['total_spent'];
 }
@@ -455,13 +450,15 @@ function give_add_past_purchases_to_new_user( $user_id ) {
 
 	$email = get_the_author_meta( 'user_email', $user_id );
 
-	$payments = give_get_payments( array( 's' => $email ) );
+	$payments = give_get_payments( array(
+		's' => $email,
+	) );
 
 	if ( $payments ) {
 		foreach ( $payments as $payment ) {
 			if ( intval( give_get_payment_user_id( $payment->ID ) ) > 0 ) {
 				continue;
-			} // This payment already associated with an account
+			} // End if().
 
 			$meta                    = give_get_payment_meta( $payment->ID );
 			$meta['user_info']       = maybe_unserialize( $meta['user_info'] );
@@ -603,38 +600,38 @@ add_action( 'give_insert_user', 'give_new_user_notification', 10, 2 );
  * @access      public
  * @since       1.8.9
  *
- * @param       int     $id     The ID of donation or donor
- * @param       string  $from   From will be a string to be passed as donation or donor
+ * @param       int    $id     The ID of donation or donor
+ * @param       string $from   From will be a string to be passed as donation or donor
  *
  * @return      string
  */
 function give_get_donor_name_by( $id = 0, $from = 'donation' ) {
 
-    // ID shouldn't be empty
-    if( empty( $id ) ){
-        return;
-    }
+	// ID shouldn't be empty
+	if ( empty( $id ) ) {
+		return;
+	}
 
-    $name = '';
+	$name = '';
 
-    switch( $from ){
+	switch ( $from ) {
 
-        case 'donation':
+		case 'donation':
 
-            $user_info = give_get_payment_meta_user_info( $id );
-            $name = $user_info['first_name'] . ' ' . $user_info['last_name'];
+			$user_info = give_get_payment_meta_user_info( $id );
+			$name = $user_info['first_name'] . ' ' . $user_info['last_name'];
 
-        break;
+		break;
 
-        case 'donor':
+		case 'donor':
 
-            $donor = new Give_Donor( $id );
-            $name = $donor->name;
+			$donor = new Give_Donor( $id );
+			$name = $donor->name;
 
-        break;
+		break;
 
-    }
+	}
 
-    return trim( $name );
+	return trim( $name );
 
 }

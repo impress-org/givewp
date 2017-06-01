@@ -289,6 +289,9 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 		$this->assertEquals( $second_note[0], $note_1 );
 	}
 
+	/**
+	 *
+	 */
 	public function test_users_purchases() {
 
 		$out = give_get_users_purchases( $this->_user_id );
@@ -306,6 +309,9 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 
 	}
 
+	/**
+	 * Test users completed donations.
+	 */
 	public function test_give_get_users_completed_donations() {
 
 		$out2 = give_get_users_completed_donations( $this->_user_id );
@@ -317,14 +323,17 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 
 	}
 
-	public function test_get_purchase_stats_by_user() {
+	/**
+	 * Test donation stats by user.
+	 */
+	public function test_get_donation_stats_by_user() {
 
-		$purchase_stats = give_get_purchase_stats_by_user( $this->_user_id );
+		$donation_stats = give_get_donation_stats_by_user( $this->_user_id );
 
-		$this->assertInternalType( 'array', $purchase_stats );
-		$this->assertEquals( 2, count( $purchase_stats ) );
-		$this->assertTrue( isset( $purchase_stats['purchases'] ) );
-		$this->assertTrue( isset( $purchase_stats['total_spent'] ) );
+		$this->assertInternalType( 'array', $donation_stats );
+		$this->assertEquals( 2, count( $donation_stats ) );
+		$this->assertTrue( isset( $donation_stats['purchases'] ) );
+		$this->assertTrue( isset( $donation_stats['total_spent'] ) );
 
 	}
 
