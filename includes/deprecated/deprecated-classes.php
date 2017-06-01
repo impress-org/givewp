@@ -32,12 +32,18 @@ add_action( 'give_init', 'give_load_deprecated_properties', 10, 1 );
  *
  * @since 1.0
  */
-class Give_DB_Customers extends Give_DB {
+class Give_DB_Customers extends Give_DB_Donors {
 
 	/**
 	 * Give_DB_Customers constructor.
 	 */
 	public function __construct() {
+		/* @var WPDB $wpdb */
+		global $wpdb;
+
+		$this->table_name  = $wpdb->prefix . 'give_customers';
+		$this->primary_key = 'id';
+		$this->version     = '1.0';
 	}
 
 	/**
@@ -54,29 +60,27 @@ class Give_DB_Customers extends Give_DB {
 	public function __call( $name, $arguments ) {
 		$deprecated_function_arr = array(
 			'get_customer_by',
-			'give_update_donor_email_on_user_update',
+			'give_update_customer_email_on_user_update',
 			'get_customers',
 		);
-
-		// If a property is renamed then it gets placed below.
-		$donors_db = new Give_DB_Donors();
 
 		if ( in_array( $name, $deprecated_function_arr ) ) {
 			switch ( $name ) {
 				case 'get_customers':
 					$args = ! empty( $arguments[0] ) ? $arguments[0] : array();
 
-					return $donors_db->get_donors( $args );
+					return $this->get_donors( $args );
 				case 'get_customer_by':
 					$field    = ! empty( $arguments[0] ) ? $arguments[0] : 'id';
 					$donor_id = ! empty( $arguments[1] ) ? $arguments[1] : 0;
 
-					return $donors_db->get_donor_by( $field, $donor_id );
-				case 'give_update_donor_email_on_user_update':
-					$user_id       = ! empty( $arguments[0] ) ? $arguments[0] : 0;
-					$old_user_data = ! empty( $arguments[1] ) ? $arguments[1] : '';
+					return $this->get_donor_by( $field, $donor_id );
 
-					return $donors_db->get_donor_by( $user_id, $old_user_data );
+				case 'give_update_customer_email_on_user_update':
+					$user_id       = ! empty( $arguments[0] ) ? $arguments[0] : 0;
+					$old_user_data = ! empty( $arguments[1] ) ? $arguments[1] : false;
+
+					return $this->update_donor_email_on_user_update( $user_id, $old_user_data );
 			}
 		}
 	}
