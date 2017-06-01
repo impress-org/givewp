@@ -87,7 +87,7 @@
   //Donor Header (non-avatar content)
   .donor-bio-header {
 
-	.customer-since {
+	.donor-since {
 	  margin: 10px 0;
 	  font-size: 16px;
 	}
@@ -103,7 +103,7 @@
       display: inline-block;
     }
 
-	.customer-edit-link {
+	.donor-edit-link {
 	  margin-bottom: 15px;
 	}
 
@@ -111,7 +111,7 @@
 
 }
 
-.customer-main-wrapper {
+.donor-main-wrapper {
   clear: both;
   margin: 0 0 20px;
 
@@ -145,7 +145,7 @@
   }
 
 }
-#give-donor-card-wrapper .customer-address-wrapper {
+#give-donor-card-wrapper .donor-address-wrapper {
   width: 202px;
 
 	span[data-key="line2"] {
@@ -154,7 +154,7 @@
 	}
 }
 
-#give-donor-card-wrapper .customer-address-wrapper select {
+#give-donor-card-wrapper .donor-address-wrapper select {
   width: 200px;
 }
 
@@ -166,7 +166,7 @@
   min-height: 125px;
 }
 
-.donor-info .customer-name {
+.donor-info .donor-name {
   font-size: 24px;
   font-weight: 600;
 }
@@ -200,7 +200,7 @@
   width: 200px
 }
 
-#customer-stats-wrapper {
+#donor-stats-wrapper {
   margin: 0 auto;
   text-align: center;
   padding: 15px;
@@ -223,27 +223,27 @@
   }
 }
 
-#customer-stats-wrapper .dashicons {
+#donor-stats-wrapper .dashicons {
   color: #888;
 }
 
-#customer-tables-wrapper table {
+#donor-tables-wrapper table {
   width: 100%;
   text-align: center;
 }
 
-#customer-tables-wrapper th {
+#donor-tables-wrapper th {
   text-align: center;
 }
 
-#customer-tables-wrapper .donations tr > th:first-child,
-#customer-tables-wrapper .donations tr > td:first-child,
-#customer-tables-wrapper .emails tr > th:first-child,
-#customer-tables-wrapper .emails tr > td:first-child {
+#donor-tables-wrapper .donations tr > th:first-child,
+#donor-tables-wrapper .donations tr > td:first-child,
+#donor-tables-wrapper .emails tr > th:first-child,
+#donor-tables-wrapper .emails tr > td:first-child {
   text-align: left;
 }
 
-#customer-tables-wrapper .donations tr > td:only-child {
+#donor-tables-wrapper .donations tr > td:only-child {
   text-align: center;
 }
 

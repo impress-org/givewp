@@ -541,29 +541,29 @@ $payment_mode   = $payment->mode;
 												?>
 											</p>
 											<p>
-												<a href="#new" class="give-payment-new-customer"><?php esc_html_e( 'Create New Donor', 'give' ); ?></a>
+												<a href="#new" class="give-payment-new-donor"><?php esc_html_e( 'Create New Donor', 'give' ); ?></a>
 											</p>
 										</div>
 									</div>
 
-									<div class="column-container new-customer" style="display: none">
+									<div class="column-container new-donor" style="display: none">
 										<div class="column">
 											<p>
-												<label for="give-new-customer-name"><?php esc_html_e( 'New Donor Name:', 'give' ); ?></label>
-												<input id="give-new-customer-name" type="text" name="give-new-customer-name" value="" class="medium-text"/>
+												<label for="give-new-donor-name"><?php esc_html_e( 'New Donor Name:', 'give' ); ?></label>
+												<input id="give-new-donor-name" type="text" name="give-new-donor-name" value="" class="medium-text"/>
 											</p>
 										</div>
 										<div class="column">
 											<p>
-												<label for="give-new-customer-email"><?php esc_html_e( 'New Donor Email:', 'give' ); ?></label>
-												<input id="give-new-customer-email" type="email" name="give-new-customer-email" value="" class="medium-text"/>
+												<label for="give-new-donor-email"><?php esc_html_e( 'New Donor Email:', 'give' ); ?></label>
+												<input id="give-new-donor-email" type="email" name="give-new-donor-email" value="" class="medium-text"/>
 											</p>
 										</div>
 										<div class="column">
 											<p>
-												<input type="hidden" name="give-current-customer" value="<?php echo $donor->id; ?>"/>
-												<input type="hidden" id="give-new-customer" name="give-new-customer" value="0"/>
-												<a href="#cancel" class="give-payment-new-customer-cancel give-delete"><?php esc_html_e( 'Cancel', 'give' ); ?></a>
+												<input type="hidden" name="give-current-donor" value="<?php echo $donor->id; ?>"/>
+												<input type="hidden" id="give-new-donor" name="give-new-donor" value="0"/>
+												<a href="#cancel" class="give-payment-new-donor-cancel give-delete"><?php esc_html_e( 'Cancel', 'give' ); ?></a>
 												<br>
 												<em><?php esc_html_e( 'Click "Save Donation" to create new donor.', 'give' ); ?></em>
 											</p>

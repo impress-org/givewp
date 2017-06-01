@@ -350,15 +350,15 @@ jQuery.noConflict();
 
 		new_donor: function () {
 
-			$('#give-donor-details').on('click', '.give-payment-new-customer, .give-payment-new-customer-cancel', function (e) {
+			$('#give-donor-details').on('click', '.give-payment-new-donor, .give-payment-new-donor-cancel', function (e) {
 				e.preventDefault();
 				$('.donor-info').toggle();
-				$('.new-customer').toggle();
+				$('.new-donor').toggle();
 
-				if ($('.new-customer').is(":visible")) {
-					$('#give-new-customer').val(1);
+				if ($('.new-donor').is(":visible")) {
+					$('#give-new-donor').val(1);
 				} else {
-					$('#give-new-customer').val(0);
+					$('#give-new-donor').val(0);
 				}
 
 			});
@@ -860,7 +860,7 @@ jQuery.noConflict();
 			});
 		},
 		remove_user   : function () {
-			$('body').on('click', '#disconnect-customer', function (e) {
+			$('body').on('click', '#disconnect-donor', function (e) {
 				e.preventDefault();
 
 				if (!confirm(give_vars.disconnect_user)) {
@@ -959,11 +959,11 @@ jQuery.noConflict();
 			});
 		},
 		add_email     : function () {
-			if (!$('#add-customer-email').length) {
+			if (!$('#add-donor-email').length) {
 				return;
 			}
 
-			$(document.body).on('click', '#add-customer-email', function (e) {
+			$(document.body).on('click', '#add-donor-email', function (e) {
 				e.preventDefault();
 				var button  = $(this);
 				var wrapper = button.parent();

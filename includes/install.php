@@ -274,14 +274,14 @@ function give_after_install() {
 
 		if ( ! @Give()->donor_meta->installed() ) {
 
-			// Create the customer meta database
+			// Create the donor meta database.
 			// (this ensures it creates it on multisite instances where it is network activated).
 			@Give()->donor_meta->create_table();
 
 		}
 
 		if ( ! @Give()->donors->installed() ) {
-			// Create the customers database
+			// Create the donor database.
 			// (this ensures it creates it on multisite instances where it is network activated).
 			@Give()->donors->create_table();
 

@@ -3,7 +3,7 @@
  * Donors.
  *
  * @package     Give
- * @subpackage  Admin/Customers
+ * @subpackage  Admin/Donors
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
@@ -17,12 +17,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Donors Page.
  *
- * Renders the customers page contents.
+ * Renders the donors page contents.
  *
  * @since  1.0
  * @return void
  */
-function give_customers_page() {
+function give_donors_page() {
 	$default_views  = give_donor_views();
 	$requested_view = isset( $_GET['view'] ) ? sanitize_text_field( $_GET['view'] ) : 'donors';
 	if ( array_key_exists( $requested_view, $default_views ) && function_exists( $default_views[ $requested_view ] ) ) {
@@ -211,40 +211,40 @@ function give_donor_view( $donor ) {
 
 				<div class="donor-bio-header clearfix">
 
-					<div class="avatar-wrap left" id="customer-avatar">
+					<div class="avatar-wrap left" id="donor-avatar">
 						<?php echo get_avatar( $donor->email ); ?>
 					</div>
 
 					<div id="donor-name-wrap" class="left">
 						<span class="donor-id">#<?php echo $donor->id; ?></span>
-						<span class="customer-name info-item edit-item"><input size="15" data-key="name" name="customerinfo[name]" type="text" value="<?php echo esc_attr( $donor->name ); ?>" placeholder="<?php esc_attr_e( 'Donor Name', 'give' ); ?>" /></span>
-						<span class="customer-name info-item editable"><span data-key="name"><?php echo $donor->name; ?></span></span>
+						<span class="donor-name info-item edit-item"><input size="15" data-key="name" name="customerinfo[name]" type="text" value="<?php echo esc_attr( $donor->name ); ?>" placeholder="<?php esc_attr_e( 'Donor Name', 'give' ); ?>" /></span>
+						<span class="donor-name info-item editable"><span data-key="name"><?php echo $donor->name; ?></span></span>
 					</div>
-					<p class="customer-since info-item">
+					<p class="donor-since info-item">
 						<?php esc_html_e( 'Donor since', 'give' ); ?>
 						<?php echo date_i18n( give_date_format(), strtotime( $donor->date_created ) ) ?>
 					</p>
 					<?php if ( current_user_can( $donor_edit_role ) ) : ?>
-						<a href="#" id="edit-donor" class="button info-item editable customer-edit-link"><?php esc_html_e( 'Edit Donor', 'give' ); ?></a>
+						<a href="#" id="edit-donor" class="button info-item editable donor-edit-link"><?php esc_html_e( 'Edit Donor', 'give' ); ?></a>
 					<?php endif; ?>
 				</div>
 				<!-- /donor-bio-header -->
 
-				<div class="customer-main-wrapper">
+				<div class="donor-main-wrapper">
 
 					<table class="widefat">
 						<tbody>
 						<tr class="alternate">
 							<th scope="col"><label for="tablecell"><?php esc_html_e( 'User:', 'give' ); ?></label></th>
 							<td>
-								<span class="customer-user-id info-item edit-item">
+								<span class="donor-user-id info-item edit-item">
 									<?php
 
 									$user_id   = $donor->user_id > 0 ? $donor->user_id : '';
 
 									$data_atts = array(
 										'key'     => 'user_login',
-										'search-type' => 'user'
+										'search-type' => 'user',
 									);
 									$user_args = array(
 										'name'  => 'customerinfo[user_id]',
@@ -261,14 +261,14 @@ function give_donor_view( $donor ) {
 									?>
 								</span>
 
-								<span class="customer-user-id info-item editable">
-									<?php if ( !empty( $userdata ) ) { ?>
+								<span class="donor-user-id info-item editable">
+									<?php if ( ! empty( $userdata ) ) { ?>
 										<span data-key="user_id">#<?php echo $donor->user_id . ' - ' . $userdata->display_name; ?></span>
 									<?php } else { ?>
 										<span data-key="user_id"><?php esc_html_e( 'None', 'give' ); ?></span>
 									<?php } ?>
 									<?php if ( current_user_can( $donor_edit_role ) && intval( $donor->user_id ) > 0 ) { ?>
-										<span class="disconnect-user"> - <a id="disconnect-customer" href="#disconnect" aria-label="<?php esc_attr_e( 'Disconnects the current user ID from this customer record.', 'give' ); ?>"><?php esc_html_e( 'Disconnect User', 'give' ); ?></a></span>
+										<span class="disconnect-user"> - <a id="disconnect-donor" href="#disconnect" aria-label="<?php esc_attr_e( 'Disconnects the current user ID from this donor record.', 'give' ); ?>"><?php esc_html_e( 'Disconnect User', 'give' ); ?></a></span>
 									<?php } ?>
 								</span>
 							</td>
@@ -279,7 +279,7 @@ function give_donor_view( $donor ) {
 								<th scope="col"><?php esc_html_e( 'Address:', 'give' ); ?></th>
 								<td class="row-title">
 
-									<div class="customer-address-wrapper">
+									<div class="donor-address-wrapper">
 
 										<?php
 										$address  = get_user_meta( $donor->user_id, '_give_user_address', true );
@@ -296,7 +296,7 @@ function give_donor_view( $donor ) {
 										?>
 
 										<?php if ( ! empty( $address ) ) { ?>
-											<span class="customer-address info-item editable">
+											<span class="donor-address info-item editable">
 												<span class="info-item" data-key="line1"><?php echo $address['line1']; ?></span>
 												<span class="info-item" data-key="line2"><?php echo $address['line2']; ?></span>
 												<span class="info-item" data-key="city"><?php echo $address['city']; ?></span>
@@ -305,7 +305,7 @@ function give_donor_view( $donor ) {
 												<span class="info-item" data-key="zip"><?php echo $address['zip']; ?></span>
 											</span>
 										<?php } ?>
-										<span class="customer-address info-item edit-item">
+										<span class="donor-address info-item edit-item">
 											<input class="info-item" type="text" data-key="line1" name="customerinfo[line1]" placeholder="<?php esc_attr_e( 'Address 1', 'give' ); ?>" value="<?php echo $address['line1']; ?>" />
 											<input class="info-item" type="text" data-key="line2" name="customerinfo[line2]" placeholder="<?php esc_attr_e( 'Address 2', 'give' ); ?>" value="<?php echo $address['line2']; ?>" />
 											<input class="info-item" type="text" data-key="city" name="customerinfo[city]" placeholder="<?php esc_attr_e( 'City', 'give' ); ?>" value="<?php echo $address['city']; ?>" />
@@ -374,12 +374,12 @@ function give_donor_view( $donor ) {
 	 *
 	 * @since 1.0
 	 *
-	 * @param object $donor The customer object being displayed.
+	 * @param object $donor The donor object being displayed.
 	 */
 	do_action( 'give_donor_before_stats', $donor );
 	?>
 
-	<div id="customer-stats-wrapper" class="donor-section postbox clear">
+	<div id="donor-stats-wrapper" class="donor-section postbox clear">
 		<ul>
 			<li>
 				<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $donor->email ) ); ?>">
@@ -403,7 +403,7 @@ function give_donor_view( $donor ) {
 			 *
 			 * @since 1.0
 			 *
-			 * @param object $donor The customer object being displayed.
+			 * @param object $donor The donor object being displayed.
 			 */
 			do_action( 'give_donor_stats_list', $donor );
 			?>
@@ -416,12 +416,12 @@ function give_donor_view( $donor ) {
 	 *
 	 * @since 1.0
 	 *
-	 * @param object $donor The customer object being displayed.
+	 * @param object $donor The donor object being displayed.
 	 */
 	do_action( 'give_donor_before_tables_wrapper', $donor );
 	?>
 
-	<div id="customer-tables-wrapper" class="donor-section">
+	<div id="donor-tables-wrapper" class="donor-section">
 
 		<?php
 		/**
@@ -429,7 +429,7 @@ function give_donor_view( $donor ) {
 		 *
 		 * @since 1.0
 		 *
-		 * @param object $donor The customer object being displayed.
+		 * @param object $donor The donor object being displayed.
 		 */
 		do_action( 'give_donor_before_tables', $donor );
 		?>
@@ -476,14 +476,14 @@ function give_donor_view( $donor ) {
 						</tr>
 					<?php endforeach; ?>
 
-					<tr class="add-customer-email-row">
-						<td colspan="2" class="add-customer-email-td">
-							<div class="add-customer-email-wrapper">
+					<tr class="add-donor-email-row">
+						<td colspan="2" class="add-donor-email-td">
+							<div class="add-donor-email-wrapper">
 								<input type="hidden" name="donor-id" value="<?php echo $donor->id; ?>" />
 								<?php wp_nonce_field( 'give_add_donor_email', 'add_email_nonce', false, true ); ?>
 								<input type="email" name="additional-email" value="" placeholder="<?php _e( 'Email Address', 'give' ); ?>" />&nbsp;
 								<input type="checkbox" name="make-additional-primary" value="1" id="make-additional-primary" />&nbsp;<label for="make-additional-primary"><?php _e( 'Make Primary', 'give' ); ?></label>
-								<button class="button-secondary give-add-customer-email" id="add-customer-email"><?php _e( 'Add Email', 'give' ); ?></button>
+								<button class="button-secondary give-add-donor-email" id="add-donor-email"><?php _e( 'Add Email', 'give' ); ?></button>
 								<span class="spinner"></span>
 							</div>
 							<div class="notice-wrap"></div>
@@ -544,7 +544,7 @@ function give_donor_view( $donor ) {
 							 *
 							 * @since 1.0
 							 *
-							 * @param object $donor The customer object being displayed.
+							 * @param object $donor The donor object being displayed.
 							 * @param object $payment  The payment object being displayed.
 							 */
 							do_action( 'give_donor_recent_purchases_actions', $donor, $payment );
@@ -607,7 +607,7 @@ function give_donor_view( $donor ) {
 		 *
 		 * @since 1.0
 		 *
-		 * @param object $donor The customer object being displayed.
+		 * @param object $donor The donor object being displayed.
 		 */
 		do_action( 'give_donor_after_tables', $donor );
 		?>
@@ -627,11 +627,11 @@ function give_donor_view( $donor ) {
 }
 
 /**
- * View the notes of a customer
+ * View the notes of a donor.
  *
  * @since  1.0
  *
- * @param  object $donor The customer object being displayed.
+ * @param  object $donor The donor object being displayed.
  *
  * @return void
  */

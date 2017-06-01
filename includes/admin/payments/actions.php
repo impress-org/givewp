@@ -69,7 +69,7 @@ function give_update_payment_details( $data ) {
 	$new_total  = give_sanitize_amount( $data['give-payment-total'] );
 	$date       = date( 'Y-m-d', strtotime( $date ) ) . ' ' . $hour . ':' . $minute . ':00';
 
-	$curr_donor_id = sanitize_text_field( $data['give-current-customer'] );
+	$curr_donor_id = sanitize_text_field( $data['give-current-donor'] );
 	$new_donor_id  = sanitize_text_field( $data['donor-id'] );
 
 	/**
@@ -90,10 +90,10 @@ function give_update_payment_details( $data ) {
 
 	$donor_changed = false;
 
-	if ( isset( $data['give-new-customer'] ) && $data['give-new-customer'] == '1' ) {
+	if ( isset( $data['give-new-donor'] ) && $data['give-new-donor'] == '1' ) {
 
-		$email = isset( $data['give-new-customer-email'] ) ? sanitize_text_field( $data['give-new-customer-email'] ) : '';
-		$names = isset( $data['give-new-customer-name'] ) ? sanitize_text_field( $data['give-new-customer-name'] ) : '';
+		$email = isset( $data['give-new-donor-email'] ) ? sanitize_text_field( $data['give-new-donor-email'] ) : '';
+		$names = isset( $data['give-new-donor-name'] ) ? sanitize_text_field( $data['give-new-donor-name'] ) : '';
 
 		if ( empty( $email ) || empty( $names ) ) {
 			wp_die( esc_html__( 'New donors require a name and email address.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
@@ -111,7 +111,7 @@ function give_update_payment_details( $data ) {
 				// Failed to crete the new donor, assume the previous donor.
 				$donor_changed = false;
 				$donor         = new Give_Donor( $curr_donor_id );
-				give_set_error( 'give-payment-new-customer-fail', __( 'Error creating new donor.', 'give' ) );
+				give_set_error( 'give-payment-new-donor-fail', __( 'Error creating new donor.', 'give' ) );
 			}
 		}
 
