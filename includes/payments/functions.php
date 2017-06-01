@@ -1364,7 +1364,7 @@ function give_payment_subtotal( $payment_id = 0 ) {
  * @return float $subtotal Subtotal for payment (non formatted).
  */
 function give_get_payment_subtotal( $payment_id = 0 ) {
-	$payment = new G_Payment( $payment_id );
+	$payment = new Give_Payment( $payment_id );
 
 	return $payment->subtotal;
 }
