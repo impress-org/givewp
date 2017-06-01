@@ -11,7 +11,7 @@
  *
  * @param $instance Give()
  *
- * @return $instance Give()
+ * @return Give
  */
 function give_load_deprecated_properties( $instance ) {
 
