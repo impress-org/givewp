@@ -653,7 +653,7 @@ class Give_HTML_Elements {
 			'multiple'    => false,
 			'selected'    => 0,
 			'chosen'      => true,
-			'number'      => 2,
+			'number'      => 30,
 			'select_atts' => '',
 			'placeholder' => __( 'Select a user', 'give' ),
 			'data'        => array(
