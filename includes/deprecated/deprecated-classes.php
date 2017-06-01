@@ -85,7 +85,7 @@ class Give_DB_Customers extends Give_DB {
 
 
 /**
- * Give_Donors Class (Deprecated)
+ * Give_Customer Class (Deprecated)
  *
  * @since 1.0
  */
@@ -93,10 +93,49 @@ class Give_Customer {
 
 	/**
 	 * Give_Customer constructor.
+	 *
+	 * @param bool $_id_or_email
+	 * @param bool $by_user_id
 	 */
-	public function __construct() {
+	public function __construct( $_id_or_email = false, $by_user_id = false ) {
+
+		$this->db = new Give_DB_Donors();
+
+		if ( false === $_id_or_email || ( is_numeric( $_id_or_email ) && (int) $_id_or_email !== absint( $_id_or_email ) ) ) {
+			return false;
+		}
+
+		$by_user_id = is_bool( $by_user_id ) ? $by_user_id : false;
+
+		if ( is_numeric( $_id_or_email ) ) {
+			$field = $by_user_id ? 'user_id' : 'id';
+		} else {
+			$field = 'email';
+		}
+
+		$this->customer = $this->db->get_donor_by( $field, $_id_or_email );
+
+		if ( empty( $donor ) || ! is_object( $donor ) ) {
+			return false;
+		}
+
+
 	}
 
+	/**
+	 * Responsible for setting properties from the Give_Donor class.
+	 *
+	 * @param $name
+	 */
+	public function __get( $name ) {
+
+		$properties = get_object_vars( $this->customer );
+
+		if ( array_key_exists( $name, $properties ) ) {
+			return $properties[ $name ];
+		}
+
+	}
 
 	/**
 	 * There are certain responsibility of this function:
@@ -115,19 +154,16 @@ class Give_Customer {
 			'decrease_purchase_count',
 		);
 
-		// If a property is renamed then it gets placed below.
-		$customer = new Give_Donor();
-
 		if ( in_array( $name, $deprecated_function_arr ) ) {
 			switch ( $name ) {
 				case 'setup_customer':
 					$donor = ! empty( $arguments[0] ) ? $arguments[0] : array();
 
-					return $customer->setup_donors( $donor );
+					return $this->customer->setup_donors( $donor );
 				case 'decrease_purchase_count':
 					$donor = ! empty( $arguments[0] ) ? $arguments[0] : array();
 
-					return $customer->decrease_donation_count( $donor );
+					return $this->customer->decrease_donation_count( $donor );
 			}
 		}
 	}
