@@ -1,8 +1,8 @@
 <?php
 /**
- * Batch Customers Export Class
+ * Batch Donors Export Class
  *
- * This class handles customer export
+ * This class handles donor export.
  *
  * @package     Give
  * @subpackage  Admin/Reports
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Give_Batch_Customers_Export extends Give_Batch_Export {
 
 	/**
-	 * Our export type. Used for export-type specific filters/actions
+	 * Our export type. Used for export-type specific filters/actions.
 	 *
 	 * @var string
 	 * @since 1.5
@@ -56,7 +56,7 @@ class Give_Batch_Customers_Export extends Give_Batch_Export {
 	private $query_id = '';
 
 	/**
-	 * Set the properties specific to the Customers export
+	 * Set the properties specific to the donors export.
 	 *
 	 * @since 1.5
 	 *

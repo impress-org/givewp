@@ -42,8 +42,8 @@ function give_include_batch_export_class( $class ) {
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/data/class-give-tools-delete-test-transactions.php';
 			break;
 
-		case 'Give_Tools_Recount_Customer_Stats':
-			require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/data/class-give-tools-recount-customer-stats.php';
+		case 'Give_Tools_Recount_Donor_Stats':
+			require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/data/class-give-tools-recount-donor-stats.php';
 			break;
 
 		case 'Give_Tools_Reset_Stats':

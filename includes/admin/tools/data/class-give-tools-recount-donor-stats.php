@@ -4,7 +4,7 @@
  *
  * This class handles batch processing of recounting all customer stats
  *
- * @subpackage  Admin/Tools/Give_Tools_Recount_Customer_Stats
+ * @subpackage  Admin/Tools/Give_Tools_Recount_Donor_Stats
  * @copyright   Copyright (c) 2016, Chris Klosowski
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.5
@@ -16,11 +16,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Give_Tools_Recount_Customer_Stats Class
+ * Give_Tools_Recount_Donor_Stats Class
  *
  * @since 1.5
  */
-class Give_Tools_Recount_Customer_Stats extends Give_Batch_Export {
+class Give_Tools_Recount_Donor_Stats extends Give_Batch_Export {
 
 	/**
 	 * Our export type. Used for export-type specific filters/actions

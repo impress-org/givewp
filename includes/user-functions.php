@@ -256,7 +256,7 @@ function give_count_donations_of_donor( $user = null ) {
 }
 
 /**
- * Calculates the total amount spent by a user
+ * Calculates the total amount spent by a user.
  *
  * @access      public
  * @since       1.0
@@ -274,7 +274,7 @@ function give_donation_total_of_user( $user = null ) {
 
 
 /**
- * Validate a potential username
+ * Validate a potential username.
  *
  * @since 1.0
  *
