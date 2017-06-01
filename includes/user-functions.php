@@ -23,14 +23,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since  1.0
  *
- * @param int    $user   User ID or email address
- * @param int    $number Number of donations to retrieve
+ * @param int    $user   User ID or email address.
+ * @param int    $number Number of donations to retrieve.
  * @param bool   $pagination
  * @param string $status
  *
- * @return bool|object List of all user donations
+ * @return bool|array List of all user donations.
  */
-function give_get_users_purchases( $user = 0, $number = 20, $pagination = false, $status = 'complete' ) {
+function give_get_users_donations( $user = 0, $number = 20, $pagination = false, $status = 'complete' ) {
 
 	if ( empty( $user ) ) {
 		$user = get_current_user_id();
@@ -41,14 +41,13 @@ function give_get_users_purchases( $user = 0, $number = 20, $pagination = false,
 	}
 
 	$status = $status === 'complete' ? 'publish' : $status;
+	$paged = 1;
 
 	if ( $pagination ) {
 		if ( get_query_var( 'paged' ) ) {
 			$paged = get_query_var( 'paged' );
 		} elseif ( get_query_var( 'page' ) ) {
 			$paged = get_query_var( 'page' );
-		} else {
-			$paged = 1;
 		}
 	}
 
@@ -60,22 +59,18 @@ function give_get_users_purchases( $user = 0, $number = 20, $pagination = false,
 	) );
 
 	if ( $pagination ) {
-
 		$args['page'] = $paged;
-
 	} else {
-
 		$args['nopaging'] = true;
-
 	}
 
 	$by_user_id = is_numeric( $user ) ? true : false;
-	$customer   = new Give_Donor( $user, $by_user_id );
+	$donor   = new Give_Donor( $user, $by_user_id );
 
-	if ( ! empty( $customer->payment_ids ) ) {
+	if ( ! empty( $donor->payment_ids ) ) {
 
 		unset( $args['user'] );
-		$args['post__in'] = array_map( 'absint', explode( ',', $customer->payment_ids ) );
+		$args['post__in'] = array_map( 'absint', explode( ',', $donor->payment_ids ) );
 
 	}
 
@@ -92,7 +87,7 @@ function give_get_users_purchases( $user = 0, $number = 20, $pagination = false,
 /**
  * Get Users Donations
  *
- * Returns a list of unique donation forms given to by a specific user
+ * Returns a list of unique donation forms given to by a specific user.
  *
  * @since  1.0
  *
@@ -112,14 +107,14 @@ function give_get_users_completed_donations( $user = 0, $status = 'complete' ) {
 
 	$by_user_id = is_numeric( $user ) ? true : false;
 
-	$customer = new Give_Donor( $user, $by_user_id );
+	$donor = new Give_Donor( $user, $by_user_id );
 
-	if ( empty( $customer->payment_ids ) ) {
+	if ( empty( $donor->payment_ids ) ) {
 		return false;
 	}
 
-	// Get all the items donated
-	$payment_ids    = array_reverse( explode( ',', $customer->payment_ids ) );
+	// Get all the items donated.
+	$payment_ids    = array_reverse( explode( ',', $donor->payment_ids ) );
 	$limit_payments = apply_filters( 'give_users_completed_donations_payments', 50 );
 	if ( ! empty( $limit_payments ) ) {
 		$payment_ids = array_slice( $payment_ids, 0, $limit_payments );
@@ -180,7 +175,7 @@ function give_has_purchases( $user_id = null ) {
 		$user_id = get_current_user_id();
 	}
 
-	if ( give_get_users_purchases( $user_id, 1 ) ) {
+	if ( give_get_users_donations( $user_id, 1 ) ) {
 		return true; // User has at least one donation
 	}
 

@@ -5,14 +5,14 @@
 
 // User's Donations
 if ( is_user_logged_in() ) {
-	$donations = give_get_users_purchases( get_current_user_id(), 20, true, 'any' );
+	$donations = give_get_users_donations( get_current_user_id(), 20, true, 'any' );
 } elseif ( Give()->email_access->token_exists ) {
 	// Email Access Token?
-	$donations = give_get_users_purchases( 0, 20, true, 'any' );
+	$donations = give_get_users_donations( 0, 20, true, 'any' );
 } elseif ( Give()->session->get_session_expiration() !== false ) {
 	// Session active?
 	$email     = Give()->session->get( 'give_email' );
-	$donations = give_get_users_purchases( $email, 20, true, 'any' );
+	$donations = give_get_users_donations( $email, 20, true, 'any' );
 }
 
 if ( $donations ) : ?>

@@ -9,7 +9,7 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 
 	protected $_user_id = null;
 
-	protected $_customer_id = null;
+	protected $_donor_id = null;
 
 	/**
 	 * Set it up
@@ -131,11 +131,11 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Test Update Customer
+	 * Test Update Donor
 	 *
 	 * @covers Give_Donor::update
 	 */
-	public function test_update_customer() {
+	public function test_update_donor() {
 
 		$test_email = 'testaccount2@domain.com';
 
@@ -166,6 +166,9 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 
 	}
 
+	/**
+	 * Test attach payment.
+	 */
 	public function test_attach_payment() {
 
 		$donor = new Give_Donor( 'testadmin@domain.com' );
@@ -175,26 +178,32 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 
 		$this->assertTrue( in_array( 5222222, $payment_ids ) );
 
-		// Verify if we don't send a payment, we get false
+		// Verify if we don't send a payment, we get false.
 		$this->assertFalse( $donor->attach_payment() );
 
 	}
 
+	/**
+	 * Test attach duplicate payment.
+	 */
 	public function test_attach_duplicate_payment() {
 
-		// Verify that if we pass a payment that's already attached we do not change stats
+		// Verify that if we pass a payment that's already attached we do not change stats.
 		$donor = new Give_Donor( 'testadmin@domain.com' );
 		$payments = array_map( 'absint', explode( ',', $donor->payment_ids ) );
 
-		$expected_purcahse_count = $donor->purchase_count;
-		$expected_purcahse_value = $donor->purchase_value;
+		$expected_purchase_count = $donor->purchase_count;
+		$expected_purchase_value = $donor->purchase_value;
 
 		$donor->attach_payment( $payments[0] );
-		$this->assertEquals( $expected_purcahse_count, $donor->purchase_count );
-		$this->assertEquals( $expected_purcahse_value, $donor->purchase_value );
+		$this->assertEquals( $expected_purchase_count, $donor->purchase_count );
+		$this->assertEquals( $expected_purchase_value, $donor->purchase_value );
 
 	}
 
+	/**
+	 * Test remove payment.
+	 */
 	public function test_remove_payment() {
 
 		$donor = new Give_Donor( 'testadmin@domain.com' );
@@ -209,6 +218,9 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 		$this->assertFalse( in_array( 5222223, $payment_ids ) );
 	}
 
+	/**
+	 * Test increment stats.
+	 */
 	public function test_increment_stats() {
 
 		$donor = new Give_Donor( 'testadmin@domain.com' );
@@ -259,6 +271,9 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 
 	}
 
+	/**
+	 * Test donor notes.
+	 */
 	public function test_donor_notes() {
 
 		$donor = new Give_Donor( 'testadmin@domain.com' );
@@ -294,14 +309,14 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 	 */
 	public function test_users_purchases() {
 
-		$out = give_get_users_purchases( $this->_user_id );
+		$out = give_get_users_donations( $this->_user_id );
 
 		$this->assertInternalType( 'object', $out[0] );
 		$this->assertEquals( 'give_payment', $out[0]->post_type );
 		$this->assertTrue( give_has_purchases( $this->_user_id ) );
 		$this->assertEquals( 1, give_count_donations_of_donor( $this->_user_id ) );
 
-		$no_user = give_get_users_purchases( 0 );
+		$no_user = give_get_users_donations( 0 );
 		$this->assertFalse( $no_user );
 
 		$no_user_count = give_count_donations_of_donor();

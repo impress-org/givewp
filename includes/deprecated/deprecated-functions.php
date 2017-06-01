@@ -357,3 +357,27 @@ function give_get_purchase_stats_by_user( $user = '' ) {
 	return give_get_donation_stats_by_user( $user );
 
 }
+
+/**
+ * Get Users Donations
+ *
+ * Retrieves a list of all donations by a specific user.
+ *
+ * @since  1.0
+ *
+ * @param int    $user   User ID or email address
+ * @param int    $number Number of donations to retrieve
+ * @param bool   $pagination
+ * @param string $status
+ *
+ * @return bool|object List of all user donations
+ */
+function give_get_users_purchases( $user = 0, $number = 20, $pagination = false, $status = 'complete' ) {
+
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_count_donations_of_donor', $backtrace );
+
+	return give_get_users_donations( $user, $number, $pagination, $status );
+
+}
