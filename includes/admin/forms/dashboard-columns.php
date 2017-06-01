@@ -183,34 +183,18 @@ function give_sort_forms( $vars ) {
 		case 'amount':
 			$multi_level_meta_key = ( 'asc' === $vars['order'] ) ? '_give_levels_minimum_amount' : '_give_levels_maximum_amount';
 
+			$vars['orderby'] = 'meta_value_num';
 			$vars['meta_query'] = array(
 				'relation' => 'OR',
 				array(
-					'relation'  =>  'AND',
-					array(
-						'key'   => '_give_price_option',
-						'value'   => 'set',
-						'compare' => '='
-					),
-					array(
-						'key'   => '_give_set_price',
-						'compare' => 'EXISTS'
-					),
+					'key'   => '_give_set_price',
+					'compare' => 'EXISTS'
 				),
 				array(
-					'relation'  =>  'AND',
-					array(
-						'key'   => '_give_price_option',
-						'value'   => 'multi',
-						'compare' => '='
-					),
-					array(
-						'key'   => $multi_level_meta_key,
-						'compare' => 'EXISTS'
-					),
+					'key'   => $multi_level_meta_key,
+					'compare' => 'EXISTS'
 				)
 			);
-			$vars['orderby'] = 'meta_value_num';
 
 			break;
 
