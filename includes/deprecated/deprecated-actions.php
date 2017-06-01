@@ -81,6 +81,10 @@ function give_deprecated_actions() {
 		'give_donor_post_set_primary_email'        => 'give_customer_post_set_primary_email',
 		'give_donation_form_top'                   => 'give_checkout_form_top',
 		'give_donation_form_bottom'                => 'give_checkout_form_bottom',
+		'give_donor_delete_top'                    => 'give_customer_delete_top',
+		'give_donor_delete_bottom'                 => 'give_customer_delete_bottom',
+		'give_donor_delete_inputs'                 => 'give_customer_delete_inputs',
+		'give_pre_insert_donor_note'               => 'give_pre_insert_customer_note',
 	);
 
 	return $give_deprecated_actions;
@@ -106,14 +110,7 @@ function give_deprecated_action_mapping( $data, $arg_1 = '', $arg_2 = '', $arg_3
 
 			if ( ! defined( 'DOING_AJAX' ) ) {
 				// translators: %s: action name.
-				_give_deprecated_function(
-					sprintf(
-						__( 'The %s action' ),
-						$give_map_deprecated_actions[ $action ]
-					),
-					'1.7',
-					$action
-				);
+				_give_deprecated_function( sprintf( __( 'The %s action' ), $give_map_deprecated_actions[ $action ] ), '1.7', $action );
 			}
 		}
 	}

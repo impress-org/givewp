@@ -48,12 +48,12 @@
 	font-weight: normal;
   }
 
-  .customer-section {
+  .donor-section {
 	border-bottom: 1px solid #eee;
 	margin-bottom: 10px;
   }
 
-  .customer-section table {
+  .donor-section table {
 	margin-bottom: 0;
   }
 
@@ -158,7 +158,7 @@
   width: 200px;
 }
 
-#give-customer-card-wrapper .customer-info {
+#give-customer-card-wrapper .donor-info {
   min-height: 185px;
 }
 
@@ -166,7 +166,7 @@
   min-height: 125px;
 }
 
-.customer-info .customer-name {
+.donor-info .customer-name {
   font-size: 24px;
   font-weight: 600;
 }
@@ -247,27 +247,27 @@
   text-align: center;
 }
 
-#customer-notes-wrapper {
+#donor-notes-wrapper {
   min-height: 50px;
 }
 
-.customer-notes-header span, .customer-notes-header img {
+.donor-notes-header span, .donor-notes-header img {
   font-weight: 600;
   line-height: 30px;
   vertical-align: middle;
 }
 
-.customer-note-input {
+.donor-note-input {
   width: 100%;
   margin-bottom: 5px;
 }
 
-//Customer Notes
-#give-customer-notes {
+// Donor Notes
+#give-donor-notes {
   div:nth-of-type(even) {
 	background-color: #f9f9f9;
   }
-  .customer-note-wrapper {
+  .donor-note-wrapper {
 	border-bottom: 1px solid #f9f9f9;
 	min-height: 38px;
 	padding: 0;
@@ -280,18 +280,18 @@
 
   }
 
-  .give-no-customer-notes {
+  .give-no-donor-notes {
 	text-align: center;
 	padding: 20px;
   }
 
 }
 
-.customer-note-wrapper span {
+.donor-note-wrapper span {
   display: block;
 }
 
-.delete-customer {
+.delete-donor {
   text-align: center;
 }
 

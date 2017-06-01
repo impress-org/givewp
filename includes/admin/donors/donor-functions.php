@@ -27,8 +27,8 @@ function give_register_default_customer_views( $views ) {
 
 	$default_views = array(
 		'overview' => 'give_customers_view',
-		'delete'   => 'give_customers_delete_view',
-		'notes'    => 'give_customer_notes_view'
+		'delete'   => 'give_donors_delete_view',
+		'notes'    => 'give_donor_notes_view'
 	);
 
 	return array_merge( $views, $default_views );

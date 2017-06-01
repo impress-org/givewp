@@ -352,7 +352,7 @@ jQuery.noConflict();
 
 			$('#give-donor-details').on('click', '.give-payment-new-customer, .give-payment-new-customer-cancel', function (e) {
 				e.preventDefault();
-				$('.customer-info').toggle();
+				$('.donor-info').toggle();
 				$('.new-customer').toggle();
 
 				if ($('.new-customer').is(":visible")) {
@@ -871,7 +871,7 @@ jQuery.noConflict();
 				var postData = {
 					give_action: 'disconnect-userid',
 					customer_id: customer_id,
-					_wpnonce   : $('#edit-customer-info #_wpnonce').val()
+					_wpnonce   : $('#edit-donor-info #_wpnonce').val()
 				};
 
 				$.post(ajaxurl, postData, function (response) {
@@ -908,25 +908,25 @@ jQuery.noConflict();
 			});
 		},
 		add_note      : function () {
-			$('body').on('click', '#add-customer-note', function (e) {
+			$('body').on('click', '#add-donor-note', function (e) {
 				e.preventDefault();
 				var postData = {
-					give_action            : 'add-customer-note',
+					give_action            : 'add-donor-note',
 					customer_id            : $('#customer-id').val(),
-					customer_note          : $('#customer-note').val(),
-					add_customer_note_nonce: $('#add_customer_note_nonce').val()
+					donor_note          : $('#donor-note').val(),
+					add_donor_note_nonce: $('#add_donor_note_nonce').val()
 				};
 
-				if (postData.customer_note) {
+				if (postData.donor_note) {
 
 					$.ajax({
 						type   : "POST",
 						data   : postData,
 						url    : ajaxurl,
 						success: function (response) {
-							$('#give-customer-notes').prepend(response);
-							$('.give-no-customer-notes').hide();
-							$('#customer-note').val('');
+							$('#give-donor-notes').prepend(response);
+							$('.give-no-donor-notes').hide();
+							$('#donor-note').val('');
 						}
 					}).fail(function (data) {
 						if (window.console && window.console.log) {
@@ -935,18 +935,18 @@ jQuery.noConflict();
 					});
 
 				} else {
-					var border_color = $('#customer-note').css('border-color');
-					$('#customer-note').css('border-color', 'red');
+					var border_color = $('#donor-note').css('border-color');
+					$('#donor-note').css('border-color', 'red');
 					setTimeout(function () {
-						$('#customer-note').css('border-color', border_color);
+						$('#donor-note').css('border-color', border_color);
 					}, 500);
 				}
 			});
 		},
 		delete_checked: function () {
-			$('#give-customer-delete-confirm').change(function () {
-				var records_input = $('#give-customer-delete-records');
-				var submit_button = $('#give-delete-customer');
+			$('#give-donor-delete-confirm').change(function () {
+				var records_input = $('#give-donor-delete-records');
+				var submit_button = $('#give-delete-donor');
 
 				if ($(this).prop('checked')) {
 					records_input.attr('disabled', false);

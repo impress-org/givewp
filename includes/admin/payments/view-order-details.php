@@ -491,7 +491,7 @@ $payment_mode   = $payment->mode;
 
 									<?php $donor = new Give_Donor( $donor_id ); ?>
 
-									<div class="column-container customer-info">
+									<div class="column-container donor-info">
 										<div class="column">
 											<p>
 												<strong><?php esc_html_e( 'Donor ID:', 'give' ); ?></strong><br>

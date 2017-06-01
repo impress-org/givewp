@@ -206,18 +206,18 @@ function give_customer_save_note( $args ) {
 		return;
 	}
 
-	$customer_note = trim( sanitize_text_field( $args['customer_note'] ) );
+	$donor_note = trim( sanitize_text_field( $args['donor_note'] ) );
 	$customer_id   = (int) $args['customer_id'];
-	$nonce         = $args['add_customer_note_nonce'];
+	$nonce         = $args['add_donor_note_nonce'];
 
-	if ( ! wp_verify_nonce( $nonce, 'add-customer-note' ) ) {
+	if ( ! wp_verify_nonce( $nonce, 'add-donor-note' ) ) {
 		wp_die( esc_html__( 'Cheatin&#8217; uh?', 'give' ), esc_html__( 'Error', 'give' ), array(
 			'response' => 400,
 		) );
 	}
 
-	if ( empty( $customer_note ) ) {
-		give_set_error( 'empty-customer-note', esc_html__( 'A note is required.', 'give' ) );
+	if ( empty( $donor_note ) ) {
+		give_set_error( 'empty-donor-note', esc_html__( 'A note is required.', 'give' ) );
 	}
 
 	if ( give_get_errors() ) {
@@ -225,23 +225,23 @@ function give_customer_save_note( $args ) {
 	}
 
 	$customer = new Give_Donor( $customer_id );
-	$new_note = $customer->add_note( $customer_note );
+	$new_note = $customer->add_note( $donor_note );
 
 	/**
-	 * Fires before inserting customer note.
+	 * Fires before inserting donor note.
 	 *
 	 * @since 1.0
 	 *
-	 * @param int $customer_id The ID of the customer.
+	 * @param int $customer_id The ID of the donor.
 	 * @param string $new_note Note content.
 	 */
-	do_action( 'give_pre_insert_customer_note', $customer_id, $new_note );
+	do_action( 'give_pre_insert_donor_note', $customer_id, $new_note );
 
 	if ( ! empty( $new_note ) && ! empty( $customer->id ) ) {
 
 		ob_start();
 		?>
-		<div class="customer-note-wrapper dashboard-comment-wrap comment-item">
+		<div class="donor-note-wrapper dashboard-comment-wrap comment-item">
 			<span class="note-content-wrap">
 				<?php echo stripslashes( $new_note ); ?>
 			</span>
@@ -263,7 +263,7 @@ function give_customer_save_note( $args ) {
 
 }
 
-add_action( 'give_add-customer-note', 'give_customer_save_note', 10, 1 );
+add_action( 'give_add-donor-note', 'give_customer_save_note', 10, 1 );
 
 /**
  * Delete a customer
@@ -289,11 +289,11 @@ function give_customer_delete( $args ) {
 	}
 
 	$customer_id = (int) $args['customer_id'];
-	$confirm     = ! empty( $args['give-customer-delete-confirm'] ) ? true : false;
-	$remove_data = ! empty( $args['give-customer-delete-records'] ) ? true : false;
+	$confirm     = ! empty( $args['give-donor-delete-confirm'] ) ? true : false;
+	$remove_data = ! empty( $args['give-donor-delete-records'] ) ? true : false;
 	$nonce       = $args['_wpnonce'];
 
-	if ( ! wp_verify_nonce( $nonce, 'delete-customer' ) ) {
+	if ( ! wp_verify_nonce( $nonce, 'delete-donor' ) ) {
 		wp_die( esc_html__( 'Cheatin&#8217; uh?', 'give' ), esc_html__( 'Error', 'give' ), array(
 			'response' => 400,
 		) );
@@ -362,7 +362,7 @@ function give_customer_delete( $args ) {
 
 }
 
-add_action( 'give_delete-customer', 'give_customer_delete', 10, 1 );
+add_action( 'give_delete-donor', 'give_customer_delete', 10, 1 );
 
 /**
  * Disconnect a user ID from a donor
@@ -518,12 +518,12 @@ function give_add_donor_email( $args ) {
 
 			$user          = wp_get_current_user();
 			$user_login    = ! empty( $user->user_login ) ? $user->user_login : __( 'System', 'give' );
-			$customer_note = sprintf( __( 'Email address %1$s added by %2$s', 'give' ), $email, $user_login );
-			$customer->add_note( $customer_note );
+			$donor_note = sprintf( __( 'Email address %1$s added by %2$s', 'give' ), $email, $user_login );
+			$customer->add_note( $donor_note );
 
 			if ( $primary ) {
-				$customer_note = sprintf( __( 'Email address %1$s set as primary by %2$s', 'give' ), $email, $user_login );
-				$customer->add_note( $customer_note );
+				$donor_note = sprintf( __( 'Email address %1$s set as primary by %2$s', 'give' ), $email, $user_login );
+				$customer->add_note( $donor_note );
 			}
 		}
 	}// End if().
@@ -572,8 +572,8 @@ function give_remove_donor_email() {
 		$url           = add_query_arg( 'give-message', 'email-removed', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $customer->id ) );
 		$user          = wp_get_current_user();
 		$user_login    = ! empty( $user->user_login ) ? $user->user_login : esc_html__( 'System', 'give' );
-		$customer_note = sprintf( __( 'Email address %1$s removed by %2$s', 'give' ), $_GET['email'], $user_login );
-		$customer->add_note( $customer_note );
+		$donor_note = sprintf( __( 'Email address %1$s removed by %2$s', 'give' ), $_GET['email'], $user_login );
+		$customer->add_note( $donor_note );
 	} else {
 		$url = add_query_arg( 'give-message', 'email-remove-failed', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $customer->id ) );
 	}

@@ -1,6 +1,8 @@
 <?php
 /**
- * Customer (Donor) Reports Table Class.
+ * Donor List Table Class.
+ *
+ * The list view under WP-Admin > Donations > Donors.
  *
  * @package     Give
  * @subpackage  Admin/Reports
@@ -20,13 +22,13 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 }
 
 /**
- * Give_Donor_Reports_Table Class.
+ * Give_Donor_List_Table Class.
  *
  * Renders the Customer Reports table.
  *
  * @since 1.0
  */
-class Give_Donor_Reports_Table extends WP_List_Table {
+class Give_Donor_List_Table extends WP_List_Table {
 
 	/**
 	 * Number of items per page.
@@ -62,9 +64,9 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 
 		// Set parent defaults
 		parent::__construct( array(
-			'singular' => esc_html__( 'Donor', 'give' ),     // Singular name of the listed records
-			'plural'   => esc_html__( 'Donors', 'give' ),    // Plural name of the listed records
-			'ajax'     => false                       // Does this table support ajax?
+			'singular' => __( 'Donor', 'give' ),     // Singular name of the listed records.
+			'plural'   => __( 'Donors', 'give' ),    // Plural name of the listed records.
+			'ajax'     => false                       // Does this table support ajax?.
 		) );
 
 	}
