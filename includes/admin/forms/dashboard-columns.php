@@ -182,8 +182,6 @@ function give_sort_forms( $vars ) {
 		// Check if "orderby" is set to "price/amount"
 		case 'amount':
 			$multi_level_meta_key = ( 'asc' === $vars['order'] ) ? '_give_levels_minimum_amount' : '_give_levels_maximum_amount';
-			//$multi_level_meta_key = '_give_levels_minimum_amount';
-
 
 			$vars['meta_query'] = array(
 				'relation' => 'OR',
@@ -238,7 +236,7 @@ function give_sort_forms( $vars ) {
 			);
 			break;
 	}
-//echo "<pre>"; print_r($vars); echo "</pre>";
+
 	return $vars;
 }
 
