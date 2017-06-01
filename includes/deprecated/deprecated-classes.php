@@ -93,7 +93,7 @@ class Give_DB_Customers extends Give_DB_Donors {
  *
  * @since 1.0
  */
-class Give_Customer {
+class Give_Customer extends Give_Donor {
 
 	/**
 	 * Give_Customer constructor.
@@ -102,94 +102,8 @@ class Give_Customer {
 	 * @param bool $by_user_id
 	 */
 	public function __construct( $_id_or_email = false, $by_user_id = false ) {
-
-		$this->db = new Give_DB_Donors();
-
-		if ( false === $_id_or_email || ( is_numeric( $_id_or_email ) && (int) $_id_or_email !== absint( $_id_or_email ) ) ) {
-			return false;
-		}
-
-		$by_user_id = is_bool( $by_user_id ) ? $by_user_id : false;
-
-		if ( is_numeric( $_id_or_email ) ) {
-			$field = $by_user_id ? 'user_id' : 'id';
-		} else {
-			$field = 'email';
-		}
-
-		$donor = $this->db->get_donor_by( $field, $_id_or_email );
-
-		if ( empty( $donor ) || ! is_object( $donor ) ) {
-			return false;
-		}
-
-		$this->setup_customer( $donor );
-
+		parent::__construct( $_id_or_email, $by_user_id );
 	}
-
-
-	/**
-	 * Setup Donor
-	 *
-	 * Set donor variables.
-	 *
-	 * @since  1.0
-	 * @access private
-	 *
-	 * @param  object $donor The Donor Object.
-	 *
-	 * @return bool             If the setup was successful or not.
-	 */
-	private function setup_customer( $donor ) {
-
-		if ( ! is_object( $donor ) ) {
-			return false;
-		}
-
-		foreach ( $donor as $key => $value ) {
-
-			switch ( $key ) {
-
-				case 'notes':
-					$this->$key = $this->get_notes();
-					break;
-
-				default:
-					$this->$key = $value;
-					break;
-
-			}
-		}
-
-		// Get donor's all email including primary email.
-		$this->emails = (array) $this->get_meta( 'additional_email', false );
-		$this->emails = array( 'primary' => $this->email ) + $this->emails;
-
-		// Donor ID and email are the only things that are necessary, make sure they exist.
-		if ( ! empty( $this->id ) && ! empty( $this->email ) ) {
-			return true;
-		}
-
-		return false;
-
-	}
-
-	/**
-	 * Responsible for setting properties from the Give_Donor class.
-	 *
-	 * @param $name
-	 */
-	public function __get( $name ) {
-
-		$properties = get_object_vars( $this->customer );
-
-		if ( array_key_exists( $name, $properties ) ) {
-			return $properties[ $name ];
-		}
-
-	}
-
-
 
 	/**
 	 * There are certain responsibility of this function:
@@ -205,7 +119,6 @@ class Give_Customer {
 	public function __call( $name, $arguments ) {
 		$deprecated_function_arr = array(
 			'setup_customer',
-			'decrease_purchase_count',
 		);
 
 		if ( in_array( $name, $deprecated_function_arr ) ) {
@@ -214,10 +127,6 @@ class Give_Customer {
 					$donor = ! empty( $arguments[0] ) ? $arguments[0] : array();
 
 					return $this->customer->setup_donors( $donor );
-				case 'decrease_purchase_count':
-					$donor = ! empty( $arguments[0] ) ? $arguments[0] : array();
-
-					return $this->customer->decrease_donation_count( $donor );
 			}
 		}
 	}
