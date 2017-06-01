@@ -869,7 +869,7 @@ final class Give_Payment {
 						break;
 
 					case 'ip':
-						$this->update_meta( '_give_payment_user_ip', $this->ip );
+						$this->update_meta( '_give_payment_donor_ip', $this->ip );
 						break;
 
 					case 'customer_id':
@@ -1986,12 +1986,13 @@ final class Give_Payment {
 	 * Setup the IP Address for the payment
 	 *
 	 * @since  1.5
+	 * @since  2.0 rename meta key
 	 * @access private
 	 *
 	 * @return string The IP address for the payment
 	 */
 	private function setup_ip() {
-		$ip = $this->get_meta( '_give_payment_user_ip', true );
+		$ip = $this->get_meta( '_give_payment_donor_ip', true );
 
 		return $ip;
 	}
