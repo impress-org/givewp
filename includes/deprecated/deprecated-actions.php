@@ -85,6 +85,7 @@ function give_deprecated_actions() {
 		'give_donor_delete_bottom'                 => 'give_customer_delete_bottom',
 		'give_donor_delete_inputs'                 => 'give_customer_delete_inputs',
 		'give_pre_insert_donor_note'               => 'give_pre_insert_customer_note',
+		'give_pre_delete_donor'               => 'give_pre_delete_customer',
 	);
 
 	return $give_deprecated_actions;

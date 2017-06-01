@@ -147,8 +147,8 @@ class Give_Notices {
 			// Customer Notices.
 			if ( current_user_can( 'edit_give_payments' ) ) {
 				switch ( $_GET['give-message'] ) {
-					case 'customer-deleted' :
-						$this->notices['updated']['give-customer-deleted'] = __( 'The donor has been deleted.', 'give' );
+					case 'donor-deleted' :
+						$this->notices['updated']['give-donor-deleted'] = __( 'The donor has been deleted.', 'give' );
 						break;
 
 					case 'email-added' :

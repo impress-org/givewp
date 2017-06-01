@@ -150,10 +150,10 @@ class Give_DB_Donors extends Give_DB {
 	}
 
 	/**
-	 * Delete a donor
+	 * Delete a donor.
 	 *
 	 * NOTE: This should not be called directly as it does not make necessary changes to
-	 * the payment meta and logs. Use give_customer_delete() instead.
+	 * the payment meta and logs. Use give_donor_delete() instead.
 	 *
 	 * @since  1.0
 	 * @access public
