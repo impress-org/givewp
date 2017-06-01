@@ -24,14 +24,8 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 
 		$this->_transaction_id = 'FIR3SID3';
 		give_set_payment_transaction_id( $payment_id, $this->_transaction_id );
-		give_insert_payment_note(
-			$payment_id,
-			sprintf(
-				/* translators: %s: Paypal transaction id */
-				esc_html__( 'PayPal Transaction ID: %s', 'give' ),
-				$this->_transaction_id
-			)
-		);
+		give_insert_payment_note( $payment_id, sprintf( /* translators: %s: Paypal transaction id */
+				esc_html__( 'PayPal Transaction ID: %s', 'give' ), $this->_transaction_id ) );
 
 		// Make sure we're working off a clean object caching in WP Core.
 		// Prevents some payment_meta from not being present.
@@ -284,11 +278,11 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		$payment->status = 'complete';
 		$payment->save();
 
-		$customer = new Give_Donor( $payment->customer_id );
-		$form     = new Give_Donate_Form( $payment->form_id );
+		$donor = new Give_Donor( $payment->customer_id );
+		$form  = new Give_Donate_Form( $payment->form_id );
 
-		$customer_sales    = $customer->purchase_count;
-		$customer_earnings = $customer->purchase_value;
+		$donor_sales    = $donor->purchase_count;
+		$donor_earnings = $donor->purchase_value;
 
 		$form_sales    = $form->sales;
 		$form_earnings = $form->earnings;
@@ -299,11 +293,11 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		$payment->refund();
 		wp_cache_flush();
 
-		$customer = new Give_Donor( $payment->customer_id );
-		$form     = new Give_Donate_Form( $payment->form_id );
+		$donor = new Give_Donor( $payment->customer_id );
+		$form  = new Give_Donate_Form( $payment->form_id );
 
-		$this->assertEquals( $customer_earnings - $payment->total, $customer->purchase_value );
-		$this->assertEquals( $customer_sales - 1, $customer->purchase_count );
+		$this->assertEquals( $donor_earnings - $payment->total, $donor->purchase_value );
+		$this->assertEquals( $donor_sales - 1, $donor->purchase_count );
 
 		$this->assertEquals( $form_earnings - $payment->total, $form->earnings );
 		$this->assertEquals( $form_sales - 1, $form->sales );
@@ -327,11 +321,11 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		$payment->status = 'complete';
 		$payment->save();
 
-		$customer = new Give_Donor( $payment->customer_id );
-		$form     = new Give_Donate_Form( $payment->form_id );
+		$donor = new Give_Donor( $payment->customer_id );
+		$form  = new Give_Donate_Form( $payment->form_id );
 
-		$customer_sales    = $customer->purchase_count;
-		$customer_earnings = $customer->purchase_value;
+		$donor_sales    = $donor->purchase_count;
+		$donor_earnings = $donor->purchase_value;
 
 		$form_sales    = $form->sales;
 		$form_earnings = $form->earnings;
@@ -342,11 +336,11 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		$payment->refund();
 		wp_cache_flush();
 
-		$customer = new Give_Donor( $payment->customer_id );
-		$form     = new Give_Donate_Form( $payment->form_id );
+		$donor = new Give_Donor( $payment->customer_id );
+		$form  = new Give_Donate_Form( $payment->form_id );
 
-		$this->assertEquals( $customer_earnings, $customer->purchase_value );
-		$this->assertEquals( $customer_sales, $customer->purchase_count );
+		$this->assertEquals( $donor_earnings, $donor->purchase_value );
+		$this->assertEquals( $donor_sales, $donor->purchase_count );
 
 		$this->assertEquals( $form_earnings, $form->earnings );
 		$this->assertEquals( $form_sales, $form->sales );
@@ -370,11 +364,11 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		$payment->status = 'complete';
 		$payment->save();
 
-		$customer = new Give_Donor( $payment->customer_id );
-		$form     = new Give_Donate_Form( $payment->form_id );
+		$donor = new Give_Donor( $payment->customer_id );
+		$form  = new Give_Donate_Form( $payment->form_id );
 
-		$customer_sales    = $customer->purchase_count;
-		$customer_earnings = $customer->purchase_value;
+		$donor_sales    = $donor->purchase_count;
+		$donor_earnings = $donor->purchase_value;
 
 		$form_sales    = $form->sales;
 		$form_earnings = $form->earnings;
@@ -389,11 +383,11 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		$payment = new Give_Payment( $this->_payment_id );
 		$this->assertEmpty( $payment->completed_date );
 
-		$customer = new Give_Donor( $payment->customer_id );
-		$form     = new Give_Donate_Form( $payment->form_id );
+		$donor = new Give_Donor( $payment->customer_id );
+		$form  = new Give_Donate_Form( $payment->form_id );
 
-		$this->assertEquals( $customer_earnings - $payment->total, $customer->purchase_value );
-		$this->assertEquals( $customer_sales - 1, $customer->purchase_count );
+		$this->assertEquals( $donor_earnings - $payment->total, $donor->purchase_value );
+		$this->assertEquals( $donor_sales - 1, $donor->purchase_count );
 
 		$this->assertEquals( $form_earnings - $payment->total, $form->earnings );
 		$this->assertEquals( $form_sales - 1, $form->sales );
@@ -416,11 +410,11 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		$payment->status = 'complete';
 		$payment->save();
 
-		$customer = new Give_Donor( $payment->customer_id );
-		$form     = new Give_Donate_Form( $payment->form_id );
+		$donor = new Give_Donor( $payment->customer_id );
+		$form  = new Give_Donate_Form( $payment->form_id );
 
-		$customer_sales    = $customer->purchase_count;
-		$customer_earnings = $customer->purchase_value;
+		$donor_sales    = $donor->purchase_count;
+		$donor_earnings = $donor->purchase_value;
 
 		$form_sales    = $form->sales;
 		$form_earnings = $form->earnings;
@@ -435,11 +429,11 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		$payment = new Give_Payment( $this->_payment_id );
 		$this->assertEmpty( $payment->completed_date );
 
-		$customer = new Give_Donor( $payment->customer_id );
-		$form     = new Give_Donate_Form( $payment->form_id );
+		$donor = new Give_Donor( $payment->customer_id );
+		$form  = new Give_Donate_Form( $payment->form_id );
 
-		$this->assertEquals( $customer_earnings, $customer->purchase_value );
-		$this->assertEquals( $customer_sales, $customer->purchase_count );
+		$this->assertEquals( $donor_earnings, $donor->purchase_value );
+		$this->assertEquals( $donor_sales, $donor->purchase_count );
 
 		$this->assertEquals( $form_earnings, $form->earnings );
 		$this->assertEquals( $form_sales, $form->sales );
@@ -467,10 +461,7 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 
 		//Add a multi-level donation amount
 		$payment->add_donation( $form->ID, array( 'price_id' => 2 ) );
-		$this->assertEquals(
-			give_sanitize_amount( '25', true ),
-			give_sanitize_amount( $payment->total, true )
-		);
+		$this->assertEquals( give_sanitize_amount( '25', true ), give_sanitize_amount( $payment->total, true ) );
 		$payment->status = 'complete';
 		$payment->save();
 
