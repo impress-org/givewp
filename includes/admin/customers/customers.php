@@ -244,7 +244,7 @@ function give_customers_view( $customer ) {
 
 									$data_atts = array(
 										'key'     => 'user_login',
-										'exclude' => $user_id,
+										'search-type' => 'user'
 									);
 									$user_args = array(
 										'name'  => 'customerinfo[user_id]',
@@ -254,7 +254,7 @@ function give_customers_view( $customer ) {
 
 									if ( ! empty( $user_id ) ) {
 										$userdata           = get_userdata( $user_id );
-										$user_args['value'] = $userdata->user_login;
+										$user_args['selected'] = $user_id;
 									}
 
 									echo Give()->html->ajax_user_search( $user_args );
