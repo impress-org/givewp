@@ -89,7 +89,7 @@ function give_donors_list() {
 			?>
 			<input type="hidden" name="post_type" value="give_forms" />
 			<input type="hidden" name="page" value="give-donors" />
-			<input type="hidden" name="view" value="customers" />
+			<input type="hidden" name="view" value="donors" />
 		</form>
 		<?php
 		/**
@@ -117,7 +117,7 @@ function give_render_donor_view( $view, $callbacks ) {
 
 	$render = true;
 
-	$donor_view_role = apply_filters( 'give_view_customers_role', 'view_give_reports' );
+	$donor_view_role = apply_filters( 'give_view_donors_role', 'view_give_reports' );
 
 	if ( ! current_user_can( $donor_view_role ) ) {
 		give_set_error( 'give-no-access', __( 'You are not permitted to view this data.', 'give' ) );
@@ -215,8 +215,8 @@ function give_donor_view( $donor ) {
 						<?php echo get_avatar( $donor->email ); ?>
 					</div>
 
-					<div id="customer-name-wrap" class="left">
-						<span class="customer-id">#<?php echo $donor->id; ?></span>
+					<div id="donor-name-wrap" class="left">
+						<span class="donor-id">#<?php echo $donor->id; ?></span>
 						<span class="customer-name info-item edit-item"><input size="15" data-key="name" name="customerinfo[name]" type="text" value="<?php echo esc_attr( $donor->name ); ?>" placeholder="<?php esc_attr_e( 'Donor Name', 'give' ); ?>" /></span>
 						<span class="customer-name info-item editable"><span data-key="name"><?php echo $donor->name; ?></span></span>
 					</div>
@@ -225,7 +225,7 @@ function give_donor_view( $donor ) {
 						<?php echo date_i18n( give_date_format(), strtotime( $donor->date_created ) ) ?>
 					</p>
 					<?php if ( current_user_can( $donor_edit_role ) ) : ?>
-						<a href="#" id="edit-customer" class="button info-item editable customer-edit-link"><?php esc_html_e( 'Edit Donor', 'give' ); ?></a>
+						<a href="#" id="edit-donor" class="button info-item editable customer-edit-link"><?php esc_html_e( 'Edit Donor', 'give' ); ?></a>
 					<?php endif; ?>
 				</div>
 				<!-- /donor-bio-header -->
@@ -358,10 +358,10 @@ function give_donor_view( $donor ) {
 
 			<span id="donor-edit-actions" class="edit-item">
 				<input type="hidden" data-key="id" name="customerinfo[id]" value="<?php echo $donor->id; ?>" />
-				<?php wp_nonce_field( 'edit-customer', '_wpnonce', false, true ); ?>
-				<input type="hidden" name="give_action" value="edit-customer" />
-				<input type="submit" id="give-edit-customer-save" class="button-secondary" value="<?php esc_attr_e( 'Update Donor', 'give' ); ?>" />
-				<a id="give-edit-customer-cancel" href="" class="delete"><?php esc_html_e( 'Cancel', 'give' ); ?></a>
+				<?php wp_nonce_field( 'edit-donor', '_wpnonce', false, true ); ?>
+				<input type="hidden" name="give_action" value="edit-donor" />
+				<input type="submit" id="give-edit-donor-save" class="button-secondary" value="<?php esc_attr_e( 'Update Donor', 'give' ); ?>" />
+				<a id="give-edit-donor-cancel" href="" class="delete"><?php esc_html_e( 'Cancel', 'give' ); ?></a>
 			</span>
 
 		</form>
@@ -479,7 +479,7 @@ function give_donor_view( $donor ) {
 					<tr class="add-customer-email-row">
 						<td colspan="2" class="add-customer-email-td">
 							<div class="add-customer-email-wrapper">
-								<input type="hidden" name="customer-id" value="<?php echo $donor->id; ?>" />
+								<input type="hidden" name="donor-id" value="<?php echo $donor->id; ?>" />
 								<?php wp_nonce_field( 'give_add_donor_email', 'add_email_nonce', false, true ); ?>
 								<input type="email" name="additional-email" value="" placeholder="<?php _e( 'Email Address', 'give' ); ?>" />&nbsp;
 								<input type="checkbox" name="make-additional-primary" value="1" id="make-additional-primary" />&nbsp;<label for="make-additional-primary"><?php _e( 'Make Primary', 'give' ); ?></label>
@@ -620,7 +620,7 @@ function give_donor_view( $donor ) {
 	 *
 	 * @since 1.0
 	 *
-	 * @param object $donor The customer object being displayed.
+	 * @param object $donor The donor object being displayed.
 	 */
 	do_action( 'give_donor_card_bottom', $donor );
 
@@ -656,7 +656,7 @@ function give_donor_notes_view( $donor ) {
 				<form id="give-add-donor-note" method="post" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=notes&id=' . $donor->id ); ?>">
 					<textarea id="donor-note" name="donor_note" class="donor-note-input" rows="10"></textarea>
 					<br />
-					<input type="hidden" id="customer-id" name="customer_id" value="<?php echo $donor->id; ?>" />
+					<input type="hidden" id="donor-id" name="customer_id" value="<?php echo $donor->id; ?>" />
 					<input type="hidden" name="give_action" value="add-donor-note" />
 					<?php wp_nonce_field( 'add-donor-note', 'add_donor_note_nonce', true, true ); ?>
 					<input id="add-donor-note" class="right button-primary" type="submit" value="Add Note" />

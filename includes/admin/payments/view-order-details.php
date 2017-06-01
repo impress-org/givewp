@@ -536,7 +536,7 @@ $payment_mode   = $payment->mode;
 												<?php
 												echo Give()->html->donor_dropdown( array(
 													'selected' => $donor->id,
-													'name'     => 'customer-id',
+													'name'     => 'donor-id',
 												) );
 												?>
 											</p>
@@ -572,7 +572,7 @@ $payment_mode   = $payment->mode;
 
 									<?php
 									/**
-									 * Fires in order details page, in the donor-details metabox.
+									 * Fires on the donation details page, in the donor-details metabox.
 									 *
 									 * The hook is left here for backwards compatibility.
 									 *
@@ -584,7 +584,7 @@ $payment_mode   = $payment->mode;
 									do_action( 'give_payment_personal_details_list', $payment_meta, $user_info );
 
 									/**
-									 * Fires in order details page, in the donor-details metabox.
+									 * Fires on the donation details page, in the donor-details metabox.
 									 *
 									 * @since 1.7
 									 *

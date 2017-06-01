@@ -843,7 +843,7 @@ jQuery.noConflict();
 	var Give_Donor = {
 
 		init          : function () {
-			this.edit_customer();
+			this.edit_donor();
 			this.add_email();
 			this.remove_user();
 			this.cancel_edit();
@@ -851,8 +851,8 @@ jQuery.noConflict();
 			this.add_note();
 			this.delete_checked();
 		},
-		edit_customer : function () {
-			$('body').on('click', '#edit-customer', function (e) {
+		edit_donor : function () {
+			$('body').on('click', '#edit-donor', function (e) {
 				e.preventDefault();
 				$('#give-donor-card-wrapper .editable').hide();
 				$('#give-donor-card-wrapper .edit-item').fadeIn().css('display', 'block');
@@ -881,7 +881,7 @@ jQuery.noConflict();
 			});
 		},
 		cancel_edit   : function () {
-			$('body').on('click', '#give-edit-customer-cancel', function (e) {
+			$('body').on('click', '#give-edit-donor-cancel', function (e) {
 				e.preventDefault();
 				$('#give-donor-card-wrapper .edit-item').hide();
 				$('#give-donor-card-wrapper .editable').show();
@@ -912,7 +912,7 @@ jQuery.noConflict();
 				e.preventDefault();
 				var postData = {
 					give_action            : 'add-donor-note',
-					customer_id            : $('#customer-id').val(),
+					customer_id            : $('#donor-id').val(),
 					donor_note          : $('#donor-note').val(),
 					add_donor_note_nonce: $('#add_donor_note_nonce').val()
 				};
@@ -972,7 +972,7 @@ jQuery.noConflict();
 				wrapper.find('.spinner').css('visibility', 'visible');
 				button.attr('disabled', true);
 
-				var customer_id = wrapper.find('input[name="customer-id"]').val();
+				var customer_id = wrapper.find('input[name="donor-id"]').val();
 				var email       = wrapper.find('input[name="additional-email"]').val();
 				var primary     = wrapper.find('input[name="make-additional-primary"]').is(':checked');
 				var nonce       = wrapper.find('input[name="add_email_nonce"]').val();

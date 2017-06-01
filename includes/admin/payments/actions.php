@@ -70,7 +70,7 @@ function give_update_payment_details( $data ) {
 	$date       = date( 'Y-m-d', strtotime( $date ) ) . ' ' . $hour . ':' . $minute . ':00';
 
 	$curr_customer_id = sanitize_text_field( $data['give-current-customer'] );
-	$new_customer_id  = sanitize_text_field( $data['customer-id'] );
+	$new_customer_id  = sanitize_text_field( $data['donor-id'] );
 
 	/**
 	 * Fires before updating edited donation.

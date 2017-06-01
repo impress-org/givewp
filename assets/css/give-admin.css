@@ -2352,12 +2352,12 @@ input.give-price-field {
   #give-donor-card-wrapper .donor-bio-header .customer-since {
     margin: 10px 0;
     font-size: 16px; }
-  #give-donor-card-wrapper .donor-bio-header .customer-id {
+  #give-donor-card-wrapper .donor-bio-header .donor-id {
     display: inline-block;
     font-size: 24px;
     font-weight: 600;
     margin-right: 10px; }
-  #give-donor-card-wrapper .donor-bio-header .customer-name-wrap {
+  #give-donor-card-wrapper .donor-bio-header .donor-name-wrap {
     display: inline-block; }
   #give-donor-card-wrapper .donor-bio-header .customer-edit-link {
     margin-bottom: 15px; }

@@ -41,7 +41,7 @@ function give_edit_donor( $args ) {
 	$donor_id   = (int) $args['customerinfo']['id'];
 	$nonce      = $args['_wpnonce'];
 
-	if ( ! wp_verify_nonce( $nonce, 'edit-customer' ) ) {
+	if ( ! wp_verify_nonce( $nonce, 'edit-donor' ) ) {
 		wp_die( __( 'Cheatin&#8217; uh?', 'give' ), __( 'Error', 'give' ), array(
 			'response' => 400,
 		) );
@@ -181,20 +181,20 @@ function give_edit_donor( $args ) {
 
 }
 
-add_action( 'give_edit-customer', 'give_edit_donor', 10, 1 );
+add_action( 'give_edit-donor', 'give_edit_donor', 10, 1 );
 
 /**
- * Save a customer note being added
+ * Save a donor note.
  *
  * @since  1.0
  *
  * @param  array $args The $_POST array being passed.
  *
- * @return int         The Note ID that was saved, or 0 if nothing was saved
+ * @return int         The Note ID that was saved, or 0 if nothing was saved.
  */
-function give_customer_save_note( $args ) {
+function give_donor_save_note( $args ) {
 
-	$customer_view_role = apply_filters( 'give_view_customers_role', 'view_give_reports' );
+	$customer_view_role = apply_filters( 'give_view_donors_role', 'view_give_reports' );
 
 	if ( ! is_admin() || ! current_user_can( $customer_view_role ) ) {
 		wp_die( esc_html__( 'You do not have permission to edit this donor.', 'give' ), esc_html__( 'Error', 'give' ), array(
@@ -263,16 +263,16 @@ function give_customer_save_note( $args ) {
 
 }
 
-add_action( 'give_add-donor-note', 'give_customer_save_note', 10, 1 );
+add_action( 'give_add-donor-note', 'give_donor_save_note', 10, 1 );
 
 /**
- * Delete a customer
+ * Delete a donor.
  *
  * @since  1.0
  *
- * @param  array $args The $_POST array being passed
+ * @param  array $args The $_POST array being passed.
  *
- * @return int Whether it was a successful deletion
+ * @return int Whether it was a successful deletion.
  */
 function give_customer_delete( $args ) {
 
@@ -391,7 +391,7 @@ function give_disconnect_donor_user_id( $args ) {
 
 	$nonce       = $args['_wpnonce'];
 
-	if ( ! wp_verify_nonce( $nonce, 'edit-customer' ) ) {
+	if ( ! wp_verify_nonce( $nonce, 'edit-donor' ) ) {
 		wp_die( __( 'Cheatin&#8217; uh?', 'give' ), __( 'Error', 'give' ), array(
 			'response' => 400,
 		) );

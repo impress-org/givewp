@@ -44,6 +44,7 @@ function give_deprecated_filters() {
 		'give_edit_donor_address'                          => 'give_edit_customer_address',
 		'give_donor_tabs'                                  => 'give_customer_tabs',
 		'give_donor_views'                                 => 'give_customer_views',
+		'give_view_donors_role'                            => 'give_view_customers_role',
 	);
 
 	return $give_deprecated_filters;
