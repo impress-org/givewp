@@ -378,8 +378,8 @@ class Give_API {
 	}
 
 	/**
-     * Get user public key.
-     *
+	 * Get user public key.
+	 *
 	 * @param int $user_id
 	 *
 	 * @return mixed|null|string
@@ -403,8 +403,8 @@ class Give_API {
 	}
 
 	/**
-     * Get user secret key.
-     *
+	 * Get user secret key.
+	 *
 	 * @param int $user_id
 	 *
 	 * @return mixed|null|string
@@ -559,26 +559,26 @@ class Give_API {
 
 			case 'donors' :
 
-				$customer = isset( $wp_query->query_vars['donor'] ) ? $wp_query->query_vars['donor'] : null;
+				$donor = isset( $wp_query->query_vars['donor'] ) ? $wp_query->query_vars['donor'] : null;
 
-				$data = $this->routes->get_customers( $customer );
+				$data = $this->routes->get_donors( $donor );
 
 				break;
 
 			case 'donations' :
 
-                /**
-                 *  Call to get recent donations
-                 *
-                 *  @params text date | today, yesterday or range
-                 *  @params date startdate | required when date = range and format to be YYYYMMDD (i.e. 20170524)
-                 *  @params date enddate | required when date = range and format to be YYYYMMDD (i.e. 20170524)
-                 */
-                $data = $this->routes->get_recent_donations( array(
+				/**
+				 *  Call to get recent donations
+				 *
+				 * @params text date | today, yesterday or range
+				 * @params date startdate | required when date = range and format to be YYYYMMDD (i.e. 20170524)
+				 * @params date enddate | required when date = range and format to be YYYYMMDD (i.e. 20170524)
+				 */
+				$data = $this->routes->get_recent_donations( array(
 					'date'      => isset( $wp_query->query_vars['date'] ) ? $wp_query->query_vars['date'] : null,
 					'startdate' => isset( $wp_query->query_vars['startdate'] ) ? $wp_query->query_vars['startdate'] : null,
 					'enddate'   => isset( $wp_query->query_vars['enddate'] ) ? $wp_query->query_vars['enddate'] : null,
-				));
+				) );
 
 				break;
 
@@ -676,7 +676,7 @@ class Give_API {
 
 		if ( $per_page < 0 && $this->get_query_mode() == 'donors' ) {
 			$per_page = 99999999;
-		} // Customers query doesn't support -1
+		} // End if().
 
 		return apply_filters( 'give_api_results_per_page', $per_page );
 	}
@@ -748,14 +748,14 @@ class Give_API {
 
 					if ( $month == 1 && $day == 1 ) {
 
-						$year -= 1;
+						$year  -= 1;
 						$month = 12;
 						$day   = cal_days_in_month( CAL_GREGORIAN, $month, $year );
 
 					} elseif ( $month > 1 && $day == 1 ) {
 
 						$month -= 1;
-						$day = cal_days_in_month( CAL_GREGORIAN, $month, $year );
+						$day   = cal_days_in_month( CAL_GREGORIAN, $month, $year );
 
 					} else {
 
@@ -849,45 +849,42 @@ class Give_API {
 					break;
 
 			endswitch;
-		}
+		}// End if().
 
 		/**
-		 * Returns the filters for the dates used to retrieve earnings/donations
+		 * Returns the filters for the dates used to retrieve earnings.
 		 *
 		 * @since 1.2
 		 *
-		 * @param array $dates The dates used for retrieving earnings/donations
+		 * @param array $dates The dates used for retrieving earnings.
 		 */
 		return apply_filters( 'give_api_stat_dates', $dates );
 	}
 
 	/**
-	 * Process Get Customers API Request
+	 * Process Get Donors API Request.
 	 *
 	 * @access public
 	 * @since  1.1
-	 * @global WPDB $wpdb       Used to query the database using the WordPress
-	 *                          Database API
+	 * @global WPDB $wpdb  Used to query the database using the WordPress Database API.
 	 *
-	 * @param int   $customer   Customer ID
+	 * @param int   $donor Donor ID
 	 *
-	 * @return array $customers Multidimensional array of the customers
+	 * @return array $donors Multidimensional array of the donors.
 	 */
-	public function get_customers( $customer = null ) {
+	public function get_donors( $donor = null ) {
 
 		$donors = array();
-		$error     = array();
+		$error  = array();
 		if ( ! user_can( $this->user_id, 'view_give_sensitive_data' ) && ! $this->override ) {
 			return $donors;
 		}
-
-		global $wpdb;
 
 		$paged    = $this->get_paged();
 		$per_page = $this->per_page();
 		$offset   = $per_page * ( $paged - 1 );
 
-		if ( is_numeric( $customer ) ) {
+		if ( is_numeric( $donor ) ) {
 			$field = 'id';
 		} else {
 			$field = 'email';
@@ -896,7 +893,7 @@ class Give_API {
 		$donor_query = Give()->donors->get_donors( array(
 			'number' => $per_page,
 			'offset' => $offset,
-			$field   => $customer,
+			$field   => $donor,
 		) );
 		$donor_count = 0;
 
@@ -915,7 +912,7 @@ class Give_API {
 				$donors['donors'][ $donor_count ]['info']['user_id']      = '';
 				$donors['donors'][ $donor_count ]['info']['username']     = '';
 				$donors['donors'][ $donor_count ]['info']['display_name'] = '';
-				$donors['donors'][ $donor_count ]['info']['customer_id']  = $donor_obj->id;
+				$donors['donors'][ $donor_count ]['info']['donor_id']  = $donor_obj->id;
 				$donors['donors'][ $donor_count ]['info']['first_name']   = $first_name;
 				$donors['donors'][ $donor_count ]['info']['last_name']    = $last_name;
 				$donors['donors'][ $donor_count ]['info']['email']        = $donor_obj->email;
@@ -924,7 +921,7 @@ class Give_API {
 
 					$user_data = get_userdata( $donor_obj->user_id );
 
-					// Customer with registered account.
+					// Donor with registered account.
 					$donors['donors'][ $donor_count ]['info']['user_id']      = $donor_obj->user_id;
 					$donors['donors'][ $donor_count ]['info']['username']     = $user_data->user_login;
 					$donors['donors'][ $donor_count ]['info']['display_name'] = $user_data->display_name;
@@ -937,13 +934,10 @@ class Give_API {
 				$donor_count ++;
 
 			}
-		} elseif ( $customer ) {
+		} elseif ( $donor ) {
 
-			$error['error'] = sprintf(
-			/* translators: %s: customer */
-				esc_html__( 'Donor %s not found.', 'give' ),
-				$customer
-			);
+			$error['error'] = sprintf( /* translators: %s: donor */
+				esc_html__( 'Donor %s not found.', 'give' ), $donor );
 
 			return $error;
 
@@ -953,7 +947,7 @@ class Give_API {
 
 			return $error;
 
-		}
+		}// End if().
 
 		return $donors;
 	}
@@ -966,7 +960,7 @@ class Give_API {
 	 *
 	 * @param int $form Give Form ID
 	 *
-	 * @return array $customers Multidimensional array of the forms
+	 * @return array $donors Multidimensional array of the forms.
 	 */
 	public function get_forms( $form = null ) {
 
@@ -997,11 +991,8 @@ class Give_API {
 				$forms['forms'][0] = $this->get_form_data( $form_info );
 
 			} else {
-				$error['error'] = sprintf(
-				/* translators: %s: form */
-					esc_html__( 'Form %s not found.', 'give' ),
-					$form
-				);
+				$error['error'] = sprintf( /* translators: %s: form */
+					esc_html__( 'Form %s not found.', 'give' ), $form );
 
 				return $error;
 			}
@@ -1172,7 +1163,7 @@ class Give_API {
 									$sales['sales'][ $date_key ] = 0;
 								}
 								$sales['sales'][ $date_key ] += $sale_count;
-								$total += $sale_count;
+								$total                       += $sale_count;
 								$d ++;
 							endwhile;
 							$i ++;
@@ -1198,26 +1189,30 @@ class Give_API {
 					} else {
 						$sales['donations'][ $args['date'] ] = give_get_sales_by_date( $dates['day'], $dates['m_start'], $dates['year'] );
 					}
-				}
+				}// End if().
 			} elseif ( $args['form'] == 'all' ) {
-				$forms = get_posts( array( 'post_type' => 'give_forms', 'nopaging' => true ) );
+				$forms = get_posts( array(
+					'post_type' => 'give_forms',
+					'nopaging'  => true,
+				) );
 				$i     = 0;
 				foreach ( $forms as $form_info ) {
-					$sales['donations'][ $i ] = array( $form_info->post_name => give_get_form_sales_stats( $form_info->ID ) );
+					$sales['donations'][ $i ] = array(
+						$form_info->post_name => give_get_form_sales_stats( $form_info->ID ),
+					);
 					$i ++;
 				}
 			} else {
 				if ( get_post_type( $args['form'] ) == 'give_forms' ) {
 					$form_info             = get_post( $args['form'] );
-					$sales['donations'][0] = array( $form_info->post_name => give_get_form_sales_stats( $args['form'] ) );
-				} else {
-					$error['error'] = sprintf(
-					/* translators: %s: form */
-						esc_html__( 'Form %s not found.', 'give' ),
-						$args['form']
+					$sales['donations'][0] = array(
+						$form_info->post_name => give_get_form_sales_stats( $args['form'] ),
 					);
+				} else {
+					$error['error'] = sprintf( /* translators: %s: form */
+						esc_html__( 'Form %s not found.', 'give' ), $args['form'] );
 				}
-			}
+			}// End if().
 
 			if ( ! empty( $error ) ) {
 				return $error;
@@ -1286,7 +1281,7 @@ class Give_API {
 									$earnings['earnings'][ $date_key ] = 0;
 								}
 								$earnings['earnings'][ $date_key ] += $earnings_stat;
-								$total += $earnings_stat;
+								$total                             += $earnings_stat;
 								$d ++;
 							endwhile;
 
@@ -1313,27 +1308,31 @@ class Give_API {
 					} else {
 						$earnings['earnings'][ $args['date'] ] = give_get_earnings_by_date( $dates['day'], $dates['m_start'], $dates['year'] );
 					}
-				}
+				}// End if().
 			} elseif ( $args['form'] == 'all' ) {
-				$forms = get_posts( array( 'post_type' => 'give_forms', 'nopaging' => true ) );
+				$forms = get_posts( array(
+					'post_type' => 'give_forms',
+					'nopaging'  => true,
+				) );
 
 				$i = 0;
 				foreach ( $forms as $form_info ) {
-					$earnings['earnings'][ $i ] = array( $form_info->post_name => give_get_form_earnings_stats( $form_info->ID ) );
+					$earnings['earnings'][ $i ] = array(
+						$form_info->post_name => give_get_form_earnings_stats( $form_info->ID ),
+					);
 					$i ++;
 				}
 			} else {
 				if ( get_post_type( $args['form'] ) == 'give_forms' ) {
 					$form_info               = get_post( $args['form'] );
-					$earnings['earnings'][0] = array( $form_info->post_name => give_get_form_earnings_stats( $args['form'] ) );
-				} else {
-					$error['error'] = sprintf(
-					/* translators: %s: form */
-						esc_html__( 'Form %s not found.', 'give' ),
-						$args['form']
+					$earnings['earnings'][0] = array(
+						$form_info->post_name => give_get_form_earnings_stats( $args['form'] ),
 					);
+				} else {
+					$error['error'] = sprintf( /* translators: %s: form */
+						esc_html__( 'Form %s not found.', 'give' ), $args['form'] );
 				}
-			}
+			}// End if().
 
 			if ( ! empty( $error ) ) {
 				return $error;
@@ -1350,8 +1349,10 @@ class Give_API {
 			$stats = array_merge( $stats, $this->get_default_sales_stats() );
 			$stats = array_merge( $stats, $this->get_default_earnings_stats() );
 
-			return array( 'stats' => $stats );
-		}
+			return array(
+				'stats' => $stats,
+			);
+		}// End if().
 	}
 
 	/**
@@ -1364,7 +1365,7 @@ class Give_API {
 	public function get_recent_donations( $args = array() ) {
 		global $wp_query;
 
-        $defaults = array(
+		$defaults = array(
 			'date'      => null,
 			'startdate' => null,
 			'enddate'   => null,
@@ -1372,7 +1373,7 @@ class Give_API {
 
 		$args = wp_parse_args( $args, $defaults );
 
-        $sales = array();
+		$sales = array();
 
 		if ( ! user_can( $this->user_id, 'view_give_reports' ) && ! $this->override ) {
 			return $sales;
@@ -1396,55 +1397,55 @@ class Give_API {
 			$query = give_get_payments( $args );
 		} elseif ( isset( $wp_query->query_vars['date'] ) ) {
 
-            $current_time = current_time( 'timestamp' );
-            $dates = $this->get_dates( $args );
+			$current_time = current_time( 'timestamp' );
+			$dates        = $this->get_dates( $args );
 
-            /**
-             *  Switch case for date query argument
-             *
-             *  @since 1.8.8
-             *
-             *  @params text date | today, yesterday or range
-             *  @params date startdate | required when date = range and format to be YYYYMMDD (i.e. 20170524)
-             *  @params date enddate | required when date = range and format to be YYYYMMDD (i.e. 20170524)
-             */
-            switch( $wp_query->query_vars['date'] ){
+			/**
+			 *  Switch case for date query argument
+			 *
+			 * @since  1.8.8
+			 *
+			 * @params text date | today, yesterday or range
+			 * @params date startdate | required when date = range and format to be YYYYMMDD (i.e. 20170524)
+			 * @params date enddate | required when date = range and format to be YYYYMMDD (i.e. 20170524)
+			 */
+			switch ( $wp_query->query_vars['date'] ) {
 
-                case 'today':
+				case 'today':
 
-                    // Set and Format Start and End Date to be date of today.
-                    $start_date = $end_date = date( 'Y/m/d', $current_time );
+					// Set and Format Start and End Date to be date of today.
+					$start_date = $end_date = date( 'Y/m/d', $current_time );
 
-                break;
+					break;
 
-                case 'yesterday':
+				case 'yesterday':
 
-                    // Set and Format Start and End Date to be date of yesterday.
-                    $start_date = $end_date = date( 'Y/m', $current_time ) . '/'. ( date( 'd', $current_time ) - 1 );
+					// Set and Format Start and End Date to be date of yesterday.
+					$start_date = $end_date = date( 'Y/m', $current_time ) . '/' . ( date( 'd', $current_time ) - 1 );
 
-                break;
+					break;
 
-                case 'range':
+				case 'range':
 
-                    // Format Start Date and End Date for filtering payment based on date range.
-                    $start_date = $dates['year'] . '/' . $dates['m_start'] . '/' . $dates['day_start'];
-                    $end_date = $dates['year_end'] . '/' . $dates['m_end'] . '/' . $dates['day_end'];
+					// Format Start Date and End Date for filtering payment based on date range.
+					$start_date = $dates['year'] . '/' . $dates['m_start'] . '/' . $dates['day_start'];
+					$end_date   = $dates['year_end'] . '/' . $dates['m_end'] . '/' . $dates['day_end'];
 
-                break;
+					break;
 
-            }
+			}
 
-            $args  = array(
-                'fields'     => 'ids',
-                'start_date' => $start_date,
-                'end_date'   => $end_date,
-                'number'     => $this->per_page(),
-                'page'       => $this->get_paged(),
-                'status'     => 'publish',
-            );
+			$args = array(
+				'fields'     => 'ids',
+				'start_date' => $start_date,
+				'end_date'   => $end_date,
+				'number'     => $this->per_page(),
+				'page'       => $this->get_paged(),
+				'status'     => 'publish',
+			);
 
 			$query = give_get_payments( $args );
-        } else {
+		} else {
 			$args  = array(
 				'fields' => 'ids',
 				'number' => $this->per_page(),
@@ -1452,7 +1453,7 @@ class Give_API {
 				'status' => 'publish',
 			);
 			$query = give_get_payments( $args );
-		}
+		}// End if().
 		if ( $query ) {
 			$i = 0;
 			foreach ( $query as $payment ) {
@@ -1523,8 +1524,8 @@ class Give_API {
 				}
 
 				$i ++;
-			}
-		}
+			}// End foreach().
+		}// End if().
 
 		return apply_filters( 'give_api_donations_endpoint', $sales );
 	}
@@ -1537,7 +1538,7 @@ class Give_API {
 	 * @since  1.1
 	 * @access public
 	 *
-	 * @return mixed|void
+	 * @return mixed
 	 */
 	public function get_output_format() {
 		global $wp_query;
@@ -1583,7 +1584,7 @@ class Give_API {
 			'query'       => isset( $wp_query->query_vars['query'] ) ? $wp_query->query_vars['query'] : null,
 			'type'        => isset( $wp_query->query_vars['type'] ) ? $wp_query->query_vars['type'] : null,
 			'form'        => isset( $wp_query->query_vars['form'] ) ? $wp_query->query_vars['form'] : null,
-			'customer'    => isset( $wp_query->query_vars['customer'] ) ? $wp_query->query_vars['customer'] : null,
+			'donor'       => isset( $wp_query->query_vars['donor'] ) ? $wp_query->query_vars['donor'] : null,
 			'date'        => isset( $wp_query->query_vars['date'] ) ? $wp_query->query_vars['date'] : null,
 			'startdate'   => isset( $wp_query->query_vars['startdate'] ) ? $wp_query->query_vars['startdate'] : null,
 			'enddate'     => isset( $wp_query->query_vars['enddate'] ) ? $wp_query->query_vars['enddate'] : null,
@@ -1722,39 +1723,39 @@ class Give_API {
 			?>
 			<table class="form-table">
 				<tbody>
-					<tr>
-						<th>
-							<?php esc_html_e( 'Give API Keys', 'give' ); ?>
-						</th>
-						<td>
-							<?php
-							$public_key = $this->get_user_public_key( $user->ID );
-							$secret_key = $this->get_user_secret_key( $user->ID );
-							?>
-							<?php if ( empty( $user->give_user_public_key ) ) { ?>
-								<input name="give_set_api_key" type="checkbox" id="give_set_api_key" value="0"/>
-								<span class="description"><?php esc_html_e( 'Generate API Key', 'give' ); ?></span>
-							<?php } else { ?>
-								<strong style="display:inline-block; width: 125px;"><?php esc_html_e( 'Public key:', 'give' ); ?>
-									&nbsp;</strong>
-								<input type="text" disabled="disabled" class="regular-text" id="publickey" value="<?php echo esc_attr( $public_key ); ?>"/>
-								<br/>
-								<strong style="display:inline-block; width: 125px;"><?php esc_html_e( 'Secret key:', 'give' ); ?>
-									&nbsp;</strong>
-								<input type="text" disabled="disabled" class="regular-text" id="privatekey" value="<?php echo esc_attr( $secret_key ); ?>"/>
-								<br/>
-								<strong style="display:inline-block; width: 125px;"><?php esc_html_e( 'Token:', 'give' ); ?>
-									&nbsp;</strong>
-								<input type="text" disabled="disabled" class="regular-text" id="token" value="<?php echo esc_attr( $this->get_token( $user->ID ) ); ?>"/>
-								<br/>
-								<input name="give_set_api_key" type="checkbox" id="give_set_api_key" value="0"/>
-								<span class="description"><label for="give_set_api_key"><?php esc_html_e( 'Revoke API Keys', 'give' ); ?></label></span>
-							<?php } ?>
-						</td>
-					</tr>
+				<tr>
+					<th>
+						<?php esc_html_e( 'Give API Keys', 'give' ); ?>
+					</th>
+					<td>
+						<?php
+						$public_key = $this->get_user_public_key( $user->ID );
+						$secret_key = $this->get_user_secret_key( $user->ID );
+						?>
+						<?php if ( empty( $user->give_user_public_key ) ) { ?>
+							<input name="give_set_api_key" type="checkbox" id="give_set_api_key" value="0"/>
+							<span class="description"><?php esc_html_e( 'Generate API Key', 'give' ); ?></span>
+						<?php } else { ?>
+							<strong style="display:inline-block; width: 125px;"><?php esc_html_e( 'Public key:', 'give' ); ?>
+								&nbsp;</strong>
+							<input type="text" disabled="disabled" class="regular-text" id="publickey" value="<?php echo esc_attr( $public_key ); ?>"/>
+							<br/>
+							<strong style="display:inline-block; width: 125px;"><?php esc_html_e( 'Secret key:', 'give' ); ?>
+								&nbsp;</strong>
+							<input type="text" disabled="disabled" class="regular-text" id="privatekey" value="<?php echo esc_attr( $secret_key ); ?>"/>
+							<br/>
+							<strong style="display:inline-block; width: 125px;"><?php esc_html_e( 'Token:', 'give' ); ?>
+								&nbsp;</strong>
+							<input type="text" disabled="disabled" class="regular-text" id="token" value="<?php echo esc_attr( $this->get_token( $user->ID ) ); ?>"/>
+							<br/>
+							<input name="give_set_api_key" type="checkbox" id="give_set_api_key" value="0"/>
+							<span class="description"><label for="give_set_api_key"><?php esc_html_e( 'Revoke API Keys', 'give' ); ?></label></span>
+						<?php } ?>
+					</td>
+				</tr>
 				</tbody>
 			</table>
-		<?php }
+		<?php }// End if().
 	}
 
 	/**
@@ -1770,11 +1771,15 @@ class Give_API {
 	public function process_api_key( $args ) {
 
 		if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'give-api-nonce' ) ) {
-			wp_die( __( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die( __( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ), array(
+				'response' => 403,
+			) );
 		}
 
 		if ( empty( $args['user_id'] ) ) {
-			wp_die( __( 'User ID Required.', 'give' ), __( 'Error', 'give' ), array( 'response' => 401 ) );
+			wp_die( __( 'User ID Required.', 'give' ), __( 'Error', 'give' ), array(
+				'response' => 401,
+			) );
 		}
 
 		if ( is_numeric( $args['user_id'] ) ) {
@@ -1786,25 +1791,15 @@ class Give_API {
 		$process = isset( $args['give_api_process'] ) ? strtolower( $args['give_api_process'] ) : false;
 
 		if ( $user_id == get_current_user_id() && ! give_get_option( 'allow_user_api_keys' ) && ! current_user_can( 'manage_give_settings' ) ) {
-			wp_die(
-				sprintf(
-				/* translators: %s: process */
-					esc_html__( 'You do not have permission to %s API keys for this user.', 'give' ),
-					$process
-				),
-				esc_html__( 'Error', 'give' ),
-				array( 'response' => 403 )
-			);
+			wp_die( sprintf( /* translators: %s: process */
+				esc_html__( 'You do not have permission to %s API keys for this user.', 'give' ), $process ), esc_html__( 'Error', 'give' ), array(
+					'response' => 403,
+				) );
 		} elseif ( ! current_user_can( 'manage_give_settings' ) ) {
-			wp_die(
-				sprintf(
-				/* translators: %s: process */
-					esc_html__( 'You do not have permission to %s API keys for this user.', 'give' ),
-					$process
-				),
-				esc_html__( 'Error', 'give' ),
-				array( 'response' => 403 )
-			);
+			wp_die( sprintf( /* translators: %s: process */
+				esc_html__( 'You do not have permission to %s API keys for this user.', 'give' ), $process ), esc_html__( 'Error', 'give' ), array(
+					'response' => 403,
+				) );
 		}
 
 		switch ( $process ) {
