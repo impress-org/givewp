@@ -905,7 +905,7 @@ final class Give_Payment {
 						break;
 
 					case 'email':
-						$this->update_meta( '_give_payment_user_email', $this->email );
+						$this->update_meta( '_give_payment_donor_email', $this->email );
 						break;
 
 					case 'key':
