@@ -680,7 +680,7 @@ class Give_HTML_Elements {
 		if ( $users ) {
 			$options[0] = $args['placeholder'];
 			foreach ( $users as $user ) {
-				$options[ absint( $user->id ) ] = esc_html( $user->user_login . ' (' . $user->user_email . ')' );
+				$options[ absint( $user->ID ) ] = esc_html( $user->user_login . ' (' . $user->user_email . ')' );
 			}
 		} else {
 			$options[0] = esc_html__( 'No users found.', 'give' );
