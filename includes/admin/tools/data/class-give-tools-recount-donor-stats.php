@@ -110,11 +110,11 @@ class Give_Tools_Recount_Donor_Stats extends Give_Batch_Export {
 
 						if ( true === $should_process_payment ) {
 
-							if ( apply_filters( 'give_customer_recount_should_increase_value', true, $payment ) ) {
+							if ( apply_filters( 'give_donor_recount_should_increase_value', true, $payment ) ) {
 								$purchase_value += give_get_payment_amount( $payment->ID );
 							}
 
-							if ( apply_filters( 'give_customer_recount_should_increase_count', true, $payment ) ) {
+							if ( apply_filters( 'give_donor_recount_should_increase_count', true, $payment ) ) {
 								$purchase_count ++;
 							}
 						}
