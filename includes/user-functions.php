@@ -402,34 +402,32 @@ function give_validate_user_email( $email, $registering_new_user = false ) {
 function give_validate_user_password( $password = '', $confirm_password = '', $registering_new_user = false ) {
 	$valid = true;
 
-	// Passwords Validation For New Donors Only
-	if ( $registering_new_user ) {
+	// Verify confirmation matches.
+	if ( $password && $confirm_password ) {
+
+		if ( $password != $confirm_password  ) {
+			// Passwords do not match
+			give_set_error( 'password_mismatch', __( 'Passwords you entered do not match. Please try again.', 'give' ) );
+			$valid = false;
+
+		} elseif ( strlen( $password ) < 6 || strlen( $confirm_password ) < 6 ) {
+			// Seems Weak Password
+			give_set_error( 'password_weak', __( 'Passwords should have atleast 6 characters.', 'give' ) );
+			$valid = false;
+		}
+
+	} elseif ( $registering_new_user ) {
+
 		// Password or confirmation missing.
 		if ( ! $password ) {
 			// The password is invalid.
 			give_set_error( 'password_empty', __( 'Enter a password.', 'give' ) );
 			$valid = false;
+
 		} elseif ( ! $confirm_password ) {
 			// Confirmation password is invalid.
 			give_set_error( 'confirmation_empty', __( 'Enter the password confirmation.', 'give' ) );
 			$valid = false;
-		}
-	}
-
-	// Passwords Validation For New Donors as well as Existing Donors
-	if( $password || $confirm_password ) {
-		if ( strlen( $password ) < 6 || strlen( $confirm_password ) < 6 ) {
-			// Seems Weak Password
-			give_set_error( 'password_weak', __( 'Passwords should have atleast 6 characters.', 'give' ) );
-			$valid = false;
-		}
-		if ( $password && $confirm_password ) {
-			// Verify confirmation matches.
-			if ( $password != $confirm_password ) {
-				// Passwords do not match
-				give_set_error( 'password_mismatch', __( 'Passwords you entered do not match. Please try again.', 'give' ) );
-				$valid = false;
-			}
 		}
 	}
 
