@@ -526,7 +526,7 @@ function give_donor_view( $donor ) {
 							<?php
 							printf(
 								'<a href="%1$s" aria-label="%2$s">%3$s</a>',
-								admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $payment->ID ),
+								admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . $payment->ID ),
 								sprintf(
 									/* translators: %s: Donation ID */
 									esc_attr__( 'View Donation %s.', 'give' ),

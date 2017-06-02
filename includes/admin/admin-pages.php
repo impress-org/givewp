@@ -180,7 +180,7 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 					}
 					break;
 				case 'edit':
-					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-payment-history' === $page && 'view-order-details' === $view ) {
+					if ( ( 'give_forms' == $typenow || 'give_forms' === $post_type ) && $pagenow == 'edit.php' && 'give-payment-history' === $page && 'view-payment-details' === $view ) {
 						$found = true;
 					}
 					break;

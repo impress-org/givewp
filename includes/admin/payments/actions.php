@@ -290,7 +290,7 @@ function give_update_payment_details( $data ) {
 	 */
 	do_action( 'give_update_edited_donation', $payment_id );
 
-	wp_safe_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&give-message=payment-updated&id=' . $payment_id ) );
+	wp_safe_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&give-message=payment-updated&id=' . $payment_id ) );
 	exit;
 }
 
@@ -367,7 +367,7 @@ function give_trigger_payment_note_deletion( $data ) {
 		wp_die( esc_html__( 'You do not have permission to edit payments.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
-	$edit_order_url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&give-message=donation-note-deleted&id=' . absint( $data['payment_id'] ) );
+	$edit_order_url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&give-message=donation-note-deleted&id=' . absint( $data['payment_id'] ) );
 
 	give_delete_payment_note( $data['note_id'], $data['payment_id'] );
 
