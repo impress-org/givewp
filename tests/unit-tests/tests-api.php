@@ -62,9 +62,7 @@ class Tests_API extends Give_Unit_Test_Case {
 
 		$user = new WP_User( $this->_user_id );
 		$user->set_role( 'administrator' );
-echo '<pre>';
-var_dump($user);
-echo '</pre>';
+
 		$roles = new Give_Roles();
 		$roles->add_roles();
 		$roles->add_caps();
