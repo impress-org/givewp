@@ -153,23 +153,7 @@ $payment_mode   = $payment->mode;
 										 *
 										 * @param int $payment_id Payment id.
 										 */
-										do_action( 'give_view_order_details_update_inner', $payment_id );
-
-										// @TODO: Fees
-										$fees = give_get_payment_fees( $payment_id );
-										if ( ! empty( $fees ) ) : ?>
-											<div class="give-order-fees give-admin-box-inside">
-												<p class="strong"><?php esc_html_e( 'Fees:', 'give' ); ?></p>
-												<ul class="give-payment-fees">
-													<?php foreach ( $fees as $fee ) : ?>
-														<li>
-															<span class="fee-label"><?php echo $fee['label']; ?>:</span>
-															<span class="fee-amount" data-fee="<?php echo esc_attr( $fee['amount'] ); ?>"><?php echo give_currency_filter( $fee['amount'], $currency_code ); ?></span>
-														</li>
-													<?php endforeach; ?>
-												</ul>
-											</div>
-										<?php endif; ?>
+										do_action( 'give_view_order_details_update_inner', $payment_id ); ?>
 
 										<div class="give-order-payment give-admin-box-inside">
 											<p>

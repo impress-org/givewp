@@ -63,7 +63,7 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 	// Ensure these actions only run once, ever.
 	if ( empty( $completed_date ) ) {
 
-		give_record_sale_in_log( $form_id, $payment_id, $price_id, $creation_date );
+		give_record_donation_in_log( $form_id, $payment_id, $price_id, $creation_date );
 
 		/**
 		 * Fires after logging donation record.

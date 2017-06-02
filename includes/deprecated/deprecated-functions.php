@@ -520,3 +520,26 @@ function give_increase_purchase_count( $form_id = 0, $quantity = 1 ) {
 	give_increase_donation_count( $form_id, $quantity );
 }
 
+
+/**
+ * Record Donation In Log
+ *
+ * Stores log information for a donation.
+ *
+ * @since 1.0
+ * @global            $give_logs Give_Logging
+ *
+ * @param int         $give_form_id Give Form ID.
+ * @param int         $payment_id   Payment ID.
+ * @param bool|int    $price_id     Price ID, if any.
+ * @param string|null $sale_date    The date of the sale.
+ *
+ * @return void
+ */
+function give_record_sale_in_log( $give_form_id = 0, $payment_id, $price_id = false, $sale_date = null ) {
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_record_donation_in_log', $backtrace );
+
+	give_record_donation_in_log( $give_form_id, $payment_id, $price_id, $sale_date );
+}

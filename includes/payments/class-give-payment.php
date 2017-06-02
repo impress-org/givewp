@@ -29,8 +29,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @property string|int $price_id
  * @property string|int $total
  * @property string|int $subtotal
- * @property string|int $fees
- * @property string|int $fees_total
  * @property string $post_status
  * @property string $date
  * @property string $postdate
@@ -142,7 +140,6 @@ final class Give_Payment {
 
 	/**
 	 * The total amount of the donation payment.
-	 * Includes donation amount and fees.
 	 *
 	 * @since  1.5
 	 * @access protected
@@ -152,7 +149,7 @@ final class Give_Payment {
 	protected $total = 0.00;
 
 	/**
-	 * The Subtotal fo the payment before fees
+	 * The Subtotal fo the payment.
 	 *
 	 * @since  1.5
 	 * @access protected
@@ -160,26 +157,6 @@ final class Give_Payment {
 	 * @var    float
 	 */
 	protected $subtotal = 0;
-
-	/**
-	 * Array of global fees for this payment
-	 *
-	 * @since  1.5
-	 * @access protected
-	 *
-	 * @var    array
-	 */
-	protected $fees = array();
-
-	/**
-	 * The sum of the fee amounts
-	 *
-	 * @since  1.5
-	 * @access protected
-	 *
-	 * @var    float
-	 */
-	protected $fees_total = 0;
 
 	/**
 	 * The date the payment was created
@@ -533,12 +510,8 @@ final class Give_Payment {
 		$all_payment_statuses  = give_get_payment_statuses();
 		$this->status_nicename = array_key_exists( $this->status, $all_payment_statuses ) ? $all_payment_statuses[ $this->status ] : ucfirst( $this->status );
 
-		// Items.
-		$this->fees = $this->setup_fees();
-
 		// Currency Based.
 		$this->total      = $this->setup_total();
-		$this->fees_total = $this->setup_fees_total();
 		$this->subtotal   = $this->setup_subtotal();
 		$this->currency   = $this->setup_currency();
 
@@ -648,7 +621,6 @@ final class Give_Payment {
 				'address'    => $this->address,
 			),
 			'status'       => $this->status,
-			'fees'         => $this->fees,
 		);
 
 		$args = apply_filters( 'give_insert_payment_args', array(
@@ -700,12 +672,6 @@ final class Give_Payment {
 			$donor->attach_payment( $this->ID, false );
 
 			$this->payment_meta = apply_filters( 'give_payment_meta', $this->payment_meta, $payment_data );
-			if ( ! empty( $this->payment_meta['fees'] ) ) {
-				$this->fees = array_merge( $this->fees, $this->payment_meta['fees'] );
-				foreach ( $this->fees as $fee ) {
-					$this->increase_fees( $fee['amount'] );
-				}
-			}
 
 			$this->update_meta( '_give_payment_meta', $this->payment_meta );
 			$this->new = true;
@@ -776,7 +742,7 @@ final class Give_Payment {
 										$y = 0;
 										while ( $y < $quantity ) {
 
-											give_record_sale_in_log( $item['id'], $this->ID, $price_id, $log_date );
+											give_record_donation_in_log( $item['id'], $this->ID, $price_id, $log_date );
 											$y ++;
 										}
 
@@ -823,33 +789,6 @@ final class Give_Payment {
 
 							}// End switch().
 						}// End foreach().
-						break;
-
-					case 'fees':
-
-						if ( 'publish' !== $this->status && 'complete' !== $this->status ) {
-							break;
-						}
-
-						if ( empty( $this->pending[ $key ] ) ) {
-							break;
-						}
-
-						foreach ( $this->pending[ $key ] as $fee ) {
-
-							switch ( $fee['action'] ) {
-
-								case 'add':
-									$total_increase += $fee['amount'];
-									break;
-
-								case 'remove':
-									$total_decrease += $fee['amount'];
-									break;
-
-							}
-						}
-
 						break;
 
 					case 'status':
@@ -979,7 +918,6 @@ final class Give_Payment {
 				'form_title' => $this->form_title,
 				'form_id'    => $this->form_id,
 				'price_id'   => $this->price_id,
-				'fees'       => $this->fees,
 				'currency'   => $this->currency,
 				'user_info'  => $this->user_info,
 			);
@@ -1031,7 +969,6 @@ final class Give_Payment {
 		$defaults = array(
 			'price'    => false,
 			'price_id' => false,
-			'fees'     => array(),
 		);
 
 		$args = wp_parse_args( apply_filters( 'give_payment_add_donation_args', $args, $donation->ID ), $defaults );
@@ -1087,7 +1024,6 @@ final class Give_Payment {
 			'id'       => $donation->ID,
 			'price'    => round( $total, give_currency_decimal_filter() ),
 			'subtotal' => round( $total, give_currency_decimal_filter() ),
-			'fees'     => $args['fees'],
 			'price_id' => $args['price_id'],
 			'action'   => 'add',
 			'options'  => $options,
@@ -1143,156 +1079,6 @@ final class Give_Payment {
 		return true;
 	}
 
-	/**
-	 * Add a fee to a given payment
-	 *
-	 * @since  1.5
-	 * @access public
-	 *
-	 * @param  array $args Array of arguments for the fee to add
-	 * @param  bool  $global
-	 *
-	 * @return bool          If the fee was added
-	 */
-	public function add_fee( $args, $global = true ) {
-
-		$default_args = array(
-			'label'    => '',
-			'amount'   => 0,
-			'type'     => 'fee',
-			'id'       => '',
-			'price_id' => 0,
-		);
-
-		$fee          = wp_parse_args( $args, $default_args );
-		$this->fees[] = $fee;
-
-		$added_fee               = $fee;
-		$added_fee['action']     = 'add';
-		$this->pending['fees'][] = $added_fee;
-		reset( $this->fees );
-
-		$this->increase_fees( $fee['amount'] );
-
-		return true;
-	}
-
-	/**
-	 * Remove a fee from the payment
-	 *
-	 * @since  1.5
-	 * @access public
-	 *
-	 * @param  int $key The array key index to remove
-	 *
-	 * @return bool     If the fee was removed successfully
-	 */
-	public function remove_fee( $key ) {
-		$removed = false;
-
-		if ( is_numeric( $key ) ) {
-			$removed = $this->remove_fee_by( 'index', $key );
-		}
-
-		return $removed;
-	}
-
-	/**
-	 * Remove a fee by the defined attributed
-	 *
-	 * @since  1.5
-	 * @access public
-	 *
-	 * @param  string     $key The key to remove by
-	 * @param  int|string $value The value to search for
-	 * @param  boolean    $global False - removes the first value it fines,
-	 *                                     True - removes all matches.
-	 *
-	 * @return boolean            If the item is removed
-	 */
-	public function remove_fee_by( $key, $value, $global = false ) {
-
-		$allowed_fee_keys = apply_filters( 'give_payment_fee_keys', array(
-			'index',
-			'label',
-			'amount',
-			'type',
-		) );
-
-		if ( ! in_array( $key, $allowed_fee_keys ) ) {
-			return false;
-		}
-
-		$removed = false;
-		if ( 'index' === $key && array_key_exists( $value, $this->fees ) ) {
-
-			$removed_fee             = $this->fees[ $value ];
-			$removed_fee['action']   = 'remove';
-			$this->pending['fees'][] = $removed_fee;
-
-			$this->decrease_fees( $removed_fee['amount'] );
-
-			unset( $this->fees[ $value ] );
-			$removed = true;
-
-		} elseif ( 'index' !== $key ) {
-
-			foreach ( $this->fees as $index => $fee ) {
-
-				if ( isset( $fee[ $key ] ) && $fee[ $key ] == $value ) {
-
-					$removed_fee             = $fee;
-					$removed_fee['action']   = 'remove';
-					$this->pending['fees'][] = $removed_fee;
-
-					$this->decrease_fees( $removed_fee['amount'] );
-
-					unset( $this->fees[ $index ] );
-					$removed = true;
-
-					if ( false === $global ) {
-						break;
-					}
-				}
-			}
-		}
-
-		if ( true === $removed ) {
-			$this->fees = array_values( $this->fees );
-		}
-
-		return $removed;
-	}
-
-	/**
-	 * Get the fees, filterable by type
-	 *
-	 * @since  1.5
-	 * @access public
-	 *
-	 * @param  string $type All, item, fee
-	 *
-	 * @return array        The Fees for the type specified
-	 */
-	public function get_fees( $type = 'all' ) {
-		$fees = array();
-
-		if ( ! empty( $this->fees ) && is_array( $this->fees ) ) {
-
-			foreach ( $this->fees as $fee_id => $fee ) {
-
-				if ( 'all' != $type && ! empty( $fee['type'] ) && $type != $fee['type'] ) {
-					continue;
-				}
-
-				$fee['id'] = $fee_id;
-				$fees[]    = $fee;
-
-			}
-		}
-
-		return apply_filters( 'give_get_payment_fees', $fees, $this->ID, $this );
-	}
 
 	/**
 	 * Add a note to a payment
@@ -1352,44 +1138,6 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Increase the payment's subtotal.
-	 *
-	 * @since  1.5
-	 * @access private
-	 *
-	 * @param  float $amount The amount to increase the payment subtotal by.
-	 *
-	 * @return void
-	 */
-	private function increase_fees( $amount = 0.00 ) {
-		$amount           = (float) $amount;
-		$this->fees_total += $amount;
-
-		$this->recalculate_total();
-	}
-
-	/**
-	 * Decrease the payment's subtotal.
-	 *
-	 * @since  1.5
-	 * @access private
-	 *
-	 * @param  float $amount The amount to decrease the payment subtotal by.
-	 *
-	 * @return void
-	 */
-	private function decrease_fees( $amount = 0.00 ) {
-		$amount           = (float) $amount;
-		$this->fees_total -= $amount;
-
-		if ( $this->fees_total < 0 ) {
-			$this->fees_total = 0;
-		}
-
-		$this->recalculate_total();
-	}
-
-	/**
 	 * Set or update the total for a payment.
 	 *
 	 * @since  1.5
@@ -1398,7 +1146,7 @@ final class Give_Payment {
 	 * @return void
 	 */
 	private function recalculate_total() {
-		$this->total = $this->subtotal + $this->fees_total;
+		$this->total = $this->subtotal;
 	}
 
 	/**
@@ -1900,28 +1648,6 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Setup the payment fees
-	 *
-	 * @since  1.5
-	 * @access private
-	 *
-	 * @return float The fees total for the payment
-	 */
-	private function setup_fees_total() {
-		$fees_total = (float) 0.00;
-
-		$payment_fees = isset( $this->payment_meta['fees'] ) ? $this->payment_meta['fees'] : array();
-		if ( ! empty( $payment_fees ) ) {
-			foreach ( $payment_fees as $fee ) {
-				$fees_total += (float) $fee['amount'];
-			}
-		}
-
-		return $fees_total;
-
-	}
-
-	/**
 	 * Setup the currency code
 	 *
 	 * @since  1.5
@@ -1933,20 +1659,6 @@ final class Give_Payment {
 		$currency = isset( $this->payment_meta['currency'] ) ? $this->payment_meta['currency'] : apply_filters( 'give_payment_currency_default', give_get_currency(), $this );
 
 		return $currency;
-	}
-
-	/**
-	 * Setup any fees associated with the payment
-	 *
-	 * @since  1.5
-	 * @access private
-	 *
-	 * @return array The Fees
-	 */
-	private function setup_fees() {
-		$payment_fees = isset( $this->payment_meta['fees'] ) ? $this->payment_meta['fees'] : array();
-
-		return $payment_fees;
 	}
 
 	/**

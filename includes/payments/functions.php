@@ -168,7 +168,6 @@ function give_insert_payment( $payment_data = array() ) {
 	$args = array(
 		'price'    => $payment->total,
 		'price_id' => $payment->price_id,
-		'fees'     => isset( $payment_data['fees'] ) ? $payment_data['fees'] : array(),
 	);
 
 	$payment->add_donation( $payment->form_id, $args );
@@ -1329,7 +1328,7 @@ function give_get_payment_amount( $payment_id ) {
 /**
  * Payment Subtotal
  *
- * Retrieves subtotal for payment (this is the amount before fees) and then returns a full formatted amount. This
+ * Retrieves subtotal for payment and then returns a full formatted amount. This
  * function essentially calls give_get_payment_subtotal()
  *
  * @since 1.5
@@ -1349,7 +1348,7 @@ function give_payment_subtotal( $payment_id = 0 ) {
 /**
  * Get Payment Subtotal
  *
- * Retrieves subtotal for payment (this is the amount before fees) and then returns a non formatted amount.
+ * Retrieves subtotal for payment and then returns a non formatted amount.
  *
  * @since 1.5
  *
@@ -1361,22 +1360,6 @@ function give_get_payment_subtotal( $payment_id = 0 ) {
 	$payment = new Give_Payment( $payment_id );
 
 	return $payment->subtotal;
-}
-
-/**
- * Retrieves arbitrary fees for the payment
- *
- * @since 1.5
- *
- * @param int $payment_id Payment ID.
- * @param string $type Fee type.
- *
- * @return mixed array if payment fees found, false otherwise.
- */
-function give_get_payment_fees( $payment_id = 0, $type = 'all' ) {
-	$payment = new Give_Payment( $payment_id );
-
-	return $payment->get_fees( $type );
 }
 
 /**
