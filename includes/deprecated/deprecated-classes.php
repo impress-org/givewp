@@ -117,18 +117,6 @@ class Give_Customer extends Give_Donor {
 	 * @return mixed
 	 */
 	public function __call( $name, $arguments ) {
-		$deprecated_function_arr = array(
-			'setup_customer',
-		);
-
-		if ( in_array( $name, $deprecated_function_arr ) ) {
-			switch ( $name ) {
-				case 'setup_customer':
-					$donor = ! empty( $arguments[0] ) ? $arguments[0] : array();
-
-					return $this->customer->setup_donors( $donor );
-			}
-		}
 	}
 
 }
