@@ -85,6 +85,7 @@ class Give_API {
 	private $data = array();
 
 	/**
+	 * Whether or not to override api key validation.
 	 *
 	 * @var bool
 	 * @access public
@@ -293,7 +294,7 @@ class Give_API {
 	/**
 	 * Validate the API request
 	 *
-	 * Checks for the user's public key and token against the secret key
+	 * Checks for the user's public key and token against the secret key.
 	 *
 	 * @access private
 	 * @global object $wp_query WordPress Query
@@ -301,7 +302,7 @@ class Give_API {
 	 * @uses   Give_API::invalid_key()
 	 * @uses   Give_API::invalid_auth()
 	 * @since  1.1
-	 * @return void
+	 * @return bool
 	 */
 	private function validate_request() {
 		global $wp_query;
@@ -309,16 +310,18 @@ class Give_API {
 		$this->override = false;
 
 		// Make sure we have both user and api key
-		if ( ! empty( $wp_query->query_vars['give-api'] ) && ( $wp_query->query_vars['give-api'] != 'forms' || ! empty( $wp_query->query_vars['token'] ) ) ) {
+		if ( ! empty( $wp_query->query_vars['give-api'] ) && ( $wp_query->query_vars['give-api'] !== 'forms' || ! empty( $wp_query->query_vars['token'] ) ) ) {
 
 			if ( empty( $wp_query->query_vars['token'] ) || empty( $wp_query->query_vars['key'] ) ) {
 				$this->missing_auth();
+				return false;
 			}
 
 			// Retrieve the user by public API key and ensure they exist
 			if ( ! ( $user = $this->get_user( $wp_query->query_vars['key'] ) ) ) {
 
 				$this->invalid_key();
+				return false;
 
 			} else {
 
@@ -330,9 +333,11 @@ class Give_API {
 					$this->is_valid_request = true;
 				} else {
 					$this->invalid_auth();
+					return false;
 				}
+
 			}
-		} elseif ( ! empty( $wp_query->query_vars['give-api'] ) && $wp_query->query_vars['give-api'] == 'forms' ) {
+		} elseif ( ! empty( $wp_query->query_vars['give-api'] ) && $wp_query->query_vars['give-api'] === 'forms' ) {
 			$this->is_valid_request = true;
 			$wp_query->set( 'key', 'public' );
 		}
@@ -428,7 +433,7 @@ class Give_API {
 	}
 
 	/**
-	 * Displays a missing authentication error if all the parameters aren't
+	 * Displays a missing authentication error if all the parameters are not met.
 	 * provided
 	 *
 	 * @access private
@@ -912,7 +917,7 @@ class Give_API {
 				$donors['donors'][ $donor_count ]['info']['user_id']      = '';
 				$donors['donors'][ $donor_count ]['info']['username']     = '';
 				$donors['donors'][ $donor_count ]['info']['display_name'] = '';
-				$donors['donors'][ $donor_count ]['info']['donor_id']  = $donor_obj->id;
+				$donors['donors'][ $donor_count ]['info']['donor_id']     = $donor_obj->id;
 				$donors['donors'][ $donor_count ]['info']['first_name']   = $first_name;
 				$donors['donors'][ $donor_count ]['info']['last_name']    = $last_name;
 				$donors['donors'][ $donor_count ]['info']['email']        = $donor_obj->email;
@@ -958,7 +963,7 @@ class Give_API {
 	 * @access public
 	 * @since  1.1
 	 *
-	 * @param int $form Give Form ID
+	 * @param int $form Give Form ID.
 	 *
 	 * @return array $donors Multidimensional array of the forms.
 	 */
@@ -1006,9 +1011,9 @@ class Give_API {
 	 *
 	 * @since  1.1
 	 *
-	 * @param  object $form_info The Download Post Object
+	 * @param  object $form_info The Give Form's Post Object.
 	 *
-	 * @return array                Array of post data to return back in the API
+	 * @return array                Array of post data to return back in the API.
 	 */
 	private function get_form_data( $form_info ) {
 
@@ -1043,7 +1048,7 @@ class Give_API {
 		if ( give_has_variable_prices( $form_info->ID ) ) {
 			foreach ( give_get_variable_prices( $form_info->ID ) as $price ) {
 				$counter ++;
-				// muli-level item
+				// multi-level item
 				$level                                     = isset( $price['_give_text'] ) ? $price['_give_text'] : 'level-' . $counter;
 				$form['pricing'][ sanitize_key( $level ) ] = $price['_give_amount'];
 
@@ -1072,9 +1077,9 @@ class Give_API {
 	 *
 	 * @since 1.1
 	 *
-	 * @global WPDB $wpdb Used to query the database using the WordPress
+	 * @global WPDB $wpdb Used to query the database using the WordPress.
 	 *
-	 * @param array $args Arguments provided by API Request
+	 * @param array $args Arguments provided by API Request.
 	 *
 	 * @return array
 	 */
@@ -1110,8 +1115,8 @@ class Give_API {
 				if ( $args['date'] == null ) {
 					$sales = $this->get_default_sales_stats();
 				} elseif ( $args['date'] === 'range' ) {
-					// Return sales for a date range
-					// Ensure the end date is later than the start date
+					// Return donations for a date range.
+					// Ensure the end date is later than the start date.
 					if ( $args['enddate'] < $args['startdate'] ) {
 						$error['error'] = esc_html__( 'The end date must be later than the start date.', 'give' );
 					}
@@ -1360,6 +1365,9 @@ class Give_API {
 	 *
 	 * @access public
 	 * @since  1.1
+	 *
+	 * @param $args array
+	 *
 	 * @return array
 	 */
 	public function get_recent_donations( $args = array() ) {
@@ -1531,9 +1539,9 @@ class Give_API {
 	}
 
 	/**
-	 * Retrieve the output format
+	 * Retrieve the output format.
 	 *
-	 * Determines whether results should be displayed in XML or JSON
+	 * Determines whether results should be displayed in XML or JSON.
 	 *
 	 * @since  1.1
 	 * @access public
@@ -1550,7 +1558,7 @@ class Give_API {
 
 
 	/**
-	 * Log each API request, if enabled
+	 * Log each API request, if enabled.
 	 *
 	 * @access private
 	 * @since  1.1
@@ -1613,7 +1621,7 @@ class Give_API {
 
 
 	/**
-	 * Retrieve the output data
+	 * Retrieve the output data.
 	 *
 	 * @access public
 	 * @since  1.1
@@ -1624,8 +1632,8 @@ class Give_API {
 	}
 
 	/**
-	 * Output Query in either JSON/XML. The query data is outputted as JSON
-	 * by default
+	 * Output Query in either JSON/XML.
+	 * The query data is outputted as JSON by default.
 	 *
 	 * @since 1.1
 	 * @global WP_Query $wp_query
@@ -1633,17 +1641,13 @@ class Give_API {
 	 * @param int       $status_code
 	 */
 	public function output( $status_code = 200 ) {
-		/**
-		 * @var WP_Query $wp_query
-		 */
-		global $wp_query;
 
 		$format = $this->get_output_format();
 
 		status_header( $status_code );
 
 		/**
-		 * Fires before outputing the API.
+		 * Fires before outputting the API.
 		 *
 		 * @since 1.1
 		 *
@@ -1677,7 +1681,7 @@ class Give_API {
 			default :
 
 				/**
-				 * Fires by the API while outputing other formats.
+				 * Fires by the API while outputting other formats.
 				 *
 				 * @since 1.1
 				 *
@@ -1691,7 +1695,7 @@ class Give_API {
 		endswitch;
 
 		/**
-		 * Fires after outputing the API.
+		 * Fires after outputting the API.
 		 *
 		 * @since 1.1
 		 *
@@ -1707,7 +1711,7 @@ class Give_API {
 	/**
 	 * Modify User Profile
 	 *
-	 * Modifies the output of profile.php to add key generation/revocation
+	 * Modifies the output of profile.php to add key generation/revocation.
 	 *
 	 * @access public
 	 * @since  1.1
@@ -1793,13 +1797,13 @@ class Give_API {
 		if ( $user_id == get_current_user_id() && ! give_get_option( 'allow_user_api_keys' ) && ! current_user_can( 'manage_give_settings' ) ) {
 			wp_die( sprintf( /* translators: %s: process */
 				esc_html__( 'You do not have permission to %s API keys for this user.', 'give' ), $process ), esc_html__( 'Error', 'give' ), array(
-					'response' => 403,
-				) );
+				'response' => 403,
+			) );
 		} elseif ( ! current_user_can( 'manage_give_settings' ) ) {
 			wp_die( sprintf( /* translators: %s: process */
 				esc_html__( 'You do not have permission to %s API keys for this user.', 'give' ), $process ), esc_html__( 'Error', 'give' ), array(
-					'response' => 403,
-				) );
+				'response' => 403,
+			) );
 		}
 
 		switch ( $process ) {
