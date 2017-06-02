@@ -70,7 +70,7 @@ class Tests_API extends Give_Unit_Test_Case {
 		wp_set_current_user( $this->_user_id );
 
 		$this->_api->user_id = $this->_user_id;
-		
+
 		$this->_api->add_endpoint( (array) $wp_rewrite );
 
 		$this->_rewrite = $wp_rewrite;
@@ -121,7 +121,7 @@ class Tests_API extends Give_Unit_Test_Case {
 
 		$this->_post = get_post( $post_id );
 
-		$user = get_userdata( 1 );
+		$user = get_userdata( $this->_user_id );
 
 		$user_info = array(
 			'id'         => $user->ID,
