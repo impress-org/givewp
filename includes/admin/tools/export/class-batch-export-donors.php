@@ -197,7 +197,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 					$payment    = new Give_Payment( $payment_id );
 
 					// Continue if donor already included.
-					if ( in_array( $payment->customer_id , $this->donor_ids ) ) {
+					if ( empty( $payment->customer_id ) || in_array( $payment->customer_id , $this->donor_ids ) ) {
 						continue;
 					}
 
