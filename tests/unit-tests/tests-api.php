@@ -505,7 +505,7 @@ class Tests_API extends Give_Unit_Test_Case {
 		$this->assertArrayHasKey( 'content', $out['forms'][0]['info'] );
 		$this->assertEquals( 'Post content 1', $out['forms'][0]['info']['content'] );
 		$this->assertArrayHasKey( 'thumbnail', $out['forms'][0]['info'] );
-		
+
 		$this->assertArrayHasKey( 'stats', $out['forms'][0] );
 		$this->assertArrayHasKey( 'total', $out['forms'][0]['stats'] );
 		$this->assertArrayHasKey( 'donations', $out['forms'][0]['stats']['total'] );
