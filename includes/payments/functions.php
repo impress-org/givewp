@@ -282,7 +282,7 @@ function give_update_payment_status( $payment_id, $new_status = 'publish' ) {
  *
  * @return void
  */
-function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
+function give_delete_donation( $payment_id = 0, $update_customer = true ) {
 	global $give_logs;
 
 	$payment     = new Give_Payment( $payment_id );
@@ -292,13 +292,13 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
 	$customer    = new Give_Donor( $donor_id );
 
 	// Only undo donations that aren't these statuses.
-	$dont_undo_statuses = apply_filters( 'give_undo_purchase_statuses', array(
+	$dont_undo_statuses = apply_filters( 'give_undo_donation_statuses', array(
 		'pending',
 		'cancelled',
 	) );
 
 	if ( ! in_array( $status, $dont_undo_statuses ) ) {
-		give_undo_purchase( false, $payment_id );
+		give_undo_donation( $payment_id );
 	}
 
 	if ( $status == 'publish' ) {
@@ -367,17 +367,11 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
  *
  * @since  1.0
  *
- * @param  int|bool $form_id Form ID (default: false).
  * @param  int $payment_id Payment ID.
  *
  * @return void
  */
-function give_undo_purchase( $form_id = false, $payment_id ) {
-
-	if ( ! empty( $form_id ) ) {
-		$form_id = false;
-		_give_deprected_argument( 'form_id', 'give_undo_purchase', '1.5' );
-	}
+function give_undo_donation( $payment_id ) {
 
 	$payment = new Give_Payment( $payment_id );
 
@@ -387,8 +381,8 @@ function give_undo_purchase( $form_id = false, $payment_id ) {
 		give_decrease_earnings( $payment->form_id, $payment->total );
 	}
 
-	$maybe_decrease_sales = apply_filters( 'give_decrease_donation_on_undo', true, $payment, $payment->form_id );
-	if ( true === $maybe_decrease_sales ) {
+	$maybe_decrease_donations = apply_filters( 'give_decrease_donations_on_undo', true, $payment, $payment->form_id );
+	if ( true === $maybe_decrease_donations ) {
 		// Decrease donation count.
 		give_decrease_donation_count( $payment->form_id );
 	}

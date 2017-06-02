@@ -573,7 +573,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			switch ( $this->current_action() ) {
 
 				case'delete':
-					give_delete_purchase( $id );
+					give_delete_donation( $id );
 					break;
 
 				case 'set-status-publish':

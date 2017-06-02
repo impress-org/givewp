@@ -297,11 +297,11 @@ function give_update_payment_details( $data ) {
 add_action( 'give_update_payment_details', 'give_update_payment_details' );
 
 /**
- * Trigger a Donation Deletion
+ * Trigger a Donation Deletion.
  *
  * @since 1.0
  *
- * @param array $data Arguments passed
+ * @param array $data Arguments passed.
  *
  * @return void
  */
@@ -311,10 +311,10 @@ function give_trigger_purchase_delete( $data ) {
 		$payment_id = absint( $data['purchase_id'] );
 
 		if ( ! current_user_can( 'edit_give_payments', $payment_id ) ) {
-			wp_die( esc_html__( 'You do not have permission to edit payments.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die( __( 'You do not have permission to edit payments.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 		}
 
-		give_delete_purchase( $payment_id );
+		give_delete_donation( $payment_id );
 		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&give-message=donation_deleted' ) );
 		give_die();
 	}
@@ -331,7 +331,7 @@ function give_ajax_store_payment_note() {
 	$note       = wp_kses( $_POST['note'], array() );
 
 	if ( ! current_user_can( 'edit_give_payments', $payment_id ) ) {
-		wp_die( esc_html__( 'You do not have permission to edit payments.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( __( 'You do not have permission to edit payments.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	if ( empty( $payment_id ) ) {

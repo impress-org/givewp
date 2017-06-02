@@ -436,5 +436,49 @@ function give_purchase_total_of_user( $user = null ) {
 
 	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_donation_total_of_user', $backtrace );
 
-	return give_donation_total_of_user($user);
+	return give_donation_total_of_user( $user );
+}
+
+/**
+ * Deletes a Donation
+ *
+ * @since  1.0
+ * @global      $give_logs
+ *
+ * @param  int  $payment_id Payment ID (default: 0).
+ * @param  bool $update_customer If we should update the customer stats (default:true).
+ *
+ * @return void
+ */
+function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
+
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_donation_total_of_user', $backtrace );
+
+	give_delete_donation( $payment_id, $update_customer );
+
+}
+
+
+/**
+ * Undo Donation
+ *
+ * Undoes a donation, including the decrease of donations and earning stats.
+ * Used for when refunding or deleting a donation.
+ *
+ * @since  1.0
+ *
+ * @param  int|bool $form_id Form ID (default: false).
+ * @param  int $payment_id Payment ID.
+ *
+ * @return void
+ */
+function give_undo_purchase( $form_id = false, $payment_id ) {
+
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_donation_total_of_user', $backtrace );
+
+	give_delete_donation( $payment_id, $update_customer );
 }

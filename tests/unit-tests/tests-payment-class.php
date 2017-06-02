@@ -312,7 +312,7 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 	public function test_refund_without_affecting_stats() {
 
 		add_filter( 'give_decrease_earnings_on_undo', '__return_false' );
-		add_filter( 'give_decrease_donation_on_undo', '__return_false' );
+		add_filter( 'give_decrease_donations_on_undo', '__return_false' );
 		add_filter( 'give_decrease_customer_value_on_refund', '__return_false' );
 		add_filter( 'give_decrease_customer_purchase_count_on_refund', '__return_false' );
 		add_filter( 'give_decrease_store_earnings_on_refund', '__return_false' );
@@ -350,7 +350,7 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		$this->assertEquals( $site_sales - 1, give_get_total_donations() );
 
 		remove_filter( 'give_decrease_earnings_on_undo', '__return_false' );
-		remove_filter( 'give_decrease_donation_on_undo', '__return_false' );
+		remove_filter( 'give_decrease_donations_on_undo', '__return_false' );
 		remove_filter( 'give_decrease_customer_value_on_refund', '__return_false' );
 		remove_filter( 'give_decrease_customer_purchase_count_on_refund', '__return_false' );
 		remove_filter( 'give_decrease_store_earnings_on_refund', '__return_false ' );
@@ -401,7 +401,7 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 	 */
 	public function test_pending_without_affecting_stats() {
 		add_filter( 'give_decrease_earnings_on_undo', '__return_false' );
-		add_filter( 'give_decrease_donation_on_undo', '__return_false' );
+		add_filter( 'give_decrease_donations_on_undo', '__return_false' );
 		add_filter( 'give_decrease_donor_value_on_pending', '__return_false' );
 		add_filter( 'give_decrease_donors_donation_count_on_pending', '__return_false' );
 		add_filter( 'give_decrease_earnings_on_pending', '__return_false' );
@@ -443,7 +443,7 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 		$this->assertEquals( $site_sales - 1, give_get_total_donations() );
 
 		remove_filter( 'give_decrease_earnings_on_undo', '__return_false' );
-		remove_filter( 'give_decrease_donation_on_undo', '__return_false' );
+		remove_filter( 'give_decrease_donations_on_undo', '__return_false' );
 		remove_filter( 'give_decrease_donor_value_on_pending', '__return_false' );
 		remove_filter( 'give_decrease_donors_donation_count_on_pending', '__return_false' );
 		remove_filter( 'give_decrease_earnings_on_pending', '__return_false ' );

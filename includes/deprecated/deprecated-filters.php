@@ -45,7 +45,8 @@ function give_deprecated_filters() {
 		'give_donor_tabs'                                  => 'give_customer_tabs',
 		'give_donor_views'                                 => 'give_customer_views',
 		'give_view_donors_role'                            => 'give_view_customers_role',
-		'give_report_donor_columns'                            => 'give_report_customer_columns',
+		'give_report_donor_columns'                        => 'give_report_customer_columns',
+		'give_undo_donation_statuses'                      => 'give_undo_purchase_statuses',
 	);
 
 	return $give_deprecated_filters;

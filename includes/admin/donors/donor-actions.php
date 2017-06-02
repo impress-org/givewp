@@ -332,7 +332,7 @@ function give_donor_delete( $args ) {
 
 				// Remove all donations, logs, etc
 				foreach ( $payments_array as $payment_id ) {
-					give_delete_purchase( $payment_id );
+					give_delete_donation( $payment_id );
 				}
 			} else {
 

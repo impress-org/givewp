@@ -1774,7 +1774,7 @@ final class Give_Payment {
 	 */
 	private function maybe_alter_stats( $alter_store_earnings, $alter_customer_value, $alter_customer_purchase_count ) {
 
-		give_undo_purchase( false, $this->ID );
+		give_undo_donation( $this->ID );
 
 		// Decrease store earnings.
 		if ( true === $alter_store_earnings ) {
