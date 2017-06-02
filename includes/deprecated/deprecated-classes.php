@@ -38,12 +38,7 @@ class Give_DB_Customers extends Give_DB_Donors {
 	 * Give_DB_Customers constructor.
 	 */
 	public function __construct() {
-		/* @var WPDB $wpdb */
-		global $wpdb;
-
-		$this->table_name  = $wpdb->prefix . 'give_customers';
-		$this->primary_key = 'id';
-		$this->version     = '1.0';
+		parent::__construct();
 	}
 
 	/**

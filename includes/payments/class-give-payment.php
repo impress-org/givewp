@@ -437,7 +437,7 @@ final class Give_Payment {
 	 * @access public
 	 *
 	 * @param  string $key The property name
-	 * @param  mixed $value The value of the property
+	 * @param  mixed  $value The value of the property
 	 */
 	public function __set( $key, $value ) {
 		$ignore = array( '_ID' );
@@ -548,7 +548,7 @@ final class Give_Payment {
 
 		// User based.
 		$this->ip          = $this->setup_ip();
-		$this->customer_id = $this->setup_customer_id();
+		$this->customer_id = $this->setup_donor_id();
 		$this->user_id     = $this->setup_user_id();
 		$this->email       = $this->setup_email();
 		$this->user_info   = $this->setup_user_info();
@@ -1012,7 +1012,7 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  int $form_id The donation form to add
+	 * @param  int   $form_id The donation form to add
 	 * @param  array $args Other arguments to pass to the function
 	 * @param  array $options List of donation options
 	 *
@@ -1107,7 +1107,7 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  int $form_id The form ID to remove
+	 * @param  int   $form_id The form ID to remove
 	 * @param  array $args Arguments to pass to identify (quantity, amount, price_id)
 	 *
 	 * @return bool           If the item was removed or not
@@ -1150,7 +1150,7 @@ final class Give_Payment {
 	 * @access public
 	 *
 	 * @param  array $args Array of arguments for the fee to add
-	 * @param  bool $global
+	 * @param  bool  $global
 	 *
 	 * @return bool          If the fee was added
 	 */
@@ -1203,10 +1203,10 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  string $key The key to remove by
+	 * @param  string     $key The key to remove by
 	 * @param  int|string $value The value to search for
-	 * @param  boolean $global False - removes the first value it fines,
-	 *                                  True - removes all matches.
+	 * @param  boolean    $global False - removes the first value it fines,
+	 *                                     True - removes all matches.
 	 *
 	 * @return boolean            If the item is removed
 	 */
@@ -1510,7 +1510,7 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  string $meta_key The Meta Key
+	 * @param  string  $meta_key The Meta Key
 	 * @param  boolean $single Return single item or array
 	 *
 	 * @return mixed             The value from the post meta
@@ -1997,14 +1997,14 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Setup the customer ID
+	 * Setup the donor ID.
 	 *
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @return int The Customer ID
+	 * @return int The Donor ID.
 	 */
-	private function setup_customer_id() {
+	private function setup_donor_id() {
 		$customer_id = $this->get_meta( '_give_payment_customer_id', true );
 
 		return $customer_id;
@@ -2025,12 +2025,12 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Setup the email address for the donation
+	 * Setup the email address for the donation.
 	 *
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @return string The email address for the payment
+	 * @return string The email address for the payment.
 	 */
 	private function setup_email() {
 		$email = $this->get_meta( '_give_payment_user_email', true );
@@ -2043,12 +2043,12 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Setup the user info
+	 * Setup the user info.
 	 *
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @return array The user info associated with the payment
+	 * @return array The user info associated with the payment.
 	 */
 	private function setup_user_info() {
 		$defaults = array(
@@ -2108,12 +2108,12 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Setup the Address for the payment
+	 * Setup the Address for the payment.
 	 *
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @return array The Address information for the payment
+	 * @return array The Address information for the payment.
 	 */
 	private function setup_address() {
 
@@ -2130,12 +2130,12 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Setup the form title
+	 * Setup the form title.
 	 *
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @return string The Form Title
+	 * @return string The Form Title.
 	 */
 	private function setup_form_title() {
 
@@ -2145,7 +2145,7 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Setup the form ID
+	 * Setup the form ID.
 	 *
 	 * @since  1.5
 	 * @access private
@@ -2160,12 +2160,12 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Setup the price ID
+	 * Setup the price ID.
 	 *
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @return int The Form Price ID
+	 * @return int The Form Price ID.
 	 */
 	private function setup_price_id() {
 		$price_id = $this->get_meta( '_give_payment_price_id', true );
@@ -2174,12 +2174,12 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Setup the payment key
+	 * Setup the payment key.
 	 *
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @return string The Payment Key
+	 * @return string The Payment Key.
 	 */
 	private function setup_payment_key() {
 		$key = $this->get_meta( '_give_payment_purchase_key', true );
@@ -2188,12 +2188,12 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Setup the payment number
+	 * Setup the payment number.
 	 *
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @return int|string Integer by default, or string if sequential order numbers is enabled
+	 * @return int|string Integer by default, or string if sequential order numbers is enabled.
 	 */
 	private function setup_payment_number() {
 		$number = $this->ID;
@@ -2213,11 +2213,11 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Converts this object into an array for special cases
+	 * Converts this object into an array for special cases.
 	 *
 	 * @access public
 	 *
-	 * @return array The payment object as an array
+	 * @return array The payment object as an array.
 	 */
 	public function array_convert() {
 		return get_object_vars( $this );
@@ -2237,60 +2237,60 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Retrieve payment completion date
+	 * Retrieve payment completion date.
 	 *
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @return string Date payment was completed
+	 * @return string Date payment was completed.
 	 */
 	private function get_completed_date() {
 		return apply_filters( 'give_payment_completed_date', $this->completed_date, $this->ID, $this );
 	}
 
 	/**
-	 * Retrieve payment subtotal
+	 * Retrieve payment subtotal.
 	 *
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @return float Payment subtotal
+	 * @return float Payment subtotal.
 	 */
 	private function get_subtotal() {
 		return apply_filters( 'give_get_payment_subtotal', $this->subtotal, $this->ID, $this );
 	}
 
 	/**
-	 * Retrieve payment currency
+	 * Retrieve payment currency.
 	 *
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @return string Payment currency code
+	 * @return string Payment currency code.
 	 */
 	private function get_currency() {
 		return apply_filters( 'give_payment_currency_code', $this->currency, $this->ID, $this );
 	}
 
 	/**
-	 * Retrieve payment gateway
+	 * Retrieve payment gateway.
 	 *
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @return string Gateway used
+	 * @return string Gateway used.
 	 */
 	private function get_gateway() {
 		return apply_filters( 'give_payment_gateway', $this->gateway, $this->ID, $this );
 	}
 
 	/**
-	 * Retrieve donation ID
+	 * Retrieve donation ID.
 	 *
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @return string Donation ID from merchant processor
+	 * @return string Donation ID from merchant processor.
 	 */
 	private function get_transaction_id() {
 		return apply_filters( 'give_get_payment_transaction_id', $this->transaction_id, $this->ID, $this );
@@ -2309,72 +2309,72 @@ final class Give_Payment {
 	}
 
 	/**
-	 * Retrieve payment customer ID
+	 * Retrieve payment donor ID.
 	 *
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @return int Payment customer ID
+	 * @return int Payment donor ID.
 	 */
-	private function get_customer_id() {
+	private function get_donor_id() {
 		return apply_filters( 'give_payment_customer_id', $this->customer_id, $this->ID, $this );
 	}
 
 	/**
-	 * Retrieve payment user ID
+	 * Retrieve payment user ID.
 	 *
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @return int Payment user ID
+	 * @return int Payment user ID.
 	 */
 	private function get_user_id() {
 		return apply_filters( 'give_payment_user_id', $this->user_id, $this->ID, $this );
 	}
 
 	/**
-	 * Retrieve payment email
+	 * Retrieve payment email.
 	 *
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @return string Payment customer email
+	 * @return string Payment donor email.
 	 */
 	private function get_email() {
 		return apply_filters( 'give_payment_user_email', $this->email, $this->ID, $this );
 	}
 
 	/**
-	 * Retrieve payment user info
+	 * Retrieve payment user info.
 	 *
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @return array Payment user info
+	 * @return array Payment user info.
 	 */
 	private function get_user_info() {
 		return apply_filters( 'give_payment_meta_user_info', $this->user_info, $this->ID, $this );
 	}
 
 	/**
-	 * Retrieve payment billing address
+	 * Retrieve payment billing address.
 	 *
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @return array Payment billing address
+	 * @return array Payment billing address.
 	 */
 	private function get_address() {
 		return apply_filters( 'give_payment_address', $this->address, $this->ID, $this );
 	}
 
 	/**
-	 * Retrieve payment key
+	 * Retrieve payment key.
 	 *
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @return string Payment key
+	 * @return string Payment key.
 	 */
 	private function get_key() {
 		return apply_filters( 'give_payment_key', $this->key, $this->ID, $this );
