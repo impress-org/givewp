@@ -88,6 +88,7 @@ function give_deprecated_actions() {
 		'give_pre_delete_donor'                    => 'give_pre_delete_customer',
 		'give_post_add_donor_email'                => 'give_post_add_customer_email',
 		'give_update_edited_donation'              => 'give_update_edited_purchase',
+		'give_pre_complete_donation'               => 'give_pre_complete_purchase',
 	);
 
 	return $give_deprecated_actions;
