@@ -159,11 +159,20 @@ class Tests_User_Function extends Give_Unit_Test_Case {
 		$this->assertFalse( $output );
 
 		/*
-		 * Check 3
+		 * Check 5
+		 *
+		 *  Register new user & password/confirm password is not empty and weak password
+		 */
+		$output = give_validate_user_password( 'xyz', 'xyz', true );
+
+		$this->assertFalse( $output );
+
+		/*
+		 * Check 5
 		 *
 		 *  Register new user & password/confirm password is not empty
 		 */
-		$output = give_validate_user_password( 'xyz', 'xyz', true );
+		$output = give_validate_user_password( 'xyzabc', 'xyzabc', true );
 
 		$this->assertTrue( $output );
 	}
