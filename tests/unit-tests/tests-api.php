@@ -58,16 +58,15 @@ class Tests_API extends Give_Unit_Test_Case {
 
 		$this->_api = new Give_API();
 
-		//		$this->_user_id = $this->factory->user->create();
-		//
-		//		$user = new WP_User( $this->_user_id );
-		//		$user->set_role( 'administrator' );
+				$this->_user_id = $this->factory->user->create();
+				$user = new WP_User( $this->_user_id );
+				$user->add_cap( 'view_give_reports' );
 
 		//		$roles = new Give_Roles();
 		//		$roles->add_roles();
 		//		$roles->add_caps();
 
-		$user                = wp_set_current_user( 1 );
+		$user                = wp_set_current_user( $this->_user_id );
 		$this->_user_id      = $user->ID;
 		$this->_api->user_id = $this->_user_id;
 		$this->_api->add_endpoint( (array) $wp_rewrite );

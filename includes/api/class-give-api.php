@@ -1036,10 +1036,7 @@ class Give_API {
 		if ( give_is_setting_enabled( give_get_option( 'tags', 'disabled' ) ) ) {
 			$form['info']['tags'] = get_the_terms( $form_info, 'give_forms_tag' );
 		}
-echo '<pre>';
-var_dump( $this->user_id);
-var_dump(user_can( $this->user_id, 'view_give_reports' ));
-echo '</pre>';
+
 		if ( user_can( $this->user_id, 'view_give_reports' ) || $this->override ) {
 			$form['stats']['total']['donations']           = give_get_form_sales_stats( $form_info->ID );
 			$form['stats']['total']['earnings']            = give_get_form_earnings_stats( $form_info->ID );
