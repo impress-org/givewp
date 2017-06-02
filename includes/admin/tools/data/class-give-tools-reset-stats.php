@@ -164,11 +164,11 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	}
 
 	/**
-	 * Set the properties specific to the payments export
+	 * Set the properties specific to the payments export.
 	 *
 	 * @since 1.5
 	 *
-	 * @param array $request The Form Data passed into the batch processing
+	 * @param array $request The Form Data passed into the batch processing.
 	 */
 	public function set_properties( $request ) {
 	}

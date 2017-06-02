@@ -1,11 +1,10 @@
 <?php
 /**
- * Recount all customer stats
+ * Recount all donor stats.
  *
- * This class handles batch processing of recounting all customer stats
+ * This class handles batch processing of recounting all donor stats.
  *
  * @subpackage  Admin/Tools/Give_Tools_Recount_Donor_Stats
- * @copyright   Copyright (c) 2016, Chris Klosowski
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.5
  */
@@ -23,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Give_Tools_Recount_Donor_Stats extends Give_Batch_Export {
 
 	/**
-	 * Our export type. Used for export-type specific filters/actions
+	 * Our export type. Used for export-type specific filters/actions.
 	 *
 	 * @var string
 	 * @since 1.5

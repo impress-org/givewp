@@ -61,7 +61,7 @@ function give_donor_tabs() {
 }
 
 /**
- * List table of customers
+ * List table of donors.
  *
  * @since  1.0
  * @return void
@@ -125,7 +125,7 @@ function give_render_donor_view( $view, $callbacks ) {
 	}
 
 	if ( ! isset( $_GET['id'] ) || ! is_numeric( $_GET['id'] ) ) {
-		give_set_error( 'give-invalid_customer', __( 'Invalid Donor ID.', 'give' ) );
+		give_set_error( 'give-invalid_donor', __( 'Invalid Donor ID.', 'give' ) );
 		$render = false;
 	}
 
@@ -133,7 +133,7 @@ function give_render_donor_view( $view, $callbacks ) {
 	$donor    = new Give_Donor( $donor_id );
 
 	if ( empty( $donor->id ) ) {
-		give_set_error( 'give-invalid_customer', __( 'Invalid Donor ID.', 'give' ) );
+		give_set_error( 'give-invalid_donor', __( 'Invalid Donor ID.', 'give' ) );
 		$render = false;
 	}
 
