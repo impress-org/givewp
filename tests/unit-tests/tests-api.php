@@ -58,6 +58,11 @@ class Tests_API extends Give_Unit_Test_Case {
 
 		$this->_api = new Give_API();
 
+		$this->_user_id = $this->factory->user->create( array(
+			'role' => 'administrator',
+		) );
+		wp_set_current_user( $this->_user_id );
+		
 		$roles = new Give_Roles();
 		$roles->add_roles();
 		$roles->add_caps();
@@ -74,10 +79,7 @@ class Tests_API extends Give_Unit_Test_Case {
 			'post_status' => 'publish',
 		) );
 
-		$this->_user_id = $this->factory->user->create( array(
-			'role' => 'administrator',
-		) );
-		wp_set_current_user( $this->_user_id );
+
 
 		$_multi_level_donations = array(
 			array(
@@ -249,6 +251,7 @@ class Tests_API extends Give_Unit_Test_Case {
 	 * Test Get Queried Version
 	 */
 	public function test_get_queried_version() {
+
 		global $wp_query;
 
 		$_POST['give_set_api_key'] = 1;
