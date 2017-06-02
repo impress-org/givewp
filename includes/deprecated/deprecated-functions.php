@@ -445,7 +445,7 @@ function give_purchase_total_of_user( $user = null ) {
  * @since  1.0
  * @global      $give_logs
  *
- * @param  int  $payment_id Payment ID (default: 0).
+ * @param  int  $payment_id      Payment ID (default: 0).
  * @param  bool $update_customer If we should update the customer stats (default:true).
  *
  * @return void
@@ -469,8 +469,8 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
  *
  * @since  1.0
  *
- * @param  int|bool $form_id Form ID (default: false).
- * @param  int $payment_id Payment ID.
+ * @param  int|bool $form_id    Form ID (default: false).
+ * @param  int      $payment_id Payment ID.
  *
  * @return void
  */
@@ -478,7 +478,45 @@ function give_undo_purchase( $form_id = false, $payment_id ) {
 
 	$backtrace = debug_backtrace();
 
-	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_donation_total_of_user', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_delete_donation', $backtrace );
 
-	give_delete_donation( $payment_id, $update_customer );
+	give_delete_donation( $payment_id );
 }
+
+
+/**
+ * Trigger a Donation Deletion.
+ *
+ * @since 1.0
+ *
+ * @param array $data Arguments passed.
+ *
+ * @return void
+ */
+function give_trigger_purchase_delete( $data ) {
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_trigger_donation_delete', $backtrace );
+
+	give_trigger_donation_delete( $data );
+}
+
+
+/**
+ * Increases the donation total count of a donation form.
+ *
+ * @since 1.0
+ *
+ * @param int $form_id  Give Form ID
+ * @param int $quantity Quantity to increase donation count by
+ *
+ * @return bool|int
+ */
+function give_increase_purchase_count( $form_id = 0, $quantity = 1 ) {
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_increase_donation_count', $backtrace );
+
+	give_increase_donation_count( $form_id, $quantity );
+}
+

@@ -305,7 +305,7 @@ add_action( 'give_update_payment_details', 'give_update_payment_details' );
  *
  * @return void
  */
-function give_trigger_purchase_delete( $data ) {
+function give_trigger_donation_delete( $data ) {
 	if ( wp_verify_nonce( $data['_wpnonce'], 'give_donation_nonce' ) ) {
 
 		$payment_id = absint( $data['purchase_id'] );
@@ -320,7 +320,7 @@ function give_trigger_purchase_delete( $data ) {
 	}
 }
 
-add_action( 'give_delete_payment', 'give_trigger_purchase_delete' );
+add_action( 'give_delete_payment', 'give_trigger_donation_delete' );
 
 /**
  * AJAX Store Donation Note

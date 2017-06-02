@@ -80,7 +80,7 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 
 	// Increase the earnings for this form ID.
 	give_increase_earnings( $form_id, $amount );
-	give_increase_purchase_count( $form_id );
+	give_increase_donation_count( $form_id );
 
 	// @todo: Refresh only range related stat cache
 	give_delete_donation_stats();

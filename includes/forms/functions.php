@@ -377,7 +377,7 @@ function give_record_sale_in_log( $give_form_id = 0, $payment_id, $price_id = fa
  *
  * @return bool|int
  */
-function give_increase_purchase_count( $form_id = 0, $quantity = 1 ) {
+function give_increase_donation_count( $form_id = 0, $quantity = 1 ) {
 	$quantity = (int) $quantity;
 	$form     = new Give_Donate_Form( $form_id );
 
