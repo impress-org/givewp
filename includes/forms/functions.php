@@ -246,13 +246,13 @@ function give_get_success_page_url( $query_string = null ) {
 }
 
 /**
- * Get the URL of the Failed Donation Page
+ * Get the URL of the Failed Donation Page.
  *
  * @since 1.0
  *
- * @param bool $extras Extras to append to the URL
+ * @param bool $extras Extras to append to the URL.
  *
- * @return mixed|void Full URL to the Failed Donation Page, if present, home page if it doesn't exist
+ * @return mixed Full URL to the Failed Donation Page, if present, home page if it doesn't exist.
  */
 function give_get_failed_transaction_uri( $extras = false ) {
 	$give_options = give_get_settings();
@@ -341,21 +341,21 @@ function give_field_is_required( $field = '', $form_id ) {
  * @since 1.0
  * @global            $give_logs Give_Logging
  *
- * @param int         $give_form_id Give Form ID
- * @param int         $payment_id   Payment ID
- * @param bool|int    $price_id     Price ID, if any
- * @param string|null $sale_date    The date of the sale
+ * @param int         $give_form_id Give Form ID.
+ * @param int         $payment_id   Payment ID.
+ * @param bool|int    $price_id     Price ID, if any.
+ * @param string|null $donation_date    The date of the donation.
  *
  * @return void
  */
-function give_record_donation_in_log( $give_form_id = 0, $payment_id, $price_id = false, $sale_date = null ) {
+function give_record_donation_in_log( $give_form_id = 0, $payment_id, $price_id = false, $donation_date = null ) {
 	global $give_logs;
 
 	$log_data = array(
 		'post_parent'   => $give_form_id,
 		'log_type'      => 'sale',
-		'post_date'     => isset( $sale_date ) ? $sale_date : null,
-		'post_date_gmt' => isset( $sale_date ) ? $sale_date : null,
+		'post_date'     => isset( $donation_date ) ? $donation_date : null,
+		'post_date_gmt' => isset( $donation_date ) ? $donation_date : null,
 	);
 
 	$log_meta = array(
