@@ -58,27 +58,26 @@ class Tests_API extends Give_Unit_Test_Case {
 
 		$this->_api = new Give_API();
 
-		$this->_user_id = $this->factory->user->create( array(
-			'role' => 'administrator',
-		) );
+		$this->_user_id = $this->factory->user->create();
 		wp_set_current_user( $this->_user_id );
-		
+		$user = new \WP_User(  $this->_user_id );
+		$user->set_role( 'administrator' );
+
 		$roles = new Give_Roles();
 		$roles->add_roles();
 		$roles->add_caps();
 
-		$this->_api->add_endpoint( $wp_rewrite );
+		$this->_api->add_endpoint( (array) $wp_rewrite );
 
 		$this->_rewrite = $wp_rewrite;
 		$this->_query   = $wp_query;
 
-		// Create a Donation Form
+		// Create a Donation Form.
 		$post_id = $this->factory->post->create( array(
 			'post_title'  => 'Test Form',
 			'post_type'   => 'give_forms',
 			'post_status' => 'publish',
 		) );
-
 
 
 		$_multi_level_donations = array(
@@ -242,8 +241,8 @@ class Tests_API extends Give_Unit_Test_Case {
 
 		$this->assertEquals( 'v1', $this->_api->get_default_version() );
 
-//		define( 'GIVE_API_VERSION', 'v2' );
-//		$this->assertEquals( 'v2', $this->_api->get_default_version() );
+		//		define( 'GIVE_API_VERSION', 'v2' );
+		//		$this->assertEquals( 'v2', $this->_api->get_default_version() );
 
 	}
 
