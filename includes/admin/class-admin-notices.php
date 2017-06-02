@@ -144,7 +144,7 @@ class Give_Notices {
 				}
 			}
 
-			// Customer Notices.
+			// Donor Notices.
 			if ( current_user_can( 'edit_give_payments' ) ) {
 				switch ( $_GET['give-message'] ) {
 					case 'donor-deleted' :
@@ -152,23 +152,23 @@ class Give_Notices {
 						break;
 
 					case 'email-added' :
-						$this->notices['updated']['give-customer-email-added'] = __( 'Donor email added', 'give' );
+						$this->notices['updated']['give-donor-email-added'] = __( 'Donor email added.', 'give' );
 						break;
 
 					case 'email-removed' :
-						$this->notices['updated']['give-customer-email-removed'] = __( 'Donor email removed', 'give' );
+						$this->notices['updated']['give-donor-email-removed'] = __( 'Donor email removed.', 'give' );
 						break;
 
 					case 'email-remove-failed' :
-						$this->notices['error']['give-customer-email-remove-failed'] = __( 'Failed to remove donor email', 'give' );
+						$this->notices['error']['give-donor-email-remove-failed'] = __( 'Failed to remove donor email.', 'give' );
 						break;
 
 					case 'primary-email-updated' :
-						$this->notices['updated']['give-customer-primary-email-updated'] = __( 'Primary email updated for donor', 'give' );
+						$this->notices['updated']['give-donor-primary-email-updated'] = __( 'Primary email updated for donor.', 'give' );
 						break;
 
 					case 'primary-email-failed' :
-						$this->notices['error']['give-customer-primary-email-failed'] = __( 'Failed to set primary email', 'give' );
+						$this->notices['error']['give-donor-primary-email-failed'] = __( 'Failed to set primary email.', 'give' );
 
 				}
 			}

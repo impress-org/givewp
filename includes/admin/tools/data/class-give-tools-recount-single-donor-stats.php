@@ -1,8 +1,8 @@
 <?php
 /**
- * Recount single customer stats
+ * Recount single donor stats.
  *
- * This class handles batch processing of recounting a single donor's stats
+ * This class handles batch processing of recounting a single donor's stats.
  *
  * @subpackage  Admin/Tools/Give_Tools_Recount_Single_Customer_Stats
  * @copyright   Copyright (c) 2016, WordImpress

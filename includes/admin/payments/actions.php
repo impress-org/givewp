@@ -150,7 +150,7 @@ function give_update_payment_details( $data ) {
 
 	if ( $donor_changed ) {
 
-		// Remove the stats and payment from the previous customer and attach it to the new customer.
+		// Remove the stats and payment from the previous donor and attach it to the new donor.
 		$previous_donor->remove_payment( $payment_id, false );
 		$donor->attach_payment( $payment_id, false );
 
@@ -160,7 +160,7 @@ function give_update_payment_details( $data ) {
 			$previous_donor->decrease_donation_count();
 			$previous_donor->decrease_value( $curr_total );
 
-			// If donation was completed adjust stats of new customers.
+			// If donation was completed adjust stats of new donors.
 			$donor->increase_purchase_count();
 			$donor->increase_value( $new_total );
 		}
