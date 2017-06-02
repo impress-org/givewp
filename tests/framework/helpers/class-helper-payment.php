@@ -16,7 +16,7 @@ class Give_Helper_Payment extends WP_UnitTestCase {
 	 */
 	public static function delete_payment( $payment_id ) {
 
-		// Delete the payment
+		// Delete the payment.
 		give_delete_purchase( $payment_id );
 
 	}

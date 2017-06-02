@@ -244,7 +244,7 @@ final class Give_Payment {
 	protected $status_nicename = '';
 
 	/**
-	 * The customer ID that made the payment
+	 * The donor ID that made the payment.
 	 *
 	 * @since  1.5
 	 * @access protected
@@ -668,36 +668,36 @@ final class Give_Payment {
 			$this->ID  = $payment_id;
 			$this->_ID = $payment_id;
 
-			$customer = new stdClass;
+			$donor = new stdClass;
 
 			if ( did_action( 'give_pre_process_donation' ) && is_user_logged_in() ) {
-				$customer = new Give_Donor( get_current_user_id(), true );
+				$donor = new Give_Donor( get_current_user_id(), true );
 
-				// Customer is logged in but used a different email to purchase with so assign to their customer record
-				if ( ! empty( $customer->id ) && $this->email != $customer->email ) {
-					$customer->add_email( $this->email );
+				// Donor is logged in but used a different email to purchase with so assign to their donor record.
+				if ( ! empty( $donor->id ) && $this->email != $donor->email ) {
+					$donor->add_email( $this->email );
 				}
 			}
 
-			if ( empty( $customer->id ) ) {
-				$customer = new Give_Donor( $this->email );
+			if ( empty( $donor->id ) ) {
+				$donor = new Give_Donor( $this->email );
 			}
 
-			if ( empty( $customer->id ) ) {
+			if ( empty( $donor->id ) ) {
 
-				$customer_data = array(
+				$donor_data = array(
 					'name'    => ! is_email( $payment_title ) ? $this->first_name . ' ' . $this->last_name : '',
 					'email'   => $this->email,
 					'user_id' => $this->user_id,
 				);
 
-				$customer->create( $customer_data );
+				$donor->create( $donor_data );
 
 			}
 
-			$this->customer_id            = $customer->id;
+			$this->customer_id            = $donor->id;
 			$this->pending['customer_id'] = $this->customer_id;
-			$customer->attach_payment( $this->ID, false );
+			$donor->attach_payment( $this->ID, false );
 
 			$this->payment_meta = apply_filters( 'give_payment_meta', $this->payment_meta, $payment_data );
 			if ( ! empty( $this->payment_meta['fees'] ) ) {
@@ -954,20 +954,20 @@ final class Give_Payment {
 
 			if ( 'pending' !== $this->status ) {
 
-				$customer = new Give_Donor( $this->customer_id );
+				$donor = new Give_Donor( $this->customer_id );
 
 				$total_change = $total_increase - $total_decrease;
 				if ( $total_change < 0 ) {
 
 					$total_change = - ( $total_change );
-					// Decrease the customer's donation stats.
-					$customer->decrease_value( $total_change );
+					// Decrease the donor's donation stats.
+					$donor->decrease_value( $total_change );
 					give_decrease_total_earnings( $total_change );
 
 				} elseif ( $total_change > 0 ) {
 
-					// Increase the customer's donation stats.
-					$customer->increase_value( $total_change );
+					// Increase the donor's donation stats.
+					$donor->increase_value( $total_change );
 					give_increase_total_earnings( $total_change );
 
 				}
@@ -1767,8 +1767,8 @@ final class Give_Payment {
 	 * @access private
 	 *
 	 * @param  bool $alter_store_earnings If the method should alter the store earnings
-	 * @param  bool $alter_customer_value If the method should reduce the customer value
-	 * @param  bool $alter_customer_purchase_count If the method should reduce the customer's purchase count
+	 * @param  bool $alter_customer_value If the method should reduce the donor value
+	 * @param  bool $alter_customer_purchase_count If the method should reduce the donor's purchase count
 	 *
 	 * @return void
 	 */
@@ -1781,7 +1781,7 @@ final class Give_Payment {
 			give_decrease_total_earnings( $this->total );
 		}
 
-		// Decrement the stats for the customer.
+		// Decrement the stats for the donor.
 		if ( ! empty( $this->customer_id ) ) {
 
 			$donor = new Give_Donor( $this->customer_id );
@@ -2060,22 +2060,22 @@ final class Give_Payment {
 		$user_info = wp_parse_args( $user_info, $defaults );
 
 		if ( empty( $user_info ) ) {
-			// Get the customer, but only if it's been created.
-			$customer = new Give_Donor( $this->customer_id );
+			// Get the donor, but only if it's been created.
+			$donor = new Give_Donor( $this->customer_id );
 
-			if ( $customer->id > 0 ) {
-				$name      = explode( ' ', $customer->name, 2 );
+			if ( $donor->id > 0 ) {
+				$name      = explode( ' ', $donor->name, 2 );
 				$user_info = array(
 					'first_name' => $name[0],
 					'last_name'  => $name[1],
-					'email'      => $customer->email,
+					'email'      => $donor->email,
 					'discount'   => 'none',
 				);
 			}
 		} else {
-			// Get the customer, but only if it's been created.
-			$customer = new Give_Donor( $this->customer_id );
-			if ( $customer->id > 0 ) {
+			// Get the donor, but only if it's been created.
+			$donor = new Give_Donor( $this->customer_id );
+			if ( $donor->id > 0 ) {
 				foreach ( $user_info as $key => $value ) {
 					if ( ! empty( $value ) ) {
 						continue;
@@ -2083,20 +2083,20 @@ final class Give_Payment {
 
 					switch ( $key ) {
 						case 'first_name':
-							$name = explode( ' ', $customer->name, 2 );
+							$name = explode( ' ', $donor->name, 2 );
 
 							$user_info[ $key ] = $name[0];
 							break;
 
 						case 'last_name':
-							$name      = explode( ' ', $customer->name, 2 );
+							$name      = explode( ' ', $donor->name, 2 );
 							$last_name = ! empty( $name[1] ) ? $name[1] : '';
 
 							$user_info[ $key ] = $last_name;
 							break;
 
 						case 'email':
-							$user_info[ $key ] = $customer->email;
+							$user_info[ $key ] = $donor->email;
 							break;
 					}
 				}

@@ -174,15 +174,18 @@ class Tests_Deprecated_Classes extends Give_Unit_Test_Case {
 	 */
 	public function test_db_customers_vs_db_donors_class() {
 
-		$donors_db   = (array) new Give_DB_Donors();
-		$customers_db = (array) new Give_DB_Customers();
+		$donors_db   = new Give_DB_Donors();
+		$customers_db = new Give_DB_Customers();
+
+		$customers_db_array = (array) $customers_db;
 
 		// Check that the objects match (converted to arrays for testing).
-		$this->assertArraySubset( $donors_db, $customers_db );
+		$this->assertArraySubset(  (array) $donors_db,  $customers_db_array );
+
 
 		// Check values match within array.
-		foreach ( $donors_db as $key => $donor_db_val ) {
-			$this->assertEquals( $donor_db_val, $customers_db["{$key}"] );
+		foreach (  (array) $donors_db as $key => $donor_db_val ) {
+			$this->assertEquals( $donor_db_val,  $customers_db_array["{$key}"] );
 		}
 
 		// Test get_customers vs get_donors
