@@ -141,11 +141,17 @@ class Tests_Deprecated_Classes extends Give_Unit_Test_Case {
 	 */
 	public function test_customers_vs_donors_class() {
 
-		$donor    = new Give_Donor( $this->_donor_id );
-		$customer = new Give_Customer( $this->_donor_id );
+		$donor    = (array) new Give_Donor( $this->_donor_id );
+		$customer = (array)  new Give_Customer( $this->_donor_id );
 
-		// Check that the objects match (converted to arrays for testing).
-		$this->assertArraySubset( (array) $donor, (array) $customer );
+		// Check that the keys match (converted to arrays for testing).
+		$this->assertArraySubset( $donor, $customer );
+
+		// Check that the donor / customer values match.
+		foreach ( $donor as $key => $donor_val ) {
+			$this->assertEquals( $donor_val, $customer["{$key}"] );
+		}
+
 
 		// Test customer create.
 		$test_email = 'cooldonor@domain.com';
@@ -168,11 +174,16 @@ class Tests_Deprecated_Classes extends Give_Unit_Test_Case {
 	 */
 	public function test_db_customers_vs_db_donors_class() {
 
-		$donors_db   = new Give_DB_Donors();
-		$customers_db = new Give_DB_Customers( $this->_donor_id );
+		$donors_db   = (array) new Give_DB_Donors();
+		$customers_db = (array) new Give_DB_Customers();
 
 		// Check that the objects match (converted to arrays for testing).
-		$this->assertArraySubset( (array) $donors_db, (array) $customers_db );
+		$this->assertArraySubset( $donors_db, $customers_db );
+
+		// Check values match within array.
+		foreach ( $donors_db as $key => $donor_db_val ) {
+			$this->assertEquals( $donor_db_val, $customers_db["{$key}"] );
+		}
 
 		// Test get_customers vs get_donors
 		$args = array(
