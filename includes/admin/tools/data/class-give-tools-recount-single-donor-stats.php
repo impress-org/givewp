@@ -47,31 +47,30 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 	 * Get the Export Data
 	 *
 	 * @access public
-	 * @since 1.5
-	 * @global object $wpdb Used to query the database using the WordPress
-	 *   Database API
-	 * @return array $data The data for the CSV file
+	 * @since  1.5
+	 * @global object $wpdb Used to query the database using the WordPress Database API
+	 * @return bool
 	 */
 	public function get_data() {
 
-		$donor = new Give_Donor( $this->customer_id );
-		$payments = $this->get_stored_data( 'give_recount_donor_payments_' . $donor->id, array() );
+		$donor    = new Give_Donor( $this->customer_id );
+		$payments = $this->get_stored_data( 'give_recount_donor_payments_' . $donor->id );
 
 		$offset     = ( $this->step - 1 ) * $this->per_step;
 		$step_items = array_slice( $payments, $offset, $this->per_step );
 
 		if ( count( $step_items ) > 0 ) {
-			$pending_total = (float) $this->get_stored_data( 'give_stats_donor_pending_total' . $donor->id, 0 );
+			$pending_total = (float) $this->get_stored_data( 'give_stats_donor_pending_total' . $donor->id );
 			$step_total    = 0;
 
-			$found_payment_ids = $this->get_stored_data( 'give_stats_found_payments_' . $donor->id, array() );
+			$found_payment_ids = $this->get_stored_data( 'give_stats_found_payments_' . $donor->id );
 
 			foreach ( $step_items as $payment ) {
 				$payment = get_post( $payment->ID );
 
 				if ( is_null( $payment ) || is_wp_error( $payment ) || 'give_payment' !== $payment->post_type ) {
 
-					$missing_payments   = $this->get_stored_data( 'give_stats_missing_payments' . $donor->id, array() );
+					$missing_payments   = $this->get_stored_data( 'give_stats_missing_payments' . $donor->id );
 					$missing_payments[] = $payment->ID;
 					$this->store_data( 'give_stats_missing_payments' . $donor->id, $missing_payments );
 
@@ -87,7 +86,7 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 
 					if ( apply_filters( 'give_donor_recount_should_increase_value', true, $payment ) ) {
 						$payment_amount = give_get_payment_amount( $payment->ID );
-						$step_total += $payment_amount;
+						$step_total     += $payment_amount;
 					}
 
 				}
@@ -159,7 +158,7 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 
 			return true;
 		} else {
-			$donor    = new Give_Donor( $this->customer_id );
+			$donor       = new Give_Donor( $this->customer_id );
 			$payment_ids = get_option( 'give_stats_found_payments_' . $donor->id, array() );
 			$this->delete_data( 'give_stats_found_payments_' . $donor->id );
 
@@ -181,15 +180,16 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 
 			$this->delete_data( 'give_stats_missing_payments' . $donor->id );
 
-			$pending_total = $this->get_stored_data( 'give_stats_donor_pending_total' . $donor->id, 0 );
+			$pending_total = $this->get_stored_data( 'give_stats_donor_pending_total' . $donor->id );
 			$this->delete_data( 'give_stats_donor_pending_total' . $donor->id );
 			$this->delete_data( 'give_recount_donor_stats_' . $donor->id );
 			$this->delete_data( 'give_recount_donor_payments_' . $this->customer_id );
 
 			$payment_ids = implode( ',', $payment_ids );
-			$donor->update( array( 'payment_ids'    => $payment_ids,
-			                          'purchase_count' => $purchase_count,
-			                          'purchase_value' => $pending_total
+			$donor->update( array(
+				'payment_ids'    => $payment_ids,
+				'purchase_count' => $purchase_count,
+				'purchase_value' => $pending_total,
 			) );
 
 			$this->done    = true;
@@ -211,7 +211,7 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 	 * Perform the export
 	 *
 	 * @access public
-	 * @since 1.5
+	 * @since  1.5
 	 * @return void
 	 */
 	public function export() {
@@ -226,7 +226,7 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 	 * Zero out the data on step one
 	 *
 	 * @access public
-	 * @since 1.5
+	 * @since  1.5
 	 * @return void
 	 */
 	public function pre_fetch() {
@@ -255,7 +255,7 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 					array(
 						'key'   => '_give_payment_user_email',
 						'value' => $donor->email,
-					)
+					),
 				),
 			);
 
@@ -288,8 +288,8 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 	 *
 	 * @since  1.5
 	 *
-	 * @param  string $key The option_name
-	 * @param  mixed $value The value to store
+	 * @param  string $key   The option_name
+	 * @param  mixed  $value The value to store
 	 *
 	 * @return void
 	 */
