@@ -2,7 +2,7 @@
 /**
  * Batch Export Class
  *
- * This is the base class for all batch export methods. Each data export type (customers, payments, etc) extend this class
+ * This is the base class for all batch export methods. Each data export type (donors, payments, etc) extend this class.
  *
  * @package     Give
  * @subpackage  Admin/Export
@@ -24,14 +24,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Give_Batch_Export extends Give_Export {
 
 	/**
-	 * The file the data is stored in
+	 * The file the data is stored in.
 	 *
 	 * @since 1.5
 	 */
 	private $file;
 
 	/**
-	 * The name of the file the data is stored in
+	 * The name of the file the data is stored in.
 	 *
 	 * @since 1.5
 	 */
@@ -45,7 +45,7 @@ class Give_Batch_Export extends Give_Export {
 	public $filetype;
 
 	/**
-	 * The current step being processed
+	 * The current step being processed.
 	 *
 	 * @since 1.5
 	 */
@@ -66,45 +66,44 @@ class Give_Batch_Export extends Give_Export {
 	public $end;
 
 	/**
-	 * Status to export
+	 * Status to export.
 	 *
 	 * @since 1.5
 	 */
 	public $status;
 
 	/**
-	 * Form to export data for
+	 * Form to export data for.
 	 *
 	 * @since 1.5
 	 */
 	public $form = null;
 
 	/**
-	 * Form Price ID to export data for
+	 * Form Price ID to export data for.
 	 *
 	 * @since 1.5
 	 */
 	public $price_id = null;
 
 	/**
-	 * Is the export file writable
+	 * Is the export file writable.
 	 *
 	 * @since 1.5
 	 */
 	public $is_writable = true;
 
 	/**
-	 *  Is the export file empty
+	 *  Is the export file empty.
 	 *
 	 * @since 1.5
 	 */
 	public $is_empty = false;
 
 	/**
-	 * Get things started
+	 * Give_Batch_Export constructor.
 	 *
-	 * @param $_step int The step to process
-	 * @since 1.5
+	 * @param int $_step
 	 */
 	public function __construct( $_step = 1 ) {
 
@@ -122,7 +121,7 @@ class Give_Batch_Export extends Give_Export {
 	}
 
 	/**
-	 * Process a step
+	 * Process a step.
 	 *
 	 * @since 1.5
 	 * @return bool
@@ -130,19 +129,21 @@ class Give_Batch_Export extends Give_Export {
 	public function process_step() {
 
 		if ( ! $this->can_export() ) {
-			wp_die( esc_html__( 'You do not have permission to export data.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die( esc_html__( 'You do not have permission to export data.', 'give' ), esc_html__( 'Error', 'give' ), array(
+				'response' => 403,
+			) );
 		}
 
-		if( $this->step < 2 ) {
+		if ( $this->step < 2 ) {
 
-			// Make sure we start with a fresh file on step 1
+			// Make sure we start with a fresh file on step 1.
 			@unlink( $this->file );
 			$this->print_csv_cols();
 		}
 
 		$rows = $this->print_csv_rows();
 
-		if( $rows ) {
+		if ( $rows ) {
 			return true;
 		} else {
 			return false;
@@ -150,7 +151,7 @@ class Give_Batch_Export extends Give_Export {
 	}
 
 	/**
-	 * Output the CSV columns
+	 * Output the CSV columns.
 	 *
 	 * @access public
 	 * @since 1.5
@@ -162,7 +163,7 @@ class Give_Batch_Export extends Give_Export {
 		$col_data = '';
 		$cols = $this->get_csv_cols();
 		$i = 1;
-		foreach( $cols as $col_id => $column ) {
+		foreach ( $cols as $col_id => $column ) {
 			$col_data .= '"' . addslashes( $column ) . '"';
 			$col_data .= $i == count( $cols ) ? '' : ',';
 			$i++;
@@ -176,7 +177,7 @@ class Give_Batch_Export extends Give_Export {
 	}
 
 	/**
-	 * Print the CSV rows for the current step
+	 * Print the CSV rows for the current step.
 	 *
 	 * @access public
 	 * @since 1.5
@@ -188,7 +189,7 @@ class Give_Batch_Export extends Give_Export {
 		$data     = $this->get_data();
 		$cols     = $this->get_csv_cols();
 
-		if( $data ) {
+		if ( $data ) {
 
 			// Output each row
 			foreach ( $data as $row ) {
@@ -196,7 +197,7 @@ class Give_Batch_Export extends Give_Export {
 				foreach ( $row as $col_id => $column ) {
 					// Make sure the column is valid
 					if ( array_key_exists( $col_id, $cols ) ) {
-						$row_data .= '"' . addslashes( preg_replace( "/\"/","'", $column ) ) . '"';
+						$row_data .= '"' . addslashes( preg_replace( '/"/',"'", $column ) ) . '"';
 						$row_data .= $i == count( $cols ) ? '' : ',';
 						$i++;
 					}
@@ -213,7 +214,7 @@ class Give_Batch_Export extends Give_Export {
 	}
 
 	/**
-	 * Return the calculated completion percentage
+	 * Return the calculated completion percentage.
 	 *
 	 * @since 1.5
 	 * @return int
@@ -223,7 +224,7 @@ class Give_Batch_Export extends Give_Export {
 	}
 
 	/**
-	 * Retrieve the file data is written to
+	 * Retrieve the file data is written to.
 	 *
 	 * @since 1.5
 	 * @return string
@@ -251,10 +252,10 @@ class Give_Batch_Export extends Give_Export {
 	}
 
 	/**
-	 * Append data to export file
+	 * Append data to export file.
 	 *
 	 * @since 1.5
-	 * @param $data string The data to add to the file
+	 * @param $data string The data to add to the file.
 	 * @return void
 	 */
 	protected function stash_step_data( $data = '' ) {
@@ -263,8 +264,8 @@ class Give_Batch_Export extends Give_Export {
 		$file .= $data;
 		@file_put_contents( $this->file, $file );
 
-		// If we have no rows after this step, mark it as an empty export
-		$file_rows    = file( $this->file, FILE_SKIP_EMPTY_LINES);
+		// If we have no rows after this step, mark it as an empty export.
+		$file_rows    = file( $this->file, FILE_SKIP_EMPTY_LINES );
 		$default_cols = $this->get_csv_cols();
 		$default_cols = empty( $default_cols ) ? 0 : 1;
 
@@ -273,7 +274,7 @@ class Give_Batch_Export extends Give_Export {
 	}
 
 	/**
-	 * Perform the export
+	 * Perform the export.
 	 *
 	 * @access public
 	 * @since 1.5
@@ -300,16 +301,16 @@ class Give_Batch_Export extends Give_Export {
 		give_die();
 	}
 
-	/*
-	 * Set the properties specific to the export
+	/**
+	 * Set the properties specific to the export.
 	 *
 	 * @since 1.5
-	 * @param array $request The Form Data passed into the batch processing
+	 * @param array $request The Form Data passed into the batch processing.
 	 */
 	public function set_properties( $request ) {}
 
 	/**
-	 * Allow for prefetching of data for the remainder of the exporter
+	 * Allow for pre-fetching of data for the remainder of the exporter.
 	 *
 	 * @access public
 	 * @since  1.5

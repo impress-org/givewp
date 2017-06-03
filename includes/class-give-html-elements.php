@@ -188,16 +188,16 @@ class Give_HTML_Elements {
 
 		$args = wp_parse_args( $args, $defaults );
 
-		$customers = Give()->customers->get_customers( array(
-			'number' => $args['number'],
+		$donors = Give()->donors->get_donors( array(
+			'number' => $args['number']
 		) );
 
 		$options = array();
 
-		if ( $customers ) {
+		if ( $donors ) {
 			$options[0] = esc_html__( 'No donor attached', 'give' );
-			foreach ( $customers as $customer ) {
-				$options[ absint( $customer->id ) ] = esc_html( $customer->name . ' (' . $customer->email . ')' );
+			foreach ( $donors as $donor ) {
+				$options[ absint( $donor->id ) ] = esc_html( $donor->name . ' (' . $donor->email . ')' );
 			}
 		} else {
 			$options[0] = esc_html__( 'No donors found.', 'give' );
@@ -208,11 +208,11 @@ class Give_HTML_Elements {
 			// If a selected customer has been specified, we need to ensure it's in the initial list of customers displayed.
 			if ( ! array_key_exists( $args['selected'], $options ) ) {
 
-				$customer = new Give_Customer( $args['selected'] );
+				$donor = new Give_Donor( $args['selected'] );
 
-				if ( $customer ) {
+				if ( $donor ) {
 
-					$options[ absint( $args['selected'] ) ] = esc_html( $customer->name . ' (' . $customer->email . ')' );
+					$options[ absint( $args['selected'] ) ] = esc_html( $donor->name . ' (' . $donor->email . ')' );
 
 				}
 			}
@@ -688,7 +688,7 @@ class Give_HTML_Elements {
 		if ( $users ) {
 			$options[0] = $args['placeholder'];
 			foreach ( $users as $user ) {
-				$options[ absint( $user->id ) ] = esc_html( $user->user_login . ' (' . $user->user_email . ')' );
+				$options[ absint( $user->ID ) ] = esc_html( $user->user_login . ' (' . $user->user_email . ')' );
 			}
 		} else {
 			$options[0] = __( 'No users found.', 'give' );
