@@ -58,17 +58,19 @@ class Tests_API extends Give_Unit_Test_Case {
 
 		$this->_api = new Give_API();
 
-				$this->_user_id = $this->factory->user->create();
-				$user = new WP_User( $this->_user_id );
-				$user->add_cap( 'view_give_reports' );
-
-		//		$roles = new Give_Roles();
-		//		$roles->add_roles();
-		//		$roles->add_caps();
+		$user_args      = array(
+			'first_name' => 'Admin',
+			'last_name'  => 'User',
+			'role'       => 'administrator',
+		);
+		$this->_user_id = $this->factory->user->create( $user_args );
+		$user           = new WP_User( $this->_user_id );
+		$user->add_cap( 'view_give_reports' );
 
 		$user                = wp_set_current_user( $this->_user_id );
 		$this->_user_id      = $user->ID;
 		$this->_api->user_id = $this->_user_id;
+
 		$this->_api->add_endpoint( (array) $wp_rewrite );
 
 		$this->_rewrite = $wp_rewrite;
@@ -405,7 +407,7 @@ class Tests_API extends Give_Unit_Test_Case {
 		$this->assertArrayHasKey( 'total_donations', $out['donors'][0]['stats'] );
 		$this->assertArrayHasKey( 'total_spent', $out['donors'][0]['stats'] );
 
-		$this->assertEquals( 1, $out['donors'][0]['info']['user_id'] );
+		$this->assertEquals( $this->_user_id, $out['donors'][0]['info']['user_id'] );
 		$this->assertEquals( 'Admin', $out['donors'][0]['info']['first_name'] );
 		$this->assertEquals( 'User', $out['donors'][0]['info']['last_name'] );
 		$this->assertEquals( 'testadmin@domain.com', $out['donors'][0]['info']['email'] );
