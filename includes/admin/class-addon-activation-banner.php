@@ -71,7 +71,11 @@ class Give_Addon_Activation_Banner {
 		add_action( 'admin_notices', array( $this, 'give_addon_activation_admin_notice' ) );
 
 		// File path of addon must be included in banner detail other addon activate meta will not delete.
-		add_action( 'deactivate_' . $this->get_plugin_file_name(), array( $this, 'remove_addon_activate_meta' ) );
+		$file_name = $this->get_plugin_file_name();
+
+		if ( ! empty( $file_name ) ) {
+			add_action( 'deactivate_' . $file_name, array( $this, 'remove_addon_activate_meta' ) );
+		}
 	}
 
 
@@ -312,19 +316,23 @@ class Give_Addon_Activation_Banner {
 					$file_name = current( explode( '/', $file_path ) );
 				}
 
+				if ( empty( $file_name ) ) {
+					return false;
+				}
+
 				foreach ( $active_plugins as $plugin ) {
 					if ( false !== strpos( $plugin, $file_name ) ) {
 						$file_name = $plugin;
 						break;
 					}
 				}
-			} else {
-				throw new Exception( __( "File path must be added of {$this->banner_details['name']} addon in banner details.", 'give' ) );
+			} elseif ( WP_DEBUG ) {
+				throw new Exception( __( "File path must be added within the {$this->banner_details['name']} add-on in the banner details.", 'give' ) );
 			}
 
 			// Check plugin path calculated by addon file path.
-			if ( empty( $file_name ) ) {
-				throw new Exception( __( "Empty Addon plugin path for {$this->banner_details['name']} addon.", 'give' ) );
+			if ( empty( $file_name ) && WP_DEBUG ) {
+				throw new Exception( __( "Empty add-on plugin path for {$this->banner_details['name']} add-on.", 'give' ) );
 			}
 
 		} catch ( Exception $e ) {

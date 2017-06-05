@@ -211,7 +211,6 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	}
 
 
-
 	/**
 	 * Test give_currency_filter function.
 	 *
@@ -220,16 +219,17 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 * @param string $price
 	 * @param string $currency
 	 * @param string $currency_position
+	 * @param bool   $decode_currency
 	 * @param string $expected
 	 *
 	 * @cover        give_currency_filter
 	 * @dataProvider give_currency_filter_provider
 	 */
-	public function test_give_currency_filter( $price, $currency, $currency_position, $expected ) {
+	public function test_give_currency_filter( $price, $currency, $currency_position, $decode_currency, $expected ) {
 		give_update_option( 'currency', $currency );
 		give_update_option( 'currency_position', $currency_position );
 
-		$output = give_currency_filter( $price, $currency );
+		$output = give_currency_filter( $price, $currency, $decode_currency );
 
 		$this->assertSame(
 			$expected,
@@ -245,12 +245,19 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 */
 	public function give_currency_filter_provider() {
 		return array(
-			array( '10', 'USD', 'after', '10$' ),
-			array( '10', 'ZAR', 'after', '10R' ),
-			array( '10', 'NOK', 'after', '10 Kr.' ),
-			array( '10', 'USD', 'before', '$10' ),
-			array( '10', 'ZAR', 'before', 'R10' ),
-			array( '10', 'NOK', 'before', 'Kr. 10' ),
+			array( '10', 'USD', 'after', false, '10&#36;' ),
+			array( '10', 'ZAR', 'after', false, '10&#82;' ),
+			array( '10', 'NOK', 'after', false, '10 &#107;&#114;.' ),
+			array( '10', 'USD', 'before', false, '&#36;10' ),
+			array( '10', 'ZAR', 'before', false, '&#82;10' ),
+			array( '10', 'NOK', 'before', false, '&#107;&#114;. 10' ),
+
+			array( '10', 'USD', 'after', true, '10$' ),
+			array( '10', 'ZAR', 'after', true, '10R' ),
+			array( '10', 'NOK', 'after', true, '10 kr.' ),
+			array( '10', 'USD', 'before', true, '$10' ),
+			array( '10', 'ZAR', 'before', true, 'R10' ),
+			array( '10', 'NOK', 'before', true, 'kr. 10' ),
 		);
 	}
 

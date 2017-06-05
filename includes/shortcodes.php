@@ -133,7 +133,7 @@ function give_goal_shortcode( $atts ) {
 	}
 
 	//Sanity check 2: Check the form even has Goals enabled.
-	if ( ! give_is_setting_enabled( get_post_meta( $atts['id'], '_give_goal_option', true ) ) ) {
+	if ( ! give_is_setting_enabled( give_get_meta( $atts['id'], '_give_goal_option', true ) ) ) {
 
 		give_output_error( __( 'The form does not have Goals enabled.', 'give' ), true );
 	} else {
@@ -405,14 +405,8 @@ function give_process_profile_editor_updates( $data ) {
 	 */
 	do_action( 'give_pre_update_user_profile', $user_id, $userdata );
 
-	// New password
-	if ( ! empty( $data['give_new_user_pass1'] ) ) {
-		if ( $data['give_new_user_pass1'] !== $data['give_new_user_pass2'] ) {
-			give_set_error( 'password_mismatch', __( 'The passwords you entered do not match. Please try again.', 'give' ) );
-		} else {
-			$userdata['user_pass'] = $data['give_new_user_pass1'];
-		}
-	}
+	// Make sure to validate passwords for existing Donors
+	give_validate_user_password( $data['give_new_user_pass1'], $data['give_new_user_pass2'] );
 
 	if ( empty( $email ) ) {
 		// Make sure email should not be empty.

@@ -68,7 +68,7 @@ function give_is_float_labels_enabled( $args ) {
 	}
 
 	if ( empty( $float_labels ) ) {
-		$float_labels = get_post_meta( $args['form_id'], '_give_form_floating_labels', true );
+		$float_labels = give_get_meta( $args['form_id'], '_give_form_floating_labels', true );
 	}
 
 	if ( empty( $float_labels ) || ( 'global' === $float_labels ) ) {
@@ -246,13 +246,13 @@ function give_get_success_page_url( $query_string = null ) {
 }
 
 /**
- * Get the URL of the Failed Donation Page
+ * Get the URL of the Failed Donation Page.
  *
  * @since 1.0
  *
- * @param bool $extras Extras to append to the URL
+ * @param bool $extras Extras to append to the URL.
  *
- * @return mixed|void Full URL to the Failed Donation Page, if present, home page if it doesn't exist
+ * @return mixed Full URL to the Failed Donation Page, if present, home page if it doesn't exist.
  */
 function give_get_failed_transaction_uri( $extras = false ) {
 	$give_options = give_get_settings();
@@ -334,28 +334,28 @@ function give_field_is_required( $field = '', $form_id ) {
 }
 
 /**
- * Record Sale In Log
+ * Record Donation In Log
  *
- * Stores log information for a form sale.
+ * Stores log information for a donation.
  *
  * @since 1.0
- * @global            $give_logs
+ * @global            $give_logs Give_Logging
  *
- * @param int         $give_form_id Give Form ID
- * @param int         $payment_id   Payment ID
- * @param bool|int    $price_id     Price ID, if any
- * @param string|null $sale_date    The date of the sale
+ * @param int         $give_form_id Give Form ID.
+ * @param int         $payment_id   Payment ID.
+ * @param bool|int    $price_id     Price ID, if any.
+ * @param string|null $donation_date    The date of the donation.
  *
  * @return void
  */
-function give_record_sale_in_log( $give_form_id = 0, $payment_id, $price_id = false, $sale_date = null ) {
+function give_record_donation_in_log( $give_form_id = 0, $payment_id, $price_id = false, $donation_date = null ) {
 	global $give_logs;
 
 	$log_data = array(
 		'post_parent'   => $give_form_id,
 		'log_type'      => 'sale',
-		'post_date'     => isset( $sale_date ) ? $sale_date : null,
-		'post_date_gmt' => isset( $sale_date ) ? $sale_date : null,
+		'post_date'     => isset( $donation_date ) ? $donation_date : null,
+		'post_date_gmt' => isset( $donation_date ) ? $donation_date : null,
 	);
 
 	$log_meta = array(
@@ -377,7 +377,7 @@ function give_record_sale_in_log( $give_form_id = 0, $payment_id, $price_id = fa
  *
  * @return bool|int
  */
-function give_increase_purchase_count( $form_id = 0, $quantity = 1 ) {
+function give_increase_donation_count( $form_id = 0, $quantity = 1 ) {
 	$quantity = (int) $quantity;
 	$form     = new Give_Donate_Form( $form_id );
 
@@ -394,7 +394,7 @@ function give_increase_purchase_count( $form_id = 0, $quantity = 1 ) {
  *
  * @return bool|int
  */
-function give_decrease_purchase_count( $form_id = 0, $quantity = 1 ) {
+function give_decrease_donation_count( $form_id = 0, $quantity = 1 ) {
 	$quantity = (int) $quantity;
 	$form     = new Give_Donate_Form( $form_id );
 
@@ -903,7 +903,7 @@ add_filter( 'give_form_goal', 'give_currency_filter', 20 );
 function give_logged_in_only( $form_id ) {
 	// If _give_logged_in_only is set to enable then guest can donate from that specific form.
 	// Otherwise it is member only donation form.
-	$val = get_post_meta( $form_id, '_give_logged_in_only', true );
+	$val = give_get_meta( $form_id, '_give_logged_in_only', true );
 	$val = ! empty( $val ) ? $val : 'enabled';
 
 	$ret = ! give_is_setting_enabled( $val );
@@ -923,7 +923,7 @@ function give_logged_in_only( $form_id ) {
  */
 function give_show_login_register_option( $form_id ) {
 
-	$show_register_form = get_post_meta( $form_id, '_give_show_register_form', true );
+	$show_register_form = give_get_meta( $form_id, '_give_show_register_form', true );
 
 	return apply_filters( 'give_show_register_form', $show_register_form, $form_id );
 
