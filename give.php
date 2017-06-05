@@ -267,6 +267,11 @@ if ( ! class_exists( 'Give' ) ) :
 		 */
 		private function setup_constants() {
 
+			// PHP version
+			if ( ! defined( 'SUPPORT_FROM_PHP_VERSION' ) ) {
+				define( 'SUPPORT_FROM_PHP_VERSION', '5.3' );
+			}
+
 			// Plugin version
 			if ( ! defined( 'GIVE_VERSION' ) ) {
 				define( 'GIVE_VERSION', '1.8.9' );
