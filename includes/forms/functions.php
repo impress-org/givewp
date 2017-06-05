@@ -671,28 +671,9 @@ function give_get_highest_price_option( $form_id = 0 ) {
 		return give_get_form_price( $form_id );
 	}
 
-	$prices = give_get_variable_prices( $form_id );
-
-	$high = 0.00;
-
-	if ( ! empty( $prices ) ) {
-
-		$max_id = $max = 0;
-
-		foreach ( $prices as $key => $price ) {
-			if ( empty( $price['_give_amount'] ) ) {
-				continue;
-			}
-			$give_amount = give_sanitize_amount( $price['_give_amount'] );
-
-			$max = max( $max, $give_amount );
-
-			if ( $give_amount == $max ) {
-				$max_id = $key;
-			}
-		}
-
-		$high = $prices[ $max_id ]['_give_amount'];
+	if ( ! ( $high = get_post_meta( $form_id, '_give_levels_maximum_amount', true ) ) ) {
+		$prices = wp_list_pluck( give_get_variable_prices( $form_id ), '_give_amount' );
+		$high   = ! empty( $prices ) ? max( $prices ) : 0;
 	}
 
 	return give_sanitize_amount( $high );
