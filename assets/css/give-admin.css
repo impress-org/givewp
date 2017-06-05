@@ -707,6 +707,11 @@ x:-o-prefocus, .qtip .qtip-tip {
 .give-metabox-tabs li .give-icon-purse:before {
   content: "\e8df"; }
 
+.give-metabox-tabs li .dashicons {
+  font-size: 14px;
+  width: 14px;
+  line-height: 20px; }
+
 /**
  * Give Forms SCSS
  *
@@ -2076,10 +2081,6 @@ Responsiveness
 
 .give-admin-box-inside .strong {
   font-weight: 600; }
-
-.give-payment-fees .fee-label {
-  font-weight: normal;
-  color: #666; }
 
 .give-admin-box .right {
   float: right; }
