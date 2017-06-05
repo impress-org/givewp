@@ -979,20 +979,38 @@ function give_v189_upgrades_levels_post_meta_callback() {
 				give_sanitize_amount( get_post_meta( $form_id, '_give_set_price', true ) )
 			);
 
+			// Remove formatting from _give_custom_amount_minimum
+			update_post_meta(
+				$form_id,
+				'_give_custom_amount_minimum',
+				give_sanitize_amount( get_post_meta( $form_id, '_give_custom_amount_minimum', true ) )
+			);
+
 			// Bailout.
-			if( 'set' === get_post_meta( $form_id, '_give_price_option', true ) ) {
+			if ( 'set' === get_post_meta( $form_id, '_give_price_option', true ) ) {
 				continue;
 			}
 
-			$donation_levels_amounts = wp_list_pluck( get_post_meta( $form_id, '_give_donation_levels', true ), '_give_amount' );
+			$donation_levels = get_post_meta( $form_id, '_give_donation_levels', true );
 
-			if ( ! empty( $donation_levels_amounts )) {
+			if ( ! empty( $donation_levels ) ) {
+
+				foreach ( $donation_levels as $index => $donation_level ) {
+					if( isset( $donation_level['_give_amount'] ) ) {
+						$donation_levels[$index]['_give_amount'] = give_sanitize_amount( $donation_level['_give_amount'] );
+					}
+				}
+
+				update_post_meta( $form_id, '_give_donation_levels', $donation_levels );
+
+				$donation_levels_amounts = wp_list_pluck( $donation_levels, '_give_amount' );
+
 				$min_amount = min( $donation_levels_amounts );
 				$max_amount = max( $donation_levels_amounts );
 
 				// Set Minimum and Maximum amount for Multi Level Donation Forms
 				give_update_meta( $form_id, '_give_levels_minimum_amount', $min_amount ? give_sanitize_amount( $min_amount ) : 0 );
-				give_update_meta( $form_id, '_give_levels_maximum_amount', $max_amount? give_sanitize_amount( $max_amount ) : 0 );
+				give_update_meta( $form_id, '_give_levels_maximum_amount', $max_amount ? give_sanitize_amount( $max_amount ) : 0 );
 			}
 
 		}
