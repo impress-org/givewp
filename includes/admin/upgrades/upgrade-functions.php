@@ -943,81 +943,75 @@ function give_v188_upgrades() {
  */
 function give_v189_upgrades_levels_post_meta_callback() {
 
-	$give_version = get_option( 'give_version' );
-
-	if ( ! $give_version ) {
-		// 1.0 is the first version to use this option so we must add it.
-		$give_version = '1.0';
+	if ( ! current_user_can( 'manage_give_settings' ) ) {
+		wp_die( esc_html__( 'You do not have permission to do Give upgrades.', 'give' ), esc_html__( 'Error', 'give' ), array(
+			'response' => 403,
+		) );
 	}
 
-	$give_version = preg_replace( '/[^0-9.].*/', '', $give_version );
+	ignore_user_abort( true );
+
+	if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
+		@set_time_limit( 0 );
+	}
 
 	$step = isset( $_GET['step'] ) ? absint( $_GET['step'] ) : 1;
 
-	// v1.8.9 Upgrades
-	if ( version_compare( $give_version, '1.8.9', '<' ) || ! give_has_upgrade_completed( 'v189_upgrades_levels_post_meta' ) ) {
-
-		$args = array(
+	// form query
+	$donation_forms = new WP_Query( array(
+			'paged'          => $step,
+			'status'         => 'any',
+			'order'          => 'ASC',
 			'post_type'      => 'give_forms',
-			'posts_per_page' => '-1',
-			'post_status'    => 'publish',
-		);
+			'posts_per_page' => 20,
+		)
+	);
 
-		$donation_forms = new WP_Query( $args );
+	if ( $donation_forms->have_posts() ) {
+		while ( $donation_forms->have_posts() ) {
+			$donation_forms->the_post();
 
-		if ( $donation_forms->have_posts() ) {
-			while ( $donation_forms->have_posts() ) {
-				$donation_forms->the_post();
+			// Remove formatting from _give_set_price
+			update_post_meta(
+				get_the_ID(),
+				'_give_set_price',
+				give_sanitize_amount( get_post_meta( get_the_ID(), '_give_set_price', true ) )
+			);
 
-				$post_id = get_the_ID();
+			$donation_levels_amounts = wp_list_pluck( get_post_meta( get_the_ID(), '_give_donation_levels', true ), '_give_amount' );
 
+			if ( ! empty( $donation_levels_amounts )) {
+				$min_amount = min( $donation_levels_amounts );
+				$max_amount = max( $donation_levels_amounts );
 
-				$donation_levels = give_get_meta( $post_id, '_give_donation_levels', true );
-
-				if ( is_array( $donation_levels ) && sizeof( $donation_levels ) > 0 ) {
-
-					$donation_levels_amount = array();
-					foreach ( $donation_levels as $level ) {
-						$donation_levels_amount[] = $level['_give_amount'];
-					}
-
-					$donation_levels_minimum_amount = min( $donation_levels_amount );
-					$donation_levels_maximum_amount = max( $donation_levels_amount );
-
-					// Set Minimum and Maximum amount for Multi Level Donation Forms
-					if ( ! empty( $donation_levels_minimum_amount ) ) {
-						give_update_meta( $post_id, '_give_levels_minimum_amount', $donation_levels_minimum_amount );
-					}
-					if ( ! empty( $donation_levels_maximum_amount ) ) {
-						give_update_meta( $post_id, '_give_levels_maximum_amount', $donation_levels_maximum_amount );
-					}
-
-				}
-
+				// Set Minimum and Maximum amount for Multi Level Donation Forms
+				give_update_meta( get_the_ID(), '_give_levels_minimum_amount', $min_amount ? give_sanitize_amount( $min_amount ) : 0 );
+				give_update_meta( get_the_ID(), '_give_levels_maximum_amount', $max_amount? give_sanitize_amount( $max_amount ) : 0 );
 			}
 
-			/* Restore original Post Data */
-			wp_reset_postdata();
-
-			// Forms found so upgrade them
-			$step ++;
-			$redirect = add_query_arg( array(
-				'page'         => 'give-upgrades',
-				'give-upgrade' => 'v189_upgrades_levels_post_meta',
-				'step'         => $step,
-			), admin_url( 'index.php' ) );
-			wp_redirect( $redirect );
-			exit();
-		} else {
-			// The Update Ran.
-			update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
-			give_set_upgrade_complete( 'v189_upgrades_levels_post_meta' );
-			delete_option( 'give_doing_upgrade' );
-
-			wp_redirect( admin_url() );
-			exit;
 		}
-	}// End if().
+
+		/* Restore original Post Data */
+		wp_reset_postdata();
+
+		// Forms found so upgrade them
+		$step ++;
+		$redirect = add_query_arg( array(
+			'page'         => 'give-upgrades',
+			'give-upgrade' => 'v189_upgrades_levels_post_meta',
+			'step'         => $step,
+		), admin_url( 'index.php' ) );
+		wp_redirect( $redirect );
+		exit();
+	} else {
+		// The Update Ran.
+		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
+		give_set_upgrade_complete( 'v189_upgrades_levels_post_meta' );
+		delete_option( 'give_doing_upgrade' );
+
+		wp_redirect( admin_url() );
+		exit;
+	}
 
 }
 
