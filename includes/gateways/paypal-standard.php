@@ -54,15 +54,8 @@ function give_process_paypal_payment( $payment_data ) {
 	// Check payment.
 	if ( empty( $payment_id ) ) {
 		// Record the error.
-		give_record_gateway_error(
-			__( 'Payment Error', 'give' ),
-			sprintf(
-				/* translators: %s: payment data */
-				__( 'Payment creation failed before sending donor to PayPal. Payment data: %s', 'give' ),
-				json_encode( $payment_data )
-			),
-			$payment_id
-		);
+		give_record_gateway_error( __( 'Payment Error', 'give' ), sprintf( /* translators: %s: payment data */
+			__( 'Payment creation failed before sending donor to PayPal. Payment data: %s', 'give' ), json_encode( $payment_data ) ), $payment_id );
 		// Problems? Send back.
 		give_send_back_to_checkout( '?payment-mode=' . $payment_data['post_data']['give-gateway'] );
 	}
@@ -155,7 +148,7 @@ function give_process_paypal_ipn() {
 		}
 	}
 
-	// Validate IPN request w/ PayPal if user hasn't disabled this security measure
+	// Validate IPN request w/ PayPal if user hasn't disabled this security measure.
 	if ( give_is_setting_enabled( give_get_option( 'paypal_verification' ) ) ) {
 
 		$remote_post_vars = array(
@@ -179,33 +172,21 @@ function give_process_paypal_ipn() {
 		$api_response = wp_remote_post( give_get_paypal_redirect(), $remote_post_vars );
 
 		if ( is_wp_error( $api_response ) ) {
-			give_record_gateway_error(
-				__( 'IPN Error', 'give' ),
-				sprintf(
-					/* translators: %s: Paypal IPN response */
-					__( 'Invalid IPN verification response. IPN data: %s', 'give' ),
-					json_encode( $api_response )
-				)
-			);
+			give_record_gateway_error( __( 'IPN Error', 'give' ), sprintf( /* translators: %s: Paypal IPN response */
+				__( 'Invalid IPN verification response. IPN data: %s', 'give' ), json_encode( $api_response ) ) );
 
 			return; // Something went wrong
 		}
 
-		if ( $api_response['body'] !== 'VERIFIED' ) {
-			give_record_gateway_error(
-				__( 'IPN Error', 'give' ),
-				sprintf(
-					/* translators: %s: Paypal IPN response */
-					__( 'Invalid IPN verification response. IPN data: %s', 'give' ),
-					json_encode( $api_response )
-				)
-			);
+		if ( 'VERIFIED' !== $api_response['body'] ) {
+			give_record_gateway_error( __( 'IPN Error', 'give' ), sprintf( /* translators: %s: Paypal IPN response */
+				__( 'Invalid IPN verification response. IPN data: %s', 'give' ), json_encode( $api_response ) ) );
 
-			return; // Response not okay
+			return; // Response not okay.
 		}
 	}// End if().
 
-	// Check if $post_data_array has been populated
+	// Check if $post_data_array has been populated.
 	if ( ! is_array( $encoded_data_array ) && ! empty( $encoded_data_array ) ) {
 		return;
 	}
@@ -263,7 +244,7 @@ add_action( 'give_verify_paypal_ipn', 'give_process_paypal_ipn' );
 function give_process_paypal_web_accept( $data, $payment_id ) {
 
 	// Only allow through these transaction types.
-	if ( $data['txn_type'] != 'web_accept' && $data['txn_type'] != 'cart' && strtolower( $data['payment_status'] ) != 'refunded' ) {
+	if ( 'web_accept' !== $data['txn_type'] && 'cart' !== $data['txn_type'] && 'refunded' !== strtolower( $data['payment_status'] ) ) {
 		return;
 	}
 
@@ -280,22 +261,15 @@ function give_process_paypal_web_accept( $data, $payment_id ) {
 	$payment_meta   = give_get_payment_meta( $payment_id );
 
 	// Must be a PayPal standard IPN.
-	if ( give_get_payment_gateway( $payment_id ) != 'paypal' ) {
+	if ( 'paypal' !== give_get_payment_gateway( $payment_id ) ) {
 		return;
 	}
 
 	// Verify payment recipient
 	if ( strcasecmp( $business_email, trim( give_get_option( 'paypal_email' ) ) ) != 0 ) {
 
-		give_record_gateway_error(
-			__( 'IPN Error', 'give' ),
-			sprintf(
-				/* translators: %s: Paypal IPN response */
-				__( 'Invalid business email in IPN response. IPN data: %s', 'give' ),
-				json_encode( $data )
-			),
-			$payment_id
-		);
+		give_record_gateway_error( __( 'IPN Error', 'give' ), sprintf( /* translators: %s: Paypal IPN response */
+			__( 'Invalid business email in IPN response. IPN data: %s', 'give' ), json_encode( $data ) ), $payment_id );
 		give_update_payment_status( $payment_id, 'failed' );
 		give_insert_payment_note( $payment_id, __( 'Payment failed due to invalid PayPal business email.', 'give' ) );
 
@@ -305,15 +279,8 @@ function give_process_paypal_web_accept( $data, $payment_id ) {
 	// Verify payment currency.
 	if ( $currency_code != strtolower( $payment_meta['currency'] ) ) {
 
-		give_record_gateway_error(
-			__( 'IPN Error', 'give' ),
-			sprintf(
-				/* translators: %s: Paypal IPN response */
-				__( 'Invalid currency in IPN response. IPN data: %s', 'give' ),
-				json_encode( $data )
-			),
-			$payment_id
-		);
+		give_record_gateway_error( __( 'IPN Error', 'give' ), sprintf( /* translators: %s: Paypal IPN response */
+			__( 'Invalid currency in IPN response. IPN data: %s', 'give' ), json_encode( $data ) ), $payment_id );
 		give_update_payment_status( $payment_id, 'failed' );
 		give_insert_payment_note( $payment_id, __( 'Payment failed due to invalid currency in PayPal IPN.', 'give' ) );
 
@@ -338,15 +305,8 @@ function give_process_paypal_web_accept( $data, $payment_id ) {
 	// Check that the donation PP and local db amounts match.
 	if ( number_format( (float) $paypal_amount, 2 ) < number_format( (float) $payment_amount, 2 ) ) {
 		// The prices don't match
-		give_record_gateway_error(
-			__( 'IPN Error', 'give' ),
-			sprintf(
-				/* translators: %s: Paypal IPN response */
-				__( 'Invalid payment amount in IPN response. IPN data: %s', 'give' ),
-				json_encode( $data )
-			),
-			$payment_id
-		);
+		give_record_gateway_error( __( 'IPN Error', 'give' ), sprintf( /* translators: %s: Paypal IPN response */
+			__( 'Invalid payment amount in IPN response. IPN data: %s', 'give' ), json_encode( $data ) ), $payment_id );
 		give_update_payment_status( $payment_id, 'failed' );
 		give_insert_payment_note( $payment_id, __( 'Payment failed due to invalid amount in PayPal IPN.', 'give' ) );
 
@@ -354,16 +314,10 @@ function give_process_paypal_web_accept( $data, $payment_id ) {
 	}
 
 	// Process completed donations.
-	if ( 'completed' === $payment_status   || give_is_test_mode() ) {
+	if ( 'completed' === $payment_status || give_is_test_mode() ) {
 
-		give_insert_payment_note(
-			$payment_id,
-			sprintf(
-				/* translators: %s: Paypal transaction ID */
-				__( 'PayPal Transaction ID: %s', 'give' ),
-				$data['txn_id']
-			)
-		);
+		give_insert_payment_note( $payment_id, sprintf( /* translators: %s: Paypal transaction ID */
+			__( 'PayPal Transaction ID: %s', 'give' ), $data['txn_id'] ) );
 		give_set_payment_transaction_id( $payment_id, $data['txn_id'] );
 		give_update_payment_status( $payment_id, 'publish' );
 
@@ -393,13 +347,14 @@ add_action( 'give_paypal_web_accept', 'give_process_paypal_web_accept', 10, 2 );
  */
 function give_process_paypal_refund( $data, $payment_id = 0 ) {
 
-	// Collect payment details
+	// Collect payment details.
 	if ( empty( $payment_id ) ) {
 		return;
 	}
 
-	if ( get_post_status( $payment_id ) == 'refunded' ) {
-		return; // Only refund payments once
+	// Only refund payments once.
+	if ( 'refunded' === get_post_status( $payment_id ) ) {
+		return;
 	}
 
 	$payment_amount = give_get_payment_amount( $payment_id );
@@ -407,36 +362,17 @@ function give_process_paypal_refund( $data, $payment_id = 0 ) {
 
 	if ( number_format( (float) $refund_amount, 2 ) < number_format( (float) $payment_amount, 2 ) ) {
 
-		give_insert_payment_note(
-			$payment_id,
-			sprintf(
-				/* translators: %s: Paypal parent transaction ID */
-				__( 'Partial PayPal refund processed: %s', 'give' ),
-				$data['parent_txn_id']
-			)
-		);
+		give_insert_payment_note( $payment_id, sprintf( /* translators: %s: Paypal parent transaction ID */
+			__( 'Partial PayPal refund processed: %s', 'give' ), $data['parent_txn_id'] ) );
 
 		return; // This is a partial refund
 
 	}
 
-	give_insert_payment_note(
-		$payment_id,
-		sprintf(
-			/* translators: 1: Paypal parent transaction ID 2. Paypal reason code */
-			__( 'PayPal Payment #%1$s Refunded for reason: %2$s', 'give' ),
-			$data['parent_txn_id'],
-			$data['reason_code']
-		)
-	);
-	give_insert_payment_note(
-		$payment_id,
-		sprintf(
-			/* translators: %s: Paypal transaction ID */
-			__( 'PayPal Refund Transaction ID: %s', 'give' ),
-			$data['txn_id']
-		)
-	);
+	give_insert_payment_note( $payment_id, sprintf( /* translators: 1: Paypal parent transaction ID 2. Paypal reason code */
+		__( 'PayPal Payment #%1$s Refunded for reason: %2$s', 'give' ), $data['parent_txn_id'], $data['reason_code'] ) );
+	give_insert_payment_note( $payment_id, sprintf( /* translators: %s: Paypal transaction ID */
+		__( 'PayPal Refund Transaction ID: %s', 'give' ), $data['txn_id'] ) );
 	give_update_payment_status( $payment_id, 'refunded' );
 }
 
@@ -506,7 +442,7 @@ function give_paypal_success_page_content( $content ) {
 	}
 
 	$payment = get_post( $payment_id );
-	if ( $payment && 'pending' == $payment->post_status ) {
+	if ( $payment && 'pending' === $payment->post_status ) {
 
 		// Payment is still pending so show processing indicator to fix the race condition.
 		ob_start();
@@ -713,7 +649,7 @@ function give_build_paypal_url( $payment_id, $payment_data ) {
 		$paypal_args['address2'] = $address['line2'];
 		$paypal_args['city']     = $address['city'];
 		$paypal_args['state']    = $address['state'];
-		$paypal_args['zip']    = $address['zip'];
+		$paypal_args['zip']      = $address['zip'];
 		$paypal_args['country']  = $address['country'];
 	}
 
@@ -749,7 +685,7 @@ function give_build_paypal_url( $payment_id, $payment_data ) {
 function give_get_paypal_button_type() {
 	// paypal_button_type can be donation or standard.
 	$paypal_button_type = '_donations';
-	if ( give_get_option( 'paypal_button_type' ) === 'standard' ) {
+	if ( 'standard' === give_get_option( 'paypal_button_type' ) ) {
 		$paypal_button_type = '_xclick';
 	}
 
