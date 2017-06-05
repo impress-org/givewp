@@ -645,6 +645,7 @@ function give_get_lowest_price_option( $form_id = 0 ) {
 	}
 
 	if ( ! ( $low = get_post_meta( $form_id, '_give_levels_minimum_amount', true ) ) ) {
+		// Backward compatibility.
 		$prices = wp_list_pluck( give_get_variable_prices( $form_id ), '_give_amount' );
 		$low    = ! empty( $prices ) ? min( $prices ) : 0;
 	}
@@ -672,6 +673,7 @@ function give_get_highest_price_option( $form_id = 0 ) {
 	}
 
 	if ( ! ( $high = get_post_meta( $form_id, '_give_levels_maximum_amount', true ) ) ) {
+		// Backward compatibility.
 		$prices = wp_list_pluck( give_get_variable_prices( $form_id ), '_give_amount' );
 		$high   = ! empty( $prices ) ? max( $prices ) : 0;
 	}
