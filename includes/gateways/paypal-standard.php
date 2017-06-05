@@ -236,7 +236,7 @@ add_action( 'give_verify_paypal_ipn', 'give_process_paypal_ipn' );
  *
  * @since 1.0
  *
- * @param array $data       IPN Data
+ * @param array $data       The IPN Data.
  * @param int   $payment_id The payment ID from Give.
  *
  * @return void
