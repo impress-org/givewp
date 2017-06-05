@@ -228,7 +228,7 @@ function give_reports_forms_table() {
 add_action( 'give_reports_view_forms', 'give_reports_forms_table' );
 
 /**
- * Renders the detailed report for a specific give form
+ * Renders the detailed report for a specific give form.
  *
  * @since 1.0
  * @return void

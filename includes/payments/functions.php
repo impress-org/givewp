@@ -168,7 +168,6 @@ function give_insert_payment( $payment_data = array() ) {
 	$args = array(
 		'price'    => $payment->total,
 		'price_id' => $payment->price_id,
-		'fees'     => isset( $payment_data['fees'] ) ? $payment_data['fees'] : array(),
 	);
 
 	$payment->add_donation( $payment->form_id, $args );
@@ -282,23 +281,23 @@ function give_update_payment_status( $payment_id, $new_status = 'publish' ) {
  *
  * @return void
  */
-function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
+function give_delete_donation( $payment_id = 0, $update_customer = true ) {
 	global $give_logs;
 
 	$payment     = new Give_Payment( $payment_id );
 	$amount      = give_get_payment_amount( $payment_id );
 	$status      = $payment->post_status;
-	$customer_id = give_get_payment_customer_id( $payment_id );
-	$customer    = new Give_Customer( $customer_id );
+	$donor_id = give_get_payment_donor_id( $payment_id );
+	$customer    = new Give_Donor( $donor_id );
 
 	// Only undo donations that aren't these statuses.
-	$dont_undo_statuses = apply_filters( 'give_undo_purchase_statuses', array(
+	$dont_undo_statuses = apply_filters( 'give_undo_donation_statuses', array(
 		'pending',
 		'cancelled',
 	) );
 
 	if ( ! in_array( $status, $dont_undo_statuses ) ) {
-		give_undo_purchase( false, $payment_id );
+		give_undo_donation( $payment_id );
 	}
 
 	if ( $status == 'publish' ) {
@@ -312,7 +311,7 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
 		if ( $customer->id && $update_customer ) {
 
 			// Decrement the stats for the donor.
-			$customer->decrease_purchase_count();
+			$customer->decrease_donation_count();
 			$customer->decrease_value( $amount );
 
 		}
@@ -367,17 +366,11 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
  *
  * @since  1.0
  *
- * @param  int|bool $form_id Form ID (default: false).
  * @param  int $payment_id Payment ID.
  *
  * @return void
  */
-function give_undo_purchase( $form_id = false, $payment_id ) {
-
-	if ( ! empty( $form_id ) ) {
-		$form_id = false;
-		_give_deprected_argument( 'form_id', 'give_undo_purchase', '1.5' );
-	}
+function give_undo_donation( $payment_id ) {
 
 	$payment = new Give_Payment( $payment_id );
 
@@ -387,10 +380,10 @@ function give_undo_purchase( $form_id = false, $payment_id ) {
 		give_decrease_earnings( $payment->form_id, $payment->total );
 	}
 
-	$maybe_decrease_sales = apply_filters( 'give_decrease_donation_on_undo', true, $payment, $payment->form_id );
-	if ( true === $maybe_decrease_sales ) {
+	$maybe_decrease_donations = apply_filters( 'give_decrease_donations_on_undo', true, $payment, $payment->form_id );
+	if ( true === $maybe_decrease_donations ) {
 		// Decrease donation count.
-		give_decrease_purchase_count( $payment->form_id );
+		give_decrease_donation_count( $payment->form_id );
 	}
 
 }
@@ -725,12 +718,12 @@ function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour
 	}
 
 	if ( false === $earnings ) {
-		$sales    = get_posts( $args );
+		$donations    = get_posts( $args );
 		$earnings = 0;
-		if ( $sales ) {
-			$sales = implode( ',', $sales );
+		if ( $donations ) {
+			$donations = implode( ',', $donations );
 
-			$earnings = $wpdb->get_var( "SELECT SUM(meta_value) FROM $wpdb->postmeta WHERE meta_key = '_give_payment_total' AND post_id IN ({$sales})" );
+			$earnings = $wpdb->get_var( "SELECT SUM(meta_value) FROM $wpdb->postmeta WHERE meta_key = '_give_payment_total' AND post_id IN ({$donations})" );
 
 		}
 		// Cache the results for one hour.
@@ -801,8 +794,8 @@ function give_get_sales_by_date( $day = null, $month_num = null, $year = null, $
 	}
 
 	if ( false === $count ) {
-		$sales = new WP_Query( $args );
-		$count = (int) $sales->post_count;
+		$donations = new WP_Query( $args );
+		$count = (int) $donations->post_count;
 		// Cache the results for one hour.
 		Give_Cache::set( $key, $count, HOUR_IN_SECONDS );
 	}
@@ -839,9 +832,9 @@ function give_is_payment_complete( $payment_id ) {
  *
  * @since  1.0
  *
- * @return int $count Total sales.
+ * @return int $count Total number of donations.
  */
-function give_get_total_sales() {
+function give_get_total_donations() {
 
 	$payments = give_count_payments();
 
@@ -980,7 +973,7 @@ function give_update_payment_meta( $payment_id = 0, $meta_key = '', $meta_value 
  *
  * @param int $payment_id Payment ID.
  *
- * @return string $user_info User Info Meta Values.
+ * @return array $user_info User Info Meta Values.
  */
 function give_get_payment_meta_user_info( $payment_id ) {
 	$payment = new Give_Payment( $payment_id );
@@ -1052,15 +1045,15 @@ function give_get_payment_user_id( $payment_id ) {
 }
 
 /**
- * Get the donor ID associated with a payment
+ * Get the donor ID associated with a payment.
  *
  * @since 1.0
  *
  * @param int $payment_id Payment ID.
  *
- * @return int $customer_id Customer ID.
+ * @return int $payment->customer_id Donor ID.
  */
-function give_get_payment_customer_id( $payment_id ) {
+function give_get_payment_donor_id( $payment_id ) {
 	$payment = new Give_Payment( $payment_id );
 
 	return $payment->customer_id;
@@ -1323,7 +1316,7 @@ function give_payment_amount( $payment_id = 0 ) {
  *
  * @param int $payment_id Payment ID.
  *
- * @return mixed|void
+ * @return mixed
  */
 function give_get_payment_amount( $payment_id ) {
 
@@ -1335,7 +1328,7 @@ function give_get_payment_amount( $payment_id ) {
 /**
  * Payment Subtotal
  *
- * Retrieves subtotal for payment (this is the amount before fees) and then returns a full formatted amount. This
+ * Retrieves subtotal for payment and then returns a full formatted amount. This
  * function essentially calls give_get_payment_subtotal()
  *
  * @since 1.5
@@ -1355,7 +1348,7 @@ function give_payment_subtotal( $payment_id = 0 ) {
 /**
  * Get Payment Subtotal
  *
- * Retrieves subtotal for payment (this is the amount before fees) and then returns a non formatted amount.
+ * Retrieves subtotal for payment and then returns a non formatted amount.
  *
  * @since 1.5
  *
@@ -1364,25 +1357,9 @@ function give_payment_subtotal( $payment_id = 0 ) {
  * @return float $subtotal Subtotal for payment (non formatted).
  */
 function give_get_payment_subtotal( $payment_id = 0 ) {
-	$payment = new G_Payment( $payment_id );
-
-	return $payment->subtotal;
-}
-
-/**
- * Retrieves arbitrary fees for the payment
- *
- * @since 1.5
- *
- * @param int $payment_id Payment ID.
- * @param string $type Fee type.
- *
- * @return mixed array if payment fees found, false otherwise.
- */
-function give_get_payment_fees( $payment_id = 0, $type = 'all' ) {
 	$payment = new Give_Payment( $payment_id );
 
-	return $payment->get_fees( $type );
+	return $payment->subtotal;
 }
 
 /**

@@ -107,7 +107,7 @@ function give_get_donation_form( $args = array() ) {
 			}
 
 			/**
-			 * Fires while outputing donation form, before the form.
+			 * Fires while outputting donation form, before the form.
 			 *
 			 * @since 1.0
 			 *
@@ -137,7 +137,7 @@ function give_get_donation_form( $args = array() ) {
 
 				<?php
 
-				// Price ID hidden field for variable (mult-level) donation forms.
+				// Price ID hidden field for variable (multi-level) donation forms.
 				if ( give_has_variable_prices( $form_id ) ) {
 					// Get default selected price ID.
 					$prices   = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
@@ -160,10 +160,10 @@ function give_get_donation_form( $args = array() ) {
 				 * @param int   $form_id The form ID.
 				 * @param array $args    An array of form arguments.
 				 */
-				do_action( 'give_checkout_form_top', $form->ID, $args );
+				do_action( 'give_donation_form_top', $form->ID, $args );
 
 				/**
-				 * Fires while outputing donation form, for payment gatways fields.
+				 * Fires while outputting donation form, for payment gateway fields.
 				 *
 				 * @since 1.7
 				 *
@@ -173,21 +173,21 @@ function give_get_donation_form( $args = array() ) {
 				do_action( 'give_payment_mode_select', $form->ID, $args );
 
 				/**
-				 * Fires while outputing donation form, after all other fields.
+				 * Fires while outputting donation form, after all other fields.
 				 *
 				 * @since 1.0
 				 *
 				 * @param int   $form_id The form ID.
 				 * @param array $args    An array of form arguments.
 				 */
-				do_action( 'give_checkout_form_bottom', $form->ID, $args );
+				do_action( 'give_donation_form_bottom', $form->ID, $args );
 
 				?>
             </form>
 
 			<?php
 			/**
-			 * Fires while outputing donation form, after the form.
+			 * Fires while outputting donation form, after the form.
 			 *
 			 * @since 1.0
 			 *
@@ -203,7 +203,7 @@ function give_get_donation_form( $args = array() ) {
 	<?php
 
 	/**
-	 * Fires while outputing donation form, after the form wapper div.
+	 * Fires while outputting donation form, after the form wrapper div.
 	 *
 	 * @since 1.0
 	 *
@@ -244,7 +244,7 @@ function give_show_purchase_form( $form_id ) {
 	 *
 	 * @since 1.7
 	 */
-	do_action( 'give_donation_form_top', $form_id );
+	do_action( 'give_payment_fields_top', $form_id );
 
 	if ( give_can_checkout() && isset( $form_id ) ) {
 
@@ -312,7 +312,7 @@ function give_show_purchase_form( $form_id ) {
 	 *
 	 * @since 1.7
 	 */
-	do_action( 'give_donation_form_bottom', $form_id );
+	do_action( 'give_payment_fields_bottom', $form_id );
 }
 
 add_action( 'give_donation_form', 'give_show_purchase_form' );
@@ -469,7 +469,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 	do_action( 'give_after_donation_levels', $form_id, $args );
 }
 
-add_action( 'give_checkout_form_top', 'give_output_donation_amount_top', 10, 2 );
+add_action( 'give_donation_form_top', 'give_output_donation_amount_top', 10, 2 );
 
 /**
  * Outputs the Donation Levels in various formats such as dropdown, radios, and buttons.

@@ -90,8 +90,8 @@ add_action( 'init', 'give_post_actions' );
  * @return void
  */
 function give_connect_donor_to_wpuser( $user_id, $user_data ){
-	/* @var Give_Customer $donor */
-	$donor = new Give_Customer( $user_data['user_email'] );
+	/* @var Give_Donor $donor */
+	$donor = new Give_Donor( $user_data['user_email'] );
 
 	// Validate donor id and check if do nor is already connect to wp user or not.
 	if( $donor->id && ! $donor->user_id ) {
@@ -154,7 +154,7 @@ function give_donor_batch_export_complete( $data ) {
 	// Remove donor ids cache.
 	if(
 		isset( $data['class'] )
-		&& 'Give_Batch_Customers_Export' === $data['class']
+		&& 'Give_Batch_Donors_Export' === $data['class']
 		&& ! empty( $data['forms'] )
 		&& isset( $data['give_export_option']['query_id'] )
 	) {
