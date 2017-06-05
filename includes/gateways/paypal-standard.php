@@ -34,7 +34,7 @@ function give_paypal_standard_billing_fields( $form_id ) {
 
 }
 
-add_action( 'give_paypal_cc_form', 'give_paypal_standard_billing_fields');
+add_action( 'give_paypal_cc_form', 'give_paypal_standard_billing_fields' );
 
 /**
  * Process PayPal Payment.
@@ -57,7 +57,7 @@ function give_process_paypal_payment( $payment_data ) {
 		give_record_gateway_error(
 			__( 'Payment Error', 'give' ),
 			sprintf(
-			/* translators: %s: payment data */
+				/* translators: %s: payment data */
 				__( 'Payment creation failed before sending donor to PayPal. Payment data: %s', 'give' ),
 				json_encode( $payment_data )
 			),
@@ -182,7 +182,7 @@ function give_process_paypal_ipn() {
 			give_record_gateway_error(
 				__( 'IPN Error', 'give' ),
 				sprintf(
-				/* translators: %s: Paypal IPN response */
+					/* translators: %s: Paypal IPN response */
 					__( 'Invalid IPN verification response. IPN data: %s', 'give' ),
 					json_encode( $api_response )
 				)
@@ -195,7 +195,7 @@ function give_process_paypal_ipn() {
 			give_record_gateway_error(
 				__( 'IPN Error', 'give' ),
 				sprintf(
-				/* translators: %s: Paypal IPN response */
+					/* translators: %s: Paypal IPN response */
 					__( 'Invalid IPN verification response. IPN data: %s', 'give' ),
 					json_encode( $api_response )
 				)
@@ -203,7 +203,7 @@ function give_process_paypal_ipn() {
 
 			return; // Response not okay
 		}
-	}
+	}// End if().
 
 	// Check if $post_data_array has been populated
 	if ( ! is_array( $encoded_data_array ) && ! empty( $encoded_data_array ) ) {
@@ -290,7 +290,7 @@ function give_process_paypal_web_accept( $data, $payment_id ) {
 		give_record_gateway_error(
 			__( 'IPN Error', 'give' ),
 			sprintf(
-			/* translators: %s: Paypal IPN response */
+				/* translators: %s: Paypal IPN response */
 				__( 'Invalid business email in IPN response. IPN data: %s', 'give' ),
 				json_encode( $data )
 			),
@@ -308,7 +308,7 @@ function give_process_paypal_web_accept( $data, $payment_id ) {
 		give_record_gateway_error(
 			__( 'IPN Error', 'give' ),
 			sprintf(
-			/* translators: %s: Paypal IPN response */
+				/* translators: %s: Paypal IPN response */
 				__( 'Invalid currency in IPN response. IPN data: %s', 'give' ),
 				json_encode( $data )
 			),
@@ -321,14 +321,14 @@ function give_process_paypal_web_accept( $data, $payment_id ) {
 	}
 
 	// Process refunds & reversed.
-	if ( $payment_status == 'refunded' || $payment_status == 'reversed' ) {
+	if ( 'refunded' === $payment_status || 'reversed' === $payment_status ) {
 		give_process_paypal_refund( $data, $payment_id );
 
 		return;
 	}
 
 	// Only complete payments once.
-	if ( get_post_status( $payment_id ) == 'publish' ) {
+	if ( 'publish' === get_post_status( $payment_id ) ) {
 		return;
 	}
 
@@ -341,7 +341,7 @@ function give_process_paypal_web_accept( $data, $payment_id ) {
 		give_record_gateway_error(
 			__( 'IPN Error', 'give' ),
 			sprintf(
-			/* translators: %s: Paypal IPN response */
+				/* translators: %s: Paypal IPN response */
 				__( 'Invalid payment amount in IPN response. IPN data: %s', 'give' ),
 				json_encode( $data )
 			),
@@ -359,7 +359,7 @@ function give_process_paypal_web_accept( $data, $payment_id ) {
 		give_insert_payment_note(
 			$payment_id,
 			sprintf(
-			/* translators: %s: Paypal transaction ID */
+				/* translators: %s: Paypal transaction ID */
 				__( 'PayPal Transaction ID: %s', 'give' ),
 				$data['txn_id']
 			)
@@ -410,7 +410,7 @@ function give_process_paypal_refund( $data, $payment_id = 0 ) {
 		give_insert_payment_note(
 			$payment_id,
 			sprintf(
-			/* translators: %s: Paypal parent transaction ID */
+				/* translators: %s: Paypal parent transaction ID */
 				__( 'Partial PayPal refund processed: %s', 'give' ),
 				$data['parent_txn_id']
 			)
@@ -423,7 +423,7 @@ function give_process_paypal_refund( $data, $payment_id = 0 ) {
 	give_insert_payment_note(
 		$payment_id,
 		sprintf(
-		/* translators: 1: Paypal parent transaction ID 2. Paypal reason code */
+			/* translators: 1: Paypal parent transaction ID 2. Paypal reason code */
 			__( 'PayPal Payment #%1$s Refunded for reason: %2$s', 'give' ),
 			$data['parent_txn_id'],
 			$data['reason_code']
@@ -432,7 +432,7 @@ function give_process_paypal_refund( $data, $payment_id = 0 ) {
 	give_insert_payment_note(
 		$payment_id,
 		sprintf(
-		/* translators: %s: Paypal transaction ID */
+			/* translators: %s: Paypal transaction ID */
 			__( 'PayPal Refund Transaction ID: %s', 'give' ),
 			$data['txn_id']
 		)
@@ -641,7 +641,7 @@ function give_paypal_get_pending_donation_note( $pending_reason ) {
 
 			break;
 
-	}
+	}// End switch().
 
 	return $note;
 
@@ -782,12 +782,11 @@ function give_build_paypal_item_title( $payment_data ) {
 			// user custom amount text if any, fallback to default if not.
 			$item_name .= ' - ' . give_check_variable( $custom_amount_text, 'empty', __( 'Custom Amount', 'give' ) );
 
-		} //Is there any donation level text?
+		} // End if().
 		elseif ( ! empty( $item_price_level_text ) ) {
 			$item_name .= ' - ' . $item_price_level_text;
 		}
-
-	} //Single donation: Custom Amount.
+	} // End if().
 	elseif ( give_get_form_price( $form_id ) !== give_sanitize_amount( $payment_data['price'] ) ) {
 		$custom_amount_text = give_get_meta( $form_id, '_give_custom_amount_text', true );
 		// user custom amount text if any, fallback to default if not.
