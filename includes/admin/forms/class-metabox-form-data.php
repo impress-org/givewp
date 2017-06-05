@@ -1131,9 +1131,6 @@ class Give_MetaBox_Form_Data {
 						}
 					}
 				}
-
-				error_log( print_r( $meta_value, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-
 				break;
 
 			default:
