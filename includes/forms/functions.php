@@ -644,33 +644,9 @@ function give_get_lowest_price_option( $form_id = 0 ) {
 		return give_get_form_price( $form_id );
 	}
 
-	$prices = give_get_variable_prices( $form_id );
-
-	$low = 0;
-
-	if ( ! empty( $prices ) ) {
-
-		$min = $min_id = 0;
-
-		foreach ( $prices as $key => $price ) {
-
-			if ( empty( $price['_give_amount'] ) ) {
-				continue;
-			}
-
-			if ( ! isset( $min ) ) {
-				$min = $price['_give_amount'];
-			} else {
-				$min = min( $min, give_sanitize_amount( $price['_give_amount'] ) );
-			}
-
-			if ( $price['_give_amount'] == $min ) {
-				$min_id = $key;
-			}
-		}
-
-		$low = $prices[ $min_id ]['_give_amount'];
-
+	if ( ! ( $low = get_post_meta( $form_id, '_give_levels_minimum_amount', true ) ) ) {
+		$prices = wp_list_pluck( give_get_variable_prices( $form_id ), '_give_amount' );
+		$low    = ! empty( $prices ) ? min( $prices ) : 0;
 	}
 
 	return give_sanitize_amount( $low );
