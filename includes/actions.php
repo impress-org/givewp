@@ -216,38 +216,27 @@ add_action( 'admin_head', 'give_admin_quick_css' );
 /**
  * Set Donation Amount for Multi Level Donation Forms
  *
- * @param int       $post_id
- * @param object    $post
+ * @param int    $form_id
+ * @param object $form
  *
  * @since 1.8.9
  *
  * @return void
  */
-function give_set_levels_donation_amount( $post_id, $post ) {
+function give_set_donation_levels_max_min_amount( $form_id, $form ) {
+	if (
+		( in_array( '_give_donation_levels', $_POST ) && count( $_POST['_give_donation_levels'] ) <= 0 ) ||
+		! ( $donation_levels_amounts = wp_list_pluck( $_POST['_give_donation_levels'], '_give_amount' ) )
+	) {
+		return;
+	}
 
-    if( is_array( $_POST['_give_donation_levels'] ) && sizeof( $_POST['_give_donation_levels'] ) > 0 ){
-	    $donation_levels = $_POST['_give_donation_levels'];
-    }else{
-        // Bail out
-        return;
-    }
+	$min_amount = min( $donation_levels_amounts );
+	$max_amount = max( $donation_levels_amounts );
 
-    if( "give_forms" == $post->post_type ){
-
-	    $donation_levels_amount = array();
-	    foreach( $donation_levels as $level ){
-		    $donation_levels_amount[] = $level['_give_amount'];
-	    }
-
-	    $donation_levels_minimum_amount = min( $donation_levels_amount );
-	    $donation_levels_maximum_amount = max( $donation_levels_amount );
-
-	    // Set Minimum and Maximum amount for Multi Level Donation Forms
-	    give_update_meta( $post_id, '_give_levels_minimum_amount', $donation_levels_minimum_amount );
-	    give_update_meta( $post_id, '_give_levels_maximum_amount', $donation_levels_maximum_amount );
-
-    }
-
+	// Set Minimum and Maximum amount for Multi Level Donation Forms
+	give_update_meta( $form_id, '_give_levels_minimum_amount', $min_amount );
+	give_update_meta( $form_id, '_give_levels_maximum_amount', $max_amount );
 }
 
-add_action( 'give_pre_process_give_forms_meta', 'give_set_levels_donation_amount', 30, 2);
+add_action( 'give_pre_process_give_forms_meta', 'give_set_donation_levels_max_min_amount', 30, 2 );
