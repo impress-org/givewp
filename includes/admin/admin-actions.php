@@ -146,7 +146,7 @@ add_action( 'admin_init', 'give_redirect_to_clean_url_admin_pages' );
  *
  * This code is used with AJAX call to hide license notice for a short period of time
  *
- * @since 1.8.9
+ * @since 1.8.8
  *
  * @return void
  */
@@ -176,3 +176,35 @@ function give_hide_license_notice() {
 }
 
 add_action( 'wp_ajax_give_hide_license_notice', 'give_hide_license_notice' );
+
+
+/**
+ * Hide Outdated PHP Notice Shortly.
+ *
+ * This code is used with AJAX call to hide outdated PHP notice for a short period of time
+ *
+ * @since 1.8.9
+ *
+ * @return void
+ */
+function give_hide_outdated_php_notice() {
+
+	if ( ! isset( $_POST['_give_hide_outdated_php_notices_shortly'] ) ) {
+		die();
+	}
+
+	// Transient key name.
+	$transient_key = "_give_hide_outdated_php_notices_shortly";
+
+	if ( Give_Cache::get( $transient_key, true ) ) {
+		return;
+	}
+
+	// Hide notice for 24 hours.
+	Give_Cache::set( $transient_key, true, DAY_IN_SECONDS, true );
+
+	die();
+
+}
+
+add_action( 'wp_ajax_give_hide_outdated_php_notice', 'give_hide_outdated_php_notice' );
