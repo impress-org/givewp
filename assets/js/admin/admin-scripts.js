@@ -1191,7 +1191,7 @@ jQuery.noConflict();
 			/**
 			 * Show image preview.
 			 */
-			$body.on('give_media_inserted', function (e, attachment, $input_field) {
+			$body.on('give_media_inserted', function (e, attachment) {
 				var $parent              = $give_upload_button.parents('.give-field-wrap'),
 					$image_container     = $('.give-image-thumb', $parent);
 
@@ -1201,7 +1201,7 @@ jQuery.noConflict();
 				}
 
 				// Bailout and hide preview.
-				if( ! $image_container. hasClass('give-hidden') && 'image' !== attachment.type ) {
+				if('image' !== attachment.type) {
 					$image_container.addClass('give-hidden');
 					$('img', $image_container).attr('src', '');
 					return false;
