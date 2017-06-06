@@ -580,6 +580,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					case 'media' :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
 						$button_label = esc_html__( sprintf( 'Add or Upload %s', ( 'file' === $value['type'] ? 'File' : 'Image' ) ), 'give' );
+						$fvalue       = empty( $value['fvalue'] ) ? 'url' : $value['fvalue'];
 						?>
 						<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
 							<th scope="row" class="titledesc">
@@ -596,11 +597,11 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 												value="<?php echo $option_value; ?>"
 												style="<?php echo esc_attr( $value['css'] ); ?>"
 											<?php echo implode( ' ', $custom_attributes ); ?>
-										/>&nbsp;&nbsp;&nbsp;&nbsp;<input class="give-upload-button button" type="button" value="<?php echo $button_label; ?>">
+										/>&nbsp;&nbsp;&nbsp;&nbsp;<input class="give-upload-button button" type="button" data-fvalue="<?php echo $fvalue; ?>" data-field-type="<?php echo $value['type']; ?>" value="<?php echo $button_label; ?>">
 										<?php echo $description ?>
 										<div class="give-image-thumb<?php echo ! $option_value ? ' give-hidden' : ''; ?>">
 											<span class="give-delete-image-thumb dashicons dashicons-no-alt"></span>
-											<img src="<?php echo $option_value; ?>" alt="">
+											<img src="<?php echo ( 'id' === $fvalue ? wp_get_attachment_url( $option_value ) : $option_value ) ; ?>" alt="">
 										</div>
 									</label>
 								</div>
