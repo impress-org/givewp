@@ -306,16 +306,6 @@ class Give_Notices {
 		return ob_get_clean();
 	}
 
-	/**
-	 * Retrieve Current PHP Version
-	 *
-	 * @since 1.8.9
-	 *
-	 * @return float
-	 */
-	function give_get_current_php_version() {
-		return phpversion();
-	}
 }
 
 new Give_Notices();
