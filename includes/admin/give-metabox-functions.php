@@ -609,6 +609,17 @@ function give_colorpicker( $field ) {
 	echo '</p>';
 }
 
+/**
+ * Output a file upload field.
+ *
+ * @since  1.8.9
+ *
+ * @param array $field
+ */
+function give_file( $field ) {
+	give_media( $field );
+}
+
 
 /**
  * Output a media upload field.
@@ -620,18 +631,19 @@ function give_colorpicker( $field ) {
 function give_media( $field ) {
 	global $thepostid, $post;
 
-	$thepostid                    = empty( $thepostid ) ? $post->ID : $thepostid;
+	$thepostid    = empty( $thepostid ) ? $post->ID : $thepostid;
+	$button_label = esc_html__( sprintf( 'Add or Upload %s', ( 'file' === $field['type'] ? 'File' : 'Image' ) ), 'give' );
+
 	$field['style']               = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class']       = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
 	$field['value']               = give_get_field_value( $field, $thepostid );
 	$field['name']                = isset( $field['name'] ) ? $field['name'] : $field['id'];
-	$field['type']                = 'text';
 	$field['attributes']['class'] = "{$field['attributes']['class']} give-text-medium";
 
 	// Allow developer to save attachment ID or attachment url as metadata.
 	$field['fvalue'] = isset( $field['fvalue'] ) ? $field['fvalue'] : 'url';
 	?>
-	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+	<fieldset class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
 		<label for="<?php echo give_get_field_name( $field ) ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
 		<input
 				name="<?php echo give_get_field_name( $field ); ?>"
@@ -641,10 +653,13 @@ function give_media( $field ) {
 				style="<?php echo esc_attr( $field['style'] ); ?>"
 				data-fvalue="<?php echo $field['fvalue']; ?>"
 			<?php echo give_get_custom_attributes( $field ); ?>
-		/>&nbsp;&nbsp;&nbsp;&nbsp;<input class="give-media-upload button" type="button"
-										 value="<?php echo esc_html__( 'Add or Upload File', 'give' ); ?>">
+		/>&nbsp;&nbsp;&nbsp;&nbsp;<input class="give-upload-button button" type="button" value="<?php echo $button_label; ?>" data-field-type="<?php echo $field['type']; ?>">
 		<?php echo give_get_field_description( $field ); ?>
-	</p>
+		<div class="give-image-thumb<?php echo ! $field['value'] ? ' give-hidden' : ''; ?>">
+			<span class="give-delete-image-thumb dashicons dashicons-no-alt"></span>
+			<img src="<?php echo ( 'id' === $field['fvalue'] ? wp_get_attachment_url( $field['value'] ) : $field['value'] ) ; ?>" alt="">
+		</div>
+	</fieldset>
 	<?php
 }
 
