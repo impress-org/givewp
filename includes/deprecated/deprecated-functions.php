@@ -454,7 +454,7 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
 
 	$backtrace = debug_backtrace();
 
-	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_donation_total_of_user', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_delete_donation', $backtrace );
 
 	give_delete_donation( $payment_id, $update_customer );
 
@@ -478,9 +478,9 @@ function give_undo_purchase( $form_id = false, $payment_id ) {
 
 	$backtrace = debug_backtrace();
 
-	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_delete_donation', $backtrace );
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_undo_donation', $backtrace );
 
-	give_delete_donation( $payment_id );
+	give_undo_donation( $payment_id );
 }
 
 
