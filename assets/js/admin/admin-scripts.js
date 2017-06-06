@@ -1150,12 +1150,6 @@ jQuery.noConflict();
 				// Cache input field.
 				$give_upload_button = $(this);
 
-				// If the uploader object has already been created, reopen the dialog
-				if (give_media_uploader) {
-					give_media_uploader.open();
-					return;
-				}
-
 				// Set modal config
 				switch ( $(this).data('field-type') ) {
 					case 'media':
