@@ -268,8 +268,8 @@ if ( ! class_exists( 'Give' ) ) :
 		private function setup_constants() {
 
 			// PHP version
-			if ( ! defined( 'REQUIRED_PHP_VERSION' ) ) {
-				define( 'REQUIRED_PHP_VERSION', '5.3' );
+			if ( ! defined( 'GIVE_REQUIRED_PHP_VERSION' ) ) {
+				define( 'GIVE_REQUIRED_PHP_VERSION', '5.3' );
 			}
 
 			// Plugin version

@@ -195,7 +195,7 @@ class Give_Notices {
          *
          * @since 1.8.9
 		 */
-		if ( ! Give_Cache::get( '_give_hide_outdated_php_notices_shortly', true ) || version_compare( REQUIRED_PHP_VERSION, array( $this, 'give_get_current_php_version' ), '>') ) {
+		if ( ! Give_Cache::get( '_give_hide_outdated_php_notices_shortly', true ) || version_compare( GIVE_REQUIRED_PHP_VERSION, array( $this, 'give_get_current_php_version' ), '>') ) {
 
 			// Check for outdated PHP Versions, if outdated show dismissable notice.
 			$html = '';
