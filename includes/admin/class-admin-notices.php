@@ -195,22 +195,27 @@ class Give_Notices {
          *
          * @since 1.8.9
 		 */
-		if ( ! Give_Cache::get( '_give_hide_outdated_php_notices_shortly', true ) || version_compare( GIVE_REQUIRED_PHP_VERSION, array( $this, 'give_get_current_php_version' ), '>') ) {
+		if( function_exists( 'phpversion' ) && version_compare( GIVE_REQUIRED_PHP_VERSION, phpversion(), '>' ) ) {
 
-			// Check for outdated PHP Versions, if outdated show dismissable notice.
-			$html = '';
-			$html .= '<div class="notice notice-error is-dismissible give-outdated-php-notice">';
-			$html .= '<p><strong>' . __( 'Your site could be faster and more secure with a newer PHP version.', 'give' ) . '</strong></p>';
-			$html .= '<p>' . __( 'Hey, we\'ve noticed that you\'re running an outdated version of PHP. PHP is the programming language that WordPress and Give are built on. The version that is currently used for your site is no longer supported. Newer versions of PHP are both faster and more secure. In fact, your version of PHP no longer receives security updates, which is why we\'re sending you this notice.', 'give' ) . '</p>';
-			$html .= '<p>' . __( 'Hosts have the ability to update your PHP version, but sometimes they don\'t dare to do that because they\'re afraid they\'ll break your site.', 'give' ) . '</p>';
-			$html .= '<p><strong>' . __( 'To which version should I update?', 'give' ) . '</strong></p>';
-			$html .= '<p>' . sprintf( __( 'You should update your PHP version to either 5.6 or to 7.0 or 7.1. On a normal WordPress site, switching to PHP 5.6 should never cause issues. We would however actually recommend you switch to PHP7. There are some plugins that are not ready for PHP7 though, so do some testing first. We have an article on how to test whether that\'s an option for you %1$shere%2$s. PHP7 is much faster than PHP 5.6. It\'s also the only PHP version still in active development and therefore the better option for your site in the long run.', 'give' ), '<a href="https://yoa.st/wg" target="_blank">', '</a>' ) . '</p>';
-			$html .= '<p><strong>' . __( 'Can\'t update? Ask your host!', 'give' ) . '</strong></p>';
-			$html .= '<p>' . sprintf( __( 'If you cannot upgrade your PHP version yourself, you can send an email to your host. If they don\'t want to upgrade your PHP version, we would suggest you switch hosts. Have a look at one of the recommended %1$sWordPress hosting partners%2$s.', 'give' ), sprintf( '<a href="%1$s" target="_blank">', esc_url( 'https://wordpress.org/hosting/' ) ), '</a>' ) . '</p>';
-			$html .= '</div>';
+		    // Check whether outdated PHP notice is dismissed for specific period of time
+		    if( ! Give_Cache::get( '_give_hide_outdated_php_notices_shortly', true ) ) {
 
-			echo apply_filters( 'give_outdated_php_version_notice_message', $html);
+		        do_action( 'give_trigger_outdated_php_notice_js' );
 
+			    $html = '';
+			    $html .= '<div class="notice notice-error is-dismissible give-outdated-php-notice">';
+			    $html .= '<p><strong>' . __( 'Your site could be faster and more secure with a newer PHP version.', 'give' ) . '</strong></p>';
+			    $html .= '<p>' . __( 'Hey, we\'ve noticed that you\'re running an outdated version of PHP. PHP is the programming language that WordPress and Give are built on. The version that is currently used for your site is no longer supported. Newer versions of PHP are both faster and more secure. In fact, your version of PHP no longer receives security updates, which is why we\'re sending you this notice.', 'give' ) . '</p>';
+			    $html .= '<p>' . __( 'Hosts have the ability to update your PHP version, but sometimes they don\'t dare to do that because they\'re afraid they\'ll break your site.', 'give' ) . '</p>';
+			    $html .= '<p><strong>' . __( 'To which version should I update?', 'give' ) . '</strong></p>';
+			    $html .= '<p>' . sprintf( __( 'You should update your PHP version to either 5.6 or to 7.0 or 7.1. On a normal WordPress site, switching to PHP 5.6 should never cause issues. We would however actually recommend you switch to PHP7. There are some plugins that are not ready for PHP7 though, so do some testing first. We have an article on how to test whether that\'s an option for you %1$shere%2$s. PHP7 is much faster than PHP 5.6. It\'s also the only PHP version still in active development and therefore the better option for your site in the long run.', 'give' ), '<a href="https://yoa.st/wg" target="_blank">', '</a>' ) . '</p>';
+			    $html .= '<p><strong>' . __( 'Can\'t update? Ask your host!', 'give' ) . '</strong></p>';
+			    $html .= '<p>' . sprintf( __( 'If you cannot upgrade your PHP version yourself, you can send an email to your host. If they don\'t want to upgrade your PHP version, we would suggest you switch hosts. Have a look at one of the recommended %1$sWordPress hosting partners%2$s.', 'give' ), sprintf( '<a href="%1$s" target="_blank">', esc_url( 'https://wordpress.org/hosting/' ) ), '</a>' ) . '</p>';
+			    $html .= '</div>';
+
+			    echo apply_filters( 'give_outdated_php_version_notice_message', $html );
+
+		    }
 		}
 
 	}

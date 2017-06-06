@@ -463,4 +463,4 @@ function give_admin_hide_outdated_php_notice_shortly_js() {
 	<?php
 }
 
-add_action( 'admin_head', 'give_admin_hide_outdated_php_notice_shortly_js' );
+add_action( 'give_trigger_outdated_php_notice_js', 'give_admin_hide_outdated_php_notice_shortly_js' );
