@@ -190,7 +190,7 @@ add_action( 'wp_ajax_give_hide_license_notice', 'give_hide_license_notice' );
 function give_hide_outdated_php_notice() {
 
 	if ( ! isset( $_POST['_give_hide_outdated_php_notices_shortly'] ) ) {
-		die();
+		give_die();
 	}
 
 	// Transient key name.
@@ -203,7 +203,7 @@ function give_hide_outdated_php_notice() {
 	// Hide notice for 24 hours.
 	Give_Cache::set( $transient_key, true, DAY_IN_SECONDS, true );
 
-	die();
+	give_die();
 
 }
 
