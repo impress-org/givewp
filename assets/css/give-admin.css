@@ -1625,20 +1625,6 @@ p.give-field-description, .cmb2-metabox-description {
   font-style: italic;
   font-size: 13px !important; }
 
-.give-image-thumb {
-  position: relative;
-  margin-top: 14px; }
-  .give-image-thumb span.give-delete-image-thumb {
-    position: absolute;
-    background: red;
-    color: white;
-    border-radius: 30px;
-    left: -10px;
-    top: -10px; }
-  .give-image-thumb img {
-    max-width: 400px;
-    border: 4px solid white; }
-
 .cmb-type-give-title label,
 .give-setting-tab-header h2 {
   float: left;
@@ -1905,6 +1891,21 @@ h2.give-nav-tab-wrapper {
 #give-show-sub-nav:hover, #give-show-sub-nav:active {
   outline: none;
   box-shadow: inset 0px 0px 4px #ddd; }
+
+.give-image-thumb {
+  position: relative;
+  margin-top: 14px; }
+  .give-image-thumb span.give-delete-image-thumb {
+    position: absolute;
+    background: red;
+    color: white;
+    border-radius: 30px;
+    left: -10px;
+    top: -10px;
+    cursor: pointer; }
+  .give-image-thumb img {
+    max-width: 250px;
+    border: 4px solid white; }
 
 /**
  * Give Payment History SCSS
