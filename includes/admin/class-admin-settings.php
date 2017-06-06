@@ -581,6 +581,11 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
 						$button_label = esc_html__( sprintf( 'Add or Upload %s', ( 'file' === $value['type'] ? 'File' : 'Image' ) ), 'give' );
 						$fvalue       = empty( $value['fvalue'] ) ? 'url' : $value['fvalue'];
+
+						$allow_media_preview_tags = array( 'jpg', 'jpeg', 'png', 'gif', 'ico' );
+						$preview_image_src        = $option_value ? ( 'id' === $fvalue ? wp_get_attachment_url( $option_value ) : $option_value ) : '#';
+						$preview_image_extension  = $preview_image_src ? pathinfo( $preview_image_src, PATHINFO_EXTENSION ) : '';
+						$is_show_preview = in_array( $preview_image_extension, $allow_media_preview_tags );
 						?>
 						<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
 							<th scope="row" class="titledesc">
@@ -599,9 +604,9 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 											<?php echo implode( ' ', $custom_attributes ); ?>
 										/>&nbsp;&nbsp;&nbsp;&nbsp;<input class="give-upload-button button" type="button" data-fvalue="<?php echo $fvalue; ?>" data-field-type="<?php echo $value['type']; ?>" value="<?php echo $button_label; ?>">
 										<?php echo $description ?>
-										<div class="give-image-thumb<?php echo ! $option_value ? ' give-hidden' : ''; ?>">
+										<div class="give-image-thumb<?php echo ! $option_value || ! $is_show_preview ? ' give-hidden' : ''; ?>">
 											<span class="give-delete-image-thumb dashicons dashicons-no-alt"></span>
-											<img src="<?php echo ( 'id' === $fvalue ? wp_get_attachment_url( $option_value ) : $option_value ) ; ?>" alt="">
+											<img src="<?php echo $preview_image_src ; ?>" alt="">
 										</div>
 									</label>
 								</div>
