@@ -6,6 +6,9 @@
  */
 class Tests_Login_Register extends Give_Unit_Test_Case {
 
+	/**
+	 * Set up tests.
+	 */
 	public function setUp() {
 
 		parent::setUp();
@@ -247,7 +250,7 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 		$this->assertArrayHasKey( 'email_unavailable', give_get_errors() );
 		$this->assertArrayHasKey( 'payment_email_invalid', give_get_errors() );
 
-		// Clear errors for other test
+		// Clear errors for other test.
 		give_clear_errors();
 	}
 
@@ -258,17 +261,33 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 	 */
 	public function test_process_register_form_success() {
 
+		// First check that this user does not exist.
+		$user = new WP_User( 0, 'random_username' );
+		$this->assertEmpty( $user->roles );
+		$this->assertEmpty( $user->allcaps );
+		$this->assertEmpty( (array) $user->data );
+
 		$_POST['give_register_submit'] = 1;
 		$_POST['give_user_pass']       = 'password';
 		$_POST['give_user_pass2']      = 'password';
-		give_process_register_form( array(
+
+		$args = array(
 			'give_register_submit' => 1,
 			'give_user_login'      => 'random_username',
 			'give_user_email'      => 'random_username@example.org',
 			'give_payment_email'   => 'random_username@example.org',
 			'give_user_pass'       => 'password',
 			'give_redirect'        => '',
-		) );
+		);
+		give_process_register_form( $args );
+
+		// Now check to see if the user exists.
+		$user = new WP_User( 0, 'random_username' );
+
+		$this->assertEquals( $args['give_payment_email'], $user->user_email );
+		$this->assertEquals( $args['give_user_login'],  $user->display_name );
+		$this->assertEquals( $args['give_user_login'],  $user->user_login );
+		$this->assertTrue( is_user_logged_in() );
 
 		// Clear errors for other test.
 		give_clear_errors();
