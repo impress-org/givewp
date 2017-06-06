@@ -431,7 +431,7 @@ function give_admin_hide_notice_shortly_js() {
 	<?php
 }
 
-add_action( 'admin_head', 'give_admin_hide_notice_shortly_js' );
+add_action( 'give_trigger_license_notice_js', 'give_admin_hide_notice_shortly_js' );
 
 /**
  * Admin js code

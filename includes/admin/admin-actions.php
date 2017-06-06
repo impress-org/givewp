@@ -146,7 +146,7 @@ add_action( 'admin_init', 'give_redirect_to_clean_url_admin_pages' );
  *
  * This code is used with AJAX call to hide license notice for a short period of time
  *
- * @since 1.8.9
+ * @since 1.8.8
  *
  * @return void
  */
