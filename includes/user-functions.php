@@ -641,7 +641,7 @@ function give_get_donor_name_by( $id = 0, $from = 'donation' ) {
 }
 
 /**
- * Checks whether the given donor email exists.
+ * Checks whether the given donor email exists in users as well as additional_email of donors.
  *
  * @since 1.8.9
  *
