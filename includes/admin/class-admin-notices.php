@@ -213,7 +213,7 @@ class Give_Notices {
 			    $html .= '<p>' . sprintf( __( 'If you cannot upgrade your PHP version yourself, you can send an email to your host. If they don\'t want to upgrade your PHP version, we would suggest you switch hosts. Have a look at one of the recommended %1$sWordPress hosting partners%2$s.', 'give' ), sprintf( '<a href="%1$s" target="_blank">', esc_url( 'https://wordpress.org/hosting/' ) ), '</a>' ) . '</p>';
 			    $html .= '</div>';
 
-			    echo apply_filters( 'give_outdated_php_version_notice_message', $html );
+			    echo $html;
 
 		    }
 		}
