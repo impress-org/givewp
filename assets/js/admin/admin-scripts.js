@@ -442,7 +442,6 @@ jQuery.noConflict();
 
 		init: function () {
 			this.toggle_options();
-			this.main_setting_update_notice();
 			this.verify_settings();
 		},
 
@@ -507,20 +506,6 @@ jQuery.noConflict();
 					$('#admin_notice_emails').parents('tr').hide();
 				}
 			}).change();
-		},
-
-		main_setting_update_notice: function () {
-			var $setting_message = $('#setting-error-give-setting-updated');
-			if ($setting_message.length) {
-
-				// auto hide setting message in 5 seconds.
-				window.setTimeout(
-					function () {
-						$setting_message.slideUp();
-					},
-					5000
-				);
-			}
 		},
 
 		verify_settings: function () {

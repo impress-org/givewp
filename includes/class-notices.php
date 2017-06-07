@@ -195,6 +195,8 @@ class Give_Notices {
 		}
 
 		echo $output;
+
+		$this->print_js();
 	}
 
 	/**
@@ -202,7 +204,7 @@ class Give_Notices {
 	 *
 	 * @since 1.8.7
 	 */
-	function _give_admin_quick_js() {
+	public function _give_admin_quick_js() {
 		/* @var WP_Screen $screen */
 		$screen = get_current_screen();
 
@@ -231,6 +233,25 @@ class Give_Notices {
 				</script>
 				<?php
 		}
+	}
+
+	public function print_js(){
+		?>
+		<script>
+			jQuery(document).ready(function(){
+				if ($setting_message.length) {
+
+					// auto hide setting message in 5 seconds.
+					window.setTimeout(
+						function () {
+							$setting_message.slideUp();
+						},
+						5000
+					);
+				}
+			})
+		</script>
+		<?php
 	}
 
 }
