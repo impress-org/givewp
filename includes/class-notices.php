@@ -107,10 +107,6 @@ class Give_Notices {
 	 * @since 1.0
 	 */
 	public function show_notices() {
-
-
-		$this->add_payment_bulk_action_notice();
-
 		// Set updates.
 		if ( count( self::$notices['updated'] ) > 0 ) {
 			foreach ( self::$notices['updated'] as $notice_id => $notice ) {
@@ -157,42 +153,6 @@ class Give_Notices {
 			wp_redirect( remove_query_arg( array( 'give_action', 'give_notice' ) ) );
 			exit;
 		}
-	}
-
-
-	/**
-	 * Add payment bulk notice.
-	 *
-	 * @since 1.8
-	 *
-	 * @return array
-	 */
-	function add_payment_bulk_action_notice() {
-		if (
-			current_user_can( 'edit_give_payments' )
-			&& isset( $_GET['action'] )
-			&& ! empty( $_GET['action'] )
-			&& isset( $_GET['payment'] )
-			&& ! empty( $_GET['payment'] )
-		) {
-			$payment_count = isset( $_GET['payment'] ) ? count( $_GET['payment'] ) : 0;
-
-			switch ( $_GET['action'] ) {
-				case 'delete':
-					if ( $payment_count ) {
-						self::$notices['updated']['bulk_action_delete'] = sprintf( _n( 'Successfully deleted only one transaction.', 'Successfully deleted %d number of transactions.', $payment_count, 'give' ), $payment_count );
-					}
-					break;
-
-				case 'resend-receipt':
-					if ( $payment_count ) {
-						self::$notices['updated']['bulk_action_resend_receipt'] = sprintf( _n( 'Successfully send email receipt to only one recipient.', 'Successfully send email receipts to %d recipients.', $payment_count, 'give' ), $payment_count );
-					}
-					break;
-			}
-		}
-
-		return self::$notices;
 	}
 
 
