@@ -23,9 +23,20 @@ class Give_Notices {
 	/**
 	 * List of notices
 	 * @var array
-	 * @since 1.8
+	 * @since  1.8
+	 * @access private
 	 */
 	private static $notices = array();
+
+
+	/**
+	 * Flag to check if any notice auto dismissible among all notices
+	 *
+	 * @since  1.8.9
+	 * @access private
+	 * @var bool
+	 */
+	private static $has_auto_dismissiable_notice = false;
 
 	/**
 	 * Get things started.
@@ -186,6 +197,11 @@ class Give_Notices {
 		$output = '';
 
 		foreach ( self::$notices as $notice_id => $notice ) {
+			// Check if notice dismissible or not.
+			if( ! self::$has_auto_dismissiable_notice ) {
+				self::$has_auto_dismissiable_notice = $notice['auto_dismissible'];
+			}
+
 			$css_id = (  false === strpos( $notice['id'], 'give') ? "give-{$notice['id']}" : $notice['id'] );
 
 			$css_class = $notice['type'] . ' give-notice notice is-dismissible';
@@ -235,23 +251,29 @@ class Give_Notices {
 		}
 	}
 
-	public function print_js(){
-		?>
-		<script>
-			jQuery(document).ready(function(){
-				if ($setting_message.length) {
 
+	/**
+	 * Print notice js.
+	 *
+	 * @since  1.8.9
+	 * @access private
+	 */
+	private function print_js() {
+		if ( self::$has_auto_dismissiable_notice ) :
+			?>
+			<script>
+				jQuery(document).ready(function () {
 					// auto hide setting message in 5 seconds.
 					window.setTimeout(
 						function () {
-							$setting_message.slideUp();
+							jQuery('.give-notice[data-auto-dismissible="1"]').slideUp();
 						},
 						5000
 					);
-				}
-			})
-		</script>
-		<?php
+				})
+			</script>
+			<?php
+		endif;
 	}
 
 }
