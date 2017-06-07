@@ -359,7 +359,7 @@ function give_validate_user_email( $email, $registering_new_user = false ) {
 		give_set_error( 'email_invalid', __( 'Invalid email.', 'give' ) );
 		$valid = false;
 
-	} elseif ( $registering_new_user && email_exists( $email ) ) {
+	} elseif ( $registering_new_user && give_donor_email_exists( $email ) ) {
 		// Check if email exists.
 		give_set_error( 'email_used', __( 'The email address provided is already active for another user.', 'give' ) );
 		$valid = false;
@@ -639,3 +639,19 @@ function give_get_donor_name_by( $id = 0, $from = 'donation' ) {
 	return trim( $name );
 
 }
+
+/**
+ * Checks whether the given donor email exists.
+ *
+ * @since 1.8.9
+ *
+ * @param  string       $email Donor Email.
+ * @return int|false    The user's ID on success, and false on failure.
+ */
+function give_donor_email_exists( $email ) {
+	if ( $user = Give()->donors->get_donor_by( 'email', $email ) ) {
+		return $user->user_id;
+	}
+	return false;
+}
+
