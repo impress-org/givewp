@@ -107,20 +107,20 @@ class Tests_User_Function extends Give_Unit_Test_Case {
 		/*
 		 * Check 3
 		 *
-		 * Varify email ( user already exist )
+		 * Verify email ( user already exist )
 		 */
 		$output = give_validate_user_email( 'admin@example.org' );
 
 		$this->assertTrue( $output );
 
 		/*
-		 * Check 3
+		 * Check 4
 		 *
 		 * Already registered email and newly register user
 		 */
 		$output = give_validate_user_email( 'admin@example.org', true );
 
-		$this->assertFalse( $output );
+		$this->assertTrue( $output );
 	}
 
 	/**
