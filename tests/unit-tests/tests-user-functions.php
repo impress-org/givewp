@@ -120,7 +120,7 @@ class Tests_User_Function extends Give_Unit_Test_Case {
 		 */
 		$output = give_validate_user_email( 'admin@example.org', true );
 
-		$this->assertTrue( $output );
+		$this->assertFalse( $output );
 	}
 
 	/**
