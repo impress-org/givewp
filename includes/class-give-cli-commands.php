@@ -263,8 +263,8 @@ class GIVE_CLI_COMMAND {
 									WP_CLI::log( $this->color_message( $heading, $data ) );
 							}
 						}
-				}
-			}
+				}// End switch().
+			}// End foreach().
 		} else {
 			// Show multiple form.
 			$table_data             = array();
@@ -312,10 +312,10 @@ class GIVE_CLI_COMMAND {
 
 				// set table data.
 				$table_data[] = $table_row;
-			}
+			}// End foreach().
 
 			$this->display_table( $table_data );
-		}
+		}// End if().
 	}
 
 
@@ -404,10 +404,10 @@ class GIVE_CLI_COMMAND {
 					'name'  => $name,
 				);
 
-				$customer_id = Give()->customers->add( $args );
+				$donor_id = Give()->donors->add( $args );
 
-				if ( $customer_id ) {
-					WP_CLI::line( $this->color_message( sprintf( __( 'Donor #%d created successfully', 'give' ), $customer_id ) ) );
+				if ( $donor_id ) {
+					WP_CLI::line( $this->color_message( sprintf( __( 'Donor #%d created successfully', 'give' ), $donor_id ) ) );
 				} else {
 					WP_CLI::error( __( 'Failed to create donor', 'give' ) );
 				}
@@ -443,7 +443,7 @@ class GIVE_CLI_COMMAND {
 				// @TODO: Allow user to get a list of donors by donation status.
 				$donors = $this->get_donors_by_form_id( $form_id );
 			} else {
-				$donors = $this->api->get_customers( $search );
+				$donors = $this->api->get_donors( $search );
 			}
 
 			// Reset number query var.
@@ -515,7 +515,7 @@ class GIVE_CLI_COMMAND {
 
 				// Increase counter.
 				self::$counter ++;
-			}
+			}// End foreach().
 
 			switch ( $format ) {
 				case 'json':
@@ -552,8 +552,8 @@ class GIVE_CLI_COMMAND {
 
 				default:
 					$this->display_table( $table_data );
-			}
-		}
+			}// End switch().
+		}// End if().
 	}
 
 
@@ -882,7 +882,7 @@ class GIVE_CLI_COMMAND {
 
 
 	/**
-	 * Get donors by form id
+	 * Get donors by form id.
 	 *
 	 * @since 1.8
 	 *
@@ -913,9 +913,9 @@ class GIVE_CLI_COMMAND {
 			}
 
 			if ( ! empty( $donors ) ) {
-				$donors['donors'][] = current( current( $this->api->get_customers( (int) $donation->customer_id ) ) );
+				$donors['donors'][] = current( current( $this->api->get_donors( (int) $donation->customer_id ) ) );
 			} else {
-				$donors = array_merge( $donors, $this->api->get_customers( (int) $donation->customer_id ) );
+				$donors = array_merge( $donors, $this->api->get_donors( (int) $donation->customer_id ) );
 			}
 
 			$skip_donors[] = $donation->customer_id;

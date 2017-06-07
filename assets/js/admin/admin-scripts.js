@@ -29,17 +29,176 @@ jQuery.noConflict();
 	 * Setup Pretty Chosen Select Fields
 	 */
 	var setup_chosen_give_selects = function () {
-		// Setup Chosen Selects
-		$('.give-select-chosen').chosen({
+		// Setup Chosen Selects.
+		var $give_chosen_containers = $('.give-select-chosen');
+
+        // Add loader with each input field.
+        $give_chosen_containers.on('chosen:ready', function () {
+            $(this).next('.chosen-container')
+                .find('input.chosen-search-input')
+                .after('<span class="spinner"></span>');
+        });
+
+        // No results returned from search trigger.
+        $give_chosen_containers.on( 'chosen:no_results', function(){
+            var $container = $(this).next('.chosen-container'),
+                $no_results_li = $container.find('li.no-results'),
+                error_string = '';
+
+            if( $container.hasClass('give-select-chosen-ajax' ) && $no_results_li.length ) {
+                error_string = give_vars.chosen.ajax_search_msg.replace( '{search_term}', '"' + $( 'input', $container ).val() + '"');
+            } else {
+                error_string = give_vars.chosen.no_results_msg.replace( '{search_term}', '"' + $( 'input', $container ).val()+ '"' );
+            }
+
+            $no_results_li.html( error_string );
+
+        });
+
+		// Initiate chosen.
+		$give_chosen_containers.chosen({
 			inherit_select_classes   : true,
 			placeholder_text_single  : give_vars.one_option,
-			placeholder_text_multiple: give_vars.one_or_more_option
+			placeholder_text_multiple: give_vars.one_or_more_option,
 		});
 
 		// This fixes the Chosen box being 0px wide when the thickbox is opened
 		$('#post').on('click', '.give-thickbox', function () {
 			$('.give-select-chosen', '#choose-give-form').css('width', '100%');
 		});
+
+		// Variables for setting up the typing timer.
+		var typingTimer;               // Timer identifier
+		var doneTypingInterval = 342;  // Time in ms, Slow - 521ms, Moderate - 342ms, Fast - 300ms
+
+		// Replace options with search results
+		$(document.body).on('keyup', '.give-select.chosen-container .chosen-search input, .give-select.chosen-container .search-field input', function (e) {
+
+			var val         = $(this).val(),
+				$container   = $(this).closest('.give-select-chosen'),
+				select      = $container.prev(),
+				$search_field = $container.find('input[type="text"]'),
+				variations  = $container.hasClass('variations'),
+				lastKey     = e.which,
+				search_type = 'give_forms_search';
+
+			// Detect if we have a defined search type, otherwise default to donation forms.
+			if ($container.prev().data('search-type')) {
+
+				// Don't trigger AJAX if this select has all options loaded.
+				if ('no_ajax' === select.data('search-type')) {
+					return;
+				}
+
+ 				search_type = 'give_' + select.data('search-type') + '_search';
+			}
+
+			// Don't fire if short or is a modifier key (shift, ctrl, apple command key, or arrow keys).
+			if (
+				val.length <= 3 ||
+				! search_type.length ||
+				(
+                    (lastKey ===  9)  || // Tab
+                    (lastKey === 13)  || // Enter
+                    (lastKey === 16)  || // Shift
+                    (lastKey === 17)  || // Ctrl
+                    (lastKey === 18)  || // Alt
+                    (lastKey === 19)  || // Pause, Break
+                    (lastKey === 20)  || // CapsLock
+                    (lastKey === 27)  || // Esc
+                    (lastKey === 33)  || // Page Up
+                    (lastKey === 34)  || // Page Down
+                    (lastKey === 35)  || // End
+                    (lastKey === 36)  || // Home
+                    (lastKey === 37)  || // Left arrow
+                    (lastKey === 38)  || // Up arrow
+                    (lastKey === 39)  || // Right arrow
+                    (lastKey === 40)  || // Down arrow
+                    (lastKey === 44)  || // PrntScrn
+                    (lastKey === 45)  || // Insert
+                    (lastKey === 144) || // NumLock
+                    (lastKey === 145) || // ScrollLock
+                    (lastKey === 91)  || // WIN Key (Start)
+                    (lastKey === 93)  || // WIN Menu
+                    (lastKey === 224) || // command key
+                    (lastKey >= 112 && lastKey <= 123) // F1 to F12lastKey
+				)
+			) {
+				return;
+			}
+			clearTimeout(typingTimer);
+			$container.addClass( 'give-select-chosen-ajax' );
+
+			typingTimer = setTimeout(
+				function () {
+					$.ajax({
+						type      : 'GET',
+						url       : ajaxurl,
+						data      : {
+							action: search_type,
+							s     : val
+						},
+						dataType  : 'json',
+						beforeSend: function () {
+							select.closest('ul.chosen-results').empty();
+							$search_field.prop( 'disabled', true );
+						},
+						success   : function (data) {
+
+							$container.removeClass( 'give-select-chosen-ajax' );
+
+                            // Remove all options but those that are selected.
+                            $('option:not(:selected)', select).remove();
+
+							if( data.length ) {
+								$.each(data, function (key, item) {
+									// Add any option that doesn't already exist.
+									if (!$('option[value="' + item.id + '"]', select).length) {
+										select.prepend('<option value="' + item.id + '">' + item.name + '</option>');
+									}
+								});
+
+								// Trigger update event.
+								$container.prev('select.give-select-chosen').trigger('chosen:updated');
+
+                            } else{
+
+								// Trigger no result message event.
+								$container.prev('select.give-select-chosen').trigger('chosen:no_results');
+							}
+
+                            // Ensure the original query is retained within the search input.
+                            $search_field.prop( 'disabled', false );
+                            $search_field.val(val).focus();
+
+						}
+					}).fail(function (response) {
+						if (window.console && window.console.log) {
+							console.log(response);
+						}
+					}).done(function (response) {
+						$search_field.prop( 'disabled', false );
+					});
+				},
+				doneTypingInterval
+			);
+		});
+
+        $('.give-select-chosen .chosen-search input').each( function() {
+        	var type = $(this).parent().parent().parent().prev('select.give-select-chosen').data('search-type');
+        	var placeholder = '';
+
+        	if ( 'form' === type ) {
+        		placeholder = give_vars.search_placeholder;
+        	} else {
+				type = 'search_placeholder_' + type;
+        		if ( give_vars[type] ) {
+        			placeholder = give_vars[type];
+        		}
+        	}
+        	$(this).attr( 'placeholder', placeholder );
+
+        });
 
 	};
 
@@ -57,13 +216,11 @@ jQuery.noConflict();
 		price = accounting.unformat(price, give_vars.decimal_separator).toString();
 		dp    = ( 'undefined' == dp ? false : dp );
 
-		var decimal_position = price.indexOf('.');
-
 		// Set default value for number of decimals.
-		if ( false !== dp ) {
+		if (false !== dp) {
 			price = parseFloat(price).toFixed(dp);
 
-		// If price do not have decimal value then set default number of decimals.
+			// If price do not have decimal value then set default number of decimals.
 		} else {
 			price = parseFloat(price).toFixed(give_vars.currency_decimals);
 		}
@@ -193,15 +350,15 @@ jQuery.noConflict();
 
 		new_donor: function () {
 
-			$('#give-donor-details').on('click', '.give-payment-new-customer, .give-payment-new-customer-cancel', function (e) {
+			$('#give-donor-details').on('click', '.give-payment-new-donor, .give-payment-new-donor-cancel', function (e) {
 				e.preventDefault();
-				$('.customer-info').toggle();
-				$('.new-customer').toggle();
+				$('.donor-info').toggle();
+				$('.new-donor').toggle();
 
-				if ($('.new-customer').is(":visible")) {
-					$('#give-new-customer').val(1);
+				if ($('.new-donor').is(":visible")) {
+					$('#give-new-donor').val(1);
 				} else {
-					$('#give-new-customer').val(0);
+					$('#give-new-donor').val(0);
 				}
 
 			});
@@ -221,12 +378,12 @@ jQuery.noConflict();
 					variable_prices_html_container = $('.give-donation-level');
 
 				// Check for form ID.
-				if ( ! ( give_form_id = $(this).val() )) {
+				if (!( give_form_id = $(this).val() )) {
 					return false;
 				}
 
 				// Bailout.
-				if( ! variable_prices_html_container.length ) {
+				if (!variable_prices_html_container.length) {
 					return false;
 				}
 
@@ -257,18 +414,18 @@ jQuery.noConflict();
 			});
 
 			// Add total donation amount if level changes.
-			$('#give-donation-overview').on('change', 'select[name="give-variable-price"]', function(){
-				var prices = jQuery(this).data('prices'),
+			$('#give-donation-overview').on('change', 'select[name="give-variable-price"]', function () {
+				var prices        = jQuery(this).data('prices'),
 					$total_amount = $('#give-payment-total')
 
-				if( $(this).val() in prices ) {
+				if ($(this).val() in prices) {
 					$total_amount
-						.val( prices[$(this).val()] )
-						.css( 'background-color', 'yellow' );
+						.val(prices[$(this).val()])
+						.css('background-color', 'yellow');
 
 					window.setTimeout(
-						function(){
-							$total_amount.css( 'background-color', 'white' )
+						function () {
+							$total_amount.css('background-color', 'white')
 						},
 						1000
 					);
@@ -427,7 +584,7 @@ jQuery.noConflict();
 		donors_export: function () {
 
 			// Show / hide Donation Form option when exporting donors
-			$('#give_customer_export_form').change(function () {
+			$('#give_donor_export_form').change(function () {
 
 				var $this                  = $(this),
 					form_id                = $('option:selected', $this).val(),
@@ -451,7 +608,7 @@ jQuery.noConflict();
 
 					$.post(ajaxurl, data, function (response) {
 						price_options_select.remove();
-						$('#give_customer_export_form_chosen').after(response);
+						$('#give_donor_export_form_chosen').after(response);
 					});
 				} else {
 					price_options_select.remove();
@@ -683,64 +840,51 @@ jQuery.noConflict();
 	/**
 	 * Donor management screen JS
 	 */
-	var Give_Customer = {
+	var Give_Donor = {
 
 		init          : function () {
-			this.edit_customer();
+			this.edit_donor();
 			this.add_email();
-			this.user_search();
 			this.remove_user();
 			this.cancel_edit();
 			this.change_country();
 			this.add_note();
 			this.delete_checked();
 		},
-		edit_customer : function () {
-			$('body').on('click', '#edit-customer', function (e) {
+		edit_donor : function () {
+			$('body').on('click', '#edit-donor', function (e) {
 				e.preventDefault();
-				$('#give-customer-card-wrapper .editable').hide();
-				$('#give-customer-card-wrapper .edit-item').fadeIn().css('display', 'block');
-			});
-		},
-		user_search   : function () {
-			// Upon selecting a user from the dropdown, we need to update the User ID
-			$('body').on('click.giveSelectUser', '.give_user_search_results a', function (e) {
-				e.preventDefault();
-				var user_id = $(this).data('userid');
-				$('input[name="customerinfo[user_id]"]').val(user_id);
+				$('#give-donor-card-wrapper .editable').hide();
+				$('#give-donor-card-wrapper .edit-item').fadeIn().css('display', 'block');
+                $('.give-select-chosen').css('width', '100%');
 			});
 		},
 		remove_user   : function () {
-			$('body').on('click', '#disconnect-customer', function (e) {
+			$('body').on('click', '#disconnect-donor', function (e) {
 				e.preventDefault();
 
 				if (!confirm(give_vars.disconnect_user)) {
 					return false;
 				}
-				var customer_id     = $('input[name="customerinfo[id]"]').val();
-
-				// Remove connected user id.
-				$('input[name="customerinfo[user_id]"]').val('');
+				var customer_id = $('input[name="customerinfo[id]"]').val();
 
 				var postData = {
 					give_action: 'disconnect-userid',
 					customer_id: customer_id,
-					_wpnonce   : $('#edit-customer-info #_wpnonce').val()
+					_wpnonce   : $('#edit-donor-info #_wpnonce').val()
 				};
 
 				$.post(ajaxurl, postData, function (response) {
-
-                    window.location.href = window.location.href;
-
+					window.location.href = window.location.href;
 				}, 'json');
 
 			});
 		},
 		cancel_edit   : function () {
-			$('body').on('click', '#give-edit-customer-cancel', function (e) {
+			$('body').on('click', '#give-edit-donor-cancel', function (e) {
 				e.preventDefault();
-				$('#give-customer-card-wrapper .edit-item').hide();
-				$('#give-customer-card-wrapper .editable').show();
+				$('#give-donor-card-wrapper .edit-item').hide();
+				$('#give-donor-card-wrapper .editable').show();
 				$('.give_user_search_results').html('');
 			});
 		},
@@ -753,7 +897,7 @@ jQuery.noConflict();
 					field_name: 'customerinfo[state]'
 				};
 				$.post(ajaxurl, data, function (response) {
-					if ('nostates' == response) {
+					if ('nostates' === response) {
 						$(':input[name="customerinfo[state]"]').replaceWith('<input type="text" name="' + data.field_name + '" value="" class="give-edit-toggles medium-text"/>');
 					} else {
 						$(':input[name="customerinfo[state]"]').replaceWith(response);
@@ -764,25 +908,25 @@ jQuery.noConflict();
 			});
 		},
 		add_note      : function () {
-			$('body').on('click', '#add-customer-note', function (e) {
+			$('body').on('click', '#add-donor-note', function (e) {
 				e.preventDefault();
 				var postData = {
-					give_action            : 'add-customer-note',
-					customer_id            : $('#customer-id').val(),
-					customer_note          : $('#customer-note').val(),
-					add_customer_note_nonce: $('#add_customer_note_nonce').val()
+					give_action            : 'add-donor-note',
+					customer_id            : $('#donor-id').val(),
+					donor_note          : $('#donor-note').val(),
+					add_donor_note_nonce: $('#add_donor_note_nonce').val()
 				};
 
-				if (postData.customer_note) {
+				if (postData.donor_note) {
 
 					$.ajax({
 						type   : "POST",
 						data   : postData,
 						url    : ajaxurl,
 						success: function (response) {
-							$('#give-customer-notes').prepend(response);
-							$('.give-no-customer-notes').hide();
-							$('#customer-note').val('');
+							$('#give-donor-notes').prepend(response);
+							$('.give-no-donor-notes').hide();
+							$('#donor-note').val('');
 						}
 					}).fail(function (data) {
 						if (window.console && window.console.log) {
@@ -791,18 +935,18 @@ jQuery.noConflict();
 					});
 
 				} else {
-					var border_color = $('#customer-note').css('border-color');
-					$('#customer-note').css('border-color', 'red');
+					var border_color = $('#donor-note').css('border-color');
+					$('#donor-note').css('border-color', 'red');
 					setTimeout(function () {
-						$('#customer-note').css('border-color', border_color);
+						$('#donor-note').css('border-color', border_color);
 					}, 500);
 				}
 			});
 		},
 		delete_checked: function () {
-			$('#give-customer-delete-confirm').change(function () {
-				var records_input = $('#give-customer-delete-records');
-				var submit_button = $('#give-delete-customer');
+			$('#give-donor-delete-confirm').change(function () {
+				var records_input = $('#give-donor-delete-records');
+				var submit_button = $('#give-delete-donor');
 
 				if ($(this).prop('checked')) {
 					records_input.attr('disabled', false);
@@ -815,11 +959,11 @@ jQuery.noConflict();
 			});
 		},
 		add_email     : function () {
-			if (!$('#add-customer-email').length) {
+			if (!$('#add-donor-email').length) {
 				return;
 			}
 
-			$(document.body).on('click', '#add-customer-email', function (e) {
+			$(document.body).on('click', '#add-donor-email', function (e) {
 				e.preventDefault();
 				var button  = $(this);
 				var wrapper = button.parent();
@@ -828,7 +972,7 @@ jQuery.noConflict();
 				wrapper.find('.spinner').css('visibility', 'visible');
 				button.attr('disabled', true);
 
-				var customer_id = wrapper.find('input[name="customer-id"]').val();
+				var customer_id = wrapper.find('input[name="donor-id"]').val();
 				var email       = wrapper.find('input[name="additional-email"]').val();
 				var primary     = wrapper.find('input[name="make-additional-primary"]').is(':checked');
 				var nonce       = wrapper.find('input[name="add_email_nonce"]').val();
@@ -909,11 +1053,11 @@ jQuery.noConflict();
 					$all_sub_fields   = $('ul.give-metabox-sub-tabs'),
 					in_sub_fields     = $(this).parents('ul.give-metabox-sub-tabs').length;
 
-				if ( has_sub_field ) {
+				if (has_sub_field) {
 					$li_parent.toggleClass('active');
 					$sub_field.toggleClass('give-hidden');
 
-					var $active_subtab_li = $( 'li.active', 'ul.give-metabox-sub-tabs' );
+					var $active_subtab_li = $('li.active', 'ul.give-metabox-sub-tabs');
 
 					// Show hide sub fields if any and exit.
 					$all_sub_fields.not($sub_field).addClass('give-hidden');
@@ -922,7 +1066,7 @@ jQuery.noConflict();
 					$active_subtab_li.addClass('active');
 
 					return false;
-				} else if ( ! in_sub_fields ) {
+				} else if (!in_sub_fields) {
 					// Hide all tab and sub tabs.
 					$all_tab_links_li.each(function (index, item) {
 						item = $(item);
@@ -932,7 +1076,7 @@ jQuery.noConflict();
 							$('ul.give-metabox-sub-tabs', item).addClass('give-hidden');
 						}
 					});
-				} else if( in_sub_fields ) {
+				} else if (in_sub_fields) {
 					// Hide all sub tabs.
 					$('ul.give-metabox-sub-tabs').addClass('give-hidden');
 					$all_tab_links_li.removeClass('active');
@@ -988,40 +1132,108 @@ jQuery.noConflict();
 						$item.wpColorPicker();
 					});
 				}
-			})
+			});
 		},
 
-		setup_media_fields: function() {
-			var give_media_uploader;
+		setup_media_fields: function () {
+			var give_media_uploader,
+				$give_upload_button,
+				$body = $('body');
 
-			$('body').on( 'click', '.give-media-upload', function (e) {
+			/**
+			 * Set media modal.
+			 */
+			$body.on('click', '.give-upload-button', function (e) {
 				e.preventDefault();
-				window.give_media_uploader_input_field = $(this);
+				var $media_modal_config = {};
 
-				// If the uploader object has already been created, reopen the dialog
-				if (give_media_uploader) {
-					give_media_uploader.open();
-					return;
+				// Cache input field.
+				$give_upload_button = $(this);
+
+				// Set modal config
+				switch ( $(this).data('field-type') ) {
+					case 'media':
+						$media_modal_config = {
+							title: give_vars.metabox_fields.media.button_title,
+							button: {text: give_vars.metabox_fields.media.button_title},
+							multiple: false, // Set to true to allow multiple files to be selected
+							library : {type:'image'}
+						};
+						break;
+
+					default:
+						$media_modal_config = {
+							title      : give_vars.metabox_fields.file.button_title,
+							button     : {text: give_vars.metabox_fields.file.button_title},
+							multiple: false
+						};
 				}
+
 				// Extend the wp.media object
-				give_media_uploader = wp.media.frames.file_frame = wp.media({
-					title: give_vars.metabox_fields.media.button_title,
-					button: {
-						text: give_vars.metabox_fields.media.button_title
-					}, multiple: false
-				});
+				give_media_uploader = wp.media($media_modal_config);
 
 				// When a file is selected, grab the URL and set it as the text field's value
 				give_media_uploader.on('select', function () {
-					var attachment = give_media_uploader.state().get('selection').first().toJSON(),
-						$input_field = window.give_media_uploader_input_field.prev(),
-						fvalue= ( 'id' === $input_field.data('fvalue') ? attachment.id : attachment.url );
+					var attachment   = give_media_uploader.state().get('selection').first().toJSON(),
+						$input_field = $give_upload_button.prev(),
+						fvalue       = ( 'id' === $give_upload_button.data('fvalue') ? attachment.id : attachment.url );
 
+					$body.trigger( 'give_media_inserted', [ attachment , $input_field ] );
+
+					// Set input field value.
 					$input_field.val(fvalue);
 				});
+
 				// Open the uploader dialog
 				give_media_uploader.open();
-			})
+			});
+
+			/**
+			 * Show image preview.
+			 */
+			$body.on('give_media_inserted', function (e, attachment) {
+				var $parent              = $give_upload_button.parents('.give-field-wrap'),
+					$image_container     = $('.give-image-thumb', $parent);
+
+				// Bailout.
+				if( ! $image_container.length ) {
+					return false;
+				}
+
+				// Bailout and hide preview.
+				if('image' !== attachment.type) {
+					$image_container.addClass('give-hidden');
+					$('img', $image_container).attr('src', '');
+					return false;
+				}
+
+				// Set the attachment URL to our custom image input field.
+				$image_container.find('img').attr('src', attachment.url);
+
+				// Hide the add image link
+				$image_container.removeClass('give-hidden');
+			});
+
+			/**
+			 * Delete Image Link.
+			 */
+			$('span.give-delete-image-thumb', '.give-image-thumb').on('click', function (event) {
+
+				event.preventDefault();
+
+				var $parent            = $(this).parents('.give-field-wrap'),
+					$image_container   = $(this).parent(),
+					$image_input_field = $('input[type="text"]', $parent);
+
+				// Clear out the preview image
+				$image_container.addClass('give-hidden');
+
+				// Remove image link from input field.
+				$image_input_field.val('');
+
+				// Hide the add image link
+				$('img', $image_container).attr('src', '');
+			});
 		},
 
 		/**
@@ -1369,9 +1581,9 @@ jQuery.noConflict();
 
 				// Get max level id.
 				$('input[type="hidden"].give-levels_id', $this).each(function (index, item) {
-					var $item = $(item),
-						current_level = parseInt( $item.val() );
-					if (max_level_id < current_level ) {
+					var $item         = $(item),
+						current_level = parseInt($item.val());
+					if (max_level_id < current_level) {
 						max_level_id = current_level;
 					}
 				});
@@ -1468,39 +1680,39 @@ jQuery.noConflict();
 	 * Payment history listing page js
 	 */
 	var Give_Payment_History = {
-		init : function(){
+		init: function () {
 			this.handle_bulk_delete()
 		},
 
-		handle_bulk_delete: function(){
+		handle_bulk_delete: function () {
 			var $payment_filters = $('#give-payments-filter');
 
 			/**
 			 * Payment filters
 			 */
-			$payment_filters.on( 'submit', function(e){
+			$payment_filters.on('submit', function (e) {
 				var current_action        = $('select[name="action"]', $(this)).val(),
 					$payments             = [],
 					confirm_action_notice = '';
 
-				$('input[name="payment[]"]:checked', $(this) ).each(function( index, item ){
-					$payments.push( $(this).val() );
+				$('input[name="payment[]"]:checked', $(this)).each(function (index, item) {
+					$payments.push($(this).val());
 				});
 
 				// Total payment count.
 				$payments = $payments.length.toString();
 
-				switch ( current_action ) {
+				switch (current_action) {
 					case 'delete':
 						// Check if admin did not select any payment.
-						if( ! parseInt( $payments ) ) {
-							alert( give_vars.bulk_action.delete.zero_payment_selected );
+						if (!parseInt($payments)) {
+							alert(give_vars.bulk_action.delete.zero_payment_selected);
 							return false;
 						}
 
 						// Ask admin before processing.
 						confirm_action_notice = ( 1 < $payments ) ? give_vars.bulk_action.delete.delete_payments : give_vars.bulk_action.delete.delete_payment;
-						if( ! window.confirm( confirm_action_notice.replace( '{payment_count}', $payments ) ) ) {
+						if (!window.confirm(confirm_action_notice.replace('{payment_count}', $payments))) {
 							return false;
 						}
 
@@ -1508,14 +1720,14 @@ jQuery.noConflict();
 
 					case 'resend-receipt':
 						// Check if admin did not select any payment.
-						if( ! parseInt( $payments ) ) {
-							alert( give_vars.bulk_action.resend_receipt.zero_recipient_selected );
+						if (!parseInt($payments)) {
+							alert(give_vars.bulk_action.resend_receipt.zero_recipient_selected);
 							return false;
 						}
 
 						// Ask admin before processing.
 						confirm_action_notice = ( 1 < $payments ) ? give_vars.bulk_action.resend_receipt.resend_receipts : give_vars.bulk_action.resend_receipt.resend_receipt;
-						if( ! window.confirm( confirm_action_notice.replace( '{payment_count}', $payments ) ) ) {
+						if (!window.confirm(confirm_action_notice.replace('{payment_count}', $payments))) {
 							return false;
 						}
 
@@ -1527,7 +1739,7 @@ jQuery.noConflict();
 		}
 	};
 
-	//On DOM Ready
+	// On DOM Ready.
 	$(function () {
 
 		enable_admin_datepicker();
@@ -1536,7 +1748,7 @@ jQuery.noConflict();
 		Give_Edit_Donation.init();
 		Give_Settings.init();
 		Give_Reports.init();
-		Give_Customer.init();
+		Give_Donor.init();
 		API_Screen.init();
 		Give_Export.init();
 		Edit_Form_Screen.init();
@@ -1547,54 +1759,6 @@ jQuery.noConflict();
 		//Footer
 		$('a.give-rating-link').click(function () {
 			jQuery(this).parent().text(jQuery(this).data('rated'));
-		});
-
-		// Ajax user search
-		$('.give-ajax-user-search').on('keyup', function () {
-			var user_search = $(this).val();
-			var exclude     = '';
-
-			if ($(this).data('exclude')) {
-				exclude = $(this).data('exclude');
-			}
-
-			$('.give-ajax').show();
-			data = {
-				action   : 'give_search_users',
-				user_name: user_search,
-				exclude  : exclude
-			};
-
-			document.body.style.cursor = 'wait';
-
-			$.ajax({
-				type    : "POST",
-				data    : data,
-				dataType: "json",
-				url     : ajaxurl,
-				success : function (search_response) {
-					$('.give-ajax').hide();
-					$('.give_user_search_results').removeClass('hidden');
-					$('.give_user_search_results span').html('');
-					$(search_response.results).appendTo('.give_user_search_results span');
-					document.body.style.cursor = 'default';
-				}
-			});
-		});
-
-		$('body').on('click.giveSelectUser', '.give_user_search_results span a', function (e) {
-			e.preventDefault();
-			var login = $(this).data('login');
-			$('.give-ajax-user-search').val(login);
-			$('.give_user_search_results').addClass('hidden');
-			$('.give_user_search_results span').html('');
-		});
-
-		$('body').on('click.giveCancelUserSearch', '.give_user_search_results a.give-ajax-user-cancel', function (e) {
-			e.preventDefault();
-			$('.give-ajax-user-search').val('');
-			$('.give_user_search_results').addClass('hidden');
-			$('.give_user_search_results span').html('');
 		});
 
 		/**
@@ -1673,10 +1837,10 @@ jQuery.noConflict();
 
 		// Format price sting of input field on focusout.
 		$('#poststuff').on('focusout', 'input.give-money-field, input.give-price-field', function () {
-			price_string = give_unformat_currency( $(this).val(), false );
+			price_string = give_unformat_currency($(this).val(), false);
 
 			// Back out.
-			if ( give_unformat_currency( '0', false ) === give_unformat_currency( $(this).val(), false ) ) {
+			if (give_unformat_currency('0', false) === give_unformat_currency($(this).val(), false)) {
 				$(this).val('');
 				return false;
 			}
@@ -1703,15 +1867,15 @@ jQuery.noConflict();
 
 			var $sub_tab_nav = $(this).next();
 
-			if( ! $sub_tab_nav.is(':hover') ) {
+			if (!$sub_tab_nav.is(':hover')) {
 				$sub_tab_nav.toggleClass('give-hidden');
 			}
 
 			return false;
-		}).on( 'blur', '#give-show-sub-nav', function(){
+		}).on('blur', '#give-show-sub-nav', function () {
 			var $sub_tab_nav = $(this).next();
 
-			if( ! $sub_tab_nav.is(':hover') ) {
+			if (!$sub_tab_nav.is(':hover')) {
 				$sub_tab_nav.addClass('give-hidden');
 			}
 		});
@@ -1742,7 +1906,7 @@ function give_render_responsive_tabs() {
 		$hide_tabs              = [],
 		tab_width               = 0;
 
-	if( 600 < jQuery(window).outerWidth() ) {
+	if (600 < jQuery(window).outerWidth()) {
 		tab_width = 200;
 	}
 
@@ -1815,7 +1979,6 @@ function give_render_responsive_tabs() {
 			resolve(true);
 		});
 
-
 		show_tabs.then(function (is_show_tabs) {
 			// Hide sub menu tabs.
 			if ($hide_tabs.length) {
@@ -1848,7 +2011,7 @@ function get_url_params() {
 	var vars   = [], hash;
 	var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
 	for (var i = 0; i < hashes.length; i++) {
-		hash = hashes[i].split('=');
+		hash          = hashes[i].split('=');
 		vars[hash[0]] = hash[1];
 	}
 	return vars;

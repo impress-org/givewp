@@ -140,3 +140,39 @@ function give_redirect_to_clean_url_admin_pages() {
 }
 
 add_action( 'admin_init', 'give_redirect_to_clean_url_admin_pages' );
+
+/**
+ * Hide License Notice Shortly.
+ *
+ * This code is used with AJAX call to hide license notice for a short period of time
+ *
+ * @since 1.8.9
+ *
+ * @return void
+ */
+function give_hide_license_notice() {
+
+	if ( ! isset( $_POST['_give_hide_license_notices_shortly'] ) ) {
+		die();
+	}
+
+	$current_user = wp_get_current_user();
+
+    // Get notice id.
+    $notice_id = sanitize_text_field( $_POST['_give_hide_license_notices_shortly'] );
+
+    // Transient key name.
+    $transient_key = "_give_hide_license_notices_shortly_{$current_user->ID}_{$notice_id}";
+
+    if ( Give_Cache::get( $transient_key, true ) ) {
+        return;
+    }
+
+    // Hide notice for 24 hours.
+    Give_Cache::set( $transient_key, true, DAY_IN_SECONDS, true );
+
+    die();
+
+}
+
+add_action( 'wp_ajax_give_hide_license_notice', 'give_hide_license_notice' );

@@ -1,11 +1,10 @@
 <?php
 /**
- * Recount all customer stats
+ * Recount all donor stats.
  *
- * This class handles batch processing of recounting all customer stats
+ * This class handles batch processing of recounting all donor stats.
  *
- * @subpackage  Admin/Tools/Give_Tools_Recount_Customer_Stats
- * @copyright   Copyright (c) 2016, Chris Klosowski
+ * @subpackage  Admin/Tools/Give_Tools_Recount_Donor_Stats
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.5
  */
@@ -16,14 +15,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Give_Tools_Recount_Customer_Stats Class
+ * Give_Tools_Recount_Donor_Stats Class
  *
  * @since 1.5
  */
-class Give_Tools_Recount_Customer_Stats extends Give_Batch_Export {
+class Give_Tools_Recount_Donor_Stats extends Give_Batch_Export {
 
 	/**
-	 * Our export type. Used for export-type specific filters/actions
+	 * Our export type. Used for export-type specific filters/actions.
+	 *
 	 * @var string
 	 * @since 1.5
 	 */
@@ -31,6 +31,7 @@ class Give_Tools_Recount_Customer_Stats extends Give_Batch_Export {
 
 	/**
 	 * Allows for a non-form batch processing to be run.
+	 *
 	 * @since  1.5
 	 * @var boolean
 	 */
@@ -38,6 +39,7 @@ class Give_Tools_Recount_Customer_Stats extends Give_Batch_Export {
 
 	/**
 	 * Sets the number of items to pull on each step
+	 *
 	 * @since  1.5
 	 * @var integer
 	 */
@@ -60,15 +62,15 @@ class Give_Tools_Recount_Customer_Stats extends Give_Batch_Export {
 			'order'   => 'DESC',
 		);
 
-		$customers = Give()->customers->get_customers( $args );
+		$donors = Give()->donors->get_donors( $args );
 
-		if ( $customers ) {
+		if ( $donors ) {
 
 			$allowed_payment_status = apply_filters( 'give_recount_donors_donation_statuses', give_get_payment_status_keys() );
 
-			foreach ( $customers as $customer ) {
+			foreach ( $donors as $donor ) {
 
-				$attached_payment_ids = explode( ',', $customer->payment_ids );
+				$attached_payment_ids = explode( ',', $donor->payment_ids );
 
 				$attached_args = array(
 					'post__in' => $attached_payment_ids,
@@ -85,9 +87,9 @@ class Give_Tools_Recount_Customer_Stats extends Give_Batch_Export {
 					'meta_query'   => array(
 						array(
 							'key'     => '_give_payment_user_email',
-							'value'   => $customer->email,
+							'value'   => $donor->email,
 							'compare' => '=',
-						)
+						),
 					),
 				);
 
@@ -108,36 +110,34 @@ class Give_Tools_Recount_Customer_Stats extends Give_Batch_Export {
 
 						if ( true === $should_process_payment ) {
 
-							if ( apply_filters( 'give_customer_recount_should_increase_value', true, $payment ) ) {
+							if ( apply_filters( 'give_donor_recount_should_increase_value', true, $payment ) ) {
 								$purchase_value += give_get_payment_amount( $payment->ID );
 							}
 
-							if ( apply_filters( 'give_customer_recount_should_increase_count', true, $payment ) ) {
+							if ( apply_filters( 'give_donor_recount_should_increase_count', true, $payment ) ) {
 								$purchase_count ++;
 							}
-
 						}
 
 						$payment_ids[] = $payment->ID;
 					}
-
 				}
 
 				$payment_ids = implode( ',', $payment_ids );
 
-				$customer_update_data = array(
+				$donor_update_data = array(
 					'purchase_count' => $purchase_count,
 					'purchase_value' => $purchase_value,
 					'payment_ids'    => $payment_ids,
 				);
 
-				$customer_instance = new Give_Customer( $customer->id );
-				$customer_instance->update( $customer_update_data );
+				$donor_instance = new Give_Donor( $donor->id );
+				$donor_instance->update( $donor_update_data );
 
-			}
+			}// End foreach().
 
 			return true;
-		}
+		}// End if().
 
 		return false;
 
@@ -157,8 +157,8 @@ class Give_Tools_Recount_Customer_Stats extends Give_Batch_Export {
 			'order'   => 'DESC',
 		);
 
-		$customers = Give()->customers->get_customers( $args );
-		$total     = count( $customers );
+		$donors = Give()->donors->get_donors( $args );
+		$total     = count( $donors );
 
 		$percentage = 100;
 
@@ -192,7 +192,9 @@ class Give_Tools_Recount_Customer_Stats extends Give_Batch_Export {
 	public function process_step() {
 
 		if ( ! $this->can_export() ) {
-			wp_die( esc_html__( 'You do not have permission to recount stats.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die( esc_html__( 'You do not have permission to recount stats.', 'give' ), esc_html__( 'Error', 'give' ), array(
+				'response' => 403,
+			) );
 		}
 
 		$had_data = $this->get_data();

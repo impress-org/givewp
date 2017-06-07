@@ -405,14 +405,8 @@ function give_process_profile_editor_updates( $data ) {
 	 */
 	do_action( 'give_pre_update_user_profile', $user_id, $userdata );
 
-	// New password
-	if ( ! empty( $data['give_new_user_pass1'] ) ) {
-		if ( $data['give_new_user_pass1'] !== $data['give_new_user_pass2'] ) {
-			give_set_error( 'password_mismatch', __( 'The passwords you entered do not match. Please try again.', 'give' ) );
-		} else {
-			$userdata['user_pass'] = $data['give_new_user_pass1'];
-		}
-	}
+	// Make sure to validate passwords for existing Donors
+	give_validate_user_password( $data['give_new_user_pass1'], $data['give_new_user_pass2'] );
 
 	if ( empty( $email ) ) {
 		// Make sure email should not be empty.
