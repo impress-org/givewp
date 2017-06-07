@@ -18,6 +18,9 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 			define( 'GIVE_UNIT_TESTS', true );
 		}
 
+		// Prevent wp_redirect from sending headers.
+		add_filter( 'give_login_redirect', '__return_false' );
+
 		// Set the current user.
 		wp_set_current_user( 0 );
 
@@ -85,9 +88,6 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 	 * @since 1.3.2
 	 */
 	public function test_process_login_form_correct_login() {
-
-		// Prevent wp_redirect from sending headers.
-		add_filter( 'give_login_redirect', '__return_false' );
 
 		ob_start();
 
