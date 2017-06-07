@@ -25,10 +25,7 @@ class Give_Notices {
 	 * @var array
 	 * @since 1.8
 	 */
-	private static $notices = array(
-		'updated' => array(),
-		'error'   => array(),
-	);
+	private static $notices = array();
 
 	/**
 	 * Get things started.
@@ -39,6 +36,7 @@ class Give_Notices {
 		add_action( 'admin_notices', array( $this, 'show_notices' ), 999 );
 		add_action( 'give_dismiss_notices', array( $this, 'dismiss_notices' ) );
 		add_action( 'admin_bar_menu', array( $this, 'give_admin_bar_menu' ), 1000, 1 );
+		add_action( 'admin_footer', '_give_admin_quick_js' );
 	}
 
 
@@ -52,7 +50,7 @@ class Give_Notices {
 	 *
 	 * @return bool
 	 */
-	public static function register_notice( $notice_args ) {
+	public function register_notice( $notice_args ) {
 		$notice_args = wp_parse_args(
 			$notice_args,
 			array(
@@ -60,7 +58,6 @@ class Give_Notices {
 				'id'               => '',
 				'description'      => '',
 				// Value: null/user/all
-				'is_dismissible'   => true,
 				'dismissible_type' => null,
 				'auto_dismissible' => false,
 				'show'             => false,
@@ -71,9 +68,23 @@ class Give_Notices {
 			return false;
 		}
 
-		self::$notices[ $notice_args['type'] ][ $notice_args['id'] ] = $notice_args;
+		self::$notices[ $notice_args['id'] ] = $notice_args;
 
 		return true;
+	}
+
+	/**
+	 * Register notice.
+	 *
+	 * @since  1.8.9
+	 * @access public
+	 *
+	 * @param string $notice_id
+	 *
+	 * @return bool
+	 */
+	public function is_show_notice( $notice_id ) {
+		return array_key_exists( $notice_id, self::$notices ) && self::$notices[$notice_id]['show'];
 	}
 
 
@@ -107,25 +118,7 @@ class Give_Notices {
 	 * @since 1.0
 	 */
 	public function show_notices() {
-		// Set updates.
-		if ( count( self::$notices['updated'] ) > 0 ) {
-			foreach ( self::$notices['updated'] as $notice_id => $notice ) {
-				if ( $notice['show'] ) {
-					add_settings_error( 'give-notices', $notice_id, $notice['description'], 'updated' );
-				}
-			}
-		}
-
-		// Set errors.
-		if ( count( self::$notices['error'] ) > 0 ) {
-			foreach ( self::$notices['error'] as $notice_id => $notice ) {
-				if ( $notice['show'] ) {
-					add_settings_error( 'give-notices', $notice_id, $notice['description'], 'error' );
-				}
-			}
-		}
-
-		settings_errors( 'give-notices' );
+		$this->settings_errors();
 	}
 
 
@@ -176,6 +169,68 @@ class Give_Notices {
 		<?php
 
 		return ob_get_clean();
+	}
+
+	/**
+	 * Display settings errors registered by add_settings_error().
+	 *
+	 * @since 1.8.9
+	 *
+	 */
+	private function settings_errors() {
+		// Bailout.
+		if( empty( self::$notices ) ) {
+			return;
+		}
+
+		$output = '';
+
+		foreach ( self::$notices as $notice_id => $notice ) {
+			$css_id = (  false === strpos( $notice['id'], 'give') ? "give-{$notice['id']}" : $notice['id'] );
+
+			$css_class = $notice['type'] . ' give-notice notice is-dismissible';
+			$output .= "<div id=\"{$css_id}\" class=\"{$css_class}\" data-auto-dismissible=\"{$notice['auto_dismissible']}\"> \n";
+			$output .= "<p>{$notice['description']}</p>";
+			$output .= "</div> \n";
+		}
+
+		echo $output;
+	}
+
+	/**
+	 * Print js for admin pages.
+	 *
+	 * @since 1.8.7
+	 */
+	function _give_admin_quick_js() {
+		/* @var WP_Screen $screen */
+		$screen = get_current_screen();
+
+		if( ! ( $screen instanceof WP_Screen ) ) {
+			return false;
+		}
+
+		switch ( true ) {
+			case Give()->notices->is_show_notice( 'give-invalid-php-version' ):
+				?>
+				<script>
+					jQuery(document).ready(function ($) {
+						$('.give-outdated-php-notice').on('click', 'button.notice-dismiss', function (e) {
+
+							e.preventDefault();
+
+							var data = {
+								'action': 'give_hide_outdated_php_notice',
+								'_give_hide_outdated_php_notices_shortly': 'general'
+							};
+
+							jQuery.post('<?php echo admin_url(); ?>admin-ajax.php', data, function(response) { });
+
+						});
+					});
+				</script>
+				<?php
+		}
 	}
 
 }

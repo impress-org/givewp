@@ -432,35 +432,3 @@ function give_admin_hide_notice_shortly_js() {
 }
 
 add_action( 'admin_head', 'give_admin_hide_notice_shortly_js' );
-
-/**
- * Admin js code
- *
- * This code helps to hide php version upgrade nag for 24 hour if admin user dismissed notice.
- *
- * @since 1.8.9
- *
- * @return void
- */
-function give_admin_hide_outdated_php_notice_shortly_js() {
-	?>
-    <script>
-        jQuery(document).ready(function ($) {
-            $('.give-outdated-php-notice').on('click', 'button.notice-dismiss', function (e) {
-
-                e.preventDefault();
-
-                var data = {
-                    'action': 'give_hide_outdated_php_notice',
-                    '_give_hide_outdated_php_notices_shortly': 'general'
-                };
-
-                jQuery.post('<?php echo admin_url(); ?>admin-ajax.php', data, function(response) { });
-
-            });
-        });
-    </script>
-	<?php
-}
-
-add_action( 'give_trigger_outdated_php_notice_js', 'give_admin_hide_outdated_php_notice_shortly_js' );

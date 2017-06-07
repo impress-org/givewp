@@ -254,7 +254,7 @@ function _give_register_admin_notices() {
 		$notice_desc .= '<p>' . sprintf( __( 'If you cannot upgrade your PHP version yourself, you can send an email to your host. If they don\'t want to upgrade your PHP version, we would suggest you switch hosts. Have a look at one of the recommended %1$sWordPress hosting partners%2$s.', 'give' ), sprintf( '<a href="%1$s" target="_blank">', esc_url( 'https://wordpress.org/hosting/' ) ), '</a>' ) . '</p>';
 
 		Give()->notices->register_notice( array(
-			'id'          => 'give-donation-deleted',
+			'id'          => 'give-invalid-php-version',
 			'type'        => 'error',
 			'description' => $notice_desc,
 			'show'        => ! Give_Cache::get( '_give_hide_outdated_php_notices_shortly', true ),
