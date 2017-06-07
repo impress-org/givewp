@@ -36,7 +36,16 @@ class Give_Notices {
 	 * @access private
 	 * @var bool
 	 */
-	private static $has_auto_dismissiable_notice = false;
+	private static $has_auto_dismissible_notice = false;
+
+	/**
+	 * Flag to check if any notice has dismiss interval among all notices
+	 *
+	 * @since  1.8.9
+	 * @access private
+	 * @var bool
+	 */
+	private static $has_dismiss_interval_notice = false;
 
 	/**
 	 * Get things started.
@@ -47,9 +56,8 @@ class Give_Notices {
 		add_action( 'admin_notices', array( $this, 'show_notices' ), 999 );
 		add_action( 'give_dismiss_notices', array( $this, 'dismiss_notices' ) );
 		add_action( 'admin_bar_menu', array( $this, 'give_admin_bar_menu' ), 1000, 1 );
-		add_action( 'admin_footer', '_give_admin_quick_js' );
+		add_action( 'give_hide_notice', array( $this, 'hide_notice' ) );
 	}
-
 
 	/**
 	 * Register notice.
@@ -65,37 +73,35 @@ class Give_Notices {
 		$notice_args = wp_parse_args(
 			$notice_args,
 			array(
-				'type'             => 'error',
 				'id'               => '',
 				'description'      => '',
+				'auto_dismissible' => false,
+
+				// Value: error/updated
+				'type'             => 'error',
+
 				// Value: null/user/all
 				'dismissible_type' => null,
-				'auto_dismissible' => false,
-				'show'             => false,
+
+				// Value: shortly/permanent/null/(interval time in second)
+				'dismiss_interval' => null,
+
 			)
 		);
 
+		// Bailout.
 		if ( empty( $notice_args['id'] ) ) {
 			return false;
 		}
 
 		self::$notices[ $notice_args['id'] ] = $notice_args;
 
-		return true;
-	}
+		// Auto set show param if not already set.
+		if( ! isset( self::$notices[ $notice_args['id'] ]['show'] ) ) {
+			self::$notices[ $notice_args['id'] ]['show'] = $this->is_notice_dismissed( $notice_args ) ? false : true;
+		}
 
-	/**
-	 * Register notice.
-	 *
-	 * @since  1.8.9
-	 * @access public
-	 *
-	 * @param string $notice_id
-	 *
-	 * @return bool
-	 */
-	public function is_show_notice( $notice_id ) {
-		return array_key_exists( $notice_id, self::$notices ) && self::$notices[$notice_id]['show'];
+		return true;
 	}
 
 
@@ -190,24 +196,43 @@ class Give_Notices {
 	 */
 	private function settings_errors() {
 		// Bailout.
-		if( empty( self::$notices ) ) {
+		if ( empty( self::$notices ) ) {
 			return;
 		}
 
 		$output = '';
 
 		foreach ( self::$notices as $notice_id => $notice ) {
-			// Check if notice dismissible or not.
-			if( ! self::$has_auto_dismissiable_notice ) {
-				self::$has_auto_dismissiable_notice = $notice['auto_dismissible'];
+			// Check flag set to true to show notice.
+			if( ! $notice['show'] ) {
+				continue;
 			}
 
-			$css_id = (  false === strpos( $notice['id'], 'give') ? "give-{$notice['id']}" : $notice['id'] );
+			// Check if notice dismissible or not.
+			if ( ! self::$has_auto_dismissible_notice ) {
+				self::$has_auto_dismissible_notice = $notice['auto_dismissible'];
+			}
+
+			// Check if notice dismissible or not.
+			if ( ! self::$has_dismiss_interval_notice ) {
+				self::$has_dismiss_interval_notice = $notice['dismiss_interval'];
+			}
+
+			$css_id = ( false === strpos( $notice['id'], 'give' ) ? "give-{$notice['id']}" : $notice['id'] );
 
 			$css_class = $notice['type'] . ' give-notice notice is-dismissible';
-			$output .= "<div id=\"{$css_id}\" class=\"{$css_class}\" data-auto-dismissible=\"{$notice['auto_dismissible']}\"> \n";
-			$output .= "<p>{$notice['description']}</p>";
-			$output .= "</div> \n";
+			$output    .= sprintf(
+				'<div id="%1$s" class="%2$s" data-auto-dismissible="%3$s" data-dismissible-type="%4$s" data-dismiss-interval="%5$s" data-notice-id="%6$s" data-security="%7$s">' . " \n",
+				$css_id,
+				$css_class,
+				$notice['auto_dismissible'],
+				$notice['dismissible_type'],
+				$notice['dismiss_interval'],
+				$notice['id'],
+				wp_create_nonce( "give_edit_{$notice_id}_notice" )
+			);
+			$output    .= "<p>{$notice['description']}</p>";
+			$output    .= "</div> \n";
 		}
 
 		echo $output;
@@ -216,50 +241,13 @@ class Give_Notices {
 	}
 
 	/**
-	 * Print js for admin pages.
-	 *
-	 * @since 1.8.7
-	 */
-	public function _give_admin_quick_js() {
-		/* @var WP_Screen $screen */
-		$screen = get_current_screen();
-
-		if( ! ( $screen instanceof WP_Screen ) ) {
-			return false;
-		}
-
-		switch ( true ) {
-			case Give()->notices->is_show_notice( 'give-invalid-php-version' ):
-				?>
-				<script>
-					jQuery(document).ready(function ($) {
-						$('.give-outdated-php-notice').on('click', 'button.notice-dismiss', function (e) {
-
-							e.preventDefault();
-
-							var data = {
-								'action': 'give_hide_outdated_php_notice',
-								'_give_hide_outdated_php_notices_shortly': 'general'
-							};
-
-							jQuery.post('<?php echo admin_url(); ?>admin-ajax.php', data, function(response) { });
-
-						});
-					});
-				</script>
-				<?php
-		}
-	}
-
-
-	/**
 	 * Print notice js.
 	 *
 	 * @since  1.8.9
 	 * @access private
 	 */
 	private function print_js() {
-		if ( self::$has_auto_dismissiable_notice ) :
+		if ( self::$has_auto_dismissible_notice ) :
 			?>
 			<script>
 				jQuery(document).ready(function () {
@@ -274,6 +262,120 @@ class Give_Notices {
 			</script>
 			<?php
 		endif;
+
+		if ( self::$has_dismiss_interval_notice ) :
+			?>
+			<script>
+				jQuery(document).ready(function () {
+
+					jQuery('body').on('click', 'button.notice-dismiss', function (e) {
+						var $parent = jQuery(this).parents('.give-notice');
+
+						// bailout.
+						if (!$parent.data('dismiss-interval') || !$parent.data('dismissible-type')) {
+							return false;
+						}
+
+						e.preventDefault();
+
+						var data = {
+							'give-action'     : 'hide_notice',
+							'notice_id'       : $parent.data('notice-id'),
+							'dismissible_type': $parent.data('dismissible-type'),
+							'dismiss_interval': $parent.data('dismiss-interval'),
+							'_wpnonce'        : $parent.data('security')
+						};
+
+						jQuery.post(
+							'<?php echo admin_url(); ?>admin-ajax.php',
+							data,
+							function (response) {
+
+							})
+					})
+				});
+			</script>
+			<?php
+		endif;
 	}
 
+
+	/**
+	 * Hide notice.
+	 *
+	 * @since  1.8.9
+	 * @access public
+	 */
+	public function hide_notice() {
+		$_post     = give_clean( $_POST );
+		$notice_id = esc_attr( $_post['notice_id'] );
+
+		// Bailout.
+		if ( empty( $notice_id ) || ! check_ajax_referer( "give_edit_{$notice_id}_notice", '_wpnonce' ) ) {
+			wp_send_json_error();
+		}
+
+		$notice_key = Give()->notices->get_notice_key( $notice_id, $_post['dismiss_interval'] );
+		if ( 'user' === $_post['dismissible_type'] ) {
+			$current_user = wp_get_current_user();
+			$notice_key   = Give()->notices->get_notice_key( $notice_id, $_post['dismiss_interval'], $current_user->ID );
+		}
+
+		$notice_dismiss_time = null;
+		if ( 'shortly' === $_post['dismiss_interval'] ) {
+			$notice_dismiss_time = DAY_IN_SECONDS;
+		}
+
+		// Save option to hide notice.
+		Give_Cache::set( $notice_key, true, $notice_dismiss_time, true );
+
+		wp_send_json_success();
+	}
+
+
+	/**
+	 * Get notice key.
+	 *
+	 * @since  1.8.9
+	 * @access public
+	 *
+	 * @param string $notice_id
+	 * @param string $dismiss_interval
+	 * @param int    $user_id
+	 *
+	 * @return string
+	 */
+	public function get_notice_key( $notice_id, $dismiss_interval, $user_id = 0 ) {
+		$notice_key = sanitize_key( "_give_notice_{$notice_id}_{$dismiss_interval}" );
+
+		if ( $user_id ) {
+			$notice_key = sanitize_key( "_give_notice_{$notice_id}_{$dismiss_interval}_{$user_id}" );
+		}
+
+		return $notice_key;
+	}
+
+
+	/**
+	 * Check if notice dismissed or not
+	 *
+	 * @since  1.8.9
+	 * @access public
+	 *
+	 * @param array $notice
+	 *
+	 * @return bool|null
+	 */
+	public function is_notice_dismissed( $notice ) {
+		$notice_key = $this->get_notice_key( $notice['id'], $notice['dismiss_interval'] );
+
+		if ( 'user' === $notice['dismissible_type'] ) {
+			$current_user = wp_get_current_user();
+			$notice_key   = Give()->notices->get_notice_key( $notice['id'], $notice['dismiss_interval'], $current_user->ID );
+		}
+
+		$notice_data = Give_Cache::get( $notice_key, true );
+
+		return ! empty( $notice_data ) && ! is_wp_error( $notice_data );
+	}
 }
