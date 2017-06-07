@@ -713,8 +713,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 				&& empty( $showed_invalid_message )
 			) {
 
-				do_action( 'give_trigger_license_notice_js' );
-
 				$messages['general']    = sprintf(
 					__( 'You have invalid or expired license keys for one or more Give Add-ons. Please go to the <a href="%s">licenses page</a> to correct this issue.', 'give' ),
 					admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' )
@@ -744,8 +742,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 					}
 
 					if ( ( ! $this->__is_notice_dismissed( $subscription['id'] ) && 'active' !== $subscription['status'] ) ) {
-
-						do_action( 'give_trigger_license_notice_js' );
 
 						if ( strtotime( $subscription['expires'] ) < current_time( 'timestamp', 1 ) ) {// Check if license already expired.
 							$messages[ $subscription['id'] ] = sprintf(
@@ -781,8 +777,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 				&& empty( $showed_invalid_message )
 			) {
 
-				do_action( 'give_trigger_license_notice_js' );
-
 				$messages['general']    = sprintf(
 					__( 'You have invalid or expired license keys for one or more Give Add-ons. Please go to the <a href="%s">licenses page</a> to correct this issue.', 'give' ),
 					admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' )
@@ -794,8 +788,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 			// Print messages.
 			if ( ! empty( $messages ) ) {
 				foreach ( $messages as $notice_id => $message ) {
-
-					do_action( 'give_trigger_license_notice_js' );
 
 					echo sprintf(
 						'<div class="notice notice-error is-dismissible give-license-notice" data-dismiss-notice-shortly="%1$s"><p>%2$s</p></div>',
