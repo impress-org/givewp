@@ -307,5 +307,3 @@ class Give_Notices {
 	}
 
 }
-
-new Give_Notices();

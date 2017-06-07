@@ -177,6 +177,16 @@ if ( ! class_exists( 'Give' ) ) :
 		public $email_access;
 
 		/**
+		 * Give notices Object
+		 *
+		 * @since  1.0
+		 * @access public
+		 *
+		 * @var    Give_Notices $notices
+		 */
+		public $notices;
+
+		/**
 		 * Main Give Instance
 		 *
 		 * Insures that only one instance of Give exists in memory at any one
@@ -210,9 +220,10 @@ if ( ! class_exists( 'Give' ) ) :
 				self::$instance->emails          = new Give_Emails();
 				self::$instance->email_tags      = new Give_Email_Template_Tags();
 				self::$instance->donors          = new Give_DB_Donors();
-				self::$instance->donor_meta   = new Give_DB_Donor_Meta();
+				self::$instance->donor_meta      = new Give_DB_Donor_Meta();
 				self::$instance->template_loader = new Give_Template_Loader();
 				self::$instance->email_access    = new Give_Email_Access();
+				self::$instance->notices         = new Give_Notices();
 
 
 				/**
@@ -326,6 +337,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/actions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/filters.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/api/class-give-api.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-notices.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-roles.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-template-loader.php';
@@ -388,7 +400,6 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-footer.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/welcome.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/class-admin-notices.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/class-api-keys-table.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/class-i18n-module.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-actions.php';
