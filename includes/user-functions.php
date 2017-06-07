@@ -649,8 +649,8 @@ function give_get_donor_name_by( $id = 0, $from = 'donation' ) {
  * @return int|false    The user's ID on success, and false on failure.
  */
 function give_donor_email_exists( $email ) {
-	if ( $user = Give()->donors->get_donor_by( 'email', $email ) ) {
-		return $user->user_id;
+	if ( Give()->donors->get_donor_by( 'email', $email ) || email_exists( $email ) ) {
+		return true;
 	}
 	return false;
 }
