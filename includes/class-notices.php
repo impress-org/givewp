@@ -55,7 +55,6 @@ class Give_Notices {
 	public function __construct() {
 		add_action( 'admin_notices', array( $this, 'show_notices' ), 999 );
 		add_action( 'give_dismiss_notices', array( $this, 'dismiss_notices' ) );
-		add_action( 'admin_bar_menu', array( $this, 'give_admin_bar_menu' ), 1000, 1 );
 		add_action( 'give_hide_notice', array( $this, 'hide_notice' ) );
 	}
 
@@ -110,31 +109,6 @@ class Give_Notices {
 		}
 
 		return true;
-	}
-
-
-	/**
-	 * Display admin bar when active.
-	 *
-	 * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
-	 *
-	 * @return bool
-	 */
-	public function give_admin_bar_menu( $wp_admin_bar ) {
-
-		if ( ! give_is_test_mode() || ! current_user_can( 'view_give_reports' ) ) {
-			return false;
-		}
-
-		// Add the main siteadmin menu item.
-		$wp_admin_bar->add_menu( array(
-			'id'     => 'give-test-notice',
-			'href'   => admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways' ),
-			'parent' => 'top-secondary',
-			'title'  => esc_html__( 'Give Test Mode Active', 'give' ),
-			'meta'   => array( 'class' => 'give-test-mode-active' ),
-		) );
-
 	}
 
 	/**

@@ -493,3 +493,36 @@ function _give_register_admin_notices() {
 }
 
 add_action( 'admin_notices', '_give_register_admin_notices', - 1 );
+
+
+/**
+ * Display admin bar when active.
+ *
+ * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
+ *
+ * @return bool
+ */
+function _give_show_test_mode_notice_in_admin_bar( $wp_admin_bar ) {
+	$is_test_mode = ! empty( $_POST['test_mode'] ) ?
+		give_is_setting_enabled( $_POST['test_mode'] ) :
+		give_is_test_mode();
+
+	if (
+		! current_user_can( 'view_give_reports' ) ||
+		! $is_test_mode
+	) {
+		return false;
+	}
+
+	// Add the main siteadmin menu item.
+	$wp_admin_bar->add_menu( array(
+		'id'     => 'give-test-notice',
+		'href'   => admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways' ),
+		'parent' => 'top-secondary',
+		'title'  => esc_html__( 'Give Test Mode Active', 'give' ),
+		'meta'   => array( 'class' => 'give-test-mode-active' ),
+	) );
+
+	return true;
+}
+add_action( 'admin_bar_menu', '_give_show_test_mode_notice_in_admin_bar', 1000, 1 );
