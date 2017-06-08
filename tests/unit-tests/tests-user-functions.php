@@ -230,5 +230,41 @@ class Tests_User_Function extends Give_Unit_Test_Case {
 
 		$this->assertTrue( $output );
 	}
+
+	/**
+	 * Test give_donor_email_exists function
+	 *
+	 * @since 1.8.9
+	 *
+	 * @cover give_donor_email_exists
+	 */
+	function test_give_donor_email_exists() {
+		/*
+		 * Check 1
+		 *
+		 * Empty email doesn't exists
+		 */
+		$output = give_donor_email_exists( '' );
+		$this->assertFalse( $output );
+
+		/*
+		 * Check 2
+		 *
+		 * Bad Email doesn't exists
+		 */
+		$output = give_donor_email_exists( 'xyz' );
+
+		$this->assertFalse( $output );
+
+		/*
+		 * Check 3
+		 *
+		 * Email already exists for either donor or user
+		 */
+		$output = give_donor_email_exists( 'admin@example.org' );
+
+		$this->assertTrue( $output );
+
+	}
 }
 
