@@ -38,7 +38,7 @@
 //--------------------------------------------------------------
 // Donor Styles
 //--------------------------------------------------------------
-#give-customer-card-wrapper {
+#give-donor-card-wrapper {
   margin-left: -1px;
   z-index: 2;
   min-height: 200px;
@@ -48,12 +48,12 @@
 	font-weight: normal;
   }
 
-  .customer-section {
+  .donor-section {
 	border-bottom: 1px solid #eee;
 	margin-bottom: 10px;
   }
 
-  .customer-section table {
+  .donor-section table {
 	margin-bottom: 0;
   }
 
@@ -87,23 +87,23 @@
   //Donor Header (non-avatar content)
   .donor-bio-header {
 
-	.customer-since {
+	.donor-since {
 	  margin: 10px 0;
 	  font-size: 16px;
 	}
 
-	.customer-id {
+	.donor-id {
       display: inline-block;
 	  font-size: 24px;
 	  font-weight: 600;
 	  margin-right: 10px;
 	}
 
-    .customer-name-wrap {
+    .donor-name-wrap {
       display: inline-block;
     }
 
-	.customer-edit-link {
+	.donor-edit-link {
 	  margin-bottom: 15px;
 	}
 
@@ -111,7 +111,7 @@
 
 }
 
-.customer-main-wrapper {
+.donor-main-wrapper {
   clear: both;
   margin: 0 0 20px;
 
@@ -145,7 +145,7 @@
   }
 
 }
-#give-customer-card-wrapper .customer-address-wrapper {
+#give-donor-card-wrapper .donor-address-wrapper {
   width: 202px;
 
 	span[data-key="line2"] {
@@ -154,19 +154,19 @@
 	}
 }
 
-#give-customer-card-wrapper .customer-address-wrapper select {
+#give-donor-card-wrapper .donor-address-wrapper select {
   width: 200px;
 }
 
-#give-customer-card-wrapper .customer-info {
+#give-donor-card-wrapper .donor-info {
   min-height: 185px;
 }
 
-#give-customer-card-wrapper .info-wrapper {
+#give-donor-card-wrapper .info-wrapper {
   min-height: 125px;
 }
 
-.customer-info .customer-name {
+.donor-info .donor-name {
   font-size: 24px;
   font-weight: 600;
 }
@@ -177,30 +177,30 @@
   text-decoration: none;
 }
 
-#customer-edit-actions {
+#donor-edit-actions {
   text-align: center;
   margin-bottom: 20px;
   line-height: 28px;
 }
 
-#customer-edit-actions .button-secondary {
+#donor-edit-actions .button-secondary {
   margin-right: 10px;
 }
 
-#give-customer-card-wrapper .edit-item {
+#give-donor-card-wrapper .edit-item {
   display: none;
 }
 
-#give-customer-card-wrapper .give_user_search_results {
+#give-donor-card-wrapper .give_user_search_results {
   left: 1px;
   top: 16px;
 }
 
-#give-customer-card-wrapper .give_user_search_results ul {
+#give-donor-card-wrapper .give_user_search_results ul {
   width: 200px
 }
 
-#customer-stats-wrapper {
+#donor-stats-wrapper {
   margin: 0 auto;
   text-align: center;
   padding: 15px;
@@ -223,51 +223,51 @@
   }
 }
 
-#customer-stats-wrapper .dashicons {
+#donor-stats-wrapper .dashicons {
   color: #888;
 }
 
-#customer-tables-wrapper table {
+#donor-tables-wrapper table {
   width: 100%;
   text-align: center;
 }
 
-#customer-tables-wrapper th {
+#donor-tables-wrapper th {
   text-align: center;
 }
 
-#customer-tables-wrapper .donations tr > th:first-child,
-#customer-tables-wrapper .donations tr > td:first-child,
-#customer-tables-wrapper .emails tr > th:first-child,
-#customer-tables-wrapper .emails tr > td:first-child {
+#donor-tables-wrapper .donations tr > th:first-child,
+#donor-tables-wrapper .donations tr > td:first-child,
+#donor-tables-wrapper .emails tr > th:first-child,
+#donor-tables-wrapper .emails tr > td:first-child {
   text-align: left;
 }
 
-#customer-tables-wrapper .donations tr > td:only-child {
+#donor-tables-wrapper .donations tr > td:only-child {
   text-align: center;
 }
 
-#customer-notes-wrapper {
+#donor-notes-wrapper {
   min-height: 50px;
 }
 
-.customer-notes-header span, .customer-notes-header img {
+.donor-notes-header span, .donor-notes-header img {
   font-weight: 600;
   line-height: 30px;
   vertical-align: middle;
 }
 
-.customer-note-input {
+.donor-note-input {
   width: 100%;
   margin-bottom: 5px;
 }
 
-//Customer Notes
-#give-customer-notes {
+// Donor Notes
+#give-donor-notes {
   div:nth-of-type(even) {
 	background-color: #f9f9f9;
   }
-  .customer-note-wrapper {
+  .donor-note-wrapper {
 	border-bottom: 1px solid #f9f9f9;
 	min-height: 38px;
 	padding: 0;
@@ -280,18 +280,18 @@
 
   }
 
-  .give-no-customer-notes {
+  .give-no-donor-notes {
 	text-align: center;
 	padding: 20px;
   }
 
 }
 
-.customer-note-wrapper span {
+.donor-note-wrapper span {
   display: block;
 }
 
-.delete-customer {
+.delete-donor {
   text-align: center;
 }
 
