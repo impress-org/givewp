@@ -226,19 +226,23 @@ function _give_register_admin_notices() {
 		! get_user_meta( get_current_user_id(), '_give_admin_ajax_inaccessible_dismissed', true ) &&
 		current_user_can( 'manage_give_settings' )
 	) {
+		// Delete notice render blocker.
+		Give_Cache::delete( 'give_cache_' . Give()->notices->get_notice_key( 'give-donation-deleted', 'permanent' ) );
+
+		// Set notice message
 		$notice_desc = '<p>' . __( 'Your site appears to be blocking the WordPress ajax interface. This may cause issues with Give.', 'give' ) . '</p>';
 		$notice_desc .= '<p>' . sprintf( __( 'Please see <a href="%s" target="_blank">this reference</a> for possible solutions.', 'give' ), esc_url( 'http://docs.givewp.com/ajax-blocked' ) ) . '</p>';
 		$notice_desc .= sprintf(
-			'<p><a href=""></a></p>',
-			add_query_arg( array( 'give_action' => 'dismiss_notices', 'give_notice' => 'admin_ajax_inaccessible' ) ),
+			'<p><a class="give_dismiss_notice" href="#">%s</a></p>',
 			__( 'Dismiss Notice', 'give' )
 		);
 
 		Give()->notices->register_notice( array(
-			'id'          => 'give-donation-deleted',
-			'type'        => 'updated',
-			'description' => $notice_desc,
-			'show'        => true,
+			'id'               => 'give-donation-deleted',
+			'type'             => 'updated',
+			'description'      => $notice_desc,
+			'dismissible_type' => 'all',
+			'dismiss_interval' => 'permanent',
 		) );
 	}
 

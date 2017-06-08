@@ -217,6 +217,8 @@ class Give_Notices {
 					$body.on('click', '.give_dismiss_notice', function (e) {
 						var $parent = jQuery(this).parents('.give-notice');
 						$parent.find('button.notice-dismiss').trigger('click');
+
+						return false;
 					});
 
 					$body.on('click', 'button.notice-dismiss', function (e) {
@@ -235,8 +237,7 @@ class Give_Notices {
 						// Bailout.
 						if (
 							! data.dismiss_interval ||
-							! data.dismissible_type ||
-							! data.dismiss_interval_time
+							! data.dismissible_type
 						) {
 							return false;
 						}
@@ -270,7 +271,6 @@ class Give_Notices {
 			empty( $notice_id ) ||
 			empty( $_post['dismissible_type'] ) ||
 			empty( $_post['dismiss_interval'] ) ||
-			empty( $_post['dismiss_interval_time'] ) ||
 			! check_ajax_referer( "give_edit_{$notice_id}_notice", '_wpnonce' )
 		) {
 			wp_send_json_error();
@@ -303,12 +303,18 @@ class Give_Notices {
 	 *
 	 * @return string
 	 */
-	public function get_notice_key( $notice_id, $dismiss_interval, $user_id = 0 ) {
-		$notice_key = sanitize_key( "_give_notice_{$notice_id}_{$dismiss_interval}" );
+	public function get_notice_key( $notice_id, $dismiss_interval = null, $user_id = 0 ) {
+		$notice_key = "_give_notice_{$notice_id}";
+
+		if( ! empty( $dismiss_interval ) ) {
+			$notice_key .= "_{$dismiss_interval}";
+		}
 
 		if ( $user_id ) {
-			$notice_key = sanitize_key( "_give_notice_{$notice_id}_{$dismiss_interval}_{$user_id}" );
+			$notice_key .= "_{$user_id}";
 		}
+
+		$notice_key = sanitize_key( $notice_key );
 
 		return $notice_key;
 	}
