@@ -73,18 +73,21 @@ class Give_Notices {
 		$notice_args = wp_parse_args(
 			$notice_args,
 			array(
-				'id'               => '',
-				'description'      => '',
-				'auto_dismissible' => false,
+				'id'                    => '',
+				'description'           => '',
+				'auto_dismissible'      => false,
 
 				// Value: error/updated
-				'type'             => 'error',
+				'type'                  => 'error',
 
 				// Value: null/user/all
-				'dismissible_type' => null,
+				'dismissible_type'      => null,
 
-				// Value: shortly/permanent/null/(interval time in second)
-				'dismiss_interval' => null,
+				// Value: shortly/permanent/null/custom/(interval time in second)
+				'dismiss_interval'      => null,
+
+				// Only set it when custom is defined.
+				'dismiss_interval_time' => null,
 
 			)
 		);
@@ -97,8 +100,13 @@ class Give_Notices {
 		self::$notices[ $notice_args['id'] ] = $notice_args;
 
 		// Auto set show param if not already set.
-		if( ! isset( self::$notices[ $notice_args['id'] ]['show'] ) ) {
+		if ( ! isset( self::$notices[ $notice_args['id'] ]['show'] ) ) {
 			self::$notices[ $notice_args['id'] ]['show'] = $this->is_notice_dismissed( $notice_args ) ? false : true;
+		}
+
+		// Auto set time interval for shortly.
+		if ( 'shortly' === self::$notices[ $notice_args['id'] ]['dismiss_interval'] ) {
+			self::$notices[ $notice_args['id'] ]['dismiss_interval_time'] = DAY_IN_SECONDS;
 		}
 
 		return true;
@@ -204,7 +212,7 @@ class Give_Notices {
 
 		foreach ( self::$notices as $notice_id => $notice ) {
 			// Check flag set to true to show notice.
-			if( ! $notice['show'] ) {
+			if ( ! $notice['show'] ) {
 				continue;
 			}
 
@@ -222,14 +230,15 @@ class Give_Notices {
 
 			$css_class = $notice['type'] . ' give-notice notice is-dismissible';
 			$output    .= sprintf(
-				'<div id="%1$s" class="%2$s" data-auto-dismissible="%3$s" data-dismissible-type="%4$s" data-dismiss-interval="%5$s" data-notice-id="%6$s" data-security="%7$s">' . " \n",
+				'<div id="%1$s" class="%2$s" data-auto-dismissible="%3$s" data-dismissible-type="%4$s" data-dismiss-interval="%5$s" data-notice-id="%6$s" data-security="%7$s" data-dismiss-interval-time="%8$s">' . " \n",
 				$css_id,
 				$css_class,
 				$notice['auto_dismissible'],
 				$notice['dismissible_type'],
 				$notice['dismiss_interval'],
 				$notice['id'],
-				wp_create_nonce( "give_edit_{$notice_id}_notice" )
+				wp_create_nonce( "give_edit_{$notice_id}_notice" ),
+				$notice['dismiss_interval_time']
 			);
 			$output    .= "<p>{$notice['description']}</p>";
 			$output    .= "</div> \n";
@@ -321,10 +330,7 @@ class Give_Notices {
 			$notice_key   = Give()->notices->get_notice_key( $notice_id, $_post['dismiss_interval'], $current_user->ID );
 		}
 
-		$notice_dismiss_time = null;
-		if ( 'shortly' === $_post['dismiss_interval'] ) {
-			$notice_dismiss_time = DAY_IN_SECONDS;
-		}
+		$notice_dismiss_time = ! empty( $_post['dismiss_interval_time'] ) ? $_post['dismiss_interval_time'] : null;
 
 		// Save option to hide notice.
 		Give_Cache::set( $notice_key, true, $notice_dismiss_time, true );
