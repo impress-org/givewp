@@ -164,7 +164,7 @@ class Give_Notices {
 
 			$css_id = ( false === strpos( $notice['id'], 'give' ) ? "give-{$notice['id']}" : $notice['id'] );
 
-			$css_class = $notice['type'] . ' give-notice notice is-dismissible';
+			$css_class =  "give-notice notice is-dismissible {$notice['type']} notice-{$notice['type']}";
 			$output    .= sprintf(
 				'<div id="%1$s" class="%2$s" data-auto-dismissible="%3$s" data-dismissible-type="%4$s" data-dismiss-interval="%5$s" data-notice-id="%6$s" data-security="%7$s" data-dismiss-interval-time="%8$s">' . " \n",
 				$css_id,
