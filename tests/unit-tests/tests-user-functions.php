@@ -236,6 +236,8 @@ class Tests_User_Function extends Give_Unit_Test_Case {
 	 *
 	 * @since 1.8.9
 	 *
+	 * @todo We need to modify the test, once we add additional_email check for donor.
+	 *
 	 * @cover give_donor_email_exists
 	 */
 	function test_give_donor_email_exists() {
