@@ -194,14 +194,21 @@ class Give_Notices {
 					var $body = jQuery('body');
 
 					$body.on('click', '.give_dismiss_notice', function (e) {
-						var $parent = jQuery(this).parents('.give-notice');
-						$parent.find('button.notice-dismiss').trigger('click');
+						var $parent = jQuery(this).parents('.give-notice'),
+							custom_notice_data    = {
+								'dismissible_type'     : jQuery(this).data('dismissible-type'),
+								'dismiss_interval'     : jQuery(this).data('dismiss-interval'),
+								'dismiss_interval_time': jQuery(this).data('dismiss-interval-time')
+							};
 
+						$parent.find('button.notice-dismiss').trigger('click', [custom_notice_data] );
 						return false;
 					});
 
-					$body.on('click', 'button.notice-dismiss', function (e) {
-						var $parent = jQuery(this).parents('.give-notice');
+					$body.on('click', 'button.notice-dismiss', function (e, custom_notice_data ) {
+						var $parent = jQuery(this).parents('.give-notice'),
+							custom_notice_data = custom_notice_data || {};
+
 						e.preventDefault();
 
 						var data = {
@@ -212,6 +219,10 @@ class Give_Notices {
 							'dismiss_interval_time': $parent.data('dismiss-interval-time'),
 							'_wpnonce'             : $parent.data('security')
 						};
+
+						if( Object.keys( custom_notice_data ).length ) {
+							jQuery.extend( data, custom_notice_data );
+						}
 
 						// Bailout.
 						if (
