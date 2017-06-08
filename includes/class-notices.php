@@ -176,7 +176,8 @@ class Give_Notices {
 				wp_create_nonce( "give_edit_{$notice_id}_notice" ),
 				$notice['dismiss_interval_time']
 			);
-			$output    .= "<p>{$notice['description']}</p>";
+
+			$output    .= ( 0 === strpos($notice['description'], '<div' ) || 0 === strpos($notice['description'], '<p' ) ?  $notice['description'] : "<p>{$notice['description']}</p>" );
 			$output    .= "</div> \n";
 		}
 
