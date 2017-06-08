@@ -53,7 +53,7 @@ class Give_Notices {
 	 * @since 1.0
 	 */
 	public function __construct() {
-		add_action( 'admin_notices', array( $this, 'show_notices' ), 999 );
+		add_action( 'admin_notices', array( $this, 'render_notices' ), 999 );
 		add_action( 'give_dismiss_notices', array( $this, 'dismiss_notices' ) );
 		add_action( 'give_hide_notice', array( $this, 'hide_notice' ) );
 	}
@@ -111,27 +111,6 @@ class Give_Notices {
 		return true;
 	}
 
-	/**
-	 * Show relevant notices.
-	 *
-	 * @since 1.0
-	 */
-	public function show_notices() {
-		$this->settings_errors();
-	}
-
-
-	/**
-	 * Admin Add-ons Notices.
-	 *
-	 * @since 1.0
-	 * @return void
-	 */
-	function give_admin_addons_notices() {
-		add_settings_error( 'give-notices', 'give-addons-feed-error', __( 'There seems to be an issue with the server. Please try again in a few minutes.', 'give' ), 'error' );
-		settings_errors( 'give-notices' );
-	}
-
 
 	/**
 	 * Dismiss admin notices when Dismiss links are clicked.
@@ -171,12 +150,12 @@ class Give_Notices {
 	}
 
 	/**
-	 * Display settings errors registered by add_settings_error().
+	 * Display notice.
 	 *
 	 * @since 1.8.9
 	 *
 	 */
-	private function settings_errors() {
+	public function render_notices() {
 		// Bailout.
 		if ( empty( self::$notices ) ) {
 			return;
