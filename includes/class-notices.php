@@ -55,7 +55,6 @@ class Give_Notices {
 	public function __construct() {
 		add_action( 'admin_notices', array( $this, 'render_notices' ), 999 );
 		add_action( 'give_dismiss_notices', array( $this, 'dismiss_notices' ) );
-		add_action( 'give_hide_notice', array( $this, 'hide_notice' ) );
 	}
 
 	/**
@@ -82,7 +81,7 @@ class Give_Notices {
 				// Value: null/user/all
 				'dismissible_type'      => null,
 
-				// Value: shortly/permanent/null/custom/(interval time in second)
+				// Value: shortly/permanent/null/custom
 				'dismiss_interval'      => null,
 
 				// Only set it when custom is defined.
@@ -110,22 +109,6 @@ class Give_Notices {
 
 		return true;
 	}
-
-
-	/**
-	 * Dismiss admin notices when Dismiss links are clicked.
-	 *
-	 * @since 1.0
-	 * @return void
-	 */
-	function dismiss_notices() {
-		if ( isset( $_GET['give_notice'] ) ) {
-			update_user_meta( get_current_user_id(), '_give_' . $_GET['give_notice'] . '_dismissed', 1 );
-			wp_redirect( remove_query_arg( array( 'give_action', 'give_notice' ) ) );
-			exit;
-		}
-	}
-
 
 	/**
 	 * Get give style admin notice.
@@ -229,24 +212,34 @@ class Give_Notices {
 			?>
 			<script>
 				jQuery(document).ready(function () {
+					var $body = jQuery('body');
 
-					jQuery('body').on('click', 'button.notice-dismiss', function (e) {
+					$body.on('click', '.give_dismiss_notice', function (e) {
 						var $parent = jQuery(this).parents('.give-notice');
+						$parent.find('button.notice-dismiss').trigger('click');
+					});
 
-						// bailout.
-						if (!$parent.data('dismiss-interval') || !$parent.data('dismissible-type')) {
-							return false;
-						}
-
+					$body.on('click', 'button.notice-dismiss', function (e) {
+						var $parent = jQuery(this).parents('.give-notice');
 						e.preventDefault();
 
 						var data = {
-							'give-action'     : 'hide_notice',
-							'notice_id'       : $parent.data('notice-id'),
-							'dismissible_type': $parent.data('dismissible-type'),
-							'dismiss_interval': $parent.data('dismiss-interval'),
-							'_wpnonce'        : $parent.data('security')
+							'give-action'          : 'dismiss_notices',
+							'notice_id'            : $parent.data('notice-id'),
+							'dismissible_type'     : $parent.data('dismissible-type'),
+							'dismiss_interval'     : $parent.data('dismiss-interval'),
+							'dismiss_interval_time': $parent.data('dismiss-interval-time'),
+							'_wpnonce'             : $parent.data('security')
 						};
+
+						// Bailout.
+						if (
+							! data.dismiss_interval ||
+							! data.dismissible_type ||
+							! data.dismiss_interval_time
+						) {
+							return false;
+						}
 
 						jQuery.post(
 							'<?php echo admin_url(); ?>admin-ajax.php',
@@ -268,12 +261,18 @@ class Give_Notices {
 	 * @since  1.8.9
 	 * @access public
 	 */
-	public function hide_notice() {
+	public function dismiss_notices() {
 		$_post     = give_clean( $_POST );
 		$notice_id = esc_attr( $_post['notice_id'] );
 
 		// Bailout.
-		if ( empty( $notice_id ) || ! check_ajax_referer( "give_edit_{$notice_id}_notice", '_wpnonce' ) ) {
+		if (
+			empty( $notice_id ) ||
+			empty( $_post['dismissible_type'] ) ||
+			empty( $_post['dismiss_interval'] ) ||
+			empty( $_post['dismiss_interval_time'] ) ||
+			! check_ajax_referer( "give_edit_{$notice_id}_notice", '_wpnonce' )
+		) {
 			wp_send_json_error();
 		}
 
