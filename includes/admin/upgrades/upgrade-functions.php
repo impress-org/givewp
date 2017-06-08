@@ -93,48 +93,57 @@ function give_show_upgrade_notices() {
 	 *
 	 */
 
-	// v1.3.2 Upgrades
-	if ( version_compare( $give_version, '1.3.2', '<' ) || ! give_has_upgrade_completed( 'upgrade_give_payment_customer_id' ) ) {
-		printf(
-			/* translators: %s: upgrade URL */
-			'<div class="updated"><p>' . __( 'Give needs to upgrade the donor database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
-			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_give_payment_customer_id' ) )
-		);
-	}
-
-	// v1.3.4 Upgrades //ensure the user has gone through 1.3.4.
-	if ( version_compare( $give_version, '1.3.4', '<' ) || ( ! give_has_upgrade_completed( 'upgrade_give_offline_status' ) && give_has_upgrade_completed( 'upgrade_give_payment_customer_id' ) ) ) {
-		printf(
-			/* translators: %s: upgrade URL */
-			'<div class="updated"><p>' . __( 'Give needs to upgrade the donations database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
-			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_give_offline_status' ) )
-		);
-	}
-
+	// Resume updates.
 	// Check if we have a stalled upgrade.
 	$resume_upgrade = give_maybe_resume_upgrade();
 	if ( ! empty( $resume_upgrade ) ) {
-		$resume_url = add_query_arg( $resume_upgrade, admin_url( 'index.php' ) );
-		echo Give_Notices::notice_html(
-			sprintf(
+		$resume_url = add_query_arg( give_maybe_resume_upgrade(), admin_url( 'index.php' ) );
+
+		Give()->notices->register_notice( array(
+			'id'          => 'give-resume-updates',
+			'type'        => 'warning',
+			'description' => sprintf(
 				__( 'Give needs to complete a database upgrade that was previously started, click <a href="%s">here</a> to resume the upgrade.', 'give' ),
 				esc_url( $resume_url )
-			)
-		);
+			),
+		) );
 
 		return;
 	}
 
+	// v1.3.2 Upgrades
+	Give()->notices->register_notice( array(
+		'id'          => 'give-version-1-3-2-updates',
+		'type'        => 'warning',
+		'description' => sprintf(
+			'<p>' . __( 'Give needs to upgrade the donor database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p>',
+			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_give_payment_customer_id' ) )
+		),
+		'show'        => ( version_compare( $give_version, '1.3.2', '<' ) || ! give_has_upgrade_completed( 'upgrade_give_payment_customer_id' ) ),
+	) );
+
+	// v1.3.4 Upgrades //ensure the user has gone through 1.3.4.
+	Give()->notices->register_notice( array(
+		'id'          => 'give-version-1-3-4-updates',
+		'type'        => 'warning',
+		'description' => sprintf(
+			'<p>' . __( 'Give needs to upgrade the donations database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p>',
+			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_give_offline_status' ) )
+		),
+		'show'        => ( version_compare( $give_version, '1.3.4', '<' ) || ( ! give_has_upgrade_completed( 'upgrade_give_offline_status' ) && give_has_upgrade_completed( 'upgrade_give_payment_customer_id' ) ) ),
+	) );
+
 	// v1.8 form metadata upgrades.
-	if ( version_compare( $give_version, '1.8', '<' ) || ! give_has_upgrade_completed( 'v18_upgrades_form_metadata' ) ) {
-		echo Give_Notices::notice_html(
-			sprintf(
-				esc_html__( 'Give needs to upgrade the form database, click %1$shere%2$s to start the upgrade.', 'give' ),
-				'<a class="give-upgrade-link" href="' . esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=give_v18_upgrades_form_metadata' ) ) . '">',
-				'</a>'
-			)
-		);
-	}
+	Give()->notices->register_notice( array(
+		'id'          => 'give-version-1-8-updates',
+		'type'        => 'warning',
+		'description' => sprintf(
+			esc_html__( 'Give needs to upgrade the form database, click %1$shere%2$s to start the upgrade.', 'give' ),
+			'<a class="give-upgrade-link" href="' . esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=give_v18_upgrades_form_metadata' ) ) . '">',
+			'</a>'
+		),
+		'show'        => ( version_compare( $give_version, '1.8', '<' ) || ! give_has_upgrade_completed( 'v18_upgrades_form_metadata' ) )
+	) );
 
 	// End 'Stepped' upgrade process notices.
 	?>
