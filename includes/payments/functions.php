@@ -277,18 +277,18 @@ function give_update_payment_status( $payment_id, $new_status = 'publish' ) {
  * @global      $give_logs
  *
  * @param  int $payment_id Payment ID (default: 0).
- * @param  bool $update_customer If we should update the customer stats (default:true).
+ * @param  bool $update_donor If we should update the donor stats (default:true).
  *
  * @return void
  */
-function give_delete_donation( $payment_id = 0, $update_customer = true ) {
+function give_delete_donation( $payment_id = 0, $update_donor = true ) {
 	global $give_logs;
 
 	$payment     = new Give_Payment( $payment_id );
 	$amount      = give_get_payment_amount( $payment_id );
 	$status      = $payment->post_status;
 	$donor_id = give_get_payment_donor_id( $payment_id );
-	$customer    = new Give_Donor( $donor_id );
+	$donor    = new Give_Donor( $donor_id );
 
 	// Only undo donations that aren't these statuses.
 	$dont_undo_statuses = apply_filters( 'give_undo_donation_statuses', array(
@@ -308,11 +308,11 @@ function give_delete_donation( $payment_id = 0, $update_customer = true ) {
 		// @todo: Refresh only range related stat cache
 		give_delete_donation_stats();
 
-		if ( $customer->id && $update_customer ) {
+		if ( $donor->id && $update_donor ) {
 
 			// Decrement the stats for the donor.
-			$customer->decrease_donation_count();
-			$customer->decrease_value( $amount );
+			$donor->decrease_donation_count();
+			$donor->decrease_value( $amount );
 
 		}
 	}
@@ -326,10 +326,10 @@ function give_delete_donation( $payment_id = 0, $update_customer = true ) {
 	 */
 	do_action( 'give_payment_delete', $payment_id );
 
-	if ( $customer->id && $update_customer ) {
+	if ( $donor->id && $update_donor ) {
 
 		// Remove the payment ID from the donor.
-		$customer->remove_payment( $payment_id );
+		$donor->remove_payment( $payment_id );
 
 	}
 

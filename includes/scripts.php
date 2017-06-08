@@ -310,8 +310,6 @@ function give_load_admin_scripts( $hook ) {
 		'regenerate_api_key'             => __( 'Are you sure you wish to regenerate this API key?', 'give' ),
 		'resend_receipt'                 => __( 'Are you sure you wish to resend the donation receipt?', 'give' ),
 		'disconnect_user'                => __( 'Are you sure you want to disconnect the user from this donor?', 'give' ),
-		'logo'                           => __( 'Logo', 'give' ),
-		'use_this_image'                 => __( 'Use this image', 'give' ),
 		'one_option'                     => __( 'Choose a form', 'give' ),
 		'one_or_more_option'             => __( 'Choose one or more forms', 'give' ),
 		'currency_sign'                  => give_currency_filter( '' ),
@@ -343,7 +341,10 @@ function give_load_admin_scripts( $hook ) {
 		),
 		'metabox_fields' => array(
 			'media' => array(
-				'button_title' => __( 'Choose Attachment', 'give' ),
+				'button_title' => __( 'Choose Image', 'give' ),
+			),
+			'file' => array(
+				'button_title' => __( 'Choose File', 'give' ),
 			)
 		),
 		'chosen' => array(

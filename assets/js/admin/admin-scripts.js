@@ -1117,40 +1117,108 @@ jQuery.noConflict();
 						$item.wpColorPicker();
 					});
 				}
-			})
+			});
 		},
 
 		setup_media_fields: function () {
-			var give_media_uploader;
+			var give_media_uploader,
+				$give_upload_button,
+				$body = $('body');
 
-			$('body').on('click', '.give-media-upload', function (e) {
+			/**
+			 * Set media modal.
+			 */
+			$body.on('click', '.give-upload-button', function (e) {
 				e.preventDefault();
-				window.give_media_uploader_input_field = $(this);
+				var $media_modal_config = {};
 
-				// If the uploader object has already been created, reopen the dialog
-				if (give_media_uploader) {
-					give_media_uploader.open();
-					return;
+				// Cache input field.
+				$give_upload_button = $(this);
+
+				// Set modal config
+				switch ( $(this).data('field-type') ) {
+					case 'media':
+						$media_modal_config = {
+							title: give_vars.metabox_fields.media.button_title,
+							button: {text: give_vars.metabox_fields.media.button_title},
+							multiple: false, // Set to true to allow multiple files to be selected
+							library : {type:'image'}
+						};
+						break;
+
+					default:
+						$media_modal_config = {
+							title      : give_vars.metabox_fields.file.button_title,
+							button     : {text: give_vars.metabox_fields.file.button_title},
+							multiple: false
+						};
 				}
+
 				// Extend the wp.media object
-				give_media_uploader = wp.media.frames.file_frame = wp.media({
-					title      : give_vars.metabox_fields.media.button_title,
-					button     : {
-						text: give_vars.metabox_fields.media.button_title
-					}, multiple: false
-				});
+				give_media_uploader = wp.media($media_modal_config);
 
 				// When a file is selected, grab the URL and set it as the text field's value
 				give_media_uploader.on('select', function () {
 					var attachment   = give_media_uploader.state().get('selection').first().toJSON(),
-						$input_field = window.give_media_uploader_input_field.prev(),
-						fvalue       = ( 'id' === $input_field.data('fvalue') ? attachment.id : attachment.url );
+						$input_field = $give_upload_button.prev(),
+						fvalue       = ( 'id' === $give_upload_button.data('fvalue') ? attachment.id : attachment.url );
 
+					$body.trigger( 'give_media_inserted', [ attachment , $input_field ] );
+
+					// Set input field value.
 					$input_field.val(fvalue);
 				});
+
 				// Open the uploader dialog
 				give_media_uploader.open();
-			})
+			});
+
+			/**
+			 * Show image preview.
+			 */
+			$body.on('give_media_inserted', function (e, attachment) {
+				var $parent              = $give_upload_button.parents('.give-field-wrap'),
+					$image_container     = $('.give-image-thumb', $parent);
+
+				// Bailout.
+				if( ! $image_container.length ) {
+					return false;
+				}
+
+				// Bailout and hide preview.
+				if('image' !== attachment.type) {
+					$image_container.addClass('give-hidden');
+					$('img', $image_container).attr('src', '');
+					return false;
+				}
+
+				// Set the attachment URL to our custom image input field.
+				$image_container.find('img').attr('src', attachment.url);
+
+				// Hide the add image link
+				$image_container.removeClass('give-hidden');
+			});
+
+			/**
+			 * Delete Image Link.
+			 */
+			$('span.give-delete-image-thumb', '.give-image-thumb').on('click', function (event) {
+
+				event.preventDefault();
+
+				var $parent            = $(this).parents('.give-field-wrap'),
+					$image_container   = $(this).parent(),
+					$image_input_field = $('input[type="text"]', $parent);
+
+				// Clear out the preview image
+				$image_container.addClass('give-hidden');
+
+				// Remove image link from input field.
+				$image_input_field.val('');
+
+				// Hide the add image link
+				$('img', $image_container).attr('src', '');
+			});
 		},
 
 		/**

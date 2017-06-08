@@ -146,11 +146,21 @@ class Tests_Payment_Class extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test Delete Transaction
+	 * Test Delete Donation
 	 */
-	public function test_delete_transaction() {
+	public function test_delete_donation() {
 
-		$this->markTestIncomplete( 'This test is incomplete' );
+		// First check the payment exists.
+		$payment = new Give_Payment( $this->_payment_id );
+		$this->assertEquals(  $this->_payment_id, $payment->ID );
+
+		give_delete_donation($this->_payment_id);
+
+		// Now check that it has gone bye bye.
+		$payment = new Give_Payment( $this->_payment_id );
+		$this->assertEquals( 0, $payment->ID );
+		$this->assertEquals( 0, $payment->form_id );
+		$this->assertEquals( 0, $payment->form_title );
 
 	}
 

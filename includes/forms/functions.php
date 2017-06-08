@@ -519,7 +519,7 @@ function give_get_average_monthly_form_earnings( $form_id = 0 ) {
 /**
  * Get Price Option Name (Text)
  *
- * Retrieves the name of a variable price option
+ * Retrieves the name of a variable price option.
  *
  * @since       1.0
  *
@@ -539,7 +539,7 @@ function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 
 		if ( intval( $price['_give_id']['level_id'] ) == intval( $price_id ) ) {
 
 			$price_text     = isset( $price['_give_text'] ) ? $price['_give_text'] : '';
-			$price_fallback = give_currency_filter( give_format_amount( $price['_give_amount'] ) );
+			$price_fallback = give_currency_filter( give_format_amount( $price['_give_amount'] ), '', true );
 			$price_name     = ! empty( $price_text ) ? $price_text : $price_fallback;
 
 		}
