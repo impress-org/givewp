@@ -84,7 +84,7 @@ class Give_Notices {
 				'description'           => '',
 				'auto_dismissible'      => false,
 
-				// Value: error/updated
+				// Value: error/warning/success/info/updated
 				'type'                  => 'error',
 
 				// Value: null/user/all
