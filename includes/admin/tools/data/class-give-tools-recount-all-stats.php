@@ -125,6 +125,15 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 					continue;
 				}
 
+				$totals[ $form_id ]['sales'] ++;
+				$totals[ $form_id ]['earnings'] += $payment_item['price'];
+
+				$processed_payments[] = $payment->ID;
+			}
+
+			// Get the list of form ids which doesnot contain any payment record.
+			$remaining_form_ids = array_diff( $all_forms, array_keys($totals) );
+			foreach( $remaining_form_ids as $form_id) {
 				//If array key doesn't exist, create it
 				if ( ! array_key_exists( $form_id, $totals ) ) {
 					$totals[ $form_id ] = array(
@@ -132,12 +141,6 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 						'earnings' => (float) 0,
 					);
 				}
-
-				$totals[ $form_id ]['sales'] ++;
-				$totals[ $form_id ]['earnings'] += $payment_item['price'];
-
-				$processed_payments[] = $payment->ID;
-
 			}
 
 			$this->store_data( 'give_temp_processed_payments', $processed_payments );
@@ -213,6 +216,7 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 
 			return true;
 		} else {
+			$this->delete_data( 'give_recount_total_' . $this->form_id );
 			$this->delete_data( 'give_recount_all_total' );
 			$this->delete_data( 'give_temp_recount_all_stats' );
 			$this->delete_data( 'give_temp_payment_items' );
