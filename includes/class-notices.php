@@ -73,7 +73,7 @@ class Give_Notices {
 	 */
 	public function register_notice( $notice_args ) {
 		// Bailout.
-		if( empty( $notice_args['id'] ) || array_key_exists( $notice_args['id'], self::$notices ) ) {
+		if ( empty( $notice_args['id'] ) || array_key_exists( $notice_args['id'], self::$notices ) ) {
 			return false;
 		}
 
@@ -108,7 +108,11 @@ class Give_Notices {
 				$extra_notice_dismiss_links = array_chunk( current( $extra_notice_dismiss_link ), 3 );
 				foreach ( $extra_notice_dismiss_links as $extra_notice_dismiss_link ) {
 					// Create array og key ==> value by parsing query string created after renaming data attributes.
-					$data_attribute_query_str = str_replace( array( 'data-', '-', '"' ), array( '', '_', '' ), implode( '&', $extra_notice_dismiss_link ) );
+					$data_attribute_query_str = str_replace( array( 'data-', '-', '"' ), array(
+						'',
+						'_',
+						'',
+					), implode( '&', $extra_notice_dismiss_link ) );
 
 					$notice_args['extra_links'][] = wp_parse_args( $data_attribute_query_str );
 				}
@@ -163,7 +167,7 @@ class Give_Notices {
 
 			$css_id = ( false === strpos( $notice['id'], 'give' ) ? "give-{$notice['id']}" : $notice['id'] );
 
-			$css_class =  "give-notice notice is-dismissible {$notice['type']} notice-{$notice['type']}";
+			$css_class = "give-notice notice is-dismissible {$notice['type']} notice-{$notice['type']}";
 			$output    .= sprintf(
 				'<div id="%1$s" class="%2$s" data-auto-dismissible="%3$s" data-dismissible-type="%4$s" data-dismiss-interval="%5$s" data-notice-id="%6$s" data-security="%7$s" data-dismiss-interval-time="%8$s">' . " \n",
 				$css_id,
@@ -176,8 +180,8 @@ class Give_Notices {
 				$notice['dismiss_interval_time']
 			);
 
-			$output    .= ( 0 === strpos($notice['description'], '<div' ) || 0 === strpos($notice['description'], '<p' ) ?  $notice['description'] : "<p>{$notice['description']}</p>" );
-			$output    .= "</div> \n";
+			$output .= ( 0 === strpos( $notice['description'], '<div' ) || 0 === strpos( $notice['description'], '<p' ) ? $notice['description'] : "<p>{$notice['description']}</p>" );
+			$output .= "</div> \n";
 		}
 
 		echo $output;
@@ -196,7 +200,7 @@ class Give_Notices {
 	 */
 	public function render_frontend_notices( $form_id = 0 ) {
 		$errors = give_get_errors();
-		
+
 		$request_form_id = isset( $_REQUEST['form-id'] ) ? intval( $_REQUEST['form-id'] ) : 0;
 
 		// Sanity checks first: Ensure that gateway returned errors display on the appropriate form.
@@ -241,19 +245,19 @@ class Give_Notices {
 					var $body = jQuery('body');
 
 					$body.on('click', '.give_dismiss_notice', function (e) {
-						var $parent = jQuery(this).parents('.give-notice'),
-							custom_notice_data    = {
+						var $parent            = jQuery(this).parents('.give-notice'),
+							custom_notice_data = {
 								'dismissible_type'     : jQuery(this).data('dismissible-type'),
 								'dismiss_interval'     : jQuery(this).data('dismiss-interval'),
 								'dismiss_interval_time': jQuery(this).data('dismiss-interval-time')
 							};
 
-						$parent.find('button.notice-dismiss').trigger('click', [custom_notice_data] );
+						$parent.find('button.notice-dismiss').trigger('click', [custom_notice_data]);
 						return false;
 					});
 
-					$body.on('click', 'button.notice-dismiss', function (e, custom_notice_data ) {
-						var $parent = jQuery(this).parents('.give-notice'),
+					$body.on('click', 'button.notice-dismiss', function (e, custom_notice_data) {
+						var $parent            = jQuery(this).parents('.give-notice'),
 							custom_notice_data = custom_notice_data || {};
 
 						e.preventDefault();
@@ -267,14 +271,14 @@ class Give_Notices {
 							'_wpnonce'             : $parent.data('security')
 						};
 
-						if( Object.keys( custom_notice_data ).length ) {
-							jQuery.extend( data, custom_notice_data );
+						if (Object.keys(custom_notice_data).length) {
+							jQuery.extend(data, custom_notice_data);
 						}
 
 						// Bailout.
 						if (
-							! data.dismiss_interval ||
-							! data.dismissible_type
+							!data.dismiss_interval ||
+							!data.dismissible_type
 						) {
 							return false;
 						}
@@ -343,7 +347,7 @@ class Give_Notices {
 	public function get_notice_key( $notice_id, $dismiss_interval = null, $user_id = 0 ) {
 		$notice_key = "_give_notice_{$notice_id}";
 
-		if( ! empty( $dismiss_interval ) ) {
+		if ( ! empty( $dismiss_interval ) ) {
 			$notice_key .= "_{$dismiss_interval}";
 		}
 
@@ -396,7 +400,7 @@ class Give_Notices {
 	 * @return bool|null
 	 */
 	public function is_notice_dismissed( $notice ) {
-		$notice_key = $this->get_notice_key( $notice['id'], $notice['dismiss_interval'] );
+		$notice_key          = $this->get_notice_key( $notice['id'], $notice['dismiss_interval'] );
 		$is_notice_dismissed = false;
 
 		if ( 'user' === $notice['dismissible_type'] ) {
@@ -405,16 +409,16 @@ class Give_Notices {
 		}
 
 		$notice_data = Give_Cache::get( $notice_key, true );
-		
+
 		// Find notice dismiss link status if notice has extra dismissible links.
-		if( ( empty( $notice_data ) || is_wp_error( $notice_data ) ) && ! empty( $notice['extra_links'] ) ) {
+		if ( ( empty( $notice_data ) || is_wp_error( $notice_data ) ) && ! empty( $notice['extra_links'] ) ) {
 
 			foreach ( $notice['extra_links'] as $extra_link ) {
 				$new_notice_data = wp_parse_args( $extra_link, $notice );
 				unset( $new_notice_data['extra_links'] );
-				
-				if( $is_notice_dismissed = $this->is_notice_dismissed( $new_notice_data ) ) {
-					return $is_notice_dismissed ;
+
+				if ( $is_notice_dismissed = $this->is_notice_dismissed( $new_notice_data ) ) {
+					return $is_notice_dismissed;
 				}
 			}
 		}
@@ -438,7 +442,8 @@ class Give_Notices {
 			return;
 		}
 
-		$classes = apply_filters( 'give_error_class', array( 'give_notices', ) );
+		// Note: we will remove give_errors class in future.
+		$classes = apply_filters( 'give_error_class', array( 'give_notices', 'give_errors' ) );
 
 		echo sprintf( '<div class="%s">', implode( ' ', $classes ) );
 
@@ -472,13 +477,14 @@ class Give_Notices {
 			return '';
 		}
 
+		// Note: we will remove give_errors class in future.
 		$error = sprintf(
-			'<div class="give_notices" id="give_error_%1$s"><p class="give_error give_%1$s">%2$s</p></div>',
+			'<div class="give_notices give_errors" id="give_error_%1$s"><p class="give_error give_%1$s">%2$s</p></div>',
 			$notice_type,
 			$message
 		);
 
-		if( ! $echo ) {
+		if ( ! $echo ) {
 			return $error;
 		}
 
