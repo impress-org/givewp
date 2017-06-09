@@ -102,9 +102,9 @@ class Give_Notices {
 		// Set extra dismiss links if any.
 		if ( false !== strpos( $notice_args['description'], 'data-dismiss-interval' ) ) {
 
-			preg_match_all( "/data-([^\"]*)=\"([^\"]*)\"/", $notice_args['description'], $extra_notice_dismiss_links );
+			preg_match_all( "/data-([^\"]*)=\"([^\"]*)\"/", $notice_args['description'], $extra_notice_dismiss_link );
 
-			if ( ! empty( $extra_notice_dismiss_links ) ) {
+			if ( ! empty( $extra_notice_dismiss_link ) ) {
 				$extra_notice_dismiss_links = array_chunk( current( $extra_notice_dismiss_link ), 3 );
 				foreach ( $extra_notice_dismiss_links as $extra_notice_dismiss_link ) {
 					// Create array og key ==> value by parsing query string created after renaming data attributes.
