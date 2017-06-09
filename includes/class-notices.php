@@ -68,6 +68,11 @@ class Give_Notices {
 	 * @return bool
 	 */
 	public function register_notice( $notice_args ) {
+		// Bailout.
+		if( empty( $notice_args['id'] ) || array_key_exists( $notice_args['id'], self::$notices ) ) {
+			return false;
+		}
+
 		$notice_args = wp_parse_args(
 			$notice_args,
 			array(
@@ -90,10 +95,28 @@ class Give_Notices {
 			)
 		);
 
-		// Bailout.
-		if ( empty( $notice_args['id'] ) ) {
-			return false;
+		// Set extra dismiss links if any.
+		if ( false !== strpos( $notice_args['description'], 'data-dismiss-interval' ) ) {
+
+			preg_match_all( "/data-([^\"]*)=\"([^\"]*)\"/", $notice_args['description'], $extra_notice_dismiss_link );
+
+			if ( ! empty( $extra_notice_dismiss_link ) ) {
+				$extra_notice_dismiss_link = array_chunk( current( $extra_notice_dismiss_link ), 3 );
+				$extra_notice_dismiss_link = array_map(
+					function ( $sub_array ) {
+						// Create array og key ==> value by parsing query string created after renaming data attributes.
+						$data_attribute_query_str =str_replace( array( 'data-', '-', '"' ), array( '', '_', '' ), implode( '&', $sub_array ) );
+						$sub_array = wp_parse_args( $data_attribute_query_str );
+
+						return $sub_array;
+					},
+					$extra_notice_dismiss_link
+				);
+
+				$notice_args['extra_links'] = $extra_notice_dismiss_link;
+			}
 		}
+
 
 		self::$notices[ $notice_args['id'] ] = $notice_args;
 
@@ -311,6 +334,34 @@ class Give_Notices {
 
 
 	/**
+	 * Get notice dismiss link.
+	 *
+	 * @param $notice_args
+	 *
+	 * @return string
+	 */
+	public function get_dismiss_link( $notice_args ) {
+		$notice_args = wp_parse_args(
+			$notice_args,
+			array(
+				'title'                 => __( 'Click here', 'give' ),
+				'dismissible_type'      => '',
+				'dismiss_interval'      => '',
+				'dismiss_interval_time' => null,
+			)
+		);
+
+		return sprintf(
+			'<a href="#" class="give_dismiss_notice" data-dismissible-type="%1$s" data-dismiss-interval="%2$s" data-dismiss-interval-time="%3$s">%4$s</a>',
+			$notice_args['dismissible_type'],
+			$notice_args['dismiss_interval'],
+			$notice_args['dismiss_interval_time'],
+			$notice_args['title']
+		);
+	}
+
+
+	/**
 	 * Check if notice dismissed or not
 	 *
 	 * @since  1.8.9
@@ -322,6 +373,7 @@ class Give_Notices {
 	 */
 	public function is_notice_dismissed( $notice ) {
 		$notice_key = $this->get_notice_key( $notice['id'], $notice['dismiss_interval'] );
+		$is_notice_dismissed = false;
 
 		if ( 'user' === $notice['dismissible_type'] ) {
 			$current_user = wp_get_current_user();
@@ -329,7 +381,22 @@ class Give_Notices {
 		}
 
 		$notice_data = Give_Cache::get( $notice_key, true );
+		
+		// Find notice dismiss link status if notice has extra dismissible links.
+		if( ( empty( $notice_data ) || is_wp_error( $notice_data ) ) && ! empty( $notice['extra_links'] ) ) {
 
-		return ! empty( $notice_data ) && ! is_wp_error( $notice_data );
+			foreach ( $notice['extra_links'] as $extra_link ) {
+				$new_notice_data = wp_parse_args( $extra_link, $notice );
+				unset( $new_notice_data['extra_links'] );
+				
+				if( $is_notice_dismissed = $this->is_notice_dismissed( $new_notice_data ) ) {
+					return $is_notice_dismissed ;
+				}
+			}
+		}
+
+		$is_notice_dismissed = ! empty( $notice_data ) && ! is_wp_error( $notice_data );
+
+		return $is_notice_dismissed;
 	}
 }
