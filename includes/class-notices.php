@@ -53,7 +53,7 @@ class Give_Notices {
 	 * @since 1.0
 	 */
 	public function __construct() {
-		add_action( 'admin_notices', array( $this, 'render_notices' ), 999 );
+		add_action( 'admin_notices', array( $this, 'render_admin_notices' ), 999 );
 		add_action( 'give_dismiss_notices', array( $this, 'dismiss_notices' ) );
 	}
 
@@ -139,7 +139,7 @@ class Give_Notices {
 	 * @since 1.8.9
 	 *
 	 */
-	public function render_notices() {
+	public function render_admin_notices() {
 		// Bailout.
 		if ( empty( self::$notices ) ) {
 			return;
