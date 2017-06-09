@@ -645,8 +645,8 @@ function give_get_donor_name_by( $id = 0, $from = 'donation' ) {
  *
  * @since 1.8.9
  *
- * @param  string       $email Donor Email.
- * @return int|false    The user's ID on success, and false on failure.
+ * @param  string   $email Donor Email.
+ * @return boolean  The user's ID on success, and false on failure.
  */
 function give_donor_email_exists( $email ) {
 	if ( Give()->donors->get_donor_by( 'email', $email ) ) {
