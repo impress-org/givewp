@@ -489,5 +489,4 @@ function Give() {
 	return Give::instance();
 }
 
-// Get Give Running
-Give();
+add_action('plugins_loaded', 'Give');
