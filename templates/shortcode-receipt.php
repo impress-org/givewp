@@ -17,6 +17,13 @@ if ( empty( $payment ) ) {
 	return;
 }
 
+//Validation: Return, if receipt id is 0.
+if ( ! empty( $give_receipt_args ) && isset( $give_receipt_args['id'] ) && 0 === $give_receipt_args['id'] ) {
+	give_output_error( __( 'The specified receipt ID appears to be invalid.', 'give' ) );
+
+	return;
+}
+
 $donation_id    = $payment->ID;
 $form_id        = give_get_payment_meta( $donation_id, '_give_payment_form_id', true );
 $meta           = give_get_payment_meta( $donation_id );
