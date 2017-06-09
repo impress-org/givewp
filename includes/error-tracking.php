@@ -14,49 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-
-/**
- * Print Errors
- *
- * Prints all stored errors. Ensures errors show up on the appropriate form;
- * For use during donation process. If errors exist, they are returned.
- *
- * @since 1.0
- * @uses  give_get_errors()
- * @uses  give_clear_errors()
- *
- * @param int $form_id Form ID.
- *
- * @return void
- */
-function give_print_errors( $form_id ) {
-
-	$errors = give_get_errors();
-
-	$request_form_id = isset( $_REQUEST['form-id'] ) ? intval( $_REQUEST['form-id'] ) : 0;
-
-	// Sanity checks first: Ensure that gateway returned errors display on the appropriate form.
-	if ( ! isset( $_POST['give_ajax'] ) && $request_form_id !== $form_id ) {
-		return;
-	}
-
-	if ( $errors ) {
-		$classes = apply_filters( 'give_error_class', array(
-			'give_errors',
-		) );
-		echo '<div class="' . implode( ' ', $classes ) . '">';
-		// Loop error codes and display errors.
-		foreach ( $errors as $error_id => $error ) {
-			echo '<div class="give_error" id="give_error_' . $error_id . '"><p><strong>' . esc_html__( 'Error', 'give' ) . '</strong>: ' . $error . '</p></div>';
-		}
-		echo '</div>';
-		give_clear_errors();
-	}
-}
-
-add_action( 'give_donation_form_before_personal_info', 'give_print_errors' );
-add_action( 'give_ajax_donation_errors', 'give_print_errors' );
-
 /**
  * Get Errors
  *

@@ -543,3 +543,25 @@ function give_record_sale_in_log( $give_form_id = 0, $payment_id, $price_id = fa
 
 	give_record_donation_in_log( $give_form_id, $payment_id, $price_id, $sale_date );
 }
+
+/**
+ * Print Errors
+ *
+ * Prints all stored errors. Ensures errors show up on the appropriate form;
+ * For use during donation process. If errors exist, they are returned.
+ *
+ * @since 1.0
+ * @uses  give_get_errors()
+ * @uses  give_clear_errors()
+ *
+ * @param int $form_id Form ID.
+ *
+ * @return void
+ */
+function give_print_errors( $form_id ) {
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'Give_Notice::print_frontend_errors', $backtrace );
+
+	do_action( 'give_frontend_notices', $form_id );
+}

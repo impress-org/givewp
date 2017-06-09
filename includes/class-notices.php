@@ -55,6 +55,10 @@ class Give_Notices {
 	public function __construct() {
 		add_action( 'admin_notices', array( $this, 'render_admin_notices' ), 999 );
 		add_action( 'give_dismiss_notices', array( $this, 'dismiss_notices' ) );
+
+		add_action( 'give_frontend_notices', array( $this, 'render_frontend_notices' ), 999 );
+		add_action( 'give_donation_form_before_personal_info', array( $this, 'render_frontend_notices' ) );
+		add_action( 'give_ajax_donation_errors', array( $this, 'render_frontend_notices' ) );
 	}
 
 	/**
@@ -185,6 +189,32 @@ class Give_Notices {
 		echo $output;
 
 		$this->print_js();
+	}
+
+
+	/**
+	 * Render give frontend notices.
+	 *
+	 * @since  1.8.9
+	 * @access public
+	 *
+	 * @param int $form_id
+	 */
+	public function render_frontend_notices( $form_id ) {
+		$errors = give_get_errors();
+
+		$request_form_id = isset( $_REQUEST['form-id'] ) ? intval( $_REQUEST['form-id'] ) : 0;
+
+		// Sanity checks first: Ensure that gateway returned errors display on the appropriate form.
+		if ( ! isset( $_POST['give_ajax'] ) && $request_form_id !== $form_id ) {
+			return;
+		}
+
+		if ( $errors ) {
+			self::print_frontend_errors( $errors );
+
+			give_clear_errors();
+		}
 	}
 
 	/**
@@ -398,5 +428,35 @@ class Give_Notices {
 		$is_notice_dismissed = ! empty( $notice_data ) && ! is_wp_error( $notice_data );
 
 		return $is_notice_dismissed;
+	}
+
+
+	/**
+	 * Print frontend errors.
+	 *
+	 * @since  1.8.9
+	 * @access public
+	 *
+	 * @param $errors
+	 */
+	static function print_frontend_errors( $errors ) {
+		if ( ! $errors ) {
+			return;
+		}
+
+		$classes = apply_filters( 'give_error_class', array( 'give_notices', ) );
+
+		echo sprintf( '<div class="%s">', implode( ' ', $classes ) );
+
+		// Loop error codes and display errors.
+		foreach ( $errors as $error_id => $error ) {
+			echo sprintf( '<div class="give_error" id="give_error_%1$s"><p><strong>%2$s</strong>: %3$s</p></div>',
+				$error_id,
+				esc_html__( 'Error', 'give' ),
+				$error
+			);
+		}
+
+		echo '</div>';
 	}
 }
