@@ -5,7 +5,7 @@
 if ( ! is_user_logged_in() ) {
 
 	// Show any error messages after form submission
-	give_print_errors( 0 ); ?>
+	Give()->notices->render_frontend_notices( 0 ); ?>
 	<form id="give-login-form" class="give-form" action="" method="post">
 		<fieldset>
 			<legend><?php esc_html_e( 'Log into Your Account', 'give' ); ?></legend>

@@ -68,7 +68,7 @@ if ( is_email( $email ) && wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
 }// End if().
 
 // Print any messages & errors
-give_print_errors( 0 );
+Give()->notices->render_frontend_notices( 0 );
 
 // Show the email login form?
 if ( $show_form ) {
