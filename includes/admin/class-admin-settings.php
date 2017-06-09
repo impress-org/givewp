@@ -577,34 +577,42 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 					// File input field.
 					case 'file' :
+					case 'media' :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
+						$button_label = esc_html__( sprintf( 'Add or Upload %s', ( 'file' === $value['type'] ? 'File' : 'Image' ) ), 'give' );
+						$fvalue       = empty( $value['fvalue'] ) ? 'url' : $value['fvalue'];
+
+						$allow_media_preview_tags = array( 'jpg', 'jpeg', 'png', 'gif', 'ico' );
+						$preview_image_src        = $option_value ? ( 'id' === $fvalue ? wp_get_attachment_url( $option_value ) : $option_value ) : '#';
+						$preview_image_extension  = $preview_image_src ? pathinfo( $preview_image_src, PATHINFO_EXTENSION ) : '';
+						$is_show_preview = in_array( $preview_image_extension, $allow_media_preview_tags );
 						?>
-                    <tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
-                        <th scope="row" class="titledesc">
-                            <label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
-                        </th>
-                        <td class="give-forminp">
-                            <div class="give-field-wrap">
-                                <label for="<?php echo $value['id'] ?>">
-                                    <input
-                                            name="<?php echo esc_attr( $value['id'] ); ?>"
-                                            id="<?php echo esc_attr( $value['id'] ); ?>"
-                                            type="text"
-                                            class="give-input-field<?php echo esc_attr( isset( $value['class'] ) ? ' ' . $value['class'] : '' ); ?>"
-                                            value="<?php echo $option_value; ?>"
-                                            style="<?php echo esc_attr( $value['css'] ); ?>"
-										<?php echo implode( ' ', $custom_attributes ); ?>
-                                    />&nbsp;&nbsp;&nbsp;&nbsp;<input class="give-upload-button button" type="button"
-                                                                     value="<?php echo esc_html__( 'Add or Upload File', 'give' ); ?>">
-									<?php echo $description ?>
-                                    <div class="give-image-thumb<?php echo ! $option_value ? ' give-hidden' : ''; ?>">
-                                        <span class="give-delete-image-thumb dashicons dashicons-no-alt"></span>
-                                        <img src="<?php echo $option_value; ?>" alt="">
-                                    </div>
-                                </label>
-                            </div>
-                        </td>
-                        </tr><?php
+						<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
+							<th scope="row" class="titledesc">
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
+							</th>
+							<td class="give-forminp">
+								<div class="give-field-wrap">
+									<label for="<?php echo $value['id'] ?>">
+										<input
+												name="<?php echo esc_attr( $value['id'] ); ?>"
+												id="<?php echo esc_attr( $value['id'] ); ?>"
+												type="text"
+												class="give-input-field<?php echo esc_attr( isset( $value['class'] ) ? ' ' . $value['class'] : '' ); ?>"
+												value="<?php echo $option_value; ?>"
+												style="<?php echo esc_attr( $value['css'] ); ?>"
+											<?php echo implode( ' ', $custom_attributes ); ?>
+										/>&nbsp;&nbsp;&nbsp;&nbsp;<input class="give-upload-button button" type="button" data-fvalue="<?php echo $fvalue; ?>" data-field-type="<?php echo $value['type']; ?>" value="<?php echo $button_label; ?>">
+										<?php echo $description ?>
+										<div class="give-image-thumb<?php echo ! $option_value || ! $is_show_preview ? ' give-hidden' : ''; ?>">
+											<span class="give-delete-image-thumb dashicons dashicons-no-alt"></span>
+											<img src="<?php echo $preview_image_src ; ?>" alt="">
+										</div>
+									</label>
+								</div>
+							</td>
+							</tr>
+						<?php
 						break;
 
 					// WordPress Editor.
