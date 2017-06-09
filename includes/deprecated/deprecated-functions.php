@@ -565,3 +565,24 @@ function give_print_errors( $form_id ) {
 
 	do_action( 'give_frontend_notices', $form_id );
 }
+
+/**
+ * Give Output Error
+ *
+ * Helper function to easily output an error message properly wrapped; used commonly with shortcodes
+ *
+ * @since      1.3
+ *
+ * @param string $message  Message to store with the error.
+ * @param bool   $echo     Flag to print or return output.
+ * @param string $error_id ID of the error being set.
+ *
+ * @return   string  $error
+ */
+function give_output_error( $message, $echo = true, $error_id = 'warning' ) {
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'Give_Notice::print_frontend_notice', $backtrace );
+
+	Give()->notices->print_frontend_notice( $message, $echo, $error_id );
+}

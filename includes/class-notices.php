@@ -200,9 +200,9 @@ class Give_Notices {
 	 *
 	 * @param int $form_id
 	 */
-	public function render_frontend_notices( $form_id ) {
+	public function render_frontend_notices( $form_id = 0 ) {
 		$errors = give_get_errors();
-
+		
 		$request_form_id = isset( $_REQUEST['form-id'] ) ? intval( $_REQUEST['form-id'] ) : 0;
 
 		// Sanity checks first: Ensure that gateway returned errors display on the appropriate form.
@@ -458,5 +458,36 @@ class Give_Notices {
 		}
 
 		echo '</div>';
+	}
+
+	/**
+	 * Print frontend notice.
+	 * Notice: notice type can be success/error/warning
+	 *
+	 * @since  1.8.9
+	 * @access public
+	 *
+	 * @param        $message
+	 * @param bool   $echo
+	 * @param string $notice_type
+	 *
+	 * @return  string
+	 */
+	static function print_frontend_notice( $message, $echo = true, $notice_type = 'warning' ) {
+		if ( empty( $message ) ) {
+			return '';
+		}
+
+		$error = sprintf(
+			'<div class="give_notices" id="give_error_%1$s"><p class="give_error give_%1$s">%2$s</p></div>',
+			$notice_type,
+			$message
+		);
+
+		if( ! $echo ) {
+			return $error;
+		}
+
+		echo $error;
 	}
 }
