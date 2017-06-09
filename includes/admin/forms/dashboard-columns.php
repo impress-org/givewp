@@ -181,13 +181,21 @@ function give_sort_forms( $vars ) {
 
 		// Check if "orderby" is set to "price/amount"
 		case 'amount':
-			$vars = array_merge(
-				$vars,
+			$multi_level_meta_key = ( 'asc' === $vars['order'] ) ? '_give_levels_minimum_amount' : '_give_levels_maximum_amount';
+
+			$vars['orderby']    = 'meta_value_num';
+			$vars['meta_query'] = array(
+				'relation' => 'OR',
 				array(
-					'meta_key' => '_give_set_price',
-					'orderby'  => 'meta_value_num',
+					'key'     => $multi_level_meta_key,
+					'type'    => 'NUMERIC',
+				),
+				array(
+					'key'     => '_give_set_price',
+					'type'    => 'NUMERIC',
 				)
 			);
+
 			break;
 
 		// Check if "orderby" is set to "goal"

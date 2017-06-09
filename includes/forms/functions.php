@@ -559,11 +559,20 @@ function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 
  * @return string $range A fully formatted price range
  */
 function give_price_range( $form_id = 0 ) {
-	$low   = give_get_lowest_price_option( $form_id );
-	$high  = give_get_highest_price_option( $form_id );
-	$range = '<span class="give_price_range_low">' . give_currency_filter( give_format_amount( $low ) ) . '</span>';
-	$range .= '<span class="give_price_range_sep">&nbsp;&ndash;&nbsp;</span>';
-	$range .= '<span class="give_price_range_high">' . give_currency_filter( give_format_amount( $high ) ) . '</span>';
+	$low        = give_get_lowest_price_option( $form_id );
+	$high       = give_get_highest_price_option( $form_id );
+	$order_type = ! empty( $_REQUEST['order'] ) ? $_REQUEST['order'] : 'asc';
+
+	$range = sprintf(
+		'<span class="give_price_range_%1$s">%2$s</span>
+				<span class="give_price_range_sep">&nbsp;&ndash;&nbsp;</span>
+				<span class="give_price_range_%3$s">%4$s</span>',
+		'asc' === $order_type ? 'low' : 'high',
+		'asc' === $order_type ? give_currency_filter( give_format_amount( $low ) ) : give_currency_filter( give_format_amount( $high ) ),
+		'asc' === $order_type ? 'high' : 'low',
+		'asc' === $order_type ? give_currency_filter( give_format_amount( $high ) ) : give_currency_filter( give_format_amount( $low ) )
+
+	);
 
 	return apply_filters( 'give_price_range', $range, $form_id, $low, $high );
 }
@@ -635,33 +644,10 @@ function give_get_lowest_price_option( $form_id = 0 ) {
 		return give_get_form_price( $form_id );
 	}
 
-	$prices = give_get_variable_prices( $form_id );
-
-	$low = 0;
-
-	if ( ! empty( $prices ) ) {
-
-		$min = $min_id = 0;
-
-		foreach ( $prices as $key => $price ) {
-
-			if ( empty( $price['_give_amount'] ) ) {
-				continue;
-			}
-
-			if ( ! isset( $min ) ) {
-				$min = $price['_give_amount'];
-			} else {
-				$min = min( $min, give_sanitize_amount( $price['_give_amount'] ) );
-			}
-
-			if ( $price['_give_amount'] == $min ) {
-				$min_id = $key;
-			}
-		}
-
-		$low = $prices[ $min_id ]['_give_amount'];
-
+	if ( ! ( $low = get_post_meta( $form_id, '_give_levels_minimum_amount', true ) ) ) {
+		// Backward compatibility.
+		$prices = wp_list_pluck( give_get_variable_prices( $form_id ), '_give_amount' );
+		$low    = ! empty( $prices ) ? min( $prices ) : 0;
 	}
 
 	return give_sanitize_amount( $low );
@@ -686,28 +672,10 @@ function give_get_highest_price_option( $form_id = 0 ) {
 		return give_get_form_price( $form_id );
 	}
 
-	$prices = give_get_variable_prices( $form_id );
-
-	$high = 0.00;
-
-	if ( ! empty( $prices ) ) {
-
-		$max_id = $max = 0;
-
-		foreach ( $prices as $key => $price ) {
-			if ( empty( $price['_give_amount'] ) ) {
-				continue;
-			}
-			$give_amount = give_sanitize_amount( $price['_give_amount'] );
-
-			$max = max( $max, $give_amount );
-
-			if ( $give_amount == $max ) {
-				$max_id = $key;
-			}
-		}
-
-		$high = $prices[ $max_id ]['_give_amount'];
+	if ( ! ( $high = get_post_meta( $form_id, '_give_levels_maximum_amount', true ) ) ) {
+		// Backward compatibility.
+		$prices = wp_list_pluck( give_get_variable_prices( $form_id ), '_give_amount' );
+		$high   = ! empty( $prices ) ? max( $prices ) : 0;
 	}
 
 	return give_sanitize_amount( $high );
