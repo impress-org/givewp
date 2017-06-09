@@ -261,7 +261,8 @@ function _give_register_admin_notices() {
 			'id'          => 'give-invalid-php-version',
 			'type'        => 'error',
 			'description' => $notice_desc,
-			'show'        => ! Give_Cache::get( '_give_hide_outdated_php_notices_shortly', true ),
+			'dismissible_type' => 'user',
+			'dismiss_interval' => 'shortly',
 		) );
 	}
 
