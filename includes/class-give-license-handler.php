@@ -709,14 +709,20 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			if (
 				empty( $this->license )
-				&& ! $this->__is_notice_dismissed( 'general' )
 				&& empty( $showed_invalid_message )
 			) {
 
-				$messages['general']    = sprintf(
-					__( 'You have invalid or expired license keys for one or more Give Add-ons. Please go to the <a href="%s">licenses page</a> to correct this issue.', 'give' ),
-					admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' )
-				);
+				Give()->notices->register_notice( array(
+					'id'               => 'give-invalid-license',
+					'type'             => 'error',
+					'description'      => sprintf(
+						__( 'You have invalid or expired license keys for one or more Give Add-ons. Please go to the <a href="%s">licenses page</a> to correct this issue.', 'give' ),
+						admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' )
+					),
+					'dismissible_type' => 'user',
+					'dismiss_interval' => 'shortly',
+				) );
+
 				$showed_invalid_message = true;
 
 			}
@@ -772,15 +778,21 @@ if ( ! class_exists( 'Give_License' ) ) :
 			// Show non subscription addon messages.
 			if (
 				! in_array( $this->license, $addon_license_key_in_subscriptions )
-				&& ! $this->__is_notice_dismissed( 'general' )
 				&& ! $this->is_valid_license()
 				&& empty( $showed_invalid_message )
 			) {
 
-				$messages['general']    = sprintf(
-					__( 'You have invalid or expired license keys for one or more Give Add-ons. Please go to the <a href="%s">licenses page</a> to correct this issue.', 'give' ),
-					admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' )
-				);
+				Give()->notices->register_notice( array(
+					'id'               => 'give-invalid-license',
+					'type'             => 'error',
+					'description'      => sprintf(
+						__( 'You have invalid or expired license keys for one or more Give Add-ons. Please go to the <a href="%s">licenses page</a> to correct this issue.', 'give' ),
+						admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' )
+					),
+					'dismissible_type' => 'user',
+					'dismiss_interval' => 'shortly',
+				) );
+
 				$showed_invalid_message = true;
 
 			}
@@ -911,19 +923,10 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 */
 		private function __is_notice_dismissed( $notice_id ) {
 			$current_user        = wp_get_current_user();
-			$is_notice_dismissed = false;
-
-			// Ge is notice dismissed permanently.
-			$already_dismiss_notices = ( $already_dismiss_notices = get_user_meta( $current_user->ID, '_give_hide_license_notices_permanently', true ) )
+			// Get is notice dismissed permanently.
+			$is_notice_dismissed = ( $already_dismiss_notices = get_user_meta( $current_user->ID, '_give_hide_license_notices_permanently', true ) )
 				? $already_dismiss_notices
 				: array();
-
-			if (
-				in_array( $notice_id, $already_dismiss_notices )
-				|| false !== Give_Cache::get( "_give_hide_license_notices_shortly_{$current_user->ID}_{$notice_id}", true )
-			) {
-				$is_notice_dismissed = true;
-			}
 
 			return $is_notice_dismissed;
 		}

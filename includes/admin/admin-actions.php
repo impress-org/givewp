@@ -46,28 +46,6 @@ function give_hide_subscription_notices() {
 		wp_safe_redirect( remove_query_arg( '_give_hide_license_notices_permanently', $_SERVER['REQUEST_URI'] ) );
 		exit();
 	}
-
-	// Hide subscription notices shortly.
-	if ( ! empty( $_GET['_give_hide_license_notices_shortly'] ) ) {
-		$current_user = wp_get_current_user();
-
-		// Get notice id.
-		$notice_id = sanitize_text_field( $_GET['_give_hide_license_notices_shortly'] );
-
-		// Transient key name.
-		$transient_key = "_give_hide_license_notices_shortly_{$current_user->ID}_{$notice_id}";
-
-		if ( Give_Cache::get( $transient_key, true ) ) {
-			return;
-		}
-
-		// Hide notice for 24 hours.
-		Give_Cache::set( $transient_key, true, DAY_IN_SECONDS, true );
-
-		// Redirect user.
-		wp_safe_redirect( remove_query_arg( '_give_hide_license_notices_shortly', $_SERVER['REQUEST_URI'] ) );
-		exit();
-	}
 }
 
 add_action( 'admin_init', 'give_hide_subscription_notices' );
