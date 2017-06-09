@@ -105,19 +105,13 @@ class Give_Notices {
 			preg_match_all( "/data-([^\"]*)=\"([^\"]*)\"/", $notice_args['description'], $extra_notice_dismiss_link );
 
 			if ( ! empty( $extra_notice_dismiss_link ) ) {
-				$extra_notice_dismiss_link = array_chunk( current( $extra_notice_dismiss_link ), 3 );
-				$extra_notice_dismiss_link = array_map(
-					function ( $sub_array ) {
-						// Create array og key ==> value by parsing query string created after renaming data attributes.
-						$data_attribute_query_str =str_replace( array( 'data-', '-', '"' ), array( '', '_', '' ), implode( '&', $sub_array ) );
-						$sub_array = wp_parse_args( $data_attribute_query_str );
+				$extra_notice_dismiss_links = array_chunk( current( $extra_notice_dismiss_link ), 3 );
+				foreach ( $extra_notice_dismiss_links as $extra_notice_dismiss_link ) {
+					// Create array og key ==> value by parsing query string created after renaming data attributes.
+					$data_attribute_query_str = str_replace( array( 'data-', '-', '"' ), array( '', '_', '' ), implode( '&', $extra_notice_dismiss_link ) );
 
-						return $sub_array;
-					},
-					$extra_notice_dismiss_link
-				);
-
-				$notice_args['extra_links'] = $extra_notice_dismiss_link;
+					$notice_args['extra_links'][] = wp_parse_args( $data_attribute_query_str );
+				}
 			}
 		}
 
