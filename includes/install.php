@@ -192,6 +192,8 @@ function give_run_install() {
 	// Add the transient to redirect.
 	Give_Cache::set( '_give_activation_redirect', true, 30, true );
 
+	// Set 'Donation Form' meta box enabled by default.
+	give_nav_donation_metabox_enabled();
 }
 
 register_activation_hook( GIVE_PLUGIN_FILE, 'give_install' );
