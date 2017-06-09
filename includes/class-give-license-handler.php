@@ -567,9 +567,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 				return false;
 			}
 
-			// Delete subscription notices show blocker.
-			$this->__remove_license_notices_show_blocker();
-
 			// Data to send in our API request.
 			$api_params = array(
 				// Do not get confused with edd_action check_subscription.
@@ -747,25 +744,46 @@ if ( ! class_exists( 'Give_License' ) ) :
 						continue;
 					}
 
-					if ( ( ! $this->__is_notice_dismissed( $subscription['id'] ) && 'active' !== $subscription['status'] ) ) {
+					if ( ( 'active' !== $subscription['status'] ) ) {
 
-						if ( strtotime( $subscription['expires'] ) < current_time( 'timestamp', 1 ) ) {// Check if license already expired.
-							$messages[ $subscription['id'] ] = sprintf(
-								__( 'Your Give add-on license expired for payment <a href="%1$s" target="_blank">#%2$d</a>. <a href="%3$s" target="_blank">Click to renew an existing license</a> or <a href="%4$s">Click here if already renewed</a>.', 'give' ),
-								urldecode( $subscription['invoice_url'] ),
-								$subscription['payment_id'],
-								"{$this->checkout_url}?edd_license_key={$subscription['license_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired",
-								esc_url( add_query_arg( '_give_hide_license_notices_permanently', $subscription['id'], $_SERVER['REQUEST_URI'] ) )
-							);
+						// Check if license already expired.
+						if ( strtotime( $subscription['expires'] ) < current_time( 'timestamp', 1 ) ) {
+							Give()->notices->register_notice( array(
+								'id'               => "give-expired-subscription-{$subscription['id'] }",
+								'type'             => 'error',
+								'description'      => sprintf(
+									__( 'Your Give add-on license expired for payment <a href="%1$s" target="_blank">#%2$d</a>. <a href="%3$s" target="_blank">Click to renew an existing license</a> or %4$s.', 'give' ),
+									urldecode( $subscription['invoice_url'] ),
+									$subscription['payment_id'],
+									"{$this->checkout_url}?edd_license_key={$subscription['license_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired",
+									Give()->notices->get_dismiss_link(array(
+										'title' => __( 'Click here if already renewed', 'give' ),
+										'dismissible_type'      => 'user',
+										'dismiss_interval'      => 'permanent',
+									))
+								),
+								'dismissible_type' => 'user',
+								'dismiss_interval' => 'shortly',
+							) );
 						} else {
-							$messages[ $subscription['id'] ] = sprintf(
-								__( 'Your Give add-on license will expire in %1$s for payment <a href="%2$s" target="_blank">#%3$d</a>. <a href="%4$s" target="_blank">Click to renew an existing license</a> or <a href="%5$s">Click here if already renewed</a>.', 'give' ),
-								human_time_diff( current_time( 'timestamp', 1 ), strtotime( $subscription['expires'] ) ),
-								urldecode( $subscription['invoice_url'] ),
-								$subscription['payment_id'],
-								"{$this->checkout_url}?edd_license_key={$subscription['license_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired",
-								esc_url( add_query_arg( '_give_hide_license_notices_permanently', $subscription['id'], $_SERVER['REQUEST_URI'] ) )
-							);
+							Give()->notices->register_notice( array(
+								'id'               => "give-expires-subscription-{$subscription['id'] }",
+								'type'             => 'error',
+								'description'      => sprintf(
+									__( 'Your Give add-on license will expire in %1$s for payment <a href="%2$s" target="_blank">#%3$d</a>. <a href="%4$s" target="_blank">Click to renew an existing license</a> or %5$s.', 'give' ),
+									human_time_diff( current_time( 'timestamp', 1 ), strtotime( $subscription['expires'] ) ),
+									urldecode( $subscription['invoice_url'] ),
+									$subscription['payment_id'],
+									"{$this->checkout_url}?edd_license_key={$subscription['license_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired",
+									Give()->notices->get_dismiss_link(array(
+										'title' => __( 'Click here if already renewed', 'give' ),
+										'dismissible_type'      => 'user',
+										'dismiss_interval'      => 'permanent',
+									))
+								),
+								'dismissible_type' => 'user',
+								'dismiss_interval' => 'shortly',
+							) );
 						}
 					}
 
@@ -795,18 +813,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 				$showed_invalid_message = true;
 
-			}
-
-			// Print messages.
-			if ( ! empty( $messages ) ) {
-				foreach ( $messages as $notice_id => $message ) {
-
-					echo sprintf(
-						'<div class="notice notice-error is-dismissible give-license-notice" data-dismiss-notice-shortly="%1$s"><p>%2$s</p></div>',
-						esc_url( add_query_arg( '_give_hide_license_notices_shortly', $notice_id, $_SERVER['REQUEST_URI'] ) ),
-						$message
-					);
-				}
 			}
 		}
 
@@ -874,63 +880,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 				}
 			}
 		}
-
-		/**
-		 * Remove license notices show blocker.
-		 *
-		 * @access private
-		 * @since  1.7
-		 *
-		 * @return void
-		 */
-		private function __remove_license_notices_show_blocker() {
-			global $wpdb;
-
-			// Delete permanent notice blocker.
-			$wpdb->query(
-				$wpdb->prepare(
-					"
-					DELETE FROM $wpdb->usermeta
-					WHERE meta_key
-					LIKE '%%%s%%'
-					",
-					'_give_hide_license_notices_permanently'
-				)
-			);
-
-			// Delete short notice blocker.
-			$wpdb->query(
-				$wpdb->prepare(
-					"
-					DELETE FROM $wpdb->options
-					WHERE option_name
-					LIKE '%%%s%%'
-					",
-					'__give_hide_license_notices_shortly_'
-				)
-			);
-		}
-
-		/**
-		 * Check if notice dismissed by admin user or not.
-		 *
-		 * @access private
-		 * @since  1.7
-		 *
-		 * @param  int $notice_id Notice ID.
-		 *
-		 * @return bool
-		 */
-		private function __is_notice_dismissed( $notice_id ) {
-			$current_user        = wp_get_current_user();
-			// Get is notice dismissed permanently.
-			$is_notice_dismissed = ( $already_dismiss_notices = get_user_meta( $current_user->ID, '_give_hide_license_notices_permanently', true ) )
-				? $already_dismiss_notices
-				: array();
-
-			return $is_notice_dismissed;
-		}
-
 
 		/**
 		 * @param $plugin_file

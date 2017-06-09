@@ -14,42 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-
-/**
- * Hide subscription notice if admin click on "Click here if already renewed" in subscription notice.
- *
- * @since 1.7
- * @return void
- */
-function give_hide_subscription_notices() {
-
-	// Hide subscription notices permanently.
-	if ( ! empty( $_GET['_give_hide_license_notices_permanently'] ) ) {
-		$current_user = wp_get_current_user();
-
-		// check previously disabled notice ids.
-		$already_dismiss_notices = ( $already_dismiss_notices = get_user_meta( $current_user->ID, '_give_hide_license_notices_permanently', true ) )
-			? $already_dismiss_notices
-			: array();
-
-		// Get notice id.
-		$notice_id = sanitize_text_field( $_GET['_give_hide_license_notices_permanently'] );
-
-		if ( ! in_array( $notice_id, $already_dismiss_notices ) ) {
-			$already_dismiss_notices[] = $notice_id;
-		}
-
-		// Store subscription ids.
-		update_user_meta( $current_user->ID, '_give_hide_license_notices_permanently', $already_dismiss_notices );
-
-		// Redirect user.
-		wp_safe_redirect( remove_query_arg( '_give_hide_license_notices_permanently', $_SERVER['REQUEST_URI'] ) );
-		exit();
-	}
-}
-
-add_action( 'admin_init', 'give_hide_subscription_notices' );
-
 /**
  * Load wp editor by ajax.
  *
