@@ -387,7 +387,7 @@ function give_undo_purchase( $form_id = false, $payment_id ) {
 		give_decrease_earnings( $payment->form_id, $payment->total );
 	}
 
-	$maybe_decrease_sales = apply_filters( 'give_decrease_sales_on_undo', true, $payment, $payment->form_id );
+	$maybe_decrease_sales = apply_filters( 'give_decrease_donation_on_undo', true, $payment, $payment->form_id );
 	if ( true === $maybe_decrease_sales ) {
 		// Decrease donation count.
 		give_decrease_purchase_count( $payment->form_id );
@@ -1884,7 +1884,7 @@ function give_get_price_id( $form_id, $price ) {
  * @param array $args Arguments for form dropdown.
  * @param bool $echo This parameter decides if print form dropdown html output or not.
  *
- * @return string|void
+ * @return string
  */
 function give_get_form_dropdown( $args = array(), $echo = false ) {
 	$form_dropdown_html = Give()->html->forms_dropdown( $args );
