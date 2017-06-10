@@ -177,6 +177,16 @@ if ( ! class_exists( 'Give' ) ) :
 		public $email_access;
 
 		/**
+		 * Give_tooltips Object
+		 *
+		 * @since  2.0
+		 * @access public
+		 *
+		 * @var    Give_Tooltips object
+		 */
+		public $tooltips;
+
+		/**
 		 * Main Give Instance
 		 *
 		 * Insures that only one instance of Give exists in memory at any one
@@ -213,6 +223,7 @@ if ( ! class_exists( 'Give' ) ) :
 				self::$instance->customer_meta   = new Give_DB_Customer_Meta();
 				self::$instance->template_loader = new Give_Template_Loader();
 				self::$instance->email_access    = new Give_Email_Access();
+				self::$instance->tooltips        = new Give_Tooltips();
 
 
 				/**
@@ -320,6 +331,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/actions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/filters.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/api/class-give-api.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-tooltips.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-roles.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-template-loader.php';
