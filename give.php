@@ -227,9 +227,9 @@ if ( ! class_exists( 'Give' ) ) :
 
 
 				/**
-				 * Fire the action after Give core loads
+				 * Fire the action after Give core loads.
 				 *
-				 * @param Give The Give class instance.
+				 * @param class Give class instance.
 				 * @since 1.8.7
 				 */
 				do_action( 'give_init', self::$instance );
@@ -505,5 +505,4 @@ function Give() {
 	return Give::instance();
 }
 
-// Get Give Running
-Give();
+add_action('plugins_loaded', 'Give');
