@@ -176,7 +176,7 @@ class Give_Notices {
 				$notice['dismissible_type'],
 				$notice['dismiss_interval'],
 				$notice['id'],
-				wp_create_nonce( "give_edit_{$notice_id}_notice" ),
+				empty( $notice['dismissible_type'] ) ? '' : wp_create_nonce( "give_edit_{$notice_id}_notice" ),
 				$notice['dismiss_interval_time']
 			);
 
