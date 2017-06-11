@@ -378,11 +378,16 @@ class Give_Payment_History_Table extends WP_List_Table {
 				break;
 
 			case 'details' :
-				$value = sprintf(
-					'<div class="give-payment-details-link-wrap"><a href="%1$s" class="give-payment-details-link button button-small hint--top" aria-label="%2$s" aria-label="%2$s"><span class="dashicons dashicons-visibility"></span></a></div>',
-					$single_donation_url,
-					sprintf( esc_attr__( 'View Donation #%s', 'give' ), $payment->ID )
-				);
+				$value = Give()->tooltips->render_link( array(
+					'label'      => sprintf( esc_attr__( 'View Donation #%s', 'give' ), $payment->ID ),
+					'tag_content' => '<span class="dashicons dashicons-visibility"></span>',
+					'link'       => $single_donation_url,
+					'attributes' => array(
+						'class' => 'give-payment-details-link button button-small',
+					),
+				) );
+
+				$value = "<div class=\"give-payment-details-link-wrap\">{$value}</div>";
 				break;
 
 			default:
