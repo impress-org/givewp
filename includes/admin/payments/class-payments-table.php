@@ -333,11 +333,13 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 		switch ( $column_name ) {
 			case 'donation' :
-				$value = sprintf(
-					'<a href="%1$s" aria-label="%2$s" class="hint--top">#%3$s</a>&nbsp;%4$s&nbsp;%5$s<br>',
-					$single_donation_url,
-					sprintf( esc_attr__( 'View Donation #%s', 'give' ), $payment->ID ),
-					$payment->ID,
+				$value = Give()->tooltips->render_link( array(
+					'label'       => sprintf( esc_attr__( 'View Donation #%s', 'give' ), $payment->ID ),
+					'tag_content' => "#$payment->ID",
+					'link'        => $single_donation_url,
+				) );
+				$value .= sprintf(
+					'&nbsp;%1$s&nbsp;%2$s<br>',
 					esc_html__( 'by', 'give' ),
 					$this->get_donor( $payment )
 				);
