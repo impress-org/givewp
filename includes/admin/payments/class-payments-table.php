@@ -410,7 +410,12 @@ class Give_Payment_History_Table extends WP_List_Table {
 			$email = esc_html__( '(unknown)', 'give' );
 		}
 
-		$value = '<a href="mailto:' . $email . '" aria-label="' . esc_attr__( 'Email donor', 'give' ) . '" class="hint--top">' . $email . '</a>';
+
+		$value = Give()->tooltips->render_link( array(
+			'link'        => "mailto:{$email}",
+			'label'       => esc_attr__( 'Email donor', 'give' ),
+			'tag_content' => $email,
+		) );
 
 		return apply_filters( 'give_payments_table_column', $value, $payment->ID, 'email' );
 	}
@@ -488,7 +493,15 @@ class Give_Payment_History_Table extends WP_List_Table {
 	function get_payment_status( $payment ) {
 		$value = '<div class="give-donation-status status-' . sanitize_title( give_get_payment_status( $payment, true ) ) . '"><span class="give-donation-status-icon"></span> ' . give_get_payment_status( $payment, true ) . '</div>';
 		if ( $payment->mode == 'test' ) {
-			$value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label hint--top" aria-label="' . esc_attr__( 'This donation was made in test mode.', 'give' ) . '">' . esc_html__( 'Test', 'give' ) . '</span>';
+			$value .= Give()->tooltips->render_span( array(
+				'label'       => esc_attr__( 'This donation was made in test mode.', 'give' ),
+				'tag_content' => esc_html__( 'Test', 'give' ),
+				'attributes'  => array(
+					'class' => 'give-item-label give-item-label-orange give-test-mode-transactions-label',
+				),
+
+
+			) );
 		}
 
 		return $value;
