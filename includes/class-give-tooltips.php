@@ -144,9 +144,6 @@ class Give_Tooltips {
 			echo $tooltip_markup;
 		}
 
-		error_log( print_r( $tooltip_markup, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-
-
 		return $tooltip_markup;
 	}
 
