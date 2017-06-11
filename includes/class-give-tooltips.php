@@ -70,7 +70,7 @@ class Give_Tooltips {
 	 * @return string
 	 */
 	public function render( $args ) {
-		$args           = $this->set_toottip_args( $args );
+		$args = $this->set_toottip_args( $args );
 
 		$tooltip_pos = array(
 			'top'          => 'hint--top',
@@ -100,12 +100,14 @@ class Give_Tooltips {
 		$args['attributes']['aria-label'] = $args['label'];
 
 		// Set classes.
-		$args['attributes']['class'] = $tooltip_pos[ $args['position'] ];
+		$args['attributes']['class'] = ! empty( $args['attributes']['class'] ) ? $args['attributes']['class'] : '';
+		$args['attributes']['class'] .= " {$tooltip_pos[ $args['position'] ]}";
 		$args['attributes']['class'] .= ! empty( $args['status'] ) ? " {$tooltip_status[ $args['status'] ]}" : '';
 		$args['attributes']['class'] .= ! empty( $args['size'] ) ? " {$tooltip_size[ $args['size'] ]}" : '';
 		$args['attributes']['class'] .= $args['show_always'] ? ' hint--always' : '';
 		$args['attributes']['class'] .= $args['round_edges'] ? ' hint--rounded' : '';
 		$args['attributes']['class'] .= $args['animate'] ? ' hint--bounce' : ' hint--no-animate';
+		$args['attributes']['class'] = trim( $args['attributes']['class'] );
 
 		// Set link attribute in tooltip has anchor tag.
 		if ( 'a' === $args['tag'] && ! empty( $args['link'] ) ) {
