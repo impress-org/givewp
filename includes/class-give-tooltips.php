@@ -158,4 +158,26 @@ class Give_Tooltips {
 
 		return $tooltip_markup;
 	}
+
+	/**
+	 * Render tooltip with span tag and question mark icon
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param array|string $args
+	 *
+	 * @return string
+	 */
+	function render_help( $args ) {
+		// Set tooltip args from string.
+		if ( is_string( $args ) ) {
+			$args = array( 'label' => $args );
+		}
+
+		$args['tag_content'] = '<i class="give-icon give-icon-question"></i>';
+		$tooltip_markup      = $this->render_span( $args );
+
+		return $tooltip_markup;
+	}
 }
