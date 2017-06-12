@@ -99,7 +99,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 				return $value;
 
 			case 'payment_id' :
-				return '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $item['payment_id'] ) . '">' . give_get_payment_number( $item['payment_id'] ) . '</a>';
+				return '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . $item['payment_id'] ) . '">' . give_get_payment_number( $item['payment_id'] ) . '</a>';
 
 			default:
 				return $item[ $column_name ];

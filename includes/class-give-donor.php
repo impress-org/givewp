@@ -1,9 +1,9 @@
 <?php
 /**
- * Customer (Donor)
+ * Donor
  *
  * @package     Give
- * @subpackage  Classes/Give_Customer
+ * @subpackage  Classes/Give_Donor
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
@@ -15,16 +15,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Give_Customer Class
+ * Give_Donor Class
  *
  * This class handles customers.
  *
  * @since 1.0
  */
-class Give_Customer {
+class Give_Donor {
 
 	/**
-	 * The customer ID
+	 * The donor ID
 	 *
 	 * @since  1.0
 	 * @access public
@@ -34,7 +34,7 @@ class Give_Customer {
 	public $id = 0;
 
 	/**
-	 * The customer's donation count
+	 * The donor's donation count.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -44,7 +44,7 @@ class Give_Customer {
 	public $purchase_count = 0;
 
 	/**
-	 * The customer's lifetime value
+	 * The donor's lifetime value.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -54,7 +54,7 @@ class Give_Customer {
 	public $purchase_value = 0;
 
 	/**
-	 * The customer's email
+	 * The donor's email.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -64,7 +64,7 @@ class Give_Customer {
 	public $email;
 
 	/**
-	 * The customer's emails
+	 * The donor's emails.
 	 *
 	 * @since  1.7
 	 * @access public
@@ -74,7 +74,7 @@ class Give_Customer {
 	public $emails;
 
 	/**
-	 * The customer's name
+	 * The donor's name.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -84,7 +84,7 @@ class Give_Customer {
 	public $name;
 
 	/**
-	 * The customer's creation date
+	 * The donor creation date.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -94,7 +94,7 @@ class Give_Customer {
 	public $date_created;
 
 	/**
-	 * The payment IDs associated with the customer
+	 * The payment IDs associated with the donor.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -104,7 +104,7 @@ class Give_Customer {
 	public $payment_ids;
 
 	/**
-	 * The user ID associated with the customer
+	 * The user ID associated with the donor.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -114,7 +114,7 @@ class Give_Customer {
 	public $user_id;
 
 	/**
-	 * Customer Notes
+	 * Donor notes saved by admins.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -129,24 +129,19 @@ class Give_Customer {
 	 * @since  1.0
 	 * @access protected
 	 *
-	 * @var    Give_DB_Customers
+	 * @var    Give_DB_Donors
 	 */
 	protected $db;
 
 	/**
-	 * Class Constructor
+	 * Give_Donor constructor.
 	 *
-	 * Set up the Give Customer Class.
-	 *
-	 * @since  1.0
-	 * @access public
-	 *
-	 * @param  bool $_id_or_email
-	 * @param  bool $by_user_id
+	 * @param bool $_id_or_email
+	 * @param bool $by_user_id
 	 */
 	public function __construct( $_id_or_email = false, $by_user_id = false ) {
 
-		$this->db = new Give_DB_Customers;
+		$this->db = new Give_DB_Donors();
 
 		if (
 			false === $_id_or_email
@@ -163,35 +158,35 @@ class Give_Customer {
 			$field = 'email';
 		}
 
-		$customer = $this->db->get_customer_by( $field, $_id_or_email );
+		$donor = $this->db->get_donor_by( $field, $_id_or_email );
 
-		if ( empty( $customer ) || ! is_object( $customer ) ) {
+		if ( empty( $donor ) || ! is_object( $donor ) ) {
 			return false;
 		}
 
-		$this->setup_customer( $customer );
+		$this->setup_donor( $donor );
 
 	}
 
 	/**
-	 * Setup Customer
+	 * Setup Donor
 	 *
-	 * Given the customer data, let's set the variables.
+	 * Set donor variables.
 	 *
 	 * @since  1.0
 	 * @access private
 	 *
-	 * @param  object $customer The Customer Object.
+	 * @param  object $donor The Donor Object.
 	 *
 	 * @return bool             If the setup was successful or not.
 	 */
-	private function setup_customer( $customer ) {
+	private function setup_donor( $donor ) {
 
-		if ( ! is_object( $customer ) ) {
+		if ( ! is_object( $donor ) ) {
 			return false;
 		}
 
-		foreach ( $customer as $key => $value ) {
+		foreach ( $donor as $key => $value ) {
 
 			switch ( $key ) {
 
@@ -210,7 +205,7 @@ class Give_Customer {
 		$this->emails = (array) $this->get_meta( 'additional_email', false );
 		$this->emails = array( 'primary' => $this->email ) + $this->emails;
 
-		// Customer ID and email are the only things that are necessary, make sure they exist.
+		// Donor ID and email are the only things that are necessary, make sure they exist.
 		if ( ! empty( $this->id ) && ! empty( $this->email ) ) {
 			return true;
 		}
@@ -224,6 +219,9 @@ class Give_Customer {
 	 *
 	 * @since  1.0
 	 * @access public
+	 * @param $key
+	 *
+	 * @return mixed|\WP_Error
 	 */
 	public function __get( $key ) {
 
@@ -234,21 +232,21 @@ class Give_Customer {
 		} else {
 
 			/* translators: %s: property key */
-			return new WP_Error( 'give-customer-invalid-property', sprintf( esc_html__( 'Can\'t get property %s.', 'give' ), $key ) );
+			return new WP_Error( 'give-donor-invalid-property', sprintf( esc_html__( 'Can\'t get property %s.', 'give' ), $key ) );
 
 		}
 
 	}
 
 	/**
-	 * Creates a customer
+	 * Creates a donor.
 	 *
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  array $data Array of attributes for a customer.
+	 * @param  array $data Array of attributes for a donor.
 	 *
-	 * @return bool|int    False if not a valid creation, customer ID if user is found or valid creation.
+	 * @return bool|int    False if not a valid creation, donor ID if user is found or valid creation.
 	 */
 	public function create( $data = array() ) {
 
@@ -272,50 +270,49 @@ class Give_Customer {
 		}
 
 		/**
-		 * Fires before creating customers.
+		 * Fires before creating donors.
 		 *
 		 * @since 1.0
 		 *
-		 * @param array $args Customer attributes.
+		 * @param array $args Donor attributes.
 		 */
-		do_action( 'give_customer_pre_create', $args );
+		do_action( 'give_donor_pre_create', $args );
 
 		$created = false;
 
-		// The DB class 'add' implies an update if the customer being asked to be created already exists
+		// The DB class 'add' implies an update if the donor being asked to be created already exists
 		if ( $this->db->add( $data ) ) {
 
-			// We've successfully added/updated the customer, reset the class vars with the new data
-			$customer = $this->db->get_customer_by( 'email', $args['email'] );
+			// We've successfully added/updated the donor, reset the class vars with the new data
+			$donor = $this->db->get_donor_by( 'email', $args['email'] );
 
-			// Setup the customer data with the values from DB
-			$this->setup_customer( $customer );
+			// Setup the donor data with the values from DB
+			$this->setup_donor( $donor );
 
 			$created = $this->id;
 		}
 
 		/**
-		 * Fires after creating customers.
+		 * Fires after creating donors.
 		 *
 		 * @since 1.0
 		 *
-		 * @param bool|int $created False if not a valid creation,
-		 *                          customer ID if user is found or valid creation.
+		 * @param bool|int $created False if not a valid creation, donor ID if user is found or valid creation.
 		 * @param array $args Customer attributes.
 		 */
-		do_action( 'give_customer_post_create', $created, $args );
+		do_action( 'give_donor_post_create', $created, $args );
 
 		return $created;
 
 	}
 
 	/**
-	 * Update a customer record
+	 * Updates a donor record.
 	 *
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  array $data Array of data attributes for a customer (checked via whitelist).
+	 * @param  array $data Array of data attributes for a donor (checked via whitelist).
 	 *
 	 * @return bool        If the update was successful or not.
 	 */
@@ -328,35 +325,35 @@ class Give_Customer {
 		$data = $this->sanitize_columns( $data );
 
 		/**
-		 * Fires before updating customers.
+		 * Fires before updating donors.
 		 *
 		 * @since 1.0
 		 *
-		 * @param int $customer_id Customer id.
-		 * @param array $data Customer attributes.
+		 * @param int $donor_id Donor id.
+		 * @param array $data Donor attributes.
 		 */
-		do_action( 'give_customer_pre_update', $this->id, $data );
+		do_action( 'give_donor_pre_update', $this->id, $data );
 
 		$updated = false;
 
 		if ( $this->db->update( $this->id, $data ) ) {
 
-			$customer = $this->db->get_customer_by( 'id', $this->id );
-			$this->setup_customer( $customer );
+			$donor = $this->db->get_donor_by( 'id', $this->id );
+			$this->setup_donor( $donor );
 
 			$updated = true;
 		}
 
 		/**
-		 * Fires after updating customers.
+		 * Fires after updating donors.
 		 *
 		 * @since 1.0
 		 *
 		 * @param bool $updated If the update was successful or not.
-		 * @param int $customer_id Customer id.
-		 * @param array $data Customer attributes.
+		 * @param int $donor_id Donor id.
+		 * @param array $data Donor attributes.
 		 */
-		do_action( 'give_customer_post_update', $updated, $this->id, $data );
+		do_action( 'give_donor_post_update', $updated, $this->id, $data );
 
 		return $updated;
 	}
@@ -364,15 +361,15 @@ class Give_Customer {
 	/**
 	 * Attach Payment
 	 *
-	 * Attach payment to the customer then triggers increasing stats.
+	 * Attach payment to the donor then triggers increasing stats.
 	 *
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  int $payment_id The payment ID to attach to the customer.
+	 * @param  int $payment_id The payment ID to attach to the donor.
 	 * @param  bool $update_stats For backwards compatibility, if we should increase the stats or not.
 	 *
-	 * @return bool            If the attachment was successfuly.
+	 * @return bool            If the attachment was successfully.
 	 */
 	public function attach_payment( $payment_id = 0, $update_stats = true ) {
 
@@ -404,9 +401,9 @@ class Give_Customer {
 		 * @since 1.0
 		 *
 		 * @param int $payment_id Payment id.
-		 * @param int $customer_id Customer id.
+		 * @param int $donor_id Customer id.
 		 */
-		do_action( 'give_customer_pre_attach_payment', $payment_id, $this->id );
+		do_action( 'give_donor_pre_attach_payment', $payment_id, $this->id );
 
 		$payment_added = $this->update( array( 'payment_ids' => $new_payment_ids ) );
 
@@ -427,15 +424,15 @@ class Give_Customer {
 		}
 
 		/**
-		 * Fires after attaching payments to customers.
+		 * Fires after attaching payments to the donor.
 		 *
 		 * @since 1.0
 		 *
-		 * @param bool $payment_added If the attachment was successfuly.
+		 * @param bool $payment_added If the attachment was successfully.
 		 * @param int $payment_id Payment id.
-		 * @param int $customer_id Customer id.
+		 * @param int $donor_id Donor id.
 		 */
-		do_action( 'give_customer_post_attach_payment', $payment_added, $payment_id, $this->id );
+		do_action( 'give_donor_post_attach_payment', $payment_added, $payment_id, $this->id );
 
 		return $payment_added;
 	}
@@ -443,7 +440,7 @@ class Give_Customer {
 	/**
 	 * Remove Payment
 	 *
-	 * Remove a payment from this customer, then triggers reducing stats.
+	 * Remove a payment from this donor, then triggers reducing stats.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -489,9 +486,9 @@ class Give_Customer {
 		 * @since 1.0
 		 *
 		 * @param int $payment_id Payment id.
-		 * @param int $customer_id Customer id.
+		 * @param int $donor_id Customer id.
 		 */
-		do_action( 'give_customer_pre_remove_payment', $payment_id, $this->id );
+		do_action( 'give_donor_pre_remove_payment', $payment_id, $this->id );
 
 		$payment_removed = $this->update( array( 'payment_ids' => $new_payment_ids ) );
 
@@ -507,27 +504,27 @@ class Give_Customer {
 					$this->decrease_value( $payment_amount );
 				}
 
-				$this->decrease_purchase_count();
+				$this->decrease_donation_count();
 			}
 		}
 
 		/**
-		 * Fires after removing payments from customers.
+		 * Fires after removing payments from donors.
 		 *
 		 * @since 1.0
 		 *
-		 * @param bool $payment_removed If the removal was successfuly.
+		 * @param bool $payment_removed If the removal was successfully.
 		 * @param int $payment_id Payment id.
-		 * @param int $customer_id Customer id.
+		 * @param int $donor_id Donor id.
 		 */
-		do_action( 'give_customer_post_remove_payment', $payment_removed, $payment_id, $this->id );
+		do_action( 'give_donor_post_remove_payment', $payment_removed, $payment_id, $this->id );
 
 		return $payment_removed;
 
 	}
 
 	/**
-	 * Increase the donation count of a customer.
+	 * Increase the donation count of a donor.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -546,35 +543,35 @@ class Give_Customer {
 		$new_total = (int) $this->purchase_count + (int) $count;
 
 		/**
-		 * Fires before increasing customer donation count.
+		 * Fires before increasing the donor's donation count.
 		 *
 		 * @since 1.0
 		 *
 		 * @param int $count The number to increase by.
-		 * @param int $customer_id Customer id.
+		 * @param int $donor_id Donor id.
 		 */
-		do_action( 'give_customer_pre_increase_purchase_count', $count, $this->id );
+		do_action( 'give_donor_pre_increase_donation_count', $count, $this->id );
 
 		if ( $this->update( array( 'purchase_count' => $new_total ) ) ) {
 			$this->purchase_count = $new_total;
 		}
 
 		/**
-		 * Fires after increasing customer donation count.
+		 * Fires after increasing the donor's donation count.
 		 *
 		 * @since 1.0
 		 *
-		 * @param int $purchase_count Customer donation count.
+		 * @param int $purchase_count Donor donation count.
 		 * @param int $count The number increased by.
-		 * @param int $customer_id Customer id.
+		 * @param int $donor_id Donor id.
 		 */
-		do_action( 'give_customer_post_increase_purchase_count', $this->purchase_count, $count, $this->id );
+		do_action( 'give_donor_post_increase_donation_count', $this->purchase_count, $count, $this->id );
 
 		return $this->purchase_count;
 	}
 
 	/**
-	 * Decrease the customer donation count.
+	 * Decrease the donor donation count.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -583,7 +580,7 @@ class Give_Customer {
 	 *
 	 * @return mixed      If successful, the new count, otherwise false.
 	 */
-	public function decrease_purchase_count( $count = 1 ) {
+	public function decrease_donation_count( $count = 1 ) {
 
 		// Make sure it's numeric and not negative
 		if ( ! is_numeric( $count ) || $count != absint( $count ) ) {
@@ -597,35 +594,35 @@ class Give_Customer {
 		}
 
 		/**
-		 * Fires before decreasing customer donation count.
+		 * Fires before decreasing the donor's donation count.
 		 *
 		 * @since 1.0
 		 *
 		 * @param int $count The number to decrease by.
-		 * @param int $customer_id Customer id.
+		 * @param int $donor_id Customer id.
 		 */
-		do_action( 'give_customer_pre_decrease_purchase_count', $count, $this->id );
+		do_action( 'give_donor_pre_decrease_donation_count', $count, $this->id );
 
 		if ( $this->update( array( 'purchase_count' => $new_total ) ) ) {
 			$this->purchase_count = $new_total;
 		}
 
 		/**
-		 * Fires after decreasing customer donation count.
+		 * Fires after decreasing the donor's donation count.
 		 *
 		 * @since 1.0
 		 *
-		 * @param int $purchase_count Customer donation count.
+		 * @param int $purchase_count Donor's donation count.
 		 * @param int $count The number decreased by.
-		 * @param int $customer_id Customer id.
+		 * @param int $donor_id Donor id.
 		 */
-		do_action( 'give_customer_post_decrease_purchase_count', $this->purchase_count, $count, $this->id );
+		do_action( 'give_donor_post_decrease_donation_count', $this->purchase_count, $count, $this->id );
 
 		return $this->purchase_count;
 	}
 
 	/**
-	 * Increase the customer's lifetime value.
+	 * Increase the donor's lifetime value.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -639,35 +636,35 @@ class Give_Customer {
 		$new_value = floatval( $this->purchase_value ) + $value;
 
 		/**
-		 * Fires before increasing customer lifetime value.
+		 * Fires before increasing donor lifetime value.
 		 *
 		 * @since 1.0
 		 *
 		 * @param float $value The value to increase by.
-		 * @param int $customer_id Customer id.
+		 * @param int $donor_id Customer id.
 		 */
-		do_action( 'give_customer_pre_increase_value', $value, $this->id );
+		do_action( 'give_donor_pre_increase_value', $value, $this->id );
 
 		if ( $this->update( array( 'purchase_value' => $new_value ) ) ) {
 			$this->purchase_value = $new_value;
 		}
 
 		/**
-		 * Fires after increasing customer lifetime value.
+		 * Fires after increasing donor lifetime value.
 		 *
 		 * @since 1.0
 		 *
-		 * @param float $purchase_value Customer lifetime value.
+		 * @param float $purchase_value Donor's lifetime value.
 		 * @param float $value The value increased by.
-		 * @param int $customer_id Customer id.
+		 * @param int $donor_id Donor id.
 		 */
-		do_action( 'give_customer_post_increase_value', $this->purchase_value, $value, $this->id );
+		do_action( 'give_donor_post_increase_value', $this->purchase_value, $value, $this->id );
 
 		return $this->purchase_value;
 	}
 
 	/**
-	 * Decrease a customer's lifetime value.
+	 * Decrease a donor's lifetime value.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -685,35 +682,35 @@ class Give_Customer {
 		}
 
 		/**
-		 * Fires before decreaseing customer lifetime value.
+		 * Fires before decreasing donor lifetime value.
 		 *
 		 * @since 1.0
 		 *
 		 * @param float $value The value to decrease by.
-		 * @param int $customer_id Customer id.
+		 * @param int $donor_id Donor id.
 		 */
-		do_action( 'give_customer_pre_decrease_value', $value, $this->id );
+		do_action( 'give_donor_pre_decrease_value', $value, $this->id );
 
 		if ( $this->update( array( 'purchase_value' => $new_value ) ) ) {
 			$this->purchase_value = $new_value;
 		}
 
 		/**
-		 * Fires after decreaseing customer lifetime value.
+		 * Fires after decreasing donor lifetime value.
 		 *
 		 * @since 1.0
 		 *
-		 * @param float $purchase_value Customer lifetime value.
+		 * @param float $purchase_value Donor lifetime value.
 		 * @param float $value The value decreased by.
-		 * @param int $customer_id Customer id.
+		 * @param int $donor_id Donor id.
 		 */
-		do_action( 'give_customer_post_decrease_value', $this->purchase_value, $value, $this->id );
+		do_action( 'give_donor_post_decrease_value', $this->purchase_value, $value, $this->id );
 
 		return $this->purchase_value;
 	}
 
 	/**
-	 * Decrease/Increase a customer's lifetime value.
+	 * Decrease/Increase a donor's lifetime value.
 	 *
 	 * This function will update donation stat on basis of current amount and new amount donation difference.
 	 * Difference value can positive or negative. Negative value will decrease user donation stat while positive value increase donation stat.
@@ -751,7 +748,7 @@ class Give_Customer {
 	}
 
 	/**
-	 * Get the parsed notes for a customer as an array.
+	 * Get the parsed notes for a donor as an array.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -781,7 +778,7 @@ class Give_Customer {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @return int The number of notes for the customer.
+	 * @return int The number of notes for the donor.
 	 */
 	public function get_notes_count() {
 
@@ -793,7 +790,7 @@ class Give_Customer {
 	}
 
 	/**
-	 * Add a note for the customer.
+	 * Add a note for the donor.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -820,14 +817,14 @@ class Give_Customer {
 		$notes       .= "\n\n" . $new_note;
 
 		/**
-		 * Fires before customer note added.
+		 * Fires before donor note is added.
 		 *
 		 * @since 1.0
 		 *
 		 * @param string $new_note New note to add.
-		 * @param int $customer_id Customer id.
+		 * @param int $donor_id Donor id.
 		 */
-		do_action( 'give_customer_pre_add_note', $new_note, $this->id );
+		do_action( 'give_donor_pre_add_note', $new_note, $this->id );
 
 		$updated = $this->update( array( 'notes' => $notes ) );
 
@@ -836,15 +833,15 @@ class Give_Customer {
 		}
 
 		/**
-		 * Fires after customer note added.
+		 * Fires after donor note added.
 		 *
 		 * @since 1.0
 		 *
-		 * @param array $customer_notes Customer notes.
+		 * @param array $donor_notes Donor notes.
 		 * @param string $new_note New note added.
-		 * @param int $customer_id Customer id.
+		 * @param int $donor_id Donor id.
 		 */
-		do_action( 'give_customer_post_add_note', $this->notes, $new_note, $this->id );
+		do_action( 'give_donor_post_add_note', $this->notes, $new_note, $this->id );
 
 		// Return the formatted note, so we can test, as well as update any displays
 		return $new_note;
@@ -852,12 +849,12 @@ class Give_Customer {
 	}
 
 	/**
-	 * Get the notes column for the customer
+	 * Get the notes column for the donor
 	 *
 	 * @since  1.0
 	 * @access private
 	 *
-	 * @return string The Notes for the customer, non-parsed.
+	 * @return string The Notes for the donor, non-parsed.
 	 */
 	private function get_raw_notes() {
 
@@ -868,7 +865,7 @@ class Give_Customer {
 	}
 
 	/**
-	 * Retrieve customer meta field for a customer.
+	 * Retrieve a meta field for a donor.
 	 *
 	 * @since  1.6
 	 * @access public
@@ -879,11 +876,11 @@ class Give_Customer {
 	 * @return mixed            Will be an array if $single is false. Will be value of meta data field if $single is true.
 	 */
 	public function get_meta( $meta_key = '', $single = true ) {
-		return Give()->customer_meta->get_meta( $this->id, $meta_key, $single );
+		return Give()->donor_meta->get_meta( $this->id, $meta_key, $single );
 	}
 
 	/**
-	 * Add meta data field to a customer.
+	 * Add a meta data field to a donor.
 	 *
 	 * @since  1.6
 	 * @access public
@@ -895,11 +892,11 @@ class Give_Customer {
 	 * @return bool               False for failure. True for success.
 	 */
 	public function add_meta( $meta_key = '', $meta_value, $unique = false ) {
-		return Give()->customer_meta->add_meta( $this->id, $meta_key, $meta_value, $unique );
+		return Give()->donor_meta->add_meta( $this->id, $meta_key, $meta_value, $unique );
 	}
 
 	/**
-	 * Update customer meta field based on customer ID.
+	 * Update a meta field based on donor ID.
 	 *
 	 * @since  1.6
 	 * @access public
@@ -911,11 +908,11 @@ class Give_Customer {
 	 * @return bool               False on failure, true if success.
 	 */
 	public function update_meta( $meta_key = '', $meta_value, $prev_value = '' ) {
-		return Give()->customer_meta->update_meta( $this->id, $meta_key, $meta_value, $prev_value );
+		return Give()->donor_meta->update_meta( $this->id, $meta_key, $meta_value, $prev_value );
 	}
 
 	/**
-	 * Remove metadata matching criteria from a customer.
+	 * Remove metadata matching criteria from a donor.
 	 *
 	 * @since  1.6
 	 * @access public
@@ -926,7 +923,7 @@ class Give_Customer {
 	 * @return bool               False for failure. True for success.
 	 */
 	public function delete_meta( $meta_key = '', $meta_value = '' ) {
-		return Give()->customer_meta->delete_meta( $this->id, $meta_key, $meta_value );
+		return Give()->donor_meta->delete_meta( $this->id, $meta_key, $meta_value );
 	}
 
 	/**
@@ -998,7 +995,7 @@ class Give_Customer {
 	 * @since  1.7
 	 * @access public
 	 *
-	 * @param  string $email The email address to attach to the customer
+	 * @param  string $email The email address to attach to the donor
 	 * @param  bool $primary Allows setting the email added as the primary
 	 *
 	 * @return bool            If the email was added successfully
@@ -1007,10 +1004,10 @@ class Give_Customer {
 		if ( ! is_email( $email ) ) {
 			return false;
 		}
-		$existing = new Give_Customer( $email );
+		$existing = new Give_Donor( $email );
 
 		if ( $existing->id > 0 ) {
-			// Email address already belongs to another customer
+			// Email address already belongs to another donor
 			return false;
 		}
 
@@ -1036,14 +1033,14 @@ class Give_Customer {
 	}
 
 	/**
-	 * Remove an email from the customer
+	 * Remove an email from the donor.
 	 *
 	 * @since  1.7
 	 * @access public
 	 *
-	 * @param  string $email The email address to remove from the customer
+	 * @param  string $email The email address to remove from the donor.
 	 *
-	 * @return bool          If the email was removed successfully
+	 * @return bool          If the email was removed successfully.
 	 */
 	public function remove_email( $email = '' ) {
 		if ( ! is_email( $email ) ) {
@@ -1060,16 +1057,16 @@ class Give_Customer {
 	}
 
 	/**
-	 * Set an email address as the customer's primary email
+	 * Set an email address as the donor's primary email.
 	 *
-	 * This will move the customer's previous primary email to an additional email
+	 * This will move the donor's previous primary email to an additional email.
 	 *
 	 * @since  1.7
 	 * @access public
 	 *
-	 * @param  string $new_primary_email The email address to remove from the customer
+	 * @param  string $new_primary_email The email address to remove from the donor.
 	 *
-	 * @return bool                      If the email was set as primary successfully
+	 * @return bool                      If the email was set as primary successfully.
 	 */
 	public function set_primary_email( $new_primary_email = '' ) {
 		if ( ! is_email( $new_primary_email ) ) {
@@ -1078,22 +1075,22 @@ class Give_Customer {
 
 		do_action( 'give_donor_pre_set_primary_email', $new_primary_email, $this->id, $this );
 
-		$existing = new Give_Customer( $new_primary_email );
+		$existing = new Give_Donor( $new_primary_email );
 
 		if ( $existing->id > 0 && (int) $existing->id !== (int) $this->id ) {
-			// This email belongs to another customer
+			// This email belongs to another donor.
 			return false;
 		}
 
 		$old_email = $this->email;
 
-		// Update customer record with new email
+		// Update donor record with new email.
 		$update = $this->update( array( 'email' => $new_primary_email ) );
 
-		// Remove new primary from list of additional emails
+		// Remove new primary from list of additional emails.
 		$remove = $this->remove_email( $new_primary_email );
 
-		// Add old email to additional emails list
+		// Add old email to additional emails list.
 		$add = $this->add_email( $old_email );
 
 		$ret = $update && $remove && $add;
