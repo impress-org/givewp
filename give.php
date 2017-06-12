@@ -481,7 +481,7 @@ if ( ! class_exists( 'Give' ) ) :
 
 			unload_textdomain( 'give' );
 			load_textdomain( 'give', WP_LANG_DIR . '/give/give-' . $locale . '.mo' );
-			load_plugin_textdomain( 'give', false, plugin_basename( dirname( __FILE__ ) ) . '/languages' );
+			load_plugin_textdomain( 'give', false, apply_filters( 'give_languages_directory', plugin_basename( dirname( __FILE__ ) ) . '/languages' ) );
 
 		}
 
