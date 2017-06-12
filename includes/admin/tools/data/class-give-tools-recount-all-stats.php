@@ -281,19 +281,15 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 				$this->store_data( 'give_temp_payment_items', $payment_items );
 			}
 
-			$all_forms = $this->get_stored_data( 'give_temp_form_ids' );
+			$args = array(
+				'post_status'    => 'any',
+				'post_type'      => 'give_forms',
+				'posts_per_page' => - 1,
+				'fields'         => 'ids',
+			);
 
-			if ( false === $all_forms ) {
-				$args = array(
-					'post_status'    => 'any',
-					'post_type'      => 'give_forms',
-					'posts_per_page' => - 1,
-					'fields'         => 'ids',
-				);
-
-				$all_forms = get_posts( $args );
-				$this->store_data( 'give_temp_form_ids', $all_forms );
-			}
+			$all_forms = get_posts( $args );
+			$this->store_data( 'give_temp_form_ids', $all_forms );
 
 			$args = apply_filters( 'give_recount_form_stats_total_args', array(
 				'post_parent__in' => $all_forms,
