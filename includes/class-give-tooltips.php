@@ -139,7 +139,7 @@ class Give_Tooltips {
 		}
 		$attributes_str = trim( $attributes_str );
 
-		return sprintf( '<%1$s %2$s>%3$s</%1$s>', $args['tag'], $attributes_str, $args['tag_content'] );
+		return sprintf( '<%1$s %2$s rel="tooltip">%3$s</%1$s>', $args['tag'], $attributes_str, $args['tag_content'] );
 	}
 
 
