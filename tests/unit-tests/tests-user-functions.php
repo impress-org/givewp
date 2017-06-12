@@ -107,14 +107,14 @@ class Tests_User_Function extends Give_Unit_Test_Case {
 		/*
 		 * Check 3
 		 *
-		 * Varify email ( user already exist )
+		 * Verify email ( user already exist )
 		 */
 		$output = give_validate_user_email( 'admin@example.org' );
 
 		$this->assertTrue( $output );
 
 		/*
-		 * Check 3
+		 * Check 4
 		 *
 		 * Already registered email and newly register user
 		 */
@@ -229,6 +229,35 @@ class Tests_User_Function extends Give_Unit_Test_Case {
 		$output = give_validate_user_password( 'xyzabc', 'xyzabc', false );
 
 		$this->assertTrue( $output );
+	}
+
+	/**
+	 * Test give_donor_email_exists function
+	 *
+	 * @since 1.8.9
+	 *
+	 * @todo We need to add Check 3 for Email already exists for donor,once we add additional_email test check for donor.
+	 *
+	 * @cover give_donor_email_exists
+	 */
+	function test_give_donor_email_exists() {
+		/*
+		 * Check 1
+		 *
+		 * Empty email doesn't exists
+		 */
+		$output = give_donor_email_exists( '' );
+		$this->assertFalse( $output );
+
+		/*
+		 * Check 2
+		 *
+		 * Bad Email doesn't exists
+		 */
+		$output = give_donor_email_exists( 'xyz' );
+
+		$this->assertFalse( $output );
+
 	}
 }
 
