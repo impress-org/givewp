@@ -132,17 +132,12 @@ class Give_Tooltips {
 	 * @access public
 	 *
 	 * @param array $args
-	 * @param bool  $echo
 	 *
 	 * @return string
 	 */
-	function render_link( $args, $echo = false ) {
+	function render_link( $args ) {
 		$args['tag']    = 'a';
 		$tooltip_markup = $this->render( $args );
-
-		if ( $echo ) {
-			echo $tooltip_markup;
-		}
 
 		return $tooltip_markup;
 	}
@@ -154,18 +149,12 @@ class Give_Tooltips {
 	 * @access public
 	 *
 	 * @param array $args
-	 * @param bool  $echo
 	 *
 	 * @return string
 	 */
-	function render_span( $args, $echo = false ) {
+	function render_span( $args ) {
 		$args['tag']    = 'span';
 		$tooltip_markup = $this->render( $args );
-
-		if ( $echo ) {
-			echo $tooltip_markup;
-		}
-
 
 		return $tooltip_markup;
 	}
