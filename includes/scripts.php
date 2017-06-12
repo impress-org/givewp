@@ -275,6 +275,9 @@ function give_load_admin_scripts( $hook ) {
 	wp_register_script( 'give-repeatable-fields', $js_plugins . 'repeatable-fields' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
 	wp_enqueue_script( 'give-repeatable-fields' );
 
+	wp_register_script( 'give-hint.css-custom', $js_plugins . 'hint.css-custom' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
+	wp_enqueue_script( 'give-hint.css-custom' );
+
 	// Forms CPT Script.
 	if ( $post_type === 'give_forms' ) {
 		wp_register_script( 'give-admin-forms-scripts', $js_dir . 'admin-forms' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );

@@ -1802,9 +1802,24 @@ jQuery.noConflict();
 
 		// Check & show message on keyup event.
 		$('#poststuff').on('keyup', 'input.give-money-field, input.give-price-field', function () {
+			var tootltip_setting = {
+				label: give_vars.price_format_guide.trim()
+			};
 			// Count thousand separator in price string.
 			thousand_separator_count = ( $(this).val().match(new RegExp(thousand_separator, 'g')) || [] ).length;
 			alphabet_count           = ( $(this).val().match(new RegExp('[a-z]', 'g')) || [] ).length;
+
+			// Show qtip conditionally if thousand separator detected on price string.
+			if (
+				( -1 !== $(this).val().indexOf(thousand_separator) )
+				&& ( thousand_separator_limit < thousand_separator_count )
+			) {
+				$(this).give_fakehint('show', tootltip_setting );
+			} else if (alphabet_count) {
+				$(this).give_fakehint('show', tootltip_setting);
+			} else {
+				$(this).give_fakehint('hide', tootltip_setting);
+			}
 
 			// Reset thousand separator count.
 			thousand_separator_count = alphabet_count = '';
