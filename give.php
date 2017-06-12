@@ -271,7 +271,7 @@ if ( ! class_exists( 'Give' ) ) :
 		 * @return void
 		 */
 		public function __clone() {
-			// Cloning instances of the class is forbidden
+			// Cloning instances of the class is forbidden.
 			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'give' ), '1.0' );
 		}
 
@@ -466,7 +466,7 @@ if ( ! class_exists( 'Give' ) ) :
 		}
 
 		/**
-		 * Loads the plugin language files
+		 * Loads the plugin language files.
 		 *
 		 * @since  1.0
 		 * @access public
@@ -474,28 +474,19 @@ if ( ! class_exists( 'Give' ) ) :
 		 * @return void
 		 */
 		public function load_textdomain() {
+
 			// Set filter for Give's languages directory
 			$give_lang_dir = dirname( plugin_basename( GIVE_PLUGIN_FILE ) ) . '/languages/';
 			$give_lang_dir = apply_filters( 'give_languages_directory', $give_lang_dir );
 
-			// Traditional WordPress plugin locale filter
-			$locale = apply_filters( 'plugin_locale', get_locale(), 'give' );
-			$mofile = sprintf( '%1$s-%2$s.mo', 'give', $locale );
+			// Traditional WordPress plugin locale filter.
+			$locale = is_admin() && function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
+			$locale = apply_filters( 'plugin_locale', $locale, 'give' );
 
-			// Setup paths to current locale file
-			$mofile_local  = $give_lang_dir . $mofile;
-			$mofile_global = WP_LANG_DIR . '/give/' . $mofile;
+			unload_textdomain( 'give' );
+			load_textdomain( 'give', WP_LANG_DIR . '/give/give-' . $locale . '.mo' );
+			load_plugin_textdomain( 'give', false, $give_lang_dir );
 
-			if ( file_exists( $mofile_global ) ) {
-				// Look in global /wp-content/languages/give folder
-				load_textdomain( 'give', $mofile_global );
-			} elseif ( file_exists( $mofile_local ) ) {
-				// Look in local location from filter `give_languages_directory`
-				load_textdomain( 'give', $mofile_local );
-			} else {
-				// Load the default language files packaged up w/ Give
-				load_plugin_textdomain( 'give', false, $give_lang_dir );
-			}
 		}
 
 	}
