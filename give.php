@@ -217,7 +217,7 @@ if ( ! class_exists( 'Give' ) ) :
 		 */
 		private function init_hooks() {
 			register_activation_hook( __FILE__, 'give_install' );
-			add_action( 'init', array( $this, 'init' ), 0 );
+			add_action( 'plugins_loaded', array( $this, 'init' ), 0 );
 		}
 		/**
 		 * Init Give when WordPress Initializes.
