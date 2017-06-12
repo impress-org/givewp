@@ -1,9 +1,4 @@
-jQuery(document).ready(function($){
-	// Add custom style.
-	var styles = '.give-fake-hintcss-js:before, .give-fake-hintcss-js:after{visibility:visible !important; opacity:1!important;}';
-	$('<style>'+ styles +'</style>').appendTo(document.head);
-});
-
+var Give_FakeHintCSS = Give_FakeHintCSS || {};
 jQuery.fn.give_fakehint = function( action, settings ) {
 	return this.each(function(){
 		var $this = jQuery(this);
@@ -18,6 +13,14 @@ jQuery.fn.give_fakehint = function( action, settings ) {
 			// bailout.
 			if( ! label.length ) {
 				return;
+			}
+
+			// Add custom style.
+			if( undefined == Give_FakeHintCSS.style_loaded ){
+				var styles = '.give-fake-hintcss-js:before, .give-fake-hintcss-js:after{visibility:visible !important; opacity:1!important;}';
+				jQuery('<style>'+ styles +'</style>').appendTo(document.head);
+
+				Give_FakeHintCSS.style_loaded = 1;
 			}
 
 			$this.after( '<span class="give-fake-hint-tooltip-js hint--top hint--medium give-fake-hintcss-js" aria-label="' + label + '"></span>' );
