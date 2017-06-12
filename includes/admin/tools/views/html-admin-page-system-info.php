@@ -490,7 +490,7 @@ $plugins      = give_get_plugins();
 		</tr>
 		<tr>
 			<td data-export-label="Admin Email Notifications"><?php _e( 'Admin Email Notifications', 'give' ); ?>:</td>
-			<td class="help"><span class="give-tooltip hint--top" aria-label="<?php echo esc_attr(  ); ?>"><i class="give-icon give-icon-question"></i></span></td>
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'Whether admin email notification enabled or not.', 'give' ) ); ?></td>
 			<td><?php echo 'enabled' === give_get_option( 'admin_notices' ) ? __( 'Enabled', 'give' ) : __( 'Disabled', 'give' ); ?></td>
 		</tr>
 		<tr>

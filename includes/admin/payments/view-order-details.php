@@ -56,7 +56,15 @@ $payment_mode   = $payment->mode;
 			$number
 		);
 		if ( $payment_mode == 'test' ) {
-			echo '<span id="test-payment-label" class="give-item-label give-item-label-orange hint--right" aria-label="' . esc_attr__( 'This donation was made in test mode.', 'give' ) . '">' . esc_html__( 'Test Donation', 'give' ) . '</span>';
+			echo Give()->tooltips->render_span(array(
+				'label' => __( 'This donation was made in test mode.', 'give' ),
+				'tag_content' => __( 'Test Donation', 'give' ),
+				'position'=> 'right',
+				'attributes' => array(
+					'id' => 'test-payment-label',
+					'class' => 'give-item-label give-item-label-orange'
+				)
+			));
 		}
 		?></h1>
 
