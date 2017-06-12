@@ -87,7 +87,7 @@ class Give_Email_Notification_Table extends WP_List_Table {
 		<a class="row-title" href="<?php echo $edit_url; ?>"><?php echo $email->config['label']; ?></a>
 
 		<?php if ( $desc = $email->config['description'] ) : ?>
-			<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( $desc ); ?>"></span>
+			<?php echo Give()->tooltips->render_help( esc_attr( $desc ) ); ?>
 		<?php endif; ?>
 
 		<?php echo $this->row_actions( $actions ); ?>

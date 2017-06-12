@@ -813,14 +813,15 @@ function give_reports_refresh_button() {
 		'give-message' => 'refreshed-reports'
 	) ), 'give-refresh-reports' );
 
-	echo '<a href="'
-	     . esc_url_raw( $url )
-	     . '" aria-label="'. esc_attr__( 'Clicking this will clear the reports cache.', 'give' )
-	     . '" class="button alignright give-admin-button give-tooltip hint--left">'
-	     . '<span class="give-admin-button-icon give-admin-button-icon-update"></span>'
-	     . esc_html__( 'Refresh Report Data', 'give' )
-	     . '</a>';
-
+	echo Give()->tooltips->render_link(array(
+		'label' => esc_attr__( 'Clicking this will clear the reports cache.', 'give' ),
+		'tag_content' => '<span class="give-admin-button-icon give-admin-button-icon-update"></span>' . esc_html__( 'Refresh Report Data', 'give' ),
+		'link' => $url,
+		'position' => 'left',
+		'attributes' => array(
+				'class' => 'button alignright give-admin-button'
+		)
+	));
 }
 
 add_action( 'give_reports_graph_additional_stats', 'give_reports_refresh_button' );
