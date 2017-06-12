@@ -475,13 +475,17 @@ if ( ! class_exists( 'Give' ) ) :
 		 */
 		public function load_textdomain() {
 
+			// Set filter for Give's languages directory
+			$give_lang_dir = dirname( plugin_basename( GIVE_PLUGIN_FILE ) ) . '/languages/';
+			$give_lang_dir = apply_filters( 'give_languages_directory', $give_lang_dir );
+
 			// Traditional WordPress plugin locale filter.
 			$locale = is_admin() && function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
 			$locale = apply_filters( 'plugin_locale', $locale, 'give' );
 
 			unload_textdomain( 'give' );
 			load_textdomain( 'give', WP_LANG_DIR . '/give/give-' . $locale . '.mo' );
-			load_plugin_textdomain( 'give', false, apply_filters( 'give_languages_directory', plugin_basename( dirname( __FILE__ ) ) . '/languages' ) );
+			load_plugin_textdomain( 'give', false, $give_lang_dir );
 
 		}
 
