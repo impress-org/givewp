@@ -21,7 +21,7 @@ class Give_Tooltips {
 	 * @return array
 	 */
 	private function set_toottip_args( $args ) {
-		return wp_parse_args(
+		$args = wp_parse_args(
 			$args,
 			array(
 				// Tooltip tag.
@@ -54,8 +54,26 @@ class Give_Tooltips {
 
 				// Attributes.
 				'attributes'  => array(),
+
+				// Value: true/false
+				'auto_width'  => true,
 			)
 		);
+
+		// Auto set width of tooltip.
+		if (
+			! empty( $args['auto_width'] ) &&
+			! empty( $args['label'] ) &&
+			empty( $args['size'] )
+		) {
+			if ( 15 < str_word_count( $args['label'] ) ) {
+				$args['size'] = 'large';
+			} elseif ( 7 < str_word_count( $args['label'] ) ) {
+				$args['size'] = 'medium';
+			}
+		}
+
+		return $args;
 	}
 
 
