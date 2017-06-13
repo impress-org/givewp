@@ -39,6 +39,7 @@ var source_paths = {
         './assets/js/plugins/jquery.blockUI.min.js',
         './assets/js/plugins/jquery.magnific-popup.min.js',
         './assets/js/plugins/jquery.payment.min.js',
+        './assets/js/plugins/give-hint.css.min.js',
         './assets/js/frontend/*.min.js' //Frontend scripts need to be loaded last
     ]
 };
