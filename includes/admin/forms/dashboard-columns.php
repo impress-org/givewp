@@ -85,7 +85,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 				}
 				break;
 			case 'goal':
-				if ( give_is_setting_enabled( get_post_meta( $post_id, '_give_goal_option', true ) ) ) {
+				if ( give_is_setting_enabled( give_get_meta( $post_id, '_give_goal_option', true ) ) ) {
 					echo give_goal( $post_id, false );
 				} else {
 					esc_html_e( 'No Goal Set', 'give' );
@@ -181,13 +181,21 @@ function give_sort_forms( $vars ) {
 
 		// Check if "orderby" is set to "price/amount"
 		case 'amount':
-			$vars = array_merge(
-				$vars,
+			$multi_level_meta_key = ( 'asc' === $vars['order'] ) ? '_give_levels_minimum_amount' : '_give_levels_maximum_amount';
+
+			$vars['orderby']    = 'meta_value_num';
+			$vars['meta_query'] = array(
+				'relation' => 'OR',
 				array(
-					'meta_key' => '_give_set_price',
-					'orderby'  => 'meta_value_num',
+					'key'     => $multi_level_meta_key,
+					'type'    => 'NUMERIC',
+				),
+				array(
+					'key'     => '_give_set_price',
+					'type'    => 'NUMERIC',
 				)
 			);
+
 			break;
 
 		// Check if "orderby" is set to "goal"
@@ -309,7 +317,7 @@ function give_price_save_quick_edit( $post_id ) {
 	}
 
 	if ( isset( $_REQUEST['_give_regprice'] ) ) {
-		update_post_meta( $post_id, '_give_set_price', strip_tags( stripslashes( $_REQUEST['_give_regprice'] ) ) );
+		give_update_meta( $post_id, '_give_set_price', strip_tags( stripslashes( $_REQUEST['_give_regprice'] ) ) );
 	}
 }
 
@@ -334,7 +342,7 @@ function give_save_bulk_edit() {
 			}
 
 			if ( ! empty( $price ) ) {
-				update_post_meta( $post_id, '_give_set_price', give_sanitize_amount( $price ) );
+				give_update_meta( $post_id, '_give_set_price', give_sanitize_amount( $price ) );
 			}
 		}
 	}

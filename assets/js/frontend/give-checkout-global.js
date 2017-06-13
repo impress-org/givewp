@@ -66,22 +66,21 @@ jQuery(function ($) {
 	 * @since 1.2
 	 */
 	function format_cc_fields() {
-		give_form = $('form.give-form');
+		var $give_form = $('form.give-form');
 
 		//Loop through forms on page and set CC validation
-		give_form.each(function () {
-			var card_number = $(this).find('.card-number');
-			var card_cvc    = $(this).find('.card-cvc');
-			var card_expiry = $(this).find('.card-expiry');
+		$give_form.each(function (index, form) {
+			form            = $(form);
+			var card_number = form.find('.card-number'),
+				card_cvc    = form.find('.card-cvc'),
+				card_expiry = form.find('.card-expiry');
 
 			//Only validate if there is a card field
-			if (card_number.length === 0) {
-				return false;
+			if ( card_number.length ) {
+				card_number.payment('formatCardNumber');
+				card_cvc.payment('formatCardCVC');
+				card_expiry.payment('formatCardExpiry');
 			}
-
-			card_number.payment('formatCardNumber');
-			card_cvc.payment('formatCardCVC');
-			card_expiry.payment('formatCardExpiry');
 		});
 
 	}
@@ -89,7 +88,7 @@ jQuery(function ($) {
 	format_cc_fields();
 
 	// Trigger formatting function when gateway changes
-	doc.on('give_gateway_loaded', function () {
+	doc.on('give_gateway_loaded', function ( e ) {
 		format_cc_fields();
 	});
 
@@ -478,7 +477,7 @@ jQuery(function ($) {
 			price_id     = selected_field.data('price-id');
 
 		// Check if price ID blank because of dropdown type
-		if (!price_id) {
+		if ( undefined == price_id ) {
 			price_id = selected_field.find('option:selected').data('price-id');
 		}
 

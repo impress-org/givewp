@@ -41,7 +41,7 @@ function give_load_scripts() {
 		'thousands_separator' => give_get_price_thousand_separator(),
 		'decimal_separator'   => give_get_price_decimal_separator(),
 		'no_gateway'          => __( 'Please select a payment method.', 'give' ),
-		'bad_minimum'         => __( 'The minimum donation amount for this form is', 'give' ),
+		'bad_minimum'         => __( 'The minimum custom donation amount for this form is', 'give' ),
 		'general_loading'     => __( 'Loading...', 'give' ),
 		'purchase_loading'    => __( 'Please Wait...', 'give' ),
 		'number_decimals'     => give_get_price_decimals(),
@@ -309,8 +309,7 @@ function give_load_admin_scripts( $hook ) {
 		'revoke_api_key'                 => __( 'Are you sure you wish to revoke this API key?', 'give' ),
 		'regenerate_api_key'             => __( 'Are you sure you wish to regenerate this API key?', 'give' ),
 		'resend_receipt'                 => __( 'Are you sure you wish to resend the donation receipt?', 'give' ),
-		'logo'                           => __( 'Logo', 'give' ),
-		'use_this_image'                 => __( 'Use this image', 'give' ),
+		'disconnect_user'                => __( 'Are you sure you want to disconnect the user from this donor?', 'give' ),
 		'one_option'                     => __( 'Choose a form', 'give' ),
 		'one_or_more_option'             => __( 'Choose one or more forms', 'give' ),
 		'currency_sign'                  => give_currency_filter( '' ),
@@ -324,6 +323,10 @@ function give_load_admin_scripts( $hook ) {
 		'confirm_before_remove_row_text' => __( 'Do you want to delete this level?', 'give' ),
 		'matched_success_failure_page'   => __( 'You cannot set the success and failed pages to the same page', 'give' ),
 		'dismiss_notice_text'            => __( 'Dismiss this notice.', 'give' ),
+		'search_placeholder'             => __( 'Type to search all forms', 'give' ),
+		'search_placeholder_donor'       => __( 'Type to search all donors', 'give' ),
+		'search_placeholder_country'     => __( 'Type to search all countries', 'give' ),
+		'search_placeholder_state'       => __( 'Type to search all states/provinces', 'give' ),
 		'bulk_action' => array(
 			'delete'         => array(
 				'zero_payment_selected' => __( 'You must choose at least one or more payments to delete.', 'give' ),
@@ -338,9 +341,16 @@ function give_load_admin_scripts( $hook ) {
 		),
 		'metabox_fields' => array(
 			'media' => array(
-				'button_title' => esc_html__( 'Choose Attachment', 'give' ),
+				'button_title' => __( 'Choose Image', 'give' ),
+			),
+			'file' => array(
+				'button_title' => __( 'Choose File', 'give' ),
 			)
-		)
+		),
+		'chosen' => array(
+			'no_results_msg'  => __( 'No results match {search_term}', 'give' ),
+			'ajax_search_msg' => __( 'Searching results for match {search_term}', 'give' ),
+		),
 	) );
 
 	if ( function_exists( 'wp_enqueue_media' ) && version_compare( get_bloginfo( 'version' ), '3.5', '>=' ) ) {
@@ -406,14 +416,16 @@ function give_admin_hide_notice_shortly_js() {
     <script>
 		jQuery(document).ready(function ($) {
 			$('.give-license-notice').on('click', 'button.notice-dismiss', function (e) {
-				e.preventDefault();
 
-				var parent             = $(this).parents('.give-license-notice'),
-				    dismiss_notice_url = parent.data('dismiss-notice-shortly');
+                e.preventDefault();
 
-				if (dismiss_notice_url) {
-					window.location.assign(dismiss_notice_url);
-				}
+                var data = {
+                    'action': 'give_hide_license_notice',
+                    '_give_hide_license_notices_shortly': 'general'
+                };
+
+                jQuery.post('<?php echo admin_url(); ?>admin-ajax.php', data, function(response) { });
+
 			});
 		});
     </script>
