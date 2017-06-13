@@ -91,6 +91,7 @@ jQuery(document).ready(function ($) {
 	 */
 	$( '.give-email-notification-status', 'table.giveemailnotifications' ).on( 'click', function(){
 		var $this = $(this),
+			$icon_container = $('i', $this),
 			$loader = $(this).next(),
 			set_notification_status = $(this).hasClass( 'give-email-notification-enabled' ) ? 'disabled' : 'enabled',
 			notification_id = $(this).data('id');
@@ -119,11 +120,11 @@ jQuery(document).ready(function ($) {
 					$this.data( 'status', set_notification_status );
 
 					if( 'enabled' === set_notification_status ) {
-						$this.removeClass('dashicons-no-alt');
-						$this.addClass('dashicons-yes');
+						$icon_container.removeClass('dashicons-no-alt');
+						$icon_container.addClass('dashicons-yes');
 					} else{
-						$this.removeClass('dashicons-yes');
-						$this.addClass('dashicons-no-alt');
+						$icon_container.removeClass('dashicons-yes');
+						$icon_container.addClass('dashicons-no-alt');
 					}
 
 					$loader.removeClass('is-active');

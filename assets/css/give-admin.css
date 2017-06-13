@@ -1729,16 +1729,17 @@ a.give-delete {
 
 .giveemailnotifications th.check-column .give-email-notification-status {
   color: white;
-  border-radius: 1em;
-  cursor: pointer;
-  padding: 2px; }
+  cursor: pointer; }
+  .giveemailnotifications th.check-column .give-email-notification-status i.dashicons {
+    border-radius: 1em;
+    padding: 2px; }
 
-.giveemailnotifications th.check-column .give-email-notification-enabled,
-.giveemailnotifications th.check-column .give-email-notification-disabled:hover {
+.giveemailnotifications th.check-column .give-email-notification-enabled .dashicons-yes,
+.giveemailnotifications th.check-column .give-email-notification-disabled:hover .dashicons-no-alt {
   background: #46b450; }
 
-.giveemailnotifications th.check-column .give-email-notification-disabled,
-.giveemailnotifications th.check-column .give-email-notification-enabled:hover {
+.giveemailnotifications th.check-column .give-email-notification-disabled .dashicons-no-alt,
+.giveemailnotifications th.check-column .give-email-notification-enabled:hover .dashicons-yes {
   background: #bbbbbb; }
 
 .giveemailnotifications th.check-column .dashicons-no-alt:hover:before {
