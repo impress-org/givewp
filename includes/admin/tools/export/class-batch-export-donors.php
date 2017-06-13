@@ -167,6 +167,20 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 		$i = 0;
 
+		$donor_args = array(
+			'number' => 30,
+		);
+
+		// Filter Donors list based on specified timeframe
+		if ( ! empty( $this->data['donor_export_start_date'] ) || ! empty( $this->data['donor_export_end_date'] ) ) {
+
+			$donor_args['date'] = array(
+				'start'     => isset( $this->data['donor_export_start_date'] ) ? date( 'Y-n-d 00:00:00', strtotime( $this->data['donor_export_start_date'] ) ) : date( 'Y-n-d 23:59:59', mktime( 23, 59,59, 01, 01, 1970 ) ),
+				'end'       => isset( $this->data['donor_export_end_date'] ) ? date( 'Y-n-d 23:59:59', strtotime( $this->data['donor_export_end_date'] ) ) : date( 'Y-n-d 23:59:59' )
+			);
+
+		}
+
 		if ( ! empty( $this->form ) ) {
 
 			// Export donors of a specific product.
@@ -203,10 +217,11 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 					$this->donor_ids[] = $payment->customer_id;
 
-					$donor      = Give()->donors->get_donor_by( 'id', $payment->customer_id );
-					$data[]     = $this->set_donor_data( $i, $data, $donor );
 					$i ++;
 				}
+
+				$donor_args['id'] = $this->donor_ids;
+				$donors = Give()->donors->get_donors( $donor_args );
 
 				// Cache donor ids only if admin export donor for specific form.
 				Give_Cache::set( $this->query_id, array_unique( $this->donor_ids ), HOUR_IN_SECONDS, true );
@@ -216,29 +231,18 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 			// Export all donors.
 			$offset = 30 * ( $this->step - 1 );
 
-			$args = array(
-				'number' => 30,
-				'offset' => $offset,
-			);
+			$donor_args['offset'] = $offset;
 
-			// Filter Donors list based on specified timeframe
-			if ( ! empty( $this->data['donor_export_start_date'] ) || ! empty( $this->data['donor_export_end_date'] ) ) {
+			$donors = Give()->donors->get_donors( $donor_args );
 
-				$args['date'] = array(
-					'start'     => date( 'Y-n-d 00:00:00', strtotime( $this->data['donor_export_start_date'] ) ),
-					'end'    => date( 'Y-n-d 23:59:59', strtotime( $this->data['donor_export_end_date'] ) )
-				);
 
-			}
-
-			$donors = Give()->donors->get_donors( $args );
-
-			foreach ( $donors as $donor ) {
-
-				$data[] = $this->set_donor_data( $i, $data, $donor );
-				$i ++;
-			}
 		}// End if().
+
+		foreach ( $donors as $donor ) {
+
+			$data[] = $this->set_donor_data( $i, $data, $donor );
+			$i ++;
+		}
 
 		$data = apply_filters( 'give_export_get_data', $data );
 		$data = apply_filters( "give_export_get_data_{$this->export_type}", $data );
