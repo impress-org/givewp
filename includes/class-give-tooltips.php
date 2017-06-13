@@ -166,11 +166,16 @@ class Give_Tooltips {
 	 * @since  2.0
 	 * @access public
 	 *
-	 * @param array $args
+	 * @param array|string $args
 	 *
 	 * @return string
 	 */
 	function render_span( $args ) {
+		// Set tooltip args from string.
+		if ( is_string( $args ) ) {
+			$args = array( 'label' => $args );
+		}
+
 		$args['tag']    = 'span';
 		$tooltip_markup = $this->render( $args );
 
