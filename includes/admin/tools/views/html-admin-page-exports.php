@@ -174,6 +174,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 									'placeholder' => esc_attr__( 'Start date', 'give' ),
 								);
 								echo Give()->html->date_field( $args ); ?>
+
 								<?php
 								$args = array(
 									'id'          => 'give_donor_export_end_date',
@@ -181,6 +182,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 									'placeholder' => esc_attr__( 'End date', 'give' ),
 								);
 								echo Give()->html->date_field( $args ); ?>
+
 								<?php
 								$args = array(
 									'name'   => 'forms',
