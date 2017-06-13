@@ -137,6 +137,9 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 				case 'userid' :
 					$cols['userid'] = esc_html__( 'User ID', 'give' );
 					break;
+				case 'donation_form' :
+					$cols['donation_form'] = esc_html__( 'Donation Form', 'give' );
+					break;
 				case 'date_first_donated' :
 					$cols['date_first_donated'] = esc_html__( 'First Donation Date', 'give' );
 					break;
@@ -316,6 +319,10 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 		}
 		if ( ! empty( $columns['userid'] ) ) {
 			$data[ $i ]['userid'] = ! empty( $donor->user_id ) ? $donor->user_id : '';
+		}
+		if ( ! empty( $columns['donation_form'] ) ) {
+			$payment = new Give_Payment($donor->payment_ids);
+			$data[ $i ]['donation_form'] = ! empty( $payment->form_title ) ? $payment->form_title : '';
 		}
 		if ( ! empty( $columns['date_first_donated'] ) ) {
 			$data[ $i ]['date_first_donated'] = date_i18n( give_date_format(), strtotime( $donor->date_created ) );
