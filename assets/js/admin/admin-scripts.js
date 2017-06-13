@@ -1814,11 +1814,11 @@ jQuery.noConflict();
 				( -1 !== $(this).val().indexOf(thousand_separator) )
 				&& ( thousand_separator_limit < thousand_separator_count )
 			) {
-				$(this).give_fakehint('show', tootltip_setting );
+				$(this).give_hintcss('show', tootltip_setting );
 			} else if (alphabet_count) {
-				$(this).give_fakehint('show', tootltip_setting);
+				$(this).give_hintcss('show', tootltip_setting);
 			} else {
-				$(this).give_fakehint('hide', tootltip_setting);
+				$(this).give_hintcss('hide', tootltip_setting);
 			}
 
 			// Reset thousand separator count.
