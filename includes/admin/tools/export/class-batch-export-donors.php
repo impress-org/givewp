@@ -215,10 +215,23 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 			// Export all donors.
 			$offset = 30 * ( $this->step - 1 );
-			$donors = Give()->donors->get_donors( array(
+
+			$args = array(
 				'number' => 30,
 				'offset' => $offset,
-			) );
+			);
+
+			// Filter Donors list based on specified timeframe
+			if ( ! empty( $this->data['donor_export_start_date'] ) || ! empty( $this->data['donor_export_end_date'] ) ) {
+
+				$args['date'] = array(
+					'start'     => date( 'Y-n-d 00:00:00', strtotime( $this->data['donor_export_start_date'] ) ),
+					'end'    => date( 'Y-n-d 23:59:59', strtotime( $this->data['donor_export_end_date'] ) )
+				);
+
+			}
+
+			$donors = Give()->donors->get_donors( $args );
 
 			foreach ( $donors as $donor ) {
 
