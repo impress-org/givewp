@@ -230,7 +230,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 										<li>
 											<label for="give-export-donation-form">
 												<input type="checkbox" checked
-												       name="give_export_option[donationform]"
+												       name="give_export_option[donation_form]"
 												       id="give-export-donation-form"><?php esc_html_e( 'Donation Form', 'give' ); ?>
 											</label>
 										</li>
