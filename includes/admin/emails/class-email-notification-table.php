@@ -188,11 +188,14 @@ class Give_Email_Notification_Table extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_setting( Give_Email_Notification $email ) {
-		ob_start();
-		?>
-		<a class="button button-small" data-tooltip="<?php echo __( 'Edit', 'give' ); ?> <?php echo $email->config['label']; ?>" href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=' . $email->config['id'] ) ); ?>"><span class="dashicons dashicons-admin-generic"></span></a>
-		<?php
-		return ob_get_clean();
+		return Give()->tooltips->render_link( array(
+			'label'       => __( 'Edit', 'give' ) . " {$email->config['label']}",
+			'tag_content' => '<span class="dashicons dashicons-admin-generic"></span>',
+			'link'        => esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=' . $email->config['id'] ) ),
+			'attributes'  => array(
+				'class' => 'button button-small',
+			),
+		) );
 	}
 
 
