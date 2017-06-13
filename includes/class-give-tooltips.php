@@ -132,14 +132,7 @@ class Give_Tooltips {
 			$args['attributes']['href'] = esc_url( $args['link'] );
 		}
 
-		// Set attribute string
-		$attributes_str = '';
-		foreach ( $args['attributes'] as $name => $val ) {
-			$attributes_str .= "{$name}=\"{$val}\" ";
-		}
-		$attributes_str = trim( $attributes_str );
-
-		return sprintf( '<%1$s %2$s rel="tooltip">%3$s</%1$s>', $args['tag'], $attributes_str, $args['tag_content'] );
+		return sprintf( '<%1$s %2$s rel="tooltip">%3$s</%1$s>', $args['tag'], give_get_attribute_str( $args['attributes'] ), $args['tag_content'] );
 	}
 
 
