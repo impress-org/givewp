@@ -1171,3 +1171,27 @@ function give_delete_meta( $id, $meta_key, $meta_value = '' ) {
 	 */
 	return apply_filters( 'give_delete_meta', $status, $id, $meta_key, $meta_value );
 }
+
+
+/**
+ * Get attribute string
+ *
+ * @since 2.0
+ *
+ * @param array $attributes
+ *
+ * @return string
+ */
+function give_get_attribute_str( $attributes ) {
+	$attribute_str = '';
+
+	if ( empty( $attributes ) ) {
+		return $attribute_str;
+	}
+
+	foreach ( $attributes as $tag => $value ) {
+		$attribute_str .= " {$tag}=\"{$value}\"";
+	}
+
+	return trim( $attribute_str );
+}
