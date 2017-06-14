@@ -38,6 +38,33 @@
 	table table input[type="text"] {
 		width: 15em;
 	}
+
+	.give-repeat-setting-field{
+		margin: 10px 0;
+	}
+
+	.give-remove-setting-field{
+		width: 25px;
+		height: 25px;
+		padding: 0;
+		text-align: center;
+		line-height: 22px;
+		font-size: 21px;
+		font-weight: 300;
+		cursor: pointer;
+		margin-left: 20px;
+		display: inline-block;
+	}
+
+	.give-remove-setting-field:hover{
+		background-color: red;
+		color: white;
+		border-radius: 30px;
+	}
+
+	.give-forminp p:first-child .give-remove-setting-field{
+		display: none;
+	}
 }
 
 .give-setting-tab-header {
@@ -45,9 +72,9 @@
 	overflow: hidden;
 	margin: 30px 0;
 
-	h2 {
-		margin-top: 8px;
-	}
+	h2 {  margin-top: 8px;  }
+
+	p {  margin-bottom: 0;  }
 }
 
 .give-radio-inline {
@@ -79,25 +106,6 @@ p.give-field-description, .cmb2-metabox-description {
 	color: #aaaaaa;
 	font-style: italic;
 	font-size: 13px !important;
-}
-
-.give-image-thumb {
-	position: relative;
-	margin-top: 14px;
-
-	span.give-delete-image-thumb {
-		position: absolute;
-		background: red;
-		color: white;
-		border-radius: 30px;
-		left: -10px;
-		top: -10px;
-	}
-
-	img {
-		max-width: 400px;
-		border: 4px solid white;
-	}
 }
 
 .cmb-type-give-title label,
@@ -221,56 +229,10 @@ p.give-field-description, .cmb2-metabox-description {
 // API
 //--------------------------------------------------------------
 
-.cmb2-id-api {
-
-	.cmb-td {
-		padding: 0;
-	}
-	table th {
-		padding: 10px 8px;
-	}
-
-	.give-ajax-user-search {
-		padding: 3px 5px;
-
-	}
-
-}
-
-.give_user_search_wrap {
-	position: relative;
-	overflow: visible;
-}
-
-.give_user_search_results {
-	position: absolute;
-	left: 0;
-	top: 27px;
-	z-index: 100;
-
-	a.give-ajax-user-cancel {
-		position: absolute;
-		right: 6px;
-		top: 2px;
-	}
-	ul {
-		padding: 10px 10px 4px;
-		margin: 0;
-		background: #f0f0f0;
-		border: 1px solid #DFDFDF;
-		width: 300px;
-		max-height: 200px;
-		overflow-y: scroll;
-	}
-
-}
-
 #api {
-
 	.tablenav .actions {
 		overflow: visible;
 	}
-
 }
 
 a.give-delete {
@@ -446,6 +408,54 @@ a.give-delete {
 	padding-top: .5em;
 }
 
+// Email notification list.
+.giveemailnotifications {
+	.check-column{
+		padding: 13px 10px 0 20px !important;
+	}
+
+	td.check-column input {
+		//width: 1em;
+		display: none;
+	}
+
+	th.check-column {
+		.give-email-notification-status{
+			color: white;
+			border-radius: 1em;
+			cursor: pointer;
+			padding: 2px;
+		}
+
+		.give-email-notification-enabled,
+		.give-email-notification-disabled:hover{
+			background: #46b450;
+		}
+
+		.give-email-notification-disabled,
+		.give-email-notification-enabled:hover{
+			background: #bbbbbb;
+		}
+
+		.dashicons-no-alt:hover:before {
+			content: "\f147" !important;
+		}
+
+		.dashicons-yes:hover:before {
+			content: "\f335" !important;
+		}
+
+		.give-email-notification-status[data-edit="0"] {
+			cursor: not-allowed;
+		}
+	}
+
+	.spinner.is-active {
+		margin: 0 0 0 2px;
+		float: none;
+	}
+}
+
 // Setting page tab
 h2.give-nav-tab-wrapper {
 	overflow: hidden;
@@ -546,4 +556,28 @@ h2.give-nav-tab-wrapper {
 #give-show-sub-nav:hover, #give-show-sub-nav:active {
 	outline: none;
 	box-shadow: inset 0px 0px 4px #ddd;
+}
+
+
+//--------------------------------------------------------------
+// Image preview container
+//--------------------------------------------------------------
+.give-image-thumb {
+	position: relative;
+	margin-top: 14px;
+
+	span.give-delete-image-thumb {
+		position: absolute;
+		background: red;
+		color: white;
+		border-radius: 30px;
+		left: -10px;
+		top: -10px;
+		cursor: pointer;
+	}
+
+	img {
+		max-width: 250px;
+		border: 4px solid white;
+	}
 }

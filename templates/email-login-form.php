@@ -8,7 +8,7 @@
 $show_form = true;
 $email     = isset( $_POST['give_email'] ) ? $_POST['give_email'] : '';
 
-//reCAPTCHA
+// reCAPTCHA
 $recaptcha_key    = give_get_option( 'recaptcha_key' );
 $recaptcha_secret = give_get_option( 'recaptcha_secret' );
 $enable_recaptcha = ( ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ) ? true : false;
@@ -22,11 +22,13 @@ if ( is_email( $email ) && wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
 		$args = array(
 			'secret'   => $recaptcha_secret,
 			'response' => $_POST['g-recaptcha-response'],
-			'remoteip' => $_POST['give_ip']
+			'remoteip' => $_POST['give_ip'],
 		);
 
 		if ( ! empty( $args['response'] ) ) {
-			$request = wp_remote_post( 'https://www.google.com/recaptcha/api/siteverify', array( 'body' => $args ) );
+			$request = wp_remote_post( 'https://www.google.com/recaptcha/api/siteverify', array(
+				'body' => $args,
+			) );
 			if ( ! is_wp_error( $request ) || 200 == wp_remote_retrieve_response_code( $request ) ) {
 
 				$response = json_decode( $request['body'], true );
@@ -35,15 +37,13 @@ if ( is_email( $email ) && wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
 				if ( ! $response['success'] ) {
 					give_set_error( 'give_recaptcha_test_failed', apply_filters( 'give_recaptcha_test_failed_message', esc_html__( 'reCAPTCHA test failed.', 'give' ) ) );
 				}
-
 			} else {
 
-				//Connection issue
+				// Connection issue
 				give_set_error( 'give_recaptcha_connection_issue', apply_filters( 'give_recaptcha_connection_issue_message', esc_html__( 'Unable to connect to reCAPTCHA server.', 'give' ) ) );
 
 			}
-
-		} // reCAPTCHA empty
+		} // End if().
 		else {
 
 			give_set_error( 'give_recaptcha_failed', apply_filters( 'give_recaptcha_failed_message', esc_html__( 'It looks like the reCAPTCHA test has failed.', 'give' ) ) );
@@ -51,26 +51,35 @@ if ( is_email( $email ) && wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
 		}
 	}
 
-	//If no errors or only expired token key error - then send email
+	// If no errors or only expired token key error - then send email
 	if ( ! give_get_errors() ) {
 
-		$customer = Give()->customers->get_customer_by( 'email', $email );
+		$donor = Give()->donors->get_donor_by( 'email', $email );
 
-		if ( isset( $customer->id ) ) {
-			if ( Give()->email_access->can_send_email( $customer->id ) ) {
-				Give()->email_access->send_email( $customer->id, $email );
+
+		if ( isset( $donor->id ) ) {
+			if ( Give()->email_access->can_send_email( $donor->id ) ) {
+				/**
+				 *  Fire the action
+				 *
+				 * @since 2.0
+				 *
+				 * @param int    $customer ::$id
+				 * @param string $email
+				 */
+				do_action( 'give_email-access_email_notification', $donor->id, $email );
 				$show_form = false;
 			}
 		} else {
-			give_set_error( 'give_no_donor_email_exists', apply_filters( 'give_no_donor_email_exists_message', esc_html__( 'It looks like that donor email address does not exist.', 'give' ) ) );
+			give_set_error( 'give_no_donor_email_exists', apply_filters( 'give_no_donor_email_exists_message', __( 'It looks like that donor email address does not exist.', 'give' ) ) );
 		}
 	}
-}
+}// End if().
 
-//Print any messages & errors
+// Print any messages & errors
 give_print_errors( 0 );
 
-//Show the email login form?
+// Show the email login form?
 if ( $show_form ) {
 ?>
 
@@ -78,7 +87,7 @@ if ( $show_form ) {
 
 		<?php
 		if ( ! give_get_errors() ) {
-			give_output_error( apply_filters( 'give_email_access_message', esc_html__( 'Please enter the email address you used for your donation. A verification email containing an access link will be sent to you.', 'give' ) ), true );
+			give_output_error( apply_filters( 'give_email_access_message', __( 'Please enter the email address you used for your donation. A verification email containing an access link will be sent to you.', 'give' ) ), true );
 		} ?>
 
 		<form method="post" action="" id="give-email-access-form">
@@ -87,7 +96,7 @@ if ( $show_form ) {
 			<input type="hidden" name="_wpnonce" value="<?php echo wp_create_nonce( 'give' ); ?>"/>
 
 			<?php
-			//Enable reCAPTCHA?
+			// Enable reCAPTCHA?
 			if ( $enable_recaptcha ) { ?>
 
 				<script>
@@ -123,5 +132,5 @@ if ( $show_form ) {
 		'success'
 	);
 
-}
+}// End if().
 ?>

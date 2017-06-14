@@ -266,6 +266,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 *
 		 * Loops though the give options array and outputs each field.
 		 *
+		 * @todo: Refactor this function
 		 * @since  1.8
 		 *
 		 * @param  array  $options     Opens array to output
@@ -278,12 +279,14 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 			// Field Default values.
 			$defaults = array(
-				'id'         => '',
-				'class'      => '',
-				'css'        => '',
-				'default'    => '',
-				'desc'       => '',
-				'table_html' => true,
+				'id'               => '',
+				'class'            => '',
+				'css'              => '',
+				'default'          => '',
+				'desc'             => '',
+				'table_html'       => true,
+				'repeat'           => false,
+				'repeat_btn_title' => __( 'Add Field', 'give' ),
 			);
 
 			foreach ( $options as $value ) {
@@ -319,12 +322,18 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 					// Section Titles
 					case 'title':
-						if ( ! empty( $value['title'] ) ) {
-							echo '<div class="give-setting-tab-header give-setting-tab-header-' . $current_tab . '"><h2>' . self::get_field_title( $value ) . '</h2><hr></div>';
-						}
+						if ( ! empty( $value['title'] ) || ! empty( $value['desc'] ) ) {
+							?>
+							<div class="give-setting-tab-header give-setting-tab-header-<?php echo $current_tab; ?>">
+								<?php if ( ! empty( $value['title'] ) ) : ?>
+									<h2><?php echo self::get_field_title( $value ); ?></h2><hr>
+								<?php endif; ?>
 
-						if ( ! empty( $value['desc'] ) ) {
-							echo wpautop( wptexturize( wp_kses_post( $value['desc'] ) ) );
+								<?php if ( ! empty( $value['desc'] ) ) : ?>
+									<?php echo wpautop( wptexturize( wp_kses_post( $value['desc'] ) ) ); ?>
+								<?php endif; ?>
+							</div>
+							<?php
 						}
 
 						if ( $value['table_html'] ) {
@@ -387,24 +396,46 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						$type = $value['type'];
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
 
+						// Set default value for repeater field if not any value set yet.
+						if( $value['repeat'] && is_string( $option_value ) ) {
+							$option_value = array( $value['default'] );
+						}
 						?>
-                    <tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
-                        <th scope="row" class="titledesc">
-                            <label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
-                        </th>
-                        <td class="give-forminp give-forminp-<?php echo sanitize_title( $value['type'] ) ?>">
-                            <input
-                                    name="<?php echo esc_attr( $value['id'] ); ?>"
-                                    id="<?php echo esc_attr( $value['id'] ); ?>"
-                                    type="<?php echo esc_attr( $type ); ?>"
-                                    style="<?php echo esc_attr( $value['css'] ); ?>"
-                                    value="<?php echo esc_attr( $option_value ); ?>"
-                                    class="give-input-field<?php echo( empty( $value['class'] ) ? '' : ' ' . esc_attr( $value['class'] ) ); ?>"
-								<?php echo implode( ' ', $custom_attributes ); ?>
-                            /> <?php echo $description; ?>
-                        </td>
-                        </tr><?php
-						break;
+						<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
+							<th scope="row" class="titledesc">
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
+							</th>
+							<td class="give-forminp give-forminp-<?php echo sanitize_title( $value['type'] ) ?>">
+								<?php if ( $value['repeat'] ) : ?>
+									<?php foreach ( $option_value as $index => $field_value ) : ?>
+										<p>
+											<input
+													name="<?php echo esc_attr( $value['id'] ); ?>[]"
+													type="<?php echo esc_attr( $type ); ?>"
+													style="<?php echo esc_attr( $value['css'] ); ?>"
+													value="<?php echo esc_attr( $field_value ); ?>"
+													class="give-input-field<?php echo( empty( $value['class'] ) ? '' : ' ' . esc_attr( $value['class'] ) ); ?> <?php echo esc_attr( $value['id'] ); ?>"
+												<?php echo implode( ' ', $custom_attributes ); ?>
+											/>
+											<span class="give-remove-setting-field" title="<?php esc_html_e( 'Remove setting field', 'give' ); ?>">-</span>
+										</p>
+									<?php endforeach; ?>
+									<a href="#" data-id="<?php echo $value['id']; ?>" class="give-repeat-setting-field button-secondary"><?php echo $value['repeat_btn_title']; ?></a>
+								<?php else : ?>
+									<input
+											name="<?php echo esc_attr( $value['id'] ); ?>"
+											id="<?php echo esc_attr( $value['id'] ); ?>"
+											type="<?php echo esc_attr( $type ); ?>"
+											style="<?php echo esc_attr( $value['css'] ); ?>"
+											value="<?php echo esc_attr( $option_value ); ?>"
+											class="give-input-field<?php echo( empty( $value['class'] ) ? '' : ' ' . esc_attr( $value['class'] ) ); ?>"
+										<?php echo implode( ' ', $custom_attributes ); ?>
+									/>
+								<?php endif; ?>
+								<?php echo $description; ?>
+							</td>
+							</tr><?php
+							break;
 
 					// Textarea.
 					case 'textarea':
@@ -577,34 +608,42 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 					// File input field.
 					case 'file' :
+					case 'media' :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
+						$button_label = esc_html__( sprintf( 'Add or Upload %s', ( 'file' === $value['type'] ? 'File' : 'Image' ) ), 'give' );
+						$fvalue       = empty( $value['fvalue'] ) ? 'url' : $value['fvalue'];
+
+						$allow_media_preview_tags = array( 'jpg', 'jpeg', 'png', 'gif', 'ico' );
+						$preview_image_src        = $option_value ? ( 'id' === $fvalue ? wp_get_attachment_url( $option_value ) : $option_value ) : '#';
+						$preview_image_extension  = $preview_image_src ? pathinfo( $preview_image_src, PATHINFO_EXTENSION ) : '';
+						$is_show_preview = in_array( $preview_image_extension, $allow_media_preview_tags );
 						?>
-                    <tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
-                        <th scope="row" class="titledesc">
-                            <label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
-                        </th>
-                        <td class="give-forminp">
-                            <div class="give-field-wrap">
-                                <label for="<?php echo $value['id'] ?>">
-                                    <input
-                                            name="<?php echo esc_attr( $value['id'] ); ?>"
-                                            id="<?php echo esc_attr( $value['id'] ); ?>"
-                                            type="text"
-                                            class="give-input-field<?php echo esc_attr( isset( $value['class'] ) ? ' ' . $value['class'] : '' ); ?>"
-                                            value="<?php echo $option_value; ?>"
-                                            style="<?php echo esc_attr( $value['css'] ); ?>"
-										<?php echo implode( ' ', $custom_attributes ); ?>
-                                    />&nbsp;&nbsp;&nbsp;&nbsp;<input class="give-upload-button button" type="button"
-                                                                     value="<?php echo esc_html__( 'Add or Upload File', 'give' ); ?>">
-									<?php echo $description ?>
-                                    <div class="give-image-thumb<?php echo ! $option_value ? ' give-hidden' : ''; ?>">
-                                        <span class="give-delete-image-thumb dashicons dashicons-no-alt"></span>
-                                        <img src="<?php echo $option_value; ?>" alt="">
-                                    </div>
-                                </label>
-                            </div>
-                        </td>
-                        </tr><?php
+						<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
+							<th scope="row" class="titledesc">
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
+							</th>
+							<td class="give-forminp">
+								<div class="give-field-wrap">
+									<label for="<?php echo $value['id'] ?>">
+										<input
+												name="<?php echo esc_attr( $value['id'] ); ?>"
+												id="<?php echo esc_attr( $value['id'] ); ?>"
+												type="text"
+												class="give-input-field<?php echo esc_attr( isset( $value['class'] ) ? ' ' . $value['class'] : '' ); ?>"
+												value="<?php echo $option_value; ?>"
+												style="<?php echo esc_attr( $value['css'] ); ?>"
+											<?php echo implode( ' ', $custom_attributes ); ?>
+										/>&nbsp;&nbsp;&nbsp;&nbsp;<input class="give-upload-button button" type="button" data-fvalue="<?php echo $fvalue; ?>" data-field-type="<?php echo $value['type']; ?>" value="<?php echo $button_label; ?>">
+										<?php echo $description ?>
+										<div class="give-image-thumb<?php echo ! $option_value || ! $is_show_preview ? ' give-hidden' : ''; ?>">
+											<span class="give-delete-image-thumb dashicons dashicons-no-alt"></span>
+											<img src="<?php echo $preview_image_src ; ?>" alt="">
+										</div>
+									</label>
+								</div>
+							</td>
+							</tr>
+						<?php
 						break;
 
 					// WordPress Editor.
@@ -673,12 +712,12 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					// Custom: Email preview buttons field.
 					case 'email_preview_buttons' :
 						?>
-                    <tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
-                        <th scope="row" class="titledesc">
-                            <label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
-                        </th>
-                        <td class="give-forminp">
-							<?php give_email_preview_buttons_callback(); ?>
+						<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
+						<th scope="row" class="titledesc">
+							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
+						</th>
+						<td class="give-forminp">
+							<?php give_email_preview_buttons_callback( $value ); ?>
 							<?php echo $description; ?>
                         </td>
                         </tr><?php
@@ -715,14 +754,27 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 					// Custom: Log field.
 					case 'logs' :
-						// Note: there are no need to check for html field param because we want custom html to this field.
-						give_reports_tab_logs();
+
+						include GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/logs.php';
+
+						// Get current section.
+						$current_section = $_GET['section'] = give_get_current_setting_section();
+
+						/**
+						 * Fires the in report page logs view.
+						 *
+						 * @since 1.0
+						 */
+						do_action( "give_logs_view_{$current_section}" );
+
 						echo $description;
 						break;
 
-					// Custom: API field.
+					// Custom: Data field.
 					case 'data' :
-						give_tools_recount_stats_display();
+
+						include  GIVE_PLUGIN_DIR . 'includes/admin/tools/views/html-admin-page-data.php';
+
 						echo $description;
 						break;
 

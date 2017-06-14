@@ -16,7 +16,7 @@
  * File: Browser.php
  * Author: Chris Schuld (http://chrisschuld.com/)
  * Last Modified: August 20th, 2010
- * @version 1.9
+ * @version 2.0
  * @package PegasusPHP
  *
  * Copyright (C) 2008-2010 Chris Schuld  (chris@chrisschuld.com)
@@ -47,7 +47,7 @@
  *
  * UPDATES:
  *
- * 2010-08-20 (v1.9):
+ * 2010-08-20 (v2.0):
  *  + Added MSN Explorer Browser (legacy)
  *  + Added Bing/MSN Robot (Thanks Rob MacDonald)
  *  + Added the Android Platform (PLATFORM_ANDROID)
@@ -550,7 +550,7 @@ class Browser {
 	}
 
 	/**
-	 * Determine if the browser is the MSNBot or not (last updated 1.9)
+	 * Determine if the browser is the MSNBot or not (last updated 2.0)
 	 * @return boolean True if the browser is the MSNBot otherwise false
 	 */
 	function checkBrowserMSNBot() {

@@ -81,6 +81,14 @@ class Give_Emails {
 	private $heading = '';
 
 	/**
+	 * Email template tags argument.
+	 * This helps to decode email template tags,
+	 *
+	 * @since  1.0
+	 */
+	public $tag_args = array();
+
+	/**
 	 * Get things going.
 	 *
 	 * @since 1.0
@@ -115,7 +123,7 @@ class Give_Emails {
 	 */
 	public function get_from_name() {
 		if ( ! $this->from_name ) {
-			$this->from_name = give_get_option( 'from_name', get_bloginfo( 'name' ) );
+			$this->from_name = give_get_option( 'from_name', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) );
 		}
 
 		return apply_filters( 'give_email_from_name', wp_specialchars_decode( $this->from_name ), $this );
@@ -140,10 +148,10 @@ class Give_Emails {
 	 * @since 1.0
 	 */
 	public function get_content_type() {
-		if ( ! $this->content_type && $this->html ) {
-			$this->content_type = apply_filters( 'give_email_default_content_type', 'text/html', $this );
-		} else if ( ! $this->html ) {
-			$this->content_type = 'text/plain';
+		if ( ! $this->content_type  ) {
+			$this->content_type = $this->html
+				? apply_filters( 'give_email_default_content_type', 'text/html', $this )
+				: 'text/plain';
 		}
 
 		return apply_filters( 'give_email_content_type', $this->content_type, $this );

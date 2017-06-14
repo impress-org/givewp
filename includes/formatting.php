@@ -129,7 +129,7 @@ function give_sanitize_amount( $number, $dp = false, $trim_zeros = false ) {
  *
  * @since 1.0
  *
- * @param string $amount   Price amount to format
+ * @param string $amount Price amount to format
  * @param bool   $decimals Whether or not to use decimals. Useful when set to false for non-currency numbers.
  *
  * @return string $amount   Newly formatted amount or Price Not Available
@@ -217,16 +217,17 @@ function give_format_decimal( $amount, $dp = false ) {
 }
 
 /**
- * Formats the currency display
+ * Formats the currency displayed.
  *
  * @since 1.0
  *
- * @param string $price
- * @param string $currency
+ * @param string $price The donation amount.
+ * @param string $currency The currency code.
+ * @param bool   $decode_currency Whether to decode the currency HTML format or not.
  *
  * @return mixed|string
  */
-function give_currency_filter( $price = '', $currency = '' ) {
+function give_currency_filter( $price = '', $currency = '', $decode_currency = false ) {
 
 	if ( empty( $currency ) ) {
 		$currency = give_get_currency();
@@ -241,7 +242,7 @@ function give_currency_filter( $price = '', $currency = '' ) {
 		$price = substr( $price, 1 );
 	}
 
-	$symbol = give_currency_symbol( $currency );
+	$symbol = give_currency_symbol( $currency, $decode_currency );
 
 	switch ( $currency ) :
 		case 'GBP' :
@@ -395,7 +396,7 @@ function give_date_format( $date_context = '' ) {
  * @since  1.7
  * @deprecated 1.8.7 You can access this function from Give_Cache.
  *
- * @param  string $action     Cache key prefix.
+ * @param  string $action Cache key prefix.
  * @param array  $query_args Query array.
  *
  * @return string
@@ -464,7 +465,9 @@ function give_validate_nonce( $nonce, $action = - 1, $wp_die_args = array() ) {
 	$default_wp_die_args = array(
 		'message' => esc_html__( 'Nonce verification has failed.', 'give' ),
 		'title'   => esc_html__( 'Error', 'give' ),
-		'args'    => array( 'response' => 403 ),
+		'args'    => array(
+			'response' => 403,
+		),
 	);
 
 	$wp_die_args = wp_parse_args( $wp_die_args, $default_wp_die_args );
@@ -486,29 +489,50 @@ function give_validate_nonce( $nonce, $action = - 1, $wp_die_args = array() ) {
  * @since 1.8
  *
  * @param                   $variable
- * @param string (optional) $conditional , default value: isset
- * @param bool (optional)   $default     , default value: false
+ * @param string (optional) $conditional    default value: isset
+ * @param bool (optional)   $default        default value: false
+ * @param string (optional) $array_key_name default value: false
  *
  * @return mixed
  */
-function give_check_variable( $variable, $conditional = '', $default = false ) {
+function give_check_variable( $variable, $conditional = '', $default = false, $array_key_name = '' ) {
+	// Get value from array if array key non empty.
+	if( empty( $array_key_name ) ) {
+		switch ( $conditional ) {
+			case 'isset_empty':
+				$variable = ( isset( $variable ) && ! empty( $variable ) ) ? $variable : $default;
+				break;
 
-	switch ( $conditional ) {
-		case 'isset_empty':
-			$variable = ( isset( $variable ) && ! empty( $variable ) ) ? $variable : $default;
-			break;
+			case 'empty':
+				$variable = ! empty( $variable ) ? $variable : $default;
+				break;
 
-		case 'empty':
-			$variable = ! empty( $variable ) ? $variable : $default;
-			break;
+			case 'null':
+				$variable = ! is_null( $variable ) ? $variable : $default;
+				break;
 
-		case 'null':
-			$variable = ! is_null( $variable ) ? $variable : $default;
-			break;
+			default:
+				$variable = isset( $variable ) ? $variable : $default;
+		}
+	} else {
+		$isset = array_key_exists( $array_key_name, $variable );
 
-		default:
-			$variable = isset( $variable ) ? $variable : $default;
+		switch ( $conditional ) {
+			case 'isset_empty':
+				$variable = ( $isset && ! empty( $variable[ $array_key_name ] ) ) ? $variable[ $array_key_name ] : $default;
+				break;
 
+			case 'empty':
+				$variable = ! empty( $variable[ $array_key_name ] ) ? $variable[ $array_key_name ] : $default;
+				break;
+
+			case 'null':
+				$variable = $isset && ! is_null( $variable[ $array_key_name ] ) ? $variable[ $array_key_name ] : $default;
+				break;
+
+			default:
+				$variable = $isset && isset( $variable[ $array_key_name ] ) ? $variable[ $array_key_name ] : $default;
+		}
 	}
 
 	return $variable;
