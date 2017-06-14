@@ -1037,9 +1037,12 @@ class Give_API {
 			$form['info']['tags'] = get_the_terms( $form_info, 'give_forms_tag' );
 		}
 
-		if ( give_is_setting_enabled( give_get_meta( $form_info->ID, '_give_goal_option', true ) ) ) {
-			$goal_amount = give_get_meta( $form_info->ID, '_give_set_goal', true );
-			$goal_percentage_completed = round( ( give_get_form_earnings_stats( $form_info->ID ) / $goal_amount ) * 100 );
+		// Check whether any goal is to be achieved for the donation form
+		$goal_option = give_get_meta( $form_info->ID, '_give_goal_option', true );
+		$goal_amount = give_get_meta( $form_info->ID, '_give_set_goal', true );
+		if ( give_is_setting_enabled( $goal_option ) && isset( $goal_amount ) &&  $goal_amount > 0 ) {
+			$total_income = give_get_form_earnings_stats( $form_info->ID );
+			$goal_percentage_completed = ( $total_income < $goal_amount ) ? round( ( $total_income / $goal_amount ) * 100, 2 ) : '100';
 			$form['goals']['amount']               = isset( $goal_amount ) ? $goal_amount : '';
 			$form['goals']['percentage_completed'] = isset( $goal_percentage_completed ) ? $goal_percentage_completed : '';
 		}
