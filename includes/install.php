@@ -144,7 +144,6 @@ function give_run_install() {
 	 */
 	do_action( 'give_upgrades' );
 
-
 	if ( GIVE_VERSION !== get_option( 'give_version' ) ) {
 		update_option( 'give_version', GIVE_VERSION );
 	}
@@ -157,9 +156,9 @@ function give_run_install() {
 	$api = new Give_API();
 	update_option( 'give_default_api_version', 'v' . $api->get_version() );
 
-	// Create the customers databases.
-	@Give()->customers->create_table();
-	@Give()->customer_meta->create_table();
+	// Create the donor databases.
+	@Give()->donors->create_table();
+	@Give()->donor_meta->create_table();
 
 	// Check for PHP Session support, and enable if available.
 	Give()->session->use_php_sessions();
@@ -240,12 +239,12 @@ add_action( 'wpmu_new_blog', 'on_create_blog', 10, 6 );
 function give_wpmu_drop_tables( $tables, $blog_id ) {
 
 	switch_to_blog( $blog_id );
-	$customers_db     = new Give_DB_Customers();
-	$customer_meta_db = new Give_DB_Customer_Meta();
+	$donors_db     = new Give_DB_Donors();
+	$donor_meta_db = new Give_DB_Donor_Meta();
 
-	if ( $customers_db->installed() ) {
-		$tables[] = $customers_db->table_name;
-		$tables[] = $customer_meta_db->table_name;
+	if ( $donors_db->installed() ) {
+		$tables[] = $donors_db->table_name;
+		$tables[] = $donor_meta_db->table_name;
 	}
 	restore_current_blog();
 
@@ -274,18 +273,18 @@ function give_after_install() {
 
 	if ( false === $give_table_check || current_time( 'timestamp' ) > $give_table_check ) {
 
-		if ( ! @Give()->customer_meta->installed() ) {
+		if ( ! @Give()->donor_meta->installed() ) {
 
-			// Create the customer meta database
+			// Create the donor meta database.
 			// (this ensures it creates it on multisite instances where it is network activated).
-			@Give()->customer_meta->create_table();
+			@Give()->donor_meta->create_table();
 
 		}
 
-		if ( ! @Give()->customers->installed() ) {
-			// Create the customers database
+		if ( ! @Give()->donors->installed() ) {
+			// Create the donor database.
 			// (this ensures it creates it on multisite instances where it is network activated).
-			@Give()->customers->create_table();
+			@Give()->donors->create_table();
 
 			/**
 			 * Fires after plugin installation.

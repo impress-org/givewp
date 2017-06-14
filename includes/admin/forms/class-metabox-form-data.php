@@ -798,12 +798,12 @@ class Give_MetaBox_Form_Data {
 				}
 
 				if ( isset( $_POST[ $form_meta_key ] ) ) {
-					if ( $field_type = $this->get_field_type( $form_meta_key ) ) {
-						switch ( $field_type ) {
+					$setting_field = $this->get_setting_field( $form_meta_key );
+					if ( ! empty( $setting_field['type'] ) ) {
+						switch ( $setting_field['type'] ) {
 							case 'textarea':
 							case 'wysiwyg':
 								$form_meta_value = wp_kses_post( $_POST[ $form_meta_key ] );
-								give_update_meta( $post_id, $form_meta_key, $form_meta_value );
 								break;
 
 							case 'group':
@@ -836,17 +836,28 @@ class Give_MetaBox_Form_Data {
 
 								// Arrange repeater field keys in order.
 								$form_meta_value = array_values( $form_meta_value );
-
-								// Save data.
-								give_update_meta( $post_id, $form_meta_key, $form_meta_value );
 								break;
 
 							default:
 								$form_meta_value = give_clean( $_POST[ $form_meta_key ] );
-
-								// Save data.
-								give_update_meta( $post_id, $form_meta_key, $form_meta_value );
 						}
+
+
+						/**
+						 * Filter the form meta value before saving
+						 *
+						 * @since 1.8.9
+						 */
+						$form_meta_value = apply_filters(
+								'give_pre_save_form_meta_value',
+								$this->sanitize_form_meta( $form_meta_value, $setting_field ),
+								$form_meta_key,
+								$this,
+								$post_id
+						);
+
+						// Save data.
+						give_update_meta( $post_id, $form_meta_key, $form_meta_value );
 
 						// Fire after saving form meta key.
 						do_action( "give_save_{$form_meta_key}", $form_meta_key, $form_meta_value, $post_id, $post );
@@ -1086,6 +1097,49 @@ class Give_MetaBox_Form_Data {
 		}
 
 		return $settings;
+	}
+
+
+	/**
+	 * Sanitize form meta values before saving.
+	 *
+	 * @since  1.8.9
+	 * @access public
+	 *
+	 * @param mixed $meta_value
+	 * @param array $setting_field
+	 *
+	 * @return mixed
+	 */
+	function sanitize_form_meta( $meta_value, $setting_field ) {
+		switch ( $setting_field['type'] ) {
+			case 'group':
+				if ( ! empty( $setting_field['fields'] ) ) {
+					foreach ( $setting_field['fields'] as $field ) {
+						if ( empty( $field['data_type'] ) || 'price' !== $field['data_type'] ) {
+							continue;
+						}
+
+						foreach ( $meta_value as $index => $meta_data ) {
+							if( ! isset( $meta_value[ $index ][ $field['id'] ] ) ) {
+								continue;
+							}
+
+							$meta_value[ $index ][ $field['id'] ] = ! empty( $meta_value[ $index ][ $field['id'] ] )
+								? give_sanitize_amount( $meta_value[ $index ][ $field['id'] ] )
+								: 0;
+						}
+					}
+				}
+				break;
+
+			default:
+				if ( ! empty( $setting_field['data_type'] ) && 'price' === $setting_field['data_type'] ) {
+					$meta_value = $meta_value ? give_sanitize_amount( $meta_value ) : 0;
+				}
+		}
+
+		return $meta_value;
 	}
 }
 

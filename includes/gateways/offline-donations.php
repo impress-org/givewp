@@ -248,7 +248,7 @@ function give_offline_send_admin_notice( $payment_id = 0 ) {
 
 	$admin_message .= sprintf(
 		                  '<a href="%1$s">%2$s</a>',
-		                  admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $payment_id ),
+		                  admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . $payment_id ),
 		                  __( 'View Donation Details &raquo;', 'give' )
 	                  ) . "\n\n";
 
