@@ -1042,7 +1042,7 @@ class Give_API {
 		$goal_amount = give_get_meta( $form_info->ID, '_give_set_goal', true );
 		if ( give_is_setting_enabled( $goal_option ) && $goal_amount ) {
 			$total_income = give_get_form_earnings_stats( $form_info->ID );
-			$goal_percentage_completed = ( $total_income < $goal_amount ) ? round( ( $total_income / $goal_amount ) * 100, 2 ) : '100';
+			$goal_percentage_completed = ( $total_income < $goal_amount ) ? round( ( $total_income / $goal_amount ) * 100, 2 ) : 100;
 			$form['goals']['amount']               = isset( $goal_amount ) ? $goal_amount : '';
 			$form['goals']['percentage_completed'] = isset( $goal_percentage_completed ) ? $goal_percentage_completed : '';
 		}
