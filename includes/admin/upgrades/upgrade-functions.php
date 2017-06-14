@@ -152,7 +152,7 @@ function give_show_upgrade_notices() {
 			__( 'Give needs to upgrade the donation forms meta-fields in database, click <a href="%s">here</a> to start the upgrade.', 'give' ),
 			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=v189_upgrades_levels_post_meta' ) )
 		),
-		// 'show'        => ( version_compare( $give_version, '1.8.9', '<' ) || ( ! give_has_upgrade_completed( 'v189_upgrades_levels_post_meta' ) ) ),
+		'show'        => ( version_compare( $give_version, '1.8.9', '<' ) || ( ! give_has_upgrade_completed( 'v189_upgrades_levels_post_meta' ) ) ),
 	) );
 
 	// End 'Stepped' upgrade process notices.
