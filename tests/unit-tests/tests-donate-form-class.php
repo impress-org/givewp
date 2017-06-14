@@ -91,7 +91,7 @@ class Tests_Donate_Form_Class extends Give_Unit_Test_Case {
 	public function test_get_goal() {
 		$simple_form = new Give_Donate_Form( $this->_simple_form->ID );
 		$this->assertEquals( 0, $simple_form->get_goal() );
-		update_post_meta( $simple_form->ID, '_give_set_goal', 5000 );
+		give_update_meta( $simple_form->ID, '_give_set_goal', 5000 );
 
 		$simple_form = new Give_Donate_Form( $this->_simple_form->ID );
 		$this->assertEquals( 5000, $simple_form->get_goal() );

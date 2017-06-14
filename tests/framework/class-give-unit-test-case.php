@@ -26,7 +26,6 @@ class Give_Unit_Test_Case extends WP_UnitTestCase {
 			define( 'GIVE_USE_PHP_SESSIONS', false );
 		}
 
-		$give_options = get_option( 'give_settings' );
 	}
 
 	public function tearDown() {
