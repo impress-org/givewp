@@ -54,6 +54,10 @@ function give_do_automatic_upgrades() {
 			give_v188_upgrades();
 			$did_upgrade = true;
 
+		case version_compare( $give_version, '1.8.9', '<' ) :
+			give_v189_upgrades();
+			$did_upgrade = true;
+
 	}
 
 	if ( $did_upgrade ) {
@@ -1053,3 +1057,41 @@ function give_v189_upgrades_levels_post_meta_callback() {
 }
 
 add_action( 'give_v189_upgrades_levels_post_meta', 'give_v189_upgrades_levels_post_meta_callback' );
+
+
+/**
+ * Give version 1.8.9 upgrades
+ *
+ * @since      1.8.9
+ */
+function give_v189_upgrades() {
+	/**
+	 * 1. Remove user license related notice show blocked ( Give_Notice will handle )
+	 */
+	global $wpdb;
+
+	// Delete permanent notice blocker.
+	$wpdb->query(
+		$wpdb->prepare(
+			"
+					DELETE FROM $wpdb->usermeta
+					WHERE meta_key
+					LIKE '%%%s%%'
+					",
+			'_give_hide_license_notices_permanently'
+		)
+	);
+
+	// Delete short notice blocker.
+	$wpdb->query(
+		$wpdb->prepare(
+			"
+					DELETE FROM $wpdb->options
+					WHERE option_name
+					LIKE '%%%s%%'
+					",
+			'__give_hide_license_notices_shortly_'
+		)
+	);
+
+}
