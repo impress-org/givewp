@@ -1002,7 +1002,7 @@ class Give_API {
 				return $error;
 			}
 		}
-echo "<pre>"; print_R($forms);give_die();
+
 		return $forms;
 	}
 
