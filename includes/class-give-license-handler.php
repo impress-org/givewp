@@ -601,7 +601,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 						// Check if license already expired.
 						if ( strtotime( $subscription['expires'] ) < current_time( 'timestamp', 1 ) ) {
 							Give()->notices->register_notice( array(
-								'id'               => "give-expired-subscription-{$subscription['id'] }",
+								'id'               => "give-expired-subscription-{$subscription['id']}",
 								'type'             => 'error',
 								'description'      => sprintf(
 									__( 'Your Give add-on license expired for payment <a href="%1$s" target="_blank">#%2$d</a>. <a href="%3$s" target="_blank">Click to renew an existing license</a> or %4$s.', 'give' ),
@@ -619,7 +619,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 							) );
 						} else {
 							Give()->notices->register_notice( array(
-								'id'               => "give-expires-subscription-{$subscription['id'] }",
+								'id'               => "give-expires-subscription-{$subscription['id']}",
 								'type'             => 'error',
 								'description'      => sprintf(
 									__( 'Your Give add-on license will expire in %1$s for payment <a href="%2$s" target="_blank">#%3$d</a>. <a href="%4$s" target="_blank">Click to renew an existing license</a> or %5$s.', 'give' ),
