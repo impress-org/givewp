@@ -1002,7 +1002,7 @@ class Give_API {
 				return $error;
 			}
 		}
-
+echo "<pre>"; print_R($forms);give_die();
 		return $forms;
 	}
 
@@ -1035,6 +1035,13 @@ class Give_API {
 		}
 		if ( give_is_setting_enabled( give_get_option( 'tags', 'disabled' ) ) ) {
 			$form['info']['tags'] = get_the_terms( $form_info, 'give_forms_tag' );
+		}
+
+		if ( give_is_setting_enabled( give_get_meta( $form_info->ID, '_give_goal_option', true ) ) ) {
+			$goal_amount = give_get_meta( $form_info->ID, '_give_set_goal', true );
+			$goal_percentage_completed = round( ( give_get_form_earnings_stats( $form_info->ID ) / $goal_amount ) * 100 );
+			$form['goals']['amount']               = isset( $goal_amount ) ? $goal_amount : '';
+			$form['goals']['percentage_completed'] = isset( $goal_percentage_completed ) ? $goal_percentage_completed : '';
 		}
 
 		if ( user_can( $this->user_id, 'view_give_reports' ) || $this->override ) {
