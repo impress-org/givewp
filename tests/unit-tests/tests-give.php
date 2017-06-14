@@ -19,7 +19,7 @@ class Tests_Give extends Give_Unit_Test_Case {
 	 * @covers Give
 	 */
 	public function test_give_instance() {
-		$this->assertClassHasStaticAttribute( 'instance', 'Give' );
+		$this->assertClassHasStaticAttribute( '_instance', 'Give' );
 	}
 
 	/**

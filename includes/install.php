@@ -48,8 +48,6 @@ function give_install( $network_wide = false ) {
 
 }
 
-register_activation_hook( GIVE_PLUGIN_FILE, 'give_install' );
-
 /**
  * Run the Give Install process.
  *
@@ -157,11 +155,14 @@ function give_run_install() {
 	update_option( 'give_default_api_version', 'v' . $api->get_version() );
 
 	// Create the donor databases.
-	@Give()->donors->create_table();
-	@Give()->donor_meta->create_table();
+	$donors_db = new Give_DB_Donors();
+	$donors_db->create_table();
+	$donor_meta = new Give_DB_Donor_Meta();
+	$donor_meta->create_table();
 
 	// Check for PHP Session support, and enable if available.
-	Give()->session->use_php_sessions();
+	$give_sessions = new Give_Session();
+	$give_sessions->use_php_sessions();
 
 	// Add a temporary option to note that Give pages have been created.
 	Give_Cache::set( '_give_installed', $options, 30, true );
@@ -192,9 +193,9 @@ function give_run_install() {
 	// Add the transient to redirect.
 	Give_Cache::set( '_give_activation_redirect', true, 30, true );
 
+	// Set 'Donation Form' meta box enabled by default.
+	give_nav_donation_metabox_enabled();
 }
-
-register_activation_hook( GIVE_PLUGIN_FILE, 'give_install' );
 
 /**
  * Network Activated New Site Setup.
