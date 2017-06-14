@@ -484,9 +484,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 				return;
 			}
 
-			// Delete subscription notices show blocker.
-			$this->__remove_license_notices_show_blocker();
-
 			$this->__single_subscription_check();
 		}
 
