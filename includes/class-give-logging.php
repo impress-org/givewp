@@ -320,6 +320,7 @@ class Give_Logging {
 			'post_status'    => 'publish',
 			'paged'          => get_query_var( 'paged' ),
 			'log_type'       => false,
+			'date_query'     => null
 		);
 
 		$query_args = wp_parse_args( $args, $defaults );
@@ -332,6 +333,26 @@ class Give_Logging {
 					'terms'    => $query_args['log_type'],
 				),
 			);
+		}
+
+		// Retrieve logs based on specific timeframe
+		if ( !empty ( $query_args['date_query'] ) && is_array( $query_args['date_query'] ) ) {
+			if ( ! empty( $query_args['date_query']['start_date'] ) ) {
+				$query_args['date_query']['after'] =  array(
+					'year'  => date( 'Y', strtotime( $query_args['date_query']['start_date'] ) ),
+					'month' => date( 'm', strtotime( $query_args['date_query']['start_date'] ) ),
+					'day'   => date( 'd', strtotime( $query_args['date_query']['start_date'] ) )
+				);
+			}
+
+			if ( ! empty( $query_args['date_query']['end_date'] ) ) {
+				$query_args['date_query']['before'] =  array(
+					'year'  => date( 'Y', strtotime( $query_args['date_query']['end_date'] ) ),
+					'month' => date( 'm', strtotime( $query_args['date_query']['end_date'] ) ),
+					'day'   => date( 'd', strtotime( $query_args['date_query']['end_date'] ) )
+				);
+			}
+			$query_args['date_query']['inclusive'] = true;
 		}
 
 		$logs = get_posts( $query_args );
