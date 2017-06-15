@@ -48,6 +48,14 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	private $donor_ids = array();
 
 	/**
+	 * Array of payment stats which is already included in csv file.
+	 *
+	 * @since 1.8.9
+	 * @var array
+	 */
+	private $payment_stats = array();
+
+	/**
 	 * Export query id.
 	 *
 	 * @since 1.8
@@ -167,23 +175,14 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	public function get_data() {
 
 		$data = array();
-		$donors = array();
 
 		$i = 0;
 
-		$donor_args = array(
-			'number' => 30,
-		);
-
 		// Filter Donors list based on specified timeframe
-		if ( ! empty( $this->data['donor_export_start_date'] ) || ! empty( $this->data['donor_export_end_date'] ) ) {
-
-			$donor_args['date'] = array(
-				'start'     => ! empty( $this->data['donor_export_start_date'] ) ? date( 'Y-n-d 00:00:00', strtotime( $this->data['donor_export_start_date'] ) ) : date( 'Y-n-d 23:59:59', '1970-1-01 00:00:00' ),
-				'end'       => ! empty( $this->data['donor_export_end_date'] ) ? date( 'Y-n-d 23:59:59', strtotime( $this->data['donor_export_end_date'] ) ) : date( 'Y-n-d 23:59:59', current_time( 'timestamp' ) )
-			);
-
-		}
+		$donor_args['date'] = array(
+			'start'     => ! empty( $this->data['donor_export_start_date'] ) ? date( 'Y-n-d 00:00:00', strtotime( $this->data['donor_export_start_date'] ) ) : date( 'Y-n-d 23:59:59', '1970-1-01 00:00:00' ),
+			'end'       => ! empty( $this->data['donor_export_end_date'] ) ? date( 'Y-n-d 23:59:59', strtotime( $this->data['donor_export_end_date'] ) ) : date( 'Y-n-d 23:59:59', current_time( 'timestamp' ) )
+		);
 
 		if ( ! empty( $this->form ) ) {
 
@@ -195,6 +194,10 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 				'log_type'       => 'sale',
 				'posts_per_page' => 30,
 				'paged'          => $this->step,
+				'date_query'     => array(
+					'start_date'     => ! empty( $this->data['donor_export_start_date'] ) ? date( 'Y-n-d 00:00:00', strtotime( $this->data['donor_export_start_date'] ) ) : date( 'Y-n-d 23:59:59', '1970-1-01 00:00:00' ),
+					'end_date'       => ! empty( $this->data['donor_export_end_date'] ) ? date( 'Y-n-d 23:59:59', strtotime( $this->data['donor_export_end_date'] ) ) : date( 'Y-n-d 23:59:59', current_time( 'timestamp' ) )
+				)
 			);
 
 			// Check for price option.
@@ -221,11 +224,15 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 					$this->donor_ids[] = $payment->customer_id;
 
+					$this->payment_stats['donations'] ++;
+					$this->payment_stats['donation_sum'] += $payment->total;
+					$this->payment_stats['form_title'] = $payment->form_title;
+
+					$donor = Give()->donors->get_donor_by( 'id', $payment->customer_id );
+					$data[] = $this->set_donor_data( $i, $data, $donor );
+
 					$i ++;
 				}
-
-				$donor_args['id'] = $this->donor_ids;
-				$donors = Give()->donors->get_donors( $donor_args );
 
 				// Cache donor ids only if admin export donor for specific form.
 				Give_Cache::set( $this->query_id, array_unique( $this->donor_ids ), HOUR_IN_SECONDS, true );
@@ -235,18 +242,18 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 			// Export all donors.
 			$offset = 30 * ( $this->step - 1 );
 
-			$donor_args['offset'] = $offset;
+			$donors = Give()->donors->get_donors( array(
+				'number' => 30,
+				'offset' => $offset
+			) );
 
-			$donors = Give()->donors->get_donors( $donor_args );
+			foreach ( $donors as $donor ) {
 
+				$data[] = $this->set_donor_data( $i, $data, $donor );
+				$i ++;
+			}
 
 		}// End if().
-
-		foreach ( $donors as $donor ) {
-
-			$data[] = $this->set_donor_data( $i, $data, $donor );
-			$i ++;
-		}
 
 		$data = apply_filters( 'give_export_get_data', $data );
 		$data = apply_filters( "give_export_get_data_{$this->export_type}", $data );
@@ -322,17 +329,16 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 			$data[ $i ]['userid'] = ! empty( $donor->user_id ) ? $donor->user_id : '';
 		}
 		if ( ! empty( $columns['donation_form'] ) ) {
-			$payment = new Give_Payment($donor->payment_ids);
-			$data[ $i ]['donation_form'] = ! empty( $payment->form_title ) ? $payment->form_title : '';
+			$data[ $i ]['donation_form'] = ! empty( $this->payment_stats['form_title'] ) ? $this->payment_stats['form_title'] : '';
 		}
 		if ( ! empty( $columns['date_first_donated'] ) ) {
 			$data[ $i ]['date_first_donated'] = date_i18n( give_date_format(), strtotime( $donor->date_created ) );
 		}
 		if ( ! empty( $columns['donations'] ) ) {
-			$data[ $i ]['donations'] = $donor->purchase_count;
+			$data[ $i ]['donations'] = $this->payment_stats['donations'];
 		}
 		if ( ! empty( $columns['donation_sum'] ) ) {
-			$data[ $i ]['donation_sum'] = give_format_amount( $donor->purchase_value );
+			$data[ $i ]['donation_sum'] = give_format_amount( $this->payment_stats['donation_sum'] );
 		}
 
 		return $data[ $i ];
