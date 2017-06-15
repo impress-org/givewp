@@ -167,6 +167,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	public function get_data() {
 
 		$data = array();
+		$donors = array();
 
 		$i = 0;
 
@@ -178,8 +179,8 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 		if ( ! empty( $this->data['donor_export_start_date'] ) || ! empty( $this->data['donor_export_end_date'] ) ) {
 
 			$donor_args['date'] = array(
-				'start'     => isset( $this->data['donor_export_start_date'] ) ? date( 'Y-n-d 00:00:00', strtotime( $this->data['donor_export_start_date'] ) ) : date( 'Y-n-d 23:59:59', mktime( 23, 59,59, 01, 01, 1970 ) ),
-				'end'       => isset( $this->data['donor_export_end_date'] ) ? date( 'Y-n-d 23:59:59', strtotime( $this->data['donor_export_end_date'] ) ) : date( 'Y-n-d 23:59:59' )
+				'start'     => ! empty( $this->data['donor_export_start_date'] ) ? date( 'Y-n-d 00:00:00', strtotime( $this->data['donor_export_start_date'] ) ) : date( 'Y-n-d 23:59:59', '1970-1-01 00:00:00' ),
+				'end'       => ! empty( $this->data['donor_export_end_date'] ) ? date( 'Y-n-d 23:59:59', strtotime( $this->data['donor_export_end_date'] ) ) : date( 'Y-n-d 23:59:59', current_time( 'timestamp' ) )
 			);
 
 		}
