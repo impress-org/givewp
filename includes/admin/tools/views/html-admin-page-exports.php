@@ -168,6 +168,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 							      class="give-export-form">
 
 								<?php
+								// Start Date form field for donors
 								$args = array(
 									'id'          => 'give_donor_export_start_date',
 									'name'        => 'donor_export_start_date',
@@ -175,6 +176,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 								);
 								echo Give()->html->date_field( $args );
 
+								// End Date form field for donors
 								$args = array(
 									'id'          => 'give_donor_export_end_date',
 									'name'        => 'donor_export_end_date',
@@ -182,6 +184,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 								);
 								echo Give()->html->date_field( $args );
 
+								// Donation Forms dropdown field for donors
 								$args = array(
 									'name'   => 'forms',
 									'id'     => 'give_donor_export_form',
