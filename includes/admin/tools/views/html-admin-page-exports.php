@@ -173,23 +173,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 									'name'        => 'donor_export_start_date',
 									'placeholder' => esc_attr__( 'Start date', 'give' ),
 								);
-								echo Give()->html->date_field( $args ); ?>
+								echo Give()->html->date_field( $args );
 
-								<?php
 								$args = array(
 									'id'          => 'give_donor_export_end_date',
 									'name'        => 'donor_export_end_date',
 									'placeholder' => esc_attr__( 'End date', 'give' ),
 								);
-								echo Give()->html->date_field( $args ); ?>
+								echo Give()->html->date_field( $args );
 
-								<?php
 								$args = array(
 									'name'   => 'forms',
 									'id'     => 'give_donor_export_form',
 									'chosen' => true,
 								);
-								echo Give()->html->forms_dropdown( $args ); ?>
+								echo Give()->html->forms_dropdown( $args );
+								?>
 
 								<input type="submit"
 								       value="<?php esc_attr_e( 'Generate CSV', 'give' ); ?>"
