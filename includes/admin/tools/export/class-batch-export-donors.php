@@ -178,12 +178,6 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 		$i = 0;
 
-		// Filter Donors list based on specified timeframe
-		$donor_args['date'] = array(
-			'start'     => ! empty( $this->data['donor_export_start_date'] ) ? date( 'Y-n-d 00:00:00', strtotime( $this->data['donor_export_start_date'] ) ) : date( 'Y-n-d 23:59:59', '1970-1-01 00:00:00' ),
-			'end'       => ! empty( $this->data['donor_export_end_date'] ) ? date( 'Y-n-d 23:59:59', strtotime( $this->data['donor_export_end_date'] ) ) : date( 'Y-n-d 23:59:59', current_time( 'timestamp' ) )
-		);
-
 		if ( ! empty( $this->form ) ) {
 
 			// Export donors of a specific product.
@@ -194,11 +188,15 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 				'log_type'       => 'sale',
 				'posts_per_page' => 30,
 				'paged'          => $this->step,
-				'date_query'     => array(
+			);
+
+			// Check for date option filter
+			if( ! empty( $this->data['donor_export_start_date'] ) || ! empty( $this->data['donor_export_end_date'] ) ) {
+				$args['date_query']  = array(
 					'start_date'     => ! empty( $this->data['donor_export_start_date'] ) ? date( 'Y-n-d 00:00:00', strtotime( $this->data['donor_export_start_date'] ) ) : date( 'Y-n-d 23:59:59', '1970-1-01 00:00:00' ),
 					'end_date'       => ! empty( $this->data['donor_export_end_date'] ) ? date( 'Y-n-d 23:59:59', strtotime( $this->data['donor_export_end_date'] ) ) : date( 'Y-n-d 23:59:59', current_time( 'timestamp' ) )
-				)
-			);
+				);
+			}
 
 			// Check for price option.
 			if ( null !== $this->price_id ) {
