@@ -61,7 +61,7 @@ function give_post_actions() {
 	$_post_action = ! empty( $_POST['give_action'] ) ? $_POST['give_action'] : null;
 
 
-	// Add backward compatibility to give-action param ( $_POST )
+	// Add backward compatibility to give-action param ( $_POST ).
 	if(  empty( $_post_action ) ) {
 		$_post_action = ! empty( $_POST['give-action'] ) ? $_POST['give-action'] : null;
 	}
@@ -90,8 +90,8 @@ add_action( 'init', 'give_post_actions' );
  * @return void
  */
 function give_connect_donor_to_wpuser( $user_id, $user_data ){
-	/* @var Give_Customer $donor */
-	$donor = new Give_Customer( $user_data['user_email'] );
+	/* @var Give_Donor $donor */
+	$donor = new Give_Donor( $user_data['user_email'] );
 
 	// Validate donor id and check if do nor is already connect to wp user or not.
 	if( $donor->id && ! $donor->user_id ) {
@@ -104,7 +104,7 @@ function give_connect_donor_to_wpuser( $user_id, $user_data ){
 			// Update user_id meta in payments.
 			if( ! empty( $donor->payment_ids ) && ( $donations = explode( ',', $donor->payment_ids ) ) ) {
 				foreach ( $donations as $donation  ) {
-					update_post_meta( $donation, '_give_payment_user_id', $user_id );
+					give_update_meta( $donation, '_give_payment_user_id', $user_id );
 				}
 			}
 		}
@@ -154,7 +154,7 @@ function give_donor_batch_export_complete( $data ) {
 	// Remove donor ids cache.
 	if(
 		isset( $data['class'] )
-		&& 'Give_Batch_Customers_Export' === $data['class']
+		&& 'Give_Batch_Donors_Export' === $data['class']
 		&& ! empty( $data['forms'] )
 		&& isset( $data['give_export_option']['query_id'] )
 	) {
@@ -211,3 +211,37 @@ function give_admin_quick_css() {
 	}
 }
 add_action( 'admin_head', 'give_admin_quick_css' );
+
+
+/**
+ * Set Donation Amount for Multi Level Donation Forms
+ *
+ * @param int    $form_id
+ * @param object $form
+ *
+ * @since 1.8.9
+ *
+ * @return void
+ */
+function give_set_donation_levels_max_min_amount( $form_id ) {
+	if (
+		( 'set' === $_POST['_give_price_option'] ) ||
+		( in_array( '_give_donation_levels', $_POST ) && count( $_POST['_give_donation_levels'] ) <= 0 ) ||
+		! ( $donation_levels_amounts = wp_list_pluck( $_POST['_give_donation_levels'], '_give_amount' ) )
+	) {
+		// Delete old meta.
+		give_delete_meta( $form_id, '_give_levels_minimum_amount' );
+		give_delete_meta( $form_id, '_give_levels_maximum_amount' );
+
+		return;
+	}
+
+	$min_amount = min( $donation_levels_amounts );
+	$max_amount = max( $donation_levels_amounts );
+
+	// Set Minimum and Maximum amount for Multi Level Donation Forms
+	give_update_meta( $form_id, '_give_levels_minimum_amount', $min_amount ? give_sanitize_amount( $min_amount ) : 0 );
+	give_update_meta( $form_id, '_give_levels_maximum_amount', $max_amount? give_sanitize_amount( $max_amount ) : 0 );
+}
+
+add_action( 'give_pre_process_give_forms_meta', 'give_set_donation_levels_max_min_amount', 30 );
