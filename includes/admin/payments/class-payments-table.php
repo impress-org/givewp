@@ -431,7 +431,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 		}
 
-		$actions['delete'] = sprintf( '<a href="%1$s" aria-label="%2$s">%3$s</a>', wp_nonce_url( add_query_arg( array(
+		$actions['delete'] = sprintf( '<a class="delete-single-donation" href="%1$s" aria-label="%2$s">%3$s</a>', wp_nonce_url( add_query_arg( array(
 				'give-action' => 'delete_payment',
 				'purchase_id' => $payment->ID,
 		), $this->base_url ), 'give_donation_nonce' ), sprintf( esc_attr__( 'Delete Donation %s', 'give' ), $payment->ID ), esc_html__( 'Delete', 'give' ) );
