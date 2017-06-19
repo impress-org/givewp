@@ -242,24 +242,15 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 
 		// Handle new meta keys.
 		case '_give_payment_donor_id':
-			remove_filter( 'get_post_metadata', '_give_20_bc_get_old_payment_meta' );
 			$check = get_post_meta( $object_id, '_give_payment_customer_id', true );
-			add_filter( 'get_post_metadata', '_give_20_bc_get_old_payment_meta', 10, 5 );
-
 			break;
 
 		case '_give_payment_donor_email':
-			remove_filter( 'get_post_metadata', '_give_20_bc_get_old_payment_meta' );
 			$check = get_post_meta( $object_id, '_give_payment_user_email', true );
-			add_filter( 'get_post_metadata', '_give_20_bc_get_old_payment_meta', 10, 5 );
-
 			break;
 
 		case '_give_payment_donor_ip':
-			remove_filter( 'get_post_metadata', '_give_20_bc_get_old_payment_meta' );
 			$check = get_post_meta( $object_id, '_give_payment_user_ip', true );
-			add_filter( 'get_post_metadata', '_give_20_bc_get_old_payment_meta', 10, 5 );
-
 			break;
 	}
 
