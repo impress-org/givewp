@@ -217,7 +217,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 			if ( null !== $this->price_id ) {
 				$args['meta_query'] = array(
 					array(
-						'key'   => '_give_log_price_id',
+						'key'   => '_give_payment_price_id',
 						'value' => (int) $this->price_id,
 					),
 				);
