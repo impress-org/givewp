@@ -83,14 +83,30 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 		if ( ! empty( $this->form ) ) {
 			// Cache donor ids to output unique list of donor.
 			$this->query_id = give_clean( $_REQUEST['give_export_option']['query_id'] );
-			if ( ! ( $this->donor_ids = Give_Cache::get( $this->query_id, true ) ) ) {
-				$this->donor_ids = array();
-				Give_Cache::set( $this->query_id, $this->donor_ids, HOUR_IN_SECONDS, true );
-			}
+			$this->cache_donor_ids();
 		}
 
 		$this->price_id = ! empty( $request['give_price_option'] ) && 'all' !== $request['give_price_option'] ? absint( $request['give_price_option'] ) : null;
 
+	}
+
+
+	/**
+	 * Cache donor ids.
+	 *
+	 * @since  1.8.9
+	 * @access private
+	 */
+	private function cache_donor_ids() {
+		// Fetch already cached donor ids.
+		$donor_ids = $this->donor_ids;
+
+		if ( $cached_donor_ids = Give_Cache::get( $this->query_id, true ) ) {
+			$donor_ids = array_unique( array_merge( $cached_donor_ids, $this->donor_ids ) );
+		}
+
+		$donor_ids = array_values( $donor_ids );
+		Give_Cache::set( $this->query_id, $donor_ids, HOUR_IN_SECONDS, true );
 	}
 
 	/**
@@ -173,10 +189,10 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	 * @return array $data The data for the CSV file.
 	 */
 	public function get_data() {
-
-		$data = array();
-
 		$i = 0;
+
+		$data             = array();
+		$cached_donor_ids = Give_Cache::get( $this->query_id, true );
 
 		if ( ! empty( $this->form ) ) {
 
@@ -212,31 +228,44 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 			if ( $payments ) {
 				/* @var Give_Payment $payment */
 				foreach ( $payments as $payment ) {
+					// Set donation sum.
+					$this->payment_stats[ $payment->customer_id ]['donation_sum'] = isset( $this->payment_stats[ $payment->customer_id ]['donation_sum'] )?
+						$this->payment_stats[ $payment->customer_id ]['donation_sum'] :
+						0;
+					$this->payment_stats[ $payment->customer_id ]['donation_sum'] += $payment->total;
 
-					$this->payment_stats['form_title'][ $payment->customer_id ]   = $payment->form_title;
-					$this->payment_stats['donation_sum'][ $payment->customer_id ] += $payment->total;
-					$this->payment_stats['donations'][ $payment->customer_id ] ++;
+					// Set donation count.
+					$this->payment_stats[ $payment->customer_id ]['donations']  = isset( $this->payment_stats[ $payment->customer_id ]['donations'] ) ?
+						$this->payment_stats[ $payment->customer_id ]['donations'] ++ :
+					0;
+
+					// Set donation form name.
+					$this->payment_stats[ $payment->customer_id ]['form_title']   = $payment->form_title;
 
 					// Continue if donor already included.
-					if ( empty( $payment->customer_id ) || in_array( $payment->customer_id, $this->donor_ids ) ) {
+					if ( empty( $payment->customer_id ) ||
+					     in_array( $payment->customer_id, $cached_donor_ids )
+					) {
 						continue;
 					}
 
-					$this->donor_ids[] = $payment->customer_id;
+					$this->donor_ids[] = $cached_donor_ids[] = $payment->customer_id;
 
 					$i ++;
 				}
 
-				foreach ( $this->donor_ids as $donor_id ) {
-					$donor                      = Give()->donors->get_donor_by( 'id', $donor_id );
-					$donor->donation_form_title = $this->payment_stats['form_title'][ $donor_id ];
-					$donor->purchase_count      = $this->payment_stats['donations'][ $donor_id ];
-					$donor->purchase_value      = $this->payment_stats['donation_sum'][ $donor_id ];
-					$data[]                     = $this->set_donor_data( $i, $data, $donor );
-				}
+				if( ! empty( $this->donor_ids ) ) {
+					foreach ( $this->donor_ids as $donor_id ) {
+						$donor                      = Give()->donors->get_donor_by( 'id', $donor_id );
+						$donor->donation_form_title = $this->payment_stats[ $donor_id ]['form_title'];
+						$donor->purchase_count      = $this->payment_stats[ $donor_id ]['donations'];
+						$donor->purchase_value      = $this->payment_stats[ $donor_id ]['donation_sum'];
+						$data[]                     = $this->set_donor_data( $i, $data, $donor );
+					}
 
-				// Cache donor ids only if admin export donor for specific form.
-				Give_Cache::set( $this->query_id, array_unique( $this->donor_ids ), HOUR_IN_SECONDS, true );
+					// Cache donor ids only if admin export donor for specific form.
+					$this->cache_donor_ids();
+				}
 			}
 		} else {
 
@@ -362,4 +391,15 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 	}
 
+	/**
+	 * Unset the properties specific to the donors export.
+	 *
+	 * @param array             $request
+	 * @param Give_Batch_Export $export
+	 */
+	public function unset_properties( $request, $export ) {
+		if( $export->done ) {
+			Give_Cache::delete( "give_cache_{$this->query_id}" );
+		}
+	}
 }
