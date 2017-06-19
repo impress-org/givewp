@@ -59,7 +59,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	 * Export query id.
 	 *
 	 * @since 1.8
-	 * @var array
+	 * @var string
 	 */
 	private $query_id = '';
 
@@ -210,6 +210,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 			$payments = ( new Give_Payments_Query( $args ) )->get_payments();
 
 			if ( $payments ) {
+				/* @var Give_Payment $payment */
 				foreach ( $payments as $payment ) {
 
 					$this->payment_stats['form_title'][ $payment->customer_id ]   = $payment->form_title;
