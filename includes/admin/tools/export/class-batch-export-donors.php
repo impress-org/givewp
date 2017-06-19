@@ -229,18 +229,18 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 				/* @var Give_Payment $payment */
 				foreach ( $payments as $payment ) {
 					// Set donation sum.
-					$this->payment_stats[ $payment->customer_id ]['donation_sum'] = isset( $this->payment_stats[ $payment->customer_id ]['donation_sum'] )?
+					$this->payment_stats[ $payment->customer_id ]['donation_sum'] = isset( $this->payment_stats[ $payment->customer_id ]['donation_sum'] ) ?
 						$this->payment_stats[ $payment->customer_id ]['donation_sum'] :
 						0;
 					$this->payment_stats[ $payment->customer_id ]['donation_sum'] += $payment->total;
 
 					// Set donation count.
-					isset( $this->payment_stats[ $payment->customer_id ]['donations'] ) ?
-						$this->payment_stats[ $payment->customer_id ]['donations'] ++ :
-						$this->payment_stats[ $payment->customer_id ]['donations']  =  1;
+					$this->payment_stats[ $payment->customer_id ]['donations'] = isset( $this->payment_stats[ $payment->customer_id ]['donations'] ) ?
+						++ $this->payment_stats[ $payment->customer_id ]['donations'] :
+						1;
 
 					// Set donation form name.
-					$this->payment_stats[ $payment->customer_id ]['form_title']   = $payment->form_title;
+					$this->payment_stats[ $payment->customer_id ]['form_title'] = $payment->form_title;
 
 					// Continue if donor already included.
 					if ( empty( $payment->customer_id ) ||
@@ -254,7 +254,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 					$i ++;
 				}
 
-				if( ! empty( $this->donor_ids ) ) {
+				if ( ! empty( $this->donor_ids ) ) {
 					foreach ( $this->donor_ids as $donor_id ) {
 						$donor                      = Give()->donors->get_donor_by( 'id', $donor_id );
 						$donor->donation_form_title = $this->payment_stats[ $donor_id ]['form_title'];
@@ -398,7 +398,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	 * @param Give_Batch_Export $export
 	 */
 	public function unset_properties( $request, $export ) {
-		if( $export->done ) {
+		if ( $export->done ) {
 			Give_Cache::delete( "give_cache_{$this->query_id}" );
 		}
 	}
