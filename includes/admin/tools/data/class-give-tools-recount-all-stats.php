@@ -125,8 +125,12 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 					continue;
 				}
 
-				$totals[ $form_id ]['sales'] ++;
-				$totals[ $form_id ]['earnings'] += $payment_item['price'];
+				$totals[ $form_id ]['sales'] = isset( $totals[ $form_id ]['sales'] ) ?
+					++ $totals[ $form_id ]['sales'] :
+					1;
+				$totals[ $form_id ]['earnings'] = isset( $totals[ $form_id ]['earnings'] ) ?
+					$payment_item['price'] :
+					0;
 
 				$processed_payments[] = $payment->ID;
 			}
