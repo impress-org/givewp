@@ -47,6 +47,7 @@ function give_do_ajax_export() {
 	$step   = absint( $_POST['step'] );
 	$class  = sanitize_text_field( $form['give-export-class'] );
 
+	/* @var Give_Batch_Export $export */
 	$export = new $class( $step );
 
 	if ( ! $export->can_export() ) {
