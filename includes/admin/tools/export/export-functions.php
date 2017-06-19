@@ -63,33 +63,39 @@ function give_do_ajax_export() {
 		exit;
 	}
 
-	$export->set_properties( $_REQUEST );
+	$export->set_properties( give_clean( $_REQUEST ) );
 
 	$export->pre_fetch();
 
-	$ret = $export->process_step( $step );
+	$ret = $export->process_step();
 
 	$percentage = $export->get_percentage_complete();
 
 	if ( $ret ) {
 
 		$step += 1;
-		echo json_encode( array( 'step' => $step, 'percentage' => $percentage ) );
-		exit;
+		$json_data = array(
+			'step' => $step,
+			'percentage' => $percentage
+		);
 
 	} elseif ( true === $export->is_empty ) {
 
-		echo json_encode( array(
+		$json_data = array(
 			'error'   => true,
 			'message' => esc_html__( 'No data found for export parameters.', 'give' )
-		) );
-		exit;
+		);
 
 	} elseif ( true === $export->done && true === $export->is_void ) {
 
-		$message = ! empty( $export->message ) ? $export->message : esc_html__( 'Batch Processing Complete', 'give' );
-		echo json_encode( array( 'success' => true, 'message' => $message ) );
-		exit;
+		$message = ! empty( $export->message ) ?
+			$export->message :
+			esc_html__( 'Batch Processing Complete', 'give' );
+
+		$json_data = array(
+			'success' => true,
+			'message' => $message
+		);
 
 	} else {
 		
@@ -100,12 +106,16 @@ function give_do_ajax_export() {
 			'give_action' => 'form_batch_export',
 		) );
 
-		$download_url = add_query_arg( $args, admin_url() );
-
-		echo json_encode( array( 'step' => 'done', 'url' => $download_url ) );
-		exit;
+		$json_data = array(
+			'step' => 'done',
+			'url' => add_query_arg( $args, admin_url() )
+		);
 
 	}
+
+	$export->unset_properties( give_clean( $_REQUEST ), $export );
+	echo json_encode( $json_data );
+	exit;
 }
 
 add_action( 'wp_ajax_give_do_ajax_export', 'give_do_ajax_export' );
