@@ -61,7 +61,7 @@ function give_post_actions() {
 	$_post_action = ! empty( $_POST['give_action'] ) ? $_POST['give_action'] : null;
 
 
-	// Add backward compatibility to give-action param ( $_POST )
+	// Add backward compatibility to give-action param ( $_POST ).
 	if(  empty( $_post_action ) ) {
 		$_post_action = ! empty( $_POST['give-action'] ) ? $_POST['give-action'] : null;
 	}
