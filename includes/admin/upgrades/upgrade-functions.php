@@ -1205,6 +1205,8 @@ function give_v20_upgrades_form_metadata() {
 				)
 			);
 
+			// @todo add db upgrade for _gove_payment_meta and other renamed mata keys.
+
 
 		}// End while().
 
