@@ -180,22 +180,21 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 		if ( ! empty( $this->form ) ) {
 
-			// Export donors of a specific product.
-			global $give_logs;
-
+			// Export donors for a specific donation form and also within specified timeframe
 			$args = array(
-				'post_parent'    => absint( $this->form ),
-				'log_type'       => 'sale',
-				'posts_per_page' => 30,
-				'paged'          => $this->step,
+				'output'        => 'payments', // Use 'posts' to get standard post objects
+				'post_type'     => array( 'give_payment' ),
+				'number'        => 30,
+				'paged'         => $this->step,
+				'status'        => 'publish',
+				'meta_key'      => '_give_payment_form_id',
+				'meta_value'    => absint( $this->form ),
 			);
 
 			// Check for date option filter
 			if( ! empty( $this->data['donor_export_start_date'] ) || ! empty( $this->data['donor_export_end_date'] ) ) {
-				$args['date_query']  = array(
-					'start_date'     => ! empty( $this->data['donor_export_start_date'] ) ? date( 'Y-n-d 00:00:00', strtotime( $this->data['donor_export_start_date'] ) ) : date( 'Y-n-d 23:59:59', '1970-1-01 00:00:00' ),
-					'end_date'       => ! empty( $this->data['donor_export_end_date'] ) ? date( 'Y-n-d 23:59:59', strtotime( $this->data['donor_export_end_date'] ) ) : date( 'Y-n-d 23:59:59', current_time( 'timestamp' ) )
-				);
+					$args['start_date'] = ! empty( $this->data['donor_export_start_date'] ) ? date( 'Y-n-d 00:00:00', strtotime( $this->data['donor_export_start_date'] ) ) : date( 'Y-n-d 23:59:59', '1970-1-01 00:00:00' );
+					$args['end_date']   = ! empty( $this->data['donor_export_end_date'] ) ? date( 'Y-n-d 23:59:59', strtotime( $this->data['donor_export_end_date'] ) ) : date( 'Y-n-d 23:59:59', current_time( 'timestamp' ) );
 			}
 
 			// Check for price option.
@@ -208,12 +207,14 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 				);
 			}
 
-			$logs = $give_logs->get_connected_logs( $args );
+			$payments = ( new Give_Payments_Query( $args ) )->get_payments();
 
-			if ( $logs ) {
-				foreach ( $logs as $log ) {
-					$payment_id = give_get_meta( $log->ID, '_give_log_payment_id', true );
-					$payment    = new Give_Payment( $payment_id );
+			if ( $payments ) {
+				foreach ( $payments as $payment ) {
+
+					$this->payment_stats['form_title'][$payment->customer_id] = $payment->form_title;
+					$this->payment_stats['donation_sum'][$payment->customer_id] += $payment->total;
+					$this->payment_stats['donations'][$payment->customer_id] ++;
 
 					// Continue if donor already included.
 					if ( empty( $payment->customer_id ) || in_array( $payment->customer_id , $this->donor_ids ) ) {
@@ -222,14 +223,15 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 					$this->donor_ids[] = $payment->customer_id;
 
-					$this->payment_stats['donations'] ++;
-					$this->payment_stats['donation_sum'] += $payment->total;
-					$this->payment_stats['form_title'] = $payment->form_title;
-
-					$donor = Give()->donors->get_donor_by( 'id', $payment->customer_id );
-					$data[] = $this->set_donor_data( $i, $data, $donor );
-
 					$i ++;
+				}
+
+				foreach( $this->donor_ids as $donor_id ) {
+					$donor = Give()->donors->get_donor_by( 'id', $donor_id );
+					$donor->donation_form_title = $this->payment_stats['form_title'][$donor_id];
+					$donor->purchase_count = $this->payment_stats['donations'][$donor_id];
+					$donor->purchase_value = $this->payment_stats['donation_sum'][$donor_id];
+					$data[] = $this->set_donor_data( $i, $data, $donor );
 				}
 
 				// Cache donor ids only if admin export donor for specific form.
@@ -247,6 +249,13 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 			foreach ( $donors as $donor ) {
 
+				// Continue if donor already included.
+				if ( empty( $donor->id ) || empty( $donor->payment_ids ) ) {
+					continue;
+				}
+
+				$payment = new Give_Payment( $donor->payment_ids );
+				$donor->donation_form_title = $payment->form_title;
 				$data[] = $this->set_donor_data( $i, $data, $donor );
 				$i ++;
 			}
@@ -327,16 +336,16 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 			$data[ $i ]['userid'] = ! empty( $donor->user_id ) ? $donor->user_id : '';
 		}
 		if ( ! empty( $columns['donation_form'] ) ) {
-			$data[ $i ]['donation_form'] = ! empty( $this->payment_stats['form_title'] ) ? $this->payment_stats['form_title'] : '';
+			$data[ $i ]['donation_form'] = ! empty( $donor->donation_form_title ) ? $donor->donation_form_title : '';
 		}
 		if ( ! empty( $columns['date_first_donated'] ) ) {
 			$data[ $i ]['date_first_donated'] = date_i18n( give_date_format(), strtotime( $donor->date_created ) );
 		}
 		if ( ! empty( $columns['donations'] ) ) {
-			$data[ $i ]['donations'] = $this->payment_stats['donations'];
+			$data[ $i ]['donations'] = $donor->purchase_count;
 		}
 		if ( ! empty( $columns['donation_sum'] ) ) {
-			$data[ $i ]['donation_sum'] = give_format_amount( $this->payment_stats['donation_sum'] );
+			$data[ $i ]['donation_sum'] = give_format_amount( $donor->purchase_value );
 		}
 
 		return $data[ $i ];
