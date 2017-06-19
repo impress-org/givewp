@@ -235,9 +235,9 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 					$this->payment_stats[ $payment->customer_id ]['donation_sum'] += $payment->total;
 
 					// Set donation count.
-					$this->payment_stats[ $payment->customer_id ]['donations']  = isset( $this->payment_stats[ $payment->customer_id ]['donations'] ) ?
+					isset( $this->payment_stats[ $payment->customer_id ]['donations'] ) ?
 						$this->payment_stats[ $payment->customer_id ]['donations'] ++ :
-					0;
+						$this->payment_stats[ $payment->customer_id ]['donations']  =  1;
 
 					// Set donation form name.
 					$this->payment_stats[ $payment->customer_id ]['form_title']   = $payment->form_title;
