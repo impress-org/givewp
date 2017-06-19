@@ -1720,7 +1720,7 @@ final class Give_Payment {
 	 * @return int The Donor ID.
 	 */
 	private function setup_donor_id() {
-		$donor_id = $this->get_meta( '_give_payment_customer_id', true );
+		$donor_id = $this->get_meta( '_give_payment_donor_id', true );
 
 		return $donor_id;
 	}
