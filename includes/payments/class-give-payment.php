@@ -1653,12 +1653,16 @@ final class Give_Payment {
 	 * Setup the currency code
 	 *
 	 * @since  1.5
+	 * @since  2.0 Set currency from _give_payment_currency meta key
 	 * @access private
 	 *
 	 * @return string The currency for the payment
 	 */
 	private function setup_currency() {
-		$currency = isset( $this->payment_meta['currency'] ) ? $this->payment_meta['currency'] : apply_filters( 'give_payment_currency_default', give_get_currency(), $this );
+		$currency = $this->get_meta( '_give_payment_currency', true );
+		$currency = ! empty( $currency ) ?
+			$currency :
+			apply_filters( 'give_payment_currency_default', give_get_currency(), $this );
 
 		return $currency;
 	}
