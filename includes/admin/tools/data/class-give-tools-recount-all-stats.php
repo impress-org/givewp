@@ -75,26 +75,17 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 		$all_forms = $this->get_stored_data( 'give_temp_form_ids' );
 
 		$args = apply_filters( 'give_recount_form_stats_args', array(
-			'post_parent__in' => $all_forms,
-			'post_type'       => 'give_log',
-			'posts_per_page'  => $this->per_step,
-			'post_status'     => 'publish',
-			'paged'           => $this->step,
-			'log_type'        => 'sale',
-			'fields'          => 'ids',
+			'post_parent__in'   => $all_forms,
+			'number'            => $this->per_step,
+			'status'            => 'publish',
+			'paged'             => $this->step,
+			'output'            => 'payments', // Use 'posts' to get standard post objects
+			'post_type'         => array( 'give_payment' ),
 		) );
 
-		$log_ids = $give_logs->get_connected_logs( $args, 'sale' );
+		$payments = ( new Give_Payments_Query( $args ) )->get_payments();
 
-		if ( $log_ids ) {
-			$log_ids = implode( ',', $log_ids );
-
-			$payment_ids = $wpdb->get_col( "SELECT meta_value FROM $wpdb->postmeta WHERE meta_key='_give_log_payment_id' AND post_id IN ($log_ids)" );
-			unset( $log_ids );
-
-			$payment_ids = implode( ',', $payment_ids );
-			$payments    = $wpdb->get_results( "SELECT ID, post_status FROM $wpdb->posts WHERE ID IN (" . $payment_ids . ")" );
-			unset( $payment_ids );
+		if ( $payments ) {
 
 			//Loop through payments
 			foreach ( $payments as $payment ) {
@@ -125,12 +116,15 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 					continue;
 				}
 
+				// Set Sales count
 				$totals[ $form_id ]['sales'] = isset( $totals[ $form_id ]['sales'] ) ?
 					++ $totals[ $form_id ]['sales'] :
 					1;
+
+				// Set Total Earnings
 				$totals[ $form_id ]['earnings'] = isset( $totals[ $form_id ]['earnings'] ) ?
-					$payment_item['price'] :
-					0;
+					( $totals[ $form_id ]['earnings'] + $payment_item['price'] ) :
+					$payment_item['price'];
 
 				$processed_payments[] = $payment->ID;
 			}
