@@ -156,7 +156,7 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 				$processed_payments[] = $payment->ID;
 			}
 
-			// Get the list of form ids which doesnot contain any payment record.
+			// Get the list of form ids which does not contain any payment record.
 			$remaining_form_ids = array_diff( $all_forms, array_keys($totals) );
 			foreach( $remaining_form_ids as $form_id) {
 				//If array key doesn't exist, create it
@@ -306,7 +306,7 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 			}
 
 			$args = array(
-				'post_status'    => 'any',
+				'post_status'    => 'publish',
 				'post_type'      => 'give_forms',
 				'posts_per_page' => - 1,
 				'fields'         => 'ids',
