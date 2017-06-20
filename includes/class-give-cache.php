@@ -316,6 +316,45 @@ class Give_Cache {
 	public static function is_valid_cache_key( $cache_key ) {
 		return ( false !== strpos( $cache_key, 'give_cache_' ) );
 	}
+
+	/**
+	 * Payment cache operation handler.
+	 *  1. Get cache.
+	 *  2. Set cache.
+	 *  3. Delete cache.
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param string $payment_id
+	 * @param string $key
+	 * @param mixed  $data
+	 * @param string $action
+	 *
+	 * @return mixed
+	 */
+	public static function payment( $payment_id, $key, $data = array(), $action = '' ) {
+		switch ( $action ) {
+			case 'delete':
+				Give_Cache::delete( "give_cache_donation_{$payment_id}" );
+				break;
+
+			default:
+				// Get cache.
+				if ( ! ( $donation_cache = Give_Cache::get( "donation_{$payment_id}", true ) ) ) {
+					$donation_cache = array();
+				}
+
+				// Get cache.
+				if ( empty( $data ) ) {
+					return ( isset( $donation_cache[ $key ] ) ? $donation_cache[ $key ] : '' );
+				}
+
+				// Store donation address to cache (save queries).
+				$donation_cache[ $key ] = $data;
+				Give_Cache::set( "donation_{$payment_id}", $donation_cache, null, true );
+		}
+	}
 }
 
 // Initialize
