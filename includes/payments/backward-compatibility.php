@@ -116,39 +116,57 @@ function _give_20_bc_get_old_payment_meta( $check, $object_id, $meta_key, $singl
 		'_give_payment_user_ip',
 	);
 
-	// metadata_exists fx will cause of firing get_post_metadata filter again so remove it to infinite prevent loop.
-	remove_filter( 'get_post_metadata', '_give_20_bc_get_old_payment_meta' );
-
 	// Bailout.
 	if (
 		'give_payment' !== get_post_type( $object_id ) ||
-		! in_array( $meta_key, $old_meta_keys ) ||
-		metadata_exists( 'post', $object_id, $meta_key )
+		! in_array( $meta_key, $old_meta_keys )
 	) {
 		return $check;
 	}
-
-	add_filter( 'get_post_metadata', '_give_20_bc_get_old_payment_meta', 10, 5 );
-
 
 	switch ( $meta_key ) {
 
 		// Handle old meta keys.
 		case '_give_payment_meta':
-			// Date payment meta.
-			if ( ! empty( $meta_value['date'] ) ) {
-				$meta_value['date'] = give_get_meta( $object_id, '_give_payment_date', true, $meta_value['date'] );
+			// Donation key.
+			if ( $donation_key = give_get_meta( $object_id, '_give_payment_purchase_key', true ) ) {
+				$meta_value['key'] = $donation_key;
 			}
 
-			// Currency payment meta.
-			if ( ! empty( $meta_value['currency'] ) ) {
-				$meta_value['currency'] = give_get_meta( $object_id, '_give_payment_currency', true, $meta_value['currency'] );
+			// Donation form.
+			if ( $donation_form = give_get_meta( $object_id, '_give_payment_form_title', true ) ) {
+				$meta_value['form_title'] = $donation_form;
+			}
+
+			// Donor email.
+			if ( $donor_email = give_get_meta( $object_id, '_give_payment_donor_email', true ) ) {
+				$meta_value['email'] = $donor_email;
+			}
+
+			// Form id.
+			if ( $form_id = give_get_meta( $object_id, '_give_payment_form_id', true ) ) {
+				$meta_value['form_id'] = $form_id;
+			}
+
+			// Price id.
+			if ( $price_id = give_get_meta( $object_id, '_give_payment_price_id', true ) ) {
+				$meta_value['date'] = $price_id;
+			}
+
+			// Date.
+			if ( $donation_date = give_get_meta( $object_id, '_give_payment_date', true ) ) {
+				$meta_value['date'] = $donation_date;
+			}
+
+			// Currency.
+			if ( $donation_currency = give_get_meta( $object_id, '_give_payment_currency', true ) ) {
+				$meta_value['currency'] = $donation_currency;
 			}
 
 			// Decode donor data.
 			$donor_data = isset( $meta_value['user_info'] ) ? maybe_unserialize( $meta_value['user_info'] ) : array();
 
-			// Donor address payment meta.
+			// Donor address.
 			if ( ! empty( $donor_data ) ) {
 				// Donor first name.
 				$donor_data['first_name'] = give_get_meta( $object_id, '_give_donor_billing_first_name', true, isset( $donor_data['first_name'] ) ? $donor_data['first_name'] : '' );
@@ -187,15 +205,21 @@ function _give_20_bc_get_old_payment_meta( $check, $object_id, $meta_key, $singl
 			break;
 
 		case '_give_payment_customer_id':
-			$check = give_get_meta( $object_id, '_give_payment_donor_id', true );
+			if ( $donor_id = give_get_meta( $object_id, '_give_payment_donor_id', true ) ) {
+				$check = $donor_id;
+			}
 			break;
 
 		case '_give_payment_user_email':
-			$check = give_get_meta( $object_id, '_give_payment_donor_email', true );
+			if ( $donor_email = give_get_meta( $object_id, '_give_payment_donor_email', true ) ) {
+				$check = $donor_email;
+			}
 			break;
 
 		case '_give_payment_user_ip':
-			$check = give_get_meta( $object_id, '_give_payment_donor_ip', true );
+			if ( $donor_ip = give_get_meta( $object_id, '_give_payment_donor_ip', true ) ) {
+				$check = $donor_ip;
+			}
 			break;
 	}
 
@@ -218,6 +242,7 @@ add_filter( 'get_post_metadata', '_give_20_bc_get_old_payment_meta', 10, 5 );
  * @return mixed
  */
 function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $single ) {
+	global $wpdb;
 	$new_meta_keys = array(
 		'_give_payment_donor_id',
 		'_give_payment_donor_email',
@@ -233,6 +258,8 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 		! in_array( $meta_key, $new_meta_keys ) ||
 		metadata_exists( 'post', $object_id, $meta_key )
 	) {
+		add_filter( 'get_post_metadata', '_give_20_bc_get_new_payment_meta', 10, 5 );
+
 		return $check;
 	}
 
@@ -242,15 +269,33 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 
 		// Handle new meta keys.
 		case '_give_payment_donor_id':
-			$check = get_post_meta( $object_id, '_give_payment_customer_id', true );
+			$check = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id=%s AND meta_key=%s",
+					$object_id,
+					'_give_payment_customer_id'
+				)
+			);
 			break;
 
 		case '_give_payment_donor_email':
-			$check = get_post_meta( $object_id, '_give_payment_user_email', true );
+			$check = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id=%s AND meta_key=%s",
+					$object_id,
+					'_give_payment_user_email'
+				)
+			);
 			break;
 
 		case '_give_payment_donor_ip':
-			$check = get_post_meta( $object_id, '_give_payment_user_ip', true );
+			$check = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id=%s AND meta_key=%s",
+					$object_id,
+					'_give_payment_user_ip'
+				)
+			);
 			break;
 	}
 
