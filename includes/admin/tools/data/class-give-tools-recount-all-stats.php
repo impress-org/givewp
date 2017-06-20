@@ -4,14 +4,14 @@
  *
  * This class handles batch processing of recounting donations and income stat totals
  *
- * @subpackage  Admin/Tools/Give_Tools_Recount_All_Stats
- * @copyright   Copyright (c) 2016, WordImpress
- * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       1.5
+ * @subpackage Admin/Tools/Give_Tools_Recount_All_Stats
+ * @copyright  Copyright (c) 2016, WordImpress
+ * @license    https://opensource.org/licenses/gpl-license GNU Public License
+ * @since      1.5
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH') ) {
 	exit;
 }
 
@@ -24,36 +24,61 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 
 	/**
 	 * Our export type. Used for export-type specific filters/actions
-	 * @var string
+	 *
 	 * @since 1.5
+	 * @var   string
 	 */
 	public $export_type = '';
 
 	/**
 	 * Allows for a non-form batch processing to be run.
-	 * @since  1.5
-	 * @var boolean
+	 *
+	 * @since 1.5
+	 * @var   bool
 	 */
 	public $is_void = true;
 
 	/**
 	 * Sets the number of items to pull on each step
-	 * @since  1.5
-	 * @var integer
+	 *
+	 * @since 1.5
+	 * @var   int
 	 */
 	public $per_step = 30;
 
 	/**
-	 * Get the Export Data
+	 * Display message on completing recount process
+	 *
+	 * @since 1.8.9
+	 * @var   string
+	 */
+	public $message = '';
+
+	/**
+	 * Default value of form id
+	 *
+	 * @since 1.8.9
+	 * @var   int
+	 */
+	public $form_id = 0;
+
+	/**
+	 * Is Recount process completed
+	 *
+	 * @since 1.8.9
+	 * @var   bool
+	 */
+	public $done = false;
+
+	/**
+	 * Get the recount all stats data
 	 *
 	 * @access public
-	 * @since 1.5
-	 * @global object $wpdb Used to query the database using the WordPress
-	 *   Database API
-	 * @return array $data The data for the CSV file
+	 * @since  1.5
+	 *
+	 * @return bool
 	 */
 	public function get_data() {
-		global $give_logs, $wpdb;
 
 		$totals             = $this->get_stored_data( 'give_temp_recount_all_stats' );
 		$payment_items      = $this->get_stored_data( 'give_temp_payment_items' );
@@ -74,16 +99,19 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 
 		$all_forms = $this->get_stored_data( 'give_temp_form_ids' );
 
-		$args = apply_filters( 'give_recount_form_stats_args', array(
-			'post_parent__in'   => $all_forms,
-			'number'            => $this->per_step,
-			'status'            => 'publish',
-			'paged'             => $this->step,
-			'output'            => 'payments', // Use 'posts' to get standard post objects
-			'post_type'         => array( 'give_payment' ),
-		) );
+		$payments = $this->get_stored_data( 'give_temp_all_payments_data' );
 
-		$payments = ( new Give_Payments_Query( $args ) )->get_payments();
+		if( false === $payments ) {
+			$args = apply_filters( 'give_recount_form_stats_args', array(
+				'post_parent__in' => $all_forms,
+				'number'          => $this->per_step,
+				'status'          => 'publish',
+				'paged'           => $this->step,
+				'output'          => 'payments', // Use 'posts' to get standard post objects
+				'post_type'       => array( 'give_payment' ),
+			) );
+			$payments = ( new Give_Payments_Query( $args ) )->get_payments();
+		}
 
 		if ( $payments ) {
 
@@ -95,14 +123,13 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 					continue;
 				}
 
-				//Verify accepted status'
+				// Verify accepted status'
 				if ( ! in_array( $payment->post_status, $accepted_statuses ) ) {
 					$processed_payments[] = $payment->ID;
 					continue;
 				}
 
 				$payment_item = $payment_items[ $payment->ID ];
-
 
 				$form_id = isset( $payment_item['id'] ) ? $payment_item['id'] : '';
 
@@ -164,11 +191,11 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 	 */
 	public function get_percentage_complete() {
 
-		$total = $this->get_stored_data( 'give_recount_all_total', false );
+		$total = $this->get_stored_data( 'give_recount_all_total' );
 
 		if ( false === $total ) {
 			$this->pre_fetch();
-			$total = $this->get_stored_data( 'give_recount_all_total', 0 );
+			$total = $this->get_stored_data( 'give_recount_all_total' );
 		}
 
 		$percentage = 100;
@@ -258,13 +285,12 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 	 */
 	public function pre_fetch() {
 
-		global $give_logs, $wpdb;
-
 		if ( $this->step == 1 ) {
 			$this->delete_data( 'give_temp_recount_all_total' );
 			$this->delete_data( 'give_temp_recount_all_stats' );
 			$this->delete_data( 'give_temp_payment_items' );
 			$this->delete_data( 'give_temp_processed_payments' );
+			$this->delete_data( 'give_temp_all_payments_data' );
 		}
 
 		$accepted_statuses = apply_filters( 'give_recount_accepted_statuses', array( 'publish' ) );
@@ -290,24 +316,18 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 			$this->store_data( 'give_temp_form_ids', $all_forms );
 
 			$args = apply_filters( 'give_recount_form_stats_total_args', array(
-				'post_parent__in' => $all_forms,
-				'post_type'       => 'give_log',
-				'post_status'     => 'publish',
-				'log_type'        => 'sale',
-				'fields'          => 'ids',
-				'nopaging'        => true,
+				'post_parent__in'   => $all_forms,
+				'number'            => $this->per_step,
+				'status'            => 'publish',
+				'paged'             => $this->step,
+				'output'            => 'payments', // Use 'posts' to get standard post objects
+				'post_type'         => array( 'give_payment' ),
 			) );
 
-			$all_logs = $give_logs->get_connected_logs( $args, 'sale' );
+			$payments = ( new Give_Payments_Query( $args ) )->get_payments();
+			$this->store_data( 'give_temp_all_payments_data', $payments );
 
-			if ( $all_logs ) {
-				$log_ids     = implode( ',', $all_logs );
-				$payment_ids = $wpdb->get_col( "SELECT meta_value FROM $wpdb->postmeta WHERE meta_key='_give_log_payment_id' AND post_id IN ($log_ids)" );
-				unset( $log_ids );
-
-				$payment_ids = implode( ',', $payment_ids );
-				$payments    = $wpdb->get_results( "SELECT ID, post_status FROM $wpdb->posts WHERE ID IN (" . $payment_ids . ")" );
-				unset( $payment_ids );
+			if ( $payments ) {
 
 				foreach ( $payments as $payment ) {
 
@@ -334,7 +354,7 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 
 				}
 
-				$total = count( $all_logs );
+				$total = count( $payments );
 			}
 
 			$this->store_data( 'give_temp_payment_items', $payment_items );
