@@ -247,6 +247,8 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 		'_give_payment_donor_id',
 		'_give_payment_donor_email',
 		'_give_payment_donor_ip',
+		'_give_donor_billing_first_name',
+		'_give_donor_billing_last_name',
 		'_give_donor_billing_address1',
 		'_give_donor_billing_address2',
 		'_give_donor_billing_city',
