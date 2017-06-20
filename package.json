@@ -22,5 +22,8 @@
     "gulp-watch": "~4.3.5",
     "gulp-wp-pot": "^1.2.2",
     "main-bower-files": "^2.11.1"
+  },
+  "scripts": {
+    "gulp": "gulp"
   }
 }
