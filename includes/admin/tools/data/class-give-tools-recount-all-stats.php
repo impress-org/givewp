@@ -112,7 +112,7 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 			) );
 
 			$payments_query = new Give_Payments_Query( $args );
-			$payments = $payments_query->get_payments();
+			$payments       = $payments_query->get_payments();
 		}
 
 		if ( $payments ) {
@@ -327,7 +327,7 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 			) );
 
 			$payments_query = new Give_Payments_Query( $args );
-			$payments = $payments_query->get_payments();
+			$payments       = $payments_query->get_payments();
 
 			$this->store_data( 'give_temp_all_payments_data', $payments );
 
