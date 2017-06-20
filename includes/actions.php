@@ -246,3 +246,25 @@ function give_set_donation_levels_max_min_amount( $form_id ) {
 }
 
 add_action( 'give_pre_process_give_forms_meta', 'give_set_donation_levels_max_min_amount', 30 );
+
+
+/**
+ * Delete payment cache on update.
+ * This cache used for saving queries
+ *
+ * @since 2.0
+ *
+ * @param $payment_id
+ */
+function _give_payment_delete_cache( $payment_id ) {
+	// Bailout.
+	if ( wp_is_post_revision( $payment_id ) ) {
+		return;
+	}
+
+	Give_Cache::delete_payment( $payment_id );
+}
+
+add_action( 'save_post_give_payment', '_give_payment_delete_cache', 9999 );
+add_action( 'give_update_edited_donation', '_give_payment_delete_cache', 9999 );
+

@@ -290,9 +290,6 @@ function give_update_payment_details( $data ) {
 	 */
 	do_action( 'give_update_edited_donation', $payment_id );
 
-	// Delete cache.
-	Give_Cache::delete_payment( $payment_id );
-
 	wp_safe_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&give-message=payment-updated&id=' . $payment_id ) );
 	exit;
 }
