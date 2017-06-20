@@ -351,8 +351,6 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 							$check = $donation_meta['user_info']['address'][ $meta_key ];
 						}
 				}
-
-				error_log( print_r( $check, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
 			}
 
 			break;
