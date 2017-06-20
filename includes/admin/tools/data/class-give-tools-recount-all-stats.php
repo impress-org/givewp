@@ -55,12 +55,12 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 	public $message = '';
 
 	/**
-	 * Default value of form id
+	 * Sets donation form id for recalculation
 	 *
 	 * @since 1.8.9
 	 * @var   int
 	 */
-	public $form_id = 0;
+	protected $form_id = 0;
 
 	/**
 	 * Is Recount process completed
