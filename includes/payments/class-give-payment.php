@@ -1741,8 +1741,12 @@ final class Give_Payment {
 	 * @return int The User ID
 	 */
 	private function setup_user_id() {
-		$donor   = Give()->customers->get_customer_by( 'id', $this->customer_id );
-		$user_id = $donor ? absint( $donor->user_id ) : 0;
+		if ( ! ( $user_id = Give_Cache::payment( $this->ID, 'user_id' ) ) ) {
+			$donor   = Give()->customers->get_customer_by( 'id', $this->customer_id );
+			$user_id = $donor ? absint( $donor->user_id ) : 0;
+
+			Give_Cache::payment( $this->ID, 'user_id', $user_id );
+		}
 
 		return $user_id;
 	}
