@@ -375,5 +375,3 @@ class Give_Cache {
 
 // Initialize
 Give_Cache::get_instance()->setup_hooks();
-
-// @todo implement this with all possible cache
