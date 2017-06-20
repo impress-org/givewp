@@ -1751,7 +1751,7 @@ final class Give_Payment {
 	 * @return string The email address for the payment.
 	 */
 	private function setup_email() {
-		$email = $this->get_meta( '_give_payment_user_email', true );
+		$email = $this->get_meta( '_give_payment_donor_email', true );
 
 		if ( empty( $email ) ) {
 			$email = Give()->donors->get_column( 'email', $this->customer_id );
