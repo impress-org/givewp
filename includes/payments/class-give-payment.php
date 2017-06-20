@@ -36,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @property string     $postdate
  * @property string     $status
  * @property string     $email
- * @property string     $payment_meta
+ * @property array      $payment_meta
  * @property string     $customer_id
  * @property string     $completed_date
  * @property string     $currency
@@ -1704,7 +1704,7 @@ final class Give_Payment {
 	 * Setup the IP Address for the payment
 	 *
 	 * @since  1.5
-	 * @since  2.0 rename meta key
+	 * @since  2.0 Set ip address from _give_payment_donor_ip meta key
 	 * @access private
 	 *
 	 * @return string The IP address for the payment
@@ -1719,6 +1719,7 @@ final class Give_Payment {
 	 * Setup the donor ID.
 	 *
 	 * @since  1.5
+	 * @since  2.0 Set id from _give_payment_donor_id meta key
 	 * @access private
 	 *
 	 * @return int The Donor ID.
@@ -1750,6 +1751,8 @@ final class Give_Payment {
 	 * Setup the email address for the donation.
 	 *
 	 * @since  1.5
+	 * @since  2.0 Set email from _give_payment_donor_email meta key
+	 *
 	 * @access private
 	 *
 	 * @return string The email address for the payment.
