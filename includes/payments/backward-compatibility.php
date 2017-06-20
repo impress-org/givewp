@@ -247,6 +247,14 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 		'_give_payment_donor_id',
 		'_give_payment_donor_email',
 		'_give_payment_donor_ip',
+		'_give_donor_billing_address1',
+		'_give_donor_billing_address2',
+		'_give_donor_billing_city',
+		'_give_donor_billing_zip',
+		'_give_donor_billing_state',
+		'_give_donor_billing_country',
+		'_give_payment_date',
+		'_give_payment_currency',
 	);
 
 	// metadata_exists fx will cause of firing get_post_metadata filter again so remove it to prevent infinite loop.
@@ -296,6 +304,57 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 					'_give_payment_user_ip'
 				)
 			);
+			break;
+
+		case '_give_donor_billing_first_name':
+		case '_give_donor_billing_last_name':
+		case '_give_donor_billing_address1':
+		case '_give_donor_billing_address2':
+		case '_give_donor_billing_city':
+		case '_give_donor_billing_zip':
+		case '_give_donor_billing_state':
+		case '_give_donor_billing_country':
+		case '_give_payment_date':
+		case '_give_payment_currency':
+			$donation_meta = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id=%s AND meta_key=%s",
+					$object_id,
+					'_give_payment_meta'
+				)
+			);
+			$donation_meta = maybe_unserialize( $donation_meta );
+
+			if ( in_array( $meta_key, array( '_give_payment_date', '_give_payment_currency' ) ) ) {
+				$meta_key = str_replace( '_give_payment_', '', $meta_key );
+				if ( isset( $donation_meta[ $meta_key ] ) ) {
+					$check = $donation_meta[ $meta_key ];
+				}
+			} else {
+				$meta_key = str_replace( '_give_donor_billing_', '', $meta_key );
+
+				switch ( $meta_key ) {
+					case 'address1':
+						if ( isset( $donation_meta['user_info']['address']['line1'] ) ) {
+							$check = $donation_meta['user_info']['address']['line1'];
+						}
+						break;
+
+					case 'address2':
+						if ( isset( $donation_meta['user_info']['address']['line2'] ) ) {
+							$check = $donation_meta['user_info']['address']['line2'];
+						}
+						break;
+
+					default:
+						if ( isset( $donation_meta['user_info']['address'][ $meta_key ] ) ) {
+							$check = $donation_meta['user_info']['address'][ $meta_key ];
+						}
+				}
+
+				error_log( print_r( $check, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
+			}
+
 			break;
 	}
 
