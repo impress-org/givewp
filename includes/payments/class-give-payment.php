@@ -1834,14 +1834,29 @@ final class Give_Payment {
 	 * @return array The Address information for the payment.
 	 */
 	private function setup_address() {
+		// Get address from cache.
+		if ( ! ( $address = Give_Cache::payment( $this->ID, 'address' ) ) ) {
+			$address['line1']   = give_get_meta( $this->ID, '_give_donor_billing_address1', true );
+			$address['line2']   = give_get_meta( $this->ID, '_give_donor_billing_address2', true );
+			$address['city']    = give_get_meta( $this->ID, '_give_donor_billing_city', true );
+			$address['state']   = give_get_meta( $this->ID, '_give_donor_billing_state', true );
+			$address['zip']     = give_get_meta( $this->ID, '_give_donor_billing_zip', true );
+			$address['country'] = give_get_meta( $this->ID, '_give_donor_billing_country', true );
 
-		$address = ! empty( $this->payment_meta['user_info']['address'] ) ? $this->payment_meta['user_info']['address'] : array(
-			'line1'   => '',
-			'line2'   => '',
-			'city'    => '',
-			'country' => '',
-			'state'   => '',
-			'zip'     => '',
+			// Save address to cache.
+			Give_Cache::payment( $this->ID, 'address', $address );
+		}
+
+		$address = wp_parse_args(
+			$address,
+			array(
+				'line1'   => '',
+				'line2'   => '',
+				'city'    => '',
+				'country' => '',
+				'state'   => '',
+				'zip'     => '',
+			)
 		);
 
 		return $address;
@@ -2121,5 +2136,4 @@ final class Give_Payment {
 	private function get_number() {
 		return apply_filters( 'give_payment_number', $this->number, $this->ID, $this );
 	}
-
 }
