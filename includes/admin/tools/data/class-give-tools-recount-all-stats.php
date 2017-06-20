@@ -110,7 +110,9 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 				'output'          => 'payments', // Use 'posts' to get standard post objects
 				'post_type'       => array( 'give_payment' ),
 			) );
-			$payments = ( new Give_Payments_Query( $args ) )->get_payments();
+
+			$payments_query = new Give_Payments_Query( $args );
+			$payments = $payments_query->get_payments();
 		}
 
 		if ( $payments ) {
@@ -324,7 +326,9 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 				'post_type'         => array( 'give_payment' ),
 			) );
 
-			$payments = ( new Give_Payments_Query( $args ) )->get_payments();
+			$payments_query = new Give_Payments_Query( $args );
+			$payments = $payments_query->get_payments();
+
 			$this->store_data( 'give_temp_all_payments_data', $payments );
 
 			if ( $payments ) {
