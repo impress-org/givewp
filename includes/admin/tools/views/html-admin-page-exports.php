@@ -48,10 +48,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 								<p><?php esc_html_e( 'Download a PDF of Donations and Income reports for all forms for the current year.', 'give' ); ?></p>
 							</td>
 							<td>
-								<a class="button"
-								   href="<?php echo wp_nonce_url( add_query_arg( [
-									   'give-action' => 'generate_pdf',
-								   ] ), 'give_generate_pdf' ); ?>"><?php esc_html_e( 'Generate PDF', 'give' ); ?></a>
+								<a class="button" href="<?php echo wp_nonce_url( add_query_arg( array( 'give-action' => 'generate_pdf' ) ), 'give_generate_pdf' ); ?>">
+									<?php esc_html_e( 'Generate PDF', 'give' ); ?>
+								</a>
 							</td>
 						</tr>
 						<tr class="alternate give-export-sales-earnings">
@@ -65,7 +64,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 								<form method="post">
 									<?php
 									printf(
-										/* translators: 1: start date dropdown 2: end date dropdown */
+									/* translators: 1: start date dropdown 2: end date dropdown */
 										esc_html__( '%1$s to %2$s', 'give' ),
 										Give()->html->year_dropdown( 'start_year' ) . ' ' . Give()->html->month_dropdown( 'start_month' ),
 										Give()->html->year_dropdown( 'end_year' ) . ' ' . Give()->html->month_dropdown( 'end_month' )
