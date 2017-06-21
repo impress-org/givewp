@@ -1,5 +1,78 @@
 <?php
 /**
+ *
+ *
+ * @since 2.0
+ *
+ * @param       $object_id
+ * @param array $meta_value
+ *
+ * @return void
+ */
+function _give_20_bc_split_and_save_give_payment_meta( $object_id, $meta_value ) {
+	// Bailout
+	if( empty( $meta_value ) ) {
+		return;
+	} elseif ( ! is_array( $meta_value ) ) {
+		$meta_value = array();
+	}
+
+	// Date payment meta.
+	if ( ! empty( $meta_value['date'] ) ) {
+		give_update_meta( $object_id, '_give_payment_date', $meta_value['date'] );
+	}
+
+	// Currency payment meta.
+	if ( ! empty( $meta_value['currency'] ) ) {
+		give_update_meta( $object_id, '_give_payment_currency', $meta_value['currency'] );
+	}
+
+	// Donor address payment meta.
+	if ( ! empty( $meta_value['user_info']['address'] ) ) {
+
+		// Donor first name.
+		if ( ! empty( $meta_value['user_info']['first_name'] ) ) {
+			give_update_meta( $object_id, '_give_donor_billing_first_name', $meta_value['user_info']['first_name'] );
+		}
+
+		// Donor last name.
+		if ( ! empty( $meta_value['user_info']['last_name'] ) ) {
+			give_update_meta( $object_id, '_give_donor_billing_last_name', $meta_value['user_info']['last_name'] );
+		}
+
+		// Address1.
+		if ( ! empty( $meta_value['user_info']['address']['line1'] ) ) {
+			give_update_meta( $object_id, '_give_donor_billing_address1', $meta_value['user_info']['address']['line1'] );
+		}
+
+		// Address2.
+		if ( ! empty( $meta_value['user_info']['address']['line2'] ) ) {
+			give_update_meta( $object_id, '_give_donor_billing_address2', $meta_value['user_info']['address']['line2'] );
+		}
+
+		// City.
+		if ( ! empty( $meta_value['user_info']['address']['city'] ) ) {
+			give_update_meta( $object_id, '_give_donor_billing_city', $meta_value['user_info']['address']['city'] );
+		}
+
+		// Zip.
+		if ( ! empty( $meta_value['user_info']['address']['zip'] ) ) {
+			give_update_meta( $object_id, '_give_donor_billing_zip', $meta_value['user_info']['address']['zip'] );
+		}
+
+		// State.
+		if ( ! empty( $meta_value['user_info']['address']['state'] ) ) {
+			give_update_meta( $object_id, '_give_donor_billing_state', $meta_value['user_info']['address']['state'] );
+		}
+
+		// Country.
+		if ( ! empty( $meta_value['user_info']['address']['country'] ) ) {
+			give_update_meta( $object_id, '_give_donor_billing_country', $meta_value['user_info']['address']['country'] );
+		}
+	}
+}
+
+/**
  * Add backward compatibility to get meta value of _give_payment_meta meta key.
  *
  * @since 2.0
@@ -103,59 +176,8 @@ function _give_20_bc_saving_old_payment_meta( $check, $object_id, $meta_key, $me
 	}
 
 	if ( '_give_payment_meta' === $meta_key ) {
-		// Date payment meta.
-		if ( ! empty( $meta_value['date'] ) ) {
-			give_update_meta( $object_id, '_give_payment_date', $meta_value['date'] );
-		}
-
-		// Currency payment meta.
-		if ( ! empty( $meta_value['currency'] ) ) {
-			give_update_meta( $object_id, '_give_payment_currency', $meta_value['currency'] );
-		}
-
-		// Donor address payment meta.
-		if ( ! empty( $meta_value['user_info']['address'] ) ) {
-
-			// Donor first name.
-			if ( ! empty( $meta_value['user_info']['first_name'] ) ) {
-				give_update_meta( $object_id, '_give_donor_billing_first_name', $meta_value['user_info']['first_name'] );
-			}
-
-			// Donor last name.
-			if ( ! empty( $meta_value['user_info']['last_name'] ) ) {
-				give_update_meta( $object_id, '_give_donor_billing_last_name', $meta_value['user_info']['last_name'] );
-			}
-
-			// Address1.
-			if ( ! empty( $meta_value['user_info']['address']['line1'] ) ) {
-				give_update_meta( $object_id, '_give_donor_billing_address1', $meta_value['user_info']['address']['line1'] );
-			}
-
-			// Address2.
-			if ( ! empty( $meta_value['user_info']['address']['line2'] ) ) {
-				give_update_meta( $object_id, '_give_donor_billing_address2', $meta_value['user_info']['address']['line2'] );
-			}
-
-			// City.
-			if ( ! empty( $meta_value['user_info']['address']['city'] ) ) {
-				give_update_meta( $object_id, '_give_donor_billing_city', $meta_value['user_info']['address']['city'] );
-			}
-
-			// Zip.
-			if ( ! empty( $meta_value['user_info']['address']['zip'] ) ) {
-				give_update_meta( $object_id, '_give_donor_billing_zip', $meta_value['user_info']['address']['zip'] );
-			}
-
-			// State.
-			if ( ! empty( $meta_value['user_info']['address']['state'] ) ) {
-				give_update_meta( $object_id, '_give_donor_billing_state', $meta_value['user_info']['address']['state'] );
-			}
-
-			// Country.
-			if ( ! empty( $meta_value['user_info']['address']['country'] ) ) {
-				give_update_meta( $object_id, '_give_donor_billing_country', $meta_value['user_info']['address']['country'] );
-			}
-		}
+		_give_20_bc_split_and_save_give_payment_meta( $object_id, $meta_value );
+		$check = true;
 	} elseif ( '_give_payment_user_email' === $meta_key ) {
 		give_update_meta( $object_id, '_give_payment_donor_email', $meta_value );
 		$check = true;
@@ -208,8 +230,8 @@ function _give_20_bc_get_old_payment_meta( $check, $object_id, $meta_key, $singl
 		case '_give_payment_meta':
 			remove_filter( 'get_post_metadata', '_give_20_bc_get_old_payment_meta' );
 
-			if( $meta_value = give_get_meta( $object_id, '_give_payment_meta' ) ) {
-				$check = _give_20_bc_give_payment_meta_value( $object_id, current( $meta_value  ));
+			if ( $meta_value = give_get_meta( $object_id, '_give_payment_meta' ) ) {
+				$check = _give_20_bc_give_payment_meta_value( $object_id, current( $meta_value ) );
 			}
 
 			add_filter( 'get_post_metadata', '_give_20_bc_get_old_payment_meta', 10, 5 );
@@ -237,7 +259,7 @@ function _give_20_bc_get_old_payment_meta( $check, $object_id, $meta_key, $singl
 	}
 
 	// Put result in an array on zero index.
-	if( ! is_null( $check ) ) {
+	if ( ! is_null( $check ) ) {
 		$check = array( $check );
 	}
 
@@ -304,6 +326,11 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 					'_give_payment_customer_id'
 				)
 			);
+
+			// Set new meta key to save queries.
+			remove_filter( 'get_post_metadata', '_give_20_bc_get_new_payment_meta', 10 );
+			give_update_meta( $object_id, '_give_payment_donor_id', $check );
+			add_filter( 'get_post_metadata', '_give_20_bc_get_new_payment_meta', 10, 5 );
 			break;
 
 		case '_give_payment_donor_email':
@@ -314,6 +341,11 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 					'_give_payment_user_email'
 				)
 			);
+
+			// Set new meta key to save queries.
+			remove_filter( 'get_post_metadata', '_give_20_bc_get_new_payment_meta', 10 );
+			give_update_meta( $object_id, '_give_payment_donor_email', $check );
+			add_filter( 'get_post_metadata', '_give_20_bc_get_new_payment_meta', 10, 5 );
 			break;
 
 		case '_give_payment_donor_ip':
@@ -324,6 +356,11 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 					'_give_payment_user_ip'
 				)
 			);
+
+			// Set new meta key to save queries.
+			remove_filter( 'get_post_metadata', '_give_20_bc_get_new_payment_meta', 10 );
+			give_update_meta( $object_id, '_give_payment_donor_ip', $check );
+			add_filter( 'get_post_metadata', '_give_20_bc_get_new_payment_meta', 10, 5 );
 			break;
 
 		case '_give_donor_billing_first_name':
@@ -346,7 +383,15 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 			$donation_meta = maybe_unserialize( $donation_meta );
 			$donation_meta = ! is_array( $donation_meta ) ? array() : $donation_meta;
 
-			if( empty( $donation_meta ) ) {
+			// Break payment meta to new meta keys.
+			if( ! empty( $donation_meta ) ) {
+				remove_filter( 'get_post_metadata', '_give_20_bc_get_new_payment_meta', 10 );
+				_give_20_bc_split_and_save_give_payment_meta( $object_id, $donation_meta );
+				add_filter( 'get_post_metadata', '_give_20_bc_get_new_payment_meta', 10, 5 );
+			}
+
+			// Get results.
+			if ( empty( $donation_meta ) ) {
 				$check = '';
 			} elseif ( in_array( $meta_key, array( '_give_payment_date', '_give_payment_currency' ) ) ) {
 				$meta_key = str_replace( '_give_payment_', '', $meta_key );
@@ -380,7 +425,7 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 	}
 
 	// Put result in an array on zero index.
-	if( ! is_null( $check ) ) {
+	if ( ! is_null( $check ) ) {
 		$check = array( $check );
 	}
 
