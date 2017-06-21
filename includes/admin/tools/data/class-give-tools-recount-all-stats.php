@@ -107,8 +107,7 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 				'number'          => $this->per_step,
 				'status'          => 'publish',
 				'paged'           => $this->step,
-				'output'          => 'payments', // Use 'posts' to get standard post objects
-				'post_type'       => array( 'give_payment' ),
+				'output'          => 'payments',
 			) );
 
 			$payments_query = new Give_Payments_Query( $args );
@@ -321,13 +320,13 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 				'post_parent__in'   => $all_forms,
 				'number'            => $this->per_step,
 				'status'            => 'publish',
-				'paged'             => $this->step,
-				'output'            => 'payments', // Use 'posts' to get standard post objects
-				'post_type'         => array( 'give_payment' ),
+				'page'              => $this->step,
+				'output'            => 'payments',
 			) );
 
 			$payments_query = new Give_Payments_Query( $args );
 			$payments       = $payments_query->get_payments();
+			$total          = wp_count_posts( 'give_payment' )->publish;
 
 			$this->store_data( 'give_temp_all_payments_data', $payments );
 
@@ -358,7 +357,6 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 
 				}
 
-				$total = count( $payments );
 			}
 
 			$this->store_data( 'give_temp_payment_items', $payment_items );
