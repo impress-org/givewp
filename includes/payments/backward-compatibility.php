@@ -230,8 +230,14 @@ function _give_20_bc_get_old_payment_meta( $check, $object_id, $meta_key, $singl
 		case '_give_payment_meta':
 			remove_filter( 'get_post_metadata', '_give_20_bc_get_old_payment_meta' );
 
-			if ( $meta_value = give_get_meta( $object_id, '_give_payment_meta' ) ) {
+			if (
+				! Give_Cache::get( "_give_payment_meta_{$object_id}", true ) &&
+				( $meta_value = give_get_meta( $object_id, '_give_payment_meta' ) )
+			) {
 				$check = _give_20_bc_give_payment_meta_value( $object_id, current( $meta_value ) );
+
+				// Set cache to save queries.
+				Give_Cache::set( "_give_payment_meta_{$object_id}", $check, HOUR_IN_SECONDS,true );
 			}
 
 			add_filter( 'get_post_metadata', '_give_20_bc_get_old_payment_meta', 10, 5 );
