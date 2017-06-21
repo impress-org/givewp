@@ -231,13 +231,13 @@ function _give_20_bc_get_old_payment_meta( $check, $object_id, $meta_key, $singl
 			remove_filter( 'get_post_metadata', '_give_20_bc_get_old_payment_meta' );
 
 			if (
-				! Give_Cache::get( "_give_payment_meta_{$object_id}", true ) &&
+				! Give_Cache::get( "give_20_bc_give_payment_meta_{$object_id}", true ) &&
 				( $meta_value = give_get_meta( $object_id, '_give_payment_meta' ) )
 			) {
 				$check = _give_20_bc_give_payment_meta_value( $object_id, current( $meta_value ) );
 
 				// Set cache to save queries.
-				Give_Cache::set( "_give_payment_meta_{$object_id}", $check, HOUR_IN_SECONDS,true );
+				Give_Cache::set( "give_20_bc_give_payment_meta_{$object_id}", $check, HOUR_IN_SECONDS,true );
 			}
 
 			add_filter( 'get_post_metadata', '_give_20_bc_get_old_payment_meta', 10, 5 );
@@ -439,3 +439,23 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 }
 
 add_filter( 'get_post_metadata', '_give_20_bc_get_new_payment_meta', 10, 5 );
+
+/**
+ * Delete payment cache on update.
+ * This cache used for saving queries
+ *
+ * @since 2.0
+ *
+ * @param $payment_id
+ */
+function _give_20_bc_delete_cache( $payment_id ) {
+	// Bailout.
+	if ( wp_is_post_revision( $payment_id ) ) {
+		return;
+	}
+
+	Give_Cache::delete( Give_Cache::get_options_like( "give_20_bc_give_payment_meta_$payment_id" ) );
+}
+
+add_action( 'save_post_give_payment', '_give_20_bc_delete_cache', 9999 );
+add_action( 'give_update_edited_donation', '_give_20_bc_delete_cache', 9999 );
