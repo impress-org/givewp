@@ -526,10 +526,10 @@ final class Give_Payment {
 		$this->customer_id = $this->setup_donor_id();
 		$this->user_id     = $this->setup_user_id();
 		$this->email       = $this->setup_email();
-		$this->address     = $this->setup_address();
-		$this->first_name  = $this->setup_donor_first_name();
-		$this->last_name   = $this->setup_donor_last_name();
 		$this->user_info   = $this->setup_user_info();
+		$this->address     = $this->setup_address();
+		$this->first_name  = $this->user_info['first_name'];
+		$this->last_name   = $this->user_info['last_name'];
 
 		// Other Identifiers.
 		$this->form_title = $this->setup_form_title();
@@ -1771,32 +1771,6 @@ final class Give_Payment {
 		return $email;
 	}
 
-
-	/**
-	 * Setup donor first name.
-	 *
-	 * @since  2.0
-	 * @access private
-	 *
-	 * @return array The user info associated with the payment.
-	 */
-	private function setup_donor_first_name(){
-		return $this->get_meta( '_give_donor_billing_first_name', true );
-	}
-
-
-	/**
-	 * Setup donor last name.
-	 *
-	 * @since  2.0
-	 * @access private
-	 *
-	 * @return array The user info associated with the payment.
-	 */
-	private function setup_donor_last_name(){
-		return $this->get_meta( '_give_donor_billing_last_name', true );
-	}
-
 	/**
 	 * Setup the user info.
 	 *
@@ -1811,15 +1785,52 @@ final class Give_Payment {
 			'last_name'  => $this->last_name,
 		);
 
-		$user_info = array(
-			'first_name' => $this->first_name,
-			'last_name'  => $this->last_name,
-			'id'         => $this->user_id,
-			'email'      => $this->email,
-			'address'    => $this->address,
-		);
-
+		$user_info = isset( $this->payment_meta['user_info'] ) ? maybe_unserialize( $this->payment_meta['user_info'] ) : array();
 		$user_info = wp_parse_args( $user_info, $defaults );
+
+		if ( empty( $user_info ) ) {
+			// Get the donor, but only if it's been created.
+			$donor = new Give_Donor( $this->customer_id );
+
+			if ( $donor->id > 0 ) {
+				$name      = explode( ' ', $donor->name, 2 );
+				$user_info = array(
+					'first_name' => $name[0],
+					'last_name'  => $name[1],
+					'email'      => $donor->email,
+					'discount'   => 'none',
+				);
+			}
+		} else {
+			// Get the donor, but only if it's been created.
+			$donor = new Give_Donor( $this->customer_id );
+			if ( $donor->id > 0 ) {
+				foreach ( $user_info as $key => $value ) {
+					if ( ! empty( $value ) ) {
+						continue;
+					}
+
+					switch ( $key ) {
+						case 'first_name':
+							$name = explode( ' ', $donor->name, 2 );
+
+							$user_info[ $key ] = $name[0];
+							break;
+
+						case 'last_name':
+							$name      = explode( ' ', $donor->name, 2 );
+							$last_name = ! empty( $name[1] ) ? $name[1] : '';
+
+							$user_info[ $key ] = $last_name;
+							break;
+
+						case 'email':
+							$user_info[ $key ] = $donor->email;
+							break;
+					}
+				}
+			}
+		}// End if().
 
 		return $user_info;
 
