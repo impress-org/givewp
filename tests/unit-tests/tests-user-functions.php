@@ -60,7 +60,7 @@ class Tests_User_Function extends Give_Unit_Test_Case {
 		 * Username is empty and registration required for form.
 		 */
 		// Stop guest checkout.
-		update_post_meta( $this->_simple_form->ID, '_give_logged_in_only', 'enabled' );
+		give_update_meta( $this->_simple_form->ID, '_give_logged_in_only', 'enabled' );
 
 		$output = give_validate_username( '', $this->_simple_form->ID );
 
@@ -107,14 +107,14 @@ class Tests_User_Function extends Give_Unit_Test_Case {
 		/*
 		 * Check 3
 		 *
-		 * Varify email ( user already exist )
+		 * Verify email ( user already exist )
 		 */
 		$output = give_validate_user_email( 'admin@example.org' );
 
 		$this->assertTrue( $output );
 
 		/*
-		 * Check 3
+		 * Check 4
 		 *
 		 * Already registered email and newly register user
 		 */
@@ -159,13 +159,105 @@ class Tests_User_Function extends Give_Unit_Test_Case {
 		$this->assertFalse( $output );
 
 		/*
-		 * Check 3
+		 * Check 4
 		 *
-		 *  Register new user & password/confirm password is not empty
+		 *  Register new user & password/confirm password is not empty and weak password
 		 */
 		$output = give_validate_user_password( 'xyz', 'xyz', true );
 
+		$this->assertFalse( $output );
+
+		/*
+		 * Check 5
+		 *
+		 *  Register new user & password and confirm password mismatch
+		 */
+		$output = give_validate_user_password( 'xyzabc', 'abcxyz', true );
+
+		$this->assertFalse( $output );
+
+		/*
+		 * Check 6
+		 *
+		 *  Register new user & password/confirm password is not empty
+		 */
+		$output = give_validate_user_password( 'xyzabc', 'xyzabc', true );
+
 		$this->assertTrue( $output );
+
+		/*
+		 * Check 7
+		 *
+		 * Existing user & empty confirm password
+		 */
+		$output = give_validate_user_password( 'xyz', '', false );
+
+		$this->assertFalse( $output );
+
+		/*
+		 * Check 8
+		 *
+		 * Existing user & empty password
+		 */
+		$output = give_validate_user_password( '', 'xyz', false );
+
+		$this->assertFalse( $output );
+
+		/*
+		 * Check 9
+		 *
+		 *  Existing user & password/confirm password is not empty and weak password
+		 */
+		$output = give_validate_user_password( 'xyz', 'xyz', false );
+
+		$this->assertFalse( $output );
+
+		/*
+		 * Check 10
+		 *
+		 *  Existing user & password and confirm password mismatch
+		 */
+		$output = give_validate_user_password( 'xyzabc', 'abcxyz', false );
+
+		$this->assertFalse( $output );
+
+		/*
+		 * Check 11
+		 *
+		 *  Existing user & password/confirm password is not empty
+		 */
+		$output = give_validate_user_password( 'xyzabc', 'xyzabc', false );
+
+		$this->assertTrue( $output );
+	}
+
+	/**
+	 * Test give_donor_email_exists function
+	 *
+	 * @since 1.8.9
+	 *
+	 * @todo We need to add Check 3 for Email already exists for donor,once we add additional_email test check for donor.
+	 *
+	 * @cover give_donor_email_exists
+	 */
+	function test_give_donor_email_exists() {
+		/*
+		 * Check 1
+		 *
+		 * Empty email doesn't exists
+		 */
+		$output = give_donor_email_exists( '' );
+		$this->assertFalse( $output );
+
+		/*
+		 * Check 2
+		 *
+		 * Bad Email doesn't exists
+		 */
+		$output = give_donor_email_exists( 'xyz' );
+
+		$this->assertFalse( $output );
+
 	}
 }
 
