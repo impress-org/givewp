@@ -189,7 +189,6 @@ function _give_20_bc_saving_old_payment_meta( $check, $object_id, $meta_key, $me
 
 	if ( '_give_payment_meta' === $meta_key ) {
 		_give_20_bc_split_and_save_give_payment_meta( $object_id, $meta_value );
-		$check = true;
 	} elseif ( '_give_payment_user_email' === $meta_key ) {
 		give_update_meta( $object_id, '_give_payment_donor_email', $meta_value );
 		$check = true;
