@@ -1269,28 +1269,19 @@ final class Give_Payment {
 
 		$meta = give_get_meta( $this->ID, $meta_key, $single );
 
-		if ( $meta_key === '_give_payment_meta' ) {
-			$meta = (array) $meta;
-
-			if ( empty( $meta['key'] ) ) {
-				$meta['key'] = $this->setup_payment_key();
-			}
-
-			if ( empty( $meta['form_title'] ) ) {
-				$meta['form_title'] = $this->setup_form_title();
-			}
-
-			if ( empty( $meta['email'] ) ) {
-				$meta['email'] = $this->setup_email();
-			}
-
-			if ( empty( $meta['date'] ) ) {
-				$meta['date'] = get_post_field( 'post_date', $this->ID );
-			}
-		}
-
+		/**
+		 * Filter the specific meta key value.
+		 *
+		 * @since 1.5
+		 */
 		$meta = apply_filters( "give_get_payment_meta_{$meta_key}", $meta, $this->ID );
 
+
+		/**
+		 * Filter the all meta keys.
+		 *
+		 * @since 1.5
+		 */
 		return apply_filters( 'give_get_payment_meta', $meta, $this->ID, $meta_key );
 	}
 
