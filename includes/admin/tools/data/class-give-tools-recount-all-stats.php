@@ -124,7 +124,7 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 					continue;
 				}
 
-				// Verify accepted status'
+				// Verify accepted status
 				if ( ! in_array( $payment->post_status, $accepted_statuses ) ) {
 					$processed_payments[] = $payment->ID;
 					continue;
