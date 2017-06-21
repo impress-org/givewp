@@ -1052,6 +1052,12 @@ form.give-form {
   #give-recurring-form .card-expiration select.card-expiry-year,
   form.give-form .card-expiration select.card-expiry-year {
     float: right; }
+  form[id*='give-form'] .give-disabled, form[id*='give-form'] [disabled],
+  #give-recurring-form .give-disabled,
+  #give-recurring-form [disabled],
+  form.give-form .give-disabled,
+  form.give-form [disabled] {
+    cursor: not-allowed; }
 
 /*---------------------------------
 Form Price & Amount
@@ -1504,6 +1510,12 @@ Section Breaks
 .give-form-wrap .give-form h3.give-section-break,
 .give-form-wrap .give-form h4.give-section-break {
   margin: 10px 0 0; }
+
+/*---------------------------------
+Form validation style
+-----------------------------------*/
+.give-do-validate input.error {
+  border-color: red !important; }
 
 /*---------------------------------
 Notices, Warnings & Errors
