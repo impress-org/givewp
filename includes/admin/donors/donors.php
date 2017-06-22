@@ -490,7 +490,7 @@ function give_donor_view( $donor ) {
 						</td>
 					</tr>
 				<?php } else { ?>
-					<tr><td colspan="2"><?php _e( 'No Emails Found', 'easy-digital-downloads' ); ?></td></tr>
+					<tr><td colspan="2"><?php _e( 'No Emails Found', 'give' ); ?></td></tr>
 				<?php }// End if().
 	?>
 			</tbody>
