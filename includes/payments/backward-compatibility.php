@@ -99,6 +99,9 @@ function _give_20_bc_give_payment_meta_value( $object_id, $meta_value ) {
 
 	// Donor email.
 	$meta_value['email'] = give_get_meta( $object_id, '_give_payment_donor_email', true );
+	$meta_value['email'] = ! empty( $meta_value['email'] ) ?
+		$meta_value['email'] :
+		Give()->donors->get_column( 'email', give_get_payment_donor_id( $object_id ) );
 
 	// Form id.
 	$meta_value['form_id'] = give_get_meta( $object_id, '_give_payment_form_id', true );
@@ -108,6 +111,9 @@ function _give_20_bc_give_payment_meta_value( $object_id, $meta_value ) {
 
 	// Date.
 	$meta_value['date'] = give_get_meta( $object_id, '_give_payment_date', true );
+	$meta_value['date'] = ! empty( $meta_value['date'] ) ?
+		$meta_value['date'] :
+		get_post_field( 'post_date', $object_id );
 
 	// Currency.
 	$meta_value['currency'] = give_get_meta( $object_id, '_give_payment_currency', true );
