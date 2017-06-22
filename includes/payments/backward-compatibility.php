@@ -474,3 +474,54 @@ function _give_20_bc_delete_cache( $payment_id ) {
 
 add_action( 'save_post_give_payment', '_give_20_bc_delete_cache', 9999 );
 add_action( 'give_update_edited_donation', '_give_20_bc_delete_cache', 9999 );
+
+
+/**
+ * Add support for old payment meta keys.
+ *
+ * @since 2.0
+ *
+ * @param WP_Query $query
+ *
+ * @return void
+ */
+function _give_20_bc_support_deprecated_meta_key_query( $query ) {
+	$new_meta_key = array(
+		// '_give_payment_customer_id' => '_give_payment_donor_id',
+		'_give_payment_user_email'  => '_give_payment_donor_email',
+		// '_give_payment_user_ip'     => '_give_payment_donor_ip',
+	);
+
+	// Bailout.
+	if (
+		give_has_upgrade_completed( 'v20_upgrades_form_metadata' ) ||
+		empty( $query->query_vars['meta_key'] ) ||
+		! in_array( $query->query_vars['meta_key'], $new_meta_key )
+	) {
+		return;
+	}
+
+
+	// Set meta_query
+	$deprecated_meta_keys = array_flip( $new_meta_key );
+	$query->set(
+		'meta_query',
+		array(
+			'relation' => 'OR',
+			array(
+				'key'   => $query->query_vars['meta_key'],
+				'value' => $query->query_vars['meta_value'],
+			),
+			array(
+				'key'   => $deprecated_meta_keys[ $query->query_vars['meta_key'] ],
+				'value' => $query->query_vars['meta_value'],
+			)
+		)
+	);
+
+	//unset single meta query.
+	unset( $query->query_vars['meta_key'] );
+	unset( $query->query_vars['meta_value'] );
+}
+
+add_action( 'pre_get_posts', '_give_20_bc_support_deprecated_meta_key_query' );
