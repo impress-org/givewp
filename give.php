@@ -62,7 +62,7 @@ if ( ! class_exists( 'Give' ) ) :
 		 *
 		 * @var    Give() The one true Give
 		 */
-		private static $instance;
+		protected static $_instance;
 
 		/**
 		 * Give Roles Object
@@ -205,38 +205,71 @@ if ( ! class_exists( 'Give' ) ) :
 		 * @return    Give
 		 */
 		public static function instance() {
-			if ( ! isset( self::$instance ) && ! ( self::$instance instanceof Give ) ) {
-				self::$instance = new Give();
-				self::$instance->setup_constants();
-
-				add_action( 'plugins_loaded', array( self::$instance, 'load_textdomain' ) );
-
-				self::$instance->includes();
-				self::$instance->roles           = new Give_Roles();
-				self::$instance->api             = new Give_API();
-				self::$instance->give_settings   = new Give_Admin_Settings();
-				self::$instance->session         = new Give_Session();
-				self::$instance->html            = new Give_HTML_Elements();
-				self::$instance->emails          = new Give_Emails();
-				self::$instance->email_tags      = new Give_Email_Template_Tags();
-				self::$instance->donors          = new Give_DB_Donors();
-				self::$instance->donor_meta      = new Give_DB_Donor_Meta();
-				self::$instance->template_loader = new Give_Template_Loader();
-				self::$instance->email_access    = new Give_Email_Access();
-				self::$instance->tooltips        = new Give_Tooltips();
-
-
-				/**
-				 * Fire the action after Give core loads.
-				 *
-				 * @param class Give class instance.
-				 * @since 1.8.7
-				 */
-				do_action( 'give_init', self::$instance );
-
+			if ( is_null( self::$_instance ) ) {
+				self::$_instance = new self();
 			}
 
-			return self::$instance;
+			return self::$_instance;
+		}
+
+		/**
+		 * Give Constructor.
+		 */
+		public function __construct() {
+			$this->setup_constants();
+			$this->includes();
+			$this->init_hooks();
+
+			do_action( 'give_loaded' );
+		}
+
+		/**
+		 * Hook into actions and filters.
+		 *
+		 * @since  1.8.9
+		 */
+		private function init_hooks() {
+			register_activation_hook( __FILE__, 'give_install' );
+			add_action( 'plugins_loaded', array( $this, 'init' ), 0 );
+		}
+		/**
+		 * Init Give when WordPress Initializes.
+		 *
+		 * @since 1.8.9
+		 */
+		public function init() {
+
+			/**
+			 * Fires before the Give core is initialized.
+			 *
+			 * @since 1.8.9
+			 */
+			do_action( 'before_give_init' );
+
+			// Set up localization.
+			$this->load_textdomain();
+
+			$this->roles           = new Give_Roles();
+			$this->api             = new Give_API();
+			$this->give_settings   = new Give_Admin_Settings();
+			$this->session         = new Give_Session();
+			$this->html            = new Give_HTML_Elements();
+			$this->emails          = new Give_Emails();
+			$this->email_tags      = new Give_Email_Template_Tags();
+			$this->donors          = new Give_DB_Donors();
+			$this->donor_meta      = new Give_DB_Donor_Meta();
+			$this->template_loader = new Give_Template_Loader();
+			$this->email_access    = new Give_Email_Access();
+
+			/**
+			 * Fire the action after Give core loads.
+			 *
+			 * @param class Give class instance.
+			 *
+			 * @since 1.8.7
+			 */
+			do_action( 'give_init', $this );
+
 		}
 
 		/**
@@ -251,7 +284,7 @@ if ( ! class_exists( 'Give' ) ) :
 		 * @return void
 		 */
 		public function __clone() {
-			// Cloning instances of the class is forbidden
+			// Cloning instances of the class is forbidden.
 			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'give' ), '1.0' );
 		}
 
@@ -448,7 +481,7 @@ if ( ! class_exists( 'Give' ) ) :
 		}
 
 		/**
-		 * Loads the plugin language files
+		 * Loads the plugin language files.
 		 *
 		 * @since  1.0
 		 * @access public
@@ -460,24 +493,14 @@ if ( ! class_exists( 'Give' ) ) :
 			$give_lang_dir = dirname( plugin_basename( GIVE_PLUGIN_FILE ) ) . '/languages/';
 			$give_lang_dir = apply_filters( 'give_languages_directory', $give_lang_dir );
 
-			// Traditional WordPress plugin locale filter
-			$locale = apply_filters( 'plugin_locale', get_locale(), 'give' );
-			$mofile = sprintf( '%1$s-%2$s.mo', 'give', $locale );
+			// Traditional WordPress plugin locale filter.
+			$locale = is_admin() && function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
+			$locale = apply_filters( 'plugin_locale', $locale, 'give' );
 
-			// Setup paths to current locale file
-			$mofile_local  = $give_lang_dir . $mofile;
-			$mofile_global = WP_LANG_DIR . '/give/' . $mofile;
+			unload_textdomain( 'give' );
+			load_textdomain( 'give', WP_LANG_DIR . '/give/give-' . $locale . '.mo' );
+			load_plugin_textdomain( 'give', false, $give_lang_dir );
 
-			if ( file_exists( $mofile_global ) ) {
-				// Look in global /wp-content/languages/give folder
-				load_textdomain( 'give', $mofile_global );
-			} elseif ( file_exists( $mofile_local ) ) {
-				// Look in local location from filter `give_languages_directory`
-				load_textdomain( 'give', $mofile_local );
-			} else {
-				// Load the default language files packaged up w/ Give
-				load_plugin_textdomain( 'give', false, $give_lang_dir );
-			}
 		}
 
 	}
@@ -502,4 +525,4 @@ function Give() {
 	return Give::instance();
 }
 
-add_action('plugins_loaded', 'Give');
+Give();
