@@ -387,20 +387,16 @@ function give_get_default_settings() {
 
 		// Offline gateway setup.
 		'global_offline_donation_content'             => give_get_default_offline_donation_content(),
-		// 'global_offline_donation_email'               => give_get_default_offline_donation_email_content(),
-		'offline-donation-instruction_email_message'  => give_get_default_offline_donation_email_content(),
-
+		'global_offline_donation_email'               => give_get_default_offline_donation_content(),
 
 		// Billing address.
 		'give_offline_donation_enable_billing_fields' => 'disabled',
 
 		// Default donation notification email.
-		// 'donation_notification'                       => give_get_default_donation_notification_email(),
-		'new-donation_email_message'                  => give_get_default_donation_notification_email(),
+		'donation_notification'                       => give_get_default_donation_notification_email(),
 
 		// Default email receipt message.
-		// 'donation_receipt'                            => give_get_default_donation_receipt_email(),
-		'donation-receipt_email_message'              => give_get_default_donation_receipt_email(),
+		'donation_receipt'                            => give_get_default_donation_receipt_email(),
 	);
 
 	return $options;
