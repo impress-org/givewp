@@ -776,6 +776,29 @@ function modify_nav_menu_meta_box_object( $post_type ) {
 
 add_filter( 'nav_menu_meta_box_object', 'modify_nav_menu_meta_box_object' );
 
+/**
+ * Enable 'Donation Form' meta enabled by default on Menu page.
+ */
+function give_nav_donation_metabox_enabled() {
+
+	// Return false, if it fails to retrieve hidden meta box list and is not admin.
+	if ( ( ! $hidden_meta_boxes = get_user_option( 'metaboxhidden_nav-menus' ) ) || ! is_admin() ) {
+		return false;
+	}
+
+	// Return false, In case, we don't find 'Donation Form' in hidden meta box list.
+	if ( ! in_array( 'add-post-type-give_forms', $hidden_meta_boxes, true ) ) {
+		return false;
+	}
+
+	// Exclude 'Donation Form' value from hidden meta box's list.
+	$hidden_meta_boxes = array_diff( $hidden_meta_boxes, array( 'add-post-type-give_forms' ) );
+
+	// Get current user ID.
+	$user = wp_get_current_user();
+
+	update_user_option( $user->ID, 'metaboxhidden_nav-menus', $hidden_meta_boxes, true );
+}
 
 /**
  * Array_column backup usage

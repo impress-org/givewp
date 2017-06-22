@@ -483,8 +483,11 @@ add_action( 'admin_init', 'give_v152_cleanup_users' );
  * @return void
  */
 function give_v16_upgrades() {
-	@Give()->donors->create_table();
-	@Give()->donor_meta->create_table();
+	// Create the donor databases.
+	$donors_db = new Give_DB_Donors();
+	$donors_db->create_table();
+	$donor_meta = new Give_DB_Donor_Meta();
+	$donor_meta->create_table();
 }
 
 /**
@@ -1142,7 +1145,7 @@ add_action( 'give_v189_upgrades_levels_post_meta', 'give_v189_upgrades_levels_po
 /**
  * Upgrade form metadata for new metabox settings.
  *
- * @since  1.8
+ * @since  2.0
  * @return void
  */
 function give_v20_upgrades_form_metadata() {
