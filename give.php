@@ -33,10 +33,10 @@
  * Give is a tribute to the spirit and philosophy of Open Source. We at WordImpress gladly embrace the Open Source philosophy both
  * in how Give itself was developed, and how we hope to see others build more from our code base.
  *
- * Give would not have been possible without the tireless efforts of WordPress and the surrounding Open Source projects and their talented developers. Thank you all for your
- * contribution to WordPress.
+ * Give would not have been possible without the tireless efforts of WordPress and the surrounding Open Source projects and their talented developers. Thank you all for your contribution to WordPress.
  *
  * - The WordImpress Team
+ *
  */
 
 // Exit if accessed directly.
@@ -52,7 +52,6 @@ if ( ! class_exists( 'Give' ) ) :
 	 * @since 1.0
 	 */
 	final class Give {
-
 		/** Singleton *************************************************************/
 
 		/**
@@ -178,15 +177,29 @@ if ( ! class_exists( 'Give' ) ) :
 		public $email_access;
 
 		/**
+		 * Give_tooltips Object
+		 *
+		 * @since  2.0
+		 * @access public
+		 *
+		 * @var    Give_Tooltips object
+		 */
+		public $tooltips;
+
+		/**
 		 * Main Give Instance
 		 *
-		 * Ensures that only one instance of Give exists in memory at any one
+		 * Insures that only one instance of Give exists in memory at any one
 		 * time. Also prevents needing to define globals all over the place.
 		 *
 		 * @since     1.0
 		 * @access    public
 		 *
 		 * @static
+		 * @staticvar array $instance
+		 * @uses      Give::setup_constants() Setup the constants needed.
+		 * @uses      Give::includes() Include the required files.
+		 * @uses      Give::load_textdomain() load the language files.
 		 * @see       Give()
 		 *
 		 * @return    Give
@@ -352,6 +365,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/actions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/filters.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/api/class-give-api.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-tooltips.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-roles.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-template-loader.php';
@@ -460,7 +474,7 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrade-functions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrades.php';
 
-			}// End if().
+			}
 
 			require_once GIVE_PLUGIN_DIR . 'includes/install.php';
 
@@ -475,7 +489,6 @@ if ( ! class_exists( 'Give' ) ) :
 		 * @return void
 		 */
 		public function load_textdomain() {
-
 			// Set filter for Give's languages directory
 			$give_lang_dir = dirname( plugin_basename( GIVE_PLUGIN_FILE ) ) . '/languages/';
 			$give_lang_dir = apply_filters( 'give_languages_directory', $give_lang_dir );
