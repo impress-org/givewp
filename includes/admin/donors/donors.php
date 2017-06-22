@@ -217,7 +217,10 @@ function give_donor_view( $donor ) {
 
 					<div id="donor-name-wrap" class="left">
 						<span class="donor-id">#<?php echo $donor->id; ?></span>
-						<span class="donor-name info-item edit-item"><input size="15" data-key="name" name="customerinfo[name]" type="text" value="<?php echo esc_attr( $donor->name ); ?>" placeholder="<?php esc_attr_e( 'Donor Name', 'give' ); ?>" /></span>
+						<span class="donor-name info-item edit-item">
+							<input size="15" data-key="first_name" name="customerinfo[first_name]" type="text" value="<?php echo esc_attr( $donor->get_meta( '_give_donor_first_name' ) ); ?>" placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" />
+							<input size="15" data-key="last_name" name="customerinfo[last_name]" type="text" value="<?php echo esc_attr( $donor->get_meta( '_give_donor_last_name' ) ); ?>" placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" />
+						</span>
 						<span class="donor-name info-item editable"><span data-key="name"><?php echo $donor->name; ?></span></span>
 					</div>
 					<p class="donor-since info-item">
