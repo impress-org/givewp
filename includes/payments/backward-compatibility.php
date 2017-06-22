@@ -5,7 +5,7 @@
  * @since 2.0
  *
  * @param       $object_id
- * @param array     $meta_value
+ * @param array $meta_value
  *
  * @return void
  */
@@ -81,7 +81,7 @@ function _give_20_bc_split_and_save_give_payment_meta( $object_id, $meta_value )
  * @since 2.0
  *
  * @param       $object_id
- * @param array     $meta_value
+ * @param array $meta_value
  *
  * @return array
  */
@@ -134,32 +134,32 @@ function _give_20_bc_give_payment_meta_value( $object_id, $meta_value ) {
 	$donor_data['address'] = false;
 
 	// Address1.
-	if( $address1 = give_get_meta( $object_id, '_give_donor_billing_address1', true ) ) {
+	if ( $address1 = give_get_meta( $object_id, '_give_donor_billing_address1', true ) ) {
 		$donor_data['address']['line1'] = $address1;
 	}
 
 	// Address2.
-	if( $address2 = give_get_meta( $object_id, '_give_donor_billing_address2', true ) ) {
+	if ( $address2 = give_get_meta( $object_id, '_give_donor_billing_address2', true ) ) {
 		$donor_data['address']['line2'] = $address2;
 	}
 
 	// City.
-	if( $city = give_get_meta( $object_id, '_give_donor_billing_city', true ) ) {
+	if ( $city = give_get_meta( $object_id, '_give_donor_billing_city', true ) ) {
 		$donor_data['address']['city'] = $city;
 	}
 
 	// Zip.
-	if( $zip = give_get_meta( $object_id, '_give_donor_billing_zip', true ) ) {
+	if ( $zip = give_get_meta( $object_id, '_give_donor_billing_zip', true ) ) {
 		$donor_data['address']['zip'] = $zip;
 	}
 
 	// State.
-	if( $state = give_get_meta( $object_id, '_give_donor_billing_state', true ) ) {
+	if ( $state = give_get_meta( $object_id, '_give_donor_billing_state', true ) ) {
 		$donor_data['address']['state'] = $state;
 	}
 
 	// Country.
-	if( $country = give_get_meta( $object_id, '_give_donor_billing_country', true ) ) {
+	if ( $country = give_get_meta( $object_id, '_give_donor_billing_country', true ) ) {
 		$donor_data['address']['country'] = $country;
 	}
 
@@ -255,7 +255,7 @@ function _give_20_bc_get_old_payment_meta( $check, $object_id, $meta_key, $singl
 				// Set cache to save queries.
 				Give_Cache::set( "give_20_bc_give_payment_meta_{$object_id}", $check, HOUR_IN_SECONDS, true );
 			}
-			
+
 			add_filter( 'get_post_metadata', '_give_20_bc_get_old_payment_meta', 10, 5 );
 
 			break;
