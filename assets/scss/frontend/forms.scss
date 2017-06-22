@@ -529,7 +529,9 @@ CC Validation
 }
 
 #give_purchase_form_wrap {
-	input.give-input.card-number.valid {
+	input.give-input.card-number.valid,
+	input.give-input.card-cvc.valid,
+	input.give-input.card-expiry.valid{
 		background-image: url('../assets/images/tick.png');
 		background-repeat: no-repeat;
 		background-position: 98% 50%;

@@ -1303,12 +1303,16 @@ CC Validation
     [id*='give_secure_site_wrapper'] span.padlock :before {
       display: inline-block; }
 
-#give_purchase_form_wrap input.give-input.card-number.valid {
+#give_purchase_form_wrap input.give-input.card-number.valid,
+#give_purchase_form_wrap input.give-input.card-cvc.valid,
+#give_purchase_form_wrap input.give-input.card-expiry.valid {
   background-image: url("../assets/images/tick.png");
   background-repeat: no-repeat;
   background-position: 98% 50%;
   background-size: 16px; }
-  #give_purchase_form_wrap input.give-input.card-number.valid.floatlabel-input {
+  #give_purchase_form_wrap input.give-input.card-number.valid.floatlabel-input,
+  #give_purchase_form_wrap input.give-input.card-cvc.valid.floatlabel-input,
+  #give_purchase_form_wrap input.give-input.card-expiry.valid.floatlabel-input {
     background-image: url("../assets/images/tick-alt.png");
     background-position: 100% 50%;
     background-size: 72px 16px; }
