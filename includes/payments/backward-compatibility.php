@@ -1,6 +1,6 @@
 <?php
 /**
- *
+ * Split _give_payment_meta to new Give core meta_keys.
  *
  * @since 2.0
  *
