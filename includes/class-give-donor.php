@@ -1103,4 +1103,48 @@ class Give_Donor {
 
 		return $ret;
 	}
+
+	/**
+	 * Split donor name into first name and last name
+	 *
+	 * @param   int     $id     Donor ID
+	 * @since   2.0
+	 * @return  object
+	 */
+	public function split_donor_name( $id ) {
+		$donor = new Give_Donor( $id );
+		$split_donor_name = explode( ' ', $donor->name, 2 );
+
+		return (object) array( 'first_name' => $split_donor_name[0], 'last_name' => $split_donor_name[1] );
+	}
+
+	/**
+	 * Retrieves first name of donor with backward compatibility
+	 *
+	 * @since   2.0
+	 * @return  string
+	 */
+	public function get_first_name() {
+		$first_name = $this->get_meta( '_give_donor_first_name');
+		if( ! $first_name ) {
+			$first_name = $this->split_donor_name( $this->id )->first_name;
+		}
+
+		return $first_name;
+	}
+
+	/**
+	 * Retrieves last name of donor with backward compatibility
+	 *
+	 * @since   2.0
+	 * @return  string
+	 */
+	public function get_last_name() {
+		$last_name = $this->get_meta( '_give_donor_last_name');
+		if( ! $last_name ) {
+			$last_name = $this->split_donor_name( $this->id )->last_name;
+		}
+
+		return $last_name;
+	}
 }
