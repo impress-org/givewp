@@ -1145,7 +1145,7 @@ add_action( 'give_v189_upgrades_levels_post_meta', 'give_v189_upgrades_levels_po
 /**
  * Upgrade form metadata for new metabox settings.
  *
- * @since  1.8
+ * @since  2.0
  * @return void
  */
 function give_v20_upgrades_form_metadata() {
