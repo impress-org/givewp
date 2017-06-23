@@ -1,4 +1,10 @@
 <?php
+// Bailout: do not apply backward compatibility if upgrade done.
+if( give_has_upgrade_completed( 'v20_upgrades_form_metadata' ) ) {
+	return;
+}
+
+
 /**
  * Split _give_payment_meta to new Give core meta_keys.
  *
@@ -495,10 +501,7 @@ function _give_20_bc_support_deprecated_meta_key_query( $query ) {
 	$deprecated_meta_keys = array_flip( $new_meta_keys );
 
 	// Bailout.
-	if (
-		give_has_upgrade_completed( 'v20_upgrades_form_metadata' ) ||
-		empty( $query->query_vars['meta_key'] )
-	) {
+	if ( empty( $query->query_vars['meta_key'] ) ) {
 		return;
 	}
 
