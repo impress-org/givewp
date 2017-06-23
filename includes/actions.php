@@ -262,7 +262,7 @@ function _give_payment_delete_cache( $payment_id ) {
 		return;
 	}
 
-	Give_Cache::delete_payment( $payment_id );
+	Give_Cache::delete_group( 'donation', $payment_id );
 }
 
 add_action( 'save_post_give_payment', '_give_payment_delete_cache', 9999 );
