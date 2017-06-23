@@ -380,7 +380,7 @@ class Give_Payments_Query extends Give_Stats {
 		if ( is_numeric( $this->args['user'] ) ) {
 			$user_key = '_give_payment_user_id';
 		} else {
-			$user_key = '_give_payment_user_email';
+			$user_key = '_give_payment_donor_email';
 		}
 
 		$this->__set( 'meta_query', array(
@@ -427,7 +427,7 @@ class Give_Payments_Query extends Give_Stats {
 
 		} elseif ( $is_email || strlen( $search ) == 32 ) {
 
-			$key         = $is_email ? '_give_payment_user_email' : '_give_payment_purchase_key';
+			$key         = $is_email ? '_give_payment_donor_email' : '_give_payment_purchase_key';
 			$search_meta = array(
 				'key'     => $key,
 				'value'   => $search,

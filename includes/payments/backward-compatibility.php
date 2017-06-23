@@ -1,6 +1,6 @@
 <?php
 // Bailout: do not apply backward compatibility if upgrade done.
-if( give_has_upgrade_completed( 'v20_upgrades_form_metadata' ) ) {
+if ( give_has_upgrade_completed( 'v20_upgrades_form_metadata' ) ) {
 	return;
 }
 

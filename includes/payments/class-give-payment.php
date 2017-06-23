@@ -1302,27 +1302,12 @@ final class Give_Payment {
 			return false;
 		}
 
-		if ( $meta_key == 'key' || $meta_key == 'date' ) {
 
-			$current_meta              = $this->get_meta();
-			$current_meta[ $meta_key ] = $meta_value;
-
-			$meta_key   = '_give_payment_meta';
-			$meta_value = $current_meta;
-
-		} elseif ( $meta_key == 'email' || $meta_key == '_give_payment_user_email' ) {
-
-			$meta_value = apply_filters( "give_update_payment_meta_{$meta_key}", $meta_value, $this->ID );
-			give_update_meta( $this->ID, '_give_payment_user_email', $meta_value );
-
-			$current_meta                       = $this->get_meta();
-			$current_meta['user_info']['email'] = $meta_value;
-
-			$meta_key   = '_give_payment_meta';
-			$meta_value = $current_meta;
-
-		}
-
+		/**
+		 * Filter the single meta key while updating
+		 *
+		 * @since 1.5
+		 */
 		$meta_value = apply_filters( "give_update_payment_meta_{$meta_key}", $meta_value, $this->ID );
 
 		return give_update_meta( $this->ID, $meta_key, $meta_value, $prev_value );
