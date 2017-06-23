@@ -500,39 +500,68 @@ function _give_20_bc_support_deprecated_meta_key_query( $query ) {
 
 	$deprecated_meta_keys = array_flip( $new_meta_keys );
 
-	// Bailout.
-	if ( empty( $query->query_vars['meta_key'] ) ) {
-		return;
-	}
-
 	// Set meta keys.
 	$meta_keys = array();
-	if ( in_array( $query->query_vars['meta_key'], $new_meta_keys ) ) {
-		$meta_keys = $deprecated_meta_keys;
-	} elseif ( in_array( $query->query_vars['meta_key'], $deprecated_meta_keys ) ) {
-		$meta_keys = $new_meta_keys;
-	}
 
-	if ( ! empty( $meta_keys ) ) {
-		// Set meta_query
-		$query->set(
-			'meta_query',
-			array(
-				'relation' => 'OR',
-				array(
-					'key'   => $query->query_vars['meta_key'],
-					'value' => $query->query_vars['meta_value'],
-				),
-				array(
-					'key'   => $meta_keys[ $query->query_vars['meta_key'] ],
-					'value' => $query->query_vars['meta_value'],
-				),
-			)
-		);
 
-		//unset single meta query.
-		unset( $query->query_vars['meta_key'] );
-		unset( $query->query_vars['meta_value'] );
+	// Bailout.
+	if ( ! empty( $query->query_vars['meta_key'] ) ) {
+		if ( in_array( $query->query_vars['meta_key'], $new_meta_keys ) ) {
+			$meta_keys = $deprecated_meta_keys;
+		} elseif ( in_array( $query->query_vars['meta_key'], $deprecated_meta_keys ) ) {
+			$meta_keys = $new_meta_keys;
+		}
+
+		if ( ! empty( $meta_keys ) ) {
+			// Set meta_query
+			$query->set(
+				'meta_query',
+				array(
+					'relation' => 'OR',
+					array(
+						'key'   => $query->query_vars['meta_key'],
+						'value' => $query->query_vars['meta_value'],
+					),
+					array(
+						'key'   => $meta_keys[ $query->query_vars['meta_key'] ],
+						'value' => $query->query_vars['meta_value'],
+					),
+				)
+			);
+
+			// Unset single meta query.
+			unset( $query->query_vars['meta_key'] );
+			unset( $query->query_vars['meta_value'] );
+		}
+	} elseif (
+		! empty( $query->query_vars['meta_query'] ) &&
+		( 1 === count( $query->query_vars['meta_query'] ) )
+	) {
+		if ( in_array( $query->query_vars['meta_query'][0]['key'], $new_meta_keys ) ) {
+			$meta_keys = $deprecated_meta_keys;
+		} elseif ( in_array( $query->query_vars['meta_query'][0]['key'], $deprecated_meta_keys ) ) {
+			$meta_keys = $new_meta_keys;
+		} else {
+			return;
+		}
+
+		if ( ! empty( $meta_keys ) ) {
+			// Set meta_query
+			$query->set(
+				'meta_query',
+				array(
+					'relation' => 'OR',
+					array(
+						'key'   => $query->query_vars['meta_query'][0]['key'],
+						'value' => $query->query_vars['meta_query'][0]['value'],
+					),
+					array(
+						'key'   => $meta_keys[ $query->query_vars['meta_query'][0]['key'] ],
+						'value' => $query->query_vars['meta_query'][0]['value'],
+					),
+				)
+			);
+		}
 	}
 }
 
