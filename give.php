@@ -260,6 +260,7 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->donor_meta      = new Give_DB_Donor_Meta();
 			$this->template_loader = new Give_Template_Loader();
 			$this->email_access    = new Give_Email_Access();
+			$this->tooltips        = new Give_Tooltips();
 
 			/**
 			 * Fire the action after Give core loads.
