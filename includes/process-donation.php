@@ -191,7 +191,7 @@ function give_check_logged_in_user_for_existing_email( $valid_data, $post ) {
 			$found_customer = new Give_Donor( $submitted_email );
 
 			if ( $found_customer->id > 0 ) {
-				give_set_error( 'give-customer-email-exists', sprintf( __( 'You are logged in as %1$s, and are submitting a donation as %2$s, which is an existing donor. To ensure that the email address is tied to the correct donor, please submit this donation from a logged-out browser, or choose another email address.' ), $customer->email, $submitted_email ) );
+				give_set_error( 'give-customer-email-exists', sprintf( __( 'You are logged in as %1$s, and are submitting a donation as %2$s, which is an existing donor. To ensure that the email address is tied to the correct donor, please submit this donation from a logged-out browser, or choose another email address.' ,'give' ), $customer->email, $submitted_email ) );
 			}
 		}
 	}
