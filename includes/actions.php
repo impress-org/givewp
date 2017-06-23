@@ -268,3 +268,29 @@ function _give_payment_delete_cache( $payment_id ) {
 add_action( 'save_post_give_payment', '_give_payment_delete_cache', 9999 );
 add_action( 'give_update_edited_donation', '_give_payment_delete_cache', 9999 );
 
+
+/**
+ * Save donor address when donation complete
+ *
+ * @since 2.0
+ *
+ * @param int $payment_id
+ */
+function _give_donor_address( $payment_id ) {
+	/* @var Give_Payment $donation */
+	$donation = new Give_Payment( $payment_id );
+
+	if ( ! $donation->customer_id ) {
+		return;
+	}
+
+
+	/* @var Give_Donor $donor */
+	$donor = new Give_Donor( $donation->customer_id );
+
+	// Save address.
+	$donor->add_address( 'billing[]', $donation->address );
+}
+
+add_action( 'give_complete_donation', '_give_donor_address' );
+
