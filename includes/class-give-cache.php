@@ -379,7 +379,7 @@ class Give_Cache {
 			return new WP_Error( 'give_invalid_payment_cache_id', __( 'We did not find valid payment cache id.', 'give' ) );
 		}
 
-		return Give_Cache::delete( "give_{$group_type}_{$id}" );
+		return Give_Cache::delete( "give_cache_give_{$group_type}_{$id}" );
 	}
 }
 
