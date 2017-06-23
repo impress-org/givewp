@@ -1717,11 +1717,13 @@ final class Give_Payment {
 	 * @return int The User ID
 	 */
 	private function setup_user_id() {
-		if ( ! ( $user_id = Give_Cache::payment( $this->ID, 'user_id' ) ) ) {
+		$cache_args = array( 'id' => $this->ID, 'key' => 'user_id' );
+		if ( ! ( $user_id = Give_Cache::group( 'donation', $cache_args ) ) ) {
 			$donor   = Give()->customers->get_customer_by( 'id', $this->customer_id );
 			$user_id = $donor ? absint( $donor->user_id ) : 0;
 
-			Give_Cache::payment( $this->ID, 'user_id', $user_id );
+			$cache_args['data'] = $user_id;
+			Give_Cache::group( 'donation', $cache_args );
 		}
 
 		return $user_id;
@@ -1822,7 +1824,8 @@ final class Give_Payment {
 	 */
 	private function setup_address() {
 		// Get address from cache.
-		if ( ! ( $address = Give_Cache::payment( $this->ID, 'address' ) ) ) {
+		$cache_args = array( 'id' => $this->ID, 'key' => 'address' );
+		if ( ! ( $address = Give_Cache::group( 'donation', $cache_args ) ) ) {
 			$address['line1']   = give_get_meta( $this->ID, '_give_donor_billing_address1', true );
 			$address['line2']   = give_get_meta( $this->ID, '_give_donor_billing_address2', true );
 			$address['city']    = give_get_meta( $this->ID, '_give_donor_billing_city', true );
@@ -1831,7 +1834,8 @@ final class Give_Payment {
 			$address['country'] = give_get_meta( $this->ID, '_give_donor_billing_country', true );
 
 			// Save address to cache.
-			Give_Cache::payment( $this->ID, 'address', $address );
+			$cache_args['data'] = $address;
+			Give_Cache::group( 'donation', $cache_args );
 		}
 
 		$address = wp_parse_args(
