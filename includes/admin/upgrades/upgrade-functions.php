@@ -54,9 +54,14 @@ function give_do_automatic_upgrades() {
 			give_v188_upgrades();
 			$did_upgrade = true;
 
+		case version_compare( $give_version, '1.8.9', '<' ) :
+			give_v189_upgrades();
+			$did_upgrade = true;
+
 		case version_compare( $give_version, '2.0', '<' ) :
 			give_v20_upgrades();
 			$did_upgrade = true;
+
 
 	}
 
@@ -89,12 +94,11 @@ function give_show_upgrade_notices() {
 
 	$give_version = preg_replace( '/[^0-9.].*/', '', $give_version );
 
-	/*
+	/**
 	 *  NOTICE:
 	 *
 	 *  When adding new upgrade notices, please be sure to put the action into the upgrades array during install:
-	 *  /includes/install.php @ Appox Line 156
-	 *
+	 *  /includes/install.php @ Approx Line 156
 	 */
 
 	// v1.3.2 Upgrades
@@ -142,18 +146,19 @@ function give_show_upgrade_notices() {
 
 	// v1.8.9 Upgrades
 	if ( version_compare( $give_version, '1.8.9', '<' ) || ( ! give_has_upgrade_completed( 'v189_upgrades_levels_post_meta' ) ) ) {
-		printf(
-		/* translators: %s: upgrade URL */
-			'<div class="updated"><p>' . __( 'Give needs to upgrade the donation forms meta-fields in database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
-			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=v189_upgrades_levels_post_meta' ) )
-		);
+		echo Give_Notices::notice_html(
+			sprintf(
+			    __( 'Give needs to upgrade the donation forms meta-fields in database, click %1$shere%2$s to start the upgrade.', 'give' ),
+				'<a class="give-upgrade-link" href="' .  esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=v189_upgrades_levels_post_meta' ) ) . '">',
+				'</a>'
+		));
 	}
 
 	// v2.0 form metadata upgrades.
 	if ( version_compare( $give_version, '2.0', '<' ) || ! give_has_upgrade_completed( 'v20_upgrades_form_metadata' ) ) {
 		echo Give_Notices::notice_html(
 			sprintf(
-				esc_html__( 'Give needs to upgrade the form database, click %1$shere%2$s to start the upgrade.', 'give' ),
+				__( 'Give needs to upgrade the form database, click %1$shere%2$s to start the upgrade.', 'give' ),
 				'<a class="give-upgrade-link" href="' . esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=give_v20_upgrades_form_metadata' ) ) . '">',
 				'</a>'
 			) );
@@ -925,7 +930,6 @@ function give_v187_upgrades() {
 	}
 }
 
-
 /**
  * Update Capabilities for Give_Worker User Role.
  *
@@ -1058,6 +1062,39 @@ function give_v189_upgrades_levels_post_meta_callback() {
 
 }
 
+/**
+ * Give version 1.8.9 upgrades
+ *
+ * @since      1.8.9
+ */
+function give_v189_upgrades() {
+	/**
+	 * 1. Remove user license related notice show blocked ( Give_Notice will handle )
+	 */
+	global $wpdb;
+	// Delete permanent notice blocker.
+	$wpdb->query(
+		$wpdb->prepare(
+			"
+					DELETE FROM $wpdb->usermeta
+					WHERE meta_key
+					LIKE '%%%s%%'
+					",
+			'_give_hide_license_notices_permanently'
+		)
+	);
+	// Delete short notice blocker.
+	$wpdb->query(
+		$wpdb->prepare(
+			"
+					DELETE FROM $wpdb->options
+					WHERE option_name
+					LIKE '%%%s%%'
+					",
+			'__give_hide_license_notices_shortly_'
+		)
+	);
+}
 
 /**
  * 2.0 Upgrades.

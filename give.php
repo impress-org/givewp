@@ -36,7 +36,6 @@
  * Give would not have been possible without the tireless efforts of WordPress and the surrounding Open Source projects and their talented developers. Thank you all for your contribution to WordPress.
  *
  * - The WordImpress Team
- *
  */
 
 // Exit if accessed directly.
@@ -52,6 +51,7 @@ if ( ! class_exists( 'Give' ) ) :
 	 * @since 1.0
 	 */
 	final class Give {
+
 		/** Singleton *************************************************************/
 
 		/**
@@ -187,19 +187,22 @@ if ( ! class_exists( 'Give' ) ) :
 		public $tooltips;
 
 		/**
+		 * Give notices Object
+		 *
+		 * @var    Give_Notices $notices
+		 */
+		public $notices;
+
+		/**
 		 * Main Give Instance
 		 *
-		 * Insures that only one instance of Give exists in memory at any one
+		 * Ensures that only one instance of Give exists in memory at any one
 		 * time. Also prevents needing to define globals all over the place.
 		 *
 		 * @since     1.0
 		 * @access    public
 		 *
 		 * @static
-		 * @staticvar array $instance
-		 * @uses      Give::setup_constants() Setup the constants needed.
-		 * @uses      Give::includes() Include the required files.
-		 * @uses      Give::load_textdomain() load the language files.
 		 * @see       Give()
 		 *
 		 * @return    Give
@@ -232,6 +235,7 @@ if ( ! class_exists( 'Give' ) ) :
 			register_activation_hook( __FILE__, 'give_install' );
 			add_action( 'plugins_loaded', array( $this, 'init' ), 0 );
 		}
+
 		/**
 		 * Init Give when WordPress Initializes.
 		 *
@@ -261,6 +265,7 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->template_loader = new Give_Template_Loader();
 			$this->email_access    = new Give_Email_Access();
 			$this->tooltips        = new Give_Tooltips();
+			$this->notices         = new Give_Notices();
 
 			/**
 			 * Fire the action after Give core loads.
@@ -341,6 +346,11 @@ if ( ! class_exists( 'Give' ) ) :
 			if ( ! defined( 'CAL_GREGORIAN' ) ) {
 				define( 'CAL_GREGORIAN', 1 );
 			}
+
+			// PHP version
+			if ( ! defined( 'GIVE_REQUIRED_PHP_VERSION' ) ) {
+				define( 'GIVE_REQUIRED_PHP_VERSION', '5.3' );
+			}
 		}
 
 		/**
@@ -367,6 +377,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/filters.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/api/class-give-api.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-tooltips.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-notices.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-roles.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-template-loader.php';
@@ -430,7 +441,6 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-footer.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/welcome.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/class-admin-notices.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/class-api-keys-table.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/class-i18n-module.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-actions.php';
@@ -475,7 +485,7 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrade-functions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrades.php';
 
-			}
+			}// End if().
 
 			require_once GIVE_PLUGIN_DIR . 'includes/install.php';
 
@@ -490,6 +500,7 @@ if ( ! class_exists( 'Give' ) ) :
 		 * @return void
 		 */
 		public function load_textdomain() {
+
 			// Set filter for Give's languages directory
 			$give_lang_dir = dirname( plugin_basename( GIVE_PLUGIN_FILE ) ) . '/languages/';
 			$give_lang_dir = apply_filters( 'give_languages_directory', $give_lang_dir );

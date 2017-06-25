@@ -1843,7 +1843,7 @@ function give_members_only_form( $final_output, $args ) {
 	//Logged in only and Register / Login set to none.
 	if ( give_logged_in_only( $form_id ) && give_show_login_register_option( $form_id ) == 'none' ) {
 
-		$final_output = give_output_error( esc_html__( 'Please log in in order to complete your donation.', 'give' ), false );
+		$final_output = Give()->notices->print_frontend_notice( esc_html__( 'Please log in in order to complete your donation.', 'give' ), false );
 
 		return apply_filters( 'give_members_only_output', $final_output, $form_id );
 
