@@ -419,6 +419,9 @@ final class Give_Payment {
 	 * @param  mixed  $value The value of the property
 	 */
 	public function __set( $key, $value ) {
+		// Flush cache before saving payment.
+		Give_Cache::delete_group( 'donation', $this->ID );
+
 		$ignore = array( '_ID' );
 
 		if ( $key === 'status' ) {
