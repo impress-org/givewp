@@ -1037,7 +1037,7 @@ class Give_API {
 			$form['info']['tags'] = get_the_terms( $form_info, 'give_forms_tag' );
 		}
 
-		// Check whether any goal is to be achieved for the donation form
+		// Check whether any goal is to be achieved for the donation form.
 		$goal_option = give_get_meta( $form_info->ID, '_give_goal_option', true );
 		$goal_amount = give_get_meta( $form_info->ID, '_give_set_goal', true );
 		if ( give_is_setting_enabled( $goal_option ) && $goal_amount ) {
