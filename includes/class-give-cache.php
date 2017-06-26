@@ -333,7 +333,7 @@ class Give_Cache {
 	 *
 	 * }
 	 *
-	 * @return bool|WP_Error
+	 * @return bool|array|WP_Error
 	 */
 	public static function group( $group_type, $args = array() ) {
 		// Bailout
