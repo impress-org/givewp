@@ -228,6 +228,24 @@ jQuery.noConflict();
 		return price;
 	}
 
+    /**
+     * List donation screen JS
+     */
+
+    var Give_List_Donation = {
+
+        init: function () {
+            this.delete_single_donation();
+        },
+
+        delete_single_donation: function () {
+            $('body').on('click', '.delete-single-donation', function (e) {
+                return confirm(give_vars.delete_payment);
+            });
+        }
+
+    }
+
 	/**
 	 * Edit donation screen JS
 	 */
@@ -1745,6 +1763,7 @@ jQuery.noConflict();
 		enable_admin_datepicker();
 		handle_status_change();
 		setup_chosen_give_selects();
+        Give_List_Donation.init();
 		Give_Edit_Donation.init();
 		Give_Settings.init();
 		Give_Reports.init();
