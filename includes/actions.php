@@ -249,37 +249,17 @@ add_action( 'give_pre_process_give_forms_meta', 'give_set_donation_levels_max_mi
 
 
 /**
- * Delete payment cache on update.
- * This cache used for saving queries
- *
- * @since 2.0
- *
- * @param $payment_id
- */
-function _give_payment_delete_cache( $payment_id ) {
-	// Bailout.
-	if ( wp_is_post_revision( $payment_id ) ) {
-		return;
-	}
-
-	Give_Cache::delete_group( 'donation', $payment_id );
-}
-
-add_action( 'save_post_give_payment', '_give_payment_delete_cache', 9999 );
-add_action( 'give_update_edited_donation', '_give_payment_delete_cache', 9999 );
-
-
-/**
  * Save donor address when donation complete
  *
  * @since 2.0
  *
  * @param int $payment_id
  */
-function _give_donor_address( $payment_id ) {
+function _give_save_donor_billing_address( $payment_id ) {
 	/* @var Give_Payment $donation */
 	$donation = new Give_Payment( $payment_id );
 
+	// Bailout
 	if ( ! $donation->customer_id ) {
 		return;
 	}
@@ -291,6 +271,5 @@ function _give_donor_address( $payment_id ) {
 	// Save address.
 	$donor->add_address( 'billing[]', $donation->address );
 }
-
-add_action( 'give_complete_donation', '_give_donor_address' );
+add_action( 'give_complete_donation', '_give_save_donor_billing_address', 9999 );
 

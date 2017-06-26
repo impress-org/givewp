@@ -693,6 +693,8 @@ final class Give_Payment {
 	 * @return bool  True of the save occurred, false if it failed or wasn't needed
 	 */
 	public function save() {
+		// flush cache before saving payment.
+		Give_Cache::delete_group( 'donation', $this->ID );
 
 		$saved = false;
 
