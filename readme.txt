@@ -65,7 +65,7 @@ The strength of Give lies within its optimized donation forms. When creating a f
 
 = First Time Users =
 
-For new users, we suggest reviewing our [documentation](http://bit.ly/WPORGGiveDocs "Visit the Give docs") to get an understanding of how the plugin works. If you run into any trouble, we offer [free support](https://wordpress.org/support/plugin/give "Visit the Give support page on WordPress.org") to help you with your issues, questions, and concerns.
+For new users, we suggest reviewing our [documentation](http://bit.ly/WPORGDocs "Visit the Give docs") to get an understanding of how the plugin works. If you run into any trouble, we offer [free support](https://wordpress.org/support/plugin/give "Visit the Give support page on WordPress.org") to help you with your issues, questions, and concerns.
 
 If you are a Give customer with an active license of any of our popular add-ons, we'd love to hear from you and support you via our [Priority Support channel](http://bit.ly/WPORGGiveSupport).
 
