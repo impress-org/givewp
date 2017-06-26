@@ -144,7 +144,7 @@ function give_render_donor_view( $view, $callbacks ) {
 
 		<?php if ( give_get_errors() ) : ?>
 			<div class="error settings-error">
-				<?php give_print_errors( 0 ); ?>
+				<?php Give()->notices->render_frontend_notices( 0 ); ?>
 			</div>
 		<?php endif; ?>
 

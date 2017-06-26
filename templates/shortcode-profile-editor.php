@@ -22,7 +22,7 @@ if ( is_user_logged_in() ):
 		</p>
 	<?php endif; ?>
 
-	<?php give_print_errors( 0 ); ?>
+	<?php Give()->notices->render_frontend_notices( 0 ); ?>
 
 	<?php
 	/**

@@ -43,8 +43,8 @@ class Give_Cache {
 	 * @return static
 	 */
 	public static function get_instance() {
-		if ( null === static::$instance ) {
-			self::$instance = new static();
+		if ( ! isset( self::$instance ) && ! ( self::$instance instanceof Give_Cache ) ) {
+			self::$instance = new Give_Cache();
 		}
 
 		return self::$instance;
