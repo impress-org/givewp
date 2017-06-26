@@ -1241,6 +1241,8 @@ class Give_Donor {
 					Give()->donor_meta->update_meta( $this->id, $meta_key, $value );
 			}
 		}
+
+		$this->setup_address();
 	}
 
 
