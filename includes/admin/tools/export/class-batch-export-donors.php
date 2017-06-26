@@ -223,7 +223,8 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 				);
 			}
 
-			$payments = ( new Give_Payments_Query( $args ) )->get_payments();
+			$payments_query = new Give_Payments_Query( $args );
+			$payments       = $payments_query->get_payments();
 
 			if ( $payments ) {
 				/* @var Give_Payment $payment */
