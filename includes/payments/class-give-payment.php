@@ -833,15 +833,31 @@ final class Give_Payment {
 						break;
 
 					case 'first_name':
-						$this->user_info['first_name'] = $this->first_name;
+						$this->update_meta( '_give_donor_billing_first_name', $this->price_id );
 						break;
 
 					case 'last_name':
-						$this->user_info['last_name'] = $this->last_name;
+						$this->update_meta( '_give_donor_billing_last_name', $this->price_id );
 						break;
 
 					case 'address':
-						$this->user_info['address'] = $this->address;
+						if( ! empty( $this->address ) ) {
+							foreach ( $this->address as $address_name => $address ) {
+								switch ( $address_name ) {
+									case 'line1':
+										$this->update_meta( '_give_donor_billing_address1', $address );
+										break;
+
+									case 'line2':
+										$this->update_meta( '_give_donor_billing_address2', $address );
+										break;
+
+									default:
+										$this->update_meta( "_give_donor_billing_{$address_name}", $address );
+								}
+
+							}
+						}
 						break;
 
 					case 'email':
