@@ -931,25 +931,6 @@ final class Give_Payment {
 
 			$this->update_meta( '_give_payment_total', $this->total );
 
-			$new_meta = array(
-				'form_title' => $this->form_title,
-				'form_id'    => $this->form_id,
-				'price_id'   => $this->price_id,
-				'currency'   => $this->currency,
-				'user_info'  => $this->user_info,
-			);
-
-			$meta        = $this->get_meta();
-			$merged_meta = array_merge( $meta, $new_meta );
-
-			// Only save the payment meta if it's changed.
-			if ( md5( serialize( $meta ) ) !== md5( serialize( $merged_meta ) ) ) {
-				$updated = $this->update_meta( '_give_payment_meta', $merged_meta );
-				if ( false !== $updated ) {
-					$saved = true;
-				}
-			}
-
 			$this->pending = array();
 			$saved         = true;
 		}// End if().
