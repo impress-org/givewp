@@ -1178,8 +1178,18 @@ class Give_Donor {
 	 * @return void
 	 */
 	public function add_address( $address_type, $address ) {
+		$is_address_empty = true;
+
+		// Address ready to process even if only one value set.
+		foreach ( $address as $value ) {
+			if( ! empty( $value ) ) {
+				$is_address_empty = false;
+				break;
+			}
+		}
+
 		// Bailout.
-		if ( empty( $address_type ) || empty( $address ) || ! $this->id ) {
+		if ( empty( $address_type ) || $is_address_empty || ! $this->id ) {
 			return;
 		}
 
@@ -1200,7 +1210,6 @@ class Give_Donor {
 				'zip'      => '',
 			)
 		);
-
 
 		// Set meta key prefix.
 		global $wpdb;
