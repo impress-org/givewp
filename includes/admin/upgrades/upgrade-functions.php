@@ -120,7 +120,7 @@ function give_show_upgrade_notices() {
 		'id'          => 'give-version-1-3-2-updates',
 		'type'        => 'warning',
 		'description' => sprintf(
-			'<p>' . __( 'Give needs to upgrade the donor database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p>',
+			'<p>' . __( 'Give 1.3.2 needs to upgrade the donor database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p>',
 			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_give_payment_customer_id' ) )
 		),
 		'show'        => ( version_compare( $give_version, '1.3.2', '<' ) || ! give_has_upgrade_completed( 'upgrade_give_payment_customer_id' ) ),
@@ -131,7 +131,7 @@ function give_show_upgrade_notices() {
 		'id'          => 'give-version-1-3-4-updates',
 		'type'        => 'warning',
 		'description' => sprintf(
-			'<p>' . __( 'Give needs to upgrade the donations database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p>',
+			'<p>' . __( 'Give 1.3.4 needs to upgrade the donations database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p>',
 			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_give_offline_status' ) )
 		),
 		'show'        => ( version_compare( $give_version, '1.3.4', '<' ) || ( ! give_has_upgrade_completed( 'upgrade_give_offline_status' ) && give_has_upgrade_completed( 'upgrade_give_payment_customer_id' ) ) ),
@@ -142,7 +142,7 @@ function give_show_upgrade_notices() {
 		'id'          => 'give-version-1-8-updates',
 		'type'        => 'warning',
 		'description' => sprintf(
-			esc_html__( 'Give needs to upgrade the form database, click <a class="give-upgrade-link" href="%s">here</a> to start the upgrade.', 'give' ),
+			__( 'Give 1.8 needs to upgrade the form database, click <a class="give-upgrade-link" href="%s">here</a> to start the upgrade.', 'give' ),
 			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=give_v18_upgrades_form_metadata' ) )
 		),
 		'show'        => ( version_compare( $give_version, '1.8', '<' ) || ! give_has_upgrade_completed( 'v18_upgrades_form_metadata' ) )
@@ -153,7 +153,7 @@ function give_show_upgrade_notices() {
 		'id'          => 'give-version-1-8-9-updates',
 		'type'        => 'warning',
 		'description' => sprintf(
-			__( 'Give needs to upgrade the donation forms meta-fields in database, click <a href="%s">here</a> to start the upgrade.', 'give' ),
+			__( 'Give 1.8.9 needs to upgrade the donation forms meta-fields in database, click <a href="%s">here</a> to start the upgrade.', 'give' ),
 			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=v189_upgrades_levels_post_meta' ) )
 		),
 		'show'        => ( version_compare( $give_version, '1.8.9', '<' ) || ( ! give_has_upgrade_completed( 'v189_upgrades_levels_post_meta' ) ) ),
