@@ -1268,10 +1268,16 @@ class Give_Donor {
 	 * @param string $current_address_type
 	 * @param array $current_address
 	 *
-	 * @return bool
+	 * @return bool|null
 	 */
 	public function is_address_exist( $current_address_type, $current_address ) {
 		$status = false;
+
+
+		// Bailout.
+		if( empty( $current_address_type ) || empty( $current_address ) ) {
+			return null;
+		}
 
 		// Bailout.
 		if( empty( $this->address ) ) {
