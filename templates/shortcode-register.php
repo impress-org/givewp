@@ -2,7 +2,7 @@
 /**
  * This template is used to display the registration form with [give_register]
  */
-give_print_errors( 0 ); ?>
+Give()->notices->render_frontend_notices( 0 ); ?>
 
 <form id="give-register-form" class="give-form" action="" method="post">
 	<?php
