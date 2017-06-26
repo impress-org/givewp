@@ -1193,8 +1193,13 @@ class Give_Donor {
 			return;
 		}
 
+		$is_multi_address = ( false !== strpos( $address_type, '[]' ) );
+		$address_type  = $is_multi_address ?
+			str_replace( '[]', '', $address_type ) :
+			$address_type;
+
 		// Bailout: do not save duplicate orders
-		if( $this->is_address_exist( $address ) ) {
+		if( $this->is_address_exist( $address_type, $address ) ) {
 			return;
 		}
 
@@ -1215,8 +1220,7 @@ class Give_Donor {
 		global $wpdb;
 		$meta_key_prefix = "_give_donor_address_{$address_type}_{address_name}";
 
-		if ( false !== strpos( $address_type, '[]' ) ) {
-			$address_type  = str_replace( '[]', '', $address_type );
+		if ( $is_multi_address ) {
 			$address_count = $wpdb->get_var(
 				$wpdb->prepare(
 					"
@@ -1261,11 +1265,12 @@ class Give_Donor {
 	 * @since 2.0
 	 * @access public
 	 *
+	 * @param string $current_address_type
 	 * @param array $current_address
 	 *
 	 * @return bool
 	 */
-	public function is_address_exist( $current_address ) {
+	public function is_address_exist( $current_address_type, $current_address ) {
 		$status = false;
 
 		// Bailout.
@@ -1274,11 +1279,10 @@ class Give_Donor {
 		}
 
 		// Compare address.
-		foreach ( $this->address as $saved_address ) {
-			if( empty( $saved_address ) ) {
+		foreach ( $this->address as $address_type => $saved_address ) {
+			if( $current_address_type !== $address_type ) {
 				continue;
-
-			}elseif( ! is_array( $saved_address[0] ) ) {
+			} elseif( ! is_array( $saved_address[0] ) ) {
 				$status = ( $current_address == $saved_address );
 
 			} else{
