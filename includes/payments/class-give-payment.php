@@ -606,6 +606,8 @@ final class Give_Payment {
 
 		}
 
+		// @todo: payment data exist here only for backward compatibility
+		// issue: https://github.com/WordImpress/Give/issues/1132
 		$payment_data = array(
 			'price'        => $this->total,
 			'date'         => $this->date,
@@ -675,7 +677,6 @@ final class Give_Payment {
 
 			$this->payment_meta = apply_filters( 'give_payment_meta', $this->payment_meta, $payment_data );
 
-			$this->update_meta( '_give_payment_meta', $this->payment_meta );
 			$this->new = true;
 		}// End if().
 
@@ -855,7 +856,6 @@ final class Give_Payment {
 									default:
 										$this->update_meta( "_give_donor_billing_{$address_name}", $address );
 								}
-
 							}
 						}
 						break;
