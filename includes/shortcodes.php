@@ -424,7 +424,7 @@ function give_process_profile_editor_updates( $data ) {
 	$donor_args = array(
 		'id'        => $donor_id,
 		'name'      => strip_tags( stripslashes( $first_name . ' ' . $last_name ) ),
-		'user_id'   => $user_id
+		'user_id'   => $user_id,
 	);
 	$donor->update( $donor_args );
 	$donor->update_meta( '_give_donor_first_name', $first_name );
