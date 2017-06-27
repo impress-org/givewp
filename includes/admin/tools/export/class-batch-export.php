@@ -101,23 +101,36 @@ class Give_Batch_Export extends Give_Export {
 	public $is_empty = false;
 
 	/**
+	 *
+	 * @since 1.8.9
+	 */
+	public $is_void = false;
+
+	/**
+	 *  Is the export file complete.
+	 *
+	 * @since 1.8.9
+	 */
+	public $done = false;
+
+	/**
 	 * Give_Batch_Export constructor.
 	 *
 	 * @param int $_step
 	 */
 	public function __construct( $_step = 1 ) {
 
-		$upload_dir       = wp_upload_dir();
-		$this->filetype   = '.csv';
-		$this->filename   = 'give-' . $this->export_type . $this->filetype;
-		$this->file       = trailingslashit( $upload_dir['basedir'] ) . $this->filename;
+		$upload_dir     = wp_upload_dir();
+		$this->filetype = '.csv';
+		$this->filename = 'give-' . $this->export_type . $this->filetype;
+		$this->file     = trailingslashit( $upload_dir['basedir'] ) . $this->filename;
 
 		if ( ! is_writeable( $upload_dir['basedir'] ) ) {
 			$this->is_writable = false;
 		}
 
-		$this->step       = $_step;
-		$this->done       = false;
+		$this->step = $_step;
+		$this->done = false;
 	}
 
 	/**
@@ -154,19 +167,19 @@ class Give_Batch_Export extends Give_Export {
 	 * Output the CSV columns.
 	 *
 	 * @access public
-	 * @since 1.5
-	 * @uses Give_Export::get_csv_cols()
+	 * @since  1.5
+	 * @uses   Give_Export::get_csv_cols()
 	 * @return string
 	 */
 	public function print_csv_cols() {
 
 		$col_data = '';
-		$cols = $this->get_csv_cols();
-		$i = 1;
+		$cols     = $this->get_csv_cols();
+		$i        = 1;
 		foreach ( $cols as $col_id => $column ) {
 			$col_data .= '"' . addslashes( $column ) . '"';
 			$col_data .= $i == count( $cols ) ? '' : ',';
-			$i++;
+			$i ++;
 		}
 		$col_data .= "\r\n";
 
@@ -180,7 +193,7 @@ class Give_Batch_Export extends Give_Export {
 	 * Print the CSV rows for the current step.
 	 *
 	 * @access public
-	 * @since 1.5
+	 * @since  1.5
 	 * @return string|false
 	 */
 	public function print_csv_rows() {
@@ -197,9 +210,9 @@ class Give_Batch_Export extends Give_Export {
 				foreach ( $row as $col_id => $column ) {
 					// Make sure the column is valid
 					if ( array_key_exists( $col_id, $cols ) ) {
-						$row_data .= '"' . addslashes( preg_replace( '/"/',"'", $column ) ) . '"';
+						$row_data .= '"' . addslashes( preg_replace( '/"/', "'", $column ) ) . '"';
 						$row_data .= $i == count( $cols ) ? '' : ',';
-						$i++;
+						$i ++;
 					}
 				}
 				$row_data .= "\r\n";
@@ -255,7 +268,9 @@ class Give_Batch_Export extends Give_Export {
 	 * Append data to export file.
 	 *
 	 * @since 1.5
+	 *
 	 * @param $data string The data to add to the file.
+	 *
 	 * @return void
 	 */
 	protected function stash_step_data( $data = '' ) {
@@ -277,7 +292,7 @@ class Give_Batch_Export extends Give_Export {
 	 * Perform the export.
 	 *
 	 * @access public
-	 * @since 1.5
+	 * @since  1.5
 	 * @return void
 	 */
 	public function export() {
@@ -305,9 +320,22 @@ class Give_Batch_Export extends Give_Export {
 	 * Set the properties specific to the export.
 	 *
 	 * @since 1.5
+	 *
 	 * @param array $request The Form Data passed into the batch processing.
 	 */
-	public function set_properties( $request ) {}
+	public function set_properties( $request ) {
+	}
+
+	/**
+	 * Unset the properties specific to the export.
+	 *
+	 * @since 1.8.9
+	 *
+	 * @param array             $request The Form Data passed into the batch processing.
+	 * @param Give_Batch_Export $export
+	 */
+	public function unset_properties( $request, $export ) {
+	}
 
 	/**
 	 * Allow for pre-fetching of data for the remainder of the exporter.
@@ -316,6 +344,7 @@ class Give_Batch_Export extends Give_Export {
 	 * @since  1.5
 	 * @return void
 	 */
-	public function pre_fetch() {}
+	public function pre_fetch() {
+	}
 
 }

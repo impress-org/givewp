@@ -60,7 +60,7 @@ function give_donation_history() {
 
 	} else {
 
-		$output = apply_filters( 'give_donation_history_nonuser_message', give_output_error( __( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' ), false ) );
+		$output = apply_filters( 'give_donation_history_nonuser_message', Give()->notices->print_frontend_notice( __( 'You must be logged in to view your donation history. Please login using your account or create an account using the same email you used to donate with.', 'give' ), false ) );
 		$output .= do_shortcode( '[give_login]' );
 
 		return $output;
@@ -129,13 +129,13 @@ function give_goal_shortcode( $atts ) {
 
 	//Sanity check 1: ensure there is an ID Provided.
 	if ( empty( $atts['id'] ) ) {
-		give_output_error( __( 'The shortcode is missing Donation Form ID attribute.', 'give' ), true );
+		Give()->notices->print_frontend_notice( __( 'The shortcode is missing Donation Form ID attribute.', 'give' ), true );
 	}
 
 	//Sanity check 2: Check the form even has Goals enabled.
 	if ( ! give_is_setting_enabled( give_get_meta( $atts['id'], '_give_goal_option', true ) ) ) {
 
-		give_output_error( __( 'The form does not have Goals enabled.', 'give' ), true );
+		Give()->notices->print_frontend_notice( __( 'The form does not have Goals enabled.', 'give' ), true );
 	} else {
 		//Passed all sanity checks: output Goal.
 		give_show_goal_progress( $atts['id'], $atts );
@@ -255,7 +255,7 @@ function give_receipt_shortcode( $atts ) {
 
 	} elseif ( ! isset( $payment_key ) ) {
 
-		return give_output_error( $give_receipt_args['error'], false, 'error' );
+		return Give()->notices->print_frontend_notice( $give_receipt_args['error'], false, 'error' );
 
 	}
 
@@ -279,7 +279,7 @@ function give_receipt_shortcode( $atts ) {
 
 		ob_start();
 
-		give_output_error( apply_filters( 'give_must_be_logged_in_error_message', __( 'You must be logged in to view this donation receipt.', 'give' ) ) );
+		Give()->notices->print_frontend_notice( apply_filters( 'give_must_be_logged_in_error_message', __( 'You must be logged in to view this donation receipt.', 'give' ) ) );
 
 		give_get_template_part( 'shortcode', 'login' );
 
@@ -297,7 +297,7 @@ function give_receipt_shortcode( $atts ) {
 	 *
 	 */
 	if ( ! apply_filters( 'give_user_can_view_receipt', $user_can_view, $give_receipt_args ) ) {
-		return give_output_error( $give_receipt_args['error'], false, 'error' );
+		return Give()->notices->print_frontend_notice( $give_receipt_args['error'], false, 'error' );
 	}
 
 	ob_start();

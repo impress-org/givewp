@@ -48,10 +48,18 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	private $donor_ids = array();
 
 	/**
+	 * Array of payment stats which is already included in csv file.
+	 *
+	 * @since 1.8.9
+	 * @var array
+	 */
+	private $payment_stats = array();
+
+	/**
 	 * Export query id.
 	 *
 	 * @since 1.8
-	 * @var array
+	 * @var string
 	 */
 	private $query_id = '';
 
@@ -75,14 +83,30 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 		if ( ! empty( $this->form ) ) {
 			// Cache donor ids to output unique list of donor.
 			$this->query_id = give_clean( $_REQUEST['give_export_option']['query_id'] );
-			if ( ! ( $this->donor_ids = Give_Cache::get( $this->query_id, true ) ) ) {
-				$this->donor_ids = array();
-				Give_Cache::set( $this->query_id, $this->donor_ids, HOUR_IN_SECONDS, true );
-			}
+			$this->cache_donor_ids();
 		}
 
 		$this->price_id = ! empty( $request['give_price_option'] ) && 'all' !== $request['give_price_option'] ? absint( $request['give_price_option'] ) : null;
 
+	}
+
+
+	/**
+	 * Cache donor ids.
+	 *
+	 * @since  1.8.9
+	 * @access private
+	 */
+	private function cache_donor_ids() {
+		// Fetch already cached donor ids.
+		$donor_ids = $this->donor_ids;
+
+		if ( $cached_donor_ids = Give_Cache::get( $this->query_id, true ) ) {
+			$donor_ids = array_unique( array_merge( $cached_donor_ids, $this->donor_ids ) );
+		}
+
+		$donor_ids = array_values( $donor_ids );
+		Give_Cache::set( $this->query_id, $donor_ids, HOUR_IN_SECONDS, true );
 	}
 
 	/**
@@ -137,6 +161,9 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 				case 'userid' :
 					$cols['userid'] = esc_html__( 'User ID', 'give' );
 					break;
+				case 'donation_form' :
+					$cols['donation_form'] = esc_html__( 'Donation Form', 'give' );
+					break;
 				case 'date_first_donated' :
 					$cols['date_first_donated'] = esc_html__( 'First Donation Date', 'give' );
 					break;
@@ -162,67 +189,115 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	 * @return array $data The data for the CSV file.
 	 */
 	public function get_data() {
-
-		$data = array();
-
 		$i = 0;
+
+		$data             = array();
+		$cached_donor_ids = Give_Cache::get( $this->query_id, true );
 
 		if ( ! empty( $this->form ) ) {
 
-			// Export donors of a specific product.
-			global $give_logs;
-
+			// Export donors for a specific donation form and also within specified timeframe
 			$args = array(
-				'post_parent'    => absint( $this->form ),
-				'log_type'       => 'sale',
-				'posts_per_page' => 30,
-				'paged'          => $this->step,
+				'output'     => 'payments', // Use 'posts' to get standard post objects
+				'post_type'  => array( 'give_payment' ),
+				'number'     => 30,
+				'paged'      => $this->step,
+				'status'     => 'publish',
+				'meta_key'   => '_give_payment_form_id',
+				'meta_value' => absint( $this->form ),
 			);
+
+			// Check for date option filter
+			if ( ! empty( $this->data['donor_export_start_date'] ) || ! empty( $this->data['donor_export_end_date'] ) ) {
+				$args['start_date'] = ! empty( $this->data['donor_export_start_date'] ) ? date( 'Y-n-d 00:00:00', strtotime( $this->data['donor_export_start_date'] ) ) : date( 'Y-n-d 23:59:59', '1970-1-01 00:00:00' );
+				$args['end_date']   = ! empty( $this->data['donor_export_end_date'] ) ? date( 'Y-n-d 23:59:59', strtotime( $this->data['donor_export_end_date'] ) ) : date( 'Y-n-d 23:59:59', current_time( 'timestamp' ) );
+			}
 
 			// Check for price option.
 			if ( null !== $this->price_id ) {
 				$args['meta_query'] = array(
 					array(
-						'key'   => '_give_log_price_id',
+						'key'   => '_give_payment_price_id',
 						'value' => (int) $this->price_id,
 					),
 				);
 			}
 
-			$logs = $give_logs->get_connected_logs( $args );
+			$payments_query = new Give_Payments_Query( $args );
+			$payments       = $payments_query->get_payments();
 
-			if ( $logs ) {
-				foreach ( $logs as $log ) {
-					$payment_id = give_get_meta( $log->ID, '_give_log_payment_id', true );
-					$payment    = new Give_Payment( $payment_id );
+			if ( $payments ) {
+				/* @var Give_Payment $payment */
+				foreach ( $payments as $payment ) {
+					// Set donation sum.
+					$this->payment_stats[ $payment->customer_id ]['donation_sum'] = isset( $this->payment_stats[ $payment->customer_id ]['donation_sum'] ) ?
+						$this->payment_stats[ $payment->customer_id ]['donation_sum'] :
+						0;
+					$this->payment_stats[ $payment->customer_id ]['donation_sum'] += $payment->total;
+
+					// Set donation count.
+					$this->payment_stats[ $payment->customer_id ]['donations'] = isset( $this->payment_stats[ $payment->customer_id ]['donations'] ) ?
+						++ $this->payment_stats[ $payment->customer_id ]['donations'] :
+						1;
+
+					// Set donation form name.
+					$this->payment_stats[ $payment->customer_id ]['form_title'] = $payment->form_title;
 
 					// Continue if donor already included.
-					if ( empty( $payment->customer_id ) || in_array( $payment->customer_id , $this->donor_ids ) ) {
+					if ( empty( $payment->customer_id ) ||
+					     in_array( $payment->customer_id, $cached_donor_ids )
+					) {
 						continue;
 					}
 
-					$this->donor_ids[] = $payment->customer_id;
+					$this->donor_ids[] = $cached_donor_ids[] = $payment->customer_id;
 
-					$donor      = Give()->donors->get_donor_by( 'id', $payment->customer_id );
-					$data[]     = $this->set_donor_data( $i, $data, $donor );
 					$i ++;
 				}
 
-				// Cache donor ids only if admin export donor for specific form.
-				Give_Cache::set( $this->query_id, array_unique( $this->donor_ids ), HOUR_IN_SECONDS, true );
+				if ( ! empty( $this->donor_ids ) ) {
+					foreach ( $this->donor_ids as $donor_id ) {
+						$donor                      = Give()->donors->get_donor_by( 'id', $donor_id );
+						$donor->donation_form_title = $this->payment_stats[ $donor_id ]['form_title'];
+						$donor->purchase_count      = $this->payment_stats[ $donor_id ]['donations'];
+						$donor->purchase_value      = $this->payment_stats[ $donor_id ]['donation_sum'];
+						$data[]                     = $this->set_donor_data( $i, $data, $donor );
+					}
+
+					// Cache donor ids only if admin export donor for specific form.
+					$this->cache_donor_ids();
+				}
 			}
 		} else {
 
 			// Export all donors.
 			$offset = 30 * ( $this->step - 1 );
-			$donors = Give()->donors->get_donors( array(
+
+			$args = array(
 				'number' => 30,
 				'offset' => $offset,
-			) );
+			);
+
+			// Check for date option filter
+			if ( ! empty( $this->data['donor_export_start_date'] ) || ! empty( $this->data['donor_export_end_date'] ) ) {
+				$args['date'] = array(
+					'start' => ! empty( $this->data['donor_export_start_date'] ) ? date( 'Y-n-d 00:00:00', strtotime( $this->data['donor_export_start_date'] ) ) : date( 'Y-n-d 23:59:59', '1970-1-01 00:00:00' ),
+					'end'   => ! empty( $this->data['donor_export_end_date'] ) ? date( 'Y-n-d 23:59:59', strtotime( $this->data['donor_export_end_date'] ) ) : date( 'Y-n-d 23:59:59', current_time( 'timestamp' ) ),
+				);
+			}
+
+			$donors = Give()->donors->get_donors( $args );
 
 			foreach ( $donors as $donor ) {
 
-				$data[] = $this->set_donor_data( $i, $data, $donor );
+				// Continue if donor already included.
+				if ( empty( $donor->id ) || empty( $donor->payment_ids ) ) {
+					continue;
+				}
+
+				$payment                    = new Give_Payment( $donor->payment_ids );
+				$donor->donation_form_title = $payment->form_title;
+				$data[]                     = $this->set_donor_data( $i, $data, $donor );
 				$i ++;
 			}
 		}// End if().
@@ -300,6 +375,9 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 		if ( ! empty( $columns['userid'] ) ) {
 			$data[ $i ]['userid'] = ! empty( $donor->user_id ) ? $donor->user_id : '';
 		}
+		if ( ! empty( $columns['donation_form'] ) ) {
+			$data[ $i ]['donation_form'] = ! empty( $donor->donation_form_title ) ? $donor->donation_form_title : '';
+		}
 		if ( ! empty( $columns['date_first_donated'] ) ) {
 			$data[ $i ]['date_first_donated'] = date_i18n( give_date_format(), strtotime( $donor->date_created ) );
 		}
@@ -314,4 +392,15 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 
 	}
 
+	/**
+	 * Unset the properties specific to the donors export.
+	 *
+	 * @param array             $request
+	 * @param Give_Batch_Export $export
+	 */
+	public function unset_properties( $request, $export ) {
+		if ( $export->done ) {
+			Give_Cache::delete( "give_cache_{$this->query_id}" );
+		}
+	}
 }
