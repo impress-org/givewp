@@ -536,7 +536,7 @@ CC Validation
 		background-repeat: no-repeat;
 		background-position: 98% 50%;
 		background-size: 16px;
-		&.floatlabel-input {
+		&.floatlabel-input:not(.card-cvc):not(.card-expiry) {
 			background-image: url('../assets/images/tick-alt.png');
 			background-position: 100% 50%;
 			background-size: 72px 16px;

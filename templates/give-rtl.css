@@ -1310,9 +1310,9 @@ CC Validation
   background-repeat: no-repeat;
   background-position: 2% 50%;
   background-size: 16px; }
-  #give_purchase_form_wrap input.give-input.card-number.valid.floatlabel-input,
-  #give_purchase_form_wrap input.give-input.card-cvc.valid.floatlabel-input,
-  #give_purchase_form_wrap input.give-input.card-expiry.valid.floatlabel-input {
+  #give_purchase_form_wrap input.give-input.card-number.valid.floatlabel-input:not(.card-cvc):not(.card-expiry),
+  #give_purchase_form_wrap input.give-input.card-cvc.valid.floatlabel-input:not(.card-cvc):not(.card-expiry),
+  #give_purchase_form_wrap input.give-input.card-expiry.valid.floatlabel-input:not(.card-cvc):not(.card-expiry) {
     background-image: url("../assets/images/tick-alt.png");
     background-position: 0% 50%;
     background-size: 72px 16px; }
