@@ -1599,15 +1599,6 @@ final class Give_Payment {
 	private function setup_total() {
 		$amount = $this->get_meta( '_give_payment_total', true );
 
-		if ( empty( $amount ) && '0.00' != $amount ) {
-			$meta = $this->get_meta( '_give_payment_meta', true );
-			$meta = maybe_unserialize( $meta );
-
-			if ( isset( $meta['amount'] ) ) {
-				$amount = $meta['amount'];
-			}
-		}
-
 		return round( floatval( $amount ), give_currency_decimal_filter() );
 	}
 
