@@ -1145,7 +1145,7 @@ function give_v20_upgrades_form_metadata() {
 				)
 			);
 
-			// @todo add db upgrade for _gove_payment_meta and other renamed mata keys.
+			// @todo add db upgrade for _give_payment_meta,_give_payment_customer_id, _give_payment_user_email, _give_payment_user_ip.
 
 
 		}// End while().
