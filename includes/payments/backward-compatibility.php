@@ -132,7 +132,7 @@ function _give_20_bc_give_payment_meta_value( $object_id, $meta_value ) {
 	$donor_data['last_name'] = give_get_meta( $object_id, '_give_donor_billing_last_name', true );
 	$donor_data['last_name'] = ! empty( $donor_data['last_name'] ) ?
 		$donor_data['last_name'] :
-		! empty( $donor_names[1] ) ? $donor_names[1] : '';
+		( isset( $donor_names[1] ) ? $donor_names[1] : '' );
 
 	// Donor email.
 	$donor_data['email'] = $meta_value['email'];
@@ -255,10 +255,10 @@ function _give_20_bc_get_old_payment_meta( $check, $object_id, $meta_key, $singl
 		case '_give_payment_meta':
 			remove_filter( 'get_post_metadata', '_give_20_bc_get_old_payment_meta' );
 
-			if ( $meta_value = give_get_meta( $object_id, '_give_payment_meta' ) ) {
+			// if ( $meta_value = give_get_meta( $object_id, '_give_payment_meta' ) ) {
 				$meta_value = ! empty( $meta_value ) ? current( $meta_value ) : array();
 				$check      = _give_20_bc_give_payment_meta_value( $object_id, $meta_value );
-			}
+			// }
 
 			add_filter( 'get_post_metadata', '_give_20_bc_get_old_payment_meta', 10, 5 );
 
