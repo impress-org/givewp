@@ -407,7 +407,7 @@ function give_validate_user_password( $password = '', $confirm_password = '', $r
 		}
 	}
 	// Passwords Validation For New Donors as well as Existing Donors
-	if( $password || $confirm_password ) {
+	if ( $password || $confirm_password ) {
 		if ( strlen( $password ) < 6 || strlen( $confirm_password ) < 6 ) {
 			// Seems Weak Password
 			give_set_error( 'password_weak', __( 'Passwords should have atleast 6 characters.', 'give' ) );
@@ -612,7 +612,7 @@ function give_get_donor_name_by( $id = 0, $from = 'donation' ) {
  *
  * @since 1.8.9
  *
- * @param  string   $email Donor Email.
+ * @param  string $email Donor Email.
  * @return boolean  The user's ID on success, and false on failure.
  */
 function give_donor_email_exists( $email ) {
