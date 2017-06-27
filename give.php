@@ -194,6 +194,13 @@ if ( ! class_exists( 'Give' ) ) :
 		public $notices;
 
 		/**
+		 * Give payment meta Object
+		 *
+		 * @var    Give_DB_Payment_Meta $notices
+		 */
+		public $payment_meta;
+
+		/**
 		 * Main Give Instance
 		 *
 		 * Ensures that only one instance of Give exists in memory at any one
@@ -266,6 +273,7 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->email_access    = new Give_Email_Access();
 			$this->tooltips        = new Give_Tooltips();
 			$this->notices         = new Give_Notices();
+			$this->payment_meta    = new Give_DB_Payment_Meta();
 
 			/**
 			 * Fire the action after Give core loads.
@@ -393,6 +401,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-license-handler.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-cron.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-email-access.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-payment-meta.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/country-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/template-functions.php';
