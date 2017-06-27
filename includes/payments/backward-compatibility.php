@@ -132,7 +132,7 @@ function _give_20_bc_give_payment_meta_value( $object_id, $meta_value ) {
 	$donor_data['last_name'] = give_get_meta( $object_id, '_give_donor_billing_last_name', true );
 	$donor_data['last_name'] = ! empty( $donor_data['last_name'] ) ?
 		$donor_data['last_name'] :
-		$donor_names[1];
+		! empty( $donor_names[1] ) ? $donor_names[1] : '';
 
 	// Donor email.
 	$donor_data['email'] = $meta_value['email'];
