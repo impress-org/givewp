@@ -1,10 +1,4 @@
 <?php
-// Bailout: do not apply backward compatibility if upgrade done.
-if ( give_has_upgrade_completed( 'v20_upgrades_form_metadata' ) ) {
-	return;
-}
-
-
 /**
  * Split _give_payment_meta to new Give core meta_keys.
  *
@@ -313,6 +307,11 @@ add_filter( 'get_post_metadata', '_give_20_bc_get_old_payment_meta', 10, 5 );
  * @return mixed
  */
 function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $single ) {
+	// Bailout: do not apply backward compatibility if upgrade done.
+	if ( give_has_upgrade_completed( 'v20_upgrades_form_metadata' ) ) {
+		return $check;
+	}
+
 	global $wpdb;
 	$new_meta_keys = array(
 		'_give_payment_donor_id',
