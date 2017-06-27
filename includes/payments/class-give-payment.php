@@ -841,6 +841,10 @@ final class Give_Payment {
 						$this->update_meta( '_give_donor_billing_last_name', $this->price_id );
 						break;
 
+					case 'currency':
+						$this->update_meta( '_give_payment_currency', $this->price_id );
+						break;
+					
 					case 'address':
 						if( ! empty( $this->address ) ) {
 							foreach ( $this->address as $address_name => $address ) {
