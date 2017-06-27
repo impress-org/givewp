@@ -14,49 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-
-/**
- * Print Errors
- *
- * Prints all stored errors. Ensures errors show up on the appropriate form;
- * For use during donation process. If errors exist, they are returned.
- *
- * @since 1.0
- * @uses  give_get_errors()
- * @uses  give_clear_errors()
- *
- * @param int $form_id Form ID.
- *
- * @return void
- */
-function give_print_errors( $form_id ) {
-
-	$errors = give_get_errors();
-
-	$request_form_id = isset( $_REQUEST['form-id'] ) ? intval( $_REQUEST['form-id'] ) : 0;
-
-	// Sanity checks first: Ensure that gateway returned errors display on the appropriate form.
-	if ( ! isset( $_POST['give_ajax'] ) && $request_form_id !== $form_id ) {
-		return;
-	}
-
-	if ( $errors ) {
-		$classes = apply_filters( 'give_error_class', array(
-			'give_errors',
-		) );
-		echo '<div class="' . implode( ' ', $classes ) . '">';
-		// Loop error codes and display errors.
-		foreach ( $errors as $error_id => $error ) {
-			echo '<div class="give_error" id="give_error_' . $error_id . '"><p><strong>' . esc_html__( 'Error', 'give' ) . '</strong>: ' . $error . '</p></div>';
-		}
-		echo '</div>';
-		give_clear_errors();
-	}
-}
-
-add_action( 'give_donation_form_before_personal_info', 'give_print_errors' );
-add_action( 'give_ajax_donation_errors', 'give_print_errors' );
-
 /**
  * Get Errors
  *
@@ -126,7 +83,7 @@ function give_unset_error( $error_id ) {
  * Register die handler for give_die()
  *
  * @since  1.0
- * @return string|void
+ * @return string
  */
 function _give_die_handler() {
 	if ( defined( 'GIVE_UNIT_TESTS' ) ) {
@@ -153,28 +110,4 @@ function give_die( $message = '', $title = '', $status = 400 ) {
 	add_filter( 'wp_die_ajax_handler', '_give_die_handler', 10, 3 );
 	add_filter( 'wp_die_handler', '_give_die_handler', 10, 3 );
 	wp_die( $message, $title, array( 'response' => $status ) );
-}
-
-/**
- * Give Output Error
- *
- * Helper function to easily output an error message properly wrapped; used commonly with shortcodes
- *
- * @since      1.3
- *
- * @param string $message  Message to store with the error.
- * @param bool   $echo     Flag to print or return output.
- * @param string $error_id ID of the error being set.
- *
- * @return   string  $error
- */
-function give_output_error( $message, $echo = true, $error_id = 'warning' ) {
-	$error = '<div class="give_errors" id="give_error_' . $error_id . '"><p class="give_error  give_' . $error_id . '">' . $message . '</p></div>';
-
-	if ( $echo ) {
-		echo $error;
-	} else {
-		return $error;
-	}
-
 }

@@ -76,8 +76,7 @@ function give_setup_post_types() {
 
 	$give_forms_args = array(
 		'labels'             => $give_forms_labels,
-		'public'             => true,
-		'publicly_queryable' => $give_forms_singular,
+		'public'             => $give_forms_singular,
 		'show_ui'            => true,
 		'show_in_menu'       => true,
 		'query_var'          => true,

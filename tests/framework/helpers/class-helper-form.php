@@ -51,7 +51,7 @@ class Give_Helper_Form extends WP_UnitTestCase {
 			'_give_default_gateway'             => 'global'
 		);
 		foreach ( $meta as $key => $value ) {
-			update_post_meta( $post_id, $key, $value );
+			give_update_meta( $post_id, $key, $value );
 		}
 
 		return get_post( $post_id );
@@ -107,7 +107,7 @@ class Give_Helper_Form extends WP_UnitTestCase {
 
 
 		foreach ( $meta as $key => $value ) {
-			update_post_meta( $post_id, $key, $value );
+			give_update_meta( $post_id, $key, $value );
 		}
 
 		return new Give_Donate_Form( $post_id );

@@ -23,7 +23,7 @@
 			<directory suffix=".php">./tests/</directory>
 			<directory suffix=".php">./templates/</directory>
 			<directory suffix=".php">./includes/libraries/</directory>
-			<directory suffix=".php">./includes/admin/reporting/export</directory>
+			<directory suffix=".php">./includes/admin/tools/export</directory>
 			<directory suffix=".php">./includes/admin/reporting/tools/</directory>
 		</blacklist>
 	</filter>
