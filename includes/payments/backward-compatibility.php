@@ -564,9 +564,28 @@ add_action( 'pre_get_posts', '_give_20_bc_support_deprecated_meta_key_query' );
 function _give_20_bc_payment_save( $payment, $key ){
 	switch ( $key ) {
 		case 'user_info':
-			$payment->update_meta( '_give_donor_billing_first_name', $payment->user_info['first_name'] );
-			$payment->update_meta( '_give_donor_billing_last_name', $payment->user_info['last_name'] );
+			if( empty( $payment->user_info ) ) {
+				// Bailout.
+				break;
+			}elseif( is_string( $payment->user_info ) ) {
+				// Check if value serialize.
+				$payment->user_info = maybe_unserialize( $payment->user_info );
+			}
 
+
+			// Save first name.
+			if( isset( $payment->user_info['first_name'] ) ) {
+				$payment->update_meta( '_give_donor_billing_first_name', $payment->user_info['first_name'] );
+			}
+
+
+			// Save last name.
+			if( isset( $payment->user_info['last_name'] ) ) {
+				$payment->update_meta( '_give_donor_billing_last_name', $payment->user_info['last_name'] );
+			}
+
+
+			// Save address.
 			if( ! empty( $payment->user_info['address'] ) ) {
 				foreach ( $payment->user_info['address'] as $address_name => $address ) {
 					switch ( $address_name ) {
