@@ -834,17 +834,17 @@ final class Give_Payment {
 						break;
 
 					case 'first_name':
-						$this->update_meta( '_give_donor_billing_first_name', $this->price_id );
+						$this->update_meta( '_give_donor_billing_first_name', $this->first_name );
 						break;
 
 					case 'last_name':
-						$this->update_meta( '_give_donor_billing_last_name', $this->price_id );
+						$this->update_meta( '_give_donor_billing_last_name', $this->last_name );
 						break;
 
 					case 'currency':
-						$this->update_meta( '_give_payment_currency', $this->price_id );
+						$this->update_meta( '_give_payment_currency', $this->currency );
 						break;
-					
+
 					case 'address':
 						if( ! empty( $this->address ) ) {
 							foreach ( $this->address as $address_name => $address ) {
