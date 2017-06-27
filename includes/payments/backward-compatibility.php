@@ -550,3 +550,42 @@ function _give_20_bc_support_deprecated_meta_key_query( $query ) {
 }
 
 add_action( 'pre_get_posts', '_give_20_bc_support_deprecated_meta_key_query' );
+
+
+/**
+ * Save payment backward compatibility.
+ * Note: some addon still can use user_info in set payment meta
+ *       we will use this infor to set first name, last name and address of donor
+ * 
+ * @since 2.0
+ *
+ * @param Give_Payment $payment
+ * @param string $key
+ */
+function _give_20_bc_payment_save( $payment, $key ){
+	switch ( $key ) {
+		case 'user_info':
+			$payment->update_meta( '_give_donor_billing_first_name', $payment->user_info['first_name'] );
+			$payment->update_meta( '_give_donor_billing_last_name', $payment->user_info['last_name'] );
+
+			if( ! empty( $payment->user_info['address'] ) ) {
+				foreach ( $payment->user_info['address'] as $address_name => $address ) {
+					switch ( $address_name ) {
+						case 'line1':
+							$payment->update_meta( '_give_donor_billing_address1', $address );
+							break;
+
+						case 'line2':
+							$payment->update_meta( '_give_donor_billing_address2', $address );
+							break;
+
+						default:
+							$payment->update_meta( "_give_donor_billing_{$address_name}", $address );
+					}
+				}
+			}
+
+			break;
+	}
+}
+add_action( 'give_payment_save', '_give_20_bc_payment_save', 10, 2 );
