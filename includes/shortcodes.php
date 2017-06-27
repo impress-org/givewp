@@ -391,11 +391,17 @@ function give_process_profile_editor_updates( $data ) {
 	 */
 	do_action( 'give_pre_update_user_profile', $user_id, $userdata );
 
-	// Make sure to validate passwords for existing Donors.
-	give_validate_user_password( $data['give_new_user_pass1'], $data['give_new_user_pass2'] );
+	// Make sure to validate first name of existing donors.
+	if ( empty( $first_name ) ) {
+		// Empty First Name.
+		give_set_error( 'empty_first_name', __( 'Please enter your first name.', 'give' ) );
+	}
 
 	// Make sure to validate user email for existing Donors.
 	give_validate_user_email( $email );
+
+	// Make sure to validate passwords for existing Donors.
+	give_validate_user_password( $data['give_new_user_pass1'], $data['give_new_user_pass2'] );
 
 	// Check for errors.
 	$errors = give_get_errors();
