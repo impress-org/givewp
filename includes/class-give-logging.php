@@ -22,6 +22,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 1.0
  */
 class Give_Logging {
+	/**
+	 * Logs data operation handler object.
+	 *
+	 * @since  2.0
+	 * @access private
+	 * @var Give_DB_Logs
+	 */
+	private $log_db;
 
 	/**
 	 * Class Constructor
@@ -32,6 +40,8 @@ class Give_Logging {
 	 * @access public
 	 */
 	public function __construct() {
+		require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-logs.php';
+		$this->log_db = new Give_DB_Logs();
 	}
 
 
@@ -47,11 +57,6 @@ class Give_Logging {
 
 		// Create types taxonomy and default types
 		add_action( 'init', array( $this, 'register_taxonomy' ), 1 );
-
-		add_action( 'save_post_give_payment', array( $this, 'background_process_delete_cache' ) );
-		add_action( 'save_post_give_forms', array( $this, 'background_process_delete_cache' ) );
-		add_action( 'save_post_give_log', array( $this, 'background_process_delete_cache' ) );
-		add_action( 'give_delete_log_cache', array( $this, 'delete_cache' ) );
 	}
 
 	/**
@@ -153,14 +158,15 @@ class Give_Logging {
 	 * @return int             Log ID.
 	 */
 	public function add( $title = '', $message = '', $parent = 0, $type = null ) {
+		// @todo: add backward compatibility for old table.
 		$log_data = array(
-			'post_title'   => $title,
-			'post_content' => $message,
-			'post_parent'  => $parent,
-			'log_type'     => $type,
+			'title'   => $title,
+			'content' => $message,
+			'parent'  => $parent,
+			'type'     => $type,
 		);
 
-		return $this->insert_log( $log_data );
+		return $this->log_db->add( $log_data );
 	}
 
 	/**
@@ -320,7 +326,7 @@ class Give_Logging {
 			'post_status'    => 'publish',
 			'paged'          => get_query_var( 'paged' ),
 			'log_type'       => false,
-			'date_query'     => null
+			'date_query'     => null,
 		);
 
 		$query_args = wp_parse_args( $args, $defaults );
@@ -336,20 +342,20 @@ class Give_Logging {
 		}
 
 		// Retrieve logs based on specific timeframe
-		if ( !empty ( $query_args['date_query'] ) && is_array( $query_args['date_query'] ) ) {
+		if ( ! empty ( $query_args['date_query'] ) && is_array( $query_args['date_query'] ) ) {
 			if ( ! empty( $query_args['date_query']['start_date'] ) ) {
-				$query_args['date_query']['after'] =  array(
+				$query_args['date_query']['after'] = array(
 					'year'  => date( 'Y', strtotime( $query_args['date_query']['start_date'] ) ),
 					'month' => date( 'm', strtotime( $query_args['date_query']['start_date'] ) ),
-					'day'   => date( 'd', strtotime( $query_args['date_query']['start_date'] ) )
+					'day'   => date( 'd', strtotime( $query_args['date_query']['start_date'] ) ),
 				);
 			}
 
 			if ( ! empty( $query_args['date_query']['end_date'] ) ) {
-				$query_args['date_query']['before'] =  array(
+				$query_args['date_query']['before'] = array(
 					'year'  => date( 'Y', strtotime( $query_args['date_query']['end_date'] ) ),
 					'month' => date( 'm', strtotime( $query_args['date_query']['end_date'] ) ),
-					'day'   => date( 'd', strtotime( $query_args['date_query']['end_date'] ) )
+					'day'   => date( 'd', strtotime( $query_args['date_query']['end_date'] ) ),
 				);
 			}
 			$query_args['date_query']['inclusive'] = true;
@@ -471,51 +477,6 @@ class Give_Logging {
 			}
 		}
 	}
-
-	/**
-	 * Setup cron to delete log cache in background.
-	 *
-	 * @since  1.7
-	 * @access public
-	 *
-	 * @param int $post_id
-	 */
-	public function background_process_delete_cache( $post_id ) {
-		// Delete log cache immediately
-		wp_schedule_single_event( time() - 5, 'give_delete_log_cache' );
-	}
-
-	/**
-	 * Delete all logging cache when form, log or payment updates
-	 *
-	 * @since  1.7
-	 * @access public
-	 *
-	 * @return bool
-	 */
-	public function delete_cache() {
-		global $wpdb;
-
-		// Add log related keys to delete.
-		$cache_option_names = $wpdb->get_col(
-			$wpdb->prepare(
-				"SELECT *
-						FROM {$wpdb->options}
-						where option_name LIKE '%%%s%%'
-						OR option_name LIKE '%%%s%%'",
-				'give_cache_get_logs',
-				'give_cache_get_log_count'
-			),
-			1 // option_name
-		);
-
-		// Bailout.
-		if ( empty( $cache_option_names ) ) {
-			return false;
-		}
-
-		Give_Cache::delete( $cache_option_names );
-	}
 }
 
 // Initiate the logging system
@@ -528,6 +489,7 @@ $GLOBALS['give_logs']->__setup_hooks();
  * A wrapper function for the Give_Logging class add() method.
  *
  * @since  1.0
+ * @since  2.0 Use global logs object
  *
  * @param  string $title   Log title. Default is empty.
  * @param  string $message Log message. Default is empty.
@@ -537,9 +499,5 @@ $GLOBALS['give_logs']->__setup_hooks();
  * @return int             ID of the new log entry.
  */
 function give_record_log( $title = '', $message = '', $parent = 0, $type = null ) {
-	/* @var Give_Logging $give_logs */
-	global $give_logs;
-	$log = $give_logs->add( $title, $message, $parent, $type );
-
-	return $log;
+	return Give()->logs->add( $title, $message, $parent, $type );
 }
