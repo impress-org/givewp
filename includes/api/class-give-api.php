@@ -1406,7 +1406,7 @@ class Give_API {
 		} elseif ( isset( $wp_query->query_vars['email'] ) ) {
 			$args  = array(
 				'fields'     => 'ids',
-				'meta_key'   => '_give_payment_user_email',
+				'meta_key'   => '_give_payment_donor_email',
 				'meta_value' => $wp_query->query_vars['email'],
 				'number'     => $this->per_page(),
 				'page'       => $this->get_paged(),

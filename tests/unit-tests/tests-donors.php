@@ -389,4 +389,56 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 		$donor_count = give_count_total_donors();
 		$this->assertEquals( 1, $donor_count );
 	}
+
+	/**
+	 * Test total donor count.
+	 *
+	 * @cover Give_Donor::add_address
+	 * @cover Give_Donor::is_address_exist
+	 * @cover Give_Donor::setup_address
+	 */
+	public function test_add_address() {
+		$donor = new Give_Donor( 'testadmin@domain.com' );
+
+		$address1 = array(
+			'line1'   => 'No. 114',
+			'line2'   => '8th block yamuna, 4th phase yelahanka',
+			'city'    => 'Bangalore',
+			'state'   => 'Karnataka',
+			'country' => 'India',
+			'zip'     => '560064',
+		);
+
+		$address2 = array(
+			'line1'   => 'No. 118',
+			'line2'   => '8th block yamuna, 4th phase yelahanka',
+			'city'    => 'Bangalore',
+			'state'   => 'Karnataka',
+			'country' => 'India',
+			'zip'     => '560064',
+		);
+
+		$address3 = array(
+			'line1'   => 'No. 118',
+			'line2'   => '8th block yamuna, 4th phase yelahanka',
+			'city'    => 'Bangalore',
+			'state'   => 'Karnataka',
+			'country' => 'India',
+			'zip'     => '560064',
+		);
+
+		$donor->add_address( 'billing[]', $address1 );
+		$donor->add_address( 'billing[]', $address2 );
+		$donor->add_address( 'billing[]', $address3 );
+
+		// Test.
+		$this->assertEquals( 1, count( $donor->address ) );
+		$this->assertEquals( 2, count( $donor->address['billing'] ) );
+
+		$donor->add_address( 'personal', $address3 );
+
+		// Test.
+		$this->assertEquals( 2, count( $donor->address ) );
+		$this->assertEquals( 2, count( $donor->address['billing'] ) );
+	}
 }

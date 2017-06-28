@@ -86,7 +86,7 @@ class Give_Tools_Recount_Donor_Stats extends Give_Batch_Export {
 					'status'       => $allowed_payment_status,
 					'meta_query'   => array(
 						array(
-							'key'     => '_give_payment_user_email',
+							'key'     => '_give_payment_donor_email',
 							'value'   => $donor->email,
 							'compare' => '=',
 						),
