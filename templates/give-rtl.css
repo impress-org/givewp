@@ -929,6 +929,12 @@ form.give-form {
   #give-recurring-form .card-expiration select.card-expiry-year,
   form.give-form .card-expiration select.card-expiry-year {
     float: left; }
+  form[id*='give-form'] .give-disabled, form[id*='give-form'] [disabled],
+  #give-recurring-form .give-disabled,
+  #give-recurring-form [disabled],
+  form.give-form .give-disabled,
+  form.give-form [disabled] {
+    cursor: not-allowed; }
 
 /*---------------------------------
 Form Price & Amount
@@ -1174,12 +1180,16 @@ CC Validation
     [id*='give_secure_site_wrapper'] span.padlock :before {
       display: inline-block; }
 
-#give_purchase_form_wrap input.give-input.card-number.valid {
+#give_purchase_form_wrap input.give-input.card-number.valid,
+#give_purchase_form_wrap input.give-input.card-cvc.valid,
+#give_purchase_form_wrap input.give-input.card-expiry.valid {
   background-image: url("../assets/images/tick.png");
   background-repeat: no-repeat;
   background-position: 2% 50%;
   background-size: 16px; }
-  #give_purchase_form_wrap input.give-input.card-number.valid.floatlabel-input {
+  #give_purchase_form_wrap input.give-input.card-number.valid.floatlabel-input:not(.card-cvc):not(.card-expiry),
+  #give_purchase_form_wrap input.give-input.card-cvc.valid.floatlabel-input:not(.card-cvc):not(.card-expiry),
+  #give_purchase_form_wrap input.give-input.card-expiry.valid.floatlabel-input:not(.card-cvc):not(.card-expiry) {
     background-image: url("../assets/images/tick-alt.png");
     background-position: 0% 50%;
     background-size: 72px 16px; }
@@ -1381,6 +1391,12 @@ Section Breaks
 .give-form-wrap .give-form h3.give-section-break,
 .give-form-wrap .give-form h4.give-section-break {
   margin: 10px 0 0; }
+
+/*---------------------------------
+Form validation style
+-----------------------------------*/
+.give-do-validate input.error {
+  border-color: red !important; }
 
 /*---------------------------------
 Notices, Warnings & Errors
