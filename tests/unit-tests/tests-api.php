@@ -83,7 +83,6 @@ class Tests_API extends Give_Unit_Test_Case {
 			'post_status' => 'publish',
 		) );
 
-
 		$_multi_level_donations = array(
 			array(
 				'_give_id'     => array(
@@ -114,6 +113,8 @@ class Tests_API extends Give_Unit_Test_Case {
 			'_give_donation_levels' => array_values( $_multi_level_donations ),
 			'_give_form_earnings'   => 120,
 			'_give_form_sales'      => 59,
+			'_give_goal_option'     => 'enabled',
+			'_give_set_goal'        => 2000,
 		);
 		foreach ( $meta as $key => $value ) {
 			give_update_meta( $post_id, $key, $value );
@@ -135,7 +136,7 @@ class Tests_API extends Give_Unit_Test_Case {
 
 		give_update_meta( $post_id, '_give_form_content', 'Post content 1' );
 
-		// Add a payment
+		// Add a payment.
 		$donation_data = array(
 			'price'           => number_format( (float) $total, 2 ),
 			'give_form_title' => get_the_title( $post_id ),
@@ -245,9 +246,8 @@ class Tests_API extends Give_Unit_Test_Case {
 
 		$this->assertEquals( 'v1', $this->_api->get_default_version() );
 
-		//		define( 'GIVE_API_VERSION', 'v2' );
-		//		$this->assertEquals( 'v2', $this->_api->get_default_version() );
-
+		// define( 'GIVE_API_VERSION', 'v2' );
+		// $this->assertEquals( 'v2', $this->_api->get_default_version() );
 	}
 
 	/**
@@ -269,9 +269,8 @@ class Tests_API extends Give_Unit_Test_Case {
 		$this->assertEquals( 'v1', $this->_api->get_queried_version() );
 
 		// There's no v2 of the API currently.
-		//		$this->_api->process_query();
-		//		$this->assertEquals( 'v2', $this->_api->get_queried_version() );
-
+		// $this->_api->process_query();
+		// $this->assertEquals( 'v2', $this->_api->get_queried_version() );
 	}
 
 	/**
@@ -315,6 +314,21 @@ class Tests_API extends Give_Unit_Test_Case {
 		$this->assertEquals( '140', $out['forms'][0]['stats']['total']['earnings'] );
 		$this->assertEquals( '60', $out['forms'][0]['stats']['monthly_average']['donations'] );
 		$this->assertEquals( '140', $out['forms'][0]['stats']['monthly_average']['earnings'] );
+	}
+
+	/**
+	 * Test Get Form Goal
+	 */
+	public function test_get_form_goal() {
+		$out = $this->_api_output;
+
+		$this->assertArrayHasKey( 'goal', $out['forms'][0] );
+		$this->assertArrayHasKey( 'amount', $out['forms'][0]['goal'] );
+		$this->assertArrayHasKey( 'percentage_completed', $out['forms'][0]['goal'] );
+
+		$this->assertEquals( '2000', $out['forms'][0]['goal']['amount'] );
+		$this->assertEquals( '7.0', $out['forms'][0]['goal']['percentage_completed'] );
+
 	}
 
 	/**
@@ -469,7 +483,6 @@ class Tests_API extends Give_Unit_Test_Case {
 
 		$this->assertArrayHasKey( 'error', $out );
 		$this->assertEquals( 'Invalid API key.', $out['error'] );
-
 
 	}
 

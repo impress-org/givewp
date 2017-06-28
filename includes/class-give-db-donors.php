@@ -41,6 +41,9 @@ class Give_DB_Donors extends Give_DB {
 		
 		add_action( 'profile_update', array( $this, 'update_donor_email_on_user_update' ), 10, 2 );
 
+		// Install table.
+		$this->register_table();
+
 	}
 
 	/**
