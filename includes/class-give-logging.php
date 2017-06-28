@@ -32,6 +32,15 @@ class Give_Logging {
 	private $log_db;
 
 	/**
+	 * Log meta data operation handler object.
+	 *
+	 * @since  2.0
+	 * @access private
+	 * @var Give_DB_Log_Meta
+	 */
+	private $logmeta_db;
+
+	/**
 	 * Class Constructor
 	 *
 	 * Set up the Give Logging Class.
@@ -41,7 +50,9 @@ class Give_Logging {
 	 */
 	public function __construct() {
 		require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-logs.php';
-		$this->log_db = new Give_DB_Logs();
+		require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-logs-meta.php';
+		$this->log_db     = new Give_DB_Logs();
+		$this->logmeta_db = new Give_DB_Log_Meta();
 	}
 
 
@@ -163,7 +174,7 @@ class Give_Logging {
 			'title'   => $title,
 			'content' => $message,
 			'parent'  => $parent,
-			'type'     => $type,
+			'type'    => $type,
 		);
 
 		return $this->log_db->add( $log_data );
