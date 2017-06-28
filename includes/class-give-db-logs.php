@@ -131,11 +131,13 @@ class Give_DB_Logs extends Give_DB {
 			// Update log data.
 			$this->update( $current_log_data['id'], $current_log_data );
 
-			return $current_log_data['id'];
+			$log_id =  $current_log_data['id'];
 
+		} else {
+			$log_id = $this->insert( $current_log_data, 'log' );
 		}
 
-		return $this->insert( $current_log_data, 'log' );
+		return $log_id;
 	}
 
 
