@@ -154,12 +154,6 @@ function give_run_install() {
 	$api = new Give_API();
 	update_option( 'give_default_api_version', 'v' . $api->get_version() );
 
-	// Create the donor databases.
-	$donors_db = new Give_DB_Donors();
-	$donors_db->create_table();
-	$donor_meta = new Give_DB_Donor_Meta();
-	$donor_meta->create_table();
-
 	// Check for PHP Session support, and enable if available.
 	$give_sessions = new Give_Session();
 	$give_sessions->use_php_sessions();

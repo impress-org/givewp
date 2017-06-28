@@ -37,8 +37,7 @@ class Give_DB_Donor_Meta extends Give_DB {
 		$this->primary_key = 'meta_id';
 		$this->version     = '1.0';
 
-		add_action( 'plugins_loaded', array( $this, 'register_table' ), 11 );
-
+		$this->register_table();
 	}
 
 	/**
