@@ -210,10 +210,10 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'name'          => esc_html__( 'Name', 'give' ),
-			'email'         => esc_html__( 'Email', 'give' ),
-			'num_donations' => esc_html__( 'Donations', 'give' ),
-			'amount_spent'  => esc_html__( 'Total Donated', 'give' ),
+			'name'          => __( 'Name', 'give' ),
+			'email'         => __( 'Email', 'give' ),
+			'num_donations' => __( 'Donations', 'give' ),
+			'amount_spent'  => __( 'Total Donated', 'give' ),
 		);
 
 		return apply_filters( 'give_report_donor_columns', $columns );
@@ -285,7 +285,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 
 		// Get donor query.
 		$args   = $this->get_donor_query();
-		$donors = Give()->customers->get_customers( $args );
+		$donors = Give()->donors->get_donors( $args );
 
 		if ( $donors ) {
 
@@ -320,7 +320,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 		$_donor_query = $this->get_donor_query();
 
 		$_donor_query['number'] = -1;
-		$donors = Give()->customers->get_customers( $_donor_query );
+		$donors = Give()->donors->get_donors( $_donor_query );
 
 		return count( $donors );
 	}

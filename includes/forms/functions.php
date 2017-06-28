@@ -68,7 +68,7 @@ function give_is_float_labels_enabled( $args ) {
 	}
 
 	if ( empty( $float_labels ) ) {
-		$float_labels = get_post_meta( $args['form_id'], '_give_form_floating_labels', true );
+		$float_labels = give_get_meta( $args['form_id'], '_give_form_floating_labels', true );
 	}
 
 	if ( empty( $float_labels ) || ( 'global' === $float_labels ) ) {
@@ -246,13 +246,13 @@ function give_get_success_page_url( $query_string = null ) {
 }
 
 /**
- * Get the URL of the Failed Donation Page
+ * Get the URL of the Failed Donation Page.
  *
  * @since 1.0
  *
- * @param bool $extras Extras to append to the URL
+ * @param bool $extras Extras to append to the URL.
  *
- * @return mixed|void Full URL to the Failed Donation Page, if present, home page if it doesn't exist
+ * @return mixed Full URL to the Failed Donation Page, if present, home page if it doesn't exist.
  */
 function give_get_failed_transaction_uri( $extras = false ) {
 	$give_options = give_get_settings();
@@ -334,28 +334,28 @@ function give_field_is_required( $field = '', $form_id ) {
 }
 
 /**
- * Record Sale In Log
+ * Record Donation In Log
  *
- * Stores log information for a form sale.
+ * Stores log information for a donation.
  *
  * @since 1.0
- * @global            $give_logs
+ * @global            $give_logs Give_Logging
  *
- * @param int         $give_form_id Give Form ID
- * @param int         $payment_id   Payment ID
- * @param bool|int    $price_id     Price ID, if any
- * @param string|null $sale_date    The date of the sale
+ * @param int         $give_form_id Give Form ID.
+ * @param int         $payment_id   Payment ID.
+ * @param bool|int    $price_id     Price ID, if any.
+ * @param string|null $donation_date    The date of the donation.
  *
  * @return void
  */
-function give_record_sale_in_log( $give_form_id = 0, $payment_id, $price_id = false, $sale_date = null ) {
+function give_record_donation_in_log( $give_form_id = 0, $payment_id, $price_id = false, $donation_date = null ) {
 	global $give_logs;
 
 	$log_data = array(
 		'post_parent'   => $give_form_id,
 		'log_type'      => 'sale',
-		'post_date'     => isset( $sale_date ) ? $sale_date : null,
-		'post_date_gmt' => isset( $sale_date ) ? $sale_date : null,
+		'post_date'     => isset( $donation_date ) ? $donation_date : null,
+		'post_date_gmt' => isset( $donation_date ) ? $donation_date : null,
 	);
 
 	$log_meta = array(
@@ -377,7 +377,7 @@ function give_record_sale_in_log( $give_form_id = 0, $payment_id, $price_id = fa
  *
  * @return bool|int
  */
-function give_increase_purchase_count( $form_id = 0, $quantity = 1 ) {
+function give_increase_donation_count( $form_id = 0, $quantity = 1 ) {
 	$quantity = (int) $quantity;
 	$form     = new Give_Donate_Form( $form_id );
 
@@ -394,7 +394,7 @@ function give_increase_purchase_count( $form_id = 0, $quantity = 1 ) {
  *
  * @return bool|int
  */
-function give_decrease_purchase_count( $form_id = 0, $quantity = 1 ) {
+function give_decrease_donation_count( $form_id = 0, $quantity = 1 ) {
 	$quantity = (int) $quantity;
 	$form     = new Give_Donate_Form( $form_id );
 
@@ -519,7 +519,7 @@ function give_get_average_monthly_form_earnings( $form_id = 0 ) {
 /**
  * Get Price Option Name (Text)
  *
- * Retrieves the name of a variable price option
+ * Retrieves the name of a variable price option.
  *
  * @since       1.0
  *
@@ -539,7 +539,7 @@ function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 
 		if ( intval( $price['_give_id']['level_id'] ) == intval( $price_id ) ) {
 
 			$price_text     = isset( $price['_give_text'] ) ? $price['_give_text'] : '';
-			$price_fallback = give_currency_filter( give_format_amount( $price['_give_amount'] ) );
+			$price_fallback = give_currency_filter( give_format_amount( $price['_give_amount'] ), '', true );
 			$price_name     = ! empty( $price_text ) ? $price_text : $price_fallback;
 
 		}
@@ -559,11 +559,20 @@ function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 
  * @return string $range A fully formatted price range
  */
 function give_price_range( $form_id = 0 ) {
-	$low   = give_get_lowest_price_option( $form_id );
-	$high  = give_get_highest_price_option( $form_id );
-	$range = '<span class="give_price_range_low">' . give_currency_filter( give_format_amount( $low ) ) . '</span>';
-	$range .= '<span class="give_price_range_sep">&nbsp;&ndash;&nbsp;</span>';
-	$range .= '<span class="give_price_range_high">' . give_currency_filter( give_format_amount( $high ) ) . '</span>';
+	$low        = give_get_lowest_price_option( $form_id );
+	$high       = give_get_highest_price_option( $form_id );
+	$order_type = ! empty( $_REQUEST['order'] ) ? $_REQUEST['order'] : 'asc';
+
+	$range = sprintf(
+		'<span class="give_price_range_%1$s">%2$s</span>
+				<span class="give_price_range_sep">&nbsp;&ndash;&nbsp;</span>
+				<span class="give_price_range_%3$s">%4$s</span>',
+		'asc' === $order_type ? 'low' : 'high',
+		'asc' === $order_type ? give_currency_filter( give_format_amount( $low ) ) : give_currency_filter( give_format_amount( $high ) ),
+		'asc' === $order_type ? 'high' : 'low',
+		'asc' === $order_type ? give_currency_filter( give_format_amount( $high ) ) : give_currency_filter( give_format_amount( $low ) )
+
+	);
 
 	return apply_filters( 'give_price_range', $range, $form_id, $low, $high );
 }
@@ -635,33 +644,10 @@ function give_get_lowest_price_option( $form_id = 0 ) {
 		return give_get_form_price( $form_id );
 	}
 
-	$prices = give_get_variable_prices( $form_id );
-
-	$low = 0;
-
-	if ( ! empty( $prices ) ) {
-
-		$min = $min_id = 0;
-
-		foreach ( $prices as $key => $price ) {
-
-			if ( empty( $price['_give_amount'] ) ) {
-				continue;
-			}
-
-			if ( ! isset( $min ) ) {
-				$min = $price['_give_amount'];
-			} else {
-				$min = min( $min, give_sanitize_amount( $price['_give_amount'] ) );
-			}
-
-			if ( $price['_give_amount'] == $min ) {
-				$min_id = $key;
-			}
-		}
-
-		$low = $prices[ $min_id ]['_give_amount'];
-
+	if ( ! ( $low = get_post_meta( $form_id, '_give_levels_minimum_amount', true ) ) ) {
+		// Backward compatibility.
+		$prices = wp_list_pluck( give_get_variable_prices( $form_id ), '_give_amount' );
+		$low    = ! empty( $prices ) ? min( $prices ) : 0;
 	}
 
 	return give_sanitize_amount( $low );
@@ -686,28 +672,10 @@ function give_get_highest_price_option( $form_id = 0 ) {
 		return give_get_form_price( $form_id );
 	}
 
-	$prices = give_get_variable_prices( $form_id );
-
-	$high = 0.00;
-
-	if ( ! empty( $prices ) ) {
-
-		$max_id = $max = 0;
-
-		foreach ( $prices as $key => $price ) {
-			if ( empty( $price['_give_amount'] ) ) {
-				continue;
-			}
-			$give_amount = give_sanitize_amount( $price['_give_amount'] );
-
-			$max = max( $max, $give_amount );
-
-			if ( $give_amount == $max ) {
-				$max_id = $key;
-			}
-		}
-
-		$high = $prices[ $max_id ]['_give_amount'];
+	if ( ! ( $high = get_post_meta( $form_id, '_give_levels_maximum_amount', true ) ) ) {
+		// Backward compatibility.
+		$prices = wp_list_pluck( give_get_variable_prices( $form_id ), '_give_amount' );
+		$high   = ! empty( $prices ) ? max( $prices ) : 0;
 	}
 
 	return give_sanitize_amount( $high );
@@ -903,7 +871,7 @@ add_filter( 'give_form_goal', 'give_currency_filter', 20 );
 function give_logged_in_only( $form_id ) {
 	// If _give_logged_in_only is set to enable then guest can donate from that specific form.
 	// Otherwise it is member only donation form.
-	$val = get_post_meta( $form_id, '_give_logged_in_only', true );
+	$val = give_get_meta( $form_id, '_give_logged_in_only', true );
 	$val = ! empty( $val ) ? $val : 'enabled';
 
 	$ret = ! give_is_setting_enabled( $val );
@@ -923,7 +891,7 @@ function give_logged_in_only( $form_id ) {
  */
 function give_show_login_register_option( $form_id ) {
 
-	$show_register_form = get_post_meta( $form_id, '_give_show_register_form', true );
+	$show_register_form = give_get_meta( $form_id, '_give_show_register_form', true );
 
 	return apply_filters( 'give_show_register_form', $show_register_form, $form_id );
 
