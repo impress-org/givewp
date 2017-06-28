@@ -214,15 +214,7 @@ class Give_Logging {
 	 * @return int             The ID of the newly created log item.
 	 */
 	public function insert_log( $log_data = array(), $log_meta = array() ) {
-		$defaults = array(
-			'post_type'    => 'give_log',
-			'post_status'  => 'publish',
-			'post_parent'  => 0,
-			'post_content' => '',
-			'log_type'     => false,
-		);
-
-		$args = wp_parse_args( $log_data, $defaults );
+		// @todo: add backward compatibility for old table.
 
 		/**
 		 * Fires before inserting log entry.
@@ -235,17 +227,12 @@ class Give_Logging {
 		do_action( 'give_pre_insert_log', $log_data, $log_meta );
 
 		// Store the log entry
-		$log_id = wp_insert_post( $args );
-
-		// Set the log type, if any
-		if ( $log_data['log_type'] && $this->valid_type( $log_data['log_type'] ) ) {
-			wp_set_object_terms( $log_id, $log_data['log_type'], 'give_log_type', false );
-		}
+		$log_id = $this->log_db->insert( $log_data );
 
 		// Set log meta, if any
 		if ( $log_id && ! empty( $log_meta ) ) {
 			foreach ( (array) $log_meta as $key => $meta ) {
-				give_update_meta( $log_id, '_give_log_' . sanitize_key( $key ), $meta );
+				$this->logmeta_db->update_meta( $log_id, sanitize_key( $key ), $meta );
 			}
 		}
 
