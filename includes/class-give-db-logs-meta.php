@@ -58,19 +58,6 @@ class Give_DB_Log_Meta extends Give_DB {
 	}
 
 	/**
-	 * Register the table with $wpdb so the metadata api can find it.
-	 *
-	 * @access  public
-	 * @since   2.0
-	 *
-	 * @return  void
-	 */
-	public function register_table() {
-		global $wpdb;
-		$wpdb->logmeta = $this->table_name;
-	}
-
-	/**
 	 * Retrieve log meta field for a log.
 	 *
 	 * @access  private
@@ -166,8 +153,10 @@ class Give_DB_Log_Meta extends Give_DB {
 	 * @return void
 	 */
 	public function create_table() {
+		global $wpdb;
+		$charset_collate = $wpdb->get_charset_collate();
 
-		$sql = "CREATE TABLE {$this->table_name} (
+		$sql = "CREATE TABLE {$wpdb->logmeta} (
 			meta_id bigint(20) NOT NULL AUTO_INCREMENT,
 			log_id bigint(20) NOT NULL,
 			meta_key varchar(255) DEFAULT NULL,
@@ -175,10 +164,10 @@ class Give_DB_Log_Meta extends Give_DB {
 			PRIMARY KEY  (meta_id),
 			KEY log_id (log_id),
 			KEY meta_key (meta_key)
-			) CHARACTER SET utf8 COLLATE utf8_general_ci;";
+			) {$charset_collate};";
 
-		dbDelta( $sql );
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		dbDelta( $sql );
 
 		update_option( $this->table_name . '_db_version', $this->version );
 	}
