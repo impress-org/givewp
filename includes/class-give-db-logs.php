@@ -250,14 +250,14 @@ class Give_DB_Logs extends Give_DB {
 		}
 
 		// Logs create for specific type.
-		if( ! empty( $args['type'] ) ) {
-			if ( is_array( $args['type'] ) ) {
-				$log_types = implode( ',', array_map( 'intval', $args['type'] ) );
-			} else {
-				$log_types = intval( $args['parent'] );
+		if ( ! empty( $args['type'] ) ) {
+			if ( ! is_array( $args['type'] ) ) {
+				$log_types = explode( ',', $args['type'] );
 			}
 
-			$where .= " AND `type` IN( {$log_types} ) ";
+			$log_types = implode( '\',\'', array_map( 'trim', $log_types ) );
+
+			$where .= " AND `type` IN( '{$log_types}' ) ";
 		}
 
 		$args['orderby'] = ! array_key_exists( $args['orderby'], $this->get_columns() ) ? 'date' : $args['orderby'];
