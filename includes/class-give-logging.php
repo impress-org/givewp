@@ -195,10 +195,11 @@ class Give_Logging {
 	 * @return array             An array of the connected logs.
 	 */
 	public function get_logs( $object_id = 0, $type = null, $paged = null ) {
+		// @todo: add backward compatibility for old table.
 		return $this->get_connected_logs( array(
-			'post_parent' => $object_id,
-			'paged'       => $paged,
-			'log_type'    => $type,
+			'parent' => $object_id,
+			'type'   => $type,
+			'paged'  => $paged,
 		) );
 	}
 
@@ -317,49 +318,37 @@ class Give_Logging {
 	 * @return array|false Array if logs were found, false otherwise.
 	 */
 	public function get_connected_logs( $args = array() ) {
+		// @todo: add backward compatibility for old table.
 
 		$defaults = array(
-			'post_type'      => 'give_log',
-			'posts_per_page' => 20,
-			'post_status'    => 'publish',
+			'number' => 20,
 			'paged'          => get_query_var( 'paged' ),
-			'log_type'       => false,
-			'date_query'     => null,
+			'type'       => false,
+			'date'     => null,
 		);
 
 		$query_args = wp_parse_args( $args, $defaults );
 
-		if ( $query_args['log_type'] && $this->valid_type( $query_args['log_type'] ) ) {
-			$query_args['tax_query'] = array(
-				array(
-					'taxonomy' => 'give_log_type',
-					'field'    => 'slug',
-					'terms'    => $query_args['log_type'],
-				),
-			);
-		}
-
 		// Retrieve logs based on specific timeframe
-		if ( ! empty ( $query_args['date_query'] ) && is_array( $query_args['date_query'] ) ) {
-			if ( ! empty( $query_args['date_query']['start_date'] ) ) {
-				$query_args['date_query']['after'] = array(
-					'year'  => date( 'Y', strtotime( $query_args['date_query']['start_date'] ) ),
-					'month' => date( 'm', strtotime( $query_args['date_query']['start_date'] ) ),
-					'day'   => date( 'd', strtotime( $query_args['date_query']['start_date'] ) ),
+		if ( ! empty ( $query_args['date'] ) && is_array( $query_args['date'] ) ) {
+			if ( ! empty( $query_args['date']['start'] ) ) {
+				$query_args['date']['after'] = array(
+					'year'  => date( 'Y', strtotime( $query_args['date']['start'] ) ),
+					'month' => date( 'm', strtotime( $query_args['date']['start'] ) ),
+					'day'   => date( 'd', strtotime( $query_args['date']['start'] ) ),
 				);
 			}
 
-			if ( ! empty( $query_args['date_query']['end_date'] ) ) {
-				$query_args['date_query']['before'] = array(
-					'year'  => date( 'Y', strtotime( $query_args['date_query']['end_date'] ) ),
-					'month' => date( 'm', strtotime( $query_args['date_query']['end_date'] ) ),
-					'day'   => date( 'd', strtotime( $query_args['date_query']['end_date'] ) ),
+			if ( ! empty( $query_args['date']['end'] ) ) {
+				$query_args['date']['before'] = array(
+					'year'  => date( 'Y', strtotime( $query_args['date']['end'] ) ),
+					'month' => date( 'm', strtotime( $query_args['date']['end'] ) ),
+					'day'   => date( 'd', strtotime( $query_args['date']['end'] ) ),
 				);
 			}
-			$query_args['date_query']['inclusive'] = true;
 		}
 
-		$logs = get_posts( $query_args );
+		$logs = $this->log_db->get_logs( $query_args );
 
 		if ( $logs ) {
 			return $logs;
@@ -385,49 +374,7 @@ class Give_Logging {
 	 * @return int                Log count.
 	 */
 	public function get_log_count( $object_id = 0, $type = null, $meta_query = null, $date_query = null ) {
-
-		$query_args = array(
-			'post_type'      => 'give_log',
-			'posts_per_page' => - 1,
-			'post_status'    => 'publish',
-			'fields'         => 'ids',
-		);
-
-		if ( $object_id ) {
-			$query_args['post_parent'] = $object_id;
-		}
-
-		if ( ! empty( $type ) && $this->valid_type( $type ) ) {
-			$query_args['tax_query'] = array(
-				array(
-					'taxonomy' => 'give_log_type',
-					'field'    => 'slug',
-					'terms'    => $type,
-				),
-			);
-		}
-
-		if ( ! empty( $meta_query ) ) {
-			$query_args['meta_query'] = $meta_query;
-		}
-
-		if ( ! empty( $date_query ) ) {
-			$query_args['date_query'] = $date_query;
-		}
-
-		// Get cache key for current query.
-		$cache_key = Give_Cache::get_key( 'get_log_count', $query_args );
-
-		// check if cache already exist or not.
-		if ( ! ( $logs_count = Give_Cache::get( $cache_key ) ) ) {
-			$logs       = new WP_Query( $query_args );
-			$logs_count = (int) $logs->post_count;
-
-			// Cache results.
-			Give_Cache::set( $cache_key, $logs_count );
-		}
-
-		return $logs_count;
+		return $this->log_db->count();
 	}
 
 	/**
