@@ -1338,13 +1338,13 @@ function give_v20_logs_upgrades() {
 			$term_name = ! is_wp_error( $term_name ) && 1 === count( $term_name) ? $term_name[0]->slug : '';
 
 			$log_data = array(
-				'id'       => $post->ID,
-				'title'    => $post->post_title,
-				'content'  => $post->post_content,
-				'parent'   => $post->post_parent,
-				'type'     => $term_name,
-				'date'     => $post->post_date,
-				'date_gmt' => $post->post_date_gmt,
+				'ID'       => $post->ID,
+				'log_title'    => $post->post_title,
+				'log_content'  => $post->post_content,
+				'log_parent'   => $post->post_parent,
+				'log_type'     => $term_name,
+				'log_date'     => $post->post_date,
+				'log_date_gmt' => $post->post_date_gmt,
 			);
 			$log_meta = array();
 
@@ -1352,7 +1352,7 @@ function give_v20_logs_upgrades() {
 				foreach ( $old_log_meta as $meta_key => $meta_value ) {
 					switch ( $meta_key ) {
 						case '_give_log_payment_id':
-							$log_data['parent'] = current( $meta_value );
+							$log_data['log_parent'] = current( $meta_value );
 							$log_meta['_give_log_form_id'] = $post->post_parent;
 							break;
 
@@ -1366,7 +1366,7 @@ function give_v20_logs_upgrades() {
 				$log_meta['api_query'] = $post->post_excerpt;
 			}
 
-			$log_id = $wpdb->insert( "{$wpdb->prefix}give_logs", $log_data );
+			$wpdb->insert( "{$wpdb->prefix}give_logs", $log_data );
 
 			if( ! empty( $log_meta ) ) {
 				foreach ( $log_meta as $meta_key => $meta_value ){
