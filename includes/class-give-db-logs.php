@@ -98,11 +98,6 @@ class Give_DB_Logs extends Give_DB {
 	 * @return bool|int
 	 */
 	public function add( $data = array() ) {
-		// Bailout: log content should not empty.
-		if ( empty( $data['content'] ) ) {
-			return false;
-		}
-
 		// Valid table columns.
 		$table_columns = array_keys( $this->get_columns() );
 
