@@ -1317,6 +1317,7 @@ function give_v20_logs_upgrades() {
 		@set_time_limit( 0 );
 	}
 
+	global $wpdb;
 	$step = isset( $_GET['step'] ) ? absint( $_GET['step'] ) : 1;
 
 	// form query
@@ -1337,6 +1338,7 @@ function give_v20_logs_upgrades() {
 			$term_name = ! is_wp_error( $term_name ) && 1 === count( $term_name) ? $term_name[0]->slug : '';
 
 			$log_data = array(
+				'id'       => $post->ID,
 				'title'    => $post->post_title,
 				'content'  => $post->post_content,
 				'parent'   => $post->post_parent,
@@ -1348,7 +1350,15 @@ function give_v20_logs_upgrades() {
 
 			if( $old_log_meta = get_post_meta( $post->ID ) ) {
 				foreach ( $old_log_meta as $meta_key => $meta_value ) {
-					$log_meta[$meta_key] = current(  $meta_value );
+					switch ( $meta_key ) {
+						case '_give_log_payment_id':
+							$log_data['parent'] = current( $meta_value );
+							$log_meta['_give_log_form_id'] = current(  $meta_value );
+							break;
+
+						default:
+							$log_meta[$meta_key] = current(  $meta_value );
+					}
 				}
 			}
 
@@ -1356,7 +1366,13 @@ function give_v20_logs_upgrades() {
 				$log_meta['api_query'] = $post->post_excerpt;
 			}
 
-			Give()->logs->insert_log( $log_data, $log_meta );
+			$log_id = $wpdb->insert( "{$wpdb->prefix}give_logs", $log_data );
+
+			if( ! empty( $log_meta ) ) {
+				foreach ( $log_meta as $meta_key => $meta_value ){
+					Give()->logs->logmeta_db->update_meta( $post->ID, $meta_key, $meta_value );
+				}
+			}
 
 		}// End while().
 
