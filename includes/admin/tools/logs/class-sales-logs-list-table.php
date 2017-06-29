@@ -367,12 +367,12 @@ class Give_Sales_Log_Table extends WP_List_Table {
 			if ( $logs ) {
 				foreach ( $logs as $log ) {
 					/* @var Give_payment $payment */
-					$payment = new Give_Payment( $log->parent );
+					$payment = new Give_Payment( $log->log_parent );
 					
 					// Make sure this payment hasn't been deleted
 					if ( get_post( $payment->ID ) ) :
 						$logs_data[] = array(
-							'ID'         => '<span class="give-item-label give-item-label-gray">' . $log->id . '</span>',
+							'ID'         => '<span class="give-item-label give-item-label-gray">' . $log->ID . '</span>',
 							'payment_id' => $payment->ID,
 							'form'       => $payment->form_id,
 							'amount'     => $payment->total,
