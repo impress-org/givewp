@@ -126,7 +126,7 @@ class Give_DB_Logs extends Give_DB {
 			// Update log data.
 			$this->update( $current_log_data['id'], $current_log_data );
 
-			$log_id =  $current_log_data['id'];
+			$log_id = $current_log_data['id'];
 
 		} else {
 			$log_id = $this->insert( $current_log_data, 'log' );
@@ -158,7 +158,6 @@ class Give_DB_Logs extends Give_DB {
 			return null;
 		}
 
-
 		if ( ! $log = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $this->table_name WHERE id = %s LIMIT 1", $log_id ), ARRAY_A ) ) {
 			return false;
 		}
@@ -174,9 +173,112 @@ class Give_DB_Logs extends Give_DB {
 	 *
 	 * @param  array $args
 	 *
-	 * @return void
+	 * @return mixed
 	 */
 	public function get_logs( $args = array() ) {
+		/* @var WPDB $wpdb */
+		global $wpdb;
+
+		$defaults = array(
+			'number'  => 20,
+			'offset'  => 0,
+			'log_id'  => 0,
+			'orderby' => 'date',
+			'order'   => 'DESC',
+		);
+
+		$args = wp_parse_args( $args, $defaults );
+
+		if ( $args['number'] < 1 ) {
+			$args['number'] = 999999999999;
+		}
+
+		$where = ' WHERE 1=1 ';
+
+		// Specific logs.
+		if ( ! empty( $args['log_id'] ) ) {
+
+			if ( is_array( $args['log_id'] ) ) {
+				$log_ids = implode( ',', array_map( 'intval', $args['log_id'] ) );
+			} else {
+				$log_ids = intval( $args['log_id'] );
+			}
+
+			$where .= " AND `log_id` IN( {$log_ids} ) ";
+
+		}
+
+		// Logs created for a specific date or in a date range
+		if ( ! empty( $args['date'] ) ) {
+
+			if ( is_array( $args['date'] ) ) {
+
+				if ( ! empty( $args['date']['start'] ) ) {
+
+					$start = date( 'Y-m-d H:i:s', strtotime( $args['date']['start'] ) );
+
+					$where .= " AND `date_created` >= '{$start}'";
+
+				}
+
+				if ( ! empty( $args['date']['end'] ) ) {
+
+					$end = date( 'Y-m-d H:i:s', strtotime( $args['date']['end'] ) );
+
+					$where .= " AND `date_created` <= '{$end}'";
+
+				}
+			} else {
+
+				$year  = date( 'Y', strtotime( $args['date'] ) );
+				$month = date( 'm', strtotime( $args['date'] ) );
+				$day   = date( 'd', strtotime( $args['date'] ) );
+
+				$where .= " AND $year = YEAR ( date_created ) AND $month = MONTH ( date_created ) AND $day = DAY ( date_created )";
+			}
+		}
+
+		// Logs create for specific parent.
+		if( ! empty( $args['parent'] ) ) {
+			if ( is_array( $args['parent'] ) ) {
+				$parent_ids = implode( ',', array_map( 'intval', $args['parent'] ) );
+			} else {
+				$parent_ids = intval( $args['parent'] );
+			}
+
+			$where .= " AND `parent` IN( {$parent_ids} ) ";
+		}
+
+		// Logs create for specific type.
+		if( ! empty( $args['type'] ) ) {
+			if ( is_array( $args['type'] ) ) {
+				$log_types = implode( ',', array_map( 'intval', $args['type'] ) );
+			} else {
+				$log_types = intval( $args['parent'] );
+			}
+
+			$where .= " AND `type` IN( {$log_types} ) ";
+		}
+
+		$args['orderby'] = ! array_key_exists( $args['orderby'], $this->get_columns() ) ? 'date' : $args['orderby'];
+
+		$logs = Give_Cache::get( 'give_logs', true, $args );
+
+		$args['orderby'] = esc_sql( $args['orderby'] );
+		$args['order']   = esc_sql( $args['order'] );
+
+		if ( $logs === false ) {
+			$logs = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT * FROM  $this->table_name $where ORDER BY {$args['orderby']} {$args['order']} LIMIT %d,%d;",
+					absint( $args['offset'] ),
+					absint( $args['number'] )
+				)
+			);
+			Give_Cache::set( 'give_logs', $logs, 3600, true, $args );
+		}
+
+		return $logs;
 	}
 
 
@@ -188,9 +290,45 @@ class Give_DB_Logs extends Give_DB {
 	 *
 	 * @param  array $args
 	 *
-	 * @return void
+	 * @return int
 	 */
 	public function count( $args = array() ) {
+		/* @var WPDB $wpdb */
+		global $wpdb;
+
+		$where = ' WHERE 1=1 ';
+
+		if ( ! empty( $args['date'] ) ) {
+
+			if ( is_array( $args['date'] ) ) {
+
+				$start = date( 'Y-m-d H:i:s', strtotime( $args['date']['start'] ) );
+				$end   = date( 'Y-m-d H:i:s', strtotime( $args['date']['end'] ) );
+
+				$where .= " AND `date_created` >= '{$start}' AND `date_created` <= '{$end}'";
+
+			} else {
+
+				$year  = date( 'Y', strtotime( $args['date'] ) );
+				$month = date( 'm', strtotime( $args['date'] ) );
+				$day   = date( 'd', strtotime( $args['date'] ) );
+
+				$where .= " AND $year = YEAR ( date_created ) AND $month = MONTH ( date_created ) AND $day = DAY ( date_created )";
+			}
+
+		}
+
+
+		$cache_key = Give_Cache::get( 'give_logs_count', true, $args );
+
+		$count = wp_cache_get( $cache_key, 'donors' );
+
+		if ( $count === false ) {
+			$count = $wpdb->get_var( "SELECT COUNT($this->primary_key) FROM " . $this->table_name . "{$where};" );
+			Give_Cache::set( 'give_logs_count', $count, 3600, true, $args );
+		}
+
+		return absint( $count );
 	}
 
 	/**
@@ -215,7 +353,6 @@ class Give_DB_Logs extends Give_DB {
         date_gmt datetime NOT NULL,
         PRIMARY KEY  (id)
         ) {$charset_collate};";
-
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		dbDelta( $sql );
