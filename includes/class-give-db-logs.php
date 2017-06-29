@@ -195,6 +195,11 @@ class Give_DB_Logs extends Give_DB {
 
 		$where = ' WHERE 1=1 ';
 
+		// Set offset.
+		if( empty( $args['offset'] ) && ( 0 < $args['paged'] ) ) {
+			$args['offset'] = $args['number'] * ( $args['paged'] - 1 );
+		}
+
 		// Specific logs.
 		if ( ! empty( $args['log_id'] ) ) {
 
