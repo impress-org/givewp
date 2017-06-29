@@ -72,12 +72,13 @@ class Give_Sales_Log_Table extends WP_List_Table {
 			case 'form' :
 				$form_title = get_the_title( $item[ $column_name ] );
 				$form_title = empty( $form_title ) ? sprintf( __( 'Untitled (#%s)', 'give' ), $item[ $column_name ] ) : $form_title;
+
 				return '<a href="' . esc_url( add_query_arg( 'form', $item[ $column_name ] ) ) . '" >' . $form_title . '</a>';
 
 			case 'user_id' :
 				return '<a href="' .
-					   admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . ( ! empty( $item['user_id'] ) ? urlencode( $item['user_id'] ) : give_get_payment_user_email( $item['payment_id'] ) ) ) .
-					   '">' . $item['user_name'] . '</a>';
+				       admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . ( ! empty( $item['user_id'] ) ? urlencode( $item['user_id'] ) : give_get_payment_user_email( $item['payment_id'] ) ) ) .
+				       '">' . $item['user_name'] . '</a>';
 
 			case 'amount' :
 				return give_currency_filter( give_format_amount( $item['amount'] ) );
@@ -338,10 +339,10 @@ class Give_Sales_Log_Table extends WP_List_Table {
 		$user      = $this->get_filtered_user();
 
 		$log_query = array(
-			'post_parent' => $give_form,
-			'log_type'    => 'sale',
-			'paged'       => $paged,
-			'meta_query'  => $this->get_meta_query(),
+			'parent'     => $give_form,
+			'type'       => 'sale',
+			'paged'      => $paged,
+			'meta_query' => $this->get_meta_query(),
 		);
 
 		$cache_key = Give_Cache::get_key( 'get_logs', $log_query );
@@ -352,22 +353,19 @@ class Give_Sales_Log_Table extends WP_List_Table {
 
 			if ( $logs ) {
 				foreach ( $logs as $log ) {
-					$payment_id = give_get_meta( $log->ID, '_give_log_payment_id', true );
-
+					/* @var Give_payment $payment */
+					$payment = new Give_Payment( $log->parent );
+					
 					// Make sure this payment hasn't been deleted
-					if ( get_post( $payment_id ) ) :
-						$user_info      = give_get_payment_meta_user_info( $payment_id );
-						$payment_meta   = give_get_payment_meta( $payment_id );
-						$payment_amount = give_get_payment_amount( $payment_id );
-
+					if ( get_post( $payment->ID ) ) :
 						$logs_data[] = array(
-							'ID'         => '<span class="give-item-label give-item-label-gray">' . $log->ID . '</span>',
-							'payment_id' => $payment_id,
-							'form'       => $log->post_parent,
-							'amount'     => $payment_amount,
-							'user_id'    => $user_info['id'],
-							'user_name'  => $user_info['first_name'] . ' ' . $user_info['last_name'],
-							'date'       => get_post_field( 'post_date', $payment_id ),
+							'ID'         => '<span class="give-item-label give-item-label-gray">' . $log->id . '</span>',
+							'payment_id' => $payment->ID,
+							'form'       => $payment->form_id,
+							'amount'     => $payment->total,
+							'user_id'    => $payment->user_id,
+							'user_name'  => trim( "{$payment->first_name} $payment->last_name" ),
+							'date'       => $payment->date,
 						);
 
 					endif;
