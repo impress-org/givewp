@@ -205,7 +205,7 @@ function give_get_email_body_content( $payment_id = 0, $payment_data = array() )
 	$default_email_body = give_get_default_donation_receipt_email();
 
 	$email_content = give_get_option( 'donation_receipt' );
-	$email_content = isset( $email_content ) ? stripslashes( $email_content ) : $default_email_body;
+	$email_content = ( $email_content ) ? stripslashes( $email_content ) : $default_email_body;
 
 	$email_body = wpautop( $email_content );
 
