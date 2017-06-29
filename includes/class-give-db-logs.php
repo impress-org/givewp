@@ -112,7 +112,7 @@ class Give_DB_Logs extends Give_DB {
 		$current_log_data = wp_parse_args( $data, $this->get_column_defaults() );
 
 		// Log parent should be an int.
-		$current_log_data['parent'] = absint( $current_log_data['parent'] );
+		$current_log_data['log_parent'] = absint( $current_log_data['log_parent'] );
 
 		// Get log.
 		$existing_log = $this->get_log_by( $current_log_data['id'] );
@@ -176,98 +176,13 @@ class Give_DB_Logs extends Give_DB {
 	 * @return mixed
 	 */
 	public function get_logs( $args = array() ) {
-		/* @var WPDB $wpdb */
 		global $wpdb;
-
-		$defaults = array(
-			'number'  => 20,
-			'offset'  => 0,
-			'log_id'  => 0,
-			'orderby' => 'date',
-			'order'   => 'DESC',
-		);
-
-		$args = wp_parse_args( $args, $defaults );
-
-		if ( $args['number'] < 1 ) {
-			$args['number'] = 999999999999;
-		}
-
-		// Where clause for primary table.
-		$where = '';
-
-		// Get sql query for meta.
-		if ( ! empty( $args['meta_query'] ) ) {
-			$meta_query_object = new WP_Meta_Query( $args['meta_query'] );
-			$meta_query        = $meta_query_object->get_sql( 'log', $this->table_name, 'id' );
-			$where             = implode( '', $meta_query );
-		}
-
-		$where .= ' WHERE 1=1 ';
-
-		// Set offset.
-		if ( empty( $args['offset'] ) && ( 0 < $args['paged'] ) ) {
-			$args['offset'] = $args['number'] * ( $args['paged'] - 1 );
-		}
-
-		// Specific logs.
-		if ( ! empty( $args['log_id'] ) ) {
-
-			if ( is_array( $args['log_id'] ) ) {
-				$log_ids = implode( ',', array_map( 'intval', $args['log_id'] ) );
-			} else {
-				$log_ids = intval( $args['log_id'] );
-			}
-
-			$where .= " AND {$this->table_name}.ID IN( {$log_ids} ) ";
-
-		}
-
-		// Logs created for a specific date or in a date range
-		if ( ! empty( $args['date_query'] ) ) {
-			$date_query_object = new WP_Date_Query( $args['date_query'], "{$this->table_name}.date" );
-			$where             .= $date_query_object->get_sql();
-		}
-
-		// Logs create for specific parent.
-		if ( ! empty( $args['parent'] ) ) {
-			if ( is_array( $args['parent'] ) ) {
-				$parent_ids = implode( ',', array_map( 'intval', $args['parent'] ) );
-			} else {
-				$parent_ids = intval( $args['parent'] );
-			}
-
-			$where .= " AND {$this->table_name}.log_parent IN( {$parent_ids} ) ";
-		}
-
-		// Logs create for specific type.
-		if ( ! empty( $args['type'] ) ) {
-			if ( ! is_array( $args['type'] ) ) {
-				$args['type'] = explode( ',', $args['type'] );
-			}
-
-			$log_types = implode( '\',\'', array_map( 'trim', $args['type'] ) );
-
-			$where .= " AND {$this->table_name}.log_type IN( '{$log_types}' ) ";
-		}
-
-		$args['orderby'] = ! array_key_exists( $args['orderby'], $this->get_columns() ) ? 'log_date' : $args['orderby'];
-
-		// Get log from cache.
-		$logs = Give_Cache::get( 'give_logs', true, $args );
-
-		$args['orderby'] = esc_sql( $args['orderby'] );
-		$args['order']   = esc_sql( $args['order'] );
-
-		if ( $logs === false ) {
-			$logs = $wpdb->get_results(
-				$wpdb->prepare(
-					"SELECT {$this->table_name}.* FROM {$this->table_name} {$where} ORDER BY {$args['orderby']} {$args['order']} LIMIT %d,%d;",
-					absint( $args['offset'] ),
-					absint( $args['number'] )
-				)
-			);
-			Give_Cache::set( 'give_logs', $logs, 3600, true, $args );
+		$sql_query = $this->get_sql( $args );
+		
+		// Get log.
+		if ( ! ( $logs = Give_Cache::get( 'give_logs', true, $sql_query ) ) ) {
+			$logs = $wpdb->get_results( $sql_query );
+			Give_Cache::set( 'give_logs', $logs, 3600, true, $sql_query );
 		}
 
 		return $logs;
@@ -287,39 +202,17 @@ class Give_DB_Logs extends Give_DB {
 	public function count( $args = array() ) {
 		/* @var WPDB $wpdb */
 		global $wpdb;
+		$args['number'] = - 1;
+		$args['fields'] = 'ID';
+		$args['count']  = true;
 
-		$where = ' WHERE 1=1 ';
+		$sql_query = $this->get_sql( $args );
 
-		if ( ! empty( $args['date'] ) ) {
-
-			if ( is_array( $args['date'] ) ) {
-
-				$start = date( 'Y-m-d H:i:s', strtotime( $args['date']['start'] ) );
-				$end   = date( 'Y-m-d H:i:s', strtotime( $args['date']['end'] ) );
-
-				$where .= " AND `date_created` >= '{$start}' AND `date_created` <= '{$end}'";
-
-			} else {
-
-				$year  = date( 'Y', strtotime( $args['date'] ) );
-				$month = date( 'm', strtotime( $args['date'] ) );
-				$day   = date( 'd', strtotime( $args['date'] ) );
-
-				$where .= " AND $year = YEAR ( date_created ) AND $month = MONTH ( date_created ) AND $day = DAY ( date_created )";
-			}
-
-		}
-
-
-		$cache_key = Give_Cache::get( 'give_logs_count', true, $args );
-
-		$count = wp_cache_get( $cache_key, 'donors' );
-
-		if ( $count === false ) {
-			$count = $wpdb->get_var( "SELECT COUNT($this->primary_key) FROM " . $this->table_name . "{$where};" );
+		if ( ! ( $count = Give_Cache::get( 'give_logs_count', true, $sql_query ) ) ) {
+			$count = $wpdb->get_var( $sql_query );
 			Give_Cache::set( 'give_logs_count', $count, 3600, true, $args );
 		}
-
+		
 		return absint( $count );
 	}
 
@@ -350,5 +243,134 @@ class Give_DB_Logs extends Give_DB {
 		dbDelta( $sql );
 
 		update_option( $this->table_name . '_db_version', $this->version );
+	}
+
+
+	/**
+	 * Get sql query from quaried array.
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param array $args
+	 *
+	 * @return string
+	 */
+	public function get_sql( $args = array() ) {
+		/* @var WPDB $wpdb */
+		global $wpdb;
+
+		$defaults = array(
+			'number'  => 20,
+			'offset'  => 0,
+			'paged'   => 0,
+			'orderby' => 'date',
+			'order'   => 'DESC',
+			'fields'  => 'all',
+			'count'   => false,
+		);
+
+		$args = wp_parse_args( $args, $defaults );
+
+		// validate params.
+		$this->validate_params( $args );
+
+		if ( $args['number'] < 1 ) {
+			$args['number'] = 999999999999;
+		}
+
+		// Where clause for primary table.
+		$where = '';
+
+		// Get sql query for meta.
+		if ( ! empty( $args['meta_query'] ) ) {
+			$meta_query_object = new WP_Meta_Query( $args['meta_query'] );
+			$meta_query        = $meta_query_object->get_sql( 'log', $this->table_name, 'id' );
+			$where             = implode( '', $meta_query );
+		}
+
+		$where .= ' WHERE 1=1 ';
+
+		// Set offset.
+		if ( empty( $args['offset'] ) && ( 0 < $args['paged'] ) ) {
+			$args['offset'] = $args['number'] * ( $args['paged'] - 1 );
+		}
+
+		// Set fields.
+		$fields = "{$this->table_name}.*";
+		if ( is_string( $args['fields'] ) && ( 'all' !== $args['fields'] ) ) {
+			$fields = "{$this->table_name}.{$args['fields']}";
+		}
+
+		// Set count.
+		if ( $args['count'] ) {
+			$fields = "COUNT({$fields})";
+		}
+
+		// Specific logs.
+		if ( ! empty( $args['ID'] ) ) {
+
+			if ( ! is_array( $args['ID'] ) ) {
+				$args['ID'] = explode( ',', $args['ID'] );
+			}
+			$log_ids = implode( ',', array_map( 'intval', $args['ID'] ) );
+
+			$where .= " AND {$this->table_name}.ID IN( {$log_ids} ) ";
+		}
+
+		// Logs created for a specific date or in a date range
+		if ( ! empty( $args['date_query'] ) ) {
+			$date_query_object = new WP_Date_Query( $args['date_query'], "{$this->table_name}.date" );
+			$where             .= $date_query_object->get_sql();
+		}
+
+		// Logs create for specific parent.
+		if ( ! empty( $args['log_parent'] ) ) {
+			if ( ! is_array( $args['log_parent'] ) ) {
+				$args['log_parent'] = explode( ',', $args['log_parent'] );
+			}
+			$parent_ids = implode( ',', array_map( 'intval', $args['log_parent'] ) );
+
+			$where .= " AND {$this->table_name}.log_parent IN( {$parent_ids} ) ";
+		}
+
+		// Logs create for specific type.
+		if ( ! empty( $args['log_type'] ) ) {
+			if ( ! is_array( $args['log_type'] ) ) {
+				$args['log_type'] = explode( ',', $args['log_type'] );
+			}
+
+			$log_types = implode( '\',\'', array_map( 'trim', $args['log_type'] ) );
+
+			$where .= " AND {$this->table_name}.log_type IN( '{$log_types}' ) ";
+		}
+
+		$args['orderby'] = ! array_key_exists( $args['orderby'], $this->get_columns() ) ? 'log_date' : $args['orderby'];
+
+		$args['orderby'] = esc_sql( $args['orderby'] );
+		$args['order']   = esc_sql( $args['order'] );
+
+		return $wpdb->prepare(
+			"SELECT {$fields} FROM {$this->table_name} {$where} ORDER BY {$this->table_name}.{$args['orderby']} {$args['order']} LIMIT %d,%d;",
+			absint( $args['offset'] ),
+			absint( $args['number'] )
+		);
+	}
+
+
+	/**
+	 * Validate query params.
+	 *
+	 * @since  2.0
+	 * @access private
+	 *
+	 * @param $args
+	 *
+	 * @return mixed
+	 */
+	private function validate_params( &$args ) {
+		$args['fields'] = array_key_exists( $args['fields'], $this->get_columns() ) ?
+			$args['fields'] :
+			'all';
 	}
 }
