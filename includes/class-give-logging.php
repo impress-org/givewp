@@ -319,12 +319,11 @@ class Give_Logging {
 	 */
 	public function get_connected_logs( $args = array() ) {
 		// @todo: add backward compatibility for old table.
-
 		$defaults = array(
 			'number' => 20,
-			'paged'          => get_query_var( 'paged' ),
-			'type'       => false,
-			'date'     => null,
+			'paged'  => get_query_var( 'paged' ),
+			'type'   => false,
+			'date'   => null,
 		);
 
 		$query_args = wp_parse_args( $args, $defaults );
