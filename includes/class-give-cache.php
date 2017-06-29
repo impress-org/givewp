@@ -77,7 +77,12 @@ class Give_Cache {
 
 		// Bailout.
 		if ( ! empty( $query_args ) ) {
-			$cache_key = "{$cache_key}_" . substr( md5( serialize( $query_args ) ), 0, 15 );
+
+			$query_args = is_array( $query_args ) ?
+				serialize( $query_args ) :
+				$query_args;
+
+			$cache_key = "{$cache_key}_" . substr( md5( $query_args ), 0, 15 );
 		}
 
 		return $cache_key;
