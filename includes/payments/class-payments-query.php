@@ -58,7 +58,7 @@ class Give_Payments_Query extends Give_Stats {
 	 */
 	public function __construct( $args = array() ) {
 		$defaults = array(
-			'output'          => 'payments', // Use 'posts' to get standard post objects
+			'output'          => 'payments',
 			'post_type'       => array( 'give_payment' ),
 			'start_date'      => false,
 			'end_date'        => false,
