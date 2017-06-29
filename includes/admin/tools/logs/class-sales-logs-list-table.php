@@ -76,9 +76,16 @@ class Give_Sales_Log_Table extends WP_List_Table {
 				return '<a href="' . esc_url( add_query_arg( 'form', $item[ $column_name ] ) ) . '" >' . $form_title . '</a>';
 
 			case 'user_id' :
-				return '<a href="' .
-				       admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . ( ! empty( $item['user_id'] ) ? urlencode( $item['user_id'] ) : give_get_payment_user_email( $item['payment_id'] ) ) ) .
-				       '">' . $item['user_name'] . '</a>';
+				if ( ! empty( $item['user_id'] ) ) {
+					return sprintf(
+						'<a href="%1$s">%2$s</a>',
+						admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . $item['user_id'] ),
+						$item['donor_name']
+					);
+				} else {
+					return __( 'No donor attached', 'give' );
+				}
+
 
 			case 'amount' :
 				return give_currency_filter( give_format_amount( $item['amount'] ) );
@@ -345,6 +352,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 			'meta_query' => $this->get_meta_query(),
 		);
 
+
 		$cache_key = Give_Cache::get_key( 'get_logs', $log_query );
 
 		// Return result from cache if exist.
@@ -364,7 +372,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 							'form'       => $payment->form_id,
 							'amount'     => $payment->total,
 							'user_id'    => $payment->user_id,
-							'user_name'  => trim( "{$payment->first_name} $payment->last_name" ),
+							'donor_name'  => trim( "{$payment->first_name} $payment->last_name" ),
 							'date'       => $payment->date,
 						);
 
