@@ -193,10 +193,20 @@ class Give_DB_Logs extends Give_DB {
 			$args['number'] = 999999999999;
 		}
 
-		$where = ' WHERE 1=1 ';
+		// Where clause for primary table.
+		$where = '';
+
+		// Get sql query for meta.
+		if ( ! empty( $args['meta_query'] ) ) {
+			$meta_query_object = new WP_Meta_Query( $args['meta_query'] );
+			$meta_query        = $meta_query_object->get_sql( 'log', $this->table_name, 'id' );
+			$where             = implode( '', $meta_query );
+		}
+
+		$where .= ' WHERE 1=1 ';
 
 		// Set offset.
-		if( empty( $args['offset'] ) && ( 0 < $args['paged'] ) ) {
+		if ( empty( $args['offset'] ) && ( 0 < $args['paged'] ) ) {
 			$args['offset'] = $args['number'] * ( $args['paged'] - 1 );
 		}
 
@@ -209,7 +219,7 @@ class Give_DB_Logs extends Give_DB {
 				$log_ids = intval( $args['log_id'] );
 			}
 
-			$where .= " AND `log_id` IN( {$log_ids} ) ";
+			$where .= " AND {$this->table_name}.log_id IN( {$log_ids} ) ";
 
 		}
 
@@ -222,7 +232,7 @@ class Give_DB_Logs extends Give_DB {
 
 					$start = date( 'Y-m-d H:i:s', strtotime( $args['date']['start'] ) );
 
-					$where .= " AND `date_created` >= '{$start}'";
+					$where .= " AND {$this->table_name}.date >= '{$start}'";
 
 				}
 
@@ -230,7 +240,7 @@ class Give_DB_Logs extends Give_DB {
 
 					$end = date( 'Y-m-d H:i:s', strtotime( $args['date']['end'] ) );
 
-					$where .= " AND `date_created` <= '{$end}'";
+					$where .= " AND {$this->table_name}.date <= '{$end}'";
 
 				}
 			} else {
@@ -239,19 +249,19 @@ class Give_DB_Logs extends Give_DB {
 				$month = date( 'm', strtotime( $args['date'] ) );
 				$day   = date( 'd', strtotime( $args['date'] ) );
 
-				$where .= " AND $year = YEAR ( date_created ) AND $month = MONTH ( date_created ) AND $day = DAY ( date_created )";
+				$where .= " AND $year = YEAR ( {$this->table_name}.date ) AND $month = MONTH ( {$this->table_name}.date ) AND $day = DAY ( {$this->table_name}.date )";
 			}
 		}
 
 		// Logs create for specific parent.
-		if( ! empty( $args['parent'] ) ) {
+		if ( ! empty( $args['parent'] ) ) {
 			if ( is_array( $args['parent'] ) ) {
 				$parent_ids = implode( ',', array_map( 'intval', $args['parent'] ) );
 			} else {
 				$parent_ids = intval( $args['parent'] );
 			}
 
-			$where .= " AND `parent` IN( {$parent_ids} ) ";
+			$where .= " AND {$this->table_name}.parent IN( {$parent_ids} ) ";
 		}
 
 		// Logs create for specific type.
@@ -262,7 +272,7 @@ class Give_DB_Logs extends Give_DB {
 
 			$log_types = implode( '\',\'', array_map( 'trim', $log_types ) );
 
-			$where .= " AND `type` IN( '{$log_types}' ) ";
+			$where .= " AND {$this->table_name}.type IN( '{$log_types}' ) ";
 		}
 
 		$args['orderby'] = ! array_key_exists( $args['orderby'], $this->get_columns() ) ? 'date' : $args['orderby'];
@@ -275,7 +285,7 @@ class Give_DB_Logs extends Give_DB {
 		if ( $logs === false ) {
 			$logs = $wpdb->get_results(
 				$wpdb->prepare(
-					"SELECT * FROM  $this->table_name $where ORDER BY {$args['orderby']} {$args['order']} LIMIT %d,%d;",
+					"SELECT {$this->table_name}.* FROM {$this->table_name} {$where} ORDER BY {$args['orderby']} {$args['order']} LIMIT %d,%d;",
 					absint( $args['offset'] ),
 					absint( $args['number'] )
 				)
