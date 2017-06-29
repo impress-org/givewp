@@ -346,12 +346,17 @@ class Give_Sales_Log_Table extends WP_List_Table {
 		$user      = $this->get_filtered_user();
 
 		$log_query = array(
-			'parent'     => $give_form,
 			'type'       => 'sale',
 			'paged'      => $paged,
 			'meta_query' => $this->get_meta_query(),
 		);
 
+		if( ! empty( $give_form ) ) {
+			$log_query['meta_query'][] = array(
+				'key' => '_give_log_form_id',
+				'value' => $give_form
+			);
+		}
 
 		$cache_key = Give_Cache::get_key( 'get_logs', $log_query );
 
