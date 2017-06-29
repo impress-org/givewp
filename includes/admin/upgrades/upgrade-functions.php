@@ -1353,7 +1353,7 @@ function give_v20_logs_upgrades() {
 					switch ( $meta_key ) {
 						case '_give_log_payment_id':
 							$log_data['parent'] = current( $meta_value );
-							$log_meta['_give_log_form_id'] = current(  $meta_value );
+							$log_meta['_give_log_form_id'] = $post->post_parent;
 							break;
 
 						default:
