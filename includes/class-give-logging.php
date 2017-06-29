@@ -373,7 +373,22 @@ class Give_Logging {
 	 * @return int                Log count.
 	 */
 	public function get_log_count( $object_id = 0, $type = null, $meta_query = null, $date_query = null ) {
-		return $this->log_db->count();
+		$log_query = array(
+			'log_type' => $type,
+			'meta_query' => $meta_query,
+			'date_query' => $date_query
+		);
+
+		if( $object_id ) {
+			$log_query['meta_query'] = array(
+				array(
+					'key' => '_give_log_form_id',
+					'value' => $object_id
+				)
+			);
+		}
+
+		return $this->log_db->count( $log_query );
 	}
 
 	/**
