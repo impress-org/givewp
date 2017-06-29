@@ -197,10 +197,10 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 				$logs_data[] = array(
 					'ID'         => $log->ID,
 					'ID_label'   => '<span class=\'give-item-label give-item-label-gray\'>' . $log->ID . '</span>',
-					'payment_id' => $log->post_parent,
+					'payment_id' => $log->log_parent,
 					'error'      => 'error',
-					'gateway'    => give_get_payment_gateway( $log->post_parent ),
-					'date'       => $log->post_date
+					'gateway'    => give_get_payment_gateway( $log->log_parent ),
+					'date'       => $log->log_date
 				);
 			}
 		}

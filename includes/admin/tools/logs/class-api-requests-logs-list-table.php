@@ -301,7 +301,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 				$logs_data[] = array(
 					'ID'   => $log->ID,
 					'ip'   => give_get_meta( $log->ID, '_give_log_request_ip', true ),
-					'date' => $log->post_date,
+					'date' => $log->log_date,
 				);
 			}
 		}
@@ -323,6 +323,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 * @return void
 	 */
 	public function prepare_items() {
+		/* @var Give_Logging $give_logs*/
 		global $give_logs;
 
 		$columns               = $this->get_columns();
