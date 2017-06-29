@@ -341,22 +341,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 		global $give_logs;
 
 		$logs_data = array();
-		$paged     = $this->get_paged();
-		$give_form = empty( $_GET['s'] ) ? $this->get_filtered_give_form() : null;
-		$user      = $this->get_filtered_user();
-
-		$log_query = array(
-			'type'       => 'sale',
-			'paged'      => $paged,
-			'meta_query' => $this->get_meta_query(),
-		);
-
-		if( ! empty( $give_form ) ) {
-			$log_query['meta_query'][] = array(
-				'key' => '_give_log_form_id',
-				'value' => $give_form
-			);
-		}
+		$log_query = $this->get_query_params();
 
 		$cache_key = Give_Cache::get_key( 'get_logs', $log_query );
 
@@ -368,7 +353,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 				foreach ( $logs as $log ) {
 					/* @var Give_payment $payment */
 					$payment = new Give_Payment( $log->log_parent );
-					
+
 					// Make sure this payment hasn't been deleted
 					if ( get_post( $payment->ID ) ) :
 						$logs_data[] = array(
@@ -377,7 +362,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 							'form'       => $payment->form_id,
 							'amount'     => $payment->total,
 							'user_id'    => $payment->user_id,
-							'donor_name'  => trim( "{$payment->first_name} $payment->last_name" ),
+							'donor_name' => trim( "{$payment->first_name} $payment->last_name" ),
 							'date'       => $payment->date,
 						);
 
@@ -425,5 +410,35 @@ class Give_Sales_Log_Table extends WP_List_Table {
 				'total_pages' => ceil( $total_items / $this->per_page ),
 			)
 		);
+	}
+
+
+	/**
+	 * Get log query param.
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @return array
+	 */
+	public function get_query_params() {
+		$paged     = $this->get_paged();
+		$give_form = empty( $_GET['s'] ) ? $this->get_filtered_give_form() : null;
+		$user      = $this->get_filtered_user();
+
+		$log_query = array(
+			'type'       => 'sale',
+			'paged'      => $paged,
+			'meta_query' => $this->get_meta_query(),
+		);
+
+		if ( ! empty( $give_form ) ) {
+			$log_query['meta_query'][] = array(
+				'key'   => '_give_log_form_id',
+				'value' => $give_form,
+			);
+		}
+
+		return $log_query;
 	}
 }
