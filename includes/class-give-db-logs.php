@@ -224,33 +224,9 @@ class Give_DB_Logs extends Give_DB {
 		}
 
 		// Logs created for a specific date or in a date range
-		if ( ! empty( $args['date'] ) ) {
-
-			if ( is_array( $args['date'] ) ) {
-
-				if ( ! empty( $args['date']['start'] ) ) {
-
-					$start = date( 'Y-m-d H:i:s', strtotime( $args['date']['start'] ) );
-
-					$where .= " AND {$this->table_name}.date >= '{$start}'";
-
-				}
-
-				if ( ! empty( $args['date']['end'] ) ) {
-
-					$end = date( 'Y-m-d H:i:s', strtotime( $args['date']['end'] ) );
-
-					$where .= " AND {$this->table_name}.date <= '{$end}'";
-
-				}
-			} else {
-
-				$year  = date( 'Y', strtotime( $args['date'] ) );
-				$month = date( 'm', strtotime( $args['date'] ) );
-				$day   = date( 'd', strtotime( $args['date'] ) );
-
-				$where .= " AND $year = YEAR ( {$this->table_name}.date ) AND $month = MONTH ( {$this->table_name}.date ) AND $day = DAY ( {$this->table_name}.date )";
-			}
+		if ( ! empty( $args['date_query'] ) ) {
+			$date_query_object = new WP_Date_Query( $args['date_query'], "{$this->table_name}.date" );
+			$where             .= $date_query_object->get_sql();
 		}
 
 		// Logs create for specific parent.
