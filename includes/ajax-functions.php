@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_test_ajax_works() {
 
-	// Check if the Airplane Mode plugin is installed
+	// Check if the Airplane Mode plugin is installed.
 	if ( class_exists( 'Airplane_Mode_Core' ) ) {
 
 		$airplane = Airplane_Mode_Core::getInstance();
@@ -37,7 +37,7 @@ function give_test_ajax_works() {
 			}
 		} else {
 
-			if ( $airplane->check_status() == 'on' ) {
+			if ( 'on' === $airplane->check_status()  ) {
 				return true;
 			}
 		}
@@ -343,7 +343,7 @@ function give_ajax_search_users() {
 
 				$results[] = array(
 					'id'   => $user->ID,
-					'name' =>  esc_html( $user->user_login . ' (' . $user->user_email . ')' ),
+					'name' => esc_html( $user->user_login . ' (' . $user->user_email . ')' ),
 				);
 			}
 		} else {
