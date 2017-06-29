@@ -29,7 +29,7 @@ class Give_Logging {
 	 * @access private
 	 * @var Give_DB_Logs
 	 */
-	private $log_db;
+	public $log_db;
 
 	/**
 	 * Log meta data operation handler object.
@@ -38,7 +38,7 @@ class Give_Logging {
 	 * @access private
 	 * @var Give_DB_Log_Meta
 	 */
-	private $logmeta_db;
+	public $logmeta_db;
 
 	/**
 	 * Class Constructor
