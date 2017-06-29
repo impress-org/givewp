@@ -36,7 +36,7 @@ class Give_DB_Logs extends Give_DB {
 		global $wpdb;
 
 		$this->table_name  = $wpdb->prefix . 'give_logs';
-		$this->primary_key = 'id';
+		$this->primary_key = 'ID';
 		$this->version     = '1.0';
 
 		// Install table.
@@ -54,13 +54,13 @@ class Give_DB_Logs extends Give_DB {
 	 */
 	public function get_columns() {
 		return array(
-			'id'       => '%d',
-			'title'    => '%s',
-			'content'  => '%s',
-			'parent'   => '%d',
-			'type'     => '%s',
-			'date'     => '%s',
-			'date_gmt' => '%s',
+			'ID'           => '%d',
+			'log_title'    => '%s',
+			'log_content'  => '%s',
+			'log_parent'   => '%d',
+			'log_type'     => '%s',
+			'log_date'     => '%s',
+			'log_date_gmt' => '%s',
 		);
 	}
 
@@ -77,13 +77,13 @@ class Give_DB_Logs extends Give_DB {
 		$log_create_date_gmt = get_gmt_from_date( $log_create_date );
 
 		return array(
-			'id'       => 0,
-			'title'    => '',
-			'content'  => '',
-			'parent'   => 0,
-			'type'     => '',
-			'date'     => $log_create_date,
-			'date_gmt' => $log_create_date_gmt,
+			'ID'           => 0,
+			'log_title'    => '',
+			'log_content'  => '',
+			'log_parent'   => 0,
+			'log_type'     => '',
+			'log_date'     => $log_create_date,
+			'log_date_gmt' => $log_create_date_gmt,
 		);
 	}
 
@@ -158,7 +158,7 @@ class Give_DB_Logs extends Give_DB {
 			return null;
 		}
 
-		if ( ! $log = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $this->table_name WHERE id = %s LIMIT 1", $log_id ), ARRAY_A ) ) {
+		if ( ! $log = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $this->table_name WHERE ID = %s LIMIT 1", $log_id ), ARRAY_A ) ) {
 			return false;
 		}
 
@@ -219,7 +219,7 @@ class Give_DB_Logs extends Give_DB {
 				$log_ids = intval( $args['log_id'] );
 			}
 
-			$where .= " AND {$this->table_name}.log_id IN( {$log_ids} ) ";
+			$where .= " AND {$this->table_name}.ID IN( {$log_ids} ) ";
 
 		}
 
@@ -237,22 +237,23 @@ class Give_DB_Logs extends Give_DB {
 				$parent_ids = intval( $args['parent'] );
 			}
 
-			$where .= " AND {$this->table_name}.parent IN( {$parent_ids} ) ";
+			$where .= " AND {$this->table_name}.log_parent IN( {$parent_ids} ) ";
 		}
 
 		// Logs create for specific type.
 		if ( ! empty( $args['type'] ) ) {
 			if ( ! is_array( $args['type'] ) ) {
-				$log_types = explode( ',', $args['type'] );
+				$args['type'] = explode( ',', $args['type'] );
 			}
 
-			$log_types = implode( '\',\'', array_map( 'trim', $log_types ) );
+			$log_types = implode( '\',\'', array_map( 'trim', $args['type'] ) );
 
-			$where .= " AND {$this->table_name}.type IN( '{$log_types}' ) ";
+			$where .= " AND {$this->table_name}.log_type IN( '{$log_types}' ) ";
 		}
 
-		$args['orderby'] = ! array_key_exists( $args['orderby'], $this->get_columns() ) ? 'date' : $args['orderby'];
+		$args['orderby'] = ! array_key_exists( $args['orderby'], $this->get_columns() ) ? 'log_date' : $args['orderby'];
 
+		// Get log from cache.
 		$logs = Give_Cache::get( 'give_logs', true, $args );
 
 		$args['orderby'] = esc_sql( $args['orderby'] );
@@ -335,14 +336,14 @@ class Give_DB_Logs extends Give_DB {
 		$charset_collate = $wpdb->get_charset_collate();
 
 		$sql = "CREATE TABLE {$this->table_name} (
-        id bigint(20) NOT NULL AUTO_INCREMENT,
-        title longtext NOT NULL,
-        content longtext NOT NULL,
-      	parent bigint(20) NOT NULL,
-        type mediumtext NOT NULL,
-        date datetime NOT NULL,
-        date_gmt datetime NOT NULL,
-        PRIMARY KEY  (id)
+        ID bigint(20) NOT NULL AUTO_INCREMENT,
+        log_title longtext NOT NULL,
+        log_content longtext NOT NULL,
+      	log_parent bigint(20) NOT NULL,
+        log_type mediumtext NOT NULL,
+        log_date datetime NOT NULL,
+        log_date_gmt datetime NOT NULL,
+        PRIMARY KEY  (ID)
         ) {$charset_collate};";
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
