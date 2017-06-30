@@ -547,16 +547,17 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 */
 	public function get_bulk_actions() {
 		$actions = array(
-			'delete'                => esc_html__( 'Delete', 'give' ),
-			'set-status-publish'    => esc_html__( 'Set To Completed', 'give' ),
-			'set-status-pending'    => esc_html__( 'Set To Pending', 'give' ),
-			'set-status-processing' => esc_html__( 'Set To Processing', 'give' ),
-			'set-status-refunded'   => esc_html__( 'Set To Refunded', 'give' ),
-			'set-status-revoked'    => esc_html__( 'Set To Revoked', 'give' ),
-			'set-status-failed'     => esc_html__( 'Set To Failed', 'give' ),
-			'set-status-cancelled'  => esc_html__( 'Set To Cancelled', 'give' ),
-			'set-status-abandoned'  => esc_html__( 'Set To Abandoned', 'give' ),
-			'resend-receipt'        => esc_html__( 'Resend Email Receipts', 'give' ),
+			'delete'                 => esc_html__( 'Delete', 'give' ),
+			'set-status-publish'     => esc_html__( 'Set To Completed', 'give' ),
+			'set-status-pending'     => esc_html__( 'Set To Pending', 'give' ),
+			'set-status-processing'  => esc_html__( 'Set To Processing', 'give' ),
+			'set-status-refunded'    => esc_html__( 'Set To Refunded', 'give' ),
+			'set-status-revoked'     => esc_html__( 'Set To Revoked', 'give' ),
+			'set-status-failed'      => esc_html__( 'Set To Failed', 'give' ),
+			'set-status-cancelled'   => esc_html__( 'Set To Cancelled', 'give' ),
+			'set-status-abandoned'   => esc_html__( 'Set To Abandoned', 'give' ),
+			'set-status-preapproval' => esc_html__( 'Set To Preapproval', 'give' ),
+			'resend-receipt'         => esc_html__( 'Resend Email Receipts', 'give' ),
 		);
 
 		return apply_filters( 'give_payments_table_bulk_actions', $actions );
