@@ -35,4 +35,4 @@ If you would like to submit a pull request, please follow the steps below:
 * If you're adding/editing a function in a class, make sure to add `@access {private|public|protected}`
 * Finally, please use tabs and not spaces. The tab indent size should be 4 for all Give code.
 
-At this point you're waiting on us to merge your pull request. We'll review all pull requests, and make suggestions and changes if necessary.
+At this point, you're waiting for us to merge your pull request. We'll review all pull requests, and make suggestions and changes if necessary.
