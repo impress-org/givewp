@@ -577,6 +577,11 @@ class Give_Payment_History_Table extends WP_List_Table {
 			$ids = array( $ids );
 		}
 
+		// Return if donation id is set as false.
+		if ( is_array( $ids ) && false === $ids[0] ) {
+			return;
+		}
+
 		if ( empty( $action ) ) {
 			return;
 		}
