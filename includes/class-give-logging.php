@@ -427,22 +427,3 @@ class Give_Logging {
 		Give_Cache::delete( $cache_option_names );
 	}
 }
-
-/**
- * Record a log entry
- *
- * A wrapper function for the Give_Logging class add() method.
- *
- * @since  1.0
- * @since  2.0 Use global logs object
- *
- * @param  string $title   Log title. Default is empty.
- * @param  string $message Log message. Default is empty.
- * @param  int    $parent  Parent log. Default is 0.
- * @param  string $type    Log type. Default is null.
- *
- * @return int             ID of the new log entry.
- */
-function give_record_log( $title = '', $message = '', $parent = 0, $type = null ) {
-	return Give()->logs->add( $title, $message, $parent, $type );
-}
