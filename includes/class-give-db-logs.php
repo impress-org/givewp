@@ -115,7 +115,7 @@ class Give_DB_Logs extends Give_DB {
 		$current_log_data['log_parent'] = absint( $current_log_data['log_parent'] );
 
 		// Get log.
-		$existing_log = $this->get_log_by( $current_log_data['id'] );
+		$existing_log = $this->get_log_by( $current_log_data['ID'] );
 
 		// Update an existing log.
 		if ( $existing_log ) {
