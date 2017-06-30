@@ -59,22 +59,14 @@ class Give_Logging {
 		add_action( 'save_post_give_forms', array( $this, 'background_process_delete_cache' ) );
 		add_action( 'save_post_give_log', array( $this, 'background_process_delete_cache' ) );
 		add_action( 'give_delete_log_cache', array( $this, 'delete_cache' ) );
-	}
 
-
-	/**
-	 * Setup hooks
-	 *
-	 * @since  1.7
-	 * @access public
-	 */
-	public function __setup_hooks() {
 		// Create the log post type
 		add_action( 'init', array( $this, 'register_post_type' ), 1 );
 
 		// Create types taxonomy and default types
 		add_action( 'init', array( $this, 'register_taxonomy' ), 1 );
 	}
+
 
 	/**
 	 * Log Post Type
@@ -488,10 +480,6 @@ class Give_Logging {
 		Give_Cache::delete( $cache_option_names );
 	}
 }
-
-// Initiate the logging system
-$GLOBALS['give_logs'] = new Give_Logging();
-$GLOBALS['give_logs']->__setup_hooks();
 
 /**
  * Record a log entry
