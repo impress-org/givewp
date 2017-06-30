@@ -74,9 +74,9 @@ class Tests_Logging extends Give_Unit_Test_Case {
 	public function test_get_logs() {
 		$args   = array(
 			'log_type'     => 'sale',
-			'post_parent'  => 1,
-			'post_title'   => 'Test Log',
-			'post_content' => 'This is a test log inserted from PHPUnit'
+			'log_parent'  => 1,
+			'log_title'   => 'Test Log',
+			'log_content' => 'This is a test log inserted from PHPUnit'
 		);
 		$log_id = Give()->logs->insert_log( $args );
 		$out    = Give()->logs->get_logs( 1, 'sale' );
@@ -101,11 +101,11 @@ class Tests_Logging extends Give_Unit_Test_Case {
 	public function test_get_connected_logs() {
 		$log_id = Give()->logs->insert_log( array(
 			'log_type'     => 'sale',
-			'post_parent'  => 1,
-			'post_title'   => 'Test Log',
-			'post_content' => 'This is a test log inserted from PHPUnit'
+			'log_parent'  => 1,
+			'log_title'   => 'Test Log',
+			'log_content' => 'This is a test log inserted from PHPUnit'
 		) );
-		$out    = Give()->logs->get_connected_logs( array( 'post_parent' => 1, 'log_type' => 'sale' ) );
+		$out    = Give()->logs->get_connected_logs( array( 'log_parent' => 1, 'log_type' => 'sale' ) );
 
 		$this->assertObjectHasAttribute( 'ID', $out[0] );
 		$this->assertObjectHasAttribute( 'log_date', $out[0] );
@@ -127,33 +127,33 @@ class Tests_Logging extends Give_Unit_Test_Case {
 	public function test_get_log_count() {
 		Give()->logs->insert_log( array(
 			'log_type'     => 'sale',
-			'post_parent'  => 1,
-			'post_title'   => 'Test Log',
-			'post_content' => 'This is a test log inserted from PHPUnit'
+			'log_parent'  => 1,
+			'log_title'   => 'Test Log',
+			'log_content' => 'This is a test log inserted from PHPUnit'
 		) );
 		Give()->logs->insert_log( array(
 			'log_type'     => 'sale',
-			'post_parent'  => 1,
-			'post_title'   => 'Test Log',
-			'post_content' => 'This is a test log inserted from PHPUnit'
+			'log_parent'  => 1,
+			'log_title'   => 'Test Log',
+			'log_content' => 'This is a test log inserted from PHPUnit'
 		) );
 		Give()->logs->insert_log( array(
 			'log_type'     => 'sale',
-			'post_parent'  => 1,
-			'post_title'   => 'Test Log',
-			'post_content' => 'This is a test log inserted from PHPUnit'
+			'log_parent'  => 1,
+			'log_title'   => 'Test Log',
+			'log_content' => 'This is a test log inserted from PHPUnit'
 		) );
 		Give()->logs->insert_log( array(
 			'log_type'     => 'sale',
-			'post_parent'  => 1,
-			'post_title'   => 'Test Log',
-			'post_content' => 'This is a test log inserted from PHPUnit'
+			'log_parent'  => 1,
+			'log_title'   => 'Test Log',
+			'log_content' => 'This is a test log inserted from PHPUnit'
 		) );
 		Give()->logs->insert_log( array(
 			'log_type'     => 'sale',
-			'post_parent'  => 1,
-			'post_title'   => 'Test Log',
-			'post_content' => 'This is a test log inserted from PHPUnit'
+			'log_parent'  => 1,
+			'log_title'   => 'Test Log',
+			'log_content' => 'This is a test log inserted from PHPUnit'
 		) );
 
 		$this->assertInternalType( 'integer', Give()->logs->get_log_count( 1, 'sale' ) );
@@ -168,33 +168,33 @@ class Tests_Logging extends Give_Unit_Test_Case {
 	public function test_delete_logs() {
 		Give()->logs->insert_log( array(
 			'log_type'     => 'sale',
-			'post_parent'  => 1,
-			'post_title'   => 'Test Log',
-			'post_content' => 'This is a test log inserted from PHPUnit'
+			'log_parent'  => 1,
+			'log_title'   => 'Test Log',
+			'log_content' => 'This is a test log inserted from PHPUnit'
 		) );
 		Give()->logs->insert_log( array(
 			'log_type'     => 'sale',
-			'post_parent'  => 1,
-			'post_title'   => 'Test Log',
-			'post_content' => 'This is a test log inserted from PHPUnit'
+			'log_parent'  => 1,
+			'log_title'   => 'Test Log',
+			'log_content' => 'This is a test log inserted from PHPUnit'
 		) );
 		Give()->logs->insert_log( array(
 			'log_type'     => 'sale',
-			'post_parent'  => 1,
-			'post_title'   => 'Test Log',
-			'post_content' => 'This is a test log inserted from PHPUnit'
+			'log_parent'  => 1,
+			'log_title'   => 'Test Log',
+			'log_content' => 'This is a test log inserted from PHPUnit'
 		) );
 		Give()->logs->insert_log( array(
 			'log_type'     => 'sale',
-			'post_parent'  => 1,
-			'post_title'   => 'Test Log',
-			'post_content' => 'This is a test log inserted from PHPUnit'
+			'log_parent'  => 1,
+			'log_title'   => 'Test Log',
+			'log_content' => 'This is a test log inserted from PHPUnit'
 		) );
 		Give()->logs->insert_log( array(
 			'log_type'     => 'sale',
-			'post_parent'  => 1,
-			'post_title'   => 'Test Log',
-			'post_content' => 'This is a test log inserted from PHPUnit'
+			'log_parent'  => 1,
+			'log_title'   => 'Test Log',
+			'log_content' => 'This is a test log inserted from PHPUnit'
 		) );
 
 		$this->assertNull( Give()->logs->delete_logs( 1 ) );

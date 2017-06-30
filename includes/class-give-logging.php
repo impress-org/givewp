@@ -293,6 +293,10 @@ class Give_Logging {
 	public function get_log_count( $object_id = 0, $type = null, $meta_query = null, $date_query = null ) {
 		$log_query = array();
 
+		if ( $object_id ) {
+			$log_query['log_parent'] = $object_id;
+		}
+
 		if ( ! empty( $type ) ) {
 			$log_query['log_type'] = $type;
 		}
@@ -303,16 +307,6 @@ class Give_Logging {
 
 		if ( ! empty( $date_query ) ) {
 			$log_query['date_query'] = $date_query;
-		}
-
-
-		if ( $object_id ) {
-			$log_query['meta_query'] = array(
-				array(
-					'key'   => '_give_log_form_id',
-					'value' => $object_id,
-				),
-			);
 		}
 
 		return $this->log_db->count( $log_query );
