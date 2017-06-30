@@ -437,7 +437,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 		if ( give_is_payment_complete( $payment->ID ) && ! empty( $email ) ) {
 
-			$actions['email_links'] = sprintf( '<a href="%1$s" aria-label="%2$s">%3$s</a>', wp_nonce_url( add_query_arg( array(
+			$actions['email_links'] = sprintf( '<a class="resend-single-donation-receipt" href="%1$s" aria-label="%2$s">%3$s</a>', wp_nonce_url( add_query_arg( array(
 				'give-action' => 'email_links',
 				'purchase_id' => $payment->ID,
 			), $this->base_url ), 'give_payment_nonce' ), sprintf( esc_attr__( 'Resend Donation %s Receipt', 'give' ), $payment->ID ), esc_html__( 'Resend Receipt', 'give' ) );
