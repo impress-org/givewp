@@ -236,11 +236,18 @@ jQuery.noConflict();
 
         init: function () {
             this.delete_single_donation();
+            this.resend_single_donation_receipt();
         },
 
         delete_single_donation: function () {
             $('body').on('click', '.delete-single-donation', function (e) {
                 return confirm(give_vars.delete_payment);
+            });
+        },
+
+        resend_single_donation_receipt: function () {
+            $('body').on('click', '.resend-single-donation-receipt', function (e) {
+                return confirm(give_vars.resend_receipt);
             });
         }
 
