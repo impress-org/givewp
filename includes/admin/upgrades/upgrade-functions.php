@@ -1374,6 +1374,9 @@ function give_v20_logs_upgrades() {
 				}
 			}
 
+			//@todo: delete log taxonomy and terms.
+			//@todo: delete all logs.
+
 		}// End while().
 
 		wp_reset_postdata();
