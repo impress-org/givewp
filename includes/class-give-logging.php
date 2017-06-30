@@ -158,7 +158,7 @@ class Give_Logging {
 	 * @return int             The ID of the newly created log item.
 	 */
 	public function insert_log( $log_data = array(), $log_meta = array() ) {
-		$this->validate_params( $log_data );
+		$this->validate_params( $log_data, $log_meta );
 
 		/**
 		 * Fires before inserting log entry.
@@ -176,7 +176,7 @@ class Give_Logging {
 		// Set log meta, if any
 		if ( $log_id && ! empty( $log_meta ) ) {
 			foreach ( (array) $log_meta as $key => $meta ) {
-				$this->logmeta_db->update_meta( $log_id, sanitize_key( $key ), $meta );
+				$this->logmeta_db->update_meta( $log_id, '_give_log_' . sanitize_key( $key ), $meta );
 			}
 		}
 
@@ -206,7 +206,7 @@ class Give_Logging {
 	 * @return bool|null       True if successful, false otherwise.
 	 */
 	public function update_log( $log_data = array(), $log_meta = array() ) {
-		$this->validate_params( $log_data );
+		$this->validate_params( $log_data, $log_meta );
 
 		/**
 		 * Fires before updating log entry.
@@ -291,11 +291,20 @@ class Give_Logging {
 	 * @return int                Log count.
 	 */
 	public function get_log_count( $object_id = 0, $type = null, $meta_query = null, $date_query = null ) {
-		$log_query = array(
-			'log_type'   => $type,
-			'meta_query' => $meta_query,
-			'date_query' => $date_query,
-		);
+		$log_query = array();
+
+		if ( ! empty( $type ) ) {
+			$log_query['log_type'] = $type;
+		}
+
+		if ( ! empty( $meta_query ) ) {
+			$log_query['meta_query'] = $meta_query;
+		}
+
+		if ( ! empty( $date_query ) ) {
+			$log_query['date_query'] = $date_query;
+		}
+
 
 		if ( $object_id ) {
 			$log_query['meta_query'] = array(
@@ -397,27 +406,30 @@ class Give_Logging {
 	 *
 	 * @since  2.0
 	 * @access private
+	 *
+	 * @param       $log_query
+	 * @param array $log_meta
 	 */
-	private function validate_params( &$args ) {
+	private function validate_params( &$log_query, &$log_meta = array() ) {
 		// Backward compatibility version 2.0
-		if( isset( $args['post_title'] ) ) {
-			$args['log_title'] = $args['post_title'];
-			unset( $args['post_title'] );
+		if ( isset( $log_query['post_title'] ) ) {
+			$log_query['log_title'] = $log_query['post_title'];
+			unset( $log_query['post_title'] );
 		}
 
-		if( isset( $args['post_content'] ) ) {
-			$args['log_content'] = $args['post_content'];
-			unset( $args['post_content'] );
+		if ( isset( $log_query['post_content'] ) ) {
+			$log_query['log_content'] = $log_query['post_content'];
+			unset( $log_query['post_content'] );
 		}
 
-		if( isset( $args['post_parent'] ) ) {
-			$args['log_parent'] = $args['post_parent'];
-			unset( $args['post_parent'] );
+		if ( isset( $log_query['post_parent'] ) ) {
+			$log_meta['form_id'] = $log_query['post_parent'];
+			unset( $log_query['post_parent'] );
 		}
 
-		if( isset( $args['post_type'] ) ) {
-			$args['log_type'] = $args['post_type'];
-			unset( $args['post_type'] );
+		if ( isset( $log_query['post_type'] ) ) {
+			$log_query['log_type'] = $log_query['post_type'];
+			unset( $log_query['post_type'] );
 		}
 	}
 }
