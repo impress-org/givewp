@@ -72,12 +72,9 @@ class Give_Payment_Stats extends Give_Stats {
 
 			$this->timestamp = false;
 
-			// Product specific stats
-			global $give_logs;
-
 			add_filter( 'posts_where', array( $this, 'payments_where' ) );
 
-			$count = $give_logs->get_log_count( $form_id, 'sale' );
+			$count = Give()->logs->get_log_count( $form_id, 'sale' );
 
 			remove_filter( 'posts_where', array( $this, 'payments_where' ) );
 
@@ -160,7 +157,7 @@ class Give_Payment_Stats extends Give_Stats {
 		} else {
 
 			// Donation form specific earning stats
-			global $give_logs, $wpdb;
+			global $wpdb;
 
 			$args = array(
 				'post_parent'         => $form_id,
@@ -182,7 +179,7 @@ class Give_Payment_Stats extends Give_Stats {
 			if ( false === $earnings ) {
 
 				$this->timestamp = false;
-				$log_ids  = $give_logs->get_connected_logs( $args, 'sale' );
+				$log_ids  = Give()->logs->get_connected_logs( $args, 'sale' );
 				$earnings = 0;
 
 				if ( $log_ids ) {

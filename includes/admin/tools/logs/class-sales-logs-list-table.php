@@ -333,13 +333,10 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @global object $give_logs Give Logs Object
+	 *
 	 * @return array $logs_data Array of all the Log entires
 	 */
 	public function get_logs() {
-		/** @var Give_Logging $give_logs */
-		global $give_logs;
-
 		$logs_data = array();
 		$log_query = $this->get_query_params();
 
@@ -347,7 +344,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 
 		// Return result from cache if exist.
 		if ( ! ( $logs_data = Give_Cache::get( $cache_key ) ) ) {
-			$logs = $give_logs->get_connected_logs( $log_query );
+			$logs = Give()->logs->get_connected_logs( $log_query );
 
 			if ( $logs ) {
 				foreach ( $logs as $log ) {
@@ -384,25 +381,22 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @global object $give_logs Give Logs Object
 	 * @uses   Give_Sales_Log_Table::get_columns()
 	 * @uses   WP_List_Table::get_sortable_columns()
 	 * @uses   Give_Sales_Log_Table::get_pagenum()
 	 * @uses   Give_Sales_Log_Table::get_logs()
 	 * @uses   Give_Sales_Log_Table::get_log_count()
+	 *
 	 * @return void
 	 */
 	public function prepare_items() {
-		/** @var Give_Logging $give_logs */
-		global $give_logs;
-
 		$columns               = $this->get_columns();
 		$hidden                = array();
 		$sortable              = $this->get_sortable_columns();
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 		$current_page          = $this->get_pagenum();
 		$this->items           = $this->get_logs();
-		$total_items           = $give_logs->get_log_count( $this->get_filtered_give_form(), 'sale', $this->get_meta_query() );
+		$total_items           = Give()->logs->get_log_count( $this->get_filtered_give_form(), 'sale', $this->get_meta_query() );
 
 		$this->set_pagination_args( array(
 				'total_items' => $total_items,

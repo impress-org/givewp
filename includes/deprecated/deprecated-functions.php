@@ -443,7 +443,6 @@ function give_purchase_total_of_user( $user = null ) {
  * Deletes a Donation
  *
  * @since  1.0
- * @global      $give_logs
  *
  * @param  int  $payment_id      Payment ID (default: 0).
  * @param  bool $update_customer If we should update the customer stats (default:true).
@@ -527,7 +526,6 @@ function give_increase_purchase_count( $form_id = 0, $quantity = 1 ) {
  * Stores log information for a donation.
  *
  * @since 1.0
- * @global            $give_logs Give_Logging
  *
  * @param int         $give_form_id Give Form ID.
  * @param int         $payment_id   Payment ID.

@@ -274,7 +274,6 @@ function give_update_payment_status( $payment_id, $new_status = 'publish' ) {
  * Deletes a Donation
  *
  * @since  1.0
- * @global      $give_logs
  *
  * @param  int $payment_id Payment ID (default: 0).
  * @param  bool $update_donor If we should update the donor stats (default:true).
@@ -282,8 +281,6 @@ function give_update_payment_status( $payment_id, $new_status = 'publish' ) {
  * @return void
  */
 function give_delete_donation( $payment_id = 0, $update_donor = true ) {
-	global $give_logs;
-
 	$payment     = new Give_Payment( $payment_id );
 	$amount      = give_get_payment_amount( $payment_id );
 	$status      = $payment->post_status;
@@ -337,7 +334,7 @@ function give_delete_donation( $payment_id = 0, $update_donor = true ) {
 	wp_delete_post( $payment_id, true );
 
 	// Remove related sale log entries.
-	$give_logs->delete_logs(
+	Give()->logs->delete_logs(
 		null,
 		'sale',
 		array(

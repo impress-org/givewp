@@ -185,7 +185,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @global object $give_logs Give Logs Object.
+	 *
 	 * @return array $data The data for the CSV file.
 	 */
 	public function get_data() {

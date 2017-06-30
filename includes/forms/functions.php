@@ -339,7 +339,6 @@ function give_field_is_required( $field = '', $form_id ) {
  * Stores log information for a donation.
  *
  * @since 1.0
- * @global            $give_logs Give_Logging
  *
  * @param int         $give_form_id Give Form ID.
  * @param int         $payment_id   Payment ID.
@@ -349,8 +348,6 @@ function give_field_is_required( $field = '', $form_id ) {
  * @return void
  */
 function give_record_donation_in_log( $give_form_id = 0, $payment_id, $price_id = false, $donation_date = null ) {
-	global $give_logs;
-
 	$log_data = array(
 		'post_parent'   => $give_form_id,
 		'log_type'      => 'sale',
@@ -363,7 +360,7 @@ function give_record_donation_in_log( $give_form_id = 0, $payment_id, $price_id 
 		'price_id'   => (int) $price_id,
 	);
 
-	$give_logs->insert_log( $log_data, $log_meta );
+	Give()->logs->insert_log( $log_data, $log_meta );
 }
 
 

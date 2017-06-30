@@ -60,7 +60,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 	 * @return array $data The data for the CSV file
 	 */
 	public function get_data() {
-		global $give_logs, $wpdb;
+		global $wpdb;
 
 		$accepted_statuses = apply_filters( 'give_recount_accepted_statuses', array( 'publish' ) );
 
@@ -88,7 +88,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 			'fields'         => 'ids',
 		) );
 
-		$log_ids              = $give_logs->get_connected_logs( $args, 'sale' );
+		$log_ids              = Give()->logs->get_connected_logs( $args, 'sale' );
 		$this->_log_ids_debug = array();
 
 		if ( $log_ids ) {
@@ -141,7 +141,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 	 * @return int
 	 */
 	public function get_percentage_complete() {
-		global $give_logs, $wpdb;
+		global $wpdb;
 
 		if ( $this->step == 1 ) {
 			$this->delete_data( 'give_recount_total_' . $this->form_id );
@@ -161,7 +161,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 				'nopaging'    => true,
 			) );
 
-			$log_ids = $give_logs->get_connected_logs( $args, 'sale' );
+			$log_ids = Give()->logs->get_connected_logs( $args, 'sale' );
 
 			if ( $log_ids ) {
 				$log_ids     = implode( ',', $log_ids );

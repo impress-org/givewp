@@ -1556,10 +1556,8 @@ final class Give_Payment {
 	 * @return void
 	 */
 	private function delete_sales_logs() {
-		global $give_logs;
-
 		// Remove related sale log entries.
-		$give_logs->delete_logs(
+		Give()->logs->delete_logs(
 			null,
 			'sale',
 			array(
