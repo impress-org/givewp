@@ -54,64 +54,11 @@ class Give_Logging {
 		$this->log_db     = new Give_DB_Logs();
 		$this->logmeta_db = new Give_DB_Log_Meta();
 
-
+		// Setup hooks.
 		add_action( 'save_post_give_payment', array( $this, 'background_process_delete_cache' ) );
 		add_action( 'save_post_give_forms', array( $this, 'background_process_delete_cache' ) );
 		add_action( 'save_post_give_log', array( $this, 'background_process_delete_cache' ) );
 		add_action( 'give_delete_log_cache', array( $this, 'delete_cache' ) );
-
-		// Create the log post type
-		add_action( 'init', array( $this, 'register_post_type' ), 1 );
-
-		// Create types taxonomy and default types
-		add_action( 'init', array( $this, 'register_taxonomy' ), 1 );
-	}
-
-
-	/**
-	 * Log Post Type
-	 *
-	 * Registers the 'give_log' Post Type.
-	 *
-	 * @since  1.0
-	 * @access public
-	 *
-	 * @return void
-	 */
-	public function register_post_type() {
-		/* Logs post type */
-		$log_args = array(
-			'labels'              => array(
-				'name' => esc_html__( 'Logs', 'give' ),
-			),
-			'public'              => false,
-			'exclude_from_search' => true,
-			'publicly_queryable'  => false,
-			'show_ui'             => false,
-			'query_var'           => false,
-			'rewrite'             => false,
-			'capability_type'     => 'post',
-			'supports'            => array( 'title', 'editor' ),
-			'can_export'          => true,
-		);
-
-		register_post_type( 'give_log', $log_args );
-	}
-
-	/**
-	 * Log Type Taxonomy
-	 *
-	 * Registers the "Log Type" taxonomy.  Used to determine the type of log entry.
-	 *
-	 * @since  1.0
-	 * @access public
-	 *
-	 * @return void
-	 */
-	public function register_taxonomy() {
-		register_taxonomy( 'give_log_type', 'give_log', array(
-			'public' => false,
-		) );
 	}
 
 	/**
