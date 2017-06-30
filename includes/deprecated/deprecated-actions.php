@@ -1,17 +1,5 @@
 <?php
 /**
- * Deprecated global variables.
- *
- * @since 2.0
- */
-function _give_load_deprecated_global_params( $give_object ) {
-	$GLOBALS['give_logs'] = Give()->logs;
-}
-
-add_action( 'give_init', '_give_load_deprecated_global_params' );
-
-
-/**
  * Handle renamed actions.
  */
 $give_map_deprecated_actions = give_deprecated_actions();
