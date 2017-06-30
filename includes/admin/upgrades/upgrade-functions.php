@@ -1323,9 +1323,9 @@ function give_v20_logs_upgrades() {
 	// form query
 	$forms = new WP_Query( array(
 			'paged'          => $step,
-			'status'         => 'any',
 			'order'          => 'DESC',
 			'post_type'      => 'give_log',
+			'post_status'    => 'any',
 			'posts_per_page' => 20,
 		)
 	);
@@ -1334,11 +1334,12 @@ function give_v20_logs_upgrades() {
 		while ( $forms->have_posts() ) {
 			$forms->the_post();
 			global $post;
-			$term_name = get_the_terms( $post->ID, 'give_log_type' );
-			$term_name = ! is_wp_error( $term_name ) && 1 === count( $term_name) ? $term_name[0]->slug : '';
+			$term = get_the_terms( $post->ID, 'give_log_type' );
+			$term = ! is_wp_error( $term ) && ! empty( $term ) ? $term[0] : array();
+			$term_name = ! empty( $term )? $term->slug : '';
 
 			$log_data = array(
-				'ID'       => $post->ID,
+				'ID'           => $post->ID,
 				'log_title'    => $post->post_title,
 				'log_content'  => $post->post_content,
 				'log_parent'   => $post->post_parent,
@@ -1374,9 +1375,7 @@ function give_v20_logs_upgrades() {
 				}
 			}
 
-			//@todo: delete log taxonomy and terms.
-			//@todo: delete all logs.
-
+			$logIDs[] = $post->ID;
 		}// End while().
 
 		wp_reset_postdata();
@@ -1392,10 +1391,37 @@ function give_v20_logs_upgrades() {
 		exit();
 
 	} else {
+		// Delete terms and taxonomy.
+		$terms = get_terms( 'give_log_type', array( 'fields' => 'ids', 'hide_empty' => false ) );
+		if( ! empty( $terms ) ) {
+			foreach ( $terms as $term ) {
+				wp_delete_term( $term, 'give_log_type' );
+			}
+			unregister_taxonomy( 'give_log_type' );
+		}
+
+		// Delete logs
+		$logIDs = get_posts( array(
+				'order'          => 'DESC',
+				'post_type'      => 'give_log',
+				'post_status'    => 'any',
+				'posts_per_page' => - 1,
+				'fields'         => 'ids',
+			)
+		);
+
+		if ( ! empty( $logIDs ) ) {
+			foreach ( $logIDs as $log ) {
+				// Delete term relationship and posts.
+				wp_delete_object_term_relationships( $log, 'give_log_type' );
+				wp_delete_post( $log, true );
+			}
+		}
+
 		// No more forms found, finish up.
 		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
 		delete_option( 'give_doing_upgrade' );
-		give_set_upgrade_complete( 'v20_upgrades_form_metadata' );
+		give_set_upgrade_complete( 'give_v20_logs_upgrades' );
 
 		wp_redirect( admin_url() );
 		exit;
