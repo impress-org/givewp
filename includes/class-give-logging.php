@@ -53,6 +53,12 @@ class Give_Logging {
 		require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-logs-meta.php';
 		$this->log_db     = new Give_DB_Logs();
 		$this->logmeta_db = new Give_DB_Log_Meta();
+
+
+		add_action( 'save_post_give_payment', array( $this, 'background_process_delete_cache' ) );
+		add_action( 'save_post_give_forms', array( $this, 'background_process_delete_cache' ) );
+		add_action( 'save_post_give_log', array( $this, 'background_process_delete_cache' ) );
+		add_action( 'give_delete_log_cache', array( $this, 'delete_cache' ) );
 	}
 
 
@@ -374,17 +380,17 @@ class Give_Logging {
 	 */
 	public function get_log_count( $object_id = 0, $type = null, $meta_query = null, $date_query = null ) {
 		$log_query = array(
-			'log_type' => $type,
+			'log_type'   => $type,
 			'meta_query' => $meta_query,
-			'date_query' => $date_query
+			'date_query' => $date_query,
 		);
 
-		if( $object_id ) {
+		if ( $object_id ) {
 			$log_query['meta_query'] = array(
 				array(
-					'key' => '_give_log_form_id',
-					'value' => $object_id
-				)
+					'key'   => '_give_log_form_id',
+					'value' => $object_id,
+				),
 			);
 		}
 
@@ -435,6 +441,51 @@ class Give_Logging {
 				wp_delete_post( $log, true );
 			}
 		}
+	}
+
+	/**
+	 * Setup cron to delete log cache in background.
+	 *
+	 * @since  1.7
+	 * @access public
+	 *
+	 * @param int $post_id
+	 */
+	public function background_process_delete_cache( $post_id ) {
+		// Delete log cache immediately
+		wp_schedule_single_event( time(), 5, 'give_delete_log_cache' );
+	}
+
+	/**
+	 * Delete all logging cache when form, log or payment updates
+	 *
+	 * @since  1.7
+	 * @access public
+	 *
+	 * @return bool
+	 */
+	public function delete_cache() {
+		global $wpdb;
+
+		// Add log related keys to delete.
+		$cache_option_names = $wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT *
+ 						FROM {$wpdb->options}
+ 						where option_name LIKE '%%%s%%'
+ 						OR option_name LIKE '%%%s%%'",
+				'give_cache_get_logs',
+				'give_cache_get_log_count'
+			),
+			1 // option_name
+		);
+
+		// Bailout.
+		if ( empty( $cache_option_names ) ) {
+			return false;
+		}
+
+		Give_Cache::delete( $cache_option_names );
 	}
 }
 
