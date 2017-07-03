@@ -47,7 +47,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 		parent::__construct( array(
 			'singular' => give_get_forms_label_singular(),    // Singular name of the listed records.
 			'plural'   => give_get_forms_label_plural(),        // Plural name of the listed records.
-			'ajax'     => false                        // Does this table support ajax?.
+			'ajax'     => false,// Does this table support ajax?.
 		) );
 	}
 
@@ -57,7 +57,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @param array  $item Contains all the data of the log item.
+	 * @param array  $item        Contains all the data of the log item.
 	 * @param string $column_name The name of the column.
 	 *
 	 * @return string Column Name.
@@ -88,7 +88,8 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 *
 	 * @return void
 	 */
-	public function column_message( $item ) { ?>
+	public function column_message( $item ) {
+	?>
 		<?php
 		echo Give()->tooltips->render_link( array(
 			'label'       => __( 'View Log Message', 'give' ),
@@ -138,7 +139,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 			'gateway'    => esc_html__( 'Gateway', 'give' ),
 			'payment_id' => esc_html__( 'Donation ID', 'give' ),
 			'date'       => esc_html__( 'Date', 'give' ),
-			'message'    => esc_html__( 'Details', 'give' )
+			'message'    => esc_html__( 'Details', 'give' ),
 		);
 
 		return $columns;
@@ -198,7 +199,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 					'payment_id' => $log->log_parent,
 					'error'      => 'error',
 					'gateway'    => give_get_payment_gateway( $log->log_parent ),
-					'date'       => $log->log_date
+					'date'       => $log->log_date,
 				);
 			}
 		}
@@ -212,9 +213,9 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 * Display the table navigation above or below the table even when no items in the logs,
 	 * so nav doesn't disappear.
 	 *
-	 * @see: https://github.com/WordImpress/Give/issues/564
+	 * @see    : https://github.com/WordImpress/Give/issues/564
 	 *
-	 * @since 1.4.1
+	 * @since  1.4.1
 	 * @access protected
 	 *
 	 * @param string $which
@@ -264,7 +265,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 		$this->set_pagination_args( array(
 				'total_items' => $total_items,
 				'per_page'    => $this->per_page,
-				'total_pages' => ceil( $total_items / $this->per_page )
+				'total_pages' => ceil( $total_items / $this->per_page ),
 			)
 		);
 	}
