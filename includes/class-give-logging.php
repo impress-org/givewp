@@ -381,13 +381,13 @@ class Give_Logging {
 		);
 		$query_args = wp_parse_args( $args, $defaults );
 		$this->bc_200_validate_params( $query_args );
-
+		
 		if ( ! give_has_upgrade_completed( 'give_v20_logs_upgrades' ) ) {
 			// Backward compatibility.
 			$logs = get_posts( $query_args );
 			$this->bc_200_add_new_properties( $logs );
 		} else {
-			$logs = $this->log_db->get_logs( $args );
+			$logs = $this->log_db->get_logs( $query_args );
 		}
 
 		return ( ! empty( $logs ) ? $logs : false );
@@ -621,7 +621,22 @@ class Give_Logging {
 			// Set only old params.
 			$query_params = array_flip( $query_params );
 			foreach ( $query_params as $old_query_param => $new_query_param ) {
+				if ( isset( $log_query[ $new_query_param ] ) ) {
+					if ( empty( $log_query[ $old_query_param ] ) ) {
+						$log_query[ $old_query_param ] = $log_query[ $new_query_param ];
+					}
+					continue;
+				} elseif ( ! isset( $log_query[ $old_query_param ] ) ) {
+					continue;
+				}
+
 				switch ( $old_query_param ) {
+					case 'tax_query':
+						if ( ! empty( $log_query[ $old_query_param ] ) && isset( $log_query[ $old_query_param ][0]['terms'] ) ) {
+							$log_query[ $new_query_param ] = $log_query[ $old_query_param ][0]['terms'];
+						}
+						break;
+
 					default:
 						if ( isset( $log_query[ $old_query_param ] ) ) {
 							$log_query[ $new_query_param ] = $log_query[ $old_query_param ];
