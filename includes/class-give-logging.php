@@ -559,12 +559,12 @@ class Give_Logging {
 						FROM {$wpdb->options}
 						where option_name LIKE '%%%s%%'
 						OR option_name LIKE '%%%s%%'",
-				'give_cache_get_logs',
+				'give_cache_give_logs',
 				'give_cache_get_log_count'
 			),
 			1 // option_name
 		);
-
+		
 		// Bailout.
 		if ( empty( $cache_option_names ) ) {
 			return false;
