@@ -335,7 +335,8 @@ class Give_DB_Logs extends Give_DB {
 		}
 
 		// Logs create for specific type.
-		if ( ! empty( $args['log_type'] ) ) {
+		// is_array check is for backward compatibility.
+		if ( ! empty( $args['log_type'] ) && ! is_array( $args['log_type'] ) ) {
 			if ( ! is_array( $args['log_type'] ) ) {
 				$args['log_type'] = explode( ',', $args['log_type'] );
 			}
