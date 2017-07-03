@@ -49,17 +49,23 @@ class Give_Logging {
 	 * @access public
 	 */
 	public function __construct() {
+		/**
+		 * Setup properties
+		 */
+
 		require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-logs.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-logs-meta.php';
 		$this->log_db     = new Give_DB_Logs();
 		$this->logmeta_db = new Give_DB_Log_Meta();
 
-		// Setup hooks.
+		/**
+		 * Setup hooks.
+		 */
+
 		add_action( 'save_post_give_payment', array( $this, 'background_process_delete_cache' ) );
 		add_action( 'save_post_give_forms', array( $this, 'background_process_delete_cache' ) );
 		add_action( 'save_post_give_log', array( $this, 'background_process_delete_cache' ) );
 		add_action( 'give_delete_log_cache', array( $this, 'delete_cache' ) );
-
 
 		// Backward compatibility.
 		if ( ! give_has_upgrade_completed( 'give_v20_logs_upgrades' ) ) {
@@ -74,10 +80,8 @@ class Give_Logging {
 
 	/**
 	 * Log Post Type
-	 * Class Constructor
 	 *
 	 * Registers the 'give_log' Post Type.
-	 * Set up the Give Logging Class.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -115,12 +119,9 @@ class Give_Logging {
 	 * @return void
 	 */
 	public function register_taxonomy() {
-		register_taxonomy(
-			'give_log_type',
-			'give_log',
-			array(
-				'public' => false,
-			) );
+		register_taxonomy( 'give_log_type', 'give_log', array(
+			'public' => false,
+		) );
 	}
 
 	/**
@@ -177,13 +178,13 @@ class Give_Logging {
 	 */
 	public function add( $title = '', $message = '', $parent = 0, $type = null ) {
 		$log_data = array(
-			'title'   => $title,
-			'content' => $message,
-			'parent'  => $parent,
-			'type'    => $type,
+			'post_title'   => $title,
+			'post_content' => $message,
+			'post_parent'  => $parent,
+			'log_type'     => $type,
 		);
 
-		return $this->log_db->add( $log_data );
+		return $this->insert_log( $log_data );
 	}
 
 	/**
@@ -202,9 +203,9 @@ class Give_Logging {
 	 */
 	public function get_logs( $object_id = 0, $type = null, $paged = null ) {
 		return $this->get_connected_logs( array(
-			'parent' => $object_id,
-			'type'   => $type,
-			'paged'  => $paged,
+			'post_parent' => $object_id,
+			'paged'       => $paged,
+			'log_type'    => $type,
 		) );
 	}
 
@@ -220,7 +221,18 @@ class Give_Logging {
 	 * @return int             The ID of the newly created log item.
 	 */
 	public function insert_log( $log_data = array(), $log_meta = array() ) {
-		$this->validate_params( $log_data, $log_meta );
+		$log_id = 0;
+
+		$defaults = array(
+			'post_type'    => 'give_log',
+			'post_status'  => 'publish',
+			'post_parent'  => 0,
+			'post_content' => '',
+			'log_type'     => false,
+		);
+
+		$args = wp_parse_args( $log_data, $defaults );
+		$this->bc_200_validate_params( $args, $log_meta );
 
 		/**
 		 * Fires before inserting log entry.
@@ -232,13 +244,30 @@ class Give_Logging {
 		 */
 		do_action( 'give_pre_insert_log', $log_data, $log_meta );
 
-		// Store the log entry
-		$log_id = $this->log_db->insert( $log_data );
+		if ( ! give_has_upgrade_completed( 'give_v20_logs_upgrades' ) ) {
+			// Backward compatibility.
+			// Store the log entry
+			$log_id = wp_insert_post( $args );
 
-		// Set log meta, if any
-		if ( $log_id && ! empty( $log_meta ) ) {
-			foreach ( (array) $log_meta as $key => $meta ) {
-				$this->logmeta_db->update_meta( $log_id, '_give_log_' . sanitize_key( $key ), $meta );
+			// Set the log type, if any
+			if ( $log_data['log_type'] && $this->valid_type( $log_data['log_type'] ) ) {
+				wp_set_object_terms( $log_id, $log_data['log_type'], 'give_log_type', false );
+			}
+
+			// Set log meta, if any
+			if ( $log_id && ! empty( $log_meta ) ) {
+				foreach ( (array) $log_meta as $key => $meta ) {
+					give_update_meta( $log_id, '_give_log_' . sanitize_key( $key ), $meta );
+				}
+			}
+		} else {
+			$log_id = $this->log_db->add( $log_data );
+
+			// Set log meta, if any
+			if ( $log_id && ! empty( $log_meta ) ) {
+				foreach ( (array) $log_meta as $key => $meta ) {
+					$this->logmeta_db->update_meta( $log_id, '_give_log_' . sanitize_key( $key ), $meta );
+				}
 			}
 		}
 
@@ -268,7 +297,7 @@ class Give_Logging {
 	 * @return bool|null       True if successful, false otherwise.
 	 */
 	public function update_log( $log_data = array(), $log_meta = array() ) {
-		$this->validate_params( $log_data, $log_meta );
+		$log_id = 0;
 
 		/**
 		 * Fires before updating log entry.
@@ -280,13 +309,35 @@ class Give_Logging {
 		 */
 		do_action( 'give_pre_update_log', $log_data, $log_meta );
 
-		// Store the log entry
-		$log_id = $this->log_db->add( $log_data );
+		$defaults = array(
+			'post_type'   => 'give_log',
+			'post_status' => 'publish',
+			'post_parent' => 0,
+		);
 
-		if ( $log_id && ! empty( $log_meta ) ) {
-			foreach ( (array) $log_meta as $key => $meta ) {
-				if ( ! empty( $meta ) ) {
-					give_update_meta( $log_id, '_give_log_' . sanitize_key( $key ), $meta );
+		$args = wp_parse_args( $log_data, $defaults );
+		$this->bc_200_validate_params( $args, $log_meta );
+
+		// Store the log entry
+		if ( ! give_has_upgrade_completed( 'give_v20_logs_upgrades' ) ) {
+			// Backward compatibility.
+			$log_id = wp_update_post( $args );
+
+			if ( $log_id && ! empty( $log_meta ) ) {
+				foreach ( (array) $log_meta as $key => $meta ) {
+					if ( ! empty( $meta ) ) {
+						give_update_meta( $log_id, '_give_log_' . sanitize_key( $key ), $meta );
+					}
+				}
+			}
+		} else {
+			$log_id = $this->log_db->add( $args );
+
+			if ( $log_id && ! empty( $log_meta ) ) {
+				foreach ( (array) $log_meta as $key => $meta ) {
+					if ( ! empty( $meta ) ) {
+						$this->logmeta_db->update_meta( $log_id, '_give_log_' . sanitize_key( $key ), $meta );
+					}
 				}
 			}
 		}
@@ -307,8 +358,10 @@ class Give_Logging {
 	 * Retrieve all connected logs
 	 *
 	 * Used for retrieving logs related to particular items, such as a specific donation.
+	 * For new table params check: Give_DB_Logs::get_column_defaults and Give_DB_Logs::get_sql#L262
 	 *
 	 * @since  1.0
+	 * @since  2.0 Added new table logic.
 	 * @access public
 	 *
 	 * @param  array $args Query arguments.
@@ -316,25 +369,27 @@ class Give_Logging {
 	 * @return array|false Array if logs were found, false otherwise.
 	 */
 	public function get_connected_logs( $args = array() ) {
-		$defaults = array(
-			'number' => 20,
-			'paged'  => get_query_var( 'paged' ),
-			'type'   => false,
-			'date'   => null,
+		$logs = array();
+
+		$defaults   = array(
+			'post_type'      => 'give_log',
+			'posts_per_page' => 20,
+			'post_status'    => 'publish',
+			'paged'          => get_query_var( 'paged' ),
+			'log_type'       => false,
 		);
-
 		$query_args = wp_parse_args( $args, $defaults );
+		$this->bc_200_validate_params( $query_args );
 
-		$this->validate_params( $query_args );
-
-		$logs = $this->log_db->get_logs( $query_args );
-
-		if ( $logs ) {
-			return $logs;
+		if ( ! give_has_upgrade_completed( 'give_v20_logs_upgrades' ) ) {
+			// Backward compatibility.
+			$logs = get_posts( $query_args );
+			$this->bc_200_add_new_properties( $logs );
+		} else {
+			$logs = $this->log_db->get_logs( $args );
 		}
 
-		// No logs found
-		return false;
+		return ( ! empty( $logs ) ? $logs : false );
 	}
 
 	/**
@@ -353,25 +408,57 @@ class Give_Logging {
 	 * @return int                Log count.
 	 */
 	public function get_log_count( $object_id = 0, $type = null, $meta_query = null, $date_query = null ) {
-		$log_query = array();
+		$logs_count = 0;
+
+		$query_args = array(
+			'post_type'      => 'give_log',
+			'posts_per_page' => - 1,
+			'post_status'    => 'publish',
+			'fields'         => 'ids',
+		);
 
 		if ( $object_id ) {
-			$log_query['log_parent'] = $object_id;
+			$query_args['post_parent'] = $object_id;
 		}
 
-		if ( ! empty( $type ) ) {
-			$log_query['log_type'] = $type;
+		if ( ! empty( $type ) && $this->valid_type( $type ) ) {
+			$query_args['tax_query'] = array(
+				array(
+					'taxonomy' => 'give_log_type',
+					'field'    => 'slug',
+					'terms'    => $type,
+				),
+			);
 		}
 
 		if ( ! empty( $meta_query ) ) {
-			$log_query['meta_query'] = $meta_query;
+			$query_args['meta_query'] = $meta_query;
 		}
 
 		if ( ! empty( $date_query ) ) {
-			$log_query['date_query'] = $date_query;
+			$query_args['date_query'] = $date_query;
 		}
 
-		return $this->log_db->count( $log_query );
+		$this->bc_200_validate_params( $query_args );
+
+		// Get cache key for current query.
+		$cache_key = Give_Cache::get_key( 'get_log_count', $query_args );
+
+		// check if cache already exist or not.
+		if ( ! ( $logs_count = Give_Cache::get( $cache_key ) ) ) {
+			if ( ! give_has_upgrade_completed( 'give_v20_logs_upgrades' ) ) {
+				// Backward compatibility.
+				$logs       = new WP_Query( $query_args );
+				$logs_count = (int) $logs->post_count;
+			} else {
+				$logs_count = $this->log_db->count( $query_args );
+			}
+
+			// Cache results.
+			Give_Cache::set( $cache_key, $logs_count );
+		}
+
+		return $logs_count;
 	}
 
 	/**
@@ -390,24 +477,45 @@ class Give_Logging {
 	 */
 	public function delete_logs( $object_id = 0, $type = null, $meta_query = null ) {
 		$query_args = array(
-			'log_parent' => $object_id,
-			'number'     => - 1,
-			'fields'     => 'ids',
+			'post_parent'    => $object_id,
+			'post_type'      => 'give_log',
+			'posts_per_page' => - 1,
+			'post_status'    => 'publish',
+			'fields'         => 'ids',
 		);
 
 		if ( ! empty( $type ) && $this->valid_type( $type ) ) {
-			$query_args['log_type'] = $type;
+			$query_args['tax_query'] = array(
+				array(
+					'taxonomy' => 'give_log_type',
+					'field'    => 'slug',
+					'terms'    => $type,
+				),
+			);
 		}
 
 		if ( ! empty( $meta_query ) ) {
 			$query_args['meta_query'] = $meta_query;
 		}
 
-		$logs = $this->log_db->get_logs( $query_args );
+		$this->bc_200_validate_params( $query_args );
 
-		if ( $logs ) {
-			foreach ( $logs as $log ) {
-				$this->log_db->delete( $log->ID );
+		if ( ! give_has_upgrade_completed( 'give_v20_logs_upgrades' ) ) {
+			// Backward compatibility.
+			$logs = get_posts( $query_args );
+
+			if ( $logs ) {
+				foreach ( $logs as $log ) {
+					wp_delete_post( $log, true );
+				}
+			}
+		} else {
+			$logs = $this->log_db->get_logs( $query_args );
+
+			if ( $logs ) {
+				foreach ( $logs as $log ) {
+					$this->log_db->delete( $log->ID );
+				}
 			}
 		}
 	}
@@ -422,7 +530,7 @@ class Give_Logging {
 	 */
 	public function background_process_delete_cache( $post_id ) {
 		// Delete log cache immediately
-		wp_schedule_single_event( time(), 5, 'give_delete_log_cache' );
+		wp_schedule_single_event( time() - 5, 'give_delete_log_cache' );
 	}
 
 	/**
@@ -440,9 +548,9 @@ class Give_Logging {
 		$cache_option_names = $wpdb->get_col(
 			$wpdb->prepare(
 				"SELECT *
- 						FROM {$wpdb->options}
- 						where option_name LIKE '%%%s%%'
- 						OR option_name LIKE '%%%s%%'",
+						FROM {$wpdb->options}
+						where option_name LIKE '%%%s%%'
+						OR option_name LIKE '%%%s%%'",
 				'give_cache_get_logs',
 				'give_cache_get_log_count'
 			),
@@ -463,29 +571,107 @@ class Give_Logging {
 	 * @since  2.0
 	 * @access private
 	 *
-	 * @param       $log_query
+	 * @param array $log_query
 	 * @param array $log_meta
 	 */
-	private function validate_params( &$log_query, &$log_meta = array() ) {
-		// Backward compatibility version 2.0
-		if ( isset( $log_query['post_title'] ) ) {
-			$log_query['log_title'] = $log_query['post_title'];
-			unset( $log_query['post_title'] );
+	private function bc_200_validate_params( &$log_query, &$log_meta = array() ) {
+		$query_params = array(
+			'log_title'   => 'post_title',
+			'log_parent'  => 'post_parent',
+			'log_content' => 'post_content',
+			'log_type'    => 'tax_query',
+		);
+
+		if ( ! give_has_upgrade_completed( 'give_v20_logs_upgrades' ) ) {
+			foreach ( $query_params as $new_query_param => $old_query_param ) {
+				if ( ! isset( $log_query[ $new_query_param ] ) ) {
+					$log_query[ $new_query_param ] = '';
+					continue;
+				}
+
+				switch ( $new_query_param ) {
+					case 'log_type':
+						if ( ! empty( $log_query[ $new_query_param ] ) && $this->valid_type( $log_query[ $new_query_param ] ) ) {
+							$log_query['tax_query'] = array(
+								array(
+									'taxonomy' => 'give_log_type',
+									'field'    => 'slug',
+									'terms'    => $log_query[ $new_query_param ],
+								),
+							);
+						}
+						break;
+
+					default:
+						$log_query[ $old_query_param ] = $log_query[ $new_query_param ];
+				}
+			}
+		} else {
+			$query_params = array_flip( $query_params );
+			foreach ( $query_params as $old_query_param => $new_query_param ) {
+				switch ( $old_query_param ) {
+					default:
+						if ( isset( $log_query[ $old_query_param ] ) ) {
+							$log_query[ $new_query_param ] = $log_query[ $old_query_param ];
+						}
+				}
+			}
+
+			if ( isset( $log_query['posts_per_page'] ) ) {
+				$log_query['number'] = $log_query['posts_per_page'];
+			}
+		}
+	}
+
+	/**
+	 * Set new log properties.
+	 *
+	 * @since  2.0
+	 * @access private
+	 *
+	 * @param  array $logs
+	 */
+	private function bc_200_add_new_properties( &$logs ) {
+		if ( empty( $logs ) ) {
+			return;
 		}
 
-		if ( isset( $log_query['post_content'] ) ) {
-			$log_query['log_content'] = $log_query['post_content'];
-			unset( $log_query['post_content'] );
-		}
+		$query_params = array(
+			'log_title'    => 'post_title',
+			'log_parent'   => 'post_parent',
+			'log_content'  => 'post_content',
+			'log_date'     => 'post_date',
+			'log_date_gmt' => 'post_date_gmt',
+			'log_type'     => 'give_log_type',
+		);
 
-		if ( isset( $log_query['post_parent'] ) ) {
-			$log_meta['form_id'] = $log_query['post_parent'];
-			unset( $log_query['post_parent'] );
-		}
+		if ( ! give_has_upgrade_completed( 'give_v20_logs_upgrades' ) ) {
+			foreach ( $logs as $index => $log ) {
+				foreach ( $query_params as $new_query_param => $old_query_param ) {
+					if ( ! property_exists( $log, $old_query_param ) ) {
+						/**
+						 *  Set unmatched properties.
+						 */
 
-		if ( isset( $log_query['post_type'] ) ) {
-			$log_query['log_type'] = $log_query['post_type'];
-			unset( $log_query['post_type'] );
+						// 1. log_type
+						$term = get_the_terms( $log->ID, 'give_log_type' );
+						$term = ! is_wp_error( $term ) && ! empty( $term ) ? $term[0] : array();
+
+						$logs[ $index ]->{$new_query_param} = ! empty( $term ) ? $term->slug : '';
+
+						continue;
+					}
+
+					switch ( $old_query_param ) {
+						case 'post_parent':
+							$logs[ $index ]->{$new_query_param} = give_get_meta( $log->ID, '_give_log_payment_id', true );
+							break;
+
+						default:
+							$logs[ $index ]->{$new_query_param} = $log->{$old_query_param};
+					}
+				}
+			}
 		}
 	}
 }
