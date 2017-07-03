@@ -279,6 +279,9 @@ class Give_Logging {
 		 */
 		do_action( 'give_post_insert_log', $log_id, $log_data, $log_meta );
 
+		// Delete cache.
+		$this->delete_cache();
+
 		return $log_id;
 	}
 
