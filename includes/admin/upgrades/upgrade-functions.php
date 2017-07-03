@@ -1263,7 +1263,7 @@ function give_v20_logs_upgrades() {
 				'ID'           => $post->ID,
 				'log_title'    => $post->post_title,
 				'log_content'  => $post->post_content,
-				'log_parent'   => $post->post_parent,
+				'log_parent'   => 0,
 				'log_type'     => $term_name,
 				'log_date'     => $post->post_date,
 				'log_date_gmt' => $post->post_date_gmt,
