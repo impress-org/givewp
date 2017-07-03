@@ -421,7 +421,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 		$user      = $this->get_filtered_user();
 
 		$log_query = array(
-			'type'       => 'sale',
+			'log_type'   => 'sale',
 			'paged'      => $paged,
 			'meta_query' => $this->get_meta_query(),
 		);
