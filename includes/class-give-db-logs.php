@@ -124,9 +124,9 @@ class Give_DB_Logs extends Give_DB {
 			$current_log_data = array_merge( $current_log_data, $existing_log );
 
 			// Update log data.
-			$this->update( $current_log_data['id'], $current_log_data );
+			$this->update( $current_log_data['ID'], $current_log_data );
 
-			$log_id = $current_log_data['id'];
+			$log_id = $current_log_data['ID'];
 
 		} else {
 			$log_id = $this->insert( $current_log_data, 'log' );
