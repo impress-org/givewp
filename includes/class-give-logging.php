@@ -62,7 +62,7 @@ class Give_Logging {
 
 
 		// Backward compatibility.
-		if ( true ) {
+		if ( ! give_has_upgrade_completed( 'give_v20_logs_upgrades' ) ) {
 			// Create the log post type
 			add_action( 'init', array( $this, 'register_post_type' ), 1 );
 
