@@ -172,11 +172,11 @@ class Give_Logging {
 	 * @param  string $title   Log entry title. Default is empty.
 	 * @param  string $message Log entry message. Default is empty.
 	 * @param  int    $parent  Log entry parent. Default is 0.
-	 * @param  string $type    Log type. Default is null.
+	 * @param  string $type    Log type. Default is empty string.
 	 *
 	 * @return int             Log ID.
 	 */
-	public function add( $title = '', $message = '', $parent = 0, $type = null ) {
+	public function add( $title = '', $message = '', $parent = 0, $type = '' ) {
 		$log_data = array(
 			'post_title'   => $title,
 			'post_content' => $message,
@@ -196,12 +196,12 @@ class Give_Logging {
 	 * @access public
 	 *
 	 * @param  int    $object_id Log object ID. Default is 0.
-	 * @param  string $type      Log type. Default is null.
+	 * @param  string $type      Log type. Default is empty string.
 	 * @param  int    $paged     Page number Default is null.
 	 *
 	 * @return array             An array of the connected logs.
 	 */
-	public function get_logs( $object_id = 0, $type = null, $paged = null ) {
+	public function get_logs( $object_id = 0, $type = '', $paged = null ) {
 		return $this->get_connected_logs( array(
 			'log_parent' => $object_id,
 			'paged'      => $paged,
@@ -381,7 +381,7 @@ class Give_Logging {
 		);
 		$query_args = wp_parse_args( $args, $defaults );
 		$this->bc_200_validate_params( $query_args );
-		
+
 		if ( ! give_has_upgrade_completed( 'give_v20_logs_upgrades' ) ) {
 			// Backward compatibility.
 			$logs = get_posts( $query_args );
@@ -402,13 +402,13 @@ class Give_Logging {
 	 * @access public
 	 *
 	 * @param  int    $object_id  Log object ID. Default is 0.
-	 * @param  string $type       Log type. Default is null.
+	 * @param  string $type       Log type. Default is empty string.
 	 * @param  array  $meta_query Log meta query. Default is null.
 	 * @param  array  $date_query Log data query. Default is null.
 	 *
 	 * @return int                Log count.
 	 */
-	public function get_log_count( $object_id = 0, $type = null, $meta_query = null, $date_query = null ) {
+	public function get_log_count( $object_id = 0, $type = '', $meta_query = null, $date_query = null ) {
 		$logs_count = 0;
 
 		$query_args = array(
@@ -473,12 +473,12 @@ class Give_Logging {
 	 * @access public
 	 *
 	 * @param  int    $object_id  Log object ID. Default is 0.
-	 * @param  string $type       Log type. Default is null.
+	 * @param  string $type       Log type. Default is empty string.
 	 * @param  array  $meta_query Log meta query. Default is null.
 	 *
 	 * @return void
 	 */
-	public function delete_logs( $object_id = 0, $type = null, $meta_query = null ) {
+	public function delete_logs( $object_id = 0, $type = '', $meta_query = null ) {
 		$query_args = array(
 			'log_parent'  => $object_id,
 			'number'      => - 1,
