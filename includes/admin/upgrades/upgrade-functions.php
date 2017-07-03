@@ -1339,6 +1339,9 @@ function give_v20_logs_upgrades() {
 			}
 		}
 
+		// Delete log cache.
+		Give()->logs->delete_cache();
+
 		// No more forms found, finish up.
 		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
 		delete_option( 'give_doing_upgrade' );
