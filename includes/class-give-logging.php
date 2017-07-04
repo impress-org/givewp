@@ -237,16 +237,6 @@ class Give_Logging {
 		$args = wp_parse_args( $log_data, $defaults );
 		$this->bc_200_validate_params( $args, $log_meta );
 
-		/**
-		 * Fires before inserting log entry.
-		 *
-		 * @since 1.0
-		 *
-		 * @param array $log_data Log entry data.
-		 * @param array $log_meta Log entry meta.
-		 */
-		do_action( 'give_pre_insert_log', $log_data, $log_meta );
-
 		if ( ! give_has_upgrade_completed( 'give_v20_logs_upgrades' ) ) {
 			global $wpdb;
 
@@ -268,18 +258,6 @@ class Give_Logging {
 				$this->logmeta_db->update_meta( $log_id, '_give_log_' . sanitize_key( $key ), $meta );
 			}
 		}
-
-		/**
-		 * Fires after inserting log entry.
-		 *
-		 * @since 1.0
-		 *
-		 * @param int   $log_id   Log entry id.
-		 * @param array $log_data Log entry data.
-		 * @param array $log_meta Log entry meta.
-		 */
-		do_action( 'give_post_insert_log', $log_id, $log_data, $log_meta );
-
 		// Delete cache.
 		$this->delete_cache();
 
