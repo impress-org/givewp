@@ -144,6 +144,35 @@ class Give_DB_Log_Meta extends Give_DB {
 		return delete_metadata( 'log', $log_id, $meta_key, $meta_value );
 	}
 
+
+	/**
+	 * Delete all log meta
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param int $log_id
+	 *
+	 * @return bool
+	 */
+	public function delete_row( $log_id = 0 ) {
+		/* @var WPDB $wpdb */
+		global $wpdb;
+
+		// Row ID must be positive integer
+		$log_id = absint( $log_id );
+
+		if ( empty( $log_id ) ) {
+			return false;
+		}
+
+		if ( false === $wpdb->query( $wpdb->prepare( "DELETE FROM $this->table_name WHERE log_id = %d", $log_id ) ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
 	/**
 	 * Create the table
 	 *
