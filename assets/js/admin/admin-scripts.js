@@ -32,28 +32,28 @@ jQuery.noConflict();
 		// Setup Chosen Selects.
 		var $give_chosen_containers = $('.give-select-chosen');
 
-        // Add loader with each input field.
-        $give_chosen_containers.on('chosen:ready', function () {
-            $(this).next('.chosen-container')
-                .find('input.chosen-search-input')
-                .after('<span class="spinner"></span>');
-        });
+		// Add loader with each input field.
+		$give_chosen_containers.on('chosen:ready', function () {
+			$(this).next('.chosen-container')
+				.find('input.chosen-search-input')
+				.after('<span class="spinner"></span>');
+		});
 
-        // No results returned from search trigger.
-        $give_chosen_containers.on( 'chosen:no_results', function(){
-            var $container = $(this).next('.chosen-container'),
-                $no_results_li = $container.find('li.no-results'),
-                error_string = '';
+		// No results returned from search trigger.
+		$give_chosen_containers.on('chosen:no_results', function () {
+			var $container     = $(this).next('.chosen-container'),
+				$no_results_li = $container.find('li.no-results'),
+				error_string   = '';
 
-            if( $container.hasClass('give-select-chosen-ajax' ) && $no_results_li.length ) {
-                error_string = give_vars.chosen.ajax_search_msg.replace( '{search_term}', '"' + $( 'input', $container ).val() + '"');
-            } else {
-                error_string = give_vars.chosen.no_results_msg.replace( '{search_term}', '"' + $( 'input', $container ).val()+ '"' );
-            }
+			if ($container.hasClass('give-select-chosen-ajax') && $no_results_li.length) {
+				error_string = give_vars.chosen.ajax_search_msg.replace('{search_term}', '"' + $('input', $container).val() + '"');
+			} else {
+				error_string = give_vars.chosen.no_results_msg.replace('{search_term}', '"' + $('input', $container).val() + '"');
+			}
 
-            $no_results_li.html( error_string );
+			$no_results_li.html(error_string);
 
-        });
+		});
 
 		// Initiate chosen.
 		$give_chosen_containers.chosen({
@@ -74,13 +74,13 @@ jQuery.noConflict();
 		// Replace options with search results
 		$(document.body).on('keyup', '.give-select.chosen-container .chosen-search input, .give-select.chosen-container .search-field input', function (e) {
 
-			var val         = $(this).val(),
-				$container   = $(this).closest('.give-select-chosen'),
-				select      = $container.prev(),
+			var val           = $(this).val(),
+				$container    = $(this).closest('.give-select-chosen'),
+				select        = $container.prev(),
 				$search_field = $container.find('input[type="text"]'),
-				variations  = $container.hasClass('variations'),
-				lastKey     = e.which,
-				search_type = 'give_forms_search';
+				variations    = $container.hasClass('variations'),
+				lastKey       = e.which,
+				search_type   = 'give_forms_search';
 
 			// Detect if we have a defined search type, otherwise default to donation forms.
 			if ($container.prev().data('search-type')) {
@@ -90,44 +90,44 @@ jQuery.noConflict();
 					return;
 				}
 
- 				search_type = 'give_' + select.data('search-type') + '_search';
+				search_type = 'give_' + select.data('search-type') + '_search';
 			}
 
 			// Don't fire if short or is a modifier key (shift, ctrl, apple command key, or arrow keys).
 			if (
 				val.length <= 3 ||
-				! search_type.length ||
+				!search_type.length ||
 				(
-                    (lastKey ===  9)  || // Tab
-                    (lastKey === 13)  || // Enter
-                    (lastKey === 16)  || // Shift
-                    (lastKey === 17)  || // Ctrl
-                    (lastKey === 18)  || // Alt
-                    (lastKey === 19)  || // Pause, Break
-                    (lastKey === 20)  || // CapsLock
-                    (lastKey === 27)  || // Esc
-                    (lastKey === 33)  || // Page Up
-                    (lastKey === 34)  || // Page Down
-                    (lastKey === 35)  || // End
-                    (lastKey === 36)  || // Home
-                    (lastKey === 37)  || // Left arrow
-                    (lastKey === 38)  || // Up arrow
-                    (lastKey === 39)  || // Right arrow
-                    (lastKey === 40)  || // Down arrow
-                    (lastKey === 44)  || // PrntScrn
-                    (lastKey === 45)  || // Insert
-                    (lastKey === 144) || // NumLock
-                    (lastKey === 145) || // ScrollLock
-                    (lastKey === 91)  || // WIN Key (Start)
-                    (lastKey === 93)  || // WIN Menu
-                    (lastKey === 224) || // command key
-                    (lastKey >= 112 && lastKey <= 123) // F1 to F12lastKey
+					(lastKey === 9) || // Tab
+					(lastKey === 13) || // Enter
+					(lastKey === 16) || // Shift
+					(lastKey === 17) || // Ctrl
+					(lastKey === 18) || // Alt
+					(lastKey === 19) || // Pause, Break
+					(lastKey === 20) || // CapsLock
+					(lastKey === 27) || // Esc
+					(lastKey === 33) || // Page Up
+					(lastKey === 34) || // Page Down
+					(lastKey === 35) || // End
+					(lastKey === 36) || // Home
+					(lastKey === 37) || // Left arrow
+					(lastKey === 38) || // Up arrow
+					(lastKey === 39) || // Right arrow
+					(lastKey === 40) || // Down arrow
+					(lastKey === 44) || // PrntScrn
+					(lastKey === 45) || // Insert
+					(lastKey === 144) || // NumLock
+					(lastKey === 145) || // ScrollLock
+					(lastKey === 91) || // WIN Key (Start)
+					(lastKey === 93) || // WIN Menu
+					(lastKey === 224) || // command key
+					(lastKey >= 112 && lastKey <= 123) // F1 to F12lastKey
 				)
 			) {
 				return;
 			}
 			clearTimeout(typingTimer);
-			$container.addClass( 'give-select-chosen-ajax' );
+			$container.addClass('give-select-chosen-ajax');
 
 			typingTimer = setTimeout(
 				function () {
@@ -141,16 +141,16 @@ jQuery.noConflict();
 						dataType  : 'json',
 						beforeSend: function () {
 							select.closest('ul.chosen-results').empty();
-							$search_field.prop( 'disabled', true );
+							$search_field.prop('disabled', true);
 						},
 						success   : function (data) {
 
-							$container.removeClass( 'give-select-chosen-ajax' );
+							$container.removeClass('give-select-chosen-ajax');
 
-                            // Remove all options but those that are selected.
-                            $('option:not(:selected)', select).remove();
+							// Remove all options but those that are selected.
+							$('option:not(:selected)', select).remove();
 
-							if( data.length ) {
+							if (data.length) {
 								$.each(data, function (key, item) {
 									// Add any option that doesn't already exist.
 									if (!$('option[value="' + item.id + '"]', select).length) {
@@ -161,15 +161,15 @@ jQuery.noConflict();
 								// Trigger update event.
 								$container.prev('select.give-select-chosen').trigger('chosen:updated');
 
-                            } else{
+							} else {
 
 								// Trigger no result message event.
 								$container.prev('select.give-select-chosen').trigger('chosen:no_results');
 							}
 
-                            // Ensure the original query is retained within the search input.
-                            $search_field.prop( 'disabled', false );
-                            $search_field.val(val).focus();
+							// Ensure the original query is retained within the search input.
+							$search_field.prop('disabled', false);
+							$search_field.val(val).focus();
 
 						}
 					}).fail(function (response) {
@@ -177,28 +177,28 @@ jQuery.noConflict();
 							console.log(response);
 						}
 					}).done(function (response) {
-						$search_field.prop( 'disabled', false );
+						$search_field.prop('disabled', false);
 					});
 				},
 				doneTypingInterval
 			);
 		});
 
-        $('.give-select-chosen .chosen-search input').each( function() {
-        	var type = $(this).parent().parent().parent().prev('select.give-select-chosen').data('search-type');
-        	var placeholder = '';
+		$('.give-select-chosen .chosen-search input').each(function () {
+			var type        = $(this).parent().parent().parent().prev('select.give-select-chosen').data('search-type');
+			var placeholder = '';
 
-        	if ( 'form' === type ) {
-        		placeholder = give_vars.search_placeholder;
-        	} else {
+			if ('form' === type) {
+				placeholder = give_vars.search_placeholder;
+			} else {
 				type = 'search_placeholder_' + type;
-        		if ( give_vars[type] ) {
-        			placeholder = give_vars[type];
-        		}
-        	}
-        	$(this).attr( 'placeholder', placeholder );
+				if (give_vars[type]) {
+					placeholder = give_vars[type];
+				}
+			}
+			$(this).attr('placeholder', placeholder);
 
-        });
+		});
 
 	};
 
@@ -228,23 +228,30 @@ jQuery.noConflict();
 		return price;
 	}
 
-    /**
-     * List donation screen JS
-     */
+	/**
+	 * List donation screen JS
+	 */
 
-    var Give_List_Donation = {
+	var Give_List_Donation = {
 
-        init: function () {
-            this.delete_single_donation();
-        },
+		init: function () {
+			this.delete_single_donation();
+			this.resend_single_donation_receipt();
+		},
 
-        delete_single_donation: function () {
-            $('body').on('click', '.delete-single-donation', function (e) {
-                return confirm(give_vars.delete_payment);
-            });
-        }
+		delete_single_donation: function () {
+			$('body').on('click', '.delete-single-donation', function (e) {
+				return confirm(give_vars.delete_payment);
+			});
+		},
 
-    }
+		resend_single_donation_receipt: function () {
+			$('body').on('click', '.resend-single-donation-receipt', function (e) {
+				return confirm(give_vars.resend_receipt);
+			});
+		}
+
+	}
 
 	/**
 	 * Edit donation screen JS
@@ -869,12 +876,12 @@ jQuery.noConflict();
 			this.add_note();
 			this.delete_checked();
 		},
-		edit_donor : function () {
+		edit_donor    : function () {
 			$('body').on('click', '#edit-donor', function (e) {
 				e.preventDefault();
 				$('#give-donor-card-wrapper .editable').hide();
 				$('#give-donor-card-wrapper .edit-item').fadeIn().css('display', 'block');
-                $('.give-select-chosen').css('width', '100%');
+				$('.give-select-chosen').css('width', '100%');
 			});
 		},
 		remove_user   : function () {
@@ -929,8 +936,8 @@ jQuery.noConflict();
 			$('body').on('click', '#add-donor-note', function (e) {
 				e.preventDefault();
 				var postData = {
-					give_action            : 'add-donor-note',
-					customer_id            : $('#donor-id').val(),
+					give_action         : 'add-donor-note',
+					customer_id         : $('#donor-id').val(),
 					donor_note          : $('#donor-note').val(),
 					add_donor_note_nonce: $('#add_donor_note_nonce').val()
 				};
@@ -1169,20 +1176,20 @@ jQuery.noConflict();
 				$give_upload_button = $(this);
 
 				// Set modal config
-				switch ( $(this).data('field-type') ) {
+				switch ($(this).data('field-type')) {
 					case 'media':
 						$media_modal_config = {
-							title: give_vars.metabox_fields.media.button_title,
-							button: {text: give_vars.metabox_fields.media.button_title},
+							title   : give_vars.metabox_fields.media.button_title,
+							button  : {text: give_vars.metabox_fields.media.button_title},
 							multiple: false, // Set to true to allow multiple files to be selected
-							library : {type:'image'}
+							library : {type: 'image'}
 						};
 						break;
 
 					default:
 						$media_modal_config = {
-							title      : give_vars.metabox_fields.file.button_title,
-							button     : {text: give_vars.metabox_fields.file.button_title},
+							title   : give_vars.metabox_fields.file.button_title,
+							button  : {text: give_vars.metabox_fields.file.button_title},
 							multiple: false
 						};
 				}
@@ -1196,7 +1203,7 @@ jQuery.noConflict();
 						$input_field = $give_upload_button.prev(),
 						fvalue       = ( 'id' === $give_upload_button.data('fvalue') ? attachment.id : attachment.url );
 
-					$body.trigger( 'give_media_inserted', [ attachment , $input_field ] );
+					$body.trigger('give_media_inserted', [attachment, $input_field]);
 
 					// Set input field value.
 					$input_field.val(fvalue);
@@ -1210,16 +1217,16 @@ jQuery.noConflict();
 			 * Show image preview.
 			 */
 			$body.on('give_media_inserted', function (e, attachment) {
-				var $parent              = $give_upload_button.parents('.give-field-wrap'),
-					$image_container     = $('.give-image-thumb', $parent);
+				var $parent          = $give_upload_button.parents('.give-field-wrap'),
+					$image_container = $('.give-image-thumb', $parent);
 
 				// Bailout.
-				if( ! $image_container.length ) {
+				if (!$image_container.length) {
 					return false;
 				}
 
 				// Bailout and hide preview.
-				if('image' !== attachment.type) {
+				if ('image' !== attachment.type) {
 					$image_container.addClass('give-hidden');
 					$('img', $image_container).attr('src', '');
 					return false;
@@ -1750,6 +1757,43 @@ jQuery.noConflict();
 						}
 
 						break;
+
+					default:
+
+						var status = '';
+						if ('set-status-publish' === current_action) {
+							status = 'Completed';
+						} else if ('set-status-pending' === current_action) {
+							status = 'Pending';
+						} else if ('set-status-processing' === current_action) {
+							status = 'Processing';
+						} else if ('set-status-refunded' === current_action) {
+							status = 'Refunded';
+						} else if ('set-status-revoked' === current_action) {
+							status = 'Revoked';
+						} else if ('set-status-failed' === current_action) {
+							status = 'Failed';
+						} else if ('set-status-cancelled' === current_action) {
+							status = 'Cancelled';
+						} else if ('set-status-abandoned' === current_action) {
+							status = 'Abandoned';
+						} else if ('set-status-preapproval' === current_action) {
+							status = 'Preapproval';
+						}
+
+						// Check if admin did not select any payment.
+						if (!parseInt($payments)) {
+							alert(give_vars.bulk_action.set_to_status.zero.replace('{status}', status));
+							return false;
+						}
+
+						// Ask admin before processing.
+						confirm_action_notice = ( 1 < $payments ) ? give_vars.bulk_action.set_to_status.multiple : give_vars.bulk_action.set_to_status.single;
+						if (!window.confirm(confirm_action_notice.replace('{payment_count}', $payments).replace('{status}', status))) {
+							return false;
+						}
+
+						break;
 				}
 
 				return true;
@@ -1763,7 +1807,7 @@ jQuery.noConflict();
 		enable_admin_datepicker();
 		handle_status_change();
 		setup_chosen_give_selects();
-        Give_List_Donation.init();
+		Give_List_Donation.init();
 		Give_Edit_Donation.init();
 		Give_Settings.init();
 		Give_Reports.init();

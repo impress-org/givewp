@@ -30,9 +30,6 @@ class Give_Unit_Test_Case extends WP_UnitTestCase {
 
 	public function tearDown() {
 		parent::tearDown();
-
-		// Delete all cached values.
-		Give_Cache::delete_all_expired( true );
 	}
 
 	/**

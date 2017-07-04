@@ -163,8 +163,8 @@ function _give_register_admin_notices() {
 					'type'        => 'updated',
 					'description' => sprintf(
 						_n(
-							'Successfully deleted only one transaction.',
-							'Successfully deleted %d number of transactions.',
+							'Successfully deleted one transaction.',
+							'Successfully deleted %d transactions.',
 							$payment_count,
 							'give'
 						),
@@ -180,8 +180,8 @@ function _give_register_admin_notices() {
 					'type'        => 'updated',
 					'description' => sprintf(
 						_n(
-							'Successfully send email receipt to only one recipient.',
-							'Successfully send email receipts to %d recipients.',
+							'Successfully sent email receipt to one recipient.',
+							'Successfully sent email receipts to %d recipients.',
 							$payment_count,
 							'give'
 						),
