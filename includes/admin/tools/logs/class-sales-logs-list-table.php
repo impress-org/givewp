@@ -340,36 +340,26 @@ class Give_Sales_Log_Table extends WP_List_Table {
 		$logs_data = array();
 		$log_query = $this->get_query_params();
 
-		$cache_key = Give_Cache::get_key( 'get_logs', $log_query );
+		$logs = Give()->logs->get_connected_logs( $log_query );
 
-		// Return result from cache if exist.
-		if ( ! ( $logs_data = Give_Cache::get( $cache_key ) ) ) {
-			$logs = Give()->logs->get_connected_logs( $log_query );
+		if ( $logs ) {
+			foreach ( $logs as $log ) {
+				/* @var Give_payment $payment */
+				$payment = new Give_Payment( $log->log_parent );
 
-			if ( $logs ) {
-				foreach ( $logs as $log ) {
-					/* @var Give_payment $payment */
-					$payment = new Give_Payment( $log->log_parent );
+				// Make sure this payment hasn't been deleted
+				if ( get_post( $payment->ID ) ) :
+					$logs_data[] = array(
+						'ID'         => '<span class="give-item-label give-item-label-gray">' . $log->ID . '</span>',
+						'payment_id' => $payment->ID,
+						'form'       => $payment->form_id,
+						'amount'     => $payment->total,
+						'user_id'    => $payment->user_id,
+						'donor_name' => trim( "{$payment->first_name} $payment->last_name" ),
+						'date'       => $payment->date,
+					);
 
-					// Make sure this payment hasn't been deleted
-					if ( get_post( $payment->ID ) ) :
-						$logs_data[] = array(
-							'ID'         => '<span class="give-item-label give-item-label-gray">' . $log->ID . '</span>',
-							'payment_id' => $payment->ID,
-							'form'       => $payment->form_id,
-							'amount'     => $payment->total,
-							'user_id'    => $payment->user_id,
-							'donor_name' => trim( "{$payment->first_name} $payment->last_name" ),
-							'date'       => $payment->date,
-						);
-
-					endif;
-				}
-
-				// Cache results.
-				if ( ! empty( $logs_data ) ) {
-					Give_Cache::set( $cache_key, $logs_data );
-				}
+				endif;
 			}
 		}
 

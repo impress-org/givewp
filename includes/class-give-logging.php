@@ -428,21 +428,12 @@ class Give_Logging {
 
 		$this->bc_200_validate_params( $query_args );
 
-		// Get cache key for current query.
-		$cache_key = Give_Cache::get_key( 'get_log_count', $query_args );
-
-		// check if cache already exist or not.
-		if ( ! ( $logs_count = Give_Cache::get( $cache_key ) ) ) {
-			if ( ! give_has_upgrade_completed( 'give_v20_logs_upgrades' ) ) {
-				// Backward compatibility.
-				$logs       = new WP_Query( $query_args );
-				$logs_count = (int) $logs->post_count;
-			} else {
-				$logs_count = $this->log_db->count( $query_args );
-			}
-
-			// Cache results.
-			Give_Cache::set( $cache_key, $logs_count );
+		if ( ! give_has_upgrade_completed( 'give_v20_logs_upgrades' ) ) {
+			// Backward compatibility.
+			$logs       = new WP_Query( $query_args );
+			$logs_count = (int) $logs->post_count;
+		} else {
+			$logs_count = $this->log_db->count( $query_args );
 		}
 
 		return $logs_count;
@@ -531,22 +522,11 @@ class Give_Logging {
 	 * @return bool
 	 */
 	public function delete_cache() {
-		global $wpdb;
-
 		// Add log related keys to delete.
-		$cache_option_names = $wpdb->get_col(
-			$wpdb->prepare(
-				"SELECT *
-						FROM {$wpdb->options}
-						WHERE option_name LIKE '%%%s%%'
-						OR option_name LIKE '%%%s%%'
-						OR option_name LIKE '%%%s%%'",
-				'give_cache_give_logs',
-				'give_cache_get_logs',
-				'give_cache_get_log_count'
-			),
-			1 // option_name
-		);
+		$cache_give_logs = Give_Cache::get_options_like( 'give_logs' );
+		$cache_give_log_count = Give_Cache::get_options_like( 'log_count' );
+
+		$cache_option_names = array_merge( $cache_give_logs, $cache_give_log_count );
 
 		// Bailout.
 		if ( empty( $cache_option_names ) ) {
