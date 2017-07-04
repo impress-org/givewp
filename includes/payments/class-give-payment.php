@@ -757,29 +757,7 @@ final class Give_Payment {
 									break;
 
 								case 'remove':
-									$log_args = array(
-										'post_type'   => 'give_log',
-										'post_parent' => $item['id'],
-										'numberposts' => $quantity,
-										'meta_query'  => array(
-											array(
-												'key'     => '_give_log_payment_id',
-												'value'   => $this->ID,
-												'compare' => '=',
-											),
-											array(
-												'key'     => '_give_log_price_id',
-												'value'   => $price_id,
-												'compare' => '=',
-											),
-										),
-									);
-
-									$found_logs = get_posts( $log_args );
-									foreach ( $found_logs as $log ) {
-										wp_delete_post( $log->ID, true );
-									}
-
+									$this->delete_sales_logs();
 									if ( 'publish' === $this->status || 'complete' === $this->status ) {
 										$form = new Give_Donate_Form( $item['id'] );
 										$form->decrease_sales( $quantity );
@@ -1557,16 +1535,7 @@ final class Give_Payment {
 	 */
 	private function delete_sales_logs() {
 		// Remove related sale log entries.
-		Give()->logs->delete_logs(
-			null,
-			'sale',
-			array(
-				array(
-					'key'   => '_give_log_payment_id',
-					'value' => $this->ID,
-				),
-			)
-		);
+		Give()->logs->delete_logs( $this->ID );
 	}
 
 	/**

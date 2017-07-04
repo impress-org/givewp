@@ -334,16 +334,7 @@ function give_delete_donation( $payment_id = 0, $update_donor = true ) {
 	wp_delete_post( $payment_id, true );
 
 	// Remove related sale log entries.
-	Give()->logs->delete_logs(
-		null,
-		'sale',
-		array(
-			array(
-				'key'   => '_give_log_payment_id',
-				'value' => $payment_id,
-			),
-		)
-	);
+	Give()->logs->delete_logs( $payment_id );
 
 	/**
 	 * Fires after payment deleted.
