@@ -320,7 +320,7 @@ class Give_DB_Logs extends Give_DB {
 
 		// Logs created for a specific date or in a date range
 		if ( ! empty( $args['date_query'] ) ) {
-			$date_query_object = new WP_Date_Query( $args['date_query'], "{$this->table_name}.date" );
+			$date_query_object = new WP_Date_Query( $args['date_query'], "{$this->table_name}.log_date" );
 			$where             .= $date_query_object->get_sql();
 		}
 
