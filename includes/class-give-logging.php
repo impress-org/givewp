@@ -258,6 +258,8 @@ class Give_Logging {
 				$this->logmeta_db->update_meta( $log_id, '_give_log_' . sanitize_key( $key ), $meta );
 			}
 		}
+
+		
 		// Delete cache.
 		$this->delete_cache();
 
@@ -543,7 +545,7 @@ class Give_Logging {
 			),
 			1 // option_name
 		);
-		
+
 		// Bailout.
 		if ( empty( $cache_option_names ) ) {
 			return false;
@@ -563,20 +565,20 @@ class Give_Logging {
 	 */
 	private function bc_200_validate_params( &$log_query, &$log_meta = array() ) {
 		$query_params = array(
-			'log_title'   => 'post_title',
-			'log_parent'  => 'post_parent',
-			'log_content' => 'post_content',
-			'log_type'    => 'tax_query',
+			'log_title'    => 'post_title',
+			'log_parent'   => 'post_parent',
+			'log_content'  => 'post_content',
+			'log_type'     => 'tax_query',
+			'log_date'     => 'post_date',
+			'log_date_gmt' => 'post_date_gmt',
 		);
 
 		if ( ! give_has_upgrade_completed( 'give_v20_logs_upgrades' ) ) {
 			// Set old params.
 			foreach ( $query_params as $new_query_param => $old_query_param ) {
 
-				if ( isset( $log_query[ $old_query_param ] ) ) {
-					if ( empty( $log_query[ $new_query_param ] ) ) {
-						$log_query[ $new_query_param ] = $log_query[ $old_query_param ];
-					}
+				if ( isset( $log_query[ $old_query_param ] ) && empty( $log_query[ $new_query_param ] ) ) {
+					$log_query[ $new_query_param ] = $log_query[ $old_query_param ];
 					continue;
 				} elseif ( ! isset( $log_query[ $new_query_param ] ) ) {
 					continue;
@@ -603,10 +605,8 @@ class Give_Logging {
 			// Set only old params.
 			$query_params = array_flip( $query_params );
 			foreach ( $query_params as $old_query_param => $new_query_param ) {
-				if ( isset( $log_query[ $new_query_param ] ) ) {
-					if ( empty( $log_query[ $old_query_param ] ) ) {
-						$log_query[ $old_query_param ] = $log_query[ $new_query_param ];
-					}
+				if ( isset( $log_query[ $new_query_param ] ) && empty( $log_query[ $old_query_param ] ) ) {
+					$log_query[ $old_query_param ] = $log_query[ $new_query_param ];
 					continue;
 				} elseif ( ! isset( $log_query[ $old_query_param ] ) ) {
 					continue;
@@ -614,15 +614,13 @@ class Give_Logging {
 
 				switch ( $old_query_param ) {
 					case 'tax_query':
-						if ( ! empty( $log_query[ $old_query_param ] ) && isset( $log_query[ $old_query_param ][0]['terms'] ) ) {
+						if ( isset( $log_query[ $old_query_param ][0]['terms'] ) ) {
 							$log_query[ $new_query_param ] = $log_query[ $old_query_param ][0]['terms'];
 						}
 						break;
 
 					default:
-						if ( isset( $log_query[ $old_query_param ] ) ) {
-							$log_query[ $new_query_param ] = $log_query[ $old_query_param ];
-						}
+						$log_query[ $new_query_param ] = $log_query[ $old_query_param ];
 				}
 			}
 
