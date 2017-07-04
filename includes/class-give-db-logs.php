@@ -370,8 +370,12 @@ class Give_DB_Logs extends Give_DB {
 	 * @return mixed
 	 */
 	private function validate_params( &$args ) {
+		// fields params
+		$args['fields'] = 'ids' === $args['fields'] ?
+			'ID' :
+			$args['fields'];
 		$args['fields'] = array_key_exists( $args['fields'], $this->get_columns() ) ?
 			$args['fields'] :
-			( 'ids' === $args['fields'] ? $args['fields'] : 'all' );
+			'all';
 	}
 }
