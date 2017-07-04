@@ -494,7 +494,9 @@ class Give_Logging {
 
 			if ( $logs ) {
 				foreach ( $logs as $log ) {
-					$this->log_db->delete( $log->ID );
+					if( $this->log_db->delete( $log->ID ) ) {
+						$this->logmeta_db->delete( $log->ID );
+					}
 				}
 			}
 		}
