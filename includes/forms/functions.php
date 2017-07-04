@@ -340,24 +340,24 @@ function give_field_is_required( $field = '', $form_id ) {
  *
  * @since 1.0
  *
- * @param int         $give_form_id Give Form ID.
- * @param int         $payment_id   Payment ID.
- * @param bool|int    $price_id     Price ID, if any.
- * @param string|null $donation_date    The date of the donation.
+ * @param int         $give_form_id  Give Form ID.
+ * @param int         $payment_id    Payment ID.
+ * @param bool|int    $price_id      Price ID, if any.
+ * @param string|null $donation_date The date of the donation.
  *
  * @return void
  */
 function give_record_donation_in_log( $give_form_id = 0, $payment_id, $price_id = false, $donation_date = null ) {
 	$log_data = array(
-		'post_parent'   => $give_form_id,
-		'log_type'      => 'sale',
-		'post_date'     => isset( $donation_date ) ? $donation_date : null,
-		'post_date_gmt' => isset( $donation_date ) ? $donation_date : null,
+		'log_parent'   => $payment_id,
+		'log_type'     => 'sale',
+		'log_date'     => isset( $donation_date ) ? $donation_date : null,
+		'log_date_gmt' => isset( $donation_date ) ? $donation_date : null,
 	);
 
 	$log_meta = array(
-		'payment_id' => $payment_id,
-		'price_id'   => (int) $price_id,
+		'form_id'  => $give_form_id,
+		'price_id' => (int) $price_id,
 	);
 
 	Give()->logs->insert_log( $log_data, $log_meta );
