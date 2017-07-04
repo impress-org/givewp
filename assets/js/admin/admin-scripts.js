@@ -1738,6 +1738,43 @@ jQuery.noConflict();
 						}
 
 						break;
+
+					default:
+
+						var status = '';
+						if ('set-status-publish' === current_action) {
+							status = 'Completed';
+						} else if ('set-status-pending' === current_action) {
+							status = 'Pending';
+						} else if ('set-status-processing' === current_action) {
+							status = 'Processing';
+						} else if ('set-status-refunded' === current_action) {
+							status = 'Refunded';
+						} else if ('set-status-revoked' === current_action) {
+							status = 'Revoked';
+						} else if ('set-status-failed' === current_action) {
+							status = 'Failed';
+						} else if ('set-status-cancelled' === current_action) {
+							status = 'Cancelled';
+						} else if ('set-status-abandoned' === current_action) {
+							status = 'Abandoned';
+						} else if ('set-status-preapproval' === current_action) {
+							status = 'Preapproval';
+						}
+
+						// Check if admin did not select any payment.
+						if (!parseInt($payments)) {
+							alert(give_vars.bulk_action.set_to_status.zero.replace('{status}', status));
+							return false;
+						}
+
+						// Ask admin before processing.
+						confirm_action_notice = ( 1 < $payments ) ? give_vars.bulk_action.set_to_status.multiple : give_vars.bulk_action.set_to_status.single;
+						if (!window.confirm(confirm_action_notice.replace('{payment_count}', $payments).replace('{status}', status))) {
+							return false;
+						}
+
+						break;
 				}
 
 				return true;

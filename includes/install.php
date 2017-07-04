@@ -173,6 +173,7 @@ function give_run_install() {
 			'v18_upgrades_core_setting',
 			'v18_upgrades_form_metadata',
 			'v20_upgrades_form_metadata',
+			'v189_upgrades_levels_post_meta'
 		);
 
 		foreach ( $upgrade_routines as $upgrade ) {

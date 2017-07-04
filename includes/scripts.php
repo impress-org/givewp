@@ -338,6 +338,11 @@ function give_load_admin_scripts( $hook ) {
 				'resend_receipt'          => __( 'Are you sure you want to resend the email receipt to this recipient?', 'give' ),
 				'resend_receipts'         => __( 'Are you sure you want to resend the emails receipt to {payment_count} recipients?', 'give' ),
 			),
+			'set_to_status' => array(
+				'zero'      => __( 'You must choose at least one or more donations to set status to {status}.', 'give' ),
+				'single'    => __( 'Are you sure you want to set status of this donation to {status}?', 'give' ),
+				'multiple'  => __( 'Are you sure you want to set status of {payment_count} donations to {status}?', 'give' ),
+			),
 		),
 		'metabox_fields' => array(
 			'media' => array(
