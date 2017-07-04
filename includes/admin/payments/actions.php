@@ -75,7 +75,7 @@ function give_update_payment_details( $data ) {
 	/**
 	 * Fires before updating edited donation.
 	 *
-	 * @since 1.0
+	 * @since 1.8.9
 	 *
 	 * @param int $payment_id The ID of the payment.
 	 */
@@ -284,11 +284,11 @@ function give_update_payment_details( $data ) {
 	/**
 	 * Fires after updating edited donation.
 	 *
-	 * @since 1.0
+	 * @since 1.8.9
 	 *
 	 * @param int $payment_id The ID of the payment.
 	 */
-	do_action( 'give_update_edited_donation', $payment_id );
+	do_action( 'give_updated_edited_donation', $payment_id );
 
 	wp_safe_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&give-message=payment-updated&id=' . $payment_id ) );
 	exit;
