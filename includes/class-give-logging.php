@@ -259,7 +259,7 @@ class Give_Logging {
 			}
 		}
 
-		
+
 		// Delete cache.
 		$this->delete_cache();
 
@@ -538,9 +538,11 @@ class Give_Logging {
 			$wpdb->prepare(
 				"SELECT *
 						FROM {$wpdb->options}
-						where option_name LIKE '%%%s%%'
+						WHERE option_name LIKE '%%%s%%'
+						OR option_name LIKE '%%%s%%'
 						OR option_name LIKE '%%%s%%'",
 				'give_cache_give_logs',
+				'give_cache_get_logs',
 				'give_cache_get_log_count'
 			),
 			1 // option_name
