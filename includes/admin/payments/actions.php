@@ -75,7 +75,8 @@ function give_update_payment_details( $data ) {
 	/**
 	 * Fires before updating edited donation.
 	 *
-	 * @since 1.8.9
+	 * @since 1.0
+	 * @since 1.8.9 Changes hook name give_update_edited_purchase -> give_update_edited_donation
 	 *
 	 * @param int $payment_id The ID of the payment.
 	 */
@@ -284,7 +285,8 @@ function give_update_payment_details( $data ) {
 	/**
 	 * Fires after updating edited donation.
 	 *
-	 * @since 1.8.9
+	 * @since 1.0
+	 * @since 1.8.9 Changes hook name give_updated_edited_purchase -> give_updated_edited_donation
 	 *
 	 * @param int $payment_id The ID of the payment.
 	 */
