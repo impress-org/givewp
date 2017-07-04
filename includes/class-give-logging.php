@@ -66,6 +66,7 @@ class Give_Logging {
 		add_action( 'save_post_give_forms', array( $this, 'background_process_delete_cache' ) );
 		add_action( 'save_post_give_log', array( $this, 'background_process_delete_cache' ) );
 		add_action( 'give_delete_log_cache', array( $this, 'delete_cache' ) );
+		add_action( 'update_log_metadata', array( $this, 'bc_20_set_payment_as_log_parent' ), 10, 4 );
 
 		// Backward compatibility.
 		if ( ! give_has_upgrade_completed( 'give_v20_logs_upgrades' ) ) {
@@ -703,5 +704,65 @@ class Give_Logging {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Change log parent to payment if set to form.
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param mixed $check
+	 * @param int   $log_id
+	 * @param array $meta_key
+	 * @param array $meta_value
+	 *
+	 * @return mixed
+	 */
+	public function bc_20_set_payment_as_log_parent( $check, $log_id, $meta_key, $meta_value ) {
+		global $wpdb;
+		$update_status = false;
+		$post_type = get_post_type( $log_id );
+
+		// Bailout.
+		if (
+			'give_payment' === $post_type ||
+			'_give_log_payment_id' !== $meta_key
+		) {
+			return $check;
+		}
+
+		$form_id = $wpdb->get_var(
+			$wpdb->prepare(
+				"
+				SELECT log_parent FROM {$this->log_db->table_name}
+				WHERE ID=%d
+				",
+				$log_id
+			)
+		);
+
+		if ( $form_id ) {
+			$this->logmeta_db->delete_meta( $log_id, '_give_log_payment_id' );
+			$this->logmeta_db->update_meta( $log_id, '_give_log_form_id', $form_id );
+
+			$update_status = $wpdb->update(
+				$this->log_db->table_name,
+				array(
+					'log_parent' => $meta_value,
+				),
+				array(
+					'ID' => $log_id,
+				),
+				array(
+					'%s',
+				),
+				array(
+					'%d',
+				)
+			);
+		}
+
+		return $update_status;
 	}
 }
