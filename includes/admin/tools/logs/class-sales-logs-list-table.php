@@ -75,20 +75,12 @@ class Give_Sales_Log_Table extends WP_List_Table {
 
 				return '<a href="' . esc_url( add_query_arg( 'form', $item[ $column_name ] ) ) . '" >' . $form_title . '</a>';
 
-			case 'user_id' :
-				if ( ! empty( $item['user_id'] ) ) {
-					return sprintf(
-						'<a href="%1$s">%2$s</a>',
-						admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . $item['user_id'] ),
-						$item['donor_name']
-					);
-				} else {
-					return __( 'No donor attached', 'give' );
-				}
-
 
 			case 'amount' :
-				return give_currency_filter( give_format_amount( $item['amount'] ) );
+				$value = give_currency_filter( give_format_amount( $item['amount'] ) );
+				$value .= sprintf( '<br><small>%1$s %2$s</small>', __( 'via', 'give' ), give_get_gateway_admin_label( $payment->gateway ) );
+
+				return $value;
 
 			case 'status' :
 
@@ -106,8 +98,29 @@ class Give_Sales_Log_Table extends WP_List_Table {
 
 				return $value;
 
-			case 'payment_id' :
-				return '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . $item['payment_id'] ) . '">' . give_get_payment_number( $item['payment_id'] ) . '</a>';
+			case 'donation' :
+				$value = Give()->tooltips->render_link( array(
+					'label'       => sprintf( esc_attr__( 'View Donation #%s', 'give' ), $payment->ID ),
+					'tag_content' => "#$payment->ID",
+					'link'        => esc_url( add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details' ) ) ),
+				) );
+
+				if ( ! empty( $item['user_id'] ) ) {
+					$value .= sprintf(
+						'&nbsp;%1$s&nbsp;<a href="%2$s">%3$s</a><br>',
+						esc_html__( 'by', 'give' ),
+						admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . $item['user_id'] ),
+						$item['donor_name']
+					);
+				} else {
+					$value .= sprintf(
+						'&nbsp;%1$s&nbsp;%2$s<br>',
+						esc_html__( 'by', 'give' ),
+						__( 'No donor attached', 'give' )
+					);;
+				}
+
+				return $value;
 
 			default:
 				return $item[ $column_name ];
@@ -124,11 +137,10 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	public function get_columns() {
 		$columns = array(
 			'ID'         => __( 'Log ID', 'give' ),
-			'user_id'    => __( 'Donor', 'give' ),
+			'donation' => __( 'Donation', 'give' ),
 			'form'       => __( 'Form', 'give' ),
-			'amount'     => __( 'Donation Amount', 'give' ),
 			'status'     => __( 'Status', 'give' ),
-			'payment_id' => __( 'Transaction ID', 'give' ),
+			'amount'     => __( 'Donation Amount', 'give' ),
 			'date'       => __( 'Date', 'give' ),
 		);
 
