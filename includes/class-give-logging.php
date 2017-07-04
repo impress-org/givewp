@@ -397,7 +397,7 @@ class Give_Logging {
 
 		$query_args = array(
 			'number'      => - 1,
-			'fields'      => 'ids',
+			'fields'      => 'ID',
 
 			// Backward comatibility.
 			'post_type'   => 'give_log',
@@ -457,7 +457,7 @@ class Give_Logging {
 		$query_args = array(
 			'log_parent'  => $object_id,
 			'number'      => - 1,
-			'fields'      => 'ids',
+			'fields'      => 'ID',
 
 			// Backward compatibility.
 			'post_type'   => 'give_log',
@@ -494,12 +494,14 @@ class Give_Logging {
 
 			if ( $logs ) {
 				foreach ( $logs as $log ) {
-					if( $this->log_db->delete( $log->ID ) ) {
-						$this->logmeta_db->delete( $log->ID );
+					if ( $this->log_db->delete( $log->ID ) ) {
+						$this->logmeta_db->delete_row( $log->ID );
 					}
 				}
 			}
 		}
+
+		$this->delete_cache();
 	}
 
 	/**
