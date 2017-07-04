@@ -195,7 +195,7 @@ abstract class Give_DB {
 		$column_formats = $this->get_columns();
 
 		// Force fields to lower case
-		$data = array_change_key_case( $data );
+		// $data = array_change_key_case( $data );
 
 		// White list columns
 		$data = array_intersect_key( $data, $column_formats );
