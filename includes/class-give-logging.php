@@ -527,7 +527,7 @@ class Give_Logging {
 	 */
 	public function delete_cache() {
 		// Add log related keys to delete.
-		$cache_give_logs = Give_Cache::get_options_like( 'give_logs' );
+		$cache_give_logs      = Give_Cache::get_options_like( 'give_logs' );
 		$cache_give_log_count = Give_Cache::get_options_like( 'log_count' );
 
 		$cache_option_names = array_merge( $cache_give_logs, $cache_give_log_count );
@@ -684,7 +684,7 @@ class Give_Logging {
 	public function bc_20_set_payment_as_log_parent( $check, $log_id, $meta_key, $meta_value ) {
 		global $wpdb;
 		$update_status = false;
-		$post_type = get_post_type( $log_id );
+		$post_type     = get_post_type( $log_id );
 
 		// Bailout.
 		if (
