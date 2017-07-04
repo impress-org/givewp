@@ -1319,7 +1319,6 @@ function give_v20_logs_upgrades() {
 			foreach ( $terms as $term ) {
 				wp_delete_term( $term, 'give_log_type' );
 			}
-			unregister_taxonomy( 'give_log_type' );
 		}
 
 		// Delete logs
@@ -1339,6 +1338,8 @@ function give_v20_logs_upgrades() {
 				wp_delete_post( $log, true );
 			}
 		}
+
+		unregister_taxonomy( 'give_log_type' );
 
 		// Delete log cache.
 		Give()->logs->delete_cache();
