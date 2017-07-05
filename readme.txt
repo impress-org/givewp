@@ -208,7 +208,9 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 == Changelog ==
 
 = 1.8.9: July 5th, 2017  =
-*
+* New: Improved the new user notification email that gets sent to admins and also improved the account information email that gets sent to donors when a donor creates an account while donating. [#1821](https://github.com/WordImpress/Give/issues/1821)
+* Fix: An invalid donation payment could accidentally be created if the admin clicked on the bulk actions submit button without first selecting a payment within the donations list screen. [#1801](https://github.com/WordImpress/Give/issues/1801)
+
 
 = 1.8.8: May 30, 2017  =
 * New: Added search functionality to donor, donation form, and donation payment dropdowns in wp-admin. [#1572](https://github.com/WordImpress/Give/issues/1572)
