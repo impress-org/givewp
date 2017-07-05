@@ -81,7 +81,7 @@ if ( give_is_setting_enabled( give_get_option( 'uninstall_on_delete' ) ) ) {
 	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_donors' );
 	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_customers' );
 	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_customermeta' );
-	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_log' );
+	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_logs' );
 	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_logmeta' );
 
 	// Cleanup Cron Events.
