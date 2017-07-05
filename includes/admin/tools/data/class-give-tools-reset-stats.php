@@ -147,7 +147,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	 */
 	public function get_percentage_complete() {
 
-		$items = $this->get_stored_data( 'give_temp_reset_ids', false );
+		$items = $this->get_stored_data( 'give_temp_reset_ids' );
 		$total = count( $items );
 
 		$percentage = 100;
