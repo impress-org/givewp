@@ -806,10 +806,11 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @access public
 		 *
 		 * @param string $edd_action
+		 * @param bool   $response_in_array
 		 *
 		 * @return mixed
 		 */
-		public function get_license_info( $edd_action = '' ) {
+		public function get_license_info( $edd_action = '', $response_in_array = false ) {
 			if( empty( $edd_action ) ) {
 				return false;
 			}
