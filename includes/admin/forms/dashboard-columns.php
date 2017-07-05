@@ -114,8 +114,8 @@ function give_render_form_columns( $column_name, $post_id ) {
 			case 'shortcode':
 				echo '<input onclick="this.setSelectionRange(0, this.value.length)" type="text" class="shortcode-input" readonly="" value="[give_form id=&#34;' . absint( $post_id ) . '&#34;]">';
 				break;
-		}
-	}
+		}// End switch().
+	}// End if().
 }
 
 add_action( 'manage_posts_custom_column', 'give_render_form_columns', 10, 2 );
@@ -146,18 +146,18 @@ add_filter( 'manage_edit-give_forms_sortable_columns', 'give_sortable_form_colum
  *
  * @since 1.0
  *
- * @param array $vars Array of all the sort variables
+ * @param array $vars Array of all the sort variables.
  *
- * @return array $vars Array of all the sort variables
+ * @return array $vars Array of all the sort variables.
  */
 function give_sort_forms( $vars ) {
-	// Check if we're viewing the "give_forms" post type
+	// Check if we're viewing the "give_forms" post type.
 	if ( ! isset( $vars['post_type'] ) || ! isset( $vars['orderby'] ) || 'give_forms' !== $vars['post_type'] ) {
 		return $vars;
 	}
 
 	switch ( $vars['orderby'] ) {
-		// Check if 'orderby' is set to "sales"
+		// Check if 'orderby' is set to "sales".
 		case 'sales':
 			$vars = array_merge(
 				$vars,
@@ -168,7 +168,7 @@ function give_sort_forms( $vars ) {
 			);
 			break;
 
-		// Check if "orderby" is set to "earnings"
+		// Check if "orderby" is set to "earnings".
 		case 'earnings':
 			$vars = array_merge(
 				$vars,
@@ -179,7 +179,7 @@ function give_sort_forms( $vars ) {
 			);
 			break;
 
-		// Check if "orderby" is set to "price/amount"
+		// Check if "orderby" is set to "price/amount".
 		case 'amount':
 			$multi_level_meta_key = ( 'asc' === $vars['order'] ) ? '_give_levels_minimum_amount' : '_give_levels_maximum_amount';
 
@@ -198,7 +198,7 @@ function give_sort_forms( $vars ) {
 
 			break;
 
-		// Check if "orderby" is set to "goal"
+		// Check if "orderby" is set to "goal".
 		case 'goal':
 			$vars = array_merge(
 				$vars,
@@ -209,7 +209,7 @@ function give_sort_forms( $vars ) {
 			);
 			break;
 
-		// Check if "orderby" is set to "donations"
+		// Check if "orderby" is set to "donations".
 		case 'donations':
 			$vars = array_merge(
 				$vars,
@@ -219,7 +219,7 @@ function give_sort_forms( $vars ) {
 				)
 			);
 			break;
-	}
+	}// End switch().
 
 	return $vars;
 }
@@ -229,9 +229,9 @@ function give_sort_forms( $vars ) {
  *
  * @since  1.0
  *
- * @param  array $vars Array of all sort varialbes
+ * @param  array $vars Array of all sort variables.
  *
- * @return array       Array of all sort variables
+ * @return array       Array of all sort variables.
  */
 function give_filter_forms( $vars ) {
 	if ( isset( $vars['post_type'] ) && 'give_forms' == $vars['post_type'] ) {
@@ -241,8 +241,9 @@ function give_filter_forms( $vars ) {
 
 			$author_id = $_REQUEST['author'];
 			if ( (int) $author_id !== get_current_user_id() ) {
-				// Tried to view the products of another person, sorry
-				wp_die( esc_html__( 'You do not have permission to view this data.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+				wp_die( esc_html__( 'You do not have permission to view this data.', 'give' ), esc_html__( 'Error', 'give' ), array(
+					'response' => 403,
+				) );
 			}
 			$vars = array_merge(
 				$vars,
@@ -279,10 +280,10 @@ add_action( 'load-edit.php', 'give_forms_load', 9999 );
  *
  * @since  1.0
  *
- * @param array $dates   The preset array of dates
+ * @param array $dates   The preset array of dates.
  *
- * @global      $typenow The post type we are viewing
- * @return array Empty array disables the dropdown
+ * @global      $typenow The post type we are viewing.
+ * @return array Empty array disables the dropdown.
  */
 function give_remove_month_filter( $dates ) {
 	global $typenow;
