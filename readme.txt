@@ -207,6 +207,9 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
+= 1.8.9: July 5th, 2017  =
+*
+
 = 1.8.8: May 30, 2017  =
 * New: Added search functionality to donor, donation form, and donation payment dropdowns in wp-admin. [#1572](https://github.com/WordImpress/Give/issues/1572)
 * New: Added a date range filter to the `/donation/` Give API endpoint. [#758](https://github.com/WordImpress/Give/issues/758)
