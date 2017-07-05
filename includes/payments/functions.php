@@ -461,11 +461,10 @@ function give_count_payments( $args = array() ) {
 			$search = str_replace( '#:', '', $args['s'] );
 			$search = str_replace( '#', '', $search );
 
-			$select = 'SELECT p2.post_status,count( * ) AS num_posts ';
-			$join   = "LEFT JOIN $wpdb->postmeta m ON m.meta_key = '_give_log_payment_id' AND m.post_id = p.ID ";
-			$join   .= "INNER JOIN $wpdb->posts p2 ON m.meta_value = p2.ID ";
-			$where  = "WHERE p.post_type = 'give_log' ";
-			$where  .= $wpdb->prepare( 'AND p.post_parent = %d} ', $search );
+			$select = 'SELECT p.post_status,count( * ) AS num_posts ';
+			$join   = '';
+			$where  = $wpdb->prepare( 'WHERE p.post_type=%s  AND p.ID = %d ', 'give_payment', $search );
+
 
 		} elseif ( is_numeric( $args['s'] ) ) {
 
