@@ -122,22 +122,42 @@ class Give_Payments_Query extends Give_Stats {
 	 * @return void
 	 */
 	public function init() {
-
-		add_action( 'give_pre_get_payments', array( $this, 'date_filter_pre' ) );
-		add_action( 'give_post_get_payments', array( $this, 'date_filter_post' ) );
-
-		add_action( 'give_pre_get_payments', array( $this, 'orderby' ) );
-		add_filter( 'posts_orderby', array( $this, 'custom_orderby' ), 10, 2 );
-		add_action( 'give_pre_get_payments', array( $this, 'status' ) );
-		add_action( 'give_pre_get_payments', array( $this, 'month' ) );
-		add_action( 'give_pre_get_payments', array( $this, 'per_page' ) );
-		add_action( 'give_pre_get_payments', array( $this, 'page' ) );
-		add_action( 'give_pre_get_payments', array( $this, 'user' ) );
-		add_action( 'give_pre_get_payments', array( $this, 'search' ) );
-		add_action( 'give_pre_get_payments', array( $this, 'mode' ) );
-		add_action( 'give_pre_get_payments', array( $this, 'children' ) );
-		add_action( 'give_pre_get_payments', array( $this, 'give_forms' ) );
 	}
+
+
+	/**
+	 * Set query filter.
+	 *
+	 * @since  1.8.9
+	 * @access private
+	 */
+	private function set_filters() {
+		$this->date_filter_pre();
+		$this->orderby();
+		$this->status();
+		$this->month();
+		$this->per_page();
+		$this->page();
+		$this->user();
+		$this->search();
+		$this->mode();
+		$this->children();
+		$this->give_forms();
+
+		add_filter( 'posts_orderby', array( $this, 'custom_orderby' ), 10, 2 );
+	}
+
+	/**
+	 * Unset query filter.
+	 *
+	 * @since  1.8.9
+	 * @access private
+	 */
+	private function unset_filters() {
+		$this->date_filter_post();
+		remove_filter( 'posts_orderby', array( $this, 'custom_orderby' ) );
+	}
+
 
 	/**
 	 * Retrieve payments.
@@ -162,6 +182,9 @@ class Give_Payments_Query extends Give_Stats {
 		 */
 		do_action( 'give_pre_get_payments', $this );
 
+		// Modify the query/query arguments before we retrieve payments.
+		$this->set_filters();
+
 		$query = new WP_Query( $this->args );
 
 		$custom_output = array(
@@ -185,6 +208,10 @@ class Give_Payments_Query extends Give_Stats {
 
 			wp_reset_postdata();
 		}
+
+
+		// Remove query filters after we retrieve payments.
+		$this->unset_filters();
 
 		/**
 		 * Fires after retrieving payments.
