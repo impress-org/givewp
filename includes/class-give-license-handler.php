@@ -597,47 +597,44 @@ if ( ! class_exists( 'Give_License' ) ) :
 						continue;
 					}
 
-					if ( ( 'active' !== $subscription['status'] ) ) {
-
-						// Check if license already expired.
-						if ( strtotime( $subscription['expires'] ) < current_time( 'timestamp', 1 ) ) {
-							Give()->notices->register_notice( array(
-								'id'               => "give-expired-subscription-{$subscription['id']}",
-								'type'             => 'error',
-								'description'      => sprintf(
-									__( 'Your Give add-on license expired for payment <a href="%1$s" target="_blank">#%2$d</a>. <a href="%3$s" target="_blank">Click to renew an existing license</a> or %4$s.', 'give' ),
-									urldecode( $subscription['invoice_url'] ),
-									$subscription['payment_id'],
-									"{$this->checkout_url}?edd_license_key={$subscription['license_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired",
-									Give()->notices->get_dismiss_link(array(
-										'title' => __( 'Click here if already renewed', 'give' ),
-										'dismissible_type'      => 'user',
-										'dismiss_interval'      => 'permanent',
-									))
-								),
-								'dismissible_type' => 'user',
-								'dismiss_interval' => 'shortly',
-							) );
-						} else {
-							Give()->notices->register_notice( array(
-								'id'               => "give-expires-subscription-{$subscription['id']}",
-								'type'             => 'error',
-								'description'      => sprintf(
-									__( 'Your Give add-on license will expire in %1$s for payment <a href="%2$s" target="_blank">#%3$d</a>. <a href="%4$s" target="_blank">Click to renew an existing license</a> or %5$s.', 'give' ),
-									human_time_diff( current_time( 'timestamp', 1 ), strtotime( $subscription['expires'] ) ),
-									urldecode( $subscription['invoice_url'] ),
-									$subscription['payment_id'],
-									"{$this->checkout_url}?edd_license_key={$subscription['license_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired",
-									Give()->notices->get_dismiss_link(array(
-										'title' => __( 'Click here if already renewed', 'give' ),
-										'dismissible_type'      => 'user',
-										'dismiss_interval'      => 'permanent',
-									))
-								),
-								'dismissible_type' => 'user',
-								'dismiss_interval' => 'shortly',
-							) );
-						}
+					// Check if license already expired.
+					if ( strtotime( $subscription['expires'] ) < current_time( 'timestamp', 1 ) ) {
+						Give()->notices->register_notice( array(
+							'id'               => "give-expired-subscription-{$subscription['id']}",
+							'type'             => 'error',
+							'description'      => sprintf(
+								__( 'Your Give add-on license expired for payment <a href="%1$s" target="_blank">#%2$d</a>. <a href="%3$s" target="_blank">Click to renew an existing license</a> or %4$s.', 'give' ),
+								urldecode( $subscription['invoice_url'] ),
+								$subscription['payment_id'],
+								"{$this->checkout_url}?edd_license_key={$subscription['license_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired",
+								Give()->notices->get_dismiss_link(array(
+									'title' => __( 'Click here if already renewed', 'give' ),
+									'dismissible_type'      => 'user',
+									'dismiss_interval'      => 'permanent',
+								))
+							),
+							'dismissible_type' => 'user',
+							'dismiss_interval' => 'shortly',
+						) );
+					} else {
+						Give()->notices->register_notice( array(
+							'id'               => "give-expires-subscription-{$subscription['id']}",
+							'type'             => 'error',
+							'description'      => sprintf(
+								__( 'Your Give add-on license will expire in %1$s for payment <a href="%2$s" target="_blank">#%3$d</a>. <a href="%4$s" target="_blank">Click to renew an existing license</a> or %5$s.', 'give' ),
+								human_time_diff( current_time( 'timestamp', 1 ), strtotime( $subscription['expires'] ) ),
+								urldecode( $subscription['invoice_url'] ),
+								$subscription['payment_id'],
+								"{$this->checkout_url}?edd_license_key={$subscription['license_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired",
+								Give()->notices->get_dismiss_link(array(
+									'title' => __( 'Click here if already renewed', 'give' ),
+									'dismissible_type'      => 'user',
+									'dismiss_interval'      => 'permanent',
+								))
+							),
+							'dismissible_type' => 'user',
+							'dismiss_interval' => 'shortly',
+						) );
 					}
 
 					// Stop validation for these license keys.
@@ -829,7 +826,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			// Call the API
 			$response = wp_remote_post(
-				$this->api_url,
+				'http://edd.dev/',
 				array(
 					'timeout'   => 15,
 					'sslverify' => false,
@@ -841,7 +838,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			if ( is_wp_error( $response ) ) {
 				return false;
 			}
-			
+
 			return json_decode( wp_remote_retrieve_body( $response ), $response_in_array );
 		}
 	}
