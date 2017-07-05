@@ -128,10 +128,10 @@ class Give_Payments_Query extends Give_Stats {
 	/**
 	 * Set query filter.
 	 *
-	 * @since 2.0
+	 * @since  1.8.9
 	 * @access private
 	 */
-	private function set_filters(){
+	private function set_filters() {
 		$this->date_filter_pre();
 		$this->orderby();
 		$this->status();
@@ -150,10 +150,10 @@ class Give_Payments_Query extends Give_Stats {
 	/**
 	 * Unset query filter.
 	 *
-	 * @since 2.0
+	 * @since  1.8.9
 	 * @access private
 	 */
-	private function unset_filters(){
+	private function unset_filters() {
 		$this->date_filter_post();
 		remove_filter( 'posts_orderby', array( $this, 'custom_orderby' ) );
 	}
