@@ -32,15 +32,15 @@ function give_form_columns( $give_form_columns ) {
 	// Standard columns
 	$give_form_columns = array(
 		'cb'            => '<input type="checkbox"/>',
-		'title'         => esc_html__( 'Name', 'give' ),
-		'form_category' => esc_html__( 'Categories', 'give' ),
-		'form_tag'      => esc_html__( 'Tags', 'give' ),
-		'price'         => esc_html__( 'Amount', 'give' ),
-		'goal'          => esc_html__( 'Goal', 'give' ),
-		'donations'     => esc_html__( 'Donations', 'give' ),
-		'earnings'      => esc_html__( 'Income', 'give' ),
-		'shortcode'     => esc_html__( 'Shortcode', 'give' ),
-		'date'          => esc_html__( 'Date', 'give' ),
+		'title'         => __( 'Name', 'give' ),
+		'form_category' => __( 'Categories', 'give' ),
+		'form_tag'      => __( 'Tags', 'give' ),
+		'price'         => __( 'Amount', 'give' ),
+		'goal'          => __( 'Goal', 'give' ),
+		'donations'     => __( 'Donations', 'give' ),
+		'earnings'      => __( 'Income', 'give' ),
+		'shortcode'     => __( 'Shortcode', 'give' ),
+		'date'          => __( 'Date', 'give' ),
 	);
 
 	// Does the user want categories / tags?
@@ -104,7 +104,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 				break;
 			case 'earnings':
 				if ( current_user_can( 'view_give_form_stats', $post_id ) ) {
-					echo '<a href="' . esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-reports&view=forms&form-id=' . $post_id ) ) . '">';
+					echo '<a href="' . esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=forms&form-id=' . $post_id ) ) . '">';
 					echo give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ) ) );
 					echo '</a>';
 				} else {
