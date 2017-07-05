@@ -405,7 +405,7 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 			'fields'         => 'ids',
 		);
 
-		$output = give_get_cache_key( $input_action, $input_query_args );
+		$output = Give_Cache::get_key( $input_action, $input_query_args );
 
 		$this->assertEquals( 'give_cache_get_log_count_01f5c4012ed8142', $output );
 	}
