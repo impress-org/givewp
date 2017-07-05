@@ -826,7 +826,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			// Call the API
 			$response = wp_remote_post(
-				'http://edd.dev/',
+				$this->api_url,
 				array(
 					'timeout'   => 15,
 					'sslverify' => false,
