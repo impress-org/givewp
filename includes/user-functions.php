@@ -563,11 +563,11 @@ function give_new_user_notification( $user_id = 0, $user_data = array() ) {
 	$emails->__set( 'heading', esc_html__( 'New User Registration', 'give' ) );
 
 	/* translators: %s: site name */
-	$message = sprintf( esc_attr__( 'A new user has registered on your site %s:', 'give' ), $blogname ) . "\r\n\r\n";
+	$message = sprintf( esc_attr__( 'A new user has registered on %s:', 'give' ), $blogname ) . "\r\n\r\n";
 	/* translators: %s: user login */
 	$message .= '<strong>' . esc_attr__( 'Username:', 'give' ) . '</strong> ' . $user_data['user_login'] . "\r\n";
 	/* translators: %s: user email */
-	$message .= '<strong>' . esc_attr__( 'E-mail:', 'give' ) . '</strong> ' . $user_data['user_email']  . "\r\n";
+	$message .= '<strong>' . esc_attr__( 'E-mail:', 'give' ) . '</strong> ' . $user_data['user_email']  . "\r\n\r\n";
 
 	$message .= '<a href="' . admin_url('user-edit.php?user_id=' . $user_id) . '" target="_blank"> ' . esc_attr__( 'Click here to view &raquo;', 'give' ) . '</a>' . "\r\n";
 
