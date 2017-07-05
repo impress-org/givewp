@@ -55,13 +55,10 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 	 *
 	 * @access public
 	 * @since 1.5
-	 * @global object $wpdb Used to query the database using the WordPress
-	 *   Database API
-	 * @return array $data The data for the CSV file
+	 *
+	 * @return bool
 	 */
 	public function get_data() {
-		global $wpdb;
-
 		$accepted_statuses = apply_filters( 'give_recount_accepted_statuses', array( 'publish' ) );
 
 		if ( $this->step == 1 ) {
@@ -79,31 +76,18 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 		}
 
 		$args = apply_filters( 'give_recount_form_stats_args', array(
-			'post_parent'    => $this->form_id,
-			'post_type'      => 'give_log',
-			'posts_per_page' => $this->per_step,
-			'post_status'    => 'publish',
-			'paged'          => $this->step,
-			'log_type'       => 'sale',
-			'fields'         => 'ids',
+			'give_forms' => $this->form_id,
+			'number'     => $this->per_step,
+			'status'     => $accepted_statuses,
+			'paged'      => $this->step,
+			'fields'     => 'ids',
 		) );
 
-		$log_ids              = Give()->logs->get_connected_logs( $args, 'sale' );
-		$this->_log_ids_debug = array();
+		$payments = new Give_Payments_Query( $args );
+		$payments = $payments->get_payments();
 
-		if ( $log_ids ) {
-			$log_ids     = implode( ',', $log_ids );
-			$payment_ids = $wpdb->get_col( "SELECT meta_value FROM $wpdb->postmeta WHERE meta_key='_give_log_payment_id' AND post_id IN ($log_ids)" );
-			unset( $log_ids );
-
-			$payment_ids = implode( ',', $payment_ids );
-			$payments    = $wpdb->get_results( "SELECT ID, post_status FROM $wpdb->posts WHERE ID IN (" . $payment_ids . ")" );
-			unset( $payment_ids );
-
+		if ( $payments ) {
 			foreach ( $payments as $payment ) {
-
-				$payment = new Give_Payment( $payment->ID );
-
 				//Ensure acceptible status only
 				if ( ! in_array( $payment->post_status, $accepted_statuses ) ) {
 					continue;
@@ -113,8 +97,6 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 				if ( $payment->form_id != $this->form_id ) {
 					continue;
 				}
-
-				$this->_log_ids_debug[] = $payment->ID;
 
 				$totals['sales'] ++;
 				$totals['earnings'] += $payment->total;
@@ -131,7 +113,6 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 		give_update_meta( $this->form_id, '_give_form_earnings', $totals['earnings'] );
 
 		return false;
-
 	}
 
 	/**
@@ -141,8 +122,6 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 	 * @return int
 	 */
 	public function get_percentage_complete() {
-		global $wpdb;
-
 		if ( $this->step == 1 ) {
 			$this->delete_data( 'give_recount_total_' . $this->form_id );
 		}
@@ -153,35 +132,16 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 		if ( false === $total ) {
 			$total = 0;
 			$args  = apply_filters( 'give_recount_form_stats_total_args', array(
-				'post_parent' => $this->form_id,
-				'post_type'   => 'give_log',
-				'post_status' => 'publish',
-				'log_type'    => 'sale',
-				'fields'      => 'ids',
-				'nopaging'    => true,
+				'give_forms' => $this->form_id,
+				'number'     => - 1,
+				'status'     => $accepted_statuses,
+				'fields'     => 'ids',
 			) );
 
-			$log_ids = Give()->logs->get_connected_logs( $args, 'sale' );
-
-			if ( $log_ids ) {
-				$log_ids     = implode( ',', $log_ids );
-				$payment_ids = $wpdb->get_col( "SELECT meta_value FROM $wpdb->postmeta WHERE meta_key='_give_log_payment_id' AND post_id IN ($log_ids)" );
-				unset( $log_ids );
-
-				$payment_ids = implode( ',', $payment_ids );
-				$payments    = $wpdb->get_results( "SELECT ID, post_status FROM $wpdb->posts WHERE ID IN (" . $payment_ids . ")" );
-				unset( $payment_ids );
-
-				foreach ( $payments as $payment ) {
-					if ( in_array( $payment->post_status, $accepted_statuses ) ) {
-						continue;
-					}
-
-					$total ++;
-				}
-			}
-
+			$payments = new Give_Payments_Query( $args );
+			$total    = count( $payments->get_payments() );
 			$this->store_data( 'give_recount_total_' . $this->form_id, $total );
+
 		}
 
 		$percentage = 100;
