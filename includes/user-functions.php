@@ -569,6 +569,8 @@ function give_new_user_notification( $user_id = 0, $user_data = array() ) {
 	/* translators: %s: user email */
 	$message .= '<strong>' . esc_attr__( 'E-mail:', 'give' ) . '</strong> ' . $user_data['user_email']  . "\r\n";
 
+	$message .= '<a href="' . admin_url('user-edit.php?user_id=' . $user_id) . '" target="_blank"> ' . esc_attr__( 'Click here to view &raquo;', 'give' ) . '</a>' . "\r\n";
+
 	$emails->send(
 		get_option( 'admin_email' ),
 		sprintf(
@@ -578,6 +580,7 @@ function give_new_user_notification( $user_id = 0, $user_data = array() ) {
 		),
 		$message
 	);
+
 
 	// Account Information: Email sends to donor who registered.
 	$emails->__set( 'heading', esc_html__( 'Account Information', 'give' ) );
