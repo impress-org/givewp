@@ -576,7 +576,7 @@ function give_new_user_notification( $user_id = 0, $user_data = array() ) {
 
 	/* translators: %s: user login */
 	$message = sprintf( esc_attr__( 'Username: %s', 'give' ), $user_data['user_login'] ) . "\r\n";
-	/* translators: %s: paswword */
+	/* translators: %s: password */
 	$message .= sprintf( esc_attr__( 'Password: %s', 'give' ), esc_attr__( '[Password entered during donation]', 'give' ) ) . "\r\n";
 
 	$message .= '<a href="' . wp_login_url() . '"> ' . esc_attr__( 'Click Here to Login &raquo;', 'give' ) . '</a>' . "\r\n";
