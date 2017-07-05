@@ -52,36 +52,23 @@ class Give_Payment_Stats extends Give_Stats {
 			return $this->end_date;
 		}
 
-		if ( empty( $form_id ) ) {
+		$args = array(
+			'status'     => 'publish',
+			'start_date' => $this->start_date,
+			'end_date'   => $this->end_date,
+			'fields'     => 'ids',
+			'number'     => - 1,
+		);
 
-			// Global sale stats
-			add_filter( 'give_count_payments_where', array( $this, 'count_where' ) );
-
-			if ( is_array( $status ) ) {
-				$count = 0;
-				foreach ( $status as $payment_status ) {
-					$count += give_count_payments()->$payment_status;
-				}
-			} else {
-				$count = give_count_payments()->$status;
-			}
-
-			remove_filter( 'give_count_payments_where', array( $this, 'count_where' ) );
-
-		} else {
-
-			$this->timestamp = false;
-
-			add_filter( 'posts_where', array( $this, 'payments_where' ) );
-
-			$count = Give()->logs->get_log_count( $form_id, 'sale' );
-
-			remove_filter( 'posts_where', array( $this, 'payments_where' ) );
-
+		if ( ! empty( $form_id ) ) {
+			$args['give_forms'] = $form_id;
 		}
 
-		return $count;
+		/* @var Give_Payments_Query $payments */
+		$payments = new Give_Payments_Query( $args );
+		$payments = $payments->get_payments();
 
+		return count( $payments );
 	}
 
 
@@ -99,9 +86,6 @@ class Give_Payment_Stats extends Give_Stats {
 	 * @return float|int                Total amount of donations based on the passed arguments.
 	 */
 	public function get_earnings( $form_id = 0, $start_date = false, $end_date = false, $gateway_id = false ) {
-
-		global $wpdb;
-
 		$this->setup_dates( $start_date, $end_date );
 
 		// Make sure start date is valid
@@ -114,91 +98,59 @@ class Give_Payment_Stats extends Give_Stats {
 			return $this->end_date;
 		}
 
-		add_filter( 'posts_where', array( $this, 'payments_where' ) );
+		$args = array(
+			'status'     => 'publish',
+			'give_forms' => $form_id,
+			'start_date' => $this->start_date,
+			'end_date'   => $this->end_date,
+			'fields'     => 'ids',
+			'number'     => - 1,
+		);
 
-		if ( empty( $form_id ) ) {
 
-			// Global earning stats
-			$args = array(
-				'post_type'              => 'give_payment',
-				'nopaging'               => true,
-				'post_status'            => array( 'publish' ),
-				'fields'                 => 'ids',
-				'update_post_term_cache' => false,
-				'suppress_filters'       => false,
-				'start_date'             => $this->start_date,
-				// These dates are not valid query args, but they are used for cache keys
-				'end_date'               => $this->end_date,
-				'give_transient_type'    => 'give_earnings',
-				// This is not a valid query arg, but is used for cache keying
+		// Filter by Gateway ID meta_key
+		if ( $gateway_id ) {
+			$args['meta_query'][] = array(
+				'key'   => '_give_payment_gateway',
+				'value' => $gateway_id,
 			);
-
-			//Filter by Gateway ID meta_key
-			if ( $gateway_id !== false ) {
-				$args['meta_key']   = '_give_payment_gateway';
-				$args['meta_value'] = $gateway_id;
-			}
-
-			$args = apply_filters( 'give_stats_earnings_args', $args );
-			$key  = Give_Cache::get_key( 'give_stats', $args );
-			$earnings = Give_Cache::get( $key );
-			
-			if ( false === $earnings ) {
-				$sales    = get_posts( $args );
-				$earnings = 0;
-				if ( $sales ) {
-					$sales = implode( ',', array_map('intval', $sales ) );
-					$earnings += $wpdb->get_var( "SELECT SUM(meta_value) FROM $wpdb->postmeta WHERE meta_key = '_give_payment_total' AND post_id IN({$sales})" );
-				}
-				// Cache the results for one hour
-				Give_Cache::set( $key, $earnings, HOUR_IN_SECONDS );
-			}
-
-		} else {
-
-			// Donation form specific earning stats
-			global $wpdb;
-
-			$args = array(
-				'post_parent'         => $form_id,
-				'nopaging'            => true,
-				'log_type'            => 'sale',
-				'fields'              => 'ids',
-				'suppress_filters'    => false,
-				'start_date'          => $this->start_date,
-				// These dates are not valid query args, but they are used for cache keys
-				'end_date'            => $this->end_date,
-				'give_transient_type' => 'give_earnings',
-				// This is not a valid query arg, but is used for cache keying
-			);
-			$args = apply_filters( 'give_stats_earnings_args', $args );
-			$key  = Give_Cache::get_key( 'give_stats', $args );
-			//Set transient for faster stats
-			$earnings = Give_Cache::get( $key );
-
-			if ( false === $earnings ) {
-
-				$this->timestamp = false;
-				$log_ids  = Give()->logs->get_connected_logs( $args, 'sale' );
-				$earnings = 0;
-
-				if ( $log_ids ) {
-					$log_ids     = implode( ',', array_map('intval', $log_ids ) );
-					$payment_ids = $wpdb->get_col( "SELECT meta_value FROM $wpdb->postmeta WHERE meta_key='_give_log_payment_id' AND post_id IN ($log_ids);" );
-
-					foreach ( $payment_ids as $payment_id ) {
-						$earnings += give_get_payment_amount( $payment_id );
-					}
-					
-				}
-
-				// Cache the results for one hour
-				Give_Cache::set( $key, $earnings, 60 * 60 );
-			}
 		}
 
-		//remove our filter
-		remove_filter( 'posts_where', array( $this, 'payments_where' ) );
+		// Filter by Gateway ID meta_key
+		if ( $form_id ) {
+			$args['meta_query'][] = array(
+				'key'   => '_give_payment_form_id',
+				'value' => $form_id,
+			);
+		}
+
+		if ( ! empty( $args['meta_query'] ) && 1 < count( $args['meta_query'] ) ) {
+			$args['meta_query']['relation'] = 'AND';
+		}
+
+		$args = apply_filters( 'give_stats_earnings_args', $args );
+		$key  = Give_Cache::get_key( 'give_stats', $args );
+
+		//Set transient for faster stats
+		$earnings = Give_Cache::get( $key );
+
+		if ( false === $earnings ) {
+
+			$this->timestamp = false;
+			$payments        = new Give_Payments_Query( $args );
+			$payments        = $payments->get_payments();
+			$earnings        = 0;
+
+			if ( ! empty( $payments ) ) {
+				foreach ( $payments as $payment ) {
+					$earnings += give_get_payment_amount( $payment->ID );
+				}
+
+			}
+
+			// Cache the results for one hour
+			Give_Cache::set( $key, $earnings, 60 * 60 );
+		}
 
 		//return earnings
 		return round( $earnings, give_currency_decimal_filter() );
@@ -232,58 +184,38 @@ class Give_Payment_Stats extends Give_Stats {
 			return $this->end_date;
 		}
 
-		add_filter( 'posts_where', array( $this, 'payments_where' ) );
+		$args = array(
+			'status'     => 'publish',
+			'give_forms' => $form_id,
+			'start_date' => $this->start_date,
+			'end_date'   => $this->end_date,
+			'fields'     => 'ids',
+			'number'     => - 1,
+		);
 
-		if ( empty( $form_id ) ) {
 
-			// Global earning stats
-			$args = array(
-				'post_type'              => 'give_payment',
-				'nopaging'               => true,
-				'post_status'            => array( 'publish' ),
-				'fields'                 => 'ids',
-				'update_post_term_cache' => false,
-				'suppress_filters'       => false,
-				'start_date'             => $this->start_date,
-				// These dates are not valid query args, but they are used for cache keys
-				'end_date'               => $this->end_date,
-				'give_transient_type'    => 'give_earnings',
-				// This is not a valid query arg, but is used for cache keying
+		// Filter by Gateway ID meta_key
+		if ( $gateway_id ) {
+			$args['meta_query'][] = array(
+				'key'   => '_give_payment_gateway',
+				'value' => $gateway_id,
 			);
-
-			//Filter by Gateway ID meta_key
-			if ( $gateway_id !== false ) {
-				$args['meta_key']   = '_give_payment_gateway';
-				$args['meta_value'] = $gateway_id;
-			}
-
-			$args = apply_filters( 'give_stats_earnings_args', $args );
-			$key  = Give_Cache::get_key( 'give_stats', $args );
-
-		} else {
-
-			// Donation form specific earning stats
-			global $wpdb;
-
-			$args = array(
-				'post_parent'         => $form_id,
-				'nopaging'            => true,
-				'log_type'            => 'sale',
-				'fields'              => 'ids',
-				'suppress_filters'    => false,
-				'start_date'          => $this->start_date,
-				// These dates are not valid query args, but they are used for cache keys
-				'end_date'            => $this->end_date,
-				'give_transient_type' => 'give_earnings',
-				// This is not a valid query arg, but is used for cache keying
-			);
-
-			$args = apply_filters( 'give_stats_earnings_args', $args );
-			$key  = Give_Cache::get_key( 'give_stats', $args );
 		}
 
-		//remove our filter
-		remove_filter( 'posts_where', array( $this, 'payments_where' ) );
+		// Filter by Gateway ID meta_key
+		if ( $form_id ) {
+			$args['meta_query'][] = array(
+				'key'   => '_give_payment_form_id',
+				'value' => $form_id,
+			);
+		}
+
+		if ( ! empty( $args['meta_query'] ) && 1 < count( $args['meta_query'] ) ) {
+			$args['meta_query']['relation'] = 'AND';
+		}
+
+		$args = apply_filters( 'give_stats_earnings_args', $args );
+		$key  = Give_Cache::get_key( 'give_stats', $args );
 
 		//return earnings
 		return $key;
