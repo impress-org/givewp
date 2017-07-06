@@ -1320,7 +1320,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 			}
 
 		} elseif ( empty( $license->success ) ){
-			$class          = $license->error;
+			$class          = 'invalid';
 			$messages[]     = sprintf(
 				__( 'Your %1$s is not active for this URL. Please <a href="%2$s" target="_blank" title="Visit account page">visit your account page</a> to manage your license key URLs.', 'give' ),
 				$addon_name,
