@@ -771,6 +771,8 @@ add_filter( 'nav_menu_meta_box_object', 'modify_nav_menu_meta_box_object' );
 
 /**
  * Enable 'Donation Form' meta enabled by default on Menu page.
+ *
+ * @since 1.8.9
  */
 function give_nav_donation_metabox_enabled() {
 
