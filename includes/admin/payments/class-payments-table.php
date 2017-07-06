@@ -145,7 +145,9 @@ class Give_Payment_History_Table extends WP_List_Table {
 	public function advanced_filters() {
 		$start_date = isset( $_GET['start-date'] ) ? sanitize_text_field( $_GET['start-date'] ) : null;
 		$end_date   = isset( $_GET['end-date'] ) ? sanitize_text_field( $_GET['end-date'] ) : null;
-		$status     = isset( $_GET['status'] ) ? $_GET['status'] : '';
+		$status     = isset( $_GET['status'] ) ? sanitize_text_field( $_GET['status'] ) : '';
+		$donor      = isset( $_GET['donor'] ) ? sanitize_text_field( $_GET['donor'] ) : '';
+		$search      = isset( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : '';
 		?>
 		<div id="give-payment-filters">
 			<span id="give-payment-date-filters">
@@ -161,7 +163,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			<?php if ( ! empty( $status ) ) : ?>
 				<input type="hidden" name="status" value="<?php echo esc_attr( $status ); ?>" />
 			<?php endif; ?>
-			<?php if ( ! empty( $start_date ) || ! empty( $end_date ) ) : ?>
+			<?php if ( ! empty( $start_date ) || ! empty( $end_date ) || ! empty( $donor )|| ! empty( $search ) ) : ?>
 				<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ); ?>"
 				   class="button-secondary"><?php esc_html_e( 'Clear Filter', 'give' ); ?></a>
 			<?php endif; ?>
