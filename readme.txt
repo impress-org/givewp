@@ -240,8 +240,6 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 * Fix: In certain rare cases where donors were logged in and giving in the name of another an incorrect name would appear within the receipts. [#1716](https://github.com/WordImpress/Give/issues/1716)
 * Fix: When clicking on a donor who has given using multiple emails the donaiton filter would not take this into account within the payments screen. [#1830](https://github.com/WordImpress/Give/issues/1830)
 
-
-
 = 1.8.8: May 30, 2017  =
 * New: Added search functionality to donor, donation form, and donation payment dropdowns in wp-admin. [#1572](https://github.com/WordImpress/Give/issues/1572)
 * New: Added a date range filter to the `/donation/` Give API endpoint. [#758](https://github.com/WordImpress/Give/issues/758)
