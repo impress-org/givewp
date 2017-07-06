@@ -103,41 +103,63 @@ jQuery(function ($) {
 	/**
 	 * Validate cc fields on change
 	 */
-	doc.on('keyup change', '.give-form .card-number, .give-form .card-cvc, .give-form .card-expiry', function () {
+	doc.on('keyup change focusout', '.give-form .card-number, .give-form .card-cvc, .give-form .card-expiry', function (e) {
 		var el          = $(this),
 			give_form   = el.parents('form.give-form'),
 			id          = el.attr('id'),
 			card_number = give_form.find('.card-number'),
 			card_cvc    = give_form.find('.card-cvc'),
 			card_expiry = give_form.find('.card-expiry'),
-			type        = $.payment.cardType(card_number.val());
+			type        = $.payment.cardType(card_number.val()),
+			error       = false;
 
-		if (id.indexOf('card_number') > -1) {
+		switch (e.type){
+			case 'focusout':
+				if (id.indexOf('card_number') > -1) {
+					// Set card number error.
+					error = !$.payment.validateCardNumber(card_number.val());
+					card_number.toggleError(error);
 
-			var card_type = give_form.find('.card-type');
+				}else if (id.indexOf('card_cvc') > -1) {
+					// Set card cvc error.
+					error = !$.payment.validateCardCVC(card_cvc.val(), type);
+					card_cvc.toggleError(error);
 
-			if (type === null) {
-				card_type.removeClass().addClass('off card-type');
-				el.removeClass('valid').addClass('error');
-			}
-			else {
-				card_type.removeClass().addClass('card-type ' + type);
-			}
+				}else if (id.indexOf('card_expiry') > -1) {
+					// Set card expiry error.
+					error = !$.payment.validateCardExpiry(card_expiry.payment('cardExpiryVal'));
+					card_expiry.toggleError(error);
+				}
 
-			card_number.toggleError(!$.payment.validateCardNumber(card_number.val()));
-		}
-		if (id.indexOf('card_cvc') > -1) {
+				// Disable submit button
+				el.parents('form').find('.give-submit').prop('disabled', error);
+				break;
 
-			card_cvc.toggleError(!$.payment.validateCardCVC(card_cvc.val(), type));
-		}
-		if (id.indexOf('card_expiry') > -1) {
+			default:
+				// Remove error class.
+				if( el.hasClass('error')) {
+					el.removeClass('error');
+				}
 
-			card_expiry.toggleError(!$.payment.validateCardExpiry(card_expiry.payment('cardExpiryVal')));
+				if (id.indexOf('card_number') > -1) {
+					// Add card related classes.
+					var card_type = give_form.find('.card-type');
 
-			var expiry = card_expiry.payment('cardExpiryVal');
+					if (type === null) {
+						card_type.removeClass().addClass('off card-type');
+						el.removeClass('valid').addClass('error');
+					}
+					else {
+						card_type.removeClass().addClass('card-type ' + type);
+					}
 
-			give_form.find('.card-expiry-month').val(expiry.month);
-			give_form.find('.card-expiry-year').val(expiry.year);
+				}else if (id.indexOf('card_expiry') > -1) {
+					// set expiry date params.
+					var expiry = card_expiry.payment('cardExpiryVal');
+
+					give_form.find('.card-expiry-month').val(expiry.month);
+					give_form.find('.card-expiry-year').val(expiry.year);
+				}
 		}
 	});
 

@@ -2,7 +2,7 @@
 /**
  * Recount income and stats
  *
- * This class handles batch processing of resetting donations and income stats
+ * This class handles batch processing of resetting donations and income stats.
  *
  * @subpackage  Admin/Tools/Give_Tools_Reset_Stats
  * @copyright   Copyright (c) 2016, WordImpress
@@ -133,7 +133,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 
 			return true;
 
-		}
+		}// End if().
 
 		return false;
 
@@ -147,7 +147,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	 */
 	public function get_percentage_complete() {
 
-		$items = $this->get_stored_data( 'give_temp_reset_ids', false );
+		$items = $this->get_stored_data( 'give_temp_reset_ids' );
 		$total = count( $items );
 
 		$percentage = 100;
@@ -164,11 +164,11 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	}
 
 	/**
-	 * Set the properties specific to the payments export
+	 * Set the properties specific to the payments export.
 	 *
 	 * @since 1.5
 	 *
-	 * @param array $request The Form Data passed into the batch processing
+	 * @param array $request The Form Data passed into the batch processing.
 	 */
 	public function set_properties( $request ) {
 	}
@@ -182,7 +182,9 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	public function process_step() {
 
 		if ( ! $this->can_export() ) {
-			wp_die( esc_html__( 'You do not have permission to reset data.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die( esc_html__( 'You do not have permission to reset data.', 'give' ), esc_html__( 'Error', 'give' ), array(
+				'response' => 403,
+			) );
 		}
 
 		$had_data = $this->get_data();
@@ -193,7 +195,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 			return true;
 		} else {
 			update_option( 'give_earnings_total', 0 );
-			Give_Cache::delete( Give_Cache::get_key('give_estimated_monthly_stats' ) );
+			Give_Cache::delete( Give_Cache::get_key( 'give_estimated_monthly_stats' ) );
 
 			$this->delete_data( 'give_temp_reset_ids' );
 
@@ -249,7 +251,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 		if ( false === $items ) {
 			$items = array();
 
-			$give_types_for_reset = array( 'give_forms', 'give_log', 'give_payment' );
+			$give_types_for_reset = array( 'give_forms', 'give_payment' );
 			$give_types_for_reset = apply_filters( 'give_reset_store_post_types', $give_types_for_reset );
 
 			$args = apply_filters( 'give_tools_reset_stats_total_args', array(
@@ -266,11 +268,13 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 				);
 			}
 
-			$customer_args = array( 'number' => - 1 );
-			$customers     = Give()->customers->get_customers( $customer_args );
-			foreach ( $customers as $customer ) {
+			$donor_args = array(
+				'number' => - 1,
+			);
+			$donors     = Give()->donors->get_donors( $donor_args );
+			foreach ( $donors as $donor ) {
 				$items[] = array(
-					'id'   => (int) $customer->id,
+					'id'   => (int) $donor->id,
 					'type' => 'customer',
 				);
 			}
@@ -280,7 +284,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 			$items = apply_filters( 'give_reset_items', $items );
 
 			$this->store_data( 'give_temp_reset_ids', $items );
-		}
+		}// End if().
 
 	}
 
@@ -341,7 +345,9 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	 */
 	private function delete_data( $key ) {
 		global $wpdb;
-		$wpdb->delete( $wpdb->options, array( 'option_name' => $key ) );
+		$wpdb->delete( $wpdb->options, array(
+			'option_name' => $key,
+		) );
 	}
 
 }

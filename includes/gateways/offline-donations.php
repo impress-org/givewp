@@ -250,7 +250,7 @@ function give_offline_send_admin_notice( $payment_id = 0 ) {
 
 	$admin_message .= sprintf(
 		                  '<a href="%1$s">%2$s</a>',
-		                  admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $payment_id ),
+		                  admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . $payment_id ),
 		                  __( 'View Donation Details &raquo;', 'give' )
 	                  ) . "\n\n";
 
@@ -465,7 +465,7 @@ function give_offline_donation_receipt_status_notice( $notice, $id ) {
 		return $notice;
 	}
 
-	return give_output_error( __( 'Payment Pending: Please follow the instructions below to complete your donation.', 'give' ), false, 'warning' );
+	return Give()->notices->print_frontend_notice( __( 'Payment Pending: Please follow the instructions below to complete your donation.', 'give' ), false, 'warning' );
 }
 
 add_filter( 'give_receipt_status_notice', 'give_offline_donation_receipt_status_notice', 10, 2 );

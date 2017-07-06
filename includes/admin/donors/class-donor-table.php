@@ -1,6 +1,8 @@
 <?php
 /**
- * Customer (Donor) Reports Table Class.
+ * Donor List Table Class.
+ *
+ * The list view under WP-Admin > Donations > Donors.
  *
  * @package     Give
  * @subpackage  Admin/Reports
@@ -20,13 +22,11 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 }
 
 /**
- * Give_Customer_Reports_Table Class.
- *
- * Renders the Customer Reports table.
+ * Give_Donor_List_Table Class.
  *
  * @since 1.0
  */
-class Give_Customer_Reports_Table extends WP_List_Table {
+class Give_Donor_List_Table extends WP_List_Table {
 
 	/**
 	 * Number of items per page.
@@ -62,9 +62,9 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 
 		// Set parent defaults
 		parent::__construct( array(
-			'singular' => esc_html__( 'Donor', 'give' ),     // Singular name of the listed records
-			'plural'   => esc_html__( 'Donors', 'give' ),    // Plural name of the listed records
-			'ajax'     => false                       // Does this table support ajax?
+			'singular' => __( 'Donor', 'give' ),     // Singular name of the listed records.
+			'plural'   => __( 'Donors', 'give' ),    // Plural name of the listed records.
+			'ajax'     => false,// Does this table support ajax?.
 		) );
 
 	}
@@ -90,11 +90,13 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 			echo '<input type="hidden" name="order" value="' . esc_attr( $_REQUEST['order'] ) . '" />';
 		}
 		?>
-        <p class="search-box" role="search">
-            <label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
-            <input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>"/>
-			<?php submit_button( $text, 'button', false, false, array( 'ID' => 'search-submit' ) ); ?>
-        </p>
+		<p class="search-box" role="search">
+			<label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
+			<input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>"/>
+			<?php submit_button( $text, 'button', false, false, array(
+				'ID' => 'search-submit',
+			) ); ?>
+		</p>
 		<?php
 	}
 
@@ -104,49 +106,47 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @param array  $item        Contains all the data of the customers.
+	 * @param array  $donor        Contains all the data of the donors.
 	 * @param string $column_name The name of the column.
 	 *
 	 * @return string Column Name.
 	 */
-	public function column_default( $item, $column_name ) {
+	public function column_default( $donor, $column_name ) {
 		switch ( $column_name ) {
 
 			case 'num_donations' :
-				$value = '<a href="' .
-				         admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $item['email'] )
-				         ) . '">' . esc_html( $item['num_donations'] ) . '</a>';
+				$value = '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&donor=' . urlencode( $donor['id'] ) ) . '&status=publish' . ' ">' . esc_html( $donor['num_donations'] ) . '</a>';
 				break;
 
 			case 'amount_spent' :
-				$value = give_currency_filter( give_format_amount( $item[ $column_name ] ) );
+				$value = give_currency_filter( give_format_amount( $donor[ $column_name ] ) );
 				break;
 
 			case 'date_created' :
-				$value = date_i18n( give_date_format(), strtotime( $item['date_created'] ) );
+				$value = date_i18n( give_date_format(), strtotime( $donor['date_created'] ) );
 				break;
 
 			default:
-				$value = isset( $item[ $column_name ] ) ? $item[ $column_name ] : null;
+				$value = isset( $donor[ $column_name ] ) ? $donor[ $column_name ] : null;
 				break;
 		}
 
-		return apply_filters( "give_report_column_{$column_name}", $value, $item['id'] );
+		return apply_filters( "give_report_column_{$column_name}", $value, $donor['id'] );
 
 	}
 
 	/**
 	 * Column name.
 	 *
-	 * @param $item
+	 * @param $donor
 	 *
 	 * @return string
 	 */
-	public function column_name( $item ) {
-		$name = '#' . $item['id'] . ' ';
-		$name .= ! empty( $item['name'] ) ? $item['name'] : '<em>' . esc_html__( 'Unnamed Donor', 'give' ) . '</em>';
-		$view_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $item['id'] );
-		$actions  = $this->get_row_actions( $item );
+	public function column_name( $donor ) {
+		$name     = '#' . $donor['id'] . ' ';
+		$name     .= ! empty( $donor['name'] ) ? $donor['name'] : '<em>' . esc_html__( 'Unnamed Donor', 'give' ) . '</em>';
+		$view_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor['id'] );
+		$actions  = $this->get_row_actions( $donor );
 
 		return '<a href="' . esc_url( $view_url ) . '">' . $name . '</a>' . $this->row_actions( $actions );
 	}
@@ -160,14 +160,14 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'name'          => esc_html__( 'Name', 'give' ),
-			'email'         => esc_html__( 'Email', 'give' ),
-			'num_donations' => esc_html__( 'Donations', 'give' ),
-			'amount_spent'  => esc_html__( 'Total Donated', 'give' ),
-			'date_created'  => esc_html__( 'Date Created', 'give' )
+			'name'          => __( 'Name', 'give' ),
+			'email'         => __( 'Email', 'give' ),
+			'num_donations' => __( 'Donations', 'give' ),
+			'amount_spent'  => __( 'Total Donated', 'give' ),
+			'date_created'  => __( 'Date Created', 'give' ),
 		);
 
-		return apply_filters( 'give_report_customer_columns', $columns );
+		return apply_filters( 'give_list_donors_columns', $columns );
 
 	}
 
@@ -187,7 +187,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 			'amount_spent'  => array( 'purchase_value', false ),
 		);
 
-		return apply_filters( 'give_report_sortable_customer_columns', $columns );
+		return apply_filters( 'give_list_donors_sortable_columns', $columns );
 	}
 
 	/**
@@ -196,38 +196,23 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 * @since  1.7
 	 * @access public
 	 *
-	 * @param $item
+	 * @param $donor
 	 *
 	 * @return array An array of action links.
 	 */
-	public function get_row_actions( $item ) {
+	public function get_row_actions( $donor ) {
 
 		$actions = array(
 
-			'view' => sprintf(
-				'<a href="%1$s" aria-label="%2$s">%3$s</a>',
-				admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $item['id'] ),
-				sprintf( esc_attr__( 'View "%s"', 'give' ), $item['name'] ),
-				esc_html__( 'View Donor', 'give' )
-			),
+			'view' => sprintf( '<a href="%1$s" aria-label="%2$s">%3$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor['id'] ), sprintf( esc_attr__( 'View "%s"', 'give' ), $donor['name'] ), __( 'View Donor', 'give' ) ),
 
-			'notes' => sprintf(
-				'<a href="%1$s" aria-label="%2$s">%3$s</a>',
-				admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=notes&id=' . $item['id'] ),
-				sprintf( esc_attr__( 'Notes for "%s"', 'give' ), $item['name'] ),
-				esc_html__( 'Notes', 'give' )
-			),
+			'notes' => sprintf( '<a href="%1$s" aria-label="%2$s">%3$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=notes&id=' . $donor['id'] ), sprintf( esc_attr__( 'Notes for "%s"', 'give' ), $donor['name'] ), __( 'Notes', 'give' ) ),
 
-			'delete' => sprintf(
-				'<a href="%1$s" aria-label="%2$s">%3$s</a>',
-				admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $item['id'] ),
-				sprintf( esc_attr__( 'Delete "%s"', 'give' ), $item['name'] ),
-				esc_html__( 'Delete', 'give' )
-			)
+			'delete' => sprintf( '<a href="%1$s" aria-label="%2$s">%3$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $donor['id'] ), sprintf( esc_attr__( 'Delete "%s"', 'give' ), $donor['name'] ), __( 'Delete', 'give' ) ),
 
 		);
 
-		return apply_filters( 'give_donor_row_actions', $actions, $item );
+		return apply_filters( 'give_donor_row_actions', $actions, $donor );
 
 	}
 
@@ -280,23 +265,23 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 		$data = array();
 
 		// Get donor query.
-		$args      = $this->get_donor_query();
-		$customers = Give()->customers->get_customers( $args );
+		$args   = $this->get_donor_query();
+		$donors = Give()->donors->get_donors( $args );
 
-		if ( $customers ) {
+		if ( $donors ) {
 
-			foreach ( $customers as $customer ) {
+			foreach ( $donors as $donor ) {
 
-				$user_id = ! empty( $customer->user_id ) ? intval( $customer->user_id ) : 0;
+				$user_id = ! empty( $donor->user_id ) ? intval( $donor->user_id ) : 0;
 
 				$data[] = array(
-					'id'            => $customer->id,
+					'id'            => $donor->id,
 					'user_id'       => $user_id,
-					'name'          => $customer->name,
-					'email'         => $customer->email,
-					'num_donations' => $customer->purchase_count,
-					'amount_spent'  => $customer->purchase_value,
-					'date_created'  => $customer->date_created,
+					'name'          => $donor->name,
+					'email'         => $donor->email,
+					'num_donations' => $donor->purchase_count,
+					'amount_spent'  => $donor->purchase_value,
+					'date_created'  => $donor->date_created,
 				);
 			}
 		}
@@ -315,7 +300,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 		$_donor_query = $this->get_donor_query();
 
 		$_donor_query['number'] = - 1;
-		$donors                 = Give()->customers->get_customers( $_donor_query );
+		$donors                 = Give()->donors->get_donors( $_donor_query );
 
 		return count( $donors );
 	}
@@ -359,16 +344,12 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @uses   Give_Customer_Reports_Table::get_columns()
-	 * @uses   WP_List_Table::get_sortable_columns()
-	 * @uses   Give_Customer_Reports_Table::get_pagenum()
-	 * @uses   Give_Customer_Reports_Table::get_total_customers()
 	 * @return void
 	 */
 	public function prepare_items() {
 
 		$columns  = $this->get_columns();
-		$hidden   = array(); // No hidden columns
+		$hidden   = array(); // No hidden columns.
 		$sortable = $this->get_sortable_columns();
 
 		$this->_column_headers = array( $columns, $hidden, $sortable );
@@ -380,7 +361,7 @@ class Give_Customer_Reports_Table extends WP_List_Table {
 		$this->set_pagination_args( array(
 			'total_items' => $this->total,
 			'per_page'    => $this->per_page,
-			'total_pages' => ceil( $this->total / $this->per_page )
+			'total_pages' => ceil( $this->total / $this->per_page ),
 		) );
 	}
 }

@@ -38,7 +38,7 @@ $number         = $payment->number;
 $payment_meta   = $payment->get_meta();
 $transaction_id = esc_attr( $payment->transaction_id );
 $user_id        = $payment->user_id;
-$customer_id    = $payment->customer_id;
+$donor_id       = $payment->customer_id;
 $payment_date   = strtotime( $payment->date );
 $user_info      = give_get_payment_meta_user_info( $payment_id );
 $address        = $payment->address;
@@ -153,23 +153,7 @@ $payment_mode   = $payment->mode;
 										 *
 										 * @param int $payment_id Payment id.
 										 */
-										do_action( 'give_view_order_details_update_inner', $payment_id );
-
-										// @TODO: Fees
-										$fees = give_get_payment_fees( $payment_id );
-										if ( ! empty( $fees ) ) : ?>
-											<div class="give-order-fees give-admin-box-inside">
-												<p class="strong"><?php esc_html_e( 'Fees:', 'give' ); ?></p>
-												<ul class="give-payment-fees">
-													<?php foreach ( $fees as $fee ) : ?>
-														<li>
-															<span class="fee-label"><?php echo $fee['label']; ?>:</span>
-															<span class="fee-amount" data-fee="<?php echo esc_attr( $fee['amount'] ); ?>"><?php echo give_currency_filter( $fee['amount'], $currency_code ); ?></span>
-														</li>
-													<?php endforeach; ?>
-												</ul>
-											</div>
-										<?php endif; ?>
+										do_action( 'give_view_order_details_update_inner', $payment_id ); ?>
 
 										<div class="give-order-payment give-admin-box-inside">
 											<p>
@@ -489,35 +473,45 @@ $payment_mode   = $payment->mode;
 
 								<div class="inside">
 
-									<?php $customer = new Give_Customer( $customer_id ); ?>
+									<?php $donor = new Give_Donor( $donor_id ); ?>
 
-									<div class="column-container customer-info">
+									<div class="column-container donor-info">
 										<div class="column">
 											<p>
 												<strong><?php esc_html_e( 'Donor ID:', 'give' ); ?></strong><br>
 												<?php
-												if ( ! empty( $customer->id ) ) {
+												if ( ! empty( $donor->id ) ) {
 													printf(
 														'<a href="%1$s" target="_blank">#%2$s</a>',
-														admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $customer->id ),
-														$customer->id
+														admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ),
+														$donor->id
 													);
 												}
 												?>
 											</p>
 											<p>
 												<strong><?php esc_html_e( 'Donor Since:', 'give' ); ?></strong><br>
-												<?php echo date_i18n( give_date_format(), strtotime( $customer->date_created ) ) ?>
+												<?php echo date_i18n( give_date_format(), strtotime( $donor->date_created ) ) ?>
 											</p>
 										</div>
 										<div class="column">
 											<p>
 												<strong><?php esc_html_e( 'Donor Name:', 'give' ); ?></strong><br>
-												<?php echo $customer->name; ?>
+												<?php
+                                                $donor_billing_name = give_get_donor_name_by( $payment_id, 'donation' );
+                                                $donor_name = give_get_donor_name_by( $donor_id, 'donor' );
+
+                                                // Check whether the donor name and WP_User name is same or not.
+                                                if( sanitize_title( $donor_billing_name ) != sanitize_title( $donor_name ) ){
+                                                    echo $donor_billing_name . ' (<a href="' . esc_url( admin_url( "edit.php?post_type=give_forms&page=give-donors&view=overview&id=$donor_id" ) ) . '">' . $donor_name . '</a>)';
+                                                }else{
+                                                    echo $donor_name;
+                                                }
+                                                ?>
 											</p>
 											<p>
 												<strong><?php esc_html_e( 'Donor Email:', 'give' ); ?></strong><br>
-												<?php echo $customer->email; ?>
+												<?php echo $donor->email; ?>
 											</p>
 										</div>
 										<div class="column">
@@ -525,35 +519,35 @@ $payment_mode   = $payment->mode;
 												<strong><?php esc_html_e( 'Change Donor:', 'give' ); ?></strong><br>
 												<?php
 												echo Give()->html->donor_dropdown( array(
-													'selected' => $customer->id,
-													'name'     => 'customer-id',
+													'selected' => $donor->id,
+													'name'     => 'donor-id',
 												) );
 												?>
 											</p>
 											<p>
-												<a href="#new" class="give-payment-new-customer"><?php esc_html_e( 'Create New Donor', 'give' ); ?></a>
+												<a href="#new" class="give-payment-new-donor"><?php esc_html_e( 'Create New Donor', 'give' ); ?></a>
 											</p>
 										</div>
 									</div>
 
-									<div class="column-container new-customer" style="display: none">
+									<div class="column-container new-donor" style="display: none">
 										<div class="column">
 											<p>
-												<label for="give-new-customer-name"><?php esc_html_e( 'New Donor Name:', 'give' ); ?></label>
-												<input id="give-new-customer-name" type="text" name="give-new-customer-name" value="" class="medium-text"/>
+												<label for="give-new-donor-name"><?php esc_html_e( 'New Donor Name:', 'give' ); ?></label>
+												<input id="give-new-donor-name" type="text" name="give-new-donor-name" value="" class="medium-text"/>
 											</p>
 										</div>
 										<div class="column">
 											<p>
-												<label for="give-new-customer-email"><?php esc_html_e( 'New Donor Email:', 'give' ); ?></label>
-												<input id="give-new-customer-email" type="email" name="give-new-customer-email" value="" class="medium-text"/>
+												<label for="give-new-donor-email"><?php esc_html_e( 'New Donor Email:', 'give' ); ?></label>
+												<input id="give-new-donor-email" type="email" name="give-new-donor-email" value="" class="medium-text"/>
 											</p>
 										</div>
 										<div class="column">
 											<p>
-												<input type="hidden" name="give-current-customer" value="<?php echo $customer->id; ?>"/>
-												<input type="hidden" id="give-new-customer" name="give-new-customer" value="0"/>
-												<a href="#cancel" class="give-payment-new-customer-cancel give-delete"><?php esc_html_e( 'Cancel', 'give' ); ?></a>
+												<input type="hidden" name="give-current-donor" value="<?php echo $donor->id; ?>"/>
+												<input type="hidden" id="give-new-donor" name="give-new-donor" value="0"/>
+												<a href="#cancel" class="give-payment-new-donor-cancel give-delete"><?php esc_html_e( 'Cancel', 'give' ); ?></a>
 												<br>
 												<em><?php esc_html_e( 'Click "Save Donation" to create new donor.', 'give' ); ?></em>
 											</p>
@@ -562,7 +556,7 @@ $payment_mode   = $payment->mode;
 
 									<?php
 									/**
-									 * Fires in order details page, in the donor-details metabox.
+									 * Fires on the donation details page, in the donor-details metabox.
 									 *
 									 * The hook is left here for backwards compatibility.
 									 *
@@ -574,7 +568,7 @@ $payment_mode   = $payment->mode;
 									do_action( 'give_payment_personal_details_list', $payment_meta, $user_info );
 
 									/**
-									 * Fires in order details page, in the donor-details metabox.
+									 * Fires on the donation details page, in the donor-details metabox.
 									 *
 									 * @since 1.7
 									 *

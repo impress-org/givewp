@@ -40,10 +40,15 @@
 
 }
 
+#give-payments-advanced-filter {
+  ul.subsubsub {
+	margin-bottom: 12px;
+  }
+  #search-submit {
+	margin-right:20px;
+  }
+}
 #give-payments-filter {
-	ul.subsubsub {
-		margin-bottom: 12px;
-	}
 	.tablenav.top {
 		float: none;
 		.bulkactions {
@@ -218,11 +223,6 @@ Responsiveness
 
 .give-admin-box-inside .strong {
 	font-weight: 600;
-}
-
-.give-payment-fees .fee-label {
-	font-weight: normal;
-	color: #666;
 }
 
 .give-admin-box .right {
