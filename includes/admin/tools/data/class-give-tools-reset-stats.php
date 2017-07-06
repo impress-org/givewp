@@ -147,7 +147,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	 */
 	public function get_percentage_complete() {
 
-		$items = $this->get_stored_data( 'give_temp_reset_ids', false );
+		$items = $this->get_stored_data( 'give_temp_reset_ids' );
 		$total = count( $items );
 
 		$percentage = 100;
@@ -251,7 +251,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 		if ( false === $items ) {
 			$items = array();
 
-			$give_types_for_reset = array( 'give_forms', 'give_log', 'give_payment' );
+			$give_types_for_reset = array( 'give_forms', 'give_payment' );
 			$give_types_for_reset = apply_filters( 'give_reset_store_post_types', $give_types_for_reset );
 
 			$args = apply_filters( 'give_tools_reset_stats_total_args', array(
