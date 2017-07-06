@@ -48,8 +48,7 @@ class Give_Payments_Query extends Give_Stats {
 	/**
 	 * Default query arguments.
 	 *
-	 * Not all of these are valid arguments that can be passed to WP_Query. The ones that are not, are modified before
-	 * the query is run to convert them to the proper syntax.
+	 * Not all of these are valid arguments that can be passed to WP_Query. The ones that are not, are modified before the query is run to convert them to the proper syntax.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -67,6 +66,7 @@ class Give_Payments_Query extends Give_Stats {
 			'orderby'         => 'ID',
 			'order'           => 'DESC',
 			'user'            => null,
+			'donor'           => null,
 			'status'          => give_get_payment_status_keys(),
 			'meta_key'        => null,
 			'year'            => null,
@@ -139,6 +139,7 @@ class Give_Payments_Query extends Give_Stats {
 		$this->per_page();
 		$this->page();
 		$this->user();
+		$this->donor();
 		$this->search();
 		$this->mode();
 		$this->children();
@@ -413,6 +414,24 @@ class Give_Payments_Query extends Give_Stats {
 		$this->__set( 'meta_query', array(
 			'key'   => $user_key,
 			'value' => $this->args['user'],
+		) );
+	}
+
+	/**
+	 * Specific donor id
+	 *
+	 * @access  public
+	 * @since   1.8.9
+	 * @return  void
+	 */
+	public function donor() {
+		if ( is_null( $this->args['donor'] ) || ! is_numeric( $this->args['donor'] ) ) {
+			return;
+		}
+
+		$this->__set( 'meta_query', array(
+			'key'   => '_give_payment_customer_id',
+			'value' => (int) $this->args['donor'],
 		) );
 	}
 

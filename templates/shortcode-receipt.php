@@ -111,7 +111,7 @@ if ( filter_var( $give_receipt_args['status_notice'], FILTER_VALIDATE_BOOLEAN ) 
 			$notice_type    = 'success';
 			break;
 		case 'pending':
-			$notice_message = __( 'Payment Pending: Your donation is currently processing..', 'give' );
+			$notice_message = __( 'Payment Pending: Your donation is currently processing.', 'give' );
 			$notice_type    = 'warning';
 			break;
 		case 'refunded':

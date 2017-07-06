@@ -46,7 +46,7 @@ class Give_Helper_Payment extends WP_UnitTestCase {
 
 		$simple_price = give_get_meta( $simple_form->ID, '_give_set_price', true );
 
-		$purchase_data = array(
+		$donation_data = array(
 			'price'           => number_format( (float) $simple_price, 2 ),
 			'give_form_title' => 'Test Donation Form',
 			'give_form_id'    => $simple_form->ID,
@@ -61,7 +61,7 @@ class Give_Helper_Payment extends WP_UnitTestCase {
 		$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 		$_SERVER['SERVER_NAME'] = 'give_virtual';
 
-		$payment_id = give_insert_payment( $purchase_data );
+		$payment_id = give_insert_payment( $donation_data );
 
 		$transaction_id          = 'FIR3SID3';
 		$payment                 = new Give_Payment( $payment_id );
@@ -108,7 +108,7 @@ class Give_Helper_Payment extends WP_UnitTestCase {
 
 		$multilevel_price = maybe_unserialize( give_get_meta( $multilevel_form->ID, '_give_donation_levels', true ) );
 
-		$purchase_data = array(
+		$donation_data = array(
 			'price'           => number_format( (float) $multilevel_price[1]['_give_amount'], 2 ), //$25
 			'give_form_title' => $multilevel_form->post_title,
 			'give_form_id'    => $multilevel_form->ID,
@@ -124,7 +124,7 @@ class Give_Helper_Payment extends WP_UnitTestCase {
 		$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 		$_SERVER['SERVER_NAME'] = 'give_virtual';
 
-		$payment_id = give_insert_payment( $purchase_data );
+		$payment_id = give_insert_payment( $donation_data );
 
 		$transaction_id          = 'FIR3SID3';
 		$payment                 = new Give_Payment( $payment_id );
