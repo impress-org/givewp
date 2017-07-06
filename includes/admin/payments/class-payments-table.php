@@ -145,7 +145,9 @@ class Give_Payment_History_Table extends WP_List_Table {
 	public function advanced_filters() {
 		$start_date = isset( $_GET['start-date'] ) ? sanitize_text_field( $_GET['start-date'] ) : null;
 		$end_date   = isset( $_GET['end-date'] ) ? sanitize_text_field( $_GET['end-date'] ) : null;
-		$status     = isset( $_GET['status'] ) ? $_GET['status'] : '';
+		$status     = isset( $_GET['status'] ) ? sanitize_text_field( $_GET['status'] ) : '';
+		$donor      = isset( $_GET['donor'] ) ? sanitize_text_field( $_GET['donor'] ) : '';
+		$search      = isset( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : '';
 		?>
 		<div id="give-payment-filters">
 			<span id="give-payment-date-filters">
@@ -161,7 +163,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			<?php if ( ! empty( $status ) ) : ?>
 				<input type="hidden" name="status" value="<?php echo esc_attr( $status ); ?>" />
 			<?php endif; ?>
-			<?php if ( ! empty( $start_date ) || ! empty( $end_date ) ) : ?>
+			<?php if ( ! empty( $start_date ) || ! empty( $end_date ) || ! empty( $donor )|| ! empty( $search ) ) : ?>
 				<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ); ?>"
 				   class="button-secondary"><?php esc_html_e( 'Clear Filter', 'give' ); ?></a>
 			<?php endif; ?>
@@ -356,7 +358,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			case 'amount' :
 				$amount = ! empty( $payment->total ) ? $payment->total : 0;
 				$value  = give_currency_filter( give_format_amount( $amount ), give_get_payment_currency_code( $payment->ID ) );
-				$value .= sprintf( '<br><small>%1$s %2$s</small>', __( 'via', 'give' ), give_get_gateway_admin_label( $payment->gateway ) );
+				$value  .= sprintf( '<br><small>%1$s %2$s</small>', __( 'via', 'give' ), give_get_gateway_admin_label( $payment->gateway ) );
 				break;
 
 			case 'donation_form' :
@@ -657,6 +659,8 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 		if ( isset( $_GET['user'] ) ) {
 			$args['user'] = urldecode( $_GET['user'] );
+		} elseif ( isset( $_GET['donor'] ) ) {
+			$args['donor'] = absint( $_GET['donor'] );
 		} elseif ( isset( $_GET['s'] ) ) {
 			$is_user = strpos( $_GET['s'], strtolower( 'user:' ) ) !== false;
 			if ( $is_user ) {
@@ -675,15 +679,15 @@ class Give_Payment_History_Table extends WP_List_Table {
 			$args['end-date'] = urldecode( $_GET['end-date'] );
 		}
 
-		$payment_count         = give_count_payments( $args );
-		$this->complete_count  = $payment_count->publish;
-		$this->pending_count   = $payment_count->pending;
+		$payment_count          = give_count_payments( $args );
+		$this->complete_count   = $payment_count->publish;
+		$this->pending_count    = $payment_count->pending;
 		$this->processing_count = $payment_count->processing;
-		$this->refunded_count  = $payment_count->refunded;
-		$this->failed_count    = $payment_count->failed;
-		$this->revoked_count   = $payment_count->revoked;
-		$this->cancelled_count = $payment_count->cancelled;
-		$this->abandoned_count = $payment_count->abandoned;
+		$this->refunded_count   = $payment_count->refunded;
+		$this->failed_count     = $payment_count->failed;
+		$this->revoked_count    = $payment_count->revoked;
+		$this->cancelled_count  = $payment_count->cancelled;
+		$this->abandoned_count  = $payment_count->abandoned;
 
 		foreach ( $payment_count as $count ) {
 			$this->total_count += $count;
@@ -703,6 +707,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$orderby    = isset( $_GET['orderby'] ) ? urldecode( $_GET['orderby'] ) : 'ID';
 		$order      = isset( $_GET['order'] ) ? $_GET['order'] : 'DESC';
 		$user       = isset( $_GET['user'] ) ? $_GET['user'] : null;
+		$donor      = isset( $_GET['donor'] ) ? $_GET['donor'] : null;
 		$status     = isset( $_GET['status'] ) ? $_GET['status'] : give_get_payment_status_keys();
 		$meta_key   = isset( $_GET['meta_key'] ) ? $_GET['meta_key'] : null;
 		$year       = isset( $_GET['year'] ) ? $_GET['year'] : null;
@@ -723,6 +728,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			'orderby'    => $orderby,
 			'order'      => $order,
 			'user'       => $user,
+			'donor'      => $donor,
 			'status'     => $status,
 			'meta_key'   => $meta_key,
 			'year'       => $year,
