@@ -43,8 +43,14 @@ function give_clear_seo_sitemap_cache_on_settings_change() {
 		( $_POST['forms_archives'] != give_get_option( 'forms_archives' ) )
 	) {
 		// If Yoast SEO or Yoast SEO Premium plugin exists, then update seo sitemap cache.
-		if ( is_plugin_active( 'wordpress-seo/wp-seo.php' ) || is_plugin_active( 'wordpress-seo-premium/wp-seo-premium.php' ) ) {
-			WPSEO_Sitemaps_Cache::clear();
+		if ( (is_plugin_active( 'wordpress-seo/wp-seo.php' )
+		     || is_plugin_active( 'wordpress-seo-premium/wp-seo-premium.php' ))
+			&& class_exists( 'WPSEO_Sitemaps_Cache' )
+		) {
+			$yoast_sitemaps_cache = new WPSEO_Sitemaps_Cache();
+			if ( method_exists( $yoast_sitemaps_cache, 'clear' ) ) {
+				WPSEO_Sitemaps_Cache::clear();
+			}
 		}
 	}
 }
