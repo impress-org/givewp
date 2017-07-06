@@ -238,6 +238,7 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 * Fix: Resolved an issue where introduced in 1.8.8 that allowed donors to be inadvertently detached from their user. [#1751](https://github.com/WordImpress/Give/issues/1751)
 * Fix: API request log count showing incorrect number. [#1069](https://github.com/WordImpress/Give/issues/1069)
 * Fix: In certain rare cases where donors were logged in and giving in the name of another an incorrect name would appear within the receipts. [#1716](https://github.com/WordImpress/Give/issues/1716)
+* Fix: When clicking on a donor who has given using multiple emails the donaiton filter would not take this into account within the payments screen. [#1830](https://github.com/WordImpress/Give/issues/1830)
 
 
 
