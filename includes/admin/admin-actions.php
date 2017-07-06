@@ -411,30 +411,3 @@ function _give_show_test_mode_notice_in_admin_bar( $wp_admin_bar ) {
 	return true;
 }
 add_action( 'admin_bar_menu', '_give_show_test_mode_notice_in_admin_bar', 1000, 1 );
-
-/**
- * This function will clear seo sitemap cache on update of settings
- *
- * @since 1.8.9
- *
- * @return void
- */
-function give_clear_seo_sitemap_cache_on_settings_change() {
-	// Load required file if the fn 'is_plugin_active' doesn't exists.
-	if( ! function_exists ('is_plugin_active') ) {
-		require_once ABSPATH . 'wp-admin/includes/plugin.php';
-	}
-
-	// If there is change detected for Single Form View and Form Archives options then proceed.
-	if(
-		( $_POST['forms_singular'] != give_get_option( 'forms_singular' ) ) ||
-		( $_POST['forms_archives'] != give_get_option( 'forms_archives' ) )
-	) {
-		// If Yoast SEO or Yoast SEO Premium plugin exists, then update seo sitemap cache.
-		if ( is_plugin_active( 'wordpress-seo/wp-seo.php' ) || is_plugin_active( 'wordpress-seo-premium/wp-seo-premium.php' ) ) {
-			WPSEO_Sitemaps_Cache::clear();
-		}
-	}
-}
-
-add_action( 'give-settings_save_display', 'give_clear_seo_sitemap_cache_on_settings_change' );
