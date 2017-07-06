@@ -557,14 +557,21 @@ function give_new_user_notification( $user_id = 0, $user_data = array() ) {
 	}
 	$blogname = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
 
-	/* translators: %s: site name */
-	$message = sprintf( esc_attr__( 'New user registration on your site %s:', 'give' ), $blogname ) . "\r\n\r\n";
-	/* translators: %s: user login */
-	$message .= sprintf( esc_attr__( 'Username: %s', 'give' ), $user_data['user_login'] ) . "\r\n\r\n";
-	/* translators: %s: user email */
-	$message .= sprintf( esc_attr__( 'E-mail: %s', 'give' ), $user_data['user_email'] ) . "\r\n";
 
-	Give()->emails->send(
+	// New User Registration: Email sends to the site admin.
+	$emails = Give()->emails;
+	$emails->__set( 'heading', esc_html__( 'New User Registration', 'give' ) );
+
+	/* translators: %s: site name */
+	$message = sprintf( esc_attr__( 'A new user has registered on %s:', 'give' ), $blogname ) . "\r\n\r\n";
+	/* translators: %s: user login */
+	$message .= '<strong>' . esc_attr__( 'Username:', 'give' ) . '</strong> ' . $user_data['user_login'] . "\r\n";
+	/* translators: %s: user email */
+	$message .= '<strong>' . esc_attr__( 'E-mail:', 'give' ) . '</strong> ' . $user_data['user_email']  . "\r\n\r\n";
+
+	$message .= '<a href="' . admin_url('user-edit.php?user_id=' . $user_id) . '" target="_blank"> ' . esc_attr__( 'Click here to view &raquo;', 'give' ) . '</a>' . "\r\n";
+
+	$emails->send(
 		get_option( 'admin_email' ),
 		sprintf(
 			/* translators: %s: site name */
@@ -574,14 +581,20 @@ function give_new_user_notification( $user_id = 0, $user_data = array() ) {
 		$message
 	);
 
+
+	// Account Information: Email sends to donor who registered.
+	$emails->__set( 'heading', esc_html__( 'Account Information', 'give' ) );
+
+	$message = sprintf( esc_attr__( 'The following email contains your account information for %s:', 'give' ), $blogname ) . "\r\n\r\n";
+
 	/* translators: %s: user login */
-	$message = sprintf( esc_attr__( 'Username: %s', 'give' ), $user_data['user_login'] ) . "\r\n";
-	/* translators: %s: paswword */
-	$message .= sprintf( esc_attr__( 'Password: %s', 'give' ), esc_attr__( '[Password entered during donation]', 'give' ) ) . "\r\n";
+	$message .=  '<strong>' . esc_attr__( 'Username:', 'give' ) . '</strong> ' .  $user_data['user_login'] . "\r\n";
+	/* translators: %s: password */
+	$message .=  '<strong>' . esc_attr__( 'Password:', 'give' ) . '</strong> ' . esc_attr__( '[Password entered during donation]', 'give' ) . "\r\n\r\n";
 
-	$message .= '<a href="' . wp_login_url() . '"> ' . esc_attr__( 'Click Here to Login &raquo;', 'give' ) . '</a>' . "\r\n";
+	$message .= '<a href="' . wp_login_url() . '" target="_blank"> ' . esc_attr__( 'Click here to login &raquo;', 'give' ) . '</a>' . "\r\n";
 
-	Give()->emails->send(
+	$emails->send(
 		$user_data['user_email'],
 		sprintf(
 			/* translators: %s: site name */
@@ -599,7 +612,7 @@ add_action( 'give_insert_user', 'give_new_user_notification', 10, 2 );
 /**
  * Get Donor Name By
  *
- * Retrieves the donor name based on the id and the name of the user or donation
+ * Retrieves the donor name based on the id and the name of the user or donation.
  *
  * @access      public
  * @since       1.8.9

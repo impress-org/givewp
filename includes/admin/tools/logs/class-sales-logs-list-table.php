@@ -114,7 +114,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 			'form'       => __( 'Form', 'give' ),
 			'amount'     => __( 'Donation Amount', 'give' ),
 			'status'     => __( 'Status', 'give' ),
-			'payment_id' => __( 'Transaction ID', 'give' ),
+			'payment_id' => __( 'Donation ID', 'give' ),
 			'date'       => __( 'Date', 'give' ),
 		);
 

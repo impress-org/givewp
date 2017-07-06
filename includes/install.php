@@ -206,7 +206,7 @@ function give_run_install() {
  * @param  int $site_id The Site ID.
  * @param  array $meta Blog Meta.
  */
-function on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
+function give_on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
 
 	if ( is_plugin_active_for_network( GIVE_PLUGIN_BASENAME ) ) {
 
@@ -218,7 +218,7 @@ function on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
 
 }
 
-add_action( 'wpmu_new_blog', 'on_create_blog', 10, 6 );
+add_action( 'wpmu_new_blog', 'give_on_create_blog', 10, 6 );
 
 
 /**
