@@ -5,7 +5,7 @@
 if ( ! is_user_logged_in() ) {
 
 	// Show any error messages after form submission
-	give_print_errors( 0 ); ?>
+	Give()->notices->render_frontend_notices( 0 ); ?>
 	<form id="give-login-form" class="give-form" action="" method="post">
 		<fieldset>
 			<legend><?php esc_html_e( 'Log into Your Account', 'give' ); ?></legend>
@@ -52,7 +52,7 @@ if ( ! is_user_logged_in() ) {
 		</fieldset>
 	</form>
 <?php } elseif( isset( $_GET['give-login-success'] ) && $_GET['give-login-success'] == true ) { ?>
-	<?php give_output_error( apply_filters('give_successful_login_message', esc_html__( 'Login successful. Welcome!', 'give' )), true, 'success' ); ?>
+	<?php Give()->notices->print_frontend_notice( apply_filters('give_successful_login_message', esc_html__( 'Login successful. Welcome!', 'give' )), true, 'success' ); ?>
 <?php } else { ?>
-	<?php give_output_error( apply_filters('give_already_logged_in_message', sprintf( __( 'You are already logged in to the site. <a href="%s">Click here</a> to logout.', 'give' ), esc_url( $give_logout_redirect ) ) ), true, 'warning' ); ?>
+	<?php Give()->notices->print_frontend_notice( apply_filters('give_already_logged_in_message', sprintf( __( 'You are already logged in to the site. <a href="%s">Click here</a> to logout.', 'give' ), esc_url( $give_logout_redirect ) ) ), true, 'warning' ); ?>
 <?php } ?>

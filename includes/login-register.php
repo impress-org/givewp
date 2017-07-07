@@ -28,13 +28,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_login_form( $login_redirect = '', $logout_redirect = '' ) {
 	if ( empty( $login_redirect ) ) {
-		$login_redirect = add_query_arg('give-login-success', 'true', give_get_current_page_url());
+		$login_redirect = add_query_arg( 'give-login-success', 'true', give_get_current_page_url() );
 	}
 
 	if ( empty( $logout_redirect ) ) {
 		$logout_redirect = add_query_arg( 'give-logout-success', 'true', give_get_current_page_url() );
 	}
-
 
 	// Add user_logout action to logout url.
 	$logout_redirect = add_query_arg(
@@ -52,7 +51,7 @@ function give_login_form( $login_redirect = '', $logout_redirect = '' ) {
 		'shortcode-login',
 		array(
 			'give_login_redirect' => $login_redirect,
-			'give_logout_redirect' => $logout_redirect
+			'give_logout_redirect' => $logout_redirect,
 		)
 	);
 
@@ -80,7 +79,7 @@ function give_register_form( $redirect = '' ) {
 		give_get_template(
 			'shortcode-register',
 			array(
-				'give_register_redirect' => $redirect
+				'give_register_redirect' => $redirect,
 			)
 		);
 	}
@@ -106,13 +105,13 @@ function give_process_login_form( $data ) {
 		if ( $user_data ) {
 			$user_ID    = $user_data->ID;
 			$user_email = $user_data->user_email;
-			if ( wp_check_password( $data['give_user_pass'], $user_data->user_pass, $user_data->ID ) ) {
+			if ( wp_check_password( $data['give_user_pass'], $user_data->user_pass, $user_ID ) ) {
 				give_log_user_in( $user_data->ID, $data['give_user_login'], $data['give_user_pass'] );
 			} else {
-				give_set_error( 'password_incorrect', esc_html__( 'The password you entered is incorrect.', 'give' ) );
+				give_set_error( 'password_incorrect', __( 'The password you entered is incorrect.', 'give' ) );
 			}
 		} else {
-			give_set_error( 'username_incorrect', esc_html__( 'The username you entered does not exist.', 'give' ) );
+			give_set_error( 'username_incorrect', __( 'The username you entered does not exist.', 'give' ) );
 		}
 		// Check for errors and redirect if none present
 		$errors = give_get_errors();
@@ -137,31 +136,31 @@ add_action( 'give_user_login', 'give_process_login_form' );
  * @return void
  */
 function give_process_user_logout( $data ) {
-    if ( wp_verify_nonce( $data['give_logout_nonce'], 'give-logout-nonce' ) && is_user_logged_in() ) {
+	if ( wp_verify_nonce( $data['give_logout_nonce'], 'give-logout-nonce' ) && is_user_logged_in() ) {
 
-        // Prevent occurring of any custom action on wp_logout.
-        remove_all_actions( 'wp_logout' );
+		// Prevent occurring of any custom action on wp_logout.
+		remove_all_actions( 'wp_logout' );
 
 		/**
 		 * Fires before processing user logout.
 		 *
 		 * @since 1.0
 		 */
-        do_action( 'give_before_user_logout' );
+		do_action( 'give_before_user_logout' );
 
-        // Logout user.
-        wp_logout();
+		// Logout user.
+		wp_logout();
 
 		/**
 		 * Fires after processing user logout.
 		 *
 		 * @since 1.0
 		 */
-        do_action( 'give_after_user_logout' );
+		do_action( 'give_after_user_logout' );
 
-        wp_redirect( $data['give_logout_redirect'] );
-        give_die();
-    }
+		wp_redirect( $data['give_logout_redirect'] );
+		give_die();
+	}
 }
 
 add_action( 'give_user_logout', 'give_process_user_logout' );
@@ -175,11 +174,12 @@ add_action( 'give_user_logout', 'give_process_user_logout' );
  * @param string $user_login Username
  * @param string $user_pass  Password
  *
- * @return void
+ * @return bool
  */
 function give_log_user_in( $user_id, $user_login, $user_pass ) {
+
 	if ( $user_id < 1 ) {
-		return;
+		return false;
 	}
 
 	wp_set_auth_cookie( $user_id );
@@ -215,16 +215,16 @@ function give_log_user_in( $user_id, $user_login, $user_pass ) {
  *
  * @param array $data Data sent from the register form
  *
- * @return void
+ * @return bool
  */
 function give_process_register_form( $data ) {
 
 	if ( is_user_logged_in() ) {
-		return;
+		return false;
 	}
 
 	if ( empty( $_POST['give_register_submit'] ) ) {
-		return;
+		return false;
 	}
 
 	/**
@@ -285,7 +285,7 @@ function give_process_register_form( $data ) {
 			'user_pass'       => $data['give_user_pass'],
 			'user_email'      => $data['give_user_email'],
 			'user_registered' => date( 'Y-m-d H:i:s' ),
-			'role'            => get_option( 'default_role' )
+			'role'            => get_option( 'default_role' ),
 		) );
 
 		wp_redirect( $redirect );

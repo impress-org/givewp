@@ -5,10 +5,27 @@
  * @group give_login_register
  */
 class Tests_Login_Register extends Give_Unit_Test_Case {
+
+	/**
+	 * Set up tests.
+	 */
 	public function setUp() {
+
 		parent::setUp();
-		wp_set_current_user(0);
+
+		// Prevent give_die() from stopping tests.
+		if ( ! defined( 'GIVE_UNIT_TESTS' ) ) {
+			define( 'GIVE_UNIT_TESTS', true );
+		}
+
+		// Prevent wp_redirect from sending headers.
+		add_filter( 'give_login_redirect', '__return_false' );
+
+		// Set the current user.
+		wp_set_current_user( 0 );
+
 	}
+
 
 	/**
 	 * Test that the login form shortcode returns the expected string.
@@ -71,19 +88,21 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 	 * @since 1.3.2
 	 */
 	public function test_process_login_form_correct_login() {
-		$this->markTestIncomplete( 'Causes headers already sent errors');
-		/*
+
 		ob_start();
-			give_process_login_form( array(
-				'give_login_nonce' 	=> wp_create_nonce( 'give-login-nonce' ),
-				'give_user_login' 	=> 'admin@example.org',
-				'give_user_pass' 	=> 'password',
-			) );
-			$return = ob_get_contents();
+
+		give_process_login_form( array(
+			'give_login_nonce'    => wp_create_nonce( 'give-login-nonce' ),
+			'give_user_login'     => 'admin@example.org',
+			'give_user_pass'      => 'password',
+			'give_login_redirect' => 'https://examplesite.org/',
+		) );
+
+		ob_get_contents();
 		ob_end_clean();
 
 		$this->assertEmpty( give_get_errors() );
-		*/
+
 	}
 
 	/**
@@ -92,7 +111,7 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 	 * @since 1.3.2
 	 */
 	public function test_log_user_in_return() {
-		$this->assertNull( give_log_user_in( 0, '', '' ) );
+		$this->assertFalse( give_log_user_in( 0, '', '' ) );
 	}
 
 	/**
@@ -101,12 +120,10 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 	 * @since 1.3.2
 	 */
 	public function test_log_user_in() {
-		$this->markTestIncomplete( 'Causes headers already sent errors');
-		/*
 		wp_logout();
-		give_log_user_in( 1 );
+		$user = new WP_User( 1 );
+		give_log_user_in( $user->ID, $user->user_email, $user->user_pass );
 		$this->assertTrue( is_user_logged_in() );
-		*/
 	}
 
 	/**
@@ -120,7 +137,7 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 		$current_user = wp_set_current_user( 1 );
 
 		$_POST['give_register_submit'] = '';
-		$this->assertNull( give_process_register_form( array() ) );
+		$this->assertFalse( give_process_register_form( array( 'give_redirect' => '', ) ) );
 
 		// Reset to origin
 		$current_user = $origin_user;
@@ -135,7 +152,7 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 	public function test_process_register_form_return_submit() {
 
 		$_POST['give_register_submit'] = '';
-		$this->assertNull( give_process_register_form( array(
+		$this->assertFalse( give_process_register_form( array(
 			'give_register_submit' => '',
 		) ) );
 
@@ -199,13 +216,13 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 	 */
 	public function test_process_register_form_username_invalid() {
 
-		$_POST['give_register_submit'] 	= 1;
-		$_POST['give_user_pass'] 		= 'password';
-		$_POST['give_user_pass2'] 		= 'other-password';
+		$_POST['give_register_submit'] = 1;
+		$_POST['give_user_pass']       = 'password';
+		$_POST['give_user_pass2']      = 'other-password';
 		give_process_register_form( array(
-			'give_register_submit' 	=> 1,
-			'give_user_login' 		=> 'admin#!@*&',
-			'give_user_email' 		=> null,
+			'give_register_submit' => 1,
+			'give_user_login'      => 'admin#!@*&',
+			'give_user_email'      => null,
 		) );
 		$this->assertArrayHasKey( 'username_invalid', give_get_errors() );
 
@@ -221,19 +238,19 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 	 */
 	public function test_process_register_form_payment_email_incorrect() {
 
-		$_POST['give_register_submit'] 	= 1;
-		$_POST['give_user_pass'] 		= '';
-		$_POST['give_user_pass2'] 		= '';
+		$_POST['give_register_submit'] = 1;
+		$_POST['give_user_pass']       = '';
+		$_POST['give_user_pass2']      = '';
 		give_process_register_form( array(
-			'give_register_submit' 	=> 1,
-			'give_user_login' 		=> 'random_username',
-			'give_user_email' 		=> 'admin@example.org',
-			'give_payment_email' 	=> 'someotheradminexample.org',
+			'give_register_submit' => 1,
+			'give_user_login'      => 'random_username',
+			'give_user_email'      => 'admin@example.org',
+			'give_payment_email'   => 'someotheradminexample.org',
 		) );
 		$this->assertArrayHasKey( 'email_unavailable', give_get_errors() );
 		$this->assertArrayHasKey( 'payment_email_invalid', give_get_errors() );
 
-		// Clear errors for other test
+		// Clear errors for other test.
 		give_clear_errors();
 	}
 
@@ -243,23 +260,37 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 	 * @since 1.3.2
 	 */
 	public function test_process_register_form_success() {
-		$this->markTestIncomplete( 'Causes headers already sent errors');
-		/*
-		$_POST['give_register_submit'] 	= 1;
-		$_POST['give_user_pass'] 		= 'password';
-		$_POST['give_user_pass2'] 		= 'password';
-		give_process_register_form( array(
-			'give_register_submit' 	=> 1,
-			'give_user_login' 		=> 'random_username',
-			'give_user_email' 		=> 'random_username@example.org',
-			'give_payment_email' 	=> 'random_username@example.org',
-			'give_user_pass' 		=> 'password',
-			'give_redirect' 			=> '/',
-		) );
 
-		// Clear errors for other test
+		// First check that this user does not exist.
+		$user = new WP_User( 0, 'random_username' );
+		$this->assertEmpty( $user->roles );
+		$this->assertEmpty( $user->allcaps );
+		$this->assertEmpty( (array) $user->data );
+
+		$_POST['give_register_submit'] = 1;
+		$_POST['give_user_pass']       = 'password';
+		$_POST['give_user_pass2']      = 'password';
+
+		$args = array(
+			'give_register_submit' => 1,
+			'give_user_login'      => 'random_username',
+			'give_user_email'      => 'random_username@example.org',
+			'give_payment_email'   => 'random_username@example.org',
+			'give_user_pass'       => 'password',
+			'give_redirect'        => '',
+		);
+		give_process_register_form( $args );
+
+		// Now check to see if the user exists.
+		$user = new WP_User( 0, 'random_username' );
+
+		$this->assertEquals( $args['give_payment_email'], $user->user_email );
+		$this->assertEquals( $args['give_user_login'],  $user->display_name );
+		$this->assertEquals( $args['give_user_login'],  $user->user_login );
+		$this->assertTrue( is_user_logged_in() );
+
+		// Clear errors for other test.
 		give_clear_errors();
-		*/
 	}
 
 }
