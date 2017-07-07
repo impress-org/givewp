@@ -152,7 +152,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 			echo '<p><strong>' . esc_html__( 'API Key:', 'give' ) . '</strong></p>';
 			echo '<div>' . give_get_meta( $item['ID'], '_give_log_key', true ) . '</div>';
 			echo '<p><strong>' . esc_html__( 'Request Date:', 'give' ) . '</strong></p>';
-			echo '<div>' . get_post_field( 'post_date', $item['ID'] ) . '</div>';
+			echo '<div>' . $item['log_date']  . '</div>';
 			?>
 		</div>
 		<?php
@@ -308,6 +308,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 					'ip'          => give_get_meta( $log->ID, '_give_log_request_ip', true ),
 					'date'        => $log->log_date,
 					'log_content' => $log->log_content,
+					'log_date'    => $log->log_date,
 				);
 			}
 		}
