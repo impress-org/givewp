@@ -91,9 +91,9 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	public function get_columns() {
 		$columns = array(
 			'ID'      => esc_html__( 'Log ID', 'give' ),
-			'details' => esc_html__( 'Request Details', 'give' ),
 			'ip'      => esc_html__( 'Request IP', 'give' ),
 			'date'    => esc_html__( 'Date', 'give' ),
+			'details' => esc_html__( 'Request Details', 'give' ),
 		);
 
 		return $columns;
@@ -128,8 +128,15 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 * @return void
 	 */
 	public function column_details( $item ) {
+		echo Give()->tooltips->render_link( array(
+			'label'       => __( 'View Request', 'give' ),
+			'tag_content' => '<span class="dashicons dashicons-visibility"></span>',
+			'link'        => "#TB_inline?width=640&amp;inlineId=log-details-{$item['ID']}",
+			'attributes'  => array(
+				'class' => 'thickbox give-error-log-details-link button button-small',
+			),
+		) );
 		?>
-		<a href="#TB_inline?width=640&amp;inlineId=log-details-<?php echo $item['ID']; ?>" class="thickbox"><?php esc_html_e( 'View Request', 'give' ); ?></a>
 		<div id="log-details-<?php echo $item['ID']; ?>" style="display:none;">
 			<?php
 
