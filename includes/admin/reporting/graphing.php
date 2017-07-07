@@ -191,7 +191,7 @@ function give_reports_graph() {
 				<div class="inside">
 					<?php give_reports_graph_controls(); ?>
 					<?php
-					$graph = new Give_Graph( $data );
+					$graph = new Give_Graph( $data, array( 'dataType' => array( 'amount', 'count' ) ) );
 					$graph->set( 'x_mode', 'time' );
 					$graph->set( 'multiple_y_axes', true );
 					$graph->display();
@@ -441,7 +441,7 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 				<div class="inside">
 					<?php give_reports_graph_controls(); ?>
 					<?php
-					$graph = new Give_Graph( $data );
+					$graph = new Give_Graph( $data, array( 'dataType' => array( 'amount', 'count' ) ) );
 					$graph->set( 'x_mode', 'time' );
 					$graph->set( 'multiple_y_axes', true );
 					$graph->display();

@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_test_ajax_works() {
 
-	// Check if the Airplane Mode plugin is installed
+	// Check if the Airplane Mode plugin is installed.
 	if ( class_exists( 'Airplane_Mode_Core' ) ) {
 
 		$airplane = Airplane_Mode_Core::getInstance();
@@ -37,7 +37,7 @@ function give_test_ajax_works() {
 			}
 		} else {
 
-			if ( $airplane->check_status() == 'on' ) {
+			if ( 'on' === $airplane->check_status()  ) {
 				return true;
 			}
 		}
@@ -155,7 +155,7 @@ function give_load_checkout_fields() {
 
 	wp_send_json( array(
 		'fields' => wp_json_encode( $fields ),
-		'submit' => wp_json_encode( give_checkout_button_purchase( $form_id ) ),
+		'submit' => wp_json_encode( give_get_donation_form_submit_button( $form_id ) ),
 	) );
 }
 
@@ -225,7 +225,7 @@ add_action( 'wp_ajax_give_get_states', 'give_ajax_get_states_field' );
 add_action( 'wp_ajax_nopriv_give_get_states', 'give_ajax_get_states_field' );
 
 /**
- * Retrieve a states drop down
+ * Retrieve donation forms via AJAX for chosen dropdown search field.
  *
  * @since  1.0
  *
@@ -234,7 +234,9 @@ add_action( 'wp_ajax_nopriv_give_get_states', 'give_ajax_get_states_field' );
 function give_ajax_form_search() {
 	global $wpdb;
 
-	$search  = esc_sql( sanitize_text_field( $_GET['s'] ) );
+	$search   = esc_sql( sanitize_text_field( $_GET['s'] ) );
+	$excludes = ( isset( $_GET['current_id'] ) ? (array) $_GET['current_id'] : array() );
+
 	$results = array();
 	if ( current_user_can( 'edit_give_forms' ) ) {
 		$items = $wpdb->get_results( "SELECT ID,post_title FROM $wpdb->posts WHERE `post_type` = 'give_forms' AND `post_title` LIKE '%$search%' LIMIT 50" );
@@ -255,7 +257,7 @@ function give_ajax_form_search() {
 
 		$items[] = array(
 			'id'   => 0,
-			'name' => esc_html__( 'No forms found.', 'give' ),
+			'name' => __( 'No forms found.', 'give' ),
 		);
 
 	}
@@ -283,7 +285,7 @@ function give_ajax_donor_search() {
 	if ( ! current_user_can( 'view_give_reports' ) ) {
 		$donors = array();
 	} else {
-		$donors = $wpdb->get_results( "SELECT id,name,email FROM {$wpdb->prefix}give_donors WHERE `name` LIKE '%$search%' OR `email` LIKE '%$search%' LIMIT 50" );
+		$donors = $wpdb->get_results( "SELECT id,name,email FROM {$wpdb->prefix}give_customers WHERE `name` LIKE '%$search%' OR `email` LIKE '%$search%' LIMIT 50" );
 	}
 
 	if ( $donors ) {
@@ -292,14 +294,14 @@ function give_ajax_donor_search() {
 
 			$results[] = array(
 				'id'   => $donor->id,
-				'name' => $donor->name . '(' . $donor->email . ')',
+				'name' => $donor->name . ' (' . $donor->email . ')',
 			);
 		}
 	} else {
 
 		$donors[] = array(
 			'id'   => 0,
-			'name' => esc_html__( 'No donors found.', 'give' ),
+			'name' => __( 'No donors found.', 'give' ),
 		);
 
 	}
@@ -323,40 +325,45 @@ function give_ajax_search_users() {
 
 	if ( current_user_can( 'manage_give_settings' ) ) {
 
-		$search_query = trim( $_POST['user_name'] );
-		$exclude      = trim( $_POST['exclude'] );
+		$search   = esc_sql( sanitize_text_field( $_GET['s'] ) );
 
 		$get_users_args = array(
 			'number' => 9999,
-			'search' => $search_query . '*',
+			'search' => $search . '*',
 		);
-
-		if ( ! empty( $exclude ) ) {
-			$exclude_array             = explode( ',', $exclude );
-			$get_users_args['exclude'] = $exclude_array;
-		}
 
 		$get_users_args = apply_filters( 'give_search_users_args', $get_users_args );
 
-		$found_users = apply_filters( 'give_ajax_found_users', get_users( $get_users_args ), $search_query );
+		$found_users = apply_filters( 'give_ajax_found_users', get_users( $get_users_args ), $search );
+		$results     = array();
 
-		$user_list = '<ul>';
 		if ( $found_users ) {
+
 			foreach ( $found_users as $user ) {
-				$user_list .= '<li><a href="#" data-userid="' . esc_attr( $user->ID ) . '" data-login="' . esc_attr( $user->user_login ) . '">' . esc_html( $user->user_login ) . '</a></li>';
+
+				$results[] = array(
+					'id'   => $user->ID,
+					'name' => esc_html( $user->user_login . ' (' . $user->user_email . ')' ),
+				);
 			}
 		} else {
-			$user_list .= '<li>' . esc_html__( 'No users found.', 'give' ) . '</li>';
+
+			$results[] = array(
+				'id'   => 0,
+				'name' => __( 'No users found.', 'give' ),
+			);
+
 		}
-		$user_list .= '</ul>';
 
-		echo json_encode( array( 'results' => $user_list ) );
+		echo json_encode( $results );
 
-	}
-	die();
+	}// End if().
+
+	give_die();
+
 }
 
-add_action( 'wp_ajax_give_search_users', 'give_ajax_search_users' );
+add_action( 'wp_ajax_give_user_search', 'give_ajax_search_users' );
 
 
 /**
@@ -418,7 +425,7 @@ function give_check_for_form_price_variations_html() {
 		wp_die();
 	}
 
-	$form_id    = ! empty( $_POST['form_id']  ) ? intval( $_POST['form_id'] ) : 0;
+	$form_id    = ! empty( $_POST['form_id'] ) ? intval( $_POST['form_id'] ) : 0;
 	$payment_id = ! empty( $_POST['payment_id'] ) ? intval( $_POST['payment_id'] ) : 0;
 	$form       = get_post( $form_id );
 
@@ -430,9 +437,9 @@ function give_check_for_form_price_variations_html() {
 		esc_html_e( 'n/a', 'give' );
 	} else {
 		$prices_atts = '';
-		if( $variable_prices = give_get_variable_prices( $form_id ) ) {
+		if ( $variable_prices = give_get_variable_prices( $form_id ) ) {
 			foreach ( $variable_prices as $variable_price ) {
-				$prices_atts[$variable_price['_give_id']['level_id']] = give_format_amount( $variable_price['_give_amount'] );
+				$prices_atts[ $variable_price['_give_id']['level_id'] ] = give_format_amount( $variable_price['_give_amount'] );
 			}
 		}
 
@@ -446,12 +453,12 @@ function give_check_for_form_price_variations_html() {
 			'select_atts'      => 'data-prices=' . esc_attr( json_encode( $prices_atts ) ),
 		);
 
-		if( $payment_id ) {
+		if ( $payment_id ) {
 			// Payment object.
 			$payment = new Give_Payment( $payment_id );
 
 			// Payment meta.
-			$payment_meta = $payment->get_meta();
+			$payment_meta                               = $payment->get_meta();
 			$variable_price_dropdown_option['selected'] = $payment_meta['price_id'];
 		}
 

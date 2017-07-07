@@ -48,8 +48,6 @@ function give_install( $network_wide = false ) {
 
 }
 
-register_activation_hook( GIVE_PLUGIN_FILE, 'give_install' );
-
 /**
  * Run the Give Install process.
  *
@@ -144,8 +142,7 @@ function give_run_install() {
 	 */
 	do_action( 'give_upgrades' );
 
-
-	if( GIVE_VERSION !== get_option( 'give_version' ) ) {
+	if ( GIVE_VERSION !== get_option( 'give_version' ) ) {
 		update_option( 'give_version', GIVE_VERSION );
 	}
 
@@ -157,12 +154,9 @@ function give_run_install() {
 	$api = new Give_API();
 	update_option( 'give_default_api_version', 'v' . $api->get_version() );
 
-	// Create the customers databases.
-	@Give()->customers->create_table();
-	@Give()->customer_meta->create_table();
-
 	// Check for PHP Session support, and enable if available.
-	Give()->session->use_php_sessions();
+	$give_sessions = new Give_Session();
+	$give_sessions->use_php_sessions();
 
 	// Add a temporary option to note that Give pages have been created.
 	Give_Cache::set( '_give_installed', $options, 30, true );
@@ -177,7 +171,8 @@ function give_run_install() {
 			'upgrade_give_payment_customer_id',
 			'upgrade_give_offline_status',
 			'v18_upgrades_core_setting',
-			'v18_upgrades_form_metadata'
+			'v18_upgrades_form_metadata',
+			'v189_upgrades_levels_post_meta'
 		);
 
 		foreach ( $upgrade_routines as $upgrade ) {
@@ -193,9 +188,9 @@ function give_run_install() {
 	// Add the transient to redirect.
 	Give_Cache::set( '_give_activation_redirect', true, 30, true );
 
+	// Set 'Donation Form' meta box enabled by default.
+	give_nav_donation_metabox_enabled();
 }
-
-register_activation_hook( GIVE_PLUGIN_FILE, 'give_install' );
 
 /**
  * Network Activated New Site Setup.
@@ -204,14 +199,14 @@ register_activation_hook( GIVE_PLUGIN_FILE, 'give_install' );
  *
  * @since      1.3.5
  *
- * @param  int    $blog_id The Blog ID created.
- * @param  int    $user_id The User ID set as the admin.
- * @param  string $domain  The URL.
- * @param  string $path    Site Path.
- * @param  int    $site_id The Site ID.
- * @param  array  $meta    Blog Meta.
+ * @param  int $blog_id The Blog ID created.
+ * @param  int $user_id The User ID set as the admin.
+ * @param  string $domain The URL.
+ * @param  string $path Site Path.
+ * @param  int $site_id The Site ID.
+ * @param  array $meta Blog Meta.
  */
-function on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
+function give_on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
 
 	if ( is_plugin_active_for_network( GIVE_PLUGIN_BASENAME ) ) {
 
@@ -223,7 +218,7 @@ function on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
 
 }
 
-add_action( 'wpmu_new_blog', 'on_create_blog', 10, 6 );
+add_action( 'wpmu_new_blog', 'give_on_create_blog', 10, 6 );
 
 
 /**
@@ -231,20 +226,20 @@ add_action( 'wpmu_new_blog', 'on_create_blog', 10, 6 );
  *
  * @since  1.4.3
  *
- * @param  array $tables  The tables to drop.
- * @param  int   $blog_id The Blog ID being deleted.
+ * @param  array $tables The tables to drop.
+ * @param  int $blog_id The Blog ID being deleted.
  *
  * @return array          The tables to drop.
  */
 function give_wpmu_drop_tables( $tables, $blog_id ) {
 
 	switch_to_blog( $blog_id );
-	$customers_db     = new Give_DB_Customers();
-	$customer_meta_db = new Give_DB_Customer_Meta();
+	$donors_db     = new Give_DB_Donors();
+	$donor_meta_db = new Give_DB_Donor_Meta();
 
-	if ( $customers_db->installed() ) {
-		$tables[] = $customers_db->table_name;
-		$tables[] = $customer_meta_db->table_name;
+	if ( $donors_db->installed() ) {
+		$tables[] = $donors_db->table_name;
+		$tables[] = $donor_meta_db->table_name;
 	}
 	restore_current_blog();
 
@@ -273,18 +268,18 @@ function give_after_install() {
 
 	if ( false === $give_table_check || current_time( 'timestamp' ) > $give_table_check ) {
 
-		if ( ! @Give()->customer_meta->installed() ) {
+		if ( ! @Give()->donor_meta->installed() ) {
 
-			// Create the customer meta database
+			// Create the donor meta database.
 			// (this ensures it creates it on multisite instances where it is network activated).
-			@Give()->customer_meta->create_table();
+			@Give()->donor_meta->create_table();
 
 		}
 
-		if ( ! @Give()->customers->installed() ) {
-			// Create the customers database
+		if ( ! @Give()->donors->installed() ) {
+			// Create the donor database.
 			// (this ensures it creates it on multisite instances where it is network activated).
-			@Give()->customers->create_table();
+			@Give()->donors->create_table();
 
 			/**
 			 * Fires after plugin installation.
@@ -347,6 +342,7 @@ add_action( 'admin_init', 'give_install_roles_on_network' );
  * @return array
  */
 function give_get_default_settings() {
+
 	$options = array(
 		// General.
 		'base_country'                                => 'US',
@@ -373,6 +369,8 @@ function give_get_default_settings() {
 		'uninstall_on_delete'                         => 'disabled',
 		'the_content_filter'                          => 'enabled',
 		'scripts_footer'                              => 'disabled',
+		'agree_to_terms_label'                        => __( 'Agree to Terms?', 'give' ),
+		'agreement_text'                              => give_get_default_agreement_text(),
 
 		// Paypal IPN verification.
 		'paypal_verification'                         => 'enabled',
@@ -396,4 +394,26 @@ function give_get_default_settings() {
 	);
 
 	return $options;
+}
+
+/**
+ * Default terms and conditions.
+ */
+function give_get_default_agreement_text() {
+
+	$org_name = get_bloginfo( 'name' );
+
+	$agreement = sprintf(
+		'<p>Acceptance of any contribution, gift or grant is at the discretion of the %1$s. The  %1$s will not accept any gift unless it can be used or expended consistently with the purpose and mission of the  %1$s.</p>
+				<p>No irrevocable gift, whether outright or life-income in character, will be accepted if under any reasonable set of circumstances the gift would jeopardize the donor’s financial security.</p>
+				<p>The %1$s will refrain from providing advice about the tax or other treatment of gifts and will encourage donors to seek guidance from their own professional advisers to assist them in the process of making their donation.</p>
+				<p>The %1$s will accept donations of cash or publicly traded securities. Gifts of in-kind services will be accepted at the discretion of the %1$s.</p>
+				<p>Certain other gifts, real property, personal property, in-kind gifts, non-liquid securities, and contributions whose sources are not transparent or whose use is restricted in some manner, must be reviewed prior to acceptance due to the special obligations raised or liabilities they may pose for %1$s.</p>
+				<p>The %1$s will provide acknowledgments to donors meeting tax requirements for property received by the charity as a gift. However, except for gifts of cash and publicly traded securities, no value shall be ascribed to any receipt or other form of substantiation of a gift received by %1$s.</p>
+				<p>The %1$s will respect the intent of the donor relating to gifts for restricted purposes and those relating to the desire to remain anonymous. With respect to anonymous gifts, the %1$s will restrict information about the donor to only those staff members with a need to know.</p>
+				<p>The %1$s will not compensate, whether through commissions, finders\' fees, or other means, any third party for directing a gift or a donor to the %1$s.</p>',
+		$org_name
+	);
+
+	return apply_filters( 'give_get_default_agreement_text', $agreement, $org_name );
 }

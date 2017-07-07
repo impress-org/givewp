@@ -325,4 +325,24 @@ abstract class Give_DB {
 		return $this->table_exists( $this->table_name );
 	}
 
+	/**
+	 * Register tables
+	 *
+	 * @since 1.8.9
+	 * @access public
+	 */
+	public function register_table() {
+		$current_version = get_option( $this->table_name . '_db_version' );
+		if ( ! $current_version || version_compare( $current_version, $this->version, '<' ) ) {
+			$this->create_table();
+		}
+	}
+
+	/**
+	 * Create table
+	 *
+	 * @since  1.8.9
+	 * @access public
+	 */
+	public function create_table(){}
 }

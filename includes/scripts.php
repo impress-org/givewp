@@ -41,7 +41,7 @@ function give_load_scripts() {
 		'thousands_separator' => give_get_price_thousand_separator(),
 		'decimal_separator'   => give_get_price_decimal_separator(),
 		'no_gateway'          => __( 'Please select a payment method.', 'give' ),
-		'bad_minimum'         => __( 'The minimum donation amount for this form is', 'give' ),
+		'bad_minimum'         => __( 'The minimum custom donation amount for this form is', 'give' ),
 		'general_loading'     => __( 'Loading...', 'give' ),
 		'purchase_loading'    => __( 'Please Wait...', 'give' ),
 		'number_decimals'     => give_get_price_decimals(),
@@ -304,13 +304,12 @@ function give_load_admin_scripts( $hook ) {
 		'thousands_separator'            => $thousand_separator,
 		'decimal_separator'              => $decimal_separator,
 		'quick_edit_warning'             => __( 'Not available for variable priced forms.', 'give' ),
-		'delete_payment'                 => __( 'Are you sure you wish to delete this payment?', 'give' ),
-		'delete_payment_note'            => __( 'Are you sure you wish to delete this note?', 'give' ),
-		'revoke_api_key'                 => __( 'Are you sure you wish to revoke this API key?', 'give' ),
-		'regenerate_api_key'             => __( 'Are you sure you wish to regenerate this API key?', 'give' ),
-		'resend_receipt'                 => __( 'Are you sure you wish to resend the donation receipt?', 'give' ),
-		'logo'                           => __( 'Logo', 'give' ),
-		'use_this_image'                 => __( 'Use this image', 'give' ),
+		'delete_payment'                 => __( 'Are you sure you want to delete this payment?', 'give' ),
+		'delete_payment_note'            => __( 'Are you sure you want to delete this note?', 'give' ),
+		'revoke_api_key'                 => __( 'Are you sure you want to revoke this API key?', 'give' ),
+		'regenerate_api_key'             => __( 'Are you sure you want to regenerate this API key?', 'give' ),
+		'resend_receipt'                 => __( 'Are you sure you want to resend the donation receipt?', 'give' ),
+		'disconnect_user'                => __( 'Are you sure you want to disconnect the user from this donor?', 'give' ),
 		'one_option'                     => __( 'Choose a form', 'give' ),
 		'one_or_more_option'             => __( 'Choose one or more forms', 'give' ),
 		'currency_sign'                  => give_currency_filter( '' ),
@@ -324,6 +323,10 @@ function give_load_admin_scripts( $hook ) {
 		'confirm_before_remove_row_text' => __( 'Do you want to delete this level?', 'give' ),
 		'matched_success_failure_page'   => __( 'You cannot set the success and failed pages to the same page', 'give' ),
 		'dismiss_notice_text'            => __( 'Dismiss this notice.', 'give' ),
+		'search_placeholder'             => __( 'Type to search all forms', 'give' ),
+		'search_placeholder_donor'       => __( 'Type to search all donors', 'give' ),
+		'search_placeholder_country'     => __( 'Type to search all countries', 'give' ),
+		'search_placeholder_state'       => __( 'Type to search all states/provinces', 'give' ),
 		'bulk_action' => array(
 			'delete'         => array(
 				'zero_payment_selected' => __( 'You must choose at least one or more payments to delete.', 'give' ),
@@ -335,12 +338,24 @@ function give_load_admin_scripts( $hook ) {
 				'resend_receipt'          => __( 'Are you sure you want to resend the email receipt to this recipient?', 'give' ),
 				'resend_receipts'         => __( 'Are you sure you want to resend the emails receipt to {payment_count} recipients?', 'give' ),
 			),
+			'set_to_status' => array(
+				'zero'      => __( 'You must choose at least one or more donations to set status to {status}.', 'give' ),
+				'single'    => __( 'Are you sure you want to set status of this donation to {status}?', 'give' ),
+				'multiple'  => __( 'Are you sure you want to set status of {payment_count} donations to {status}?', 'give' ),
+			),
 		),
 		'metabox_fields' => array(
 			'media' => array(
-				'button_title' => esc_html__( 'Choose Attachment', 'give' ),
+				'button_title' => __( 'Choose Image', 'give' ),
+			),
+			'file' => array(
+				'button_title' => __( 'Choose File', 'give' ),
 			)
-		)
+		),
+		'chosen' => array(
+			'no_results_msg'  => __( 'No results match {search_term}', 'give' ),
+			'ajax_search_msg' => __( 'Searching results for match {search_term}', 'give' ),
+		),
 	) );
 
 	if ( function_exists( 'wp_enqueue_media' ) && version_compare( get_bloginfo( 'version' ), '3.5', '>=' ) ) {
@@ -391,33 +406,3 @@ function give_admin_icon() {
 }
 
 add_action( 'admin_head', 'give_admin_icon' );
-
-/**
- * Admin js code
- *
- * This code helps to hide license notices for 24 hour if admin user dismissed notice.
- *
- * @since 1.7
- *
- * @return void
- */
-function give_admin_hide_notice_shortly_js() {
-	?>
-    <script>
-		jQuery(document).ready(function ($) {
-			$('.give-license-notice').on('click', 'button.notice-dismiss', function (e) {
-				e.preventDefault();
-
-				var parent             = $(this).parents('.give-license-notice'),
-				    dismiss_notice_url = parent.data('dismiss-notice-shortly');
-
-				if (dismiss_notice_url) {
-					window.location.assign(dismiss_notice_url);
-				}
-			});
-		});
-    </script>
-	<?php
-}
-
-add_action( 'admin_head', 'give_admin_hide_notice_shortly_js' );
