@@ -207,4 +207,47 @@ class Tests_Logging extends Give_Unit_Test_Case {
 
 		$this->assertNull( Give()->logs->delete_logs( 1 ) );
 	}
+
+	/**
+	 * Test Delete Logs
+	 *
+	 * @covers Give_DB_Log_Meta::add_meta
+	 * @covers Give_DB_Log_Meta::get_meta
+	 * @covers Give_DB_Log_Meta::update_meta
+	 * @covers Give_DB_Log_Meta::delete_meta
+	 */
+	public function test_metadata_fx() {
+		$log_id = Give()->logs->add( 'Log Metadata', 'for meta data testing' );
+
+		/**
+		 * WordPress meta functions.
+		 */
+		// Test 1: add_post_meta
+		add_post_meta( $log_id, 'add_log_meta', 'add_log_meta', true );
+		$this->assertEquals( 'add_log_meta', give_get_meta( $log_id, 'add_log_meta', true ) );
+
+		// Test 2: update_post_meta
+		update_post_meta( $log_id, 'update_log_meta', 'update_log_meta' );
+		$this->assertEquals( 'update_log_meta', give_get_meta( $log_id, 'update_log_meta', true ) );
+
+		// Test 3: delete_post_meta
+		$this->assertTrue( delete_post_meta( $log_id, 'update_log_meta' ) );
+		$this->assertFalse( delete_post_meta( $log_id, 'update_log_meta' ) );
+
+
+		/**
+		 * Give_DB_Log_Meta functions.
+		 */
+		// Test 1: add_meta
+		Give()->logs->logmeta_db->add_meta( $log_id, 'add_log_meta', 'add_log_meta', true );
+		$this->assertEquals( 'add_log_meta', Give()->logs->logmeta_db->get_meta( $log_id, 'add_log_meta', true ) );
+
+		// Test 2: update_meta
+		Give()->logs->logmeta_db->update_meta( $log_id, 'update_log_meta', 'update_log_meta' );
+		$this->assertEquals( 'update_log_meta', Give()->logs->logmeta_db->get_meta( $log_id, 'update_log_meta', true ) );
+
+		// Test 3: delete_meta
+		$this->assertTrue( Give()->logs->logmeta_db->delete_meta( $log_id, 'update_log_meta' ) );
+		$this->assertFalse( Give()->logs->logmeta_db->delete_meta( $log_id, 'update_log_meta' ) );
+	}
 }
