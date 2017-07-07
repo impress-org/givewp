@@ -1875,8 +1875,11 @@ h2.give-nav-tab-wrapper {
   #give-payment-filters label.give-start-date-label {
     margin-right: 5px; }
 
-#give-payments-filter ul.subsubsub {
+#give-payments-advanced-filter ul.subsubsub {
   margin-bottom: 12px; }
+
+#give-payments-advanced-filter #search-submit {
+  margin-left: 20px; }
 
 #give-payments-filter .tablenav.top {
   float: none; }
