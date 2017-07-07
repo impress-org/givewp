@@ -80,7 +80,6 @@ add_action( 'give_logs_view_gateway_errors', 'give_logs_view_gateway_errors' );
  *
  * @since 1.0
  * @uses  Give_API_Request_Log_Table::prepare_items()
- * @uses  Give_API_Request_Log_Table::search_box()
  * @uses  Give_API_Request_Log_Table::display()
  * @return void
  */
