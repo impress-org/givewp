@@ -66,7 +66,7 @@ class Give_Logging {
 		add_action( 'save_post_give_forms', array( $this, 'background_process_delete_cache' ) );
 		add_action( 'save_post_give_log', array( $this, 'background_process_delete_cache' ) );
 		add_action( 'give_delete_log_cache', array( $this, 'delete_cache' ) );
-		add_action( 'update_log_metadata', array( $this, 'bc_20_set_payment_as_log_parent' ), 10, 4 );
+		add_action( 'update_log_metadata', array( $this, 'bc_200_set_payment_as_log_parent' ), 10, 4 );
 
 		// Backward compatibility.
 		if ( ! give_has_upgrade_completed( 'give_v20_logs_upgrades' ) ) {
@@ -681,7 +681,7 @@ class Give_Logging {
 	 *
 	 * @return mixed
 	 */
-	public function bc_20_set_payment_as_log_parent( $check, $log_id, $meta_key, $meta_value ) {
+	public function bc_200_set_payment_as_log_parent( $check, $log_id, $meta_key, $meta_value ) {
 		global $wpdb;
 		$update_status = false;
 		$post_type     = get_post_type( $log_id );
