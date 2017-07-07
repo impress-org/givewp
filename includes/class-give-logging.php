@@ -397,7 +397,6 @@ class Give_Logging {
 
 		$query_args = array(
 			'number'      => - 1,
-			'fields'      => 'ID',
 
 			// Backward comatibility.
 			'post_type'   => 'give_log',
@@ -409,13 +408,7 @@ class Give_Logging {
 		}
 
 		if ( ! empty( $type ) && $this->valid_type( $type ) ) {
-			$query_args['tax_query'] = array(
-				array(
-					'taxonomy' => 'give_log_type',
-					'field'    => 'slug',
-					'terms'    => $type,
-				),
-			);
+			$query_args['log_type'] = $type;
 		}
 
 		if ( ! empty( $meta_query ) ) {
@@ -465,13 +458,7 @@ class Give_Logging {
 		);
 
 		if ( ! empty( $type ) && $this->valid_type( $type ) ) {
-			$query_args['tax_query'] = array(
-				array(
-					'taxonomy' => 'give_log_type',
-					'field'    => 'slug',
-					'terms'    => $type,
-				),
-			);
+			$query_args['log_type'] = $type;
 		}
 
 		if ( ! empty( $meta_query ) ) {
@@ -557,6 +544,8 @@ class Give_Logging {
 			'log_type'     => 'tax_query',
 			'log_date'     => 'post_date',
 			'log_date_gmt' => 'post_date_gmt',
+			'number'       => 'posts_per_page',
+			'meta_query'   => 'meta_query',
 		);
 
 		if ( ! give_has_upgrade_completed( 'give_v20_logs_upgrades' ) ) {
@@ -572,14 +561,29 @@ class Give_Logging {
 
 				switch ( $new_query_param ) {
 					case 'log_type':
-						if ( ! empty( $log_query[ $new_query_param ] ) && $this->valid_type( $log_query[ $new_query_param ] ) ) {
-							$log_query['tax_query'] = array(
-								array(
-									'taxonomy' => 'give_log_type',
-									'field'    => 'slug',
-									'terms'    => $log_query[ $new_query_param ],
-								),
-							);
+						$log_query['tax_query'] = array(
+							array(
+								'taxonomy' => 'give_log_type',
+								'field'    => 'slug',
+								'terms'    => $log_query[ $new_query_param ],
+							),
+						);
+						break;
+
+					case 'meta_query':
+						if( ! empty( $log_query['meta_query'] ) && empty( $log_query['post_parent'] ) ) {
+							foreach ( $log_query['meta_query'] as $index => $meta_query ){
+								if( ! is_array( $meta_query ) || empty( $meta_query['key'] ) ) {
+									continue;
+								}
+
+								switch ( $meta_query['key'] ) {
+									case '_give_log_form_id':
+										$log_query['post_parent'] = $meta_query['value'];
+										unset( $log_query['meta_query'][$index] );
+										break;
+								}
+							}
 						}
 						break;
 
@@ -608,10 +612,6 @@ class Give_Logging {
 					default:
 						$log_query[ $new_query_param ] = $log_query[ $old_query_param ];
 				}
-			}
-
-			if ( isset( $log_query['posts_per_page'] ) ) {
-				$log_query['number'] = $log_query['posts_per_page'];
 			}
 		}
 	}
