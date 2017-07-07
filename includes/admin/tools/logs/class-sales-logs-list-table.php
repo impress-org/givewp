@@ -317,27 +317,12 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 * @return void
 	 */
 	public function give_forms_filter() {
-		$give_forms = get_posts( array(
-			'post_type'              => 'give_forms',
-			'post_status'            => 'any',
-			'posts_per_page'         => - 1,
-			'orderby'                => 'title',
-			'order'                  => 'ASC',
-			'fields'                 => 'ids',
-			'update_post_meta_cache' => false,
-			'update_post_term_cache' => false,
+		echo Give()->html->forms_dropdown( array(
+			'selected' => '',
+			'name'   => 'form',
+			'id'     => 'give-log-form-filter',
+			'chosen' => true,
 		) );
-
-		if ( $give_forms ) {
-			echo '<select name="form" id="give-log-form-filter">';
-			echo '<option value="0">' . __( 'All', 'give' ) . '</option>';
-			foreach ( $give_forms as $form ) {
-				$form_title = get_the_title( $form );
-				$form_title = empty( $form_title ) ? sprintf( __( 'Untitled (#%s)', 'give' ), $form ) : $form_title;
-				echo '<option value="' . $form . '"' . selected( $form, $this->get_filtered_give_form() ) . '>' . esc_html( $form_title ) . '</option>';
-			}
-			echo '</select>';
-		}
 	}
 
 	/**
