@@ -22,7 +22,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 2.0
  */
 class Give_DB_Log_Meta extends Give_DB {
-
 	/**
 	 * Give_DB_Log_Meta constructor.
 	 *
@@ -38,6 +37,11 @@ class Give_DB_Log_Meta extends Give_DB {
 		$this->version     = '1.0';
 
 		$this->register_table();
+
+		add_filter( 'add_post_metadata', array( $this, '__add_meta' ), 0, 4 );
+		add_filter( 'get_post_metadata', array( $this, '__get_meta' ), 0, 4 );
+		add_filter( 'update_post_metadata', array( $this, '__update_meta' ), 0, 4 );
+		add_filter( 'delete_post_metadata', array( $this, '__delete_meta' ), 0, 4 );
 	}
 
 	/**
@@ -69,10 +73,12 @@ class Give_DB_Log_Meta extends Give_DB {
 	 *
 	 * @return  mixed                 Will be an array if $single is false. Will be value of meta data field if $single is true.
 	 */
-	public function get_meta( $log_id = 0, $meta_key = '', $single = false ) {
-		$log_id = $this->sanitize_log_id( $log_id );
-		if ( false === $log_id ) {
-			return false;
+	public function get_meta( $log_id, $meta_key, $single ) {
+		$log_id = $this->sanitize_id( $log_id );
+
+		// Bailout.
+		if ( ! $log_id || ! Give()->logs->log_db->is_log( $log_id ) ) {
+			return null;
 		}
 
 		return get_metadata( 'log', $log_id, $meta_key, $single );
@@ -92,9 +98,9 @@ class Give_DB_Log_Meta extends Give_DB {
 	 * @return  bool                  False for failure. True for success.
 	 */
 	public function add_meta( $log_id = 0, $meta_key = '', $meta_value, $unique = false ) {
-		$log_id = $this->sanitize_log_id( $log_id );
-		if ( false === $log_id ) {
-			return false;
+		$log_id = $this->sanitize_id( $log_id );
+		if ( ! $log_id || ! Give()->logs->log_db->is_log( $log_id ) ) {
+			return null;
 		}
 
 		return add_metadata( 'log', $log_id, $meta_key, $meta_value, $unique );
@@ -114,9 +120,9 @@ class Give_DB_Log_Meta extends Give_DB {
 	 * @return  bool                  False on failure, true if success.
 	 */
 	public function update_meta( $log_id = 0, $meta_key = '', $meta_value, $prev_value = '' ) {
-		$log_id = $this->sanitize_log_id( $log_id );
-		if ( false === $log_id ) {
-			return false;
+		$log_id = $this->sanitize_id( $log_id );
+		if ( ! $log_id || ! Give()->logs->log_db->is_log( $log_id ) ) {
+			return null;
 		}
 
 		return update_metadata( 'log', $log_id, $meta_key, $meta_value, $prev_value );
@@ -141,6 +147,12 @@ class Give_DB_Log_Meta extends Give_DB {
 	 * @return  bool                  False for failure. True for success.
 	 */
 	public function delete_meta( $log_id = 0, $meta_key = '', $meta_value = '' ) {
+		$log_id = $this->sanitize_id( $log_id );
+
+		if ( ! $log_id || ! Give()->logs->log_db->is_log( $log_id ) ) {
+			return null;
+		}
+
 		return delete_metadata( 'log', $log_id, $meta_key, $meta_value );
 	}
 
@@ -201,34 +213,51 @@ class Give_DB_Log_Meta extends Give_DB {
 		update_option( $this->table_name . '_db_version', $this->version );
 	}
 
+
 	/**
-	 * Given a log ID, make sure it's a positive number, greater than zero before inserting or adding.
+	 * Add support for hidden functions.
 	 *
-	 * @access private
 	 * @since  2.0
+	 * @access public
 	 *
-	 * @param  int|stripe $log_id A passed log ID.
+	 * @param $name
+	 * @param $arguments
 	 *
-	 * @return int|bool                The normalized log ID or false if it's found to not be valid.
+	 * @return mixed
 	 */
-	private function sanitize_log_id( $log_id ) {
-		if ( ! is_numeric( $log_id ) ) {
-			return false;
+	public function __call( $name, $arguments ) {
+		switch ( $name ) {
+			case '__add_meta':
+				$check    = $arguments[0];
+				$log_id   = $arguments[1];
+				$meta_key = $arguments[2];
+				$single   = $arguments[3];
+
+				return $this->add_meta( $log_id, $meta_key, $single );
+
+			case '__get_meta':
+				$check    = $arguments[0];
+				$log_id   = $arguments[1];
+				$meta_key = $arguments[2];
+				$single   = $arguments[3];
+
+				return $this->get_meta( $log_id, $meta_key, $single );
+
+			case '__update_meta':
+				$check    = $arguments[0];
+				$log_id   = $arguments[1];
+				$meta_key = $arguments[2];
+				$single   = $arguments[3];
+
+				return $this->update_meta( $log_id, $meta_key, $single );
+
+			case '__delete_meta':
+				$check    = $arguments[0];
+				$log_id   = $arguments[1];
+				$meta_key = $arguments[2];
+				$single   = $arguments[3];
+
+				return $this->delete_meta( $log_id, $meta_key, $single );
 		}
-
-		$log_id = (int) $log_id;
-
-		// We were given a non positive number.
-		if ( absint( $log_id ) !== $log_id ) {
-			return false;
-		}
-
-		if ( empty( $log_id ) ) {
-			return false;
-		}
-
-		return absint( $log_id );
-
 	}
-
 }
