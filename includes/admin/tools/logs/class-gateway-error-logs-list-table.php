@@ -103,22 +103,20 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 		<div id="log-message-<?php echo $item['ID']; ?>" style="display:none;">
 			<?php
 
-			$log_message = get_post_field( 'post_content', $item['ID'] );
-
-			$serialized = strpos( $log_message, '{"' );
+			$serialized = strpos( $item['log_content'], '{"' );
 
 			// Check to see if the log message contains serialized information
 			if ( $serialized !== false ) {
-				$length = strlen( $log_message ) - $serialized;
-				$intro  = substr( $log_message, 0, - $length );
-				$data   = substr( $log_message, $serialized, strlen( $log_message ) - 1 );
+				$length = strlen( $item['log_content'] ) - $serialized;
+				$intro  = substr( $item['log_content'], 0, - $length );
+				$data   = substr( $item['log_content'], $serialized, strlen( $item['log_content'] ) - 1 );
 
 				echo wpautop( $intro );
 				echo wpautop( '<strong>' . esc_html__( 'Log data:', 'give' ) . '</strong>' );
 				echo '<div style="word-wrap: break-word;">' . wpautop( $data ) . '</div>';
 			} else {
 				// No serialized data found
-				echo wpautop( $log_message );
+				echo wpautop( $item['log_content'] );
 			}
 			?>
 		</div>
@@ -194,12 +192,13 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 			foreach ( $logs as $log ) {
 
 				$logs_data[] = array(
-					'ID'         => $log->ID,
-					'ID_label'   => '<span class=\'give-item-label give-item-label-gray\'>' . $log->ID . '</span>',
-					'payment_id' => $log->log_parent,
-					'error'      => 'error',
-					'gateway'    => give_get_payment_gateway( $log->log_parent ),
-					'date'       => $log->log_date,
+					'ID'          => $log->ID,
+					'ID_label'    => '<span class=\'give-item-label give-item-label-gray\'>' . $log->ID . '</span>',
+					'payment_id'  => $log->log_parent,
+					'error'       => 'error',
+					'gateway'     => give_get_payment_gateway( $log->log_parent ),
+					'date'        => $log->log_date,
+					'log_content' => $log->log_content,
 				);
 			}
 		}
