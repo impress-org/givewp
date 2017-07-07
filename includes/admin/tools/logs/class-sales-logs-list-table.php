@@ -236,6 +236,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 */
 	public function get_meta_query() {
 		$user = $this->get_filtered_user();
+		$give_form = $this->get_filtered_give_form();
 
 		$meta_query = array();
 
@@ -244,6 +245,13 @@ class Give_Sales_Log_Table extends WP_List_Table {
 			$meta_query[] = array(
 				'key'   => '_give_log_user_id',
 				'value' => $user,
+			);
+		}
+
+		if ( $give_form ) {
+			$meta_query[] = array(
+				'key'   => '_give_log_form_id',
+				'value' => $give_form,
 			);
 		}
 
@@ -335,7 +343,6 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	public function get_logs() {
 		$logs_data = array();
 		$log_query = $this->get_query_params();
-
 		$logs = Give()->logs->get_connected_logs( $log_query );
 
 		if ( $logs ) {
@@ -382,7 +389,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 		$current_page          = $this->get_pagenum();
 		$this->items           = $this->get_logs();
-		$total_items           = Give()->logs->get_log_count( $this->get_filtered_give_form(), 'sale', $this->get_meta_query() );
+		$total_items           = Give()->logs->get_log_count( 0, 'sale', $this->get_meta_query() );
 
 		$this->set_pagination_args( array(
 				'total_items' => $total_items,
@@ -403,7 +410,6 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 */
 	public function get_query_params() {
 		$paged     = $this->get_paged();
-		$give_form = empty( $_GET['s'] ) ? $this->get_filtered_give_form() : null;
 		$user      = $this->get_filtered_user();
 
 		$log_query = array(
@@ -412,13 +418,6 @@ class Give_Sales_Log_Table extends WP_List_Table {
 			'meta_query' => $this->get_meta_query(),
 			'number'     => $this->per_page,
 		);
-
-		if ( ! empty( $give_form ) ) {
-			$log_query['meta_query'][] = array(
-				'key'   => '_give_log_form_id',
-				'value' => $give_form,
-			);
-		}
 
 		return $log_query;
 	}
