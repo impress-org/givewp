@@ -142,13 +142,15 @@ class Give_DB_Logs extends Give_DB {
 	 * @since  2.0
 	 * @access public
 	 *
-	 * @param int $log_id
+	 * @param int    $log_id
+	 * @param string $by
 	 *
 	 * @return bool|null|array
 	 */
-	public function get_log_by( $log_id = 0 ) {
+	public function get_log_by( $log_id = 0, $by = 'id' ) {
 		/* @var WPDB $wpdb */
 		global $wpdb;
+		$log = null;
 
 		// Make sure $log_id is int.
 		$log_id = absint( $log_id );
@@ -158,8 +160,19 @@ class Give_DB_Logs extends Give_DB {
 			return null;
 		}
 
-		if ( ! $log = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $this->table_name WHERE ID = %s LIMIT 1", $log_id ), ARRAY_A ) ) {
-			return false;
+		switch ( $by ) {
+			case 'id':
+				$log = $wpdb->get_row(
+					$wpdb->prepare(
+						"SELECT * FROM $this->table_name WHERE ID = %s LIMIT 1",
+						$log_id
+					),
+					ARRAY_A
+				);
+				break;
+
+			default:
+				$log = apply_filters( "give_get_log_by_{$by}", $log, $log_id );
 		}
 
 		return $log;
@@ -377,5 +390,19 @@ class Give_DB_Logs extends Give_DB {
 		$args['fields'] = array_key_exists( $args['fields'], $this->get_columns() ) ?
 			$args['fields'] :
 			'all';
+	}
+
+	/**
+	 * Check if current id is log or not
+	 *
+	 * @since 2.0
+	 * @access public
+	 * @param $id
+	 *
+	 * @return bool
+	 */
+	public function is_log( $id ) {
+		$log = $this->get_log_by( $id );
+		return ! empty( $log ) ? true : false;
 	}
 }
