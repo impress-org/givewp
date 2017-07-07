@@ -411,6 +411,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 			'log_type'   => 'sale',
 			'paged'      => $paged,
 			'meta_query' => $this->get_meta_query(),
+			'number'     => $this->per_page,
 		);
 
 		if ( ! empty( $give_form ) ) {
