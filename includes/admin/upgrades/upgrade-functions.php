@@ -1286,7 +1286,7 @@ function give_v20_logs_upgrades() {
 			}
 
 			if( 'api_request' === $term_name ){
-				$log_meta['api_query'] = $post->post_excerpt;
+				$log_meta['_give_log_api_query'] = $post->post_excerpt;
 			}
 
 			$wpdb->insert( "{$wpdb->prefix}give_logs", $log_data );

@@ -140,7 +140,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 		<div id="log-details-<?php echo $item['ID']; ?>" style="display:none;">
 			<?php
 
-			$request = get_post_meta( $item['ID'], '_give_log_error_summary', true );
+			$request = get_post_meta( $item['ID'], '_give_log_api_query', true );
 			echo '<p><strong>' . esc_html__( 'API Request:', 'give' ) . '</strong></p>';
 			echo '<div>' . $request . '</div>';
 			if ( ! empty( $item['log_content'] ) ) {
