@@ -140,13 +140,12 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 		<div id="log-details-<?php echo $item['ID']; ?>" style="display:none;">
 			<?php
 
-			$request = get_post_field( 'post_excerpt', $item['ID'] );
-			$error   = get_post_field( 'post_content', $item['ID'] );
+			$request = get_post_meta( $item['ID'], '_give_log_error_summary', true );
 			echo '<p><strong>' . esc_html__( 'API Request:', 'give' ) . '</strong></p>';
 			echo '<div>' . $request . '</div>';
-			if ( ! empty( $error ) ) {
+			if ( ! empty( $item['log_content'] ) ) {
 				echo '<p><strong>' . esc_html__( 'Error', 'give' ) . '</strong></p>';
-				echo '<div>' . esc_html( $error ) . '</div>';
+				echo '<div>' . esc_html( $item['log_content'] ) . '</div>';
 			}
 			echo '<p><strong>' . esc_html__( 'API User:', 'give' ) . '</strong></p>';
 			echo '<div>' . give_get_meta( $item['ID'], '_give_log_user', true ) . '</div>';
@@ -305,9 +304,10 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 			foreach ( $logs as $log ) {
 
 				$logs_data[] = array(
-					'ID'   => $log->ID,
-					'ip'   => give_get_meta( $log->ID, '_give_log_request_ip', true ),
-					'date' => $log->log_date,
+					'ID'          => $log->ID,
+					'ip'          => give_get_meta( $log->ID, '_give_log_request_ip', true ),
+					'date'        => $log->log_date,
+					'log_content' => $log->log_content,
 				);
 			}
 		}
