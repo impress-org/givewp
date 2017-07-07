@@ -272,6 +272,8 @@ function give_record_log( $title = '', $message = '', $parent = 0, $type = null 
  * @return int ID of the new log entry
  */
 function give_record_gateway_error( $title = '', $message = '', $parent = 0 ) {
+	$title = empty( $title ) ? esc_html__( 'Payment Error', 'give' ) : $title;
+
 	return give_record_log( $title, $message, $parent, 'gateway_error' );
 }
 
