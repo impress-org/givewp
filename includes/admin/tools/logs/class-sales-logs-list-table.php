@@ -317,7 +317,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 */
 	public function give_forms_filter() {
 		echo Give()->html->forms_dropdown( array(
-			'selected' => '',
+			'selected' => $this->get_filtered_give_form(),
 			'name'   => 'form',
 			'id'     => 'give-log-form-filter',
 			'chosen' => true,
