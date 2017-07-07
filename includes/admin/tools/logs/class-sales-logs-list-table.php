@@ -205,16 +205,15 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 * @param string $which
 	 */
 	protected function display_tablenav( $which ) {
-
-		if ( 'top' === $which ) {
-			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
-		}
 		?>
 		<div class="tablenav <?php echo esc_attr( $which ); ?>">
 
-			<div class="alignleft actions bulkactions">
-				<?php $this->bulk_actions( $which ); ?>
-			</div>
+			<?php if ( 'top' === $which ) : ?>
+				<div class="alignleft actions bulkactions">
+					<?php $this->bulk_actions( $which ); ?>
+				</div>
+			<?php endif; ?>
+
 			<?php
 			$this->extra_tablenav( $which );
 			$this->pagination( $which );
