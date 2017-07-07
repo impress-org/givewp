@@ -136,12 +136,12 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'ID'         => __( 'Log ID', 'give' ),
+			'ID'       => __( 'Log ID', 'give' ),
 			'donation' => __( 'Donation', 'give' ),
-			'form'       => __( 'Form', 'give' ),
-			'status'     => __( 'Status', 'give' ),
-			'amount'     => __( 'Donation Amount', 'give' ),
-			'date'       => __( 'Date', 'give' ),
+			'form'     => __( 'Form', 'give' ),
+			'status'   => __( 'Status', 'give' ),
+			'amount'   => __( 'Donation Amount', 'give' ),
+			'date'     => __( 'Date', 'give' ),
 		);
 
 		return $columns;
