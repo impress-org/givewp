@@ -33,7 +33,7 @@ class Give_DB_Donor_Meta extends Give_DB {
 		/* @var WPDB $wpdb */
 		global $wpdb;
 
-		$this->table_name  = $wpdb->prefix . 'give_customermeta';
+		$wpdb->customermeta = $this->table_name  = $wpdb->prefix . 'give_customermeta';
 		$this->primary_key = 'meta_id';
 		$this->version     = '1.0';
 
@@ -55,19 +55,6 @@ class Give_DB_Donor_Meta extends Give_DB {
 			'meta_key'    => '%s',
 			'meta_value'  => '%s',
 		);
-	}
-
-	/**
-	 * Register the table with $wpdb so the metadata api can find it.
-	 *
-	 * @access  public
-	 * @since   1.6
-	 *
-	 * @return  void
-	 */
-	public function register_table() {
-		global $wpdb;
-		$wpdb->customermeta = $this->table_name;
 	}
 
 	/**

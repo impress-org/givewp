@@ -272,4 +272,3 @@ function _give_save_donor_billing_address( $payment_id ) {
 	$donor->add_address( 'billing[]', $donation->address );
 }
 add_action( 'save_post_give_payment', '_give_save_donor_billing_address', 9999 );
-

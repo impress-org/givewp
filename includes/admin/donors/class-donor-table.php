@@ -106,47 +106,47 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @param array  $item        Contains all the data of the donors.
+	 * @param array  $donor        Contains all the data of the donors.
 	 * @param string $column_name The name of the column.
 	 *
 	 * @return string Column Name.
 	 */
-	public function column_default( $item, $column_name ) {
+	public function column_default( $donor, $column_name ) {
 		switch ( $column_name ) {
 
 			case 'num_donations' :
-				$value = '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( $item['email'] ) ) . '">' . esc_html( $item['num_donations'] ) . '</a>';
+				$value = '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&donor=' . urlencode( $donor['id'] ) ) . '&status=publish' . ' ">' . esc_html( $donor['num_donations'] ) . '</a>';
 				break;
 
 			case 'amount_spent' :
-				$value = give_currency_filter( give_format_amount( $item[ $column_name ] ) );
+				$value = give_currency_filter( give_format_amount( $donor[ $column_name ] ) );
 				break;
 
 			case 'date_created' :
-				$value = date_i18n( give_date_format(), strtotime( $item['date_created'] ) );
+				$value = date_i18n( give_date_format(), strtotime( $donor['date_created'] ) );
 				break;
 
 			default:
-				$value = isset( $item[ $column_name ] ) ? $item[ $column_name ] : null;
+				$value = isset( $donor[ $column_name ] ) ? $donor[ $column_name ] : null;
 				break;
 		}
 
-		return apply_filters( "give_report_column_{$column_name}", $value, $item['id'] );
+		return apply_filters( "give_report_column_{$column_name}", $value, $donor['id'] );
 
 	}
 
 	/**
 	 * Column name.
 	 *
-	 * @param $item
+	 * @param $donor
 	 *
 	 * @return string
 	 */
-	public function column_name( $item ) {
-		$name     = '#' . $item['id'] . ' ';
-		$name     .= ! empty( $item['name'] ) ? $item['name'] : '<em>' . esc_html__( 'Unnamed Donor', 'give' ) . '</em>';
-		$view_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $item['id'] );
-		$actions  = $this->get_row_actions( $item );
+	public function column_name( $donor ) {
+		$name     = '#' . $donor['id'] . ' ';
+		$name     .= ! empty( $donor['name'] ) ? $donor['name'] : '<em>' . esc_html__( 'Unnamed Donor', 'give' ) . '</em>';
+		$view_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor['id'] );
+		$actions  = $this->get_row_actions( $donor );
 
 		return '<a href="' . esc_url( $view_url ) . '">' . $name . '</a>' . $this->row_actions( $actions );
 	}
@@ -196,23 +196,23 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 * @since  1.7
 	 * @access public
 	 *
-	 * @param $item
+	 * @param $donor
 	 *
 	 * @return array An array of action links.
 	 */
-	public function get_row_actions( $item ) {
+	public function get_row_actions( $donor ) {
 
 		$actions = array(
 
-			'view' => sprintf( '<a href="%1$s" aria-label="%2$s">%3$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $item['id'] ), sprintf( esc_attr__( 'View "%s"', 'give' ), $item['name'] ), __( 'View Donor', 'give' ) ),
+			'view' => sprintf( '<a href="%1$s" aria-label="%2$s">%3$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor['id'] ), sprintf( esc_attr__( 'View "%s"', 'give' ), $donor['name'] ), __( 'View Donor', 'give' ) ),
 
-			'notes' => sprintf( '<a href="%1$s" aria-label="%2$s">%3$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=notes&id=' . $item['id'] ), sprintf( esc_attr__( 'Notes for "%s"', 'give' ), $item['name'] ), __( 'Notes', 'give' ) ),
+			'notes' => sprintf( '<a href="%1$s" aria-label="%2$s">%3$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=notes&id=' . $donor['id'] ), sprintf( esc_attr__( 'Notes for "%s"', 'give' ), $donor['name'] ), __( 'Notes', 'give' ) ),
 
-			'delete' => sprintf( '<a href="%1$s" aria-label="%2$s">%3$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $item['id'] ), sprintf( esc_attr__( 'Delete "%s"', 'give' ), $item['name'] ), __( 'Delete', 'give' ) ),
+			'delete' => sprintf( '<a href="%1$s" aria-label="%2$s">%3$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $donor['id'] ), sprintf( esc_attr__( 'Delete "%s"', 'give' ), $donor['name'] ), __( 'Delete', 'give' ) ),
 
 		);
 
-		return apply_filters( 'give_donor_row_actions', $actions, $item );
+		return apply_filters( 'give_donor_row_actions', $actions, $donor );
 
 	}
 

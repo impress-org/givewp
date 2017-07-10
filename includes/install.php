@@ -173,6 +173,7 @@ function give_run_install() {
 			'v18_upgrades_core_setting',
 			'v18_upgrades_form_metadata',
 			'v20_upgrades_form_metadata',
+			'v189_upgrades_levels_post_meta'
 		);
 
 		foreach ( $upgrade_routines as $upgrade ) {
@@ -206,7 +207,7 @@ function give_run_install() {
  * @param  int $site_id The Site ID.
  * @param  array $meta Blog Meta.
  */
-function on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
+function give_on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
 
 	if ( is_plugin_active_for_network( GIVE_PLUGIN_BASENAME ) ) {
 
@@ -218,7 +219,7 @@ function on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
 
 }
 
-add_action( 'wpmu_new_blog', 'on_create_blog', 10, 6 );
+add_action( 'wpmu_new_blog', 'give_on_create_blog', 10, 6 );
 
 
 /**

@@ -98,7 +98,8 @@ function give_show_upgrade_notices() {
 	 *  NOTICE:
 	 *
 	 *  When adding new upgrade notices, please be sure to put the action into the upgrades array during install:
-	 *  /includes/install.php @ Approx Line 156
+	 *  /includes/install.php @ Appox Line 169
+	 *
 	 */
 
 	// Resume updates.
@@ -157,7 +158,7 @@ function give_show_upgrade_notices() {
 		'id'          => 'give-version-1-8-9-updates',
 		'type'        => 'warning',
 		'description' => sprintf(
-			__( 'Give 1.8.9 needs to upgrade the donation forms meta-fields in database, click <a href="%s">here</a> to start the upgrade.', 'give' ),
+			__( 'Give 1.8.9 needs to update the donation form\'s meta fields within database, click <a href="%s">here</a> to start the upgrade.', 'give' ),
 			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=v189_upgrades_levels_post_meta' ) )
 		),
 		'show'        => ( version_compare( $give_version, '1.8.9', '<' ) || ( ! give_has_upgrade_completed( 'v189_upgrades_levels_post_meta' ) ) ),

@@ -126,32 +126,6 @@ function _give_register_admin_notices() {
 		return;
 	}
 
-	// Add ajax disabled notice.
-	if ( ! give_test_ajax_works() && current_user_can( 'manage_give_settings' ) ) {
-		// Delete notice render blocker.
-		Give_Cache::delete( 'give_cache_' . Give()->notices->get_notice_key( 'give-ajax-not-working', 'permanent' ) );
-
-		// Set notice message
-		$notice_desc = '<p>' . __( 'Your site appears to be blocking the WordPress ajax interface. This may cause issues with Give.', 'give' ) . '</p>';
-		$notice_desc .= '<p>' . sprintf( __( 'Please see <a href="%s" target="_blank">this reference</a> for possible solutions.', 'give' ), esc_url( 'http://docs.givewp.com/ajax-blocked' ) ) . '</p>';
-		$notice_desc .= sprintf(
-			'<p>%s</p>',
-			Give()->notices->get_dismiss_link(array(
-				'title' => __( 'Dismiss Notice', 'give' ),
-				'dismissible_type' => 'all',
-				'dismiss_interval' => 'permanent',
-			))
-		);
-
-		Give()->notices->register_notice( array(
-			'id'               => 'give-ajax-not-working',
-			'type'             => 'updated',
-			'description'      => $notice_desc,
-			'dismissible_type' => 'all',
-			'dismiss_interval' => 'permanent',
-		) );
-	}
-
 	// Add PHP version update notice
 	if ( function_exists( 'phpversion' ) && version_compare( GIVE_REQUIRED_PHP_VERSION, phpversion(), '>' ) ) {
 
@@ -189,8 +163,8 @@ function _give_register_admin_notices() {
 					'type'        => 'updated',
 					'description' => sprintf(
 						_n(
-							'Successfully deleted only one transaction.',
-							'Successfully deleted %d number of transactions.',
+							'Successfully deleted one transaction.',
+							'Successfully deleted %d transactions.',
 							$payment_count,
 							'give'
 						),
@@ -206,8 +180,8 @@ function _give_register_admin_notices() {
 					'type'        => 'updated',
 					'description' => sprintf(
 						_n(
-							'Successfully send email receipt to only one recipient.',
-							'Successfully send email receipts to %d recipients.',
+							'Successfully sent email receipt to one recipient.',
+							'Successfully sent email receipts to %d recipients.',
 							$payment_count,
 							'give'
 						),

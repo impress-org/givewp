@@ -504,22 +504,26 @@ if ( ! class_exists( 'Give_License' ) ) :
 			// Do not get confused with edd_action check_subscription.
 			// By default edd software licensing api does not have api to check subscription.
 			// This is a custom feature to check subscriptions.
-			if ( ! ( $subscription_data = $this->get_license_info( 'check_subscription' ) ) ) {
+			if ( ! ( $subscription_data = $this->get_license_info( 'check_subscription', true ) ) ) {
 				return;
 			}
 
-			if ( ! empty( $subscription_data->success ) && absint( $subscription_data->success ) ) {
+
+			if ( ! empty( $subscription_data['success'] ) && absint( $subscription_data['success'] ) ) {
 				$subscriptions = get_option( 'give_subscriptions', array() );
 
 				// Update subscription data only if subscription does not exist already.
-				if ( ! array_key_exists( $subscription_data->id, $subscriptions ) ) {
-					$subscriptions[ $subscription_data->id ]             = $subscription_data;
-					$subscriptions[ $subscription_data->id ]['licenses'] = array();
+				$subscriptions[ $subscription_data['id'] ]            = $subscription_data;
+
+
+				// Initiate default set of license for subscription.
+				if( ! isset( $subscriptions[ $subscription_data['id'] ]['licenses'] ) ) {
+					$subscriptions[ $subscription_data['id']]['licenses'] = array();
 				}
 
 				// Store licenses for subscription.
-				if ( ! in_array( $this->license, $subscriptions[ $subscription_data->id ]['licenses'] ) ) {
-					$subscriptions[ $subscription_data->id ]['licenses'][] = $this->license;
+				if ( ! in_array( $this->license, $subscriptions[ $subscription_data['id'] ]['licenses'] ) ) {
+					$subscriptions[ $subscription_data['id']]['licenses'][] = $this->license;
 				}
 
 				update_option( 'give_subscriptions', $subscriptions );
@@ -593,47 +597,44 @@ if ( ! class_exists( 'Give_License' ) ) :
 						continue;
 					}
 
-					if ( ( 'active' !== $subscription['status'] ) ) {
-
-						// Check if license already expired.
-						if ( strtotime( $subscription['expires'] ) < current_time( 'timestamp', 1 ) ) {
-							Give()->notices->register_notice( array(
-								'id'               => "give-expired-subscription-{$subscription['id']}",
-								'type'             => 'error',
-								'description'      => sprintf(
-									__( 'Your Give add-on license expired for payment <a href="%1$s" target="_blank">#%2$d</a>. <a href="%3$s" target="_blank">Click to renew an existing license</a> or %4$s.', 'give' ),
-									urldecode( $subscription['invoice_url'] ),
-									$subscription['payment_id'],
-									"{$this->checkout_url}?edd_license_key={$subscription['license_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired",
-									Give()->notices->get_dismiss_link(array(
-										'title' => __( 'Click here if already renewed', 'give' ),
-										'dismissible_type'      => 'user',
-										'dismiss_interval'      => 'permanent',
-									))
-								),
-								'dismissible_type' => 'user',
-								'dismiss_interval' => 'shortly',
-							) );
-						} else {
-							Give()->notices->register_notice( array(
-								'id'               => "give-expires-subscription-{$subscription['id']}",
-								'type'             => 'error',
-								'description'      => sprintf(
-									__( 'Your Give add-on license will expire in %1$s for payment <a href="%2$s" target="_blank">#%3$d</a>. <a href="%4$s" target="_blank">Click to renew an existing license</a> or %5$s.', 'give' ),
-									human_time_diff( current_time( 'timestamp', 1 ), strtotime( $subscription['expires'] ) ),
-									urldecode( $subscription['invoice_url'] ),
-									$subscription['payment_id'],
-									"{$this->checkout_url}?edd_license_key={$subscription['license_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired",
-									Give()->notices->get_dismiss_link(array(
-										'title' => __( 'Click here if already renewed', 'give' ),
-										'dismissible_type'      => 'user',
-										'dismiss_interval'      => 'permanent',
-									))
-								),
-								'dismissible_type' => 'user',
-								'dismiss_interval' => 'shortly',
-							) );
-						}
+					// Check if license already expired.
+					if ( strtotime( $subscription['expires'] ) < current_time( 'timestamp', 1 ) ) {
+						Give()->notices->register_notice( array(
+							'id'               => "give-expired-subscription-{$subscription['id']}",
+							'type'             => 'error',
+							'description'      => sprintf(
+								__( 'Your Give add-on license expired for payment <a href="%1$s" target="_blank">#%2$d</a>. <a href="%3$s" target="_blank">Click to renew an existing license</a> or %4$s.', 'give' ),
+								urldecode( $subscription['invoice_url'] ),
+								$subscription['payment_id'],
+								"{$this->checkout_url}?edd_license_key={$subscription['license_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired",
+								Give()->notices->get_dismiss_link(array(
+									'title' => __( 'Click here if already renewed', 'give' ),
+									'dismissible_type'      => 'user',
+									'dismiss_interval'      => 'permanent',
+								))
+							),
+							'dismissible_type' => 'user',
+							'dismiss_interval' => 'shortly',
+						) );
+					} else {
+						Give()->notices->register_notice( array(
+							'id'               => "give-expires-subscription-{$subscription['id']}",
+							'type'             => 'error',
+							'description'      => sprintf(
+								__( 'Your Give add-on license will expire in %1$s for payment <a href="%2$s" target="_blank">#%3$d</a>. <a href="%4$s" target="_blank">Click to renew an existing license</a> or %5$s.', 'give' ),
+								human_time_diff( current_time( 'timestamp', 1 ), strtotime( $subscription['expires'] ) ),
+								urldecode( $subscription['invoice_url'] ),
+								$subscription['payment_id'],
+								"{$this->checkout_url}?edd_license_key={$subscription['license_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired",
+								Give()->notices->get_dismiss_link(array(
+									'title' => __( 'Click here if already renewed', 'give' ),
+									'dismissible_type'      => 'user',
+									'dismiss_interval'      => 'permanent',
+								))
+							),
+							'dismissible_type' => 'user',
+							'dismiss_interval' => 'shortly',
+						) );
 					}
 
 					// Stop validation for these license keys.
@@ -806,10 +807,11 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @access public
 		 *
 		 * @param string $edd_action
+		 * @param bool   $response_in_array
 		 *
 		 * @return mixed
 		 */
-		public function get_license_info( $edd_action = '' ) {
+		public function get_license_info( $edd_action = '', $response_in_array = false ) {
 			if( empty( $edd_action ) ) {
 				return false;
 			}
@@ -837,7 +839,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 				return false;
 			}
 
-			return json_decode( wp_remote_retrieve_body( $response ) );
+			return json_decode( wp_remote_retrieve_body( $response ), $response_in_array );
 		}
 	}
 
