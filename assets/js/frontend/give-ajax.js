@@ -98,6 +98,7 @@ jQuery(document).ready(function ($) {
 
                 // Login successfully message.
                 this_form.find( '#give-payment-mode-select' ).after( data.message );
+                this_form.find( '.give_notices.give_errors' ).delay(5000).slideUp();
 
                 //reload the selected gateway so it contains their logged in information
 				give_load_gateway(this_form, this_form.find('.give-gateway-option-selected input').val());
