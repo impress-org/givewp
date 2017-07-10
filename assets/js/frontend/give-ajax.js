@@ -89,19 +89,24 @@ jQuery(document).ready(function ($) {
         };
 
 		$.post(give_global_vars.ajaxurl, data, function (data) {
-
+            data = JSON.parse( data );
 			//user is logged in
-			if ($.trim(data) == 'success') {
+			if ( $.trim( typeof ( data.status ) ) != undefined && data.status == 'success' && typeof ( data.message ) != undefined ) {
+
 				//remove errors
 				this_form.find('.give_errors').remove();
-				//reload the selected gateway so it contains their logged in information
+
+                // Login successfully message.
+                this_form.find( '#give-payment-mode-select' ).after( data.message );
+
+                //reload the selected gateway so it contains their logged in information
 				give_load_gateway(this_form, this_form.find('.give-gateway-option-selected input').val());
 			} else {
 				//Login failed, show errors
 				this_form.find('[id^=give-login-fields] input[type=submit]').val(complete_purchase_val);
 				this_form.find('.give-loading-animation').fadeOut();
 				this_form.find('.give_errors').remove();
-				this_form.find('[id^=give-user-login-submit]').before(data);
+				this_form.find('[id^=give-user-login-submit]').before( data.message );
 			}
 		});
 
