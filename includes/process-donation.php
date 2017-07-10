@@ -207,8 +207,6 @@ add_action( 'give_checkout_error_checks', 'give_check_logged_in_user_for_existin
  * @return      void
  */
 function give_process_form_login() {
-	$data = array();
-	$data['status'] = 'error';
 	$is_ajax = isset( $_POST['give_ajax'] );
 
 	$user_data = give_donation_form_validate_user_login();
@@ -224,9 +222,7 @@ function give_process_form_login() {
 				do_action( 'give_ajax_donation_errors' );
 				$message = ob_get_contents();
 			ob_end_clean();
-			$data['message'] = $message;
-			echo wp_json_encode( $data );
-			give_die();
+			wp_send_json_error( $message );
 		} else {
 			wp_redirect( $_SERVER['HTTP_REFERER'] );
 			exit;
@@ -236,19 +232,17 @@ function give_process_form_login() {
 	give_log_user_in( $user_data['user_id'], $user_data['user_login'], $user_data['user_pass'] );
 
 	if ( $is_ajax ) {
-		$data['status'] = 'success';
-		$data['message'] = Give()->notices->print_frontend_notice(
+		$message = Give()->notices->print_frontend_notice(
 			sprintf(
 				/* translators: %s: user first name */
 				esc_html__( 'Welcome %s! You have successfully logged into your account.', 'give' ),
-				$user_data['user_first']
+				( isset( $user_data['user_first'] ) && ! empty( $user_data['user_first'] )  ) ? $user_data['user_first'] : $user_data['user_login']
 			),
 			false,
 			'success'
 		);
 
-		echo wp_json_encode( $data );
-		give_die();
+		wp_send_json_success( $message );
 	} else {
 		wp_redirect( $_SERVER['HTTP_REFERER'] );
 	}

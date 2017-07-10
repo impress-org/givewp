@@ -88,16 +88,15 @@ jQuery(document).ready(function ($) {
             give_user_pass: this_form.find('[name=give_user_pass]').val()
         };
 
-		$.post(give_global_vars.ajaxurl, data, function (data) {
-            data = JSON.parse( data );
+		$.post(give_global_vars.ajaxurl, data, function (response) {
 			//user is logged in
-			if ( $.trim( typeof ( data.status ) ) != undefined && data.status == 'success' && typeof ( data.message ) != undefined ) {
+			if ( $.trim( typeof ( response.success ) ) != undefined && response.success == true && typeof ( response.data ) != undefined ) {
 
 				//remove errors
 				this_form.find('.give_errors').remove();
 
                 // Login successfully message.
-                this_form.find( '#give-payment-mode-select' ).after( data.message );
+                this_form.find( '#give-payment-mode-select' ).after( response.data );
                 this_form.find( '.give_notices.give_errors' ).delay(5000).slideUp();
 
                 //reload the selected gateway so it contains their logged in information
@@ -107,7 +106,7 @@ jQuery(document).ready(function ($) {
 				this_form.find('[id^=give-login-fields] input[type=submit]').val(complete_purchase_val);
 				this_form.find('.give-loading-animation').fadeOut();
 				this_form.find('.give_errors').remove();
-				this_form.find('[id^=give-user-login-submit]').before( data.message );
+				this_form.find('[id^=give-user-login-submit]').before( response.data );
 			}
 		});
 
