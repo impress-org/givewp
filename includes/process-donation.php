@@ -236,7 +236,7 @@ function give_process_form_login() {
 			sprintf(
 				/* translators: %s: user first name */
 				esc_html__( 'Welcome %s! You have successfully logged into your account.', 'give' ),
-				( isset( $user_data['user_first'] ) && ! empty( $user_data['user_first'] )  ) ? $user_data['user_first'] : $user_data['user_login']
+				( ! empty( $user_data['user_first'] ) ) ? $user_data['user_first'] : $user_data['user_login']
 			),
 			false,
 			'success'
