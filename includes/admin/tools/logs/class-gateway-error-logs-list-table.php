@@ -177,7 +177,8 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 		$paged     = $this->get_paged();
 		$log_query = array(
 			'log_type' => 'gateway_error',
-			'paged'    => $paged
+			'paged'    => $paged,
+			'number'   => $this->per_page,
 		);
 
 		$logs = $give_logs->get_connected_logs( $log_query );
@@ -258,7 +259,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 		$this->set_pagination_args( array(
 				'total_items' => $total_items,
 				'per_page'    => $this->per_page,
-				'total_pages' => ceil( $total_items / $this->per_page )
+				'total_pages' => ceil( $total_items / $this->per_page ),
 			)
 		);
 	}

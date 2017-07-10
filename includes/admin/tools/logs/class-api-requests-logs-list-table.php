@@ -291,6 +291,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 			'log_type'   => 'api_request',
 			'paged'      => $paged,
 			'meta_query' => $this->get_meta_query(),
+			'number'     => $this->per_page,
 		);
 
 		$logs = $give_logs->get_connected_logs( $log_query );
