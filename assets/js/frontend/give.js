@@ -91,6 +91,22 @@ jQuery(function ($) {
 
 	});
 
+	// Auto hide frontend notices.
+	var give_notices = jQuery('.give_notice[data-auto-dismissible="1"]');
+	if(  give_notices.length ){
+		give_notices.each(function( index, $notice ){
+			$notice = $( $notice );
+
+			// auto hide setting message in 5 seconds.
+			window.setTimeout(
+				function () {
+					$notice.slideUp();
+				},
+				$notice.data('dismiss-interval')
+			);
+		});
+	}
+
 });
 
 /**
