@@ -207,6 +207,9 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
+= 1.8.11: July 11th, 2017  =
+* Fix: Compatiblity issue with Yoast SEO's new Link Checker utility preventing new Give installs from activating properly. [#1848](https://github.com/WordImpress/Give/issues/1848)
+
 = 1.8.10: July 10th, 2017  =
 * New: A login notification now displays upon successful login within a donation form. [#1384](https://github.com/WordImpress/Give/issues/1384)
 * Fix: Non-core email tags were not rendering properly for some add-ons due to a change made in the way the plugin loads in the last version release. [#1839](https://github.com/WordImpress/Give/issues/1839)
