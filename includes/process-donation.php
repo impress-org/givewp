@@ -468,7 +468,7 @@ function give_get_required_fields( $form_id ) {
 		);
 		$required_fields['card_state']      = array(
 			'error_id'      => 'invalid_state',
-			'error_message' => __( 'Please enter billing state / province.', 'give' ),
+			'error_message' => __( 'Please enter billing state / province / County.', 'give' ),
 		);
 	}
 
