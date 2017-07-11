@@ -23,14 +23,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since  1.0
  *
- * @param int    $user   User ID or email address
- * @param int    $number Number of donations to retrieve
+ * @param int    $user   User ID or email address.
+ * @param int    $number Number of donations to retrieve.
  * @param bool   $pagination
  * @param string $status
  *
- * @return bool|object List of all user donations
+ * @return bool|array List of all user donations.
  */
-function give_get_users_purchases( $user = 0, $number = 20, $pagination = false, $status = 'complete' ) {
+function give_get_users_donations( $user = 0, $number = 20, $pagination = false, $status = 'complete' ) {
 
 	if ( empty( $user ) ) {
 		$user = get_current_user_id();
@@ -41,14 +41,13 @@ function give_get_users_purchases( $user = 0, $number = 20, $pagination = false,
 	}
 
 	$status = $status === 'complete' ? 'publish' : $status;
+	$paged = 1;
 
 	if ( $pagination ) {
 		if ( get_query_var( 'paged' ) ) {
 			$paged = get_query_var( 'paged' );
 		} elseif ( get_query_var( 'page' ) ) {
 			$paged = get_query_var( 'page' );
-		} else {
-			$paged = 1;
 		}
 	}
 
@@ -60,39 +59,35 @@ function give_get_users_purchases( $user = 0, $number = 20, $pagination = false,
 	) );
 
 	if ( $pagination ) {
-
 		$args['page'] = $paged;
-
 	} else {
-
 		$args['nopaging'] = true;
-
 	}
 
 	$by_user_id = is_numeric( $user ) ? true : false;
-	$customer   = new Give_Customer( $user, $by_user_id );
+	$donor   = new Give_Donor( $user, $by_user_id );
 
-	if ( ! empty( $customer->payment_ids ) ) {
+	if ( ! empty( $donor->payment_ids ) ) {
 
 		unset( $args['user'] );
-		$args['post__in'] = array_map( 'absint', explode( ',', $customer->payment_ids ) );
+		$args['post__in'] = array_map( 'absint', explode( ',', $donor->payment_ids ) );
 
 	}
 
-	$purchases = give_get_payments( apply_filters( 'give_get_users_donations_args', $args ) );
+	$donations = give_get_payments( apply_filters( 'give_get_users_donations_args', $args ) );
 
 	// No donations
-	if ( ! $purchases ) {
+	if ( ! $donations ) {
 		return false;
 	}
 
-	return $purchases;
+	return $donations;
 }
 
 /**
  * Get Users Donations
  *
- * Returns a list of unique donation forms given to by a specific user
+ * Returns a list of unique donation forms given to by a specific user.
  *
  * @since  1.0
  *
@@ -112,14 +107,14 @@ function give_get_users_completed_donations( $user = 0, $status = 'complete' ) {
 
 	$by_user_id = is_numeric( $user ) ? true : false;
 
-	$customer = new Give_Customer( $user, $by_user_id );
+	$donor = new Give_Donor( $user, $by_user_id );
 
-	if ( empty( $customer->payment_ids ) ) {
+	if ( empty( $donor->payment_ids ) ) {
 		return false;
 	}
 
-	// Get all the items donated
-	$payment_ids    = array_reverse( explode( ',', $customer->payment_ids ) );
+	// Get all the items donated.
+	$payment_ids    = array_reverse( explode( ',', $donor->payment_ids ) );
 	$limit_payments = apply_filters( 'give_users_completed_donations_payments', 50 );
 	if ( ! empty( $limit_payments ) ) {
 		$payment_ids = array_slice( $payment_ids, 0, $limit_payments );
@@ -135,8 +130,8 @@ function give_get_users_completed_donations( $user = 0, $status = 'complete' ) {
 
 	// Grab only the post ids "form_id" of the forms donated on this order
 	$completed_donations_ids = array();
-	foreach ( $donation_data as $purchase_meta ) {
-		$completed_donations_ids[] = isset( $purchase_meta['form_id'] ) ? $purchase_meta['form_id'] : '';
+	foreach ( $donation_data as $donation_meta ) {
+		$completed_donations_ids[] = isset( $donation_meta['form_id'] ) ? $donation_meta['form_id'] : '';
 	}
 
 	if ( empty( $completed_donations_ids ) ) {
@@ -175,57 +170,53 @@ function give_get_users_completed_donations( $user = 0, $status = 'complete' ) {
  *
  * @return      bool True if has donated, false other wise.
  */
-function give_has_purchases( $user_id = null ) {
+function give_has_donations( $user_id = null ) {
 	if ( empty( $user_id ) ) {
 		$user_id = get_current_user_id();
 	}
 
-	if ( give_get_users_purchases( $user_id, 1 ) ) {
-		return true; // User has at least one donation
+	if ( give_get_users_donations( $user_id, 1 ) ) {
+		return true; // User has at least one donation.
 	}
 
-	return false; // User has never donated anything
+	// User has never donated anything.
+	return false;
 }
 
 
 /**
- * Get Donation Status for User
+ * Get Donation Status for User.
  *
- * Retrieves the donation count and the total amount spent for a specific user
+ * Retrieves the donation count and the total amount spent for a specific user.
  *
  * @access      public
  * @since       1.0
  *
- * @param       int|string $user The ID or email of the donor to retrieve stats for
+ * @param       int|string $user The ID or email of the donor to retrieve stats for.
  *
  * @return      array
  */
-function give_get_purchase_stats_by_user( $user = '' ) {
+function give_get_donation_stats_by_user( $user = '' ) {
+
+	$field = '';
 
 	if ( is_email( $user ) ) {
-
 		$field = 'email';
-
 	} elseif ( is_numeric( $user ) ) {
-
 		$field = 'user_id';
-
 	}
 
 	$stats    = array();
-	$customer = Give()->customers->get_customer_by( $field, $user );
+	$donor = Give()->donors->get_donor_by( $field, $user );
 
-	if ( $customer ) {
-
-		$customer = new Give_Customer( $customer->id );
-
-		$stats['purchases']   = absint( $customer->purchase_count );
-		$stats['total_spent'] = give_sanitize_amount( $customer->purchase_value );
-
+	if ( $donor ) {
+		$donor = new Give_Donor( $donor->id );
+		$stats['purchases']   = absint( $donor->purchase_count );
+		$stats['total_spent'] = give_sanitize_amount( $donor->purchase_value );
 	}
 
 	/**
-	 * Filter the donation stats
+	 * Filter the donation stats.
 	 *
 	 * @since 1.7
 	 */
@@ -236,18 +227,18 @@ function give_get_purchase_stats_by_user( $user = '' ) {
 
 
 /**
- * Count number of donations of a donor
+ * Count number of donations of a donor.
  *
- * Returns total number of donations a donor has made
+ * Returns total number of donations a donor has made.
  *
  * @access      public
  * @since       1.0
  *
  * @param       int|string $user The ID or email of the donor.
  *
- * @return      int The total number of donations
+ * @return      int The total number of donations.
  */
-function give_count_purchases_of_customer( $user = null ) {
+function give_count_donations_of_donor( $user = null ) {
 
 	// Logged in?
 	if ( empty( $user ) ) {
@@ -259,13 +250,13 @@ function give_count_purchases_of_customer( $user = null ) {
 		$user = Give()->email_access->token_email;
 	}
 
-	$stats = ! empty( $user ) ? give_get_purchase_stats_by_user( $user ) : false;
+	$stats = ! empty( $user ) ? give_get_donation_stats_by_user( $user ) : false;
 
 	return isset( $stats['purchases'] ) ? $stats['purchases'] : 0;
 }
 
 /**
- * Calculates the total amount spent by a user
+ * Calculates the total amount spent by a user.
  *
  * @access      public
  * @since       1.0
@@ -274,16 +265,16 @@ function give_count_purchases_of_customer( $user = null ) {
  *
  * @return      float The total amount the user has spent
  */
-function give_purchase_total_of_user( $user = null ) {
+function give_donation_total_of_user( $user = null ) {
 
-	$stats = give_get_purchase_stats_by_user( $user );
+	$stats = give_get_donation_stats_by_user( $user );
 
 	return $stats['total_spent'];
 }
 
 
 /**
- * Validate a potential username
+ * Validate a potential username.
  *
  * @since 1.0
  *
@@ -368,7 +359,7 @@ function give_validate_user_email( $email, $registering_new_user = false ) {
 		give_set_error( 'email_invalid', __( 'Invalid email.', 'give' ) );
 		$valid = false;
 
-	} elseif ( $registering_new_user && email_exists( $email ) ) {
+	} elseif ( $registering_new_user && ( give_donor_email_exists( $email ) || email_exists( $email ) ) ) {
 		// Check if email exists.
 		give_set_error( 'email_used', __( 'The email address provided is already active for another user.', 'give' ) );
 		$valid = false;
@@ -402,14 +393,8 @@ function give_validate_user_email( $email, $registering_new_user = false ) {
 function give_validate_user_password( $password = '', $confirm_password = '', $registering_new_user = false ) {
 	$valid = true;
 
-	if ( $password && $confirm_password ) {
-		// Verify confirmation matches.
-		if ( $password != $confirm_password ) {
-			// Passwords do not match
-			give_set_error( 'password_mismatch', __( 'Passwords don\'t match.', 'give' ) );
-			$valid = false;
-		}
-	} elseif ( $registering_new_user ) {
+	// Passwords Validation For New Donors Only
+	if ( $registering_new_user ) {
 		// Password or confirmation missing.
 		if ( ! $password ) {
 			// The password is invalid.
@@ -419,6 +404,22 @@ function give_validate_user_password( $password = '', $confirm_password = '', $r
 			// Confirmation password is invalid.
 			give_set_error( 'confirmation_empty', __( 'Enter the password confirmation.', 'give' ) );
 			$valid = false;
+		}
+	}
+	// Passwords Validation For New Donors as well as Existing Donors
+	if( $password || $confirm_password ) {
+		if ( strlen( $password ) < 6 || strlen( $confirm_password ) < 6 ) {
+			// Seems Weak Password
+			give_set_error( 'password_weak', __( 'Passwords should have atleast 6 characters.', 'give' ) );
+			$valid = false;
+		}
+		if ( $password && $confirm_password ) {
+			// Verify confirmation matches.
+			if ( $password != $confirm_password ) {
+				// Passwords do not match
+				give_set_error( 'password_mismatch', __( 'Passwords you entered do not match. Please try again.', 'give' ) );
+				$valid = false;
+			}
 		}
 	}
 
@@ -439,10 +440,9 @@ function give_validate_user_password( $password = '', $confirm_password = '', $r
 
 
 /**
- * Looks up donations by email that match the registering user
+ * Looks up donations by email that match the registering user.
  *
- * This is for users that donated as a guest and then came
- * back and created an account.
+ * This is for users that donated as a guest and then came back and created an account.
  *
  * @access      public
  * @since       1.0
@@ -451,24 +451,25 @@ function give_validate_user_password( $password = '', $confirm_password = '', $r
  *
  * @return      void
  */
-function give_add_past_purchases_to_new_user( $user_id ) {
+function give_add_past_donations_to_new_user( $user_id ) {
 
 	$email = get_the_author_meta( 'user_email', $user_id );
 
-	$payments = give_get_payments( array( 's' => $email ) );
+	$payments = give_get_payments( array(
+		's' => $email,
+	) );
 
 	if ( $payments ) {
 		foreach ( $payments as $payment ) {
 			if ( intval( give_get_payment_user_id( $payment->ID ) ) > 0 ) {
 				continue;
-			} // This payment already associated with an account
+			} // End if().
 
 			$meta                    = give_get_payment_meta( $payment->ID );
 			$meta['user_info']       = maybe_unserialize( $meta['user_info'] );
 			$meta['user_info']['id'] = $user_id;
-			$meta['user_info']       = $meta['user_info'];
 
-			// Store the updated user ID in the payment meta
+			// Store the updated user ID in the payment meta.
 			give_update_payment_meta( $payment->ID, '_give_payment_meta', $meta );
 			give_update_payment_meta( $payment->ID, '_give_payment_user_id', $user_id );
 		}
@@ -476,7 +477,7 @@ function give_add_past_purchases_to_new_user( $user_id ) {
 
 }
 
-add_action( 'user_register', 'give_add_past_purchases_to_new_user' );
+add_action( 'user_register', 'give_add_past_donations_to_new_user' );
 
 
 /**
@@ -487,8 +488,8 @@ add_action( 'user_register', 'give_add_past_purchases_to_new_user' );
  *
  * @return        int The total number of donors.
  */
-function give_count_total_customers() {
-	return Give()->customers->count();
+function give_count_total_donors() {
+	return Give()->donors->count();
 }
 
 
@@ -498,7 +499,7 @@ function give_count_total_customers() {
  * @access        public
  * @since         1.0
  *
- * @param         int $user_id The donor ID.
+ * @param         int $user_id The donor ID.x
  *
  * @return        array The donor's address, if any
  */
@@ -556,14 +557,21 @@ function give_new_user_notification( $user_id = 0, $user_data = array() ) {
 	}
 	$blogname = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
 
-	/* translators: %s: site name */
-	$message = sprintf( esc_attr__( 'New user registration on your site %s:', 'give' ), $blogname ) . "\r\n\r\n";
-	/* translators: %s: user login */
-	$message .= sprintf( esc_attr__( 'Username: %s', 'give' ), $user_data['user_login'] ) . "\r\n\r\n";
-	/* translators: %s: user email */
-	$message .= sprintf( esc_attr__( 'E-mail: %s', 'give' ), $user_data['user_email'] ) . "\r\n";
 
-	Give()->emails->send(
+	// New User Registration: Email sends to the site admin.
+	$emails = Give()->emails;
+	$emails->__set( 'heading', esc_html__( 'New User Registration', 'give' ) );
+
+	/* translators: %s: site name */
+	$message = sprintf( esc_attr__( 'A new user has registered on %s:', 'give' ), $blogname ) . "\r\n\r\n";
+	/* translators: %s: user login */
+	$message .= '<strong>' . esc_attr__( 'Username:', 'give' ) . '</strong> ' . $user_data['user_login'] . "\r\n";
+	/* translators: %s: user email */
+	$message .= '<strong>' . esc_attr__( 'E-mail:', 'give' ) . '</strong> ' . $user_data['user_email']  . "\r\n\r\n";
+
+	$message .= '<a href="' . admin_url('user-edit.php?user_id=' . $user_id) . '" target="_blank"> ' . esc_attr__( 'Click here to view &raquo;', 'give' ) . '</a>' . "\r\n";
+
+	$emails->send(
 		get_option( 'admin_email' ),
 		sprintf(
 			/* translators: %s: site name */
@@ -573,14 +581,20 @@ function give_new_user_notification( $user_id = 0, $user_data = array() ) {
 		$message
 	);
 
+
+	// Account Information: Email sends to donor who registered.
+	$emails->__set( 'heading', esc_html__( 'Account Information', 'give' ) );
+
+	$message = sprintf( esc_attr__( 'The following email contains your account information for %s:', 'give' ), $blogname ) . "\r\n\r\n";
+
 	/* translators: %s: user login */
-	$message = sprintf( esc_attr__( 'Username: %s', 'give' ), $user_data['user_login'] ) . "\r\n";
-	/* translators: %s: paswword */
-	$message .= sprintf( esc_attr__( 'Password: %s', 'give' ), esc_attr__( '[Password entered during donation]', 'give' ) ) . "\r\n";
+	$message .=  '<strong>' . esc_attr__( 'Username:', 'give' ) . '</strong> ' .  $user_data['user_login'] . "\r\n";
+	/* translators: %s: password */
+	$message .=  '<strong>' . esc_attr__( 'Password:', 'give' ) . '</strong> ' . esc_attr__( '[Password entered during donation]', 'give' ) . "\r\n\r\n";
 
-	$message .= '<a href="' . wp_login_url() . '"> ' . esc_attr__( 'Click Here to Login &raquo;', 'give' ) . '</a>' . "\r\n";
+	$message .= '<a href="' . wp_login_url() . '" target="_blank"> ' . esc_attr__( 'Click here to login &raquo;', 'give' ) . '</a>' . "\r\n";
 
-	Give()->emails->send(
+	$emails->send(
 		$user_data['user_email'],
 		sprintf(
 			/* translators: %s: site name */
@@ -593,3 +607,64 @@ function give_new_user_notification( $user_id = 0, $user_data = array() ) {
 }
 
 add_action( 'give_insert_user', 'give_new_user_notification', 10, 2 );
+
+
+/**
+ * Get Donor Name By
+ *
+ * Retrieves the donor name based on the id and the name of the user or donation.
+ *
+ * @access      public
+ * @since       1.8.9
+ *
+ * @param       int    $id     The ID of donation or donor
+ * @param       string $from   From will be a string to be passed as donation or donor
+ *
+ * @return      string
+ */
+function give_get_donor_name_by( $id = 0, $from = 'donation' ) {
+
+	// ID shouldn't be empty
+	if ( empty( $id ) ) {
+		return;
+	}
+
+	$name = '';
+
+	switch ( $from ) {
+
+		case 'donation':
+
+			$user_info = give_get_payment_meta_user_info( $id );
+			$name = $user_info['first_name'] . ' ' . $user_info['last_name'];
+
+		break;
+
+		case 'donor':
+
+			$donor = new Give_Donor( $id );
+			$name = $donor->name;
+
+		break;
+
+	}
+
+	return trim( $name );
+
+}
+
+/**
+ * Checks whether the given donor email exists in users as well as additional_email of donors.
+ *
+ * @since 1.8.9
+ *
+ * @param  string   $email Donor Email.
+ * @return boolean  The user's ID on success, and false on failure.
+ */
+function give_donor_email_exists( $email ) {
+	if ( Give()->donors->get_donor_by( 'email', $email ) ) {
+		return true;
+	}
+	return false;
+}
+

@@ -46,7 +46,7 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 	$payment_meta   = $payment->payment_meta;
 	$completed_date = $payment->completed_date;
 	$user_info      = $payment->user_info;
-	$customer_id    = $payment->customer_id;
+	$donor_id       = $payment->customer_id;
 	$amount         = $payment->total;
 	$price_id       = $payment->price_id;
 	$form_id        = $payment->form_id;
@@ -58,12 +58,12 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 	 *
 	 * @param int $payment_id The ID of the payment.
 	 */
-	do_action( 'give_pre_complete_purchase', $payment_id );
+	do_action( 'give_pre_complete_donation', $payment_id );
 
 	// Ensure these actions only run once, ever.
 	if ( empty( $completed_date ) ) {
 
-		give_record_sale_in_log( $form_id, $payment_id, $price_id, $creation_date );
+		give_record_donation_in_log( $form_id, $payment_id, $price_id, $creation_date );
 
 		/**
 		 * Fires after logging donation record.
@@ -80,15 +80,15 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 
 	// Increase the earnings for this form ID.
 	give_increase_earnings( $form_id, $amount );
-	give_increase_purchase_count( $form_id );
+	give_increase_donation_count( $form_id );
 
 	// @todo: Refresh only range related stat cache
 	give_delete_donation_stats();
 
 	// Increase the donor's donation stats.
-	$customer = new Give_Customer( $customer_id );
-	$customer->increase_purchase_count();
-	$customer->increase_value( $amount );
+	$donor = new Give_Donor( $donor_id );
+	$donor->increase_purchase_count();
+	$donor->increase_value( $amount );
 
 	give_increase_total_earnings( $amount );
 
@@ -133,11 +133,7 @@ function give_record_status_change( $payment_id, $new_status, $old_status ) {
 	$new_status = isset( $stati[ $new_status ] ) ? $stati[ $new_status ] : $new_status;
 
 	// translators: 1: old status 2: new status.
-	$status_change = sprintf(
-		esc_html__( 'Status changed from %1$s to %2$s.', 'give' ),
-		$old_status,
-		$new_status
-	);
+	$status_change = sprintf( esc_html__( 'Status changed from %1$s to %2$s.', 'give' ), $old_status, $new_status );
 
 	give_insert_payment_note( $payment_id, $status_change );
 }

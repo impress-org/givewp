@@ -96,7 +96,7 @@ function give_get_default_gateway( $form_id ) {
 
 	$give_options = give_get_settings();
 	$default      = isset( $give_options['default_gateway'] ) && give_is_gateway_active( $give_options['default_gateway'] ) ? $give_options['default_gateway'] : 'paypal';
-	$form_default = get_post_meta( $form_id, '_give_default_gateway', true );
+	$form_default = give_get_meta( $form_id, '_give_default_gateway', true );
 
 	// Single Form settings varies compared to the Global default settings.
 	if ( ! empty( $form_default ) &&
