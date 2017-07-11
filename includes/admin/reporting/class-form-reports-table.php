@@ -326,7 +326,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 		$sortable = $this->get_sortable_columns();
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 		$this->items = $this->reports_data();
-		$total_items = $this->count();
+		$total_items = $this->count;
 
 		$this->set_pagination_args( array(
 				'total_items' => $total_items,
