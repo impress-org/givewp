@@ -64,7 +64,7 @@ class Give_DB_Log_Meta extends Give_DB {
 	/**
 	 * Retrieve log meta field for a log.
 	 *
-	 * @access  private
+	 * @access  public
 	 * @since   2.0
 	 *
 	 * @param   int    $log_id   Log ID.
@@ -87,7 +87,7 @@ class Give_DB_Log_Meta extends Give_DB {
 	/**
 	 * Add meta data field to a log.
 	 *
-	 * @access  private
+	 * @access  public
 	 * @since   2.0
 	 *
 	 * @param   int    $log_id     Log ID.
@@ -109,7 +109,7 @@ class Give_DB_Log_Meta extends Give_DB {
 	/**
 	 * Update log meta field based on Log ID.
 	 *
-	 * @access  private
+	 * @access  public
 	 * @since   2.0
 	 *
 	 * @param   int    $log_id     Log ID.
@@ -137,7 +137,7 @@ class Give_DB_Log_Meta extends Give_DB {
 	 * value, will keep from removing duplicate metadata with the same key. It also
 	 * allows removing all metadata matching key, if needed.
 	 *
-	 * @access  private
+	 * @access  public
 	 * @since   2.0
 	 *
 	 * @param   int    $log_id     Log ID.
