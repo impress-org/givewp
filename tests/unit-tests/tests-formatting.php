@@ -399,7 +399,7 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 		// Basic query param.
 		$input_query_args = array(
 			'post_parent'    => 1024,
-			'post_type'      => 'give_log',
+			'post_type'      => 'give_payment',
 			'posts_per_page' => - 1,
 			'post_status'    => 'publish',
 			'fields'         => 'ids',
@@ -407,7 +407,7 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 
 		$output = Give_Cache::get_key( $input_action, $input_query_args );
 
-		$this->assertEquals( 'give_cache_get_log_count_01f5c4012ed8142', $output );
+		$this->assertEquals( 'give_cache_get_log_count_0c601bd4ca75279', $output );
 	}
 
 	/**

@@ -192,6 +192,14 @@ if ( ! class_exists( 'Give' ) ) :
 		 * @var    Give_Notices $notices
 		 */
 		public $notices;
+		
+
+		/**
+		 * Give logging Object
+		 *
+		 * @var    Give_Logging $logs
+		 */
+		public $logs;
 
 		/**
 		 * Give payment meta Object
@@ -274,6 +282,7 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->tooltips        = new Give_Tooltips();
 			$this->notices         = new Give_Notices();
 			$this->payment_meta    = new Give_DB_Payment_Meta();
+			$this->logs            = new Give_Logging();
 
 			/**
 			 * Fire the action after Give core loads.

@@ -176,6 +176,18 @@ function give_show_upgrade_notices() {
 		'show'        => ( version_compare( $give_version, '2.0', '<' ) || ( ! give_has_upgrade_completed( 'v20_upgrades_form_metadata' ) ) ),
 	) );
 
+	// v2.0 upgrade logs database.
+	Give()->notices->register_notice( array(
+		'id'          => 'give-version-2-0-0-logs-updates',
+		'type'        => 'warning',
+		'description' => sprintf(
+			__( 'Give 2.0 needs to upgrade the log database, click %1$shere%2$s to start the upgrade.', 'give' ),
+			'<a class="give-upgrade-link" href="' . esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=give_v20_logs_upgrades' ) ) . '">',
+			'</a>'
+		),
+		'show'        => ( version_compare( $give_version, '2.0', '<' ) || ( ! give_has_upgrade_completed( 'give_v20_logs_upgrades' ) ) ),
+	) );
+
 	// End 'Stepped' upgrade process notices.
 	?>
 	<script>
@@ -199,6 +211,40 @@ function give_show_upgrade_notices() {
 }
 
 add_action( 'admin_notices', 'give_show_upgrade_notices' );
+
+/**
+ * Triggers all upgrade functions
+ *
+ * This function is usually triggered via AJAX
+ *
+ * @since 1.0
+ * @return void
+ */
+function give_trigger_upgrades() {
+
+	if ( ! current_user_can( 'manage_give_settings' ) ) {
+		wp_die( esc_html__( 'You do not have permission to do Give upgrades.', 'give' ), esc_html__( 'Error', 'give' ), array(
+			'response' => 403,
+		) );
+	}
+
+	$give_version = get_option( 'give_version' );
+
+	if ( ! $give_version ) {
+		// 1.0 is the first version to use this option so we must add it.
+		$give_version = '1.0';
+		add_option( 'give_version', $give_version );
+	}
+
+	update_option( 'give_version', GIVE_VERSION );
+	delete_option( 'give_doing_upgrade' );
+
+	if ( DOING_AJAX ) {
+		die( 'complete' );
+	} // End if().
+}
+
+add_action( 'wp_ajax_give_trigger_upgrades', 'give_trigger_upgrades' );
 
 /**
  * Upgrades the
@@ -1177,3 +1223,139 @@ function give_v20_upgrades_form_metadata() {
 }
 
 add_action( 'give_give_v20_upgrades_form_metadata', 'give_v20_upgrades_form_metadata' );
+
+/**
+ * Upgrade logs data.
+ *
+ * @since  2.0
+ * @return void
+ */
+function give_v20_logs_upgrades() {
+	if ( ! current_user_can( 'manage_give_settings' ) ) {
+		wp_die( esc_html__( 'You do not have permission to do Give upgrades.', 'give' ), esc_html__( 'Error', 'give' ), array(
+			'response' => 403,
+		) );
+	}
+
+	ignore_user_abort( true );
+
+	if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
+		@set_time_limit( 0 );
+	}
+
+	global $wpdb;
+	$step = isset( $_GET['step'] ) ? absint( $_GET['step'] ) : 1;
+
+	// form query
+	$forms = new WP_Query( array(
+			'paged'          => $step,
+			'order'          => 'DESC',
+			'post_type'      => 'give_log',
+			'post_status'    => 'any',
+			'posts_per_page' => 20,
+		)
+	);
+
+	if ( $forms->have_posts() ) {
+		while ( $forms->have_posts() ) {
+			$forms->the_post();
+			global $post;
+			$term = get_the_terms( $post->ID, 'give_log_type' );
+			$term = ! is_wp_error( $term ) && ! empty( $term ) ? $term[0] : array();
+			$term_name = ! empty( $term )? $term->slug : '';
+
+			$log_data = array(
+				'ID'           => $post->ID,
+				'log_title'    => $post->post_title,
+				'log_content'  => $post->post_content,
+				'log_parent'   => 0,
+				'log_type'     => $term_name,
+				'log_date'     => $post->post_date,
+				'log_date_gmt' => $post->post_date_gmt,
+			);
+			$log_meta = array();
+
+			if( $old_log_meta = get_post_meta( $post->ID ) ) {
+				foreach ( $old_log_meta as $meta_key => $meta_value ) {
+					switch ( $meta_key ) {
+						case '_give_log_payment_id':
+							$log_data['log_parent'] = current( $meta_value );
+							$log_meta['_give_log_form_id'] = $post->post_parent;
+							break;
+
+						default:
+							$log_meta[$meta_key] = current(  $meta_value );
+					}
+				}
+			}
+
+			if( 'api_request' === $term_name ){
+				$log_meta['_give_log_api_query'] = $post->post_excerpt;
+			}
+
+			$wpdb->insert( "{$wpdb->prefix}give_logs", $log_data );
+
+			if( ! empty( $log_meta ) ) {
+				foreach ( $log_meta as $meta_key => $meta_value ){
+					Give()->logs->logmeta_db->update_meta( $post->ID, $meta_key, $meta_value );
+				}
+			}
+
+			$logIDs[] = $post->ID;
+		}// End while().
+
+		wp_reset_postdata();
+
+		// Forms found so upgrade them
+		$step ++;
+		$redirect = add_query_arg( array(
+			'page'         => 'give-upgrades',
+			'give-upgrade' => 'give_v20_logs_upgrades',
+			'step'         => $step,
+		), admin_url( 'index.php' ) );
+		wp_redirect( $redirect );
+		exit();
+
+	} else {
+		// Delete terms and taxonomy.
+		$terms = get_terms( 'give_log_type', array( 'fields' => 'ids', 'hide_empty' => false ) );
+		if( ! empty( $terms ) ) {
+			foreach ( $terms as $term ) {
+				wp_delete_term( $term, 'give_log_type' );
+			}
+		}
+
+		// Delete logs
+		$logIDs = get_posts( array(
+				'order'          => 'DESC',
+				'post_type'      => 'give_log',
+				'post_status'    => 'any',
+				'posts_per_page' => - 1,
+				'fields'         => 'ids',
+			)
+		);
+
+		if ( ! empty( $logIDs ) ) {
+			foreach ( $logIDs as $log ) {
+				// Delete term relationship and posts.
+				wp_delete_object_term_relationships( $log, 'give_log_type' );
+				wp_delete_post( $log, true );
+			}
+		}
+
+		unregister_taxonomy( 'give_log_type' );
+
+		// Delete log cache.
+		Give()->logs->delete_cache();
+
+		// No more forms found, finish up.
+		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
+		delete_option( 'give_doing_upgrade' );
+		give_set_upgrade_complete( 'give_v20_logs_upgrades' );
+
+		wp_redirect( admin_url() );
+		exit;
+	}
+}
+
+add_action( 'give_give_v20_logs_upgrades', 'give_v20_logs_upgrades' );

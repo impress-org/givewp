@@ -123,12 +123,8 @@ class Give_Donors_Gravatars {
 	 * @return array        IDs if logs, false otherwise
 	 */
 	public function get_log_ids( $form_id = '' ) {
-
-		// get Give_Logging class
-		global $give_logs;
-
 		// get log for this form
-		$logs = $give_logs->get_logs( $form_id );
+		$logs = Give()->logs->get_logs( $form_id );
 
 		if ( $logs ) {
 			$log_ids = array();

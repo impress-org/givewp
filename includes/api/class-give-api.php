@@ -1573,7 +1573,6 @@ class Give_API {
 	 * @access private
 	 * @since  1.1
 	 *
-	 * @global Give_Logging $give_logs
 	 * @global WP_Query     $wp_query
 	 *
 	 * @param array         $data
@@ -1584,11 +1583,6 @@ class Give_API {
 		if ( ! $this->log_requests ) {
 			return;
 		}
-
-		/**
-		 * @var Give_Logging $give_logs
-		 */
-		global $give_logs;
 
 		/**
 		 * @var WP_Query $wp_query
@@ -1626,7 +1620,7 @@ class Give_API {
 			'version'    => $this->get_queried_version(),
 		);
 
-		$give_logs->insert_log( $log_data, $log_meta );
+		Give()->logs->insert_log( $log_data, $log_meta );
 	}
 
 
