@@ -38,7 +38,7 @@ class Give_DB_Log_Meta extends Give_DB {
 
 		$this->register_table();
 
-		add_filter( 'add_post_metadata', array( $this, '__add_meta' ), 0, 4 );
+		add_filter( 'add_post_metadata', array( $this, '__add_meta' ), 0, 5 );
 		add_filter( 'get_post_metadata', array( $this, '__get_meta' ), 0, 4 );
 		add_filter( 'update_post_metadata', array( $this, '__update_meta' ), 0, 4 );
 		add_filter( 'delete_post_metadata', array( $this, '__delete_meta' ), 0, 4 );
@@ -228,12 +228,13 @@ class Give_DB_Log_Meta extends Give_DB {
 	public function __call( $name, $arguments ) {
 		switch ( $name ) {
 			case '__add_meta':
-				$check    = $arguments[0];
-				$log_id   = $arguments[1];
-				$meta_key = $arguments[2];
-				$single   = $arguments[3];
+				$check      = $arguments[0];
+				$log_id     = $arguments[1];
+				$meta_key   = $arguments[2];
+				$meta_value = $arguments[3];
+				$unique     = $arguments[4];
 
-				return $this->add_meta( $log_id, $meta_key, $single );
+				return $this->add_meta( $log_id, $meta_key, $meta_value, $unique );
 
 			case '__get_meta':
 				$check    = $arguments[0];
@@ -244,20 +245,20 @@ class Give_DB_Log_Meta extends Give_DB {
 				return $this->get_meta( $log_id, $meta_key, $single );
 
 			case '__update_meta':
-				$check    = $arguments[0];
-				$log_id   = $arguments[1];
-				$meta_key = $arguments[2];
-				$single   = $arguments[3];
+				$check      = $arguments[0];
+				$log_id     = $arguments[1];
+				$meta_key   = $arguments[2];
+				$meta_value = $arguments[3];
 
-				return $this->update_meta( $log_id, $meta_key, $single );
+				return $this->update_meta( $log_id, $meta_key, $meta_value );
 
 			case '__delete_meta':
-				$check    = $arguments[0];
-				$log_id   = $arguments[1];
-				$meta_key = $arguments[2];
-				$single   = $arguments[3];
+				$check      = $arguments[0];
+				$log_id     = $arguments[1];
+				$meta_key   = $arguments[2];
+				$meta_value = $arguments[3];
 
-				return $this->delete_meta( $log_id, $meta_key, $single );
+				return $this->delete_meta( $log_id, $meta_key, $meta_value );
 		}
 	}
 }
