@@ -195,7 +195,7 @@ abstract class Give_DB {
 		$column_formats = $this->get_columns();
 
 		// Force fields to lower case
-		$data = array_change_key_case( $data );
+		// $data = array_change_key_case( $data );
 
 		// White list columns
 		$data = array_intersect_key( $data, $column_formats );
@@ -345,4 +345,35 @@ abstract class Give_DB {
 	 * @access public
 	 */
 	public function create_table(){}
+
+
+	/**
+	 * Given a ID, make sure it's a positive number, greater than zero before inserting or adding.
+	 *
+	 * @access private
+	 * @since  2.0
+	 *
+	 * @param  int $id A passed ID.
+	 *
+	 * @return int|bool                The normalized log ID or false if it's found to not be valid.
+	 */
+	public function sanitize_id( $id ) {
+		if ( ! is_numeric( $id ) ) {
+			return false;
+		}
+
+		$id = (int) $id;
+
+		// We were given a non positive number.
+		if ( absint( $id ) !== $id ) {
+			return false;
+		}
+
+		if ( empty( $id ) ) {
+			return false;
+		}
+
+		return absint( $id );
+
+	}
 }

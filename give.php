@@ -192,6 +192,14 @@ if ( ! class_exists( 'Give' ) ) :
 		 * @var    Give_Notices $notices
 		 */
 		public $notices;
+		
+
+		/**
+		 * Give logging Object
+		 *
+		 * @var    Give_Logging $logs
+		 */
+		public $logs;
 
 		/**
 		 * Main Give Instance
@@ -266,6 +274,7 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->email_access    = new Give_Email_Access();
 			$this->tooltips        = new Give_Tooltips();
 			$this->notices         = new Give_Notices();
+			$this->logs            = new Give_Logging();
 
 			/**
 			 * Fire the action after Give core loads.
