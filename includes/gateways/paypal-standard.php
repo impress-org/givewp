@@ -51,6 +51,9 @@ function give_process_paypal_payment( $payment_data ) {
 	give_validate_nonce( $payment_data['gateway_nonce'], 'give-gateway' );
 	$payment_id = give_create_payment( $payment_data );
 
+	// Register message in donation note that PayPal IPN is not received yet.
+	give_insert_payment_note( $payment_id, __( 'N/A', 'give' ) );
+
 	// Check payment.
 	if ( empty( $payment_id ) ) {
 		// Record the error.
@@ -252,6 +255,9 @@ function give_process_paypal_web_accept( $data, $payment_id ) {
 	if ( empty( $payment_id ) ) {
 		return;
 	}
+
+	// Register message in donation note that IPN received successfully.
+	give_insert_payment_note( $payment_id, __( 'Last IPN Received', 'give' ) );
 
 	// Collect donation payment details.
 	$paypal_amount  = $data['mc_gross'];
