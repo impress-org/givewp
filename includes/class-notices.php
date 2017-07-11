@@ -454,6 +454,14 @@ class Give_Notices {
 
 			// Loop error codes and display errors.
 			foreach ( $errors as $error_id => $error ) {
+				// Backward compatibility v<1.8.11
+				if ( is_string( $error ) ) {
+					$error = array(
+						'message'     => $error,
+						'notice_args' => array(),
+					);
+				}
+
 				$notice_args = wp_parse_args( $error['notice_args'], $default_notice_args );
 
 				echo sprintf(

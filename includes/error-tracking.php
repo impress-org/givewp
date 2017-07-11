@@ -47,10 +47,17 @@ function give_set_error( $error_id, $error_message, $notice_args = array() ) {
 	if ( ! $errors ) {
 		$errors = array();
 	}
-	$errors[ $error_id ] = array(
-		'message'     => $error_message,
-		'notice_args' => $notice_args,
-	);
+
+	if( is_array( $notice_args ) && ! empty( $notice_args ) ) {
+		$errors[ $error_id ] = array(
+			'message'     => $error_message,
+			'notice_args' => $notice_args,
+		);
+	} else {
+		// Backward compatibility v<1.8.11.
+		$errors[ $error_id ] = $error_message;
+	}
+
 	Give()->session->set( 'give_errors', $errors );
 }
 
