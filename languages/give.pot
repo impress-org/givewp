@@ -36,7 +36,7 @@ msgstr ""
 msgid "You do not have permission to install plugin updates"
 msgstr ""
 
-#: includes/admin/EDD_SL_Plugin_Updater.php:396, includes/admin/donors/donor-actions.php:31, includes/admin/donors/donor-actions.php:45, includes/admin/donors/donor-actions.php:200, includes/admin/donors/donor-actions.php:214, includes/admin/donors/donor-actions.php:282, includes/admin/donors/donor-actions.php:297, includes/admin/donors/donor-actions.php:381, includes/admin/donors/donor-actions.php:395, includes/admin/donors/donor-actions.php:564, includes/admin/donors/donor-actions.php:610, includes/admin/forms/dashboard-columns.php:244, includes/admin/payments/actions.php:31, includes/admin/payments/actions.php:89, includes/admin/payments/actions.php:100, includes/admin/payments/actions.php:316, includes/admin/payments/actions.php:336, includes/admin/payments/actions.php:369, includes/admin/payments/actions.php:391, includes/admin/payments/view-payment-details.php:24, includes/admin/payments/view-payment-details.php:34, includes/admin/tools/data/class-give-tools-delete-test-transactions.php:157, includes/admin/tools/data/class-give-tools-recount-all-stats.php:235, includes/admin/tools/data/class-give-tools-recount-donor-stats.php:195, includes/admin/tools/data/class-give-tools-recount-form-stats.php:180, includes/admin/tools/data/class-give-tools-recount-income.php:156, includes/admin/tools/data/class-give-tools-recount-single-donor-stats.php:151, includes/admin/tools/data/class-give-tools-reset-stats.php:185, includes/admin/tools/export/class-batch-export.php:145, includes/admin/tools/export/class-export.php:177, includes/admin/tools/export/export-actions.php:26, includes/admin/tools/export/pdf-reports.php:31, includes/admin/tools/export/pdf-reports.php:35, includes/admin/tools/logs/class-api-requests-logs-list-table.php:141, includes/admin/tools/logs/class-gateway-error-logs-list-table.php:128, includes/admin/upgrades/upgrade-functions.php:197, includes/admin/upgrades/upgrade-functions.php:309, includes/admin/upgrades/upgrade-functions.php:346, includes/admin/upgrades/upgrade-functions.php:720, includes/admin/upgrades/upgrade-functions.php:964, includes/api/class-give-api.php:1788, includes/api/class-give-api.php:1794, includes/api/class-give-api.php:1809, includes/api/class-give-api.php:1814, includes/class-give-license-handler.php:796, includes/class-notices.php:454, includes/emails/actions.php:56, includes/emails/template.php:270, includes/formatting.php:467, includes/gateways/manual.php:38
+#: includes/admin/EDD_SL_Plugin_Updater.php:396, includes/admin/donors/donor-actions.php:31, includes/admin/donors/donor-actions.php:45, includes/admin/donors/donor-actions.php:200, includes/admin/donors/donor-actions.php:214, includes/admin/donors/donor-actions.php:282, includes/admin/donors/donor-actions.php:297, includes/admin/donors/donor-actions.php:381, includes/admin/donors/donor-actions.php:395, includes/admin/donors/donor-actions.php:564, includes/admin/donors/donor-actions.php:610, includes/admin/forms/dashboard-columns.php:244, includes/admin/payments/actions.php:31, includes/admin/payments/actions.php:89, includes/admin/payments/actions.php:100, includes/admin/payments/actions.php:316, includes/admin/payments/actions.php:336, includes/admin/payments/actions.php:369, includes/admin/payments/actions.php:391, includes/admin/payments/view-payment-details.php:24, includes/admin/payments/view-payment-details.php:34, includes/admin/tools/data/class-give-tools-delete-test-transactions.php:157, includes/admin/tools/data/class-give-tools-recount-all-stats.php:235, includes/admin/tools/data/class-give-tools-recount-donor-stats.php:195, includes/admin/tools/data/class-give-tools-recount-form-stats.php:180, includes/admin/tools/data/class-give-tools-recount-income.php:156, includes/admin/tools/data/class-give-tools-recount-single-donor-stats.php:151, includes/admin/tools/data/class-give-tools-reset-stats.php:185, includes/admin/tools/export/class-batch-export.php:145, includes/admin/tools/export/class-export.php:177, includes/admin/tools/export/export-actions.php:26, includes/admin/tools/export/pdf-reports.php:31, includes/admin/tools/export/pdf-reports.php:35, includes/admin/tools/logs/class-api-requests-logs-list-table.php:141, includes/admin/tools/logs/class-gateway-error-logs-list-table.php:128, includes/admin/upgrades/upgrade-functions.php:197, includes/admin/upgrades/upgrade-functions.php:309, includes/admin/upgrades/upgrade-functions.php:346, includes/admin/upgrades/upgrade-functions.php:720, includes/admin/upgrades/upgrade-functions.php:964, includes/api/class-give-api.php:1788, includes/api/class-give-api.php:1794, includes/api/class-give-api.php:1809, includes/api/class-give-api.php:1814, includes/class-give-license-handler.php:796, includes/class-notices.php:474, includes/emails/actions.php:56, includes/emails/template.php:270, includes/formatting.php:467, includes/gateways/manual.php:38
 msgid "Error"
 msgstr ""
 
@@ -1609,7 +1609,7 @@ msgstr ""
 msgid "The label shown next to the agree to terms check box. Add your own to customize or leave blank to use the default text placeholder."
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:493, includes/admin/settings/class-settings-display.php:251, includes/forms/template.php:1483, includes/forms/template.php:1488, includes/install.php:372
+#: includes/admin/forms/class-metabox-form-data.php:493, includes/admin/settings/class-settings-display.php:251, includes/forms/template.php:1483, includes/forms/template.php:1488, includes/install.php:318
 msgid "Agree to Terms?"
 msgstr ""
 
@@ -2497,7 +2497,7 @@ msgstr ""
 msgid "Okay"
 msgstr ""
 
-#: includes/admin/shortcodes/shortcode-give-donation-history.php:24, includes/install.php:118
+#: includes/admin/shortcodes/shortcode-give-donation-history.php:24, includes/install.php:424
 msgid "Donation History"
 msgstr ""
 
@@ -6210,15 +6210,15 @@ msgstr ""
 msgid "Payment is pending for unknown reasons. Contact PayPal support for assistance."
 msgstr ""
 
-#: includes/install.php:82
+#: includes/install.php:388
 msgid "Donation Confirmation"
 msgstr ""
 
-#: includes/install.php:101
+#: includes/install.php:407
 msgid "Donation Failed"
 msgstr ""
 
-#: includes/install.php:102
+#: includes/install.php:408
 msgid "We're sorry, your donation failed to process. Please try again or contact site support."
 msgstr ""
 
