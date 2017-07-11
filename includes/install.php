@@ -371,9 +371,10 @@ function give_get_default_agreement_text() {
  * @since 1.8.11
  */
 function give_create_pages(){
-	// Bailout.
+
+	// Bailout if pages already created.
 	if( get_option( 'give_install_pages_created') ) {
-		return;
+		return false;
 	}
 
 	$options = array();
@@ -433,8 +434,7 @@ function give_create_pages(){
 	}
 
 	if( ! empty( $options ) ) {
-		$options = array_merge( give_get_settings(), $options );
-		give_update_option( 'give_settings', $options );
+		update_option( 'give_settings', array_merge( give_get_settings(), $options ) );
 	}
 
 	add_option( 'give_install_pages_created', 1, '', 'no' );
