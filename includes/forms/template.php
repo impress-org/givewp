@@ -1011,7 +1011,7 @@ function give_default_cc_address_fields( $form_id ) {
 
 		<p id="give-card-state-wrap" class="form-row form-row-last form-row-responsive">
 			<label for="card_state" class="give-label">
-				<?php esc_html_e( 'State / Province', 'give' ); ?>
+				<?php esc_html_e( 'State / Province / County', 'give' ); ?>
 				<?php if ( give_field_is_required( 'card_state', $form_id ) ) : ?>
 					<span class="give-required-indicator">*</span>
 				<?php endif; ?>
@@ -1041,7 +1041,7 @@ function give_default_cc_address_fields( $form_id ) {
 				</select>
 			<?php else : ?>
 				<input type="text" size="6" name="card_state" id="card_state" class="card_state give-input"
-					   placeholder="<?php esc_attr_e( 'State / Province', 'give' ); ?>"/>
+					   placeholder="<?php esc_attr_e( 'State / Province / County', 'give' ); ?>"/>
 			<?php endif; ?>
 		</p>
 		<?php
