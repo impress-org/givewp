@@ -4,7 +4,7 @@ Donate link: https://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.2
 Tested up to: 4.8
-Stable tag: 1.8.9
+Stable tag: 1.8.10
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -206,6 +206,11 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 1.8.10: July 10th, 2017  =
+* New: A login notification now displays upon successful login within a donation form. [#1384](https://github.com/WordImpress/Give/issues/1384)
+* Fix: Non-core email tags were not rendering properly for some add-ons due to a change made in the way the plugin loads in the last version release. [#1839](https://github.com/WordImpress/Give/issues/1839)
+* Fix: Incorrect admin pagination numbering is now fixed for logs and donations [#1378](https://github.com/WordImpress/Give/issues/1378)
 
 = 1.8.9: July 5th, 2017  =
 * New: Improved the new user notification email that gets sent to admins and also improved the account information email that gets sent to donors when a donor creates an account while donating. [#1821](https://github.com/WordImpress/Give/issues/1821)
