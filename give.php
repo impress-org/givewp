@@ -192,7 +192,7 @@ if ( ! class_exists( 'Give' ) ) :
 		 * @var    Give_Notices $notices
 		 */
 		public $notices;
-		
+
 
 		/**
 		 * Give logging Object
@@ -207,6 +207,13 @@ if ( ! class_exists( 'Give' ) ) :
 		 * @var    Give_DB_Payment_Meta $notices
 		 */
 		public $payment_meta;
+
+		/**
+		 * Give form meta Object
+		 *
+		 * @var    Give_DB_form_Meta $notices
+		 */
+		public $form_meta;
 
 		/**
 		 * Main Give Instance
@@ -283,6 +290,7 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->notices         = new Give_Notices();
 			$this->payment_meta    = new Give_DB_Payment_Meta();
 			$this->logs            = new Give_Logging();
+			$this->form_meta       = new Give_DB_Form_Meta();
 
 			/**
 			 * Fire the action after Give core loads.
@@ -411,6 +419,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-cron.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-email-access.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-payment-meta.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-form-meta.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/country-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/template-functions.php';
