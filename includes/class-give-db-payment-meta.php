@@ -36,10 +36,12 @@ class Give_DB_Payment_Meta extends Give_DB {
 		$this->primary_key = 'meta_id';
 		$this->version     = '1.0';
 
-		$current_version = get_option( $this->table_name . '_db_version' );
-		if ( ! $current_version || version_compare( $current_version, $this->version, '<' ) ) {
-			$this->create_table();
-		}
+		$this->register_table();
+
+		add_filter( 'add_post_metadata', array( $this, '__add_meta' ), 0, 4 );
+		add_filter( 'get_post_metadata', array( $this, '__get_meta' ), 0, 4 );
+		add_filter( 'update_post_metadata', array( $this, '__update_meta' ), 0, 4 );
+		add_filter( 'delete_post_metadata', array( $this, '__delete_meta' ), 0, 4 );
 	}
 
 	/**
@@ -53,7 +55,7 @@ class Give_DB_Payment_Meta extends Give_DB {
 	public function get_columns() {
 		return array(
 			'meta_id'    => '%d',
-			'post_id'    => '%d',
+			'payment_id' => '%d',
 			'meta_key'   => '%s',
 			'meta_value' => '%s',
 		);
@@ -64,8 +66,8 @@ class Give_DB_Payment_Meta extends Give_DB {
 	 *
 	 * For internal use only. Use Give_Payment->get_meta() for public usage.
 	 *
-	 * @access  private
-	 * @since   1.6
+	 * @access  public
+	 * @since   2.0
 	 *
 	 * @param   int    $payment_id Payment ID.
 	 * @param   string $meta_key   The meta key to retrieve.
@@ -74,9 +76,11 @@ class Give_DB_Payment_Meta extends Give_DB {
 	 * @return  mixed                 Will be an array if $single is false. Will be value of meta data field if $single is true.
 	 */
 	public function get_meta( $payment_id = 0, $meta_key = '', $single = false ) {
-		$payment_id = $this->sanitize_payment_id( $payment_id );
-		if ( false === $payment_id ) {
-			return false;
+		$payment_id = $this->sanitize_id( $payment_id );
+
+		// Bailout.
+		if ( ! $payment_id || ! Give()->logs->log_db->is_log( $payment_id ) ) {
+			return null;
 		}
 
 		return get_metadata( 'payment', $payment_id, $meta_key, $single );
@@ -88,7 +92,7 @@ class Give_DB_Payment_Meta extends Give_DB {
 	 * For internal use only. Use Give_Payment->add_meta() for public usage.
 	 *
 	 * @access  private
-	 * @since   1.6
+	 * @since   2.0
 	 *
 	 * @param   int    $payment_id Payment ID.
 	 * @param   string $meta_key   Metadata name.
@@ -98,9 +102,11 @@ class Give_DB_Payment_Meta extends Give_DB {
 	 * @return  bool                  False for failure. True for success.
 	 */
 	public function add_meta( $payment_id = 0, $meta_key = '', $meta_value, $unique = false ) {
-		$payment_id = $this->sanitize_payment_id( $payment_id );
-		if ( false === $payment_id ) {
-			return false;
+		$payment_id = $this->sanitize_id( $payment_id );
+
+		// Bailout.
+		if ( ! $payment_id || ! Give()->logs->log_db->is_log( $payment_id ) ) {
+			return null;
 		}
 
 		return add_metadata( 'payment', $payment_id, $meta_key, $meta_value, $unique );
@@ -116,8 +122,8 @@ class Give_DB_Payment_Meta extends Give_DB {
 	 *
 	 * If the meta field for the payment does not exist, it will be added.
 	 *
-	 * @access  private
-	 * @since   1.6
+	 * @access  public
+	 * @since   2.0
 	 *
 	 * @param   int    $payment_id Payment ID.
 	 * @param   string $meta_key   Metadata key.
@@ -127,9 +133,11 @@ class Give_DB_Payment_Meta extends Give_DB {
 	 * @return  bool                  False on failure, true if success.
 	 */
 	public function update_meta( $payment_id = 0, $meta_key = '', $meta_value, $prev_value = '' ) {
-		$payment_id = $this->sanitize_payment_id( $payment_id );
-		if ( false === $payment_id ) {
-			return false;
+		$payment_id = $this->sanitize_id( $payment_id );
+
+		// Bailout.
+		if ( ! $payment_id || ! Give()->logs->log_db->is_log( $payment_id ) ) {
+			return null;
 		}
 
 		return update_metadata( 'payment', $payment_id, $meta_key, $meta_value, $prev_value );
@@ -138,14 +146,12 @@ class Give_DB_Payment_Meta extends Give_DB {
 	/**
 	 * Remove metadata matching criteria from a payment.
 	 *
-	 * For internal use only. Use Give_Payment->delete_meta() for public usage.
-	 *
 	 * You can match based on the key, or key and value. Removing based on key and
 	 * value, will keep from removing duplicate metadata with the same key. It also
 	 * allows removing all metadata matching key, if needed.
 	 *
-	 * @access  private
-	 * @since   1.6
+	 * @access  public
+	 * @since   2.0
 	 *
 	 * @param   int    $payment_id Payment ID.
 	 * @param   string $meta_key   Metadata name.
@@ -154,6 +160,13 @@ class Give_DB_Payment_Meta extends Give_DB {
 	 * @return  bool                  False for failure. True for success.
 	 */
 	public function delete_meta( $payment_id = 0, $meta_key = '', $meta_value = '' ) {
+		$payment_id = $this->sanitize_id( $payment_id );
+
+		// Bailout.
+		if ( ! $payment_id || ! Give()->logs->log_db->is_log( $payment_id ) ) {
+			return null;
+		}
+
 		return delete_metadata( 'payment', $payment_id, $meta_key, $meta_value );
 	}
 
@@ -172,11 +185,11 @@ class Give_DB_Payment_Meta extends Give_DB {
 
 		$sql = "CREATE TABLE {$this->table_name} (
 			meta_id bigint(20) NOT NULL AUTO_INCREMENT,
-			post_id bigint(20) NOT NULL,
+			payment_id bigint(20) NOT NULL,
 			meta_key varchar(255) DEFAULT NULL,
 			meta_value longtext,
 			PRIMARY KEY  (meta_id),
-			KEY post_id (post_id),
+			KEY payment_id (payment_id),
 			KEY meta_key (meta_key)
 			) {$charset_collate};";
 
@@ -186,34 +199,50 @@ class Give_DB_Payment_Meta extends Give_DB {
 		update_option( $this->table_name . '_db_version', $this->version );
 	}
 
-
 	/**
-	 * Given a payment ID, make sure it's a positive number, greater than zero before inserting or adding.
+	 * Add support for hidden functions.
 	 *
-	 * @access private
-	 * @since  1.6
+	 * @since  2.0
+	 * @access public
 	 *
-	 * @param  int|stripe $payment_id A passed payment ID.
+	 * @param $name
+	 * @param $arguments
 	 *
-	 * @return int|bool                The normalized payment ID or false if it's found to not be valid.
+	 * @return mixed
 	 */
-	private function sanitize_payment_id( $payment_id ) {
-		if ( ! is_numeric( $payment_id ) ) {
-			return false;
+	public function __call( $name, $arguments ) {
+		switch ( $name ) {
+			case '__add_meta':
+				$check    = $arguments[0];
+				$log_id   = $arguments[1];
+				$meta_key = $arguments[2];
+				$single   = $arguments[3];
+
+				return $this->add_meta( $log_id, $meta_key, $single );
+
+			case '__get_meta':
+				$check    = $arguments[0];
+				$log_id   = $arguments[1];
+				$meta_key = $arguments[2];
+				$single   = $arguments[3];
+
+				return $this->get_meta( $log_id, $meta_key, $single );
+
+			case '__update_meta':
+				$check    = $arguments[0];
+				$log_id   = $arguments[1];
+				$meta_key = $arguments[2];
+				$single   = $arguments[3];
+
+				return $this->update_meta( $log_id, $meta_key, $single );
+
+			case '__delete_meta':
+				$check    = $arguments[0];
+				$log_id   = $arguments[1];
+				$meta_key = $arguments[2];
+				$single   = $arguments[3];
+
+				return $this->delete_meta( $log_id, $meta_key, $single );
 		}
-
-		$payment_id = (int) $payment_id;
-
-		// We were given a non positive number.
-		if ( absint( $payment_id ) !== $payment_id ) {
-			return false;
-		}
-
-		if ( empty( $payment_id ) ) {
-			return false;
-		}
-
-		return absint( $payment_id );
-
 	}
 }
