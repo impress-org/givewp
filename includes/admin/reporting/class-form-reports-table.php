@@ -42,7 +42,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 
 	/**
 	 * @var int Total number of Donation Forms
-	 * @since 1.8.10
+	 * @since 1.8.11
 	 */
 	public $count;
 
