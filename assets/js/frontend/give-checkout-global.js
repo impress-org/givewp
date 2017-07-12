@@ -40,8 +40,10 @@ jQuery(function ($) {
 				},
 				success  : function (response) {
                     if( typeof ( response.states_found ) != undefined && true == response.states_found ) {
+                        $form.find( 'p#give-card-state-wrap' ).removeClass( 'give-hidden' );
                         $form.find('input[name="card_state"], select[name="card_state"]').replaceWith( response.data );
                     } else {
+                        $form.find( 'p#give-card-state-wrap' ).addClass( 'give-hidden' );
                         var text_field = '<input type="text" id="card_state" name="card_state" class="cart-state give-input required" value=""/>';
                         $form.find('input[name="card_state"], select[name="card_state"]').replaceWith(text_field);
                     }
