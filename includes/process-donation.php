@@ -481,7 +481,7 @@ function give_get_required_fields( $form_id ) {
 			$states = give_get_states( $country );
 			// Check if states is empty or not.
 			if ( empty( $states ) ) {
-				// If status is empty remove the required feilds of state in billing cart.
+				// If states is empty remove the required feilds of state in billing cart.
 				unset( $required_fields['card_state'] );
 			}
 		}
