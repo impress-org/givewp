@@ -144,7 +144,6 @@ function give_format_amount( $amount, $decimals = true ) {
 	if ( ! empty( $amount ) ) {
 		// Sanitize amount before formatting.
 		$amount = give_sanitize_amount( $amount );
-
 		if ( 'INR' === $currency ) {
 			$decimal_amount = '';
 
@@ -152,8 +151,14 @@ function give_format_amount( $amount, $decimals = true ) {
 			if ( ( $pos = strpos( $amount, '.' ) ) !== false ) {
 				if( ! empty( $decimals ) ) {
 					$decimal_amount = substr( round( substr( $amount, $pos ), $decimals ), 1 );
-					$decimal_amount = $decimal_amount ? $decimal_amount : substr( '.0000000000', 0, ( $decimals + 1 ) );
 					$amount   = substr( $amount, 0, $pos );
+
+					if( ! $decimal_amount ) {
+						$decimal_amount = substr( '.0000000000', 0, ( $decimals + 1 ) );
+					}elseif ( ( $decimals + 1 ) > strlen( $decimal_amount ) ) {
+						$decimal_amount = substr( "{$decimal_amount}000000000", 0, ( $decimals + 1 ) );
+					}
+
 				} else{
 					$amount   = number_format( $amount, $decimals, $decimal_sep, '' );
 				}
