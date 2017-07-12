@@ -442,19 +442,39 @@ class Give_Notices {
 			return;
 		}
 
+		$default_notice_args = array(
+			'auto_dismissible' => false,
+			'dismiss_interval' => 5000,
+		);
+
 		// Note: we will remove give_errors class in future.
 		$classes = apply_filters( 'give_error_class', array( 'give_notices', 'give_errors' ) );
 
 		echo sprintf( '<div class="%s">', implode( ' ', $classes ) );
 
-		// Loop error codes and display errors.
-		foreach ( $errors as $error_id => $error ) {
-			echo sprintf( '<div class="give_error" id="give_error_%1$s"><p><strong>%2$s</strong>: %3$s</p></div>',
-				$error_id,
-				esc_html__( 'Error', 'give' ),
-				$error
-			);
-		}
+			// Loop error codes and display errors.
+			foreach ( $errors as $error_id => $error ) {
+				// Backward compatibility v<1.8.11
+				if ( is_string( $error ) ) {
+					$error = array(
+						'message'     => $error,
+						'notice_args' => array(),
+					);
+				}
+
+				$notice_args = wp_parse_args( $error['notice_args'], $default_notice_args );
+
+				echo sprintf(
+					'<div class="give_error give_notice" id="give_error_%1$s" data-auto-dismissible="%2$d" data-dismiss-interval="%3$d">
+								<p><strong>%4$s</strong>: %5$s</p>
+							</div>',
+					$error_id,
+					absint( $notice_args['auto_dismissible'] ),
+					absint( $notice_args['dismiss_interval'] ),
+					esc_html__( 'Error', 'give' ),
+					$error['message']
+				);
+			}
 
 		echo '</div>';
 	}
@@ -469,18 +489,32 @@ class Give_Notices {
 	 * @param        $message
 	 * @param bool   $echo
 	 * @param string $notice_type
+	 * @param array  $notice_args
 	 *
 	 * @return  string
 	 */
-	static function print_frontend_notice( $message, $echo = true, $notice_type = 'warning' ) {
+	static function print_frontend_notice( $message, $echo = true, $notice_type = 'warning', $notice_args = array() ) {
 		if ( empty( $message ) ) {
 			return '';
 		}
 
+		$default_notice_args = array(
+			'auto_dismissible' => false,
+			'dismiss_interval' => 5000,
+		);
+
+		$notice_args = wp_parse_args( $notice_args, $default_notice_args );
+
 		// Note: we will remove give_errors class in future.
 		$error = sprintf(
-			'<div class="give_notices give_errors" id="give_error_%1$s"><p class="give_error give_%1$s">%2$s</p></div>',
+			'<div class="give_notices give_errors" id="give_error_%1$s">
+						<p class="give_error give_notice give_%1$s" data-auto-dismissible="%2$d" data-dismiss-interval="%3$d">
+							%4$s
+						</p>
+					</div>',
 			$notice_type,
+			absint( $notice_args['auto_dismissible'] ),
+			absint( $notice_args['dismiss_interval'] ),
 			$message
 		);
 
