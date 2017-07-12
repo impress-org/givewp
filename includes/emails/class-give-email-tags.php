@@ -261,8 +261,8 @@ function give_load_email_tags() {
 	 */
 	do_action( 'give_add_email_tags' );
 }
+add_action( 'init', 'give_load_email_tags', - 999 );
 
-add_action( 'give_init', 'give_load_email_tags' );
 
 /**
  * Add default Give email template tags.
@@ -275,82 +275,82 @@ function give_setup_email_tags() {
 	$email_tags = array(
 		array(
 			'tag'         => 'donation',
-			'description' => esc_html__( 'The donation form name, and the donation level (if applicable).', 'give' ),
+			'description' => __( 'The donation form name, and the donation level (if applicable).', 'give' ),
 			'function'    => 'give_email_tag_donation'
 		),
 		array(
 			'tag'         => 'form_title',
-			'description' => esc_html__( 'The donation form name.', 'give' ),
+			'description' => __( 'The donation form name.', 'give' ),
 			'function'    => 'give_email_tag_form_title'
 		),
 		array(
 			'tag'         => 'amount',
-			'description' => esc_html__( 'The total donation amount with currency sign.', 'give' ),
+			'description' => __( 'The total donation amount with currency sign.', 'give' ),
 			'function'    => 'give_email_tag_amount'
 		),
 		array(
 			'tag'         => 'price',
-			'description' => esc_html__( 'The total donation amount with currency sign.', 'give' ),
+			'description' => __( 'The total donation amount with currency sign.', 'give' ),
 			'function'    => 'give_email_tag_price'
 		),
 		array(
 			'tag'         => 'name',
-			'description' => esc_html__( 'The donor\'s first name.', 'give' ),
+			'description' => __( 'The donor\'s first name.', 'give' ),
 			'function'    => 'give_email_tag_first_name'
 		),
 		array(
 			'tag'         => 'fullname',
-			'description' => esc_html__( 'The donor\'s full name, first and last.', 'give' ),
+			'description' => __( 'The donor\'s full name, first and last.', 'give' ),
 			'function'    => 'give_email_tag_fullname'
 		),
 		array(
 			'tag'         => 'username',
-			'description' => esc_html__( 'The donor\'s user name on the site, if they registered an account.', 'give' ),
+			'description' => __( 'The donor\'s user name on the site, if they registered an account.', 'give' ),
 			'function'    => 'give_email_tag_username'
 		),
 		array(
 			'tag'         => 'user_email',
-			'description' => esc_html__( 'The donor\'s email address.', 'give' ),
+			'description' => __( 'The donor\'s email address.', 'give' ),
 			'function'    => 'give_email_tag_user_email'
 		),
 		array(
 			'tag'         => 'billing_address',
-			'description' => esc_html__( 'The donor\'s billing address.', 'give' ),
+			'description' => __( 'The donor\'s billing address.', 'give' ),
 			'function'    => 'give_email_tag_billing_address'
 		),
 		array(
 			'tag'         => 'date',
-			'description' => esc_html__( 'The date of the donation.', 'give' ),
+			'description' => __( 'The date of the donation.', 'give' ),
 			'function'    => 'give_email_tag_date'
 		),
 		array(
 			'tag'         => 'payment_id',
-			'description' => esc_html__( 'The unique ID number for this donation.', 'give' ),
+			'description' => __( 'The unique ID number for this donation.', 'give' ),
 			'function'    => 'give_email_tag_payment_id'
 		),
 		array(
 			'tag'         => 'receipt_id',
-			'description' => esc_html__( 'The unique ID number for this donation receipt.', 'give' ),
+			'description' => __( 'The unique ID number for this donation receipt.', 'give' ),
 			'function'    => 'give_email_tag_receipt_id'
 		),
 		array(
 			'tag'         => 'payment_method',
-			'description' => esc_html__( 'The method of payment used for this donation.', 'give' ),
+			'description' => __( 'The method of payment used for this donation.', 'give' ),
 			'function'    => 'give_email_tag_payment_method'
 		),
 		array(
 			'tag'         => 'sitename',
-			'description' => esc_html__( 'The name of your site.', 'give' ),
+			'description' => __( 'The name of your site.', 'give' ),
 			'function'    => 'give_email_tag_sitename'
 		),
 		array(
 			'tag'         => 'receipt_link',
-			'description' => esc_html__( 'The donation receipt direct link, to view the receipt on the website.', 'give' ),
+			'description' => __( 'The donation receipt direct link, to view the receipt on the website.', 'give' ),
 			'function'    => 'give_email_tag_receipt_link'
 		),
 		array(
 			'tag'         => 'receipt_link_url',
-			'description' => esc_html__( 'The donation receipt direct URL, to view the receipt on the website.', 'give' ),
+			'description' => __( 'The donation receipt direct URL, to view the receipt on the website.', 'give' ),
 			'function'    => 'give_email_tag_receipt_link_url'
 		),
 	);
