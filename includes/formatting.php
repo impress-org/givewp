@@ -135,21 +135,48 @@ function give_sanitize_amount( $number, $dp = false, $trim_zeros = false ) {
  * @return string $amount   Newly formatted amount or Price Not Available
  */
 function give_format_amount( $amount, $decimals = true ) {
-	$thousands_sep = give_get_option( 'thousands_separator', ',' );
-	$decimal_sep   = give_get_option( 'decimal_separator', '.' );
+	$formatted      = 0;
+	$thousands_sep  = give_get_option( 'thousands_separator', ',' );
+	$decimal_sep    = give_get_option( 'decimal_separator', '.' );
+	$decimals       = $decimals ? give_get_price_decimals() : 0;
+	$currency       = give_get_option( 'currency', '.' );
 
-	if ( empty( $amount ) ) {
-		$amount = 0;
-	} else {
+	if ( ! empty( $amount ) ) {
 		// Sanitize amount before formatting.
 		$amount = give_sanitize_amount( $amount );
+
+		if ( 'INR' === $currency ) {
+			$decimal_amount = '';
+
+			// Extract decimals from amount
+			if ( ( $pos = strpos( $amount, '.' ) ) !== false ) {
+				if( ! empty( $decimals ) ) {
+					$decimal_amount = substr( round( substr( $amount, $pos ), $decimals ), 1 );
+					$decimal_amount = $decimal_amount ? $decimal_amount : substr( '.0000000000', 0, ( $decimals + 1 ) );
+					$amount   = substr( $amount, 0, $pos );
+				} else{
+					$amount   = number_format( $amount, $decimals, $decimal_sep, '' );
+				}
+			}
+
+			// Extract last 3 from amount
+			$result = substr( $amount, - 3 );
+			$amount = substr( $amount, 0, - 3 );
+
+			// Apply digits 2 by 2
+			while ( strlen( $amount ) > 0 ) {
+				$result = substr( $amount, - 2 ) . ',' . $result;
+				$amount = substr( $amount, 0, - 2 );
+			}
+
+			$formatted = $result . $decimal_amount;
+		} else {
+			$formatted = number_format( $amount, $decimals, $decimal_sep, $thousands_sep );
+
+		}
 	}
 
-	$decimals = $decimals ? give_get_price_decimals() : 0;
-
-	$formatted = number_format( $amount, $decimals, $decimal_sep, $thousands_sep );
-
-	return apply_filters( 'give_format_amount', $formatted, $amount, $decimals, $decimal_sep, $thousands_sep );
+	return apply_filters( 'give_format_amount', $formatted, $amount, $decimals, $decimal_sep, $thousands_sep, $currency );
 }
 
 
