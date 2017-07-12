@@ -466,10 +466,25 @@ function give_get_required_fields( $form_id ) {
 			'error_id'      => 'invalid_country',
 			'error_message' => __( 'Please select your billing country.', 'give' ),
 		);
+
+
 		$required_fields['card_state']      = array(
 			'error_id'      => 'invalid_state',
 			'error_message' => __( 'Please enter billing state / province / County.', 'give' ),
 		);
+
+		// Check if billing country alredy exists.
+		if ( ! empty( $_POST['billing_country'] ) ) {
+			// Get the value from $_POST.
+			$country = sanitize_text_field( $_POST['billing_country'] );
+			// Get the States list from the country.
+			$states = give_get_states( $country );
+			// Check if states is empty or not.
+			if ( empty( $states ) ) {
+				// If status is empty remove the required feilds of state in billing cart.
+				unset( $required_fields['card_state'] );
+			}
+		}
 	}
 
 	/**
