@@ -258,7 +258,7 @@ function give_text_input( $field ) {
 
 	?>
 	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
-	<label for="<?php echo give_get_field_name( $field ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
+	<label for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
 	<?php echo $field['before_field']; ?>
 	<input
 			type="<?php echo esc_attr( $field['type'] ); ?>"
