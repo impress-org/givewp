@@ -78,6 +78,7 @@ function give_sanitize_amount( $number, $dp = false, $trim_zeros = false ) {
 	$number = wp_unslash( $number );
 
 	$thousand_separator = give_get_price_thousand_separator();
+	$decimal_separator  = give_get_price_decimal_separator();
 
 	$locale   = localeconv();
 	$decimals = array( give_get_price_decimal_separator(), $locale['decimal_point'], $locale['mon_decimal_point'] );
@@ -93,7 +94,11 @@ function give_sanitize_amount( $number, $dp = false, $trim_zeros = false ) {
 	if ( ! in_array( $thousand_separator, $decimals ) && ( false !== strpos( $number, $thousand_separator ) ) ) {
 		$number = str_replace( $thousand_separator, '', $number );
 	} elseif ( in_array( $thousand_separator, $decimals ) ) {
-		$number = preg_replace( '/\.(?=.*\.)/', '', $number );
+		if( false === strpos( $number, $decimals ) ) {
+			$number = str_replace( $thousand_separator, '', $number );
+		} else {
+			$number = preg_replace( '/\.(?=.*\.)/', '', $number );
+		}
 	}
 
 	// Remove non numeric entity before decimal separator.
