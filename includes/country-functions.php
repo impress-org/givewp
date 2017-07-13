@@ -372,6 +372,44 @@ function give_states_list() {
 	return (array) apply_filters( 'give_states_list', $states );
 }
 
+/**
+ * List of Country that have no states init.
+ *
+ * There are some country which does not have states init Example: germany.
+ *
+ * @since 1.8.11
+ *
+ * $$country array $country_code.
+ */
+function give_no_states_country_list() {
+	$country = array(
+		'AT' => esc_html__( 'Austria', 'give' ),
+		'BE' => esc_html__( 'Belgium', 'give' ),
+		'CZ' => esc_html__( 'Czech Republic', 'give' ),
+		'DE' => esc_html__( 'Germany', 'give' ),
+		'EE' => esc_html__( 'Estonia', 'give' ),
+		'FI' => esc_html__( 'Finland', 'give' ),
+		'DK' => esc_html__( 'Denmark', 'give' ),
+		'FR' => esc_html__( 'France', 'give' ),
+		'IS' => esc_html__( 'Iceland', 'give' ),
+		'NL' => esc_html__( 'Netherlands', 'give' ),
+		'PL' => esc_html__( 'Poland', 'give' ),
+		'PT' => esc_html__( 'Portugal', 'give' ),
+		'SK' => esc_html__( 'Slovak Republic', 'give' ),
+		'SI' => esc_html__( 'Slovenia', 'give' ),
+		'VN' => esc_html__( 'Vietnam', 'give' ),
+	);
+
+	/**
+	 * Filter can be used to add or remove the Country that does not have states init.
+	 *
+	 * @since 1.8.11
+	 *
+	 * @param array  $country Contain key as there country code & value as there country name.
+	 */
+	return (array) apply_filters( 'give_no_states_country_list', $country );
+}
+
 
 
 /**
