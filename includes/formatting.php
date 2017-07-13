@@ -34,7 +34,11 @@ function give_get_price_decimals() {
  * @return mixed
  */
 function give_get_price_thousand_separator() {
-	return give_get_option( 'thousands_separator', ',' );
+	$give_options       = give_get_settings();
+	$thousand_separator = isset( $give_options['thousands_separator'] ) ? $give_options['thousands_separator'] : ',';
+	$thousand_separator = empty( $thousand_separator ) ? ' ' : $thousand_separator;
+
+	return $thousand_separator;
 }
 
 /**
