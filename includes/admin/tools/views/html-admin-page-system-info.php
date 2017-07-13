@@ -500,14 +500,18 @@ $plugins      = give_get_plugins();
 				<?php
 				$last_paypal_ipn_received = get_option( 'give_last_paypal_ipn_received' );
 				if( is_array( $last_paypal_ipn_received ) && count( $last_paypal_ipn_received ) > 0 ) {
-					$transaction_information_url = 'https://history.paypal.com/cgi-bin/webscr?cmd=_history-details-from-hub&id=' . $last_paypal_ipn_received['transaction_id'];
-					$donation_url = site_url() . '/wp-admin/edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . $last_paypal_ipn_received['payment_id'];
+					$donation_id     = $last_paypal_ipn_received['payment_id'];
+					$ipn_timestamp   = give_get_meta( $donation_id, 'give_last_paypal_ipn_received', true );
+					$transaction_url = 'https://history.paypal.com/cgi-bin/webscr?cmd=_history-details-from-hub&id=' . $last_paypal_ipn_received['transaction_id'];
+					$donation_url    = site_url() . '/wp-admin/edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . $last_paypal_ipn_received['payment_id'];
 					echo sprintf(
-							__( 'IPN received for <a href="%s">#%s</a> ( <a href="%s" target="_blank">%s</a> ). Status %s', 'give' ),
+							__( 'IPN received for <a href="%s">#%s</a> ( <a href="%s" target="_blank">%s</a> ) on %s at %s. Status %s', 'give' ),
 							$donation_url,
-							$last_paypal_ipn_received['payment_id'],
-							$transaction_information_url,
+							$payment_id,
+							$transaction_url,
 							$last_paypal_ipn_received['transaction_id'],
+							date_i18n( 'm/d/Y', $ipn_timestamp ),
+							date_i18n( 'H:i', $ipn_timestamp ),
 							$last_paypal_ipn_received['auth_status']
 					);
 				} else {
