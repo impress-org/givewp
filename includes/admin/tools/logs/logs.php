@@ -47,11 +47,19 @@ function give_get_logs_tab() {
 function give_logs_view_sales() {
 
 	include GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/class-sales-logs-list-table.php';
-
-	$logs_table = new Give_Sales_Log_Table();
-	$logs_table->prepare_items();
-	$logs_table->display();
-
+	?>
+	<form class="give-logs-sales-filter" method="get" action="">
+		<?php
+		$logs_table = new Give_Sales_Log_Table();
+		$logs_table->prepare_items();
+		$logs_table->display();
+		?>
+		<input type="hidden" name="post_type" value="give_forms"/>
+		<input type="hidden" name="page" value="give-tools"/>
+		<input type="hidden" name="tab" value="logs"/>
+		<input type="hidden" name="section" value="sales"/>
+	</form>
+	<?php
 }
 
 add_action( 'give_logs_view_sales', 'give_logs_view_sales' );
