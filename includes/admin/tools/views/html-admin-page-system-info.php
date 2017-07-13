@@ -503,7 +503,7 @@ $plugins      = give_get_plugins();
 					$donation_id     = $last_paypal_ipn_received['payment_id'];
 					$ipn_timestamp   = give_get_meta( $donation_id, 'give_last_paypal_ipn_received', true );
 					$transaction_url = 'https://history.paypal.com/cgi-bin/webscr?cmd=_history-details-from-hub&id=' . $last_paypal_ipn_received['transaction_id'];
-					$donation_url    = site_url() . '/wp-admin/edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . $last_paypal_ipn_received['payment_id'];
+					$donation_url    = site_url() . '/wp-admin/edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . $donation_id;
 					echo sprintf(
 							__( 'IPN received for <a href="%s">#%s</a> ( <a href="%s" target="_blank">%s</a> ) on %s at %s. Status %s', 'give' ),
 							$donation_url,
