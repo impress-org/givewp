@@ -507,7 +507,7 @@ $plugins      = give_get_plugins();
 					echo sprintf(
 							__( 'IPN received for <a href="%s">#%s</a> ( <a href="%s" target="_blank">%s</a> ) on %s at %s. Status %s', 'give' ),
 							$donation_url,
-							$payment_id,
+							$donation_id,
 							$transaction_url,
 							$last_paypal_ipn_received['transaction_id'],
 							date_i18n( 'm/d/Y', $ipn_timestamp ),
