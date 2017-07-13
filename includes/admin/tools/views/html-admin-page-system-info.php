@@ -495,7 +495,7 @@ $plugins      = give_get_plugins();
 		</tr>
 		<tr>
 			<td data-export-label="PayPal IPN Notifications"><?php _e( 'PayPal IPN Notifications', 'give' ); ?>:</td>
-			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'Whether admin has enabled PayPal IPN notifications or not.', 'give' ) ); ?>"></span></td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'Displays whether when last PayPal IPN is received with which donation or transaction.', 'give' ) ); ?>"></span></td>
 			<td>
 				<?php
 				$last_paypal_ipn_received = get_option( 'give_last_paypal_ipn_received' );
