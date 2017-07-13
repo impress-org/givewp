@@ -451,6 +451,11 @@ $plugins      = give_get_plugins();
 			<td><?php echo ! empty( $give_options['failure_page'] ) ? esc_url( get_permalink( $give_options['failure_page'] ) ) : '&ndash;'; ?></td>
 		</tr>
 		<tr>
+			<td data-export-label="Donation History Page"><?php _e( 'Donation History Page', 'give' ); ?>:</td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The page where past donations are listed.', 'give' ) ); ?>"></span></td>
+			<td><?php echo ! empty( $give_options['history_page'] ) ? esc_url( get_permalink( $give_options['history_page'] ) ) : '&ndash;'; ?></td>
+		</tr>
+		<tr>
 			<td data-export-label="Give Forms Slug"><?php _e( 'Give Forms Slug', 'give' ); ?>:</td>
 			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The slug used for Give donation forms.', 'give' ) ); ?>"></span></td>
 			<td><?php echo esc_html( defined( 'GIVE_SLUG' ) ? '/' . GIVE_SLUG . '/' : '/donations/' ); ?></td>
