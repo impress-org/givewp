@@ -1723,13 +1723,13 @@ jQuery.noConflict();
 					confirm_action_notice = '',
 					status = '';
 
-				// Set common aciton if aciton type is status.
+				// Set common action, if action type is status.
 				current_action = is_status_type_action ?
 					'set-to-status' :
 					current_action;
 
 
-				if( Object.keys(give_vars.bulk_action).length ) {
+				if( Object.keys( give_vars.bulk_action ).length ) {
 					for ( status in  give_vars.bulk_action ) {
 						if( status === current_action ) {
 							// Get status text if current action types is status.
@@ -1737,18 +1737,18 @@ jQuery.noConflict();
 								give_vars.bulk_action[current_action].zero.replace( '{status}', current_action_label.replace( 'Set To ', '' ) ) :
 								give_vars.bulk_action[current_action].zero;
 
-							// Check if admin selected any payment sor not.
+							// Check if admin selected any donations or not.
 							if ( ! parseInt( $payments ) ) {
 								alert( confirm_action_notice );
 								return false;
 							}
 
-							// Get message on basis of payment count..
+							// Get message on basis of payment count.
 							confirm_action_notice = ( 1 < $payments ) ?
 								give_vars.bulk_action[current_action].multiple :
 								give_vars.bulk_action[current_action].single;
 
-							// get admin confirmation.
+							// Trigger Admin Confirmation PopUp.
 							return window.confirm( confirm_action_notice
 								.replace( '{payment_count}', $payments )
 								.replace( '{status}', current_action_label.replace( 'Set To ', '' ) )
