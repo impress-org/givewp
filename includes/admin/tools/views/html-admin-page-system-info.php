@@ -494,6 +494,11 @@ $plugins      = give_get_plugins();
 			<td><?php echo esc_html( ! empty( $default_gateway ) ? $default_gateway : '&ndash;' ); ?></td>
 		</tr>
 		<tr>
+			<td data-export-label="PayPal IPN Verification"><?php _e( 'PayPal IPN Verification', 'give' ); ?>:</td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'Whether admins requires verification of IPN notifications with PayPal.', 'give' ) ); ?>"></span></td>
+			<td><?php echo 'enabled' === give_get_option( 'paypal_verification' ) ? __( 'Enabled', 'give' ) : __( 'Disabled', 'give' ); ?></td>
+		</tr>
+		<tr>
 			<td data-export-label="PayPal IPN Notifications"><?php _e( 'PayPal IPN Notifications', 'give' ); ?>:</td>
 			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'Displays whether when last PayPal IPN is received with which donation or transaction.', 'give' ) ); ?>"></span></td>
 			<td>
