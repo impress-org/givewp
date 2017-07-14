@@ -1707,6 +1707,7 @@ jQuery.noConflict();
 	var Give_Payment_History = {
 		init: function() {
 			this.handle_bulk_delete();
+			this.filter_by_donation_form();
 		},
 
 		handle_bulk_delete: function() {
@@ -1800,6 +1801,15 @@ jQuery.noConflict();
 
 				return true;
 			} );
+		},
+
+		filter_by_donation_form: function () {
+			$( '.give-donation-forms-filter' ).on( 'change', function() {
+				var form_id = $(this).val();
+				if( - 1 !== form_id ){
+					// WIP
+				}
+			});
 		}
 	};
 
