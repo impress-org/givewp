@@ -6,7 +6,7 @@
  * Date: 14/07/17
  * Time: 3:27 PM
  */
-class Give_Upgrades {
+class Give_Updates {
 	/**
 	 * Instance.
 	 *
@@ -22,7 +22,7 @@ class Give_Upgrades {
 	 * @since  1.8.12
 	 * @access private
 	 *
-	 * @param Give_Upgrades .
+	 * @param Give_Updates .
 	 */
 	private function __construct() {
 	}
@@ -104,7 +104,7 @@ class Give_Upgrades {
 			),
 			'manage_give_settings',
 			'give-upgrades',
-			'give_upgrades_screen'
+			array( $this, 'render_page' )
 		);
 	}
 
@@ -118,6 +118,17 @@ class Give_Upgrades {
 	public function get_update_count() {
 		return 4;
 	}
+
+
+	/**
+	 * Render Give Updates page
+	 *
+	 * @since  1.8.12
+	 * @access public
+	 */
+	public function render_page() {
+		include_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/views/upgrades.php';
+	}
 }
 
-Give_Upgrades::get_instance()->setup_hooks();
+Give_Updates::get_instance()->setup_hooks();

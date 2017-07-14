@@ -472,8 +472,8 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-donation-history.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-receipt.php';
 
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/class-give-updates.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrade-functions.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrades.php';
 
 			}// End if().
 
