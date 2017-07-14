@@ -1246,7 +1246,7 @@ function give_get_login_fields( $form_id ) {
 				   data-action="give_checkout_register">
 					<?php esc_html_e( 'Register', 'give' );
 					if ( ! give_logged_in_only( $form_id ) ) {
-						echo ' ' . esc_html__( 'or checkout as a guest &raquo;', 'give' );
+						echo ' ' . esc_html__( 'and donate as a guest &raquo;', 'give' );
 					} ?>
 				</a>
 			</p>
