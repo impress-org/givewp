@@ -51,62 +51,29 @@ function give_get_state() {
  * @return mixed|void  A list of states for the shop's base country
  */
 function give_get_states( $country = null ) {
+	// If Country have no states return empty array.
+	$states = array();
 
+	// Check if Country Code is empty or not.
 	if ( empty( $country ) ) {
+		// Get defalut country code that is being set by the admin.
 		$country = give_get_country();
 	}
 
-	switch ( $country ) :
+	// Get all the list of the states in array key format where key is the country code and value is the states that it contain.
+	$states_list = give_states_list();
 
-		case 'US' :
-			$states = give_get_states_list();
-			break;
-		case 'CA' :
-			$states = give_get_provinces_list();
-			break;
-		case 'AU' :
-			$states = give_get_australian_states_list();
-			break;
-		case 'BR' :
-			$states = give_get_brazil_states_list();
-			break;
-		case 'CN' :
-			$states = give_get_chinese_states_list();
-			break;
-		case 'HK' :
-			$states = give_get_hong_kong_states_list();
-			break;
-		case 'HU' :
-			$states = give_get_hungary_states_list();
-			break;
-		case 'ID' :
-			$states = give_get_indonesian_states_list();
-			break;
-		case 'IN' :
-			$states = give_get_indian_states_list();
-			break;
-		case 'MY' :
-			$states = give_get_malaysian_states_list();
-			break;
-		case 'NZ' :
-			$states = give_get_new_zealand_states_list();
-			break;
-		case 'TH' :
-			$states = give_get_thailand_states_list();
-			break;
-		case 'ZA' :
-			$states = give_get_south_african_states_list();
-			break;
-		case 'ES' :
-			$states = give_get_spain_states_list();
-			break;
-		default :
-			$states = array();
-			break;
+	// Check if $country code exists in the array key.
+	if ( array_key_exists( $country, $states_list ) ) {
+		$states = $states_list[ $country ];
+	}
 
-	endswitch;
-
-	return apply_filters( 'give_give_states', $states );
+	/**
+	 * Filter the query in case tables are non-standard.
+	 *
+	 * @param string $query Database count query
+	 */
+	return (array) apply_filters( 'give_give_states', $states );
 }
 
 
@@ -365,8 +332,85 @@ function give_get_country_list() {
 		'ZW' => esc_html__( 'Zimbabwe', 'give' )
 	);
 
-	return apply_filters( 'give_countries', $countries );
+	return (array) apply_filters( 'give_countries', $countries );
 }
+
+
+/**
+ * Get States List.
+ *
+ * @since 1.8.11
+ *
+ * @return array $states A list of the available states as in array key format.
+ */
+function give_states_list() {
+	$states = array(
+		'US' => give_get_states_list(),
+		'CA' => give_get_provinces_list(),
+		'AU' => give_get_australian_states_list(),
+		'BR' => give_get_brazil_states_list(),
+		'CN' => give_get_chinese_states_list(),
+		'HK' => give_get_hong_kong_states_list(),
+		'HU' => give_get_hungary_states_list(),
+		'ID' => give_get_indonesian_states_list(),
+		'IN' => give_get_indian_states_list(),
+		'MY' => give_get_malaysian_states_list(),
+		'NZ' => give_get_new_zealand_states_list(),
+		'TH' => give_get_thailand_states_list(),
+		'ZA' => give_get_south_african_states_list(),
+		'ES' => give_get_spain_states_list(),
+	);
+	/**
+	 * Filter can be used to add or remove the States from the Country.
+	 *
+	 * Filters can be use to add states inside the country all the states will be in array format ans the array key will be country code.
+	 *
+	 * @since 1.8.11
+	 *
+	 * @param array  $states Contain the list of states in array key format where key of the array is there respected country code.
+	 */
+	return (array) apply_filters( 'give_states_list', $states );
+}
+
+/**
+ * List of Country that have no states init.
+ *
+ * There are some country which does not have states init Example: germany.
+ *
+ * @since 1.8.11
+ *
+ * $$country array $country_code.
+ */
+function give_no_states_country_list() {
+	$country = array(
+		'AT' => esc_html__( 'Austria', 'give' ),
+		'BE' => esc_html__( 'Belgium', 'give' ),
+		'CZ' => esc_html__( 'Czech Republic', 'give' ),
+		'DE' => esc_html__( 'Germany', 'give' ),
+		'EE' => esc_html__( 'Estonia', 'give' ),
+		'FI' => esc_html__( 'Finland', 'give' ),
+		'DK' => esc_html__( 'Denmark', 'give' ),
+		'FR' => esc_html__( 'France', 'give' ),
+		'IS' => esc_html__( 'Iceland', 'give' ),
+		'NL' => esc_html__( 'Netherlands', 'give' ),
+		'PL' => esc_html__( 'Poland', 'give' ),
+		'PT' => esc_html__( 'Portugal', 'give' ),
+		'SK' => esc_html__( 'Slovak Republic', 'give' ),
+		'SI' => esc_html__( 'Slovenia', 'give' ),
+		'VN' => esc_html__( 'Vietnam', 'give' ),
+	);
+
+	/**
+	 * Filter can be used to add or remove the Country that does not have states init.
+	 *
+	 * @since 1.8.11
+	 *
+	 * @param array  $country Contain key as there country code & value as there country name.
+	 */
+	return (array) apply_filters( 'give_no_states_country_list', $country );
+}
+
+
 
 /**
  * Get States List
