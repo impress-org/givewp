@@ -451,6 +451,11 @@ $plugins      = give_get_plugins();
 			<td><?php echo ! empty( $give_options['failure_page'] ) ? esc_url( get_permalink( $give_options['failure_page'] ) ) : '&ndash;'; ?></td>
 		</tr>
 		<tr>
+			<td data-export-label="Donation History Page"><?php _e( 'Donation History Page', 'give' ); ?>:</td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The page where past donations are listed.', 'give' ) ); ?>"></span></td>
+			<td><?php echo ! empty( $give_options['history_page'] ) ? esc_url( get_permalink( $give_options['history_page'] ) ) : '&ndash;'; ?></td>
+		</tr>
+		<tr>
 			<td data-export-label="Give Forms Slug"><?php _e( 'Give Forms Slug', 'give' ); ?>:</td>
 			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The slug used for Give donation forms.', 'give' ) ); ?>"></span></td>
 			<td><?php echo esc_html( defined( 'GIVE_SLUG' ) ? '/' . GIVE_SLUG . '/' : '/donations/' ); ?></td>
@@ -487,6 +492,38 @@ $plugins      = give_get_plugins();
 			<td data-export-label="Default Payment Gateway"><?php _e( 'Default Payment Gateway', 'give' ); ?>:</td>
 			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The default payment gateway selected in Give settings.', 'give' ) ); ?>"></span></td>
 			<td><?php echo esc_html( ! empty( $default_gateway ) ? $default_gateway : '&ndash;' ); ?></td>
+		</tr>
+		<tr>
+			<td data-export-label="PayPal IPN Verification"><?php _e( 'PayPal IPN Verification', 'give' ); ?>:</td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'Whether admins requires verification of IPN notifications with PayPal.', 'give' ) ); ?>"></span></td>
+			<td><?php echo 'enabled' === give_get_option( 'paypal_verification' ) ? __( 'Enabled', 'give' ) : __( 'Disabled', 'give' ); ?></td>
+		</tr>
+		<tr>
+			<td data-export-label="PayPal IPN Notifications"><?php _e( 'PayPal IPN Notifications', 'give' ); ?>:</td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'Displays whether when last PayPal IPN is received with which donation or transaction.', 'give' ) ); ?>"></span></td>
+			<td>
+				<?php
+				$last_paypal_ipn_received = get_option( 'give_last_paypal_ipn_received' );
+				if( is_array( $last_paypal_ipn_received ) && count( $last_paypal_ipn_received ) > 0 ) {
+					$donation_id     = $last_paypal_ipn_received['payment_id'];
+					$ipn_timestamp   = give_get_meta( $donation_id, 'give_last_paypal_ipn_received', true );
+					$transaction_url = 'https://history.paypal.com/cgi-bin/webscr?cmd=_history-details-from-hub&id=' . $last_paypal_ipn_received['transaction_id'];
+					$donation_url    = site_url() . '/wp-admin/edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . $donation_id;
+					echo sprintf(
+							__( 'IPN received for <a href="%s">#%s</a> ( <a href="%s" target="_blank">%s</a> ) on %s at %s. Status %s', 'give' ),
+							$donation_url,
+							$donation_id,
+							$transaction_url,
+							$last_paypal_ipn_received['transaction_id'],
+							date_i18n( 'm/d/Y', $ipn_timestamp ),
+							date_i18n( 'H:i', $ipn_timestamp ),
+							$last_paypal_ipn_received['auth_status']
+					);
+				} else {
+					echo 'N/A';
+				}
+				?>
+			</td>
 		</tr>
 		<tr>
 			<td data-export-label="Admin Email Notifications"><?php _e( 'Admin Email Notifications', 'give' ); ?>:</td>
