@@ -47,18 +47,39 @@ function give_get_logs_tab() {
 function give_logs_view_sales() {
 
 	include GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/class-sales-logs-list-table.php';
+
+	$logs_table = new Give_Sales_Log_Table();
+	$logs_table->prepare_items();
 	?>
-	<form class="give-logs-sales-filter" method="get" action="">
+	<div class="wrap">
+
 		<?php
-		$logs_table = new Give_Sales_Log_Table();
-		$logs_table->prepare_items();
-		$logs_table->display();
+		/**
+		 * Fires before displaying Donations logs.
+		 *
+		 * @since 1.8.12
+		 */
+		do_action( 'give_logs_donations_top' );
 		?>
-		<input type="hidden" name="post_type" value="give_forms"/>
-		<input type="hidden" name="page" value="give-tools"/>
-		<input type="hidden" name="tab" value="logs"/>
-		<input type="hidden" name="section" value="sales"/>
-	</form>
+
+		<form class="give-logs-sales-filter" method="get" action="<?php echo 'edit.php?post_type=give_forms&page=give-tools&tab=logs'; ?>">
+			<?php $logs_table->display(); ?>
+			<input type="hidden" name="post_type" value="give_forms"/>
+			<input type="hidden" name="page" value="give-tools"/>
+			<input type="hidden" name="tab" value="logs"/>
+			<input type="hidden" name="section" value="sales"/>
+		</form>
+
+		<?php
+		/**
+		 * Fires after displaying Donations logs.
+		 *
+		 * @since 1.8.12
+		 */
+		do_action( 'give_logs_donations_bottom' );
+		?>
+
+	</div>
 	<?php
 }
 
@@ -78,7 +99,37 @@ function give_logs_view_gateway_errors() {
 
 	$logs_table = new Give_Gateway_Error_Log_Table();
 	$logs_table->prepare_items();
-	$logs_table->display();
+	?>
+	<div class="wrap">
+
+		<?php
+		/**
+		 * Fires before displaying Payment Error logs.
+		 *
+		 * @since 1.8.12
+		 */
+		do_action( 'give_logs_payment_error_top' );
+		?>
+
+		<form class="give-logs-payment-errors-filter" method="get" action="<?php echo 'edit.php?post_type=give_forms&page=give-tools&tab=logs'; ?>">
+			<?php $logs_table->display(); ?>
+			<input type="hidden" name="post_type" value="give_forms"/>
+			<input type="hidden" name="page" value="give-tools"/>
+			<input type="hidden" name="tab" value="logs"/>
+			<input type="hidden" name="section" value="gateway_errors"/>
+		</form>
+
+		<?php
+		/**
+		 * Fires after displaying Payment Error logs.
+		 *
+		 * @since 1.8.12
+		 */
+		do_action( 'give_logs_payment_error_bottom' );
+		?>
+
+	</div>
+	<?php
 }
 
 add_action( 'give_logs_view_gateway_errors', 'give_logs_view_gateway_errors' );
@@ -117,6 +168,7 @@ function give_logs_view_api_requests() {
 			<input type="hidden" name="post_type" value="give_forms"/>
 			<input type="hidden" name="page" value="give-tools"/>
 			<input type="hidden" name="tab" value="logs"/>
+			<input type="hidden" name="section" value="api_requests"/>
 		</form>
 		<?php
 		/**
