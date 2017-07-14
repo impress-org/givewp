@@ -329,16 +329,16 @@ function give_load_admin_scripts( $hook ) {
 		'search_placeholder_state'       => __( 'Type to search all states/provinces', 'give' ),
 		'bulk_action' => array(
 			'delete'         => array(
-				'zero_payment_selected' => __( 'You must choose at least one or more payments to delete.', 'give' ),
-				'delete_payment'        => __( 'Are you sure you want to permanently delete this donation?', 'give' ),
-				'delete_payments'       => __( 'Are you sure you want to permanently delete the selected {payment_count} donations?', 'give' ),
+				'zero' => __( 'You must choose at least one or more payments to delete.', 'give' ),
+				'single'        => __( 'Are you sure you want to permanently delete this donation?', 'give' ),
+				'multiple'       => __( 'Are you sure you want to permanently delete the selected {payment_count} donations?', 'give' ),
 			),
 			'resend_receipt' => array(
-				'zero_recipient_selected' => __( 'You must choose at least one or more recipients to resend the email receipt.', 'give' ),
-				'resend_receipt'          => __( 'Are you sure you want to resend the email receipt to this recipient?', 'give' ),
-				'resend_receipts'         => __( 'Are you sure you want to resend the emails receipt to {payment_count} recipients?', 'give' ),
+				'zero' => __( 'You must choose at least one or more recipients to resend the email receipt.', 'give' ),
+				'single'          => __( 'Are you sure you want to resend the email receipt to this recipient?', 'give' ),
+				'multiple'         => __( 'Are you sure you want to resend the emails receipt to {payment_count} recipients?', 'give' ),
 			),
-			'set_to_status' => array(
+			'set-to-status' => array(
 				'zero'      => __( 'You must choose at least one or more donations to set status to {status}.', 'give' ),
 				'single'    => __( 'Are you sure you want to set status of this donation to {status}?', 'give' ),
 				'multiple'  => __( 'Are you sure you want to set status of {payment_count} donations to {status}?', 'give' ),
