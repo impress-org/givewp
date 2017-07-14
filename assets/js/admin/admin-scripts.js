@@ -1701,6 +1701,38 @@ jQuery.noConflict();
 		} );
 	};
 
+	var set_donation_status = function( status ) {
+
+		var $payments = $( 'input[name="payment[]"]:checked' ).length, confirm_action_notice;
+
+		if ( ! parseInt( $payments ) ) {
+			alert( give_vars.bulk_action.set_to_status.zero.replace( '{status}', status ) );
+			return false;
+		}
+
+		// Ask admin before processing.
+		confirm_action_notice = ( 1 < $payments ) ? give_vars.bulk_action.set_to_status.multiple : give_vars.bulk_action.set_to_status.single;
+		if ( ! window.confirm( confirm_action_notice.replace( '{payment_count}', $payments ).replace( '{status}', status ) ) ) {
+			return false;
+		}
+
+		// var data = new Object();
+		// // Check if admin did not select any payment.
+		// if ( ! parseInt( $payments ) ) {
+		// 	data.alert_type = 'normal';
+		// 	data.text =  give_vars.bulk_action.set_to_status.zero.replace( '{status}', $status );
+		// }else if ( 1 < $payments ) {
+		// 	data.alert_type = 'confirm';
+		// 	data.text =  give_vars.bulk_action.set_to_status.multiple.replace( '{status}', $status ).replace( '{payment_count}', $payments );
+		// } else {
+		// 	data.alert_type = 'confirm';
+		// 	data.text =  give_vars.bulk_action.set_to_status.single.replace( '{status}', $status ).replace( '{payment_count}', $payments );
+		// }
+		//
+		// return data;
+
+	};
+
 	/**
 	 * Payment history listing page js
 	 */
@@ -1717,15 +1749,8 @@ jQuery.noConflict();
 			 */
 			$payment_filters.on( 'submit', function( e ) {
 				var current_action = $( 'select[name="action"]', $( this ) ).val(),
-					$payments = [],
+					$payments = $( 'input[name="payment[]"]:checked' ).length,
 					confirm_action_notice = '';
-
-				$( 'input[name="payment[]"]:checked', $( this ) ).each( function( index, item ) {
-					$payments.push( $( this ).val() );
-				} );
-
-				// Total payment count.
-				$payments = $payments.length.toString();
 
 				switch ( current_action ) {
 					case 'delete':
@@ -1757,19 +1782,18 @@ jQuery.noConflict();
 						}
 
 						break;
+
 					case 'set-status-publish':
-						var status = 'Completed';
 
-						// Check if admin did not select any payment.
-						if ( ! parseInt( $payments ) ) {
-							alert( give_vars.bulk_action.set_to_status.zero.replace( '{status}', status ) );
-							return false;
-						}
+						var donation_status = set_donation_status( $payments, 'Completed' );
 
-						// Ask admin before processing.
-						confirm_action_notice = ( 1 < $payments ) ? give_vars.bulk_action.set_to_status.multiple : give_vars.bulk_action.set_to_status.single;
-						if ( ! window.confirm( confirm_action_notice.replace( '{payment_count}', $payments ).replace( '{status}', status ) ) ) {
+						if( 'normal' === donation_status.alert_type ) {
+							alert( donation_status.text );
 							return false;
+						} else {
+							if( ! window.confirm( donation_status.text ) ) {
+								return false;
+							}
 						}
 
 						break;
@@ -1911,8 +1935,41 @@ jQuery.noConflict();
 						break;
 
 					default:
-						// If you add anything here, make sure to test pagination properly.
-						break;
+						// var status = '';
+						// if ( 'set-status-publish' === current_action ) {
+						// 	status = 'completed';
+						// } else if ( 'set-status-pending' === current_action ) {
+						// 	status = 'pending';
+						// } else if ( 'set-status-processing' === current_action ) {
+						// 	status = 'processing';
+						// } else if ( 'set-status-refunded' === current_action ) {
+						// 	status = 'refunded';
+						// } else if ( 'set-status-revoked' === current_action ) {
+						// 	status = 'revoked';
+						// } else if ( 'set-status-failed' === current_action ) {
+						// 	status = 'failed';
+						// } else if ( 'set-status-cancelled' === current_action ) {
+						// 	status = 'cancelled';
+						// } else if ( 'set-status-abandoned' === current_action ) {
+						// 	status = 'abandoned';
+						// } else if ( 'set-status-preapproval' === current_action ) {
+						// 	status = 'preapproval';
+						// } else {
+						// 	// If you add anything here, make sure to test pagination properly.
+						// }
+						//
+						// // Check if admin did not select any payment.
+						// if ( ! parseInt( $payments ) ) {
+						// 	alert( give_vars.bulk_action.set_to_status.zero.replace( '{status}', status ) );
+						// 	return false;
+						// }
+						//
+						// // Ask admin before processing.
+						// confirm_action_notice = ( 1 < $payments ) ? give_vars.bulk_action.set_to_status.multiple : give_vars.bulk_action.set_to_status.single;
+						// if ( ! window.confirm( confirm_action_notice.replace( '{payment_count}', $payments ).replace( '{status}', status ) ) ) {
+						// 	return false;
+						// }
+					break;
 
 				}
 
