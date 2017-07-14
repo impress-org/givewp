@@ -750,6 +750,41 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 	}
 
+	protected function extra_tablenav( $which ) {
+
+		if ( $which === "top" ){
+			?>
+			<div class="alignleft actions bulkactions">
+				<?php
+				$args = array(
+					'post_type'      => 'give_forms',
+					'post_status'    => 'publish',
+					'posts_per_page' => - 1,
+					'order'          => 'ID',
+					'orderby'        => 'ASC'
+				);
+				$donation_forms = new WP_Query( $args );
+
+				if( $donation_forms->have_posts() ){
+					?>
+					<select name="form" class="give-donation-forms-filter">
+						<option value="-1"><?php _e( 'All Donation Forms', 'give' ); ?></option>
+						<?php while( $donation_forms->have_posts() ) : $donation_forms->the_post(); ?>
+							<option value="<?php the_ID(); ?>"><?php the_title(); ?></option>
+						<?php endwhile; ?>
+					</select>
+					<?php
+				}
+				?>
+			</div>
+			<?php
+		}
+		if ( $which === "bottom" ){
+			//The code that goes after the table is there
+
+		}
+	}
+
 	/**
 	 * Setup the final data for the table
 	 *
