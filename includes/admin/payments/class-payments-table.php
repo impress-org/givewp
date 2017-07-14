@@ -750,6 +750,14 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 	}
 
+	/**
+	 * Added filter for donation forms
+	 * @param string $which
+	 *
+	 * @since 1.8.12
+	 *
+	 * @return void
+	 */
 	protected function extra_tablenav( $which ) {
 
 		if ( $which === "top" ){
