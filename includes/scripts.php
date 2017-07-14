@@ -333,7 +333,7 @@ function give_load_admin_scripts( $hook ) {
 				'single'        => __( 'Are you sure you want to permanently delete this donation?', 'give' ),
 				'multiple'       => __( 'Are you sure you want to permanently delete the selected {payment_count} donations?', 'give' ),
 			),
-			'resend_receipt' => array(
+			'resend-receipt' => array(
 				'zero' => __( 'You must choose at least one or more recipients to resend the email receipt.', 'give' ),
 				'single'          => __( 'Are you sure you want to resend the email receipt to this recipient?', 'give' ),
 				'multiple'         => __( 'Are you sure you want to resend the emails receipt to {payment_count} recipients?', 'give' ),
