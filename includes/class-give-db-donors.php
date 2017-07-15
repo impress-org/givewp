@@ -38,11 +38,15 @@ class Give_DB_Donors extends Give_DB {
 		$this->table_name  = $wpdb->prefix . 'give_customers';
 		$this->primary_key = 'id';
 		$this->version     = '1.0';
-		
-		add_action( 'profile_update', array( $this, 'update_donor_email_on_user_update' ), 10, 2 );
 
-		// Install table.
-		$this->register_table();
+		// Set hooks and register table only if instance loading first time.
+		if( ! ( Give()->donors instanceof Give_DB_Donors ) ) {
+			// Setup hook.
+			add_action( 'profile_update', array( $this, 'update_donor_email_on_user_update' ), 10, 2 );
+
+			// Install table.
+			$this->register_table();
+		}
 
 	}
 

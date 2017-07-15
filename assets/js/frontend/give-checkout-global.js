@@ -39,12 +39,20 @@ jQuery(function ($) {
 					withCredentials: true
 				},
 				success  : function (response) {
-					if ('nostates' == response) {
-						var text_field = '<input type="text" id="card_state" name="card_state" class="cart-state give-input required" value=""/>';
-						$form.find('input[name="card_state"], select[name="card_state"]').replaceWith(text_field);
+                    if( typeof ( response.states_found ) != undefined && true == response.states_found ) {
+                        $form.find('input[name="card_state"], select[name="card_state"]').replaceWith( response.data );
+                    } else {
+                        var text_field = '<input type="text" id="card_state" name="card_state" class="cart-state give-input required" value=""/>';
+                        $form.find('input[name="card_state"], select[name="card_state"]').replaceWith(text_field);
+                    }
+
+                    // Check if user want to show the feilds or not.
+                    if( typeof ( response.show_field ) != undefined && true == response.show_field ) {
+                        $form.find( 'p#give-card-state-wrap' ).removeClass( 'give-hidden' );
 					} else {
-						$form.find('input[name="card_state"], select[name="card_state"]').replaceWith(response);
+                        $form.find( 'p#give-card-state-wrap' ).addClass( 'give-hidden' );
 					}
+
 					doc.trigger('give_checkout_billing_address_updated', [response, $form.attr('id')]);
 				}
 			}).fail(function (data) {
