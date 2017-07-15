@@ -372,16 +372,16 @@ function give_estimated_monthly_stats() {
 }
 
 /**
- * Set Get form method for reporting tabs
+ * Assign Get form method for reporting tabs
  *
  * @since 1.8.12
  *
  * @return string
  */
-function give_set_get_form_method() {
+function give_reports_set_get_form_method() {
 	return 'get';
 }
-add_filter( 'give-reports_form_method_tab_forms', 'give_set_get_form_method', 10 );
-add_filter( 'give-reports_form_method_tab_donors', 'give_set_get_form_method', 10 );
+add_filter( 'give-reports_form_method_tab_forms', 'give_reports_set_get_form_method', 10 );
+add_filter( 'give-reports_form_method_tab_donors', 'give_reports_set_get_form_method', 10 );
 
 // @TODO: After release 1.8 Donations -> Reports generates with new setting api, so we can remove some old code from this file.
