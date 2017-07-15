@@ -232,6 +232,13 @@ function give_reports_forms_table() {
 
 add_action( 'give_reports_view_forms', 'give_reports_forms_table' );
 
+/**
+ * Set Get form method for reporting tabs
+ *
+ * @since 1.8.12
+ *
+ * @return string
+ */
 function give_set_get_form_method() {
 	return 'get';
 }
