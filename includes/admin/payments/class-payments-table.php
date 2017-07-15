@@ -186,7 +186,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 					<?php
 					while( $donation_forms->have_posts() ) : $donation_forms->the_post();
 						$form_selected = '';
-						if( get_the_ID() == $form_id ) {
+						if( get_the_ID() === $form_id ) {
 							$form_selected = 'selected="selected"';
 						}
 						?>
@@ -783,58 +783,6 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 		return $p_query->get_payments();
 
-	}
-
-	/**
-	 * Added filter for donation forms
-	 * @param string $which
-	 *
-	 * @since 1.8.12
-	 *
-	 * @return void
-	 */
-	protected function extra_tablenav( $which ) {
-
-		if ( $which === "top" ){
-			?>
-			<div class="alignleft actions bulkactions">
-				<?php
-				$args = array(
-					'post_type'      => 'give_forms',
-					'post_status'    => 'publish',
-					'posts_per_page' => - 1,
-					'order'          => 'ID',
-					'orderby'        => 'ASC'
-				);
-				$donation_forms = new WP_Query( $args );
-
-				if( $donation_forms->have_posts() ) {
-					?>
-					<select name="form_id" class="give-donation-forms-filter">
-						<option value="-1"><?php _e( 'All Donation Forms', 'give' ); ?></option>
-						<?php
-						while( $donation_forms->have_posts() ) : $donation_forms->the_post();
-							$form_selected = '';
-							if( get_the_ID() == $_GET['form_id'] ) {
-								$form_selected = 'selected="selected"';
-							}
-							?>
-							<option value="<?php the_ID(); ?>" <?php echo $form_selected; ?>><?php the_title(); ?></option>
-							<?php
-						endwhile;
-						?>
-					</select>
-					<?php
-					submit_button( __( 'Apply', 'give' ), 'secondary', 'actions', false );
-				}
-				?>
-			</div>
-			<?php
-		}
-		if ( $which === "bottom" ){
-			//The code that goes after the table is there
-
-		}
 	}
 
 	/**
