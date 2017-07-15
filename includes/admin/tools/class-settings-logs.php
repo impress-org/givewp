@@ -51,8 +51,8 @@ if ( ! class_exists( 'Give_Settings_Logs' ) ) :
 
 			// Do not use main form for this tab.
 			if ( give_get_current_setting_tab() === $this->id ) {
-				add_action( 'give-tools_open_form', '__return_empty_string' );
-				add_action( 'give-tools_close_form', '__return_empty_string' );
+				//add_action( 'give-tools_open_form', '__return_empty_string' );
+				//add_action( 'give-tools_close_form', '__return_empty_string' );
 			}
 		}
 
