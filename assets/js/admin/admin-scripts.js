@@ -1734,7 +1734,7 @@ jQuery.noConflict();
 								give_vars.bulk_action[current_action].zero.replace( '{status}', current_action_label.replace( 'Set To ', '' ) ) :
 								give_vars.bulk_action[current_action].zero;
 
-							// Check if admin selected any paymentor not.
+							// Check if admin selected any donations or not.
 							if ( ! parseInt( $payments ) ) {
 								alert( confirm_action_notice );
 								return false;
