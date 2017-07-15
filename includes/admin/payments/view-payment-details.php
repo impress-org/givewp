@@ -640,7 +640,7 @@ $payment_mode   = $payment->mode;
 														?>
 													</div>
 													<div id="give-order-address-state-wrap">
-														<label for="give-payment-address-state" class="order-data-address-line"><?php esc_html_e( 'State / Province:', 'give' ); ?></label>
+														<label for="give-payment-address-state" class="order-data-address-line"><?php esc_html_e( 'State / Province / County:', 'give' ); ?></label>
 														<?php
 														$states = give_get_states( $address['country'] );
 														if ( ! empty( $states ) ) {
