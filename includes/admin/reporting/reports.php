@@ -219,21 +219,23 @@ function give_reports_forms_table() {
 	}
 
 	include( dirname( __FILE__ ) . '/class-form-reports-table.php' );
+
+	$give_table = new Give_Form_Reports_Table();
+	$give_table->prepare_items();
+	$give_table->display();
 	?>
-	<form class="give-forms-reports-filter" method="get">
-		<?php
-		$give_table = new Give_Form_Reports_Table();
-		$give_table->prepare_items();
-		$give_table->display();
-		?>
-		<input type="hidden" name="post_type" value="give_forms"/>
-		<input type="hidden" name="page" value="give-reports"/>
-		<input type="hidden" name="tab" value="forms"/>
-	</form>
+	<input type="hidden" name="post_type" value="give_forms"/>
+	<input type="hidden" name="page" value="give-reports"/>
+	<input type="hidden" name="tab" value="forms"/>
 	<?php
 }
 
 add_action( 'give_reports_view_forms', 'give_reports_forms_table' );
+
+function give_set_get_form_method() {
+	return 'get';
+}
+add_filter( 'give-reports_form_method_tab_forms', 'give_set_get_form_method' );
 
 /**
  * Renders the detailed report for a specific give form.
