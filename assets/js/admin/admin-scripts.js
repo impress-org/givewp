@@ -284,14 +284,13 @@ jQuery.noConflict();
 
 					state_wrap.find( '*' ).not( '.order-data-address-line' ).remove();
 
-					if ( 'nostates' == response ) {
-						state_wrap.append( '<input type="text" name="give-payment-address[0][state]" value="" class="give-edit-toggles medium-text"/>' );
-					} else {
-						state_wrap.append( response );
-						state_wrap.find( 'select' ).chosen();
-					}
+                    if( typeof ( response.states_found ) != undefined && true == response.states_found ) {
+                        state_wrap.append( response.data );
+                        state_wrap.find( 'select' ).chosen();
+                    } else {
+                        state_wrap.append( '<input type="text" name="give-payment-address[0][state]" value="" class="give-edit-toggles medium-text"/>' );
+                    }
 				} );
-
 				return false;
 			} );
 
@@ -922,13 +921,12 @@ jQuery.noConflict();
 					field_name: 'customerinfo[state]'
 				};
 				$.post( ajaxurl, data, function( response ) {
-					if ( 'nostates' === response ) {
-						$( ':input[name="customerinfo[state]"]' ).replaceWith( '<input type="text" name="' + data.field_name + '" value="" class="give-edit-toggles medium-text"/>' );
+					if( typeof ( response.states_found ) != undefined && true == response.states_found ) {
+                        $( ':input[name="customerinfo[state]"]' ).replaceWith( response.data );
 					} else {
-						$( ':input[name="customerinfo[state]"]' ).replaceWith( response );
+                        $( ':input[name="customerinfo[state]"]' ).replaceWith( '<input type="text" name="' + data.field_name + '" value="" class="give-edit-toggles medium-text"/>' );
 					}
 				} );
-
 				return false;
 			} );
 		},

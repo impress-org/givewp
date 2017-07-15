@@ -338,7 +338,7 @@ function give_donor_view( $donor ) {
 												<?php
 											} else {
 												?>
-												<input type="text" size="6" data-key="state" name="customerinfo[state]" id="card_state" class="card_state give-input info-item" placeholder="<?php esc_attr_e( 'State / Province', 'give' ); ?>" />
+												<input type="text" size="6" data-key="state" name="customerinfo[state]" id="card_state" class="card_state give-input info-item" placeholder="<?php esc_attr_e( 'State / Province / County', 'give' ); ?>" />
 												<?php
 											}
 											?>
