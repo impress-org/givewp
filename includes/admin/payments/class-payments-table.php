@@ -147,7 +147,8 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$end_date   = isset( $_GET['end-date'] ) ? sanitize_text_field( $_GET['end-date'] ) : null;
 		$status     = isset( $_GET['status'] ) ? sanitize_text_field( $_GET['status'] ) : '';
 		$donor      = isset( $_GET['donor'] ) ? sanitize_text_field( $_GET['donor'] ) : '';
-		$search      = isset( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : '';
+		$search     = isset( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : '';
+		$form_id    = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : '';
 		?>
 		<div id="give-payment-filters">
 			<span id="give-payment-date-filters">
@@ -168,6 +169,36 @@ class Give_Payment_History_Table extends WP_List_Table {
 				   class="button-secondary"><?php esc_html_e( 'Clear Filter', 'give' ); ?></a>
 			<?php endif; ?>
 			<?php $this->search_box( esc_html__( 'Search', 'give' ), 'give-payments' ); ?>
+			<?php
+			$args = array(
+				'post_type'      => 'give_forms',
+				'post_status'    => 'publish',
+				'posts_per_page' => - 1,
+				'order'          => 'ID',
+				'orderby'        => 'ASC'
+			);
+			$donation_forms = new WP_Query( $args );
+
+			if( $donation_forms->have_posts() ) {
+				?>
+				<select name="form_id" class="give-donation-forms-filter">
+					<option value="-1"><?php _e( 'All Donation Forms', 'give' ); ?></option>
+					<?php
+					while( $donation_forms->have_posts() ) : $donation_forms->the_post();
+						$form_selected = '';
+						if( get_the_ID() == $form_id ) {
+							$form_selected = 'selected="selected"';
+						}
+						?>
+						<option value="<?php the_ID(); ?>" <?php echo $form_selected; ?>><?php the_title(); ?></option>
+						<?php
+					endwhile;
+					?>
+				</select>
+				<?php
+				submit_button( __( 'Apply', 'give' ), 'secondary', '', false );
+			}
+			?>
 		</div>
 
 		<?php
@@ -777,15 +808,24 @@ class Give_Payment_History_Table extends WP_List_Table {
 				);
 				$donation_forms = new WP_Query( $args );
 
-				if( $donation_forms->have_posts() ){
+				if( $donation_forms->have_posts() ) {
 					?>
-					<select name="form" class="give-donation-forms-filter">
+					<select name="form_id" class="give-donation-forms-filter">
 						<option value="-1"><?php _e( 'All Donation Forms', 'give' ); ?></option>
-						<?php while( $donation_forms->have_posts() ) : $donation_forms->the_post(); ?>
-							<option value="<?php the_ID(); ?>"><?php the_title(); ?></option>
-						<?php endwhile; ?>
+						<?php
+						while( $donation_forms->have_posts() ) : $donation_forms->the_post();
+							$form_selected = '';
+							if( get_the_ID() == $_GET['form_id'] ) {
+								$form_selected = 'selected="selected"';
+							}
+							?>
+							<option value="<?php the_ID(); ?>" <?php echo $form_selected; ?>><?php the_title(); ?></option>
+							<?php
+						endwhile;
+						?>
 					</select>
 					<?php
+					submit_button( __( 'Apply', 'give' ), 'secondary', 'actions', false );
 				}
 				?>
 			</div>
