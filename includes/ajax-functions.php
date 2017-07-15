@@ -192,35 +192,49 @@ add_action( 'wp_ajax_nopriv_give_get_form_title', 'give_ajax_get_form_title' );
  * @return void
  */
 function give_ajax_get_states_field() {
+	$states_found = false;
+	$show_field = true;
+	// Get the Country code from the $_POST.
+	$country = sanitize_text_field( $_POST['country'] );
 
-	if ( empty( $_POST['country'] ) ) {
-		$_POST['country'] = give_get_country();
+	// Get the field name from the $_POST.
+	$field_name = sanitize_text_field( $_POST['field_name'] );
+
+	if ( empty( $country ) ) {
+		$country = give_get_country();
 	}
-	$states = give_get_states( $_POST['country'] );
 
+	$states = give_get_states( $country );
 	if ( ! empty( $states ) ) {
-
 		$args = array(
-			'name'             => $_POST['field_name'],
-			'id'               => $_POST['field_name'],
-			'class'            => $_POST['field_name'] . '  give-select',
-			'options'          => give_get_states( $_POST['country'] ),
+			'name'             => $field_name,
+			'id'               => $field_name,
+			'class'            => $field_name . '  give-select',
+			'options'          => $states,
 			'show_option_all'  => false,
 			'show_option_none' => false,
 		);
-
-		$response = Give()->html->select( $args );
-
+		$data = Give()->html->select( $args );
+		$states_found = true;
 	} else {
+		$data = 'nostates';
 
-		$response = 'nostates';
+		// Get the country list that does not have any states init.
+		$no_states_country = give_no_states_country_list();
+
+		// Check if $country code exists in the array key.
+		if ( array_key_exists( $country, $no_states_country ) ) {
+			$show_field = false;
+		}
 	}
-
-	echo $response;
-
-	give_die();
+	$response = array(
+		'success' => true,
+		'states_found' => $states_found,
+		'show_field' => $show_field,
+		'data' => $data,
+	);
+	wp_send_json( $response );
 }
-
 add_action( 'wp_ajax_give_get_states', 'give_ajax_get_states_field' );
 add_action( 'wp_ajax_nopriv_give_get_states', 'give_ajax_get_states_field' );
 
