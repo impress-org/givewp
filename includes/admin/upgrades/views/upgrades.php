@@ -38,9 +38,9 @@ if ( $step > $steps ) {
 
 $give_updates = Give_Updates::get_instance();
 ?>
-<div class="wrap">
+<div class="wrap" id="give-updates">
 	<h1><?php esc_html_e( 'Give - Upgrades', 'give' ); ?></h1>
-	<div id="give-updates" class="panel-content">
+	<div class="panel-content">
 		<p>
 			<?php _e( 'You have updates. Please <a href="%s">create a backup</a> of your site before updating. It is important to always stay up-to-date with latest versions of Give core and it\'s add-ons. We regularly release new features, bug fixes, and enhancements. To update add-ons be sure your <a href="%s">license keys</a> are active.', 'give' ); ?>
 		</p>
@@ -48,7 +48,7 @@ $give_updates = Give_Updates::get_instance();
 
 	<?php $update_counter = 1;?>
 
-	<?php $db_updates = $give_updates->get_updates('database'); ?>
+	<?php $db_updates = $give_updates->get_db_update_count(); ?>
 	<?php if( ! empty( $db_updates ) ) : ?>
 		<?php $db_update_url = add_query_arg( array( 'type' => 'database' ) ); ?>
 		<div id="give-db-updates">
@@ -58,13 +58,20 @@ $give_updates = Give_Updates::get_instance();
 					<?php echo sprintf( __( 'Give needs to update the database. <a href="%s">Update now ></a>', 'give' ), $db_update_url ); ?>
 				</p>
 			</div>
+			<div id="poststuff" style="display: none">
+				<div class="postbox">
+					<h2 class="hndle"><span><?php echo sprintf( __( 'Step 1 of %s', 'give' ), $db_updates ); ?></span></h2>
+					<div class="inside"></div>
+					<!-- .inside -->
+				</div><!-- .postbox -->
+			</div>
 		</div>
 	<?php endif; ?>
 
 	<?php $plugin_updates = $give_updates->get_plugin_update_count(); ?>
 	<?php if( ! empty( $plugin_updates ) ) : ?>
 	<?php $plugin_update_url = add_query_arg( array( 's' => 'Give' ), admin_url( '/plugins.php' ) ); ?>
-	<div id="give-db-updates">
+	<div id="give-plugin-updates">
 		<h2><?php _e( 'Plugin Updates', 'give' ); ?></h2>
 		<div class="panel-content">
 			<p>
