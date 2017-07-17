@@ -41,18 +41,15 @@ At this point, you're waiting for us to merge your pull request. We'll review al
 
 We ensure that each change in JS files follows [Javascript Coding Standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/javascript/) provided by WordPress.
 
-#### Step 1: Install ESLint Standard Package
+#### Step 1: Install Node Modules as defined in `package.json`
 
 ```
-$ npm i eslint -g
+$ npm install
 ```
-#### Step 2: Install WordPress plugin for ESLint
-```
-$ npm install -g eslint-config-wordpress
-```
-#### Step 3: Using ESLint
 
-##### Using with Terminal 
+#### Step 2: How to use ESLint?
+
+##### with Terminal 
 
 1. Open Terminal
 2. Type command in a format `$ eslint [options] file.js [file.js] [dir]`.
@@ -63,7 +60,7 @@ For Example,
 $ eslint yourfile.js
 ```
 
-##### Using with PHPStorm
+##### with PHPStorm
 
 Follow the steps below to configure ESLint with PHPStorm:
 1. Go to PHPStorm `Preferences > Languages and Frameworks > Javascript > Code Quality Tools > ESLint`.
