@@ -49,18 +49,13 @@ if ( ! class_exists( 'Give_Settings_Forms' ) ) :
 			add_action( "give-reports_settings_{$this->id}_page", array( $this, 'output' ) );
 			add_action( 'give_admin_field_report_forms', array( $this, 'render_report_forms_field' ), 10, 2 );
 
-			// Do not use main form for this tab.
-			if( give_get_current_setting_tab() === $this->id ) {
-				add_action( 'give-reports_open_form', '__return_empty_string' );
-				add_action( 'give-reports_close_form', '__return_empty_string' );
-			}
 		}
 
 		/**
 		 * Add this page to settings.
 		 *
 		 * @since  1.8
-		 * @param  array $pages Lst of pages.
+		 * @param  array $pages List of pages.
 		 * @return array
 		 */
 		public function add_settings_page( $pages ) {
