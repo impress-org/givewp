@@ -1396,36 +1396,6 @@ body.give_forms_page_give-reports table.export-options-table span#give-start-wra
   #give-tools-recount-form .notice-wrap #give-batch-success {
     margin-bottom: 6px; }
 
-.give-progress {
-  height: 15px;
-  width: 95%;
-  border-radius: 4px;
-  overflow: hidden; }
-  .give-progress > div {
-    height: 100%;
-    width: 0; }
-
-.admin-color-fresh .give-export-form .give-progress div, .give-export-form .give-progress div {
-  background: #0073aa; }
-
-.admin-color-light .give-export-form .give-progress div {
-  background: #888; }
-
-.admin-color-blue .give-export-form .give-progress div {
-  background: #096484; }
-
-.admin-color-coffee .give-export-form .give-progress div {
-  background: #c7a589; }
-
-.admin-color-ectoplasm .give-export-form .give-progress div {
-  background: #a3b745; }
-
-.admin-color-midnight .give-export-form .give-progress div {
-  background: #e14d43; }
-
-.admin-color-sunrise .give-export-form .give-progress div {
-  background: #dd823b; }
-
 .recount-stats-controls form {
   display: inline; }
 
@@ -2721,5 +2691,35 @@ div.sc-shortcode {
     font-size: 12px;
     line-height: 20px;
     outline: 0; }
+
+.give-progress {
+  height: 15px;
+  width: 95%;
+  border-radius: 4px;
+  overflow: hidden; }
+  .give-progress > div {
+    height: 100%;
+    width: 0; }
+
+.admin-color-fresh .give-progress div, .give-progress div {
+  background: #0073aa; }
+
+.admin-color-light .give-progress div {
+  background: #888; }
+
+.admin-color-blue .give-progress div {
+  background: #096484; }
+
+.admin-color-coffee .give-progress div {
+  background: #c7a589; }
+
+.admin-color-ectoplasm .give-progress div {
+  background: #a3b745; }
+
+.admin-color-midnight .give-progress div {
+  background: #e14d43; }
+
+.admin-color-sunrise .give-progress div {
+  background: #dd823b; }
 
 /*# sourceMappingURL=../sourcemaps/give-admin.css.map */
