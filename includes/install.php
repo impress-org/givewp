@@ -84,7 +84,7 @@ function give_run_install() {
 				'post_status'    => 'publish',
 				'post_author'    => 1,
 				'post_type'      => 'page',
-				'comment_status' => 'closed'
+				'comment_status' => 'closed',
 			)
 		);
 
@@ -103,7 +103,7 @@ function give_run_install() {
 				'post_status'    => 'publish',
 				'post_author'    => 1,
 				'post_type'      => 'page',
-				'comment_status' => 'closed'
+				'comment_status' => 'closed',
 			)
 		);
 
@@ -120,7 +120,7 @@ function give_run_install() {
 				'post_status'    => 'publish',
 				'post_author'    => 1,
 				'post_type'      => 'page',
-				'comment_status' => 'closed'
+				'comment_status' => 'closed',
 			)
 		);
 
@@ -172,7 +172,9 @@ function give_run_install() {
 			'upgrade_give_offline_status',
 			'v18_upgrades_core_setting',
 			'v18_upgrades_form_metadata',
-			'v189_upgrades_levels_post_meta'
+			'v189_upgrades_levels_post_meta',
+			'v20_upgrades_form_metadata',
+			'give_v20_logs_upgrades'
 		);
 
 		foreach ( $upgrade_routines as $upgrade ) {

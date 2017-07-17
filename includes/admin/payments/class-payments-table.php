@@ -350,7 +350,16 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 		switch ( $column_name ) {
 			case 'donation' :
-				$value = sprintf( '<a href="%1$s" data-tooltip="%2$s">#%3$s</a>&nbsp;%4$s&nbsp;%5$s<br>', $single_donation_url, sprintf( esc_attr__( 'View Donation #%s', 'give' ), $payment->ID ), $payment->ID, esc_html__( 'by', 'give' ), $this->get_donor( $payment ) );
+				$value = Give()->tooltips->render_link( array(
+					'label'       => sprintf( esc_attr__( 'View Donation #%s', 'give' ), $payment->ID ),
+					'tag_content' => "#$payment->ID",
+					'link'        => $single_donation_url,
+				) );
+				$value .= sprintf(
+					'&nbsp;%1$s&nbsp;%2$s<br>',
+					esc_html__( 'by', 'give' ),
+					$this->get_donor( $payment )
+				);
 				$value .= $this->get_donor_email( $payment );
 				$value .= $this->row_actions( $row_actions );
 				break;
@@ -382,7 +391,16 @@ class Give_Payment_History_Table extends WP_List_Table {
 				break;
 
 			case 'details' :
-				$value = sprintf( '<div class="give-payment-details-link-wrap"><a href="%1$s" class="give-payment-details-link button button-small" data-tooltip="%2$s" aria-label="%2$s"><span class="dashicons dashicons-visibility"></span></a></div>', $single_donation_url, sprintf( esc_attr__( 'View Donation #%s', 'give' ), $payment->ID ) );
+				$value = Give()->tooltips->render_link( array(
+					'label'      => sprintf( esc_attr__( 'View Donation #%s', 'give' ), $payment->ID ),
+					'tag_content' => '<span class="dashicons dashicons-visibility"></span>',
+					'link'       => $single_donation_url,
+					'attributes' => array(
+						'class' => 'give-payment-details-link button button-small',
+					),
+				) );
+
+				$value = "<div class=\"give-payment-details-link-wrap\">{$value}</div>";
 				break;
 
 			default:
@@ -412,7 +430,12 @@ class Give_Payment_History_Table extends WP_List_Table {
 			$email = esc_html__( '(unknown)', 'give' );
 		}
 
-		$value = '<a href="mailto:' . $email . '" data-tooltip="' . esc_attr__( 'Email donor', 'give' ) . '">' . $email . '</a>';
+
+		$value = Give()->tooltips->render_link( array(
+			'link'        => "mailto:{$email}",
+			'label'       => esc_attr__( 'Email donor', 'give' ),
+			'tag_content' => $email,
+		) );
 
 		return apply_filters( 'give_payments_table_column', $value, $payment->ID, 'email' );
 	}
@@ -468,7 +491,15 @@ class Give_Payment_History_Table extends WP_List_Table {
 	function get_payment_status( $payment ) {
 		$value = '<div class="give-donation-status status-' . sanitize_title( give_get_payment_status( $payment, true ) ) . '"><span class="give-donation-status-icon"></span> ' . give_get_payment_status( $payment, true ) . '</div>';
 		if ( $payment->mode == 'test' ) {
-			$value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label" data-tooltip="' . esc_attr__( 'This donation was made in test mode.', 'give' ) . '">' . esc_html__( 'Test', 'give' ) . '</span>';
+			$value .= Give()->tooltips->render_span( array(
+				'label'       => esc_attr__( 'This donation was made in test mode.', 'give' ),
+				'tag_content' => esc_html__( 'Test', 'give' ),
+				'attributes'  => array(
+					'class' => 'give-item-label give-item-label-orange give-test-mode-transactions-label',
+				),
+
+
+			) );
 		}
 
 		return $value;
@@ -629,7 +660,11 @@ class Give_Payment_History_Table extends WP_List_Table {
 					break;
 
 				case 'resend-receipt':
-					give_email_donation_receipt( $id, false );
+					/**
+					 * Fire the action
+					 * @since 2.0
+					 */
+					do_action( 'give_donation-receipt_email_notification', $id );
 					break;
 			}// End switch().
 

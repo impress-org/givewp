@@ -551,59 +551,13 @@ function give_get_donor_address( $user_id = 0 ) {
  * @return        void
  */
 function give_new_user_notification( $user_id = 0, $user_data = array() ) {
-
+	// Bailout.
 	if ( empty( $user_id ) || empty( $user_data ) ) {
 		return;
 	}
-	$blogname = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
 
-
-	// New User Registration: Email sends to the site admin.
-	$emails = Give()->emails;
-	$emails->__set( 'heading', esc_html__( 'New User Registration', 'give' ) );
-
-	/* translators: %s: site name */
-	$message = sprintf( esc_attr__( 'A new user has registered on %s:', 'give' ), $blogname ) . "\r\n\r\n";
-	/* translators: %s: user login */
-	$message .= '<strong>' . esc_attr__( 'Username:', 'give' ) . '</strong> ' . $user_data['user_login'] . "\r\n";
-	/* translators: %s: user email */
-	$message .= '<strong>' . esc_attr__( 'E-mail:', 'give' ) . '</strong> ' . $user_data['user_email']  . "\r\n\r\n";
-
-	$message .= '<a href="' . admin_url('user-edit.php?user_id=' . $user_id) . '" target="_blank"> ' . esc_attr__( 'Click here to view &raquo;', 'give' ) . '</a>' . "\r\n";
-
-	$emails->send(
-		get_option( 'admin_email' ),
-		sprintf(
-			/* translators: %s: site name */
-			esc_attr__( '[%s] New User Registration', 'give' ),
-			$blogname
-		),
-		$message
-	);
-
-
-	// Account Information: Email sends to donor who registered.
-	$emails->__set( 'heading', esc_html__( 'Account Information', 'give' ) );
-
-	$message = sprintf( esc_attr__( 'The following email contains your account information for %s:', 'give' ), $blogname ) . "\r\n\r\n";
-
-	/* translators: %s: user login */
-	$message .=  '<strong>' . esc_attr__( 'Username:', 'give' ) . '</strong> ' .  $user_data['user_login'] . "\r\n";
-	/* translators: %s: password */
-	$message .=  '<strong>' . esc_attr__( 'Password:', 'give' ) . '</strong> ' . esc_attr__( '[Password entered during donation]', 'give' ) . "\r\n\r\n";
-
-	$message .= '<a href="' . wp_login_url() . '" target="_blank"> ' . esc_attr__( 'Click here to login &raquo;', 'give' ) . '</a>' . "\r\n";
-
-	$emails->send(
-		$user_data['user_email'],
-		sprintf(
-			/* translators: %s: site name */
-			esc_attr__( '[%s] Your username and password', 'give' ),
-			$blogname
-		),
-		$message
-	);
-
+	do_action( 'give_new-donor-register_email_notification', $user_id, $user_data );
+	do_action( 'give_donor-register_email_notification', $user_id, $user_data );
 }
 
 add_action( 'give_insert_user', 'give_new_user_notification', 10, 2 );
@@ -612,7 +566,7 @@ add_action( 'give_insert_user', 'give_new_user_notification', 10, 2 );
 /**
  * Get Donor Name By
  *
- * Retrieves the donor name based on the id and the name of the user or donation.
+ * Retrieves the donor name based on the id and the name of the user or donation
  *
  * @access      public
  * @since       1.8.9

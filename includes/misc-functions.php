@@ -587,10 +587,17 @@ function _give_deprecated_function( $function, $version, $replacement = null, $b
  * @return string $post_id
  */
 function give_get_admin_post_id() {
-	$post_id = isset( $_GET['post'] ) ? $_GET['post'] : null;
-	if ( ! $post_id && isset( $_POST['post_id'] ) ) {
-		$post_id = $_POST['post_id'];
-	}
+	$post_id = isset( $_REQUEST['post'] )
+		? absint( $_REQUEST['post'] )
+		: null;
+
+	$post_id = ! empty( $post_id )
+		? $post_id
+		: ( isset( $_REQUEST['post_id'] ) ? absint( $_REQUEST['post_id'] ) : null );
+
+	$post_id = ! empty( $post_id )
+		? $post_id
+		: ( isset( $_REQUEST['post_ID'] ) ? absint( $_REQUEST['post_ID'] ) : null );
 
 	return $post_id;
 }
@@ -1093,6 +1100,21 @@ function give_delete_donation_stats( $date_range = '', $args = array() ) {
 	return $status;
 }
 
+/**
+ * Check if admin creating new donation form or not.
+ *
+ * @since 2.0
+ * @return bool
+ */
+function give_is_add_new_form_page() {
+	$status = false;
+
+	if ( false !== strpos( $_SERVER['REQUEST_URI'], '/wp-admin/post-new.php?post_type=give_forms' ) ) {
+		$status = true;
+	}
+
+	return $status;
+}
 
 /**
  * Get Form/Payment meta.
@@ -1173,4 +1195,108 @@ function give_delete_meta( $id, $meta_key, $meta_value = '' ) {
 	 * @since 1.8.8
 	 */
 	return apply_filters( 'give_delete_meta', $status, $id, $meta_key, $meta_value );
+}
+
+
+/**
+ * Get attribute string
+ *
+ * @since 2.0
+ *
+ * @param array $attributes
+ *
+ * @return string
+ */
+function give_get_attribute_str( $attributes ) {
+	$attribute_str = '';
+
+	if ( empty( $attributes ) ) {
+		return $attribute_str;
+	}
+
+	foreach ( $attributes as $tag => $value ) {
+		$attribute_str .= " {$tag}=\"{$value}\"";
+	}
+
+	return trim( $attribute_str );
+}
+
+
+/**
+ * Check if the upgrade routine has been run for a specific action
+ *
+ * @since  1.0
+ *
+ * @param  string $upgrade_action The upgrade action to check completion for
+ *
+ * @return bool                   If the action has been added to the completed actions array
+ */
+function give_has_upgrade_completed( $upgrade_action = '' ) {
+
+	if ( empty( $upgrade_action ) ) {
+		return false;
+	}
+
+	$completed_upgrades = give_get_completed_upgrades();
+
+	return in_array( $upgrade_action, $completed_upgrades );
+
+}
+
+/**
+ * For use when doing 'stepped' upgrade routines, to see if we need to start somewhere in the middle
+ *
+ * @since 1.8
+ *
+ * @return mixed   When nothing to resume returns false, otherwise starts the upgrade where it left off
+ */
+function give_maybe_resume_upgrade() {
+	$doing_upgrade = get_option( 'give_doing_upgrade', false );
+	if ( empty( $doing_upgrade ) ) {
+		return false;
+	}
+
+	return $doing_upgrade;
+}
+
+/**
+ * Adds an upgrade action to the completed upgrades array
+ *
+ * @since  1.0
+ *
+ * @param  string $upgrade_action The action to add to the completed upgrades array
+ *
+ * @return bool                   If the function was successfully added
+ */
+function give_set_upgrade_complete( $upgrade_action = '' ) {
+
+	if ( empty( $upgrade_action ) ) {
+		return false;
+	}
+
+	$completed_upgrades   = give_get_completed_upgrades();
+	$completed_upgrades[] = $upgrade_action;
+
+	// Remove any blanks, and only show uniques.
+	$completed_upgrades = array_unique( array_values( $completed_upgrades ) );
+
+	return update_option( 'give_completed_upgrades', $completed_upgrades );
+}
+
+/**
+ * Get's the array of completed upgrade actions
+ *
+ * @since  1.0
+ * @return array The array of completed upgrades
+ */
+function give_get_completed_upgrades() {
+
+	$completed_upgrades = get_option( 'give_completed_upgrades' );
+
+	if ( false === $completed_upgrades ) {
+		$completed_upgrades = array();
+	}
+
+	return $completed_upgrades;
+
 }

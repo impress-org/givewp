@@ -19,34 +19,36 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * This class is for working with payments in Give.
  *
- * @property int $ID
- * @property bool $new
- * @property string $number
- * @property string $mode
- * @property string $key
- * @property string $form_title
+ * @property int        $ID
+ * @property bool       $new
+ * @property string     $number
+ * @property string     $mode
+ * @property string     $key
+ * @property string     $form_title
  * @property string|int $form_id
  * @property string|int $price_id
  * @property string|int $total
  * @property string|int $subtotal
- * @property string $post_status
- * @property string $date
- * @property string $postdate
- * @property string $status
- * @property string $email
- * @property string $payment_meta
- * @property string $customer_id
- * @property string $completed_date
- * @property string $currency
- * @property string $ip
- * @property array $user_info
- * @property string $gateway
- * @property string $user_id
- * @property string $first_name
- * @property string $last_name
- * @property string $parent_payment
- * @property string $transaction_id
- * @property string $old_status
+ * @property string|int $fees
+ * @property string|int $fees_total
+ * @property string     $post_status
+ * @property string     $date
+ * @property string     $postdate
+ * @property string     $status
+ * @property string     $email
+ * @property string     $payment_meta
+ * @property string     $customer_id
+ * @property string     $completed_date
+ * @property string     $currency
+ * @property string     $ip
+ * @property array      $user_info
+ * @property string     $gateway
+ * @property string     $user_id
+ * @property string     $first_name
+ * @property string     $last_name
+ * @property string     $parent_payment
+ * @property string     $transaction_id
+ * @property string     $old_status
  *
  * @since 1.5
  */
@@ -413,7 +415,7 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  string $key The property name
+	 * @param  string $key   The property name
 	 * @param  mixed  $value The value of the property
 	 */
 	public function __set( $key, $value ) {
@@ -484,8 +486,8 @@ final class Give_Payment {
 		 *
 		 * @since 1.5
 		 *
-		 * @param Give_Payment $this Payment object.
-		 * @param int $payment_id The ID of the payment.
+		 * @param Give_Payment $this       Payment object.
+		 * @param int          $payment_id The ID of the payment.
 		 */
 		do_action( 'give_pre_setup_payment', $this, $payment_id );
 
@@ -543,8 +545,8 @@ final class Give_Payment {
 		 *
 		 * @since 1.5
 		 *
-		 * @param Give_Payment $this Payment object.
-		 * @param int $payment_id The ID of the payment.
+		 * @param Give_Payment $this       Payment object.
+		 * @param int          $payment_id The ID of the payment.
 		 */
 		do_action( 'give_setup_payment', $this, $payment_id );
 
@@ -755,29 +757,7 @@ final class Give_Payment {
 									break;
 
 								case 'remove':
-									$log_args = array(
-										'post_type'   => 'give_log',
-										'post_parent' => $item['id'],
-										'numberposts' => $quantity,
-										'meta_query'  => array(
-											array(
-												'key'     => '_give_log_payment_id',
-												'value'   => $this->ID,
-												'compare' => '=',
-											),
-											array(
-												'key'     => '_give_log_price_id',
-												'value'   => $price_id,
-												'compare' => '=',
-											),
-										),
-									);
-
-									$found_logs = get_posts( $log_args );
-									foreach ( $found_logs as $log ) {
-										wp_delete_post( $log->ID, true );
-									}
-
+									$this->delete_sales_logs();
 									if ( 'publish' === $this->status || 'complete' === $this->status ) {
 										$form = new Give_Donate_Form( $item['id'] );
 										$form->decrease_sales( $quantity );
@@ -1554,19 +1534,8 @@ final class Give_Payment {
 	 * @return void
 	 */
 	private function delete_sales_logs() {
-		global $give_logs;
-
 		// Remove related sale log entries.
-		$give_logs->delete_logs(
-			null,
-			'sale',
-			array(
-				array(
-					'key'   => '_give_log_payment_id',
-					'value' => $this->ID,
-				),
-			)
-		);
+		Give()->logs->delete_logs( $this->ID );
 	}
 
 	/**
