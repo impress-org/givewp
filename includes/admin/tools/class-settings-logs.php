@@ -56,7 +56,7 @@ if ( ! class_exists( 'Give_Settings_Logs' ) ) :
 		 *
 		 * @since  1.8
 		 *
-		 * @param  array $pages Lst of pages.
+		 * @param  array $pages List of pages.
 		 *
 		 * @return array
 		 */
