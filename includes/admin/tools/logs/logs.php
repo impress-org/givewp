@@ -227,7 +227,7 @@ function give_log_views() {
  *
  * @return string
  */
-function give_tools_set_get_form_method() {
+function give_tools_set_form_method( $method ) {
 	return 'get';
 }
-add_filter( 'give-tools_form_method_tab_logs', 'give_tools_set_get_form_method' );
+add_filter( 'give-tools_form_method_tab_logs', 'give_tools_set_form_method', 10 );
