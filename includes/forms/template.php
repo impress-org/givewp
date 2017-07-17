@@ -385,14 +385,15 @@ add_action( 'give_donation_form_register_login_fields', 'give_show_register_logi
  */
 function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 
-	$give_options        = give_get_settings();
-	$variable_pricing    = give_has_variable_prices( $form_id );
-	$allow_custom_amount = give_get_meta( $form_id, '_give_custom_amount', true );
-	$currency_position   = isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before';
-	$symbol              = give_currency_symbol( give_get_currency() );
-	$currency_output     = '<span class="give-currency-symbol give-currency-position-' . $currency_position . '">' . $symbol . '</span>';
-	$default_amount      = give_format_amount( give_get_default_form_amount( $form_id ) );
-	$custom_amount_text  = give_get_meta( $form_id, '_give_custom_amount_text', true );
+	$give_options          = give_get_settings();
+	$variable_pricing      = give_has_variable_prices( $form_id );
+	$allow_custom_amount   = give_get_meta( $form_id, '_give_custom_amount', true );
+	$currency_position     = isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before';
+	$symbol                = give_currency_symbol( give_get_currency() );
+	$currency_output       = '<span class="give-currency-symbol give-currency-position-' . $currency_position . '">' . $symbol . '</span>';
+	$default_amount        = give_format_amount( give_get_default_form_amount( $form_id ) );
+	$custom_amount_text    = give_get_meta( $form_id, '_give_custom_amount_text', true );
+	$default_custom_amount = give_is_setting_enabled( give_get_meta( $form_id, '_give_set_custom_amount_default', true ) );
 
 	/**
 	 * Fires while displaying donation form, before donation level fields.
@@ -424,7 +425,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 		//Custom Amount Allowed.
 		?>
 		<div class="give-total-wrap">
-			<div class="give-donation-amount form-row-wide">
+			<div class="give-donation-amount form-row-wide <?php if( $default_custom_amount ) { echo "give-custom-amount-focus-in"; } ?>">
 				<?php if ( $currency_position == 'before' ) {
 					echo $currency_output;
 				} ?>
