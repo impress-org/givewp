@@ -319,9 +319,6 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 		) );
 			if ( 'give_forms' == $typenow || 'index.php' == $pagenow || 'post-new.php' == $pagenow || 'post.php' == $pagenow ) {
 				$found = true;
-				if ( 'give-upgrades' === $page ) {
-					$found = false;
-				}
 			} elseif ( in_array( $pagenow, $admin_pages ) ) {
 				$found = true;
 			}
