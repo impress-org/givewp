@@ -370,6 +370,7 @@ class Give_MetaBox_Form_Data {
 						'options'     => array(
 							'amount'     => __( 'Amount', 'give' ),
 							'percentage' => __( 'Percentage', 'give' ),
+							'donation'   => __( 'Number of Donations', 'give' ),
 						),
 					),
 					array(
