@@ -60,15 +60,12 @@ function give_logs_view_sales() {
 		 * @since 1.8.12
 		 */
 		do_action( 'give_logs_donations_top' );
-		?>
 
-<!--		<form class="give-logs-sales-filter" method="get" action="--><?php //echo 'edit.php?post_type=give_forms&page=give-tools&tab=logs'; ?><!--">-->
-			<?php $logs_table->display(); ?>
-			<input type="hidden" name="post_type" value="give_forms"/>
-			<input type="hidden" name="page" value="give-tools"/>
-			<input type="hidden" name="tab" value="logs"/>
-			<input type="hidden" name="section" value="sales"/>
-<!--		</form>-->
+		$logs_table->display(); ?>
+		<input type="hidden" name="post_type" value="give_forms"/>
+		<input type="hidden" name="page" value="give-tools"/>
+		<input type="hidden" name="tab" value="logs"/>
+		<input type="hidden" name="section" value="sales"/>
 
 		<?php
 		/**
@@ -109,15 +106,12 @@ function give_logs_view_gateway_errors() {
 		 * @since 1.8.12
 		 */
 		do_action( 'give_logs_payment_error_top' );
-		?>
 
-<!--		<form class="give-logs-payment-errors-filter" method="get" action="--><?php //echo 'edit.php?post_type=give_forms&page=give-tools&tab=logs'; ?><!--">-->
-			<?php $logs_table->display(); ?>
-			<input type="hidden" name="post_type" value="give_forms"/>
-			<input type="hidden" name="page" value="give-tools"/>
-			<input type="hidden" name="tab" value="logs"/>
-			<input type="hidden" name="section" value="gateway_errors"/>
-<!--		</form>-->
+		$logs_table->display(); ?>
+		<input type="hidden" name="post_type" value="give_forms"/>
+		<input type="hidden" name="page" value="give-tools"/>
+		<input type="hidden" name="tab" value="logs"/>
+		<input type="hidden" name="section" value="gateway_errors"/>
 
 		<?php
 		/**
@@ -158,18 +152,15 @@ function give_logs_view_api_requests() {
 		 * @since 1.0
 		 */
 		do_action( 'give_logs_api_requests_top' );
-		?>
 
-<!--		<form id="give-logs-filter" method="get" action="--><?php //echo 'edit.php?post_type=give_forms&page=give-tools&tab=logs'; ?><!--">-->
-			<?php
-			$logs_table->search_box( esc_html__( 'Search', 'give' ), 'give-api-requests' );
-			$logs_table->display();
-			?>
-			<input type="hidden" name="post_type" value="give_forms"/>
-			<input type="hidden" name="page" value="give-tools"/>
-			<input type="hidden" name="tab" value="logs"/>
-			<input type="hidden" name="section" value="api_requests"/>
-<!--		</form>-->
+		$logs_table->search_box( esc_html__( 'Search', 'give' ), 'give-api-requests' );
+		$logs_table->display();
+		?>
+		<input type="hidden" name="post_type" value="give_forms"/>
+		<input type="hidden" name="page" value="give-tools"/>
+		<input type="hidden" name="tab" value="logs"/>
+		<input type="hidden" name="section" value="api_requests"/>
+
 		<?php
 		/**
 		 * Fires after displaying API requests logs.
