@@ -157,7 +157,7 @@ class Give_Updates {
 				$this->get_update_count()
 			),
 			'manage_give_settings',
-			'give-upgrades',
+			'give-updates',
 			array( $this, 'render_page' )
 		);
 	}
