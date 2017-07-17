@@ -17,6 +17,15 @@ class Give_Updates {
 	static private $instance;
 
 	/**
+	 * Updates
+	 *
+	 * @since  1.8.12
+	 * @access private
+	 * @var array
+	 */
+	static private $updates = array();
+
+	/**
 	 * Singleton pattern.
 	 *
 	 * @since  1.8.12
@@ -25,6 +34,47 @@ class Give_Updates {
 	 * @param Give_Updates .
 	 */
 	private function __construct() {
+	}
+
+	/**
+	 * Register updates
+	 *
+	 * @param $args
+	 */
+	public static function register( $args ) {
+		$args_default = array(
+			'id'      => '',
+			'version' => '',
+		);
+
+		$args = wp_parse_args( $args, $args_default );
+
+		// You can only register database upgrade.
+		$args['type'] = 'database';
+
+		// Bailout.
+		if ( $args['id'] || $args['version'] ) {
+			return;
+		}
+
+		self::$updates[ $args['type'] ][ $args['version'] ] = $args;
+	}
+
+
+	/**
+	 * Get updates.
+	 *
+	 * @since  1.8.12
+	 * @access public
+	 *
+	 * @param string $type Tye of update.
+	 *
+	 * @return array
+	 */
+	public function get_updates( $type = '' ) {
+		$updates = ! empty( self::$updates[$type] ) ? self::$updates[$type] : array();
+
+		return $updates;
 	}
 
 
