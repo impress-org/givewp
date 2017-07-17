@@ -40,7 +40,7 @@ if ( $step > $steps ) {
 
 	<div id="give-upgrade-status" class="welcome-panel-content">
 		<p style="font-size: 20px;max-width: 900px;">
-			<?php _e( 'You have updates. Please <a href="%s">create a backup</a> of your site before updating. It is important to always stay up-to-date with latest versions of Give core and it\'s add-ons. We regularly release new features, bug fixes, and enhancements. To update add-ons be sure your <a href="%s">license keys</a> are active', 'give' ); ?>
+			<?php _e( 'You have updates. Please <a href="%s">create a backup</a> of your site before updating. It is important to always stay up-to-date with latest versions of Give core and it\'s add-ons. We regularly release new features, bug fixes, and enhancements. To update add-ons be sure your <a href="%s">license keys</a> are active.', 'give' ); ?>
 		</p>
 	</div>
 
