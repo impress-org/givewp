@@ -259,6 +259,9 @@ function give_load_admin_scripts( $hook ) {
 
 
 	// JS.
+	wp_register_script( 'give-selector-cache', $js_plugins . 'selector-cache' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
+	wp_enqueue_script( 'give-selector-cache' );
+
 	wp_register_script( 'jquery-chosen', $js_plugins . 'chosen.jquery' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
 	wp_enqueue_script( 'jquery-chosen' );
 
