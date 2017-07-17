@@ -264,15 +264,15 @@ class Give_MetaBox_Form_Data {
 								'placeholder' => esc_attr__( 'Donate Now', 'give' ),
 							),
 						),
-						array(
-							'id'         => $prefix . 'checkout_label',
-							'name'       => __( 'Submit Button', 'give' ),
-							'desc'       => __( 'The button label for completing a donation.', 'give' ),
-							'type'       => 'text_small',
-							'attributes' => array(
-								'placeholder' => __( 'Donate Now', 'give' ),
+							array(
+								'id'         => $prefix . 'checkout_label',
+								'name'       => __( 'Submit Button', 'give' ),
+								'desc'       => __( 'The button label for completing a donation.', 'give' ),
+								'type'       => 'text_small',
+								'attributes' => array(
+									'placeholder' => __( 'Donate Now', 'give' ),
+								),
 							),
-						),
 						array(
 							'name' => __( 'Default Gateway', 'give' ),
 							'desc' => __( 'By default, the gateway for this form will inherit the global default gateway (set under Give > Settings > Payment Gateways). This option allows you to customize the default gateway for this form only.', 'give' ),
@@ -348,6 +348,20 @@ class Give_MetaBox_Form_Data {
 							'disabled' => __( 'Disabled', 'give' ),
 						),
 					),
+
+					array(
+						'name'        => __( 'Goal Format', 'give' ),
+						'description' => __( 'Do you want to display the total amount raised based on your monetary goal or a percentage? For instance, "$500 of $1,000 raised" or "50% funded".', 'give' ),
+						'id'          => $prefix . 'goal_format',
+						'type'        => 'radio_inline',
+						'default'     => 'amount',
+						'options'     => array(
+							'amount'     => __( 'Amount', 'give' ),
+							'percentage' => __( 'Percentage', 'give' ),
+							'donation'   => __( 'Number of Donations', 'give' ),
+						),
+					),
+
 					array(
 						'name'        => __( 'Goal Amount', 'give' ),
 						'description' => __( 'This is the monetary goal amount you want to reach for this form.', 'give' ),
@@ -362,17 +376,12 @@ class Give_MetaBox_Form_Data {
 					),
 
 					array(
-						'name'        => __( 'Goal Format', 'give' ),
-						'description' => __( 'Do you want to display the total amount raised based on your monetary goal or a percentage? For instance, "$500 of $1,000 raised" or "50% funded".', 'give' ),
-						'id'          => $prefix . 'goal_format',
-						'type'        => 'radio_inline',
-						'default'     => 'amount',
-						'options'     => array(
-							'amount'     => __( 'Amount', 'give' ),
-							'percentage' => __( 'Percentage', 'give' ),
-							'donation'   => __( 'Number of Donations', 'give' ),
-						),
+						'id'         => $prefix . 'number_of_donation_goal',
+						'name'       => __( 'Donation Goal', 'give' ),
+						'desc'       => __( 'Set total number of donations as a goal.', 'give' ),
+						'type'       => 'text_small',
 					),
+
 					array(
 						'name'    => __( 'Progress Bar Color', 'give' ),
 						'desc'    => __( 'Customize the color of the goal progress bar.', 'give' ),
