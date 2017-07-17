@@ -1153,6 +1153,19 @@ ASIDE
 #give-export-payments div.chosen-container:first-of-type {
   margin-top: 10px; }
 
+#give-export-payments div.chosen-container ul.chosen-choices {
+  border: 1px solid #ddd; }
+  #give-export-payments div.chosen-container ul.chosen-choices input.chosen-search-input {
+    border: 1px solid #ddd;
+    height: 20px; }
+
+#give-export-payments select {
+  vertical-align: inherit;
+  margin: 0;
+  height: 26px;
+  line-height: 26px;
+  border: 1px solid #ddd; }
+
 /*-------------------------------------
 Doc Links
 -------------------------------------*/
