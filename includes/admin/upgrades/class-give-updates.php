@@ -43,8 +43,9 @@ class Give_Updates {
 	 */
 	public static function register( $args ) {
 		$args_default = array(
-			'id'      => '',
-			'version' => '',
+			'id'       => '',
+			'version'  => '',
+			'callback' => '',
 		);
 
 		$args = wp_parse_args( $args, $args_default );
@@ -53,7 +54,7 @@ class Give_Updates {
 		$args['type'] = 'database';
 
 		// Bailout.
-		if ( $args['id'] || $args['version'] ) {
+		if ( $args['id'] || $args['version'] || empty( $args['callback'] ) ) {
 			return;
 		}
 
