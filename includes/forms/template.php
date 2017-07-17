@@ -425,12 +425,12 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 		//Custom Amount Allowed.
 		?>
 		<div class="give-total-wrap">
-			<div class="give-donation-amount form-row-wide <?php if( $default_custom_amount ) { echo "give-custom-amount-focus-in"; } ?>">
+			<div class="give-donation-amount form-row-wide">
 				<?php if ( $currency_position == 'before' ) {
 					echo $currency_output;
 				} ?>
 				<label class="give-hidden" for="give-amount"><?php esc_html_e( 'Donation Amount:', 'give' ); ?></label>
-				<input class="give-text-input give-amount-top" id="give-amount" name="give-amount" type="tel"
+				<input class="give-text-input give-amount-top <?php if( $default_custom_amount ) { echo "give-default-custom-amount"; } ?>" id="give-amount" name="give-amount" type="tel"
 					   placeholder="" value="<?php echo $default_amount; ?>" autocomplete="off">
 				<?php if ( $currency_position == 'after' ) {
 					echo $currency_output;
