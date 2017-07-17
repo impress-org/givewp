@@ -50,24 +50,27 @@ $ npm i eslint -g
 ```
 $ npm install -g eslint-config-wordpress
 ```
-#### Step 3: Configuration with PHPStorm
-1. Go to PHPStorm `Preferences > Languages and Frameworks > JAvascript > Code Quality Tools > ESLint`.
-2. Now, Tick the `Enable` checkbox.
-3. Set path for Node Interpreter and ESLint package, if its not set.
-
-#### Step 4: Using ESLint
-
-##### Using with PHPStorm
-
-Open any JS file and you'll see suggestions from ESLint, if any.
+#### Step 3: Using ESLint
 
 ##### Using with Terminal 
 
 1. Open Terminal
-2. Type command in a format `eslint [options] file.js [file.js] [dir]`.
+2. Type command in a format `$ eslint [options] file.js [file.js] [dir]`.
 3. You'll get a list of suggestions.
 
 For Example,
 ```
-eslint yourfile.js
+$ eslint yourfile.js
 ```
+
+##### Using with PHPStorm
+
+Follow the steps below to configure ESLint with PHPStorm:
+1. Go to PHPStorm `Preferences > Languages and Frameworks > Javascript > Code Quality Tools > ESLint`.
+2. Now, Tick the `Enable` checkbox.
+3. Set path for Node Interpreter and ESLint package, if its not set.
+
+
+Open any JS file and you'll see suggestions from ESLint, if any.
+
+That's all! You're done.
