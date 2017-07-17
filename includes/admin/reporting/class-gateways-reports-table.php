@@ -177,7 +177,7 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 	 *
 	 * @return int
 	 */
-	public function give_usort_reorder( $a, $b ) {
+	public function give_sort_total_donations( $old_value, $new_value ) {
 		// If no sort, default to label.
 		$orderby = (!empty($_REQUEST['orderby'])) ? $_REQUEST['orderby'] : 'label';
 
@@ -185,7 +185,7 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 		$order = (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : 'asc';
 
 		//Determine sort order.
-		$result = strcmp( $a[ $orderby ], $b[ $orderby ] );
+		$result = strcmp( $old_value[ $orderby ], $new_value[ $orderby ] );
 
 		return ($order==='asc') ? $result : -$result;
 	}
@@ -240,7 +240,7 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 		$this->items           = $this->reports_data();
 
 		// Sort Array when we are sorting data in array.
-		usort( $this->items, array( $this, 'give_usort_reorder' ) );
+		usort( $this->items, array( $this, 'give_sort_total_donations' ) );
 
 	}
 }
