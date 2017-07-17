@@ -47,7 +47,8 @@ function give_redirect_to_clean_url_admin_pages() {
 	$give_pages = array(
 		'give-payment-history',
 		'give-donors',
-		'give-reports'
+		'give-reports',
+		'give-tools'
 	);
 
 	// Get current page.
