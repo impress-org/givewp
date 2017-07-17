@@ -108,7 +108,7 @@ class Give_Updates {
 	public function setup_hooks() {
 		add_action( 'admin_init', array( $this, '__change_donations_label' ), 9999 );
 		add_action( 'admin_menu', array( $this, '__register_menu' ), 9999 );
-		add_action( 'wp_ajax_give_updates', '__give_updates' );
+		add_action( 'wp_ajax_give_do_ajax_updates', array( $this, '__give_ajax_updates' ) );
 	}
 
 	/**
@@ -176,7 +176,7 @@ class Give_Updates {
 	 */
 	public function get_db_update_count() {
 		// @todo calculate total update count
-		return 0;
+		return 1;
 	}
 
 
@@ -234,8 +234,27 @@ class Give_Updates {
 	 * @since  1.8.12
 	 * @access public
 	 */
-	public function __give_updates() {
+	public function __give_ajax_updates() {
 		$plugin_updates = $this->get_updates();
+		$step           = absint( $_POST['step'] );
+
+		if ( 10 == $step ) {
+			wp_send_json_success(
+				array(
+					'message' => 'Updated',
+					'heading' => sprintf( 'Step %s of 10', $step ),
+				)
+			);
+		}
+
+		wp_send_json(
+			array(
+				'data' => array(
+					'step'    => ++ $step,
+					'heading' => sprintf( 'Step %s of 10', $_POST['step'] ),
+				),
+			)
+		);
 	}
 }
 
