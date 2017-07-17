@@ -18,6 +18,7 @@ if (
 }
 
 $goal_format = give_get_meta( $form_id, '_give_goal_format', true );
+$price       = give_get_meta( $form_id, '_give_set_price', true );
 $color       = give_get_meta( $form_id, '_give_goal_color', true );
 $show_text   = isset( $args['show_text'] ) ? filter_var( $args['show_text'], FILTER_VALIDATE_BOOLEAN ) : true;
 $show_bar    = isset( $args['show_bar'] ) ? filter_var( $args['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
@@ -56,7 +57,7 @@ if ( $income >= $goal ) {
 	<?php if ( ! empty( $show_text ) ) : ?>
 		<div class="raised">
 			<?php
-			if ( $goal_format !== 'percentage' ) :
+			if ( $goal_format === 'amount' ) :
 
 				// Get formatted amount.
 				$income = give_human_format_large_amount( give_format_amount( $income ) );
@@ -69,13 +70,27 @@ if ( $income >= $goal ) {
 					'<span class="goal-text">' . give_currency_filter( $goal ) . '</span>'
 				);
 
-
-			elseif ( $goal_format == 'percentage' ) :
+			elseif ( $goal_format === 'percentage' ) :
 
 				echo sprintf(
 				/* translators: %s: percentage of the amount raised compared to the goal target */
 					__( '%s%% funded', 'give' ),
 					'<span class="give-percentage">' . round( $progress ) . '</span>'
+				);
+
+			elseif ( $goal_format === 'donation' ) :
+
+				// Get formatted amount.
+				$income = give_human_format_large_amount( give_format_amount( $income ) );
+				$goal   = give_human_format_large_amount( give_format_amount( $goal ) );
+
+				$number_of_donation_completed = round( $income/$price );
+				$total_number_of_donations    = round( $goal/$price );
+				echo sprintf(
+				/* translators: 1: total number of donations completed 2: total number of donations set as goal */
+					__( '%1$s of %2$s donations', 'give' ),
+					'<span class="income">' . $number_of_donation_completed . '</span>',
+					'<span class="goal-text">' . $total_number_of_donations . '</span>'
 				);
 
 			endif;
