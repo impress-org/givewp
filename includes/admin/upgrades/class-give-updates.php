@@ -102,7 +102,7 @@ class Give_Updates {
 	 *
 	 */
 	public function setup_hooks() {
-		if ( $this->get_update_count() ) {
+		if ( $this->get_db_update_count() ) {
 			add_action( 'admin_init', array( $this, 'change_donations_label' ), 9999 );
 			add_action( 'admin_menu', array( $this, 'register_menu' ), 9999 );
 		}
@@ -129,7 +129,7 @@ class Give_Updates {
 
 			$menu[ $index ][0] = sprintf(
 				__( 'Donations <span class="update-plugins count-%1$d"><span class="plugin-count">%1$d</span></span>', 'give' ),
-				$this->get_update_count()
+				$this->get_db_update_count()
 			);
 
 			break;
@@ -150,7 +150,7 @@ class Give_Updates {
 			sprintf(
 				'%1$s <span class="update-plugins count-%2$d"><span class="plugin-count">%2$d</span></span>',
 				__( 'Updates', 'give' ),
-				$this->get_update_count()
+				$this->get_db_update_count()
 			),
 			'manage_give_settings',
 			'give-upgrades',
@@ -165,7 +165,7 @@ class Give_Updates {
 	 * @access public
 	 * @return int
 	 */
-	public function get_update_count() {
+	public function get_db_update_count() {
 		return 4;
 	}
 
