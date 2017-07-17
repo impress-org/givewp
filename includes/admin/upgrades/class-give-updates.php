@@ -137,14 +137,14 @@ class Give_Updates {
 	}
 
 	/**
-	 * Register upgrades menu
+	 * Register updates menu
 	 *
 	 * @since  1.8.12
 	 * @access public
 	 */
 	public function register_menu() {
 		// Bailout.
-		if( ! $this->get_update_count() ) {
+		if ( ! $this->get_update_count() ) {
 			return;
 		}
 
