@@ -159,6 +159,17 @@ class Give_MetaBox_Form_Data {
 						),
 					),
 					array(
+						'name'        => __( 'Set Custom Amount as Default', 'give' ),
+						'description' => __( 'Do you want the user to type Custom Amount as Default?', 'give' ),
+						'id'          => $prefix . 'set_custom_amount_default',
+						'type'        => 'radio_inline',
+						'default'     => 'enabled',
+						'options'     => array(
+							'enabled'  => __( 'Enabled', 'give' ),
+							'disabled' => __( 'Disabled', 'give' ),
+						),
+					),
+					array(
 						'name'        => __( 'Minimum Amount', 'give' ),
 						'description' => __( 'Enter the minimum custom donation amount.', 'give' ),
 						'id'          => $prefix . 'custom_amount_minimum',
