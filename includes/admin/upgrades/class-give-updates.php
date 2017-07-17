@@ -179,6 +179,29 @@ class Give_Updates {
 	public function render_page() {
 		include_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/views/upgrades.php';
 	}
+
+	/**
+	 * Get addon update count.
+	 *
+	 * @since  1.8.12
+	 * @access public
+	 * @return int
+	 */
+	public function get_plugin_update_count() {
+		$addons = give_get_plugins();
+		$plugin_updates = get_plugin_updates();
+		$update_counter = 0;
+
+		foreach ( $addons as $key => $info ){
+			if ( 'active' != $info['Status'] ||  'add-on' != $info['Type'] || empty( $plugin_updates[$key] ) ) {
+				continue;
+			}
+
+			$update_counter++;
+		}
+
+		return $update_counter;
+	}
 }
 
 Give_Updates::get_instance()->setup_hooks();
