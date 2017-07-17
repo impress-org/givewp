@@ -114,7 +114,7 @@ function give_get_payment_by( $field = '', $value = '' ) {
 
 		default:
 			return false;
-	}
+	}// End switch().
 
 	if ( $payment ) {
 		return $payment;
@@ -432,8 +432,6 @@ function give_count_payments( $args = array() ) {
 				AND m.meta_key = '_give_payment_user_{$field}'
 				AND m.meta_value = '{$args['user']}'";
 		}
-
-
 	} elseif ( ! empty( $args['donor'] ) ) {
 
 		$join  = "LEFT JOIN $wpdb->postmeta m ON (p.ID = m.post_id)";
@@ -466,7 +464,6 @@ function give_count_payments( $args = array() ) {
 			$join   = '';
 			$where  = $wpdb->prepare( 'WHERE p.post_type=%s  AND p.ID = %d ', 'give_payment', $search );
 
-
 		} elseif ( is_numeric( $args['s'] ) ) {
 
 			$join  = "LEFT JOIN $wpdb->postmeta m ON (p.ID = m.post_id)";
@@ -479,8 +476,8 @@ function give_count_payments( $args = array() ) {
 			$search = '%' . $search . '%';
 
 			$where .= $wpdb->prepare( 'AND ((p.post_title LIKE %s) OR (p.post_content LIKE %s))', $search, $search );
-		}
-	}
+		}// End if().
+	}// End if().
 
 	if ( ! empty( $args['form_id'] ) && is_numeric( $args['form_id'] ) ) {
 		$where .= $wpdb->prepare( ' AND p.post_parent = %d', $args['form_id'] );
@@ -1244,7 +1241,7 @@ function give_get_next_payment_number() {
 			$number           = $start;
 			$increment_number = false;
 		}
-	}
+	}// End if().
 
 	$increment_number = apply_filters( 'give_increment_payment_number', $increment_number, $number );
 
@@ -1401,7 +1398,7 @@ function give_set_payment_transaction_id( $payment_id = 0, $transaction_id = '' 
  * @since 1.0
  * @global object $wpdb Used to query the database using the WordPress Database API.
  *
- * @param string  $key  the key to search for.
+ * @param string $key  the key to search for.
  *
  * @return int $purchase Donation ID.
  */
@@ -1424,7 +1421,7 @@ function give_get_purchase_id_by_key( $key ) {
  * @since 1.3
  * @global object $wpdb Used to query the database using the WordPress Database API.
  *
- * @param string  $key  The transaction ID to search for.
+ * @param string $key  The transaction ID to search for.
  *
  * @return int $purchase Donation ID.
  */
@@ -1459,7 +1456,11 @@ function give_get_payment_notes( $payment_id = 0, $search = '' ) {
 	remove_action( 'pre_get_comments', 'give_hide_payment_notes', 10 );
 	remove_filter( 'comments_clauses', 'give_hide_payment_notes_pre_41', 10 );
 
-	$notes = get_comments( array( 'post_id' => $payment_id, 'order' => 'ASC', 'search' => $search ) );
+	$notes = get_comments( array(
+		'post_id' => $payment_id,
+		'order' => 'ASC',
+		'search' => $search,
+	) );
 
 	add_action( 'pre_get_comments', 'give_hide_payment_notes', 10 );
 	add_filter( 'comments_clauses', 'give_hide_payment_notes_pre_41', 10, 2 );
@@ -1785,10 +1786,10 @@ function give_get_payment_form_title( $payment_meta, $only_level = false, $separ
 		$form_title = '';
 	}
 
-	//If multi-level, append to the form title.
+	// If multi-level, append to the form title.
 	if ( give_has_variable_prices( $form_id ) ) {
 
-		//Only add separator if there is a form title.
+		// Only add separator if there is a form title.
 		if ( ! empty( $form_title ) ) {
 			$form_title .= ' ' . $separator . ' ';
 		}
@@ -1906,7 +1907,9 @@ function give_get_form_variable_price_dropdown( $args = array(), $echo = false )
 	}
 
 	// Update options.
-	$args = array_merge( $args, array( 'options' => $variable_price_options ) );
+	$args = array_merge( $args, array(
+		'options' => $variable_price_options,
+	) );
 
 	// Generate select html.
 	$form_dropdown_html = Give()->html->select( $args );
