@@ -207,7 +207,6 @@ add_action( 'give_checkout_error_checks', 'give_check_logged_in_user_for_existin
  * @return      void
  */
 function give_process_form_login() {
-
 	$is_ajax = isset( $_POST['give_ajax'] );
 
 	$user_data = give_donation_form_validate_user_login();
@@ -219,8 +218,11 @@ function give_process_form_login() {
 			 *
 			 * @since 1.0
 			 */
-			do_action( 'give_ajax_donation_errors' );
-			give_die();
+			ob_start();
+				do_action( 'give_ajax_donation_errors' );
+				$message = ob_get_contents();
+			ob_end_clean();
+			wp_send_json_error( $message );
 		} else {
 			wp_redirect( $_SERVER['HTTP_REFERER'] );
 			exit;
@@ -230,8 +232,17 @@ function give_process_form_login() {
 	give_log_user_in( $user_data['user_id'], $user_data['user_login'], $user_data['user_pass'] );
 
 	if ( $is_ajax ) {
-		echo 'success';
-		give_die();
+		$message = Give()->notices->print_frontend_notice(
+			sprintf(
+				/* translators: %s: user first name */
+				esc_html__( 'Welcome %s! You have successfully logged into your account.', 'give' ),
+				( ! empty( $user_data['user_first'] ) ) ? $user_data['user_first'] : $user_data['user_login']
+			),
+			false,
+			'success'
+		);
+
+		wp_send_json_success( $message );
 	} else {
 		wp_redirect( $_SERVER['HTTP_REFERER'] );
 	}
@@ -455,10 +466,27 @@ function give_get_required_fields( $form_id ) {
 			'error_id'      => 'invalid_country',
 			'error_message' => __( 'Please select your billing country.', 'give' ),
 		);
+
+
 		$required_fields['card_state']      = array(
 			'error_id'      => 'invalid_state',
-			'error_message' => __( 'Please enter billing state / province.', 'give' ),
+			'error_message' => __( 'Please enter billing state / province / County.', 'give' ),
 		);
+
+		// Check if billing country alredy exists.
+		if ( ! empty( $_POST['billing_country'] ) ) {
+			// Get the value from $_POST.
+			$country = sanitize_text_field( $_POST['billing_country'] );
+
+			// Get the country list that does not have any states init.
+			$no_states_country = give_no_states_country_list();
+
+			// Check if states is empty or not.
+			if ( array_key_exists( $country, $no_states_country ) ) {
+				// If states is empty remove the required feilds of state in billing cart.
+				unset( $required_fields['card_state'] );
+			}
+		}
 	}
 
 	/**
