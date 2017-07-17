@@ -39,9 +39,12 @@ class Give_Updates {
 	/**
 	 * Register updates
 	 *
-	 * @param $args
+	 * @since  1.8.12
+	 * @access public
+	 *
+	 * @param array $args
 	 */
-	public static function register( $args ) {
+	public function register( $args ) {
 		$args_default = array(
 			'id'       => '',
 			'version'  => '',
@@ -54,7 +57,7 @@ class Give_Updates {
 		$args['type'] = 'database';
 
 		// Bailout.
-		if ( $args['id'] || $args['version'] || empty( $args['callback'] ) ) {
+		if ( empty( $args['id'] ) || empty( $args['version'] ) || empty( $args['callback'] ) ) {
 			return;
 		}
 
@@ -103,8 +106,9 @@ class Give_Updates {
 	 *
 	 */
 	public function setup_hooks() {
-		add_action( 'admin_init', array( $this, 'change_donations_label' ), 9999 );
-		add_action( 'admin_menu', array( $this, 'register_menu' ), 9999 );
+		add_action( 'admin_init', array( $this, '__change_donations_label' ), 9999 );
+		add_action( 'admin_menu', array( $this, '__register_menu' ), 9999 );
+		add_action( 'wp_ajax_give_updates', '__give_updates' );
 	}
 
 	/**
@@ -113,7 +117,7 @@ class Give_Updates {
 	 * @since  1.8.12
 	 * @access public
 	 */
-	function change_donations_label() {
+	function __change_donations_label() {
 		global $menu;
 		global $submenu;
 
@@ -142,7 +146,7 @@ class Give_Updates {
 	 * @since  1.8.12
 	 * @access public
 	 */
-	public function register_menu() {
+	public function __register_menu() {
 		// Bailout.
 		if ( ! $this->get_update_count() ) {
 			return;
@@ -222,6 +226,16 @@ class Give_Updates {
 		$plugin_update_count = $this->get_plugin_update_count();
 
 		return ( $db_update_count + $plugin_update_count );
+	}
+
+	/**
+	 *  Process give updates.
+	 *
+	 * @since  1.8.12
+	 * @access public
+	 */
+	public function __give_updates() {
+		$plugin_updates = $this->get_updates();
 	}
 }
 
