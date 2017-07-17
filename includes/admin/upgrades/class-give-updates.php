@@ -72,7 +72,7 @@ class Give_Updates {
 	 * @return array
 	 */
 	public function get_updates( $type = '' ) {
-		$updates = ! empty( self::$updates[$type] ) ? self::$updates[$type] : array();
+		$updates = ! empty( self::$updates[ $type ] ) ? self::$updates[ $type ] : array();
 
 		return $updates;
 	}
@@ -102,10 +102,8 @@ class Give_Updates {
 	 *
 	 */
 	public function setup_hooks() {
-		if ( $this->get_db_update_count() ) {
-			add_action( 'admin_init', array( $this, 'change_donations_label' ), 9999 );
-			add_action( 'admin_menu', array( $this, 'register_menu' ), 9999 );
-		}
+		add_action( 'admin_init', array( $this, 'change_donations_label' ), 9999 );
+		add_action( 'admin_menu', array( $this, 'register_menu' ), 9999 );
 	}
 
 	/**
@@ -118,7 +116,8 @@ class Give_Updates {
 		global $menu;
 		global $submenu;
 
-		if ( empty( $menu ) ) {
+		// Bailout.
+		if ( empty( $menu ) || ! $this->get_update_count() ) {
 			return;
 		}
 
@@ -129,7 +128,7 @@ class Give_Updates {
 
 			$menu[ $index ][0] = sprintf(
 				__( 'Donations <span class="update-plugins count-%1$d"><span class="plugin-count">%1$d</span></span>', 'give' ),
-				$this->get_db_update_count()
+				$this->get_update_count()
 			);
 
 			break;
@@ -143,6 +142,11 @@ class Give_Updates {
 	 * @access public
 	 */
 	public function register_menu() {
+		// Bailout.
+		if( ! $this->get_update_count() ) {
+			return;
+		}
+
 		//Upgrades
 		add_submenu_page(
 			'edit.php?post_type=give_forms',
@@ -150,7 +154,7 @@ class Give_Updates {
 			sprintf(
 				'%1$s <span class="update-plugins count-%2$d"><span class="plugin-count">%2$d</span></span>',
 				__( 'Updates', 'give' ),
-				$this->get_db_update_count()
+				$this->get_update_count()
 			),
 			'manage_give_settings',
 			'give-upgrades',
@@ -166,7 +170,8 @@ class Give_Updates {
 	 * @return int
 	 */
 	public function get_db_update_count() {
-		return 4;
+		// @todo calculate total update count
+		return 0;
 	}
 
 
@@ -188,19 +193,34 @@ class Give_Updates {
 	 * @return int
 	 */
 	public function get_plugin_update_count() {
-		$addons = give_get_plugins();
+		$addons         = give_get_plugins();
 		$plugin_updates = get_plugin_updates();
 		$update_counter = 0;
 
-		foreach ( $addons as $key => $info ){
-			if ( 'active' != $info['Status'] ||  'add-on' != $info['Type'] || empty( $plugin_updates[$key] ) ) {
+		foreach ( $addons as $key => $info ) {
+			if ( 'active' != $info['Status'] || 'add-on' != $info['Type'] || empty( $plugin_updates[ $key ] ) ) {
 				continue;
 			}
 
-			$update_counter++;
+			$update_counter ++;
 		}
 
 		return $update_counter;
+	}
+
+	/**
+	 * Get total update count
+	 *
+	 * @since  1.8.12
+	 * @access public
+	 *
+	 * @return int
+	 */
+	public function get_update_count() {
+		$db_update_count     = $this->get_db_update_count();
+		$plugin_update_count = $this->get_plugin_update_count();
+
+		return ( $db_update_count + $plugin_update_count );
 	}
 }
 
