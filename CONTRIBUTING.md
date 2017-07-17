@@ -36,3 +36,38 @@ If you would like to submit a pull request, please follow the steps below:
 * Finally, please use tabs and not spaces. The tab indent size should be 4 for all Give code.
 
 At this point, you're waiting for us to merge your pull request. We'll review all pull requests, and make suggestions and changes if necessary.
+
+## Javascript Coding Standards
+
+We ensure that each change in JS files follows [Javascript Coding Standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/javascript/) provided by WordPress.
+
+#### Step 1: Install ESLint Standard Package
+
+```
+$ npm i eslint -g
+```
+#### Step 2: Install WordPress plugin for ESLint
+```
+$ npm install -g eslint-config-wordpress
+```
+#### Step 3: Configuration with PHPStorm
+1. Go to PHPStorm `Preferences > Languages and Frameworks > JAvascript > Code Quality Tools > ESLint`.
+2. Now, Tick the `Enable` checkbox.
+3. Set path for Node Interpreter and ESLint package, if its not set.
+
+#### Step 4: Using ESLint
+
+##### Using with PHPStorm
+
+Open any JS file and you'll see suggestions from ESLint, if any.
+
+##### Using with Terminal 
+
+1. Open Terminal
+2. Type command in a format `eslint [options] file.js [file.js] [dir]`.
+3. You'll get a list of suggestions.
+
+For Example,
+```
+eslint yourfile.js
+```
