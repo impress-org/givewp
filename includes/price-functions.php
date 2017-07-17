@@ -97,6 +97,14 @@ function give_get_default_multilevel_amount( $form_id ) {
 
 	if( ! $default_custom_amount ) {
 
+		/**
+		 * Get Variable Prices of a Multilevel form
+		 *
+		 * @param $form_id Form ID
+		 * @since 1.0
+		 *
+		 * @return array
+		 */
 		$prices = apply_filters(
 			'give_form_variable_prices',
 			give_get_variable_prices( $form_id ),
