@@ -227,56 +227,79 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 */
 	public function get_views() {
 
-		$current          = isset( $_GET['status'] ) ? $_GET['status'] : '';
-		$total_count      = '&nbsp;<span class="count">(' . $this->total_count . ')</span>';
-		$complete_count   = '&nbsp;<span class="count">(' . $this->complete_count . ')</span>';
-		$cancelled_count  = '&nbsp;<span class="count">(' . $this->cancelled_count . ')</span>';
-		$pending_count    = '&nbsp;<span class="count">(' . $this->pending_count . ')</span>';
-		$processing_count = '&nbsp;<span class="count">(' . $this->processing_count . ')</span>';
-		$refunded_count   = '&nbsp;<span class="count">(' . $this->refunded_count . ')</span>';
-		$failed_count     = '&nbsp;<span class="count">(' . $this->failed_count . ')</span>';
-		$abandoned_count  = '&nbsp;<span class="count">(' . $this->abandoned_count . ')</span>';
-		$revoked_count    = '&nbsp;<span class="count">(' . $this->revoked_count . ')</span>';
-
-		$views = array(
-			'all'        => sprintf( '<a href="%s"%s>%s</a>', remove_query_arg( array(
-				'status',
-				'paged',
-			) ), $current === 'all' || $current == '' ? ' class="current"' : '', esc_html__( 'All', 'give' ) . $total_count ),
-			'publish'    => sprintf( '<a href="%s"%s>%s</a>', esc_url( add_query_arg( array(
-				'status' => 'publish',
-				'paged'  => false,
-			) ) ), $current === 'publish' ? ' class="current"' : '', esc_html__( 'Completed', 'give' ) . $complete_count ),
-			'pending'    => sprintf( '<a href="%s"%s>%s</a>', esc_url( add_query_arg( array(
-				'status' => 'pending',
-				'paged'  => false,
-			) ) ), $current === 'pending' ? ' class="current"' : '', esc_html__( 'Pending', 'give' ) . $pending_count ),
-			'processing' => sprintf( '<a href="%s"%s>%s</a>', esc_url( add_query_arg( array(
-				'status' => 'processing',
-				'paged'  => false,
-			) ) ), $current === 'processing' ? ' class="current"' : '', esc_html__( 'Processing', 'give' ) . $processing_count ),
-			'refunded'   => sprintf( '<a href="%s"%s>%s</a>', esc_url( add_query_arg( array(
-				'status' => 'refunded',
-				'paged'  => false,
-			) ) ), $current === 'refunded' ? ' class="current"' : '', esc_html__( 'Refunded', 'give' ) . $refunded_count ),
-			'revoked'    => sprintf( '<a href="%s"%s>%s</a>', esc_url( add_query_arg( array(
-				'status' => 'revoked',
-				'paged'  => false,
-			) ) ), $current === 'revoked' ? ' class="current"' : '', esc_html__( 'Revoked', 'give' ) . $revoked_count ),
-			'failed'     => sprintf( '<a href="%s"%s>%s</a>', esc_url( add_query_arg( array(
-				'status' => 'failed',
-				'paged'  => false,
-			) ) ), $current === 'failed' ? ' class="current"' : '', esc_html__( 'Failed', 'give' ) . $failed_count ),
-			'cancelled'  => sprintf( '<a href="%s"%s>%s</a>', esc_url( add_query_arg( array(
-				'status' => 'cancelled',
-				'paged'  => false,
-			) ) ), $current === 'cancelled' ? ' class="current"' : '', esc_html__( 'Cancelled', 'give' ) . $cancelled_count ),
-			'abandoned'  => sprintf( '<a href="%s"%s>%s</a>', esc_url( add_query_arg( array(
-				'status' => 'abandoned',
-				'paged'  => false,
-			) ) ), $current === 'abandoned' ? ' class="current"' : '', esc_html__( 'Abandoned', 'give' ) . $abandoned_count ),
+		$current = isset( $_GET['status'] ) ? $_GET['status'] : '';
+		$views = array();
+		$tabs = array(
+			'all' => array(
+			        'total_count',
+			        esc_html__( 'All', 'give' )
+            ),
+			'publish' => array(
+			        'complete_count',
+			        esc_html__( 'Completed', 'give' )
+            ),
+			'pending' => array(
+			        'pending_count',
+			        esc_html__( 'Pending', 'give' )
+            ),
+			'processing' => array(
+			        'processing_count',
+			        esc_html__( 'Processing', 'give' )
+            ),
+			'refunded' => array(
+			        'refunded_count',
+			        esc_html__( 'Refunded', 'give' )
+            ),
+			'revoked' => array(
+			        'revoked_count',
+			        esc_html__( 'Revoked', 'give' )
+            ),
+			'failed' => array(
+			        'failed_count',
+			        esc_html__( 'Failed', 'give' )
+            ),
+			'cancelled' => array(
+			        'cancelled_count',
+			        esc_html__( 'Cancelled', 'give' )
+            ),
+			'abandoned' => array(
+			        'abandoned_count',
+			        esc_html__( 'Abandoned', 'give' )
+            ),
 		);
 
+		foreach ( $tabs as $key => $tab ) {
+			$count_key = $tab[0];
+			$count = $this->$count_key;
+
+			/**
+			 * Filter can be used to show all the status inside the donation tabs.
+			 *
+			 * Filter can be used to show all the status inside the donation submenu tabs return true to show all the tab.
+			 *
+			 * @since 1.8.12
+			 *
+			 * @param string  $key Current view tab value.
+			 * @param int  $count Number of donation inside the tab.
+			 */
+			if ( 'all' === $key || $key === $current || apply_filters( 'give_payments_table_show_all_status', 0 < $count, $key, $count ) ) {
+				$count_html = '&nbsp;<span class="count">(' . $count . ')</span>';
+				$class = '';
+				if ( 'all' === $key ) {
+					$href = esc_url( remove_query_arg( array( 'status', 'paged' ) ) );
+                }else {
+					$href = esc_url( add_query_arg( array( 'status' => $key, 'paged' => false ) ) );
+				}
+
+				if ( ( 'all' === $key && empty( $current ) ) ) {
+					$class = 'class="current"';
+                } elseif ( $current == $key ) {
+					$class = 'class="current"';
+                }
+
+				$views[ $key ] = '<a href="'. $href .'" '. $class .' >'. $tab[1] . $count_html .'</a>';
+			}
+		}
 		return apply_filters( 'give_payments_table_views', $views );
 	}
 
