@@ -692,8 +692,6 @@ class Give_DB_Donors extends Give_DB {
 				return false;
 			}
 
-			$user = get_userdata( $user_id );
-
 			// Get User First name and Last name.
 			$first_name = ( $_POST['first_name'] ) ? $_POST['first_name'] : get_user_meta( $user_id, 'first_name', true );
 			$last_name  = ( $_POST['last_name'] ) ? $_POST['last_name'] : get_user_meta( $user_id, 'last_name', true );
