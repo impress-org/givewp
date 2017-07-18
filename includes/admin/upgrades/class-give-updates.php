@@ -25,6 +25,34 @@ class Give_Updates {
 	 */
 	static private $updates = array();
 
+
+	/**
+	 * Current update percentage number
+	 *
+	 * @since  1.8.12
+	 * @access private
+	 * @var array
+	 */
+	static public $percentage = 0;
+
+	/**
+	 * Current update step number
+	 *
+	 * @since  1.8.12
+	 * @access private
+	 * @var array
+	 */
+	static public $step = 1;
+
+	/**
+	 * Current update number
+	 *
+	 * @since  1.8.12
+	 * @access private
+	 * @var array
+	 */
+	static public $update = 1;
+
 	/**
 	 * Singleton pattern.
 	 *
@@ -57,11 +85,11 @@ class Give_Updates {
 		$args['type'] = 'database';
 
 		// Bailout.
-		if ( empty( $args['id'] ) || empty( $args['version'] ) || empty( $args['callback'] ) ) {
+		if ( empty( $args['id'] ) || empty( $args['version'] ) || empty( $args['callback'] ) || ! is_callable( $args['callback'] ) ) {
 			return;
 		}
 
-		self::$updates[ $args['type'] ][ $args['version'] ] = $args;
+		self::$updates[ $args['type'] ][] = $args;
 	}
 
 
@@ -71,12 +99,36 @@ class Give_Updates {
 	 * @since  1.8.12
 	 * @access public
 	 *
-	 * @param string $type Tye of update.
+	 * @param string $update_type Tye of update.
+	 * @param string $status      Tye of update.
 	 *
 	 * @return array
 	 */
-	public function get_updates( $type = '' ) {
-		$updates = ! empty( self::$updates[ $type ] ) ? self::$updates[ $type ] : array();
+	public function get_updates( $update_type = '', $status = 'all' ) {
+		$updates = ! empty( self::$updates[ $update_type ] ) ? self::$updates[ $update_type ] : array();
+
+		// Bailout.
+		if ( empty( $updates ) ) {
+			return $updates;
+		}
+
+		switch ( $status ) {
+			case 'new':
+				// Remove already completed updates.
+
+				$completed_updates = give_get_completed_upgrades();
+
+				if ( ! empty( $completed_updates ) ) {
+					foreach ( $updates as $index => $update ) {
+						if ( in_array( $update['id'], $completed_updates ) ) {
+							unset( $updates[ $index ] );
+						}
+					}
+					$updates = array_values( $updates );
+				}
+
+				break;
+		}
 
 		return $updates;
 	}
@@ -108,6 +160,7 @@ class Give_Updates {
 	public function setup_hooks() {
 		add_action( 'admin_init', array( $this, '__change_donations_label' ), 9999 );
 		add_action( 'admin_menu', array( $this, '__register_menu' ), 9999 );
+		add_action( 'give_set_upgrade_completed', array( $this, '__flush_resume_updates' ), 9999 );
 		add_action( 'wp_ajax_give_do_ajax_updates', array( $this, '__give_ajax_updates' ) );
 	}
 
@@ -175,8 +228,7 @@ class Give_Updates {
 	 * @return int
 	 */
 	public function get_db_update_count() {
-		// @todo calculate total update count
-		return 1;
+		return count( $this->get_updates( 'database', 'new' ) );
 	}
 
 
@@ -228,33 +280,152 @@ class Give_Updates {
 		return ( $db_update_count + $plugin_update_count );
 	}
 
+
+	/**
+	 * Delete resume updates
+	 *
+	 * @since  1.8.12
+	 * @access public
+	 */
+	public function __flush_resume_updates() {
+		delete_option( 'give_doing_upgrade' );
+		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
+
+		// Reset counter.
+		self::$step = self::$percentage = 0;
+		++ self::$update;
+	}
+
 	/**
 	 *  Process give updates.
+	 *
+	 * @todo   : add dependency update logic
 	 *
 	 * @since  1.8.12
 	 * @access public
 	 */
 	public function __give_ajax_updates() {
-		$plugin_updates = $this->get_updates();
-		$step           = absint( $_POST['step'] );
-
-		if ( 10 == $step ) {
-			wp_send_json_success(
+		// Check permission.
+		if ( ! current_user_can( 'manage_give_settings' ) ) {
+			$this->send_ajax_response(
 				array(
-					'message' => 'Updated',
-					'heading' => sprintf( 'Step %s of 10', $step ),
-				)
+					'message' => esc_html__( 'You do not have permission to do Give upgrades.', 'give' ),
+				),
+				'error'
 			);
 		}
 
-		wp_send_json(
-			array(
-				'data' => array(
-					'step'    => ++ $step,
-					'heading' => sprintf( 'Step %s of 10', $_POST['step'] ),
+		// Update timeout error.
+		ignore_user_abort( true );
+		if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
+			@set_time_limit( 0 );
+		}
+
+		// Set params.
+		self::$step   = absint( $_POST['step'] );
+		self::$update = absint( $_POST['update'] );
+
+		// Bailout: step and update must be positive and greater then zero.
+		if ( ! self::$step ) {
+			$this->send_ajax_response(
+				array(
+					'message'    => __( 'Error: please reload this page  and try again', 'give' ),
+					'heading'    => '',
+					'percentage' => 0,
 				),
-			)
+				'error'
+			);
+		}
+
+		// Get updates.
+		// $all_updates = $this->get_updates( 'database' );
+		$updates = $this->get_updates( 'database', 'new' );
+
+
+		// Bailout if we do not have nay updates.
+		if ( empty( $updates ) ) {
+			$this->send_ajax_response(
+				array(
+					'message'    => __( 'Database already up to date.', 'give' ),
+					'heading'    => '',
+					'percentage' => 0,
+				),
+				'success'
+			);
+		}
+
+		// Process update.
+		foreach ( $updates as $index => $update ) {
+			// Run update.
+			if ( is_array( $update['callback'] ) ) {
+				$update['callback'][0]->$update['callback'][1]();
+			} else {
+				$update['callback']();
+			}
+
+			// Check if current update completed or not.
+			if ( give_has_upgrade_completed( $update['id'] ) ) {
+				if ( 1 === count( $updates ) ) {
+					$this->send_ajax_response(
+						array(
+							'message'    => __( 'Database updated successfully.', 'give' ),
+							'heading'    => '',
+							'percentage' => 0,
+						),
+						'success'
+					);
+				}
+			}
+
+			// Verify percentage.
+			self::$percentage = ( 100 < self::$percentage ) ? 100 : self::$percentage;
+
+			// error_log( print_r( self::$percentage, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
+			$this->send_ajax_response(
+				array(
+					'step'       => ++ self::$step,
+					'update'     => self::$update,
+					'heading'    => sprintf( 'Update %s of {update_count}', self::$update ),
+					'percentage' => self::$percentage,
+				)
+			);
+		}
+	}
+
+	/**
+	 * Send ajax response
+	 *
+	 * @since  1.8.12
+	 * @access public
+	 *
+	 * @param        $data
+	 * @param string $type
+	 */
+	public function send_ajax_response( $data, $type = '' ) {
+		$default = array(
+			'message'    => '',
+			'heading'    => '',
+			'percentage' => 0,
+			'step'       => 0,
+			'update'     => 0,
 		);
+
+		// Set data.
+		$data = wp_parse_args( $data, $default );
+
+		switch ( $type ) {
+			case 'success':
+				wp_send_json_success( $data );
+				break;
+
+			case 'error':
+				wp_send_json_success( $data );
+				break;
+
+			default:
+				wp_send_json( array( 'data' => $data ) );
+				break;
+		}
 	}
 }
 
