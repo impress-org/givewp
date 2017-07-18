@@ -376,6 +376,7 @@ function give_process_profile_editor_updates( $data ) {
 	$state        = ( isset( $data['give_address_state'] ) ? sanitize_text_field( $data['give_address_state'] ) : '' );
 	$zip          = ( isset( $data['give_address_zip'] ) ? sanitize_text_field( $data['give_address_zip'] ) : '' );
 	$country      = ( isset( $data['give_address_country'] ) ? sanitize_text_field( $data['give_address_country'] ) : '' );
+	$full_name    = $first_name . ' ' . $last_name;
 
 	$userdata = array(
 		'ID'           => $user_id,
@@ -426,10 +427,13 @@ function give_process_profile_editor_updates( $data ) {
 		give_die();
 	}
 
-	// Update the user
+	// Update Donor First Name and Last Name.
 	$donor   = Give()->donors->get_donor_by( 'user_id', $user_id );
+	Give()->donors->update( $donor->id, array( 'name' => $full_name ) );
 	Give()->donor_meta->update_meta( $donor->id, '_give_donor_first_name', $first_name );
 	Give()->donor_meta->update_meta( $donor->id, '_give_donor_last_name', $last_name );
+
+	// Update the user
 	$meta    = update_user_meta( $user_id, '_give_user_address', $address );
 	$updated = wp_update_user( $userdata );
 
