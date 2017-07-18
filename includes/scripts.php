@@ -329,9 +329,9 @@ function give_load_admin_scripts( $hook ) {
 		'search_placeholder_state'       => __( 'Type to search all states/provinces', 'give' ),
 		'bulk_action' => array(
 			'delete'    => array(
-				'zero_payment_selected' => __( 'You must choose at least one or more payments to delete.', 'give' ),
-				'delete_payment'        => __( 'Are you sure you want to permanently delete this donation?', 'give' ),
-				'delete_payments'       => __( 'Are you sure you want to permanently delete the selected {payment_count} donations?', 'give' ),
+				'zero'     => __( 'You must choose at least one or more payments to delete.', 'give' ),
+				'single'   => __( 'Are you sure you want to permanently delete this donation?', 'give' ),
+				'multiple' => __( 'Are you sure you want to permanently delete the selected {payment_count} donations?', 'give' ),
 			),
 			'resend-receipt' => array(
 				'zero'     => __( 'You must choose at least one or more recipients to resend the email receipt.', 'give' ),
