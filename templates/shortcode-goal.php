@@ -17,11 +17,13 @@ if (
 	return false;
 }
 
-$goal_format = give_get_meta( $form_id, '_give_goal_format', true );
-$price       = give_get_meta( $form_id, '_give_set_price', true );
-$color       = give_get_meta( $form_id, '_give_goal_color', true );
-$show_text   = isset( $args['show_text'] ) ? filter_var( $args['show_text'], FILTER_VALIDATE_BOOLEAN ) : true;
-$show_bar    = isset( $args['show_bar'] ) ? filter_var( $args['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
+$goal_format         = give_get_meta( $form_id, '_give_goal_format', true );
+$price               = give_get_meta( $form_id, '_give_set_price', true );
+$color               = give_get_meta( $form_id, '_give_goal_color', true );
+$show_text           = isset( $args['show_text'] ) ? filter_var( $args['show_text'], FILTER_VALIDATE_BOOLEAN ) : true;
+$show_bar            = isset( $args['show_bar'] ) ? filter_var( $args['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
+$donations_goal      = give_get_meta( $form_id, '_give_number_of_donation_goal', true );
+$donations_completed = give_get_form_sales_stats( $form_id );
 
 
 /**
@@ -44,11 +46,14 @@ $goal = apply_filters( 'give_goal_amount_target_output', $form->goal, $form_id, 
  *
  * @since 1.8.8
  */
-$progress = apply_filters( 'give_goal_amount_funded_percentage_output', round( ( $income / $goal ) * 100, 2 ), $form_id, $form );
-
+if ( 'donation' !== $goal_format ) {
+	$progress = apply_filters( 'give_goal_amount_funded_percentage_output', round( ( $income / $goal ) * 100, 2 ), $form_id, $form );
+} else {
+	$progress = apply_filters( 'give_goal_amount_funded_percentage_output', round( ( $donations_completed / $donations_goal ) * 100, 2 ), $form_id, $form );
+}
 
 // Set progress to 100 percentage if income > goal.
-if ( $income >= $goal ) {
+if ( ( $income >= $goal ) || ( $donations_completed >= $donations_goal ) ) {
 	$progress = 100;
 }
 
@@ -80,17 +85,11 @@ if ( $income >= $goal ) {
 
 			elseif ( $goal_format === 'donation' ) :
 
-				// Get formatted amount.
-				$income = give_human_format_large_amount( give_format_amount( $income ) );
-				$goal   = give_human_format_large_amount( give_format_amount( $goal ) );
-
-				$number_of_donation_completed = round( $income/$price );
-				$total_number_of_donations    = round( $goal/$price );
 				echo sprintf(
 				/* translators: 1: total number of donations completed 2: total number of donations set as goal */
 					__( '%1$s of %2$s donations', 'give' ),
-					'<span class="income">' . $number_of_donation_completed . '</span>',
-					'<span class="goal-text">' . $total_number_of_donations . '</span>'
+					'<span class="income">' . $donations_completed . '</span>',
+					'<span class="goal-text">' . $donations_goal . '</span>'
 				);
 
 			endif;
