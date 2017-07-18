@@ -43,11 +43,10 @@ jQuery(function ($) {
 					var states_label = response.states_label;
                     if( typeof ( response.states_found ) != undefined && true == response.states_found ) {
                         html = response.data;
-                        $form.find('input[name="card_state"], select[name="card_state"]').closest( 'div' ).find( 'label' ).text( states_label );
                     } else {
                         html = '<input type="text" id="card_state"  name="card_state" class="cart-state give-input required" placeholder="' + states_label + '" value=""/>';
                     }
-
+                    $form.find('input[name="card_state"], select[name="card_state"]').closest( 'div' ).find( 'label' ).text( states_label );
                     $form.find('input[name="card_state"], select[name="card_state"]').replaceWith( html );
 
                     // Check if user want to show the feilds or not.

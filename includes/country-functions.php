@@ -708,7 +708,6 @@ function give_get_country_locale() {
 			),
 			'state'     => array(
 				'label'       => __( 'County', 'give' ),
-				'required'    => false,
 			),
 		),
 		'VN' => array(
