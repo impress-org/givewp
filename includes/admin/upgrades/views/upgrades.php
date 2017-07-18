@@ -14,28 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$action = isset( $_GET['give-upgrade'] ) ? sanitize_text_field( $_GET['give-upgrade'] ) : '';
-$step   = isset( $_GET['step'] ) ? absint( $_GET['step'] ) : 1;
-$total  = isset( $_GET['total'] ) ? absint( $_GET['total'] ) : false;
-$custom = isset( $_GET['custom'] ) ? absint( $_GET['custom'] ) : 0;
-$number = isset( $_GET['number'] ) ? absint( $_GET['number'] ) : 100;
-$steps  = round( ( $total / $number ), 0 );
-
-$doing_upgrade_args = array(
-	'page'         => 'give-upgrades',
-	'give-upgrade' => $action,
-	'step'         => $step,
-	'total'        => $total,
-	'custom'       => $custom,
-	'steps'        => $steps,
-);
-update_option( 'give_doing_upgrade', $doing_upgrade_args );
-
-if ( $step > $steps ) {
-	// Prevent a weird case where the estimate was off. Usually only a couple.
-	$steps = $step;
-}
-
 $give_updates = Give_Updates::get_instance();
 ?>
 <div class="wrap" id="poststuff">
@@ -66,7 +44,7 @@ $give_updates = Give_Updates::get_instance();
 								<p><?php echo sprintf( __( 'Give needs to update the database. <a href="%s">Update now ></a>', 'give' ), $db_update_url ); ?></p>
 							</div>
 							<div class="progress-container give-hidden">
-								<strong class="update-message" data-update-count="<?php echo  $db_updates; ?>"><?php echo sprintf( __( 'Update 1 of %s', 'give' ), $db_updates ); ?></strong>
+								<strong class="update-message" data-update-count="<?php echo  $db_updates; ?>"  data-resume-update="<?php echo $give_updates->resume_updates(); ?>"><?php echo sprintf( __( 'Update 1 of %s', 'give' ), $db_updates ); ?></strong>
 								<div class="progress-content"></div>
 							</div>
 						</div>

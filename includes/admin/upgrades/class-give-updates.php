@@ -380,15 +380,18 @@ class Give_Updates {
 			// Verify percentage.
 			self::$percentage = ( 100 < self::$percentage ) ? 100 : self::$percentage;
 
-			// error_log( print_r( self::$percentage, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-			$this->send_ajax_response(
-				array(
-					'step'       => ++ self::$step,
-					'update'     => self::$update,
-					'heading'    => sprintf( 'Update %s of {update_count}', self::$update ),
-					'percentage' => self::$percentage,
-				)
+			$doing_upgrade_args = array(
+				'update_info' => $update,
+				'step'        => ++ self::$step,
+				'update'      => self::$update,
+				'heading'     => sprintf( 'Update %s of {update_count}', self::$update ),
+				'percentage'  => self::$percentage,
 			);
+
+			// Cache upgrade.
+			update_option( 'give_doing_upgrade', $doing_upgrade_args );
+
+			$this->send_ajax_response( $doing_upgrade_args );
 		}
 	}
 

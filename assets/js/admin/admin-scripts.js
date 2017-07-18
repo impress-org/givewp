@@ -853,7 +853,7 @@ jQuery.noConflict();
 		},
 
 		submit: function () {
-			var self = this;
+			var self = this, step = 1, resume_update_step = 0;
 
 			self.el.main_container          = Give_Selector_Cache.get('#give-db-updates');
 			self.el.update_link             = Give_Selector_Cache.get('a', self.el.main_container);
@@ -878,8 +878,13 @@ jQuery.noConflict();
 				self.el.progress_container.append('<div class="notice-wrap give-clearfix"><span class="spinner is-active"></span><div class="give-progress"><div></div></div></div>');
 				self.el.progress_main_container.removeClass('give-hidden');
 
+				resume_update_step = parseInt( self.el.heading.data('resume-update') );
+				if( resume_update_step ) {
+					step = resume_update_step;
+				}
+
 				// Start the process from first step of first update.
-				self.process_step(1, 1, self);
+				self.process_step( step , 1, self);
 				return false;
 			});
 		},
