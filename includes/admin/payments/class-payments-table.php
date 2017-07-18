@@ -170,34 +170,16 @@ class Give_Payment_History_Table extends WP_List_Table {
 			<?php endif; ?>
 			<?php $this->search_box( esc_html__( 'Search', 'give' ), 'give-payments' ); ?>
 			<?php
-			$args = array(
-				'post_type'      => 'give_forms',
-				'post_status'    => 'publish',
-				'posts_per_page' => - 1,
-				'order'          => 'ID',
-				'orderby'        => 'ASC'
-			);
-			$donation_forms = new WP_Query( $args );
+			// Filter Donations by Donation Forms.
+			echo Give()->html->forms_dropdown( array(
+				'name'     => 'form_id',
+				'class'    => 'give-donation-forms-filter',
+				'selected' => $form_id,
+				'chosen'   => true,
+				'number'   => - 1,
+			) );
 
-			if( $donation_forms->have_posts() ) {
-				?>
-				<select name="form_id" class="give-donation-forms-filter">
-					<option value="-1"><?php _e( 'All Donation Forms', 'give' ); ?></option>
-					<?php
-					while( $donation_forms->have_posts() ) : $donation_forms->the_post();
-						$form_selected = '';
-						if( get_the_ID() === $form_id ) {
-							$form_selected = 'selected="selected"';
-						}
-						?>
-						<option value="<?php the_ID(); ?>" <?php echo $form_selected; ?>><?php the_title(); ?></option>
-						<?php
-					endwhile;
-					?>
-				</select>
-				<?php
-				submit_button( __( 'Apply', 'give' ), 'secondary', '', false );
-			}
+			submit_button( __( 'Apply', 'give' ), 'secondary', '', false );
 			?>
 		</div>
 
