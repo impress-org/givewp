@@ -54,9 +54,14 @@ function give_do_automatic_upgrades() {
 			give_v188_upgrades();
 			$did_upgrade = true;
 
+		case version_compare( $give_version, '1.8.9', '<' ) :
+			give_v189_upgrades();
+			$did_upgrade = true;
+
 		case version_compare( $give_version, '2.0', '<' ) :
 			give_v20_upgrades();
 			$did_upgrade = true;
+
 
 	}
 
@@ -89,86 +94,99 @@ function give_show_upgrade_notices() {
 
 	$give_version = preg_replace( '/[^0-9.].*/', '', $give_version );
 
-	/*
+	/**
 	 *  NOTICE:
 	 *
 	 *  When adding new upgrade notices, please be sure to put the action into the upgrades array during install:
-	 *  /includes/install.php @ Appox Line 156
+	 *  /includes/install.php @ Appox Line 169
 	 *
 	 */
 
-	// v1.3.2 Upgrades
-	if ( version_compare( $give_version, '1.3.2', '<' ) || ! give_has_upgrade_completed( 'upgrade_give_payment_customer_id' ) ) {
-		printf(
-		/* translators: %s: upgrade URL */
-			'<div class="updated"><p>' . __( 'Give needs to upgrade the donor database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
-			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_give_payment_customer_id' ) )
-		);
-	}
-
-	// v1.3.4 Upgrades //ensure the user has gone through 1.3.4.
-	if ( version_compare( $give_version, '1.3.4', '<' ) || ( ! give_has_upgrade_completed( 'upgrade_give_offline_status' ) && give_has_upgrade_completed( 'upgrade_give_payment_customer_id' ) ) ) {
-		printf(
-		/* translators: %s: upgrade URL */
-			'<div class="updated"><p>' . __( 'Give needs to upgrade the donations database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
-			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_give_offline_status' ) )
-		);
-	}
-
+	// Resume updates.
 	// Check if we have a stalled upgrade.
 	$resume_upgrade = give_maybe_resume_upgrade();
 	if ( ! empty( $resume_upgrade ) ) {
-		$resume_url = add_query_arg( $resume_upgrade, admin_url( 'index.php' ) );
-		echo Give_Notices::notice_html(
-			sprintf(
+		$resume_url = add_query_arg( give_maybe_resume_upgrade(), admin_url( 'index.php' ) );
+
+		Give()->notices->register_notice( array(
+			'id'          => 'give-resume-updates',
+			'type'        => 'warning',
+			'description' => sprintf(
 				__( 'Give needs to complete a database upgrade that was previously started, click <a href="%s">here</a> to resume the upgrade.', 'give' ),
 				esc_url( $resume_url )
-			)
-		);
+			),
+		) );
 
 		return;
 	}
 
+	// v1.3.2 Upgrades
+	Give()->notices->register_notice( array(
+		'id'          => 'give-version-1-3-2-updates',
+		'type'        => 'warning',
+		'description' => sprintf(
+			'<p>' . __( 'Give 1.3.2 needs to upgrade the donor database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p>',
+			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_give_payment_customer_id' ) )
+		),
+		'show'        => ( version_compare( $give_version, '1.3.2', '<' ) || ! give_has_upgrade_completed( 'upgrade_give_payment_customer_id' ) ),
+	) );
+
+	// v1.3.4 Upgrades //ensure the user has gone through 1.3.4.
+	Give()->notices->register_notice( array(
+		'id'          => 'give-version-1-3-4-updates',
+		'type'        => 'warning',
+		'description' => sprintf(
+			'<p>' . __( 'Give 1.3.4 needs to upgrade the donations database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p>',
+			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=upgrade_give_offline_status' ) )
+		),
+		'show'        => ( version_compare( $give_version, '1.3.4', '<' ) || ( ! give_has_upgrade_completed( 'upgrade_give_offline_status' ) && give_has_upgrade_completed( 'upgrade_give_payment_customer_id' ) ) ),
+	) );
+
 	// v1.8 form metadata upgrades.
-	if ( version_compare( $give_version, '1.8', '<' ) || ! give_has_upgrade_completed( 'v18_upgrades_form_metadata' ) ) {
-		echo Give_Notices::notice_html(
-			sprintf(
-				esc_html__( 'Give needs to upgrade the form database, click %1$shere%2$s to start the upgrade.', 'give' ),
-				'<a class="give-upgrade-link" href="' . esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=give_v18_upgrades_form_metadata' ) ) . '">',
-				'</a>'
-			)
-		);
-	}
+	Give()->notices->register_notice( array(
+		'id'          => 'give-version-1-8-updates',
+		'type'        => 'warning',
+		'description' => sprintf(
+			__( 'Give 1.8 needs to upgrade the form database, click <a class="give-upgrade-link" href="%s">here</a> to start the upgrade.', 'give' ),
+			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=give_v18_upgrades_form_metadata' ) )
+		),
+		'show'        => ( version_compare( $give_version, '1.8', '<' ) || ! give_has_upgrade_completed( 'v18_upgrades_form_metadata' ) )
+	) );
 
 	// v1.8.9 Upgrades
-	if ( version_compare( $give_version, '1.8.9', '<' ) || ( ! give_has_upgrade_completed( 'v189_upgrades_levels_post_meta' ) ) ) {
-		printf(
-		/* translators: %s: upgrade URL */
-			'<div class="updated"><p>' . __( 'Give needs to upgrade the donation forms meta-fields in database, click <a href="%s">here</a> to start the upgrade.', 'give' ) . '</p></div>',
+	Give()->notices->register_notice( array(
+		'id'          => 'give-version-1-8-9-updates',
+		'type'        => 'warning',
+		'description' => sprintf(
+			__( 'Give 1.8.9 needs to update the donation form\'s meta fields within database, click <a href="%s">here</a> to start the upgrade.', 'give' ),
 			esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=v189_upgrades_levels_post_meta' ) )
-		);
-	}
+		),
+		'show'        => ( version_compare( $give_version, '1.8.9', '<' ) || ( ! give_has_upgrade_completed( 'v189_upgrades_levels_post_meta' ) ) ),
+	) );
 
 	// v2.0 form metadata upgrades.
-	if ( version_compare( $give_version, '2.0', '<' ) || ! give_has_upgrade_completed( 'v20_upgrades_form_metadata' ) ) {
-		echo Give_Notices::notice_html(
-			sprintf(
-				esc_html__( 'Give needs to upgrade the form database, click %1$shere%2$s to start the upgrade.', 'give' ),
-				'<a class="give-upgrade-link" href="' . esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=give_v20_upgrades_form_metadata' ) ) . '">',
-				'</a>'
-			) );
-	}
+	Give()->notices->register_notice( array(
+		'id'          => 'give-version-2-0-0-updates',
+		'type'        => 'warning',
+		'description' => sprintf(
+			__( 'Give 2.0 needs to upgrade the form database, click %1$shere%2$s to start the upgrade.', 'give' ),
+			'<a class="give-upgrade-link" href="' . esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=give_v20_upgrades_form_metadata' ) ) . '">',
+			'</a>'
+		),
+		'show'        => ( version_compare( $give_version, '2.0', '<' ) || ( ! give_has_upgrade_completed( 'v20_upgrades_form_metadata' ) ) ),
+	) );
 
-	// v2.0 donor name upgrades.
-	if ( version_compare( $give_version, '2.0', '<' ) || ! give_has_upgrade_completed( 'v20_upgrades_donor_name' ) ) {
-		echo Give_Notices::notice_html(
-			sprintf(
-				esc_html__( 'Give needs to upgrade the donor database, click %1$shere%2$s to start the upgrade.', 'give' ),
-				'<a class="give-upgrade-link" href="' . esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=v20_upgrades_donor_name' ) ) . '">',
-				'</a>'
-			) );
-	}
-
+	// v2.0 upgrade logs database.
+	Give()->notices->register_notice( array(
+		'id'          => 'give-version-2-0-0-logs-updates',
+		'type'        => 'warning',
+		'description' => sprintf(
+			__( 'Give 2.0 needs to upgrade the log database, click %1$shere%2$s to start the upgrade.', 'give' ),
+			'<a class="give-upgrade-link" href="' . esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=give_v20_logs_upgrades' ) ) . '">',
+			'</a>'
+		),
+		'show'        => ( version_compare( $give_version, '2.0', '<' ) || ( ! give_has_upgrade_completed( 'give_v20_logs_upgrades' ) ) ),
+	) );
 
 	// End 'Stepped' upgrade process notices.
 	?>
@@ -227,85 +245,6 @@ function give_trigger_upgrades() {
 }
 
 add_action( 'wp_ajax_give_trigger_upgrades', 'give_trigger_upgrades' );
-
-/**
- * Check if the upgrade routine has been run for a specific action
- *
- * @since  1.0
- *
- * @param  string $upgrade_action The upgrade action to check completion for
- *
- * @return bool                   If the action has been added to the completed actions array
- */
-function give_has_upgrade_completed( $upgrade_action = '' ) {
-
-	if ( empty( $upgrade_action ) ) {
-		return false;
-	}
-
-	$completed_upgrades = give_get_completed_upgrades();
-
-	return in_array( $upgrade_action, $completed_upgrades );
-
-}
-
-/**
- * For use when doing 'stepped' upgrade routines, to see if we need to start somewhere in the middle
- *
- * @since 1.8
- *
- * @return mixed   When nothing to resume returns false, otherwise starts the upgrade where it left off
- */
-function give_maybe_resume_upgrade() {
-	$doing_upgrade = get_option( 'give_doing_upgrade', false );
-	if ( empty( $doing_upgrade ) ) {
-		return false;
-	}
-
-	return $doing_upgrade;
-}
-
-/**
- * Adds an upgrade action to the completed upgrades array
- *
- * @since  1.0
- *
- * @param  string $upgrade_action The action to add to the completed upgrades array
- *
- * @return bool                   If the function was successfully added
- */
-function give_set_upgrade_complete( $upgrade_action = '' ) {
-
-	if ( empty( $upgrade_action ) ) {
-		return false;
-	}
-
-	$completed_upgrades   = give_get_completed_upgrades();
-	$completed_upgrades[] = $upgrade_action;
-
-	// Remove any blanks, and only show uniques.
-	$completed_upgrades = array_unique( array_values( $completed_upgrades ) );
-
-	return update_option( 'give_completed_upgrades', $completed_upgrades );
-}
-
-/**
- * Get's the array of completed upgrade actions
- *
- * @since  1.0
- * @return array The array of completed upgrades
- */
-function give_get_completed_upgrades() {
-
-	$completed_upgrades = get_option( 'give_completed_upgrades' );
-
-	if ( false === $completed_upgrades ) {
-		$completed_upgrades = array();
-	}
-
-	return $completed_upgrades;
-
-}
 
 /**
  * Upgrades the
@@ -396,7 +335,7 @@ function give_v134_upgrade_give_offline_status() {
 
 }
 
-	add_action( 'give_upgrade_give_offline_status', 'give_v134_upgrade_give_offline_status' );
+add_action( 'give_upgrade_give_offline_status', 'give_v134_upgrade_give_offline_status' );
 
 /**
  * Cleanup User Roles
@@ -935,7 +874,6 @@ function give_v187_upgrades() {
 	}
 }
 
-
 /**
  * Update Capabilities for Give_Worker User Role.
  *
@@ -1070,6 +1008,43 @@ function give_v189_upgrades_levels_post_meta_callback() {
 
 add_action( 'give_v189_upgrades_levels_post_meta', 'give_v189_upgrades_levels_post_meta_callback' );
 
+
+/**
+ * Give version 1.8.9 upgrades
+ *
+ * @since      1.8.9
+ */
+function give_v189_upgrades() {
+	/**
+	 * 1. Remove user license related notice show blocked ( Give_Notice will handle )
+	 */
+	global $wpdb;
+
+	// Delete permanent notice blocker.
+	$wpdb->query(
+		$wpdb->prepare(
+			"
+					DELETE FROM $wpdb->usermeta
+					WHERE meta_key
+					LIKE '%%%s%%'
+					",
+			'_give_hide_license_notices_permanently'
+		)
+	);
+
+	// Delete short notice blocker.
+	$wpdb->query(
+		$wpdb->prepare(
+			"
+					DELETE FROM $wpdb->options
+					WHERE option_name
+					LIKE '%%%s%%'
+					",
+			'__give_hide_license_notices_shortly_'
+		)
+	);
+}
+
 /**
  * 2.0 Upgrades.
  *
@@ -1150,77 +1125,6 @@ function give_v20_upgrades_email_setting() {
 	}
 }
 
-/**
- * Upgrade routine for splitting donor name into first name and last name.
- *
- * @since 2.0
- *
- * @return void
- */
-function give_v20_upgrades_donor_name() {
-
-	if ( ! current_user_can( 'manage_give_settings' ) ) {
-		wp_die( esc_html__( 'You do not have permission to do Give upgrades.', 'give' ), esc_html__( 'Error', 'give' ), array(
-			'response' => 403,
-		) );
-	}
-
-	ignore_user_abort( true );
-
-	if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
-		@set_time_limit( 0 );
-	}
-
-	$per_step = 30;
-	$step = isset( $_GET['step'] ) ? absint( $_GET['step'] ) : 1;
-	$offset = ( $step - 1 ) * $per_step;
-	$args = array(
-		'number'    => $per_step,
-		'offset'    => $offset
-	);
-
-	$donors = Give()->donors->get_donors( $args );
-
-	if( $donors ) {
-		// Loop through Donors
-		foreach ( $donors as $donor ) {
-			$donor_name = explode( ' ', $donor->name, 2 );
-			$donor_first_name = Give()->donor_meta->get_meta( $donor->id, '_give_donor_first_name' );
-			$donor_last_name = Give()->donor_meta->get_meta( $donor->id, '_give_donor_last_name' );
-
-			// If first name meta of donor is not created, then create it.
-			if( ! $donor_first_name ) {
-				Give()->donor_meta->add_meta( $donor->id, '_give_donor_first_name', $donor_name[0] );
-			}
-
-			// If last name meta of donor is not created, then create it.
-			if( ! $donor_last_name ) {
-				Give()->donor_meta->add_meta( $donor->id, '_give_donor_last_name', $donor_name[1] );
-			}
-		}
-
-		$step ++;
-		$redirect = add_query_arg( array(
-			'page'         => 'give-upgrades',
-			'give-upgrade' => 'v20_upgrades_donor_name',
-			'step'         => $step,
-		), admin_url( 'index.php' ) );
-		wp_redirect( $redirect );
-		exit();
-
-	}else {
-		// No more donors found, finish up.
-		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
-		delete_option( 'give_doing_upgrade' );
-		give_set_upgrade_complete( 'v20_upgrades_donor_name' );
-
-		wp_redirect( admin_url() );
-		exit;
-	}
-
-}
-
-add_action( 'give_v20_upgrades_donor_name', 'give_v20_upgrades_donor_name' );
 
 /**
  * Upgrade form metadata for new metabox settings.
@@ -1315,3 +1219,139 @@ function give_v20_upgrades_form_metadata() {
 }
 
 add_action( 'give_give_v20_upgrades_form_metadata', 'give_v20_upgrades_form_metadata' );
+
+/**
+ * Upgrade logs data.
+ *
+ * @since  2.0
+ * @return void
+ */
+function give_v20_logs_upgrades() {
+	if ( ! current_user_can( 'manage_give_settings' ) ) {
+		wp_die( esc_html__( 'You do not have permission to do Give upgrades.', 'give' ), esc_html__( 'Error', 'give' ), array(
+			'response' => 403,
+		) );
+	}
+
+	ignore_user_abort( true );
+
+	if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
+		@set_time_limit( 0 );
+	}
+
+	global $wpdb;
+	$step = isset( $_GET['step'] ) ? absint( $_GET['step'] ) : 1;
+
+	// form query
+	$forms = new WP_Query( array(
+			'paged'          => $step,
+			'order'          => 'DESC',
+			'post_type'      => 'give_log',
+			'post_status'    => 'any',
+			'posts_per_page' => 20,
+		)
+	);
+
+	if ( $forms->have_posts() ) {
+		while ( $forms->have_posts() ) {
+			$forms->the_post();
+			global $post;
+			$term = get_the_terms( $post->ID, 'give_log_type' );
+			$term = ! is_wp_error( $term ) && ! empty( $term ) ? $term[0] : array();
+			$term_name = ! empty( $term )? $term->slug : '';
+
+			$log_data = array(
+				'ID'           => $post->ID,
+				'log_title'    => $post->post_title,
+				'log_content'  => $post->post_content,
+				'log_parent'   => 0,
+				'log_type'     => $term_name,
+				'log_date'     => $post->post_date,
+				'log_date_gmt' => $post->post_date_gmt,
+			);
+			$log_meta = array();
+
+			if( $old_log_meta = get_post_meta( $post->ID ) ) {
+				foreach ( $old_log_meta as $meta_key => $meta_value ) {
+					switch ( $meta_key ) {
+						case '_give_log_payment_id':
+							$log_data['log_parent'] = current( $meta_value );
+							$log_meta['_give_log_form_id'] = $post->post_parent;
+							break;
+
+						default:
+							$log_meta[$meta_key] = current(  $meta_value );
+					}
+				}
+			}
+
+			if( 'api_request' === $term_name ){
+				$log_meta['_give_log_api_query'] = $post->post_excerpt;
+			}
+
+			$wpdb->insert( "{$wpdb->prefix}give_logs", $log_data );
+
+			if( ! empty( $log_meta ) ) {
+				foreach ( $log_meta as $meta_key => $meta_value ){
+					Give()->logs->logmeta_db->update_meta( $post->ID, $meta_key, $meta_value );
+				}
+			}
+
+			$logIDs[] = $post->ID;
+		}// End while().
+
+		wp_reset_postdata();
+
+		// Forms found so upgrade them
+		$step ++;
+		$redirect = add_query_arg( array(
+			'page'         => 'give-upgrades',
+			'give-upgrade' => 'give_v20_logs_upgrades',
+			'step'         => $step,
+		), admin_url( 'index.php' ) );
+		wp_redirect( $redirect );
+		exit();
+
+	} else {
+		// Delete terms and taxonomy.
+		$terms = get_terms( 'give_log_type', array( 'fields' => 'ids', 'hide_empty' => false ) );
+		if( ! empty( $terms ) ) {
+			foreach ( $terms as $term ) {
+				wp_delete_term( $term, 'give_log_type' );
+			}
+		}
+
+		// Delete logs
+		$logIDs = get_posts( array(
+				'order'          => 'DESC',
+				'post_type'      => 'give_log',
+				'post_status'    => 'any',
+				'posts_per_page' => - 1,
+				'fields'         => 'ids',
+			)
+		);
+
+		if ( ! empty( $logIDs ) ) {
+			foreach ( $logIDs as $log ) {
+				// Delete term relationship and posts.
+				wp_delete_object_term_relationships( $log, 'give_log_type' );
+				wp_delete_post( $log, true );
+			}
+		}
+
+		unregister_taxonomy( 'give_log_type' );
+
+		// Delete log cache.
+		Give()->logs->delete_cache();
+
+		// No more forms found, finish up.
+		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
+		delete_option( 'give_doing_upgrade' );
+		give_set_upgrade_complete( 'give_v20_logs_upgrades' );
+
+		wp_redirect( admin_url() );
+		exit;
+	}
+}
+
+add_action( 'give_give_v20_logs_upgrades', 'give_v20_logs_upgrades' );

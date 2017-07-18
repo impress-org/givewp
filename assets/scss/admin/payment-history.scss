@@ -40,10 +40,15 @@
 
 }
 
+#give-payments-advanced-filter {
+  ul.subsubsub {
+	margin-bottom: 12px;
+  }
+  #search-submit {
+	margin-right:20px;
+  }
+}
 #give-payments-filter {
-	ul.subsubsub {
-		margin-bottom: 12px;
-	}
 	.tablenav.top {
 		float: none;
 		.bulkactions {

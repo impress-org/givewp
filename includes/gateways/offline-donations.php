@@ -445,7 +445,7 @@ function give_offline_donation_receipt_status_notice( $notice, $id ) {
 		return $notice;
 	}
 
-	return give_output_error( __( 'Payment Pending: Please follow the instructions below to complete your donation.', 'give' ), false, 'warning' );
+	return Give()->notices->print_frontend_notice( __( 'Payment Pending: Please follow the instructions below to complete your donation.', 'give' ), false, 'warning' );
 }
 
 add_filter( 'give_receipt_status_notice', 'give_offline_donation_receipt_status_notice', 10, 2 );

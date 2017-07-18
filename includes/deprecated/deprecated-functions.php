@@ -16,6 +16,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Deprecated global variables.
+ *
+ * @since 2.0
+ */
+function _give_load_deprecated_global_params( $give_object ) {
+	$GLOBALS['give_logs'] = Give()->logs;
+}
+
+add_action( 'give_init', '_give_load_deprecated_global_params' );
+
 
 /**
  * Checks if Guest checkout is enabled for a particular donation form
@@ -443,7 +454,6 @@ function give_purchase_total_of_user( $user = null ) {
  * Deletes a Donation
  *
  * @since  1.0
- * @global      $give_logs
  *
  * @param  int  $payment_id      Payment ID (default: 0).
  * @param  bool $update_customer If we should update the customer stats (default:true).
@@ -527,7 +537,6 @@ function give_increase_purchase_count( $form_id = 0, $quantity = 1 ) {
  * Stores log information for a donation.
  *
  * @since 1.0
- * @global            $give_logs Give_Logging
  *
  * @param int         $give_form_id Give Form ID.
  * @param int         $payment_id   Payment ID.
@@ -542,4 +551,47 @@ function give_record_sale_in_log( $give_form_id = 0, $payment_id, $price_id = fa
 	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_record_donation_in_log', $backtrace );
 
 	give_record_donation_in_log( $give_form_id, $payment_id, $price_id, $sale_date );
+}
+
+/**
+ * Print Errors
+ *
+ * Prints all stored errors. Ensures errors show up on the appropriate form;
+ * For use during donation process. If errors exist, they are returned.
+ *
+ * @since 1.0
+ * @uses  give_get_errors()
+ * @uses  give_clear_errors()
+ *
+ * @param int $form_id Form ID.
+ *
+ * @return void
+ */
+function give_print_errors( $form_id ) {
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'Give_Notice::print_frontend_errors', $backtrace );
+
+	do_action( 'give_frontend_notices', $form_id );
+}
+
+/**
+ * Give Output Error
+ *
+ * Helper function to easily output an error message properly wrapped; used commonly with shortcodes
+ *
+ * @since      1.3
+ *
+ * @param string $message  Message to store with the error.
+ * @param bool   $echo     Flag to print or return output.
+ * @param string $error_id ID of the error being set.
+ *
+ * @return   string  $error
+ */
+function give_output_error( $message, $echo = true, $error_id = 'warning' ) {
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'Give_Notice::print_frontend_notice', $backtrace );
+
+	Give()->notices->print_frontend_notice( $message, $echo, $error_id );
 }

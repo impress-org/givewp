@@ -33,8 +33,7 @@
  * Give is a tribute to the spirit and philosophy of Open Source. We at WordImpress gladly embrace the Open Source philosophy both
  * in how Give itself was developed, and how we hope to see others build more from our code base.
  *
- * Give would not have been possible without the tireless efforts of WordPress and the surrounding Open Source projects and their talented developers. Thank you all for your
- * contribution to WordPress.
+ * Give would not have been possible without the tireless efforts of WordPress and the surrounding Open Source projects and their talented developers. Thank you all for your contribution to WordPress.
  *
  * - The WordImpress Team
  */
@@ -178,6 +177,31 @@ if ( ! class_exists( 'Give' ) ) :
 		public $email_access;
 
 		/**
+		 * Give_tooltips Object
+		 *
+		 * @since  2.0
+		 * @access public
+		 *
+		 * @var    Give_Tooltips object
+		 */
+		public $tooltips;
+
+		/**
+		 * Give notices Object
+		 *
+		 * @var    Give_Notices $notices
+		 */
+		public $notices;
+		
+
+		/**
+		 * Give logging Object
+		 *
+		 * @var    Give_Logging $logs
+		 */
+		public $logs;
+
+		/**
 		 * Main Give Instance
 		 *
 		 * Ensures that only one instance of Give exists in memory at any one
@@ -219,6 +243,7 @@ if ( ! class_exists( 'Give' ) ) :
 			register_activation_hook( __FILE__, 'give_install' );
 			add_action( 'plugins_loaded', array( $this, 'init' ), 0 );
 		}
+
 		/**
 		 * Init Give when WordPress Initializes.
 		 *
@@ -247,6 +272,9 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->donor_meta      = new Give_DB_Donor_Meta();
 			$this->template_loader = new Give_Template_Loader();
 			$this->email_access    = new Give_Email_Access();
+			$this->tooltips        = new Give_Tooltips();
+			$this->notices         = new Give_Notices();
+			$this->logs            = new Give_Logging();
 
 			/**
 			 * Fire the action after Give core loads.
@@ -327,6 +355,11 @@ if ( ! class_exists( 'Give' ) ) :
 			if ( ! defined( 'CAL_GREGORIAN' ) ) {
 				define( 'CAL_GREGORIAN', 1 );
 			}
+
+			// PHP version
+			if ( ! defined( 'GIVE_REQUIRED_PHP_VERSION' ) ) {
+				define( 'GIVE_REQUIRED_PHP_VERSION', '5.3' );
+			}
 		}
 
 		/**
@@ -352,6 +385,8 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/actions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/filters.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/api/class-give-api.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-tooltips.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-notices.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-roles.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-template-loader.php';
@@ -415,7 +450,6 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-footer.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/welcome.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/class-admin-notices.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/class-api-keys-table.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/class-i18n-module.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-actions.php';

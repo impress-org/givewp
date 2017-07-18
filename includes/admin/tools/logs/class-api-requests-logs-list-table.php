@@ -91,9 +91,9 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	public function get_columns() {
 		$columns = array(
 			'ID'      => esc_html__( 'Log ID', 'give' ),
-			'details' => esc_html__( 'Request Details', 'give' ),
 			'ip'      => esc_html__( 'Request IP', 'give' ),
 			'date'    => esc_html__( 'Date', 'give' ),
+			'details' => esc_html__( 'Request Details', 'give' ),
 		);
 
 		return $columns;
@@ -128,25 +128,31 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 * @return void
 	 */
 	public function column_details( $item ) {
+		echo Give()->tooltips->render_link( array(
+			'label'       => __( 'View Request', 'give' ),
+			'tag_content' => '<span class="dashicons dashicons-visibility"></span>',
+			'link'        => "#TB_inline?width=640&amp;inlineId=log-details-{$item['ID']}",
+			'attributes'  => array(
+				'class' => 'thickbox give-error-log-details-link button button-small',
+			),
+		) );
 		?>
-		<a href="#TB_inline?width=640&amp;inlineId=log-details-<?php echo $item['ID']; ?>" class="thickbox"><?php esc_html_e( 'View Request', 'give' ); ?></a>
 		<div id="log-details-<?php echo $item['ID']; ?>" style="display:none;">
 			<?php
 
-			$request = get_post_field( 'post_excerpt', $item['ID'] );
-			$error   = get_post_field( 'post_content', $item['ID'] );
+			$request = get_post_meta( $item['ID'], '_give_log_api_query', true );
 			echo '<p><strong>' . esc_html__( 'API Request:', 'give' ) . '</strong></p>';
 			echo '<div>' . $request . '</div>';
-			if ( ! empty( $error ) ) {
+			if ( ! empty( $item['log_content'] ) ) {
 				echo '<p><strong>' . esc_html__( 'Error', 'give' ) . '</strong></p>';
-				echo '<div>' . esc_html( $error ) . '</div>';
+				echo '<div>' . esc_html( $item['log_content'] ) . '</div>';
 			}
 			echo '<p><strong>' . esc_html__( 'API User:', 'give' ) . '</strong></p>';
 			echo '<div>' . give_get_meta( $item['ID'], '_give_log_user', true ) . '</div>';
 			echo '<p><strong>' . esc_html__( 'API Key:', 'give' ) . '</strong></p>';
 			echo '<div>' . give_get_meta( $item['ID'], '_give_log_key', true ) . '</div>';
 			echo '<p><strong>' . esc_html__( 'Request Date:', 'give' ) . '</strong></p>';
-			echo '<div>' . get_post_field( 'post_date', $item['ID'] ) . '</div>';
+			echo '<div>' . $item['log_date']  . '</div>';
 			?>
 		</div>
 		<?php
@@ -279,29 +285,30 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @global object $give_logs Give Logs Object
+	 *
 	 * @return array $logs_data Array of all the Log entires
 	 */
 	public function get_logs() {
-		global $give_logs;
-
 		$logs_data = array();
 		$paged     = $this->get_paged();
 		$log_query = array(
 			'log_type'   => 'api_request',
 			'paged'      => $paged,
 			'meta_query' => $this->get_meta_query(),
+			'number'     => $this->per_page,
 		);
 
-		$logs = $give_logs->get_connected_logs( $log_query );
+		$logs = Give()->logs->get_connected_logs( $log_query );
 
 		if ( $logs ) {
 			foreach ( $logs as $log ) {
 
 				$logs_data[] = array(
-					'ID'   => $log->ID,
-					'ip'   => give_get_meta( $log->ID, '_give_log_request_ip', true ),
-					'date' => $log->post_date,
+					'ID'          => $log->ID,
+					'ip'          => give_get_meta( $log->ID, '_give_log_request_ip', true ),
+					'date'        => $log->log_date,
+					'log_content' => $log->log_content,
+					'log_date'    => $log->log_date,
 				);
 			}
 		}
@@ -314,23 +321,21 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @global object $give_logs Give Logs Object
 	 * @uses   Give_API_Request_Log_Table::get_columns()
 	 * @uses   WP_List_Table::get_sortable_columns()
 	 * @uses   Give_API_Request_Log_Table::get_pagenum()
 	 * @uses   Give_API_Request_Log_Table::get_logs()
 	 * @uses   Give_API_Request_Log_Table::get_log_count()
+	 *
 	 * @return void
 	 */
 	public function prepare_items() {
-		global $give_logs;
-
 		$columns               = $this->get_columns();
 		$hidden                = array(); // No hidden columns
 		$sortable              = $this->get_sortable_columns();
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 		$this->items           = $this->get_logs();
-		$total_items           = $give_logs->get_log_count( 0, 'api_request' );
+		$total_items           = Give()->logs->get_log_count( 0, 'api_request' );
 
 		$this->set_pagination_args( array(
 				'total_items' => $total_items,

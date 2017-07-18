@@ -1037,6 +1037,16 @@ class Give_API {
 			$form['info']['tags'] = get_the_terms( $form_info, 'give_forms_tag' );
 		}
 
+		// Check whether any goal is to be achieved for the donation form.
+		$goal_option = give_get_meta( $form_info->ID, '_give_goal_option', true );
+		$goal_amount = give_get_meta( $form_info->ID, '_give_set_goal', true );
+		if ( give_is_setting_enabled( $goal_option ) && $goal_amount ) {
+			$total_income = give_get_form_earnings_stats( $form_info->ID );
+			$goal_percentage_completed = ( $total_income < $goal_amount ) ? round( ( $total_income / $goal_amount ) * 100, 2 ) : 100;
+			$form['goal']['amount']               = isset( $goal_amount ) ? $goal_amount : '';
+			$form['goal']['percentage_completed'] = isset( $goal_percentage_completed ) ? $goal_percentage_completed : '';
+		}
+
 		if ( user_can( $this->user_id, 'view_give_reports' ) || $this->override ) {
 			$form['stats']['total']['donations']           = give_get_form_sales_stats( $form_info->ID );
 			$form['stats']['total']['earnings']            = give_get_form_earnings_stats( $form_info->ID );
@@ -1563,7 +1573,6 @@ class Give_API {
 	 * @access private
 	 * @since  1.1
 	 *
-	 * @global Give_Logging $give_logs
 	 * @global WP_Query     $wp_query
 	 *
 	 * @param array         $data
@@ -1574,11 +1583,6 @@ class Give_API {
 		if ( ! $this->log_requests ) {
 			return;
 		}
-
-		/**
-		 * @var Give_Logging $give_logs
-		 */
-		global $give_logs;
 
 		/**
 		 * @var WP_Query $wp_query
@@ -1616,7 +1620,7 @@ class Give_API {
 			'version'    => $this->get_queried_version(),
 		);
 
-		$give_logs->insert_log( $log_data, $log_meta );
+		Give()->logs->insert_log( $log_data, $log_meta );
 	}
 
 

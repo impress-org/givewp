@@ -129,7 +129,7 @@ class Give_MetaBox_Form_Data {
 						'data_type'   => 'price',
 						'attributes'  => array(
 							'placeholder' => give_format_decimal( '1.00' ),
-							'value'       => give_format_decimal( $price ),
+							'value'       => $price,
 							'class'       => 'give-money-field',
 						),
 					),
@@ -166,7 +166,7 @@ class Give_MetaBox_Form_Data {
 						'data_type'   => 'price',
 						'attributes'  => array(
 							'placeholder' => give_format_decimal( '1.00' ),
-							'value'       => give_format_decimal( $custom_amount_minimum ),
+							'value'       => $custom_amount_minimum,
 							'class'       => 'give-money-field',
 						),
 					),

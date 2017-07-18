@@ -154,12 +154,6 @@ function give_run_install() {
 	$api = new Give_API();
 	update_option( 'give_default_api_version', 'v' . $api->get_version() );
 
-	// Create the donor databases.
-	$donors_db = new Give_DB_Donors();
-	$donors_db->create_table();
-	$donor_meta = new Give_DB_Donor_Meta();
-	$donor_meta->create_table();
-
 	// Check for PHP Session support, and enable if available.
 	$give_sessions = new Give_Session();
 	$give_sessions->use_php_sessions();
@@ -178,8 +172,9 @@ function give_run_install() {
 			'upgrade_give_offline_status',
 			'v18_upgrades_core_setting',
 			'v18_upgrades_form_metadata',
+			'v189_upgrades_levels_post_meta',
 			'v20_upgrades_form_metadata',
-			'v20_upgrades_donor_name',
+			'give_v20_logs_upgrades'
 		);
 
 		foreach ( $upgrade_routines as $upgrade ) {
@@ -213,7 +208,7 @@ function give_run_install() {
  * @param  int $site_id The Site ID.
  * @param  array $meta Blog Meta.
  */
-function on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
+function give_on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
 
 	if ( is_plugin_active_for_network( GIVE_PLUGIN_BASENAME ) ) {
 
@@ -225,7 +220,7 @@ function on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
 
 }
 
-add_action( 'wpmu_new_blog', 'on_create_blog', 10, 6 );
+add_action( 'wpmu_new_blog', 'give_on_create_blog', 10, 6 );
 
 
 /**
@@ -388,20 +383,16 @@ function give_get_default_settings() {
 
 		// Offline gateway setup.
 		'global_offline_donation_content'             => give_get_default_offline_donation_content(),
-		// 'global_offline_donation_email'               => give_get_default_offline_donation_email_content(),
-		'offline-donation-instruction_email_message'  => give_get_default_offline_donation_email_content(),
-
+		'global_offline_donation_email'               => give_get_default_offline_donation_content(),
 
 		// Billing address.
 		'give_offline_donation_enable_billing_fields' => 'disabled',
 
 		// Default donation notification email.
-		// 'donation_notification'                       => give_get_default_donation_notification_email(),
-		'new-donation_email_message'                  => give_get_default_donation_notification_email(),
+		'donation_notification'                       => give_get_default_donation_notification_email(),
 
 		// Default email receipt message.
-		// 'donation_receipt'                            => give_get_default_donation_receipt_email(),
-		'donation-receipt_email_message'              => give_get_default_donation_receipt_email(),
+		'donation_receipt'                            => give_get_default_donation_receipt_email(),
 	);
 
 	return $options;
@@ -414,15 +405,17 @@ function give_get_default_agreement_text() {
 
 	$org_name = get_bloginfo( 'name' );
 
-	$agreement = '<p>Acceptance of any contribution, gift or grant is at the discretion of the ' . $org_name . '. The  ' . $org_name . ' will not accept any gift unless it can be used or expended consistently with the purpose and mission of the  ' . $org_name . '.</p>
-<p>No irrevocable gift, whether outright or life-income in character, will be accepted if under any reasonable set of circumstances the gift would jeopardize the donor’s financial security.</p>
-<p>The ' . $org_name . ' will refrain from providing advice about the tax or other treatment of gifts and will encourage donors to seek guidance from their own professional advisers to assist them in the process of making their donation.</p>
-<p>The ' . $org_name . ' will accept donations of cash or publicly traded securities. Gifts of in-kind services will be accepted at the discretion of the ' . $org_name . '.</p>
-<p>Certain other gifts, real property, personal property, in-kind gifts, non-liquid securities, and contributions whose sources are not transparent or whose use is restricted in some manner, must be reviewed prior to acceptance due to the special obligations raised or liabilities they may pose for ' . $org_name . '.</p>
-<p>The ' . $org_name . ' will provide acknowledgments to donors meeting tax requirements for property received by the charity as a gift. However, except for gifts of cash and publicly traded securities, no value shall be ascribed to any receipt or other form of substantiation of a gift received by ' . $org_name . '.</p>
-<p>The ' . $org_name . ' will respect the intent of the donor relating to gifts for restricted purposes and those relating to the desire to remain anonymous. With respect to anonymous gifts, the ' . $org_name . ' will restrict information about the donor to only those staff members with a need to know.</p>
-<p>The ' . $org_name . ' will not compensate, whether through commissions, finders\' fees, or other means, any third party for directing a gift or a donor to the ' . $org_name . '.</p>';
+	$agreement = sprintf(
+		'<p>Acceptance of any contribution, gift or grant is at the discretion of the %1$s. The  %1$s will not accept any gift unless it can be used or expended consistently with the purpose and mission of the  %1$s.</p>
+				<p>No irrevocable gift, whether outright or life-income in character, will be accepted if under any reasonable set of circumstances the gift would jeopardize the donor’s financial security.</p>
+				<p>The %1$s will refrain from providing advice about the tax or other treatment of gifts and will encourage donors to seek guidance from their own professional advisers to assist them in the process of making their donation.</p>
+				<p>The %1$s will accept donations of cash or publicly traded securities. Gifts of in-kind services will be accepted at the discretion of the %1$s.</p>
+				<p>Certain other gifts, real property, personal property, in-kind gifts, non-liquid securities, and contributions whose sources are not transparent or whose use is restricted in some manner, must be reviewed prior to acceptance due to the special obligations raised or liabilities they may pose for %1$s.</p>
+				<p>The %1$s will provide acknowledgments to donors meeting tax requirements for property received by the charity as a gift. However, except for gifts of cash and publicly traded securities, no value shall be ascribed to any receipt or other form of substantiation of a gift received by %1$s.</p>
+				<p>The %1$s will respect the intent of the donor relating to gifts for restricted purposes and those relating to the desire to remain anonymous. With respect to anonymous gifts, the %1$s will restrict information about the donor to only those staff members with a need to know.</p>
+				<p>The %1$s will not compensate, whether through commissions, finders\' fees, or other means, any third party for directing a gift or a donor to the %1$s.</p>',
+		$org_name
+	);
 
 	return apply_filters( 'give_get_default_agreement_text', $agreement, $org_name );
-
 }
