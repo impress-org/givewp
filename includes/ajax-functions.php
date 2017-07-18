@@ -241,7 +241,6 @@ function give_ajax_get_states_field() {
 		'states_found' => $states_found,
 		'show_field' => $show_field,
 		'states_label' => $label,
-		'no_states_country' => $no_states_country,
 		'data' => $data,
 	);
 	wp_send_json( $response );
