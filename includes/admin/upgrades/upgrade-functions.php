@@ -187,6 +187,18 @@ function give_show_upgrade_notices() {
 		'show'        => ( version_compare( $give_version, '2.0', '<' ) || ( ! give_has_upgrade_completed( 'give_v20_logs_upgrades' ) ) ),
 	) );
 
+	// v2.0 donor name upgrade routine.
+	Give()->notices->register_notice( array(
+		'id'          => 'give-version-2-0-0-donor-name-updates',
+		'type'        => 'warning',
+		'description' => sprintf(
+			__( 'Give 2.0 needs to upgrade the donors database, click %1$shere%2$s to start the upgrade.', 'give' ),
+			'<a class="give-upgrade-link" href="' . esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=v20_upgrades_donor_name' ) ) . '">',
+			'</a>'
+		),
+		'show'        => ( version_compare( $give_version, '2.0', '<' ) || ( ! give_has_upgrade_completed( 'v20_upgrades_donor_name' ) ) ),
+	) );
+
 	// End 'Stepped' upgrade process notices.
 	?>
 	<script>
@@ -1125,78 +1137,6 @@ function give_v20_upgrades_email_setting() {
 }
 
 /**
- * Upgrade routine for splitting donor name into first name and last name.
- *
- * @since 2.0
- *
- * @return void
- */
-function give_v20_upgrades_donor_name() {
-
-	if ( ! current_user_can( 'manage_give_settings' ) ) {
-		wp_die( esc_html__( 'You do not have permission to do Give upgrades.', 'give' ), esc_html__( 'Error', 'give' ), array(
-			'response' => 403,
-		) );
-	}
-
-	ignore_user_abort( true );
-
-	if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
-		@set_time_limit( 0 );
-	}
-
-	$per_step = 30;
-	$step = isset( $_GET['step'] ) ? absint( $_GET['step'] ) : 1;
-	$offset = ( $step - 1 ) * $per_step;
-	$args = array(
-		'number'    => $per_step,
-		'offset'    => $offset
-	);
-
-	$donors = Give()->donors->get_donors( $args );
-
-	if( $donors ) {
-		// Loop through Donors
-		foreach ( $donors as $donor ) {
-			$donor_name = explode( ' ', $donor->name, 2 );
-			$donor_first_name = Give()->donor_meta->get_meta( $donor->id, '_give_donor_first_name' );
-			$donor_last_name = Give()->donor_meta->get_meta( $donor->id, '_give_donor_last_name' );
-
-			// If first name meta of donor is not created, then create it.
-			if( ! $donor_first_name ) {
-				Give()->donor_meta->add_meta( $donor->id, '_give_donor_first_name', $donor_name[0] );
-			}
-
-			// If last name meta of donor is not created, then create it.
-			if( ! $donor_last_name ) {
-				Give()->donor_meta->add_meta( $donor->id, '_give_donor_last_name', $donor_name[1] );
-			}
-		}
-
-		$step ++;
-		$redirect = add_query_arg( array(
-			'page'         => 'give-upgrades',
-			'give-upgrade' => 'v20_upgrades_donor_name',
-			'step'         => $step,
-		), admin_url( 'index.php' ) );
-		wp_redirect( $redirect );
-		exit();
-
-	}else {
-		// No more donors found, finish up.
-		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
-		delete_option( 'give_doing_upgrade' );
-		give_set_upgrade_complete( 'v20_upgrades_donor_name' );
-
-		wp_redirect( admin_url() );
-		exit;
-	}
-
-}
-
-add_action( 'give_v20_upgrades_donor_name', 'give_v20_upgrades_donor_name' );
-
-/**
  * Upgrade form metadata for new metabox settings.
  *
  * @since  2.0
@@ -1425,3 +1365,75 @@ function give_v20_logs_upgrades() {
 }
 
 add_action( 'give_give_v20_logs_upgrades', 'give_v20_logs_upgrades' );
+
+/**
+ * Upgrade routine for splitting donor name into first name and last name.
+ *
+ * @since 2.0
+ *
+ * @return void
+ */
+function give_v20_upgrades_donor_name() {
+
+	if ( ! current_user_can( 'manage_give_settings' ) ) {
+		wp_die( esc_html__( 'You do not have permission to do Give upgrades.', 'give' ), esc_html__( 'Error', 'give' ), array(
+			'response' => 403,
+		) );
+	}
+
+	ignore_user_abort( true );
+
+	if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
+		@set_time_limit( 0 );
+	}
+
+	$per_step = 30;
+	$step = isset( $_GET['step'] ) ? absint( $_GET['step'] ) : 1;
+	$offset = ( $step - 1 ) * $per_step;
+	$args = array(
+		'number'    => $per_step,
+		'offset'    => $offset
+	);
+
+	$donors = Give()->donors->get_donors( $args );
+
+	if( $donors ) {
+		// Loop through Donors
+		foreach ( $donors as $donor ) {
+			$donor_name = explode( ' ', $donor->name, 2 );
+			$donor_first_name = Give()->donor_meta->get_meta( $donor->id, '_give_donor_first_name' );
+			$donor_last_name = Give()->donor_meta->get_meta( $donor->id, '_give_donor_last_name' );
+
+			// If first name meta of donor is not created, then create it.
+			if( ! $donor_first_name ) {
+				Give()->donor_meta->add_meta( $donor->id, '_give_donor_first_name', $donor_name[0] );
+			}
+
+			// If last name meta of donor is not created, then create it.
+			if( ! $donor_last_name ) {
+				Give()->donor_meta->add_meta( $donor->id, '_give_donor_last_name', $donor_name[1] );
+			}
+		}
+
+		$step ++;
+		$redirect = add_query_arg( array(
+			'page'         => 'give-upgrades',
+			'give-upgrade' => 'v20_upgrades_donor_name',
+			'step'         => $step,
+		), admin_url( 'index.php' ) );
+		wp_redirect( $redirect );
+		exit();
+
+	}else {
+		// No more donors found, finish up.
+		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
+		delete_option( 'give_doing_upgrade' );
+		give_set_upgrade_complete( 'v20_upgrades_donor_name' );
+
+		wp_redirect( admin_url() );
+		exit;
+	}
+
+}
+
+add_action( 'give_v20_upgrades_donor_name', 'give_v20_upgrades_donor_name' );
