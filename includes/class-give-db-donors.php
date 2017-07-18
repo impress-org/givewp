@@ -40,6 +40,7 @@ class Give_DB_Donors extends Give_DB {
 		$this->version     = '1.0';
 		
 		add_action( 'profile_update', array( $this, 'update_donor_email_on_user_update' ), 10, 2 );
+		add_action( 'edit_user_profile_update', array( $this, 'update_donor_info_on_user_update' ), 10, 2 );
 
 		// Install table.
 		$this->register_table();
@@ -92,10 +93,10 @@ class Give_DB_Donors extends Give_DB {
 	/**
 	 * Add a donor
 	 *
+	 * @param  array $data List of donor data to add.
+	 *
 	 * @since  1.0
 	 * @access public
-	 *
-	 * @param  array $data
 	 *
 	 * @return int|bool
 	 */
@@ -158,10 +159,10 @@ class Give_DB_Donors extends Give_DB {
 	 * NOTE: This should not be called directly as it does not make necessary changes to
 	 * the payment meta and logs. Use give_donor_delete() instead.
 	 *
+	 * @param  bool|string|int $_id_or_email ID or Email of Donor.
+	 *
 	 * @since  1.0
 	 * @access public
-	 *
-	 * @param  bool|string|int $_id_or_email
 	 *
 	 * @return bool|int
 	 */
@@ -189,11 +190,11 @@ class Give_DB_Donors extends Give_DB {
 	/**
 	 * Checks if a donor exists
 	 *
-	 * @since  1.0
-	 * @access public
-	 *
 	 * @param  string $value The value to search for. Default is empty.
 	 * @param  string $field The Donor ID or email to search in. Default is 'email'.
+	 *
+	 * @since  1.0
+	 * @access public
 	 *
 	 * @return bool          True is exists, false otherwise.
 	 */
@@ -211,11 +212,11 @@ class Give_DB_Donors extends Give_DB {
 	/**
 	 * Attaches a payment ID to a donor
 	 *
+	 * @param  int $donor_id   Donor ID.
+	 * @param  int $payment_id Payment ID.
+	 *
 	 * @since  1.0
 	 * @access public
-	 *
-	 * @param  int $donor_id Donor ID.
-	 * @param  int $payment_id  Payment ID.
 	 *
 	 * @return bool
 	 */
@@ -235,11 +236,11 @@ class Give_DB_Donors extends Give_DB {
 	/**
 	 * Removes a payment ID from a donor.
 	 *
+	 * @param  int $donor_id   Donor ID.
+	 * @param  int $payment_id Payment ID.
+	 *
 	 * @since  1.0
 	 * @access public
-	 *
-	 * @param  int $donor_id Donor ID.
-	 * @param  int $payment_id  Payment ID.
 	 *
 	 * @return bool
 	 */
@@ -259,10 +260,11 @@ class Give_DB_Donors extends Give_DB {
 	/**
 	 * Increments donor's donation stats.
 	 *
-	 * @access public
-	 *
 	 * @param int   $donor_id Donor ID.
-	 * @param float $amount      Amoumt.
+	 * @param float $amount   Amoumt.
+	 *
+	 * @since  1.0
+	 * @access public
 	 *
 	 * @return bool
 	 */
@@ -284,11 +286,11 @@ class Give_DB_Donors extends Give_DB {
 	/**
 	 * Decrements donor's donation stats.
 	 *
+	 * @param int   $donor_id Donor ID.
+	 * @param float $amount   Amount.
+	 *
 	 * @since  1.0
 	 * @access public
-	 *
-	 * @param  int   $donor_id Donor ID.
-	 * @param  float $amount      Amount.
 	 *
 	 * @return bool
 	 */
@@ -310,11 +312,11 @@ class Give_DB_Donors extends Give_DB {
 	/**
 	 * Updates the email address of a donor record when the email on a user is updated
 	 *
-	 * @since  1.4.3
-	 * @access public
-	 *
 	 * @param  int          $user_id       User ID.
 	 * @param  WP_User|bool $old_user_data User data.
+	 *
+	 * @since  1.4.3
+	 * @access public
 	 *
 	 * @return bool
 	 */
@@ -351,10 +353,10 @@ class Give_DB_Donors extends Give_DB {
 					/**
 					 * Fires after updating donor email on user update.
 					 *
-					 * @since 1.4.3
-					 * 
-					 * @param  WP_User       $user     WordPress User object.
+					 * @param  WP_User    $user  WordPress User object.
 					 * @param  Give_Donor $donor Give donor object.
+					 *
+					 * @since 1.4.3
 					 */
 					do_action( 'give_update_donor_email_on_user_update', $user, $donor );
 
@@ -447,10 +449,10 @@ class Give_DB_Donors extends Give_DB {
 	/**
 	 * Retrieve donors from the database.
 	 *
+	 * @param  array $args List of Arguments.
+	 *
 	 * @since  1.0
 	 * @access public
-     *
-     * @param  array $args
      *
      * @return array|object|null Customers array or object. Null if not found.
 	 */
@@ -474,7 +476,7 @@ class Give_DB_Donors extends Give_DB {
 
 		$where = ' WHERE 1=1 ';
 
-		// specific donors.
+		// Specific donors.
 		if ( ! empty( $args['id'] ) ) {
 
 			if ( is_array( $args['id'] ) ) {
@@ -487,7 +489,7 @@ class Give_DB_Donors extends Give_DB {
 
 		}
 
-		// donors for specific user accounts
+		// Donors for specific user accounts.
 		if ( ! empty( $args['user_id'] ) ) {
 
 			if ( is_array( $args['user_id'] ) ) {
@@ -500,7 +502,7 @@ class Give_DB_Donors extends Give_DB {
 
 		}
 
-		//specific donors by email
+		// Specific donors by email.
 		if( ! empty( $args['email'] ) ) {
 
 			if( is_array( $args['email'] ) ) {
@@ -515,12 +517,12 @@ class Give_DB_Donors extends Give_DB {
 			}
 		}
 
-		// specific donors by name
+		// Specific donors by name.
 		if( ! empty( $args['name'] ) ) {
 			$where .= $wpdb->prepare( " AND `name` LIKE '%%%%" . '%s' . "%%%%' ", $args['name'] );
 		}
 
-		// Donors created for a specific date or in a date range
+		// Donors created for a specific date or in a date range.
 		if ( ! empty( $args['date'] ) ) {
 
 			if ( is_array( $args['date'] ) ) {
@@ -578,10 +580,10 @@ class Give_DB_Donors extends Give_DB {
 	/**
 	 * Count the total number of donors in the database
 	 *
+	 * @param  array $args List of Arguments.
+	 *
 	 * @since  1.0
 	 * @access public
-     *
-     * @param  array $args
      *
      * @return int         Total number of donors.
 	 */
@@ -667,6 +669,52 @@ class Give_DB_Donors extends Give_DB {
 	 */
 	public function installed() {
 		return $this->table_exists( $this->table_name );
+	}
+
+	/**
+	 * Update Donor Information when User Profile is updated from admin.
+	 *
+	 * @param int $user_id
+	 *
+	 * @access public
+	 * @since  2.0
+	 *
+	 * @return bool
+	 */
+	public function update_donor_info_on_user_update( $user_id = 0 ) {
+
+		if ( current_user_can('edit_user',$user_id) ) {
+
+			$donor = new Give_Donor( $user_id, true );
+
+			// Bailout, if donor doesn't exists.
+			if ( ! $donor ) {
+				return false;
+			}
+
+			$user = get_userdata( $user_id );
+
+			// Get User First name and Last name.
+			$first_name = get_user_meta( $user_id, 'first_name', true );
+			$last_name  = get_user_meta( $user_id, 'last_name', true );
+			$full_name  = $first_name . ' ' . $last_name;
+
+			// Assign User First name and Last name to Donor.
+			Give()->donors->update( $donor->id, array( 'name' => $full_name ) );
+			Give()->donor_meta->update( $donor->id, '_give_donor_first_name', $first_name );
+			Give()->donor_meta->update( $donor->id, '_give_donor_last_name', $last_name );
+
+			/**
+			 * Fires after user profile is updated.
+			 *
+			 * @param  WP_User    $user  WordPress User object.
+			 * @param  Give_Donor $donor Give donor object.
+			 *
+			 * @since 2.0
+			 */
+			do_action( 'give_update_donor_info_on_user_update', $user, $donor );
+
+		}
 	}
 
 }
