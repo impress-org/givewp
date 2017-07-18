@@ -1726,6 +1726,7 @@ jQuery.noConflict();
 					'set-to-status' :
 					current_action;
 
+
 				if( Object.keys( give_vars.bulk_action ).length ) {
 					for ( status in  give_vars.bulk_action ) {
 						if( status === current_action ) {
