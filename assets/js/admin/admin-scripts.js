@@ -1726,7 +1726,7 @@ jQuery.noConflict();
 					'set-to-status' :
 					current_action;
 
-				if( Object.keys(give_vars.bulk_action).length ) {
+				if( Object.keys( give_vars.bulk_action ).length ) {
 					for ( status in  give_vars.bulk_action ) {
 						if( status === current_action ) {
 							// Get status text if current action types is status.
@@ -1745,7 +1745,7 @@ jQuery.noConflict();
 								give_vars.bulk_action[current_action].multiple :
 								give_vars.bulk_action[current_action].single;
 
-							// get admin confirmation.
+							// Trigger Admin Confirmation PopUp.
 							return window.confirm( confirm_action_notice
 								.replace( '{payment_count}', $payments )
 								.replace( '{status}', current_action_label.replace( 'Set To ', '' ) )
