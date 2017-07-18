@@ -200,6 +200,14 @@ function give_ajax_get_states_field() {
 	// Get the field name from the $_POST.
 	$field_name = sanitize_text_field( $_POST['field_name'] );
 
+	$label = __( 'State', 'give' );
+	$states_label = give_get_states_label();
+
+	// Check if $country code exists in the array key for states label.
+	if ( array_key_exists( $country, $states_label ) ) {
+		$label = $states_label[ $country ];
+	}
+
 	if ( empty( $country ) ) {
 		$country = give_get_country();
 	}
@@ -213,6 +221,7 @@ function give_ajax_get_states_field() {
 			'options'          => $states,
 			'show_option_all'  => false,
 			'show_option_none' => false,
+			'placeholder' => $label,
 		);
 		$data = Give()->html->select( $args );
 		$states_found = true;
@@ -231,6 +240,8 @@ function give_ajax_get_states_field() {
 		'success' => true,
 		'states_found' => $states_found,
 		'show_field' => $show_field,
+		'states_label' => $label,
+		'no_states_country' => $no_states_country,
 		'data' => $data,
 	);
 	wp_send_json( $response );
