@@ -148,7 +148,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$status     = isset( $_GET['status'] ) ? sanitize_text_field( $_GET['status'] ) : '';
 		$donor      = isset( $_GET['donor'] ) ? sanitize_text_field( $_GET['donor'] ) : '';
 		$search     = isset( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : '';
-		$form_id    = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : null;
+		$form_id    = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
 		?>
 		<div id="give-payment-filters">
 			<span id="give-payment-date-filters">
@@ -174,7 +174,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			echo Give()->html->forms_dropdown( array(
 				'name'     => 'form_id',
 				'class'    => 'give-donation-forms-filter',
-				'selected' => $form_id,
+				'selected' => $form_id, // Make sure to have $form_id set to 0, if there is no selection.
 				'chosen'   => true,
 				'number'   => - 1,
 			) );
