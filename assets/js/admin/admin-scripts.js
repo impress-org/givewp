@@ -857,9 +857,9 @@ jQuery.noConflict();
 
 			self.el.main_container          = Give_Selector_Cache.get('#give-db-updates');
 			self.el.update_link             = Give_Selector_Cache.get('a', self.el.main_container);
-			self.el.progress_main_container = Give_Selector_Cache.get('#poststuff', self.el.main_container);
-			self.el.heading                 = Give_Selector_Cache.get('h2.hndle', self.el.progress_main_containerr);
-			self.el.progress_container      = Give_Selector_Cache.get('.inside', self.el.progress_main_container);
+			self.el.progress_main_container = Give_Selector_Cache.get('.progress-container', self.el.main_container);
+			self.el.heading                 = Give_Selector_Cache.get('strong.update-message', self.el.progress_main_container);
+			self.el.progress_container      = Give_Selector_Cache.get('.progress-content', self.el.progress_main_container);
 
 			// Bailout
 			if (self.el.update_link.hasClass('active')) {
@@ -869,10 +869,14 @@ jQuery.noConflict();
 			self.el.update_link.on('click', '', function (e) {
 				e.preventDefault();
 
+				if( $(this).hasClass('active') ) {
+					return false;
+				}
+
 				$(this).addClass('active');
 				self.el.progress_container.find('.notice-wrap').remove();
 				self.el.progress_container.append('<div class="notice-wrap give-clearfix"><span class="spinner is-active"></span><div class="give-progress"><div></div></div></div>');
-				self.el.progress_main_container.show();
+				self.el.progress_main_container.removeClass('give-hidden');
 
 				// start the process
 				self.process_step(1, self);
@@ -894,33 +898,38 @@ jQuery.noConflict();
 
 					// We need to get the actual in progress form, not all forms on the page
 					var notice_wrap = Give_Selector_Cache.get('.notice-wrap', self.el.progress_container, true);
-					notice_wrap.html('');
-
-					console.log(Object.keys(response));
 
 					if (-1 !== $.inArray('success', Object.keys(response))) {
 						if (response.success) {
 							// Update steps info
 							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
-								console.log(self.el.heading, response.data.heading);
 								self.el.heading.text(response.data.heading);
 							}
 
 							notice_wrap.html('<div class="updated notice is-dismissible"><p>' + response.data.message + '<span class="notice-dismiss"></span></p></div>');
+
+							setTimeout(function(){
+								self.el.update_link.removeClass('active');
+								self.el.progress_main_container.addClass('give-hidden');
+							}, 5000 );
 						} else {
 							notice_wrap.html('<div class="updated error"><p>' + response.data.message + '</p></div>');
+
+							setTimeout(function(){
+								self.el.update_link.removeClass('active');
+								self.el.progress_main_container.addClass('give-hidden');
+							}, 5000 );
 						}
 					} else {
 						// Update progress.
-						$('.give-progress div').animate({
-							width: response.percentage + '%',
+						$('.give-progress div', '#give-db-updates').animate({
+							width: response.data.percentage + '%',
 						}, 50, function () {
 							// Animation complete.
 						});
 
 						// Update steps info
 						if (-1 !== $.inArray('heading', Object.keys(response.data))) {
-							console.log(self.el.heading, response.data.heading);
 							self.el.heading.text(response.data.heading);
 						}
 
@@ -935,9 +944,7 @@ jQuery.noConflict();
 
 				Give_Selector_Cache.get('.notice-wrap', self.el.progress_container).append(response.responseText);
 
-			}).always(function () {
-				self.el.update_link.removeClass('active');
-			});
+			}).always(function () {});
 
 		},
 
