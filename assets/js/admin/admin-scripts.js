@@ -869,7 +869,7 @@ jQuery.noConflict();
 			self.el.update_link.on('click', '', function (e) {
 				e.preventDefault();
 
-				if( $(this).hasClass('active') ) {
+				if ($(this).hasClass('active')) {
 					return false;
 				}
 
@@ -878,20 +878,21 @@ jQuery.noConflict();
 				self.el.progress_container.append('<div class="notice-wrap give-clearfix"><span class="spinner is-active"></span><div class="give-progress"><div></div></div></div>');
 				self.el.progress_main_container.removeClass('give-hidden');
 
-				// start the process
-				self.process_step(1, self);
+				// Start the process from first step of first update.
+				self.process_step(1, 1, self);
 				return false;
 			});
 		},
 
-		process_step: function (step, self) {
+		process_step: function (step, update, self) {
 
 			$.ajax({
 				type    : 'POST',
 				url     : ajaxurl,
 				data    : {
 					action: 'give_do_ajax_updates',
-					step  : step,
+					step  : parseInt(step),
+					update: parseInt(update)
 				},
 				dataType: 'json',
 				success : function (response) {
@@ -908,17 +909,22 @@ jQuery.noConflict();
 
 							notice_wrap.html('<div class="updated notice is-dismissible"><p>' + response.data.message + '<span class="notice-dismiss"></span></p></div>');
 
-							setTimeout(function(){
+							setTimeout(function () {
 								self.el.update_link.removeClass('active');
 								self.el.progress_main_container.addClass('give-hidden');
-							}, 5000 );
+							}, 5000);
 						} else {
+							// Update steps info
+							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
+								self.el.heading.text(response.data.heading);
+							}
+
 							notice_wrap.html('<div class="updated error"><p>' + response.data.message + '</p></div>');
 
-							setTimeout(function(){
+							setTimeout(function () {
 								self.el.update_link.removeClass('active');
 								self.el.progress_main_container.addClass('give-hidden');
-							}, 5000 );
+							}, 5000);
 						}
 					} else {
 						// Update progress.
@@ -930,10 +936,10 @@ jQuery.noConflict();
 
 						// Update steps info
 						if (-1 !== $.inArray('heading', Object.keys(response.data))) {
-							self.el.heading.text(response.data.heading);
+							self.el.heading.text(response.data.heading.replace('{update_count}', self.el.heading.data('update-count')));
 						}
 
-						self.process_step(parseInt(response.data.step), self);
+						self.process_step(parseInt(response.data.step), response.data.update, self);
 					}
 
 				}
@@ -944,7 +950,8 @@ jQuery.noConflict();
 
 				Give_Selector_Cache.get('.notice-wrap', self.el.progress_container).append(response.responseText);
 
-			}).always(function () {});
+			}).always(function () {
+			});
 
 		},
 
