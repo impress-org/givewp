@@ -55,8 +55,8 @@ function give_get_price_decimal_separator() {
  *
  * @since      1.0
  *
- * @param  int|float|string $number Expects either a float or a string with a decimal separator only (no thousands)
- * @param  int|bool         $dp Number of decimals
+ * @param  int|float|string $number     Expects either a float or a string with a decimal separator only (no thousands)
+ * @param  int|bool         $dp         Number of decimals
  * @param  bool             $trim_zeros From end of string
  *
  * @return string $amount Newly sanitized amount
@@ -201,7 +201,7 @@ function give_human_format_large_amount( $amount ) {
  * @since 1.0
  *
  * @param int|float|string $amount Formatted or sanitized price
- * @param int|bool         $dp number of decimals
+ * @param int|bool         $dp     number of decimals
  *
  * @return string $amount Newly formatted amount or Price Not Available
  */
@@ -489,29 +489,50 @@ function give_validate_nonce( $nonce, $action = - 1, $wp_die_args = array() ) {
  * @since 1.8
  *
  * @param                   $variable
- * @param string (optional) $conditional , default value: isset
- * @param bool (optional)   $default , default value: false
+ * @param string (optional) $conditional    default value: isset
+ * @param bool (optional)   $default        default value: false
+ * @param string (optional) $array_key_name default value: false
  *
  * @return mixed
  */
-function give_check_variable( $variable, $conditional = '', $default = false ) {
+function give_check_variable( $variable, $conditional = '', $default = false, $array_key_name = '' ) {
+	// Get value from array if array key non empty.
+	if( empty( $array_key_name ) ) {
+		switch ( $conditional ) {
+			case 'isset_empty':
+				$variable = ( isset( $variable ) && ! empty( $variable ) ) ? $variable : $default;
+				break;
 
-	switch ( $conditional ) {
-		case 'isset_empty':
-			$variable = ( isset( $variable ) && ! empty( $variable ) ) ? $variable : $default;
-			break;
+			case 'empty':
+				$variable = ! empty( $variable ) ? $variable : $default;
+				break;
 
-		case 'empty':
-			$variable = ! empty( $variable ) ? $variable : $default;
-			break;
+			case 'null':
+				$variable = ! is_null( $variable ) ? $variable : $default;
+				break;
 
-		case 'null':
-			$variable = ! is_null( $variable ) ? $variable : $default;
-			break;
+			default:
+				$variable = isset( $variable ) ? $variable : $default;
+		}
+	} else {
+		$isset = array_key_exists( $array_key_name, $variable );
 
-		default:
-			$variable = isset( $variable ) ? $variable : $default;
+		switch ( $conditional ) {
+			case 'isset_empty':
+				$variable = ( $isset && ! empty( $variable[ $array_key_name ] ) ) ? $variable[ $array_key_name ] : $default;
+				break;
 
+			case 'empty':
+				$variable = ! empty( $variable[ $array_key_name ] ) ? $variable[ $array_key_name ] : $default;
+				break;
+
+			case 'null':
+				$variable = $isset && ! is_null( $variable[ $array_key_name ] ) ? $variable[ $array_key_name ] : $default;
+				break;
+
+			default:
+				$variable = $isset && isset( $variable[ $array_key_name ] ) ? $variable[ $array_key_name ] : $default;
+		}
 	}
 
 	return $variable;

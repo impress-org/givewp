@@ -1,0 +1,369 @@
+<?php
+/**
+ * Email Notification
+ *
+ * This class handles all email notification settings.
+ *
+ * @package     Give
+ * @subpackage  Classes/Emails
+ * @copyright   Copyright (c) 2016, WordImpress
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
+ * @since       2.0
+ */
+
+/**
+ * Class Give_Email_Notifications
+ */
+class Give_Email_Notifications {
+	/**
+	 * Instance.
+	 *
+	 * @since  2.0
+	 * @access static
+	 * @var
+	 */
+	static private $instance;
+
+	/**
+	 * Array of email notifications.
+	 *
+	 * @since  2.0
+	 * @access private
+	 * @var array
+	 */
+	private $emails = array();
+
+	/**
+	 * Singleton pattern.
+	 *
+	 * @since  2.0
+	 * @access private
+	 * Give_Payumoney_API constructor.
+	 */
+	private function __construct() {
+	}
+
+
+	/**
+	 * Get instance.
+	 *
+	 * @since  2.0
+	 * @access static
+	 * @return static
+	 */
+	static function get_instance() {
+		if ( null === static::$instance ) {
+			self::$instance = new static();
+		}
+
+		return self::$instance;
+	}
+
+	/**
+	 * Setup dependencies
+	 *
+	 * @since 2.0
+	 */
+	public function init() {
+		// Load files.
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/ajax-handler.php';
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/class-email-setting-field.php';
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/filters.php';
+
+		// Load email notifications.
+		$this->add_emails_notifications();
+
+		add_filter( 'give_metabox_form_data_settings', array( $this, 'add_metabox_setting_fields' ), 10, 2 );
+		add_action( 'init', array( $this, 'preview_email' ) );
+		add_action( 'init', array( $this, 'send_preview_email' ) );
+
+		/* @var Give_Email_Notification $email */
+		foreach ( $this->get_email_notifications() as $email ) {
+			// Setup email section.
+			if( Give_Email_Notification_Util::is_show_on_emails_setting_page( $email ) ) {
+				add_filter( 'give_get_sections_emails', array( $email, 'add_section' ) );
+				add_filter( "give_hide_section_{$email->config['id']}_on_emails_page", array( $email, 'hide_section' ) );
+			}
+
+			// Setup email preview.
+			if ( Give_Email_Notification_Util::is_email_preview_has_header( $email ) ) {
+				add_action( "give_{$email->config['id']}_email_preview", array( $this, 'email_preview_header' ) );
+				add_filter( "give_{$email->config['id']}_email_preview_data", array( $this, 'email_preview_data' ) );
+				add_filter( "give_{$email->config['id']}_email_preview_message", array( $this, 'email_preview_message' ), 1, 2 );
+			}
+		}
+	}
+
+
+	/**
+	 * Add setting to metabox.
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param array $settings
+	 * @param int   $post_id
+	 *
+	 * @return array
+	 */
+	public function add_metabox_setting_fields( $settings, $post_id ) {
+		$emails = $this->get_email_notifications();
+
+		// Bailout.
+		if ( empty( $emails ) ) {
+			return $settings;
+		}
+
+		// Email notification setting.
+		$settings['email_notification_options'] = array(
+			'id'         => 'email_notification_options',
+			'title'      => __( 'Email Notification', 'give' ),
+
+			/**
+			 * Filter the email notification settings.
+			 *
+			 * @since 2.0
+			 */
+			'sub-fields' => apply_filters( 'give_email_notification_options_metabox_fields', array(), $post_id ),
+		);
+
+		return $settings;
+	}
+
+	/**
+	 * Add email notifications
+	 *
+	 * @since  2.0
+	 * @access private
+	 */
+	private function add_emails_notifications() {
+		$this->emails = array(
+			include GIVE_PLUGIN_DIR . 'includes/admin/emails/class-new-donation-email.php',
+			include GIVE_PLUGIN_DIR . 'includes/admin/emails/class-donation-receipt-email.php',
+			include GIVE_PLUGIN_DIR . 'includes/admin/emails/class-new-offline-donation-email.php',
+			include GIVE_PLUGIN_DIR . 'includes/admin/emails/class-offline-donation-instruction-email.php',
+			include GIVE_PLUGIN_DIR . 'includes/admin/emails/class-new-donor-register-email.php',
+			include GIVE_PLUGIN_DIR . 'includes/admin/emails/class-donor-register-email.php',
+			include GIVE_PLUGIN_DIR . 'includes/admin/emails/class-email-access-email.php',
+		);
+
+		/**
+		 * Filter the email notifications.
+		 *
+		 * @since 2.0
+		 */
+		$this->emails = apply_filters( 'give_email_notifications', $this->emails, $this );
+
+		// Bailout.
+		if ( empty( $this->emails ) ) {
+			return;
+		}
+
+		// Initiate email notifications.
+		foreach ( $this->emails as $email ) {
+			$email->init();
+		}
+	}
+
+
+	/**
+	 * Get list of email notifications.
+	 *
+	 * @since  2.0
+	 * @access public
+	 * @return array
+	 */
+	public function get_email_notifications() {
+		return $this->emails;
+	}
+
+
+	/**
+	 * Displays the email preview
+	 *
+	 * @since  2.0
+	 * @access public
+	 * @return bool|null
+	 */
+	public function preview_email() {
+		// Bailout.
+		if ( ! Give_Email_Notification_Util::can_preview_email() ) {
+			return false;
+		}
+
+		// Security check.
+		give_validate_nonce( $_GET['_wpnonce'], 'give-preview-email' );
+
+		// Get email type.
+		$email_type = isset( $_GET['email_type'] ) ? esc_attr( $_GET['email_type'] ) : '';
+
+		/* @var Give_Email_Notification $email */
+		foreach ( $this->get_email_notifications() as $email ) {
+			if ( $email_type !== $email->config['id'] ) {
+				continue;
+			}
+
+			// Set form id.
+			$form_id = empty( $_GET['form_id']  ) ? null : absint( $_GET['form_id'] );
+
+			// Call setup email data to apply filter and other thing to email.
+			$email->setup_email_data();
+
+			// Decode message.
+			$email_message = $email->preview_email_template_tags( $email->get_email_message( $form_id ) );
+
+			// Set email template.
+			Give()->emails->html    = true;
+			Give()->emails->__set( 'template', $email->get_email_template( $form_id ) );
+
+			if ( 'text/plain' === $email->config['content_type'] ) {
+				// Give()->emails->__set( 'html', false );
+				Give()->emails->__set( 'template', 'none' );
+			}
+
+			if ( $email_message = Give()->emails->build_email( $email_message ) ) {
+
+				/**
+				 * Filter the email preview data
+				 *
+				 * @since 2.0
+				 *
+				 * @param array
+				 */
+				$email_preview_data = apply_filters( "give_{$email_type}_email_preview_data", array() );
+
+				/**
+				 * Fire the give_{$email_type}_email_preview action
+				 *
+				 * @since 2.0
+				 */
+				do_action( "give_{$email_type}_email_preview", $email );
+
+				/**
+				 * Filter the email message
+				 *
+				 * @since 2.0
+				 *
+				 * @param string                  $email_message
+				 * @param array                   $email_preview_data
+				 * @param Give_Email_Notification $email
+				 */
+				echo apply_filters( "give_{$email_type}_email_preview_message", $email_message, $email_preview_data, $email );
+
+				exit();
+			}
+		}// End foreach().
+	}
+
+
+	/**
+	 * Add header to donation receipt email preview
+	 *
+	 * @since   2.0
+	 * @access  public
+	 *
+	 * @param Give_Email_Notification $email
+	 */
+	public function email_preview_header( $email ) {
+		/**
+		 * Filter the all email preview headers.
+		 *
+		 * @since 2.0
+		 *
+		 * @param Give_Email_Notification $email
+		 */
+		$email_preview_header = apply_filters( 'give_email_preview_header', give_get_preview_email_header(), $email );
+
+		echo $email_preview_header;
+	}
+
+	/**
+	 * Add email preview data
+	 *
+	 * @since   2.0
+	 * @access  public
+	 *
+	 * @param array $email_preview_data
+	 *
+	 * @return array
+	 */
+	public function email_preview_data( $email_preview_data ) {
+		$email_preview_data['payment_id'] = absint( give_check_variable( give_clean( $_GET ), 'isset', 0, 'preview_id' ) );
+		$email_preview_data['user_id']    = absint( give_check_variable( give_clean( $_GET ), 'isset', 0, 'user_id' ) );
+
+		return $email_preview_data;
+	}
+
+	/**
+	 * Replace email template tags.
+	 *
+	 * @since   2.0
+	 * @access  public
+	 *
+	 * @param string $email_message
+	 * @param array  $email_preview_data
+	 *
+	 * @return string
+	 */
+	public function email_preview_message( $email_message, $email_preview_data ) {
+		if (
+			! empty( $email_preview_data['payment_id'] )
+			|| ! empty( $email_preview_data['user_id'] )
+		) {
+			$email_message = give_do_email_tags( $email_message, $email_preview_data );
+		}
+
+		return $email_message;
+	}
+
+	/**
+	 * Displays the email preview
+	 *
+	 * @since  2.0
+	 * @access public
+	 * @return bool|null
+	 */
+	public function send_preview_email() {
+		// Bailout.
+		if ( ! Give_Email_Notification_Util::can_send_preview_email() ) {
+			return false;
+		}
+
+		// Security check.
+		give_validate_nonce( $_GET['_wpnonce'], 'give-send-preview-email' );
+
+		// Get email type.
+		$email_type = give_check_variable( give_clean( $_GET ), 'isset', '', 'email_type' );
+
+		/* @var Give_Email_Notification $email */
+		foreach ( $this->get_email_notifications() as $email ) {
+			if ( $email_type === $email->config['id'] && Give_Email_Notification_Util::is_email_preview( $email ) ) {
+				$email->send_preview_email();
+				break;
+			}
+		}
+	}
+
+
+	/**
+	 * Load Give_Email_Notifications
+	 *
+	 * @since  2.0
+	 * @access public
+	 */
+	public function load() {
+		add_action( 'init', array( $this, 'init' ), -1 );
+	}
+}
+
+// Helper class.
+require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/abstract-email-notification.php';
+require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/class-email-notification-util.php';
+
+// Add backward compatibility.
+require_once GIVE_PLUGIN_DIR . 'includes/admin/emails/backward-compatibility.php';
+
+/**
+ * Initialize functionality.
+ */
+Give_Email_Notifications::get_instance()->load();

@@ -140,6 +140,11 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 			// Get all sections.
 			$sections = $this->get_sections();
 
+			// Bailout.
+			if ( empty( $sections ) ) {
+				return;
+			}
+
 			// Show section settings only if setting section exist.
 			if ( $current_section && ! in_array( $current_section, array_keys( $sections ) ) ) {
 				echo '<div class="error"><p>' . __( 'Oops, this settings page does not exist.', 'give' ) . '</p></div>';
@@ -148,25 +153,28 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 				return;
 			}
 
-			// Bailout.
-			if ( empty( $sections ) ) {
-				return;
-			}
-
 			if ( is_null( $this->current_setting_page ) ) {
 				$this->current_setting_page = give_get_current_setting_page();
 			}
 
-			echo '<ul class="subsubsub">';
-
-			// Get section keys.
-			$array_keys = array_keys( $sections );
-
+			$section_list = array();
 			foreach ( $sections as $id => $label ) {
-				echo '<li><a href="' . admin_url( 'edit.php?post_type=give_forms&page=' . $this->current_setting_page . '&tab=' . $this->id . '&section=' . sanitize_title( $id ) ) . '" class="' . ( $current_section == $id ? 'current' : '' ) . '">' . $label . '</a> ' . ( end( $array_keys ) == $id ? '' : '|' ) . ' </li>';
+				/**
+				 * Fire the filter to hide particular section on tab.
+				 *
+				 * @since 2.0
+				 */
+				if ( apply_filters( "give_hide_section_{$id}_on_{$this->id}_page", false, $sections, $this->id ) ) {
+					continue;
+				}
+
+				$section_list[] = '<li><a href="' . admin_url( 'edit.php?post_type=give_forms&page=' . $this->current_setting_page . '&tab=' . $this->id . '&section=' . sanitize_title( $id ) ) . '" class="' . ( $current_section == $id ? 'current' : '' ) . '">' . $label . '</a>';
 			}
 
-			echo '</ul><br class="clear" /><hr>';
+			echo sprintf(
+				'<ul class="subsubsub">%s</ul><br class="clear" /><hr>',
+				implode( ' | </li>', $section_list )
+			);
 		}
 
 		/**
