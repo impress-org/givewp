@@ -405,23 +405,17 @@ function give_process_profile_editor_updates( $data ) {
 	 */
 	do_action( 'give_pre_update_user_profile', $user_id, $userdata );
 
+	// Make sure to validate first name of existing donors.
+	if ( empty( $first_name ) ) {
+		// Empty First Name.
+		give_set_error( 'empty_first_name', __( 'Please enter your first name.', 'give' ) );
+	}
+
+  	// Make sure to validate user email for existing Donors.
+  	give_validate_user_email( $email );
+
 	// Make sure to validate passwords for existing Donors
 	give_validate_user_password( $data['give_new_user_pass1'], $data['give_new_user_pass2'] );
-
-	if ( empty( $email ) ) {
-		// Make sure email should not be empty.
-		give_set_error( 'email_empty', __( 'The email you entered is empty.', 'give' ) );
-
-	} else if ( ! is_email( $email ) ) {
-		// Make sure email should be valid.
-		give_set_error( 'email_not_valid', __( 'The email you entered is not valid. Please use another', 'give' ) );
-
-	} else if ( $email != $old_user_data->user_email ) {
-		// Make sure the new email doesn't belong to another user
-		if ( email_exists( $email ) ) {
-			give_set_error( 'email_exists', __( 'The email you entered belongs to another user. Please use another.', 'give' ) );
-		}
-	}
 
 	// Check for errors
 	$errors = give_get_errors();
@@ -433,6 +427,9 @@ function give_process_profile_editor_updates( $data ) {
 	}
 
 	// Update the user
+	$donor   = give_get_donor_by( 'user_id', $user_id );
+	Give()->donor_meta->update_meta( $donor->id, '_give_donor_first_name', $first_name );
+	Give()->donor_meta->update_meta( $donor->id, '_give_donor_last_name', $last_name );
 	$meta    = update_user_meta( $user_id, '_give_user_address', $address );
 	$updated = wp_update_user( $userdata );
 
