@@ -427,6 +427,24 @@ class Give_Updates {
 				break;
 		}
 	}
+
+
+	/**
+	 * Resume updates
+	 * @since  1.8.12
+	 * @access public
+	 *
+	 * @return bool|int
+	 */
+	public function resume_updates() {
+		$status = false;
+
+		if ( $update = get_option( 'give_doing_upgrade' ) ) {
+			$status = ! empty( $update['step'] ) ? $update['step'] : $status;
+		}
+
+		return $status;
+	}
 }
 
 Give_Updates::get_instance()->setup_hooks();
