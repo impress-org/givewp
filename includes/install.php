@@ -178,8 +178,10 @@ function give_run_install() {
 			'upgrade_give_offline_status',
 			'v18_upgrades_core_setting',
 			'v18_upgrades_form_metadata',
+			'v189_upgrades_levels_post_meta',
 			'v20_upgrades_form_metadata',
 			'v20_upgrades_donor_name',
+			'give_v20_logs_upgrades'
 		);
 
 		foreach ( $upgrade_routines as $upgrade ) {
