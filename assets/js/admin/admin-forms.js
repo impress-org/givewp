@@ -115,10 +115,6 @@ jQuery.noConflict();
 		}).change();
 
 		//Goals
-
-		// Hide Donation Goal Field by default.
-		$('._give_number_of_donation_goal_field').hide();
-
 		var goal_option = $('._give_goal_option_field');
 		//Close Form when Goal Achieved
 		var close_form_when_goal_achieved_option = $('._give_close_form_when_goal_achieved_field input:radio');
