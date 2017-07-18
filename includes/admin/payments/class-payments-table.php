@@ -147,7 +147,8 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$end_date   = isset( $_GET['end-date'] ) ? sanitize_text_field( $_GET['end-date'] ) : null;
 		$status     = isset( $_GET['status'] ) ? sanitize_text_field( $_GET['status'] ) : '';
 		$donor      = isset( $_GET['donor'] ) ? sanitize_text_field( $_GET['donor'] ) : '';
-		$search      = isset( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : '';
+		$search     = isset( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : '';
+		$form_id    = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : null;
 		?>
 		<div id="give-payment-filters">
 			<span id="give-payment-date-filters">
@@ -168,6 +169,36 @@ class Give_Payment_History_Table extends WP_List_Table {
 				   class="button-secondary"><?php esc_html_e( 'Clear Filter', 'give' ); ?></a>
 			<?php endif; ?>
 			<?php $this->search_box( esc_html__( 'Search', 'give' ), 'give-payments' ); ?>
+			<?php
+			$args = array(
+				'post_type'      => 'give_forms',
+				'post_status'    => 'publish',
+				'posts_per_page' => - 1,
+				'order'          => 'ID',
+				'orderby'        => 'ASC'
+			);
+			$donation_forms = new WP_Query( $args );
+
+			if( $donation_forms->have_posts() ) {
+				?>
+				<select name="form_id" class="give-donation-forms-filter">
+					<option value="-1"><?php _e( 'All Donation Forms', 'give' ); ?></option>
+					<?php
+					while( $donation_forms->have_posts() ) : $donation_forms->the_post();
+						$form_selected = '';
+						if( get_the_ID() === $form_id ) {
+							$form_selected = 'selected="selected"';
+						}
+						?>
+						<option value="<?php the_ID(); ?>" <?php echo $form_selected; ?>><?php the_title(); ?></option>
+						<?php
+					endwhile;
+					?>
+				</select>
+				<?php
+				submit_button( __( 'Apply', 'give' ), 'secondary', '', false );
+			}
+			?>
 		</div>
 
 		<?php
@@ -679,6 +710,8 @@ class Give_Payment_History_Table extends WP_List_Table {
 			$args['end-date'] = urldecode( $_GET['end-date'] );
 		}
 
+		$args['form_id'] = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : null;
+
 		$payment_count          = give_count_payments( $args );
 		$this->complete_count   = $payment_count->publish;
 		$this->pending_count    = $payment_count->pending;
@@ -716,6 +749,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$search     = isset( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : null;
 		$start_date = isset( $_GET['start-date'] ) ? sanitize_text_field( $_GET['start-date'] ) : null;
 		$end_date   = isset( $_GET['end-date'] ) ? sanitize_text_field( $_GET['end-date'] ) : $start_date;
+		$form_id    = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : null;
 
 		if ( ! empty( $search ) ) {
 			$status = 'any'; // Force all payment statuses when searching.
@@ -737,6 +771,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			's'          => $search,
 			'start_date' => $start_date,
 			'end_date'   => $end_date,
+			'give_forms' => $form_id,
 		);
 
 		if ( is_string( $search ) && false !== strpos( $search, 'txn:' ) ) {
