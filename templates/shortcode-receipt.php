@@ -12,7 +12,7 @@ if ( empty( $payment ) ) {
 
 // Double-Validation: Check for $payment global.
 if ( empty( $payment ) ) {
-	give_output_error( __( 'The specified receipt ID appears to be invalid.', 'give' ) );
+	Give()->notices->print_frontend_notice( __( 'The specified receipt ID appears to be invalid.', 'give' ) );
 
 	return;
 }
@@ -111,7 +111,7 @@ if ( filter_var( $give_receipt_args['status_notice'], FILTER_VALIDATE_BOOLEAN ) 
 			$notice_type    = 'success';
 			break;
 		case 'pending':
-			$notice_message = __( 'Payment Pending: Your donation is currently processing..', 'give' );
+			$notice_message = __( 'Payment Pending: Your donation is currently processing.', 'give' );
 			$notice_type    = 'warning';
 			break;
 		case 'refunded':
@@ -155,7 +155,7 @@ if ( filter_var( $give_receipt_args['status_notice'], FILTER_VALIDATE_BOOLEAN ) 
 		 * @param string $status Payment status.
 		 * @param array  $meta   Array of meta data related to the payment.
 		 */
-		echo apply_filters( 'give_receipt_status_notice', give_output_error( $notice_message, false, $notice_type ), $id, $status, $meta );
+		echo apply_filters( 'give_receipt_status_notice', Give()->notices->print_frontend_notice( $notice_message, false, $notice_type ), $id, $status, $meta );
 	}
 }// End if().
 

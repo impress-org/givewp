@@ -87,7 +87,7 @@ class Give_Email_Notification_Table extends WP_List_Table {
 		<a class="row-title" href="<?php echo $edit_url; ?>"><?php echo $email->config['label']; ?></a>
 
 		<?php if ( $desc = $email->config['description'] ) : ?>
-			<span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( $desc ); ?>"></span>
+			<?php echo Give()->tooltips->render_help( esc_attr( $desc ) ); ?>
 		<?php endif; ?>
 
 		<?php echo $this->row_actions( $actions ); ?>
@@ -134,32 +134,33 @@ class Give_Email_Notification_Table extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_cb( $email ) {
-		ob_start();
+		$notification_status  = $email->get_notification_status();
+		$user_can_edit_status = (int) Give_Email_Notification_Util::is_notification_status_editable( $email );
+		$icon_classes         = Give_Email_Notification_Util::is_email_notification_active( $email )
+			? 'dashicons dashicons-yes'
+			: 'dashicons dashicons-no-alt';
+		$attributes           = array(
+			'class'       => "give-email-notification-status give-email-notification-{$notification_status}",
+			'data-id'     => $email->config['id'],
+			'data-status' => $email->get_notification_status(),
+			'data-edit'   => $user_can_edit_status,
+		);
 
-		$notification_status = $email->get_notification_status();
-		$default_class       = "give-email-notification-status give-email-notification-{$notification_status} dashicons";
-		$attributes['class'] = Give_Email_Notification_Util::is_email_notification_active( $email )
-			? "{$default_class} dashicons-yes"
-			: "{$default_class} dashicons-no-alt";
-
-		$attributes['data-status'] = "{$notification_status}";
-		$attributes['data-id']     = "{$email->config['id']}";
-
-		$attributes['data-edit'] = (int) Give_Email_Notification_Util::is_notification_status_editable( $email );
-
-		if ( ! $attributes['data-edit'] ) {
-			$attributes['data-tooltip'] = $email->config['notices']['non-notification-status-editable'];
+		if ( ! $user_can_edit_status ) {
+			$html = Give()->tooltips->render_span( array(
+				'label'       => $email->config['notices']['non-notification-status-editable'],
+				'tag_content' => sprintf( '<i class="%s"></i></span></span><span class="spinner"></span>', $icon_classes ),
+				'attributes'  => $attributes,
+			) );
+		} else {
+			$html = sprintf(
+				'<span %1$s><i class="%2$s"></i></span></span><span class="spinner"></span>',
+				give_get_attribute_str( $attributes ),
+				$icon_classes
+			);
 		}
 
-		$attribute_str = '';
-		foreach ( $attributes as $tag => $value ) {
-			$attribute_str .= " {$tag}=\"{$value}\"";
-		}
-		?>
-		<span<?php echo $attribute_str; ?>></span><span class="spinner"></span>
-		<?php
-
-		return ob_get_clean();
+		return $html;
 	}
 
 
@@ -188,11 +189,14 @@ class Give_Email_Notification_Table extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_setting( Give_Email_Notification $email ) {
-		ob_start();
-		?>
-		<a class="button button-small" data-tooltip="<?php echo __( 'Edit', 'give' ); ?> <?php echo $email->config['label']; ?>" href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=' . $email->config['id'] ) ); ?>"><span class="dashicons dashicons-admin-generic"></span></a>
-		<?php
-		return ob_get_clean();
+		return Give()->tooltips->render_link( array(
+			'label'       => __( 'Edit', 'give' ) . " {$email->config['label']}",
+			'tag_content' => '<span class="dashicons dashicons-admin-generic"></span>',
+			'link'        => esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=' . $email->config['id'] ) ),
+			'attributes'  => array(
+				'class' => 'button button-small',
+			),
+		) );
 	}
 
 

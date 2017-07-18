@@ -317,18 +317,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @return void
 		 */
 		public function activate_license() {
-			// Bailout: Check if license key set of not.
-			if ( ! isset( $_POST[ $this->item_shortname . '_license_key' ] ) ) {
-				return;
-			}
-
-			// Security check.
-			if ( ! wp_verify_nonce( $_REQUEST[ $this->item_shortname . '_license_key-nonce' ], $this->item_shortname . '_license_key-nonce' ) ) {
-				wp_die( __( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
-			}
-
-			// Check if user have correct permissions.
-			if ( ! current_user_can( 'manage_give_settings' ) ) {
+			// Bailout.
+			if( ! $this->__is_user_can_edit_license() ) {
 				return;
 			}
 
@@ -360,48 +350,24 @@ if ( ! class_exists( 'Give_License' ) ) :
 			}
 
 			// Get license key.
-			$license = sanitize_text_field( $_POST[ $this->item_shortname . '_license_key' ] );
-
-			// Bailout.
-			if ( empty( $license ) ) {
-				return;
-			}
+			$this->license = sanitize_text_field( $_POST[ $this->item_shortname . '_license_key' ] );
 
 			// Delete previous license key from subscription if previously added.
 			$this->__remove_license_key_from_subscriptions();
 
-			// Data to send to the API
-			$api_params = array(
-				'edd_action' => 'activate_license', // never change from "edd_" to "give_"!
-				'license'    => $license,
-				'item_name'  => urlencode( $this->item_name ),
-				'url'        => home_url(),
-			);
-
-			// Call the API
-			$response = wp_remote_post(
-				$this->api_url,
-				array(
-					'timeout'   => 15,
-					'sslverify' => false,
-					'body'      => $api_params,
-				)
-			);
-
-			// Make sure there are no errors
-			if ( is_wp_error( $response ) ) {
+			// Make sure there are no api errors
+			if ( ! ( $license_data = $this->get_license_info( 'activate_license' ) ) ) {
 				return;
 			}
 
 			// Tell WordPress to look for updates
 			set_site_transient( 'update_plugins', null );
 
-			// Decode license data
-			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
+			// Add license data.
 			update_option( $this->item_shortname . '_license_active', $license_data );
 
 			// Add license key.
-			give_update_option( "{$this->item_shortname}_license_key", $license );
+			give_update_option( "{$this->item_shortname}_license_key", $this->license );
 
 			// Check subscription for license key and store this to db (if any).
 			$this->__single_subscription_check();
@@ -418,16 +384,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @return void
 		 */
 		public function deactivate_license() {
-
-			if ( ! isset( $_POST[ $this->item_shortname . '_license_key' ] ) ) {
-				return;
-			}
-
-			if ( ! wp_verify_nonce( $_REQUEST[ $this->item_shortname . '_license_key-nonce' ], $this->item_shortname . '_license_key-nonce' ) ) {
-				wp_die( __( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
-			}
-
-			if ( ! current_user_can( 'manage_give_settings' ) ) {
+			// Bailout.
+			if( ! $this->__is_user_can_edit_license() ) {
 				return;
 			}
 
@@ -441,38 +399,18 @@ if ( ! class_exists( 'Give_License' ) ) :
 			// Run on deactivate button press
 			if ( isset( $_POST[ $this->item_shortname . '_license_key_deactivate' ] ) ) {
 
-				// Data to send to the API
-				$api_params = array(
-					'edd_action' => 'deactivate_license', // never change from "edd_" to "give_"!
-					'license'    => $this->license,
-					'item_name'  => urlencode( $this->item_name ),
-					'url'        => home_url(),
-				);
-
-				// Call the API
-				$response = wp_remote_post(
-					$this->api_url,
-					array(
-						'timeout'   => 15,
-						'sslverify' => false,
-						'body'      => $api_params,
-					)
-				);
-
-				// Make sure there are no errors
-				if ( is_wp_error( $response ) ) {
+				// Make sure there are no api errors
+				if ( ! ( $license_data = $this->get_license_info( 'deactivate_license' ) ) ) {
 					return;
 				}
-
-				// Decode the license data
-				$license_data = json_decode( wp_remote_retrieve_body( $response ) );
 
 				// Ensure deactivated successfully.
 				if ( isset( $license_data->success ) ) {
 
 					// Remove license data.
 					delete_option( $this->item_shortname . '_license_active' );
-					
+
+					// Delete licence data.
 					give_delete_option( $this->item_shortname . '_license_key' );
 
 					// Remove license key from subscriptions if exist.
@@ -488,51 +426,32 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @access public
 		 * @since  1.7
 		 *
-		 * @return bool|void
+		 * @return void
 		 */
 		public function weekly_license_check() {
 
-			if ( ! empty( $_POST['give_settings'] ) ) {
-				// Don't fire when saving settings
-				return false;
-			}
-
-			if ( empty( $this->license ) ) {
-				return false;
+			if (
+				! empty( $_POST['give_settings'] ) ||
+				empty( $this->license )
+			) {
+				return;
 			}
 
 			// Allow third party add-on developers to handle their license check.
 			if ( $this->__is_third_party_addon() ) {
 				do_action( 'give_weekly_license_check', $this );
 
-				return false;
+				return;
 			}
 
-			// Data to send in our API request.
-			$api_params = array(
-				'edd_action' => 'check_license',
-				'license'    => $this->license,
-				'item_name'  => urlencode( $this->item_name ),
-				'url'        => home_url(),
-			);
-
-			// Call the API.
-			$response = wp_remote_post(
-				$this->api_url,
-				array(
-					'timeout'   => 15,
-					'sslverify' => false,
-					'body'      => $api_params,
-				)
-			);
-
-			// Make sure the response came back okay.
-			if ( is_wp_error( $response ) ) {
-				return false;
+			// Make sure there are no api errors
+			if ( ! ( $license_data = $this->get_license_info( 'check_license' ) ) ) {
+				return;
 			}
 
-			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
 			update_option( $this->item_shortname . '_license_active', $license_data );
+
+			return;
 		}
 
 		/**
@@ -541,13 +460,15 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @access public
 		 * @since  1.7
 		 *
-		 * @return bool|void
+		 * @return void
 		 */
 		public function weekly_subscription_check() {
-
-			if ( ! empty( $_POST['give_settings'] ) ) {
-				// Don't fire when saving settings
-				return false;
+			// Bailout.
+			if (
+				! empty( $_POST['give_settings'] ) ||
+				empty( $this->license )
+			) {
+				return;
 			}
 
 			// Remove old subscription data.
@@ -556,64 +477,14 @@ if ( ! class_exists( 'Give_License' ) ) :
 				update_option( '_give_subscriptions_edit_last', strtotime( '+ 1 day', current_time( 'timestamp', 1 ) ) );
 			}
 
-			if ( empty( $this->license ) ) {
-				return false;
-			}
-
 			// Allow third party add-on developers to handle their subscription check.
 			if ( $this->__is_third_party_addon() ) {
 				do_action( 'give_weekly_subscription_check', $this );
 
-				return false;
+				return;
 			}
 
-			// Delete subscription notices show blocker.
-			$this->__remove_license_notices_show_blocker();
-
-			// Data to send in our API request.
-			$api_params = array(
-				// Do not get confused with edd_action check_subscription.
-				// By default edd software licensing api does not have api to check subscription.
-				// This is a custom feature to check subscriptions.
-				'edd_action' => 'check_subscription',
-				'license'    => $this->license,
-				'item_name'  => urlencode( $this->item_name ),
-				'url'        => home_url(),
-			);
-
-			// Call the API
-			$response = wp_remote_post(
-				$this->api_url,
-				array(
-					'timeout'   => 15,
-					'sslverify' => false,
-					'body'      => $api_params,
-				)
-			);
-
-			// Make sure the response came back okay.
-			if ( is_wp_error( $response ) ) {
-				return false;
-			}
-
-			$subscription_data = json_decode( wp_remote_retrieve_body( $response ), true );
-
-			if ( ! empty( $subscription_data['success'] ) && absint( $subscription_data['success'] ) ) {
-				$subscriptions = get_option( 'give_subscriptions', array() );
-
-				// Update subscription data only if subscription does not exist already.
-				if ( ! array_key_exists( $subscription_data['id'], $subscriptions ) ) {
-					$subscriptions[ $subscription_data['id'] ]             = $subscription_data;
-					$subscriptions[ $subscription_data['id'] ]['licenses'] = array();
-				}
-
-				// Store licenses for subscription.
-				if ( ! in_array( $this->license, $subscriptions[ $subscription_data['id'] ]['licenses'] ) ) {
-					$subscriptions[ $subscription_data['id'] ]['licenses'][] = $this->license;
-				}
-
-				update_option( 'give_subscriptions', $subscriptions );
-			}
+			$this->__single_subscription_check();
 		}
 
 		/**
@@ -622,58 +493,37 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @access private
 		 * @since  1.7
 		 *
-		 * @return bool|void
+		 * @return void
 		 */
 		private function __single_subscription_check() {
-			// Do not fire if license key is not set.
-			if ( ! isset( $_POST[ $this->item_shortname . '_license_key' ] ) ) {
-				return false;
-			}
-
 			if ( empty( $this->license ) ) {
-				return false;
+				return;
 			}
 
-			// Data to send in our API request.
-			$api_params = array(
-				// Do not get confused with edd_action check_subscription.
-				// By default edd software licensing api does not have api to check subscription.
-				// This is a custom feature to check subscriptions.
-				'edd_action' => 'check_subscription',
-				'license'    => $this->license,
-				'item_name'  => urlencode( $this->item_name ),
-				'url'        => home_url(),
-			);
-
-			// Call the API
-			$response = wp_remote_post(
-				$this->api_url,
-				array(
-					'timeout'   => 15,
-					'sslverify' => false,
-					'body'      => $api_params,
-				)
-			);
-
-			// Make sure the response came back okay.
-			if ( is_wp_error( $response ) ) {
-				return false;
+			// Make sure there are no api errors
+			// Do not get confused with edd_action check_subscription.
+			// By default edd software licensing api does not have api to check subscription.
+			// This is a custom feature to check subscriptions.
+			if ( ! ( $subscription_data = $this->get_license_info( 'check_subscription', true ) ) ) {
+				return;
 			}
 
-			$subscription_data = json_decode( wp_remote_retrieve_body( $response ), true );
 
 			if ( ! empty( $subscription_data['success'] ) && absint( $subscription_data['success'] ) ) {
 				$subscriptions = get_option( 'give_subscriptions', array() );
 
 				// Update subscription data only if subscription does not exist already.
-				if ( ! array_key_exists( $subscription_data['id'], $subscriptions ) ) {
-					$subscriptions[ $subscription_data['id'] ]             = $subscription_data;
-					$subscriptions[ $subscription_data['id'] ]['licenses'] = array();
+				$subscriptions[ $subscription_data['id'] ]            = $subscription_data;
+
+
+				// Initiate default set of license for subscription.
+				if( ! isset( $subscriptions[ $subscription_data['id'] ]['licenses'] ) ) {
+					$subscriptions[ $subscription_data['id']]['licenses'] = array();
 				}
 
 				// Store licenses for subscription.
 				if ( ! in_array( $this->license, $subscriptions[ $subscription_data['id'] ]['licenses'] ) ) {
-					$subscriptions[ $subscription_data['id'] ]['licenses'][] = $this->license;
+					$subscriptions[ $subscription_data['id']]['licenses'][] = $this->license;
 				}
 
 				update_option( 'give_subscriptions', $subscriptions );
@@ -709,13 +559,20 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			if (
 				empty( $this->license )
-				&& ! $this->__is_notice_dismissed( 'general' )
 				&& empty( $showed_invalid_message )
 			) {
-				$messages['general']    = sprintf(
-					__( 'You have invalid or expired license keys for one or more Give Add-ons. Please go to the <a href="%s">licenses page</a> to correct this issue.', 'give' ),
-					admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' )
-				);
+
+				Give()->notices->register_notice( array(
+					'id'               => 'give-invalid-license',
+					'type'             => 'error',
+					'description'      => sprintf(
+						__( 'You have invalid or expired license keys for one or more Give Add-ons. Please go to the <a href="%s">licenses page</a> to correct this issue.', 'give' ),
+						admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' )
+					),
+					'dismissible_type' => 'user',
+					'dismiss_interval' => 'shortly',
+				) );
+
 				$showed_invalid_message = true;
 
 			}
@@ -740,26 +597,44 @@ if ( ! class_exists( 'Give_License' ) ) :
 						continue;
 					}
 
-					if ( ( ! $this->__is_notice_dismissed( $subscription['id'] ) && 'active' !== $subscription['status'] ) ) {
-
-						if ( strtotime( $subscription['expires'] ) < current_time( 'timestamp', 1 ) ) {// Check if license already expired.
-							$messages[ $subscription['id'] ] = sprintf(
-								__( 'Your Give add-on license expired for payment <a href="%1$s" target="_blank">#%2$d</a>. <a href="%3$s" target="_blank">Click to renew an existing license</a> or <a href="%4$s">Click here if already renewed</a>.', 'give' ),
+					// Check if license already expired.
+					if ( strtotime( $subscription['expires'] ) < current_time( 'timestamp', 1 ) ) {
+						Give()->notices->register_notice( array(
+							'id'               => "give-expired-subscription-{$subscription['id']}",
+							'type'             => 'error',
+							'description'      => sprintf(
+								__( 'Your Give add-on license expired for payment <a href="%1$s" target="_blank">#%2$d</a>. <a href="%3$s" target="_blank">Click to renew an existing license</a> or %4$s.', 'give' ),
 								urldecode( $subscription['invoice_url'] ),
 								$subscription['payment_id'],
 								"{$this->checkout_url}?edd_license_key={$subscription['license_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired",
-								esc_url( add_query_arg( '_give_hide_license_notices_permanently', $subscription['id'], $_SERVER['REQUEST_URI'] ) )
-							);
-						} else {
-							$messages[ $subscription['id'] ] = sprintf(
-								__( 'Your Give add-on license will expire in %1$s for payment <a href="%2$s" target="_blank">#%3$d</a>. <a href="%4$s" target="_blank">Click to renew an existing license</a> or <a href="%5$s">Click here if already renewed</a>.', 'give' ),
+								Give()->notices->get_dismiss_link(array(
+									'title' => __( 'Click here if already renewed', 'give' ),
+									'dismissible_type'      => 'user',
+									'dismiss_interval'      => 'permanent',
+								))
+							),
+							'dismissible_type' => 'user',
+							'dismiss_interval' => 'shortly',
+						) );
+					} else {
+						Give()->notices->register_notice( array(
+							'id'               => "give-expires-subscription-{$subscription['id']}",
+							'type'             => 'error',
+							'description'      => sprintf(
+								__( 'Your Give add-on license will expire in %1$s for payment <a href="%2$s" target="_blank">#%3$d</a>. <a href="%4$s" target="_blank">Click to renew an existing license</a> or %5$s.', 'give' ),
 								human_time_diff( current_time( 'timestamp', 1 ), strtotime( $subscription['expires'] ) ),
 								urldecode( $subscription['invoice_url'] ),
 								$subscription['payment_id'],
 								"{$this->checkout_url}?edd_license_key={$subscription['license_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired",
-								esc_url( add_query_arg( '_give_hide_license_notices_permanently', $subscription['id'], $_SERVER['REQUEST_URI'] ) )
-							);
-						}
+								Give()->notices->get_dismiss_link(array(
+									'title' => __( 'Click here if already renewed', 'give' ),
+									'dismissible_type'      => 'user',
+									'dismiss_interval'      => 'permanent',
+								))
+							),
+							'dismissible_type' => 'user',
+							'dismiss_interval' => 'shortly',
+						) );
 					}
 
 					// Stop validation for these license keys.
@@ -771,29 +646,23 @@ if ( ! class_exists( 'Give_License' ) ) :
 			// Show non subscription addon messages.
 			if (
 				! in_array( $this->license, $addon_license_key_in_subscriptions )
-				&& ! $this->__is_notice_dismissed( 'general' )
 				&& ! $this->is_valid_license()
 				&& empty( $showed_invalid_message )
 			) {
 
-				$messages['general']    = sprintf(
-					__( 'You have invalid or expired license keys for one or more Give Add-ons. Please go to the <a href="%s">licenses page</a> to correct this issue.', 'give' ),
-					admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' )
-				);
+				Give()->notices->register_notice( array(
+					'id'               => 'give-invalid-license',
+					'type'             => 'error',
+					'description'      => sprintf(
+						__( 'You have invalid or expired license keys for one or more Give Add-ons. Please go to the <a href="%s">licenses page</a> to correct this issue.', 'give' ),
+						admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' )
+					),
+					'dismissible_type' => 'user',
+					'dismiss_interval' => 'shortly',
+				) );
+
 				$showed_invalid_message = true;
 
-			}
-
-			// Print messages.
-			if ( ! empty( $messages ) ) {
-				foreach ( $messages as $notice_id => $message ) {
-
-					echo sprintf(
-						'<div class="notice notice-error is-dismissible give-license-notice" data-dismiss-notice-shortly="%1$s"><p>%2$s</p></div>',
-						esc_url( add_query_arg( '_give_hide_license_notices_shortly', $notice_id, $_SERVER['REQUEST_URI'] ) ),
-						$message
-					);
-				}
 			}
 		}
 
@@ -834,7 +703,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @access private
 		 * @since  1.7
 		 *
-		 * @return void|bool
+		 * @return bool
 		 */
 		private function __remove_license_key_from_subscriptions() {
 			$subscriptions = get_option( 'give_subscriptions', array() );
@@ -861,72 +730,6 @@ if ( ! class_exists( 'Give_License' ) ) :
 				}
 			}
 		}
-
-		/**
-		 * Remove license notices show blocker.
-		 *
-		 * @access private
-		 * @since  1.7
-		 *
-		 * @return void
-		 */
-		private function __remove_license_notices_show_blocker() {
-			global $wpdb;
-
-			// Delete permanent notice blocker.
-			$wpdb->query(
-				$wpdb->prepare(
-					"
-					DELETE FROM $wpdb->usermeta
-					WHERE meta_key
-					LIKE '%%%s%%'
-					",
-					'_give_hide_license_notices_permanently'
-				)
-			);
-
-			// Delete short notice blocker.
-			$wpdb->query(
-				$wpdb->prepare(
-					"
-					DELETE FROM $wpdb->options
-					WHERE option_name
-					LIKE '%%%s%%'
-					",
-					'__give_hide_license_notices_shortly_'
-				)
-			);
-		}
-
-		/**
-		 * Check if notice dismissed by admin user or not.
-		 *
-		 * @access private
-		 * @since  1.7
-		 *
-		 * @param  int $notice_id Notice ID.
-		 *
-		 * @return bool
-		 */
-		private function __is_notice_dismissed( $notice_id ) {
-			$current_user        = wp_get_current_user();
-			$is_notice_dismissed = false;
-
-			// Ge is notice dismissed permanently.
-			$already_dismiss_notices = ( $already_dismiss_notices = get_user_meta( $current_user->ID, '_give_hide_license_notices_permanently', true ) )
-				? $already_dismiss_notices
-				: array();
-
-			if (
-				in_array( $notice_id, $already_dismiss_notices )
-				|| false !== Give_Cache::get( "_give_hide_license_notices_shortly_{$current_user->ID}_{$notice_id}", true )
-			) {
-				$is_notice_dismissed = true;
-			}
-
-			return $is_notice_dismissed;
-		}
-
 
 		/**
 		 * @param $plugin_file
@@ -970,6 +773,73 @@ if ( ! class_exists( 'Give_License' ) ) :
 			}
 
 			return $message_data;
+		}
+
+
+		/**
+		 * Check if admin can edit license or not,
+		 *
+		 * @since 1.8.9
+		 * @access private
+		 */
+		private function __is_user_can_edit_license(){
+			// Bailout.
+			if (
+				empty( $_POST[ $this->item_shortname . '_license_key' ] ) ||
+				! current_user_can( 'manage_give_settings' )
+			) {
+				return false;
+			}
+
+			// Security check.
+			if ( ! wp_verify_nonce( $_REQUEST[ $this->item_shortname . '_license_key-nonce' ], $this->item_shortname . '_license_key-nonce' ) ) {
+				wp_die( __( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+			}
+
+			return true;
+		}
+
+
+		/**
+		 * Get license information.
+		 *
+		 * @since  1.8.9
+		 * @access public
+		 *
+		 * @param string $edd_action
+		 * @param bool   $response_in_array
+		 *
+		 * @return mixed
+		 */
+		public function get_license_info( $edd_action = '', $response_in_array = false ) {
+			if( empty( $edd_action ) ) {
+				return false;
+			}
+
+			// Data to send to the API
+			$api_params = array(
+				'edd_action' => $edd_action, // never change from "edd_" to "give_"!
+				'license'    => $this->license,
+				'item_name'  => urlencode( $this->item_name ),
+				'url'        => home_url(),
+			);
+
+			// Call the API
+			$response = wp_remote_post(
+				$this->api_url,
+				array(
+					'timeout'   => 15,
+					'sslverify' => false,
+					'body'      => $api_params,
+				)
+			);
+
+			// Make sure there are no errors
+			if ( is_wp_error( $response ) ) {
+				return false;
+			}
+
+			return json_decode( wp_remote_retrieve_body( $response ), $response_in_array );
 		}
 	}
 

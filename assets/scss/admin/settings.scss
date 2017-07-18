@@ -422,18 +422,21 @@ a.give-delete {
 	th.check-column {
 		.give-email-notification-status{
 			color: white;
-			border-radius: 1em;
 			cursor: pointer;
-			padding: 2px;
+
+			i.dashicons{
+				border-radius: 1em;
+				padding: 2px;
+			}
 		}
 
-		.give-email-notification-enabled,
-		.give-email-notification-disabled:hover{
+		.give-email-notification-enabled .dashicons-yes,
+		.give-email-notification-disabled:hover .dashicons-no-alt{
 			background: #46b450;
 		}
 
-		.give-email-notification-disabled,
-		.give-email-notification-enabled:hover{
+		.give-email-notification-disabled .dashicons-no-alt,
+		.give-email-notification-enabled:hover .dashicons-yes{
 			background: #bbbbbb;
 		}
 

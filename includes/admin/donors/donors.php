@@ -144,7 +144,7 @@ function give_render_donor_view( $view, $callbacks ) {
 
 		<?php if ( give_get_errors() ) : ?>
 			<div class="error settings-error">
-				<?php give_print_errors( 0 ); ?>
+				<?php Give()->notices->render_frontend_notices( 0 ); ?>
 			</div>
 		<?php endif; ?>
 
@@ -493,7 +493,7 @@ function give_donor_view( $donor ) {
 						</td>
 					</tr>
 				<?php } else { ?>
-					<tr><td colspan="2"><?php _e( 'No Emails Found', 'easy-digital-downloads' ); ?></td></tr>
+					<tr><td colspan="2"><?php _e( 'No Emails Found', 'give' ); ?></td></tr>
 				<?php }// End if().
 	?>
 			</tbody>

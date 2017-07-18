@@ -41,6 +41,9 @@ class Give_DB_Donors extends Give_DB {
 		
 		add_action( 'profile_update', array( $this, 'update_donor_email_on_user_update' ), 10, 2 );
 
+		// Install table.
+		$this->register_table();
+
 	}
 
 	/**
@@ -517,7 +520,7 @@ class Give_DB_Donors extends Give_DB {
 			$where .= $wpdb->prepare( " AND `name` LIKE '%%%%" . '%s' . "%%%%' ", $args['name'] );
 		}
 
-		// Customers created for a specific date or in a date range
+		// Donors created for a specific date or in a date range
 		if ( ! empty( $args['date'] ) ) {
 
 			if ( is_array( $args['date'] ) ) {

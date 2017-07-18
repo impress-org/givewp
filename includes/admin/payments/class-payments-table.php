@@ -69,6 +69,14 @@ class Give_Payment_History_Table extends WP_List_Table {
 	public $pending_count;
 
 	/**
+	 * Total number of processing payments
+	 *
+	 * @var int
+	 * @since 1.8.9
+	 */
+	public $processing_count;
+
+	/**
 	 * Total number of refunded payments
 	 *
 	 * @var int
@@ -137,23 +145,25 @@ class Give_Payment_History_Table extends WP_List_Table {
 	public function advanced_filters() {
 		$start_date = isset( $_GET['start-date'] ) ? sanitize_text_field( $_GET['start-date'] ) : null;
 		$end_date   = isset( $_GET['end-date'] ) ? sanitize_text_field( $_GET['end-date'] ) : null;
-		$status     = isset( $_GET['status'] ) ? $_GET['status'] : '';
+		$status     = isset( $_GET['status'] ) ? sanitize_text_field( $_GET['status'] ) : '';
+		$donor      = isset( $_GET['donor'] ) ? sanitize_text_field( $_GET['donor'] ) : '';
+		$search      = isset( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : '';
 		?>
 		<div id="give-payment-filters">
 			<span id="give-payment-date-filters">
 				<label for="start-date"
 				       class="give-start-date-label"><?php esc_html_e( 'Start Date:', 'give' ); ?></label>
 				<input type="text" id="start-date" name="start-date" class="give_datepicker"
-				       value="<?php echo $start_date; ?>" placeholder="mm/dd/yyyy"/>
+				       value="<?php echo $start_date; ?>" placeholder="mm/dd/yyyy" />
 				<label for="end-date" class="give-end-date-label"><?php esc_html_e( 'End Date:', 'give' ); ?></label>
 				<input type="text" id="end-date" name="end-date" class="give_datepicker"
-				       value="<?php echo $end_date; ?>" placeholder="mm/dd/yyyy"/>
-				<input type="submit" class="button-secondary" value="<?php esc_attr_e( 'Apply', 'give' ); ?>"/>
+				       value="<?php echo $end_date; ?>" placeholder="mm/dd/yyyy" />
+				<input type="submit" class="button-secondary" value="<?php esc_attr_e( 'Apply', 'give' ); ?>" />
 			</span>
 			<?php if ( ! empty( $status ) ) : ?>
-				<input type="hidden" name="status" value="<?php echo esc_attr( $status ); ?>"/>
+				<input type="hidden" name="status" value="<?php echo esc_attr( $status ); ?>" />
 			<?php endif; ?>
-			<?php if ( ! empty( $start_date ) || ! empty( $end_date ) ) : ?>
+			<?php if ( ! empty( $start_date ) || ! empty( $end_date ) || ! empty( $donor )|| ! empty( $search ) ) : ?>
 				<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ); ?>"
 				   class="button-secondary"><?php esc_html_e( 'Clear Filter', 'give' ); ?></a>
 			<?php endif; ?>
@@ -200,10 +210,10 @@ class Give_Payment_History_Table extends WP_List_Table {
 			do_action( 'give_payment_history_search' );
 			?>
 			<label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
-			<input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>"/>
+			<input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>" />
 			<?php submit_button( $text, 'button', false, false, array(
 				'ID' => 'search-submit',
-			) ); ?><br/>
+			) ); ?><br />
 		</p>
 		<?php
 	}
@@ -217,46 +227,51 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 */
 	public function get_views() {
 
-		$current         = isset( $_GET['status'] ) ? $_GET['status'] : '';
-		$total_count     = '&nbsp;<span class="count">(' . $this->total_count . ')</span>';
-		$complete_count  = '&nbsp;<span class="count">(' . $this->complete_count . ')</span>';
-		$cancelled_count = '&nbsp;<span class="count">(' . $this->cancelled_count . ')</span>';
-		$pending_count   = '&nbsp;<span class="count">(' . $this->pending_count . ')</span>';
-		$refunded_count  = '&nbsp;<span class="count">(' . $this->refunded_count . ')</span>';
-		$failed_count    = '&nbsp;<span class="count">(' . $this->failed_count . ')</span>';
-		$abandoned_count = '&nbsp;<span class="count">(' . $this->abandoned_count . ')</span>';
-		$revoked_count   = '&nbsp;<span class="count">(' . $this->revoked_count . ')</span>';
+		$current          = isset( $_GET['status'] ) ? $_GET['status'] : '';
+		$total_count      = '&nbsp;<span class="count">(' . $this->total_count . ')</span>';
+		$complete_count   = '&nbsp;<span class="count">(' . $this->complete_count . ')</span>';
+		$cancelled_count  = '&nbsp;<span class="count">(' . $this->cancelled_count . ')</span>';
+		$pending_count    = '&nbsp;<span class="count">(' . $this->pending_count . ')</span>';
+		$processing_count = '&nbsp;<span class="count">(' . $this->processing_count . ')</span>';
+		$refunded_count   = '&nbsp;<span class="count">(' . $this->refunded_count . ')</span>';
+		$failed_count     = '&nbsp;<span class="count">(' . $this->failed_count . ')</span>';
+		$abandoned_count  = '&nbsp;<span class="count">(' . $this->abandoned_count . ')</span>';
+		$revoked_count    = '&nbsp;<span class="count">(' . $this->revoked_count . ')</span>';
 
 		$views = array(
-			'all'       => sprintf( '<a href="%s"%s>%s</a>', remove_query_arg( array(
+			'all'        => sprintf( '<a href="%s"%s>%s</a>', remove_query_arg( array(
 				'status',
 				'paged',
 			) ), $current === 'all' || $current == '' ? ' class="current"' : '', esc_html__( 'All', 'give' ) . $total_count ),
-			'publish'   => sprintf( '<a href="%s"%s>%s</a>', esc_url( add_query_arg( array(
+			'publish'    => sprintf( '<a href="%s"%s>%s</a>', esc_url( add_query_arg( array(
 				'status' => 'publish',
 				'paged'  => false,
 			) ) ), $current === 'publish' ? ' class="current"' : '', esc_html__( 'Completed', 'give' ) . $complete_count ),
-			'pending'   => sprintf( '<a href="%s"%s>%s</a>', esc_url( add_query_arg( array(
+			'pending'    => sprintf( '<a href="%s"%s>%s</a>', esc_url( add_query_arg( array(
 				'status' => 'pending',
 				'paged'  => false,
 			) ) ), $current === 'pending' ? ' class="current"' : '', esc_html__( 'Pending', 'give' ) . $pending_count ),
-			'refunded'  => sprintf( '<a href="%s"%s>%s</a>', esc_url( add_query_arg( array(
+			'processing' => sprintf( '<a href="%s"%s>%s</a>', esc_url( add_query_arg( array(
+				'status' => 'processing',
+				'paged'  => false,
+			) ) ), $current === 'processing' ? ' class="current"' : '', esc_html__( 'Processing', 'give' ) . $processing_count ),
+			'refunded'   => sprintf( '<a href="%s"%s>%s</a>', esc_url( add_query_arg( array(
 				'status' => 'refunded',
 				'paged'  => false,
 			) ) ), $current === 'refunded' ? ' class="current"' : '', esc_html__( 'Refunded', 'give' ) . $refunded_count ),
-			'revoked'   => sprintf( '<a href="%s"%s>%s</a>', esc_url( add_query_arg( array(
+			'revoked'    => sprintf( '<a href="%s"%s>%s</a>', esc_url( add_query_arg( array(
 				'status' => 'revoked',
 				'paged'  => false,
 			) ) ), $current === 'revoked' ? ' class="current"' : '', esc_html__( 'Revoked', 'give' ) . $revoked_count ),
-			'failed'    => sprintf( '<a href="%s"%s>%s</a>', esc_url( add_query_arg( array(
+			'failed'     => sprintf( '<a href="%s"%s>%s</a>', esc_url( add_query_arg( array(
 				'status' => 'failed',
 				'paged'  => false,
 			) ) ), $current === 'failed' ? ' class="current"' : '', esc_html__( 'Failed', 'give' ) . $failed_count ),
-			'cancelled' => sprintf( '<a href="%s"%s>%s</a>', esc_url( add_query_arg( array(
+			'cancelled'  => sprintf( '<a href="%s"%s>%s</a>', esc_url( add_query_arg( array(
 				'status' => 'cancelled',
 				'paged'  => false,
 			) ) ), $current === 'cancelled' ? ' class="current"' : '', esc_html__( 'Cancelled', 'give' ) . $cancelled_count ),
-			'abandoned' => sprintf( '<a href="%s"%s>%s</a>', esc_url( add_query_arg( array(
+			'abandoned'  => sprintf( '<a href="%s"%s>%s</a>', esc_url( add_query_arg( array(
 				'status' => 'abandoned',
 				'paged'  => false,
 			) ) ), $current === 'abandoned' ? ' class="current"' : '', esc_html__( 'Abandoned', 'give' ) . $abandoned_count ),
@@ -335,7 +350,16 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 		switch ( $column_name ) {
 			case 'donation' :
-				$value = sprintf( '<a href="%1$s" data-tooltip="%2$s">#%3$s</a>&nbsp;%4$s&nbsp;%5$s<br>', $single_donation_url, sprintf( esc_attr__( 'View Donation #%s', 'give' ), $payment->ID ), $payment->ID, esc_html__( 'by', 'give' ), $this->get_donor( $payment ) );
+				$value = Give()->tooltips->render_link( array(
+					'label'       => sprintf( esc_attr__( 'View Donation #%s', 'give' ), $payment->ID ),
+					'tag_content' => "#$payment->ID",
+					'link'        => $single_donation_url,
+				) );
+				$value .= sprintf(
+					'&nbsp;%1$s&nbsp;%2$s<br>',
+					esc_html__( 'by', 'give' ),
+					$this->get_donor( $payment )
+				);
 				$value .= $this->get_donor_email( $payment );
 				$value .= $this->row_actions( $row_actions );
 				break;
@@ -367,7 +391,16 @@ class Give_Payment_History_Table extends WP_List_Table {
 				break;
 
 			case 'details' :
-				$value = sprintf( '<div class="give-payment-details-link-wrap"><a href="%1$s" class="give-payment-details-link button button-small" data-tooltip="%2$s" aria-label="%2$s"><span class="dashicons dashicons-visibility"></span></a></div>', $single_donation_url, sprintf( esc_attr__( 'View Donation #%s', 'give' ), $payment->ID ) );
+				$value = Give()->tooltips->render_link( array(
+					'label'      => sprintf( esc_attr__( 'View Donation #%s', 'give' ), $payment->ID ),
+					'tag_content' => '<span class="dashicons dashicons-visibility"></span>',
+					'link'       => $single_donation_url,
+					'attributes' => array(
+						'class' => 'give-payment-details-link button button-small',
+					),
+				) );
+
+				$value = "<div class=\"give-payment-details-link-wrap\">{$value}</div>";
 				break;
 
 			default:
@@ -397,7 +430,12 @@ class Give_Payment_History_Table extends WP_List_Table {
 			$email = esc_html__( '(unknown)', 'give' );
 		}
 
-		$value = '<a href="mailto:' . $email . '" data-tooltip="' . esc_attr__( 'Email donor', 'give' ) . '">' . $email . '</a>';
+
+		$value = Give()->tooltips->render_link( array(
+			'link'        => "mailto:{$email}",
+			'label'       => esc_attr__( 'Email donor', 'give' ),
+			'tag_content' => $email,
+		) );
 
 		return apply_filters( 'give_payments_table_column', $value, $payment->ID, 'email' );
 	}
@@ -424,16 +462,16 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 		if ( give_is_payment_complete( $payment->ID ) && ! empty( $email ) ) {
 
-			$actions['email_links'] = sprintf( '<a href="%1$s" aria-label="%2$s">%3$s</a>', wp_nonce_url( add_query_arg( array(
-					'give-action' => 'email_links',
-					'purchase_id' => $payment->ID,
+			$actions['email_links'] = sprintf( '<a class="resend-single-donation-receipt" href="%1$s" aria-label="%2$s">%3$s</a>', wp_nonce_url( add_query_arg( array(
+				'give-action' => 'email_links',
+				'purchase_id' => $payment->ID,
 			), $this->base_url ), 'give_payment_nonce' ), sprintf( esc_attr__( 'Resend Donation %s Receipt', 'give' ), $payment->ID ), esc_html__( 'Resend Receipt', 'give' ) );
 
 		}
 
-		$actions['delete'] = sprintf( '<a href="%1$s" aria-label="%2$s">%3$s</a>', wp_nonce_url( add_query_arg( array(
-				'give-action' => 'delete_payment',
-				'purchase_id' => $payment->ID,
+		$actions['delete'] = sprintf( '<a class="delete-single-donation" href="%1$s" aria-label="%2$s">%3$s</a>', wp_nonce_url( add_query_arg( array(
+			'give-action' => 'delete_payment',
+			'purchase_id' => $payment->ID,
 		), $this->base_url ), 'give_donation_nonce' ), sprintf( esc_attr__( 'Delete Donation %s', 'give' ), $payment->ID ), esc_html__( 'Delete', 'give' ) );
 
 		return apply_filters( 'give_payment_row_actions', $actions, $payment );
@@ -453,7 +491,15 @@ class Give_Payment_History_Table extends WP_List_Table {
 	function get_payment_status( $payment ) {
 		$value = '<div class="give-donation-status status-' . sanitize_title( give_get_payment_status( $payment, true ) ) . '"><span class="give-donation-status-icon"></span> ' . give_get_payment_status( $payment, true ) . '</div>';
 		if ( $payment->mode == 'test' ) {
-			$value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label" data-tooltip="' . esc_attr__( 'This donation was made in test mode.', 'give' ) . '">' . esc_html__( 'Test', 'give' ) . '</span>';
+			$value .= Give()->tooltips->render_span( array(
+				'label'       => esc_attr__( 'This donation was made in test mode.', 'give' ),
+				'tag_content' => esc_html__( 'Test', 'give' ),
+				'attributes'  => array(
+					'class' => 'give-item-label give-item-label-orange give-test-mode-transactions-label',
+				),
+
+
+			) );
 		}
 
 		return $value;
@@ -534,15 +580,17 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 */
 	public function get_bulk_actions() {
 		$actions = array(
-			'delete'               => esc_html__( 'Delete', 'give' ),
-			'set-status-publish'   => esc_html__( 'Set To Completed', 'give' ),
-			'set-status-pending'   => esc_html__( 'Set To Pending', 'give' ),
-			'set-status-refunded'  => esc_html__( 'Set To Refunded', 'give' ),
-			'set-status-revoked'   => esc_html__( 'Set To Revoked', 'give' ),
-			'set-status-failed'    => esc_html__( 'Set To Failed', 'give' ),
-			'set-status-cancelled' => esc_html__( 'Set To Cancelled', 'give' ),
-			'set-status-abandoned' => esc_html__( 'Set To Abandoned', 'give' ),
-			'resend-receipt'       => esc_html__( 'Resend Email Receipts', 'give' ),
+			'delete'                 => __( 'Delete', 'give' ),
+			'set-status-publish'     => __( 'Set To Completed', 'give' ),
+			'set-status-pending'     => __( 'Set To Pending', 'give' ),
+			'set-status-processing'  => __( 'Set To Processing', 'give' ),
+			'set-status-refunded'    => __( 'Set To Refunded', 'give' ),
+			'set-status-revoked'     => __( 'Set To Revoked', 'give' ),
+			'set-status-failed'      => __( 'Set To Failed', 'give' ),
+			'set-status-cancelled'   => __( 'Set To Cancelled', 'give' ),
+			'set-status-abandoned'   => __( 'Set To Abandoned', 'give' ),
+			'set-status-preapproval' => __( 'Set To Preapproval', 'give' ),
+			'resend-receipt'         => __( 'Resend Email Receipts', 'give' ),
 		);
 
 		return apply_filters( 'give_payments_table_bulk_actions', $actions );
@@ -582,6 +630,10 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 				case 'set-status-pending':
 					give_update_payment_status( $id, 'pending' );
+					break;
+
+				case 'set-status-processing':
+					give_update_payment_status( $id, 'processing' );
 					break;
 
 				case 'set-status-refunded':
@@ -642,6 +694,8 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 		if ( isset( $_GET['user'] ) ) {
 			$args['user'] = urldecode( $_GET['user'] );
+		} elseif ( isset( $_GET['donor'] ) ) {
+			$args['donor'] = absint( $_GET['donor'] );
 		} elseif ( isset( $_GET['s'] ) ) {
 			$is_user = strpos( $_GET['s'], strtolower( 'user:' ) ) !== false;
 			if ( $is_user ) {
@@ -660,14 +714,15 @@ class Give_Payment_History_Table extends WP_List_Table {
 			$args['end-date'] = urldecode( $_GET['end-date'] );
 		}
 
-		$payment_count         = give_count_payments( $args );
-		$this->complete_count  = $payment_count->publish;
-		$this->pending_count   = $payment_count->pending;
-		$this->refunded_count  = $payment_count->refunded;
-		$this->failed_count    = $payment_count->failed;
-		$this->revoked_count   = $payment_count->revoked;
-		$this->cancelled_count = $payment_count->cancelled;
-		$this->abandoned_count = $payment_count->abandoned;
+		$payment_count          = give_count_payments( $args );
+		$this->complete_count   = $payment_count->publish;
+		$this->pending_count    = $payment_count->pending;
+		$this->processing_count = $payment_count->processing;
+		$this->refunded_count   = $payment_count->refunded;
+		$this->failed_count     = $payment_count->failed;
+		$this->revoked_count    = $payment_count->revoked;
+		$this->cancelled_count  = $payment_count->cancelled;
+		$this->abandoned_count  = $payment_count->abandoned;
 
 		foreach ( $payment_count as $count ) {
 			$this->total_count += $count;
@@ -687,6 +742,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$orderby    = isset( $_GET['orderby'] ) ? urldecode( $_GET['orderby'] ) : 'ID';
 		$order      = isset( $_GET['order'] ) ? $_GET['order'] : 'DESC';
 		$user       = isset( $_GET['user'] ) ? $_GET['user'] : null;
+		$donor      = isset( $_GET['donor'] ) ? $_GET['donor'] : null;
 		$status     = isset( $_GET['status'] ) ? $_GET['status'] : give_get_payment_status_keys();
 		$meta_key   = isset( $_GET['meta_key'] ) ? $_GET['meta_key'] : null;
 		$year       = isset( $_GET['year'] ) ? $_GET['year'] : null;
@@ -707,6 +763,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			'orderby'    => $orderby,
 			'order'      => $order,
 			'user'       => $user,
+			'donor'      => $donor,
 			'status'     => $status,
 			'meta_key'   => $meta_key,
 			'year'       => $year,
@@ -759,6 +816,9 @@ class Give_Payment_History_Table extends WP_List_Table {
 			case 'pending':
 				$total_items = $this->pending_count;
 				break;
+			case 'processing':
+				$total_items = $this->processing_count;
+				break;
 			case 'refunded':
 				$total_items = $this->refunded_count;
 				break;
@@ -787,12 +847,12 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$this->items = $data;
 
 		$this->set_pagination_args( array(
-				'total_items' => $total_items,
-				// We have to calculate the total number of items.
-				'per_page'    => $this->per_page,
-				// We have to determine how many items to show on a page.
-				'total_pages' => ceil( $total_items / $this->per_page ),
-				// We have to calculate the total number of pages.
+			'total_items' => $total_items,
+			// We have to calculate the total number of items.
+			'per_page'    => $this->per_page,
+			// We have to determine how many items to show on a page.
+			'total_pages' => ceil( $total_items / $this->per_page ),
+			// We have to calculate the total number of pages.
 		) );
 	}
 }

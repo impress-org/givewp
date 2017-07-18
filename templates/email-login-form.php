@@ -77,7 +77,7 @@ if ( is_email( $email ) && wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
 }// End if().
 
 // Print any messages & errors
-give_print_errors( 0 );
+Give()->notices->render_frontend_notices( 0 );
 
 // Show the email login form?
 if ( $show_form ) {
@@ -87,7 +87,7 @@ if ( $show_form ) {
 
 		<?php
 		if ( ! give_get_errors() ) {
-			give_output_error( apply_filters( 'give_email_access_message', __( 'Please enter the email address you used for your donation. A verification email containing an access link will be sent to you.', 'give' ) ), true );
+			Give()->notices->print_frontend_notice( apply_filters( 'give_email_access_message', __( 'Please enter the email address you used for your donation. A verification email containing an access link will be sent to you.', 'give' ) ), true );
 		} ?>
 
 		<form method="post" action="" id="give-email-access-form">
@@ -122,7 +122,7 @@ if ( $show_form ) {
 <?php
 } else {
 
-	give_output_error(
+	Give()->notices->print_frontend_notice(
 		sprintf(
 			/* translators: %s: user email address */
 			esc_html__( 'An email with an access link has been sent to %s.', 'give' ),

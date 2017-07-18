@@ -61,6 +61,7 @@ function give_do_automatic_upgrades() {
 			give_v20_upgrades();
 			$did_upgrade = true;
 
+
 	}
 
 	if ( $did_upgrade ) {
@@ -118,7 +119,7 @@ function give_show_upgrade_notices() {
 		return;
 	}
 
-	// v1.3.2 Upgrades.
+	// v1.3.2 Upgrades
 	Give()->notices->register_notice( array(
 		'id'          => 'give-version-1-3-2-updates',
 		'type'        => 'warning',
@@ -151,7 +152,7 @@ function give_show_upgrade_notices() {
 		'show'        => ( version_compare( $give_version, '1.8', '<' ) || ! give_has_upgrade_completed( 'v18_upgrades_form_metadata' ) )
 	) );
 
-	// v1.8.9 Upgrades.
+	// v1.8.9 Upgrades
 	Give()->notices->register_notice( array(
 		'id'          => 'give-version-1-8-9-updates',
 		'type'        => 'warning',
@@ -184,18 +185,6 @@ function give_show_upgrade_notices() {
 			'</a>'
 		),
 		'show'        => ( version_compare( $give_version, '2.0', '<' ) || ( ! give_has_upgrade_completed( 'give_v20_logs_upgrades' ) ) ),
-	) );
-
-	// v2.0 donor name upgrades.
-	Give()->notices->register_notice( array(
-		'id'          => 'give-version-2-0-0-logs-updates',
-		'type'        => 'warning',
-		'description' => sprintf(
-			__( 'Give needs to upgrade the donor database, click %1$shere%2$s to start the upgrade.', 'give' ),
-			'<a class="give-upgrade-link" href="' . esc_url( admin_url( 'index.php?page=give-upgrades&give-upgrade=v20_upgrades_donor_name' ) ) . '">',
-			'</a>'
-		),
-		'show'        => ( version_compare( $give_version, '2.0', '<' ) || ( ! give_has_upgrade_completed( 'v20_upgrades_donor_name' ) ) ),
 	) );
 
 	// End 'Stepped' upgrade process notices.
@@ -255,6 +244,85 @@ function give_trigger_upgrades() {
 }
 
 add_action( 'wp_ajax_give_trigger_upgrades', 'give_trigger_upgrades' );
+
+/**
+ * Check if the upgrade routine has been run for a specific action
+ *
+ * @since  1.0
+ *
+ * @param  string $upgrade_action The upgrade action to check completion for
+ *
+ * @return bool                   If the action has been added to the completed actions array
+ */
+function give_has_upgrade_completed( $upgrade_action = '' ) {
+
+	if ( empty( $upgrade_action ) ) {
+		return false;
+	}
+
+	$completed_upgrades = give_get_completed_upgrades();
+
+	return in_array( $upgrade_action, $completed_upgrades );
+
+}
+
+/**
+ * For use when doing 'stepped' upgrade routines, to see if we need to start somewhere in the middle
+ *
+ * @since 1.8
+ *
+ * @return mixed   When nothing to resume returns false, otherwise starts the upgrade where it left off
+ */
+function give_maybe_resume_upgrade() {
+	$doing_upgrade = get_option( 'give_doing_upgrade', false );
+	if ( empty( $doing_upgrade ) ) {
+		return false;
+	}
+
+	return $doing_upgrade;
+}
+
+/**
+ * Adds an upgrade action to the completed upgrades array
+ *
+ * @since  1.0
+ *
+ * @param  string $upgrade_action The action to add to the completed upgrades array
+ *
+ * @return bool                   If the function was successfully added
+ */
+function give_set_upgrade_complete( $upgrade_action = '' ) {
+
+	if ( empty( $upgrade_action ) ) {
+		return false;
+	}
+
+	$completed_upgrades   = give_get_completed_upgrades();
+	$completed_upgrades[] = $upgrade_action;
+
+	// Remove any blanks, and only show uniques.
+	$completed_upgrades = array_unique( array_values( $completed_upgrades ) );
+
+	return update_option( 'give_completed_upgrades', $completed_upgrades );
+}
+
+/**
+ * Get's the array of completed upgrade actions
+ *
+ * @since  1.0
+ * @return array The array of completed upgrades
+ */
+function give_get_completed_upgrades() {
+
+	$completed_upgrades = get_option( 'give_completed_upgrades' );
+
+	if ( false === $completed_upgrades ) {
+		$completed_upgrades = array();
+	}
+
+	return $completed_upgrades;
+
+}
 
 /**
  * Upgrades the
