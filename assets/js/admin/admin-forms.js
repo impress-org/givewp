@@ -137,6 +137,7 @@ jQuery.noConflict();
 				$('._give_goal_color_field').hide();
 				$('._give_close_form_when_goal_achieved_field').hide();
 				$('._give_form_goal_achieved_message_field').hide();
+				$('._give_number_of_donation_goal_field').hide();
 			} else {
 				$('._give_set_goal_field').show();
 				$('._give_goal_format_field').show();
