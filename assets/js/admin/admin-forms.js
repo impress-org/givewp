@@ -41,21 +41,28 @@ jQuery.noConflict();
 		var price_option = $('._give_price_option_field input:radio');
 
 		price_option.on('change', function () {
-
 			var price_option_val = $('._give_price_option_field input:radio:checked').val();
+			var custom_amount_option_val = $('._give_custom_amount_field input:radio:checked').val();
+
 			if (price_option_val === 'set') {
 				//set price shows
 				$('._give_set_price_field').show();
 				$('#_give_donation_levels_field').hide(); // Hide multi-val stuffs.
 				$('._give_display_style_field').hide(); // Hide display style setting.
-
-
+				$('._give_set_custom_amount_default_field').hide();
 			} else {
 				//multi-value shows
 				$('._give_set_price_field').hide();
 				$('#_give_donation_levels_field').show(); // Show set stuffs.
 				$('._give_display_style_field').show(); // Show display style setting.
+
+				if ( 'disabled' === custom_amount_option_val ) {
+					$('._give_set_custom_amount_default_field').hide();
+				} else {
+					$('._give_set_custom_amount_default_field').show();
+				}
 			}
+
 		}).change();
 
 
@@ -105,13 +112,23 @@ jQuery.noConflict();
 		var custom_amount_option = $('._give_custom_amount_field input:radio');
 		custom_amount_option.on('change', function () {
 			var custom_amount_option_val = $('._give_custom_amount_field input:radio:checked').val();
+			var price_option_val = $('._give_price_option_field input:radio:checked').val();
 			if (custom_amount_option_val === 'disabled') {
 				$('._give_custom_amount_minimum_field').hide();
 				$('._give_custom_amount_text_field').hide();
+
+				if( 'multi' === price_option_val ) {
+					$('._give_set_custom_amount_default_field').hide();
+				}
 			} else {
 				$('._give_custom_amount_minimum_field').show();
 				$('._give_custom_amount_text_field').show();
+
+				if( 'multi' === price_option_val ) {
+					$('._give_set_custom_amount_default_field').show();
+				}
 			}
+
 		}).change();
 
 		//Goals

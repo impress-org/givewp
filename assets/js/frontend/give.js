@@ -14,6 +14,9 @@ jQuery(function ($) {
 
 	var doc = $(document);
 
+	// Set focus to custom amount, if custom amount is set as default.
+	$('.give-default-custom-amount').focus();
+
 	// Trigger float-labels
 	give_fl_trigger();
 
