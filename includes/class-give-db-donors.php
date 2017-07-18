@@ -695,24 +695,14 @@ class Give_DB_Donors extends Give_DB {
 			$user = get_userdata( $user_id );
 
 			// Get User First name and Last name.
-			$first_name = get_user_meta( $user_id, 'first_name', true );
-			$last_name  = get_user_meta( $user_id, 'last_name', true );
-			$full_name  = $first_name . ' ' . $last_name;
+			$first_name = ( $_POST['first_name'] ) ? $_POST['first_name'] : get_user_meta( $user_id, 'first_name', true );
+			$last_name  = ( $_POST['last_name'] ) ? $_POST['last_name'] : get_user_meta( $user_id, 'last_name', true );
+			$full_name  = strip_tags( stripslashes( $first_name . ' ' . $last_name ) );
 
 			// Assign User First name and Last name to Donor.
 			Give()->donors->update( $donor->id, array( 'name' => $full_name ) );
-			Give()->donor_meta->update( $donor->id, '_give_donor_first_name', $first_name );
-			Give()->donor_meta->update( $donor->id, '_give_donor_last_name', $last_name );
-
-			/**
-			 * Fires after user profile is updated.
-			 *
-			 * @param  WP_User    $user  WordPress User object.
-			 * @param  Give_Donor $donor Give donor object.
-			 *
-			 * @since 2.0
-			 */
-			do_action( 'give_update_donor_info_on_user_update', $user, $donor );
+			Give()->donor_meta->update_meta( $donor->id, '_give_donor_first_name', $first_name );
+			Give()->donor_meta->update_meta( $donor->id, '_give_donor_last_name', $last_name );
 
 		}
 	}
