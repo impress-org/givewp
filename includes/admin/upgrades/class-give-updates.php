@@ -158,10 +158,31 @@ class Give_Updates {
 	 *
 	 */
 	public function setup_hooks() {
+		add_action( 'init', array( $this, '__register_upgrade' ), 9999 );
 		add_action( 'admin_init', array( $this, '__change_donations_label' ), 9999 );
 		add_action( 'admin_menu', array( $this, '__register_menu' ), 9999 );
 		add_action( 'give_set_upgrade_completed', array( $this, '__flush_resume_updates' ), 9999 );
 		add_action( 'wp_ajax_give_do_ajax_updates', array( $this, '__give_ajax_updates' ) );
+	}
+
+
+	/**
+	 * Fire custom aciton hook to register updates
+	 *
+	 * @since  1.8.12
+	 * @access public
+	 */
+	public function __register_upgrade() {
+		if ( ! is_admin() ) {
+			return;
+		}
+
+		/**
+		 * Fire the hook
+		 *
+		 * @since 1.8.12
+		 */
+		do_action( 'give_register_updates', $this );
 	}
 
 	/**
