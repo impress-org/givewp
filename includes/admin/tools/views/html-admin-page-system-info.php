@@ -175,7 +175,15 @@ $plugins      = give_get_plugins();
 				if ( ! is_wp_error( $tls_check ) ) {
 					$tls_check = json_decode( wp_remote_retrieve_body( $tls_check ) );
 					/* translators: %s: SSL connection response */
-					echo sprintf( __('Connection uses %s', 'give'), $tls_check->tls_version );
+					printf( __('Connection uses %s', 'give'), esc_html( $tls_check->tls_version )) ;
+				}
+				?></td>
+		</tr>
+		<tr>
+			<td data-export-label="TLS Connection"><?php _e( 'TLS Rating', 'give' ); ?>:</td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The server\'s connection as rated by https://www.howsmyssl.com/', 'give' ) ); ?>"></span></td>
+			<td><?php if ( ! is_wp_error( $tls_check ) ) {
+					esc_html_e( $tls_check->rating);
 				} ?></td>
 		</tr>
 		<tr>
@@ -358,7 +366,7 @@ $plugins      = give_get_plugins();
 				'cmd'     => '_notify-validate'
 			)
 		) );
-		
+
 		if ( ! is_wp_error( $response ) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 ) {
 			$posting['wp_remote_post']['success'] = true;
 		} else {
