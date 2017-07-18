@@ -40,7 +40,7 @@ $give_updates = Give_Updates::get_instance();
 ?>
 <div class="wrap" id="poststuff">
 	<div id="give-updates">
-		<h1><?php esc_html_e( 'Give - Upgrades', 'give' ); ?></h1>
+		<h1><?php esc_html_e( 'Give - Updates', 'give' ); ?></h1>
 		<div class="postbox-container">
 			<div class="postbox">
 				<div class="inside">
@@ -61,11 +61,13 @@ $give_updates = Give_Updates::get_instance();
 				<div class="postbox-container">
 					<div class="postbox">
 						<h2 class="hndle"><?php _e( 'Database Updates', 'give' ); ?></h2>
-						<!--<h2 class="hndle"><span>-->
-						<?php //echo sprintf( __( 'Update 1 of %s', 'give' ), $db_updates ); ?><!--</span></h2>-->
 						<div class="inside">
 							<div class="panel-content">
 								<p><?php echo sprintf( __( 'Give needs to update the database. <a href="%s">Update now ></a>', 'give' ), $db_update_url ); ?></p>
+							</div>
+							<div class="progress-container give-hidden">
+								<strong class="update-message"><?php echo sprintf( __( 'Update 1 of %s', 'give' ), $db_updates ); ?></strong>
+								<div class="progress-content"></div>
 							</div>
 						</div>
 						<!-- .inside -->
