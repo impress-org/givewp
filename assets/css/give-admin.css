@@ -1933,7 +1933,6 @@ h2.give-nav-tab-wrapper {
   clear: both;
   background: #f5f5f5;
   border-color: #dfdfdf;
-  overflow: auto;
   margin: 8px 0;
   padding: 12px;
   border-width: 1px;
@@ -1958,6 +1957,9 @@ h2.give-nav-tab-wrapper {
 
 #give-payments-advanced-filter #search-submit {
   margin-right: 20px; }
+
+#give-payments-advanced-filter .give-donation-forms-filter {
+  margin-right: 5px; }
 
 #give-payments-filter .tablenav.top {
   float: none; }
