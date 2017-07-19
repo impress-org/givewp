@@ -105,6 +105,12 @@ class Give_Updates {
 	 * @return array
 	 */
 	public function get_updates( $update_type = '', $status = 'all' ) {
+		// return all updates.
+		if ( empty( $update_type ) ) {
+			return self::$updates;
+		}
+
+		// Get specific update.
 		$updates = ! empty( self::$updates[ $update_type ] ) ? self::$updates[ $update_type ] : array();
 
 		// Bailout.
