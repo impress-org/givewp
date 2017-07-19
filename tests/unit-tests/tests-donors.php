@@ -11,7 +11,6 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 
 	protected $_donor_id = null;
 
-	protected $_donor = array();
 	/**
 	 * Set it up
 	 */
@@ -65,15 +64,6 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 			'role' => 'administrator',
 		) );
 		$user           = get_userdata( $this->_user_id );
-
-		// Create a donor.
-		$this->_donor = new Give_Donor();
-		$args = array(
-			'name'  => 'Test Admin',
-			'email' => 'testadmin@domain.com',
-			'user_id' => $user->ID
-		);
-		$this->_donor->create( $args );
 
 		// Generate Donations.
 		$user_info = array(
@@ -410,7 +400,14 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 	 */
 	public function test_get_first_name() {
 
-		$first_name = $this->_donor->get_first_name();
+		// Create a donor.
+		$donor = new Give_Donor();
+		$args = array(
+			'name'  => 'Test Admin',
+			'email' => 'testadmin@domain.com',
+		);
+		$donor->create( $args );
+		$first_name = $donor->get_first_name();
 		$this->assertEquals( 'Test', $first_name );
 
 	}
@@ -424,7 +421,13 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 	 */
 	public function test_get_last_name() {
 
-		$last_name = $this->_donor->get_last_name();
+		$donor = new Give_Donor();
+		$args = array(
+			'name'  => 'Test Admin',
+			'email' => 'testadmin@domain.com',
+		);
+		$donor->create( $args );
+		$last_name = $donor->get_last_name();
 		$this->assertEquals( 'Admin', $last_name );
 
 	}
@@ -438,7 +441,13 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 	 */
 	public function test_split_donor_name() {
 
-		$donor_name_split = $this->_donor->split_donor_name( $this->_donor->id );
+		$donor = new Give_Donor();
+		$args = array(
+			'name'  => 'Test Admin',
+			'email' => 'testadmin@domain.com',
+		);
+		$donor->create( $args );
+		$donor_name_split = $donor->split_donor_name( $donor->id );
 
 		/**
 		 * Check 1 - Check for type object.
