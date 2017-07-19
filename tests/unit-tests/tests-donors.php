@@ -59,16 +59,15 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 			give_update_meta( $this->_post_id, $key, $value );
 		}
 
-		// Create User.
+		// Generate Donations
 		$this->_user_id = $this->factory->user->create( array(
 			'role' => 'administrator',
 		) );
 		$user           = get_userdata( $this->_user_id );
 
-		// Generate Donations.
 		$user_info = array(
 			'id'         => $user->ID,
-			'email'      => 'admin@example.org',
+			'email'      => 'testadmin@domain.com',
 			'first_name' => $user->first_name,
 			'last_name'  => $user->last_name,
 		);
@@ -389,93 +388,5 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 	public function test_count_total_donors() {
 		$donor_count = give_count_total_donors();
 		$this->assertEquals( 1, $donor_count );
-	}
-
-	/**
-	 * Tests get_first_name function of Give_Donor class.
-	 *
-	 * @since 1.8.12
-	 *
-	 * @cover Give_Donor::get_first_name()
-	 */
-	public function test_get_first_name() {
-
-		// Create a donor.
-		$donor = new Give_Donor();
-		$args = array(
-			'name'  => 'Test Admin',
-			'email' => 'testadmin@domain.com',
-		);
-		$donor->create( $args );
-		$first_name = $donor->get_first_name();
-		$this->assertEquals( 'Test', $first_name );
-
-	}
-
-	/**
-	 * Tests get_last_name function of Give_Donor class.
-	 *
-	 * @since 1.8.12
-	 *
-	 * @cover Give_Donor::get_last_name()
-	 */
-	public function test_get_last_name() {
-
-		$donor = new Give_Donor();
-		$args = array(
-			'name'  => 'Test Admin',
-			'email' => 'testadmin@domain.com',
-		);
-		$donor->create( $args );
-		$last_name = $donor->get_last_name();
-		$this->assertEquals( 'Admin', $last_name );
-
-	}
-
-	/**
-	 * Tests split_donor_name function of Give_Donor class.
-	 *
-	 * @since 1.8.12
-	 *
-	 * @cover Give_Donor::split_donor_name()
-	 */
-	public function test_split_donor_name() {
-
-		$donor = new Give_Donor();
-		$args = array(
-			'name'  => 'Test Admin',
-			'email' => 'testadmin@domain.com',
-		);
-		$donor->create( $args );
-		$donor_name_split = $donor->split_donor_name( $donor->id );
-
-		/**
-		 * Check 1 - Check for type object.
-		 *
-		 * @since 1.8.12
-		 */
-		$this->assertInternalType( 'object', $donor_name_split );
-
-		/**
-		 * Check 2 - Check for existence of attribute first_name in object.
-		 *
-		 * @since 1.8.12
-		 */
-		$this->assertObjectHasAttribute( 'first_name', $donor_name_split );
-
-		/**
-		 * Check 3 - Check that first_name attribute of object is not empty.
-		 *
-		 * @since 1.8.12
-		 */
-		$this->assertNotEmpty( $donor_name_split->first_name );
-
-		/**
-		 * Check 4 - Check for existence of attribute last_name in object.
-		 *
-		 * @since 1.8.12
-		 */
-		$this->assertObjectHasAttribute( 'last_name', $donor_name_split );
-
 	}
 }
