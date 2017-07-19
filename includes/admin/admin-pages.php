@@ -382,16 +382,16 @@ function give_reports_page_pages( $settings ) {
 
 	$settings = array(
 		// Earnings.
-		include( 'reporting/class-settings-earnings.php' ),
+		include( 'reports/class-earnings-report.php' ),
 
 		// Forms.
-		include( 'reporting/class-settings-forms.php' ),
+		include( 'reports/class-forms-report.php' ),
 
 		// Donors.
-		include( 'reporting/class-settings-donors.php' ),
+		include( 'reports/class-donors-report.php' ),
 
 		// Gateways.
-		include( 'reporting/class-settings-gateways.php' ),
+		include( 'reports/class-gateways-report.php' ),
 
 	);
 
