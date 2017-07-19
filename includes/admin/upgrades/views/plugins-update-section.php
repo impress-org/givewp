@@ -1,7 +1,6 @@
 <?php
 /* @var Give_Updates $give_updates */
 $plugins = $give_updates->get_updates( 'plugin' );
-error_log( print_r( $plugins, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
 if( empty( $plugins ) ) {
 	return;
 }
