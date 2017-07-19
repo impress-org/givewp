@@ -167,6 +167,26 @@ class Give_Updates {
 
 
 	/**
+	 * Register plugin addon updates
+	 *
+	 * @since  1.8.12
+	 * @access public
+	 */
+	public function __register_plugin_addon_updates() {
+		$addons         = give_get_plugins();
+		$plugin_updates = get_plugin_updates();
+
+		foreach ( $addons as $key => $info ) {
+			if ( 'active' != $info['Status'] || 'add-on' != $info['Type'] || empty( $plugin_updates[ $key ] ) ) {
+				continue;
+			}
+
+			self::$updates['plugin'][] = array_merge( $info, (array) $plugin_updates[ $key ] );
+		}
+	}
+
+
+	/**
 	 * Fire custom aciton hook to register updates
 	 *
 	 * @since  1.8.12
@@ -221,6 +241,9 @@ class Give_Updates {
 	 * @access public
 	 */
 	public function __register_menu() {
+		// Load plugin updates.
+		$this->__register_plugin_addon_updates();
+
 		// Bailout.
 		if ( ! $this->get_update_count() ) {
 			return;
@@ -271,19 +294,7 @@ class Give_Updates {
 	 * @return int
 	 */
 	public function get_plugin_update_count() {
-		$addons         = give_get_plugins();
-		$plugin_updates = get_plugin_updates();
-		$update_counter = 0;
-
-		foreach ( $addons as $key => $info ) {
-			if ( 'active' != $info['Status'] || 'add-on' != $info['Type'] || empty( $plugin_updates[ $key ] ) ) {
-				continue;
-			}
-
-			$update_counter ++;
-		}
-
-		return $update_counter;
+		return count( $this->get_updates( 'plugin' ) );
 	}
 
 	/**
