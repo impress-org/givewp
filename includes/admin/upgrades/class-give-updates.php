@@ -163,14 +163,21 @@ class Give_Updates {
 	 * @access public
 	 *
 	 */
-	public function setup_hooks() {
+	public function setup() {
+		/**
+		 * Setup hooks.
+		 */
 		add_action( 'init', array( $this, '__register_upgrade' ), 9999 );
 		add_action( 'admin_init', array( $this, '__change_donations_label' ), 9999 );
 		add_action( 'admin_menu', array( $this, '__register_menu' ), 9999 );
 		add_action( 'give_set_upgrade_completed', array( $this, '__flush_resume_updates' ), 9999 );
 		add_action( 'wp_ajax_give_do_ajax_updates', array( $this, '__give_ajax_updates' ) );
-	}
 
+		/**
+		 * Load file
+		 */
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrade-functions.php';
+	}
 
 	/**
 	 * Register plugin addon updates
@@ -491,4 +498,4 @@ class Give_Updates {
 	}
 }
 
-Give_Updates::get_instance()->setup_hooks();
+Give_Updates::get_instance()->setup();
