@@ -873,6 +873,11 @@ jQuery.noConflict();
 					return false;
 				}
 
+				// Ask for admin confirmation.
+				if( ! window.confirm( give_vars.db_update_confirmation_msg ) ) {
+					return;
+				}
+
 				$(this).addClass('active');
 				self.el.progress_container.find('.notice-wrap').remove();
 				self.el.progress_container.append('<div class="notice-wrap give-clearfix"><span class="spinner is-active"></span><div class="give-progress"><div></div></div></div>');
