@@ -337,8 +337,6 @@ class Give_Updates {
 	/**
 	 *  Process give updates.
 	 *
-	 * @todo   : add dependency update logic
-	 *
 	 * @since  1.8.12
 	 * @access public
 	 */
@@ -394,6 +392,11 @@ class Give_Updates {
 
 		// Process update.
 		foreach ( $updates as $index => $update ) {
+			// Check if update depend upon any other update.
+			if ( ! empty( $update['depend'] ) && ! give_has_upgrade_completed( $update['depend'] ) ) {
+				continue;
+			}
+
 			// Run update.
 			if ( is_array( $update['callback'] ) ) {
 				$update['callback'][0]->$update['callback'][1]();
