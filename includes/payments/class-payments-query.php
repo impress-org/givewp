@@ -173,6 +173,8 @@ class Give_Payments_Query extends Give_Stats {
 	 * @return array
 	 */
 	public function get_payments() {
+		// Modify the query/query arguments before we retrieve payments.
+		$this->set_filters();
 
 		/**
 		 * Fires before retrieving payments.
@@ -182,9 +184,6 @@ class Give_Payments_Query extends Give_Stats {
 		 * @param Give_Payments_Query $this Payments query object.
 		 */
 		do_action( 'give_pre_get_payments', $this );
-
-		// Modify the query/query arguments before we retrieve payments.
-		$this->set_filters();
 
 		$query = new WP_Query( $this->args );
 
