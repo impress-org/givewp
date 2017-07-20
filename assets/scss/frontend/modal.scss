@@ -65,6 +65,7 @@
 	// Popup content holder
 	.mfp-content {
 		display: inline-block;
+	  	box-sizing: border-box;
 		vertical-align: middle;
 		text-align: left;
 		position: relative;
