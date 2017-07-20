@@ -586,3 +586,26 @@ function give_output_error( $message, $echo = true, $error_id = 'warning' ) {
 
 	Give()->notices->print_frontend_notice( $message, $echo, $error_id );
 }
+
+
+/**
+ * Get Donation Summary
+ *
+ * Retrieves the donation summary.
+ *
+ * @since       1.0
+ *
+ * @param array $purchase_data
+ * @param bool  $email
+ *
+ * @return string
+ */
+function give_get_purchase_summary( $purchase_data, $email = true ) {
+
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '1.8.9', 'give_payment_gateway_donation_summary', $backtrace );
+
+	give_payment_gateway_donation_summary($purchase_data, $email);
+
+}
