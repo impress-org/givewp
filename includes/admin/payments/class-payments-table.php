@@ -297,20 +297,14 @@ class Give_Payment_History_Table extends WP_List_Table {
 			 * @param int  $count Number of donation inside the tab.
 			 */
 			if ( 'all' === $key || $key === $current || apply_filters( 'give_payments_table_show_all_status', 0 < $count, $key, $count ) ) {
-				$class = '';
-				if ( 'all' === $key ) {
-					$href = esc_url( remove_query_arg( array( 'status', 'paged' ) ) );
-                }else {
-					$href = esc_url( add_query_arg( array( 'status' => $key, 'paged' => false ) ) );
-				}
 
-				if ( ( 'all' === $key && empty( $current ) ) ) {
-					$class = 'class="current"';
-                } elseif ( $current == $key ) {
-					$class = 'class="current"';
-                }
-
-				$views[ $key ] = sprintf( '<a href="%s" %s >%s&nbsp;<span class="count">(%s)</span></a>', $href, $class, $name, $count );
+				$views[ $key ] = sprintf(
+				        '<a href="%s" %s >%s&nbsp;<span class="count">(%s)</span></a>',
+					    esc_url( ( 'all' === (string) $key ) ? remove_query_arg( array( 'status', 'paged' ) ) : add_query_arg( array( 'status' => $key, 'paged' => false ) ) ),
+                        ( ( 'all' === $key && empty( $current ) ) ) ? 'class="current"' : ( $current == $key ) ? 'class="current"' : '',
+                        $name,
+                        $count
+                );
 			}
 		}
 		return apply_filters( 'give_payments_table_views', $views );
