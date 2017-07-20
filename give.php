@@ -435,7 +435,6 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/class-i18n-module.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-actions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-filters.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/system-info.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/add-ons.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/plugins.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/dashboard-widgets.php';
@@ -456,9 +455,9 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/export-actions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/pdf-reports.php';
 
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/reports.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/class-give-graph.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/graphing.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/reports/reports.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/reports/class-give-graph.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/reports/graphing.php';
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/logs.php';
 
@@ -474,8 +473,7 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-donation-history.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-receipt.php';
 
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrade-functions.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrades.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/class-give-updates.php';
 
 			}// End if().
 

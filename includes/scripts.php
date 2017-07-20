@@ -259,6 +259,9 @@ function give_load_admin_scripts( $hook ) {
 
 
 	// JS.
+	wp_register_script( 'give-selector-cache', $js_plugins . 'selector-cache' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
+	wp_enqueue_script( 'give-selector-cache' );
+
 	wp_register_script( 'jquery-chosen', $js_plugins . 'chosen.jquery' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
 	wp_enqueue_script( 'jquery-chosen' );
 
@@ -329,16 +332,16 @@ function give_load_admin_scripts( $hook ) {
 		'search_placeholder_state'       => __( 'Type to search all states/provinces', 'give' ),
 		'bulk_action' => array(
 			'delete'    => array(
-				'zero_payment_selected' => __( 'You must choose at least one or more payments to delete.', 'give' ),
-				'delete_payment'        => __( 'Are you sure you want to permanently delete this donation?', 'give' ),
-				'delete_payments'       => __( 'Are you sure you want to permanently delete the selected {payment_count} donations?', 'give' ),
+				'zero'     => __( 'You must choose at least one or more payments to delete.', 'give' ),
+				'single'   => __( 'Are you sure you want to permanently delete this donation?', 'give' ),
+				'multiple' => __( 'Are you sure you want to permanently delete the selected {payment_count} donations?', 'give' ),
 			),
-			'resend_receipt' => array(
-				'zero_recipient_selected' => __( 'You must choose at least one or more recipients to resend the email receipt.', 'give' ),
-				'resend_receipt'          => __( 'Are you sure you want to resend the email receipt to this recipient?', 'give' ),
-				'resend_receipts'         => __( 'Are you sure you want to resend the emails receipt to {payment_count} recipients?', 'give' ),
+			'resend-receipt' => array(
+				'zero'     => __( 'You must choose at least one or more recipients to resend the email receipt.', 'give' ),
+				'single'   => __( 'Are you sure you want to resend the email receipt to this recipient?', 'give' ),
+				'multiple' => __( 'Are you sure you want to resend the emails receipt to {payment_count} recipients?', 'give' ),
 			),
-			'set_to_status' => array(
+			'set-to-status' => array(
 				'zero'      => __( 'You must choose at least one or more donations to set status to {status}.', 'give' ),
 				'single'    => __( 'Are you sure you want to set status of this donation to {status}?', 'give' ),
 				'multiple'  => __( 'Are you sure you want to set status of {payment_count} donations to {status}?', 'give' ),
@@ -356,6 +359,7 @@ function give_load_admin_scripts( $hook ) {
 			'no_results_msg'  => __( 'No results match {search_term}', 'give' ),
 			'ajax_search_msg' => __( 'Searching results for match {search_term}', 'give' ),
 		),
+		'db_update_confirmation_msg' => __( 'Did you already take backup of database before processing updates?', 'give' )
 	) );
 
 	if ( function_exists( 'wp_enqueue_media' ) && version_compare( get_bloginfo( 'version' ), '3.5', '>=' ) ) {

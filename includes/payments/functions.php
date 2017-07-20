@@ -480,7 +480,11 @@ function give_count_payments( $args = array() ) {
 	}// End if().
 
 	if ( ! empty( $args['form_id'] ) && is_numeric( $args['form_id'] ) ) {
-		$where .= $wpdb->prepare( ' AND p.post_parent = %d', $args['form_id'] );
+
+		$join  = "LEFT JOIN $wpdb->postmeta m ON (p.ID = m.post_id)";
+		$where .= $wpdb->prepare( '
+                AND m.meta_key = %s
+                AND m.meta_value = %s', '_give_payment_form_id', $args['form_id'] );
 	}
 
 	// Limit payments count by date.
