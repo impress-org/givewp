@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 /**
- * Give_Tools_Delete_Test_Transactions Class
+ * Give_Tools_Delete_Donors Class
  *
  * @since 1.8.12
  */
