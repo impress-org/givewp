@@ -150,38 +150,43 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$search     = isset( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : '';
 		$form_id    = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
 		?>
-        <div id="give-payment-filters">
+		<div id="give-payment-filters">
 			<span id="give-payment-date-filters">
 				<label for="start-date"
-                       class="give-start-date-label"><?php esc_html_e( 'Start Date:', 'give' ); ?></label>
+				       class="give-start-date-label"><?php esc_html_e( 'Start Date', 'give' ); ?></label>
 				<input type="text" id="start-date" name="start-date" class="give_datepicker"
-                       value="<?php echo $start_date; ?>" placeholder="mm/dd/yyyy"/>
-				<label for="end-date" class="give-end-date-label"><?php esc_html_e( 'End Date:', 'give' ); ?></label>
+				       value="<?php echo $start_date; ?>" placeholder="mm/dd/yyyy" />
+				<label for="end-date" class="give-end-date-label"><?php esc_html_e( 'End Date', 'give' ); ?></label>
 				<input type="text" id="end-date" name="end-date" class="give_datepicker"
-                       value="<?php echo $end_date; ?>" placeholder="mm/dd/yyyy"/>
-				<input type="submit" class="button-secondary" value="<?php esc_attr_e( 'Apply', 'give' ); ?>"/>
+				       value="<?php echo $end_date; ?>" placeholder="mm/dd/yyyy" />
 			</span>
 			<?php if ( ! empty( $status ) ) : ?>
-                <input type="hidden" name="status" value="<?php echo esc_attr( $status ); ?>"/>
+				<input type="hidden" name="status" value="<?php echo esc_attr( $status ); ?>" />
 			<?php endif; ?>
-			<?php if ( ! empty( $start_date ) || ! empty( $end_date ) || ! empty( $donor ) || ! empty( $search ) ) : ?>
-                <a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ); ?>"
-                   class="button-secondary"><?php esc_html_e( 'Clear Filter', 'give' ); ?></a>
-			<?php endif; ?>
-			<?php $this->search_box( esc_html__( 'Search', 'give' ), 'give-payments' ); ?>
-			<?php
-			// Filter Donations by Donation Forms.
-			echo Give()->html->forms_dropdown( array(
-				'name'     => 'form_id',
-				'class'    => 'give-donation-forms-filter',
-				'selected' => $form_id, // Make sure to have $form_id set to 0, if there is no selection.
-				'chosen'   => true,
-				'number'   => - 1,
-			) );
 
-			submit_button( __( 'Apply', 'give' ), 'secondary', '', false );
-			?>
-        </div>
+			<?php $this->search_box( esc_html__( 'Search', 'give' ), 'give-payments' ); ?>
+			<span id="give-payment-form-filter">
+				<label for="-date"
+				       class="give-start-date-label"><?php esc_html_e( 'Form', 'give' ); ?></label>
+				<?php
+				// Filter Donations by Donation Forms.
+				echo Give()->html->forms_dropdown( array(
+					'name'     => 'form_id',
+					'class'    => 'give-donation-forms-filter',
+					'selected' => $form_id, // Make sure to have $form_id set to 0, if there is no selection.
+					'chosen'   => true,
+					'number'   => - 1,
+				) );
+
+				submit_button( __( 'Apply', 'give' ), 'secondary', '', false );
+				?>
+				<?php
+				// Clear active filters button.
+				if ( ! empty( $start_date ) || ! empty( $end_date ) || ! empty( $donor ) || ! empty( $search ) || ! empty( $status ) || ! empty( $form_id ) ) : ?>
+					<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ); ?>"
+					   class="button-secondary give-clear-filters-button"><?php esc_html_e( 'Clear Filters', 'give' ); ?></a>
+				<?php endif; ?>
+		</div>
 
 		<?php
 	}
@@ -192,7 +197,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param string $text Label for the search box
+	 * @param string $text     Label for the search box
 	 * @param string $input_id ID of the search box
 	 *
 	 * @return void
@@ -211,7 +216,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			echo '<input type="hidden" name="order" value="' . esc_attr( $_REQUEST['order'] ) . '" />';
 		}
 		?>
-        <p class="search-box" role="search">
+		<p class="search-box" role="search">
 			<?php
 			/**
 			 * Fires in the payment history search box.
@@ -222,12 +227,12 @@ class Give_Payment_History_Table extends WP_List_Table {
 			 */
 			do_action( 'give_payment_history_search' );
 			?>
-            <label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
-            <input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>"/>
+			<label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
+			<input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>" />
 			<?php submit_button( $text, 'button', false, false, array(
 				'ID' => 'search-submit',
-			) ); ?><br/>
-        </p>
+			) ); ?><br />
+		</p>
 		<?php
 	}
 
@@ -245,39 +250,39 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$tabs    = array(
 			'all'        => array(
 				'total_count',
-				esc_html__( 'All', 'give' )
+				esc_html__( 'All', 'give' ),
 			),
 			'publish'    => array(
 				'complete_count',
-				esc_html__( 'Completed', 'give' )
+				esc_html__( 'Completed', 'give' ),
 			),
 			'pending'    => array(
 				'pending_count',
-				esc_html__( 'Pending', 'give' )
+				esc_html__( 'Pending', 'give' ),
 			),
 			'processing' => array(
 				'processing_count',
-				esc_html__( 'Processing', 'give' )
+				esc_html__( 'Processing', 'give' ),
 			),
 			'refunded'   => array(
 				'refunded_count',
-				esc_html__( 'Refunded', 'give' )
+				esc_html__( 'Refunded', 'give' ),
 			),
 			'revoked'    => array(
 				'revoked_count',
-				esc_html__( 'Revoked', 'give' )
+				esc_html__( 'Revoked', 'give' ),
 			),
 			'failed'     => array(
 				'failed_count',
-				esc_html__( 'Failed', 'give' )
+				esc_html__( 'Failed', 'give' ),
 			),
 			'cancelled'  => array(
 				'cancelled_count',
-				esc_html__( 'Cancelled', 'give' )
+				esc_html__( 'Cancelled', 'give' ),
 			),
 			'abandoned'  => array(
 				'abandoned_count',
-				esc_html__( 'Abandoned', 'give' )
+				esc_html__( 'Abandoned', 'give' ),
 			),
 		);
 
@@ -293,8 +298,8 @@ class Give_Payment_History_Table extends WP_List_Table {
 			 *
 			 * @since 1.8.12
 			 *
-			 * @param string $key Current view tab value.
-			 * @param int $count Number of donation inside the tab.
+			 * @param string $key   Current view tab value.
+			 * @param int    $count Number of donation inside the tab.
 			 */
 			if ( 'all' === $key || $key === $current || apply_filters( 'give_payments_table_show_all_status', 0 < $count, $key, $count ) ) {
 
@@ -369,8 +374,8 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @param Give_Payment $payment Payment ID.
-	 * @param string $column_name The name of the column
+	 * @param Give_Payment $payment     Payment ID.
+	 * @param string       $column_name The name of the column
 	 *
 	 * @return string Column Name
 	 */
@@ -669,7 +674,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			 *
 			 * @since 1.7
 			 *
-			 * @param int $id The ID of the payment.
+			 * @param int    $id             The ID of the payment.
 			 * @param string $current_action The action that is being triggered.
 			 */
 			do_action( 'give_payments_table_do_bulk_action', $id, $this->current_action() );
