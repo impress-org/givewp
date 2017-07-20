@@ -132,8 +132,8 @@ class Give_Payment_History_Table extends WP_List_Table {
 			'ajax'     => false,                              // Does this table support ajax?
 		) );
 
-		$this->get_payment_counts();
 		$this->process_bulk_action();
+		$this->get_payment_counts();
 		$this->base_url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' );
 	}
 
