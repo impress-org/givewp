@@ -71,8 +71,8 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 				'post_status'    => 'any',
 				'posts_per_page' => - 1,
 				// ONLY TEST MODE TRANSACTIONS!!!
-				'meta_key'   => '_give_payment_mode',
-				'meta_value' => 'test'
+				'meta_key'       => '_give_payment_mode',
+				'meta_value'     => 'test'
 			) );
 
 			$donation_posts = get_posts( $args );
@@ -92,9 +92,9 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	public function get_percentage_complete() {
 		if ( 1 == $this->step ) {
 			return 30;
-		} elseif (  2 == $this->step ) {
+		} elseif ( 2 == $this->step ) {
 			return 70;
-		} else{
+		} else {
 			return 100;
 		}
 	}
@@ -113,10 +113,11 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 
 		if ( $had_data ) {
 			$this->done = false;
+
 			return true;
 		} else {
 			update_option( 'give_earnings_total', give_get_total_earnings( true ) );
-			Give_Cache::delete( Give_Cache::get_key('give_estimated_monthly_stats' ) );
+			Give_Cache::delete( Give_Cache::get_key( 'give_estimated_monthly_stats' ) );
 
 			$this->delete_data( $this->key );
 
@@ -127,6 +128,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 
 			$this->done    = true;
 			$this->message = __( 'Test donor and transactions successfully deleted.', 'give' );
+
 			return false;
 		}
 	}
@@ -146,12 +148,13 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 
 		if ( ! is_array( $items ) ) {
 			$this->is_empty = true;
+
 			return false;
 		}
 
 		if ( 2 == $this->step ) {
 			foreach ( $items as $item ) {
-				foreach ( (array)$item as $value ) {
+				foreach ( (array) $item as $value ) {
 					wp_delete_post( $value, true );
 				}
 			}
@@ -165,26 +168,28 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 			$args = apply_filters( 'give_tools_reset_stats_total_args', array(
 				'post_type'      => 'give_payment',
 				'post_status'    => 'any',
-				'posts_per_page' =>  -1,
+				'posts_per_page' => - 1,
 				// ONLY TEST MODE TRANSACTIONS!!!
-				'meta_key'   => '_give_payment_mode',
-				'meta_value' => 'live',
+				'meta_key'       => '_give_payment_mode',
+				'meta_value'     => 'live',
 				'author__in'     => $this->donor_ids
 			) );
 
-			$donor_ids = array();
+			$donor_ids      = array();
 			$donation_posts = get_posts( $args );
 			foreach ( $donation_posts as $donation ) {
 				$donor_ids[] = (int) $donation->post_author;
 			}
-			$donor_ids = array_unique( $donor_ids );
+			$donor_ids     = array_unique( $donor_ids );
 			$delete_donors = array_diff( $this->donor_ids, $donor_ids );
 
 			foreach ( $delete_donors as $donor ) {
 				Give()->donors->delete_by_user_id( $donor );
 			}
+
 			return false;
 		}
+
 		return true;
 	}
 
