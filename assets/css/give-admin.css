@@ -1902,11 +1902,9 @@ h2.give-nav-tab-wrapper {
 #give-payment-filters, .give-submit-wrap {
   clear: both;
   background: #f5f5f5;
-  border-color: #dfdfdf;
+  border: 1px solid #dfdfdf;
   margin: 8px 0;
   padding: 12px;
-  border-width: 1px;
-  border-style: solid;
   font-size: 13px;
   line-height: 2.1em; }
 
@@ -1918,9 +1916,10 @@ h2.give-nav-tab-wrapper {
 
 #give-payment-filters label {
   font-style: italic;
-  margin: 0 10px; }
-  #give-payment-filters label.give-start-date-label {
-    margin-left: 5px; }
+  margin: 0 3px 0 10px; }
+
+#give-payment-filters input[type="text"] {
+  height: 28px; }
 
 #give-payments-advanced-filter ul.subsubsub {
   margin-bottom: 12px; }
@@ -1929,7 +1928,8 @@ h2.give-nav-tab-wrapper {
   margin-right: 20px; }
 
 #give-payments-advanced-filter .give-donation-forms-filter {
-  margin-right: 5px; }
+  margin-right: 5px;
+  top: -2px; }
 
 #give-payments-filter .tablenav.top {
   float: none; }
