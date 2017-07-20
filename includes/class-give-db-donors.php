@@ -191,6 +191,29 @@ class Give_DB_Donors extends Give_DB {
 	}
 
 	/**
+	 * Delete a donor.
+	 *
+	 * NOTE: This should not be called directly as it does not make necessary changes to
+	 * the payment meta and logs. Use give_donor_delete() instead.
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @param  int $user_id
+	 *
+	 * @return bool|int
+	 */
+	public function delete_by_user_id( $user_id = false ) {
+
+		if ( empty( $user_id ) ) {
+			return false;
+		}
+		global $wpdb;
+
+		return $wpdb->delete( $this->table_name, array( 'user_id' => $user_id ), array( '%d' ) );
+	}
+
+	/**
 	 * Checks if a donor exists
 	 *
 	 * @since  1.0
