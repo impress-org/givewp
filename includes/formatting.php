@@ -140,10 +140,11 @@ function give_sanitize_amount( $number, $dp = false, $trim_zeros = false ) {
  *
  * @param string $amount Price amount to format
  * @param bool   $decimals Whether or not to use decimals. Useful when set to false for non-currency numbers.
+ * @param bool   $sanitize Whether or not to sanitize number.
  *
  * @return string $amount   Newly formatted amount or Price Not Available
  */
-function give_format_amount( $amount, $decimals = true ) {
+function give_format_amount( $amount, $decimals = true, $sanitize= true ) {
 	$formatted      = 0;
 	$thousands_sep  = give_get_option( 'thousands_separator', ',' );
 	$decimal_sep    = give_get_option( 'decimal_separator', '.' );
@@ -152,7 +153,8 @@ function give_format_amount( $amount, $decimals = true ) {
 
 	if ( ! empty( $amount ) ) {
 		// Sanitize amount before formatting.
-		$amount = give_sanitize_amount( $amount );
+		$amount = $sanitize ? give_sanitize_amount( $amount ) : $amount;
+
 		if ( 'INR' === $currency ) {
 			$decimal_amount = '';
 
@@ -241,14 +243,15 @@ function give_human_format_large_amount( $amount ) {
  *
  * @since 1.0
  *
- * @param int|float|string $amount Formatted or sanitized price
- * @param int|bool         $dp number of decimals
+ * @param int|float|string $amount   Formatted or sanitized price
+ * @param int|bool         $dp       number of decimals
+ * @param bool             $sanitize Whether or not sanitize number
  *
  * @return string $amount Newly formatted amount or Price Not Available
  */
-function give_format_decimal( $amount, $dp = false ) {
+function give_format_decimal( $amount, $dp = false, $sanitize = true ) {
 	$decimal_separator = give_get_price_decimal_separator();
-	$formatted_amount  = give_sanitize_amount( $amount, $dp );
+	$formatted_amount  = $sanitize ? give_sanitize_amount( $amount, $dp ) : $amount;
 
 	if ( false !== strpos( $formatted_amount, '.' ) ) {
 		$formatted_amount = str_replace( '.', $decimal_separator, $formatted_amount );
