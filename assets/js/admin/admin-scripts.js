@@ -396,9 +396,10 @@ jQuery.noConflict();
 			});
 		},
 
-		variable_price_list: function () {
-			// Update variable price list whnen form changes.
-			$('select[name="forms"]').chosen().change(function () {
+
+		variable_price_list: function() {
+			// Update variable price list when form changes.
+			$( '#give_payment_form_select' ).chosen().change( function() {
 				var give_form_id,
 					variable_prices_html_container = $('.give-donation-level');
 
