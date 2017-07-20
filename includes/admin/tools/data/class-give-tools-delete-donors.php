@@ -7,7 +7,7 @@
  * @subpackage  Admin/Tools/Give_Tools_Delete_Donors
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       1.8.8
+ * @since       1.8.12
  */
 
 // Exit if accessed directly.
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Give_Tools_Delete_Test_Transactions Class
  *
- * @since 1.8.8
+ * @since 1.8.12
  */
 class Give_Tools_Delete_Donors extends Give_Batch_Export {
 
@@ -30,20 +30,20 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	/**
 	 * Our export type. Used for export-type specific filters/actions
 	 * @var string
-	 * @since 1.5
+	 * @since 1.8.12
 	 */
 	public $export_type = '';
 
 	/**
 	 * Allows for a non-form batch processing to be run.
-	 * @since  1.5
+	 * @since  1.8.12
 	 * @var boolean
 	 */
 	public $is_void = true;
 
 	/**
 	 * Sets the number of items to pull on each step
-	 * @since  1.5
+	 * @since  1.8.12
 	 * @var integer
 	 */
 	public $per_step = 30;
@@ -51,7 +51,13 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	public $donor_ids = array();
 
 	/**
-	 * Pre Fetch
+	 * Get the Export Data
+	 *
+	 * @access public
+	 * @since 1.8.12
+	 * @global object $wpdb Used to query the database using the WordPress Database API
+	 *
+	 * @return array|bool $data The data for the CSV file
 	 */
 	public function pre_fetch() {
 
@@ -80,7 +86,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	/**
 	 * Return the calculated completion percentage.
 	 *
-	 * @since 1.5
+	 * @since 1.8.12
 	 * @return int
 	 */
 	public function get_percentage_complete() {
@@ -129,7 +135,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	 * Get the Export Data
 	 *
 	 * @access public
-	 * @since 1.5
+	 * @since 1.8.12
 	 * @global object $wpdb Used to query the database using the WordPress Database API
 	 *
 	 * @return array|bool $data The data for the CSV file
@@ -185,7 +191,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	/**
 	 * Given a key, get the information from the Database Directly
 	 *
-	 * @since  1.5
+	 * @since  1.8.12
 	 *
 	 * @param  string $key The option_name
 	 *
@@ -198,7 +204,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	/**
 	 * Give a key, store the value
 	 *
-	 * @since  1.5
+	 * @since  1.8.12
 	 *
 	 * @param  string $key The option_name
 	 * @param  mixed $value The value to store
@@ -212,7 +218,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	/**
 	 * Delete an option
 	 *
-	 * @since  1.5
+	 * @since  1.8.12
 	 *
 	 * @param  string $key The option_name to delete
 	 *
