@@ -1153,6 +1153,19 @@ ASIDE
 #give-export-payments div.chosen-container:first-of-type {
   margin-top: 10px; }
 
+#give-export-payments div.chosen-container ul.chosen-choices {
+  border: 1px solid #ddd; }
+  #give-export-payments div.chosen-container ul.chosen-choices input.chosen-search-input {
+    border: 1px solid #ddd;
+    height: 20px; }
+
+#give-export-payments select {
+  vertical-align: inherit;
+  margin: 0;
+  height: 26px;
+  line-height: 26px;
+  border: 1px solid #ddd; }
+
 /*-------------------------------------
 Doc Links
 -------------------------------------*/
@@ -1920,7 +1933,6 @@ h2.give-nav-tab-wrapper {
   clear: both;
   background: #f5f5f5;
   border-color: #dfdfdf;
-  overflow: auto;
   margin: 8px 0;
   padding: 12px;
   border-width: 1px;
@@ -1945,6 +1957,9 @@ h2.give-nav-tab-wrapper {
 
 #give-payments-advanced-filter #search-submit {
   margin-right: 20px; }
+
+#give-payments-advanced-filter .give-donation-forms-filter {
+  margin-right: 5px; }
 
 #give-payments-filter .tablenav.top {
   float: none; }
