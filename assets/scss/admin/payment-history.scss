@@ -21,6 +21,22 @@
 	border: 1px solid #dfdfdf;
 	padding: 12px 12px 0 12px;
 
+	// Chosen height adjustment.
+	.give-donation-forms-filter .chosen-single {
+		height: 28px;
+		line-height: 28px;
+	}
+
+	// Chosen up arrow.
+	.chosen-container-single .chosen-single div b {
+		background-position: 0 4px;
+	}
+
+	// Chosen down arrow.
+	.chosen-container-active.chosen-with-drop .chosen-single div b {
+		background-position: -18px 6px;
+	}
+
 	&:after {
 		content: "";
 		display: table;
