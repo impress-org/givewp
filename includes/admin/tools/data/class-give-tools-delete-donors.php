@@ -234,7 +234,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 			}
 
 			foreach ( $donation_ids as $item ) {
-				wp_delete_post( $item, true );
+//				wp_delete_post( $item, true );
 			}
 		}
 
@@ -242,46 +242,31 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 		// Here we delete all the donor
 		if ( 3 === $step ) {
 			$page = (int) $this->get_step_page();
-			$page ++;
-			$this->update_option( $this->step_on_key, $page );
 			$donor_ids = $this->get_option( $this->donor_key );
 			$count     = count( $donor_ids );
-
-			$donor_ids = $this->get_delete_ids( $donor_ids, $page );
-
-			$current_page = (int) ceil( $count / $this->per_step );
 
 			$args = apply_filters( 'give_tools_reset_stats_total_args', array(
 				'post_type'      => 'give_payment',
 				'post_status'    => 'any',
-				'posts_per_page' => $this->per_step,
-				// ONLY TEST MODE TRANSACTIONS!!!
+				'posts_per_page' => 1,
 				'meta_key'       => '_give_payment_mode',
 				'meta_value'     => 'live',
-				'author__in'     => $donor_ids
+				'author'     => $donor_ids[ $page ]
 			) );
 
-			$new_donor_ids  = array();
 			$donation_posts = get_posts( $args );
-			foreach ( $donation_posts as $donation ) {
-				$new_donor_ids[] = (int) $donation->post_author;
+			if ( empty( $donation_posts ) ) {
+				Give()->donors->delete_by_user_id( $donor_ids[ $page ] );
 			}
-			$new_donor_ids = array_unique( $new_donor_ids );
-			$new_donor_ids = array_diff( $donor_ids, $new_donor_ids );
 
-
-			foreach ( $new_donor_ids as $donor ) {
-				Give()->donors->delete_by_user_id( $donor );
-			}
-			if ( $page === $current_page ) {
+			$page ++;
+			$this->update_option( $this->step_on_key, $page );
+			if ( $count === $page ) {
 				$this->is_empty = false;
-
 				return false;
 			}
-
 			return true;
 		}
-
 		return true;
 	}
 
