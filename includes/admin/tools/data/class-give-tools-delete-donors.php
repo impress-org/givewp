@@ -25,7 +25,10 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 
 	var $request;
 
-	var $key = 'give_temp_delete_donation_ids';
+	var $donation_key = 'give_temp_delete_donation_ids';
+	var $donor_key = 'give_temp_delete_donor55_ids';
+	var $step_key = 'give_temp_delete_step';
+	var $step_on_key = 'give_temp_delete_step_on';
 
 	/**
 	 * Our export type. Used for export-type specific filters/actions
@@ -46,7 +49,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	 * @since  1.8.12
 	 * @var integer
 	 */
-	public $per_step = 30;
+	public $per_step = 3;
 
 	public $donor_ids = array();
 
@@ -60,27 +63,68 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	 * @return array|bool $data The data for the CSV file
 	 */
 	public function pre_fetch() {
-
-		$items = array();
-		if ( 1 == $this->step ) {
-
-			$this->delete_data( $this->key );
-
-			$args = apply_filters( 'give_tools_reset_stats_total_args', array(
-				'post_type'      => 'give_payment',
-				'post_status'    => 'any',
-				'posts_per_page' => - 1,
-				// ONLY TEST MODE TRANSACTIONS!!!
-				'meta_key'       => '_give_payment_mode',
-				'meta_value'     => 'test'
-			) );
-
-			$donation_posts = get_posts( $args );
-			foreach ( $donation_posts as $donation ) {
-				$items[ $donation->post_author ][] = $donation->ID;
-			}
-			$this->store_data( $this->key, $items );
+		$donation_ids = array();
+		$donor_ids    = array();
+		if ( 1 === (int) $this->step ) {
+			$this->delete_option( $this->donation_key );
+			$this->delete_option( $this->donor_key );
+			$this->update_option( $this->step_key, 'count' );
+			$this->update_option( $this->step_on_key, '0' );
+		} else {
+			$donor_ids    = $this->get_option( $this->donor_key );
+			$donation_ids = $this->get_option( $this->donation_key );
 		}
+
+		$step = (int) $this->get_step();
+		if ( 1 === $step ) {
+			$this->count( $step, $donation_ids, $donor_ids );
+		}
+	}
+
+	private function count( $step, $donation_ids = array(), $donor_ids = array() ) {
+
+		$paged = (int) $this->get_step_page();
+		++ $paged;
+
+		$args = apply_filters( 'give_tools_reset_stats_total_args', array(
+			'post_type'      => 'give_payment',
+			'post_status'    => 'any',
+			'posts_per_page' => $this->per_step,
+			'paged'          => $paged,
+			// ONLY TEST MODE TRANSACTIONS!!!
+			'meta_key'       => '_give_payment_mode',
+			'meta_value'     => 'test'
+		) );
+
+
+		wp_reset_postdata();
+		$donation_posts = new WP_Query( $args );
+		// The Loop.
+		if ( $donation_posts->have_posts() ) {
+			while ( $donation_posts->have_posts() ) {
+				$donation_posts->the_post();
+				global $post;
+				$donation_ids[] = $post->ID;
+
+				$donor_ids[] = (int) $post->post_author;
+			}
+			/* Restore original Post Data */
+		}
+
+		$total_donation = (int) $donation_posts->found_posts;
+		$max_num_pages  = (int) $donation_posts->max_num_pages;
+
+		if ( $paged < $max_num_pages ) {
+			$this->update_option( $this->step_on_key, $paged );
+		} else {
+			$this->update_option( $this->step_key, 'donation' );
+			$this->update_option( $this->step_on_key, '0' );
+		}
+
+		$donor_ids = array_unique( $donor_ids );
+		$this->update_option( $this->donor_key, $donor_ids );
+		$this->update_option( $this->donation_key, $donation_ids );
+		wp_reset_postdata();
 	}
 
 	/**
@@ -90,12 +134,21 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	 * @return int
 	 */
 	public function get_percentage_complete() {
-		if ( 1 == $this->step ) {
-			return 30;
-		} elseif ( 2 == $this->step ) {
-			return 70;
+		$donation_ids = $this->get_option( $this->donation_key );
+		$count        = count( $donation_ids );
+		if ( 1 === (int) $this->step ) {
+			if ( ! empty( $donation_ids ) ) {
+				return ( 100 / ( $count + 2 ) );
+			} else {
+				return 100;
+			}
 		} else {
-			return 100;
+
+			if ( 2 === $this->get_step() ) {
+				return ( 100 / ( $count + 1 ) );
+			} else {
+				return 100;
+			}
 		}
 	}
 
@@ -103,10 +156,6 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 
 		if ( ! $this->can_export() ) {
 			wp_die( __( 'You do not have permission to delete test transactions.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
-		}
-
-		if ( 1 == $this->step ) {
-			return true;
 		}
 
 		$had_data = $this->get_data();
@@ -119,7 +168,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 			update_option( 'give_earnings_total', give_get_total_earnings( true ) );
 			Give_Cache::delete( Give_Cache::get_key( 'give_estimated_monthly_stats' ) );
 
-			$this->delete_data( $this->key );
+			$this->delete_option( $this->donation_key );
 
 			// Reset the sequential order numbers
 			if ( give_get_option( 'enable_sequential' ) ) {
@@ -144,53 +193,116 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	 */
 	public function get_data() {
 
-		$items = $this->get_stored_data( $this->key );
+		$donation_ids = $this->get_option( $this->donation_key );
 
-		if ( ! is_array( $items ) ) {
+		/**
+		 * Return false id not test donation is found.
+		 */
+		if ( empty( $donation_ids ) ) {
 			$this->is_empty = true;
 
 			return false;
 		}
 
-		if ( 2 == $this->step ) {
-			foreach ( $items as $item ) {
-				foreach ( (array) $item as $value ) {
-					wp_delete_post( $value, true );
+		$step = (int) $this->get_step();
+
+		// In step to we delete all the donation in loop.
+		if ( 2 === $step ) {
+
+			$pass_to_donor = false;
+			$page          = (int) $this->get_step_page();
+			$page ++;
+
+			$count = count( $donation_ids );
+
+			if ( $count > $this->per_step ) {
+
+				$this->update_option( $this->step_on_key, $page );
+				$donation_ids = $this->get_delete_ids( $donation_ids, $page );
+				$current_page = (int) ceil( $count / $this->per_step );
+
+				if ( $page === $current_page ) {
+					$pass_to_donor = true;
 				}
+			} else {
+				$pass_to_donor = true;
+			}
+
+			if ( true === $pass_to_donor ) {
+				$this->update_option( $this->step_key, 'donor' );
+				$this->update_option( $this->step_on_key, '0' );
+			}
+
+			foreach ( $donation_ids as $item ) {
+				wp_delete_post( $item, true );
 			}
 		}
 
-		if ( 3 == $this->step ) {
-			foreach ( $items as $key => $value ) {
-				$this->donor_ids[] = (int) $key;
-			}
+
+		// Here we delete all the donor
+		if ( 3 === $step ) {
+			$page = (int) $this->get_step_page();
+			$page ++;
+			$this->update_option( $this->step_on_key, $page );
+			$donor_ids = $this->get_option( $this->donor_key );
+			$count     = count( $donor_ids );
+
+			$donor_ids = $this->get_delete_ids( $donor_ids, $page );
+
+			$current_page = (int) ceil( $count / $this->per_step );
 
 			$args = apply_filters( 'give_tools_reset_stats_total_args', array(
 				'post_type'      => 'give_payment',
 				'post_status'    => 'any',
-				'posts_per_page' => - 1,
+				'posts_per_page' => $this->per_step,
 				// ONLY TEST MODE TRANSACTIONS!!!
 				'meta_key'       => '_give_payment_mode',
 				'meta_value'     => 'live',
-				'author__in'     => $this->donor_ids
+				'author__in'     => $donor_ids
 			) );
 
-			$donor_ids      = array();
+			$new_donor_ids  = array();
 			$donation_posts = get_posts( $args );
 			foreach ( $donation_posts as $donation ) {
-				$donor_ids[] = (int) $donation->post_author;
+				$new_donor_ids[] = (int) $donation->post_author;
 			}
-			$donor_ids     = array_unique( $donor_ids );
-			$delete_donors = array_diff( $this->donor_ids, $donor_ids );
+			$new_donor_ids = array_unique( $new_donor_ids );
+			$new_donor_ids = array_diff( $donor_ids, $new_donor_ids );
 
-			foreach ( $delete_donors as $donor ) {
+
+			foreach ( $new_donor_ids as $donor ) {
 				Give()->donors->delete_by_user_id( $donor );
 			}
+			if ( $page === $current_page ) {
+				$this->is_empty = false;
 
-			return false;
+				return false;
+			}
+
+			return true;
 		}
 
 		return true;
+	}
+
+	public function get_delete_ids( $donation_ids, $page ) {
+		$index            = $page --;
+		$count            = count( $donation_ids );
+		$temp             = 0;
+		$current_page     = 0;
+		$post_delete      = $this->per_step;
+		$page_donation_id = array();
+
+		foreach ( $donation_ids as $item ) {
+			$temp ++;
+			$page_donation_id[ $current_page ][] = $item;
+			if ( $temp === $post_delete ) {
+				$current_page ++;
+				$temp = 0;
+			}
+		}
+
+		return $page_donation_id[ $page ];
 	}
 
 	/**
@@ -202,22 +314,22 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	 *
 	 * @return mixed       Returns the data from the database
 	 */
-	public function get_stored_data( $key ) {
-		return get_option( $key, false );
+	public function get_option( $key, $defalut_value = false ) {
+		return get_option( $key, $defalut_value );
 	}
 
 	/**
 	 * Give a key, store the value
 	 *
-	 * @since  1.8.12
+	 * @since  1.8.12s
 	 *
 	 * @param  string $key The option_name
 	 * @param  mixed $value The value to store
 	 *
 	 * @return void
 	 */
-	public function store_data( $key, $value ) {
-		return update_option( $key, $value );
+	public function update_option( $key, $value ) {
+		update_option( $key, $value, false );
 	}
 
 	/**
@@ -229,8 +341,25 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	 *
 	 * @return void
 	 */
-	public function delete_data( $key ) {
-		return delete_option( $key );
+	public function delete_option( $key ) {
+		delete_option( $key );
+	}
+
+	private function get_step() {
+		$step_key = (string) $this->get_option( $this->step_key, false );
+		if ( 'count' === $step_key ) {
+			return 1;
+		} elseif ( 'donation' === $step_key ) {
+			return 2;
+		} elseif ( 'donor' === $step_key ) {
+			return 3;
+		} else {
+			return $step_key;
+		}
+	}
+
+	private function get_step_page() {
+		return $this->get_option( $this->step_on_key, false );
 	}
 
 }
