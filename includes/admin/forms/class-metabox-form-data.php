@@ -1126,7 +1126,7 @@ class Give_MetaBox_Form_Data {
 							}
 
 							$meta_value[ $index ][ $field['id'] ] = ! empty( $meta_value[ $index ][ $field['id'] ] )
-								? give_sanitize_amount( $meta_value[ $index ][ $field['id'] ] )
+								? give_sanitize_amount_for_db( $meta_value[ $index ][ $field['id'] ] )
 								: 0;
 						}
 					}
@@ -1135,7 +1135,7 @@ class Give_MetaBox_Form_Data {
 
 			default:
 				if ( ! empty( $setting_field['data_type'] ) && 'price' === $setting_field['data_type'] ) {
-					$meta_value = $meta_value ? give_sanitize_amount( $meta_value ) : 0;
+					$meta_value = $meta_value ? give_sanitize_amount_for_db( $meta_value ) : 0;
 				}
 		}
 
