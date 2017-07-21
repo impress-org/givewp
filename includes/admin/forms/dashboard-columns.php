@@ -105,7 +105,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 			case 'earnings':
 				if ( current_user_can( 'view_give_form_stats', $post_id ) ) {
 					echo '<a href="' . esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=forms&form-id=' . $post_id ) ) . '">';
-					echo give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ) ) );
+					echo give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ), true, false ) );
 					echo '</a>';
 				} else {
 					echo '-';

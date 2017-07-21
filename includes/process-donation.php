@@ -99,7 +99,9 @@ function give_process_donation_form() {
 
 	$auth_key = defined( 'AUTH_KEY' ) ? AUTH_KEY : '';
 
-	$price        = isset( $_POST['give-amount'] ) ? (float) apply_filters( 'give_donation_total', give_sanitize_amount( give_format_amount( $_POST['give-amount'] ) ) ) : '0.00';
+	$price        = isset( $_POST['give-amount'] ) ?
+		(float) apply_filters( 'give_donation_total', give_sanitize_amount( $_POST['give-amount'] ) ) :
+		'0.00';
 	$purchase_key = strtolower( md5( $user['user_email'] . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) );
 
 	// Setup donation information
@@ -356,7 +358,7 @@ function give_donation_form_validate_gateway() {
 				sprintf(
 					/* translators: %s: minimum donation amount */
 					__( 'This form has a minimum donation amount of %s.', 'give' ),
-					give_currency_filter( give_format_amount( give_get_form_minimum_price( $form_id ) ) )
+					give_currency_filter( give_format_amount( give_get_form_minimum_price( $form_id ), true, false ) )
 				)
 			);
 

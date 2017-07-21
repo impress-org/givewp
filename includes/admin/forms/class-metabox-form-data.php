@@ -85,7 +85,7 @@ class Give_MetaBox_Form_Data {
 		$post_id               = give_get_admin_post_id();
 		$price                 = give_get_form_price( $post_id );
 		$custom_amount_minimum = give_get_form_minimum_price( $post_id );
-		$goal                  = give_format_amount( give_get_form_goal( $post_id ), false, false );
+		$goal                  = give_format_amount( give_get_form_goal( $post_id ), true, false );
 		$price_placeholder     = give_format_decimal( '1.00', false, false );
 
 		// No empty prices - min. 1.00 for new forms
@@ -99,8 +99,8 @@ class Give_MetaBox_Form_Data {
 		}
 
 		// Format amounts.
-		$price = give_format_amount( $price, false, false );
-		$custom_amount_minimum = give_format_amount( $price, false, false );
+		$price = give_format_amount( $price, true, false );
+		$custom_amount_minimum = give_format_amount( $price, true, false );
 
 		// Start with an underscore to hide fields from custom fields list
 		$prefix = '_give_';

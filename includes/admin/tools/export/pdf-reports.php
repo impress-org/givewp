@@ -120,7 +120,7 @@ function give_generate_pdf( $data ) {
 					$max = $first;
 				}
 
-				$price = give_currency_filter( give_format_amount( $min ), '', true ) . ' - ' . give_currency_filter( give_format_amount( $max ), '', true );
+				$price = give_currency_filter( give_format_amount( $min, true, false ), '', true ) . ' - ' . give_currency_filter( give_format_amount( $max ), '', true );
 			} else {
 				$price = give_currency_filter( give_get_form_price( $form->ID ), '', true );
 			}

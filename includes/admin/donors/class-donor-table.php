@@ -119,7 +119,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 				break;
 
 			case 'amount_spent' :
-				$value = give_currency_filter( give_format_amount( $donor[ $column_name ] ) );
+				$value = give_currency_filter( give_format_amount( $donor[ $column_name ] ), true, false );
 				break;
 
 			case 'date_created' :
