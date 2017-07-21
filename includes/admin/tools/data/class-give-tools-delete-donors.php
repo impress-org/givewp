@@ -26,9 +26,11 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	var $request;
 
 	var $donation_key = 'give_temp_delete_donation_ids';
-	var $donor_key = 'give_temp_delete_donor55_ids';
+	var $donor_key = 'give_temp_delete_donor_ids';
 	var $step_key = 'give_temp_delete_step';
 	var $step_on_key = 'give_temp_delete_step_on';
+	var $total_step;
+	var $step_completed;
 
 	/**
 	 * Our export type. Used for export-type specific filters/actions
@@ -116,7 +118,13 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 
 		if ( $paged < $max_num_pages ) {
 			$this->update_option( $this->step_on_key, $paged );
+
+			$page_remain = $max_num_pages - $paged;
+
+			$this->total_step = (int) $max_num_pages + ( $total_donation / $this->per_step ) + ( ( $page_remain * 2 ) * count( $donor_ids ) );
+			$this->step_completed = $paged;
 		} else {
+			$donation_ids_count = count( $donor_ids );
 			$this->update_option( $this->step_key, 'donation' );
 			$this->update_option( $this->step_on_key, '0' );
 		}
@@ -124,6 +132,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 		$donor_ids = array_unique( $donor_ids );
 		$this->update_option( $this->donor_key, $donor_ids );
 		$this->update_option( $this->donation_key, $donation_ids );
+
 		wp_reset_postdata();
 	}
 
@@ -134,22 +143,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	 * @return int
 	 */
 	public function get_percentage_complete() {
-		$donation_ids = $this->get_option( $this->donation_key );
-		$count        = count( $donation_ids );
-		if ( 1 === (int) $this->step ) {
-			if ( ! empty( $donation_ids ) ) {
-				return ( 100 / ( $count + 2 ) );
-			} else {
-				return 100;
-			}
-		} else {
-
-			if ( 2 === $this->get_step() ) {
-				return ( 100 / ( $count + 1 ) );
-			} else {
-				return 100;
-			}
-		}
+		return  ceil( ( 100 * $this->step_completed ) / $this->total_step );
 	}
 
 	public function process_step() {
@@ -200,20 +194,25 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 		 */
 		if ( empty( $donation_ids ) ) {
 			$this->is_empty = true;
-
+			$this->total_step = 1;
 			return false;
 		}
 
 		$step = (int) $this->get_step();
+		$donor_ids = $this->get_option( $this->donor_key );
 
 		// In step to we delete all the donation in loop.
 		if ( 2 === $step ) {
 
+
 			$pass_to_donor = false;
 			$page          = (int) $this->get_step_page();
 			$page ++;
-
 			$count = count( $donation_ids );
+
+			$this->total_step = ( count( $donation_ids ) / $this->per_step ) + count( $donor_ids );
+			$this->step_completed = $page;
+
 
 			if ( $count > $this->per_step ) {
 
@@ -234,16 +233,18 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 			}
 
 			foreach ( $donation_ids as $item ) {
-//				wp_delete_post( $item, true );
+				wp_delete_post( $item, true );
 			}
 		}
 
 
 		// Here we delete all the donor
 		if ( 3 === $step ) {
-			$page = (int) $this->get_step_page();
-			$donor_ids = $this->get_option( $this->donor_key );
+			$page      = (int) $this->get_step_page();
 			$count     = count( $donor_ids );
+
+			$this->total_step = ( count( $donation_ids ) / $this->per_step ) + count( $donor_ids );
+			$this->step_completed = $page + ( count( $donation_ids ) / $this->per_step );
 
 			$args = apply_filters( 'give_tools_reset_stats_total_args', array(
 				'post_type'      => 'give_payment',
@@ -251,7 +252,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 				'posts_per_page' => 1,
 				'meta_key'       => '_give_payment_mode',
 				'meta_value'     => 'live',
-				'author'     => $donor_ids[ $page ]
+				'author'         => $donor_ids[ $page ]
 			) );
 
 			$donation_posts = get_posts( $args );
@@ -263,10 +264,13 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 			$this->update_option( $this->step_on_key, $page );
 			if ( $count === $page ) {
 				$this->is_empty = false;
+
 				return false;
 			}
+
 			return true;
 		}
+
 		return true;
 	}
 
