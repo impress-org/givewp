@@ -1903,6 +1903,13 @@ h2.give-nav-tab-wrapper {
   background: #f5f5f5;
   border: 1px solid #dfdfdf;
   padding: 12px 12px 0 12px; }
+  .give-filters .give-donation-forms-filter .chosen-single {
+    height: 28px;
+    line-height: 28px; }
+  .give-filters .chosen-container-single .chosen-single div b {
+    background-position: 100% 4px; }
+  .give-filters .chosen-container-active.chosen-with-drop .chosen-single div b {
+    background-position: -18px 6px; }
   .give-filters:after {
     content: "";
     display: table;
