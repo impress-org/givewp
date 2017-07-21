@@ -51,7 +51,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	 * @since  1.8.12
 	 * @var integer
 	 */
-	public $per_step = 3;
+	public $per_step = 10;
 
 	public $donor_ids = array();
 
@@ -350,5 +350,4 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	private function get_step_page() {
 		return $this->get_option( $this->step_on_key, false );
 	}
-
 }
