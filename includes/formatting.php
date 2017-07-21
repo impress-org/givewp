@@ -84,7 +84,7 @@ function give_sanitize_amount_for_db( $number, $dp = false, $trim_zeros = false 
 function give_sanitize_amount( $number, $dp = false, $trim_zeros = false ) {
 
 	// Bailout.
-	if ( empty( $number ) ) {
+	if ( empty( $number ) || ( ! is_numeric( $number ) && ! is_string( $number ) ) ) {
 		return $number;
 	}
 
