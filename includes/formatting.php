@@ -52,6 +52,22 @@ function give_get_price_decimal_separator() {
 	return give_get_option( 'decimal_separator', '.' );
 }
 
+
+/**
+ * Sanitize Amount before saving to database
+ *
+ * @since      1.8.12
+ *
+ * @param  int|float|string $number     Expects either a float or a string with a decimal separator only (no thousands)
+ * @param  int|bool         $dp         Number of decimals
+ * @param  bool             $trim_zeros From end of string
+ *
+ * @return string $amount Newly sanitized amount
+ */
+function give_sanitize_amount_for_db( $number, $dp = false, $trim_zeros = false ) {
+	return give_sanitize_amount( $number, 6 );
+}
+
 /**
  * Sanitize Amount
  *
