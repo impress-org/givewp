@@ -912,7 +912,7 @@ final class Give_Payment {
 				}
 			}
 
-			$this->update_meta( '_give_payment_total', $this->total );
+			$this->update_meta( '_give_payment_total', give_sanitize_amount_for_db( $this->total ) );
 
 			$new_meta = array(
 				'form_title' => $this->form_title,

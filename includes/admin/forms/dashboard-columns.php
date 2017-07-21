@@ -318,7 +318,7 @@ function give_price_save_quick_edit( $post_id ) {
 	}
 
 	if ( isset( $_REQUEST['_give_regprice'] ) ) {
-		give_update_meta( $post_id, '_give_set_price', strip_tags( stripslashes( $_REQUEST['_give_regprice'] ) ) );
+		give_update_meta( $post_id, '_give_set_price', give_sanitize_amount_for_db( strip_tags( stripslashes( $_REQUEST['_give_regprice'] ) ) ) );
 	}
 }
 
@@ -343,7 +343,7 @@ function give_save_bulk_edit() {
 			}
 
 			if ( ! empty( $price ) ) {
-				give_update_meta( $post_id, '_give_set_price', give_sanitize_amount( $price ) );
+				give_update_meta( $post_id, '_give_set_price', give_sanitize_amount_for_db( $price ) );
 			}
 		}
 	}
