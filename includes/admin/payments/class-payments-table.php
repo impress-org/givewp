@@ -150,22 +150,22 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$search     = isset( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : '';
 		$form_id    = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
 		?>
-		<div id="give-payment-filters">
-			<span id="give-payment-date-filters">
-				<label for="start-date"
-				       class="give-start-date-label"><?php esc_html_e( 'Start Date', 'give' ); ?></label>
-				<input type="text" id="start-date" name="start-date" class="give_datepicker"
-				       value="<?php echo $start_date; ?>" placeholder="mm/dd/yyyy" />
-				<label for="end-date" class="give-end-date-label"><?php esc_html_e( 'End Date', 'give' ); ?></label>
-				<input type="text" id="end-date" name="end-date" class="give_datepicker"
-				       value="<?php echo $end_date; ?>" placeholder="mm/dd/yyyy" />
-			</span>
-			<?php if ( ! empty( $status ) ) : ?>
-				<input type="hidden" name="status" value="<?php echo esc_attr( $status ); ?>" />
-			<?php endif; ?>
-
+		<div id="give-payment-filters" class="give-filters">
 			<?php $this->search_box( esc_html__( 'Search', 'give' ), 'give-payments' ); ?>
-			<span id="give-payment-form-filter">
+			<div id="give-payment-date-filters">
+				<div class="give-filter give-filter-half">
+					<label for="start-date"
+					       class="give-start-date-label"><?php esc_html_e( 'Start Date', 'give' ); ?></label>
+					<input type="text" id="start-date" name="start-date" class="give_datepicker"
+				       value="<?php echo $start_date; ?>" placeholder="mm/dd/yyyy" />
+				</div>
+				<div class="give-filter give-filter-half">
+					<label for="end-date" class="give-end-date-label"><?php esc_html_e( 'End Date', 'give' ); ?></label>
+					<input type="text" id="end-date" name="end-date" class="give_datepicker"
+				       value="<?php echo $end_date; ?>" placeholder="mm/dd/yyyy" />
+		       </div>
+			</div>
+			<div id="give-payment-form-filter" class="give-filter">
 				<label for="-date"
 				       class="give-start-date-label"><?php esc_html_e( 'Form', 'give' ); ?></label>
 				<?php
@@ -177,15 +177,22 @@ class Give_Payment_History_Table extends WP_List_Table {
 					'chosen'   => true,
 					'number'   => - 1,
 				) );
-
-				submit_button( __( 'Apply', 'give' ), 'secondary', '', false );
 				?>
+			</div>
+
+			<?php if ( ! empty( $status ) ) : ?>
+				<input type="hidden" name="status" value="<?php echo esc_attr( $status ); ?>" />
+			<?php endif; ?>
+
+			<div class="give-filter">
+				<?php submit_button( __( 'Apply', 'give' ), 'secondary', '', false ); ?>
 				<?php
 				// Clear active filters button.
 				if ( ! empty( $start_date ) || ! empty( $end_date ) || ! empty( $donor ) || ! empty( $search ) || ! empty( $status ) || ! empty( $form_id ) ) : ?>
 					<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ); ?>"
-					   class="button-secondary give-clear-filters-button"><?php esc_html_e( 'Clear Filters', 'give' ); ?></a>
+					   class="button give-clear-filters-button"><?php esc_html_e( 'Clear Filters', 'give' ); ?></a>
 				<?php endif; ?>
+			</div>
 		</div>
 
 		<?php
@@ -216,7 +223,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			echo '<input type="hidden" name="order" value="' . esc_attr( $_REQUEST['order'] ) . '" />';
 		}
 		?>
-		<p class="search-box" role="search">
+		<div class="give-filter give-filter-search" role="search">
 			<?php
 			/**
 			 * Fires in the payment history search box.
@@ -232,7 +239,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			<?php submit_button( $text, 'button', false, false, array(
 				'ID' => 'search-submit',
 			) ); ?><br />
-		</p>
+		</div>
 		<?php
 	}
 
