@@ -149,40 +149,42 @@ function give_sanitize_amount( $number, $dp = false, $trim_zeros = false ) {
  *
  * @since 1.0
  *
- * @param string $amount Price amount to format
+ * @param string $amount   Price amount to format
  * @param bool   $decimals Whether or not to use decimals. Useful when set to false for non-currency numbers.
  * @param bool   $sanitize Whether or not to sanitize number.
  *
  * @return string $amount   Newly formatted amount or Price Not Available
  */
-function give_format_amount( $amount, $decimals = true, $sanitize= true ) {
-	$formatted      = 0;
-	$thousands_sep  = give_get_option( 'thousands_separator', ',' );
-	$decimal_sep    = give_get_option( 'decimal_separator', '.' );
-	$decimals       = $decimals ? give_get_price_decimals() : 0;
-	$currency       = give_get_option( 'currency', '.' );
+function give_format_amount( $amount, $decimals = true, $sanitize = true ) {
+	$formatted     = 0;
+	$thousands_sep = give_get_option( 'thousands_separator', ',' );
+	$decimal_sep   = give_get_option( 'decimal_separator', '.' );
+	$decimals      = $decimals ? give_get_price_decimals() : 0;
+	$currency      = give_get_option( 'currency', '.' );
 
 	if ( ! empty( $amount ) ) {
 		// Sanitize amount before formatting.
-		$amount = $sanitize ? give_sanitize_amount( $amount ) : $amount;
+		$amount = $sanitize ?
+			give_sanitize_amount( $amount ) :
+			round( $amount, $decimals );
 
 		if ( 'INR' === $currency ) {
 			$decimal_amount = '';
 
 			// Extract decimals from amount
 			if ( ( $pos = strpos( $amount, '.' ) ) !== false ) {
-				if( ! empty( $decimals ) ) {
+				if ( ! empty( $decimals ) ) {
 					$decimal_amount = substr( round( substr( $amount, $pos ), $decimals ), 1 );
-					$amount   = substr( $amount, 0, $pos );
+					$amount         = substr( $amount, 0, $pos );
 
-					if( ! $decimal_amount ) {
+					if ( ! $decimal_amount ) {
 						$decimal_amount = substr( '.0000000000', 0, ( $decimals + 1 ) );
-					}elseif ( ( $decimals + 1 ) > strlen( $decimal_amount ) ) {
+					} elseif ( ( $decimals + 1 ) > strlen( $decimal_amount ) ) {
 						$decimal_amount = substr( "{$decimal_amount}000000000", 0, ( $decimals + 1 ) );
 					}
 
-				} else{
-					$amount   = number_format( $amount, $decimals, $decimal_sep, '' );
+				} else {
+					$amount = number_format( $amount, $decimals, $decimal_sep, '' );
 				}
 			}
 
@@ -262,7 +264,9 @@ function give_human_format_large_amount( $amount ) {
  */
 function give_format_decimal( $amount, $dp = false, $sanitize = true ) {
 	$decimal_separator = give_get_price_decimal_separator();
-	$formatted_amount  = $sanitize ? give_sanitize_amount( $amount, $dp ) : $amount;
+	$formatted_amount  = $sanitize ?
+		give_sanitize_amount( $amount, $dp ) :
+		round( $amount, ( is_bool( $dp ) ? give_get_price_decimals() : $dp ) );
 
 	if ( false !== strpos( $formatted_amount, '.' ) ) {
 		$formatted_amount = str_replace( '.', $decimal_separator, $formatted_amount );
