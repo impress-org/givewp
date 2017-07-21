@@ -14,7 +14,150 @@
 // Payment Filters
 //------------------------------------
 
-#give-payment-filters, .give-submit-wrap {
+// Wrapper for multiple filter fields.
+.give-filters {
+	clear: both;
+	background: #f5f5f5;
+	border: 1px solid #dfdfdf;
+	padding: 12px 12px 0 12px;
+
+	// Chosen height adjustment.
+	.give-donation-forms-filter .chosen-single {
+		height: 28px;
+		line-height: 28px;
+	}
+
+	// Chosen up arrow.
+	.chosen-container-single .chosen-single div b {
+		background-position: 0 4px;
+	}
+
+	// Chosen down arrow.
+	.chosen-container-active.chosen-with-drop .chosen-single div b {
+		background-position: -18px 6px;
+	}
+
+	&:after {
+		content: "";
+		display: table;
+		clear: both;
+	}
+}
+
+// Individual filter field.
+.give-filter {
+	display: block;
+	margin-bottom: 12px;
+	width: 100%;
+
+	&:after {
+		content: "";
+		display: table;
+		clear: both;
+	}
+
+	label {
+		display: block;
+		margin-right: 4px;
+	}
+
+	input {
+		margin: 0;
+	}
+
+	input[type="text"] {
+		height: 28px;
+		width: 100%;
+	}
+
+	input[type="text"],
+	input[type="search"],
+	{
+		height: 28px;
+	}
+
+	.button {
+		height: 28px;
+		line-height: 26px;
+		margin: 0;
+		padding: 0 10px 1px;
+	}
+
+	select {
+		width: 100%;
+	}
+
+	@media screen and (min-width: 783px) {
+		float: left;
+		margin-right: 18px;
+		width: auto;
+
+		label {
+			display: inline-block;
+		}
+
+		input[type="text"] {
+			display: inline-block;
+			width: 144px;
+		}
+	}
+}
+
+.give-filter-search {
+	input[type="search"] {
+		display: block;
+		float: left;
+		width: 68%;
+	}
+
+	input[type="submit"] {
+		display: block;
+		float: right;
+		width: 30%;
+	}
+
+	@media screen and (min-width: 783px) {
+		input[type="search"] {
+			display: inline-block;
+			margin-right: 4px;
+			width: 144px;
+		}
+
+		input[type="submit"] {
+			display: inline-block;
+			width: auto;
+		}
+	}
+}
+
+.give-filter-half {
+	@media screen and (min-width: 600px) {
+		float: left;
+		width: 49%;
+
+		&:last-child {
+			float: right;
+		}
+	}
+
+	@media screen and (min-width: 783px) {
+		width: auto;
+
+		&:last-child {
+			float: left;
+		}
+
+		input[type="text"] {
+			width: 96px;
+		}
+	}
+}
+
+.give-clear-filters-button {
+	margin-left: 8px;
+}
+
+.give-submit-wrap {
   clear: both;
   background: #f5f5f5;
   border: 1px solid #dfdfdf;
@@ -25,38 +168,14 @@
 }
 
 #give-payment-filters {
-  p {
-	color: #777;
-  }
   ul.subsubsub {
 	margin-bottom: 8px;
   }
-  label {
-	font-style: italic;
-	margin: 0 3px 0 10px;
-  }
-  input[type="text"] {
-	height: 28px;
-  }
-
-  @media (max-width: 955px) and (max-width:1100px){
-	
-  }
-
 }
 
 #give-payments-advanced-filter {
   ul.subsubsub {
 	margin-bottom: 12px;
-  }
-  #search-submit {
-	margin-right: 20px;
-  }
-  .give-donation-forms-filter {
-	margin-right: 5px;
-	top:-2px;
-  }
-  .give-clear-filters-button {
   }
 }
 
