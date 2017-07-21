@@ -249,7 +249,7 @@ function give_text_input( $field ) {
 
 		case 'decimal' :
 			$field['attributes']['class'] .= ' give_input_decimal';
-			$field['value'] = ( ! empty( $field['value'] ) ? give_format_decimal( $field['value'] ) : $field['value'] );
+			$field['value'] = ( ! empty( $field['value'] ) ? give_format_decimal( $field['value'], false, false ) : $field['value'] );
 			break;
 
 		default :
