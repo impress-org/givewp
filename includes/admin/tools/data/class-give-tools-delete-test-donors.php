@@ -122,7 +122,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 			$this->update_option( $this->step_on_key, '0' );
 		} else {
 			// Get the old donors list.
-			$donor_ids    = $this->get_option( $this->donor_key );
+			$donor_ids = $this->get_option( $this->donor_key );
 
 			// Get the old donation list.
 			$donation_ids = $this->get_option( $this->donation_key );
@@ -188,7 +188,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 		$total_donation = (int) $donation_posts->found_posts;
 
 		// Maximum number of page can be display
-		$max_num_pages  = (int) $donation_posts->max_num_pages;
+		$max_num_pages = (int) $donation_posts->max_num_pages;
 
 		// Check current page is less then max number of page or not
 		if ( $paged < $max_num_pages ) {
@@ -196,7 +196,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 			$this->update_option( $this->step_on_key, $paged );
 
 			// Calculating percentage.
-			$page_remain = $max_num_pages - $paged;
+			$page_remain          = $max_num_pages - $paged;
 			$this->total_step     = (int) $max_num_pages + ( $total_donation / $this->per_step ) + ( ( $page_remain * 2 ) * count( $donor_ids ) );
 			$this->step_completed = $paged;
 		} else {
@@ -272,11 +272,12 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 		if ( empty( $donation_ids ) ) {
 			$this->is_empty   = true;
 			$this->total_step = 1;
+
 			return false;
 		}
 
 		// Get the current step.
-		$step      = (int) $this->get_step();
+		$step = (int) $this->get_step();
 
 		// get teh donor ids.
 		$donor_ids = $this->get_option( $this->donor_key );
@@ -288,7 +289,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 			$page ++;
 			$count = count( $donation_ids );
 
-			$this->total_step     = ( count( $donation_ids ) / $this->per_step ) + count( $donor_ids );
+			$this->total_step     = ( ( count( $donation_ids ) / $this->per_step ) * 2 ) + count( $donor_ids );
 			$this->step_completed = $page;
 
 
@@ -321,7 +322,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 			$page  = (int) $this->get_step_page();
 			$count = count( $donor_ids );
 
-			$this->total_step     = ( count( $donation_ids ) / $this->per_step ) + count( $donor_ids );
+			$this->total_step     = ( ( count( $donation_ids ) / $this->per_step ) * 2 ) + count( $donor_ids );
 			$this->step_completed = $page + ( count( $donation_ids ) / $this->per_step );
 
 			$args = apply_filters( 'give_tools_reset_stats_total_args', array(
