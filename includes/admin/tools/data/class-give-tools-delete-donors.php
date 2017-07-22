@@ -25,11 +25,46 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 
 	var $request;
 
+	/**
+	 * Used to store donation id's that are going to get deleted.
+	 * @var array.
+	 * @since 1.8.12
+	 */
 	var $donation_key = 'give_temp_delete_donation_ids';
+
+	/**
+	 * Used to store donors id's that are going to get deleted.
+	 * @var array.
+	 * @since 1.8.12
+	 */
 	var $donor_key = 'give_temp_delete_donor_ids';
+
+	/**
+	 * Used to store the step where the step will be. ( 'count', 'donations', 'donors' ).
+	 * @var array.
+	 * @since 1.8.12
+	 */
 	var $step_key = 'give_temp_delete_step';
+
+	/**
+	 * Used to store to get the page count in the loop.
+	 * @var array.
+	 * @since 1.8.12
+	 */
 	var $step_on_key = 'give_temp_delete_step_on';
+
+	/**
+	 * Contain total number of step .
+	 * @var array.
+	 * @since 1.8.12
+	 */
 	var $total_step;
+
+	/**
+	 * Counting contain total number of step that completed.
+	 * @var array.
+	 * @since 1.8.12
+	 */
 	var $step_completed;
 
 	/**
@@ -53,6 +88,11 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	 */
 	public $per_step = 10;
 
+	/**
+	 * Set's all the donors id's
+	 * @since  1.8.12
+	 * @var array
+	 */
 	public $donor_ids = array();
 
 	/**
@@ -67,27 +107,54 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	public function pre_fetch() {
 		$donation_ids = array();
 		$donor_ids    = array();
+
+		// Check if the ajax request if running for the first time.
 		if ( 1 === (int) $this->step ) {
+			// Delete all the donation ids.
 			$this->delete_option( $this->donation_key );
+			// Delete all the donor ids.
 			$this->delete_option( $this->donor_key );
+
+			// Delete all the step and set to 'count' which if the first step in the process of deleting the donors.
 			$this->update_option( $this->step_key, 'count' );
+
+			// Delete tha page count of the step.
 			$this->update_option( $this->step_on_key, '0' );
 		} else {
+			// Get the old donors list.
 			$donor_ids    = $this->get_option( $this->donor_key );
+
+			// Get the old donation list.
 			$donation_ids = $this->get_option( $this->donation_key );
 		}
 
+		// Get the step and check for it if it's on the first step( 'count' ) or not.
 		$step = (int) $this->get_step();
 		if ( 1 === $step ) {
+			/**
+			 * Will add or update the donation and donor data by running wp query.
+			 */
 			$this->count( $step, $donation_ids, $donor_ids );
 		}
 	}
 
+	/**
+	 * Will Update or Add the donation and donors ids in the with option table for there respected key.
+	 *
+	 * @param string $step On which the current ajax is running.
+	 * @param array $donation_ids Contain the list of all the donation id's that has being add before this
+	 * @param array $donor_ids Contain the list of all the donors id's that has being add before this
+	 */
 	private function count( $step, $donation_ids = array(), $donor_ids = array() ) {
 
+		// Get the Page count by default it's zero.
 		$paged = (int) $this->get_step_page();
+		// Incresed the page count by one.
 		++ $paged;
 
+		/**
+		 * Filter add to alter the argument before the wp quest run
+		 */
 		$args = apply_filters( 'give_tools_reset_stats_total_args', array(
 			'post_type'      => 'give_payment',
 			'post_status'    => 'any',
@@ -98,30 +165,39 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 			'meta_value'     => 'test'
 		) );
 
-
+		// Reset the post data.
 		wp_reset_postdata();
+		// Getting the new donation.
 		$donation_posts = new WP_Query( $args );
+
 		// The Loop.
 		if ( $donation_posts->have_posts() ) {
 			while ( $donation_posts->have_posts() ) {
 				$donation_posts->the_post();
 				global $post;
+				// Add the donation id in side the array.
 				$donation_ids[] = $post->ID;
 
+				// Add the donor id in side the array.
 				$donor_ids[] = (int) $post->post_author;
 			}
 			/* Restore original Post Data */
 		}
 
+		// Get the total number of post found.
 		$total_donation = (int) $donation_posts->found_posts;
+
+		// Maximum number of page can be display
 		$max_num_pages  = (int) $donation_posts->max_num_pages;
 
+		// Check current page is less then max number of page or not
 		if ( $paged < $max_num_pages ) {
+			// Update the curretn page virable for the next step
 			$this->update_option( $this->step_on_key, $paged );
 
+			// Calculating percentage.
 			$page_remain = $max_num_pages - $paged;
-
-			$this->total_step = (int) $max_num_pages + ( $total_donation / $this->per_step ) + ( ( $page_remain * 2 ) * count( $donor_ids ) );
+			$this->total_step     = (int) $max_num_pages + ( $total_donation / $this->per_step ) + ( ( $page_remain * 2 ) * count( $donor_ids ) );
 			$this->step_completed = $paged;
 		} else {
 			$donation_ids_count = count( $donor_ids );
@@ -143,7 +219,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	 * @return int
 	 */
 	public function get_percentage_complete() {
-		return  ceil( ( 100 * $this->step_completed ) / $this->total_step );
+		return ceil( ( 100 * $this->step_completed ) / $this->total_step );
 	}
 
 	public function process_step() {
@@ -187,30 +263,32 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	 */
 	public function get_data() {
 
+		// Get the donation id's.
 		$donation_ids = $this->get_option( $this->donation_key );
 
 		/**
 		 * Return false id not test donation is found.
 		 */
 		if ( empty( $donation_ids ) ) {
-			$this->is_empty = true;
+			$this->is_empty   = true;
 			$this->total_step = 1;
 			return false;
 		}
 
-		$step = (int) $this->get_step();
+		// Get the current step.
+		$step      = (int) $this->get_step();
+
+		// get teh donor ids.
 		$donor_ids = $this->get_option( $this->donor_key );
 
 		// In step to we delete all the donation in loop.
 		if ( 2 === $step ) {
-
-
 			$pass_to_donor = false;
 			$page          = (int) $this->get_step_page();
 			$page ++;
 			$count = count( $donation_ids );
 
-			$this->total_step = ( count( $donation_ids ) / $this->per_step ) + count( $donor_ids );
+			$this->total_step     = ( count( $donation_ids ) / $this->per_step ) + count( $donor_ids );
 			$this->step_completed = $page;
 
 
@@ -240,10 +318,10 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 
 		// Here we delete all the donor
 		if ( 3 === $step ) {
-			$page      = (int) $this->get_step_page();
-			$count     = count( $donor_ids );
+			$page  = (int) $this->get_step_page();
+			$count = count( $donor_ids );
 
-			$this->total_step = ( count( $donation_ids ) / $this->per_step ) + count( $donor_ids );
+			$this->total_step     = ( count( $donation_ids ) / $this->per_step ) + count( $donor_ids );
 			$this->step_completed = $page + ( count( $donation_ids ) / $this->per_step );
 
 			$args = apply_filters( 'give_tools_reset_stats_total_args', array(
@@ -334,6 +412,13 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 		delete_option( $key );
 	}
 
+	/**
+	 * Get the current step in number.
+	 *
+	 * There are three step to delete the total donor first counting, second deleting donotion and third deleting donors.
+	 *
+	 * @return int|string
+	 */
 	private function get_step() {
 		$step_key = (string) $this->get_option( $this->step_key, false );
 		if ( 'count' === $step_key ) {
@@ -347,6 +432,9 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 		}
 	}
 
+	/**
+	 * Get the current $page value in the ajax.
+	 */
 	private function get_step_page() {
 		return $this->get_option( $this->step_on_key, false );
 	}
