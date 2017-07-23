@@ -670,6 +670,8 @@ jQuery.noConflict();
 					var notice_wrap = export_form.find( '.notice-wrap' );
 					notice_wrap.html( '<div class="notice notice-warning"><p><input type="checkbox" id="confirm-reset" name="confirm_reset_store" value="1" /> <label for="confirm-reset">' + give_vars.reset_stats_warn + '</label></p></div>' );
 					submit_button.addClass( 'button-disabled' ).attr( 'disabled', 'disabled' );
+
+					// Add check when admin try to delete all the test donors.
                 } else if ( 'delete-test-donors' === selected_type ) {
                     export_form.append( '<div class="notice-wrap"></div>' );
                     var notice_wrap = export_form.find( '.notice-wrap' );
