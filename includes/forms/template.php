@@ -1012,11 +1012,18 @@ function give_default_cc_address_fields( $form_id ) {
 
 		<?php
 		$selected_state = give_get_state();
-		$states         = give_get_states( $selected_country );
+
+		$label = __( 'State', 'give' );
+		$states_label = give_get_states_label();
+		// Check if $country code exists in the array key for states label.
+		if ( array_key_exists( $selected_country, $states_label ) ) {
+			$label = $states_label[ $selected_country ];
+		}
+
+		$states = give_get_states( $selected_country );
 
 		// Get the country list that does not have any states init.
 		$no_states_country = give_no_states_country_list();
-
 
 		if ( ! empty( $give_user_info['card_state'] ) ) {
 			$selected_state = $give_user_info['card_state'];
@@ -1024,7 +1031,7 @@ function give_default_cc_address_fields( $form_id ) {
 		?>
 		<p id="give-card-state-wrap" class="form-row form-row-last form-row-responsive <?php echo ( ! empty( $selected_country ) && array_key_exists( $selected_country, $no_states_country ) ) ? 'give-hidden' : ''; ?> ">
 			<label for="card_state" class="give-label">
-				<?php esc_html_e( 'State / Province / County', 'give' ); ?>
+				<?php echo $label; ?>
 				<?php if ( give_field_is_required( 'card_state', $form_id ) ) : ?>
 					<span class="give-required-indicator">*</span>
 				<?php endif; ?>
@@ -1047,7 +1054,7 @@ function give_default_cc_address_fields( $form_id ) {
 				</select>
 			<?php else : ?>
 				<input type="text" size="6" name="card_state" id="card_state" class="card_state give-input"
-					   placeholder="<?php esc_attr_e( 'State / Province / County', 'give' ); ?>"/>
+					   placeholder="<?php echo $label; ?>"/>
 			<?php endif; ?>
 		</p>
 		<?php
