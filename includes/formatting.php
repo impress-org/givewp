@@ -49,7 +49,19 @@ function give_get_price_thousand_separator() {
  * @return mixed
  */
 function give_get_price_decimal_separator() {
-	return give_get_option( 'decimal_separator', '.' );
+	$default_decimal_separators = array(
+		'.' => ',',
+		',' => '.',
+	);
+
+	$thousand_separator = give_get_price_thousand_separator();
+	$default_decimal_separator = in_array( $thousand_separator, $default_decimal_separators ) ?
+		$default_decimal_separators[$thousand_separator] :
+		'.';
+
+	$decimal_separator = give_get_option( 'decimal_separator', $default_decimal_separator );
+
+	return $decimal_separator;
 }
 
 
