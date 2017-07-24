@@ -3,6 +3,7 @@
   "private": true,
   "devDependencies": {
     "del": "^2.0.1",
+    "eslint": "^4.2.0",
     "fs-extra": "^1.0.0",
     "gulp": "^3.9.1",
     "gulp-bower": "0.0.13",
@@ -22,5 +23,8 @@
     "gulp-watch": "~4.3.5",
     "gulp-wp-pot": "^1.2.2",
     "main-bower-files": "^2.11.1"
+  },
+  "dependencies": {
+    "eslint-config-wordpress": "^2.0.0"
   }
 }

@@ -3,7 +3,7 @@
  * Give Reports Page/Tab
  *
  * @package     Give
- * @subpackage  Classes/Give_Settings_Forms
+ * @subpackage  Classes/Give_Earnings_Report
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.8
@@ -13,14 +13,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-if ( ! class_exists( 'Give_Settings_Forms' ) ) :
+if ( ! class_exists( 'Give_Earnings_Report' ) ) :
 
 	/**
-	 * Give_Settings_Forms.
+	 * Give_Earnings_Report.
 	 *
 	 * @sine 1.8
 	 */
-	class Give_Settings_Forms {
+	class Give_Earnings_Report {
 
 		/**
 		 * Setting page id.
@@ -42,12 +42,12 @@ if ( ! class_exists( 'Give_Settings_Forms' ) ) :
 		 * Constructor.
 		 */
 		public function __construct() {
-			$this->id    = 'forms';
-			$this->label = esc_html__( 'Forms', 'give' );
+			$this->id    = 'earnings';
+			$this->label = esc_html__( 'Income', 'give' );
 
 			add_filter( 'give-reports_tabs_array', array( $this, 'add_settings_page' ), 20 );
 			add_action( "give-reports_settings_{$this->id}_page", array( $this, 'output' ) );
-			add_action( 'give_admin_field_report_forms', array( $this, 'render_report_forms_field' ), 10, 2 );
+			add_action( 'give_admin_field_report_earnings', array( $this, 'render_report_earnings_field' ), 10, 2 );
 
 			// Do not use main form for this tab.
 			if( give_get_current_setting_tab() === $this->id ) {
@@ -89,17 +89,17 @@ if ( ! class_exists( 'Give_Settings_Forms' ) ) :
 				'give_get_settings_' . $this->id,
 				array(
 					array(
-						'id'   => 'give_reports_forms',
+						'id'   => 'give_tools_earnings',
 						'type' => 'title',
 						'table_html' => false
 					),
 					array(
-						'id'   => 'forms',
-						'name' => esc_html__( 'Forms', 'give' ),
-						'type' => 'report_forms',
+						'id'   => 'earnings',
+						'name' => esc_html__( 'Income', 'give' ),
+						'type' => 'report_earnings',
 					),
 					array(
-						'id'   => 'give_reports_forms',
+						'id'   => 'give_tools_earnings',
 						'type' => 'sectionend',
 						'table_html' => false
 					)
@@ -123,7 +123,7 @@ if ( ! class_exists( 'Give_Settings_Forms' ) ) :
 		}
 
 		/**
-		 * Render report forms field
+		 * Render earning field
 		 *
 		 * @since  1.8
 		 * @access public
@@ -131,11 +131,11 @@ if ( ! class_exists( 'Give_Settings_Forms' ) ) :
 		 * @param $field
 		 * @param $option_value
 		 */
-		public function render_report_forms_field( $field, $option_value ) {
-			do_action( 'give_reports_view_forms');
+		public function render_report_earnings_field( $field, $option_value ) {
+			do_action( 'give_reports_view_earnings' );
 		}
 	}
 
 endif;
 
-return new Give_Settings_Forms();
+return new Give_Earnings_Report();
