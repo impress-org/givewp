@@ -103,6 +103,15 @@ function give_maybe_sanitize_amount( $number, $dp = false, $trim_zeros = false )
 		return number_format( $number, ( is_bool( $dp ) ? give_get_price_decimals() : $dp ), '.', '' );
 	}
 
+	// Handle thousand separator as '.'
+	if ( '.' === $thousand_separator && false !== strpos( $number, $thousand_separator ) ){
+		$number_parts = explode( '.', $number );
+
+		if( 2 < count( $number_parts ) || ( 6 > strlen( $number_parts[1] ) ) ) {
+			$number = str_replace( '.', '', $number );
+		}
+	}
+
 	return give_sanitize_amount( $number, $dp, $trim_zeros );
 }
 
