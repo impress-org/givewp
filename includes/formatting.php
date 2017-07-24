@@ -215,40 +215,42 @@ function give_format_amount( $amount, $decimals = true, $sanitize = true ) {
 			give_maybe_sanitize_amount( $amount, $decimals ) :
 			number_format( $amount, $decimals, '.', '' );
 
-		if ( 'INR' === $currency ) {
-			$decimal_amount = '';
+		switch ( $currency ) {
+			case 'INR':
+				$decimal_amount = '';
 
-			// Extract decimals from amount
-			if ( ( $pos = strpos( $amount, '.' ) ) !== false ) {
-				if ( ! empty( $decimals ) ) {
-					$decimal_amount = substr( round( substr( $amount, $pos ), $decimals ), 1 );
-					$amount         = substr( $amount, 0, $pos );
+				// Extract decimals from amount
+				if ( ( $pos = strpos( $amount, '.' ) ) !== false ) {
+					if ( ! empty( $decimals ) ) {
+						$decimal_amount = substr( round( substr( $amount, $pos ), $decimals ), 1 );
+						$amount         = substr( $amount, 0, $pos );
 
-					if ( ! $decimal_amount ) {
-						$decimal_amount = substr( '.0000000000', 0, ( $decimals + 1 ) );
-					} elseif ( ( $decimals + 1 ) > strlen( $decimal_amount ) ) {
-						$decimal_amount = substr( "{$decimal_amount}000000000", 0, ( $decimals + 1 ) );
+						if ( ! $decimal_amount ) {
+							$decimal_amount = substr( '.0000000000', 0, ( $decimals + 1 ) );
+						} elseif ( ( $decimals + 1 ) > strlen( $decimal_amount ) ) {
+							$decimal_amount = substr( "{$decimal_amount}000000000", 0, ( $decimals + 1 ) );
+						}
+
+					} else {
+						$amount = number_format( $amount, $decimals, $decimal_sep, '' );
 					}
-
-				} else {
-					$amount = number_format( $amount, $decimals, $decimal_sep, '' );
 				}
-			}
 
-			// Extract last 3 from amount
-			$result = substr( $amount, - 3 );
-			$amount = substr( $amount, 0, - 3 );
+				// Extract last 3 from amount
+				$result = substr( $amount, - 3 );
+				$amount = substr( $amount, 0, - 3 );
 
-			// Apply digits 2 by 2
-			while ( strlen( $amount ) > 0 ) {
-				$result = substr( $amount, - 2 ) . $thousands_sep . $result;
-				$amount = substr( $amount, 0, - 2 );
-			}
+				// Apply digits 2 by 2
+				while ( strlen( $amount ) > 0 ) {
+					$result = substr( $amount, - 2 ) . $thousands_sep . $result;
+					$amount = substr( $amount, 0, - 2 );
+				}
 
-			$formatted = $result . $decimal_amount;
-		} else {
-			$formatted = number_format( $amount, $decimals, $decimal_sep, $thousands_sep );
+				$formatted = $result . $decimal_amount;
+				break;
 
+			default:
+				$formatted = number_format( $amount, $decimals, $decimal_sep, $thousands_sep );
 		}
 	}
 
