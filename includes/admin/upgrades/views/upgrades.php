@@ -19,9 +19,8 @@ $give_updates = Give_Updates::get_instance();
 <div class="wrap" id="poststuff">
 	<div id="give-updates">
 		<h1 id="give-updates-h1"><?php esc_html_e( 'Give - Updates', 'give' ); ?></h1>
-			<div class="give-update-panel-content">
-				<p><?php printf( __( 'Give regularly receives new features, bug fixes, and enhancements. It is important to always stay up-to-date with latest version of Give core and its add-ons.  Please create a backup of your site before updating. To update add-ons be sure your <a href="%1$s">license keys</a> are activated.', 'give' ), 'https://givewp.com/my-account/' ); ?></p>
-			</div>
+		<div class="give-update-panel-content">
+			<p><?php printf( __( 'Give regularly receives new features, bug fixes, and enhancements. It is important to always stay up-to-date with latest version of Give core and its add-ons.  Please create a backup of your site before updating. To update add-ons be sure your <a href="%1$s">license keys</a> are activated.', 'give' ), 'https://givewp.com/my-account/' ); ?></p>
 		</div>
 
 		<?php $update_counter = 1; ?>
@@ -40,7 +39,8 @@ $give_updates = Give_Updates::get_instance();
 								<p><?php echo sprintf( __( 'Give needs to update the database. <a href="%s">Update now ></a>', 'give' ), $db_update_url ); ?></p>
 							</div>
 							<div class="progress-container give-hidden">
-								<strong class="update-message" data-update-count="<?php echo $db_updates; ?>" data-resume-update="<?php echo $give_updates->resume_updates(); ?>"><?php echo sprintf( __( 'Update 1 of %s', 'give' ), $db_updates ); ?></strong>
+								<strong class="update-message" data-update-count="<?php echo $db_updates; ?>"
+								        data-resume-update="<?php echo $give_updates->resume_updates(); ?>"><?php echo sprintf( __( 'Update 1 of %s', 'give' ), $db_updates ); ?></strong>
 								<div class="progress-content"></div>
 							</div>
 						</div>
