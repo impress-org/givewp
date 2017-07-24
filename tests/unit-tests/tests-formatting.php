@@ -170,10 +170,20 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 * @dataProvider give_human_format_large_amount_provider
 	 */
 	function test_give_human_format_large_amount( $amount, $expected ) {
+		// Case 1.
+		give_update_option( 'currency', 'USD' );
+		$output = give_human_format_large_amount( give_format_amount( $amount ) );
+		$this->assertSame(
+			$expected[0],
+			$output
+		);
+
+		// Case 2.
+		give_update_option( 'currency', 'INR' );
 		$output = give_human_format_large_amount( give_format_amount( $amount ) );
 
 		$this->assertSame(
-			$expected,
+			$expected[1],
 			$output
 		);
 	}
@@ -188,12 +198,14 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 */
 	function give_human_format_large_amount_provider() {
 		return array(
-			array( '1234000000000', '1.23 trillion' ),
-			array( '1000000000000', '1 trillion' ),
-			array( '1000000000', '1 billion' ),
-			array( '1000000', '1 million' ),
-			array( '10000', '10,000.00' ),
-			array( '100', '100.00' ),
+			array( '1234000000000', array( '1.23 trillion', '1234 arab' ) ),
+			array( '1000000000000', array( '1 trillion', '1000 arab' ) ),
+			array( '1000000000', array( '1 billion', '1 arab' ) ),
+			array( '1000000', array( '1 million', '10 lakh') ),
+			array( '100000', array( '100,000.00', '1 lakh') ),
+			array( '599000', array( '599,000.00', '5.99 lakh') ),
+			array( '10000', array( '10,000.00', '10,000.00' ) ),
+			array( '100', array( '100.00', '100.00' ) ),
 		);
 	}
 
