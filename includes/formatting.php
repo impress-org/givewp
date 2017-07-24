@@ -220,7 +220,7 @@ function give_format_amount( $amount, $decimals = true, $sanitize = true ) {
 
 			// Apply digits 2 by 2
 			while ( strlen( $amount ) > 0 ) {
-				$result = substr( $amount, - 2 ) . ',' . $result;
+				$result = substr( $amount, - 2 ) . $thousands_sep . $result;
 				$amount = substr( $amount, 0, - 2 );
 			}
 
