@@ -183,10 +183,10 @@ function give_sanitize_amount( $number, $dp = false, $trim_zeros = false ) {
  */
 function give_format_amount( $amount, $decimals = true, $sanitize = true ) {
 	$formatted     = 0;
-	$thousands_sep = give_get_option( 'thousands_separator', ',' );
-	$decimal_sep   = give_get_option( 'decimal_separator', '.' );
+	$thousands_sep = give_get_price_thousand_separator();
+	$decimal_sep   = give_get_price_decimal_separator();
 	$decimals      = $decimals ? give_get_price_decimals() : 0;
-	$currency      = give_get_option( 'currency', '.' );
+	$currency      = give_get_currency();
 
 	if ( ! empty( $amount ) ) {
 		// Sanitize amount before formatting.
