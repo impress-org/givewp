@@ -288,13 +288,26 @@ function give_human_format_large_amount( $amount ) {
 	// Human format amount (default).
 	$human_format_amount = $amount;
 
-	// Calculate large number formatted amount.
-	if ( 4 < $amount_count_parts ) {
-		$human_format_amount = sprintf( esc_html__( '%s trillion', 'give' ), round( ( $sanitize_amount / 1000000000000 ), 2 ) );
-	} elseif ( 3 < $amount_count_parts ) {
-		$human_format_amount = sprintf( esc_html__( '%s billion', 'give' ), round( ( $sanitize_amount / 1000000000 ), 2 ) );
-	} elseif ( 2 < $amount_count_parts ) {
-		$human_format_amount = sprintf( esc_html__( '%s million', 'give' ), round( ( $sanitize_amount / 1000000 ), 2 ) );
+	switch ( give_get_currency() ) {
+		case 'INR':
+			// Calculate large number formatted amount.
+			if ( 4 < $amount_count_parts ) {
+				$human_format_amount = sprintf( esc_html__( '%s arab', 'give' ), round( ( $sanitize_amount / 1000000000 ), 2 ) );
+			} elseif ( 3 < $amount_count_parts ) {
+				$human_format_amount = sprintf( esc_html__( '%s crore', 'give' ), round( ( $sanitize_amount / 10000000 ), 2 ) );
+			} elseif ( 2 < $amount_count_parts ) {
+				$human_format_amount = sprintf( esc_html__( '%s lakh', 'give' ), round( ( $sanitize_amount / 100000 ), 2 ) );
+			}
+			break;
+		default:
+			// Calculate large number formatted amount.
+			if ( 4 < $amount_count_parts ) {
+				$human_format_amount = sprintf( esc_html__( '%s trillion', 'give' ), round( ( $sanitize_amount / 1000000000000 ), 2 ) );
+			} elseif ( 3 < $amount_count_parts ) {
+				$human_format_amount = sprintf( esc_html__( '%s billion', 'give' ), round( ( $sanitize_amount / 1000000000 ), 2 ) );
+			} elseif ( 2 < $amount_count_parts ) {
+				$human_format_amount = sprintf( esc_html__( '%s million', 'give' ), round( ( $sanitize_amount / 1000000 ), 2 ) );
+			}
 	}
 
 	return apply_filters( 'give_human_format_large_amount', $human_format_amount, $amount, $sanitize_amount );
