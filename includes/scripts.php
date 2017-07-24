@@ -36,6 +36,7 @@ function give_load_scripts() {
 	$localize_give_vars = apply_filters( 'give_global_script_vars', array(
 		'ajaxurl'             => give_get_ajax_url(),
 		'checkout_nonce'      => wp_create_nonce( 'give_checkout_nonce' ),
+		'currency'            => give_get_currency(),
 		'currency_sign'       => give_currency_filter( '' ),
 		'currency_pos'        => give_get_currency_position(),
 		'thousands_separator' => give_get_price_thousand_separator(),
