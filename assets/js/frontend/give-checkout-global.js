@@ -46,7 +46,12 @@ jQuery(function ($) {
                     } else {
                         html = '<input type="text" id="card_state"  name="card_state" class="cart-state give-input required" placeholder="' + states_label + '" value=""/>';
                     }
-                    $form.find('input[name="card_state"], select[name="card_state"]').closest( 'p' ).find( 'label' ).text( states_label );
+
+                    if( false === $form.hasClass( 'float-labels-enabled' ) ) {
+                        states_label  = states_label + '<span class="give-required-indicator">*</span>';
+					}
+
+                    $form.find('input[name="card_state"], select[name="card_state"]').closest( 'p' ).find( 'label' ).html( states_label );
                     $form.find('input[name="card_state"], select[name="card_state"]').replaceWith( html );
 
                     // Check if user want to show the feilds or not.
