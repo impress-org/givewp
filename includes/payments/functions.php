@@ -1835,7 +1835,7 @@ function give_get_price_id( $form_id, $price ) {
 
 		foreach ( $levels as $level ) {
 
-			$level_amount = (float) give_sanitize_amount( $level['_give_amount'] );
+			$level_amount = (float) give_maybe_sanitize_amount( $level['_give_amount'] );
 
 			// Check that this indeed the recurring price.
 			if ( $level_amount == $price ) {

@@ -1559,22 +1559,23 @@ add_action( 'give_donation_form_after_cc_form', 'give_terms_agreement', 8888, 1 
  */
 function give_checkout_final_total( $form_id ) {
 
-	if ( isset( $_POST['give_total'] ) ) {
-		$total = apply_filters( 'give_donation_total', give_sanitize_amount( $_POST['give_total'] ) );
-	} else {
-		//default total.
-		$total = give_get_default_form_amount( $form_id );
-	}
+	$total = isset( $_POST['give_total'] ) ?
+		apply_filters( 'give_donation_total', give_maybe_sanitize_amount( $_POST['give_total'] ) ) :
+		give_get_default_form_amount( $form_id );
+
+
 	//Only proceed if give_total available.
 	if ( empty( $total ) ) {
 		return;
 	}
 	?>
 	<p id="give-final-total-wrap" class="form-wrap ">
-		<span
-				class="give-donation-total-label"><?php echo apply_filters( 'give_donation_total_label', esc_html__( 'Donation Total:', 'give' ) ); ?></span>
-		<span class="give-final-total-amount"
-			  data-total="<?php echo give_format_amount( $total, true, false ); ?>"><?php echo give_currency_filter( give_format_amount( $total , true, false) ); ?></span>
+		<span class="give-donation-total-label">
+			<?php echo apply_filters( 'give_donation_total_label', esc_html__( 'Donation Total:', 'give' ) ); ?>
+		</span>
+		<span class="give-final-total-amount" data-total="<?php echo give_format_amount( $total, true, false ); ?>">
+			<?php echo give_currency_filter( give_format_amount( $total , true, false) ); ?>
+		</span>
 	</p>
 	<?php
 }

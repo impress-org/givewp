@@ -650,7 +650,7 @@ function give_get_lowest_price_option( $form_id = 0 ) {
 		$low    = ! empty( $prices ) ? min( $prices ) : 0;
 	}
 
-	return give_sanitize_amount( $low );
+	return give_maybe_sanitize_amount( $low );
 }
 
 /**
@@ -678,7 +678,7 @@ function give_get_highest_price_option( $form_id = 0 ) {
 		$high   = ! empty( $prices ) ? max( $prices ) : 0;
 	}
 
-	return give_sanitize_amount( $high );
+	return give_maybe_sanitize_amount( $high );
 }
 
 /**
@@ -734,6 +734,7 @@ function give_get_form_minimum_price( $form_id = 0 ) {
  * @return int $formatted_price
  */
 function give_price( $form_id = 0, $echo = true, $price_id = false ) {
+	$price = 0;
 
 	if ( empty( $form_id ) ) {
 		$form_id = get_the_ID();
@@ -756,16 +757,12 @@ function give_price( $form_id = 0, $echo = true, $price_id = false ) {
 
 			$price = give_get_lowest_price_option( $form_id );
 		}
-
-		$price = give_sanitize_amount( $price );
-
 	} else {
 
 		$price = give_get_form_price( $form_id );
-
 	}
 
-	$price           = apply_filters( 'give_form_price', give_sanitize_amount( $price ), $form_id );
+	$price           = apply_filters( 'give_form_price', give_maybe_sanitize_amount( $price ), $form_id );
 	$formatted_price = '<span class="give_price" id="give_price_' . $form_id . '">' . $price . '</span>';
 	$formatted_price = apply_filters( 'give_form_price_after_html', $formatted_price, $form_id, $price );
 
@@ -802,7 +799,7 @@ function give_get_price_option_amount( $form_id = 0, $price_id = 0 ) {
 		};
 	}
 
-	return apply_filters( 'give_get_price_option_amount', give_sanitize_amount( $amount ), $form_id, $price_id );
+	return apply_filters( 'give_get_price_option_amount', give_maybe_sanitize_amount( $amount ), $form_id, $price_id );
 }
 
 /**
@@ -844,7 +841,7 @@ function give_goal( $form_id = 0, $echo = true ) {
 
 	$goal = give_get_form_goal( $form_id );
 
-	$goal           = apply_filters( 'give_form_goal', give_sanitize_amount( $goal ), $form_id );
+	$goal           = apply_filters( 'give_form_goal', give_maybe_sanitize_amount( $goal ), $form_id );
 	$formatted_goal = '<span class="give_price" id="give_price_' . $form_id . '">' . $goal . '</span>';
 	$formatted_goal = apply_filters( 'give_form_price_after_html', $formatted_goal, $form_id, $goal );
 

@@ -58,14 +58,40 @@ function give_get_price_decimal_separator() {
  *
  * @since      1.8.12
  *
+ * @param  int|float|string $number Expects either a float or a string with a decimal separator only (no thousands)
+ *
+ * @return string $amount Newly sanitized amount
+ */
+function give_sanitize_amount_for_db( $number ) {
+	return give_sanitize_amount( $number, 6 );
+}
+
+/**
+ * Sanitize Amount before saving to database
+ *
+ * @since      1.8.12
+ *
  * @param  int|float|string $number     Expects either a float or a string with a decimal separator only (no thousands)
  * @param  int|bool         $dp         Number of decimals
  * @param  bool             $trim_zeros From end of string
  *
  * @return string $amount Newly sanitized amount
  */
-function give_sanitize_amount_for_db( $number, $dp = false, $trim_zeros = false ) {
-	return give_sanitize_amount( $number, 6 );
+function give_maybe_sanitize_amount( $number, $dp = false, $trim_zeros = false ) {
+	$thousand_separator = give_get_price_thousand_separator();
+	$decimal_separator  = give_get_price_decimal_separator();
+
+	// Bailout.
+	if( empty( $number ) || ( ! is_numeric( $number ) && ! is_string( $number ) ) ) {
+		return $number;
+	}elseif (
+		( false == strpos( $number, $thousand_separator ) ) &&
+		( false === strpos( $number, $decimal_separator ) )
+	) {
+		return number_format( $number, ( is_bool( $dp ) ? give_get_price_decimals() : $dp ), '.', '' );
+	}
+
+	return give_sanitize_amount( $number, $dp, $trim_zeros );
 }
 
 /**
@@ -165,8 +191,8 @@ function give_format_amount( $amount, $decimals = true, $sanitize = true ) {
 	if ( ! empty( $amount ) ) {
 		// Sanitize amount before formatting.
 		$amount = $sanitize ?
-			give_sanitize_amount( $amount ) :
-			round( $amount, $decimals );
+			give_maybe_sanitize_amount( $amount, $decimals ) :
+			number_format( $amount, $decimals, '.', '' );
 
 		if ( 'INR' === $currency ) {
 			$decimal_amount = '';
@@ -228,7 +254,7 @@ function give_human_format_large_amount( $amount ) {
 	$thousands_sep = give_get_price_thousand_separator();
 
 	// Sanitize amount.
-	$sanitize_amount = give_sanitize_amount( $amount );
+	$sanitize_amount = give_maybe_sanitize_amount( $amount );
 
 	// Explode amount to calculate name of large numbers.
 	$amount_array = explode( $thousands_sep, $amount );
@@ -265,8 +291,8 @@ function give_human_format_large_amount( $amount ) {
 function give_format_decimal( $amount, $dp = false, $sanitize = true ) {
 	$decimal_separator = give_get_price_decimal_separator();
 	$formatted_amount  = $sanitize ?
-		give_sanitize_amount( $amount, $dp ) :
-		round( $amount, ( is_bool( $dp ) ? give_get_price_decimals() : $dp ) );
+		give_maybe_sanitize_amount( $amount, $dp ) :
+		number_format( $amount, ( is_bool( $dp ) ? give_get_price_decimals() : $dp ), '.', '' );
 
 	if ( false !== strpos( $formatted_amount, '.' ) ) {
 		$formatted_amount = str_replace( '.', $decimal_separator, $formatted_amount );

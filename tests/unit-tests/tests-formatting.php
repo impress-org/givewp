@@ -116,16 +116,16 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 		switch ( $currency ) {
 			default:
 				// Test 1: without decimal
-				$output = give_format_amount( $amount, false );
+				$output = give_format_amount( $amount, false, false );
 				$this->assertSame( $expected[0], $output, "Testing with {$currency} currency (without decimal)." );
 
 				// Test 2: with decimal(2)
-				$output = give_format_amount( $amount, true );
+				$output = give_format_amount( $amount, true, false );
 				$this->assertSame( $expected[1], $output, "Testing with {$currency} currency (with decimal {2})." );
 
 				// Test 3: with decimal (more then 2)
 				give_update_option( 'number_decimals', 4 );
-				$output = give_format_amount( $amount, true );
+				$output = give_format_amount( $amount, true, false );
 				$this->assertSame( $expected[2], $output, "Testing with {$currency} currency (with decimal {4})." );
 		}
 	}

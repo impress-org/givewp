@@ -1004,7 +1004,7 @@ final class Give_Payment {
 		}
 
 		// Sanitizing the price here so we don't have a dozen calls later.
-		$item_price = give_sanitize_amount( $item_price );
+		$item_price = give_maybe_sanitize_amount( $item_price );
 		$total      = round( $item_price, give_currency_decimal_filter() );
 
 		// Add Options.
