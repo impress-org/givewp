@@ -180,13 +180,59 @@ jQuery(function ($) {
 	 * @returns {*|string}
 	 */
 	function give_format_currency(price, args) {
+		price = price.toString().trim();
+		var number_decimals= parseInt( give_global_vars.number_decimals );
 
-		//Properly position symbol after if selected
-		if (give_global_vars.currency_pos == 'after') {
-			args.format = "%v%s";
+		if( 'INR' === give_global_vars.currency ) {
+			actual_price = accounting.unformat( price, give_global_vars.decimal_separator ).toString();
+
+			var decimal_amount = result = amount = '',
+				decimal_index = actual_price.indexOf('.');
+
+			if( ( -1 !== decimal_index ) && number_decimals ){
+				decimal_amount = Number( actual_price.substr( parseInt( decimal_index ) ) ).toFixed( number_decimals ).toString().substr(1);
+				actual_price   = actual_price.substr(  0, parseInt( decimal_index ) );
+
+				if ( ! decimal_amount.length ) {
+					decimal_amount = '.0000000000'.substr( 0, ( pa + 1 ) );
+				} else if ( ( number_decimals + 1 ) > decimal_amount.length ) {
+					decimal_amount = ( decimal_amount + '000000000' ).substr( 0, number_decimals + 1 );
+				}
+			}
+
+			// Extract last 3 from amount
+			result = actual_price.substr( -3 );
+			amount = actual_price.substr( 0, parseInt( actual_price.length ) - 3 );
+
+			// Apply digits 2 by 2
+			while ( amount.length > 0 ) {
+				result = amount.substr(-2 ) +  give_global_vars.thousands_separator + result;
+				amount = amount.substr( 0, parseInt( amount.length ) -2 );
+			}
+
+			if( decimal_amount.length ) {
+				result = result + decimal_amount;
+			}
+
+			price = result;
+
+			if( undefined !== args.symbol && args.symbol.length ) {
+				if ( 'after' === give_global_vars.currency_pos) {
+					price = price + args.symbol;
+				} else {
+					price = args.symbol + price;
+				}
+			}
+		} else {
+			//Properly position symbol after if selected
+			if ( 'after' === give_global_vars.currency_pos) {
+				args.format = "%v%s";
+			}
+
+			price = accounting.formatMoney(price, args);
 		}
 
-		return accounting.formatMoney(price, args).trim();
+		return price;
 
 	}
 
@@ -215,7 +261,7 @@ jQuery(function ($) {
 			precision: give_global_vars.number_decimals
 		};
 
-		return accounting.formatMoney(amount, format_args);
+		return give_format_currency(amount, format_args);
 	}
 
 	/**
