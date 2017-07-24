@@ -278,7 +278,7 @@ class Give_Updates {
 	}
 
 	/**
-	 * Get tottal updates count
+	 * Get total updates count
 	 *
 	 * @since  1.8.12
 	 * @access public
