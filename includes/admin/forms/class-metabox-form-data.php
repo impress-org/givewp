@@ -100,7 +100,7 @@ class Give_MetaBox_Form_Data {
 
 		// Format amounts.
 		$price = give_format_amount( $price, true, false );
-		$custom_amount_minimum = give_format_amount( $price, true, false );
+		$custom_amount_minimum = give_format_amount( $custom_amount_minimum, true, false );
 
 		// Start with an underscore to hide fields from custom fields list
 		$prefix = '_give_';
