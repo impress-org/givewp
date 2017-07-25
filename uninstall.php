@@ -68,9 +68,8 @@ if ( give_is_setting_enabled( give_get_option( 'uninstall_on_delete' ) ) ) {
 		}
 	}
 
-	// Loading classes on plugin deleting.
-	Give()->init();
 	// Delete Capabilities.
+	Give()->roles = new Give_Roles();
 	Give()->roles->remove_caps();
 
 	// Delete the Roles.
