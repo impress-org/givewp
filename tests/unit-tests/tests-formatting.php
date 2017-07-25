@@ -55,7 +55,7 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 * @param bool   $dp
 	 * @param bool   $trim_zeros
 	 *
-	 * @covers \give_sanitize_amount()
+	 * @covers give_sanitize_amount()
 	 *
 	 * @dataProvider give_sanitize_amount_provider
 	 */
