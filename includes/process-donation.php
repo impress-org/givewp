@@ -358,7 +358,7 @@ function give_donation_form_validate_gateway() {
 				sprintf(
 					/* translators: %s: minimum donation amount */
 					__( 'This form has a minimum donation amount of %s.', 'give' ),
-					give_currency_filter( give_format_amount( give_get_form_minimum_price( $form_id ), true, false ) )
+					give_currency_filter( give_format_amount( give_get_form_minimum_price( $form_id ), array( 'sanitize' => false ) ) )
 				)
 			);
 

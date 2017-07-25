@@ -215,7 +215,7 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 				'complete_sales'  => $complete_count,
 				'pending_sales'   => $pending_count,
 				'total_sales'     => $complete_count + $pending_count,
-				'total_donations' => give_currency_filter( give_format_amount( $stats->get_earnings( 0, 0, 0, $gateway_id ), true, false ) ),
+				'total_donations' => give_currency_filter( give_format_amount( $stats->get_earnings( 0, 0, 0, $gateway_id ), array( 'sanitize' => false ) ) ),
 			);
 		}
 

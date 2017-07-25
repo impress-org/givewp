@@ -190,7 +190,7 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 				break;
 
 			case 'amount_spent' :
-				$value = give_currency_filter( give_format_amount( $item[ $column_name ], true, false ) );
+				$value = give_currency_filter( give_format_amount( $item[ $column_name ], array( 'sanitize' => false ) ) );
 				break;
 
 			default:

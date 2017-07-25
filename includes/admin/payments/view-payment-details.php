@@ -375,7 +375,7 @@ $payment_mode   = $payment->mode;
 														$prices_atts = '';
 														if( $variable_prices = give_get_variable_prices( $payment_meta['form_id'] ) ) {
 															foreach ( $variable_prices as $variable_price ) {
-																$prices_atts[$variable_price['_give_id']['level_id']] = give_format_amount( $variable_price['_give_amount'], true, false );
+																$prices_atts[$variable_price['_give_id']['level_id']] = give_format_amount( $variable_price['_give_amount'], array( 'sanitize' => false ) );
 															}
 														}
 														// Variable price dropdown options.
@@ -398,7 +398,7 @@ $payment_mode   = $payment->mode;
 										<div class="column">
 											<p>
 												<strong><?php esc_html_e( 'Total Donation:', 'give' ); ?></strong><br>
-												<?php echo give_currency_filter( give_format_amount( $payment->total, true, false ), give_get_payment_currency_code( $payment->ID ) ); ?>
+												<?php echo give_currency_filter( give_format_amount( $payment->total, array( 'sanitize' => false ) ), give_get_payment_currency_code( $payment->ID ) ); ?>
 											</p>
 											<p>
 												<?php

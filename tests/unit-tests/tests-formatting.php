@@ -116,16 +116,16 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 		switch ( $currency ) {
 			default:
 				// Test 1: without decimal
-				$output = give_format_amount( $amount, false, false );
+				$output = give_format_amount( $amount, array( 'decimal' => false, 'sanitize' => false, 'currency' => $currency ) );
 				$this->assertSame( $expected[0], $output, "Testing with {$currency} currency (without decimal)." );
 
 				// Test 2: with decimal(2)
-				$output = give_format_amount( $amount, true, false );
+				$output = give_format_amount( $amount, array( 'sanitize' => false, 'currency' => $currency ) );
 				$this->assertSame( $expected[1], $output, "Testing with {$currency} currency (with decimal {2})." );
 
 				// Test 3: with decimal (more then 2)
 				give_update_option( 'number_decimals', 4 );
-				$output = give_format_amount( $amount, true, false );
+				$output = give_format_amount( $amount, array( 'sanitize' => false, 'currency' => $currency ) );
 				$this->assertSame( $expected[2], $output, "Testing with {$currency} currency (with decimal {4})." );
 		}
 	}
@@ -171,17 +171,14 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 */
 	function test_give_human_format_large_amount( $amount, $expected ) {
 		// Case 1.
-		give_update_option( 'currency', 'USD' );
-		$output = give_human_format_large_amount( give_format_amount( $amount ) );
+		$output = give_human_format_large_amount( give_format_amount( $amount, array( 'sanitize' => false, 'currency' => 'USD' ) ) );
 		$this->assertSame(
 			$expected[0],
 			$output
 		);
 
 		// Case 2.
-		give_update_option( 'currency', 'INR' );
-		$output = give_human_format_large_amount( give_format_amount( $amount ) );
-
+		$output = give_human_format_large_amount( give_format_amount( $amount, array( 'sanitize' => false, 'currency' => 'INR' ) ), array( 'currency' => 'INR' ) );
 		$this->assertSame(
 			$expected[1],
 			$output

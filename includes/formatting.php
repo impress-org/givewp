@@ -218,7 +218,7 @@ function give_format_amount( $amount, $args = array() ) {
 	$formatted     = 0;
 	$thousands_sep = give_get_price_thousand_separator();
 	$decimal_sep   = give_get_price_decimal_separator();
-	$decimals      = empty( $args['decimal'] ) ? give_get_price_decimals() : 0;
+	$decimals      = ! empty( $args['decimal'] ) ? give_get_price_decimals() : 0;
 	$currency      = $args['currency'];
 
 	if ( ! empty( $amount ) ) {
@@ -280,10 +280,16 @@ function give_format_amount( $amount, $args = array() ) {
  * @use   give_get_price_thousand_separator Get thousand separator.
  *
  * @param string $amount formatted amount number.
+ * @param array  $args   Array of arguments.
  *
  * @return float|string  formatted amount number with large number names.
  */
-function give_human_format_large_amount( $amount ) {
+function give_human_format_large_amount( $amount, $args = array() ) {
+	$default_args = array(
+		'currency' => give_get_currency(),
+	);
+
+	$args = wp_parse_args( $args, $default_args );
 
 	// Get thousand separator.
 	$thousands_sep = give_get_price_thousand_separator();
@@ -300,7 +306,7 @@ function give_human_format_large_amount( $amount ) {
 	// Human format amount (default).
 	$human_format_amount = $amount;
 
-	switch ( give_get_currency() ) {
+	switch ( $args['currency'] ) {
 		case 'INR':
 			// Calculate large number formatted amount.
 			if ( 4 < $amount_count_parts ) {

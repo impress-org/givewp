@@ -385,7 +385,7 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 			$data[ $i ]['donations'] = $donor->purchase_count;
 		}
 		if ( ! empty( $columns['donation_sum'] ) ) {
-			$data[ $i ]['donation_sum'] = give_format_amount( $donor->purchase_value, true, false );
+			$data[ $i ]['donation_sum'] = give_format_amount( $donor->purchase_value, array( 'sanitize' => false ) );
 		}
 
 		return $data[ $i ];

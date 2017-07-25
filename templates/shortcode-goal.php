@@ -59,8 +59,8 @@ if ( $income >= $goal ) {
 			if ( $goal_format !== 'percentage' ) :
 
 				// Get formatted amount.
-				$income = give_human_format_large_amount( give_format_amount( $income, true, false ) );
-				$goal   = give_human_format_large_amount( give_format_amount( $goal, true, false ) );
+				$income = give_human_format_large_amount( give_format_amount( $income, array( 'sanitize' => false ) ) );
+				$goal   = give_human_format_large_amount( give_format_amount( $goal, array( 'sanitize' => false ) ) );
 
 				echo sprintf(
 				/* translators: 1: amount of income raised 2: goal target ammount */
