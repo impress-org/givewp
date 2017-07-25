@@ -1,12 +1,11 @@
 <?php
-
 /**
- * Created by PhpStorm.
- * User: ravinderkumar
- * Date: 14/07/17
- * Time: 3:27 PM
+ * Class Give_Updates
+ *
+ * @since 1.8.12
  */
 class Give_Updates {
+
 	/**
 	 * Instance.
 	 *
@@ -25,7 +24,6 @@ class Give_Updates {
 	 */
 	static private $updates = array();
 
-
 	/**
 	 * Current update percentage number
 	 *
@@ -33,7 +31,7 @@ class Give_Updates {
 	 * @access private
 	 * @var array
 	 */
-	static public $percentage = 0;
+	public $percentage = 0;
 
 	/**
 	 * Current update step number
@@ -42,7 +40,7 @@ class Give_Updates {
 	 * @access private
 	 * @var array
 	 */
-	static public $step = 1;
+	public $step = 1;
 
 	/**
 	 * Current update number
@@ -139,7 +137,6 @@ class Give_Updates {
 		return $updates;
 	}
 
-
 	/**
 	 * Get instance.
 	 *
@@ -148,8 +145,8 @@ class Give_Updates {
 	 * @return static
 	 */
 	static function get_instance() {
-		if ( null === static::$instance ) {
-			self::$instance = new static();
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
 		}
 
 		return self::$instance;
