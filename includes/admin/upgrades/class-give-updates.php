@@ -22,7 +22,7 @@ class Give_Updates {
 	 * @access private
 	 * @var array
 	 */
-	static private $updates = array();
+	private $updates = array();
 
 	/**
 	 * Current update percentage number
@@ -49,7 +49,7 @@ class Give_Updates {
 	 * @access private
 	 * @var array
 	 */
-	static public $update = 1;
+	public $update = 1;
 
 	/**
 	 * Singleton pattern.
@@ -87,7 +87,7 @@ class Give_Updates {
 			return;
 		}
 
-		self::$updates[ $args['type'] ][] = $args;
+		$this->updates[ $args['type'] ][] = $args;
 	}
 
 
@@ -105,11 +105,11 @@ class Give_Updates {
 	public function get_updates( $update_type = '', $status = 'all' ) {
 		// return all updates.
 		if ( empty( $update_type ) ) {
-			return self::$updates;
+			return $this->updates;
 		}
 
 		// Get specific update.
-		$updates = ! empty( self::$updates[ $update_type ] ) ? self::$updates[ $update_type ] : array();
+		$updates = ! empty( $this->updates[ $update_type ] ) ? $this->updates[ $update_type ] : array();
 
 		// Bailout.
 		if ( empty( $updates ) ) {
@@ -191,7 +191,7 @@ class Give_Updates {
 				continue;
 			}
 
-			self::$updates['plugin'][] = array_merge( $info, (array) $plugin_updates[ $key ] );
+			$this->updates['plugin'][] = array_merge( $info, (array) $plugin_updates[ $key ] );
 		}
 	}
 
@@ -334,8 +334,8 @@ class Give_Updates {
 		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
 
 		// Reset counter.
-		self::$step = self::$percentage = 0;
-		++ self::$update;
+		$this->step = $this->percentage = 0;
+		++ $this->update;
 	}
 
 	/**
@@ -362,11 +362,11 @@ class Give_Updates {
 		}
 
 		// Set params.
-		self::$step   = absint( $_POST['step'] );
-		self::$update = absint( $_POST['update'] );
+		$this->step   = absint( $_POST['step'] );
+		$this->update = absint( $_POST['update'] );
 
 		// Bailout: step and update must be positive and greater then zero.
-		if ( ! self::$step ) {
+		if ( ! $this->step ) {
 			$this->send_ajax_response(
 				array(
 					'message'    => __( 'Error: please reload this page  and try again', 'give' ),
@@ -378,15 +378,13 @@ class Give_Updates {
 		}
 
 		// Get updates.
-		// $all_updates = $this->get_updates( 'database' );
 		$updates = $this->get_updates( 'database', 'new' );
-
 
 		// Bailout if we do not have nay updates.
 		if ( empty( $updates ) ) {
 			$this->send_ajax_response(
 				array(
-					'message'    => __( 'Database already up to date.', 'give' ),
+					'message'    => __( 'The database is already up to date.', 'give' ),
 					'heading'    => '',
 					'percentage' => 0,
 				),
@@ -423,14 +421,14 @@ class Give_Updates {
 			}
 
 			// Verify percentage.
-			self::$percentage = ( 100 < self::$percentage ) ? 100 : self::$percentage;
+			$this->percentage = ( 100 < $this->percentage ) ? 100 : $this->percentage;
 
 			$doing_upgrade_args = array(
 				'update_info' => $update,
-				'step'        => ++ self::$step,
-				'update'      => self::$update,
-				'heading'     => sprintf( 'Update %s of {update_count}', self::$update ),
-				'percentage'  => self::$percentage,
+				'step'        => ++ $this->step,
+				'update'      => $this->update,
+				'heading'     => sprintf( 'Update %s of {update_count}', $this->update ),
+				'percentage'  => $this->percentage,
 			);
 
 			// Cache upgrade.
