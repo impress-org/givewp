@@ -156,9 +156,8 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-receipt.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-register.php' );
 
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/upgrades/class-give-updates.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrade-functions.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrades.php' );
-
 
 		/** Check Assets Exist */
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/css/chosen.css' );
