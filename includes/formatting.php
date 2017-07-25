@@ -197,21 +197,33 @@ function give_sanitize_amount( $number, $dp = false, $trim_zeros = false ) {
  * @since 1.0
  *
  * @param string $amount   Price amount to format
- * @param bool   $decimals Whether or not to use decimals. Useful when set to false for non-currency numbers.
- * @param bool   $sanitize Whether or not to sanitize number.
+ * @param array  $args     Array of arguments.
  *
  * @return string $amount   Newly formatted amount or Price Not Available
  */
-function give_format_amount( $amount, $decimals = true, $sanitize = true ) {
+function give_format_amount( $amount, $args = array() ) {
+	// Backward compatibility.
+	if( is_bool( $args ) ) {
+		$args = array( 'decimal' => $args );
+	}
+
+	$default_args = array(
+		'decimal'  => true,
+		'sanitize' => true,
+		'currency' => give_get_currency(),
+	);
+
+	$args = wp_parse_args( $args, $default_args );
+
 	$formatted     = 0;
 	$thousands_sep = give_get_price_thousand_separator();
 	$decimal_sep   = give_get_price_decimal_separator();
-	$decimals      = $decimals ? give_get_price_decimals() : 0;
-	$currency      = give_get_currency();
+	$decimals      = empty( $args['decimal'] ) ? give_get_price_decimals() : 0;
+	$currency      = $args['currency'];
 
 	if ( ! empty( $amount ) ) {
 		// Sanitize amount before formatting.
-		$amount = $sanitize ?
+		$amount = ! empty( $args['sanitize'] ) ?
 			give_maybe_sanitize_amount( $amount, $decimals ) :
 			number_format( $amount, $decimals, '.', '' );
 
@@ -254,7 +266,7 @@ function give_format_amount( $amount, $decimals = true, $sanitize = true ) {
 		}
 	}
 
-	return apply_filters( 'give_format_amount', $formatted, $amount, $decimals, $decimal_sep, $thousands_sep, $currency );
+	return apply_filters( 'give_format_amount', $formatted, $amount, $decimals, $decimal_sep, $thousands_sep, $currency, $args );
 }
 
 
