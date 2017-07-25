@@ -119,7 +119,6 @@ class Give_Updates {
 		switch ( $status ) {
 			case 'new':
 				// Remove already completed updates.
-
 				$completed_updates = give_get_completed_upgrades();
 
 				if ( ! empty( $completed_updates ) ) {
@@ -158,7 +157,6 @@ class Give_Updates {
 	 *
 	 * @since  1.8.12
 	 * @access public
-	 *
 	 */
 	public function setup() {
 		/**
@@ -177,7 +175,7 @@ class Give_Updates {
 	}
 
 	/**
-	 * Register plugin addon updates
+	 * Register plugin add-on updates.
 	 *
 	 * @since  1.8.12
 	 * @access public
@@ -197,7 +195,7 @@ class Give_Updates {
 
 
 	/**
-	 * Fire custom aciton hook to register updates
+	 * Fire custom action hook to register updates
 	 *
 	 * @since  1.8.12
 	 * @access public
@@ -251,15 +249,28 @@ class Give_Updates {
 	 * @access public
 	 */
 	public function __register_menu() {
+
 		// Load plugin updates.
 		$this->__register_plugin_addon_updates();
 
 		// Bailout.
-		if ( ! $this->get_update_count() ) {
+		if ( ! $this->get_update_count() && isset($_GET['page']) && 'give-updates' === $_GET['page'] ) {
+			// Upgrades
+			add_submenu_page(
+				'edit.php?post_type=give_forms',
+				esc_html__( 'Give Updates Complete', 'give' ),
+				__( 'Updates', 'give' ),
+				'manage_give_settings',
+				'give-updates',
+				array( $this, 'render_complete_page' )
+			);
+		}
+
+		if ( ! $this->get_update_count()) {
 			return;
 		}
 
-		//Upgrades
+		// Upgrades
 		add_submenu_page(
 			'edit.php?post_type=give_forms',
 			esc_html__( 'Give Updates', 'give' ),
@@ -285,6 +296,15 @@ class Give_Updates {
 		return count( $this->get_updates( 'database', 'new' ) );
 	}
 
+	/**
+	 * Render Give Updates Completed page
+	 *
+	 * @since  1.8.12
+	 * @access public
+	 */
+	public function render_complete_page() {
+		include_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/views/upgrades-complete.php';
+	}
 
 	/**
 	 * Render Give Updates page
@@ -435,7 +455,7 @@ class Give_Updates {
 			update_option( 'give_doing_upgrade', $doing_upgrade_args );
 
 			$this->send_ajax_response( $doing_upgrade_args );
-		}
+		}// End foreach().
 	}
 
 	/**
@@ -469,7 +489,9 @@ class Give_Updates {
 				break;
 
 			default:
-				wp_send_json( array( 'data' => $data ) );
+				wp_send_json( array(
+					'data' => $data,
+				) );
 				break;
 		}
 	}
@@ -477,6 +499,7 @@ class Give_Updates {
 
 	/**
 	 * Resume updates
+	 *
 	 * @since  1.8.12
 	 * @access public
 	 *
