@@ -124,6 +124,15 @@ function give_show_upgrade_notices( $give_updates ) {
 			'callback' => 'give_v1812_update_amount_values_callback',
 		)
 	);
+
+	// v1.8.12 Upgrades
+	$give_updates->register(
+		array(
+			'id'       => 'v1812_update_donor_purchase_values',
+			'version'  => '1.8.12',
+			'callback' => 'give_v1812_update_donor_purchase_value_callback',
+		)
+	);
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
@@ -1075,5 +1084,40 @@ function give_v1812_update_amount_values_callback() {
 	} else {
 		// The Update Ran.
 		give_set_upgrade_complete( 'v1812_update_amount_values' );
+	}
+}
+
+
+/**
+ * Give version 1.8.12 update
+ *
+ * Standardized amount values to six decimal for donor
+ *
+ * @see        https://github.com/WordImpress/Give/issues/1849#issuecomment-315128602
+ *
+ * @since      1.8.12
+ */
+function give_v1812_update_donor_purchase_value_callback() {
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
+	$offset       = 1 === $give_updates::$step ? 0 : $give_updates::$step * 20;
+
+	// form query
+	$donors = Give()->donors->get_donors( array(
+			'number' => 20,
+			'offset' => $offset,
+		)
+	);
+
+	if ( ! empty( $donors ) ) {
+		$give_updates->set_percentage( Give()->donors->count() );
+
+		/* @var Object $donor */
+		foreach ( $donors as $donor ) {
+			Give()->donors->update( $donor->id, array( 'purchase_value' => give_sanitize_amount_for_db( $donor->purchase_value ) ) );
+		}
+	} else {
+		// The Update Ran.
+		give_set_upgrade_complete( 'v1812_update_donor_purchase_values' );
 	}
 }
