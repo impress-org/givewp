@@ -879,7 +879,7 @@ jQuery.noConflict();
 					return;
 				}
 
-				$(this).addClass('active');
+				$(this).addClass('active').fadeOut();
 				self.el.progress_container.find('.notice-wrap').remove();
 				self.el.progress_container.append('<div class="notice-wrap give-clearfix"><span class="spinner is-active"></span><div class="give-progress"><div></div></div></div>');
 				self.el.progress_main_container.removeClass('give-hidden');
