@@ -254,19 +254,20 @@ class Give_Updates {
 		$this->__register_plugin_addon_updates();
 
 		// Bailout.
-		if ( ! $this->get_update_count() && isset($_GET['page']) && 'give-updates' === $_GET['page'] ) {
-			// Upgrades
-			add_submenu_page(
-				'edit.php?post_type=give_forms',
-				esc_html__( 'Give Updates Complete', 'give' ),
-				__( 'Updates', 'give' ),
-				'manage_give_settings',
-				'give-updates',
-				array( $this, 'render_complete_page' )
-			);
-		}
-
 		if ( ! $this->get_update_count()) {
+			// Show complete update message if still on update setting page.
+			if ( isset($_GET['page']) && 'give-updates' === $_GET['page'] ) {
+				// Upgrades
+				add_submenu_page(
+					'edit.php?post_type=give_forms',
+					esc_html__( 'Give Updates Complete', 'give' ),
+					__( 'Updates', 'give' ),
+					'manage_give_settings',
+					'give-updates',
+					array( $this, 'render_complete_page' )
+				);
+			}
+
 			return;
 		}
 
