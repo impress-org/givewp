@@ -38,6 +38,10 @@ add_action( 'give_register_batch_exporter', 'give_register_batch_recount_export_
 function give_include_batch_export_class( $class ) {
 	switch ( $class ) {
 
+		case 'Give_Tools_Delete_Donors':
+			require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/data/class-give-tools-delete-test-donors.php';
+			break;
+
 		case 'Give_Tools_Delete_Test_Transactions':
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/data/class-give-tools-delete-test-transactions.php';
 			break;

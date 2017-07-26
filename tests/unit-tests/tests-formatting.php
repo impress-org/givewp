@@ -1,13 +1,20 @@
 <?php
 
 /**
- * @group formatting
+ * Class Tests_Formatting
  */
 class Tests_Formatting extends Give_Unit_Test_Case {
+
+	/**
+	 * Set it up.
+	 */
 	public function setUp() {
 		parent::setUp();
 	}
 
+	/**
+	 * Tear it down.
+	 */
 	public function tearDown() {
 		parent::tearDown();
 	}
@@ -48,10 +55,12 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 * @param bool   $dp
 	 * @param bool   $trim_zeros
 	 *
-	 * @cover        give_sanitize_amount
+	 * @covers ::give_sanitize_amount
+	 *
 	 * @dataProvider give_sanitize_amount_provider
 	 */
 	function test_give_sanitize_amount( $amount, $expected, $dp = false, $trim_zeros = false ) {
+
 		$output = give_sanitize_amount( $amount, $dp, $trim_zeros );
 
 		$this->assertSame(
@@ -66,7 +75,6 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 *
 	 * @since 1.8
 	 * @return array
-	 *
 	 */
 	function give_sanitize_amount_provider() {
 		return array(

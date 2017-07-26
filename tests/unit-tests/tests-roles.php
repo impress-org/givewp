@@ -41,7 +41,7 @@ class Tests_Roles extends Give_Unit_Test_Case {
 
 		if ( class_exists( 'WP_Roles' ) ) {
 			if ( ! isset( $wp_roles ) ) {
-				$wp_roles = new \WP_Roles();
+				$wp_roles = new WP_Roles();
 			}
 		}
 
@@ -87,7 +87,7 @@ class Tests_Roles extends Give_Unit_Test_Case {
 
 		if ( class_exists( 'WP_Roles' ) ) {
 			if ( ! isset( $wp_roles ) ) {
-				$wp_roles = new \WP_Roles();
+				$wp_roles = new WP_Roles();
 			}
 		}
 
@@ -97,12 +97,15 @@ class Tests_Roles extends Give_Unit_Test_Case {
 
 	}
 
+	/**
+	 * Test accountant caps.
+	 */
 	public function test_give_accountant_caps() {
 		global $wp_roles;
 
 		if ( class_exists( 'WP_Roles' ) ) {
 			if ( ! isset( $wp_roles ) ) {
-				$wp_roles = new \WP_Roles();
+				$wp_roles = new WP_Roles();
 			}
 		}
 

@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Load WP_List_Table if not loaded
+// Load WP_List_Table if not loaded.
 if ( ! class_exists( 'WP_List_Table' ) ) {
 	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 }
@@ -230,8 +230,9 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 *
 	 * This is used to return log entries that match our search query, user query, or form query
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
+	 *
 	 * @return array $meta_query
 	 */
 	public function get_meta_query() {
@@ -241,7 +242,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 		$meta_query = array();
 
 		if ( $user ) {
-			// Show only logs from a specific user
+			// Show only logs from a specific user.
 			$meta_query[] = array(
 				'key'   => '_give_log_user_id',
 				'value' => $user,
@@ -258,7 +259,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 		$search = $this->get_search();
 		if ( $search ) {
 			if ( is_email( $search ) ) {
-				// This is an email search. We use this to ensure it works for guest users and logged-in users
+				// This is an email search. We use this to ensure it works for guest users and logged-in users.
 				$key     = '_give_log_user_info';
 				$compare = 'LIKE';
 			} else {
@@ -271,10 +272,10 @@ class Give_Sales_Log_Table extends WP_List_Table {
 					$user = get_user_by( 'login', $search );
 
 					if ( $user ) {
-						// Found one, set meta value to user's ID
+						// Found one, set meta value to user's ID.
 						$search = $user->ID;
 					} else {
-						// No user found so let's do a real search query
+						// No user found so let's do a real search query.
 						$users = new WP_User_Query( array(
 							'search'         => $search,
 							'search_columns' => array( 'user_url', 'user_nicename' ),
@@ -292,7 +293,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 			}
 
 			if ( ! $this->file_search ) {
-				// Meta query only works for non file name searche
+				// Meta query only works for non file name search.
 				$meta_query[] = array(
 					'key'     => $key,
 					'value'   => $search,

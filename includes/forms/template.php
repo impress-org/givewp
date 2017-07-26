@@ -1000,22 +1000,28 @@ function give_default_cc_address_fields( $form_id ) {
 			</select>
 		</p>
 
-		<p id="give-card-state-wrap" class="form-row form-row-last form-row-responsive">
+
+		<?php
+		$selected_state = give_get_state();
+		$states         = give_get_states( $selected_country );
+
+		// Get the country list that does not have any states init.
+		$no_states_country = give_no_states_country_list();
+
+
+		if ( ! empty( $give_user_info['card_state'] ) ) {
+			$selected_state = $give_user_info['card_state'];
+		}
+		?>
+		<p id="give-card-state-wrap" class="form-row form-row-last form-row-responsive <?php echo ( ! empty( $selected_country ) && array_key_exists( $selected_country, $no_states_country ) ) ? 'give-hidden' : ''; ?> ">
 			<label for="card_state" class="give-label">
-				<?php esc_html_e( 'State / Province', 'give' ); ?>
+				<?php esc_html_e( 'State / Province / County', 'give' ); ?>
 				<?php if ( give_field_is_required( 'card_state', $form_id ) ) : ?>
 					<span class="give-required-indicator">*</span>
 				<?php endif; ?>
 				<?php echo Give()->tooltips->render_help( __( 'The state or province for your billing address.', 'give' ) ); ?>
 			</label>
-
-			<?php
-			$selected_state = give_get_state();
-			$states         = give_get_states( $selected_country );
-
-			if ( ! empty( $give_user_info['card_state'] ) ) {
-				$selected_state = $give_user_info['card_state'];
-			}
+            <?php
 
 			if ( ! empty( $states ) ) : ?>
 				<select
@@ -1031,7 +1037,7 @@ function give_default_cc_address_fields( $form_id ) {
 				</select>
 			<?php else : ?>
 				<input type="text" size="6" name="card_state" id="card_state" class="card_state give-input"
-					   placeholder="<?php esc_attr_e( 'State / Province', 'give' ); ?>"/>
+					   placeholder="<?php esc_attr_e( 'State / Province / County', 'give' ); ?>"/>
 			<?php endif; ?>
 		</p>
 		<?php
@@ -1233,7 +1239,7 @@ function give_get_login_fields( $form_id ) {
 				   data-action="give_checkout_register">
 					<?php esc_html_e( 'Register', 'give' );
 					if ( ! give_logged_in_only( $form_id ) ) {
-						echo ' ' . esc_html__( 'or checkout as a guest &raquo;', 'give' );
+						echo ' ' . esc_html__( 'and donate as a guest &raquo;', 'give' );
 					} ?>
 				</a>
 			</p>
