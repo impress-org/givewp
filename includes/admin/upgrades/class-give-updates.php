@@ -523,9 +523,10 @@ class Give_Updates {
 	 * @access public
 	 *
 	 * @param $total
+	 * @param $current_total
 	 */
-	public function set_percentage( $total ) {
-		$this->percentage = $total ? ( ( $this->step * 20 ) / $total ) * 100 : 0;
+	public function set_percentage( $total, $current_total ) {
+		$this->percentage = $total ? ( ( $current_total ) / $total ) * 100 : 0;
 	}
 }
 
