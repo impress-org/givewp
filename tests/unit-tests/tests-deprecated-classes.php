@@ -32,11 +32,6 @@ class Tests_Deprecated_Classes extends Give_Unit_Test_Case {
 	 */
 	public function setUp() {
 
-		if (version_compare(PHP_VERSION, '5.2', '<=')) {
-			$this->markTestSkipped( 'PHPUnit version too outdated to run tests within this class.' );
-			return;
-		}
-
 		parent::setUp();
 
 		$this->_post_id = $this->factory->post->create( array(
@@ -146,6 +141,10 @@ class Tests_Deprecated_Classes extends Give_Unit_Test_Case {
 	 */
 	public function test_customers_vs_donors_class() {
 
+		if ( version_compare( PHP_VERSION, '5.2', '<=' ) ) {
+			$this->markTestSkipped( 'PHPUnit version too outdated to run tests within this class.' );
+		}
+
 		$donor    = (array) new Give_Donor( $this->_donor_id );
 		$customer = (array) new Give_Customer( $this->_donor_id );
 
@@ -179,9 +178,12 @@ class Tests_Deprecated_Classes extends Give_Unit_Test_Case {
 	 */
 	public function test_db_customers_vs_db_donors_class() {
 
-		$donors_db    = new Give_DB_Donors();
-		$customers_db = new Give_DB_Customers();
+		if ( version_compare( PHP_VERSION, '5.2', '<=' ) ) {
+			$this->markTestSkipped( 'PHPUnit version too outdated to run tests within this class.' );
+		}
 
+		$donors_db          = new Give_DB_Donors();
+		$customers_db       = new Give_DB_Customers();
 		$customers_db_array = (array) $customers_db;
 
 
