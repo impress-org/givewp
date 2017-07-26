@@ -1899,37 +1899,111 @@ h2.give-nav-tab-wrapper {
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
-#give-payment-filters, .give-submit-wrap {
+.give-filters {
   clear: both;
   background: #f5f5f5;
-  border-color: #dfdfdf;
+  border: 1px solid #dfdfdf;
+  padding: 12px 12px 0 12px; }
+  .give-filters .give-donation-forms-filter .chosen-single {
+    height: 28px;
+    line-height: 28px; }
+  .give-filters .chosen-container-single .chosen-single div b {
+    background-position: 0 4px; }
+  .give-filters .chosen-container-active.chosen-with-drop .chosen-single div b {
+    background-position: -18px 6px; }
+  .give-filters:after {
+    content: "";
+    display: table;
+    clear: both; }
+
+.give-filter {
+  display: block;
+  margin-bottom: 12px;
+  width: 100%; }
+  .give-filter:after {
+    content: "";
+    display: table;
+    clear: both; }
+  .give-filter label {
+    display: block;
+    margin-right: 4px; }
+  .give-filter input {
+    margin: 0; }
+  .give-filter input[type="text"] {
+    height: 28px;
+    width: 100%; }
+  .give-filter input[type="text"],
+  .give-filter input[type="search"] {
+    height: 28px; }
+  .give-filter .button {
+    height: 28px;
+    line-height: 26px;
+    margin: 0;
+    padding: 0 10px 1px; }
+  .give-filter select {
+    width: 100%; }
+  @media screen and (min-width: 783px) {
+    .give-filter {
+      float: left;
+      margin-right: 18px;
+      width: auto; }
+      .give-filter label {
+        display: inline-block; }
+      .give-filter input[type="text"] {
+        display: inline-block;
+        width: 144px; } }
+
+.give-filter-search input[type="search"] {
+  display: block;
+  float: left;
+  width: 68%; }
+
+.give-filter-search input[type="submit"] {
+  display: block;
+  float: right;
+  width: 30%; }
+
+@media screen and (min-width: 783px) {
+  .give-filter-search input[type="search"] {
+    display: inline-block;
+    margin-right: 4px;
+    width: 144px; }
+  .give-filter-search input[type="submit"] {
+    display: inline-block;
+    width: auto; } }
+
+@media screen and (min-width: 600px) {
+  .give-filter-half {
+    float: left;
+    width: 49%; }
+    .give-filter-half:last-child {
+      float: right; } }
+
+@media screen and (min-width: 783px) {
+  .give-filter-half {
+    width: auto; }
+    .give-filter-half:last-child {
+      float: left; }
+    .give-filter-half input[type="text"] {
+      width: 96px; } }
+
+.give-clear-filters-button {
+  margin-left: 8px; }
+
+.give-submit-wrap {
+  clear: both;
+  background: #f5f5f5;
+  border: 1px solid #dfdfdf;
   margin: 8px 0;
   padding: 12px;
-  border-width: 1px;
-  border-style: solid;
   font-size: 13px;
   line-height: 2.1em; }
-
-#give-payment-filters p {
-  color: #777; }
 
 #give-payment-filters ul.subsubsub {
   margin-bottom: 8px; }
 
-#give-payment-filters label {
-  font-style: italic;
-  margin: 0 10px; }
-  #give-payment-filters label.give-start-date-label {
-    margin-left: 5px; }
-
 #give-payments-advanced-filter ul.subsubsub {
   margin-bottom: 12px; }
-
-#give-payments-advanced-filter #search-submit {
-  margin-right: 20px; }
-
-#give-payments-advanced-filter .give-donation-forms-filter {
-  margin-right: 5px; }
 
 #give-payments-filter .tablenav.top {
   float: none; }
@@ -2723,5 +2797,26 @@ div.sc-shortcode {
 
 .admin-color-sunrise .give-progress div {
   background: #dd823b; }
+
+/**
+ * Give Updates Panel SCSS
+ *
+ * @description Updates Panel Styles
+ * @package     Give
+ * @subpackage  SCSS/Admin
+ * @copyright   Copyright (c) 2017, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+#give-updates-h1 {
+  padding-top: 0; }
+
+.give-update-panel-content p {
+  font-size: 16px; }
+
+#give-updates .dashicons-no-alt {
+  color: red; }
+
+#give-updates .dashicons-yes {
+  color: green; }
 
 /*# sourceMappingURL=../sourcemaps/give-admin.css.map */

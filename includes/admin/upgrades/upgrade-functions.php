@@ -280,7 +280,7 @@ function give_v132_upgrade_give_payment_customer_id() {
 	$sql   = "UPDATE $wpdb->postmeta SET meta_key = '_give_payment_customer_id' WHERE meta_key = '_give_payment_donor_id'";
 	$query = $wpdb->query( $sql );
 
-	$give_updates::$percentage = 100;
+	$give_updates->percentage = 100;
 	give_set_upgrade_complete( 'upgrade_give_payment_customer_id' );
 }
 
@@ -321,7 +321,7 @@ function give_v134_upgrade_give_offline_status() {
 		}
 	}
 
-	$give_updates::$percentage = 100;
+	$give_updates->percentage = 100;
 	give_set_upgrade_complete( 'upgrade_give_offline_status' );
 }
 
@@ -660,7 +660,7 @@ function give_v18_upgrades_form_metadata() {
 
 	// form query
 	$forms = new WP_Query( array(
-			'paged'          => $give_updates::$step,
+			'paged'          => $give_updates->step,
 			'status'         => 'any',
 			'order'          => 'ASC',
 			'post_type'      => 'give_forms',
@@ -669,10 +669,8 @@ function give_v18_upgrades_form_metadata() {
 	);
 
 	if ( $forms->have_posts() ) {
-		$give_updates::$percentage = ( ( $give_updates::$step * 20 ) / $forms->found_posts  ) * 100;
-
-		error_log( print_r( "{$give_updates::$step}-{$forms->found_posts}-{$give_updates::$percentage}", true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-
+		$give_updates->percentage = ( ( $give_updates->step * 20 ) / $forms->found_posts  ) * 100;
+		
 		while ( $forms->have_posts() ) {
 			$forms->the_post();
 
@@ -880,7 +878,7 @@ function give_v189_upgrades_levels_post_meta_callback() {
 
 	// form query
 	$donation_forms = new WP_Query( array(
-			'paged'          => $give_updates::$step,
+			'paged'          => $give_updates->step,
 			'status'         => 'any',
 			'order'          => 'ASC',
 			'post_type'      => 'give_forms',
@@ -889,7 +887,7 @@ function give_v189_upgrades_levels_post_meta_callback() {
 	);
 
 	if ( $donation_forms->have_posts() ) {
-		$give_updates::$percentage = ( ( $give_updates::$step * 20 ) / $donation_forms->found_posts  ) * 100;
+		$give_updates->percentage = ( ( $give_updates->step * 20 ) / $donation_forms->found_posts  ) * 100;
 
 		while ( $donation_forms->have_posts() ) {
 			$donation_forms->the_post();
