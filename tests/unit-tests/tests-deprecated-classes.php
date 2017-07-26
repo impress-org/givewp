@@ -32,6 +32,10 @@ class Tests_Deprecated_Classes extends Give_Unit_Test_Case {
 	 */
 	public function setUp() {
 
+		if (version_compare(PHP_VERSION, '5.2', '<=')) {
+			$this->markTestSkipped( 'PHPUnit version too outdated to run tests within this class.' );
+		}
+
 		parent::setUp();
 
 		$this->_post_id = $this->factory->post->create( array(
@@ -142,7 +146,7 @@ class Tests_Deprecated_Classes extends Give_Unit_Test_Case {
 	public function test_customers_vs_donors_class() {
 
 		$donor    = (array) new Give_Donor( $this->_donor_id );
-		$customer = (array)  new Give_Customer( $this->_donor_id );
+		$customer = (array) new Give_Customer( $this->_donor_id );
 
 		// Check that the keys match (converted to arrays for testing).
 		$this->assertArraySubset( $donor, $customer );
@@ -155,7 +159,7 @@ class Tests_Deprecated_Classes extends Give_Unit_Test_Case {
 
 		// Test customer create.
 		$test_email = 'cooldonor@domain.com';
-		$customer2 = new Give_Customer( $test_email );
+		$customer2  = new Give_Customer( $test_email );
 		$this->assertEquals( 0, $customer2->id );
 
 		$data = array(
@@ -174,30 +178,31 @@ class Tests_Deprecated_Classes extends Give_Unit_Test_Case {
 	 */
 	public function test_db_customers_vs_db_donors_class() {
 
-		$donors_db   = new Give_DB_Donors();
+		$donors_db    = new Give_DB_Donors();
 		$customers_db = new Give_DB_Customers();
 
 		$customers_db_array = (array) $customers_db;
 
+
 		// Check that the objects match (converted to arrays for testing).
-		$this->assertArraySubset(  (array) $donors_db,  $customers_db_array );
+		$this->assertArraySubset( (array) $donors_db, $customers_db_array );
 
 
 		// Check values match within array.
-		foreach (  (array) $donors_db as $key => $donor_db_val ) {
-			$this->assertEquals( $donor_db_val,  $customers_db_array["{$key}"] );
+		foreach ( (array) $donors_db as $key => $donor_db_val ) {
+			$this->assertEquals( $donor_db_val, $customers_db_array["{$key}"] );
 		}
 
 		// Test get_customers vs get_donors
-		$args = array(
-			'number' => -1,
+		$args          = array(
+			'number' => - 1,
 		);
-		$get_donors = $donors_db->get_donors( $args );
+		$get_donors    = $donors_db->get_donors( $args );
 		$get_customers = $customers_db->get_customers( $args );
 		$this->assertArraySubset( (array) $get_donors[0], (array) $get_customers[0] );
 
 		// Test get_customer_by vs get_donor_by
-		$donor = $donors_db->get_donor_by( 'email', 'testadmin@domain.com' );
+		$donor    = $donors_db->get_donor_by( 'email', 'testadmin@domain.com' );
 		$customer = $customers_db->get_donor_by( 'email', 'testadmin@domain.com' );
 		$this->assertArraySubset( (array) $donor, (array) $customer );
 
