@@ -141,7 +141,7 @@ class Tests_Deprecated_Classes extends Give_Unit_Test_Case {
 	 */
 	public function test_customers_vs_donors_class() {
 
-		if ( version_compare( phpversion(), '5.2', '<=' ) ) {
+		if ( ! method_exists( $this, 'markTestSkipped' ) ) {
 			$this->markTestSkipped( 'PHPUnit version too outdated to run tests within this class.' );
 		}
 
@@ -178,7 +178,7 @@ class Tests_Deprecated_Classes extends Give_Unit_Test_Case {
 	 */
 	public function test_db_customers_vs_db_donors_class() {
 
-		if ( version_compare( phpversion(), '5.2', '<=' ) ) {
+		if ( ! method_exists( $this, 'markTestSkipped' ) ) {
 			$this->markTestSkipped( 'PHPUnit version too outdated to run tests within this class.' );
 		}
 
