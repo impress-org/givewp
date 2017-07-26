@@ -173,6 +173,8 @@ class Give_Payments_Query extends Give_Stats {
 	 * @return array
 	 */
 	public function get_payments() {
+		// Modify the query/query arguments before we retrieve payments.
+		$this->set_filters();
 
 		/**
 		 * Fires before retrieving payments.
@@ -182,9 +184,6 @@ class Give_Payments_Query extends Give_Stats {
 		 * @param Give_Payments_Query $this Payments query object.
 		 */
 		do_action( 'give_pre_get_payments', $this );
-
-		// Modify the query/query arguments before we retrieve payments.
-		$this->set_filters();
 
 		$query = new WP_Query( $this->args );
 
@@ -378,6 +377,8 @@ class Give_Payments_Query extends Give_Stats {
 	 * @return mixed
 	 */
 	public function custom_orderby( $order, $query ) {
+		global $wpdb;
+
 		$post_types = is_array( $query->query['post_type'] ) ? $query->query['post_type'] : array( $query->query['post_type'] );
 		if ( ! in_array( 'give_payment', $post_types ) || is_array( $query->query['orderby'] ) ) {
 			return $order;
@@ -385,7 +386,7 @@ class Give_Payments_Query extends Give_Stats {
 
 		switch ( $query->query['orderby'] ) {
 			case 'post_status':
-				$order = 'wp_posts.post_status ' . strtoupper( $query->query['order'] );
+				$order = $wpdb->posts .'.post_status ' . strtoupper( $query->query['order'] );
 				break;
 		}
 

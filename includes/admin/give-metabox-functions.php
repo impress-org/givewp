@@ -1065,8 +1065,8 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 							<div class="give-row-head give-move">
 								<button type="button" class="handlediv button-link">
 									<span class="toggle-indicator"></span></button>
-								<sapn class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-
-								</sapn>
+								<span class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-
+								</span>
 								<h2>
 									<span data-header-title="<?php echo $header_title; ?>"><?php echo $header_title; ?></span>
 								</h2>
@@ -1100,8 +1100,8 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 						<div class="give-row-head give-move">
 							<button type="button" class="handlediv button-link">
 								<span class="toggle-indicator"></span></button>
-							<sapn class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-
-							</sapn>
+							<span class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-
+							</span>
 							<h2>
 								<span data-header-title="<?php echo $header_title; ?>"><?php echo $header_title; ?></span>
 							</h2>

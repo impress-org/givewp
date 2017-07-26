@@ -137,6 +137,7 @@ jQuery.noConflict();
 				$('._give_goal_color_field').hide();
 				$('._give_close_form_when_goal_achieved_field').hide();
 				$('._give_form_goal_achieved_message_field').hide();
+				$('._give_number_of_donation_goal_field').hide();
 			} else {
 				$('._give_set_goal_field').show();
 				$('._give_goal_format_field').show();
@@ -148,6 +149,21 @@ jQuery.noConflict();
 				if (close_form_when_goal_achieved_option_val === 'enabled') {
 					$('._give_form_goal_achieved_message_field').show();
 				}
+
+			}
+		}).change();
+
+		var goal_format = $('._give_goal_format_field input:radio');
+		goal_format.on('change', function() {
+			var goal_format_val = $('._give_goal_format_field input:radio:checked').val();
+			var goal_option_val = $('._give_goal_option_field input:radio:checked').val();
+
+			if( 'donation' === goal_format_val ) {
+				$('._give_set_goal_field').hide();
+				$('._give_number_of_donation_goal_field').show();
+			} else {
+				( 'disabled' === goal_option_val ) ? $('._give_set_goal_field').hide() : $('._give_set_goal_field').show();
+				$('._give_number_of_donation_goal_field').hide();
 			}
 		}).change();
 

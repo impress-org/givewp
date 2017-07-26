@@ -81,20 +81,25 @@ jQuery(document).ready(function ($) {
             give_user_pass: this_form.find('[name=give_user_pass]').val()
         };
 
-		$.post(give_global_vars.ajaxurl, data, function (data) {
-
+		$.post(give_global_vars.ajaxurl, data, function (response) {
 			//user is logged in
-			if ($.trim(data) == 'success') {
+			if ( $.trim( typeof ( response.success ) ) != undefined && response.success == true && typeof ( response.data ) != undefined ) {
+
 				//remove errors
 				this_form.find('.give_errors').remove();
-				//reload the selected gateway so it contains their logged in information
+
+                // Login successfully message.
+                this_form.find( '#give-payment-mode-select' ).after( response.data );
+                this_form.find( '.give_notices.give_errors' ).delay(5000).slideUp();
+
+                //reload the selected gateway so it contains their logged in information
 				give_load_gateway(this_form, this_form.find('.give-gateway-option-selected input').val());
 			} else {
 				//Login failed, show errors
 				this_form.find('[id^=give-login-fields] input[type=submit]').val(complete_purchase_val);
 				this_form.find('.give-loading-animation').fadeOut();
 				this_form.find('.give_errors').remove();
-				this_form.find('[id^=give-user-login-submit]').before(data);
+				this_form.find('[id^=give-user-login-submit]').before( response.data );
 			}
 		});
 

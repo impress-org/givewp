@@ -755,13 +755,11 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					// Custom: Log field.
 					case 'logs' :
 
-						include GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/logs.php';
-
 						// Get current section.
 						$current_section = $_GET['section'] = give_get_current_setting_section();
 
 						/**
-						 * Fires the in report page logs view.
+						 * Fires for each tab of logs view.
 						 *
 						 * @since 1.0
 						 */

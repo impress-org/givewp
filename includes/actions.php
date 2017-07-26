@@ -178,7 +178,7 @@ function give_admin_quick_css() {
 	}
 
 	switch ( true ) {
-		case ( 'plugins' === $screen->base ):
+		case ( 'plugins' === $screen->base || 'plugins-network' === $screen->base ):
 			?>
 			<style>
 				tr.active.update + tr.give-addon-notice-tr td{

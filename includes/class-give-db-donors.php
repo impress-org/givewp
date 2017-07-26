@@ -38,11 +38,15 @@ class Give_DB_Donors extends Give_DB {
 		$this->table_name  = $wpdb->prefix . 'give_customers';
 		$this->primary_key = 'id';
 		$this->version     = '1.0';
-		
-		add_action( 'profile_update', array( $this, 'update_donor_email_on_user_update' ), 10, 2 );
 
-		// Install table.
-		$this->register_table();
+		// Set hooks and register table only if instance loading first time.
+		if( ! ( Give()->donors instanceof Give_DB_Donors ) ) {
+			// Setup hook.
+			add_action( 'profile_update', array( $this, 'update_donor_email_on_user_update' ), 10, 2 );
+
+			// Install table.
+			$this->register_table();
+		}
 
 	}
 
@@ -184,6 +188,29 @@ class Give_DB_Donors extends Give_DB {
 			return false;
 		}
 
+	}
+
+	/**
+	 * Delete a donor.
+	 *
+	 * NOTE: This should not be called directly as it does not make necessary changes to
+	 * the payment meta and logs. Use give_donor_delete() instead.
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @param  int $user_id
+	 *
+	 * @return bool|int
+	 */
+	public function delete_by_user_id( $user_id = false ) {
+
+		if ( empty( $user_id ) ) {
+			return false;
+		}
+		global $wpdb;
+
+		return $wpdb->delete( $this->table_name, array( 'user_id' => $user_id ), array( '%d' ) );
 	}
 
 	/**
