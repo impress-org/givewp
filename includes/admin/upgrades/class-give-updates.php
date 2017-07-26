@@ -514,6 +514,18 @@ class Give_Updates {
 
 		return $status;
 	}
+
+	/**
+	 * Set current update percentage.
+	 *
+	 * @since  1.8.12
+	 * @access public
+	 *
+	 * @param $total
+	 */
+	public function set_percentage( $total ) {
+		$this->percentage = $total ? ( ( $this->step * 20 ) / $total ) * 100 : 0;
+	}
 }
 
 Give_Updates::get_instance()->setup();
