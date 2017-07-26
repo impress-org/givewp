@@ -141,8 +141,9 @@ class Tests_Deprecated_Classes extends Give_Unit_Test_Case {
 	 */
 	public function test_customers_vs_donors_class() {
 
-		if ( ! method_exists( $this, 'markTestSkipped' ) ) {
+		if ( ! method_exists( $this, 'assertArraySubset' ) ) {
 			$this->markTestSkipped( 'PHPUnit version too outdated to run tests within this class.' );
+
 		}
 
 		$donor    = (array) new Give_Donor( $this->_donor_id );
@@ -178,7 +179,7 @@ class Tests_Deprecated_Classes extends Give_Unit_Test_Case {
 	 */
 	public function test_db_customers_vs_db_donors_class() {
 
-		if ( ! method_exists( $this, 'markTestSkipped' ) ) {
+		if ( ! method_exists( $this, 'assertArraySubset' ) ) {
 			$this->markTestSkipped( 'PHPUnit version too outdated to run tests within this class.' );
 		}
 
