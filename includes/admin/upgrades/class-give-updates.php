@@ -1,12 +1,11 @@
 <?php
-
 /**
- * Created by PhpStorm.
- * User: ravinderkumar
- * Date: 14/07/17
- * Time: 3:27 PM
+ * Class Give_Updates
+ *
+ * @since 1.8.12
  */
 class Give_Updates {
+
 	/**
 	 * Instance.
 	 *
@@ -23,8 +22,7 @@ class Give_Updates {
 	 * @access private
 	 * @var array
 	 */
-	static private $updates = array();
-
+	private $updates = array();
 
 	/**
 	 * Current update percentage number
@@ -33,7 +31,7 @@ class Give_Updates {
 	 * @access private
 	 * @var array
 	 */
-	static public $percentage = 0;
+	public $percentage = 0;
 
 	/**
 	 * Current update step number
@@ -42,7 +40,7 @@ class Give_Updates {
 	 * @access private
 	 * @var array
 	 */
-	static public $step = 1;
+	public $step = 1;
 
 	/**
 	 * Current update number
@@ -51,7 +49,7 @@ class Give_Updates {
 	 * @access private
 	 * @var array
 	 */
-	static public $update = 1;
+	public $update = 1;
 
 	/**
 	 * Singleton pattern.
@@ -89,7 +87,7 @@ class Give_Updates {
 			return;
 		}
 
-		self::$updates[ $args['type'] ][] = $args;
+		$this->updates[ $args['type'] ][] = $args;
 	}
 
 
@@ -107,11 +105,11 @@ class Give_Updates {
 	public function get_updates( $update_type = '', $status = 'all' ) {
 		// return all updates.
 		if ( empty( $update_type ) ) {
-			return self::$updates;
+			return $this->updates;
 		}
 
 		// Get specific update.
-		$updates = ! empty( self::$updates[ $update_type ] ) ? self::$updates[ $update_type ] : array();
+		$updates = ! empty( $this->updates[ $update_type ] ) ? $this->updates[ $update_type ] : array();
 
 		// Bailout.
 		if ( empty( $updates ) ) {
@@ -121,7 +119,6 @@ class Give_Updates {
 		switch ( $status ) {
 			case 'new':
 				// Remove already completed updates.
-
 				$completed_updates = give_get_completed_upgrades();
 
 				if ( ! empty( $completed_updates ) ) {
@@ -139,7 +136,6 @@ class Give_Updates {
 		return $updates;
 	}
 
-
 	/**
 	 * Get instance.
 	 *
@@ -148,8 +144,8 @@ class Give_Updates {
 	 * @return static
 	 */
 	static function get_instance() {
-		if ( null === static::$instance ) {
-			self::$instance = new static();
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
 		}
 
 		return self::$instance;
@@ -161,7 +157,6 @@ class Give_Updates {
 	 *
 	 * @since  1.8.12
 	 * @access public
-	 *
 	 */
 	public function setup() {
 		/**
@@ -180,7 +175,7 @@ class Give_Updates {
 	}
 
 	/**
-	 * Register plugin addon updates
+	 * Register plugin add-on updates.
 	 *
 	 * @since  1.8.12
 	 * @access public
@@ -194,13 +189,13 @@ class Give_Updates {
 				continue;
 			}
 
-			self::$updates['plugin'][] = array_merge( $info, (array) $plugin_updates[ $key ] );
+			$this->updates['plugin'][] = array_merge( $info, (array) $plugin_updates[ $key ] );
 		}
 	}
 
 
 	/**
-	 * Fire custom aciton hook to register updates
+	 * Fire custom action hook to register updates
 	 *
 	 * @since  1.8.12
 	 * @access public
@@ -254,15 +249,28 @@ class Give_Updates {
 	 * @access public
 	 */
 	public function __register_menu() {
+
 		// Load plugin updates.
 		$this->__register_plugin_addon_updates();
 
 		// Bailout.
-		if ( ! $this->get_update_count() ) {
+		if ( ! $this->get_update_count() && isset($_GET['page']) && 'give-updates' === $_GET['page'] ) {
+			// Upgrades
+			add_submenu_page(
+				'edit.php?post_type=give_forms',
+				esc_html__( 'Give Updates Complete', 'give' ),
+				__( 'Updates', 'give' ),
+				'manage_give_settings',
+				'give-updates',
+				array( $this, 'render_complete_page' )
+			);
+		}
+
+		if ( ! $this->get_update_count()) {
 			return;
 		}
 
-		//Upgrades
+		// Upgrades
 		add_submenu_page(
 			'edit.php?post_type=give_forms',
 			esc_html__( 'Give Updates', 'give' ),
@@ -288,6 +296,15 @@ class Give_Updates {
 		return count( $this->get_updates( 'database', 'new' ) );
 	}
 
+	/**
+	 * Render Give Updates Completed page
+	 *
+	 * @since  1.8.12
+	 * @access public
+	 */
+	public function render_complete_page() {
+		include_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/views/upgrades-complete.php';
+	}
 
 	/**
 	 * Render Give Updates page
@@ -337,8 +354,8 @@ class Give_Updates {
 		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
 
 		// Reset counter.
-		self::$step = self::$percentage = 0;
-		++ self::$update;
+		$this->step = $this->percentage = 0;
+		++ $this->update;
 	}
 
 	/**
@@ -365,11 +382,11 @@ class Give_Updates {
 		}
 
 		// Set params.
-		self::$step   = absint( $_POST['step'] );
-		self::$update = absint( $_POST['update'] );
+		$this->step   = absint( $_POST['step'] );
+		$this->update = absint( $_POST['update'] );
 
 		// Bailout: step and update must be positive and greater then zero.
-		if ( ! self::$step ) {
+		if ( ! $this->step ) {
 			$this->send_ajax_response(
 				array(
 					'message'    => __( 'Error: please reload this page  and try again', 'give' ),
@@ -381,15 +398,13 @@ class Give_Updates {
 		}
 
 		// Get updates.
-		// $all_updates = $this->get_updates( 'database' );
 		$updates = $this->get_updates( 'database', 'new' );
-
 
 		// Bailout if we do not have nay updates.
 		if ( empty( $updates ) ) {
 			$this->send_ajax_response(
 				array(
-					'message'    => __( 'Database already up to date.', 'give' ),
+					'message'    => __( 'The database is already up to date.', 'give' ),
 					'heading'    => '',
 					'percentage' => 0,
 				),
@@ -426,21 +441,21 @@ class Give_Updates {
 			}
 
 			// Verify percentage.
-			self::$percentage = ( 100 < self::$percentage ) ? 100 : self::$percentage;
+			$this->percentage = ( 100 < $this->percentage ) ? 100 : $this->percentage;
 
 			$doing_upgrade_args = array(
 				'update_info' => $update,
-				'step'        => ++ self::$step,
-				'update'      => self::$update,
-				'heading'     => sprintf( 'Update %s of {update_count}', self::$update ),
-				'percentage'  => self::$percentage,
+				'step'        => ++ $this->step,
+				'update'      => $this->update,
+				'heading'     => sprintf( 'Update %s of {update_count}', $this->update ),
+				'percentage'  => $this->percentage,
 			);
 
 			// Cache upgrade.
 			update_option( 'give_doing_upgrade', $doing_upgrade_args );
 
 			$this->send_ajax_response( $doing_upgrade_args );
-		}
+		}// End foreach().
 	}
 
 	/**
@@ -474,7 +489,9 @@ class Give_Updates {
 				break;
 
 			default:
-				wp_send_json( array( 'data' => $data ) );
+				wp_send_json( array(
+					'data' => $data,
+				) );
 				break;
 		}
 	}
@@ -482,6 +499,7 @@ class Give_Updates {
 
 	/**
 	 * Resume updates
+	 *
 	 * @since  1.8.12
 	 * @access public
 	 *
