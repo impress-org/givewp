@@ -999,7 +999,7 @@ function give_v1812_update_amount_values_callback() {
 
 	// form query
 	$donation_forms = new WP_Query( array(
-			'paged'          => $give_updates::$step,
+			'paged'          => $give_updates->step,
 			'status'         => 'any',
 			'order'          => 'ASC',
 			'post_type'      => array( 'give_forms', 'give_payment' ),
@@ -1098,7 +1098,7 @@ function give_v1812_update_amount_values_callback() {
 function give_v1812_update_donor_purchase_value_callback() {
 	/* @var Give_Updates $give_updates */
 	$give_updates = Give_Updates::get_instance();
-	$offset       = 1 === $give_updates::$step ? 0 : $give_updates::$step * 20;
+	$offset       = 1 === $give_updates->step ? 0 : $give_updates->step * 20;
 
 	// form query
 	$donors = Give()->donors->get_donors( array(
