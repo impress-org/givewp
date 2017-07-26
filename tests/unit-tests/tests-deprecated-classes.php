@@ -34,6 +34,7 @@ class Tests_Deprecated_Classes extends Give_Unit_Test_Case {
 
 		if (version_compare(PHP_VERSION, '5.2', '<=')) {
 			$this->markTestSkipped( 'PHPUnit version too outdated to run tests within this class.' );
+			return;
 		}
 
 		parent::setUp();
