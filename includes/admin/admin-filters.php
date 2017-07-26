@@ -38,7 +38,7 @@ function __give_sanitize_number_decimals_setting_field( $value ) {
 
 	// Check if
 	if ( $value_changed && ( $old_value != $value ) ) {
-		Give_Admin_Settings::add_error( 'give-number-decimal', __( '\'Number of Decimals\' automatically set to zero because \'Decimal Separator\' can not empty.', 'give' ) );
+		Give_Admin_Settings::add_error( 'give-number-decimal', __( 'The \'Number of Decimals\' option has been automatically set to zero because the \'Decimal Separator\' option can not empty.', 'give' ) );
 	}
 
 	$value = absint( $value );
@@ -73,7 +73,7 @@ function __give_validate_decimal_separator_setting_field( $value ) {
 	if ( $decimal_separator === $thousand_separator ) {
 		$value                    = '';
 		$_POST['number_decimals'] = 0;
-		Give_Admin_Settings::add_error( 'give-decimal-separator', __( '\'Decimal Separator\' automatically set to empty because it can not equal to \'Thousand Separator\'', 'give' ) );
+		Give_Admin_Settings::add_error( 'give-decimal-separator', __( 'The \'Decimal Separator\' option has automatically been set to empty because it can not be equal to the \'Thousand Separator\'', 'give' ) );
 	}
 
 	return $value;
