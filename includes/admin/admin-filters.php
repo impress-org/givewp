@@ -41,6 +41,12 @@ function __give_sanitize_number_decimals_setting_field( $value ) {
 		Give_Admin_Settings::add_error( 'give-number-decimal', __( '\'Number of Decimals\' automatically set to zero because \'Decimal Separator\' can not empty.', 'give' ) );
 	}
 
+	$value = absint( $value );
+
+	if( 6 <= $value ) {
+		$value = 5;
+	}
+
 	return absint( $value );
 }
 
