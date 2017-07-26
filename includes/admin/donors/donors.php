@@ -268,7 +268,18 @@ function give_donor_view( $donor ) {
 										<span data-key="user_id"><?php esc_html_e( 'None', 'give' ); ?></span>
 									<?php } ?>
 									<?php if ( current_user_can( $donor_edit_role ) && intval( $donor->user_id ) > 0 ) { ?>
-										<span class="disconnect-user"> - <a id="disconnect-donor" href="#disconnect" aria-label="<?php esc_attr_e( 'Disconnects the current user ID from this donor record.', 'give' ); ?>"><?php esc_html_e( 'Disconnect User', 'give' ); ?></a></span>
+										<span class="disconnect-user">
+											-
+											<a id="disconnect-donor" href="#disconnect" aria-label="<?php esc_attr_e( 'Disconnects the current user ID from this donor record.', 'give' ); ?>">
+												<?php esc_html_e( 'Disconnect User', 'give' ); ?>
+											</a>
+										</span>
+										<span class="view-user-profile">
+											|
+											<a id="view-user-profile" href="<?php echo 'user-edit.php?user_id=' . $donor->user_id; ?>" aria-label="<?php esc_attr_e( 'View User Profile of current user ID.', 'give' ); ?>">
+												<?php esc_html_e( 'View User Profile', 'give' ); ?>
+											</a>
+										</span>
 									<?php } ?>
 								</span>
 							</td>
