@@ -89,7 +89,7 @@ class Tests_Activation extends Give_Unit_Test_Case {
 	/**
 	 * Test give_create_pages()
 	 *
-	 * @covers \give_create_pages()
+	 * @covers ::give_create_pages
 	 *
 	 * @since  1.8.11
 	 */
