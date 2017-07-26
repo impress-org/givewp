@@ -651,8 +651,8 @@ function give_v18_upgrades_form_metadata() {
 	);
 
 	if ( $forms->have_posts() ) {
-		$give_updates->percentage = ( ( $give_updates->step * 20 ) / $forms->found_posts  ) * 100;
-		
+		$give_updates->set_percentage( $forms->found_posts, $give_updates->step * 20 );
+
 		while ( $forms->have_posts() ) {
 			$forms->the_post();
 
@@ -869,7 +869,7 @@ function give_v189_upgrades_levels_post_meta_callback() {
 	);
 
 	if ( $donation_forms->have_posts() ) {
-		$give_updates->percentage = ( ( $give_updates->step * 20 ) / $donation_forms->found_posts  ) * 100;
+		$give_updates->set_percentage( $donation_forms->found_posts, $give_updates->step * 20 );
 
 		while ( $donation_forms->have_posts() ) {
 			$donation_forms->the_post();
