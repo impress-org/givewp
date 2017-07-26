@@ -36,15 +36,15 @@ function __give_sanitize_number_decimals_setting_field( $value ) {
 		$value_changed = true;
 	}
 
-	// Check if
 	if ( $value_changed && ( $old_value != $value ) ) {
-		Give_Admin_Settings::add_error( 'give-number-decimal', __( 'The \'Number of Decimals\' option has been automatically set to zero because the \'Decimal Separator\' option can not empty.', 'give' ) );
+		Give_Admin_Settings::add_error( 'give-number-decimal', __( 'The \'Number of Decimals\' option has been automatically set to zero because the \'Decimal Separator\' is not set.', 'give' ) );
 	}
 
 	$value = absint( $value );
 
 	if( 6 <= $value ) {
 		$value = 5;
+		Give_Admin_Settings::add_error( 'give-number-decimal', __( 'The \'Number of Decimals\' option has been automatically set to 5 because you entered a number higher than the maximum allowed.', 'give' ) );
 	}
 
 	return absint( $value );
