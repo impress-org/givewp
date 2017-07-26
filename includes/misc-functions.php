@@ -1278,6 +1278,14 @@ function give_set_upgrade_complete( $upgrade_action = '' ) {
 	// Remove any blanks, and only show uniques.
 	$completed_upgrades = array_unique( array_values( $completed_upgrades ) );
 
+
+	/**
+	 * Fire the action when any upgrade set to complete.
+	 *
+	 * @since 1.8.12
+	 */
+	do_action( 'give_set_upgrade_completed', $upgrade_action, $completed_upgrades );
+
 	return update_option( 'give_completed_upgrades', $completed_upgrades );
 }
 
