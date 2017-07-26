@@ -36,6 +36,7 @@ do_action( 'give_tools_recount_stats_before' );
 						<option data-type="recount-all" value="Give_Tools_Recount_All_Stats"><?php esc_html_e( 'Recalculate Income Amount and Donation Counts for All Forms', 'give' ); ?></option>
 						<option data-type="recount-donor-stats" value="Give_Tools_Recount_Donor_Stats"><?php esc_html_e( 'Recalculate Donor Statistics', 'give' ); ?></option>
 						<option data-type="delete-test-transactions" value="Give_Tools_Delete_Test_Transactions"><?php esc_html_e( 'Delete Test Transactions', 'give' ); ?></option>
+						<option data-type="delete-test-donors"   value="Give_Tools_Delete_Donors"><?php esc_html_e( 'Delete Test Donor', 'give' ); ?></option>
 						<option data-type="reset-stats" value="Give_Tools_Reset_Stats"><?php esc_html_e( 'Delete All Data', 'give' ); ?></option>
 						<?php
 						/**
