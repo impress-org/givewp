@@ -554,7 +554,7 @@ add_action( 'pre_get_posts', '_give_20_bc_support_deprecated_meta_key_query' );
 /**
  * Save payment backward compatibility.
  * Note: some addon still can use user_info in set payment meta
- *       we will use this infor to set first name, last name and address of donor
+ *       we will use this info to set first name, last name and address of donor
  * 
  * @since 2.0
  *
