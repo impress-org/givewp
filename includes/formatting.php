@@ -107,7 +107,10 @@ function give_maybe_sanitize_amount( $number, $dp = false, $trim_zeros = false )
 	if ( '.' === $thousand_separator && false !== strpos( $number, $thousand_separator ) ){
 		$number_parts = explode( '.', $number );
 
-		if( 2 < count( $number_parts ) || ( 6 > strlen( $number_parts[1] ) ) ) {
+		if( 2 === count( $number_parts ) && ( 6 === strlen( $number_parts[1] ) ) ) {
+			// Trim zero from database value.
+			$trim_zeros = true;
+		} else {
 			$number = str_replace( '.', '', $number );
 		}
 	}
