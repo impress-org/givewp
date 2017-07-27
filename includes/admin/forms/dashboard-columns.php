@@ -105,7 +105,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 			case 'earnings':
 				if ( current_user_can( 'view_give_form_stats', $post_id ) ) {
 					echo '<a href="' . esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=forms&form-id=' . $post_id ) ) . '">';
-					echo give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ) ) );
+					echo give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ), array( 'sanitize' => false ) ) );
 					echo '</a>';
 				} else {
 					echo '-';
@@ -318,7 +318,7 @@ function give_price_save_quick_edit( $post_id ) {
 	}
 
 	if ( isset( $_REQUEST['_give_regprice'] ) ) {
-		give_update_meta( $post_id, '_give_set_price', strip_tags( stripslashes( $_REQUEST['_give_regprice'] ) ) );
+		give_update_meta( $post_id, '_give_set_price', give_sanitize_amount_for_db( strip_tags( stripslashes( $_REQUEST['_give_regprice'] ) ) ) );
 	}
 }
 
@@ -343,7 +343,7 @@ function give_save_bulk_edit() {
 			}
 
 			if ( ! empty( $price ) ) {
-				give_update_meta( $post_id, '_give_set_price', give_sanitize_amount( $price ) );
+				give_update_meta( $post_id, '_give_set_price', give_sanitize_amount_for_db( $price ) );
 			}
 		}
 	}

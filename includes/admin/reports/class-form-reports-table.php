@@ -80,12 +80,26 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 */
 	public function column_default( $item, $column_name ) {
 		switch ( $column_name ) {
+			case 'title':
+				$title = empty( $item['title'] ) ? sprintf( __( 'Untitled (#%s)', 'give' ), $item['ID'] ) : $item['title'];
+
+				return sprintf(
+					'<a href="%s">%s</a>',
+					get_edit_post_link( $item['ID'] ),
+					$title
+				);
+			case 'sales':
+				return sprintf(
+					'<a href="%s">%s</a>',
+					admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&form_id=' . urlencode( $item['ID'] ) ),
+					$item['sales']
+				);
 			case 'earnings' :
-				return give_currency_filter( give_format_amount( $item[ $column_name ] ) );
+				return give_currency_filter( give_format_amount( $item[ $column_name ], array( 'sanitize' => false ) ) );
 			case 'average_sales' :
 				return round( $item[ $column_name ] );
 			case 'average_earnings' :
-				return give_currency_filter( give_format_amount( $item[ $column_name ] ) );
+				return give_currency_filter( give_format_amount( $item[ $column_name ], array( 'sanitize' => false ) ) );
 			case 'details' :
 				return '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=forms&form-id=' . $item['ID'] ) . '">' . esc_html__( 'View Detailed Report', 'give' ) . '</a>';
 			default:

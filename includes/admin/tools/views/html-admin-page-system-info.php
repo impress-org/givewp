@@ -452,12 +452,12 @@ $plugins      = give_get_plugins();
 		<tr>
 			<td data-export-label="Decimal Separator"><?php _e( 'Decimal Separator', 'give' ); ?>:</td>
 			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The decimal separator defined in Give settings.', 'give' ) ); ?>"></span></td>
-			<td><?php echo esc_html( give_get_option( 'decimal_separator', '.' ) ); ?></td>
+			<td><?php echo esc_html( give_get_price_decimal_separator() ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Thousands Separator"><?php _e( 'Thousands Separator', 'give' ); ?>:</td>
 			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The thousands separator defined in Give settings.', 'give' ) ); ?>"></span></td>
-			<td><?php echo esc_html( give_get_option( 'thousands_separator', ',' ) ); ?></td>
+			<td><?php echo esc_html( give_get_price_thousand_separator() ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Success Page"><?php _e( 'Success Page', 'give' ); ?>:</td>
