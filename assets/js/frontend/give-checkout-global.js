@@ -39,12 +39,20 @@ jQuery(function ($) {
 					withCredentials: true
 				},
 				success  : function (response) {
+					var html = "";
+					var states_label = response.states_label;
                     if( typeof ( response.states_found ) != undefined && true == response.states_found ) {
-                        $form.find('input[name="card_state"], select[name="card_state"]').replaceWith( response.data );
+                        html = response.data;
                     } else {
-                        var text_field = '<input type="text" id="card_state" name="card_state" class="cart-state give-input required" value=""/>';
-                        $form.find('input[name="card_state"], select[name="card_state"]').replaceWith(text_field);
+                        html = '<input type="text" id="card_state"  name="card_state" class="cart-state give-input required" placeholder="' + states_label + '" value=""/>';
                     }
+
+                    if( false === $form.hasClass( 'float-labels-enabled' ) ) {
+                        states_label  = states_label + '<span class="give-required-indicator">*</span>';
+					}
+
+                    $form.find('input[name="card_state"], select[name="card_state"]').closest( 'p' ).find( 'label' ).html( states_label );
+                    $form.find('input[name="card_state"], select[name="card_state"]').replaceWith( html );
 
                     // Check if user want to show the feilds or not.
                     if( typeof ( response.show_field ) != undefined && true == response.show_field ) {
