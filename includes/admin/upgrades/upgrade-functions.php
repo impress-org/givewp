@@ -138,6 +138,15 @@ function give_show_upgrade_notices( $give_updates ) {
 			'callback' => 'give_v20_logs_upgrades_callback',
 		)
 	);
+
+	// v2.0.0 Upgrades
+	$give_updates->register(
+		array(
+			'id'       => 'move_metadata_into_new_table',
+			'version'  => '2.0.0',
+			'callback' => 'give_v20_move_metadata_into_new_table_callback',
+		)
+	);
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
@@ -1163,5 +1172,72 @@ function give_v20_logs_upgrades_callback() {
 
 		// No more forms found, finish up.
 		give_set_upgrade_complete( 'v20_logs_upgrades' );
+	}
+}
+
+
+/**
+ * Move payment and form metadata to new table
+ *
+ * @since  2.0
+ * @return void
+ */
+function give_v20_move_metadata_into_new_table_callback() {
+	global $wpdb;
+	$give_updates = Give_Updates::get_instance();
+
+	// form query
+	$payments = new WP_Query( array(
+			'paged'          => $give_updates->step,
+			'status'         => 'any',
+			'order'          => 'ASC',
+			'post_type'      => array( 'give_forms', 'give_payment' ),
+			'posts_per_page' => 20,
+		)
+	);
+
+	if ( $payments->have_posts() ) {
+		$give_updates->set_percentage( $payments->found_posts, $give_updates->step * 20 );
+
+		while ( $payments->have_posts() ) {
+			$payments->the_post();
+			$meta_data = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT * FROM $wpdb->postmeta where post_id=%d",
+					get_the_ID()
+				),
+				ARRAY_A
+			);
+
+			if ( ! empty( $meta_data ) ) {
+				foreach ( $meta_data as $index => $data ) {
+					switch ( get_post_type( get_the_ID() ) ) {
+						case 'give_forms':
+							$data['form_id'] = $data['post_id'];
+							unset( $data['post_id'] );
+
+							Give()->form_meta->insert( $data );
+							delete_post_meta( get_the_ID(), $data['meta_key'] );
+
+							break;
+
+						case 'give_payment':
+							$data['payment_id'] = $data['post_id'];
+							unset( $data['post_id'] );
+
+							Give()->payment_meta->insert( $data );
+							delete_post_meta( get_the_ID(), $data['meta_key'] );
+
+							break;
+					}
+				}
+			}
+
+		}// End while().
+
+		wp_reset_postdata();
+	} else {
+		// No more forms found, finish up.
+		give_set_upgrade_complete( 'move_metadata_into_new_table' );
 	}
 }
