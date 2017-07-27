@@ -516,6 +516,7 @@ class Give_Updates {
 		return $status;
 	}
 
+
 	/**
 	 * Set current update percentage.
 	 *

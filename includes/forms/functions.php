@@ -539,7 +539,7 @@ function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 
 		if ( intval( $price['_give_id']['level_id'] ) == intval( $price_id ) ) {
 
 			$price_text     = isset( $price['_give_text'] ) ? $price['_give_text'] : '';
-			$price_fallback = give_currency_filter( give_format_amount( $price['_give_amount'] ), '', true );
+			$price_fallback = give_currency_filter( give_format_amount( $price['_give_amount'], array( 'sanitize' => false ) ), '', true );
 			$price_name     = ! empty( $price_text ) ? $price_text : $price_fallback;
 
 		}
@@ -568,9 +568,9 @@ function give_price_range( $form_id = 0 ) {
 				<span class="give_price_range_sep">&nbsp;&ndash;&nbsp;</span>
 				<span class="give_price_range_%3$s">%4$s</span>',
 		'asc' === $order_type ? 'low' : 'high',
-		'asc' === $order_type ? give_currency_filter( give_format_amount( $low ) ) : give_currency_filter( give_format_amount( $high ) ),
+		'asc' === $order_type ? give_currency_filter( give_format_amount( $low, array( 'sanitize' => false ) ) ) : give_currency_filter( give_format_amount( $high, array( 'sanitize' => false ) ) ),
 		'asc' === $order_type ? 'high' : 'low',
-		'asc' === $order_type ? give_currency_filter( give_format_amount( $high ) ) : give_currency_filter( give_format_amount( $low ) )
+		'asc' === $order_type ? give_currency_filter( give_format_amount( $high, array( 'sanitize' => false ) ) ) : give_currency_filter( give_format_amount( $low, array( 'sanitize' => false ) ) )
 
 	);
 
@@ -650,7 +650,7 @@ function give_get_lowest_price_option( $form_id = 0 ) {
 		$low    = ! empty( $prices ) ? min( $prices ) : 0;
 	}
 
-	return give_sanitize_amount( $low );
+	return give_maybe_sanitize_amount( $low );
 }
 
 /**
@@ -678,7 +678,7 @@ function give_get_highest_price_option( $form_id = 0 ) {
 		$high   = ! empty( $prices ) ? max( $prices ) : 0;
 	}
 
-	return give_sanitize_amount( $high );
+	return give_maybe_sanitize_amount( $high );
 }
 
 /**
@@ -734,6 +734,7 @@ function give_get_form_minimum_price( $form_id = 0 ) {
  * @return int $formatted_price
  */
 function give_price( $form_id = 0, $echo = true, $price_id = false ) {
+	$price = 0;
 
 	if ( empty( $form_id ) ) {
 		$form_id = get_the_ID();
@@ -756,16 +757,12 @@ function give_price( $form_id = 0, $echo = true, $price_id = false ) {
 
 			$price = give_get_lowest_price_option( $form_id );
 		}
-
-		$price = give_sanitize_amount( $price );
-
 	} else {
 
 		$price = give_get_form_price( $form_id );
-
 	}
 
-	$price           = apply_filters( 'give_form_price', give_sanitize_amount( $price ), $form_id );
+	$price           = apply_filters( 'give_form_price', give_maybe_sanitize_amount( $price ), $form_id );
 	$formatted_price = '<span class="give_price" id="give_price_' . $form_id . '">' . $price . '</span>';
 	$formatted_price = apply_filters( 'give_form_price_after_html', $formatted_price, $form_id, $price );
 
@@ -802,7 +799,7 @@ function give_get_price_option_amount( $form_id = 0, $price_id = 0 ) {
 		};
 	}
 
-	return apply_filters( 'give_get_price_option_amount', give_sanitize_amount( $amount ), $form_id, $price_id );
+	return apply_filters( 'give_get_price_option_amount', give_maybe_sanitize_amount( $amount ), $form_id, $price_id );
 }
 
 /**
@@ -844,7 +841,7 @@ function give_goal( $form_id = 0, $echo = true ) {
 
 	$goal = give_get_form_goal( $form_id );
 
-	$goal           = apply_filters( 'give_form_goal', give_sanitize_amount( $goal ), $form_id );
+	$goal           = apply_filters( 'give_form_goal', give_maybe_sanitize_amount( $goal ), $form_id );
 	$formatted_goal = '<span class="give_price" id="give_price_' . $form_id . '">' . $goal . '</span>';
 	$formatted_goal = apply_filters( 'give_form_price_after_html', $formatted_goal, $form_id, $goal );
 

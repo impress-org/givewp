@@ -99,7 +99,9 @@ function give_process_donation_form() {
 
 	$auth_key = defined( 'AUTH_KEY' ) ? AUTH_KEY : '';
 
-	$price        = isset( $_POST['give-amount'] ) ? (float) apply_filters( 'give_donation_total', give_sanitize_amount( give_format_amount( $_POST['give-amount'] ) ) ) : '0.00';
+	$price        = isset( $_POST['give-amount'] ) ?
+		(float) apply_filters( 'give_donation_total', give_maybe_sanitize_amount( $_POST['give-amount'] ) ) :
+		'0.00';
 	$purchase_key = strtolower( md5( $user['user_email'] . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) );
 
 	// Setup donation information
@@ -335,7 +337,7 @@ function give_donation_form_validate_fields() {
 function give_donation_form_validate_gateway() {
 
 	$form_id = isset( $_REQUEST['give-form-id'] ) ? $_REQUEST['give-form-id'] : 0;
-	$amount  = isset( $_REQUEST['give-amount'] ) ? give_sanitize_amount( $_REQUEST['give-amount'] ) : 0;
+	$amount  = isset( $_REQUEST['give-amount'] ) ? give_maybe_sanitize_amount( $_REQUEST['give-amount'] ) : 0;
 	$gateway = give_get_default_gateway( $form_id );
 
 	// Check if a gateway value is present.
@@ -356,7 +358,7 @@ function give_donation_form_validate_gateway() {
 				sprintf(
 					/* translators: %s: minimum donation amount */
 					__( 'This form has a minimum donation amount of %s.', 'give' ),
-					give_currency_filter( give_format_amount( give_get_form_minimum_price( $form_id ) ) )
+					give_currency_filter( give_format_amount( give_get_form_minimum_price( $form_id ), array( 'sanitize' => false ) ) )
 				)
 			);
 
@@ -386,7 +388,7 @@ function give_donation_form_validate_gateway() {
  */
 function give_verify_minimum_price() {
 
-	$amount          = give_sanitize_amount( $_REQUEST['give-amount'] );
+	$amount          = give_maybe_sanitize_amount( $_REQUEST['give-amount'] );
 	$form_id         = isset( $_REQUEST['give-form-id'] ) ? $_REQUEST['give-form-id'] : 0;
 	$price_id        = isset( $_REQUEST['give-price-id'] ) ? $_REQUEST['give-price-id'] : null;
 	$variable_prices = give_has_variable_prices( $form_id );
@@ -1172,19 +1174,16 @@ function give_validate_multi_donation_form_level( $valid_data, $data ) {
 		}
 
 		// Sanitize donation amount.
-		$data['give-amount'] = give_sanitize_amount( $data['give-amount'] );
+		$data['give-amount'] = give_maybe_sanitize_amount( $data['give-amount'] );
 
-		// Get number of decimals.
-		$default_decimals = give_get_price_decimals();
-
-		if ( $data['give-amount'] === give_sanitize_amount( give_get_price_option_amount( $data['give-form-id'], $data['give-price-id'] ), $default_decimals ) ) {
+		if ( $data['give-amount'] === give_maybe_sanitize_amount( give_get_price_option_amount( $data['give-form-id'], $data['give-price-id'] ) ) ) {
 			return true;
 		}
 
 		// Find correct donation level from all donation levels.
 		foreach ( $variable_prices as $variable_price ) {
 			// Sanitize level amount.
-			$variable_price['_give_amount'] = give_sanitize_amount( $variable_price['_give_amount'], $default_decimals );
+			$variable_price['_give_amount'] = give_maybe_sanitize_amount( $variable_price['_give_amount'] );
 
 			// Set first match donation level ID.
 			if ( $data['give-amount'] === $variable_price['_give_amount'] ) {
@@ -1201,7 +1200,7 @@ function give_validate_multi_donation_form_level( $valid_data, $data ) {
 			&& ( give_is_setting_enabled( give_get_meta( $data['give-form-id'], '_give_custom_amount', true ) ) )
 		) {
 			// Sanitize custom minimum amount.
-			$custom_minimum_amount = give_sanitize_amount( give_get_meta( $data['give-form-id'], '_give_custom_amount_minimum', true ), $default_decimals );
+			$custom_minimum_amount = give_maybe_sanitize_amount( give_get_meta( $data['give-form-id'], '_give_custom_amount_minimum', true ) );
 
 			if ( $data['give-amount'] >= $custom_minimum_amount ) {
 				$_POST['give-price-id'] = 'custom';

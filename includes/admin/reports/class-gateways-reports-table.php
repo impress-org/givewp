@@ -212,10 +212,10 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 			$reports_data[] = array(
 				'ID'              => $gateway_id,
 				'label'           => $gateway['admin_label'],
-				'complete_sales'  => give_format_amount( $complete_count, false ),
-				'pending_sales'   => give_format_amount( $pending_count, false ),
-				'total_sales'     => give_format_amount( $complete_count + $pending_count, false ),
-				'total_donations' => give_currency_filter( give_format_amount( $stats->get_earnings( 0, 0, 0, $gateway_id ) ) ),
+				'complete_sales'  => $complete_count,
+				'pending_sales'   => $pending_count,
+				'total_sales'     => $complete_count + $pending_count,
+				'total_donations' => give_currency_filter( give_format_amount( $stats->get_earnings( 0, 0, 0, $gateway_id ), array( 'sanitize' => false ) ) ),
 			);
 		}
 
