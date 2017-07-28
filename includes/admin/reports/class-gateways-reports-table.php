@@ -81,9 +81,9 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 	public function get_columns() {
 		$columns = array(
 			'label'           => esc_attr__( 'Gateway', 'give' ),
-			'complete_sales'  => esc_attr__( 'Complete Transactions', 'give' ),
-			'pending_sales'   => esc_attr__( 'Pending / Failed Transactions', 'give' ),
-			'total_sales'     => esc_attr__( 'Total Transactions', 'give' ),
+			'complete_sales'  => esc_attr__( 'Complete Payments', 'give' ),
+			'pending_sales'   => esc_attr__( 'Pending / Failed Payments', 'give' ),
+			'total_sales'     => esc_attr__( 'Total Payments', 'give' ),
 			'total_donations' => esc_attr__( 'Total Donated', 'give' )
 		);
 
