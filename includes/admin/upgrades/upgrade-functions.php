@@ -72,7 +72,7 @@ add_action( 'give_upgrades', 'give_do_automatic_upgrades' );
  * Display Upgrade Notices
  *
  * @since 1.0
- * @since 1.8.12 Update new udate process code.
+ * @since 1.8.12 Update new update process code.
  *
  * @param Give_Updates $give_updates
  *
