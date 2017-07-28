@@ -26,7 +26,7 @@ $email          = give_get_payment_user_email( $donation_id );
 $status         = $payment->post_status;
 $status_label   = give_get_payment_status( $payment, true );
 
-/*
+/**
  * Generate Donation Receipt Arguments.
  *
  * Added donation receipt array to global variable $give_receipt_args to manage it from single variable
@@ -87,7 +87,7 @@ $give_receipt_args['donation_receipt']['payment_method'] = array(
 	'display'   => true,
 );
 
-/*
+/**
  * Extend Give Donation Receipt
  *
  * You can easily extend the donation receipt argument using the filter give_donation_receipt_args
