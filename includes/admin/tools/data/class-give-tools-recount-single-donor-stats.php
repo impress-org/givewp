@@ -235,7 +235,7 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 
 			// Before we start, let's zero out the customer's data
 			$donor = new Give_Donor( $this->customer_id );
-			$donor->update( array( 'purchase_value' => give_format_amount( 0 ), 'purchase_count' => 0 ) );
+			$donor->update( array( 'purchase_value' => give_format_amount( 0, array( 'sanitize' => false ) ), 'purchase_count' => 0 ) );
 
 			$attached_payment_ids = explode( ',', $donor->payment_ids );
 

@@ -119,7 +119,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 				break;
 
 			case 'amount_spent' :
-				$value = give_currency_filter( give_format_amount( $donor[ $column_name ] ) );
+				$value = give_currency_filter( give_format_amount( $donor[ $column_name ], array( 'sanitize' => false ) ), true, false );
 				break;
 
 			case 'date_created' :
@@ -300,6 +300,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 		$_donor_query = $this->get_donor_query();
 
 		$_donor_query['number'] = - 1;
+		$_donor_query['offset'] = 0;
 		$donors                 = Give()->donors->get_donors( $_donor_query );
 
 		return count( $donors );

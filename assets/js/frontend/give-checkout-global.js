@@ -39,12 +39,28 @@ jQuery(function ($) {
 					withCredentials: true
 				},
 				success  : function (response) {
-					if ('nostates' == response) {
-						var text_field = '<input type="text" id="card_state" name="card_state" class="cart-state give-input required" value=""/>';
-						$form.find('input[name="card_state"], select[name="card_state"]').replaceWith(text_field);
-					} else {
-						$form.find('input[name="card_state"], select[name="card_state"]').replaceWith(response);
+					var html = "";
+					var states_label = response.states_label;
+                    if( typeof ( response.states_found ) != undefined && true == response.states_found ) {
+                        html = response.data;
+                    } else {
+                        html = '<input type="text" id="card_state"  name="card_state" class="cart-state give-input required" placeholder="' + states_label + '" value=""/>';
+                    }
+
+                    if( false === $form.hasClass( 'float-labels-enabled' ) ) {
+                        states_label  = states_label + '<span class="give-required-indicator">*</span>';
 					}
+
+                    $form.find('input[name="card_state"], select[name="card_state"]').closest( 'p' ).find( 'label' ).html( states_label );
+                    $form.find('input[name="card_state"], select[name="card_state"]').replaceWith( html );
+
+                    // Check if user want to show the feilds or not.
+                    if( typeof ( response.show_field ) != undefined && true == response.show_field ) {
+                        $form.find( 'p#give-card-state-wrap' ).removeClass( 'give-hidden' );
+					} else {
+                        $form.find( 'p#give-card-state-wrap' ).addClass( 'give-hidden' );
+					}
+
 					doc.trigger('give_checkout_billing_address_updated', [response, $form.attr('id')]);
 				}
 			}).fail(function (data) {
@@ -172,13 +188,59 @@ jQuery(function ($) {
 	 * @returns {*|string}
 	 */
 	function give_format_currency(price, args) {
+		price = price.toString().trim();
+		var number_decimals= parseInt( give_global_vars.number_decimals );
 
-		//Properly position symbol after if selected
-		if (give_global_vars.currency_pos == 'after') {
-			args.format = "%v%s";
+		if( 'INR' === give_global_vars.currency ) {
+			actual_price = accounting.unformat( price, give_global_vars.decimal_separator ).toString();
+
+			var decimal_amount = result = amount = '',
+				decimal_index = actual_price.indexOf('.');
+
+			if( ( -1 !== decimal_index ) && number_decimals ){
+				decimal_amount = Number( actual_price.substr( parseInt( decimal_index ) ) ).toFixed( number_decimals ).toString().substr(1);
+				actual_price   = actual_price.substr(  0, parseInt( decimal_index ) );
+
+				if ( ! decimal_amount.length ) {
+					decimal_amount = '.0000000000'.substr( 0, ( pa + 1 ) );
+				} else if ( ( number_decimals + 1 ) > decimal_amount.length ) {
+					decimal_amount = ( decimal_amount + '000000000' ).substr( 0, number_decimals + 1 );
+				}
+			}
+
+			// Extract last 3 from amount
+			result = actual_price.substr( -3 );
+			amount = actual_price.substr( 0, parseInt( actual_price.length ) - 3 );
+
+			// Apply digits 2 by 2
+			while ( amount.length > 0 ) {
+				result = amount.substr(-2 ) +  give_global_vars.thousands_separator + result;
+				amount = amount.substr( 0, parseInt( amount.length ) -2 );
+			}
+
+			if( decimal_amount.length ) {
+				result = result + decimal_amount;
+			}
+
+			price = result;
+
+			if( undefined !== args.symbol && args.symbol.length ) {
+				if ( 'after' === give_global_vars.currency_pos) {
+					price = price + args.symbol;
+				} else {
+					price = args.symbol + price;
+				}
+			}
+		} else {
+			//Properly position symbol after if selected
+			if ( 'after' === give_global_vars.currency_pos) {
+				args.format = "%v%s";
+			}
+
+			price = accounting.formatMoney(price, args);
 		}
 
-		return accounting.formatMoney(price, args).trim();
+		return price;
 
 	}
 
@@ -207,7 +269,7 @@ jQuery(function ($) {
 			precision: give_global_vars.number_decimals
 		};
 
-		return accounting.formatMoney(amount, format_args);
+		return give_format_currency(amount, format_args);
 	}
 
 	/**

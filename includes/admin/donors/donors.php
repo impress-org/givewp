@@ -338,7 +338,7 @@ function give_donor_view( $donor ) {
 												<?php
 											} else {
 												?>
-												<input type="text" size="6" data-key="state" name="customerinfo[state]" id="card_state" class="card_state give-input info-item" placeholder="<?php esc_attr_e( 'State / Province', 'give' ); ?>" />
+												<input type="text" size="6" data-key="state" name="customerinfo[state]" id="card_state" class="card_state give-input info-item" placeholder="<?php esc_attr_e( 'State / Province / County', 'give' ); ?>" />
 												<?php
 											}
 											?>
@@ -393,7 +393,7 @@ function give_donor_view( $donor ) {
 			</li>
 			<li>
 				<span class="dashicons dashicons-chart-area"></span>
-				<?php echo give_currency_filter( give_format_amount( $donor->purchase_value ) ); ?> <?php esc_html_e( 'Lifetime Donations', 'give' ); ?>
+				<?php echo give_currency_filter( give_format_amount( $donor->purchase_value, array( 'sanitize' => false ) ), true, false ); ?> <?php esc_html_e( 'Lifetime Donations', 'give' ); ?>
 			</li>
 			<?php
 			/**

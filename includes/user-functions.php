@@ -212,7 +212,7 @@ function give_get_donation_stats_by_user( $user = '' ) {
 	if ( $donor ) {
 		$donor = new Give_Donor( $donor->id );
 		$stats['purchases']   = absint( $donor->purchase_count );
-		$stats['total_spent'] = give_sanitize_amount( $donor->purchase_value );
+		$stats['total_spent'] = give_maybe_sanitize_amount( $donor->purchase_value );
 	}
 
 	/**

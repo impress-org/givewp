@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Load WP_List_Table if not loaded
+// Load WP_List_Table if not loaded.
 if ( ! class_exists( 'WP_List_Table' ) ) {
 	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 }
@@ -80,7 +80,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 					   '">' . $item['user_name'] . '</a>';
 
 			case 'amount' :
-				return give_currency_filter( give_format_amount( $item['amount'] ) );
+				return give_currency_filter( give_format_amount( $item['amount'], array( 'sanitize' => false ) ) );
 
 			case 'status' :
 
@@ -205,8 +205,9 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 *
 	 * This is used to return log entries that match our search query, user query, or form query
 	 *
-	 * @access public
 	 * @since  1.0
+	 * @access public
+	 *
 	 * @return array $meta_query
 	 */
 	public function get_meta_query() {
@@ -215,7 +216,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 		$meta_query = array();
 
 		if ( $user ) {
-			// Show only logs from a specific user
+			// Show only logs from a specific user.
 			$meta_query[] = array(
 				'key'   => '_give_log_user_id',
 				'value' => $user,
@@ -225,7 +226,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 		$search = $this->get_search();
 		if ( $search ) {
 			if ( is_email( $search ) ) {
-				// This is an email search. We use this to ensure it works for guest users and logged-in users
+				// This is an email search. We use this to ensure it works for guest users and logged-in users.
 				$key     = '_give_log_user_info';
 				$compare = 'LIKE';
 			} else {
@@ -238,10 +239,10 @@ class Give_Sales_Log_Table extends WP_List_Table {
 					$user = get_user_by( 'login', $search );
 
 					if ( $user ) {
-						// Found one, set meta value to user's ID
+						// Found one, set meta value to user's ID.
 						$search = $user->ID;
 					} else {
-						// No user found so let's do a real search query
+						// No user found so let's do a real search query.
 						$users = new WP_User_Query( array(
 							'search'         => $search,
 							'search_columns' => array( 'user_url', 'user_nicename' ),
@@ -259,7 +260,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 			}
 
 			if ( ! $this->file_search ) {
-				// Meta query only works for non file name searche
+				// Meta query only works for non file name search.
 				$meta_query[] = array(
 					'key'     => $key,
 					'value'   => $search,
@@ -332,10 +333,11 @@ class Give_Sales_Log_Table extends WP_List_Table {
 		$user      = $this->get_filtered_user();
 
 		$log_query = array(
-			'post_parent' => $give_form,
-			'log_type'    => 'sale',
-			'paged'       => $paged,
-			'meta_query'  => $this->get_meta_query(),
+			'post_parent'    => $give_form,
+			'log_type'       => 'sale',
+			'paged'          => $paged,
+			'meta_query'     => $this->get_meta_query(),
+			'posts_per_page' => $this->per_page,
 		);
 
 		$cache_key = Give_Cache::get_key( 'get_logs', $log_query );
@@ -348,7 +350,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 				foreach ( $logs as $log ) {
 					$payment_id = give_get_meta( $log->ID, '_give_log_payment_id', true );
 
-					// Make sure this payment hasn't been deleted
+					// Make sure this payment hasn't been deleted.
 					if ( get_post( $payment_id ) ) :
 						$user_info      = give_get_payment_meta_user_info( $payment_id );
 						$payment_meta   = give_get_payment_meta( $payment_id );

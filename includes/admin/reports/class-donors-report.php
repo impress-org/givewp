@@ -3,7 +3,7 @@
  * Give Reports Page/Tab
  *
  * @package     Give
- * @subpackage  Classes/Give_Settings_Earnings
+ * @subpackage  Classes/Give_Donors_Report
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.8
@@ -13,14 +13,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-if ( ! class_exists( 'Give_Settings_Earnings' ) ) :
+if ( ! class_exists( 'Give_Donors_Report' ) ) :
 
 	/**
-	 * Give_Settings_Earnings.
+	 * Give_Donors_Report.
 	 *
 	 * @sine 1.8
 	 */
-	class Give_Settings_Earnings {
+	class Give_Donors_Report {
 
 		/**
 		 * Setting page id.
@@ -42,25 +42,20 @@ if ( ! class_exists( 'Give_Settings_Earnings' ) ) :
 		 * Constructor.
 		 */
 		public function __construct() {
-			$this->id    = 'earnings';
-			$this->label = esc_html__( 'Income', 'give' );
+			$this->id    = 'donors';
+			$this->label = esc_html__( 'Donors', 'give' );
 
 			add_filter( 'give-reports_tabs_array', array( $this, 'add_settings_page' ), 20 );
 			add_action( "give-reports_settings_{$this->id}_page", array( $this, 'output' ) );
-			add_action( 'give_admin_field_report_earnings', array( $this, 'render_report_earnings_field' ), 10, 2 );
+			add_action( 'give_admin_field_report_donors', array( $this, 'render_report_donors_field' ), 10, 2 );
 
-			// Do not use main form for this tab.
-			if( give_get_current_setting_tab() === $this->id ) {
-				add_action( 'give-reports_open_form', '__return_empty_string' );
-				add_action( 'give-reports_close_form', '__return_empty_string' );
-			}
 		}
 
 		/**
 		 * Add this page to settings.
 		 *
 		 * @since  1.8
-		 * @param  array $pages Lst of pages.
+		 * @param  array $pages List of pages.
 		 * @return array
 		 */
 		public function add_settings_page( $pages ) {
@@ -89,17 +84,17 @@ if ( ! class_exists( 'Give_Settings_Earnings' ) ) :
 				'give_get_settings_' . $this->id,
 				array(
 					array(
-						'id'   => 'give_tools_earnings',
+						'id'   => 'give_reports_donors',
 						'type' => 'title',
 						'table_html' => false
 					),
 					array(
-						'id'   => 'earnings',
-						'name' => esc_html__( 'Income', 'give' ),
-						'type' => 'report_earnings',
+						'id'   => 'donors',
+						'name' => esc_html__( 'Donors', 'give' ),
+						'type' => 'report_donors',
 					),
 					array(
-						'id'   => 'give_tools_earnings',
+						'id'   => 'give_reports_donors',
 						'type' => 'sectionend',
 						'table_html' => false
 					)
@@ -123,7 +118,7 @@ if ( ! class_exists( 'Give_Settings_Earnings' ) ) :
 		}
 
 		/**
-		 * Render earning field
+		 * Render report donors field
 		 *
 		 * @since  1.8
 		 * @access public
@@ -131,11 +126,11 @@ if ( ! class_exists( 'Give_Settings_Earnings' ) ) :
 		 * @param $field
 		 * @param $option_value
 		 */
-		public function render_report_earnings_field( $field, $option_value ) {
-			do_action( 'give_reports_view_earnings' );
+		public function render_report_donors_field( $field, $option_value ) {
+			do_action( 'give_reports_view_donors');
 		}
 	}
 
 endif;
 
-return new Give_Settings_Earnings();
+return new Give_Donors_Report();
