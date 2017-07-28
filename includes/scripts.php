@@ -36,6 +36,7 @@ function give_load_scripts() {
 	$localize_give_vars = apply_filters( 'give_global_script_vars', array(
 		'ajaxurl'             => give_get_ajax_url(),
 		'checkout_nonce'      => wp_create_nonce( 'give_checkout_nonce' ),
+		'currency'            => give_get_currency(),
 		'currency_sign'       => give_currency_filter( '' ),
 		'currency_pos'        => give_get_currency_position(),
 		'thousands_separator' => give_get_price_thousand_separator(),
@@ -259,6 +260,9 @@ function give_load_admin_scripts( $hook ) {
 
 
 	// JS.
+	wp_register_script( 'give-selector-cache', $js_plugins . 'selector-cache' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
+	wp_enqueue_script( 'give-selector-cache' );
+
 	wp_register_script( 'jquery-chosen', $js_plugins . 'chosen.jquery' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
 	wp_enqueue_script( 'jquery-chosen' );
 
@@ -318,6 +322,7 @@ function give_load_admin_scripts( $hook ) {
 		'batch_export_no_class'          => __( 'You must choose a method.', 'give' ),
 		'batch_export_no_reqs'           => __( 'Required fields not completed.', 'give' ),
 		'reset_stats_warn'               => __( 'Are you sure you want to reset Give? This process is <strong><em>not reversible</em></strong> and will delete all data regardless of test or live mode. Please be sure you have a recent backup before proceeding.', 'give' ),
+		'delete_test_donor'               => __( 'Are you sure you want to delete all the test donors? This process will also delete test donations as well.', 'give' ),
 		'price_format_guide'             => sprintf( __( 'Please enter amount in monetary decimal ( %1$s ) format without thousand separator ( %2$s ) .', 'give' ), $decimal_separator, $thousand_separator ),
 		/* translators : %s: Donation form options metabox */
 		'confirm_before_remove_row_text' => __( 'Do you want to delete this level?', 'give' ),
@@ -328,17 +333,17 @@ function give_load_admin_scripts( $hook ) {
 		'search_placeholder_country'     => __( 'Type to search all countries', 'give' ),
 		'search_placeholder_state'       => __( 'Type to search all states/provinces', 'give' ),
 		'bulk_action' => array(
-			'delete'         => array(
-				'zero_payment_selected' => __( 'You must choose at least one or more payments to delete.', 'give' ),
-				'delete_payment'        => __( 'Are you sure you want to permanently delete this donation?', 'give' ),
-				'delete_payments'       => __( 'Are you sure you want to permanently delete the selected {payment_count} donations?', 'give' ),
+			'delete'    => array(
+				'zero'     => __( 'You must choose at least one or more payments to delete.', 'give' ),
+				'single'   => __( 'Are you sure you want to permanently delete this donation?', 'give' ),
+				'multiple' => __( 'Are you sure you want to permanently delete the selected {payment_count} donations?', 'give' ),
 			),
-			'resend_receipt' => array(
-				'zero_recipient_selected' => __( 'You must choose at least one or more recipients to resend the email receipt.', 'give' ),
-				'resend_receipt'          => __( 'Are you sure you want to resend the email receipt to this recipient?', 'give' ),
-				'resend_receipts'         => __( 'Are you sure you want to resend the emails receipt to {payment_count} recipients?', 'give' ),
+			'resend-receipt' => array(
+				'zero'     => __( 'You must choose at least one or more recipients to resend the email receipt.', 'give' ),
+				'single'   => __( 'Are you sure you want to resend the email receipt to this recipient?', 'give' ),
+				'multiple' => __( 'Are you sure you want to resend the emails receipt to {payment_count} recipients?', 'give' ),
 			),
-			'set_to_status' => array(
+			'set-to-status' => array(
 				'zero'      => __( 'You must choose at least one or more donations to set status to {status}.', 'give' ),
 				'single'    => __( 'Are you sure you want to set status of this donation to {status}?', 'give' ),
 				'multiple'  => __( 'Are you sure you want to set status of {payment_count} donations to {status}?', 'give' ),
@@ -356,6 +361,7 @@ function give_load_admin_scripts( $hook ) {
 			'no_results_msg'  => __( 'No results match {search_term}', 'give' ),
 			'ajax_search_msg' => __( 'Searching results for match {search_term}', 'give' ),
 		),
+		'db_update_confirmation_msg' => __( 'The following process will make updates to your site\'s database. Please create a database backup before proceeding with updates.', 'give' )
 	) );
 
 	if ( function_exists( 'wp_enqueue_media' ) && version_compare( get_bloginfo( 'version' ), '3.5', '>=' ) ) {
@@ -378,30 +384,30 @@ add_action( 'admin_enqueue_scripts', 'give_load_admin_scripts', 100 );
  */
 function give_admin_icon() {
 	?>
-    <style type="text/css" media="screen">
+	<style type="text/css" media="screen">
 
-        <?php if ( version_compare( get_bloginfo( 'version' ), '3.8-RC', '>=' ) || version_compare( get_bloginfo( 'version' ), '3.8', '>=' ) ) { ?>
-        @font-face {
-            font-family: 'give-icomoon';
-            src: url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.eot?ngjl88'; ?>');
-            src: url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.eot?#iefixngjl88'?>') format('embedded-opentype'),
-            url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.woff?ngjl88'; ?>') format('woff'),
-            url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.svg?ngjl88#icomoon'; ?>') format('svg');
-            font-weight: normal;
-            font-style: normal;
-        }
+		<?php if ( version_compare( get_bloginfo( 'version' ), '3.8-RC', '>=' ) || version_compare( get_bloginfo( 'version' ), '3.8', '>=' ) ) { ?>
+		@font-face {
+			font-family: 'give-icomoon';
+			src: url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.eot?ngjl88'; ?>');
+			src: url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.eot?#iefixngjl88'?>') format('embedded-opentype'),
+			url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.woff?ngjl88'; ?>') format('woff'),
+			url('<?php echo GIVE_PLUGIN_URL . '/assets/fonts/icomoon.svg?ngjl88#icomoon'; ?>') format('svg');
+			font-weight: normal;
+			font-style: normal;
+		}
 
-        .dashicons-give:before, #adminmenu div.wp-menu-image.dashicons-give:before {
-            font-family: 'give-icomoon';
-            font-size: 18px;
-            width: 18px;
-            height: 18px;
-            content: "\e800";
-        }
+		.dashicons-give:before, #adminmenu div.wp-menu-image.dashicons-give:before {
+			font-family: 'give-icomoon';
+			font-size: 18px;
+			width: 18px;
+			height: 18px;
+			content: "\e800";
+		}
 
-        <?php }  ?>
+		<?php }  ?>
 
-    </style>
+	</style>
 	<?php
 }
 

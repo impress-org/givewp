@@ -1,13 +1,20 @@
 <?php
 
 /**
- * @group formatting
+ * Class Tests_Formatting
  */
 class Tests_Formatting extends Give_Unit_Test_Case {
+
+	/**
+	 * Set it up.
+	 */
 	public function setUp() {
 		parent::setUp();
 	}
 
+	/**
+	 * Tear it down.
+	 */
 	public function tearDown() {
 		parent::tearDown();
 	}
@@ -48,10 +55,12 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 * @param bool   $dp
 	 * @param bool   $trim_zeros
 	 *
-	 * @cover        give_sanitize_amount
+	 * @covers ::give_sanitize_amount
+	 *
 	 * @dataProvider give_sanitize_amount_provider
 	 */
 	function test_give_sanitize_amount( $amount, $expected, $dp = false, $trim_zeros = false ) {
+
 		$output = give_sanitize_amount( $amount, $dp, $trim_zeros );
 
 		$this->assertSame(
@@ -66,7 +75,6 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 *
 	 * @since 1.8
 	 * @return array
-	 *
 	 */
 	function give_sanitize_amount_provider() {
 		return array(
@@ -96,18 +104,30 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 *
 	 * @param string   $amount
 	 * @param string   $expected
-	 * @param bool $decimal
+	 * @param string   $currency
 	 *
 	 * @cover        give_format_amount
 	 * @dataProvider give_format_amount_provider
 	 */
-	function test_give_format_amount( $amount, $expected, $decimal = false ) {
-		$output = give_format_amount( $amount, $decimal );
+	function test_give_format_amount( $amount, $expected, $currency ) {
+		give_update_option( 'currency', $currency );
+		give_update_option( 'number_decimals', 2 );
 
-		$this->assertSame(
-			$expected,
-			$output
-		);
+		switch ( $currency ) {
+			default:
+				// Test 1: without decimal
+				$output = give_format_amount( $amount, array( 'decimal' => false, 'sanitize' => false, 'currency' => $currency ) );
+				$this->assertSame( $expected[0], $output, "Testing with {$currency} currency (without decimal)." );
+
+				// Test 2: with decimal(2)
+				$output = give_format_amount( $amount, array( 'sanitize' => false, 'currency' => $currency ) );
+				$this->assertSame( $expected[1], $output, "Testing with {$currency} currency (with decimal {2})." );
+
+				// Test 3: with decimal (more then 2)
+				give_update_option( 'number_decimals', 4 );
+				$output = give_format_amount( $amount, array( 'sanitize' => false, 'currency' => $currency ) );
+				$this->assertSame( $expected[2], $output, "Testing with {$currency} currency (with decimal {4})." );
+		}
 	}
 
 
@@ -120,16 +140,20 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 */
 	function give_format_amount_provider() {
 		return array(
-			array( '1000000000000', '1,000,000,000,000' ),
-			array( '1000000000', '1,000,000,000' ),
-			array( '1000000', '1,000,000' ),
-			array( '10000', '10,000' ),
-			array( '100', '100' ),
-			array( '1000000000000', '1,000,000,000,000.00', true ),
-			array( '1000000000', '1,000,000,000.00', true ),
-			array( '1000000', '1,000,000.00', true ),
-			array( '10000', '10,000.00', true ),
-			array( '100', '100.00', true ),
+			array( '1000000000000.28735', array( '10,00,00,00,00,000', '10,00,00,00,00,000.29', '10,00,00,00,00,000.2874' ), 'INR' ),
+			array( '1000000000.8274', array( '1,00,00,00,001', '1,00,00,00,000.83', '1,00,00,00,000.8274' ), 'INR' ),
+			array( '1000000.98257', array( '10,00,001', '10,00,000.98', '10,00,000.9826'  ), 'INR' ),
+			array( '10000.89275', array( '10,001', '10,000.89', '10,000.8928' ), 'INR' ),
+			array( '100.7325', array( '101', '100.73', '100.7325' ), 'INR' ),
+			array( '100.3', array( '100', '100.30', '100.3000' ), 'INR' ),
+			array( '100', array( '100', '100.00', '100.0000' ), 'INR' ),
+			array( '1000000000000.28735', array( '1,000,000,000,000', '1,000,000,000,000.29', '1,000,000,000,000.2874' ), 'USD' ),
+			array( '1000000000.8274', array( '1,000,000,001', '1,000,000,000.83', '1,000,000,000.8274' ), 'USD' ),
+			array( '1000000.98257', array( '1,000,001', '1,000,000.98', '1,000,000.9826'  ), 'USD' ),
+			array( '10000.89275', array( '10,001', '10,000.89', '10,000.8928' ), 'USD' ),
+			array( '100.7325', array( '101', '100.73', '100.7325' ), 'USD' ),
+			array( '100', array( '100', '100.00', '100.0000' ), 'USD' ),
+			array( '100.3', array( '100', '100.30', '100.3000' ), 'USD' ),
 		);
 	}
 
@@ -146,10 +170,17 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 * @dataProvider give_human_format_large_amount_provider
 	 */
 	function test_give_human_format_large_amount( $amount, $expected ) {
-		$output = give_human_format_large_amount( give_format_amount( $amount ) );
-
+		// Case 1.
+		$output = give_human_format_large_amount( give_format_amount( $amount, array( 'sanitize' => false, 'currency' => 'USD' ) ) );
 		$this->assertSame(
-			$expected,
+			$expected[0],
+			$output
+		);
+
+		// Case 2.
+		$output = give_human_format_large_amount( give_format_amount( $amount, array( 'sanitize' => false, 'currency' => 'INR' ) ), array( 'currency' => 'INR' ) );
+		$this->assertSame(
+			$expected[1],
 			$output
 		);
 	}
@@ -164,12 +195,14 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 */
 	function give_human_format_large_amount_provider() {
 		return array(
-			array( '1234000000000', '1.23 trillion' ),
-			array( '1000000000000', '1 trillion' ),
-			array( '1000000000', '1 billion' ),
-			array( '1000000', '1 million' ),
-			array( '10000', '10,000.00' ),
-			array( '100', '100.00' ),
+			array( '1234000000000', array( '1.23 trillion', '1234 arab' ) ),
+			array( '1000000000000', array( '1 trillion', '1000 arab' ) ),
+			array( '1000000000', array( '1 billion', '1 arab' ) ),
+			array( '1000000', array( '1 million', '10 lakh') ),
+			array( '100000', array( '100,000.00', '1 lakh') ),
+			array( '599000', array( '599,000.00', '5.99 lakh') ),
+			array( '10000', array( '10,000.00', '10,000.00' ) ),
+			array( '100', array( '100.00', '100.00' ) ),
 		);
 	}
 

@@ -4,7 +4,7 @@ Donate link: https://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.2
 Tested up to: 4.8
-Stable tag: 1.8.9
+Stable tag: 1.8.12
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -49,7 +49,7 @@ Find out more:
 
 = Who Uses Give? =
 
-With more than 20,000 active installs of Give, we hear more and more success stories from nonprofit organizations using Give. Causes are using Give to raise millions of dollars per year. Check out some of our [Give Stories](http://bit.ly/WPORGGiveStories) and [Case Studies](http://bit.ly/WPORGGiveCaseStudies) for details about their success.
+With more than 30,000+ active installs of Give, we hear more and more success stories from nonprofit organizations using Give. Causes are using Give to raise millions of dollars per year. Check out some of our [Give Stories](http://bit.ly/WPORGGiveStories) and [Case Studies](http://bit.ly/WPORGGiveCaseStudies) for details about their success.
 
 = Why Use Give for Donations? =
 
@@ -206,6 +206,14 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 1.8.11: July 11th, 2017  =
+* Fix: Compatibility issue with Yoast SEO's new Link Checker utility preventing new Give installs from activating properly. [#1848](https://github.com/WordImpress/Give/issues/1848)
+
+= 1.8.10: July 10th, 2017  =
+* New: A login notification now displays upon successful login within a donation form. [#1384](https://github.com/WordImpress/Give/issues/1384)
+* Fix: Non-core email tags were not rendering properly for some add-ons due to a change made in the way the plugin loads in the last version release. [#1839](https://github.com/WordImpress/Give/issues/1839)
+* Fix: Incorrect admin pagination numbering is now fixed for logs and donations [#1378](https://github.com/WordImpress/Give/issues/1378)
 
 = 1.8.9: July 5th, 2017  =
 * New: Improved the new user notification email that gets sent to admins and also improved the account information email that gets sent to donors when a donor creates an account while donating. [#1821](https://github.com/WordImpress/Give/issues/1821)

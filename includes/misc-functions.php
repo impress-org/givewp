@@ -110,7 +110,7 @@ function give_get_currencies() {
  *
  * @since      1.0
  *
- * @param  string $currency The currency string.
+ * @param  string $currency        The currency string.
  * @param  bool   $decode_currency Option to HTML decode the currency symbol.
  *
  * @return string           The symbol to use for the currency
@@ -214,11 +214,11 @@ function give_currency_symbol( $currency = '', $decode_currency = false ) {
  * @return string
  */
 function give_get_currency_name( $currency_code ) {
-	$currency_name = '';
+	$currency_name  = '';
 	$currency_names = give_get_currencies();
 
 	if ( $currency_code && array_key_exists( $currency_code, $currency_names ) ) {
-		$currency_name = explode( '(',  $currency_names[ $currency_code ] );
+		$currency_name = explode( '(', $currency_names[ $currency_code ] );
 		$currency_name = trim( current( $currency_name ) );
 	}
 
@@ -382,25 +382,50 @@ function give_get_purchase_session() {
 /**
  * Get Donation Summary
  *
- * Retrieves the donation summary.
+ * Creates a donation summary for payment gateways from the donation data before the payment is created in the database.
  *
- * @since       1.0
+ * @since       1.8.12
  *
- * @param array $purchase_data
- * @param bool  $email
+ * @param array $donation_data
+ * @param bool  $name_and_email
+ * @param int   $length
  *
  * @return string
  */
-function give_get_purchase_summary( $purchase_data, $email = true ) {
+function give_payment_gateway_donation_summary( $donation_data, $name_and_email = true, $length = 255 ) {
+
 	$summary = '';
 
-	if ( $email ) {
-		$summary .= $purchase_data['user_email'] . ' - ';
+	$form_id = isset( $donation_data['post_data']['give-form-id'] ) ? $donation_data['post_data']['give-form-id'] : '';
+
+	// Form title.
+	if ( isset( $donation_data['post_data']['give-form-title'] ) ) {
+		$summary .= $donation_data['post_data']['give-form-title'];
+	}
+	// Form multilevel if applicable.
+	if ( isset( $donation_data['post_data']['give-price-id'] ) ) {
+		$summary .= ': ' . give_get_price_option_name( $form_id, $donation_data['post_data']['give-price-id'] );
 	}
 
-	$summary .= get_the_title( $purchase_data['post_data']['give-form-id'] );
+	// Add Donor's name + email if requested.
+	if ( $name_and_email ) {
 
-	return $summary;
+		// First name
+		if ( isset( $donation_data['user_info']['first_name'] ) && ! empty( $donation_data['user_info']['first_name'] ) ) {
+			$summary .= ' - ' . $donation_data['user_info']['first_name'];
+		}
+
+		if ( isset( $donation_data['user_info']['last_name'] ) && ! empty( $donation_data['user_info']['last_name'] ) ) {
+			$summary .= ' ' . $donation_data['user_info']['last_name'];
+		}
+
+		$summary .= ' (' . $donation_data['user_email'] . ')';
+	}
+
+	// Cut the length
+	$summary = substr( $summary, 0, $length );
+
+	return apply_filters( 'give_payment_gateway_donation_summary', $summary );
 }
 
 
@@ -653,8 +678,8 @@ function give_get_newsletter() {
 	<div class="give-newsletter-form-wrap">
 
 		<form action="//givewp.us3.list-manage.com/subscribe/post?u=3ccb75d68bda4381e2f45794c&amp;id=12a081aa13"
-			  method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate"
-			  target="_blank" novalidate>
+		      method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate"
+		      target="_blank" novalidate>
 			<div class="give-newsletter-confirmation">
 				<p><?php esc_html_e( 'Thanks for Subscribing!', 'give' ); ?> :)</p>
 			</div>
@@ -663,26 +688,26 @@ function give_get_newsletter() {
 				<tr valign="middle">
 					<td>
 						<label for="mce-EMAIL"
-							   class="screen-reader-text"><?php esc_html_e( 'Email Address (required)', 'give' ); ?></label>
+						       class="screen-reader-text"><?php esc_html_e( 'Email Address (required)', 'give' ); ?></label>
 						<input type="email" name="EMAIL" id="mce-EMAIL"
-							   placeholder="<?php esc_attr_e( 'Email Address (required)', 'give' ); ?>"
-							   class="required email" value="">
+						       placeholder="<?php esc_attr_e( 'Email Address (required)', 'give' ); ?>"
+						       class="required email" value="">
 					</td>
 					<td>
 						<label for="mce-FNAME"
-							   class="screen-reader-text"><?php esc_html_e( 'First Name', 'give' ); ?></label>
+						       class="screen-reader-text"><?php esc_html_e( 'First Name', 'give' ); ?></label>
 						<input type="text" name="FNAME" id="mce-FNAME"
-							   placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" class="" value="">
+						       placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" class="" value="">
 					</td>
 					<td>
 						<label for="mce-LNAME"
-							   class="screen-reader-text"><?php esc_html_e( 'Last Name', 'give' ); ?></label>
+						       class="screen-reader-text"><?php esc_html_e( 'Last Name', 'give' ); ?></label>
 						<input type="text" name="LNAME" id="mce-LNAME"
-							   placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" class="" value="">
+						       placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" class="" value="">
 					</td>
 					<td>
 						<input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button"
-							   value="<?php esc_attr_e( 'Subscribe', 'give' ); ?>">
+						       value="<?php esc_attr_e( 'Subscribe', 'give' ); ?>">
 					</td>
 				</tr>
 			</table>
@@ -695,31 +720,30 @@ function give_get_newsletter() {
 	</div>
 
 	<script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>
-	<script type='text/javascript'>(function ($) {
-			window.fnames = new Array();
-			window.ftypes = new Array();
-			fnames[0] = 'EMAIL';
-			ftypes[0] = 'email';
-			fnames[1] = 'FNAME';
-			ftypes[1] = 'text';
-			fnames[2] = 'LNAME';
-			ftypes[2] = 'text';
+	<script type='text/javascript'>(function( $ ) {
+				window.fnames = new Array();
+				window.ftypes = new Array();
+				fnames[ 0 ] = 'EMAIL';
+				ftypes[ 0 ] = 'email';
+				fnames[ 1 ] = 'FNAME';
+				ftypes[ 1 ] = 'text';
+				fnames[ 2 ] = 'LNAME';
+				ftypes[ 2 ] = 'text';
 
-			//Successful submission
-			$('form[name="mc-embedded-subscribe-form"]').on('submit', function () {
+				//Successful submission
+				$( 'form[name="mc-embedded-subscribe-form"]' ).on( 'submit', function() {
 
-				var email_field = $(this).find('#mce-EMAIL').val();
-				if (!email_field) {
-					return false;
-				}
-				$(this).find('.give-newsletter-confirmation').show().delay(5000).slideUp();
-				$(this).find('.give-newsletter-form').hide();
+					var email_field = $( this ).find( '#mce-EMAIL' ).val();
+					if ( ! email_field ) {
+						return false;
+					}
+					$( this ).find( '.give-newsletter-confirmation' ).show().delay( 5000 ).slideUp();
+					$( this ).find( '.give-newsletter-form' ).hide();
 
-			});
+				} );
 
-
-		}(jQuery));
-		var $mcj = jQuery.noConflict(true);
+			}( jQuery ));
+			var $mcj = jQuery.noConflict( true );
 
 
 	</script>
@@ -1064,13 +1088,13 @@ function give_is_terms_enabled( $form_id ) {
 /**
  * Delete donation stats cache.
  *
- * @todo Resolve stats cache key naming issue. Currently it is difficult to regenerate cache key.
+ * @todo  Resolve stats cache key naming issue. Currently it is difficult to regenerate cache key.
  *
  * @since 1.8.7
  *
  * @param string|array $date_range Date for stats.
- *                           Date value should be in today, yesterday, this_week, last_week, this_month, last_month, this_quarter, last_quarter, this_year, last_year.
- *                           For date value other, all cache will be removed.
+ *                                 Date value should be in today, yesterday, this_week, last_week, this_month, last_month, this_quarter, last_quarter, this_year, last_year.
+ *                                 For date value other, all cache will be removed.
  *
  * @param array        $args
  *
@@ -1086,7 +1110,7 @@ function give_delete_donation_stats( $date_range = '', $args = array() ) {
 	 * @since 1.8.7
 	 *
 	 * @param string|array $date_range
-	 * @param array  $args
+	 * @param array        $args
 	 */
 	do_action( 'give_delete_donation_stats', $status, $date_range, $args );
 
@@ -1113,11 +1137,11 @@ function give_get_meta( $id, $meta_key, $single = false, $default = false ) {
 	 * @since 1.8.8
 	 */
 	$meta_value = apply_filters(
-			'give_get_meta',
-			get_post_meta( $id, $meta_key, $single ),
-			$id,
-			$meta_key,
-			$default
+		'give_get_meta',
+		get_post_meta( $id, $meta_key, $single ),
+		$id,
+		$meta_key,
+		$default
 	);
 
 	if (

@@ -159,7 +159,7 @@ $payment_mode   = $payment->mode;
 											<p>
 												<label for="give-payment-total" class="strong"><?php esc_html_e( 'Total Donation:', 'give' ); ?></label>&nbsp;
 												<?php echo give_currency_symbol( $payment->currency ); ?>
-												&nbsp;<input id="give-payment-total" name="give-payment-total" type="text" class="small-text give-price-field" value="<?php echo esc_attr( give_format_decimal( give_get_payment_amount( $payment_id ) ) ); ?>"/>
+												&nbsp;<input id="give-payment-total" name="give-payment-total" type="text" class="small-text give-price-field" value="<?php echo esc_attr( give_format_decimal( give_get_payment_amount( $payment_id ), false, false ) ); ?>"/>
 											</p>
 										</div>
 
@@ -375,7 +375,7 @@ $payment_mode   = $payment->mode;
 														$prices_atts = '';
 														if( $variable_prices = give_get_variable_prices( $payment_meta['form_id'] ) ) {
 															foreach ( $variable_prices as $variable_price ) {
-																$prices_atts[$variable_price['_give_id']['level_id']] = give_format_amount( $variable_price['_give_amount'] );
+																$prices_atts[$variable_price['_give_id']['level_id']] = give_format_amount( $variable_price['_give_amount'], array( 'sanitize' => false ) );
 															}
 														}
 														// Variable price dropdown options.
@@ -398,7 +398,7 @@ $payment_mode   = $payment->mode;
 										<div class="column">
 											<p>
 												<strong><?php esc_html_e( 'Total Donation:', 'give' ); ?></strong><br>
-												<?php echo give_currency_filter( give_format_amount( $payment->total ), give_get_payment_currency_code( $payment->ID ) ); ?>
+												<?php echo give_currency_filter( give_format_amount( $payment->total, array( 'sanitize' => false ) ), give_get_payment_currency_code( $payment->ID ) ); ?>
 											</p>
 											<p>
 												<?php
@@ -640,7 +640,7 @@ $payment_mode   = $payment->mode;
 														?>
 													</div>
 													<div id="give-order-address-state-wrap">
-														<label for="give-payment-address-state" class="order-data-address-line"><?php esc_html_e( 'State / Province:', 'give' ); ?></label>
+														<label for="give-payment-address-state" class="order-data-address-line"><?php esc_html_e( 'State / Province / County:', 'give' ); ?></label>
 														<?php
 														$states = give_get_states( $address['country'] );
 														if ( ! empty( $states ) ) {

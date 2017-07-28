@@ -49,7 +49,7 @@ if ( ! class_exists( 'Give_Settings_System_Info' ) ) :
 			add_action( "give-tools_settings_{$this->id}_page", array( $this, 'output' ) );
 
 			// Do not use main form for this tab.
-			if( give_get_current_setting_tab() === $this->id ) {
+			if ( give_get_current_setting_tab() === $this->id ) {
 				add_action( "give-tools_open_form", '__return_empty_string' );
 				add_action( "give-tools_close_form", '__return_empty_string' );
 			}
@@ -59,7 +59,9 @@ if ( ! class_exists( 'Give_Settings_System_Info' ) ) :
 		 * Add this page to settings.
 		 *
 		 * @since  1.8
+		 *
 		 * @param  array $pages Lst of pages.
+		 *
 		 * @return array
 		 */
 		public function add_settings_page( $pages ) {

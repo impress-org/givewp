@@ -58,7 +58,7 @@ function give_email_template_tags( $message, $payment_data, $payment_id, $admin_
  */
 function give_email_preview_template_tags( $message ) {
 
-	$price = give_currency_filter( give_format_amount( 10.50 ) );
+	$price = give_currency_filter( give_format_amount( 10.50, array( 'sanitize' => false ) ) );
 
 	$gateway = 'PayPal';
 
@@ -244,7 +244,7 @@ function give_get_donation_notification_body_content( $payment_id = 0, $payment_
 	$default_email_body .= esc_html__( 'A donation has been made.', 'give' ) . "\n\n";
 	$default_email_body .= esc_html__( 'Donation:', 'give' ) . "\n\n";
 	$default_email_body .= esc_html__( 'Donor:', 'give' ) . ' ' . html_entity_decode( $name, ENT_COMPAT, 'UTF-8' ) . "\n";
-	$default_email_body .= esc_html__( 'Amount:', 'give' ) . ' ' . html_entity_decode( give_currency_filter( give_format_amount( give_get_payment_amount( $payment_id ) ) ), ENT_COMPAT, 'UTF-8' ) . "\n";
+	$default_email_body .= esc_html__( 'Amount:', 'give' ) . ' ' . html_entity_decode( give_currency_filter( give_format_amount( give_get_payment_amount( $payment_id ), array( 'sanitize' => false ) ) ), ENT_COMPAT, 'UTF-8' ) . "\n";
 	$default_email_body .= esc_html__( 'Payment Method:', 'give' ) . ' ' . $gateway . "\n\n";
 	$default_email_body .= esc_html__( 'Thank you', 'give' );
 

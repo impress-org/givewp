@@ -201,6 +201,22 @@ function give_process_paypal_ipn() {
 	$payment_id = isset( $encoded_data_array['custom'] ) ? absint( $encoded_data_array['custom'] ) : 0;
 	$txn_type   = $encoded_data_array['txn_type'];
 
+	// Check for PayPal IPN Notifications and update data based on it.
+	$current_timestamp = current_time( 'timestamp' );
+	$paypal_ipn_vars = array(
+		'auth_status'    => ( $api_response['body'] ) ? $api_response['body'] : 'N/A',
+		'transaction_id' => $encoded_data_array['txn_id'],
+		'payment_id'     => $payment_id,
+	);
+	update_option( 'give_last_paypal_ipn_received', $paypal_ipn_vars );
+	give_insert_payment_note( $payment_id, sprintf(
+				__( 'Last IPN received on %s at %s', 'give' ),
+				date_i18n( 'm/d/Y', $current_timestamp ),
+				date_i18n( 'H:i', $current_timestamp )
+			)
+	);
+	give_update_meta( $payment_id, 'give_last_paypal_ipn_received', $current_timestamp );
+
 	if ( has_action( 'give_paypal_' . $txn_type ) ) {
 		/**
 		 * Fires while processing PayPal IPN $txn_type.
@@ -713,7 +729,7 @@ function give_build_paypal_item_title( $payment_data ) {
 		$price_level_amount    = give_get_price_option_amount( $form_id, $payment_data['post_data']['give-price-id'] );
 
 		// Donation given doesn't match selected level (must be a custom amount).
-		if ( $price_level_amount != give_sanitize_amount( $payment_data['price'] ) ) {
+		if ( $price_level_amount != give_maybe_sanitize_amount( $payment_data['price'] ) ) {
 			$custom_amount_text = give_get_meta( $form_id, '_give_custom_amount_text', true );
 			// user custom amount text if any, fallback to default if not.
 			$item_name .= ' - ' . give_check_variable( $custom_amount_text, 'empty', __( 'Custom Amount', 'give' ) );
@@ -722,7 +738,7 @@ function give_build_paypal_item_title( $payment_data ) {
 			$item_name .= ' - ' . $item_price_level_text;
 		}
 	} // End if().
-	elseif ( give_get_form_price( $form_id ) !== give_sanitize_amount( $payment_data['price'] ) ) {
+	elseif ( give_get_form_price( $form_id ) !== give_maybe_sanitize_amount( $payment_data['price'] ) ) {
 		$custom_amount_text = give_get_meta( $form_id, '_give_custom_amount_text', true );
 		// user custom amount text if any, fallback to default if not.
 		$item_name .= ' - ' . give_check_variable( $custom_amount_text, 'empty', __( 'Custom Amount', 'give' ) );
