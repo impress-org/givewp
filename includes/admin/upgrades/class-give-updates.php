@@ -441,9 +441,6 @@ class Give_Updates {
 				}
 			}
 
-			// Verify percentage.
-			$this->percentage = ( 100 < $this->percentage ) ? 100 : $this->percentage;
-
 			$doing_upgrade_args = array(
 				'update_info' => $update,
 				'step'        => ++ $this->step,
@@ -527,7 +524,11 @@ class Give_Updates {
 	 * @param $current_total
 	 */
 	public function set_percentage( $total, $current_total ) {
+		// Set percentage.
 		$this->percentage = $total ? ( ( $current_total ) / $total ) * 100 : 0;
+
+		// Verify percentage.
+		$this->percentage = ( 100 < $this->percentage ) ? 100 : $this->percentage;
 	}
 }
 
