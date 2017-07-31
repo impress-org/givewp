@@ -232,7 +232,7 @@ function give_offline_send_admin_notice( $payment_id = 0 ) {
 		$name = $user_info['email'];
 	}
 
-	$amount = give_currency_filter( give_format_amount( give_get_payment_amount( $payment_id ) ) );
+	$amount = give_currency_filter( give_format_amount( give_get_payment_amount( $payment_id ), array( 'sanitize' => false ) ) );
 
 	$admin_subject = apply_filters( 'give_offline_admin_donation_notification_subject', __( 'New Pending Donation', 'give' ), $payment_id );
 

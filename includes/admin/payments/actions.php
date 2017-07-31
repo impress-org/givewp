@@ -65,8 +65,8 @@ function give_update_payment_details( $data ) {
 
 	$address = array_map( 'trim', $data['give-payment-address'][0] );
 
-	$curr_total = give_sanitize_amount( $payment->total );
-	$new_total  = give_sanitize_amount( $data['give-payment-total'] );
+	$curr_total = $payment->total;
+	$new_total  = give_maybe_sanitize_amount( $data['give-payment-total'] );
 	$date       = date( 'Y-m-d', strtotime( $date ) ) . ' ' . $hour . ':' . $minute . ':00';
 
 	$curr_donor_id = sanitize_text_field( $data['give-current-donor'] );

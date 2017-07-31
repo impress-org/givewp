@@ -29,21 +29,21 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 				'_give_id'     => array(
 					'level_id' => '1',
 				),
-				'_give_amount' => '10.00',
+				'_give_amount' => give_sanitize_amount_for_db( '10.00' ),
 				'_give_text'   => 'Basic Level',
 			),
 			array(
 				'_give_id'     => array(
 					'level_id' => '2',
 				),
-				'_give_amount' => '20.00',
+				'_give_amount' => give_sanitize_amount_for_db( '20.00' ),
 				'_give_text'   => 'Intermediate Level',
 			),
 			array(
 				'_give_id'     => array(
 					'level_id' => '3',
 				),
-				'_give_amount' => '40.00',
+				'_give_amount' => give_sanitize_amount_for_db( '40.00' ),
 				'_give_text'   => 'Advanced Level',
 			),
 		);

@@ -85,17 +85,22 @@ class Give_MetaBox_Form_Data {
 		$post_id               = give_get_admin_post_id();
 		$price                 = give_get_form_price( $post_id );
 		$custom_amount_minimum = give_get_form_minimum_price( $post_id );
-		$goal                  = give_get_form_goal( $post_id );
+		$goal                  = give_format_amount( give_get_form_goal( $post_id ), array( 'sanitize' => false ) );
+		$price_placeholder     = give_format_decimal( '1.00', false, false );
 
 		// No empty prices - min. 1.00 for new forms
 		if ( empty( $price ) && is_null( $post_id ) ) {
-			$price = esc_attr( give_format_decimal( '1.00' ) );
+			$price = '1.00';
 		}
 
 		// Min. $1.00 for new forms
 		if ( empty( $custom_amount_minimum ) ) {
-			$custom_amount_minimum = esc_attr( give_format_decimal( '1.00' ) );
+			$custom_amount_minimum = '1.00';
 		}
+
+		// Format amounts.
+		$price = give_format_amount( $price, array( 'sanitize' => false ) );
+		$custom_amount_minimum = give_format_amount( $custom_amount_minimum, array( 'sanitize' => false ) );
 
 		// Start with an underscore to hide fields from custom fields list
 		$prefix = '_give_';
@@ -128,7 +133,7 @@ class Give_MetaBox_Form_Data {
 						'type'        => 'text_small',
 						'data_type'   => 'price',
 						'attributes'  => array(
-							'placeholder' => give_format_decimal( '1.00' ),
+							'placeholder' => $price_placeholder,
 							'value'       => $price,
 							'class'       => 'give-money-field',
 						),
@@ -165,7 +170,7 @@ class Give_MetaBox_Form_Data {
 						'type'        => 'text_small',
 						'data_type'   => 'price',
 						'attributes'  => array(
-							'placeholder' => give_format_decimal( '1.00' ),
+							'placeholder' => $price_placeholder,
 							'value'       => $custom_amount_minimum,
 							'class'       => 'give-money-field',
 						),
@@ -203,7 +208,7 @@ class Give_MetaBox_Form_Data {
 								'type'       => 'text_small',
 								'data_type'  => 'price',
 								'attributes' => array(
-									'placeholder' => give_format_decimal( '1.00' ),
+									'placeholder' => $price_placeholder,
 									'class'       => 'give-money-field',
 								),
 							),
@@ -369,8 +374,8 @@ class Give_MetaBox_Form_Data {
 						'type'        => 'text_small',
 						'data_type'   => 'price',
 						'attributes'  => array(
-							'placeholder' => give_format_decimal( '0.00' ),
-							'value'       => give_format_decimal( $goal ),
+							'placeholder' => give_format_decimal( '0.00', false, false ),
+							'value'       => $goal,
 							'class'       => 'give-money-field',
 						),
 					),
@@ -1136,7 +1141,7 @@ class Give_MetaBox_Form_Data {
 							}
 
 							$meta_value[ $index ][ $field['id'] ] = ! empty( $meta_value[ $index ][ $field['id'] ] )
-								? give_sanitize_amount( $meta_value[ $index ][ $field['id'] ] )
+								? give_sanitize_amount_for_db( $meta_value[ $index ][ $field['id'] ] )
 								: 0;
 						}
 					}
@@ -1145,7 +1150,7 @@ class Give_MetaBox_Form_Data {
 
 			default:
 				if ( ! empty( $setting_field['data_type'] ) && 'price' === $setting_field['data_type'] ) {
-					$meta_value = $meta_value ? give_sanitize_amount( $meta_value ) : 0;
+					$meta_value = $meta_value ? give_sanitize_amount_for_db( $meta_value ) : 0;
 				}
 		}
 

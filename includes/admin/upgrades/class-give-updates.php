@@ -390,7 +390,7 @@ class Give_Updates {
 		if ( ! $this->step ) {
 			$this->send_ajax_response(
 				array(
-					'message'    => __( 'Error: please reload this page  and try again', 'give' ),
+					'message'    => __( 'Please reload this page  and try again', 'give' ),
 					'heading'    => '',
 					'percentage' => 0,
 				),
@@ -406,7 +406,7 @@ class Give_Updates {
 			$this->send_ajax_response(
 				array(
 					'message'    => __( 'The database is already up to date.', 'give' ),
-					'heading'    => '',
+					'heading'    => __( 'Updates Completed.', 'give' ),
 					'percentage' => 0,
 				),
 				'success'
@@ -433,16 +433,13 @@ class Give_Updates {
 					$this->send_ajax_response(
 						array(
 							'message'    => __( 'Database updated successfully.', 'give' ),
-							'heading'    => '',
+							'heading'    => __( 'Updates Completed.', 'give' ),
 							'percentage' => 0,
 						),
 						'success'
 					);
 				}
 			}
-
-			// Verify percentage.
-			$this->percentage = ( 100 < $this->percentage ) ? 100 : $this->percentage;
 
 			$doing_upgrade_args = array(
 				'update_info' => $update,
@@ -486,7 +483,7 @@ class Give_Updates {
 				break;
 
 			case 'error':
-				wp_send_json_success( $data );
+				wp_send_json_error( $data );
 				break;
 
 			default:
@@ -516,6 +513,7 @@ class Give_Updates {
 		return $status;
 	}
 
+
 	/**
 	 * Set current update percentage.
 	 *
@@ -526,7 +524,11 @@ class Give_Updates {
 	 * @param $current_total
 	 */
 	public function set_percentage( $total, $current_total ) {
+		// Set percentage.
 		$this->percentage = $total ? ( ( $current_total ) / $total ) * 100 : 0;
+
+		// Verify percentage.
+		$this->percentage = ( 100 < $this->percentage ) ? 100 : $this->percentage;
 	}
 }
 

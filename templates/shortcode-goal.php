@@ -65,8 +65,8 @@ if ( ( $income >= $goal ) || ( $donations_completed >= $donations_goal ) ) {
 			if ( $goal_format === 'amount' ) :
 
 				// Get formatted amount.
-				$income = give_human_format_large_amount( give_format_amount( $income ) );
-				$goal   = give_human_format_large_amount( give_format_amount( $goal ) );
+				$income = give_human_format_large_amount( give_format_amount( $income, array( 'sanitize' => false ) ) );
+				$goal   = give_human_format_large_amount( give_format_amount( $goal, array( 'sanitize' => false ) ) );
 
 				echo sprintf(
 				/* translators: 1: amount of income raised 2: goal target ammount */

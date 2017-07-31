@@ -1002,8 +1002,7 @@ ASIDE
     bottom: 0;
     right: 166px;
     width: 170px;
-    max-height: 250px;
-    overflow-y: scroll; }
+    max-height: 250px; }
 
 @media only screen and (min-width: 851px) and (max-width: 1025px), (max-width: 550px) {
   #give-metabox-form-data ul.give-metabox-tabs {
