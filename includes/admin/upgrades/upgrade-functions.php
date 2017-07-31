@@ -1185,16 +1185,14 @@ function give_v20_upgrades_donor_name() {
 	/* @var Give_Updates $give_updates */
 	$give_updates = Give_Updates::get_instance();
 
-	$per_step = 30;
-	$offset = ( $give_updates->step - 1 ) * $per_step;
 	$args = array(
-		'number'    => $per_step,
-		'offset'    => $offset
+		'offset' => ( 1 === $give_updates->step ) ? 0 : $give_updates->step * 20,
 	);
 
 	$donors = Give()->donors->get_donors( $args );
 
 	if( $donors ) {
+		$give_updates->set_percentage( count( $donors ), $give_updates->step * 20 );
 		// Loop through Donors
 		foreach ( $donors as $donor ) {
 			$donor_name = explode( ' ', $donor->name, 2 );
