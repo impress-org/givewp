@@ -85,7 +85,7 @@ class Give_DB_Log_Meta extends Give_DB {
 		$log_id = $this->sanitize_id( $log_id );
 
 		// Bailout.
-		if ( ! $log_id || ! Give()->logs->log_db->is_log( $log_id ) ) {
+		if ( ! Give()->logs->log_db->is_log( $log_id ) ) {
 			return null;
 		}
 
@@ -119,7 +119,7 @@ class Give_DB_Log_Meta extends Give_DB {
 	 */
 	public function add_meta( $log_id = 0, $meta_key = '', $meta_value, $unique = false ) {
 		$log_id = $this->sanitize_id( $log_id );
-		if ( ! $log_id || ! Give()->logs->log_db->is_log( $log_id ) ) {
+		if ( ! Give()->logs->log_db->is_log( $log_id ) ) {
 			return null;
 		}
 
@@ -141,7 +141,7 @@ class Give_DB_Log_Meta extends Give_DB {
 	 */
 	public function update_meta( $log_id = 0, $meta_key = '', $meta_value, $prev_value = '' ) {
 		$log_id = $this->sanitize_id( $log_id );
-		if ( ! $log_id || ! Give()->logs->log_db->is_log( $log_id ) ) {
+		if ( ! Give()->logs->log_db->is_log( $log_id ) ) {
 			return null;
 		}
 
@@ -169,7 +169,7 @@ class Give_DB_Log_Meta extends Give_DB {
 	public function delete_meta( $log_id = 0, $meta_key = '', $meta_value = '' ) {
 		$log_id = $this->sanitize_id( $log_id );
 
-		if ( ! $log_id || ! Give()->logs->log_db->is_log( $log_id ) ) {
+		if ( ! Give()->logs->log_db->is_log( $log_id ) ) {
 			return null;
 		}
 

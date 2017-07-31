@@ -402,7 +402,7 @@ class Give_DB_Logs extends Give_DB {
 	 * @return bool
 	 */
 	public function is_log( $id ) {
-		$log = $this->get_log_by( $id );
+		$log = ( ! empty( $id ) || get_post_type( $id ) ) ? false : $this->get_log_by( $id );
 		return ! empty( $log ) ? true : false;
 	}
 }
