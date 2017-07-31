@@ -1389,6 +1389,8 @@ function give_v20_move_metadata_into_new_table_callback() {
 
 		while ( $payments->have_posts() ) {
 			$payments->the_post();
+			global $post;
+
 			$meta_data = $wpdb->get_results(
 				$wpdb->prepare(
 					"SELECT * FROM $wpdb->postmeta where post_id=%d",
@@ -1399,7 +1401,7 @@ function give_v20_move_metadata_into_new_table_callback() {
 
 			if ( ! empty( $meta_data ) ) {
 				foreach ( $meta_data as $index => $data ) {
-					switch ( get_post_type( get_the_ID() ) ) {
+					switch ( $post->post_type ) {
 						case 'give_forms':
 							$data['form_id'] = $data['post_id'];
 							unset( $data['post_id'] );
