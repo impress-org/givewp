@@ -129,7 +129,7 @@ function give_get_donation_form( $args = array() ) {
 				<input type="hidden" name="give-form-url"
 					   value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
 				<input type="hidden" name="give-form-minimum"
-					   value="<?php echo give_format_amount( give_get_form_minimum_price( $form->ID ) ); ?>"/>
+					   value="<?php echo give_format_amount( give_get_form_minimum_price( $form->ID ), array( 'sanitize' => false ) ); ?>"/>
 
 				<!-- The following field is for robots only, invisible to humans: -->
 				<span class="give-hidden" style="display: none !important;">
@@ -394,7 +394,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 	$currency_position   = isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before';
 	$symbol              = give_currency_symbol( give_get_currency() );
 	$currency_output     = '<span class="give-currency-symbol give-currency-position-' . $currency_position . '">' . $symbol . '</span>';
-	$default_amount      = give_format_amount( give_get_default_form_amount( $form_id ) );
+	$default_amount      = give_format_amount( give_get_default_form_amount( $form_id ), array( 'sanitize' => false ) );
 	$custom_amount_text  = give_get_meta( $form_id, '_give_custom_amount_text', true );
 
 	/**
@@ -502,11 +502,11 @@ function give_output_levels( $form_id ) {
 			$output .= '<ul id="give-donation-level-button-wrap" class="give-donation-levels-wrap give-list-inline">';
 
 			foreach ( $prices as $price ) {
-				$level_text    = apply_filters( 'give_form_level_text', ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( give_format_amount( $price['_give_amount'] ) ), $form_id, $price );
+				$level_text    = apply_filters( 'give_form_level_text', ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( give_format_amount( $price['_give_amount'], array( 'sanitize' => false ) ) ), $form_id, $price );
 				$level_classes = apply_filters( 'give_form_level_classes', 'give-donation-level-btn give-btn give-btn-level-' . $price['_give_id']['level_id'] . ' ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'give-default-level' : '' ), $form_id, $price );
 
 				$output .= '<li>';
-				$output .= '<button type="button" data-price-id="' . $price['_give_id']['level_id'] . '" class=" ' . $level_classes . '" value="' . give_format_amount( $price['_give_amount'] ) . '">';
+				$output .= '<button type="button" data-price-id="' . $price['_give_id']['level_id'] . '" class=" ' . $level_classes . '" value="' . give_format_amount( $price['_give_amount'], array( 'sanitize' => false ) ) . '">';
 				$output .= $level_text;
 				$output .= '</button>';
 				$output .= '</li>';
@@ -531,11 +531,11 @@ function give_output_levels( $form_id ) {
 			$output .= '<ul id="give-donation-level-radio-list" class="give-donation-levels-wrap">';
 
 			foreach ( $prices as $price ) {
-				$level_text    = apply_filters( 'give_form_level_text', ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( give_format_amount( $price['_give_amount'] ) ), $form_id, $price );
+				$level_text    = apply_filters( 'give_form_level_text', ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( give_format_amount( $price['_give_amount'], array( 'sanitize' => false ) ) ), $form_id, $price );
 				$level_classes = apply_filters( 'give_form_level_classes', 'give-radio-input give-radio-input-level give-radio-level-' . $price['_give_id']['level_id'] . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? ' give-default-level' : '' ), $form_id, $price );
 
 				$output .= '<li>';
-				$output .= '<input type="radio" data-price-id="' . $price['_give_id']['level_id'] . '" class="' . $level_classes . '" name="give-radio-donation-level" id="give-radio-level-' . $price['_give_id']['level_id'] . '" ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'checked="checked"' : '' ) . ' value="' . give_format_amount( $price['_give_amount'] ) . '">';
+				$output .= '<input type="radio" data-price-id="' . $price['_give_id']['level_id'] . '" class="' . $level_classes . '" name="give-radio-donation-level" id="give-radio-level-' . $price['_give_id']['level_id'] . '" ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'checked="checked"' : '' ) . ' value="' . give_format_amount( $price['_give_amount'], array( 'sanitize' => false ) ) . '">';
 				$output .= '<label for="give-radio-level-' . $price['_give_id']['level_id'] . '">' . $level_text . '</label>';
 				$output .= '</li>';
 
@@ -560,10 +560,10 @@ function give_output_levels( $form_id ) {
 
 			//first loop through prices.
 			foreach ( $prices as $price ) {
-				$level_text    = apply_filters( 'give_form_level_text', ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( give_format_amount( $price['_give_amount'] ) ), $form_id, $price );
+				$level_text    = apply_filters( 'give_form_level_text', ! empty( $price['_give_text'] ) ? $price['_give_text'] : give_currency_filter( give_format_amount( $price['_give_amount'], array( 'sanitize' => false ) ) ), $form_id, $price );
 				$level_classes = apply_filters( 'give_form_level_classes', 'give-donation-level-' . $price['_give_id']['level_id'] . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? ' give-default-level' : '' ), $form_id, $price );
 
-				$output .= '<option data-price-id="' . $price['_give_id']['level_id'] . '" class="' . $level_classes . '" ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'selected="selected"' : '' ) . ' value="' . give_format_amount( $price['_give_amount'] ) . '">';
+				$output .= '<option data-price-id="' . $price['_give_id']['level_id'] . '" class="' . $level_classes . '" ' . ( ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) ? 'selected="selected"' : '' ) . ' value="' . give_format_amount( $price['_give_amount'], array( 'sanitize' => false ) ) . '">';
 				$output .= $level_text;
 				$output .= '</option>';
 
@@ -1003,11 +1003,18 @@ function give_default_cc_address_fields( $form_id ) {
 
 		<?php
 		$selected_state = give_get_state();
-		$states         = give_get_states( $selected_country );
+
+		$label = __( 'State', 'give' );
+		$states_label = give_get_states_label();
+		// Check if $country code exists in the array key for states label.
+		if ( array_key_exists( $selected_country, $states_label ) ) {
+			$label = $states_label[ $selected_country ];
+		}
+
+		$states = give_get_states( $selected_country );
 
 		// Get the country list that does not have any states init.
 		$no_states_country = give_no_states_country_list();
-
 
 		if ( ! empty( $give_user_info['card_state'] ) ) {
 			$selected_state = $give_user_info['card_state'];
@@ -1015,7 +1022,7 @@ function give_default_cc_address_fields( $form_id ) {
 		?>
 		<p id="give-card-state-wrap" class="form-row form-row-last form-row-responsive <?php echo ( ! empty( $selected_country ) && array_key_exists( $selected_country, $no_states_country ) ) ? 'give-hidden' : ''; ?> ">
 			<label for="card_state" class="give-label">
-				<?php esc_html_e( 'State / Province / County', 'give' ); ?>
+				<?php echo $label; ?>
 				<?php if ( give_field_is_required( 'card_state', $form_id ) ) : ?>
 					<span class="give-required-indicator">*</span>
 				<?php endif; ?>
@@ -1037,7 +1044,7 @@ function give_default_cc_address_fields( $form_id ) {
 				</select>
 			<?php else : ?>
 				<input type="text" size="6" name="card_state" id="card_state" class="card_state give-input"
-					   placeholder="<?php esc_attr_e( 'State / Province / County', 'give' ); ?>"/>
+					   placeholder="<?php echo $label; ?>"/>
 			<?php endif; ?>
 		</p>
 		<?php
@@ -1546,22 +1553,23 @@ add_action( 'give_donation_form_after_cc_form', 'give_terms_agreement', 8888, 1 
  */
 function give_checkout_final_total( $form_id ) {
 
-	if ( isset( $_POST['give_total'] ) ) {
-		$total = apply_filters( 'give_donation_total', $_POST['give_total'] );
-	} else {
-		//default total.
-		$total = give_get_default_form_amount( $form_id );
-	}
+	$total = isset( $_POST['give_total'] ) ?
+		apply_filters( 'give_donation_total', give_maybe_sanitize_amount( $_POST['give_total'] ) ) :
+		give_get_default_form_amount( $form_id );
+
+
 	//Only proceed if give_total available.
 	if ( empty( $total ) ) {
 		return;
 	}
 	?>
 	<p id="give-final-total-wrap" class="form-wrap ">
-		<span
-				class="give-donation-total-label"><?php echo apply_filters( 'give_donation_total_label', esc_html__( 'Donation Total:', 'give' ) ); ?></span>
-		<span class="give-final-total-amount"
-			  data-total="<?php echo give_format_amount( $total ); ?>"><?php echo give_currency_filter( give_format_amount( $total ) ); ?></span>
+		<span class="give-donation-total-label">
+			<?php echo apply_filters( 'give_donation_total_label', esc_html__( 'Donation Total:', 'give' ) ); ?>
+		</span>
+		<span class="give-final-total-amount" data-total="<?php echo give_format_amount( $total, array( 'sanitize' => false ) ); ?>">
+			<?php echo give_currency_filter( give_format_amount( $total , array( 'sanitize' => false ) ) ); ?>
+		</span>
 	</p>
 	<?php
 }

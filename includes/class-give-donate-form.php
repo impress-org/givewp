@@ -492,16 +492,16 @@ class Give_Donate_Form {
 
 		if ( ! isset( $this->price ) ) {
 
-			$this->price = give_get_meta( $this->ID, '_give_set_price', true );
+			$this->price = give_maybe_sanitize_amount(
+				give_get_meta(
+					$this->ID,
+					'_give_set_price',
+					true
+				)
+			);
 
-			if ( $this->price ) {
-
-				$this->price = give_sanitize_amount( $this->price );
-
-			} else {
-
+			if ( ! $this->price ) {
 				$this->price = 0;
-
 			}
 
 		}
@@ -532,14 +532,8 @@ class Give_Donate_Form {
 			$allow_custom_amount = give_get_meta( $this->ID, '_give_custom_amount', true );
 			$this->minimum_price = give_get_meta( $this->ID, '_give_custom_amount_minimum', true );
 
-			if ( give_is_setting_enabled( $allow_custom_amount ) && $this->minimum_price ) {
-
-				$this->minimum_price = give_sanitize_amount( $this->minimum_price );
-
-			} else {
-
+			if ( ! give_is_setting_enabled( $allow_custom_amount ) ) {
 				$this->minimum_price = 0;
-
 			}
 
 		}
@@ -589,14 +583,8 @@ class Give_Donate_Form {
 
 			$this->goal = give_get_meta( $this->ID, '_give_set_goal', true );
 
-			if ( $this->goal ) {
-
-				$this->goal = give_sanitize_amount( $this->goal );
-
-			} else {
-
+			if ( ! $this->goal ) {
 				$this->goal = 0;
-
 			}
 
 		}

@@ -81,9 +81,9 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 	public function get_columns() {
 		$columns = array(
 			'label'           => esc_attr__( 'Gateway', 'give' ),
-			'complete_sales'  => esc_attr__( 'Complete Transactions', 'give' ),
-			'pending_sales'   => esc_attr__( 'Pending / Failed Transactions', 'give' ),
-			'total_sales'     => esc_attr__( 'Total Transactions', 'give' ),
+			'complete_sales'  => esc_attr__( 'Complete Payments', 'give' ),
+			'pending_sales'   => esc_attr__( 'Pending / Failed Payments', 'give' ),
+			'total_sales'     => esc_attr__( 'Total Payments', 'give' ),
 			'total_donations' => esc_attr__( 'Total Donated', 'give' )
 		);
 
@@ -212,10 +212,10 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 			$reports_data[] = array(
 				'ID'              => $gateway_id,
 				'label'           => $gateway['admin_label'],
-				'complete_sales'  => give_format_amount( $complete_count, false ),
-				'pending_sales'   => give_format_amount( $pending_count, false ),
-				'total_sales'     => give_format_amount( $complete_count + $pending_count, false ),
-				'total_donations' => give_currency_filter( give_format_amount( $stats->get_earnings( 0, 0, 0, $gateway_id ) ) ),
+				'complete_sales'  => $complete_count,
+				'pending_sales'   => $pending_count,
+				'total_sales'     => $complete_count + $pending_count,
+				'total_donations' => give_currency_filter( give_format_amount( $stats->get_earnings( 0, 0, 0, $gateway_id ), array( 'sanitize' => false ) ) ),
 			);
 		}
 

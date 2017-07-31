@@ -387,12 +387,12 @@ function give_get_purchase_session() {
  * @since       1.8.12
  *
  * @param array $donation_data
- * @param bool  $email
+ * @param bool  $name_and_email
  * @param int   $length
  *
  * @return string
  */
-function give_payment_gateway_donation_summary( $donation_data, $email = true, $length = 255 ) {
+function give_payment_gateway_donation_summary( $donation_data, $name_and_email = true, $length = 255 ) {
 
 	$summary = '';
 
@@ -407,17 +407,18 @@ function give_payment_gateway_donation_summary( $donation_data, $email = true, $
 		$summary .= ': ' . give_get_price_option_name( $form_id, $donation_data['post_data']['give-price-id'] );
 	}
 
-	// First name
-	if ( isset( $donation_data['user_info']['first_name'] ) && ! empty( $donation_data['user_info']['first_name'] ) ) {
-		$summary .= ' - ' . $donation_data['user_info']['first_name'];
-	}
+	// Add Donor's name + email if requested.
+	if ( $name_and_email ) {
 
-	if ( isset( $donation_data['user_info']['last_name'] ) && ! empty( $donation_data['user_info']['last_name'] ) ) {
-		$summary .= ' ' . $donation_data['user_info']['last_name'];
-	}
+		// First name
+		if ( isset( $donation_data['user_info']['first_name'] ) && ! empty( $donation_data['user_info']['first_name'] ) ) {
+			$summary .= ' - ' . $donation_data['user_info']['first_name'];
+		}
 
-	// Add Donors email if requested.
-	if ( $email ) {
+		if ( isset( $donation_data['user_info']['last_name'] ) && ! empty( $donation_data['user_info']['last_name'] ) ) {
+			$summary .= ' ' . $donation_data['user_info']['last_name'];
+		}
+
 		$summary .= ' (' . $donation_data['user_email'] . ')';
 	}
 
@@ -1303,6 +1304,13 @@ function give_set_upgrade_complete( $upgrade_action = '' ) {
 	// Remove any blanks, and only show uniques.
 	$completed_upgrades = array_unique( array_values( $completed_upgrades ) );
 
+	/**
+	 * Fire the action when any upgrade set to complete.
+	 *
+	 * @since 1.8.12
+	 */
+	do_action( 'give_set_upgrade_completed', $upgrade_action, $completed_upgrades );
+
 	return update_option( 'give_completed_upgrades', $completed_upgrades );
 }
 
@@ -1313,13 +1321,5 @@ function give_set_upgrade_complete( $upgrade_action = '' ) {
  * @return array The array of completed upgrades
  */
 function give_get_completed_upgrades() {
-
-	$completed_upgrades = get_option( 'give_completed_upgrades' );
-
-	if ( false === $completed_upgrades ) {
-		$completed_upgrades = array();
-	}
-
-	return $completed_upgrades;
-
+	return (array) get_option( 'give_completed_upgrades' );
 }
