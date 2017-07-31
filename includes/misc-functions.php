@@ -1198,3 +1198,84 @@ function give_delete_meta( $id, $meta_key, $meta_value = '' ) {
 	 */
 	return apply_filters( 'give_delete_meta', $status, $id, $meta_key, $meta_value );
 }
+
+/**
+ * Check if the upgrade routine has been run for a specific action
+ *
+ * @since  1.0
+ *
+ * @param  string $upgrade_action The upgrade action to check completion for
+ *
+ * @return bool                   If the action has been added to the completed actions array
+ */
+function give_has_upgrade_completed( $upgrade_action = '' ) {
+
+	if ( empty( $upgrade_action ) ) {
+		return false;
+	}
+
+	$completed_upgrades = give_get_completed_upgrades();
+
+	return in_array( $upgrade_action, $completed_upgrades );
+
+}
+
+/**
+ * For use when doing 'stepped' upgrade routines, to see if we need to start somewhere in the middle
+ *
+ * @since 1.8
+ *
+ * @return mixed   When nothing to resume returns false, otherwise starts the upgrade where it left off
+ */
+function give_maybe_resume_upgrade() {
+	$doing_upgrade = get_option( 'give_doing_upgrade', false );
+	if ( empty( $doing_upgrade ) ) {
+		return false;
+	}
+
+	return $doing_upgrade;
+}
+
+/**
+ * Adds an upgrade action to the completed upgrades array
+ *
+ * @since  1.0
+ *
+ * @param  string $upgrade_action The action to add to the completed upgrades array
+ *
+ * @return bool                   If the function was successfully added
+ */
+function give_set_upgrade_complete( $upgrade_action = '' ) {
+
+	if ( empty( $upgrade_action ) ) {
+		return false;
+	}
+
+	$completed_upgrades   = give_get_completed_upgrades();
+	$completed_upgrades[] = $upgrade_action;
+
+	// Remove any blanks, and only show uniques.
+	$completed_upgrades = array_unique( array_values( $completed_upgrades ) );
+
+	/**
+	 * Fire the action when any upgrade set to complete.
+	 *
+	 * @since 1.8.12
+	 */
+	do_action( 'give_set_upgrade_completed', $upgrade_action, $completed_upgrades );
+
+	return update_option( 'give_completed_upgrades', $completed_upgrades );
+}
+
+/**
+ * Get's the array of completed upgrade actions
+ *
+ * @since  1.0
+ * @return array The array of completed upgrades
+ */
+function give_get_completed_upgrades() {
+
+	return (array) get_option( 'give_completed_upgrades' );
+
+}
+
