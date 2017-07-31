@@ -164,7 +164,7 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 					'zip'       => isset( $user_info['address']['zip'] ) ? $user_info['address']['zip'] : '',
 					'form_id'   => isset( $payment_meta['form_id'] ) ? $payment_meta['form_id'] : '',
 					'form_name' => isset( $payment_meta['form_title'] ) ? $payment_meta['form_title'] : '',
-					'amount'    => html_entity_decode( give_format_amount( $total ) ),
+					'amount'    => html_entity_decode( give_format_amount( $total, array( 'sanitize' => false ) ) ),
 					'gateway'   => give_get_gateway_admin_label( give_get_meta( $payment->ID, '_give_payment_gateway', true ) ),
 					'trans_id'  => give_get_payment_transaction_id( $payment->ID ),
 					'key'       => $payment_meta['key'],

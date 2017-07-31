@@ -206,7 +206,7 @@ function give_reports_graph() {
 				<tbody>
 				<tr>
 					<th scope="row"><strong><?php esc_html_e( 'Total income for period:', 'give' ); ?></strong></th>
-					<td><?php echo give_currency_filter( give_format_amount( $earnings_totals ) ); ?></td>
+					<td><?php echo give_currency_filter( give_format_amount( $earnings_totals, array( 'sanitize' => false ) ) ); ?></td>
 				</tr>
 				<tr class="alternate">
 					<th scope="row"><strong><?php esc_html_e( 'Total donations for period:', 'give' ); ?><strong></th>
@@ -215,7 +215,7 @@ function give_reports_graph() {
 				<?php if ( 'this_month' == $dates['range'] ) : ?>
 					<tr>
 						<th scope="row"><strong><?php esc_html_e( 'Estimated monthly income:', 'give' ); ?></strong></th>
-						<td><?php echo give_currency_filter( give_format_amount( $estimated['earnings'] ) ); ?></td>
+						<td><?php echo give_currency_filter( give_format_amount( $estimated['earnings'], array( 'sanitize' => false ) ) ); ?></td>
 					</tr>
 					<tr class="alternate">
 						<th scope="row"><strong><?php esc_html_e( 'Estimated monthly donations:', 'give' ); ?></strong></th>
@@ -453,7 +453,7 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 				<tbody>
 				<tr>
 					<th scope="row"><strong><?php esc_html_e( 'Total income for period:', 'give' ); ?></strong></th>
-					<td><?php echo give_currency_filter( give_format_amount( $earnings_totals ) ); ?></td>
+					<td><?php echo give_currency_filter( give_format_amount( $earnings_totals, array( 'sanitize' => false ) ) ); ?></td>
 				</tr>
 				<tr class="alternate">
 					<th scope="row"><strong><?php esc_html_e( 'Total donations for period:', 'give' ); ?></strong></th>
@@ -461,7 +461,7 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 				</tr>
 				<tr>
 					<th scope="row"><strong><?php esc_html_e( 'Average monthly income:', 'give' ); ?></strong></th>
-					<td><?php echo give_currency_filter( give_format_amount( give_get_average_monthly_form_earnings( $form_id ) ) ); ?></td>
+					<td><?php echo give_currency_filter( give_format_amount( give_get_average_monthly_form_earnings( $form_id ), array( 'sanitize' => false ) ) ); ?></td>
 				</tr>
 				<tr class="alternate">
 					<th scope="row"><strong><?php esc_html_e( 'Average monthly donations:', 'give' ); ?></strong></th>

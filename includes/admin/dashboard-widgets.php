@@ -58,7 +58,7 @@ function give_dashboard_sales_widget() {
 
 			<p class="give-dashboard-today-earnings"><?php
 				$earnings_today = $stats->get_earnings( 0, 'today', false );
-				echo give_currency_filter( give_format_amount( $earnings_today ) );
+				echo give_currency_filter( give_format_amount( $earnings_today, array( 'sanitize' => false ) ) );
 			?></p>
 
 			<p class="give-orders-today"><?php
@@ -66,7 +66,7 @@ function give_dashboard_sales_widget() {
 				printf(
 					/* translators: %s: daily donation count */
 					esc_html__( '%s donations today', 'give' ),
-					give_format_amount( $donations_today, false )
+					give_format_amount( $donations_today, array( 'decimal' => false, 'sanitize' => false ) )
 				);
 			?></p>
 
@@ -84,24 +84,24 @@ function give_dashboard_sales_widget() {
 			<tbody>
 			<tr id="give-table-stats-tr-1">
 				<td>
-					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_week' ) ) ); ?></p>
+					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_week' ), array( 'sanitize' => false ) ) ); ?></p>
 
 					<p class="give-dashboard-stat-total-label"><?php esc_html_e( 'This Week', 'give' ); ?></p>
 				</td>
 				<td>
-					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_month' ) ) ); ?></p>
+					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_month' ), array( 'sanitize' => false ) ) ); ?></p>
 
 					<p class="give-dashboard-stat-total-label"><?php esc_html_e( 'This Month', 'give' ); ?></p>
 				</td>
 			</tr>
 			<tr id="give-table-stats-tr-2">
 				<td>
-					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'last_month' ) ) ) ?></p>
+					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'last_month' ), array( 'sanitize' => false ) ) ) ?></p>
 
 					<p class="give-dashboard-stat-total-label"><?php esc_html_e( 'Last Month', 'give' ); ?></p>
 				</td>
 				<td>
-					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_year', false ) ) ) ?></p>
+					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_year', false ), array( 'decimal' => false, 'sanitize' => false ) ) ) ?></p>
 
 					<p class="give-dashboard-stat-total-label"><?php esc_html_e( 'This Year', 'give' ); ?></p>
 				</td>

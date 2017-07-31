@@ -59,7 +59,7 @@ function give_email_template_tags( $message, $payment_data, $payment_id, $admin_
  */
 function give_email_preview_template_tags( $message ) {
 
-	$price = give_currency_filter( give_format_amount( 10.50 ) );
+	$price = give_currency_filter( give_format_amount( 10.50, array( 'sanitize' => false ) ) );
 
 	$gateway = 'PayPal';
 
