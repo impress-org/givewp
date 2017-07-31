@@ -371,7 +371,7 @@ function give_format_decimal( $amount, $dp = false, $sanitize = true ) {
  */
 function give_currency_filter( $price = '', $currency = '', $decode_currency = false ) {
 
-	if ( empty( $currency ) ) {
+	if ( empty( $currency ) || ! array_key_exists( (string) $currency, give_get_currencies() ) ) {
 		$currency = give_get_currency();
 	}
 
