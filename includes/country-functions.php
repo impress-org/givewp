@@ -436,7 +436,6 @@ function give_get_states_label() {
 	return (array) apply_filters( 'give_get_states_label', $country_states_label );
 }
 
-
 function give_get_country_locale() {
 	return (array) apply_filters( 'give_get_country_locale', array(
 		'AF' => array(
@@ -450,12 +449,6 @@ function give_get_country_locale() {
 			),
 		),
 		'AU' => array(
-			'city'      => array(
-				'label'       => __( 'Suburb', 'give' ),
-			),
-			'postcode'  => array(
-				'label'       => __( 'Postcode', 'give' ),
-			),
 			'state'     => array(
 				'label'       => __( 'State', 'give' ),
 			),
@@ -543,9 +536,6 @@ function give_get_country_locale() {
 			),
 		),
 		'HK' => array(
-			'city'  => array(
-				'label'       => __( 'Town / District', 'give' ),
-			),
 			'state' => array(
 				'label'       => __( 'Region', 'give' ),
 			),
@@ -561,9 +551,6 @@ function give_get_country_locale() {
 			),
 		),
 		'IE' => array(
-			'postcode' => array(
-				'label'    => __( 'Eircode', 'give' ),
-			),
 			'state' => array(
 				'label'       => __( 'County', 'give' ),
 			),
@@ -615,9 +602,6 @@ function give_get_country_locale() {
 			),
 		),
 		'NZ' => array(
-			'postcode' => array(
-				'label' => __( 'Postcode', 'give' ),
-			),
 			'state' => array(
 				'required' => false,
 				'label'    => __( 'Region', 'give' ),
@@ -695,17 +679,11 @@ function give_get_country_locale() {
 			),
 		),
 		'US' => array(
-			'postcode'  => array(
-				'label'       => __( 'ZIP', 'give' ),
-			),
 			'state'     => array(
 				'label'       => __( 'State', 'give' ),
 			),
 		),
 		'GB' => array(
-			'postcode'  => array(
-				'label'       => __( 'Postcode', 'give' ),
-			),
 			'state'     => array(
 				'label'       => __( 'County', 'give' ),
 			),
