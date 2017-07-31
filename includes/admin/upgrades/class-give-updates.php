@@ -390,7 +390,7 @@ class Give_Updates {
 		if ( ! $this->step ) {
 			$this->send_ajax_response(
 				array(
-					'message'    => __( 'Error: please reload this page  and try again', 'give' ),
+					'message'    => __( 'Please reload this page  and try again', 'give' ),
 					'heading'    => '',
 					'percentage' => 0,
 				),
@@ -406,7 +406,7 @@ class Give_Updates {
 			$this->send_ajax_response(
 				array(
 					'message'    => __( 'The database is already up to date.', 'give' ),
-					'heading'    => '',
+					'heading'    => __( 'Updates Completed.', 'give' ),
 					'percentage' => 0,
 				),
 				'success'
@@ -433,7 +433,7 @@ class Give_Updates {
 					$this->send_ajax_response(
 						array(
 							'message'    => __( 'Database updated successfully.', 'give' ),
-							'heading'    => '',
+							'heading'    => __( 'Updates Completed.', 'give' ),
 							'percentage' => 0,
 						),
 						'success'
@@ -483,7 +483,7 @@ class Give_Updates {
 				break;
 
 			case 'error':
-				wp_send_json_success( $data );
+				wp_send_json_error( $data );
 				break;
 
 			default:

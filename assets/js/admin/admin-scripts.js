@@ -918,22 +918,20 @@ jQuery.noConflict();
 								self.el.heading.text(response.data.heading);
 							}
 
-							notice_wrap.html('<div class="updated notice is-dismissible"><p>' + response.data.message + '<span class="notice-dismiss"></span></p></div>');
+							self.el.update_link.closest('p').remove();
+							notice_wrap.html('<div class="notice notice-success is-dismissible"><p>' + response.data.message + '</p><button type="button" class="notice-dismiss"></button></div>');
 
-							setTimeout(function () {
-								self.el.update_link.removeClass('active');
-								self.el.progress_main_container.addClass('give-hidden');
-							}, 5000);
 						} else {
 							// Update steps info
 							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
 								self.el.heading.text(response.data.heading);
 							}
 
-							notice_wrap.html('<div class="updated error"><p>' + response.data.message + '</p></div>');
+
+							notice_wrap.html('<div class="notice notice-error"><p>' + response.data.message + '</p></div>');
 
 							setTimeout(function () {
-								self.el.update_link.removeClass('active');
+								self.el.update_link.removeClass('active').show();
 								self.el.progress_main_container.addClass('give-hidden');
 							}, 5000);
 						}
