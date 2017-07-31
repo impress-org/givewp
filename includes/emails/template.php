@@ -78,6 +78,8 @@ function give_email_preview_template_tags( $message ) {
 	$message = str_replace( '{name}', $user->display_name, $message );
 	$message = str_replace( '{fullname}', $user->display_name, $message );
 	$message = str_replace( '{username}', $user->user_login, $message );
+	$message = str_replace( '{user_email}', $user->user_email, $message );
+	$message = str_replace( '{billing_address}', '', $message );
 	$message = str_replace( '{date}', date( give_date_format(), current_time( 'timestamp' ) ), $message );
 	$message = str_replace( '{amount}', $price, $message );
 	$message = str_replace( '{price}', $price, $message );
