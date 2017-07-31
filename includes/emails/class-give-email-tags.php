@@ -707,7 +707,7 @@ function give_email_tag_amount( $tag_args ) {
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
 			$payment     = new Give_Payment( $tag_args['payment_id'] );
-			$give_amount = give_currency_filter( give_format_amount( $payment->total ), $payment->currency );
+			$give_amount = give_currency_filter( give_format_amount( $payment->total, array( 'sanitize' => false ) ), $payment->currency );
 			$amount      = html_entity_decode( $give_amount, ENT_COMPAT, 'UTF-8' );
 			break;
 	}

@@ -240,8 +240,8 @@ function give_set_donation_levels_max_min_amount( $form_id ) {
 	$max_amount = max( $donation_levels_amounts );
 
 	// Set Minimum and Maximum amount for Multi Level Donation Forms
-	give_update_meta( $form_id, '_give_levels_minimum_amount', $min_amount ? give_sanitize_amount( $min_amount ) : 0 );
-	give_update_meta( $form_id, '_give_levels_maximum_amount', $max_amount? give_sanitize_amount( $max_amount ) : 0 );
+	give_update_meta( $form_id, '_give_levels_minimum_amount', $min_amount ? give_sanitize_amount_for_db( $min_amount ) : 0 );
+	give_update_meta( $form_id, '_give_levels_maximum_amount', $max_amount? give_sanitize_amount_for_db( $max_amount ) : 0 );
 }
 
 add_action( 'give_pre_process_give_forms_meta', 'give_set_donation_levels_max_min_amount', 30 );
