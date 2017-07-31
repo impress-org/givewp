@@ -58,6 +58,10 @@ function give_do_automatic_upgrades() {
 			give_v189_upgrades();
 			$did_upgrade = true;
 
+		case version_compare( $give_version, '1.8.12', '<' ) :
+			give_v1812_upgrades();
+			$did_upgrade = true;
+
 	}
 
 	if ( $did_upgrade ) {
@@ -902,6 +906,38 @@ function give_v189_upgrades() {
 		)
 	);
 
+}
+
+
+/**
+ * Give version 1.8.9 upgrades
+ *
+ * @since      1.8.9
+ */
+function give_v1812_upgrades() {
+	/**
+	 * Validate number format settings.
+	 */
+	$give_settings        = give_get_settings();
+	$give_setting_updated = false;
+
+	if ( $give_settings['thousands_separator'] === $give_settings['decimal_separator'] ) {
+		$give_settings['number_decimals']   = 0;
+		$give_settings['decimal_separator'] = '';
+		$give_setting_updated               = true;
+
+	} elseif ( empty( $give_settings['decimal_separator'] ) ) {
+		$give_settings['number_decimals'] = 0;
+		$give_setting_updated             = true;
+
+	} elseif ( 6 < absint( $give_settings['number_decimals'] ) ) {
+		$give_settings['number_decimals'] = 5;
+		$give_setting_updated             = true;
+	}
+
+	if ( $give_setting_updated ) {
+		update_option( 'give_settings', $give_settings );
+	}
 }
 
 
