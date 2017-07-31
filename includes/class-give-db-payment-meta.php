@@ -38,10 +38,10 @@ class Give_DB_Payment_Meta extends Give_DB {
 
 		$this->register_table();
 
-		// add_filter( 'add_post_metadata', array( $this, '__add_meta' ), 0, 4 );
-		// add_filter( 'get_post_metadata', array( $this, '__get_meta' ), 0, 4 );
-		// add_filter( 'update_post_metadata', array( $this, '__update_meta' ), 0, 4 );
-		// add_filter( 'delete_post_metadata', array( $this, '__delete_meta' ), 0, 4 );
+		add_filter( 'add_post_metadata', array( $this, '__add_meta' ), 0, 4 );
+		add_filter( 'get_post_metadata', array( $this, '__get_meta' ), 0, 4 );
+		add_filter( 'update_post_metadata', array( $this, '__update_meta' ), 0, 4 );
+		add_filter( 'delete_post_metadata', array( $this, '__delete_meta' ), 0, 4 );
 	}
 
 	/**
@@ -211,6 +211,11 @@ class Give_DB_Payment_Meta extends Give_DB {
 	 * @return mixed
 	 */
 	public function __call( $name, $arguments ) {
+		// Bailout.
+		if( ! give_has_upgrade_completed('v20_move_metadata_into_new_table') ) {
+			return;
+		}
+
 		switch ( $name ) {
 			case '__add_meta':
 				$check      = $arguments[0];

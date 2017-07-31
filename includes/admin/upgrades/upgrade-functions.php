@@ -1392,7 +1392,7 @@ function give_v20_move_metadata_into_new_table_callback() {
 		wp_reset_postdata();
 	} else {
 		// No more forms found, finish up.
-		give_set_upgrade_complete( 'move_metadata_into_new_table' );
+		give_set_upgrade_complete( 'v20_move_metadata_into_new_table' );
 	}
 }
 
