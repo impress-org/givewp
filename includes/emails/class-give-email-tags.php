@@ -300,8 +300,8 @@ function give_load_email_tags() {
 	 */
 	do_action( 'give_add_email_tags' );
 }
+add_action( 'init', 'give_load_email_tags', - 999 );
 
-add_action( 'give_init', 'give_load_email_tags' );
 
 /**
  * Add default Give email template tags.

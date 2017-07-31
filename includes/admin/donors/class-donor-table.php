@@ -300,6 +300,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 		$_donor_query = $this->get_donor_query();
 
 		$_donor_query['number'] = - 1;
+		$_donor_query['offset'] = 0;
 		$donors                 = Give()->donors->get_donors( $_donor_query );
 
 		return count( $donors );
