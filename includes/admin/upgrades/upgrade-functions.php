@@ -119,6 +119,33 @@ function give_show_upgrade_notices( $give_updates ) {
 			'callback' => 'give_v189_upgrades_levels_post_meta_callback',
 		)
 	);
+
+	// v2.0 Form Metadata Upgrades
+	$give_updates->register(
+		array(
+			'id'       => 'v20_upgrades_form_metadata',
+			'version'  => '2.0',
+			'callback' => 'give_v20_upgrades_form_metadata',
+		)
+	);
+
+	// v2.0 Log Upgrades
+	$give_updates->register(
+		array(
+			'id'       => 'give_v20_logs_upgrades',
+			'version'  => '2.0',
+			'callback' => 'give_v20_logs_upgrades',
+		)
+	);
+
+	// v2.0 Donor Name Upgrades
+	$give_updates->register(
+		array(
+			'id'       => 'v20_upgrades_donor_name',
+			'version'  => '2.0',
+			'callback' => 'give_v20_upgrades_donor_name',
+		)
+	);
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
@@ -975,23 +1002,12 @@ function give_v20_upgrades_email_setting() {
  * @return void
  */
 function give_v20_upgrades_form_metadata() {
-	if ( ! current_user_can( 'manage_give_settings' ) ) {
-		wp_die( esc_html__( 'You do not have permission to do Give upgrades.', 'give' ), esc_html__( 'Error', 'give' ), array(
-			'response' => 403,
-		) );
-	}
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
 
-	ignore_user_abort( true );
-
-	if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
-		@set_time_limit( 0 );
-	}
-
-	$step = isset( $_GET['step'] ) ? absint( $_GET['step'] ) : 1;
-
-	// form query
+	// Form query.
 	$forms = new WP_Query( array(
-			'paged'          => $step,
+			'paged'          => $give_updates->step,
 			'status'         => 'any',
 			'order'          => 'ASC',
 			'post_type'      => 'give_forms',
@@ -1000,6 +1016,8 @@ function give_v20_upgrades_form_metadata() {
 	);
 
 	if ( $forms->have_posts() ) {
+		$give_updates->set_percentage( $forms->found_posts, $give_updates->step * 20 );
+
 		while ( $forms->have_posts() ) {
 			$forms->the_post();
 
@@ -1037,30 +1055,14 @@ function give_v20_upgrades_form_metadata() {
 
 		}// End while().
 
+		/* Restore original Post Data */
 		wp_reset_postdata();
 
-		// Forms found so upgrade them
-		$step ++;
-		$redirect = add_query_arg( array(
-			'page'         => 'give-upgrades',
-			'give-upgrade' => 'give_v20_upgrades_form_metadata',
-			'step'         => $step,
-		), admin_url( 'index.php' ) );
-		wp_redirect( $redirect );
-		exit();
-
 	} else {
-		// No more forms found, finish up.
-		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
-		delete_option( 'give_doing_upgrade' );
+		// The Update Ran.
 		give_set_upgrade_complete( 'v20_upgrades_form_metadata' );
-
-		wp_redirect( admin_url() );
-		exit;
 	}
 }
-
-add_action( 'give_give_v20_upgrades_form_metadata', 'give_v20_upgrades_form_metadata' );
 
 /**
  * Upgrade logs data.
@@ -1069,24 +1071,12 @@ add_action( 'give_give_v20_upgrades_form_metadata', 'give_v20_upgrades_form_meta
  * @return void
  */
 function give_v20_logs_upgrades() {
-	if ( ! current_user_can( 'manage_give_settings' ) ) {
-		wp_die( esc_html__( 'You do not have permission to do Give upgrades.', 'give' ), esc_html__( 'Error', 'give' ), array(
-			'response' => 403,
-		) );
-	}
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
 
-	ignore_user_abort( true );
-
-	if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
-		@set_time_limit( 0 );
-	}
-
-	global $wpdb;
-	$step = isset( $_GET['step'] ) ? absint( $_GET['step'] ) : 1;
-
-	// form query
+	// Form query.
 	$forms = new WP_Query( array(
-			'paged'          => $step,
+			'paged'          => $give_updates->step,
 			'order'          => 'DESC',
 			'post_type'      => 'give_log',
 			'post_status'    => 'any',
@@ -1095,9 +1085,11 @@ function give_v20_logs_upgrades() {
 	);
 
 	if ( $forms->have_posts() ) {
+		$give_updates->set_percentage( $forms->found_posts, $give_updates->step * 20 );
+
 		while ( $forms->have_posts() ) {
 			$forms->the_post();
-			global $post;
+			global $post, $wpdb;
 			$term = get_the_terms( $post->ID, 'give_log_type' );
 			$term = ! is_wp_error( $term ) && ! empty( $term ) ? $term[0] : array();
 			$term_name = ! empty( $term )? $term->slug : '';
@@ -1144,16 +1136,6 @@ function give_v20_logs_upgrades() {
 
 		wp_reset_postdata();
 
-		// Forms found so upgrade them
-		$step ++;
-		$redirect = add_query_arg( array(
-			'page'         => 'give-upgrades',
-			'give-upgrade' => 'give_v20_logs_upgrades',
-			'step'         => $step,
-		), admin_url( 'index.php' ) );
-		wp_redirect( $redirect );
-		exit();
-
 	} else {
 		// Delete terms and taxonomy.
 		$terms = get_terms( 'give_log_type', array( 'fields' => 'ids', 'hide_empty' => false ) );
@@ -1163,7 +1145,7 @@ function give_v20_logs_upgrades() {
 			}
 		}
 
-		// Delete logs
+		// Delete logs.
 		$logIDs = get_posts( array(
 				'order'          => 'DESC',
 				'post_type'      => 'give_log',
@@ -1186,17 +1168,11 @@ function give_v20_logs_upgrades() {
 		// Delete log cache.
 		Give()->logs->delete_cache();
 
-		// No more forms found, finish up.
-		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
-		delete_option( 'give_doing_upgrade' );
+		// The Update Ran.
 		give_set_upgrade_complete( 'give_v20_logs_upgrades' );
 
-		wp_redirect( admin_url() );
-		exit;
 	}
 }
-
-add_action( 'give_give_v20_logs_upgrades', 'give_v20_logs_upgrades' );
 
 /**
  * Upgrade routine for splitting donor name into first name and last name.
@@ -1206,22 +1182,11 @@ add_action( 'give_give_v20_logs_upgrades', 'give_v20_logs_upgrades' );
  * @return void
  */
 function give_v20_upgrades_donor_name() {
-
-	if ( ! current_user_can( 'manage_give_settings' ) ) {
-		wp_die( esc_html__( 'You do not have permission to do Give upgrades.', 'give' ), esc_html__( 'Error', 'give' ), array(
-			'response' => 403,
-		) );
-	}
-
-	ignore_user_abort( true );
-
-	if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
-		@set_time_limit( 0 );
-	}
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
 
 	$per_step = 30;
-	$step = isset( $_GET['step'] ) ? absint( $_GET['step'] ) : 1;
-	$offset = ( $step - 1 ) * $per_step;
+	$offset = ( $give_updates->step - 1 ) * $per_step;
 	$args = array(
 		'number'    => $per_step,
 		'offset'    => $offset
@@ -1247,25 +1212,9 @@ function give_v20_upgrades_donor_name() {
 			}
 		}
 
-		$step ++;
-		$redirect = add_query_arg( array(
-			'page'         => 'give-upgrades',
-			'give-upgrade' => 'v20_upgrades_donor_name',
-			'step'         => $step,
-		), admin_url( 'index.php' ) );
-		wp_redirect( $redirect );
-		exit();
-
 	}else {
-		// No more donors found, finish up.
-		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
-		delete_option( 'give_doing_upgrade' );
+		// The Update Ran.
 		give_set_upgrade_complete( 'v20_upgrades_donor_name' );
-
-		wp_redirect( admin_url() );
-		exit;
 	}
 
 }
-
-add_action( 'give_v20_upgrades_donor_name', 'give_v20_upgrades_donor_name' );
