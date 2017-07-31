@@ -23,6 +23,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Give_DB_Log_Meta extends Give_DB {
 	/**
+	 * Flag to handle result type
+	 *
+	 * @since 2.0
+	 * @access private
+	 */
+	private $raw_result = false;
+
+	/**
 	 * Give_DB_Log_Meta constructor.
 	 *
 	 * @access  public
@@ -81,7 +89,19 @@ class Give_DB_Log_Meta extends Give_DB {
 			return null;
 		}
 
-		return get_metadata( 'log', $log_id, $meta_key, $single );
+		if( $this->raw_result ) {
+			if( ! ( $value = get_metadata( 'log', $log_id, $meta_key, false ) ) ) {
+				$value = '';
+			}
+
+			// Reset flag.
+			$this->raw_result = false;
+
+		}else {
+			$value = get_metadata( 'log', $log_id, $meta_key, $single );
+		}
+
+		return $value;
 	}
 
 	/**
@@ -242,6 +262,7 @@ class Give_DB_Log_Meta extends Give_DB {
 				$meta_key = $arguments[2];
 				$single   = $arguments[3];
 
+				$this->raw_result = true;
 				return $this->get_meta( $log_id, $meta_key, $single );
 
 			case '__update_meta':
