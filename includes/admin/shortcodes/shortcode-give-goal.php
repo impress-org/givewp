@@ -46,7 +46,9 @@ class Give_Shortcode_Donation_Form_Goal extends Give_Shortcode_Generator {
 			array(
 				'type'        => 'post',
 				'query_args'  => array(
-					'post_type' => 'give_forms',
+					'post_type'  => 'give_forms',
+					'meta_key'   => '_give_goal_option',
+					'meta_value' => 'enabled',
 				),
 				'name'        => 'id',
 				'tooltip'     => esc_attr__( 'Select a Donation Form', 'give' ),

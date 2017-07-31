@@ -107,9 +107,7 @@ add_action( 'give_before_offline_info_fields', 'give_offline_billing_fields', 10
  */
 function give_offline_process_payment( $purchase_data ) {
 
-	$purchase_summary = give_get_purchase_summary( $purchase_data );
-
-	// setup the payment details
+	// Setup the payment details.
 	$payment_data = array(
 		'price'           => $purchase_data['price'],
 		'give_form_title' => $purchase_data['post_data']['give-form-title'],
@@ -470,7 +468,7 @@ function give_offline_payment_receipt_after( $payment ) {
 
 	?>
     <tr>
-        <td scope="row"><strong><?php esc_html_e( 'Offline Payment Instruction:', 'give' ); ?></strong></td>
+        <td scope="row"><strong><?php esc_html_e( 'Offline Donations Instructions', 'give' ); ?></strong></td>
         <td>
 			<?php echo give_get_offline_payment_instruction( $payment->form_id, true ); ?>
         </td>

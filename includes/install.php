@@ -73,60 +73,6 @@ function give_run_install() {
 	// Setup some default options.
 	$options = array();
 
-	// Checks if the Success Page option exists AND that the page exists.
-	if ( ! get_post( give_get_option( 'success_page' ) ) ) {
-
-		// Donation Confirmation (Success) Page
-		$success = wp_insert_post(
-			array(
-				'post_title'     => esc_html__( 'Donation Confirmation', 'give' ),
-				'post_content'   => '[give_receipt]',
-				'post_status'    => 'publish',
-				'post_author'    => 1,
-				'post_type'      => 'page',
-				'comment_status' => 'closed',
-			)
-		);
-
-		// Store our page IDs
-		$options['success_page'] = $success;
-	}
-
-	// Checks if the Failure Page option exists AND that the page exists.
-	if ( ! get_post( give_get_option( 'failure_page' ) ) ) {
-
-		// Failed Donation Page
-		$failed = wp_insert_post(
-			array(
-				'post_title'     => esc_html__( 'Donation Failed', 'give' ),
-				'post_content'   => esc_html__( 'We\'re sorry, your donation failed to process. Please try again or contact site support.', 'give' ),
-				'post_status'    => 'publish',
-				'post_author'    => 1,
-				'post_type'      => 'page',
-				'comment_status' => 'closed',
-			)
-		);
-
-		$options['failure_page'] = $failed;
-	}
-
-	// Checks if the History Page option exists AND that the page exists.
-	if ( ! get_post( give_get_option( 'history_page' ) ) ) {
-		// Donation History Page
-		$history = wp_insert_post(
-			array(
-				'post_title'     => esc_html__( 'Donation History', 'give' ),
-				'post_content'   => '[donation_history]',
-				'post_status'    => 'publish',
-				'post_author'    => 1,
-				'post_type'      => 'page',
-				'comment_status' => 'closed',
-			)
-		);
-
-		$options['history_page'] = $history;
-	}
-
 	//Fresh Install? Setup Test Mode, Base Country (US), Test Gateway, Currency.
 	if ( empty( $current_version ) ) {
 		$options = array_merge( $options, give_get_default_settings() );
@@ -181,8 +127,7 @@ function give_run_install() {
 			'v189_upgrades_levels_post_meta',
 			'v20_upgrades_form_metadata',
 			'give_v20_logs_upgrades',
-			'v20_upgrades_donor_name',
-			'give_v20_logs_upgrades'
+			'v20_upgrades_donor_name'
 		);
 
 		foreach ( $upgrade_routines as $upgrade ) {
@@ -427,3 +372,82 @@ function give_get_default_agreement_text() {
 
 	return apply_filters( 'give_get_default_agreement_text', $agreement, $org_name );
 }
+
+
+/**
+ * This function will install give related page which is not created already.
+ *
+ * @since 1.8.11
+ *
+ * @return void
+ */
+function give_create_pages(){
+
+	// Bailout if pages already created.
+	if( get_option( 'give_install_pages_created') ) {
+		return false;
+	}
+
+	$options = array();
+
+	// Checks if the Success Page option exists AND that the page exists.
+	if ( ! get_post( give_get_option( 'success_page' ) ) ) {
+
+		// Donation Confirmation (Success) Page
+		$success = wp_insert_post(
+			array(
+				'post_title'     => esc_html__( 'Donation Confirmation', 'give' ),
+				'post_content'   => '[give_receipt]',
+				'post_status'    => 'publish',
+				'post_author'    => 1,
+				'post_type'      => 'page',
+				'comment_status' => 'closed'
+			)
+		);
+
+		// Store our page IDs
+		$options['success_page'] = $success;
+	}
+
+	// Checks if the Failure Page option exists AND that the page exists.
+	if ( ! get_post( give_get_option( 'failure_page' ) ) ) {
+
+		// Failed Donation Page
+		$failed = wp_insert_post(
+			array(
+				'post_title'     => esc_html__( 'Donation Failed', 'give' ),
+				'post_content'   => esc_html__( 'We\'re sorry, your donation failed to process. Please try again or contact site support.', 'give' ),
+				'post_status'    => 'publish',
+				'post_author'    => 1,
+				'post_type'      => 'page',
+				'comment_status' => 'closed'
+			)
+		);
+
+		$options['failure_page'] = $failed;
+	}
+
+	// Checks if the History Page option exists AND that the page exists.
+	if ( ! get_post( give_get_option( 'history_page' ) ) ) {
+		// Donation History Page
+		$history = wp_insert_post(
+			array(
+				'post_title'     => esc_html__( 'Donation History', 'give' ),
+				'post_content'   => '[donation_history]',
+				'post_status'    => 'publish',
+				'post_author'    => 1,
+				'post_type'      => 'page',
+				'comment_status' => 'closed'
+			)
+		);
+
+		$options['history_page'] = $history;
+	}
+
+	if( ! empty( $options ) ) {
+		update_option( 'give_settings', array_merge( give_get_settings(), $options ) );
+	}
+
+	add_option( 'give_install_pages_created', 1, '', 'no' );
+}
+add_action( 'admin_init', 'give_create_pages', -1 );

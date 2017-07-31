@@ -35,10 +35,16 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	public $per_page = 30;
 
 	/**
-	 * @var object Query results
+	 * @var object Query results of all the donation forms
 	 * @since 1.0
 	 */
-	private $products;
+	private $donation_forms;
+
+	/**
+	 * @var int Total number of Donation Forms
+	 * @since 1.8.11
+	 */
+	public $count;
 
 	/**
 	 * Get things started
@@ -51,8 +57,8 @@ class Give_Form_Reports_Table extends WP_List_Table {
 
 		// Set parent defaults
 		parent::__construct( array(
-			'singular' => give_get_forms_label_singular(),    // Singular name of the listed records
-			'plural'   => give_get_forms_label_plural(),        // Plural name of the listed records
+			'singular' => give_get_forms_label_singular(),    // Singular name of the listed records.
+			'plural'   => give_get_forms_label_plural(),        // Plural name of the listed records.
 			'ajax'     => false                        // Does this table support ajax?
 		) );
 
@@ -64,16 +70,30 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	/**
 	 * This function renders most of the columns in the list table.
 	 *
-	 * @access public
-	 * @since  1.0
-	 *
 	 * @param array  $item        Contains all the data of the donation form
 	 * @param string $column_name The name of the column
+	 *
+	 * @access public
+	 * @since  1.0
 	 *
 	 * @return string Column Name
 	 */
 	public function column_default( $item, $column_name ) {
 		switch ( $column_name ) {
+			case 'title':
+				$title = empty( $item['title'] ) ? sprintf( __( 'Untitled (#%s)', 'give' ), $item['ID'] ) : $item['title'];
+
+				return sprintf(
+					'<a href="%s">%s</a>',
+					get_edit_post_link( $item['ID'] ),
+					$title
+				);
+			case 'sales':
+				return sprintf(
+					'<a href="%s">%s</a>',
+					admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&form_id=' . urlencode( $item['ID'] ) ),
+					$item['sales']
+				);
 			case 'earnings' :
 				return give_currency_filter( give_format_amount( $item[ $column_name ] ) );
 			case 'average_sales' :
@@ -92,6 +112,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
+	 *
 	 * @return array $columns Array of all the list table columns
 	 */
 	public function get_columns() {
@@ -112,6 +133,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
+	 *
 	 * @return array Array of all the sortable columns
 	 */
 	public function get_sortable_columns() {
@@ -127,40 +149,23 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
+	 *
 	 * @return int Current page number
 	 */
 	public function get_paged() {
 		return isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1;
 	}
 
-
 	/**
 	 * Retrieve the category being viewed
 	 *
 	 * @access public
 	 * @since  1.0
+	 *
 	 * @return int Category ID
 	 */
 	public function get_category() {
 		return isset( $_GET['category'] ) ? absint( $_GET['category'] ) : 0;
-	}
-
-
-	/**
-	 * Retrieve the total number of forms
-	 *
-	 * @access public
-	 * @since  1.0
-	 * @return int $total Total number of donation forms
-	 */
-	public function get_total_forms() {
-		$total  = 0;
-		$counts = wp_count_posts( 'give_forms', 'readable' );
-		foreach ( $counts as $status => $count ) {
-			$total += $count;
-		}
-
-		return $total;
 	}
 
 	/**
@@ -168,6 +173,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
+	 *
 	 * @return void
 	 */
 	public function bulk_actions( $which = '' ) {
@@ -206,11 +212,10 @@ class Give_Form_Reports_Table extends WP_List_Table {
 				?>
 			</div>
 
-
 			<br class="clear" />
 
 		</div>
-	<?php
+		<?php
 	}
 
 	/**
@@ -218,6 +223,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
+	 *
 	 * @return void
 	 */
 	public function category_filter() {
@@ -228,12 +234,12 @@ class Give_Form_Reports_Table extends WP_List_Table {
 		}
 	}
 
-
 	/**
-	 * Performs the products query
+	 * Performs the donation forms query
 	 *
 	 * @access public
 	 * @since  1.0
+	 *
 	 * @return void
 	 */
 	public function query() {
@@ -279,7 +285,10 @@ class Give_Form_Reports_Table extends WP_List_Table {
 
 		$args = apply_filters( 'give_form_reports_prepare_items_args', $args, $this );
 
-		$this->products = new WP_Query( $args );
+		$this->donation_forms = new WP_Query( $args );
+
+		// Store total number of donation forms count.
+		$this->count = $this->donation_forms->found_posts;
 
 	}
 
@@ -288,12 +297,13 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
+	 *
 	 * @return array $reports_data All the data for donor reports
 	 */
 	public function reports_data() {
 		$reports_data = array();
 
-		$give_forms = $this->products->posts;
+		$give_forms = $this->donation_forms->posts;
 
 		if ( $give_forms ) {
 			foreach ( $give_forms as $form ) {
@@ -311,33 +321,26 @@ class Give_Form_Reports_Table extends WP_List_Table {
 		return $reports_data;
 	}
 
-
 	/**
 	 * Setup the final data for the table
 	 *
 	 * @access public
 	 * @since  1.5
+	 *
 	 * @uses   Give_Form_Reports_Table::get_columns()
 	 * @uses   Give_Form_Reports_Table::get_sortable_columns()
 	 * @uses   Give_Form_Reports_Table::reports_data()
 	 * @uses   Give_Form_Reports_Table::get_pagenum()
-	 * @uses   Give_Form_Reports_Table::get_total_forms()
+	 *
 	 * @return void
 	 */
 	public function prepare_items() {
 		$columns = $this->get_columns();
-
 		$hidden = array(); // No hidden columns
-
 		$sortable = $this->get_sortable_columns();
-
 		$this->_column_headers = array( $columns, $hidden, $sortable );
-
-		$data = $this->reports_data();
-
-		$total_items = $this->get_total_forms();
-
-		$this->items = $data;
+		$this->items = $this->reports_data();
+		$total_items = $this->count;
 
 		$this->set_pagination_args( array(
 				'total_items' => $total_items,

@@ -484,7 +484,9 @@ function give_add_donor_email( $args ) {
 	$donor_edit_role = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
 
 	if ( ! is_admin() || ! current_user_can( $donor_edit_role ) ) {
-		wp_die( __( 'You do not have permission to edit this donor.', 'edit' ) );
+		wp_die( esc_html__( 'You do not have permission to edit this donor.', 'give' ), esc_html__( 'Error', 'give' ), array(
+			'response' => 403,
+		) );
 	}
 
 	$output = array();
