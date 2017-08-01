@@ -69,7 +69,7 @@ class Give_Logging {
 		add_action( 'update_log_metadata', array( $this, 'bc_200_set_payment_as_log_parent' ), 10, 4 );
 
 		// Backward compatibility.
-		if ( ! give_has_upgrade_completed( 'give_v20_logs_upgrades' ) ) {
+		if ( ! give_has_upgrade_completed( 'v20_logs_upgrades' ) ) {
 			// Create the log post type
 			add_action( 'init', array( $this, 'register_post_type' ), 1 );
 
@@ -237,7 +237,7 @@ class Give_Logging {
 		$args = wp_parse_args( $log_data, $defaults );
 		$this->bc_200_validate_params( $args, $log_meta );
 
-		if ( ! give_has_upgrade_completed( 'give_v20_logs_upgrades' ) ) {
+		if ( ! give_has_upgrade_completed( 'v20_logs_upgrades' ) ) {
 			global $wpdb;
 
 			// Backward Compatibility.
@@ -302,7 +302,7 @@ class Give_Logging {
 		$this->bc_200_validate_params( $args, $log_meta );
 
 		// Store the log entry
-		if ( ! give_has_upgrade_completed( 'give_v20_logs_upgrades' ) ) {
+		if ( ! give_has_upgrade_completed( 'v20_logs_upgrades' ) ) {
 			// Backward compatibility.
 			$log_id = wp_update_post( $args );
 
@@ -366,10 +366,11 @@ class Give_Logging {
 		$query_args = wp_parse_args( $args, $defaults );
 		$this->bc_200_validate_params( $query_args );
 
-		if ( ! give_has_upgrade_completed( 'give_v20_logs_upgrades' ) ) {
+		if ( ! give_has_upgrade_completed( 'v20_logs_upgrades' ) ) {
 			// Backward compatibility.
 			$logs = get_posts( $query_args );
 			$this->bc_200_add_new_properties( $logs );
+			var_dump('here');
 		} else {
 			$logs = $this->log_db->get_logs( $query_args );
 		}
@@ -421,7 +422,7 @@ class Give_Logging {
 
 		$this->bc_200_validate_params( $query_args );
 
-		if ( ! give_has_upgrade_completed( 'give_v20_logs_upgrades' ) ) {
+		if ( ! give_has_upgrade_completed( 'v20_logs_upgrades' ) ) {
 			// Backward compatibility.
 			$logs       = new WP_Query( $query_args );
 			$logs_count = (int) $logs->post_count;
@@ -467,7 +468,7 @@ class Give_Logging {
 
 		$this->bc_200_validate_params( $query_args );
 
-		if ( ! give_has_upgrade_completed( 'give_v20_logs_upgrades' ) ) {
+		if ( ! give_has_upgrade_completed( 'v20_logs_upgrades' ) ) {
 			// Backward compatibility.
 			$logs = get_posts( $query_args );
 
@@ -548,7 +549,7 @@ class Give_Logging {
 			'meta_query'   => 'meta_query',
 		);
 
-		if ( ! give_has_upgrade_completed( 'give_v20_logs_upgrades' ) ) {
+		if ( ! give_has_upgrade_completed( 'v20_logs_upgrades' ) ) {
 			// Set old params.
 			foreach ( $query_params as $new_query_param => $old_query_param ) {
 
@@ -638,7 +639,7 @@ class Give_Logging {
 			'log_type'     => 'give_log_type',
 		);
 
-		if ( ! give_has_upgrade_completed( 'give_v20_logs_upgrades' ) ) {
+		if ( ! give_has_upgrade_completed( 'v20_logs_upgrades' ) ) {
 			foreach ( $logs as $index => $log ) {
 				foreach ( $query_params as $new_query_param => $old_query_param ) {
 					if ( ! property_exists( $log, $old_query_param ) ) {
