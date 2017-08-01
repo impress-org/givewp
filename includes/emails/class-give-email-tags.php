@@ -474,10 +474,25 @@ function give_email_tag_billing_address( $payment_id ) {
 	if ( ! empty( $user_address['line2'] ) ) {
 		$return .= ', ' . $user_address['line2'];
 	}
-	$return .= "\n" . $user_address['city'] . ', ' . $user_address['state'] . ' ' . $user_address['zip'];
-	$return .= "\n" . give_get_country_name_by_key($user_address['country']);
+	if ( ! empty( $user_address['city'] ) ) {
+		$return .= "\n" . $user_address['city'];
+	}
+	if ( ! empty( $user_address['state'] ) ) {
+		$return .= ', ' . $user_address['state'];
+	}
+	if ( ! empty( $user_address['zip'] ) ) {
+		$return .= ' ' . $user_address['zip'];
+	}
+	if ( ! empty( $user_address['country'] ) ) {
+		$return .= "\n" . give_get_country_name_by_key( $user_address['country'] );
+	}
 
-	return $return;
+	if ( empty( $return ) ) {
+		$return = __( 'None provided', 'give' );
+	}
+
+	return apply_filters('give_email_tag_billing_address', $return, $payment_id);
+
 }
 
 /**
