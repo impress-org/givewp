@@ -15,39 +15,39 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Get Shop Base Country
+ * Get Base Country
  *
  * @since 1.0
- * @return string $country The two letter country code for the shop's base country
+ * @return string $country The two letter country code for the site's base country
  */
 function give_get_country() {
 	$give_options = give_get_settings();
-	$country = isset( $give_options['base_country'] ) ? $give_options['base_country'] : 'US';
+	$country      = isset( $give_options['base_country'] ) ? $give_options['base_country'] : 'US';
 
 	return apply_filters( 'give_give_country', $country );
 }
 
 /**
- * Get Shop Base State
+ * Get Base State
  *
  * @since 1.0
- * @return string $state The shop's base state name
+ * @return string $state The site's base state name
  */
 function give_get_state() {
 	$give_options = give_get_settings();
-	$state = isset( $give_options['base_state'] ) ? $give_options['base_state'] : false;
+	$state        = isset( $give_options['base_state'] ) ? $give_options['base_state'] : false;
 
 	return apply_filters( 'give_give_state', $state );
 }
 
 /**
- * Get Shop States
+ * Get States
  *
  * @since 1.0
  *
  * @param null $country
  *
- * @return mixed|void  A list of states for the shop's base country
+ * @return mixed A list of states for the site's base country
  */
 function give_get_states( $country = null ) {
 	// If Country have no states return empty array.
@@ -55,7 +55,7 @@ function give_get_states( $country = null ) {
 
 	// Check if Country Code is empty or not.
 	if ( empty( $country ) ) {
-		// Get defalut country code that is being set by the admin.
+		// Get default country code that is being set by the admin.
 		$country = give_get_country();
 	}
 
@@ -102,7 +102,7 @@ function give_get_country_list() {
 		'AU' => esc_html__( 'Australia', 'give' ),
 		'AT' => esc_html__( 'Austria', 'give' ),
 		'AZ' => esc_html__( 'Azerbaijan', 'give' ),
-		'BS' => esc_html__( 'Bahamas', 'give'),
+		'BS' => esc_html__( 'Bahamas', 'give' ),
 		'BH' => esc_html__( 'Bahrain', 'give' ),
 		'BD' => esc_html__( 'Bangladesh', 'give' ),
 		'BB' => esc_html__( 'Barbados', 'give' ),
@@ -327,7 +327,7 @@ function give_get_country_list() {
 		'YE' => esc_html__( 'Yemen', 'give' ),
 		'YU' => esc_html__( 'Yugoslavia', 'give' ),
 		'ZM' => esc_html__( 'Zambia', 'give' ),
-		'ZW' => esc_html__( 'Zimbabwe', 'give' )
+		'ZW' => esc_html__( 'Zimbabwe', 'give' ),
 	);
 
 	return (array) apply_filters( 'give_countries', $countries );
@@ -374,6 +374,7 @@ function give_states_list() {
 		'BD' => give_get_bangladeshi_states_list(),
 		'AR' => give_get_argentina_states_list(),
 	);
+
 	/**
 	 * Filter can be used to add or remove the States from the Country.
 	 *
@@ -381,7 +382,7 @@ function give_states_list() {
 	 *
 	 * @since 1.8.11
 	 *
-	 * @param array  $states Contain the list of states in array key format where key of the array is there respected country code.
+	 * @param array $states Contain the list of states in array key format where key of the array is there respected country code.
 	 */
 	return (array) apply_filters( 'give_states_list', $states );
 }
@@ -397,9 +398,9 @@ function give_states_list() {
  */
 function give_no_states_country_list() {
 	$country_list = array();
-	$locale = give_get_country_locale();
+	$locale       = give_get_country_locale();
 	foreach ( $locale as $key => $value ) {
-		if ( ! empty( $value['state'] ) && isset( $value['state']['required'] ) && false === $value['state']['required'] ){
+		if ( ! empty( $value['state'] ) && isset( $value['state']['required'] ) && false === $value['state']['required'] ) {
 			$country_list[ $key ] = $value['state'];
 		}
 	}
@@ -409,18 +410,45 @@ function give_no_states_country_list() {
 	 *
 	 * @since 1.8.11
 	 *
-	 * @param array  $country Contain key as there country code & value as there country name.
+	 * @param array $country Contain key as there country code & value as there country name.
 	 */
 	return (array) apply_filters( 'give_no_states_country_list', $country_list );
 }
 
+
+/**
+ * Get the country name by list key.
+ *
+ * @since 1.8.12
+ *
+ * @param string $key
+ *
+ * @return string|bool
+ */
+function give_get_country_name_by_key( $key ) {
+	$country_list = give_get_country_list();
+
+	if ( array_key_exists( $key, $country_list ) ) {
+		return $country_list[$key];
+	}
+
+	return false;
+}
+
+/**
+ * Get the States label.
+ *
+ * @since 1.8.11
+ *
+ * @return array
+ */
 function give_get_states_label() {
 	$country_states_label = array();
-	$default_label = __( 'State', 'give' );
-	$locale = give_get_country_locale();
+	$default_label        = __( 'State', 'give' );
+	$locale               = give_get_country_locale();
 	foreach ( $locale as $key => $value ) {
 		$label = $default_label;
-		if ( ! empty( $value['state'] ) && ! empty( $value['state']['label'] ) ){
+		if ( ! empty( $value['state'] ) && ! empty( $value['state']['label'] ) ) {
 			$label = $value['state']['label'];
 		}
 		$country_states_label[ $key ] = $label;
@@ -431,12 +459,16 @@ function give_get_states_label() {
 	 *
 	 * @since 1.8.11
 	 *
-	 * @param array  $country Contain key as there country code & value as there country name.
+	 * @param array $country Contain key as there country code & value as there country name.
 	 */
 	return (array) apply_filters( 'give_get_states_label', $country_states_label );
 }
 
-
+/**
+ * Get country locale.
+ *
+ * @return array
+ */
 function give_get_country_locale() {
 	return (array) apply_filters( 'give_get_country_locale', array(
 		'AF' => array(
@@ -450,14 +482,14 @@ function give_get_country_locale() {
 			),
 		),
 		'AU' => array(
-			'city'      => array(
-				'label'       => __( 'Suburb', 'give' ),
+			'city'     => array(
+				'label' => __( 'Suburb', 'give' ),
 			),
-			'postcode'  => array(
-				'label'       => __( 'Postcode', 'give' ),
+			'postcode' => array(
+				'label' => __( 'Postcode', 'give' ),
 			),
-			'state'     => array(
-				'label'       => __( 'State', 'give' ),
+			'state'    => array(
+				'label' => __( 'State', 'give' ),
 			),
 		),
 		'AX' => array(
@@ -467,13 +499,13 @@ function give_get_country_locale() {
 		),
 		'BD' => array(
 			'state' => array(
-				'label'       => __( 'District', 'give' ),
+				'label' => __( 'District', 'give' ),
 			),
 		),
 		'BE' => array(
 			'state' => array(
-				'required'    => false,
-				'label'       => __( 'Province', 'give' ),
+				'required' => false,
+				'label'    => __( 'Province', 'give' ),
 			),
 		),
 		'BI' => array(
@@ -483,23 +515,23 @@ function give_get_country_locale() {
 		),
 		'CA' => array(
 			'state' => array(
-				'label'       => __( 'Province', 'give' ),
+				'label' => __( 'Province', 'give' ),
 			),
 		),
 		'CH' => array(
 			'state' => array(
-				'label'       => __( 'Canton', 'give' ),
-				'required'    => false,
+				'label'    => __( 'Canton', 'give' ),
+				'required' => false,
 			),
 		),
 		'CL' => array(
-			'state'     => array(
-				'label'       => __( 'Region', 'give' ),
+			'state' => array(
+				'label' => __( 'Region', 'give' ),
 			),
 		),
 		'CN' => array(
 			'state' => array(
-				'label'       => __( 'Province', 'give' ),
+				'label' => __( 'Province', 'give' ),
 			),
 		),
 		'CZ' => array(
@@ -544,28 +576,28 @@ function give_get_country_locale() {
 		),
 		'HK' => array(
 			'city'  => array(
-				'label'       => __( 'Town / District', 'give' ),
+				'label' => __( 'Town / District', 'give' ),
 			),
 			'state' => array(
-				'label'       => __( 'Region', 'give' ),
+				'label' => __( 'Region', 'give' ),
 			),
 		),
 		'HU' => array(
 			'state' => array(
-				'label'       => __( 'County', 'give' ),
+				'label' => __( 'County', 'give' ),
 			),
 		),
 		'ID' => array(
 			'state' => array(
-				'label'       => __( 'Province', 'give' ),
+				'label' => __( 'Province', 'give' ),
 			),
 		),
 		'IE' => array(
 			'postcode' => array(
-				'label'    => __( 'Eircode', 'give' ),
+				'label' => __( 'Eircode', 'give' ),
 			),
-			'state' => array(
-				'label'       => __( 'County', 'give' ),
+			'state'    => array(
+				'label' => __( 'County', 'give' ),
 			),
 		),
 		'IS' => array(
@@ -580,7 +612,7 @@ function give_get_country_locale() {
 		),
 		'IT' => array(
 			'state' => array(
-				'label'       => __( 'Province', 'give' ),
+				'label' => __( 'Province', 'give' ),
 			),
 		),
 		'JP' => array(
@@ -610,15 +642,15 @@ function give_get_country_locale() {
 		),
 		'NL' => array(
 			'state' => array(
-				'required'    => false,
-				'label'       => __( 'Province', 'give' ),
+				'required' => false,
+				'label'    => __( 'Province', 'give' ),
 			),
 		),
 		'NZ' => array(
 			'postcode' => array(
 				'label' => __( 'Postcode', 'give' ),
 			),
-			'state' => array(
+			'state'    => array(
 				'required' => false,
 				'label'    => __( 'Region', 'give' ),
 			),
@@ -630,7 +662,7 @@ function give_get_country_locale() {
 		),
 		'NP' => array(
 			'state' => array(
-				'label'       => __( 'State / Zone', 'give' ),
+				'label' => __( 'State / Zone', 'give' ),
 			),
 		),
 		'PL' => array(
@@ -670,13 +702,13 @@ function give_get_country_locale() {
 		),
 		'ES' => array(
 			'state' => array(
-				'label'       => __( 'Province', 'give' ),
+				'label' => __( 'Province', 'give' ),
 			),
 		),
 		'LI' => array(
 			'state' => array(
-				'label'       => __( 'Municipality', 'give' ),
-				'required'    => false,
+				'label'    => __( 'Municipality', 'give' ),
+				'required' => false,
 			),
 		),
 		'LK' => array(
@@ -691,23 +723,23 @@ function give_get_country_locale() {
 		),
 		'TR' => array(
 			'state' => array(
-				'label'       => __( 'Province', 'give' ),
+				'label' => __( 'Province', 'give' ),
 			),
 		),
 		'US' => array(
-			'postcode'  => array(
-				'label'       => __( 'ZIP', 'give' ),
+			'postcode' => array(
+				'label' => __( 'ZIP', 'give' ),
 			),
-			'state'     => array(
-				'label'       => __( 'State', 'give' ),
+			'state'    => array(
+				'label' => __( 'State', 'give' ),
 			),
 		),
 		'GB' => array(
-			'postcode'  => array(
-				'label'       => __( 'Postcode', 'give' ),
+			'postcode' => array(
+				'label' => __( 'Postcode', 'give' ),
 			),
-			'state'     => array(
-				'label'       => __( 'County', 'give' ),
+			'state'    => array(
+				'label' => __( 'County', 'give' ),
 			),
 		),
 		'VN' => array(
@@ -722,9 +754,9 @@ function give_get_country_locale() {
 		),
 		'ZA' => array(
 			'state' => array(
-				'label'       => __( 'Province', 'give' ),
+				'label' => __( 'Province', 'give' ),
 			),
-		)
+		),
 	) );
 }
 
@@ -819,6 +851,7 @@ function give_get_turkey_states_list() {
 		'TR80' => __( 'Osmaniye', 'give' ),
 		'TR81' => __( 'D&#252;zce', 'give' ),
 	);
+
 	return apply_filters( 'give_turkey_states', $states );
 }
 
@@ -829,51 +862,52 @@ function give_get_turkey_states_list() {
  * @return array $states A list of states
  */
 function give_get_romania_states_list() {
-	$states = array (
-		''     => '',
-		'AB' => __( 'Alba' , 'give' ),
-		'AR' => __( 'Arad' , 'give' ),
-		'AG' => __( 'Arges' , 'give' ),
-		'BC' => __( 'Bacau' , 'give' ),
-		'BH' => __( 'Bihor' , 'give' ),
-		'BN' => __( 'Bistrita-Nasaud' , 'give' ),
-		'BT' => __( 'Botosani' , 'give' ),
-		'BR' => __( 'Braila' , 'give' ),
-		'BV' => __( 'Brasov' , 'give' ),
-		'B'  => __( 'Bucuresti' , 'give' ),
-		'BZ' => __( 'Buzau' , 'give' ),
-		'CL' => __( 'Calarasi' , 'give' ),
-		'CS' => __( 'Caras-Severin' , 'give' ),
-		'CJ' => __( 'Cluj' , 'give' ),
-		'CT' => __( 'Constanta' , 'give' ),
-		'CV' => __( 'Covasna' , 'give' ),
-		'DB' => __( 'Dambovita' , 'give' ),
-		'DJ' => __( 'Dolj' , 'give' ),
-		'GL' => __( 'Galati' , 'give' ),
-		'GR' => __( 'Giurgiu' , 'give' ),
-		'GJ' => __( 'Gorj' , 'give' ),
-		'HR' => __( 'Harghita' , 'give' ),
-		'HD' => __( 'Hunedoara' , 'give' ),
-		'IL' => __( 'Ialomita' , 'give' ),
-		'IS' => __( 'Iasi' , 'give' ),
-		'IF' => __( 'Ilfov' , 'give' ),
-		'MM' => __( 'Maramures' , 'give' ),
-		'MH' => __( 'Mehedinti' , 'give' ),
-		'MS' => __( 'Mures' , 'give' ),
-		'NT' => __( 'Neamt' , 'give' ),
-		'OT' => __( 'Olt' , 'give' ),
-		'PH' => __( 'Prahova' , 'give' ),
-		'SJ' => __( 'Salaj' , 'give' ),
-		'SM' => __( 'Satu Mare' , 'give' ),
-		'SB' => __( 'Sibiu' , 'give' ),
-		'SV' => __( 'Suceava' , 'give' ),
-		'TR' => __( 'Teleorman' , 'give' ),
-		'TM' => __( 'Timis' , 'give' ),
-		'TL' => __( 'Tulcea' , 'give' ),
-		'VL' => __( 'Valcea' , 'give' ),
-		'VS' => __( 'Vaslui' , 'give' ),
-		'VN' => __( 'Vrancea' , 'give' ),
+	$states = array(
+		''   => '',
+		'AB' => __( 'Alba', 'give' ),
+		'AR' => __( 'Arad', 'give' ),
+		'AG' => __( 'Arges', 'give' ),
+		'BC' => __( 'Bacau', 'give' ),
+		'BH' => __( 'Bihor', 'give' ),
+		'BN' => __( 'Bistrita-Nasaud', 'give' ),
+		'BT' => __( 'Botosani', 'give' ),
+		'BR' => __( 'Braila', 'give' ),
+		'BV' => __( 'Brasov', 'give' ),
+		'B'  => __( 'Bucuresti', 'give' ),
+		'BZ' => __( 'Buzau', 'give' ),
+		'CL' => __( 'Calarasi', 'give' ),
+		'CS' => __( 'Caras-Severin', 'give' ),
+		'CJ' => __( 'Cluj', 'give' ),
+		'CT' => __( 'Constanta', 'give' ),
+		'CV' => __( 'Covasna', 'give' ),
+		'DB' => __( 'Dambovita', 'give' ),
+		'DJ' => __( 'Dolj', 'give' ),
+		'GL' => __( 'Galati', 'give' ),
+		'GR' => __( 'Giurgiu', 'give' ),
+		'GJ' => __( 'Gorj', 'give' ),
+		'HR' => __( 'Harghita', 'give' ),
+		'HD' => __( 'Hunedoara', 'give' ),
+		'IL' => __( 'Ialomita', 'give' ),
+		'IS' => __( 'Iasi', 'give' ),
+		'IF' => __( 'Ilfov', 'give' ),
+		'MM' => __( 'Maramures', 'give' ),
+		'MH' => __( 'Mehedinti', 'give' ),
+		'MS' => __( 'Mures', 'give' ),
+		'NT' => __( 'Neamt', 'give' ),
+		'OT' => __( 'Olt', 'give' ),
+		'PH' => __( 'Prahova', 'give' ),
+		'SJ' => __( 'Salaj', 'give' ),
+		'SM' => __( 'Satu Mare', 'give' ),
+		'SB' => __( 'Sibiu', 'give' ),
+		'SV' => __( 'Suceava', 'give' ),
+		'TR' => __( 'Teleorman', 'give' ),
+		'TM' => __( 'Timis', 'give' ),
+		'TL' => __( 'Tulcea', 'give' ),
+		'VL' => __( 'Valcea', 'give' ),
+		'VS' => __( 'Vaslui', 'give' ),
+		'VN' => __( 'Vrancea', 'give' ),
 	);
+
 	return apply_filters( 'give_romania_states', $states );
 }
 
@@ -885,7 +919,7 @@ function give_get_romania_states_list() {
  */
 function give_get_pakistan_states_list() {
 	$states = array(
-		''     => '',
+		''   => '',
 		'JK' => __( 'Azad Kashmir', 'give' ),
 		'BA' => __( 'Balochistan', 'give' ),
 		'TA' => __( 'FATA', 'give' ),
@@ -895,6 +929,7 @@ function give_get_pakistan_states_list() {
 		'PB' => __( 'Punjab', 'give' ),
 		'SD' => __( 'Sindh', 'give' ),
 	);
+
 	return apply_filters( 'give_pakistan_states', $states );
 }
 
@@ -906,7 +941,7 @@ function give_get_pakistan_states_list() {
  */
 function give_get_philippines_states_list() {
 	$states = array(
-		''     => '',
+		''    => '',
 		'ABR' => __( 'Abra', 'give' ),
 		'AGN' => __( 'Agusan del Norte', 'give' ),
 		'AGS' => __( 'Agusan del Sur', 'give' ),
@@ -990,6 +1025,7 @@ function give_get_philippines_states_list() {
 		'ZSI' => __( 'Zamboanga Sibugay', 'give' ),
 		'00'  => __( 'Metro Manila', 'give' ),
 	);
+
 	return apply_filters( 'give_philippines_states', $states );
 }
 
@@ -1001,7 +1037,7 @@ function give_get_philippines_states_list() {
  */
 function give_get_peru_states_list() {
 	$states = array(
-		''     => '',
+		''    => '',
 		'CAL' => __( 'El Callao', 'give' ),
 		'LMA' => __( 'Municipalidad Metropolitana de Lima', 'give' ),
 		'AMA' => __( 'Amazonas', 'give' ),
@@ -1029,6 +1065,7 @@ function give_get_peru_states_list() {
 		'TUM' => __( 'Tumbes', 'give' ),
 		'UCA' => __( 'Ucayali', 'give' ),
 	);
+
 	return apply_filters( 'give_peru_states', $states );
 }
 
@@ -1040,7 +1077,7 @@ function give_get_peru_states_list() {
  */
 function give_get_nepal_states_list() {
 	$states = array(
-		''     => '',
+		''    => '',
 		'BAG' => __( 'Bagmati', 'give' ),
 		'BHE' => __( 'Bheri', 'give' ),
 		'DHA' => __( 'Dhaulagiri', 'give' ),
@@ -1056,6 +1093,7 @@ function give_get_nepal_states_list() {
 		'SAG' => __( 'Sagarmatha', 'give' ),
 		'SET' => __( 'Seti', 'give' ),
 	);
+
 	return apply_filters( 'give_nepal_states', $states );
 }
 
@@ -1067,7 +1105,7 @@ function give_get_nepal_states_list() {
  */
 function give_get_nigerian_states_list() {
 	$states = array(
-		''     => '',
+		''   => '',
 		'AB' => __( 'Abia', 'give' ),
 		'FC' => __( 'Abuja', 'give' ),
 		'AD' => __( 'Adamawa', 'give' ),
@@ -1106,6 +1144,7 @@ function give_get_nigerian_states_list() {
 		'YO' => __( 'Yobe', 'give' ),
 		'ZA' => __( 'Zamfara', 'give' ),
 	);
+
 	return apply_filters( 'give_nigerian_states', $states );
 }
 
@@ -1117,40 +1156,41 @@ function give_get_nigerian_states_list() {
  */
 function give_get_mexico_states_list() {
 	$states = array(
-		''                      => '',
-		'Distrito Federal' 		=> __( 'Distrito Federal', 'give' ),
-		'Jalisco' 				=> __( 'Jalisco', 'give' ),
-		'Nuevo Leon' 			=> __( 'Nuevo León', 'give' ),
-		'Aguascalientes' 		=> __( 'Aguascalientes', 'give' ),
-		'Baja California' 		=> __( 'Baja California', 'give' ),
-		'Baja California Sur' 	=> __( 'Baja California Sur', 'give' ),
-		'Campeche' 				=> __( 'Campeche', 'give' ),
-		'Chiapas' 				=> __( 'Chiapas', 'give' ),
-		'Chihuahua' 			=> __( 'Chihuahua', 'give' ),
-		'Coahuila' 				=> __( 'Coahuila', 'give' ),
-		'Colima' 				=> __( 'Colima', 'give' ),
-		'Durango' 				=> __( 'Durango', 'give' ),
-		'Guanajuato' 			=> __( 'Guanajuato', 'give' ),
-		'Guerrero' 				=> __( 'Guerrero', 'give' ),
-		'Hidalgo' 				=> __( 'Hidalgo', 'give' ),
-		'Estado de Mexico' 		=> __( 'Edo. de México', 'give' ),
-		'Michoacan' 			=> __( 'Michoacán', 'give' ),
-		'Morelos' 				=> __( 'Morelos', 'give' ),
-		'Nayarit' 				=> __( 'Nayarit', 'give' ),
-		'Oaxaca' 				=> __( 'Oaxaca', 'give' ),
-		'Puebla' 				=> __( 'Puebla', 'give' ),
-		'Queretaro' 			=> __( 'Querétaro', 'give' ),
-		'Quintana Roo' 			=> __( 'Quintana Roo', 'give' ),
-		'San Luis Potosi' 		=> __( 'San Luis Potosí', 'give' ),
-		'Sinaloa' 				=> __( 'Sinaloa', 'give' ),
-		'Sonora' 				=> __( 'Sonora', 'give' ),
-		'Tabasco' 				=> __( 'Tabasco', 'give' ),
-		'Tamaulipas' 			=> __( 'Tamaulipas', 'give' ),
-		'Tlaxcala' 				=> __( 'Tlaxcala', 'give' ),
-		'Veracruz' 				=> __( 'Veracruz', 'give' ),
-		'Yucatan' 				=> __( 'Yucatán', 'give' ),
-		'Zacatecas' 			=> __( 'Zacatecas', 'give' ),
+		''                    => '',
+		'Distrito Federal'    => __( 'Distrito Federal', 'give' ),
+		'Jalisco'             => __( 'Jalisco', 'give' ),
+		'Nuevo Leon'          => __( 'Nuevo León', 'give' ),
+		'Aguascalientes'      => __( 'Aguascalientes', 'give' ),
+		'Baja California'     => __( 'Baja California', 'give' ),
+		'Baja California Sur' => __( 'Baja California Sur', 'give' ),
+		'Campeche'            => __( 'Campeche', 'give' ),
+		'Chiapas'             => __( 'Chiapas', 'give' ),
+		'Chihuahua'           => __( 'Chihuahua', 'give' ),
+		'Coahuila'            => __( 'Coahuila', 'give' ),
+		'Colima'              => __( 'Colima', 'give' ),
+		'Durango'             => __( 'Durango', 'give' ),
+		'Guanajuato'          => __( 'Guanajuato', 'give' ),
+		'Guerrero'            => __( 'Guerrero', 'give' ),
+		'Hidalgo'             => __( 'Hidalgo', 'give' ),
+		'Estado de Mexico'    => __( 'Edo. de México', 'give' ),
+		'Michoacan'           => __( 'Michoacán', 'give' ),
+		'Morelos'             => __( 'Morelos', 'give' ),
+		'Nayarit'             => __( 'Nayarit', 'give' ),
+		'Oaxaca'              => __( 'Oaxaca', 'give' ),
+		'Puebla'              => __( 'Puebla', 'give' ),
+		'Queretaro'           => __( 'Querétaro', 'give' ),
+		'Quintana Roo'        => __( 'Quintana Roo', 'give' ),
+		'San Luis Potosi'     => __( 'San Luis Potosí', 'give' ),
+		'Sinaloa'             => __( 'Sinaloa', 'give' ),
+		'Sonora'              => __( 'Sonora', 'give' ),
+		'Tabasco'             => __( 'Tabasco', 'give' ),
+		'Tamaulipas'          => __( 'Tamaulipas', 'give' ),
+		'Tlaxcala'            => __( 'Tlaxcala', 'give' ),
+		'Veracruz'            => __( 'Veracruz', 'give' ),
+		'Yucatan'             => __( 'Yucatán', 'give' ),
+		'Zacatecas'           => __( 'Zacatecas', 'give' ),
 	);
+
 	return apply_filters( 'give_mexico_states', $states );
 }
 
@@ -1211,6 +1251,7 @@ function give_get_japan_states_list() {
 		'JP46' => __( 'Kagoshima', 'give' ),
 		'JP47' => __( 'Okinawa', 'give' ),
 	);
+
 	return apply_filters( 'give_japan_states', $states );
 }
 
@@ -1222,7 +1263,7 @@ function give_get_japan_states_list() {
  */
 function give_get_italy_states_list() {
 	$states = array(
-		''     => '',
+		''   => '',
 		'AG' => __( 'Agrigento', 'give' ),
 		'AL' => __( 'Alessandria', 'give' ),
 		'AN' => __( 'Ancona', 'give' ),
@@ -1334,6 +1375,7 @@ function give_get_italy_states_list() {
 		'VI' => __( 'Vicenza', 'give' ),
 		'VT' => __( 'Viterbo', 'give' ),
 	);
+
 	return apply_filters( 'give_italy_states', $states );
 }
 
@@ -1345,7 +1387,7 @@ function give_get_italy_states_list() {
  */
 function give_get_iran_states_list() {
 	$states = array(
-		''     => '',
+		''    => '',
 		'KHZ' => __( 'Khuzestan  (خوزستان)', 'give' ),
 		'THR' => __( 'Tehran  (تهران)', 'give' ),
 		'ILM' => __( 'Ilaam (ایلام)', 'give' ),
@@ -1378,6 +1420,7 @@ function give_get_iran_states_list() {
 		'HRZ' => __( 'Hormozgan (هرمزگان)', 'give' ),
 		'SBN' => __( 'Sistan and Baluchestan (سیستان و بلوچستان)', 'give' ),
 	);
+
 	return apply_filters( 'give_iran_states', $states );
 }
 
@@ -1389,7 +1432,7 @@ function give_get_iran_states_list() {
  */
 function give_get_ireland_states_list() {
 	$states = array(
-		''     => '',
+		''   => '',
 		'CE' => __( 'Clare', 'give' ),
 		'CK' => __( 'Cork', 'give' ),
 		'CN' => __( 'Cavan', 'give' ),
@@ -1417,6 +1460,7 @@ function give_get_ireland_states_list() {
 		'WW' => __( 'Wicklow', 'give' ),
 		'WX' => __( 'Wexford', 'give' ),
 	);
+
 	return apply_filters( 'give_ireland_states', $states );
 }
 
@@ -1428,7 +1472,7 @@ function give_get_ireland_states_list() {
  */
 function give_get_greek_states_list() {
 	$states = array(
-		''     => '',
+		''  => '',
 		'I' => __( 'Αττική', 'give' ),
 		'A' => __( 'Ανατολική Μακεδονία και Θράκη', 'give' ),
 		'B' => __( 'Κεντρική Μακεδονία', 'give' ),
@@ -1443,6 +1487,7 @@ function give_get_greek_states_list() {
 		'L' => __( 'Νότιο Αιγαίο', 'give' ),
 		'M' => __( 'Κρήτη', 'give' ),
 	);
+
 	return apply_filters( 'give_greek_states', $states );
 }
 
@@ -1454,7 +1499,7 @@ function give_get_greek_states_list() {
  */
 function give_get_bolivian_states_list() {
 	$states = array(
-		''     => '',
+		''  => '',
 		'B' => __( 'Chuquisaca', 'give' ),
 		'H' => __( 'Beni', 'give' ),
 		'C' => __( 'Cochabamba', 'give' ),
@@ -1465,6 +1510,7 @@ function give_get_bolivian_states_list() {
 		'S' => __( 'Santa Cruz', 'give' ),
 		'T' => __( 'Tarija', 'give' ),
 	);
+
 	return apply_filters( 'give_bolivian_states', $states );
 }
 
@@ -1476,7 +1522,7 @@ function give_get_bolivian_states_list() {
  */
 function give_get_bulgarian_states_list() {
 	$states = array(
-		''     => '',
+		''      => '',
 		'BG-01' => __( 'Blagoevgrad', 'give' ),
 		'BG-02' => __( 'Burgas', 'give' ),
 		'BG-08' => __( 'Dobrich', 'give' ),
@@ -1506,6 +1552,7 @@ function give_get_bulgarian_states_list() {
 		'BG-06' => __( 'Vratsa', 'give' ),
 		'BG-28' => __( 'Yambol', 'give' ),
 	);
+
 	return apply_filters( 'give_bulgarian_states', $states );
 }
 
@@ -1517,7 +1564,7 @@ function give_get_bulgarian_states_list() {
  */
 function give_get_bangladeshi_states_list() {
 	$states = array(
-		''	=> '',
+		''     => '',
 		'BAG'  => __( 'Bagerhat', 'give' ),
 		'BAN'  => __( 'Bandarban', 'give' ),
 		'BAR'  => __( 'Barguna', 'give' ),
@@ -1583,6 +1630,7 @@ function give_get_bangladeshi_states_list() {
 		'TAN'  => __( 'Tangail', 'give' ),
 		'THA'  => __( 'Thakurgaon', 'give' ),
 	);
+
 	return apply_filters( 'give_bangladeshi_states', $states );
 }
 
@@ -1620,6 +1668,7 @@ function give_get_argentina_states_list() {
 		'V' => __( 'Tierra del Fuego', 'give' ),
 		'T' => __( 'Tucum&aacute;n', 'give' ),
 	);
+
 	return apply_filters( 'give_argentina_states', $states );
 }
 
@@ -1698,7 +1747,7 @@ function give_get_states_list() {
 		'VI' => 'Virgin Islands',
 		'AA' => 'Armed Forces - Americas',
 		'AE' => 'Armed Forces - Europe, Canada, Middle East, Africa',
-		'AP' => 'Armed Forces - Pacific'
+		'AP' => 'Armed Forces - Pacific',
 	);
 
 	return apply_filters( 'give_us_states', $states );
@@ -1714,19 +1763,19 @@ function give_get_states_list() {
 function give_get_provinces_list() {
 	$provinces = array(
 		''   => '',
-		'AB' => esc_html__('Alberta', 'give' ),
-		'BC' => esc_html__('British Columbia', 'give' ),
-		'MB' => esc_html__('Manitoba', 'give' ),
-		'NB' => esc_html__('New Brunswick', 'give' ),
-		'NL' => esc_html__('Newfoundland and Labrador', 'give' ),
-		'NS' => esc_html__('Nova Scotia', 'give' ),
-		'NT' => esc_html__('Northwest Territories', 'give' ),
-		'NU' => esc_html__('Nunavut', 'give' ),
-		'ON' => esc_html__('Ontario', 'give' ),
-		'PE' => esc_html__('Prince Edward Island', 'give' ),
-		'QC' => esc_html__('Quebec', 'give' ),
-		'SK' => esc_html__('Saskatchewan', 'give' ),
-		'YT' => esc_html__('Yukon', 'give' )
+		'AB' => esc_html__( 'Alberta', 'give' ),
+		'BC' => esc_html__( 'British Columbia', 'give' ),
+		'MB' => esc_html__( 'Manitoba', 'give' ),
+		'NB' => esc_html__( 'New Brunswick', 'give' ),
+		'NL' => esc_html__( 'Newfoundland and Labrador', 'give' ),
+		'NS' => esc_html__( 'Nova Scotia', 'give' ),
+		'NT' => esc_html__( 'Northwest Territories', 'give' ),
+		'NU' => esc_html__( 'Nunavut', 'give' ),
+		'ON' => esc_html__( 'Ontario', 'give' ),
+		'PE' => esc_html__( 'Prince Edward Island', 'give' ),
+		'QC' => esc_html__( 'Quebec', 'give' ),
+		'SK' => esc_html__( 'Saskatchewan', 'give' ),
+		'YT' => esc_html__( 'Yukon', 'give' ),
 	);
 
 	return apply_filters( 'give_canada_provinces', $provinces );
@@ -1748,7 +1797,7 @@ function give_get_australian_states_list() {
 		'SA'  => 'South Australia',
 		'TAS' => 'Tasmania',
 		'VIC' => 'Victoria',
-		'WA'  => 'Western Australia'
+		'WA'  => 'Western Australia',
 	);
 
 	return apply_filters( 'give_australian_states', $states );
@@ -1789,7 +1838,7 @@ function give_get_brazil_states_list() {
 		'SC' => 'Santa Catarina',
 		'SP' => 'S&atilde;o Paulo',
 		'SE' => 'Sergipe',
-		'TO' => 'Tocantins'
+		'TO' => 'Tocantins',
 	);
 
 	return apply_filters( 'give_brazil_states', $states );
@@ -1806,7 +1855,7 @@ function give_get_hong_kong_states_list() {
 		''                => '',
 		'HONG KONG'       => 'Hong Kong Island',
 		'KOWLOON'         => 'Kowloon',
-		'NEW TERRITORIES' => 'New Territories'
+		'NEW TERRITORIES' => 'New Territories',
 	);
 
 	return apply_filters( 'give_hong_kong_states', $states );
@@ -1840,7 +1889,7 @@ function give_get_hungary_states_list() {
 		'TO' => 'Tolna',
 		'VA' => 'Vas',
 		'VE' => 'Veszprém',
-		'ZA' => 'Zala'
+		'ZA' => 'Zala',
 	);
 
 	return apply_filters( 'give_hungary_states', $states );
@@ -1886,7 +1935,7 @@ function give_get_chinese_states_list() {
 		'CN29' => 'Ningxia Hui / &#23425;&#22799;',
 		'CN30' => 'Macau / &#28595;&#38376;',
 		'CN31' => 'Tibet / &#35199;&#34255;',
-		'CN32' => 'Xinjiang / &#26032;&#30086;'
+		'CN32' => 'Xinjiang / &#26032;&#30086;',
 	);
 
 	return apply_filters( 'give_chinese_states', $states );
@@ -1915,7 +1964,7 @@ function give_get_new_zealand_states_list() {
 		'TM' => 'Tasman',
 		'WA' => 'Waikato',
 		'WE' => 'Wellington',
-		'WC' => 'West Coast'
+		'WC' => 'West Coast',
 	);
 
 	return apply_filters( 'give_new_zealand_states', $states );
@@ -1963,7 +2012,7 @@ function give_get_indonesian_states_list() {
 		'MA' => 'Maluku',
 		'MU' => 'Maluku Utara',
 		'PA' => 'Papua',
-		'PB' => 'Papua Barat'
+		'PB' => 'Papua Barat',
 	);
 
 	return apply_filters( 'give_indonesia_states', $states );
@@ -2013,7 +2062,7 @@ function give_get_indian_states_list() {
 		'DD' => 'Daman and Diu',
 		'DL' => 'Delhi',
 		'LD' => 'Lakshadweep',
-		'PY' => 'Pondicherry (Puducherry)'
+		'PY' => 'Pondicherry (Puducherry)',
 	);
 
 	return apply_filters( 'give_indian_states', $states );
@@ -2043,7 +2092,7 @@ function give_get_malaysian_states_list() {
 		'TRG' => 'Terengganu',
 		'KUL' => 'W.P. Kuala Lumpur',
 		'LBN' => 'W.P. Labuan',
-		'PJY' => 'W.P. Putrajaya'
+		'PJY' => 'W.P. Putrajaya',
 	);
 
 	return apply_filters( 'give_malaysian_states', $states );
@@ -2066,7 +2115,7 @@ function give_get_south_african_states_list() {
 		'MP'  => 'Mpumalanga',
 		'NC'  => 'Northern Cape',
 		'NW'  => 'North West',
-		'WC'  => 'Western Cape'
+		'WC'  => 'Western Cape',
 	);
 
 	return apply_filters( 'give_south_african_states', $states );
@@ -2157,7 +2206,7 @@ function give_get_thailand_states_list() {
 		'TH-61' => 'Uthai Thani (&#3629;&#3640;&#3607;&#3633;&#3618;&#3608;&#3634;&#3609;&#3637;)',
 		'TH-53' => 'Uttaradit (&#3629;&#3640;&#3605;&#3619;&#3604;&#3636;&#3605;&#3606;&#3660;)',
 		'TH-95' => 'Yala (&#3618;&#3632;&#3621;&#3634;)',
-		'TH-35' => 'Yasothon (&#3618;&#3650;&#3626;&#3608;&#3619;)'
+		'TH-35' => 'Yasothon (&#3618;&#3650;&#3626;&#3608;&#3619;)',
 	);
 
 	return apply_filters( 'give_thailand_states', $states );
@@ -2223,7 +2272,7 @@ function give_get_spain_states_list() {
 		'VA' => esc_html__( 'Valladolid', 'give' ),
 		'BI' => esc_html__( 'Bizkaia', 'give' ),
 		'ZA' => esc_html__( 'Zamora', 'give' ),
-		'Z'  => esc_html__( 'Zaragoza', 'give' )
+		'Z'  => esc_html__( 'Zaragoza', 'give' ),
 	);
 
 	return apply_filters( 'give_spain_states', $states );
