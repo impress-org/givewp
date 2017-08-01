@@ -48,14 +48,14 @@ jQuery(function ($) {
                     }
 
                     if( false === $form.hasClass( 'float-labels-enabled' ) ) {
-                    	var $label_class = '';
-                        if( typeof ( response.states_require ) != undefined && false == response.states_require ) {
-                            $label_class = 'give-hidden';
-                        }
-                        states_label  = states_label + '<span class="give-required-indicator ' + $label_class + ' ">*</span>';
+                        if( typeof ( response.states_require ) != 'undefined' && true == response.states_require ) {
+                            $form.find('input[name="card_state"], select[name="card_state"]').closest( 'p' ).find( 'label .give-required-indicator' ).removeClass( 'give-hidden' );
+                        } else {
+                            $form.find('input[name="card_state"], select[name="card_state"]').closest( 'p' ).find( 'label .give-required-indicator' ).addClass( 'give-hidden' );
+						}
 					}
 
-                    $form.find('input[name="card_state"], select[name="card_state"]').closest( 'p' ).find( 'label' ).html( states_label );
+                    $form.find('input[name="card_state"], select[name="card_state"]').closest( 'p' ).find( 'label .state-label-text' ).text( states_label );
                     $form.find('input[name="card_state"], select[name="card_state"]').replaceWith( html );
 
                     // Check if user want to show the feilds or not.

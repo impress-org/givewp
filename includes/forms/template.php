@@ -1035,7 +1035,7 @@ function give_default_cc_address_fields( $form_id ) {
         <p id="give-card-state-wrap"
            class="form-row form-row-last form-row-responsive <?php echo ( ! empty( $selected_country ) && array_key_exists( $selected_country, $no_states_country ) ) ? 'give-hidden' : ''; ?> ">
             <label for="card_state" class="give-label">
-				<?php echo $label; ?>
+				<span class="state-label-text"><?php echo $label; ?></span>
 				<?php if ( give_field_is_required( 'card_state', $form_id ) ) :
 					?>
                     <span class="give-required-indicator <?php echo( array_key_exists( $selected_country, $states_not_required_country_list ) ? 'give-hidden' : '' ) ?> ">*</span>
