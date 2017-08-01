@@ -415,6 +415,35 @@ function give_no_states_country_list() {
 	return (array) apply_filters( 'give_no_states_country_list', $country_list );
 }
 
+
+/**
+ * List of Country in which states feilds is not required.
+ *
+ * There are some country in which states feilds is not required Example: United Kingdom ( uk ).
+ *
+ * @since 1.8.11
+ *
+ * $country array $country_code.
+ */
+function give_states_not_required_country_list() {
+	$country_list = array();
+	$locale       = give_get_country_locale();
+	foreach ( $locale as $key => $value ) {
+		if ( ! empty( $value['state'] ) && isset( $value['state']['required'] ) && false === $value['state']['required'] ) {
+			$country_list[ $key ] = $value['state'];
+		}
+	}
+
+	/**
+	 * Filter can be used to add or remove the Country in which states feilds is not required.
+	 *
+	 * @since 1.8.11
+	 *
+	 * @param array $country Contain key as there country code & value as there country name.
+	 */
+	return (array) apply_filters( 'give_states_not_required_country_list', $country_list );
+}
+
 function give_get_states_label() {
 	$country_states_label = array();
 	$default_label        = __( 'State', 'give' );
