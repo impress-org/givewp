@@ -489,6 +489,7 @@ function give_get_country_locale() {
 		'AF' => array(
 			'state' => array(
 				'required' => false,
+				'hidden'   => true,
 			),
 		),
 		'AT' => array(

@@ -49,7 +49,7 @@ jQuery(function ($) {
 
                     if( false === $form.hasClass( 'float-labels-enabled' ) ) {
                     	var $label_class = '';
-                        if( typeof ( response.states_require ) != undefined && true == response.states_require ) {
+                        if( typeof ( response.states_require ) != undefined && false == response.states_require ) {
                             $label_class = 'give-hidden';
                         }
                         states_label  = states_label + '<span class="give-required-indicator ' + $label_class + ' ">*</span>';
