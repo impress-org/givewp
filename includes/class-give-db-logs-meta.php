@@ -226,6 +226,10 @@ class Give_DB_Log_Meta extends Give_DB {
 	 * @return mixed
 	 */
 	public function __call( $name, $arguments ) {
+		if( ! give_has_upgrade_completed( 'v20_logs_upgrades') ) {
+			return;
+		}
+
 		switch ( $name ) {
 			case '__add_meta':
 				$check      = $arguments[0];
