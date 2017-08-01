@@ -438,6 +438,11 @@ function give_get_states_label() {
 
 function give_get_country_locale() {
 	return (array) apply_filters( 'give_get_country_locale', array(
+		'AE' => array(
+			'state' => array(
+				'required' => false,
+			),
+		),
 		'AF' => array(
 			'state' => array(
 				'required' => false,
@@ -450,7 +455,7 @@ function give_get_country_locale() {
 		),
 		'AU' => array(
 			'state'     => array(
-				'label'       => __( 'State', 'give' ),
+				'label'       => __( 'State', 'woocommerce' ),
 			),
 		),
 		'AX' => array(
@@ -460,13 +465,13 @@ function give_get_country_locale() {
 		),
 		'BD' => array(
 			'state' => array(
-				'label'       => __( 'District', 'give' ),
+				'label'       => __( 'District', 'woocommerce' ),
 			),
 		),
 		'BE' => array(
 			'state' => array(
 				'required'    => false,
-				'label'       => __( 'Province', 'give' ),
+				'label'       => __( 'Province', 'woocommerce' ),
 			),
 		),
 		'BI' => array(
@@ -476,23 +481,23 @@ function give_get_country_locale() {
 		),
 		'CA' => array(
 			'state' => array(
-				'label'       => __( 'Province', 'give' ),
+				'label'       => __( 'Province', 'woocommerce' ),
 			),
 		),
 		'CH' => array(
 			'state' => array(
-				'label'       => __( 'Canton', 'give' ),
+				'label'       => __( 'Canton', 'woocommerce' ),
 				'required'    => false,
 			),
 		),
 		'CL' => array(
 			'state'     => array(
-				'label'       => __( 'Region', 'give' ),
+				'label'       => __( 'Region', 'woocommerce' ),
 			),
 		),
 		'CN' => array(
 			'state' => array(
-				'label'       => __( 'Province', 'give' ),
+				'label'       => __( 'Province', 'woocommerce' ),
 			),
 		),
 		'CZ' => array(
@@ -537,22 +542,22 @@ function give_get_country_locale() {
 		),
 		'HK' => array(
 			'state' => array(
-				'label'       => __( 'Region', 'give' ),
+				'label'       => __( 'Region', 'woocommerce' ),
 			),
 		),
 		'HU' => array(
 			'state' => array(
-				'label'       => __( 'County', 'give' ),
+				'label'       => __( 'County', 'woocommerce' ),
 			),
 		),
 		'ID' => array(
 			'state' => array(
-				'label'       => __( 'Province', 'give' ),
+				'label'       => __( 'Province', 'woocommerce' ),
 			),
 		),
 		'IE' => array(
 			'state' => array(
-				'label'       => __( 'County', 'give' ),
+				'label'       => __( 'County', 'woocommerce' ),
 			),
 		),
 		'IS' => array(
@@ -567,12 +572,13 @@ function give_get_country_locale() {
 		),
 		'IT' => array(
 			'state' => array(
-				'label'       => __( 'Province', 'give' ),
+				'required'    => true,
+				'label'       => __( 'Province', 'woocommerce' ),
 			),
 		),
 		'JP' => array(
 			'state' => array(
-				'label' => __( 'Prefecture', 'give' ),
+				'label' => __( 'Prefecture', 'woocommerce' ),
 			),
 		),
 		'KR' => array(
@@ -598,13 +604,13 @@ function give_get_country_locale() {
 		'NL' => array(
 			'state' => array(
 				'required'    => false,
-				'label'       => __( 'Province', 'give' ),
+				'label'       => __( 'Province', 'woocommerce' ),
 			),
 		),
 		'NZ' => array(
 			'state' => array(
 				'required' => false,
-				'label'    => __( 'Region', 'give' ),
+				'label'    => __( 'Region', 'woocommerce' ),
 			),
 		),
 		'NO' => array(
@@ -614,7 +620,7 @@ function give_get_country_locale() {
 		),
 		'NP' => array(
 			'state' => array(
-				'label'       => __( 'State / Zone', 'give' ),
+				'label'       => __( 'State / Zone', 'woocommerce' ),
 			),
 		),
 		'PL' => array(
@@ -654,12 +660,12 @@ function give_get_country_locale() {
 		),
 		'ES' => array(
 			'state' => array(
-				'label'       => __( 'Province', 'give' ),
+				'label'       => __( 'Province', 'woocommerce' ),
 			),
 		),
 		'LI' => array(
 			'state' => array(
-				'label'       => __( 'Municipality', 'give' ),
+				'label'       => __( 'Municipality', 'woocommerce' ),
 				'required'    => false,
 			),
 		),
@@ -675,17 +681,18 @@ function give_get_country_locale() {
 		),
 		'TR' => array(
 			'state' => array(
-				'label'       => __( 'Province', 'give' ),
+				'label'       => __( 'Province', 'woocommerce' ),
 			),
 		),
 		'US' => array(
 			'state'     => array(
-				'label'       => __( 'State', 'give' ),
+				'label'       => __( 'State', 'woocommerce' ),
 			),
 		),
 		'GB' => array(
 			'state'     => array(
-				'label'       => __( 'County', 'give' ),
+				'label'       => __( 'County', 'woocommerce' ),
+				'required'    => false,
 			),
 		),
 		'VN' => array(
@@ -700,9 +707,9 @@ function give_get_country_locale() {
 		),
 		'ZA' => array(
 			'state' => array(
-				'label'       => __( 'Province', 'give' ),
+				'label'       => __( 'Province', 'woocommerce' ),
 			),
-		)
+		),
 	) );
 }
 
