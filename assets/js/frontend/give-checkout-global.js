@@ -53,10 +53,12 @@ jQuery(function ($) {
                         } else {
                             $form.find('input[name="card_state"], select[name="card_state"]').closest('p').find('label .give-required-indicator').addClass('give-hidden');
                         }
+                    } else {
+                        $form.find('input[name="card_state"], select[name="card_state"]').closest('p').find('label').text( states_label );
                     }
 
-                    $form.find('input[name="card_state"], select[name="card_state"]').closest('p').find('label .state-label-text').text(states_label);
-                    $form.find('input[name="card_state"], select[name="card_state"]').replaceWith(html);
+                    $form.find('input[name="card_state"], select[name="card_state"]').closest('p').find('label .state-label-text').text( states_label );
+                    $form.find('input[name="card_state"], select[name="card_state"]').replaceWith( html );
 
                     // Check if user want to show the feilds or not.
                     if (typeof ( response.show_field ) != undefined && true == response.show_field) {
