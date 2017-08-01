@@ -392,7 +392,7 @@ $payment_mode   = $payment->mode;
 															'name'             => 'give-variable-price',
 															'chosen'           => true,
 															'show_option_all'  => '',
-															'show_option_none' => '',
+															'show_option_none' => ( '' === get_post_meta( $payment_id, '_give_payment_price_id', true ) ? __( 'None', 'give' )  : '' ),
 															'select_atts'      => 'data-prices=' . esc_attr( json_encode( $prices_atts ) ),
 															'selected'         => $payment_meta['price_id'],
 														);
