@@ -415,7 +415,6 @@ function give_no_states_country_list() {
 	return (array) apply_filters( 'give_no_states_country_list', $country_list );
 }
 
-
 /**
  * List of Country in which states feilds is not required.
  *
@@ -444,6 +443,13 @@ function give_states_not_required_country_list() {
 	return (array) apply_filters( 'give_states_not_required_country_list', $country_list );
 }
 
+/**
+ * Get the label that need to show as an placeholder.
+ *
+ * @ since 1.8.12
+ *
+ * @return array $country_states_label
+ */
 function give_get_states_label() {
 	$country_states_label = array();
 	$default_label        = __( 'State', 'give' );
@@ -466,6 +472,13 @@ function give_get_states_label() {
 	return (array) apply_filters( 'give_get_states_label', $country_states_label );
 }
 
+/**
+ * Get country locale settings.
+ *
+ * @since 1.8.12
+ *
+ * @return array
+ */
 function give_get_country_locale() {
 	return (array) apply_filters( 'give_get_country_locale', array(
 		'AE' => array(
