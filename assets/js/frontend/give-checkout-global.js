@@ -48,7 +48,11 @@ jQuery(function ($) {
                     }
 
                     if( false === $form.hasClass( 'float-labels-enabled' ) ) {
-                        states_label  = states_label + '<span class="give-required-indicator">*</span>';
+                    	var $label_class = '';
+                        if( typeof ( response.states_require ) != undefined && true == response.states_require ) {
+                            $label_class = 'give-hidden';
+                        }
+                        states_label  = states_label + '<span class="give-required-indicator ' + $label_class + ' ">*</span>';
 					}
 
                     $form.find('input[name="card_state"], select[name="card_state"]').closest( 'p' ).find( 'label' ).html( states_label );
