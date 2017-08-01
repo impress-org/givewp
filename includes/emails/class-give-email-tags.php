@@ -475,7 +475,7 @@ function give_email_tag_billing_address( $payment_id ) {
 		$return .= ', ' . $user_address['line2'];
 	}
 	$return .= "\n" . $user_address['city'] . ', ' . $user_address['state'] . ' ' . $user_address['zip'];
-	$return .= "\n" . give_get_country($user_address['country']);
+	$return .= "\n" . give_get_country_name_by_key($user_address['country']);
 
 	return $return;
 }
