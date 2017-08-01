@@ -157,21 +157,22 @@ class Give_Payment_History_Table extends WP_List_Table {
 					<label for="start-date"
 					       class="give-start-date-label"><?php esc_html_e( 'Start Date', 'give' ); ?></label>
 					<input type="text" id="start-date" name="start-date" class="give_datepicker"
-				       value="<?php echo $start_date; ?>" placeholder="mm/dd/yyyy" />
+					       value="<?php echo $start_date; ?>" placeholder="mm/dd/yyyy" />
 				</div>
 				<div class="give-filter give-filter-half">
 					<label for="end-date" class="give-end-date-label"><?php esc_html_e( 'End Date', 'give' ); ?></label>
 					<input type="text" id="end-date" name="end-date" class="give_datepicker"
-				       value="<?php echo $end_date; ?>" placeholder="mm/dd/yyyy" />
-		       </div>
+					       value="<?php echo $end_date; ?>" placeholder="mm/dd/yyyy" />
+				</div>
 			</div>
 			<div id="give-payment-form-filter" class="give-filter">
-				<label for="-date"
-				       class="give-start-date-label"><?php esc_html_e( 'Form', 'give' ); ?></label>
+				<label for="give-donation-forms-filter"
+				       class="give-donation-forms-filter-label"><?php esc_html_e( 'Form', 'give' ); ?></label>
 				<?php
 				// Filter Donations by Donation Forms.
 				echo Give()->html->forms_dropdown( array(
 					'name'     => 'form_id',
+					'id'       => 'give-donation-forms-filter',
 					'class'    => 'give-donation-forms-filter',
 					'selected' => $form_id, // Make sure to have $form_id set to 0, if there is no selection.
 					'chosen'   => true,
