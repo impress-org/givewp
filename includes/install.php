@@ -118,7 +118,9 @@ function give_run_install() {
 			'upgrade_give_offline_status',
 			'v18_upgrades_core_setting',
 			'v18_upgrades_form_metadata',
-			'v189_upgrades_levels_post_meta'
+			'v189_upgrades_levels_post_meta',
+			'v1812_update_amount_values',
+			'v1812_update_donor_purchase_values'
 		);
 
 		foreach ( $upgrade_routines as $upgrade ) {

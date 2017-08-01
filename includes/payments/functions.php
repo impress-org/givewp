@@ -1303,7 +1303,7 @@ function give_remove_payment_prefix_postfix( $number ) {
 function give_payment_amount( $payment_id = 0 ) {
 	$amount = give_get_payment_amount( $payment_id );
 
-	return give_currency_filter( give_format_amount( $amount ), give_get_payment_currency_code( $payment_id ) );
+	return give_currency_filter( give_format_amount( $amount, array( 'sanitize' => false ) ), give_get_payment_currency_code( $payment_id ) );
 }
 
 /**
@@ -1340,7 +1340,7 @@ function give_get_payment_amount( $payment_id ) {
 function give_payment_subtotal( $payment_id = 0 ) {
 	$subtotal = give_get_payment_subtotal( $payment_id );
 
-	return give_currency_filter( give_format_amount( $subtotal ), give_get_payment_currency_code( $payment_id ) );
+	return give_currency_filter( give_format_amount( $subtotal , array( 'sanitize' => false ) ), give_get_payment_currency_code( $payment_id ) );
 }
 
 /**
@@ -1835,7 +1835,7 @@ function give_get_price_id( $form_id, $price ) {
 
 		foreach ( $levels as $level ) {
 
-			$level_amount = (float) give_sanitize_amount( $level['_give_amount'] );
+			$level_amount = (float) give_maybe_sanitize_amount( $level['_give_amount'] );
 
 			// Check that this indeed the recurring price.
 			if ( $level_amount == $price ) {
@@ -1907,7 +1907,7 @@ function give_get_form_variable_price_dropdown( $args = array(), $echo = false )
 
 	// Get variable price and ID from variable price array.
 	foreach ( $variable_prices as $variable_price ) {
-		$variable_price_options[ $variable_price['_give_id']['level_id'] ] = ! empty( $variable_price['_give_text'] ) ? $variable_price['_give_text'] : give_currency_filter( give_format_amount( $variable_price['_give_amount'] ) );
+		$variable_price_options[ $variable_price['_give_id']['level_id'] ] = ! empty( $variable_price['_give_text'] ) ? $variable_price['_give_text'] : give_currency_filter( give_format_amount( $variable_price['_give_amount'], array( 'sanitize' => false ) ) );
 	}
 
 	// Update options.

@@ -666,22 +666,22 @@ jQuery.noConflict();
 						'width'    : 'auto',
 						'min-width': '250px'
 					});
+				} else if ( 'reset-stats' === selected_type ) {
+					export_form.append( '<div class="notice-wrap"></div>' );
+					var notice_wrap = export_form.find( '.notice-wrap' );
+					notice_wrap.html( '<div class="notice notice-warning"><p><input type="checkbox" id="confirm-reset" name="confirm_reset_store" value="1" /> <label for="confirm-reset">' + give_vars.reset_stats_warn + '</label></p></div>' );
+					submit_button.addClass( 'button-disabled' ).attr( 'disabled', 'disabled' );
 
-				} else if ('reset-stats' === selected_type) {
-
-					export_form.append('<div class="notice-wrap"></div>');
-					var notice_wrap = export_form.find('.notice-wrap');
-					notice_wrap.html('<div class="notice notice-warning"><p><input type="checkbox" id="confirm-reset" name="confirm_reset_store" value="1" /> <label for="confirm-reset">' + give_vars.reset_stats_warn + '</label></p></div>');
-
-					submit_button.addClass('button-disabled').attr('disabled', 'disabled');
-
+					// Add check when admin try to delete all the test donors.
+                } else if ( 'delete-test-donors' === selected_type ) {
+                    export_form.append( '<div class="notice-wrap"></div>' );
+                    var notice_wrap = export_form.find( '.notice-wrap' );
+                    notice_wrap.html( '<div class="notice notice-warning"><p><input type="checkbox" id="confirm-reset" name="confirm_reset_store" value="1" /> <label for="confirm-reset">' + give_vars.delete_test_donor + '</label></p></div>' );
+                    submit_button.addClass( 'button-disabled' ).attr( 'disabled', 'disabled' );
 				} else {
-
 					forms.hide();
-					forms.val(0);
-
+					forms.val( 0 );
 				}
-
 				$('#' + selected_type).show();
 			});
 
@@ -879,7 +879,7 @@ jQuery.noConflict();
 					return;
 				}
 
-				$(this).addClass('active');
+				$(this).addClass('active').fadeOut();
 				self.el.progress_container.find('.notice-wrap').remove();
 				self.el.progress_container.append('<div class="notice-wrap give-clearfix"><span class="spinner is-active"></span><div class="give-progress"><div></div></div></div>');
 				self.el.progress_main_container.removeClass('give-hidden');
@@ -918,22 +918,20 @@ jQuery.noConflict();
 								self.el.heading.text(response.data.heading);
 							}
 
-							notice_wrap.html('<div class="updated notice is-dismissible"><p>' + response.data.message + '<span class="notice-dismiss"></span></p></div>');
+							self.el.update_link.closest('p').remove();
+							notice_wrap.html('<div class="notice notice-success is-dismissible"><p>' + response.data.message + '</p><button type="button" class="notice-dismiss"></button></div>');
 
-							setTimeout(function () {
-								self.el.update_link.removeClass('active');
-								self.el.progress_main_container.addClass('give-hidden');
-							}, 5000);
 						} else {
 							// Update steps info
 							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
 								self.el.heading.text(response.data.heading);
 							}
 
-							notice_wrap.html('<div class="updated error"><p>' + response.data.message + '</p></div>');
+
+							notice_wrap.html('<div class="notice notice-error"><p>' + response.data.message + '</p></div>');
 
 							setTimeout(function () {
-								self.el.update_link.removeClass('active');
+								self.el.update_link.removeClass('active').show();
 								self.el.progress_main_container.addClass('give-hidden');
 							}, 5000);
 						}
