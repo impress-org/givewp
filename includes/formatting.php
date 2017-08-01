@@ -104,13 +104,20 @@ function give_maybe_sanitize_amount( $number, $dp = false, $trim_zeros = false )
 	}
 
 	// Handle thousand separator as '.'
-	if ( '.' === $thousand_separator && false !== strpos( $number, $thousand_separator ) ){
-		$number_parts = explode( '.', $number );
+	// Handle sanitize database values.
+	$number_parts = explode( '.', $number );
+	$is_db_sanitize_val = ( 2 === count( $number_parts ) && ( 6 === strlen( $number_parts[1] ) ) );
 
-		if( 2 === count( $number_parts ) && ( 6 === strlen( $number_parts[1] ) ) ) {
-			// Trim zero from database value.
-			$trim_zeros = true;
-		} else {
+	if( $is_db_sanitize_val ) {
+		// Sanitize database value.
+		return number_format( $number, ( is_bool( $dp ) ? give_get_price_decimals() : $dp ), '.', '' );
+
+	} elseif (
+		'.' === $thousand_separator &&
+		false !== strpos( $number, $thousand_separator )
+	){
+		// Fix point thousand separator value.
+		if( ! $is_db_sanitize_val ) {
 			$number = str_replace( '.', '', $number );
 		}
 	}
