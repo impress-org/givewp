@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Get Base Country
+ * Get Site Base Country
  *
  * @since 1.0
  * @return string $country The two letter country code for the site's base country
@@ -28,7 +28,7 @@ function give_get_country() {
 }
 
 /**
- * Get Base State
+ * Get Site Base State
  *
  * @since 1.0
  * @return string $state The site's base state name
@@ -41,13 +41,13 @@ function give_get_state() {
 }
 
 /**
- * Get States
+ * Get Site States
  *
  * @since 1.0
  *
  * @param null $country
  *
- * @return mixed A list of states for the site's base country
+ * @return mixed  A list of states for the site's base country.
  */
 function give_get_states( $country = null ) {
 	// If Country have no states return empty array.
@@ -55,7 +55,7 @@ function give_get_states( $country = null ) {
 
 	// Check if Country Code is empty or not.
 	if ( empty( $country ) ) {
-		// Get default country code that is being set by the admin.
+		// Get defalut country code that is being set by the admin.
 		$country = give_get_country();
 	}
 
@@ -79,7 +79,7 @@ function give_get_states( $country = null ) {
  * Get Country List
  *
  * @since 1.0
- * @return array $countries A list of the available countries
+ * @return array $countries A list of the available countries.
  */
 function give_get_country_list() {
 	$countries = array(
@@ -400,7 +400,7 @@ function give_no_states_country_list() {
 	$country_list = array();
 	$locale       = give_get_country_locale();
 	foreach ( $locale as $key => $value ) {
-		if ( ! empty( $value['state'] ) && isset( $value['state']['required'] ) && false === $value['state']['required'] ) {
+		if ( ! empty( $value['state'] ) && isset( $value['state']['hidden'] ) && true === $value['state']['hidden'] ) {
 			$country_list[ $key ] = $value['state'];
 		}
 	}
@@ -415,6 +415,33 @@ function give_no_states_country_list() {
 	return (array) apply_filters( 'give_no_states_country_list', $country_list );
 }
 
+/**
+ * List of Country in which states feilds is not required.
+ *
+ * There are some country in which states feilds is not required Example: United Kingdom ( uk ).
+ *
+ * @since 1.8.11
+ *
+ * $country array $country_code.
+ */
+function give_states_not_required_country_list() {
+	$country_list = array();
+	$locale       = give_get_country_locale();
+	foreach ( $locale as $key => $value ) {
+		if ( ! empty( $value['state'] ) && isset( $value['state']['required'] ) && false === $value['state']['required'] ) {
+			$country_list[ $key ] = $value['state'];
+		}
+	}
+
+	/**
+	 * Filter can be used to add or remove the Country in which states feilds is not required.
+	 *
+	 * @since 1.8.11
+	 *
+	 * @param array $country Contain key as there country code & value as there country name.
+	 */
+	return (array) apply_filters( 'give_states_not_required_country_list', $country_list );
+}
 
 /**
  * Get the country name by list key.
@@ -429,18 +456,18 @@ function give_get_country_name_by_key( $key ) {
 	$country_list = give_get_country_list();
 
 	if ( array_key_exists( $key, $country_list ) ) {
-		return $country_list[$key];
+		return $country_list[ $key ];
 	}
 
 	return false;
 }
 
 /**
- * Get the States label.
+ * Get the label that need to show as an placeholder.
  *
- * @since 1.8.11
+ * @ since 1.8.12
  *
- * @return array
+ * @return array $country_states_label
  */
 function give_get_states_label() {
 	$country_states_label = array();
@@ -465,30 +492,33 @@ function give_get_states_label() {
 }
 
 /**
- * Get country locale.
+ * Get country locale settings.
+ *
+ * @since 1.8.12
  *
  * @return array
  */
 function give_get_country_locale() {
 	return (array) apply_filters( 'give_get_country_locale', array(
+		'AE' => array(
+			'state' => array(
+				'required' => false,
+			),
+		),
 		'AF' => array(
 			'state' => array(
 				'required' => false,
+				'hidden'   => true,
 			),
 		),
 		'AT' => array(
 			'state' => array(
 				'required' => false,
+				'hidden'   => true,
 			),
 		),
 		'AU' => array(
-			'city'     => array(
-				'label' => __( 'Suburb', 'give' ),
-			),
-			'postcode' => array(
-				'label' => __( 'Postcode', 'give' ),
-			),
-			'state'    => array(
+			'state' => array(
 				'label' => __( 'State', 'give' ),
 			),
 		),
@@ -506,6 +536,7 @@ function give_get_country_locale() {
 			'state' => array(
 				'required' => false,
 				'label'    => __( 'Province', 'give' ),
+				'hidden'   => true,
 			),
 		),
 		'BI' => array(
@@ -522,6 +553,7 @@ function give_get_country_locale() {
 			'state' => array(
 				'label'    => __( 'Canton', 'give' ),
 				'required' => false,
+				'hidden'   => true,
 			),
 		),
 		'CL' => array(
@@ -537,31 +569,37 @@ function give_get_country_locale() {
 		'CZ' => array(
 			'state' => array(
 				'required' => false,
+				'hidden'   => true,
 			),
 		),
 		'DE' => array(
 			'state' => array(
 				'required' => false,
+				'hidden'   => true,
 			),
 		),
 		'DK' => array(
 			'state' => array(
 				'required' => false,
+				'hidden'   => true,
 			),
 		),
 		'EE' => array(
 			'state' => array(
 				'required' => false,
+				'hidden'   => true,
 			),
 		),
 		'FI' => array(
 			'state' => array(
 				'required' => false,
+				'hidden'   => true,
 			),
 		),
 		'FR' => array(
 			'state' => array(
 				'required' => false,
+				'hidden'   => true,
 			),
 		),
 		'GP' => array(
@@ -575,16 +613,14 @@ function give_get_country_locale() {
 			),
 		),
 		'HK' => array(
-			'city'  => array(
-				'label' => __( 'Town / District', 'give' ),
-			),
 			'state' => array(
 				'label' => __( 'Region', 'give' ),
 			),
 		),
 		'HU' => array(
 			'state' => array(
-				'label' => __( 'County', 'give' ),
+				'label'  => __( 'County', 'give' ),
+				'hidden' => true,
 			),
 		),
 		'ID' => array(
@@ -593,16 +629,14 @@ function give_get_country_locale() {
 			),
 		),
 		'IE' => array(
-			'postcode' => array(
-				'label' => __( 'Eircode', 'give' ),
-			),
-			'state'    => array(
+			'state' => array(
 				'label' => __( 'County', 'give' ),
 			),
 		),
 		'IS' => array(
 			'state' => array(
 				'required' => false,
+				'hidden'   => true,
 			),
 		),
 		'IL' => array(
@@ -612,7 +646,8 @@ function give_get_country_locale() {
 		),
 		'IT' => array(
 			'state' => array(
-				'label' => __( 'Province', 'give' ),
+				'required' => true,
+				'label'    => __( 'Province', 'give' ),
 			),
 		),
 		'JP' => array(
@@ -644,20 +679,20 @@ function give_get_country_locale() {
 			'state' => array(
 				'required' => false,
 				'label'    => __( 'Province', 'give' ),
+				'hidden'   => true,
 			),
 		),
 		'NZ' => array(
-			'postcode' => array(
-				'label' => __( 'Postcode', 'give' ),
-			),
-			'state'    => array(
+			'state' => array(
 				'required' => false,
 				'label'    => __( 'Region', 'give' ),
+				'hidden'   => true,
 			),
 		),
 		'NO' => array(
 			'state' => array(
 				'required' => false,
+				'hidden'   => true,
 			),
 		),
 		'NP' => array(
@@ -668,11 +703,13 @@ function give_get_country_locale() {
 		'PL' => array(
 			'state' => array(
 				'required' => false,
+				'hidden'   => true,
 			),
 		),
 		'PT' => array(
 			'state' => array(
 				'required' => false,
+				'hidden'   => true,
 			),
 		),
 		'RE' => array(
@@ -693,11 +730,13 @@ function give_get_country_locale() {
 		'SK' => array(
 			'state' => array(
 				'required' => false,
+				'hidden'   => true,
 			),
 		),
 		'SI' => array(
 			'state' => array(
 				'required' => false,
+				'hidden'   => true,
 			),
 		),
 		'ES' => array(
@@ -709,6 +748,7 @@ function give_get_country_locale() {
 			'state' => array(
 				'label'    => __( 'Municipality', 'give' ),
 				'required' => false,
+				'hidden'   => true,
 			),
 		),
 		'LK' => array(
@@ -719,6 +759,7 @@ function give_get_country_locale() {
 		'SE' => array(
 			'state' => array(
 				'required' => false,
+				'hidden'   => true,
 			),
 		),
 		'TR' => array(
@@ -727,24 +768,20 @@ function give_get_country_locale() {
 			),
 		),
 		'US' => array(
-			'postcode' => array(
-				'label' => __( 'ZIP', 'give' ),
-			),
-			'state'    => array(
+			'state' => array(
 				'label' => __( 'State', 'give' ),
 			),
 		),
 		'GB' => array(
-			'postcode' => array(
-				'label' => __( 'Postcode', 'give' ),
-			),
-			'state'    => array(
-				'label' => __( 'County', 'give' ),
+			'state' => array(
+				'label'    => __( 'County', 'give' ),
+				'required' => false,
 			),
 		),
 		'VN' => array(
 			'state' => array(
 				'required' => false,
+				'hidden'   => true,
 			),
 		),
 		'YT' => array(
