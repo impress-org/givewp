@@ -25,10 +25,18 @@ class Give_DB_Payment_Meta extends Give_DB {
 	/**
 	 * Flag to handle result type
 	 *
-	 * @since 2.0
+	 * @since  2.0
 	 * @access private
 	 */
 	private $raw_result = false;
+
+	/**
+	 * Flag for short circuit of meta function
+	 *
+	 * @since  2.0
+	 * @access private
+	 */
+	private $check = false;
 
 	/**
 	 * Give_DB_Payment_Meta constructor.
@@ -46,10 +54,10 @@ class Give_DB_Payment_Meta extends Give_DB {
 
 		$this->register_table();
 
-		add_filter( 'add_post_metadata', array( $this, '__add_meta' ), 0, 4 );
+		add_filter( 'add_post_metadata', array( $this, '__add_meta' ), 0, 5 );
 		add_filter( 'get_post_metadata', array( $this, '__get_meta' ), 0, 4 );
-		add_filter( 'update_post_metadata', array( $this, '__update_meta' ), 0, 4 );
-		add_filter( 'delete_post_metadata', array( $this, '__delete_meta' ), 0, 4 );
+		add_filter( 'update_post_metadata', array( $this, '__update_meta' ), 0, 5 );
+		add_filter( 'delete_post_metadata', array( $this, '__delete_meta' ), 0, 5 );
 	}
 
 	/**
@@ -88,18 +96,18 @@ class Give_DB_Payment_Meta extends Give_DB {
 
 		// Bailout.
 		if ( ! $this->is_payment( $payment_id ) ) {
-			return null;
+			return $this->check;
 		}
 
-		if( $this->raw_result ) {
-			if( ! ( $value = get_metadata( 'payment', $payment_id, $meta_key, false ) ) ) {
+		if ( $this->raw_result ) {
+			if ( ! ( $value = get_metadata( 'payment', $payment_id, $meta_key, false ) ) ) {
 				$value = '';
 			}
 
 			// Reset flag.
 			$this->raw_result = false;
 
-		}else {
+		} else {
 			$value = get_metadata( 'payment', $payment_id, $meta_key, $single );
 		}
 
@@ -126,7 +134,7 @@ class Give_DB_Payment_Meta extends Give_DB {
 
 		// Bailout.
 		if ( ! $this->is_payment( $payment_id ) ) {
-			return null;
+			return $this->check;
 		}
 
 		return add_metadata( 'payment', $payment_id, $meta_key, $meta_value, $unique );
@@ -157,7 +165,7 @@ class Give_DB_Payment_Meta extends Give_DB {
 
 		// Bailout.
 		if ( ! $this->is_payment( $payment_id ) ) {
-			return null;
+			return $this->check;
 		}
 
 		return update_metadata( 'payment', $payment_id, $meta_key, $meta_value, $prev_value );
@@ -184,7 +192,7 @@ class Give_DB_Payment_Meta extends Give_DB {
 
 		// Bailout.
 		if ( ! $this->is_payment( $payment_id ) ) {
-			return null;
+			return $this->check;
 		}
 
 		return delete_metadata( 'payment', $payment_id, $meta_key, $meta_value );
@@ -232,44 +240,46 @@ class Give_DB_Payment_Meta extends Give_DB {
 	 */
 	public function __call( $name, $arguments ) {
 		// Bailout.
-		if( ! give_has_upgrade_completed('v20_move_metadata_into_new_table') ) {
+		if ( ! give_has_upgrade_completed( 'v20_move_metadata_into_new_table' ) ) {
 			return;
 		}
 
 		switch ( $name ) {
 			case '__add_meta':
-				$check      = $arguments[0];
-				$log_id     = $arguments[1];
-				$meta_key   = $arguments[2];
-				$meta_value = $arguments[3];
-				$unique     = $arguments[4];
+				$this->check = $arguments[0];
+				$payment_id  = $arguments[1];
+				$meta_key    = $arguments[2];
+				$meta_value  = $arguments[3];
+				$unique      = $arguments[4];
 
-				return $this->add_meta( $log_id, $meta_key, $meta_value, $unique );
+				return $this->add_meta( $payment_id, $meta_key, $meta_value, $unique );
 
 			case '__get_meta':
-				$check    = $arguments[0];
-				$log_id   = $arguments[1];
-				$meta_key = $arguments[2];
-				$single   = $arguments[3];
+				$this->check = $arguments[0];
+				$payment_id  = $arguments[1];
+				$meta_key    = $arguments[2];
+				$single      = $arguments[3];
 
 				$this->raw_result = true;
-				return $this->get_meta( $log_id, $meta_key, $single );
+
+				return $this->get_meta( $payment_id, $meta_key, $single );
 
 			case '__update_meta':
-				$check      = $arguments[0];
-				$log_id     = $arguments[1];
-				$meta_key   = $arguments[2];
-				$meta_value = $arguments[3];
+				$this->check = $arguments[0];
+				$payment_id  = $arguments[1];
+				$meta_key    = $arguments[2];
+				$meta_value  = $arguments[3];
 
-				return $this->update_meta( $log_id, $meta_key, $meta_value );
+				return $this->update_meta( $payment_id, $meta_key, $meta_value );
 
 			case '__delete_meta':
-				$check      = $arguments[0];
-				$log_id     = $arguments[1];
-				$meta_key   = $arguments[2];
-				$meta_value = $arguments[3];
+				$this->check = $arguments[0];
+				$payment_id  = $arguments[1];
+				$meta_key    = $arguments[2];
+				$meta_value  = $arguments[3];
+				$delete_all  = $arguments[3];
 
-				return $this->delete_meta( $log_id, $meta_key, $meta_value );
+				return $this->delete_meta( $payment_id, $meta_key, $meta_value, $delete_all );
 		}
 	}
 
