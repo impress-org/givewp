@@ -400,7 +400,7 @@ function give_no_states_country_list() {
 	$country_list = array();
 	$locale       = give_get_country_locale();
 	foreach ( $locale as $key => $value ) {
-		if ( ! empty( $value['state'] ) && isset( $value['state']['required'] ) && false === $value['state']['required'] ) {
+		if ( ! empty( $value['state'] ) && isset( $value['state']['hidden'] ) && true === $value['state']['hidden'] ) {
 			$country_list[ $key ] = $value['state'];
 		}
 	}
@@ -557,8 +557,8 @@ function give_get_country_locale() {
 		),
 		'HU' => array(
 			'state' => array(
-				'label' => __( 'County', 'give' ),
-				'hidden'   => true,
+				'label'  => __( 'County', 'give' ),
+				'hidden' => true,
 			),
 		),
 		'ID' => array(
