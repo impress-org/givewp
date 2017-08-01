@@ -293,7 +293,7 @@ function give_update_payment_details( $data ) {
 				$price_id = $price_info['_give_id']['level_id'];
 			}
 
-		} elseif( $form->is_custom_price_mode() && $form->minimum_price <= $new_total  ){
+		} elseif( $form->is_custom_price_mode() ){
 			$price_id = 'custom';
 		}
 
