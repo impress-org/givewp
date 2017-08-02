@@ -3,7 +3,7 @@
 /**
  * Class Tests_Country_Functions
  */
-class Tests_Country_Functions extends WP_UnitTestCase {
+class Tests_Country_Functions extends Give_Unit_Test_Case {
 
 	/**
 	 * Set it up.
