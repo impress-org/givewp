@@ -194,11 +194,20 @@ add_action( 'wp_ajax_nopriv_give_get_form_title', 'give_ajax_get_form_title' );
 function give_ajax_get_states_field() {
 	$states_found = false;
 	$show_field = true;
+	$states_require = true;
 	// Get the Country code from the $_POST.
 	$country = sanitize_text_field( $_POST['country'] );
 
 	// Get the field name from the $_POST.
 	$field_name = sanitize_text_field( $_POST['field_name'] );
+
+	$label = __( 'State', 'give' );
+	$states_label = give_get_states_label();
+
+	// Check if $country code exists in the array key for states label.
+	if ( array_key_exists( $country, $states_label ) ) {
+		$label = $states_label[ $country ];
+	}
 
 	if ( empty( $country ) ) {
 		$country = give_get_country();
@@ -213,6 +222,7 @@ function give_ajax_get_states_field() {
 			'options'          => $states,
 			'show_option_all'  => false,
 			'show_option_none' => false,
+			'placeholder' => $label,
 		);
 		$data = Give()->html->select( $args );
 		$states_found = true;
@@ -226,11 +236,21 @@ function give_ajax_get_states_field() {
 		if ( array_key_exists( $country, $no_states_country ) ) {
 			$show_field = false;
 		}
+
+		// Get the country list that does not require states.
+		$states_not_required_country_list = give_states_not_required_country_list();
+
+		// Check if $country code exists in the array key.
+		if ( array_key_exists( $country, $states_not_required_country_list ) ) {
+			$states_require = false;
+		}
 	}
 	$response = array(
 		'success' => true,
 		'states_found' => $states_found,
 		'show_field' => $show_field,
+		'states_label' => $label,
+		'states_require' => $states_require,
 		'data' => $data,
 	);
 	wp_send_json( $response );
@@ -412,7 +432,7 @@ function give_check_for_form_price_variations() {
 
 			foreach ( $variable_prices as $key => $price ) {
 
-				$level_text = ! empty( $price['_give_text'] ) ? esc_html( $price['_give_text'] ) : give_currency_filter( give_format_amount( $price['_give_amount'] ) );
+				$level_text = ! empty( $price['_give_text'] ) ? esc_html( $price['_give_text'] ) : give_currency_filter( give_format_amount( $price['_give_amount'], array( 'sanitize' => false ) ) );
 
 				$ajax_response .= '<option value="' . esc_attr( $price['_give_id']['level_id'] ) . '">' . $level_text . '</option>';
 			}
@@ -453,7 +473,7 @@ function give_check_for_form_price_variations_html() {
 		$prices_atts = '';
 		if ( $variable_prices = give_get_variable_prices( $form_id ) ) {
 			foreach ( $variable_prices as $variable_price ) {
-				$prices_atts[ $variable_price['_give_id']['level_id'] ] = give_format_amount( $variable_price['_give_amount'] );
+				$prices_atts[ $variable_price['_give_id']['level_id'] ] = give_format_amount( $variable_price['_give_amount'], array( 'sanitize' => false ) );
 			}
 		}
 

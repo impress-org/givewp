@@ -49,7 +49,7 @@ Find out more:
 
 = Who Uses Give? =
 
-With more than 20,000 active installs of Give, we hear more and more success stories from nonprofit organizations using Give. Causes are using Give to raise millions of dollars per year. Check out some of our [Give Stories](http://bit.ly/WPORGGiveStories) and [Case Studies](http://bit.ly/WPORGGiveCaseStudies) for details about their success.
+With more than 30,000+ active installs of Give, we hear more and more success stories from nonprofit organizations using Give. Causes are using Give to raise millions of dollars per year. Check out some of our [Give Stories](http://bit.ly/WPORGGiveStories) and [Case Studies](http://bit.ly/WPORGGiveCaseStudies) for details about their success.
 
 = Why Use Give for Donations? =
 

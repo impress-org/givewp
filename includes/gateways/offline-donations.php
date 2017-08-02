@@ -107,9 +107,7 @@ add_action( 'give_before_offline_info_fields', 'give_offline_billing_fields', 10
  */
 function give_offline_process_payment( $purchase_data ) {
 
-	$purchase_summary = give_get_purchase_summary( $purchase_data );
-
-	// setup the payment details
+	// Setup the payment details.
 	$payment_data = array(
 		'price'           => $purchase_data['price'],
 		'give_form_title' => $purchase_data['post_data']['give-form-title'],
@@ -236,7 +234,7 @@ function give_offline_send_admin_notice( $payment_id = 0 ) {
 		$name = $user_info['email'];
 	}
 
-	$amount = give_currency_filter( give_format_amount( give_get_payment_amount( $payment_id ) ) );
+	$amount = give_currency_filter( give_format_amount( give_get_payment_amount( $payment_id ), array( 'sanitize' => false ) ) );
 
 	$admin_subject = apply_filters( 'give_offline_admin_donation_notification_subject', __( 'New Pending Donation', 'give' ), $payment_id );
 

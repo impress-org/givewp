@@ -58,6 +58,10 @@ function give_do_automatic_upgrades() {
 			give_v189_upgrades();
 			$did_upgrade = true;
 
+		case version_compare( $give_version, '1.8.12', '<' ) :
+			give_v1812_upgrades();
+			$did_upgrade = true;
+
 	}
 
 	if ( $did_upgrade ) {
@@ -72,7 +76,7 @@ add_action( 'give_upgrades', 'give_do_automatic_upgrades' );
  * Display Upgrade Notices
  *
  * @since 1.0
- * @since 1.8.12 Update new udate process code.
+ * @since 1.8.12 Update new update process code.
  *
  * @param Give_Updates $give_updates
  *
@@ -115,6 +119,24 @@ function give_show_upgrade_notices( $give_updates ) {
 			'callback' => 'give_v189_upgrades_levels_post_meta_callback',
 		)
 	);
+
+	// v1.8.12 Upgrades
+	$give_updates->register(
+		array(
+			'id'       => 'v1812_update_amount_values',
+			'version'  => '1.8.12',
+			'callback' => 'give_v1812_update_amount_values_callback',
+		)
+	);
+
+	// v1.8.12 Upgrades
+	$give_updates->register(
+		array(
+			'id'       => 'v1812_update_donor_purchase_values',
+			'version'  => '1.8.12',
+			'callback' => 'give_v1812_update_donor_purchase_value_callback',
+		)
+	);
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
@@ -153,85 +175,6 @@ function give_trigger_upgrades() {
 
 add_action( 'wp_ajax_give_trigger_upgrades', 'give_trigger_upgrades' );
 
-/**
- * Check if the upgrade routine has been run for a specific action
- *
- * @since  1.0
- *
- * @param  string $upgrade_action The upgrade action to check completion for
- *
- * @return bool                   If the action has been added to the completed actions array
- */
-function give_has_upgrade_completed( $upgrade_action = '' ) {
-
-	if ( empty( $upgrade_action ) ) {
-		return false;
-	}
-
-	$completed_upgrades = give_get_completed_upgrades();
-
-	return in_array( $upgrade_action, $completed_upgrades );
-
-}
-
-/**
- * For use when doing 'stepped' upgrade routines, to see if we need to start somewhere in the middle
- *
- * @since 1.8
- *
- * @return mixed   When nothing to resume returns false, otherwise starts the upgrade where it left off
- */
-function give_maybe_resume_upgrade() {
-	$doing_upgrade = get_option( 'give_doing_upgrade', false );
-	if ( empty( $doing_upgrade ) ) {
-		return false;
-	}
-
-	return $doing_upgrade;
-}
-
-/**
- * Adds an upgrade action to the completed upgrades array
- *
- * @since  1.0
- *
- * @param  string $upgrade_action The action to add to the completed upgrades array
- *
- * @return bool                   If the function was successfully added
- */
-function give_set_upgrade_complete( $upgrade_action = '' ) {
-
-	if ( empty( $upgrade_action ) ) {
-		return false;
-	}
-
-	$completed_upgrades   = give_get_completed_upgrades();
-	$completed_upgrades[] = $upgrade_action;
-
-	// Remove any blanks, and only show uniques.
-	$completed_upgrades = array_unique( array_values( $completed_upgrades ) );
-
-	/**
-	 * Fire the action when any upgrade set to complete.
-	 *
-	 * @since 1.8.12
-	 */
-	do_action( 'give_set_upgrade_completed', $upgrade_action, $completed_upgrades );
-
-	return update_option( 'give_completed_upgrades', $completed_upgrades );
-}
-
-/**
- * Get's the array of completed upgrade actions
- *
- * @since  1.0
- * @return array The array of completed upgrades
- */
-function give_get_completed_upgrades() {
-
-	return (array) get_option( 'give_completed_upgrades' );
-
-}
 
 /**
  * Upgrades the
@@ -262,7 +205,7 @@ function give_v132_upgrade_give_payment_customer_id() {
 	$sql   = "UPDATE $wpdb->postmeta SET meta_key = '_give_payment_customer_id' WHERE meta_key = '_give_payment_donor_id'";
 	$query = $wpdb->query( $sql );
 
-	$give_updates::$percentage = 100;
+	$give_updates->percentage = 100;
 	give_set_upgrade_complete( 'upgrade_give_payment_customer_id' );
 }
 
@@ -303,7 +246,7 @@ function give_v134_upgrade_give_offline_status() {
 		}
 	}
 
-	$give_updates::$percentage = 100;
+	$give_updates->percentage = 100;
 	give_set_upgrade_complete( 'upgrade_give_offline_status' );
 }
 
@@ -642,7 +585,7 @@ function give_v18_upgrades_form_metadata() {
 
 	// form query
 	$forms = new WP_Query( array(
-			'paged'          => $give_updates::$step,
+			'paged'          => $give_updates->step,
 			'status'         => 'any',
 			'order'          => 'ASC',
 			'post_type'      => 'give_forms',
@@ -651,9 +594,7 @@ function give_v18_upgrades_form_metadata() {
 	);
 
 	if ( $forms->have_posts() ) {
-		$give_updates::$percentage = ( ( $give_updates::$step * 20 ) / $forms->found_posts  ) * 100;
-
-		error_log( print_r( "{$give_updates::$step}-{$forms->found_posts}-{$give_updates::$percentage}", true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
+		$give_updates->set_percentage( $forms->found_posts, ( $give_updates->step * 20 ) );
 
 		while ( $forms->have_posts() ) {
 			$forms->the_post();
@@ -862,7 +803,7 @@ function give_v189_upgrades_levels_post_meta_callback() {
 
 	// form query
 	$donation_forms = new WP_Query( array(
-			'paged'          => $give_updates::$step,
+			'paged'          => $give_updates->step,
 			'status'         => 'any',
 			'order'          => 'ASC',
 			'post_type'      => 'give_forms',
@@ -871,7 +812,7 @@ function give_v189_upgrades_levels_post_meta_callback() {
 	);
 
 	if ( $donation_forms->have_posts() ) {
-		$give_updates::$percentage = ( ( $give_updates::$step * 20 ) / $donation_forms->found_posts  ) * 100;
+		$give_updates->set_percentage( $donation_forms->found_posts, ( $give_updates->step * 20 ) );
 
 		while ( $donation_forms->have_posts() ) {
 			$donation_forms->the_post();
@@ -965,4 +906,173 @@ function give_v189_upgrades() {
 		)
 	);
 
+}
+
+
+/**
+ * Give version 1.8.9 upgrades
+ *
+ * @since      1.8.9
+ */
+function give_v1812_upgrades() {
+	/**
+	 * Validate number format settings.
+	 */
+	$give_settings        = give_get_settings();
+	$give_setting_updated = false;
+
+	if ( $give_settings['thousands_separator'] === $give_settings['decimal_separator'] ) {
+		$give_settings['number_decimals']   = 0;
+		$give_settings['decimal_separator'] = '';
+		$give_setting_updated               = true;
+
+	} elseif ( empty( $give_settings['decimal_separator'] ) ) {
+		$give_settings['number_decimals'] = 0;
+		$give_setting_updated             = true;
+
+	} elseif ( 6 < absint( $give_settings['number_decimals'] ) ) {
+		$give_settings['number_decimals'] = 5;
+		$give_setting_updated             = true;
+	}
+
+	if ( $give_setting_updated ) {
+		update_option( 'give_settings', $give_settings );
+	}
+}
+
+
+/**
+ * Give version 1.8.12 update
+ *
+ * Standardized amount values to six decimal
+ *
+ * @see        https://github.com/WordImpress/Give/issues/1849#issuecomment-315128602
+ *
+ * @since      1.8.12
+ */
+function give_v1812_update_amount_values_callback() {
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
+
+	// form query
+	$donation_forms = new WP_Query( array(
+			'paged'          => $give_updates->step,
+			'status'         => 'any',
+			'order'          => 'ASC',
+			'post_type'      => array( 'give_forms', 'give_payment' ),
+			'posts_per_page' => 20,
+		)
+	);
+
+	if ( $donation_forms->have_posts() ) {
+		$give_updates->set_percentage( $donation_forms->found_posts, ( $give_updates->step * 20 ) );
+
+		while ( $donation_forms->have_posts() ) {
+			$donation_forms->the_post();
+			global $post;
+
+			$meta = get_post_meta( $post->ID );
+
+			switch ( $post->post_type ) {
+				case 'give_forms':
+					// _give_set_price
+					if( ! empty( $meta['_give_set_price'][0] ) ) {
+						update_post_meta( $post->ID, '_give_set_price', give_sanitize_amount_for_db( $meta['_give_set_price'][0] ) );
+					}
+
+					// _give_custom_amount_minimum
+					if( ! empty( $meta['_give_custom_amount_minimum'][0] ) ) {
+						update_post_meta( $post->ID, '_give_custom_amount_minimum', give_sanitize_amount_for_db( $meta['_give_custom_amount_minimum'][0] ) );
+					}
+
+					// _give_levels_minimum_amount
+					if( ! empty( $meta['_give_levels_minimum_amount'][0] ) ) {
+						update_post_meta( $post->ID, '_give_levels_minimum_amount', give_sanitize_amount_for_db( $meta['_give_levels_minimum_amount'][0] ) );
+					}
+
+					// _give_levels_maximum_amount
+					if( ! empty( $meta['_give_levels_maximum_amount'][0] ) ) {
+						update_post_meta( $post->ID, '_give_levels_maximum_amount', give_sanitize_amount_for_db( $meta['_give_levels_maximum_amount'][0] ) );
+					}
+
+					// _give_set_goal
+					if( ! empty( $meta['_give_set_goal'][0] ) ) {
+						update_post_meta( $post->ID, '_give_set_goal', give_sanitize_amount_for_db( $meta['_give_set_goal'][0] ) );
+					}
+
+					// _give_form_earnings
+					if( ! empty( $meta['_give_form_earnings'][0] ) ) {
+						update_post_meta( $post->ID, '_give_form_earnings', give_sanitize_amount_for_db( $meta['_give_form_earnings'][0] ) );
+					}
+
+					// _give_custom_amount_minimum
+					if( ! empty( $meta['_give_donation_levels'][0] ) ) {
+						$donation_levels = unserialize( $meta['_give_donation_levels'][0] );
+
+						foreach( $donation_levels as $index => $level ) {
+							if( empty( $level['_give_amount'] ) ) {
+								continue;
+							}
+
+							$donation_levels[$index]['_give_amount'] = give_sanitize_amount_for_db( $level['_give_amount'] );
+						}
+
+						$meta['_give_donation_levels'] = $donation_levels;
+						update_post_meta( $post->ID, '_give_donation_levels', $meta['_give_donation_levels'] );
+					}
+
+
+					break;
+
+				case 'give_payment':
+					// _give_payment_total
+					if( ! empty( $meta['_give_payment_total'][0] ) ) {
+						update_post_meta( $post->ID, '_give_payment_total', give_sanitize_amount_for_db( $meta['_give_payment_total'][0] ) );
+					}
+
+					break;
+			}
+		}
+
+		/* Restore original Post Data */
+		wp_reset_postdata();
+	} else {
+		// The Update Ran.
+		give_set_upgrade_complete( 'v1812_update_amount_values' );
+	}
+}
+
+
+/**
+ * Give version 1.8.12 update
+ *
+ * Standardized amount values to six decimal for donor
+ *
+ * @see        https://github.com/WordImpress/Give/issues/1849#issuecomment-315128602
+ *
+ * @since      1.8.12
+ */
+function give_v1812_update_donor_purchase_value_callback() {
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
+	$offset       = 1 === $give_updates->step ? 0 : $give_updates->step * 20;
+
+	// form query
+	$donors = Give()->donors->get_donors( array(
+			'number' => 20,
+			'offset' => $offset,
+		)
+	);
+
+	if ( ! empty( $donors ) ) {
+		$give_updates->set_percentage( Give()->donors->count(), ( $give_updates->step * 20 ) );
+
+		/* @var Object $donor */
+		foreach ( $donors as $donor ) {
+			Give()->donors->update( $donor->id, array( 'purchase_value' => give_sanitize_amount_for_db( $donor->purchase_value ) ) );
+		}
+	} else {
+		// The Update Ran.
+		give_set_upgrade_complete( 'v1812_update_donor_purchase_values' );
+	}
 }
