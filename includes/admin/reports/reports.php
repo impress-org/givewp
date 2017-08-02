@@ -223,6 +223,11 @@ function give_reports_forms_table() {
 	$give_table = new Give_Form_Reports_Table();
 	$give_table->prepare_items();
 	$give_table->display();
+	?>
+	<input type="hidden" name="post_type" value="give_forms"/>
+	<input type="hidden" name="page" value="give-reports"/>
+	<input type="hidden" name="tab" value="forms"/>
+	<?php
 }
 
 add_action( 'give_reports_view_forms', 'give_reports_forms_table' );
@@ -271,16 +276,14 @@ function give_reports_donors_table() {
 		 * @since 1.0
 		 */
 		do_action( 'give_logs_donors_table_top' );
+
+		$give_table->search_box( esc_html__( 'Search', 'give' ), 'give-donors' );
+		$give_table->display();
 		?>
-		<form id="give-donors-filter" method="get">
-			<?php
-			$give_table->search_box( esc_html__( 'Search', 'give' ), 'give-donors' );
-			$give_table->display();
-			?>
-			<input type="hidden" name="post_type" value="give_forms"/>
-			<input type="hidden" name="page" value="give-reports"/>
-			<input type="hidden" name="tab" value="donors"/>
-		</form>
+		<input type="hidden" name="post_type" value="give_forms"/>
+		<input type="hidden" name="page" value="give-reports"/>
+		<input type="hidden" name="tab" value="donors"/>
+
 		<?php
 		/**
 		 * Fires after the donors log actions form.
@@ -294,7 +297,6 @@ function give_reports_donors_table() {
 }
 
 add_action( 'give_reports_view_donors', 'give_reports_donors_table' );
-
 
 /**
  * Renders the Gateways Table
@@ -313,7 +315,6 @@ function give_reports_gateways_table() {
 }
 
 add_action( 'give_reports_view_gateways', 'give_reports_gateways_table' );
-
 
 /**
  * Renders the Reports Earnings Graphs
@@ -369,5 +370,18 @@ function give_estimated_monthly_stats() {
 
 	return maybe_unserialize( $estimated );
 }
+
+/**
+ * Assign Get form method for reporting tabs
+ *
+ * @since 1.8.12
+ *
+ * @return string
+ */
+function give_reports_set_form_method() {
+	return 'get';
+}
+add_filter( 'give-reports_form_method_tab_forms', 'give_reports_set_form_method', 10 );
+add_filter( 'give-reports_form_method_tab_donors', 'give_reports_set_form_method', 10 );
 
 // @TODO: After release 1.8 Donations -> Reports generates with new setting api, so we can remove some old code from this file.

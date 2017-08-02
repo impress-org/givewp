@@ -241,7 +241,7 @@ function give_text_input( $field ) {
 
 	switch ( $data_type ) {
 		case 'price' :
-			$field['value'] = ( ! empty( $field['value'] ) ? give_format_amount( $field['value'] ) : $field['value'] );
+			$field['value'] = ( ! empty( $field['value'] ) ? give_format_amount( give_maybe_sanitize_amount( $field['value'] ), array( 'sanitize' => false ) ) : $field['value'] );
 
 			$field['before_field'] = ! empty( $field['before_field'] ) ? $field['before_field'] : ( give_get_option( 'currency_position', 'before' ) == 'before' ? '<span class="give-money-symbol give-money-symbol-before">' . give_currency_symbol() . '</span>' : '' );
 			$field['after_field']  = ! empty( $field['after_field'] ) ? $field['after_field'] : ( give_get_option( 'currency_position', 'before' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '' );
@@ -249,7 +249,7 @@ function give_text_input( $field ) {
 
 		case 'decimal' :
 			$field['attributes']['class'] .= ' give_input_decimal';
-			$field['value'] = ( ! empty( $field['value'] ) ? give_format_decimal( $field['value'] ) : $field['value'] );
+			$field['value'] = ( ! empty( $field['value'] ) ? give_format_decimal( give_maybe_sanitize_amount( $field['value'] ), false, false ) : $field['value'] );
 			break;
 
 		default :
@@ -1009,8 +1009,8 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 							<div class="give-row-head give-move">
 								<button type="button" class="handlediv button-link">
 									<span class="toggle-indicator"></span></button>
-								<sapn class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-
-								</sapn>
+								<span class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-
+								</span>
 								<h2>
 									<span data-header-title="<?php echo $header_title; ?>"><?php echo $header_title; ?></span>
 								</h2>
@@ -1044,8 +1044,8 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 						<div class="give-row-head give-move">
 							<button type="button" class="handlediv button-link">
 								<span class="toggle-indicator"></span></button>
-							<sapn class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-
-							</sapn>
+							<span class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-
+							</span>
 							<h2>
 								<span data-header-title="<?php echo $header_title; ?>"><?php echo $header_title; ?></span>
 							</h2>

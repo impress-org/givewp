@@ -912,7 +912,7 @@ final class Give_Payment {
 				}
 			}
 
-			$this->update_meta( '_give_payment_total', $this->total );
+			$this->update_meta( '_give_payment_total', give_sanitize_amount_for_db( $this->total ) );
 
 			$new_meta = array(
 				'form_title' => $this->form_title,
@@ -1004,7 +1004,7 @@ final class Give_Payment {
 		}
 
 		// Sanitizing the price here so we don't have a dozen calls later.
-		$item_price = give_sanitize_amount( $item_price );
+		$item_price = give_maybe_sanitize_amount( $item_price );
 		$total      = round( $item_price, give_currency_decimal_filter() );
 
 		// Add Options.
@@ -1747,7 +1747,7 @@ final class Give_Payment {
 	private function setup_email() {
 		$email = $this->get_meta( '_give_payment_user_email', true );
 
-		if ( empty( $email ) ) {
+		if ( empty( $email ) && $this->customer_id ) {
 			$email = Give()->donors->get_column( 'email', $this->customer_id );
 		}
 

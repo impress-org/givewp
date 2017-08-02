@@ -149,7 +149,7 @@ class Give_Payment_Stats extends Give_Stats {
 			}
 
 			// Cache the results for one hour
-			Give_Cache::set( $key, $earnings, 60 * 60 );
+			Give_Cache::set( $key, give_sanitize_amount_for_db( $earnings ), 60 * 60 );
 		}
 
 		//return earnings

@@ -80,7 +80,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 					   '">' . $item['user_name'] . '</a>';
 
 			case 'amount' :
-				return give_currency_filter( give_format_amount( $item['amount'] ) );
+				return give_currency_filter( give_format_amount( $item['amount'], array( 'sanitize' => false ) ) );
 
 			case 'status' :
 

@@ -65,8 +65,8 @@ function give_update_payment_details( $data ) {
 
 	$address = array_map( 'trim', $data['give-payment-address'][0] );
 
-	$curr_total = give_sanitize_amount( $payment->total );
-	$new_total  = give_sanitize_amount( $data['give-payment-total'] );
+	$curr_total = $payment->total;
+	$new_total  = give_maybe_sanitize_amount( $data['give-payment-total'] );
 	$date       = date( 'Y-m-d', strtotime( $date ) ) . ' ' . $hour . ':' . $minute . ':00';
 
 	$curr_donor_id = sanitize_text_field( $data['give-current-donor'] );
@@ -263,19 +263,45 @@ function give_update_payment_details( $data ) {
 	}
 
 	// Update price id if current form is variable form.
-	if ( ! empty( $data['give-variable-price'] ) && give_has_variable_prices( $payment->form_id ) ) {
+	/* @var Give_Donate_Form $form */
+	$form = new Give_Donate_Form( $payment->form_id );
+
+	if ( isset( $data['give-variable-price'] ) && $form->has_variable_prices() ) {
 
 		// Get payment meta data.
 		$payment_meta = $payment->get_meta();
 
-		// Set payment id to empty string if variable price id is negative ( i.e. custom amount feature enabled ).
-		$data['give-variable-price'] = ( 'custom' === $data['give-variable-price'] ) ? 'custom' : ( 0 < $data['give-variable-price'] ) ? $data['give-variable-price'] : '';
+		$price_info = array();
+		$price_id = '';
+
+		// Get price info
+		if( 0 <= $data['give-variable-price'] ) {
+			foreach ( $form->prices as $variable_price ) {
+				if( $new_total === give_maybe_sanitize_amount( $variable_price['_give_amount'] ) ) {
+					$price_info = $variable_price;
+					break;
+				}
+			}
+		}
+
+		// Set price id.
+		if( ! empty( $price_info ) ) {
+			$price_id = $data['give-variable-price'];
+
+			if( $data['give-variable-price'] !== $price_info['_give_id']['level_id'] ) {
+				// Set price id to amount match.
+				$price_id = $price_info['_give_id']['level_id'];
+			}
+
+		} elseif( $form->is_custom_price_mode() ){
+			$price_id = 'custom';
+		}
 
 		// Update payment meta data.
-		$payment_meta['price_id'] = $data['give-variable-price'];
+		$payment_meta['price_id'] = $price_id;
 
 		// Update payment give form meta data.
-		$payment->update_meta( '_give_payment_price_id', $data['give-variable-price'] );
+		$payment->update_meta( '_give_payment_price_id', $price_id );
 		$payment->update_meta( '_give_payment_meta', $payment_meta );
 
 		// Re setup payment to update new meta value in object.
