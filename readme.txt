@@ -220,10 +220,10 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 * New: Added an update confirm prompt when an admin attempts to resend the donation receipt to a donor. [#1802](https://github.com/WordImpress/Give/issues/1802)
 * New: Improved credit card expiry validation. [#1781](https://github.com/WordImpress/Give/issues/1781)
 * New: Goals are now accessible via the API. [#1423](https://github.com/WordImpress/Give/issues/1423)
-* New: Added a confirmation alert when an dmin attempts to delete a payment on the list screen. [#1773](https://github.com/WordImpress/Give/issues/1773)
+* New: Added a confirmation alert when an admin attempts to delete a payment on the list screen. [#1773](https://github.com/WordImpress/Give/issues/1773)
 * New: You can now specify a timeframe when exporting donors. [#1427](https://github.com/WordImpress/Give/issues/1427)
 * New: PHP 5.2 will work but if you're running it a new banner will display prompting your to upgrade your server to a more modern and supported version. [#1723](https://github.com/WordImpress/Give/issues/1723)
-* New: Give now supports per user language settings. Now your users can use Give in the language they perfer as long as it's supported on WP.org. [#1769](https://github.com/WordImpress/Give/issues/1769)
+* New: Give now supports per user language settings. Now your users can use Give in the language they prefer as long as it's supported on WP.org. [#1769](https://github.com/WordImpress/Give/issues/1769)
 * New: You can now sort your donation forms more accurately by amount within wp-admin. [#1253](https://github.com/WordImpress/Give/issues/1253)
 * New: Give's Settings API now has separate fields for files and media. [#1758](https://github.com/WordImpress/Give/issues/1758), [#1761](https://github.com/WordImpress/Give/pull/1761)
 * Tweak: Deprecated a number of functions and hooks due to incorrect terminology with backwards compatiblity. [#896](https://github.com/WordImpress/Give/issues/896)
@@ -246,7 +246,7 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 * Fix: Resolved an issue where introduced in 1.8.8 that allowed donors to be inadvertently detached from their user. [#1751](https://github.com/WordImpress/Give/issues/1751)
 * Fix: API request log count showing incorrect number. [#1069](https://github.com/WordImpress/Give/issues/1069)
 * Fix: In certain rare cases where donors were logged in and giving in the name of another an incorrect name would appear within the receipts. [#1716](https://github.com/WordImpress/Give/issues/1716)
-* Fix: When clicking on a donor who has given using multiple emails the donaiton filter would not take this into account within the payments screen. [#1830](https://github.com/WordImpress/Give/issues/1830)
+* Fix: When clicking on a donor who has given using multiple emails the donation filter would not take this into account within the payments screen. [#1830](https://github.com/WordImpress/Give/issues/1830)
 
 = 1.8.8: May 30, 2017  =
 * New: Added search functionality to donor, donation form, and donation payment dropdowns in wp-admin. [#1572](https://github.com/WordImpress/Give/issues/1572)
