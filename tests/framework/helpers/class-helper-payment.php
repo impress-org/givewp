@@ -5,7 +5,7 @@
  *
  * Helper class to create and delete a donation payment easily.
  */
-class Give_Helper_Payment extends WP_UnitTestCase {
+class Give_Helper_Payment extends Give_Unit_Test_Case {
 
 	/**
 	 * Delete a payment.
