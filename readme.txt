@@ -207,6 +207,8 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
+= 1.8.12: August 2nd, 2017  =
+
 = 1.8.11: July 11th, 2017  =
 * Fix: Compatibility issue with Yoast SEO's new Link Checker utility preventing new Give installs from activating properly. [#1848](https://github.com/WordImpress/Give/issues/1848)
 
