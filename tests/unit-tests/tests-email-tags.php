@@ -687,6 +687,12 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	 * @cover give_email_tag_email_access_link
 	 */
 	function test_give_email_tag_email_access_link() {
+		// Create new table columns manually.
+		// Are db columns setup?
+		if( ! give_update_option( 'email_access_installed' ) ) {
+			Give()->email_access->create_columns();
+		}
+
 		Give_Helper_Payment::create_simple_payment();
 
 		$link = give_email_tag_email_access_link( array( 'user_id' => 1 ) );
