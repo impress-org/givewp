@@ -816,14 +816,10 @@ function give_get_cc_form( $form_id ) {
 				<?php echo Give()->tooltips->render_help( __( 'The date your credit card expires, typically on the front of the card.', 'give' ) ); ?>
 			</label>
 
-			<input type="hidden" id="card_exp_month-<?php echo $form_id ?>" name="card_exp_month"
-				   class="card-expiry-month"/>
-			<input type="hidden" id="card_exp_year-<?php echo $form_id ?>" name="card_exp_year"
-				   class="card-expiry-year"/>
+			<input type="hidden" id="card_exp_month-<?php echo $form_id ?>" name="card_exp_month" class="card-expiry-month"/>
+			<input type="hidden" id="card_exp_year-<?php echo $form_id ?>" name="card_exp_year" class="card-expiry-year"/>
 
-			<input type="tel" autocomplete="off" name="card_expiry" id="card_expiry-<?php echo $form_id ?>"
-				   class="card-expiry give-input required" placeholder="<?php esc_attr_e( 'MM / YY', 'give' ); ?>"
-				   required aria-required="true"/>
+			<input type="tel" autocomplete="off" name="card_expiry" id="card_expiry-<?php echo $form_id ?>" class="card-expiry give-input required" placeholder="<?php esc_attr_e( 'MM / YY', 'give' ); ?>" required aria-required="true"/>
 		</p>
 		<?php
 		/**
@@ -1004,7 +1000,7 @@ function give_default_cc_address_fields( $form_id ) {
 		<?php
 		$selected_state = give_get_state();
 
-		$label = __( 'State', 'give' );
+		$label        = __( 'State', 'give' );
 		$states_label = give_get_states_label();
 		// Check if $country code exists in the array key for states label.
 		if ( array_key_exists( $selected_country, $states_label ) ) {
@@ -1019,18 +1015,20 @@ function give_default_cc_address_fields( $form_id ) {
 		if ( ! empty( $give_user_info['card_state'] ) ) {
 			$selected_state = $give_user_info['card_state'];
 		}
+
+		// Get the country list that does not require states.
+		$states_not_required_country_list = give_states_not_required_country_list();
 		?>
-		<p id="give-card-state-wrap" class="form-row form-row-last form-row-responsive <?php echo ( ! empty( $selected_country ) && array_key_exists( $selected_country, $no_states_country ) ) ? 'give-hidden' : ''; ?> ">
+		<p id="give-card-state-wrap"
+		   class="form-row form-row-last form-row-responsive <?php echo ( ! empty( $selected_country ) && array_key_exists( $selected_country, $no_states_country ) ) ? 'give-hidden' : ''; ?> ">
 			<label for="card_state" class="give-label">
-				<?php echo $label; ?>
-				<?php if ( give_field_is_required( 'card_state', $form_id ) ) : ?>
-					<span class="give-required-indicator">*</span>
+				<span class="state-label-text"><?php echo $label; ?></span>
+				<?php if ( give_field_is_required( 'card_state', $form_id ) ) :?>
+					<span class="give-required-indicator <?php echo( array_key_exists( $selected_country, $states_not_required_country_list ) ? 'give-hidden' : '' ) ?> ">*</span>
 				<?php endif; ?>
 				<?php echo Give()->tooltips->render_help( __( 'The state or province for your billing address.', 'give' ) ); ?>
 			</label>
-            <?php
-
-			if ( ! empty( $states ) ) : ?>
+			<?php if ( ! empty( $states ) ) : ?>
 				<select
 						name="card_state"
 						id="card_state"
@@ -1567,8 +1565,9 @@ function give_checkout_final_total( $form_id ) {
 		<span class="give-donation-total-label">
 			<?php echo apply_filters( 'give_donation_total_label', esc_html__( 'Donation Total:', 'give' ) ); ?>
 		</span>
-		<span class="give-final-total-amount" data-total="<?php echo give_format_amount( $total, array( 'sanitize' => false ) ); ?>">
-			<?php echo give_currency_filter( give_format_amount( $total , array( 'sanitize' => false ) ) ); ?>
+		<span class="give-final-total-amount"
+			  data-total="<?php echo give_format_amount( $total, array( 'sanitize' => false ) ); ?>">
+			<?php echo give_currency_filter( give_format_amount( $total, array( 'sanitize' => false ) ) ); ?>
 		</span>
 	</p>
 	<?php
@@ -1629,7 +1628,8 @@ function give_get_donation_form_submit_button( $form_id ) {
 	ob_start();
 	?>
 	<div class="give-submit-button-wrap give-clearfix">
-		<input type="submit" class="give-submit give-btn" id="give-purchase-button" name="give-purchase" value="<?php echo $display_label; ?>"/>
+		<input type="submit" class="give-submit give-btn" id="give-purchase-button" name="give-purchase"
+			   value="<?php echo $display_label; ?>"/>
 		<span class="give-loading-animation"></span>
 	</div>
 	<?php

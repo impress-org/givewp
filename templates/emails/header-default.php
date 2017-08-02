@@ -2,18 +2,20 @@
 /**
  * Email Header
  *
- * @package 	Give/Templates/Emails
+ * @package     Give/Templates/Emails
  * @version     1.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+} // Exit if accessed directly.
 
 // For gmail compatibility, including CSS styles in head/body are stripped out therefore styles need to be inline. These variables contain rules which are added to the template inline. !important; is a gmail hack to prevent styles being stripped if it doesn't like something.
-$body = "
+$body               = "
 	background-color: #f6f6f6;
 	font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
 ";
-$wrapper = "
+$wrapper            = "
 	width:100%;
 	-webkit-text-size-adjust:none !important;
 	margin:0;
@@ -27,7 +29,10 @@ $template_container = "
 	border-radius:3px !important;
 	padding: 20px;
 ";
-$template_header = "
+$template_image     = "
+	max-width:450px;
+";
+$template_header    = "
 	color: #00000;
 	border-top-left-radius:3px !important;
 	border-top-right-radius:3px !important;
@@ -37,7 +42,7 @@ $template_header = "
 	text-align: center;
 	vertical-align:middle;
 ";
-$body_content = "
+$body_content       = "
 	border-radius:3px !important;
 	font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
 ";
@@ -48,7 +53,7 @@ $body_content_inner = "
 	line-height:150%;
 	text-align:left;
 ";
-$header_content_h1 = "
+$header_content_h1  = "
 	color: #000000;
 	margin:0;
 	padding: 28px 24px;
@@ -58,49 +63,47 @@ $header_content_h1 = "
 	font-weight: 500;
 	line-height: 1.2;
 ";
-$header_img = give_get_option( 'email_logo', '' );
+$header_img         = give_get_option( 'email_logo', '' );
 ?>
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 		<title><?php echo get_bloginfo( 'name' ); ?></title>
 	</head>
 	<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" style="<?php echo $body; ?>">
 		<div style="<?php echo $wrapper; ?>">
-		<table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%">
-			<tr>
-				<td align="center" valign="top">
-					<?php
-					if( ! empty( $header_img ) ) : ?>
-						<div id="template_header_image">
-							<?php echo '<p style="margin-top:0;"><img src="' . esc_url( $header_img ) . '" alt="' . get_bloginfo( 'name' ) . '" /></p>'; ?>
-						</div>
-					<?php endif; ?>
-					<table border="0" cellpadding="0" cellspacing="0" width="600" id="template_container" style="<?php echo $template_container; ?>">
-						<?php if ( $email_content_heading = Give()->emails->get_heading() ) : ?>
-						<tr>
-							<td align="center" valign="top">
-								<!-- Header -->
-								<table border="0" cellpadding="0" cellspacing="0" width="600" id="template_header" style="<?php echo $template_header; ?>" bgcolor="#ffffff">
-									<tr>
-										<td>
-											<h1 style="<?php echo $header_content_h1; ?>"><?php echo $email_content_heading; ?></h1>
-										</td>
-									</tr>
-								</table>
-								<!-- End Header -->
-							</td>
-						</tr>
+			<table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%">
+				<tr>
+					<td align="center" valign="top">
+						<?php
+						if ( ! empty( $header_img ) ) : ?>
+							<div id="template_header_image">
+								<?php echo '<p style="margin-top:0;"><img style="' . $template_image . '" src="' . esc_url( $header_img ) . '" alt="' . get_bloginfo( 'name' ) . '" /></p>'; ?>
+							</div>
 						<?php endif; ?>
-						<tr>
-							<td align="center" valign="top">
-								<!-- Body -->
-								<table border="0" cellpadding="0" cellspacing="0" width="600" id="template_body">
-									<tr>
-										<td valign="top" style="<?php echo $body_content; ?>">
-											<!-- Content -->
-											<table border="0" cellpadding="20" cellspacing="0" width="100%">
-												<tr>
-													<td valign="top">
-														<div style="<?php echo $body_content_inner; ?>">
+						<table border="0" cellpadding="0" cellspacing="0" width="600" id="template_container" style="<?php echo $template_container; ?>">
+							<tr>
+								<td align="center" valign="top">
+									<!-- Header -->
+									<table border="0" cellpadding="0" cellspacing="0" width="600" id="template_header" style="<?php echo $template_header; ?>" bgcolor="#ffffff">
+										<tr>
+											<td>
+												<h1 style="<?php echo $header_content_h1; ?>"><?php echo Give()->emails->get_heading(); ?></h1>
+											</td>
+										</tr>
+									</table>
+									<!-- End Header -->
+								</td>
+							</tr>
+							<tr>
+								<td align="center" valign="top">
+									<!-- Body -->
+									<table border="0" cellpadding="0" cellspacing="0" width="600" id="template_body">
+										<tr>
+											<td valign="top" style="<?php echo $body_content; ?>">
+												<!-- Content -->
+												<table border="0" cellpadding="20" cellspacing="0" width="100%">
+													<tr>
+														<td valign="top">
+															<div style="<?php echo $body_content_inner; ?>">

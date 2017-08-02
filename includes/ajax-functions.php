@@ -194,6 +194,7 @@ add_action( 'wp_ajax_nopriv_give_get_form_title', 'give_ajax_get_form_title' );
 function give_ajax_get_states_field() {
 	$states_found = false;
 	$show_field = true;
+	$states_require = true;
 	// Get the Country code from the $_POST.
 	$country = sanitize_text_field( $_POST['country'] );
 
@@ -235,12 +236,21 @@ function give_ajax_get_states_field() {
 		if ( array_key_exists( $country, $no_states_country ) ) {
 			$show_field = false;
 		}
+
+		// Get the country list that does not require states.
+		$states_not_required_country_list = give_states_not_required_country_list();
+
+		// Check if $country code exists in the array key.
+		if ( array_key_exists( $country, $states_not_required_country_list ) ) {
+			$states_require = false;
+		}
 	}
 	$response = array(
 		'success' => true,
 		'states_found' => $states_found,
 		'show_field' => $show_field,
 		'states_label' => $label,
+		'states_require' => $states_require,
 		'data' => $data,
 	);
 	wp_send_json( $response );
