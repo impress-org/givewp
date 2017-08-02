@@ -1,10 +1,8 @@
 <?php
-
-
 /**
- * @group give_upgrades
+ * Class Tests_Upgrades
  */
-class Tests_Upgrades extends WP_UnitTestCase {
+class Tests_Upgrades extends Give_Unit_Test_Case {
 
 	public function setUp() {
 		parent::setUp();

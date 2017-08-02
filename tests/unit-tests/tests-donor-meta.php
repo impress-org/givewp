@@ -3,7 +3,7 @@
 /**
  * Class Tests_Donor_Meta
  */
-class Tests_Donor_Meta extends WP_UnitTestCase {
+class Tests_Donor_Meta extends Give_Unit_Test_Case {
 
 	/**
 	 * @var Give_Donor

@@ -990,7 +990,7 @@ function give_email_tag_receipt_link( $tag_args ) {
 	$formatted = sprintf(
 		'<a href="%1$s">%2$s</a>',
 		$receipt_url,
-		esc_html__( 'View it in your browser', 'give' )
+		esc_html__( 'View it in your browser &raquo;', 'give' )
 	);
 
 	/**
