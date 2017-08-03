@@ -148,8 +148,8 @@ $plugins      = give_get_plugins();
 			<td><?php echo give_test_ajax_works() ? __( 'Accessible', 'give' ) : __( 'Inaccessible', 'give' ); ?></td>
 		</tr>
 		<tr>
-			<td data-export-label="Registered Post Stati"><?php _e( 'Registered Post Stati', 'give' ); ?>:</td>
-			<td class="help"><?php echo Give()->tooltips->render_help( __( 'A list of all registered post stati.', 'give' ) ); ?></td>
+			<td data-export-label="Registered Post Statuses"><?php _e( 'Registered Post Statuses', 'give' ); ?>:</td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'A list of all registered post statuses.', 'give' ) ); ?>"></span></td>
 			<td><?php echo esc_html( implode( ', ', get_post_stati() ) ); ?></td>
 		</tr>
 	</tbody>

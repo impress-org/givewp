@@ -355,18 +355,18 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		/*
 		 * Case 1: Payment ID from payment.
 		 */
-		$payment_id = Give_Helper_Payment::create_simple_payment();
-		$payment_id = give_email_tag_payment_id( array( 'payment_id' => $payment_id ) );
+		$expected_payment_id = Give_Helper_Payment::create_simple_payment();
+		$actual_payment_id   = give_email_tag_payment_id( array( 'payment_id' => $expected_payment_id ) );
 
-		$this->assertEquals( 'GIVE-1', $payment_id );
+		$this->assertEquals( $expected_payment_id, $actual_payment_id );
 
 		/*
 		 * Case 2: Payment ID with filter
 		 */
 		add_filter( 'give_email_tag_payment_id', array( $this, 'give_payment_id' ), 10, 2 );
 
-		$payment_id = give_email_tag_payment_id( array( 'user_id' => 1 ) );
-		$this->assertEquals( 'GIVE-1 [Pending]', $payment_id );
+		$actual_payment_id = give_email_tag_payment_id( array( 'user_id' => 1 ) );
+		$this->assertEquals( 'GIVE-1 [Pending]', $actual_payment_id );
 
 		remove_filter( 'give_email_tag_payment_id', array( $this, 'give_payment_id' ), 10 );
 	}
@@ -540,7 +540,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$payment        = Give_Helper_Payment::create_simple_payment();
 		$payment_method = give_email_tag_payment_method( array( 'payment_id' => $payment ) );
 
-		$this->assertEquals( '', $payment_method );
+		$this->assertEquals( 'Test Donation', $payment_method );
 
 		/*
 		 * Case 2: Payment method with filter
@@ -653,7 +653,6 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	function test_give_email_tag_receipt_link_url() {
 		$payment = Give_Helper_Payment::create_simple_payment();
 
-
 		$receipt_link_url = give_email_tag_receipt_link_url( array( 'payment_id' => $payment ) );
 
 		$this->assertRegExp(
@@ -675,7 +674,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$receipt_link = give_email_tag_receipt_link( array( 'payment_id' => $payment ) );
 
 		$this->assertRegExp(
-			'/give_action=view_receipt">View it in your browser<\/a>/',
+			'/give_action=view_receipt">View it in your browser &raquo;<\/a>/',
 			$receipt_link
 		);
 	}
@@ -688,6 +687,12 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	 * @cover give_email_tag_email_access_link
 	 */
 	function test_give_email_tag_email_access_link() {
+		// Create new table columns manually.
+		// Are db columns setup?
+		if( ! give_update_option( 'email_access_installed' ) ) {
+			Give()->email_access->create_columns();
+		}
+
 		Give_Helper_Payment::create_simple_payment();
 
 		$link = give_email_tag_email_access_link( array( 'user_id' => 1 ) );

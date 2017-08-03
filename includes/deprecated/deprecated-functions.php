@@ -618,3 +618,39 @@ function give_get_purchase_summary( $purchase_data, $email = true ) {
 	give_payment_gateway_donation_summary($purchase_data, $email);
 
 }
+
+/**
+ * Retrieves the emails for which admin notifications are sent to (these can be changed in the Give Settings).
+ *
+ * @since 1.0
+ * @deprecated 2.0
+ *
+ * @return mixed
+ */
+function give_get_admin_notice_emails() {
+
+	$email_option = give_get_option( 'admin_notice_emails' );
+
+	$emails = ! empty( $email_option ) && strlen( trim( $email_option ) ) > 0 ? $email_option : get_bloginfo( 'admin_email' );
+	$emails = array_map( 'trim', explode( "\n", $emails ) );
+
+	return apply_filters( 'give_admin_notice_emails', $emails );
+}
+
+/**
+ * Checks whether admin donation notices are disabled
+ *
+ * @since 1.0
+ * @deprecated 2.0
+ *
+ * @param int $payment_id
+ *
+ * @return mixed
+ */
+function give_admin_notices_disabled( $payment_id = 0 ) {
+	return apply_filters(
+		'give_admin_notices_disabled',
+		! give_is_setting_enabled( Give_Email_Notification::get_instance('new-donation' )->get_notification_status() ),
+		$payment_id
+	);
+}
