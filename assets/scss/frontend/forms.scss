@@ -230,6 +230,14 @@ form.give-form {
 		clear: both;
 	}
 
+	.form-row-half {
+		width: 48.5%;
+		float: left;
+		&:nth-child(2n) {
+			margin-right: 3%;
+		}
+	}
+
 	.form-row-two-thirds {
 		float: left;
 		width: 65.75%;
@@ -237,15 +245,22 @@ form.give-form {
 		&.form-row-first {
 			margin-left: 0;
 		}
+
+		&:nth-child(2n) {
+			margin-right: 3%;
+		}
 	}
 
 	.form-row-one-third {
 		float: left;
 		width: 31.25%;
-		margin-left: 3%;
 
 		&.form-row-first {
 			margin-left: 0;
+		}
+
+		&:nth-child(2n) {
+			margin-right: 3%;
 		}
 	}
 
