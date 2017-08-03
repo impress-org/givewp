@@ -236,18 +236,11 @@ class Give_Payment_Stats extends Give_Stats {
 	public function get_best_selling( $number = 10 ) {
 		global $wpdb;
 
-		$meta_table = $wpdb->formmeta;
-		$id_column = 'form_id';
-
-		// Backward compatibility.
-		if( ! give_has_upgrade_completed( 'v20_move_metadata_into_new_table' ) ) {
-			$meta_table = $wpdb->postmeta;
-			$id_column = 'post_id';
-		}
+		$meta_table = __give_v20_bc_table_details( 'form' );
 
 		$give_forms = $wpdb->get_results( $wpdb->prepare(
-			"SELECT {$id_column} as form_id, max(meta_value) as sales
-				FROM {$meta_table} WHERE meta_key='_give_form_sales' AND meta_value > 0
+			"SELECT {$meta_table['column']['id']} as form_id, max(meta_value) as sales
+				FROM {$meta_table['name']} WHERE meta_key='_give_form_sales' AND meta_value > 0
 				GROUP BY meta_value+0
 				DESC LIMIT %d;", $number
 		) );

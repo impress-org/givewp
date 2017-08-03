@@ -58,6 +58,8 @@ class Give_DB_Payment_Meta extends Give_DB {
 		add_filter( 'get_post_metadata', array( $this, '__get_meta' ), 0, 4 );
 		add_filter( 'update_post_metadata', array( $this, '__update_meta' ), 0, 5 );
 		add_filter( 'delete_post_metadata', array( $this, '__delete_meta' ), 0, 5 );
+		add_filter( 'posts_where', array( $this, '__posts_where' ), 10, 2 );
+		add_filter( 'posts_join', array( $this, '__posts_join' ), 10, 2 );
 	}
 
 	/**
@@ -228,6 +230,95 @@ class Give_DB_Payment_Meta extends Give_DB {
 	}
 
 	/**
+	 * Filter where clause of every query for new payment meta table
+	 *
+	 * @since 2.0
+	 * @access public
+	 *
+	 * @param string $where
+	 * @param WP_Query $wp_query
+	 *
+	 * @return string
+	 */
+	public function __posts_where( $where, $wp_query ) {
+		global $wpdb;
+
+		$is_payment_post_type = false;
+
+		// Check if it is payment query.
+		if( ! empty( $wp_query->query['post_type'] ) ) {
+			if( is_string( $wp_query->query['post_type'] ) && 'give_payment' === $wp_query->query['post_type'] ) {
+				$is_payment_post_type = true;
+			}elseif ( is_array( $wp_query->query['post_type'] ) && in_array( 'give_payment', $wp_query->query['post_type'] ) ){
+				$is_payment_post_type = true;
+			}
+		}
+
+		// Add new table to sql query.
+		if(
+			give_has_upgrade_completed( 'v20_move_metadata_into_new_table' ) &&
+			$is_payment_post_type &&
+			! empty( $wp_query->meta_query->queries )
+		){
+			$where = str_replace( $wpdb->postmeta, $wpdb->paymentmeta, $where );
+		}
+
+		return $where;
+	}
+
+	/**
+	 * Filter join clause of every query for new payment meta table
+	 *
+	 * @since 2.0
+	 * @access public
+	 *
+	 * @param string $join
+	 * @param WP_Query $wp_query
+	 *
+	 * @return string
+	 */
+	public function __posts_join( $join, $wp_query ) {
+		global $wpdb;
+
+		$is_payment_post_type = false;
+
+		// Check if it is payment query.
+		if( ! empty( $wp_query->query['post_type'] ) ) {
+			if( is_string( $wp_query->query['post_type'] ) && 'give_payment' === $wp_query->query['post_type'] ) {
+				$is_payment_post_type = true;
+			}elseif ( is_array( $wp_query->query['post_type'] ) && in_array( 'give_payment', $wp_query->query['post_type'] ) ){
+				$is_payment_post_type = true;
+			}
+		}
+
+		// Add new table to sql query.
+		if(
+			give_has_upgrade_completed( 'v20_move_metadata_into_new_table' ) &&
+			$is_payment_post_type &&
+			! empty( $wp_query->meta_query->queries )
+		){
+			$join = str_replace( "{$wpdb->postmeta}.post_id", "{$wpdb->paymentmeta}.payment_id", $join );
+			$join = str_replace( $wpdb->postmeta, $wpdb->paymentmeta, $join );
+		}
+
+		return $join;
+	}
+
+	/**
+	 * Check if current id of payment type or not
+	 *
+	 * @since  2.0
+	 * @access private
+	 *
+	 * @param $ID
+	 *
+	 * @return bool
+	 */
+	private function is_payment( $ID ) {
+		return $ID && ( 'give_payment' === get_post_type( $ID ) );
+	}
+
+	/**
 	 * Add support for hidden functions.
 	 *
 	 * @since  2.0
@@ -281,20 +372,5 @@ class Give_DB_Payment_Meta extends Give_DB {
 
 				return $this->delete_meta( $payment_id, $meta_key, $meta_value, $delete_all );
 		}
-	}
-
-
-	/**
-	 * Check if current id of payment type or not
-	 *
-	 * @since  2.0
-	 * @access private
-	 *
-	 * @param $ID
-	 *
-	 * @return bool
-	 */
-	private function is_payment( $ID ) {
-		return $ID && ( 'give_payment' === get_post_type( $ID ) );
 	}
 }
