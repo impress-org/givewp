@@ -77,27 +77,27 @@ class Give_DB_Meta extends Give_DB {
 			return;
 		}
 
-		if( in_array( 'add_post_metadata', $this->supports ) ) {
+		if ( in_array( 'add_post_metadata', $this->supports ) ) {
 			add_filter( 'add_post_metadata', array( $this, '__add_meta' ), 0, 5 );
 		}
 
-		if( in_array( 'get_post_metadata', $this->supports ) ) {
+		if ( in_array( 'get_post_metadata', $this->supports ) ) {
 			add_filter( 'get_post_metadata', array( $this, '__get_meta' ), 0, 4 );
 		}
 
-		if( in_array( 'update_post_metadata', $this->supports ) ) {
+		if ( in_array( 'update_post_metadata', $this->supports ) ) {
 			add_filter( 'update_post_metadata', array( $this, '__update_meta' ), 0, 5 );
 		}
 
-		if( in_array( 'delete_post_metadata', $this->supports ) ) {
+		if ( in_array( 'delete_post_metadata', $this->supports ) ) {
 			add_filter( 'delete_post_metadata', array( $this, '__delete_meta' ), 0, 5 );
 		}
 
-		if( in_array( 'posts_where', $this->supports ) ) {
+		if ( in_array( 'posts_where', $this->supports ) ) {
 			add_filter( 'posts_where', array( $this, '__posts_where' ), 10, 2 );
 		}
 
-		if( in_array( 'posts_join', $this->supports ) ) {
+		if ( in_array( 'posts_join', $this->supports ) ) {
 			add_filter( 'posts_join', array( $this, '__posts_join' ), 10, 2 );
 		}
 	}
@@ -242,10 +242,11 @@ class Give_DB_Meta extends Give_DB {
 	 * @param   int    $id         Post Type ID.
 	 * @param   string $meta_key   Metadata name.
 	 * @param   mixed  $meta_value Optional. Metadata value.
+	 * @param   mixed  $delete_all Optional.
 	 *
 	 * @return  bool                  False for failure. True for success.
 	 */
-	public function delete_meta( $id = 0, $meta_key = '', $meta_value = '' ) {
+	public function delete_meta( $id = 0, $meta_key = '', $meta_value = '', $delete_all = '' ) {
 		$id = $this->sanitize_id( $id );
 
 		// Bailout.
@@ -253,7 +254,7 @@ class Give_DB_Meta extends Give_DB {
 			return $this->check;
 		}
 
-		return delete_metadata( $this->meta_type, $id, $meta_key, $meta_value );
+		return delete_metadata( $this->meta_type, $id, $meta_key, $meta_value, $delete_all );
 	}
 
 

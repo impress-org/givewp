@@ -21,23 +21,38 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 2.0
  */
-class Give_DB_Log_Meta extends Give_DB {
+class Give_DB_Log_Meta extends Give_DB_Meta {
 	/**
-	 * Flag to handle result type
+	 * Meta supports.
 	 *
 	 * @since  2.0
-	 * @access private
+	 * @access protected
+	 * @var array
 	 */
-	private $raw_result = false;
-
+	protected $supports = array(
+		'add_post_metadata',
+		'get_post_metadata',
+		'update_post_metadata',
+		'delete_post_metadata',
+	);
 
 	/**
-	 * Flag for short circuit of meta function
+	 * Post type
 	 *
 	 * @since  2.0
-	 * @access private
+	 * @access protected
+	 * @var bool
 	 */
-	private $check = false;
+	protected $post_type = 'give_log';
+
+	/**
+	 * Meta type
+	 *
+	 * @since  2.0
+	 * @access protected
+	 * @var bool
+	 */
+	protected $meta_type = 'log';
 
 	/**
 	 * Give_DB_Log_Meta constructor.
@@ -55,10 +70,7 @@ class Give_DB_Log_Meta extends Give_DB {
 
 		$this->register_table();
 
-		add_filter( 'add_post_metadata', array( $this, '__add_meta' ), 0, 5 );
-		add_filter( 'get_post_metadata', array( $this, '__get_meta' ), 0, 4 );
-		add_filter( 'update_post_metadata', array( $this, '__update_meta' ), 0, 5 );
-		add_filter( 'delete_post_metadata', array( $this, '__delete_meta' ), 0, 5 );
+		parent::__construct();
 	}
 
 	/**
@@ -77,116 +89,6 @@ class Give_DB_Log_Meta extends Give_DB {
 			'meta_value' => '%s',
 		);
 	}
-
-	/**
-	 * Retrieve log meta field for a log.
-	 *
-	 * @access  private
-	 * @since   2.0
-	 *
-	 * @param   int    $log_id   Log ID.
-	 * @param   string $meta_key The meta key to retrieve.
-	 * @param   bool   $single   Whether to return a single value.
-	 *
-	 * @return  mixed                 Will be an array if $single is false. Will be value of meta data field if $single is true.
-	 */
-	public function get_meta( $log_id, $meta_key, $single ) {
-		$log_id = $this->sanitize_id( $log_id );
-
-		// Bailout.
-		if ( ! Give()->logs->log_db->is_log( $log_id ) ) {
-			return $this->check;
-		}
-
-		if ( $this->raw_result ) {
-			if ( ! ( $value = get_metadata( 'log', $log_id, $meta_key, false ) ) ) {
-				$value = '';
-			}
-
-			// Reset flag.
-			$this->raw_result = false;
-
-		} else {
-			$value = get_metadata( 'log', $log_id, $meta_key, $single );
-		}
-
-		return $value;
-	}
-
-	/**
-	 * Add meta data field to a log.
-	 *
-	 * @access  private
-	 * @since   2.0
-	 *
-	 * @param   int    $log_id     Log ID.
-	 * @param   string $meta_key   Metadata name.
-	 * @param   mixed  $meta_value Metadata value.
-	 * @param   bool   $unique     Optional, default is false. Whether the same key should not be added.
-	 *
-	 * @return  bool                  False for failure. True for success.
-	 */
-	public function add_meta( $log_id = 0, $meta_key = '', $meta_value, $unique = false ) {
-		$log_id = $this->sanitize_id( $log_id );
-
-		if ( ! Give()->logs->log_db->is_log( $log_id ) ) {
-			return $this->check;
-		}
-
-		return add_metadata( 'log', $log_id, $meta_key, $meta_value, $unique );
-	}
-
-	/**
-	 * Update log meta field based on Log ID.
-	 *
-	 * @access  private
-	 * @since   2.0
-	 *
-	 * @param   int    $log_id     Log ID.
-	 * @param   string $meta_key   Metadata key.
-	 * @param   mixed  $meta_value Metadata value.
-	 * @param   mixed  $prev_value Optional. Previous value to check before removing.
-	 *
-	 * @return  bool                  False on failure, true if success.
-	 */
-	public function update_meta( $log_id = 0, $meta_key = '', $meta_value, $prev_value = '' ) {
-		$log_id = $this->sanitize_id( $log_id );
-
-		if ( ! Give()->logs->log_db->is_log( $log_id ) ) {
-			return $this->check;
-		}
-
-		return update_metadata( 'log', $log_id, $meta_key, $meta_value, $prev_value );
-	}
-
-	/**
-	 * Remove metadata matching criteria from a log.
-	 *
-	 * For internal use only. Use Give_Log->delete_meta() for public usage.
-	 *
-	 * You can match based on the key, or key and value. Removing based on key and
-	 * value, will keep from removing duplicate metadata with the same key. It also
-	 * allows removing all metadata matching key, if needed.
-	 *
-	 * @access  private
-	 * @since   2.0
-	 *
-	 * @param   int    $log_id     Log ID.
-	 * @param   string $meta_key   Metadata name.
-	 * @param   mixed  $meta_value Optional. Metadata value.
-	 *
-	 * @return  bool                  False for failure. True for success.
-	 */
-	public function delete_meta( $log_id = 0, $meta_key = '', $meta_value = '' ) {
-		$log_id = $this->sanitize_id( $log_id );
-
-		if ( ! Give()->logs->log_db->is_log( $log_id ) ) {
-			return $this->check;
-		}
-
-		return delete_metadata( 'log', $log_id, $meta_key, $meta_value );
-	}
-
 
 	/**
 	 * Delete all log meta
@@ -242,61 +144,5 @@ class Give_DB_Log_Meta extends Give_DB {
 		dbDelta( $sql );
 
 		update_option( $this->table_name . '_db_version', $this->version );
-	}
-
-
-	/**
-	 * Add support for hidden functions.
-	 *
-	 * @since  2.0
-	 * @access public
-	 *
-	 * @param $name
-	 * @param $arguments
-	 *
-	 * @return mixed
-	 */
-	public function __call( $name, $arguments ) {
-		if ( ! give_has_upgrade_completed( 'v20_logs_upgrades' ) ) {
-			return;
-		}
-
-		switch ( $name ) {
-			case '__add_meta':
-				$this->check = $arguments[0];
-				$log_id      = $arguments[1];
-				$meta_key    = $arguments[2];
-				$meta_value  = $arguments[3];
-				$unique      = $arguments[4];
-
-				return $this->add_meta( $log_id, $meta_key, $meta_value, $unique );
-
-			case '__get_meta':
-				$this->check = $arguments[0];
-				$log_id      = $arguments[1];
-				$meta_key    = $arguments[2];
-				$single      = $arguments[3];
-
-				$this->raw_result = true;
-
-				return $this->get_meta( $log_id, $meta_key, $single );
-
-			case '__update_meta':
-				$this->check = $arguments[0];
-				$log_id      = $arguments[1];
-				$meta_key    = $arguments[2];
-				$meta_value  = $arguments[3];
-
-				return $this->update_meta( $log_id, $meta_key, $meta_value );
-
-			case '__delete_meta':
-				$this->check = $arguments[0];
-				$log_id      = $arguments[1];
-				$meta_key    = $arguments[2];
-				$meta_value  = $arguments[3];
-				$delete_all  = $arguments[4];
-
-				return $this->delete_meta( $log_id, $meta_key, $meta_value, $delete_all );
-		}
 	}
 }

@@ -21,22 +21,24 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 2.0
  */
-class Give_DB_Payment_Meta extends Give_DB {
+class Give_DB_Payment_Meta extends Give_DB_Meta {
 	/**
-	 * Flag to handle result type
+	 * Post type
 	 *
 	 * @since  2.0
-	 * @access private
+	 * @access protected
+	 * @var bool
 	 */
-	private $raw_result = false;
+	protected $post_type = 'give_payment';
 
 	/**
-	 * Flag for short circuit of meta function
+	 * Meta type
 	 *
 	 * @since  2.0
-	 * @access private
+	 * @access protected
+	 * @var bool
 	 */
-	private $check = false;
+	protected $meta_type = 'payment';
 
 	/**
 	 * Give_DB_Payment_Meta constructor.
@@ -54,12 +56,7 @@ class Give_DB_Payment_Meta extends Give_DB {
 
 		$this->register_table();
 
-		add_filter( 'add_post_metadata', array( $this, '__add_meta' ), 0, 5 );
-		add_filter( 'get_post_metadata', array( $this, '__get_meta' ), 0, 4 );
-		add_filter( 'update_post_metadata', array( $this, '__update_meta' ), 0, 5 );
-		add_filter( 'delete_post_metadata', array( $this, '__delete_meta' ), 0, 5 );
-		add_filter( 'posts_where', array( $this, '__posts_where' ), 10, 2 );
-		add_filter( 'posts_join', array( $this, '__posts_join' ), 10, 2 );
+		parent::__construct();
 	}
 
 	/**
@@ -77,127 +74,6 @@ class Give_DB_Payment_Meta extends Give_DB {
 			'meta_key'   => '%s',
 			'meta_value' => '%s',
 		);
-	}
-
-	/**
-	 * Retrieve payment meta field for a payment.
-	 *
-	 * For internal use only. Use Give_Payment->get_meta() for public usage.
-	 *
-	 * @access  public
-	 * @since   2.0
-	 *
-	 * @param   int    $payment_id Payment ID.
-	 * @param   string $meta_key   The meta key to retrieve.
-	 * @param   bool   $single     Whether to return a single value.
-	 *
-	 * @return  mixed                 Will be an array if $single is false. Will be value of meta data field if $single is true.
-	 */
-	public function get_meta( $payment_id = 0, $meta_key = '', $single = false ) {
-		$payment_id = $this->sanitize_id( $payment_id );
-
-		// Bailout.
-		if ( ! $this->is_payment( $payment_id ) ) {
-			return $this->check;
-		}
-
-		if ( $this->raw_result ) {
-			if ( ! ( $value = get_metadata( 'payment', $payment_id, $meta_key, false ) ) ) {
-				$value = '';
-			}
-
-			// Reset flag.
-			$this->raw_result = false;
-
-		} else {
-			$value = get_metadata( 'payment', $payment_id, $meta_key, $single );
-		}
-
-		return $value;
-	}
-
-	/**
-	 * Add meta data field to a payment.
-	 *
-	 * For internal use only. Use Give_Payment->add_meta() for public usage.
-	 *
-	 * @access  private
-	 * @since   2.0
-	 *
-	 * @param   int    $payment_id Payment ID.
-	 * @param   string $meta_key   Metadata name.
-	 * @param   mixed  $meta_value Metadata value.
-	 * @param   bool   $unique     Optional, default is false. Whether the same key should not be added.
-	 *
-	 * @return  bool                  False for failure. True for success.
-	 */
-	public function add_meta( $payment_id = 0, $meta_key = '', $meta_value, $unique = false ) {
-		$payment_id = $this->sanitize_id( $payment_id );
-
-		// Bailout.
-		if ( ! $this->is_payment( $payment_id ) ) {
-			return $this->check;
-		}
-
-		return add_metadata( 'payment', $payment_id, $meta_key, $meta_value, $unique );
-	}
-
-	/**
-	 * Update payment meta field based on Payment ID.
-	 *
-	 * For internal use only. Use Give_Payment->update_meta() for public usage.
-	 *
-	 * Use the $prev_value parameter to differentiate between meta fields with the
-	 * same key and Payment ID.
-	 *
-	 * If the meta field for the payment does not exist, it will be added.
-	 *
-	 * @access  public
-	 * @since   2.0
-	 *
-	 * @param   int    $payment_id Payment ID.
-	 * @param   string $meta_key   Metadata key.
-	 * @param   mixed  $meta_value Metadata value.
-	 * @param   mixed  $prev_value Optional. Previous value to check before removing.
-	 *
-	 * @return  bool                  False on failure, true if success.
-	 */
-	public function update_meta( $payment_id = 0, $meta_key = '', $meta_value, $prev_value = '' ) {
-		$payment_id = $this->sanitize_id( $payment_id );
-
-		// Bailout.
-		if ( ! $this->is_payment( $payment_id ) ) {
-			return $this->check;
-		}
-
-		return update_metadata( 'payment', $payment_id, $meta_key, $meta_value, $prev_value );
-	}
-
-	/**
-	 * Remove metadata matching criteria from a payment.
-	 *
-	 * You can match based on the key, or key and value. Removing based on key and
-	 * value, will keep from removing duplicate metadata with the same key. It also
-	 * allows removing all metadata matching key, if needed.
-	 *
-	 * @access  public
-	 * @since   2.0
-	 *
-	 * @param   int    $payment_id Payment ID.
-	 * @param   string $meta_key   Metadata name.
-	 * @param   mixed  $meta_value Optional. Metadata value.
-	 *
-	 * @return  bool                  False for failure. True for success.
-	 */
-	public function delete_meta( $payment_id = 0, $meta_key = '', $meta_value = '' ) {
-		$payment_id = $this->sanitize_id( $payment_id );
-
-		// Bailout.
-		if ( ! $this->is_payment( $payment_id ) ) {
-			return $this->check;
-		}
-
-		return delete_metadata( 'payment', $payment_id, $meta_key, $meta_value );
 	}
 
 	/**
@@ -227,150 +103,5 @@ class Give_DB_Payment_Meta extends Give_DB {
 		dbDelta( $sql );
 
 		update_option( $this->table_name . '_db_version', $this->version );
-	}
-
-	/**
-	 * Filter where clause of every query for new payment meta table
-	 *
-	 * @since 2.0
-	 * @access public
-	 *
-	 * @param string $where
-	 * @param WP_Query $wp_query
-	 *
-	 * @return string
-	 */
-	public function __posts_where( $where, $wp_query ) {
-		global $wpdb;
-
-		$is_payment_post_type = false;
-
-		// Check if it is payment query.
-		if( ! empty( $wp_query->query['post_type'] ) ) {
-			if( is_string( $wp_query->query['post_type'] ) && 'give_payment' === $wp_query->query['post_type'] ) {
-				$is_payment_post_type = true;
-			}elseif ( is_array( $wp_query->query['post_type'] ) && in_array( 'give_payment', $wp_query->query['post_type'] ) ){
-				$is_payment_post_type = true;
-			}
-		}
-
-		// Add new table to sql query.
-		if(
-			give_has_upgrade_completed( 'v20_move_metadata_into_new_table' ) &&
-			$is_payment_post_type &&
-			! empty( $wp_query->meta_query->queries )
-		){
-			$where = str_replace( $wpdb->postmeta, $wpdb->paymentmeta, $where );
-		}
-
-		return $where;
-	}
-
-	/**
-	 * Filter join clause of every query for new payment meta table
-	 *
-	 * @since 2.0
-	 * @access public
-	 *
-	 * @param string $join
-	 * @param WP_Query $wp_query
-	 *
-	 * @return string
-	 */
-	public function __posts_join( $join, $wp_query ) {
-		global $wpdb;
-
-		$is_payment_post_type = false;
-
-		// Check if it is payment query.
-		if( ! empty( $wp_query->query['post_type'] ) ) {
-			if( is_string( $wp_query->query['post_type'] ) && 'give_payment' === $wp_query->query['post_type'] ) {
-				$is_payment_post_type = true;
-			}elseif ( is_array( $wp_query->query['post_type'] ) && in_array( 'give_payment', $wp_query->query['post_type'] ) ){
-				$is_payment_post_type = true;
-			}
-		}
-
-		// Add new table to sql query.
-		if(
-			give_has_upgrade_completed( 'v20_move_metadata_into_new_table' ) &&
-			$is_payment_post_type &&
-			! empty( $wp_query->meta_query->queries )
-		){
-			$join = str_replace( "{$wpdb->postmeta}.post_id", "{$wpdb->paymentmeta}.payment_id", $join );
-			$join = str_replace( $wpdb->postmeta, $wpdb->paymentmeta, $join );
-		}
-
-		return $join;
-	}
-
-	/**
-	 * Check if current id of payment type or not
-	 *
-	 * @since  2.0
-	 * @access private
-	 *
-	 * @param $ID
-	 *
-	 * @return bool
-	 */
-	private function is_payment( $ID ) {
-		return $ID && ( 'give_payment' === get_post_type( $ID ) );
-	}
-
-	/**
-	 * Add support for hidden functions.
-	 *
-	 * @since  2.0
-	 * @access public
-	 *
-	 * @param $name
-	 * @param $arguments
-	 *
-	 * @return mixed
-	 */
-	public function __call( $name, $arguments ) {
-		// Bailout.
-		if ( ! give_has_upgrade_completed( 'v20_move_metadata_into_new_table' ) ) {
-			return;
-		}
-
-		switch ( $name ) {
-			case '__add_meta':
-				$this->check = $arguments[0];
-				$payment_id  = $arguments[1];
-				$meta_key    = $arguments[2];
-				$meta_value  = $arguments[3];
-				$unique      = $arguments[4];
-
-				return $this->add_meta( $payment_id, $meta_key, $meta_value, $unique );
-
-			case '__get_meta':
-				$this->check = $arguments[0];
-				$payment_id  = $arguments[1];
-				$meta_key    = $arguments[2];
-				$single      = $arguments[3];
-
-				$this->raw_result = true;
-
-				return $this->get_meta( $payment_id, $meta_key, $single );
-
-			case '__update_meta':
-				$this->check = $arguments[0];
-				$payment_id  = $arguments[1];
-				$meta_key    = $arguments[2];
-				$meta_value  = $arguments[3];
-
-				return $this->update_meta( $payment_id, $meta_key, $meta_value );
-
-			case '__delete_meta':
-				$this->check = $arguments[0];
-				$payment_id  = $arguments[1];
-				$meta_key    = $arguments[2];
-				$meta_value  = $arguments[3];
-				$delete_all  = $arguments[3];
-
-				return $this->delete_meta( $payment_id, $meta_key, $meta_value, $delete_all );
-		}
 	}
 }
