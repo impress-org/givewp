@@ -24,7 +24,8 @@ class Give_Helper_Payment extends Give_Unit_Test_Case {
 	 *
 	 * @since 1.0
 	 */
-	public static function create_simple_payment() {
+	public static function create_simple_payment( $date = '' ) {
+
 
 		// Sequential order coming soon.
 		//		$give_options = give_get_settings();
@@ -44,11 +45,16 @@ class Give_Helper_Payment extends Give_Unit_Test_Case {
 
 		$simple_price = give_get_meta( $simple_form->ID, '_give_set_price', true );
 
+		// Set date if not set already.
+		if ( empty( $date ) ) {
+			$date = date( 'Y-m-d H:i:s', strtotime( '-1 day' ) );
+		}
+
 		$donation_data = array(
 			'price'           => number_format( (float) $simple_price, 2 ),
 			'give_form_title' => 'Test Donation Form',
 			'give_form_id'    => $simple_form->ID,
-			'date'            => date( 'Y-m-d H:i:s', strtotime( '-1 day' ) ),
+			'date'            => $date,
 			'purchase_key'    => strtolower( md5( uniqid() ) ),
 			'user_email'      => $user_info['email'],
 			'user_info'       => $user_info,
@@ -90,14 +96,12 @@ class Give_Helper_Payment extends Give_Unit_Test_Case {
 		$simple_form = Give_Helper_Form::create_simple_form();
 
 		$user_info = array(
-			'id'            => 0,
-			'email'         => 'guest@example.org',
-			'first_name'    => 'Guest',
-			'last_name'     => 'User',
-			'discount'      => 'none'
+			'id'         => 0,
+			'email'      => 'guest@example.org',
+			'first_name' => 'Guest',
+			'last_name'  => 'User',
+			'discount'   => 'none',
 		);
-
-
 
 		$simple_price = give_get_meta( $simple_form->ID, '_give_set_price', true );
 
@@ -200,7 +204,6 @@ class Give_Helper_Payment extends Give_Unit_Test_Case {
 		return $payment_id;
 
 	}
-
 
 
 }
