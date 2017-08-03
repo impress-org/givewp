@@ -1909,6 +1909,9 @@ h2.give-nav-tab-wrapper {
     background-position: 100% 4px; }
   .give-filters .chosen-container-active.chosen-with-drop .chosen-single div b {
     background-position: -18px 6px; }
+  .give-filters #give_donation_forms_filter {
+    display: inline-block;
+    width: auto; }
   .give-filters:after {
     content: "";
     display: table;
@@ -2816,3 +2819,6 @@ div.sc-shortcode {
 
 #give-updates .dashicons-yes {
   color: green; }
+
+#give-db-updates .spinner {
+  margin-top: 0; }

@@ -5,7 +5,7 @@
  *
  * Helper class to create and delete a donation form.
  */
-class Give_Helper_Form extends WP_UnitTestCase {
+class Give_Helper_Form extends Give_Unit_Test_Case {
 
 	/**
 	 * Delete a donation form.

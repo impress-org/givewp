@@ -193,7 +193,7 @@ form.give-form {
 
 		}
 
-		select, textarea, input[type="text"], input[type="tel"], input[type="email"], input[type="password"] {
+		select, textarea, input[type="text"], input[type="tel"], input[type="email"], input[type="password"], input[type="url"] {
 			@include box-sizing(border-box);
 			width: 100%;
 			border-radius: 0;
