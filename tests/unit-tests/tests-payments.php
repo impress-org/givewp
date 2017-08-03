@@ -290,7 +290,7 @@ class Tests_Payments extends Give_Unit_Test_Case {
 		Give_Helper_Payment::delete_payment( $this->_payment_id );
 		wp_cache_flush();
 
-		$give_options = give_get_settings();
+		$give_options                      = give_get_settings();
 		$give_options['enable_sequential'] = 1;
 
 		$payment_id = Give_Helper_Payment::create_simple_payment();
@@ -427,7 +427,8 @@ class Tests_Payments extends Give_Unit_Test_Case {
 		$payment->save();
 		$meta = $payment->get_meta();
 
-		$this->assertSame( $payment->date, $meta['date'] );
+		// substr to ensure travis CI tests don't fail based off of seconds delay.
+		$this->assertSame( substr( $payment->date, 0, 15 ), substr( $meta['date'], 0, 15 ) );
 
 	}
 
@@ -486,7 +487,7 @@ class Tests_Payments extends Give_Unit_Test_Case {
 
 		$args           = array(
 			'start_date' => date( 'Y-m-d H:i:s', strtotime( '-1 day' ) ),
-			'end_date' => date( 'Y-m-d H:i:s' )
+			'end_date'   => date( 'Y-m-d H:i:s' ),
 		);
 		$payments_query = new Give_Payments_Query( $args );
 		$payments       = $payments_query->get_payments();
