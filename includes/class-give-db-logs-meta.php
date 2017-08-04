@@ -145,4 +145,18 @@ class Give_DB_Log_Meta extends Give_DB_Meta {
 
 		update_option( $this->table_name . '_db_version', $this->version );
 	}
+
+	/**
+	 * Check if current id is log or not
+	 *
+	 * @since  2.0
+	 * @access protected
+	 *
+	 * @param $id
+	 *
+	 * @return bool
+	 */
+	protected function is_valid_post_type( $id ) {
+		return Give()->logs->log_db->is_log( $id );
+	}
 }
