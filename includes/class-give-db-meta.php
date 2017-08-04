@@ -73,7 +73,7 @@ class Give_DB_Meta extends Give_DB {
 	 */
 	function __construct() {
 		// Bailout.
-		if ( empty( $this->supports ) || ! give_has_upgrade_completed( 'v20_move_metadata_into_new_table' ) ) {
+		if ( empty( $this->supports ) || ! $this->is_custom_meta_table_active() ) {
 			return;
 		}
 
@@ -355,5 +355,16 @@ class Give_DB_Meta extends Give_DB {
 	 */
 	protected function is_valid_post_type( $ID ) {
 		return $ID && ( $this->post_type === get_post_type( $ID ) );
+	}
+
+	/**
+	 * check if custom meta table enabled or not.
+	 *
+	 * @since  2.0
+	 * @access protected
+	 * @return bool
+	 */
+	protected function is_custom_meta_table_active() {
+		return false;
 	}
 }

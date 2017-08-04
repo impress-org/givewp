@@ -159,4 +159,15 @@ class Give_DB_Log_Meta extends Give_DB_Meta {
 	protected function is_valid_post_type( $id ) {
 		return Give()->logs->log_db->is_log( $id );
 	}
+
+	/**
+	 * check if custom meta table enabled or not.
+	 *
+	 * @since  2.0
+	 * @access protected
+	 * @return bool
+	 */
+	protected function is_custom_meta_table_active() {
+		return give_has_upgrade_completed( 'v20_logs_upgrades' );
+	}
 }

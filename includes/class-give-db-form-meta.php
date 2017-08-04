@@ -104,4 +104,16 @@ class Give_DB_Form_Meta extends Give_DB_Meta {
 
 		update_option( $this->table_name . '_db_version', $this->version );
 	}
+
+
+	/**
+	 * check if custom meta table enabled or not.
+	 *
+	 * @since  2.0
+	 * @access protected
+	 * @return bool
+	 */
+	protected function is_custom_meta_table_active() {
+		return give_has_upgrade_completed( 'v20_move_metadata_into_new_table' );
+	}
 }
