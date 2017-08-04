@@ -347,13 +347,13 @@ class Give_DB_Meta extends Give_DB {
 	 * Check if current id of payment type or not
 	 *
 	 * @since  2.0
-	 * @access private
+	 * @access protected
 	 *
 	 * @param $ID
 	 *
 	 * @return bool
 	 */
-	private function is_valid_post_type( $ID ) {
+	protected function is_valid_post_type( $ID ) {
 		return $ID && ( $this->post_type === get_post_type( $ID ) );
 	}
 }
