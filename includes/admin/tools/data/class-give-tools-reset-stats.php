@@ -112,7 +112,6 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 						$sql[] = "UPDATE {$meta_table['name']} SET meta_value = 0.00 WHERE meta_key = '_give_form_earnings' AND {$meta_table['column']['id']} IN ($ids)";
 						break;
 					case 'other':
-						error_log( print_r( 'here', true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
 						$sql[] = "DELETE FROM $wpdb->posts WHERE id IN ($ids)";
 						$sql[] = "DELETE FROM $wpdb->postmeta WHERE post_id IN ($ids)";
 						$sql[] = "DELETE FROM $wpdb->comments WHERE comment_post_ID IN ($ids)";
