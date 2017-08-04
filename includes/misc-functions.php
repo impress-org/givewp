@@ -1325,7 +1325,7 @@ function give_get_completed_upgrades() {
 }
 
 /**
- * In after 2.0 we updated table for log, payment and form.
+ * In 2.0 we updated table for log, payment and form.
  *
  * Note: internal purpose only.
  *
