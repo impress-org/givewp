@@ -412,7 +412,7 @@ function give_count_payments( $args = array() ) {
 
 	$select = 'SELECT p.post_status,count( * ) AS num_posts';
 	$join   = '';
-	$where  = "WHERE p.post_type = 'give_payment'";
+	$where  = "WHERE p.post_type = 'give_payment' AND p.post_status IN ('". implode( "','", give_get_payment_status_keys() ). "')";
 
 	// Count payments for a specific user.
 	if ( ! empty( $args['user'] ) ) {
