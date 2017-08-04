@@ -73,7 +73,7 @@ class Give_DB_Meta extends Give_DB {
 	 */
 	function __construct() {
 		// Bailout.
-		if ( ! empty( $this->supports ) || ! give_has_upgrade_completed( 'v20_move_metadata_into_new_table' ) ) {
+		if ( empty( $this->supports ) || ! give_has_upgrade_completed( 'v20_move_metadata_into_new_table' ) ) {
 			return;
 		}
 
