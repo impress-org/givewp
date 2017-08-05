@@ -423,7 +423,8 @@ function give_disconnect_donor_user_id( $args ) {
 		global $wpdb;
 
 		if ( ! empty( $donor->payment_ids ) ) {
-			$wpdb->query( "UPDATE $wpdb->postmeta SET meta_value = 0 WHERE meta_key = '_give_payment_user_id' AND post_id IN ( $donor->payment_ids )" );
+			$meta_table = __give_v20_bc_table_details( 'payment' );
+			$wpdb->query( "UPDATE {$meta_table['name']} SET meta_value = 0 WHERE meta_key = '_give_payment_user_id' AND {$meta_table['column']['id']} IN ( $donor->payment_ids )" );
 		}
 
 		$output['success'] = true;
