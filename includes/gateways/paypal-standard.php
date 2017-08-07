@@ -75,7 +75,7 @@ add_action( 'give_gateway_paypal', 'give_process_paypal_payment' );
  */
 function give_listen_for_paypal_ipn() {
 	// Regular PayPal IPN
-	if ( isset( $_GET['give-listener'] ) && $_GET['give-listener'] == 'IPN' ) {
+	if ( isset( $_GET['give-listener'] ) && 'IPN' === $_GET['give-listener'] ) {
 		/**
 		 * Fires while verifying PayPal IPN
 		 *
