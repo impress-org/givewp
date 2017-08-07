@@ -2286,4 +2286,12 @@ body.give-twentysixteen .give-submit {
 body.give-twentysixteen fieldset#give_terms_agreement {
   padding-left: 0; }
 
+body.give-twentyseventeen.colors-dark div.give-total-wrap input.give-text-input,
+body.give-twentyseventeen.colors-dark div#give_purchase_form_wrap span.give-final-total-amount,
+body.give-twentyseventeen.colors-dark div.give_notices p {
+  color: black; }
+
+body.give-twentyseventeen.colors-dark form[id*="give"] fieldset {
+  background-color: transparent; }
+
 /*# sourceMappingURL=../assets/sourcemaps/give.css.map */
