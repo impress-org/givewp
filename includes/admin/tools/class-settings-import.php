@@ -437,19 +437,22 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
                 </th>
             </tr>
 			<?php
+			$csv = ( isset( $_REQUEST['csv'] ) ? sanitize_text_field( $_POST['csv'] ) : '' );
+			$existing = ( isset( $_REQUEST['existing'] ) ? sanitize_text_field( $_POST['existing'] ) : '' );
+			$delimiter = ( isset( $_REQUEST['delimiter'] ) ? sanitize_text_field( $_POST['delimiter'] ) : '' );
 			$settings = array(
 				array(
 					'id'      => 'csv',
 					'name'    => __( 'Choose a CSV file:', 'give-manual-donations' ),
 					'type'    => 'file',
 					'fvalue'  => 'id',
-					'default' => sanitize_text_field( $_POST['csv'] ),
+					'default' => $csv,
 				),
 				array(
 					'id'      => 'existing',
 					'name'    => __( 'Update existing donations:', 'give-manual-donations' ),
 					'type'    => 'checkbox',
-					'default' => sanitize_text_field( ( isset( $_POST['existing'] ) ? 'on' : '' ) ),
+					'default' => $existing,
 					'decs'    => __( 'If a product being imported matches an existing donation by ID, update the existing donation rather than creating a new donation or skipping the row.', 'give-manual-donations' ),
 				),
 				array(
@@ -457,7 +460,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 					'name'       => __( 'CSV Delimiter:', 'give-manual-donations' ),
 					'type'       => 'text',
 					'attributes' => array( 'placeholder' => ',', 'size' => '2' ),
-					'default'    => sanitize_text_field( $_POST['delimiter'] ),
+					'default'    => $delimiter,
 					'decs'       => __( 'If a product being imported matches an existing donation by ID, update the existing donation rather than creating a new donation or skipping the row.', 'give-manual-donations' ),
 				),
 			);
