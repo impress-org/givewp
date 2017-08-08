@@ -158,6 +158,15 @@ function give_show_upgrade_notices( $give_updates ) {
 		)
 	);
 
+	// v2.0.0 Upgrades
+	$give_updates->register(
+		array(
+			'id'       => 'v20_move_metadata_into_new_table',
+			'version'  => '2.0.0',
+			'callback' => 'give_v20_move_metadata_into_new_table_callback',
+		)
+	);
+
 	// v2.0.0 Donor Name Upgrades
 	$give_updates->register(
 		array(
@@ -1248,11 +1257,13 @@ function give_v20_upgrades_form_metadata_callback() {
 		/* Restore original Post Data */
 		wp_reset_postdata();
 	} else {
-		// The Update Ran.
+		// No more forms found, finish up.
 		give_set_upgrade_complete( 'v20_upgrades_form_metadata' );
 	}
 
+	//  delete _give_payment_user_id now we are getting user id from donor id.
 }
+
 
 /**
  * Upgrade logs data.
@@ -1359,6 +1370,74 @@ function give_v20_logs_upgrades_callback() {
 
 		// No more forms found, finish up.
 		give_set_upgrade_complete( 'v20_logs_upgrades' );
+	}
+}
+
+/**
+ * Move payment and form metadata to new table
+ *
+ * @since  2.0
+ * @return void
+ */
+function give_v20_move_metadata_into_new_table_callback() {
+	global $wpdb;
+	$give_updates = Give_Updates::get_instance();
+
+	// form query
+	$payments = new WP_Query( array(
+			'paged'          => $give_updates->step,
+			'status'         => 'any',
+			'order'          => 'ASC',
+			'post_type'      => array( 'give_forms', 'give_payment' ),
+			'posts_per_page' => 20,
+		)
+	);
+
+	if ( $payments->have_posts() ) {
+		$give_updates->set_percentage( $payments->found_posts, $give_updates->step * 20 );
+
+		while ( $payments->have_posts() ) {
+			$payments->the_post();
+			global $post;
+
+			$meta_data = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT * FROM $wpdb->postmeta where post_id=%d",
+					get_the_ID()
+				),
+				ARRAY_A
+			);
+
+			if ( ! empty( $meta_data ) ) {
+				foreach ( $meta_data as $index => $data ) {
+					switch ( $post->post_type ) {
+						case 'give_forms':
+							$data['form_id'] = $data['post_id'];
+							unset( $data['post_id'] );
+
+							Give()->form_meta->insert( $data );
+							delete_post_meta( get_the_ID(), $data['meta_key'] );
+
+							break;
+
+						case 'give_payment':
+							$data['payment_id'] = $data['post_id'];
+							unset( $data['post_id'] );
+
+							Give()->payment_meta->insert( $data );
+							delete_post_meta( get_the_ID(), $data['meta_key'] );
+
+							break;
+					}
+				}
+			}
+
+		}// End while().
+
+		wp_reset_postdata();
+	} else {
+		// No more forms found, finish up.
+		give_set_upgrade_complete( 'v20_move_metadata_into_new_table' );
 	}
 }
 

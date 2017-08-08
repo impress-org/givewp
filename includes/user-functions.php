@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0
  *
- * @return bool|array          List of all user donations.
+ * @return bool|array List of all user donations.
  */
 function give_get_users_donations( $user = 0, $number = 20, $pagination = false, $status = 'complete' ) {
 
@@ -409,8 +409,8 @@ function give_validate_user_password( $password = '', $confirm_password = '', $r
 	// Passwords Validation For New Donors as well as Existing Donors.
 	if ( $password || $confirm_password ) {
 		if ( strlen( $password ) < 6 || strlen( $confirm_password ) < 6 ) {
-			// Seems Weak Password.
-			give_set_error( 'password_weak', __( 'Passwords should have atleast 6 characters.', 'give' ) );
+			// Seems Weak Password
+			give_set_error( 'password_weak', __( 'Passwords should have at least 6 characters.', 'give' ) );
 			$valid = false;
 		}
 		if ( $password && $confirm_password ) {

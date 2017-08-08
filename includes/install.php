@@ -129,6 +129,7 @@ function give_run_install() {
 			'v1812_update_donor_purchase_values',
 			'v20_upgrades_form_metadata',
 			'v20_logs_upgrades',
+			'v20_move_metadata_into_new_table',
 			'v20_upgrades_donor_name'
 		);
 
