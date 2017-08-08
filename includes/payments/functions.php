@@ -392,6 +392,7 @@ function give_undo_donation( $payment_id ) {
 function give_count_payments( $args = array() ) {
 
 	global $wpdb;
+	$meta_table = __give_v20_bc_table_details( 'payment' );
 
 	$defaults = array(
 		'user'       => null,
@@ -418,7 +419,7 @@ function give_count_payments( $args = array() ) {
 			$field = '';
 		}
 
-		$join = "LEFT JOIN $wpdb->postmeta m ON (p.ID = m.post_id)";
+		$join = "LEFT JOIN {$meta_table['name']} m ON (p.ID = m.{$meta_table['column']['id']})";
 
 		if ( ! empty( $field ) ) {
 			$where .= "
@@ -427,7 +428,7 @@ function give_count_payments( $args = array() ) {
 		}
 	} elseif ( ! empty( $args['donor'] ) ) {
 
-		$join  = "LEFT JOIN $wpdb->postmeta m ON (p.ID = m.post_id)";
+		$join  = "LEFT JOIN {$meta_table['name']} m ON (p.ID = m.{$meta_table['column']['id']})";
 		$where .= "
 			AND m.meta_key = '_give_payment_customer_id'
 			AND m.meta_value = '{$args['donor']}'";
@@ -443,7 +444,7 @@ function give_count_payments( $args = array() ) {
 				$field = '_give_payment_purchase_key';
 			}
 
-			$join  = "LEFT JOIN $wpdb->postmeta m ON (p.ID = m.post_id)";
+			$join  = "LEFT JOIN {$meta_table['name']} m ON (p.ID = m.{$meta_table['column']['id']})";
 			$where .= $wpdb->prepare( '
                 AND m.meta_key = %s
                 AND m.meta_value = %s', $field, $args['s'] );
@@ -459,7 +460,7 @@ function give_count_payments( $args = array() ) {
 
 		} elseif ( is_numeric( $args['s'] ) ) {
 
-			$join  = "LEFT JOIN $wpdb->postmeta m ON (p.ID = m.post_id)";
+			$join  = "LEFT JOIN {$meta_table['column']} m ON (p.ID = m.{$meta_table['column']})";
 			$where .= $wpdb->prepare( "
 				AND m.meta_key = '_give_payment_user_id'
 				AND m.meta_value = %d", $args['s'] );
@@ -474,7 +475,7 @@ function give_count_payments( $args = array() ) {
 
 	if ( ! empty( $args['form_id'] ) && is_numeric( $args['form_id'] ) ) {
 
-		$join  = "LEFT JOIN $wpdb->postmeta m ON (p.ID = m.post_id)";
+		$join  = "LEFT JOIN {$meta_table['name']} m ON (p.ID = m.{$meta_table['column']['id']})";
 		$where .= $wpdb->prepare( '
                 AND m.meta_key = %s
                 AND m.meta_value = %s', '_give_payment_form_id', $args['form_id'] );
@@ -678,9 +679,10 @@ function give_get_payment_status_keys() {
  * @return int $earnings  Earnings
  */
 function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour = null ) {
-
 	// This is getting deprecated soon. Use Give_Payment_Stats with the get_earnings() method instead.
+
 	global $wpdb;
+	$meta_table = __give_v20_bc_table_details( 'payment' );
 
 	$args = array(
 		'post_type'              => 'give_payment',
@@ -714,7 +716,7 @@ function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour
 		if ( $donations ) {
 			$donations = implode( ',', $donations );
 
-			$earnings = $wpdb->get_var( "SELECT SUM(meta_value) FROM $wpdb->postmeta WHERE meta_key = '_give_payment_total' AND post_id IN ({$donations})" );
+			$earnings = $wpdb->get_var( "SELECT SUM(meta_value) FROM {$meta_table['name']} WHERE meta_key = '_give_payment_total' AND {$meta_table['column']['id']} IN ({$donations})" );
 
 		}
 		// Cache the results for one hour.
@@ -844,6 +846,7 @@ function give_get_total_donations() {
 function give_get_total_earnings( $recalculate = false ) {
 
 	$total = get_option( 'give_earnings_total', 0 );
+	$meta_table = __give_v20_bc_table_details( 'payment' );
 
 	// Calculate total earnings.
 	if ( ! $total || $recalculate ) {
@@ -872,7 +875,7 @@ function give_get_total_earnings( $recalculate = false ) {
 
 			if ( ! empty( $payments ) ) {
 				$payments = implode( ',', $payments );
-				$total    += $wpdb->get_var( "SELECT SUM(meta_value) FROM $wpdb->postmeta WHERE meta_key = '_give_payment_total' AND post_id IN({$payments})" );
+				$total    += $wpdb->get_var( "SELECT SUM(meta_value) FROM {$meta_table['name']} WHERE meta_key = '_give_payment_total' AND {$meta_table['column']['id']} IN({$payments})" );
 			}
 		}
 
@@ -1401,8 +1404,9 @@ function give_set_payment_transaction_id( $payment_id = 0, $transaction_id = '' 
  */
 function give_get_purchase_id_by_key( $key ) {
 	global $wpdb;
+	$meta_table = __give_v20_bc_table_details( 'payment' );
 
-	$purchase = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_give_payment_purchase_key' AND meta_value = %s LIMIT 1", $key ) );
+	$purchase = $wpdb->get_var( $wpdb->prepare( "SELECT {$meta_table['column']['id']} FROM {$meta_table['name']} WHERE meta_key = '_give_payment_purchase_key' AND meta_value = %s LIMIT 1", $key ) );
 
 	if ( $purchase != null ) {
 		return $purchase;
@@ -1424,8 +1428,9 @@ function give_get_purchase_id_by_key( $key ) {
  */
 function give_get_purchase_id_by_transaction_id( $key ) {
 	global $wpdb;
+	$meta_table = __give_v20_bc_table_details('payment');
 
-	$purchase = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_give_payment_transaction_id' AND meta_value = %s LIMIT 1", $key ) );
+	$purchase = $wpdb->get_var( $wpdb->prepare( "SELECT {$meta_table['column']['id']} FROM {$meta_table['name']} WHERE meta_key = '_give_payment_transaction_id' AND meta_value = %s LIMIT 1", $key ) );
 
 	if ( $purchase != null ) {
 		return $purchase;

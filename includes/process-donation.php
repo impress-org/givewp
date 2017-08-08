@@ -480,11 +480,11 @@ function give_get_required_fields( $form_id ) {
 			// Get the value from $_POST.
 			$country = sanitize_text_field( $_POST['billing_country'] );
 
-			// Get the country list that does not have any states init.
-			$no_states_country = give_no_states_country_list();
+			// Get the country list that does not required any states init.
+			$states_country = give_states_not_required_country_list();
 
 			// Check if states is empty or not.
-			if ( array_key_exists( $country, $no_states_country ) ) {
+			if ( array_key_exists( $country, $states_country ) ) {
 				// If states is empty remove the required feilds of state in billing cart.
 				unset( $required_fields['card_state'] );
 			}

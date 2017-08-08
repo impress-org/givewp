@@ -1321,3 +1321,47 @@ function give_get_attribute_str( $attributes ) {
 
 	return trim( $attribute_str );
 }
+
+
+/**
+ * In 2.0 we updated table for log, payment and form.
+ *
+ * Note: internal purpose only.
+ *
+ * @since 2.0
+ * @global wpdb  $wpdb
+ *
+ * @param string $type Context for table
+ *
+ * @return null|array
+ */
+function __give_v20_bc_table_details( $type ) {
+	global $wpdb;
+	$table = array();
+
+	// Bailout.
+	if ( empty( $type ) ) {
+		return null;
+	}
+
+	switch ( $type ) {
+		case 'form':
+			$table['name']         = $wpdb->formmeta;
+			$table['column']['id'] = 'form_id';
+
+			break;
+
+		case 'payment':
+			$table['name']         = $wpdb->paymentmeta;
+			$table['column']['id'] = 'payment_id';
+	}
+
+	// Backward compatibility.
+	if ( ! give_has_upgrade_completed( 'v20_move_metadata_into_new_table' ) ) {
+		$table['name']         = $wpdb->postmeta;
+		$table['column']['id'] = 'post_id';
+	}
+
+
+	return $table;
+}

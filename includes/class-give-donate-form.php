@@ -1054,27 +1054,13 @@ class Give_Donate_Form {
 		/* @var WPDB $wpdb */
 		global $wpdb;
 
+		// Bailout.
 		if ( empty( $meta_key ) ) {
 			return false;
 		}
 
-		// Make sure if it needs to be serialized, we do
-		$meta_value = maybe_serialize( $meta_value );
-
-		if ( is_numeric( $meta_value ) ) {
-			$value_type = is_float( $meta_value ) ? '%f' : '%d';
-		} else {
-			$value_type = "'%s'";
-		}
-
-		$sql = $wpdb->prepare( "UPDATE $wpdb->postmeta SET meta_value = $value_type WHERE post_id = $this->ID AND meta_key = '%s'", $meta_value, $meta_key );
-
-		if ( $wpdb->query( $sql ) ) {
-
-			clean_post_cache( $this->ID );
-
+		if ( give_update_meta( $this->ID, $meta_key, $meta_value  ) ) {
 			return true;
-
 		}
 
 		return false;

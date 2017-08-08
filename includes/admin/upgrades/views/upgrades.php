@@ -39,8 +39,9 @@ $give_updates = Give_Updates::get_instance();
 								<p><?php echo sprintf( __( 'Give needs to update the database. <a href="%s">Update now ></a>', 'give' ), $db_update_url ); ?></p>
 							</div>
 							<div class="progress-container give-hidden">
-								<strong class="update-message" data-update-count="<?php echo $db_updates; ?>"
-								        data-resume-update="<?php echo $give_updates->resume_updates(); ?>"><?php echo sprintf( __( 'Update 1 of %s', 'give' ), $db_updates ); ?></strong>
+								<p class="update-message" data-update-count="<?php echo $db_updates; ?>"
+								   data-resume-update="<?php echo $give_updates->resume_updates(); ?>">
+									<strong><?php echo sprintf( __( 'Update 1 of %s', 'give' ), $db_updates ); ?></strong></p>
 								<div class="progress-content"></div>
 							</div>
 						</div>

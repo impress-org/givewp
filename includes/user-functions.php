@@ -410,7 +410,7 @@ function give_validate_user_password( $password = '', $confirm_password = '', $r
 	if( $password || $confirm_password ) {
 		if ( strlen( $password ) < 6 || strlen( $confirm_password ) < 6 ) {
 			// Seems Weak Password
-			give_set_error( 'password_weak', __( 'Passwords should have atleast 6 characters.', 'give' ) );
+			give_set_error( 'password_weak', __( 'Passwords should have at least 6 characters.', 'give' ) );
 			$valid = false;
 		}
 		if ( $password && $confirm_password ) {

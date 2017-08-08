@@ -63,6 +63,7 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 
 		$offset     = ( $this->step - 1 ) * $this->per_step;
 		$step_items = array_slice( $items, $offset, $this->per_step );
+		$meta_table = __give_v20_bc_table_details( 'payment' );
 
 		if ( $step_items ) {
 
@@ -89,7 +90,7 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 				switch ( $type ) {
 					case 'other':
 						$sql[] = "DELETE FROM $wpdb->posts WHERE id IN ($ids)";
-						$sql[] = "DELETE FROM $wpdb->postmeta WHERE post_id IN ($ids)";
+						$sql[] = "DELETE FROM {$meta_table['name']} WHERE {$meta_table['column']['id']} IN ($ids)";
 						$sql[] = "DELETE FROM $wpdb->comments WHERE comment_post_ID IN ($ids)";
 						$sql[] = "DELETE FROM $wpdb->commentmeta WHERE comment_id NOT IN (SELECT comment_ID FROM $wpdb->comments)";
 						break;
@@ -222,15 +223,15 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 			$items = array();
 
 			$args = apply_filters( 'give_tools_reset_stats_total_args', array(
-				'post_type'      => 'give_payment',
-				'post_status'    => 'any',
 				'posts_per_page' => - 1,
 				// ONLY TEST MODE TRANSACTIONS!!!
 				'meta_key'   => '_give_payment_mode',
-				'meta_value' => 'test'
+				'meta_value' => 'test',
 			) );
 
-			$posts = get_posts( $args );
+			$posts = new Give_Payments_Query( $args );
+			$posts = $posts->get_payments();
+
 			foreach ( $posts as $post ) {
 				$items[] = array(
 					'id'   => (int) $post->ID,

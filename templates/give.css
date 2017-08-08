@@ -802,19 +802,21 @@ form.give-form {
       #give-recurring-form .form-row label.checkbox,
       form.give-form .form-row label.checkbox {
         display: inline; }
-    form[id*='give-form'] .form-row select, form[id*='give-form'] .form-row textarea, form[id*='give-form'] .form-row input[type="text"], form[id*='give-form'] .form-row input[type="tel"], form[id*='give-form'] .form-row input[type="email"], form[id*='give-form'] .form-row input[type="password"],
+    form[id*='give-form'] .form-row select, form[id*='give-form'] .form-row textarea, form[id*='give-form'] .form-row input[type="text"], form[id*='give-form'] .form-row input[type="tel"], form[id*='give-form'] .form-row input[type="email"], form[id*='give-form'] .form-row input[type="password"], form[id*='give-form'] .form-row input[type="url"],
     #give-recurring-form .form-row select,
     #give-recurring-form .form-row textarea,
     #give-recurring-form .form-row input[type="text"],
     #give-recurring-form .form-row input[type="tel"],
     #give-recurring-form .form-row input[type="email"],
     #give-recurring-form .form-row input[type="password"],
+    #give-recurring-form .form-row input[type="url"],
     form.give-form .form-row select,
     form.give-form .form-row textarea,
     form.give-form .form-row input[type="text"],
     form.give-form .form-row input[type="tel"],
     form.give-form .form-row input[type="email"],
-    form.give-form .form-row input[type="password"] {
+    form.give-form .form-row input[type="password"],
+    form.give-form .form-row input[type="url"] {
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
       box-sizing: border-box;
@@ -826,33 +828,37 @@ form.give-form {
       border: 1px solid #ccc;
       margin: 0;
       padding: .5em; }
-      form[id*='give-form'] .form-row select:focus, form[id*='give-form'] .form-row textarea:focus, form[id*='give-form'] .form-row input[type="text"]:focus, form[id*='give-form'] .form-row input[type="tel"]:focus, form[id*='give-form'] .form-row input[type="email"]:focus, form[id*='give-form'] .form-row input[type="password"]:focus,
+      form[id*='give-form'] .form-row select:focus, form[id*='give-form'] .form-row textarea:focus, form[id*='give-form'] .form-row input[type="text"]:focus, form[id*='give-form'] .form-row input[type="tel"]:focus, form[id*='give-form'] .form-row input[type="email"]:focus, form[id*='give-form'] .form-row input[type="password"]:focus, form[id*='give-form'] .form-row input[type="url"]:focus,
       #give-recurring-form .form-row select:focus,
       #give-recurring-form .form-row textarea:focus,
       #give-recurring-form .form-row input[type="text"]:focus,
       #give-recurring-form .form-row input[type="tel"]:focus,
       #give-recurring-form .form-row input[type="email"]:focus,
       #give-recurring-form .form-row input[type="password"]:focus,
+      #give-recurring-form .form-row input[type="url"]:focus,
       form.give-form .form-row select:focus,
       form.give-form .form-row textarea:focus,
       form.give-form .form-row input[type="text"]:focus,
       form.give-form .form-row input[type="tel"]:focus,
       form.give-form .form-row input[type="email"]:focus,
-      form.give-form .form-row input[type="password"]:focus {
+      form.give-form .form-row input[type="password"]:focus,
+      form.give-form .form-row input[type="url"]:focus {
         background-color: #fff; }
-      form[id*='give-form'] .form-row select.required, form[id*='give-form'] .form-row textarea.required, form[id*='give-form'] .form-row input[type="text"].required, form[id*='give-form'] .form-row input[type="tel"].required, form[id*='give-form'] .form-row input[type="email"].required, form[id*='give-form'] .form-row input[type="password"].required,
+      form[id*='give-form'] .form-row select.required, form[id*='give-form'] .form-row textarea.required, form[id*='give-form'] .form-row input[type="text"].required, form[id*='give-form'] .form-row input[type="tel"].required, form[id*='give-form'] .form-row input[type="email"].required, form[id*='give-form'] .form-row input[type="password"].required, form[id*='give-form'] .form-row input[type="url"].required,
       #give-recurring-form .form-row select.required,
       #give-recurring-form .form-row textarea.required,
       #give-recurring-form .form-row input[type="text"].required,
       #give-recurring-form .form-row input[type="tel"].required,
       #give-recurring-form .form-row input[type="email"].required,
       #give-recurring-form .form-row input[type="password"].required,
+      #give-recurring-form .form-row input[type="url"].required,
       form.give-form .form-row select.required,
       form.give-form .form-row textarea.required,
       form.give-form .form-row input[type="text"].required,
       form.give-form .form-row input[type="tel"].required,
       form.give-form .form-row input[type="email"].required,
-      form.give-form .form-row input[type="password"].required {
+      form.give-form .form-row input[type="password"].required,
+      form.give-form .form-row input[type="url"].required {
         color: #333; }
   form[id*='give-form'] .form-row-first,
   form[id*='give-form'] .form-row-last,
@@ -2012,7 +2018,9 @@ form.floated-labels .styled.select {
   z-index: 2147483540;
   position: fixed;
   outline: none !important;
-  -webkit-backface-visibility: hidden; }
+  -webkit-backface-visibility: hidden;
+  -webkit-overflow-scrolling: touch;
+  -webkit-transform: translateZ(0); }
   .give-modal form[id*='give-form'] {
     margin-bottom: 0; }
     .give-modal form[id*='give-form'] .give-submit {

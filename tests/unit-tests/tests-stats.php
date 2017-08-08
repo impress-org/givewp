@@ -3,7 +3,7 @@
 /**
  * @group give_stats
  */
-class Tests_Stats extends WP_UnitTestCase {
+class Tests_Stats extends Give_Unit_Test_Case {
 
 	protected $_post;
 	protected $_stats;
@@ -163,6 +163,7 @@ class Tests_Stats extends WP_UnitTestCase {
 		$best_selling = $stats->get_best_selling();
 
 		//Best selling should return an array ordered by sale count
+		$this->assertTrue( ! empty( $best_selling ) );
 		$this->assertLessThan( $best_selling[0]->sales, $best_selling[1]->sales );
 
 	}

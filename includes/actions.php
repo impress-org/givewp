@@ -237,6 +237,9 @@ function give_set_donation_levels_max_min_amount( $form_id ) {
 		return;
 	}
 
+	// Sanitize donation level amounts.
+	$donation_levels_amounts = array_map( 'give_maybe_sanitize_amount', $donation_levels_amounts );
+
 	$min_amount = min( $donation_levels_amounts );
 	$max_amount = max( $donation_levels_amounts );
 

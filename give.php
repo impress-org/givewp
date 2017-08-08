@@ -202,16 +202,16 @@ if ( ! class_exists( 'Give' ) ) :
 		public $logs;
 
 		/**
-		 * Give payment meta Object
+		 * Give payment Object
 		 *
-		 * @var    Give_DB_Payment_Meta $notices
+		 * @var    Give_DB_Payment_Meta $payment_meta
 		 */
 		public $payment_meta;
 
 		/**
-		 * Give form meta Object
+		 * Give form Object
 		 *
-		 * @var    Give_DB_form_Meta $notices
+		 * @var    Give_DB_Form_Meta $form_meta
 		 */
 		public $form_meta;
 
@@ -290,6 +290,7 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->notices         = new Give_Notices();
 			$this->payment_meta    = new Give_DB_Payment_Meta();
 			$this->logs            = new Give_Logging();
+			$this->payment_meta    = new Give_DB_Payment_Meta();
 			$this->form_meta       = new Give_DB_Form_Meta();
 
 			/**
@@ -408,6 +409,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-template-loader.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donate-form.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-meta.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-donors.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-donor-meta.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donor.php';
