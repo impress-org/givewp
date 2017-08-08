@@ -11,7 +11,7 @@ build:
       WP_VERSION: latest
   dependencies:
     before:
-      - "bash tests/bin/install.sh woocommerce_test root '' localhost $WP_VERSION"
+      - "bash tests/bin/install.sh give_test root '' localhost $WP_VERSION"
   tests:
     override:
       -
@@ -42,17 +42,9 @@ checks:
     verify_property_names: false
 filter:
   excluded_paths:
-    - apigen/
-    - dummy-data/
-    - i18n/
-    - includes/api/legacy/
-    - includes/class-wc-legacy-api.php
-    - includes/gateways/simplify-commerce-deprecated/
-    - includes/gateways/simplify-commerce/includes/
-    - includes/legacy/
+    - .github/
     - includes/libraries/
-    - includes/shipping/legacy-*
-    - includes/updates/
-    - includes/vendor/
-    - includes/wc-deprecated-functions.php
+    - includes/deprecated/
+    - bower/
+    - languages/
     - tests/

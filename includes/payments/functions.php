@@ -262,9 +262,15 @@ function give_create_payment( $payment_data ) {
  */
 function give_update_payment_status( $payment_id, $new_status = 'publish' ) {
 
-	$payment         = new Give_Payment( $payment_id );
-	$payment->status = $new_status;
-	$updated         = $payment->save();
+	$updated = false;
+	$payment = new Give_Payment( $payment_id );
+
+	if( $payment && $payment->ID > 0 ) {
+
+		$payment->status = $new_status;
+		$updated = $payment->save();
+
+	}
 
 	return $updated;
 }
@@ -412,7 +418,7 @@ function give_count_payments( $args = array() ) {
 
 	$select = 'SELECT p.post_status,count( * ) AS num_posts';
 	$join   = '';
-	$where  = "WHERE p.post_type = 'give_payment'";
+	$where  = "WHERE p.post_type = 'give_payment' AND p.post_status IN ('". implode( "','", give_get_payment_status_keys() ). "')";
 
 	// Count payments for a specific user.
 	if ( ! empty( $args['user'] ) ) {
@@ -604,6 +610,16 @@ function give_check_for_existing_payment( $payment_id ) {
  */
 function give_get_payment_status( $payment, $return_label = false ) {
 
+	if( is_numeric( $payment ) ) {
+
+		$payment = new Give_Payment( $payment );
+
+		if( ! $payment->ID > 0 ) {
+			return false;
+		}
+
+	}
+
 	if ( ! is_object( $payment ) || ! isset( $payment->post_status ) ) {
 		return false;
 	}
@@ -614,7 +630,7 @@ function give_get_payment_status( $payment, $return_label = false ) {
 		return false;
 	}
 
-	// Get payment object if no already given.
+	// Get payment object if not already given.
 	$payment = $payment instanceof Give_Payment ? $payment : new Give_Payment( $payment->ID );
 
 	if ( array_key_exists( $payment->status, $statuses ) ) {
