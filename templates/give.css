@@ -1262,7 +1262,8 @@ form[id*='give-form'] select.give-select-level {
   clear: both;
   color: #333;
   background-color: #FDFDFD;
-  padding: .5em; }
+  padding: .5em;
+  max-width: 100%; }
 
 /*---------------------------------
 Buttons
