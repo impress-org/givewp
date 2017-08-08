@@ -392,3 +392,75 @@ function _give_show_test_mode_notice_in_admin_bar( $wp_admin_bar ) {
 	return true;
 }
 add_action( 'admin_bar_menu', '_give_show_test_mode_notice_in_admin_bar', 1000, 1 );
+
+
+function give_import_page_link_callback() {
+	?>
+	<a href="<?php echo esc_url( give_import_page_url() ); ?>"
+	   class="page-import-action page-title-action"><?php esc_html_e( 'Import Donations', 'give-manual-donations' ); ?></a>
+	<?php
+
+	// Check if view donation single page only.
+	if ( 'view-payment-details' === (string) sanitize_text_field( $_REQUEST['view'] ) && 'give-payment-history' === (string) sanitize_text_field( $_REQUEST['page'] ) ) {
+		?>
+		<style type="text/css">
+			.wrap #transaction-details-heading {
+				display: inline-block;
+			}
+		</style>
+		<?php
+	}
+}
+add_action( 'give_payments_page_top', 'give_import_page_link_callback', 11 );
+add_action( 'give_view_order_details_before', 'give_import_page_link_callback', 11 );
+
+
+function give_donation_import_callback() {
+	$fields = isset( $_POST['fields'] ) ? $_POST['fields'] : null;
+	parse_str( $fields );
+	$start    = (int) sanitize_text_field( $_REQUEST['start'] );
+	$end      = (int) sanitize_text_field( $_REQUEST['end'] );
+	$next     = (int) sanitize_text_field( $_REQUEST['next'] );
+	$total    = (int) sanitize_text_field( $_REQUEST['total'] );
+	$per_page = (int) sanitize_text_field( $_REQUEST['per_page'] );
+	if ( empty( $delimiter ) ) {
+		$delimiter = ',';
+	}
+	$new_data = array();
+	// processing done here.
+	$raw_data = give_get_donation_data_from_csv( $csv, $start, $end, $delimiter );
+	$raw_key  = maybe_unserialize( $mapto );
+	foreach ( $raw_data as $row_data ) {
+		give_save_import_donation_to_db( $raw_key, $row_data );
+	}
+	if ( $next == false ) {
+		$json_data = array(
+			'success' => true,
+			'message' => __( 'All donation uploaded successfully!', 'give-manual-donations' ),
+		);
+	} else {
+		$index_start = $start;
+		$index_end   = $end;
+		$last        = false;
+		$next        = true;
+		if ( $next ) {
+			$index_start = $index_start + $per_page;
+			$index_end   = $per_page + ( $index_start - 1 );
+		}
+		if ( $index_end >= $total ) {
+			$index_end = $total;
+			$last      = true;
+		}
+		$json_data = array(
+			'raw_data' => $raw_data,
+			'raw_key'  => $raw_key,
+			'new_data' => $new_data,
+			'next'     => $next,
+			'start'    => $index_start,
+			'end'      => $index_end,
+			'last'     => $last,
+		);
+	}
+	wp_die( json_encode( $json_data ) );
+}
+add_action( 'wp_ajax_give_donation_import', 'give_donation_import_callback' );

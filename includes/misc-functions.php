@@ -1274,8 +1274,79 @@ function give_set_upgrade_complete( $upgrade_action = '' ) {
  * @return array The array of completed upgrades
  */
 function give_get_completed_upgrades() {
-
 	return (array) get_option( 'give_completed_upgrades' );
-
 }
 
+
+/**
+ * Return Import Page URL
+ *
+ * @since 1.8.13
+ *
+ * @param array $parameter
+ *
+ * @return string URL
+ */
+function give_import_page_url( $parameter = array() ) {
+	$defalut_query_arg = array(
+		'post_type' => 'give_forms',
+		'page'      => 'give-tools',
+		'tab'       => 'import',
+	);
+	$import_query_arg = wp_parse_args( $parameter, $defalut_query_arg );
+	return add_query_arg( $import_query_arg, admin_url( 'edit.php' ) );
+}
+
+
+function give_save_import_donation_to_db( $raw_key, $row_data ) {
+	$data = array_combine( $raw_key, $row_data );
+	if ( ! empty( $data['_give_payment_customer_id'] ) && $user_data = get_userdata( (int) $data['_give_payment_customer_id'] ) ) {
+		echo 'id';
+		$customer_id = $user_data->ID;
+	} else {
+		$user_data = get_user_by( 'email', $data['email'].'dsfs' );
+		if ( $user_data ) {
+			$customer_id = $user_data->ID;
+		} else {
+			// This action was added to remove the login when using the give register function.
+			add_action( 'give_insert_user', 'give_insert_user_csv_callback', 11 );
+			$customer_id = give_register_and_login_new_user( array(
+				'user_login'      => $data['email'],
+				'user_email'      => $data['email'],
+				'user_registered' => date( 'Y-m-d H:i:s' ),
+				'user_first'      => $data['first_name'],
+				'user_last'       => $data['last_name'],
+				'role'            => get_option( 'default_role' ),
+			) );
+			remove_action( 'give_insert_user', 'give_insert_user_csv_callback', 11 );
+		}
+	}
+}
+
+function give_insert_user_csv_callback( $user_id ) {
+	return $user_id;
+}
+
+/**
+ * Import CSV in DB
+ *
+ * @param int $file_id CSV id
+ * @param array $mapto Map csv to meta key.
+ * @param int $start Start from which csv line.
+ * @param int $end End from which csv line.
+ */
+function give_get_donation_data_from_csv( $file_id, $start, $end, $delimiter = ',' ) {
+	$raw_data = array();
+	$file_dir = get_attached_file( $file_id );
+	$count    = 0;
+	if ( false !== ( $handle = fopen( $file_dir, 'r' ) ) ) {
+		while ( false !== ( $row = fgetcsv( $handle, 0, $delimiter ) ) ) {
+			if ( $count >= $start && $count <= $end ) {
+				$raw_data[] = $row;
+			}
+			$count ++;
+		}
+		fclose( $handle );
+	}
+	return $raw_data;
+}

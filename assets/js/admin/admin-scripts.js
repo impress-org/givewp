@@ -2171,3 +2171,64 @@ function get_url_params() {
 	}
 	return vars;
 }
+
+/**
+ * Run when user click on upload CSV.
+ *
+ * @since 1.8.13
+ */
+function give_on_donation_import_start() {
+    give_on_donation_import_ajax();
+}
+
+/**
+ * Upload CSV ajax
+ *
+ * @since 1.8.13
+ */
+function give_on_donation_import_ajax() {
+    var $form = jQuery('form.tools-setting-page-import');
+
+    var progress = jQuery($form).find('progress');
+    var start = jQuery(progress).data('start');
+    var end = jQuery(progress).data('end');
+    var next = jQuery(progress).data('next');
+    var total = jQuery(progress).data('total');
+    var per_page = jQuery(progress).data('per_page');
+
+    jQuery.ajax({
+        type: 'POST',
+        url: ajaxurl,
+        data: {
+            action: give_vars.give_donation_import,
+            start: start,
+            end: end,
+            next: next,
+            total: total,
+            per_page: per_page,
+            fields: $form.serialize()
+        },
+        dataType: 'json',
+        success: function ( response ) {
+            console.log( response );
+            if( response.next == true ) {
+                jQuery(progress).data( 'start', response.start );
+                jQuery(progress).data( 'end', response.end );
+
+                if( response.last == true ){
+                    jQuery( progress ).data( 'next', false );
+                }
+                give_on_donation_import_ajax();
+            } else {
+                if( response.success == true ) {
+                    alert( response.message );
+                } else {
+                    alert( give_vars.error_message );
+                }
+            }
+        },
+        error: function () {
+            alert( give_vars.error_message );
+        }
+    });
+}
