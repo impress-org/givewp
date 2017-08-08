@@ -3,7 +3,7 @@
 /**
  * @group give_stats
  */
-class Tests_Stats extends WP_UnitTestCase {
+class Tests_Stats extends Give_Unit_Test_Case {
 
 	protected $_post;
 	protected $_stats;

@@ -859,7 +859,7 @@ jQuery.noConflict();
 			self.el.main_container          = Give_Selector_Cache.get('#give-db-updates');
 			self.el.update_link             = Give_Selector_Cache.get('a', self.el.main_container);
 			self.el.progress_main_container = Give_Selector_Cache.get('.progress-container', self.el.main_container);
-			self.el.heading                 = Give_Selector_Cache.get('strong.update-message', self.el.progress_main_container);
+			self.el.heading                 = Give_Selector_Cache.get('.update-message', self.el.progress_main_container);
 			self.el.progress_container      = Give_Selector_Cache.get('.progress-content', self.el.progress_main_container);
 
 			// Bailout
@@ -915,7 +915,7 @@ jQuery.noConflict();
 						if (response.success) {
 							// Update steps info
 							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
-								self.el.heading.text(response.data.heading);
+								self.el.heading.html('<strong>' + response.data.heading + '</strong>');
 							}
 
 							self.el.update_link.closest('p').remove();
@@ -924,9 +924,8 @@ jQuery.noConflict();
 						} else {
 							// Update steps info
 							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
-								self.el.heading.text(response.data.heading);
+								self.el.heading.html('<strong>' + response.data.heading + '</strong>');
 							}
-
 
 							notice_wrap.html('<div class="notice notice-error"><p>' + response.data.message + '</p></div>');
 
@@ -945,7 +944,7 @@ jQuery.noConflict();
 
 						// Update steps info
 						if (-1 !== $.inArray('heading', Object.keys(response.data))) {
-							self.el.heading.text(response.data.heading.replace('{update_count}', self.el.heading.data('update-count')));
+							self.el.heading.html('<strong>' + response.data.heading.replace('{update_count}', self.el.heading.data('update-count')) + '</strong>');
 						}
 
 						self.process_step(parseInt(response.data.step), response.data.update, self);

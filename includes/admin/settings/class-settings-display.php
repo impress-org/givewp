@@ -66,7 +66,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						array(
 							'name' => __( 'Floating Labels', 'give' ),
 							/* translators: %s: http://docs.givewp.com/form-floating-labels */
-							'desc' => sprintf( wp_kses( __( '<a href="%s" target="_blank">Floating labels</a> allows your lables to be inset within the form fields to provide a cleaner form appearance. Note that if the "Disable CSS" option is enabled, you will need to style the floating labels yourself.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( 'http://docs.givewp.com/form-floating-labels' ) ),
+							'desc' => sprintf( wp_kses( __( '<a href="%s" target="_blank">Floating labels</a> allows your labels to be inset within the form fields to provide a cleaner form appearance. Note that if the "Disable CSS" option is enabled, you will need to style the floating labels yourself.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( 'http://docs.givewp.com/form-floating-labels' ) ),
 							'id'   => 'floatlabels',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
