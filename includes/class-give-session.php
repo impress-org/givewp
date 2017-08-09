@@ -118,7 +118,7 @@ class Give_Session {
 
 		// Init Session.
 		if ( empty( $this->session ) && ! $this->use_php_sessions ) {
-			add_action( 'plugins_loaded', array( $this, 'init' ), - 1 );
+			add_action( 'plugins_loaded', array( $this, 'init' ), 9999 );
 		} else {
 			add_action( 'init', array( $this, 'init' ), - 1 );
 		}
@@ -174,7 +174,7 @@ class Give_Session {
 	 *
 	 * @param  string $key Session key.
 	 *
-	 * @return string      Session variable.
+	 * @return string|array      Session variable.
 	 */
 	public function get( $key ) {
 		$key = sanitize_key( $key );
