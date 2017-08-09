@@ -376,7 +376,7 @@ function give_process_profile_editor_updates( $data ) {
 	$state        = ( isset( $data['give_address_state'] ) ? sanitize_text_field( $data['give_address_state'] ) : '' );
 	$zip          = ( isset( $data['give_address_zip'] ) ? sanitize_text_field( $data['give_address_zip'] ) : '' );
 	$country      = ( isset( $data['give_address_country'] ) ? sanitize_text_field( $data['give_address_country'] ) : '' );
-	$full_name    = $first_name . ' ' . $last_name;
+	$full_name    = trim("{$first_name} {$last_name}");
 
 	$userdata = array(
 		'ID'           => $user_id,
