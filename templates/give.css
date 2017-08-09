@@ -1316,9 +1316,9 @@ CC Validation
   background-repeat: no-repeat;
   background-position: 98% 50%;
   background-size: 16px; }
-  #give_purchase_form_wrap input.give-input.card-number.valid.floatlabel-input:not(.card-cvc):not(.card-expiry),
-  #give_purchase_form_wrap input.give-input.card-cvc.valid.floatlabel-input:not(.card-cvc):not(.card-expiry),
-  #give_purchase_form_wrap input.give-input.card-expiry.valid.floatlabel-input:not(.card-cvc):not(.card-expiry) {
+  #give_purchase_form_wrap input.give-input.card-number.valid.fl-input:not(.card-cvc):not(.card-expiry),
+  #give_purchase_form_wrap input.give-input.card-cvc.valid.fl-input:not(.card-cvc):not(.card-expiry),
+  #give_purchase_form_wrap input.give-input.card-expiry.valid.fl-input:not(.card-cvc):not(.card-expiry) {
     background-image: url("../assets/images/tick-alt.png");
     background-position: 100% 50%;
     background-size: 72px 16px; }
@@ -1331,7 +1331,7 @@ CC Validation
   height: 26px;
   background-size: 37px 26px !important; }
 
-#give_purchase_form_wrap .floatlabel span.card-type {
+#give_purchase_form_wrap .fl-wrap span.card-type {
   top: 11px;
   right: 11px; }
 
@@ -2051,79 +2051,217 @@ Avada
 /*!
  * Float Labels
  *
- * Version: 1.0.8
+ * Version: 3.0.2
  * Author: Paul Ryley (http://geminilabs.io)
  * URL: https://github.com/geminilabs/float-labels.js
  * License: MIT
  */
-form.floated-labels .floatlabel {
-  position: relative; }
-  form.floated-labels .floatlabel input[type="text"], form.floated-labels .floatlabel input[type="tel"], form.floated-labels .floatlabel input[type="email"], form.floated-labels .floatlabel input[type="password"],
-  form.floated-labels .floatlabel input,
-  form.floated-labels .floatlabel select,
-  form.floated-labels .floatlabel textarea {
-    font-size: 16px;
-    line-height: normal;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    padding: 12px; }
-  form.floated-labels .floatlabel select {
-    position: relative;
-    color: #aaa;
-    cursor: pointer;
-    -webkit-appearance: none;
-    -moz-appearance: none; }
-  form.floated-labels .floatlabel.is-active label.floatlabel-label {
-    opacity: 1;
-    visibility: visible; }
-  form.floated-labels .floatlabel.is-active input,
-  form.floated-labels .floatlabel.is-active select,
-  form.floated-labels .floatlabel.is-active textarea {
-    color: #333;
-    background-color: #fff;
-    border-color: #ccc;
-    padding-top: 20px;
-    padding-bottom: 4px; }
-  form.floated-labels .floatlabel.is-focused label.floatlabel-label {
-    color: #007ba4; }
-  form.floated-labels .floatlabel.is-focused input,
-  form.floated-labels .floatlabel.is-focused select,
-  form.floated-labels .floatlabel.is-focused textarea {
-    background-color: #fff;
-    border-color: #ccc; }
-  form.floated-labels .floatlabel label.floatlabel-label {
-    position: absolute;
-    display: block;
-    top: 8px;
-    left: 12px;
-    color: #aaa;
-    font-size: 11px;
-    line-height: 1;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease-in-out;
-    padding: 0 1px; }
-    form.floated-labels .floatlabel label.floatlabel-label.is-visible {
-      opacity: 1;
-      visibility: visible; }
+[id*="give-form"] .fl-form .fl-wrap {
+  position: relative;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
 
-form.floated-labels .styled.select {
-  position: relative; }
-  form.floated-labels .styled.select:before, form.floated-labels .styled.select:after {
-    content: '';
-    position: absolute;
-    display: block;
-    top: 24px;
-    height: 2px;
-    width: 6px;
-    background: #aaa;
-    z-index: 2; }
-  form.floated-labels .styled.select:before {
-    right: 18px;
-    transform: skew(0deg, 45deg); }
-  form.floated-labels .styled.select:after {
-    right: 12px;
-    transform: skew(0deg, -45deg); }
+[id*="give-form"] .fl-form input.fl-input,
+[id*="give-form"] .fl-form select.fl-select,
+[id*="give-form"] .fl-form textarea.fl-textarea {
+  width: 100%;
+  outline: 0;
+  font-size: 16px;
+  line-height: normal;
+  border-radius: 0;
+  border: 1px solid #ccc;
+  background-color: inherit;
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
+  margin-bottom: 0; }
+  [id*="give-form"] .fl-form input.fl-input:-moz-placeholder,
+  [id*="give-form"] .fl-form select.fl-select:-moz-placeholder,
+  [id*="give-form"] .fl-form textarea.fl-textarea:-moz-placeholder {
+    color: #bbb; }
+  [id*="give-form"] .fl-form input.fl-input::-moz-placeholder,
+  [id*="give-form"] .fl-form select.fl-select::-moz-placeholder,
+  [id*="give-form"] .fl-form textarea.fl-textarea::-moz-placeholder {
+    color: #bbb; }
+  [id*="give-form"] .fl-form input.fl-input:-ms-input-placeholder,
+  [id*="give-form"] .fl-form select.fl-select:-ms-input-placeholder,
+  [id*="give-form"] .fl-form textarea.fl-textarea:-ms-input-placeholder {
+    color: #bbb; }
+  [id*="give-form"] .fl-form input.fl-input::-webkit-input-placeholder,
+  [id*="give-form"] .fl-form select.fl-select::-webkit-input-placeholder,
+  [id*="give-form"] .fl-form textarea.fl-textarea::-webkit-input-placeholder {
+    color: #bbb; }
+
+[id*="give-form"] .fl-form select.fl-select {
+  position: relative;
+  color: #bbb;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none; }
+
+[id*="give-form"] .fl-form .fl-is-active input.fl-input,
+[id*="give-form"] .fl-form .fl-is-active select.fl-select,
+[id*="give-form"] .fl-form .fl-is-active textarea.fl-textarea {
+  color: #333;
+  background-color: inherit;
+  border-color: #ccc; }
+
+[id*="give-form"] .fl-form .fl-has-focus input.fl-input,
+[id*="give-form"] .fl-form .fl-has-focus select.fl-select,
+[id*="give-form"] .fl-form .fl-has-focus textarea.fl-textarea {
+  background-color: inherit;
+  border-color: #ccc; }
+
+[id*="give-form"] .fl-form label.fl-label {
+  opacity: 0;
+  visibility: hidden;
+  display: block;
+  position: absolute;
+  top: -12px;
+  left: 0;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  color: #bbb;
+  border-radius-top-left: 0;
+  transition: all 0.2s ease-in-out;
+  z-index: 1; }
+
+[id*="give-form"] .fl-form .fl-is-active label.fl-label {
+  opacity: 1;
+  visibility: visible; }
+
+[id*="give-form"] .fl-form .fl-has-focus label.fl-label {
+  color: #1976D2; }
+
+[id*="give-form"] .fl-form .fl-is-required:before {
+  opacity: 1;
+  content: '*';
+  display: block;
+  position: absolute;
+  top: 1px;
+  right: 18px;
+  font-size: 16px;
+  line-height: 1.75;
+  color: #D32F2F;
+  transition: all 0.2s ease-in-out;
+  padding: 6px 0 0;
+  z-index: 1; }
+
+[id*="give-form"] .fl-form .fl-is-required.fl-is-active:before {
+  opacity: 0; }
+
+[id*="give-form"] .fl-form.fl-style-1 input.fl-input,
+[id*="give-form"] .fl-form.fl-style-1 select.fl-select,
+[id*="give-form"] .fl-form.fl-style-1 textarea.fl-textarea {
+  padding: 6px 12px; }
+
+[id*="give-form"] .fl-form.fl-style-1 select.fl-select {
+  height: 44px; }
+
+[id*="give-form"] .fl-form.fl-style-1 .fl-is-active input.fl-input,
+[id*="give-form"] .fl-form.fl-style-1 .fl-is-active select.fl-select,
+[id*="give-form"] .fl-form.fl-style-1 .fl-is-active textarea.fl-textarea {
+  padding: 6px 12px; }
+
+[id*="give-form"] .fl-form.fl-style-1 label.fl-label {
+  top: 1px;
+  left: 10px;
+  background-color: transparent;
+  padding: 12px 3px; }
+
+[id*="give-form"] .fl-form.fl-style-1 label.fl-label:before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 19px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: inherit;
+  z-index: -1; }
+
+[id*="give-form"] .fl-form.fl-style-1 .fl-is-active label.fl-label {
+  top: -9px;
+  padding: 3px; }
+
+[id*="give-form"] .fl-form.fl-style-1 .fl-is-active label.fl-label:before {
+  top: 9px; }
+
+[id*="give-form"] .fl-form.fl-style-2 input.fl-input,
+[id*="give-form"] .fl-form.fl-style-2 select.fl-select,
+[id*="give-form"] .fl-form.fl-style-2 textarea.fl-textarea {
+  padding: 12px; }
+
+[id*="give-form"] .fl-form.fl-style-2 select.fl-select {
+  height: 56px; }
+
+[id*="give-form"] .fl-form.fl-style-2 .fl-is-active input.fl-input,
+[id*="give-form"] .fl-form.fl-style-2 .fl-is-active select.fl-select,
+[id*="give-form"] .fl-form.fl-style-2 .fl-is-active textarea.fl-textarea {
+  padding: 18px 12px 6px; }
+
+[id*="give-form"] .fl-form.fl-style-2 label.fl-label {
+  top: 1px;
+  left: 10px;
+  background-color: inherit;
+  padding: 6px 3px 3px; }
+
+[id*="give-form"] .fl-form.fl-style-2 .fl-has-focus label.fl-label {
+  background-color: inherit; }
+
+[id*="give-form"] .fl-form.fl-style-2 .fl-is-active label.fl-label {
+  background-color: inherit; }
+
+[id*="give-form"] .fl-form.fl-style-2 .fl-is-required:before {
+  padding-top: 12px; }
+
+[id*="give-form"] .fl-form .fl-wrap-select:after {
+  content: '';
+  position: absolute;
+  display: block;
+  top: 1px;
+  right: 6px;
+  height: calc(100% - 2px);
+  width: 15px;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 16'><path fill='#bbb' d='M 4 0 L 0 6.5 L 8 6.5 L 4 0 z M 0 9.5 L 4 16 L 4 16 L 8 9.5 z'/></svg>") no-repeat;
+  background-position: 100% 50%;
+  background-size: 7px 14px;
+  z-index: 2; }
+
+[id*="give-form"] .fl-form.fl-style-give input.fl-input,
+[id*="give-form"] .fl-form.fl-style-give select.fl-select,
+[id*="give-form"] .fl-form.fl-style-give textarea.fl-textarea {
+  padding: 12px; }
+
+[id*="give-form"] .fl-form.fl-style-give select.fl-select {
+  height: 45px; }
+
+[id*="give-form"] .fl-form.fl-style-give .fl-is-active input.fl-input,
+[id*="give-form"] .fl-form.fl-style-give .fl-is-active select.fl-select,
+[id*="give-form"] .fl-form.fl-style-give .fl-is-active textarea.fl-textarea {
+  padding: 20px 12px 4px; }
+
+[id*="give-form"] .fl-form.fl-style-give label.fl-label {
+  top: 1px;
+  left: 13px;
+  padding: 6px 0 0; }
+
+[id*="give-form"] .fl-form.fl-style-give .fl-is-required:before {
+  padding-top: 12px; }
+
+[id*="give-form"] .fl-form.fl-style-give label.fl-label .give-required-indicator {
+  display: none; }
+
+[id*="give-form"] .fl-form.fl-style-give label.fl-label .give-tooltip {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  z-index: 1; }
+  [id*="give-form"] .fl-form.fl-style-give label.fl-label .give-tooltip::before {
+    content: unset; }
 
 /**
  * Give Magnific Modal Custom SCSS
