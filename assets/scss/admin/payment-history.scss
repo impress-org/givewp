@@ -40,7 +40,11 @@
   	// Prevent select from causing line break flash.
   	#give_donation_forms_filter {
 	  display:inline-block;
-	  width:auto;
+	  width:30%;
+
+		@media screen and (max-width: 782px) {
+			width: 100%;
+		}
 	}
 
 	&:after {
