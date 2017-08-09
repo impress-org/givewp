@@ -393,7 +393,7 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 	/**
 	 * Tests get_first_name function of Give_Donor class.
 	 *
-	 * @since 1.8.12
+	 * @since 2.0
 	 *
 	 * @cover Give_Donor::get_first_name()
 	 */
@@ -414,7 +414,7 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 	/**
 	 * Tests get_last_name function of Give_Donor class.
 	 *
-	 * @since 1.8.12
+	 * @since 2.0
 	 *
 	 * @cover Give_Donor::get_last_name()
 	 */
@@ -434,7 +434,7 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 	/**
 	 * Tests split_donor_name function of Give_Donor class.
 	 *
-	 * @since 1.8.12
+	 * @since 2.0
 	 *
 	 * @cover Give_Donor::split_donor_name()
 	 */
