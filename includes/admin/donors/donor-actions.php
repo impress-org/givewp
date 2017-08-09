@@ -115,7 +115,7 @@ function give_edit_donor( $args ) {
 	// Sanitize the inputs
 	$donor_data            = array();
 	if( ! empty( $donor_info['first_name'] ) ) {
-		$donor_data['name'] = strip_tags( stripslashes( $donor_info['first_name'] . ' ' . $donor_info['last_name'] ) );
+		$donor_data['name'] = strip_tags( wp_unslash( trim( "{$donor_info['first_name']} {$donor_info['last_name']}" ) ) );
 	}
 	$donor_data['user_id'] = $donor_info['user_id'];
 
