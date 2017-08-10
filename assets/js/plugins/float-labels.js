@@ -1,10 +1,10 @@
 /*!
  * Float Labels
  *
- * Version: 3.0.2
- * Author: Paul Ryley (http://geminilabs.io)
- * URL: https://github.com/geminilabs/float-labels.js
- * License: MIT
+ * @version: 3.0.3
+ * @author: Paul Ryley (http://geminilabs.io)
+ * @url: https://geminilabs.github.io/float-labels.js
+ * @license: MIT
  */
 
 /** global: NodeList, Option */
@@ -77,14 +77,6 @@
 			};
 		},
 
-		/** @return void */
-		addEvents: function( el )
-		{
-			el.addEventListener( 'blur', this.events.blur );
-			el.addEventListener( 'input', this.events.input );
-			el.addEventListener( 'focus', this.events.focus );
-		},
-
 		/** @return null|void */
 		build: function( el )
 		{
@@ -96,7 +88,7 @@
 			labelEl.text = labelText;
 			this.setPlaceholder( labelText, el );
 			this.wrapLabel( labelEl, el );
-			this.addEvents( el );
+			this.handleEvents( el, 'add' );
 			if( typeof this.config[this.current].customEvent === 'function' ) {
 				this.config[this.current].customEvent.call( this, el );
 			}
@@ -145,7 +137,7 @@
 		/** @return string|false */
 		getLabel: function( el )
 		{
-			var label = this.sprintf( 'label[for="$0"]', el.getAttribute( 'id' ));
+			var label = 'label[for="' + el.getAttribute( 'id' ) + '"]';
 			var labelEl = this.el[this.current].querySelectorAll( label );
 			// check for multiple labels with identical 'for' attributes
 			if( labelEl.length > 1 ) {
@@ -176,6 +168,15 @@
 			return labelText;
 		},
 
+		/** @return void */
+		handleEvents: function( el, action )
+		{
+			var events = this.events;
+			['blur','input','focus'].forEach( function( event ) {
+				el[ action + 'EventListener']( event, events[event] );
+			});
+		},
+
 		/** @return bool */
 		hasParent: function( el )
 		{
@@ -188,22 +189,22 @@
 		},
 
 		/** @return void */
-		loop: function( callback1, callback2 ) {
+		loop: function( elCallback, fieldCallback ) {
 			for( var i = 0; i < this.el.length; ++i ) {
 				if( typeof this.selectors[i] === 'undefined' ) {
 					var config = this.extend( {}, this.defaults, this.options, this.el[i].getAttribute( 'data-options' ));
-					var exclude = this.sprintf( ':not($0)', config.exclude.split( /[\s,]+/ ).join( '):not(' ));
+					var exclude = ':not(' + config.exclude.split( /[\s,]+/ ).join( '):not(' ) + ')';
 					this.selectors[i] = config.transform.replace( /,/g, exclude + ',' ) + exclude;
 					this.config[i] = config;
 				}
 				var fields = this.el[i].querySelectorAll( this.selectors[i] );
 				this.current = i;
-				if( typeof callback1 === 'function' ) {
-					callback1.call( this, this.el[i], i );
+				if( typeof elCallback === 'function' ) {
+					elCallback.call( this, this.el[i], i );
 				}
 				for( var x = 0; x < fields.length; ++x ) {
-					if( typeof callback2 === 'function' ) {
-						callback2.call( this, fields[x], i );
+					if( typeof fieldCallback === 'function' ) {
+						fieldCallback.call( this, fields[x], i );
 					}
 				}
 			}
@@ -253,14 +254,6 @@
 			el.className = classes.join( ' ' ).trim();
 		},
 
-		/** @return void */
-		removeEvents: function( el )
-		{
-			el.removeEventListener( 'blur', this.events.blur );
-			el.removeEventListener( 'input', this.events.input );
-			el.removeEventListener( 'focus', this.events.focus );
-		},
-
 		/** @return null|void */
 		reset: function( el )
 		{
@@ -268,38 +261,47 @@
 			if( !this.hasParent( el ))return;
 			var fragment = document.createDocumentFragment();
 			while( parent.firstElementChild ) {
-				this.removeClasses( parent.firstElementChild );
-				fragment.appendChild( parent.firstElementChild );
+				var childEl = parent.firstElementChild;
+				this.removeClasses( childEl );
+				fragment.appendChild( childEl );
 			}
 			parent.parentNode.replaceChild( fragment, parent );
-			this.removeEvents( el );
+			this.resetPlaceholder( el );
+			this.handleEvents( el, 'remove' );
+		},
+
+		/** @return void */
+		resetPlaceholder: function( el )
+		{
+			var dataPlaceholder = 'data-placeholder';
+			var originalPlaceholder = el.getAttribute( dataPlaceholder );
+			if( originalPlaceholder !== null ) {
+				el.removeAttribute( dataPlaceholder );
+				el.setAttribute( 'placeholder', originalPlaceholder );
+			}
 		},
 
 		/** @return void */
 		setPlaceholder: function( labelText, el )
 		{
+			var placeholderText = el.getAttribute( 'placeholder' );
 			// add a placholder option to the select if it doesn't already exist
 			if( el.tagName === 'SELECT' ) {
-				if( el.firstElementChild.value !== '' ) {
-					el.insertBefore( new Option( labelText, '', true, true ), el.firstElementChild );
+				var childEl = el.firstElementChild;
+				if( childEl.value ) {
+					el.insertBefore( new Option( labelText, '', true, true ), childEl );
 				}
-				else if( el.firstElementChild.value === '' && el.options[0].text === '' ) {
-					el.firstElementChild.text = labelText;
+				else if( childEl.text === '' ) {
+					childEl.text = labelText;
 				}
 			}
 			// add a textarea/input placeholder attribute if it doesn't exist
-			else if( !el.getAttribute( 'placeholder' ) || this.config[this.current].prioritize === 'label' ) {
+			else if( !placeholderText || this.config[this.current].prioritize === 'label' ) {
+				if( placeholderText ) {
+					el.setAttribute( 'data-placeholder', placeholderText );
+				}
 				el.setAttribute( 'placeholder', labelText );
 			}
-		},
-
-		/** @return string */
-		sprintf: function( format )
-		{
-			var args = [].slice.call( arguments, 1, arguments.length );
-			return format.replace( /\$(\d+)/g, function( match, number ) {
-				return args[number] !== undefined ? args[number] : match;
-			});
 		},
 
 		/** @return void */
