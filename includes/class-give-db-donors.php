@@ -35,9 +35,11 @@ class Give_DB_Donors extends Give_DB {
 		/* @var WPDB $wpdb */
 		global $wpdb;
 
-		$this->table_name     = "{$wpdb->prefix}give_donors";
-		$this->primary_key    = 'id';
-		$this->version        = '1.0';
+		$wpdb->donors      = $this->table_name = "{$wpdb->prefix}give_donors";
+		$this->primary_key = 'id';
+		$this->version     = '1.0';
+
+		$this->bc_200_params();
 
 		// Set hooks and register table only if instance loading first time.
 		if ( ! ( Give()->donors instanceof Give_DB_Donors ) ) {
@@ -456,14 +458,14 @@ class Give_DB_Donors extends Give_DB {
 		if ( ! $donor = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $this->table_name WHERE $db_field = %s LIMIT 1", $value ) ) ) {
 
 			// Look for donor from an additional email.
-			if( 'email' === $field ) {
-				$meta_table  = Give()->donor_meta->table_name;
-				$donor_id = $wpdb->get_var( $wpdb->prepare( "SELECT customer_id FROM {$meta_table} WHERE meta_key = 'additional_email' AND meta_value = %s LIMIT 1", $value ) );
+			if ( 'email' === $field ) {
+				$meta_table = Give()->donor_meta->table_name;
+				$donor_id   = $wpdb->get_var( $wpdb->prepare( "SELECT customer_id FROM {$meta_table} WHERE meta_key = 'additional_email' AND meta_value = %s LIMIT 1", $value ) );
 
-				if( ! empty( $donor_id ) ) {
+				if ( ! empty( $donor_id ) ) {
 					return $this->get( $donor_id );
- 				}
- 			}
+				}
+			}
 
 			return false;
 		}
@@ -683,17 +685,20 @@ class Give_DB_Donors extends Give_DB {
 
 		update_option( $this->table_name . '_db_version', $this->version );
 	}
-	
-	/**
-	 * Check if the Customers table was ever installed
-	 *
-	 * @since  1.4.3
-	 * @access public
-	 *
-	 * @return bool Returns if the donors table was installed and upgrade routine run.
-	 */
-	public function installed() {
-		return $this->table_exists( $this->table_name );
-	}
 
+	/**
+	 * Add backward compatibility for old table name
+	 *
+	 * @since  2.0
+	 * @access private
+	 * @global wpdb $wpdb
+	 */
+	private function bc_200_params() {
+		/* @var wpdb $wpdb */
+		global $wpdb;
+
+		if ( ! give_has_upgrade_completed( 'v20_rename_donor_tables' ) ) {
+			$wpdb->donors = $this->table_name = "{$wpdb->prefix}give_customers";
+		}
+	}
 }

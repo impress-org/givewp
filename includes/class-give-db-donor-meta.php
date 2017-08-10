@@ -24,6 +24,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Give_DB_Donor_Meta extends Give_DB {
 
 	/**
+	 * Meta type
+	 *
+	 * @since  2.0
+	 * @access protected
+	 *
+	 * @var string
+	 */
+	protected $meta_type = 'donor';
+
+	/**
 	 * Give_DB_Donor_Meta constructor.
 	 *
 	 * @access  public
@@ -33,10 +43,11 @@ class Give_DB_Donor_Meta extends Give_DB {
 		/* @var WPDB $wpdb */
 		global $wpdb;
 
-		$wpdb->customermeta = $this->table_name = $wpdb->prefix . 'give_donormeta';
-		$this->primary_key  = 'meta_id';
-		$this->version      = '1.0';
+		$wpdb->donormeta   = $this->table_name = $wpdb->prefix . 'give_donormeta';
+		$this->primary_key = 'meta_id';
+		$this->version     = '1.0';
 
+		$this->bc_200_params();
 		$this->register_table();
 	}
 
@@ -51,7 +62,7 @@ class Give_DB_Donor_Meta extends Give_DB {
 	public function get_columns() {
 		return array(
 			'meta_id'     => '%d',
-			'customer_id' => '%d',
+			'donor_id' => '%d',
 			'meta_key'    => '%s',
 			'meta_value'  => '%s',
 		);
@@ -72,12 +83,12 @@ class Give_DB_Donor_Meta extends Give_DB {
 	 * @return  mixed                 Will be an array if $single is false. Will be value of meta data field if $single is true.
 	 */
 	public function get_meta( $donor_id = 0, $meta_key = '', $single = false ) {
-		$donor_id = $this->sanitize_donor_id( $donor_id );
+		$donor_id = $this->sanitize_id( $donor_id );
 		if ( false === $donor_id ) {
 			return false;
 		}
 
-		return get_metadata( 'customer', $donor_id, $meta_key, $single );
+		return get_metadata( $this->meta_type, $donor_id, $meta_key, $single );
 	}
 
 	/**
@@ -96,12 +107,12 @@ class Give_DB_Donor_Meta extends Give_DB {
 	 * @return  bool                  False for failure. True for success.
 	 */
 	public function add_meta( $donor_id = 0, $meta_key = '', $meta_value, $unique = false ) {
-		$donor_id = $this->sanitize_donor_id( $donor_id );
+		$donor_id = $this->sanitize_id( $donor_id );
 		if ( false === $donor_id ) {
 			return false;
 		}
 
-		return add_metadata( 'customer', $donor_id, $meta_key, $meta_value, $unique );
+		return add_metadata( $this->meta_type, $donor_id, $meta_key, $meta_value, $unique );
 	}
 
 	/**
@@ -125,12 +136,12 @@ class Give_DB_Donor_Meta extends Give_DB {
 	 * @return  bool                  False on failure, true if success.
 	 */
 	public function update_meta( $donor_id = 0, $meta_key = '', $meta_value, $prev_value = '' ) {
-		$donor_id = $this->sanitize_donor_id( $donor_id );
+		$donor_id = $this->sanitize_id( $donor_id );
 		if ( false === $donor_id ) {
 			return false;
 		}
 
-		return update_metadata( 'customer', $donor_id, $meta_key, $meta_value, $prev_value );
+		return update_metadata( $this->meta_type, $donor_id, $meta_key, $meta_value, $prev_value );
 	}
 
 	/**
@@ -152,7 +163,7 @@ class Give_DB_Donor_Meta extends Give_DB {
 	 * @return  bool                  False for failure. True for success.
 	 */
 	public function delete_meta( $donor_id = 0, $meta_key = '', $meta_value = '' ) {
-		return delete_metadata( 'customer', $donor_id, $meta_key, $meta_value );
+		return delete_metadata( $this->meta_type, $donor_id, $meta_key, $meta_value );
 	}
 
 	/**
@@ -169,11 +180,11 @@ class Give_DB_Donor_Meta extends Give_DB {
 
 		$sql = "CREATE TABLE {$this->table_name} (
 			meta_id bigint(20) NOT NULL AUTO_INCREMENT,
-			customer_id bigint(20) NOT NULL,
+			donor_id bigint(20) NOT NULL,
 			meta_key varchar(255) DEFAULT NULL,
 			meta_value longtext,
 			PRIMARY KEY  (meta_id),
-			KEY customer_id (customer_id),
+			KEY donor_id (donor_id),
 			KEY meta_key (meta_key)
 			) CHARACTER SET utf8 COLLATE utf8_general_ci;";
 
@@ -183,33 +194,22 @@ class Give_DB_Donor_Meta extends Give_DB {
 	}
 
 	/**
-	 * Given a donor ID, make sure it's a positive number, greater than zero before inserting or adding.
+	 * Add backward compatibility for old table name
 	 *
+	 * @since  2.0
 	 * @access private
-	 * @since  1.6
-	 *
-	 * @param  int|stripe $donor_id A passed donor ID.
-	 *
-	 * @return int|bool                The normalized donor ID or false if it's found to not be valid.
+	 * @global wpdb $wpdb
 	 */
-	private function sanitize_donor_id( $donor_id ) {
-		if ( ! is_numeric( $donor_id ) ) {
-			return false;
+	private function bc_200_params() {
+		/* @var wpdb $wpdb */
+		global $wpdb;
+
+		if ( ! give_has_upgrade_completed( 'v20_rename_donor_tables' ) ) {
+			$wpdb->donormeta = $this->table_name = "{$wpdb->prefix}give_customermeta";
+			$this->meta_type = 'customer';
 		}
 
-		$donor_id = (int) $donor_id;
-
-		// We were given a non positive number.
-		if ( absint( $donor_id ) !== $donor_id ) {
-			return false;
-		}
-
-		if ( empty( $donor_id ) ) {
-			return false;
-		}
-
-		return absint( $donor_id );
-
+		$wpdb->customermeta = $wpdb->donormeta;
 	}
 
 }
