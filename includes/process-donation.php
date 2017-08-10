@@ -815,15 +815,8 @@ function give_register_and_login_new_user( $user_data = array() ) {
 	 */
 	do_action( 'give_insert_user', $user_id, $user_data );
 
-	/**
-	 * Can be used if the above function should register and login the user or only register the user.
-	 *
-	 * @since 1.8.13
-	 */
-	if ( true === (bool) apply_filters( 'give_log_user_in', true, $user_id, $user_data ) ) {
-		// Login new user.
-		give_log_user_in( $user_id, $user_data['user_login'], $user_data['user_pass'] );
-	}
+	// Login new user.
+	give_log_user_in( $user_id, $user_data['user_login'], $user_data['user_pass'] );
 
 	// Return user id.
 	return $user_id;

@@ -110,8 +110,8 @@ function give_get_currencies() {
  *
  * @since      1.0
  *
- * @param  string $currency        The currency string.
- * @param  bool   $decode_currency Option to HTML decode the currency symbol.
+ * @param  string $currency The currency string.
+ * @param  bool $decode_currency Option to HTML decode the currency symbol.
  *
  * @return string           The symbol to use for the currency
  */
@@ -387,8 +387,8 @@ function give_get_purchase_session() {
  * @since       1.8.12
  *
  * @param array $donation_data
- * @param bool  $name_and_email
- * @param int   $length
+ * @param bool $name_and_email
+ * @param int $length
  *
  * @return string
  */
@@ -568,10 +568,10 @@ function give_is_host( $host = false ) {
  * @uses apply_filters() Calls 'give_deprecated_function_trigger_error' and expects boolean value of true to do
  *   trigger or false to not trigger error.
  *
- * @param string $function    The function that was called.
- * @param string $version     The plugin version that deprecated the function.
+ * @param string $function The function that was called.
+ * @param string $version The plugin version that deprecated the function.
  * @param string $replacement Optional. The function that should have been called.
- * @param array  $backtrace   Optional. Contains stack backtrace of deprecated function.
+ * @param array $backtrace Optional. Contains stack backtrace of deprecated function.
  */
 function _give_deprecated_function( $function, $version, $replacement = null, $backtrace = null ) {
 
@@ -582,9 +582,9 @@ function _give_deprecated_function( $function, $version, $replacement = null, $b
 	 *
 	 * @since 1.0
 	 *
-	 * @param string $function    The function that was called.
+	 * @param string $function The function that was called.
 	 * @param string $replacement Optional. The function that should have been called.
-	 * @param string $version     The plugin version that deprecated the function.
+	 * @param string $version The plugin version that deprecated the function.
 	 */
 	do_action( 'give_deprecated_function_run', $function, $replacement, $version );
 
@@ -673,81 +673,81 @@ function give_is_func_disabled( $function ) {
 function give_get_newsletter() {
 	?>
 
-	<p class="newsletter-intro"><?php esc_html_e( 'Be sure to sign up for the Give newsletter below to stay informed of important updates and news.', 'give' ); ?></p>
+    <p class="newsletter-intro"><?php esc_html_e( 'Be sure to sign up for the Give newsletter below to stay informed of important updates and news.', 'give' ); ?></p>
 
-	<div class="give-newsletter-form-wrap">
+    <div class="give-newsletter-form-wrap">
 
-		<form action="//givewp.us3.list-manage.com/subscribe/post?u=3ccb75d68bda4381e2f45794c&amp;id=12a081aa13"
-		      method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate"
-		      target="_blank" novalidate>
-			<div class="give-newsletter-confirmation">
-				<p><?php esc_html_e( 'Thanks for Subscribing!', 'give' ); ?> :)</p>
-			</div>
+        <form action="//givewp.us3.list-manage.com/subscribe/post?u=3ccb75d68bda4381e2f45794c&amp;id=12a081aa13"
+              method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate"
+              target="_blank" novalidate>
+            <div class="give-newsletter-confirmation">
+                <p><?php esc_html_e( 'Thanks for Subscribing!', 'give' ); ?> :)</p>
+            </div>
 
-			<table class="form-table give-newsletter-form">
-				<tr valign="middle">
-					<td>
-						<label for="mce-EMAIL"
-						       class="screen-reader-text"><?php esc_html_e( 'Email Address (required)', 'give' ); ?></label>
-						<input type="email" name="EMAIL" id="mce-EMAIL"
-						       placeholder="<?php esc_attr_e( 'Email Address (required)', 'give' ); ?>"
-						       class="required email" value="">
-					</td>
-					<td>
-						<label for="mce-FNAME"
-						       class="screen-reader-text"><?php esc_html_e( 'First Name', 'give' ); ?></label>
-						<input type="text" name="FNAME" id="mce-FNAME"
-						       placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" class="" value="">
-					</td>
-					<td>
-						<label for="mce-LNAME"
-						       class="screen-reader-text"><?php esc_html_e( 'Last Name', 'give' ); ?></label>
-						<input type="text" name="LNAME" id="mce-LNAME"
-						       placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" class="" value="">
-					</td>
-					<td>
-						<input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button"
-						       value="<?php esc_attr_e( 'Subscribe', 'give' ); ?>">
-					</td>
-				</tr>
-			</table>
-		</form>
+            <table class="form-table give-newsletter-form">
+                <tr valign="middle">
+                    <td>
+                        <label for="mce-EMAIL"
+                               class="screen-reader-text"><?php esc_html_e( 'Email Address (required)', 'give' ); ?></label>
+                        <input type="email" name="EMAIL" id="mce-EMAIL"
+                               placeholder="<?php esc_attr_e( 'Email Address (required)', 'give' ); ?>"
+                               class="required email" value="">
+                    </td>
+                    <td>
+                        <label for="mce-FNAME"
+                               class="screen-reader-text"><?php esc_html_e( 'First Name', 'give' ); ?></label>
+                        <input type="text" name="FNAME" id="mce-FNAME"
+                               placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" class="" value="">
+                    </td>
+                    <td>
+                        <label for="mce-LNAME"
+                               class="screen-reader-text"><?php esc_html_e( 'Last Name', 'give' ); ?></label>
+                        <input type="text" name="LNAME" id="mce-LNAME"
+                               placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" class="" value="">
+                    </td>
+                    <td>
+                        <input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button"
+                               value="<?php esc_attr_e( 'Subscribe', 'give' ); ?>">
+                    </td>
+                </tr>
+            </table>
+        </form>
 
-		<div style="position: absolute; left: -5000px;">
-			<input type="text" name="b_3ccb75d68bda4381e2f45794c_12a081aa13" tabindex="-1" value="">
-		</div>
+        <div style="position: absolute; left: -5000px;">
+            <input type="text" name="b_3ccb75d68bda4381e2f45794c_12a081aa13" tabindex="-1" value="">
+        </div>
 
-	</div>
+    </div>
 
-	<script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>
-	<script type='text/javascript'>(function( $ ) {
-				window.fnames = new Array();
-				window.ftypes = new Array();
-				fnames[ 0 ] = 'EMAIL';
-				ftypes[ 0 ] = 'email';
-				fnames[ 1 ] = 'FNAME';
-				ftypes[ 1 ] = 'text';
-				fnames[ 2 ] = 'LNAME';
-				ftypes[ 2 ] = 'text';
+    <script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>
+    <script type='text/javascript'>(function ($) {
+            window.fnames = new Array();
+            window.ftypes = new Array();
+            fnames[0] = 'EMAIL';
+            ftypes[0] = 'email';
+            fnames[1] = 'FNAME';
+            ftypes[1] = 'text';
+            fnames[2] = 'LNAME';
+            ftypes[2] = 'text';
 
-				//Successful submission
-				$( 'form[name="mc-embedded-subscribe-form"]' ).on( 'submit', function() {
+            //Successful submission
+            $('form[name="mc-embedded-subscribe-form"]').on('submit', function () {
 
-					var email_field = $( this ).find( '#mce-EMAIL' ).val();
-					if ( ! email_field ) {
-						return false;
-					}
-					$( this ).find( '.give-newsletter-confirmation' ).show().delay( 5000 ).slideUp();
-					$( this ).find( '.give-newsletter-form' ).hide();
+                var email_field = $(this).find('#mce-EMAIL').val();
+                if (!email_field) {
+                    return false;
+                }
+                $(this).find('.give-newsletter-confirmation').show().delay(5000).slideUp();
+                $(this).find('.give-newsletter-form').hide();
 
-				} );
+            });
 
-			}( jQuery ));
-			var $mcj = jQuery.noConflict( true );
+        }(jQuery));
+        var $mcj = jQuery.noConflict(true);
 
 
-	</script>
-	<!--End mc_embed_signup-->
+    </script>
+    <!--End mc_embed_signup-->
 
 <?php }
 
@@ -838,12 +838,12 @@ if ( ! function_exists( 'array_column' ) ) {
 	 * Optionally, you may provide an $indexKey to index the values in the returned
 	 * array by the values from the $indexKey column in the input array.
 	 *
-	 * @param array      $input     A multi-dimensional array (record set) from which to pull
+	 * @param array $input A multi-dimensional array (record set) from which to pull
 	 *                              a column of values.
 	 * @param int|string $columnKey The column of values to return. This value may be the
 	 *                              integer key of the column you wish to retrieve, or it
 	 *                              may be the string key name for an associative array.
-	 * @param mixed      $indexKey  (Optional.) The column to use as the index/keys for
+	 * @param mixed $indexKey (Optional.) The column to use as the index/keys for
 	 *                              the returned array. This value may be the integer key
 	 *                              of the column, or it may be the string key name.
 	 *
@@ -1096,7 +1096,7 @@ function give_is_terms_enabled( $form_id ) {
  *                                 Date value should be in today, yesterday, this_week, last_week, this_month, last_month, this_quarter, last_quarter, this_year, last_year.
  *                                 For date value other, all cache will be removed.
  *
- * @param array        $args
+ * @param array $args
  *
  * @return WP_Error|bool
  */
@@ -1110,7 +1110,7 @@ function give_delete_donation_stats( $date_range = '', $args = array() ) {
 	 * @since 1.8.7
 	 *
 	 * @param string|array $date_range
-	 * @param array        $args
+	 * @param array $args
 	 */
 	do_action( 'give_delete_donation_stats', $status, $date_range, $args );
 
@@ -1123,10 +1123,10 @@ function give_delete_donation_stats( $date_range = '', $args = array() ) {
  *
  * @since 1.8.8
  *
- * @param int    $id
+ * @param int $id
  * @param string $meta_key
- * @param bool   $single
- * @param bool   $default
+ * @param bool $single
+ * @param bool $default
  *
  * @return mixed
  */
@@ -1159,7 +1159,7 @@ function give_get_meta( $id, $meta_key, $single = false, $default = false ) {
  *
  * @since 1.8.8
  *
- * @param int    $id
+ * @param int $id
  * @param string $meta_key
  * @param string $meta_value
  * @param string $prev_value
@@ -1182,7 +1182,7 @@ function give_update_meta( $id, $meta_key, $meta_value, $prev_value = '' ) {
  *
  * @since 1.8.8
  *
- * @param int    $id
+ * @param int $id
  * @param string $meta_key
  * @param string $meta_value
  *
@@ -1293,23 +1293,26 @@ function give_import_page_url( $parameter = array() ) {
 		'page'      => 'give-tools',
 		'tab'       => 'import',
 	);
-	$import_query_arg = wp_parse_args( $parameter, $defalut_query_arg );
+	$import_query_arg  = wp_parse_args( $parameter, $defalut_query_arg );
+
 	return add_query_arg( $import_query_arg, admin_url( 'edit.php' ) );
 }
 
 
 function give_save_import_donation_to_db( $raw_key, $row_data ) {
 	$data = array_combine( $raw_key, $row_data );
-	if ( ! empty( $data['_give_payment_customer_id'] ) && $user_data = get_userdata( (int) $data['_give_payment_customer_id'] ) ) {
-		echo 'id';
+
+	$data = (array) apply_filters( 'give_save_import_donation_to_db', $data );
+
+	if ( ! empty( $data['customer_id'] ) && $user_data = get_userdata( (int) $data['customer_id'] ) ) {
 		$customer_id = $user_data->ID;
 	} else {
-		$user_data = get_user_by( 'email', $data['email'].'dsfs' );
+		$user_data = get_user_by( 'email', $data['email'] );
 		if ( $user_data ) {
 			$customer_id = $user_data->ID;
 		} else {
 			// This action was added to remove the login when using the give register function.
-			add_action( 'give_insert_user', 'give_insert_user_csv_callback', 11 );
+			add_filter( 'give_log_user_in', 'give_log_user_in_callback', 11 );
 			$customer_id = give_register_and_login_new_user( array(
 				'user_login'      => $data['email'],
 				'user_email'      => $data['email'],
@@ -1318,13 +1321,97 @@ function give_save_import_donation_to_db( $raw_key, $row_data ) {
 				'user_last'       => $data['last_name'],
 				'role'            => get_option( 'default_role' ),
 			) );
-			remove_action( 'give_insert_user', 'give_insert_user_csv_callback', 11 );
+			remove_filter( 'give_log_user_in', 'give_log_user_in_callback', 11 );
 		}
+	}
+
+
+	$form = false;
+	if ( ! empty( $data['give_form_id'] ) ) {
+		$form = new Give_Donate_Form( $data['give_form_id'] );
+		if ( empty( $form->get_ID() ) ) {
+			$form = false;
+		}
+	}
+
+	if ( false === $form ) {
+
+		$form = get_page_by_title( $data['give_form_title'], OBJECT, 'give_forms' );
+
+		if ( ! empty( $form->ID ) ) {
+			$form = new Give_Donate_Form( $form->ID );
+		} else {
+			$form = new Give_Donate_Form();
+			$args = array(
+				'post_title'  => $data['give_form_title'],
+				'post_status' => 'publish',
+				'post_author' => (int) $customer_id,
+			);
+			$form = $form->create( $args );
+		}
+
+
+		$form = get_page_by_title( $data['give_form_title'], OBJECT, 'give_forms' );
+		$form = new Give_Donate_Form( $form->ID );
+
+		if ( ! empty( $data['give_form_level'] ) ) {
+
+			$prices     = (array) $form->get_prices();
+			$price_text = array();
+			foreach ( $prices as $key => $price ) {
+				$price_text[] = ( ! empty( $price['_give_text'] ) ? $price['_give_text'] : '' );
+			}
+
+
+			if ( ! in_array( $data['give_form_level'], $price_text ) ) {
+				$multi_level_donations = array(
+					array(
+						'_give_id'     => array(
+							'level_id' => ( count( $prices ) + 1 ),
+						),
+						'_give_amount' => give_sanitize_amount_for_db( $data['amount'] ),
+						'_give_text'   => $data['give_form_level'],
+					),
+				);
+
+				$prices = wp_parse_args( $multi_level_donations, $prices );
+			}
+
+			$meta = array(
+				'_give_price_option'    => 'multi',
+				'_give_donation_levels' => array_values( $prices ),
+			);
+		}
+
+		$defaults = array(
+			'_give_set_price'    => give_sanitize_amount_for_db( $data['amount'] ),
+			'_give_price_option' => 'set',
+			'give_product_notes' => 'Donation Notes',
+			'_give_product_type' => 'default',
+		);
+
+		$meta = wp_parse_args( $meta, $defaults );
+
+		foreach ( $meta as $key => $value ) {
+			give_update_meta( $form->get_ID(), $key, $value );
+		}
+
+
 	}
 }
 
-function give_insert_user_csv_callback( $user_id ) {
-	return $user_id;
+
+/**
+ * Remove login when user register with give functions.
+ *
+ * @since 1.8.13
+ *
+ * @param $value
+ *
+ * @return bool
+ */
+function give_log_user_in_callback( $value ) {
+	return false;
 }
 
 /**
@@ -1348,5 +1435,52 @@ function give_get_donation_data_from_csv( $file_id, $start, $end, $delimiter = '
 		}
 		fclose( $handle );
 	}
+
 	return $raw_data;
+}
+
+
+/**
+ * Return the option that are related to donations.
+ *
+ * @since 1.8.13
+ */
+function give_import_donations_options() {
+	return (array) apply_filters( 'give_import_donations_options', array(
+		''                      => __( 'Do not import', 'give' ),
+		'id'                    => __( 'Donation ID', 'give' ),
+		'amount'                => __( 'Donation Amount', 'give' ),
+		'post_date'             => __( 'Donation Date', 'give' ),
+		'first_name'            => __( 'Donor First Name', 'give' ),
+		'last_name'             => __( 'Donor Last Name', 'give' ),
+		'email'                 => __( 'Donor Email', 'give' ),
+		'post_status'           => __( 'Donation Status', 'give' ),
+		'_give_payment_gateway' => __( 'Payment Method', 'give' ),
+		'comment_content'       => __( 'Notes', 'give' ),
+		'post_meta'             => __( 'Import as Meta', 'give' ),
+	) );
+}
+
+/**
+ * Return the option that are related to donations.
+ *
+ * @since 1.8.13
+ */
+function give_import_donor_options() {
+	return (array) apply_filters( 'give_import_donor_options', array(
+		'customer_id' => __( 'Donor ID', 'give' ),
+	) );
+}
+
+/**
+ * Return the option that are related to donations.
+ *
+ * @since 1.8.13
+ */
+function give_import_donation_form_options() {
+	return (array) apply_filters( 'give_import_donation_form_options', array(
+		'give_form_id'    => __( 'Donation Form ID', 'give' ),
+		'give_form_title' => __( 'Donation Form', 'give' ),
+		'give_form_level' => __( 'Donation Level', 'give' ),
+	) );
 }

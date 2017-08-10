@@ -172,6 +172,8 @@ function give_insert_payment( $payment_data = array() ) {
 
 	$payment->add_donation( $payment->form_id, $args );
 
+
+
 	// Set date if present.
 	if ( isset( $payment_data['post_date'] ) ) {
 		$payment->date = $payment_data['post_date'];
