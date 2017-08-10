@@ -736,6 +736,224 @@ table#give_donation_receipt span.donation-level-text-wrap {
   font-style: italic;
   display: block; }
 
+/*!
+ * Float Labels
+ *
+ * @version: 3.0.3
+ * @author: Paul Ryley (http://geminilabs.io)
+ * @url: https://geminilabs.github.io/float-labels.js
+ * @license: MIT
+ */
+[id*="give-form"] .fl-form .fl-wrap {
+  position: relative;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
+[id*="give-form"] .fl-form input.fl-input,
+[id*="give-form"] .fl-form select.fl-select,
+[id*="give-form"] .fl-form textarea.fl-textarea {
+  width: 100%;
+  outline: 0;
+  font-size: 16px;
+  line-height: normal;
+  border-radius: 0;
+  border: 1px solid #ccc;
+  background-color: inherit;
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
+  margin-bottom: 0; }
+  [id*="give-form"] .fl-form input.fl-input:-moz-placeholder,
+  [id*="give-form"] .fl-form select.fl-select:-moz-placeholder,
+  [id*="give-form"] .fl-form textarea.fl-textarea:-moz-placeholder {
+    color: #bbb; }
+  [id*="give-form"] .fl-form input.fl-input::-moz-placeholder,
+  [id*="give-form"] .fl-form select.fl-select::-moz-placeholder,
+  [id*="give-form"] .fl-form textarea.fl-textarea::-moz-placeholder {
+    color: #bbb; }
+  [id*="give-form"] .fl-form input.fl-input:-ms-input-placeholder,
+  [id*="give-form"] .fl-form select.fl-select:-ms-input-placeholder,
+  [id*="give-form"] .fl-form textarea.fl-textarea:-ms-input-placeholder {
+    color: #bbb; }
+  [id*="give-form"] .fl-form input.fl-input::-webkit-input-placeholder,
+  [id*="give-form"] .fl-form select.fl-select::-webkit-input-placeholder,
+  [id*="give-form"] .fl-form textarea.fl-textarea::-webkit-input-placeholder {
+    color: #bbb; }
+
+[id*="give-form"] .fl-form select.fl-select {
+  position: relative;
+  color: #bbb;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none; }
+
+[id*="give-form"] .fl-form .fl-is-active input.fl-input,
+[id*="give-form"] .fl-form .fl-is-active select.fl-select,
+[id*="give-form"] .fl-form .fl-is-active textarea.fl-textarea {
+  color: #333;
+  background-color: inherit;
+  border-color: #ccc; }
+
+[id*="give-form"] .fl-form .fl-has-focus input.fl-input,
+[id*="give-form"] .fl-form .fl-has-focus select.fl-select,
+[id*="give-form"] .fl-form .fl-has-focus textarea.fl-textarea {
+  background-color: inherit;
+  border-color: #ccc; }
+
+[id*="give-form"] .fl-form label.fl-label {
+  opacity: 0;
+  visibility: hidden;
+  display: block;
+  position: absolute;
+  top: -12px;
+  right: 0;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  color: #bbb;
+  border-radius-top-right: 0;
+  transition: all 0.2s ease-in-out;
+  z-index: 1; }
+
+[id*="give-form"] .fl-form .fl-is-active label.fl-label {
+  opacity: 1;
+  visibility: visible; }
+
+[id*="give-form"] .fl-form .fl-has-focus label.fl-label {
+  color: #1976D2; }
+
+[id*="give-form"] .fl-form .fl-is-required:before {
+  opacity: 1;
+  content: '*';
+  display: block;
+  position: absolute;
+  top: 1px;
+  left: 18px;
+  font-size: 16px;
+  line-height: 1.75;
+  color: #D32F2F;
+  transition: all 0.2s ease-in-out;
+  padding: 6px 0 0;
+  z-index: 1; }
+
+[id*="give-form"] .fl-form .fl-is-required.fl-is-active:before {
+  opacity: 0; }
+
+[id*="give-form"] .fl-form.fl-style-1 input.fl-input,
+[id*="give-form"] .fl-form.fl-style-1 select.fl-select,
+[id*="give-form"] .fl-form.fl-style-1 textarea.fl-textarea {
+  padding: 6px 12px; }
+
+[id*="give-form"] .fl-form.fl-style-1 select.fl-select {
+  height: 44px; }
+
+[id*="give-form"] .fl-form.fl-style-1 .fl-is-active input.fl-input,
+[id*="give-form"] .fl-form.fl-style-1 .fl-is-active select.fl-select,
+[id*="give-form"] .fl-form.fl-style-1 .fl-is-active textarea.fl-textarea {
+  padding: 6px 12px; }
+
+[id*="give-form"] .fl-form.fl-style-1 label.fl-label {
+  top: 1px;
+  right: 10px;
+  background-color: transparent;
+  padding: 12px 3px; }
+
+[id*="give-form"] .fl-form.fl-style-1 label.fl-label:before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 19px;
+  right: 0;
+  left: 0;
+  height: 1px;
+  background-color: inherit;
+  z-index: -1; }
+
+[id*="give-form"] .fl-form.fl-style-1 .fl-is-active label.fl-label {
+  top: -9px;
+  padding: 3px; }
+
+[id*="give-form"] .fl-form.fl-style-1 .fl-is-active label.fl-label:before {
+  top: 9px; }
+
+[id*="give-form"] .fl-form.fl-style-2 input.fl-input,
+[id*="give-form"] .fl-form.fl-style-2 select.fl-select,
+[id*="give-form"] .fl-form.fl-style-2 textarea.fl-textarea {
+  padding: 12px; }
+
+[id*="give-form"] .fl-form.fl-style-2 select.fl-select {
+  height: 56px; }
+
+[id*="give-form"] .fl-form.fl-style-2 .fl-is-active input.fl-input,
+[id*="give-form"] .fl-form.fl-style-2 .fl-is-active select.fl-select,
+[id*="give-form"] .fl-form.fl-style-2 .fl-is-active textarea.fl-textarea {
+  padding: 18px 12px 6px; }
+
+[id*="give-form"] .fl-form.fl-style-2 label.fl-label {
+  top: 1px;
+  right: 10px;
+  background-color: inherit;
+  padding: 6px 3px 3px; }
+
+[id*="give-form"] .fl-form.fl-style-2 .fl-has-focus label.fl-label {
+  background-color: inherit; }
+
+[id*="give-form"] .fl-form.fl-style-2 .fl-is-active label.fl-label {
+  background-color: inherit; }
+
+[id*="give-form"] .fl-form.fl-style-2 .fl-is-required:before {
+  padding-top: 12px; }
+
+[id*="give-form"] .fl-form .fl-wrap-select:after {
+  content: '';
+  position: absolute;
+  display: block;
+  top: 1px;
+  left: 6px;
+  height: calc(100% - 2px);
+  width: 15px;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 16'><path fill='#bbb' d='M 4 0 L 0 6.5 L 8 6.5 L 4 0 z M 0 9.5 L 4 16 L 4 16 L 8 9.5 z'/></svg>") no-repeat;
+  background-position: 0% 50%;
+  background-size: 7px 14px;
+  z-index: 2; }
+
+[id*="give-form"] .fl-form.fl-style-give input.fl-input,
+[id*="give-form"] .fl-form.fl-style-give select.fl-select,
+[id*="give-form"] .fl-form.fl-style-give textarea.fl-textarea {
+  line-height: inherit;
+  padding: 12px; }
+
+[id*="give-form"] .fl-form.fl-style-give select.fl-select {
+  line-height: inherit; }
+
+[id*="give-form"] .fl-form.fl-style-give .fl-is-active input.fl-input,
+[id*="give-form"] .fl-form.fl-style-give .fl-is-active select.fl-select,
+[id*="give-form"] .fl-form.fl-style-give .fl-is-active textarea.fl-textarea {
+  padding: 20px 12px 4px;
+  transition: padding 0.2s ease-in-out, border 0.2s ease-in-out; }
+
+[id*="give-form"] .fl-form.fl-style-give label.fl-label {
+  top: 1px;
+  right: 13px;
+  left: 0;
+  padding: 6px 0 0; }
+
+[id*="give-form"] .fl-form.fl-style-give .fl-is-required:before {
+  padding-top: 12px; }
+
+[id*="give-form"] .fl-form.fl-style-give label.fl-label .give-required-indicator {
+  display: none; }
+
+[id*="give-form"] .fl-form.fl-style-give label.fl-label .give-tooltip {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  z-index: 1; }
+  [id*="give-form"] .fl-form.fl-style-give label.fl-label .give-tooltip::before {
+    content: unset; }
+
 /**
  * Give Frontend Forms SCSS
  *
@@ -1314,14 +1532,12 @@ CC Validation
 #give_purchase_form_wrap input.give-input.card-expiry.valid {
   background-image: url("../assets/images/tick.png");
   background-repeat: no-repeat;
-  background-position: 2% 50%;
+  background-position: left 10px top 50%;
   background-size: 16px; }
   #give_purchase_form_wrap input.give-input.card-number.valid.fl-input:not(.card-cvc):not(.card-expiry),
   #give_purchase_form_wrap input.give-input.card-cvc.valid.fl-input:not(.card-cvc):not(.card-expiry),
   #give_purchase_form_wrap input.give-input.card-expiry.valid.fl-input:not(.card-cvc):not(.card-expiry) {
-    background-image: url("../assets/images/tick-alt.png");
-    background-position: 0% 50%;
-    background-size: 72px 16px; }
+    background-position: left 55px top 50%; }
 
 #give_purchase_form_wrap span.card-type {
   position: absolute;
@@ -1332,7 +1548,7 @@ CC Validation
   background-size: 37px 26px !important; }
 
 #give_purchase_form_wrap .fl-wrap span.card-type {
-  top: 11px;
+  top: calc(0.5em + 6px);
   left: 11px; }
 
 #give_purchase_form_wrap span.card-type.off {
@@ -2047,221 +2263,6 @@ Avada
     background-color: #2bc253;
     position: relative;
     overflow: hidden; }
-
-/*!
- * Float Labels
- *
- * @version: 3.0.3
- * @author: Paul Ryley (http://geminilabs.io)
- * @url: https://geminilabs.github.io/float-labels.js
- * @license: MIT
- */
-[id*="give-form"] .fl-form .fl-wrap {
-  position: relative;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale; }
-
-[id*="give-form"] .fl-form input.fl-input,
-[id*="give-form"] .fl-form select.fl-select,
-[id*="give-form"] .fl-form textarea.fl-textarea {
-  width: 100%;
-  outline: 0;
-  font-size: 16px;
-  line-height: normal;
-  border-radius: 0;
-  border: 1px solid #ccc;
-  background-color: inherit;
-  box-sizing: border-box;
-  transition: all 0.2s ease-in-out;
-  margin-bottom: 0; }
-  [id*="give-form"] .fl-form input.fl-input:-moz-placeholder,
-  [id*="give-form"] .fl-form select.fl-select:-moz-placeholder,
-  [id*="give-form"] .fl-form textarea.fl-textarea:-moz-placeholder {
-    color: #bbb; }
-  [id*="give-form"] .fl-form input.fl-input::-moz-placeholder,
-  [id*="give-form"] .fl-form select.fl-select::-moz-placeholder,
-  [id*="give-form"] .fl-form textarea.fl-textarea::-moz-placeholder {
-    color: #bbb; }
-  [id*="give-form"] .fl-form input.fl-input:-ms-input-placeholder,
-  [id*="give-form"] .fl-form select.fl-select:-ms-input-placeholder,
-  [id*="give-form"] .fl-form textarea.fl-textarea:-ms-input-placeholder {
-    color: #bbb; }
-  [id*="give-form"] .fl-form input.fl-input::-webkit-input-placeholder,
-  [id*="give-form"] .fl-form select.fl-select::-webkit-input-placeholder,
-  [id*="give-form"] .fl-form textarea.fl-textarea::-webkit-input-placeholder {
-    color: #bbb; }
-
-[id*="give-form"] .fl-form select.fl-select {
-  position: relative;
-  color: #bbb;
-  cursor: pointer;
-  -webkit-appearance: none;
-  -moz-appearance: none; }
-
-[id*="give-form"] .fl-form .fl-is-active input.fl-input,
-[id*="give-form"] .fl-form .fl-is-active select.fl-select,
-[id*="give-form"] .fl-form .fl-is-active textarea.fl-textarea {
-  color: #333;
-  background-color: inherit;
-  border-color: #ccc; }
-
-[id*="give-form"] .fl-form .fl-has-focus input.fl-input,
-[id*="give-form"] .fl-form .fl-has-focus select.fl-select,
-[id*="give-form"] .fl-form .fl-has-focus textarea.fl-textarea {
-  background-color: inherit;
-  border-color: #ccc; }
-
-[id*="give-form"] .fl-form label.fl-label {
-  opacity: 0;
-  visibility: hidden;
-  display: block;
-  position: absolute;
-  top: -12px;
-  right: 0;
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 1;
-  color: #bbb;
-  border-radius-top-right: 0;
-  transition: all 0.2s ease-in-out;
-  z-index: 1; }
-
-[id*="give-form"] .fl-form .fl-is-active label.fl-label {
-  opacity: 1;
-  visibility: visible; }
-
-[id*="give-form"] .fl-form .fl-has-focus label.fl-label {
-  color: #1976D2; }
-
-[id*="give-form"] .fl-form .fl-is-required:before {
-  opacity: 1;
-  content: '*';
-  display: block;
-  position: absolute;
-  top: 1px;
-  left: 18px;
-  font-size: 16px;
-  line-height: 1.75;
-  color: #D32F2F;
-  transition: all 0.2s ease-in-out;
-  padding: 6px 0 0;
-  z-index: 1; }
-
-[id*="give-form"] .fl-form .fl-is-required.fl-is-active:before {
-  opacity: 0; }
-
-[id*="give-form"] .fl-form.fl-style-1 input.fl-input,
-[id*="give-form"] .fl-form.fl-style-1 select.fl-select,
-[id*="give-form"] .fl-form.fl-style-1 textarea.fl-textarea {
-  padding: 6px 12px; }
-
-[id*="give-form"] .fl-form.fl-style-1 select.fl-select {
-  height: 44px; }
-
-[id*="give-form"] .fl-form.fl-style-1 .fl-is-active input.fl-input,
-[id*="give-form"] .fl-form.fl-style-1 .fl-is-active select.fl-select,
-[id*="give-form"] .fl-form.fl-style-1 .fl-is-active textarea.fl-textarea {
-  padding: 6px 12px; }
-
-[id*="give-form"] .fl-form.fl-style-1 label.fl-label {
-  top: 1px;
-  right: 10px;
-  background-color: transparent;
-  padding: 12px 3px; }
-
-[id*="give-form"] .fl-form.fl-style-1 label.fl-label:before {
-  content: '';
-  display: block;
-  position: absolute;
-  top: 19px;
-  right: 0;
-  left: 0;
-  height: 1px;
-  background-color: inherit;
-  z-index: -1; }
-
-[id*="give-form"] .fl-form.fl-style-1 .fl-is-active label.fl-label {
-  top: -9px;
-  padding: 3px; }
-
-[id*="give-form"] .fl-form.fl-style-1 .fl-is-active label.fl-label:before {
-  top: 9px; }
-
-[id*="give-form"] .fl-form.fl-style-2 input.fl-input,
-[id*="give-form"] .fl-form.fl-style-2 select.fl-select,
-[id*="give-form"] .fl-form.fl-style-2 textarea.fl-textarea {
-  padding: 12px; }
-
-[id*="give-form"] .fl-form.fl-style-2 select.fl-select {
-  height: 56px; }
-
-[id*="give-form"] .fl-form.fl-style-2 .fl-is-active input.fl-input,
-[id*="give-form"] .fl-form.fl-style-2 .fl-is-active select.fl-select,
-[id*="give-form"] .fl-form.fl-style-2 .fl-is-active textarea.fl-textarea {
-  padding: 18px 12px 6px; }
-
-[id*="give-form"] .fl-form.fl-style-2 label.fl-label {
-  top: 1px;
-  right: 10px;
-  background-color: inherit;
-  padding: 6px 3px 3px; }
-
-[id*="give-form"] .fl-form.fl-style-2 .fl-has-focus label.fl-label {
-  background-color: inherit; }
-
-[id*="give-form"] .fl-form.fl-style-2 .fl-is-active label.fl-label {
-  background-color: inherit; }
-
-[id*="give-form"] .fl-form.fl-style-2 .fl-is-required:before {
-  padding-top: 12px; }
-
-[id*="give-form"] .fl-form .fl-wrap-select:after {
-  content: '';
-  position: absolute;
-  display: block;
-  top: 1px;
-  left: 6px;
-  height: calc(100% - 2px);
-  width: 15px;
-  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 16'><path fill='#bbb' d='M 4 0 L 0 6.5 L 8 6.5 L 4 0 z M 0 9.5 L 4 16 L 4 16 L 8 9.5 z'/></svg>") no-repeat;
-  background-position: 0% 50%;
-  background-size: 7px 14px;
-  z-index: 2; }
-
-[id*="give-form"] .fl-form.fl-style-give input.fl-input,
-[id*="give-form"] .fl-form.fl-style-give select.fl-select,
-[id*="give-form"] .fl-form.fl-style-give textarea.fl-textarea {
-  padding: 12px; }
-
-[id*="give-form"] .fl-form.fl-style-give select.fl-select {
-  height: 45px; }
-
-[id*="give-form"] .fl-form.fl-style-give .fl-is-active input.fl-input,
-[id*="give-form"] .fl-form.fl-style-give .fl-is-active select.fl-select,
-[id*="give-form"] .fl-form.fl-style-give .fl-is-active textarea.fl-textarea {
-  padding: 20px 12px 4px; }
-
-[id*="give-form"] .fl-form.fl-style-give label.fl-label {
-  top: 1px;
-  right: 13px;
-  padding: 6px 0 0; }
-
-[id*="give-form"] .fl-form.fl-style-give .fl-is-required:before {
-  padding-top: 12px; }
-
-[id*="give-form"] .fl-form.fl-style-give label.fl-label .give-required-indicator {
-  display: none; }
-
-[id*="give-form"] .fl-form.fl-style-give label.fl-label .give-tooltip {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  z-index: 1; }
-  [id*="give-form"] .fl-form.fl-style-give label.fl-label .give-tooltip::before {
-    content: unset; }
 
 /**
  * Give Magnific Modal Custom SCSS
