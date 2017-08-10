@@ -105,11 +105,11 @@ class Give_Sales_Log_Table extends WP_List_Table {
 					'link'        => esc_url( add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details' ) ) ),
 				) );
 
-				if ( ! empty( $item['user_id'] ) ) {
+				if ( ! empty( $item['donor_id'] ) ) {
 					$value .= sprintf(
 						'&nbsp;%1$s&nbsp;<a href="%2$s">%3$s</a><br>',
 						esc_html__( 'by', 'give' ),
-						admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . $item['user_id'] ),
+						admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&donor=' . $item['donor_id'] ),
 						$item['donor_name']
 					);
 				} else {
@@ -358,7 +358,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 						'payment_id' => $payment->ID,
 						'form'       => $payment->form_id,
 						'amount'     => $payment->total,
-						'user_id'    => $payment->user_id,
+						'donor_id'    => $payment->customer_id,
 						'donor_name' => trim( "{$payment->first_name} $payment->last_name" ),
 						'date'       => $payment->date,
 					);
