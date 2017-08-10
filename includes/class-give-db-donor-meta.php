@@ -33,9 +33,9 @@ class Give_DB_Donor_Meta extends Give_DB {
 		/* @var WPDB $wpdb */
 		global $wpdb;
 
-		$wpdb->customermeta = $this->table_name  = $wpdb->prefix . 'give_customermeta';
-		$this->primary_key = 'meta_id';
-		$this->version     = '1.0';
+		$wpdb->customermeta = $this->table_name = $wpdb->prefix . 'give_donormeta';
+		$this->primary_key  = 'meta_id';
+		$this->version      = '1.0';
 
 		$this->register_table();
 	}
@@ -67,7 +67,7 @@ class Give_DB_Donor_Meta extends Give_DB {
 	 *
 	 * @param   int    $donor_id Donor ID.
 	 * @param   string $meta_key The meta key to retrieve.
-	 * @param   bool   $single Whether to return a single value.
+	 * @param   bool   $single   Whether to return a single value.
 	 *
 	 * @return  mixed                 Will be an array if $single is false. Will be value of meta data field if $single is true.
 	 */
@@ -88,10 +88,10 @@ class Give_DB_Donor_Meta extends Give_DB {
 	 * @access  private
 	 * @since   1.6
 	 *
-	 * @param   int    $donor_id Donor ID.
-	 * @param   string $meta_key Metadata name.
+	 * @param   int    $donor_id   Donor ID.
+	 * @param   string $meta_key   Metadata name.
 	 * @param   mixed  $meta_value Metadata value.
-	 * @param   bool   $unique Optional, default is false. Whether the same key should not be added.
+	 * @param   bool   $unique     Optional, default is false. Whether the same key should not be added.
 	 *
 	 * @return  bool                  False for failure. True for success.
 	 */
@@ -117,8 +117,8 @@ class Give_DB_Donor_Meta extends Give_DB {
 	 * @access  private
 	 * @since   1.6
 	 *
-	 * @param   int    $donor_id Donor ID.
-	 * @param   string $meta_key Metadata key.
+	 * @param   int    $donor_id   Donor ID.
+	 * @param   string $meta_key   Metadata key.
 	 * @param   mixed  $meta_value Metadata value.
 	 * @param   mixed  $prev_value Optional. Previous value to check before removing.
 	 *
@@ -145,8 +145,8 @@ class Give_DB_Donor_Meta extends Give_DB {
 	 * @access  private
 	 * @since   1.6
 	 *
-	 * @param   int    $donor_id Donor ID.
-	 * @param   string $meta_key Metadata name.
+	 * @param   int    $donor_id   Donor ID.
+	 * @param   string $meta_key   Metadata name.
 	 * @param   mixed  $meta_value Optional. Metadata value.
 	 *
 	 * @return  bool                  False for failure. True for success.
