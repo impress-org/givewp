@@ -2,10 +2,11 @@
 	input.#{fl(prefix)}input,
 	select.#{fl(prefix)}select,
 	textarea.#{fl(prefix)}textarea {
+		line-height: inherit;
 		padding: 12px;
 	}
 	select.#{fl(prefix)}select {
-		height: 45px;
+		line-height: inherit;
 	}
 	.#{fl(prefix)}is-active input.#{fl(prefix)}input,
 	.#{fl(prefix)}is-active select.#{fl(prefix)}select,
