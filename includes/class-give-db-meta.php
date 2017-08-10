@@ -344,7 +344,7 @@ class Give_DB_Meta extends Give_DB {
 	}
 
 	/**
-	 * Check if current id of payment type or not
+	 * Check if current id of post type or not
 	 *
 	 * @since  2.0
 	 * @access protected
