@@ -11,6 +11,8 @@
 	.#{fl(prefix)}is-active select.#{fl(prefix)}select,
 	.#{fl(prefix)}is-active textarea.#{fl(prefix)}textarea {
 		padding: 20px 12px 4px;
+		transition: padding fl(transition-speed) fl(transition-easing),
+					border fl(transition-speed) fl(transition-easing);
 	}
 	label.#{fl(prefix)}label {
 		top: fl(border-width);
