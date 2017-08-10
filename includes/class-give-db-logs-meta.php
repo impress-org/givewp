@@ -37,6 +37,15 @@ class Give_DB_Log_Meta extends Give_DB_Meta {
 	);
 
 	/**
+	 * Post type
+	 *
+	 * @since  2.0
+	 * @access protected
+	 * @var bool
+	 */
+	protected $post_type = 'give_log';
+
+	/**
 	 * Meta type
 	 *
 	 * @since  2.0

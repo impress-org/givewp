@@ -1468,6 +1468,10 @@ function give_v20_rename_donor_tables_callback() {
 			! $wpdb->query( $wpdb->prepare( "SHOW TABLES LIKE %s", $new_table ) )
 		) {
 			$wpdb->query( "ALTER TABLE {$old_table} RENAME TO {$new_table}" );
+
+			if( "{$wpdb->prefix}give_donormeta" === $new_table ) {
+				$wpdb->query( "ALTER TABLE {$new_table} CHANGE COLUMN customer_id donor_id bigint(20)" );
+			}
 		}
 	}
 
@@ -1475,5 +1479,9 @@ function give_v20_rename_donor_tables_callback() {
 
 	// No more forms found, finish up.
 	give_set_upgrade_complete( 'v20_rename_donor_tables' );
+
+	// Re initiate donor classes.
+	Give()->donors     = new Give_DB_Donors();
+	Give()->donor_meta = new Give_DB_Donor_Meta();
 }
 
