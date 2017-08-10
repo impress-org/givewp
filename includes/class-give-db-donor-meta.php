@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.6
  */
-class Give_DB_Donor_Meta extends Give_DB {
+class Give_DB_Donor_Meta extends Give_DB_Meta {
 
 	/**
 	 * Meta type
@@ -32,6 +32,15 @@ class Give_DB_Donor_Meta extends Give_DB {
 	 * @var string
 	 */
 	protected $meta_type = 'donor';
+
+	/**
+	 * Meta supports.
+	 *
+	 * @since  2.0
+	 * @access protected
+	 * @var array
+	 */
+	protected $supports = array();
 
 	/**
 	 * Give_DB_Donor_Meta constructor.
@@ -46,6 +55,8 @@ class Give_DB_Donor_Meta extends Give_DB {
 		$wpdb->donormeta   = $this->table_name = $wpdb->prefix . 'give_donormeta';
 		$this->primary_key = 'meta_id';
 		$this->version     = '1.0';
+
+		parent::__construct();
 
 		$this->bc_200_params();
 		$this->register_table();
@@ -66,104 +77,6 @@ class Give_DB_Donor_Meta extends Give_DB {
 			'meta_key'    => '%s',
 			'meta_value'  => '%s',
 		);
-	}
-
-	/**
-	 * Retrieve donor meta field for a donor.
-	 *
-	 * For internal use only. Use Give_Donor->get_meta() for public usage.
-	 *
-	 * @access  private
-	 * @since   1.6
-	 *
-	 * @param   int    $donor_id Donor ID.
-	 * @param   string $meta_key The meta key to retrieve.
-	 * @param   bool   $single   Whether to return a single value.
-	 *
-	 * @return  mixed                 Will be an array if $single is false. Will be value of meta data field if $single is true.
-	 */
-	public function get_meta( $donor_id = 0, $meta_key = '', $single = false ) {
-		$donor_id = $this->sanitize_id( $donor_id );
-		if ( false === $donor_id ) {
-			return false;
-		}
-
-		return get_metadata( $this->meta_type, $donor_id, $meta_key, $single );
-	}
-
-	/**
-	 * Add meta data field to a donor.
-	 *
-	 * For internal use only. Use Give_Donor->add_meta() for public usage.
-	 *
-	 * @access  private
-	 * @since   1.6
-	 *
-	 * @param   int    $donor_id   Donor ID.
-	 * @param   string $meta_key   Metadata name.
-	 * @param   mixed  $meta_value Metadata value.
-	 * @param   bool   $unique     Optional, default is false. Whether the same key should not be added.
-	 *
-	 * @return  bool                  False for failure. True for success.
-	 */
-	public function add_meta( $donor_id = 0, $meta_key = '', $meta_value, $unique = false ) {
-		$donor_id = $this->sanitize_id( $donor_id );
-		if ( false === $donor_id ) {
-			return false;
-		}
-
-		return add_metadata( $this->meta_type, $donor_id, $meta_key, $meta_value, $unique );
-	}
-
-	/**
-	 * Update donor meta field based on Donor ID.
-	 *
-	 * For internal use only. Use Give_Donor->update_meta() for public usage.
-	 *
-	 * Use the $prev_value parameter to differentiate between meta fields with the
-	 * same key and Donor ID.
-	 *
-	 * If the meta field for the donor does not exist, it will be added.
-	 *
-	 * @access  private
-	 * @since   1.6
-	 *
-	 * @param   int    $donor_id   Donor ID.
-	 * @param   string $meta_key   Metadata key.
-	 * @param   mixed  $meta_value Metadata value.
-	 * @param   mixed  $prev_value Optional. Previous value to check before removing.
-	 *
-	 * @return  bool                  False on failure, true if success.
-	 */
-	public function update_meta( $donor_id = 0, $meta_key = '', $meta_value, $prev_value = '' ) {
-		$donor_id = $this->sanitize_id( $donor_id );
-		if ( false === $donor_id ) {
-			return false;
-		}
-
-		return update_metadata( $this->meta_type, $donor_id, $meta_key, $meta_value, $prev_value );
-	}
-
-	/**
-	 * Remove metadata matching criteria from a donor.
-	 *
-	 * For internal use only. Use Give_Donor->delete_meta() for public usage.
-	 *
-	 * You can match based on the key, or key and value. Removing based on key and
-	 * value, will keep from removing duplicate metadata with the same key. It also
-	 * allows removing all metadata matching key, if needed.
-	 *
-	 * @access  private
-	 * @since   1.6
-	 *
-	 * @param   int    $donor_id   Donor ID.
-	 * @param   string $meta_key   Metadata name.
-	 * @param   mixed  $meta_value Optional. Metadata value.
-	 *
-	 * @return  bool                  False for failure. True for success.
-	 */
-	public function delete_meta( $donor_id = 0, $meta_key = '', $meta_value = '' ) {
-		return delete_metadata( $this->meta_type, $donor_id, $meta_key, $meta_value );
 	}
 
 	/**
@@ -210,6 +123,20 @@ class Give_DB_Donor_Meta extends Give_DB {
 		}
 
 		$wpdb->customermeta = $wpdb->donormeta;
+	}
+
+	/**
+	 * Check if current id is valid
+	 *
+	 * @since  2.0
+	 * @access protected
+	 *
+	 * @param $ID
+	 *
+	 * @return bool
+	 */
+	protected function is_valid_post_type( $ID ) {
+		return $ID && true;
 	}
 
 }
