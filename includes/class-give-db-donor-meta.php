@@ -27,11 +27,11 @@ class Give_DB_Donor_Meta extends Give_DB_Meta {
 	 * Meta type
 	 *
 	 * @since  2.0
-	 * @access protected
+	 * @access public
 	 *
 	 * @var string
 	 */
-	protected $meta_type = 'donor';
+	public $meta_type = 'donor';
 
 	/**
 	 * Meta supports.
@@ -117,7 +117,10 @@ class Give_DB_Donor_Meta extends Give_DB_Meta {
 		/* @var wpdb $wpdb */
 		global $wpdb;
 
-		if ( ! give_has_upgrade_completed( 'v20_rename_donor_tables' ) ) {
+		if (
+			! give_has_upgrade_completed( 'v20_rename_donor_tables' ) &&
+			$wpdb->query( $wpdb->prepare( "SHOW TABLES LIKE %s","{$wpdb->prefix}give_customermeta" ) )
+		) {
 			$wpdb->donormeta = $this->table_name = "{$wpdb->prefix}give_customermeta";
 			$this->meta_type = 'customer';
 		}

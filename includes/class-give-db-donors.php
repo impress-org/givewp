@@ -697,7 +697,10 @@ class Give_DB_Donors extends Give_DB {
 		/* @var wpdb $wpdb */
 		global $wpdb;
 
-		if ( ! give_has_upgrade_completed( 'v20_rename_donor_tables' ) ) {
+		if (
+			! give_has_upgrade_completed( 'v20_rename_donor_tables' ) &&
+			$wpdb->query( $wpdb->prepare( "SHOW TABLES LIKE %s","{$wpdb->prefix}give_customers" ) )
+		) {
 			$wpdb->donors = $this->table_name = "{$wpdb->prefix}give_customers";
 		}
 	}
