@@ -459,8 +459,8 @@ class Give_DB_Donors extends Give_DB {
 
 			// Look for donor from an additional email.
 			if ( 'email' === $field ) {
-				$meta_table = Give()->donor_meta->table_name;
-				$donor_id   = $wpdb->get_var( $wpdb->prepare( "SELECT customer_id FROM {$meta_table} WHERE meta_key = 'additional_email' AND meta_value = %s LIMIT 1", $value ) );
+				$meta_type  = Give()->donor_meta->meta_type;
+				$donor_id   = $wpdb->get_var( $wpdb->prepare( "SELECT {$meta_type}_id FROM $wpdb->donormeta WHERE meta_key = 'additional_email' AND meta_value = %s LIMIT 1", $value ) );
 
 				if ( ! empty( $donor_id ) ) {
 					return $this->get( $donor_id );
