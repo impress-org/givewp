@@ -190,22 +190,10 @@ function give_fl_trigger() {
 	}
 	else {
 		give_float_labels = new FloatLabels( '.float-labels-enabled', {
-			customEvent: give_fl_custom_events,
 			exclude: '#give-amount, .give-select-level, .multiselect, [type="url"]',
 			prioritize: 'placeholder',
 			style: 'give',
 		});
-	}
-}
-
-/**
- * Floating Labels Custom Events
- * @param el
- */
-function give_fl_custom_events(el) {
-	var field = jQuery(el);
-	if (field.hasClass('card-number')) {
-		field.after('<span class="off card-type"/>');
 	}
 }
 
