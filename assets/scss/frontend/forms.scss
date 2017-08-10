@@ -552,7 +552,7 @@ CC Validation
 
 	.fl-wrap {
 		span.card-type {
-			top: 9px;
+			top: calc(0.5em + #{fl(base-padding)});
 			right: 11px;
 		}
 	}
