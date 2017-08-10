@@ -199,7 +199,7 @@ class Give_DB_Donors extends Give_DB {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  int $user_id
+	 * @param  int|bool $user_id
 	 *
 	 * @return bool|int
 	 */
