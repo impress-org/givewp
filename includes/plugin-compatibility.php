@@ -21,6 +21,7 @@
 function give_disable_mandrill_nl2br() {
 	add_filter( 'mandrill_nl2br', '__return_false' );
 }
+
 add_action( 'give_email_send_before', 'give_disable_mandrill_nl2br' );
 
 
@@ -37,16 +38,20 @@ function give_clear_seo_sitemap_cache_on_settings_change() {
 		require_once ABSPATH . 'wp-admin/includes/plugin.php';
 	}
 
-	// If there is change detected for Single Form View and Form Archives options then proceed.
-	if (
-		( $_POST['forms_singular'] != give_get_option( 'forms_singular' ) ) ||
-		( $_POST['forms_archives'] != give_get_option( 'forms_archives' ) )
+	if ( ( is_plugin_active( 'wordpress-seo/wp-seo.php' )
+	       || is_plugin_active( 'wordpress-seo-premium/wp-seo-premium.php' ) )
+	     && class_exists( 'WPSEO_Sitemaps_Cache' )
 	) {
-		// If Yoast SEO or Yoast SEO Premium plugin exists, then update seo sitemap cache.
-		if ( (is_plugin_active( 'wordpress-seo/wp-seo.php' )
-		     || is_plugin_active( 'wordpress-seo-premium/wp-seo-premium.php' ))
-			&& class_exists( 'WPSEO_Sitemaps_Cache' )
+
+		$forms_singular_option = give_get_option( 'forms_singular' );
+		$forms_archive_option  = give_get_option( 'forms_singular' );
+
+		// If there is change detected for Single Form View and Form Archives options then proceed.
+		if (
+			( isset( $_POST['forms_singular'] ) && $_POST['forms_singular'] !== $forms_singular_option ) ||
+			( isset( $_POST['forms_archives'] ) && $_POST['forms_archives'] !== $forms_archive_option )
 		) {
+			// If Yoast SEO or Yoast SEO Premium plugin exists, then update seo sitemap cache.
 			$yoast_sitemaps_cache = new WPSEO_Sitemaps_Cache();
 			if ( method_exists( $yoast_sitemaps_cache, 'clear' ) ) {
 				WPSEO_Sitemaps_Cache::clear();
