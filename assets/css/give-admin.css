@@ -1846,9 +1846,18 @@ h2.give-nav-tab-wrapper {
     background-position: 0 4px; }
   .give-filters .chosen-container-active.chosen-with-drop .chosen-single div b {
     background-position: -18px 6px; }
-  .give-filters #give_donation_forms_filter {
+  .give-filters #give-payment-form-filter, .give-filters #give_donation_forms_filter {
     display: inline-block;
-    width: auto; }
+    width: 300px; }
+    @media screen and (max-width: 782px) {
+      .give-filters #give-payment-form-filter, .give-filters #give_donation_forms_filter {
+        width: 100%; } }
+  .give-filters #give_donation_forms_filter {
+    width: 255px; }
+    @media screen and (max-width: 782px) {
+      .give-filters #give_donation_forms_filter {
+        width: 100%;
+        max-width: 100%; } }
   .give-filters:after {
     content: "";
     display: table;

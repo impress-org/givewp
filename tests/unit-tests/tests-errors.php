@@ -1,10 +1,13 @@
 <?php
 
-
 /**
- * @group give_errors
+ * Class Tests_Errors
  */
 class Tests_Errors extends Give_Unit_Test_Case {
+
+	/**
+	 * Set it up.
+	 */
 	public function setUp() {
 		parent::setUp();
 
@@ -14,10 +17,16 @@ class Tests_Errors extends Give_Unit_Test_Case {
 		give_set_error( 'password_incorrect', 'The password you entered is incorrect.' );
 	}
 
+	/**
+	 * Tear it down.
+	 */
 	public function tearDown() {
 		parent::tearDown();
 	}
 
+	/**
+	 * Test setting errors.
+	 */
 	public function test_set_errors() {
 		$errors = Give()->session->get( 'give_errors' );
 
@@ -27,19 +36,25 @@ class Tests_Errors extends Give_Unit_Test_Case {
 		$this->assertArrayHasKey( 'password_incorrect', $errors );
 	}
 
+	/**
+	 * Test clearing errors.
+	 */
 	public function test_clear_errors() {
-		$errors = give_clear_errors();
+		give_clear_errors();
 		$this->assertFalse( Give()->session->get( 'give_errors' ) );
 	}
 
+	/**
+	 * Test unsetting errors.
+	 */
 	public function test_unset_error() {
-		$error = give_unset_error( 'invalid_email' );
+		give_unset_error( 'invalid_email' );
 		$errors = Give()->session->get( 'give_errors' );
 
 		$expected = array(
 			'invalid_user' => 'The user information is invalid.',
 			'username_incorrect' => 'The username you entered does not exist.',
-			'password_incorrect' => 'The password you entered is incorrect.'
+			'password_incorrect' => 'The password you entered is incorrect.',
 		);
 
 		$this->assertEquals( $expected, $errors );
