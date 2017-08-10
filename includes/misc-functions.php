@@ -1336,6 +1336,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data ) {
 
 	if ( false === $form ) {
 
+	    echo $data['give_form_title'];
 		$form = get_page_by_title( $data['give_form_title'], OBJECT, 'give_forms' );
 
 		if ( ! empty( $form->ID ) ) {
@@ -1355,10 +1356,9 @@ function give_save_import_donation_to_db( $raw_key, $row_data ) {
 		$form = new Give_Donate_Form( $form->ID );
 
 		if ( ! empty( $data['give_form_level'] ) ) {
-
-			$prices     = (array) $form->get_prices();
+			$prices     = $form->get_prices();
 			$price_text = array();
-			foreach ( $prices as $key => $price ) {
+			foreach ( (array) $prices as $key => $price ) {
 				$price_text[] = ( ! empty( $price['_give_text'] ) ? $price['_give_text'] : '' );
 			}
 
@@ -1374,7 +1374,13 @@ function give_save_import_donation_to_db( $raw_key, $row_data ) {
 					),
 				);
 
-				$prices = wp_parse_args( $multi_level_donations, $prices );
+				if( ! empty( $prices ) ) {
+				    echo 'test1';
+					$prices = wp_parse_args( $multi_level_donations, $prices );
+				} else {
+					echo 'test2';
+					$prices = $multi_level_donations;
+                }
 			}
 
 			$meta = array(
@@ -1395,8 +1401,6 @@ function give_save_import_donation_to_db( $raw_key, $row_data ) {
 		foreach ( $meta as $key => $value ) {
 			give_update_meta( $form->get_ID(), $key, $value );
 		}
-
-
 	}
 }
 
