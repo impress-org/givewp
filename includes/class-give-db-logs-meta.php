@@ -29,21 +29,7 @@ class Give_DB_Log_Meta extends Give_DB_Meta {
 	 * @access protected
 	 * @var array
 	 */
-	protected $supports = array(
-		'add_post_metadata',
-		'get_post_metadata',
-		'update_post_metadata',
-		'delete_post_metadata',
-	);
-
-	/**
-	 * Post type
-	 *
-	 * @since  2.0
-	 * @access protected
-	 * @var bool
-	 */
-	protected $post_type = 'give_log';
+	protected $supports = array();
 
 	/**
 	 * Meta type
@@ -147,17 +133,17 @@ class Give_DB_Log_Meta extends Give_DB_Meta {
 	}
 
 	/**
-	 * Check if current id is log or not
+	 * Check if current id is valid
 	 *
 	 * @since  2.0
 	 * @access protected
 	 *
-	 * @param $id
+	 * @param $ID
 	 *
 	 * @return bool
 	 */
-	protected function is_valid_post_type( $id ) {
-		return Give()->logs->log_db->is_log( $id );
+	protected function is_valid_post_type( $ID ) {
+		return $ID && true;
 	}
 
 	/**
