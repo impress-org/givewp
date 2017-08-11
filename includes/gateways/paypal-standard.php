@@ -75,7 +75,7 @@ add_action( 'give_gateway_paypal', 'give_process_paypal_payment' );
  */
 function give_listen_for_paypal_ipn() {
 	// Regular PayPal IPN
-	if ( isset( $_GET['give-listener'] ) && $_GET['give-listener'] == 'IPN' ) {
+	if ( isset( $_GET['give-listener'] ) && 'IPN' === $_GET['give-listener'] ) {
 		/**
 		 * Fires while verifying PayPal IPN
 		 *
@@ -474,32 +474,6 @@ function give_paypal_success_page_content( $content ) {
 }
 
 add_filter( 'give_payment_confirm_paypal', 'give_paypal_success_page_content' );
-
-/**
- * Given a Payment ID, extract the transaction ID
- *
- * @since  1.0
- *
- * @param  string $payment_id Payment ID
- *
- * @return string                   Transaction ID
- */
-function give_paypal_get_payment_transaction_id( $payment_id ) {
-
-	$transaction_id = '';
-	$notes          = give_get_payment_notes( $payment_id );
-
-	foreach ( $notes as $note ) {
-		if ( preg_match( '/^PayPal Transaction ID: ([^\s]+)/', $note->comment_content, $match ) ) {
-			$transaction_id = $match[1];
-			continue;
-		}
-	}
-
-	return apply_filters( 'give_paypal_set_payment_transaction_id', $transaction_id, $payment_id );
-}
-
-add_filter( 'give_get_payment_transaction_id-paypal', 'give_paypal_get_payment_transaction_id', 10, 1 );
 
 /**
  * Given a transaction ID, generate a link to the PayPal transaction ID details

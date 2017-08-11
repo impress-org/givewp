@@ -319,7 +319,7 @@ function give_ajax_donor_search() {
 	if ( ! current_user_can( 'view_give_reports' ) ) {
 		$donors = array();
 	} else {
-		$donors = $wpdb->get_results( "SELECT id,name,email FROM {$wpdb->prefix}give_customers WHERE `name` LIKE '%$search%' OR `email` LIKE '%$search%' LIMIT 50" );
+		$donors = $wpdb->get_results( "SELECT id,name,email FROM $wpdb->donors WHERE `name` LIKE '%$search%' OR `email` LIKE '%$search%' LIMIT 50" );
 	}
 
 	if ( $donors ) {

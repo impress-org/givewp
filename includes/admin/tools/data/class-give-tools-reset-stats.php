@@ -104,8 +104,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 
 				switch ( $type ) {
 					case 'customers':
-						$table_name = $wpdb->prefix . 'give_customers';
-						$sql[]      = "DELETE FROM $table_name WHERE id IN ($ids)";
+						$sql[]      = "DELETE FROM $wpdb->donors WHERE id IN ($ids)";
 						break;
 					case 'forms':
 						$sql[] = "UPDATE {$meta_table['name']} SET meta_value = 0 WHERE meta_key = '_give_form_sales' AND {$meta_table['column']['id']} IN ($ids)";

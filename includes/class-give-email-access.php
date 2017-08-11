@@ -166,12 +166,12 @@ class Give_Email_Access {
 
 		// Does a user row exist?
 		$exists = (int) $wpdb->get_var(
-			$wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}give_customers WHERE id = %d", $customer_id )
+			$wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->donors WHERE id = %d", $customer_id )
 		);
 
 		if ( 0 < $exists ) {
 			$row_id = (int) $wpdb->get_var(
-				$wpdb->prepare( "SELECT id FROM {$wpdb->prefix}give_customers WHERE id = %d AND (verify_throttle < %s OR verify_key = '') LIMIT 1", $customer_id, $throttle )
+				$wpdb->prepare( "SELECT id FROM $wpdb->donors WHERE id = %d AND (verify_throttle < %s OR verify_key = '') LIMIT 1", $customer_id, $throttle )
 			);
 
 			if ( $row_id < 1 ) {
@@ -279,7 +279,7 @@ class Give_Email_Access {
 		$expires = date( 'Y-m-d H:i:s', time() - $this->token_expiration );
 
 		$email = $wpdb->get_var(
-			$wpdb->prepare( "SELECT email FROM {$wpdb->prefix}give_customers WHERE token = %s AND verify_throttle >= %s LIMIT 1", $token, $expires )
+			$wpdb->prepare( "SELECT email FROM $wpdb->donors WHERE token = %s AND verify_throttle >= %s LIMIT 1", $token, $expires )
 		);
 
 		if ( ! empty( $email ) ) {
@@ -316,18 +316,18 @@ class Give_Email_Access {
 
 		// Insert or update?
 		$row_id = (int) $wpdb->get_var(
-			$wpdb->prepare( "SELECT id FROM {$wpdb->prefix}give_customers WHERE id = %d LIMIT 1", $customer_id )
+			$wpdb->prepare( "SELECT id FROM $wpdb->donors WHERE id = %d LIMIT 1", $customer_id )
 		);
 
 		// Update.
 		if ( ! empty( $row_id ) ) {
 			$wpdb->query(
-				$wpdb->prepare( "UPDATE {$wpdb->prefix}give_customers SET verify_key = %s, verify_throttle = %s WHERE id = %d LIMIT 1", $verify_key, $now, $row_id )
+				$wpdb->prepare( "UPDATE $wpdb->donors SET verify_key = %s, verify_throttle = %s WHERE id = %d LIMIT 1", $verify_key, $now, $row_id )
 			);
 		} // Insert.
 		else {
 			$wpdb->query(
-				$wpdb->prepare( "INSERT INTO {$wpdb->prefix}give_customers ( verify_key, verify_throttle) VALUES (%s, %s)", $verify_key, $now )
+				$wpdb->prepare( "INSERT INTO $wpdb->donors ( verify_key, verify_throttle) VALUES (%s, %s)", $verify_key, $now )
 			);
 		}
 	}
@@ -348,7 +348,7 @@ class Give_Email_Access {
 
 		// See if the verify_key exists.
 		$row = $wpdb->get_row(
-			$wpdb->prepare( "SELECT id, email FROM {$wpdb->prefix}give_customers WHERE verify_key = %s LIMIT 1", $token )
+			$wpdb->prepare( "SELECT id, email FROM $wpdb->donors WHERE verify_key = %s LIMIT 1", $token )
 		);
 
 		$now = date( 'Y-m-d H:i:s' );
@@ -356,7 +356,7 @@ class Give_Email_Access {
 		// Set token and remove verify key.
 		if ( ! empty( $row ) ) {
 			$wpdb->query(
-				$wpdb->prepare( "UPDATE {$wpdb->prefix}give_customers SET verify_key = '', token = %s, verify_throttle = %s WHERE id = %d LIMIT 1", $token, $now, $row->id )
+				$wpdb->prepare( "UPDATE $wpdb->donors SET verify_key = '', token = %s, verify_throttle = %s WHERE id = %d LIMIT 1", $token, $now, $row->id )
 			);
 
 			$this->token_email = $row->email;
@@ -401,7 +401,7 @@ class Give_Email_Access {
 		global $wpdb;
 
 		// Create columns in customers table
-		$query = $wpdb->query( "ALTER TABLE {$wpdb->prefix}give_customers ADD `token` VARCHAR(255) CHARACTER SET utf8 NOT NULL, ADD `verify_key` VARCHAR(255) CHARACTER SET utf8 NOT NULL AFTER `token`, ADD `verify_throttle` DATETIME NOT NULL AFTER `verify_key`" );
+		$query = $wpdb->query( "ALTER TABLE $wpdb->donors ADD `token` VARCHAR(255) CHARACTER SET utf8 NOT NULL, ADD `verify_key` VARCHAR(255) CHARACTER SET utf8 NOT NULL AFTER `token`, ADD `verify_throttle` DATETIME NOT NULL AFTER `verify_key`" );
 
 		// Columns added properly
 		if ( $query ) {
