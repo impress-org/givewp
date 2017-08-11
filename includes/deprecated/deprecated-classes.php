@@ -128,12 +128,7 @@ class Give_DB_Customer_Meta extends Give_DB_Donor_Meta {
 	 * Give_DB_Customer_Meta constructor.
 	 */
 	public function __construct() {
-		/* @var WPDB $wpdb */
-		global $wpdb;
-
-		$this->table_name  = $wpdb->prefix . 'give_customermeta';
-		$this->primary_key = 'meta_id';
-		$this->version     = '1.0';
+		parent::__construct();
 	}
 
 
