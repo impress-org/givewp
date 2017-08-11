@@ -162,10 +162,10 @@ function give_show_upgrade_notices( $give_updates ) {
 	// v2.0.0 Upgrades
 	$give_updates->register(
 		array(
-			'id'       => 'move_metadata_into_new_table',
+			'id'       => 'v20_move_metadata_into_new_table',
 			'version'  => '2.0.0',
 			'callback' => 'give_v20_move_metadata_into_new_table_callback',
-			'depend'   => 'give_v20_upgrades_form_metadata_callback'
+			'depend'   => 'v20_upgrades_form_metadata'
 		)
 	);
 
