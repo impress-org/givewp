@@ -1220,6 +1220,7 @@ function give_v20_upgrades_form_metadata_callback() {
 
 		while ( $forms->have_posts() ) {
 			$forms->the_post();
+			global $post;
 
 			// Update offline instruction email notification status.
 			$offline_instruction_notification_status = get_post_meta( get_the_ID(), '_give_customize_offline_donations', true );
@@ -1252,7 +1253,20 @@ function give_v20_upgrades_form_metadata_callback() {
 				)
 			);
 
-			// @todo add db upgrade for _give_payment_meta,_give_payment_customer_id, _give_payment_user_email, _give_payment_user_ip.
+			// Split _give_payment_meta meta.
+			_give_20_bc_split_and_save_give_payment_meta( $post->ID, give_get_meta( $post->ID, '_give_payment_meta', true ) );
+
+			// Rename _give_payment_customer_id.
+			give_update_meta( $post->ID, '_give_payment_donor_id',  give_get_meta( $post->ID, '_give_payment_customer_id', true ) );
+
+			// Rename _give_payment_donor_email.
+			give_update_meta( $post->ID, '_give_payment_donor_email',  give_get_meta( $post->ID, '_give_payment_user_email', true ) );
+
+			// Rename _give_payment_donor_email.
+			give_update_meta( $post->ID, '_give_payment_donor_ip',  give_get_meta( $post->ID, '_give_payment_user_ip', true ) );
+
+			// Remove _give_payment_user_id.
+			give_delete_meta( $post->ID, '_give_payment_user_id' );
 
 
 		}// End while().
@@ -1262,8 +1276,6 @@ function give_v20_upgrades_form_metadata_callback() {
 		// No more forms found, finish up.
 		give_set_upgrade_complete( 'v20_upgrades_form_metadata' );
 	}
-
-	//  delete _give_payment_user_id now we are getting user id from donor id.
 }
 
 /**
