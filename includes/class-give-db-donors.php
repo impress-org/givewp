@@ -35,12 +35,14 @@ class Give_DB_Donors extends Give_DB {
 		/* @var WPDB $wpdb */
 		global $wpdb;
 
-		$this->table_name  = $wpdb->prefix . 'give_customers';
+		$wpdb->donors      = $this->table_name = "{$wpdb->prefix}give_donors";
 		$this->primary_key = 'id';
 		$this->version     = '1.0';
 
+		$this->bc_200_params();
+
 		// Set hooks and register table only if instance loading first time.
-		if( ! ( Give()->donors instanceof Give_DB_Donors ) ) {
+		if ( ! ( Give()->donors instanceof Give_DB_Donors ) ) {
 			// Setup hook.
 			add_action( 'profile_update', array( $this, 'update_donor_email_on_user_update' ), 10, 2 );
 			add_action( 'edit_user_profile_update', array( $this, 'update_donor_info_on_user_update' ), 10, 2 );
@@ -107,7 +109,7 @@ class Give_DB_Donors extends Give_DB {
 	public function add( $data = array() ) {
 
 		$defaults = array(
-			'payment_ids' => ''
+			'payment_ids' => '',
 		);
 
 		$args = wp_parse_args( $data, $defaults );
@@ -134,9 +136,9 @@ class Give_DB_Donors extends Give_DB {
 
 				} else {
 
-					$existing_ids          = array_map( 'absint', explode( ',', $donor->payment_ids ) );
-					$payment_ids           = array_map( 'absint', explode( ',', $args['payment_ids'] ) );
-					$payment_ids           = array_merge( $payment_ids, $existing_ids );
+					$existing_ids       = array_map( 'absint', explode( ',', $donor->payment_ids ) );
+					$payment_ids        = array_map( 'absint', explode( ',', $args['payment_ids'] ) );
+					$payment_ids        = array_merge( $payment_ids, $existing_ids );
 					$donor->payment_ids = implode( ',', array_unique( array_values( $payment_ids ) ) );
 
 				}
@@ -176,8 +178,8 @@ class Give_DB_Donors extends Give_DB {
 			return false;
 		}
 
-		$column   = is_email( $_id_or_email ) ? 'email' : 'id';
-		$donor = $this->get_donor_by( $column, $_id_or_email );
+		$column = is_email( $_id_or_email ) ? 'email' : 'id';
+		$donor  = $this->get_donor_by( $column, $_id_or_email );
 
 		if ( $donor->id > 0 ) {
 
@@ -200,7 +202,7 @@ class Give_DB_Donors extends Give_DB {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  int $user_id
+	 * @param  int|bool $user_id
 	 *
 	 * @return bool|int
 	 */
@@ -226,7 +228,7 @@ class Give_DB_Donors extends Give_DB {
 	 * @return bool          True is exists, false otherwise.
 	 */
 	public function exists( $value = '', $field = 'email' ) {
-		
+
 		$columns = $this->get_columns();
 		if ( ! array_key_exists( $field, $columns ) ) {
 			return false;
@@ -239,11 +241,11 @@ class Give_DB_Donors extends Give_DB {
 	/**
 	 * Attaches a payment ID to a donor
 	 *
-	 * @param  int $donor_id   Donor ID.
-	 * @param  int $payment_id Payment ID.
-	 *
 	 * @since  1.0
 	 * @access public
+	 *
+	 * @param  int $donor_id   Donor ID.
+	 * @param  int $payment_id Payment ID.
 	 *
 	 * @return bool
 	 */
@@ -263,11 +265,11 @@ class Give_DB_Donors extends Give_DB {
 	/**
 	 * Removes a payment ID from a donor.
 	 *
-	 * @param  int $donor_id   Donor ID.
-	 * @param  int $payment_id Payment ID.
-	 *
 	 * @since  1.0
 	 * @access public
+	 *
+	 * @param  int $donor_id   Donor ID.
+	 * @param  int $payment_id Payment ID.
 	 *
 	 * @return bool
 	 */
@@ -287,11 +289,10 @@ class Give_DB_Donors extends Give_DB {
 	/**
 	 * Increments donor's donation stats.
 	 *
+	 * @access public
+	 *
 	 * @param int   $donor_id Donor ID.
 	 * @param float $amount   Amoumt.
-	 *
-	 * @since  1.0
-	 * @access public
 	 *
 	 * @return bool
 	 */
@@ -313,11 +314,11 @@ class Give_DB_Donors extends Give_DB {
 	/**
 	 * Decrements donor's donation stats.
 	 *
-	 * @param int   $donor_id Donor ID.
-	 * @param float $amount   Amount.
-	 *
 	 * @since  1.0
 	 * @access public
+	 *
+	 * @param  int   $donor_id Donor ID.
+	 * @param  float $amount   Amount.
 	 *
 	 * @return bool
 	 */
@@ -351,23 +352,23 @@ class Give_DB_Donors extends Give_DB {
 
 		$donor = new Give_Donor( $user_id, true );
 
-		if( ! $donor ) {
+		if ( ! $donor ) {
 			return false;
 		}
 
 		$user = get_userdata( $user_id );
 
-		if( ! empty( $user ) && $user->user_email !== $donor->email ) {
+		if ( ! empty( $user ) && $user->user_email !== $donor->email ) {
 
-			if( ! $this->get_donor_by( 'email', $user->user_email ) ) {
+			if ( ! $this->get_donor_by( 'email', $user->user_email ) ) {
 
 				$success = $this->update( $donor->id, array( 'email' => $user->user_email ) );
 
-				if( $success ) {
+				if ( $success ) {
 					// Update some payment meta if we need to
 					$payments_array = explode( ',', $donor->payment_ids );
 
-					if( ! empty( $payments_array ) ) {
+					if ( ! empty( $payments_array ) ) {
 
 						foreach ( $payments_array as $payment_id ) {
 
@@ -380,10 +381,10 @@ class Give_DB_Donors extends Give_DB {
 					/**
 					 * Fires after updating donor email on user update.
 					 *
+					 * @since 1.4.3
+					 *
 					 * @param  WP_User    $user  WordPress User object.
 					 * @param  Give_Donor $donor Give donor object.
-					 *
-					 * @since 1.4.3
 					 */
 					do_action( 'give_update_donor_email_on_user_update', $user, $donor );
 
@@ -394,7 +395,7 @@ class Give_DB_Donors extends Give_DB {
 		}
 
 	}
-	
+
 	/**
 	 * Retrieves a single donor from the database
 	 *
@@ -458,14 +459,14 @@ class Give_DB_Donors extends Give_DB {
 		if ( ! $donor = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $this->table_name WHERE $db_field = %s LIMIT 1", $value ) ) ) {
 
 			// Look for donor from an additional email.
-			if( 'email' === $field ) {
-				$meta_table  = Give()->donor_meta->table_name;
-				$donor_id = $wpdb->get_var( $wpdb->prepare( "SELECT customer_id FROM {$meta_table} WHERE meta_key = 'additional_email' AND meta_value = %s LIMIT 1", $value ) );
+			if ( 'email' === $field ) {
+				$meta_type  = Give()->donor_meta->meta_type;
+				$donor_id   = $wpdb->get_var( $wpdb->prepare( "SELECT {$meta_type}_id FROM $wpdb->donormeta WHERE meta_key = 'additional_email' AND meta_value = %s LIMIT 1", $value ) );
 
-				if( ! empty( $donor_id ) ) {
+				if ( ! empty( $donor_id ) ) {
 					return $this->get( $donor_id );
- 				}
- 			}
+				}
+			}
 
 			return false;
 		}
@@ -476,15 +477,15 @@ class Give_DB_Donors extends Give_DB {
 	/**
 	 * Retrieve donors from the database.
 	 *
-	 * @param  array $args List of Arguments.
-	 *
 	 * @since  1.0
 	 * @access public
-     *
-     * @return array|object|null Customers array or object. Null if not found.
+	 *
+	 * @param  array $args
+	 *
+	 * @return array|object|null Customers array or object. Null if not found.
 	 */
 	public function get_donors( $args = array() ) {
-        /* @var WPDB $wpdb */
+		/* @var WPDB $wpdb */
 		global $wpdb;
 
 		$defaults = array(
@@ -492,7 +493,7 @@ class Give_DB_Donors extends Give_DB {
 			'offset'  => 0,
 			'user_id' => 0,
 			'orderby' => 'id',
-			'order'   => 'DESC'
+			'order'   => 'DESC',
 		);
 
 		$args = wp_parse_args( $args, $defaults );
@@ -530,9 +531,9 @@ class Give_DB_Donors extends Give_DB {
 		}
 
 		// Specific donors by email.
-		if( ! empty( $args['email'] ) ) {
+		if ( ! empty( $args['email'] ) ) {
 
-			if( is_array( $args['email'] ) ) {
+			if ( is_array( $args['email'] ) ) {
 
 				$emails_count       = count( $args['email'] );
 				$emails_placeholder = array_fill( 0, $emails_count, '%s' );
@@ -545,7 +546,7 @@ class Give_DB_Donors extends Give_DB {
 		}
 
 		// Specific donors by name.
-		if( ! empty( $args['name'] ) ) {
+		if ( ! empty( $args['name'] ) ) {
 			$where .= $wpdb->prepare( " AND `name` LIKE '%%%%" . '%s' . "%%%%' ", $args['name'] );
 		}
 
@@ -607,15 +608,15 @@ class Give_DB_Donors extends Give_DB {
 	/**
 	 * Count the total number of donors in the database
 	 *
-	 * @param  array $args List of Arguments.
-	 *
 	 * @since  1.0
 	 * @access public
-     *
-     * @return int         Total number of donors.
+	 *
+	 * @param  array $args
+	 *
+	 * @return int         Total number of donors.
 	 */
 	public function count( $args = array() ) {
-        /* @var WPDB $wpdb */
+		/* @var WPDB $wpdb */
 		global $wpdb;
 
 		$where = ' WHERE 1=1 ';
@@ -685,17 +686,24 @@ class Give_DB_Donors extends Give_DB {
 
 		update_option( $this->table_name . '_db_version', $this->version );
 	}
-	
+
 	/**
-	 * Check if the Customers table was ever installed
+	 * Add backward compatibility for old table name
 	 *
-	 * @since  1.4.3
-	 * @access public
-	 *
-	 * @return bool Returns if the donors table was installed and upgrade routine run.
+	 * @since  2.0
+	 * @access private
+	 * @global wpdb $wpdb
 	 */
-	public function installed() {
-		return $this->table_exists( $this->table_name );
+	private function bc_200_params() {
+		/* @var wpdb $wpdb */
+		global $wpdb;
+
+		if (
+			! give_has_upgrade_completed( 'v20_rename_donor_tables' ) &&
+			$wpdb->query( $wpdb->prepare( "SHOW TABLES LIKE %s","{$wpdb->prefix}give_customers" ) )
+		) {
+			$wpdb->donors = $this->table_name = "{$wpdb->prefix}give_customers";
+		}
 	}
 
 	/**

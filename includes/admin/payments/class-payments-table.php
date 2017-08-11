@@ -117,6 +117,14 @@ class Give_Payment_History_Table extends WP_List_Table {
 	public $abandoned_count;
 
 	/**
+	 * Total number of pre-approved payments
+	 *
+	 * @var int
+	 * @since 1.8.13
+	 */
+	public $preapproval_count;
+
+	/**
 	 * Get things started.
 	 *
 	 * @since 1.0
@@ -291,6 +299,10 @@ class Give_Payment_History_Table extends WP_List_Table {
 			'abandoned'  => array(
 				'abandoned_count',
 				esc_html__( 'Abandoned', 'give' ),
+			),
+			'preapproval'  => array(
+				'preapproval_count',
+				esc_html__( 'Preapproval Pending', 'give' ),
 			),
 		);
 
@@ -760,15 +772,16 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 		$args['form_id'] = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : null;
 
-		$payment_count          = give_count_payments( $args );
-		$this->complete_count   = $payment_count->publish;
-		$this->pending_count    = $payment_count->pending;
-		$this->processing_count = $payment_count->processing;
-		$this->refunded_count   = $payment_count->refunded;
-		$this->failed_count     = $payment_count->failed;
-		$this->revoked_count    = $payment_count->revoked;
-		$this->cancelled_count  = $payment_count->cancelled;
-		$this->abandoned_count  = $payment_count->abandoned;
+		$payment_count           = give_count_payments( $args );
+		$this->complete_count    = $payment_count->publish;
+		$this->pending_count     = $payment_count->pending;
+		$this->processing_count  = $payment_count->processing;
+		$this->refunded_count    = $payment_count->refunded;
+		$this->failed_count      = $payment_count->failed;
+		$this->revoked_count     = $payment_count->revoked;
+		$this->cancelled_count   = $payment_count->cancelled;
+		$this->abandoned_count   = $payment_count->abandoned;
+		$this->preapproval_count = $payment_count->preapproval;
 
 		foreach ( $payment_count as $count ) {
 			$this->total_count += $count;
@@ -881,6 +894,9 @@ class Give_Payment_History_Table extends WP_List_Table {
 				break;
 			case 'abandoned':
 				$total_items = $this->abandoned_count;
+				break;
+			case 'preapproval':
+				$total_items = $this->preapproval_count;
 				break;
 			case 'any':
 				$total_items = $this->total_count;

@@ -391,18 +391,4 @@ class Give_DB_Logs extends Give_DB {
 			$args['fields'] :
 			'all';
 	}
-
-	/**
-	 * Check if current id is log or not
-	 *
-	 * @since 2.0
-	 * @access public
-	 * @param $id
-	 *
-	 * @return bool
-	 */
-	public function is_log( $id ) {
-		$log = ( empty( $id ) || get_post_type( $id ) ) ? false : $this->get_log_by( $id );
-		return ! empty( $log ) ? true : false;
-	}
 }

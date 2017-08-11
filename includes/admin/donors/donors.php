@@ -185,7 +185,7 @@ function give_render_donor_view( $view, $callbacks ) {
  *
  * @since  1.0
  *
- * @param  object $donor The Donor object being displayed.
+ * @param  Give_Donor $donor The Donor object being displayed.
  *
  * @return void
  */

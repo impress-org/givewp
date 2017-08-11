@@ -140,39 +140,6 @@ class Give_DB_Meta extends Give_DB {
 
 
 	/**
-	 * Filter where clause of every query for new payment meta table
-	 *
-	 * @since  2.0
-	 * @access public
-	 *
-	 * @param string   $where
-	 * @param WP_Query $wp_query
-	 *
-	 * @return string
-	 */
-	public function __posts_where( $where, $wp_query ) {
-		global $wpdb;
-
-		$is_payment_post_type = false;
-
-		// Check if it is payment query.
-		if ( ! empty( $wp_query->query['post_type'] ) ) {
-			if ( is_string( $wp_query->query['post_type'] ) && $this->post_type === $wp_query->query['post_type'] ) {
-				$is_payment_post_type = true;
-			} elseif ( is_array( $wp_query->query['post_type'] ) && in_array( $this->post_type, $wp_query->query['post_type'] ) ) {
-				$is_payment_post_type = true;
-			}
-		}
-
-		// Add new table to sql query.
-		if ( $is_payment_post_type && ! empty( $wp_query->meta_query->queries ) ) {
-			$where = str_replace( $wpdb->postmeta, $this->table_name, $where );
-		}
-
-		return $where;
-	}
-
-	/**
 	 * Add meta data field to a payment.
 	 *
 	 * For internal use only. Use Give_Payment->add_meta() for public usage.
@@ -255,6 +222,39 @@ class Give_DB_Meta extends Give_DB {
 		}
 
 		return delete_metadata( $this->meta_type, $id, $meta_key, $meta_value, $delete_all );
+	}
+
+	/**
+	 * Filter where clause of every query for new payment meta table
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param string   $where
+	 * @param WP_Query $wp_query
+	 *
+	 * @return string
+	 */
+	public function __posts_where( $where, $wp_query ) {
+		global $wpdb;
+
+		$is_payment_post_type = false;
+
+		// Check if it is payment query.
+		if ( ! empty( $wp_query->query['post_type'] ) ) {
+			if ( is_string( $wp_query->query['post_type'] ) && $this->post_type === $wp_query->query['post_type'] ) {
+				$is_payment_post_type = true;
+			} elseif ( is_array( $wp_query->query['post_type'] ) && in_array( $this->post_type, $wp_query->query['post_type'] ) ) {
+				$is_payment_post_type = true;
+			}
+		}
+
+		// Add new table to sql query.
+		if ( $is_payment_post_type && ! empty( $wp_query->meta_query->queries ) ) {
+			$where = str_replace( $wpdb->postmeta, $this->table_name, $where );
+		}
+
+		return $where;
 	}
 
 
@@ -344,7 +344,7 @@ class Give_DB_Meta extends Give_DB {
 	}
 
 	/**
-	 * Check if current id of payment type or not
+	 * Check if current id of post type or not
 	 *
 	 * @since  2.0
 	 * @access protected

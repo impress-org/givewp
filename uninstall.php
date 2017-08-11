@@ -80,6 +80,7 @@ if ( give_is_setting_enabled( give_get_option( 'uninstall_on_delete' ) ) ) {
 
 	// Remove all database tables.
 	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_donors' );
+	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_donormeta' );
 	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_customers' );
 	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_customermeta' );
 	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_logs' );

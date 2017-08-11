@@ -167,6 +167,16 @@ function give_show_upgrade_notices( $give_updates ) {
 		)
 	);
 
+	// v2.0.0 Upgrades
+	$give_updates->register(
+		array(
+			'id'       => 'v20_rename_donor_tables',
+			'version'  => '2.0.0',
+			'callback' => 'give_v20_rename_donor_tables_callback',
+			'depend' => array( 'v20_move_metadata_into_new_table', 'v20_logs_upgrades', 'v20_upgrades_form_metadata' )
+		)
+	);
+
 	// v2.0.0 Donor Name Upgrades
 	$give_updates->register(
 		array(
@@ -1254,7 +1264,6 @@ function give_v20_upgrades_form_metadata_callback() {
 
 		}// End while().
 
-		/* Restore original Post Data */
 		wp_reset_postdata();
 	} else {
 		// No more forms found, finish up.
@@ -1483,3 +1492,46 @@ function give_v20_upgrades_donor_name() {
 	}
 
 }
+
+/**
+ * Upgrade logs data.
+ *
+ * @since  2.0
+ * @global wpdb $wpdb
+ * @return void
+ */
+function give_v20_rename_donor_tables_callback() {
+	global $wpdb;
+
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
+
+	$tables = array(
+		"{$wpdb->prefix}give_customers"    => "{$wpdb->prefix}give_donors",
+		"{$wpdb->prefix}give_customermeta" => "{$wpdb->prefix}give_donormeta",
+	);
+
+	// Alter customer table
+	foreach ( $tables as $old_table => $new_table ) {
+		if (
+			$wpdb->query( $wpdb->prepare( "SHOW TABLES LIKE %s", $old_table ) ) &&
+			! $wpdb->query( $wpdb->prepare( "SHOW TABLES LIKE %s", $new_table ) )
+		) {
+			$wpdb->query( "ALTER TABLE {$old_table} RENAME TO {$new_table}" );
+
+			if( "{$wpdb->prefix}give_donormeta" === $new_table ) {
+				$wpdb->query( "ALTER TABLE {$new_table} CHANGE COLUMN customer_id donor_id bigint(20)" );
+			}
+		}
+	}
+
+	$give_updates->percentage = 100;
+
+	// No more forms found, finish up.
+	give_set_upgrade_complete( 'v20_rename_donor_tables' );
+
+	// Re initiate donor classes.
+	Give()->donors     = new Give_DB_Donors();
+	Give()->donor_meta = new Give_DB_Donor_Meta();
+}
+
