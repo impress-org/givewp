@@ -1203,6 +1203,7 @@ function give_v1812_update_donor_purchase_value_callback() {
  * @return void
  */
 function give_v20_upgrades_form_metadata_callback() {
+	global $wpdb;
 	$give_updates = Give_Updates::get_instance();
 
 	// form query
@@ -1254,16 +1255,32 @@ function give_v20_upgrades_form_metadata_callback() {
 			);
 
 			// Split _give_payment_meta meta.
-			_give_20_bc_split_and_save_give_payment_meta( $post->ID, give_get_meta( $post->ID, '_give_payment_meta', true ) );
+			$payment_meta = maybe_unserialize( $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM $wpdb->postmeta WHERE meta_key=%s", '_give_payment_meta' ) ) );
+			if ( ! empty( $payment_meta ) ) {
+				_give_20_bc_split_and_save_give_payment_meta( $post->ID, maybe_unserialize( $payment_meta ) );
+			}
 
 			// Rename _give_payment_customer_id.
-			give_update_meta( $post->ID, '_give_payment_donor_id',  give_get_meta( $post->ID, '_give_payment_customer_id', true ) );
+			$customer_id = maybe_unserialize( $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM $wpdb->postmeta WHERE meta_key=%s", '_give_payment_customer_id' ) ) );
+			if( !empty( $customer_id ) ) {
+				give_update_meta( $post->ID, '_give_payment_donor_id',  $customer_id );
+				give_delete_meta( $post->ID, '_give_payment_customer_id' );
+			}
+
 
 			// Rename _give_payment_donor_email.
-			give_update_meta( $post->ID, '_give_payment_donor_email',  give_get_meta( $post->ID, '_give_payment_user_email', true ) );
+			$user_email = maybe_unserialize( $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM $wpdb->postmeta WHERE meta_key=%s", '_give_payment_user_email' ) ) );
+			if( ! empty( $user_email ) ) {
+				give_update_meta( $post->ID, '_give_payment_donor_email', $user_email );
+				give_get_meta( $post->ID, '_give_payment_user_email' );
+			}
 
-			// Rename _give_payment_donor_email.
-			give_update_meta( $post->ID, '_give_payment_donor_ip',  give_get_meta( $post->ID, '_give_payment_user_ip', true ) );
+			// Rename _give_payment_user_ip.
+			$user_ip = maybe_unserialize( $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM $wpdb->postmeta WHERE meta_key=%s", '_give_payment_user_ip' ) ) );
+			if( ! empty( $user_ip ) ) {
+				give_update_meta( $post->ID, '_give_payment_donor_ip',  $user_ip );
+				give_delete_meta( $post->ID, '_give_payment_user_ip', true );
+			}
 
 			// Remove _give_payment_user_id.
 			give_delete_meta( $post->ID, '_give_payment_user_id' );
