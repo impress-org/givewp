@@ -391,7 +391,7 @@ class Give_Updates {
 		if ( ! $this->step ) {
 			$this->send_ajax_response(
 				array(
-					'message'    => __( 'Please reload this page  and try again', 'give' ),
+					'message'    => __( 'Please reload this page and try again', 'give' ),
 					'heading'    => '',
 					'percentage' => 0,
 				),
