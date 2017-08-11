@@ -238,7 +238,7 @@ class Give_Donor {
 		$addresses = $wpdb->get_results(
 			$wpdb->prepare(
 				"
-				SELECT meta_key, meta_value FROM {$wpdb->prefix}give_customermeta
+				SELECT meta_key, meta_value FROM {$wpdb->donormeta}
 				WHERE meta_key
 				LIKE '%%%s%%'
 				",
@@ -1224,7 +1224,7 @@ class Give_Donor {
 			$address_count = $wpdb->get_var(
 				$wpdb->prepare(
 					"
-					SELECT COUNT(*) FROM {$wpdb->prefix}give_customermeta
+					SELECT COUNT(*) FROM {$wpdb->donormeta}
 					WHERE meta_key
 					LIKE '%%%s%%'
 					",
