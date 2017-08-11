@@ -152,16 +152,6 @@ function give_show_upgrade_notices( $give_updates ) {
 	// v2.0.0 Upgrades
 	$give_updates->register(
 		array(
-			'id'       => 'v20_upgrades_form_metadata',
-			'version'  => '2.0.0',
-			'callback' => 'give_v20_upgrades_form_metadata_callback',
-		)
-	);
-
-
-	// v2.0.0 Upgrades
-	$give_updates->register(
-		array(
 			'id'       => 'v20_logs_upgrades',
 			'version'  => '2.0.0',
 			'callback' => 'give_v20_logs_upgrades_callback',
@@ -173,15 +163,6 @@ function give_show_upgrade_notices( $give_updates ) {
 	$give_updates->register(
 		array(
 			'id'       => 'move_metadata_into_new_table',
-			'version'  => '2.0.0',
-			'callback' => 'give_v20_move_metadata_into_new_table_callback',
-		)
-	);
-
-	// v2.0.0 Upgrades
-	$give_updates->register(
-		array(
-			'id'       => 'v20_move_metadata_into_new_table',
 			'version'  => '2.0.0',
 			'callback' => 'give_v20_move_metadata_into_new_table_callback',
 		)
