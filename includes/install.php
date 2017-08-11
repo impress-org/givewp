@@ -130,7 +130,7 @@ function give_run_install() {
 			'v20_upgrades_form_metadata',
 			'v20_logs_upgrades',
 			'v20_move_metadata_into_new_table',
-			'v20_rename_donor_tables'
+			'v20_rename_donor_tables',
 			'v20_upgrades_donor_name'
 		);
 
