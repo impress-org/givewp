@@ -165,6 +165,7 @@ function give_show_upgrade_notices( $give_updates ) {
 			'id'       => 'move_metadata_into_new_table',
 			'version'  => '2.0.0',
 			'callback' => 'give_v20_move_metadata_into_new_table_callback',
+			'depend'   => 'give_v20_upgrades_form_metadata_callback'
 		)
 	);
 
