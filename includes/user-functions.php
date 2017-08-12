@@ -366,9 +366,11 @@ function give_validate_user_email( $email, $registering_new_user = false ) {
 			give_set_error( 'email_used', __( 'Donor Exists as well as User exists.', 'give' ) );
 			$valid = false;
 		} else {
-			// Check if email exists.
-			give_set_error( 'email_notused', __( 'Donor Exists and User doesn\'t exists.', 'give' ) );
-			$valid = false;
+			if( give_is_additional_email( $email ) ) {
+				// Check if email exists.
+				give_set_error( 'email_notused', __( 'Donor Exists and User doesn\'t exists.', 'give' ) );
+				$valid = false;
+			}
 		}
 
 		//give_die();
@@ -682,5 +684,11 @@ function give_donor_email_exists( $email ) {
 
 
 function give_is_additional_email( $email ) {
+	global $wpdb;
+	$meta_table  = Give()->donor_meta->table_name;
+	$donor_id = $wpdb->get_var( $wpdb->prepare( "SELECT customer_id FROM {$meta_table} WHERE meta_key = 'additional_email' AND meta_value = %s LIMIT 1", $email ) );
 
+	if( ! empty( $donor_id ) ) {
+		return $this->get( $donor_id );
+	}
 }
