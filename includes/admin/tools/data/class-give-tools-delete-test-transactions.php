@@ -237,19 +237,18 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 			$items = array();
 
 			$args = apply_filters( 'give_tools_reset_stats_total_args', array(
-				'post_type'      => 'give_payment',
-				'post_status'    => 'any',
-				'posts_per_page' => - 1,
-				// ONLY TEST MODE TRANSACTIONS!!!
-				'meta_key'       => '_give_payment_mode',
-				'meta_value'     => 'test'
+				'post_status' => 'any',
+				'number'      => - 1,
+				'meta_key'    => '_give_payment_mode',
+				'meta_value'  => 'test'
 			) );
 
-			$posts = get_posts( $args );
-			foreach ( $posts as $post ) {
+			$posts    = new Give_Payments_Query( $args );
+			$payments = $posts->get_payments();
+			foreach ( $payments as $payment ) {
 				$items[] = array(
-					'id'   => (int) $post->ID,
-					'type' => $post->post_type,
+					'id'   => (int) $payment->__get( 'ID' ),
+					'type' => 'give_payment',
 				);
 			}
 
