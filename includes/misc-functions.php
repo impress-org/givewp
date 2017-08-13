@@ -1304,6 +1304,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data ) {
 	$price_id  = '';
 	$user_data = false;
 	$meta      = array();
+	$payment = false;
 
 	$data = (array) apply_filters( 'give_save_import_donation_to_db', $data );
 
@@ -1315,7 +1316,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data ) {
 			$customer_id = $user_data->ID;
 		} else {
 			// This action was added to remove the login when using the give register function.
-			add_filter( 'give_log_user_in', 'give_log_user_in_callback', 11 );
+			add_filter( 'give_log_user_in_on_register', 'give_log_user_in_on_register_callback', 11 );
 			$customer_id = give_register_and_login_new_user( array(
 				'user_login'      => $data['email'],
 				'user_email'      => $data['email'],
@@ -1324,7 +1325,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data ) {
 				'user_last'       => $data['last_name'],
 				'role'            => get_option( 'default_role' ),
 			) );
-			remove_filter( 'give_log_user_in', 'give_log_user_in_callback', 11 );
+			remove_filter( 'give_log_user_in_on_register', 'give_log_user_in_on_register_callback', 11 );
 
 			$user_data = get_userdata( (int) $customer_id );
 		}
@@ -1426,13 +1427,14 @@ function give_save_import_donation_to_db( $raw_key, $row_data ) {
 			'status'          => ( isset( $data['post_status'] ) ? $data['post_status'] : 'publish' ),
 		);
 
-		$payment = give_insert_payment( $payment_data );
+
+//		$payment = give_insert_payment( $payment_data );
 		if ( $payment ) {
-		    echo $payment;
-		    update_post_meta( $payment, '_give_payment_import', true );
-        } else {
-		    echo 'no doantion made';
-        }
+			echo $payment;
+			update_post_meta( $payment, '_give_payment_import', true );
+		} else {
+			echo 'no doantion made';
+		}
 	}
 }
 
@@ -1483,18 +1485,18 @@ function give_get_donation_data_from_csv( $file_id, $start, $end, $delimiter = '
  */
 function give_import_donations_options() {
 	return (array) apply_filters( 'give_import_donations_options', array(
-		''                      => __( 'Do not import', 'give' ),
-		'id'                    => __( 'Donation ID', 'give' ),
-		'amount'                => __( 'Donation Amount', 'give' ),
-		'post_date'             => __( 'Donation Date', 'give' ),
-		'first_name'            => __( 'Donor First Name', 'give' ),
-		'last_name'             => __( 'Donor Last Name', 'give' ),
-		'address'               => __( 'Donor Address', 'give' ),
-		'email'                 => __( 'Donor Email', 'give' ),
-		'post_status'           => __( 'Donation Status', 'give' ),
-		'gateway' => __( 'Payment Method', 'give' ),
-		'comment_content'       => __( 'Notes', 'give' ),
-		'post_meta'             => __( 'Import as Meta', 'give' ),
+		''                => __( 'Do not import', 'give' ),
+		'id'              => __( 'Donation ID', 'give' ),
+		'amount'          => __( 'Donation Amount', 'give' ),
+		'post_date'       => __( 'Donation Date', 'give' ),
+		'first_name'      => __( 'Donor First Name', 'give' ),
+		'last_name'       => __( 'Donor Last Name', 'give' ),
+		'address'         => __( 'Donor Address', 'give' ),
+		'email'           => __( 'Donor Email', 'give' ),
+		'post_status'     => __( 'Donation Status', 'give' ),
+		'gateway'         => __( 'Payment Method', 'give' ),
+		'comment_content' => __( 'Notes', 'give' ),
+		'post_meta'       => __( 'Import as Meta', 'give' ),
 	) );
 }
 
