@@ -1428,7 +1428,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data ) {
 		);
 
 
-//		$payment = give_insert_payment( $payment_data );
+		$payment = give_insert_payment( $payment_data );
 		if ( $payment ) {
 			echo $payment;
 			update_post_meta( $payment, '_give_payment_import', true );
@@ -1448,7 +1448,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data ) {
  *
  * @return bool
  */
-function give_log_user_in_callback( $value ) {
+function give_log_user_in_on_register_callback( $value ) {
 	return false;
 }
 
