@@ -238,7 +238,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 
 
 			// processing done here.
-			$raw_data = give_get_donation_data_from_csv( $csv, 1, 10, ',' );
+			$raw_data = give_get_donation_data_from_csv( $csv, 9, 10, ',' );
 			$mapto    = 'a:12:{i:0;s:15:"give_form_title";i:1;s:6:"amount";i:2;s:15:"give_form_level";i:3;s:9:"post_date";i:4;s:10:"first_name";i:5;s:9:"last_name";i:6;s:5:"email";i:7;s:11:"customer_id";i:8;s:11:"post_status";i:9;s:7:"gateway";i:10;s:15:"comment_content";i:11;s:9:"post_meta";}';
 			$raw_key  = maybe_unserialize( $mapto );
 			foreach ( $raw_data as $row_data ) {
@@ -400,8 +400,9 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
             </tr>
 			<?php
 			$csv       = ( isset( $_REQUEST['csv'] ) ? sanitize_text_field( $_POST['csv'] ) : '' );
-			$existing  = ( isset( $_REQUEST['existing'] ) ? sanitize_text_field( $_POST['existing'] ) : '' );
+			$existing  = ( isset( $_REQUEST['existing'] ) ? 'on' : '' );
 			$delimiter = ( isset( $_REQUEST['delimiter'] ) ? sanitize_text_field( $_POST['delimiter'] ) : '' );
+
 			$settings  = array(
 				array(
 					'id'      => 'csv',

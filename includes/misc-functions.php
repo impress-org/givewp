@@ -1323,6 +1323,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data ) {
 				'user_registered' => date( 'Y-m-d H:i:s' ),
 				'user_first'      => $data['first_name'],
 				'user_last'       => $data['last_name'],
+				'user_pass'       => wp_generate_password( 8, true ),
 				'role'            => get_option( 'default_role' ),
 			) );
 			remove_filter( 'give_log_user_in_on_register', 'give_log_user_in_on_register_callback', 11 );
@@ -1408,7 +1409,6 @@ function give_save_import_donation_to_db( $raw_key, $row_data ) {
 
 		//Create payment_data array
 		$payment_data = array(
-			'gateway'         => ( ! empty( $data['gateway'] ) ? strtolower( $data['gateway'] ) : 'manual' ),
 			'price'           => $data['amount'],
 			'give_form_title' => $data['give_form_title'],
 			'give_form_id'    => $form->get_ID(),
@@ -1425,12 +1425,12 @@ function give_save_import_donation_to_db( $raw_key, $row_data ) {
 				'address'    => ( isset( $data['address'] ) ? $data['address'] : ( ( $address = get_user_meta( $customer_id, 'address', true ) ) ? $address : false ) ),
 			),
 			'status'          => ( isset( $data['post_status'] ) ? $data['post_status'] : 'publish' ),
+			'gateway'         => ( ! empty( $data['gateway'] ) && 'offline' != strtolower( $data['gateway'] ) ? strtolower( $data['gateway'] ) : 'manual' ),
 		);
-
 
 		$payment = give_insert_payment( $payment_data );
 		if ( $payment ) {
-			echo $payment;
+//			echo $payment;
 			update_post_meta( $payment, '_give_payment_import', true );
 		} else {
 			echo 'no doantion made';
