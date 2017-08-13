@@ -326,6 +326,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 				// Delete the main payment.
 				wp_delete_post( $item, true );
 			}
+			do_action( 'give_delete_log_cache' );
 		}
 
 
