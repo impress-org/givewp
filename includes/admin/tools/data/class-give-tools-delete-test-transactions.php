@@ -93,7 +93,7 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 
 						// Get all the test logs of the donations ids.
 						$parent_query = "SELECT DISTINCT post_id as id FROM $wpdb->postmeta WHERE meta_key = '_give_log_payment_id' AND meta_value IN ( $temp_ids )";
-						$parent_ids = $wpdb->get_results( $parent_query, 'ARRAY_A' );
+						$parent_ids   = $wpdb->get_results( $parent_query, 'ARRAY_A' );
 
 						// List of all test logs.
 						if ( $parent_ids ) {
@@ -119,8 +119,10 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 				}
 				do_action( 'give_delete_log_cache' );
 			}
+
 			return true;
 		}
+
 		return false;
 	}
 
@@ -178,7 +180,7 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 			return true;
 		} else {
 			update_option( 'give_earnings_total', give_get_total_earnings( true ) );
-			Give_Cache::delete( Give_Cache::get_key('give_estimated_monthly_stats' ) );
+			Give_Cache::delete( Give_Cache::get_key( 'give_estimated_monthly_stats' ) );
 
 			$this->delete_data( 'give_temp_delete_test_ids' );
 
@@ -239,8 +241,8 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 				'post_status'    => 'any',
 				'posts_per_page' => - 1,
 				// ONLY TEST MODE TRANSACTIONS!!!
-				'meta_key'   => '_give_payment_mode',
-				'meta_value' => 'test'
+				'meta_key'       => '_give_payment_mode',
+				'meta_value'     => 'test'
 			) );
 
 			$posts = get_posts( $args );
