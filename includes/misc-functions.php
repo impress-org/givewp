@@ -1300,7 +1300,10 @@ function give_import_page_url( $parameter = array() ) {
 
 
 function give_save_import_donation_to_db( $raw_key, $row_data ) {
-	$data = array_combine( $raw_key, $row_data );
+	$data      = array_combine( $raw_key, $row_data );
+	$price_id  = '';
+	$user_data = false;
+	$meta      = array();
 
 	$data = (array) apply_filters( 'give_save_import_donation_to_db', $data );
 
@@ -1322,6 +1325,8 @@ function give_save_import_donation_to_db( $raw_key, $row_data ) {
 				'role'            => get_option( 'default_role' ),
 			) );
 			remove_filter( 'give_log_user_in', 'give_log_user_in_callback', 11 );
+
+			$user_data = get_userdata( (int) $customer_id );
 		}
 	}
 
@@ -1336,7 +1341,6 @@ function give_save_import_donation_to_db( $raw_key, $row_data ) {
 
 	if ( false === $form ) {
 
-	    echo $data['give_form_title'];
 		$form = get_page_by_title( $data['give_form_title'], OBJECT, 'give_forms' );
 
 		if ( ! empty( $form->ID ) ) {
@@ -1359,9 +1363,8 @@ function give_save_import_donation_to_db( $raw_key, $row_data ) {
 			$prices     = $form->get_prices();
 			$price_text = array();
 			foreach ( (array) $prices as $key => $price ) {
-				$price_text[] = ( ! empty( $price['_give_text'] ) ? $price['_give_text'] : '' );
+				$price_text[ $price['_give_id']['level_id'] ] = ( ! empty( $price['_give_text'] ) ? $price['_give_text'] : '' );
 			}
-
 
 			if ( ! in_array( $data['give_form_level'], $price_text ) ) {
 				$multi_level_donations = array(
@@ -1374,13 +1377,13 @@ function give_save_import_donation_to_db( $raw_key, $row_data ) {
 					),
 				);
 
-				if( ! empty( $prices ) ) {
-				    echo 'test1';
+				if ( ! empty( $prices ) ) {
 					$prices = wp_parse_args( $multi_level_donations, $prices );
 				} else {
-					echo 'test2';
 					$prices = $multi_level_donations;
-                }
+				}
+
+				$price_id = array_search( $data['give_form_level'], $price_text );
 			}
 
 			$meta = array(
@@ -1401,6 +1404,35 @@ function give_save_import_donation_to_db( $raw_key, $row_data ) {
 		foreach ( $meta as $key => $value ) {
 			give_update_meta( $form->get_ID(), $key, $value );
 		}
+
+		//Create payment_data array
+		$payment_data = array(
+			'gateway'         => ( ! empty( $data['gateway'] ) ? strtolower( $data['gateway'] ) : 'manual' ),
+			'price'           => $data['amount'],
+			'give_form_title' => $data['give_form_title'],
+			'give_form_id'    => $form->get_ID(),
+			'give_price_id'   => $price_id,
+			'date'            => $data['post_date'],
+			'user_email'      => $data['email'],
+			'purchase_key'    => strtolower( md5( uniqid() ) ),
+			'currency'        => give_get_currency(),
+			'user_info'       => array(
+				'id'         => $customer_id,
+				'email'      => ( isset( $data['email'] ) ? $data['email'] : ( isset( $user_data->data->user_email ) ? $user_data->data->user_email : false ) ),
+				'first_name' => ( isset( $data['first_name'] ) ? $data['first_name'] : ( ( $first_name = get_user_meta( $customer_id, 'first_name', true ) ) ? $first_name : $user_data->data->user_nicename ) ),
+				'last_name'  => ( isset( $data['last_name'] ) ? $data['last_name'] : ( ( $last_name = get_user_meta( $customer_id, 'last_name', true ) ) ? $last_name : $user_data->data->user_nicename ) ),
+				'address'    => ( isset( $data['address'] ) ? $data['address'] : ( ( $address = get_user_meta( $customer_id, 'address', true ) ) ? $address : false ) ),
+			),
+			'status'          => ( isset( $data['post_status'] ) ? $data['post_status'] : 'publish' ),
+		);
+
+		$payment = give_insert_payment( $payment_data );
+		if ( $payment ) {
+		    echo $payment;
+		    update_post_meta( $payment, '_give_payment_import', true );
+        } else {
+		    echo 'no doantion made';
+        }
 	}
 }
 
@@ -1457,9 +1489,10 @@ function give_import_donations_options() {
 		'post_date'             => __( 'Donation Date', 'give' ),
 		'first_name'            => __( 'Donor First Name', 'give' ),
 		'last_name'             => __( 'Donor Last Name', 'give' ),
+		'address'               => __( 'Donor Address', 'give' ),
 		'email'                 => __( 'Donor Email', 'give' ),
 		'post_status'           => __( 'Donation Status', 'give' ),
-		'_give_payment_gateway' => __( 'Payment Method', 'give' ),
+		'gateway' => __( 'Payment Method', 'give' ),
 		'comment_content'       => __( 'Notes', 'give' ),
 		'post_meta'             => __( 'Import as Meta', 'give' ),
 	) );

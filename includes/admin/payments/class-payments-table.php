@@ -515,6 +515,10 @@ class Give_Payment_History_Table extends WP_List_Table {
 			$value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label" data-tooltip="' . esc_attr__( 'This donation was made in test mode.', 'give' ) . '">' . esc_html__( 'Test', 'give' ) . '</span>';
 		}
 
+		if ( true === $payment->import ) {
+			$value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label" data-tooltip="' . esc_attr__( 'This donation was imported.', 'give' ) . '">' . esc_html__( 'Import', 'give' ) . '</span>';
+		}
+
 		return $value;
 	}
 

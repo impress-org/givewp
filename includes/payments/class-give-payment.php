@@ -23,6 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @property bool $new
  * @property string $number
  * @property string $mode
+ * @property string $import
  * @property string $key
  * @property string $form_title
  * @property string|int $form_id
@@ -97,6 +98,16 @@ final class Give_Payment {
 	 * @var    string
 	 */
 	protected $mode = 'live';
+
+	/**
+	 * Is donations is Import or not.
+	 *
+	 * @since  1.8.13
+	 * @access protected
+	 *
+	 * @var    bool
+	 */
+	protected $import = false;
 
 	/**
 	 * The unique donation payment key.
@@ -505,6 +516,7 @@ final class Give_Payment {
 		$this->status         = $payment->post_status;
 		$this->post_status    = $this->status;
 		$this->mode           = $this->setup_mode();
+		$this->import           = $this->setup_import();
 		$this->parent_payment = $payment->post_parent;
 
 		$all_payment_statuses  = give_get_payment_statuses();
@@ -1608,6 +1620,18 @@ final class Give_Payment {
 	 */
 	private function setup_mode() {
 		return $this->get_meta( '_give_payment_mode' );
+	}
+
+	/**
+	 * Setup the payment import data
+	 *
+	 * @since  1.8.13
+	 * @access private
+	 *
+	 * @return bool The payment import
+	 */
+	private function setup_import() {
+		return (bool) $this->get_meta( '_give_payment_import' );
 	}
 
 	/**

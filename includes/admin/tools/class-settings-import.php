@@ -75,7 +75,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 		}
 
 		static function update_notices( $messages ) {
-			if ( 'import' === (string) sanitize_text_field( $_GET['tab'] ) ) {
+			if ( ! empty( $_GET['tab'] ) && 'import' === (string) sanitize_text_field( $_GET['tab'] ) ) {
 				unset( $messages['give-setting-updated'] );
 			}
 
@@ -134,18 +134,18 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 		 * Will start Import
 		 */
 		static function start_import() {
-			$csv   = (int) $_REQUEST['csv'];
+			$csv         = (int) $_REQUEST['csv'];
 			$index_start = 1;
-			$index_end = 1;
-			$next = true;
-			$total = self::get_csv_total( $csv );
+			$index_end   = 1;
+			$next        = true;
+			$total       = self::get_csv_total( $csv );
 			if ( self::$per_page < $total ) {
 				$total_ajax = ceil( $total / self::$per_page );
-				$index_end = self::$per_page;
+				$index_end  = self::$per_page;
 			} else {
 				$total_ajax = 1;
-				$index_end = $total;
-				$next = false;
+				$index_end  = $total;
+				$next       = false;
 			}
 			$current_percentage = 100 / ( $total_ajax + 1 );
 
@@ -238,7 +238,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 			$new_data = array();
 			// processing done here.
 			$raw_data = give_get_donation_data_from_csv( 2645, 1, 10, ',' );
-			$mapto = 'a:12:{i:0;s:15:"give_form_title";i:1;s:6:"amount";i:2;s:15:"give_form_level";i:3;s:9:"post_date";i:4;s:10:"first_name";i:5;s:9:"last_name";i:6;s:5:"email";i:7;s:11:"customer_id";i:8;s:11:"post_status";i:9;s:21:"_give_payment_gateway";i:10;s:15:"comment_content";i:11;s:9:"post_meta";}';
+			$mapto    = 'a:12:{i:0;s:15:"give_form_title";i:1;s:6:"amount";i:2;s:15:"give_form_level";i:3;s:9:"post_date";i:4;s:10:"first_name";i:5;s:9:"last_name";i:6;s:5:"email";i:7;s:11:"customer_id";i:8;s:11:"post_status";i:9;s:7:"gateway";i:10;s:15:"comment_content";i:11;s:9:"post_meta";}';
 			$raw_key  = maybe_unserialize( $mapto );
 			foreach ( $raw_data as $row_data ) {
 				give_save_import_donation_to_db( $raw_key, $row_data );
@@ -313,7 +313,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 		}
 
 		static function get_importer( $file_id, $index = 0, $delimiter = ',' ) {
-			$raw_data     = false;
+			$raw_data = false;
 			$file_dir = get_attached_file( $file_id );
 			if ( $file_dir ) {
 				if ( false !== ( $handle = fopen( $file_dir, 'r' ) ) ) {
@@ -398,10 +398,10 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
                 </th>
             </tr>
 			<?php
-			$csv = ( isset( $_REQUEST['csv'] ) ? sanitize_text_field( $_POST['csv'] ) : '' );
-			$existing = ( isset( $_REQUEST['existing'] ) ? sanitize_text_field( $_POST['existing'] ) : '' );
+			$csv       = ( isset( $_REQUEST['csv'] ) ? sanitize_text_field( $_POST['csv'] ) : '' );
+			$existing  = ( isset( $_REQUEST['existing'] ) ? sanitize_text_field( $_POST['existing'] ) : '' );
 			$delimiter = ( isset( $_REQUEST['delimiter'] ) ? sanitize_text_field( $_POST['delimiter'] ) : '' );
-			$settings = array(
+			$settings  = array(
 				array(
 					'id'      => 'csv',
 					'name'    => __( 'Choose a CSV file:', 'give-manual-donations' ),
