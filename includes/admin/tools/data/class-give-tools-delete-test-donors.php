@@ -311,9 +311,22 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 				$this->update_option( $this->step_on_key, '0' );
 			}
 
+			global $wpdb;
 			foreach ( $donation_ids as $item ) {
+
+				// will delete the payment log first.
+				$parent_query = $wpdb->prepare( "SELECT post_id as id FROM $wpdb->postmeta WHERE meta_key = %s AND meta_value = %d", '_give_log_payment_id', (int) $item );
+				$log_id = $wpdb->get_row( $parent_query, ARRAY_A );
+				// Check if payment has it log or not if yes then delete it.
+				if ( ! empty( $log_id['id'] ) ) {
+					// Deleting the payment log.
+					wp_delete_post( $log_id['id'], true );
+				}
+
+				// Delete the main payment.
 				wp_delete_post( $item, true );
 			}
+			do_action( 'give_delete_log_cache' );
 		}
 
 
