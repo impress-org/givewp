@@ -1279,3 +1279,24 @@ function give_get_completed_upgrades() {
 
 }
 
+/**
+ * Remove the Give transaction pages from WP search results.
+ *
+ * @since 1.8.13
+ *
+ * @param \WP_Query
+ */
+function give_remove_pages_from_search( $query ) {
+
+	if ( ! $query->is_admin && $query->is_search && $query->is_main_query() ) {
+
+		$transaction_failed = give_get_option( 'failure_page', 0 );
+		$success_page       = give_get_option( 'success_page', 0 );
+		$query->set( 'post__not_in', array( $transaction_failed, $success_page ) );
+	}
+
+	return apply_filters( 'give_remove_pages_from_search', $query );
+
+}
+
+add_action( 'pre_get_posts', 'give_remove_pages_from_search', 10, 1 );
