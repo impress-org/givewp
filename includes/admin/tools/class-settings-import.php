@@ -236,9 +236,8 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 			}
 
 
-
 			// processing done here.
-			$raw_data = give_get_donation_data_from_csv( $csv, 9, 10, ',' );
+			$raw_data = give_get_donation_data_from_csv( $csv, 10, 11, ',' );
 			$mapto    = 'a:12:{i:0;s:15:"give_form_title";i:1;s:6:"amount";i:2;s:15:"give_form_level";i:3;s:9:"post_date";i:4;s:10:"first_name";i:5;s:9:"last_name";i:6;s:5:"email";i:7;s:11:"customer_id";i:8;s:11:"post_status";i:9;s:7:"gateway";i:10;s:15:"comment_content";i:11;s:9:"post_meta";}';
 			$raw_key  = maybe_unserialize( $mapto );
 			foreach ( $raw_data as $row_data ) {
@@ -403,7 +402,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 			$existing  = ( isset( $_REQUEST['existing'] ) ? 'on' : '' );
 			$delimiter = ( isset( $_REQUEST['delimiter'] ) ? sanitize_text_field( $_POST['delimiter'] ) : '' );
 
-			$settings  = array(
+			$settings = array(
 				array(
 					'id'      => 'csv',
 					'name'    => __( 'Choose a CSV file:', 'give-manual-donations' ),
@@ -449,7 +448,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 					} elseif ( ( $mime_type = get_post_mime_type( $csv ) ) && ! strpos( $mime_type, 'csv' ) ) {
 						$has_error = true;
 						Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide the ID to a valid CSV file.', 'give-manual-donations' ) );
-                    }
+					}
 				} else {
 					$has_error = true;
 					Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide the ID to a valid CSV file.', 'give-manual-donations' ) );
@@ -460,9 +459,13 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 						'step'      => '2',
 						'csv'       => $csv,
 						'existing'  => ( isset( $_REQUEST['existing'] ) ) ? sanitize_text_field( $_REQUEST['existing'] ) : '',
-						'delimiter'  => ( isset( $_REQUEST['delimiter'] ) ) ? sanitize_text_field( $_REQUEST['delimiter'] ) : '',
+						'delimiter' => ( isset( $_REQUEST['delimiter'] ) ) ? sanitize_text_field( $_REQUEST['delimiter'] ) : '',
 					) );
-					wp_redirect( $url );
+					?>
+                    <script type="text/javascript">
+                        window.location = "<?php echo $url; ?>"
+                    </script>
+					<?php
 				}
 			}
 		}

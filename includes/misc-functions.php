@@ -1407,11 +1407,15 @@ function give_save_import_donation_to_db( $raw_key, $row_data ) {
 			give_update_meta( $form->get_ID(), $key, $value );
 		}
 
+		if ( ! strpos( '.', $data['amount'] ) ) {
+			$data['amount'] = $data['amount'] . '.00';
+        }
+
 		//Create payment_data array
 		$payment_data = array(
 			'price'           => $data['amount'],
 			'give_form_title' => $data['give_form_title'],
-			'give_form_id'    => $form->get_ID(),
+			'give_form_id'    => (string) $form->get_ID(),
 			'give_price_id'   => $price_id,
 			'date'            => $data['post_date'],
 			'user_email'      => $data['email'],
@@ -1430,10 +1434,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data ) {
 
 		$payment = give_insert_payment( $payment_data );
 		if ( $payment ) {
-//			echo $payment;
 			update_post_meta( $payment, '_give_payment_import', true );
-		} else {
-			echo 'no doantion made';
 		}
 	}
 }
