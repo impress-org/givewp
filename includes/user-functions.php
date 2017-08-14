@@ -359,11 +359,14 @@ function give_validate_user_email( $email, $registering_new_user = false ) {
 		give_set_error( 'email_invalid', __( 'Invalid email.', 'give' ) );
 		$valid = false;
 
-	} elseif ( $registering_new_user && ( give_donor_email_exists( $email ) || email_exists( $email ) ) ) {
+	} elseif ( $registering_new_user ) {
 
-		// Check if email exists.
-		give_set_error( 'email_used', __( 'The email address provided is already active for another user.', 'give' ) );
-		$valid = false;
+		// If donor email is not primary
+		if( ! give_donor_email_exists( $email ) && ! email_exists( $email ) && give_is_additional_email( $email ) ) {
+			// Check if email exists.
+			give_set_error( 'email_used', __( 'The email address provided is already active for another user.', 'give' ) );
+			$valid = false;
+		}
 	}
 
 	/**
