@@ -1285,6 +1285,7 @@ function give_get_completed_upgrades() {
  * @since 1.8.13
  *
  * @param \WP_Query
+ *
  */
 function give_remove_pages_from_search( $query ) {
 
@@ -1292,10 +1293,11 @@ function give_remove_pages_from_search( $query ) {
 
 		$transaction_failed = give_get_option( 'failure_page', 0 );
 		$success_page       = give_get_option( 'success_page', 0 );
-		$query->set( 'post__not_in', array( $transaction_failed, $success_page ) );
+		$args = apply_filters( 'give_remove_pages_from_search', array( $transaction_failed, $success_page ), $query );
+
+		$query->set( 'post__not_in', $args );
 	}
 
-	return apply_filters( 'give_remove_pages_from_search', $query );
 
 }
 
