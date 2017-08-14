@@ -62,7 +62,7 @@ $give_updates = Give_Updates::get_instance();
 						<h2 class="hndle"><?php _e( 'Add-on Updates', 'give' ); ?></h2>
 						<div class="inside">
 							<div class="panel-content">
-								<p><?php echo sprintf( __( 'There are %1$s Give %2$s that need to be updated. <a href="%3$s">Update now ></a>', 'give' ), $plugin_updates, _n( 'add-on', 'add-ons', $plugin_updates, 'give' ), $plugin_update_url ); ?></p>
+								<p><?php echo sprintf( __( 'There %1$s %2$s Give %3$s that %4$s to be updated. <a href="%5$s">Update now ></a>', 'give' ), _n( 'is', 'are', $plugin_updates, 'give' ), $plugin_updates, _n( 'add-on', 'add-ons', $plugin_updates, 'give' ), _n( 'needs', 'need', $plugin_updates, 'give' ), $plugin_update_url  ); ?></p>
 								<?php include_once 'plugins-update-section.php'; ?>
 							</div>
 						</div>
