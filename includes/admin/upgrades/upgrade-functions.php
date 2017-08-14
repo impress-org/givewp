@@ -1471,9 +1471,10 @@ function give_v20_upgrades_donor_name() {
 		$give_updates->set_percentage( count( $donors ), $give_updates->step * 20 );
 		// Loop through Donors
 		foreach ( $donors as $donor ) {
-			$donor_name = explode( ' ', $donor->name, 2 );
+
+			$donor_name       = explode( ' ', $donor->name, 2 );
 			$donor_first_name = Give()->donor_meta->get_meta( $donor->id, '_give_donor_first_name' );
-			$donor_last_name = Give()->donor_meta->get_meta( $donor->id, '_give_donor_last_name' );
+			$donor_last_name  = Give()->donor_meta->get_meta( $donor->id, '_give_donor_last_name' );
 
 			// If first name meta of donor is not created, then create it.
 			if( ! $donor_first_name ) {
@@ -1484,6 +1485,13 @@ function give_v20_upgrades_donor_name() {
 			if( ! $donor_last_name ) {
 				Give()->donor_meta->add_meta( $donor->id, '_give_donor_last_name', $donor_name[1] );
 			}
+
+			// If Donor is connected with WP User then update user meta.
+			if( $donor->user_id ) {
+				update_user_meta( $donor->user_id, 'first_name', $donor_name[0] );
+				update_user_meta( $donor->user_id, 'last_name', $donor_name[1] );
+			}
+
 		}
 
 	}else {
