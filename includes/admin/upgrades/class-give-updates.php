@@ -377,12 +377,6 @@ class Give_Updates {
 			);
 		}
 
-		// Update timeout error.
-		ignore_user_abort( true );
-		if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
-			@set_time_limit( 0 );
-		}
-
 		// Set params.
 		$this->step   = absint( $_POST['step'] );
 		$this->update = absint( $_POST['update'] );

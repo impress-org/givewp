@@ -75,7 +75,7 @@ function give_get_price_decimal_separator() {
  * @return string $amount Newly sanitized amount
  */
 function give_sanitize_amount_for_db( $number ) {
-	return give_sanitize_amount( $number, 6 );
+	return give_maybe_sanitize_amount( $number, 6 );
 }
 
 /**

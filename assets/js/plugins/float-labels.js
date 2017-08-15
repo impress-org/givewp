@@ -1,239 +1,327 @@
 /*!
  * Float Labels
  *
- * Version: 1.0.8
- * Author: Paul Ryley (http://geminilabs.io)
- * URL: https://github.com/geminilabs/float-labels.js
- * License: MIT
+ * @version: 3.0.3
+ * @author: Paul Ryley (http://geminilabs.io)
+ * @url: https://geminilabs.github.io/float-labels.js
+ * @license: MIT
  */
 
-/**
- * This plugin applies the float label pattern to a form.
- *
- * The float label pattern floats the inline label up above the input after the user enters a value.
- *
- * Pros:
- * - User keeps context
- *   The user keeps the field’s context after they’ve focused and entered a value. This provides
- *   for a more accessible, less frustrating experience.
- * - Clean and scannable by default
- *   The pattern allows for a clean inline label experience by default, and only becomes a little
- *   more cluttered once the user has filled things out.
- * - Elegant
- *
- * Cons:
- * - Doesn’t provide room for both label and placeholder
- *   Because the label is occupying the same space as the placeholder, there’s no room for
- *   additional hinting.
- * - Small Label
- *   The label becomes small and possibly hard to read, but at the same time it’s not as big a deal.
- *   Once the user has interacted with the input, the label becomes a reference rather than an
- *   instruction.
- *
- * Links:
- * - http://bradfrost.com/blog/post/float-label-pattern/
- * - https://dribbble.com/shots/1254439--GIF-Mobile-Form-Interaction
- */
+/** global: NodeList, Option */
 
-(function()
+;(function( window, document, undefined )
 {
-	var $, floatLabel, keyPress, form, opts;
+	"use strict";
 
-	$ = window.jQuery || window.Zepto || window.$;
-
-	/**
-	 * Floating Labels
-	 *
-	 * @param array options [plugin options array]
-	 */
-	$.fn.floatlabels = function( options )
+	var Plugin = function( el, options )
 	{
-		opts = $.extend({
-			regex       : /text|password|email|number|search|url|tel/,
-			exclude     : [],
-			priority    : '', // label|placeholder
-			customLabel : function(){},
-			customEvent : function(){},
-		}, options );
-
-		form = $( this );
-
-		if( form.length ) {
-
-			if( form.get(0).tagName !== 'FORM' ) {
-				var forms = form.find( 'form' );
-
-				if( forms.length === 0 ) {
-					forms = form.closest( 'form' );
-				}
-				if( forms.length === 0 ) {
-					return;
-				}
-
-				form = forms;
-			}
-
-			form.addClass( 'floated-labels' );
-
-			opts.exclude.push( '.no-label' );
-			opts.exclude = opts.exclude.join( ',' );
-
-			// float input labels
-			form.find( 'input:not(' + opts.exclude + ')' ).each( function()
-			{
-				if( opts.regex.test( $( this ).attr( 'type' ) ) ) {
-					floatLabel( this );
-				}
+		this.el = this.isString( el ) ? document.querySelectorAll( el ) : el;
+		if( !NodeList.prototype.isPrototypeOf( this.el ))return;
+		this.config = [];
+		this.options = options;
+		this.selectors = [];
+		this.init();
+		this.destroy = function() {
+			this.loop( function( el ) {
+				el.removeEventListener( 'reset', this.events.reset );
+				this.removeClasses( el );
+			}, function( field ) {
+				this.reset( field );
 			});
-
-			// float textarea labels
-			form.find( 'textarea:not(' + opts.exclude + ')' ).each( function()
-			{
-				floatLabel( this );
+		};
+		this.rebuild = function() {
+			this.loop( null, function( field ) {
+				this.floatLabel( field, true );
 			});
-
-			// float select labels
-			form.find( 'select:not(' + opts.exclude + ')' ).each( function()
-			{
-				floatLabel( this, 'select' );
-
-				$( this ).parent().addClass( 'styled select' );
-			});
-		}
+		};
 	};
 
-	/**
-	 * Modifies a form element for floatlabels CSS styling
-	 *
-	 * @param object el   [the :input element]
-	 * @param string type [the :input type] (optional)
-	 */
-	floatLabel = function( el, type )
-	{
-		var id, label_el, label_for, label, placeholder, tooltip, floatlabel = 'floatlabel';
+	Plugin.prototype = {
 
-		el          = $( el );
-		id          = el.attr( 'id' );
-		placeholder = el.attr( 'placeholder' );
-		label_for   = 'label[for="' + id + '"]';
+		defaults: {
+			customEvent  : null,
+			customLabel  : null,
+			exclude      : '.no-label',
+			inputRegex   : /email|number|password|search|tel|text|url/,
+			prefix       : 'fl-',
+			prioritize   : 'label', // label|placeholder
+			requiredClass: 'required',
+			style        : 0, // 0|1|2
+			transform    : 'input,select,textarea'
+		},
 
-		if( id !== undefined ) {
+		/** @return void */
+		init: function()
+		{
+			this.initEvents();
+			this.loop( function( el, i ) {
+				var style = this.config[i].style;
+				el.addEventListener( 'reset', this.events.reset );
+				el.classList.add( this.prefixed( 'form' ));
+				if( style ) {
+					el.classList.add( this.prefixed( 'style-' + style ));
+				}
+			}, function( field ) {
+				this.floatLabel( field );
+			});
+		},
 
-			label_el = $( label_for );
+		/** @return void */
+		initEvents: function()
+		{
+			this.events = {
+				blur: this.onBlur.bind( this ),
+				focus: this.onFocus.bind( this ),
+				input: this.onChange.bind( this ),
+				reset: this.onReset.bind( this ),
+			};
+		},
 
+		/** @return null|void */
+		build: function( el )
+		{
+			var labelEl = this.getLabel( el );
+			if( !labelEl )return;
+			var labelText = this.getLabelText( labelEl, el );
+			el.classList.add( this.prefixed( el.tagName.toLowerCase() ));
+			labelEl.classList.add( this.prefixed( 'label' ));
+			labelEl.text = labelText;
+			this.setPlaceholder( labelText, el );
+			this.wrapLabel( labelEl, el );
+			this.handleEvents( el, 'add' );
+			if( typeof this.config[this.current].customEvent === 'function' ) {
+				this.config[this.current].customEvent.call( this, el );
+			}
+		},
+
+		/** @return Element */
+		createEl: function( tag, attributes )
+		{
+			var el = ( typeof tag === 'string' ) ? document.createElement( tag ) : tag;
+			attributes = attributes || {};
+			for( var key in attributes ) {
+				if( !attributes.hasOwnProperty( key ))continue;
+				el.setAttribute( key, attributes[key] );
+			}
+			return el;
+		},
+
+		/** @return object */
+		extend: function()
+		{
+			var args = [].slice.call( arguments );
+			var result = args[0];
+			var extenders = args.slice(1);
+			Object.keys( extenders ).forEach( function( i ) {
+				for( var key in extenders[i] ) {
+					if( !extenders[i].hasOwnProperty( key ))continue;
+					result[key] = extenders[i][key];
+				}
+			});
+			return result;
+		},
+
+		/** @return null|void */
+		floatLabel: function( el, rebuild )
+		{
+			if( !el.getAttribute( 'id' ) || (
+				el.tagName === 'INPUT' && !this.config[this.current].inputRegex.test( el.getAttribute( 'type' ))
+			))return;
+			if( this.hasParent( el )) {
+				if( rebuild !== true )return;
+				this.reset( el );
+			}
+			this.build( el );
+		},
+
+		/** @return string|false */
+		getLabel: function( el )
+		{
+			var label = 'label[for="' + el.getAttribute( 'id' ) + '"]';
+			var labelEl = this.el[this.current].querySelectorAll( label );
 			// check for multiple labels with identical 'for' attributes
-			if( label_el.length > 1 ) {
-				label_el = el.parent().find( label_for );
+			if( labelEl.length > 1 ) {
+				labelEl = el.parentNode.querySelectorAll( label );
 			}
-
-			if( label_el.length === 1 ) {
-				label   = label_el.text().replace( /[*:]/g, '' ).trim();
-				tooltip = label_el.find( '[data-tooltip]' ).data( 'tooltip' );
+			if( labelEl.length === 1 ) {
+				return labelEl[0];
 			}
+			return false;
+		},
 
-			if( !label || ( label && placeholder && opts.priority === 'placeholder' ) ) {
-				label = placeholder;
+		/** @return string */
+		getLabelText: function( labelEl, el )
+		{
+			var labelText = labelEl.textContent.replace( /[*:]/g, '' ).trim();
+			var placeholderText = el.getAttribute( 'placeholder' );
+
+			if( !labelText || ( labelText && placeholderText && this.config[this.current].prioritize === 'placeholder' )) {
+				labelText = placeholderText;
 			}
-		}
+			// call the custom defined label event
+			if( typeof this.config[this.current].customLabel === 'function' ) {
+				var customLabel = this.config[this.current].customLabel.call( this, labelEl, el );
+				if( customLabel !== undefined ) {
+					labelText = customLabel;
+				}
+			}
+			return labelText;
+		},
 
-		// only proceed if label is not empty
-		if( label ) {
+		/** @return void */
+		handleEvents: function( el, action )
+		{
+			var events = this.events;
+			['blur','input','focus'].forEach( function( event ) {
+				el[ action + 'EventListener']( event, events[event] );
+			});
+		},
 
+		/** @return bool */
+		hasParent: function( el )
+		{
+			return el.parentNode.classList.contains( this.prefixed( 'wrap' ));
+		},
+
+		/** @return bool */
+		isString: function( str ) {
+			return Object.prototype.toString.call( str ) === "[object String]";
+		},
+
+		/** @return void */
+		loop: function( elCallback, fieldCallback ) {
+			for( var i = 0; i < this.el.length; ++i ) {
+				if( typeof this.selectors[i] === 'undefined' ) {
+					var config = this.extend( {}, this.defaults, this.options, this.el[i].getAttribute( 'data-options' ));
+					var exclude = ':not(' + config.exclude.split( /[\s,]+/ ).join( '):not(' ) + ')';
+					this.selectors[i] = config.transform.replace( /,/g, exclude + ',' ) + exclude;
+					this.config[i] = config;
+				}
+				var fields = this.el[i].querySelectorAll( this.selectors[i] );
+				this.current = i;
+				if( typeof elCallback === 'function' ) {
+					elCallback.call( this, this.el[i], i );
+				}
+				for( var x = 0; x < fields.length; ++x ) {
+					if( typeof fieldCallback === 'function' ) {
+						fieldCallback.call( this, fields[x], i );
+					}
+				}
+			}
+		},
+
+		/** @return void */
+		onBlur: function( ev )
+		{
+			ev.target.parentNode.classList.remove( this.prefixed( 'has-focus' ));
+		},
+
+		/** @return void */
+		onChange: function( ev )
+		{
+			var event = ev.target.value.length ? 'add' : 'remove';
+			ev.target.parentNode.classList[event]( this.prefixed( 'is-active' ));
+		},
+
+		/** @return void */
+		onFocus: function( ev )
+		{
+			ev.target.parentNode.classList.add( this.prefixed( 'has-focus' ));
+		},
+
+		/** @return void */
+		onReset: function()
+		{
+			var fields = this.el[this.current].querySelectorAll( this.selectors[this.current] );
+			for( var i = 0; i < fields.length; ++i ) {
+				fields[i].parentNode.classList.remove( this.prefixed( 'is-active' ));
+			}
+		},
+
+		/** @return string */
+		prefixed: function( value )
+		{
+			return this.config[this.current].prefix + value;
+		},
+
+		/** @return void */
+		removeClasses: function( el )
+		{
+			var prefix = this.config[this.current].prefix;
+			var classes = el.className.split( ' ' ).filter( function( c ) {
+				return c.lastIndexOf( prefix, 0 ) !== 0;
+			});
+			el.className = classes.join( ' ' ).trim();
+		},
+
+		/** @return null|void */
+		reset: function( el )
+		{
+			var parent = el.parentNode;
+			if( !this.hasParent( el ))return;
+			var fragment = document.createDocumentFragment();
+			while( parent.firstElementChild ) {
+				var childEl = parent.firstElementChild;
+				this.removeClasses( childEl );
+				fragment.appendChild( childEl );
+			}
+			parent.parentNode.replaceChild( fragment, parent );
+			this.resetPlaceholder( el );
+			this.handleEvents( el, 'remove' );
+		},
+
+		/** @return void */
+		resetPlaceholder: function( el )
+		{
+			var dataPlaceholder = 'data-placeholder';
+			var originalPlaceholder = el.getAttribute( dataPlaceholder );
+			if( originalPlaceholder !== null ) {
+				el.removeAttribute( dataPlaceholder );
+				el.setAttribute( 'placeholder', originalPlaceholder );
+			}
+		},
+
+		/** @return void */
+		setPlaceholder: function( labelText, el )
+		{
+			var placeholderText = el.getAttribute( 'placeholder' );
 			// add a placholder option to the select if it doesn't already exist
-			if( type === 'select' ) {
-				var first = el.children().first();
-
-				if( first.val() === '' && first.text() === '' ) {
-					first.text( label );
+			if( el.tagName === 'SELECT' ) {
+				var childEl = el.firstElementChild;
+				if( childEl.value ) {
+					el.insertBefore( new Option( labelText, '', true, true ), childEl );
+				}
+				else if( childEl.text === '' ) {
+					childEl.text = labelText;
 				}
 			}
 			// add a textarea/input placeholder attribute if it doesn't exist
-			else {
-				if( !placeholder || opts.priority === 'label' ) {
-					el.attr( 'placeholder', label );
+			else if( !placeholderText || this.config[this.current].prioritize === 'label' ) {
+				if( placeholderText ) {
+					el.setAttribute( 'data-placeholder', placeholderText );
 				}
+				el.setAttribute( 'placeholder', labelText );
 			}
+		},
 
-			if( !el.parent().hasClass( floatlabel ) ) {
-
-				el.addClass( floatlabel + '-input' ).wrap( _pf( '<div class="{0} {0}-{1}"/>', floatlabel, id ) );
-
-				// call the custom defined event
-				opts.customEvent.call( this, el );
-
-				// call the custom defined label event
-				var custom_label = opts.customLabel.call( this, el, label );
-
-				if( custom_label !== undefined ) {
-					label = custom_label;
-				}
-
-				label = $( _pf('<label for="{0}" class="{1}-label">{2}</label>', id, floatlabel, label ) );
-
-				// re-add existing label tooltip
-				if( tooltip ) {
-					label.attr( 'data-tooltip', tooltip );
-				}
-
-				label_el.remove();
-
-				el.after( label );
-			}
-
-			if( el.val().length ) {
-				el.parent().addClass( 'is-active' );
-			}
-
-			// Events
-			el.on( 'focus', function()
-			{
-				el.parent().addClass( 'is-focused' );
-			});
-
-			el.on( 'blur', function()
-			{
-				el.parent().removeClass( 'is-focused' );
-			});
-
-			el.on( 'keyup blur change', function( ev )
-			{
-				keyPress( el, ev );
-			});
-		}
-	};
-
-	/**
-	 * Fired when the :input value has changed or when it loses focus
-	 *
-	 * @param object el [the :input element]
-	 * @param event  ev [the event that is fired on keyup|blur|change]
-	 */
-	keyPress = function( el, ev )
-	{
-		if( ev ) {
-			var key = ev.keyCode || ev.which;
-			if( 9 === key ) return;
-		}
-
-		if( el.val().length ) {
-			el.parent().addClass( 'is-active' );
-		}
-		else {
-			el.parent().removeClass( 'is-active' );
-		}
-	};
-
-	/**
-	 * Simplified printf implementation
-	 */
-	_pf = function( format )
-	{
-		var args = [].slice.call( arguments, 1, arguments.length );
-
-		return format.replace( /{(\d+)}/g, function ( match, number )
+		/** @return void */
+		wrapLabel: function( labelEl, el )
 		{
-			return typeof args[ number ] !== undefined ? args[ number ] : match;
-		});
+			var wrapper = this.createEl( 'div', {
+				class: this.prefixed( 'wrap' ) + ' ' + this.prefixed( 'wrap-' + el.tagName.toLowerCase() ),
+			});
+			if( el.value.length ) {
+				wrapper.classList.add( this.prefixed( 'is-active' ));
+			}
+			if( el.getAttribute( 'required' ) !== null || el.classList.contains( this.config[this.current].requiredClass )) {
+				wrapper.classList.add( this.prefixed( 'is-required' ));
+			}
+			el.parentNode.insertBefore( wrapper, el );
+			wrapper.appendChild( labelEl );
+			wrapper.appendChild( el );
+		},
 	};
 
-}).call( this );
+	window.FloatLabels = Plugin;
+
+})( window, document );
