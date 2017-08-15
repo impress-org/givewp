@@ -364,7 +364,7 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 		case '_give_payment_donor_id':
 			$check = $wpdb->get_var(
 				$wpdb->prepare(
-					"SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id=%s AND meta_key=%s",
+					"SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id=%d AND meta_key=%s",
 					$object_id,
 					'_give_payment_customer_id'
 				)
@@ -379,7 +379,7 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 		case '_give_payment_donor_email':
 			$check = $wpdb->get_var(
 				$wpdb->prepare(
-					"SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id=%s AND meta_key=%s",
+					"SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id=%d AND meta_key=%s",
 					$object_id,
 					'_give_payment_user_email'
 				)
@@ -418,7 +418,7 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 		case '_give_payment_currency':
 			$donation_meta = $wpdb->get_var(
 				$wpdb->prepare(
-					"SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id=%s AND meta_key=%s",
+					"SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id=%d AND meta_key=%s",
 					$object_id,
 					'_give_payment_meta'
 				)
