@@ -235,14 +235,18 @@ class Give_Donor {
 	 */
 	public function setup_address() {
 		global $wpdb;
+		$meta_type = Give()->donor_meta->meta_type;
+
 		$addresses = $wpdb->get_results(
 			$wpdb->prepare(
 				"
 				SELECT meta_key, meta_value FROM {$wpdb->donormeta}
 				WHERE meta_key
 				LIKE '%%%s%%'
+				AND {$meta_type}_id=%d
 				",
-				'give_donor_address'
+				'give_donor_address',
+				$this->id
 			),
 			ARRAY_N
 		);
