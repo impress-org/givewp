@@ -1288,11 +1288,13 @@ class Give_Donor {
 			return $status;
 		}
 
+
 		// Compare address.
 		foreach ( $this->address as $address_type => $saved_address ) {
 			if( $current_address_type !== $address_type ) {
 				continue;
-			} elseif( ! is_array( $saved_address[0] ) ) {
+
+			} elseif( empty( $saved_address[0] ) || ! is_array( $saved_address[0] ) ) {
 				$status = ( $current_address == $saved_address );
 
 			} else{
