@@ -1331,6 +1331,22 @@ function give_v20_upgrades_payment_metadata_callback() {
 				}
 			}
 
+			// Bailout
+			if ( $donor_id = give_get_meta( $post->ID, '_give_payment_donor_id', true ) ) {
+				/* @var Give_Donor $donor */
+				$donor = new Give_Donor( $donor_id );
+
+				$address['line1']   = give_get_meta( $post->ID, '_give_donor_billing_address1', true, '' );
+				$address['line2']   = give_get_meta( $post->ID, '_give_donor_billing_address2', true, '' );
+				$address['city']    = give_get_meta( $post->ID, '_give_donor_billing_city', true, '' );
+				$address['state']   = give_get_meta( $post->ID, '_give_donor_billing_state', true, '' );
+				$address['zip']     = give_get_meta( $post->ID, '_give_donor_billing_zip', true, '' );
+				$address['country'] = give_get_meta( $post->ID, '_give_donor_billing_country', true, '' );
+
+				// Save address.
+				$donor->add_address( 'billing[]', $address );
+			}
+
 		}// End while().
 
 		wp_reset_postdata();
