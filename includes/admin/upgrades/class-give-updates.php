@@ -376,12 +376,7 @@ class Give_Updates {
 				'error'
 			);
 		}
-
-		// Update timeout error.
-		if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
-			@set_time_limit( 0 );
-		}
-
+		
 		// Set params.
 		$this->step   = absint( $_POST['step'] );
 		$this->update = absint( $_POST['update'] );

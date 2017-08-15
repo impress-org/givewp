@@ -398,12 +398,6 @@ function give_updated_messages( $messages ) {
 
 add_filter( 'post_updated_messages', 'give_updated_messages' );
 
-
-/**
- * Setup Post Type Images
- */
-add_action( 'after_setup_theme', 'give_add_thumbnail_support', 10 );
-
 /**
  * Ensure post thumbnail support is turned on
  */
@@ -418,6 +412,8 @@ function give_add_thumbnail_support() {
 
 	add_post_type_support( 'give_forms', 'thumbnail' );
 }
+
+add_action( 'after_setup_theme', 'give_add_thumbnail_support', 10 );
 
 /**
  * Give Sidebars

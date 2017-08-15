@@ -1009,7 +1009,7 @@ function give_default_cc_address_fields( $form_id ) {
 
 		$states = give_get_states( $selected_country );
 
-		// Get the country list that does not have any states init.
+		// Get the country list that do not have any states init.
 		$no_states_country = give_no_states_country_list();
 
 		if ( ! empty( $give_user_info['card_state'] ) ) {
