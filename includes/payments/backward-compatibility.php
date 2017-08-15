@@ -426,13 +426,6 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 			$donation_meta = maybe_unserialize( $donation_meta );
 			$donation_meta = ! is_array( $donation_meta ) ? array() : $donation_meta;
 
-			// Break payment meta to new meta keys.
-			if ( ! empty( $donation_meta ) ) {
-				remove_filter( 'get_post_metadata', '_give_20_bc_get_new_payment_meta', 10 );
-				_give_20_bc_split_and_save_give_payment_meta( $object_id, $donation_meta );
-				add_filter( 'get_post_metadata', '_give_20_bc_get_new_payment_meta', 10, 5 );
-			}
-
 			// Get results.
 			if ( empty( $donation_meta ) ) {
 				$check = '';
