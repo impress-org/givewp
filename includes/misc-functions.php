@@ -1152,7 +1152,7 @@ function give_is_add_new_form_page() {
  *
  * @return mixed
  */
-function give_get_meta( $id, $meta_key, $single = false, $default = false ) {
+function give_get_meta( $id, $meta_key = '', $single = false, $default = false ) {
 	/**
 	 * Filter the meta value
 	 *
