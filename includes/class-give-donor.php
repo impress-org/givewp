@@ -1223,6 +1223,7 @@ class Give_Donor {
 		// Set meta key prefix.
 		global $wpdb;
 		$meta_key_prefix = "_give_donor_address_{$address_type}_{address_name}";
+		$meta_type = Give()->donor_meta->meta_type;
 
 		if ( $is_multi_address ) {
 			$address_count = $wpdb->get_var(
@@ -1231,8 +1232,10 @@ class Give_Donor {
 					SELECT COUNT(*) FROM {$wpdb->donormeta}
 					WHERE meta_key
 					LIKE '%%%s%%'
+					AND {$meta_type}_id=%d
 					",
-					"_give_donor_address_{$address_type}_address1"
+					"_give_donor_address_{$address_type}_address1",
+					$this->id
 				)
 			);
 
