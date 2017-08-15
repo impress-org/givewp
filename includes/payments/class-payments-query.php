@@ -430,8 +430,10 @@ class Give_Payments_Query extends Give_Stats {
 			return;
 		}
 
+		$donor_meta_type = Give()->donor_meta->meta_type;
+
 		$this->__set( 'meta_query', array(
-			'key'   => '_give_payment_customer_id',
+			'key'   => "_give_payment_{$donor_meta_type}_id",
 			'value' => (int) $this->args['donor'],
 		) );
 	}

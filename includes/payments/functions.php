@@ -398,7 +398,8 @@ function give_undo_donation( $payment_id ) {
 function give_count_payments( $args = array() ) {
 
 	global $wpdb;
-	$meta_table = __give_v20_bc_table_details( 'payment' );
+	$meta_table      = __give_v20_bc_table_details( 'payment' );
+	$donor_meta_type = Give()->donor_meta->meta_type;
 
 	$defaults = array(
 		'user'       => null,
@@ -436,7 +437,7 @@ function give_count_payments( $args = array() ) {
 
 		$join  = "LEFT JOIN {$meta_table['name']} m ON (p.ID = m.{$meta_table['column']['id']})";
 		$where .= "
-			AND m.meta_key = '_give_payment_customer_id'
+			AND m.meta_key = '_give_payment_{$donor_meta_type}_id'
 			AND m.meta_value = '{$args['donor']}'";
 
 		// Count payments for a search.
