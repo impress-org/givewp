@@ -1320,6 +1320,11 @@ function give_v20_upgrades_payment_metadata_callback() {
 			);
 
 			foreach ( $deprecated_meta_keys as $old_meta_key => $new_meta_key ) {
+				// Do not add new meta key if already exist.
+				if( give_get_meta( $post->ID, $new_meta_key, true )) {
+					continue;
+				}
+
 				$meta_id = $wpdb->get_var( $wpdb->prepare( "SELECT meta_id FROM $wpdb->postmeta WHERE meta_key=%s", $old_meta_key ) );
 				if ( ! empty( $meta_id ) ) {
 					$wpdb->get_var( $wpdb->prepare( "UPDATE $wpdb->postmeta SET meta_key=%s WHERE meta_id=%d", $new_meta_key, $meta_id ) );
