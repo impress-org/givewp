@@ -117,10 +117,19 @@ function give_edit_donor( $args ) {
 	$donor_first_name       = ! empty( $donor_info['first_name'] ) ? give_clean( $donor_info['first_name'] ) : '';
 	$donor_last_name        = ! empty( $donor_info['last_name'] ) ? give_clean( $donor_info['last_name'] ) : '';
 
-	if( ! empty( $donor_first_name ) ) {
-		$donor_data['name'] = strip_tags( wp_unslash( trim( "{$donor_first_name} {$donor_last_name}" ) ) );
+	// Bail out with error, if first name is empty.
+	if( empty( $donor_first_name) ) {
+		Give()->notices->register_notice( array(
+			'id'          => 'empty_donor_first_name',
+			'type'        => 'error',
+			'description' => __( '<strong>ERROR:</strong> Please enter your first name.', 'give' ),
+			'show'        => true,
+		) );
+
+		return;
 	}
 
+	$donor_data['name']     = strip_tags( wp_unslash( trim( "{$donor_first_name} {$donor_last_name}" ) ) );
 	$donor_data['user_id']  = $donor_info['user_id'];
 
 	$donor_data             = apply_filters( 'give_edit_donor_info', $donor_data, $donor_id );
