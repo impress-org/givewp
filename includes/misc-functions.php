@@ -1299,7 +1299,7 @@ function give_import_page_url( $parameter = array() ) {
 }
 
 
-function give_save_import_donation_to_db( $raw_key, $row_data ) {
+function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array() ) {
 	$data = array_combine( $raw_key, $row_data );
 
 	$price_id  = '';
@@ -1435,11 +1435,21 @@ function give_save_import_donation_to_db( $raw_key, $row_data ) {
 
 		$payment = give_insert_payment( $payment_data );
 		if ( $payment ) {
+
 			update_post_meta( $payment, '_give_payment_import', true );
 
 			// Insert Notes.
 			if ( isset( $data['notes'] ) ) {
 				give_insert_payment_note( $payment, $data['notes'] );
+			}
+			
+			$meta_exists = array_keys( $raw_key, 'post_meta' );
+			if ( ! empty( $main_key ) && ! empty( $meta_exists ) ) {
+				foreach ( $meta_exists as $meta_exist ) {
+					if ( ! empty( $main_key[ $meta_exist ] ) && ! empty( $row_data[ $meta_exist ] ) ) {
+						update_post_meta( $payment, $main_key[ $meta_exist ], $row_data[ $meta_exist ] );
+					}
+				}
 			}
 		}
 	}

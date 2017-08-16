@@ -418,6 +418,10 @@ add_action( 'give_view_order_details_before', 'give_import_page_link_callback', 
 function give_donation_import_callback() {
 	$fields = isset( $_POST['fields'] ) ? $_POST['fields'] : null;
 	parse_str( $fields );
+
+	// Parent key id.
+	$main_key  = maybe_unserialize( $main_key );
+
 	$current    = (int) sanitize_text_field( $_REQUEST['current'] );
 	$total_ajax    = (int) sanitize_text_field( $_REQUEST['total_ajax'] );
 	$start    = (int) sanitize_text_field( $_REQUEST['start'] );
@@ -428,12 +432,12 @@ function give_donation_import_callback() {
 	if ( empty( $delimiter ) ) {
 		$delimiter = ',';
 	}
-	$new_data = array();
+
 	// processing done here.
 	$raw_data = give_get_donation_data_from_csv( $csv, $start, $end, $delimiter );
 	$raw_key  = maybe_unserialize( $mapto );
 	foreach ( $raw_data as $row_data ) {
-		give_save_import_donation_to_db( $raw_key, $row_data );
+		give_save_import_donation_to_db( $raw_key, $row_data, $main_key );
 	}
 	if ( $next == false ) {
 		$json_data = array(
@@ -456,7 +460,6 @@ function give_donation_import_callback() {
 		$json_data = array(
 			'raw_data' => $raw_data,
 			'raw_key'  => $raw_key,
-			'new_data' => $new_data,
 			'next'     => $next,
 			'start'    => $index_start,
 			'end'      => $index_end,

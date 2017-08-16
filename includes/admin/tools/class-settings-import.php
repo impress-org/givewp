@@ -123,8 +123,8 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 						// Drop down for importer files.
 						Give_Settings_Import::start_import();
 					} elseif ( 4 === $step ) {
-					// Successful or fail message.
-					Give_Settings_Import::import_success();
+						// Successful or fail message.
+						Give_Settings_Import::import_success();
 					}
 					?>
                     </tbody>
@@ -134,8 +134,8 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 		}
 
 		static function import_success() {
-		    echo 'imported successfully';
-        }
+			echo 'imported successfully';
+		}
 
 		/**
 		 * Will start Import
@@ -185,8 +185,10 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
                            class="mapto">
                     <input type="hidden" value="<?php echo $_REQUEST['csv']; ?>" name="csv" class="csv">
                     <input type="hidden" value="<?php echo $_REQUEST['existing']; ?>" name="existing" class="existing">
-                    <input type="hidden" value="<?php echo $_REQUEST['delimiter']; ?>" name="delimiter"
-                           class="delimiter">
+                    <input type="hidden" value="<?php echo $_REQUEST['delimiter']; ?>" name="delimiter">
+                    <input type="hidden" value='<?php echo maybe_serialize( self::get_importer( $csv ) ); ?>'
+                           name="main_key"
+                           class="main_key">
                 </th>
             </tr>
 
