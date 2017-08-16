@@ -461,6 +461,14 @@ function give_donation_import_callback() {
 			'last'     => $last,
 		);
 	}
+
+	$url = give_import_page_url( array(
+		'step'      => '4',
+		'csv'       => $csv,
+		'success'       => $json_data['success'],
+	) );
+	$json_data['url'] = $url;
+
 	wp_die( json_encode( $json_data ) );
 }
 add_action( 'wp_ajax_give_donation_import', 'give_donation_import_callback' );

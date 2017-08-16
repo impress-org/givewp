@@ -2227,9 +2227,9 @@ function give_on_donation_import_ajax() {
                 give_on_donation_import_ajax();
             } else {
                 if( response.success == true ) {
-                    alert( response.message );
+                    window.location = response.url;
                 } else {
-                    alert( give_vars.error_message );
+                    window.location = response.url;
                 }
             }
         },

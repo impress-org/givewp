@@ -122,6 +122,9 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 					} elseif ( 3 === $step ) {
 						// Drop down for importer files.
 						Give_Settings_Import::start_import();
+					} elseif ( 4 === $step ) {
+					// Successful or fail message.
+					Give_Settings_Import::import_success();
 					}
 					?>
                     </tbody>
@@ -129,6 +132,10 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
             </section>
 			<?php
 		}
+
+		static function import_success() {
+		    echo 'imported successfully';
+        }
 
 		/**
 		 * Will start Import
