@@ -135,8 +135,8 @@ function give_edit_donor( $args ) {
 	$donor_data             = apply_filters( 'give_edit_donor_info', $donor_data, $donor_id );
 	$address                = apply_filters( 'give_edit_donor_address', $address, $donor_id );
 
-	$donor_data             = array_map( 'sanitize_text_field', $donor_data );
-	$address                = array_map( 'sanitize_text_field', $address );
+	$donor_data             = give_clean( $donor_data );
+	$address                = give_clean( $address );
 
 	/**
 	 * Fires before editing a donor.
@@ -236,7 +236,7 @@ function give_donor_save_note( $args ) {
 		return false;
 	}
 
-	$donor_note = trim( sanitize_text_field( $args['donor_note'] ) );
+	$donor_note = trim( give_clean( $args['donor_note'] ) );
 	$donor_id   = (int) $args['customer_id'];
 	$nonce      = $args['add_donor_note_nonce'];
 
