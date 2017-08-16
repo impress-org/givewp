@@ -581,3 +581,34 @@ input.give-price-field {
 .give-select-chosen-ajax.chosen-container-single .chosen-search input[type="text"] {
   background-image: none !important;
 }
+
+.give-tools-setting-page-import {
+	.give-progress-steps {
+		padding: 0 0 24px;
+		margin: 0;
+		list-style: none outside;
+		overflow: hidden;
+		color: #ccc;
+		width: 100%;
+		display: -webkit-inline-flex;
+		display: -ms-inline-flexbox;
+		display: -webkit-inline-box;
+		display: inline-flex;
+
+		li {
+			width: 25%;
+			float: left;
+			padding: 0 0 .8em;
+			margin: 0;
+			text-align: center;
+			position: relative;
+			border-bottom: 4px solid #ccc;
+			line-height: 1.4em;
+		}
+
+		li.active {
+			border-color: #a16696;
+			color: #a16696;
+		}
+	}
+}
