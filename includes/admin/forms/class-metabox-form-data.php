@@ -61,8 +61,10 @@ class Give_MetaBox_Form_Data {
 		// add_filter( 'give_metabox_form_data_settings', array( $this, 'cmb2_metabox_settings' ) );
 		// Add offline donations options.
 		add_filter( 'give_metabox_form_data_settings', array( $this, 'add_offline_donations_setting_tab' ), 0, 1 );
-	}
 
+		// Maintain active tab query parameter after save.
+		add_filter( 'redirect_post_location', array( $this, 'maintain_active_tab' ), 10, 2 );
+	}
 
 	/**
 	 * Setup metabox related data.
@@ -632,12 +634,18 @@ class Give_MetaBox_Form_Data {
 	public function output() {
 		// Bailout.
 		if ( $form_data_tabs = $this->get_tabs() ) {
+			$active_tab = ! empty( $_GET['give_tab'] ) ? sanitize_text_field( $_GET['give_tab'] ) : 'form_field_options';
 			wp_nonce_field( 'give_save_form_meta', 'give_form_meta_nonce' );
 			?>
+			<input id="give_form_active_tab" type="hidden" name="give_form_active_tab">
 			<div class="give-metabox-panel-wrap">
 				<ul class="give-form-data-tabs give-metabox-tabs">
 					<?php foreach ( $form_data_tabs as $index => $form_data_tab ) : ?>
-						<li class="<?php echo "{$form_data_tab['id']}_tab" . ( ! $index ? ' active' : '' ) . ( $this->has_sub_tab( $form_data_tab ) ? ' has-sub-fields' : '' ); ?>">
+						<?php
+						// Determine if current tab is active.
+						$is_active = $active_tab === $form_data_tab['id'] ? true : false;
+						?>
+						<li class="<?php echo "{$form_data_tab['id']}_tab" . ( $is_active ? ' active' : '' ) . ( $this->has_sub_tab( $form_data_tab ) ? ' has-sub-fields' : '' ); ?>">
 							<a href="#<?php echo $form_data_tab['id']; ?>" data-tab-id="<?php echo $form_data_tab['id']; ?>">
 								<?php if ( ! empty( $form_data_tab['icon-html'] ) ) : ?>
 									<?php echo $form_data_tab['icon-html']; ?>
@@ -666,13 +674,15 @@ class Give_MetaBox_Form_Data {
 					<?php endforeach; ?>
 				</ul>
 
-				<?php $show_first_tab_content = true; ?>
 				<?php foreach ( $this->settings as $setting ) : ?>
 					<?php if ( ! $this->has_sub_tab( $setting ) ) : ?>
 						<?php do_action( "give_before_{$setting['id']}_settings" ); ?>
-
+						<?php
+						// Determine if current panel is active.
+						$is_active = $active_tab === $setting['id'] ? true : false;
+						?>
 						<div id="<?php echo $setting['id']; ?>"
-							 class="panel give_options_panel<?php echo( $show_first_tab_content ? ' active' : '' );
+							 class="panel give_options_panel<?php echo( $is_active ? ' active' : '' );
 						     $show_first_tab_content = false; ?>">
 							<?php if ( ! empty( $setting['fields'] ) ) : ?>
 								<?php foreach ( $setting['fields'] as $field ) : ?>
@@ -1145,6 +1155,24 @@ class Give_MetaBox_Form_Data {
 		}
 
 		return $meta_value;
+	}
+
+	/**
+	 * Maintain the active tab after save.
+	 *
+	 * @since  1.8.13
+	 * @access private
+	 *
+	 * @param string $location The destination URL.
+	 * @param int    $post_id  The post ID.
+	 * @return string The URL after redirect.
+	 */
+	function maintain_active_tab( $location, $post_id ) {
+		if ( ! empty( $_POST['give_form_active_tab'] ) ) {
+			$location = add_query_arg( 'give_tab', $_POST['give_form_active_tab'], $location );
+		}
+
+		return $location;
 	}
 }
 

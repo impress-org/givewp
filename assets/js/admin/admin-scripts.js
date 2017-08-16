@@ -1183,9 +1183,10 @@ jQuery.noConflict();
 	 * Edit Donation form screen Js
 	 */
 	var Edit_Form_Screen = {
+		active_tab: $.query.get('give_tab'),
+
 		init: function () {
 			this.handle_metabox_tab_click();
-			this.handle_hash_change();
 			this.setup_colorpicker_fields();
 			this.setup_media_fields();
 			this.setup_repeatable_fields();
@@ -1206,7 +1207,7 @@ jQuery.noConflict();
 				e.preventDefault();
 				$this = $( this );
 				self.activate_tab($this);
-				self.update_hash($this);
+				self.update_query($this);
 			});
 		},
 
@@ -1274,36 +1275,15 @@ jQuery.noConflict();
 		},
 
 		/**
-		 * Update hash with active tab ID.
+		 * Update query string with active tab ID.
 		 */
-		update_hash: function($tab_link) {
+		update_query: function($tab_link) {
 			var tab_id = $tab_link.data('tab-id');
+			var new_query = $.query.set( 'give_tab', tab_id ).toString();
 
-			if (history.pushState) {
-				history.pushState(null, null, '#' + tab_id);
+			if (history.replaceState) {
+				history.replaceState(null, null, new_query);
 			}
-			else {
-				location.hash = '#' + tab_id;
-			}
-		},
-
-		/**
-		 * Attach event handler that fires on hash change.
-		 */
-		handle_hash_change: function () {
-			var self = this;
-
-			$(window).on('hashchange', function(e) {
-				e.preventDefault();
-
-				if (location.hash.length) {
-					var $current_active_tab = $('a[href="' + location.hash + '"]', '.give-metabox-tabs');
-				} else {
-					var $current_active_tab = $('.give-metabox-tabs a').first();
-				}
-
-				self.activate_tab($current_active_tab);
-			});
 		},
 
 		/**
