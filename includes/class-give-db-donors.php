@@ -728,8 +728,8 @@ class Give_DB_Donors extends Give_DB {
 			}
 
 			// Get User First name and Last name.
-			$first_name = ( $_POST['first_name'] ) ? $_POST['first_name'] : get_user_meta( $user_id, 'first_name', true );
-			$last_name  = ( $_POST['last_name'] ) ? $_POST['last_name'] : get_user_meta( $user_id, 'last_name', true );
+			$first_name = ( $_POST['first_name'] ) ? give_clean( $_POST['first_name'] ) : get_user_meta( $user_id, 'first_name', true );
+			$last_name  = ( $_POST['last_name'] ) ? give_clean( $_POST['last_name'] ) : get_user_meta( $user_id, 'last_name', true );
 			$full_name  = strip_tags( wp_unslash( trim( "{$first_name} {$last_name}" ) ) );
 
 			// Assign User First name and Last name to Donor.
