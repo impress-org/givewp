@@ -418,6 +418,8 @@ add_action( 'give_view_order_details_before', 'give_import_page_link_callback', 
 function give_donation_import_callback() {
 	$fields = isset( $_POST['fields'] ) ? $_POST['fields'] : null;
 	parse_str( $fields );
+	$current    = (int) sanitize_text_field( $_REQUEST['current'] );
+	$total_ajax    = (int) sanitize_text_field( $_REQUEST['total_ajax'] );
 	$start    = (int) sanitize_text_field( $_REQUEST['start'] );
 	$end      = (int) sanitize_text_field( $_REQUEST['end'] );
 	$next     = (int) sanitize_text_field( $_REQUEST['next'] );
@@ -468,6 +470,12 @@ function give_donation_import_callback() {
 		'success'       => $json_data['success'],
 	) );
 	$json_data['url'] = $url;
+
+	$current++;
+	$json_data['current'] = $current;
+
+	$percentage = ( 100 / ( $total_ajax + 1 ) ) * $current;
+	$json_data['percentage'] = $percentage;
 
 	wp_die( json_encode( $json_data ) );
 }

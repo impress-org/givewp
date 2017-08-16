@@ -168,14 +168,18 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 
             <tr valign="top" class="give-import-dropdown">
                 <th colspan="2">
-                    <progress class="give-importer-progress" max="100"
-                              value="<?php echo $current_percentage; ?>"
-                              data-start="<?php echo $index_start; ?>"
-                              data-end="<?php echo $index_end; ?>"
-                              data-next="<?php echo $next; ?>"
-                              data-total="<?php echo $total; ?>"
-                              data-per_page="<?php echo self::$per_page; ?>">
-                    </progress>
+                    <span class="spinner is-active"></span>
+                    <div class="give-progress"
+                         data-current="1"
+                         data-total_ajax="<?php echo $total_ajax; ?>"
+                         data-start="<?php echo $index_start; ?>"
+                         data-end="<?php echo $index_end; ?>"
+                         data-next="<?php echo $next; ?>"
+                         data-total="<?php echo $total; ?>"
+                         data-per_page="<?php echo self::$per_page; ?>">
+
+                        <div style="width: <?php echo $current_percentage; ?>%"></div>
+                    </div>
                     <input type="hidden" value="3" name="step">
                     <input type="hidden" value='<?php echo maybe_serialize( $_REQUEST['mapto'] ); ?>' name="mapto"
                            class="mapto">
