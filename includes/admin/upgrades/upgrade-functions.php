@@ -1299,7 +1299,7 @@ function give_v20_logs_upgrades_callback() {
 
 		while ( $forms->have_posts() ) {
 			$forms->the_post();
-			global $post, $wpdb;
+			global $post;
 			$term = get_the_terms( $post->ID, 'give_log_type' );
 			$term = ! is_wp_error( $term ) && ! empty( $term ) ? $term[0] : array();
 			$term_name = ! empty( $term )? $term->slug : '';
