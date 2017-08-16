@@ -1435,11 +1435,8 @@ function give_save_import_donation_to_db( $raw_key, $row_data ) {
 
 		$payment = give_insert_payment( $payment_data );
 		if ( $payment ) {
-		    pre_var_dump( $payment );
 			update_post_meta( $payment, '_give_payment_import', true );
-		} else {
-			pre_var_dump( 'failed' );
-        }
+		}
 	}
 }
 
