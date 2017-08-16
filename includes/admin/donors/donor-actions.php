@@ -151,8 +151,14 @@ function give_edit_donor( $args ) {
 		}
 
 		// Set Donor Meta and User Meta for donor last name.
-		Give()->donor_meta->update_meta( $donor_id, '_give_donor_last_name', $donor_info['last_name'] );
-		update_user_meta( $donor->user_id, 'last_name', $donor_info['last_name'] );
+		if( ! empty( $donor_info['last_name'] ) ) {
+
+			Give()->donor_meta->update_meta( $donor_id, '_give_donor_last_name', $donor_info['last_name'] );
+			// Update User Meta, if user is attached with donor
+			if ( ! empty( $donor->user_id ) ) {
+				update_user_meta( $donor->user_id, 'last_name', $donor_info['last_name'] );
+			}
+		}
 
 		if ( ! empty( $donor->user_id ) && $donor->user_id > 0 ) {
 			update_user_meta( $donor->user_id, '_give_user_address', $address );
