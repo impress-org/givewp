@@ -113,17 +113,21 @@ function give_edit_donor( $args ) {
 	}
 
 	// Sanitize the inputs
-	$donor_data            = array();
-	if( ! empty( $donor_info['first_name'] ) ) {
-		$donor_data['name'] = strip_tags( wp_unslash( trim( "{$donor_info['first_name']} {$donor_info['last_name']}" ) ) );
+	$donor_data             = array();
+	$donor_first_name       = ! empty( $donor_info['first_name'] ) ? give_clean( $donor_info['first_name'] ) : '';
+	$donor_last_name        = ! empty( $donor_info['last_name'] ) ? give_clean( $donor_info['last_name'] ) : '';
+
+	if( ! empty( $donor_first_name ) ) {
+		$donor_data['name'] = strip_tags( wp_unslash( trim( "{$donor_first_name} {$donor_last_name}" ) ) );
 	}
-	$donor_data['user_id'] = $donor_info['user_id'];
 
-	$donor_data = apply_filters( 'give_edit_donor_info', $donor_data, $donor_id );
-	$address    = apply_filters( 'give_edit_donor_address', $address, $donor_id );
+	$donor_data['user_id']  = $donor_info['user_id'];
 
-	$donor_data = array_map( 'sanitize_text_field', $donor_data );
-	$address    = array_map( 'sanitize_text_field', $address );
+	$donor_data             = apply_filters( 'give_edit_donor_info', $donor_data, $donor_id );
+	$address                = apply_filters( 'give_edit_donor_address', $address, $donor_id );
+
+	$donor_data             = array_map( 'sanitize_text_field', $donor_data );
+	$address                = array_map( 'sanitize_text_field', $address );
 
 	/**
 	 * Fires before editing a donor.
@@ -141,26 +145,21 @@ function give_edit_donor( $args ) {
 	if ( $donor->update( $donor_data ) ) {
 
 		// Set Donor Meta and User Meta for donor first name.
-		if( ! empty( $donor_info['first_name'] ) ) {
-			Give()->donor_meta->update_meta( $donor_id, '_give_donor_first_name', $donor_info['first_name'] );
+		if( ! empty( $donor_first_name ) ) {
+			Give()->donor_meta->update_meta( $donor_id, '_give_donor_first_name', $donor_first_name );
 
 			// Update User Meta, if user is attached with donor
 			if ( ! empty( $donor->user_id ) ) {
-				update_user_meta( $donor->user_id, 'first_name', $donor_info['first_name'] );
+				update_user_meta( $donor->user_id, 'first_name', $donor_first_name );
 			}
 		}
 
-		// Set Donor Meta and User Meta for donor last name.
-		if( ! empty( $donor_info['last_name'] ) ) {
+		// Set Donor Meta for donor last name.
+		Give()->donor_meta->update_meta( $donor_id, '_give_donor_last_name', $donor_last_name );
 
-			Give()->donor_meta->update_meta( $donor_id, '_give_donor_last_name', $donor_info['last_name'] );
-			// Update User Meta, if user is attached with donor
-			if ( ! empty( $donor->user_id ) ) {
-				update_user_meta( $donor->user_id, 'last_name', $donor_info['last_name'] );
-			}
-		}
-
+		// Update User Meta, if user is attached with donor
 		if ( ! empty( $donor->user_id ) && $donor->user_id > 0 ) {
+			update_user_meta( $donor->user_id, 'last_name', $donor_last_name );
 			update_user_meta( $donor->user_id, '_give_user_address', $address );
 		}
 
