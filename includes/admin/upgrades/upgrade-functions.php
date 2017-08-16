@@ -167,22 +167,22 @@ function give_show_upgrade_notices( $give_updates ) {
 		)
 	);
 
-	// v2.0.0 Upgrades
-	$give_updates->register(
-		array(
-			'id'       => 'v20_rename_donor_tables',
-			'version'  => '2.0.0',
-			'callback' => 'give_v20_rename_donor_tables_callback',
-			'depend' => array( 'v20_move_metadata_into_new_table', 'v20_logs_upgrades', 'v20_upgrades_form_metadata' )
-		)
-	);
-
 	// v2.0.0 Donor Name Upgrades
 	$give_updates->register(
 		array(
 			'id'       => 'v20_upgrades_donor_name',
 			'version'  => '2.0.0',
 			'callback' => 'give_v20_upgrades_donor_name',
+		)
+	);
+
+	// v2.0.0 Upgrades
+	$give_updates->register(
+		array(
+			'id'       => 'v20_rename_donor_tables',
+			'version'  => '2.0.0',
+			'callback' => 'give_v20_rename_donor_tables_callback',
+			'depend' => array( 'v20_move_metadata_into_new_table', 'v20_logs_upgrades', 'v20_upgrades_form_metadata', 'v20_upgrades_donor_name' )
 		)
 	);
 }
