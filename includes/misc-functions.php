@@ -1300,13 +1300,18 @@ function give_import_page_url( $parameter = array() ) {
 
 
 function give_save_import_donation_to_db( $raw_key, $row_data ) {
-	$data      = array_combine( $raw_key, $row_data );
+	$data = array_combine( $raw_key, $row_data );
+
 	$price_id  = '';
 	$user_data = false;
 	$meta      = array();
-	$payment = false;
+	$payment   = false;
 
 	$data = (array) apply_filters( 'give_save_import_donation_to_db', $data );
+
+	if ( ! strpos( '.', $data['amount'] ) ) {
+		$data['amount'] = $data['amount'] . '.00';
+	}
 
 	if ( ! empty( $data['customer_id'] ) && $user_data = get_userdata( (int) $data['customer_id'] ) ) {
 		$customer_id = $user_data->ID;
@@ -1407,10 +1412,6 @@ function give_save_import_donation_to_db( $raw_key, $row_data ) {
 			give_update_meta( $form->get_ID(), $key, $value );
 		}
 
-		if ( ! strpos( '.', $data['amount'] ) ) {
-			$data['amount'] = $data['amount'] . '.00';
-        }
-
 		//Create payment_data array
 		$payment_data = array(
 			'price'           => $data['amount'],
@@ -1434,8 +1435,11 @@ function give_save_import_donation_to_db( $raw_key, $row_data ) {
 
 		$payment = give_insert_payment( $payment_data );
 		if ( $payment ) {
+		    pre_var_dump( $payment );
 			update_post_meta( $payment, '_give_payment_import', true );
-		}
+		} else {
+			pre_var_dump( 'failed' );
+        }
 	}
 }
 
