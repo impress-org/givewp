@@ -672,7 +672,7 @@ class Give_MetaBox_Form_Data {
 						<?php do_action( "give_before_{$setting['id']}_settings" ); ?>
 
 						<div id="<?php echo $setting['id']; ?>"
-							 class="panel give_options_panel<?php echo( $show_first_tab_content ? '' : ' give-hidden' );
+							 class="panel give_options_panel<?php echo( $show_first_tab_content ? ' active' : '' );
 						     $show_first_tab_content = false; ?>">
 							<?php if ( ! empty( $setting['fields'] ) ) : ?>
 								<?php foreach ( $setting['fields'] as $field ) : ?>

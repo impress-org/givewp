@@ -1267,10 +1267,10 @@ jQuery.noConflict();
 			$tab_link.parent().addClass('active');
 
 			// Hide all tab contents.
-			$('.give_options_panel').addClass('give-hidden');
+			$('.give_options_panel').removeClass('active');
 
 			// Show tab content.
-			$($tab_link.attr('href')).removeClass('give-hidden');
+			$($tab_link.attr('href')).addClass('active');
 		},
 
 		/**
