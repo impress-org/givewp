@@ -2222,7 +2222,10 @@ function give_on_donation_import_ajax() {
         success: function ( response ) {
             console.log( response );
 
-            if( response.next == true ) {
+			jQuery(progress).data( 'current', response.current );
+			jQuery( progress ).find( 'div' ).width( response.percentage + '%' );
+
+			if( response.next == true ) {
                 jQuery(progress).data( 'start', response.start );
                 jQuery(progress).data( 'end', response.end );
 
@@ -2232,7 +2235,7 @@ function give_on_donation_import_ajax() {
                 give_on_donation_import_ajax();
             } else {
                 if( response.success == true ) {
-                    // window.location = response.url;
+                    window.location = response.url;
                 } else {
                     window.location = response.url;
                 }
