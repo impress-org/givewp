@@ -1110,7 +1110,7 @@ class Give_API {
 		$earnings = array(
 			'earnings' => array(),
 		);
-		$sales    = array(
+		$donations    = array(
 			'donations' => array(),
 		);
 		$error    = array();
@@ -1123,7 +1123,7 @@ class Give_API {
 
 			if ( $args['form'] == null ) {
 				if ( $args['date'] == null ) {
-					$sales = $this->get_default_sales_stats();
+					$donations = $this->get_default_sales_stats();
 				} elseif ( $args['date'] === 'range' ) {
 					// Return donations for a date range.
 					// Ensure the end date is later than the start date.
@@ -1174,10 +1174,10 @@ class Give_API {
 							while ( $d <= $num_of_days ) :
 								$sale_count = give_get_sales_by_date( $d, $i, $y );
 								$date_key   = date( 'Ymd', strtotime( $y . '/' . $i . '/' . $d ) );
-								if ( ! isset( $sales['sales'][ $date_key ] ) ) {
-									$sales['sales'][ $date_key ] = 0;
+								if ( ! isset( $donations['sales'][ $date_key ] ) ) {
+									$donations['sales'][ $date_key ] = 0;
 								}
-								$sales['sales'][ $date_key ] += $sale_count;
+								$donations['sales'][ $date_key ] += $sale_count;
 								$total                       += $sale_count;
 								$d ++;
 							endwhile;
@@ -1187,22 +1187,22 @@ class Give_API {
 						$y ++;
 					endwhile;
 
-					$sales['totals'] = $total;
+					$donations['totals'] = $total;
 				} else {
 					if ( $args['date'] == 'this_quarter' || $args['date'] == 'last_quarter' ) {
-						$sales_count = 0;
+						$donations_count = 0;
 
 						// Loop through the months
 						$month = $dates['m_start'];
 
 						while ( $month <= $dates['m_end'] ) :
-							$sales_count += give_get_sales_by_date( null, $month, $dates['year'] );
+							$donations_count += give_get_sales_by_date( null, $month, $dates['year'] );
 							$month ++;
 						endwhile;
 
-						$sales['donations'][ $args['date'] ] = $sales_count;
+						$donations['donations'][ $args['date'] ] = $donations_count;
 					} else {
-						$sales['donations'][ $args['date'] ] = give_get_sales_by_date( $dates['day'], $dates['m_start'], $dates['year'] );
+						$donations['donations'][ $args['date'] ] = give_get_sales_by_date( $dates['day'], $dates['m_start'], $dates['year'] );
 					}
 				}// End if().
 			} elseif ( $args['form'] == 'all' ) {
@@ -1212,7 +1212,7 @@ class Give_API {
 				) );
 				$i     = 0;
 				foreach ( $forms as $form_info ) {
-					$sales['donations'][ $i ] = array(
+					$donations['donations'][ $i ] = array(
 						$form_info->post_name => give_get_form_sales_stats( $form_info->ID ),
 					);
 					$i ++;
@@ -1220,7 +1220,7 @@ class Give_API {
 			} else {
 				if ( get_post_type( $args['form'] ) == 'give_forms' ) {
 					$form_info             = get_post( $args['form'] );
-					$sales['donations'][0] = array(
+					$donations['donations'][0] = array(
 						$form_info->post_name => give_get_form_sales_stats( $args['form'] ),
 					);
 				} else {
@@ -1233,7 +1233,7 @@ class Give_API {
 				return $error;
 			}
 
-			return $sales;
+			return $donations;
 
 		} elseif ( $args['type'] == 'earnings' ) {
 			if ( $args['form'] == null ) {
@@ -1391,10 +1391,10 @@ class Give_API {
 
 		$args = wp_parse_args( $args, $defaults );
 
-		$sales = array();
+		$donations = array();
 
 		if ( ! user_can( $this->user_id, 'view_give_reports' ) && ! $this->override ) {
-			return $sales;
+			return $donations;
 		}
 
 		if ( isset( $wp_query->query_vars['id'] ) ) {
@@ -1410,7 +1410,6 @@ class Give_API {
 				'meta_value' => $wp_query->query_vars['email'],
 				'number'     => $this->per_page(),
 				'page'       => $this->get_paged(),
-				'status'     => 'publish',
 			);
 			$query = give_get_payments( $args );
 		} elseif ( isset( $wp_query->query_vars['date'] ) ) {
@@ -1459,7 +1458,6 @@ class Give_API {
 				'end_date'   => $end_date,
 				'number'     => $this->per_page(),
 				'page'       => $this->get_paged(),
-				'status'     => 'publish',
 			);
 
 			$query = give_get_payments( $args );
@@ -1468,7 +1466,6 @@ class Give_API {
 				'fields' => 'ids',
 				'number' => $this->per_page(),
 				'page'   => $this->get_paged(),
-				'status' => 'publish',
 			);
 			$query = give_get_payments( $args );
 		}// End if().
@@ -1490,31 +1487,32 @@ class Give_API {
 				$first_name = isset( $user_info['first_name'] ) ? $user_info['first_name'] : '';
 				$last_name  = isset( $user_info['last_name'] ) ? $user_info['last_name'] : '';
 
-				$sales['donations'][ $i ]['ID']             = $payment->number;
-				$sales['donations'][ $i ]['transaction_id'] = $payment->transaction_id;
-				$sales['donations'][ $i ]['key']            = $payment->key;
-				$sales['donations'][ $i ]['total']          = $payment->total;
-				$sales['donations'][ $i ]['gateway']        = $payment->gateway;
-				$sales['donations'][ $i ]['name']           = $first_name . ' ' . $last_name;
-				$sales['donations'][ $i ]['fname']          = $first_name;
-				$sales['donations'][ $i ]['lname']          = $last_name;
-				$sales['donations'][ $i ]['email']          = $payment->email;
-				$sales['donations'][ $i ]['date']           = $payment->date;
+				$donations['donations'][ $i ]['ID']             = $payment->number;
+				$donations['donations'][ $i ]['transaction_id'] = $payment->transaction_id;
+				$donations['donations'][ $i ]['key']            = $payment->key;
+				$donations['donations'][ $i ]['total']          = $payment->total;
+				$donations['donations'][ $i ]['status']         = give_get_payment_status($payment, true);
+				$donations['donations'][ $i ]['gateway']        = $payment->gateway;
+				$donations['donations'][ $i ]['name']           = $first_name . ' ' . $last_name;
+				$donations['donations'][ $i ]['fname']          = $first_name;
+				$donations['donations'][ $i ]['lname']          = $last_name;
+				$donations['donations'][ $i ]['email']          = $payment->email;
+				$donations['donations'][ $i ]['date']           = $payment->date;
 
 				$form_id  = isset( $payment_meta['form_id'] ) ? $payment_meta['form_id'] : $payment_meta;
 				$price    = isset( $payment_meta['form_id'] ) ? give_get_form_price( $payment_meta['form_id'] ) : false;
 				$price_id = isset( $payment_meta['price_id'] ) ? $payment_meta['price_id'] : null;
 
-				$sales['donations'][ $i ]['form']['id']    = $form_id;
-				$sales['donations'][ $i ]['form']['name']  = get_the_title( $payment_meta['form_id'] );
-				$sales['donations'][ $i ]['form']['price'] = $price;
+				$donations['donations'][ $i ]['form']['id']    = $form_id;
+				$donations['donations'][ $i ]['form']['name']  = get_the_title( $payment_meta['form_id'] );
+				$donations['donations'][ $i ]['form']['price'] = $price;
 
 				if ( give_has_variable_prices( $form_id ) ) {
 					if ( isset( $payment_meta['price_id'] ) ) {
 						$price_name                                     = give_get_price_option_name( $form_id, $payment_meta['price_id'], $payment->ID );
-						$sales['donations'][ $i ]['form']['price_name'] = $price_name;
-						$sales['donations'][ $i ]['form']['price_id']   = $price_id;
-						$sales['donations'][ $i ]['form']['price']      = give_get_price_option_amount( $form_id, $price_id );
+						$donations['donations'][ $i ]['form']['price_name'] = $price_name;
+						$donations['donations'][ $i ]['form']['price_id']   = $price_id;
+						$donations['donations'][ $i ]['form']['price']      = give_get_price_option_amount( $form_id, $price_id );
 
 					}
 				}
@@ -1537,7 +1535,7 @@ class Give_API {
 						continue;
 					}
 
-					$sales['donations'][ $i ]['payment_meta'][ $meta_key ] = $meta_value;
+					$donations['donations'][ $i ]['payment_meta'][ $meta_key ] = $meta_value;
 
 				}
 
@@ -1545,7 +1543,7 @@ class Give_API {
 			}// End foreach().
 		}// End if().
 
-		return apply_filters( 'give_api_donations_endpoint', $sales );
+		return apply_filters( 'give_api_donations_endpoint', $donations );
 	}
 
 	/**
@@ -2019,13 +2017,13 @@ class Give_API {
 	private function get_default_sales_stats() {
 
 		// Default sales return
-		$sales                               = array();
-		$sales['donations']['today']         = $this->stats->get_sales( 0, 'today' );
-		$sales['donations']['current_month'] = $this->stats->get_sales( 0, 'this_month' );
-		$sales['donations']['last_month']    = $this->stats->get_sales( 0, 'last_month' );
-		$sales['donations']['totals']        = give_get_total_donations();
+		$donations                               = array();
+		$donations['donations']['today']         = $this->stats->get_sales( 0, 'today' );
+		$donations['donations']['current_month'] = $this->stats->get_sales( 0, 'this_month' );
+		$donations['donations']['last_month']    = $this->stats->get_sales( 0, 'last_month' );
+		$donations['donations']['totals']        = give_get_total_donations();
 
-		return $sales;
+		return $donations;
 	}
 
 	/**
