@@ -602,7 +602,7 @@ function give_check_for_existing_payment( $payment_id ) {
  *
  * @since 1.0
  *
- * @param WP_Post|Give_Payment $payment      Payment object.
+ * @param WP_Post|Give_Payment|int $payment      Payment object or payment ID..
  * @param bool                 $return_label Whether to return the translated status label
  *                                           instead of status value. Default false.
  *
