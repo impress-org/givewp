@@ -1436,6 +1436,11 @@ function give_save_import_donation_to_db( $raw_key, $row_data ) {
 		$payment = give_insert_payment( $payment_data );
 		if ( $payment ) {
 			update_post_meta( $payment, '_give_payment_import', true );
+
+			// Insert Notes.
+			if ( isset( $data['notes'] ) ) {
+				give_insert_payment_note( $payment, $data['notes'] );
+			}
 		}
 	}
 }
@@ -1497,7 +1502,7 @@ function give_import_donations_options() {
 		'email'           => __( 'Donor Email', 'give' ),
 		'post_status'     => __( 'Donation Status', 'give' ),
 		'gateway'         => __( 'Payment Method', 'give' ),
-		'comment_content' => __( 'Notes', 'give' ),
+		'notes' => __( 'Notes', 'give' ),
 		'post_meta'       => __( 'Import as Meta', 'give' ),
 	) );
 }
