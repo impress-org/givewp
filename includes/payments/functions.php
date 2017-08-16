@@ -184,9 +184,6 @@ function give_insert_payment( $payment_data = array() ) {
 		update_option( 'give_last_payment_number', $number );
 	}
 
-	// Clear the user's donation cache.
-	delete_transient( 'give_user_' . $payment_data['user_info']['id'] . '_purchases' );
-
 	// Save payment.
 	$payment->save();
 
@@ -602,7 +599,7 @@ function give_check_for_existing_payment( $payment_id ) {
  *
  * @since 1.0
  *
- * @param WP_Post|Give_Payment|int $payment      Payment object or payment ID..
+ * @param WP_Post|Give_Payment|int $payment      Payment object or payment ID.
  * @param bool                 $return_label Whether to return the translated status label
  *                                           instead of status value. Default false.
  *
