@@ -314,6 +314,7 @@ class Give_API {
 
 			if ( empty( $wp_query->query_vars['token'] ) || empty( $wp_query->query_vars['key'] ) ) {
 				$this->missing_auth();
+
 				return false;
 			}
 
@@ -321,6 +322,7 @@ class Give_API {
 			if ( ! ( $user = $this->get_user( $wp_query->query_vars['key'] ) ) ) {
 
 				$this->invalid_key();
+
 				return false;
 
 			} else {
@@ -333,6 +335,7 @@ class Give_API {
 					$this->is_valid_request = true;
 				} else {
 					$this->invalid_auth();
+
 					return false;
 				}
 
@@ -580,6 +583,7 @@ class Give_API {
 				 * @params date enddate | required when date = range and format to be YYYYMMDD (i.e. 20170524)
 				 */
 				$data = $this->routes->get_recent_donations( array(
+					'id'        => isset( $wp_query->query_vars['id'] ) ? $wp_query->query_vars['id'] : null,
 					'date'      => isset( $wp_query->query_vars['date'] ) ? $wp_query->query_vars['date'] : null,
 					'startdate' => isset( $wp_query->query_vars['startdate'] ) ? $wp_query->query_vars['startdate'] : null,
 					'enddate'   => isset( $wp_query->query_vars['enddate'] ) ? $wp_query->query_vars['enddate'] : null,
@@ -1041,8 +1045,8 @@ class Give_API {
 		$goal_option = give_get_meta( $form_info->ID, '_give_goal_option', true );
 		$goal_amount = give_get_meta( $form_info->ID, '_give_set_goal', true );
 		if ( give_is_setting_enabled( $goal_option ) && $goal_amount ) {
-			$total_income = give_get_form_earnings_stats( $form_info->ID );
-			$goal_percentage_completed = ( $total_income < $goal_amount ) ? round( ( $total_income / $goal_amount ) * 100, 2 ) : 100;
+			$total_income                         = give_get_form_earnings_stats( $form_info->ID );
+			$goal_percentage_completed            = ( $total_income < $goal_amount ) ? round( ( $total_income / $goal_amount ) * 100, 2 ) : 100;
 			$form['goal']['amount']               = isset( $goal_amount ) ? $goal_amount : '';
 			$form['goal']['percentage_completed'] = isset( $goal_percentage_completed ) ? $goal_percentage_completed : '';
 		}
@@ -1106,14 +1110,14 @@ class Give_API {
 
 		$dates = $this->get_dates( $args );
 
-		$stats    = array();
-		$earnings = array(
+		$stats     = array();
+		$earnings  = array(
 			'earnings' => array(),
 		);
-		$donations    = array(
+		$donations = array(
 			'donations' => array(),
 		);
-		$error    = array();
+		$error     = array();
 
 		if ( ! user_can( $this->user_id, 'view_give_reports' ) && ! $this->override ) {
 			return $stats;
@@ -1178,7 +1182,7 @@ class Give_API {
 									$donations['sales'][ $date_key ] = 0;
 								}
 								$donations['sales'][ $date_key ] += $sale_count;
-								$total                       += $sale_count;
+								$total                           += $sale_count;
 								$d ++;
 							endwhile;
 							$i ++;
@@ -1219,7 +1223,7 @@ class Give_API {
 				}
 			} else {
 				if ( get_post_type( $args['form'] ) == 'give_forms' ) {
-					$form_info             = get_post( $args['form'] );
+					$form_info                 = get_post( $args['form'] );
 					$donations['donations'][0] = array(
 						$form_info->post_name => give_get_form_sales_stats( $args['form'] ),
 					);
@@ -1384,6 +1388,7 @@ class Give_API {
 		global $wp_query;
 
 		$defaults = array(
+			'id'        => null,
 			'date'      => null,
 			'startdate' => null,
 			'enddate'   => null,
@@ -1469,6 +1474,7 @@ class Give_API {
 			);
 			$query = give_get_payments( $args );
 		}// End if().
+
 		if ( $query ) {
 			$i = 0;
 			foreach ( $query as $payment ) {
@@ -1477,8 +1483,6 @@ class Give_API {
 					$payment      = new Give_Payment( $payment );
 					$payment_meta = $payment->get_meta();
 					$user_info    = $payment->user_info;
-				} else {
-					continue;
 				}
 
 				$payment_meta = $payment->get_meta();
@@ -1491,7 +1495,7 @@ class Give_API {
 				$donations['donations'][ $i ]['transaction_id'] = $payment->transaction_id;
 				$donations['donations'][ $i ]['key']            = $payment->key;
 				$donations['donations'][ $i ]['total']          = $payment->total;
-				$donations['donations'][ $i ]['status']         = give_get_payment_status($payment, true);
+				$donations['donations'][ $i ]['status']         = give_get_payment_status( $payment, true );
 				$donations['donations'][ $i ]['gateway']        = $payment->gateway;
 				$donations['donations'][ $i ]['name']           = $first_name . ' ' . $last_name;
 				$donations['donations'][ $i ]['fname']          = $first_name;
@@ -1509,7 +1513,7 @@ class Give_API {
 
 				if ( give_has_variable_prices( $form_id ) ) {
 					if ( isset( $payment_meta['price_id'] ) ) {
-						$price_name                                     = give_get_price_option_name( $form_id, $payment_meta['price_id'], $payment->ID );
+						$price_name                                         = give_get_price_option_name( $form_id, $payment_meta['price_id'], $payment->ID );
 						$donations['donations'][ $i ]['form']['price_name'] = $price_name;
 						$donations['donations'][ $i ]['form']['price_id']   = $price_id;
 						$donations['donations'][ $i ]['form']['price']      = give_get_price_option_amount( $form_id, $price_id );
@@ -1745,22 +1749,22 @@ class Give_API {
 						$secret_key = $this->get_user_secret_key( $user->ID );
 						?>
 						<?php if ( empty( $user->give_user_public_key ) ) { ?>
-							<input name="give_set_api_key" type="checkbox" id="give_set_api_key" value="0"/>
+							<input name="give_set_api_key" type="checkbox" id="give_set_api_key" value="0" />
 							<span class="description"><?php esc_html_e( 'Generate API Key', 'give' ); ?></span>
 						<?php } else { ?>
 							<strong style="display:inline-block; width: 125px;"><?php esc_html_e( 'Public key:', 'give' ); ?>
 								&nbsp;</strong>
-							<input type="text" disabled="disabled" class="regular-text" id="publickey" value="<?php echo esc_attr( $public_key ); ?>"/>
-							<br/>
+							<input type="text" disabled="disabled" class="regular-text" id="publickey" value="<?php echo esc_attr( $public_key ); ?>" />
+							<br />
 							<strong style="display:inline-block; width: 125px;"><?php esc_html_e( 'Secret key:', 'give' ); ?>
 								&nbsp;</strong>
-							<input type="text" disabled="disabled" class="regular-text" id="privatekey" value="<?php echo esc_attr( $secret_key ); ?>"/>
-							<br/>
+							<input type="text" disabled="disabled" class="regular-text" id="privatekey" value="<?php echo esc_attr( $secret_key ); ?>" />
+							<br />
 							<strong style="display:inline-block; width: 125px;"><?php esc_html_e( 'Token:', 'give' ); ?>
 								&nbsp;</strong>
-							<input type="text" disabled="disabled" class="regular-text" id="token" value="<?php echo esc_attr( $this->get_token( $user->ID ) ); ?>"/>
-							<br/>
-							<input name="give_set_api_key" type="checkbox" id="give_set_api_key" value="0"/>
+							<input type="text" disabled="disabled" class="regular-text" id="token" value="<?php echo esc_attr( $this->get_token( $user->ID ) ); ?>" />
+							<br />
+							<input name="give_set_api_key" type="checkbox" id="give_set_api_key" value="0" />
 							<span class="description"><label for="give_set_api_key"><?php esc_html_e( 'Revoke API Keys', 'give' ); ?></label></span>
 						<?php } ?>
 					</td>
