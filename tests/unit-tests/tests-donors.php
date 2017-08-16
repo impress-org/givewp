@@ -452,28 +452,28 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 		/**
 		 * Check 1 - Check for type object.
 		 *
-		 * @since 1.8.12
+		 * @since 2.0
 		 */
 		$this->assertInternalType( 'object', $donor_name_split );
 
 		/**
 		 * Check 2 - Check for existence of attribute first_name in object.
 		 *
-		 * @since 1.8.12
+		 * @since 2.0
 		 */
 		$this->assertObjectHasAttribute( 'first_name', $donor_name_split );
 
 		/**
 		 * Check 3 - Check that first_name attribute of object is not empty.
 		 *
-		 * @since 1.8.12
+		 * @since 2.0
 		 */
 		$this->assertNotEmpty( $donor_name_split->first_name );
 
 		/**
 		 * Check 4 - Check for existence of attribute last_name in object.
 		 *
-		 * @since 1.8.12
+		 * @since 2.0
 		 */
 		$this->assertObjectHasAttribute( 'last_name', $donor_name_split );
 
