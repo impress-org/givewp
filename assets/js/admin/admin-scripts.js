@@ -1283,7 +1283,7 @@ jQuery.noConflict();
 		 */
 		update_query: function($tab_link) {
 			var tab_id = $tab_link.data('tab-id');
-			var new_query = $.query.set( 'give_tab', tab_id ).toString();
+			var new_query = $.query.set( 'give_tab', tab_id ).remove('message').toString();
 
 			if (history.replaceState) {
 				history.replaceState(null, null, new_query);
