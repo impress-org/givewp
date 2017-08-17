@@ -471,8 +471,8 @@ function give_email_tag_first_name( $tag_args ) {
 			break;
 
 		case give_check_variable( $tag_args, 'isset', 0, 'user_id' ):
-			$user_info = Give()->donors->get_donor_by( 'user_id', $tag_args['user_id'] );
-			$firstname = $user_info->first_name;
+			$donor = new Give_Donor( $tag_args['user_id'], true );
+			$firstname = $donor->get_first_name();
 			break;
 	}
 
@@ -516,8 +516,8 @@ function give_email_tag_fullname( $tag_args ) {
 			break;
 
 		case give_check_variable( $tag_args, 'isset', 0, 'user_id' ):
-			$user_info = Give()->donors->get_donor_by( 'user_id', $tag_args['user_id'] );
-			$fullname  = trim( "{$user_info->first_name} {$user_info->last_name}" );
+			$donor = new Give_Donor( $tag_args['user_id'], true );
+			$fullname  = trim( "{$donor->get_first_name()} {$donor->get_last_name()}" );
 			break;
 	}
 
