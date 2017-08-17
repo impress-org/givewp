@@ -1184,7 +1184,7 @@ jQuery.noConflict();
 	 */
 	var Edit_Form_Screen = {
 		init: function () {
-			var default_tab_id = $.query.get('give_tab');
+			var default_tab_id = $.query.get('give_tab').length  ? $.query.get('give_tab') : 'form_field_options';
 
 			this.handle_metabox_tab_click();
 			this.setup_colorpicker_fields();
@@ -1195,8 +1195,8 @@ jQuery.noConflict();
 			// Multi level repeater field js.
 			this.handle_multi_levels_repeater_group_events();
 
-			// Set active tab hidden field on page load.
-			$('#give_form_active_tab').val(default_tab_id);
+			// Set active tab on page load.
+			this.activate_tab($('a[href="#' + default_tab_id + '"]'));
 		},
 
 		/**
