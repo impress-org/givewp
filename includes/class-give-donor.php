@@ -1142,6 +1142,8 @@ class Give_Donor {
 	public function get_last_name() {
 		$first_name = $this->get_meta( '_give_donor_first_name');
 		$last_name = $this->get_meta( '_give_donor_last_name');
+
+		// This condition will prevent unnecessary splitting of donor name to fetch last name.
 		if( ! $first_name && ! $last_name ) {
 			$last_name = $this->split_donor_name( $this->id )->last_name;
 		}
