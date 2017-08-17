@@ -672,7 +672,7 @@ class Give_MetaBox_Form_Data {
 								<ul class="give-metabox-sub-tabs give-hidden">
 									<?php foreach ( $form_data_tab['sub-fields'] as $sub_tab ) : ?>
 										<li class="<?php echo "{$sub_tab['id']}_tab"; ?>">
-											<a href="#<?php echo $sub_tab['id']; ?>">
+											<a href="#<?php echo $sub_tab['id']; ?>" data-tab-id="<?php echo $sub_tab['id']; ?>">
 												<?php if ( ! empty( $sub_tab['icon-html'] ) ) : ?>
 													<?php echo $sub_tab['icon-html']; ?>
 												<?php else : ?>

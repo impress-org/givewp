@@ -1232,7 +1232,7 @@ jQuery.noConflict();
 
 			if (has_sub_field) {
 				$li_parent.toggleClass('active');
-				$sub_field.toggleClass('give-hidden');
+				$sub_field.removeClass('give-hidden');
 
 				var $active_subtab_li = $('li.active', 'ul.give-metabox-sub-tabs');
 
@@ -1241,8 +1241,6 @@ jQuery.noConflict();
 				$all_tab_links_li.not($li_parent).removeClass('active');
 
 				$active_subtab_li.addClass('active');
-
-				return false;
 			} else if (!in_sub_fields) {
 				// Hide all tab and sub tabs.
 				$all_tab_links_li.each(function (index, item) {
