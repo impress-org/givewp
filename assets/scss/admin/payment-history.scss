@@ -584,12 +584,10 @@ input.give-price-field {
 
 .give-tools-setting-page-import {
 	.give-progress-steps {
+		width: 100%;
 		padding: 0 0 24px;
-		margin: 0;
 		list-style: none outside;
 		overflow: hidden;
-		color: #ccc;
-		width: 100%;
 		display: -webkit-inline-flex;
 		display: -ms-inline-flexbox;
 		display: -webkit-inline-box;
@@ -610,5 +608,38 @@ input.give-price-field {
 			border-color: #a16696;
 			color: #a16696;
 		}
+
+		li::before {
+			content: '';
+			border: 4px solid #ccc;
+			border-radius: 100%;
+			width: 10px;
+			height: 10px;
+			position: absolute;
+			bottom: 0;
+			left: 50%;
+			margin-left: -6px;
+			margin-bottom: -10px;
+			background: #fff;
+		}
 	}
+
+	.step-4 {
+		h2 {
+			text-align: center;
+			font-size: 20px !important;
+		}
+		p {
+          text-align: center;
+		}
+	}
+
+    .button-secondary.step-4 {
+      display: none;
+    }
+}
+
+.give-text-center {
+	text-align: center;
+  background-color: red;
 }

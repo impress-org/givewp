@@ -470,6 +470,7 @@ function give_donation_import_callback() {
 	$url = give_import_page_url( array(
 		'step'      => '4',
 		'csv'       => $csv,
+		'total'       => $total,
 		'success'       => $json_data['success'],
 	) );
 	$json_data['url'] = $url;

@@ -94,9 +94,10 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
                    value="<?php echo Give_Settings_Import::get_step(); ?>"/>
 
 			<?php
-			if ( ! self::check_for_dropdown_or_import() ) {
+			if ( self::check_for_dropdown_or_import() == false ) {
+				$step = Give_Settings_Import::get_step();
 				?>
-                <input type="submit" class="button-secondary" id="recount-stats-submit"
+                <input type="submit" class="button-secondary <?php echo 'step-' . $step; ?>" id="recount-stats-submit"
                        value="<?php esc_attr_e( 'Submit', 'give-manual-donations' ); ?>"/>
 				<?php
 			}
@@ -111,7 +112,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 			$step = Give_Settings_Import::get_step();
 			?>
             <section>
-                <table class="widefat export-options-table give-table">
+                <table class="widefat export-options-table give-table <?php echo 'step-' . $step; ?>">
                     <tbody>
 					<?php
 					if ( 1 === $step ) {
@@ -134,7 +135,42 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 		}
 
 		static function import_success() {
-			echo 'imported successfully';
+			$total   = (int) $_GET['total'];
+			$success = (bool) $_GET['success'];
+			?>
+            <tr valign="top" class="give-import-dropdown">
+                <th colspan="2">
+                    <h2>
+						<?php
+						if ( $success ) {
+							echo sprintf( __( 'Import complete! %s donations imported', 'give' ), '<strong>' . $total . '</strong>' );
+						} else {
+							echo sprintf( __( 'Failed to import %s donations', 'give' ), '<strong>' . $total . '</strong>' );
+						}
+						?>
+                    </h2>
+
+					<?php
+					$text      = __( 'Import Donation', 'give' );
+					$query_arg = array(
+						'post_type' => 'give_forms',
+						'page'      => 'give-tools',
+						'tab'       => 'import',
+					);
+					if ( $success ) {
+						$query_arg = array(
+							'post_type' => 'give_forms',
+							'page'      => 'give-payment-history',
+						);
+						$text      = __( 'View Donations', 'give' );
+					}
+					?>
+                    <p>
+                        <a href="<?php echo add_query_arg( $query_arg, admin_url( 'edit.php' ) ); ?>"><?php echo $text; ?></a>
+                    </p>
+                </th>
+            </tr>
+			<?php
 		}
 
 		/**
@@ -207,7 +243,6 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 			if ( isset( $_REQUEST['mapto'] ) ) {
 				return true;
 			}
-
 			return false;
 		}
 
