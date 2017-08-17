@@ -669,6 +669,10 @@ final class Give_Payment {
 
 			}
 
+			// Update Donor Meta once donor is created.
+			$donor->update_meta( '_give_donor_first_name', $this->first_name );
+			$donor->update_meta( '_give_donor_last_name', $this->last_name );
+
 			$this->customer_id            = $donor->id;
 			$this->pending['customer_id'] = $this->customer_id;
 			$donor->attach_payment( $this->ID, false );
