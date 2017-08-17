@@ -14,28 +14,28 @@ class Give_Translations {
 	 * Instance.
 	 *
 	 * @since  2.0
-	 * @access static
+	 * @access private
 	 * @var
 	 */
-	static private $instance;
+	private static $instance;
 
 	/**
 	 * Text config.
 	 *
 	 * @since  2.0
-	 * @access static
+	 * @access private
 	 * @var
 	 */
-	static private $text_configs = array();
+	private static $text_configs = array();
 
 	/**
 	 * Translated texts.
 	 *
 	 * @since  2.0
-	 * @access static
+	 * @access private
 	 * @var
 	 */
-	static private $text_translations = array();
+	private static  $text_translations = array();
 
 	/**
 	 * Singleton pattern.
@@ -51,10 +51,10 @@ class Give_Translations {
 	 * Get instance.
 	 *
 	 * @since  2.0
-	 * @access static
+	 * @access public
 	 * @return static
 	 */
-	static function get_instance() {
+	public static function get_instance() {
 		if ( null === static::$instance ) {
 			self::$instance = new static();
 		}
@@ -131,12 +131,12 @@ class Give_Translations {
 				$error = new WP_Error( 'EMPTY_TEXT', __( 'Empty string is not allowed.', 'give' ), $args );
 				throw new Exception( $error->get_error_message( 'EMPTY_TEXT' ) );
 
-			} else if ( empty( $args['id'] ) ) {
+			} elseif ( empty( $args['id'] ) ) {
 				/* @var WP_Error $error */
 				$error = new WP_Error( 'EMPTY_ID', __( 'Empty ID is not allowed.', 'give' ), $args );
 				throw new Exception( $error->get_error_message( 'EMPTY_ID' ) );
 
-			} else if (
+			} elseif (
 				empty( $args['group'] ) &&
 				array_key_exists( $args['id'], self::$text_configs )
 			) {
@@ -144,7 +144,7 @@ class Give_Translations {
 				$error = new WP_Error( 'TEXT_ID_ALREADY_EXIST', __( 'Text ID without group already exist.', 'give' ), $args );
 				throw new Exception( $error->get_error_message( 'TEXT_ID_ALREADY_EXIST' ) );
 
-			} else if (
+			} elseif (
 				! empty( $args['group'] ) &&
 				! empty( self::$text_configs[ $args['group'] ] ) &&
 				array_key_exists( $args['id'], self::$text_configs[ $args['group'] ] )
@@ -163,8 +163,7 @@ class Give_Translations {
 			}
 		} catch ( Exception $e ) {
 			error_log( $e->getMessage() );
-		}
-
+		}// End try().
 
 		/**
 		 * Filter the texts
@@ -275,7 +274,11 @@ class Give_Translations {
 	 * @return string
 	 */
 	public static function add_label_translation( $id, $group = '', $text = '' ) {
-		return self::get_text( array( 'id' => "{$id}_label", 'group' => $group, 'text' => $text ) );
+		return self::get_text( array(
+			'id' => "{$id}_label",
+			'group' => $group,
+			'text' => $text,
+		) );
 	}
 
 	/**
@@ -291,7 +294,11 @@ class Give_Translations {
 	 * @return string
 	 */
 	public static function add_tooltip_translation( $id, $group = '', $text = '' ) {
-		return self::get_text( array( 'id' => "{$id}_label", 'group' => $group, 'text' => $text ) );
+		return self::get_text( array(
+			'id' => "{$id}_label",
+			'group' => $group,
+			'text' => $text,
+		) );
 	}
 
 	/**
@@ -306,7 +313,11 @@ class Give_Translations {
 	 * @return string
 	 */
 	public static function get_label( $id, $group = '' ) {
-		return self::get_text( array( 'id' => "{$id}_label", 'group' => $group, 'type' => 'label' ) );
+		return self::get_text( array(
+			'id' => "{$id}_label",
+			'group' => $group,
+			'type' => 'label',
+		) );
 	}
 
 	/**
@@ -321,7 +332,11 @@ class Give_Translations {
 	 * @return string
 	 */
 	public static function get_tooltip( $id, $group = '' ) {
-		return self::get_text( array( 'id' => "{$id}_tooltip", 'group' => $group, 'type' => 'tooltip' ) );
+		return self::get_text( array(
+			'id' => "{$id}_tooltip",
+			'group' => $group,
+			'type' => 'tooltip',
+		) );
 	}
 
 	/**
@@ -376,7 +391,7 @@ class Give_Translations {
 			) {
 				$text = self::$text_translations[ $args['group'] ][ $args['id'] ];
 			}
-		} else if (
+		} elseif (
 			empty( $args['group'] ) &&
 			array_key_exists( $args['id'], self::$text_configs )
 		) {
