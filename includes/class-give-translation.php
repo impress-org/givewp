@@ -96,7 +96,7 @@ class Give_Translations {
 		 */
 		self::$text_translations = apply_filters(
 			'give_translated_texts',
-			array_merge( self::$text_translations, get_option( 'give_text_translations', array() ) )
+			self::$text_translations
 		);
 	}
 
