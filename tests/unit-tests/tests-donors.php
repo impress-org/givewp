@@ -404,12 +404,12 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 		// Create a donor.
 		$donor = new Give_Donor();
 		$args = array(
-			'name'  => 'Test Admin',
+			'name'  => 'Admin User',
 			'email' => 'testadmin@domain.com',
 		);
 		$donor->create( $args );
 		$first_name = $donor->get_first_name();
-		$this->assertEquals( 'Test', $first_name );
+		$this->assertEquals( 'Admin', $first_name );
 
 	}
 
@@ -424,12 +424,12 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 
 		$donor = new Give_Donor();
 		$args = array(
-			'name'  => 'Test Admin',
+			'name'  => 'Admin User',
 			'email' => 'testadmin@domain.com',
 		);
 		$donor->create( $args );
 		$last_name = $donor->get_last_name();
-		$this->assertEquals( 'Admin', $last_name );
+		$this->assertEquals( 'User', $last_name );
 
 	}
 
@@ -444,7 +444,7 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 
 		$donor = new Give_Donor();
 		$args = array(
-			'name'  => 'Test Admin',
+			'name'  => 'Admin User',
 			'email' => 'testadmin@domain.com',
 		);
 		$donor->create( $args );
