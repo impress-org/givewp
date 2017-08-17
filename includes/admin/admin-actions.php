@@ -392,3 +392,36 @@ function _give_show_test_mode_notice_in_admin_bar( $wp_admin_bar ) {
 	return true;
 }
 add_action( 'admin_bar_menu', '_give_show_test_mode_notice_in_admin_bar', 1000, 1 );
+
+
+/**
+ * Validate Fields of User Profile
+ *
+ * @param object   $errors Object of WP Errors.
+ * @param int|bool $update True or False.
+ * @param object   $user   WP User Data.
+ *
+ * @since 2.0
+ *
+ * @return mixed
+ */
+function give_validate_user_profile( $errors, $update, $user ) {
+
+	if ( ! empty( $_POST['action'] ) && ( 'adduser' === $_POST['action'] || 'createuser' === $_POST["action"] ) ) {
+		return $errors;
+	}
+
+	if( ! empty( $user->ID ) ) {
+		$donor = Give()->donors->get_donor_by( 'user_id', $user->ID );
+
+		if( $donor ) {
+			// If Donor is attached with User, then validate first name
+			if ( empty( $_POST['first_name'] ) ) {
+				$errors->add('empty_first_name', __( '<strong>ERROR:</strong> Please enter your first name.', 'give' ) );
+			}
+		}
+	}
+
+}
+
+add_action( 'user_profile_update_errors', 'give_validate_user_profile', 10, 3 );
