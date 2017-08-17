@@ -1749,10 +1749,9 @@ final class Give_Payment {
 			$donor = new Give_Donor( $this->customer_id );
 
 			if ( $donor->id > 0 ) {
-				$name      = explode( ' ', $donor->name, 2 );
 				$user_info = array(
-					'first_name' => $name[0],
-					'last_name'  => $name[1],
+					'first_name' => $donor->get_first_name(),
+					'last_name'  => $donor->get_last_name(),
 					'email'      => $donor->email,
 					'discount'   => 'none',
 				);
@@ -1760,6 +1759,7 @@ final class Give_Payment {
 		} else {
 			// Get the donor, but only if it's been created.
 			$donor = new Give_Donor( $this->customer_id );
+
 			if ( $donor->id > 0 ) {
 				foreach ( $user_info as $key => $value ) {
 					if ( ! empty( $value ) ) {
@@ -1768,16 +1768,11 @@ final class Give_Payment {
 
 					switch ( $key ) {
 						case 'first_name':
-							$name = explode( ' ', $donor->name, 2 );
-
-							$user_info[ $key ] = $name[0];
+							$user_info[ $key ] = $donor->get_first_name();
 							break;
 
 						case 'last_name':
-							$name      = explode( ' ', $donor->name, 2 );
-							$last_name = ! empty( $name[1] ) ? $name[1] : '';
-
-							$user_info[ $key ] = $last_name;
+							$user_info[ $key ] = $donor->get_last_name();
 							break;
 
 						case 'email':
