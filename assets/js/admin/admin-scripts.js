@@ -1183,9 +1183,9 @@ jQuery.noConflict();
 	 * Edit Donation form screen Js
 	 */
 	var Edit_Form_Screen = {
-		active_tab: $.query.get('give_tab'),
-
 		init: function () {
+			var default_tab_id = $.query.get('give_tab');
+
 			this.handle_metabox_tab_click();
 			this.setup_colorpicker_fields();
 			this.setup_media_fields();
@@ -1194,6 +1194,9 @@ jQuery.noConflict();
 
 			// Multi level repeater field js.
 			this.handle_multi_levels_repeater_group_events();
+
+			// Set active tab hidden field on page load.
+			$('#give_form_active_tab').val(default_tab_id);
 		},
 
 		/**
@@ -1224,6 +1227,7 @@ jQuery.noConflict();
 				$all_sub_fields   = $('ul.give-metabox-sub-tabs'),
 				in_sub_fields     = $tab_link.parents('ul.give-metabox-sub-tabs').length;
 
+			// Update active tab hidden field to maintain tab after save.
 			$('#give_form_active_tab').val(tab_id);
 
 			if (has_sub_field) {
