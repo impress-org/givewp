@@ -1175,13 +1175,14 @@ class Give_MetaBox_Form_Data {
 	 * Maintain the active tab after save.
 	 *
 	 * @since  1.8.13
-	 * @access private
+	 * @access public
 	 *
 	 * @param string $location The destination URL.
 	 * @param int    $post_id  The post ID.
+	 *
 	 * @return string The URL after redirect.
 	 */
-	function maintain_active_tab( $location, $post_id ) {
+	public function maintain_active_tab( $location, $post_id ) {
 		if ( ! empty( $_POST['give_form_active_tab'] ) ) {
 			$location = add_query_arg( 'give_tab', give_clean( $_POST['give_form_active_tab'] ), $location );
 		}
