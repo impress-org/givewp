@@ -395,7 +395,8 @@ function give_undo_donation( $payment_id ) {
 function give_count_payments( $args = array() ) {
 
 	global $wpdb;
-	$meta_table = __give_v20_bc_table_details( 'payment' );
+	$meta_table      = __give_v20_bc_table_details( 'payment' );
+	$donor_meta_type = Give()->donor_meta->meta_type;
 
 	$defaults = array(
 		'user'       => null,
@@ -433,7 +434,7 @@ function give_count_payments( $args = array() ) {
 
 		$join  = "LEFT JOIN {$meta_table['name']} m ON (p.ID = m.{$meta_table['column']['id']})";
 		$where .= "
-			AND m.meta_key = '_give_payment_customer_id'
+			AND m.meta_key = '_give_payment_{$donor_meta_type}_id'
 			AND m.meta_value = '{$args['donor']}'";
 
 		// Count payments for a search.
@@ -442,7 +443,7 @@ function give_count_payments( $args = array() ) {
 		if ( is_email( $args['s'] ) || strlen( $args['s'] ) == 32 ) {
 
 			if ( is_email( $args['s'] ) ) {
-				$field = '_give_payment_user_email';
+				$field = '_give_payment_donor_email';
 			} else {
 				$field = '_give_payment_purchase_key';
 			}
@@ -465,7 +466,7 @@ function give_count_payments( $args = array() ) {
 
 			$join  = "LEFT JOIN {$meta_table['column']} m ON (p.ID = m.{$meta_table['column']})";
 			$where .= $wpdb->prepare( "
-				AND m.meta_key = '_give_payment_user_id'
+				AND m.meta_key = '_give_payment_donor_id'
 				AND m.meta_value = %d", $args['s'] );
 
 		} else {

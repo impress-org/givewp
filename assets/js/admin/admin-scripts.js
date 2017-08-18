@@ -935,19 +935,28 @@ jQuery.noConflict();
 							}, 5000);
 						}
 					} else {
-						// Update progress.
-						$('.give-progress div', '#give-db-updates').animate({
-							width: response.data.percentage + '%',
-						}, 50, function () {
-							// Animation complete.
-						});
+						if ( response && -1 !== $.inArray('percentage', Object.keys(response.data))) {
+							// Update progress.
+							$('.give-progress div', '#give-db-updates').animate({
+								width: response.data.percentage + '%',
+							}, 50, function () {
+								// Animation complete.
+							});
 
-						// Update steps info
-						if (-1 !== $.inArray('heading', Object.keys(response.data))) {
-							self.el.heading.html('<strong>' + response.data.heading.replace('{update_count}', self.el.heading.data('update-count')) + '</strong>');
+							// Update steps info
+							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
+								self.el.heading.html('<strong>' + response.data.heading.replace('{update_count}', self.el.heading.data('update-count')) + '</strong>');
+							}
+
+							self.process_step(parseInt(response.data.step), response.data.update, self);
+						} else{
+							notice_wrap.html('<div class="notice notice-error"><p>' + give_vars.updates.ajax_error + '</p></div>');
+
+							setTimeout(function () {
+								self.el.update_link.removeClass('active').show();
+								self.el.progress_main_container.addClass('give-hidden');
+							}, 5000);
 						}
-
-						self.process_step(parseInt(response.data.step), response.data.update, self);
 					}
 
 				}

@@ -1152,7 +1152,7 @@ function give_is_add_new_form_page() {
  *
  * @return mixed
  */
-function give_get_meta( $id, $meta_key, $single = false, $default = false ) {
+function give_get_meta( $id, $meta_key = '', $single = false, $default = false ) {
 	/**
 	 * Filter the meta value
 	 *
@@ -1220,31 +1220,6 @@ function give_delete_meta( $id, $meta_key, $meta_value = '' ) {
 	 */
 	return apply_filters( 'give_delete_meta', $status, $id, $meta_key, $meta_value );
 }
-
-
-/**
- * Get attribute string
- *
- * @since 2.0
- *
- * @param array $attributes
- *
- * @return string
- */
-function give_get_attribute_str( $attributes ) {
-	$attribute_str = '';
-
-	if ( empty( $attributes ) ) {
-		return $attribute_str;
-	}
-
-	foreach ( $attributes as $tag => $value ) {
-		$attribute_str .= " {$tag}=\"{$value}\"";
-	}
-
-	return trim( $attribute_str );
-}
-
 
 /**
  * Check if the upgrade routine has been run for a specific action
@@ -1323,6 +1298,30 @@ function give_set_upgrade_complete( $upgrade_action = '' ) {
 function give_get_completed_upgrades() {
 	return (array) get_option( 'give_completed_upgrades' );
 }
+
+/**
+ * Get attribute string
+ *
+ * @since 2.0
+ *
+ * @param array $attributes
+ *
+ * @return string
+ */
+function give_get_attribute_str( $attributes ) {
+	$attribute_str = '';
+
+	if ( empty( $attributes ) ) {
+		return $attribute_str;
+	}
+
+	foreach ( $attributes as $tag => $value ) {
+		$attribute_str .= " {$tag}=\"{$value}\"";
+	}
+
+	return trim( $attribute_str );
+}
+
 
 /**
  * In 2.0 we updated table for log, payment and form.

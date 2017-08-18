@@ -171,7 +171,7 @@ class Give_Donors_Gravatars {
 
 			foreach ( $payment_ids as $key => $id ) {
 
-				$email = give_get_meta( $id, '_give_payment_user_email', true );
+				$email = give_get_meta( $id, '_give_payment_donor_email', true );
 
 				if ( isset ( $give_options['give_donors_gravatars_has_gravatar_account'] ) ) {
 					if ( ! $this->validate_gravatar( $email ) ) {
@@ -179,7 +179,7 @@ class Give_Donors_Gravatars {
 					}
 				}
 
-				$unique_emails[ $id ] = give_get_meta( $id, '_give_payment_user_email', true );
+				$unique_emails[ $id ] = give_get_meta( $id, '_give_payment_donor_email', true );
 
 			}
 
@@ -272,7 +272,7 @@ class Give_Donors_Gravatars {
 				$name = $user_info['first_name'];
 
 				// get donor's email
-				$email = give_get_meta( $id, '_give_payment_user_email', true );
+				$email = give_get_meta( $id, '_give_payment_donor_email', true );
 
 				// set gravatar size and provide filter
 				$size = isset( $give_options['give_donors_gravatars_gravatar_size'] ) ? apply_filters( 'give_donors_gravatars_gravatar_size', $give_options['give_donors_gravatars_gravatar_size'] ) : '';

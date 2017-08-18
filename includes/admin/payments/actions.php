@@ -224,20 +224,9 @@ function give_update_payment_details( $data ) {
 		// Get new give form title.
 		$new_form_title = get_the_title( $new_form_id );
 
-		// Update new give form data in payment data.
-		$payment_meta               = $payment->get_meta();
-		$payment_meta['form_title'] = $new_form_title;
-		$payment_meta['form_id']    = $new_form_id;
-
-		// Update price id post meta data for set donation form.
-		if ( ! give_has_variable_prices( $new_form_id ) ) {
-			$payment_meta['price_id'] = '';
-		}
-
 		// Update payment give form meta data.
 		$payment->update_meta( '_give_payment_form_id', $new_form_id );
 		$payment->update_meta( '_give_payment_form_title', $new_form_title );
-		$payment->update_meta( '_give_payment_meta', $payment_meta );
 
 		// Update price id payment metadata.
 		if ( ! give_has_variable_prices( $new_form_id ) ) {

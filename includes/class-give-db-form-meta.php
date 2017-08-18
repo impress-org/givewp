@@ -105,7 +105,6 @@ class Give_DB_Form_Meta extends Give_DB_Meta {
 		update_option( $this->table_name . '_db_version', $this->version );
 	}
 
-
 	/**
 	 * check if custom meta table enabled or not.
 	 *

@@ -169,7 +169,7 @@ class Give_Cache {
 	 */
 
 	public static function delete( $cache_keys ) {
-		$result = true;
+		$result       = true;
 		$invalid_keys = array();
 
 		if ( ! empty( $cache_keys ) ) {
@@ -178,18 +178,18 @@ class Give_Cache {
 			foreach ( $cache_keys as $cache_key ) {
 				if ( ! self::is_valid_cache_key( $cache_key ) ) {
 					$invalid_keys[] = $cache_key;
-					$result = false;
+					$result         = false;
 				}
 
 				delete_option( $cache_key );
 			}
 		}
 
-		if( ! $result ) {
+		if ( ! $result ) {
 			$result = new WP_Error(
 				'give_invalid_cache_key',
-					__( 'Cache key format should be give_cache_*', 'give' ),
-					$invalid_keys
+				__( 'Cache key format should be give_cache_*', 'give' ),
+				$invalid_keys
 			);
 		}
 
@@ -203,7 +203,7 @@ class Give_Cache {
 	 * @access public
 	 * @global wpdb $wpdb
 	 *
-	 * @param bool $force If set to true then all cached values will be delete instead of only expired
+	 * @param bool  $force If set to true then all cached values will be delete instead of only expired
 	 *
 	 * @return bool
 	 */
@@ -316,9 +316,72 @@ class Give_Cache {
 	public static function is_valid_cache_key( $cache_key ) {
 		return ( false !== strpos( $cache_key, 'give_cache_' ) );
 	}
+
+
+	/**
+	 * Cache small chunks inside group
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param       $group_type
+	 * @param array $args {
+	 *
+	 * @type string $id
+	 * @type string $key
+	 * @type string $data
+	 *
+	 * }
+	 *
+	 * @return bool|array|WP_Error
+	 */
+	public static function group( $group_type, $args = array() ) {
+		// Bailout
+		if ( empty( $group_type ) || empty( $args ) || empty( $args['id'] ) ) {
+			return false;
+		} elseif ( empty( $args['key'] ) ) {
+			return new WP_Error( 'give_invalid_payment_cache_key', __( 'We did not find valid payment cache key.', 'give' ) );
+		}
+
+		$cache_id = "give_{$group_type}_{$args['id']}";
+
+		// Get cache.
+		if ( ! ( $donation_cache = Give_Cache::get( $cache_id, true ) ) ) {
+			$donation_cache = array();
+		}
+
+		// Get cache.
+		if ( empty( $args['data'] ) ) {
+			return ( isset( $donation_cache[ $args['key'] ] ) ? $donation_cache[ $args['key'] ] : '' );
+		}
+
+		// Store donation address to cache (save queries).
+		$donation_cache[ $args['key'] ] = $args['data'];
+
+		return Give_Cache::set( $cache_id, $donation_cache, null, true );
+	}
+
+	/**
+	 * Delete payment cache.
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param string $group_type
+	 * @param string $id
+	 *
+	 * @return mixed
+	 */
+	public static function delete_group( $group_type, $id ) {
+		if ( empty( $group_type ) ) {
+			return false;
+		} elseif ( ! $id ) {
+			return new WP_Error( 'give_invalid_payment_cache_id', __( 'We did not find valid payment cache id.', 'give' ) );
+		}
+
+		return Give_Cache::delete( "give_cache_give_{$group_type}_{$id}" );
+	}
 }
 
 // Initialize
 Give_Cache::get_instance()->setup_hooks();
-
-// @todo implement this with all possible cache

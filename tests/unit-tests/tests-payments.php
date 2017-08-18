@@ -343,7 +343,7 @@ class Tests_Payments extends Give_Unit_Test_Case {
 		// Try and retrieve the transaction ID
 		$this->assertEquals( $this->_transaction_id, $payment->get_meta( '_give_payment_transaction_id' ) );
 
-		$this->assertEquals( $payment->email, $payment->get_meta( '_give_payment_user_email' ) );
+		$this->assertEquals( $payment->email, $payment->get_meta( '_give_payment_donor_email' ) );
 
 	}
 
@@ -361,7 +361,7 @@ class Tests_Payments extends Give_Unit_Test_Case {
 		$this->assertEquals( $this->_transaction_id, give_get_payment_meta( $this->_payment_id, '_give_payment_transaction_id' ) );
 
 		$user_info = give_get_payment_meta_user_info( $this->_payment_id );
-		$this->assertEquals( $user_info['email'], give_get_payment_meta( $this->_payment_id, '_give_payment_user_email' ) );
+		$this->assertEquals( $user_info['email'], give_get_payment_meta( $this->_payment_id, '_give_payment_donor_email' ) );
 
 	}
 
@@ -408,12 +408,12 @@ class Tests_Payments extends Give_Unit_Test_Case {
 
 		$this->assertEquals( $new_value, give_get_payment_meta( $this->_payment_id, '_give_payment_purchase_key' ) );
 
-		$ret = give_update_payment_meta( $this->_payment_id, '_give_payment_user_email', 'test@test.com' );
+		$ret = give_update_payment_meta( $this->_payment_id, '_give_payment_donor_email', 'test@test.com' );
 
 		$this->assertTrue( $ret );
 
 		$user_info = give_get_payment_meta_user_info( $this->_payment_id );
-		$this->assertEquals( 'test@test.com', give_get_payment_meta( $this->_payment_id, '_give_payment_user_email' ) );
+		$this->assertEquals( 'test@test.com', give_get_payment_meta( $this->_payment_id, '_give_payment_donor_email' ) );
 
 	}
 
