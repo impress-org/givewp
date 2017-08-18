@@ -81,9 +81,9 @@ function give_get_states( $country = null ) {
  * @since 1.0
  * @return array $countries A list of the available countries.
  */
-function give_get_country_list() {
+function give_get_country_list( $default = '' ) {
 	$countries = array(
-		''   => '',
+		''   => esc_html__( $default, 'give' ),
 		'US' => esc_html__( 'United States', 'give' ),
 		'CA' => esc_html__( 'Canada', 'give' ),
 		'GB' => esc_html__( 'United Kingdom', 'give' ),
