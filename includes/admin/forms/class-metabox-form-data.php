@@ -1179,7 +1179,10 @@ class Give_MetaBox_Form_Data {
 	 * @return string The URL after redirect.
 	 */
 	public function maintain_active_tab( $location, $post_id ) {
-		if ( ! empty( $_POST['give_form_active_tab'] ) ) {
+		if (
+			'give_forms' === get_post_type( $post_id ) &&
+			! empty( $_POST['give_form_active_tab'] )
+		) {
 			$location = add_query_arg( 'give_tab', give_clean( $_POST['give_form_active_tab'] ), $location );
 		}
 
