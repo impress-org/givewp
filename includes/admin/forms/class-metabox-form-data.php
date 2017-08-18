@@ -101,7 +101,7 @@ class Give_MetaBox_Form_Data {
 		}
 
 		// Format amounts.
-		$price = give_format_amount( $price, array( 'sanitize' => false ) );
+		$price                 = give_format_amount( $price, array( 'sanitize' => false ) );
 		$custom_amount_minimum = give_format_amount( $custom_amount_minimum, array( 'sanitize' => false ) );
 
 		// Start with an underscore to hide fields from custom fields list
@@ -433,7 +433,7 @@ class Give_MetaBox_Form_Data {
 				'id'        => 'form_content_options',
 				'title'     => __( 'Form Content', 'give' ),
 				'icon-html' => '<span class="give-icon give-icon-edit"></span>',
-				'fields' => apply_filters( 'give_forms_content_options_metabox_fields', array(
+				'fields'    => apply_filters( 'give_forms_content_options_metabox_fields', array(
 
 					// Donation content.
 					array(
@@ -487,7 +487,7 @@ class Give_MetaBox_Form_Data {
 				'id'        => 'form_terms_options',
 				'title'     => __( 'Terms & Conditions', 'give' ),
 				'icon-html' => '<span class="give-icon give-icon-checklist"></span>',
-				'fields' => apply_filters( 'give_forms_terms_options_metabox_fields', array(
+				'fields'    => apply_filters( 'give_forms_terms_options_metabox_fields', array(
 					// Donation Option
 					array(
 						'name'        => __( 'Terms and Conditions', 'give' ),
@@ -532,7 +532,6 @@ class Give_MetaBox_Form_Data {
 				),
 			) ),
 		);
-
 
 		/**
 		 * Filter the metabox tabbed panel settings.
@@ -706,7 +705,7 @@ class Give_MetaBox_Form_Data {
 						</div>
 
 						<?php do_action( "give_after_{$setting['id']}_settings" ); ?>
-					<?php else: ?>
+					<?php else : ?>
 						<?php if ( $this->has_sub_tab( $setting ) ) : ?>
 							<?php if ( ! empty( $setting['sub-fields'] ) ) : ?>
 								<?php foreach ( $setting['sub-fields'] as $index => $sub_fields ) : ?>
@@ -725,7 +724,7 @@ class Give_MetaBox_Form_Data {
 				<?php endforeach; ?>
 			</div>
 			<?php
-		}
+		}// End if().
 	}
 
 
@@ -862,15 +861,13 @@ class Give_MetaBox_Form_Data {
 									}
 								}
 
-
 								// Arrange repeater field keys in order.
 								$form_meta_value = array_values( $form_meta_value );
 								break;
 
 							default:
 								$form_meta_value = give_clean( $_POST[ $form_meta_key ] );
-						}
-
+						}// End switch().
 
 						/**
 						 * Filter the form meta value before saving
@@ -878,11 +875,11 @@ class Give_MetaBox_Form_Data {
 						 * @since 1.8.9
 						 */
 						$form_meta_value = apply_filters(
-								'give_pre_save_form_meta_value',
-								$this->sanitize_form_meta( $form_meta_value, $setting_field ),
-								$form_meta_key,
-								$this,
-								$post_id
+							'give_pre_save_form_meta_value',
+							$this->sanitize_form_meta( $form_meta_value, $setting_field ),
+							$form_meta_key,
+							$this,
+							$post_id
 						);
 
 						// Save data.
@@ -890,10 +887,10 @@ class Give_MetaBox_Form_Data {
 
 						// Fire after saving form meta key.
 						do_action( "give_save_{$form_meta_key}", $form_meta_key, $form_meta_value, $post_id, $post );
-					}
-				}
-			}
-		}
+					}// End if().
+				}// End if().
+			}// End foreach().
+		}// End if().
 
 		// Fire action after saving form meta.
 		do_action( 'give_post_process_give_forms_meta', $post_id, $post );
@@ -1092,7 +1089,6 @@ class Give_MetaBox_Form_Data {
 			}
 		}
 
-
 		// Get field from group.
 		if ( ! empty( $group_id ) ) {
 			foreach ( $setting_field['fields'] as $field ) {
@@ -1150,7 +1146,7 @@ class Give_MetaBox_Form_Data {
 						}
 
 						foreach ( $meta_value as $index => $meta_data ) {
-							if( ! isset( $meta_value[ $index ][ $field['id'] ] ) ) {
+							if ( ! isset( $meta_value[ $index ][ $field['id'] ] ) ) {
 								continue;
 							}
 
