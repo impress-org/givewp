@@ -646,8 +646,8 @@ class Give_MetaBox_Form_Data {
 	 */
 	public function output() {
 		// Bailout.
-		if ( $form_data_tabs = $this->get_tabs() ) {
-			$active_tab = ! empty( $_GET['give_tab'] ) ? sanitize_text_field( $_GET['give_tab'] ) : 'form_field_options';
+		if ( $form_data_tabs = $this->get_tabs() ) :
+			$active_tab = ! empty( $_GET['give_tab'] ) ? give_clean( $_GET['give_tab'] ) : 'form_field_options';
 			wp_nonce_field( 'give_save_form_meta', 'give_form_meta_nonce' );
 			?>
 			<input id="give_form_active_tab" type="hidden" name="give_form_active_tab">
@@ -724,7 +724,7 @@ class Give_MetaBox_Form_Data {
 				<?php endforeach; ?>
 			</div>
 			<?php
-		}// End if().
+		endif; // End if().
 	}
 
 
