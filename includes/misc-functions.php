@@ -1347,7 +1347,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 			'address'    => $address,
 		),
 		'gateway'         => ( ! empty( $data['gateway'] ) && 'offline' != strtolower( $data['gateway'] ) ? strtolower( $data['gateway'] ) : 'manual' ),
-		'give_form_title' => $data['form_title'],
+		'give_form_title' => ( ! empty( $data['form_title'] ) ? $data['form_title'] : $form->get_name() ),
 		'give_form_id'    => (string) $form->get_ID(),
 		'give_price_id'   => $price_id,
 		'purchase_key'    => strtolower( md5( uniqid() ) ),
@@ -1519,6 +1519,8 @@ function give_import_get_user_from_csv( $data ) {
  */
 function give_import_get_form_data_from_csv( $data ) {
 	$form = false;
+	$meta = array();
+
 	if ( ! empty( $data['form_id'] ) ) {
 		$form = new Give_Donate_Form( $data['form_id'] );
 		if ( empty( $form->get_ID() ) ) {
@@ -1526,9 +1528,7 @@ function give_import_get_form_data_from_csv( $data ) {
 		}
 	}
 
-	if ( false === $form ) {
-		$meta = array();
-
+	if ( false === $form && ! empty( $data['form_title'] ) ) {
 		$form = get_page_by_title( $data['form_title'], OBJECT, 'give_forms' );
 
 		if ( ! empty( $form->ID ) ) {
@@ -1542,10 +1542,11 @@ function give_import_get_form_data_from_csv( $data ) {
 			$form = $form->create( $args );
 		}
 
-
 		$form = get_page_by_title( $data['form_title'], OBJECT, 'give_forms' );
 		$form = new Give_Donate_Form( $form->ID );
+	}
 
+	if ( ! empty( $form ) && $form->get_ID() ) {
 		if ( ! empty( $data['form_level'] ) ) {
 			$prices     = (array) $form->get_prices();
 			$price_text = array();
@@ -1609,6 +1610,6 @@ function give_import_get_form_data_from_csv( $data ) {
 		foreach ( $meta as $key => $value ) {
 			give_update_meta( $form->get_ID(), $key, $value );
 		}
-	}
+    }
 	return $form;
 }

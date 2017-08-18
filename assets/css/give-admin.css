@@ -2307,8 +2307,8 @@ input.give-price-field {
     border-bottom: 4px solid #ccc;
     line-height: 1.4em; }
   .give-tools-setting-page-import .give-progress-steps li.active {
-    border-color: #a16696;
-    color: #a16696; }
+    border-color: #337136;
+    color: #337136; }
   .give-tools-setting-page-import .give-progress-steps li::before {
     content: '';
     border: 4px solid #ccc;
