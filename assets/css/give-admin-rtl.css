@@ -969,7 +969,11 @@ ASIDE
   overflow: hidden; }
 
 #give-metabox-form-data .give_options_panel {
+  display: none;
   padding-right: 170px; }
+  #give-metabox-form-data .give_options_panel.active,
+  .no-js #give-metabox-form-data .give_options_panel {
+    display: block; }
   #give-metabox-form-data .give_options_panel .give-field-wrap {
     padding: 1em 162px 1em 20px !important;
     margin: 0;
@@ -1909,9 +1913,18 @@ h2.give-nav-tab-wrapper {
     background-position: 100% 4px; }
   .give-filters .chosen-container-active.chosen-with-drop .chosen-single div b {
     background-position: -18px 6px; }
-  .give-filters #give_donation_forms_filter {
+  .give-filters #give-payment-form-filter, .give-filters #give_donation_forms_filter {
     display: inline-block;
-    width: auto; }
+    width: 300px; }
+    @media screen and (max-width: 782px) {
+      .give-filters #give-payment-form-filter, .give-filters #give_donation_forms_filter {
+        width: 100%; } }
+  .give-filters #give_donation_forms_filter {
+    width: 255px; }
+    @media screen and (max-width: 782px) {
+      .give-filters #give_donation_forms_filter {
+        width: 100%;
+        max-width: 100%; } }
   .give-filters:after {
     content: "";
     display: table;

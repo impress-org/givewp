@@ -1470,6 +1470,7 @@ function give_import_donation_form_options() {
 }
 
 /**
+<<<<<<< HEAD
  * Give get user details.
  *
  * @since 1.8.13
@@ -1613,3 +1614,22 @@ function give_import_get_form_data_from_csv( $data ) {
     }
 	return $form;
 }
+
+/** Remove the Give transaction pages from WP search results.
+ *
+ * @since 1.8.13
+ *
+ * @param \WP_Query
+ *
+ */
+function give_remove_pages_from_search( $query ) {
+	if ( ! $query->is_admin && $query->is_search && $query->is_main_query() ) {
+
+		$transaction_failed = give_get_option( 'failure_page', 0 );
+		$success_page       = give_get_option( 'success_page', 0 );
+		$args = apply_filters( 'give_remove_pages_from_search', array( $transaction_failed, $success_page ), $query );
+
+		$query->set( 'post__not_in', $args );
+	}
+}
+add_action( 'pre_get_posts', 'give_remove_pages_from_search', 10, 1 );

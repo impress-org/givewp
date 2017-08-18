@@ -74,10 +74,12 @@ class Give_Sales_Log_Table extends WP_List_Table {
 				$form_title = empty( $form_title ) ? sprintf( __( 'Untitled (#%s)', 'give' ), $item[ $column_name ] ) : $form_title;
 				return '<a href="' . esc_url( add_query_arg( 'form', $item[ $column_name ] ) ) . '" >' . $form_title . '</a>';
 
-			case 'user_id' :
-				return '<a href="' .
-					   admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . ( ! empty( $item['user_id'] ) ? urlencode( $item['user_id'] ) : give_get_payment_user_email( $item['payment_id'] ) ) ) .
-					   '">' . $item['user_name'] . '</a>';
+			case 'donor_id' :
+				return sprintf(
+					'<a href="%s">%s</a>',
+					admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&donor=' . absint( $item['donor_id'] ) ),
+					$item['donor_name']
+				);
 
 			case 'amount' :
 				return give_currency_filter( give_format_amount( $item['amount'], array( 'sanitize' => false ) ) );
@@ -110,7 +112,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	public function get_columns() {
 		$columns = array(
 			'ID'         => __( 'Log ID', 'give' ),
-			'user_id'    => __( 'Donor', 'give' ),
+			'donor_id'   => __( 'Donor', 'give' ),
 			'form'       => __( 'Form', 'give' ),
 			'amount'     => __( 'Donation Amount', 'give' ),
 			'status'     => __( 'Status', 'give' ),
@@ -353,7 +355,6 @@ class Give_Sales_Log_Table extends WP_List_Table {
 					// Make sure this payment hasn't been deleted.
 					if ( get_post( $payment_id ) ) :
 						$user_info      = give_get_payment_meta_user_info( $payment_id );
-						$payment_meta   = give_get_payment_meta( $payment_id );
 						$payment_amount = give_get_payment_amount( $payment_id );
 
 						$logs_data[] = array(
@@ -361,8 +362,8 @@ class Give_Sales_Log_Table extends WP_List_Table {
 							'payment_id' => $payment_id,
 							'form'       => $log->post_parent,
 							'amount'     => $payment_amount,
-							'user_id'    => $user_info['id'],
-							'user_name'  => $user_info['first_name'] . ' ' . $user_info['last_name'],
+							'donor_id'   => give_get_payment_donor_id( $payment_id ),
+							'donor_name' => trim( "{$user_info['first_name']} {$user_info['last_name']}" ),
 							'date'       => get_post_field( 'post_date', $payment_id ),
 						);
 

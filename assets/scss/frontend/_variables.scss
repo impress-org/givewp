@@ -39,3 +39,19 @@ $contentbg: #fff;
 // Content BG - Tabs (active state)
 $subtext: #777;
 // small, breadcrumbs etc
+
+$float-labels: (
+	base-height             : 30px,
+	border-radius           : 0,
+	margin-bottom           : 0,
+	color-background        : inherit,
+	color-background-active : inherit,
+	color-background-focus  : inherit,
+	color-border            : #ccc,
+	color-border-active     : #ccc,
+	color-border-focus      : #ccc,
+	color-text              : #333,
+	line-height             : normal,
+	font-weight             : 700,
+	parent                  : '[id*="give-form"] ',
+);

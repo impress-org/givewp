@@ -8,158 +8,168 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
 
-
-
 //------------------------------------
 // Payment Filters
 //------------------------------------
 
 // Wrapper for multiple filter fields.
 .give-filters {
+  clear: both;
+  background: #f5f5f5;
+  border: 1px solid #dfdfdf;
+  padding: 12px 12px 0 12px;
+
+  // Chosen height adjustment.
+  .give-donation-forms-filter .chosen-single {
+	height: 28px;
+	line-height: 28px;
+  }
+
+  // Chosen up arrow.
+  .chosen-container-single .chosen-single div b {
+	background-position: 0 4px;
+  }
+
+  // Chosen down arrow.
+  .chosen-container-active.chosen-with-drop .chosen-single div b {
+	background-position: -18px 6px;
+  }
+
+
+  // Prevent select from causing line break flash.
+  #give-payment-form-filter, #give_donation_forms_filter {
+	display: inline-block;
+	width: 300px;
+	@media screen and (max-width: 782px) {
+	  width: 100%;
+	}
+  }
+  // Chosen / Select donation form filter dropdown.
+  #give_donation_forms_filter {
+	width: 255px;
+	@media screen and (max-width: 782px) {
+	  width: 100%;
+	  max-width:100%;
+	}
+  }
+
+  &:after {
+	content: "";
+	display: table;
 	clear: both;
-	background: #f5f5f5;
-	border: 1px solid #dfdfdf;
-	padding: 12px 12px 0 12px;
-
-	// Chosen height adjustment.
-	.give-donation-forms-filter .chosen-single {
-		height: 28px;
-		line-height: 28px;
-	}
-
-	// Chosen up arrow.
-	.chosen-container-single .chosen-single div b {
-		background-position: 0 4px;
-	}
-
-	// Chosen down arrow.
-	.chosen-container-active.chosen-with-drop .chosen-single div b {
-		background-position: -18px 6px;
-	}
-
-  	// Prevent select from causing line break flash.
-  	#give_donation_forms_filter {
-	  display:inline-block;
-	  width:auto;
-	}
-
-	&:after {
-		content: "";
-		display: table;
-		clear: both;
-	}
+  }
 }
 
 // Individual filter field.
 .give-filter {
-	display: block;
-	margin-bottom: 12px;
-	width: 100%;
+  display: block;
+  margin-bottom: 12px;
+  width: 100%;
 
-	&:after {
-		content: "";
-		display: table;
-		clear: both;
-	}
+  &:after {
+	content: "";
+	display: table;
+	clear: both;
+  }
+
+  label {
+	display: block;
+	margin-right: 4px;
+  }
+
+  input {
+	margin: 0;
+  }
+
+  input[type="text"] {
+	height: 28px;
+	width: 100%;
+  }
+
+  input[type="text"],
+  input[type="search"] {
+	height: 28px;
+  }
+
+  .button {
+	height: 28px;
+	line-height: 26px;
+	margin: 0;
+	padding: 0 10px 1px;
+  }
+
+  select {
+	width: 100%;
+  }
+
+  @media screen and (min-width: 783px) {
+	float: left;
+	margin-right: 18px;
+	width: auto;
 
 	label {
-		display: block;
-		margin-right: 4px;
-	}
-
-	input {
-		margin: 0;
+	  display: inline-block;
 	}
 
 	input[type="text"] {
-		height: 28px;
-		width: 100%;
+	  display: inline-block;
+	  width: 144px;
 	}
-
-	input[type="text"],
-	input[type="search"] {
-		height: 28px;
-	}
-
-	.button {
-		height: 28px;
-		line-height: 26px;
-		margin: 0;
-		padding: 0 10px 1px;
-	}
-
-	select {
-		width: 100%;
-	}
-
-	@media screen and (min-width: 783px) {
-		float: left;
-		margin-right: 18px;
-		width: auto;
-
-		label {
-			display: inline-block;
-		}
-
-		input[type="text"] {
-			display: inline-block;
-			width: 144px;
-		}
-	}
+  }
 }
 
 .give-filter-search {
+  input[type="search"] {
+	display: block;
+	float: left;
+	width: 68%;
+  }
+
+  input[type="submit"] {
+	display: block;
+	float: right;
+	width: 30%;
+  }
+
+  @media screen and (min-width: 783px) {
 	input[type="search"] {
-		display: block;
-		float: left;
-		width: 68%;
+	  display: inline-block;
+	  margin-right: 4px;
+	  width: 144px;
 	}
 
 	input[type="submit"] {
-		display: block;
-		float: right;
-		width: 30%;
+	  display: inline-block;
+	  width: auto;
 	}
-
-	@media screen and (min-width: 783px) {
-		input[type="search"] {
-			display: inline-block;
-			margin-right: 4px;
-			width: 144px;
-		}
-
-		input[type="submit"] {
-			display: inline-block;
-			width: auto;
-		}
-	}
+  }
 }
 
 .give-filter-half {
-	@media screen and (min-width: 600px) {
-		float: left;
-		width: 49%;
+  @media screen and (min-width: 600px) {
+	float: left;
+	width: 49%;
 
-		&:last-child {
-			float: right;
-		}
+	&:last-child {
+	  float: right;
+	}
+  }
+
+  @media screen and (min-width: 783px) {
+	width: auto;
+
+	&:last-child {
+	  float: left;
 	}
 
-	@media screen and (min-width: 783px) {
-		width: auto;
-
-		&:last-child {
-			float: left;
-		}
-
-		input[type="text"] {
-			width: 96px;
-		}
+	input[type="text"] {
+	  width: 96px;
 	}
+  }
 }
 
 .give-clear-filters-button {
-	margin-left: 8px;
+  margin-left: 8px;
 }
 
 .give-submit-wrap {
