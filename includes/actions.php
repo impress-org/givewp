@@ -93,7 +93,7 @@ function give_connect_donor_to_wpuser( $user_id, $user_data ){
 	/* @var Give_Donor $donor */
 	$donor = new Give_Donor( $user_data['user_email'] );
 
-	// Validate donor id and check if do nor is already connect to wp user or not.
+	// Validate donor id and check if do not is already connect to wp user or not.
 	if( $donor->id && ! $donor->user_id ) {
 
 		// Update donor user_id.
@@ -102,11 +102,12 @@ function give_connect_donor_to_wpuser( $user_id, $user_data ){
 			$donor->add_note( $donor_note );
 
 			// Update user_id meta in payments.
-			if( ! empty( $donor->payment_ids ) && ( $donations = explode( ',', $donor->payment_ids ) ) ) {
-				foreach ( $donations as $donation  ) {
-					give_update_meta( $donation, '_give_payment_user_id', $user_id );
-				}
-			}
+			// if( ! empty( $donor->payment_ids ) && ( $donations = explode( ',', $donor->payment_ids ) ) ) {
+			// 	foreach ( $donations as $donation  ) {
+			// 		give_update_meta( $donation, '_give_payment_user_id', $user_id );
+			// 	}
+			// }
+			// Do not need to update user_id in payment because we will get user id from donor id now.
 		}
 	}
 }
@@ -248,3 +249,29 @@ function give_set_donation_levels_max_min_amount( $form_id ) {
 }
 
 add_action( 'give_pre_process_give_forms_meta', 'give_set_donation_levels_max_min_amount', 30 );
+
+
+/**
+ * Save donor address when donation complete
+ *
+ * @since 2.0
+ *
+ * @param int $payment_id
+ */
+function _give_save_donor_billing_address( $payment_id ) {
+	/* @var Give_Payment $donation */
+	$donation = new Give_Payment( $payment_id );
+
+	// Bailout
+	if ( ! $donation->customer_id ) {
+		return;
+	}
+
+
+	/* @var Give_Donor $donor */
+	$donor = new Give_Donor( $donation->customer_id );
+	
+	// Save address.
+	$donor->add_address( 'billing[]', $donation->address );
+}
+add_action( 'save_post_give_payment', '_give_save_donor_billing_address', 9999 );

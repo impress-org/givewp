@@ -36,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @property string     $postdate
  * @property string     $status
  * @property string     $email
- * @property string     $payment_meta
+ * @property array      $payment_meta
  * @property string     $customer_id
  * @property string     $completed_date
  * @property string     $currency
@@ -606,6 +606,8 @@ final class Give_Payment {
 
 		}
 
+		// @todo: payment data exist here only for backward compatibility
+		// issue: https://github.com/WordImpress/Give/issues/1132
 		$payment_data = array(
 			'price'        => $this->total,
 			'date'         => $this->date,
@@ -675,7 +677,6 @@ final class Give_Payment {
 
 			$this->payment_meta = apply_filters( 'give_payment_meta', $this->payment_meta, $payment_data );
 
-			$this->update_meta( '_give_payment_meta', $this->payment_meta );
 			$this->new = true;
 		}// End if().
 
@@ -693,7 +694,6 @@ final class Give_Payment {
 	 * @return bool  True of the save occurred, false if it failed or wasn't needed
 	 */
 	public function save() {
-
 		$saved = false;
 
 		// Must have an ID.
@@ -788,16 +788,16 @@ final class Give_Payment {
 						break;
 
 					case 'ip':
-						$this->update_meta( '_give_payment_user_ip', $this->ip );
+						$this->update_meta( '_give_payment_donor_ip', $this->ip );
 						break;
 
 					case 'customer_id':
-						$this->update_meta( '_give_payment_customer_id', $this->customer_id );
+						$this->update_meta( '_give_payment_donor_id', $this->customer_id );
 						break;
 
-					case 'user_id':
-						$this->update_meta( '_give_payment_user_id', $this->user_id );
-						break;
+					// case 'user_id':
+					// 	$this->update_meta( '_give_payment_user_id', $this->user_id );
+					// 	break;
 
 					case 'form_title':
 						$this->update_meta( '_give_payment_form_title', $this->form_title );
@@ -812,19 +812,38 @@ final class Give_Payment {
 						break;
 
 					case 'first_name':
-						$this->user_info['first_name'] = $this->first_name;
+						$this->update_meta( '_give_donor_billing_first_name', $this->first_name );
 						break;
 
 					case 'last_name':
-						$this->user_info['last_name'] = $this->last_name;
+						$this->update_meta( '_give_donor_billing_last_name', $this->last_name );
+						break;
+
+					case 'currency':
+						$this->update_meta( '_give_payment_currency', $this->currency );
 						break;
 
 					case 'address':
-						$this->user_info['address'] = $this->address;
+						if( ! empty( $this->address ) ) {
+							foreach ( $this->address as $address_name => $address ) {
+								switch ( $address_name ) {
+									case 'line1':
+										$this->update_meta( '_give_donor_billing_address1', $address );
+										break;
+
+									case 'line2':
+										$this->update_meta( '_give_donor_billing_address2', $address );
+										break;
+
+									default:
+										$this->update_meta( "_give_donor_billing_{$address_name}", $address );
+								}
+							}
+						}
 						break;
 
 					case 'email':
-						$this->update_meta( '_give_payment_user_email', $this->email );
+						$this->update_meta( '_give_payment_donor_email', $this->email );
 						break;
 
 					case 'key':
@@ -893,25 +912,6 @@ final class Give_Payment {
 			}
 
 			$this->update_meta( '_give_payment_total', give_sanitize_amount_for_db( $this->total ) );
-
-			$new_meta = array(
-				'form_title' => $this->form_title,
-				'form_id'    => $this->form_id,
-				'price_id'   => $this->price_id,
-				'currency'   => $this->currency,
-				'user_info'  => $this->user_info,
-			);
-
-			$meta        = $this->get_meta();
-			$merged_meta = array_merge( $meta, $new_meta );
-
-			// Only save the payment meta if it's changed.
-			if ( md5( serialize( $meta ) ) !== md5( serialize( $merged_meta ) ) ) {
-				$updated = $this->update_meta( '_give_payment_meta', $merged_meta );
-				if ( false !== $updated ) {
-					$saved = true;
-				}
-			}
 
 			$this->pending = array();
 			$saved         = true;
@@ -1247,28 +1247,19 @@ final class Give_Payment {
 
 		$meta = give_get_meta( $this->ID, $meta_key, $single );
 
-		if ( $meta_key === '_give_payment_meta' ) {
-			$meta = (array) $meta;
-
-			if ( empty( $meta['key'] ) ) {
-				$meta['key'] = $this->setup_payment_key();
-			}
-
-			if ( empty( $meta['form_title'] ) ) {
-				$meta['form_title'] = $this->setup_form_title();
-			}
-
-			if ( empty( $meta['email'] ) ) {
-				$meta['email'] = $this->setup_email();
-			}
-
-			if ( empty( $meta['date'] ) ) {
-				$meta['date'] = get_post_field( 'post_date', $this->ID );
-			}
-		}
-
+		/**
+		 * Filter the specific meta key value.
+		 *
+		 * @since 1.5
+		 */
 		$meta = apply_filters( "give_get_payment_meta_{$meta_key}", $meta, $this->ID );
 
+
+		/**
+		 * Filter the all meta keys.
+		 *
+		 * @since 1.5
+		 */
 		return apply_filters( 'give_get_payment_meta', $meta, $this->ID, $meta_key );
 	}
 
@@ -1289,27 +1280,12 @@ final class Give_Payment {
 			return false;
 		}
 
-		if ( $meta_key == 'key' || $meta_key == 'date' ) {
 
-			$current_meta              = $this->get_meta();
-			$current_meta[ $meta_key ] = $meta_value;
-
-			$meta_key   = '_give_payment_meta';
-			$meta_value = $current_meta;
-
-		} elseif ( $meta_key == 'email' || $meta_key == '_give_payment_user_email' ) {
-
-			$meta_value = apply_filters( "give_update_payment_meta_{$meta_key}", $meta_value, $this->ID );
-			give_update_meta( $this->ID, '_give_payment_user_email', $meta_value );
-
-			$current_meta                       = $this->get_meta();
-			$current_meta['user_info']['email'] = $meta_value;
-
-			$meta_key   = '_give_payment_meta';
-			$meta_value = $current_meta;
-
-		}
-
+		/**
+		 * Filter the single meta key while updating
+		 *
+		 * @since 1.5
+		 */
 		$meta_value = apply_filters( "give_update_payment_meta_{$meta_key}", $meta_value, $this->ID );
 
 		return give_update_meta( $this->ID, $meta_key, $meta_value, $prev_value );
@@ -1590,15 +1566,6 @@ final class Give_Payment {
 	private function setup_total() {
 		$amount = $this->get_meta( '_give_payment_total', true );
 
-		if ( empty( $amount ) && '0.00' != $amount ) {
-			$meta = $this->get_meta( '_give_payment_meta', true );
-			$meta = maybe_unserialize( $meta );
-
-			if ( isset( $meta['amount'] ) ) {
-				$amount = $meta['amount'];
-			}
-		}
-
 		return round( floatval( $amount ), give_currency_decimal_filter() );
 	}
 
@@ -1620,12 +1587,16 @@ final class Give_Payment {
 	 * Setup the currency code
 	 *
 	 * @since  1.5
+	 * @since  2.0 Set currency from _give_payment_currency meta key
 	 * @access private
 	 *
 	 * @return string The currency for the payment
 	 */
 	private function setup_currency() {
-		$currency = isset( $this->payment_meta['currency'] ) ? $this->payment_meta['currency'] : apply_filters( 'give_payment_currency_default', give_get_currency(), $this );
+		$currency = $this->get_meta( '_give_payment_currency', true );
+		$currency = ! empty( $currency ) ?
+			$currency :
+			apply_filters( 'give_payment_currency_default', give_get_currency(), $this );
 
 		return $currency;
 	}
@@ -1667,12 +1638,13 @@ final class Give_Payment {
 	 * Setup the IP Address for the payment
 	 *
 	 * @since  1.5
+	 * @since  2.0 Set ip address from _give_payment_donor_ip meta key
 	 * @access private
 	 *
 	 * @return string The IP address for the payment
 	 */
 	private function setup_ip() {
-		$ip = $this->get_meta( '_give_payment_user_ip', true );
+		$ip = $this->get_meta( '_give_payment_donor_ip', true );
 
 		return $ip;
 	}
@@ -1681,26 +1653,32 @@ final class Give_Payment {
 	 * Setup the donor ID.
 	 *
 	 * @since  1.5
+	 * @since  2.0 Set id from _give_payment_donor_id meta key
 	 * @access private
 	 *
 	 * @return int The Donor ID.
 	 */
 	private function setup_donor_id() {
-		$customer_id = $this->get_meta( '_give_payment_customer_id', true );
+		$donor_id = $this->get_meta( '_give_payment_donor_id', true );
 
-		return $customer_id;
+		return $donor_id;
 	}
 
 	/**
 	 * Setup the User ID associated with the donation
 	 *
 	 * @since  1.5
+	 * @since  2.0 Get user id connect to donor from donor table instead of payment meta.
+	 *
 	 * @access private
 	 *
 	 * @return int The User ID
 	 */
 	private function setup_user_id() {
-		$user_id = $this->get_meta( '_give_payment_user_id', true );
+
+		$donor   = Give()->customers->get_customer_by( 'id', $this->customer_id );
+		$user_id = $donor ? absint( $donor->user_id ) : 0;
+
 
 		return $user_id;
 	}
@@ -1709,12 +1687,14 @@ final class Give_Payment {
 	 * Setup the email address for the donation.
 	 *
 	 * @since  1.5
+	 * @since  2.0 Set email from _give_payment_donor_email meta key
+	 *
 	 * @access private
 	 *
 	 * @return string The email address for the payment.
 	 */
 	private function setup_email() {
-		$email = $this->get_meta( '_give_payment_user_email', true );
+		$email = $this->get_meta( '_give_payment_donor_email', true );
 
 		if ( empty( $email ) && $this->customer_id ) {
 			$email = Give()->donors->get_column( 'email', $this->customer_id );
@@ -1797,15 +1777,12 @@ final class Give_Payment {
 	 * @return array The Address information for the payment.
 	 */
 	private function setup_address() {
-
-		$address = ! empty( $this->payment_meta['user_info']['address'] ) ? $this->payment_meta['user_info']['address'] : array(
-			'line1'   => '',
-			'line2'   => '',
-			'city'    => '',
-			'country' => '',
-			'state'   => '',
-			'zip'     => '',
-		);
+		$address['line1']   = give_get_meta( $this->ID, '_give_donor_billing_address1', true, '' );
+		$address['line2']   = give_get_meta( $this->ID, '_give_donor_billing_address2', true, '' );
+		$address['city']    = give_get_meta( $this->ID, '_give_donor_billing_city', true, '' );
+		$address['state']   = give_get_meta( $this->ID, '_give_donor_billing_state', true, '' );
+		$address['zip']     = give_get_meta( $this->ID, '_give_donor_billing_zip', true, '' );
+		$address['country'] = give_get_meta( $this->ID, '_give_donor_billing_country', true, '' );
 
 		return $address;
 	}
@@ -2084,5 +2061,4 @@ final class Give_Payment {
 	private function get_number() {
 		return apply_filters( 'give_payment_number', $this->number, $this->ID, $this );
 	}
-
 }

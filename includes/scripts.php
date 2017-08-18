@@ -349,6 +349,9 @@ function give_load_admin_scripts( $hook ) {
 				'multiple'  => __( 'Are you sure you want to set status of {payment_count} donations to {status}?', 'give' ),
 			),
 		),
+		'updates' => array(
+			'ajax_error' => __( 'Please reload this page and try again', 'give' )
+		),
 		'metabox_fields' => array(
 			'media' => array(
 				'button_title' => __( 'Choose Image', 'give' ),
