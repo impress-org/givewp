@@ -646,6 +646,9 @@ function give_build_paypal_url( $payment_id, $payment_data ) {
 	// Donations or regular transactions?
 	$paypal_args['cmd'] = give_get_paypal_button_type();
 
+	// Set PayPal Locale.
+	$paypal_args['lc'] = give_get_paypal_locale();
+
 	/**
 	 * Filter the paypal redirect args.
 	 *
@@ -682,6 +685,20 @@ function give_get_paypal_button_type() {
 	return $paypal_button_type;
 }
 
+/**
+ * Get PayPal Locale.
+ *
+ * @since 2.0
+ * @return string
+ */
+function give_get_paypal_locale() {
+	$paypal_locale = '';
+	if( ! empty( give_get_option( 'paypal_locale' ) ) ) {
+		$paypal_locale = give_get_option( 'paypal_locale' );
+	}
+
+	return $paypal_locale;
+}
 
 /**
  * Build item title for paypal.
