@@ -388,10 +388,8 @@ function _give_show_test_mode_notice_in_admin_bar( $wp_admin_bar ) {
 		'title'  => esc_html__( 'Give Test Mode Active', 'give' ),
 		'meta'   => array( 'class' => 'give-test-mode-active' ),
 	) );
-
 	return true;
 }
-
 add_action( 'admin_bar_menu', '_give_show_test_mode_notice_in_admin_bar', 1000, 1 );
 
 
@@ -402,7 +400,7 @@ function give_import_page_link_callback() {
 	<?php
 
 	// Check if view donation single page only.
-	if ( 'view-payment-details' === (string) sanitize_text_field( $_REQUEST['view'] ) && 'give-payment-history' === (string) sanitize_text_field( $_REQUEST['page'] ) ) {
+	if ( ! empty( $_REQUEST['view'] ) && 'view-payment-details' === (string) sanitize_text_field( $_REQUEST['view'] ) && 'give-payment-history' === (string) sanitize_text_field( $_REQUEST['page'] ) ) {
 		?>
         <style type="text/css">
             .wrap #transaction-details-heading {
