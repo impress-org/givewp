@@ -1352,7 +1352,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 		'give_price_id'   => $price_id,
 		'purchase_key'    => strtolower( md5( uniqid() ) ),
 		'user_email'      => $data['email'],
-		'date'            => $data['post_date'],
+		'post_date'       => ( isset( $data['post_date'] ) ? mysql2date( 'Y-m-d H:i:s', $data['post_date'] ) : current_time( 'mysql' ) ),
 	);
 
 	$payment_data = apply_filters( 'give_import_before_import_payment', $payment_data, $data, $user_data, $form );
