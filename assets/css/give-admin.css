@@ -2290,6 +2290,7 @@ input.give-price-field {
 .give-tools-setting-page-import .give-progress-steps {
   width: 100%;
   padding: 0 0 24px;
+  margin-left: 0;
   list-style: none outside;
   overflow: hidden;
   display: -webkit-inline-flex;
@@ -2328,12 +2329,13 @@ input.give-price-field {
 .give-tools-setting-page-import .step-4 p {
   text-align: center; }
 
-.give-tools-setting-page-import .button-secondary.step-4 {
+.give-tools-setting-page-import .button-secondary.step-4, .give-tools-setting-page-import .give-image-thumb {
   display: none; }
 
-.give-text-center {
-  text-align: center;
-  background-color: red; }
+.give-tools-setting-page-import h2#give-import-title {
+  background: #e4e4e4;
+  font-size: 15px;
+  font-weight: 600; }
 
 /**
  * Give Admin Dashboard SCSS
