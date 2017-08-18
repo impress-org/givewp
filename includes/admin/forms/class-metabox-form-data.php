@@ -694,9 +694,7 @@ class Give_MetaBox_Form_Data {
 						// Determine if current panel is active.
 						$is_active = $active_tab === $setting['id'] ? true : false;
 						?>
-						<div id="<?php echo $setting['id']; ?>"
-							 class="panel give_options_panel<?php echo( $is_active ? ' active' : '' );
-						     $show_first_tab_content = false; ?>">
+						<div id="<?php echo $setting['id']; ?>" class="panel give_options_panel<?php echo( $is_active ? ' active' : '' ); ?>">
 							<?php if ( ! empty( $setting['fields'] ) ) : ?>
 								<?php foreach ( $setting['fields'] as $field ) : ?>
 									<?php give_render_field( $field ); ?>
