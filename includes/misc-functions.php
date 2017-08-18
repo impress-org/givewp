@@ -1313,142 +1313,61 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 		$data['amount'] = $data['amount'] . '.00';
 	}
 
-	if ( ! empty( $data['customer_id'] ) && $user_data = get_userdata( (int) $data['customer_id'] ) ) {
-		$customer_id = $user_data->ID;
-	} else {
-		$user_data = get_user_by( 'email', $data['email'] );
-		if ( $user_data ) {
-			$customer_id = $user_data->ID;
-		} else {
-			// This action was added to remove the login when using the give register function.
-			add_filter( 'give_log_user_in_on_register', 'give_log_user_in_on_register_callback', 11 );
-			$customer_id = give_register_and_login_new_user( array(
-				'user_login'      => $data['email'],
-				'user_email'      => $data['email'],
-				'user_registered' => date( 'Y-m-d H:i:s' ),
-				'user_first'      => $data['first_name'],
-				'user_last'       => $data['last_name'],
-				'user_pass'       => wp_generate_password( 8, true ),
-				'role'            => get_option( 'default_role' ),
-			) );
-			remove_filter( 'give_log_user_in_on_register', 'give_log_user_in_on_register_callback', 11 );
 
-			$user_data = get_userdata( (int) $customer_id );
-		}
-	}
+	// Here come the login function.
+	$user_data = give_import_get_user_from_csv( $data );
+	if ( false == $user_data ) {
+	    $customer_id = $user_data->id;
+    } else {
+	    return false;
+    }
 
+    // get form data or register a form data.
+	$form = give_import_get_form_data_from_csv( $data );
+	if ( false == $form ) {
+	    return false;
+    } else {
+		$price_id = ( isset( $form->price_id ) ) ? $form->price_id : false;
+    }
 
-	$form = false;
-	if ( ! empty( $data['give_form_id'] ) ) {
-		$form = new Give_Donate_Form( $data['give_form_id'] );
-		if ( empty( $form->get_ID() ) ) {
-			$form = false;
-		}
-	}
+	//Create payment_data array
+	$payment_data = array(
+		'price'           => $data['amount'],
+		'form_title' => $data['form_title'],
+		'form_id'    => (string) $form->get_ID(),
+		'give_price_id'   => $price_id,
+		'date'            => $data['post_date'],
+		'user_email'      => $data['email'],
+		'purchase_key'    => strtolower( md5( uniqid() ) ),
+		'currency'        => give_get_currency(),
+		'user_info'       => array(
+			'id'         => $customer_id,
+			'email'      => ( isset( $data['email'] ) ? $data['email'] : ( isset( $user_data->data->user_email ) ? $user_data->data->user_email : false ) ),
+			'first_name' => ( isset( $data['first_name'] ) ? $data['first_name'] : ( ( $first_name = get_user_meta( $customer_id, 'first_name', true ) ) ? $first_name : $user_data->data->user_nicename ) ),
+			'last_name'  => ( isset( $data['last_name'] ) ? $data['last_name'] : ( ( $last_name = get_user_meta( $customer_id, 'last_name', true ) ) ? $last_name : $user_data->data->user_nicename ) ),
+			'address'    => ( isset( $data['address'] ) ? $data['address'] : ( ( $address = get_user_meta( $customer_id, 'address', true ) ) ? $address : false ) ),
+		),
+		'status'          => ( isset( $data['post_status'] ) ? $data['post_status'] : 'publish' ),
+		'gateway'         => ( ! empty( $data['gateway'] ) && 'offline' != strtolower( $data['gateway'] ) ? strtolower( $data['gateway'] ) : 'manual' ),
+	);
 
-	if ( false === $form ) {
+	$payment_data = apply_filters( 'give_import_before_import_payment', $payment_data, $data, $user_data, $form );
 
-		$form = get_page_by_title( $data['give_form_title'], OBJECT, 'give_forms' );
+	$payment = give_insert_payment( $payment_data );
+	if ( $payment ) {
 
-		if ( ! empty( $form->ID ) ) {
-			$form = new Give_Donate_Form( $form->ID );
-		} else {
-			$form = new Give_Donate_Form();
-			$args = array(
-				'post_title'  => $data['give_form_title'],
-				'post_status' => 'publish',
-				'post_author' => (int) $customer_id,
-			);
-			$form = $form->create( $args );
-		}
+		update_post_meta( $payment, '_give_payment_import', true );
 
-
-		$form = get_page_by_title( $data['give_form_title'], OBJECT, 'give_forms' );
-		$form = new Give_Donate_Form( $form->ID );
-
-		if ( ! empty( $data['give_form_level'] ) ) {
-			$prices     = $form->get_prices();
-			$price_text = array();
-			foreach ( (array) $prices as $key => $price ) {
-				$price_text[ $price['_give_id']['level_id'] ] = ( ! empty( $price['_give_text'] ) ? $price['_give_text'] : '' );
-			}
-
-			if ( ! in_array( $data['give_form_level'], $price_text ) ) {
-				$multi_level_donations = array(
-					array(
-						'_give_id'     => array(
-							'level_id' => ( count( $prices ) + 1 ),
-						),
-						'_give_amount' => give_sanitize_amount_for_db( $data['amount'] ),
-						'_give_text'   => $data['give_form_level'],
-					),
-				);
-
-				if ( ! empty( $prices ) ) {
-					$prices = wp_parse_args( $multi_level_donations, $prices );
-				} else {
-					$prices = $multi_level_donations;
-				}
-
-				$price_id = array_search( $data['give_form_level'], $price_text );
-			}
-
-			$meta = array(
-				'_give_price_option'    => 'multi',
-				'_give_donation_levels' => array_values( $prices ),
-			);
+		// Insert Notes.
+		if ( isset( $data['notes'] ) ) {
+			give_insert_payment_note( $payment, $data['notes'] );
 		}
 
-		$defaults = array(
-			'_give_set_price'    => give_sanitize_amount_for_db( $data['amount'] ),
-			'_give_price_option' => 'set',
-			'give_product_notes' => 'Donation Notes',
-			'_give_product_type' => 'default',
-		);
-
-		$meta = wp_parse_args( $meta, $defaults );
-
-		foreach ( $meta as $key => $value ) {
-			give_update_meta( $form->get_ID(), $key, $value );
-		}
-
-		//Create payment_data array
-		$payment_data = array(
-			'price'           => $data['amount'],
-			'give_form_title' => $data['give_form_title'],
-			'give_form_id'    => (string) $form->get_ID(),
-			'give_price_id'   => $price_id,
-			'date'            => $data['post_date'],
-			'user_email'      => $data['email'],
-			'purchase_key'    => strtolower( md5( uniqid() ) ),
-			'currency'        => give_get_currency(),
-			'user_info'       => array(
-				'id'         => $customer_id,
-				'email'      => ( isset( $data['email'] ) ? $data['email'] : ( isset( $user_data->data->user_email ) ? $user_data->data->user_email : false ) ),
-				'first_name' => ( isset( $data['first_name'] ) ? $data['first_name'] : ( ( $first_name = get_user_meta( $customer_id, 'first_name', true ) ) ? $first_name : $user_data->data->user_nicename ) ),
-				'last_name'  => ( isset( $data['last_name'] ) ? $data['last_name'] : ( ( $last_name = get_user_meta( $customer_id, 'last_name', true ) ) ? $last_name : $user_data->data->user_nicename ) ),
-				'address'    => ( isset( $data['address'] ) ? $data['address'] : ( ( $address = get_user_meta( $customer_id, 'address', true ) ) ? $address : false ) ),
-			),
-			'status'          => ( isset( $data['post_status'] ) ? $data['post_status'] : 'publish' ),
-			'gateway'         => ( ! empty( $data['gateway'] ) && 'offline' != strtolower( $data['gateway'] ) ? strtolower( $data['gateway'] ) : 'manual' ),
-		);
-
-		$payment = give_insert_payment( $payment_data );
-		if ( $payment ) {
-
-			update_post_meta( $payment, '_give_payment_import', true );
-
-			// Insert Notes.
-			if ( isset( $data['notes'] ) ) {
-				give_insert_payment_note( $payment, $data['notes'] );
-			}
-			
-			$meta_exists = array_keys( $raw_key, 'post_meta' );
-			if ( ! empty( $main_key ) && ! empty( $meta_exists ) ) {
-				foreach ( $meta_exists as $meta_exist ) {
-					if ( ! empty( $main_key[ $meta_exist ] ) && ! empty( $row_data[ $meta_exist ] ) ) {
-						update_post_meta( $payment, $main_key[ $meta_exist ], $row_data[ $meta_exist ] );
-					}
+		$meta_exists = array_keys( $raw_key, 'post_meta' );
+		if ( ! empty( $main_key ) && ! empty( $meta_exists ) ) {
+			foreach ( $meta_exists as $meta_exist ) {
+				if ( ! empty( $main_key[ $meta_exist ] ) && ! empty( $row_data[ $meta_exist ] ) ) {
+					update_post_meta( $payment, $main_key[ $meta_exist ], $row_data[ $meta_exist ] );
 				}
 			}
 		}
@@ -1535,8 +1454,131 @@ function give_import_donor_options() {
  */
 function give_import_donation_form_options() {
 	return (array) apply_filters( 'give_import_donation_form_options', array(
-		'give_form_id'    => __( 'Donation Form ID', 'give' ),
-		'give_form_title' => __( 'Donation Form', 'give' ),
-		'give_form_level' => __( 'Donation Level', 'give' ),
+		'form_id'    => __( 'Donation Form ID', 'give' ),
+		'form_title' => __( 'Donation Form', 'give' ),
+		'form_level' => __( 'Donation Level', 'give' ),
 	) );
+}
+
+/**
+ * Give get user details.
+ *
+ * @since 1.8.13
+ *
+ * @param $data
+ *
+ * @return bool|false|WP_User
+ */
+function give_import_get_user_from_csv( $data ) {
+    $user_data = false;
+	if ( ! empty( $data['customer_id'] ) ) {
+		$user_data = get_user_by( 'id', (int) $data['customer_id'] );
+	} else {
+		$user_data = get_user_by( 'email', $data['email'] );
+		if ( false == $user_data ) {
+
+			// This action was added to remove the login when using the give register function.
+			add_filter( 'give_log_user_in_on_register', 'give_log_user_in_on_register_callback', 11 );
+
+			$customer_id = give_register_and_login_new_user( array(
+				'user_login'      => $data['email'],
+				'user_email'      => $data['email'],
+				'user_registered' => date( 'Y-m-d H:i:s' ),
+				'user_first'      => $data['first_name'],
+				'user_last'       => $data['last_name'],
+				'user_pass'       => wp_generate_password( 8, true ),
+				'role'            => get_option( 'default_role' ),
+			) );
+			remove_filter( 'give_log_user_in_on_register', 'give_log_user_in_on_register_callback', 11 );
+
+			$user_data = get_user_by( 'id', (int) $customer_id );
+		}
+	}
+	return $user_data;
+}
+
+/**
+ * Give get form data from csv if not then create and form and return the form value.
+ *
+ * @since 1.8.13.
+ *
+ * @param $data.
+ *
+ * @return array|bool|Give_Donate_Form|int|null|WP_Post
+ */
+function give_import_get_form_data_from_csv( $data ) {
+	$form = false;
+	if ( ! empty( $data['form_id'] ) ) {
+		$form = new Give_Donate_Form( $data['form_id'] );
+		if ( empty( $form->get_ID() ) ) {
+			$form = false;
+		}
+	}
+
+	if ( false === $form ) {
+
+		$form = get_page_by_title( $data['form_title'], OBJECT, 'give_forms' );
+
+		if ( ! empty( $form->ID ) ) {
+			$form = new Give_Donate_Form( $form->ID );
+		} else {
+			$form = new Give_Donate_Form();
+			$args = array(
+				'post_title'  => $data['form_title'],
+				'post_status' => 'publish',
+			);
+			$form = $form->create( $args );
+		}
+
+
+		$form = get_page_by_title( $data['form_title'], OBJECT, 'give_forms' );
+		$form = new Give_Donate_Form( $form->ID );
+
+		if ( ! empty( $data['form_level'] ) ) {
+			$prices     = $form->get_prices();
+			$price_text = array();
+			foreach ( (array) $prices as $key => $price ) {
+				$price_text[ $price['_give_id']['level_id'] ] = ( ! empty( $price['_give_text'] ) ? $price['_give_text'] : '' );
+			}
+
+			if ( ! in_array( $data['form_level'], $price_text ) ) {
+				$multi_level_donations = array(
+					array(
+						'_give_id'     => array(
+							'level_id' => ( count( $prices ) + 1 ),
+						),
+						'_give_amount' => give_sanitize_amount_for_db( $data['amount'] ),
+						'_give_text'   => $data['form_level'],
+					),
+				);
+
+				if ( ! empty( $prices ) ) {
+					$prices = wp_parse_args( $multi_level_donations, $prices );
+				} else {
+					$prices = $multi_level_donations;
+				}
+
+				$form->price_id = array_search( $data['form_level'], $price_text );
+			}
+
+			$meta = array(
+				'_give_price_option'    => 'multi',
+				'_give_donation_levels' => array_values( $prices ),
+			);
+		}
+
+		$defaults = array(
+			'_give_set_price'    => give_sanitize_amount_for_db( $data['amount'] ),
+			'_give_price_option' => 'set',
+			'give_product_notes' => 'Donation Notes',
+			'_give_product_type' => 'default',
+		);
+
+		$meta = wp_parse_args( $meta, $defaults );
+
+		foreach ( $meta as $key => $value ) {
+			give_update_meta( $form->get_ID(), $key, $value );
+		}
+	}
+	return $form;
 }

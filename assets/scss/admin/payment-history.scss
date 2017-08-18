@@ -583,16 +583,17 @@ input.give-price-field {
 }
 
 .give-tools-setting-page-import {
+
 	.give-progress-steps {
 		width: 100%;
 		padding: 0 0 24px;
+		margin-left: 0;
 		list-style: none outside;
 		overflow: hidden;
 		display: -webkit-inline-flex;
 		display: -ms-inline-flexbox;
 		display: -webkit-inline-box;
 		display: inline-flex;
-
 		li {
 			width: 25%;
 			float: left;
@@ -630,16 +631,17 @@ input.give-price-field {
 			font-size: 20px !important;
 		}
 		p {
-          text-align: center;
+			text-align: center;
 		}
 	}
 
-    .button-secondary.step-4 {
-      display: none;
-    }
-}
+	.button-secondary.step-4, .give-image-thumb {
+		display: none;
+	}
 
-.give-text-center {
-	text-align: center;
-  background-color: red;
+	h2#give-import-title{
+		background: #e4e4e4;
+		font-size: 15px;
+		font-weight: 600;
+	}
 }

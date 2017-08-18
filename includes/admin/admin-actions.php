@@ -481,6 +481,7 @@ function give_donation_import_callback() {
 	$percentage = ( 100 / ( $total_ajax + 1 ) ) * $current;
 	$json_data['percentage'] = $percentage;
 
+	$json_data = apply_filters( 'give_import_ajax_responces', $json_data, $fields );
 	wp_die( json_encode( $json_data ) );
 }
 add_action( 'wp_ajax_give_donation_import', 'give_donation_import_callback' );
