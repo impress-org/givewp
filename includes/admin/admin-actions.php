@@ -438,9 +438,17 @@ function give_donation_import_callback() {
 	// processing done here.
 	$raw_data = give_get_donation_data_from_csv( $csv, $start, $end, $delimiter );
 	$raw_key  = maybe_unserialize( $mapto );
+
+	//Prevent normal emails
+	remove_action( 'give_complete_donation', 'give_trigger_donation_receipt', 999 );
+	remove_action( 'give_insert_user', 'give_new_user_notification', 10 );
+
 	foreach ( $raw_data as $row_data ) {
 		give_save_import_donation_to_db( $raw_key, $row_data, $main_key );
 	}
+	add_action( 'give_insert_user', 'give_new_user_notification', 10, 2 );
+	add_action( 'give_complete_donation', 'give_trigger_donation_receipt', 999 );
+
 	if ( $next == false ) {
 		$json_data = array(
 			'success' => true,
