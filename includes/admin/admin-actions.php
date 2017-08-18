@@ -123,7 +123,7 @@ add_action( 'wp_ajax_give_hide_outdated_php_notice', 'give_hide_outdated_php_not
  */
 function _give_register_admin_notices() {
 	// Bailout.
-	if( ! is_admin() ) {
+	if ( ! is_admin() ) {
 		return;
 	}
 
@@ -391,26 +391,28 @@ function _give_show_test_mode_notice_in_admin_bar( $wp_admin_bar ) {
 
 	return true;
 }
+
 add_action( 'admin_bar_menu', '_give_show_test_mode_notice_in_admin_bar', 1000, 1 );
 
 
 function give_import_page_link_callback() {
 	?>
-	<a href="<?php echo esc_url( give_import_page_url() ); ?>"
-	   class="page-import-action page-title-action"><?php esc_html_e( 'Import Donations', 'give-manual-donations' ); ?></a>
+    <a href="<?php echo esc_url( give_import_page_url() ); ?>"
+       class="page-import-action page-title-action"><?php esc_html_e( 'Import Donations', 'give-manual-donations' ); ?></a>
 	<?php
 
 	// Check if view donation single page only.
 	if ( 'view-payment-details' === (string) sanitize_text_field( $_REQUEST['view'] ) && 'give-payment-history' === (string) sanitize_text_field( $_REQUEST['page'] ) ) {
 		?>
-		<style type="text/css">
-			.wrap #transaction-details-heading {
-				display: inline-block;
-			}
-		</style>
+        <style type="text/css">
+            .wrap #transaction-details-heading {
+                display: inline-block;
+            }
+        </style>
 		<?php
 	}
 }
+
 add_action( 'give_payments_page_top', 'give_import_page_link_callback', 11 );
 add_action( 'give_view_order_details_before', 'give_import_page_link_callback', 11 );
 
@@ -420,15 +422,15 @@ function give_donation_import_callback() {
 	parse_str( $fields );
 
 	// Parent key id.
-	$main_key  = maybe_unserialize( $main_key );
+	$main_key = maybe_unserialize( $main_key );
 
 	$current    = (int) sanitize_text_field( $_REQUEST['current'] );
-	$total_ajax    = (int) sanitize_text_field( $_REQUEST['total_ajax'] );
-	$start    = (int) sanitize_text_field( $_REQUEST['start'] );
-	$end      = (int) sanitize_text_field( $_REQUEST['end'] );
-	$next     = (int) sanitize_text_field( $_REQUEST['next'] );
-	$total    = (int) sanitize_text_field( $_REQUEST['total'] );
-	$per_page = (int) sanitize_text_field( $_REQUEST['per_page'] );
+	$total_ajax = (int) sanitize_text_field( $_REQUEST['total_ajax'] );
+	$start      = (int) sanitize_text_field( $_REQUEST['start'] );
+	$end        = (int) sanitize_text_field( $_REQUEST['end'] );
+	$next       = (int) sanitize_text_field( $_REQUEST['next'] );
+	$total      = (int) sanitize_text_field( $_REQUEST['total'] );
+	$per_page   = (int) sanitize_text_field( $_REQUEST['per_page'] );
 	if ( empty( $delimiter ) ) {
 		$delimiter = ',';
 	}
@@ -467,21 +469,22 @@ function give_donation_import_callback() {
 		);
 	}
 
-	$url = give_import_page_url( array(
-		'step'      => '4',
-		'csv'       => $csv,
-		'total'       => $total,
-		'success'       => $json_data['success'],
+	$url              = give_import_page_url( array(
+		'step'    => '4',
+		'csv'     => $csv,
+		'total'   => $total,
+		'success' => $json_data['success'],
 	) );
 	$json_data['url'] = $url;
 
-	$current++;
+	$current ++;
 	$json_data['current'] = $current;
 
-	$percentage = ( 100 / ( $total_ajax + 1 ) ) * $current;
+	$percentage              = ( 100 / ( $total_ajax + 1 ) ) * $current;
 	$json_data['percentage'] = $percentage;
 
 	$json_data = apply_filters( 'give_import_ajax_responces', $json_data, $fields );
 	wp_die( json_encode( $json_data ) );
 }
+
 add_action( 'wp_ajax_give_donation_import', 'give_donation_import_callback' );
