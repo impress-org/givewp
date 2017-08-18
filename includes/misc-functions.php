@@ -1531,22 +1531,35 @@ function give_import_get_form_data_from_csv( $data ) {
 		$form = new Give_Donate_Form( $form->ID );
 
 		if ( ! empty( $data['form_level'] ) ) {
-			$prices     = $form->get_prices();
+			$prices     = (array) $form->get_prices();
 			$price_text = array();
-			foreach ( (array) $prices as $key => $price ) {
-				$price_text[ $price['_give_id']['level_id'] ] = ( ! empty( $price['_give_text'] ) ? $price['_give_text'] : '' );
+			foreach ( $prices as $key => $price ) {
+			    if ( isset( $price['_give_id']['level_id'] ) ) {
+				    $price_text[ $price['_give_id']['level_id'] ] = ( ! empty( $price['_give_text'] ) ? $price['_give_text'] : '' );
+			    }
 			}
 
 			if ( ! in_array( $data['form_level'], $price_text ) ) {
+
+			    // For generating unquiet level id.
+				$count = 1;
+				$new_level = count( $prices ) + $count;
+                while ( array_key_exists( $new_level, $price_text ) ) {
+	                $count++;
+	                $new_level = count( $prices ) + $count;
+                }
+
 				$multi_level_donations = array(
 					array(
 						'_give_id'     => array(
-							'level_id' => ( count( $prices ) + 1 ),
+							'level_id' => $new_level,
 						),
 						'_give_amount' => give_sanitize_amount_for_db( $data['amount'] ),
 						'_give_text'   => $data['form_level'],
 					),
 				);
+
+				$price_text[ $new_level ] = $data['form_level'];
 
 				if ( ! empty( $prices ) ) {
 					$prices = wp_parse_args( $multi_level_donations, $prices );
