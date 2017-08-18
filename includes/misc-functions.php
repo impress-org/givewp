@@ -1561,7 +1561,7 @@ function give_import_get_form_data_from_csv( $data ) {
 
 				$price_text[ $new_level ] = $data['form_level'];
 
-				if ( ! empty( $prices ) ) {
+				if ( ! empty( $prices ) && is_array( $prices ) && ! empty( $prices[0] ) ) {
 					$prices = wp_parse_args( $multi_level_donations, $prices );
 				} else {
 					$prices = $multi_level_donations;
@@ -1569,7 +1569,13 @@ function give_import_get_form_data_from_csv( $data ) {
 			}
 			$form->price_id = array_search( $data['form_level'], $price_text );
 
+			$donation_levels_amounts = wp_list_pluck( $prices, '_give_amount' );
+			$min_amount = min( $donation_levels_amounts );
+			$max_amount = max( $donation_levels_amounts );
+
 			$meta = array(
+				'_give_levels_minimum_amount'    => $min_amount,
+				'_give_levels_maximum_amount'    => $max_amount,
 				'_give_price_option'    => 'multi',
 				'_give_donation_levels' => array_values( $prices ),
 			);
