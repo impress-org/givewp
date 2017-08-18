@@ -1527,6 +1527,7 @@ function give_import_get_form_data_from_csv( $data ) {
 	}
 
 	if ( false === $form ) {
+		$meta = array();
 
 		$form = get_page_by_title( $data['form_title'], OBJECT, 'give_forms' );
 
@@ -1609,6 +1610,5 @@ function give_import_get_form_data_from_csv( $data ) {
 			give_update_meta( $form->get_ID(), $key, $value );
 		}
 	}
-
 	return $form;
 }

@@ -479,7 +479,7 @@ function give_donation_import_callback() {
 		'step'    => '4',
 		'csv'     => $csv,
 		'total'   => $total,
-		'success' => $json_data['success'],
+		'success' => ( isset( $json_data['success'] ) ? $json_data['success'] : '' ),
 	) );
 	$json_data['url'] = $url;
 
