@@ -1,0 +1,41 @@
+#{fl(parent)}.#{fl(prefix)}form.#{fl(prefix)}style-give {
+	input.#{fl(prefix)}input,
+	select.#{fl(prefix)}select,
+	textarea.#{fl(prefix)}textarea {
+		line-height: inherit;
+		padding: 12px;
+	}
+	select.#{fl(prefix)}select {
+		line-height: inherit;
+	}
+	.#{fl(prefix)}is-active input.#{fl(prefix)}input,
+	.#{fl(prefix)}is-active select.#{fl(prefix)}select,
+	.#{fl(prefix)}is-active textarea.#{fl(prefix)}textarea {
+		padding: 20px 12px 4px;
+		transition: padding fl(transition-speed) fl(transition-easing),
+					border fl(transition-speed) fl(transition-easing);
+	}
+	label.#{fl(prefix)}label {
+		top: fl(border-width);
+		left: 13px;
+		right: 0;
+		padding: 6px 0 0;
+	}
+	.#{fl(prefix)}is-required:before {
+		padding-top: 12px;
+	}
+	label.#{fl(prefix)}label .give-required-indicator {
+		display: none;
+	}
+	label.#{fl(prefix)}label .give-tooltip {
+		position: absolute;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		z-index: 1;
+		&::before {
+			content: unset;
+		}
+	}
+}

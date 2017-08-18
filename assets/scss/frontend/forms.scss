@@ -535,12 +535,10 @@ CC Validation
 	input.give-input.card-expiry.valid{
 		background-image: url('../assets/images/tick.png');
 		background-repeat: no-repeat;
-		background-position: 98% 50%;
+		background-position: right 10px top 50%;
 		background-size: 16px;
-		&.floatlabel-input:not(.card-cvc):not(.card-expiry) {
-			background-image: url('../assets/images/tick-alt.png');
-			background-position: 100% 50%;
-			background-size: 72px 16px;
+		&.fl-input:not(.card-cvc):not(.card-expiry) {
+			background-position: right 55px top 50%;
 		}
 	}
 
@@ -553,9 +551,9 @@ CC Validation
 		background-size: 37px 26px !important;
 	}
 
-	.floatlabel {
+	.fl-wrap {
 		span.card-type {
-			top: 11px;
+			top: calc(0.5em + #{fl(base-padding)});
 			right: 11px;
 		}
 	}
