@@ -1183,7 +1183,7 @@ class Give_MetaBox_Form_Data {
 	 */
 	function maintain_active_tab( $location, $post_id ) {
 		if ( ! empty( $_POST['give_form_active_tab'] ) ) {
-			$location = add_query_arg( 'give_tab', $_POST['give_form_active_tab'], $location );
+			$location = add_query_arg( 'give_tab', give_clean( $_POST['give_form_active_tab'] ), $location );
 		}
 
 		return $location;
