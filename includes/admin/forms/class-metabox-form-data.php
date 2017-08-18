@@ -707,8 +707,7 @@ class Give_MetaBox_Form_Data {
 						<?php if ( $this->has_sub_tab( $setting ) ) : ?>
 							<?php if ( ! empty( $setting['sub-fields'] ) ) : ?>
 								<?php foreach ( $setting['sub-fields'] as $index => $sub_fields ) : ?>
-									<div id="<?php echo $sub_fields['id']; ?>"
-										 class="panel give_options_panel give-hidden">
+									<div id="<?php echo $sub_fields['id']; ?>" class="panel give_options_panel give-hidden">
 										<?php if ( ! empty( $sub_fields['fields'] ) ) : ?>
 											<?php foreach ( $sub_fields['fields'] as $sub_field ) : ?>
 												<?php give_render_field( $sub_field ); ?>
