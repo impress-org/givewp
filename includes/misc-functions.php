@@ -1325,6 +1325,15 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 		$price_id = ( isset( $form->price_id ) ) ? $form->price_id : false;
 	}
 
+	$address = array(
+		'line1'   => ( isset( $data['line1'] ) ? sanitize_text_field( $data['line1'] ) : '' ),
+		'line2'   => ( isset( $data['line1'] ) ? sanitize_text_field( $data['line2'] ) : '' ),
+		'city'    => ( isset( $data['line1'] ) ? sanitize_text_field( $data['city'] ) : '' ),
+		'zip'     => ( isset( $data['zip'] ) ? sanitize_text_field( $data['zip'] ) : '' ),
+		'state'   => ( isset( $data['state'] ) ? sanitize_text_field( $data['state'] ) : '' ),
+		'country' => ( isset( $data['country'] ) ? sanitize_text_field( $data['country'] ) : '' ),
+	);
+
 	//Create payment_data array
 	$payment_data = array(
 		'price'           => $data['amount'],
@@ -1335,7 +1344,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 			'email'      => ( isset( $data['email'] ) ? $data['email'] : ( isset( $user_data->data->user_email ) ? $user_data->data->user_email : false ) ),
 			'first_name' => ( isset( $data['first_name'] ) ? $data['first_name'] : ( ( $first_name = get_user_meta( $customer_id, 'first_name', true ) ) ? $first_name : $user_data->data->user_nicename ) ),
 			'last_name'  => ( isset( $data['last_name'] ) ? $data['last_name'] : ( ( $last_name = get_user_meta( $customer_id, 'last_name', true ) ) ? $last_name : $user_data->data->user_nicename ) ),
-			'address'    => ( isset( $data['address'] ) ? $data['address'] : ( ( $address = get_user_meta( $customer_id, 'address', true ) ) ? $address : false ) ),
+			'address'    => $address,
 		),
 		'gateway'         => ( ! empty( $data['gateway'] ) && 'offline' != strtolower( $data['gateway'] ) ? strtolower( $data['gateway'] ) : 'manual' ),
 		'give_form_title' => $data['form_title'],
@@ -1422,7 +1431,12 @@ function give_import_donations_options() {
 		'post_date'   => __( 'Donation Date', 'give' ),
 		'first_name'  => __( 'Donor First Name', 'give' ),
 		'last_name'   => __( 'Donor Last Name', 'give' ),
-		'address'     => __( 'Donor Address', 'give' ),
+		'line1'       => __( 'Address 1', 'give' ),
+		'line2'       => __( 'Address 2', 'give' ),
+		'city'        => __( 'City', 'give' ),
+		'state'       => __( 'State', 'give' ),
+		'country'     => __( 'Country', 'give' ),
+		'zip'         => __( 'Zip', 'give' ),
 		'email'       => __( 'Donor Email', 'give' ),
 		'post_status' => __( 'Donation Status', 'give' ),
 		'gateway'     => __( 'Payment Method', 'give' ),
@@ -1490,6 +1504,7 @@ function give_import_get_user_from_csv( $data ) {
 			$user_data = get_user_by( 'id', (int) $customer_id );
 		}
 	}
+
 	return $user_data;
 }
 
@@ -1534,20 +1549,20 @@ function give_import_get_form_data_from_csv( $data ) {
 			$prices     = (array) $form->get_prices();
 			$price_text = array();
 			foreach ( $prices as $key => $price ) {
-			    if ( isset( $price['_give_id']['level_id'] ) ) {
-				    $price_text[ $price['_give_id']['level_id'] ] = ( ! empty( $price['_give_text'] ) ? $price['_give_text'] : '' );
-			    }
+				if ( isset( $price['_give_id']['level_id'] ) ) {
+					$price_text[ $price['_give_id']['level_id'] ] = ( ! empty( $price['_give_text'] ) ? $price['_give_text'] : '' );
+				}
 			}
 
 			if ( ! in_array( $data['form_level'], $price_text ) ) {
 
-			    // For generating unquiet level id.
-				$count = 1;
+				// For generating unquiet level id.
+				$count     = 1;
 				$new_level = count( $prices ) + $count;
-                while ( array_key_exists( $new_level, $price_text ) ) {
-	                $count++;
-	                $new_level = count( $prices ) + $count;
-                }
+				while ( array_key_exists( $new_level, $price_text ) ) {
+					$count ++;
+					$new_level = count( $prices ) + $count;
+				}
 
 				$multi_level_donations = array(
 					array(
@@ -1570,14 +1585,14 @@ function give_import_get_form_data_from_csv( $data ) {
 			$form->price_id = array_search( $data['form_level'], $price_text );
 
 			$donation_levels_amounts = wp_list_pluck( $prices, '_give_amount' );
-			$min_amount = min( $donation_levels_amounts );
-			$max_amount = max( $donation_levels_amounts );
+			$min_amount              = min( $donation_levels_amounts );
+			$max_amount              = max( $donation_levels_amounts );
 
 			$meta = array(
-				'_give_levels_minimum_amount'    => $min_amount,
-				'_give_levels_maximum_amount'    => $max_amount,
-				'_give_price_option'    => 'multi',
-				'_give_donation_levels' => array_values( $prices ),
+				'_give_levels_minimum_amount' => $min_amount,
+				'_give_levels_maximum_amount' => $max_amount,
+				'_give_price_option'          => 'multi',
+				'_give_donation_levels'       => array_values( $prices ),
 			);
 		}
 
