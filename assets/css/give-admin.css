@@ -2837,4 +2837,42 @@ div.sc-shortcode {
 #give-db-updates .spinner {
   margin-top: 0; }
 
+/**
+ * Give Blank Slate
+ *
+ * @package     Give
+ * @subpackage  SCSS/Admin
+ * @copyright   Copyright (c) 2016, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+.give-blank-slate {
+  background: white;
+  border: 1px solid #e5e5e5;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+  margin: 0 auto;
+  padding: 40px;
+  text-align: center; }
+  .give-blank-slate :last-child {
+    margin-bottom: 0; }
+  .give-blank-slate__heading, .give-blank-slate__message, .give-blank-slate__cta, .give-blank-slate__help {
+    margin: 0 0 10px; }
+  .give-blank-slate__image {
+    display: block;
+    height: 80px;
+    margin: 0 auto 10px;
+    width: auto; }
+  .give-blank-slate__help {
+    color: #666;
+    font-style: italic; }
+    .give-blank-slate__help a {
+      display: inline-block;
+      text-decoration: underline; }
+
+.give-blank-slate a.give-blank-slate__cta {
+  display: inline-block;
+  font-size: 1.2em;
+  height: auto;
+  margin: 0 0 10px;
+  padding: .75em 1.5em; }
+
 /*# sourceMappingURL=../sourcemaps/give-admin.css.map */
