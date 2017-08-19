@@ -101,7 +101,7 @@ class Give_MetaBox_Form_Data {
 		}
 
 		// Format amounts.
-		$price = give_format_amount( $price, array( 'sanitize' => false ) );
+		$price                 = give_format_amount( $price, array( 'sanitize' => false ) );
 		$custom_amount_minimum = give_format_amount( $custom_amount_minimum, array( 'sanitize' => false ) );
 
 		// Start with an underscore to hide fields from custom fields list
@@ -433,7 +433,7 @@ class Give_MetaBox_Form_Data {
 				'id'        => 'form_content_options',
 				'title'     => __( 'Form Content', 'give' ),
 				'icon-html' => '<span class="give-icon give-icon-edit"></span>',
-				'fields' => apply_filters( 'give_forms_content_options_metabox_fields', array(
+				'fields'    => apply_filters( 'give_forms_content_options_metabox_fields', array(
 
 					// Donation content.
 					array(
@@ -487,7 +487,7 @@ class Give_MetaBox_Form_Data {
 				'id'        => 'form_terms_options',
 				'title'     => __( 'Terms & Conditions', 'give' ),
 				'icon-html' => '<span class="give-icon give-icon-checklist"></span>',
-				'fields' => apply_filters( 'give_forms_terms_options_metabox_fields', array(
+				'fields'    => apply_filters( 'give_forms_terms_options_metabox_fields', array(
 					// Donation Option
 					array(
 						'name'        => __( 'Terms and Conditions', 'give' ),
@@ -532,7 +532,6 @@ class Give_MetaBox_Form_Data {
 				),
 			) ),
 		);
-
 
 		/**
 		 * Filter the metabox tabbed panel settings.
@@ -647,8 +646,8 @@ class Give_MetaBox_Form_Data {
 	 */
 	public function output() {
 		// Bailout.
-		if ( $form_data_tabs = $this->get_tabs() ) {
-			$active_tab = ! empty( $_GET['give_tab'] ) ? sanitize_text_field( $_GET['give_tab'] ) : 'form_field_options';
+		if ( $form_data_tabs = $this->get_tabs() ) :
+			$active_tab = ! empty( $_GET['give_tab'] ) ? give_clean( $_GET['give_tab'] ) : 'form_field_options';
 			wp_nonce_field( 'give_save_form_meta', 'give_form_meta_nonce' );
 			?>
 			<input id="give_form_active_tab" type="hidden" name="give_form_active_tab">
@@ -695,9 +694,7 @@ class Give_MetaBox_Form_Data {
 						// Determine if current panel is active.
 						$is_active = $active_tab === $setting['id'] ? true : false;
 						?>
-						<div id="<?php echo $setting['id']; ?>"
-							 class="panel give_options_panel<?php echo( $is_active ? ' active' : '' );
-						     $show_first_tab_content = false; ?>">
+						<div id="<?php echo $setting['id']; ?>" class="panel give_options_panel<?php echo( $is_active ? ' active' : '' ); ?>">
 							<?php if ( ! empty( $setting['fields'] ) ) : ?>
 								<?php foreach ( $setting['fields'] as $field ) : ?>
 									<?php give_render_field( $field ); ?>
@@ -706,12 +703,11 @@ class Give_MetaBox_Form_Data {
 						</div>
 
 						<?php do_action( "give_after_{$setting['id']}_settings" ); ?>
-					<?php else: ?>
+					<?php else : ?>
 						<?php if ( $this->has_sub_tab( $setting ) ) : ?>
 							<?php if ( ! empty( $setting['sub-fields'] ) ) : ?>
 								<?php foreach ( $setting['sub-fields'] as $index => $sub_fields ) : ?>
-									<div id="<?php echo $sub_fields['id']; ?>"
-										 class="panel give_options_panel give-hidden">
+									<div id="<?php echo $sub_fields['id']; ?>" class="panel give_options_panel give-hidden">
 										<?php if ( ! empty( $sub_fields['fields'] ) ) : ?>
 											<?php foreach ( $sub_fields['fields'] as $sub_field ) : ?>
 												<?php give_render_field( $sub_field ); ?>
@@ -725,7 +721,7 @@ class Give_MetaBox_Form_Data {
 				<?php endforeach; ?>
 			</div>
 			<?php
-		}
+		endif; // End if().
 	}
 
 
@@ -862,15 +858,13 @@ class Give_MetaBox_Form_Data {
 									}
 								}
 
-
 								// Arrange repeater field keys in order.
 								$form_meta_value = array_values( $form_meta_value );
 								break;
 
 							default:
 								$form_meta_value = give_clean( $_POST[ $form_meta_key ] );
-						}
-
+						}// End switch().
 
 						/**
 						 * Filter the form meta value before saving
@@ -878,11 +872,11 @@ class Give_MetaBox_Form_Data {
 						 * @since 1.8.9
 						 */
 						$form_meta_value = apply_filters(
-								'give_pre_save_form_meta_value',
-								$this->sanitize_form_meta( $form_meta_value, $setting_field ),
-								$form_meta_key,
-								$this,
-								$post_id
+							'give_pre_save_form_meta_value',
+							$this->sanitize_form_meta( $form_meta_value, $setting_field ),
+							$form_meta_key,
+							$this,
+							$post_id
 						);
 
 						// Save data.
@@ -890,10 +884,10 @@ class Give_MetaBox_Form_Data {
 
 						// Fire after saving form meta key.
 						do_action( "give_save_{$form_meta_key}", $form_meta_key, $form_meta_value, $post_id, $post );
-					}
-				}
-			}
-		}
+					}// End if().
+				}// End if().
+			}// End foreach().
+		}// End if().
 
 		// Fire action after saving form meta.
 		do_action( 'give_post_process_give_forms_meta', $post_id, $post );
@@ -1092,7 +1086,6 @@ class Give_MetaBox_Form_Data {
 			}
 		}
 
-
 		// Get field from group.
 		if ( ! empty( $group_id ) ) {
 			foreach ( $setting_field['fields'] as $field ) {
@@ -1150,7 +1143,7 @@ class Give_MetaBox_Form_Data {
 						}
 
 						foreach ( $meta_value as $index => $meta_data ) {
-							if( ! isset( $meta_value[ $index ][ $field['id'] ] ) ) {
+							if ( ! isset( $meta_value[ $index ][ $field['id'] ] ) ) {
 								continue;
 							}
 
@@ -1175,15 +1168,19 @@ class Give_MetaBox_Form_Data {
 	 * Maintain the active tab after save.
 	 *
 	 * @since  1.8.13
-	 * @access private
+	 * @access public
 	 *
 	 * @param string $location The destination URL.
 	 * @param int    $post_id  The post ID.
+	 *
 	 * @return string The URL after redirect.
 	 */
-	function maintain_active_tab( $location, $post_id ) {
-		if ( ! empty( $_POST['give_form_active_tab'] ) ) {
-			$location = add_query_arg( 'give_tab', $_POST['give_form_active_tab'], $location );
+	public function maintain_active_tab( $location, $post_id ) {
+		if (
+			'give_forms' === get_post_type( $post_id ) &&
+			! empty( $_POST['give_form_active_tab'] )
+		) {
+			$location = add_query_arg( 'give_tab', give_clean( $_POST['give_form_active_tab'] ), $location );
 		}
 
 		return $location;
