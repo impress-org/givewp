@@ -181,10 +181,6 @@ class Give_Blank_Slate {
 
 		$template_path = GIVE_PLUGIN_DIR . 'includes/admin/views/blank-slate.php';
 
-		if ( ! is_readable( $template_path ) ) {
-			return sprintf( '<!-- Could not read "%s" file. -->', $template_path );
-		}
-
 		include $template_path;
 	}
 
