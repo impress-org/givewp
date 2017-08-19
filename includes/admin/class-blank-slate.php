@@ -214,7 +214,7 @@ class Give_Blank_Slate {
 			'update_post_meta_cache' => false,
 			'update_post_term_cache' => false,
 			'fields'                 => 'ids',
-			'post_status'            => array( 'publish', 'pending', 'future', 'private', 'trash' ),
+			'post_status'            => array( 'any', 'trash' ),
 		) );
 
 		return $query->have_posts();
