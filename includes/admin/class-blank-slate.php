@@ -144,6 +144,60 @@ class Give_Blank_Slate {
 	}
 
 	/**
+	 * Renders the blank slate message.
+	 *
+	 * @since 1.8.13
+	 *
+	 * @param string $which The location of the list table hook: 'top' or 'bottom'.
+	 */
+	public function render( $which = 'bottom') {
+		// Bail out to prevent content from rendering twice.
+		if ( 'top' === $which ) {
+			return null;
+		}
+
+		$screen = $this->screen;
+
+		/**
+		 * Filters the content of the blank slate.
+		 *
+		 * @since 1.8.13
+		 *
+		 * @param array $content {
+		 *    Array of blank slate content.
+		 *
+		 *    @type string $image_url URL of the blank slate image.
+		 *    @type string $image_alt Image alt text.
+		 *    @type string $heading   Heading text.
+		 *    @type string $message   Body copy.
+		 *    @type string $cta_text  Call to action text.
+		 *    @type string $cta_link  Call to action URL.
+		 *    @type string $help      Help text.
+		 * }
+		 *
+		 * @param string $screen The current screen ID.
+		 */
+		$content = apply_filters( 'give_blank_slate_content', $this->content, $screen );
+
+		$template_path = GIVE_PLUGIN_DIR . 'includes/admin/views/blank-slate.php';
+
+		if ( ! is_readable( $template_path ) ) {
+			return sprintf( '<!-- Could not read "%s" file. -->', $template_path );
+		}
+
+		include $template_path;
+	}
+
+	/**
+	 * Hides non-essential UI elements when blank slate content is on screen.
+	 *
+	 * @since 1.8.13
+	 */
+	function hide_ui() {
+		echo '<style type="text/css">.page-title-action, .give-filters, .search-box, .subsubsub, .wp-list-table, .tablenav.top, .give_forms_page_give-payment-history .tablenav.bottom, .give_forms_page_give-donors .tablenav.bottom, .tablenav-pages { display: none; }</style>';
+	}
+
+	/**
 	 * Determines if at least one post of a given post type exists.
 	 *
 	 * @since 1.8.13
@@ -244,52 +298,5 @@ class Give_Blank_Slate {
 			// Return defaults if context is undefined.
 			return $defaults;
 		}
-	}
-
-	/**
-	 * Renders the blank slate message.
-	 *
-	 * @since 1.8.13
-	 */
-	public function render() {
-		$screen = $this->screen;
-
-		/**
-		 * Filters the content of the blank slate.
-		 *
-		 * @since 1.8.13
-		 *
-		 * @param array $content {
-		 *    Array of blank slate content.
-		 *
-		 *    @type string $image_url URL of the blank slate image.
-		 *    @type string $image_alt Image alt text.
-		 *    @type string $heading   Heading text.
-		 *    @type string $message   Body copy.
-		 *    @type string $cta_text  Call to action text.
-		 *    @type string $cta_link  Call to action URL.
-		 *    @type string $help      Help text.
-		 * }
-		 *
-		 * @param string $screen The current screen ID.
-		 */
-		$content = apply_filters( 'give_blank_slate_content', $this->content, $screen );
-
-		$template_path = GIVE_PLUGIN_DIR . 'includes/admin/views/blank-slate.php';
-
-		if ( ! is_readable( $template_path ) ) {
-			return sprintf( '<!-- Could not read "%s" file. -->', $template_path );
-		}
-
-		include $template_path;
-	}
-
-	/**
-	 * Hides non-essential UI elements when blank slate content is on screen.
-	 *
-	 * @since 1.8.13
-	 */
-	function hide_ui() {
-		echo '<style type="text/css">.page-title-action, .give-filters, .search-box, .subsubsub, .wp-list-table, .tablenav.top, .give_forms_page_give-payment-history .tablenav.bottom, .give_forms_page_give-donors .tablenav.bottom, .tablenav-pages { display: none; }</style>';
 	}
 }
