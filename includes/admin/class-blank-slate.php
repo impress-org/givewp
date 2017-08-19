@@ -99,7 +99,7 @@ class Give_Blank_Slate {
 				break;
 			// Donations screen.
 			case 'give_forms_page_give-payment-history':
-				$this->form = $this->post_exists( 'give_forms' );
+				$this->form     = $this->post_exists( 'give_forms' );
 				$this->donation = $this->post_exists( 'give_payment' );
 
 				if ( $this->donation ) {
@@ -117,7 +117,7 @@ class Give_Blank_Slate {
 				break;
 			// Donors screen.
 			case 'give_forms_page_give-donors':
-				$this->form = $this->post_exists( 'give_forms' );
+				$this->form  = $this->post_exists( 'give_forms' );
 				$this->donor = $this->donor_exists();
 
 				if ( $this->donor ) {
