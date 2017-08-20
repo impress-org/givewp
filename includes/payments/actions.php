@@ -253,3 +253,29 @@ function give_refresh_thismonth_stat_transients( $payment_ID ) {
 }
 
 add_action( 'save_post_give_payment', 'give_refresh_thismonth_stat_transients' );
+
+/*
+ * Add meta in payment that store page id and page url.
+ *
+ * Will add/update when user add click on the checkout page.
+ * The status of the donation doest not matter as it get change when user had made the payment successfully.
+ *
+ * @since 1.8.13
+ *
+ * @param {integer} $payment_id Payment id for which the meta value should be updated.
+ */
+function give_payment_save_page_data( $payment_id ) {
+	$page_url = ( ! empty( $_REQUEST['give-current-url'] ) ? esc_url( $_REQUEST['give-current-url'] ) : false );
+	// Check $page_url is not empty.
+	if ( $page_url ) {
+		update_post_meta( $payment_id, '_give_current_url', $page_url );
+		$page_id = url_to_postid( $page_url );
+		// Check $page_id is not empty.
+		if ( $page_id ) {
+			update_post_meta( $payment_id, '_give_current_page_id', $page_id );
+		}
+	}
+}
+
+// Fire when payment is save.
+add_action( 'give_insert_payment', 'give_payment_save_page_data' );
