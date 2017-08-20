@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since  1.0
  *
- * @param  int    $payment_id The ID number of the payment.
+ * @param  int $payment_id The ID number of the payment.
  * @param  string $new_status The status of the payment, probably "publish".
  * @param  string $old_status The status of the payment prior to being marked as "complete", probably "pending".
  *
@@ -70,8 +70,8 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 		 *
 		 * @since 1.0
 		 *
-		 * @param int   $form_id      The ID number of the form.
-		 * @param int   $payment_id   The ID number of the payment.
+		 * @param int $form_id The ID number of the form.
+		 * @param int $payment_id The ID number of the payment.
 		 * @param array $payment_meta The payment meta.
 		 */
 		do_action( 'give_complete_form_donation', $form_id, $payment_id, $payment_meta );
@@ -119,7 +119,7 @@ add_action( 'give_update_payment_status', 'give_complete_purchase', 100, 3 );
  *
  * @since  1.0
  *
- * @param  int    $payment_id The ID number of the payment.
+ * @param  int $payment_id The ID number of the payment.
  * @param  string $new_status The status of the payment, probably "publish".
  * @param  string $old_status The status of the payment prior to being marked as "complete", probably "pending".
  *
