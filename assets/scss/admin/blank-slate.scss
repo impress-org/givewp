@@ -1,0 +1,54 @@
+/**
+ * Give Blank Slate
+ *
+ * @package     Give
+ * @subpackage  SCSS/Admin
+ * @copyright   Copyright (c) 2016, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+
+.give-blank-slate {
+	background: white;
+	border: 1px solid #e5e5e5;
+	box-shadow: 0 1px 1px rgba( 0,0,0,0.04 );
+	margin: 0 auto;
+	padding: 40px;
+	text-align: center;
+
+	:last-child {
+		margin-bottom: 0;
+	}
+
+	&__heading,
+	&__message,
+	&__cta,
+	&__help {
+		margin: 0 0 10px;
+	}
+
+	&__image {
+		display: block;
+		height: 80px;
+		margin: 0 auto 10px;
+		width: auto;
+	}
+
+	&__help {
+		color: #666;
+		font-style: italic;
+
+		a {
+			display: inline-block;
+			text-decoration: underline;
+		}
+	}
+}
+
+// Extra selectors needed to override WP Core styles.
+.give-blank-slate a.give-blank-slate__cta {
+	display: inline-block;
+	font-size: 1.2em;
+	height: auto;
+	margin: 0 0 10px;
+	padding: .75em 1.5em;
+}

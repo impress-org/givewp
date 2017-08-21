@@ -392,3 +392,14 @@ function _give_show_test_mode_notice_in_admin_bar( $wp_admin_bar ) {
 	return true;
 }
 add_action( 'admin_bar_menu', '_give_show_test_mode_notice_in_admin_bar', 1000, 1 );
+
+/**
+ * Initializes blank slate content if a list table is empty.
+ *
+ * @since 1.8.13
+ */
+function give_blank_slate() {
+	$blank_slate = new Give_Blank_Slate();
+	$blank_slate->init();
+}
+add_action( 'current_screen', 'give_blank_slate' );
