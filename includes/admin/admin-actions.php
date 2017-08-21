@@ -494,3 +494,15 @@ function give_donation_import_callback() {
 }
 
 add_action( 'wp_ajax_give_donation_import', 'give_donation_import_callback' );
+
+
+/**
+ * Initializes blank slate content if a list table is empty.
+ *
+ * @since 1.8.13
+ */
+function give_blank_slate() {
+	$blank_slate = new Give_Blank_Slate();
+	$blank_slate->init();
+}
+add_action( 'current_screen', 'give_blank_slate' );
