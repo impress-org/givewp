@@ -646,6 +646,12 @@ function give_build_paypal_url( $payment_id, $payment_data ) {
 	// Donations or regular transactions?
 	$paypal_args['cmd'] = give_get_paypal_button_type();
 
+	// Set PayPal Locale.
+	$paypal_locale = give_get_option( 'paypal_locale' );
+	if( ! empty( $paypal_locale ) ) {
+		$paypal_args['lc'] = $paypal_locale;
+	}
+
 	/**
 	 * Filter the paypal redirect args.
 	 *
@@ -681,7 +687,6 @@ function give_get_paypal_button_type() {
 
 	return $paypal_button_type;
 }
-
 
 /**
  * Build item title for paypal.

@@ -97,6 +97,14 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 								'disabled' => __( 'Disabled', 'give' ),
 							)
 						),
+						array(
+							'name'    => __( 'PayPal Locale', 'give' ),
+							'desc'    => __( 'Set your own locale for PayPal or let PayPal choose locale automatically.', 'give' ),
+							'id'      => 'paypal_locale',
+							'type'    => 'select',
+							'default' => '',
+							'options' => give_get_country_list( 'Let PayPal Decide the Locale' )
+						),
                         array(
                             'name'  => __( 'PayPal Standard Gateway Settings Docs Link', 'give' ),
                             'id'    => 'paypal_standard_gateway_settings_docs_link',
