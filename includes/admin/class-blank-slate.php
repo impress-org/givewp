@@ -248,7 +248,7 @@ class Give_Blank_Slate {
 			'cta_link'  => admin_url( 'post-new.php?post_type=give_forms' ),
 			'help'      => sprintf(
 				__( 'Need help? Get started with %sGive 101%s.', 'wbpr' ),
-				'<a href="https://givewp.com/documentation/core/give-101/">',
+				'<a href="https://doc.givewp.com/give101/">',
 				'</a>'
 			),
 		);
@@ -266,7 +266,7 @@ class Give_Blank_Slate {
 				'cta_link' => admin_url( 'edit.php?post_type=give_forms' ),
 				'help'     => sprintf(
 					__( 'Need help? Learn more about %sDonations%s.', 'wbpr' ),
-					'<a href="https://givewp.com/documentation/core/donations/">',
+					'<a href="http://docs.givewp.com/core-donations/">',
 					'</a>'
 				),
 			),
@@ -281,7 +281,7 @@ class Give_Blank_Slate {
 				'cta_link' => admin_url( 'edit.php?post_type=give_forms' ),
 				'help'     => sprintf(
 					__( 'Need help? Learn more about %sDonors%s.', 'wbpr' ),
-					'<a href="https://givewp.com/documentation/core/donors/">',
+					'<a href="http://docs.givewp.com/core-donors/">',
 					'</a>'
 				),
 			),
