@@ -1735,6 +1735,10 @@ class Give_API {
 	function user_key_field( $user ) {
 
 		if ( ( give_get_option( 'api_allow_user_keys', false ) || current_user_can( 'manage_give_settings' ) ) && current_user_can( 'edit_user', $user->ID ) ) {
+
+			// Flush Rewrite Rules to avoid 404 error using Give API for first time.
+			flush_rewrite_rules();
+
 			$user = get_userdata( $user->ID );
 			?>
 			<table class="form-table">
@@ -1822,7 +1826,6 @@ class Give_API {
 			case 'generate':
 				if ( $this->generate_api_key( $user_id ) ) {
 					Give_Cache::delete( Give_Cache::get_key( 'give_total_api_keys' ) );
-					flush_rewrite_rules();
 					wp_redirect( add_query_arg( 'give-message', 'api-key-generated', 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) );
 					exit();
 				} else {
@@ -1833,7 +1836,6 @@ class Give_API {
 			case 'regenerate':
 				$this->generate_api_key( $user_id, true );
 				Give_Cache::delete( Give_Cache::get_key( 'give_total_api_keys' ) );
-				flush_rewrite_rules();
 				wp_redirect( add_query_arg( 'give-message', 'api-key-regenerated', 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) );
 				exit();
 				break;
