@@ -688,7 +688,7 @@ function give_get_paypal_button_type() {
 /**
  * Get PayPal Locale.
  *
- * @since 2.0
+ * @since 1.8.13
  * @return string
  */
 function give_get_paypal_locale() {
