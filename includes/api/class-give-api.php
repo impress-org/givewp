@@ -1833,6 +1833,7 @@ class Give_API {
 			case 'regenerate':
 				$this->generate_api_key( $user_id, true );
 				Give_Cache::delete( Give_Cache::get_key( 'give_total_api_keys' ) );
+				flush_rewrite_rules();
 				wp_redirect( add_query_arg( 'give-message', 'api-key-regenerated', 'edit.php?post_type=give_forms&page=give-tools&tab=api' ) );
 				exit();
 				break;
