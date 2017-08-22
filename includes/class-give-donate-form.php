@@ -492,16 +492,16 @@ class Give_Donate_Form {
 
 		if ( ! isset( $this->price ) ) {
 
-			$this->price = get_post_meta( $this->ID, '_give_set_price', true );
+			$this->price = give_maybe_sanitize_amount(
+				give_get_meta(
+					$this->ID,
+					'_give_set_price',
+					true
+				)
+			);
 
-			if ( $this->price ) {
-
-				$this->price = give_sanitize_amount( $this->price );
-
-			} else {
-
+			if ( ! $this->price ) {
 				$this->price = 0;
-
 			}
 
 		}
@@ -529,17 +529,11 @@ class Give_Donate_Form {
 
 		if ( ! isset( $this->minimum_price ) ) {
 
-			$allow_custom_amount = get_post_meta( $this->ID, '_give_custom_amount', true );
-			$this->minimum_price = get_post_meta( $this->ID, '_give_custom_amount_minimum', true );
+			$allow_custom_amount = give_get_meta( $this->ID, '_give_custom_amount', true );
+			$this->minimum_price = give_get_meta( $this->ID, '_give_custom_amount_minimum', true );
 
-			if ( give_is_setting_enabled( $allow_custom_amount ) && $this->minimum_price ) {
-
-				$this->minimum_price = give_sanitize_amount( $this->minimum_price );
-
-			} else {
-
+			if ( ! give_is_setting_enabled( $allow_custom_amount ) ) {
 				$this->minimum_price = 0;
-
 			}
 
 		}
@@ -559,7 +553,7 @@ class Give_Donate_Form {
 
 		if ( ! isset( $this->prices ) ) {
 
-			$this->prices = get_post_meta( $this->ID, '_give_donation_levels', true );
+			$this->prices = give_get_meta( $this->ID, '_give_donation_levels', true );
 
 		}
 
@@ -587,16 +581,10 @@ class Give_Donate_Form {
 
 		if ( ! isset( $this->goal ) ) {
 
-			$this->goal = get_post_meta( $this->ID, '_give_set_goal', true );
+			$this->goal = give_get_meta( $this->ID, '_give_set_goal', true );
 
-			if ( $this->goal ) {
-
-				$this->goal = give_sanitize_amount( $this->goal );
-
-			} else {
-
+			if ( ! $this->goal ) {
 				$this->goal = 0;
-
 			}
 
 		}
@@ -615,7 +603,7 @@ class Give_Donate_Form {
 	 */
 	public function is_single_price_mode() {
 
-		$option = get_post_meta( $this->ID, '_give_price_option', true );
+		$option = give_get_meta( $this->ID, '_give_price_option', true );
 		$ret    = 0;
 
 		if ( empty( $option ) || $option === 'set' ) {
@@ -644,7 +632,7 @@ class Give_Donate_Form {
 	 */
 	public function is_custom_price_mode() {
 
-		$option = get_post_meta( $this->ID, '_give_custom_amount', true );
+		$option = give_get_meta( $this->ID, '_give_custom_amount', true );
 		$ret    = 0;
 
 		if ( give_is_setting_enabled( $option ) ) {
@@ -675,7 +663,7 @@ class Give_Donate_Form {
 	 */
 	public function has_variable_prices() {
 
-		$option = get_post_meta( $this->ID, '_give_price_option', true );
+		$option = give_get_meta( $this->ID, '_give_price_option', true );
 		$ret    = 0;
 
 		if ( $option === 'multi' ) {
@@ -704,7 +692,7 @@ class Give_Donate_Form {
 
 		if ( ! isset( $this->type ) ) {
 
-			$this->type = get_post_meta( $this->ID, '_give_price_option', true );
+			$this->type = give_get_meta( $this->ID, '_give_price_option', true );
 
 			if ( empty( $this->type ) ) {
 				$this->type = 'set';
@@ -763,7 +751,7 @@ class Give_Donate_Form {
 
 		$display_option = ( isset( $args['display_style'] ) && ! empty( $args['display_style'] ) )
 			? $args['display_style']
-			: get_post_meta( $this->ID, '_give_payment_display', true );
+			: give_get_meta( $this->ID, '_give_payment_display', true );
 
 		// If admin want to show only button for form then user inbuilt modal functionality.
 		if( 'button' === $display_option ) {
@@ -821,11 +809,11 @@ class Give_Donate_Form {
 
 		if ( ! isset( $this->sales ) ) {
 
-			if ( '' == get_post_meta( $this->ID, '_give_form_sales', true ) ) {
+			if ( '' == give_get_meta( $this->ID, '_give_form_sales', true ) ) {
 				add_post_meta( $this->ID, '_give_form_sales', 0 );
 			} // End if
 
-			$this->sales = get_post_meta( $this->ID, '_give_form_sales', true );
+			$this->sales = give_get_meta( $this->ID, '_give_form_sales', true );
 
 			if ( $this->sales < 0 ) {
 				// Never let sales be less than zero
@@ -911,11 +899,11 @@ class Give_Donate_Form {
 
 		if ( ! isset( $this->earnings ) ) {
 
-			if ( '' == get_post_meta( $this->ID, '_give_form_earnings', true ) ) {
+			if ( '' == give_get_meta( $this->ID, '_give_form_earnings', true ) ) {
 				add_post_meta( $this->ID, '_give_form_earnings', 0 );
 			}
 
-			$this->earnings = get_post_meta( $this->ID, '_give_form_earnings', true );
+			$this->earnings = give_get_meta( $this->ID, '_give_form_earnings', true );
 
 			if ( $this->earnings < 0 ) {
 				// Never let earnings be less than zero
@@ -1006,7 +994,7 @@ class Give_Donate_Form {
 		if ( $variable_pricing && ! is_null( $price_id ) && $price_id !== false ) {
 			$price = give_get_price_option_amount( $this->ID, $price_id );
 		} elseif ( ! $variable_pricing ) {
-			$price = get_post_meta( $this->ID, '_give_set_price', true );
+			$price = give_get_meta( $this->ID, '_give_set_price', true );
 		}
 
 		if ( isset( $price ) && (float) $price == 0 ) {
@@ -1040,8 +1028,8 @@ class Give_Donate_Form {
 		$is_close_form = apply_filters(
 			'give_is_close_donation_form',
 			(
-			give_is_setting_enabled( get_post_meta( $this->ID, '_give_goal_option', true ) ) )
-			&& give_is_setting_enabled( get_post_meta( $this->ID, '_give_close_form_when_goal_achieved', true ) )
+			give_is_setting_enabled( give_get_meta( $this->ID, '_give_goal_option', true ) ) )
+			&& give_is_setting_enabled( give_get_meta( $this->ID, '_give_close_form_when_goal_achieved', true ) )
 			&& ( $this->get_goal() <= $this->get_earnings()
 			),
 			$this->ID

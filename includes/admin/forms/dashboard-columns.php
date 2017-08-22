@@ -32,15 +32,15 @@ function give_form_columns( $give_form_columns ) {
 	// Standard columns
 	$give_form_columns = array(
 		'cb'            => '<input type="checkbox"/>',
-		'title'         => esc_html__( 'Name', 'give' ),
-		'form_category' => esc_html__( 'Categories', 'give' ),
-		'form_tag'      => esc_html__( 'Tags', 'give' ),
-		'price'         => esc_html__( 'Amount', 'give' ),
-		'goal'          => esc_html__( 'Goal', 'give' ),
-		'donations'     => esc_html__( 'Donations', 'give' ),
-		'earnings'      => esc_html__( 'Income', 'give' ),
-		'shortcode'     => esc_html__( 'Shortcode', 'give' ),
-		'date'          => esc_html__( 'Date', 'give' ),
+		'title'         => __( 'Name', 'give' ),
+		'form_category' => __( 'Categories', 'give' ),
+		'form_tag'      => __( 'Tags', 'give' ),
+		'price'         => __( 'Amount', 'give' ),
+		'goal'          => __( 'Goal', 'give' ),
+		'donations'     => __( 'Donations', 'give' ),
+		'earnings'      => __( 'Income', 'give' ),
+		'shortcode'     => __( 'Shortcode', 'give' ),
+		'date'          => __( 'Date', 'give' ),
 	);
 
 	// Does the user want categories / tags?
@@ -85,7 +85,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 				}
 				break;
 			case 'goal':
-				if ( give_is_setting_enabled( get_post_meta( $post_id, '_give_goal_option', true ) ) ) {
+				if ( give_is_setting_enabled( give_get_meta( $post_id, '_give_goal_option', true ) ) ) {
 					echo give_goal( $post_id, false );
 				} else {
 					esc_html_e( 'No Goal Set', 'give' );
@@ -95,7 +95,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 				break;
 			case 'donations':
 				if ( current_user_can( 'view_give_form_stats', $post_id ) ) {
-					echo '<a href="' . esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-tools&tab=logs&form=' . $post_id ) ) . '">';
+					echo '<a href="' . esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&form_id=' . $post_id ) ) . '">';
 					echo give_get_form_sales_stats( $post_id );
 					echo '</a>';
 				} else {
@@ -104,8 +104,8 @@ function give_render_form_columns( $column_name, $post_id ) {
 				break;
 			case 'earnings':
 				if ( current_user_can( 'view_give_form_stats', $post_id ) ) {
-					echo '<a href="' . esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-reports&view=forms&form-id=' . $post_id ) ) . '">';
-					echo give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ) ) );
+					echo '<a href="' . esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=forms&form-id=' . $post_id ) ) . '">';
+					echo give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ), array( 'sanitize' => false ) ) );
 					echo '</a>';
 				} else {
 					echo '-';
@@ -114,8 +114,8 @@ function give_render_form_columns( $column_name, $post_id ) {
 			case 'shortcode':
 				echo '<input onclick="this.setSelectionRange(0, this.value.length)" type="text" class="shortcode-input" readonly="" value="[give_form id=&#34;' . absint( $post_id ) . '&#34;]">';
 				break;
-		}
-	}
+		}// End switch().
+	}// End if().
 }
 
 add_action( 'manage_posts_custom_column', 'give_render_form_columns', 10, 2 );
@@ -146,18 +146,18 @@ add_filter( 'manage_edit-give_forms_sortable_columns', 'give_sortable_form_colum
  *
  * @since 1.0
  *
- * @param array $vars Array of all the sort variables
+ * @param array $vars Array of all the sort variables.
  *
- * @return array $vars Array of all the sort variables
+ * @return array $vars Array of all the sort variables.
  */
 function give_sort_forms( $vars ) {
-	// Check if we're viewing the "give_forms" post type
+	// Check if we're viewing the "give_forms" post type.
 	if ( ! isset( $vars['post_type'] ) || ! isset( $vars['orderby'] ) || 'give_forms' !== $vars['post_type'] ) {
 		return $vars;
 	}
 
 	switch ( $vars['orderby'] ) {
-		// Check if 'orderby' is set to "sales"
+		// Check if 'orderby' is set to "sales".
 		case 'sales':
 			$vars = array_merge(
 				$vars,
@@ -168,7 +168,7 @@ function give_sort_forms( $vars ) {
 			);
 			break;
 
-		// Check if "orderby" is set to "earnings"
+		// Check if "orderby" is set to "earnings".
 		case 'earnings':
 			$vars = array_merge(
 				$vars,
@@ -179,18 +179,26 @@ function give_sort_forms( $vars ) {
 			);
 			break;
 
-		// Check if "orderby" is set to "price/amount"
+		// Check if "orderby" is set to "price/amount".
 		case 'amount':
-			$vars = array_merge(
-				$vars,
+			$multi_level_meta_key = ( 'asc' === $vars['order'] ) ? '_give_levels_minimum_amount' : '_give_levels_maximum_amount';
+
+			$vars['orderby']    = 'meta_value_num';
+			$vars['meta_query'] = array(
+				'relation' => 'OR',
 				array(
-					'meta_key' => '_give_set_price',
-					'orderby'  => 'meta_value_num',
+					'key'     => $multi_level_meta_key,
+					'type'    => 'NUMERIC',
+				),
+				array(
+					'key'     => '_give_set_price',
+					'type'    => 'NUMERIC',
 				)
 			);
+
 			break;
 
-		// Check if "orderby" is set to "goal"
+		// Check if "orderby" is set to "goal".
 		case 'goal':
 			$vars = array_merge(
 				$vars,
@@ -201,7 +209,7 @@ function give_sort_forms( $vars ) {
 			);
 			break;
 
-		// Check if "orderby" is set to "donations"
+		// Check if "orderby" is set to "donations".
 		case 'donations':
 			$vars = array_merge(
 				$vars,
@@ -211,7 +219,7 @@ function give_sort_forms( $vars ) {
 				)
 			);
 			break;
-	}
+	}// End switch().
 
 	return $vars;
 }
@@ -221,9 +229,9 @@ function give_sort_forms( $vars ) {
  *
  * @since  1.0
  *
- * @param  array $vars Array of all sort varialbes
+ * @param  array $vars Array of all sort variables.
  *
- * @return array       Array of all sort variables
+ * @return array       Array of all sort variables.
  */
 function give_filter_forms( $vars ) {
 	if ( isset( $vars['post_type'] ) && 'give_forms' == $vars['post_type'] ) {
@@ -233,8 +241,9 @@ function give_filter_forms( $vars ) {
 
 			$author_id = $_REQUEST['author'];
 			if ( (int) $author_id !== get_current_user_id() ) {
-				// Tried to view the products of another person, sorry
-				wp_die( esc_html__( 'You do not have permission to view this data.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
+				wp_die( esc_html__( 'You do not have permission to view this data.', 'give' ), esc_html__( 'Error', 'give' ), array(
+					'response' => 403,
+				) );
 			}
 			$vars = array_merge(
 				$vars,
@@ -271,10 +280,10 @@ add_action( 'load-edit.php', 'give_forms_load', 9999 );
  *
  * @since  1.0
  *
- * @param array $dates   The preset array of dates
+ * @param array $dates   The preset array of dates.
  *
- * @global      $typenow The post type we are viewing
- * @return array Empty array disables the dropdown
+ * @global      $typenow The post type we are viewing.
+ * @return array Empty array disables the dropdown.
  */
 function give_remove_month_filter( $dates ) {
 	global $typenow;
@@ -309,7 +318,7 @@ function give_price_save_quick_edit( $post_id ) {
 	}
 
 	if ( isset( $_REQUEST['_give_regprice'] ) ) {
-		update_post_meta( $post_id, '_give_set_price', strip_tags( stripslashes( $_REQUEST['_give_regprice'] ) ) );
+		give_update_meta( $post_id, '_give_set_price', give_sanitize_amount_for_db( strip_tags( stripslashes( $_REQUEST['_give_regprice'] ) ) ) );
 	}
 }
 
@@ -334,7 +343,7 @@ function give_save_bulk_edit() {
 			}
 
 			if ( ! empty( $price ) ) {
-				update_post_meta( $post_id, '_give_set_price', give_sanitize_amount( $price ) );
+				give_update_meta( $post_id, '_give_set_price', give_sanitize_amount_for_db( $price ) );
 			}
 		}
 	}

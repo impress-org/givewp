@@ -48,7 +48,7 @@ function give_add_ons_page() {
 function give_add_ons_get_feed() {
 
 	$addons_debug = false; //set to true to debug
-	$cache        = get_transient( 'give_add_ons_feed' );
+	$cache        = Give_Cache::get( 'give_add_ons_feed', true );
 
 	if ( $cache === false || $addons_debug === true && WP_DEBUG === true ) {
 		$feed = wp_remote_get( 'https://givewp.com/downloads/feed/', array( 'sslverify' => false ) );
@@ -56,10 +56,13 @@ function give_add_ons_get_feed() {
 		if ( ! is_wp_error( $feed ) ) {
 			if ( isset( $feed['body'] ) && strlen( $feed['body'] ) > 0 ) {
 				$cache = wp_remote_retrieve_body( $feed );
-				set_transient( 'give_add_ons_feed', $cache, 3600 );
+				Give_Cache::set( 'give_add_ons_feed', $cache, HOUR_IN_SECONDS, true );
 			}
 		} else {
-			$cache = '<div class="error"><p>' . esc_html__( 'There was an error retrieving the Give Add-ons list from the server. Please try again later.', 'give' ) . '</div>';
+			$cache = sprintf(
+				'<div class="error"><p>%s</p></div>',
+				esc_html__( 'There was an error retrieving the Give Add-ons list from the server. Please try again later.', 'give' )
+			);
 		}
 	}
 

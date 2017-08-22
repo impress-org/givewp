@@ -1,78 +1,50 @@
-filter:
-    excluded_paths:
-    - vendor/*
-    - tests/*
-    - languages/*
-    - includes/libraries/*
-    - bin/*
-    - assets/*
-    - templates/*
-
-before_commands:
-    - 'composer install --dev --prefer-source'
+build:
+  environment:
+    php: "7.1"
+    mysql: true
+    postgresql: false
+    redis: false
+    apache2:
+      modules:
+        - rewrite
+    variables:
+      WP_VERSION: latest
+  dependencies:
+    before:
+      - "bash tests/bin/install.sh give_test root '' localhost $WP_VERSION"
+  tests:
+    override:
+      -
+        command: "vendor/bin/phpunit -c phpunit.xml --coverage-clover=results"
+        coverage:
+          file: results
+          format: clover
 tools:
-    external_code_coverage:
-            timeout: 900    # wait for 15 minutes instead of 5
-    php_mess_detector:
-        config:
-            code_size_rules:
-                cyclomatic_complexity:  false
-                npath_complexity:     false
-                excessive_method_length:  false
-                excessive_class_length:  false
-                excessive_parameter_list:  false
-                excessive_public_count:  false
-                too_many_fields:      false
-                too_many_methods:     false
-                excessive_class_complexity:  false
-    php_code_sniffer:
-        config:
-            standard: WordPress
-            sniffs: { wordpress: { arrays: { array_declaration_sniff: true }, classes: { valid_class_name_sniff: true }, files: { file_name_sniff: true }, formatting: { multiple_statement_alignment_sniff: true }, functions: { function_call_signature_sniff: true, function_declaration_argument_spacing_sniff: true }, naming_conventions: { valid_function_name_sniff: true }, objects: { object_instantiation_sniff: true }, php: { discouraged_functions_sniff: true }, strings: { double_quote_usage_sniff: true }, white_space: { control_structure_spacing_sniff: true, operator_spacing_sniff: true, php_indent_sniff: true }, xss: { escape_output_sniff: true } } }
-    php_code_coverage: true
-    sensiolabs_security_checker: true
-    php_pdepend: true
-    php_loc:
-        enabled: true
-        excluded_dirs: [vendor, tests, languages, includes/libraries, bin, assets, templates]
-    php_cpd:
-        enabled: true
-        excluded_dirs: [vendor, tests, languages, includes/libraries, bin, assets, templates]
+  php_code_sniffer:
+    config:
+      standard: WordPress
+  sensiolabs_security_checker: true
 checks:
-    php:
-        psr2_switch_declaration: false
-        psr2_control_structure_declaration: false
-        psr2_class_declaration: false
-        one_class_per_file: false
-        avoid_superglobals: false
-        require_php_tag_first: false
-        code_rating: true
-        duplication: true
-        variable_existence: true
-        useless_calls: true
-        use_statement_alias_conflict: true
-        unused_variables: false
-        unused_properties: true
-        unused_parameters: false
-        unreachable_code: true
-        sql_injection_vulnerabilities: true
-        security_vulnerabilities: true
-        precedence_mistakes: true
-        precedence_in_conditions: true
-        parameter_non_unique: true
-        no_property_on_interface: true
-        no_non_implemented_abstract_methods: true
-        deprecated_code_usage: true
-        closure_use_not_conflicting: true
-        closure_use_modifiable: true
-        avoid_useless_overridden_methods: true
-        avoid_conflicting_incrementers: true
-        assignment_of_null_return: true
-        unused_methods: true
-        too_many_arguments: true
-        no_debug_code: true
-        missing_arguments: true
-        return_doc_comments: true
-        argument_type_checks: false
-        no_error_suppression: false
-        property_assignments: false
+  php:
+    avoid_closing_tag: false
+    avoid_superglobals: false
+    coding_standard:
+      name: WordPress
+    no_exit: false
+    no_global_keyword: false
+    one_class_per_file: false
+    psr2_class_declaration: false
+    psr2_control_structure_declaration: false
+    psr2_switch_declaration: false
+    variable_existence: false
+    verify_access_scope_valid: false
+    verify_argument_usable_as_reference: false
+    verify_property_names: false
+filter:
+  excluded_paths:
+    - .github/
+    - includes/libraries/
+    - includes/deprecated/
+    - bower/
+    - languages/
+    - tests/

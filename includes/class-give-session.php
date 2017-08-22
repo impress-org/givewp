@@ -102,6 +102,10 @@ class Give_Session {
 				require_once GIVE_PLUGIN_DIR . 'includes/libraries/sessions/class-recursive-arrayaccess.php';
 			}
 
+			// Include utilities class
+			if ( ! class_exists( 'WP_Session_Utils' ) ) {
+				require_once GIVE_PLUGIN_DIR . 'includes/libraries/sessions/class-wp-session-utils.php';
+			}
 			if ( ! class_exists( 'WP_Session' ) ) {
 				require_once GIVE_PLUGIN_DIR . 'includes/libraries/sessions/class-wp-session.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/libraries/sessions/wp-session.php';
@@ -114,7 +118,7 @@ class Give_Session {
 
 		// Init Session.
 		if ( empty( $this->session ) && ! $this->use_php_sessions ) {
-			add_action( 'plugins_loaded', array( $this, 'init' ), - 1 );
+			add_action( 'plugins_loaded', array( $this, 'init' ), 9999 );
 		} else {
 			add_action( 'init', array( $this, 'init' ), - 1 );
 		}
@@ -170,7 +174,7 @@ class Give_Session {
 	 *
 	 * @param  string $key Session key.
 	 *
-	 * @return string      Session variable.
+	 * @return string|array      Session variable.
 	 */
 	public function get( $key ) {
 		$key = sanitize_key( $key );

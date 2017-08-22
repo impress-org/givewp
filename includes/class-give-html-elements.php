@@ -31,45 +31,44 @@ class Give_HTML_Elements {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  array  $args Arguments for the dropdown.
+	 * @param  array $args Arguments for the dropdown.
 	 *
 	 * @return string       Donations dropdown.
 	 */
-	public function transactions_dropdown( $args = array() ) {
+	public function donations_dropdown( $args = array() ) {
 
 		$defaults = array(
-			'name'        => 'transactions',
-			'id'          => 'transactions',
+			'name'        => 'donations',
+			'id'          => 'donations',
 			'class'       => '',
 			'multiple'    => false,
 			'selected'    => 0,
 			'chosen'      => false,
 			'number'      => 30,
-			'placeholder' => esc_html__( 'Select a transaction', 'give' )
+			'placeholder' => __( 'Select a donation', 'give' ),
 		);
 
 		$args = wp_parse_args( $args, $defaults );
 
 		$payments = new Give_Payments_Query( array(
-			'number' => $args['number']
+			'number' => $args['number'],
 		) );
 
 		$payments = $payments->get_payments();
 
 		$options = array();
 
-		//Provide nice human readable options.
+		// Provide nice human readable options.
 		if ( $payments ) {
-			$options[0] = esc_html__( 'Select a donation', 'give' );
+			$options[0] = $args['placeholder'];
 			foreach ( $payments as $payment ) {
 
-				$options[ absint( $payment->ID ) ] = esc_html( '#' . $payment->ID . ' - ' . $payment->email . ' - ' . $payment->form_title);
+				$options[ absint( $payment->ID ) ] = esc_html( '#' . $payment->ID . ' - ' . $payment->email . ' - ' . $payment->form_title );
 
 			}
 		} else {
-			$options[0] = esc_html__( 'No donations found.', 'give' );
+			$options[0] = __( 'No donations found.', 'give' );
 		}
-
 
 		$output = $this->select( array(
 			'name'             => $args['name'],
@@ -82,7 +81,7 @@ class Give_HTML_Elements {
 			'placeholder'      => $args['placeholder'],
 			'select_atts'      => $args['select_atts'],
 			'show_option_all'  => false,
-			'show_option_none' => false
+			'show_option_none' => false,
 		) );
 
 		return $output;
@@ -110,7 +109,10 @@ class Give_HTML_Elements {
 			'selected'    => 0,
 			'chosen'      => false,
 			'number'      => 30,
-			'placeholder' => esc_attr__( 'Select a Donation Form', 'give' )
+			'placeholder' => esc_attr__( 'Select a Donation Form', 'give' ),
+			'data'        => array(
+				'search-type' => 'form',
+			),
 		);
 
 		$args = wp_parse_args( $args, $defaults );
@@ -119,15 +121,20 @@ class Give_HTML_Elements {
 			'post_type'      => 'give_forms',
 			'orderby'        => 'title',
 			'order'          => 'ASC',
-			'posts_per_page' => $args['number']
+			'posts_per_page' => $args['number'],
 		) );
 
 		$options = array();
 
+		// Ensure the selected.
+		if ( false !== $args['selected'] && $args['selected'] !== 0 ) {
+			$options[ $args['selected'] ] = get_the_title( $args['selected'] );
+		}
+
 		if ( $forms ) {
-			$options[0] = esc_attr__( 'Select a Donation Form', 'give' );
+			$options[0] = $args['placeholder'];
 			foreach ( $forms as $form ) {
-				$form_title = empty( $form->post_title ) ? sprintf( __( 'Untitled (#%s)', 'give' ), $form->ID ) : $form->post_title;
+				$form_title                     = empty( $form->post_title ) ? sprintf( __( 'Untitled (#%s)', 'give' ), $form->ID ) : $form->post_title;
 				$options[ absint( $form->ID ) ] = esc_html( $form_title );
 			}
 		} else {
@@ -144,7 +151,8 @@ class Give_HTML_Elements {
 			'multiple'         => $args['multiple'],
 			'placeholder'      => $args['placeholder'],
 			'show_option_all'  => false,
-			'show_option_none' => false
+			'show_option_none' => false,
+			'data'             => $args['data'],
 		) );
 
 		return $output;
@@ -153,7 +161,7 @@ class Give_HTML_Elements {
 	/**
 	 * Donors Dropdown
 	 *
-	 * Renders an HTML Dropdown of all customers.
+	 * Renders an HTML Dropdown of all donors.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -165,28 +173,31 @@ class Give_HTML_Elements {
 	public function donor_dropdown( $args = array() ) {
 
 		$defaults = array(
-			'name'        => 'customers',
-			'id'          => 'customers',
+			'name'        => 'donors',
+			'id'          => 'donors',
 			'class'       => '',
 			'multiple'    => false,
 			'selected'    => 0,
 			'chosen'      => true,
 			'placeholder' => esc_attr__( 'Select a Donor', 'give' ),
-			'number'      => 30
+			'number'      => 30,
+			'data'        => array(
+				'search-type' => 'donor',
+			),
 		);
 
 		$args = wp_parse_args( $args, $defaults );
 
-		$customers = Give()->customers->get_customers( array(
+		$donors = Give()->donors->get_donors( array(
 			'number' => $args['number']
 		) );
 
 		$options = array();
 
-		if ( $customers ) {
+		if ( $donors ) {
 			$options[0] = esc_html__( 'No donor attached', 'give' );
-			foreach ( $customers as $customer ) {
-				$options[ absint( $customer->id ) ] = esc_html( $customer->name . ' (' . $customer->email . ')' );
+			foreach ( $donors as $donor ) {
+				$options[ absint( $donor->id ) ] = esc_html( $donor->name . ' (' . $donor->email . ')' );
 			}
 		} else {
 			$options[0] = esc_html__( 'No donors found.', 'give' );
@@ -195,19 +206,16 @@ class Give_HTML_Elements {
 		if ( ! empty( $args['selected'] ) ) {
 
 			// If a selected customer has been specified, we need to ensure it's in the initial list of customers displayed.
-
 			if ( ! array_key_exists( $args['selected'], $options ) ) {
 
-				$customer = new Give_Customer( $args['selected'] );
+				$donor = new Give_Donor( $args['selected'] );
 
-				if ( $customer ) {
+				if ( $donor ) {
 
-					$options[ absint( $args['selected'] ) ] = esc_html( $customer->name . ' (' . $customer->email . ')' );
+					$options[ absint( $args['selected'] ) ] = esc_html( $donor->name . ' (' . $donor->email . ')' );
 
 				}
-
 			}
-
 		}
 
 		$output = $this->select( array(
@@ -219,7 +227,8 @@ class Give_HTML_Elements {
 			'multiple'         => $args['multiple'],
 			'chosen'           => $args['chosen'],
 			'show_option_all'  => false,
-			'show_option_none' => false
+			'show_option_none' => false,
+			'data'             => $args['data'],
 		) );
 
 		return $output;
@@ -247,16 +256,13 @@ class Give_HTML_Elements {
 			$options[ absint( $category->term_id ) ] = esc_html( $category->name );
 		}
 
-		$output = $this->select( wp_parse_args(
-			$args,
-			array(
-				'name'             => $name,
-				'selected'         => $selected,
-				'options'          => $options,
-				'show_option_all'  => esc_html__( 'All Categories', 'give' ),
-				'show_option_none' => false
-			)
-		) );
+		$output = $this->select( wp_parse_args( $args, array(
+			'name'             => $name,
+			'selected'         => $selected,
+			'options'          => $options,
+			'show_option_all'  => esc_html__( 'All Categories', 'give' ),
+			'show_option_none' => false,
+		) ) );
 
 		return $output;
 	}
@@ -283,16 +289,13 @@ class Give_HTML_Elements {
 			$options[ absint( $tag->term_id ) ] = esc_html( $tag->name );
 		}
 
-		$output = $this->select( wp_parse_args(
-			$args,
-			array(
-				'name'             => $name,
-				'selected'         => $selected,
-				'options'          => $options,
-				'show_option_all'  => esc_html__( 'All Tags', 'give' ),
-				'show_option_none' => false,
-			)
-		) );
+		$output = $this->select( wp_parse_args( $args, array(
+			'name'             => $name,
+			'selected'         => $selected,
+			'options'          => $options,
+			'show_option_all'  => esc_html__( 'All Tags', 'give' ),
+			'show_option_none' => false,
+		) ) );
 
 		return $output;
 	}
@@ -329,7 +332,7 @@ class Give_HTML_Elements {
 			'selected'         => $selected,
 			'options'          => $options,
 			'show_option_all'  => false,
-			'show_option_none' => false
+			'show_option_none' => false,
 		) );
 
 		return $output;
@@ -363,7 +366,7 @@ class Give_HTML_Elements {
 			'selected'         => $selected,
 			'options'          => $options,
 			'show_option_all'  => false,
-			'show_option_none' => false
+			'show_option_none' => false,
 		) );
 
 		return $output;
@@ -392,11 +395,19 @@ class Give_HTML_Elements {
 			'placeholder'      => null,
 			'multiple'         => false,
 			'select_atts'      => false,
-			'show_option_all'  => esc_html__( 'All', 'give' ),
-			'show_option_none' => esc_html__( 'None', 'give' )
+			'show_option_all'  => __( 'All', 'give' ),
+			'show_option_none' => __( 'None', 'give' ),
+			'data'             => array(),
+			'readonly'         => false,
+			'disabled'         => false,
 		);
 
 		$args = wp_parse_args( $args, $defaults );
+
+		$data_elements = '';
+		foreach ( $args['data'] as $key => $value ) {
+			$data_elements .= ' data-' . esc_attr( $key ) . '="' . esc_attr( $value ) . '"';
+		}
 
 		if ( $args['multiple'] ) {
 			$multiple = ' MULTIPLE';
@@ -414,8 +425,7 @@ class Give_HTML_Elements {
 			$placeholder = '';
 		}
 
-
-		$output = '<select name="' . esc_attr( $args['name'] ) . '" id="' . esc_attr( sanitize_key( str_replace( '-', '_', $args['id'] ) ) ) . '" class="give-select ' . esc_attr( $args['class'] ) . '"' . $multiple . ' ' . $args['select_atts'] . ' data-placeholder="' . $placeholder . '">';
+		$output = '<select name="' . esc_attr( $args['name'] ) . '" id="' . esc_attr( sanitize_key( str_replace( '-', '_', $args['id'] ) ) ) . '" class="give-select ' . esc_attr( $args['class'] ) . '"' . $multiple . ' ' . $args['select_atts'] . ' data-placeholder="' . $placeholder . '"' . $data_elements . '>';
 
 		if ( $args['show_option_all'] ) {
 			if ( $args['multiple'] ) {
@@ -473,8 +483,8 @@ class Give_HTML_Elements {
 			'class'   => 'give-checkbox',
 			'options' => array(
 				'disabled' => false,
-				'readonly' => false
-			)
+				'readonly' => false,
+			),
 		);
 
 		$args = wp_parse_args( $args, $defaults );
@@ -504,7 +514,7 @@ class Give_HTML_Elements {
 	 * @return string      The text field.
 	 */
 	public function text( $args = array() ) {
-		// Backwards compatibility
+		// Backwards compatibility.
 		if ( func_num_args() > 1 ) {
 			$args = func_get_args();
 
@@ -523,7 +533,7 @@ class Give_HTML_Elements {
 			'class'        => 'regular-text',
 			'disabled'     => false,
 			'autocomplete' => '',
-			'data'         => false
+			'data'         => false,
 		);
 
 		$args = wp_parse_args( $args, $defaults );
@@ -597,7 +607,7 @@ class Give_HTML_Elements {
 			'label'    => null,
 			'desc'     => null,
 			'class'    => 'large-text',
-			'disabled' => false
+			'disabled' => false,
 		);
 
 		$args = wp_parse_args( $args, $defaults );
@@ -637,27 +647,70 @@ class Give_HTML_Elements {
 	public function ajax_user_search( $args = array() ) {
 
 		$defaults = array(
-			'name'         => 'user_id',
-			'value'        => null,
-			'placeholder'  => esc_attr__( 'Enter username', 'give' ),
-			'label'        => null,
-			'desc'         => null,
-			'class'        => '',
-			'disabled'     => false,
-			'autocomplete' => 'off',
-			'data'         => false
+			'name'        => 'users',
+			'id'          => 'users',
+			'class'       => 'give-ajax-user-search',
+			'multiple'    => false,
+			'selected'    => 0,
+			'chosen'      => true,
+			'number'      => 30,
+			'select_atts' => '',
+			'placeholder' => __( 'Select a user', 'give' ),
+			'data'        => array(
+				'search-type' => 'user',
+			),
 		);
 
 		$args = wp_parse_args( $args, $defaults );
 
-		$args['class'] = 'give-ajax-user-search ' . $args['class'];
+		// Set initial args.
+		$get_users_args = array(
+			'number' => $args['number'],
+		);
 
-		$output = '<span class="give_user_search_wrap">';
-		$output .= $this->text( $args );
-		$output .= '<span class="give_user_search_results hidden"><a class="give-ajax-user-cancel" aria-label="' . esc_attr__( 'Cancel', 'give' ) . '" href="#">x</a><span></span></span>';
-		$output .= '</span>';
+		// Ensure selected user is not included in initial query.
+		// This is because sites with many users, it's not a guarantee the selected user will be returned.
+		if ( ! empty( $args['selected'] ) ) {
+			$get_users_args['exclude'] = $args['selected'];
+		}
+
+		// Initial users array.
+		$users = apply_filters( 'give_ajax_user_search_initial_results', get_users( $get_users_args ), $args );
+
+		// Now add the selected user to the $users array if the arg is present.
+		if ( ! empty( $args['selected'] ) ) {
+			$selected_user =  apply_filters( 'give_ajax_user_search_selected_results', get_users( "include={$args['selected']}" ), $args );;
+			$users         = array_merge( $users, $selected_user );
+		}
+
+		$options = array();
+
+		if ( $users ) {
+			$options[0] = $args['placeholder'];
+			foreach ( $users as $user ) {
+				$options[ absint( $user->ID ) ] = esc_html( $user->user_login . ' (' . $user->user_email . ')' );
+			}
+		} else {
+			$options[0] = __( 'No users found.', 'give' );
+		}
+
+		$output = $this->select( array(
+			'name'             => $args['name'],
+			'selected'         => $args['selected'],
+			'id'               => $args['id'],
+			'class'            => $args['class'],
+			'options'          => $options,
+			'chosen'           => $args['chosen'],
+			'multiple'         => $args['multiple'],
+			'placeholder'      => $args['placeholder'],
+			'select_atts'      => $args['select_atts'],
+			'show_option_all'  => false,
+			'show_option_none' => false,
+			'data'             => $args['data'],
+		) );
 
 		return $output;
+
 	}
 
 }

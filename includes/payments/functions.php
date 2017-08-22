@@ -41,7 +41,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @type string $meta_key Custom field key. Default is null.
  * }
  *
- * @return object $payments Payments retrieved from the database
+ * @return array $payments Payments retrieved from the database
  */
 function give_get_payments( $args = array() ) {
 
@@ -114,7 +114,7 @@ function give_get_payment_by( $field = '', $value = '' ) {
 
 		default:
 			return false;
-	}
+	}// End switch().
 
 	if ( $payment ) {
 		return $payment;
@@ -168,7 +168,6 @@ function give_insert_payment( $payment_data = array() ) {
 	$args = array(
 		'price'    => $payment->total,
 		'price_id' => $payment->price_id,
-		'fees'     => isset( $payment_data['fees'] ) ? $payment_data['fees'] : array(),
 	);
 
 	$payment->add_donation( $payment->form_id, $args );
@@ -184,9 +183,6 @@ function give_insert_payment( $payment_data = array() ) {
 		$payment->number = give_format_payment_number( $number );
 		update_option( 'give_last_payment_number', $number );
 	}
-
-	// Clear the user's donation cache.
-	delete_transient( 'give_user_' . $payment_data['user_info']['id'] . '_purchases' );
 
 	// Save payment.
 	$payment->save();
@@ -263,9 +259,15 @@ function give_create_payment( $payment_data ) {
  */
 function give_update_payment_status( $payment_id, $new_status = 'publish' ) {
 
-	$payment         = new Give_Payment( $payment_id );
-	$payment->status = $new_status;
-	$updated         = $payment->save();
+	$updated = false;
+	$payment = new Give_Payment( $payment_id );
+
+	if( $payment && $payment->ID > 0 ) {
+
+		$payment->status = $new_status;
+		$updated = $payment->save();
+
+	}
 
 	return $updated;
 }
@@ -277,42 +279,43 @@ function give_update_payment_status( $payment_id, $new_status = 'publish' ) {
  * @since  1.0
  * @global      $give_logs
  *
- * @param  int  $payment_id      Payment ID (default: 0).
- * @param  bool $update_customer If we should update the customer stats (default:true).
+ * @param  int  $payment_id   Payment ID (default: 0).
+ * @param  bool $update_donor If we should update the donor stats (default:true).
  *
  * @return void
  */
-function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
+function give_delete_donation( $payment_id = 0, $update_donor = true ) {
 	global $give_logs;
 
-	$payment     = new Give_Payment( $payment_id );
-	$amount      = give_get_payment_amount( $payment_id );
-	$status      = $payment->post_status;
-	$customer_id = give_get_payment_customer_id( $payment_id );
-	$customer    = new Give_Customer( $customer_id );
+	$payment  = new Give_Payment( $payment_id );
+	$amount   = give_get_payment_amount( $payment_id );
+	$status   = $payment->post_status;
+	$donor_id = give_get_payment_donor_id( $payment_id );
+	$donor    = new Give_Donor( $donor_id );
 
 	// Only undo donations that aren't these statuses.
-	$dont_undo_statuses = apply_filters( 'give_undo_purchase_statuses', array(
+	$dont_undo_statuses = apply_filters( 'give_undo_donation_statuses', array(
 		'pending',
 		'cancelled',
 	) );
 
 	if ( ! in_array( $status, $dont_undo_statuses ) ) {
-		give_undo_purchase( false, $payment_id );
+		give_undo_donation( $payment_id );
 	}
 
 	if ( $status == 'publish' ) {
 
 		// Only decrease earnings if they haven't already been decreased (or were never increased for this payment).
 		give_decrease_total_earnings( $amount );
-		// Clear the This Month earnings (this_monththis_month is NOT a typo).
-		delete_transient( md5( 'give_earnings_this_monththis_month' ) );
 
-		if ( $customer->id && $update_customer ) {
+		// @todo: Refresh only range related stat cache
+		give_delete_donation_stats();
+
+		if ( $donor->id && $update_donor ) {
 
 			// Decrement the stats for the donor.
-			$customer->decrease_purchase_count();
-			$customer->decrease_value( $amount );
+			$donor->decrease_donation_count();
+			$donor->decrease_value( $amount );
 
 		}
 	}
@@ -326,10 +329,10 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
 	 */
 	do_action( 'give_payment_delete', $payment_id );
 
-	if ( $customer->id && $update_customer ) {
+	if ( $donor->id && $update_donor ) {
 
 		// Remove the payment ID from the donor.
-		$customer->remove_payment( $payment_id );
+		$donor->remove_payment( $payment_id );
 
 	}
 
@@ -337,16 +340,12 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
 	wp_delete_post( $payment_id, true );
 
 	// Remove related sale log entries.
-	$give_logs->delete_logs(
-		null,
-		'sale',
+	$give_logs->delete_logs( null, 'sale', array(
 		array(
-			array(
-				'key'   => '_give_log_payment_id',
-				'value' => $payment_id,
-			),
-		)
-	);
+			'key'   => '_give_log_payment_id',
+			'value' => $payment_id,
+		),
+	) );
 
 	/**
 	 * Fires after payment deleted.
@@ -366,17 +365,11 @@ function give_delete_purchase( $payment_id = 0, $update_customer = true ) {
  *
  * @since  1.0
  *
- * @param  int|bool $form_id    Form ID (default: false).
- * @param  int      $payment_id Payment ID.
+ * @param  int $payment_id Payment ID.
  *
  * @return void
  */
-function give_undo_purchase( $form_id = false, $payment_id ) {
-
-	if ( ! empty( $form_id ) ) {
-		$form_id = false;
-		_give_deprected_argument( 'form_id', 'give_undo_purchase', '1.5' );
-	}
+function give_undo_donation( $payment_id ) {
 
 	$payment = new Give_Payment( $payment_id );
 
@@ -386,10 +379,10 @@ function give_undo_purchase( $form_id = false, $payment_id ) {
 		give_decrease_earnings( $payment->form_id, $payment->total );
 	}
 
-	$maybe_decrease_sales = apply_filters( 'give_decrease_sales_on_undo', true, $payment, $payment->form_id );
-	if ( true === $maybe_decrease_sales ) {
+	$maybe_decrease_donations = apply_filters( 'give_decrease_donations_on_undo', true, $payment, $payment->form_id );
+	if ( true === $maybe_decrease_donations ) {
 		// Decrease donation count.
-		give_decrease_purchase_count( $payment->form_id );
+		give_decrease_donation_count( $payment->form_id );
 	}
 
 }
@@ -422,7 +415,7 @@ function give_count_payments( $args = array() ) {
 
 	$select = 'SELECT p.post_status,count( * ) AS num_posts';
 	$join   = '';
-	$where  = "WHERE p.post_type = 'give_payment'";
+	$where  = "WHERE p.post_type = 'give_payment' AND p.post_status IN ('". implode( "','", give_get_payment_status_keys() ). "')";
 
 	// Count payments for a specific user.
 	if ( ! empty( $args['user'] ) ) {
@@ -442,6 +435,12 @@ function give_count_payments( $args = array() ) {
 				AND m.meta_key = '_give_payment_user_{$field}'
 				AND m.meta_value = '{$args['user']}'";
 		}
+	} elseif ( ! empty( $args['donor'] ) ) {
+
+		$join  = "LEFT JOIN $wpdb->postmeta m ON (p.ID = m.post_id)";
+		$where .= "
+			AND m.meta_key = '_give_payment_customer_id'
+			AND m.meta_value = '{$args['donor']}'";
 
 		// Count payments for a search.
 	} elseif ( ! empty( $args['s'] ) ) {
@@ -457,44 +456,40 @@ function give_count_payments( $args = array() ) {
 			$join  = "LEFT JOIN $wpdb->postmeta m ON (p.ID = m.post_id)";
 			$where .= $wpdb->prepare( '
                 AND m.meta_key = %s
-                AND m.meta_value = %s',
-				$field,
-				$args['s']
-			);
+                AND m.meta_value = %s', $field, $args['s'] );
 
 		} elseif ( '#' == substr( $args['s'], 0, 1 ) ) {
 
 			$search = str_replace( '#:', '', $args['s'] );
 			$search = str_replace( '#', '', $search );
 
-			$select = 'SELECT p2.post_status,count( * ) AS num_posts ';
-			$join   = "LEFT JOIN $wpdb->postmeta m ON m.meta_key = '_give_log_payment_id' AND m.post_id = p.ID ";
-			$join   .= "INNER JOIN $wpdb->posts p2 ON m.meta_value = p2.ID ";
-			$where  = "WHERE p.post_type = 'give_log' ";
-			$where  .= $wpdb->prepare( 'AND p.post_parent = %d} ', $search );
+			$select = 'SELECT p.post_status,count( * ) AS num_posts ';
+			$join   = '';
+			$where  = $wpdb->prepare( 'WHERE p.post_type=%s  AND p.ID = %d ', 'give_payment', $search );
 
 		} elseif ( is_numeric( $args['s'] ) ) {
 
 			$join  = "LEFT JOIN $wpdb->postmeta m ON (p.ID = m.post_id)";
 			$where .= $wpdb->prepare( "
 				AND m.meta_key = '_give_payment_user_id'
-				AND m.meta_value = %d",
-				$args['s']
-			);
+				AND m.meta_value = %d", $args['s'] );
 
 		} else {
 			$search = $wpdb->esc_like( $args['s'] );
 			$search = '%' . $search . '%';
 
 			$where .= $wpdb->prepare( 'AND ((p.post_title LIKE %s) OR (p.post_content LIKE %s))', $search, $search );
-		}
-	}
+		}// End if().
+	}// End if().
 
 	if ( ! empty( $args['form_id'] ) && is_numeric( $args['form_id'] ) ) {
 
-		$where .= $wpdb->prepare( ' AND p.post_parent = %d', $args['form_id'] );
-
+		$join  = "LEFT JOIN $wpdb->postmeta m ON (p.ID = m.post_id)";
+		$where .= $wpdb->prepare( '
+                AND m.meta_key = %s
+                AND m.meta_value = %s', '_give_payment_form_id', $args['form_id'] );
 	}
+
 	// Limit payments count by date.
 	if ( ! empty( $args['start-date'] ) && false !== strpos( $args['start-date'], '/' ) ) {
 
@@ -511,7 +506,7 @@ function give_count_payments( $args = array() ) {
 
 		}
 
-		// Fixes an issue with the payments list table counts when no end date is specified (partiy with stats class).
+		// Fixes an issue with the payments list table counts when no end date is specified (with stats class).
 		if ( empty( $args['end-date'] ) ) {
 			$args['end-date'] = $args['start-date'];
 		}
@@ -604,13 +599,23 @@ function give_check_for_existing_payment( $payment_id ) {
  *
  * @since 1.0
  *
- * @param WP_Post|Give_Payment $payment      Payment object.
+ * @param WP_Post|Give_Payment|int $payment      Payment object or payment ID.
  * @param bool                 $return_label Whether to return the translated status label
  *                                           instead of status value. Default false.
  *
  * @return bool|mixed True if payment status exists, false otherwise.
  */
 function give_get_payment_status( $payment, $return_label = false ) {
+
+	if( is_numeric( $payment ) ) {
+
+		$payment = new Give_Payment( $payment );
+
+		if( ! $payment->ID > 0 ) {
+			return false;
+		}
+
+	}
 
 	if ( ! is_object( $payment ) || ! isset( $payment->post_status ) ) {
 		return false;
@@ -622,7 +627,7 @@ function give_get_payment_status( $payment, $return_label = false ) {
 		return false;
 	}
 
-	// Get payment object if no already given.
+	// Get payment object if not already given.
 	$payment = $payment instanceof Give_Payment ? $payment : new Give_Payment( $payment->ID );
 
 	if ( array_key_exists( $payment->status, $statuses ) ) {
@@ -657,6 +662,7 @@ function give_get_payment_statuses() {
 		'cancelled'   => __( 'Cancelled', 'give' ),
 		'abandoned'   => __( 'Abandoned', 'give' ),
 		'preapproval' => __( 'Pre-Approved', 'give' ),
+		'processing'  => __( 'Processing', 'give' ),
 		'revoked'     => __( 'Revoked', 'give' ),
 	);
 
@@ -723,12 +729,12 @@ function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour
 	}
 
 	if ( false === $earnings ) {
-		$sales    = get_posts( $args );
-		$earnings = 0;
-		if ( $sales ) {
-			$sales = implode( ',', $sales );
+		$donations = get_posts( $args );
+		$earnings  = 0;
+		if ( $donations ) {
+			$donations = implode( ',', $donations );
 
-			$earnings = $wpdb->get_var( "SELECT SUM(meta_value) FROM $wpdb->postmeta WHERE meta_key = '_give_payment_total' AND post_id IN ({$sales})" );
+			$earnings = $wpdb->get_var( "SELECT SUM(meta_value) FROM $wpdb->postmeta WHERE meta_key = '_give_payment_total' AND post_id IN ({$donations})" );
 
 		}
 		// Cache the results for one hour.
@@ -790,7 +796,7 @@ function give_get_sales_by_date( $day = null, $month_num = null, $year = null, $
 
 	$args = apply_filters( 'give_get_sales_by_date_args', $args );
 
-	$key  = Give_Cache::get_key( 'give_stats', $args );
+	$key = Give_Cache::get_key( 'give_stats', $args );
 
 	if ( ! empty( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'give-refresh-reports' ) ) {
 		$count = false;
@@ -799,8 +805,8 @@ function give_get_sales_by_date( $day = null, $month_num = null, $year = null, $
 	}
 
 	if ( false === $count ) {
-		$sales = new WP_Query( $args );
-		$count = (int) $sales->post_count;
+		$donations = new WP_Query( $args );
+		$count     = (int) $donations->post_count;
 		// Cache the results for one hour.
 		Give_Cache::set( $key, $count, HOUR_IN_SECONDS );
 	}
@@ -837,9 +843,9 @@ function give_is_payment_complete( $payment_id ) {
  *
  * @since  1.0
  *
- * @return int $count Total sales.
+ * @return int $count Total number of donations.
  */
-function give_get_total_sales() {
+function give_get_total_donations() {
 
 	$payments = give_count_payments();
 
@@ -851,54 +857,46 @@ function give_get_total_sales() {
  *
  * @since  1.0
  *
+ * @param bool $recalculate Recalculate earnings forcefully.
+ *
  * @return float $total Total earnings.
  */
-function give_get_total_earnings() {
+function give_get_total_earnings( $recalculate = false ) {
 
-	$total = get_option( 'give_earnings_total', false );
+	$total = get_option( 'give_earnings_total', 0 );
 
-	// If no total stored in DB, use old method of calculating total earnings.
-	if ( false === $total ) {
-
+	// Calculate total earnings.
+	if ( ! $total || $recalculate ) {
 		global $wpdb;
 
-		$total = get_transient( 'give_earnings_total' );
+		$total = (float) 0;
 
-		if ( false === $total ) {
+		$args = apply_filters( 'give_get_total_earnings_args', array(
+			'offset' => 0,
+			'number' => - 1,
+			'status' => array( 'publish' ),
+			'fields' => 'ids',
+		) );
 
-			$total = (float) 0;
+		$payments = give_get_payments( $args );
+		if ( $payments ) {
 
-			$args = apply_filters( 'give_get_total_earnings_args', array(
-				'offset' => 0,
-				'number' => - 1,
-				'status' => array( 'publish' ),
-				'fields' => 'ids',
-			) );
-
-			$payments = give_get_payments( $args );
-			if ( $payments ) {
-
-				/**
-				 * If performing a donation, we need to skip the very last payment in the database,
-				 * since it calls give_increase_total_earnings() on completion,
-				 * which results in duplicated earnings for the very first donation.
-				 */
-				if ( did_action( 'give_update_payment_status' ) ) {
-					array_pop( $payments );
-				}
-
-				if ( ! empty( $payments ) ) {
-					$payments = implode( ',', $payments );
-					$total    += $wpdb->get_var( "SELECT SUM(meta_value) FROM $wpdb->postmeta WHERE meta_key = '_give_payment_total' AND post_id IN({$payments})" );
-				}
+			/**
+			 * If performing a donation, we need to skip the very last payment in the database,
+			 * since it calls give_increase_total_earnings() on completion,
+			 * which results in duplicated earnings for the very first donation.
+			 */
+			if ( did_action( 'give_update_payment_status' ) ) {
+				array_pop( $payments );
 			}
 
-			// Cache results for 1 day. This cache is cleared automatically when a payment is made.
-			set_transient( 'give_earnings_total', $total, 86400 );
-
-			// Store the total for the first time.
-			update_option( 'give_earnings_total', $total );
+			if ( ! empty( $payments ) ) {
+				$payments = implode( ',', $payments );
+				$total    += $wpdb->get_var( "SELECT SUM(meta_value) FROM $wpdb->postmeta WHERE meta_key = '_give_payment_total' AND post_id IN({$payments})" );
+			}
 		}
+
+		update_option( 'give_earnings_total', $total, 'no' );
 	}
 
 	if ( $total < 0 ) {
@@ -986,7 +984,7 @@ function give_update_payment_meta( $payment_id = 0, $meta_key = '', $meta_value 
  *
  * @param int $payment_id Payment ID.
  *
- * @return string $user_info User Info Meta Values.
+ * @return array $user_info User Info Meta Values.
  */
 function give_get_payment_meta_user_info( $payment_id ) {
 	$payment = new Give_Payment( $payment_id );
@@ -1058,15 +1056,15 @@ function give_get_payment_user_id( $payment_id ) {
 }
 
 /**
- * Get the donor ID associated with a payment
+ * Get the donor ID associated with a payment.
  *
  * @since 1.0
  *
  * @param int $payment_id Payment ID.
  *
- * @return int $customer_id Customer ID.
+ * @return int $payment->customer_id Donor ID.
  */
-function give_get_payment_customer_id( $payment_id ) {
+function give_get_payment_donor_id( $payment_id ) {
 	$payment = new Give_Payment( $payment_id );
 
 	return $payment->customer_id;
@@ -1260,7 +1258,7 @@ function give_get_next_payment_number() {
 			$number           = $start;
 			$increment_number = false;
 		}
-	}
+	}// End if().
 
 	$increment_number = apply_filters( 'give_increment_payment_number', $increment_number, $number );
 
@@ -1318,7 +1316,7 @@ function give_remove_payment_prefix_postfix( $number ) {
 function give_payment_amount( $payment_id = 0 ) {
 	$amount = give_get_payment_amount( $payment_id );
 
-	return give_currency_filter( give_format_amount( $amount ), give_get_payment_currency_code( $payment_id ) );
+	return give_currency_filter( give_format_amount( $amount, array( 'sanitize' => false ) ), give_get_payment_currency_code( $payment_id ) );
 }
 
 /**
@@ -1329,7 +1327,7 @@ function give_payment_amount( $payment_id = 0 ) {
  *
  * @param int $payment_id Payment ID.
  *
- * @return mixed|void
+ * @return mixed
  */
 function give_get_payment_amount( $payment_id ) {
 
@@ -1341,7 +1339,7 @@ function give_get_payment_amount( $payment_id ) {
 /**
  * Payment Subtotal
  *
- * Retrieves subtotal for payment (this is the amount before fees) and then returns a full formatted amount. This
+ * Retrieves subtotal for payment and then returns a full formatted amount. This
  * function essentially calls give_get_payment_subtotal()
  *
  * @since 1.5
@@ -1355,13 +1353,13 @@ function give_get_payment_amount( $payment_id ) {
 function give_payment_subtotal( $payment_id = 0 ) {
 	$subtotal = give_get_payment_subtotal( $payment_id );
 
-	return give_currency_filter( give_format_amount( $subtotal ), give_get_payment_currency_code( $payment_id ) );
+	return give_currency_filter( give_format_amount( $subtotal , array( 'sanitize' => false ) ), give_get_payment_currency_code( $payment_id ) );
 }
 
 /**
  * Get Payment Subtotal
  *
- * Retrieves subtotal for payment (this is the amount before fees) and then returns a non formatted amount.
+ * Retrieves subtotal for payment and then returns a non formatted amount.
  *
  * @since 1.5
  *
@@ -1370,25 +1368,9 @@ function give_payment_subtotal( $payment_id = 0 ) {
  * @return float $subtotal Subtotal for payment (non formatted).
  */
 function give_get_payment_subtotal( $payment_id = 0 ) {
-	$payment = new G_Payment( $payment_id );
-
-	return $payment->subtotal;
-}
-
-/**
- * Retrieves arbitrary fees for the payment
- *
- * @since 1.5
- *
- * @param int    $payment_id Payment ID.
- * @param string $type       Fee type.
- *
- * @return mixed array if payment fees found, false otherwise.
- */
-function give_get_payment_fees( $payment_id = 0, $type = 'all' ) {
 	$payment = new Give_Payment( $payment_id );
 
-	return $payment->get_fees( $type );
+	return $payment->subtotal;
 }
 
 /**
@@ -1433,7 +1415,7 @@ function give_set_payment_transaction_id( $payment_id = 0, $transaction_id = '' 
  * @since 1.0
  * @global object $wpdb Used to query the database using the WordPress Database API.
  *
- * @param string  $key  the key to search for.
+ * @param string $key  the key to search for.
  *
  * @return int $purchase Donation ID.
  */
@@ -1456,7 +1438,7 @@ function give_get_purchase_id_by_key( $key ) {
  * @since 1.3
  * @global object $wpdb Used to query the database using the WordPress Database API.
  *
- * @param string  $key  The transaction ID to search for.
+ * @param string $key  The transaction ID to search for.
  *
  * @return int $purchase Donation ID.
  */
@@ -1491,7 +1473,11 @@ function give_get_payment_notes( $payment_id = 0, $search = '' ) {
 	remove_action( 'pre_get_comments', 'give_hide_payment_notes', 10 );
 	remove_filter( 'comments_clauses', 'give_hide_payment_notes_pre_41', 10 );
 
-	$notes = get_comments( array( 'post_id' => $payment_id, 'order' => 'ASC', 'search' => $search ) );
+	$notes = get_comments( array(
+		'post_id' => $payment_id,
+		'order' => 'ASC',
+		'search' => $search,
+	) );
 
 	add_action( 'pre_get_comments', 'give_hide_payment_notes', 10 );
 	add_filter( 'comments_clauses', 'give_hide_payment_notes_pre_41', 10, 2 );
@@ -1624,9 +1610,7 @@ function give_get_payment_note_html( $note, $payment_id = 0 ) {
 		'give-action' => 'delete_payment_note',
 		'note_id'     => $note->comment_ID,
 		'payment_id'  => $payment_id,
-	) ),
-		'give_delete_payment_note_' . $note->comment_ID
-	);
+	) ), 'give_delete_payment_note_' . $note->comment_ID );
 
 	$note_html = '<div class="give-payment-note" id="give-payment-note-' . $note->comment_ID . '">';
 	$note_html .= '<p>';
@@ -1819,10 +1803,10 @@ function give_get_payment_form_title( $payment_meta, $only_level = false, $separ
 		$form_title = '';
 	}
 
-	//If multi-level, append to the form title.
+	// If multi-level, append to the form title.
 	if ( give_has_variable_prices( $form_id ) ) {
 
-		//Only add separator if there is a form title.
+		// Only add separator if there is a form title.
 		if ( ! empty( $form_title ) ) {
 			$form_title .= ' ' . $separator . ' ';
 		}
@@ -1830,7 +1814,7 @@ function give_get_payment_form_title( $payment_meta, $only_level = false, $separ
 		$form_title .= '<span class="donation-level-text-wrap">';
 
 		if ( $price_id == 'custom' ) {
-			$custom_amount_text = get_post_meta( $form_id, '_give_custom_amount_text', true );
+			$custom_amount_text = give_get_meta( $form_id, '_give_custom_amount_text', true );
 			$form_title         .= ! empty( $custom_amount_text ) ? $custom_amount_text : __( 'Custom Amount', 'give' );
 		} else {
 			$form_title .= give_get_price_option_name( $form_id, $price_id );
@@ -1860,11 +1844,11 @@ function give_get_price_id( $form_id, $price ) {
 
 	if ( give_has_variable_prices( $form_id ) ) {
 
-		$levels = maybe_unserialize( get_post_meta( $form_id, '_give_donation_levels', true ) );
+		$levels = maybe_unserialize( give_get_meta( $form_id, '_give_donation_levels', true ) );
 
 		foreach ( $levels as $level ) {
 
-			$level_amount = (float) give_sanitize_amount( $level['_give_amount'] );
+			$level_amount = (float) give_maybe_sanitize_amount( $level['_give_amount'] );
 
 			// Check that this indeed the recurring price.
 			if ( $level_amount == $price ) {
@@ -1890,7 +1874,7 @@ function give_get_price_id( $form_id, $price ) {
  * @param array $args Arguments for form dropdown.
  * @param bool  $echo This parameter decides if print form dropdown html output or not.
  *
- * @return string|void
+ * @return string
  */
 function give_get_form_dropdown( $args = array(), $echo = false ) {
 	$form_dropdown_html = Give()->html->forms_dropdown( $args );
@@ -1936,11 +1920,13 @@ function give_get_form_variable_price_dropdown( $args = array(), $echo = false )
 
 	// Get variable price and ID from variable price array.
 	foreach ( $variable_prices as $variable_price ) {
-		$variable_price_options[ $variable_price['_give_id']['level_id'] ] = ! empty( $variable_price['_give_text'] ) ? $variable_price['_give_text'] : give_currency_filter( give_format_amount( $variable_price['_give_amount'] ) );
+		$variable_price_options[ $variable_price['_give_id']['level_id'] ] = ! empty( $variable_price['_give_text'] ) ? $variable_price['_give_text'] : give_currency_filter( give_format_amount( $variable_price['_give_amount'], array( 'sanitize' => false ) ) );
 	}
 
 	// Update options.
-	$args = array_merge( $args, array( 'options' => $variable_price_options ) );
+	$args = array_merge( $args, array(
+		'options' => $variable_price_options,
+	) );
 
 	// Generate select html.
 	$form_dropdown_html = Give()->html->select( $args );
@@ -1966,14 +1952,14 @@ function give_get_form_variable_price_dropdown( $args = array(), $echo = false )
  */
 function give_get_payment_meta_price_id( $payment_meta ) {
 
-	if(isset($payment_meta['give_price_id'])) {
-		$price_id =  $payment_meta['give_price_id'];
-	} elseif(isset($payment_meta['price_id'])) {
-		$price_id =  $payment_meta['price_id'];
+	if ( isset( $payment_meta['give_price_id'] ) ) {
+		$price_id = $payment_meta['give_price_id'];
+	} elseif ( isset( $payment_meta['price_id'] ) ) {
+		$price_id = $payment_meta['price_id'];
 	} else {
 		$price_id = give_get_price_id( $payment_meta['give_form_id'], $payment_meta['price'] );
 	}
 
-	return apply_filters('give_get_payment_meta_price_id', $price_id);
+	return apply_filters( 'give_get_payment_meta_price_id', $price_id );
 
 }

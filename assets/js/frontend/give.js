@@ -9,6 +9,7 @@
  */
 
 var give_scripts;
+var give_float_labels;
 
 jQuery(function ($) {
 
@@ -26,31 +27,9 @@ jQuery(function ($) {
 	});
 
 	doc.on('give_checkout_billing_address_updated', function (ev, response, form_id) {
-
-		var form = $('form#' + form_id);
-
-		if (form.hasClass('float-labels-enabled')) {
-
-			var wrap = form.find('#give-card-state-wrap');
-			var el = wrap.find('#card_state');
-			var label = wrap.find('label[for="card_state"]');
-
-			label = label.length ? label.text().replace(/[*:]/g, '').trim() : '';
-
-			if ('nostates' === response) {
-				// fix input
-				el.attr('placeholder', label).parent().removeClass('styled select');
-			} else {
-				// fix select
-				el.children().first().text(label);
-				el.parent().addClass('styled select');
-			}
-
-			el.parent().removeClass('is-active');
-
-			// Trigger float-labels
-			give_fl_trigger();
-		}
+		if (!$('form#' + form_id).hasClass('float-labels-enabled')) return;
+		// Trigger float-labels
+		give_fl_trigger();
 	});
 
 	// Reveal Btn which displays the checkout content
@@ -91,6 +70,22 @@ jQuery(function ($) {
 
 	});
 
+	// Auto hide frontend notices.
+	var give_notices = jQuery('.give_notice[data-auto-dismissible="1"]');
+	if( give_notices.length ){
+		give_notices.each(function( index, $notice ){
+			$notice = $( $notice );
+
+			// auto hide setting message in 5 seconds.
+			window.setTimeout(
+				function () {
+					$notice.slideUp();
+				},
+				$notice.data('dismiss-interval')
+			);
+		});
+	}
+
 });
 
 /**
@@ -106,6 +101,8 @@ function give_open_form_modal($form_wrap, $form) {
 	jQuery.magnificPopup.open({
 		mainClass   : give_global_vars.magnific_options.main_class,
 		closeOnBgClick : give_global_vars.magnific_options.close_on_bg_click,
+		fixedContentPos: true,
+		fixedBgPos: true,
 		items: {
 			src: $form,
 			type: 'inline'
@@ -165,8 +162,6 @@ function give_open_form_modal($form_wrap, $form) {
 					$mfp_content.addClass('give-responsive-mfp-content');
 				}
 
-
-
 				// Hide .give-hidden and .give-btn-modal  if admin only want to show only button.
 				if ($form_wrap.hasClass('give-display-button-only')) {
 					children = $form.children().not('.give-hidden, .give-btn-modal');
@@ -190,20 +185,15 @@ function give_open_form_modal($form_wrap, $form) {
  * Floating Labels Custom Events
  */
 function give_fl_trigger() {
-	var options = {
-		exclude: ['#give-amount, .give-select-level, .multiselect, .give-repeater-table input, input[type="url"]'],
-		customEvent: give_fl_custom_events
-	};
-	jQuery('.float-labels-enabled').floatlabels(options);
-}
-
-/**
- * Floating Labels Custom Events
- * @param el
- */
-function give_fl_custom_events(el) {
-	if (el.hasClass('card-number')) {
-		el.after('<span class="off card-type"/>');
+	if( give_float_labels instanceof FloatLabels ) {
+		give_float_labels.rebuild();
+	}
+	else {
+		give_float_labels = new FloatLabels( '.float-labels-enabled', {
+			exclude: '#give-amount, .give-select-level, [multiple]',
+			prioritize: 'placeholder',
+			style: 'give',
+		});
 	}
 }
 

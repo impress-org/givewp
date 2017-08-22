@@ -60,7 +60,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							'default' => 'disabled',
 							'options' => array(
 								'enabled'  => __( 'Yes, Remove all data', 'give' ),
-								'disabled' => __( 'No, keep my Give settings and donation data this time', 'give' ),
+								'disabled' => __( 'No, keep my Give settings and donation data', 'give' ),
 							)
 						),
 						array(

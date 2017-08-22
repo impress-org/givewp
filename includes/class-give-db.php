@@ -102,6 +102,11 @@ abstract class Give_DB {
 		/* @var WPDB $wpdb */
 		global $wpdb;
 
+		// Bailout.
+		if ( empty( $row_id ) ) {
+			return null;
+		}
+
 		return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $this->table_name WHERE $this->primary_key = %s LIMIT 1;", $row_id ) );
 	}
 
@@ -111,16 +116,22 @@ abstract class Give_DB {
 	 * @since  1.0
 	 * @access public
 	 *
-     * @param  int $column Column ID.
-     * @param  int $row_id Row ID.
-     *
-     * @return object
+	 * @param  int $column Column ID.
+	 * @param  int $row_id Row ID.
+	 *
+	 * @return object
 	 */
 	public function get_by( $column, $row_id ) {
-        /* @var WPDB $wpdb */
-        global $wpdb;
+		/* @var WPDB $wpdb */
+		global $wpdb;
+
+		// Bailout.
+		if ( empty( $column ) || empty( $row_id ) ) {
+			return null;
+		}
 
 		$column = esc_sql( $column );
+
 		return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $this->table_name WHERE $column = %s LIMIT 1;", $row_id ) );
 	}
 
@@ -129,17 +140,23 @@ abstract class Give_DB {
 	 *
 	 * @since  1.0
 	 * @access public
-     *
-     * @param  int $column Column ID.
-     * @param  int $row_id Row ID.
-     *
+	 *
+	 * @param  int $column Column ID.
+	 * @param  int $row_id Row ID.
+	 *
 	 * @return string      Column value.
 	 */
 	public function get_column( $column, $row_id ) {
-        /* @var WPDB $wpdb */
-        global $wpdb;
+		/* @var WPDB $wpdb */
+		global $wpdb;
+
+		// Bailout.
+		if ( empty( $column ) || empty( $row_id ) ) {
+			return null;
+		}
 
 		$column = esc_sql( $column );
+
 		return $wpdb->get_var( $wpdb->prepare( "SELECT $column FROM $this->table_name WHERE $this->primary_key = %s LIMIT 1;", $row_id ) );
 	}
 
@@ -158,6 +175,11 @@ abstract class Give_DB {
 	public function get_column_by( $column, $column_where, $column_value ) {
         /* @var WPDB $wpdb */
         global $wpdb;
+
+		// Bailout.
+		if ( empty( $column ) || empty( $column_where ) || empty( $column_value ) ) {
+			return null;
+		}
 
 		$column_where = esc_sql( $column_where );
 		$column       = esc_sql( $column );
@@ -325,4 +347,24 @@ abstract class Give_DB {
 		return $this->table_exists( $this->table_name );
 	}
 
+	/**
+	 * Register tables
+	 *
+	 * @since 1.8.9
+	 * @access public
+	 */
+	public function register_table() {
+		$current_version = get_option( $this->table_name . '_db_version' );
+		if ( ! $current_version || version_compare( $current_version, $this->version, '<' ) ) {
+			$this->create_table();
+		}
+	}
+
+	/**
+	 * Create table
+	 *
+	 * @since  1.8.9
+	 * @access public
+	 */
+	public function create_table(){}
 }

@@ -29,16 +29,175 @@ jQuery.noConflict();
 	 * Setup Pretty Chosen Select Fields
 	 */
 	var setup_chosen_give_selects = function () {
-		// Setup Chosen Selects
-		$('.give-select-chosen').chosen({
+		// Setup Chosen Selects.
+		var $give_chosen_containers = $('.give-select-chosen');
+
+		// Add loader with each input field.
+		$give_chosen_containers.on('chosen:ready', function () {
+			$(this).next('.chosen-container')
+				.find('input.chosen-search-input')
+				.after('<span class="spinner"></span>');
+		});
+
+		// No results returned from search trigger.
+		$give_chosen_containers.on('chosen:no_results', function () {
+			var $container     = $(this).next('.chosen-container'),
+				$no_results_li = $container.find('li.no-results'),
+				error_string   = '';
+
+			if ($container.hasClass('give-select-chosen-ajax') && $no_results_li.length) {
+				error_string = give_vars.chosen.ajax_search_msg.replace('{search_term}', '"' + $('input', $container).val() + '"');
+			} else {
+				error_string = give_vars.chosen.no_results_msg.replace('{search_term}', '"' + $('input', $container).val() + '"');
+			}
+
+			$no_results_li.html(error_string);
+
+		});
+
+		// Initiate chosen.
+		$give_chosen_containers.chosen({
 			inherit_select_classes   : true,
 			placeholder_text_single  : give_vars.one_option,
-			placeholder_text_multiple: give_vars.one_or_more_option
+			placeholder_text_multiple: give_vars.one_or_more_option,
 		});
 
 		// This fixes the Chosen box being 0px wide when the thickbox is opened
 		$('#post').on('click', '.give-thickbox', function () {
 			$('.give-select-chosen', '#choose-give-form').css('width', '100%');
+		});
+
+		// Variables for setting up the typing timer.
+		var typingTimer;               // Timer identifier
+		var doneTypingInterval = 342;  // Time in ms, Slow - 521ms, Moderate - 342ms, Fast - 300ms
+
+		// Replace options with search results
+		$(document.body).on('keyup', '.give-select.chosen-container .chosen-search input, .give-select.chosen-container .search-field input', function (e) {
+
+			var val           = $(this).val(),
+				$container    = $(this).closest('.give-select-chosen'),
+				select        = $container.prev(),
+				$search_field = $container.find('input[type="text"]'),
+				variations    = $container.hasClass('variations'),
+				lastKey       = e.which,
+				search_type   = 'give_forms_search';
+
+			// Detect if we have a defined search type, otherwise default to donation forms.
+			if ($container.prev().data('search-type')) {
+
+				// Don't trigger AJAX if this select has all options loaded.
+				if ('no_ajax' === select.data('search-type')) {
+					return;
+				}
+
+				search_type = 'give_' + select.data('search-type') + '_search';
+			}
+
+			// Don't fire if short or is a modifier key (shift, ctrl, apple command key, or arrow keys).
+			if (
+				val.length <= 3 ||
+				!search_type.length ||
+				(
+					(lastKey === 9) || // Tab
+					(lastKey === 13) || // Enter
+					(lastKey === 16) || // Shift
+					(lastKey === 17) || // Ctrl
+					(lastKey === 18) || // Alt
+					(lastKey === 19) || // Pause, Break
+					(lastKey === 20) || // CapsLock
+					(lastKey === 27) || // Esc
+					(lastKey === 33) || // Page Up
+					(lastKey === 34) || // Page Down
+					(lastKey === 35) || // End
+					(lastKey === 36) || // Home
+					(lastKey === 37) || // Left arrow
+					(lastKey === 38) || // Up arrow
+					(lastKey === 39) || // Right arrow
+					(lastKey === 40) || // Down arrow
+					(lastKey === 44) || // PrntScrn
+					(lastKey === 45) || // Insert
+					(lastKey === 144) || // NumLock
+					(lastKey === 145) || // ScrollLock
+					(lastKey === 91) || // WIN Key (Start)
+					(lastKey === 93) || // WIN Menu
+					(lastKey === 224) || // command key
+					(lastKey >= 112 && lastKey <= 123) // F1 to F12lastKey
+				)
+			) {
+				return;
+			}
+			clearTimeout(typingTimer);
+			$container.addClass('give-select-chosen-ajax');
+
+			typingTimer = setTimeout(
+				function () {
+					$.ajax({
+						type      : 'GET',
+						url       : ajaxurl,
+						data      : {
+							action: search_type,
+							s     : val
+						},
+						dataType  : 'json',
+						beforeSend: function () {
+							select.closest('ul.chosen-results').empty();
+							$search_field.prop('disabled', true);
+						},
+						success   : function (data) {
+
+							$container.removeClass('give-select-chosen-ajax');
+
+							// Remove all options but those that are selected.
+							$('option:not(:selected)', select).remove();
+
+							if (data.length) {
+								$.each(data, function (key, item) {
+									// Add any option that doesn't already exist.
+									if (!$('option[value="' + item.id + '"]', select).length) {
+										select.prepend('<option value="' + item.id + '">' + item.name + '</option>');
+									}
+								});
+
+								// Trigger update event.
+								$container.prev('select.give-select-chosen').trigger('chosen:updated');
+
+							} else {
+
+								// Trigger no result message event.
+								$container.prev('select.give-select-chosen').trigger('chosen:no_results');
+							}
+
+							// Ensure the original query is retained within the search input.
+							$search_field.prop('disabled', false);
+							$search_field.val(val).focus();
+
+						}
+					}).fail(function (response) {
+						if (window.console && window.console.log) {
+							console.log(response);
+						}
+					}).done(function (response) {
+						$search_field.prop('disabled', false);
+					});
+				},
+				doneTypingInterval
+			);
+		});
+
+		$('.give-select-chosen .chosen-search input').each(function () {
+			var type        = $(this).parent().parent().parent().prev('select.give-select-chosen').data('search-type');
+			var placeholder = '';
+
+			if ('form' === type) {
+				placeholder = give_vars.search_placeholder;
+			} else {
+				type = 'search_placeholder_' + type;
+				if (give_vars[type]) {
+					placeholder = give_vars[type];
+				}
+			}
+			$(this).attr('placeholder', placeholder);
+
 		});
 
 	};
@@ -54,23 +213,45 @@ jQuery.noConflict();
 	 * @returns {string}
 	 */
 	function give_unformat_currency(price, dp) {
-		price                = accounting.unformat(price, give_vars.decimal_separator).toString();
-		var decimal_position = price.indexOf('.');
+		price = accounting.unformat(price, give_vars.decimal_separator).toString();
+		dp    = ( 'undefined' == dp ? false : dp );
 
 		// Set default value for number of decimals.
-		if (false != dp) {
+		if (false !== dp) {
 			price = parseFloat(price).toFixed(dp);
 
 			// If price do not have decimal value then set default number of decimals.
-		} else if (
-			( -1 === decimal_position )
-			|| ( give_vars.currency_decimals > price.substr(decimal_position + 1).length )
-		) {
+		} else {
 			price = parseFloat(price).toFixed(give_vars.currency_decimals);
 		}
 
 		return price;
 	}
+
+	/**
+	 * List donation screen JS
+	 */
+
+	var Give_List_Donation = {
+
+		init: function () {
+			this.delete_single_donation();
+			this.resend_single_donation_receipt();
+		},
+
+		delete_single_donation: function () {
+			$('body').on('click', '.delete-single-donation', function (e) {
+				return confirm(give_vars.delete_payment);
+			});
+		},
+
+		resend_single_donation_receipt: function () {
+			$('body').on('click', '.resend-single-donation-receipt', function (e) {
+				return confirm(give_vars.resend_receipt);
+			});
+		}
+
+	};
 
 	/**
 	 * Edit donation screen JS
@@ -103,11 +284,11 @@ jQuery.noConflict();
 
 					state_wrap.find('*').not('.order-data-address-line').remove();
 
-					if ('nostates' == response) {
-						state_wrap.append('<input type="text" name="give-payment-address[0][state]" value="" class="give-edit-toggles medium-text"/>');
-					} else {
-						state_wrap.append(response);
+					if (typeof ( response.states_found ) != undefined && true == response.states_found) {
+						state_wrap.append(response.data);
 						state_wrap.find('select').chosen();
+					} else {
+						state_wrap.append('<input type="text" name="give-payment-address[0][state]" value="" class="give-edit-toggles medium-text"/>');
 					}
 				});
 
@@ -170,7 +351,7 @@ jQuery.noConflict();
 					};
 
 					$.ajax({
-						type   : "POST",
+						type   : 'POST',
 						data   : postData,
 						url    : ajaxurl,
 						success: function (response) {
@@ -194,15 +375,15 @@ jQuery.noConflict();
 
 		new_donor: function () {
 
-			$('#give-donor-details').on('click', '.give-payment-new-customer, .give-payment-new-customer-cancel', function (e) {
+			$('#give-donor-details').on('click', '.give-payment-new-donor, .give-payment-new-donor-cancel', function (e) {
 				e.preventDefault();
-				$('.customer-info').toggle();
-				$('.new-customer').toggle();
+				$('.donor-info').toggle();
+				$('.new-donor').toggle();
 
-				if ($('.new-customer').is(":visible")) {
-					$('#give-new-customer').val(1);
+				if ($('.new-donor').is(':visible')) {
+					$('#give-new-donor').val(1);
 				} else {
-					$('#give-new-customer').val(0);
+					$('#give-new-donor').val(0);
 				}
 
 			});
@@ -215,19 +396,20 @@ jQuery.noConflict();
 			});
 		},
 
-		variable_price_list: function () {
-			// Update variable price list whnen form changes.
-			$('select[name="forms"]').chosen().change(function () {
+
+		variable_price_list: function() {
+			// Update variable price list when form changes.
+			$( '#give_payment_form_select' ).chosen().change( function() {
 				var give_form_id,
 					variable_prices_html_container = $('.give-donation-level');
 
 				// Check for form ID.
-				if ( ! ( give_form_id = $(this).val() )) {
+				if (!( give_form_id = $(this).val() )) {
 					return false;
 				}
 
 				// Bailout.
-				if( ! variable_prices_html_container.length ) {
+				if (!variable_prices_html_container.length) {
 					return false;
 				}
 
@@ -258,18 +440,18 @@ jQuery.noConflict();
 			});
 
 			// Add total donation amount if level changes.
-			$('#give-donation-overview').on('change', 'select[name="give-variable-price"]', function(){
-				var prices = jQuery(this).data('prices'),
-					$total_amount = $('#give-payment-total')
+			$('#give-donation-overview').on('change', 'select[name="give-variable-price"]', function () {
+				var prices        = jQuery(this).data('prices'),
+					$total_amount = $('#give-payment-total');
 
-				if( $(this).val() in prices ) {
+				if ($(this).val() in prices) {
 					$total_amount
-						.val( prices[$(this).val()] )
-						.css( 'background-color', 'yellow' );
+						.val(prices[$(this).val()])
+						.css('background-color', 'yellow');
 
 					window.setTimeout(
-						function(){
-							$total_amount.css( 'background-color', 'white' )
+						function () {
+							$total_amount.css('background-color', 'white');
 						},
 						1000
 					);
@@ -428,7 +610,7 @@ jQuery.noConflict();
 		donors_export: function () {
 
 			// Show / hide Donation Form option when exporting donors
-			$('#give_customer_export_form').change(function () {
+			$('#give_donor_export_form').change(function () {
 
 				var $this                  = $(this),
 					form_id                = $('option:selected', $this).val(),
@@ -452,7 +634,7 @@ jQuery.noConflict();
 
 					$.post(ajaxurl, data, function (response) {
 						price_options_select.remove();
-						$('#give_customer_export_form_chosen').after(response);
+						$('#give_donor_export_form_chosen').after(response);
 					});
 				} else {
 					price_options_select.remove();
@@ -484,22 +666,22 @@ jQuery.noConflict();
 						'width'    : 'auto',
 						'min-width': '250px'
 					});
+				} else if ( 'reset-stats' === selected_type ) {
+					export_form.append( '<div class="notice-wrap"></div>' );
+					var notice_wrap = export_form.find( '.notice-wrap' );
+					notice_wrap.html( '<div class="notice notice-warning"><p><input type="checkbox" id="confirm-reset" name="confirm_reset_store" value="1" /> <label for="confirm-reset">' + give_vars.reset_stats_warn + '</label></p></div>' );
+					submit_button.addClass( 'button-disabled' ).attr( 'disabled', 'disabled' );
 
-				} else if ('reset-stats' === selected_type) {
-
-					export_form.append('<div class="notice-wrap"></div>');
-					var notice_wrap = export_form.find('.notice-wrap');
-					notice_wrap.html('<div class="notice notice-warning"><p><input type="checkbox" id="confirm-reset" name="confirm_reset_store" value="1" /> <label for="confirm-reset">' + give_vars.reset_stats_warn + '</label></p></div>');
-
-					submit_button.addClass('button-disabled').attr('disabled', 'disabled');
-
+					// Add check when admin try to delete all the test donors.
+                } else if ( 'delete-test-donors' === selected_type ) {
+                    export_form.append( '<div class="notice-wrap"></div>' );
+                    var notice_wrap = export_form.find( '.notice-wrap' );
+                    notice_wrap.html( '<div class="notice notice-warning"><p><input type="checkbox" id="confirm-reset" name="confirm_reset_store" value="1" /> <label for="confirm-reset">' + give_vars.delete_test_donor + '</label></p></div>' );
+                    submit_button.addClass( 'button-disabled' ).attr( 'disabled', 'disabled' );
 				} else {
-
 					forms.hide();
-					forms.val(0);
-
+					forms.val( 0 );
 				}
-
 				$('#' + selected_type).show();
 			});
 
@@ -661,6 +843,135 @@ jQuery.noConflict();
 	};
 
 	/**
+	 * Updates screen JS
+	 */
+	var Give_Updates = {
+		el: {},
+
+		init: function () {
+			this.submit();
+			this.dismiss_message();
+		},
+
+		submit: function () {
+			var self = this, step = 1, resume_update_step = 0;
+
+			self.el.main_container          = Give_Selector_Cache.get('#give-db-updates');
+			self.el.update_link             = Give_Selector_Cache.get('a', self.el.main_container);
+			self.el.progress_main_container = Give_Selector_Cache.get('.progress-container', self.el.main_container);
+			self.el.heading                 = Give_Selector_Cache.get('.update-message', self.el.progress_main_container);
+			self.el.progress_container      = Give_Selector_Cache.get('.progress-content', self.el.progress_main_container);
+
+			// Bailout
+			if (self.el.update_link.hasClass('active')) {
+				return;
+			}
+
+			self.el.update_link.on('click', '', function (e) {
+				e.preventDefault();
+
+				if ($(this).hasClass('active')) {
+					return false;
+				}
+
+				// Ask for admin confirmation.
+				if (!window.confirm(give_vars.db_update_confirmation_msg)) {
+					return;
+				}
+
+				$(this).addClass('active').fadeOut();
+				self.el.progress_container.find('.notice-wrap').remove();
+				self.el.progress_container.append('<div class="notice-wrap give-clearfix"><span class="spinner is-active"></span><div class="give-progress"><div></div></div></div>');
+				self.el.progress_main_container.removeClass('give-hidden');
+
+				resume_update_step = parseInt(self.el.heading.data('resume-update'));
+				if (resume_update_step) {
+					step = resume_update_step;
+				}
+
+				// Start the process from first step of first update.
+				self.process_step(step, 1, self);
+				return false;
+			});
+		},
+
+		process_step: function (step, update, self) {
+
+			$.ajax({
+				type    : 'POST',
+				url     : ajaxurl,
+				data    : {
+					action: 'give_do_ajax_updates',
+					step  : parseInt(step),
+					update: parseInt(update)
+				},
+				dataType: 'json',
+				success : function (response) {
+
+					// We need to get the actual in progress form, not all forms on the page
+					var notice_wrap = Give_Selector_Cache.get('.notice-wrap', self.el.progress_container, true);
+
+					if (-1 !== $.inArray('success', Object.keys(response))) {
+						if (response.success) {
+							// Update steps info
+							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
+								self.el.heading.html('<strong>' + response.data.heading + '</strong>');
+							}
+
+							self.el.update_link.closest('p').remove();
+							notice_wrap.html('<div class="notice notice-success is-dismissible"><p>' + response.data.message + '</p><button type="button" class="notice-dismiss"></button></div>');
+
+						} else {
+							// Update steps info
+							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
+								self.el.heading.html('<strong>' + response.data.heading + '</strong>');
+							}
+
+							notice_wrap.html('<div class="notice notice-error"><p>' + response.data.message + '</p></div>');
+
+							setTimeout(function () {
+								self.el.update_link.removeClass('active').show();
+								self.el.progress_main_container.addClass('give-hidden');
+							}, 5000);
+						}
+					} else {
+						// Update progress.
+						$('.give-progress div', '#give-db-updates').animate({
+							width: response.data.percentage + '%',
+						}, 50, function () {
+							// Animation complete.
+						});
+
+						// Update steps info
+						if (-1 !== $.inArray('heading', Object.keys(response.data))) {
+							self.el.heading.html('<strong>' + response.data.heading.replace('{update_count}', self.el.heading.data('update-count')) + '</strong>');
+						}
+
+						self.process_step(parseInt(response.data.step), response.data.update, self);
+					}
+
+				}
+			}).fail(function (response) {
+				if (window.console && window.console.log) {
+					console.log(response);
+				}
+
+				Give_Selector_Cache.get('.notice-wrap', self.el.progress_container).append(response.responseText);
+
+			}).always(function () {
+			});
+
+		},
+
+		dismiss_message: function () {
+			$('body').on('click', '#poststuff .notice-dismiss', function () {
+				$(this).parent().slideUp('fast');
+			});
+		}
+
+	};
+
+	/**
 	 * Admin Status Select Field Change
 	 *
 	 * @description: Handle status switching
@@ -684,57 +995,51 @@ jQuery.noConflict();
 	/**
 	 * Donor management screen JS
 	 */
-	var Give_Customer = {
+	var Give_Donor = {
 
 		init          : function () {
-			this.edit_customer();
+			this.edit_donor();
 			this.add_email();
-			this.user_search();
 			this.remove_user();
 			this.cancel_edit();
 			this.change_country();
 			this.add_note();
 			this.delete_checked();
 		},
-		edit_customer : function () {
-			$('body').on('click', '#edit-customer', function (e) {
+		edit_donor    : function () {
+			$('body').on('click', '#edit-donor', function (e) {
 				e.preventDefault();
-				$('#give-customer-card-wrapper .editable').hide();
-				$('#give-customer-card-wrapper .edit-item').fadeIn().css('display', 'block');
-			});
-		},
-		user_search   : function () {
-			// Upon selecting a user from the dropdown, we need to update the User ID
-			$('body').on('click.giveSelectUser', '.give_user_search_results a', function (e) {
-				e.preventDefault();
-				var user_id = $(this).data('userid');
-				$('input[name="customerinfo[user_id]"]').val(user_id);
+				$('#give-donor-card-wrapper .editable').hide();
+				$('#give-donor-card-wrapper .edit-item').fadeIn().css('display', 'block');
+				$('.give-select-chosen').css('width', '100%');
 			});
 		},
 		remove_user   : function () {
-			$('body').on('click', '#disconnect-customer', function (e) {
+			$('body').on('click', '#disconnect-donor', function (e) {
 				e.preventDefault();
+
+				if (!confirm(give_vars.disconnect_user)) {
+					return false;
+				}
 				var customer_id = $('input[name="customerinfo[id]"]').val();
 
 				var postData = {
 					give_action: 'disconnect-userid',
 					customer_id: customer_id,
-					_wpnonce   : $('#edit-customer-info #_wpnonce').val()
+					_wpnonce   : $('#edit-donor-info #_wpnonce').val()
 				};
 
 				$.post(ajaxurl, postData, function (response) {
-
 					window.location.href = window.location.href;
-
 				}, 'json');
 
 			});
 		},
 		cancel_edit   : function () {
-			$('body').on('click', '#give-edit-customer-cancel', function (e) {
+			$('body').on('click', '#give-edit-donor-cancel', function (e) {
 				e.preventDefault();
-				$('#give-customer-card-wrapper .edit-item').hide();
-				$('#give-customer-card-wrapper .editable').show();
+				$('#give-donor-card-wrapper .edit-item').hide();
+				$('#give-donor-card-wrapper .editable').show();
 				$('.give_user_search_results').html('');
 			});
 		},
@@ -746,11 +1051,12 @@ jQuery.noConflict();
 					country   : $this.val(),
 					field_name: 'customerinfo[state]'
 				};
+
 				$.post(ajaxurl, data, function (response) {
-					if ('nostates' == response) {
-						$(':input[name="customerinfo[state]"]').replaceWith('<input type="text" name="' + data.field_name + '" value="" class="give-edit-toggles medium-text"/>');
+					if (typeof ( response.states_found ) != undefined && true == response.states_found) {
+						$(':input[name="customerinfo[state]"]').replaceWith(response.data);
 					} else {
-						$(':input[name="customerinfo[state]"]').replaceWith(response);
+						$(':input[name="customerinfo[state]"]').replaceWith('<input type="text" name="' + data.field_name + '" value="" class="give-edit-toggles medium-text"/>');
 					}
 				});
 
@@ -758,25 +1064,25 @@ jQuery.noConflict();
 			});
 		},
 		add_note      : function () {
-			$('body').on('click', '#add-customer-note', function (e) {
+			$('body').on('click', '#add-donor-note', function (e) {
 				e.preventDefault();
 				var postData = {
-					give_action            : 'add-customer-note',
-					customer_id            : $('#customer-id').val(),
-					customer_note          : $('#customer-note').val(),
-					add_customer_note_nonce: $('#add_customer_note_nonce').val()
+					give_action         : 'add-donor-note',
+					customer_id         : $('#donor-id').val(),
+					donor_note          : $('#donor-note').val(),
+					add_donor_note_nonce: $('#add_donor_note_nonce').val()
 				};
 
-				if (postData.customer_note) {
+				if (postData.donor_note) {
 
 					$.ajax({
-						type   : "POST",
+						type   : 'POST',
 						data   : postData,
 						url    : ajaxurl,
 						success: function (response) {
-							$('#give-customer-notes').prepend(response);
-							$('.give-no-customer-notes').hide();
-							$('#customer-note').val('');
+							$('#give-donor-notes').prepend(response);
+							$('.give-no-donor-notes').hide();
+							$('#donor-note').val('');
 						}
 					}).fail(function (data) {
 						if (window.console && window.console.log) {
@@ -785,18 +1091,18 @@ jQuery.noConflict();
 					});
 
 				} else {
-					var border_color = $('#customer-note').css('border-color');
-					$('#customer-note').css('border-color', 'red');
+					var border_color = $('#donor-note').css('border-color');
+					$('#donor-note').css('border-color', 'red');
 					setTimeout(function () {
-						$('#customer-note').css('border-color', border_color);
+						$('#donor-note').css('border-color', border_color);
 					}, 500);
 				}
 			});
 		},
 		delete_checked: function () {
-			$('#give-customer-delete-confirm').change(function () {
-				var records_input = $('#give-customer-delete-records');
-				var submit_button = $('#give-delete-customer');
+			$('#give-donor-delete-confirm').change(function () {
+				var records_input = $('#give-donor-delete-records');
+				var submit_button = $('#give-delete-donor');
 
 				if ($(this).prop('checked')) {
 					records_input.attr('disabled', false);
@@ -809,11 +1115,11 @@ jQuery.noConflict();
 			});
 		},
 		add_email     : function () {
-			if (!$('#add-customer-email').length) {
+			if (!$('#add-donor-email').length) {
 				return;
 			}
 
-			$(document.body).on('click', '#add-customer-email', function (e) {
+			$(document.body).on('click', '#add-donor-email', function (e) {
 				e.preventDefault();
 				var button  = $(this);
 				var wrapper = button.parent();
@@ -822,7 +1128,7 @@ jQuery.noConflict();
 				wrapper.find('.spinner').css('visibility', 'visible');
 				button.attr('disabled', true);
 
-				var customer_id = wrapper.find('input[name="customer-id"]').val();
+				var customer_id = wrapper.find('input[name="donor-id"]').val();
 				var email       = wrapper.find('input[name="additional-email"]').val();
 				var primary     = wrapper.find('input[name="make-additional-primary"]').is(':checked');
 				var nonce       = wrapper.find('input[name="add_email_nonce"]').val();
@@ -878,6 +1184,8 @@ jQuery.noConflict();
 	 */
 	var Edit_Form_Screen = {
 		init: function () {
+			var default_tab_id = $.query.get('give_tab').length  ? $.query.get('give_tab') : 'form_field_options';
+
 			this.handle_metabox_tab_click();
 			this.setup_colorpicker_fields();
 			this.setup_media_fields();
@@ -886,80 +1194,97 @@ jQuery.noConflict();
 
 			// Multi level repeater field js.
 			this.handle_multi_levels_repeater_group_events();
+
+			// Set active tab on page load.
+			this.activate_tab($('a[href="#' + default_tab_id + '"]'));
 		},
 
 		/**
-		 * Toggle metabox tab if mentioned in url.
+		 * Attach click event handler to tabs.
 		 */
 		handle_metabox_tab_click: function () {
+			var self = this;
 			var $tab_links = $('.give-metabox-tabs a');
 
 			$tab_links.on('click', function (e) {
 				e.preventDefault();
-				var $li_parent        = $(this).parent(),
-					$sub_field        = $('ul.give-metabox-sub-tabs', $li_parent),
-					has_sub_field     = $sub_field.length,
-					$all_tab_links_li = $tab_links.parents('li'),
-					$all_sub_fields   = $('ul.give-metabox-sub-tabs'),
-					in_sub_fields     = $(this).parents('ul.give-metabox-sub-tabs').length;
-
-				if ( has_sub_field ) {
-					$li_parent.toggleClass('active');
-					$sub_field.toggleClass('give-hidden');
-
-					var $active_subtab_li = $( 'li.active', 'ul.give-metabox-sub-tabs' );
-
-					// Show hide sub fields if any and exit.
-					$all_sub_fields.not($sub_field).addClass('give-hidden');
-					$all_tab_links_li.not($li_parent).removeClass('active');
-
-					$active_subtab_li.addClass('active');
-
-					return false;
-				} else if ( ! in_sub_fields ) {
-					// Hide all tab and sub tabs.
-					$all_tab_links_li.each(function (index, item) {
-						item = $(item);
-						item.removeClass('active');
-
-						if (item.hasClass('has-sub-fields')) {
-							$('ul.give-metabox-sub-tabs', item).addClass('give-hidden');
-						}
-					});
-				} else if( in_sub_fields ) {
-					// Hide all sub tabs.
-					$('ul.give-metabox-sub-tabs').addClass('give-hidden');
-					$all_tab_links_li.removeClass('active');
-
-					// Hide all tab inside sub tabs.
-					$(this).parents('ul.give-metabox-sub-tabs')
-						.removeClass('give-hidden')
-						.children('li')
-						.removeClass('active');
-
-					// Add active class to parent li.
-					$(this).parents('li.has-sub-fields').addClass('active');
-				}
-
-				// Add active class to current tab link.
-				$(this).parent().addClass('active');
-
-				// Hide all tab contents.
-				$('.give_options_panel').addClass('give-hidden');
-
-				// Show tab content.
-				$($(this).attr('href')).removeClass('give-hidden');
-
-				return false;
+				$this = $( this );
+				self.activate_tab($this);
+				self.update_query($this);
 			});
+		},
 
-			// Auto open tab if mentioned in url.
-			if (location.hash.length) {
-				var $current_active_tab = $('a[href="' + location.hash + '"]', '.give-metabox-tabs');
+		/**
+		 * Set the active tab.
+		 */
+		activate_tab: function ($tab_link) {
+			var tab_id            = $tab_link.data('tab-id'),
+				$li_parent        = $tab_link.parent(),
+				$sub_field        = $('ul.give-metabox-sub-tabs', $li_parent),
+				has_sub_field     = $sub_field.length,
+				$tab_links        = $('.give-metabox-tabs a'),
+				$all_tab_links_li = $tab_links.parents('li'),
+				$all_sub_fields   = $('ul.give-metabox-sub-tabs'),
+				in_sub_fields     = $tab_link.parents('ul.give-metabox-sub-tabs').length;
 
-				if ($current_active_tab.length) {
-					$current_active_tab.trigger('click');
-				}
+			// Update active tab hidden field to maintain tab after save.
+			$('#give_form_active_tab').val(tab_id);
+
+			if (has_sub_field) {
+				$li_parent.toggleClass('active');
+				$sub_field.removeClass('give-hidden');
+
+				var $active_subtab_li = $('li.active', 'ul.give-metabox-sub-tabs');
+
+				// Show hide sub fields if any and exit.
+				$all_sub_fields.not($sub_field).addClass('give-hidden');
+				$all_tab_links_li.not($li_parent).removeClass('active');
+
+				$active_subtab_li.addClass('active');
+			} else if (!in_sub_fields) {
+				// Hide all tab and sub tabs.
+				$all_tab_links_li.each(function (index, item) {
+					item = $(item);
+					item.removeClass('active');
+
+					if (item.hasClass('has-sub-fields')) {
+						$('ul.give-metabox-sub-tabs', item).addClass('give-hidden');
+					}
+				});
+			} else if (in_sub_fields) {
+				// Hide all sub tabs.
+				$('ul.give-metabox-sub-tabs').addClass('give-hidden');
+				$all_tab_links_li.removeClass('active');
+
+				// Hide all tab inside sub tabs.
+				$tab_link.parents('ul.give-metabox-sub-tabs')
+				       .removeClass('give-hidden')
+				       .children('li')
+				       .removeClass('active');
+
+				// Add active class to parent li.
+				$tab_link.parents('li.has-sub-fields').addClass('active');
+			}
+
+			// Add active class to current tab link.
+			$tab_link.parent().addClass('active');
+
+			// Hide all tab contents.
+			$('.give_options_panel').removeClass('active');
+
+			// Show tab content.
+			$($tab_link.attr('href')).addClass('active');
+		},
+
+		/**
+		 * Update query string with active tab ID.
+		 */
+		update_query: function($tab_link) {
+			var tab_id = $tab_link.data('tab-id');
+			var new_query = $.query.set( 'give_tab', tab_id ).remove('message').toString();
+
+			if (history.replaceState) {
+				history.replaceState(null, null, new_query);
 			}
 		},
 
@@ -974,7 +1299,7 @@ jQuery.noConflict();
 					$colorpicker_fields.each(function (index, item) {
 						var $item = $(item);
 
-						// Bailout: do not automatically initialize colorpicker for repeater field group template.
+						// Bailout: do not automatically initialize color picker for repeater field group template.
 						if ($item.parents('.give-template').length) {
 							return;
 						}
@@ -982,42 +1307,108 @@ jQuery.noConflict();
 						$item.wpColorPicker();
 					});
 				}
-			})
+			});
 		},
 
-		setup_media_fields: function() {
-			var give_media_uploader;
+		setup_media_fields: function () {
+			var give_media_uploader,
+				$give_upload_button,
+				$body = $('body');
 
-			$('body').on( 'click', '.give-media-upload', function (e) {
+			/**
+			 * Set media modal.
+			 */
+			$body.on('click', '.give-upload-button', function (e) {
 				e.preventDefault();
-				window.give_media_uploader_input_field = $(this);
+				var $media_modal_config = {};
 
-				// If the uploader object has already been created, reopen the dialog
-				if (give_media_uploader) {
-					give_media_uploader.open();
-					return;
+				// Cache input field.
+				$give_upload_button = $(this);
+
+				// Set modal config
+				switch ($(this).data('field-type')) {
+					case 'media':
+						$media_modal_config = {
+							title   : give_vars.metabox_fields.media.button_title,
+							button  : {text: give_vars.metabox_fields.media.button_title},
+							multiple: false, // Set to true to allow multiple files to be selected
+							library : {type: 'image'}
+						};
+						break;
+
+					default:
+						$media_modal_config = {
+							title   : give_vars.metabox_fields.file.button_title,
+							button  : {text: give_vars.metabox_fields.file.button_title},
+							multiple: false
+						};
 				}
+
 				// Extend the wp.media object
-				give_media_uploader = wp.media.frames.file_frame = wp.media({
-					title: give_vars.metabox_fields.media.button_title,
-					button: {
-						text: give_vars.metabox_fields.media.button_title
-					}, multiple: false
-				});
+				give_media_uploader = wp.media($media_modal_config);
 
 				// When a file is selected, grab the URL and set it as the text field's value
 				give_media_uploader.on('select', function () {
-					var attachment = give_media_uploader.state().get('selection').first().toJSON(),
-						$input_field = window.give_media_uploader_input_field.prev(),
-						fvalue= ( 'id' === $input_field.data('fvalue') ? attachment.id : attachment.url );
-					
-					console.log($input_field);
+					var attachment   = give_media_uploader.state().get('selection').first().toJSON(),
+						$input_field = $give_upload_button.prev(),
+						fvalue       = ( 'id' === $give_upload_button.data('fvalue') ? attachment.id : attachment.url );
 
+					$body.trigger('give_media_inserted', [attachment, $input_field]);
+
+					// Set input field value.
 					$input_field.val(fvalue);
 				});
+
 				// Open the uploader dialog
 				give_media_uploader.open();
-			})
+			});
+
+			/**
+			 * Show image preview.
+			 */
+			$body.on('give_media_inserted', function (e, attachment) {
+				var $parent          = $give_upload_button.parents('.give-field-wrap'),
+					$image_container = $('.give-image-thumb', $parent);
+
+				// Bailout.
+				if (!$image_container.length) {
+					return false;
+				}
+
+				// Bailout and hide preview.
+				if ('image' !== attachment.type) {
+					$image_container.addClass('give-hidden');
+					$('img', $image_container).attr('src', '');
+					return false;
+				}
+
+				// Set the attachment URL to our custom image input field.
+				$image_container.find('img').attr('src', attachment.url);
+
+				// Hide the add image link
+				$image_container.removeClass('give-hidden');
+			});
+
+			/**
+			 * Delete Image Link.
+			 */
+			$('span.give-delete-image-thumb', '.give-image-thumb').on('click', function (event) {
+
+				event.preventDefault();
+
+				var $parent            = $(this).parents('.give-field-wrap'),
+					$image_container   = $(this).parent(),
+					$image_input_field = $('input[type="text"]', $parent);
+
+				// Clear out the preview image
+				$image_container.addClass('give-hidden');
+
+				// Remove image link from input field.
+				$image_input_field.val('');
+
+				// Hide the add image link
+				$('img', $image_container).attr('src', '');
+			});
 		},
 
 		/**
@@ -1046,7 +1437,7 @@ jQuery.noConflict();
 						before_remove                 : null,
 						after_remove                  : handle_metabox_repeater_field_row_remove,
 						sortable_options              : {
-							placeholder: "give-ui-placeholder-state-highlight",
+							placeholder: 'give-ui-placeholder-state-highlight',
 							start      : function (event, ui) {
 								$('body').trigger('repeater_field_sorting_start', [ui.item]);
 							},
@@ -1290,7 +1681,7 @@ jQuery.noConflict();
 					$header_title_container.html(donation_level_header_text_prefix + ': ' + $(this).val());
 				} else {
 					// Reset donation level header heading text.
-					$header_title_container.html(donation_level_header_text_prefix)
+					$header_title_container.html(donation_level_header_text_prefix);
 				}
 			});
 
@@ -1319,7 +1710,7 @@ jQuery.noConflict();
 					$header_title_container.html(donation_level_header_text_prefix + ': ' + $item.val());
 				} else {
 					// Reset donation level header heading text.
-					$header_title_container.html(donation_level_header_text_prefix)
+					$header_title_container.html(donation_level_header_text_prefix);
 				}
 			});
 
@@ -1365,9 +1756,9 @@ jQuery.noConflict();
 
 				// Get max level id.
 				$('input[type="hidden"].give-levels_id', $this).each(function (index, item) {
-					var $item = $(item),
-						current_level = parseInt( $item.val() );
-					if (max_level_id < current_level ) {
+					var $item         = $(item),
+						current_level = parseInt($item.val());
+					if (max_level_id < current_level) {
 						max_level_id = current_level;
 					}
 				});
@@ -1457,65 +1848,62 @@ jQuery.noConflict();
 					$el.qtip('option', 'position.at', ($el.data('tooltip-target-position') == undefined) ? 'top center' : $el.data('tooltip-target-position'));
 				}
 			}
-		})
+		});
 	};
 
 	/**
 	 * Payment history listing page js
 	 */
 	var Give_Payment_History = {
-		init : function(){
-			this.handle_bulk_delete()
+		init: function () {
+			this.handle_bulk_delete();
 		},
 
-		handle_bulk_delete: function(){
+		handle_bulk_delete: function () {
 			var $payment_filters = $('#give-payments-filter');
 
 			/**
 			 * Payment filters
 			 */
-			$payment_filters.on( 'submit', function(e){
+			$payment_filters.on('submit', function (e) {
 				var current_action        = $('select[name="action"]', $(this)).val(),
-					$payments             = [],
-					confirm_action_notice = '';
+					current_action_label  = $('select[name="action"]', $(this)).find(':selected').text(),
+					$payments             = $('input[name="payment[]"]:checked').length,
+					is_status_type_action = ( -1 !== current_action.indexOf('set-status-') ),
+					confirm_action_notice = '',
+					status                = '';
 
-				$('input[name="payment[]"]:checked', $(this) ).each(function( index, item ){
-					$payments.push( $(this).val() );
-				});
+				// Set common action, if action type is status.
+				current_action = is_status_type_action ?
+					'set-to-status' :
+					current_action;
 
-				// Total payment count.
-				$payments = $payments.length.toString();
-				
-				switch ( current_action ) {
-					case 'delete':
-						// Check if admin did not select any payment.
-						if( ! parseInt( $payments ) ) {
-							alert( give_vars.bulk_action.delete.zero_payment_selected );
-							return false;
+				if (Object.keys(give_vars.bulk_action).length) {
+					for (status in  give_vars.bulk_action) {
+						if (status === current_action) {
+							// Get status text if current action types is status.
+							confirm_action_notice = is_status_type_action ?
+								give_vars.bulk_action[current_action].zero.replace('{status}', current_action_label.replace('Set To ', '')) :
+								give_vars.bulk_action[current_action].zero;
+
+							// Check if admin selected any donations or not.
+							if (!parseInt($payments)) {
+								alert(confirm_action_notice);
+								return false;
+							}
+
+							// Get message on basis of payment count.
+							confirm_action_notice = ( 1 < $payments ) ?
+								give_vars.bulk_action[current_action].multiple :
+								give_vars.bulk_action[current_action].single;
+
+							// Trigger Admin Confirmation PopUp.
+							return window.confirm(confirm_action_notice
+								.replace('{payment_count}', $payments)
+								.replace('{status}', current_action_label.replace('Set To ', ''))
+							);
 						}
-
-						// Ask admin before processing.
-						confirm_action_notice = ( 1 < $payments ) ? give_vars.bulk_action.delete.delete_payments : give_vars.bulk_action.delete.delete_payment;
-						if( ! window.confirm( confirm_action_notice.replace( '{payment_count}', $payments ) ) ) {
-							return false;
-						}
-
-						break;
-
-					case 'resend-receipt':
-						// Check if admin did not select any payment.
-						if( ! parseInt( $payments ) ) {
-							alert( give_vars.bulk_action.resend_receipt.zero_recipient_selected );
-							return false;
-						}
-
-						// Ask admin before processing.
-						confirm_action_notice = ( 1 < $payments ) ? give_vars.bulk_action.resend_receipt.resend_receipts : give_vars.bulk_action.resend_receipt.resend_receipt;
-						if( ! window.confirm( confirm_action_notice.replace( '{payment_count}', $payments ) ) ) {
-							return false;
-						}
-
-						break;
+					}
 				}
 
 				return true;
@@ -1523,18 +1911,20 @@ jQuery.noConflict();
 		}
 	};
 
-	//On DOM Ready
+	// On DOM Ready.
 	$(function () {
 
 		enable_admin_datepicker();
 		handle_status_change();
 		setup_chosen_give_selects();
+		Give_List_Donation.init();
 		Give_Edit_Donation.init();
 		Give_Settings.init();
 		Give_Reports.init();
-		Give_Customer.init();
+		Give_Donor.init();
 		API_Screen.init();
 		Give_Export.init();
+		Give_Updates.init();
 		Edit_Form_Screen.init();
 		Give_Payment_History.init();
 
@@ -1543,54 +1933,6 @@ jQuery.noConflict();
 		//Footer
 		$('a.give-rating-link').click(function () {
 			jQuery(this).parent().text(jQuery(this).data('rated'));
-		});
-
-		// Ajax user search
-		$('.give-ajax-user-search').on('keyup', function () {
-			var user_search = $(this).val();
-			var exclude     = '';
-
-			if ($(this).data('exclude')) {
-				exclude = $(this).data('exclude');
-			}
-
-			$('.give-ajax').show();
-			data = {
-				action   : 'give_search_users',
-				user_name: user_search,
-				exclude  : exclude
-			};
-
-			document.body.style.cursor = 'wait';
-
-			$.ajax({
-				type    : "POST",
-				data    : data,
-				dataType: "json",
-				url     : ajaxurl,
-				success : function (search_response) {
-					$('.give-ajax').hide();
-					$('.give_user_search_results').removeClass('hidden');
-					$('.give_user_search_results span').html('');
-					$(search_response.results).appendTo('.give_user_search_results span');
-					document.body.style.cursor = 'default';
-				}
-			});
-		});
-
-		$('body').on('click.giveSelectUser', '.give_user_search_results span a', function (e) {
-			e.preventDefault();
-			var login = $(this).data('login');
-			$('.give-ajax-user-search').val(login);
-			$('.give_user_search_results').addClass('hidden');
-			$('.give_user_search_results span').html('');
-		});
-
-		$('body').on('click.giveCancelUserSearch', '.give_user_search_results a.give-ajax-user-cancel', function (e) {
-			e.preventDefault();
-			$('.give-ajax-user-search').val('');
-			$('.give_user_search_results').addClass('hidden');
-			$('.give_user_search_results span').html('');
 		});
 
 		/**
@@ -1641,7 +1983,7 @@ jQuery.noConflict();
 					give_add_qtip($give_money_fields);
 				},
 				100
-			)
+			);
 		});
 
 		// Check & show message on keyup event.
@@ -1672,7 +2014,7 @@ jQuery.noConflict();
 			price_string = give_unformat_currency($(this).val(), false);
 
 			// Back out.
-			if (!parseInt(price_string)) {
+			if (give_unformat_currency('0', false) === give_unformat_currency($(this).val(), false)) {
 				$(this).val('');
 				return false;
 			}
@@ -1699,15 +2041,15 @@ jQuery.noConflict();
 
 			var $sub_tab_nav = $(this).next();
 
-			if( ! $sub_tab_nav.is(':hover') ) {
+			if (!$sub_tab_nav.is(':hover')) {
 				$sub_tab_nav.toggleClass('give-hidden');
 			}
 
 			return false;
-		}).on( 'blur', '#give-show-sub-nav', function(){
+		}).on('blur', '#give-show-sub-nav', function () {
 			var $sub_tab_nav = $(this).next();
 
-			if( ! $sub_tab_nav.is(':hover') ) {
+			if (!$sub_tab_nav.is(':hover')) {
 				$sub_tab_nav.addClass('give-hidden');
 			}
 		});
@@ -1738,7 +2080,7 @@ function give_render_responsive_tabs() {
 		$hide_tabs              = [],
 		tab_width               = 0;
 
-	if( 600 < jQuery(window).outerWidth() ) {
+	if (600 < jQuery(window).outerWidth()) {
 		tab_width = 200;
 	}
 
@@ -1811,7 +2153,6 @@ function give_render_responsive_tabs() {
 			resolve(true);
 		});
 
-
 		show_tabs.then(function (is_show_tabs) {
 			// Hide sub menu tabs.
 			if ($hide_tabs.length) {
@@ -1844,7 +2185,7 @@ function get_url_params() {
 	var vars   = [], hash;
 	var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
 	for (var i = 0; i < hashes.length; i++) {
-		hash = hashes[i].split('=');
+		hash          = hashes[i].split('=');
 		vars[hash[0]] = hash[1];
 	}
 	return vars;

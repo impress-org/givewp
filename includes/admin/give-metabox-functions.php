@@ -241,7 +241,7 @@ function give_text_input( $field ) {
 
 	switch ( $data_type ) {
 		case 'price' :
-			$field['value'] = ( ! empty( $field['value'] ) ? give_format_amount( $field['value'] ) : $field['value'] );
+			$field['value'] = ( ! empty( $field['value'] ) ? give_format_amount( give_maybe_sanitize_amount( $field['value'] ), array( 'sanitize' => false ) ) : $field['value'] );
 
 			$field['before_field'] = ! empty( $field['before_field'] ) ? $field['before_field'] : ( give_get_option( 'currency_position', 'before' ) == 'before' ? '<span class="give-money-symbol give-money-symbol-before">' . give_currency_symbol() . '</span>' : '' );
 			$field['after_field']  = ! empty( $field['after_field'] ) ? $field['after_field'] : ( give_get_option( 'currency_position', 'before' ) == 'after' ? '<span class="give-money-symbol give-money-symbol-after">' . give_currency_symbol() . '</span>' : '' );
@@ -249,7 +249,7 @@ function give_text_input( $field ) {
 
 		case 'decimal' :
 			$field['attributes']['class'] .= ' give_input_decimal';
-			$field['value'] = ( ! empty( $field['value'] ) ? give_format_decimal( $field['value'] ) : $field['value'] );
+			$field['value'] = ( ! empty( $field['value'] ) ? give_format_decimal( give_maybe_sanitize_amount( $field['value'] ), false, false ) : $field['value'] );
 			break;
 
 		default :
@@ -609,6 +609,17 @@ function give_colorpicker( $field ) {
 	echo '</p>';
 }
 
+/**
+ * Output a file upload field.
+ *
+ * @since  1.8.9
+ *
+ * @param array $field
+ */
+function give_file( $field ) {
+	give_media( $field );
+}
+
 
 /**
  * Output a media upload field.
@@ -620,18 +631,24 @@ function give_colorpicker( $field ) {
 function give_media( $field ) {
 	global $thepostid, $post;
 
-	$thepostid                    = empty( $thepostid ) ? $post->ID : $thepostid;
+	$thepostid    = empty( $thepostid ) ? $post->ID : $thepostid;
+	$button_label = esc_html__( sprintf( 'Add or Upload %s', ( 'file' === $field['type'] ? 'File' : 'Image' ) ), 'give' );
+
 	$field['style']               = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class']       = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
 	$field['value']               = give_get_field_value( $field, $thepostid );
 	$field['name']                = isset( $field['name'] ) ? $field['name'] : $field['id'];
-	$field['type']                = 'text';
 	$field['attributes']['class'] = "{$field['attributes']['class']} give-text-medium";
 
 	// Allow developer to save attachment ID or attachment url as metadata.
 	$field['fvalue'] = isset( $field['fvalue'] ) ? $field['fvalue'] : 'url';
+
+	$allow_media_preview_tags = array( 'jpg', 'jpeg', 'png', 'gif', 'ico' );
+	$preview_image_src        = $field['value'] ? ( 'id' === $field['fvalue'] ? wp_get_attachment_url( $field['value'] ) : $field['value'] ) : '#';
+	$preview_image_extension  = $preview_image_src ? pathinfo( $preview_image_src, PATHINFO_EXTENSION ) : '';
+	$is_show_preview = in_array( $preview_image_extension, $allow_media_preview_tags );
 	?>
-	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+	<fieldset class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
 		<label for="<?php echo give_get_field_name( $field ) ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
 		<input
 				name="<?php echo give_get_field_name( $field ); ?>"
@@ -639,12 +656,14 @@ function give_media( $field ) {
 				type="text"
 				value="<?php echo $field['value']; ?>"
 				style="<?php echo esc_attr( $field['style'] ); ?>"
-				data-fvalue="<?php echo $field['fvalue']; ?>"
 			<?php echo give_get_custom_attributes( $field ); ?>
-		/>&nbsp;&nbsp;&nbsp;&nbsp;<input class="give-media-upload button" type="button"
-										 value="<?php echo esc_html__( 'Add or Upload File', 'give' ); ?>">
+		/>&nbsp;&nbsp;&nbsp;&nbsp;<input class="give-upload-button button" type="button" value="<?php echo $button_label; ?>" data-fvalue="<?php echo $field['fvalue']; ?>" data-field-type="<?php echo $field['type']; ?>">
 		<?php echo give_get_field_description( $field ); ?>
-	</p>
+		<div class="give-image-thumb<?php echo ! $field['value'] || ! $is_show_preview ? ' give-hidden' : ''; ?>">
+			<span class="give-delete-image-thumb dashicons dashicons-no-alt"></span>
+			<img src="<?php echo $preview_image_src ; ?>" alt="">
+		</div>
+	</fieldset>
 	<?php
 }
 
@@ -705,7 +724,7 @@ function give_docs_link( $field ) {
 
 	echo '<p class="give-docs-link"><a href="' . esc_url( $field['url'] )
 	     . '" target="_blank">'
-	     . sprintf( esc_html__( 'Need Help? See docs on "%s"' ), $field['title'] )
+	     . sprintf( esc_html__( 'Need Help? See docs on "%s"', 'give' ), $field['title'] )
 	     . '<span class="dashicons dashicons-editor-help"></span></a></p>';
 }
 
@@ -727,7 +746,7 @@ function give_get_field_value( $field, $postid ) {
 	}
 
 	// Get value from db.
-	$field_value = get_post_meta( $postid, $field['id'], true );
+	$field_value = give_get_meta( $postid, $field['id'], true );
 
 	/**
 	 * Filter the field value before apply default value.
@@ -758,8 +777,18 @@ function give_get_field_value( $field, $postid ) {
  */
 function give_get_field_description( $field ) {
 	$field_desc_html = '';
-	if ( ! empty( $field['description'] ) ) {
-		$field_desc_html = '<span class="give-field-description">' . wp_kses_post( $field['description'] ) . '</span>';
+	$description     = '';
+
+	// Check for both `description` and `desc`.
+	if ( isset( $field['description'] ) ) {
+		$description = $field['description'];
+	} elseif ( isset( $field['desc'] ) ) {
+		$description = $field['desc'];
+	}
+
+	// Set if there is a description.
+	if ( ! empty( $description ) ) {
+		$field_desc_html = '<span class="give-field-description">' . wp_kses_post( $description ) . '</span>';
 	}
 
 	return $field_desc_html;
@@ -913,8 +942,9 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 
 	$group_numbering = isset( $fields['options']['group_numbering'] ) ? (int) $fields['options']['group_numbering'] : 0;
 	$close_tabs      = isset( $fields['options']['close_tabs'] ) ? (int) $fields['options']['close_tabs'] : 0;
+	$wrapper_class   = isset( $fields['wrapper_class'] ) ? $fields['wrapper_class'] : '';
 	?>
-	<div class="give-repeatable-field-section" id="<?php echo "{$fields['id']}_field"; ?>"
+	<div class="give-repeatable-field-section <?php echo esc_attr( $wrapper_class ); ?>" id="<?php echo "{$fields['id']}_field"; ?>"
 		 data-group-numbering="<?php echo $group_numbering; ?>" data-close-tabs="<?php echo $close_tabs; ?>">
 		<?php if ( ! empty( $fields['name'] ) ) : ?>
 			<p class="give-repeater-field-name"><?php echo $fields['name']; ?></p>
@@ -926,7 +956,7 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 
 		<table class="give-repeatable-fields-section-wrapper" cellspacing="0">
 			<?php
-			$repeater_field_values = get_post_meta( $thepostid, $fields['id'], true );
+			$repeater_field_values = give_get_meta( $thepostid, $fields['id'], true );
 			$header_title          = isset( $fields['options']['header_title'] )
 				? $fields['options']['header_title']
 				: esc_attr__( 'Group', 'give' );
@@ -980,8 +1010,8 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 							<div class="give-row-head give-move">
 								<button type="button" class="handlediv button-link">
 									<span class="toggle-indicator"></span></button>
-								<sapn class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-
-								</sapn>
+								<span class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-
+								</span>
 								<h2>
 									<span data-header-title="<?php echo $header_title; ?>"><?php echo $header_title; ?></span>
 								</h2>
@@ -1015,8 +1045,8 @@ function _give_metabox_form_data_repeater_fields( $fields ) {
 						<div class="give-row-head give-move">
 							<button type="button" class="handlediv button-link">
 								<span class="toggle-indicator"></span></button>
-							<sapn class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-
-							</sapn>
+							<span class="give-remove" title="<?php esc_html_e( 'Remove Group', 'give' ); ?>">-
+							</span>
 							<h2>
 								<span data-header-title="<?php echo $header_title; ?>"><?php echo $header_title; ?></span>
 							</h2>
@@ -1143,10 +1173,10 @@ function give_get_current_setting_page() {
  * @return string
  */
 function _give_display_content_field_value( $field_value, $field, $postid ) {
-	$show_content = get_post_meta( $postid, '_give_content_option', true );
+	$show_content = give_get_meta( $postid, '_give_content_option', true );
 
 	if (
-		! get_post_meta( $postid, '_give_display_content', true )
+		! give_get_meta( $postid, '_give_display_content', true )
 		&& $show_content
 		&& ( 'none' !== $show_content )
 	) {
@@ -1174,10 +1204,10 @@ add_filter( '_give_display_content_field_value', '_give_display_content_field_va
  * @return string
  */
 function _give_content_placement_field_value( $field_value, $field, $postid ) {
-	$show_content = get_post_meta( $postid, '_give_content_option', true );
+	$show_content = give_get_meta( $postid, '_give_content_option', true );
 
 	if (
-		! get_post_meta( $postid, '_give_content_placement', true )
+		! give_get_meta( $postid, '_give_content_placement', true )
 		&& ( 'none' !== $show_content )
 	) {
 		$field_value = $show_content;
@@ -1203,7 +1233,7 @@ add_filter( '_give_content_placement_field_value', '_give_content_placement_fiel
  * @return string
  */
 function _give_terms_option_field_value( $field_value, $field, $postid ) {
-	$term_option = get_post_meta( $postid, '_give_terms_option', true );
+	$term_option = give_get_meta( $postid, '_give_terms_option', true );
 
 	if ( in_array( $term_option, array( 'none', 'yes' ) ) ) {
 		$field_value = ( 'yes' === $term_option ? 'enabled' : 'disabled' );
@@ -1230,7 +1260,7 @@ add_filter( '_give_terms_option_field_value', '_give_terms_option_field_value', 
  * @return string
  */
 function _give_offline_donation_enable_billing_fields_single_field_value( $field_value, $field, $postid ) {
-	$offline_donation = get_post_meta( $postid, '_give_offline_donation_enable_billing_fields_single', true );
+	$offline_donation = give_get_meta( $postid, '_give_offline_donation_enable_billing_fields_single', true );
 
 	if ( 'on' === $offline_donation ) {
 		$field_value = 'enabled';
@@ -1256,7 +1286,7 @@ add_filter( '_give_offline_donation_enable_billing_fields_single_field_value', '
  * @return string
  */
 function _give_custom_amount_field_value( $field_value, $field, $postid ) {
-	$custom_amount = get_post_meta( $postid, '_give_custom_amount', true );
+	$custom_amount = give_get_meta( $postid, '_give_custom_amount', true );
 
 	if ( in_array( $custom_amount, array( 'yes', 'no' ) ) ) {
 		$field_value = ( 'yes' === $custom_amount ? 'enabled' : 'disabled' );
@@ -1282,7 +1312,7 @@ add_filter( '_give_custom_amount_field_value', '_give_custom_amount_field_value'
  * @return string
  */
 function _give_goal_option_field_value( $field_value, $field, $postid ) {
-	$goal_option = get_post_meta( $postid, '_give_goal_option', true );
+	$goal_option = give_get_meta( $postid, '_give_goal_option', true );
 
 	if ( in_array( $goal_option, array( 'yes', 'no' ) ) ) {
 		$field_value = ( 'yes' === $goal_option ? 'enabled' : 'disabled' );
@@ -1308,7 +1338,7 @@ add_filter( '_give_goal_option_field_value', '_give_goal_option_field_value', 10
  * @return string
  */
 function _give_close_form_when_goal_achieved_value( $field_value, $field, $postid ) {
-	$close_form = get_post_meta( $postid, '_give_close_form_when_goal_achieved', true );
+	$close_form = give_get_meta( $postid, '_give_close_form_when_goal_achieved', true );
 
 	if ( in_array( $close_form, array( 'yes', 'no' ) ) ) {
 		$field_value = ( 'yes' === $close_form ? 'enabled' : 'disabled' );
@@ -1334,7 +1364,7 @@ add_filter( '_give_close_form_when_goal_achieved_field_value', '_give_close_form
  * @return string
  */
 function _give_logged_in_only_value( $field_value, $field, $postid ) {
-	$guest_donation = get_post_meta( $postid, '_give_logged_in_only', true );
+	$guest_donation = give_get_meta( $postid, '_give_logged_in_only', true );
 
 	if ( in_array( $guest_donation, array( 'yes', 'no' ) ) ) {
 		$field_value = ( 'yes' === $guest_donation ? 'enabled' : 'disabled' );
@@ -1360,7 +1390,7 @@ add_filter( '_give_logged_in_only_field_value', '_give_logged_in_only_value', 10
  * @return string
  */
 function _give_customize_offline_donations_value( $field_value, $field, $postid ) {
-	$customize_offline_text = get_post_meta( $postid, '_give_customize_offline_donations', true );
+	$customize_offline_text = give_get_meta( $postid, '_give_customize_offline_donations', true );
 
 	if ( in_array( $customize_offline_text, array( 'yes', 'no' ) ) ) {
 		$field_value = ( 'yes' === $customize_offline_text ? 'enabled' : 'disabled' );

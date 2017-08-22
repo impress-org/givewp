@@ -2,27 +2,103 @@
 /**
  * This template is used to display the donation summary with [give_receipt]
  */
+
 global $give_receipt_args, $payment;
 
-//Validation: Ensure $payment var is set
-if ( empty( $payment ) && isset( $give_receipt_args['id'] ) ) {
-	$payment = get_post( $give_receipt_args['id'] );
+// Validation: Ensure $payment var is set.
+if ( empty( $payment ) ) {
+	$payment = ! empty( $give_receipt_args['id'] ) ? get_post( $give_receipt_args['id'] ) : 0;
 }
 
-//Double-Validation: Check for $payment global
+// Double-Validation: Check for $payment global.
 if ( empty( $payment ) ) {
-	give_output_error( esc_html__( 'The specified receipt ID appears to be invalid.', 'give' ) );
+	Give()->notices->print_frontend_notice( __( 'The specified receipt ID appears to be invalid.', 'give' ) );
 
 	return;
 }
 
-$id           = $payment->ID;
-$meta         = give_get_payment_meta( $payment->ID );
-$donation     = give_get_payment_form_title( $meta );
-$user         = give_get_payment_meta_user_info( $payment->ID );
-$email        = give_get_payment_user_email( $payment->ID );
-$status       = $payment->post_status;
-$status_label = give_get_payment_status( $payment, true );
+$donation_id    = $payment->ID;
+$form_id        = give_get_payment_meta( $donation_id, '_give_payment_form_id', true );
+$meta           = give_get_payment_meta( $donation_id );
+$donation       = give_get_payment_form_title( $meta );
+$user           = give_get_payment_meta_user_info( $donation_id );
+$email          = give_get_payment_user_email( $donation_id );
+$status         = $payment->post_status;
+$status_label   = give_get_payment_status( $payment, true );
+
+/**
+ * Generate Donation Receipt Arguments.
+ *
+ * Added donation receipt array to global variable $give_receipt_args to manage it from single variable
+ *
+ * @since 1.8.8
+ */
+$give_receipt_args['donation_receipt']['donor'] = array(
+	'name'      => __( 'Donor', 'give' ),
+	'value'     => $user['first_name'] . ' ' . $user['last_name'],
+	'display'   => $give_receipt_args['donor'],
+);
+
+$give_receipt_args['donation_receipt']['date'] = array(
+	'name'      => __( 'Date', 'give' ),
+	'value'     => date_i18n( give_date_format(), strtotime( $meta['date'] ) ),
+	'display'   => $give_receipt_args['date'],
+);
+
+$give_receipt_args['donation_receipt']['total_donation'] = array(
+	'name'      => __( 'Total Donation', 'give' ),
+	'value'     => give_payment_amount( $donation_id ),
+	'display'   => true,
+);
+
+$give_receipt_args['donation_receipt']['donation'] = array(
+	'name'      => __( 'Donation', 'give' ),
+	'value'     => $donation,
+	'display'   => true,
+);
+
+$give_receipt_args['donation_receipt']['donation_status'] = array(
+	'name'      => __( 'Donation Status', 'give' ),
+	'value'     => esc_attr( $status ),
+	'display'   => $give_receipt_args['payment_status'],
+);
+
+$give_receipt_args['donation_receipt']['donation_id'] = array(
+	'name'      => __( 'Donation ID', 'give' ),
+	'value'     => $donation_id,
+	'display'   => ($give_receipt_args['payment_id'])?true:false,
+);
+
+$give_receipt_args['donation_receipt']['payment_details'] = array(
+	'name'      => __( 'Payment:', 'give' ),
+	'value'     => __( 'Details:', 'give' ),
+	'display'   => ($give_receipt_args['payment_id'])?false:true,
+);
+
+$give_receipt_args['donation_receipt']['payment_key'] = array(
+	'name'      => __( 'Payment Key', 'give' ),
+	'value'     => get_post_meta( $donation_id, '_give_payment_purchase_key', true ),
+	'display'   => $give_receipt_args['payment_key'],
+);
+
+$give_receipt_args['donation_receipt']['payment_method'] = array(
+	'name'      => __( 'Payment Method', 'give' ),
+	'value'     => give_get_gateway_checkout_label( give_get_payment_gateway( $donation_id ) ),
+	'display'   => true,
+);
+
+/**
+ * Extend Give Donation Receipt
+ *
+ * You can easily extend the donation receipt argument using the filter give_donation_receipt_args
+ *
+ * @params array $give_receipt_args['donation_receipt'] Array of arguments for Donation Receipt.
+ * @params int   $donation_id                           Donation ID.
+ * @params int   $form_id                               Donation Form ID.
+ *
+ * @since 1.8.8
+ */
+$give_receipt_args['donation_receipt'] = apply_filters( 'give_donation_receipt_args', $give_receipt_args['donation_receipt'], $donation_id, $form_id );
 
 // Show payment status notice based on shortcode attribute.
 if ( filter_var( $give_receipt_args['status_notice'], FILTER_VALIDATE_BOOLEAN ) ) {
@@ -31,35 +107,35 @@ if ( filter_var( $give_receipt_args['status_notice'], FILTER_VALIDATE_BOOLEAN ) 
 
 	switch ( $status ) {
 		case 'publish':
-			$notice_message = esc_html__( 'Payment Complete: Thank you for your donation.', 'give' );
+			$notice_message = __( 'Payment Complete: Thank you for your donation.', 'give' );
 			$notice_type    = 'success';
 			break;
 		case 'pending':
-			$notice_message = esc_html__( 'Payment Pending: Your donation is currently processing..', 'give' );
+			$notice_message = __( 'Payment Pending: Your donation is currently processing.', 'give' );
 			$notice_type    = 'warning';
 			break;
 		case 'refunded':
-			$notice_message = esc_html__( 'Payment Refunded: Your donation has been refunded.', 'give' );
+			$notice_message = __( 'Payment Refunded: Your donation has been refunded.', 'give' );
 			$notice_type    = 'warning';
 			break;
 		case 'preapproval':
-			$notice_message = esc_html__( 'Payment Preapproved: Thank you for your donation.', 'give' );
+			$notice_message = __( 'Payment Preapproved: Thank you for your donation.', 'give' );
 			$notice_type    = 'warning';
 			break;
 		case 'failed':
-			$notice_message = esc_html__( 'Payment Failed: Please contact the site owner for assistance.', 'give' );
+			$notice_message = __( 'Payment Failed: Please contact the site owner for assistance.', 'give' );
 			$notice_type    = 'error';
 			break;
 		case 'cancelled':
-			$notice_message = esc_html__( 'Payment Cancelled: Your donation has been cancelled.', 'give' );
+			$notice_message = __( 'Payment Cancelled: Your donation has been cancelled.', 'give' );
 			$notice_type    = 'error';
 			break;
 		case 'abandoned':
-			$notice_message = esc_html__( 'Payment Abandoned: The this donation was not been completed.', 'give' );
+			$notice_message = __( 'Payment Abandoned: This donation has not been completed.', 'give' );
 			$notice_type    = 'error';
 			break;
 		case 'revoked':
-			$notice_message = esc_html__( 'Payment Revoked: Please contact the site owner for assistance.', 'give' );
+			$notice_message = __( 'Payment Revoked: Please contact the site owner for assistance.', 'give' );
 			$notice_type    = 'error';
 			break;
 	}
@@ -79,9 +155,9 @@ if ( filter_var( $give_receipt_args['status_notice'], FILTER_VALIDATE_BOOLEAN ) 
 		 * @param string $status Payment status.
 		 * @param array  $meta   Array of meta data related to the payment.
 		 */
-		echo apply_filters( 'give_receipt_status_notice', give_output_error( $notice_message, false, $notice_type ), $id, $status, $meta );
+		echo apply_filters( 'give_receipt_status_notice', Give()->notices->print_frontend_notice( $notice_message, false, $notice_type ), $id, $status, $meta );
 	}
-}
+}// End if().
 
 /**
  * Fires in the payment receipt shortcode, before the receipt main table.
@@ -146,87 +222,14 @@ do_action( 'give_payment_receipt_before_table', $payment, $give_receipt_args );
 		do_action( 'give_payment_receipt_before', $payment, $give_receipt_args );
 		?>
 
-		<?php if ( filter_var( $give_receipt_args['donor'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
+		<?php foreach ( $give_receipt_args['donation_receipt'] as $receipt_item ) { ?>
+			<?php if ( filter_var( $receipt_item['display'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
 			<tr>
-				<td scope="row"><strong><?php esc_html_e( 'Donor:', 'give' ); ?></strong></td>
-				<td><?php echo $user['first_name'] . ' ' . $user['last_name']; ?></td>
+				<td scope="row"><strong><?php echo $receipt_item['name']; ?></strong></td>
+				<td><?php echo $receipt_item['value']; ?></td>
 			</tr>
-		<?php endif; ?>
-
-		<?php if ( filter_var( $give_receipt_args['date'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
-			<tr>
-				<td scope="row"><strong><?php esc_html_e( 'Date:', 'give' ); ?></strong></td>
-				<td><?php echo date_i18n( give_date_format(), strtotime( $meta['date'] ) ); ?></td>
-			</tr>
-		<?php endif; ?>
-
-		<?php if ( filter_var( $give_receipt_args['price'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
-			<tr>
-				<td scope="row"><strong><?php esc_html_e( 'Total Donation:', 'give' ); ?></strong></td>
-				<td><?php echo give_payment_amount( $payment->ID ); ?></td>
-			</tr>
-		<?php endif; ?>
-
-		<tr>
-			<td scope="row" class="give_receipt_payment_status">
-				<strong><?php esc_html_e( 'Donation:', 'give' ); ?></strong></td>
-			<td class="give_receipt_payment_status"><?php echo $donation; ?></td>
-		</tr>
-
-		<?php if ( filter_var( $give_receipt_args['payment_status'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
-			<tr>
-				<td scope="row" class="give_receipt_payment_status">
-					<strong><?php esc_html_e( 'Donation Status:', 'give' ); ?></strong></td>
-				<td class="give_receipt_payment_status <?php echo esc_attr( $status ); ?>"><?php echo esc_html( $status_label ); ?></td>
-			</tr>
-		<?php endif; ?>
-
-		<?php if ( filter_var( $give_receipt_args['payment_id'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
-			<tr>
-				<td scope="row"><strong><?php esc_html_e( 'Donation ID:', 'give' ); ?></strong></td>
-				<td><?php echo give_get_payment_number( $payment->ID ); ?></td>
-			</tr>
-		<?php else : ?>
-			<tr>
-				<td scope="row"><strong><?php esc_html_e( 'Payment:', 'give' ); ?></strong></td>
-				<td><?php esc_html_e( 'Details:', 'give' ); ?></td>
-			</tr>
-		<?php endif; ?>
-
-		<?php if ( filter_var( $give_receipt_args['payment_key'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
-			<tr>
-				<td scope="row"><strong><?php esc_html_e( 'Payment Key:', 'give' ); ?></strong></td>
-				<td><?php echo get_post_meta( $payment->ID, '_give_payment_purchase_key', true ); ?></td>
-			</tr>
-		<?php endif; ?>
-
-		<?php if ( filter_var( $give_receipt_args['payment_method'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
-			<tr>
-				<td scope="row"><strong><?php esc_html_e( 'Payment Method:', 'give' ); ?></strong></td>
-				<td><?php echo give_get_gateway_checkout_label( give_get_payment_gateway( $payment->ID ) ); ?></td>
-			</tr>
-		<?php endif; ?>
-
-		<?php
-		//No fees built in just yet...
-		//@TODO: Fees
-		if ( ( $fees = give_get_payment_fees( $payment->ID, 'fee' ) ) ) : ?>
-			<tr>
-				<td scope="row"><strong><?php esc_html_e( 'Fees:', 'give' ); ?></strong></td>
-				<td>
-					<ul class="give_receipt_fees">
-						<?php foreach ( $fees as $fee ) : ?>
-							<li>
-								<span class="give_fee_label"><?php echo esc_html( $fee['label'] ); ?></span>
-								<span class="give_fee_sep">&nbsp;&ndash;&nbsp;</span>
-								<span
-									class="give_fee_amount"><?php echo give_currency_filter( give_format_amount( $fee['amount'] ) ); ?></span>
-							</li>
-						<?php endforeach; ?>
-					</ul>
-				</td>
-			</tr>
-		<?php endif; ?>
+			<?php endif; ?>
+		<?php } ?>
 
 		<?php
 		/**

@@ -158,7 +158,7 @@ class Give_Stats {
 		$month           = date( 'n', current_time( 'timestamp' ) );
 		$year            = date( 'Y', current_time( 'timestamp' ) );
 
-		if ( array_key_exists( $date, $this->get_predefined_dates() ) ) {
+		if ( array_key_exists( (string) $date, $this->get_predefined_dates() ) ) {
 
 			// This is a predefined date rate, such as last_week
 			switch ( $date ) {
@@ -551,7 +551,7 @@ class Give_Stats {
 		if ( ! is_wp_error( $this->end_date ) ) {
 
 			if ( $this->timestamp ) {
-				$format = 'Y-m-d 00:00:00';
+				$format = 'Y-m-d H:i:s';
 			} else {
 				$format = 'Y-m-d 23:59:59';
 			}

@@ -19,7 +19,7 @@ class Tests_Give extends Give_Unit_Test_Case {
 	 * @covers Give
 	 */
 	public function test_give_instance() {
-		$this->assertClassHasStaticAttribute( 'instance', 'Give' );
+		$this->assertClassHasStaticAttribute( '_instance', 'Give' );
 	}
 
 	/**
@@ -44,6 +44,7 @@ class Tests_Give extends Give_Unit_Test_Case {
 	 */
 	public function test_includes() {
 
+		/** Check Includes Exist */
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/post-types.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/scripts.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/ajax-functions.php' );
@@ -52,9 +53,9 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-template-loader.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-donate-form.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-db.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-db-customer-meta.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-db-customers.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-customer.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-db-donor-meta.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-db-donors.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-donor.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-stats.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-session.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-html-elements.php' );
@@ -87,29 +88,64 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/emails/functions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/emails/template.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/emails/actions.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-notices.php' );
 
+
+		/** Check Admin Exist */
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/admin-footer.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/welcome.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/class-admin-notices.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/class-i18n-module.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/admin-actions.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/system-info.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/add-ons.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/dashboard-widgets.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/payments/actions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/payments/payments-history.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/customers/customers.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/customers/customer-functions.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/customers/customer-actions.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/donors/donors.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/donors/donor-functions.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/donors/donor-actions.php' );
+
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/forms/metabox.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/forms/dashboard-columns.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/reporting/export/export-functions.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/reporting/reports.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/reporting/pdf-reports.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/reporting/class-give-graph.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/reporting/graphing.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/reporting/tools/tools-actions.php' );
+
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-api.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-data.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-export.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-logs.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-system-info.php' );
+
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/data/class-give-tools-delete-test-transactions.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/data/class-give-tools-recount-all-stats.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/data/class-give-tools-recount-donor-stats.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/data/class-give-tools-recount-form-stats.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/data/class-give-tools-recount-income.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/data/class-give-tools-recount-single-donor-stats.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/data/class-give-tools-reset-stats.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/data/tools-actions.php' );
+
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-batch-export.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-batch-export-donors.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-batch-export-forms.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-batch-export-payments.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-export.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-export-earnings.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/export-actions.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/export-functions.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/export/pdf-reports.php' );
+
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/class-api-requests-logs-list-table.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/class-gateway-error-logs-list-table.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/class-sales-logs-list-table.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/logs.php' );
+
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/views/html-admin-page-data.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/views/html-admin-page-exports.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/tools/views/html-admin-page-system-info.php' );
+
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/reports/reports.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/reports/class-give-graph.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/reports/graphing.php' );
+
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/abstract-shortcode-generator.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/class-shortcode-button.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-donation-history.php' );
@@ -119,9 +155,9 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-profile-editor.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-receipt.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-register.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrade-functions.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrades.php' );
 
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/upgrades/class-give-updates.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrade-functions.php' );
 
 		/** Check Assets Exist */
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/css/chosen.css' );

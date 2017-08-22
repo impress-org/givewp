@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Give Unit Tests Bootstrap
  *
@@ -9,7 +10,7 @@ class Give_Unit_Tests_Bootstrap {
 	/** @var \Give_Unit_Tests_Bootstrap instance */
 	protected static $instance = null;
 
-	/** @var string directory where wordpress-tests-lib	is installed */
+	/** @var string directory where wordpress-tests-lib    is installed */
 	public $wp_tests_dir;
 
 	/** @var string testing directory */
@@ -33,8 +34,8 @@ class Give_Unit_Tests_Bootstrap {
 			$_SERVER['SERVER_NAME'] = 'localhost';
 		}
 
-		$this->tests_dir 	= dirname( __FILE__ );
-		$this->plugin_dir	= dirname( $this->tests_dir );
+		$this->tests_dir    = dirname( __FILE__ );
+		$this->plugin_dir   = dirname( $this->tests_dir );
 		$this->wp_tests_dir = getenv( 'WP_TESTS_DIR' ) ? getenv( 'WP_TESTS_DIR' ) : '/tmp/wordpress-tests-lib';
 
 		// load test function so tests_add_filter() is available
@@ -42,6 +43,9 @@ class Give_Unit_Tests_Bootstrap {
 
 		// load Give
 		tests_add_filter( 'muplugins_loaded', array( $this, 'load_give' ) );
+
+		// Uninstall Give.
+		tests_add_filter( 'plugins_loaded', array( $this, 'uninstall_give' ), 0 );
 
 		// install Give
 		tests_add_filter( 'setup_theme', array( $this, 'install_give' ) );
@@ -51,6 +55,24 @@ class Give_Unit_Tests_Bootstrap {
 
 		// load Give testing framework
 		$this->includes();
+	}
+
+
+	/**
+	 * Uninstall Give
+	 *
+	 * @since  1.8.9
+	 * @access public
+	 */
+	public function uninstall_give() {
+		give_update_option( 'uninstall_on_delete', 'enabled' );
+
+		// Prevent missing object issue.
+		Give()->roles = new Give_Roles();
+
+		// clean existing install first
+		define( 'WP_UNINSTALL_PLUGIN', true );
+		include( $this->plugin_dir . '/uninstall.php' );
 	}
 
 	/**
@@ -70,11 +92,6 @@ class Give_Unit_Tests_Bootstrap {
 	 * @global WP_Roles $wp_roles
 	 */
 	public function install_give() {
-
-		// clean existing install first
-		define( 'WP_UNINSTALL_PLUGIN', true );
-		include( $this->plugin_dir . '/uninstall.php' );
-
 		echo 'Installing Give...' . PHP_EOL;
 
 		give_install();

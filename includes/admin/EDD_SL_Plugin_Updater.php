@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * Allows plugins to use their own update API.
  *
  * @author Easy Digital Downloads
- * @version 1.6.11
+ * @version 1.6.12
  */
 class EDD_SL_Plugin_Updater {
 
@@ -198,7 +198,7 @@ class EDD_SL_Plugin_Updater {
 
 			if ( empty( $version_info->download_link ) ) {
 				printf(
-					__( 'There is a new version of %1$s available. %2$sView version %3$s details%4$s.', 'easy-digital-downloads' ),
+					__( 'There is a new version of %1$s available. %2$sView version %3$s details%4$s.', 'give' ),
 					esc_html( $version_info->name ),
 					'<a target="_blank" class="thickbox" href="' . esc_url( $changelog_link ) . '">',
 					esc_html( $version_info->new_version ),
@@ -206,7 +206,7 @@ class EDD_SL_Plugin_Updater {
 				);
 			} else {
 				printf(
-					__( 'There is a new version of %1$s available. %2$sView version %3$s details%4$s or %5$supdate now%6$s.', 'easy-digital-downloads' ),
+					__( 'There is a new version of %1$s available. %2$sView version %3$s details%4$s or %5$supdate now%6$s.', 'give' ),
 					esc_html( $version_info->name ),
 					'<a target="_blank" class="thickbox" href="' . esc_url( $changelog_link ) . '">',
 					esc_html( $version_info->new_version ),
@@ -279,8 +279,8 @@ class EDD_SL_Plugin_Updater {
 		// Convert sections into an associative array, since we're getting an object, but Core expects an array.
 		if ( isset( $_data->sections ) && ! is_array( $_data->sections ) ) {
 			$new_sections = array();
-			foreach ( $_data->sections as $key => $key ) {
-				$new_sections[ $key ] = $key;
+			foreach ( $_data->sections as $key => $value ) {
+				$new_sections[ $key ] = $value;
 			}
 
 			$_data->sections = $new_sections;
@@ -289,8 +289,8 @@ class EDD_SL_Plugin_Updater {
 		// Convert banners into an associative array, since we're getting an object, but Core expects an array.
 		if ( isset( $_data->banners ) && ! is_array( $_data->banners ) ) {
 			$new_banners = array();
-			foreach ( $_data->banners as $key => $key ) {
-				$new_banners[ $key ] = $key;
+			foreach ( $_data->banners as $key => $value ) {
+				$new_banners[ $key ] = $value;
 			}
 
 			$_data->banners = $new_banners;
@@ -393,7 +393,7 @@ class EDD_SL_Plugin_Updater {
 		}
 
 		if( ! current_user_can( 'update_plugins' ) ) {
-			wp_die( __( 'You do not have permission to install plugin updates', 'easy-digital-downloads' ), __( 'Error', 'easy-digital-downloads' ), array( 'response' => 403 ) );
+			wp_die( __( 'You do not have permission to install plugin updates', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 		}
 
 		$data         = $edd_plugin_data[ $_REQUEST['slug'] ];

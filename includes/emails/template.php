@@ -58,7 +58,7 @@ function give_email_template_tags( $message, $payment_data, $payment_id, $admin_
  */
 function give_email_preview_template_tags( $message ) {
 
-	$price = give_currency_filter( give_format_amount( 10.50 ) );
+	$price = give_currency_filter( give_format_amount( 10.50, array( 'sanitize' => false ) ) );
 
 	$gateway = 'PayPal';
 
@@ -73,11 +73,14 @@ function give_email_preview_template_tags( $message ) {
 		esc_html__( 'View the receipt in your browser &raquo;', 'give' )
 	);
 
+	// Set user.
 	$user = wp_get_current_user();
 
 	$message = str_replace( '{name}', $user->display_name, $message );
 	$message = str_replace( '{fullname}', $user->display_name, $message );
 	$message = str_replace( '{username}', $user->user_login, $message );
+	$message = str_replace( '{user_email}', $user->user_email, $message );
+	$message = str_replace( '{billing_address}', "123 Test Street, Unit 222\nSomewhere Town, CA, 92101", $message );
 	$message = str_replace( '{date}', date( give_date_format(), current_time( 'timestamp' ) ), $message );
 	$message = str_replace( '{amount}', $price, $message );
 	$message = str_replace( '{price}', $price, $message );
@@ -205,7 +208,7 @@ function give_get_email_body_content( $payment_id = 0, $payment_data = array() )
 	$default_email_body = give_get_default_donation_receipt_email();
 
 	$email_content = give_get_option( 'donation_receipt' );
-	$email_content = isset( $email_content ) ? stripslashes( $email_content ) : $default_email_body;
+	$email_content = ( $email_content ) ? stripslashes( $email_content ) : $default_email_body;
 
 	$email_body = wpautop( $email_content );
 
@@ -238,13 +241,13 @@ function give_get_donation_notification_body_content( $payment_id = 0, $payment_
 		$name = $email;
 	}
 
-	$gateway = give_get_gateway_admin_label( get_post_meta( $payment_id, '_give_payment_gateway', true ) );
+	$gateway = give_get_gateway_admin_label( give_get_meta( $payment_id, '_give_payment_gateway', true ) );
 
 	$default_email_body = esc_html__( 'Hello', 'give' ) . "\n\n";
 	$default_email_body .= esc_html__( 'A donation has been made.', 'give' ) . "\n\n";
 	$default_email_body .= esc_html__( 'Donation:', 'give' ) . "\n\n";
 	$default_email_body .= esc_html__( 'Donor:', 'give' ) . ' ' . html_entity_decode( $name, ENT_COMPAT, 'UTF-8' ) . "\n";
-	$default_email_body .= esc_html__( 'Amount:', 'give' ) . ' ' . html_entity_decode( give_currency_filter( give_format_amount( give_get_payment_amount( $payment_id ) ) ), ENT_COMPAT, 'UTF-8' ) . "\n";
+	$default_email_body .= esc_html__( 'Amount:', 'give' ) . ' ' . html_entity_decode( give_currency_filter( give_format_amount( give_get_payment_amount( $payment_id ), array( 'sanitize' => false ) ) ), ENT_COMPAT, 'UTF-8' ) . "\n";
 	$default_email_body .= esc_html__( 'Payment Method:', 'give' ) . ' ' . $gateway . "\n\n";
 	$default_email_body .= esc_html__( 'Thank you', 'give' );
 

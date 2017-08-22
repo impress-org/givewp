@@ -167,7 +167,7 @@ class Give_Donors_Gravatars {
 
 			foreach ( $log_ids as $id ) {
 				// get the payment ID for each corresponding log ID
-				$payment_ids[] = get_post_meta( $id, '_give_log_payment_id', true );
+				$payment_ids[] = give_get_meta( $id, '_give_log_payment_id', true );
 			}
 
 			// remove donors who have donated more than once so we can have unique avatars
@@ -175,7 +175,7 @@ class Give_Donors_Gravatars {
 
 			foreach ( $payment_ids as $key => $id ) {
 
-				$email = get_post_meta( $id, '_give_payment_user_email', true );
+				$email = give_get_meta( $id, '_give_payment_user_email', true );
 
 				if ( isset ( $give_options['give_donors_gravatars_has_gravatar_account'] ) ) {
 					if ( ! $this->validate_gravatar( $email ) ) {
@@ -183,7 +183,7 @@ class Give_Donors_Gravatars {
 					}
 				}
 
-				$unique_emails[ $id ] = get_post_meta( $id, '_give_payment_user_email', true );
+				$unique_emails[ $id ] = give_get_meta( $id, '_give_payment_user_email', true );
 
 			}
 
@@ -267,7 +267,7 @@ class Give_Donors_Gravatars {
 				}
 
 				// get the payment meta
-				$payment_meta = get_post_meta( $id, '_give_payment_meta', true );
+				$payment_meta = give_get_meta( $id, '_give_payment_meta', true );
 
 				// unserialize the payment meta
 				$user_info = maybe_unserialize( $payment_meta['user_info'] );
@@ -276,7 +276,7 @@ class Give_Donors_Gravatars {
 				$name = $user_info['first_name'];
 
 				// get donor's email
-				$email = get_post_meta( $id, '_give_payment_user_email', true );
+				$email = give_get_meta( $id, '_give_payment_user_email', true );
 
 				// set gravatar size and provide filter
 				$size = isset( $give_options['give_donors_gravatars_gravatar_size'] ) ? apply_filters( 'give_donors_gravatars_gravatar_size', $give_options['give_donors_gravatars_gravatar_size'] ) : '';

@@ -72,32 +72,33 @@ class Give_i18n_Banner {
 			return;
 		}
 
+		foreach ( $args as $key => $arg ) {
+			$this->$key = $arg;
+		}
+
+		add_action( 'admin_init', array( $this, 'init' ) );
+
+
+	}
+
+	/**
+	 * Initialize i18n banner.
+	 */
+	function init() {
+
+		// First get user's locale (4.7+).
+		$this->locale = function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
+
 		// This plugin is en_US native.
-		$this->locale = get_locale();
 		if ( 'en_US' === $this->locale ) {
 			return;
 		}
-
-		$this->init( $args );
 
 		if ( ! $this->hide_promo() ) {
 			add_action( $this->hook, array( $this, 'promo' ) );
 		}
 	}
 
-	/**
-	 * This is where you decide where to display the messages and where you set the plugin specific variables.
-	 *
-	 * @access private
-	 *
-	 * @param array $args
-	 */
-	private function init( $args ) {
-		foreach ( $args as $key => $arg ) {
-			$this->$key = $arg;
-		}
-
-	}
 
 	/**
 	 * Check whether the promo should be hidden or not.
@@ -107,11 +108,11 @@ class Give_i18n_Banner {
 	 * @return bool
 	 */
 	private function hide_promo() {
-		$hide_promo = get_transient( 'give_i18n_give_promo_hide' );
+		$hide_promo = Give_Cache::get( 'give_i18n_give_promo_hide', true );
 		if ( ! $hide_promo ) {
 			if ( filter_input( INPUT_GET, 'remove_i18n_promo', FILTER_VALIDATE_INT ) === 1 ) {
 				// No expiration time, so this would normally not expire, but it wouldn't be copied to other sites etc.
-				set_transient( 'give_i18n_give_promo_hide', true );
+				Give_Cache::set( 'give_i18n_give_promo_hide', true, null, true );
 				$hide_promo = true;
 			}
 		}
@@ -209,15 +210,17 @@ class Give_i18n_Banner {
 				body.rtl .give-i18n-notice-content {
 					margin: 0 125px 0 30px;
 				}
+
 				body.rtl div.give-addon-alert .dismiss {
-					left:20px;
-					right:auto;
+					left: 20px;
+					right: auto;
 				}
 
 			</style>
 			<div id="give-i18n-notice" class="give-addon-alert updated" style="">
 
-				<a href="https://wordpress.org/support/register.php" class="alignleft give-i18n-icon" style="margin:0" target="_blank"><span class="dashicons dashicons-translation" style="font-size: 110px; text-decoration: none;"></span></a>
+				<a href="https://wordpress.org/support/register.php" class="alignleft give-i18n-icon" style="margin:0" target="_blank"><span class="dashicons dashicons-translation"
+				                                                                                                                             style="font-size: 110px; text-decoration: none;"></span></a>
 
 				<div class="give-i18n-notice-content">
 					<a href="<?php echo esc_url( add_query_arg( array( 'remove_i18n_promo' => '1' ) ) ); ?>" class="dismiss"><span class="dashicons dashicons-dismiss"></span></a>
@@ -242,11 +245,11 @@ class Give_i18n_Banner {
 	 */
 	private function find_or_initialize_translation_details() {
 
-		$set = get_transient( 'give_i18n_give_' . $this->locale );
+		$set = Give_Cache::get( "give_i18n_give_{$this->locale}", true );
 
 		if ( ! $set ) {
 			$set = $this->retrieve_translation_details();
-			set_transient( 'give_i18n_give_' . $this->locale, $set, DAY_IN_SECONDS );
+			Give_Cache::set( "give_i18n_give_{$this->locale}", $set, DAY_IN_SECONDS, true );
 		}
 
 		return $set;
@@ -321,9 +324,7 @@ class Give_i18n_Banner {
 	}
 }
 
-$give_i18n = new Give_i18n_Banner(
-	array(
+$give_i18n = new Give_i18n_Banner( array(
 		'hook'          => 'give_forms_page_give-settings',
 		'glotpress_url' => 'https://translate.wordpress.org/api/projects/wp-plugins/give/stable/',
-	)
-);
+	) );

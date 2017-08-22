@@ -139,7 +139,7 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
 
 .give-money-symbol-after {
 	//border-left: 0;
-	margin-left: -1px;
+	margin-left: -5px;
 }
 
 .give_options_panel input[ type="text"] {
@@ -399,7 +399,13 @@ ASIDE
 	}
 
 	.give_options_panel {
+		display: none;
 		padding-left: 170px;
+
+		&.active,
+		.no-js & {
+			display: block;
+		}
 
 		.give-field-wrap {
 			padding: 1em 20px 1em 162px !important;
@@ -572,7 +578,7 @@ ASIDE
 
 	.give-metabox-tabs {
 		margin: 0;
-		min-width: 170px;
+		max-width: 170px;
 		float: left;
 		line-height: 1em;
 		padding: 0 0 10px;
@@ -641,10 +647,9 @@ ASIDE
 				display: block;
 				position: absolute;
 				bottom: 0;
-				left: 170px;
+				left: 166px;
 				width: 170px;
 				max-height: 250px;
-				overflow-y: scroll;
 			}
 		}
 	}
@@ -697,6 +702,25 @@ ASIDE
 
 	div.chosen-container:first-of-type {
 		margin-top: 10px;
+	}
+
+	div.chosen-container {
+		ul.chosen-choices {
+			input.chosen-search-input {
+				border: 1px solid #ddd;
+				height: 20px;
+			}
+
+			border: 1px solid #ddd;
+		}
+	}
+
+	select {
+		vertical-align: inherit;
+		margin: 0;
+		height: 26px;
+		line-height: 26px;
+		border: 1px solid #ddd;
 	}
 }
 

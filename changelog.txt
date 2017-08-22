@@ -1,3 +1,47 @@
+= 1.5.2: June 31, 2016 =
+* New: Added an addition "status" column for donation logs. [#684](https://github.com/WordImpress/Give/issues/684)
+* Tweak: Hide the submit button for the API Tab in Settings & improved the field description. [#681](https://github.com/WordImpress/Give/issues/681)
+* Fix: Deleted unnecessary user capabilities and resolved ones with typos causing issues with viewing and publishing donation forms for admins on new installs. [#671](https://github.com/WordImpress/Give/issues/671) and [#662](https://github.com/WordImpress/Give/issues/662)
+* Fix: Donation amount and count get reduced when delete pending donation - thanks @farookibrahim. [#677](https://github.com/WordImpress/Give/issues/677)
+* Fix: Broken link when clicking on donors name from transactions list in wp-admin. [#680](https://github.com/WordImpress/Give/issues/680)
+
+= 1.5.1: June 30, 2016 =
+* Fix: The give_forms post type doesn't register correctly on new installs therefore users weren't seeing the "Add Form" or "Edit Form" options within WP-Admin. [#671](https://github.com/WordImpress/Give/issues/671) and [#thread](https://wordpress.org/support/topic/the-add-forum-tab-not-showing?replies=4#post-8587308)
+
+= 1.5: June 29, 2016 =
+* New: Easily reorder payment gateways with the new drag-and-drop gateway reorder capability within settings. [#391](https://github.com/WordImpress/Give/issues/391)
+* New: Implement honeypot hidden field to help prevent spam donation form submissions. [#424](https://github.com/WordImpress/Give/issues/424)
+* New: Export donation history based on a date range exports in "Reports > Export > Export Donation History"- [#414](https://github.com/WordImpress/Give/issues/414)
+* New: Automatically close a form when it reaches its Goal. [#168](https://github.com/WordImpress/Give/issues/168)
+* New: Added the ability to delete all test transactions under "Donations > Reports > Tools". [#263](https://github.com/WordImpress/Give/issues/263)
+* New: Recalculate stats tool now available to recount individual donor statistics, delete test transactions, or reset all your statistics entirely. [#411](https://github.com/WordImpress/Give/issues/441)
+* New: New Give_Payments class added which allows easier development for donation payments. [#504](https://github.com/WordImpress/Give/issues/504)
+* New: Added "Test Mode" labels to more easily identify donations made while Give is in Test Mode. [#188](https://github.com/WordImpress/Give/issues/188)
+* New: Template wrapper support for the "Catch Evolution" theme added. [#632](https://github.com/WordImpress/Give/issues/632)
+* New: Export additional data and control the export columns for donors under Reports > Export > Export Donors in CSV. [#630](https://github.com/WordImpress/Give/issues/630)
+* New: South Korean Won added to list of currencies. [#624](https://github.com/WordImpress/Give/issues/624)
+* New: Moroccan Dirham added to list of currencies. [#381](https://github.com/WordImpress/Give/issues/381)
+* New: South African Rand added to list of currencies. [#624](https://github.com/WordImpress/Give/issues/624)
+* Tweak: Now when a multi-level donation is made the multi-level labels will display on the confirmation page, within the transactions listing page, and also attached to the {donation} email tag which outputs the email receipts. [#175](https://github.com/WordImpress/Give/issues/175)
+* Tweak: Added donor name to the donation receipt and reordered the rows for a more logical flow. [#645](https://github.com/WordImpress/Give/issues/645)
+* Tweak: Removed the French translation files included because, thanks to all French polyglots, we have been translated in full
+* Tweak: Removed Grunt in favor of Gulp for compiling pot files. [#666](https://github.com/WordImpress/Give/issues/666)
+* Tweak: Removed hosted translations in favor of public GlotPress translations
+* Tweak: Rewrite of give_get_current_page_url to fix issues with domain mapped server with $_SERVER['SERVER_PORT']. [#622](https://github.com/WordImpress/Give/issues/622)
+* Fix: Transactions Status Changes Causes Donation Form Income Amounts + Goals to Not Calculate Correctly. [#188](https://github.com/WordImpress/Give/issues/188)
+* Fix: Per form Offline donations gateway's "Request Billing Information" checkbox doesn't properly override the global setting. [#649](https://github.com/WordImpress/Give/issues/649)
+* Fix: Reports filter custom date range option when selected causes the refresh reports button to overlap. [#626](https://github.com/WordImpress/Give/issues/626)
+* Fix: Reports graph tooltips not displaying currency properly formatted. [#620](https://github.com/WordImpress/Give/issues/620)
+* Fix: Attaching a new user to a donor isn't updating. [#644](https://github.com/WordImpress/Give/issues/644)
+* Fix: Remove shortcode generator button when visual editor disabled. [#638](https://github.com/WordImpress/Give/issues/638)
+* Fix: Bug with shortcode & show_content argument when two of the same forms on a page displaying the content incorrectly when set to none. [#634](https://github.com/WordImpress/Give/issues/634)
+
+= 1.4.5: May 12, 2016 =
+* Hotfix: Fixed a bug introduced which causes the custom amount minimum to be improperly calculated. [#616](https://github.com/WordImpress/Give/issues/616)
+
+= 1.4.4: May 12, 2016 =
+* Hotfix: Version 1.4.3 breaks modal popup display method. [#615](https://github.com/WordImpress/Give/issues/615)
+
 = 1.4.3: May 12, 2016  =
 * Fix: Update the email address of a customer record when the email of a user is updated via the WordPress profile updater - https://github.com/WordImpress/Give/issues/607
 * Fix: Bug if the donation form's custom amount minimum is set to 0.00 the warning message would still display - https://github.com/WordImpress/Give/issues/604

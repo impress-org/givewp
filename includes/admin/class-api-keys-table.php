@@ -238,7 +238,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 * @return void
 	 */
 	function bulk_actions( $which = '' ) {
-		// These aren't really bulk actions but this outputs the markup in the right place
+		// These aren't really bulk actions but this outputs the markup in the right place.
 		static $give_api_is_bottom;
 
 		if ( $give_api_is_bottom ) {
@@ -247,8 +247,15 @@ class Give_API_Keys_Table extends WP_List_Table {
 		?>
 		<input type="hidden" name="give_action" value="process_api_key"/>
 		<input type="hidden" name="give_api_process" value="generate"/>
-		<?php wp_nonce_field( 'give-api-nonce' ); ?>
-		<?php echo Give()->html->ajax_user_search(); ?>
+		<?php wp_nonce_field( 'give-api-nonce' );
+		/**
+		 * API Key user search.
+		 */
+		$args = array(
+		  'id' => 'give-api-user-search',
+		  'name' => 'user_id',
+        );
+        echo Give()->html->ajax_user_search($args); ?>
 		<?php submit_button( esc_html__( 'Generate New API Keys', 'give' ), 'secondary', 'submit', false ); ?>
 		<?php
 		$give_api_is_bottom = true;
@@ -304,13 +311,19 @@ class Give_API_Keys_Table extends WP_List_Table {
 	public function total_items() {
 		global $wpdb;
 
-		if ( ! get_transient( 'give_total_api_keys' ) ) {
-			$total_items = $wpdb->get_var( "SELECT count(user_id) FROM $wpdb->usermeta WHERE meta_value='give_user_secret_key'" );
+		if ( ! ( $total_items = Give_Cache::get( 'give_total_api_keys', true ) ) ) {
+			$total_items = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT count(user_id)
+					FROM {$wpdb->usermeta} WHERE meta_value='%s'",
+					'give_user_secret_key'
+				)
+			);
 
-			set_transient( 'give_total_api_keys', $total_items, 60 * 60 );
+			Give_Cache::set( 'give_total_api_keys', $total_items, HOUR_IN_SECONDS, true );
 		}
 
-		return get_transient( 'give_total_api_keys' );
+		return $total_items;
 	}
 
 	/**

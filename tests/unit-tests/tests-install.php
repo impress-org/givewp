@@ -2,7 +2,7 @@
 
 
 /**
- * @group give_activation
+ * Class Tests_Activation
  */
 class Tests_Activation extends Give_Unit_Test_Case {
 
@@ -18,14 +18,91 @@ class Tests_Activation extends Give_Unit_Test_Case {
 	/**
 	 * Test if the global settings are set and have settings pages.
 	 *
-	 * @since 1.3.2
+	 * @since   1.3.2
+	 * @updated 1.8.11 Testing actual settings options are set properly on install.
 	 */
 	public function test_settings() {
+		$give_options = give_get_settings();
+
+		$this->assertArrayHasKey( 'base_country', $give_options );
+		$this->assertEquals( 'US', $give_options['base_country'] );
+
+		$this->assertArrayHasKey( 'currency', $give_options );
+		$this->assertEquals( 'USD', $give_options['currency'] );
+
+		$this->assertArrayHasKey( 'currency_position', $give_options );
+		$this->assertEquals( 'before', $give_options['currency_position'] );
+
+		$this->assertArrayHasKey( 'session_lifetime', $give_options );
+		$this->assertEquals( '604800', $give_options['session_lifetime'] );
+
+		$this->assertArrayHasKey( 'email_access', $give_options );
+		$this->assertEquals( 'disabled', $give_options['email_access'] );
+
+		$this->assertArrayHasKey( 'number_decimals', $give_options );
+		$this->assertEquals( 2, $give_options['number_decimals'] );
+
+		$this->assertArrayHasKey( 'test_mode', $give_options );
+		$this->assertEquals( 'enabled', $give_options['test_mode'] );
+
+		$this->assertArrayHasKey( 'the_content_filter', $give_options );
+		$this->assertEquals( 'enabled', $give_options['the_content_filter'] );
+
+		$this->assertArrayHasKey( 'tags', $give_options );
+		$this->assertEquals( 'disabled', $give_options['tags'] );
+
+		$this->assertArrayHasKey( 'categories', $give_options );
+		$this->assertEquals( 'disabled', $give_options['categories'] );
+
+		$this->assertArrayHasKey( 'form_sidebar', $give_options );
+		$this->assertEquals( 'enabled', $give_options['form_sidebar'] );
+
+		$this->assertArrayHasKey( 'forms_excerpt', $give_options );
+		$this->assertEquals( 'enabled', $give_options['forms_excerpt'] );
+
+		$this->assertArrayHasKey( 'form_featured_img', $give_options );
+		$this->assertEquals( 'enabled', $give_options['form_featured_img'] );
+
+		$this->assertArrayHasKey( 'forms_archives', $give_options );
+		$this->assertEquals( 'enabled', $give_options['forms_archives'] );
+
+		$this->assertArrayHasKey( 'forms_singular', $give_options );
+		$this->assertEquals( 'enabled', $give_options['forms_singular'] );
+
+		$this->assertArrayHasKey( 'welcome', $give_options );
+		$this->assertEquals( 'enabled', $give_options['welcome'] );
+
+		$this->assertArrayHasKey( 'css', $give_options );
+		$this->assertEquals( 'enabled', $give_options['css'] );
+
+		$this->assertArrayHasKey( 'floatlabels', $give_options );
+		$this->assertEquals( 'disabled', $give_options['floatlabels'] );
+
+		$this->assertArrayHasKey( 'uninstall_on_delete', $give_options );
+		$this->assertEquals( 'disabled', $give_options['uninstall_on_delete'] );
+
+		$this->assertArrayHasKey( 'agreement_text', $give_options );
+		$this->assertEquals( $give_options['agreement_text'], give_get_default_agreement_text() );
+
+	}
+
+	/**
+	 * Test give_create_pages()
+	 *
+	 * @covers ::give_create_pages
+	 *
+	 * @since  1.8.11
+	 */
+	public function test_give_create_pages() {
+
+		give_create_pages();
+
 		$give_options = give_get_settings();
 
 		$this->assertArrayHasKey( 'history_page', $give_options );
 		$this->assertArrayHasKey( 'success_page', $give_options );
 		$this->assertArrayHasKey( 'failure_page', $give_options );
+
 	}
 
 	/**
@@ -35,46 +112,28 @@ class Tests_Activation extends Give_Unit_Test_Case {
 	 */
 	public function test_install() {
 
-		$give_options               = give_get_settings();
-		$origin_give_options		= $give_options;
-		$origin_upgraded_from 		= get_option( 'give_version_upgraded_from' );
-		$origin_give_version		= get_option( 'give_version' );
+		$give_options         = give_get_settings();
+		$origin_upgraded_from = get_option( 'give_version_upgraded_from' );
+		$origin_give_version  = get_option( 'give_version' );
 
 		// Prepare values for testing
-		delete_option( 'give_settings' ); 
+		delete_option( 'give_settings' );
 		update_option( 'give_version', '2.0' );
-		$give_options = array();
 
 		give_install();
 
 		// Test the give_version_upgraded_from value
 		$this->assertEquals( get_option( 'give_version_upgraded_from' ), '2.0' );
 
-		// Test that new pages are created, and not the same as the already created ones.
-		// This is to make sure the test is giving the most accurate results.
-		$new_settings = get_option( 'give_settings' );
-		$this->assertArrayHasKey( 'success_page', $new_settings );
-		$this->assertNotEquals( $origin_give_options['success_page'], $new_settings['success_page'] );
-		$this->assertArrayHasKey( 'failure_page', $new_settings );
-		$this->assertNotEquals( $origin_give_options['failure_page'], $new_settings['failure_page'] );
-		$this->assertArrayHasKey( 'history_page', $new_settings );
-		$this->assertNotEquals( $origin_give_options['history_page'], $new_settings['history_page'] );
-
 		$this->assertEquals( GIVE_VERSION, get_option( 'give_version' ) );
-
 		$this->assertInstanceOf( 'WP_Role', get_role( 'give_manager' ) );
 		$this->assertInstanceOf( 'WP_Role', get_role( 'give_accountant' ) );
 		$this->assertInstanceOf( 'WP_Role', get_role( 'give_worker' ) );
 
-		$this->assertNotFalse( get_transient( '_give_activation_redirect' ) );
+		$this->assertNotFalse( Give_Cache::get( '_give_activation_redirect', true ) );
 
-
-		// Reset to origin
-		wp_delete_post( $new_settings['success_page'], true );
-		wp_delete_post( $new_settings['history_page'], true );
-		wp_delete_post( $new_settings['failure_page'], true );
+		// Reset to origin.
 		update_option( 'give_version_upgraded_from', $origin_upgraded_from );
-		$give_options = $origin_give_options;
 		update_option( 'give_version', $origin_give_version );
 
 	}
@@ -104,16 +163,16 @@ class Tests_Activation extends Give_Unit_Test_Case {
 		$give_options = give_get_settings();
 
 		// Prepare for test
-		set_transient( '_give_installed', $give_options, 30 );
+		Give_Cache::set( '_give_installed', $give_options, 30, true );
 
 		// Fake admin screen
 		set_current_screen( 'dashboard' );
 
-		$this->assertNotFalse( get_transient( '_give_installed' ) );
+		$this->assertNotFalse( Give_Cache::get( '_give_installed', true ) );
 
 		give_after_install();
 
-		$this->assertFalse( get_transient( '_give_installed' ) );
+		$this->assertFalse( Give_Cache::get( '_give_installed', true ) );
 
 	}
 
@@ -128,10 +187,10 @@ class Tests_Activation extends Give_Unit_Test_Case {
 
 		// Prepare for test
 		set_current_screen( 'front' );
-		set_transient( '_give_installed', $give_options, 30 );
+		Give_Cache::set( '_give_installed', $give_options, 30, true );
 
 		give_after_install();
-		$this->assertNotFalse( get_transient( '_give_installed' ) );
+		$this->assertNotFalse( Give_Cache::get( '_give_installed', true ) );
 
 	}
 
@@ -149,13 +208,12 @@ class Tests_Activation extends Give_Unit_Test_Case {
 		// Fake admin screen
 		set_current_screen( 'dashboard' );
 
-		delete_transient( '_give_installed' );
+		Give_Cache::delete( Give_Cache::get_key( '_give_installed' ) );
 
 		$this->assertNull( give_after_install() );
 
 		// Reset to origin
-		set_transient( '_give_installed', $give_options, 30 );
-
+		Give_Cache::set( '_give_installed', $give_options, 30, true );
 	}
 
 	/**

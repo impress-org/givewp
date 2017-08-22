@@ -43,17 +43,12 @@ if ( ! class_exists( 'Give_Settings_Logs' ) ) :
 		 */
 		public function __construct() {
 			$this->id    = 'logs';
-			$this->label = esc_html__( 'Logs', 'give' );
+			$this->label = __( 'Logs', 'give' );
 
 			$this->default_tab = 'sales';
 
 			parent::__construct();
 
-			// Do not use main form for this tab.
-			if ( give_get_current_setting_tab() === $this->id ) {
-				add_action( 'give-tools_open_form', '__return_empty_string' );
-				add_action( 'give-tools_close_form', '__return_empty_string' );
-			}
 		}
 
 		/**
@@ -61,7 +56,7 @@ if ( ! class_exists( 'Give_Settings_Logs' ) ) :
 		 *
 		 * @since  1.8
 		 *
-		 * @param  array $pages Lst of pages.
+		 * @param  array $pages List of pages.
 		 *
 		 * @return array
 		 */
@@ -90,7 +85,7 @@ if ( ! class_exists( 'Give_Settings_Logs' ) ) :
 				),
 				array(
 					'id'   => 'api',
-					'name' => esc_html__( 'Log', 'give' ),
+					'name' => __( 'Log', 'give' ),
 					'type' => 'logs',
 
 				),
@@ -122,9 +117,9 @@ if ( ! class_exists( 'Give_Settings_Logs' ) ) :
 		 */
 		public function get_sections() {
 			$sections = array(
-				'sales'          => esc_html__( 'Donations', 'give' ),
-				'gateway_errors' => esc_html__( 'Payment Errors', 'give' ),
-				'api_requests'   => esc_html__( 'API Requests', 'give' ),
+				'sales'          => __( 'Donations', 'give' ),
+				'gateway_errors' => __( 'Payment Errors', 'give' ),
+				'api_requests'   => __( 'API Requests', 'give' ),
 			);
 
 			$sections = apply_filters( 'give_log_views', $sections );

@@ -27,8 +27,8 @@ function give_get_actions() {
 
 	$_get_action = ! empty( $_GET['give_action'] ) ? $_GET['give_action'] : null;
 
-	// Add backward compatibility to give-action param ( $_GET or $_POST )
-	if(  doing_action( 'admin_init' ) && empty( $_get_action ) ) {
+	// Add backward compatibility to give-action param ( $_GET )
+	if(  empty( $_get_action ) ) {
 		$_get_action = ! empty( $_GET['give-action'] ) ? $_GET['give-action'] : null;
 	}
 
@@ -46,10 +46,9 @@ function give_get_actions() {
 }
 
 add_action( 'init', 'give_get_actions' );
-add_action( 'admin_init', 'give_get_actions' );
 
 /**
- * Hooks Give actions, when present in the $_POST superglobal. Every give_action
+ * Hooks Give actions, when present in the $_POST super global. Every give_action
  * present in $_POST is called using WordPress's do_action function. These
  * functions are called on init.
  *
@@ -62,8 +61,8 @@ function give_post_actions() {
 	$_post_action = ! empty( $_POST['give_action'] ) ? $_POST['give_action'] : null;
 
 
-	// Add backward compatibility to give-action param ( $_GET or $_POST )
-	if(  doing_action( 'admin_init' ) && empty( $_post_action ) ) {
+	// Add backward compatibility to give-action param ( $_POST ).
+	if(  empty( $_post_action ) ) {
 		$_post_action = ! empty( $_POST['give-action'] ) ? $_POST['give-action'] : null;
 	}
 
@@ -81,7 +80,6 @@ function give_post_actions() {
 }
 
 add_action( 'init', 'give_post_actions' );
-add_action( 'admin_init', 'give_post_actions' );
 
 /**
  * Connect WordPress user with Donor.
@@ -92,7 +90,8 @@ add_action( 'admin_init', 'give_post_actions' );
  * @return void
  */
 function give_connect_donor_to_wpuser( $user_id, $user_data ){
-	$donor = new Give_Customer( $user_data['user_email'] );
+	/* @var Give_Donor $donor */
+	$donor = new Give_Donor( $user_data['user_email'] );
 
 	// Validate donor id and check if do nor is already connect to wp user or not.
 	if( $donor->id && ! $donor->user_id ) {
@@ -105,7 +104,7 @@ function give_connect_donor_to_wpuser( $user_id, $user_data ){
 			// Update user_id meta in payments.
 			if( ! empty( $donor->payment_ids ) && ( $donations = explode( ',', $donor->payment_ids ) ) ) {
 				foreach ( $donations as $donation  ) {
-					update_post_meta( $donation, '_give_payment_user_id', $user_id );
+					give_update_meta( $donation, '_give_payment_user_id', $user_id );
 				}
 			}
 		}
@@ -155,11 +154,97 @@ function give_donor_batch_export_complete( $data ) {
 	// Remove donor ids cache.
 	if(
 		isset( $data['class'] )
-		&& 'Give_Batch_Customers_Export' === $data['class']
+		&& 'Give_Batch_Donors_Export' === $data['class']
 		&& ! empty( $data['forms'] )
 		&& isset( $data['give_export_option']['query_id'] )
 	) {
-		delete_transient( $data['give_export_option']['query_id'] );
+		Give_Cache::delete( Give_Cache::get_key( $data['give_export_option']['query_id'] ) );
 	}
 }
 add_action('give_file_export_complete', 'give_donor_batch_export_complete' );
+
+/**
+ * Print css for wordpress setting pages.
+ *
+ * @since 1.8.7
+ */
+function give_admin_quick_css() {
+	/* @var WP_Screen $screen */
+	$screen = get_current_screen();
+
+	if( ! ( $screen instanceof WP_Screen ) ) {
+		return false;
+	}
+
+	switch ( true ) {
+		case ( 'plugins' === $screen->base || 'plugins-network' === $screen->base ):
+			?>
+			<style>
+				tr.active.update + tr.give-addon-notice-tr td{
+                    box-shadow:none;
+                    -webkit-box-shadow:none;
+				}
+				tr.active + tr.give-addon-notice-tr td{
+                    position: relative;
+				    top:-1px;
+                }
+				tr.active + tr.give-addon-notice-tr .notice{
+                    margin: 5px 20px 15px 40px;
+                }
+
+				tr.give-addon-notice-tr .dashicons {
+                    color: #f56e28;
+                }
+				tr.give-addon-notice-tr td{
+					border-left: 4px solid #00a0d2;
+				}
+
+				tr.give-addon-notice-tr td{
+					padding: 0!important;
+				}
+
+                tr.active.update + tr.give-addon-notice-tr .notice{
+					margin: 5px 20px 5px 40px;
+				}
+			</style>
+			<?php
+	}
+}
+add_action( 'admin_head', 'give_admin_quick_css' );
+
+
+/**
+ * Set Donation Amount for Multi Level Donation Forms
+ *
+ * @param int    $form_id
+ * @param object $form
+ *
+ * @since 1.8.9
+ *
+ * @return void
+ */
+function give_set_donation_levels_max_min_amount( $form_id ) {
+	if (
+		( 'set' === $_POST['_give_price_option'] ) ||
+		( in_array( '_give_donation_levels', $_POST ) && count( $_POST['_give_donation_levels'] ) <= 0 ) ||
+		! ( $donation_levels_amounts = wp_list_pluck( $_POST['_give_donation_levels'], '_give_amount' ) )
+	) {
+		// Delete old meta.
+		give_delete_meta( $form_id, '_give_levels_minimum_amount' );
+		give_delete_meta( $form_id, '_give_levels_maximum_amount' );
+
+		return;
+	}
+
+	// Sanitize donation level amounts.
+	$donation_levels_amounts = array_map( 'give_maybe_sanitize_amount', $donation_levels_amounts );
+
+	$min_amount = min( $donation_levels_amounts );
+	$max_amount = max( $donation_levels_amounts );
+
+	// Set Minimum and Maximum amount for Multi Level Donation Forms
+	give_update_meta( $form_id, '_give_levels_minimum_amount', $min_amount ? give_sanitize_amount_for_db( $min_amount ) : 0 );
+	give_update_meta( $form_id, '_give_levels_maximum_amount', $max_amount? give_sanitize_amount_for_db( $max_amount ) : 0 );
+}
+
+add_action( 'give_pre_process_give_forms_meta', 'give_set_donation_levels_max_min_amount', 30 );

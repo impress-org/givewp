@@ -707,6 +707,11 @@ x:-o-prefocus, .qtip .qtip-tip {
 .give-metabox-tabs li .give-icon-purse:before {
   content: "\e8df"; }
 
+.give-metabox-tabs li .dashicons {
+  font-size: 14px;
+  width: 14px;
+  line-height: 20px; }
+
 /**
  * Give Forms SCSS
  *
@@ -806,7 +811,7 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
   margin-right: -4px; }
 
 .give-money-symbol-after {
-  margin-left: -1px; }
+  margin-left: -5px; }
 
 .give_options_panel input[type="text"] {
   padding: 5px;
@@ -964,7 +969,11 @@ ASIDE
   overflow: hidden; }
 
 #give-metabox-form-data .give_options_panel {
+  display: none;
   padding-left: 170px; }
+  #give-metabox-form-data .give_options_panel.active,
+  .no-js #give-metabox-form-data .give_options_panel {
+    display: block; }
   #give-metabox-form-data .give_options_panel .give-field-wrap {
     padding: 1em 20px 1em 162px !important;
     margin: 0;
@@ -1069,7 +1078,7 @@ ASIDE
 
 #give-metabox-form-data .give-metabox-tabs {
   margin: 0;
-  min-width: 170px;
+  max-width: 170px;
   float: left;
   line-height: 1em;
   padding: 0 0 10px;
@@ -1118,10 +1127,9 @@ ASIDE
     display: block;
     position: absolute;
     bottom: 0;
-    left: 170px;
+    left: 166px;
     width: 170px;
-    max-height: 250px;
-    overflow-y: scroll; }
+    max-height: 250px; }
 
 @media only screen and (min-width: 851px) and (max-width: 1025px), (max-width: 550px) {
   #give-metabox-form-data ul.give-metabox-tabs {
@@ -1147,6 +1155,19 @@ ASIDE
 
 #give-export-payments div.chosen-container:first-of-type {
   margin-top: 10px; }
+
+#give-export-payments div.chosen-container ul.chosen-choices {
+  border: 1px solid #ddd; }
+  #give-export-payments div.chosen-container ul.chosen-choices input.chosen-search-input {
+    border: 1px solid #ddd;
+    height: 20px; }
+
+#give-export-payments select {
+  vertical-align: inherit;
+  margin: 0;
+  height: 26px;
+  line-height: 26px;
+  border: 1px solid #ddd; }
 
 /*-------------------------------------
 Doc Links
@@ -1378,36 +1399,6 @@ body.give_forms_page_give-reports table.export-options-table span#give-start-wra
   #give-tools-recount-form .notice-wrap #give-batch-success {
     margin-bottom: 6px; }
 
-.give-progress {
-  height: 15px;
-  width: 95%;
-  border-radius: 4px;
-  overflow: hidden; }
-  .give-progress > div {
-    height: 100%;
-    width: 0; }
-
-.admin-color-fresh .give-export-form .give-progress div, .give-export-form .give-progress div {
-  background: #0073aa; }
-
-.admin-color-light .give-export-form .give-progress div {
-  background: #888; }
-
-.admin-color-blue .give-export-form .give-progress div {
-  background: #096484; }
-
-.admin-color-coffee .give-export-form .give-progress div {
-  background: #c7a589; }
-
-.admin-color-ectoplasm .give-export-form .give-progress div {
-  background: #a3b745; }
-
-.admin-color-midnight .give-export-form .give-progress div {
-  background: #e14d43; }
-
-.admin-color-sunrise .give-export-form .give-progress div {
-  background: #dd823b; }
-
 .recount-stats-controls form {
   display: inline; }
 
@@ -1620,20 +1611,6 @@ p.give-field-description, .cmb2-metabox-description {
   font-style: italic;
   font-size: 13px !important; }
 
-.give-image-thumb {
-  position: relative;
-  margin-top: 14px; }
-  .give-image-thumb span.give-delete-image-thumb {
-    position: absolute;
-    background: red;
-    color: white;
-    border-radius: 30px;
-    left: -10px;
-    top: -10px; }
-  .give-image-thumb img {
-    max-width: 400px;
-    border: 4px solid white; }
-
 .cmb-type-give-title label,
 .give-setting-tab-header h2 {
   float: left;
@@ -1712,37 +1689,6 @@ p.give-field-description, .cmb2-metabox-description {
 
 #give-download-sysinfo {
   margin: 0; }
-
-.cmb2-id-api .cmb-td {
-  padding: 0; }
-
-.cmb2-id-api table th {
-  padding: 10px 8px; }
-
-.cmb2-id-api .give-ajax-user-search {
-  padding: 3px 5px; }
-
-.give_user_search_wrap {
-  position: relative;
-  overflow: visible; }
-
-.give_user_search_results {
-  position: absolute;
-  left: 0;
-  top: 27px;
-  z-index: 100; }
-  .give_user_search_results a.give-ajax-user-cancel {
-    position: absolute;
-    right: 6px;
-    top: 2px; }
-  .give_user_search_results ul {
-    padding: 10px 10px 4px;
-    margin: 0;
-    background: #f0f0f0;
-    border: 1px solid #DFDFDF;
-    width: 300px;
-    max-height: 200px;
-    overflow-y: scroll; }
 
 #api .tablenav .actions {
   overflow: visible; }
@@ -1932,6 +1878,21 @@ h2.give-nav-tab-wrapper {
   outline: none;
   box-shadow: inset 0px 0px 4px #ddd; }
 
+.give-image-thumb {
+  position: relative;
+  margin-top: 14px; }
+  .give-image-thumb span.give-delete-image-thumb {
+    position: absolute;
+    background: red;
+    color: white;
+    border-radius: 30px;
+    left: -10px;
+    top: -10px;
+    cursor: pointer; }
+  .give-image-thumb img {
+    max-width: 250px;
+    border: 4px solid white; }
+
 /**
  * Give Payment History SCSS
  *
@@ -1941,31 +1902,122 @@ h2.give-nav-tab-wrapper {
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
 */
-#give-payment-filters, .give-submit-wrap {
+.give-filters {
   clear: both;
   background: #f5f5f5;
-  border-color: #dfdfdf;
-  overflow: auto;
+  border: 1px solid #dfdfdf;
+  padding: 12px 12px 0 12px; }
+  .give-filters .give-donation-forms-filter .chosen-single {
+    height: 28px;
+    line-height: 28px; }
+  .give-filters .chosen-container-single .chosen-single div b {
+    background-position: 0 4px; }
+  .give-filters .chosen-container-active.chosen-with-drop .chosen-single div b {
+    background-position: -18px 6px; }
+  .give-filters #give-payment-form-filter, .give-filters #give_donation_forms_filter {
+    display: inline-block;
+    width: 300px; }
+    @media screen and (max-width: 782px) {
+      .give-filters #give-payment-form-filter, .give-filters #give_donation_forms_filter {
+        width: 100%; } }
+  .give-filters #give_donation_forms_filter {
+    width: 255px; }
+    @media screen and (max-width: 782px) {
+      .give-filters #give_donation_forms_filter {
+        width: 100%;
+        max-width: 100%; } }
+  .give-filters:after {
+    content: "";
+    display: table;
+    clear: both; }
+
+.give-filter {
+  display: block;
+  margin-bottom: 12px;
+  width: 100%; }
+  .give-filter:after {
+    content: "";
+    display: table;
+    clear: both; }
+  .give-filter label {
+    display: block;
+    margin-right: 4px; }
+  .give-filter input {
+    margin: 0; }
+  .give-filter input[type="text"] {
+    height: 28px;
+    width: 100%; }
+  .give-filter input[type="text"],
+  .give-filter input[type="search"] {
+    height: 28px; }
+  .give-filter .button {
+    height: 28px;
+    line-height: 26px;
+    margin: 0;
+    padding: 0 10px 1px; }
+  .give-filter select {
+    width: 100%; }
+  @media screen and (min-width: 783px) {
+    .give-filter {
+      float: left;
+      margin-right: 18px;
+      width: auto; }
+      .give-filter label {
+        display: inline-block; }
+      .give-filter input[type="text"] {
+        display: inline-block;
+        width: 144px; } }
+
+.give-filter-search input[type="search"] {
+  display: block;
+  float: left;
+  width: 68%; }
+
+.give-filter-search input[type="submit"] {
+  display: block;
+  float: right;
+  width: 30%; }
+
+@media screen and (min-width: 783px) {
+  .give-filter-search input[type="search"] {
+    display: inline-block;
+    margin-right: 4px;
+    width: 144px; }
+  .give-filter-search input[type="submit"] {
+    display: inline-block;
+    width: auto; } }
+
+@media screen and (min-width: 600px) {
+  .give-filter-half {
+    float: left;
+    width: 49%; }
+    .give-filter-half:last-child {
+      float: right; } }
+
+@media screen and (min-width: 783px) {
+  .give-filter-half {
+    width: auto; }
+    .give-filter-half:last-child {
+      float: left; }
+    .give-filter-half input[type="text"] {
+      width: 96px; } }
+
+.give-clear-filters-button {
+  margin-left: 8px; }
+
+.give-submit-wrap {
+  clear: both;
+  background: #f5f5f5;
+  border: 1px solid #dfdfdf;
   margin: 8px 0;
   padding: 12px;
-  border-width: 1px;
-  border-style: solid;
   font-size: 13px;
   line-height: 2.1em; }
-
-#give-payment-filters p {
-  color: #777; }
 
 #give-payment-filters ul.subsubsub {
   margin-bottom: 8px; }
 
-#give-payment-filters label {
-  font-style: italic;
-  margin: 0 10px; }
-  #give-payment-filters label.give-start-date-label {
-    margin-left: 5px; }
-
-#give-payments-filter ul.subsubsub {
+#give-payments-advanced-filter ul.subsubsub {
   margin-bottom: 12px; }
 
 #give-payments-filter .tablenav.top {
@@ -2108,10 +2160,6 @@ Responsiveness
 .give-admin-box-inside .strong {
   font-weight: 600; }
 
-.give-payment-fees .fee-label {
-  font-weight: normal;
-  color: #666; }
-
 .give-admin-box .right {
   float: right; }
 
@@ -2237,6 +2285,21 @@ input.give-price-field {
 .give_forms_page_give-payment-history #give-dashboard-widgets-wrap #side-sortables {
   padding-top: 0; }
 
+.give-select-chosen .spinner {
+  position: absolute;
+  right: 5px;
+  top: 2px;
+  z-index: 999; }
+
+.give-select-chosen-ajax .spinner {
+  visibility: visible; }
+
+.give-select-chosen-ajax .chosen-search input[type="text"] {
+  background-image: none !important; }
+
+.give-select-chosen-ajax.chosen-container-single .chosen-search input[type="text"] {
+  background-image: none !important; }
+
 /**
  * Give Admin Dashboard SCSS
  *
@@ -2339,54 +2402,54 @@ input.give-price-field {
   float: right;
   clear: none; }
 
-#give-customer-card-wrapper {
+#give-donor-card-wrapper {
   margin-left: -1px;
   z-index: 2;
   min-height: 200px; }
-  #give-customer-card-wrapper input {
+  #give-donor-card-wrapper input {
     font-weight: normal; }
-  #give-customer-card-wrapper .customer-section {
+  #give-donor-card-wrapper .donor-section {
     border-bottom: 1px solid #eee;
     margin-bottom: 10px; }
-  #give-customer-card-wrapper .customer-section table {
+  #give-donor-card-wrapper .donor-section table {
     margin-bottom: 0; }
-  #give-customer-card-wrapper > div:first-child {
+  #give-donor-card-wrapper > div:first-child {
     padding-top: 20px; }
-  #give-customer-card-wrapper > div:last-child {
+  #give-donor-card-wrapper > div:last-child {
     padding-bottom: 20px;
     border: none; }
-  #give-customer-card-wrapper .avatar-wrap {
+  #give-donor-card-wrapper .avatar-wrap {
     padding: 0 15px 15px 0;
     text-align: center;
     float: left; }
-    #give-customer-card-wrapper .avatar-wrap img {
+    #give-donor-card-wrapper .avatar-wrap img {
       border-radius: 3px; }
-  #give-customer-card-wrapper a.delete {
+  #give-donor-card-wrapper a.delete {
     text-decoration: none;
     color: #ff0000;
     margin-right: 5px; }
-  #give-customer-card-wrapper .donor-bio-header .customer-since {
+  #give-donor-card-wrapper .donor-bio-header .donor-since {
     margin: 10px 0;
     font-size: 16px; }
-  #give-customer-card-wrapper .donor-bio-header .customer-id {
+  #give-donor-card-wrapper .donor-bio-header .donor-id {
     display: inline-block;
     font-size: 24px;
     font-weight: 600;
     margin-right: 10px; }
-  #give-customer-card-wrapper .donor-bio-header .customer-name-wrap {
+  #give-donor-card-wrapper .donor-bio-header .donor-name-wrap {
     display: inline-block; }
-  #give-customer-card-wrapper .donor-bio-header .customer-edit-link {
+  #give-donor-card-wrapper .donor-bio-header .donor-edit-link {
     margin-bottom: 15px; }
 
-.customer-main-wrapper {
+.donor-main-wrapper {
   clear: both;
   margin: 0 0 20px; }
   @media (max-width: 655px) {
-    .customer-main-wrapper {
+    .donor-main-wrapper {
       width: 100%; } }
-  .customer-main-wrapper table {
+  .donor-main-wrapper table {
     margin: 0; }
-  .customer-main-wrapper input {
+  .donor-main-wrapper input {
     width: 200px; }
 
 #donor-summary {
@@ -2401,22 +2464,22 @@ input.give-price-field {
     color: #F0F0F0;
     z-index: 0; }
 
-#give-customer-card-wrapper .customer-address-wrapper {
+#give-donor-card-wrapper .donor-address-wrapper {
   width: 202px; }
-  #give-customer-card-wrapper .customer-address-wrapper span[data-key="line2"] {
+  #give-donor-card-wrapper .donor-address-wrapper span[data-key="line2"] {
     display: table;
     clear: both; }
 
-#give-customer-card-wrapper .customer-address-wrapper select {
+#give-donor-card-wrapper .donor-address-wrapper select {
   width: 200px; }
 
-#give-customer-card-wrapper .customer-info {
+#give-donor-card-wrapper .donor-info {
   min-height: 185px; }
 
-#give-customer-card-wrapper .info-wrapper {
+#give-donor-card-wrapper .info-wrapper {
   min-height: 125px; }
 
-.customer-info .customer-name {
+.donor-info .donor-name {
   font-size: 24px;
   font-weight: 600; }
 
@@ -2425,92 +2488,92 @@ input.give-price-field {
   font-weight: normal;
   text-decoration: none; }
 
-#customer-edit-actions {
+#donor-edit-actions {
   text-align: center;
   margin-bottom: 20px;
   line-height: 28px; }
 
-#customer-edit-actions .button-secondary {
+#donor-edit-actions .button-secondary {
   margin-right: 10px; }
 
-#give-customer-card-wrapper .edit-item {
+#give-donor-card-wrapper .edit-item {
   display: none; }
 
-#give-customer-card-wrapper .give_user_search_results {
+#give-donor-card-wrapper .give_user_search_results {
   left: 1px;
   top: 16px; }
 
-#give-customer-card-wrapper .give_user_search_results ul {
+#give-donor-card-wrapper .give_user_search_results ul {
   width: 200px; }
 
-#customer-stats-wrapper {
+#donor-stats-wrapper {
   margin: 0 auto;
   text-align: center;
   padding: 15px; }
-  #customer-stats-wrapper ul {
+  #donor-stats-wrapper ul {
     margin: 0;
     padding: 0;
     overflow: hidden; }
-    #customer-stats-wrapper ul li {
+    #donor-stats-wrapper ul li {
       width: 50%;
       float: left;
       line-height: 22px;
       font-size: 14px;
       margin: 0; }
-  #customer-stats-wrapper a {
+  #donor-stats-wrapper a {
     text-decoration: none; }
 
-#customer-stats-wrapper .dashicons {
+#donor-stats-wrapper .dashicons {
   color: #888; }
 
-#customer-tables-wrapper table {
+#donor-tables-wrapper table {
   width: 100%;
   text-align: center; }
 
-#customer-tables-wrapper th {
+#donor-tables-wrapper th {
   text-align: center; }
 
-#customer-tables-wrapper .donations tr > th:first-child,
-#customer-tables-wrapper .donations tr > td:first-child,
-#customer-tables-wrapper .emails tr > th:first-child,
-#customer-tables-wrapper .emails tr > td:first-child {
+#donor-tables-wrapper .donations tr > th:first-child,
+#donor-tables-wrapper .donations tr > td:first-child,
+#donor-tables-wrapper .emails tr > th:first-child,
+#donor-tables-wrapper .emails tr > td:first-child {
   text-align: left; }
 
-#customer-tables-wrapper .donations tr > td:only-child {
+#donor-tables-wrapper .donations tr > td:only-child {
   text-align: center; }
 
-#customer-notes-wrapper {
+#donor-notes-wrapper {
   min-height: 50px; }
 
-.customer-notes-header span, .customer-notes-header img {
+.donor-notes-header span, .donor-notes-header img {
   font-weight: 600;
   line-height: 30px;
   vertical-align: middle; }
 
-.customer-note-input {
+.donor-note-input {
   width: 100%;
   margin-bottom: 5px; }
 
-#give-customer-notes div:nth-of-type(even) {
+#give-donor-notes div:nth-of-type(even) {
   background-color: #f9f9f9; }
 
-#give-customer-notes .customer-note-wrapper {
+#give-donor-notes .donor-note-wrapper {
   border-bottom: 1px solid #f9f9f9;
   min-height: 38px;
   padding: 0; }
-  #give-customer-notes .customer-note-wrapper .note-content-wrap {
+  #give-donor-notes .donor-note-wrapper .note-content-wrap {
     padding: 10px 12px;
     line-height: 20px;
     font-size: 14px; }
 
-#give-customer-notes .give-no-customer-notes {
+#give-donor-notes .give-no-donor-notes {
   text-align: center;
   padding: 20px; }
 
-.customer-note-wrapper span {
+.donor-note-wrapper span {
   display: block; }
 
-.delete-customer {
+.delete-donor {
   text-align: center; }
 
 /**
@@ -2719,5 +2782,97 @@ div.sc-shortcode {
     font-size: 12px;
     line-height: 20px;
     outline: 0; }
+
+.give-progress {
+  height: 15px;
+  width: 95%;
+  border-radius: 4px;
+  overflow: hidden; }
+  .give-progress > div {
+    height: 100%;
+    width: 0; }
+
+.admin-color-fresh .give-progress div, .give-progress div {
+  background: #0073aa; }
+
+.admin-color-light .give-progress div {
+  background: #888; }
+
+.admin-color-blue .give-progress div {
+  background: #096484; }
+
+.admin-color-coffee .give-progress div {
+  background: #c7a589; }
+
+.admin-color-ectoplasm .give-progress div {
+  background: #a3b745; }
+
+.admin-color-midnight .give-progress div {
+  background: #e14d43; }
+
+.admin-color-sunrise .give-progress div {
+  background: #dd823b; }
+
+/**
+ * Give Updates Panel SCSS
+ *
+ * @description Updates Panel Styles
+ * @package     Give
+ * @subpackage  SCSS/Admin
+ * @copyright   Copyright (c) 2017, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+#give-updates-h1 {
+  padding-top: 0; }
+
+.give-update-panel-content p {
+  font-size: 16px; }
+
+#give-updates .dashicons-no-alt {
+  color: red; }
+
+#give-updates .dashicons-yes {
+  color: green; }
+
+#give-db-updates .spinner {
+  margin-top: 0; }
+
+/**
+ * Give Blank Slate
+ *
+ * @package     Give
+ * @subpackage  SCSS/Admin
+ * @copyright   Copyright (c) 2016, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+.give-blank-slate {
+  background: white;
+  border: 1px solid #e5e5e5;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+  margin: 0 auto;
+  padding: 40px;
+  text-align: center; }
+  .give-blank-slate :last-child {
+    margin-bottom: 0; }
+  .give-blank-slate__heading, .give-blank-slate__message, .give-blank-slate__cta, .give-blank-slate__help {
+    margin: 0 0 10px; }
+  .give-blank-slate__image {
+    display: block;
+    height: 80px;
+    margin: 0 auto 10px;
+    width: auto; }
+  .give-blank-slate__help {
+    color: #666;
+    font-style: italic; }
+    .give-blank-slate__help a {
+      display: inline-block;
+      text-decoration: underline; }
+
+.give-blank-slate a.give-blank-slate__cta {
+  display: inline-block;
+  font-size: 1.2em;
+  height: auto;
+  margin: 0 0 10px;
+  padding: .75em 1.5em; }
 
 /*# sourceMappingURL=../sourcemaps/give-admin.css.map */

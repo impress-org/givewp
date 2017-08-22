@@ -5,14 +5,14 @@
 
 // User's Donations
 if ( is_user_logged_in() ) {
-	$donations = give_get_users_purchases( get_current_user_id(), 20, true, 'any' );
+	$donations = give_get_users_donations( get_current_user_id(), 20, true, 'any' );
 } elseif ( Give()->email_access->token_exists ) {
 	// Email Access Token?
-	$donations = give_get_users_purchases( 0, 20, true, 'any' );
+	$donations = give_get_users_donations( 0, 20, true, 'any' );
 } elseif ( Give()->session->get_session_expiration() !== false ) {
 	// Session active?
 	$email     = Give()->session->get( 'give_email' );
-	$donations = give_get_users_purchases( $email, 20, true, 'any' );
+	$donations = give_get_users_donations( $email, 20, true, 'any' );
 }
 
 if ( $donations ) : ?>
@@ -65,7 +65,7 @@ if ( $donations ) : ?>
                 <td class="give-donation-id">#<?php echo give_get_payment_number( $post->ID ); ?></td>
                 <td class="give-donation-date"><?php echo date_i18n( give_date_format(), strtotime( get_post_field( 'post_date', $post->ID ) ) ); ?></td>
                 <td class="give-donation-amount">
-                    <span class="give-donation-amount"><?php echo give_currency_filter( give_format_amount( give_get_payment_amount( $post->ID ) ) ); ?></span>
+                    <span class="give-donation-amount"><?php echo give_currency_filter( give_format_amount( give_get_payment_amount( $post->ID ), array( 'sanitize' => false ) ) ); ?></span>
                 </td>
                 <td class="give-donation-details">
 					<?php
@@ -102,11 +102,11 @@ if ( $donations ) : ?>
 			'base'    => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
 			'format'  => '?paged=%#%',
 			'current' => max( 1, get_query_var( 'paged' ) ),
-			'total'   => ceil( give_count_purchases_of_customer() / 20 ) // 20 items per page
+			'total'   => ceil( give_count_donations_of_donor() / 20 ) // 20 items per page
 		) );
 		?>
     </div>
 	<?php wp_reset_postdata(); ?>
 <?php else : ?>
-	<?php give_output_error( esc_html__( 'It looks like you haven\'t made any donations.', 'give' ), true, 'success' ); ?>
+	<?php Give()->notices->print_frontend_notice( esc_html__( 'It looks like you haven\'t made any donations.', 'give' ), true, 'success' ); ?>
 <?php endif;

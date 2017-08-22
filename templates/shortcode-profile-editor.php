@@ -22,7 +22,7 @@ if ( is_user_logged_in() ):
 		</p>
 	<?php endif; ?>
 
-	<?php give_print_errors( 0 ); ?>
+	<?php Give()->notices->render_frontend_notices( 0 ); ?>
 
 	<?php
 	/**
@@ -149,7 +149,7 @@ if ( is_user_logged_in() ):
 				</p>
 
 				<p id="give-card-state-wrap" class="form-row form-row-last form-row-responsive">
-					<label for="give_address_state"><?php esc_html_e( 'State / Province', 'give' ); ?></label>
+					<label for="give_address_state"><?php esc_html_e( 'State / Province / County', 'give' ); ?></label>
 					<input name="give_address_state" id="give_address_state" class="text give-input" type="text" value="<?php echo esc_attr( $address['state'] ); ?>"/>
 				</p>
 

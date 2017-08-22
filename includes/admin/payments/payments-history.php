@@ -27,8 +27,8 @@ function give_payment_history_page() {
 
 	$give_payment = get_post_type_object( 'give_payment' );
 
-	if ( isset( $_GET['view'] ) && 'view-order-details' == $_GET['view'] ) {
-		require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/view-order-details.php';
+	if ( isset( $_GET['view'] ) && 'view-payment-details' == $_GET['view'] ) {
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/view-payment-details.php';
 	} else {
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/class-payments-table.php';
 		$payments_table = new Give_Payment_History_Table();
@@ -47,11 +47,16 @@ function give_payment_history_page() {
 		do_action( 'give_payments_page_top' );
 		?>
 
-		<form id="give-payments-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ); ?>">
+		<form id="give-payments-advanced-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ); ?>">
 			<input type="hidden" name="post_type" value="give_forms" />
 			<input type="hidden" name="page" value="give-payment-history" />
 			<?php $payments_table->views() ?>
 			<?php $payments_table->advanced_filters(); ?>
+		</form>
+
+		<form id="give-payments-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ); ?>">
+			<input type="hidden" name="post_type" value="give_forms" />
+			<input type="hidden" name="page" value="give-payment-history" />
 			<?php $payments_table->display() ?>
 		</form>
 
@@ -90,7 +95,7 @@ function give_view_order_details_title( $admin_title, $title ) {
 
 	switch( $_GET['give-action'] ) :
 
-		case 'view-order-details' :
+		case 'view-payment-details' :
 			$title = sprintf(
 				/* translators: %s: admin title */
 				esc_html__( 'View Donation Details - %s', 'give' ),
@@ -114,7 +119,7 @@ function give_view_order_details_title( $admin_title, $title ) {
 add_filter( 'admin_title', 'give_view_order_details_title', 10, 2 );
 
 /**
- * Intercept default Edit post links for Give payments and rewrite them to the View Order Details screen
+ * Intercept default Edit post links for Give payments and rewrite them to the View Order Details screen.
  *
  * @since 1.0
  *
@@ -135,7 +140,7 @@ function give_override_edit_post_for_payment_link( $url, $post_id = 0, $context 
 		return $url;
 	}
 
-	$url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $post_id );
+	$url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . $post_id );
 
 	return $url;
 }

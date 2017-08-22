@@ -45,22 +45,23 @@ function give_get_templates_url() {
  * @param string $default_path  Default path. Default is empty.
  */
 function give_get_template( $template_name, $args = array(), $template_path = '', $default_path = '' ) {
-    if ( ! empty( $args ) && is_array( $args ) ) {
-        extract( $args );
-    }
+	if ( ! empty( $args ) && is_array( $args ) ) {
+		extract( $args );
+	}
 
-    $template_names = array( $template_name . '.php' );
+	$template_names = array( $template_name . '.php' );
 
-    $located = give_locate_template( $template_names, $template_path, $default_path );
+	$located = give_locate_template( $template_names, $template_path, $default_path );
 
-    if ( ! file_exists( $located ) ) {
+	if ( ! file_exists( $located ) ) {
 		/* translators: %s: the template */
-        give_output_error( sprintf( __( 'The %s template was not found.', 'give' ), $located ), true );
-        return;
-    }
+		Give()->notices->print_frontend_notice( sprintf( __( 'The %s template was not found.', 'give' ), $located ), true );
 
-    // Allow 3rd party plugin filter template file from their plugin.
-    $located = apply_filters( 'give_get_template', $located, $template_name, $args, $template_path, $default_path );
+		return;
+	}
+
+	// Allow 3rd party plugin filter template file from their plugin.
+	$located = apply_filters( 'give_get_template', $located, $template_name, $args, $template_path, $default_path );
 
 	/**
 	 * Fires in give template, before the file is included.
@@ -74,9 +75,9 @@ function give_get_template( $template_name, $args = array(), $template_path = ''
 	 * @param string $located       Template file filter by 3rd party plugin.
 	 * @param array  $args          Passed arguments.
 	 */
-    do_action( 'give_before_template_part', $template_name, $template_path, $located, $args );
+	do_action( 'give_before_template_part', $template_name, $template_path, $located, $args );
 
-    include( $located );
+	include( $located );
 
 	/**
 	 * Fires in give template, after the file is included.
@@ -90,7 +91,7 @@ function give_get_template( $template_name, $args = array(), $template_path = ''
 	 * @param string $located       Template file filter by 3rd party plugin.
 	 * @param array  $args          Passed arguments.
 	 */
-    do_action( 'give_after_template_part', $template_name, $template_path, $located, $args );
+	do_action( 'give_after_template_part', $template_name, $template_path, $located, $args );
 }
 
 /**
@@ -104,7 +105,7 @@ function give_get_template( $template_name, $args = array(), $template_path = ''
  * @param string $name Optional. Template part file name {slug}-{name}.php. Default is null.
  * @param bool   $load If true the template file will be loaded, if it is found.
  *
- * @return string 
+ * @return string
  */
 function give_get_template_part( $slug, $name = null, $load = true ) {
 
@@ -146,8 +147,8 @@ function give_get_template_part( $slug, $name = null, $load = true ) {
  * @since 1.0
  *
  * @param string|array $template_names Template file(s) to search for, in order.
- * @param bool $load If true the template file will be loaded if it is found.
- * @param bool $require_once Whether to require_once or require. Default true.
+ * @param bool         $load           If true the template file will be loaded if it is found.
+ * @param bool         $require_once   Whether to require_once or require. Default true.
  *                                     Has no effect if $load is false.
  *
  * @return string The template filename if one is located.
@@ -192,7 +193,7 @@ function give_locate_template( $template_names, $load = false, $require_once = t
  * Returns a list of paths to check for template locations
  *
  * @since 1.0
- * @return mixed|void
+ * @return array
  */
 function give_get_theme_template_paths() {
 
@@ -201,7 +202,7 @@ function give_get_theme_template_paths() {
 	$file_paths = array(
 		1   => trailingslashit( get_stylesheet_directory() ) . $template_dir,
 		10  => trailingslashit( get_template_directory() ) . $template_dir,
-		100 => give_get_templates_dir()
+		100 => give_get_templates_dir(),
 	);
 
 	$file_paths = apply_filters( 'give_template_paths', $file_paths );
@@ -281,10 +282,11 @@ function give_add_body_classes( $class ) {
 		$classes[] = 'give-page';
 	}
 
-	//Theme-specific Classes used to prevent conflicts via CSS
+	// Theme-specific Classes used to prevent conflicts via CSS
+	/* @var WP_Theme $current_theme */
 	$current_theme = wp_get_theme();
 
-	switch ( $current_theme->template ) {
+	switch ( $current_theme->get_template() ) {
 
 		case 'Divi':
 			$classes[] = 'give-divi';
@@ -294,6 +296,9 @@ function give_add_body_classes( $class ) {
 			break;
 		case 'twentysixteen':
 			$classes[] = 'give-twentysixteen';
+			break;
+		case 'twentyseventeen':
+			$classes[] = 'give-twentyseventeen';
 			break;
 
 	}
@@ -410,16 +415,6 @@ if ( ! function_exists( 'give_template_single_title' ) ) {
 	 */
 	function give_template_single_title() {
 		give_get_template_part( 'single-give-form/title' );
-	}
-}
-
-if ( ! function_exists( 'give_show_avatars' ) ) {
-
-	/**
-	 * Output the product title.
-	 */
-	function give_show_avatars() {
-		echo do_shortcode( '[give_donors_gravatars]' );
 	}
 }
 
