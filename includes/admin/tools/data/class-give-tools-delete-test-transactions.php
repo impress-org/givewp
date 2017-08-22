@@ -245,13 +245,15 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 
 			$posts    = new Give_Payments_Query( $args );
 			$payments = $posts->get_payments();
+
+			/* @var Give_Payment $payment */
 			foreach ( $payments as $payment ) {
 				$items[] = array(
-					'id'   => (int) $payment->__get( 'ID' ),
+					'id'   => (int) $payment->ID,
 					'type' => 'give_payment',
 				);
 			}
-
+			
 			// Allow filtering of items to remove with an unassociative array for each item.
 			// The array contains the unique ID of the item, and a 'type' for you to use in the execution of the get_data method.
 			$items = apply_filters( 'give_delete_test_items', $items );
