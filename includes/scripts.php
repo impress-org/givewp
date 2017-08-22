@@ -273,7 +273,7 @@ function give_load_admin_scripts( $hook ) {
 	wp_enqueue_script( 'jquery-ui-datepicker' );
 	wp_enqueue_script( 'thickbox' );
 
-	wp_register_script( 'give-admin-scripts', $js_dir . 'admin-scripts' . $suffix . '.js', array( 'jquery', 'jquery-ui-datepicker', 'wp-color-picker' ), GIVE_VERSION, false );
+	wp_register_script( 'give-admin-scripts', $js_dir . 'admin-scripts' . $suffix . '.js', array( 'jquery', 'jquery-ui-datepicker', 'wp-color-picker', 'jquery-query' ), GIVE_VERSION, false );
 	wp_enqueue_script( 'give-admin-scripts' );
 
 	wp_register_script( 'jquery-flot', $js_plugins . 'jquery.flot' . $suffix . '.js' );
@@ -348,6 +348,9 @@ function give_load_admin_scripts( $hook ) {
 				'single'    => __( 'Are you sure you want to set status of this donation to {status}?', 'give' ),
 				'multiple'  => __( 'Are you sure you want to set status of {payment_count} donations to {status}?', 'give' ),
 			),
+		),
+		'updates' => array(
+			'ajax_error' => __( 'Please reload this page and try again', 'give' )
 		),
 		'metabox_fields' => array(
 			'media' => array(

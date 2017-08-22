@@ -376,7 +376,7 @@ class Give_Updates {
 				'error'
 			);
 		}
-
+		
 		// Set params.
 		$this->step   = absint( $_POST['step'] );
 		$this->update = absint( $_POST['update'] );
@@ -385,7 +385,7 @@ class Give_Updates {
 		if ( ! $this->step ) {
 			$this->send_ajax_response(
 				array(
-					'message'    => __( 'Please reload this page  and try again', 'give' ),
+					'message'    => __( 'Please reload this page and try again', 'give' ),
 					'heading'    => '',
 					'percentage' => 0,
 				),
@@ -413,6 +413,17 @@ class Give_Updates {
 		foreach ( $updates as $index => $update ) {
 			// Check if update depend upon any other update.
 			if ( ! $this->is_parent_updates_completed( $update ) ) {
+				if ( 1 === count( $updates ) ) {
+					$this->send_ajax_response(
+						array(
+							'message'    => __( 'Error occurred while running current update because it contains invalid update dependencies', 'give' ),
+							'heading'    => '',
+							'percentage' => 0,
+						),
+						'error'
+					);
+				}
+
 				continue;
 			}
 

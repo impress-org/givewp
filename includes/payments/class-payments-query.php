@@ -407,9 +407,9 @@ class Give_Payments_Query extends Give_Stats {
 		}
 
 		if ( is_numeric( $this->args['user'] ) ) {
-			$user_key = '_give_payment_user_id';
+			$user_key = '_give_payment_donor_id';
 		} else {
-			$user_key = '_give_payment_user_email';
+			$user_key = '_give_payment_donor_email';
 		}
 
 		$this->__set( 'meta_query', array(
@@ -430,8 +430,10 @@ class Give_Payments_Query extends Give_Stats {
 			return;
 		}
 
+		$donor_meta_type = Give()->donor_meta->meta_type;
+
 		$this->__set( 'meta_query', array(
-			'key'   => '_give_payment_customer_id',
+			'key'   => "_give_payment_{$donor_meta_type}_id",
 			'value' => (int) $this->args['donor'],
 		) );
 	}
@@ -474,7 +476,7 @@ class Give_Payments_Query extends Give_Stats {
 
 		} elseif ( $is_email || strlen( $search ) == 32 ) {
 
-			$key         = $is_email ? '_give_payment_user_email' : '_give_payment_purchase_key';
+			$key         = $is_email ? '_give_payment_donor_email' : '_give_payment_purchase_key';
 			$search_meta = array(
 				'key'     => $key,
 				'value'   => $search,
@@ -487,7 +489,7 @@ class Give_Payments_Query extends Give_Stats {
 		} elseif ( $is_user ) {
 
 			$search_meta = array(
-				'key'   => '_give_payment_user_id',
+				'key'   => '_give_payment_donor_id',
 				'value' => trim( str_replace( 'user:', '', strtolower( $search ) ) ),
 			);
 

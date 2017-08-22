@@ -124,6 +124,16 @@ class Give_Donor {
 	public $notes;
 
 	/**
+	 * Donor address.
+	 *
+	 * @since  1.0
+	 * @access public
+	 *
+	 * @var    array
+	 */
+	public $address;
+
+	/**
 	 * The Database Abstraction
 	 *
 	 * @since  1.0
@@ -141,7 +151,7 @@ class Give_Donor {
 	 */
 	public function __construct( $_id_or_email = false, $by_user_id = false ) {
 
-		$this->db = new Give_DB_Donors();
+		$this->db = Give()->donors;
 
 		if (
 			false === $_id_or_email
@@ -205,6 +215,8 @@ class Give_Donor {
 		$this->emails = (array) $this->get_meta( 'additional_email', false );
 		$this->emails = array( 'primary' => $this->email ) + $this->emails;
 
+		$this->setup_address();
+
 		// Donor ID and email are the only things that are necessary, make sure they exist.
 		if ( ! empty( $this->id ) && ! empty( $this->email ) ) {
 			return true;
@@ -212,6 +224,53 @@ class Give_Donor {
 
 		return false;
 
+	}
+
+
+	/**
+	 * Setup donor address.
+	 *
+	 * @since 2.0
+	 * @access public
+	 */
+	public function setup_address() {
+		global $wpdb;
+		$meta_type = Give()->donor_meta->meta_type;
+
+		$addresses = $wpdb->get_results(
+			$wpdb->prepare(
+				"
+				SELECT meta_key, meta_value FROM {$wpdb->donormeta}
+				WHERE meta_key
+				LIKE '%%%s%%'
+				AND {$meta_type}_id=%d
+				",
+				'give_donor_address',
+				$this->id
+			),
+			ARRAY_N
+		);
+
+		if ( empty( $addresses ) ) {
+			return array();
+		}
+
+		foreach ( $addresses as $address ) {
+			$address[0] = str_replace( '_give_donor_address_', '', $address[0] );
+			$address[0] = explode( '_', $address[0] );
+
+			if ( 'address1' === $address[0][1] ) {
+				$address[0][1] = 'line1';
+			} elseif ( 'address2' === $address[0][1] ) {
+				$address[0][1] = 'line2';
+			}
+
+			if ( 3 === count( $address[0] ) ) {
+				$this->address[ $address[0][0] ][ $address[0][2] ][ $address[0][1] ] = $address[1];
+			} else {
+				$this->address[ $address[0][0] ][ $address[0][1] ] = $address[1];
+			}
+		}
 	}
 
 	/**
@@ -1102,6 +1161,167 @@ class Give_Donor {
 		do_action( 'give_donor_post_set_primary_email', $new_primary_email, $this->id, $this );
 
 		return $ret;
+	}
+
+	/**
+	 * Add donor address
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param string $address_type
+	 * @param array  $address {
+	 *
+	 * @type string  $address2
+	 * @type string city
+	 * @type string zip
+	 * @type string state
+	 * @type string country
+	 * }
+	 *
+	 * @return void
+	 */
+	public function add_address( $address_type, $address ) {
+		$is_address_empty = true;
+
+		// Address ready to process even if only one value set.
+		foreach ( $address as $value ) {
+			if( ! empty( $value ) ) {
+				$is_address_empty = false;
+				break;
+			}
+		}
+
+		// Bailout.
+		if ( empty( $address_type ) || $is_address_empty || ! $this->id ) {
+			return;
+		}
+
+		$is_multi_address = ( false !== strpos( $address_type, '[]' ) );
+		$address_type  = $is_multi_address ?
+			str_replace( '[]', '', $address_type ) :
+			$address_type;
+
+		// Bailout: do not save duplicate orders
+		if( $this->is_address_exist( $address_type, $address ) ) {
+			return;
+		}
+
+		// Set default address.
+		$address = wp_parse_args(
+			$address,
+			array(
+				'line1' => '',
+				'line2' => '',
+				'city'     => '',
+				'state'    => '',
+				'country'  => '',
+				'zip'      => '',
+			)
+		);
+
+		// Set meta key prefix.
+		global $wpdb;
+		$meta_key_prefix = "_give_donor_address_{$address_type}_{address_name}";
+		$meta_type = Give()->donor_meta->meta_type;
+
+		if ( $is_multi_address ) {
+			$address_count = $wpdb->get_var(
+				$wpdb->prepare(
+					"
+					SELECT COUNT(*) FROM {$wpdb->donormeta}
+					WHERE meta_key
+					LIKE '%%%s%%'
+					AND {$meta_type}_id=%d
+					",
+					"_give_donor_address_{$address_type}_address1",
+					$this->id
+				)
+			);
+
+			$address_count   = $address_count ? $address_count : 0;
+			$meta_key_prefix = "_give_donor_address_{$address_type}_{address_name}_{$address_count}";
+		}
+
+		// Save donor address.
+		foreach ( $address as $type => $value ) {
+			$meta_key = str_replace( '{address_name}', $type, $meta_key_prefix );
+			switch ( $type ) {
+				case 'line1':
+					$meta_key = str_replace( '{address_name}', 'address1', $meta_key_prefix );
+					Give()->donor_meta->update_meta( $this->id, $meta_key, $value );
+					break;
+
+				case 'line2':
+					$meta_key = str_replace( '{address_name}', 'address2', $meta_key_prefix );
+					Give()->donor_meta->update_meta( $this->id, $meta_key, $value );
+					break;
+
+				default:
+					Give()->donor_meta->update_meta( $this->id, $meta_key, $value );
+			}
+		}
+
+		$this->setup_address();
+	}
+
+
+	/**
+	 * Check if donor already has current address
+	 *
+	 * @since 2.0
+	 * @access public
+	 *
+	 * @param string $current_address_type
+	 * @param array $current_address
+	 *
+	 * @return bool|null
+	 */
+	public function is_address_exist( $current_address_type, $current_address ) {
+		$status = false;
+
+
+		// Bailout.
+		if( empty( $current_address_type ) || empty( $current_address ) ) {
+			return null;
+		}
+
+		// Bailout.
+		if( empty( $this->address ) ) {
+			return $status;
+		}
+
+
+		// Compare address.
+		foreach ( $this->address as $address_type => $saved_address ) {
+			if( $current_address_type !== $address_type ) {
+				continue;
+
+			} elseif( empty( $saved_address[0] ) || ! is_array( $saved_address[0] ) ) {
+				$status = ( $current_address == $saved_address );
+
+			} else{
+				foreach ( $saved_address as $address ) {
+					if( empty( $saved_address ) ) {
+						continue;
+					}
+
+					$status = ( $current_address == $address );
+
+					// Exit loop immediately if address exist.
+					if( $status ) {
+						break;
+					}
+				}
+			}
+
+			// Exit loop immediately if address exist.
+			if( $status ) {
+				break;
+			}
+		}
+
+		return $status;
 	}
 
 	/**

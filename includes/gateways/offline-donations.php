@@ -315,7 +315,7 @@ function give_offline_add_settings( $settings ) {
 			'name'        => __( 'Billing Fields', 'give' ),
 			'desc'        => __( 'This option will enable the billing details section for this form\'s offline donation payment gateway. The fieldset will appear above the offline donation instructions.', 'give' ),
 			'id'          => $prefix . 'offline_donation_enable_billing_fields_single',
-			'row_classes' => 'give-subfield',
+			'row_classes' => 'give-subfield give-hidden',
 			'type'        => 'radio_inline',
 			'default'     => 'disabled',
 			'options'     => array(
@@ -329,10 +329,10 @@ function give_offline_add_settings( $settings ) {
 			'desc'        => __( 'Enter the instructions you want to display to the donor during the donation process. Most likely this would include important information like mailing address and who to make the check out to.', 'give' ),
 			'default'     => give_get_default_offline_donation_content(),
 			'type'        => 'wysiwyg',
-			'row_classes' => 'give-subfield',
+			'row_classes' => 'give-subfield give-hidden',
 			'options'     => array(
 				'textarea_rows' => 6,
-			),
+			)
 		),
 		array(
 			'name'  => 'offline_docs',

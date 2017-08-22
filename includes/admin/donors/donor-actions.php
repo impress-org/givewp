@@ -151,6 +151,7 @@ function give_edit_donor( $args ) {
 
 	$output = array();
 
+	$output['success'] = false;
 	if ( $donor->update( $donor_data ) ) {
 
 		// Set Donor Meta and User Meta for donor first name.
@@ -173,21 +174,17 @@ function give_edit_donor( $args ) {
 		}
 
 		// Update some donation meta if we need to.
-		$payments_array = explode( ',', $donor->payment_ids );
-
-		if ( $donor->user_id != $previous_user_id ) {
-			foreach ( $payments_array as $payment_id ) {
-				give_update_payment_meta( $payment_id, '_give_payment_user_id', $donor->user_id );
-			}
-		}
+		// $payments_array = explode( ',', $donor->payment_ids );
+		//
+		// if ( $donor->user_id != $previous_user_id ) {
+		// 	foreach ( $payments_array as $payment_id ) {
+		// 		give_update_payment_meta( $payment_id, '_give_payment_user_id', $donor->user_id );
+		// 	}
+		// }
 
 		$output['success']       = true;
 		$donor_data              = array_merge( $donor_data, $address );
 		$output['customer_info'] = $donor_data;
-
-	} else {
-
-		$output['success'] = false;
 
 	}
 
@@ -368,7 +365,7 @@ function give_donor_delete( $args ) {
 
 				// Just set the donations to customer_id of 0
 				foreach ( $payments_array as $payment_id ) {
-					give_update_payment_meta( $payment_id, '_give_payment_customer_id', 0 );
+					give_update_payment_meta( $payment_id, '_give_payment_donor_id', 0 );
 				}
 			}
 
@@ -449,17 +446,19 @@ function give_disconnect_donor_user_id( $args ) {
 		'user_id' => 0,
 	);
 
-	if ( $donor->update( $donor_args ) ) {
-		global $wpdb;
 
-		if ( ! empty( $donor->payment_ids ) ) {
-			$meta_table = __give_v20_bc_table_details( 'payment' );
-			$wpdb->query( "UPDATE {$meta_table['name']} SET meta_value = 0 WHERE meta_key = '_give_payment_user_id' AND {$meta_table['column']['id']} IN ( $donor->payment_ids )" );
-		}
-
-		$output['success'] = true;
-
-	} else {
+	$output['success'] = true;
+	if ( ! $donor->update( $donor_args ) ) {
+		// if ( $donor->update( $donor_args ) ) {
+		// 	global $wpdb;
+		//
+		// 	if ( ! empty( $donor->payment_ids ) ) {
+		// 		$wpdb->query( "UPDATE $wpdb->postmeta SET meta_value = 0 WHERE meta_key = '_give_payment_user_id' AND post_id IN ( $donor->payment_ids )" );
+		// 	}
+		//
+		// 	$output['success'] = true;
+		//
+		// } else {
 
 		$output['success'] = false;
 		give_set_error( 'give-disconnect-user-fail', __( 'Failed to disconnect user from donor.', 'give' ) );

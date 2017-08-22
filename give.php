@@ -192,7 +192,7 @@ if ( ! class_exists( 'Give' ) ) :
 		 * @var    Give_Notices $notices
 		 */
 		public $notices;
-		
+
 
 		/**
 		 * Give logging Object
@@ -301,6 +301,7 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->email_access    = new Give_Email_Access();
 			$this->tooltips        = new Give_Tooltips();
 			$this->notices         = new Give_Notices();
+			$this->payment_meta    = new Give_DB_Payment_Meta();
 			$this->logs            = new Give_Logging();
 			$this->payment_meta    = new Give_DB_Payment_Meta();
 			$this->form_meta       = new Give_DB_Form_Meta();
@@ -450,6 +451,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/deprecated/deprecated-actions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/deprecated/deprecated-filters.php';
 
+			require_once GIVE_PLUGIN_DIR . 'includes/payments/backward-compatibility.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/actions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/class-payment-stats.php';

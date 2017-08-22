@@ -184,9 +184,6 @@ function give_insert_payment( $payment_data = array() ) {
 		update_option( 'give_last_payment_number', $number );
 	}
 
-	// Clear the user's donation cache.
-	delete_transient( 'give_user_' . $payment_data['user_info']['id'] . '_purchases' );
-
 	// Save payment.
 	$payment->save();
 
@@ -398,7 +395,8 @@ function give_undo_donation( $payment_id ) {
 function give_count_payments( $args = array() ) {
 
 	global $wpdb;
-	$meta_table = __give_v20_bc_table_details( 'payment' );
+	$meta_table      = __give_v20_bc_table_details( 'payment' );
+	$donor_meta_type = Give()->donor_meta->meta_type;
 
 	$defaults = array(
 		'user'       => null,
@@ -436,7 +434,7 @@ function give_count_payments( $args = array() ) {
 
 		$join  = "LEFT JOIN {$meta_table['name']} m ON (p.ID = m.{$meta_table['column']['id']})";
 		$where .= "
-			AND m.meta_key = '_give_payment_customer_id'
+			AND m.meta_key = '_give_payment_{$donor_meta_type}_id'
 			AND m.meta_value = '{$args['donor']}'";
 
 		// Count payments for a search.
@@ -445,7 +443,7 @@ function give_count_payments( $args = array() ) {
 		if ( is_email( $args['s'] ) || strlen( $args['s'] ) == 32 ) {
 
 			if ( is_email( $args['s'] ) ) {
-				$field = '_give_payment_user_email';
+				$field = '_give_payment_donor_email';
 			} else {
 				$field = '_give_payment_purchase_key';
 			}
@@ -468,7 +466,7 @@ function give_count_payments( $args = array() ) {
 
 			$join  = "LEFT JOIN {$meta_table['column']} m ON (p.ID = m.{$meta_table['column']})";
 			$where .= $wpdb->prepare( "
-				AND m.meta_key = '_give_payment_user_id'
+				AND m.meta_key = '_give_payment_donor_id'
 				AND m.meta_value = %d", $args['s'] );
 
 		} else {
@@ -596,7 +594,7 @@ function give_check_for_existing_payment( $payment_id ) {
  *
  * @since 1.0
  *
- * @param WP_Post|Give_Payment $payment      Payment object.
+ * @param WP_Post|Give_Payment|int $payment      Payment object or payment ID.
  * @param bool                 $return_label Whether to return the translated status label
  *                                           instead of status value. Default false.
  *

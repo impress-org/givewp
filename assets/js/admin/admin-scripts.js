@@ -935,19 +935,28 @@ jQuery.noConflict();
 							}, 5000);
 						}
 					} else {
-						// Update progress.
-						$('.give-progress div', '#give-db-updates').animate({
-							width: response.data.percentage + '%',
-						}, 50, function () {
-							// Animation complete.
-						});
+						if ( response && -1 !== $.inArray('percentage', Object.keys(response.data))) {
+							// Update progress.
+							$('.give-progress div', '#give-db-updates').animate({
+								width: response.data.percentage + '%',
+							}, 50, function () {
+								// Animation complete.
+							});
 
-						// Update steps info
-						if (-1 !== $.inArray('heading', Object.keys(response.data))) {
-							self.el.heading.html('<strong>' + response.data.heading.replace('{update_count}', self.el.heading.data('update-count')) + '</strong>');
+							// Update steps info
+							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
+								self.el.heading.html('<strong>' + response.data.heading.replace('{update_count}', self.el.heading.data('update-count')) + '</strong>');
+							}
+
+							self.process_step(parseInt(response.data.step), response.data.update, self);
+						} else{
+							notice_wrap.html('<div class="notice notice-error"><p>' + give_vars.updates.ajax_error + '</p></div>');
+
+							setTimeout(function () {
+								self.el.update_link.removeClass('active').show();
+								self.el.progress_main_container.addClass('give-hidden');
+							}, 5000);
 						}
-
-						self.process_step(parseInt(response.data.step), response.data.update, self);
 					}
 
 				}
@@ -1184,6 +1193,8 @@ jQuery.noConflict();
 	 */
 	var Edit_Form_Screen = {
 		init: function () {
+			var default_tab_id = $.query.get('give_tab').length  ? $.query.get('give_tab') : 'form_field_options';
+
 			this.handle_metabox_tab_click();
 			this.setup_colorpicker_fields();
 			this.setup_media_fields();
@@ -1192,80 +1203,97 @@ jQuery.noConflict();
 
 			// Multi level repeater field js.
 			this.handle_multi_levels_repeater_group_events();
+
+			// Set active tab on page load.
+			this.activate_tab($('a[href="#' + default_tab_id + '"]'));
 		},
 
 		/**
-		 * Toggle metabox tab if mentioned in url.
+		 * Attach click event handler to tabs.
 		 */
 		handle_metabox_tab_click: function () {
+			var self = this;
 			var $tab_links = $('.give-metabox-tabs a');
 
 			$tab_links.on('click', function (e) {
 				e.preventDefault();
-				var $li_parent        = $(this).parent(),
-					$sub_field        = $('ul.give-metabox-sub-tabs', $li_parent),
-					has_sub_field     = $sub_field.length,
-					$all_tab_links_li = $tab_links.parents('li'),
-					$all_sub_fields   = $('ul.give-metabox-sub-tabs'),
-					in_sub_fields     = $(this).parents('ul.give-metabox-sub-tabs').length;
-
-				if (has_sub_field) {
-					$li_parent.toggleClass('active');
-					$sub_field.toggleClass('give-hidden');
-
-					var $active_subtab_li = $('li.active', 'ul.give-metabox-sub-tabs');
-
-					// Show hide sub fields if any and exit.
-					$all_sub_fields.not($sub_field).addClass('give-hidden');
-					$all_tab_links_li.not($li_parent).removeClass('active');
-
-					$active_subtab_li.addClass('active');
-
-					return false;
-				} else if (!in_sub_fields) {
-					// Hide all tab and sub tabs.
-					$all_tab_links_li.each(function (index, item) {
-						item = $(item);
-						item.removeClass('active');
-
-						if (item.hasClass('has-sub-fields')) {
-							$('ul.give-metabox-sub-tabs', item).addClass('give-hidden');
-						}
-					});
-				} else if (in_sub_fields) {
-					// Hide all sub tabs.
-					$('ul.give-metabox-sub-tabs').addClass('give-hidden');
-					$all_tab_links_li.removeClass('active');
-
-					// Hide all tab inside sub tabs.
-					$(this).parents('ul.give-metabox-sub-tabs')
-						.removeClass('give-hidden')
-						.children('li')
-						.removeClass('active');
-
-					// Add active class to parent li.
-					$(this).parents('li.has-sub-fields').addClass('active');
-				}
-
-				// Add active class to current tab link.
-				$(this).parent().addClass('active');
-
-				// Hide all tab contents.
-				$('.give_options_panel').addClass('give-hidden');
-
-				// Show tab content.
-				$($(this).attr('href')).removeClass('give-hidden');
-
-				return false;
+				$this = $( this );
+				self.activate_tab($this);
+				self.update_query($this);
 			});
+		},
 
-			// Auto open tab if mentioned in url.
-			if (location.hash.length) {
-				var $current_active_tab = $('a[href="' + location.hash + '"]', '.give-metabox-tabs');
+		/**
+		 * Set the active tab.
+		 */
+		activate_tab: function ($tab_link) {
+			var tab_id            = $tab_link.data('tab-id'),
+				$li_parent        = $tab_link.parent(),
+				$sub_field        = $('ul.give-metabox-sub-tabs', $li_parent),
+				has_sub_field     = $sub_field.length,
+				$tab_links        = $('.give-metabox-tabs a'),
+				$all_tab_links_li = $tab_links.parents('li'),
+				$all_sub_fields   = $('ul.give-metabox-sub-tabs'),
+				in_sub_fields     = $tab_link.parents('ul.give-metabox-sub-tabs').length;
 
-				if ($current_active_tab.length) {
-					$current_active_tab.trigger('click');
-				}
+			// Update active tab hidden field to maintain tab after save.
+			$('#give_form_active_tab').val(tab_id);
+
+			if (has_sub_field) {
+				$li_parent.toggleClass('active');
+				$sub_field.removeClass('give-hidden');
+
+				var $active_subtab_li = $('li.active', 'ul.give-metabox-sub-tabs');
+
+				// Show hide sub fields if any and exit.
+				$all_sub_fields.not($sub_field).addClass('give-hidden');
+				$all_tab_links_li.not($li_parent).removeClass('active');
+
+				$active_subtab_li.addClass('active');
+			} else if (!in_sub_fields) {
+				// Hide all tab and sub tabs.
+				$all_tab_links_li.each(function (index, item) {
+					item = $(item);
+					item.removeClass('active');
+
+					if (item.hasClass('has-sub-fields')) {
+						$('ul.give-metabox-sub-tabs', item).addClass('give-hidden');
+					}
+				});
+			} else if (in_sub_fields) {
+				// Hide all sub tabs.
+				$('ul.give-metabox-sub-tabs').addClass('give-hidden');
+				$all_tab_links_li.removeClass('active');
+
+				// Hide all tab inside sub tabs.
+				$tab_link.parents('ul.give-metabox-sub-tabs')
+				       .removeClass('give-hidden')
+				       .children('li')
+				       .removeClass('active');
+
+				// Add active class to parent li.
+				$tab_link.parents('li.has-sub-fields').addClass('active');
+			}
+
+			// Add active class to current tab link.
+			$tab_link.parent().addClass('active');
+
+			// Hide all tab contents.
+			$('.give_options_panel').removeClass('active');
+
+			// Show tab content.
+			$($tab_link.attr('href')).addClass('active');
+		},
+
+		/**
+		 * Update query string with active tab ID.
+		 */
+		update_query: function($tab_link) {
+			var tab_id = $tab_link.data('tab-id');
+			var new_query = $.query.set( 'give_tab', tab_id ).remove('message').toString();
+
+			if (history.replaceState) {
+				history.replaceState(null, null, new_query);
 			}
 		},
 

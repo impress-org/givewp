@@ -846,7 +846,11 @@ ASIDE
   overflow: hidden; }
 
 #give-metabox-form-data .give_options_panel {
+  display: none;
   padding-left: 170px; }
+  #give-metabox-form-data .give_options_panel.active,
+  .no-js #give-metabox-form-data .give_options_panel {
+    display: block; }
   #give-metabox-form-data .give_options_panel .give-field-wrap {
     padding: 1em 20px 1em 162px !important;
     margin: 0;
