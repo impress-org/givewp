@@ -1523,7 +1523,9 @@ function give_import_get_form_data_from_csv( $data ) {
 
 	if ( ! empty( $data['form_id'] ) ) {
 		$form = new Give_Donate_Form( $data['form_id'] );
-		if ( empty( $form->get_ID() ) ) {
+		// Add support to older php version.
+		$form_id = $form->get_ID();
+		if ( empty( $form_id ) ) {
 			$form = false;
 		}
 	}
