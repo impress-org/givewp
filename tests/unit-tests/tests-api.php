@@ -258,7 +258,7 @@ class Tests_API extends Give_Unit_Test_Case {
 		global $wp_query;
 
 		$_POST['give_set_api_key'] = 1;
-		Give()->api->update_key( $this->_user_id );
+		Give()->api->generate_api_key( $this->_user_id );
 
 		$wp_query->query_vars['key']   = get_user_meta( $this->_user_id, 'give_user_public_key', true );
 		$wp_query->query_vars['token'] = hash( 'md5', get_user_meta( $this->_user_id, 'give_user_secret_key', true ) . get_user_meta( $this->_user_id, 'give_user_public_key', true ) );
@@ -377,11 +377,11 @@ class Tests_API extends Give_Unit_Test_Case {
 	/**
 	 * Test Update Key
 	 */
-	public function test_update_key() {
+	public function test_generate_api_key() {
 
 		$_POST['give_set_api_key'] = 1;
 
-		Give()->api->update_key( $this->_user_id );
+		Give()->api->generate_api_key( $this->_user_id );
 
 		$user_public = $this->_api->get_user_public_key( $this->_user_id );
 		$user_secret = $this->_api->get_user_secret_key( $this->_user_id );
@@ -398,7 +398,7 @@ class Tests_API extends Give_Unit_Test_Case {
 
 		$_POST['give_set_api_key'] = 1;
 
-		Give()->api->update_key( $this->_user_id );
+		Give()->api->generate_api_key( $this->_user_id );
 
 		$this->assertEquals( $this->_user_id, $this->_api->get_user( $this->_api->get_user_public_key( $this->_user_id ) ) );
 
@@ -454,7 +454,7 @@ class Tests_API extends Give_Unit_Test_Case {
 		global $wp_query;
 
 		$_POST['give_set_api_key'] = 1;
-		Give()->api->update_key( $this->_user_id );
+		Give()->api->generate_api_key( $this->_user_id );
 		$wp_query->query_vars['key']   = get_user_meta( $this->_user_id, 'give_user_public_key', true );
 		$wp_query->query_vars['token'] = 'bad-token-val';
 
@@ -473,7 +473,7 @@ class Tests_API extends Give_Unit_Test_Case {
 		global $wp_query;
 
 		$_POST['give_set_api_key'] = 1;
-		Give()->api->update_key( $this->_user_id );
+		Give()->api->generate_api_key( $this->_user_id );
 		$wp_query->query_vars['key']   = 'bad-key-val';
 		$wp_query->query_vars['token'] = hash( 'md5', get_user_meta( $this->_user_id, 'give_user_secret_key', true ) . get_user_meta( $this->_user_id, 'give_user_public_key', true ) );
 
@@ -493,7 +493,7 @@ class Tests_API extends Give_Unit_Test_Case {
 		global $wp_query;
 
 		$_POST['give_set_api_key'] = 1;
-		$this->_api->update_key( $this->_user_id );
+		$this->_api->generate_api_key( $this->_user_id );
 
 		$wp_query->query_vars['give-api'] = 'forms';
 		$wp_query->query_vars['key']      = get_user_meta( $this->_user_id, 'give_user_public_key', true );
