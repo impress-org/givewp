@@ -16,6 +16,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Deprecated global variables.
+ *
+ * @since 2.0
+ *
+ * @param Give $give_object
+ */
+function _give_load_deprecated_global_params( $give_object ) {
+	$GLOBALS['give_cron'] = Give_Cron::get_instance();
+}
+
+add_action( 'give_init', '_give_load_deprecated_global_params' );
+
+
 
 /**
  * Checks if Guest checkout is enabled for a particular donation form
