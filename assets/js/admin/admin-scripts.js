@@ -2252,11 +2252,7 @@ function give_on_donation_import_ajax() {
                 }
                 give_on_donation_import_ajax();
             } else {
-                if( response.success == true ) {
-                    window.location = response.url;
-                } else {
-                    window.location = response.url;
-                }
+                window.location = response.url;
             }
         },
         error: function () {
