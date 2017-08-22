@@ -75,7 +75,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 		}
 
 		static function update_notices( $messages ) {
-			if ( ! empty( $_GET['tab'] ) && 'import' === (string) sanitize_text_field( $_GET['tab'] ) ) {
+			if ( ! empty( $_GET['tab'] ) && 'import' === give_clean( $_GET['tab'] ) ) {
 				unset( $messages['give-setting-updated'] );
 			}
 
@@ -437,7 +437,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 		 * @return int $step on which step doest the import is on.
 		 */
 		static function get_step() {
-			$step    = (int) ( isset( $_REQUEST['step'] ) ? sanitize_text_field( $_REQUEST['step'] ) : false );
+			$step    = (int) ( isset( $_REQUEST['step'] ) ? give_clean( $_REQUEST['step'] ) : false );
 			$on_step = 1;
 			if ( empty( $step ) || 1 === $step ) {
 				$on_step = 1;
@@ -466,8 +466,8 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
                 </th>
             </tr>
 			<?php
-			$csv       = ( isset( $_REQUEST['csv'] ) ? sanitize_text_field( $_POST['csv'] ) : '' );
-			$delimiter = ( isset( $_REQUEST['delimiter'] ) ? sanitize_text_field( $_POST['delimiter'] ) : ',' );
+			$csv       = ( isset( $_REQUEST['csv'] ) ? give_clean( $_POST['csv'] ) : '' );
+			$delimiter = ( isset( $_REQUEST['delimiter'] ) ? give_clean( $_POST['delimiter'] ) : ',' );
 
 			$settings = array(
 				array(
@@ -502,7 +502,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 
 			// Validation for first step.
 			if ( 1 === $step ) {
-				$csv = (int) sanitize_text_field( $_POST['csv'] );
+				$csv = absint( $_POST['csv'] );
 				if ( $csv ) {
 					if ( ! wp_get_attachment_url( $csv ) ) {
 						$has_error = true;
@@ -521,7 +521,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 					$url = give_import_page_url( (array) apply_filters( 'give_import_step_two_url', array(
 						'step'      => '2',
 						'csv'       => $csv,
-						'delimiter' => ( isset( $_REQUEST['delimiter'] ) ) ? sanitize_text_field( $_REQUEST['delimiter'] ) : ',',
+						'delimiter' => ( isset( $_REQUEST['delimiter'] ) ) ? give_clean( $_REQUEST['delimiter'] ) : ',',
 					) ) );
 					?>
                     <script type="text/javascript">

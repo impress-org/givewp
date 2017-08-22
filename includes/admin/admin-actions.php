@@ -405,7 +405,7 @@ function give_import_page_link_callback() {
 	<?php
 
 	// Check if view donation single page only.
-	if ( ! empty( $_REQUEST['view'] ) && 'view-payment-details' === (string) give_clean( $_REQUEST['view'] ) && 'give-payment-history' === (string) sanitize_text_field( $_REQUEST['page'] ) ) {
+	if ( ! empty( $_REQUEST['view'] ) && 'view-payment-details' === (string) give_clean( $_REQUEST['view'] ) && 'give-payment-history' === give_clean( $_REQUEST['page'] ) ) {
 		?>
         <style type="text/css">
             .wrap #transaction-details-heading {

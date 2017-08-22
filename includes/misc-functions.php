@@ -1326,11 +1326,11 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 	}
 
 	$address = array(
-		'line1'   => ( isset( $data['line1'] ) ? sanitize_text_field( $data['line1'] ) : '' ),
-		'line2'   => ( isset( $data['line1'] ) ? sanitize_text_field( $data['line2'] ) : '' ),
-		'city'    => ( isset( $data['line1'] ) ? sanitize_text_field( $data['city'] ) : '' ),
-		'zip'     => ( isset( $data['zip'] ) ? sanitize_text_field( $data['zip'] ) : '' ),
-		'state'   => ( isset( $data['state'] ) ? sanitize_text_field( $data['state'] ) : '' ),
+		'line1'   => ( isset( $data['line1'] ) ? give_clean( $data['line1'] ) : '' ),
+		'line2'   => ( isset( $data['line1'] ) ? give_clean( $data['line2'] ) : '' ),
+		'city'    => ( isset( $data['line1'] ) ? give_clean( $data['city'] ) : '' ),
+		'zip'     => ( isset( $data['zip'] ) ? give_clean( $data['zip'] ) : '' ),
+		'state'   => ( isset( $data['state'] ) ? give_clean( $data['state'] ) : '' ),
 		'country' => ( isset( $data['country'] ) ? ( ( $country_code = array_search( $data['country'], give_get_country_list() ) ) ? $country_code : $data['country'] ) : '' ),
 	);
 
