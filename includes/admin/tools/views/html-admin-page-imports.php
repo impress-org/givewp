@@ -14,7 +14,7 @@ if ( ! current_user_can( 'manage_give_settings' ) ) {
 /**
  * Fires before displaying the import div tools.
  *
- * @since 1.5
+ * @since 1.8.13
  */
 do_action( 'give_tools_import_main_before' );
 ?>
@@ -65,6 +65,6 @@ do_action( 'give_tools_import_main_before' );
 /**
  * Fires after displaying the import div tools.
  *
- * @since 1.5
+ * @since 1.8.13
  */
 do_action( 'give_tools_import_main_after' );

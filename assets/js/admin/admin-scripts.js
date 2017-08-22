@@ -2214,14 +2214,15 @@ function give_on_donation_import_start() {
 function give_on_donation_import_ajax() {
     var $form = jQuery('form.tools-setting-page-import');
 
-    var progress = jQuery( $form ).find( '.give-progress' );
-    var total_ajax = jQuery( progress ).data( 'total_ajax' );
-    var current = jQuery( progress ).data( 'current' );
-    var start = jQuery( progress ).data( 'start' );
-    var end = jQuery( progress ).data( 'end' );
-    var next = jQuery( progress ).data( 'next' );
-    var total = jQuery( progress ).data( 'total' );
-    var per_page = jQuery( progress ).data( 'per_page' );
+    var progress = $form.find( '.give-progress' );
+
+    var total_ajax = jQuery( progress ).data( 'total_ajax' ),
+    current = jQuery( progress ).data( 'current' ),
+    start = jQuery( progress ).data( 'start' ),
+    end = jQuery( progress ).data( 'end' ),
+    next = jQuery( progress ).data( 'next' ),
+    total = jQuery( progress ).data( 'total' ),
+    per_page = jQuery( progress ).data( 'per_page' );
 
     jQuery.ajax({
         type: 'POST',
@@ -2239,8 +2240,6 @@ function give_on_donation_import_ajax() {
         },
         dataType: 'json',
         success: function ( response ) {
-            console.log( response );
-
 			jQuery(progress).data( 'current', response.current );
 			jQuery( progress ).find( 'div' ).width( response.percentage + '%' );
 

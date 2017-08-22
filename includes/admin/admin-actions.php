@@ -393,14 +393,19 @@ function _give_show_test_mode_notice_in_admin_bar( $wp_admin_bar ) {
 add_action( 'admin_bar_menu', '_give_show_test_mode_notice_in_admin_bar', 1000, 1 );
 
 
+/**
+ * Add Link to Import page in from donation archive and donation single page
+ *
+ * @since 1.8.13
+ */
 function give_import_page_link_callback() {
 	?>
     <a href="<?php echo esc_url( give_import_page_url() ); ?>"
-       class="page-import-action page-title-action"><?php esc_html_e( 'Import Donations', 'give-manual-donations' ); ?></a>
+       class="page-import-action page-title-action"><?php esc_html_e( 'Import Donations', 'give' ); ?></a>
 	<?php
 
 	// Check if view donation single page only.
-	if ( ! empty( $_REQUEST['view'] ) && 'view-payment-details' === (string) sanitize_text_field( $_REQUEST['view'] ) && 'give-payment-history' === (string) sanitize_text_field( $_REQUEST['page'] ) ) {
+	if ( ! empty( $_REQUEST['view'] ) && 'view-payment-details' === (string) give_clean( $_REQUEST['view'] ) && 'give-payment-history' === (string) sanitize_text_field( $_REQUEST['page'] ) ) {
 		?>
         <style type="text/css">
             .wrap #transaction-details-heading {
@@ -422,13 +427,13 @@ function give_donation_import_callback() {
 	// Parent key id.
 	$main_key = maybe_unserialize( $main_key );
 
-	$current    = (int) sanitize_text_field( $_REQUEST['current'] );
-	$total_ajax = (int) sanitize_text_field( $_REQUEST['total_ajax'] );
-	$start      = (int) sanitize_text_field( $_REQUEST['start'] );
-	$end        = (int) sanitize_text_field( $_REQUEST['end'] );
-	$next       = (int) sanitize_text_field( $_REQUEST['next'] );
-	$total      = (int) sanitize_text_field( $_REQUEST['total'] );
-	$per_page   = (int) sanitize_text_field( $_REQUEST['per_page'] );
+	$current    = absint( $_REQUEST['current'] );
+	$total_ajax = absint( $_REQUEST['total_ajax'] );
+	$start      = absint( $_REQUEST['start'] );
+	$end        = absint( $_REQUEST['end'] );
+	$next       = absint( $_REQUEST['next'] );
+	$total      = absint( $_REQUEST['total'] );
+	$per_page   = absint( $_REQUEST['per_page'] );
 	if ( empty( $delimiter ) ) {
 		$delimiter = ',';
 	}
@@ -456,7 +461,7 @@ function give_donation_import_callback() {
 	if ( $next == false ) {
 		$json_data = array(
 			'success' => true,
-			'message' => __( 'All donation uploaded successfully!', 'give-manual-donations' ),
+			'message' => __( 'All donation uploaded successfully!', 'give' ),
 		);
 	} else {
 		$index_start = $start;

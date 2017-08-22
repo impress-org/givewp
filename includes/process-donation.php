@@ -893,12 +893,12 @@ function give_get_donation_form_user( $valid_data = array() ) {
 
 	// Get the user's billing address details.
 	$user['address']            = array();
-	$user['address']['line1']   = ! empty( $_POST['card_address'] ) ? sanitize_text_field( $_POST['card_address'] ) : false;
-	$user['address']['line2']   = ! empty( $_POST['card_address_2'] ) ? sanitize_text_field( $_POST['card_address_2'] ) : false;
-	$user['address']['city']    = ! empty( $_POST['card_city'] ) ? sanitize_text_field( $_POST['card_city'] ) : false;
-	$user['address']['state']   = ! empty( $_POST['card_state'] ) ? sanitize_text_field( $_POST['card_state'] ) : false;
-	$user['address']['zip']     = ! empty( $_POST['card_zip'] ) ? sanitize_text_field( $_POST['card_zip'] ) : false;
-	$user['address']['country'] = ! empty( $_POST['billing_country'] ) ? ( ( $country_code = array_search( sanitize_text_field( $_POST['card_zip'] ), give_get_country_list() ) ) ? $country_code : sanitize_text_field( $_POST['card_zip'] ) ) : false;
+	$user['address']['line1']   = ! empty( $_POST['card_address'] ) ? give_clean( $_POST['card_address'] ) : false;
+	$user['address']['line2']   = ! empty( $_POST['card_address_2'] ) ? give_clean( $_POST['card_address_2'] ) : false;
+	$user['address']['city']    = ! empty( $_POST['card_city'] ) ? give_clean( $_POST['card_city'] ) : false;
+	$user['address']['state']   = ! empty( $_POST['card_state'] ) ? give_clean( $_POST['card_state'] ) : false;
+	$user['address']['zip']     = ! empty( $_POST['card_zip'] ) ? give_clean( $_POST['card_zip'] ) : false;
+	$user['address']['country'] = ! empty( $_POST['billing_country'] ) ? ( ( $country_code = array_search( give_clean( $_POST['card_zip'] ), give_get_country_list() ) ) ? $country_code : give_clean( $_POST['card_zip'] ) ) : false;
 
 	if ( empty( $user['address']['country'] ) ) {
 		$user['address'] = false;
