@@ -14,7 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-
 /**
  * Give_Cron Class
  *
@@ -25,49 +24,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Give_Cron {
 
 	/**
-	 * Instance.
+	 * Class Constructor
 	 *
-	 * @since  1.8.13
-	 * @access private
-	 * @var
-	 */
-	private static $instance;
-
-	/**
-	 * Singleton pattern.
+	 * Set up the Give Cron Class.
 	 *
-	 * @since  1.8.13
-	 * @access private
-	 */
-	private function __construct() {
-	}
-
-
-	/**
-	 * Get instance.
-	 *
-	 * @since  1.8.13
+	 * @since  1.3.2
 	 * @access public
-	 * @return static
-	 */
-	public static function get_instance() {
-		if ( null === static::$instance ) {
-			self::$instance = new static();
-			self::$instance->setup();
-		}
-
-		return self::$instance;
-	}
-
-
-	/**
-	 * Setup
 	 *
-	 * @since 1.8.13
+	 * @see    Give_Cron::weekly_events()
 	 */
-	private function setup() {
-		add_filter( 'cron_schedules', array( self::$instance, '__add_schedules' ) );
-		add_action( 'wp', array( self::$instance, '__schedule_events' ) );
+	public function __construct() {
+		add_filter( 'cron_schedules', array( $this, 'add_schedules' ) );
+		add_action( 'wp', array( $this, 'schedule_Events' ) );
 	}
 
 	/**
@@ -80,17 +48,17 @@ class Give_Cron {
 	 *
 	 * @return array            An array of non-default cron schedules.
 	 */
-	public function __add_schedules( $schedules = array() ) {
+	public function add_schedules( $schedules = array() ) {
 		// Adds once weekly to the existing schedules.
 		$schedules['weekly'] = array(
 			'interval' => 604800,
-			'display'  => esc_html__( 'Once Weekly', 'give' ),
+			'display'  => esc_html__( 'Once Weekly', 'give' )
 		);
 
 		// Cron for background process.
 		$schedules['asyncly'] = array(
 			'interval' => - 3600,
-			'display'  => esc_html__( 'Background Process', 'give' ),
+			'display'  => esc_html__( 'Background Process', 'give' )
 		);
 
 		return $schedules;
@@ -104,7 +72,7 @@ class Give_Cron {
 	 *
 	 * @return void
 	 */
-	public function __schedule_events() {
+	public function schedule_events() {
 		$this->weekly_events();
 		$this->daily_events();
 		$this->asyncly_events();
@@ -152,3 +120,5 @@ class Give_Cron {
 		}
 	}
 }
+
+$give_cron = new Give_Cron;
