@@ -389,6 +389,14 @@ class Tests_API extends Give_Unit_Test_Case {
 		$this->assertNotEmpty( $user_public );
 		$this->assertNotEmpty( $user_secret );
 
+		Give()->api->generate_api_key( $this->_user_id, true );
+
+		$new_public = $this->_api->get_user_public_key( $this->_user_id );
+		$new_secret = $this->_api->get_user_secret_key( $this->_user_id );
+
+		$this->assertNotEquals( $user_public, $new_public );
+		$this->assertNotEquals( $user_secret, $new_secret );
+
 	}
 
 	/**
