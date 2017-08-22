@@ -188,6 +188,16 @@ if ( ! class_exists( 'Give' ) ) :
 		public $notices;
 
 		/**
+		 * Give cron Object
+		 *
+		 * @since  1.8.13
+		 * @access public
+		 *
+		 * @var    Give_Cron $cron
+		 */
+		public $cron;
+
+		/**
 		 * Main Give Instance
 		 *
 		 * Ensures that only one instance of Give exists in memory at any one
@@ -271,6 +281,7 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->template_loader = new Give_Template_Loader();
 			$this->email_access    = new Give_Email_Access();
 			$this->notices         = new Give_Notices();
+			$this->cron            = new Give_Cron();
 
 			/**
 			 * Fire the action after Give core loads.
