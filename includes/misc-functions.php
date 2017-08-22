@@ -1470,7 +1470,6 @@ function give_import_donation_form_options() {
 }
 
 /**
-<<<<<<< HEAD
  * Give get user details.
  *
  * @since 1.8.13
