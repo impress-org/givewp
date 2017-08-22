@@ -672,7 +672,15 @@ function give_donor_email_exists( $email ) {
 	return false;
 }
 
-
+/**
+ * This function will check whether the donor email is primary or additional.
+ *
+ * @param $email Donor Email.
+ *
+ * @since 1.8.13
+ *
+ * @return bool
+ */
 function give_is_additional_email( $email ) {
 	global $wpdb;
 	$meta_table  = Give()->donor_meta->table_name;
