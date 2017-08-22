@@ -1634,3 +1634,67 @@ function give_remove_pages_from_search( $query ) {
 	}
 }
 add_action( 'pre_get_posts', 'give_remove_pages_from_search', 10, 1 );
+
+
+/**
+ * Pluck a certain field out of each object in a list.
+ *
+ * This has the same functionality and prototype of
+ * array_column() (PHP 5.5) but also supports objects.
+ *
+ * @since 1.8.13
+ *
+ * @param array      $list      List of objects or arrays
+ * @param int|string $field     Field from the object to place instead of the entire object
+ * @param int|string $index_key Optional. Field from the object to use as keys for the new array.
+ *                              Default null.
+ * @return array Array of found values. If `$index_key` is set, an array of found values with keys
+ *               corresponding to `$index_key`. If `$index_key` is null, array keys from the original
+ *               `$list` will be preserved in the results.
+ */
+function give_list_pluck( $list, $field, $index_key = null ) {
+
+	if ( ! $index_key ) {
+		/*
+		 * This is simple. Could at some point wrap array_column()
+		 * if we knew we had an array of arrays.
+		 */
+		foreach ( $list as $key => $value ) {
+			if ( is_object( $value ) ) {
+			    if ( isset( $value->$field ) ) {
+				    $list[ $key ] = $value->$field;
+			    }
+			} else {
+				if ( isset( $value[ $field ] ) ) {
+					$list[ $key ] = $value[ $field ];
+				}
+			}
+		}
+		return $list;
+	}
+
+	/*
+	 * When index_key is not set for a particular item, push the value
+	 * to the end of the stack. This is how array_column() behaves.
+	 */
+	$newlist = array();
+	foreach ( $list as $value ) {
+		if ( is_object( $value ) ) {
+			if ( isset( $value->$index_key ) ) {
+				$newlist[ $value->$index_key ] = $value->$field;
+			} else {
+				$newlist[] = $value->$field;
+			}
+		} else {
+			if ( isset( $value[ $index_key ] ) ) {
+				$newlist[ $value[ $index_key ] ] = $value[ $field ];
+			} else {
+				$newlist[] = $value[ $field ];
+			}
+		}
+	}
+
+	$list = $newlist;
+
+	return $list;
+}
