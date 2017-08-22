@@ -73,10 +73,10 @@ Open any JS file and you'll see suggestions from ESLint, if any.
 That's all! You're done.
 
 ## How to test code before creating PR
-You can create a awesome PR if:
-1. `debug.log` is empty after testing code functionality.
-2. Do not contain any testing purpose code.
-3. Passes all phpunit test.
-4. No formatting issue while check formatting `php_codesniffer`/`eslint` with `WordPress Coding Standard`.
-5. Works fine at least on PHP `5.3` and PHP `7.*`
+You can create an awesome PR if:
+1. `/wp-content/debug.log` is empty after testing code functionality.
+2. Does not contain and testing code like `var_dump()` and `console.log()`.
+3. Passes all phpunit tests.
+4. No formatting issue when check formatting via `php_codesniffer`/`eslint` with `WordPress Coding Standard`.
+5. Works fine on at least on PHP `5.3` and PHP `7.*`
 6. Plugin loads fine with your code on PHP `5.2`
