@@ -1872,9 +1872,6 @@ class Give_API {
 			return false;
 		}
 
-		// Flush Rewrite Rules for Give API to work for the first time.
-		flush_rewrite_rules();
-
 		$public_key = $this->get_user_public_key( $user_id );
 		$secret_key = $this->get_user_secret_key( $user_id );
 
