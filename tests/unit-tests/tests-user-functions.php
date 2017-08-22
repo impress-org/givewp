@@ -120,7 +120,7 @@ class Tests_User_Function extends Give_Unit_Test_Case {
 		 */
 		$output = give_validate_user_email( 'admin@example.org', true );
 
-		$this->assertFalse( $output );
+		$this->assertTrue( $output );
 	}
 
 	/**
@@ -258,6 +258,41 @@ class Tests_User_Function extends Give_Unit_Test_Case {
 
 		$this->assertFalse( $output );
 
+	}
+
+	/**
+	 * Test give_is_additional_email function
+	 *
+	 * @since 1.8.13
+	 *
+	 * @cover give_is_additional_email
+	 */
+	function test_give_is_additional_email() {
+		/*
+		 * Check 1
+		 *
+		 * Empty email doesn't exists
+		 */
+		$output = give_is_additional_email( '' );
+		$this->assertFalse( $output );
+
+		/*
+		 * Check 2
+		 *
+		 * Bad Email doesn't exists
+		 */
+		$output = give_is_additional_email( 'xyz' );
+
+		$this->assertFalse( $output );
+
+		/*
+		 * Check 3
+		 *
+		 * Not an additional email. i.e. Primary Email
+		 */
+		$output = give_is_additional_email( 'admin@example.org' );
+
+		$this->assertFalse( $output );
 	}
 }
 
