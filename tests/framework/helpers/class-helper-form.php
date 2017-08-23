@@ -45,7 +45,6 @@ class Give_Helper_Form extends Give_Unit_Test_Case {
 		$meta = wp_parse_args(
 			( ! empty( $args['meta'] ) ? $args['meta'] : array() ),
 			array(
-				'_give_price_option'                => 'set',
 				'_give_set_price'                   => '20.00',
 				'_give_custom_amount'               => 'enabled',
 				'_give_custom_amount_minimum'       => '1',
@@ -60,6 +59,8 @@ class Give_Helper_Form extends Give_Unit_Test_Case {
 				'_give_default_gateway'             => 'global',
 			)
 		);
+
+		$meta['_give_price_option'] = 'set';
 
 		return self::create_form(
 			array(
@@ -121,13 +122,14 @@ class Give_Helper_Form extends Give_Unit_Test_Case {
 			( ! empty( $args['meta'] ) ? $args['meta'] : array() ),
 			array(
 				'_give_set_price'       => '0.00', //Multi-level Pricing; not set
-				'_give_price_option'    => 'multi',
 				'_give_display_style'   => 'buttons',
 				'_give_donation_levels' => array_values( $_multi_level_donations ),
 				'_give_form_earnings'   => 120,
 				'_give_form_sales'      => 6,
 			)
 		);
+
+		$meta['_give_price_option'] = 'multi';
 
 		return self::create_form(
 			array(
