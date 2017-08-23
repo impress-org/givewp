@@ -88,7 +88,7 @@ class Give_Cron {
 		);
 
 		// Cron for background process.
-		$schedules['asyncly'] = array(
+		$schedules['async'] = array(
 			'interval' => - 3600,
 			'display'  => esc_html__( 'Background Process', 'give' ),
 		);
@@ -107,7 +107,7 @@ class Give_Cron {
 	public function __schedule_events() {
 		$this->weekly_events();
 		$this->daily_events();
-		$this->asyncly_events();
+		$this->async_events();
 	}
 
 	/**
@@ -139,16 +139,16 @@ class Give_Cron {
 	}
 
 	/**
-	 * Schedule asyncly events
+	 * Schedule async events
 	 *
 	 * @since  1.8.13
 	 * @access private
 	 *
 	 * @return void
 	 */
-	private function asyncly_events() {
-		if ( ! wp_next_scheduled( 'give_asyncly_scheduled_events' ) ) {
-			wp_schedule_event( current_time( 'timestamp' ), 'asyncly', 'give_asyncly_scheduled_events' );
+	private function async_events() {
+		if ( ! wp_next_scheduled( 'give_async_scheduled_events' ) ) {
+			wp_schedule_event( current_time( 'timestamp' ), 'async', 'give_async_scheduled_events' );
 		}
 	}
 
@@ -168,8 +168,8 @@ class Give_Cron {
 				$cron_action = 'give_daily_scheduled_events';
 				break;
 
-			case 'asyncly':
-				$cron_action = 'give_asyncly_scheduled_events';
+			case 'async':
+				$cron_action = 'give_async_scheduled_events';
 				break;
 
 			default:
@@ -219,15 +219,15 @@ class Give_Cron {
 	}
 
 	/**
-	 * Add asyncly event
+	 * Add async event
 	 *
 	 * @since  1.8.13
 	 * @access public
 	 *
 	 * @param $action
 	 */
-	public static function add_asyncly_event( $action ) {
-		self::add_event( $action, 'asyncly' );
+	public static function add_async_event( $action ) {
+		self::add_event( $action, 'async' );
 	}
 }
 
