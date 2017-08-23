@@ -60,4 +60,4 @@ function give_set_settings_with_disable_prefix( $old_settings, $settings ) {
 		update_option( 'give_settings', $settings );
 	}
 }
-add_action( 'update_option_give_settings', 'give_set_settings_with_disable_prefix', 10, 2 );
+// add_action( 'update_option_give_settings', 'give_set_settings_with_disable_prefix', 10, 2 );
