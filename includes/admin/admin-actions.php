@@ -388,10 +388,11 @@ function _give_show_test_mode_notice_in_admin_bar( $wp_admin_bar ) {
 		'title'  => esc_html__( 'Give Test Mode Active', 'give' ),
 		'meta'   => array( 'class' => 'give-test-mode-active' ),
 	) );
+
 	return true;
 }
-add_action( 'admin_bar_menu', '_give_show_test_mode_notice_in_admin_bar', 1000, 1 );
 
+add_action( 'admin_bar_menu', '_give_show_test_mode_notice_in_admin_bar', 1000, 1 );
 
 /**
  * Add Link to Import page in from donation archive and donation single page
@@ -402,19 +403,31 @@ function give_import_page_link_callback() {
 	?>
     <a href="<?php echo esc_url( give_import_page_url() ); ?>"
        class="page-import-action page-title-action"><?php esc_html_e( 'Import Donations', 'give' ); ?></a>
-	<?php
 
-	// Check if view donation single page only.
-	if ( ! empty( $_REQUEST['view'] ) && 'view-payment-details' === (string) give_clean( $_REQUEST['view'] ) && 'give-payment-history' === give_clean( $_REQUEST['page'] ) ) {
+    <style type="text/css">
+        <?php
+		// Check if view donation single page only.
+		if ( ! empty( $_REQUEST['view'] ) && 'view-payment-details' === (string) give_clean( $_REQUEST['view'] ) && 'give-payment-history' === give_clean( $_REQUEST['page'] ) ) {
+			?>
+        .wrap #transaction-details-heading {
+            display: inline-block;
+        }
+
+        <?php
+	} else {
 		?>
-        <style type="text/css">
-            .wrap #transaction-details-heading {
-                display: inline-block;
-            }
-        </style>
-		<?php
-	}
+        /* So the "New Donation" button aligns with the wp-admin h1 tag */
+        .wrap > h1 {
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        <?php
+	} ?>
+    </style>
+	<?php
 }
+
 
 add_action( 'give_payments_page_top', 'give_import_page_link_callback', 11 );
 add_action( 'give_view_order_details_before', 'give_import_page_link_callback', 11 );
@@ -516,4 +529,5 @@ function give_blank_slate() {
 	$blank_slate = new Give_Blank_Slate();
 	$blank_slate->init();
 }
+
 add_action( 'current_screen', 'give_blank_slate' );
