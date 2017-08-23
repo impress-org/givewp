@@ -588,7 +588,7 @@ function give_donor_email_exists( $email ) {
 /**
  * This function will check whether the donor email is primary or additional.
  *
- * @param $email Donor Email.
+ * @param string $email Donor Email.
  *
  * @since 1.8.13
  *
@@ -596,11 +596,14 @@ function give_donor_email_exists( $email ) {
  */
 function give_is_additional_email( $email ) {
 	global $wpdb;
-	$meta_table  = Give()->donor_meta->table_name;
-	$donor_id = $wpdb->get_var( $wpdb->prepare( "SELECT customer_id FROM {$meta_table} WHERE meta_key = 'additional_email' AND meta_value = %s LIMIT 1", $email ) );
+	
+	$meta_table = Give()->donor_meta->table_name;
+	$meta_type  = Give()->donor_meta->meta_type;
+	$donor_id   = $wpdb->get_var( $wpdb->prepare( "SELECT {$meta_type}_id FROM {$meta_table} WHERE meta_key = 'additional_email' AND meta_value = %s LIMIT 1", $email ) );
 
-	if( empty( $donor_id ) ) {
+	if ( empty( $donor_id ) ) {
 		return false;
 	}
+
 	return true;
 }
