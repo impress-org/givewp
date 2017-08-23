@@ -232,7 +232,7 @@ function give_mark_abandoned_donations() {
 	}
 }
 
-add_action( 'give_weekly_scheduled_events', 'give_mark_abandoned_donations' );
+Give_Cron::add_weekly_event( 'give_mark_abandoned_donations' );
 
 
 /**

@@ -23,6 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function _give_load_deprecated_global_params( $give_object ) {
 	$GLOBALS['give_logs'] = Give()->logs;
+	$GLOBALS['give_cron'] = Give_Cron::get_instance();
 }
 
 add_action( 'give_init', '_give_load_deprecated_global_params' );
