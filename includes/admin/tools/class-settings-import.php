@@ -474,6 +474,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 					'id'      => 'csv',
 					'name'    => __( 'Choose a CSV file:', 'give' ),
 					'type'    => 'file',
+					'attributes' => array( 'editing' => 'false', 'library' => 'text' ),
 					'fvalue'  => 'id',
 					'default' => $csv,
 				),

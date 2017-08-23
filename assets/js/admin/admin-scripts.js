@@ -1346,11 +1346,18 @@ jQuery.noConflict();
 						$media_modal_config = {
 							title   : give_vars.metabox_fields.file.button_title,
 							button  : {text: give_vars.metabox_fields.file.button_title},
-							multiple: false
+							multiple: false,
+                            contentUserSetting :false,
 						};
 				}
 
-				// Extend the wp.media object
+
+                var editing = jQuery( this ).closest( '.give-field-wrap' ).find( '.give-input-field' ).attr( 'editing' );
+                if( typeof( editing ) != 'undefined' ) {
+                    wp.media.controller.Library.prototype.defaults.contentUserSetting=false;
+                }
+
+                // Extend the wp.media object
 				give_media_uploader = wp.media($media_modal_config);
 
 				// When a file is selected, grab the URL and set it as the text field's value
