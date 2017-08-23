@@ -1357,7 +1357,10 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 
 	$payment_data = apply_filters( 'give_import_before_import_payment', $payment_data, $data, $user_data, $form );
 
+	add_action( 'give_update_payment_status', 'give_donation_import_insert_default_payment_note', 1 );
 	$payment = give_insert_payment( $payment_data );
+	remove_action( 'give_update_payment_status', 'give_donation_import_insert_default_payment_note', 1 );
+
 	if ( $payment ) {
 
 		update_post_meta( $payment, '_give_payment_import', true );
@@ -1375,6 +1378,22 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 				}
 			}
 		}
+	}
+}
+
+/**
+ * Record payment notes that is being imported from CSV.
+ *
+ * @since  1.8.13
+ *
+ * @param  int    $payment_id The ID number of the payment.
+ *
+ * @return void
+ */
+function give_donation_import_insert_default_payment_note( $payment_id ) {
+	$current_user = wp_get_current_user();
+	if ( ! empty( $current_user->user_email ) ) {
+		give_insert_payment_note( $payment_id, esc_html( wp_sprintf( 'This donation was imported by %s', $current_user->user_email ), 'give' ) );
 	}
 }
 
@@ -1501,6 +1520,15 @@ function give_import_get_user_from_csv( $data ) {
 			) );
 			remove_filter( 'give_log_user_in_on_register', 'give_log_user_in_on_register_callback', 11 );
 
+			// Adding notes that donor is being imported from CSV.
+			$current_user = wp_get_current_user();
+			if ( ! empty( $current_user->user_email ) ) {
+				$donor    = new Give_Donor( $customer_id );
+				$donor->add_note( esc_html( wp_sprintf( 'This donor was imported by %s', $current_user->user_email ), 'give' ) );
+			}
+
+			update_user_meta( $customer_id, '_give_payment_import', true );
+
 			$user_data = get_user_by( 'id', (int) $customer_id );
 		}
 	}
@@ -1542,6 +1570,8 @@ function give_import_get_form_data_from_csv( $data ) {
 				'post_status' => 'publish',
 			);
 			$form = $form->create( $args );
+
+			update_post_meta( $form->ID, '_give_payment_import', true );
 		}
 
 		$form = get_page_by_title( $data['form_title'], OBJECT, 'give_forms' );
@@ -1612,7 +1642,8 @@ function give_import_get_form_data_from_csv( $data ) {
 		foreach ( $meta as $key => $value ) {
 			give_update_meta( $form->get_ID(), $key, $value );
 		}
-    }
+	}
+
 	return $form;
 }
 
@@ -1628,11 +1659,15 @@ function give_remove_pages_from_search( $query ) {
 
 		$transaction_failed = give_get_option( 'failure_page', 0 );
 		$success_page       = give_get_option( 'success_page', 0 );
-		$args = apply_filters( 'give_remove_pages_from_search', array( $transaction_failed, $success_page ), $query );
+		$args               = apply_filters( 'give_remove_pages_from_search', array(
+			$transaction_failed,
+			$success_page
+		), $query );
 
 		$query->set( 'post__not_in', $args );
 	}
 }
+
 add_action( 'pre_get_posts', 'give_remove_pages_from_search', 10, 1 );
 
 
@@ -1644,10 +1679,11 @@ add_action( 'pre_get_posts', 'give_remove_pages_from_search', 10, 1 );
  *
  * @since 1.8.13
  *
- * @param array      $list      List of objects or arrays
- * @param int|string $field     Field from the object to place instead of the entire object
+ * @param array $list List of objects or arrays
+ * @param int|string $field Field from the object to place instead of the entire object
  * @param int|string $index_key Optional. Field from the object to use as keys for the new array.
  *                              Default null.
+ *
  * @return array Array of found values. If `$index_key` is set, an array of found values with keys
  *               corresponding to `$index_key`. If `$index_key` is null, array keys from the original
  *               `$list` will be preserved in the results.
@@ -1661,15 +1697,16 @@ function give_list_pluck( $list, $field, $index_key = null ) {
 		 */
 		foreach ( $list as $key => $value ) {
 			if ( is_object( $value ) ) {
-			    if ( isset( $value->$field ) ) {
-				    $list[ $key ] = $value->$field;
-			    }
+				if ( isset( $value->$field ) ) {
+					$list[ $key ] = $value->$field;
+				}
 			} else {
 				if ( isset( $value[ $field ] ) ) {
 					$list[ $key ] = $value[ $field ];
 				}
 			}
 		}
+
 		return $list;
 	}
 
