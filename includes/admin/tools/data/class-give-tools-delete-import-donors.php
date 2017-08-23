@@ -246,7 +246,7 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 			}
 
 			$this->done    = true;
-			$this->message = __( 'Import donor and transactions successfully deleted.', 'give' );
+			$this->message = __( 'Imported donor and transactions successfully deleted.', 'give' );
 
 			return false;
 		}
