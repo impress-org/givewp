@@ -1363,7 +1363,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 		update_post_meta( $payment, '_give_payment_import', true );
 
 		// Insert Notes.
-		if ( isset( $data['notes'] ) ) {
+		if ( ! empty( $data['notes'] ) ) {
 			give_insert_payment_note( $payment, $data['notes'] );
 		}
 
