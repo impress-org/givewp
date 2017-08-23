@@ -207,11 +207,11 @@ if ( ! class_exists( 'Give_License' ) ) :
 			add_action( 'admin_notices', array( $this, 'notices' ) );
 
 			// Check license weekly.
-			add_action( 'give_weekly_scheduled_events', array( $this, 'weekly_license_check' ) );
+			Give_Cron::add_weekly_event( array( $this, 'weekly_license_check' ) );
 			add_action( 'give_validate_license_when_site_migrated', array( $this, 'weekly_license_check' ) );
 
 			// Check subscription weekly.
-			add_action( 'give_weekly_scheduled_events', array( $this, 'weekly_subscription_check' ) );
+			Give_Cron::add_weekly_event( array( $this, 'weekly_subscription_check' ) );
 			add_action( 'give_validate_license_when_site_migrated', array( $this, 'weekly_subscription_check' ) );
 
 			// Show addon notice on plugin page.
