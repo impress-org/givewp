@@ -177,7 +177,7 @@ class Give_API {
 	 *
 	 * @since  1.1
 	 */
-	public function add_endpoint( $rewrite_rules ) {
+	public function add_endpoint() {
 		add_rewrite_endpoint( 'give-api', EP_ALL );
 	}
 
