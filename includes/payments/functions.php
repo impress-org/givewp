@@ -161,7 +161,7 @@ function give_insert_payment( $payment_data = array() ) {
 	$payment->email          = $payment_data['user_info']['email'];
 	$payment->ip             = give_get_ip();
 	$payment->key            = $payment_data['purchase_key'];
-	$payment->mode           = give_is_test_mode() ? 'test' : 'live';
+	$payment->mode           = ( ! empty( $payment_data['mode'] ) ? (string) $payment_data['mode'] : ( give_is_test_mode() ? 'test' : 'live' ) );
 	$payment->parent_payment = ! empty( $payment_data['parent'] ) ? absint( $payment_data['parent'] ) : '';
 
 	// Add the donation.

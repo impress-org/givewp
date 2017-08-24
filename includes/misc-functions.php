@@ -1353,6 +1353,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 		'purchase_key'    => strtolower( md5( uniqid() ) ),
 		'user_email'      => $data['email'],
 		'post_date'       => ( isset( $data['post_date'] ) ? mysql2date( 'Y-m-d H:i:s', $data['post_date'] ) : current_time( 'mysql' ) ),
+		'mode'            => ( ! empty( $data['mode'] ) ? ( 'true' == (string) $data['mode'] || 'TRUE' == (string) $data['mode'] ? 'test' : 'live' ) : ( isset( $_GET['mode'] ) ? ( true == (bool) $_GET['mode'] ? 'test' : 'live' ) : ( give_is_test_mode() ? 'test' : 'live' ) ) ),
 	);
 
 	$payment_data = apply_filters( 'give_import_before_import_payment', $payment_data, $data, $user_data, $form );
@@ -1386,7 +1387,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
  *
  * @since  1.8.13
  *
- * @param  int    $payment_id The ID number of the payment.
+ * @param  int $payment_id The ID number of the payment.
  *
  * @return void
  */
@@ -1460,6 +1461,7 @@ function give_import_donations_options() {
 		'post_status' => __( 'Donation Status', 'give' ),
 		'gateway'     => __( 'Payment Method', 'give' ),
 		'notes'       => __( 'Notes', 'give' ),
+		'mode'        => __( 'Test Mode', 'give' ),
 		'post_meta'   => __( 'Import as Meta', 'give' ),
 	) );
 }
@@ -1523,15 +1525,15 @@ function give_import_get_user_from_csv( $data ) {
 			// Adding notes that donor is being imported from CSV.
 			$current_user = wp_get_current_user();
 			if ( ! empty( $current_user->user_email ) ) {
-				$donor    = new Give_Donor( $customer_id );
+				$donor = new Give_Donor( $customer_id );
 
 				if ( empty( $donor->id ) ) {
-				    if ( ! empty( $data['form_id'] ) ) {
-					    $form = new Give_Donate_Form( $data['form_id'] );
-				    }
+					if ( ! empty( $data['form_id'] ) ) {
+						$form = new Give_Donate_Form( $data['form_id'] );
+					}
 
 					$payment_title = ( isset( $data['form_title'] ) ? $data['form_title'] : ( isset( $form ) ? $form->get_name() : esc_html( 'New Form', 'give' ) ) );
-					$donor_data = array(
+					$donor_data    = array(
 						'name'    => ! is_email( $payment_title ) ? $data['first_name'] . ' ' . $data['last_name'] : '',
 						'email'   => $data['email'],
 						'user_id' => $customer_id,

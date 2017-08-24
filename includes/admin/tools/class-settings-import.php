@@ -228,6 +228,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
                     <input type="hidden" value='<?php echo maybe_serialize( $_REQUEST['mapto'] ); ?>' name="mapto"
                            class="mapto">
                     <input type="hidden" value="<?php echo $_REQUEST['csv']; ?>" name="csv" class="csv">
+                    <input type="hidden" value="<?php echo $_REQUEST['mode']; ?>" name="mode" class="mode">
                     <input type="hidden" value="<?php echo $_REQUEST['delimiter']; ?>" name="delimiter">
                     <input type="hidden" value='<?php echo maybe_serialize( self::get_importer( $csv ) ); ?>'
                            name="main_key"
@@ -468,6 +469,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 			<?php
 			$csv       = ( isset( $_REQUEST['csv'] ) ? give_clean( $_POST['csv'] ) : '' );
 			$delimiter = ( isset( $_REQUEST['delimiter'] ) ? give_clean( $_POST['delimiter'] ) : ',' );
+			$mode = ( ! empty( $_REQUEST['mode'] ) ? 'on' : '' );
 
 			$settings = array(
 				array(
@@ -484,7 +486,12 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 					'type'       => 'text',
 					'attributes' => array( 'placeholder' => ',', 'size' => '2' ),
 					'default'    => $delimiter,
-					'decs'       => __( 'If a product being imported matches an existing donation by ID, update the existing donation rather than creating a new donation or skipping the row.', 'give' ),
+				),
+				array(
+					'id'         => 'mode',
+					'name'       => __( 'Test Mode:', 'give' ),
+					'type'       => 'checkbox',
+					'default'    => $mode,
 				),
 			);
 
@@ -523,6 +530,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 						'step'      => '2',
 						'csv'       => $csv,
 						'delimiter' => ( isset( $_REQUEST['delimiter'] ) ) ? give_clean( $_REQUEST['delimiter'] ) : ',',
+						'mode' => ( isset( $_REQUEST['mode'] ) ) ? give_clean( $_REQUEST['mode'] ) : '0',
 					) ) );
 					?>
                     <script type="text/javascript">
