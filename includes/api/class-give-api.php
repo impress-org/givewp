@@ -150,8 +150,8 @@ class Give_API {
 		add_filter( 'query_vars', array( $this, 'query_vars' ) );
 		add_action( 'show_user_profile', array( $this, 'user_key_field' ) );
 		add_action( 'edit_user_profile', array( $this, 'user_key_field' ) );
-		add_action( 'personal_options_update', array( $this, 'update_key' ) );
-		add_action( 'edit_user_profile_update', array( $this, 'update_key' ) );
+		add_action( 'personal_options_update', array( $this, 'generate_api_key' ) );
+		add_action( 'edit_user_profile_update', array( $this, 'generate_api_key' ) );
 		add_action( 'give_process_api_key', array( $this, 'process_api_key' ) );
 
 		// Setup a backwards compatibility check for user API Keys
@@ -173,11 +173,9 @@ class Give_API {
 	 *
 	 * @access public
 	 *
-	 * @param array $rewrite_rules WordPress Rewrite Rules
-	 *
 	 * @since  1.1
 	 */
-	public function add_endpoint( $rewrite_rules ) {
+	public function add_endpoint() {
 		add_rewrite_endpoint( 'give-api', EP_ALL );
 	}
 
@@ -1735,6 +1733,7 @@ class Give_API {
 	function user_key_field( $user ) {
 
 		if ( ( give_get_option( 'api_allow_user_keys', false ) || current_user_can( 'manage_give_settings' ) ) && current_user_can( 'edit_user', $user->ID ) ) {
+
 			$user = get_userdata( $user->ID );
 			?>
 			<table class="form-table">
@@ -1849,22 +1848,24 @@ class Give_API {
 	/**
 	 * Generate new API keys for a user
 	 *
+	 * @param int     $user_id    User ID the key is being generated for.
+	 * @param boolean $regenerate Regenerate the key for the user.
+	 *
 	 * @access public
 	 * @since  1.1
-	 *
-	 * @param int     $user_id    User ID the key is being generated for
-	 * @param boolean $regenerate Regenerate the key for the user
 	 *
 	 * @return boolean True if (re)generated succesfully, false otherwise.
 	 */
 	public function generate_api_key( $user_id = 0, $regenerate = false ) {
 
+		// Bail out, if user doesn't exists.
 		if ( empty( $user_id ) ) {
 			return false;
 		}
 
 		$user = get_userdata( $user_id );
 
+		// Bail Out, if user object doesn't exists.
 		if ( ! $user ) {
 			return false;
 		}
@@ -1872,15 +1873,21 @@ class Give_API {
 		$public_key = $this->get_user_public_key( $user_id );
 		$secret_key = $this->get_user_secret_key( $user_id );
 
-		if ( empty( $public_key ) || $regenerate == true ) {
+		if ( empty( $public_key ) ) {
 			$new_public_key = $this->generate_public_key( $user->user_email );
 			$new_secret_key = $this->generate_private_key( $user->ID );
+		} else if ( ! empty( $public_key ) ) {
+			// Regenerate API keys, if regenerate is true.
+			if( true === $regenerate ) {
+				$this->revoke_api_key( $user->ID );
+				$new_public_key = $this->generate_public_key( $user->user_email );
+				$new_secret_key = $this->generate_private_key( $user->ID );
+			} elseif ( current_user_can( 'edit_user', $user_id ) && isset( $_POST['give_set_api_key'] ) ) {
+				// Revoke API Key, if Public key exists and updating user profile.
+				$this->revoke_api_key( $user->ID );
+			}
 		} else {
 			return false;
-		}
-
-		if ( $regenerate == true ) {
-			$this->revoke_api_key( $user->ID );
 		}
 
 		update_user_meta( $user_id, $new_public_key, 'give_user_public_key' );
@@ -1928,39 +1935,6 @@ class Give_API {
 
 	public function get_version() {
 		return self::VERSION;
-	}
-
-
-	/**
-	 * Generate and Save API key
-	 *
-	 * Generates the key requested by user_key_field and stores it in the database
-	 *
-	 * @access public
-	 * @since  1.1
-	 *
-	 * @param int $user_id
-	 *
-	 * @return void
-	 */
-	public function update_key( $user_id ) {
-		if ( current_user_can( 'edit_user', $user_id ) && isset( $_POST['give_set_api_key'] ) ) {
-
-			$user = get_userdata( $user_id );
-
-			$public_key = $this->get_user_public_key( $user_id );
-			$secret_key = $this->get_user_secret_key( $user_id );
-
-			if ( empty( $public_key ) ) {
-				$new_public_key = $this->generate_public_key( $user->user_email );
-				$new_secret_key = $this->generate_private_key( $user->ID );
-
-				update_user_meta( $user_id, $new_public_key, 'give_user_public_key' );
-				update_user_meta( $user_id, $new_secret_key, 'give_user_secret_key' );
-			} else {
-				$this->revoke_api_key( $user_id );
-			}
-		}
 	}
 
 	/**
