@@ -1524,6 +1524,22 @@ function give_import_get_user_from_csv( $data ) {
 			$current_user = wp_get_current_user();
 			if ( ! empty( $current_user->user_email ) ) {
 				$donor    = new Give_Donor( $customer_id );
+
+				if ( empty( $donor->id ) ) {
+				    if ( ! empty( $data['form_id'] ) ) {
+					    $form = new Give_Donate_Form( $data['form_id'] );
+				    }
+
+					$payment_title = ( isset( $data['form_title'] ) ? $data['form_title'] : ( isset( $form ) ? $form->get_name() : esc_html( 'New Form', 'give' ) ) );
+					$donor_data = array(
+						'name'    => ! is_email( $payment_title ) ? $data['first_name'] . ' ' . $data['last_name'] : '',
+						'email'   => $data['email'],
+						'user_id' => $customer_id,
+					);
+
+					$donor->create( $donor_data );
+				}
+
 				$donor->add_note( esc_html( wp_sprintf( 'This donor was imported by %s', $current_user->user_email ), 'give' ) );
 			}
 
