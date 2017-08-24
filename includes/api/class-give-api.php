@@ -173,8 +173,6 @@ class Give_API {
 	 *
 	 * @access public
 	 *
-	 * @param array $rewrite_rules WordPress Rewrite Rules
-	 *
 	 * @since  1.1
 	 */
 	public function add_endpoint() {
