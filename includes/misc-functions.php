@@ -1358,11 +1358,21 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 
 	$payment_data = apply_filters( 'give_import_before_import_payment', $payment_data, $data, $user_data, $form );
 
+	// Check for duplicate code.
+//	if ( true === give_check_import_donation_duplicate( $payment_data, $data, $form, $user_data ) ) {
+//		return false;
+//	}
+
 	add_action( 'give_update_payment_status', 'give_donation_import_insert_default_payment_note', 1 );
+	add_filter( 'give_insert_payment_args', 'give_donation_import_give_insert_payment_args', 11, 2 );
 	$payment = give_insert_payment( $payment_data );
 	remove_action( 'give_update_payment_status', 'give_donation_import_insert_default_payment_note', 1 );
+	remove_filter( 'give_insert_payment_args', 'give_donation_import_give_insert_payment_args', 11 );
 
 	if ( $payment ) {
+
+		$args = give_check_import_donation_duplicate( $payment_data, $data, $form, $user_data );
+		update_post_meta( $payment, '_give_wp_query', $args );
 
 		update_post_meta( $payment, '_give_payment_import', true );
 
@@ -1380,6 +1390,63 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 			}
 		}
 	}
+}
+
+/**
+ *
+ */
+function give_donation_import_give_insert_payment_args( $args, $payment_data ) {
+    if ( ! empty( $payment_data['user_info']['id'] ) ) {
+	    $args['post_author'] = (int) $payment_data['user_info']['id'];
+    }
+}
+
+/**
+ * Check if Import donation is duplicate
+ *
+ * @since 1.8.13
+ */
+function give_check_import_donation_duplicate( $payment_data, $data, $form, $user_data ) {
+	$return = false;
+	if ( ! empty( $data['post_date'] ) ) {
+		$post_date = mysql2date( 'Y-m-d-H-i-s', $data['post_date'] );
+		$post_date = explode( '-', $post_date );
+		$args      = array(
+			'post_type'  => 'give_forms',
+			'author'  => absint( $user_data->ID ),
+			'date_query' => array(
+				array(
+					'year'   => $post_date[0],
+					'month'  => $post_date[1],
+					'day'    => $post_date[2],
+					'hour'   => $post_date[3],
+					'minute' => $post_date[4],
+					'second' => $post_date[5],
+				),
+			),
+			'meta_query' => array(
+				array(
+					'key'     => '_give_payment_total',
+					'value'   => $payment_data['price'],
+					'type'    => 'numeric',
+					'compare' => '=',
+				),
+				array(
+					'key'     => '_give_payment_form_id',
+					'value'   => $payment_data['give_form_id'],
+					'type'    => 'numeric',
+					'compare' => '=',
+				),
+				array(
+					'key'     => '_give_payment_gateway',
+					'value'   => $payment_data['gateway'],
+					'compare' => '=',
+				),
+			),
+		);
+		$return = $args;
+	}
+	return $return;
 }
 
 /**
