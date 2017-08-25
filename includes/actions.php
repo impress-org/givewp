@@ -248,3 +248,21 @@ function give_set_donation_levels_max_min_amount( $form_id ) {
 }
 
 add_action( 'give_pre_process_give_forms_meta', 'give_set_donation_levels_max_min_amount', 30 );
+
+/**
+ * Assign User Role to user account created by donor during registration.
+ *
+ * @param array $user_data WP User object.
+ *
+ * @since 1.8.13
+ *
+ * @return mixed
+ */
+function give_assign_user_role( $user_data ) {
+
+	$user_data['role'] = give_get_option( 'donor_default_user_role' );
+
+	return $user_data;
+}
+
+add_filter( 'give_insert_user_args', 'give_assign_user_role' );
