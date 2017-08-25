@@ -1390,7 +1390,9 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 }
 
 /**
+ * Add author id in in donation post
  *
+ * @since 8.1.13
  */
 function give_donation_import_give_insert_payment_args( $args, $payment_data ) {
     if ( ! empty( $payment_data['user_info']['id'] ) ) {
@@ -1449,9 +1451,10 @@ function give_check_import_donation_duplicate( $payment_data, $data, $form, $use
 			),
 		);
 
-		$the_query = new WP_Query( $args );
-		if ( $the_query->have_posts() ) {
-			$return = true;
+		$payments = new Give_Payments_Query( $args );
+		$donations = $payments->get_payments();
+		if ( $donations ) {
+            return true;
         }
 	}
 	return $return;
