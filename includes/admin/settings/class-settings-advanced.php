@@ -68,7 +68,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							'desc'    => esc_html__( 'Assign default user roles for donors when donors opt to register as a WP User.', 'give' ),
 							'id'      => 'donor_default_user_role',
 							'type'    => 'select',
-							'default' => '',
+							'default' => 'subscriber',
 							'options' => give_get_user_roles()
 						),
 						array(
