@@ -421,3 +421,19 @@ function give_get_user_roles() {
 
 	return $user_roles;
 }
+
+/**
+ * Assign User Role to user account created by donor during registration.
+ *
+ * @since 1.8.13
+ *
+ * @return mixed
+ */
+function give_assign_user_role() {
+
+	$user_args['role'] = give_get_option( 'donor_default_user_role' );
+
+	return $user_args;
+}
+
+add_filter( 'give_insert_user_args', 'give_assign_user_role' );
