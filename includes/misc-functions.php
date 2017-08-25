@@ -1359,9 +1359,9 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 	$payment_data = apply_filters( 'give_import_before_import_payment', $payment_data, $data, $user_data, $form );
 
 	// Check for duplicate code.
-//	if ( true === give_check_import_donation_duplicate( $payment_data, $data, $form, $user_data ) ) {
-//		return false;
-//	}
+	if ( true === give_check_import_donation_duplicate( $payment_data, $data, $form, $user_data ) ) {
+		return false;
+	}
 
 	add_action( 'give_update_payment_status', 'give_donation_import_insert_default_payment_note', 1 );
 	add_filter( 'give_insert_payment_args', 'give_donation_import_give_insert_payment_args', 11, 2 );
@@ -1370,9 +1370,6 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 	remove_filter( 'give_insert_payment_args', 'give_donation_import_give_insert_payment_args', 11 );
 
 	if ( $payment ) {
-
-		$args = give_check_import_donation_duplicate( $payment_data, $data, $form, $user_data );
-		update_post_meta( $payment, '_give_wp_query', $args );
 
 		update_post_meta( $payment, '_give_payment_import', true );
 
@@ -1399,10 +1396,13 @@ function give_donation_import_give_insert_payment_args( $args, $payment_data ) {
     if ( ! empty( $payment_data['user_info']['id'] ) ) {
 	    $args['post_author'] = (int) $payment_data['user_info']['id'];
     }
+    return $args;
 }
 
 /**
  * Check if Import donation is duplicate
+ *
+ * Ref: https://xwp.github.io/engineering-best-practices/php/
  *
  * @since 1.8.13
  */
@@ -1412,8 +1412,13 @@ function give_check_import_donation_duplicate( $payment_data, $data, $form, $use
 		$post_date = mysql2date( 'Y-m-d-H-i-s', $data['post_date'] );
 		$post_date = explode( '-', $post_date );
 		$args      = array(
-			'post_type'  => 'give_forms',
+			'post_type'  => 'give_payment',
 			'author'  => absint( $user_data->ID ),
+			'cache_results'  => false,
+			'no_found_rows' => true,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+			'fields' => 'ids',
 			'date_query' => array(
 				array(
 					'year'   => $post_date[0],
@@ -1427,9 +1432,8 @@ function give_check_import_donation_duplicate( $payment_data, $data, $form, $use
 			'meta_query' => array(
 				array(
 					'key'     => '_give_payment_total',
-					'value'   => $payment_data['price'],
-					'type'    => 'numeric',
-					'compare' => '=',
+					'value'   => preg_replace('/[\$,]/', '', $payment_data['price']),
+					'compare' => 'LIKE',
 				),
 				array(
 					'key'     => '_give_payment_form_id',
@@ -1444,7 +1448,11 @@ function give_check_import_donation_duplicate( $payment_data, $data, $form, $use
 				),
 			),
 		);
-		$return = $args;
+
+		$the_query = new WP_Query( $args );
+		if ( $the_query->have_posts() ) {
+			$return = true;
+        }
 	}
 	return $return;
 }
