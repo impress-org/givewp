@@ -1300,6 +1300,9 @@ function give_import_page_url( $parameter = array() ) {
 
 
 function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array() ) {
+
+	$report    = give_import_donation_report();
+
 	$data     = array_combine( $raw_key, $row_data );
 	$price_id = false;
 
@@ -1360,6 +1363,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 
 	// Check for duplicate code.
 	if ( true === give_check_import_donation_duplicate( $payment_data, $data, $form, $user_data ) ) {
+		$report['duplicate_donation'] = ( ! empty( $report['duplicate_donation'] ) ? ( absint( $report['duplicate_donation'] ) + 1 ) : 1 );
 		return false;
 	}
 
@@ -1370,6 +1374,8 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 	remove_filter( 'give_insert_payment_args', 'give_donation_import_give_insert_payment_args', 11 );
 
 	if ( $payment ) {
+
+		$report['create_donation'] = ( ! empty( $report['create_donation'] ) ? ( absint( $report['create_donation'] ) + 1 ) : 1 );
 
 		update_post_meta( $payment, '_give_payment_import', true );
 
@@ -1386,7 +1392,12 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 				}
 			}
 		}
-	}
+	} else {
+		$report['failed_donation'] = ( ! empty( $report['failed_donation'] ) ? ( absint( $report['failed_donation'] ) + 1 ) : 1 );
+    }
+
+	// update the report
+	give_import_donation_report_update( $report );
 }
 
 /**
@@ -1395,10 +1406,11 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
  * @since 8.1.13
  */
 function give_donation_import_give_insert_payment_args( $args, $payment_data ) {
-    if ( ! empty( $payment_data['user_info']['id'] ) ) {
-	    $args['post_author'] = (int) $payment_data['user_info']['id'];
-    }
-    return $args;
+	if ( ! empty( $payment_data['user_info']['id'] ) ) {
+		$args['post_author'] = (int) $payment_data['user_info']['id'];
+	}
+
+	return $args;
 }
 
 /**
@@ -1414,14 +1426,14 @@ function give_check_import_donation_duplicate( $payment_data, $data, $form, $use
 		$post_date = mysql2date( 'Y-m-d-H-i-s', $data['post_date'] );
 		$post_date = explode( '-', $post_date );
 		$args      = array(
-			'post_type'  => 'give_payment',
-			'author'  => absint( $user_data->ID ),
-			'cache_results'  => false,
-			'no_found_rows' => true,
+			'post_type'              => 'give_payment',
+			'author'                 => absint( $user_data->ID ),
+			'cache_results'          => false,
+			'no_found_rows'          => true,
 			'update_post_meta_cache' => false,
 			'update_post_term_cache' => false,
-			'fields' => 'ids',
-			'date_query' => array(
+			'fields'                 => 'ids',
+			'date_query'             => array(
 				array(
 					'year'   => $post_date[0],
 					'month'  => $post_date[1],
@@ -1431,10 +1443,10 @@ function give_check_import_donation_duplicate( $payment_data, $data, $form, $use
 					'second' => $post_date[5],
 				),
 			),
-			'meta_query' => array(
+			'meta_query'             => array(
 				array(
 					'key'     => '_give_payment_total',
-					'value'   => preg_replace('/[\$,]/', '', $payment_data['price']),
+					'value'   => preg_replace( '/[\$,]/', '', $payment_data['price'] ),
 					'compare' => 'LIKE',
 				),
 				array(
@@ -1451,12 +1463,13 @@ function give_check_import_donation_duplicate( $payment_data, $data, $form, $use
 			),
 		);
 
-		$payments = new Give_Payments_Query( $args );
+		$payments  = new Give_Payments_Query( $args );
 		$donations = $payments->get_payments();
 		if ( ! empty( $donations ) ) {
-            return true;
-        }
+			return true;
+		}
 	}
+
 	return $return;
 }
 
@@ -1578,14 +1591,21 @@ function give_import_donation_form_options() {
  * @return bool|false|WP_User
  */
 function give_import_get_user_from_csv( $data ) {
+	$report    = give_import_donation_report();
 	$user_data = false;
 	if ( ! empty( $data['customer_id'] ) ) {
 		$user_data = get_user_by( 'id', (int) $data['customer_id'] );
+		if ( false != $user_data ) {
+			$report['duplicate_donor'] = ( ! empty( $report['duplicate_donor'] ) ? ( absint( $report['duplicate_donor'] ) + 1 ) : 1 );
+		}
 	}
 
 	if ( false == $user_data && ! empty( $data['email'] ) ) {
 		$user_data = get_user_by( 'email', $data['email'] );
 		if ( false == $user_data && ! empty( $data['first_name'] ) && ! empty( $data['last_name'] ) && isset( $_GET['create_user'] ) && 1 === absint( $_GET['create_user'] ) ) {
+
+			$report['create_donor'] = ( ! empty( $report['create_donor'] ) ? ( absint( $report['create_donor'] ) + 1 ) : 1 );
+
 			// This action was added to remove the login when using the give register function.
 			add_filter( 'give_log_user_in_on_register', 'give_log_user_in_on_register_callback', 11 );
 
@@ -1626,9 +1646,13 @@ function give_import_get_user_from_csv( $data ) {
 			update_user_meta( $customer_id, '_give_payment_import', true );
 
 			$user_data = get_user_by( 'id', (int) $customer_id );
+		} else {
+			$report['duplicate_donor'] = ( ! empty( $report['duplicate_donor'] ) ? ( absint( $report['duplicate_donor'] ) + 1 ) : 1 );
 		}
 	}
 
+	// update the report
+	give_import_donation_report_update( $report );
 	return $user_data;
 }
 
@@ -1642,6 +1666,9 @@ function give_import_get_user_from_csv( $data ) {
  * @return array|bool|Give_Donate_Form|int|null|WP_Post
  */
 function give_import_get_form_data_from_csv( $data ) {
+    // Get the import report
+    $report    = give_import_donation_report();
+
 	$form = false;
 	$meta = array();
 
@@ -1650,6 +1677,9 @@ function give_import_get_form_data_from_csv( $data ) {
 		// Add support to older php version.
 		$form_id = $form->get_ID();
 		if ( empty( $form_id ) ) {
+
+			$report['duplicate_form'] = ( ! empty( $report['duplicate_form'] ) ? ( absint( $report['duplicate_form'] ) + 1 ) : 1 );
+
 			$form = false;
 		}
 	}
@@ -1658,6 +1688,9 @@ function give_import_get_form_data_from_csv( $data ) {
 		$form = get_page_by_title( $data['form_title'], OBJECT, 'give_forms' );
 
 		if ( ! empty( $form->ID ) ) {
+
+			$report['duplicate_form'] = ( ! empty( $report['duplicate_form'] ) ? ( absint( $report['duplicate_form'] ) + 1 ) : 1 );
+
 			$form = new Give_Donate_Form( $form->ID );
 		} else {
 			$form = new Give_Donate_Form();
@@ -1666,6 +1699,8 @@ function give_import_get_form_data_from_csv( $data ) {
 				'post_status' => 'publish',
 			);
 			$form = $form->create( $args );
+
+			$report['create_form'] = ( ! empty( $report['create_form'] ) ? ( absint( $report['create_form'] ) + 1 ) : 1 );
 
 			update_post_meta( $form->ID, '_give_payment_import', true );
 		}
@@ -1740,6 +1775,8 @@ function give_import_get_form_data_from_csv( $data ) {
 		}
 	}
 
+	// update the report
+	give_import_donation_report_update( $report );
 	return $form;
 }
 
@@ -1830,4 +1867,32 @@ function give_list_pluck( $list, $field, $index_key = null ) {
 	$list = $newlist;
 
 	return $list;
+}
+
+/**
+ * Get the Import report of the donations
+ *
+ * @since 1.8.13
+ */
+function give_import_donation_report() {
+	return get_option( 'give_import_donation_report', array() );
+}
+
+
+/**
+ * Update the Import report of the donations
+ *
+ * @since 1.8.13
+ */
+function give_import_donation_report_update( $value = array() ) {
+	update_option( 'give_import_donation_report', $value );
+}
+
+/**
+ * Delete the Import report of the donations
+ *
+ * @since 1.8.13
+ */
+function give_import_donation_report_reset() {
+	update_option( 'give_import_donation_report', array() );
 }

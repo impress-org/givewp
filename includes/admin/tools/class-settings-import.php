@@ -179,12 +179,18 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
                 </th>
             </tr>
 			<?php
+
+            pre_var_dump( give_import_donation_report() );
 		}
 
 		/**
 		 * Will start Import
 		 */
 		static function start_import() {
+
+		    // Reset the donation form report.
+			give_import_donation_report_reset();
+
 			$csv         = (int) $_REQUEST['csv'];
 			$index_start = 1;
 			$index_end   = 1;
