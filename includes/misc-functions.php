@@ -1585,7 +1585,7 @@ function give_import_get_user_from_csv( $data ) {
 
 	if ( false == $user_data && ! empty( $data['email'] ) ) {
 		$user_data = get_user_by( 'email', $data['email'] );
-		if ( false == $user_data && ! empty( $data['first_name'] ) && ! empty( $data['last_name'] ) ) {
+		if ( false == $user_data && ! empty( $data['first_name'] ) && ! empty( $data['last_name'] ) && isset( $_GET['create_user'] ) && 1 === absint( $_GET['create_user'] ) ) {
 			// This action was added to remove the login when using the give register function.
 			add_filter( 'give_log_user_in_on_register', 'give_log_user_in_on_register_callback', 11 );
 

@@ -229,6 +229,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
                            class="mapto">
                     <input type="hidden" value="<?php echo $_REQUEST['csv']; ?>" name="csv" class="csv">
                     <input type="hidden" value="<?php echo $_REQUEST['mode']; ?>" name="mode" class="mode">
+                    <input type="hidden" value="<?php echo $_REQUEST['create_user']; ?>" name="create_user" class="create_user">
                     <input type="hidden" value="<?php echo $_REQUEST['delimiter']; ?>" name="delimiter">
                     <input type="hidden" value='<?php echo maybe_serialize( self::get_importer( $csv ) ); ?>'
                            name="main_key"
@@ -470,7 +471,8 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 			$csv       = ( isset( $_REQUEST['csv'] ) ? give_clean( $_POST['csv'] ) : '' );
 			$delimiter = ( isset( $_REQUEST['delimiter'] ) ? give_clean( $_POST['delimiter'] ) : ',' );
 			$mode = ( ! empty( $_REQUEST['mode'] ) ? 'on' : '' );
-
+			$create_user = ( isset( $_REQUEST['create_user'] ) && isset( $_REQUEST['csv'] ) && 1 == absint( $_REQUEST['create_user'] ) ? 'on' : ( isset( $_REQUEST['csv'] ) ? '' : 'on'  ) );
+			
 			$settings = array(
 				array(
 					'id'      => 'csv',
@@ -492,6 +494,12 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 					'name'       => __( 'Test Mode:', 'give' ),
 					'type'       => 'checkbox',
 					'default'    => $mode,
+				),
+				array(
+					'id'         => 'create_user',
+					'name'       => __( 'Create WP users for new donors?:', 'give' ),
+					'type'       => 'checkbox',
+					'default'    => $create_user,
 				),
 			);
 
@@ -531,6 +539,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 						'csv'       => $csv,
 						'delimiter' => ( isset( $_REQUEST['delimiter'] ) ) ? give_clean( $_REQUEST['delimiter'] ) : ',',
 						'mode' => ( isset( $_REQUEST['mode'] ) ) ? give_clean( $_REQUEST['mode'] ) : '0',
+						'create_user' => ( isset( $_REQUEST['create_user'] ) ) ? give_clean( $_REQUEST['create_user'] ) : '0',
 					) ) );
 					?>
                     <script type="text/javascript">
