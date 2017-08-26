@@ -187,7 +187,6 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 		 * Will start Import
 		 */
 		static function start_import() {
-
 		    // Reset the donation form report.
 			give_import_donation_report_reset();
 

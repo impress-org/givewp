@@ -1300,9 +1300,6 @@ function give_import_page_url( $parameter = array() ) {
 
 
 function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array() ) {
-
-	$report    = give_import_donation_report();
-
 	$data     = array_combine( $raw_key, $row_data );
 	$price_id = false;
 
@@ -1361,39 +1358,43 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 
 	$payment_data = apply_filters( 'give_import_before_import_payment', $payment_data, $data, $user_data, $form );
 
+	// Get the report
+	$report    = give_import_donation_report();
+
 	// Check for duplicate code.
 	if ( true === give_check_import_donation_duplicate( $payment_data, $data, $form, $user_data ) ) {
+
 		$report['duplicate_donation'] = ( ! empty( $report['duplicate_donation'] ) ? ( absint( $report['duplicate_donation'] ) + 1 ) : 1 );
-		return false;
-	}
+	} else {
 
-	add_action( 'give_update_payment_status', 'give_donation_import_insert_default_payment_note', 1 );
-	add_filter( 'give_insert_payment_args', 'give_donation_import_give_insert_payment_args', 11, 2 );
-	$payment = give_insert_payment( $payment_data );
-	remove_action( 'give_update_payment_status', 'give_donation_import_insert_default_payment_note', 1 );
-	remove_filter( 'give_insert_payment_args', 'give_donation_import_give_insert_payment_args', 11 );
+		add_action( 'give_update_payment_status', 'give_donation_import_insert_default_payment_note', 1 );
+		add_filter( 'give_insert_payment_args', 'give_donation_import_give_insert_payment_args', 11, 2 );
+		$payment = give_insert_payment( $payment_data );
+		remove_action( 'give_update_payment_status', 'give_donation_import_insert_default_payment_note', 1 );
+		remove_filter( 'give_insert_payment_args', 'give_donation_import_give_insert_payment_args', 11 );
 
-	if ( $payment ) {
+		if ( $payment ) {
 
-		$report['create_donation'] = ( ! empty( $report['create_donation'] ) ? ( absint( $report['create_donation'] ) + 1 ) : 1 );
+			$report['create_donation'] = ( ! empty( $report['create_donation'] ) ? ( absint( $report['create_donation'] ) + 1 ) : 1 );
 
-		update_post_meta( $payment, '_give_payment_import', true );
+			update_post_meta( $payment, '_give_payment_import', true );
 
-		// Insert Notes.
-		if ( ! empty( $data['notes'] ) ) {
-			give_insert_payment_note( $payment, $data['notes'] );
-		}
+			// Insert Notes.
+			if ( ! empty( $data['notes'] ) ) {
+				give_insert_payment_note( $payment, $data['notes'] );
+			}
 
-		$meta_exists = array_keys( $raw_key, 'post_meta' );
-		if ( ! empty( $main_key ) && ! empty( $meta_exists ) ) {
-			foreach ( $meta_exists as $meta_exist ) {
-				if ( ! empty( $main_key[ $meta_exist ] ) && ! empty( $row_data[ $meta_exist ] ) ) {
-					update_post_meta( $payment, $main_key[ $meta_exist ], $row_data[ $meta_exist ] );
+			$meta_exists = array_keys( $raw_key, 'post_meta' );
+			if ( ! empty( $main_key ) && ! empty( $meta_exists ) ) {
+				foreach ( $meta_exists as $meta_exist ) {
+					if ( ! empty( $main_key[ $meta_exist ] ) && ! empty( $row_data[ $meta_exist ] ) ) {
+						update_post_meta( $payment, $main_key[ $meta_exist ], $row_data[ $meta_exist ] );
+					}
 				}
 			}
+		} else {
+			$report['failed_donation'] = ( ! empty( $report['failed_donation'] ) ? ( absint( $report['failed_donation'] ) + 1 ) : 1 );
 		}
-	} else {
-		$report['failed_donation'] = ( ! empty( $report['failed_donation'] ) ? ( absint( $report['failed_donation'] ) + 1 ) : 1 );
     }
 
 	// update the report
