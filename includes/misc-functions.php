@@ -1453,7 +1453,7 @@ function give_check_import_donation_duplicate( $payment_data, $data, $form, $use
 
 		$payments = new Give_Payments_Query( $args );
 		$donations = $payments->get_payments();
-		if ( $donations ) {
+		if ( ! empty( $donations ) ) {
             return true;
         }
 	}
