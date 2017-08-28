@@ -1367,7 +1367,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 		$report['duplicate_donation'] = ( ! empty( $report['duplicate_donation'] ) ? ( absint( $report['duplicate_donation'] ) + 1 ) : 1 );
 	} else {
 
-		add_action( 'give_update_payment_status', 'give_donation_import_insert_default_payment_note', 1 );
+		add_action( 'give_update_payment_status', 'give_donation_import_insert_default_payment_note', 1, 1 );
 		add_filter( 'give_insert_payment_args', 'give_donation_import_give_insert_payment_args', 11, 2 );
 		add_action( 'give_insert_payment', 'give_import_donation_insert_payment', 11, 2 );
 		$payment = give_insert_payment( $payment_data );
@@ -1427,7 +1427,6 @@ function give_donation_import_give_insert_payment_args( $args, $payment_data ) {
 	if ( ! empty( $payment_data['user_info']['id'] ) ) {
 		$args['post_author'] = (int) $payment_data['user_info']['id'];
 	}
-
 	return $args;
 }
 
@@ -1501,9 +1500,9 @@ function give_check_import_donation_duplicate( $payment_data, $data, $form, $use
  * @return void
  */
 function give_donation_import_insert_default_payment_note( $payment_id ) {
-	$current_user = wp_get_current_user();
-	if ( ! empty( $current_user->user_email ) ) {
-		give_insert_payment_note( $payment_id, esc_html( wp_sprintf( 'This donation was imported by %s', $current_user->user_email ), 'give' ) );
+	$payment    = new Give_Payment( $payment_id );
+	if ( ! empty( $payment->email ) ) {
+		give_insert_payment_note( $payment_id, esc_html( wp_sprintf( 'This donation was imported by %s', $payment->email ), 'give' ) );
 	}
 }
 
@@ -1638,10 +1637,8 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
 			) );
 			remove_filter( 'give_log_user_in_on_register', 'give_log_user_in_on_register_callback', 11 );
 
-			// Adding notes that donor is being imported from CSV.
-			$current_user = wp_get_current_user();
-			if ( ! empty( $current_user->user_email ) ) {
-				$donor = new Give_Donor( $customer_id );
+			if ( ! empty( $data['email'] ) ) {
+				$donor = new Give_Donor( $customer_id, true );
 
 				if ( empty( $donor->id ) ) {
 					if ( ! empty( $data['form_id'] ) ) {
@@ -1658,6 +1655,8 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
 					$donor->create( $donor_data );
 				}
 
+				// Adding notes that donor is being imported from CSV.
+				$current_user = wp_get_current_user();
 				$donor->add_note( esc_html( wp_sprintf( 'This donor was imported by %s', $current_user->user_email ), 'give' ) );
 			}
 
