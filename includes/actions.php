@@ -260,7 +260,8 @@ add_action( 'give_pre_process_give_forms_meta', 'give_set_donation_levels_max_mi
  */
 function give_assign_user_role( $user_data ) {
 
-	$user_data['role'] = give_get_option( 'donor_default_user_role' );
+	$default_user_role = give_get_option( 'donor_default_user_role' );
+	$user_data['role'] = $default_user_role ? $default_user_role : 'subscriber';
 
 	return $user_data;
 }
