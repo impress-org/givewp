@@ -191,10 +191,6 @@ class Give_Cron {
 				$cron_action = 'give_daily_scheduled_events';
 				break;
 
-			case 'async':
-				$cron_action = 'give_async_scheduled_events';
-				break;
-
 			default:
 				$cron_action = 'give_weekly_scheduled_events';
 				break;
