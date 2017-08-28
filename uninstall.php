@@ -85,6 +85,7 @@ if ( give_is_setting_enabled( give_get_option( 'uninstall_on_delete' ) ) ) {
 
 	// Cleanup Cron Events.
 	wp_clear_scheduled_hook( 'give_daily_scheduled_events' );
+	wp_clear_scheduled_hook( 'give_weekly_scheduled_events' );
 	wp_clear_scheduled_hook( 'give_daily_cron' );
 	wp_clear_scheduled_hook( 'give_weekly_cron' );
 
