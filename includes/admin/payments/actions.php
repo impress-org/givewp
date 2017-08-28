@@ -39,10 +39,6 @@ function give_update_payment_details( $data ) {
 	/* @var Give_Payment $payment */
 	$payment = new Give_Payment( $payment_id );
 
-	// Retrieve existing payment meta.
-	$meta      = $payment->get_meta();
-	$user_info = $payment->user_info;
-
 	$status = $data['give-payment-status'];
 	$date   = sanitize_text_field( $data['give-payment-date'] );
 	$hour   = sanitize_text_field( $data['give-payment-time-hour'] );
