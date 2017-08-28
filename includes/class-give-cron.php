@@ -68,6 +68,50 @@ class Give_Cron {
 	private function setup() {
 		add_filter( 'cron_schedules', array( self::$instance, '__add_schedules' ) );
 		add_action( 'wp', array( self::$instance, '__schedule_events' ) );
+		add_action( 'init', array( self::$instance, '__load_async_events' ) );
+	}
+
+
+	/**
+	 * Load async events
+	 *
+	 * @since 1.8.13
+	 */
+	public function __load_async_events() {
+		$async_events = get_option( 'give_async_events', array() );
+
+		// Bailout.
+		if ( empty( $async_events ) ) {
+			return;
+		}
+
+		foreach ( $async_events as $index => $event ) {
+			// Set cron name.
+			$cron_name = "give_async_scheduled_events_{$index}";
+
+			// Setup cron.
+			wp_schedule_single_event( current_time( 'timestamp', 1 ), $cron_name, $event['params'] );
+
+			// Add cron action.
+			add_action( $cron_name, $event['callback'], 10, count( $event['params'] ) );
+			add_action( $cron_name, array( $this, '__delete_async_events' ), 9999, 0 );
+		}
+	}
+
+	/**
+	 * Delete async cron info after run
+	 *
+	 * @since 1.8.13
+	 */
+	public function __delete_async_events() {
+		$async_events    = get_option( 'give_async_events', array() );
+		$cron_name_parts = explode( '_', current_action() );
+		$cron_id         = end( $cron_name_parts );
+
+		if ( ! empty( $async_events[ $cron_id ] ) ) {
+			unset( $async_events[ $cron_id ] );
+			update_option( 'give_async_events', $async_events );
+		}
 	}
 
 	/**
@@ -87,12 +131,6 @@ class Give_Cron {
 			'display'  => esc_html__( 'Once Weekly', 'give' ),
 		);
 
-		// Cron for background process.
-		$schedules['async'] = array(
-			'interval' => - 3600,
-			'display'  => esc_html__( 'Background Process', 'give' ),
-		);
-
 		return $schedules;
 	}
 
@@ -107,7 +145,6 @@ class Give_Cron {
 	public function __schedule_events() {
 		$this->weekly_events();
 		$this->daily_events();
-		$this->async_events();
 	}
 
 	/**
@@ -135,20 +172,6 @@ class Give_Cron {
 	private function daily_events() {
 		if ( ! wp_next_scheduled( 'give_daily_scheduled_events' ) ) {
 			wp_schedule_event( current_time( 'timestamp' ), 'daily', 'give_daily_scheduled_events' );
-		}
-	}
-
-	/**
-	 * Schedule async events
-	 *
-	 * @since  1.8.13
-	 * @access private
-	 *
-	 * @return void
-	 */
-	private function async_events() {
-		if ( ! wp_next_scheduled( 'give_async_scheduled_events' ) ) {
-			wp_schedule_event( current_time( 'timestamp' ), 'async', 'give_async_scheduled_events' );
 		}
 	}
 
@@ -224,10 +247,20 @@ class Give_Cron {
 	 * @since  1.8.13
 	 * @access public
 	 *
-	 * @param $action
+	 * @param string $action
+	 * @param array  $args
 	 */
-	public static function add_async_event( $action ) {
-		self::add_event( $action, 'async' );
+	public static function add_async_event( $action, $args = array() ) {
+
+		// Cache async events.
+		$async_events             = get_option( 'give_async_events', array() );
+		$async_events[ uniqid() ] = array(
+			'callback' => $action,
+			'params'   => $args,
+		);
+
+
+		update_option( 'give_async_events', $async_events );
 	}
 }
 
