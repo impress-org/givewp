@@ -1128,7 +1128,7 @@ function give_get_register_fields( $form_id ) {
 					<?php if ( give_logged_in_only( $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
-					<?php echo Give()->tooltips->render_help( __( 'The username you will use to log into your account.', 'give' ) ); ?>
+					<?php echo Give()->tooltips->render_help( __( 'Create an account for donor to manage donations from one dashboard.', 'give' ) ); ?>
 				</label>
 			</div>
 
