@@ -55,14 +55,10 @@ function give_install( $network_wide = false ) {
  * @return void
  */
 function give_run_install() {
-
 	$give_options = give_get_settings();
 
 	// Setup the Give Custom Post Types.
 	give_setup_post_types();
-
-	// Clear the permalinks.
-	flush_rewrite_rules( false );
 
 	// Add Upgraded From Option.
 	$current_version = get_option( 'give_version' );
@@ -97,8 +93,12 @@ function give_run_install() {
 	$roles->add_roles();
 	$roles->add_caps();
 
+	// Set api version, end point and refresh permalink.
 	$api = new Give_API();
+	$api->add_endpoint();
 	update_option( 'give_default_api_version', 'v' . $api->get_version() );
+
+	flush_rewrite_rules();
 
 	// Check for PHP Session support, and enable if available.
 	$give_sessions = new Give_Session();

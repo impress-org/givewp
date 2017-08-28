@@ -272,7 +272,7 @@ function __give_get_payment_meta( $check, $object_id, $meta_key, $meta_value ) {
 	// Bailout.
 	if (
 		'give_payment' !== get_post_type( $object_id ) ||
-		 '_give_payment_meta' !== $meta_key ||
+		'_give_payment_meta' !== $meta_key ||
 		! give_has_upgrade_completed( 'v20_upgrades_payment_metadata' )
 	) {
 		return $check;
@@ -291,7 +291,7 @@ function __give_get_payment_meta( $check, $object_id, $meta_key, $meta_value ) {
 	}
 
 	// Donation key.
-	$payment_meta['key'] = ! empty( $payment_meta['_give_payment_purchase_key'] ) ? current( $payment_meta['_give_payment_purchase_key'] ) : '' ;
+	$payment_meta['key'] = ! empty( $payment_meta['_give_payment_purchase_key'] ) ? current( $payment_meta['_give_payment_purchase_key'] ) : '';
 
 	// Donation form.
 	$payment_meta['form_title'] = ! empty( $payment_meta['_give_payment_form_title'] ) ? current( $payment_meta['_give_payment_form_title'] ) : '';
@@ -315,14 +315,12 @@ function __give_get_payment_meta( $check, $object_id, $meta_key, $meta_value ) {
 		get_post_field( 'post_date', $object_id );
 
 
-
 	// Currency.
 	$payment_meta['currency'] = ! empty( $payment_meta['_give_payment_currency'] ) ? current( $payment_meta['_give_payment_currency'] ) : '';
 
 	// Decode donor data.
 	$donor_names = give_get_donor_name_by( ( ! empty( $payment_meta['_give_payment_donor_id'] ) ? current( $payment_meta['_give_payment_donor_id'] ) : 0 ), 'donor' );
 	$donor_names = explode( ' ', $donor_names, 2 );
-
 
 
 	// Donor first name.
@@ -399,3 +397,29 @@ function __give_get_payment_meta( $check, $object_id, $meta_key, $meta_value ) {
 
 add_filter( 'get_post_metadata', '__give_get_payment_meta', 0, 4 );
 
+/**
+ * Add meta in payment that store page id and page url.
+ *
+ * Will add/update when user add click on the checkout page.
+ * The status of the donation doest not matter as it get change when user had made the payment successfully.
+ *
+ * @since 1.8.13
+ *
+ * @param int $payment_id Payment id for which the meta value should be updated.
+ */
+function give_payment_save_page_data( $payment_id ) {
+	$page_url = ( ! empty( $_REQUEST['give-current-url'] ) ? esc_url( $_REQUEST['give-current-url'] ) : false );
+
+	// Check $page_url is not empty.
+	if ( $page_url ) {
+		update_post_meta( $payment_id, '_give_current_url', $page_url );
+		$page_id = url_to_postid( $page_url );
+		// Check $page_id is not empty.
+		if ( $page_id ) {
+			update_post_meta( $payment_id, '_give_current_page_id', $page_id );
+		}
+	}
+}
+
+// Fire when payment is save.
+add_action( 'give_insert_payment', 'give_payment_save_page_data' );
