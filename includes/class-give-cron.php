@@ -128,7 +128,7 @@ class Give_Cron {
 		// Adds once weekly to the existing schedules.
 		$schedules['weekly'] = array(
 			'interval' => 604800,
-			'display'  => esc_html__( 'Once Weekly', 'give' ),
+			'display'  => __( 'Once Weekly', 'give' ),
 		);
 
 		return $schedules;
@@ -189,10 +189,6 @@ class Give_Cron {
 		switch ( $type ) {
 			case 'daily':
 				$cron_action = 'give_daily_scheduled_events';
-				break;
-
-			case 'async':
-				$cron_action = 'give_async_scheduled_events';
 				break;
 
 			default:
