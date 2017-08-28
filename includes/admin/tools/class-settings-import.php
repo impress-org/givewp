@@ -143,7 +143,9 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 		}
 
 		static function import_success() {
+			$report  = give_import_donation_report();
 			$total   = (int) $_GET['total'];
+			$total   = $total - 1;
 			$success = (bool) $_GET['success'];
 			?>
             <tr valign="top" class="give-import-dropdown">
@@ -173,21 +175,69 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 						$text      = __( 'View Donations', 'give' );
 					}
 					?>
+					<?php
+					if ( ! empty( $report['duplicate_donor'] ) ) {
+						?>
+                        <p>
+							<?php echo esc_html( wp_sprintf( '%s duplicate donors detected', $report['duplicate_donor'] ), 'give' ); ?>
+                        </p>
+						<?php
+					}
+					?>
+
+					<?php
+					if ( ! empty( $report['create_donor'] ) ) {
+						?>
+                        <p>
+							<?php echo esc_html( wp_sprintf( '%s donors created', $report['create_donor'] ), 'give' ); ?>
+                        </p>
+						<?php
+					}
+					?>
+
+					<?php
+					if ( ! empty( $report['create_form'] ) ) {
+						?>
+                        <p>
+							<?php echo esc_html( wp_sprintf( '%s donations forms created', $report['create_form'] ), 'give' ); ?>
+                        </p>
+						<?php
+					}
+					?>
+
+					<?php
+					if ( ! empty( $report['duplicate_donation'] ) ) {
+						?>
+                        <p>
+							<?php echo esc_html( wp_sprintf( '%s duplicate donations detected', $report['duplicate_donation'] ), 'give' ); ?>
+                        </p>
+						<?php
+					}
+					?>
+
+					<?php
+					if ( ! empty( $report['create_donation'] ) ) {
+						?>
+                        <p>
+							<?php echo esc_html( wp_sprintf( '%s donations imported', $report['create_donation'] ), 'give' ); ?>
+                        </p>
+						<?php
+					}
+					?>
+
                     <p>
                         <a href="<?php echo add_query_arg( $query_arg, admin_url( 'edit.php' ) ); ?>"><?php echo $text; ?></a>
                     </p>
                 </th>
             </tr>
 			<?php
-
-            pre_var_dump( give_import_donation_report() );
 		}
 
 		/**
 		 * Will start Import
 		 */
 		static function start_import() {
-		    // Reset the donation form report.
+			// Reset the donation form report.
 			give_import_donation_report_reset();
 
 			$csv         = (int) $_REQUEST['csv'];
@@ -234,7 +284,8 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
                            class="mapto">
                     <input type="hidden" value="<?php echo $_REQUEST['csv']; ?>" name="csv" class="csv">
                     <input type="hidden" value="<?php echo $_REQUEST['mode']; ?>" name="mode" class="mode">
-                    <input type="hidden" value="<?php echo $_REQUEST['create_user']; ?>" name="create_user" class="create_user">
+                    <input type="hidden" value="<?php echo $_REQUEST['create_user']; ?>" name="create_user"
+                           class="create_user">
                     <input type="hidden" value="<?php echo $_REQUEST['delimiter']; ?>" name="delimiter">
                     <input type="hidden" value='<?php echo maybe_serialize( self::get_importer( $csv ) ); ?>'
                            name="main_key"
@@ -366,9 +417,9 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 					?>
                 </optgroup>
 
-                <?php
-                do_action( 'give_import_dropdown_option', $index, $donations, $donors, $forms, $value );
-                ?>
+				<?php
+				do_action( 'give_import_dropdown_option', $index, $donations, $donors, $forms, $value );
+				?>
             </select>
 			<?php
 		}
@@ -473,19 +524,19 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
                 </th>
             </tr>
 			<?php
-			$csv       = ( isset( $_REQUEST['csv'] ) ? give_clean( $_POST['csv'] ) : '' );
-			$delimiter = ( isset( $_REQUEST['delimiter'] ) ? give_clean( $_POST['delimiter'] ) : ',' );
-			$mode = ( ! empty( $_REQUEST['mode'] ) ? 'on' : '' );
-			$create_user = ( isset( $_REQUEST['create_user'] ) && isset( $_REQUEST['csv'] ) && 1 == absint( $_REQUEST['create_user'] ) ? 'on' : ( isset( $_REQUEST['csv'] ) ? '' : 'on'  ) );
-			
+			$csv         = ( isset( $_REQUEST['csv'] ) ? give_clean( $_POST['csv'] ) : '' );
+			$delimiter   = ( isset( $_REQUEST['delimiter'] ) ? give_clean( $_POST['delimiter'] ) : ',' );
+			$mode        = ( ! empty( $_REQUEST['mode'] ) ? 'on' : '' );
+			$create_user = ( isset( $_REQUEST['create_user'] ) && isset( $_REQUEST['csv'] ) && 1 == absint( $_REQUEST['create_user'] ) ? 'on' : ( isset( $_REQUEST['csv'] ) ? '' : 'on' ) );
+
 			$settings = array(
 				array(
-					'id'      => 'csv',
-					'name'    => __( 'Choose a CSV file:', 'give' ),
-					'type'    => 'file',
+					'id'         => 'csv',
+					'name'       => __( 'Choose a CSV file:', 'give' ),
+					'type'       => 'file',
 					'attributes' => array( 'editing' => 'false', 'library' => 'text' ),
-					'fvalue'  => 'id',
-					'default' => $csv,
+					'fvalue'     => 'id',
+					'default'    => $csv,
 				),
 				array(
 					'id'         => 'delimiter',
@@ -495,16 +546,16 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 					'default'    => $delimiter,
 				),
 				array(
-					'id'         => 'mode',
-					'name'       => __( 'Test Mode:', 'give' ),
-					'type'       => 'checkbox',
-					'default'    => $mode,
+					'id'      => 'mode',
+					'name'    => __( 'Test Mode:', 'give' ),
+					'type'    => 'checkbox',
+					'default' => $mode,
 				),
 				array(
-					'id'         => 'create_user',
-					'name'       => __( 'Create WP users for new donors?:', 'give' ),
-					'type'       => 'checkbox',
-					'default'    => $create_user,
+					'id'      => 'create_user',
+					'name'    => __( 'Create WP users for new donors?:', 'give' ),
+					'type'    => 'checkbox',
+					'default' => $create_user,
 				),
 			);
 
@@ -540,10 +591,10 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 				if ( false == $has_error ) {
 
 					$url = give_import_page_url( (array) apply_filters( 'give_import_step_two_url', array(
-						'step'      => '2',
-						'csv'       => $csv,
-						'delimiter' => ( isset( $_REQUEST['delimiter'] ) ) ? give_clean( $_REQUEST['delimiter'] ) : ',',
-						'mode' => ( isset( $_REQUEST['mode'] ) ) ? give_clean( $_REQUEST['mode'] ) : '0',
+						'step'        => '2',
+						'csv'         => $csv,
+						'delimiter'   => ( isset( $_REQUEST['delimiter'] ) ) ? give_clean( $_REQUEST['delimiter'] ) : ',',
+						'mode'        => ( isset( $_REQUEST['mode'] ) ) ? give_clean( $_REQUEST['mode'] ) : '0',
 						'create_user' => ( isset( $_REQUEST['create_user'] ) ) ? give_clean( $_REQUEST['create_user'] ) : '0',
 					) ) );
 					?>

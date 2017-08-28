@@ -434,8 +434,15 @@ add_action( 'give_view_order_details_before', 'give_import_page_link_callback', 
 
 
 function give_donation_import_callback() {
-	$fields = isset( $_POST['fields'] ) ? $_POST['fields'] : null;
+	$import_setting = array();
+	$fields         = isset( $_POST['fields'] ) ? $_POST['fields'] : null;
+
 	parse_str( $fields );
+
+	$import_setting['create_user'] = $create_user;
+	$import_setting['mode']        = $mode;
+	$import_setting['delimiter']   = $delimiter;
+	$import_setting['csv']         = $csv;
 
 	// Parent key id.
 	$main_key = maybe_unserialize( $main_key );
@@ -461,7 +468,7 @@ function give_donation_import_callback() {
 	remove_action( 'give_insert_payment', 'give_payment_save_page_data' );
 
 	foreach ( $raw_data as $row_data ) {
-		give_save_import_donation_to_db( $raw_key, $row_data, $main_key );
+		give_save_import_donation_to_db( $raw_key, $row_data, $main_key, $import_setting );
 	}
 
 	// Check if function exists or not.
