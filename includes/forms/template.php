@@ -1086,18 +1086,6 @@ function give_get_register_fields( $form_id ) {
 	ob_start(); ?>
 	<fieldset id="give-register-fields-<?php echo $form_id; ?>">
 
-		<?php if ( $show_register_form == 'both' ) { ?>
-			<div class="give-login-account-wrap">
-				<p class="give-login-message"><?php esc_html_e( 'Already have an account?', 'give' ); ?>&nbsp;
-					<a href="<?php echo esc_url( add_query_arg( 'login', 1 ) ); ?>" class="give-checkout-login"
-					   data-action="give_checkout_login"><?php esc_html_e( 'Login', 'give' ); ?></a>
-				</p>
-				<p class="give-loading-text">
-					<span class="give-loading-animation"></span>
-				</p>
-			</div>
-		<?php } ?>
-
 		<?php
 		/**
 		 * Fires while rendering user registration form, before registration fields.
@@ -1121,16 +1109,25 @@ function give_get_register_fields( $form_id ) {
 			do_action( 'give_register_account_fields_before', $form_id );
 			?>
 
-			<div id="give-create-account-wrap-<?php echo $form_id; ?>" class="form-row form-row-responsive">
+			<div id="give-create-account-wrap-<?php echo $form_id; ?>" class="form-row form-row-first form-row-responsive">
 				<label for="give-create-account-<?php echo $form_id; ?>">
 					<input type="checkbox"  name="give_create_account" id="give-create-account-<?php echo $form_id; ?>" class="give-input" />
 					<?php _e( 'Create an account', 'give' ); ?>
-					<?php if ( give_logged_in_only( $form_id ) ) { ?>
-						<span class="give-required-indicator">*</span>
-					<?php } ?>
 					<?php echo Give()->tooltips->render_help( __( 'Create an account for donor to manage donations from one dashboard.', 'give' ) ); ?>
 				</label>
 			</div>
+
+			<?php if ( $show_register_form == 'both' ) { ?>
+				<div class="give-login-account-wrap form-row form-row-last form-row-responsive">
+					<p class="give-login-message"><?php esc_html_e( 'Already have an account?', 'give' ); ?>&nbsp;
+						<a href="<?php echo esc_url( add_query_arg( 'login', 1 ) ); ?>" class="give-checkout-login"
+						   data-action="give_checkout_login"><?php esc_html_e( 'Login', 'give' ); ?></a>
+					</p>
+					<p class="give-loading-text">
+						<span class="give-loading-animation"></span>
+					</p>
+				</div>
+			<?php } ?>
 
 			<?php
 			/**
