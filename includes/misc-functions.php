@@ -1369,9 +1369,11 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 
 		add_action( 'give_update_payment_status', 'give_donation_import_insert_default_payment_note', 1 );
 		add_filter( 'give_insert_payment_args', 'give_donation_import_give_insert_payment_args', 11, 2 );
+		add_action( 'give_insert_payment', 'give_import_donation_insert_payment', 11, 2 );
 		$payment = give_insert_payment( $payment_data );
 		remove_action( 'give_update_payment_status', 'give_donation_import_insert_default_payment_note', 1 );
 		remove_filter( 'give_insert_payment_args', 'give_donation_import_give_insert_payment_args', 11 );
+		remove_action( 'give_insert_payment', 'give_import_donation_insert_payment', 11 );
 
 		if ( $payment ) {
 
@@ -1399,6 +1401,21 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 
 	// update the report
 	give_import_donation_report_update( $report );
+}
+
+/*
+ * Give update purchase_count of give customer.
+ *
+ * @since 1.8.13
+ */
+function give_import_donation_insert_payment( $payment_id, $payment_data ) {
+	// Update Give Customers purchase_count
+	if ( ! empty( $payment_data['status'] ) && ( 'complete' === (string) $payment_data['status'] || 'publish' === (string) $payment_data['status'] ) ) {
+		if ( ! empty( $payment_data['user_info']['id'] ) ) {
+			$donor = new Give_Donor( $payment_data['user_info']['id'], true );
+			$donor->increase_purchase_count();
+		}
+	}
 }
 
 /**
