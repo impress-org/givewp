@@ -36,6 +36,10 @@ if( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs 
 	<div class="wrap give-settings-page <?php echo self::$setting_filter_prefix . '-setting-page'; ?>">
 		<?php echo $form_open_tag; ?>
 		<h2></h2>
+		<?php
+		// Show messages.
+		self::show_messages();
+		?>
 		<div class="nav-tab-wrapper give-nav-tab-wrapper">
 			<?php
 			foreach ( $tabs as $name => $label ) {
@@ -71,11 +75,6 @@ if( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs 
 		 * @since 1.8
 		 */
 		do_action( self::$setting_filter_prefix . "_sections_{$current_tab}_page" );
-
-
-		// Show messages.
-		self::show_messages();
-
 
 		/**
 		 * Trigger Action.
