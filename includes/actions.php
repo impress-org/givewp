@@ -218,7 +218,6 @@ add_action( 'admin_head', 'give_admin_quick_css' );
  * Set Donation Amount for Multi Level Donation Forms
  *
  * @param int    $form_id
- * @param object $form
  *
  * @since 1.8.9
  *
