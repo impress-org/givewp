@@ -104,8 +104,9 @@ class Give_Cron {
 	 * @since 1.8.13
 	 */
 	public function __delete_async_events() {
-		$async_events = get_option( 'give_async_events', array() );
-		$cron_id      = end( explode( '_', current_action() ) );
+		$async_events    = get_option( 'give_async_events', array() );
+		$cron_name_parts = explode( '_', current_action() );
+		$cron_id         = end( $cron_name_parts );
 
 		if ( ! empty( $async_events[ $cron_id ] ) ) {
 			unset( $async_events[ $cron_id ] );
