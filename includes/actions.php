@@ -269,8 +269,36 @@ function _give_save_donor_billing_address( $payment_id ) {
 
 	/* @var Give_Donor $donor */
 	$donor = new Give_Donor( $donation->customer_id );
-	
+
 	// Save address.
 	$donor->add_address( 'billing[]', $donation->address );
 }
+
 add_action( 'save_post_give_payment', '_give_save_donor_billing_address', 9999 );
+
+
+/**
+ * Update form id in payment logs
+ * This function will be use by cron to sync form id ( if changes ) between payment and log.
+ *
+ * @since 2.0
+ *
+ * @param $new_form_id
+ * @param $payment_id
+ */
+function __give_update_log_form_id( $new_form_id, $payment_id ) {
+	$logs = Give()->logs->get_logs( $payment_id );
+
+	// Bailout.
+	if ( empty( $logs ) ) {
+		return;
+	}
+
+	/* @var object $log */
+	foreach ( $logs as $log ) {
+		Give()->logs->logmeta_db->update_meta( $log->ID, '_give_log_form_id', $new_form_id );
+	}
+
+	// Delete cache.
+	Give()->logs->delete_cache();
+}
