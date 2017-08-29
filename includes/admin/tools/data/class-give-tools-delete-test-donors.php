@@ -141,9 +141,9 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	/**
 	 * Will Update or Add the donation and donors ids in the with option table for there respected key.
 	 *
-	 * @param string $step         On which the current ajax is running.
-	 * @param array  $donation_ids Contain the list of all the donation id's that has being add before this
-	 * @param array  $donor_ids    Contain the list of all the donors id's that has being add before this
+	 * @param string $step On which the current ajax is running.
+	 * @param array $donation_ids Contain the list of all the donation id's that has being add before this
+	 * @param array $donor_ids Contain the list of all the donors id's that has being add before this
 	 */
 	private function count( $step, $donation_ids = array(), $donor_ids = array() ) {
 
@@ -404,8 +404,8 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	 *
 	 * @since  1.8.12s
 	 *
-	 * @param  string $key   The option_name
-	 * @param  mixed  $value The value to store
+	 * @param  string $key The option_name
+	 * @param  mixed $value The value to store
 	 *
 	 * @return void
 	 */
