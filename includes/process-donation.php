@@ -815,6 +815,13 @@ function give_register_and_login_new_user( $user_data = array() ) {
 	 */
 	do_action( 'give_insert_user', $user_id, $user_data );
 
+	/**
+	 * Filter allow user to alter if user when to login or not when user is register for the first time.
+	 *
+	 * @since 1.8.13
+	 *
+	 * return bool True if login with registration and False if only want to register.
+	 */
 	if ( true === (bool) apply_filters( 'give_log_user_in_on_register', true ) ) {
 		// Login new user.
 		give_log_user_in( $user_id, $user_data['user_login'], $user_data['user_pass'] );
