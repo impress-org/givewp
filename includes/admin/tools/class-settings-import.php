@@ -143,17 +143,25 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 		}
 
 		static function import_success() {
-			$report  = give_import_donation_report();
-			$total   = (int) $_GET['total'];
-			$total   = $total - 1;
-			$success = (bool) $_GET['success'];
+			$report      = give_import_donation_report();
+			$report_html = array(
+				'duplicate_donor'    => __( '%s duplicate donors detected', 'give' ),
+				'create_donor'       => __( '%s donors created', 'give' ),
+				'create_form'        => __( '%s donations forms created', 'give' ),
+				'duplicate_donation' => __( '%s duplicate donations detected', 'give' ),
+				'create_donation'    => __( '%s donations imported', 'give' ),
+
+			);
+			$total       = (int) $_GET['total'];
+			$total       = $total - 1;
+			$success     = (bool) $_GET['success'];
 			?>
 			<tr valign="top" class="give-import-dropdown">
 				<th colspan="2">
 					<h2>
 						<?php
 						if ( $success ) {
-							echo sprintf( __( 'Import complete! %s donations imported', 'give' ), "<strong>{$total}</strong>" );
+							echo sprintf( __( 'Import complete! %s donations processed', 'give' ), "<strong>{$total}</strong>" );
 						} else {
 							echo sprintf( __( 'Failed to import %s donations', 'give' ), "<strong>{$total}</strong>" );
 						}
@@ -174,54 +182,15 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 						);
 						$text      = __( 'View Donations', 'give' );
 					}
-					?>
-					<?php
-					if ( ! empty( $report['duplicate_donor'] ) ) {
-						?>
-						<p>
-							<?php echo esc_html( wp_sprintf( __( '%s duplicate donors detected', 'give' ), $report['duplicate_donor'] ) ); ?>
-						</p>
-						<?php
-					}
-					?>
 
-					<?php
-					if ( ! empty( $report['create_donor'] ) ) {
-						?>
-						<p>
-							<?php echo esc_html( wp_sprintf( __( '%s donors created', 'give' ), $report['create_donor'] ) ); ?>
-						</p>
-						<?php
-					}
-					?>
-
-					<?php
-					if ( ! empty( $report['create_form'] ) ) {
-						?>
-						<p>
-							<?php echo esc_html( wp_sprintf( __( '%s donations forms created', 'give' ), $report['create_form'] ) ); ?>
-						</p>
-						<?php
-					}
-					?>
-
-					<?php
-					if ( ! empty( $report['duplicate_donation'] ) ) {
-						?>
-						<p>
-							<?php echo esc_html( wp_sprintf( __( '%s duplicate donations detected', 'give' ), $report['duplicate_donation'] ) ); ?>
-						</p>
-						<?php
-					}
-					?>
-
-					<?php
-					if ( ! empty( $report['create_donation'] ) ) {
-						?>
-						<p>
-							<?php echo esc_html( wp_sprintf( __( '%s donations imported', 'give' ), $report['create_donation'] ) ); ?>
-						</p>
-						<?php
+					foreach ( $report as $key => $value ) {
+						if ( array_key_exists( $key, $report_html ) && ! empty( $value ) ) {
+							?>
+							<p>
+								<?php echo esc_html( wp_sprintf( $report_html[ $key ], $value ) ); ?>
+							</p>
+							<?php
+						}
 					}
 					?>
 
