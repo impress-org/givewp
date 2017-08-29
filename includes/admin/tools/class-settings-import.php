@@ -289,7 +289,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 					$return = false;
 				}
 
-				if ( false === in_array( 'email', $mapto ) && false === in_array( 'customer_id', $mapto ) ) {
+				if ( false === in_array( 'email', $mapto ) && false === in_array( 'donor_id', $mapto ) ) {
 					Give_Admin_Settings::add_error( 'give-import-csv-donor', __( 'Please select Email id or Customer ID options from the dropdown.', 'give' ) );
 					$return = false;
 				}

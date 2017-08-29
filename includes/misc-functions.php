@@ -1581,7 +1581,7 @@ function give_import_donations_options() {
  */
 function give_import_donor_options() {
 	return (array) apply_filters( 'give_import_donor_options', array(
-		'customer_id' => __( 'Donor ID', 'give' ),
+		'donor_id' => __( 'Donor ID', 'give' ),
 	) );
 }
 
@@ -1610,8 +1610,8 @@ function give_import_donation_form_options() {
 function give_import_get_user_from_csv( $data, $import_setting = array() ) {
 	$report    = give_import_donation_report();
 	$user_data = false;
-	if ( ! empty( $data['customer_id'] ) ) {
-		$user_data = get_user_by( 'id', (int) $data['customer_id'] );
+	if ( ! empty( $data['donor_id'] ) ) {
+		$user_data = get_user_by( 'id', (int) $data['donor_id'] );
 		if ( false != $user_data ) {
 			$report['duplicate_donor'] = ( ! empty( $report['duplicate_donor'] ) ? ( absint( $report['duplicate_donor'] ) + 1 ) : 1 );
 		}
