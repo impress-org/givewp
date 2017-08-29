@@ -182,8 +182,8 @@ function give_check_logged_in_user_for_existing_email( $valid_data, $post ) {
 	// Verify that the email address belongs to this customer.
 	if ( is_user_logged_in() ) {
 
-		$submitted_email    = $valid_data['logged_in_user']['user_email'];
-		$donor = new Give_Donor( get_current_user_id(), true );
+		$submitted_email = $valid_data['logged_in_user']['user_email'];
+		$donor           = new Give_Donor( get_current_user_id(), true );
 
 		// If this email address is not registered with this customer, see if it belongs to any other customer
 		if (
@@ -193,7 +193,7 @@ function give_check_logged_in_user_for_existing_email( $valid_data, $post ) {
 			$found_donor = new Give_Donor( $submitted_email );
 
 			if ( $found_donor->id > 0 ) {
-				give_set_error( 'give-customer-email-exists', sprintf( __( 'You are logged in as %1$s, and are submitting a donation as %2$s, which is an existing donor. To ensure that the email address is tied to the correct donor, please submit this donation from a logged-out browser, or choose another email address.' ,'give' ), $donor->email, $submitted_email ) );
+				give_set_error( 'give-customer-email-exists', sprintf( __( 'You are logged in as %1$s, and are submitting a donation as %2$s, which is an existing donor. To ensure that the email address is tied to the correct donor, please submit this donation from a logged-out browser, or choose another email address.', 'give' ), $donor->email, $submitted_email ) );
 			}
 		}
 	}
@@ -221,8 +221,8 @@ function give_process_form_login() {
 			 * @since 1.0
 			 */
 			ob_start();
-				do_action( 'give_ajax_donation_errors' );
-				$message = ob_get_contents();
+			do_action( 'give_ajax_donation_errors' );
+			$message = ob_get_contents();
 			ob_end_clean();
 			wp_send_json_error( $message );
 		} else {
@@ -236,7 +236,7 @@ function give_process_form_login() {
 	if ( $is_ajax ) {
 		$message = Give()->notices->print_frontend_notice(
 			sprintf(
-				/* translators: %s: user first name */
+			/* translators: %s: user first name */
 				esc_html__( 'Welcome %s! You have successfully logged into your account.', 'give' ),
 				( ! empty( $user_data['user_first'] ) ) ? $user_data['user_first'] : $user_data['user_login']
 			),
@@ -356,7 +356,7 @@ function give_donation_form_validate_gateway() {
 			give_set_error(
 				'invalid_donation_minimum',
 				sprintf(
-					/* translators: %s: minimum donation amount */
+				/* translators: %s: minimum donation amount */
 					__( 'This form has a minimum donation amount of %s.', 'give' ),
 					give_currency_filter( give_format_amount( give_get_form_minimum_price( $form_id ), array( 'sanitize' => false ) ) )
 				)
@@ -470,7 +470,7 @@ function give_get_required_fields( $form_id ) {
 		);
 
 
-		$required_fields['card_state']      = array(
+		$required_fields['card_state'] = array(
 			'error_id'      => 'invalid_state',
 			'error_message' => __( 'Please enter billing state / province / County.', 'give' ),
 		);
@@ -972,7 +972,7 @@ function give_get_donation_cc_info() {
  *
  * @since  1.0
  *
- * @param int    $zip
+ * @param int $zip
  * @param string $country_code
  *
  * @return bool|mixed
