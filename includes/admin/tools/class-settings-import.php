@@ -461,10 +461,10 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 			$step = Give_Settings_Import::get_step();
 			?>
 			<ol class="give-progress-steps">
-				<li class="<?php echo( 1 === $step ? 'active' : '' ); ?>">Upload CSV file</li>
-				<li class="<?php echo( 2 === $step ? 'active' : '' ); ?>">Column mapping</li>
-				<li class="<?php echo( 3 === $step ? 'active' : '' ); ?>">Import</li>
-				<li class="<?php echo( 4 === $step ? 'active' : '' ); ?>">Done!</li>
+				<li class="<?php echo( 1 === $step ? 'active' : '' ); ?>"><?php esc_html_e( 'Upload CSV file', 'give' ); ?></li>
+				<li class="<?php echo( 2 === $step ? 'active' : '' ); ?>"><?php esc_html_e( 'Column mapping', 'give' ); ?></li>
+				<li class="<?php echo( 3 === $step ? 'active' : '' ); ?>"><?php esc_html_e( 'Import', 'give' ); ?></li>
+				<li class="<?php echo( 4 === $step ? 'active' : '' ); ?>"><?php esc_html_e( 'Done!' , 'give' ); ?></li>
 			</ol>
 			<?php
 		}
