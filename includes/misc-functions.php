@@ -673,81 +673,81 @@ function give_is_func_disabled( $function ) {
 function give_get_newsletter() {
 	?>
 
-    <p class="newsletter-intro"><?php esc_html_e( 'Be sure to sign up for the Give newsletter below to stay informed of important updates and news.', 'give' ); ?></p>
+	<p class="newsletter-intro"><?php esc_html_e( 'Be sure to sign up for the Give newsletter below to stay informed of important updates and news.', 'give' ); ?></p>
 
-    <div class="give-newsletter-form-wrap">
+	<div class="give-newsletter-form-wrap">
 
-        <form action="//givewp.us3.list-manage.com/subscribe/post?u=3ccb75d68bda4381e2f45794c&amp;id=12a081aa13"
-              method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate"
-              target="_blank" novalidate>
-            <div class="give-newsletter-confirmation">
-                <p><?php esc_html_e( 'Thanks for Subscribing!', 'give' ); ?> :)</p>
-            </div>
+		<form action="//givewp.us3.list-manage.com/subscribe/post?u=3ccb75d68bda4381e2f45794c&amp;id=12a081aa13"
+		      method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate"
+		      target="_blank" novalidate>
+			<div class="give-newsletter-confirmation">
+				<p><?php esc_html_e( 'Thanks for Subscribing!', 'give' ); ?> :)</p>
+			</div>
 
-            <table class="form-table give-newsletter-form">
-                <tr valign="middle">
-                    <td>
-                        <label for="mce-EMAIL"
-                               class="screen-reader-text"><?php esc_html_e( 'Email Address (required)', 'give' ); ?></label>
-                        <input type="email" name="EMAIL" id="mce-EMAIL"
-                               placeholder="<?php esc_attr_e( 'Email Address (required)', 'give' ); ?>"
-                               class="required email" value="">
-                    </td>
-                    <td>
-                        <label for="mce-FNAME"
-                               class="screen-reader-text"><?php esc_html_e( 'First Name', 'give' ); ?></label>
-                        <input type="text" name="FNAME" id="mce-FNAME"
-                               placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" class="" value="">
-                    </td>
-                    <td>
-                        <label for="mce-LNAME"
-                               class="screen-reader-text"><?php esc_html_e( 'Last Name', 'give' ); ?></label>
-                        <input type="text" name="LNAME" id="mce-LNAME"
-                               placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" class="" value="">
-                    </td>
-                    <td>
-                        <input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button"
-                               value="<?php esc_attr_e( 'Subscribe', 'give' ); ?>">
-                    </td>
-                </tr>
-            </table>
-        </form>
+			<table class="form-table give-newsletter-form">
+				<tr valign="middle">
+					<td>
+						<label for="mce-EMAIL"
+						       class="screen-reader-text"><?php esc_html_e( 'Email Address (required)', 'give' ); ?></label>
+						<input type="email" name="EMAIL" id="mce-EMAIL"
+						       placeholder="<?php esc_attr_e( 'Email Address (required)', 'give' ); ?>"
+						       class="required email" value="">
+					</td>
+					<td>
+						<label for="mce-FNAME"
+						       class="screen-reader-text"><?php esc_html_e( 'First Name', 'give' ); ?></label>
+						<input type="text" name="FNAME" id="mce-FNAME"
+						       placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" class="" value="">
+					</td>
+					<td>
+						<label for="mce-LNAME"
+						       class="screen-reader-text"><?php esc_html_e( 'Last Name', 'give' ); ?></label>
+						<input type="text" name="LNAME" id="mce-LNAME"
+						       placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" class="" value="">
+					</td>
+					<td>
+						<input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button"
+						       value="<?php esc_attr_e( 'Subscribe', 'give' ); ?>">
+					</td>
+				</tr>
+			</table>
+		</form>
 
-        <div style="position: absolute; left: -5000px;">
-            <input type="text" name="b_3ccb75d68bda4381e2f45794c_12a081aa13" tabindex="-1" value="">
-        </div>
+		<div style="position: absolute; left: -5000px;">
+			<input type="text" name="b_3ccb75d68bda4381e2f45794c_12a081aa13" tabindex="-1" value="">
+		</div>
 
-    </div>
+	</div>
 
-    <script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>
-    <script type='text/javascript'>(function ($) {
-            window.fnames = new Array();
-            window.ftypes = new Array();
-            fnames[0] = 'EMAIL';
-            ftypes[0] = 'email';
-            fnames[1] = 'FNAME';
-            ftypes[1] = 'text';
-            fnames[2] = 'LNAME';
-            ftypes[2] = 'text';
+	<script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>
+	<script type='text/javascript'>(function ($) {
+			window.fnames = new Array();
+			window.ftypes = new Array();
+			fnames[0] = 'EMAIL';
+			ftypes[0] = 'email';
+			fnames[1] = 'FNAME';
+			ftypes[1] = 'text';
+			fnames[2] = 'LNAME';
+			ftypes[2] = 'text';
 
-            //Successful submission
-            $('form[name="mc-embedded-subscribe-form"]').on('submit', function () {
+			//Successful submission
+			$('form[name="mc-embedded-subscribe-form"]').on('submit', function () {
 
-                var email_field = $(this).find('#mce-EMAIL').val();
-                if (!email_field) {
-                    return false;
-                }
-                $(this).find('.give-newsletter-confirmation').show().delay(5000).slideUp();
-                $(this).find('.give-newsletter-form').hide();
+				var email_field = $(this).find('#mce-EMAIL').val();
+				if (!email_field) {
+					return false;
+				}
+				$(this).find('.give-newsletter-confirmation').show().delay(5000).slideUp();
+				$(this).find('.give-newsletter-form').hide();
 
-            });
+			});
 
-        }(jQuery));
-        var $mcj = jQuery.noConflict(true);
+		}(jQuery));
+		var $mcj = jQuery.noConflict(true);
 
 
-    </script>
-    <!--End mc_embed_signup-->
+	</script>
+	<!--End mc_embed_signup-->
 
 <?php }
 
@@ -1302,6 +1302,7 @@ function give_import_page_url( $parameter = array() ) {
 function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array(), $import_setting = array() ) {
 	$data     = array_combine( $raw_key, $row_data );
 	$price_id = false;
+	$import_setting['create_user'] = ( isset( $import_setting['create_user'] ) ? $import_setting['create_user'] : 1 );
 
 	$data = (array) apply_filters( 'give_save_import_donation_to_db', $data );
 
@@ -1310,9 +1311,9 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 	}
 
 	// Here come the login function.
-	$user_data = give_import_get_user_from_csv( $data, $import_setting );
-	if ( false != $user_data ) {
-		$customer_id = $user_data->ID;
+	$donor_data = give_import_get_user_from_csv( $data, $import_setting );
+	if ( ! empty( $donor_data->id ) ) {
+		$customer_id = $donor_data->id;
 	} else {
 		return false;
 	}
@@ -1341,9 +1342,9 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 		'currency'        => give_get_currency(),
 		'user_info'       => array(
 			'id'         => $customer_id,
-			'email'      => ( isset( $data['email'] ) ? $data['email'] : ( isset( $user_data->data->user_email ) ? $user_data->data->user_email : false ) ),
-			'first_name' => ( isset( $data['first_name'] ) ? $data['first_name'] : ( ( $first_name = get_user_meta( $customer_id, 'first_name', true ) ) ? $first_name : $user_data->data->user_nicename ) ),
-			'last_name'  => ( isset( $data['last_name'] ) ? $data['last_name'] : ( ( $last_name = get_user_meta( $customer_id, 'last_name', true ) ) ? $last_name : $user_data->data->user_nicename ) ),
+			'email'      => ( isset( $data['email'] ) ? $data['email'] : ( isset( $donor_data->email ) ? $donor_data->email : false ) ),
+			'first_name' => ( isset( $data['first_name'] ) ? $data['first_name'] : ( ( $first_name = get_user_meta( $customer_id, 'first_name', true ) ) ? $first_name : $donor_data->name ) ),
+			'last_name'  => ( isset( $data['last_name'] ) ? $data['last_name'] : ( ( $last_name = get_user_meta( $customer_id, 'last_name', true ) ) ? $last_name : $donor_data->name ) ),
 			'address'    => $address,
 		),
 		'gateway'         => ( ! empty( $data['gateway'] ) && 'offline' != strtolower( $data['gateway'] ) ? strtolower( $data['gateway'] ) : 'manual' ),
@@ -1356,17 +1357,15 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 		'mode'            => ( ! empty( $data['mode'] ) ? ( 'true' == (string) $data['mode'] || 'TRUE' == (string) $data['mode'] ? 'test' : 'live' ) : ( isset( $import_setting['mode'] ) ? ( true == (bool) $import_setting['mode'] ? 'test' : 'live' ) : ( give_is_test_mode() ? 'test' : 'live' ) ) ),
 	);
 
-	$payment_data = apply_filters( 'give_import_before_import_payment', $payment_data, $data, $user_data, $form );
+	$payment_data = apply_filters( 'give_import_before_import_payment', $payment_data, $data, $donor_data, $form );
 
 	// Get the report
 	$report = give_import_donation_report();
 
 	// Check for duplicate code.
-	if ( true === give_check_import_donation_duplicate( $payment_data, $data, $form, $user_data ) ) {
-
+	if ( true === give_check_import_donation_duplicate( $payment_data, $data, $form, $donor_data ) ) {
 		$report['duplicate_donation'] = ( ! empty( $report['duplicate_donation'] ) ? ( absint( $report['duplicate_donation'] ) + 1 ) : 1 );
 	} else {
-
 		add_action( 'give_update_payment_status', 'give_donation_import_insert_default_payment_note', 1, 1 );
 		add_filter( 'give_insert_payment_args', 'give_donation_import_give_insert_payment_args', 11, 2 );
 		add_action( 'give_insert_payment', 'give_import_donation_insert_payment', 11, 2 );
@@ -1427,6 +1426,7 @@ function give_donation_import_give_insert_payment_args( $args, $payment_data ) {
 	if ( ! empty( $payment_data['user_info']['id'] ) ) {
 		$args['post_author'] = (int) $payment_data['user_info']['id'];
 	}
+
 	return $args;
 }
 
@@ -1437,14 +1437,14 @@ function give_donation_import_give_insert_payment_args( $args, $payment_data ) {
  *
  * @since 1.8.13
  */
-function give_check_import_donation_duplicate( $payment_data, $data, $form, $user_data ) {
+function give_check_import_donation_duplicate( $payment_data, $data, $form, $donor_data ) {
 	$return = false;
 	if ( ! empty( $data['post_date'] ) ) {
 		$post_date = mysql2date( 'Y-m-d-H-i-s', $data['post_date'] );
 		$post_date = explode( '-', $post_date );
 		$args      = array(
 			'post_type'              => 'give_payment',
-			'author'                 => absint( $user_data->ID ),
+			'author'                 => absint( $donor_data->id ),
 			'cache_results'          => false,
 			'no_found_rows'          => true,
 			'update_post_meta_cache' => false,
@@ -1500,7 +1500,7 @@ function give_check_import_donation_duplicate( $payment_data, $data, $form, $use
  * @return void
  */
 function give_donation_import_insert_default_payment_note( $payment_id ) {
-	$payment    = new Give_Payment( $payment_id );
+	$payment = new Give_Payment( $payment_id );
 	if ( ! empty( $payment->email ) ) {
 		give_insert_payment_note( $payment_id, esc_html( wp_sprintf( 'This donation was imported by %s', $payment->email ), 'give' ) );
 	}
@@ -1609,69 +1609,90 @@ function give_import_donation_form_options() {
  */
 function give_import_get_user_from_csv( $data, $import_setting = array() ) {
 	$report    = give_import_donation_report();
-	$user_data = false;
+	$donor_data = false;
+	$customer_id = false;
+
+	// check if donor id is not empty
 	if ( ! empty( $data['donor_id'] ) ) {
-		$user_data = get_user_by( 'id', (int) $data['donor_id'] );
-		if ( false != $user_data ) {
+		$donor_data = new Give_Donor( (int) $data['donor_id'] );
+		if ( ! empty( $donor_data->id ) ) {
 			$report['duplicate_donor'] = ( ! empty( $report['duplicate_donor'] ) ? ( absint( $report['duplicate_donor'] ) + 1 ) : 1 );
 		}
 	}
 
-	if ( false == $user_data && ! empty( $data['email'] ) ) {
-		$user_data = get_user_by( 'email', $data['email'] );
-		if ( false == $user_data && ! empty( $data['first_name'] ) && ! empty( $data['last_name'] ) && isset( $import_setting['create_user'] ) && 1 === absint( $import_setting['create_user'] ) ) {
+	if ( empty( $donor_data->id ) && ! empty( $data['email'] ) ) {
+		$donor_data = new Give_Donor( $data['email'] );
+		if ( empty( $donor_data->id ) ) {
+			$donor_data = get_user_by( 'email', $data['email'] );
 
-			$report['create_donor'] = ( ! empty( $report['create_donor'] ) ? ( absint( $report['create_donor'] ) + 1 ) : 1 );
+			if ( empty( $donor_data->ID ) && ! empty( $data['first_name'] ) && ! empty( $data['last_name'] ) && isset( $import_setting['create_user'] ) && 1 === absint( $import_setting['create_user'] ) ) {
+				$donor_args = array(
+					'user_login'      => $data['email'],
+					'user_email'      => $data['email'],
+					'user_registered' => date( 'Y-m-d H:i:s' ),
+					'user_first'      => $data['first_name'],
+					'user_last'       => $data['last_name'],
+					'user_pass'       => wp_generate_password( 8, true ),
+					'role'            => get_option( 'default_role' ),
+				);
 
-			// This action was added to remove the login when using the give register function.
-			add_filter( 'give_log_user_in_on_register', 'give_log_user_in_on_register_callback', 11 );
+				/**
+				 * Filter to modify user data before new user id register.
+				 *
+				 * @since 1.8.13
+				 */
+				$donor_args = (array) apply_filters( 'give_import_insert_user_args', $donor_args, $data, $import_setting );
 
-			$customer_id = give_register_and_login_new_user( array(
-				'user_login'      => $data['email'],
-				'user_email'      => $data['email'],
-				'user_registered' => date( 'Y-m-d H:i:s' ),
-				'user_first'      => $data['first_name'],
-				'user_last'       => $data['last_name'],
-				'user_pass'       => wp_generate_password( 8, true ),
-				'role'            => get_option( 'default_role' ),
-			) );
-			remove_filter( 'give_log_user_in_on_register', 'give_log_user_in_on_register_callback', 11 );
+				// This action was added to remove the login when using the give register function.
+				add_filter( 'give_log_user_in_on_register', 'give_log_user_in_on_register_callback', 11 );
+				$customer_id = give_register_and_login_new_user( $donor_args );
+				remove_filter( 'give_log_user_in_on_register', 'give_log_user_in_on_register_callback', 11 );
 
-			if ( ! empty( $data['email'] ) ) {
-				$donor = new Give_Donor( $customer_id, true );
+				update_user_meta( $customer_id, '_give_payment_import', true );
+				$donor_data = new Give_Donor( $customer_id, true );
+			} else {
+				$customer_id = ( ! empty( $donor_data->ID ) ? $donor_data->ID : false );
+			}
 
-				if ( empty( $donor->id ) ) {
+			if ( ! empty( $customer_id ) || ( isset( $import_setting['create_user'] ) && 0 === absint( $import_setting['create_user'] ) ) ) {
+				$donor_data= new Give_Donor( $customer_id, true );
+
+				if ( empty( $donor_data->id ) ) {
+
 					if ( ! empty( $data['form_id'] ) ) {
 						$form = new Give_Donate_Form( $data['form_id'] );
 					}
 
 					$payment_title = ( isset( $data['form_title'] ) ? $data['form_title'] : ( isset( $form ) ? $form->get_name() : esc_html( 'New Form', 'give' ) ) );
-					$donor_data    = array(
+					$donor_args    = array(
 						'name'    => ! is_email( $payment_title ) ? $data['first_name'] . ' ' . $data['last_name'] : '',
 						'email'   => $data['email'],
-						'user_id' => $customer_id,
 					);
 
-					$donor->create( $donor_data );
+					if ( ! empty( $customer_id ) ) {
+						$donor_args['user_id'] = $customer_id;
+					}
+
+					$donor_data->create( $donor_args );
+
+					// Adding notes that donor is being imported from CSV.
+					$current_user = wp_get_current_user();
+					$donor_data->add_note( esc_html( wp_sprintf( __( 'This donor was imported by %s' , 'give' ), $current_user->user_email ) ) );
+
+					$report['create_donor'] = ( ! empty( $report['create_donor'] ) ? ( absint( $report['create_donor'] ) + 1 ) : 1 );
+				} else {
+					$report['duplicate_donor'] = ( ! empty( $report['duplicate_donor'] ) ? ( absint( $report['duplicate_donor'] ) + 1 ) : 1 );
 				}
-
-				// Adding notes that donor is being imported from CSV.
-				$current_user = wp_get_current_user();
-				$donor->add_note( esc_html( wp_sprintf( 'This donor was imported by %s', $current_user->user_email ), 'give' ) );
 			}
-
-			update_user_meta( $customer_id, '_give_payment_import', true );
-
-			$user_data = get_user_by( 'id', (int) $customer_id );
 		} else {
 			$report['duplicate_donor'] = ( ! empty( $report['duplicate_donor'] ) ? ( absint( $report['duplicate_donor'] ) + 1 ) : 1 );
 		}
 	}
 
-	// update the report
+// update the report
 	give_import_donation_report_update( $report );
 
-	return $user_data;
+	return $donor_data;
 }
 
 /**
