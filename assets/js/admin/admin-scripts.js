@@ -1346,15 +1346,18 @@ jQuery.noConflict();
 						$media_modal_config = {
 							title: give_vars.metabox_fields.file.button_title,
 							button: {text: give_vars.metabox_fields.file.button_title},
-							multiple: false,
-							contentUserSetting: false,
+							multiple: false
 						};
 				}
 
-
 				var editing = jQuery(this).closest('.give-field-wrap').find('.give-input-field').attr('editing');
-				if (typeof( editing ) != 'undefined') {
+				if ( 'undefined' !== typeof( editing ) ) {
 					wp.media.controller.Library.prototype.defaults.contentUserSetting = false;
+				}
+
+				var $library = jQuery( this ).closest('.give-field-wrap').find('.give-input-field').attr('library');
+				if ('undefined' !== typeof( $library ) && '' !== $library) {
+					$media_modal_config.library = {type: $library};
 				}
 
 				// Extend the wp.media object
