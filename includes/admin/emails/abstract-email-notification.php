@@ -812,6 +812,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 						),
 						__( 'Access Donation Details &raquo;', 'give' )
 					),
+					'reset_password_link' => $user_id ? give_email_tag_reset_password_link( array( 'user_id' => $user_id ) ) : '',
 				)
 			);
 
