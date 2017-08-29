@@ -39,10 +39,6 @@ function give_update_payment_details( $data ) {
 	/* @var Give_Payment $payment */
 	$payment = new Give_Payment( $payment_id );
 
-	// Retrieve existing payment meta.
-	$meta      = $payment->get_meta();
-	$user_info = $payment->user_info;
-
 	$status = $data['give-payment-status'];
 	$date   = sanitize_text_field( $data['give-payment-date'] );
 	$hour   = sanitize_text_field( $data['give-payment-time-hour'] );
@@ -249,6 +245,9 @@ function give_update_payment_details( $data ) {
 
 		// Re setup payment to update new meta value in object.
 		$payment->update_payment_setup( $payment->ID );
+		
+		// Update form id in payment logs.
+		Give_Cron::add_async_event( '__give_update_log_form_id', array( $new_form_id, $payment_id ) );
 	}
 
 	// Update price id if current form is variable form.
