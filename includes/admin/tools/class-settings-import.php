@@ -272,6 +272,8 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 
 		/**
 		 * Will return true if importing can be started or not else false.
+		 *
+		 * @since 1.8.13
 		 */
 		static function check_for_dropdown_or_import() {
 			$return = true;
@@ -407,6 +409,17 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 			return $total;
 		}
 
+		/**
+		 * Get the CSV fields title from the CSV.
+		 *
+		 * @since 1.8.13
+		 *
+		 * @param (int) $file_id
+		 * @param int $index
+		 * @param string $delimiter
+		 *
+		 * @return array|bool $raw_data title of the CSV file fields
+		 */
 		static function get_importer( $file_id, $index = 0, $delimiter = ',' ) {
 			$raw_data = false;
 			$file_dir = get_attached_file( $file_id );
