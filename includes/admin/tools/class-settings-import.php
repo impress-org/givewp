@@ -179,7 +179,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 					if ( ! empty( $report['duplicate_donor'] ) ) {
 						?>
 						<p>
-							<?php echo esc_html( wp_sprintf( '%s duplicate donors detected', $report['duplicate_donor'] ), 'give' ); ?>
+							<?php echo esc_html( wp_sprintf( __( '%s duplicate donors detected', 'give' ), $report['duplicate_donor'] ) ); ?>
 						</p>
 						<?php
 					}
@@ -189,7 +189,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 					if ( ! empty( $report['create_donor'] ) ) {
 						?>
 						<p>
-							<?php echo esc_html( wp_sprintf( '%s donors created', $report['create_donor'] ), 'give' ); ?>
+							<?php echo esc_html( wp_sprintf( __( '%s donors created', 'give' ), $report['create_donor'] ) ); ?>
 						</p>
 						<?php
 					}
@@ -199,7 +199,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 					if ( ! empty( $report['create_form'] ) ) {
 						?>
 						<p>
-							<?php echo esc_html( wp_sprintf( '%s donations forms created', $report['create_form'] ), 'give' ); ?>
+							<?php echo esc_html( wp_sprintf( __( '%s donations forms created', 'give' ), $report['create_form'] ) ); ?>
 						</p>
 						<?php
 					}
@@ -209,7 +209,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 					if ( ! empty( $report['duplicate_donation'] ) ) {
 						?>
 						<p>
-							<?php echo esc_html( wp_sprintf( '%s duplicate donations detected', $report['duplicate_donation'] ), 'give' ); ?>
+							<?php echo esc_html( wp_sprintf( __( '%s duplicate donations detected', 'give' ), $report['duplicate_donation'] ) ); ?>
 						</p>
 						<?php
 					}
@@ -219,7 +219,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 					if ( ! empty( $report['create_donation'] ) ) {
 						?>
 						<p>
-							<?php echo esc_html( wp_sprintf( '%s donations imported', $report['create_donation'] ), 'give' ); ?>
+							<?php echo esc_html( wp_sprintf( __( '%s donations imported', 'give' ), $report['create_donation'] ) ); ?>
 						</p>
 						<?php
 					}
