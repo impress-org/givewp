@@ -52,7 +52,7 @@ class Give_Cron {
 		// Adds once weekly to the existing schedules.
 		$schedules['weekly'] = array(
 			'interval' => 604800,
-			'display'  => esc_html__( 'Once Weekly', 'give' )
+			'display'  => esc_html__( 'Once Weekly', 'give' ),
 		);
 
 		return $schedules;
