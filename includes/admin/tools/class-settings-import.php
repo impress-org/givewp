@@ -477,7 +477,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 		 * @return int $step on which step doest the import is on.
 		 */
 		static function get_step() {
-			$step    = (int) ( isset( $_REQUEST['step'] ) ? give_clean( $_REQUEST['step'] ) : false );
+			$step    = (int) ( isset( $_REQUEST['step'] ) ? give_clean( $_REQUEST['step'] ) : 0 );
 			$on_step = 1;
 			if ( empty( $step ) || 1 === $step ) {
 				$on_step = 1;
