@@ -1300,8 +1300,9 @@ function give_import_page_url( $parameter = array() ) {
 
 
 function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array(), $import_setting = array() ) {
-	$data     = array_combine( $raw_key, $row_data );
-	$price_id = false;
+	$data                          = array_combine( $raw_key, $row_data );
+	$price_id                      = false;
+	$customer_id                   = 0;
 	$import_setting['create_user'] = ( isset( $import_setting['create_user'] ) ? $import_setting['create_user'] : 1 );
 
 	$data = (array) apply_filters( 'give_save_import_donation_to_db', $data );
@@ -1313,7 +1314,9 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 	// Here come the login function.
 	$donor_data = give_import_get_user_from_csv( $data, $import_setting );
 	if ( ! empty( $donor_data->id ) ) {
-		$customer_id = $donor_data->id;
+		if ( ! empty( $donor_data->user_id ) ) {
+			$customer_id = $donor_data->user_id;
+		}
 	} else {
 		return false;
 	}
@@ -1337,14 +1340,15 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 
 	//Create payment_data array
 	$payment_data = array(
+		'donor_id'        => $donor_data->id,
 		'price'           => $data['amount'],
 		'status'          => ( isset( $data['post_status'] ) ? $data['post_status'] : 'publish' ),
 		'currency'        => give_get_currency(),
 		'user_info'       => array(
 			'id'         => $customer_id,
 			'email'      => ( isset( $data['email'] ) ? $data['email'] : ( isset( $donor_data->email ) ? $donor_data->email : false ) ),
-			'first_name' => ( isset( $data['first_name'] ) ? $data['first_name'] : ( ( $first_name = get_user_meta( $customer_id, 'first_name', true ) ) ? $first_name : $donor_data->name ) ),
-			'last_name'  => ( isset( $data['last_name'] ) ? $data['last_name'] : ( ( $last_name = get_user_meta( $customer_id, 'last_name', true ) ) ? $last_name : $donor_data->name ) ),
+			'first_name' => ( isset( $data['first_name'] ) ? $data['first_name'] : ( ! empty( $customer_id ) && ( $first_name = get_user_meta( $customer_id, 'first_name', true ) ) ? $first_name : $donor_data->name ) ),
+			'last_name'  => ( isset( $data['last_name'] ) ? $data['last_name'] : ( ! empty( $customer_id ) && ( $last_name = get_user_meta( $customer_id, 'last_name', true ) ) ? $last_name : $donor_data->name ) ),
 			'address'    => $address,
 		),
 		'gateway'         => ( ! empty( $data['gateway'] ) && 'offline' != strtolower( $data['gateway'] ) ? strtolower( $data['gateway'] ) : 'manual' ),
@@ -1608,8 +1612,8 @@ function give_import_donation_form_options() {
  * @return bool|false|WP_User
  */
 function give_import_get_user_from_csv( $data, $import_setting = array() ) {
-	$report    = give_import_donation_report();
-	$donor_data = false;
+	$report      = give_import_donation_report();
+	$donor_data  = false;
 	$customer_id = false;
 
 	// check if donor id is not empty
@@ -1655,7 +1659,7 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
 			}
 
 			if ( ! empty( $customer_id ) || ( isset( $import_setting['create_user'] ) && 0 === absint( $import_setting['create_user'] ) ) ) {
-				$donor_data= new Give_Donor( $customer_id, true );
+				$donor_data = new Give_Donor( $customer_id, true );
 
 				if ( empty( $donor_data->id ) ) {
 
@@ -1665,8 +1669,8 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
 
 					$payment_title = ( isset( $data['form_title'] ) ? $data['form_title'] : ( isset( $form ) ? $form->get_name() : esc_html( 'New Form', 'give' ) ) );
 					$donor_args    = array(
-						'name'    => ! is_email( $payment_title ) ? $data['first_name'] . ' ' . $data['last_name'] : '',
-						'email'   => $data['email'],
+						'name'  => ! is_email( $payment_title ) ? $data['first_name'] . ' ' . $data['last_name'] : '',
+						'email' => $data['email'],
 					);
 
 					if ( ! empty( $customer_id ) ) {
@@ -1677,7 +1681,7 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
 
 					// Adding notes that donor is being imported from CSV.
 					$current_user = wp_get_current_user();
-					$donor_data->add_note( esc_html( wp_sprintf( __( 'This donor was imported by %s' , 'give' ), $current_user->user_email ) ) );
+					$donor_data->add_note( esc_html( wp_sprintf( __( 'This donor was imported by %s', 'give' ), $current_user->user_email ) ) );
 
 					$report['create_donor'] = ( ! empty( $report['create_donor'] ) ? ( absint( $report['create_donor'] ) + 1 ) : 1 );
 				} else {
