@@ -153,9 +153,9 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 					<h2>
 						<?php
 						if ( $success ) {
-							echo sprintf( __( 'Import complete! %s donations imported', 'give' ), '<strong>' . $total . '</strong>' );
+							echo sprintf( __( 'Import complete! %s donations imported', 'give' ), "<strong>{$total}</strong>" );
 						} else {
-							echo sprintf( __( 'Failed to import %s donations', 'give' ), '<strong>' . $total . '</strong>' );
+							echo sprintf( __( 'Failed to import %s donations', 'give' ), "<strong>{$total}</strong>" );
 						}
 						?>
 					</h2>
