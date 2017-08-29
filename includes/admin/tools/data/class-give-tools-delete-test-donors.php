@@ -389,7 +389,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	/**
 	 * Given a key, get the information from the Database Directly
 	 *
-	 * @since  1.8.12
+	 * @since  1.8.13
 	 *
 	 * @param  string $key The option_name
 	 *
