@@ -1867,65 +1867,59 @@ jQuery.noConflict();
 	/**
 	 * Payment history listing page js
 	 */
-	var Give_Payment_History = {
-		init: function () {
-			this.handle_bulk_delete();
+	var GivePaymentHistory = {
+		init: function() {
+			$( 'body' ).on( 'click', '#give-payments-filter input', this.handleBulkActions );
 		},
 
-		handle_bulk_delete: function () {
-			var $payment_filters = $('#give-payments-filter');
-
-			/**
-			 * Payment filters
-			 */
-			$payment_filters.on('submit', function (e) {
-				var current_action        = $('select[name="action"]', $(this)).val(),
-					current_action_label  = $('select[name="action"]', $(this)).find(':selected').text(),
-					$payments             = $('input[name="payment[]"]:checked').length,
-					is_status_type_action = ( -1 !== current_action.indexOf('set-status-') ),
-					confirm_action_notice = '',
-					status                = '';
+		handleBulkActions: function( e ) {
+			var currentAction         = $( this ).closest( '.tablenav' ).find( 'select' ).val(),
+				currentActionLabel    = $( this ).closest( '.tablenav' ).find( 'option[value="' + currentAction + '"]' ).text(),
+				$payments             = $( 'input[name="payment[]"]:checked' ).length,
+				isStatusTypeAction    = ( -1 !== currentAction.indexOf( 'set-status-' ) ),
+				confirmActionNotice   = '',
+				status                = '';
 
 				// Set common action, if action type is status.
-				current_action = is_status_type_action ?
+				currentAction = isStatusTypeAction ?
 					'set-to-status' :
-					current_action;
+					currentAction;
 
-				if (Object.keys(give_vars.bulk_action).length) {
-					for (status in  give_vars.bulk_action) {
-						if (status === current_action) {
+				if ( Object.keys( give_vars.bulk_action ).length ) {
+					for ( status in  give_vars.bulk_action ) {
+						if ( status === currentAction ) {
+
 							// Get status text if current action types is status.
-							confirm_action_notice = is_status_type_action ?
-								give_vars.bulk_action[current_action].zero.replace('{status}', current_action_label.replace('Set To ', '')) :
-								give_vars.bulk_action[current_action].zero;
+							confirmActionNotice = isStatusTypeAction ?
+								give_vars.bulk_action[currentAction].zero.replace( '{status}', currentActionLabel.replace( 'Set To ', '' ) ) :
+								give_vars.bulk_action[currentAction].zero;
 
 							// Check if admin selected any donations or not.
-							if (!parseInt($payments)) {
-								alert(confirm_action_notice);
+							if ( ! parseInt($payments) ) {
+								alert( confirmActionNotice );
 								return false;
 							}
 
 							// Get message on basis of payment count.
-							confirm_action_notice = ( 1 < $payments ) ?
-								give_vars.bulk_action[current_action].multiple :
-								give_vars.bulk_action[current_action].single;
+							confirmActionNotice = ( 1 < $payments ) ?
+								give_vars.bulk_action[currentAction].multiple :
+								give_vars.bulk_action[currentAction].single;
 
 							// Trigger Admin Confirmation PopUp.
-							return window.confirm(confirm_action_notice
-								.replace('{payment_count}', $payments)
-								.replace('{status}', current_action_label.replace('Set To ', ''))
+							return window.confirm( confirmActionNotice
+								.replace( '{payment_count}', $payments )
+								.replace( '{status}', currentActionLabel.replace( 'Set To ', '' ) )
 							);
 						}
 					}
 				}
 
 				return true;
-			});
 		}
 	};
 
 	// On DOM Ready.
-	$(function () {
+	$( function() {
 
 		enable_admin_datepicker();
 		handle_status_change();
@@ -1939,13 +1933,13 @@ jQuery.noConflict();
 		Give_Export.init();
 		Give_Updates.init();
 		Edit_Form_Screen.init();
-		Give_Payment_History.init();
+		GivePaymentHistory.init();
 
 		initialize_qtips();
 
-		//Footer
-		$('a.give-rating-link').click(function () {
-			jQuery(this).parent().text(jQuery(this).data('rated'));
+		// Footer.
+		$( 'a.give-rating-link' ).click( function() {
+			jQuery( this ).parent().text( jQuery( this ).data( 'rated' ) );
 		});
 
 		/**
@@ -1953,10 +1947,11 @@ jQuery.noConflict();
 		 */
 
 		// This function uses for adding qtip to money/price field.
-		function give_add_qtip($fields) {
+		function give_add_qtip( $fields ) {
+
 			// Add qtip to all existing money input fields.
-			$fields.each(function () {
-				$(this).qtip({
+			$fields.each( function() {
+				$( this ).qtip({
 					style   : 'qtip-dark qtip-tipsy',
 					content : {
 						text: give_vars.price_format_guide.trim()
@@ -1970,7 +1965,7 @@ jQuery.noConflict();
 			});
 		}
 
-		var $give_money_fields       = $('input.give-money-field, input.give-price-field');
+		var $give_money_fields       = $( 'input.give-money-field, input.give-price-field' );
 		var thousand_separator       = give_vars.thousands_separator,
 			decimal_separator        = give_vars.decimal_separator,
 			thousand_separator_count = '',
@@ -1982,40 +1977,42 @@ jQuery.noConflict();
 			thousand_separator_limit = ( decimal_separator === thousand_separator ? 1 : 0 );
 
 		// Add qtip to all existing money input fields.
-		give_add_qtip($give_money_fields);
+		give_add_qtip( $give_money_fields );
 
 		// Add qtip to new created money/price input field.
-		$('#_give_donation_levels_repeat').on('click', 'button.cmb-add-group-row', function () {
+		$( '#_give_donation_levels_repeat' ).on( 'click', 'button.cmb-add-group-row', function() {
 			window.setTimeout(
-				function () {
+				function() {
 
 					// Update input filed selector.
-					$give_money_fields = $('input.give-money-field, input.give-price-field');
+					$give_money_fields = $( 'input.give-money-field, input.give-price-field' );
 
 					// Add qtip to all existing money input fields.
-					give_add_qtip($give_money_fields);
+					give_add_qtip( $give_money_fields );
 				},
 				100
 			);
 		});
 
 		// Check & show message on keyup event.
-		$('#poststuff').on('keyup', 'input.give-money-field, input.give-price-field', function () {
+		$( '#poststuff' ).on( 'keyup', 'input.give-money-field, input.give-price-field', function() {
+
 			// Count thousand separator in price string.
-			thousand_separator_count = ( $(this).val().match(new RegExp(thousand_separator, 'g')) || [] ).length;
-			alphabet_count           = ( $(this).val().match(new RegExp('[a-z]', 'g')) || [] ).length;
+			thousand_separator_count = ( $( this ).val().match( new RegExp( thousand_separator, 'g' ) ) || [] ).length;
+			alphabet_count           = ( $( this ).val().match( new RegExp( '[a-z]', 'g' ) ) || [] ).length;
 
 			// Show qtip conditionally if thousand separator detected on price string.
 			if (
-				( -1 !== $(this).val().indexOf(thousand_separator) )
+				( -1 !== $(this).val().indexOf( thousand_separator ) )
 				&& ( thousand_separator_limit < thousand_separator_count )
 			) {
-				$(this).qtip('show');
-			} else if (alphabet_count) {
+				$( this ).qtip( 'show' );
+			} else if ( alphabet_count ) {
+
 				// Show qtip if user entered a number with alphabet letter.
-				$(this).qtip('show');
+				$( this ).qtip( 'show' );
 			} else {
-				$(this).qtip('hide');
+				$( this ).qtip( 'hide' );
 			}
 
 			// Reset thousand separator count.

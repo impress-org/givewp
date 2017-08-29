@@ -65,7 +65,23 @@ if ( $donations ) : ?>
                 <td class="give-donation-id">#<?php echo give_get_payment_number( $post->ID ); ?></td>
                 <td class="give-donation-date"><?php echo date_i18n( give_date_format(), strtotime( get_post_field( 'post_date', $post->ID ) ) ); ?></td>
                 <td class="give-donation-amount">
-                    <span class="give-donation-amount"><?php echo give_currency_filter( give_format_amount( give_get_payment_amount( $post->ID ), array( 'sanitize' => false ) ) ); ?></span>
+                    <span class="give-donation-amount">
+	                    <?php
+	                    $donation_amount = give_currency_filter( give_format_amount( give_get_payment_amount( $post->ID ), array( 'sanitize' => false ) ) );
+
+	                    /**
+	                     * Filters the donation amount on Donation History Page.
+	                     *
+	                     * @param int $donation_amount Donation Amount.
+	                     * @param int $post->ID        Donation ID.
+	                     *
+	                     * @since 1.8.13
+	                     *
+	                     * @return int
+	                     */
+	                    echo apply_filters( 'give_donation_history_row_amount', $donation_amount, $post->ID );
+	                    ?>
+                    </span>
                 </td>
                 <td class="give-donation-details">
 					<?php
