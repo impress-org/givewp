@@ -102,7 +102,7 @@ class Give_Stats {
 			'this_quarter' => esc_html__( 'This Quarter', 'give' ),
 			'last_quarter' => esc_html__( 'Last Quarter', 'give' ),
 			'this_year'    => esc_html__( 'This Year', 'give' ),
-			'last_year'    => esc_html__( 'Last Year', 'give' )
+			'last_year'    => esc_html__( 'Last Year', 'give' ),
 		);
 
 		return apply_filters( 'give_stats_predefined_dates', $predefined );

@@ -27,6 +27,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function give_set_settings_with_disable_prefix( $old_settings, $settings ) {
+	// Bailout.
+	if( ! function_exists( 'give_v18_renamed_core_settings' ) ) {
+		return;
+	}
+
 	// Get old setting names.
 	$old_settings   = array_flip( give_v18_renamed_core_settings() );
 	$update_setting = false;
