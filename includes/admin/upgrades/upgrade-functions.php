@@ -137,6 +137,15 @@ function give_show_upgrade_notices( $give_updates ) {
 			'callback' => 'give_v1812_update_donor_purchase_value_callback',
 		)
 	);
+
+	// v1.8.13 Upgrades for donor
+	$give_updates->register(
+		array(
+			'id'       => 'v1813_update_update_donor_user_roles',
+			'version'  => '1.8.13',
+			'callback' => 'give_v1813_update_donor_user_roles_callback',
+		)
+	);
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
