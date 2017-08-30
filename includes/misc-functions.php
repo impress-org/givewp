@@ -1539,7 +1539,7 @@ function give_check_import_donation_duplicate( $payment_data, $data, $form, $don
  */
 function give_donation_import_insert_default_payment_note( $payment_id ) {
 	$current_user = wp_get_current_user();
-	give_insert_payment_note( $payment_id, esc_html( wp_sprintf( 'This donation was imported by %s', $current_user->user_email ), 'give' ) );
+	give_insert_payment_note( $payment_id, esc_html( wp_sprintf( __( 'This donation was imported by %s', 'give' ), $current_user->user_email ) ) );
 }
 
 
