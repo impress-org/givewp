@@ -341,6 +341,8 @@ function give_get_default_settings() {
 		// Default email receipt message.
 		'donation_receipt'                            => give_get_default_donation_receipt_email(),
 
+		'donor_default_user_role'                     => 'give_donor',
+
 	);
 
 	return $options;
