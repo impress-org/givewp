@@ -94,7 +94,7 @@ class Give_i18n_Banner {
 			return;
 		}
 
-		if ( ! $this->hide_promo() ) {
+		if ( ! $this->hide_promo() && ( 'give_forms' === $_GET['post_type'] ) && ( 'give-settings' === $_GET['page'] ) ) {
 			add_action( $this->hook, array( $this, 'promo' ) );
 		}
 	}
@@ -325,6 +325,6 @@ class Give_i18n_Banner {
 }
 
 $give_i18n = new Give_i18n_Banner( array(
-		'hook'          => 'give_forms_page_give-settings',
+		'hook'          => 'admin_notices',
 		'glotpress_url' => 'https://translate.wordpress.org/api/projects/wp-plugins/give/stable/',
 	) );
