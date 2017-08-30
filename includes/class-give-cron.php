@@ -243,6 +243,7 @@ class Give_Cron {
 
 	/**
 	 * Add async event
+	 * Note: it is good for small jobs if you have bigger task to do then either test it or manage with custom cron job.
 	 *
 	 * @since  1.8.13
 	 * @access public
