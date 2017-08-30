@@ -68,7 +68,11 @@ class Give_Cron {
 	private function setup() {
 		add_filter( 'cron_schedules', array( self::$instance, '__add_schedules' ) );
 		add_action( 'wp', array( self::$instance, '__schedule_events' ) );
-		add_action( 'init', array( self::$instance, '__load_async_events' ) );
+
+		// Load async event only when cron is running.
+		if( wp_doing_cron() ) {
+			add_action( 'init', array( self::$instance, '__load_async_events' ) );
+		}
 	}
 
 
