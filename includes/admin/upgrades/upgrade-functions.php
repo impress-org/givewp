@@ -1109,13 +1109,16 @@ function give_v1813_update_donor_user_roles_callback() {
 		/* @var Object $donor */
 		foreach( $donors as $donor ) {
 			$user_id = $donor->user_id;
+
 			// Proceed, if donor is attached with user.
 			if( $user_id ) {
-				// Proceed only, if user is not admin or super admin.
-				if( ! is_super_admin( $user_id ) || ! is_admin( $user_id ) ) {
+				$user = get_userdata( $user_id );
+
+				// Update user role, if user has subscriber role.
+				if ( is_array( $user->roles ) && in_array( 'subscriber', $user->roles ) ) {
 					wp_update_user(
 						array(
-							'ID'   => $donor->user_id,
+							'ID'   => $user_id,
 							'role' => 'give_donor',
 						)
 					);
