@@ -47,7 +47,7 @@ class Give_Helper_Payment extends Give_Unit_Test_Case {
 		}
 
 		$donation = wp_parse_args(
-			( ! empty( $args['donation'] ) ? $args['donation'] : array() ),
+			( ! empty( $donation['donation'] ) ? $donation['donation'] : array() ),
 			array(
 				'price'           => number_format( (float) $simple_price, 2 ),
 				'give_form_title' => 'Test Donation Form',

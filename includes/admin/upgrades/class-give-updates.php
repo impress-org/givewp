@@ -235,8 +235,11 @@ class Give_Updates {
 			}
 
 			$menu[ $index ][0] = sprintf(
-				__( 'Donations <span class="update-plugins count-%1$d"><span class="plugin-count">%1$d</span></span>', 'give' ),
-				$this->get_update_count()
+				__( 'Donations %s', 'give' ),
+				sprintf(
+					'<span class="update-plugins count-%1$d"><span class="plugin-count">%1$d</span></span>',
+					$this->get_update_count()
+				)
 			);
 
 			break;

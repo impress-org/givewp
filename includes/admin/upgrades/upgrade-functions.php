@@ -1370,6 +1370,7 @@ function give_v20_upgrades_payment_metadata_callback() {
 
 /**
  * Upgrade logs data.
+ * @todo: check if payment price id is necessary to store in log meta or not
  *
  * @since  2.0
  * @return void

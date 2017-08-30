@@ -77,7 +77,7 @@ class Give_Roles {
 			'publish_pages'          => true,
 			'publish_posts'          => true,
 			'read_private_pages'     => true,
-			'read_private_posts'     => true
+			'read_private_posts'     => true,
 		) );
 
 		add_role( 'give_accountant', esc_html__( 'Give Accountant', 'give' ), array(
@@ -91,7 +91,7 @@ class Give_Roles {
 			'edit_posts'   => true,
             'edit_pages'   => true,
 			'upload_files' => true,
-			'delete_posts' => false
+			'delete_posts' => false,
 		) );
 
 	}
