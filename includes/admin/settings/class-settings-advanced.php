@@ -64,14 +64,6 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							)
 						),
 						array(
-							'name'    => __( 'Default User Role', 'give' ),
-							'desc'    => __( 'Assign default user roles for donors when donors opt to register as a WP User.', 'give' ),
-							'id'      => 'donor_default_user_role',
-							'type'    => 'select',
-							'default' => 'subscriber',
-							'options' => give_get_user_roles()
-						),
-						array(
 							/* translators: %s: the_content */
 							'name'    => sprintf( __( '%s filter', 'give' ), '<code>the_content</code>' ),
 							/* translators: 1: https://codex.wordpress.org/Plugin_API/Filter_Reference/the_content 2: the_content */
