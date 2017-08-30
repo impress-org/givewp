@@ -1384,6 +1384,10 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 
 			update_post_meta( $payment, '_give_payment_import', true );
 
+			if ( ! empty( $import_setting['csv'] ) ) {
+				update_post_meta( $payment, '_give_payment_import_id', $import_setting['csv'] );
+			}
+
 			// Insert Notes.
 			if ( ! empty( $data['notes'] ) ) {
 				give_insert_payment_note( $payment, $data['notes'] );
@@ -1709,6 +1713,8 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
  * @return array|bool|Give_Donate_Form|int|null|WP_Post
  */
 function give_import_get_form_data_from_csv( $data, $import_setting = array() ) {
+	$new_form = false;
+
 	// Get the import report
 	$report = give_import_donation_report();
 
@@ -1736,18 +1742,15 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 
 			$form = new Give_Donate_Form( $form->ID );
 		} else {
-			$form = new Give_Donate_Form();
-			$args = array(
+			$form                  = new Give_Donate_Form();
+			$args                  = array(
 				'post_title'  => $data['form_title'],
 				'post_status' => 'publish',
 			);
-			$form = $form->create( $args );
-
+			$form                  = $form->create( $args );
 			$report['create_form'] = ( ! empty( $report['create_form'] ) ? ( absint( $report['create_form'] ) + 1 ) : 1 );
+			$new_form              = true;
 
-			if ( ! empty( $form->ID ) ) {
-				update_post_meta( $form->ID, '_give_payment_import', true );
-			}
 		}
 
 		$form = get_page_by_title( $data['form_title'], OBJECT, 'give_forms' );
@@ -1781,6 +1784,7 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 						),
 						'_give_amount' => give_sanitize_amount_for_db( $data['amount'] ),
 						'_give_text'   => $data['form_level'],
+						'_give_default'   => 'default',
 					),
 				);
 
@@ -1812,6 +1816,17 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 			'give_product_notes' => 'Donation Notes',
 			'_give_product_type' => 'default',
 		);
+
+		// If new form is created.
+		if ( ! empty( $new_form ) ) {
+			$new_form = array(
+				'_give_payment_import' => true,
+				'_give_display_style'   => 'radios',
+				'_give_custom_amount'   => 'disabled',
+				'_give_payment_display'   => 'onpage',
+			);
+			$defaults = wp_parse_args( $defaults, $new_form );
+		}
 
 		$meta = wp_parse_args( $meta, $defaults );
 
@@ -1941,4 +1956,75 @@ function give_import_donation_report_update( $value = array() ) {
  */
 function give_import_donation_report_reset() {
 	update_option( 'give_import_donation_report', array() );
+}
+
+
+/**
+ * Add meta data field to a customers.
+ *
+ * @since 1.8.13
+ *
+ * @param int $customer_id Customers ID.
+ * @param string $meta_key Metadata name.
+ * @param mixed $meta_value Metadata value. Must be serializable if non-scalar.
+ * @param bool $unique Optional. Whether the same key should not be added.
+ *                           Default false.
+ *
+ * @return int|false Meta ID on success, false on failure.
+ */
+function add_customer_meta( $customer_id, $meta_key, $meta_value, $unique = false ) {
+	return add_metadata( 'give_customer', $customer_id, $meta_key, $meta_value, $unique );
+}
+
+/**
+ * Remove metadata matching criteria from a Customer meta.
+ *
+ * You can match based on the key, or key and value. Removing based on key and
+ * value, will keep from removing duplicate metadata with the same key. It also
+ * allows removing all metadata matching key, if needed.
+ *
+ * @since 1.8.13
+ *
+ * @param int $customer_id Customers ID
+ * @param string $meta_key Metadata name.
+ * @param mixed $meta_value Optional. Metadata value.
+ *
+ * @return bool True on success, false on failure.
+ */
+function delete_customer_meta( $customer_id, $meta_key, $meta_value = '' ) {
+	return delete_metadata( 'give_customer', $customer_id, $meta_key, $meta_value );
+}
+
+/**
+ * Retrieve comment meta field for a Customers.
+ *
+ * @since 1.8.13
+ *
+ * @param int $customer_id Customer ID.
+ * @param string $key Optional. The meta key to retrieve. By default, returns data for all keys.
+ * @param bool $single Whether to return a single value.
+ *
+ * @return mixed Will be an array if $single is false. Will be value of meta data field if $single
+ *  is true.
+ */
+function get_customer_meta( $customer_id, $key = '', $single = false ) {
+	return get_metadata( 'give_customer', $customer_id, $key, $single );
+}
+
+/**
+ * Update customer meta field based on Customer ID.\
+ *
+ * If the meta field for the customer does not exist, it will be added.
+ *
+ * @since 1.8.13
+ *
+ * @param int $comment_id Comment ID.
+ * @param string $meta_key Metadata key.
+ * @param mixed $meta_value Metadata value.
+ * @param mixed $prev_value Optional. Previous value to check before removing.
+ *
+ * @return int|bool Meta ID if the key didn't exist, true on successful update, false on failure.
+ */
+function update_customer_meta( $comment_id, $meta_key, $meta_value, $prev_value = '' ) {
+	return update_metadata( 'give_customer', $comment_id, $meta_key, $meta_value, $prev_value );
 }
