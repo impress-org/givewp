@@ -348,6 +348,7 @@ class GIVE_CLI_COMMAND {
 	 *
 	 * ## EXAMPLES
 	 *
+	 * wp give donors
 	 * wp give donors --id=103
 	 * wp give donors --email=john@test.com
 	 * wp give donors --create=1 --email=john@test.com
