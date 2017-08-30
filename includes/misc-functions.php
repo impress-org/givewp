@@ -2018,13 +2018,13 @@ function get_customer_meta( $customer_id, $key = '', $single = false ) {
  *
  * @since 1.8.13
  *
- * @param int $comment_id Comment ID.
+ * @param int $customer_id Customer ID.
  * @param string $meta_key Metadata key.
  * @param mixed $meta_value Metadata value.
  * @param mixed $prev_value Optional. Previous value to check before removing.
  *
  * @return int|bool Meta ID if the key didn't exist, true on successful update, false on failure.
  */
-function update_customer_meta( $comment_id, $meta_key, $meta_value, $prev_value = '' ) {
-	return update_metadata( 'give_customer', $comment_id, $meta_key, $meta_value, $prev_value );
+function update_customer_meta( $customer_id, $meta_key, $meta_value, $prev_value = '' ) {
+	return update_metadata( 'give_customer', $customer_id, $meta_key, $meta_value, $prev_value );
 }
