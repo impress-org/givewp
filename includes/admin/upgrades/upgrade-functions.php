@@ -141,7 +141,7 @@ function give_show_upgrade_notices( $give_updates ) {
 	// v1.8.13 Upgrades for donor
 	$give_updates->register(
 		array(
-			'id'       => 'v1813_update_update_donor_user_roles',
+			'id'       => 'v1813_update_donor_user_roles',
 			'version'  => '1.8.13',
 			'callback' => 'give_v1813_update_donor_user_roles_callback',
 		)
@@ -1083,5 +1083,47 @@ function give_v1812_update_donor_purchase_value_callback() {
 	} else {
 		// The Update Ran.
 		give_set_upgrade_complete( 'v1812_update_donor_purchase_values' );
+	}
+}
+
+/**
+ * Upgrade routine for updating user roles for existing donors.
+ *
+ * @since 1.8.13
+ */
+function give_v1813_update_donor_user_roles_callback() {
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
+	$offset       = 1 === $give_updates->step ? 0 : $give_updates->step * 20;
+
+	// Fetch all the existing donors.
+	$donors = Give()->donors->get_donors( array(
+			'number' => 20,
+			'offset' => $offset,
+		)
+	);
+
+	if ( ! empty( $donors ) ) {
+		$give_updates->set_percentage( Give()->donors->count(), ( $give_updates->step * 20 ) );
+
+		/* @var Object $donor */
+		foreach( $donors as $donor ) {
+			$user_id = $donor->user_id;
+			// Proceed, if donor is attached with user.
+			if( $user_id ) {
+				// Proceed only, if user is not admin or super admin.
+				if( ! is_super_admin( $user_id ) || ! is_admin( $user_id ) ) {
+					wp_update_user(
+						array(
+							'ID'   => $donor->user_id,
+							'role' => 'give_donor',
+						)
+					);
+				}
+			}
+		}
+	} else {
+		// The Update Ran.
+		give_set_upgrade_complete( 'v1813_update_donor_user_roles' );
 	}
 }
