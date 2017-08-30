@@ -1418,8 +1418,9 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 function give_import_donation_insert_payment( $payment_id, $payment_data ) {
 	// Update Give Customers purchase_count
 	if ( ! empty( $payment_data['status'] ) && ( 'complete' === (string) $payment_data['status'] || 'publish' === (string) $payment_data['status'] ) ) {
-		if ( ! empty( $payment_data['user_info']['id'] ) ) {
-			$donor = new Give_Donor( $payment_data['user_info']['id'], true );
+		$donor_id = (int) get_post_meta( $payment_id, '_give_payment_customer_id', true );
+		if ( ! empty( $donor_id ) ) {
+			$donor = new Give_Donor( $donor_id );
 			$donor->increase_purchase_count();
 		}
 	}
@@ -1452,7 +1453,6 @@ function give_check_import_donation_duplicate( $payment_data, $data, $form, $don
 		$post_date = explode( '-', $post_date );
 		$args      = array(
 			'post_type'              => 'give_payment',
-			'author'                 => absint( $donor_data->id ),
 			'cache_results'          => false,
 			'no_found_rows'          => true,
 			'update_post_meta_cache' => false,
