@@ -139,7 +139,6 @@ class Give_Roles {
 					$wp_roles->add_cap( 'administrator', $cap );
 					$wp_roles->add_cap( 'give_manager', $cap );
 					$wp_roles->add_cap( 'give_worker', $cap );
-					$wp_roles->add_cap( 'give_donor', $cap );
 				}
 			}
 
@@ -283,7 +282,6 @@ class Give_Roles {
 					$wp_roles->remove_cap( 'give_manager', $cap );
 					$wp_roles->remove_cap( 'administrator', $cap );
 					$wp_roles->remove_cap( 'give_worker', $cap );
-					$wp_roles->remove_cap( 'give_donor', $cap );
 				}
 			}
 
