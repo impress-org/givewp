@@ -348,6 +348,7 @@ class GIVE_CLI_COMMAND {
 	 *
 	 * ## EXAMPLES
 	 *
+	 * wp give donors
 	 * wp give donors --id=103
 	 * wp give donors --email=john@test.com
 	 * wp give donors --create=1 --email=john@test.com
@@ -662,6 +663,7 @@ class GIVE_CLI_COMMAND {
 	 *
 	 * ## EXAMPLES
 	 *
+	 * wp give report
 	 * wp give report --date=this_month
 	 * wp give report --start-date=01/02/2014 --end-date=02/23/2014
 	 * wp give report --date=last_year
@@ -706,7 +708,7 @@ class GIVE_CLI_COMMAND {
 	 *
 	 * ## OPTIONS
 	 *
-	 * [--action=<cache_action>]
+	 * --action=<cache_action>
 	 * : Value of this parameter can be delete (in case you want to delete all stat cache).
 	 *
 	 * ## EXAMPLES
