@@ -1142,6 +1142,9 @@ function give_v1813_update_donor_user_roles_callback() {
  * @since 1.8.13
  */
 function give_v1813_upgrades() {
+	// Update admin setting.
+	give_update_option( 'donor_default_user_role', 'give_donor' );
+
 	// Update Give roles.
 	$roles = new Give_Roles();
 	$roles->add_roles();
