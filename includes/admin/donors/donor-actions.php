@@ -122,11 +122,11 @@ function give_edit_donor( $args ) {
 		Give()->notices->register_notice( array(
 			'id'          => 'empty_donor_first_name',
 			'type'        => 'error',
-			'description' => __( '<strong>ERROR:</strong> Please enter your first name.', 'give' ),
+			'description' => '<strong>ERROR:</strong>' . __( 'Please enter your first name.', 'give' ),
 			'show'        => true,
 		) );
 
-		return;
+		return false;
 	}
 
 	$donor_data['name']     = strip_tags( wp_unslash( trim( "{$donor_first_name} {$donor_last_name}" ) ) );
