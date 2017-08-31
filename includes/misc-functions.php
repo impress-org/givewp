@@ -1743,7 +1743,7 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
 						$form = new Give_Donate_Form( $data['form_id'] );
 					}
 
-					$payment_title = ( isset( $data['form_title'] ) ? $data['form_title'] : ( isset( $form ) ? $form->get_name() : esc_html( 'New Form', 'give' ) ) );
+					$payment_title = ( isset( $data['form_title'] ) ? $data['form_title'] : ( isset( $form ) ? $form->get_name() : esc_html__( 'New Form', 'give' ) ) );
 					$donor_args    = array(
 						'name'  => ! is_email( $payment_title ) ? $data['first_name'] . ' ' . $data['last_name'] : '',
 						'email' => $data['email'],
