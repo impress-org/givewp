@@ -201,6 +201,12 @@ function give_donor_view( $donor ) {
 	 * @param object $donor The donor object being displayed.
 	 */
 	do_action( 'give_donor_card_top', $donor );
+
+	// Set Read only to the fields which needs to be locked.
+	$read_only = false;
+	if( $donor->user_id ) {
+		$read_only = 'readonly="readonly"';
+	}
 	?>
 
 	<div id="donor-summary" class="info-wrapper donor-section postbox">
@@ -218,8 +224,18 @@ function give_donor_view( $donor ) {
 					<div id="donor-name-wrap" class="left">
 						<span class="donor-id">#<?php echo $donor->id; ?></span>
 						<span class="donor-name info-item edit-item">
-							<input size="15" data-key="first_name" name="customerinfo[first_name]" type="text" value="<?php esc_attr_e( $donor->get_first_name() ); ?>" placeholder="<?php _e( 'First Name', 'give' ); ?>" />
-							<input size="15" data-key="last_name" name="customerinfo[last_name]" type="text" value="<?php esc_attr_e( $donor->get_last_name() ); ?>" placeholder="<?php _e( 'Last Name', 'give' ); ?>" />
+							<input <?php echo $read_only; ?> size="15" data-key="first_name" name="customerinfo[first_name]" type="text" value="<?php esc_attr_e( $donor->get_first_name() ); ?>" placeholder="<?php _e( 'First Name', 'give' ); ?>" />
+							<?php if( $donor->user_id ) { ?>
+							<a href="#" class="give-lock-block">
+								<i class="give-icon give-icon-locked"></i>
+							</a>
+							<?php } ?>
+							<input <?php echo $read_only; ?> size="15" data-key="last_name" name="customerinfo[last_name]" type="text" value="<?php esc_attr_e( $donor->get_last_name() ); ?>" placeholder="<?php _e( 'Last Name', 'give' ); ?>" />
+							<?php if( $donor->user_id ) { ?>
+							<a href="#" class="give-lock-block">
+								<i class="give-icon give-icon-locked"></i>
+							</a>
+							<?php } ?>
 						</span>
 						<span class="donor-name info-item editable"><span data-key="name"><?php echo $donor->name; ?></span></span>
 					</div>
