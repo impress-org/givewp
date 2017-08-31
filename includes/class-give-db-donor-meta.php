@@ -158,10 +158,6 @@ class Give_DB_Donor_Meta extends Give_DB {
 	/**
 	 * Remove all meta data matching criteria from a donor id.
 	 *
-	 * For internal use only. Use Give_Donor->delete_all_meta() for public usage.
-	 *
-	 * You can match based on donor_id.
-	 *
 	 * @access  private
 	 * @since   1.8.14
 	 *
