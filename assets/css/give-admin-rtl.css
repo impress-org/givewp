@@ -2514,7 +2514,8 @@ input.give-price-field {
 .give-lock-block {
   margin-right: -25px;
   text-decoration: none;
-  font-size: 14px; }
+  font-size: 14px;
+  margin-left: 3px; }
   .give-lock-block i {
     color: #000000;
     font-size: 14px; }
