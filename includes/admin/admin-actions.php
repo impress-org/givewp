@@ -442,7 +442,7 @@ add_action( 'give_view_order_details_before', 'give_import_page_link_callback', 
  */
 function give_donation_import_callback() {
 	$import_setting = array();
-	$fields         = isset( $_POST['fields'] ) ? give_clean ( $_POST['fields'] ) : null;
+	$fields         = isset( $_POST['fields'] ) ? $_POST['fields'] : null;
 
 	parse_str( $fields );
 
