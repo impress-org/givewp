@@ -622,12 +622,6 @@ function give_donation_form_validate_new_user() {
 		$valid_user_data['user_email'] = $user_data['give_email'];
 	}
 
-	// Check password.
-	if ( give_validate_user_password( $user_data['give_user_pass'], $user_data['give_user_pass_confirm'], $registering_new_user ) ) {
-		// All is good to go.
-		$valid_user_data['user_pass'] = $user_data['give_user_pass'];
-	}
-
 	return $valid_user_data;
 }
 
