@@ -155,9 +155,9 @@
     -webkit-transform: rotate(-359deg);
     transform: rotate(-359deg); } }
 
-/*! Hint.css - v2.4.1 - 2016-11-08
+/*! Hint.css - v2.5.0 - 2017-04-23
 * http://kushagragour.in/lab/hint/
-* Copyright (c) 2016 Kushagra Gour */
+* Copyright (c) 2017 Kushagra Gour */
 [class*=hint--] {
   position: relative;
   display: inline-block; }
@@ -616,7 +616,7 @@ table#give_donation_receipt span.donation-level-text-wrap {
 /*!
  * Float Labels
  *
- * @version: 3.0.3
+ * @version: 3.2.0
  * @author: Paul Ryley (http://geminilabs.io)
  * @url: https://geminilabs.github.io/float-labels.js
  * @license: MIT
@@ -769,14 +769,7 @@ table#give_donation_receipt span.donation-level-text-wrap {
 [id*="give-form"] .fl-form.fl-style-2 label.fl-label {
   top: 1px;
   right: 10px;
-  background-color: inherit;
   padding: 6px 3px 3px; }
-
-[id*="give-form"] .fl-form.fl-style-2 .fl-has-focus label.fl-label {
-  background-color: inherit; }
-
-[id*="give-form"] .fl-form.fl-style-2 .fl-is-active label.fl-label {
-  background-color: inherit; }
 
 [id*="give-form"] .fl-form.fl-style-2 .fl-is-required:before {
   padding-top: 12px; }

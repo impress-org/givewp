@@ -60,9 +60,9 @@
 /**
  * Give CSS Variables
  */
-/*! Hint.css - v2.4.1 - 2016-11-08
+/*! Hint.css - v2.5.0 - 2017-04-23
 * http://kushagragour.in/lab/hint/
-* Copyright (c) 2016 Kushagra Gour */
+* Copyright (c) 2017 Kushagra Gour */
 [class*=hint--] {
   position: relative;
   display: inline-block; }
@@ -2510,6 +2510,14 @@ input.give-price-field {
 
 .delete-donor {
   text-align: center; }
+
+.give-lock-block {
+  margin-right: -25px;
+  text-decoration: none;
+  font-size: 14px; }
+  .give-lock-block i {
+    color: #000000;
+    font-size: 14px; }
 
 /**
  * Give Admin Buttons SCSS
