@@ -432,10 +432,17 @@ function give_import_page_link_callback() {
 add_action( 'give_payments_page_top', 'give_import_page_link_callback', 11 );
 add_action( 'give_view_order_details_before', 'give_import_page_link_callback', 11 );
 
-
+/**
+ * Load donation import ajax callback
+ * Fire when importing from CSV start
+ *
+ * @since  1.8.13
+ *
+ * @return json $json_data
+ */
 function give_donation_import_callback() {
 	$import_setting = array();
-	$fields         = isset( $_POST['fields'] ) ? $_POST['fields'] : null;
+	$fields         = isset( $_POST['fields'] ) ? give_clean ( $_POST['fields'] ) : null;
 
 	parse_str( $fields );
 
