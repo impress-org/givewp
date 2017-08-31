@@ -427,7 +427,7 @@ function give_validate_user_profile( $errors, $update, $user ) {
 		if( $donor ) {
 			// If Donor is attached with User, then validate first name
 			if ( empty( $_POST['first_name'] ) ) {
-				$errors->add('empty_first_name', __( '<strong>ERROR:</strong> Please enter your first name.', 'give' ) );
+				$errors->add('empty_first_name', '<strong>ERROR:</strong>' . __( 'Please enter your first name.', 'give' ) );
 			}
 		}
 	}
