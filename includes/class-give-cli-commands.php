@@ -910,7 +910,7 @@ class GIVE_CLI_COMMAND {
 		/* @var Give_Payment|object $donation Payment object. */
 		foreach ( $donations as $donation ) {
 
-			if ( in_array( $donation->customer_id, $skip_donors ) ) {
+			if ( in_array( $donation->customer_id, $skip_donors ,true ) ) {
 				continue;
 			}
 
