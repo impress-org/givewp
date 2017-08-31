@@ -18,14 +18,17 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 	/**
 	 * Give_Settings_Import.
 	 *
-	 * @sine 1.8
+	 * Add a submenu page in give tools menu called Import donations which import the donations from the CSV files.
+	 *
+	 * @since 1.8.13
 	 */
 	class Give_Settings_Import extends Give_Settings_Page {
 
 		/**
 		 * Setting page id.
 		 *
-		 * @since 1.8
+		 * @since 1.8.13
+		 *
 		 * @var   string
 		 */
 		protected $id = '';
@@ -33,12 +36,19 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 		/**
 		 * Setting page label.
 		 *
-		 * @since 1.8
+		 * @since 1.8.13
+		 *
 		 * @var   string
 		 */
 		protected $label = '';
 
-
+		/**
+		 * Importing donation per page.
+		 *
+		 * @since 1.8.13
+		 *
+		 * @var   int
+		 */
 		public static $per_page = 5;
 
 		/**
@@ -78,14 +88,13 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 			if ( ! empty( $_GET['tab'] ) && 'import' === give_clean( $_GET['tab'] ) ) {
 				unset( $messages['give-setting-updated'] );
 			}
-
 			return $messages;
 		}
 
 		/**
 		 * Print submit and nonce button.
 		 *
-		 * @since 1.2.
+		 * @since 1.8.13
 		 */
 		static function submit() {
 			wp_nonce_field( 'give-save-settings', '_give-save-settings' );
@@ -98,7 +107,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 		/**
 		 * Print the HTML for importer.
 		 *
-		 * @since 1.2
+		 * @since 1.8.13
 		 */
 		static function html() {
 			$step = Give_Settings_Import::get_step();
@@ -302,6 +311,8 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 
 		/**
 		 * Print the Dropdown option for CSV.
+		 *
+		 * @since 1.8.13
 		 */
 		static function render_dropdown() {
 			$csv = (int) $_GET['csv'];
@@ -351,6 +362,8 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 
 		/**
 		 * Print the colums from the CSV.
+		 *
+		 * @since 1.8.13
 		 */
 		static function get_columns( $index, $donations, $donors, $forms, $value = false ) {
 			?>
@@ -439,6 +452,8 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 		/**
 		 * Remove UTF-8 BOM signature.
 		 *
+		 * @since 1.8.13
+		 *
 		 * @param  string $string String to handle.
 		 *
 		 * @return string
@@ -455,7 +470,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 		/**
 		 * Is used to show the process when user upload the donor form.
 		 *
-		 * @since 1.2
+		 * @since 1.8.13
 		 */
 		static function progress() {
 			$step = Give_Settings_Import::get_step();
@@ -472,7 +487,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 		/**
 		 * Will return the import step.
 		 *
-		 * @since 1.2
+		 * @since 1.8.13
 		 *
 		 * @return int $step on which step doest the import is on.
 		 */
@@ -496,6 +511,8 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 		 * Add CSV upload HTMl
 		 *
 		 * Print the html of the file upload from which CSV will be uploaded.
+		 *
+		 * @since 1.8.13
 		 */
 		static public function render_media_csv() {
 			?>
@@ -548,6 +565,8 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 
 		/**
 		 * Run when user click on the submit button.
+		 *
+		 * @since 1.8.13
 		 */
 		public function save() {
 			$has_error = false;
@@ -591,7 +610,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 		/**
 		 * Add this page to settings.
 		 *
-		 * @since  1.8
+		 * @since  1.8.13
 		 *
 		 * @param  array $pages Lst of pages.
 		 *
@@ -606,7 +625,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 		/**
 		 * Get settings array.
 		 *
-		 * @since  1.8
+		 * @since  1.8.13
 		 * @return array
 		 */
 		public function get_settings() {
@@ -616,7 +635,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 			/**
 			 * Filter the settings.
 			 *
-			 * @since  1.8
+			 * @since  1.8.13
 			 *
 			 * @param  array $settings
 			 */
@@ -638,7 +657,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 		/**
 		 * Output the settings.
 		 *
-		 * @since  1.8
+		 * @since  1.8.13
 		 * @return void
 		 */
 		public function output() {
@@ -649,7 +668,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 		/**
 		 * Render report import field
 		 *
-		 * @since  1.8
+		 * @since  1.8.13
 		 * @access public
 		 *
 		 * @param $field
