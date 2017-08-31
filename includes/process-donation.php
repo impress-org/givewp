@@ -614,11 +614,8 @@ function give_donation_form_validate_new_user() {
 		}
 	}
 
-	// Check if we have an username to register.
-	if ( give_validate_username( $user_data['give_email'] ) ) {
-		$registering_new_user          = true;
-		$valid_user_data['user_login'] = $user_data['give_email'];
-	}
+	// Set Email as Username.
+	$valid_user_data['user_login'] = $user_data['give_email'];
 
 	// Check if we have an email to verify.
 	if ( give_validate_user_email( $user_data['give_email'], $registering_new_user ) ) {
