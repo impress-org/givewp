@@ -418,7 +418,7 @@ add_action( 'current_screen', 'give_blank_slate' );
 function give_validate_user_profile( $errors, $update, $user ) {
 
 	if ( ! empty( $_POST['action'] ) && ( 'adduser' === $_POST['action'] || 'createuser' === $_POST["action"] ) ) {
-		return $errors;
+		return;
 	}
 
 	if( ! empty( $user->ID ) ) {
