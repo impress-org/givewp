@@ -1004,54 +1004,66 @@ jQuery.noConflict();
 	/**
 	 * Donor management screen JS
 	 */
-	var Give_Donor = {
+	var GiveDonor = {
 
-		init          : function () {
-			this.edit_donor();
+		init: function() {
+			this.editDonor();
 			this.add_email();
-			this.remove_user();
-			this.cancel_edit();
+			this.removeUser();
+			this.cancelEdit();
 			this.change_country();
 			this.add_note();
 			this.delete_checked();
+
+			$( 'body' ).on( 'click', '.give-lock-block', this.unlockDonorFields );
 		},
-		edit_donor    : function () {
-			$('body').on('click', '#edit-donor', function (e) {
+
+		unlockDonorFields: function( e ) {
+			alert( give_vars.unlock_donor_fields );
+			e.preventDefault();
+		},
+
+		editDonor: function() {
+			$( 'body' ).on( 'click', '#edit-donor', function( e ) {
 				e.preventDefault();
-				$('#give-donor-card-wrapper .editable').hide();
-				$('#give-donor-card-wrapper .edit-item').fadeIn().css('display', 'block');
-				$('.give-select-chosen').css('width', '100%');
+				$( '#give-donor-card-wrapper .editable' ).hide();
+				$( '#give-donor-card-wrapper .edit-item' ).fadeIn().css( 'display', 'block' );
+				$( '.give-select-chosen' ).css( 'width', '100%' );
 			});
 		},
-		remove_user   : function () {
-			$('body').on('click', '#disconnect-donor', function (e) {
+
+		removeUser: function() {
+			$( 'body' ).on( 'click', '#disconnect-donor', function( e ) {
 				e.preventDefault();
 
-				if (!confirm(give_vars.disconnect_user)) {
+				if ( ! confirm( give_vars.disconnect_user ) ) {
 					return false;
 				}
-				var customer_id = $('input[name="customerinfo[id]"]').val();
+
+				var donorID = $( 'input[name="customerinfo[id]"]' ).val();
 
 				var postData = {
 					give_action: 'disconnect-userid',
-					customer_id: customer_id,
-					_wpnonce   : $('#edit-donor-info #_wpnonce').val()
+					customer_id: donorID,
+					_wpnonce   : $( '#edit-donor-info #_wpnonce' ).val()
 				};
 
-				$.post(ajaxurl, postData, function (response) {
+				$.post( ajaxurl, postData, function( response ) {
 					window.location.href = window.location.href;
 				}, 'json');
 
 			});
 		},
-		cancel_edit   : function () {
-			$('body').on('click', '#give-edit-donor-cancel', function (e) {
+
+		cancelEdit: function() {
+			$( 'body' ).on( 'click', '#give-edit-donor-cancel', function( e ) {
 				e.preventDefault();
-				$('#give-donor-card-wrapper .edit-item').hide();
-				$('#give-donor-card-wrapper .editable').show();
-				$('.give_user_search_results').html('');
+				$( '#give-donor-card-wrapper .edit-item' ).hide();
+				$( '#give-donor-card-wrapper .editable' ).show();
+				$( '.give_user_search_results' ).html( '' );
 			});
 		},
+
 		change_country: function () {
 			$('select[name="customerinfo[country]"]').change(function () {
 				var $this = $(this);
@@ -1905,7 +1917,7 @@ jQuery.noConflict();
 		Give_Edit_Donation.init();
 		Give_Settings.init();
 		Give_Reports.init();
-		Give_Donor.init();
+		GiveDonor.init();
 		API_Screen.init();
 		Give_Export.init();
 		Give_Updates.init();
