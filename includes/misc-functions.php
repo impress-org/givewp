@@ -1332,8 +1332,6 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 	}
 
 
-
-
 	$address = array(
 		'line1'   => ( ! empty( $data['line1'] ) ? give_clean( $data['line1'] ) : '' ),
 		'line2'   => ( ! empty( $data['line1'] ) ? give_clean( $data['line2'] ) : '' ),
@@ -1432,11 +1430,12 @@ function give_donation_import_update_donor_information( $donor, $payment_id, $pa
 	$old_donor = $donor;
 	if ( ! empty( $payment_data['donor_id'] ) ) {
 		$donor_id = absint( $payment_data['donor_id'] );
-		$donor = new Give_Donor( $donor_id );
+		$donor    = new Give_Donor( $donor_id );
 		if ( ! empty( $donor->id ) ) {
 			return $donor;
 		}
 	}
+
 	return $old_donor;
 }
 
@@ -1465,7 +1464,6 @@ function give_donation_import_give_insert_payment_args( $args, $payment_data ) {
 	if ( ! empty( $payment_data['user_info']['id'] ) ) {
 		$args['post_author'] = (int) $payment_data['user_info']['id'];
 	}
-
 	return $args;
 }
 
@@ -1577,7 +1575,6 @@ function give_get_donation_data_from_csv( $file_id, $start, $end, $delimiter = '
 		}
 		fclose( $handle );
 	}
-
 	return $raw_data;
 }
 
@@ -1618,7 +1615,7 @@ function give_import_donations_options() {
 function give_import_donor_options() {
 	return (array) apply_filters( 'give_import_donor_options', array(
 		'donor_id' => __( 'Donor ID', 'give' ),
-		'user_id' => __( 'User ID', 'give' ),
+		'user_id'  => __( 'User ID', 'give' ),
 	) );
 }
 
@@ -1658,7 +1655,7 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
 	}
 
 	if ( empty( $donor_data->id ) && ! empty( $data['user_id'] ) ) {
-		$user_id = (int) $data['user_id'];
+		$user_id    = (int) $data['user_id'];
 		$donor_data = new Give_Donor( $user_id, true );
 
 
@@ -1666,12 +1663,12 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
 			$donor_data = get_user_by( 'id', $user_id );
 			if ( ! empty( $donor_data->ID ) ) {
 				$first_name = ( ! empty( $data['first_name'] ) ? $data['first_name'] : $donor_data->user_nicename );
-				$last_name = ( ! empty( $data['last_name'] ) ? $data['last_name'] : ( ( $lastname = get_user_meta( $donor_data->ID, 'last_name', true ) ) ? $lastname : '' ) );
-				$name = $first_name . ' ' .  $last_name;
+				$last_name  = ( ! empty( $data['last_name'] ) ? $data['last_name'] : ( ( $lastname = get_user_meta( $donor_data->ID, 'last_name', true ) ) ? $lastname : '' ) );
+				$name       = $first_name . ' ' . $last_name;
 				$user_email = $donor_data->user_email;
-				$donor_args    = array(
-					'name'  => $name,
-					'email' => $user_email,
+				$donor_args = array(
+					'name'    => $name,
+					'email'   => $user_email,
 					'user_id' => $user_id,
 				);
 
@@ -1688,7 +1685,7 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
 				}
 
 				$report['create_donor'] = ( ! empty( $report['create_donor'] ) ? ( absint( $report['create_donor'] ) + 1 ) : 1 );
-			}else {
+			} else {
 			}
 		} else {
 			// Add is used to ensure duplicate emails are not added
@@ -1851,12 +1848,12 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 
 				$multi_level_donations = array(
 					array(
-						'_give_id'     => array(
+						'_give_id'      => array(
 							'level_id' => $new_level,
 						),
-						'_give_amount' => give_sanitize_amount_for_db( $data['amount'] ),
-						'_give_text'   => $data['form_level'],
-						'_give_default'   => 'default',
+						'_give_amount'  => give_sanitize_amount_for_db( $data['amount'] ),
+						'_give_text'    => $data['form_level'],
+						'_give_default' => 'default',
 					),
 				);
 
@@ -1883,20 +1880,20 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 		}
 
 		$defaults = array(
-			'_give_set_price'    => give_sanitize_amount_for_db( $data['amount'] ),
-			'_give_price_option' => 'set',
-			'give_product_notes' => 'Donation Notes',
-			'_give_product_type' => 'default',
+			'_give_set_price'      => give_sanitize_amount_for_db( $data['amount'] ),
+			'_give_price_option'   => 'set',
+			'give_product_notes'   => 'Donation Notes',
+			'_give_product_type'   => 'default',
 			'_give_logged_in_only' => 'enabled',
 		);
 
 		// If new form is created.
 		if ( ! empty( $new_form ) ) {
 			$new_form = array(
-				'_give_payment_import' => true,
+				'_give_payment_import'  => true,
 				'_give_display_style'   => 'radios',
 				'_give_custom_amount'   => 'disabled',
-				'_give_payment_display'   => 'onpage',
+				'_give_payment_display' => 'onpage',
 			);
 			$defaults = wp_parse_args( $defaults, $new_form );
 		}
@@ -1914,7 +1911,8 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 	return $form;
 }
 
-/** Remove the Give transaction pages from WP search results.
+/**
+ * Remove the Give transaction pages from WP search results.
  *
  * @since 1.8.13
  *
@@ -1923,20 +1921,77 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
  */
 function give_remove_pages_from_search( $query ) {
 	if ( ! $query->is_admin && $query->is_search && $query->is_main_query() ) {
-
 		$transaction_failed = give_get_option( 'failure_page', 0 );
 		$success_page       = give_get_option( 'success_page', 0 );
 		$args               = apply_filters( 'give_remove_pages_from_search', array(
 			$transaction_failed,
 			$success_page
 		), $query );
-
 		$query->set( 'post__not_in', $args );
 	}
 }
 
 add_action( 'pre_get_posts', 'give_remove_pages_from_search', 10, 1 );
 
+/**
+ * Inserts a new key/value before a key in the array.
+ *
+ * @since 1.8.13
+ *
+ * @param string $key The key to insert before.
+ * @param array $array An array to insert in to.
+ * @param string $new_key The key to insert.
+ * @param array|string $new_value An value to insert.
+ *
+ * @return array The new array if the key exists, the passed array otherwise.
+ *
+ * @see   array_insert_before()
+ */
+function give_array_insert_before( $key, array &$array, $new_key, $new_value ) {
+	if ( array_key_exists( $key, $array ) ) {
+		$new = array();
+		foreach ( $array as $k => $value ) {
+			if ( $k === $key ) {
+				$new[ $new_key ] = $new_value;
+			}
+			$new[ $k ] = $value;
+		}
+
+		return $new;
+	}
+
+	return $array;
+}
+
+/**
+ * Inserts a new key/value after a key in the array.
+ *
+ * @since 1.8.13
+ *
+ * @param string $key The key to insert after.
+ * @param array $array An array to insert in to.
+ * @param string $new_key The key to insert.
+ * @param array|string $new_value An value to insert.
+ *
+ * @return array The new array if the key exists, the passed array otherwise.
+ *
+ * @see   array_insert_before()
+ */
+function give_array_insert_after( $key, array &$array, $new_key, $new_value ) {
+	if ( array_key_exists( $key, $array ) ) {
+		$new = array();
+		foreach ( $array as $k => $value ) {
+			$new[ $k ] = $value;
+			if ( $k === $key ) {
+				$new[ $new_key ] = $new_value;
+			}
+		}
+
+		return $new;
+	}
+
+	return $array;
+}
 
 /**
  * Pluck a certain field out of each object in a list.
@@ -2021,6 +2076,7 @@ function give_import_donation_report() {
 function give_import_donation_report_update( $value = array() ) {
 	update_option( 'give_import_donation_report', $value );
 }
+
 
 /**
  * Delete the Import report of the donations
