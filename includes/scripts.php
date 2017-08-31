@@ -332,6 +332,7 @@ function give_load_admin_scripts( $hook ) {
 		'search_placeholder_donor'       => __( 'Type to search all donors', 'give' ),
 		'search_placeholder_country'     => __( 'Type to search all countries', 'give' ),
 		'search_placeholder_state'       => __( 'Type to search all states/provinces', 'give' ),
+		'unlock_donor_fields'            => __( 'To edit first name and last name, please go to user profile of the donor.', 'give' ),
 		'bulk_action' => array(
 			'delete'    => array(
 				'zero'     => __( 'You must choose at least one or more payments to delete.', 'give' ),
