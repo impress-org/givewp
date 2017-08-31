@@ -1332,10 +1332,21 @@ class Give_Donor {
 	 * @return  object
 	 */
 	public function split_donor_name( $id ) {
-		$donor = new Give_Donor( $id );
+		$first_name = $last_name  = '';
+		$donor      = new Give_Donor( $id );
+
 		$split_donor_name = explode( ' ', $donor->name, 2 );
 
-		return (object) array( 'first_name' => $split_donor_name[0], 'last_name' => $split_donor_name[1] );
+		// Check for existence of first name after split of donor name.
+		if( is_array( $split_donor_name ) && ! empty( $split_donor_name[0] ) ) {
+			$first_name = $split_donor_name[0];
+		}
+
+		// Check for existence of last name after split of donor name.
+		if( is_array( $split_donor_name ) && ! empty( $split_donor_name[1] ) ) {
+			$last_name = $split_donor_name[1];
+		}
+		return (object) array( 'first_name' => $first_name, 'last_name' => $last_name );
 	}
 
 	/**
