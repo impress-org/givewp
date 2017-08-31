@@ -1380,7 +1380,7 @@ function give_remove_pages_from_search( $query ) {
 
 		$transaction_failed = give_get_option( 'failure_page', 0 );
 		$success_page       = give_get_option( 'success_page', 0 );
-		$args = apply_filters( 'give_remove_pages_from_search', array( $transaction_failed, $success_page ), $query );
+		$args               = apply_filters( 'give_remove_pages_from_search', array( $transaction_failed, $success_page ), $query );
 
 		$query->set( 'post__not_in', $args );
 	}
@@ -1389,3 +1389,65 @@ function give_remove_pages_from_search( $query ) {
 }
 
 add_action( 'pre_get_posts', 'give_remove_pages_from_search', 10, 1 );
+
+
+
+/**
+ * Inserts a new key/value before a key in the array.
+ *
+ * @since 1.8.13
+ *
+ * @param string       $key       The key to insert before.
+ * @param array        $array     An array to insert in to.
+ * @param string       $new_key   The key to insert.
+ * @param array|string $new_value An value to insert.
+ *
+ * @return array The new array if the key exists, the passed array otherwise.
+ *
+ * @see   array_insert_before()
+ */
+function give_array_insert_before( $key, array &$array, $new_key, $new_value ) {
+	if ( array_key_exists( $key, $array ) ) {
+		$new = array();
+		foreach ( $array as $k => $value ) {
+			if ( $k === $key ) {
+				$new[ $new_key ] = $new_value;
+			}
+			$new[ $k ] = $value;
+		}
+
+		return $new;
+	}
+
+	return $array;
+}
+
+/**
+ * Inserts a new key/value after a key in the array.
+ *
+ * @since 1.8.13
+ *
+ * @param string       $key       The key to insert after.
+ * @param array        $array     An array to insert in to.
+ * @param string       $new_key   The key to insert.
+ * @param array|string $new_value An value to insert.
+ *
+ * @return array The new array if the key exists, the passed array otherwise.
+ *
+ * @see   array_insert_before()
+ */
+function give_array_insert_after( $key, array &$array, $new_key, $new_value ) {
+	if ( array_key_exists( $key, $array ) ) {
+		$new = array();
+		foreach ( $array as $k => $value ) {
+			$new[ $k ] = $value;
+			if ( $k === $key ) {
+				$new[ $new_key ] = $new_value;
+			}
+		}
+
+		return $new;
+	}
+
+	return $array;
+}

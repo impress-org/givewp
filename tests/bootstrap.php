@@ -37,24 +37,29 @@ class Give_Unit_Tests_Bootstrap {
 		$this->tests_dir    = dirname( __FILE__ );
 		$this->plugin_dir   = dirname( $this->tests_dir );
 		$this->wp_tests_dir = getenv( 'WP_TESTS_DIR' ) ? getenv( 'WP_TESTS_DIR' ) : '/tmp/wordpress-tests-lib';
+		$manual_bootstrap    = isset( $GLOBALS['manual_bootstrap'] ) ? (bool) $GLOBALS['manual_bootstrap'] : true;
 
-		// load test function so tests_add_filter() is available
+		// Load test function so tests_add_filter() is available
 		require_once( $this->wp_tests_dir . '/includes/functions.php' );
 
-		// load Give
+		// Load Give
 		tests_add_filter( 'muplugins_loaded', array( $this, 'load_give' ) );
 
 		// Uninstall Give.
 		tests_add_filter( 'plugins_loaded', array( $this, 'uninstall_give' ), 0 );
 
-		// install Give
+		// Install Give
 		tests_add_filter( 'setup_theme', array( $this, 'install_give' ) );
 
-		// load the WP testing environment
-		require_once( $this->wp_tests_dir . '/includes/bootstrap.php' );
+		// Load the WP testing environment
+		if( $manual_bootstrap ) {
+			require_once( $this->wp_tests_dir . '/includes/bootstrap.php' );
 
-		// load Give testing framework
-		$this->includes();
+			// Load Give testing framework
+			// Note: you must copy code of this function to your include function of bootstrap class
+			// Or use Give_Unit_Tests_Bootstrap::includes();
+			$this->includes();
+		}
 	}
 
 
