@@ -203,7 +203,7 @@ function give_donor_view( $donor ) {
 	do_action( 'give_donor_card_top', $donor );
 
 	// Set Read only to the fields which needs to be locked.
-	$read_only = false;
+	$read_only = '';
 	if( $donor->user_id ) {
 		$read_only = 'readonly="readonly"';
 	}
