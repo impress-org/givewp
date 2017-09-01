@@ -62,6 +62,10 @@ function give_do_automatic_upgrades() {
 			give_v1812_upgrades();
 			$did_upgrade = true;
 
+		case version_compare( $give_version, '1.8.13', '<' ) :
+			give_v1813_upgrades();
+			$did_upgrade = true;
+
 		case version_compare( $give_version, '2.0', '<' ) :
 			give_v20_upgrades();
 			$did_upgrade = true;
@@ -141,6 +145,15 @@ function give_show_upgrade_notices( $give_updates ) {
 		)
 	);
 
+	// v1.8.13 Upgrades for donor
+	$give_updates->register(
+		array(
+			'id'       => 'v1813_update_donor_user_roles',
+			'version'  => '1.8.13',
+			'callback' => 'give_v1813_update_donor_user_roles_callback',
+		)
+	);
+
 	// v2.0.0 Upgrades
 	$give_updates->register(
 		array(
@@ -175,7 +188,7 @@ function give_show_upgrade_notices( $give_updates ) {
 			'id'       => 'v20_move_metadata_into_new_table',
 			'version'  => '2.0.0',
 			'callback' => 'give_v20_move_metadata_into_new_table_callback',
-			'depend'   => array( 'v20_upgrades_payment_metadata', 'v20_upgrades_form_metadata' )
+			'depend'   => array( 'v20_upgrades_payment_metadata', 'v20_upgrades_form_metadata' ),
 		)
 	);
 
@@ -189,7 +202,7 @@ function give_show_upgrade_notices( $give_updates ) {
 				'v20_move_metadata_into_new_table',
 				'v20_logs_upgrades',
 				'v20_upgrades_form_metadata',
-				'v20_upgrades_payment_metadata'
+				'v20_upgrades_payment_metadata',
 			),
 		)
 	);
@@ -1212,6 +1225,66 @@ function give_v1812_update_donor_purchase_value_callback() {
 }
 
 /**
+ * Upgrade routine for updating user roles for existing donors.
+ *
+ * @since 1.8.13
+ */
+function give_v1813_update_donor_user_roles_callback() {
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
+	$offset       = 1 === $give_updates->step ? 0 : $give_updates->step * 20;
+
+	// Fetch all the existing donors.
+	$donors = Give()->donors->get_donors( array(
+			'number' => 20,
+			'offset' => $offset,
+		)
+	);
+
+	if ( ! empty( $donors ) ) {
+		$give_updates->set_percentage( Give()->donors->count(), ( $give_updates->step * 20 ) );
+
+		/* @var Object $donor */
+		foreach ( $donors as $donor ) {
+			$user_id = $donor->user_id;
+
+			// Proceed, if donor is attached with user.
+			if ( $user_id ) {
+				$user = get_userdata( $user_id );
+
+				// Update user role, if user has subscriber role.
+				if ( is_array( $user->roles ) && in_array( 'subscriber', $user->roles ) ) {
+					wp_update_user(
+						array(
+							'ID'   => $user_id,
+							'role' => 'give_donor',
+						)
+					);
+				}
+			}
+		}
+	} else {
+		// The Update Ran.
+		give_set_upgrade_complete( 'v1813_update_donor_user_roles' );
+	}
+}
+
+/**
+ * Version 1.8.13 automatic updates
+ *
+ * @since 1.8.13
+ */
+function give_v1813_upgrades() {
+	// Update admin setting.
+	give_update_option( 'donor_default_user_role', 'give_donor' );
+
+	// Update Give roles.
+	$roles = new Give_Roles();
+	$roles->add_roles();
+	$roles->add_caps();
+}
+
+/**
  * Upgrade form metadata for new metabox settings.
  *
  * @since  2.0
@@ -1321,7 +1394,7 @@ function give_v20_upgrades_payment_metadata_callback() {
 
 			foreach ( $deprecated_meta_keys as $old_meta_key => $new_meta_key ) {
 				// Do not add new meta key if already exist.
-				if( give_get_meta( $post->ID, $new_meta_key, true )) {
+				if ( give_get_meta( $post->ID, $new_meta_key, true ) ) {
 					continue;
 				}
 
@@ -1362,7 +1435,7 @@ function give_v20_upgrades_payment_metadata_callback() {
 
 /**
  * Upgrade logs data.
- * @todo: check if payment price id is necessary to store in log meta or not
+ * @todo   : check if payment price id is necessary to store in log meta or not
  *
  * @since  2.0
  * @return void
@@ -1536,6 +1609,7 @@ function give_v20_move_metadata_into_new_table_callback() {
 		// No more forms found, finish up.
 		give_set_upgrade_complete( 'v20_move_metadata_into_new_table' );
 	}
+
 }
 
 
