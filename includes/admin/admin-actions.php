@@ -439,7 +439,7 @@ add_action( 'user_profile_update_errors', 'give_validate_user_profile', 10, 3 );
 /**
  * Show Donor Information on User Profile Page.
  *
- * @param $user User Object.
+ * @param object $user User Object.
  *
  * @since 2.0
  */
