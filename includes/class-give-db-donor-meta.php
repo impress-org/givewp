@@ -167,7 +167,7 @@ class Give_DB_Donor_Meta extends Give_DB {
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
-		$sql = "CREATE TABLE {$this->table_name} (
+		$sql = "CREATE TABLE IF NOT EXISTS {$this->table_name} (
 			meta_id bigint(20) NOT NULL AUTO_INCREMENT,
 			customer_id bigint(20) NOT NULL,
 			meta_key varchar(255) DEFAULT NULL,
@@ -176,6 +176,8 @@ class Give_DB_Donor_Meta extends Give_DB {
 			KEY customer_id (customer_id),
 			KEY meta_key (meta_key)
 			) CHARACTER SET utf8 COLLATE utf8_general_ci;";
+
+
 
 		dbDelta( $sql );
 
