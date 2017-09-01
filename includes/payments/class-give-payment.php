@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @property string $postdate
  * @property string $status
  * @property string $email
- * @property string $payment_meta
+ * @property array  $payment_meta
  * @property string $customer_id
  * @property string $completed_date
  * @property string $currency
