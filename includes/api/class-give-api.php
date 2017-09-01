@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Renders API returns as a JSON/XML array
  *
- * @since  1.1
+ * @since 1.1
  */
 class Give_API {
 
@@ -443,7 +443,7 @@ class Give_API {
 	 */
 	private function missing_auth() {
 		$error          = array();
-		$error['error'] = esc_html__( 'You must specify both a token and API key.', 'give' );
+		$error['error'] = __( 'You must specify both a token and API key.', 'give' );
 
 		$this->data = $error;
 		$this->output( 401 );
@@ -460,7 +460,7 @@ class Give_API {
 	 */
 	private function invalid_auth() {
 		$error          = array();
-		$error['error'] = esc_html__( 'Your request could not be authenticated.', 'give' );
+		$error['error'] = __( 'Your request could not be authenticated.', 'give' );
 
 		$this->data = $error;
 		$this->output( 403 );
@@ -477,7 +477,7 @@ class Give_API {
 	 */
 	private function invalid_key() {
 		$error          = array();
-		$error['error'] = esc_html__( 'Invalid API key.', 'give' );
+		$error['error'] = __( 'Invalid API key.', 'give' );
 
 		$this->data = $error;
 		$this->output( 403 );
@@ -493,7 +493,7 @@ class Give_API {
 	 */
 	private function invalid_version() {
 		$error          = array();
-		$error['error'] = esc_html__( 'Invalid API version.', 'give' );
+		$error['error'] = __( 'Invalid API version.', 'give' );
 
 		$this->data = $error;
 		$this->output( 404 );
@@ -643,7 +643,7 @@ class Give_API {
 
 		// Make sure our query is valid
 		if ( ! in_array( $query, $accepted ) ) {
-			$error['error'] = esc_html__( 'Invalid query.', 'give' );
+			$error['error'] = __( 'Invalid query.', 'give' );
 
 			$this->data = $error;
 			// 400 is Bad Request
@@ -944,13 +944,13 @@ class Give_API {
 		} elseif ( $donor ) {
 
 			$error['error'] = sprintf( /* translators: %s: donor */
-				esc_html__( 'Donor %s not found.', 'give' ), $donor );
+				__( 'Donor %s not found.', 'give' ), $donor );
 
 			return $error;
 
 		} else {
 
-			$error['error'] = esc_html__( 'No donors found.', 'give' );
+			$error['error'] = __( 'No donors found.', 'give' );
 
 			return $error;
 
@@ -999,7 +999,7 @@ class Give_API {
 
 			} else {
 				$error['error'] = sprintf( /* translators: %s: form */
-					esc_html__( 'Form %s not found.', 'give' ), $form );
+					__( 'Form %s not found.', 'give' ), $form );
 
 				return $error;
 			}
@@ -1130,12 +1130,12 @@ class Give_API {
 					// Return donations for a date range.
 					// Ensure the end date is later than the start date.
 					if ( $args['enddate'] < $args['startdate'] ) {
-						$error['error'] = esc_html__( 'The end date must be later than the start date.', 'give' );
+						$error['error'] = __( 'The end date must be later than the start date.', 'give' );
 					}
 
 					// Ensure both the start and end date are specified
 					if ( empty( $args['startdate'] ) || empty( $args['enddate'] ) ) {
-						$error['error'] = esc_html__( 'Invalid or no date range specified.', 'give' );
+						$error['error'] = __( 'Invalid or no date range specified.', 'give' );
 					}
 
 					$total = 0;
@@ -1227,7 +1227,7 @@ class Give_API {
 					);
 				} else {
 					$error['error'] = sprintf( /* translators: %s: form */
-						esc_html__( 'Form %s not found.', 'give' ), $args['form'] );
+						__( 'Form %s not found.', 'give' ), $args['form'] );
 				}
 			}// End if().
 
@@ -1245,12 +1245,12 @@ class Give_API {
 					// Return sales for a date range
 					// Ensure the end date is later than the start date
 					if ( $args['enddate'] < $args['startdate'] ) {
-						$error['error'] = esc_html__( 'The end date must be later than the start date.', 'give' );
+						$error['error'] = __( 'The end date must be later than the start date.', 'give' );
 					}
 
 					// Ensure both the start and end date are specified
 					if ( empty( $args['startdate'] ) || empty( $args['enddate'] ) ) {
-						$error['error'] = esc_html__( 'Invalid or no date range specified.', 'give' );
+						$error['error'] = __( 'Invalid or no date range specified.', 'give' );
 					}
 
 					$total = (float) 0.00;
@@ -1347,7 +1347,7 @@ class Give_API {
 					);
 				} else {
 					$error['error'] = sprintf( /* translators: %s: form */
-						esc_html__( 'Form %s not found.', 'give' ), $args['form'] );
+						__( 'Form %s not found.', 'give' ), $args['form'] );
 				}
 			}// End if().
 
@@ -1419,6 +1419,8 @@ class Give_API {
 
 			$current_time = current_time( 'timestamp' );
 			$dates        = $this->get_dates( $args );
+			$start_date   = '';
+			$end_date     = '';
 
 			/**
 			 *  Switch case for date query argument
@@ -1740,7 +1742,7 @@ class Give_API {
 				<tbody>
 				<tr>
 					<th>
-						<?php esc_html_e( 'Give API Keys', 'give' ); ?>
+						<?php _e( 'Give API Keys', 'give' ); ?>
 					</th>
 					<td>
 						<?php
@@ -1748,23 +1750,23 @@ class Give_API {
 						$secret_key = $this->get_user_secret_key( $user->ID );
 						?>
 						<?php if ( empty( $user->give_user_public_key ) ) { ?>
-							<input name="give_set_api_key" type="checkbox" id="give_set_api_key" value="0" />
-							<span class="description"><?php esc_html_e( 'Generate API Key', 'give' ); ?></span>
+							<input name="give_set_api_key" type="checkbox" id="give_set_api_key" />
+							<span class="description"><?php _e( 'Generate API Key', 'give' ); ?></span>
 						<?php } else { ?>
-							<strong style="display:inline-block; width: 125px;"><?php esc_html_e( 'Public key:', 'give' ); ?>
+							<strong style="display:inline-block; width: 125px;"><?php _e( 'Public key:', 'give' ); ?>
 								&nbsp;</strong>
 							<input type="text" disabled="disabled" class="regular-text" id="publickey" value="<?php echo esc_attr( $public_key ); ?>" />
 							<br />
-							<strong style="display:inline-block; width: 125px;"><?php esc_html_e( 'Secret key:', 'give' ); ?>
+							<strong style="display:inline-block; width: 125px;"><?php _e( 'Secret key:', 'give' ); ?>
 								&nbsp;</strong>
 							<input type="text" disabled="disabled" class="regular-text" id="privatekey" value="<?php echo esc_attr( $secret_key ); ?>" />
 							<br />
-							<strong style="display:inline-block; width: 125px;"><?php esc_html_e( 'Token:', 'give' ); ?>
+							<strong style="display:inline-block; width: 125px;"><?php _e( 'Token:', 'give' ); ?>
 								&nbsp;</strong>
 							<input type="text" disabled="disabled" class="regular-text" id="token" value="<?php echo esc_attr( $this->get_token( $user->ID ) ); ?>" />
 							<br />
-							<input name="give_set_api_key" type="checkbox" id="give_set_api_key" value="0" />
-							<span class="description"><label for="give_set_api_key"><?php esc_html_e( 'Revoke API Keys', 'give' ); ?></label></span>
+							<input name="give_revoke_api_key" type="checkbox" id="give_revoke_api_key" />
+							<span class="description"><label for="give_revoke_api_key"><?php _e( 'Revoke API Keys', 'give' ); ?></label></span>
 						<?php } ?>
 					</td>
 				</tr>
@@ -1807,12 +1809,12 @@ class Give_API {
 
 		if ( $user_id == get_current_user_id() && ! give_get_option( 'allow_user_api_keys' ) && ! current_user_can( 'manage_give_settings' ) ) {
 			wp_die( sprintf( /* translators: %s: process */
-				esc_html__( 'You do not have permission to %s API keys for this user.', 'give' ), $process ), esc_html__( 'Error', 'give' ), array(
+				__( 'You do not have permission to %s API keys for this user.', 'give' ), $process ), __( 'Error', 'give' ), array(
 				'response' => 403,
 			) );
 		} elseif ( ! current_user_can( 'manage_give_settings' ) ) {
 			wp_die( sprintf( /* translators: %s: process */
-				esc_html__( 'You do not have permission to %s API keys for this user.', 'give' ), $process ), esc_html__( 'Error', 'give' ), array(
+				__( 'You do not have permission to %s API keys for this user.', 'give' ), $process ), __( 'Error', 'give' ), array(
 				'response' => 403,
 			) );
 		}
@@ -1854,7 +1856,7 @@ class Give_API {
 	 * @access public
 	 * @since  1.1
 	 *
-	 * @return boolean True if (re)generated succesfully, false otherwise.
+	 * @return boolean True if (re)generated successfully, false otherwise.
 	 */
 	public function generate_api_key( $user_id = 0, $regenerate = false ) {
 
@@ -1870,24 +1872,41 @@ class Give_API {
 			return false;
 		}
 
-		$public_key = $this->get_user_public_key( $user_id );
-		$secret_key = $this->get_user_secret_key( $user_id );
+		$new_public_key = '';
+		$new_secret_key = '';
 
-		if ( empty( $public_key ) ) {
-			$new_public_key = $this->generate_public_key( $user->user_email );
-			$new_secret_key = $this->generate_private_key( $user->ID );
-		} else if ( ! empty( $public_key ) ) {
-			// Regenerate API keys, if regenerate is true.
-			if( true === $regenerate ) {
+		if( ! empty( $_POST['from'] ) && 'profile' === $_POST['from'] ) {
+			// For User Profile Page.
+			if( ! empty( $_POST['give_set_api_key'] ) ) {
+				// Generate API Key from User Profile page.
+				$new_public_key = $this->generate_public_key( $user->user_email );
+				$new_secret_key = $this->generate_private_key( $user->ID );
+			} elseif ( ! empty( $_POST['give_revoke_api_key'] ) ) {
+				// Revoke API Key from User Profile page.
+				$this->revoke_api_key( $user->ID );
+			} else {
+				return false;
+			}
+		} else {
+			// For Tools > API page.
+			$public_key = $this->get_user_public_key( $user_id );
+
+			if ( empty( $public_key ) && ! $regenerate ) {
+				// Generating API for first time.
+				$new_public_key = $this->generate_public_key( $user->user_email );
+				$new_secret_key = $this->generate_private_key( $user->ID );
+			} elseif ( $public_key && $regenerate ) {
+				// API Key already exists and Regenerating API Key.
 				$this->revoke_api_key( $user->ID );
 				$new_public_key = $this->generate_public_key( $user->user_email );
 				$new_secret_key = $this->generate_private_key( $user->ID );
-			} elseif ( current_user_can( 'edit_user', $user_id ) && isset( $_POST['give_set_api_key'] ) ) {
-				// Revoke API Key, if Public key exists and updating user profile.
+			} elseif ( ! empty( $public_key ) && ! $regenerate ) {
+				// Doing nothing, when API Key exists but still try to generate again instead of regenerating.
+				return false;
+			} else {
+				// Revoke API Key.
 				$this->revoke_api_key( $user->ID );
 			}
-		} else {
-			return false;
 		}
 
 		update_user_meta( $user_id, $new_public_key, 'give_user_public_key' );
