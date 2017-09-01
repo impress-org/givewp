@@ -972,6 +972,7 @@ function give_v189_upgrades() {
 function give_v20_upgrades() {
 	// Upgrade email settings.
 	give_v20_upgrades_email_setting();
+	give_v20_upgrade_donor_register_email_message();
 }
 
 /**
@@ -1041,6 +1042,23 @@ function give_v20_upgrades_email_setting() {
 				give_delete_option( $old_setting );
 		}
 	}
+}
+
+/**
+ * Update Donor Register Email Message.
+ *
+ * @since 2.0
+ */
+function give_v20_upgrade_donor_register_email_message() {
+	$all_setting = give_get_settings();
+
+	// Bailout on fresh install.
+	if ( empty( $all_setting ) ) {
+		return;
+	}
+
+	$donor_register_email = new Give_Donor_Register_Email();
+	give_update_option( 'donor-register_email_message', $donor_register_email->get_default_email_message() );
 }
 
 
