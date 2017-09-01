@@ -380,7 +380,7 @@ function _give_show_test_mode_notice_in_admin_bar( $wp_admin_bar ) {
 		return false;
 	}
 
-	// Add the main siteadmin menu item.
+	// Add the main site admin menu item.
 	$wp_admin_bar->add_menu( array(
 		'id'     => 'give-test-notice',
 		'href'   => admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways' ),
@@ -425,7 +425,7 @@ function give_validate_user_profile( $errors, $update, $user ) {
 		$donor = Give()->donors->get_donor_by( 'user_id', $user->ID );
 
 		if( $donor ) {
-			// If Donor is attached with User, then validate first name
+			// If Donor is attached with User, then validate first name.
 			if ( empty( $_POST['first_name'] ) ) {
 				$errors->add( 'empty_first_name', '<strong>ERROR:</strong>' . __( 'Please enter your first name.', 'give' ) );
 			}
