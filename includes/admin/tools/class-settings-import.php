@@ -88,6 +88,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 			if ( ! empty( $_GET['tab'] ) && 'import' === give_clean( $_GET['tab'] ) ) {
 				unset( $messages['give-setting-updated'] );
 			}
+
 			return $messages;
 		}
 
@@ -152,6 +153,13 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 		}
 
 		static function import_success() {
+
+			$delete_csv = ( ! empty( $_GET['delete_csv'] ) ? absint( $_GET['delete_csv'] ) : false );
+			$csv        = ( ! empty( $_GET['csv'] ) ? absint( $_GET['csv'] ) : false );
+			if ( ! empty( $delete_csv ) && ! empty( $csv ) ) {
+				wp_delete_attachment( $csv, true );
+			}
+
 			$report      = give_import_donation_report();
 			$report_html = array(
 				'duplicate_donor'    => __( '%s duplicate donors detected', 'give' ),
@@ -264,6 +272,8 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 					<input type="hidden" value="<?php echo $_REQUEST['mode']; ?>" name="mode" class="mode">
 					<input type="hidden" value="<?php echo $_REQUEST['create_user']; ?>" name="create_user"
 					       class="create_user">
+					<input type="hidden" value="<?php echo $_REQUEST['delete_csv']; ?>" name="delete_csv"
+					       class="delete_csv">
 					<input type="hidden" value="<?php echo $_REQUEST['delimiter']; ?>" name="delimiter">
 					<input type="hidden" value='<?php echo maybe_serialize( self::get_importer( $csv ) ); ?>'
 					       name="main_key"
@@ -316,36 +326,48 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 		 */
 		static function render_dropdown() {
 			$csv = (int) $_GET['csv'];
-			?>
-			<tr valign="top" class="give-import-dropdown">
-				<th colspan="2">
-					<h2 id="give-import-title"><?php esc_html_e( 'Map CSV fields to donations', 'give' ) ?></h2>
-					<p><?php esc_html_e( 'Select fields from your CSV file to map against donations fields or to ignore during import.', 'give' ) ?></p>
-				</th>
-			</tr>
 
-			<tr valign="top" class="give-import-dropdown">
-				<th><b><?php esc_html_e( 'Column name', 'give' ); ?></b></th>
-				<th><b><?php esc_html_e( 'Map to field', 'give' ); ?></b></th>
-			</tr>
-
-			<?php
-			$raw_key   = self::get_importer( $csv );
-			$donations = give_import_donations_options();
-			$donors    = give_import_donor_options();
-			$forms     = give_import_donation_form_options();
-
-			foreach ( $raw_key as $index => $value ) {
+			// TO check if the CSV files that is being add is valid or not if not then redirect to first step again
+			$has_error = self::csv_check( $csv );
+			if ( $has_error ) {
+				$url = give_import_page_url();
 				?>
-				<tr valign="top" class="give-import-option">
-					<th><?php echo $value; ?></th>
-					<th>
-						<?php
-						self::get_columns( $index, $donations, $donors, $forms, $value );
-						?>
+				<script type="text/javascript">
+					window.location = "<?php echo $url; ?>"
+				</script>
+				<?php
+			} else {
+				?>
+				<tr valign="top" class="give-import-dropdown">
+					<th colspan="2">
+						<h2 id="give-import-title"><?php esc_html_e( 'Map CSV fields to donations', 'give' ) ?></h2>
+						<p><?php esc_html_e( 'Select fields from your CSV file to map against donations fields or to ignore during import.', 'give' ) ?></p>
 					</th>
 				</tr>
+
+				<tr valign="top" class="give-import-dropdown">
+					<th><b><?php esc_html_e( 'Column name', 'give' ); ?></b></th>
+					<th><b><?php esc_html_e( 'Map to field', 'give' ); ?></b></th>
+				</tr>
+
 				<?php
+				$raw_key   = self::get_importer( $csv );
+				$donations = give_import_donations_options();
+				$donors    = give_import_donor_options();
+				$forms     = give_import_donation_form_options();
+
+				foreach ( $raw_key as $index => $value ) {
+					?>
+					<tr valign="top" class="give-import-option">
+						<th><?php echo $value; ?></th>
+						<th>
+							<?php
+							self::get_columns( $index, $donations, $donors, $forms, $value );
+							?>
+						</th>
+					</tr>
+					<?php
+				}
 			}
 		}
 
@@ -479,7 +501,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 				<li class="<?php echo( 1 === $step ? 'active' : '' ); ?>"><?php esc_html_e( 'Upload CSV file', 'give' ); ?></li>
 				<li class="<?php echo( 2 === $step ? 'active' : '' ); ?>"><?php esc_html_e( 'Column mapping', 'give' ); ?></li>
 				<li class="<?php echo( 3 === $step ? 'active' : '' ); ?>"><?php esc_html_e( 'Import', 'give' ); ?></li>
-				<li class="<?php echo( 4 === $step ? 'active' : '' ); ?>"><?php esc_html_e( 'Done!' , 'give' ); ?></li>
+				<li class="<?php echo( 4 === $step ? 'active' : '' ); ?>"><?php esc_html_e( 'Done!', 'give' ); ?></li>
 			</ol>
 			<?php
 		}
@@ -527,6 +549,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 			$delimiter   = ( isset( $_REQUEST['delimiter'] ) ? give_clean( $_POST['delimiter'] ) : ',' );
 			$mode        = ( ! empty( $_REQUEST['mode'] ) ? 'on' : '' );
 			$create_user = ( isset( $_REQUEST['create_user'] ) && isset( $_REQUEST['csv'] ) && 1 == absint( $_REQUEST['create_user'] ) ? 'on' : ( isset( $_REQUEST['csv'] ) ? '' : 'on' ) );
+			$delete_csv  = ( ! empty( $_REQUEST['delete_csv'] ) ? 'on' : '' );
 
 			$settings = array(
 				array(
@@ -556,6 +579,12 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 					'type'    => 'checkbox',
 					'default' => $create_user,
 				),
+				array(
+					'id'      => 'delete_csv',
+					'name'    => __( 'Delete CSV after import:', 'give' ),
+					'type'    => 'checkbox',
+					'default' => $delete_csv,
+				),
 			);
 
 			$settings = apply_filters( 'give_import_file_upload_html', $settings );
@@ -569,25 +598,14 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 		 * @since 1.8.13
 		 */
 		public function save() {
-			$has_error = false;
 			// Get the current step.
 			$step = Give_Settings_Import::get_step();
 
 			// Validation for first step.
 			if ( 1 === $step ) {
 				$csv = absint( $_POST['csv'] );
-				if ( $csv ) {
-					if ( ! wp_get_attachment_url( $csv ) ) {
-						$has_error = true;
-						Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide the ID to a valid CSV file.', 'give' ) );
-					} elseif ( ( $mime_type = get_post_mime_type( $csv ) ) && ! strpos( $mime_type, 'csv' ) ) {
-						$has_error = true;
-						Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide the ID to a valid CSV file.', 'give' ) );
-					}
-				} else {
-					$has_error = true;
-					Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide the ID to a valid CSV file.', 'give' ) );
-				}
+
+				$has_error = self::csv_check( $csv );
 
 				if ( false == $has_error ) {
 
@@ -597,6 +615,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 						'delimiter'   => ( isset( $_REQUEST['delimiter'] ) ) ? give_clean( $_REQUEST['delimiter'] ) : ',',
 						'mode'        => ( isset( $_REQUEST['mode'] ) ) ? give_clean( $_REQUEST['mode'] ) : '0',
 						'create_user' => ( isset( $_REQUEST['create_user'] ) ) ? give_clean( $_REQUEST['create_user'] ) : '0',
+						'delete_csv'  => ( isset( $_REQUEST['delete_csv'] ) ) ? give_clean( $_REQUEST['delete_csv'] ) : '0',
 					) ) );
 					?>
 					<script type="text/javascript">
@@ -605,6 +624,33 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 					<?php
 				}
 			}
+		}
+
+		/**
+		 * Check if user uploaded csv is valid or not.
+		 *
+		 * @since 1.8.13
+		 *
+		 * param int $csv Id of the CSV files.
+		 *
+		 * return bool $has_error CSV is valid or not.
+		 */
+		static function csv_check( $csv = false ) {
+			$has_error = false;
+			if ( $csv ) {
+				if ( ! wp_get_attachment_url( $csv ) ) {
+					$has_error = true;
+					Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide the ID to a valid CSV file.', 'give' ) );
+				} elseif ( ( $mime_type = get_post_mime_type( $csv ) ) && ! strpos( $mime_type, 'csv' ) ) {
+					$has_error = true;
+					Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide the ID to a valid CSV file.', 'give' ) );
+				}
+			} else {
+				$has_error = true;
+				Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide the ID to a valid CSV file.', 'give' ) );
+			}
+
+			return $has_error;
 		}
 
 		/**

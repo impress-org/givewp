@@ -401,30 +401,30 @@ add_action( 'admin_bar_menu', '_give_show_test_mode_notice_in_admin_bar', 1000, 
  */
 function give_import_page_link_callback() {
 	?>
-    <a href="<?php echo esc_url( give_import_page_url() ); ?>"
-       class="page-import-action page-title-action"><?php esc_html_e( 'Import Donations', 'give' ); ?></a>
+	<a href="<?php echo esc_url( give_import_page_url() ); ?>"
+	   class="page-import-action page-title-action"><?php esc_html_e( 'Import Donations', 'give' ); ?></a>
 
-    <style type="text/css">
-        <?php
+	<style type="text/css">
+		<?php
 		// Check if view donation single page only.
 		if ( ! empty( $_REQUEST['view'] ) && 'view-payment-details' === (string) give_clean( $_REQUEST['view'] ) && 'give-payment-history' === give_clean( $_REQUEST['page'] ) ) {
 			?>
-        .wrap #transaction-details-heading {
-            display: inline-block;
-        }
+		.wrap #transaction-details-heading {
+			display: inline-block;
+		}
 
-        <?php
+		<?php
 	} else {
 		?>
-        /* So the "New Donation" button aligns with the wp-admin h1 tag */
-        .wrap > h1 {
-            display: inline-block;
-            margin-right: 5px;
-        }
+		/* So the "New Donation" button aligns with the wp-admin h1 tag */
+		.wrap > h1 {
+			display: inline-block;
+			margin-right: 5px;
+		}
 
-        <?php
+		<?php
 	} ?>
-    </style>
+	</style>
 	<?php
 }
 
@@ -450,6 +450,7 @@ function give_donation_import_callback() {
 	$import_setting['mode']        = $mode;
 	$import_setting['delimiter']   = $delimiter;
 	$import_setting['csv']         = $csv;
+	$import_setting['delete_csv']  = $delete_csv;
 
 	// Parent key id.
 	$main_key = maybe_unserialize( $main_key );
@@ -514,10 +515,11 @@ function give_donation_import_callback() {
 	}
 
 	$url              = give_import_page_url( array(
-		'step'    => '4',
-		'csv'     => $csv,
-		'total'   => $total,
-		'success' => ( isset( $json_data['success'] ) ? $json_data['success'] : '' ),
+		'step'       => '4',
+		'csv'        => $csv,
+		'total'      => $total,
+		'delete_csv' => $import_setting['delete_csv'],
+		'success'    => ( isset( $json_data['success'] ) ? $json_data['success'] : '' ),
 	) );
 	$json_data['url'] = $url;
 
@@ -557,7 +559,7 @@ function give_get_user_roles() {
 	$user_roles = array();
 
 	// Loop through User Roles.
-	foreach( get_editable_roles() as $role_name => $role_info ):
+	foreach ( get_editable_roles() as $role_name => $role_info ):
 		$user_roles[ $role_name ] = $role_info['name'];
 	endforeach;
 
