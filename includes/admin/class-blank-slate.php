@@ -248,7 +248,7 @@ class Give_Blank_Slate {
 			'cta_link'  => admin_url( 'post-new.php?post_type=give_forms' ),
 			'help'      => sprintf(
 				__( 'Need help? Get started with %sGive 101%s.', 'wbpr' ),
-				'<a href="https://doc.givewp.com/give101/">',
+				'<a href="http://docs.givewp.com/give101/" target="_blank">',
 				'</a>'
 			),
 		);
