@@ -421,7 +421,7 @@ final class Give_Payment {
 	public function __set( $key, $value ) {
 		$ignore = array( '_ID' );
 
-		if ( $key === 'status' ) {
+		if ( 'status' === $key ) {
 			$this->old_status = $this->status;
 		}
 
@@ -442,7 +442,7 @@ final class Give_Payment {
 	 *
 	 * @param  string $name The attribute to get
 	 *
-	 * @return boolean       If the item is set or not
+	 * @return boolean|null       If the item is set or not
 	 */
 	public function __isset( $name ) {
 		if ( property_exists( $this, $name ) ) {
@@ -513,9 +513,9 @@ final class Give_Payment {
 		$this->status_nicename = array_key_exists( $this->status, $all_payment_statuses ) ? $all_payment_statuses[ $this->status ] : ucfirst( $this->status );
 
 		// Currency Based.
-		$this->total      = $this->setup_total();
-		$this->subtotal   = $this->setup_subtotal();
-		$this->currency   = $this->setup_currency();
+		$this->total    = $this->setup_total();
+		$this->subtotal = $this->setup_subtotal();
+		$this->currency = $this->setup_currency();
 
 		// Gateway based.
 		$this->gateway        = $this->setup_gateway();
@@ -650,7 +650,7 @@ final class Give_Payment {
 				$donor = new Give_Donor( get_current_user_id(), true );
 
 				// Donor is logged in but used a different email to purchase with so assign to their donor record.
-				if ( ! empty( $donor->id ) && $this->email != $donor->email ) {
+				if ( ! empty( $donor->id ) && $this->email !== $donor->email ) {
 					$donor->add_email( $this->email );
 				}
 			}
@@ -828,7 +828,7 @@ final class Give_Payment {
 						break;
 
 					case 'address':
-						if( ! empty( $this->address ) ) {
+						if ( ! empty( $this->address ) ) {
 							foreach ( $this->address as $address_name => $address ) {
 								switch ( $address_name ) {
 									case 'line1':
@@ -935,7 +935,7 @@ final class Give_Payment {
 	 * @access public
 	 *
 	 * @param  int   $form_id The donation form to add
-	 * @param  array $args Other arguments to pass to the function
+	 * @param  array $args    Other arguments to pass to the function
 	 * @param  array $options List of donation options
 	 *
 	 * @return bool           True when successful, false otherwise
@@ -1028,7 +1028,7 @@ final class Give_Payment {
 	 * @access public
 	 *
 	 * @param  int   $form_id The form ID to remove
-	 * @param  array $args Arguments to pass to identify (quantity, amount, price_id)
+	 * @param  array $args    Arguments to pass to identify (quantity, amount, price_id)
 	 *
 	 * @return bool           If the item was removed or not
 	 */
@@ -1072,7 +1072,7 @@ final class Give_Payment {
 	 *
 	 * @param  string $note The note to add
 	 *
-	 * @return void
+	 * @return bool           If the note was specified or not
 	 */
 	public function add_note( $note = false ) {
 		// Bail if no note specified.
@@ -1167,8 +1167,8 @@ final class Give_Payment {
 			 *
 			 * @since 1.5
 			 *
-			 * @param int $payment_id Payments ID.
-			 * @param string $status The new status.
+			 * @param int    $payment_id Payments ID.
+			 * @param string $status     The new status.
 			 * @param string $old_status The old status.
 			 */
 			do_action( 'give_before_payment_status_change', $this->ID, $status, $old_status );
@@ -1208,8 +1208,8 @@ final class Give_Payment {
 			 *
 			 * @since 1.5
 			 *
-			 * @param int $payment_id Payment ID.
-			 * @param string $status The new status.
+			 * @param int    $payment_id Payment ID.
+			 * @param string $status     The new status.
 			 * @param string $old_status The old status.
 			 */
 			do_action( 'give_update_payment_status', $this->ID, $status, $old_status );
@@ -1243,7 +1243,7 @@ final class Give_Payment {
 	 * @access public
 	 *
 	 * @param  string  $meta_key The Meta Key
-	 * @param  boolean $single Return single item or array
+	 * @param  boolean $single   Return single item or array
 	 *
 	 * @return mixed             The value from the post meta
 	 */
@@ -1273,7 +1273,7 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  string $meta_key The meta key to update
+	 * @param  string $meta_key   The meta key to update
 	 * @param  string $meta_value The meta value
 	 * @param  string $prev_value Previous meta value
 	 *
@@ -1474,8 +1474,8 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @param  bool $alter_store_earnings If the method should alter the store earnings
-	 * @param  bool $alter_customer_value If the method should reduce the donor value
+	 * @param  bool $alter_store_earnings          If the method should alter the store earnings
+	 * @param  bool $alter_customer_value          If the method should reduce the donor value
 	 * @param  bool $alter_customer_purchase_count If the method should reduce the donor's purchase count
 	 *
 	 * @return void

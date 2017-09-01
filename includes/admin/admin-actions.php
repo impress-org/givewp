@@ -466,3 +466,20 @@ function give_donor_information_profile_fields( $user ) {
 }
 
 add_action( 'personal_options', 'give_donor_information_profile_fields' );
+/**
+ * Get Array of WP User Roles.
+ *
+ * @since 1.8.13
+ *
+ * @return array
+ */
+function give_get_user_roles() {
+	$user_roles = array();
+
+	// Loop through User Roles.
+	foreach( get_editable_roles() as $role_name => $role_info ):
+		$user_roles[ $role_name ] = $role_info['name'];
+	endforeach;
+
+	return $user_roles;
+}
