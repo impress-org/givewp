@@ -385,7 +385,7 @@ function _give_show_test_mode_notice_in_admin_bar( $wp_admin_bar ) {
 		'id'     => 'give-test-notice',
 		'href'   => admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways' ),
 		'parent' => 'top-secondary',
-		'title'  => esc_html__( 'Give Test Mode Active', 'give' ),
+		'title'  => __( 'Give Test Mode Active', 'give' ),
 		'meta'   => array( 'class' => 'give-test-mode-active' ),
 	) );
 
@@ -427,7 +427,7 @@ function give_validate_user_profile( $errors, $update, $user ) {
 		if( $donor ) {
 			// If Donor is attached with User, then validate first name
 			if ( empty( $_POST['first_name'] ) ) {
-				$errors->add('empty_first_name', '<strong>ERROR:</strong>' . __( 'Please enter your first name.', 'give' ) );
+				$errors->add( 'empty_first_name', '<strong>ERROR:</strong>' . __( 'Please enter your first name.', 'give' ) );
 			}
 		}
 	}
@@ -437,24 +437,32 @@ function give_validate_user_profile( $errors, $update, $user ) {
 add_action( 'user_profile_update_errors', 'give_validate_user_profile', 10, 3 );
 
 /**
- * @param $user
+ * Show Donor Information on User Profile Page.
+ *
+ * @param $user User Object.
+ *
+ * @since 2.0
  */
 function give_donor_information_profile_fields( $user ) {
 	$donor = Give()->donors->get_donor_by( 'user_id', $user->ID );
-	?>
-	<table class="form-table">
-		<tbody>
+
+	// Display Donor Information, only if donor is attached with User.
+	if( ! empty( $donor->user_id ) ) {
+		?>
+		<table class="form-table">
+			<tbody>
 			<tr>
 				<th scope="row"><?php _e( 'Donor', 'give' ); ?></th>
 				<td>
 					<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ); ?>">
 						<?php _e( 'View Donor Information', 'give' ); ?>
-                    </a>
+					</a>
 				</td>
 			</tr>
-		</tbody>
-	</table>
-	<?php
+			</tbody>
+		</table>
+		<?php
+	}
 }
 
 add_action( 'personal_options', 'give_donor_information_profile_fields' );
