@@ -435,3 +435,26 @@ function give_validate_user_profile( $errors, $update, $user ) {
 }
 
 add_action( 'user_profile_update_errors', 'give_validate_user_profile', 10, 3 );
+
+/**
+ * @param $user
+ */
+function give_donor_information_profile_fields( $user ) {
+	$donor = Give()->donors->get_donor_by( 'user_id', $user->ID );
+	?>
+	<table class="form-table">
+		<tbody>
+			<tr>
+				<th scope="row"><?php _e( 'Donor', 'give' ); ?></th>
+				<td>
+					<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ); ?>">
+						<?php _e( 'View Donor Information', 'give' ); ?>
+                    </a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<?php
+}
+
+add_action( 'personal_options', 'give_donor_information_profile_fields' );
