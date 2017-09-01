@@ -105,11 +105,11 @@ class Give_Email_Template_Tags {
 	public function get_tags( $context_type = 'all', $field = '' ) {
 		$tags = $this->tags;
 
-		if( 'all' !== $context_type ) {
+		if ( 'all' !== $context_type ) {
 			$tags = array();
 
 			foreach ( $this->tags as $tag ) {
-				if( empty( $tag['context'] ) || $context_type !== $tag['context'] ) {
+				if ( empty( $tag['context'] ) || $context_type !== $tag['context'] ) {
 					continue;
 				}
 
@@ -117,7 +117,7 @@ class Give_Email_Template_Tags {
 			}
 		}
 
-		if( ! empty( $tags ) && ! empty( $field )  ) {
+		if ( ! empty( $tags ) && ! empty( $field ) ) {
 			$tags = wp_list_pluck( $tags, $field );
 		}
 
@@ -300,6 +300,7 @@ function give_load_email_tags() {
 	 */
 	do_action( 'give_add_email_tags' );
 }
+
 add_action( 'init', 'give_load_email_tags', - 999 );
 
 
@@ -1161,14 +1162,14 @@ function give_email_tag_email_access_link( $tag_args ) {
 			get_permalink( give_get_option( 'history_page' ) )
 		);
 
-		if( empty( $tag_args['email_content_type'] ) || 'text/html' === $tag_args['email_content_type'] ) {
+		if ( empty( $tag_args['email_content_type'] ) || 'text/html' === $tag_args['email_content_type'] ) {
 			$email_access_link = sprintf(
 				'<a href="%1$s" target="_blank">%2$s</a>',
 				esc_url( $access_url ),
 				__( 'Access Donation Details &raquo;', 'give' )
 			);
 
-		} else{
+		} else {
 
 			$email_access_link = sprintf(
 				'%1$s: %2$s',
