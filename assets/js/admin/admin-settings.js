@@ -83,7 +83,7 @@ jQuery(document).ready(function ($) {
 			var $options = '';
 			if(null === $parsed) {
 				$state_list.prop('disabled', true);
-				$options += '<option selected>No states</option>';
+				$options += '<option selected>No states/province</option>';
 			} else {
 				$state_list.prop('disabled', false);
 			}
