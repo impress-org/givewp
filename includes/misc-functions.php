@@ -1828,7 +1828,7 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 	}
 
 	if ( ! empty( $form ) && $form->get_ID() ) {
-		if ( ! empty( $data['form_level'] ) ) {
+		if ( ! empty( $data['form_level'] ) && 'custom' != (string) strtolower( $data['form_level'] ) ) {
 			$prices     = (array) $form->get_prices();
 			$price_text = array();
 			foreach ( $prices as $key => $price ) {
