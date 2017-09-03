@@ -1464,6 +1464,7 @@ function give_donation_import_give_insert_payment_args( $args, $payment_data ) {
 	if ( ! empty( $payment_data['user_info']['id'] ) ) {
 		$args['post_author'] = (int) $payment_data['user_info']['id'];
 	}
+
 	return $args;
 }
 
@@ -1575,6 +1576,7 @@ function give_get_donation_data_from_csv( $file_id, $start, $end, $delimiter = '
 		}
 		fclose( $handle );
 	}
+
 	return $raw_data;
 }
 
@@ -1703,7 +1705,7 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
 			$donor_data = get_user_by( 'email', $data['email'] );
 
 			if ( empty( $donor_data->ID ) && ! empty( $data['first_name'] ) && ! empty( $data['last_name'] ) && isset( $import_setting['create_user'] ) && 1 === absint( $import_setting['create_user'] ) ) {
-				$give_role = (array) give_get_option( 'donor_default_user_role', get_option( 'default_role', ( ! empty( wp_roles()->is_role( 'give_donor' ) ) ? 'give_donor' : 'subscriber' ) ) );
+				$give_role  = (array) give_get_option( 'donor_default_user_role', get_option( 'default_role', ( ! empty( wp_roles()->is_role( 'give_donor' ) ) ? 'give_donor' : 'subscriber' ) ) );
 				$donor_args = array(
 					'user_login'      => $data['email'],
 					'user_email'      => $data['email'],
