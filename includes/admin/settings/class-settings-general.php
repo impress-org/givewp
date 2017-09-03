@@ -9,6 +9,9 @@
  * @since       1.8
  */
 
+$give_states_list      = give_states_list();
+$give_settings_options = get_option( 'give_settings' );
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
@@ -177,6 +180,9 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 					break;
 
 				case 'general-settings':
+					$give_states_list      = give_states_list();
+					$give_settings_options = get_option( 'give_settings' );
+
 					$settings = array(
 						// Section 1: General.
 						array(
@@ -233,7 +239,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'desc'    => esc_html__( 'The state/province your site operates from.', 'give' ),
 							'id'      => 'base_state',
 							'type'    => 'select',
-							'options' => give_states_list()[ get_option( 'give_settings' )['base_country'] ],
+							'options' => $give_states_list[ $give_settings_options['base_country'] ],
 						),
 						array(
 						    'name'  => esc_html__( 'General Options Docs Link', 'give' ),

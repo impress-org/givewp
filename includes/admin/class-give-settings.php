@@ -245,13 +245,6 @@ class Give_Plugin_Settings {
 							'options' => give_get_country_list(),
 						),
 						array(
-							'name'    => esc_html__( 'Default State/Province', 'give' ),
-							'desc'    => esc_html__( 'The state/province your site operates from.', 'give' ),
-							'id'      => 'base_state',
-							'type'    => 'select',
-							'options' => give_states_list()[ get_option( 'give_settings' )['base_country'] ],
-						),
-						array(
 							'name' => __( 'Currency Settings', 'give' ),
 							'desc' => '',
 							'type' => 'give_title',
