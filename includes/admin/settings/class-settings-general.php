@@ -9,9 +9,6 @@
  * @since       1.8
  */
 
-$give_states_list      = give_states_list();
-$give_settings_options = get_option( 'give_settings' );
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
