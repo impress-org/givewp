@@ -26,6 +26,13 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 	var $request;
 
 	/**
+	 * Used to store form id's that are going to get recount.
+	 * @var array.
+	 * @since 1.8.13
+	 */
+	var $form_key = 'give_temp_delete_form_ids';
+
+	/**
 	 * Used to store donation id's that are going to get deleted.
 	 * @var array.
 	 * @since 1.8.12
@@ -110,6 +117,8 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 
 		// Check if the ajax request if running for the first time.
 		if ( 1 === (int) $this->step ) {
+			// Delete all the form ids.
+			$this->delete_option( $this->form_key );
 			// Delete all the donation ids.
 			$this->delete_option( $this->donation_key );
 			// Delete all the donor ids.
@@ -314,11 +323,34 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 			foreach ( $donation_ids as $item ) {
 				wp_delete_post( $item, true );
 			}
+
+			// Get the old form list.
+			$form_ids = (array) $this->get_option( $this->form_key );
+
+			foreach ( $donation_ids as $item ) {
+				$form_ids[] = get_post_meta( $item, '_give_payment_form_id', true );
+				wp_delete_post( $item, true );
+			}
+
+			// update the new form list.
+			$this->update_option( $this->form_key, $form_ids );
 		}
 
 
 		// Here we delete all the donor
 		if ( 3 === $step ) {
+
+			// Get the old form list.
+			$form_ids = (array) $this->get_option( $this->form_key );
+			if ( ! empty( $form_ids ) ) {
+				$form_ids = array_unique( $form_ids );
+				foreach ( $form_ids as $form_id ) {
+					give_recount_form_income_donation( (int) $form_id );
+				}
+			}
+			// update the new form list.
+			$this->update_option( $this->form_key, array() );
+
 			$page  = (int) $this->get_step_page();
 			$count = count( $donor_ids );
 

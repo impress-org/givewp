@@ -2160,3 +2160,62 @@ function get_customer_meta( $customer_id, $key = '', $single = false ) {
 function update_customer_meta( $customer_id, $meta_key, $meta_value, $prev_value = '' ) {
 	return update_metadata( 'give_customer', $customer_id, $meta_key, $meta_value, $prev_value );
 }
+
+/*
+ * Give recalculate income and donation of the donation from ID
+ *
+ * @since 1.8.13
+ *
+ * @param int $form_id Form id of which recalculation needs to be done.
+ */
+function give_recount_form_income_donation( $form_id = false ) {
+	// Check if form id is not empty.
+	if ( ! empty( $form_id ) ) {
+		/**
+		 * Filter to modify payment status.
+		 *
+		 * @since 1.8.13
+		 */
+		$accepted_statuses = apply_filters( 'give_recount_accepted_statuses', array( 'publish' ) );
+
+		/**
+		 * Filter to modify args of payment query before recalculating the form total
+		 *
+		 * @since 1.8.13
+		 */
+		$args = apply_filters( 'give_recount_form_stats_args', array(
+			'give_forms'     => $form_id,
+			'status'         => $accepted_statuses,
+			'posts_per_page' => - 1,
+			'fields'         => 'ids',
+		) );
+
+		$totals = array(
+			'sales'    => 0,
+			'earnings' => 0,
+		);
+
+		$payments = new Give_Payments_Query( $args );
+		$payments = $payments->get_payments();
+
+		if ( $payments ) {
+			foreach ( $payments as $payment ) {
+				//Ensure acceptible status only
+				if ( ! in_array( $payment->post_status, $accepted_statuses ) ) {
+					continue;
+				}
+
+				//Ensure only payments for this form are counted
+				if ( $payment->form_id != $form_id ) {
+					continue;
+				}
+
+				$totals['sales'] ++;
+				$totals['earnings'] += $payment->total;
+
+			}
+		}
+		give_update_meta( $form_id, '_give_form_sales', $totals['sales'] );
+		give_update_meta( $form_id, '_give_form_earnings', give_sanitize_amount_for_db( $totals['earnings'] ) );
+	}
+}
