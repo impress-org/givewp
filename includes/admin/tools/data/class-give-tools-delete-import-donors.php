@@ -182,13 +182,33 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 		// The Loop.
 		if ( $donation_posts->have_posts() ) {
 			while ( $donation_posts->have_posts() ) {
+				$add_author = true;
 				$donation_posts->the_post();
 				global $post;
 				// Add the donation id in side the array.
 				$donation_ids[] = $post->ID;
 
-				// Add the donor id in side the array.
-				$donor_ids[] = (int) $post->post_author;
+				$donor_id = (int) get_post_meta( $post->ID, '_give_payment_customer_id', true );
+				if ( ! empty( $donor_id ) ) {
+					$donor = new Give_Donor( $donor_id );
+					if ( ! empty( $donor->id ) ) {
+						if ( empty( $donor->user_id ) && ! empty( $donor->payment_ids ) ) {
+							$add_author = false;
+							$count      = (int) count( $donor->payment_ids );
+							if ( 1 === $count ) {
+								Give()->donors->delete( $donor->id );
+							} else {
+								$donor->remove_payment( $post->ID );
+								$donor->decrease_donation_count();
+							}
+						}
+					}
+				}
+
+				if ( ! empty( $add_author ) ) {
+					// Add the donor id in side the array.
+					$donor_ids[] = (int) $post->post_author;
+				}
 			}
 			/* Restore original Post Data */
 		}
@@ -320,10 +340,6 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 				$this->update_option( $this->step_on_key, '0' );
 			}
 
-			foreach ( $donation_ids as $item ) {
-				wp_delete_post( $item, true );
-			}
-
 			// Get the old form list.
 			$form_ids = (array) $this->get_option( $this->form_key );
 
@@ -361,8 +377,6 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 				'post_type'      => 'give_payment',
 				'post_status'    => 'any',
 				'posts_per_page' => 1,
-				'meta_key'       => '_give_payment_mode',
-				'meta_value'     => 'live',
 				'author'         => $donor_ids[ $page ]
 			) );
 
