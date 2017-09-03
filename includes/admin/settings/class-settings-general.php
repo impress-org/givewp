@@ -177,6 +177,9 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 					break;
 
 				case 'general-settings':
+					$give_states_list      = give_states_list();
+					$give_settings_options = get_option( 'give_settings' );
+
 					$settings = array(
 						// Section 1: General.
 						array(
@@ -228,13 +231,20 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'type'    => 'select',
 							'options' => give_get_country_list(),
 						),
-                        array(
-                            'name'  => esc_html__( 'General Options Docs Link', 'give' ),
-                            'id'    => 'general_options_docs_link',
-                            'url'   => esc_url( 'http://docs.givewp.com/settings-general' ),
-                            'title' => __( 'General Options', 'give' ),
-                            'type'  => 'give_docs_link',
-                        ),
+						array(
+							'name'    => esc_html__( 'Default State/Province', 'give' ),
+							'desc'    => esc_html__( 'The state/province your site operates from.', 'give' ),
+							'id'      => 'base_state',
+							'type'    => 'select',
+							'options' => $give_states_list[ $give_settings_options['base_country'] ],
+						),
+						array(
+						    'name'  => esc_html__( 'General Options Docs Link', 'give' ),
+						    'id'    => 'general_options_docs_link',
+						    'url'   => esc_url( 'http://docs.givewp.com/settings-general' ),
+						    'title' => __( 'General Options', 'give' ),
+						    'type'  => 'give_docs_link',
+						),
 						array(
 							'type' => 'sectionend',
 							'id'   => 'give_title_general_settings_1'

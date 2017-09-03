@@ -117,6 +117,21 @@ function give_hide_outdated_php_notice() {
 add_action( 'wp_ajax_give_hide_outdated_php_notice', 'give_hide_outdated_php_notice' );
 
 /**
+ * Updates state list.
+ *
+ * This code changes the state list in general settings when the country is changed.
+ *
+ * @return void
+ */
+function give_update_states() {
+	$country_code = filter_input( INPUT_POST, 'country_code', FILTER_SANITIZE_STRING );
+	$states_list  = give_states_list();
+	echo wp_json_encode( $states_list[ $country_code ] );
+	wp_die();
+}
+add_action( 'wp_ajax_give_update_states', 'give_update_states' );
+
+/**
  * Register admin notices.
  *
  * @since 1.8.9

@@ -61,4 +61,40 @@ jQuery(document).ready(function ($) {
 		// Update select html.
 		$default_gateway.html(active_payment_option_html);
 	});
+
+	/**
+	 * Updates states list on change of country
+	 */
+	var $country_list = $('#base_country'),
+		$state_list   = $('#base_state'),
+		$name         = null;
+	$country_list.on('change', function() {
+		$.ajax({
+			url: ajaxurl,
+			type: 'POST',
+			data: {
+				action       : 'give_update_states',
+				country_code : $(this).val(),
+			},
+		})
+		.done(function(response) {
+			$state_list[0].options.length = 0;
+			var $parsed = JSON.parse(response);
+			var $options = '';
+			if(null === $parsed) {
+				$state_list.prop('disabled', true);
+				$options += '<option selected>No states/province</option>';
+			} else {
+				$state_list.prop('disabled', false);
+			}
+			for($name in $parsed) {
+				if($parsed.hasOwnProperty($name)) {
+					if('' !== $parsed[$name]) {
+						$options += '<option value="' + $name + '">' + $parsed[$name] + '</option>';
+					}
+				}
+			}
+			$state_list.html($options);
+		});
+	});
 });
