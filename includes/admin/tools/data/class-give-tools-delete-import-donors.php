@@ -374,15 +374,27 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 			$this->step_completed = $page + ( count( $donation_ids ) / $this->per_step );
 
 			$args = apply_filters( 'give_tools_reset_stats_total_args', array(
-				'post_type'      => 'give_payment',
 				'post_status'    => 'any',
 				'posts_per_page' => 1,
 				'author'         => $donor_ids[ $page ]
 			) );
 
-			$donation_posts = get_posts( $args );
-			if ( empty( $donation_posts ) ) {
+			$donations = array();
+			$payments = new Give_Payments_Query( $args );
+			$payments = $payments->get_payments();
+			if ( empty( $payments ) ) {
 				Give()->donors->delete_by_user_id( $donor_ids[ $page ] );
+			} else {
+				foreach ( $payments as $payment ) {
+					$donations[] = $payment->ID;
+				}
+
+				$donor          = new Give_Donor( $donor_ids[ $page ], true );
+				$data_to_update = array(
+					'purchase_count' => count( $donations ),
+					'payment_ids'    => implode( ',', $donations ),
+				);
+				$donor->update( $data_to_update );
 			}
 
 			$page ++;
