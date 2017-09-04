@@ -24,6 +24,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function give_do_automatic_upgrades() {
+
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
+
 	$did_upgrade  = false;
 	$give_version = preg_replace( '/[^0-9.].*/', '', get_option( 'give_version' ) );
 
