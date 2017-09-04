@@ -467,9 +467,32 @@ jQuery.noConflict();
 	var Give_Settings = {
 
 		init: function () {
+			this.setting_change_Country();
 			this.toggle_options();
 			this.main_setting_update_notice();
 			this.verify_settings();
+		},
+
+		setting_change_Country: function () {
+			$('select[name="base_country"]').change(function () {
+				var $this = $(this);
+				var data = {
+					action: 'give_get_states',
+					country: $this.val(),
+					field_name: 'base_state',
+				};
+
+				$.post(ajaxurl, data, function (response) {
+					if (typeof ( response.states_found ) != undefined && true == response.states_found) {
+						$this.closest( 'tr' ).next().show()
+						$(':input[name="base_state"]').replaceWith( response.data );
+					} else {
+						$this.closest( 'tr' ).next().hide();
+						$(':input[name="base_state"]').replaceWith('<input type="hidden" name="' + data.field_name + '" value="" class="give-edit-toggles medium-text"/>');
+					}
+				});
+				return false;
+			});
 		},
 
 		toggle_options: function () {
