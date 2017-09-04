@@ -72,9 +72,6 @@ class Tests_Activation extends Give_Unit_Test_Case {
 		$this->assertArrayHasKey( 'form_featured_img', $give_options );
 		$this->assertEquals( 'enabled', $give_options['form_featured_img'] );
 
-		$this->assertArrayHasKey( 'featured_image_size', $give_options );
-		$this->assertEquals( 'large', $give_options['featured_image_size'] );
-
 		$this->assertArrayHasKey( 'form_sidebar', $give_options );
 		$this->assertEquals( 'enabled', $give_options['form_sidebar'] );
 
@@ -86,9 +83,6 @@ class Tests_Activation extends Give_Unit_Test_Case {
 
 		$this->assertArrayHasKey( 'terms', $give_options );
 		$this->assertEquals( 'disabled', $give_options['terms'] );
-
-		$this->assertArrayHasKey( 'email_template', $give_options );
-		$this->assertEquals( 'default', $give_options['email_template'] );
 
 		$this->assertArrayHasKey( 'admin_notices', $give_options );
 		$this->assertEquals( 'enabled', $give_options['admin_notices'] );
