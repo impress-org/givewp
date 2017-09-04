@@ -1480,8 +1480,6 @@ function give_donation_import_give_insert_payment_args( $args, $payment_data ) {
 /**
  * Check if Import donation is duplicate
  *
- * Ref: https://xwp.github.io/engineering-best-practices/php/
- *
  * @since 1.8.13
  */
 function give_check_import_donation_duplicate( $payment_data, $data, $form, $donor_data ) {
