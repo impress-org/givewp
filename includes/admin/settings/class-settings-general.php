@@ -177,6 +177,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 					break;
 
 				case 'general-settings':
+					$states = give_get_states();
 					$settings = array(
 						// Section 1: General.
 						array(
@@ -229,11 +230,12 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'options' => give_get_country_list(),
 						),
 						array(
+							'wrapper_class'    => ( empty( $states ) ? 'give-hidden' : '' ),
 							'name'    => __( 'Default State/Province', 'give' ),
 							'desc'    => __( 'The state/province your site operates from.', 'give' ),
 							'id'      => 'base_state',
 							'type'    => 'select',
-							'options' => give_get_states(),
+							'options' => $states,
 						),
 						array(
 							'name'  => esc_html__( 'General Options Docs Link', 'give' ),
