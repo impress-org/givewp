@@ -177,7 +177,11 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 					break;
 
 				case 'general-settings':
+					$country = give_get_country();
 					$states = give_get_states();
+					// Get the country list that does not have any states init.
+					$no_states_country = give_no_states_country_list();
+
 					$settings = array(
 						// Section 1: General.
 						array(
@@ -230,11 +234,11 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'options' => give_get_country_list(),
 						),
 						array(
-							'wrapper_class'    => ( empty( $states ) ? 'give-hidden' : '' ),
+							'wrapper_class'    => ( array_key_exists( $country, $no_states_country ) ? 'give-hidden' : '' ),
 							'name'    => __( 'Default State/Province', 'give' ),
 							'desc'    => __( 'The state/province your site operates from.', 'give' ),
 							'id'      => 'base_state',
-							'type'    => 'select',
+							'type'    => ( empty( $states ) ? 'text' : 'select' ),
 							'options' => $states,
 						),
 						array(

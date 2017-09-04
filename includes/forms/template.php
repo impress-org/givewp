@@ -1013,6 +1013,10 @@ function give_default_cc_address_fields( $form_id ) {
 		<?php
 		$selected_state = give_get_state();
 
+		if ( ! empty( $give_user_info['card_state'] ) && '*' !== $give_user_info['card_state'] ) {
+			$selected_country = $give_user_info['card_state'];
+		}
+
 		$label        = __( 'State', 'give' );
 		$states_label = give_get_states_label();
 		// Check if $country code exists in the array key for states label.

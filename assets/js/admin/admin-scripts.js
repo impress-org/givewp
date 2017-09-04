@@ -483,12 +483,14 @@ jQuery.noConflict();
 				};
 
 				$.post(ajaxurl, data, function (response) {
+					$this.closest( 'tr' ).next().show()
 					if (typeof ( response.states_found ) != undefined && true == response.states_found) {
-						$this.closest( 'tr' ).next().show()
 						$(':input[name="base_state"]').replaceWith( response.data );
 					} else {
-						$this.closest( 'tr' ).next().hide();
-						$(':input[name="base_state"]').replaceWith('<input type="hidden" name="' + data.field_name + '" value="" class="give-edit-toggles medium-text"/>');
+						if (typeof ( response.show_field ) != undefined && false == response.show_field ) {
+							$this.closest( 'tr' ).next().hide();
+						}
+						$(':input[name="base_state"]').replaceWith('<input type="text" name="' + data.field_name + '" value="" class="give-edit-toggles medium-text"/>');
 					}
 				});
 				return false;
