@@ -1011,13 +1011,17 @@ function give_default_cc_address_fields( $form_id ) {
 
 
 		<?php
+		// Get defalut selected state by admin.
 		$selected_state = give_get_state();
-		if ( ! empty( $give_user_info['card_state'] ) ) {
+
+		// Get the last payment made by user states.
+		if ( ! empty( $give_user_info['card_state'] ) && '*' !== $give_user_info['card_state'] ) {
 			$selected_state = $give_user_info['card_state'];
 		}
 
-		if ( ! empty( $give_user_info['card_state'] ) && '*' !== $give_user_info['card_state'] ) {
-			$selected_country = $give_user_info['card_state'];
+		// Get the country code
+		if ( ! empty( $give_user_info['billing_country'] ) && '*' !== $give_user_info['billing_country'] ) {
+			$selected_country = $give_user_info['billing_country'];
 		}
 
 		$label        = __( 'State', 'give' );

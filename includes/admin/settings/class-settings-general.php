@@ -177,8 +177,12 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 					break;
 
 				case 'general-settings':
+					// Get default country code.
 					$country = give_get_country();
-					$states = give_get_states();
+
+					// get the list of the states of which defalut country is selected
+					$states = give_get_states( $country );
+
 					// Get the country list that does not have any states init.
 					$no_states_country = give_no_states_country_list();
 
@@ -233,6 +237,11 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'type'    => 'select',
 							'options' => give_get_country_list(),
 						),
+						/**
+						 * Add base state to give setting
+						 *
+						 * @since 1.8.14
+						 */
 						array(
 							'wrapper_class'    => ( array_key_exists( $country, $no_states_country ) ? 'give-hidden' : '' ),
 							'name'    => __( 'Default State/Province', 'give' ),

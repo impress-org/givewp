@@ -473,6 +473,11 @@ jQuery.noConflict();
 			this.verify_settings();
 		},
 
+		/**
+		 * Fire when user change the country from the dropdown
+		 *
+		 * @since 1.8.14
+		 */
 		setting_change_Country: function () {
 			$('select[name="base_country"]').change(function () {
 				var $this = $(this);
@@ -483,11 +488,13 @@ jQuery.noConflict();
 				};
 
 				$.post(ajaxurl, data, function (response) {
+					// Show the states dropdown menu
 					$this.closest( 'tr' ).next().show()
 					if (typeof ( response.states_found ) != undefined && true == response.states_found) {
 						$(':input[name="base_state"]').replaceWith( response.data );
 					} else {
 						if (typeof ( response.show_field ) != undefined && false == response.show_field ) {
+							// Hide the states dropdown menu
 							$this.closest( 'tr' ).next().hide();
 						}
 						$(':input[name="base_state"]').replaceWith('<input type="text" name="' + data.field_name + '" value="" class="give-edit-toggles medium-text"/>');
