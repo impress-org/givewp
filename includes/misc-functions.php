@@ -1298,7 +1298,16 @@ function give_import_page_url( $parameter = array() ) {
 	return add_query_arg( $import_query_arg, admin_url( 'edit.php' ) );
 }
 
-
+/**
+ * Add import Donation forms, donations , donor from CSV to database
+ *
+ * @since 1.8.13
+ *
+ * @param array $raw_key Setup bu user at step 2.
+ * @param array $row_data Feilds that are being imported from CSV
+ * @param array $main_key First row from the CSV
+ * @param array $import_setting Contain the global variable.
+ */
 function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array(), $import_setting = array() ) {
 	$data                          = array_combine( $raw_key, $row_data );
 	$price_id                      = false;
@@ -2092,11 +2101,11 @@ function give_import_donation_report_reset() {
 
 
 /**
- * Add meta data field to a customers.
+ * Add meta data field to a donor.
  *
  * @since 1.8.13
  *
- * @param int $customer_id Customers ID.
+ * @param int $donor_id Donor ID.
  * @param string $meta_key Metadata name.
  * @param mixed $meta_value Metadata value. Must be serializable if non-scalar.
  * @param bool $unique Optional. Whether the same key should not be added.
@@ -2104,12 +2113,12 @@ function give_import_donation_report_reset() {
  *
  * @return int|false Meta ID on success, false on failure.
  */
-function add_customer_meta( $customer_id, $meta_key, $meta_value, $unique = false ) {
-	return add_metadata( 'give_customer', $customer_id, $meta_key, $meta_value, $unique );
+function add_donor_meta( $donor_id, $meta_key, $meta_value, $unique = false ) {
+	return add_metadata( 'give_customer', $donor_id, $meta_key, $meta_value, $unique );
 }
 
 /**
- * Remove metadata matching criteria from a Customer meta.
+ * Remove metadata matching criteria from a Donor meta.
  *
  * You can match based on the key, or key and value. Removing based on key and
  * value, will keep from removing duplicate metadata with the same key. It also
@@ -2117,48 +2126,48 @@ function add_customer_meta( $customer_id, $meta_key, $meta_value, $unique = fals
  *
  * @since 1.8.13
  *
- * @param int $customer_id Customers ID
+ * @param int $donor_id Donor ID
  * @param string $meta_key Metadata name.
  * @param mixed $meta_value Optional. Metadata value.
  *
  * @return bool True on success, false on failure.
  */
-function delete_customer_meta( $customer_id, $meta_key, $meta_value = '' ) {
-	return delete_metadata( 'give_customer', $customer_id, $meta_key, $meta_value );
+function delete_donor_meta( $donor_id, $meta_key, $meta_value = '' ) {
+	return delete_metadata( 'give_customer', $donor_id, $meta_key, $meta_value );
 }
 
 /**
- * Retrieve comment meta field for a Customers.
+ * Retrieve donor meta field for a donor meta table.
  *
  * @since 1.8.13
  *
- * @param int $customer_id Customer ID.
+ * @param int $donor_id Donor ID.
  * @param string $key Optional. The meta key to retrieve. By default, returns data for all keys.
  * @param bool $single Whether to return a single value.
  *
  * @return mixed Will be an array if $single is false. Will be value of meta data field if $single
  *  is true.
  */
-function get_customer_meta( $customer_id, $key = '', $single = false ) {
-	return get_metadata( 'give_customer', $customer_id, $key, $single );
+function get_donor_meta( $donor_id, $key = '', $single = false ) {
+	return get_metadata( 'give_customer', $donor_id, $key, $single );
 }
 
 /**
- * Update customer meta field based on Customer ID.\
+ * Update customer meta field based on Donor ID.
  *
- * If the meta field for the customer does not exist, it will be added.
+ * If the meta field for the donor does not exist, it will be added.
  *
  * @since 1.8.13
  *
- * @param int $customer_id Customer ID.
+ * @param int $donor_id Donor ID.
  * @param string $meta_key Metadata key.
  * @param mixed $meta_value Metadata value.
  * @param mixed $prev_value Optional. Previous value to check before removing.
  *
  * @return int|bool Meta ID if the key didn't exist, true on successful update, false on failure.
  */
-function update_customer_meta( $customer_id, $meta_key, $meta_value, $prev_value = '' ) {
-	return update_metadata( 'give_customer', $customer_id, $meta_key, $meta_value, $prev_value );
+function update_donor_meta( $donor_id, $meta_key, $meta_value, $prev_value = '' ) {
+	return update_metadata( 'give_customer', $donor_id, $meta_key, $meta_value, $prev_value );
 }
 
 /*
