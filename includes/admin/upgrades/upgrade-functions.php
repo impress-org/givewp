@@ -1050,9 +1050,6 @@ function give_v20_upgrades_email_setting() {
  * @since 2.0
  */
 function give_v20_upgrade_donor_register_email_message() {
-	/* @var Give_Updates $give_updates */
-	$give_updates = Give_Updates::get_instance();
-
 	$all_setting = give_get_settings();
 
 	// Bailout on fresh install.
@@ -1060,7 +1057,7 @@ function give_v20_upgrade_donor_register_email_message() {
 		return;
 	}
 
-	$donor_register_email = new Give_Donor_Register_Email();
+	$donor_register_email = Give_Donor_Register_Email::get_instance();
 	give_update_option( 'donor-register_email_message', $donor_register_email->get_default_email_message() );
 }
 
