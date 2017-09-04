@@ -24,10 +24,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function give_do_automatic_upgrades() {
-
-	/* @var Give_Updates $give_updates */
-	$give_updates = Give_Updates::get_instance();
-
 	$did_upgrade  = false;
 	$give_version = preg_replace( '/[^0-9.].*/', '', get_option( 'give_version' ) );
 
@@ -1054,6 +1050,9 @@ function give_v20_upgrades_email_setting() {
  * @since 2.0
  */
 function give_v20_upgrade_donor_register_email_message() {
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
+
 	$all_setting = give_get_settings();
 
 	// Bailout on fresh install.
