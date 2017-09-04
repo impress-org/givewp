@@ -229,6 +229,13 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'options' => give_get_country_list(),
 						),
 						array(
+							'name'    => __( 'Default State/Province', 'give' ),
+							'desc'    => __( 'The state/province your site operates from.', 'give' ),
+							'id'      => 'base_state',
+							'type'    => 'select',
+							'options' => give_get_states(),
+						),
+						array(
 							'name'  => esc_html__( 'General Options Docs Link', 'give' ),
 							'id'    => 'general_options_docs_link',
 							'url'   => esc_url( 'http://docs.givewp.com/settings-general' ),
