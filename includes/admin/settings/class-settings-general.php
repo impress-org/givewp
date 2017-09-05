@@ -244,7 +244,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						 */
 						array(
 							'wrapper_class'    => ( array_key_exists( $country, $no_states_country ) ? 'give-hidden' : '' ),
-							'name'    => __( 'Default State/Province', 'give' ),
+							'name'    => __( 'Base State/Province', 'give' ),
 							'desc'    => __( 'The state/province your site operates from.', 'give' ),
 							'id'      => 'base_state',
 							'type'    => ( empty( $states ) ? 'text' : 'select' ),

@@ -497,7 +497,7 @@ jQuery.noConflict();
 							// Hide the states dropdown menu
 							$this.closest( 'tr' ).next().hide();
 						}
-						$(':input[name="base_state"]').replaceWith('<input type="text" name="' + data.field_name + '" value="" class="give-edit-toggles medium-text"/>');
+						$(':input[name="base_state"]').replaceWith('<input type="text" name="' + data.field_name + '" value="' + response.default_state + '" class="give-edit-toggles medium-text"/>');
 					}
 				});
 				return false;
