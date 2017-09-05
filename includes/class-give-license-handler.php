@@ -116,7 +116,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		private $account_url = 'https://givewp.com/my-account/';
 
 		/**
-		 * Ccheckout URL
+		 * Checkout URL
 		 *
 		 * @access private
 		 * @since  1.7
@@ -157,6 +157,13 @@ if ( ! class_exists( 'Give_License' ) ) :
 			$this->checkout_url     = is_null( $_checkout_url ) ? $this->checkout_url : $_checkout_url;
 			$this->account_url      = is_null( $_account_url ) ? $this->account_url : $_account_url;
 			$this->auto_updater_obj = null;
+
+			// Add Setting for Give Add-on activation status.
+			$is_addon_activated = get_option( 'give_is_addon_activated' );
+			if( ! $is_addon_activated && is_object( $this ) && sizeof( $this ) > 0 ) {
+				update_option( 'give_is_addon_activated', true );
+				Give_Cache::set( 'give_cache_hide_license_notice_after_activation', true, 5 * MINUTE_IN_SECONDS );
+			}
 
 			// Setup hooks
 			$this->includes();
@@ -557,9 +564,14 @@ if ( ! class_exists( 'Give_License' ) ) :
 			$addon_license_key_in_subscriptions = ! empty( $addon_license_key_in_subscriptions ) ? $addon_license_key_in_subscriptions : array();
 			$messages                           = array();
 
+			// Check whether admin has Give Add-on activated since 24 hours?
+			$is_license_notice_hidden = Give_Cache::get( 'give_cache_hide_license_notice_after_activation' );
+
+			// Display Invalid License notice, if its more than 24 hours since first Give Add-on activation.
 			if (
 				empty( $this->license )
 				&& empty( $showed_invalid_message )
+				&& ( false === $is_license_notice_hidden )
 			) {
 
 				Give()->notices->register_notice( array(
