@@ -388,8 +388,17 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 		 * @since 1.8.13
 		 */
 		static function get_columns( $index, $donations, $donors, $forms, $value = false ) {
+			$default = give_import_default_options();
 			?>
 			<select name="mapto[<?php echo $index; ?>]">
+				<?php
+				foreach ( $default as $option => $option_value ) {
+					$checked = self::selected( $option_value, $value );
+					?>
+					<option value="<?php echo $option; ?>" <?php echo $checked; ?> ><?php echo $option_value; ?></option>
+					<?php
+				}
+				?>
 				<optgroup label="Donations">
 					<?php
 					foreach ( $donations as $option => $option_value ) {

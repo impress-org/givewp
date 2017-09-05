@@ -1589,11 +1589,36 @@ function give_get_donation_data_from_csv( $file_id, $start, $end, $delimiter = '
 
 
 /**
+ * Return the option that are default options.
+ *
+ * @since 1.8.13
+ */
+function give_import_default_options() {
+	/**
+	 * Filter to modify defalut option in the import dropdown
+	 *
+	 * @since 1.8.13
+	 *
+	 * @return array
+	 */
+	return (array) apply_filters( 'give_import_default_options', array(
+		'' => __( 'Do not import', 'give' ),
+	) );
+}
+
+/**
  * Return the option that are related to donations.
  *
  * @since 1.8.13
  */
 function give_import_donations_options() {
+	/**
+	 * Filter to modify donations option in the import dropdown
+	 *
+	 * @since 1.8.13
+	 *
+	 * @return array
+	 */
 	return (array) apply_filters( 'give_import_donations_options', array(
 		''            => __( 'Do not import', 'give' ),
 		'id'          => __( 'Donation ID', 'give' ),
@@ -1622,6 +1647,13 @@ function give_import_donations_options() {
  * @since 1.8.13
  */
 function give_import_donor_options() {
+	/**
+	 * Filter to modify donors option in the import dropdown
+	 *
+	 * @since 1.8.13
+	 *
+	 * @return array
+	 */
 	return (array) apply_filters( 'give_import_donor_options', array(
 		'donor_id' => __( 'Donor ID', 'give' ),
 		'user_id'  => __( 'User ID', 'give' ),
@@ -1634,6 +1666,13 @@ function give_import_donor_options() {
  * @since 1.8.13
  */
 function give_import_donation_form_options() {
+	/**
+	 * Filter to modify form option in the import dropdown
+	 *
+	 * @since 1.8.13
+	 *
+	 * @return array
+	 */
 	return (array) apply_filters( 'give_import_donation_form_options', array(
 		'form_id'    => __( 'Donation Form ID', 'give' ),
 		'form_title' => __( 'Donation Form', 'give' ),
