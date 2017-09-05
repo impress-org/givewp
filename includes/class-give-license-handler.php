@@ -658,8 +658,9 @@ if ( ! class_exists( 'Give_License' ) ) :
 			// Show non subscription addon messages.
 			if (
 				! in_array( $this->license, $addon_license_key_in_subscriptions )
-				&& ! $this->is_valid_license()
+				&& ! empty( $this->license )
 				&& empty( $showed_invalid_message )
+				&& ! $this->is_valid_license()
 			) {
 
 				Give()->notices->register_notice( array(
