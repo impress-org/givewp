@@ -288,7 +288,7 @@ jQuery.noConflict();
 						state_wrap.append(response.data);
 						state_wrap.find('select').chosen();
 					} else {
-						state_wrap.append('<input type="text" name="give-payment-address[0][state]" value="" class="give-edit-toggles medium-text"/>');
+						state_wrap.append('<input type="text" name="give-payment-address[0][state]" value="' + response.default_state + '" class="give-edit-toggles medium-text"/>');
 					}
 				});
 
@@ -1088,7 +1088,7 @@ jQuery.noConflict();
 					if (typeof ( response.states_found ) != undefined && true == response.states_found) {
 						$(':input[name="customerinfo[state]"]').replaceWith(response.data);
 					} else {
-						$(':input[name="customerinfo[state]"]').replaceWith('<input type="text" name="' + data.field_name + '" value="" class="give-edit-toggles medium-text"/>');
+						$(':input[name="customerinfo[state]"]').replaceWith('<input type="text" name="' + data.field_name + '" value="' + response.default_state + '" class="give-edit-toggles medium-text"/>');
 					}
 				});
 
