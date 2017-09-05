@@ -227,8 +227,8 @@ function give_ajax_get_states_field() {
 			'options'          => $states,
 			'show_option_all'  => false,
 			'show_option_none' => false,
-			'placeholder' => $label,
-			'selected' => $default_state,
+			'placeholder'      => $label,
+			'selected'         => $default_state,
 		);
 		$data = Give()->html->select( $args );
 		$states_found = true;
@@ -252,13 +252,13 @@ function give_ajax_get_states_field() {
 		}
 	}
 	$response = array(
-		'success' => true,
-		'states_found' => $states_found,
-		'show_field' => $show_field,
-		'states_label' => $label,
+		'success'        => true,
+		'states_found'   => $states_found,
+		'show_field'     => $show_field,
+		'states_label'   => $label,
 		'states_require' => $states_require,
-		'data' => $data,
-		'default_state' => $default_state,
+		'data'           => $data,
+		'default_state'  => $default_state,
 	);
 	wp_send_json( $response );
 }
