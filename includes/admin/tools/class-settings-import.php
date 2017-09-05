@@ -549,7 +549,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 			$delimiter   = ( isset( $_REQUEST['delimiter'] ) ? give_clean( $_POST['delimiter'] ) : ',' );
 			$mode        = ( ! empty( $_REQUEST['mode'] ) ? 'on' : '' );
 			$create_user = ( isset( $_REQUEST['create_user'] ) && isset( $_REQUEST['csv'] ) && 1 == absint( $_REQUEST['create_user'] ) ? 'on' : ( isset( $_REQUEST['csv'] ) ? '' : 'on' ) );
-			$delete_csv  = ( ! empty( $_REQUEST['delete_csv'] ) ? 'on' : '' );
+			$delete_csv = ( isset( $_REQUEST['delete_csv'] ) && isset( $_REQUEST['csv'] ) && 1 == absint( $_REQUEST['delete_csv'] ) ? 'on' : ( isset( $_REQUEST['csv'] ) ? '' : 'on' ) );
 
 			$settings = array(
 				array(
