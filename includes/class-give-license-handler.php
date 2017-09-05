@@ -19,7 +19,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 	/**
 	 * Give_License Class
 	 *
-	 * This class simplifies the process of adding license information to new Give add-ons.
+	 * This class simplifies the process of adding license information
+	 * to new Give add-ons.
 	 *
 	 * @since 1.0
 	 */
@@ -200,16 +201,16 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 */
 		private function hooks() {
 
-			// Register settings
+			// Register settings.
 			add_filter( 'give_settings_licenses', array( $this, 'settings' ), 1 );
 
-			// Activate license key on settings save
+			// Activate license key on settings save.
 			add_action( 'admin_init', array( $this, 'activate_license' ) );
 
-			// Deactivate license key
+			// Deactivate license key.
 			add_action( 'admin_init', array( $this, 'deactivate_license' ) );
 
-			// Updater
+			// Updater.
 			add_action( 'admin_init', array( $this, 'auto_updater' ), 0 );
 			add_action( 'admin_notices', array( $this, 'notices' ) );
 
@@ -239,7 +240,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 */
 		public function auto_updater() {
 
-			// Setup the updater
+			// Setup the updater.
 			$this->auto_updater_obj = new EDD_SL_Plugin_Updater(
 				$this->api_url,
 				$this->file,
@@ -362,12 +363,12 @@ if ( ! class_exists( 'Give_License' ) ) :
 			// Delete previous license key from subscription if previously added.
 			$this->__remove_license_key_from_subscriptions();
 
-			// Make sure there are no api errors
+			// Make sure there are no api errors.
 			if ( ! ( $license_data = $this->get_license_info( 'activate_license' ) ) ) {
 				return;
 			}
 
-			// Tell WordPress to look for updates
+			// Tell WordPress to look for updates.
 			set_site_transient( 'update_plugins', null );
 
 			// Add license data.
@@ -403,10 +404,10 @@ if ( ! class_exists( 'Give_License' ) ) :
 				return;
 			}
 
-			// Run on deactivate button press
+			// Run on deactivate button press.
 			if ( isset( $_POST[ $this->item_shortname . '_license_key_deactivate' ] ) ) {
 
-				// Make sure there are no api errors
+				// Make sure there are no api errors.
 				if ( ! ( $license_data = $this->get_license_info( 'deactivate_license' ) ) ) {
 					return;
 				}
@@ -451,7 +452,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 				return;
 			}
 
-			// Make sure there are no api errors
+			// Make sure there are no api errors.
 			if ( ! ( $license_data = $this->get_license_info( 'check_license' ) ) ) {
 				return;
 			}
@@ -507,7 +508,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 				return;
 			}
 
-			// Make sure there are no api errors
+			// Make sure there are no api errors.
 			// Do not get confused with edd_action check_subscription.
 			// By default edd software licensing api does not have api to check subscription.
 			// This is a custom feature to check subscriptions.
@@ -655,7 +656,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 				$showed_subscriptions_message = true;
 			}// End if().
 
-			// Show non subscription addon messages.
+			// Show Non Subscription Give Add-on messages.
 			if (
 				! in_array( $this->license, $addon_license_key_in_subscriptions )
 				&& ! empty( $this->license )
@@ -829,7 +830,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 				return false;
 			}
 
-			// Data to send to the API
+			// Data to send to the API.
 			$api_params = array(
 				'edd_action' => $edd_action, // never change from "edd_" to "give_"!
 				'license'    => $this->license,
@@ -837,7 +838,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 				'url'        => home_url(),
 			);
 
-			// Call the API
+			// Call the API.
 			$response = wp_remote_post(
 				$this->api_url,
 				array(
@@ -847,7 +848,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 				)
 			);
 
-			// Make sure there are no errors
+			// Make sure there are no errors.
 			if ( is_wp_error( $response ) ) {
 				return false;
 			}
@@ -856,4 +857,4 @@ if ( ! class_exists( 'Give_License' ) ) :
 		}
 	}
 
-endif; // end class_exists check
+endif; // end class_exists check.
