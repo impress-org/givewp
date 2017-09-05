@@ -212,7 +212,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 					?>
 
 					<p>
-						<a href="<?php echo add_query_arg( $query_arg, admin_url( 'edit.php' ) ); ?>"><?php echo $text; ?></a>
+						<a class="button button-large button-secondary" href="<?php echo add_query_arg( $query_arg, admin_url( 'edit.php' ) ); ?>"><?php echo $text; ?></a>
 					</p>
 				</th>
 			</tr>
