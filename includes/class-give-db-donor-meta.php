@@ -156,6 +156,21 @@ class Give_DB_Donor_Meta extends Give_DB {
 	}
 
 	/**
+	 * Remove all meta data matching criteria from a donor id.
+	 *
+	 * @access  private
+	 * @since   1.8.14
+	 *
+	 * @param   int    $donor_id Donor ID.
+	 *
+	 * @return  bool  False for failure. True for success.
+	 */
+	public function delete_all_meta( $donor_id = 0 ) {
+		global $wpdb;
+		$wpdb->delete( $this->table_name, array( 'customer_id' => $donor_id ), array( '%d' ) );
+	}
+
+	/**
 	 * Create the table
 	 *
 	 * @access public
