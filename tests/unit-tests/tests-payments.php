@@ -498,7 +498,7 @@ class Tests_Payments extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * @covers give_get_price_id
+	 * @covers ::give_get_price_id
 	 */
 	public function test_give_get_price_id() {
 		$form = Give_Helper_Form::create_multilevel_form(
