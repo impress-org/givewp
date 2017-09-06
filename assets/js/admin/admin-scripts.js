@@ -710,6 +710,12 @@ jQuery.noConflict();
 					var notice_wrap = export_form.find('.notice-wrap');
 					notice_wrap.html('<div class="notice notice-warning"><p><input type="checkbox" id="confirm-reset" name="confirm_reset_store" value="1" /> <label for="confirm-reset">' + give_vars.delete_test_donor + '</label></p></div>');
 					submit_button.addClass('button-disabled').attr('disabled', 'disabled');
+					// Add check when admin try to delete all the imported donations.
+				} else if ('delete-import-donors' === selected_type) {
+					export_form.append('<div class="notice-wrap"></div>');
+					var notice_wrap = export_form.find('.notice-wrap');
+					notice_wrap.html('<div class="notice notice-warning"><p><input type="checkbox" id="confirm-reset" name="confirm_reset_store" value="1" /> <label for="confirm-reset">' + give_vars.delete_import_donor + '</label></p></div>');
+					submit_button.addClass('button-disabled').attr('disabled', 'disabled');
 				} else {
 					forms.hide();
 					forms.val(0);
@@ -1374,6 +1380,16 @@ jQuery.noConflict();
 							button: {text: give_vars.metabox_fields.file.button_title},
 							multiple: false
 						};
+				}
+
+				var editing = jQuery(this).closest('.give-field-wrap').find('.give-input-field').attr('editing');
+				if ( 'undefined' !== typeof( editing ) ) {
+					wp.media.controller.Library.prototype.defaults.contentUserSetting = false;
+				}
+
+				var $library = jQuery( this ).closest('.give-field-wrap').find('.give-input-field').attr('library');
+				if ('undefined' !== typeof( $library ) && '' !== $library) {
+					$media_modal_config.library = {type: $library};
 				}
 
 				// Extend the wp.media object
@@ -2218,4 +2234,68 @@ function get_url_params() {
 		vars[hash[0]] = hash[1];
 	}
 	return vars;
+}
+
+/**
+ * Run when user click on upload CSV.
+ *
+ * @since 1.8.13
+ */
+function give_on_donation_import_start() {
+	give_on_donation_import_ajax();
+}
+
+/**
+ * Upload CSV ajax
+ *
+ * @since 1.8.13
+ */
+function give_on_donation_import_ajax() {
+	var $form = jQuery('form.tools-setting-page-import');
+
+	var progress = $form.find('.give-progress');
+
+	var total_ajax = jQuery(progress).data('total_ajax'),
+		current = jQuery(progress).data('current'),
+		start = jQuery(progress).data('start'),
+		end = jQuery(progress).data('end'),
+		next = jQuery(progress).data('next'),
+		total = jQuery(progress).data('total'),
+		per_page = jQuery(progress).data('per_page');
+
+	jQuery.ajax({
+		type: 'POST',
+		url: ajaxurl,
+		data: {
+			action: give_vars.give_donation_import,
+			total_ajax: total_ajax,
+			current: current,
+			start: start,
+			end: end,
+			next: next,
+			total: total,
+			per_page: per_page,
+			fields: $form.serialize()
+		},
+		dataType: 'json',
+		success: function (response) {
+			jQuery(progress).data('current', response.current);
+			jQuery(progress).find('div').width(response.percentage + '%');
+
+			if (response.next == true) {
+				jQuery(progress).data('start', response.start);
+				jQuery(progress).data('end', response.end);
+
+				if (response.last == true) {
+					jQuery(progress).data('next', false);
+				}
+				give_on_donation_import_ajax();
+			} else {
+				window.location = response.url;
+			}
+		},
+		error: function () {
+			alert(give_vars.error_message);
+		}
+	});
 }

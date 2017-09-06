@@ -739,7 +739,7 @@ table#give_donation_receipt span.donation-level-text-wrap {
 /*!
  * Float Labels
  *
- * @version: 3.0.3
+ * @version: 3.1.0
  * @author: Paul Ryley (http://geminilabs.io)
  * @url: https://geminilabs.github.io/float-labels.js
  * @license: MIT
@@ -892,14 +892,7 @@ table#give_donation_receipt span.donation-level-text-wrap {
 [id*="give-form"] .fl-form.fl-style-2 label.fl-label {
   top: 1px;
   right: 10px;
-  background-color: inherit;
   padding: 6px 3px 3px; }
-
-[id*="give-form"] .fl-form.fl-style-2 .fl-has-focus label.fl-label {
-  background-color: inherit; }
-
-[id*="give-form"] .fl-form.fl-style-2 .fl-is-active label.fl-label {
-  background-color: inherit; }
 
 [id*="give-form"] .fl-form.fl-style-2 .fl-is-required:before {
   padding-top: 12px; }
@@ -2425,3 +2418,11 @@ body.give-twentysixteen .give-submit {
 
 body.give-twentysixteen fieldset#give_terms_agreement {
   padding-right: 0; }
+
+body.give-twentyseventeen.colors-dark div.give-total-wrap input.give-text-input,
+body.give-twentyseventeen.colors-dark div#give_purchase_form_wrap span.give-final-total-amount,
+body.give-twentyseventeen.colors-dark div.give_notices p {
+  color: black; }
+
+body.give-twentyseventeen.colors-dark form[id*="give"] fieldset {
+  background-color: transparent; }
