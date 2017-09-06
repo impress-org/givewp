@@ -323,6 +323,7 @@ function give_load_admin_scripts( $hook ) {
 		'batch_export_no_reqs'           => __( 'Required fields not completed.', 'give' ),
 		'reset_stats_warn'               => __( 'Are you sure you want to reset Give? This process is <strong><em>not reversible</em></strong> and will delete all data regardless of test or live mode. Please be sure you have a recent backup before proceeding.', 'give' ),
 		'delete_test_donor'               => __( 'Are you sure you want to delete all the test donors? This process will also delete test donations as well.', 'give' ),
+		'delete_import_donor'               => __( 'Are you sure you want to delete all the imported donors? This process will also delete imported donations as well.', 'give' ),
 		'price_format_guide'             => sprintf( __( 'Please enter amount in monetary decimal ( %1$s ) format without thousand separator ( %2$s ) .', 'give' ), $decimal_separator, $thousand_separator ),
 		/* translators : %s: Donation form options metabox */
 		'confirm_before_remove_row_text' => __( 'Do you want to delete this level?', 'give' ),
@@ -361,7 +362,9 @@ function give_load_admin_scripts( $hook ) {
 			'no_results_msg'  => __( 'No results match {search_term}', 'give' ),
 			'ajax_search_msg' => __( 'Searching results for match {search_term}', 'give' ),
 		),
-		'db_update_confirmation_msg' => __( 'The following process will make updates to your site\'s database. Please create a database backup before proceeding with updates.', 'give' )
+		'db_update_confirmation_msg' => __( 'The following process will make updates to your site\'s database. Please create a database backup before proceeding with updates.', 'give' ),
+        'error_message' => __( 'Something went wrong kindly try again!','give' ),
+        'give_donation_import' => 'give_donation_import',
 	) );
 
 	if ( function_exists( 'wp_enqueue_media' ) && version_compare( get_bloginfo( 'version' ), '3.5', '>=' ) ) {

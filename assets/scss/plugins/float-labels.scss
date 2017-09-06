@@ -1,7 +1,7 @@
 /*!
  * Float Labels
  *
- * @version: 3.0.3
+ * @version: 3.1.0
  * @author: Paul Ryley (http://geminilabs.io)
  * @url: https://geminilabs.github.io/float-labels.js
  * @license: MIT
@@ -97,14 +97,7 @@ $float-labels-defaults: (
 	label.#{fl(prefix)}label {
 		top: fl(border-width);
 		left: fl(border-width) + fl(base-padding)*1.5;
-		background-color: fl(color-background);
 		padding: fl(base-padding) fl(base-padding)/2 fl(base-padding)/2;
-	}
-	.#{fl(prefix)}has-focus label.#{fl(prefix)}label {
-		background-color: fl(color-background-focus);
-	}
-	.#{fl(prefix)}is-active label.#{fl(prefix)}label {
-		background-color: fl(color-background-active);
 	}
 	.#{fl(prefix)}is-required:before {
 		padding-top: fl(base-padding)*2;

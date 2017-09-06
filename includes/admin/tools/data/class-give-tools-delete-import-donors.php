@@ -17,52 +17,59 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 /**
- * Give_Tools_Delete_Donors Class
+ * Give_Tools_Import_Donors Class
  *
- * @since 1.8.12
+ * @since 1.8.13
  */
-class Give_Tools_Delete_Donors extends Give_Batch_Export {
+class Give_Tools_Import_Donors extends Give_Batch_Export {
 
 	var $request;
 
 	/**
+	 * Used to store form id's that are going to get recount.
+	 * @var array.
+	 * @since 1.8.13
+	 */
+	var $form_key = 'give_temp_delete_form_ids';
+
+	/**
 	 * Used to store donation id's that are going to get deleted.
-	 * @var string
+	 * @var array.
 	 * @since 1.8.12
 	 */
 	var $donation_key = 'give_temp_delete_donation_ids';
 
 	/**
 	 * Used to store donors id's that are going to get deleted.
-	 * @var string
+	 * @var array.
 	 * @since 1.8.12
 	 */
 	var $donor_key = 'give_temp_delete_donor_ids';
 
 	/**
 	 * Used to store the step where the step will be. ( 'count', 'donations', 'donors' ).
-	 * @var string
+	 * @var array.
 	 * @since 1.8.12
 	 */
 	var $step_key = 'give_temp_delete_step';
 
 	/**
 	 * Used to store to get the page count in the loop.
-	 * @var string
+	 * @var array.
 	 * @since 1.8.12
 	 */
 	var $step_on_key = 'give_temp_delete_step_on';
 
 	/**
 	 * Contain total number of step .
-	 * @var string
+	 * @var array.
 	 * @since 1.8.12
 	 */
 	var $total_step;
 
 	/**
 	 * Counting contain total number of step that completed.
-	 * @var int
+	 * @var array.
 	 * @since 1.8.12
 	 */
 	var $step_completed;
@@ -84,7 +91,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	/**
 	 * Sets the number of items to pull on each step
 	 * @since  1.8.12
-	 * @var int
+	 * @var integer
 	 */
 	public $per_step = 10;
 
@@ -99,7 +106,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	 * Get the Export Data
 	 *
 	 * @access public
-	 * @since  1.8.12
+	 * @since 1.8.12
 	 * @global object $wpdb Used to query the database using the WordPress Database API
 	 *
 	 * @return array|bool $data The data for the CSV file
@@ -110,6 +117,8 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 
 		// Check if the ajax request if running for the first time.
 		if ( 1 === (int) $this->step ) {
+			// Delete all the form ids.
+			$this->delete_option( $this->form_key );
 			// Delete all the donation ids.
 			$this->delete_option( $this->donation_key );
 			// Delete all the donor ids.
@@ -160,9 +169,9 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 			'post_status'    => 'any',
 			'posts_per_page' => $this->per_step,
 			'paged'          => $paged,
-			// ONLY TEST MODE TRANSACTIONS!!!
-			'meta_key'       => '_give_payment_mode',
-			'meta_value'     => 'test',
+			'meta_key'       => '_give_payment_import',
+			'meta_value_num' => 1,
+			'meta_compare'   => '=',
 		) );
 
 		// Reset the post data.
@@ -173,13 +182,33 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 		// The Loop.
 		if ( $donation_posts->have_posts() ) {
 			while ( $donation_posts->have_posts() ) {
+				$add_author = true;
 				$donation_posts->the_post();
 				global $post;
 				// Add the donation id in side the array.
 				$donation_ids[] = $post->ID;
 
-				// Add the donor id in side the array.
-				$donor_ids[] = (int) $post->post_author;
+				$donor_id = (int) get_post_meta( $post->ID, '_give_payment_customer_id', true );
+				if ( ! empty( $donor_id ) ) {
+					$donor = new Give_Donor( $donor_id );
+					if ( ! empty( $donor->id ) ) {
+						if ( empty( $donor->user_id ) && ! empty( $donor->payment_ids ) ) {
+							$add_author = false;
+							$count      = (int) count( $donor->payment_ids );
+							if ( 1 === $count ) {
+								Give()->donors->delete( $donor->id );
+							} else {
+								$donor->remove_payment( $post->ID );
+								$donor->decrease_donation_count();
+							}
+						}
+					}
+				}
+
+				if ( ! empty( $add_author ) ) {
+					// Add the donor id in side the array.
+					$donor_ids[] = (int) $post->post_author;
+				}
 			}
 			/* Restore original Post Data */
 		}
@@ -225,7 +254,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	public function process_step() {
 
 		if ( ! $this->can_export() ) {
-			wp_die( __( 'You do not have permission to delete test transactions.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die( __( 'You do not have permission to delete Import transactions.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 		}
 
 		$had_data = $this->get_data();
@@ -246,7 +275,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 			}
 
 			$this->done    = true;
-			$this->message = __( 'Test donor and transactions successfully deleted.', 'give' );
+			$this->message = __( 'Imported donor and transactions successfully deleted.', 'give' );
 
 			return false;
 		}
@@ -256,7 +285,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	 * Get the Export Data
 	 *
 	 * @access public
-	 * @since  1.8.12
+	 * @since 1.8.12
 	 * @global object $wpdb Used to query the database using the WordPress Database API
 	 *
 	 * @return array|bool $data The data for the CSV file
@@ -267,7 +296,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 		$donation_ids = $this->get_option( $this->donation_key );
 
 		/**
-		 * Return false id not test donation is found.
+		 * Return false id not Import donation is found.
 		 */
 		if ( empty( $donation_ids ) ) {
 			$this->is_empty   = true;
@@ -311,27 +340,33 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 				$this->update_option( $this->step_on_key, '0' );
 			}
 
-			global $wpdb;
+			// Get the old form list.
+			$form_ids = (array) $this->get_option( $this->form_key );
+
 			foreach ( $donation_ids as $item ) {
-
-				// will delete the payment log first.
-				$parent_query = $wpdb->prepare( "SELECT post_id as id FROM $wpdb->postmeta WHERE meta_key = %s AND meta_value = %d", '_give_log_payment_id', (int) $item );
-				$log_id       = $wpdb->get_row( $parent_query, ARRAY_A );
-				// Check if payment has it log or not if yes then delete it.
-				if ( ! empty( $log_id['id'] ) ) {
-					// Deleting the payment log.
-					wp_delete_post( $log_id['id'], true );
-				}
-
-				// Delete the main payment.
+				$form_ids[] = get_post_meta( $item, '_give_payment_form_id', true );
 				wp_delete_post( $item, true );
 			}
-			do_action( 'give_delete_log_cache' );
+
+			// update the new form list.
+			$this->update_option( $this->form_key, $form_ids );
 		}
 
 
 		// Here we delete all the donor
 		if ( 3 === $step ) {
+
+			// Get the old form list.
+			$form_ids = (array) $this->get_option( $this->form_key );
+			if ( ! empty( $form_ids ) ) {
+				$form_ids = array_unique( $form_ids );
+				foreach ( $form_ids as $form_id ) {
+					give_recount_form_income_donation( (int) $form_id );
+				}
+			}
+			// update the new form list.
+			$this->update_option( $this->form_key, array() );
+
 			$page  = (int) $this->get_step_page();
 			$count = count( $donor_ids );
 
@@ -339,17 +374,27 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 			$this->step_completed = $page + ( count( $donation_ids ) / $this->per_step );
 
 			$args = apply_filters( 'give_tools_reset_stats_total_args', array(
-				'post_type'      => 'give_payment',
 				'post_status'    => 'any',
 				'posts_per_page' => 1,
-				'meta_key'       => '_give_payment_mode',
-				'meta_value'     => 'live',
-				'author'         => $donor_ids[ $page ],
+				'author'         => $donor_ids[ $page ]
 			) );
 
-			$donation_posts = get_posts( $args );
-			if ( empty( $donation_posts ) ) {
+			$donations = array();
+			$payments = new Give_Payments_Query( $args );
+			$payments = $payments->get_payments();
+			if ( empty( $payments ) ) {
 				Give()->donors->delete_by_user_id( $donor_ids[ $page ] );
+			} else {
+				foreach ( $payments as $payment ) {
+					$donations[] = $payment->ID;
+				}
+
+				$donor          = new Give_Donor( $donor_ids[ $page ], true );
+				$data_to_update = array(
+					'purchase_count' => count( $donations ),
+					'payment_ids'    => implode( ',', $donations ),
+				);
+				$donor->update( $data_to_update );
 			}
 
 			$page ++;
@@ -389,7 +434,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	/**
 	 * Given a key, get the information from the Database Directly
 	 *
-	 * @since  1.8.13
+	 * @since  1.8.12
 	 *
 	 * @param  string $key The option_name
 	 *
