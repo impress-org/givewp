@@ -1901,7 +1901,6 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 						),
 						'_give_amount'  => give_sanitize_amount_for_db( $data['amount'] ),
 						'_give_text'    => $data['form_level'],
-						'_give_default' => 'default',
 					),
 				);
 
@@ -1910,6 +1909,7 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 				if ( ! empty( $prices ) && is_array( $prices ) && ! empty( $prices[0] ) ) {
 					$prices = wp_parse_args( $multi_level_donations, $prices );
 				} else {
+					$multi_level_donations[0]['_give_default'] = 'default';
 					$prices = $multi_level_donations;
 				}
 			}
