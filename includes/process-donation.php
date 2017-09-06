@@ -688,6 +688,7 @@ function give_donation_form_validate_user_login() {
 				// All is correct.
 			} else {
 
+				// Check for Donor and User Disconnection.
 				$is_donor_disconnected = get_user_meta( $user_data->ID, '_give_is_donor_disconnected', true );
 				if( $is_donor_disconnected ) {
 					// Donor and User are disconnected.
