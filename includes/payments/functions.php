@@ -1841,8 +1841,7 @@ function give_get_payment_form_title( $payment_meta, $only_level = false, $separ
  * @return string $price_id
  */
 function give_get_price_id( $form_id, $price ) {
-
-	$price_id = 0;
+	$price_id = null;
 
 	if ( give_has_variable_prices( $form_id ) ) {
 
@@ -1850,19 +1849,26 @@ function give_get_price_id( $form_id, $price ) {
 
 		foreach ( $levels as $level ) {
 
-			$level_amount = (float) give_maybe_sanitize_amount( $level['_give_amount'] );
+			$level_amount = give_maybe_sanitize_amount( $level['_give_amount'] );
 
 			// Check that this indeed the recurring price.
 			if ( $level_amount == $price ) {
 
 				$price_id = $level['_give_id']['level_id'];
+				break;
 
 			}
 		}
+
+		if( is_null( $price_id ) && give_is_custom_price_mode( $form_id ) ) {
+			$price_id = 'custom';
+		}
 	}
 
-	return $price_id;
+	// Price ID must be numeric or string.
+	$price_id = ! is_numeric( $price_id ) && ! is_string( $price_id ) ? 0 : $price_id;
 
+	return $price_id;
 }
 
 /**

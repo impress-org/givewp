@@ -497,4 +497,54 @@ class Tests_Payments extends Give_Unit_Test_Case {
 		$this->assertEquals( $this->_payment_id, $payments[1]->ID );
 	}
 
+	/**
+	 * @covers ::give_get_price_id
+	 */
+	public function test_give_get_price_id() {
+		$form = Give_Helper_Form::create_multilevel_form(
+			array(
+				'meta' => array(
+					'_give_set_price'             => '0.00', //Multi-level Pricing; not set
+					'_give_display_style'         => 'buttons',
+					'_give_donation_levels'       => array(
+						array(
+							'_give_id'     => array( 'level_id' => '1' ),
+							'_give_amount' => '10',
+							'_give_text'   => 'Small Gift',
+						),
+						array(
+							'_give_id'      => array( 'level_id' => '2' ),
+							'_give_amount'  => '25',
+							'_give_text'    => 'Mid-size Gift',
+							'_give_default' => 'default',
+						),
+						array(
+							'_give_id'     => array( 'level_id' => '3' ),
+							'_give_amount' => '50',
+							'_give_text'   => 'Large Gift',
+						),
+						array(
+							'_give_id'     => array( 'level_id' => '4' ),
+							'_give_amount' => '100',
+							'_give_text'   => 'Big Gift',
+						),
+					),
+					'_give_custom_amount'         => 'enabled',
+					'_give_custom_amount_minimum' => give_maybe_sanitize_amount( 1 ),
+				),
+			)
+		);
+
+		$amount_with_levels = array(
+			1 => give_maybe_sanitize_amount( 10 ),
+			2 => give_maybe_sanitize_amount( 25 ),
+			3 => give_maybe_sanitize_amount( 50 ),
+			4 => give_maybe_sanitize_amount( 100 ),
+			'custom' => give_maybe_sanitize_amount( 1.22 ),
+		);
+
+		foreach ( $amount_with_levels as $level_id => $amount ) {
+			$this->assertEquals( $level_id, give_get_price_id( $form->ID, $amount ) );
+		}
+	}
 }
