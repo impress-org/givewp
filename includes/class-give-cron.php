@@ -70,7 +70,7 @@ class Give_Cron {
 		add_action( 'wp', array( self::$instance, '__schedule_events' ) );
 
 		// Load async event only when cron is running.
-		if( wp_doing_cron() ) {
+		if( defined( 'DOING_CRON' ) && DOING_CRON ) {
 			add_action( 'init', array( self::$instance, '__load_async_events' ) );
 		}
 	}

@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @property string $postdate
  * @property string $status
  * @property string $email
- * @property string $payment_meta
+ * @property array  $payment_meta
  * @property string $customer_id
  * @property string $completed_date
  * @property string $currency
@@ -419,7 +419,7 @@ final class Give_Payment {
 	public function __set( $key, $value ) {
 		$ignore = array( '_ID' );
 
-		if ( $key === 'status' ) {
+		if ( 'status' === $key ) {
 			$this->old_status = $this->status;
 		}
 
@@ -440,7 +440,7 @@ final class Give_Payment {
 	 *
 	 * @param  string $name The attribute to get
 	 *
-	 * @return boolean       If the item is set or not
+	 * @return boolean|null       If the item is set or not
 	 */
 	public function __isset( $name ) {
 		if ( property_exists( $this, $name ) ) {
@@ -646,7 +646,7 @@ final class Give_Payment {
 				$donor = new Give_Donor( get_current_user_id(), true );
 
 				// Donor is logged in but used a different email to purchase with so assign to their donor record.
-				if ( ! empty( $donor->id ) && $this->email != $donor->email ) {
+				if ( ! empty( $donor->id ) && $this->email !== $donor->email ) {
 					$donor->add_email( $this->email );
 				}
 			}
@@ -1088,7 +1088,7 @@ final class Give_Payment {
 	 *
 	 * @param  string $note The note to add
 	 *
-	 * @return void
+	 * @return bool           If the note was specified or not
 	 */
 	public function add_note( $note = false ) {
 		// Bail if no note specified.
