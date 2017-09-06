@@ -19,35 +19,35 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * This class is for working with payments in Give.
  *
- * @property int $ID
- * @property bool $new
- * @property string $number
- * @property string $mode
- * @property string $import
- * @property string $key
- * @property string $form_title
+ * @property int        $ID
+ * @property bool       $new
+ * @property string     $number
+ * @property string     $mode
+ * @property string     $import
+ * @property string     $key
+ * @property string     $form_title
  * @property string|int $form_id
  * @property string|int $price_id
  * @property string|int $total
  * @property string|int $subtotal
- * @property string $post_status
- * @property string $date
- * @property string $postdate
- * @property string $status
- * @property string $email
- * @property array  $payment_meta
- * @property string $customer_id
- * @property string $completed_date
- * @property string $currency
- * @property string $ip
- * @property array $user_info
- * @property string $gateway
- * @property string $user_id
- * @property string $first_name
- * @property string $last_name
- * @property string $parent_payment
- * @property string $transaction_id
- * @property string $old_status
+ * @property string     $post_status
+ * @property string     $date
+ * @property string     $postdate
+ * @property string     $status
+ * @property string     $email
+ * @property array      $payment_meta
+ * @property string     $customer_id
+ * @property string     $completed_date
+ * @property string     $currency
+ * @property string     $ip
+ * @property array      $user_info
+ * @property string     $gateway
+ * @property string     $user_id
+ * @property string     $first_name
+ * @property string     $last_name
+ * @property string     $parent_payment
+ * @property string     $transaction_id
+ * @property string     $old_status
  *
  * @since 1.5
  */
@@ -434,8 +434,8 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  string $key The property name
-	 * @param  mixed $value The value of the property
+	 * @param  string $key   The property name
+	 * @param  mixed  $value The value of the property
 	 */
 	public function __set( $key, $value ) {
 		$ignore = array( '_ID' );
@@ -505,8 +505,8 @@ final class Give_Payment {
 		 *
 		 * @since 1.5
 		 *
-		 * @param Give_Payment $this Payment object.
-		 * @param int $payment_id The ID of the payment.
+		 * @param Give_Payment $this       Payment object.
+		 * @param int          $payment_id The ID of the payment.
 		 */
 		do_action( 'give_pre_setup_payment', $this, $payment_id );
 
@@ -565,8 +565,8 @@ final class Give_Payment {
 		 *
 		 * @since 1.5
 		 *
-		 * @param Give_Payment $this Payment object.
-		 * @param int $payment_id The ID of the payment.
+		 * @param Give_Payment $this       Payment object.
+		 * @param int          $payment_id The ID of the payment.
 		 */
 		do_action( 'give_setup_payment', $this, $payment_id );
 
@@ -847,6 +847,7 @@ final class Give_Payment {
 
 					case 'user_id':
 						$this->update_meta( '_give_payment_user_id', $this->user_id );
+						$this->user_info['id'] = $this->user_id;
 						break;
 
 					case 'form_title':
@@ -980,8 +981,8 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  int $form_id The donation form to add
-	 * @param  array $args Other arguments to pass to the function
+	 * @param  int   $form_id The donation form to add
+	 * @param  array $args    Other arguments to pass to the function
 	 * @param  array $options List of donation options
 	 *
 	 * @return bool           True when successful, false otherwise
@@ -1010,7 +1011,7 @@ final class Give_Payment {
 
 			// Deal with variable pricing.
 			if ( give_has_variable_prices( $donation->ID ) ) {
-				$prices     = maybe_unserialize( give_get_meta( $form_id, '_give_donation_levels', true ) );
+				$prices     = give_get_meta( $form_id, '_give_donation_levels', true );
 				$item_price = '';
 				// Loop through prices.
 				foreach ( $prices as $price ) {
@@ -1073,8 +1074,8 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  int $form_id The form ID to remove
-	 * @param  array $args Arguments to pass to identify (quantity, amount, price_id)
+	 * @param  int   $form_id The form ID to remove
+	 * @param  array $args    Arguments to pass to identify (quantity, amount, price_id)
 	 *
 	 * @return bool           If the item was removed or not
 	 */
@@ -1213,8 +1214,8 @@ final class Give_Payment {
 			 *
 			 * @since 1.5
 			 *
-			 * @param int $payment_id Payments ID.
-			 * @param string $status The new status.
+			 * @param int    $payment_id Payments ID.
+			 * @param string $status     The new status.
 			 * @param string $old_status The old status.
 			 */
 			do_action( 'give_before_payment_status_change', $this->ID, $status, $old_status );
@@ -1254,8 +1255,8 @@ final class Give_Payment {
 			 *
 			 * @since 1.5
 			 *
-			 * @param int $payment_id Payment ID.
-			 * @param string $status The new status.
+			 * @param int    $payment_id Payment ID.
+			 * @param string $status     The new status.
 			 * @param string $old_status The old status.
 			 */
 			do_action( 'give_update_payment_status', $this->ID, $status, $old_status );
@@ -1288,8 +1289,8 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  string $meta_key The Meta Key
-	 * @param  boolean $single Return single item or array
+	 * @param  string  $meta_key The Meta Key
+	 * @param  boolean $single   Return single item or array
 	 *
 	 * @return mixed             The value from the post meta
 	 */
@@ -1319,6 +1320,14 @@ final class Give_Payment {
 
 		$meta = apply_filters( "give_get_payment_meta_{$meta_key}", $meta, $this->ID );
 
+		// Security check.
+		if ( is_serialized( $meta ) ) {
+			preg_match( '/[oO]\s*:\s*\d+\s*:\s*"\s*(?!(?i)(stdClass))/', $meta, $matches );
+			if ( ! empty( $matches ) ) {
+				$meta = array();
+			}
+		}
+
 		return apply_filters( 'give_get_payment_meta', $meta, $this->ID, $meta_key );
 	}
 
@@ -1328,7 +1337,7 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  string $meta_key The meta key to update
+	 * @param  string $meta_key   The meta key to update
 	 * @param  string $meta_value The meta value
 	 * @param  string $prev_value Previous meta value
 	 *
@@ -1544,8 +1553,8 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access private
 	 *
-	 * @param  bool $alter_store_earnings If the method should alter the store earnings
-	 * @param  bool $alter_customer_value If the method should reduce the donor value
+	 * @param  bool $alter_store_earnings          If the method should alter the store earnings
+	 * @param  bool $alter_customer_value          If the method should reduce the donor value
 	 * @param  bool $alter_customer_purchase_count If the method should reduce the donor's purchase count
 	 *
 	 * @return void
@@ -1810,7 +1819,15 @@ final class Give_Payment {
 			'last_name'  => $this->last_name,
 		);
 
-		$user_info = isset( $this->payment_meta['user_info'] ) ? maybe_unserialize( $this->payment_meta['user_info'] ) : array();
+		$user_info = isset( $this->payment_meta['user_info'] ) ? $this->payment_meta['user_info'] : array();
+
+		if ( is_serialized( $user_info ) ) {
+			preg_match( '/[oO]\s*:\s*\d+\s*:\s*"\s*(?!(?i)(stdClass))/', $user_info, $matches );
+			if ( ! empty( $matches ) ) {
+				$user_info = array();
+			}
+		}
+
 		$user_info = wp_parse_args( $user_info, $defaults );
 
 		if ( empty( $user_info ) ) {

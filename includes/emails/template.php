@@ -34,9 +34,9 @@ function give_get_email_templates() {
  *
  * @since 1.0
  *
- * @param string $message Message with the template tags.
+ * @param string $message      Message with the template tags.
  * @param array  $payment_data Payment Data.
- * @param int    $payment_id Payment ID.
+ * @param int    $payment_id   Payment ID.
  * @param bool   $admin_notice Whether or not this is a notification email.
  *
  * @return string $message Fully formatted message
@@ -67,7 +67,7 @@ function give_email_preview_template_tags( $message ) {
 	$payment_id = rand( 1, 100 );
 
 	$receipt_link_url = esc_url( add_query_arg( array( 'payment_key' => $receipt_id, 'give_action' => 'view_receipt' ), home_url() ) );
-	$receipt_link = sprintf(
+	$receipt_link     = sprintf(
 		'<a href="%1$s">%2$s</a>',
 		$receipt_link_url,
 		esc_html__( 'View the receipt in your browser &raquo;', 'give' )
@@ -115,7 +115,7 @@ function give_email_template_preview( $array ) {
 		'name' => esc_html__( 'Preview Email', 'give' ),
 		'desc' => esc_html__( 'Click the buttons to preview or send test emails.', 'give' ),
 		'id'   => 'give_email_preview_buttons',
-		'type' => 'email_preview_buttons'
+		'type' => 'email_preview_buttons',
 	);
 
 	return give_settings_array_insert( $array, 'donation_subject', array( $custom_field ) );
@@ -134,12 +134,14 @@ add_filter( 'give_settings_emails', 'give_email_template_preview' );
 function give_email_preview_buttons_callback() {
 	ob_start();
 	?>
-	<a href="<?php echo esc_url( add_query_arg( array( 'give_action' => 'preview_email' ), home_url() ) ); ?>" class="button-secondary" target="_blank"><?php esc_html_e( 'Preview Donation Receipt', 'give' ); ?></a>
+	<a href="<?php echo esc_url( add_query_arg( array( 'give_action' => 'preview_email' ), home_url() ) ); ?>" class="button-secondary"
+	   target="_blank"><?php esc_html_e( 'Preview Donation Receipt', 'give' ); ?></a>
 	<a href="<?php echo wp_nonce_url( add_query_arg( array(
 		'give_action'  => 'send_test_email',
 		'give-message' => 'sent-test-email',
-		'tag'          => 'emails'
-	) ), 'give-test-email' ); ?>" aria-label="<?php esc_attr_e( 'Send demo donation receipt to the emails listed below.', 'give' ); ?>" class="button-secondary"><?php esc_html_e( 'Send Test Email', 'give' ); ?></a>
+		'tag'          => 'emails',
+	) ), 'give-test-email' ); ?>" aria-label="<?php esc_attr_e( 'Send demo donation receipt to the emails listed below.', 'give' ); ?>"
+	   class="button-secondary"><?php esc_html_e( 'Send Test Email', 'give' ); ?></a>
 	<?php
 	echo ob_get_clean();
 }
@@ -198,7 +200,7 @@ add_action( 'init', 'give_display_email_template_preview' );
  *
  * @since 1.0
  *
- * @param int   $payment_id Payment ID
+ * @param int   $payment_id   Payment ID
  * @param array $payment_data Payment Data
  *
  * @return string $email_body Body of the email
@@ -222,39 +224,38 @@ function give_get_email_body_content( $payment_id = 0, $payment_data = array() )
  *
  * @since  1.0
  *
- * @param int   $payment_id Payment ID
+ * @param int   $payment_id   Payment ID
  * @param array $payment_data Payment Data
  *
  * @return string $email_body Body of the email
  */
 function give_get_donation_notification_body_content( $payment_id = 0, $payment_data = array() ) {
 
-	$user_info = maybe_unserialize( $payment_data['user_info'] );
-	$email     = give_get_payment_user_email( $payment_id );
+	$payment = new Give_Payment( $payment_id );
 
-	if ( isset( $user_info['id'] ) && $user_info['id'] > 0 ) {
-		$user_data = get_userdata( $user_info['id'] );
+	if ( $payment->user_id > 0 ) {
+		$user_data = get_userdata( $payment->user_id );
 		$name      = $user_data->display_name;
-	} elseif ( isset( $user_info['first_name'] ) && isset( $user_info['last_name'] ) ) {
-		$name = $user_info['first_name'] . ' ' . $user_info['last_name'];
+	} elseif ( ! empty( $payment->first_name ) && ! empty( $payment->last_name ) ) {
+		$name = $payment->first_name . ' ' . $payment->last_name;
 	} else {
-		$name = $email;
+		$name = $payment->email;
 	}
 
-	$gateway = give_get_gateway_admin_label( give_get_meta( $payment_id, '_give_payment_gateway', true ) );
+	$gateway = give_get_gateway_admin_label( $payment->gateway );
 
 	$default_email_body = esc_html__( 'Hello', 'give' ) . "\n\n";
 	$default_email_body .= esc_html__( 'A donation has been made.', 'give' ) . "\n\n";
 	$default_email_body .= esc_html__( 'Donation:', 'give' ) . "\n\n";
 	$default_email_body .= esc_html__( 'Donor:', 'give' ) . ' ' . html_entity_decode( $name, ENT_COMPAT, 'UTF-8' ) . "\n";
-	$default_email_body .= esc_html__( 'Amount:', 'give' ) . ' ' . html_entity_decode( give_currency_filter( give_format_amount( give_get_payment_amount( $payment_id ), array( 'sanitize' => false ) ) ), ENT_COMPAT, 'UTF-8' ) . "\n";
+	$default_email_body .= esc_html__( 'Amount:', 'give' ) . ' ' . html_entity_decode( give_currency_filter( give_format_amount( $payment->total, array( 'sanitize' => false ) ) ), ENT_COMPAT, 'UTF-8' ) . "\n";
 	$default_email_body .= esc_html__( 'Payment Method:', 'give' ) . ' ' . $gateway . "\n\n";
 	$default_email_body .= esc_html__( 'Thank you', 'give' );
 
-	$email = give_get_option( 'donation_notification' );
-	$email = isset( $email ) ? stripslashes( $email ) : $default_email_body;
+	$message = give_get_option( 'donation_notification' );
+	$message = isset( $email ) ? stripslashes( $message ) : $default_email_body;
 
-	$email_body = give_do_email_tags( $email, $payment_id );
+	$email_body = give_do_email_tags( $message, $payment_id );
 
 	return apply_filters( 'give_donation_notification', wpautop( $email_body ), $payment_id, $payment_data );
 }
@@ -355,7 +356,7 @@ function give_get_preview_email_header() {
 
 	//Get payments.
 	$payments = new Give_Payments_Query( array(
-		'number' => 100
+		'number' => 100,
 	) );
 	$payments = $payments->get_payments();
 	$options  = array();
@@ -400,7 +401,7 @@ function give_get_preview_email_header() {
 		'chosen'           => false,
 		'select_atts'      => 'onchange="change_preview()">',
 		'show_option_all'  => false,
-		'show_option_none' => false
+		'show_option_none' => false,
 	) );
 
 	//Closing tag
