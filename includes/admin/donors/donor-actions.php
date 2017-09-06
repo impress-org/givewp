@@ -145,11 +145,14 @@ function give_edit_donor( $args ) {
 		// Update some donation meta if we need to.
 		$payments_array = explode( ',', $donor->payment_ids );
 
-		if ( $donor->user_id != $previous_user_id ) {
+		if ( $donor->user_id !== $previous_user_id ) {
 			foreach ( $payments_array as $payment_id ) {
 				give_update_payment_meta( $payment_id, '_give_payment_user_id', $donor->user_id );
 			}
 		}
+
+		// Delete user meta, if user is connected with donor.
+		delete_user_meta( $donor->user_id, '_give_is_donor_disconnected' );
 
 		$output['success']       = true;
 		$donor_data              = array_merge( $donor_data, $address );
@@ -425,6 +428,9 @@ function give_disconnect_donor_user_id( $args ) {
 		if ( ! empty( $donor->payment_ids ) ) {
 			$wpdb->query( "UPDATE $wpdb->postmeta SET meta_value = 0 WHERE meta_key = '_give_payment_user_id' AND post_id IN ( $donor->payment_ids )" );
 		}
+
+		// Set Donor Disconnection status true, if user and donor are disconnected with each other.
+		update_user_meta( $user_id, '_give_is_donor_disconnected', true );
 
 		$output['success'] = true;
 
