@@ -699,18 +699,19 @@ function give_is_additional_email( $email ) {
   *
   * @since  1.8.14
   *
-  * @return WP_Error
+  * @return object|WP_Error
   */
 function give_check_for_donor_user_connection( $user ) {
-	$donor = new Give_Donor( $user->ID, true );
+	$is_donor_disconnected = get_user_meta( $user->ID, '_give_is_donor_disconnected', true );
 
-	// Bail out, if user is connected with donor.
-	if( 0 >= $donor->user_id ) {
+	// Bail out, if user is not connected with donor.
+	if( $is_donor_disconnected ) {
 		return new WP_Error( 'donor_user_disconnected',
-			__( '<strong>ERROR</strong>: Donor and User profile are disconnected. Please contact administrator.', 'give' )
+			'<strong>ERROR</strong> ' . __( 'Donor and User profile are disconnected. Please contact site administrator.', 'give' )
 		);
 	}
 
+	return $user;
 }
 
 add_action( 'wp_authenticate_user', 'give_check_for_donor_user_connection', 10 );
