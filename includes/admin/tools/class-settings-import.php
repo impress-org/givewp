@@ -162,12 +162,31 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 
 			$report      = give_import_donation_report();
 			$report_html = array(
-				'duplicate_donor'    => __( '%s duplicate donors detected', 'give' ),
-				'create_donor'       => __( '%s donors created', 'give' ),
-				'create_form'        => __( '%s donations forms created', 'give' ),
-				'duplicate_donation' => __( '%s duplicate donations detected', 'give' ),
-				'create_donation'    => __( '%s donations imported', 'give' ),
-
+				'duplicate_donor'    => array(
+					__( '%s duplicate %s detected', 'give' ),
+					__( 'donor', 'give' ),
+					__( 'donors', 'give' ),
+				),
+				'create_donor'       => array(
+					__( '%s %s created', 'give' ),
+					__( 'donor', 'give' ),
+					__( 'donors', 'give' ),
+				),
+				'create_form'        => array(
+					__( '%s donation %s created', 'give' ),
+					__( 'form', 'give' ),
+					__( 'forms', 'give' ),
+				),
+				'duplicate_donation' => array(
+					__( '%s duplicate %s detected', 'give' ),
+					__( 'donation', 'give' ),
+					__( 'donations', 'give' ),
+				),
+				'create_donation'    => array(
+					__( '%s %s imported', 'give' ),
+					__( 'donation', 'give' ),
+					__( 'donations', 'give' ),
+				),
 			);
 			$total       = (int) $_GET['total'];
 			$total       = $total - 1;
@@ -204,7 +223,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 						if ( array_key_exists( $key, $report_html ) && ! empty( $value ) ) {
 							?>
 							<p>
-								<?php echo esc_html( wp_sprintf( $report_html[ $key ], $value ) ); ?>
+								<?php echo esc_html( wp_sprintf( $report_html[ $key ][0], $value, _n( $report_html[ $key ][1], $report_html[ $key ][2], $value, 'give' ) ) ); ?>
 							</p>
 							<?php
 						}
