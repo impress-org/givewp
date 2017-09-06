@@ -1677,6 +1677,7 @@ function give_import_donation_form_options() {
 		'form_id'    => __( 'Donation Form ID', 'give' ),
 		'form_title' => __( 'Donation Form', 'give' ),
 		'form_level' => __( 'Donation Level', 'give' ),
+		'form_custom_amount_text' => __( 'Custom Amount Text', 'give' ),
 	) );
 }
 
@@ -1844,9 +1845,7 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 		// Add support to older php version.
 		$form_id = $form->get_ID();
 		if ( empty( $form_id ) ) {
-
 			$report['duplicate_form'] = ( ! empty( $report['duplicate_form'] ) ? ( absint( $report['duplicate_form'] ) + 1 ) : 1 );
-
 			$form = false;
 		}
 	}
@@ -1926,23 +1925,28 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 				'_give_price_option'          => 'multi',
 				'_give_donation_levels'       => array_values( $prices ),
 			);
+		} else {
+			$form->price_id = 'custom';
 		}
 
 		$defaults = array(
-			'_give_set_price'      => give_sanitize_amount_for_db( $data['amount'] ),
-			'_give_price_option'   => 'set',
-			'give_product_notes'   => 'Donation Notes',
-			'_give_product_type'   => 'default',
-			'_give_logged_in_only' => 'enabled',
+			'_give_set_price'    => give_sanitize_amount_for_db( $data['amount'] ),
+			'_give_price_option' => 'set',
 		);
 
 		// If new form is created.
 		if ( ! empty( $new_form ) ) {
 			$new_form = array(
-				'_give_payment_import'  => true,
-				'_give_display_style'   => 'radios',
-				'_give_custom_amount'   => 'disabled',
-				'_give_payment_display' => 'onpage',
+				'_give_custom_amount_text' => ( ! empty( $data['form_custom_amount_text'] ) ? $data['form_custom_amount_text'] : 'Custom' ),
+				'_give_logged_in_only'     => 'enabled',
+				'_give_custom_amount'      => 'enabled',
+				'_give_payment_import'     => true,
+				'_give_display_style'      => 'radios',
+				'_give_payment_display'    => 'onpage',
+				'give_product_notes'       => 'Donation Notes',
+				'_give_product_type'       => 'default',
+				'_give_default_gateway'    => 'global',
+				'_give_show_register_form' => 'both',
 			);
 			$defaults = wp_parse_args( $defaults, $new_form );
 		}
