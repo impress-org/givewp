@@ -253,7 +253,7 @@ function give_get_donation_notification_body_content( $payment_id = 0, $payment_
 	$default_email_body .= esc_html__( 'Thank you', 'give' );
 
 	$message = give_get_option( 'donation_notification' );
-	$message = isset( $email ) ? stripslashes( $message ) : $default_email_body;
+	$message = isset( $message ) ? stripslashes( $message ) : $default_email_body;
 
 	$email_body = give_do_email_tags( $message, $payment_id );
 
