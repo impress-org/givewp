@@ -94,7 +94,11 @@ class Give_i18n_Banner {
 			return;
 		}
 
-		if ( ! $this->hide_promo() && ( 'give_forms' === $_GET['post_type'] ) && ( 'give-settings' === $_GET['page'] ) ) {
+		if (
+			! $this->hide_promo()
+			&& ( ! empty( $_GET['post_type'] ) && 'give_forms' === $_GET['post_type'] )
+			&& ( ! empty( $_GET['page'] ) && 'give-settings' === $_GET['page'] )
+		) {
 			add_action( $this->hook, array( $this, 'promo' ) );
 		}
 	}
