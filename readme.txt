@@ -208,6 +208,9 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
+= 1.8.13: September 7th, 2017  =
+
+
 = 1.8.12: August 2nd, 2017  =
 * New: A new updates screen better notifies user's about necessary database and available add-on updates. [#1538](https://github.com/WordImpress/Give/issues/1538), [#1896](https://github.com/WordImpress/Give/issues/1896)
 * New: The donation method report now has sortable columns. [#1616](https://github.com/WordImpress/Give/issues/1616)
