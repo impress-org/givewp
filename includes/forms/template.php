@@ -1011,8 +1011,12 @@ function give_default_cc_address_fields( $form_id ) {
 
 
 		<?php
-		// Get defalut selected state by admin.
-		$selected_state = give_get_state();
+		$selected_state = '';
+
+		if ( $selected_country === give_get_country() ) {
+			// Get defalut selected state by admin.
+			$selected_state = give_get_state();
+		}
 
 		// Get the last payment made by user states.
 		if ( ! empty( $give_user_info['card_state'] ) && '*' !== $give_user_info['card_state'] ) {
