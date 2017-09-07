@@ -766,15 +766,9 @@ final class Give_Payment {
 
 									if ( 'publish' === $this->status || 'complete' === $this->status ) {
 
-										// Add sales logs.
+										// Add donation to logs.
 										$log_date = date_i18n( 'Y-m-d G:i:s', current_time( 'timestamp' ) );
-
-										$y = 0;
-										while ( $y < $quantity ) {
-
-											give_record_donation_in_log( $item['id'], $this->ID, $price_id, $log_date );
-											$y ++;
-										}
+										give_record_donation_in_log( $item['id'], $this->ID, $price_id, $log_date );
 
 										$form = new Give_Donate_Form( $item['id'] );
 										$form->increase_sales( $quantity );
@@ -1006,13 +1000,13 @@ final class Give_Payment {
 
 		// Allow overriding the price.
 		if ( false !== $args['price'] ) {
-			$item_price = $args['price'];
+			$donation_amount = $args['price'];
 		} else {
 
 			// Deal with variable pricing.
 			if ( give_has_variable_prices( $donation->ID ) ) {
-				$prices     = give_get_meta( $form_id, '_give_donation_levels', true );
-				$item_price = '';
+				$prices          = give_get_meta( $form_id, '_give_donation_levels', true );
+				$donation_amount = '';
 				// Loop through prices.
 				foreach ( $prices as $price ) {
 					// Find a match between price_id and level_id.
@@ -1020,23 +1014,23 @@ final class Give_Payment {
 					if ( ( isset( $args['price_id'] ) && isset( $price['_give_id']['level_id'] ) )
 					     && $args['price_id'] == $price['_give_id']['level_id']
 					) {
-						$item_price = $price['_give_amount'];
+						$donation_amount = $price['_give_amount'];
 					}
 				}
 				// Fallback to the lowest price point.
-				if ( $item_price == '' ) {
-					$item_price       = give_get_lowest_price_option( $donation->ID );
+				if ( $donation_amount == '' ) {
+					$donation_amount  = give_get_lowest_price_option( $donation->ID );
 					$args['price_id'] = give_get_lowest_price_id( $donation->ID );
 				}
 			} else {
 				// Simple form price.
-				$item_price = give_get_form_price( $donation->ID );
+				$donation_amount = give_get_form_price( $donation->ID );
 			}
 		}
 
 		// Sanitizing the price here so we don't have a dozen calls later.
-		$item_price = give_maybe_sanitize_amount( $item_price );
-		$total      = round( $item_price, give_currency_decimal_filter() );
+		$donation_amount = give_maybe_sanitize_amount( $donation_amount );
+		$total           = round( $donation_amount, give_currency_decimal_filter() );
 
 		// Add Options.
 		$default_options = array();
