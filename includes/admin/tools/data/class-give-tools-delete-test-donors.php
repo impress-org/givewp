@@ -27,42 +27,42 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 
 	/**
 	 * Used to store donation id's that are going to get deleted.
-	 * @var array.
+	 * @var string
 	 * @since 1.8.12
 	 */
 	var $donation_key = 'give_temp_delete_donation_ids';
 
 	/**
 	 * Used to store donors id's that are going to get deleted.
-	 * @var array.
+	 * @var string
 	 * @since 1.8.12
 	 */
 	var $donor_key = 'give_temp_delete_donor_ids';
 
 	/**
 	 * Used to store the step where the step will be. ( 'count', 'donations', 'donors' ).
-	 * @var array.
+	 * @var string
 	 * @since 1.8.12
 	 */
 	var $step_key = 'give_temp_delete_step';
 
 	/**
 	 * Used to store to get the page count in the loop.
-	 * @var array.
+	 * @var string
 	 * @since 1.8.12
 	 */
 	var $step_on_key = 'give_temp_delete_step_on';
 
 	/**
 	 * Contain total number of step .
-	 * @var array.
+	 * @var string
 	 * @since 1.8.12
 	 */
 	var $total_step;
 
 	/**
 	 * Counting contain total number of step that completed.
-	 * @var array.
+	 * @var int
 	 * @since 1.8.12
 	 */
 	var $step_completed;
@@ -84,7 +84,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	/**
 	 * Sets the number of items to pull on each step
 	 * @since  1.8.12
-	 * @var integer
+	 * @var int
 	 */
 	public $per_step = 10;
 
@@ -99,7 +99,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	 * Get the Export Data
 	 *
 	 * @access public
-	 * @since 1.8.12
+	 * @since  1.8.12
 	 * @global object $wpdb Used to query the database using the WordPress Database API
 	 *
 	 * @return array|bool $data The data for the CSV file
@@ -162,7 +162,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 			'paged'          => $paged,
 			// ONLY TEST MODE TRANSACTIONS!!!
 			'meta_key'       => '_give_payment_mode',
-			'meta_value'     => 'test'
+			'meta_value'     => 'test',
 		) );
 
 		// Reset the post data.
@@ -256,7 +256,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	 * Get the Export Data
 	 *
 	 * @access public
-	 * @since 1.8.12
+	 * @since  1.8.12
 	 * @global object $wpdb Used to query the database using the WordPress Database API
 	 *
 	 * @return array|bool $data The data for the CSV file
@@ -311,9 +311,22 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 				$this->update_option( $this->step_on_key, '0' );
 			}
 
+			global $wpdb;
 			foreach ( $donation_ids as $item ) {
+
+				// will delete the payment log first.
+				$parent_query = $wpdb->prepare( "SELECT post_id as id FROM $wpdb->postmeta WHERE meta_key = %s AND meta_value = %d", '_give_log_payment_id', (int) $item );
+				$log_id       = $wpdb->get_row( $parent_query, ARRAY_A );
+				// Check if payment has it log or not if yes then delete it.
+				if ( ! empty( $log_id['id'] ) ) {
+					// Deleting the payment log.
+					wp_delete_post( $log_id['id'], true );
+				}
+
+				// Delete the main payment.
 				wp_delete_post( $item, true );
 			}
+			do_action( 'give_delete_log_cache' );
 		}
 
 
@@ -331,7 +344,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 				'posts_per_page' => 1,
 				'meta_key'       => '_give_payment_mode',
 				'meta_value'     => 'live',
-				'author'         => $donor_ids[ $page ]
+				'author'         => $donor_ids[ $page ],
 			) );
 
 			$donation_posts = get_posts( $args );
@@ -376,7 +389,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	/**
 	 * Given a key, get the information from the Database Directly
 	 *
-	 * @since  1.8.12
+	 * @since  1.8.13
 	 *
 	 * @param  string $key The option_name
 	 *

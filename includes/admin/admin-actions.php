@@ -123,7 +123,7 @@ add_action( 'wp_ajax_give_hide_outdated_php_notice', 'give_hide_outdated_php_not
  */
 function _give_register_admin_notices() {
 	// Bailout.
-	if( ! is_admin() ) {
+	if ( ! is_admin() ) {
 		return;
 	}
 
@@ -391,4 +391,177 @@ function _give_show_test_mode_notice_in_admin_bar( $wp_admin_bar ) {
 
 	return true;
 }
+
 add_action( 'admin_bar_menu', '_give_show_test_mode_notice_in_admin_bar', 1000, 1 );
+
+/**
+ * Add Link to Import page in from donation archive and donation single page
+ *
+ * @since 1.8.13
+ */
+function give_import_page_link_callback() {
+	?>
+	<a href="<?php echo esc_url( give_import_page_url() ); ?>"
+	   class="page-import-action page-title-action"><?php esc_html_e( 'Import Donations', 'give' ); ?></a>
+
+	<style type="text/css">
+		<?php
+		// Check if view donation single page only.
+		if ( ! empty( $_REQUEST['view'] ) && 'view-payment-details' === (string) give_clean( $_REQUEST['view'] ) && 'give-payment-history' === give_clean( $_REQUEST['page'] ) ) {
+			?>
+		.wrap #transaction-details-heading {
+			display: inline-block;
+		}
+
+		<?php
+	} else {
+		?>
+		/* So the "New Donation" button aligns with the wp-admin h1 tag */
+		.wrap > h1 {
+			display: inline-block;
+			margin-right: 5px;
+		}
+
+		<?php
+	} ?>
+	</style>
+	<?php
+}
+
+
+add_action( 'give_payments_page_top', 'give_import_page_link_callback', 11 );
+add_action( 'give_view_order_details_before', 'give_import_page_link_callback', 11 );
+
+/**
+ * Load donation import ajax callback
+ * Fire when importing from CSV start
+ *
+ * @since  1.8.13
+ *
+ * @return json $json_data
+ */
+function give_donation_import_callback() {
+	$import_setting = array();
+	$fields         = isset( $_POST['fields'] ) ? $_POST['fields'] : null;
+
+	parse_str( $fields );
+
+	$import_setting['create_user'] = $create_user;
+	$import_setting['mode']        = $mode;
+	$import_setting['delimiter']   = $delimiter;
+	$import_setting['csv']         = $csv;
+	$import_setting['delete_csv']  = $delete_csv;
+
+	// Parent key id.
+	$main_key = maybe_unserialize( $main_key );
+
+	$current    = absint( $_REQUEST['current'] );
+	$total_ajax = absint( $_REQUEST['total_ajax'] );
+	$start      = absint( $_REQUEST['start'] );
+	$end        = absint( $_REQUEST['end'] );
+	$next       = absint( $_REQUEST['next'] );
+	$total      = absint( $_REQUEST['total'] );
+	$per_page   = absint( $_REQUEST['per_page'] );
+	if ( empty( $delimiter ) ) {
+		$delimiter = ',';
+	}
+
+	// processing done here.
+	$raw_data = give_get_donation_data_from_csv( $csv, $start, $end, $delimiter );
+	$raw_key  = maybe_unserialize( $mapto );
+
+	//Prevent normal emails
+	remove_action( 'give_complete_donation', 'give_trigger_donation_receipt', 999 );
+	remove_action( 'give_insert_user', 'give_new_user_notification', 10 );
+	remove_action( 'give_insert_payment', 'give_payment_save_page_data' );
+
+	foreach ( $raw_data as $row_data ) {
+		give_save_import_donation_to_db( $raw_key, $row_data, $main_key, $import_setting );
+	}
+
+	// Check if function exists or not.
+	if ( function_exists( 'give_payment_save_page_data' ) ) {
+		add_action( 'give_insert_payment', 'give_payment_save_page_data' );
+	}
+	add_action( 'give_insert_user', 'give_new_user_notification', 10, 2 );
+	add_action( 'give_complete_donation', 'give_trigger_donation_receipt', 999 );
+
+	if ( $next == false ) {
+		$json_data = array(
+			'success' => true,
+			'message' => __( 'All donation uploaded successfully!', 'give' ),
+		);
+	} else {
+		$index_start = $start;
+		$index_end   = $end;
+		$last        = false;
+		$next        = true;
+		if ( $next ) {
+			$index_start = $index_start + $per_page;
+			$index_end   = $per_page + ( $index_start - 1 );
+		}
+		if ( $index_end >= $total ) {
+			$index_end = $total;
+			$last      = true;
+		}
+		$json_data = array(
+			'raw_data' => $raw_data,
+			'raw_key'  => $raw_key,
+			'next'     => $next,
+			'start'    => $index_start,
+			'end'      => $index_end,
+			'last'     => $last,
+		);
+	}
+
+	$url              = give_import_page_url( array(
+		'step'       => '4',
+		'csv'        => $csv,
+		'total'      => $total,
+		'delete_csv' => $import_setting['delete_csv'],
+		'success'    => ( isset( $json_data['success'] ) ? $json_data['success'] : '' ),
+	) );
+	$json_data['url'] = $url;
+
+	$current ++;
+	$json_data['current'] = $current;
+
+	$percentage              = ( 100 / ( $total_ajax + 1 ) ) * $current;
+	$json_data['percentage'] = $percentage;
+
+	$json_data = apply_filters( 'give_import_ajax_responces', $json_data, $fields );
+	wp_die( json_encode( $json_data ) );
+}
+
+add_action( 'wp_ajax_give_donation_import', 'give_donation_import_callback' );
+
+
+/**
+ * Initializes blank slate content if a list table is empty.
+ *
+ * @since 1.8.13
+ */
+function give_blank_slate() {
+	$blank_slate = new Give_Blank_Slate();
+	$blank_slate->init();
+}
+
+add_action( 'current_screen', 'give_blank_slate' );
+
+/**
+ * Get Array of WP User Roles.
+ *
+ * @since 1.8.13
+ *
+ * @return array
+ */
+function give_get_user_roles() {
+	$user_roles = array();
+
+	// Loop through User Roles.
+	foreach ( get_editable_roles() as $role_name => $role_info ):
+		$user_roles[ $role_name ] = $role_info['name'];
+	endforeach;
+
+	return $user_roles;
+}

@@ -55,14 +55,10 @@ function give_install( $network_wide = false ) {
  * @return void
  */
 function give_run_install() {
-
 	$give_options = give_get_settings();
 
 	// Setup the Give Custom Post Types.
 	give_setup_post_types();
-
-	// Clear the permalinks.
-	flush_rewrite_rules( false );
 
 	// Add Upgraded From Option.
 	$current_version = get_option( 'give_version' );
@@ -97,8 +93,12 @@ function give_run_install() {
 	$roles->add_roles();
 	$roles->add_caps();
 
+	// Set api version, end point and refresh permalink.
 	$api = new Give_API();
+	$api->add_endpoint();
 	update_option( 'give_default_api_version', 'v' . $api->get_version() );
+
+	flush_rewrite_rules();
 
 	// Check for PHP Session support, and enable if available.
 	$give_sessions = new Give_Session();
@@ -120,7 +120,9 @@ function give_run_install() {
 			'v18_upgrades_form_metadata',
 			'v189_upgrades_levels_post_meta',
 			'v1812_update_amount_values',
-			'v1812_update_donor_purchase_values'
+			'v1812_update_donor_purchase_values',
+			'v1813_update_user_roles',
+			'v1813_update_donor_user_roles'
 		);
 
 		foreach ( $upgrade_routines as $upgrade ) {
@@ -299,6 +301,8 @@ function give_get_default_settings() {
 		'currency_position'                           => 'before',
 		'session_lifetime'                            => '604800',
 		'email_access'                                => 'disabled',
+		'thousands_separator'                         => ',',
+		'decimal_separator'                           => '.',
 		'number_decimals'                             => 2,
 
 		// Display options.
@@ -339,6 +343,9 @@ function give_get_default_settings() {
 
 		// Default email receipt message.
 		'donation_receipt'                            => give_get_default_donation_receipt_email(),
+
+		'donor_default_user_role'                     => 'give_donor',
+
 	);
 
 	return $options;

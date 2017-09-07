@@ -117,6 +117,14 @@ class Give_Payment_History_Table extends WP_List_Table {
 	public $abandoned_count;
 
 	/**
+	 * Total number of pre-approved payments
+	 *
+	 * @var int
+	 * @since 1.8.13
+	 */
+	public $preapproval_count;
+
+	/**
 	 * Get things started.
 	 *
 	 * @since 1.0
@@ -291,6 +299,10 @@ class Give_Payment_History_Table extends WP_List_Table {
 			'abandoned'  => array(
 				'abandoned_count',
 				esc_html__( 'Abandoned', 'give' ),
+			),
+			'preapproval'  => array(
+				'preapproval_count',
+				esc_html__( 'Preapproval Pending', 'give' ),
 			),
 		);
 
@@ -515,6 +527,10 @@ class Give_Payment_History_Table extends WP_List_Table {
 			$value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label" data-tooltip="' . esc_attr__( 'This donation was made in test mode.', 'give' ) . '">' . esc_html__( 'Test', 'give' ) . '</span>';
 		}
 
+		if ( true === $payment->import && true === (bool) apply_filters( 'give_payment_show_importer_label', false ) ) {
+			$value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label" data-tooltip="' . esc_attr__( 'This donation was imported.', 'give' ) . '">' . esc_html__( 'Import', 'give' ) . '</span>';
+		}
+
 		return $value;
 	}
 
@@ -725,15 +741,16 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 		$args['form_id'] = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : null;
 
-		$payment_count          = give_count_payments( $args );
-		$this->complete_count   = $payment_count->publish;
-		$this->pending_count    = $payment_count->pending;
-		$this->processing_count = $payment_count->processing;
-		$this->refunded_count   = $payment_count->refunded;
-		$this->failed_count     = $payment_count->failed;
-		$this->revoked_count    = $payment_count->revoked;
-		$this->cancelled_count  = $payment_count->cancelled;
-		$this->abandoned_count  = $payment_count->abandoned;
+		$payment_count           = give_count_payments( $args );
+		$this->complete_count    = $payment_count->publish;
+		$this->pending_count     = $payment_count->pending;
+		$this->processing_count  = $payment_count->processing;
+		$this->refunded_count    = $payment_count->refunded;
+		$this->failed_count      = $payment_count->failed;
+		$this->revoked_count     = $payment_count->revoked;
+		$this->cancelled_count   = $payment_count->cancelled;
+		$this->abandoned_count   = $payment_count->abandoned;
+		$this->preapproval_count = $payment_count->preapproval;
 
 		foreach ( $payment_count as $count ) {
 			$this->total_count += $count;
@@ -846,6 +863,9 @@ class Give_Payment_History_Table extends WP_List_Table {
 				break;
 			case 'abandoned':
 				$total_items = $this->abandoned_count;
+				break;
+			case 'preapproval':
+				$total_items = $this->preapproval_count;
 				break;
 			case 'any':
 				$total_items = $this->total_count;

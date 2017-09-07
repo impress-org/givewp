@@ -234,8 +234,11 @@ class Give_Updates {
 			}
 
 			$menu[ $index ][0] = sprintf(
-				__( 'Donations <span class="update-plugins count-%1$d"><span class="plugin-count">%1$d</span></span>', 'give' ),
-				$this->get_update_count()
+				__( 'Donations %s', 'give' ),
+				sprintf(
+					'<span class="update-plugins count-%1$d"><span class="plugin-count">%1$d</span></span>',
+					$this->get_update_count()
+				)
 			);
 
 			break;
@@ -374,12 +377,6 @@ class Give_Updates {
 				),
 				'error'
 			);
-		}
-
-		// Update timeout error.
-		ignore_user_abort( true );
-		if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
-			@set_time_limit( 0 );
 		}
 
 		// Set params.

@@ -62,6 +62,10 @@ function give_do_automatic_upgrades() {
 			give_v1812_upgrades();
 			$did_upgrade = true;
 
+		case version_compare( $give_version, '1.8.13', '<' ) :
+			give_v1813_upgrades();
+			$did_upgrade = true;
+
 	}
 
 	if ( $did_upgrade ) {
@@ -135,6 +139,15 @@ function give_show_upgrade_notices( $give_updates ) {
 			'id'       => 'v1812_update_donor_purchase_values',
 			'version'  => '1.8.12',
 			'callback' => 'give_v1812_update_donor_purchase_value_callback',
+		)
+	);
+
+	// v1.8.13 Upgrades for donor
+	$give_updates->register(
+		array(
+			'id'       => 'v1813_update_donor_user_roles',
+			'version'  => '1.8.13',
+			'callback' => 'give_v1813_update_donor_user_roles_callback',
 		)
 	);
 }
@@ -976,45 +989,45 @@ function give_v1812_update_amount_values_callback() {
 			switch ( $post->post_type ) {
 				case 'give_forms':
 					// _give_set_price
-					if( ! empty( $meta['_give_set_price'][0] ) ) {
+					if ( ! empty( $meta['_give_set_price'][0] ) ) {
 						update_post_meta( $post->ID, '_give_set_price', give_sanitize_amount_for_db( $meta['_give_set_price'][0] ) );
 					}
 
 					// _give_custom_amount_minimum
-					if( ! empty( $meta['_give_custom_amount_minimum'][0] ) ) {
+					if ( ! empty( $meta['_give_custom_amount_minimum'][0] ) ) {
 						update_post_meta( $post->ID, '_give_custom_amount_minimum', give_sanitize_amount_for_db( $meta['_give_custom_amount_minimum'][0] ) );
 					}
 
 					// _give_levels_minimum_amount
-					if( ! empty( $meta['_give_levels_minimum_amount'][0] ) ) {
+					if ( ! empty( $meta['_give_levels_minimum_amount'][0] ) ) {
 						update_post_meta( $post->ID, '_give_levels_minimum_amount', give_sanitize_amount_for_db( $meta['_give_levels_minimum_amount'][0] ) );
 					}
 
 					// _give_levels_maximum_amount
-					if( ! empty( $meta['_give_levels_maximum_amount'][0] ) ) {
+					if ( ! empty( $meta['_give_levels_maximum_amount'][0] ) ) {
 						update_post_meta( $post->ID, '_give_levels_maximum_amount', give_sanitize_amount_for_db( $meta['_give_levels_maximum_amount'][0] ) );
 					}
 
 					// _give_set_goal
-					if( ! empty( $meta['_give_set_goal'][0] ) ) {
+					if ( ! empty( $meta['_give_set_goal'][0] ) ) {
 						update_post_meta( $post->ID, '_give_set_goal', give_sanitize_amount_for_db( $meta['_give_set_goal'][0] ) );
 					}
 
 					// _give_form_earnings
-					if( ! empty( $meta['_give_form_earnings'][0] ) ) {
+					if ( ! empty( $meta['_give_form_earnings'][0] ) ) {
 						update_post_meta( $post->ID, '_give_form_earnings', give_sanitize_amount_for_db( $meta['_give_form_earnings'][0] ) );
 					}
 
 					// _give_custom_amount_minimum
-					if( ! empty( $meta['_give_donation_levels'][0] ) ) {
+					if ( ! empty( $meta['_give_donation_levels'][0] ) ) {
 						$donation_levels = unserialize( $meta['_give_donation_levels'][0] );
 
-						foreach( $donation_levels as $index => $level ) {
-							if( empty( $level['_give_amount'] ) ) {
+						foreach ( $donation_levels as $index => $level ) {
+							if ( empty( $level['_give_amount'] ) ) {
 								continue;
 							}
 
-							$donation_levels[$index]['_give_amount'] = give_sanitize_amount_for_db( $level['_give_amount'] );
+							$donation_levels[ $index ]['_give_amount'] = give_sanitize_amount_for_db( $level['_give_amount'] );
 						}
 
 						$meta['_give_donation_levels'] = $donation_levels;
@@ -1026,7 +1039,7 @@ function give_v1812_update_amount_values_callback() {
 
 				case 'give_payment':
 					// _give_payment_total
-					if( ! empty( $meta['_give_payment_total'][0] ) ) {
+					if ( ! empty( $meta['_give_payment_total'][0] ) ) {
 						update_post_meta( $post->ID, '_give_payment_total', give_sanitize_amount_for_db( $meta['_give_payment_total'][0] ) );
 					}
 
@@ -1075,4 +1088,65 @@ function give_v1812_update_donor_purchase_value_callback() {
 		// The Update Ran.
 		give_set_upgrade_complete( 'v1812_update_donor_purchase_values' );
 	}
+}
+
+/**
+ * Upgrade routine for updating user roles for existing donors.
+ *
+ * @since 1.8.13
+ */
+function give_v1813_update_donor_user_roles_callback() {
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
+	$offset       = 1 === $give_updates->step ? 0 : $give_updates->step * 20;
+
+	// Fetch all the existing donors.
+	$donors = Give()->donors->get_donors( array(
+			'number' => 20,
+			'offset' => $offset,
+		)
+	);
+
+	if ( ! empty( $donors ) ) {
+		$give_updates->set_percentage( Give()->donors->count(), ( $give_updates->step * 20 ) );
+
+		/* @var Object $donor */
+		foreach ( $donors as $donor ) {
+			$user_id = $donor->user_id;
+
+			// Proceed, if donor is attached with user.
+			if ( $user_id ) {
+				$user = get_userdata( $user_id );
+
+				// Update user role, if user has subscriber role.
+				if ( is_array( $user->roles ) && in_array( 'subscriber', $user->roles ) ) {
+					wp_update_user(
+						array(
+							'ID'   => $user_id,
+							'role' => 'give_donor',
+						)
+					);
+				}
+			}
+		}
+	} else {
+		// The Update Ran.
+		give_set_upgrade_complete( 'v1813_update_donor_user_roles' );
+	}
+}
+
+
+/**
+ * Version 1.8.13 automatic updates
+ *
+ * @since 1.8.13
+ */
+function give_v1813_upgrades() {
+	// Update admin setting.
+	give_update_option( 'donor_default_user_role', 'give_donor' );
+
+	// Update Give roles.
+	$roles = new Give_Roles();
+	$roles->add_roles();
+	$roles->add_caps();
 }

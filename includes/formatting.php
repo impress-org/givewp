@@ -75,7 +75,7 @@ function give_get_price_decimal_separator() {
  * @return string $amount Newly sanitized amount
  */
 function give_sanitize_amount_for_db( $number ) {
-	return give_sanitize_amount( $number, 6 );
+	return give_maybe_sanitize_amount( $number, 6 );
 }
 
 /**
@@ -106,7 +106,10 @@ function give_maybe_sanitize_amount( $number, $dp = false, $trim_zeros = false )
 	// Handle thousand separator as '.'
 	// Handle sanitize database values.
 	$number_parts = explode( '.', $number );
-	$is_db_sanitize_val = ( 2 === count( $number_parts ) && ( 6 === strlen( $number_parts[1] ) ) );
+	$is_db_sanitize_val = ( 2 === count( $number_parts ) &&
+	                        is_numeric( $number_parts[0] ) &&
+	                        is_numeric( $number_parts[1] ) &&
+	                        ( 6 === strlen( $number_parts[1] ) ) );
 
 	if( $is_db_sanitize_val ) {
 		// Sanitize database value.
@@ -117,9 +120,7 @@ function give_maybe_sanitize_amount( $number, $dp = false, $trim_zeros = false )
 		false !== strpos( $number, $thousand_separator )
 	){
 		// Fix point thousand separator value.
-		if( ! $is_db_sanitize_val ) {
-			$number = str_replace( '.', '', $number );
-		}
+		$number = str_replace( '.', '', $number );
 	}
 
 	return give_sanitize_amount( $number, $dp, $trim_zeros );

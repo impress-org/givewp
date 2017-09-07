@@ -360,7 +360,7 @@ function give_settings_page_pages( $settings ) {
 		// License settings.
 		include( 'settings/class-settings-license.php' ),
 
-		// Advanced settinns.
+		// Advanced settings.
 		include( 'settings/class-settings-advanced.php' )
 	);
 
@@ -425,6 +425,9 @@ function give_tools_page_pages( $settings ) {
 
 		// Export.
 		include( 'tools/class-settings-export.php' ),
+
+		// Import
+		include_once( 'tools/class-settings-import.php' ),
 
 	);
 

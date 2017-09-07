@@ -182,18 +182,18 @@ function give_check_logged_in_user_for_existing_email( $valid_data, $post ) {
 	// Verify that the email address belongs to this customer.
 	if ( is_user_logged_in() ) {
 
-		$submitted_email    = $valid_data['logged_in_user']['user_email'];
-		$customer = new Give_Donor( get_current_user_id(), true );
+		$submitted_email = $valid_data['logged_in_user']['user_email'];
+		$donor           = new Give_Donor( get_current_user_id(), true );
 
 		// If this email address is not registered with this customer, see if it belongs to any other customer
 		if (
-			$submitted_email !== $customer->email
-			&& ( is_array( $customer->emails ) && ! in_array( $submitted_email, $customer->emails ) )
+			$submitted_email !== $donor->email
+			&& ( is_array( $donor->emails ) && ! in_array( $submitted_email, $donor->emails ) )
 		) {
-			$found_customer = new Give_Donor( $submitted_email );
+			$found_donor = new Give_Donor( $submitted_email );
 
-			if ( $found_customer->id > 0 ) {
-				give_set_error( 'give-customer-email-exists', sprintf( __( 'You are logged in as %1$s, and are submitting a donation as %2$s, which is an existing donor. To ensure that the email address is tied to the correct donor, please submit this donation from a logged-out browser, or choose another email address.' ,'give' ), $customer->email, $submitted_email ) );
+			if ( $found_donor->id > 0 ) {
+				give_set_error( 'give-customer-email-exists', sprintf( __( 'You are logged in as %1$s, and are submitting a donation as %2$s, which is an existing donor. To ensure that the email address is tied to the correct donor, please submit this donation from a logged-out browser, or choose another email address.', 'give' ), $donor->email, $submitted_email ) );
 			}
 		}
 	}
@@ -221,8 +221,8 @@ function give_process_form_login() {
 			 * @since 1.0
 			 */
 			ob_start();
-				do_action( 'give_ajax_donation_errors' );
-				$message = ob_get_contents();
+			do_action( 'give_ajax_donation_errors' );
+			$message = ob_get_contents();
 			ob_end_clean();
 			wp_send_json_error( $message );
 		} else {
@@ -236,7 +236,7 @@ function give_process_form_login() {
 	if ( $is_ajax ) {
 		$message = Give()->notices->print_frontend_notice(
 			sprintf(
-				/* translators: %s: user first name */
+			/* translators: %s: user first name */
 				esc_html__( 'Welcome %s! You have successfully logged into your account.', 'give' ),
 				( ! empty( $user_data['user_first'] ) ) ? $user_data['user_first'] : $user_data['user_login']
 			),
@@ -356,7 +356,7 @@ function give_donation_form_validate_gateway() {
 			give_set_error(
 				'invalid_donation_minimum',
 				sprintf(
-					/* translators: %s: minimum donation amount */
+				/* translators: %s: minimum donation amount */
 					__( 'This form has a minimum donation amount of %s.', 'give' ),
 					give_currency_filter( give_format_amount( give_get_form_minimum_price( $form_id ), array( 'sanitize' => false ) ) )
 				)
@@ -470,7 +470,7 @@ function give_get_required_fields( $form_id ) {
 		);
 
 
-		$required_fields['card_state']      = array(
+		$required_fields['card_state'] = array(
 			'error_id'      => 'invalid_state',
 			'error_message' => __( 'Please enter billing state / province / County.', 'give' ),
 		);
@@ -791,7 +791,7 @@ function give_register_and_login_new_user( $user_data = array() ) {
 		'first_name'      => isset( $user_data['user_first'] ) ? $user_data['user_first'] : '',
 		'last_name'       => isset( $user_data['user_last'] ) ? $user_data['user_last'] : '',
 		'user_registered' => date( 'Y-m-d H:i:s' ),
-		'role'            => get_option( 'default_role' ),
+		'role'            => give_get_option( 'donor_default_user_role', 'give_donor' ),
 	), $user_data );
 
 	// Insert new user.
@@ -815,8 +815,17 @@ function give_register_and_login_new_user( $user_data = array() ) {
 	 */
 	do_action( 'give_insert_user', $user_id, $user_data );
 
-	// Login new user.
-	give_log_user_in( $user_id, $user_data['user_login'], $user_data['user_pass'] );
+	/**
+	 * Filter allow user to alter if user when to login or not when user is register for the first time.
+	 *
+	 * @since 1.8.13
+	 *
+	 * return bool True if login with registration and False if only want to register.
+	 */
+	if ( true === (bool) apply_filters( 'give_log_user_in_on_register', true ) ) {
+		// Login new user.
+		give_log_user_in( $user_id, $user_data['user_login'], $user_data['user_pass'] );
+	}
 
 	// Return user id.
 	return $user_id;
@@ -891,12 +900,12 @@ function give_get_donation_form_user( $valid_data = array() ) {
 
 	// Get the user's billing address details.
 	$user['address']            = array();
-	$user['address']['line1']   = ! empty( $_POST['card_address'] ) ? sanitize_text_field( $_POST['card_address'] ) : false;
-	$user['address']['line2']   = ! empty( $_POST['card_address_2'] ) ? sanitize_text_field( $_POST['card_address_2'] ) : false;
-	$user['address']['city']    = ! empty( $_POST['card_city'] ) ? sanitize_text_field( $_POST['card_city'] ) : false;
-	$user['address']['state']   = ! empty( $_POST['card_state'] ) ? sanitize_text_field( $_POST['card_state'] ) : false;
-	$user['address']['country'] = ! empty( $_POST['billing_country'] ) ? sanitize_text_field( $_POST['billing_country'] ) : false;
-	$user['address']['zip']     = ! empty( $_POST['card_zip'] ) ? sanitize_text_field( $_POST['card_zip'] ) : false;
+	$user['address']['line1']   = ! empty( $_POST['card_address'] ) ? give_clean( $_POST['card_address'] ) : false;
+	$user['address']['line2']   = ! empty( $_POST['card_address_2'] ) ? give_clean( $_POST['card_address_2'] ) : false;
+	$user['address']['city']    = ! empty( $_POST['card_city'] ) ? give_clean( $_POST['card_city'] ) : false;
+	$user['address']['state']   = ! empty( $_POST['card_state'] ) ? give_clean( $_POST['card_state'] ) : false;
+	$user['address']['zip']     = ! empty( $_POST['card_zip'] ) ? give_clean( $_POST['card_zip'] ) : false;
+	$user['address']['country'] = ! empty( $_POST['billing_country'] ) ? give_clean( $_POST['billing_country'] ) : false;
 
 	if ( empty( $user['address']['country'] ) ) {
 		$user['address'] = false;
@@ -970,7 +979,7 @@ function give_get_donation_cc_info() {
  *
  * @since  1.0
  *
- * @param int    $zip
+ * @param int $zip
  * @param string $country_code
  *
  * @return bool|mixed
