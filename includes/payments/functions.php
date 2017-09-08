@@ -1845,7 +1845,7 @@ function give_get_price_id( $form_id, $price ) {
 
 	if ( give_has_variable_prices( $form_id ) ) {
 
-		$levels = maybe_unserialize( give_get_meta( $form_id, '_give_donation_levels', true ) );
+		$levels = give_get_meta( $form_id, '_give_donation_levels', true );
 
 		foreach ( $levels as $level ) {
 

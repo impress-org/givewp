@@ -132,7 +132,7 @@ class Give_Helper_Payment extends Give_Unit_Test_Case {
 		$multilevel_form = Give_Helper_Form::create_multilevel_form();
 
 		// Get donation levels
-		$multilevel_price = maybe_unserialize( give_get_meta( $multilevel_form->ID, '_give_donation_levels', true ) );
+		$multilevel_price = give_get_meta( $multilevel_form->ID, '_give_donation_levels', true );
 
 		// Setup donation data.
 		$donation = wp_parse_args(

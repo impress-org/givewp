@@ -1,7 +1,7 @@
 /*!
  * Float Labels
  *
- * @version: 3.1.0
+ * @version: 3.2.0
  * @author: Paul Ryley (http://geminilabs.io)
  * @url: https://geminilabs.github.io/float-labels.js
  * @license: MIT
@@ -39,15 +39,16 @@
 	Plugin.prototype = {
 
 		defaults: {
-			customEvent  : null,
-			customLabel  : null,
-			exclude      : '.no-label',
-			inputRegex   : /email|number|password|search|tel|text|url/,
-			prefix       : 'fl-',
-			prioritize   : 'label', // label|placeholder
+			customEvent: null,
+			customLabel: null,
+			customPlaceholder: null,
+			exclude: '.no-label',
+			inputRegex: /email|number|password|search|tel|text|url/,
+			prefix: 'fl-',
+			prioritize: 'label', // label|placeholder
 			requiredClass: 'required',
-			style        : 0, // 0|1|2
-			transform    : 'input,select,textarea'
+			style: 0, // 0|1|2
+			transform: 'input,select,textarea'
 		},
 
 		/** @return void */
@@ -83,11 +84,9 @@
 		{
 			var labelEl = this.getLabel( el );
 			if( !labelEl )return;
-			var labelText = this.getLabelText( labelEl, el );
 			el.classList.add( this.prefixed( el.tagName.toLowerCase() ));
-			labelEl.classList.add( this.prefixed( 'label' ));
-			labelEl.text = labelText;
-			this.setPlaceholder( labelText, el );
+			this.setLabel( labelEl, el );
+			this.setPlaceholder( labelEl, el );
 			this.wrapLabel( labelEl, el );
 			this.handleEvents( el, 'add' );
 			if( typeof this.config[this.current].customEvent === 'function' ) {
@@ -155,16 +154,8 @@
 		{
 			var labelText = labelEl.textContent.replace( /[*:]/g, '' ).trim();
 			var placeholderText = el.getAttribute( 'placeholder' );
-
 			if( !labelText || ( labelText && placeholderText && this.config[this.current].prioritize === 'placeholder' )) {
 				labelText = placeholderText;
-			}
-			// call the custom defined label event
-			if( typeof this.config[this.current].customLabel === 'function' ) {
-				var customLabel = this.config[this.current].customLabel.call( this, labelEl, el );
-				if( customLabel !== undefined ) {
-					labelText = customLabel;
-				}
 			}
 			return labelText;
 		},
@@ -286,25 +277,48 @@
 		},
 
 		/** @return void */
-		setPlaceholder: function( labelText, el )
+		setLabel: function( labelEl, el )
+		{
+			labelEl.classList.add( this.prefixed( 'label' ));
+			labelEl.textContent = this.getLabelText( labelEl, el );
+			if( typeof this.config[this.current].customLabel === 'function' ) {
+				labelEl.textContent = this.config[this.current].customLabel.call( this, labelEl, el );
+			}
+		},
+
+		/** @return void */
+		setPlaceholder: function( labelEl, el )
 		{
 			var placeholderText = el.getAttribute( 'placeholder' );
-			// add a placholder option to the select if it doesn't already exist
-			if( el.tagName === 'SELECT' ) {
-				var childEl = el.firstElementChild;
-				if( childEl.value ) {
-					el.insertBefore( new Option( labelText, '', true, true ), childEl );
-				}
-				else if( childEl.text === '' ) {
-					childEl.text = labelText;
-				}
-			}
-			// add a textarea/input placeholder attribute if it doesn't exist
-			else if( !placeholderText || this.config[this.current].prioritize === 'label' ) {
+			if( this.config[this.current].prioritize === 'label' || !placeholderText ) {
 				if( placeholderText ) {
 					el.setAttribute( 'data-placeholder', placeholderText );
 				}
-				el.setAttribute( 'placeholder', labelText );
+				placeholderText = this.getLabelText( labelEl, el );
+			}
+			if( typeof this.config[this.current].customPlaceholder === 'function' ) {
+				placeholderText = this.config[this.current].customPlaceholder.call( this, placeholderText, el, labelEl );
+			}
+			if( el.tagName === 'SELECT' ) {
+				this.setSelectPlaceholder( el, placeholderText );
+			}
+			else {
+				el.setAttribute( 'placeholder', placeholderText );
+			}
+		},
+
+		/** @return void */
+		setSelectPlaceholder: function( el, placeholderText )
+		{
+			var childEl = el.firstElementChild;
+			if( childEl.hasAttribute( 'value' ) && childEl.value ) {
+				el.insertBefore( new Option( placeholderText, '', true, true ), childEl );
+			}
+			else {
+				childEl.setAttribute( 'value', '' );
+			}
+			if( childEl.textContent === '' ) {
+				childEl.textContent = placeholderText;
 			}
 		},
 
@@ -314,7 +328,7 @@
 			var wrapper = this.createEl( 'div', {
 				class: this.prefixed( 'wrap' ) + ' ' + this.prefixed( 'wrap-' + el.tagName.toLowerCase() ),
 			});
-			if( el.value.length ) {
+			if( el.hasAttribute( 'value' ) && el.value.length ) {
 				wrapper.classList.add( this.prefixed( 'is-active' ));
 			}
 			if( el.getAttribute( 'required' ) !== null || el.classList.contains( this.config[this.current].requiredClass )) {
