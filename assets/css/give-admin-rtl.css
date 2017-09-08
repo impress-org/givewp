@@ -2482,7 +2482,7 @@ input.give-price-field {
   font-size: 24px;
   font-weight: 600; }
 
-.disconnect-user a {
+#disconnect-donor, #view-user-profile {
   font-size: 12px;
   font-weight: normal;
   text-decoration: none; }
