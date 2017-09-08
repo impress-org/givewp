@@ -1788,80 +1788,81 @@ jQuery.noConflict();
 	/**
 	 * Handle row count and field count for repeatable field.
 	 */
-	var handle_metabox_repeater_field_row_count = function (container, new_row) {
-		var row_count = $(container).attr('data-rf-row-count'),
-			$container = $(container),
-			$parent = $container.parents('.give-repeatable-field-section');
+	var handle_metabox_repeater_field_row_count = function( container, new_row ) {
+		var row_count = $( container ).attr( 'data-rf-row-count' ),
+			$container = $( container ),
+			$parent = $container.parents( '.give-repeatable-field-section' );
 
 		row_count++;
 
 		// Set name for fields.
-		$('*', new_row).each(function () {
-			$.each(this.attributes, function (index, element) {
-				this.value = this.value.replace('{{row-count-placeholder}}', row_count - 1);
+		$( '*', new_row ).each( function() {
+			$.each( this.attributes, function( index, element ) {
+				this.value = this.value.replace( '{{row-count-placeholder}}', row_count - 1 );
 			});
 		});
 
 		// Set row counter.
-		$(container).attr('data-rf-row-count', row_count);
+		$( container ).attr( 'data-rf-row-count', row_count );
 
 		// Fire event: Row added.
-		$parent.trigger('repeater_field_new_row_added', [container, new_row]);
+		$parent.trigger( 'repeater_field_new_row_added', [container, new_row] );
 	};
 
 	/**
 	 * Handle row remove for repeatable field.
 	 */
 	var handle_metabox_repeater_field_row_remove = function (container) {
-		var $container = $(container),
-			$parent = $container.parents('.give-repeatable-field-section'),
-			row_count = $(container).attr('data-rf-row-count');
+		var $container = $( container ),
+			$parent = $container.parents( '.give-repeatable-field-section' ),
+			row_count = $( container ).attr( 'data-rf-row-count' );
 
 		// Reduce row count.
-		$container.attr('data-rf-row-count', --row_count);
+		$container.attr( 'data-rf-row-count', --row_count );
 
 		// Fire event: Row deleted.
-		$parent.trigger('repeater_field_row_deleted');
+		$parent.trigger( 'repeater_field_row_deleted' );
 	};
 
 	/**
 	 * Add number suffix to repeater group.
 	 */
-	var handle_repeater_group_add_number_suffix = function ($parent) {
+	var handle_repeater_group_add_number_suffix = function( $parent ) {
+
 		// Bailout: check if auto group numbering is on or not.
-		if (!parseInt($parent.data('group-numbering'))) {
+		if ( ! parseInt( $parent.data( 'group-numbering' ) ) ) {
 			return;
 		}
 
-		var $header_title_container = $('.give-row-head h2 span', $parent),
-			header_text_prefix = $header_title_container.data('header-title');
+		var $header_title_container = $( '.give-row-head h2 span', $parent ),
+			header_text_prefix = $header_title_container.data( 'header-title' );
 
-		$header_title_container.each(function (index, item) {
-			var $item = $(item);
+		$header_title_container.each( function( index, item ) {
+			var $item = $( item );
 
 			// Bailout: do not rename header title in fields template.
-			if ($item.parents('.give-template').length) {
+			if ( $item.parents( '.give-template' ).length ) {
 				return;
 			}
 
-			$item.html(header_text_prefix + ': ' + index);
+			$item.html( header_text_prefix + ': ' + index );
 		});
 	};
 
 	/**
 	 * Initialize qTips
 	 */
-	var initialize_qtips = function () {
-		jQuery('[data-tooltip!=""]').qtip({ // Grab all elements with a non-blank data-tooltip attr.
+	var InitializeQtips = function() {
+		jQuery( '[data-tooltip!=""]' ).qtip({ // Grab all elements with a non-blank data-tooltip attr.
 			content: {
-				attr: 'data-tooltip' // Tell qTip2 to look inside this attr for its content
+				attr: 'data-tooltip' // Tell qTip2 to look inside this attr for its content.
 			},
 			style: {classes: 'qtip-rounded qtip-tipsy'},
 			events: {
-				show: function (event, api) {
-					var $el = $(api.elements.target[0]);
-					$el.qtip('option', 'position.my', ($el.data('tooltip-my-position') == undefined) ? 'bottom center' : $el.data('tooltip-my-position'));
-					$el.qtip('option', 'position.at', ($el.data('tooltip-target-position') == undefined) ? 'top center' : $el.data('tooltip-target-position'));
+				show: function( event, api ) {
+					var $el = $( api.elements.target[0]);
+					$el.qtip( 'option', 'position.my', ( $el.data( 'tooltip-my-position' ) === undefined ) ? 'bottom center' : $el.data( 'tooltip-my-position' ) );
+					$el.qtip( 'option', 'position.at', ( $el.data( 'tooltip-target-position' ) === undefined ) ? 'top center' : $el.data( 'tooltip-target-position' ) );
 				}
 			}
 		});
@@ -1871,15 +1872,15 @@ jQuery.noConflict();
 	 * Payment history listing page js
 	 */
 	var GivePaymentHistory = {
-		init: function () {
-			$('body').on('click', '#give-payments-filter input', this.handleBulkActions);
+		init: function() {
+			$( 'body' ).on( 'click', '#give-payments-filter input[type="submit"]', this.handleBulkActions ) ;
 		},
 
-		handleBulkActions: function (e) {
-			var currentAction = $(this).closest('.tablenav').find('select').val(),
-				currentActionLabel = $(this).closest('.tablenav').find('option[value="' + currentAction + '"]').text(),
-				$payments = $('input[name="payment[]"]:checked').length,
-				isStatusTypeAction = ( -1 !== currentAction.indexOf('set-status-') ),
+		handleBulkActions: function() {
+			var currentAction = $( this ).closest( '.tablenav' ).find( 'select' ).val(),
+				currentActionLabel = $( this ).closest( '.tablenav' ).find( 'option[value="' + currentAction + '"]' ).text(),
+				$payments = $( 'input[name="payment[]"]:checked' ).length,
+				isStatusTypeAction = ( -1 !== currentAction.indexOf( 'set-status-' ) ),
 				confirmActionNotice = '',
 				status = '';
 
@@ -1888,18 +1889,18 @@ jQuery.noConflict();
 				'set-to-status' :
 				currentAction;
 
-			if (Object.keys(give_vars.bulk_action).length) {
-				for (status in  give_vars.bulk_action) {
-					if (status === currentAction) {
+			if ( Object.keys( give_vars.bulk_action ).length ) {
+				for ( status in give_vars.bulk_action ) {
+					if ( status === currentAction ) {
 
 						// Get status text if current action types is status.
 						confirmActionNotice = isStatusTypeAction ?
-							give_vars.bulk_action[currentAction].zero.replace('{status}', currentActionLabel.replace('Set To ', '')) :
+							give_vars.bulk_action[currentAction].zero.replace( '{status}', currentActionLabel.replace( 'Set To ', '' ) ) :
 							give_vars.bulk_action[currentAction].zero;
 
 						// Check if admin selected any donations or not.
-						if (!parseInt($payments)) {
-							alert(confirmActionNotice);
+						if ( ! parseInt( $payments ) ) {
+							alert( confirmActionNotice );
 							return false;
 						}
 
@@ -1909,9 +1910,9 @@ jQuery.noConflict();
 							give_vars.bulk_action[currentAction].single;
 
 						// Trigger Admin Confirmation PopUp.
-						return window.confirm(confirmActionNotice
-							.replace('{payment_count}', $payments)
-							.replace('{status}', currentActionLabel.replace('Set To ', ''))
+						return window.confirm( confirmActionNotice
+							.replace( '{payment_count}', $payments )
+							.replace( '{status}', currentActionLabel.replace( 'Set To ', '' ) )
 						);
 					}
 				}
@@ -1922,7 +1923,7 @@ jQuery.noConflict();
 	};
 
 	// On DOM Ready.
-	$(function () {
+	$( function() {
 
 		enable_admin_datepicker();
 		handle_status_change();
@@ -1938,11 +1939,11 @@ jQuery.noConflict();
 		Edit_Form_Screen.init();
 		GivePaymentHistory.init();
 
-		initialize_qtips();
+		InitializeQtips();
 
 		// Footer.
-		$('a.give-rating-link').click(function () {
-			jQuery(this).parent().text(jQuery(this).data('rated'));
+		$( 'a.give-rating-link' ).click( function() {
+			jQuery( this ).parent().text( jQuery( this ).data( 'rated' ) );
 		});
 
 		/**
@@ -1950,7 +1951,7 @@ jQuery.noConflict();
 		 */
 
 		// This function uses for adding qtip to money/price field.
-		function give_add_qtip($fields) {
+		function give_add_qtip( $fields ) {
 
 			// Add qtip to all existing money input fields.
 			$fields.each(function () {
