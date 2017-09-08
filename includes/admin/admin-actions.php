@@ -430,7 +430,6 @@ function give_import_page_link_callback() {
 
 
 add_action( 'give_payments_page_top', 'give_import_page_link_callback', 11 );
-add_action( 'give_view_order_details_before', 'give_import_page_link_callback', 11 );
 
 /**
  * Load donation import ajax callback

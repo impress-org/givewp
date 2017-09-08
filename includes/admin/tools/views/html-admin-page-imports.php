@@ -20,8 +20,8 @@ do_action( 'give_tools_import_main_before' );
 ?>
     <div id="poststuff">
         <div class="postbox">
-            <h1 class="handle ui-sortable-handle" align="center"><?php esc_html_e( 'Import Donations', 'give' ); ?></h1>
-            <div class="inside recount-stats-controls give-tools-setting-page-import">
+            <h1 class="give-importer-h1" align="center"><?php esc_html_e( 'Import Donations', 'give' ); ?></h1>
+            <div class="inside give-tools-setting-page-import">
 				<?php
 				/**
 				 * Fires before from start.
@@ -30,7 +30,7 @@ do_action( 'give_tools_import_main_before' );
 				 */
 				do_action( 'give_tools_import_form_before_start' );
 				?>
-                <form method="post" id="give-tools-recount-form" class="give-import-form tools-setting-page-import tools-setting-page-import">
+                <form method="post" id="give-import-donations-form" class="give-import-form tools-setting-page-import tools-setting-page-import">
 
 					<?php
 					/**

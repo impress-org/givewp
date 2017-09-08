@@ -9,17 +9,18 @@
  */
 
 jQuery.noConflict();
-(function ($) {
+( function( $ ) {
 
 	/**
 	 * Setup Admin Datepicker
 	 * @since: 1.0
 	 */
-	var enable_admin_datepicker = function () {
-		// Date picker
-		if ($('.give_datepicker').length > 0) {
+	var enable_admin_datepicker = function() {
+
+		// Date picker.
+		if ( $( '.give_datepicker' ).length > 0 ) {
 			var dateFormat = 'mm/dd/yy';
-			$('.give_datepicker').datepicker({
+			$( '.give_datepicker' ).datepicker({
 				dateFormat: dateFormat
 			});
 		}
@@ -28,30 +29,31 @@ jQuery.noConflict();
 	/**
 	 * Setup Pretty Chosen Select Fields
 	 */
-	var setup_chosen_give_selects = function () {
+	var setup_chosen_give_selects = function() {
+
 		// Setup Chosen Selects.
-		var $give_chosen_containers = $('.give-select-chosen');
+		var $give_chosen_containers = $( '.give-select-chosen' );
 
 		// Add loader with each input field.
-		$give_chosen_containers.on('chosen:ready', function () {
-			$(this).next('.chosen-container')
-				.find('input.chosen-search-input')
-				.after('<span class="spinner"></span>');
+		$give_chosen_containers.on( 'chosen:ready', function() {
+			$( this ).next( '.chosen-container' )
+				.find( 'input.chosen-search-input' )
+				.after( '<span class="spinner"></span>' );
 		});
 
 		// No results returned from search trigger.
-		$give_chosen_containers.on('chosen:no_results', function () {
-			var $container = $(this).next('.chosen-container'),
-				$no_results_li = $container.find('li.no-results'),
+		$give_chosen_containers.on( 'chosen:no_results', function() {
+			var $container = $( this ).next( '.chosen-container' ),
+				$no_results_li = $container.find( 'li.no-results' ),
 				error_string = '';
 
-			if ($container.hasClass('give-select-chosen-ajax') && $no_results_li.length) {
-				error_string = give_vars.chosen.ajax_search_msg.replace('{search_term}', '"' + $('input', $container).val() + '"');
+			if ($container.hasClass( 'give-select-chosen-ajax' ) && $no_results_li.length ) {
+				error_string = give_vars.chosen.ajax_search_msg.replace( '{search_term}', '"' + $( 'input', $container ).val() + '"' );
 			} else {
-				error_string = give_vars.chosen.no_results_msg.replace('{search_term}', '"' + $('input', $container).val() + '"');
+				error_string = give_vars.chosen.no_results_msg.replace( '{search_term}', '"' + $( 'input', $container ).val() + '"' );
 			}
 
-			$no_results_li.html(error_string);
+			$no_results_li.html( error_string );
 
 		});
 
@@ -63,8 +65,8 @@ jQuery.noConflict();
 		});
 
 		// This fixes the Chosen box being 0px wide when the thickbox is opened
-		$('#post').on('click', '.give-thickbox', function () {
-			$('.give-select-chosen', '#choose-give-form').css('width', '100%');
+		$( '#post' ).on( 'click', '.give-thickbox', function() {
+			$( '.give-select-chosen', '#choose-give-form' ).css( 'width', '100%' );
 		});
 
 		// Variables for setting up the typing timer.
@@ -72,65 +74,65 @@ jQuery.noConflict();
 		var doneTypingInterval = 342;  // Time in ms, Slow - 521ms, Moderate - 342ms, Fast - 300ms
 
 		// Replace options with search results
-		$(document.body).on('keyup', '.give-select.chosen-container .chosen-search input, .give-select.chosen-container .search-field input', function (e) {
+		$( document.body ).on( 'keyup', '.give-select.chosen-container .chosen-search input, .give-select.chosen-container .search-field input', function( e ) {
 
-			var val = $(this).val(),
-				$container = $(this).closest('.give-select-chosen'),
+			var val = $( this ).val(),
+				$container = $( this ).closest( '.give-select-chosen' ),
 				select = $container.prev(),
-				$search_field = $container.find('input[type="text"]'),
-				variations = $container.hasClass('variations'),
+				$search_field = $container.find( 'input[type="text"]' ),
+				variations = $container.hasClass( 'variations' ),
 				lastKey = e.which,
 				search_type = 'give_forms_search';
 
 			// Detect if we have a defined search type, otherwise default to donation forms.
-			if ($container.prev().data('search-type')) {
+			if ( $container.prev().data( 'search-type' ) ) {
 
 				// Don't trigger AJAX if this select has all options loaded.
-				if ('no_ajax' === select.data('search-type')) {
+				if ( 'no_ajax' === select.data( 'search-type' ) ) {
 					return;
 				}
 
-				search_type = 'give_' + select.data('search-type') + '_search';
+				search_type = 'give_' + select.data( 'search-type' ) + '_search';
 			}
 
 			// Don't fire if short or is a modifier key (shift, ctrl, apple command key, or arrow keys).
 			if (
 				val.length <= 3 ||
-				!search_type.length ||
+				! search_type.length ||
 				(
-					(lastKey === 9) || // Tab
-					(lastKey === 13) || // Enter
-					(lastKey === 16) || // Shift
-					(lastKey === 17) || // Ctrl
-					(lastKey === 18) || // Alt
-					(lastKey === 19) || // Pause, Break
-					(lastKey === 20) || // CapsLock
-					(lastKey === 27) || // Esc
-					(lastKey === 33) || // Page Up
-					(lastKey === 34) || // Page Down
-					(lastKey === 35) || // End
-					(lastKey === 36) || // Home
-					(lastKey === 37) || // Left arrow
-					(lastKey === 38) || // Up arrow
-					(lastKey === 39) || // Right arrow
-					(lastKey === 40) || // Down arrow
-					(lastKey === 44) || // PrntScrn
-					(lastKey === 45) || // Insert
-					(lastKey === 144) || // NumLock
-					(lastKey === 145) || // ScrollLock
-					(lastKey === 91) || // WIN Key (Start)
-					(lastKey === 93) || // WIN Menu
-					(lastKey === 224) || // command key
-					(lastKey >= 112 && lastKey <= 123) // F1 to F12lastKey
+					( 9 === lastKey ) || // Tab
+					( 13 === lastKey ) || // Enter
+					( 16 === lastKey ) || // Shift
+					( 17 === lastKey ) || // Ctrl
+					( 18 === lastKey ) || // Alt
+					( 19 === lastKey ) || // Pause, Break
+					( 20 === lastKey ) || // CapsLock
+					( 27 === lastKey ) || // Esc
+					( 33 === lastKey ) || // Page Up
+					( 34 === lastKey ) || // Page Down
+					( 35 === lastKey ) || // End
+					( 36 === lastKey ) || // Home
+					( 37 === lastKey ) || // Left arrow
+					( 38 === lastKey ) || // Up arrow
+					( 39 === lastKey ) || // Right arrow
+					( 40 === lastKey ) || // Down arrow
+					( 44 === lastKey ) || // PrntScrn
+					( 45 === lastKey ) || // Insert
+					( 144 === lastKey ) || // NumLock
+					( 145 === lastKey ) || // ScrollLock
+					( 91 === lastKey ) || // WIN Key (Start)
+					( 93 === lastKey ) || // WIN Menu
+					( 224 === lastKey ) || // command key
+					( 112 <= lastKey && 123 >= lastKey ) // F1 to F12lastKey
 				)
 			) {
 				return;
 			}
-			clearTimeout(typingTimer);
-			$container.addClass('give-select-chosen-ajax');
+			clearTimeout( typingTimer );
+			$container.addClass( 'give-select-chosen-ajax' );
 
 			typingTimer = setTimeout(
-				function () {
+				function() {
 					$.ajax({
 						type: 'GET',
 						url: ajaxurl,
@@ -139,64 +141,65 @@ jQuery.noConflict();
 							s: val
 						},
 						dataType: 'json',
-						beforeSend: function () {
-							select.closest('ul.chosen-results').empty();
-							$search_field.prop('disabled', true);
+						beforeSend: function() {
+							select.closest( 'ul.chosen-results' ).empty();
+							$search_field.prop( 'disabled', true );
 						},
-						success: function (data) {
+						success: function( data ) {
 
-							$container.removeClass('give-select-chosen-ajax');
+							$container.removeClass( 'give-select-chosen-ajax' );
 
 							// Remove all options but those that are selected.
-							$('option:not(:selected)', select).remove();
+							$( 'option:not(:selected)', select ).remove();
 
-							if (data.length) {
-								$.each(data, function (key, item) {
+							if ( data.length ) {
+								$.each( data, function( key, item ) {
+
 									// Add any option that doesn't already exist.
-									if (!$('option[value="' + item.id + '"]', select).length) {
-										select.prepend('<option value="' + item.id + '">' + item.name + '</option>');
+									if ( ! $( 'option[value="' + item.id + '"]', select ).length ) {
+										select.prepend( '<option value="' + item.id + '">' + item.name + '</option>' );
 									}
 								});
 
 								// Trigger update event.
-								$container.prev('select.give-select-chosen').trigger('chosen:updated');
+								$container.prev( 'select.give-select-chosen' ).trigger( 'chosen:updated' );
 
 							} else {
 
 								// Trigger no result message event.
-								$container.prev('select.give-select-chosen').trigger('chosen:no_results');
+								$container.prev( 'select.give-select-chosen' ).trigger( 'chosen:no_results' );
 							}
 
 							// Ensure the original query is retained within the search input.
-							$search_field.prop('disabled', false);
-							$search_field.val(val).focus();
+							$search_field.prop( 'disabled', false );
+							$search_field.val( val ).focus();
 
 						}
-					}).fail(function (response) {
-						if (window.console && window.console.log) {
-							console.log(response);
+					}).fail( function( response ) {
+						if ( window.console && window.console.log ) {
+							console.log( response );
 						}
-					}).done(function (response) {
-						$search_field.prop('disabled', false);
+					}).done( function( response ) {
+						$search_field.prop( 'disabled', false );
 					});
 				},
 				doneTypingInterval
 			);
 		});
 
-		$('.give-select-chosen .chosen-search input').each(function () {
-			var type = $(this).parent().parent().parent().prev('select.give-select-chosen').data('search-type');
+		$( '.give-select-chosen .chosen-search input' ).each( function() {
+			var type = $( this ).parent().parent().parent().prev( 'select.give-select-chosen' ).data( 'search-type' );
 			var placeholder = '';
 
-			if ('form' === type) {
+			if ( 'form' === type ) {
 				placeholder = give_vars.search_placeholder;
 			} else {
 				type = 'search_placeholder_' + type;
-				if (give_vars[type]) {
+				if ( give_vars[type] ) {
 					placeholder = give_vars[type];
 				}
 			}
-			$(this).attr('placeholder', placeholder);
+			$( this ).attr( 'placeholder', placeholder );
 
 		});
 
@@ -212,17 +215,17 @@ jQuery.noConflict();
 	 *
 	 * @returns {string}
 	 */
-	function give_unformat_currency(price, dp) {
-		price = accounting.unformat(price, give_vars.decimal_separator).toString();
-		dp = ( 'undefined' == dp ? false : dp );
+	function give_unformat_currency( price, dp ) {
+		price = accounting.unformat( price, give_vars.decimal_separator ).toString();
+		dp = ( 'undefined' === dp ? false : dp );
 
 		// Set default value for number of decimals.
-		if (false !== dp) {
-			price = parseFloat(price).toFixed(dp);
+		if ( false !== dp ) {
+			price = parseFloat( price ).toFixed( dp );
+		} else {
 
 			// If price do not have decimal value then set default number of decimals.
-		} else {
-			price = parseFloat(price).toFixed(give_vars.currency_decimals);
+			price = parseFloat( price ).toFixed( give_vars.currency_decimals );
 		}
 
 		return price;
@@ -232,22 +235,22 @@ jQuery.noConflict();
 	 * List donation screen JS
 	 */
 
-	var Give_List_Donation = {
+	var GiveListDonation = {
 
-		init: function () {
-			this.delete_single_donation();
-			this.resend_single_donation_receipt();
+		init: function() {
+			this.deleteSingleDonation();
+			this.resendSingleDonationReceipt();
 		},
 
-		delete_single_donation: function () {
-			$('body').on('click', '.delete-single-donation', function (e) {
-				return confirm(give_vars.delete_payment);
+		deleteSingleDonation: function() {
+			$( 'body' ).on( 'click', '.delete-single-donation', function() {
+				return confirm( give_vars.delete_payment );
 			});
 		},
 
-		resend_single_donation_receipt: function () {
-			$('body').on('click', '.resend-single-donation-receipt', function (e) {
-				return confirm(give_vars.resend_receipt);
+		resendSingleDonationReceipt: function() {
+			$( 'body' ).on( 'click', '.resend-single-donation-receipt', function() {
+				return confirm( give_vars.resend_receipt );
 			});
 		}
 
@@ -1820,80 +1823,81 @@ jQuery.noConflict();
 	/**
 	 * Handle row count and field count for repeatable field.
 	 */
-	var handle_metabox_repeater_field_row_count = function (container, new_row) {
-		var row_count = $(container).attr('data-rf-row-count'),
-			$container = $(container),
-			$parent = $container.parents('.give-repeatable-field-section');
+	var handle_metabox_repeater_field_row_count = function( container, new_row ) {
+		var row_count = $( container ).attr( 'data-rf-row-count' ),
+			$container = $( container ),
+			$parent = $container.parents( '.give-repeatable-field-section' );
 
 		row_count++;
 
 		// Set name for fields.
-		$('*', new_row).each(function () {
-			$.each(this.attributes, function (index, element) {
-				this.value = this.value.replace('{{row-count-placeholder}}', row_count - 1);
+		$( '*', new_row ).each( function() {
+			$.each( this.attributes, function( index, element ) {
+				this.value = this.value.replace( '{{row-count-placeholder}}', row_count - 1 );
 			});
 		});
 
 		// Set row counter.
-		$(container).attr('data-rf-row-count', row_count);
+		$( container ).attr( 'data-rf-row-count', row_count );
 
 		// Fire event: Row added.
-		$parent.trigger('repeater_field_new_row_added', [container, new_row]);
+		$parent.trigger( 'repeater_field_new_row_added', [container, new_row] );
 	};
 
 	/**
 	 * Handle row remove for repeatable field.
 	 */
 	var handle_metabox_repeater_field_row_remove = function (container) {
-		var $container = $(container),
-			$parent = $container.parents('.give-repeatable-field-section'),
-			row_count = $(container).attr('data-rf-row-count');
+		var $container = $( container ),
+			$parent = $container.parents( '.give-repeatable-field-section' ),
+			row_count = $( container ).attr( 'data-rf-row-count' );
 
 		// Reduce row count.
-		$container.attr('data-rf-row-count', --row_count);
+		$container.attr( 'data-rf-row-count', --row_count );
 
 		// Fire event: Row deleted.
-		$parent.trigger('repeater_field_row_deleted');
+		$parent.trigger( 'repeater_field_row_deleted' );
 	};
 
 	/**
 	 * Add number suffix to repeater group.
 	 */
-	var handle_repeater_group_add_number_suffix = function ($parent) {
+	var handle_repeater_group_add_number_suffix = function( $parent ) {
+
 		// Bailout: check if auto group numbering is on or not.
-		if (!parseInt($parent.data('group-numbering'))) {
+		if ( ! parseInt( $parent.data( 'group-numbering' ) ) ) {
 			return;
 		}
 
-		var $header_title_container = $('.give-row-head h2 span', $parent),
-			header_text_prefix = $header_title_container.data('header-title');
+		var $header_title_container = $( '.give-row-head h2 span', $parent ),
+			header_text_prefix = $header_title_container.data( 'header-title' );
 
-		$header_title_container.each(function (index, item) {
-			var $item = $(item);
+		$header_title_container.each( function( index, item ) {
+			var $item = $( item );
 
 			// Bailout: do not rename header title in fields template.
-			if ($item.parents('.give-template').length) {
+			if ( $item.parents( '.give-template' ).length ) {
 				return;
 			}
 
-			$item.html(header_text_prefix + ': ' + index);
+			$item.html( header_text_prefix + ': ' + index );
 		});
 	};
 
 	/**
 	 * Initialize qTips
 	 */
-	var initialize_qtips = function () {
-		jQuery('[data-tooltip!=""]').qtip({ // Grab all elements with a non-blank data-tooltip attr.
+	var InitializeQtips = function() {
+		jQuery( '[data-tooltip!=""]' ).qtip({ // Grab all elements with a non-blank data-tooltip attr.
 			content: {
-				attr: 'data-tooltip' // Tell qTip2 to look inside this attr for its content
+				attr: 'data-tooltip' // Tell qTip2 to look inside this attr for its content.
 			},
 			style: {classes: 'qtip-rounded qtip-tipsy'},
 			events: {
-				show: function (event, api) {
-					var $el = $(api.elements.target[0]);
-					$el.qtip('option', 'position.my', ($el.data('tooltip-my-position') == undefined) ? 'bottom center' : $el.data('tooltip-my-position'));
-					$el.qtip('option', 'position.at', ($el.data('tooltip-target-position') == undefined) ? 'top center' : $el.data('tooltip-target-position'));
+				show: function( event, api ) {
+					var $el = $( api.elements.target[0]);
+					$el.qtip( 'option', 'position.my', ( $el.data( 'tooltip-my-position' ) === undefined ) ? 'bottom center' : $el.data( 'tooltip-my-position' ) );
+					$el.qtip( 'option', 'position.at', ( $el.data( 'tooltip-target-position' ) === undefined ) ? 'top center' : $el.data( 'tooltip-target-position' ) );
 				}
 			}
 		});
@@ -1903,15 +1907,15 @@ jQuery.noConflict();
 	 * Payment history listing page js
 	 */
 	var GivePaymentHistory = {
-		init: function () {
-			$('body').on('click', '#give-payments-filter input', this.handleBulkActions);
+		init: function() {
+			$( 'body' ).on( 'click', '#give-payments-filter input[type="submit"]', this.handleBulkActions ) ;
 		},
 
-		handleBulkActions: function (e) {
-			var currentAction = $(this).closest('.tablenav').find('select').val(),
-				currentActionLabel = $(this).closest('.tablenav').find('option[value="' + currentAction + '"]').text(),
-				$payments = $('input[name="payment[]"]:checked').length,
-				isStatusTypeAction = ( -1 !== currentAction.indexOf('set-status-') ),
+		handleBulkActions: function() {
+			var currentAction = $( this ).closest( '.tablenav' ).find( 'select' ).val(),
+				currentActionLabel = $( this ).closest( '.tablenav' ).find( 'option[value="' + currentAction + '"]' ).text(),
+				$payments = $( 'input[name="payment[]"]:checked' ).length,
+				isStatusTypeAction = ( -1 !== currentAction.indexOf( 'set-status-' ) ),
 				confirmActionNotice = '',
 				status = '';
 
@@ -1920,18 +1924,18 @@ jQuery.noConflict();
 				'set-to-status' :
 				currentAction;
 
-			if (Object.keys(give_vars.bulk_action).length) {
-				for (status in  give_vars.bulk_action) {
-					if (status === currentAction) {
+			if ( Object.keys( give_vars.bulk_action ).length ) {
+				for ( status in give_vars.bulk_action ) {
+					if ( status === currentAction ) {
 
 						// Get status text if current action types is status.
 						confirmActionNotice = isStatusTypeAction ?
-							give_vars.bulk_action[currentAction].zero.replace('{status}', currentActionLabel.replace('Set To ', '')) :
+							give_vars.bulk_action[currentAction].zero.replace( '{status}', currentActionLabel.replace( 'Set To ', '' ) ) :
 							give_vars.bulk_action[currentAction].zero;
 
 						// Check if admin selected any donations or not.
-						if (!parseInt($payments)) {
-							alert(confirmActionNotice);
+						if ( ! parseInt( $payments ) ) {
+							alert( confirmActionNotice );
 							return false;
 						}
 
@@ -1941,9 +1945,9 @@ jQuery.noConflict();
 							give_vars.bulk_action[currentAction].single;
 
 						// Trigger Admin Confirmation PopUp.
-						return window.confirm(confirmActionNotice
-							.replace('{payment_count}', $payments)
-							.replace('{status}', currentActionLabel.replace('Set To ', ''))
+						return window.confirm( confirmActionNotice
+							.replace( '{payment_count}', $payments )
+							.replace( '{status}', currentActionLabel.replace( 'Set To ', '' ) )
 						);
 					}
 				}
@@ -1954,12 +1958,12 @@ jQuery.noConflict();
 	};
 
 	// On DOM Ready.
-	$(function () {
+	$( function() {
 
 		enable_admin_datepicker();
 		handle_status_change();
 		setup_chosen_give_selects();
-		Give_List_Donation.init();
+		GiveListDonation.init();
 		Give_Edit_Donation.init();
 		Give_Settings.init();
 		Give_Reports.init();
@@ -1970,11 +1974,11 @@ jQuery.noConflict();
 		Edit_Form_Screen.init();
 		GivePaymentHistory.init();
 
-		initialize_qtips();
+		InitializeQtips();
 
 		// Footer.
-		$('a.give-rating-link').click(function () {
-			jQuery(this).parent().text(jQuery(this).data('rated'));
+		$( 'a.give-rating-link' ).click( function() {
+			jQuery( this ).parent().text( jQuery( this ).data( 'rated' ) );
 		});
 
 		/**
@@ -1982,7 +1986,7 @@ jQuery.noConflict();
 		 */
 
 		// This function uses for adding qtip to money/price field.
-		function give_add_qtip($fields) {
+		function give_add_qtip( $fields ) {
 
 			// Add qtip to all existing money input fields.
 			$fields.each(function () {

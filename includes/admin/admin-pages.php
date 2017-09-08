@@ -360,7 +360,7 @@ function give_settings_page_pages( $settings ) {
 		// License settings.
 		include( 'settings/class-settings-license.php' ),
 
-		// Advanced settinns.
+		// Advanced settings.
 		include( 'settings/class-settings-advanced.php' )
 	);
 
