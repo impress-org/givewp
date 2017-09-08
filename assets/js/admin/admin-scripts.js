@@ -470,7 +470,7 @@ jQuery.noConflict();
 	var Give_Settings = {
 
 		init: function () {
-			this.setting_change_Country();
+			this.setting_change_country();
 			this.toggle_options();
 			this.main_setting_update_notice();
 			this.verify_settings();
@@ -481,7 +481,7 @@ jQuery.noConflict();
 		 *
 		 * @since 1.8.14
 		 */
-		setting_change_Country: function () {
+		setting_change_country: function () {
 			$('select[name="base_country"]').change(function () {
 				var $this = $(this);
 				var data = {
