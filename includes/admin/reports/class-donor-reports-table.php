@@ -133,9 +133,9 @@ class Give_Donor_Reports_Table extends WP_List_Table {
 		<div class="tablenav give-clearfix <?php echo esc_attr( $which ); ?>">
 
 			<?php if ( 'top' === $which ) { ?>
-				<h3 class="alignleft reports-earnings-title">
-					<span><?php esc_html_e( 'Donors Report', 'give' ); ?></span>
-				</h3>
+				<h2 class="alignleft reports-earnings-title">
+					<?php esc_html_e( 'Donors Report', 'give' ); ?>
+				</h2>
 			<?php } ?>
 
 			<div class="alignright tablenav-right">
