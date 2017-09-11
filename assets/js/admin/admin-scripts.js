@@ -291,7 +291,7 @@ jQuery.noConflict();
 						state_wrap.append(response.data);
 						state_wrap.find('select').chosen();
 					} else {
-						state_wrap.append('<input type="text" name="give-payment-address[0][state]" value="" class="give-edit-toggles medium-text"/>');
+						state_wrap.append('<input type="text" name="give-payment-address[0][state]" value="' + response.default_state + '" class="give-edit-toggles medium-text"/>');
 					}
 				});
 
@@ -470,9 +470,41 @@ jQuery.noConflict();
 	var Give_Settings = {
 
 		init: function () {
+			this.setting_change_country();
 			this.toggle_options();
 			this.main_setting_update_notice();
 			this.verify_settings();
+		},
+
+		/**
+		 * Fire when user change the country from the dropdown
+		 *
+		 * @since 1.8.14
+		 */
+		setting_change_country: function () {
+			$('select[name="base_country"]').change(function () {
+				var $this = $(this);
+				var data = {
+					action: 'give_get_states',
+					country: $this.val(),
+					field_name: 'base_state',
+				};
+
+				$.post(ajaxurl, data, function (response) {
+					// Show the states dropdown menu
+					$this.closest( 'tr' ).next().show()
+					if (typeof ( response.states_found ) != undefined && true == response.states_found) {
+						$(':input[name="base_state"]').replaceWith( response.data );
+					} else {
+						if (typeof ( response.show_field ) != undefined && false == response.show_field ) {
+							// Hide the states dropdown menu
+							$this.closest( 'tr' ).next().hide();
+						}
+						$(':input[name="base_state"]').replaceWith('<input type="text" name="' + data.field_name + '" value="' + response.default_state + '" class="give-edit-toggles medium-text"/>');
+					}
+				});
+				return false;
+			});
 		},
 
 		toggle_options: function () {
@@ -681,7 +713,7 @@ jQuery.noConflict();
 					var notice_wrap = export_form.find('.notice-wrap');
 					notice_wrap.html('<div class="notice notice-warning"><p><input type="checkbox" id="confirm-reset" name="confirm_reset_store" value="1" /> <label for="confirm-reset">' + give_vars.delete_test_donor + '</label></p></div>');
 					submit_button.addClass('button-disabled').attr('disabled', 'disabled');
-					// Add check when admin try to delete all the test donors.
+					// Add check when admin try to delete all the imported donations.
 				} else if ('delete-import-donors' === selected_type) {
 					export_form.append('<div class="notice-wrap"></div>');
 					var notice_wrap = export_form.find('.notice-wrap');
@@ -1065,7 +1097,7 @@ jQuery.noConflict();
 					if (typeof ( response.states_found ) != undefined && true == response.states_found) {
 						$(':input[name="customerinfo[state]"]').replaceWith(response.data);
 					} else {
-						$(':input[name="customerinfo[state]"]').replaceWith('<input type="text" name="' + data.field_name + '" value="" class="give-edit-toggles medium-text"/>');
+						$(':input[name="customerinfo[state]"]').replaceWith('<input type="text" name="' + data.field_name + '" value="' + response.default_state + '" class="give-edit-toggles medium-text"/>');
 					}
 				});
 
