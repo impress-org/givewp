@@ -1335,7 +1335,7 @@ body.give_forms_page_give-reports .reports-forms-details-wrap.top, body.give_for
 body.give_forms_page_give-reports .tablenav.bottom, body.give_forms_page_give-payment-history .tablenav.bottom {
   margin-top: 10px; }
 
-body.give_forms_page_give-reports h3.reports-earnings-title, body.give_forms_page_give-payment-history h3.reports-earnings-title {
+body.give_forms_page_give-reports h2.reports-earnings-title, body.give_forms_page_give-payment-history h2.reports-earnings-title {
   margin: 7px 0 0; }
 
 body.give_forms_page_give-reports .reports-views-wrap, body.give_forms_page_give-payment-history .reports-views-wrap {
@@ -1714,68 +1714,76 @@ a.give-delete {
   width: 100%; }
 
 /* Addon grid design */
-.give-settings-page {
-  margin-top: 20px; }
-  .give-settings-page .give-settings-wrap-licenses {
-    display: block;
-    position: relative;
-    float: right;
-    width: 30.5%;
-    min-height: 180px;
-    margin: 20px 0 20px 1%; }
-  .give-settings-page .give-license-key label {
-    margin: 0 10px 0 0;
+.give-settings-page .give-settings-wrap-licenses {
+  display: block;
+  position: relative;
+  float: right;
+  width: 30.5%;
+  min-height: 180px;
+  margin: 20px 0 20px 1%; }
+
+.give-settings-page .give-license-key label {
+  margin: 0 10px 0 0;
+  padding: 10px 0;
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: default; }
+
+.give-settings-page .give-license-block {
+  margin: 0 10px; }
+
+.give-settings-page input[type="text"].give-license-field,
+.give-settings-page input[type="password"].give-license-field {
+  width: 100%; }
+
+.give-settings-page .give-license-block input[type="submit"] {
+  position: absolute;
+  top: 3px;
+  left: 10px;
+  height: 24px;
+  line-height: 22px;
+  padding: 0 8px 1px;
+  font-size: 11px; }
+
+.give-settings-page .give-license-status-notice {
+  background: #fff;
+  border-right: 4px solid #fff;
+  -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+  margin: 5px 0 2px;
+  padding: 1px 12px; }
+  .give-settings-page .give-license-status-notice p {
     padding: 10px 0;
-    display: block;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: default; }
-  .give-settings-page .give-license-block {
-    margin: 0 10px; }
-  .give-settings-page input[type="text"].give-license-field,
-  .give-settings-page input[type="password"].give-license-field {
-    width: 100%; }
-  .give-settings-page .give-license-block input[type="submit"] {
-    position: absolute;
-    top: 3px;
-    left: 10px;
-    height: 24px;
-    line-height: 22px;
-    padding: 0 8px 1px;
-    font-size: 11px; }
-  .give-settings-page .give-license-status-notice {
-    background: #fff;
-    border-right: 4px solid #fff;
-    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
-    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
-    margin: 5px 0 2px;
-    padding: 1px 12px; }
-    .give-settings-page .give-license-status-notice p {
-      padding: 10px 0;
-      margin: 0; }
-    .give-settings-page .give-license-status-notice a {
-      color: #444;
-      cursor: pointer; }
-      .give-settings-page .give-license-status-notice a:hover {
-        text-decoration: none; }
-  .give-settings-page .give-license-status-notice.give-license-expires-soon {
-    border-color: #00a0d2; }
-  .give-settings-page .give-license-status-notice.give-inactive,
-  .give-settings-page .give-license-status-notice.give-license-expired {
-    border-color: #e24e4e; }
-  .give-settings-page .give-license-status-notice.give-license-error,
-  .give-settings-page .give-license-status-notice.give-license-no_activations_left,
-  .give-settings-page .give-license-status-notice.give-license-missing,
-  .give-settings-page .give-license-status-notice.give-license-invalid,
-  .give-settings-page .give-license-status-notice.give-license-site_inactive,
-  .give-settings-page .give-license-status-notice.give-license-item_name_mismatch {
-    border-color: orange; }
-  .give-settings-page .give-license-status-notice.give-license-lifetime-notice,
-  .give-settings-page .give-license-status-notice.give-license-expiration-date {
-    border-color: #46b450; }
-  .give-settings-page .give-license-status-notice.give-license-expires-soon a:hover,
-  .give-settings-page .give-license-status-notice.give-license-expired a:hover {
-    text-decoration: none; }
+    margin: 0; }
+  .give-settings-page .give-license-status-notice a {
+    color: #444;
+    cursor: pointer; }
+    .give-settings-page .give-license-status-notice a:hover {
+      text-decoration: none; }
+
+.give-settings-page .give-license-status-notice.give-license-expires-soon {
+  border-color: #00a0d2; }
+
+.give-settings-page .give-license-status-notice.give-inactive,
+.give-settings-page .give-license-status-notice.give-license-expired {
+  border-color: #e24e4e; }
+
+.give-settings-page .give-license-status-notice.give-license-error,
+.give-settings-page .give-license-status-notice.give-license-no_activations_left,
+.give-settings-page .give-license-status-notice.give-license-missing,
+.give-settings-page .give-license-status-notice.give-license-invalid,
+.give-settings-page .give-license-status-notice.give-license-site_inactive,
+.give-settings-page .give-license-status-notice.give-license-item_name_mismatch {
+  border-color: orange; }
+
+.give-settings-page .give-license-status-notice.give-license-lifetime-notice,
+.give-settings-page .give-license-status-notice.give-license-expiration-date {
+  border-color: #46b450; }
+
+.give-settings-page .give-license-status-notice.give-license-expires-soon a:hover,
+.give-settings-page .give-license-status-notice.give-license-expired a:hover {
+  text-decoration: none; }
 
 /* Responsive fixes: Addon grid design */
 @media screen and (max-width: 1100px) {
