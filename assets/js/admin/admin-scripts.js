@@ -36,7 +36,7 @@ var give_setting_edit = false;
 	var form_edit_alert = function(){
 		if ( jQuery( 'body.post-type-give_forms' ).length > 0 ) {
 			window.addEventListener("beforeunload", function (e) {
-				var confirmationMessage = '';
+				var confirmationMessage = give_vars.setting_not_save_message;
 				if ( give_setting_edit ) {
 					(e || window.event).returnValue = confirmationMessage; //Gecko + IE
 					return confirmationMessage;                            //Webkit, Safari, Chrome
