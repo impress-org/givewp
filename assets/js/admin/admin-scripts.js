@@ -9,6 +9,8 @@
  */
 
 jQuery.noConflict();
+// Provided access to golbal level
+var givesettingedit = false;
 ( function( $ ) {
 
 	/**
@@ -23,6 +25,57 @@ jQuery.noConflict();
 			$( '.give_datepicker' ).datepicker({
 				dateFormat: dateFormat
 			});
+		}
+	};
+
+	/**
+	 * Show alert when admin try to reload the page with saving the changes.
+	 *
+	 * @since 1.8.14
+	*/
+	var form_edit_alert = function(){
+		if ( jQuery( 'body.post-type-give_forms' ).length > 0 ) {
+			window.addEventListener("beforeunload", function (e) {
+				var confirmationMessage = '';
+				if ( givesettingedit ) {
+					(e || window.event).returnValue = confirmationMessage; //Gecko + IE
+					return confirmationMessage;                            //Webkit, Safari, Chrome
+				}
+			});
+
+			jQuery( 'body' ).on( 'click', '.give-save-button', function () {
+				givesettingedit = false;
+			});
+		}
+	};
+
+	/**
+	 * Display alert in setting page of give if user try to reload the page with saving the changes.
+	 *
+	 * @since 1.8.14
+	 */
+	var enable_form_edit_alert_setting  = function () {
+		// Check if it give setting page or not.
+		if ( jQuery( 'body.give_forms_page_give-settings' ).length > 0 ) {
+
+			// Get the default value
+			var on_load_value = jQuery( 'body.give_forms_page_give-settings #give-mainform' ).serialize();
+
+			/**
+			 * Add two on event because when user enter a key and then reload the page from by pressing CTRL + R then it used to get reload, So to stop that add keyup event.
+			 */
+			jQuery( '.give-settings-page' ).on( 'change, keyup', 'form', function () {
+
+				// Get the form value after change.
+				var on_change_value = jQuery( 'body.give_forms_page_give-settings #give-mainform' ).serialize();
+
+				// If both the value are same then no change has being made else change has being made.
+				if( on_load_value == on_change_value ) {
+					givesettingedit = false;
+				} else{
+					givesettingedit = true;
+				}
+			} );
 		}
 	};
 
@@ -1961,6 +2014,7 @@ jQuery.noConflict();
 	$( function() {
 
 		enable_admin_datepicker();
+		form_edit_alert();
 		handle_status_change();
 		setup_chosen_give_selects();
 		GiveListDonation.init();
@@ -2105,6 +2159,9 @@ jQuery.noConflict();
 
 		// Render setting tab.
 		give_render_responsive_tabs();
+
+		// Called after all the form processing had being done.
+		enable_form_edit_alert_setting();
 	});
 })(jQuery);
 
