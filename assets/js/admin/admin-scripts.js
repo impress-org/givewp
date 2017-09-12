@@ -9,8 +9,8 @@
  */
 
 jQuery.noConflict();
-// Provided access to golbal level
-var givesettingedit = false;
+// Provided access to global level
+var give_setting_edit = false;
 ( function( $ ) {
 
 	/**
@@ -37,14 +37,14 @@ var givesettingedit = false;
 		if ( jQuery( 'body.post-type-give_forms' ).length > 0 ) {
 			window.addEventListener("beforeunload", function (e) {
 				var confirmationMessage = '';
-				if ( givesettingedit ) {
+				if ( give_setting_edit ) {
 					(e || window.event).returnValue = confirmationMessage; //Gecko + IE
 					return confirmationMessage;                            //Webkit, Safari, Chrome
 				}
 			});
 
 			jQuery( 'body' ).on( 'click', '.give-save-button', function () {
-				givesettingedit = false;
+				give_setting_edit = false;
 			});
 		}
 	};
@@ -73,9 +73,9 @@ var givesettingedit = false;
 
 				// If both the value are same then no change has being made else change has being made.
 				if( on_load_value == on_change_value ) {
-					givesettingedit = false;
+					give_setting_edit = false;
 				} else{
-					givesettingedit = true;
+					give_setting_edit = true;
 				}
 			} );
 		}
