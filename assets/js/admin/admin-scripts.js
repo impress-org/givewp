@@ -62,9 +62,11 @@ var givesettingedit = false;
 			var on_load_value = jQuery( 'body.give_forms_page_give-settings #give-mainform' ).serialize();
 
 			/**
-			 * Add two on event because when user enter a key and then reload the page from by pressing CTRL + R then it used to get reload, So to stop that add keyup event.
+			 * Keyup event add to support to text box and textarea.
+			 * Focus event add to support to dropdown.
+			 * Change event add to support to rest all element.
 			 */
-			jQuery( '.give-settings-page' ).on( 'change, keyup', 'form', function () {
+			jQuery( '.give-settings-page' ).on( 'change, keyup, focus', 'form', function () {
 
 				// Get the form value after change.
 				var on_change_value = jQuery( 'body.give_forms_page_give-settings #give-mainform' ).serialize();
