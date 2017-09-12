@@ -63,11 +63,10 @@ var give_setting_edit = false;
 
 			/**
 			 * Keyup event add to support to text box and textarea.
-			 * Focus event add to support to dropdown.
+			 * blur event add to support to dropdown.
 			 * Change event add to support to rest all element.
 			 */
-			jQuery( '.give-settings-page' ).on( 'change, keyup, focus', 'form', function () {
-
+			jQuery( '.give-settings-page' ).on( 'change keyup blur', 'form', function ( event  ) {
 				// Get the form value after change.
 				var on_change_value = jQuery( 'body.give_forms_page_give-settings #give-mainform' ).serialize();
 
