@@ -250,8 +250,11 @@ class Give_Graph {
 							mode        : "<?php echo $this->options['y_mode']; ?>",
 							timeFormat  : "<?php echo $this->options['y_mode'] == 'time' ? $this->options['time_format'] : ''; ?>",
 							<?php if( $this->options['y_mode'] != 'time' ) : ?>
-							tickDecimals: <?php echo $this->options['y_decimals']; ?>
+							tickDecimals: <?php echo $this->options['y_decimals']; ?>,
 							<?php endif; ?>
+							tickFormatter: function(val) {
+								return val.toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, give_vars.thousands_separator);
+							},
 						}
 					}
 				);
