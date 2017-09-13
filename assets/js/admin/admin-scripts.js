@@ -2315,6 +2315,13 @@ function give_on_donation_import_start() {
 function give_on_donation_import_ajax() {
 	var $form = jQuery('form.tools-setting-page-import');
 
+	/**
+	 * Do not allow user to reload the page
+	 *
+	 * @since 1.8.14
+	 */
+	give_setting_edit = true;
+
 	var progress = $form.find('.give-progress');
 
 	var total_ajax = jQuery(progress).data('total_ajax'),
@@ -2353,10 +2360,22 @@ function give_on_donation_import_ajax() {
 				}
 				give_on_donation_import_ajax();
 			} else {
+				/**
+				 * Now user is allow to reload the page.
+				 *
+				 * @since 1.8.14
+				 */
+				give_setting_edit = false;
 				window.location = response.url;
 			}
 		},
 		error: function () {
+			/**
+			 * Now user is allow to reload the page.
+			 *
+			 * @since 1.8.14
+			 */
+			give_setting_edit = false;
 			alert(give_vars.error_message);
 		}
 	});
