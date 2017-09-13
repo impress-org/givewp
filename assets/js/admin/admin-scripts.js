@@ -871,6 +871,13 @@ var give_setting_edit = false;
 		},
 
 		process_step: function (step, data, self) {
+			/**
+			* Do not allow user to reload the page
+			*
+			* @since 1.8.14
+			*/
+			give_setting_edit = true;
+
 			$.ajax({
 				type: 'POST',
 				url: ajaxurl,
@@ -882,6 +889,13 @@ var give_setting_edit = false;
 				dataType: 'json',
 				success: function (response) {
 					if ('done' == response.step || response.error || response.success) {
+
+						/**
+						 * Now allow user to reload the page
+						 *
+						 * @since 1.8.14
+						 */
+						give_setting_edit = false;
 
 						// We need to get the actual in progress form, not all forms on the page
 						var export_form = $('.give-export-form').find('.give-progress').parent().parent();
@@ -907,6 +921,13 @@ var give_setting_edit = false;
 					}
 				}
 			}).fail(function (response) {
+				/**
+				 * Now allow user to reload the page
+				 *
+				 * @since 1.8.14
+				 */
+				give_setting_edit = false;
+
 				if (window.console && window.console.log) {
 					console.log(response);
 				}
