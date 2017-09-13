@@ -871,6 +871,12 @@ var give_setting_edit = false;
 		},
 
 		process_step: function (step, data, self) {
+			/**
+			* Do not allow user to reload the page
+			*
+			* @since 1.8.14
+			*/
+			give_setting_edit = true;
 
 			$.ajax({
 				type: 'POST',
@@ -882,32 +888,29 @@ var give_setting_edit = false;
 				},
 				dataType: 'json',
 				success: function (response) {
-
 					if ('done' == response.step || response.error || response.success) {
+
+						/**
+						 * Now allow user to reload the page
+						 *
+						 * @since 1.8.14
+						 */
+						give_setting_edit = false;
 
 						// We need to get the actual in progress form, not all forms on the page
 						var export_form = $('.give-export-form').find('.give-progress').parent().parent();
 						var notice_wrap = export_form.find('.notice-wrap');
-
 						export_form.find('.button-disabled').removeClass('button-disabled');
-
 						if (response.error) {
-
 							var error_message = response.message;
 							notice_wrap.html('<div class="updated error"><p>' + error_message + '</p></div>');
-
 						} else if (response.success) {
-
 							var success_message = response.message;
 							notice_wrap.html('<div id="give-batch-success" class="updated notice is-dismissible"><p>' + success_message + '<span class="notice-dismiss"></span></p></div>');
-
 						} else {
-
 							notice_wrap.remove();
 							window.location = response.url;
-
 						}
-
 					} else {
 						$('.give-progress div').animate({
 							width: response.percentage + '%',
@@ -916,17 +919,20 @@ var give_setting_edit = false;
 						});
 						self.process_step(parseInt(response.step), data, self);
 					}
-
 				}
 			}).fail(function (response) {
+				/**
+				 * Now allow user to reload the page
+				 *
+				 * @since 1.8.14
+				 */
+				give_setting_edit = false;
+
 				if (window.console && window.console.log) {
 					console.log(response);
 				}
-
 				$('.notice-wrap').append(response.responseText);
-
 			});
-
 		},
 
 		dismiss_message: function () {
