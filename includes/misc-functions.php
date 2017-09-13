@@ -2269,3 +2269,37 @@ function give_recount_form_income_donation( $form_id = false ) {
 		give_update_meta( $form_id, '_give_form_earnings', give_sanitize_amount_for_db( $totals['earnings'] ) );
 	}
 }
+
+/**
+ * Zero Decimal based Currency.
+ *
+ * @since 1.8.14
+ *
+ * @return bool
+ */
+function give_is_zero_based_currency() {
+	$zero_based_currency = array(
+		'PYG', // Paraguayan Guarani.
+		'GNF', // Guinean Franc.
+		'RWF', // Rwandan Franc.
+		'JPY', // Japanese Yen.
+		'BIF', // Burundian Franc.
+		'KRW', // South Korean Won.
+		'MGA', // Malagasy Ariary.
+		'XAF', // Central African Cfa Franc.
+		'XPF', // Cfp Franc.
+		'CLP', // Chilean Peso.
+		'KMF', // Comorian Franc.
+		'DJF', // Djiboutian Franc.
+		'VUV', // Vanuatu Vatu.
+		'VND', // Vietnamese Dong.
+		'XOF', // West African Cfa Franc.
+	);
+
+	// Check for Zero Based Currency.
+	if ( in_array( give_get_currency(), $zero_based_currency ) ) {
+		return true;
+	}
+
+	return false;
+}
