@@ -416,7 +416,18 @@ function give_build_paypal_item_title( $payment_data ) {
 		$item_name .= ' - ' . give_check_variable( $custom_amount_text, 'empty', __( 'Custom Amount', 'give' ) );
 	}
 
-	return $item_name;
+	/**
+	 * Filter the Item Title of Payment Gateway.
+	 *
+	 * @param string $item_name    Item Title of Payment Gateway.
+	 * @param int    $form_id      Donation Form ID.
+	 * @param array  $payment_data Payment Data.
+	 *
+	 * @since 1.8.14
+	 *
+	 * @return string
+	 */
+	return apply_filters( 'give_payment_gateway_item_title', $item_name, $form_id, $payment_data );
 }
 
 /**
