@@ -394,14 +394,11 @@ function give_get_purchase_session() {
  */
 function give_payment_gateway_donation_summary( $donation_data, $name_and_email = true, $length = 255 ) {
 
-	$summary = '';
-
 	$form_id = isset( $donation_data['post_data']['give-form-id'] ) ? $donation_data['post_data']['give-form-id'] : '';
 
 	// Form title.
-	if ( isset( $donation_data['post_data']['give-form-title'] ) ) {
-		$summary .= $donation_data['post_data']['give-form-title'];
-	}
+	$summary = ( -! empty( $donation_data['post_data']['give-form-title'] ) ? $donation_data['post_data']['give-form-title'] : __( 'Untitled donation form', 'give' ) );
+
 	// Form multilevel if applicable.
 	if ( isset( $donation_data['post_data']['give-price-id'] ) ) {
 		$summary .= ': ' . give_get_price_option_name( $form_id, $donation_data['post_data']['give-price-id'] );
