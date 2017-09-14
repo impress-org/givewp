@@ -380,15 +380,15 @@ function give_get_purchase_session() {
 }
 
 /**
- * Build item title for PayPal.
+ * Generate Item Title for Payment Gateway.
  *
  * @param array $payment_data Payment Data.
  *
- * @since 1.8
+ * @since 1.8.14
  *
  * @return string
  */
-function give_build_paypal_item_title( $payment_data ) {
+function give_payment_gateway_item_title( $payment_data ) {
 	$form_id          = intval( $payment_data['post_data']['give-form-id'] );
 	$item_name        = $payment_data['post_data']['give-form-title'];
 	$is_custom_amount = give_is_setting_enabled( give_get_meta( $form_id, '_give_custom_amount', true ) );

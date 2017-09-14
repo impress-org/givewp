@@ -598,7 +598,7 @@ function give_build_paypal_url( $payment_id, $payment_data ) {
 	$paypal_redirect = trailingslashit( give_get_paypal_redirect() ) . '?';
 
 	// Item name.
-	$item_name = give_build_paypal_item_title( $payment_data );
+	$item_name = give_payment_gateway_item_title( $payment_data );
 
 	// Setup PayPal API params.
 	$paypal_args = array(
