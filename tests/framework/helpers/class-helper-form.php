@@ -175,6 +175,16 @@ class Give_Helper_Form extends Give_Unit_Test_Case {
 		return new Give_Donate_Form( $form_id );
 	}
 
+	/**
+	 * Setup Simple Donation Form with Post Data.
+	 *
+	 * @param bool $is_custom_amount Status for custom amount enabled or not.
+	 *
+	 * @since 1.8.14
+	 * @access public
+	 *
+	 * @return array
+	 */
 	public static function setup_simple_donation_form( $is_custom_amount = false ) {
 		// Setup user info.
 		$user_info = array(
@@ -213,6 +223,16 @@ class Give_Helper_Form extends Give_Unit_Test_Case {
 		return $donation;
 	}
 
+	/**
+	 * Setup Multi Level Donation Form with Post Data.
+	 *
+	 * @param bool $is_custom_amount Status for custom amount enabled or not.
+	 *
+	 * @since 1.8.14
+	 * @access public
+	 *
+	 * @return array
+	 */
 	public static function setup_multi_level_donation_form( $is_custom_amount = false ) {
 
 		// Setup user info.
