@@ -975,7 +975,7 @@ ASIDE
   .no-js #give-metabox-form-data .give_options_panel {
     display: block; }
   #give-metabox-form-data .give_options_panel .give-field-wrap {
-    padding: 1em 162px 1em 20px !important;
+    padding: 1em 162px 1em 20px;
     margin: 0;
     border-bottom: 1px solid #eee; }
     #give-metabox-form-data .give_options_panel .give-field-wrap > label, #give-metabox-form-data .give_options_panel .give-field-wrap > span.give-field-label {
@@ -1139,10 +1139,20 @@ ASIDE
       #give-metabox-form-data ul.give-metabox-tabs li > a:before {
         margin-left: 0;
         font-size: 15px; }
-      #give-metabox-form-data ul.give-metabox-tabs li > a span {
+      #give-metabox-form-data ul.give-metabox-tabs li > a span.give-label {
         display: none; }
+      #give-metabox-form-data ul.give-metabox-tabs li > a span.give-icon:before {
+        margin: 0; }
   #give-metabox-form-data .give_options_panel {
-    padding-right: 40px; } }
+    padding-right: 40px; }
+    #give-metabox-form-data .give_options_panel .give-field-wrap {
+      padding: 10px; }
+      #give-metabox-form-data .give_options_panel .give-field-wrap span.give-field-label {
+        display: block;
+        float: none;
+        margin: 0 0 10px 0;
+        font-size: 14px;
+        width: 100%; } }
 
 #give-export-payments .give_forms_categories,
 #give-export-payments .give_forms_tags {
