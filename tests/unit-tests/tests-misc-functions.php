@@ -79,6 +79,14 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 		$this->assertEquals( true, $status );
 	}
 
+	/**
+	 * Test for building Item Title of Payment Gateway.
+	 *
+	 * @since 1.8.14
+	 * @access public
+	 *
+	 * @cover give_payment_gateway_item_title
+	 */
 	public function test_give_payment_gateway_item_title() {
 
 		// Setup Simple Donation Form.
