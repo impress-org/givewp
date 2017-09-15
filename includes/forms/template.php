@@ -891,7 +891,67 @@ function give_default_cc_address_fields( $form_id ) {
 		 * @param int $form_id The form ID.
 		 */
 		do_action( 'give_cc_billing_top' );
+
+
+
+		// For Country.
+		$selected_country = give_get_country();
+		if ( ! empty( $give_user_info['billing_country'] ) && '*' !== $give_user_info['billing_country'] ) {
+			$selected_country = $give_user_info['billing_country'];
+		}
+		$countries = give_get_country_list();
+
+		// For state
+		$selected_state = '';
+		if ( $selected_country === give_get_country() ) {
+			// Get defalut selected state by admin.
+			$selected_state = give_get_state();
+		}
+		// Get the last payment made by user states.
+		if ( ! empty( $give_user_info['card_state'] ) && '*' !== $give_user_info['card_state'] ) {
+			$selected_state = $give_user_info['card_state'];
+		}
+		// Get the country code
+		if ( ! empty( $give_user_info['billing_country'] ) && '*' !== $give_user_info['billing_country'] ) {
+			$selected_country = $give_user_info['billing_country'];
+		}
+		$label        = __( 'State', 'give' );
+		$states_label = give_get_states_label();
+		// Check if $country code exists in the array key for states label.
+		if ( array_key_exists( $selected_country, $states_label ) ) {
+			$label = $states_label[ $selected_country ];
+		}
+		$states = give_get_states( $selected_country );
+		// Get the country list that do not have any states init.
+		$no_states_country = give_no_states_country_list();
+		// Get the country list that does not require states.
+		$states_not_required_country_list = give_states_not_required_country_list();
+
 		?>
+	    <p id="give-card-country-wrap" class="form-row form-row-wide">
+		    <label for="billing_country" class="give-label">
+			    <?php esc_html_e( 'Country', 'give' ); ?>
+			    <?php if ( give_field_is_required( 'billing_country', $form_id ) ) : ?>
+				    <span class="give-required-indicator">*</span>
+			    <?php endif; ?>
+			    <span class="give-tooltip give-icon give-icon-question"
+			          data-tooltip="<?php esc_attr_e( 'The country for your billing address.', 'give' ); ?>"></span>
+		    </label>
+
+		    <select
+				    name="billing_country"
+				    id="billing_country"
+				    class="billing-country billing_country give-select<?php echo( give_field_is_required( 'billing_country', $form_id ) ? ' required' : '' ); ?>"
+			    <?php echo( give_field_is_required( 'billing_country', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
+		    >
+			    <?php
+			    foreach ( $countries as $country_code => $country ) {
+				    echo '<option value="' . esc_attr( $country_code ) . '"' . selected( $country_code, $selected_country, false ) . '>' . $country . '</option>';
+			    }
+			    ?>
+		    </select>
+	    </p>
+
 	    <p id="give-card-address-wrap" class="form-row form-row-wide">
 		    <label for="card_address" class="give-label">
 			    <?php esc_html_e( 'Address 1', 'give' ); ?>
@@ -935,6 +995,37 @@ function give_default_cc_address_fields( $form_id ) {
 		    />
 	    </p>
 
+	    <p id="give-card-state-wrap"
+	       class="form-row form-row-wide <?php echo ( ! empty( $selected_country ) && array_key_exists( $selected_country, $no_states_country ) ) ? 'give-hidden' : ''; ?> ">
+		    <label for="card_state" class="give-label">
+			    <span class="state-label-text"><?php echo $label; ?></span>
+			    <?php if ( give_field_is_required( 'card_state', $form_id ) ) :
+				    ?>
+				    <span class="give-required-indicator <?php echo( array_key_exists( $selected_country, $states_not_required_country_list ) ? 'give-hidden' : '' ) ?> ">*</span>
+			    <?php endif; ?>
+			    <span class="give-tooltip give-icon give-icon-question"
+			          data-tooltip="<?php esc_attr_e( 'The state, province, or county for your billing address.', 'give' ); ?>"></span>
+		    </label>
+		    <?php
+
+		    if ( ! empty( $states ) ) : ?>
+			    <select
+					    name="card_state"
+					    id="card_state"
+					    class="card_state give-select<?php echo( give_field_is_required( 'card_state', $form_id ) ? ' required' : '' ); ?>"
+				    <?php echo( give_field_is_required( 'card_state', $form_id ) ? ' required aria-required="true" ' : '' ); ?>>
+				    <?php
+				    foreach ( $states as $state_code => $state ) {
+					    echo '<option value="' . $state_code . '"' . selected( $state_code, $selected_state, false ) . '>' . $state . '</option>';
+				    }
+				    ?>
+			    </select>
+		    <?php else : ?>
+			    <input type="text" size="6" name="card_state" id="card_state" class="card_state give-input"
+			           placeholder="<?php echo $label; ?>" value="<?php echo $selected_state; ?>"/>
+		    <?php endif; ?>
+	    </p>
+
 	    <p id="give-card-city-wrap" class="form-row form-row-first form-row-responsive">
 		    <label for="card_city" class="give-label">
 			    <?php esc_html_e( 'City', 'give' ); ?>
@@ -975,103 +1066,6 @@ function give_default_cc_address_fields( $form_id ) {
 				    value="<?php echo isset( $give_user_info['card_zip'] ) ? $give_user_info['card_zip'] : ''; ?>"
 			    <?php echo( give_field_is_required( 'card_zip', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
 		    />
-	    </p>
-
-	    <p id="give-card-country-wrap" class="form-row form-row-first form-row-responsive">
-		    <label for="billing_country" class="give-label">
-			    <?php esc_html_e( 'Country', 'give' ); ?>
-			    <?php if ( give_field_is_required( 'billing_country', $form_id ) ) : ?>
-				    <span class="give-required-indicator">*</span>
-			    <?php endif; ?>
-			    <span class="give-tooltip give-icon give-icon-question"
-			          data-tooltip="<?php esc_attr_e( 'The country for your billing address.', 'give' ); ?>"></span>
-		    </label>
-
-		    <select
-				    name="billing_country"
-				    id="billing_country"
-				    class="billing-country billing_country give-select<?php echo( give_field_is_required( 'billing_country', $form_id ) ? ' required' : '' ); ?>"
-			    <?php echo( give_field_is_required( 'billing_country', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
-		    >
-			    <?php
-
-			    $selected_country = give_get_country();
-
-			    if ( ! empty( $give_user_info['billing_country'] ) && '*' !== $give_user_info['billing_country'] ) {
-				    $selected_country = $give_user_info['billing_country'];
-			    }
-
-			    $countries = give_get_country_list();
-			    foreach ( $countries as $country_code => $country ) {
-				    echo '<option value="' . esc_attr( $country_code ) . '"' . selected( $country_code, $selected_country, false ) . '>' . $country . '</option>';
-			    }
-			    ?>
-		    </select>
-	    </p>
-
-
-	    <?php
-	    $selected_state = '';
-
-	    if ( $selected_country === give_get_country() ) {
-		    // Get defalut selected state by admin.
-		    $selected_state = give_get_state();
-	    }
-
-	    // Get the last payment made by user states.
-	    if ( ! empty( $give_user_info['card_state'] ) && '*' !== $give_user_info['card_state'] ) {
-		    $selected_state = $give_user_info['card_state'];
-	    }
-
-	    // Get the country code
-	    if ( ! empty( $give_user_info['billing_country'] ) && '*' !== $give_user_info['billing_country'] ) {
-		    $selected_country = $give_user_info['billing_country'];
-	    }
-
-	    $label        = __( 'State', 'give' );
-	    $states_label = give_get_states_label();
-	    // Check if $country code exists in the array key for states label.
-	    if ( array_key_exists( $selected_country, $states_label ) ) {
-		    $label = $states_label[ $selected_country ];
-	    }
-
-	    $states = give_get_states( $selected_country );
-
-	    // Get the country list that do not have any states init.
-	    $no_states_country = give_no_states_country_list();
-
-	    // Get the country list that does not require states.
-	    $states_not_required_country_list = give_states_not_required_country_list();
-	    ?>
-	    <p id="give-card-state-wrap"
-	       class="form-row form-row-last form-row-responsive <?php echo ( ! empty( $selected_country ) && array_key_exists( $selected_country, $no_states_country ) ) ? 'give-hidden' : ''; ?> ">
-		    <label for="card_state" class="give-label">
-			    <span class="state-label-text"><?php echo $label; ?></span>
-			    <?php if ( give_field_is_required( 'card_state', $form_id ) ) :
-				    ?>
-				    <span class="give-required-indicator <?php echo( array_key_exists( $selected_country, $states_not_required_country_list ) ? 'give-hidden' : '' ) ?> ">*</span>
-			    <?php endif; ?>
-			    <span class="give-tooltip give-icon give-icon-question"
-			          data-tooltip="<?php esc_attr_e( 'The state, province, or county for your billing address.', 'give' ); ?>"></span>
-		    </label>
-		    <?php
-
-		    if ( ! empty( $states ) ) : ?>
-			    <select
-					    name="card_state"
-					    id="card_state"
-					    class="card_state give-select<?php echo( give_field_is_required( 'card_state', $form_id ) ? ' required' : '' ); ?>"
-				    <?php echo( give_field_is_required( 'card_state', $form_id ) ? ' required aria-required="true" ' : '' ); ?>>
-				    <?php
-				    foreach ( $states as $state_code => $state ) {
-					    echo '<option value="' . $state_code . '"' . selected( $state_code, $selected_state, false ) . '>' . $state . '</option>';
-				    }
-				    ?>
-			    </select>
-		    <?php else : ?>
-			    <input type="text" size="6" name="card_state" id="card_state" class="card_state give-input"
-			           placeholder="<?php echo $label; ?>" value="<?php echo $selected_state; ?>"/>
-		    <?php endif; ?>
 	    </p>
 		<?php
 		/**
