@@ -263,7 +263,6 @@ add_action( 'give_reports_view_forms', 'give_reports_form_details' );
  * @return void
  */
 function give_reports_donors_table() {
-	include( dirname( __FILE__ ) . '/class-donor-reports-table.php' );
 
 	$give_table = new Give_Donor_Reports_Table();
 	$give_table->prepare_items();
