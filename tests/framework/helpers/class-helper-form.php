@@ -174,6 +174,92 @@ class Give_Helper_Form extends Give_Unit_Test_Case {
 
 		return new Give_Donate_Form( $form_id );
 	}
+
+	public static function setup_simple_donation_form( $is_custom_amount = false ) {
+		// Setup user info.
+		$user_info = array(
+			'id'         => 0,
+			'email'      => 'guest@example.org',
+			'first_name' => 'Guest',
+			'last_name'  => 'User',
+			'discount'   => 'none',
+		);
+
+		// Setup simple donation form.
+		$simple_form   = self::create_simple_form();
+		$simple_price  = give_get_meta( $simple_form->ID, '_give_set_price', true );
+		$actual_amount = number_format( (float) $simple_price, 2 );
+		$custom_amount = number_format( (float) $simple_price + 10, 2 );
+
+		$donation = wp_parse_args(
+			( ! empty( $args['donation'] ) ? $args['donation'] : array() ),
+			array(
+				'price'           => $actual_amount,
+				'date'            => date( 'Y-m-d H:i:s', strtotime( '-1 day' ) ),
+				'purchase_key'    => strtolower( md5( uniqid() ) ),
+				'user_email'      => $user_info['email'],
+				'user_info'       => $user_info,
+				'currency'        => 'USD',
+				'status'          => 'pending',
+				'gateway'         => 'manual',
+				'post_data'       => array(
+					'give-form-id'    => $simple_form->ID,
+					'give-form-title' => 'Test Donation Form',
+					'give-amount'     => $is_custom_amount ? $custom_amount : $actual_amount,
+				)
+			)
+		);
+
+		return $donation;
+	}
+
+	public static function setup_multi_level_donation_form( $is_custom_amount = false ) {
+
+		// Setup user info.
+		$user_info = array(
+			'id'         => 0,
+			'email'      => 'guest@example.org',
+			'first_name' => 'Guest',
+			'last_name'  => 'User',
+			'discount'   => 'none',
+		);
+
+		// Setup simple donation form.
+		$multi_level_form          = self::create_multilevel_form();
+		$donation_levels           = give_get_meta( $multi_level_form->ID, '_give_donation_levels', true );
+
+		$multi_level_donation_data = array();
+		foreach( $donation_levels as $level ) {
+			if( ! empty( $level['_give_default'] ) ) {
+				$multi_level_donation_data = $level;
+			}
+		}
+
+		$actual_amount    = number_format( (float) $multi_level_donation_data['_give_amount'], 2 );
+		$custom_amount    = number_format( (float) $multi_level_donation_data['_give_amount'] + 10, 2 );
+
+		$donation = wp_parse_args(
+			( ! empty( $args['donation'] ) ? $args['donation'] : array() ),
+			array(
+				'price'           => $actual_amount,
+				'date'            => date( 'Y-m-d H:i:s', strtotime( '-1 day' ) ),
+				'purchase_key'    => strtolower( md5( uniqid() ) ),
+				'user_email'      => $user_info['email'],
+				'user_info'       => $user_info,
+				'currency'        => 'USD',
+				'status'          => 'pending',
+				'gateway'         => 'manual',
+				'post_data'       => array(
+					'give-form-id'    => $multi_level_form->ID,
+					'give-form-title' => 'Test Donation Form',
+					'give-amount'     => $is_custom_amount ? $custom_amount : $actual_amount,
+					'give-price-id'   => $multi_level_donation_data['_give_id']['level_id']
+				)
+			)
+		);
+
+		return $donation;
+	}
 }
 
 // @todo: Add default form setting to created_form function.
