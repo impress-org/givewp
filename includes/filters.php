@@ -116,3 +116,50 @@ function give_akismet( $spam ) {
 
 add_filter( 'give_spam', 'give_akismet' );
 
+/**
+ * Check Akismet API Key.
+ *
+ * @since 1.8.15
+ *
+ * @return bool
+ */
+function give_check_akismet_key() {
+	if ( is_callable( array( 'Akismet', 'get_api_key' ) ) ) { // Akismet v3.0+
+		return (bool) Akismet::get_api_key();
+	}
+
+	if ( function_exists( 'akismet_get_key' ) ) {
+		return (bool) akismet_get_key();
+	}
+
+	return false;
+}
+
+/**
+ * Akismet spam check.
+ *
+ * @since 1.8.15
+ *
+ * @param array $args
+ *
+ * @return mixed
+ */
+function give_akismet_spam_check( $args ) {
+	global $akismet_api_host, $akismet_api_port;
+
+	$spam         = false;
+	$query_string = http_build_query( $args );
+
+	if ( is_callable( array( 'Akismet', 'http_post' ) ) ) { // Akismet v3.0+
+		$response = Akismet::http_post( $query_string, 'comment-check' );
+	} else {
+		$response = akismet_http_post( $query_string, $akismet_api_host,
+			'/1.1/comment-check', $akismet_api_port );
+	}
+
+	if ( 'true' == $response[1] ) {
+		$spam = true;
+	}
+
+	return apply_filters( 'give_akismet_span_check', $spam, $args );
+}
