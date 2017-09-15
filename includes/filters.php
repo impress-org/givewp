@@ -136,13 +136,13 @@ function give_check_akismet_key() {
 }
 
 /**
- * Akismet spam check.
+ * Detect spam through Akismet Comment API.
  *
  * @since 1.8.15
  *
  * @param array $args
  *
- * @return mixed
+ * @return bool|mixed
  */
 function give_akismet_spam_check( $args ) {
 	global $akismet_api_host, $akismet_api_port;
@@ -157,6 +157,7 @@ function give_akismet_spam_check( $args ) {
 			'/1.1/comment-check', $akismet_api_port );
 	}
 
+	// It's spam if response status is true.
 	if ( 'true' == $response[1] ) {
 		$spam = true;
 	}
