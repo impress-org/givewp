@@ -335,7 +335,7 @@ function give_donation_form_validate_fields() {
  *
  * @since 1.8.15
  *
- * @return mixed
+ * @return bool|mixed
  */
 function is_spam_donation() {
 	$spam = false;
