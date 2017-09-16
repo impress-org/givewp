@@ -387,9 +387,6 @@ function give_reports_page_pages( $settings ) {
 		// Forms.
 		include( 'reports/class-forms-report.php' ),
 
-		// Donors.
-		include( 'reports/class-donors-report.php' ),
-
 		// Gateways.
 		include( 'reports/class-gateways-report.php' ),
 
