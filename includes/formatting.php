@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return mixed
  */
 function give_get_price_decimals() {
-	return apply_filters( 'give_sanitize_amount_decimals', give_get_option( 'number_decimals', 2 ) );
+	return apply_filters( 'give_sanitize_amount_decimals', give_get_option( 'number_decimals', 0 ) );
 }
 
 /**
