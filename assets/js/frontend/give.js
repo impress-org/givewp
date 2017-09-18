@@ -86,6 +86,8 @@ jQuery(function ($) {
 		});
 	}
 
+	doc.on('change', '#give_profile_billing_address_wrap #give_address_country', update_profile_state_field );
+
 });
 
 /**
@@ -232,4 +234,58 @@ function give_change_html5_form_field_validation_message() {
 			}
 		});
 	});
+}
+
+
+/**
+ * Update state/province fields per country selection
+ *
+ * @since 1.8.14
+ */
+function update_profile_state_field() {
+	var $this = jQuery( this ),
+		$form = $this.parents('form');
+	if ('give_address_country' === $this.attr('id')) {
+
+		//Disable the State field until updated
+		$form.find('#give_address_state').empty().append('<option value="1">' + give_global_vars.general_loading + '</option>').prop('disabled', true);
+
+		// If the country field has changed, we need to update the state/province field
+		var postData = {
+			action: 'give_get_states',
+			country: $this.val(),
+			field_name: 'give_address_state'
+		};
+
+		jQuery.ajax({
+			type: 'POST',
+			data: postData,
+			url: give_global_vars.ajaxurl,
+			xhrFields: {
+				withCredentials: true
+			},
+			success: function ( response ) {
+				var html = '';
+				var states_label = response.states_label;
+				if (typeof ( response.states_found ) != undefined && true == response.states_found) {
+					html = response.data;
+				} else {
+					html = '<input type="text" id="give_address_state"  name="give_address_state" class="text give-input" placeholder="' + states_label + '" value="' + response.default_state + '"/>';
+				}
+				$form.find('input[name="give_address_state"], select[name="give_address_state"]').replaceWith(html);
+
+				// Check if user want to show the feilds or not.
+				if (typeof ( response.show_field ) != undefined && true == response.show_field) {
+					$form.find('p#give-card-state-wrap').removeClass('give-hidden');
+				} else {
+					$form.find('p#give-card-state-wrap').addClass('give-hidden');
+				}
+			}
+		}).fail(function (data) {
+			if (window.console && window.console.log) {
+				console.log(data);
+			}
+		});
+	}
+	return false;
 }

@@ -365,6 +365,7 @@ function give_load_admin_scripts( $hook ) {
 		'db_update_confirmation_msg' => __( 'The following process will make updates to your site\'s database. Please create a database backup before proceeding with updates.', 'give' ),
         'error_message' => __( 'Something went wrong kindly try again!','give' ),
         'give_donation_import' => 'give_donation_import',
+		'setting_not_save_message' => __( 'Changes you made may not be saved.','give' ),
 	) );
 
 	if ( function_exists( 'wp_enqueue_media' ) && version_compare( get_bloginfo( 'version' ), '3.5', '>=' ) ) {

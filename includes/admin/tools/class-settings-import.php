@@ -299,7 +299,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 			</tr>
 
 			<script type="text/javascript">
-				jQuery(document).ready(function ($) {
+				jQuery(document).ready(function () {
 					give_on_donation_import_start();
 				});
 			</script>
@@ -601,7 +601,7 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 				),
 				array(
 					'id'      => 'create_user',
-					'name'    => __( 'Create WP users for new donors?:', 'give' ),
+					'name'    => __( 'Create WP users for new donors:', 'give' ),
 					'type'    => 'checkbox',
 					'default' => $create_user,
 				),
