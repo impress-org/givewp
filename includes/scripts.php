@@ -415,3 +415,30 @@ function give_admin_icon() {
 }
 
 add_action( 'admin_head', 'give_admin_icon' );
+
+/**
+ * Load Google ReCaptcha JS on Head.
+ *
+ * @since 1.8.14
+ */
+function give_load_recaptcha_script() {
+	// reCAPTCHA.
+	$recaptcha_key    = give_get_option( 'recaptcha_key' );
+	$recaptcha_secret = give_get_option( 'recaptcha_secret' );
+	$enable_recaptcha = ( ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ) ? true : false;
+
+	if ( $enable_recaptcha ):
+		?>
+		<script src="https://www.google.com/recaptcha/api.js?onload=give_load_recaptcha&render=explicit" async defer></script>
+		<script type="text/javascript">
+					var give_load_recaptcha = function() {
+						jQuery('.g-recaptcha').each(function(index, el) {
+							grecaptcha.render(el, {'sitekey' : '<?php echo $recaptcha_key; ?>'});
+						});
+					};
+		</script>
+		<?php
+	endif;
+}
+
+add_action( 'wp_head', 'give_load_recaptcha_script' );
