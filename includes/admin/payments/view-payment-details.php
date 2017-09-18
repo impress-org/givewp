@@ -645,7 +645,7 @@ $payment_mode   = $payment->mode;
 												</div>
 
 												<div class="row">
-													<div id="give-order-address-state-wrap" class="<?php echo ( array_key_exists( $address['country'], $no_states_country ) ? 'give-hidden' : '' ); ?>">
+													<div id="give-order-address-state-wrap" class="<?php echo ( ! empty( $address['country'] ) && array_key_exists( $address['country'], $no_states_country ) ? 'give-hidden' : '' ); ?>">
 														<label for="give-payment-address-state" class="order-data-address-line"><?php esc_html_e( 'State / Province / County:', 'give' ); ?></label>
 														<?php
 														$states = give_get_states( $address['country'] );
