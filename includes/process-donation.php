@@ -287,8 +287,8 @@ function give_donation_form_validate_fields() {
 	}
 
 	// Check spam detect.
-	if ( is_spam_donation() ) {
-		give_set_error( 'invalid_donation', __( 'Spam detected. Go away bad bot!', 'give' ) );
+	if ( give_is_spam_donation() ) {
+		give_set_error( 'invalid_donation', __( 'This donation has been flagged as spam. Please try again.', 'give' ) );
 	}
 
 	// Validate agree to terms
@@ -333,11 +333,11 @@ function give_donation_form_validate_fields() {
 /**
  * Detect spam donation.
  *
- * @since 1.8.15
+ * @since 1.8.14
  *
  * @return bool|mixed
  */
-function is_spam_donation() {
+function give_is_spam_donation() {
 	$spam = false;
 
 	$user_agent = (string) isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : "";

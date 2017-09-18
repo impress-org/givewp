@@ -71,7 +71,7 @@ add_action( 'update_option_give_settings', 'give_set_settings_with_disable_prefi
 /**
  * Check spam through Akismet.
  *
- * @since 1.8.15
+ * @since 1.8.14
  *
  * @param $spam
  *
@@ -119,7 +119,7 @@ add_filter( 'give_spam', 'give_akismet' );
 /**
  * Check Akismet API Key.
  *
- * @since 1.8.15
+ * @since 1.8.14
  *
  * @return bool
  */
@@ -138,7 +138,7 @@ function give_check_akismet_key() {
 /**
  * Detect spam through Akismet Comment API.
  *
- * @since 1.8.15
+ * @since 1.8.14
  *
  * @param array $args
  *
@@ -158,9 +158,9 @@ function give_akismet_spam_check( $args ) {
 	}
 
 	// It's spam if response status is true.
-	if ( 'true' == $response[1] ) {
+	if ( 'true' === $response[1] ) {
 		$spam = true;
 	}
 
-	return apply_filters( 'give_akismet_span_check', $spam, $args );
+	return apply_filters( 'give_akismet_spam_check', $spam, $args );
 }
