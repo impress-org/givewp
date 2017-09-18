@@ -1162,10 +1162,18 @@ var give_setting_edit = false;
 				};
 
 				$.post(ajaxurl, data, function (response) {
+					// Show the states dropdown menu
+					$this.closest( '.donor-address' ).find( '[name="customerinfo[state]"]' ).removeClass( 'give-hidden' );
+
 					if (typeof ( response.states_found ) != undefined && true == response.states_found) {
 						$(':input[name="customerinfo[state]"]').replaceWith(response.data);
 					} else {
 						$(':input[name="customerinfo[state]"]').replaceWith('<input type="text" name="' + data.field_name + '" value="' + response.default_state + '" class="give-edit-toggles medium-text"/>');
+
+						if (typeof ( response.show_field ) != undefined && false == response.show_field ) {
+							// Hide the states dropdown menu
+							$this.closest( '.donor-address' ).find( '[name="customerinfo[state]"]' ).addClass( 'give-hidden' );
+						}
 					}
 				});
 

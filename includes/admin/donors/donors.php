@@ -332,6 +332,9 @@ function give_donor_view( $donor ) {
 										$selected_state = give_get_state();
 										$states         = give_get_states( $selected_country );
 										$selected_state = isset( $address['state'] ) ? $address['state'] : $selected_state;
+
+										// Get the country list that does not have any states init.
+										$no_states_country = give_no_states_country_list();
 										?>
 										<span class="donor-address info-item edit-item">
 											<select data-key="country" name="customerinfo[country]" id="billing_country" class="billing_country give-select edit-item">
@@ -356,7 +359,7 @@ function give_donor_view( $donor ) {
 												<?php
 											} else {
 												?>
-												<input type="text" size="6" data-key="state" name="customerinfo[state]" id="card_state" class="card_state give-input info-item" placeholder="<?php _e( 'State / Province / County', 'give' ); ?>" />
+												<input type="text" size="6" data-key="state" name="customerinfo[state]" id="card_state" class="card_state give-input info-item <?php echo ( array_key_exists( $selected_country, $no_states_country ) ? 'give-hidden' : '' ) ?>" placeholder="<?php _e( 'State / Province / County', 'give' ); ?>" />
 												<?php
 											}
 											?>
