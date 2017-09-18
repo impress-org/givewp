@@ -338,7 +338,7 @@ var give_setting_edit = false;
 				$.post(ajaxurl, data, function (response) {
 
 					// Show the states dropdown menu
-					$this.closest( '.column-container' ).find( '#give-order-address-state-wrap' ).removeClass( 'give-hidden' )
+					$this.closest( '.column-container' ).find( '#give-order-address-state-wrap' ).removeClass( 'give-hidden' );
 
 					var state_wrap = $('#give-order-address-state-wrap');
 					state_wrap.find('*').not('.order-data-address-line').remove();
@@ -346,13 +346,12 @@ var give_setting_edit = false;
 						state_wrap.append(response.data);
 						state_wrap.find('select').chosen();
 					} else {
+						state_wrap.append('<input type="text" name="give-payment-address[0][state]" value="' + response.default_state + '" class="give-edit-toggles medium-text"/>');
 
 						if (typeof ( response.show_field ) != undefined && false == response.show_field ) {
 							// Hide the states dropdown menu
 							$this.closest( '.column-container' ).find( '#give-order-address-state-wrap' ).addClass( 'give-hidden' );
 						}
-
-						state_wrap.append('<input type="text" name="give-payment-address[0][state]" value="' + response.default_state + '" class="give-edit-toggles medium-text"/>');
 					}
 				});
 
