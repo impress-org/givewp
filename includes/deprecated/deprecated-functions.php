@@ -630,6 +630,8 @@ function give_get_purchase_summary( $purchase_data, $email = true ) {
  * @param array $payment_data Payment Data.
  *
  * @since 1.8.14
+ *
+ * @return string
  */
 function give_build_paypal_item_title( $payment_data ) {
 
@@ -637,6 +639,6 @@ function give_build_paypal_item_title( $payment_data ) {
 
 	_give_deprecated_function( __FUNCTION__, '1.8.14', 'give_payment_gateway_item_title', $backtrace );
 
-	give_payment_gateway_item_title( $payment_data );
+	return give_payment_gateway_item_title( $payment_data );
 
 }
