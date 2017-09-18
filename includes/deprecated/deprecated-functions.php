@@ -623,3 +623,20 @@ function give_get_purchase_summary( $purchase_data, $email = true ) {
 	give_payment_gateway_donation_summary($purchase_data, $email);
 
 }
+
+/**
+ * Generate Item Title for Payment Gateway
+ *
+ * @param array $payment_data Payment Data.
+ *
+ * @since 1.8.14
+ */
+function give_build_paypal_item_title( $payment_data ) {
+
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '1.8.14', 'give_payment_gateway_item_title', $backtrace );
+
+	give_payment_gateway_item_title( $payment_data );
+
+}

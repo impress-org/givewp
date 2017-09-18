@@ -740,7 +740,7 @@ var give_setting_edit = false;
 				var export_form = $('#give-tools-recount-form');
 				var selected_type = $('option:selected', this).data('type');
 				var submit_button = $('#recount-stats-submit');
-				var forms = $('#tools-form-dropdown');
+				var forms = $('.tools-form-dropdown');
 
 				// Reset the form
 				export_form.find('.notice-wrap').remove();
@@ -748,14 +748,7 @@ var give_setting_edit = false;
 				forms.hide();
 				$('.give-recount-stats-descriptions span').hide();
 
-				if ('recount-form' === selected_type) {
-
-					forms.show();
-					forms.find('.give-select-chosen').css({
-						'width': 'auto',
-						'min-width': '250px'
-					});
-				} else if ('reset-stats' === selected_type) {
+				if ('reset-stats' === selected_type) {
 					export_form.append('<div class="notice-wrap"></div>');
 					var notice_wrap = export_form.find('.notice-wrap');
 					notice_wrap.html('<div class="notice notice-warning"><p><input type="checkbox" id="confirm-reset" name="confirm_reset_store" value="1" /> <label for="confirm-reset">' + give_vars.reset_stats_warn + '</label></p></div>');
@@ -769,6 +762,7 @@ var give_setting_edit = false;
 					submit_button.addClass('button-disabled').attr('disabled', 'disabled');
 					// Add check when admin try to delete all the imported donations.
 				} else if ('delete-import-donors' === selected_type) {
+
 					export_form.append('<div class="notice-wrap"></div>');
 					var notice_wrap = export_form.find('.notice-wrap');
 					notice_wrap.html('<div class="notice notice-warning"><p><input type="checkbox" id="confirm-reset" name="confirm_reset_store" value="1" /> <label for="confirm-reset">' + give_vars.delete_import_donor + '</label></p></div>');
@@ -777,6 +771,13 @@ var give_setting_edit = false;
 					forms.hide();
 					forms.val(0);
 				}
+
+				current_forms = $( '.tools-form-dropdown-' + selected_type );
+				current_forms.show();
+				current_forms.find('.give-select-chosen').css({
+					'width': 'auto',
+					'min-width': '250px'
+				});
 				$('#' + selected_type).show();
 			});
 
