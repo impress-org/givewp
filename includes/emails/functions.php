@@ -28,12 +28,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 	$payment = new Give_Payment( $payment_id );
+
 	/**
 	 * Fire the action
 	 */
 	do_action( 'give_donation-receipt_email_notification', $payment_id );
 
-	//If admin notifications are on, send the admin notice.
+	// If admin notifications are on, send the admin notice.
 	if ( $admin_notice && ! give_admin_notices_disabled( $payment_id ) ) {
 		/**
 		 * Fires in the donation email receipt.
@@ -131,26 +132,68 @@ function give_get_default_donation_receipt_email() {
  * @since 1.0
  *
  * @param $user_info
+ * @param $payment Give_Payment|bool for getting the names.
  *
  * @return array $email_names
  */
-function give_get_email_names( $user_info ) {
+function give_get_email_names( $user_info, $payment = false ) {
 	$email_names = array();
-	$user_info   = maybe_unserialize( $user_info );
 
-	$email_names['fullname'] = '';
-	if ( isset( $user_info['id'] ) && $user_info['id'] > 0 && isset( $user_info['first_name'] ) ) {
-		$user_data               = get_userdata( $user_info['id'] );
-		$email_names['name']     = $user_info['first_name'];
-		$email_names['fullname'] = $user_info['first_name'] . ' ' . $user_info['last_name'];
-		$email_names['username'] = $user_data->user_login;
-	} elseif ( isset( $user_info['first_name'] ) ) {
-		$email_names['name']     = $user_info['first_name'];
-		$email_names['fullname'] = $user_info['first_name'] . ' ' . $user_info['last_name'];
-		$email_names['username'] = $user_info['first_name'];
+	if ( is_a( $payment, 'Give_Payment' ) ) {
+
+		if ( $payment->user_id > 0 ) {
+
+			$user_data               = get_userdata( $payment->user_id );
+			$email_names['name']     = $payment->first_name;
+			$email_names['fullname'] = trim( $payment->first_name . ' ' . $payment->last_name );
+			$email_names['username'] = $user_data->user_login;
+
+		} elseif ( ! empty( $payment->first_name ) ) {
+
+			$email_names['name']     = $payment->first_name;
+			$email_names['fullname'] = trim( $payment->first_name . ' ' . $payment->last_name );
+			$email_names['username'] = $payment->first_name;
+
+		} else {
+
+			$email_names['name']     = $payment->email;
+			$email_names['username'] = $payment->email;
+
+		}
+
 	} else {
-		$email_names['name']     = $user_info['email'];
-		$email_names['username'] = $user_info['email'];
+
+		// Support for old serialized data
+		if ( is_serialized( $user_info ) ) {
+
+			// Security check.
+			preg_match( '/[oO]\s*:\s*\d+\s*:\s*"\s*(?!(?i)(stdClass))/', $user_info, $matches );
+			if ( ! empty( $matches ) ) {
+				return array(
+					'name'     => '',
+					'fullname' => '',
+					'username' => '',
+				);
+			} else {
+				$user_info = maybe_unserialize( $user_info );
+			}
+
+		}
+
+		if ( isset( $user_info['id'] ) && $user_info['id'] > 0 && isset( $user_info['first_name'] ) ) {
+			$user_data               = get_userdata( $user_info['id'] );
+			$email_names['name']     = $user_info['first_name'];
+			$email_names['fullname'] = $user_info['first_name'] . ' ' . $user_info['last_name'];
+			$email_names['username'] = $user_data->user_login;
+		} elseif ( isset( $user_info['first_name'] ) ) {
+			$email_names['name']     = $user_info['first_name'];
+			$email_names['fullname'] = $user_info['first_name'] . ' ' . $user_info['last_name'];
+			$email_names['username'] = $user_info['first_name'];
+		} else {
+			$email_names['name']     = $user_info['email'];
+			$email_names['username'] = $user_info['email'];
+		}
+
 	}
 
 	return $email_names;

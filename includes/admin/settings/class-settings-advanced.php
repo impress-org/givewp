@@ -27,7 +27,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 		 */
 		public function __construct() {
 			$this->id    = 'advanced';
-			$this->label = esc_html__( 'Advanced', 'give' );
+			$this->label = __( 'Advanced', 'give' );
 
 			$this->default_tab = 'advanced-options';
 
@@ -53,8 +53,8 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							'type' => 'title'
 						),
 						array(
-							'name'    => esc_html__( 'Remove Data on Uninstall', 'give' ),
-							'desc'    => esc_html__( 'When the plugin is deleted, completely remove all Give data. This includes all Give settings, forms, form meta, donor, donor data, donations. Everything.', 'give' ),
+							'name'    => __( 'Remove Data on Uninstall', 'give' ),
+							'desc'    => __( 'When the plugin is deleted, completely remove all Give data. This includes all Give settings, forms, form meta, donor, donor data, donations. Everything.', 'give' ),
 							'id'      => 'uninstall_on_delete',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
@@ -62,6 +62,14 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 								'enabled'  => __( 'Yes, Remove all data', 'give' ),
 								'disabled' => __( 'No, keep my Give settings and donation data', 'give' ),
 							)
+						),
+						array(
+							'name'    => __( 'Default User Role', 'give' ),
+							'desc'    => __( 'Assign default user roles for donors when donors opt to register as a WP User.', 'give' ),
+							'id'      => 'donor_default_user_role',
+							'type'    => 'select',
+							'default' => 'give_donor',
+							'options' => give_get_user_roles()
 						),
 						array(
 							/* translators: %s: the_content */
@@ -77,7 +85,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							)
 						),
 						array(
-							'name'    => esc_html__( 'Script Loading Location', 'give' ),
+							'name'    => __( 'Script Loading Location', 'give' ),
 							'desc'    => __( 'This allows you to load your Give scripts either in the <code>&lt;head&gt;</code> or footer of your website.', 'give' ),
 							'id'      => 'scripts_footer',
 							'type'    => 'radio_inline',
@@ -88,7 +96,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							)
 						),
                         array(
-                            'name'  => esc_html__( 'Advanced Settings Docs Link', 'give' ),
+                            'name'  => __( 'Advanced Settings Docs Link', 'give' ),
                             'id'    => 'advanced_settings_docs_link',
                             'url'   => esc_url( 'http://docs.givewp.com/settings-advanced' ),
                             'title' => __( 'Advanced Settings', 'give' ),
@@ -130,7 +138,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 		 */
 		public function get_sections() {
 			$sections = array(
-				'advanced-options' => esc_html__( 'Advanced Options', 'give' )
+				'advanced-options' => __( 'Advanced Options', 'give' )
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );

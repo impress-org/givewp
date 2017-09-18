@@ -139,18 +139,63 @@ if ( is_user_logged_in() ):
 					<input name="give_address_zip" id="give_address_zip" class="text give-input" type="text" value="<?php echo esc_attr( $address['zip'] ); ?>"/>
 				</p>
 
+				<?php
+				$selected_country = ( ! empty( $address['country'] ) ? $address['country'] : '' );
+				?>
+
 				<p id="give-card-country-wrap" class="form-row form-row-first form-row-responsive">
 					<label for="give_address_country"><?php esc_html_e( 'Country', 'give' ); ?></label>
 					<select name="give_address_country" id="give_address_country" class="select give-select">
 						<?php foreach ( give_get_country_list() as $key => $country ) : ?>
-							<option value="<?php echo $key; ?>"<?php selected( $address['country'], $key ); ?>><?php echo esc_html( $country ); ?></option>
+							<option value="<?php echo $key; ?>"<?php selected( $selected_country, $key ); ?>><?php echo esc_html( $country ); ?></option>
 						<?php endforeach; ?>
 					</select>
 				</p>
 
-				<p id="give-card-state-wrap" class="form-row form-row-last form-row-responsive">
+				<?php
+				$selected_state = '';
+				if ( $selected_country === give_get_country() ) {
+					// Get defalut selected state by admin.
+					$selected_state = give_get_state();
+				}
+
+				$selected_state = ! empty( $address['state'] ) ? $address['state'] : $selected_state;
+
+				$label        = __( 'State', 'give' );
+				$states_label = give_get_states_label();
+				// Check if $country code exists in the array key for states label.
+				if ( array_key_exists( $selected_country, $states_label ) ) {
+					$label = $states_label[ $selected_country ];
+				}
+
+				$states = give_get_states( $selected_country );
+
+				// Get the country list that do not have any states init.
+				$no_states_country = give_no_states_country_list();
+
+				// Get the country list that does not require states.
+				$states_not_required_country_list = give_states_not_required_country_list();
+				?>
+
+				<p id="give-card-state-wrap" class="form-row form-row-last form-row-responsive <?php echo ( ! empty( $selected_country ) && array_key_exists( $selected_country, $no_states_country ) ) ? 'give-hidden' : ''; ?>">
 					<label for="give_address_state"><?php esc_html_e( 'State / Province / County', 'give' ); ?></label>
-					<input name="give_address_state" id="give_address_state" class="text give-input" type="text" value="<?php echo esc_attr( $address['state'] ); ?>"/>
+					<?php
+					if ( ! empty( $states ) ) : ?>
+						<select
+								name="give_address_state"
+								id="give_address_state"
+								class="give_address_state"
+							<?php
+							foreach ( $states as $state_code => $state ) {
+								echo '<option value="' . $state_code . '"' . selected( $state_code, $selected_state, false ) . '>' . $state . '</option>';
+							}
+							?>
+						</select>
+					<?php else : ?>
+						<input type="text" size="6" name="give_address_state" id="give_address_state" class="give_address_state give-input"
+						       placeholder="<?php echo $label; ?>" value="<?php echo $selected_state; ?>"/>
+					<?php endif;
+					?>
 				</p>
 
 				<?php

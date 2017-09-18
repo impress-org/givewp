@@ -27,6 +27,9 @@ class Tests_Activation extends Give_Unit_Test_Case {
 		$this->assertArrayHasKey( 'base_country', $give_options );
 		$this->assertEquals( 'US', $give_options['base_country'] );
 
+		$this->assertArrayHasKey( 'test_mode', $give_options );
+		$this->assertEquals( 'enabled', $give_options['test_mode'] );
+
 		$this->assertArrayHasKey( 'currency', $give_options );
 		$this->assertEquals( 'USD', $give_options['currency'] );
 
@@ -39,38 +42,14 @@ class Tests_Activation extends Give_Unit_Test_Case {
 		$this->assertArrayHasKey( 'email_access', $give_options );
 		$this->assertEquals( 'disabled', $give_options['email_access'] );
 
+		$this->assertArrayHasKey( 'thousands_separator', $give_options );
+		$this->assertEquals( ',', $give_options['thousands_separator'] );
+
+		$this->assertArrayHasKey( 'decimal_separator', $give_options );
+		$this->assertEquals( '.', $give_options['decimal_separator'] );
+
 		$this->assertArrayHasKey( 'number_decimals', $give_options );
 		$this->assertEquals( 2, $give_options['number_decimals'] );
-
-		$this->assertArrayHasKey( 'test_mode', $give_options );
-		$this->assertEquals( 'enabled', $give_options['test_mode'] );
-
-		$this->assertArrayHasKey( 'the_content_filter', $give_options );
-		$this->assertEquals( 'enabled', $give_options['the_content_filter'] );
-
-		$this->assertArrayHasKey( 'tags', $give_options );
-		$this->assertEquals( 'disabled', $give_options['tags'] );
-
-		$this->assertArrayHasKey( 'categories', $give_options );
-		$this->assertEquals( 'disabled', $give_options['categories'] );
-
-		$this->assertArrayHasKey( 'form_sidebar', $give_options );
-		$this->assertEquals( 'enabled', $give_options['form_sidebar'] );
-
-		$this->assertArrayHasKey( 'forms_excerpt', $give_options );
-		$this->assertEquals( 'enabled', $give_options['forms_excerpt'] );
-
-		$this->assertArrayHasKey( 'form_featured_img', $give_options );
-		$this->assertEquals( 'enabled', $give_options['form_featured_img'] );
-
-		$this->assertArrayHasKey( 'forms_archives', $give_options );
-		$this->assertEquals( 'enabled', $give_options['forms_archives'] );
-
-		$this->assertArrayHasKey( 'forms_singular', $give_options );
-		$this->assertEquals( 'enabled', $give_options['forms_singular'] );
-
-		$this->assertArrayHasKey( 'welcome', $give_options );
-		$this->assertEquals( 'enabled', $give_options['welcome'] );
 
 		$this->assertArrayHasKey( 'css', $give_options );
 		$this->assertEquals( 'enabled', $give_options['css'] );
@@ -78,8 +57,50 @@ class Tests_Activation extends Give_Unit_Test_Case {
 		$this->assertArrayHasKey( 'floatlabels', $give_options );
 		$this->assertEquals( 'disabled', $give_options['floatlabels'] );
 
+		$this->assertArrayHasKey( 'welcome', $give_options );
+		$this->assertEquals( 'enabled', $give_options['welcome'] );
+
+		$this->assertArrayHasKey( 'forms_singular', $give_options );
+		$this->assertEquals( 'enabled', $give_options['forms_singular'] );
+
+		$this->assertArrayHasKey( 'forms_archives', $give_options );
+		$this->assertEquals( 'enabled', $give_options['forms_archives'] );
+
+		$this->assertArrayHasKey( 'forms_excerpt', $give_options );
+		$this->assertEquals( 'enabled', $give_options['forms_excerpt'] );
+
+		$this->assertArrayHasKey( 'form_featured_img', $give_options );
+		$this->assertEquals( 'enabled', $give_options['form_featured_img'] );
+
+		$this->assertArrayHasKey( 'form_sidebar', $give_options );
+		$this->assertEquals( 'enabled', $give_options['form_sidebar'] );
+
+		$this->assertArrayHasKey( 'categories', $give_options );
+		$this->assertEquals( 'disabled', $give_options['categories'] );
+
+		$this->assertArrayHasKey( 'tags', $give_options );
+		$this->assertEquals( 'disabled', $give_options['tags'] );
+
+		$this->assertArrayHasKey( 'terms', $give_options );
+		$this->assertEquals( 'disabled', $give_options['terms'] );
+
+		$this->assertArrayHasKey( 'admin_notices', $give_options );
+		$this->assertEquals( 'enabled', $give_options['admin_notices'] );
+
 		$this->assertArrayHasKey( 'uninstall_on_delete', $give_options );
 		$this->assertEquals( 'disabled', $give_options['uninstall_on_delete'] );
+
+		$this->assertArrayHasKey( 'donor_default_user_role', $give_options );
+		$this->assertEquals( 'give_donor', $give_options['donor_default_user_role'] );
+
+		$this->assertArrayHasKey( 'the_content_filter', $give_options );
+		$this->assertEquals( 'enabled', $give_options['the_content_filter'] );
+
+		$this->assertArrayHasKey( 'scripts_footer', $give_options );
+		$this->assertEquals( 'disabled', $give_options['scripts_footer'] );
+
+		$this->assertArrayHasKey( 'agree_to_terms_label', $give_options );
+		$this->assertEquals( __( 'Agree to Terms?', 'give' ), $give_options['agree_to_terms_label'] );
 
 		$this->assertArrayHasKey( 'agreement_text', $give_options );
 		$this->assertEquals( $give_options['agreement_text'], give_get_default_agreement_text() );

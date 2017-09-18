@@ -36,7 +36,7 @@ function give_payment_history_page() {
 	?>
 	<div class="wrap">
 
-		<h1><?php echo get_admin_page_title(); ?></h1>
+		<h1 class="wp-heading-inline"><?php echo get_admin_page_title(); ?></h1>
 
 		<?php
 		/**

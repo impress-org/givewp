@@ -184,6 +184,13 @@ class Give_DB_Donors extends Give_DB {
 
 			global $wpdb;
 
+			/**
+			 * Deleting the donor meta.
+			 *
+			 * @since 1.8.14
+			 */
+			Give()->donor_meta->delete_all_meta( $donor->id );
+
 			return $wpdb->delete( $this->table_name, array( 'id' => $donor->id ), array( '%d' ) );
 
 		} else {
@@ -210,8 +217,18 @@ class Give_DB_Donors extends Give_DB {
 		if ( empty( $user_id ) ) {
 			return false;
 		}
-		global $wpdb;
 
+		/**
+		 * Deleting the donor meta.
+		 *
+		 * @since 1.8.14
+		 */
+		$donor = new Give_Donor( $user_id, true );
+		if( ! empty( $donor->id ) ) {
+			Give()->donor_meta->delete_all_meta( $donor->id );
+		}
+
+		global $wpdb;
 		return $wpdb->delete( $this->table_name, array( 'user_id' => $user_id ), array( '%d' ) );
 	}
 
@@ -342,7 +359,7 @@ class Give_DB_Donors extends Give_DB {
 	 * @since  1.4.3
 	 * @access public
 	 *
-	 * @param  int          $user_id       User ID.
+	 * @param  int $user_id User ID.
 	 * @param  WP_User|bool $old_user_data User data.
 	 *
 	 * @return bool
@@ -402,7 +419,7 @@ class Give_DB_Donors extends Give_DB {
 	 * @access public
 	 *
 	 * @param  string $field ID or email. Default is 'id'.
-	 * @param  mixed  $value The Customer ID or email to search. Default is 0.
+	 * @param  mixed $value The Customer ID or email to search. Default is 0.
 	 *
 	 * @return mixed         Upon success, an object of the donor. Upon failure, NULL
 	 */

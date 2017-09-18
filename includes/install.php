@@ -121,6 +121,8 @@ function give_run_install() {
 			'v189_upgrades_levels_post_meta',
 			'v1812_update_amount_values',
 			'v1812_update_donor_purchase_values',
+			'v1813_update_user_roles',
+			'v1813_update_donor_user_roles',
 			'v20_upgrades_form_metadata',
 			'v20_logs_upgrades',
 			'v20_move_metadata_into_new_table',
@@ -303,6 +305,8 @@ function give_get_default_settings() {
 		'currency_position'                           => 'before',
 		'session_lifetime'                            => '604800',
 		'email_access'                                => 'disabled',
+		'thousands_separator'                         => ',',
+		'decimal_separator'                           => '.',
 		'number_decimals'                             => 2,
 
 		// Display options.
@@ -343,6 +347,9 @@ function give_get_default_settings() {
 
 		// Default email receipt message.
 		'donation_receipt'                            => give_get_default_donation_receipt_email(),
+
+		'donor_default_user_role'                     => 'give_donor',
+
 	);
 
 	return $options;

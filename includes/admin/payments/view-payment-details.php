@@ -49,7 +49,7 @@ $payment_mode   = $payment->mode;
 ?>
 <div class="wrap give-wrap">
 
-	<h1 id="transaction-details-heading"><?php
+	<h1 id="transaction-details-heading" class="wp-heading-inline"><?php
 		printf(
 			/* translators: %s: donation number */
 			esc_html__( 'Donation %s', 'give' ),
