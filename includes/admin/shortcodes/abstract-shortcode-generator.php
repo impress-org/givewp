@@ -178,7 +178,8 @@ abstract class Give_Shortcode_Generator {
 
 		if ( ! empty( $this->errors ) ) {
 			foreach ( $this->required as $name => $alert ) {
-				if ( false === array_search( $name, array_column( $generated_fields, 'name' ) ) ) {
+				// Using WordPress function in place of array_column wp_list_pluck as it support older version as well.
+				if ( false === array_search( $name, give_list_pluck( $generated_fields, 'name' ) ) ) {
 
 					$errors[] = $this->errors[ $name ];
 				}

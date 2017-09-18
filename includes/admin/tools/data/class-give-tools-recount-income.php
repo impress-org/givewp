@@ -172,6 +172,9 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 		}
 	}
 
+	/**
+	 * Headers.
+	 */
 	public function headers() {
 		ignore_user_abort( true );
 
@@ -208,7 +211,16 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 		global $wpdb;
 		$value = $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM $wpdb->options WHERE option_name = '%s'", $key ) );
 
-		return empty( $value ) ? false : maybe_unserialize( $value );
+		if ( empty( $value ) ) {
+			return false;
+		}
+
+		$maybe_json = json_decode( $value );
+		if ( ! is_null( $maybe_json ) ) {
+			$value = json_decode( $value, true );
+		}
+
+		return $value;
 	}
 
 	/**
@@ -224,7 +236,7 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 	private function store_data( $key, $value ) {
 		global $wpdb;
 
-		$value = maybe_serialize( $value );
+		$value = is_array( $value ) ? wp_json_encode( $value ) : esc_attr( $value );
 
 		$data = array(
 			'option_name'  => $key,

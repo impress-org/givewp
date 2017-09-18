@@ -415,9 +415,6 @@ function give_reports_page_pages( $settings ) {
 		// Forms.
 		include( 'reports/class-forms-report.php' ),
 
-		// Donors.
-		include( 'reports/class-donors-report.php' ),
-
 		// Gateways.
 		include( 'reports/class-gateways-report.php' ),
 
@@ -453,6 +450,9 @@ function give_tools_page_pages( $settings ) {
 
 		// Export.
 		include( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-export.php' ),
+
+		// Import
+		include_once( GIVE_PLUGIN_DIR . 'includes/admin/tools/class-settings-import.php' ),
 	);
 
 	// Output.
