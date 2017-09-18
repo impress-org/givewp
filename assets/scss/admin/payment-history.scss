@@ -410,6 +410,10 @@ Responsiveness
   width: 196px;
 }
 
+#give-edit-order-form .row {
+  margin-top: 10px;
+}
+
 #give-donation-overview ul,
 #give-order-address-country-wrap select,
 #give-donor-details .order-data-address input,
@@ -508,6 +512,7 @@ input.give-price-field {
 
   label {
 	display: block;
+    margin-bottom: 5px;
   }
 
   .column-container {
@@ -515,7 +520,7 @@ input.give-price-field {
   }
 
   input[type="text"] {
-	width: 95%;
+	width: 98%;
   }
 
   .chosen-container {
@@ -530,7 +535,7 @@ input.give-price-field {
 
 @media screen and (min-width: 1200px) {
   #give-edit-order-form .column {
-	width: 33%;
+	width: 49%;
   }
 
   #give-donation-overview.columns-4 li.actions {
