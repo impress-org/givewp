@@ -685,14 +685,15 @@ ASIDE
 
 			.give-field-wrap {
 				padding: 10px;
-				
-				span.give-field-label {
+
+				span.give-field-label, label {
 					display: block;
 					float: none;
 					margin: 0 0 10px 0;
 					font-size: 14px;
 					width: 100%;
 				}
+
 			}
 		}
 

@@ -1147,7 +1147,7 @@ ASIDE
     padding-left: 40px; }
     #give-metabox-form-data .give_options_panel .give-field-wrap {
       padding: 10px; }
-      #give-metabox-form-data .give_options_panel .give-field-wrap span.give-field-label {
+      #give-metabox-form-data .give_options_panel .give-field-wrap span.give-field-label, #give-metabox-form-data .give_options_panel .give-field-wrap label {
         display: block;
         float: none;
         margin: 0 0 10px 0;
