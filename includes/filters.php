@@ -71,6 +71,9 @@ add_action( 'update_option_give_settings', 'give_set_settings_with_disable_prefi
 /**
  * Check spam through Akismet.
  *
+ * It will build Akismet query string and call Akismet API.
+ * Akismet response return 'true' for spam donation.
+ *
  * @since 1.8.14
  *
  * @param $spam
@@ -110,6 +113,7 @@ function give_akismet( $spam ) {
 		}
 	}
 
+	// It will return Akismet spam detect API response.
 	return give_akismet_spam_check( $args );
 
 }
@@ -162,5 +166,6 @@ function give_akismet_spam_check( $args ) {
 		$spam = true;
 	}
 
+	// Allow developer to modified Akismet spam detection response.
 	return apply_filters( 'give_akismet_spam_check', $spam, $args );
 }

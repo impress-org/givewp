@@ -287,7 +287,7 @@ function give_donation_form_validate_fields() {
 	}
 
 	// Check spam detect.
-	if ( give_is_spam_donation() ) {
+	if ( give_is_spam_donation() && isset( $_POST['action'] ) ) {
 		give_set_error( 'invalid_donation', __( 'This donation has been flagged as spam. Please try again.', 'give' ) );
 	}
 
@@ -346,6 +346,7 @@ function give_is_spam_donation() {
 		$spam = true;
 	}
 
+	// Allow developer to customized Akismet spam detect API call and it's response.
 	return apply_filters( 'give_spam', $spam );
 }
 
