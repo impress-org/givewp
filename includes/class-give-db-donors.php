@@ -45,7 +45,7 @@ class Give_DB_Donors extends Give_DB {
 		if ( ! ( Give()->donors instanceof Give_DB_Donors ) ) {
 			// Setup hook.
 			add_action( 'profile_update', array( $this, 'update_donor_email_on_user_update' ), 10, 2 );
-			add_action( 'personal_options_update', array( $this, 'update_donor_info_on_user_update' ), 11, 2 );
+			add_action( 'edit_user_profile_update', array( $this, 'update_donor_info_on_user_update' ), 11, 2 );
 
 			// Install table.
 			$this->register_table();
