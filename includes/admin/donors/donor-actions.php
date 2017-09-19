@@ -122,7 +122,7 @@ function give_edit_donor( $args ) {
 		Give()->notices->register_notice( array(
 			'id'          => 'empty_donor_first_name',
 			'type'        => 'error',
-			'description' => '<strong>ERROR:</strong>' . __( 'Please enter your first name.', 'give' ),
+			'description' => sprintf( '%1$s %2$s', esc_html__('<strong>ERROR:</strong>', 'give' ), __( 'Please enter your first name.', 'give' ) ),
 			'show'        => true,
 		) );
 

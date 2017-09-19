@@ -560,7 +560,7 @@ add_action( 'current_screen', 'give_blank_slate' );
  */
 function give_validate_user_profile( $errors, $update, $user ) {
 
-	if ( ! empty( $_POST['action'] ) && ( 'adduser' === $_POST['action'] || 'createuser' === $_POST["action"] ) ) {
+	if ( ! empty( $_POST['action'] ) && ( 'adduser' === $_POST['action'] || 'createuser' === $_POST['action'] ) ) {
 		return;
 	}
 
@@ -570,7 +570,11 @@ function give_validate_user_profile( $errors, $update, $user ) {
 		if( $donor ) {
 			// If Donor is attached with User, then validate first name.
 			if ( empty( $_POST['first_name'] ) ) {
-				$errors->add( 'empty_first_name', '<strong>ERROR:</strong>' . __( 'Please enter your first name.', 'give' ) );
+				$errors->add(
+					'empty_first_name',
+					sprintf( '%1$s %2$s', esc_html__( '<strong>ERROR:</strong>', 'give' ), __( 'Please enter your first name.', 'give' )
+					)
+				);
 			}
 		}
 	}
