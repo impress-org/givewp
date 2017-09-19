@@ -273,7 +273,12 @@ function give_load_admin_scripts( $hook ) {
 	wp_enqueue_script( 'jquery-ui-datepicker' );
 	wp_enqueue_script( 'thickbox' );
 
-	wp_register_script( 'give-admin-scripts', $js_dir . 'admin-scripts' . $suffix . '.js', array( 'jquery', 'jquery-ui-datepicker', 'wp-color-picker', 'jquery-query' ), GIVE_VERSION, false );
+	wp_register_script( 'give-admin-scripts', $js_dir . 'admin-scripts' . $suffix . '.js', array(
+		'jquery',
+		'jquery-ui-datepicker',
+		'wp-color-picker',
+		'jquery-query',
+	), GIVE_VERSION, false );
 	wp_enqueue_script( 'give-admin-scripts' );
 
 	wp_register_script( 'jquery-flot', $js_plugins . 'jquery.flot' . $suffix . '.js' );
@@ -322,8 +327,8 @@ function give_load_admin_scripts( $hook ) {
 		'batch_export_no_class'          => __( 'You must choose a method.', 'give' ),
 		'batch_export_no_reqs'           => __( 'Required fields not completed.', 'give' ),
 		'reset_stats_warn'               => __( 'Are you sure you want to reset Give? This process is <strong><em>not reversible</em></strong> and will delete all data regardless of test or live mode. Please be sure you have a recent backup before proceeding.', 'give' ),
-		'delete_test_donor'               => __( 'Are you sure you want to delete all the test donors? This process will also delete test donations as well.', 'give' ),
-		'delete_import_donor'               => __( 'Are you sure you want to delete all the imported donors? This process will also delete imported donations as well.', 'give' ),
+		'delete_test_donor'              => __( 'Are you sure you want to delete all the test donors? This process will also delete test donations as well.', 'give' ),
+		'delete_import_donor'            => __( 'Are you sure you want to delete all the imported donors? This process will also delete imported donations as well.', 'give' ),
 		'price_format_guide'             => sprintf( __( 'Please enter amount in monetary decimal ( %1$s ) format without thousand separator ( %2$s ) .', 'give' ), $decimal_separator, $thousand_separator ),
 		/* translators : %s: Donation form options metabox */
 		'confirm_before_remove_row_text' => __( 'Do you want to delete this level?', 'give' ),
@@ -333,8 +338,8 @@ function give_load_admin_scripts( $hook ) {
 		'search_placeholder_donor'       => __( 'Type to search all donors', 'give' ),
 		'search_placeholder_country'     => __( 'Type to search all countries', 'give' ),
 		'search_placeholder_state'       => __( 'Type to search all states/provinces', 'give' ),
-		'bulk_action' => array(
-			'delete'    => array(
+		'bulk_action'                    => array(
+			'delete'         => array(
 				'zero'     => __( 'You must choose at least one or more payments to delete.', 'give' ),
 				'single'   => __( 'Are you sure you want to permanently delete this donation?', 'give' ),
 				'multiple' => __( 'Are you sure you want to permanently delete the selected {payment_count} donations?', 'give' ),
@@ -344,28 +349,27 @@ function give_load_admin_scripts( $hook ) {
 				'single'   => __( 'Are you sure you want to resend the email receipt to this recipient?', 'give' ),
 				'multiple' => __( 'Are you sure you want to resend the emails receipt to {payment_count} recipients?', 'give' ),
 			),
-			'set-to-status' => array(
-				'zero'      => __( 'You must choose at least one or more donations to set status to {status}.', 'give' ),
-				'single'    => __( 'Are you sure you want to set status of this donation to {status}?', 'give' ),
-				'multiple'  => __( 'Are you sure you want to set status of {payment_count} donations to {status}?', 'give' ),
+			'set-to-status'  => array(
+				'zero'     => __( 'You must choose at least one or more donations to set status to {status}.', 'give' ),
+				'single'   => __( 'Are you sure you want to set status of this donation to {status}?', 'give' ),
+				'multiple' => __( 'Are you sure you want to set status of {payment_count} donations to {status}?', 'give' ),
 			),
 		),
-		'metabox_fields' => array(
+		'metabox_fields'                 => array(
 			'media' => array(
 				'button_title' => __( 'Choose Image', 'give' ),
 			),
-			'file' => array(
+			'file'  => array(
 				'button_title' => __( 'Choose File', 'give' ),
-			)
+			),
 		),
-		'chosen' => array(
+		'chosen'                         => array(
 			'no_results_msg'  => __( 'No results match {search_term}', 'give' ),
 			'ajax_search_msg' => __( 'Searching results for match {search_term}', 'give' ),
 		),
-		'db_update_confirmation_msg' => __( 'The following process will make updates to your site\'s database. Please create a database backup before proceeding with updates.', 'give' ),
-        'error_message' => __( 'Something went wrong kindly try again!','give' ),
-        'give_donation_import' => 'give_donation_import',
-		'setting_not_save_message' => __( 'Changes you made may not be saved.','give' ),
+		'db_update_confirmation_msg'     => __( 'The following process will make updates to your site\'s database. Please create a database backup before proceeding with updates.', 'give' ),
+		'error_message'                  => __( 'Something went wrong kindly try again!', 'give' ),
+		'give_donation_import'           => 'give_donation_import',
 	) );
 
 	if ( function_exists( 'wp_enqueue_media' ) && version_compare( get_bloginfo( 'version' ), '3.5', '>=' ) ) {
@@ -418,28 +422,73 @@ function give_admin_icon() {
 add_action( 'admin_head', 'give_admin_icon' );
 
 /**
- * Load Google ReCaptcha JS on Head.
+ * Load Google reCaptcha script before </head> tag.
  *
  * @since 1.8.14
  */
 function give_load_recaptcha_script() {
 	// reCAPTCHA.
-	$recaptcha_key    = give_get_option( 'recaptcha_key' );
-	$recaptcha_secret = give_get_option( 'recaptcha_secret' );
-	$enable_recaptcha = ( ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ) ? true : false;
+	$recaptcha_data   = give_recaptcha_data();
+	$enable_recaptcha = $recaptcha_data['enable_recaptcha'];
 
+	// Check if reCaptcha enabled.
 	if ( $enable_recaptcha ):
 		?>
 		<script src="https://www.google.com/recaptcha/api.js?onload=give_load_recaptcha&render=explicit" async defer></script>
-		<script type="text/javascript">
-					var give_load_recaptcha = function() {
-						jQuery('.g-recaptcha').each(function(index, el) {
-							grecaptcha.render(el, {'sitekey' : '<?php echo $recaptcha_key; ?>'});
-						});
-					};
-		</script>
 		<?php
 	endif;
 }
 
 add_action( 'wp_head', 'give_load_recaptcha_script' );
+
+/**
+ * Render Google reCaptcha on specific element.
+ *
+ * For work multiple reCaptcha on the same page, ID element should be unique.
+ *
+ * @since 1.8.14
+ */
+function give_recaptcha_callback() {
+	// get Give reCAPTCHA data.
+	$recaptcha_data   = give_recaptcha_data();
+	$enable_recaptcha = $recaptcha_data['enable_recaptcha'];
+	$recaptcha_key    = $recaptcha_data['recaptcha_key'];
+
+	// Check if reCaptcha enabled.
+	if ( $enable_recaptcha ):
+		?>
+		<script type="text/javascript">
+					var give_load_recaptcha = function() {
+						jQuery( '.g-recaptcha' ).each( function( index, el ) {
+							var recaptcha_id = 'give-recaptcha-' + index;
+
+							jQuery( this ).attr( 'id', recaptcha_id );
+							grecaptcha.render( recaptcha_id, { 'sitekey': '<?php echo $recaptcha_key; ?>' } );
+						} );
+					};
+
+		</script>
+		<?php
+	endif;
+}
+
+add_action( 'wp_footer', 'give_recaptcha_callback' );
+
+/**
+ * Build reCAPTCHA data array.
+ *
+ * @return array array of reCAPTCHA data.
+ */
+function give_recaptcha_data() {
+	// get Give reCAPTCHA data.
+	$recaptcha_key    = give_get_option( 'recaptcha_key' );
+	$recaptcha_secret = give_get_option( 'recaptcha_secret' );
+	$enable_recaptcha = ( ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ) ? true : false;
+
+	// Build reCAPTCHA array.
+	return array(
+		'recaptcha_key'    => $recaptcha_key,
+		'recaptcha_secret' => $recaptcha_secret,
+		'enable_recaptcha' => $enable_recaptcha,
+	);
+}
