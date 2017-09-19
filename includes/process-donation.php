@@ -575,6 +575,9 @@ function give_donation_form_validate_logged_in_user() {
  * @return      array
  */
 function give_donation_form_validate_new_user() {
+
+	$auto_generated_password = wp_generate_password();
+
 	// Default user data.
 	$default_user_data = array(
 		'give-form-id'           => '',
@@ -583,17 +586,14 @@ function give_donation_form_validate_new_user() {
 		'user_last'              => '',
 		'give_user_login'        => false,
 		'give_email'             => false,
-		'give_user_pass'         => false,
-		'give_user_pass_confirm' => false,
+		'give_user_pass'         => $auto_generated_password,
+		'give_user_pass_confirm' => $auto_generated_password,
 	);
 
 	// Get user data.
 	$user_data                   = wp_parse_args( array_map( 'trim', give_clean( $_POST ) ), $default_user_data );
 	$registering_new_user        = false;
 	$form_id                     = absint( $user_data['give-form-id'] );
-
-	// Generate Password.
-	$user_data['give_user_pass'] = $user_data['give_user_pass_confirm'] = wp_generate_password();
 
 	// Start an empty array to collect valid user data.
 	$valid_user_data = array(
@@ -605,6 +605,9 @@ function give_donation_form_validate_new_user() {
 
 		// Get last name.
 		'user_last'  => $user_data['give_last'],
+
+		// Get Password.
+		'user_pass'  => $user_data['give_user_pass'],
 	);
 
 	// Loop through required fields and show error messages.
