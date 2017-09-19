@@ -124,7 +124,7 @@ function give_edit_donor( $args ) {
 			'type'        => 'error',
 			'description' => sprintf(
 				'<strong>%1$s</strong> %2$s',
-				__('ERROR:', 'give' ),
+				__('ERROR', 'give' ),
 				__( 'Please enter your first name.', 'give' )
 			),
 			'show'        => true,
