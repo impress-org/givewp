@@ -100,8 +100,6 @@ if ( $show_form ) {
 						});
 					})(jQuery);
 				</script>
-
-				<script src='https://www.google.com/recaptcha/api.js'></script>
 				<div class="g-recaptcha" data-sitekey="<?php echo $recaptcha_key; ?>"></div>
 				<input type="hidden" name="give_ip" class="give_ip" value=""/>
 			<?php } ?>
