@@ -100,6 +100,51 @@ $give_receipt_args['donation_receipt']['payment_method'] = array(
  */
 $give_receipt_args['donation_receipt'] = apply_filters( 'give_donation_receipt_args', $give_receipt_args['donation_receipt'], $donation_id, $form_id );
 
+// When the donation were made through offline donation, We won't show receipt and payment status though.
+if ( 'offline' === give_get_payment_gateway( $payment->ID ) && 'pending' === $status ) {
+
+	/**
+	 * Before the offline donation receipt content starts.
+	 *
+	 * @since 1.8.14
+	 *
+	 * @param Give_Payment $payment           Donation payment object.
+	 * @param array        $give_receipt_args Receipt Arguments.
+	 */
+	do_action( 'give_receipt_before_offline_payment', $payment, $give_receipt_args );
+	?>
+	<h2><?php echo apply_filters( 'give_receipt_offline_payment_heading', __( 'Your Donation is Almost Complete!', 'give' ) ); ?></h2>
+	<div id="give_donation_receipt" class="<?php echo esc_attr( apply_filters( 'give_receipt_offline_payment_classes', 'give_receipt_offline_payment' ) ); ?>">
+		<?php
+		// Instruction for offline donation.
+		$offline_instruction = give_get_offline_payment_instruction( $form_id, true );
+
+		/**
+		 * Instruction for the offline donation.
+		 *
+		 * @since 1.8.14
+		 *
+		 * @param string       $offline_instruction Offline instruction content.
+		 * @param Give_Payment $payment             Payment object.
+		 * @param integer      $form_id             Donation form id.
+		 */
+		echo apply_filters( 'give_receipt_offline_payment_instruction', $offline_instruction, $payment, $form_id );
+		?>
+	</div>
+	<?php
+	/**
+	 * After the offline donation content ends.
+	 *
+	 * @since 1.8.14
+	 *
+	 * @param Give_Payment $payment           Donation payment object.
+	 * @param array        $give_receipt_args Receipt Arguments.
+	 */
+	do_action( 'give_receipt_after_offline_payment', $payment, $give_receipt_args );
+
+	return;
+}
+
 // Show payment status notice based on shortcode attribute.
 if ( filter_var( $give_receipt_args['status_notice'], FILTER_VALIDATE_BOOLEAN ) ) {
 	$notice_message = '';
