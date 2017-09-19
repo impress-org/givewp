@@ -627,7 +627,7 @@ function give_import_donation_insert_payment( $payment_id, $payment_data ) {
 /**
  * Add author id in in donation post
  *
- * @since 8.1.13
+ * @since 1.8.13
  */
 function give_donation_import_give_insert_payment_args( $args, $payment_data ) {
 	if ( ! empty( $payment_data['user_info']['id'] ) ) {
