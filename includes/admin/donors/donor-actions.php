@@ -85,7 +85,7 @@ function give_edit_donor( $args ) {
 	$address = array();
 	if ( intval( $donor_info['user_id'] ) > 0 ) {
 
-		$current_address = get_user_meta( $donor_info['user_id'], '_give_user_address', true );
+		$current_address = (array) get_user_meta( $donor_info['user_id'], '_give_user_address', true );
 
 		if ( false === $current_address ) {
 			$address['line1']   = isset( $donor_info['line1'] ) ? $donor_info['line1'] : '';
