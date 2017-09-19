@@ -1122,9 +1122,22 @@ function give_get_register_fields( $form_id ) {
 
 			<div id="give-create-account-wrap-<?php echo $form_id; ?>" class="form-row form-row-first form-row-responsive">
 				<label for="give-create-account-<?php echo $form_id; ?>">
-					<input type="checkbox"  name="give_create_account" id="give-create-account-<?php echo $form_id; ?>" class="give-input" />
-					<?php _e( 'Create an account', 'give' ); ?>
-					<?php echo Give()->tooltips->render_help( __( 'Create an account for donor to manage donations from one dashboard.', 'give' ) ); ?>
+					<?php
+					// Add attributes to checkbox, if Guest Checkout is disabled.
+					$is_guest_checkout = give_get_meta( $form_id,'_give_logged_in_only', true );
+					if( ! give_is_setting_enabled( $is_guest_checkout ) ) {
+						echo Give()->tooltips->render(
+							array(
+								'tag_content' => '<input type="checkbox" name="give_create_account" id="give-create-account-" class="give-input" checked disabled />',
+								'label' => __( 'Registration is compulsory for this donation form as Guest Checkout is disabled.', 'give' ),
+							) );
+					} else {
+						?>
+						<input type="checkbox" name="give_create_account" id="give-create-account-<?php echo $form_id; ?>" class="give-input" />
+						<?php
+					}
+					_e( 'Create an account', 'give' );
+					echo Give()->tooltips->render_help( __( 'Create an account for donor to manage donations from one dashboard.', 'give' ) ); ?>
 				</label>
 			</div>
 
