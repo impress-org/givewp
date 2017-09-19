@@ -343,7 +343,7 @@ function give_donation_form_validate_fields() {
 function give_is_spam_donation() {
 	$spam = false;
 
-	$user_agent = (string) isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : "";
+	$user_agent = (string) isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : '';
 
 	if ( strlen( $user_agent ) < 2 ) {
 		$spam = true;
