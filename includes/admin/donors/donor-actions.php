@@ -123,8 +123,8 @@ function give_edit_donor( $args ) {
 			'id'          => 'empty_donor_first_name',
 			'type'        => 'error',
 			'description' => sprintf(
-				'<strong>%1$s</strong> %2$s',
-				__('ERROR:', 'give' ),
+				'<strong>%1$s:</strong> %2$s',
+				__( 'ERROR', 'give' ),
 				__( 'Please enter your first name.', 'give' )
 			),
 			'show'        => true,
