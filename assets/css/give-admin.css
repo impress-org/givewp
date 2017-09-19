@@ -2198,6 +2198,9 @@ Responsiveness
 #give-donation-overview .give-select-chosen {
   width: 196px; }
 
+#give-edit-order-form .row {
+  margin-top: 10px; }
+
 #give-donation-overview ul,
 #give-order-address-country-wrap select,
 #give-donor-details .order-data-address input,
@@ -2260,20 +2263,21 @@ input.give-price-field {
   margin: 0 0 10px; }
 
 #give-billing-details label {
-  display: block; }
+  display: block;
+  margin-bottom: 5px; }
 
 #give-billing-details .column-container {
   padding: 5px 0 10px; }
 
 #give-billing-details input[type="text"] {
-  width: 95%; }
+  width: 98%; }
 
 #give-billing-details .chosen-container {
   width: 98% !important; }
 
 @media screen and (min-width: 1200px) {
   #give-edit-order-form .column {
-    width: 33%; }
+    width: 49%; }
   #give-donation-overview.columns-4 li.actions {
     width: 25%;
     margin-top: 0;
