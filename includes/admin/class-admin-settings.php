@@ -91,6 +91,16 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				die();
 			}
 
+			// Show error message if Akismet not configured and Admin try to save 'enabled' option.
+			if ( isset( $_POST['akismet_spam_protection'] )
+			     && 'enabled' === $_POST['akismet_spam_protection']
+			     && ! give_check_akismet_key()
+			) {
+				self::add_error( 'give-akismet-protection', __( 'Please properly configure Akismet to enable SPAM protection.', 'give' ) );
+
+				return;
+			}
+
 			/**
 			 * Trigger Action.
 			 *
