@@ -185,6 +185,13 @@ class Give_DB_Donors extends Give_DB {
 
 			global $wpdb;
 
+			/**
+			 * Deleting the donor meta.
+			 *
+			 * @since 1.8.14
+			 */
+			Give()->donor_meta->delete_all_meta( $donor->id );
+
 			return $wpdb->delete( $this->table_name, array( 'id' => $donor->id ), array( '%d' ) );
 
 		} else {
@@ -211,8 +218,18 @@ class Give_DB_Donors extends Give_DB {
 		if ( empty( $user_id ) ) {
 			return false;
 		}
-		global $wpdb;
 
+		/**
+		 * Deleting the donor meta.
+		 *
+		 * @since 1.8.14
+		 */
+		$donor = new Give_Donor( $user_id, true );
+		if( ! empty( $donor->id ) ) {
+			Give()->donor_meta->delete_all_meta( $donor->id );
+		}
+
+		global $wpdb;
 		return $wpdb->delete( $this->table_name, array( 'user_id' => $user_id ), array( '%d' ) );
 	}
 
@@ -340,7 +357,7 @@ class Give_DB_Donors extends Give_DB {
 	/**
 	 * Updates the email address of a donor record when the email on a user is updated
 	 *
-	 * @param  int          $user_id       User ID.
+	 * @param  int $user_id User ID.
 	 * @param  WP_User|bool $old_user_data User data.
 	 *
 	 * @since  1.4.3

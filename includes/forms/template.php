@@ -998,7 +998,22 @@ function give_default_cc_address_fields( $form_id ) {
 
 
 		<?php
-		$selected_state = give_get_state();
+		$selected_state = '';
+
+		if ( $selected_country === give_get_country() ) {
+			// Get defalut selected state by admin.
+			$selected_state = give_get_state();
+		}
+
+		// Get the last payment made by user states.
+		if ( ! empty( $give_user_info['card_state'] ) && '*' !== $give_user_info['card_state'] ) {
+			$selected_state = $give_user_info['card_state'];
+		}
+
+		// Get the country code
+		if ( ! empty( $give_user_info['billing_country'] ) && '*' !== $give_user_info['billing_country'] ) {
+			$selected_country = $give_user_info['billing_country'];
+		}
 
 		$label        = __( 'State', 'give' );
 		$states_label = give_get_states_label();
@@ -1011,10 +1026,6 @@ function give_default_cc_address_fields( $form_id ) {
 
 		// Get the country list that do not have any states init.
 		$no_states_country = give_no_states_country_list();
-
-		if ( ! empty( $give_user_info['card_state'] ) ) {
-			$selected_state = $give_user_info['card_state'];
-		}
 
 		// Get the country list that does not require states.
 		$states_not_required_country_list = give_states_not_required_country_list();

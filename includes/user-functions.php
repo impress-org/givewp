@@ -362,7 +362,7 @@ function give_validate_user_email( $email, $registering_new_user = false ) {
 	} elseif ( $registering_new_user ) {
 
 		// If donor email is not primary
-		if( ! email_exists( $email ) && give_donor_email_exists($email) && give_is_additional_email( $email ) ) {
+		if ( ! email_exists( $email ) && give_donor_email_exists( $email ) && give_is_additional_email( $email ) ) {
 			// Check if email exists.
 			give_set_error( 'email_used', __( 'The email address provided is already active for another user.', 'give' ) );
 			$valid = false;

@@ -35,9 +35,9 @@ function give_get_email_templates() {
  *
  * @since 1.0
  *
- * @param string $message Message with the template tags.
+ * @param string $message      Message with the template tags.
  * @param array  $payment_data Payment Data.
- * @param int    $payment_id Payment ID.
+ * @param int    $payment_id   Payment ID.
  * @param bool   $admin_notice Whether or not this is a notification email.
  *
  * @return string $message Fully formatted message
@@ -68,7 +68,7 @@ function give_email_preview_template_tags( $message ) {
 	$payment_id = rand( 1, 100 );
 
 	$receipt_link_url = esc_url( add_query_arg( array( 'payment_key' => $receipt_id, 'give_action' => 'view_receipt' ), home_url() ) );
-	$receipt_link = sprintf(
+	$receipt_link     = sprintf(
 		'<a href="%1$s">%2$s</a>',
 		$receipt_link_url,
 		esc_html__( 'View the receipt in your browser &raquo;', 'give' )
@@ -97,6 +97,7 @@ function give_email_preview_template_tags( $message ) {
 
 	return wpautop( apply_filters( 'give_email_preview_template_tags', $message ) );
 }
+
 
 
 /**
@@ -238,7 +239,7 @@ function give_get_preview_email_header() {
 
 	//Get payments.
 	$payments = new Give_Payments_Query( array(
-		'number' => 100
+		'number' => 100,
 	) );
 	$payments = $payments->get_payments();
 	$options  = array();
@@ -296,7 +297,7 @@ function give_get_preview_email_header() {
 		'chosen'           => false,
 		'select_atts'      => 'onchange="change_preview()"',
 		'show_option_all'  => false,
-		'show_option_none' => false
+		'show_option_none' => false,
 	) );
 
 	//Closing tag

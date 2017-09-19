@@ -312,6 +312,8 @@ function give_get_default_settings() {
 		'currency_position'                           => 'before',
 		'session_lifetime'                            => '604800',
 		'email_access'                                => 'disabled',
+		'thousands_separator'                         => ',',
+		'decimal_separator'                           => '.',
 		'number_decimals'                             => 2,
 
 		// Display options.

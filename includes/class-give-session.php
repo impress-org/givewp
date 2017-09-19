@@ -177,9 +177,42 @@ class Give_Session {
 	 * @return string|array      Session variable.
 	 */
 	public function get( $key ) {
-		$key = sanitize_key( $key );
+		$key    = sanitize_key( $key );
+		$return = false;
 
-		return isset( $this->session[ $key ] ) ? maybe_unserialize( $this->session[ $key ] ) : false;
+		if ( isset( $this->session[ $key ] ) && ! empty( $this->session[ $key ] ) ) {
+
+			preg_match( '/[oO]\s*:\s*\d+\s*:\s*"\s*(?!(?i)(stdClass))/', $this->session[ $key ], $matches );
+			if ( ! empty( $matches ) ) {
+				$this->set( $key, null );
+
+				return false;
+			}
+
+			if ( is_numeric( $this->session[ $key ] ) ) {
+				$return = $this->session[ $key ];
+			} else {
+
+				$maybe_json = json_decode( $this->session[ $key ] );
+
+				// Since json_last_error is PHP 5.3+, we have to rely on a `null` value for failing to parse JSON.
+				if ( is_null( $maybe_json ) ) {
+					$is_serialized = is_serialized( $this->session[ $key ] );
+					if ( $is_serialized ) {
+						$value = @unserialize( $this->session[ $key ] );
+						$this->set( $key, (array) $value );
+						$return = $value;
+					} else {
+						$return = $this->session[ $key ];
+					}
+				} else {
+					$return = json_decode( $this->session[ $key ], true );
+				}
+
+			}
+		}
+
+		return $return;
 
 	}
 
@@ -201,9 +234,9 @@ class Give_Session {
 		$key = sanitize_key( $key );
 
 		if ( is_array( $value ) ) {
-			$this->session[ $key ] = serialize( $value );
+			$this->session[ $key ] = wp_json_encode( $value );
 		} else {
-			$this->session[ $key ] = $value;
+			$this->session[ $key ] = esc_attr( $value );
 		}
 
 		if ( $this->use_php_sessions ) {
@@ -216,7 +249,8 @@ class Give_Session {
 	/**
 	 * Set Session Cookies
 	 *
-	 * Cookies are used to increase the session lifetime using the give setting. This is helpful for when a user closes their browser after making a donation and comes back to the site.
+	 * Cookies are used to increase the session lifetime using the give setting. This is helpful for when a user closes their browser after making a donation and comes back to the
+	 * site.
 	 *
 	 * @since  1.4
 	 * @access public

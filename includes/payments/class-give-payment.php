@@ -23,6 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @property bool       $new
  * @property string     $number
  * @property string     $mode
+ * @property string     $import
  * @property string     $key
  * @property string     $form_title
  * @property string|int $form_id
@@ -99,6 +100,16 @@ final class Give_Payment {
 	 * @var    string
 	 */
 	protected $mode = 'live';
+
+	/**
+	 * Is donations is Import or not.
+	 *
+	 * @since  1.8.13
+	 * @access protected
+	 *
+	 * @var    bool
+	 */
+	protected $import = false;
 
 	/**
 	 * The unique donation payment key.
@@ -231,6 +242,16 @@ final class Give_Payment {
 	 * @var    integer
 	 */
 	protected $customer_id = null;
+
+	/**
+	 * The Donor ID (if logged in) that made the payment
+	 *
+	 * @since  1.8.13
+	 * @access protected
+	 *
+	 * @var    integer
+	 */
+	protected $donor_id = 0;
 
 	/**
 	 * The User ID (if logged in) that made the payment
@@ -507,6 +528,7 @@ final class Give_Payment {
 		$this->status         = $payment->post_status;
 		$this->post_status    = $this->status;
 		$this->mode           = $this->setup_mode();
+		$this->import         = $this->setup_import();
 		$this->parent_payment = $payment->post_parent;
 
 		$all_payment_statuses  = give_get_payment_statuses();
@@ -615,6 +637,7 @@ final class Give_Payment {
 			'purchase_key' => $this->key,
 			'form_title'   => $this->form_title,
 			'form_id'      => $this->form_id,
+			'donor_id'     => $this->donor_id,
 			'price_id'     => $this->price_id,
 			'currency'     => $this->currency,
 			'user_info'    => array(
@@ -645,6 +668,13 @@ final class Give_Payment {
 			$this->_ID = $payment_id;
 
 			$donor = new stdClass;
+
+			/**
+			 * Filter donor class after the donation is completed and before customer table is updated.
+			 *
+			 * @since 1.8.13
+			 */
+			$donor = apply_filters( 'give_update_donor_information', $donor, $payment_id, $payment_data, $args );
 
 			if ( did_action( 'give_pre_process_donation' ) && is_user_logged_in() ) {
 				$donor = new Give_Donor( get_current_user_id(), true );
@@ -742,15 +772,9 @@ final class Give_Payment {
 
 									if ( 'publish' === $this->status || 'complete' === $this->status ) {
 
-										// Add sales logs.
+										// Add donation to logs.
 										$log_date = date_i18n( 'Y-m-d G:i:s', current_time( 'timestamp' ) );
-
-										$y = 0;
-										while ( $y < $quantity ) {
-
-											give_record_donation_in_log( $item['id'], $this->ID, $price_id, $log_date );
-											$y ++;
-										}
+										give_record_donation_in_log( $item['id'], $this->ID, $price_id, $log_date );
 
 										$form = new Give_Donate_Form( $item['id'] );
 										$form->increase_sales( $quantity );
@@ -959,13 +983,13 @@ final class Give_Payment {
 
 		// Allow overriding the price.
 		if ( false !== $args['price'] ) {
-			$item_price = $args['price'];
+			$donation_amount = $args['price'];
 		} else {
 
 			// Deal with variable pricing.
 			if ( give_has_variable_prices( $donation->ID ) ) {
-				$prices     = maybe_unserialize( give_get_meta( $form_id, '_give_donation_levels', true ) );
-				$item_price = '';
+				$prices          = give_get_meta( $form_id, '_give_donation_levels', true );
+				$donation_amount = '';
 				// Loop through prices.
 				foreach ( $prices as $price ) {
 					// Find a match between price_id and level_id.
@@ -973,23 +997,23 @@ final class Give_Payment {
 					if ( ( isset( $args['price_id'] ) && isset( $price['_give_id']['level_id'] ) )
 					     && $args['price_id'] == $price['_give_id']['level_id']
 					) {
-						$item_price = $price['_give_amount'];
+						$donation_amount = $price['_give_amount'];
 					}
 				}
 				// Fallback to the lowest price point.
-				if ( $item_price == '' ) {
-					$item_price       = give_get_lowest_price_option( $donation->ID );
+				if ( $donation_amount == '' ) {
+					$donation_amount  = give_get_lowest_price_option( $donation->ID );
 					$args['price_id'] = give_get_lowest_price_id( $donation->ID );
 				}
 			} else {
 				// Simple form price.
-				$item_price = give_get_form_price( $donation->ID );
+				$donation_amount = give_get_form_price( $donation->ID );
 			}
 		}
 
 		// Sanitizing the price here so we don't have a dozen calls later.
-		$item_price = give_maybe_sanitize_amount( $item_price );
-		$total      = round( $item_price, give_currency_decimal_filter() );
+		$donation_amount = give_maybe_sanitize_amount( $donation_amount );
+		$total           = round( $donation_amount, give_currency_decimal_filter() );
 
 		// Add Options.
 		$default_options = array();
@@ -1258,6 +1282,13 @@ final class Give_Payment {
 		 */
 		$meta = apply_filters( "give_get_payment_meta_{$meta_key}", $meta, $this->ID );
 
+		// Security check.
+		if ( is_serialized( $meta ) ) {
+			preg_match( '/[oO]\s*:\s*\d+\s*:\s*"\s*(?!(?i)(stdClass))/', $meta, $matches );
+			if ( ! empty( $matches ) ) {
+				$meta = array();
+			}
+		}
 
 		/**
 		 * Filter the all meta keys.
@@ -1560,6 +1591,18 @@ final class Give_Payment {
 	}
 
 	/**
+	 * Setup the payment import data
+	 *
+	 * @since  1.8.13
+	 * @access private
+	 *
+	 * @return bool The payment import
+	 */
+	private function setup_import() {
+		return (bool) $this->get_meta( '_give_payment_import' );
+	}
+
+	/**
 	 * Setup the payment total
 	 *
 	 * @since  1.5
@@ -1721,7 +1764,15 @@ final class Give_Payment {
 			'last_name'  => $this->last_name,
 		);
 
-		$user_info = isset( $this->payment_meta['user_info'] ) ? maybe_unserialize( $this->payment_meta['user_info'] ) : array();
+		$user_info = isset( $this->payment_meta['user_info'] ) ? $this->payment_meta['user_info'] : array();
+
+		if ( is_serialized( $user_info ) ) {
+			preg_match( '/[oO]\s*:\s*\d+\s*:\s*"\s*(?!(?i)(stdClass))/', $user_info, $matches );
+			if ( ! empty( $matches ) ) {
+				$user_info = array();
+			}
+		}
+
 		$user_info = wp_parse_args( $user_info, $defaults );
 
 		if ( empty( $user_info ) ) {

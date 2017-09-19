@@ -73,7 +73,7 @@ function give_donors_list() {
 	$donors_table->prepare_items();
 	?>
 	<div class="wrap">
-		<h1><?php echo get_admin_page_title(); ?></h1>
+		<h1 class="wp-heading-inline"><?php echo get_admin_page_title(); ?></h1>
 		<?php
 		/**
 		 * Fires in donors screen, above the table.
@@ -148,7 +148,15 @@ function give_render_donor_view( $view, $callbacks ) {
 			</div>
 		<?php endif; ?>
 
-		<h1 class="screen-reader-text"><?php _e( 'Donor', 'give' ); ?></h1>
+		<h1 class="wp-heading-inline">
+			<?php
+			printf(
+			/* translators: %s: donor number */
+				esc_html__( 'Donor %s', 'give' ),
+				$donor_id
+			);
+			?>
+		</h1>
 
 		<?php if ( $donor && $render ) : ?>
 
@@ -288,17 +296,17 @@ function give_donor_view( $donor ) {
 									<?php } ?>
 									<?php if ( current_user_can( $donor_edit_role ) && intval( $donor->user_id ) > 0 ) { ?>
 										<span class="disconnect-user">
-											-
-											<a id="disconnect-donor" href="#disconnect" aria-label="<?php _e( 'Disconnects the current user ID from this donor record.', 'give' ); ?>">
-												<?php _e( 'Disconnect User', 'give' ); ?>
+ 											-
+ 											<a id="disconnect-donor" href="#disconnect" aria-label="<?php _e( 'Disconnects the current user ID from this donor record.', 'give' ); ?>">
+ 												<?php _e( 'Disconnect User', 'give' ); ?>
 											</a>
-										</span>
-										<span class="view-user-profile">
-											|
-											<a id="view-user-profile" href="<?php echo 'user-edit.php?user_id=' . $donor->user_id; ?>" aria-label="<?php _e( 'View User Profile of current user ID.', 'give' ); ?>">
-												<?php _e( 'View User Profile', 'give' ); ?>
+ 										</span>
+ 										<span class="view-user-profile">
+ 											|
+ 											<a id="view-user-profile" href="<?php echo 'user-edit.php?user_id=' . $donor->user_id; ?>" aria-label="<?php _e( 'View User Profile of current user ID.', 'give' ); ?>">
+ 												<?php _e( 'View User Profile', 'give' ); ?>
 											</a>
-										</span>
+ 										</span>
 									<?php } ?>
 								</span>
 							</td>
@@ -562,7 +570,7 @@ function give_donor_view( $donor ) {
 									esc_attr__( 'View Donation %s.', 'give' ),
 									$payment->ID
 								),
-								esc_html__( 'View Donation', 'give' )
+								__( 'View Donation', 'give' )
 							);
 							?>
 
@@ -617,7 +625,7 @@ function give_donor_view( $donor ) {
 									esc_attr__( 'View Form %s.', 'give' ),
 									$donation->post_title
 								),
-								esc_html__( 'View Form', 'give' )
+								__( 'View Form', 'give' )
 							);
 							?>
 						</td>
