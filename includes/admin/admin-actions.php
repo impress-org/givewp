@@ -573,8 +573,8 @@ function give_validate_user_profile( $errors, $update, $user ) {
 				$errors->add(
 					'empty_first_name',
 					sprintf(
-						'<strong>%1$s</strong> %2$s',
-						__( 'ERROR:', 'give' ),
+						'<strong>%1$s:</strong> %2$s',
+						__( 'ERROR', 'give' ),
 						__( 'Please enter your first name.', 'give' )
 					)
 				);
