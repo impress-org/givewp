@@ -118,39 +118,90 @@ if ( is_user_logged_in() ):
 			<legend id="give_profile_billing_address_label"><?php esc_html_e( 'Change your Billing Address', 'give' ); ?></legend>
 
 			<div id="give_profile_billing_address_wrap">
+				<?php
+				// Get selected country from address.
+				$selected_country = ( ! empty( $address['country'] ) ? $address['country'] : '' );
 
-				<p id="give-card-address-wrap" class="form-row form-row-first form-row-responsive">
-					<label for="give_address_line1"><?php esc_html_e( 'Address 1', 'give' ); ?></label>
-					<input name="give_address_line1" id="give_address_line1" class="text give-input" type="text" value="<?php echo esc_attr( $address['line1'] ); ?>"/>
-				</p>
+				$selected_state = '';
+				if ( $selected_country === give_get_country() ) {
+					// Get defalut selected state by admin.
+					$selected_state = give_get_state();
+				}
 
-				<p id="give-card-address-2-wrap" class="form-row form-row-last form-row-responsive">
-					<label for="give_address_line2"><?php esc_html_e( 'Address 2', 'give' ); ?></label>
-					<input name="give_address_line2" id="give_address_line2" class="text give-input" type="text" value="<?php echo esc_attr( $address['line2'] ); ?>"/>
-				</p>
+				// Get selected state from address.
+				$selected_state = ! empty( $address['state'] ) ? $address['state'] : $selected_state;
 
-				<p id="give-card-city-wrap" class="form-row form-row-first form-row-responsive">
-					<label for="give_address_city"><?php esc_html_e( 'City', 'give' ); ?></label>
-					<input name="give_address_city" id="give_address_city" class="text give-input" type="text" value="<?php echo esc_attr( $address['city'] ); ?>"/>
-				</p>
+				$label        = __( 'State', 'give' );
+				$states_label = give_get_states_label();
+				// Check if $country code exists in the array key for states label.
+				if ( array_key_exists( $selected_country, $states_label ) ) {
+					$label = $states_label[ $selected_country ];
+				}
 
-				<p id="give-card-zip-wrap" class="form-row form-row-last form-row-responsive">
-					<label for="give_address_zip"><?php esc_html_e( 'Zip / Postal Code', 'give' ); ?></label>
-					<input name="give_address_zip" id="give_address_zip" class="text give-input" type="text" value="<?php echo esc_attr( $address['zip'] ); ?>"/>
-				</p>
+				$states = give_get_states( $selected_country );
 
-				<p id="give-card-country-wrap" class="form-row form-row-first form-row-responsive">
+				// Get the country list that do not have any states init.
+				$no_states_country = give_no_states_country_list();
+
+				// Get the country list that does not require states.
+				$states_not_required_country_list = give_states_not_required_country_list();
+				?>
+
+				<p id="give-card-country-wrap" class="form-row form-row-wide">
 					<label for="give_address_country"><?php esc_html_e( 'Country', 'give' ); ?></label>
 					<select name="give_address_country" id="give_address_country" class="select give-select">
 						<?php foreach ( give_get_country_list() as $key => $country ) : ?>
-							<option value="<?php echo $key; ?>"<?php selected( $address['country'], $key ); ?>><?php echo esc_html( $country ); ?></option>
+							<option value="<?php echo $key; ?>"<?php selected( $selected_country, $key ); ?>><?php echo esc_html( $country ); ?></option>
 						<?php endforeach; ?>
 					</select>
 				</p>
 
-				<p id="give-card-state-wrap" class="form-row form-row-last form-row-responsive">
+				<p id="give-card-address-wrap" class="form-row form-row-wide">
+					<label for="give_address_line1"><?php esc_html_e( 'Address 1', 'give' ); ?></label>
+					<input name="give_address_line1" id="give_address_line1" class="text give-input" type="text"
+					       value="<?php echo esc_attr( $address['line1'] ); ?>"/>
+				</p>
+
+				<p id="give-card-address-2-wrap" class="form-row form-row-wide">
+					<label for="give_address_line2"><?php esc_html_e( 'Address 2', 'give' ); ?></label>
+					<input name="give_address_line2" id="give_address_line2" class="text give-input" type="text"
+					       value="<?php echo esc_attr( $address['line2'] ); ?>"/>
+				</p>
+
+
+				<p id="give-card-state-wrap"
+				   class="form-row form-row-wide <?php echo ( ! empty( $selected_country ) && array_key_exists( $selected_country, $no_states_country ) ) ? 'give-hidden' : ''; ?>">
 					<label for="give_address_state"><?php esc_html_e( 'State / Province / County', 'give' ); ?></label>
-					<input name="give_address_state" id="give_address_state" class="text give-input" type="text" value="<?php echo esc_attr( $address['state'] ); ?>"/>
+					<?php
+					if ( ! empty( $states ) ) : ?>
+						<select
+								name="give_address_state"
+								id="give_address_state"
+								class="give_address_state"
+						<?php
+						foreach ( $states as $state_code => $state ) {
+							echo '<option value="' . $state_code . '"' . selected( $state_code, $selected_state, false ) . '>' . $state . '</option>';
+						}
+						?>
+						</select>
+					<?php else : ?>
+						<input type="text" size="6" name="give_address_state" id="give_address_state"
+						       class="give_address_state give-input"
+						       placeholder="<?php echo $label; ?>" value="<?php echo $selected_state; ?>"/>
+					<?php endif;
+					?>
+				</p>
+
+				<p id="give-card-city-wrap" class="form-row form-row-first form-row-responsive">
+					<label for="give_address_city"><?php esc_html_e( 'City', 'give' ); ?></label>
+					<input name="give_address_city" id="give_address_city" class="text give-input" type="text"
+					       value="<?php echo esc_attr( $address['city'] ); ?>"/>
+				</p>
+
+				<p id="give-card-zip-wrap" class="form-row form-row-last form-row-responsive">
+					<label for="give_address_zip"><?php esc_html_e( 'Zip / Postal Code', 'give' ); ?></label>
+					<input name="give_address_zip" id="give_address_zip" class="text give-input" type="text"
+					       value="<?php echo esc_attr( $address['zip'] ); ?>"/>
 				</p>
 
 				<?php

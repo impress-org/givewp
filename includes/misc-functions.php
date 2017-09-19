@@ -380,6 +380,57 @@ function give_get_purchase_session() {
 }
 
 /**
+ * Generate Item Title for Payment Gateway.
+ *
+ * @param array $payment_data Payment Data.
+ *
+ * @since 1.8.14
+ *
+ * @return string
+ */
+function give_payment_gateway_item_title( $payment_data ) {
+	$form_id          = intval( $payment_data['post_data']['give-form-id'] );
+	$item_name        = $payment_data['post_data']['give-form-title'];
+	$is_custom_amount = give_is_setting_enabled( give_get_meta( $form_id, '_give_custom_amount', true ) );
+
+	// Verify has variable prices.
+	if ( give_has_variable_prices( $form_id ) && isset( $payment_data['post_data']['give-price-id'] ) ) {
+
+		$item_price_level_text = give_get_price_option_name( $form_id, $payment_data['post_data']['give-price-id'] );
+		$price_level_amount    = give_get_price_option_amount( $form_id, $payment_data['post_data']['give-price-id'] );
+
+		// Donation given doesn't match selected level (must be a custom amount).
+		if ( $price_level_amount !== give_maybe_sanitize_amount( $payment_data['post_data']['give-amount'] ) ) {
+			$custom_amount_text = give_get_meta( $form_id, '_give_custom_amount_text', true );
+
+			// user custom amount text if any, fallback to default if not.
+			$item_name .= ' - ' . give_check_variable( $custom_amount_text, 'empty', __( 'Custom Amount', 'give' ) );
+
+		} elseif ( ! empty( $item_price_level_text ) ) {
+			$item_name .= ' - ' . $item_price_level_text;
+		}
+	} // End if().
+	elseif ( $is_custom_amount && give_get_form_price( $form_id ) !== give_maybe_sanitize_amount( $payment_data['post_data']['give-amount'] ) ) {
+		$custom_amount_text = give_get_meta( $form_id, '_give_custom_amount_text', true );
+		// user custom amount text if any, fallback to default if not.
+		$item_name .= ' - ' . give_check_variable( $custom_amount_text, 'empty', __( 'Custom Amount', 'give' ) );
+	}
+
+	/**
+	 * Filter the Item Title of Payment Gateway.
+	 *
+	 * @param string $item_name    Item Title of Payment Gateway.
+	 * @param int    $form_id      Donation Form ID.
+	 * @param array  $payment_data Payment Data.
+	 *
+	 * @since 1.8.14
+	 *
+	 * @return string
+	 */
+	return apply_filters( 'give_payment_gateway_item_title', $item_name, $form_id, $payment_data );
+}
+
+/**
  * Get Donation Summary
  *
  * Creates a donation summary for payment gateways from the donation data before the payment is created in the database.
@@ -393,15 +444,11 @@ function give_get_purchase_session() {
  * @return string
  */
 function give_payment_gateway_donation_summary( $donation_data, $name_and_email = true, $length = 255 ) {
-
-	$summary = '';
-
 	$form_id = isset( $donation_data['post_data']['give-form-id'] ) ? $donation_data['post_data']['give-form-id'] : '';
 
 	// Form title.
-	if ( isset( $donation_data['post_data']['give-form-title'] ) ) {
-		$summary .= $donation_data['post_data']['give-form-title'];
-	}
+	$summary = ( ! empty( $donation_data['post_data']['give-form-title'] ) ? $donation_data['post_data']['give-form-title'] : ( ! empty( $form_id ) ? wp_sprintf( __( 'Donation Form ID: %d', 'give' ), $form_id ) : __( 'Untitled donation form', 'give' ) ) );
+
 	// Form multilevel if applicable.
 	if ( isset( $donation_data['post_data']['give-price-id'] ) ) {
 		$summary .= ': ' . give_get_price_option_name( $form_id, $donation_data['post_data']['give-price-id'] );
@@ -2268,4 +2315,38 @@ function give_recount_form_income_donation( $form_id = false ) {
 		give_update_meta( $form_id, '_give_form_sales', $totals['sales'] );
 		give_update_meta( $form_id, '_give_form_earnings', give_sanitize_amount_for_db( $totals['earnings'] ) );
 	}
+}
+
+/**
+ * Zero Decimal based Currency.
+ *
+ * @since 1.8.14
+ *
+ * @return bool
+ */
+function give_is_zero_based_currency() {
+	$zero_based_currency = array(
+		'PYG', // Paraguayan Guarani.
+		'GNF', // Guinean Franc.
+		'RWF', // Rwandan Franc.
+		'JPY', // Japanese Yen.
+		'BIF', // Burundian Franc.
+		'KRW', // South Korean Won.
+		'MGA', // Malagasy Ariary.
+		'XAF', // Central African Cfa Franc.
+		'XPF', // Cfp Franc.
+		'CLP', // Chilean Peso.
+		'KMF', // Comorian Franc.
+		'DJF', // Djiboutian Franc.
+		'VUV', // Vanuatu Vatu.
+		'VND', // Vietnamese Dong.
+		'XOF', // West African Cfa Franc.
+	);
+
+	// Check for Zero Based Currency.
+	if ( in_array( give_get_currency(), $zero_based_currency ) ) {
+		return true;
+	}
+
+	return false;
 }

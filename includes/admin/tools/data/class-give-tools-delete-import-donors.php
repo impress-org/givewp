@@ -384,6 +384,15 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 			$payments = $payments->get_payments();
 			if ( empty( $payments ) ) {
 				Give()->donors->delete_by_user_id( $donor_ids[ $page ] );
+
+				/**
+				 * If Checked then delete WP user.
+				 *
+				 * @since 1.8.14
+				 */
+				if ( 'on' === (string) $_REQUEST['delete-import-donors'] ) {
+					wp_delete_user( $donor_ids[ $page ] );
+				}
 			} else {
 				foreach ( $payments as $payment ) {
 					$donations[] = $payment->ID;
