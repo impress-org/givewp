@@ -1128,7 +1128,7 @@ function give_get_register_fields( $form_id ) {
 					if( ! give_is_setting_enabled( $is_guest_checkout ) ) {
 						echo Give()->tooltips->render(
 							array(
-								'tag_content' => '<input type="checkbox" name="give_create_account" id="give-create-account-" class="give-input" checked disabled />',
+								'tag_content' => '<input type="checkbox" name="give_create_account" id="give-create-account-" class="give-input" checked disabled /><input type="hidden" name="give_create_account" value="on" />',
 								'label' => __( 'Registration is compulsory for this donation form as Guest Checkout is disabled.', 'give' ),
 							) );
 					} else {
