@@ -510,7 +510,7 @@ function give_get_donor_address( $user_id = 0 ) {
 		$user_id = get_current_user_id();
 	}
 
-	$address = get_user_meta( $user_id, '_give_user_address', true );
+	$address = (array) get_user_meta( $user_id, '_give_user_address', true );
 
 	if ( ! isset( $address['line1'] ) ) {
 		$address['line1'] = '';
