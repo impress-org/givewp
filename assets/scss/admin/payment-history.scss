@@ -410,6 +410,10 @@ Responsiveness
   width: 196px;
 }
 
+#give-edit-order-form .row {
+	margin-top: 10px;
+}
+
 #give-donation-overview ul,
 #give-order-address-country-wrap select,
 #give-donor-details .order-data-address input,
@@ -499,46 +503,42 @@ input.give-price-field {
 //------------------------------------------
 //Edit Order Form
 //------------------------------------------
-
 #give-billing-details {
+	.column > div {
+		margin: 0 0 10px;
+	}
 
-  .column > div {
-	margin: 0 0 10px;
-  }
+	label {
+		display: block;
+		margin-bottom: 5px;
+	}
 
-  label {
-	display: block;
-  }
+	.column-container {
+		padding: 5px 0 10px;
+	}
 
-  .column-container {
-	padding: 5px 0 10px;
-  }
+	input[type="text"] {
+		width: 98%;
+	}
 
-  input[type="text"] {
-	width: 95%;
-  }
-
-  .chosen-container {
-	width: 98% !important;
-  }
-
+	.chosen-container {
+		width: 98% !important;
+	}
 }
 
 //------------------------------------------
 //Responsive
 //------------------------------------------
-
 @media screen and (min-width: 1200px) {
-  #give-edit-order-form .column {
-	width: 33%;
-  }
+	#give-edit-order-form .column {
+		width: 49%;
+	}
 
-  #give-donation-overview.columns-4 li.actions {
-	width: 25%;
-	margin-top: 0;
-	margin-right: 0;
-  }
-
+	#give-donation-overview.columns-4 li.actions {
+		width: 25%;
+		margin-top: 0;
+		margin-right: 0;
+	}
 }
 
 @media screen and (max-width: 1199px) {
