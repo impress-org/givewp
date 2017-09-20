@@ -67,13 +67,13 @@ $give_receipt_args['donation_receipt']['donation_status'] = array(
 $give_receipt_args['donation_receipt']['donation_id'] = array(
 	'name'    => __( 'Donation ID', 'give' ),
 	'value'   => $donation_id,
-	'display' => $give_receipt_args['payment_id'] ? true : false,
+	'display' => $give_receipt_args['payment_id'],
 );
 
 $give_receipt_args['donation_receipt']['payment_details'] = array(
 	'name'    => __( 'Payment:', 'give' ),
 	'value'   => __( 'Details:', 'give' ),
-	'display' => $give_receipt_args['payment_id'] ? false : true,
+	'display' => ( 'true' === $give_receipt_args['payment_id'] ) ? false : true,
 );
 
 $give_receipt_args['donation_receipt']['payment_key'] = array(
