@@ -2,7 +2,7 @@
 /**
  * Exports Functions
  *
- * These are functions are used for exporting data from Give
+ * These functions are used for exporting data from Give
  *
  * @package     Give
  * @subpackage  Admin/Export
