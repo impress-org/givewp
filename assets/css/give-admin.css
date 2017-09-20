@@ -852,7 +852,7 @@ ASIDE
   .no-js #give-metabox-form-data .give_options_panel {
     display: block; }
   #give-metabox-form-data .give_options_panel .give-field-wrap {
-    padding: 1em 20px 1em 162px !important;
+    padding: 1em 20px 1em 162px;
     margin: 0;
     border-bottom: 1px solid #eee; }
     #give-metabox-form-data .give_options_panel .give-field-wrap > label, #give-metabox-form-data .give_options_panel .give-field-wrap > span.give-field-label {
@@ -1016,10 +1016,20 @@ ASIDE
       #give-metabox-form-data ul.give-metabox-tabs li > a:before {
         margin-right: 0;
         font-size: 15px; }
-      #give-metabox-form-data ul.give-metabox-tabs li > a span {
+      #give-metabox-form-data ul.give-metabox-tabs li > a span.give-label {
         display: none; }
+      #give-metabox-form-data ul.give-metabox-tabs li > a span.give-icon:before {
+        margin: 0; }
   #give-metabox-form-data .give_options_panel {
-    padding-left: 40px; } }
+    padding-left: 40px; }
+    #give-metabox-form-data .give_options_panel .give-field-wrap {
+      padding: 10px; }
+      #give-metabox-form-data .give_options_panel .give-field-wrap span.give-field-label, #give-metabox-form-data .give_options_panel .give-field-wrap label {
+        display: block;
+        float: none;
+        margin: 0 0 10px 0;
+        font-size: 14px;
+        width: 100%; } }
 
 #give-export-payments .give_forms_categories,
 #give-export-payments .give_forms_tags {
@@ -2134,6 +2144,9 @@ Responsiveness
 #give-donation-overview .give-select-chosen {
   width: 196px; }
 
+#give-edit-order-form .row {
+  margin-top: 10px; }
+
 #give-donation-overview ul,
 #give-order-address-country-wrap select,
 #give-donor-details .order-data-address input,
@@ -2196,20 +2209,21 @@ input.give-price-field {
   margin: 0 0 10px; }
 
 #give-billing-details label {
-  display: block; }
+  display: block;
+  margin-bottom: 5px; }
 
 #give-billing-details .column-container {
   padding: 5px 0 10px; }
 
 #give-billing-details input[type="text"] {
-  width: 95%; }
+  width: 98%; }
 
 #give-billing-details .chosen-container {
   width: 98% !important; }
 
 @media screen and (min-width: 1200px) {
   #give-edit-order-form .column {
-    width: 33%; }
+    width: 49%; }
   #give-donation-overview.columns-4 li.actions {
     width: 25%;
     margin-top: 0;

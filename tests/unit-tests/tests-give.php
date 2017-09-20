@@ -65,6 +65,7 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/country-functions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/template-functions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/misc-functions.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/import-functions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/forms/functions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/forms/template.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/forms/widget.php' );

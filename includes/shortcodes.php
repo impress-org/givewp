@@ -288,13 +288,12 @@ function give_receipt_shortcode( $atts ) {
 		return $login_form;
 	}
 
-	/*
+	/**
 	 * Check if the user has permission to view the receipt.
 	 *
 	 * If user is logged in, user ID is compared to user ID of ID stored in payment meta
 	 * or if user is logged out and donation was made as a guest, the donation session is checked for
 	 * or if user is logged in and the user can view sensitive shop data.
-	 *
 	 */
 	if ( ! apply_filters( 'give_user_can_view_receipt', $user_can_view, $give_receipt_args ) ) {
 		return Give()->notices->print_frontend_notice( $give_receipt_args['error'], false, 'error' );

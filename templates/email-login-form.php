@@ -5,6 +5,7 @@
  * This template is used to display an email form which will when submitted send an update donation receipt and also refresh the users session
  */
 
+global $give_access_form_outputted;
 $show_form = true;
 $email     = isset( $_POST['give_email'] ) ? $_POST['give_email'] : '';
 
@@ -12,6 +13,11 @@ $email     = isset( $_POST['give_email'] ) ? $_POST['give_email'] : '';
 $recaptcha_key    = give_get_option( 'recaptcha_key' );
 $recaptcha_secret = give_get_option( 'recaptcha_secret' );
 $enable_recaptcha = ( ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ) ? true : false;
+
+// Only output the form once.
+if ( $give_access_form_outputted ) {
+	return;
+}
 
 // Form submission
 if ( is_email( $email ) && wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
@@ -80,9 +86,7 @@ if ( is_email( $email ) && wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
 Give()->notices->render_frontend_notices( 0 );
 
 // Show the email login form?
-if ( $show_form ) {
-?>
-
+if ( $show_form ) { ?>
 	<div class="give-form">
 
 		<?php
@@ -92,39 +96,40 @@ if ( $show_form ) {
 
 		<form method="post" action="" id="give-email-access-form">
 			<label for="give-email"><?php esc_html__( 'Donation Email:', 'give' ); ?></label>
-			<input id="give-email" type="email" name="give_email" value="" placeholder="<?php esc_attr_e( 'Your donation email', 'give' ); ?>"/>
-			<input type="hidden" name="_wpnonce" value="<?php echo wp_create_nonce( 'give' ); ?>"/>
+			<input id="give-email" type="email" name="give_email" value="" placeholder="<?php esc_attr_e( 'Your donation email', 'give' ); ?>" />
+			<input type="hidden" name="_wpnonce" value="<?php echo wp_create_nonce( 'give' ); ?>" />
 
 			<?php
 			// Enable reCAPTCHA?
 			if ( $enable_recaptcha ) { ?>
 
 				<script>
-					//IP verify for reCAPTCHA
-					(function ($) {
-						$(function () {
-							$.getJSON('https://api.ipify.org?format=jsonp&callback=?', function (json) {
-								$('.give_ip').val(json.ip);
-							});
-						});
-					})(jQuery);
+									//IP verify for reCAPTCHA
+									(function( $ ) {
+										$( function() {
+											$.getJSON( 'https://api.ipify.org?format=jsonp&callback=?', function( json ) {
+												$( '.give_ip' ).val( json.ip );
+											} );
+										} );
+									})( jQuery );
 				</script>
 
 				<script src='https://www.google.com/recaptcha/api.js'></script>
 				<div class="g-recaptcha" data-sitekey="<?php echo $recaptcha_key; ?>"></div>
-				<input type="hidden" name="give_ip" class="give_ip" value=""/>
+				<input type="hidden" name="give_ip" class="give_ip" value="" />
 			<?php } ?>
 
-			<input type="submit" class="give-submit" value="<?php esc_attr_e( 'Email access token', 'give' ); ?>"/>
+			<input type="submit" class="give-submit" value="<?php esc_attr_e( 'Email access token', 'give' ); ?>" />
 		</form>
 	</div>
 
-<?php
+	<?php
+
 } else {
 
 	Give()->notices->print_frontend_notice(
 		sprintf(
-			/* translators: %s: user email address */
+		/* translators: %s: user email address */
 			esc_html__( 'An email with an access link has been sent to %s.', 'give' ),
 			$email
 		),
@@ -133,4 +138,7 @@ if ( $show_form ) {
 	);
 
 }// End if().
+
+// The form has been output.
+$give_access_form_outputted = true;
 ?>
