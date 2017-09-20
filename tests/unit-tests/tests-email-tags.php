@@ -28,15 +28,15 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$this->assertEquals( 'Admin', $firstname );
 
 		/*
-		 * Case 2: First name from donor_id.
+		 * Case 2: First name from user_id.
 		 */
-		$firstname = give_email_tag_first_name( array( 'donor_id' => 1 ) );
+		$firstname = give_email_tag_first_name( array( 'user_id' => 1 ) );
 		$this->assertEquals( 'Admin', $firstname );
 
 		/*
 		 * Case 3: First name from donor_id.
 		 */
-		$firstname = give_email_tag_first_name( array( 'user_id' => 1 ) );
+		$firstname = give_email_tag_first_name( array( 'donor_id' => 1 ) );
 		$this->assertEquals( 'Admin', $firstname );
 
 		/*
