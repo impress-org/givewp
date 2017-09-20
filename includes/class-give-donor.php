@@ -1323,4 +1323,42 @@ class Give_Donor {
 
 		return $status;
 	}
+
+	/**
+	 * Get First Name from the name of the donor.
+	 *
+	 * @since 2.0
+	 *
+	 * return string $first_name First Name of the donor
+	 */
+	public function get_first_name() {
+		$first_name = '';
+		if ( ! empty( $this->name ) ) {
+			$name = explode( ' ', $this->name );
+			if ( ! empty( $name[0] ) ) {
+				$first_name = $name[0];
+			}
+		}
+
+		return $first_name;
+	}
+
+	/**
+	 * Get Last Name from the name of the donor.
+	 *
+	 * @since 2.0
+	 *
+	 * return string $last_name Last Name of the donor
+	 */
+	public function get_last_name() {
+		$last_name = '';
+		if ( ! empty( $this->name ) ) {
+			$name = explode( ' ', $this->name );
+			if ( ! empty( $name[1] ) ) {
+				$last_name = $name[1];
+			}
+		}
+
+		return $last_name;
+	}
 }
