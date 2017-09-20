@@ -687,28 +687,3 @@ function give_is_additional_email( $email ) {
 	}
 	return true;
 }
-
-
-/**
-  * Check whether Donor and User profiles are connected or not before logging in.
-  *
-  * @param $user Object of User who is trying to login.
-  *
-  * @since  1.8.14
-  *
-  * @return object|WP_Error
-  */
-function give_check_for_donor_user_connection( $user ) {
-	$is_donor_disconnected = get_user_meta( $user->ID, '_give_is_donor_disconnected', true );
-
-	// Bail out, if user is not connected with donor.
-	if( $is_donor_disconnected ) {
-		return new WP_Error( 'donor_user_disconnected',
-			'<strong>ERROR</strong> ' . __( 'Donor and User profile are disconnected. Please contact site administrator.', 'give' )
-		);
-	}
-
-	return $user;
-}
-
-add_action( 'wp_authenticate_user', 'give_check_for_donor_user_connection', 10 );
