@@ -36,6 +36,8 @@ class Give_Roles {
 	 */
 	public function __construct() {
 		add_filter( 'give_map_meta_cap', array( $this, 'meta_caps' ), 10, 4 );
+		add_filter( 'woocommerce_disable_admin_bar', array( $this, 'manage_admin_dashboard' ), 10 );
+		add_filter( 'woocommerce_prevent_admin_access', array( $this, 'manage_admin_dashboard'), 10 );
 	}
 
 	/**
@@ -294,4 +296,25 @@ class Give_Roles {
 		}
 	}
 
+	/**
+	 * Allow admin dashboard to User with Give Accountant Role.
+	 *
+	 * Note: WooCommerce doesn't allow the user to access the WP dashboard who holds "Give Accountant" role.
+	 *
+	 * @since 1.8.14
+	 *
+	 * @return bool
+	 */
+	public function manage_admin_dashboard() {
+
+		// Get the current logged user.
+		$current_user = wp_get_current_user();
+
+		// If user with "Give Accountant" user role is logged-in .
+		if ( 0 !== $current_user->ID && in_array( 'give_accountant', (array) $current_user->roles, true ) ) {
+
+			// Return false, means no prevention.
+			return false;
+		}
+	}
 }

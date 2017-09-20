@@ -6,7 +6,7 @@
     "accounting.js": "latest",
     "blockUI": "blockui#*",
     "chosen": "master",
-    "float-labels.js": "^3.0.0",
+    "float-labels.js": "latest",
     "flot.orderbars": "*",
     "jquery.payment": "latest",
     "magnific-popup": "latest",

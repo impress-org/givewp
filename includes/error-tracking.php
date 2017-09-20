@@ -85,7 +85,15 @@ function give_clear_errors() {
 function give_unset_error( $error_id ) {
 	$errors = give_get_errors();
 	if ( $errors ) {
-		unset( $errors[ $error_id ] );
+		/**
+		 * Check If $error_id exists in the array.
+		 * If exists then unset it.
+		 *
+		 * @since 1.8.13
+		 */
+		if ( isset( $errors[ $error_id ] ) ) {
+			unset( $errors[ $error_id ] );
+		}
 		Give()->session->set( 'give_errors', $errors );
 	}
 }

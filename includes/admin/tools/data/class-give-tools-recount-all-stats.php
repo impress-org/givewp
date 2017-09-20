@@ -11,7 +11,7 @@
  */
 
 // Exit if accessed directly.
-if (! defined('ABSPATH') ) {
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
@@ -101,7 +101,7 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 
 		$payments = $this->get_stored_data( 'give_temp_all_payments_data' );
 
-		if( false === $payments ) {
+		if ( false === $payments ) {
 			$args = apply_filters( 'give_recount_form_stats_args', array(
 				'post_parent__in' => $all_forms,
 				'number'          => $this->per_step,
@@ -158,8 +158,8 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 			}
 
 			// Get the list of form ids which does not contain any payment record.
-			$remaining_form_ids = array_diff( $all_forms, array_keys($totals) );
-			foreach( $remaining_form_ids as $form_id) {
+			$remaining_form_ids = array_diff( $all_forms, array_keys( $totals ) );
+			foreach ( $remaining_form_ids as $form_id ) {
 				//If array key doesn't exist, create it
 				if ( ! array_key_exists( $form_id, $totals ) ) {
 					$totals[ $form_id ] = array(
@@ -267,7 +267,7 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 	 * Perform the export
 	 *
 	 * @access public
-	 * @since 1.5
+	 * @since  1.5
 	 * @return void
 	 */
 	public function export() {
@@ -282,7 +282,7 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 	 * Pre Fetch Data
 	 *
 	 * @access public
-	 * @since 1.5
+	 * @since  1.5
 	 */
 	public function pre_fetch() {
 
@@ -317,11 +317,11 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 			$this->store_data( 'give_temp_form_ids', $all_forms );
 
 			$args = apply_filters( 'give_recount_form_stats_total_args', array(
-				'post_parent__in'   => $all_forms,
-				'number'            => $this->per_step,
-				'status'            => 'publish',
-				'page'              => $this->step,
-				'output'            => 'payments',
+				'post_parent__in' => $all_forms,
+				'number'          => $this->per_step,
+				'status'          => 'publish',
+				'page'            => $this->step,
+				'output'          => 'payments',
 			) );
 
 			$payments_query = new Give_Payments_Query( $args );
@@ -340,7 +340,7 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 					//If for some reason somehow the form_ID isn't set check payment meta
 					if ( empty( $payment->form_id ) ) {
 						$payment_meta = $payment->get_meta();
-						$form_id = isset( $payment_meta['form_id'] ) ? $payment_meta['form_id'] : 0;
+						$form_id      = isset( $payment_meta['form_id'] ) ? $payment_meta['form_id'] : 0;
 					}
 
 					if ( ! in_array( $payment->post_status, $accepted_statuses ) ) {
@@ -351,7 +351,7 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 						$payment_items[ $payment->ID ] = array(
 							'id'         => $form_id,
 							'payment_id' => $payment->ID,
-							'price'      => $payment->total
+							'price'      => $payment->total,
 						);
 					}
 
@@ -378,7 +378,16 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 		global $wpdb;
 		$value = $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM $wpdb->options WHERE option_name = '%s'", $key ) );
 
-		return empty( $value ) ? false : maybe_unserialize( $value );
+		if ( empty( $value ) ) {
+			return false;
+		}
+
+		$maybe_json = json_decode( $value );
+		if ( ! is_null( $maybe_json ) ) {
+			$value = json_decode( $value, true );
+		}
+
+		return $value;
 	}
 
 	/**
@@ -386,15 +395,15 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 	 *
 	 * @since  1.5
 	 *
-	 * @param  string $key The option_name
-	 * @param  mixed $value The value to store
+	 * @param  string $key   The option_name
+	 * @param  mixed  $value The value to store
 	 *
 	 * @return void
 	 */
 	private function store_data( $key, $value ) {
 		global $wpdb;
 
-		$value = maybe_serialize( $value );
+		$value = is_array( $value ) ? wp_json_encode( $value ) : esc_attr( $value );
 
 		$data = array(
 			'option_name'  => $key,

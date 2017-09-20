@@ -35,7 +35,7 @@ if( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs 
 	?>
 	<div class="wrap give-settings-page <?php echo self::$setting_filter_prefix . '-setting-page'; ?>">
 		<?php echo $form_open_tag; ?>
-		<h2></h2>
+		<h1 class="wp-heading-inline"><?php echo esc_html( $tabs[ $current_tab ] ); ?></h1>
 		<?php
 		// Show messages.
 		self::show_messages();
@@ -62,7 +62,6 @@ if( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs 
 			<a href="#" id="give-show-sub-nav" class="nav-tab give-not-tab" title="<?php _e( 'View remaining setting tabs', 'give' ); ?>"><span class="dashicons dashicons-arrow-down-alt2"></span></span></a>
 			<nav class="give-sub-nav-tab give-hidden"></nav>
 		</div>
-		<h1 class="screen-reader-text"><?php echo esc_html( $tabs[ $current_tab ] ); ?></h1>
 		<?php
 
 		/**
