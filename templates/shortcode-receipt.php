@@ -60,7 +60,7 @@ $give_receipt_args['donation_receipt']['donation'] = array(
 
 $give_receipt_args['donation_receipt']['donation_status'] = array(
 	'name'    => __( 'Donation Status', 'give' ),
-	'value'   => esc_attr( $status ),
+	'value'   => esc_attr( $status_label ),
 	'display' => $give_receipt_args['payment_status'],
 );
 
@@ -68,12 +68,6 @@ $give_receipt_args['donation_receipt']['donation_id'] = array(
 	'name'    => __( 'Donation ID', 'give' ),
 	'value'   => $donation_id,
 	'display' => $give_receipt_args['payment_id'],
-);
-
-$give_receipt_args['donation_receipt']['payment_details'] = array(
-	'name'    => __( 'Payment:', 'give' ),
-	'value'   => __( 'Details:', 'give' ),
-	'display' => ( 'true' === $give_receipt_args['payment_id'] ) ? false : true,
 );
 
 $give_receipt_args['donation_receipt']['payment_key'] = array(
