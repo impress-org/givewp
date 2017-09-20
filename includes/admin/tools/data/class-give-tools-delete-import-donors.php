@@ -373,37 +373,39 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 			$this->total_step     = ( ( count( $donation_ids ) / $this->per_step ) * 2 ) + count( $donor_ids );
 			$this->step_completed = $page + ( count( $donation_ids ) / $this->per_step );
 
-			$args = apply_filters( 'give_tools_reset_stats_total_args', array(
-				'post_status'    => 'any',
-				'posts_per_page' => 1,
-				'author'         => $donor_ids[ $page ]
-			) );
+			if ( ! empty( $donor_ids[ $page ] ) ) {
+				$args = apply_filters( 'give_tools_reset_stats_total_args', array(
+					'post_status'    => 'any',
+					'posts_per_page' => 1,
+					'author'         => $donor_ids[ $page ]
+				) );
 
-			$donations = array();
-			$payments = new Give_Payments_Query( $args );
-			$payments = $payments->get_payments();
-			if ( empty( $payments ) ) {
-				Give()->donors->delete_by_user_id( $donor_ids[ $page ] );
+				$donations = array();
+				$payments  = new Give_Payments_Query( $args );
+				$payments  = $payments->get_payments();
+				if ( empty( $payments ) ) {
+					Give()->donors->delete_by_user_id( $donor_ids[ $page ] );
 
-				/**
-				 * If Checked then delete WP user.
-				 *
-				 * @since 1.8.14
-				 */
-				if ( 'on' === (string) $_REQUEST['delete-import-donors'] ) {
-					wp_delete_user( $donor_ids[ $page ] );
+					/**
+					 * If Checked then delete WP user.
+					 *
+					 * @since 1.8.14
+					 */
+					if ( 'on' === (string) $_REQUEST['delete-import-donors'] ) {
+						wp_delete_user( $donor_ids[ $page ] );
+					}
+				} else {
+					foreach ( $payments as $payment ) {
+						$donations[] = $payment->ID;
+					}
+
+					$donor          = new Give_Donor( $donor_ids[ $page ], true );
+					$data_to_update = array(
+						'purchase_count' => count( $donations ),
+						'payment_ids'    => implode( ',', $donations ),
+					);
+					$donor->update( $data_to_update );
 				}
-			} else {
-				foreach ( $payments as $payment ) {
-					$donations[] = $payment->ID;
-				}
-
-				$donor          = new Give_Donor( $donor_ids[ $page ], true );
-				$data_to_update = array(
-					'purchase_count' => count( $donations ),
-					'payment_ids'    => implode( ',', $donations ),
-				);
-				$donor->update( $data_to_update );
 			}
 
 			$page ++;

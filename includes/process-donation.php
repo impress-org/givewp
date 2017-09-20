@@ -287,9 +287,28 @@ function give_donation_form_validate_fields() {
 		give_set_error( 'invalid_honeypot', esc_html__( 'Honeypot field detected. Go away bad bot!', 'give' ) );
 	}
 
+	// Check spam detect.
+	if ( isset( $_POST['action'] )
+	     && give_is_setting_enabled( give_get_option( 'akismet_spam_protection' ) )
+	     && give_is_spam_donation()
+	) {
+		give_set_error( 'invalid_donation', __( 'This donation has been flagged as spam. Please try again.', 'give' ) );
+	}
+
 	// Validate agree to terms.
 	if ( give_is_terms_enabled( $form_id ) ) {
 		give_donation_form_validate_agree_to_terms();
+	}
+
+	// Stop processing donor registration, if donor registration is optional and donor can do guest checkout.
+	// If registration form username field is empty that means donor do not want to registration instead want guest checkout.
+	if (
+		! give_logged_in_only( $form_id )
+		&& isset( $_POST['give-purchase-var'] )
+		&& $_POST['give-purchase-var'] == 'needs-to-register'
+		&& empty( $_POST['give_user_login'] )
+	) {
+		unset( $_POST['give-purchase-var'] );
 	}
 
 	if ( is_user_logged_in() ) {
@@ -313,6 +332,26 @@ function give_donation_form_validate_fields() {
 
 	// Return collected data.
 	return $valid_data;
+}
+
+/**
+ * Detect spam donation.
+ *
+ * @since 1.8.14
+ *
+ * @return bool|mixed
+ */
+function give_is_spam_donation() {
+	$spam = false;
+
+	$user_agent = (string) isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : '';
+
+	if ( strlen( $user_agent ) < 2 ) {
+		$spam = true;
+	}
+
+	// Allow developer to customized Akismet spam detect API call and it's response.
+	return apply_filters( 'give_spam', $spam );
 }
 
 /**
@@ -591,9 +630,9 @@ function give_donation_form_validate_new_user() {
 	);
 
 	// Get user data.
-	$user_data                   = wp_parse_args( array_map( 'trim', give_clean( $_POST ) ), $default_user_data );
-	$registering_new_user        = false;
-	$form_id                     = absint( $user_data['give-form-id'] );
+	$user_data            = wp_parse_args( array_map( 'trim', give_clean( $_POST ) ), $default_user_data );
+	$registering_new_user = false;
+	$form_id              = absint( $user_data['give-form-id'] );
 
 	// Start an empty array to collect valid user data.
 	$valid_user_data = array(
