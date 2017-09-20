@@ -752,6 +752,11 @@ function give_donation_form_validate_guest_user() {
 		'user_id' => 0,
 	);
 
+	// Show error message if user must be logged in.
+	if ( give_logged_in_only( $form_id ) ) {
+		give_set_error( 'logged_in_only', __( 'You must be logged in to donate.', 'give' ) );
+	}
+
 	// Get the guest email.
 	$guest_email = isset( $_POST['give_email'] ) ? $_POST['give_email'] : false;
 
