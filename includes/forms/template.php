@@ -1230,7 +1230,7 @@ function give_get_register_fields( $form_id ) {
 				</label>
 			</div>
 
-			<?php if ( $show_register_form == 'both' ) { ?>
+			<?php if ( 'both' === $show_register_form ) { ?>
 				<div class="give-login-account-wrap form-row form-row-last form-row-responsive">
 					<p class="give-login-message"><?php esc_html_e( 'Already have an account?', 'give' ); ?>&nbsp;
 						<a href="<?php echo esc_url( add_query_arg( 'login', 1 ) ); ?>" class="give-checkout-login"
