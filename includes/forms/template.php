@@ -1224,8 +1224,9 @@ function give_get_register_fields( $form_id ) {
 						<input type="checkbox" name="give_create_account" id="give-create-account-<?php echo $form_id; ?>" class="give-input" />
 						<?php
 					}
-					_e( 'Create an account', 'give' );
-					echo Give()->tooltips->render_help( __( 'Create an account for donor to manage donations from one dashboard.', 'give' ) ); ?>
+					?>
+					<?php _e( 'Create an account', 'give' ); ?>
+					<?php echo Give()->tooltips->render_help( __( 'Create an account for donor to manage donations from one dashboard.', 'give' ) ); ?>
 				</label>
 			</div>
 
