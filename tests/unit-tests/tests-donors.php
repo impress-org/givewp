@@ -163,6 +163,20 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 		$this->assertEquals( 'testaccountupdated@domain.com', $donor->email );
 		$this->assertEquals( 'Test Account', $donor->name );
 
+		/**
+		 * Check add for First Name
+		 *
+		 * @since 2.0
+		 */
+		$this->assertEquals( 'Test', $donor->get_first_name() );
+
+		/**
+		 * Check add for Last Name
+		 *
+		 * @since 2.0
+		 */
+		$this->assertEquals( 'Account', $donor->get_last_name() );
+
 		// Verify if we have an empty array we get false
 		$this->assertFalse( $donor->update() );
 
