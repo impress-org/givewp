@@ -407,3 +407,72 @@ function give_get_email_names( $user_info, $payment = false ) {
 
 	return $email_names;
 }
+
+/**
+ * Send email to admin when user tries to login and restricted due to user - donor disconnection.
+ *
+ * @param int $user_id  User ID.
+ * @param int $donor_id Donor ID.
+ *
+ * @since 1.8.14
+ */
+function give_admin_email_user_donor_disconnection( $user_id, $donor_id ) {
+
+	$user_id  = absint( $user_id );
+	$donor_id = absint( $donor_id );
+
+	// Bail Out, if user id doesn't exists.
+	if ( empty( $user_id ) ) {
+		return;
+	}
+
+	// Bail Out, if donor id doesn't exists.
+	if ( empty( $donor_id ) ) {
+		return;
+	}
+
+	$from_name = give_get_option( 'from_name', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) );
+
+	$from_email = give_get_option( 'from_email', get_bloginfo( 'admin_email' ) );
+
+	/* translators: %s: payment id */
+	$subject = __( 'Attention: User tries to login whose Donor profile is disconnected!', 'give' );
+
+	/**
+	 * Filters the donation notification subject.
+	 *
+	 * @since 1.8.14
+	 */
+	$subject = apply_filters( 'give_admin_donor_user_disconnection_notification_subject', wp_strip_all_tags( $subject ) );
+
+	$headers = "From: " . stripslashes_deep( html_entity_decode( $from_name, ENT_COMPAT, 'UTF-8' ) ) . " <$from_email>\r\n";
+	$headers .= "Reply-To: " . $from_email . "\r\n";
+	$headers .= "Content-Type: text/html; charset=utf-8\r\n";
+
+	/**
+	 * Filters the donation notification email headers.
+	 *
+	 * @since 1.8.14
+	 */
+	$headers = apply_filters( 'give_admin_donor_user_disconnection_notification_headers', $headers );
+
+	$message = sprintf(
+		'%1$s <a href="%2$s">%3$s</a>',
+		__( 'Hi Admin,
+	
+	A User has tried logging in using the donation form. But, User was unable to login due to User and Donor Profile disconnection.
+	
+	Do you want to reconnect User and Donor profile again?', 'give' ),
+		esc_url( admin_url() . 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor_id . '&reconnect_user=' . $user_id ),
+		__( 'Reconnect Now!', 'give' )
+	);
+
+	$emails = Give()->emails;
+	$emails->__set( 'from_name', $from_name );
+	$emails->__set( 'from_email', $from_email );
+	$emails->__set( 'headers', $headers );
+	$emails->__set( 'heading', __( 'User - Donor Profile Disconnection', 'give' ) );
+
+	$emails->send( give_get_admin_notice_emails(), $subject, $message );
+
+}
