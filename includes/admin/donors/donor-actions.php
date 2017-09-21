@@ -151,8 +151,17 @@ function give_edit_donor( $args ) {
 			}
 		}
 
-		// Delete user meta, if user is connected with donor.
-		delete_user_meta( $donor->user_id, '_give_is_donor_disconnected' );
+		// Fetch disconnected user id, if exists.
+		$disconnected_user_id = $donor->get_meta( '_give_disconnected_user_id', true );
+
+		// Flag User and Donor Disconnection.
+		delete_user_meta( $disconnected_user_id, '_give_is_donor_disconnected' );
+
+		// Check whether the disconnected user id and the reconnected user id are same or not.
+		// If both are same then delete user id store in donor meta.
+		if( $donor_info['user_id'] === $disconnected_user_id ) {
+			$donor->delete_meta( '_give_disconnected_user_id' );
+		}
 
 		$output['success']       = true;
 		$donor_data              = array_merge( $donor_data, $address );
@@ -431,6 +440,7 @@ function give_disconnect_donor_user_id( $args ) {
 
 		// Set Donor Disconnection status true, if user and donor are disconnected with each other.
 		update_user_meta( $user_id, '_give_is_donor_disconnected', true );
+		$donor->update_meta( '_give_disconnected_user_id', $user_id );
 
 		$output['success'] = true;
 
