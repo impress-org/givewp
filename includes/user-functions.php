@@ -354,6 +354,11 @@ function give_validate_user_email( $email, $registering_new_user = false ) {
 		give_set_error( 'email_empty', __( 'Enter an email.', 'give' ) );
 		$valid = false;
 
+	} elseif ( email_exists( $email ) ) {
+		// Email already exists.
+		give_set_error( 'email_exists', __( 'Email already exists.', 'give' ) );
+		$valid = false;
+
 	} elseif ( ! is_email( $email ) ) {
 		// Validate email.
 		give_set_error( 'email_invalid', __( 'Invalid email.', 'give' ) );

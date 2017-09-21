@@ -155,9 +155,9 @@
     -webkit-transform: rotate(-359deg);
     transform: rotate(-359deg); } }
 
-/*! Hint.css - v2.4.1 - 2016-11-08
+/*! Hint.css - v2.5.0 - 2017-04-23
 * http://kushagragour.in/lab/hint/
-* Copyright (c) 2016 Kushagra Gour */
+* Copyright (c) 2017 Kushagra Gour */
 [class*=hint--] {
   position: relative;
   display: inline-block; }
@@ -1515,6 +1515,7 @@ User Login
   margin: 0 0 15px;
   position: relative; }
   [id*='give-form'] .give-login-account-wrap .give-login-message {
+    text-align: left;
     margin: 0;
     padding: 0; }
   [id*='give-form'] .give-login-account-wrap .give-loading-text {
