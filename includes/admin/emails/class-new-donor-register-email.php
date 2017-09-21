@@ -147,51 +147,70 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 				}
 			}
 
-			// Start constructing HTML output.
-			$email_preview_header = '<div style="margin:0;padding:10px 0;width:100%;background-color:#FFF;border-bottom:1px solid #eee; text-align:center;">';
-
 			// Inline JS function for switching donations.
 			$request_url = $_SERVER['REQUEST_URI'];
 
 			// Remove payment id query param if set from request url.
 			if ( $user_id ) {
-				$request_url_data = wp_parse_url( $_SERVER['REQUEST_URI'] );
+				$request_url_data = wp_parse_url( $request_url );
 				$query            = $request_url_data['query'];
 				$query            = str_replace( "&user_id={$user_id}", '', $query );
 
 				$request_url = home_url( '/?' . str_replace( '', '', $query ) );
 			}
+			?>
+			<script type="text/javascript">
+				function change_preview() {
+					var transactions = document.getElementById("give_preview_email_user_id");
+					var selected_trans = transactions.options[transactions.selectedIndex];
+					if (selected_trans) {
+						var url_string = "<?php echo $request_url; ?>&user_id=" + selected_trans.value;
+						window.location = url_string;
+					}
+				}
+			</script>
 
-			$email_preview_header .= '<script>
-				 function change_preview(){
-				  var transactions = document.getElementById("give_preview_email_user_id");
-			        var selected_trans = transactions.options[transactions.selectedIndex];
-				        if (selected_trans){
-				            var url_string = "' . $request_url . '&user_id=" + selected_trans.value;
-				                window.location = url_string;
-				        }
-				    }
-			    </script>';
+			<style type="text/css">
+				.give_preview_email_user_id_main {
+					margin: 0;
+					padding: 10px 0;
+					width: 100%;
+					background-color: #FFF;
+					border-bottom: 1px solid #eee;
+					text-align: center;
+				}
 
-			$email_preview_header .= '<label for="give_preview_email_user_id" style="font-size:12px;color:#333;margin:0 4px 0 0;">' . esc_html__( 'Preview email with a donor:', 'give' ) . '</label>';
+				.give_preview_email_user_id_label {
+					font-size: 12px;
+					color: #333;
+					margin: 0 4px 0 0;
+				}
+			</style>
 
-			// The select field with 100 latest transactions
-			$email_preview_header .= Give()->html->select( array(
-				'name'             => 'preview_email_user_id',
-				'selected'         => $user_id,
-				'id'               => 'give_preview_email_user_id',
-				'class'            => 'give-preview-email-donor-id',
-				'options'          => $options,
-				'chosen'           => false,
-				'select_atts'      => 'onchange="change_preview()"',
-				'show_option_all'  => false,
-				'show_option_none' => false,
-			) );
+			<!-- Start constructing HTML output.-->
+			<div class="give_preview_email_user_id_main">
 
-			// Closing tag
-			$email_preview_header .= '</div>';
+				<label for="give_preview_email_user_id" class="give_preview_email_user_id_label">
+					<?php echo esc_html__( 'Preview email with a donor:', 'give' ); ?>
+				</label>
 
-			echo $email_preview_header;
+				<?php
+				// The select field with 100 latest transactions
+				echo Give()->html->select( array(
+					'name'             => 'preview_email_user_id',
+					'selected'         => $user_id,
+					'id'               => 'give_preview_email_user_id',
+					'class'            => 'give-preview-email-donor-id',
+					'options'          => $options,
+					'chosen'           => false,
+					'select_atts'      => 'onchange="change_preview()"',
+					'show_option_all'  => false,
+					'show_option_none' => false,
+				) );
+				?>
+				<!-- Closing tag-->
+			</div>
+			<?php
 		}
 	}
 
