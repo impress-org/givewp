@@ -24,6 +24,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Give_DB_Donor_Meta extends Give_DB {
 
 	/**
+	 * Meta type
+	 *
+	 * @since  1.8.14
+	 * @access public
+	 *
+	 * @var string
+	 */
+	public $meta_type = 'customer';
+
+	/**
 	 * Give_DB_Donor_Meta constructor.
 	 *
 	 * @access  public
