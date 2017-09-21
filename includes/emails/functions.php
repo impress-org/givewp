@@ -473,6 +473,6 @@ function give_admin_email_user_donor_disconnection( $user_id, $donor_id ) {
 	$emails->__set( 'headers', $headers );
 	$emails->__set( 'heading', __( 'User - Donor Profile Disconnection', 'give' ) );
 
-	$emails->send( give_get_admin_notice_emails(), $subject, $message );
+	$emails->send( give_get_admin_notice_emails(), $subject, give_do_email_tags( $message ) );
 
 }
