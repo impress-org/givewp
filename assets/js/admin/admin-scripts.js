@@ -1138,7 +1138,7 @@ var give_setting_edit = false;
 				};
 
 				$.post(ajaxurl, postData, function (response) {
-					window.location.href = window.location.href;
+					window.location.href = response.redirect;
 				}, 'json');
 
 			});
