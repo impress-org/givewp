@@ -129,7 +129,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 
 			// Get payments.
 			$donors  = new Give_API();
-			$donors  = give_check_variable( $donors->get_customers(), 'empty', array(), 'donors' );
+			$donors  = give_check_variable( $donors->get_donors(), 'empty', array(), 'donors' );
 			$options = array();
 
 			// Default option.
