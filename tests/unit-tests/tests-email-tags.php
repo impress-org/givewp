@@ -34,7 +34,13 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$this->assertEquals( 'Admin', $firstname );
 
 		/*
-		 * Case 3: First name with filter
+		 * Case 3: First name from donor_id.
+		 */
+		$firstname = give_email_tag_first_name( array( 'donor_id' => 1 ) );
+		$this->assertEquals( 'Admin', $firstname );
+
+		/*
+		 * Case 4: First name with filter
 		 */
 		add_filter( 'give_email_tag_first_name', array( $this, 'give_first_name' ), 10, 2 );
 
