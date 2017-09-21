@@ -22,6 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 1.0
  */
 class Give_DB_Donors extends Give_DB {
+
 	/**
 	 * Give_DB_Donors constructor.
 	 *
@@ -197,7 +198,7 @@ class Give_DB_Donors extends Give_DB {
 	}
 
 	/**
-	 * Delete a donor.
+	 * Delete a donor by user ID.
 	 *
 	 * NOTE: This should not be called directly as it does not make necessary changes to
 	 * the payment meta and logs. Use give_donor_delete() instead.
@@ -205,7 +206,7 @@ class Give_DB_Donors extends Give_DB {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  int $user_id
+	 * @param  int|bool $user_id
 	 *
 	 * @return bool|int
 	 */
