@@ -518,7 +518,7 @@ class Give_DB_Donors extends Give_DB {
 
 		$where = ' WHERE 1=1 ';
 
-		// specific donors.
+		// Specific donors.
 		if ( ! empty( $args['id'] ) ) {
 
 			if ( is_array( $args['id'] ) ) {
@@ -531,7 +531,7 @@ class Give_DB_Donors extends Give_DB {
 
 		}
 
-		// donors for specific user accounts
+		// Donors for specific user accounts
 		if ( ! empty( $args['user_id'] ) ) {
 
 			if ( is_array( $args['user_id'] ) ) {
@@ -544,7 +544,7 @@ class Give_DB_Donors extends Give_DB {
 
 		}
 
-		//specific donors by email
+		// Specific donors by email.
 		if ( ! empty( $args['email'] ) ) {
 
 			if ( is_array( $args['email'] ) ) {
@@ -559,12 +559,12 @@ class Give_DB_Donors extends Give_DB {
 			}
 		}
 
-		// specific donors by name
+		// Specific donors by name.
 		if ( ! empty( $args['name'] ) ) {
 			$where .= $wpdb->prepare( " AND `name` LIKE '%%%%" . '%s' . "%%%%' ", $args['name'] );
 		}
 
-		// Donors created for a specific date or in a date range
+		// Donors created for a specific date or in a date range.
 		if ( ! empty( $args['date'] ) ) {
 
 			if ( is_array( $args['date'] ) ) {
