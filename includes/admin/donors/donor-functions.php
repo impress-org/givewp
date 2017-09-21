@@ -84,3 +84,73 @@ function give_register_delete_donor_tab( $tabs ) {
 }
 
 add_filter( 'give_donor_tabs', 'give_register_delete_donor_tab', PHP_INT_MAX, 1 );
+
+function give_connect_user_donor_profile( $donor, $donor_data, $address ) {
+
+	$donor_id         = $donor->id;
+	$previous_user_id = $donor->user_id;
+
+	/**
+	 * Fires before editing a donor.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int   $donor_id   The ID of the donor.
+	 * @param array $donor_data The donor data.
+	 * @param array $address    The donor's address.
+	 */
+	do_action( 'give_pre_edit_donor', $donor_id, $donor_data, $address = array() );
+
+	$output = array();
+
+	if ( $donor->update( $donor_data ) ) {
+
+		if ( ! empty( $donor->user_id ) && $donor->user_id > 0 ) {
+			update_user_meta( $donor->user_id, '_give_user_address', $address );
+		}
+
+		// Update some donation meta if we need to.
+		$payments_array = explode( ',', $donor->payment_ids );
+
+		if ( $donor->user_id !== $previous_user_id ) {
+			foreach ( $payments_array as $payment_id ) {
+				give_update_payment_meta( $payment_id, '_give_payment_user_id', $donor->user_id );
+			}
+		}
+
+		// Fetch disconnected user id, if exists.
+		$disconnected_user_id = $donor->get_meta( '_give_disconnected_user_id', true );
+
+		// Flag User and Donor Disconnection.
+		delete_user_meta( $disconnected_user_id, '_give_is_donor_disconnected' );
+
+		// Check whether the disconnected user id and the reconnected user id are same or not.
+		// If both are same then delete user id store in donor meta.
+		if( $donor_data['user_id'] === $disconnected_user_id ) {
+			delete_user_meta( $disconnected_user_id, '_give_disconnected_donor_id' );
+			$donor->delete_meta( '_give_disconnected_user_id' );
+		}
+
+		$output['success']       = true;
+		$donor_data              = array_merge( $donor_data, $address );
+		$output['customer_info'] = $donor_data;
+
+	} else {
+
+		$output['success'] = false;
+
+	}
+
+	/**
+	 * Fires after editing a donor.
+	 *
+	 * @since 1.0
+	 *
+	 * @param int   $donor_id   The ID of the donor.
+	 * @param array $donor_data The donor data.
+	 */
+	do_action( 'give_post_edit_donor', $donor_id, $donor_data );
+
+
+	return $output;
+}
