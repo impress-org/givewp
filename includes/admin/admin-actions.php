@@ -353,6 +353,15 @@ function _give_register_admin_notices() {
 						'show'        => true,
 					) );
 					break;
+
+				case 'reconnect-user' :
+					Give()->notices->register_notice( array(
+						'id'          => 'give-donor-reconnect-user',
+						'type'        => 'updated',
+						'description' => __( 'User has been successfully connected with Donor.', 'give' ),
+						'show'        => true,
+					) );
+					break;
 			}
 		}
 	}
