@@ -305,7 +305,7 @@ class Give_DB_Donors extends Give_DB {
 	 * @access public
 	 *
 	 * @param int $donor_id Donor ID.
-	 * @param float $amount Amoumt.
+	 * @param float $amount THe amount to increase.
 	 *
 	 * @return bool
 	 */
@@ -495,7 +495,7 @@ class Give_DB_Donors extends Give_DB {
 	 *
 	 * @param  array $args
 	 *
-	 * @return array|object|null Customers array or object. Null if not found.
+	 * @return array|object|null Donors array or object. Null if not found.
 	 */
 	public function get_donors( $args = array() ) {
 		/* @var WPDB $wpdb */
