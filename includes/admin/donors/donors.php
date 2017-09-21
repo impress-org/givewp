@@ -130,7 +130,7 @@ function give_render_donor_view( $view, $callbacks ) {
 	}
 
 	$donor_id          = (int) $_GET['id'];
-	$reconnect_user_id = (int) $_GET['user_id'];
+	$reconnect_user_id = ! empty( $_GET['user_id'] ) ? (int) $_GET['user_id'] : '';
 	$donor             = new Give_Donor( $donor_id );
 
 	// Reconnect User with Donor profile.
