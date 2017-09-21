@@ -110,7 +110,7 @@ function give_edit_donor( $args ) {
 
 	}
 
-	// Sanitize the inputs
+	// Sanitize the inputs.
 	$donor_data            = array();
 	$donor_data['name']    = strip_tags( stripslashes( $donor_info['name'] ) );
 	$donor_data['user_id'] = $donor_info['user_id'];
@@ -282,13 +282,13 @@ function give_donor_delete( $args ) {
 
 			if ( $remove_data ) {
 
-				// Remove all donations, logs, etc
+				// Remove all donations, logs, etc.
 				foreach ( $payments_array as $payment_id ) {
 					give_delete_donation( $payment_id );
 				}
 			} else {
 
-				// Just set the donations to customer_id of 0
+				// Just set the donations to customer_id of 0.
 				foreach ( $payments_array as $payment_id ) {
 					give_update_payment_meta( $payment_id, '_give_payment_customer_id', 0 );
 				}
@@ -298,13 +298,13 @@ function give_donor_delete( $args ) {
 
 		} else {
 
-			give_set_error( 'give-donor-delete-failed', esc_html__( 'Error deleting donor.', 'give' ) );
+			give_set_error( 'give-donor-delete-failed', __( 'Error deleting donor.', 'give' ) );
 			$redirect = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $donor_id );
 
 		}
 	} else {
 
-		give_set_error( 'give-donor-delete-invalid-id', esc_html__( 'Invalid Donor ID.', 'give' ) );
+		give_set_error( 'give-donor-delete-invalid-id', __( 'Invalid Donor ID.', 'give' ) );
 		$redirect = admin_url( 'edit.php?post_type=give_forms&page=give-donors' );
 
 	}
@@ -433,7 +433,7 @@ function give_add_donor_email( $args ) {
 	$donor_edit_role = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
 
 	if ( ! is_admin() || ! current_user_can( $donor_edit_role ) ) {
-		wp_die( esc_html__( 'You do not have permission to edit this donor.', 'give' ), esc_html__( 'Error', 'give' ), array(
+		wp_die( __( 'You do not have permission to edit this donor.', 'give' ), __( 'Error', 'give' ), array(
 			'response' => 403,
 		) );
 	}
@@ -451,12 +451,12 @@ function give_add_donor_email( $args ) {
 	} elseif ( ! wp_verify_nonce( $args['_wpnonce'], 'give_add_donor_email' ) ) {
 		$output = array(
 			'success' => false,
-			'message' => esc_html__( 'Nonce verification failed.', 'give' ),
+			'message' => __( 'Nonce verification failed.', 'give' ),
 		);
 	} elseif ( ! is_email( $args['email'] ) ) {
 		$output = array(
 			'success' => false,
-			'message' => esc_html__( 'Invalid email.', 'give' ),
+			'message' => __( 'Invalid email.', 'give' ),
 		);
 	} else {
 		$email    = sanitize_email( $args['email'] );
@@ -528,7 +528,7 @@ function give_remove_donor_email() {
 
 	$nonce = $_GET['_wpnonce'];
 	if ( ! wp_verify_nonce( $nonce, 'give-remove-donor-email' ) ) {
-		wp_die( esc_html__( 'Nonce verification failed', 'give' ), esc_html__( 'Error', 'give' ), array(
+		wp_die( __( 'Nonce verification failed', 'give' ), __( 'Error', 'give' ), array(
 			'response' => 403,
 		) );
 	}
@@ -574,7 +574,7 @@ function give_set_donor_primary_email() {
 	$nonce = $_GET['_wpnonce'];
 
 	if ( ! wp_verify_nonce( $nonce, 'give-set-donor-primary-email' ) ) {
-		wp_die( esc_html__( 'Nonce verification failed', 'give' ), esc_html__( 'Error', 'give' ), array(
+		wp_die( __( 'Nonce verification failed', 'give' ), __( 'Error', 'give' ), array(
 			'response' => 403,
 		) );
 	}
@@ -584,7 +584,7 @@ function give_set_donor_primary_email() {
 	if ( $donor->set_primary_email( $_GET['email'] ) ) {
 		$url        = add_query_arg( 'give-message', 'primary-email-updated', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ) );
 		$user       = wp_get_current_user();
-		$user_login = ! empty( $user->user_login ) ? $user->user_login : esc_html__( 'System', 'give' );
+		$user_login = ! empty( $user->user_login ) ? $user->user_login : __( 'System', 'give' );
 		$donor_note = sprintf( __( 'Email address %1$s set as primary by %2$s', 'give' ), $_GET['email'], $user_login );
 
 		$donor->add_note( $donor_note );
