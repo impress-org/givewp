@@ -129,8 +129,14 @@ function give_render_donor_view( $view, $callbacks ) {
 		$render = false;
 	}
 
-	$donor_id = (int) $_GET['id'];
-	$donor    = new Give_Donor( $donor_id );
+	$donor_id          = (int) $_GET['id'];
+	$reconnect_user_id = (int) $_GET['user_id'];
+	$donor             = new Give_Donor( $donor_id );
+
+	// Reconnect User with Donor profile.
+	if( $reconnect_user_id ) {
+		give_connect_user_donor_profile( $donor, array( 'user_id' => $reconnect_user_id ), array() );
+	}
 
 	if ( empty( $donor->id ) ) {
 		give_set_error( 'give-invalid_donor', __( 'Invalid Donor ID.', 'give' ) );
@@ -199,7 +205,7 @@ function give_render_donor_view( $view, $callbacks ) {
  */
 function give_donor_view( $donor ) {
 
-	$donor_edit_role = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
+	$donor_edit_role   = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
 
 	/**
 	 * Fires in donor profile screen, above the donor card.
