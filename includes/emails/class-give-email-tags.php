@@ -429,6 +429,13 @@ function give_setup_email_tags() {
 			'context'     => 'general',
 		),
 
+		array(
+			'tag'         => 'reset_password_link',
+			'description' => esc_html__( 'The reset password link for user.', 'give' ),
+			'function'    => 'give_email_tag_reset_password_link',
+			'context'     => 'general',
+		),
+
 	);
 
 	// Apply give_email_tags filter
@@ -1228,4 +1235,88 @@ function __give_20_bc_str_type_email_tag_param( $tag_args ) {
 	}
 
 	return $tag_args;
+}
+
+/**
+ * Email template tag: {reset_password_link}
+ *
+ * @param array $tag_args   Array of arguments for email tags.
+ * @param int   $payment_id Donation ID.
+ *
+ * @since 2.0
+ *
+ * @return array
+ */
+function give_email_tag_reset_password_link( $tag_args, $payment_id ) {
+
+	$reset_password_url = '';
+
+	switch ( true ) {
+		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
+			$payment    = new Give_Payment( $tag_args['payment_id'] );
+			$payment_id = $payment->number;
+			break;
+		case give_check_variable( $tag_args, 'isset', 0, 'user_id' ):
+			$reset_password_url = give_get_reset_password_url( $tag_args['user_id'] );
+			break;
+	}
+
+	if( empty( $tag_args['email_content_type'] ) || 'text/html' === $tag_args['email_content_type'] ) {
+		// Generate link, if Email content type is html.
+		$reset_password_link = sprintf(
+			'<a href="%1$s" target="_blank">%2$s</a>',
+			esc_url( $reset_password_url ),
+			__( 'Reset your password &raquo;', 'give' )
+		);
+	} else{
+		$reset_password_link = sprintf(
+			'%1$s: %2$s',
+			__( 'Reset your password', 'give' ),
+			esc_url( $reset_password_url )
+		);
+	}
+
+	/**
+	 * Filter the {reset_password_link} email template tag output.
+	 *
+	 * @param int   $payment_id Donation ID.
+	 * @param array $tag_args   Email Tag arguments.
+	 *
+	 * @since 2.0
+	 */
+	return apply_filters(
+		'give_email_tag_reset_password_link',
+		$reset_password_link,
+		$payment_id,
+		$tag_args
+	);
+}
+
+/**
+ * Get Reset Password URL.
+ *
+ * @param $user_id
+ *
+ * @since 2.0
+ *
+ * @return mixed|string
+ */
+function give_get_reset_password_url( $user_id ) {
+	$reset_password_url = '';
+
+	// Proceed further only, if user_id exists.
+	if ( $user_id ) {
+
+		// Get User Object Details.
+		$user = get_user_by( 'ID', $user_id );
+
+		// Prepare Reset Password URL.
+		$reset_password_url = esc_url( add_query_arg( array(
+			'action' => 'rp',
+			'key' => get_password_reset_key( $user ),
+			'login' => $user->user_login,
+		), wp_login_url() ) );
+	}
+
+	return $reset_password_url;
 }

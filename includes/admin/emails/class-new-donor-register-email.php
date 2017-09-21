@@ -102,7 +102,6 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 		 * @return string
 		 */
 		public function setup_email_notification( $user_id, $user_data ) {
-			$this->recipient_email = $user_data['user_email'];
 			$this->send_email_notification( array(
 				'user_id' => $user_id,
 			) );

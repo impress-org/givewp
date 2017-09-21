@@ -19,9 +19,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Handles the donation form process.
  *
- * @access      private
- * @since       1.0
- * @return      false|null
+ * @access private
+ * @since  1.0
+ *
+ * @return false|null
  */
 function give_process_donation_form() {
 
@@ -32,7 +33,7 @@ function give_process_donation_form() {
 	 */
 	do_action( 'give_pre_process_donation' );
 
-	// Validate the form $_POST data
+	// Validate the form $_POST data.
 	$valid_data = give_donation_form_validate_fields();
 
 	/**
@@ -49,12 +50,12 @@ function give_process_donation_form() {
 
 	$is_ajax = isset( $_POST['give_ajax'] );
 
-	// Process the login form
+	// Process the login form.
 	if ( isset( $_POST['give_login_submit'] ) ) {
 		give_process_form_login();
 	}
 
-	// Validate the user
+	// Validate the user.
 	$user = give_get_donation_form_user( $valid_data );
 
 	if ( false === $valid_data || give_get_errors() || ! $user ) {
@@ -71,13 +72,13 @@ function give_process_donation_form() {
 		}
 	}
 
-	// If AJAX send back success to proceed with form submission
+	// If AJAX send back success to proceed with form submission.
 	if ( $is_ajax ) {
 		echo 'success';
 		give_die();
 	}
 
-	// After AJAX: Setup session if not using php_sessions
+	// After AJAX: Setup session if not using php_sessions.
 	if ( ! Give()->session->use_php_sessions() ) {
 		// Double-check that set_cookie is publicly accessible;
 		// we're using a slightly modified class-wp-sessions.php
@@ -88,7 +89,7 @@ function give_process_donation_form() {
 		}
 	}
 
-	// Setup user information
+	// Setup user information.
 	$user_info = array(
 		'id'         => $user['user_id'],
 		'email'      => $user['user_email'],
@@ -104,7 +105,7 @@ function give_process_donation_form() {
 		'0.00';
 	$purchase_key = strtolower( md5( $user['user_email'] . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) );
 
-	// Setup donation information
+	// Setup donation information.
 	$donation_data = array(
 		'price'        => $price,
 		'purchase_key' => $purchase_key,
@@ -116,7 +117,7 @@ function give_process_donation_form() {
 		'card_info'    => $valid_data['cc_info'],
 	);
 
-	// Add the user data for hooks
+	// Add the user data for hooks.
 	$valid_data['user'] = $user;
 
 	/**
@@ -132,7 +133,7 @@ function give_process_donation_form() {
 	 */
 	do_action( 'give_checkout_before_gateway', $_POST, $user_info, $valid_data );
 
-	// Sanity check for price
+	// Sanity check for price.
 	if ( ! $donation_data['price'] ) {
 		// Revert to manual
 		$donation_data['gateway'] = 'manual';
@@ -146,17 +147,17 @@ function give_process_donation_form() {
 	 */
 	$donation_data = apply_filters( 'give_donation_data_before_gateway', $donation_data, $valid_data );
 
-	// Setup the data we're storing in the donation session
+	// Setup the data we're storing in the donation session.
 	$session_data = $donation_data;
 
-	// Make sure credit card numbers are never stored in sessions
+	// Make sure credit card numbers are never stored in sessions.
 	unset( $session_data['card_info']['card_number'] );
 	unset( $session_data['post_data']['card_number'] );
 
 	// Used for showing data to non logged-in users after donation, and for other plugins needing donation data.
 	give_set_purchase_session( $session_data );
 
-	// Send info to the gateway for payment processing
+	// Send info to the gateway for payment processing.
 	give_send_to_gateway( $donation_data['gateway'], $donation_data );
 	give_die();
 
@@ -185,7 +186,7 @@ function give_check_logged_in_user_for_existing_email( $valid_data, $post ) {
 		$submitted_email = $valid_data['logged_in_user']['user_email'];
 		$donor           = new Give_Donor( get_current_user_id(), true );
 
-		// If this email address is not registered with this customer, see if it belongs to any other customer
+		// If this email address is not registered with this customer, see if it belongs to any other customer.
 		if (
 			$submitted_email !== $donor->email
 			&& ( is_array( $donor->emails ) && ! in_array( $submitted_email, $donor->emails ) )
@@ -262,7 +263,7 @@ add_action( 'wp_ajax_nopriv_give_process_donation_login', 'give_process_form_log
  */
 function give_donation_form_validate_fields() {
 
-	// Check if there is $_POST
+	// Check if there is $_POST.
 	if ( empty( $_POST ) ) {
 		return false;
 	}
@@ -271,17 +272,17 @@ function give_donation_form_validate_fields() {
 
 	// Start an array to collect valid data
 	$valid_data = array(
-		'gateway'          => give_donation_form_validate_gateway(), // Gateway fallback (amount is validated here)
-		'need_new_user'    => false,     // New user flag
-		'need_user_login'  => false,     // Login user flag
-		'logged_user_data' => array(),   // Logged user collected data
-		'new_user_data'    => array(),   // New user collected data
-		'login_user_data'  => array(),   // Login user collected data
-		'guest_user_data'  => array(),   // Guest user collected data
-		'cc_info'          => give_donation_form_validate_cc(),// Credit card info
+		'gateway'          => give_donation_form_validate_gateway(), // Gateway fallback (amount is validated here).
+		'need_new_user'    => false,     // New user flag.
+		'need_user_login'  => false,     // Login user flag.
+		'logged_user_data' => array(),   // Logged user collected data.
+		'new_user_data'    => array(),   // New user collected data.
+		'login_user_data'  => array(),   // Login user collected data.
+		'guest_user_data'  => array(),   // Guest user collected data.
+		'cc_info'          => give_donation_form_validate_cc(),// Credit card info.
 	);
 
-	// Validate Honeypot First
+	// Validate Honeypot First.
 	if ( ! empty( $_POST['give-honeypot'] ) ) {
 		give_set_error( 'invalid_honeypot', esc_html__( 'Honeypot field detected. Go away bad bot!', 'give' ) );
 	}
@@ -294,26 +295,15 @@ function give_donation_form_validate_fields() {
 		give_set_error( 'invalid_donation', __( 'This donation has been flagged as spam. Please try again.', 'give' ) );
 	}
 
-	// Validate agree to terms
+	// Validate agree to terms.
 	if ( give_is_terms_enabled( $form_id ) ) {
 		give_donation_form_validate_agree_to_terms();
-	}
-
-	// Stop processing donor registration, if donor registration is optional and donor can do guest checkout.
-	// If registration form username field is empty that means donor do not want to registration instead want guest checkout.
-	if (
-		! give_logged_in_only( $form_id )
-		&& isset( $_POST['give-purchase-var'] )
-		&& $_POST['give-purchase-var'] == 'needs-to-register'
-		&& empty( $_POST['give_user_login'] )
-	) {
-		unset( $_POST['give-purchase-var'] );
 	}
 
 	if ( is_user_logged_in() ) {
 		// Collect logged in user data.
 		$valid_data['logged_in_user'] = give_donation_form_validate_logged_in_user();
-	} elseif ( isset( $_POST['give-purchase-var'] ) && $_POST['give-purchase-var'] == 'needs-to-register' ) {
+	} elseif ( isset( $_POST['give-purchase-var'] ) && $_POST['give-purchase-var'] == 'needs-to-register' && ! empty( $_POST['give_create_account'] ) ) {
 		// Set new user registration as required.
 		$valid_data['need_new_user'] = true;
 		// Validate new user data.
@@ -613,6 +603,9 @@ function give_donation_form_validate_logged_in_user() {
  * @return      array
  */
 function give_donation_form_validate_new_user() {
+
+	$auto_generated_password = wp_generate_password();
+
 	// Default user data.
 	$default_user_data = array(
 		'give-form-id'           => '',
@@ -621,8 +614,8 @@ function give_donation_form_validate_new_user() {
 		'user_last'              => '',
 		'give_user_login'        => false,
 		'give_email'             => false,
-		'give_user_pass'         => false,
-		'give_user_pass_confirm' => false,
+		'give_user_pass'         => $auto_generated_password,
+		'give_user_pass_confirm' => $auto_generated_password,
 	);
 
 	// Get user data.
@@ -640,6 +633,9 @@ function give_donation_form_validate_new_user() {
 
 		// Get last name.
 		'user_last'  => $user_data['give_last'],
+
+		// Get Password.
+		'user_pass'  => $user_data['give_user_pass'],
 	);
 
 	// Loop through required fields and show error messages.
@@ -649,21 +645,12 @@ function give_donation_form_validate_new_user() {
 		}
 	}
 
-	// Check if we have an username to register.
-	if ( give_validate_username( $user_data['give_user_login'] ) ) {
-		$registering_new_user          = true;
-		$valid_user_data['user_login'] = $user_data['give_user_login'];
-	}
+	// Set Email as Username.
+	$valid_user_data['user_login'] = $user_data['give_email'];
 
 	// Check if we have an email to verify.
 	if ( give_validate_user_email( $user_data['give_email'], $registering_new_user ) ) {
 		$valid_user_data['user_email'] = $user_data['give_email'];
-	}
-
-	// Check password.
-	if ( give_validate_user_password( $user_data['give_user_pass'], $user_data['give_user_pass_confirm'], $registering_new_user ) ) {
-		// All is good to go.
-		$valid_user_data['user_pass'] = $user_data['give_user_pass'];
 	}
 
 	return $valid_user_data;

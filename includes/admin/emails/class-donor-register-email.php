@@ -73,12 +73,12 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 		 * @return string
 		 */
 		function get_default_email_message() {
-			$message = esc_attr__( 'Username: {username}', 'give' ) . "\r\n";
-			$message .= sprintf(
-				            esc_attr__( 'Password: %s', 'give' ),
-				            esc_attr__( '[Password entered during donation]', 'give' )
-			            ) . "\r\n";
+			$message = esc_attr__( 'Username: {username}', 'give' ) . "\r\n\r\n";
 
+			$message .= __( 'To reset your password, simply click the link below. That will take you to a web page where you can create a new password.', 'give' ) . "\r\n";
+			$message .= '{reset_password_link}' . "\r\n\r\n";
+
+			$message .= __( 'After resetting password, Please login to your account with link below.', 'give' ) . "\r\n";
 			$message .= '<a href="' . wp_login_url() . '"> ' . esc_attr__( 'Click Here to Login &raquo;', 'give' ) . '</a>' . "\r\n";
 
 			/**
