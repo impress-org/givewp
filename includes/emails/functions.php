@@ -463,7 +463,7 @@ function give_admin_email_user_donor_disconnection( $user_id, $donor_id ) {
 	A User has tried logging in using the donation form. But, User was unable to login due to User and Donor Profile disconnection.
 	
 	Do you want to reconnect User and Donor profile again?', 'give' ),
-		esc_url( admin_url() . 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor_id . '&reconnect_user=' . $user_id ),
+		esc_url( admin_url() . 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor_id . '&user_id=' . $user_id . '&give-message=reconnect-user' ),
 		__( 'Reconnect Now!', 'give' )
 	);
 
