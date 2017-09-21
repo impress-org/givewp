@@ -438,8 +438,8 @@ function give_payment_gateway_item_title( $payment_data ) {
  * @since       1.8.12
  *
  * @param array $donation_data
- * @param bool $name_and_email
- * @param int $length
+ * @param bool  $name_and_email
+ * @param int   $length
  *
  * @return string
  */
@@ -615,10 +615,10 @@ function give_is_host( $host = false ) {
  * @uses apply_filters() Calls 'give_deprecated_function_trigger_error' and expects boolean value of true to do
  *   trigger or false to not trigger error.
  *
- * @param string $function The function that was called.
- * @param string $version The plugin version that deprecated the function.
+ * @param string $function    The function that was called.
+ * @param string $version     The plugin version that deprecated the function.
  * @param string $replacement Optional. The function that should have been called.
- * @param array $backtrace Optional. Contains stack backtrace of deprecated function.
+ * @param array  $backtrace   Optional. Contains stack backtrace of deprecated function.
  */
 function _give_deprecated_function( $function, $version, $replacement = null, $backtrace = null ) {
 
@@ -629,9 +629,9 @@ function _give_deprecated_function( $function, $version, $replacement = null, $b
 	 *
 	 * @since 1.0
 	 *
-	 * @param string $function The function that was called.
+	 * @param string $function    The function that was called.
 	 * @param string $replacement Optional. The function that should have been called.
-	 * @param string $version The plugin version that deprecated the function.
+	 * @param string $version     The plugin version that deprecated the function.
 	 */
 	do_action( 'give_deprecated_function_run', $function, $replacement, $version );
 
@@ -892,12 +892,12 @@ if ( ! function_exists( 'array_column' ) ) {
 	 * Optionally, you may provide an $indexKey to index the values in the returned
 	 * array by the values from the $indexKey column in the input array.
 	 *
-	 * @param array $input A multi-dimensional array (record set) from which to pull
+	 * @param array      $input     A multi-dimensional array (record set) from which to pull
 	 *                              a column of values.
 	 * @param int|string $columnKey The column of values to return. This value may be the
 	 *                              integer key of the column you wish to retrieve, or it
 	 *                              may be the string key name for an associative array.
-	 * @param mixed $indexKey (Optional.) The column to use as the index/keys for
+	 * @param mixed      $indexKey  (Optional.) The column to use as the index/keys for
 	 *                              the returned array. This value may be the integer key
 	 *                              of the column, or it may be the string key name.
 	 *
@@ -1192,10 +1192,10 @@ function give_is_add_new_form_page() {
  *
  * @since 1.8.8
  *
- * @param int $id
+ * @param int    $id
  * @param string $meta_key
- * @param bool $single
- * @param bool $default
+ * @param bool   $single
+ * @param bool   $default
  *
  * @return mixed
  */
@@ -1228,7 +1228,7 @@ function give_get_meta( $id, $meta_key = '', $single = false, $default = false )
  *
  * @since 1.8.8
  *
- * @param int $id
+ * @param int    $id
  * @param string $meta_key
  * @param string $meta_value
  * @param string $prev_value
@@ -1251,7 +1251,7 @@ function give_update_meta( $id, $meta_key, $meta_value, $prev_value = '' ) {
  *
  * @since 1.8.8
  *
- * @param int $id
+ * @param int    $id
  * @param string $meta_key
  * @param string $meta_value
  *
@@ -1422,13 +1422,13 @@ function __give_v20_bc_table_details( $type ) {
  *
  */
 function give_remove_pages_from_search( $query ) {
+
 	if ( ! $query->is_admin && $query->is_search && $query->is_main_query() ) {
+
 		$transaction_failed = give_get_option( 'failure_page', 0 );
 		$success_page       = give_get_option( 'success_page', 0 );
-		$args               = apply_filters( 'give_remove_pages_from_search', array(
-			$transaction_failed,
-			$success_page
-		), $query );
+		$args               = apply_filters( 'give_remove_pages_from_search', array( $transaction_failed, $success_page ), $query );
+
 		$query->set( 'post__not_in', $args );
 	}
 }
@@ -1440,9 +1440,9 @@ add_action( 'pre_get_posts', 'give_remove_pages_from_search', 10, 1 );
  *
  * @since 1.8.13
  *
- * @param string $key The key to insert before.
- * @param array $array An array to insert in to.
- * @param string $new_key The key to insert.
+ * @param string       $key       The key to insert before.
+ * @param array        $array     An array to insert in to.
+ * @param string       $new_key   The key to insert.
  * @param array|string $new_value An value to insert.
  *
  * @return array The new array if the key exists, the passed array otherwise.
@@ -1470,9 +1470,9 @@ function give_array_insert_before( $key, array &$array, $new_key, $new_value ) {
  *
  * @since 1.8.13
  *
- * @param string $key The key to insert after.
- * @param array $array An array to insert in to.
- * @param string $new_key The key to insert.
+ * @param string       $key       The key to insert after.
+ * @param array        $array     An array to insert in to.
+ * @param string       $new_key   The key to insert.
  * @param array|string $new_value An value to insert.
  *
  * @return array The new array if the key exists, the passed array otherwise.

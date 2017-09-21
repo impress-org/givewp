@@ -1515,6 +1515,7 @@ User Login
   margin: 0 0 15px;
   position: relative; }
   [id*='give-form'] .give-login-account-wrap .give-login-message {
+    text-align: left;
     margin: 0;
     padding: 0; }
   [id*='give-form'] .give-login-account-wrap .give-loading-text {
