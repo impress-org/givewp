@@ -84,14 +84,7 @@ function give_edit_donor( $args ) {
 
 		$current_address = (array) get_user_meta( $donor_info['user_id'], '_give_user_address', true );
 
-		if ( false === $current_address ) {
-			$address['line1']   = isset( $donor_info['line1'] ) ? $donor_info['line1'] : '';
-			$address['line2']   = isset( $donor_info['line2'] ) ? $donor_info['line2'] : '';
-			$address['city']    = isset( $donor_info['city'] ) ? $donor_info['city'] : '';
-			$address['country'] = isset( $donor_info['country'] ) ? $donor_info['country'] : '';
-			$address['zip']     = isset( $donor_info['zip'] ) ? $donor_info['zip'] : '';
-			$address['state']   = isset( $donor_info['state'] ) ? $donor_info['state'] : '';
-		} else {
+		if ( is_array( $current_address ) && 0 < count( $current_address ) ) {
 			$current_address    = wp_parse_args( $current_address, array(
 				'line1',
 				'line2',
@@ -100,13 +93,21 @@ function give_edit_donor( $args ) {
 				'state',
 				'country',
 			) );
-			$address['line1']   = isset( $donor_info['line1'] ) ? $donor_info['line1'] : $current_address['line1'];
-			$address['line2']   = isset( $donor_info['line2'] ) ? $donor_info['line2'] : $current_address['line2'];
-			$address['city']    = isset( $donor_info['city'] ) ? $donor_info['city'] : $current_address['city'];
-			$address['country'] = isset( $donor_info['country'] ) ? $donor_info['country'] : $current_address['country'];
-			$address['zip']     = isset( $donor_info['zip'] ) ? $donor_info['zip'] : $current_address['zip'];
-			$address['state']   = isset( $donor_info['state'] ) ? $donor_info['state'] : $current_address['state'];
+			$address['line1']   = ! empty( $donor_info['line1'] ) ? $donor_info['line1'] : $current_address['line1'];
+			$address['line2']   = ! empty( $donor_info['line2'] ) ? $donor_info['line2'] : $current_address['line2'];
+			$address['city']    = ! empty( $donor_info['city'] ) ? $donor_info['city'] : $current_address['city'];
+			$address['country'] = ! empty( $donor_info['country'] ) ? $donor_info['country'] : $current_address['country'];
+			$address['zip']     = ! empty( $donor_info['zip'] ) ? $donor_info['zip'] : $current_address['zip'];
+			$address['state']   = ! empty( $donor_info['state'] ) ? $donor_info['state'] : $current_address['state'];
+		} else {
+			$address['line1']   = ! empty( $donor_info['line1'] ) ? $donor_info['line1'] : '';
+			$address['line2']   = ! empty( $donor_info['line2'] ) ? $donor_info['line2'] : '';
+			$address['city']    = ! empty( $donor_info['city'] ) ? $donor_info['city'] : '';
+			$address['country'] = ! empty( $donor_info['country'] ) ? $donor_info['country'] : '';
+			$address['zip']     = ! empty( $donor_info['zip'] ) ? $donor_info['zip'] : '';
+			$address['state']   = ! empty( $donor_info['state'] ) ? $donor_info['state'] : '';
 		}
+
 	}
 
 	// Sanitize the inputs
