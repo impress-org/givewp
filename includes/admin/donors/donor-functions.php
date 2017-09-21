@@ -99,7 +99,7 @@ function give_connect_user_donor_profile( $donor, $donor_data, $address ) {
 	 * @param array $donor_data The donor data.
 	 * @param array $address    The donor's address.
 	 */
-	do_action( 'give_pre_edit_donor', $donor_id, $donor_data, $address = array() );
+	do_action( 'give_pre_edit_donor', $donor_id, $donor_data, $address );
 
 	$output = array();
 
