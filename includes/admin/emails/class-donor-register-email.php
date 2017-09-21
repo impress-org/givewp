@@ -147,7 +147,7 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 					if ( ! $donor['info']['user_id'] ) {
 						continue;
 					}
-					$options[ $donor['info']['user_id'] ] = esc_html( '#' . $donor['info']['customer_id'] . ' - ' . $donor['info']['email'] );
+					$options[ $donor['info']['user_id'] ] = esc_html( '#' . $donor['info']['donor_id'] . ' - ' . $donor['info']['email'] );
 				}
 			}
 
