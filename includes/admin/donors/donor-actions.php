@@ -74,9 +74,6 @@ function give_edit_donor( $args ) {
 		}
 	}
 
-	// Record this for later.
-	$previous_user_id = $donor->user_id;
-
 	if ( give_get_errors() ) {
 		return false;
 	}
@@ -123,65 +120,7 @@ function give_edit_donor( $args ) {
 	$donor_data = array_map( 'sanitize_text_field', $donor_data );
 	$address    = array_map( 'sanitize_text_field', $address );
 
-	/**
-	 * Fires before editing a donor.
-	 *
-	 * @since 1.0
-	 *
-	 * @param int   $donor_id   The ID of the donor.
-	 * @param array $donor_data The donor data.
-	 * @param array $address    The donor's address.
-	 */
-	do_action( 'give_pre_edit_donor', $donor_id, $donor_data, $address );
-
-	$output = array();
-
-	if ( $donor->update( $donor_data ) ) {
-
-		if ( ! empty( $donor->user_id ) && $donor->user_id > 0 ) {
-			update_user_meta( $donor->user_id, '_give_user_address', $address );
-		}
-
-		// Update some donation meta if we need to.
-		$payments_array = explode( ',', $donor->payment_ids );
-
-		if ( $donor->user_id !== $previous_user_id ) {
-			foreach ( $payments_array as $payment_id ) {
-				give_update_payment_meta( $payment_id, '_give_payment_user_id', $donor->user_id );
-			}
-		}
-
-		// Fetch disconnected user id, if exists.
-		$disconnected_user_id = $donor->get_meta( '_give_disconnected_user_id', true );
-
-		// Flag User and Donor Disconnection.
-		delete_user_meta( $disconnected_user_id, '_give_is_donor_disconnected' );
-
-		// Check whether the disconnected user id and the reconnected user id are same or not.
-		// If both are same then delete user id store in donor meta.
-		if( $donor_info['user_id'] === $disconnected_user_id ) {
-			$donor->delete_meta( '_give_disconnected_user_id' );
-		}
-
-		$output['success']       = true;
-		$donor_data              = array_merge( $donor_data, $address );
-		$output['customer_info'] = $donor_data;
-
-	} else {
-
-		$output['success'] = false;
-
-	}
-
-	/**
-	 * Fires after editing a donor.
-	 *
-	 * @since 1.0
-	 *
-	 * @param int   $donor_id   The ID of the donor.
-	 * @param array $donor_data The donor data.
-	 */
-	do_action( 'give_post_edit_donor', $donor_id, $donor_data );
+	$output = give_connect_user_donor_profile( $donor, $donor_data, $address );
 
 	if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 		header( 'Content-Type: application/json' );
@@ -440,6 +379,7 @@ function give_disconnect_donor_user_id( $args ) {
 
 		// Set Donor Disconnection status true, if user and donor are disconnected with each other.
 		update_user_meta( $user_id, '_give_is_donor_disconnected', true );
+		update_user_meta( $user_id, '_give_disconnected_donor_id', $donor->id );
 		$donor->update_meta( '_give_disconnected_user_id', $user_id );
 
 		$output['success'] = true;
@@ -449,6 +389,8 @@ function give_disconnect_donor_user_id( $args ) {
 		$output['success'] = false;
 		give_set_error( 'give-disconnect-user-fail', __( 'Failed to disconnect user from donor.', 'give' ) );
 	}
+
+	$output['redirect'] = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' ) . $donor_id;
 
 	/**
 	 * Fires after disconnecting user ID from a donor.
