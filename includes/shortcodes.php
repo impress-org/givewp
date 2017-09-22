@@ -352,12 +352,12 @@ add_shortcode( 'give_profile_editor', 'give_profile_editor_shortcode' );
  * @return bool
  */
 function give_process_profile_editor_updates( $data ) {
-	// Profile field change request
+	// Profile field change request.
 	if ( empty( $_POST['give_profile_editor_submit'] ) && ! is_user_logged_in() ) {
 		return false;
 	}
 
-	// Nonce security
+	// Nonce security.
 	if ( ! wp_verify_nonce( $data['give_profile_editor_nonce'], 'give-profile-editor-nonce' ) ) {
 		return false;
 	}
@@ -411,8 +411,10 @@ function give_process_profile_editor_updates( $data ) {
 		give_set_error( 'empty_first_name', __( 'Please enter your first name.', 'give' ) );
 	}
 
-	// Make sure to validate user email for existing Donors.
-	give_validate_user_email( $email );
+	// Make sure to validate user email only if user changes email.
+	if( $old_user_data->data->user_email !== $email ) {
+		give_validate_user_email( $email, true );
+	}
 
 	// Make sure to validate passwords for existing Donors
 	give_validate_user_password( $data['give_new_user_pass1'], $data['give_new_user_pass2'] );
