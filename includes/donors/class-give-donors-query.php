@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.8.14
  */
-class Give_Donors_Query extends Give_Stats {
+class Give_Donors_Query {
 
 	/**
 	 * The args to pass to the give_get_donors() query
