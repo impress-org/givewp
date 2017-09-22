@@ -269,9 +269,9 @@ class Give_Donors_Query extends Give_Stats {
 				$emails_placeholder = array_fill( 0, $emails_count, '%s' );
 				$emails             = implode( ', ', $emails_placeholder );
 
-				$where .= $wpdb->prepare( " AND `email` IN( $emails ) ", $this->args['email'] );
+				$where .= $wpdb->prepare( " AND {$this->table_name}.email IN( $emails ) ", $this->args['email'] );
 			} else {
-				$where .= $wpdb->prepare( " AND `email` = %s ", $this->args['email'] );
+				$where .= $wpdb->prepare( " AND {$this->table_name}.email = %s ", $this->args['email'] );
 			}
 		}
 
