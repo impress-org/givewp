@@ -2243,11 +2243,11 @@ jQuery(window).resize(function () {
  */
 function give_render_responsive_tabs() {
 	var $setting_page_form = jQuery('.give-settings-page'),
-		$main_tab_nav = jQuery('h2.give-nav-tab-wrapper'),
+		$main_tab_nav = jQuery('.give-nav-tab-wrapper'),
 		setting_page_form_width = $setting_page_form.width(),
 		$sub_tab_nav_wrapper = jQuery('.give-sub-nav-tab-wrapper'),
 		$sub_tab_nav = jQuery('nav', $sub_tab_nav_wrapper),
-		$setting_tab_links = jQuery('h2.give-nav-tab-wrapper>a:not(give-not-tab)'),
+		$setting_tab_links = jQuery('.give-nav-tab-wrapper>a:not(give-not-tab)'),
 		$show_tabs = [],
 		$hide_tabs = [],
 		tab_width = 0;
