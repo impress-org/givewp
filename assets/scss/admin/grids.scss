@@ -36,7 +36,9 @@ $breakpoint-large: 60em; // 960px
 .give-grid-col-12 { width: $width; }
 
 @media only screen and (max-width: $breakpoint-small) {
-  .give-grid-row [class^="give-grid-col"] {
-    width: $width;
+  .give-grid-row {
+    [class^="give-grid-col"] {
+      width: $width;
+    }
   }
 }
