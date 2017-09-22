@@ -1350,10 +1350,11 @@ class Give_Donor {
 	}
 
 	/**
-	 * Retrieves first name of donor with backward compatibility
+	 * Retrieves first name of donor with backward compatibility.
 	 *
 	 * @since   2.0
-	 * @return  string
+	 *
+	 * @return string $first_name First Name of the donor.
 	 */
 	public function get_first_name() {
 		$first_name = $this->get_meta( '_give_donor_first_name');
@@ -1365,10 +1366,11 @@ class Give_Donor {
 	}
 
 	/**
-	 * Retrieves last name of donor with backward compatibility
+	 * Retrieves last name of donor with backward compatibility.
 	 *
 	 * @since   2.0
-	 * @return  string
+	 *
+	 * @return string $last_name Last Name of the donor.
 	 */
 	public function get_last_name() {
 		$first_name = $this->get_meta( '_give_donor_first_name');

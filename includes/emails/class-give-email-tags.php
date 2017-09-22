@@ -487,6 +487,16 @@ function give_email_tag_first_name( $tag_args ) {
 			$donor = new Give_Donor( $tag_args['user_id'], true );
 			$firstname = $donor->get_first_name();
 			break;
+
+		/**
+		 * Get Donor First Name from donor id
+		 *
+		 * @since 2.0
+		 */
+		case give_check_variable( $tag_args, 'isset', 0, 'donor_id' ):
+			$donor     = new Give_Donor( $tag_args['donor_id'] );
+			$firstname = $donor->get_first_name();
+			break;
 	}
 
 	/**
@@ -531,6 +541,16 @@ function give_email_tag_fullname( $tag_args ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'user_id' ):
 			$donor = new Give_Donor( $tag_args['user_id'], true );
 			$fullname  = trim( "{$donor->get_first_name()} {$donor->get_last_name()}" );
+			break;
+
+		/**
+		 * Get Donor Full Name from donor id
+		 *
+		 * @since 2.0
+		 */
+		case give_check_variable( $tag_args, 'isset', 0, 'donor_id' ):
+			$donor    = new Give_Donor( $tag_args['donor_id'] );
+			$fullname = trim( $donor->name );
 			break;
 	}
 
@@ -577,6 +597,19 @@ function give_email_tag_username( $tag_args ) {
 			$user_info = get_user_by( 'id', $tag_args['user_id'] );
 			$username  = $user_info->user_login;
 			break;
+
+		/**
+		 * Get Donor Username from donor id
+		 *
+		 * @since 2.0
+		 */
+		case give_check_variable( $tag_args, 'isset', 0, 'donor_id' ):
+			$donor = new Give_Donor( $tag_args['donor_id'] );
+			if ( ! empty( $donor->id ) && ! empty( $donor->user_id ) ) {
+				$user_info = get_user_by( 'id', $donor->user_id );
+				$username  = $user_info->user_login;
+			}
+			break;
 	}
 
 	/**
@@ -616,6 +649,17 @@ function give_email_tag_user_email( $tag_args ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'user_id' ):
 			$user_info = get_user_by( 'id', $tag_args['user_id'] );
 			$email     = $user_info->user_email;
+			break;
+
+
+		/**
+		 * Get Donor Email from donor id
+		 *
+		 * @since 2.0
+		 */
+		case give_check_variable( $tag_args, 'isset', 0, 'donor_id' ):
+			$donor = new Give_Donor( $tag_args['donor_id'] );
+			$email = $donor->email;
 			break;
 	}
 
