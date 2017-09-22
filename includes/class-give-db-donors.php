@@ -201,7 +201,7 @@ class Give_DB_Donors extends Give_DB {
 	}
 
 	/**
-	 * Delete a donor.
+	 * Delete a donor by user ID.
 	 *
 	 * NOTE: This should not be called directly as it does not make necessary changes to
 	 * the payment meta and logs. Use give_donor_delete() instead.
@@ -499,7 +499,7 @@ class Give_DB_Donors extends Give_DB {
 	 *
 	 * @param  array $args
 	 *
-	 * @return array|object|null Customers array or object. Null if not found.
+	 * @return array|object|null Donors array or object. Null if not found.
 	 */
 	public function get_donors( $args = array() ) {
 		/* @var WPDB $wpdb */

@@ -2141,7 +2141,7 @@ Responsiveness
   text-align: right; }
 
 #give-donation-overview .give-select-chosen {
-  width: 196px; }
+  width: 97%; }
 
 #give-edit-order-form .row {
   margin-top: 10px; }
@@ -2222,6 +2222,8 @@ input.give-price-field {
 
 @media screen and (min-width: 1200px) {
   #give-edit-order-form .column {
+    width: 33%; }
+  #give-order-address .column {
     width: 49%; }
   #give-donation-overview.columns-4 li.actions {
     width: 25%;
