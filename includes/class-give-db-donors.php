@@ -511,7 +511,7 @@ class Give_DB_Donors extends Give_DB {
 	 * @return array|object|null Donors array or object. Null if not found.
 	 */
 	public function get_donors( $args = array() ) {
-		$this->bc_v1814_params( $args );
+		$this->bc_1814_params( $args );
 
 		$cache_key = md5( 'give_donors_' . serialize( $args ) );
 
@@ -540,7 +540,7 @@ class Give_DB_Donors extends Give_DB {
 	 * @return int         Total number of donors.
 	 */
 	public function count( $args = array() ) {
-		$this->bc_v1814_params( $args );
+		$this->bc_1814_params( $args );
 		$args['count'] = true;
 
 		$cache_key = md5( 'give_donors_count' . serialize( $args ) );
@@ -609,7 +609,7 @@ class Give_DB_Donors extends Give_DB {
 	 *
 	 * @param $args
 	 */
-	private function bc_v1814_params( &$args ) {
+	private function bc_1814_params( &$args ) {
 		// Backward compatibility: user_id
 		if ( ! empty( $args['user_id'] ) ) {
 			$args['user'] = $args['user_id'];
