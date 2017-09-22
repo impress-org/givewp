@@ -88,16 +88,19 @@ class Give_Donors_Query extends Give_Stats {
 	public function __construct( $args = array() ) {
 		$defaults = array(
 			'number'     => 20,
+			'offset'     => 0,
 			'paged'      => 1,
 			'orderby'    => 'id',
 			'order'      => 'DESC',
 			'user'       => null,
+			'email'      => null,
 			'donor'      => null,
 			'meta_query' => array(),
 			'date_query' => array(),
 			's'          => null,
 			'fields'     => 'all', // Support donors (all fields) or valid column  as string or array list
 			'count'      => false,
+			// 'form'       => array(),
 		);
 
 		$this->args = wp_parse_args( $args, $defaults );
@@ -202,21 +205,8 @@ class Give_Donors_Query extends Give_Stats {
 			$this->args['number'] = 999999999999;
 		}
 
-		// Where clause for primary table.
-		$where = '';
+		$where = $this->get_where_query();
 
-		// Get sql query for meta.
-		if ( ! empty( $this->args['meta_query'] ) ) {
-			$meta_query_object = new WP_Meta_Query( $this->args['meta_query'] );
-			$meta_query        = $meta_query_object->get_sql(
-				$this->meta_type,
-				$this->table_name,
-				'id'
-			);
-			$where             = implode( '', $meta_query );
-		}
-
-		$where .= 'WHERE 1=1';
 
 		// Set offset.
 		if ( empty( $this->args['offset'] ) && ( 0 < $this->args['paged'] ) ) {
@@ -238,6 +228,91 @@ class Give_Donors_Query extends Give_Stats {
 			$fields = "COUNT({$this->table_name}.id)";
 		}
 
+		$orderby = $this->get_order_query();
+
+		return $wpdb->prepare(
+			"SELECT {$fields} FROM {$this->table_name} {$where} {$orderby} {$this->args['order']} LIMIT %d,%d;",
+			absint( $this->args['offset'] ),
+			absint( $this->args['number'] )
+		);
+	}
+
+	/**
+	 * Set query where clause.
+	 *
+	 * @since  1.8.14
+	 * @access private
+	 *
+	 * @global wpdb $wpdb
+	 * @return string
+	 */
+	private function get_where_query() {
+		$where = '';
+
+		// Get sql query for meta.
+		if ( ! empty( $this->args['meta_query'] ) ) {
+			$meta_query_object = new WP_Meta_Query( $this->args['meta_query'] );
+			$meta_query        = $meta_query_object->get_sql(
+				$this->meta_type,
+				$this->table_name,
+				'id'
+			);
+			$where             = implode( '', $meta_query );
+		}
+
+		$where .= 'WHERE 1=1';
+		$where .= $this->get_where_search();
+		$where .= $this->get_where_email();
+		$where .= $this->get_where_donor();
+		$where .= $this->get_where_user();
+		$where .= $this->get_where_date();
+
+		return $where;
+	}
+
+	/**
+	 * Set email where clause.
+	 *
+	 * @since  1.8.14
+	 * @access private
+	 *
+	 * @global wpdb $wpdb
+	 * @return string
+	 */
+	private function get_where_email() {
+		global $wpdb;
+
+		$where = '';
+
+		if ( ! empty( $this->args['email'] ) ) {
+
+			if ( is_array( $this->args['email'] ) ) {
+
+				$emails_count       = count( $this->args['email'] );
+				$emails_placeholder = array_fill( 0, $emails_count, '%s' );
+				$emails             = implode( ', ', $emails_placeholder );
+
+				$where .= $wpdb->prepare( " AND `email` IN( $emails ) ", $this->args['email'] );
+			} else {
+				$where .= $wpdb->prepare( " AND `email` = %s ", $this->args['email'] );
+			}
+		}
+
+		return $where;
+	}
+
+	/**
+	 * Set donor where clause.
+	 *
+	 * @since  1.8.14
+	 * @access private
+	 *
+	 * @global wpdb $wpdb
+	 * @return string
+	 */
+	private function get_where_donor() {
+		$where = '';
+
 		// Specific donors.
 		if ( ! empty( $this->args['donor'] ) ) {
 			if ( ! is_array( $this->args['donor'] ) ) {
@@ -248,11 +323,77 @@ class Give_Donors_Query extends Give_Stats {
 			$where .= " AND {$this->table_name}.id IN( {$log_ids} ) ";
 		}
 
+		return $where;
+	}
+
+	/**
+	 * Set date where clause.
+	 *
+	 * @since  1.8.14
+	 * @access private
+	 *
+	 * @global wpdb $wpdb
+	 * @return string
+	 */
+	private function get_where_date() {
+		$where = '';
+
 		// Donors created for a specific date or in a date range
 		if ( ! empty( $this->args['date_query'] ) ) {
-			$date_query_object = new WP_Date_Query( $this->args['date_query'], "{$this->table_name}.date_created" );
-			$where             .= $date_query_object->get_sql();
+			$date_query_object = new WP_Date_Query(
+				$this->args['date_query'],
+				"{$this->table_name}.date_created"
+			);
+
+			$where .= $date_query_object->get_sql();
 		}
+
+		return $where;
+	}
+
+	/**
+	 * Set search where clause.
+	 *
+	 * @since  1.8.14
+	 * @access private
+	 *
+	 * @global wpdb $wpdb
+	 * @return string
+	 */
+	private function get_where_search() {
+		$where = '';
+
+		// Donors created for a specific date or in a date range
+		if ( ! empty( $this->args['s'] ) && false !== strpos( $this->args['s'], ':' ) ) {
+			$search_parts = explode( ':', $this->args['s'] );
+
+			if ( ! empty( $search_parts[0] ) ) {
+				switch ( $search_parts[0] ) {
+					case 'name':
+						$where = " AND {$this->table_name}.name LIKE '%{$search_parts[1]}%' ";
+						break;
+
+					case 'note':
+						$where = " AND {$this->table_name}.notes LIKE '%{$search_parts[1]}%' ";
+						break;
+				}
+			}
+		}
+
+		return $where;
+	}
+
+	/**
+	 * Set user where clause.
+	 *
+	 * @since  1.8.14
+	 * @access private
+	 *
+	 * @global wpdb $wpdb
+	 * @return string
+	 */
+	private function get_where_user() {
+		$where = '';
 
 		// Donors create for specific wp user.
 		if ( ! empty( $this->args['user'] ) ) {
@@ -264,15 +405,37 @@ class Give_Donors_Query extends Give_Stats {
 			$where .= " AND {$this->table_name}.user_id IN( {$user_ids} ) ";
 		}
 
-		$this->args['orderby'] = ! array_key_exists( $this->args['orderby'], Give()->donors->get_columns() ) ? 'id' : $this->args['orderby'];
+		return $where;
+	}
+
+	/**
+	 * Set orderby query
+	 *
+	 * @since  1.8.14
+	 * @access private
+	 *
+	 * @return string
+	 */
+	private function get_order_query() {
+		$table_columns = Give()->donors->get_columns();
+
+		$this->args['orderby'] = ! array_key_exists( $this->args['orderby'], $table_columns ) ?
+			'id' :
+			$this->args['orderby'];
 
 		$this->args['orderby'] = esc_sql( $this->args['orderby'] );
 		$this->args['order']   = esc_sql( $this->args['order'] );
 
-		return $wpdb->prepare(
-			"SELECT {$fields} FROM {$this->table_name} {$where} ORDER BY {$this->table_name}.{$this->args['orderby']} {$this->args['order']} LIMIT %d,%d;",
-			absint( $this->args['offset'] ),
-			absint( $this->args['number'] )
-		);
+		switch ( $table_columns[ $this->args['orderby'] ] ) {
+			case '%d':
+			case '%f':
+				$query = "ORDER BY {$this->table_name}.{$this->args['orderby']}+0";
+				break;
+
+			default:
+				$query = "ORDER BY {$this->table_name}.{$this->args['orderby']}";
+		}
+
+		return $query;
 	}
 }
