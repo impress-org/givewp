@@ -244,7 +244,7 @@ function give_receipt_shortcode( $atts ) {
 
 	$email_access = give_get_option( 'email_access' );
 
-	// No payment_key found & Email Access is Turned on:
+	// No payment_key found & Email Access is Turned on.
 	if ( ! isset( $payment_key ) && give_is_setting_enabled( $email_access ) && ! Give()->email_access->token_exists ) {
 
 		ob_start();
@@ -416,14 +416,14 @@ function give_process_profile_editor_updates( $data ) {
 		give_validate_user_email( $email, true );
 	}
 
-	// Make sure to validate passwords for existing Donors
+	// Make sure to validate passwords for existing Donors.
 	give_validate_user_password( $data['give_new_user_pass1'], $data['give_new_user_pass2'] );
 
-	// Check for errors
+	// Check for errors.
 	$errors = give_get_errors();
 
 	if ( $errors ) {
-		// Send back to the profile editor if there are errors
+		// Send back to the profile editor if there are errors.
 		wp_redirect( $data['give_redirect'] );
 		give_die();
 	}
@@ -434,7 +434,7 @@ function give_process_profile_editor_updates( $data ) {
 	Give()->donor_meta->update_meta( $donor->id, '_give_donor_first_name', $first_name );
 	Give()->donor_meta->update_meta( $donor->id, '_give_donor_last_name', $last_name );
 
-	// Update the user
+	// Update the user.
 	$meta    = update_user_meta( $user_id, '_give_user_address', $address );
 	$updated = wp_update_user( $userdata );
 
