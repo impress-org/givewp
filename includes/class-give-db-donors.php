@@ -490,14 +490,12 @@ class Give_DB_Donors extends Give_DB {
 			$donor = new Give_Donors_Query( $args );
 			$donor = $donor->get_donors();
 
-			if ( ! empty( $donor ) ) {
-				return $donor;
+			if ( empty( $donor ) ) {
+				return false;
 			}
-
-			return false;
 		}
 
-		return $donor;
+		return current( $donor );
 	}
 
 	/**
