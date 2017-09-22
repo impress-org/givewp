@@ -167,29 +167,6 @@ class Give_Donors_Query extends Give_Stats {
 	}
 
 	/**
-	 * Search
-	 *
-	 * @since  1.8.14
-	 * @access public
-	 *
-	 * @return void
-	 */
-	public function search() {
-
-		if ( ! isset( $this->args['s'] ) ) {
-			return;
-		}
-
-		$search = trim( $this->args['s'] );
-
-		if ( empty( $search ) ) {
-			return;
-		}
-
-		// @todo setup search logic
-	}
-
-	/**
 	 * Get sql query from queried array.
 	 *
 	 * @since  2.0
