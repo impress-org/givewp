@@ -518,22 +518,41 @@ class Give_Notices {
 			return '';
 		}
 
+		/**
+		 * Change auto_dismissible to dismissible and set the value to true
+		 *
+		 * @since 1.8.14
+		 */
 		$default_notice_args = array(
-			'auto_dismissible' => false,
+			'dismissible' => true,
 			'dismiss_interval' => 5000,
 		);
 
 		$notice_args = wp_parse_args( $notice_args, $default_notice_args );
 
+		/**
+		 * Added to give support to backward compatibility to auto_dismissible.
+		 * Check if auto_dismissible is set and it true then unset and change dismissible parameter value to auto
+		 *
+		 * @since 1.8.14
+		 */
+		if ( isset( $notice_args['auto_dismissible'] ) ) {
+			if ( ! empty( $notice_args['auto_dismissible'] ) ) {
+				$notice_args['dismissible'] = 'auto';
+			}
+			// unset auto_dismissible as it has being deprecated.
+			unset( $notice_args['auto_dismissible'] );
+		}
+
 		// Note: we will remove give_errors class in future.
 		$error = sprintf(
 			'<div class="give_notices give_errors" id="give_error_%1$s">
-						<p class="give_error give_notice give_%1$s" data-auto-dismissible="%2$d" data-dismiss-interval="%3$d">
-							%4$s
-						</p>
-					</div>',
+				<p class="give_error give_notice give_%1$s" data-dismissible="%2$s" data-dismiss-interval="%3$d">
+					%4$s
+				</p>
+			</div>',
 			$notice_type,
-			absint( $notice_args['auto_dismissible'] ),
+			give_clean( $notice_args['auto_dismissible'] ),
 			absint( $notice_args['dismiss_interval'] ),
 			$message
 		);
