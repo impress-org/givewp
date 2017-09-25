@@ -2536,6 +2536,15 @@ input.give-price-field {
 .delete-donor {
   text-align: center; }
 
+.give-lock-block {
+  margin-left: -25px;
+  text-decoration: none;
+  font-size: 14px;
+  margin-right: 3px; }
+  .give-lock-block i {
+    color: #000000;
+    font-size: 14px; }
+
 /**
  * Give Admin Buttons SCSS
  *

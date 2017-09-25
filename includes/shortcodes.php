@@ -244,7 +244,7 @@ function give_receipt_shortcode( $atts ) {
 
 	$email_access = give_get_option( 'email_access' );
 
-	// No payment_key found & Email Access is Turned on:
+	// No payment_key found & Email Access is Turned on.
 	if ( ! isset( $payment_key ) && give_is_setting_enabled( $email_access ) && ! Give()->email_access->token_exists ) {
 
 		ob_start();
@@ -352,12 +352,12 @@ add_shortcode( 'give_profile_editor', 'give_profile_editor_shortcode' );
  * @return bool
  */
 function give_process_profile_editor_updates( $data ) {
-	// Profile field change request
+	// Profile field change request.
 	if ( empty( $_POST['give_profile_editor_submit'] ) && ! is_user_logged_in() ) {
 		return false;
 	}
 
-	// Nonce security
+	// Nonce security.
 	if ( ! wp_verify_nonce( $data['give_profile_editor_nonce'], 'give-profile-editor-nonce' ) ) {
 		return false;
 	}
@@ -375,6 +375,7 @@ function give_process_profile_editor_updates( $data ) {
 	$state        = ( isset( $data['give_address_state'] ) ? sanitize_text_field( $data['give_address_state'] ) : '' );
 	$zip          = ( isset( $data['give_address_zip'] ) ? sanitize_text_field( $data['give_address_zip'] ) : '' );
 	$country      = ( isset( $data['give_address_country'] ) ? sanitize_text_field( $data['give_address_country'] ) : '' );
+	$full_name    = trim("{$first_name} {$last_name}");
 
 	$userdata = array(
 		'ID'           => $user_id,
@@ -404,34 +405,36 @@ function give_process_profile_editor_updates( $data ) {
 	 */
 	do_action( 'give_pre_update_user_profile', $user_id, $userdata );
 
-	// Make sure to validate passwords for existing Donors
-	give_validate_user_password( $data['give_new_user_pass1'], $data['give_new_user_pass2'] );
-
-	if ( empty( $email ) ) {
-		// Make sure email should not be empty.
-		give_set_error( 'email_empty', __( 'The email you entered is empty.', 'give' ) );
-
-	} else if ( ! is_email( $email ) ) {
-		// Make sure email should be valid.
-		give_set_error( 'email_not_valid', __( 'The email you entered is not valid. Please use another', 'give' ) );
-
-	} else if ( $email != $old_user_data->user_email ) {
-		// Make sure the new email doesn't belong to another user
-		if ( email_exists( $email ) ) {
-			give_set_error( 'email_exists', __( 'The email you entered belongs to another user. Please use another.', 'give' ) );
-		}
+	// Make sure to validate first name of existing donors.
+	if ( empty( $first_name ) ) {
+		// Empty First Name.
+		give_set_error( 'empty_first_name', __( 'Please enter your first name.', 'give' ) );
 	}
 
-	// Check for errors
+	// Make sure to validate user email only if user changes email.
+	if( $old_user_data->data->user_email !== $email ) {
+		give_validate_user_email( $email, true );
+	}
+
+	// Make sure to validate passwords for existing Donors.
+	give_validate_user_password( $data['give_new_user_pass1'], $data['give_new_user_pass2'] );
+
+	// Check for errors.
 	$errors = give_get_errors();
 
 	if ( $errors ) {
-		// Send back to the profile editor if there are errors
+		// Send back to the profile editor if there are errors.
 		wp_redirect( $data['give_redirect'] );
 		give_die();
 	}
 
-	// Update the user
+	// Update Donor First Name and Last Name.
+	$donor   = Give()->donors->get_donor_by( 'user_id', $user_id );
+	Give()->donors->update( $donor->id, array( 'name' => $full_name ) );
+	Give()->donor_meta->update_meta( $donor->id, '_give_donor_first_name', $first_name );
+	Give()->donor_meta->update_meta( $donor->id, '_give_donor_last_name', $last_name );
+
+	// Update the user.
 	$meta    = update_user_meta( $user_id, '_give_user_address', $address );
 	$updated = wp_update_user( $userdata );
 

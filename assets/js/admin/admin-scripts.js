@@ -130,13 +130,13 @@ var give_setting_edit = false;
 		// Replace options with search results
 		$( document.body ).on( 'keyup', '.give-select.chosen-container .chosen-search input, .give-select.chosen-container .search-field input', function( e ) {
 
-			var val = $( this ).val(),
-				$container = $( this ).closest( '.give-select-chosen' ),
-				select = $container.prev(),
-				$search_field = $container.find( 'input[type="text"]' ),
-				variations = $container.hasClass( 'variations' ),
-				lastKey = e.which,
-				search_type = 'give_forms_search';
+			var val           = $(this).val(),
+				$container    = $(this).closest('.give-select-chosen'),
+				select        = $container.prev(),
+				$search_field = $container.find('input[type="text"]'),
+				variations    = $container.hasClass('variations'),
+				lastKey       = e.which,
+				search_type   = 'give_forms_search';
 
 			// Detect if we have a defined search type, otherwise default to donation forms.
 			if ( $container.prev().data( 'search-type' ) ) {
@@ -188,9 +188,9 @@ var give_setting_edit = false;
 			typingTimer = setTimeout(
 				function() {
 					$.ajax({
-						type: 'GET',
-						url: ajaxurl,
-						data: {
+						type      : 'GET',
+						url       : ajaxurl,
+						data      : {
 							action: search_type,
 							s: val
 						},
@@ -1112,54 +1112,66 @@ var give_setting_edit = false;
 	/**
 	 * Donor management screen JS
 	 */
-	var Give_Donor = {
+	var GiveDonor = {
 
-		init: function () {
-			this.edit_donor();
+		init: function() {
+			this.editDonor();
 			this.add_email();
-			this.remove_user();
-			this.cancel_edit();
+			this.removeUser();
+			this.cancelEdit();
 			this.change_country();
 			this.add_note();
 			this.delete_checked();
+
+			$( 'body' ).on( 'click', '.give-lock-block', this.unlockDonorFields );
 		},
-		edit_donor: function () {
-			$('body').on('click', '#edit-donor', function (e) {
+
+		unlockDonorFields: function( e ) {
+			alert( give_vars.unlock_donor_fields );
+			e.preventDefault();
+		},
+
+		editDonor: function() {
+			$( 'body' ).on( 'click', '#edit-donor', function( e ) {
 				e.preventDefault();
-				$('#give-donor-card-wrapper .editable').hide();
-				$('#give-donor-card-wrapper .edit-item').fadeIn().css('display', 'block');
-				$('.give-select-chosen').css('width', '100%');
+				$( '#give-donor-card-wrapper .editable' ).hide();
+				$( '#give-donor-card-wrapper .edit-item' ).fadeIn().css( 'display', 'block' );
+				$( '.give-select-chosen' ).css( 'width', '100%' );
 			});
 		},
-		remove_user: function () {
-			$('body').on('click', '#disconnect-donor', function (e) {
+
+		removeUser: function() {
+			$( 'body' ).on( 'click', '#disconnect-donor', function( e ) {
 				e.preventDefault();
 
-				if (!confirm(give_vars.disconnect_user)) {
+				if ( ! confirm( give_vars.disconnect_user ) ) {
 					return false;
 				}
-				var customer_id = $('input[name="customerinfo[id]"]').val();
+
+				var donorID = $( 'input[name="customerinfo[id]"]' ).val();
 
 				var postData = {
 					give_action: 'disconnect-userid',
-					customer_id: customer_id,
-					_wpnonce: $('#edit-donor-info #_wpnonce').val()
+					customer_id: donorID,
+					_wpnonce   : $( '#edit-donor-info #_wpnonce' ).val()
 				};
 
-				$.post(ajaxurl, postData, function (response) {
+				$.post( ajaxurl, postData, function( response ) {
 					window.location.href = window.location.href;
 				}, 'json');
 
 			});
 		},
-		cancel_edit: function () {
-			$('body').on('click', '#give-edit-donor-cancel', function (e) {
+
+		cancelEdit: function() {
+			$( 'body' ).on( 'click', '#give-edit-donor-cancel', function( e ) {
 				e.preventDefault();
-				$('#give-donor-card-wrapper .edit-item').hide();
-				$('#give-donor-card-wrapper .editable').show();
-				$('.give_user_search_results').html('');
+				$( '#give-donor-card-wrapper .edit-item' ).hide();
+				$( '#give-donor-card-wrapper .editable' ).show();
+				$( '.give_user_search_results' ).html( '' );
 			});
 		},
+
 		change_country: function () {
 			$('select[name="customerinfo[country]"]').change(function () {
 				var $this = $(this);
@@ -2033,7 +2045,7 @@ var give_setting_edit = false;
 		Give_Edit_Donation.init();
 		Give_Settings.init();
 		Give_Reports.init();
-		Give_Donor.init();
+		GiveDonor.init();
 		API_Screen.init();
 		Give_Export.init();
 		Give_Updates.init();
@@ -2117,8 +2129,8 @@ var give_setting_edit = false;
 			thousand_separator       = give_vars.thousands_separator,
 			decimal_separator        = give_vars.decimal_separator,
 			thousand_separator_count = '',
-			alphabet_count = '',
-			price_string = '',
+			alphabet_count           = '',
+			price_string             = '',
 
 			// Thousand separation limit in price depends upon decimal separator symbol.
 			// If thousand separator is equal to decimal separator then price does not have more then 1 thousand separator otherwise limit is zero.
@@ -2131,8 +2143,8 @@ var give_setting_edit = false;
 			};
 
 			// Count thousand separator in price string.
-			thousand_separator_count = ( $(this).val().match(new RegExp(thousand_separator, 'g')) || [] ).length;
-			alphabet_count = ( $(this).val().match(new RegExp('[a-z]', 'g')) || [] ).length;
+			thousand_separator_count = ( $( this ).val().match( new RegExp( thousand_separator, 'g' ) ) || [] ).length;
+			alphabet_count           = ( $( this ).val().match( new RegExp( '[a-z]', 'g' ) ) || [] ).length;
 
 			// Show qtip conditionally if thousand separator detected on price string.
 			if (( -1 !== $(this).val().indexOf(thousand_separator) ) && ( thousand_separator_limit < thousand_separator_count ) ) {
@@ -2242,15 +2254,15 @@ jQuery(window).resize(function () {
  * Render responsive tabs
  */
 function give_render_responsive_tabs() {
-	var $setting_page_form = jQuery('.give-settings-page'),
-		$main_tab_nav = jQuery('.give-nav-tab-wrapper'),
+	var $setting_page_form      = jQuery('.give-settings-page'),
+		$main_tab_nav           = jQuery('h2.give-nav-tab-wrapper'),
 		setting_page_form_width = $setting_page_form.width(),
-		$sub_tab_nav_wrapper = jQuery('.give-sub-nav-tab-wrapper'),
-		$sub_tab_nav = jQuery('nav', $sub_tab_nav_wrapper),
-		$setting_tab_links = jQuery('.give-nav-tab-wrapper>a:not(give-not-tab)'),
-		$show_tabs = [],
-		$hide_tabs = [],
-		tab_width = 0;
+		$sub_tab_nav_wrapper    = jQuery('.give-sub-nav-tab-wrapper'),
+		$sub_tab_nav            = jQuery('nav', $sub_tab_nav_wrapper),
+		$setting_tab_links      = jQuery('h2.give-nav-tab-wrapper>a:not(give-not-tab)'),
+		$show_tabs              = [],
+		$hide_tabs              = [],
+		tab_width               = 0;
 
 	if (600 < jQuery(window).outerWidth()) {
 		tab_width = 200;
@@ -2292,7 +2304,7 @@ function give_render_responsive_tabs() {
 		// Remove current tab from sub menu and add this to main menu if exist and get last tab from main menu and add this to sub menu.
 		if ($hide_tabs.length && ( -1 != window.location.search.indexOf('&tab=') )) {
 			var $current_tab_nav = {},
-				query_params = get_url_params();
+				query_params     = get_url_params();
 
 			$hide_tabs = $hide_tabs.filter(function ($tab_link) {
 				var is_current_nav_item = ( -1 != parseInt($tab_link.attr('href').indexOf('&tab=' + query_params['tab'])) );

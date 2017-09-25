@@ -100,6 +100,12 @@ function give_run_install() {
 
 	flush_rewrite_rules();
 
+	// Create the donor databases.
+	$donors_db = new Give_DB_Donors();
+	$donors_db->create_table();
+	$donor_meta = new Give_DB_Donor_Meta();
+	$donor_meta->create_table();
+
 	// Check for PHP Session support, and enable if available.
 	$give_sessions = new Give_Session();
 	$give_sessions->use_php_sessions();
@@ -126,7 +132,8 @@ function give_run_install() {
 			'v20_upgrades_form_metadata',
 			'v20_logs_upgrades',
 			'v20_move_metadata_into_new_table',
-			'v20_rename_donor_tables'
+			'v20_rename_donor_tables',
+			'v20_upgrades_donor_name'
 		);
 
 		foreach ( $upgrade_routines as $upgrade ) {
