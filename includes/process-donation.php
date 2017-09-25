@@ -945,6 +945,15 @@ function give_get_donation_form_user( $valid_data = array() ) {
 		update_user_meta( $user['user_id'], '_give_user_address', $user['address'] );
 	}
 
+	$is_donor_disconnected = get_user_meta( $user['user_id'], '_give_is_donor_disconnected', true );
+	if( is_user_logged_in() && $is_donor_disconnected ) {
+		// Donor and User are disconnected.
+		give_set_error(
+			'donor_user_disconnected',
+			__( 'Your Donor and User profile are no longer connected. Please contact the site administrator.', 'give' )
+		);
+	}
+
 	// Return valid user.
 	return $user;
 }
