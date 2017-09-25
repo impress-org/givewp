@@ -50,7 +50,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 							</td>
 							<td>
 								<a class="button" href="<?php echo add_query_arg( array( 'importer-type' => 'import_donations' ) ); ?>">
-									<?php esc_html_e( 'Generate CSV', 'give' ); ?>
+									<?php esc_html_e( 'Import CSV', 'give' ); ?>
 								</a>
 							</td>
 						</tr>
