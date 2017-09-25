@@ -460,6 +460,7 @@ function give_add_past_donations_to_new_user( $user_id ) {
 	$email = get_the_author_meta( 'user_email', $user_id );
 
 	$payments = give_get_payments( array(
+		'output' => 'payments',
 		's' => $email,
 	) );
 
