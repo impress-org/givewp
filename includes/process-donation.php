@@ -716,22 +716,6 @@ function give_donation_form_validate_user_login() {
 				// All is correct.
 			} else {
 
-				// Check for Donor and User Disconnection.
-				$is_donor_disconnected = get_user_meta( $user_data->ID, '_give_is_donor_disconnected', true );
-				if( $is_donor_disconnected ) {
-
-					$disconnected_donor_id = get_user_meta( $user_data->ID, '_give_disconnected_donor_id', true );
-
-					// Send Email.
-					give_admin_email_user_donor_disconnection( $user_data->ID, $disconnected_donor_id );
-
-					// Donor and User are disconnected.
-					give_set_error(
-						'donor_user_disconnected',
-						__( 'Your Donor and User profile are no longer connected. Please contact site administrator.', 'give' )
-					);
-				}
-
 				// Repopulate the valid user data array.
 				$valid_user_data = array(
 					'user_id'    => $user_data->ID,
