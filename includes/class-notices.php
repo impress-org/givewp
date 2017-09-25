@@ -82,7 +82,13 @@ class Give_Notices {
 			array(
 				'id'                    => '',
 				'description'           => '',
-				'auto_dismissible'      => false,
+				/**
+				 * Add New Parameter and remove the auto_dismissible parameter.
+				 * Value: auto/true/false
+				 *
+				 * @since 1.8.14
+				 */
+				'dismissible'           => true,
 
 				// Value: error/warning/success/info/updated
 				'type'                  => 'error',
@@ -98,6 +104,20 @@ class Give_Notices {
 
 			)
 		);
+
+		/**
+		 * Added to give support to backward compatibility to auto_dismissible.
+		 * Check if auto_dismissible is set and it true then unset and change dismissible parameter value to auto
+		 *
+		 * @since 1.8.14
+		 */
+		if ( isset( $notice_args['auto_dismissible'] ) ) {
+			if ( ! empty( $notice_args['auto_dismissible'] ) ) {
+				$notice_args['dismissible'] = 'auto';
+			}
+			// unset auto_dismissible as it has being deprecated.
+			unset( $notice_args['auto_dismissible'] );
+		}
 
 		// Set extra dismiss links if any.
 		if ( false !== strpos( $notice_args['description'], 'data-dismiss-interval' ) ) {
@@ -157,7 +177,7 @@ class Give_Notices {
 
 			// Check if notice dismissible or not.
 			if ( ! self::$has_auto_dismissible_notice ) {
-				self::$has_auto_dismissible_notice = $notice['auto_dismissible'];
+				self::$has_auto_dismissible_notice = ( 'auto' === $notice['dismissible'] ? true : false );
 			}
 
 			// Check if notice dismissible or not.
@@ -167,12 +187,12 @@ class Give_Notices {
 
 			$css_id = ( false === strpos( $notice['id'], 'give' ) ? "give-{$notice['id']}" : $notice['id'] );
 
-			$css_class = "give-notice notice ". ( 'error' === (string) $notice['type'] ? 'non': 'is' ) ."-dismissible {$notice['type']} notice-{$notice['type']}";
+			$css_class = "give-notice notice ". ( empty( $notice['dismissible'] ) ? 'non': 'is' ) ."-dismissible {$notice['type']} notice-{$notice['type']}";
 			$output    .= sprintf(
-				'<div id="%1$s" class="%2$s" data-auto-dismissible="%3$s" data-dismissible-type="%4$s" data-dismiss-interval="%5$s" data-notice-id="%6$s" data-security="%7$s" data-dismiss-interval-time="%8$s">' . " \n",
+				'<div id="%1$s" class="%2$s" data-dismissible="%3$s" data-dismissible-type="%4$s" data-dismiss-interval="%5$s" data-notice-id="%6$s" data-security="%7$s" data-dismiss-interval-time="%8$s">' . " \n",
 				$css_id,
 				$css_class,
-				$notice['auto_dismissible'],
+				$notice['dismissible'],
 				$notice['dismissible_type'],
 				$notice['dismiss_interval'],
 				$notice['id'],
@@ -229,7 +249,7 @@ class Give_Notices {
 					// auto hide setting message in 5 seconds.
 					window.setTimeout(
 						function () {
-							jQuery('.give-notice[data-auto-dismissible="1"]').slideUp();
+							jQuery('.give-notice[data-dismissible="auto"]').slideUp();
 						},
 						5000
 					);
