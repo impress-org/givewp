@@ -320,7 +320,7 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
 		}
 	}
 
-// update the report
+	// update the report
 	give_import_donation_report_update( $report );
 
 	return $donor_data;
@@ -422,10 +422,10 @@ function give_import_donation_form_options() {
 /**
  * Import CSV in DB
  *
- * @param int $file_id CSV id
- * @param array $mapto Map csv to meta key.
- * @param int $start Start from which csv line.
- * @param int $end End from which csv line.
+ * @param int   $file_id CSV id
+ * @param array $mapto   Map csv to meta key.
+ * @param int   $start   Start from which csv line.
+ * @param int   $end     End from which csv line.
  */
 function give_get_donation_data_from_csv( $file_id, $start, $end, $delimiter = ',' ) {
 	$raw_data = array();
@@ -463,9 +463,9 @@ function give_log_user_in_on_register_callback( $value ) {
  *
  * @since 1.8.13
  *
- * @param array $raw_key Setup bu user at step 2.
- * @param array $row_data Feilds that are being imported from CSV
- * @param array $main_key First row from the CSV
+ * @param array $raw_key        Setup bu user at step 2.
+ * @param array $row_data       Feilds that are being imported from CSV
+ * @param array $main_key       First row from the CSV
  * @param array $import_setting Contain the global variable.
  */
 function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array(), $import_setting = array() ) {
@@ -719,9 +719,10 @@ function give_donation_import_insert_default_payment_note( $payment_id ) {
  */
 function give_import_page_url( $parameter = array() ) {
 	$defalut_query_arg = array(
-		'post_type' => 'give_forms',
-		'page'      => 'give-tools',
-		'tab'       => 'import',
+		'post_type'     => 'give_forms',
+		'page'          => 'give-tools',
+		'tab'           => 'import',
+		'importer-type' => 'import_donations',
 	);
 	$import_query_arg  = wp_parse_args( $parameter, $defalut_query_arg );
 

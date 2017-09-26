@@ -141,6 +141,7 @@ form.give-form {
 	.give-hidden {
 		display: none;
 	}
+
 	.give-tooltip {
 		margin: 0 3px;
 		padding: 0;
@@ -153,7 +154,6 @@ form.give-form {
 		}
 	}
 
-	legend,
 	h3.give-section-break,
 	h4.give-section-break {
 		font-size: 1.15em;
@@ -167,6 +167,12 @@ form.give-form {
 			font-style: italic;
 			font-weight: normal;
 		}
+	}
+
+	legend {
+		font-size: 1.15em;
+		font-weight: bold;
+		padding: 0 5px;
 	}
 
 	//Form Layout

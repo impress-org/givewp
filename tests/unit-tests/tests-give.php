@@ -92,6 +92,7 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/emails/template.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/emails/actions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-notices.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/donors/class-give-donors-query.php' );
 
 
 		/** Check Admin Exist */

@@ -589,6 +589,58 @@
   width: 14px;
   line-height: 20px; }
 
+.give-grid-row {
+  position: relative;
+  width: 100%; }
+  .give-grid-row [class^="give-grid-col"] {
+    float: right;
+    margin: 0.5rem 1%;
+    min-height: 0.125rem; }
+  .give-grid-row::after {
+    content: "";
+    display: table;
+    clear: both; }
+
+.give-grid-col-1 {
+  width: 6.33333%; }
+
+.give-grid-col-2 {
+  width: 14.66667%; }
+
+.give-grid-col-3 {
+  width: 23%; }
+
+.give-grid-col-4 {
+  width: 31.33333%; }
+
+.give-grid-col-5 {
+  width: 39.66667%; }
+
+.give-grid-col-6 {
+  width: 48%; }
+
+.give-grid-col-7 {
+  width: 56.33333%; }
+
+.give-grid-col-8 {
+  width: 64.66667%; }
+
+.give-grid-col-9 {
+  width: 73%; }
+
+.give-grid-col-10 {
+  width: 81.33333%; }
+
+.give-grid-col-11 {
+  width: 89.66667%; }
+
+.give-grid-col-12 {
+  width: 98%; }
+
+@media only screen and (max-width: 33.75em) {
+  .give-grid-row [class^="give-grid-col"] {
+    width: 98%; } }
+
 /**
  * Give Forms SCSS
  *

@@ -33,14 +33,6 @@ class Give_DB_Donor_Meta extends Give_DB_Meta {
 	 */
 	public $meta_type = 'donor';
 
-	/**
-	 * Meta supports.
-	 *
-	 * @since  2.0
-	 * @access protected
-	 * @var array
-	 */
-	protected $supports = array();
 
 	/**
 	 * Give_DB_Donor_Meta constructor.
@@ -85,7 +77,7 @@ class Give_DB_Donor_Meta extends Give_DB_Meta {
 	 * @access  private
 	 * @since   1.8.14
 	 *
-	 * @param   int    $donor_id Donor ID.
+	 * @param   int $donor_id Donor ID.
 	 *
 	 * @return  bool  False for failure. True for success.
 	 */
