@@ -59,6 +59,32 @@ class Give_Notices {
 		add_action( 'give_frontend_notices', array( $this, 'render_frontend_notices' ), 999 );
 		add_action( 'give_donation_form_before_personal_info', array( $this, 'render_frontend_notices' ) );
 		add_action( 'give_ajax_donation_errors', array( $this, 'render_frontend_notices' ) );
+
+		/**
+		 * Remove auto_dismissible and add backward compatibility.
+		 *
+		 * @since 1.8.14
+		 */
+		add_filter( 'give_register_notice_args', array( $this, 'give_notice_dismissible' ) );
+		add_filter( 'give_frontend_errors_args', array( $this, 'give_notice_dismissible' ) );
+		add_filter( 'give_frontend_notice_args', array( $this, 'give_notice_dismissible' ) );
+	}
+
+	/**
+	 * Added to give support to backward compatibility to auto_dismissible.
+	 * Check if auto_dismissible is set and it true then unset and change dismissible parameter value to auto
+	 *
+	 * @since 1.8.14
+	 */
+	function give_notice_dismissible( $args ) {
+		if ( isset( $args['auto_dismissible'] ) ) {
+			if ( ! empty( $args['auto_dismissible'] ) ) {
+				$args['dismissible'] = 'auto';
+			}
+			// unset auto_dismissible as it has been deprecated.
+			unset( $args['auto_dismissible'] );
+		}
+		return $args;
 	}
 
 	/**
@@ -106,18 +132,11 @@ class Give_Notices {
 		);
 
 		/**
-		 * Added to give support to backward compatibility to auto_dismissible.
-		 * Check if auto_dismissible is set and it true then unset and change dismissible parameter value to auto
+		 * Filter to modify Notice args before it get add
 		 *
 		 * @since 1.8.14
 		 */
-		if ( isset( $notice_args['auto_dismissible'] ) ) {
-			if ( ! empty( $notice_args['auto_dismissible'] ) ) {
-				$notice_args['dismissible'] = 'auto';
-			}
-			// unset auto_dismissible as it has been deprecated.
-			unset( $notice_args['auto_dismissible'] );
-		}
+		$notice_args = apply_filters( 'give_register_notice_args', $notice_args );
 
 		// Set extra dismiss links if any.
 		if ( false !== strpos( $notice_args['description'], 'data-dismiss-interval' ) ) {
@@ -490,18 +509,11 @@ class Give_Notices {
 				$notice_args = wp_parse_args( $error['notice_args'], $default_notice_args );
 
 				/**
-				 * Added to give support to backward compatibility to auto_dismissible.
-				 * Check if auto_dismissible is set and it true then unset and change dismissible parameter value to auto
+				 * Filter to modify Frontend Errors args before errors is display.
 				 *
 				 * @since 1.8.14
 				 */
-				if ( isset( $notice_args['auto_dismissible'] ) ) {
-					if ( ! empty( $notice_args['auto_dismissible'] ) ) {
-						$notice_args['dismissible'] = 'auto';
-					}
-					// unset auto_dismissible as it has been deprecated.
-					unset( $notice_args['auto_dismissible'] );
-				}
+				$notice_args = apply_filters( 'give_frontend_errors_args', $notice_args );
 
 				echo sprintf(
 					'<div class="give_error give_notice" id="give_error_%1$s" data-dismissible="%2$s" data-dismiss-interval="%3$d">
@@ -550,18 +562,11 @@ class Give_Notices {
 		$notice_args = wp_parse_args( $notice_args, $default_notice_args );
 
 		/**
-		 * Added to give support to backward compatibility to auto_dismissible.
-		 * Check if auto_dismissible is set and it true then unset and change dismissible parameter value to auto
+		 * Filter to modify Frontend notice args before notices is display.
 		 *
 		 * @since 1.8.14
 		 */
-		if ( isset( $notice_args['auto_dismissible'] ) ) {
-			if ( ! empty( $notice_args['auto_dismissible'] ) ) {
-				$notice_args['dismissible'] = 'auto';
-			}
-			// unset auto_dismissible as it has been deprecated.
-			unset( $notice_args['auto_dismissible'] );
-		}
+		$notice_args = apply_filters( 'give_frontend_notice_args', $notice_args );
 
 		// Note: we will remove give_errors class in future.
 		$error = sprintf(
