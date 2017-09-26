@@ -11,142 +11,159 @@
 // Donors Listing Page Style
 //--------------------------------------------------------------
 .give_forms_page_give-donors {
-  .wrap > h2 {
-	margin-bottom: 15px;
-  }
-
-  .nav-tab-wrapper .dashicons {
-    position: relative;
-    top:2px;
-    margin: 0 3px 0 0;
-  }
-
-  #give-donors-filter {
-	position: relative;
-	p.search-box {
-	  float: left;
-	  margin: 0;
+	.wrap > h2 {
+		margin-bottom: 15px;
 	}
-  }
 
-  .tablenav.top {
-	float: right;
-	clear: none;
-  }
+	.nav-tab-wrapper .dashicons {
+		position: relative;
+		top: 2px;
+		margin: 0 3px 0 0;
+	}
+
+	#give-donors-filter {
+		position: relative;
+		p.search-box {
+			float: left;
+			margin: 0;
+		}
+	}
+
+	.tablenav.top {
+		float: right;
+		clear: none;
+	}
 }
 
 //--------------------------------------------------------------
 // Donor Styles
 //--------------------------------------------------------------
 #give-donor-card-wrapper {
-  margin-left: -1px;
-  z-index: 2;
-  min-height: 200px;
+	margin-left: -1px;
+	z-index: 2;
+	min-height: 200px;
 
-
-  input {
-	font-weight: normal;
-  }
-
-  .donor-section {
-	border-bottom: 1px solid #eee;
-	margin-bottom: 10px;
-  }
-
-  .donor-section table {
-	margin-bottom: 0;
-  }
-
-  > div:first-child {
-	padding-top: 20px;
-  }
-
-  > div:last-child {
-	padding-bottom: 20px;
-	border: none;
-  }
-
-  //AVATAR
-  .avatar-wrap {
-	padding: 0 15px 15px 0;
-	text-align: center;
-	float: left;
-
-	img {
-	  border-radius: 3px;
+	input {
+		font-weight: normal;
 	}
 
-  }
-
-  a.delete {
-	text-decoration: none;
-	color: #ff0000;
-	margin-right: 5px;
-  }
-
-  //Donor Header (non-avatar content)
-  .donor-bio-header {
-
-	.donor-since {
-	  margin: 10px 0;
-	  font-size: 16px;
+	.donor-section {
+		border-bottom: 1px solid #eee;
+		margin-bottom: 10px;
 	}
 
-	.donor-id {
-      display: inline-block;
-	  font-size: 24px;
-	  font-weight: 600;
-	  margin-right: 10px;
+	.donor-section table {
+		margin-bottom: 0;
 	}
 
-    .donor-name-wrap {
-      display: inline-block;
-    }
-
-	.donor-edit-link {
-	  margin-bottom: 15px;
+	> div:first-child {
+		padding-top: 20px;
 	}
 
-  }
+	> div:last-child {
+		padding-bottom: 20px;
+		border: none;
+	}
 
+	//AVATAR
+	.avatar-wrap {
+		padding: 0 15px 15px 0;
+		text-align: center;
+		float: left;
+
+		img {
+			border-radius: 3px;
+		}
+
+	}
+
+	a.delete {
+		text-decoration: none;
+		color: #ff0000;
+		margin-right: 5px;
+	}
+
+	//Donor Header (non-avatar content)
+	.donor-bio-header {
+
+		.donor-since {
+			margin: 10px 0;
+			font-size: 16px;
+		}
+
+		.donor-id {
+			display: inline-block;
+			font-size: 24px;
+			font-weight: 600;
+			margin-right: 10px;
+		}
+
+		.donor-name-wrap {
+			display: inline-block;
+		}
+
+		.donor-edit-link {
+			margin-bottom: 15px;
+		}
+
+	}
+
+	// Address meta-box
+	.all-address{
+		[class^="give-grid-col"] {
+			min-height: 200px;
+		}
+
+		.address{
+			min-height: 200px;
+			border: 1px solid #dad9d9;
+			padding: 9px;
+			border-radius: 5px;
+		}
+	}
+
+	.add-new-address {
+		margin: 0.5rem 1% !important;
+	}
 }
 
 .donor-main-wrapper {
-  clear: both;
-  margin: 0 0 20px;
+	clear: both;
+	margin: 0 0 20px;
 
-  @media(max-width: 655px) {
-	width: 100%;
-  }
+	@media(max-width: 655px) {
+		width: 100%;
+	}
 
-  table {
-	margin: 0;
-  }
+	table {
+		margin: 0;
+	}
 
-  input {
-	width: 200px;
-  }
+	input {
+		width: 200px;
+	}
 
 }
 
 //Donor Summary
 #donor-summary {
-  padding: 0 20px;
+	padding: 0 20px;
 
-  &:after {
-	font-family: "dashicons";
-	content: "\f110";
-	position: absolute;
-	top: 10px;
-	right: 10px;
-	font-size: 100px;
-	color: #F0F0F0;
-	z-index: 0;
-  }
+	&:after {
+		font-family: "dashicons";
+		content: "\f110";
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		font-size: 100px;
+		color: #F0F0F0;
+		z-index: 0;
+	}
 
 }
+
 #give-donor-card-wrapper .donor-address-wrapper {
-  width: 202px;
+	width: 202px;
 
 	span[data-key="line2"] {
 		display: table;
@@ -155,159 +172,159 @@
 }
 
 #give-donor-card-wrapper .donor-address-wrapper select {
-  width: 200px;
+	width: 200px;
 }
 
 #give-donor-card-wrapper .donor-info {
-  min-height: 185px;
+	min-height: 185px;
 }
 
 #give-donor-card-wrapper .info-wrapper {
-  min-height: 125px;
+	min-height: 125px;
 }
 
 .donor-info .donor-name {
-  font-size: 24px;
-  font-weight: 600;
+	font-size: 24px;
+	font-weight: 600;
 }
 
 #disconnect-donor {
-  font-size: 12px;
-  font-weight: normal;
-  text-decoration: none;
+	font-size: 12px;
+	font-weight: normal;
+	text-decoration: none;
 }
 
 #view-user-profile {
-  @extend #disconnect-donor;
+	@extend #disconnect-donor;
 }
 
 #donor-edit-actions {
-  text-align: center;
-  margin-bottom: 20px;
-  line-height: 28px;
+	text-align: center;
+	margin-bottom: 20px;
+	line-height: 28px;
 }
 
 #donor-edit-actions .button-secondary {
-  margin-right: 10px;
+	margin-right: 10px;
 }
 
 #give-donor-card-wrapper .edit-item {
-  display: none;
+	display: none;
 }
 
 #give-donor-card-wrapper .give_user_search_results {
-  left: 1px;
-  top: 16px;
+	left: 1px;
+	top: 16px;
 }
 
 #give-donor-card-wrapper .give_user_search_results ul {
-  width: 200px
+	width: 200px
 }
 
 #donor-stats-wrapper {
-  margin: 0 auto;
-  text-align: center;
-  padding: 15px;
-  ul {
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-	li {
-	  width: 50%;
-	  float: left;
-	  line-height: 22px;
-	  font-size: 14px;
-	  margin: 0;
+	margin: 0 auto;
+	text-align: center;
+	padding: 15px;
+	ul {
+		margin: 0;
+		padding: 0;
+		overflow: hidden;
+		li {
+			width: 50%;
+			float: left;
+			line-height: 22px;
+			font-size: 14px;
+			margin: 0;
+		}
+
 	}
 
-  }
-
-  a {
-	text-decoration: none;
-  }
+	a {
+		text-decoration: none;
+	}
 }
 
 #donor-stats-wrapper .dashicons {
-  color: #888;
+	color: #888;
 }
 
 #donor-tables-wrapper table {
-  width: 100%;
-  text-align: center;
+	width: 100%;
+	text-align: center;
 }
 
 #donor-tables-wrapper th {
-  text-align: center;
+	text-align: center;
 }
 
 #donor-tables-wrapper .donations tr > th:first-child,
 #donor-tables-wrapper .donations tr > td:first-child,
 #donor-tables-wrapper .emails tr > th:first-child,
 #donor-tables-wrapper .emails tr > td:first-child {
-  text-align: left;
+	text-align: left;
 }
 
 #donor-tables-wrapper .donations tr > td:only-child {
-  text-align: center;
+	text-align: center;
 }
 
 #donor-notes-wrapper {
-  min-height: 50px;
+	min-height: 50px;
 }
 
 .donor-notes-header span, .donor-notes-header img {
-  font-weight: 600;
-  line-height: 30px;
-  vertical-align: middle;
+	font-weight: 600;
+	line-height: 30px;
+	vertical-align: middle;
 }
 
 .donor-note-input {
-  width: 100%;
-  margin-bottom: 5px;
+	width: 100%;
+	margin-bottom: 5px;
 }
 
 // Donor Notes
 #give-donor-notes {
-  div:nth-of-type(even) {
-	background-color: #f9f9f9;
-  }
-  .donor-note-wrapper {
-	border-bottom: 1px solid #f9f9f9;
-	min-height: 38px;
-	padding: 0;
+	div:nth-of-type(even) {
+		background-color: #f9f9f9;
+	}
+	.donor-note-wrapper {
+		border-bottom: 1px solid #f9f9f9;
+		min-height: 38px;
+		padding: 0;
 
-	.note-content-wrap {
-	  padding: 10px 12px;
-	  line-height: 20px;
-	  font-size: 14px;
+		.note-content-wrap {
+			padding: 10px 12px;
+			line-height: 20px;
+			font-size: 14px;
+		}
+
 	}
 
-  }
-
-  .give-no-donor-notes {
-	text-align: center;
-	padding: 20px;
-  }
+	.give-no-donor-notes {
+		text-align: center;
+		padding: 20px;
+	}
 
 }
 
 .donor-note-wrapper span {
-  display: block;
+	display: block;
 }
 
 .delete-donor {
-  text-align: center;
+	text-align: center;
 }
 
 .give-lock-block {
-  margin-left: -25px;
-  text-decoration: none;
-  font-size: 14px;
-  margin-right: 3px;
+	margin-left: -25px;
+	text-decoration: none;
+	font-size: 14px;
+	margin-right: 3px;
 
-  i {
-    color: #000000;
-    font-size: 14px;
-  }
+	i {
+		color: #000000;
+		font-size: 14px;
+	}
 }
 

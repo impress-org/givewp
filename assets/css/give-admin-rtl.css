@@ -2451,6 +2451,15 @@ input.give-price-field {
     display: inline-block; }
   #give-donor-card-wrapper .donor-bio-header .donor-edit-link {
     margin-bottom: 15px; }
+  #give-donor-card-wrapper .all-address [class^="give-grid-col"] {
+    min-height: 200px; }
+  #give-donor-card-wrapper .all-address .address {
+    min-height: 200px;
+    border: 1px solid #dad9d9;
+    padding: 9px;
+    border-radius: 5px; }
+  #give-donor-card-wrapper .add-new-address {
+    margin: 0.5rem 1% !important; }
 
 .donor-main-wrapper {
   clear: both;
