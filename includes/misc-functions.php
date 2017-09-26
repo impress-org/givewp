@@ -873,7 +873,7 @@ function give_donation_metabox_menu() {
 		$user = wp_get_current_user();
 
 		update_user_option( $user->ID, 'metaboxhidden_nav-menus', $hidden_meta_boxes, true );
-		update_user_option( $user->ID, 'give_is_donation_forms_menu_updated', true );
+		update_user_option( $user->ID, 'give_is_donation_forms_menu_updated', true, true );
 	}
 }
 
