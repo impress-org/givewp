@@ -362,9 +362,11 @@ function give_load_admin_scripts( $hook ) {
 			'no_results_msg'  => __( 'No results match {search_term}', 'give' ),
 			'ajax_search_msg' => __( 'Searching results for match {search_term}', 'give' ),
 		),
+		'db_update_confirmation_msg_button' => __( 'Run Updates','give' ),
 		'db_update_confirmation_msg' => __( 'The following process will make updates to your site\'s database. Please create a database backup before proceeding with updates.', 'give' ),
-        'error_message' => __( 'Something went wrong kindly try again!','give' ),
-        'give_donation_import' => 'give_donation_import',
+		'error_message' => __( 'Something went wrong kindly try again!','give' ),
+		'give_donation_import' => 'give_donation_import',
+		'setting_not_save_message' => __( 'Changes you made may not be saved.','give' ),
 		'setting_not_save_message' => __( 'Changes you made may not be saved.','give' ),
 	) );
 
