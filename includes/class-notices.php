@@ -192,7 +192,7 @@ class Give_Notices {
 				'<div id="%1$s" class="%2$s" data-dismissible="%3$s" data-dismissible-type="%4$s" data-dismiss-interval="%5$s" data-notice-id="%6$s" data-security="%7$s" data-dismiss-interval-time="%8$s">' . " \n",
 				$css_id,
 				$css_class,
-				$notice['dismissible'],
+				give_clean( $notice['dismissible'] ),
 				$notice['dismissible_type'],
 				$notice['dismiss_interval'],
 				$notice['id'],
