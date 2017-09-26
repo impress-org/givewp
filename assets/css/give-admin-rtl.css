@@ -2458,8 +2458,16 @@ input.give-price-field {
     border: 1px solid #dad9d9;
     padding: 9px;
     border-radius: 5px; }
+  #give-donor-card-wrapper .all-address a {
+    text-decoration: none; }
   #give-donor-card-wrapper .add-new-address {
     margin: 0.5rem 1% !important; }
+  #give-donor-card-wrapper .add-new-address-form-hidden {
+    position: absolute;
+    left: 13px;
+    right: 13px;
+    top: 0;
+    visibility: hidden; }
 
 .donor-main-wrapper {
   clear: both;

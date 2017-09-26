@@ -120,10 +120,22 @@
 			padding: 9px;
 			border-radius: 5px;
 		}
+
+		a{
+			text-decoration: none;
+		}
 	}
 
 	.add-new-address {
 		margin: 0.5rem 1% !important;
+	}
+
+	.add-new-address-form-hidden{
+		position: absolute;
+		right: 13px;
+		left: 13px;
+		top: 0;
+		visibility: hidden;
 	}
 }
 

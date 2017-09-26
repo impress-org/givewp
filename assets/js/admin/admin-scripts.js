@@ -1122,6 +1122,7 @@ var give_setting_edit = false;
 			this.change_country();
 			this.add_note();
 			this.delete_checked();
+			this.addressesAction();
 
 			$( 'body' ).on( 'click', '.give-lock-block', this.unlockDonorFields );
 		},
@@ -1290,6 +1291,49 @@ var give_setting_edit = false;
 
 				}, 'json');
 
+			});
+		},
+		addressesAction: function(){
+			var $addressWrapper = $( '#donor-address-wrapper' ),
+				$allAddress = $( '.all-address', $addressWrapper ),
+				$allAddressEditBtn = $( '.js-edit', $allAddress ),
+				$allAddressRemoveBtn = $( '.js-remove', $allAddress ),
+				$addressForm = $( '.address-form', $addressWrapper ),
+				$addressFormCancelBtn = $( '.js-cancel', $addressForm ),
+				$addNewAddressBtn = $( '.add-new-address', $addressWrapper );
+
+
+			// Edit current address button event
+			$allAddressEditBtn.on( 'click', function(e){
+				e.preventDefault();
+
+				$addNewAddressBtn.hide();
+				$allAddress.addClass('give-hidden');
+				$addressForm.removeClass('add-new-address-form-hidden');
+			});
+
+			// Remove address button event
+			$allAddressRemoveBtn.on( 'click', function(e){
+				e.preventDefault();
+
+			});
+
+			// Add new address button event.
+			$addNewAddressBtn.on( 'click', function(e){
+				e.preventDefault();
+
+				$( this ).hide();
+				$allAddress.addClass('give-hidden');
+				$addressForm.removeClass('add-new-address-form-hidden');
+			});
+
+			// Cancel add new address form button event
+			$addressFormCancelBtn.on( 'click', function(e){
+				e.preventDefault();
+
+				$addNewAddressBtn.show();
+				$allAddress.removeClass('give-hidden');
+				$addressForm.addClass('add-new-address-form-hidden');
 			});
 		},
 	};

@@ -21,12 +21,27 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 2.0
  *
  * @param array $address
- * @param bool  $is_default_address
+ * @param array $address_args
  *
  * @return string
  */
-function __give_get_format_address( $address, $is_default_address = false ) {
-	$address_html = '';
+function __give_get_format_address( $address, $address_args = array() ) {
+	$address_html       = '';
+	$address_args       = wp_parse_args(
+		$address_args,
+		array(
+			'type'            => '',
+			'index'           => 0,
+			'default_address' => false,
+		)
+	);
+
+	$is_default_address = $address_args['default_address'];
+
+	$address_id = $address_args['type'];
+	if( ! empty( $address_args['index'] ) ) {
+		$address_id = "{$address_id}_{$address_args['index']}";
+	}
 
 	// Bailout.
 	if ( empty( $address ) || ! is_array( $address ) ) {
@@ -42,15 +57,16 @@ function __give_get_format_address( $address, $is_default_address = false ) {
 
 	// Address action.
 	$address_html .= sprintf(
-		'<br><a href="#">%1$s</a> | <a href="#">%2$s</a>',
+		'<br><a href="#" class="js-edit">%1$s</a> | <a href="#" class="js-remove">%2$s</a>',
 		__( 'Edit', 'give' ),
 		__( 'Remove', 'give' )
-		//$is_default_address ? '' : sprintf( '| <a href="#">%s</a>', __( 'Set as default', 'give' ) )
+	//$is_default_address ? '' : sprintf( '| <a href="#">%s</a>', __( 'Set as default', 'give' ) )
 	);
 
 	// Add address wrapper.
 	$address_html = sprintf(
-		'<div class="give-grid-col-4"><div class="address">%s</div></div>',
+		'<div class="give-grid-col-4"><div data-address-id="%s" class="address">%s</div></div>',
+		$address_id,
 		$address_html
 	);
 
@@ -522,14 +538,27 @@ function give_donor_view( $donor ) {
 							// Default address always will be at zero array index.
 							$is_set_as_default = null;
 
-							foreach ( $donor->address as $addresses ) {
+							foreach ( $donor->address as $address_type => $addresses ) {
 
 								if ( is_array( $addresses ) ) {
 									foreach ( $addresses as $index => $address ) {
-										echo __give_get_format_address( $address, $is_set_as_default );
+										echo __give_get_format_address(
+											$address,
+											array(
+												'type'            => $address_type,
+												'index'           => $index,
+												'default_address' => $is_set_as_default,
+											)
+										);
 									}
 								} else {
-									echo __give_get_format_address( $addresses, $is_set_as_default );
+									echo __give_get_format_address(
+										$addresses,
+										array(
+											'type'            => $address_type,
+											'default_address' => $is_set_as_default,
+										)
+									);
 								}
 							}
 						endif;
@@ -549,73 +578,89 @@ function give_donor_view( $donor ) {
 					</div>
 				</div>
 
-				<div class="address-form give-hidden">
-					<form action="">
-						<div class="row">
-							<div id="give-order-address-country-wrap">
-								<label class="order-data-address-line"><?php esc_html_e( 'Country:', 'give' ); ?></label>
-								<?php
-								echo Give()->html->select( array(
-									'options'          => give_get_country_list(),
-									'name'             => 'give-payment-address[0][country]',
-									// 'selected'         => $address['country'],
-									'show_option_all'  => false,
-									'show_option_none' => false,
-									'chosen'           => true,
-									'placeholder'      => esc_attr__( 'Select a country', 'give' ),
-									'data'             => array( 'search-type' => 'no_ajax' ),
-								) );
-								?>
-							</div>
-						</div>
+				<div class="address-form add-new-address-form-hidden">
+					<form action="" method="post">
+						<table class="widefat striped">
+							<tbody>
+								<tr>
+									<th class="col">
+										<label class="order-data-address-line"><?php esc_html_e( 'Country:', 'give' ); ?></label>
+									</th>
+									<td>
+										<?php
+										echo Give()->html->select( array(
+											'options'          => give_get_country_list(),
+											'name'             => 'give-payment-address[0][country]',
+											// 'selected'         => $address['country'],
+											'show_option_all'  => false,
+											'show_option_none' => false,
+											'chosen'           => true,
+											'placeholder'      => esc_attr__( 'Select a country', 'give' ),
+											'data'             => array( 'search-type' => 'no_ajax' ),
+										) );
+										?>
+									</td>
+								</tr>
+								<tr>
+									<th class="col">
+										<label for="give-payment-address-line1" class="order-data-address"><?php esc_html_e( 'Address 1:', 'give' ); ?></label>
+									</th>
+									<td>
+										<input id="give-payment-address-line1" type="text" name="give-payment-address[0][line1]" value="" class="medium-text"/>
+									</td>
+								</tr>
+								<tr>
+									<th class="col">
+										<label for="give-payment-address-line2" class="order-data-address-line"><?php esc_html_e( 'Address 2:', 'give' ); ?></label>
+									</th>
+									<td>
+										<input id="give-payment-address-line2" type="text" name="give-payment-address[0][line2]" value="" class="medium-text"/>
 
-						<div class="row">
-							<div class="give-wrap-address-line1">
-								<label for="give-payment-address-line1" class="order-data-address"><?php esc_html_e( 'Address 1:', 'give' ); ?></label>
-								<input id="give-payment-address-line1" type="text" name="give-payment-address[0][line1]" value="" class="medium-text"/>
-							</div>
-						</div>
-
-						<div class="row">
-							<div class="give-wrap-address-line2">
-								<label for="give-payment-address-line2" class="order-data-address-line"><?php esc_html_e( 'Address 2:', 'give' ); ?></label>
-								<input id="give-payment-address-line2" type="text" name="give-payment-address[0][line2]" value="" class="medium-text"/>
-							</div>
-						</div>
-
-						<div class="row">
-							<div id="give-order-address-state-wrap" class="">
-								<label for="give-payment-address-state" class="order-data-address-line"><?php esc_html_e( 'State / Province / County:', 'give' ); ?></label>
-								<?php
-								echo Give()->html->select( array(
-									'options'          => array(),
-									'name'             => 'give-payment-address[0][state]',
-									// 'selected'         => $address['state'],
-									'show_option_all'  => false,
-									'show_option_none' => false,
-									'chosen'           => true,
-									'placeholder'      => esc_attr__( 'Select a state', 'give' ),
-									'data'             => array( 'search-type' => 'no_ajax' ),
-								) );
-								?>
-							</div>
-						</div>
-
-						<div class="row">
-							<div class="column">
-								<div class="give-wrap-address-city">
-									<label for="give-payment-address-city" class="order-data-address-line"><?php esc_html_e( 'City:', 'give' ); ?></label>
-									<input id="give-payment-address-city" type="text" name="give-payment-address[0][city]" value="" class="medium-text"/>
-								</div>
-							</div>
-
-							<div class="column">
-								<div class="give-wrap-address-zip">
-									<label for="give-payment-address-zip" class="order-data-address-line"><?php esc_html_e( 'Zip / Postal Code:', 'give' ); ?></label>
-									<input id="give-payment-address-zip" type="text" name="give-payment-address[0][zip]" value="" class="medium-text"/>
-								</div>
-							</div>
-						</div>
+									</td>
+								</tr>
+								<tr>
+									<th class="col">
+										<label for="give-payment-address-state" class="order-data-address-line"><?php esc_html_e( 'State / Province / County:', 'give' ); ?></label>
+									</th>
+									<td>
+										<?php
+										echo Give()->html->select( array(
+											'options'          => array(),
+											'name'             => 'give-payment-address[0][state]',
+											// 'selected'         => $address['state'],
+											'show_option_all'  => false,
+											'show_option_none' => false,
+											'chosen'           => true,
+											'placeholder'      => esc_attr__( 'Select a state', 'give' ),
+											'data'             => array( 'search-type' => 'no_ajax' ),
+										) );
+										?>
+									</td>
+								</tr>
+								<tr>
+									<th class="col">
+										<label for="give-payment-address-city" class="order-data-address-line"><?php esc_html_e( 'City:', 'give' ); ?></label>
+									</th>
+									<td>
+										<input id="give-payment-address-city" type="text" name="give-payment-address[0][city]" value="" class="medium-text"/>
+									</td>
+								</tr>
+								<tr>
+									<th class="col">
+										<label for="give-payment-address-zip" class="order-data-address-line"><?php esc_html_e( 'Zip / Postal Code:', 'give' ); ?></label>
+									</th>
+									<td>
+										<input id="give-payment-address-zip" type="text" name="give-payment-address[0][zip]" value="" class="medium-text"/>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2">
+										<?php wp_nonce_field( 'give-add-new-donor-address' ); ?>
+										<input type="submit" class="button button-primary js-save" value="<?php _e( 'Save', 'give' ); ?>">&nbsp;&nbsp;<button class="button js-cancel"><?php _e( 'Cancel', 'give' ); ?></button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
 					</form>
 				</div>
 			</div>
