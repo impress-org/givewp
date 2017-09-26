@@ -571,7 +571,7 @@ class Give_Notices {
 				</p>
 			</div>',
 			$notice_type,
-			give_clean( $notice_args['auto_dismissible'] ),
+			give_clean( $notice_args['dismissible'] ),
 			absint( $notice_args['dismiss_interval'] ),
 			$message
 		);
