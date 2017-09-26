@@ -854,10 +854,17 @@ function give_donation_metabox_menu() {
 	$screen = get_current_screen();
 
 	// Proceed, if current screen is navigation menus.
-	if( 'nav-menus' === $screen->id && give_is_setting_enabled( give_get_option( 'forms_singular' ) ) && ! get_user_option( 'give_is_donation_forms_menu_updated' ) ) {
+	if(
+		'nav-menus' === $screen->id &&
+		give_is_setting_enabled( give_get_option( 'forms_singular' ) ) &&
+		! get_user_option( 'give_is_donation_forms_menu_updated' )
+	) {
 
 		// Return false, if it fails to retrieve hidden meta box list and is not admin.
-		if ( ( ! $hidden_meta_boxes = get_user_option( 'metaboxhidden_nav-menus' ) ) || ! is_admin() ) {
+		if (
+			! is_admin() ||
+			( ! $hidden_meta_boxes = get_user_option( 'metaboxhidden_nav-menus' ) )
+		) {
 			return false;
 		}
 
