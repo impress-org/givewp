@@ -113,15 +113,34 @@ function give_edit_donor( $args ) {
 	}
 
 	// Sanitize the inputs
-	$donor_data            = array();
-	$donor_data['name']    = strip_tags( stripslashes( $donor_info['name'] ) );
-	$donor_data['user_id'] = $donor_info['user_id'];
+	$donor_data             = array();
+	$donor_first_name       = ! empty( $donor_info['first_name'] ) ? give_clean( $donor_info['first_name'] ) : '';
+	$donor_last_name        = ! empty( $donor_info['last_name'] ) ? give_clean( $donor_info['last_name'] ) : '';
 
-	$donor_data = apply_filters( 'give_edit_donor_info', $donor_data, $donor_id );
-	$address    = apply_filters( 'give_edit_donor_address', $address, $donor_id );
+	// Bail out with error, if first name is empty.
+	if( empty( $donor_first_name) ) {
+		Give()->notices->register_notice( array(
+			'id'          => 'empty_donor_first_name',
+			'type'        => 'error',
+			'description' => sprintf(
+				'<strong>%1$s:</strong> %2$s',
+				__( 'ERROR', 'give' ),
+				__( 'Please enter your first name.', 'give' )
+			),
+			'show'        => true,
+		) );
 
-	$donor_data = array_map( 'sanitize_text_field', $donor_data );
-	$address    = array_map( 'sanitize_text_field', $address );
+		return false;
+	}
+
+	$donor_data['name']     = strip_tags( wp_unslash( trim( "{$donor_first_name} {$donor_last_name}" ) ) );
+	$donor_data['user_id']  = $donor_info['user_id'];
+
+	$donor_data             = apply_filters( 'give_edit_donor_info', $donor_data, $donor_id );
+	$address                = apply_filters( 'give_edit_donor_address', $address, $donor_id );
+
+	$donor_data             = give_clean( $donor_data );
+	$address                = give_clean( $address );
 
 	/**
 	 * Fires before editing a donor.
@@ -139,7 +158,22 @@ function give_edit_donor( $args ) {
 	$output['success'] = false;
 	if ( $donor->update( $donor_data ) ) {
 
+		// Set Donor Meta and User Meta for donor first name.
+		if( ! empty( $donor_first_name ) ) {
+			Give()->donor_meta->update_meta( $donor_id, '_give_donor_first_name', $donor_first_name );
+
+			// Update User Meta, if user is attached with donor
+			if ( ! empty( $donor->user_id ) ) {
+				update_user_meta( $donor->user_id, 'first_name', $donor_first_name );
+			}
+		}
+
+		// Set Donor Meta for donor last name.
+		Give()->donor_meta->update_meta( $donor_id, '_give_donor_last_name', $donor_last_name );
+
+		// Update User Meta, if user is attached with donor
 		if ( ! empty( $donor->user_id ) && $donor->user_id > 0 ) {
+			update_user_meta( $donor->user_id, 'last_name', $donor_last_name );
 			update_user_meta( $donor->user_id, '_give_user_address', $address );
 		}
 
@@ -203,7 +237,7 @@ function give_donor_save_note( $args ) {
 		return false;
 	}
 
-	$donor_note = trim( sanitize_text_field( $args['donor_note'] ) );
+	$donor_note = trim( give_clean( $args['donor_note'] ) );
 	$donor_id   = (int) $args['customer_id'];
 	$nonce      = $args['add_donor_note_nonce'];
 

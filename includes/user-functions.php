@@ -40,7 +40,7 @@ function give_get_users_donations( $user = 0, $number = 20, $pagination = false,
 		return false;
 	}
 
-	$status = $status === 'complete' ? 'publish' : $status;
+	$status = ( 'complete' === $status ) ? 'publish' : $status;
 	$paged = 1;
 
 	if ( $pagination ) {
@@ -76,7 +76,7 @@ function give_get_users_donations( $user = 0, $number = 20, $pagination = false,
 
 	$donations = give_get_payments( apply_filters( 'give_get_users_donations_args', $args ) );
 
-	// No donations
+	// No donations.
 	if ( ! $donations ) {
 		return false;
 	}
@@ -128,7 +128,7 @@ function give_get_users_completed_donations( $user = 0, $status = 'complete' ) {
 		return false;
 	}
 
-	// Grab only the post ids "form_id" of the forms donated on this order
+	// Grab only the post ids "form_id" of the forms donated on this order.
 	$completed_donations_ids = array();
 	foreach ( $donation_data as $donation_meta ) {
 		$completed_donations_ids[] = isset( $donation_meta['form_id'] ) ? $donation_meta['form_id'] : '';
@@ -138,10 +138,10 @@ function give_get_users_completed_donations( $user = 0, $status = 'complete' ) {
 		return false;
 	}
 
-	// Only include each donation once
+	// Only include each donation once.
 	$form_ids = array_unique( $completed_donations_ids );
 
-	// Make sure we still have some products and a first item
+	// Make sure we still have some products and a first item.
 	if ( empty( $form_ids ) || ! isset( $form_ids[0] ) ) {
 		return false;
 	}
@@ -402,7 +402,7 @@ function give_validate_user_email( $email, $registering_new_user = false ) {
 function give_validate_user_password( $password = '', $confirm_password = '', $registering_new_user = false ) {
 	$valid = true;
 
-	// Passwords Validation For New Donors Only
+	// Passwords Validation For New Donors Only.
 	if ( $registering_new_user ) {
 		// Password or confirmation missing.
 		if ( ! $password ) {
@@ -415,7 +415,7 @@ function give_validate_user_password( $password = '', $confirm_password = '', $r
 			$valid = false;
 		}
 	}
-	// Passwords Validation For New Donors as well as Existing Donors
+	// Passwords Validation For New Donors as well as Existing Donors.
 	if ( $password || $confirm_password ) {
 		if ( strlen( $password ) < 6 || strlen( $confirm_password ) < 6 ) {
 			// Seems Weak Password
@@ -424,8 +424,8 @@ function give_validate_user_password( $password = '', $confirm_password = '', $r
 		}
 		if ( $password && $confirm_password ) {
 			// Verify confirmation matches.
-			if ( $password != $confirm_password ) {
-				// Passwords do not match
+			if ( $password !== $confirm_password ) {
+				// Passwords do not match.
 				give_set_error( 'password_mismatch', __( 'Passwords you entered do not match. Please try again.', 'give' ) );
 				$valid = false;
 			}
@@ -446,7 +446,6 @@ function give_validate_user_password( $password = '', $confirm_password = '', $r
 
 	return $valid;
 }
-
 
 /**
  * Counts the total number of donors.
@@ -546,7 +545,7 @@ add_action( 'give_insert_user', 'give_new_user_notification', 10, 2 );
  */
 function give_get_donor_name_by( $id = 0, $from = 'donation' ) {
 
-	// ID shouldn't be empty
+	// ID shouldn't be empty.
 	if ( empty( $id ) ) {
 		return;
 	}
@@ -580,7 +579,7 @@ function give_get_donor_name_by( $id = 0, $from = 'donation' ) {
  *
  * @since 1.8.9
  *
- * @param  string $email Donor Email.
+ * @param  string   $email Donor Email.
  * @return boolean  The user's ID on success, and false on failure.
  */
 function give_donor_email_exists( $email ) {

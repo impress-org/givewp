@@ -16,11 +16,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-
 /**
  * Perform automatic database upgrades when necessary.
  *
- * @since 1.6
+ * @since  1.6
  * @return void
  */
 function give_do_automatic_upgrades() {
@@ -189,6 +188,15 @@ function give_show_upgrade_notices( $give_updates ) {
 			'version'  => '2.0.0',
 			'callback' => 'give_v20_move_metadata_into_new_table_callback',
 			'depend'   => array( 'v20_upgrades_payment_metadata', 'v20_upgrades_form_metadata' ),
+		)
+	);
+
+	// v2.0.0 Donor Name Upgrades
+	$give_updates->register(
+		array(
+			'id'       => 'v20_upgrades_donor_name',
+			'version'  => '2.0.0',
+			'callback' => 'give_v20_upgrades_donor_name',
 		)
 	);
 
@@ -1532,7 +1540,7 @@ function give_v20_logs_upgrades_callback() {
 			}
 		}
 
-		// Delete logs
+		// Delete logs.
 		$logIDs = get_posts( array(
 				'order'          => 'DESC',
 				'post_type'      => 'give_log',
@@ -1630,6 +1638,56 @@ function give_v20_move_metadata_into_new_table_callback() {
 
 }
 
+/**
+ * Upgrade routine for splitting donor name into first name and last name.
+ *
+ * @since 2.0
+ *
+ * @return void
+ */
+function give_v20_upgrades_donor_name() {
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
+
+	$args = array(
+		'offset' => ( 1 === $give_updates->step ) ? 0 : $give_updates->step * 20,
+	);
+
+	$donors = Give()->donors->get_donors( $args );
+
+	if( $donors ) {
+		$give_updates->set_percentage( count( $donors ), $give_updates->step * 20 );
+		// Loop through Donors
+		foreach ( $donors as $donor ) {
+
+			$donor_name       = explode( ' ', $donor->name, 2 );
+			$donor_first_name = Give()->donor_meta->get_meta( $donor->id, '_give_donor_first_name' );
+			$donor_last_name  = Give()->donor_meta->get_meta( $donor->id, '_give_donor_last_name' );
+
+			// If first name meta of donor is not created, then create it.
+			if( ! $donor_first_name ) {
+				Give()->donor_meta->add_meta( $donor->id, '_give_donor_first_name', $donor_name[0] );
+			}
+
+			// If last name meta of donor is not created, then create it.
+			if( ! $donor_last_name ) {
+				Give()->donor_meta->add_meta( $donor->id, '_give_donor_last_name', $donor_name[1] );
+			}
+
+			// If Donor is connected with WP User then update user meta.
+			if( $donor->user_id ) {
+				update_user_meta( $donor->user_id, 'first_name', $donor_name[0] );
+				update_user_meta( $donor->user_id, 'last_name', $donor_name[1] );
+			}
+
+		}
+
+	}else {
+		// The Update Ran.
+		give_set_upgrade_complete( 'v20_upgrades_donor_name' );
+	}
+
+}
 
 /**
  * Upgrade logs data.

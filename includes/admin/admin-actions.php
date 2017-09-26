@@ -380,12 +380,12 @@ function _give_show_test_mode_notice_in_admin_bar( $wp_admin_bar ) {
 		return false;
 	}
 
-	// Add the main siteadmin menu item.
+	// Add the main site admin menu item.
 	$wp_admin_bar->add_menu( array(
 		'id'     => 'give-test-notice',
 		'href'   => admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways' ),
 		'parent' => 'top-secondary',
-		'title'  => esc_html__( 'Give Test Mode Active', 'give' ),
+		'title'  => __( 'Give Test Mode Active', 'give' ),
 		'meta'   => array( 'class' => 'give-test-mode-active' ),
 	) );
 
@@ -548,6 +548,75 @@ function give_blank_slate() {
 
 add_action( 'current_screen', 'give_blank_slate' );
 
+/**
+ * Validate Fields of User Profile
+ *
+ * @param object   $errors Object of WP Errors.
+ * @param int|bool $update True or False.
+ * @param object   $user   WP User Data.
+ *
+ * @since 2.0
+ *
+ * @return mixed
+ */
+function give_validate_user_profile( $errors, $update, $user ) {
+
+	if ( ! empty( $_POST['action'] ) && ( 'adduser' === $_POST['action'] || 'createuser' === $_POST['action'] ) ) {
+		return;
+	}
+
+	if( ! empty( $user->ID ) ) {
+		$donor = Give()->donors->get_donor_by( 'user_id', $user->ID );
+
+		if( $donor ) {
+			// If Donor is attached with User, then validate first name.
+			if ( empty( $_POST['first_name'] ) ) {
+				$errors->add(
+					'empty_first_name',
+					sprintf(
+						'<strong>%1$s:</strong> %2$s',
+						__( 'ERROR', 'give' ),
+						__( 'Please enter your first name.', 'give' )
+					)
+				);
+			}
+		}
+	}
+
+}
+
+add_action( 'user_profile_update_errors', 'give_validate_user_profile', 10, 3 );
+
+/**
+ * Show Donor Information on User Profile Page.
+ *
+ * @param object $user User Object.
+ *
+ * @since 2.0
+ */
+function give_donor_information_profile_fields( $user ) {
+	$donor = Give()->donors->get_donor_by( 'user_id', $user->ID );
+
+	// Display Donor Information, only if donor is attached with User.
+	if( ! empty( $donor->user_id ) ) {
+		?>
+		<table class="form-table">
+			<tbody>
+			<tr>
+				<th scope="row"><?php _e( 'Donor', 'give' ); ?></th>
+				<td>
+					<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ); ?>">
+						<?php _e( 'View Donor Information', 'give' ); ?>
+					</a>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+		<?php
+	}
+}
+
+add_action( 'personal_options', 'give_donor_information_profile_fields' );
 /**
  * Get Array of WP User Roles.
  *
