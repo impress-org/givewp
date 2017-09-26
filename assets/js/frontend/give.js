@@ -71,7 +71,7 @@ jQuery(function ($) {
 	});
 
 	// Auto hide frontend notices.
-	var give_notices = jQuery('.give_notice[data-auto-dismissible="1"]');
+	var give_notices = jQuery('.give_notice[data-dismissible="auto"]');
 	if( give_notices.length ){
 		give_notices.each(function( index, $notice ){
 			$notice = $( $notice );
