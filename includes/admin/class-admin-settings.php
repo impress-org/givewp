@@ -91,6 +91,16 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				die();
 			}
 
+			// Show error message if Akismet not configured and Admin try to save 'enabled' option.
+			if ( isset( $_POST['akismet_spam_protection'] )
+			     && give_is_setting_enabled( $_POST['akismet_spam_protection'] )
+			     && ! give_check_akismet_key()
+			) {
+				self::add_error( 'give-akismet-protection', __( 'Please properly configure Akismet to enable SPAM protection.', 'give' ) );
+
+				return;
+			}
+
 			/**
 			 * Trigger Action.
 			 *
@@ -386,24 +396,24 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 						$type = $value['type'];
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
-
 						?>
-                    <tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
-                        <th scope="row" class="titledesc">
-                            <label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
-                        </th>
-                        <td class="give-forminp give-forminp-<?php echo sanitize_title( $value['type'] ) ?>">
-                            <input
-                                    name="<?php echo esc_attr( $value['id'] ); ?>"
-                                    id="<?php echo esc_attr( $value['id'] ); ?>"
-                                    type="<?php echo esc_attr( $type ); ?>"
-                                    style="<?php echo esc_attr( $value['css'] ); ?>"
-                                    value="<?php echo esc_attr( $option_value ); ?>"
-                                    class="give-input-field<?php echo( empty( $value['class'] ) ? '' : ' ' . esc_attr( $value['class'] ) ); ?>"
-								<?php echo implode( ' ', $custom_attributes ); ?>
-                            /> <?php echo $description; ?>
-                        </td>
-                        </tr><?php
+						<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
+							<th scope="row" class="titledesc">
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
+							</th>
+							<td class="give-forminp give-forminp-<?php echo sanitize_title( $value['type'] ) ?>">
+								<input
+										name="<?php echo esc_attr( $value['id'] ); ?>"
+										id="<?php echo esc_attr( $value['id'] ); ?>"
+										type="<?php echo esc_attr( $type ); ?>"
+										style="<?php echo esc_attr( $value['css'] ); ?>"
+										value="<?php echo esc_attr( $option_value ); ?>"
+										class="give-input-field<?php echo( empty( $value['class'] ) ? '' : ' ' . esc_attr( $value['class'] ) ); ?>"
+									<?php echo implode( ' ', $custom_attributes ); ?>
+								/> <?php echo $description; ?>
+							</td>
+						</tr>
+						<?php
 						break;
 
 					// Textarea.
@@ -724,13 +734,11 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					// Custom: Log field.
 					case 'logs' :
 
-						include GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/logs.php';
-
 						// Get current section.
 						$current_section = $_GET['section'] = give_get_current_setting_section();
 
 						/**
-						 * Fires the in report page logs view.
+						 * Fires for each tab of logs view.
 						 *
 						 * @since 1.0
 						 */

@@ -115,11 +115,15 @@ class Give_Donor_List_Table extends WP_List_Table {
 		switch ( $column_name ) {
 
 			case 'num_donations' :
-				$value = '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&donor=' . urlencode( $donor['id'] ) ) . '&status=publish' . ' ">' . esc_html( $donor['num_donations'] ) . '</a>';
+				$value = sprintf(
+					'<a href="%s">%s</a>',
+					admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&donor=' . absint( $donor['id'] ) ),
+					esc_html( $donor['num_donations'] )
+				);
 				break;
 
 			case 'amount_spent' :
-				$value = give_currency_filter( give_format_amount( $donor[ $column_name ] ) );
+				$value = give_currency_filter( give_format_amount( $donor[ $column_name ], array( 'sanitize' => false ) ) );
 				break;
 
 			case 'date_created' :
@@ -131,7 +135,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 				break;
 		}
 
-		return apply_filters( "give_report_column_{$column_name}", $value, $donor['id'] );
+		return apply_filters( "give_donors_column_{$column_name}", $value, $donor['id'] );
 
 	}
 
@@ -300,6 +304,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 		$_donor_query = $this->get_donor_query();
 
 		$_donor_query['number'] = - 1;
+		$_donor_query['offset'] = 0;
 		$donors                 = Give()->donors->get_donors( $_donor_query );
 
 		return count( $donors );

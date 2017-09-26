@@ -85,7 +85,7 @@ function give_edit_donor( $args ) {
 	$address = array();
 	if ( intval( $donor_info['user_id'] ) > 0 ) {
 
-		$current_address = get_user_meta( $donor_info['user_id'], '_give_user_address', true );
+		$current_address = (array) get_user_meta( $donor_info['user_id'], '_give_user_address', true );
 
 		if ( false === $current_address ) {
 			$address['line1']   = isset( $donor_info['line1'] ) ? $donor_info['line1'] : '';
@@ -465,10 +465,18 @@ add_action( 'give_disconnect-userid', 'give_disconnect_donor_user_id', 10, 1 );
  * @return mixed        If DOING_AJAX echos out JSON, otherwise returns array of success (bool) and message (string).
  */
 function give_add_donor_email( $args ) {
+	/**
+	 * Define variable
+	 *
+	 * @since 1.8.14
+	 */
+	$donor_id = '';
 	$donor_edit_role = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
 
 	if ( ! is_admin() || ! current_user_can( $donor_edit_role ) ) {
-		wp_die( __( 'You do not have permission to edit this donor.', 'edit' ) );
+		wp_die( esc_html__( 'You do not have permission to edit this donor.', 'give' ), esc_html__( 'Error', 'give' ), array(
+			'response' => 403,
+		) );
 	}
 
 	$output = array();

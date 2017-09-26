@@ -81,13 +81,26 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 	public function get_columns() {
 		$columns = array(
 			'label'           => esc_attr__( 'Gateway', 'give' ),
-			'complete_sales'  => esc_attr__( 'Complete Transactions', 'give' ),
-			'pending_sales'   => esc_attr__( 'Pending / Failed Transactions', 'give' ),
-			'total_sales'     => esc_attr__( 'Total Transactions', 'give' ),
+			'complete_sales'  => esc_attr__( 'Complete Payments', 'give' ),
+			'pending_sales'   => esc_attr__( 'Pending / Failed Payments', 'give' ),
+			'total_sales'     => esc_attr__( 'Total Payments', 'give' ),
 			'total_donations' => esc_attr__( 'Total Donated', 'give' )
 		);
 
 		return $columns;
+	}
+
+	/**
+	 * Get the sortable columns
+	 *
+	 * @access public
+	 * @since  1.8.12
+	 * @return array Array of all the sortable columns
+	 */
+	public function get_sortable_columns() {
+		return array(
+			'total_donations' => array( 'total_donations', false )
+		);
 	}
 
 
@@ -131,9 +144,9 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 		<div class="tablenav gateways-report-tablenav give-clearfix <?php echo esc_attr( $which ); ?>">
 
 			<?php if ( 'top' === $which ) { ?>
-				<h3 class="alignleft reports-earnings-title">
-					<span><?php esc_html_e( 'Donation Methods Report', 'give' ); ?></span>
-				</h3>
+				<h2 class="alignleft reports-earnings-title">
+					<?php esc_html_e( 'Donation Methods Report', 'give' ); ?>
+				</h2>
 			<?php } ?>
 
 			<div class="alignright tablenav-right">
@@ -151,6 +164,30 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 
 		</div>
 		<?php
+	}
+
+	/**
+	 * Reorder User Defined Array
+	 *
+	 * @param $old_value
+	 * @param $new_value
+	 *
+	 * @access public
+	 * @since  1.8.12
+	 *
+	 * @return int
+	 */
+	public function give_sort_total_donations( $old_value, $new_value ) {
+		// If no sort, default to label.
+		$orderby = ( ! empty( $_REQUEST['orderby'] ) ) ? $_REQUEST['orderby'] : 'label';
+
+		//If no order, default to asc.
+		$order = ( ! empty( $_REQUEST['order'] ) ) ? $_REQUEST['order'] : 'asc';
+
+		//Determine sort order.
+		$result = strcmp( $old_value[ $orderby ], $new_value[ $orderby ] );
+
+		return ( $order === 'asc' ) ? $result : -$result;
 	}
 
 
@@ -175,16 +212,15 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 			$reports_data[] = array(
 				'ID'              => $gateway_id,
 				'label'           => $gateway['admin_label'],
-				'complete_sales'  => give_format_amount( $complete_count, false ),
-				'pending_sales'   => give_format_amount( $pending_count, false ),
-				'total_sales'     => give_format_amount( $complete_count + $pending_count, false ),
-				'total_donations' => give_currency_filter( give_format_amount( $stats->get_earnings( 0, 0, 0, $gateway_id ) ) )
+				'complete_sales'  => $complete_count,
+				'pending_sales'   => $pending_count,
+				'total_sales'     => $complete_count + $pending_count,
+				'total_donations' => give_currency_filter( give_format_amount( $stats->get_earnings( 0, strtotime('04/13/2015' ), current_time('timestamp' ), $gateway_id ), array( 'sanitize' => false ) ) ),
 			);
 		}
 
 		return $reports_data;
 	}
-
 
 	/**
 	 * Setup the final data for the table
@@ -202,6 +238,9 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 		$sortable              = $this->get_sortable_columns();
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 		$this->items           = $this->reports_data();
+
+		// Sort Array when we are sorting data in array.
+		usort( $this->items, array( $this, 'give_sort_total_donations' ) );
 
 	}
 }

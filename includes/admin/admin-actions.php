@@ -47,7 +47,8 @@ function give_redirect_to_clean_url_admin_pages() {
 	$give_pages = array(
 		'give-payment-history',
 		'give-donors',
-		'give-reports'
+		'give-reports',
+		'give-tools',
 	);
 
 	// Get current page.
@@ -122,28 +123,8 @@ add_action( 'wp_ajax_give_hide_outdated_php_notice', 'give_hide_outdated_php_not
  */
 function _give_register_admin_notices() {
 	// Bailout.
-	if( ! is_admin() ) {
+	if ( ! is_admin() ) {
 		return;
-	}
-
-	// Add PHP version update notice
-	if ( function_exists( 'phpversion' ) && version_compare( GIVE_REQUIRED_PHP_VERSION, phpversion(), '>' ) ) {
-
-		$notice_desc = '<p><strong>' . __( 'Your site could be faster and more secure with a newer PHP version.', 'give' ) . '</strong></p>';
-		$notice_desc .= '<p>' . __( 'Hey, we\'ve noticed that you\'re running an outdated version of PHP. PHP is the programming language that WordPress and Give are built on. The version that is currently used for your site is no longer supported. Newer versions of PHP are both faster and more secure. In fact, your version of PHP no longer receives security updates, which is why we\'re sending you this notice.', 'give' ) . '</p>';
-		$notice_desc .= '<p>' . __( 'Hosts have the ability to update your PHP version, but sometimes they don\'t dare to do that because they\'re afraid they\'ll break your site.', 'give' ) . '</p>';
-		$notice_desc .= '<p><strong>' . __( 'To which version should I update?', 'give' ) . '</strong></p>';
-		$notice_desc .= '<p>' .  __( 'You should update your PHP version to either 5.6 or to 7.0 or 7.1. On a normal WordPress site, switching to PHP 5.6 should never cause issues. We would however actually recommend you switch to PHP7. There are some plugins that are not ready for PHP7 though, so do some testing first. PHP7 is much faster than PHP 5.6. It\'s also the only PHP version still in active development and therefore the better option for your site in the long run.', 'give' ) . '</p>';
-		$notice_desc .= '<p><strong>' . __( 'Can\'t update? Ask your host!', 'give' ) . '</strong></p>';
-		$notice_desc .= '<p>' . sprintf( __( 'If you cannot upgrade your PHP version yourself, you can send an email to your host. If they don\'t want to upgrade your PHP version, we would suggest you switch hosts. Have a look at one of the recommended %1$sWordPress hosting partners%2$s.', 'give' ), sprintf( '<a href="%1$s" target="_blank">', esc_url( 'https://wordpress.org/hosting/' ) ), '</a>' ) . '</p>';
-
-		Give()->notices->register_notice( array(
-			'id'          => 'give-invalid-php-version',
-			'type'        => 'error',
-			'description' => $notice_desc,
-			'dismissible_type' => 'user',
-			'dismiss_interval' => 'shortly',
-		) );
 	}
 
 	// Add payment bulk notice.
@@ -410,4 +391,177 @@ function _give_show_test_mode_notice_in_admin_bar( $wp_admin_bar ) {
 
 	return true;
 }
+
 add_action( 'admin_bar_menu', '_give_show_test_mode_notice_in_admin_bar', 1000, 1 );
+
+/**
+ * Add Link to Import page in from donation archive and donation single page
+ *
+ * @since 1.8.13
+ */
+function give_import_page_link_callback() {
+	?>
+	<a href="<?php echo esc_url( give_import_page_url() ); ?>"
+	   class="page-import-action page-title-action"><?php esc_html_e( 'Import Donations', 'give' ); ?></a>
+
+	<style type="text/css">
+		<?php
+		// Check if view donation single page only.
+		if ( ! empty( $_REQUEST['view'] ) && 'view-payment-details' === (string) give_clean( $_REQUEST['view'] ) && 'give-payment-history' === give_clean( $_REQUEST['page'] ) ) {
+			?>
+		.wrap #transaction-details-heading {
+			display: inline-block;
+		}
+
+		<?php
+	} else {
+		?>
+		/* So the "New Donation" button aligns with the wp-admin h1 tag */
+		.wrap > h1 {
+			display: inline-block;
+			margin-right: 5px;
+		}
+
+		<?php
+	} ?>
+	</style>
+	<?php
+}
+
+
+add_action( 'give_payments_page_top', 'give_import_page_link_callback', 11 );
+
+/**
+ * Load donation import ajax callback
+ * Fire when importing from CSV start
+ *
+ * @since  1.8.13
+ *
+ * @return json $json_data
+ */
+function give_donation_import_callback() {
+	$import_setting = array();
+	$fields         = isset( $_POST['fields'] ) ? $_POST['fields'] : null;
+
+	parse_str( $fields );
+
+	$import_setting['create_user'] = $create_user;
+	$import_setting['mode']        = $mode;
+	$import_setting['delimiter']   = $delimiter;
+	$import_setting['csv']         = $csv;
+	$import_setting['delete_csv']  = $delete_csv;
+
+	// Parent key id.
+	$main_key = maybe_unserialize( $main_key );
+
+	$current    = absint( $_REQUEST['current'] );
+	$total_ajax = absint( $_REQUEST['total_ajax'] );
+	$start      = absint( $_REQUEST['start'] );
+	$end        = absint( $_REQUEST['end'] );
+	$next       = absint( $_REQUEST['next'] );
+	$total      = absint( $_REQUEST['total'] );
+	$per_page   = absint( $_REQUEST['per_page'] );
+	if ( empty( $delimiter ) ) {
+		$delimiter = ',';
+	}
+
+	// processing done here.
+	$raw_data = give_get_donation_data_from_csv( $csv, $start, $end, $delimiter );
+	$raw_key  = maybe_unserialize( $mapto );
+
+	//Prevent normal emails
+	remove_action( 'give_complete_donation', 'give_trigger_donation_receipt', 999 );
+	remove_action( 'give_insert_user', 'give_new_user_notification', 10 );
+	remove_action( 'give_insert_payment', 'give_payment_save_page_data' );
+
+	foreach ( $raw_data as $row_data ) {
+		give_save_import_donation_to_db( $raw_key, $row_data, $main_key, $import_setting );
+	}
+
+	// Check if function exists or not.
+	if ( function_exists( 'give_payment_save_page_data' ) ) {
+		add_action( 'give_insert_payment', 'give_payment_save_page_data' );
+	}
+	add_action( 'give_insert_user', 'give_new_user_notification', 10, 2 );
+	add_action( 'give_complete_donation', 'give_trigger_donation_receipt', 999 );
+
+	if ( $next == false ) {
+		$json_data = array(
+			'success' => true,
+			'message' => __( 'All donation uploaded successfully!', 'give' ),
+		);
+	} else {
+		$index_start = $start;
+		$index_end   = $end;
+		$last        = false;
+		$next        = true;
+		if ( $next ) {
+			$index_start = $index_start + $per_page;
+			$index_end   = $per_page + ( $index_start - 1 );
+		}
+		if ( $index_end >= $total ) {
+			$index_end = $total;
+			$last      = true;
+		}
+		$json_data = array(
+			'raw_data' => $raw_data,
+			'raw_key'  => $raw_key,
+			'next'     => $next,
+			'start'    => $index_start,
+			'end'      => $index_end,
+			'last'     => $last,
+		);
+	}
+
+	$url              = give_import_page_url( array(
+		'step'          => '4',
+		'importer-type' => 'import_donations',
+		'csv'           => $csv,
+		'total'         => $total,
+		'delete_csv'    => $import_setting['delete_csv'],
+		'success'       => ( isset( $json_data['success'] ) ? $json_data['success'] : '' ),
+	) );
+	$json_data['url'] = $url;
+
+	$current ++;
+	$json_data['current'] = $current;
+
+	$percentage              = ( 100 / ( $total_ajax + 1 ) ) * $current;
+	$json_data['percentage'] = $percentage;
+
+	$json_data = apply_filters( 'give_import_ajax_responces', $json_data, $fields );
+	wp_die( json_encode( $json_data ) );
+}
+
+add_action( 'wp_ajax_give_donation_import', 'give_donation_import_callback' );
+
+
+/**
+ * Initializes blank slate content if a list table is empty.
+ *
+ * @since 1.8.13
+ */
+function give_blank_slate() {
+	$blank_slate = new Give_Blank_Slate();
+	$blank_slate->init();
+}
+
+add_action( 'current_screen', 'give_blank_slate' );
+
+/**
+ * Get Array of WP User Roles.
+ *
+ * @since 1.8.13
+ *
+ * @return array
+ */
+function give_get_user_roles() {
+	$user_roles = array();
+
+	// Loop through User Roles.
+	foreach ( get_editable_roles() as $role_name => $role_info ):
+		$user_roles[ $role_name ] = $role_info['name'];
+	endforeach;
+
+	return $user_roles;
+}

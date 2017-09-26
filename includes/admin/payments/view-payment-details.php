@@ -49,7 +49,7 @@ $payment_mode   = $payment->mode;
 ?>
 <div class="wrap give-wrap">
 
-	<h1 id="transaction-details-heading"><?php
+	<h1 id="transaction-details-heading" class="wp-heading-inline"><?php
 		printf(
 			/* translators: %s: donation number */
 			esc_html__( 'Donation %s', 'give' ),
@@ -159,7 +159,7 @@ $payment_mode   = $payment->mode;
 											<p>
 												<label for="give-payment-total" class="strong"><?php esc_html_e( 'Total Donation:', 'give' ); ?></label>&nbsp;
 												<?php echo give_currency_symbol( $payment->currency ); ?>
-												&nbsp;<input id="give-payment-total" name="give-payment-total" type="text" class="small-text give-price-field" value="<?php echo esc_attr( give_format_decimal( give_get_payment_amount( $payment_id ) ) ); ?>"/>
+												&nbsp;<input id="give-payment-total" name="give-payment-total" type="text" class="small-text give-price-field" value="<?php echo esc_attr( give_format_decimal( give_get_payment_amount( $payment_id ), false, false ) ); ?>"/>
 											</p>
 										</div>
 
@@ -273,7 +273,7 @@ $payment_mode   = $payment->mode;
 										<?php endif; ?>
 
 										<div class="give-admin-box-inside">
-											<p><?php $purchase_url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&user=' . urlencode( esc_attr( give_get_payment_user_email( $payment_id ) ) ) ); ?>
+											<p><?php $purchase_url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&donor=' . absint( give_get_payment_donor_id( $payment_id ) ) ); ?>
 												<a href="<?php echo $purchase_url; ?>"><?php esc_html_e( 'View all donations for this donor &raquo;', 'give' ); ?></a>
 											</p>
 										</div>
@@ -342,7 +342,7 @@ $payment_mode   = $payment->mode;
 												<?php
 												if ( $payment_meta['form_id'] ) :
 													printf(
-														'<a href="%1$s" target="_blank">#%2$s</a>',
+														'<a href="%1$s">#%2$s</a>',
 														admin_url( 'post.php?action=edit&post=' . $payment_meta['form_id'] ),
 														$payment_meta['form_id']
 													);
@@ -375,7 +375,7 @@ $payment_mode   = $payment->mode;
 														$prices_atts = '';
 														if( $variable_prices = give_get_variable_prices( $payment_meta['form_id'] ) ) {
 															foreach ( $variable_prices as $variable_price ) {
-																$prices_atts[$variable_price['_give_id']['level_id']] = give_format_amount( $variable_price['_give_amount'] );
+																$prices_atts[$variable_price['_give_id']['level_id']] = give_format_amount( $variable_price['_give_amount'], array( 'sanitize' => false ) );
 															}
 														}
 														// Variable price dropdown options.
@@ -384,7 +384,7 @@ $payment_mode   = $payment->mode;
 															'name'             => 'give-variable-price',
 															'chosen'           => true,
 															'show_option_all'  => '',
-															'show_option_none' => '',
+															'show_option_none' => ( '' === get_post_meta( $payment_id, '_give_payment_price_id', true ) ? __( 'None', 'give' )  : '' ),
 															'select_atts'      => 'data-prices=' . esc_attr( json_encode( $prices_atts ) ),
 															'selected'         => $payment_meta['price_id'],
 														);
@@ -398,7 +398,7 @@ $payment_mode   = $payment->mode;
 										<div class="column">
 											<p>
 												<strong><?php esc_html_e( 'Total Donation:', 'give' ); ?></strong><br>
-												<?php echo give_currency_filter( give_format_amount( $payment->total ), give_get_payment_currency_code( $payment->ID ) ); ?>
+												<?php echo give_currency_filter( give_format_amount( $payment->total, array( 'sanitize' => false ) ), give_get_payment_currency_code( $payment->ID ) ); ?>
 											</p>
 											<p>
 												<?php
@@ -482,7 +482,7 @@ $payment_mode   = $payment->mode;
 												<?php
 												if ( ! empty( $donor->id ) ) {
 													printf(
-														'<a href="%1$s" target="_blank">#%2$s</a>',
+														'<a href="%1$s">#%2$s</a>',
 														admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ),
 														$donor->id
 													);
@@ -602,28 +602,17 @@ $payment_mode   = $payment->mode;
 
 										<div class="order-data-address">
 											<div class="data column-container">
-												<div class="column">
-													<div class="give-wrap-address-line1">
-														<label for="give-payment-address-line1" class="order-data-address"><?php esc_html_e( 'Address 1:', 'give' ); ?></label>
-														<input id="give-payment-address-line1" type="text" name="give-payment-address[0][line1]" value="<?php echo esc_attr( $address['line1'] ); ?>" class="medium-text"/>
-													</div>
-													<div class="give-wrap-address-line2">
-														<label for="give-payment-address-line2" class="order-data-address-line"><?php esc_html_e( 'Address 2:', 'give' ); ?></label>
-														<input id="give-payment-address-line2" type="text" name="give-payment-address[0][line2]" value="<?php echo esc_attr( $address['line2'] ); ?>" class="medium-text"/>
-													</div>
-												</div>
-												<div class="column">
-													<div class="give-wrap-address-city">
-														<label for="give-payment-address-city" class="order-data-address-line"><?php esc_html_e( 'City:', 'give' ); ?></label>
-														<input id="give-payment-address-city" type="text" name="give-payment-address[0][city]" value="<?php echo esc_attr( $address['city'] ); ?>" class="medium-text"/>
-													</div>
-													<div class="give-wrap-address-zip">
-														<label for="give-payment-address-zip" class="order-data-address-line"><?php esc_html_e( 'Zip / Postal Code:', 'give' ); ?></label>
-														<input id="give-payment-address-zip" type="text" name="give-payment-address[0][zip]" value="<?php echo esc_attr( $address['zip'] ); ?>" class="medium-text"/>
 
-													</div>
-												</div>
-												<div class="column">
+												<?php
+												$address['country'] = ( ! empty( $address['country'] ) ? $address['country'] : give_get_country() );
+
+												$address['state'] = ( ! empty( $address['state'] ) ? $address['state'] : '' );
+
+												// Get the country list that does not have any states init.
+												$no_states_country = give_no_states_country_list();
+												?>
+
+												<div class="row">
 													<div id="give-order-address-country-wrap">
 														<label class="order-data-address-line"><?php esc_html_e( 'Country:', 'give' ); ?></label>
 														<?php
@@ -639,8 +628,25 @@ $payment_mode   = $payment->mode;
 														) );
 														?>
 													</div>
-													<div id="give-order-address-state-wrap">
-														<label for="give-payment-address-state" class="order-data-address-line"><?php esc_html_e( 'State / Province:', 'give' ); ?></label>
+												</div>
+
+												<div class="row">
+													<div class="give-wrap-address-line1">
+														<label for="give-payment-address-line1" class="order-data-address"><?php esc_html_e( 'Address 1:', 'give' ); ?></label>
+														<input id="give-payment-address-line1" type="text" name="give-payment-address[0][line1]" value="<?php echo esc_attr( $address['line1'] ); ?>" class="medium-text"/>
+													</div>
+												</div>
+
+												<div class="row">
+													<div class="give-wrap-address-line2">
+														<label for="give-payment-address-line2" class="order-data-address-line"><?php esc_html_e( 'Address 2:', 'give' ); ?></label>
+														<input id="give-payment-address-line2" type="text" name="give-payment-address[0][line2]" value="<?php echo esc_attr( $address['line2'] ); ?>" class="medium-text"/>
+													</div>
+												</div>
+
+												<div class="row">
+													<div id="give-order-address-state-wrap" class="<?php echo ( ! empty( $address['country'] ) && array_key_exists( $address['country'], $no_states_country ) ? 'give-hidden' : '' ); ?>">
+														<label for="give-payment-address-state" class="order-data-address-line"><?php esc_html_e( 'State / Province / County:', 'give' ); ?></label>
 														<?php
 														$states = give_get_states( $address['country'] );
 														if ( ! empty( $states ) ) {
@@ -659,6 +665,22 @@ $payment_mode   = $payment->mode;
 															<input id="give-payment-address-state" type="text" name="give-payment-address[0][state]" value="<?php echo esc_attr( $address['state'] ); ?>" class="medium-text"/>
 															<?php
 														} ?>
+													</div>
+												</div>
+
+												<div class="row">
+													<div class="column">
+														<div class="give-wrap-address-city">
+															<label for="give-payment-address-city" class="order-data-address-line"><?php esc_html_e( 'City:', 'give' ); ?></label>
+															<input id="give-payment-address-city" type="text" name="give-payment-address[0][city]" value="<?php echo esc_attr( $address['city'] ); ?>" class="medium-text"/>
+														</div>
+													</div>
+
+													<div class="column">
+														<div class="give-wrap-address-zip">
+															<label for="give-payment-address-zip" class="order-data-address-line"><?php esc_html_e( 'Zip / Postal Code:', 'give' ); ?></label>
+															<input id="give-payment-address-zip" type="text" name="give-payment-address[0][zip]" value="<?php echo esc_attr( $address['zip'] ); ?>" class="medium-text"/>
+														</div>
 													</div>
 												</div>
 											</div>

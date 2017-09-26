@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0
  *
- * @param int $payment_id Payment ID.
+ * @param int  $payment_id   Payment ID.
  * @param bool $admin_notice Whether to send the admin email notification or not (default: true).
  *
  * @return void
@@ -35,7 +35,7 @@ function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 	/**
 	 * Filters the from name.
 	 *
-	 * @param int $payment_id Payment id.
+	 * @param int   $payment_id   Payment id.
 	 * @param mixed $payment_data Payment meta data.
 	 *
 	 * @since 1.0
@@ -47,7 +47,7 @@ function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 	/**
 	 * Filters the from email.
 	 *
-	 * @param int $payment_id Payment id.
+	 * @param int   $payment_id   Payment id.
 	 * @param mixed $payment_data Payment meta data.
 	 *
 	 * @since 1.0
@@ -69,7 +69,7 @@ function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 	/**
 	 * Filters the donation email receipt attachments. By default, there is no attachment but plugins can hook in to provide one more multiple for the donor. Examples would be a printable ticket or PDF receipt.
 	 *
-	 * @param int $payment_id Payment id.
+	 * @param int   $payment_id   Payment id.
 	 * @param mixed $payment_data Payment meta data.
 	 *
 	 * @since 1.0
@@ -86,7 +86,7 @@ function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 	/**
 	 * Filters the donation receipt's email headers.
 	 *
-	 * @param int $payment_id Payment id.
+	 * @param int   $payment_id   Payment id.
 	 * @param mixed $payment_data Payment meta data.
 	 *
 	 * @since 1.0
@@ -106,7 +106,7 @@ function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 		 *
 		 * @since 1.0
 		 *
-		 * @param int $payment_id Payment id.
+		 * @param int   $payment_id   Payment id.
 		 * @param mixed $payment_data Payment meta data.
 		 */
 		do_action( 'give_admin_donation_email', $payment_id, $payment_data );
@@ -165,7 +165,7 @@ function give_email_test_donation_receipt() {
  *
  * @since 1.0
  *
- * @param int $payment_id Payment ID (default: 0)
+ * @param int   $payment_id   Payment ID (default: 0)
  * @param array $payment_data Payment Meta and Data
  *
  * @return void
@@ -341,26 +341,68 @@ function give_get_default_donation_receipt_email() {
  * @since 1.0
  *
  * @param $user_info
+ * @param $payment Give_Payment|bool for getting the names.
  *
  * @return array $email_names
  */
-function give_get_email_names( $user_info ) {
+function give_get_email_names( $user_info, $payment = false ) {
 	$email_names = array();
-	$user_info   = maybe_unserialize( $user_info );
 
-	$email_names['fullname'] = '';
-	if ( isset( $user_info['id'] ) && $user_info['id'] > 0 && isset( $user_info['first_name'] ) ) {
-		$user_data               = get_userdata( $user_info['id'] );
-		$email_names['name']     = $user_info['first_name'];
-		$email_names['fullname'] = $user_info['first_name'] . ' ' . $user_info['last_name'];
-		$email_names['username'] = $user_data->user_login;
-	} elseif ( isset( $user_info['first_name'] ) ) {
-		$email_names['name']     = $user_info['first_name'];
-		$email_names['fullname'] = $user_info['first_name'] . ' ' . $user_info['last_name'];
-		$email_names['username'] = $user_info['first_name'];
+	if ( is_a( $payment, 'Give_Payment' ) ) {
+
+		if ( $payment->user_id > 0 ) {
+
+			$user_data               = get_userdata( $payment->user_id );
+			$email_names['name']     = $payment->first_name;
+			$email_names['fullname'] = trim( $payment->first_name . ' ' . $payment->last_name );
+			$email_names['username'] = $user_data->user_login;
+
+		} elseif ( ! empty( $payment->first_name ) ) {
+
+			$email_names['name']     = $payment->first_name;
+			$email_names['fullname'] = trim( $payment->first_name . ' ' . $payment->last_name );
+			$email_names['username'] = $payment->first_name;
+
+		} else {
+
+			$email_names['name']     = $payment->email;
+			$email_names['username'] = $payment->email;
+
+		}
+
 	} else {
-		$email_names['name']     = $user_info['email'];
-		$email_names['username'] = $user_info['email'];
+
+		// Support for old serialized data
+		if ( is_serialized( $user_info ) ) {
+
+			// Security check.
+			preg_match( '/[oO]\s*:\s*\d+\s*:\s*"\s*(?!(?i)(stdClass))/', $user_info, $matches );
+			if ( ! empty( $matches ) ) {
+				return array(
+					'name'     => '',
+					'fullname' => '',
+					'username' => '',
+				);
+			} else {
+				$user_info = maybe_unserialize( $user_info );
+			}
+
+		}
+
+		if ( isset( $user_info['id'] ) && $user_info['id'] > 0 && isset( $user_info['first_name'] ) ) {
+			$user_data               = get_userdata( $user_info['id'] );
+			$email_names['name']     = $user_info['first_name'];
+			$email_names['fullname'] = $user_info['first_name'] . ' ' . $user_info['last_name'];
+			$email_names['username'] = $user_data->user_login;
+		} elseif ( isset( $user_info['first_name'] ) ) {
+			$email_names['name']     = $user_info['first_name'];
+			$email_names['fullname'] = $user_info['first_name'] . ' ' . $user_info['last_name'];
+			$email_names['username'] = $user_info['first_name'];
+		} else {
+			$email_names['name']     = $user_info['email'];
+			$email_names['username'] = $user_info['email'];
+		}
+
 	}
 
 	return $email_names;

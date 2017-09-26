@@ -399,10 +399,16 @@ ASIDE
 	}
 
 	.give_options_panel {
+		display: none;
 		padding-left: 170px;
 
+		&.active,
+		.no-js & {
+			display: block;
+		}
+
 		.give-field-wrap {
-			padding: 1em 20px 1em 162px !important;
+			padding: 1em 20px 1em 162px;
 			margin: 0;
 			border-bottom: 1px solid #eee;
 
@@ -644,7 +650,6 @@ ASIDE
 				left: 166px;
 				width: 170px;
 				max-height: 250px;
-				overflow-y: scroll;
 			}
 		}
 	}
@@ -665,14 +670,31 @@ ASIDE
 					margin-right: 0;
 					font-size: 15px;
 				}
-				span {
+				span.give-label {
 					display: none;
+				}
+
+				span.give-icon:before {
+					margin: 0;
 				}
 			}
 
 		}
 		.give_options_panel {
 			padding-left: 40px;
+
+			.give-field-wrap {
+				padding: 10px;
+
+				span.give-field-label, label {
+					display: block;
+					float: none;
+					margin: 0 0 10px 0;
+					font-size: 14px;
+					width: 100%;
+				}
+
+			}
 		}
 
 	}
@@ -697,6 +719,25 @@ ASIDE
 
 	div.chosen-container:first-of-type {
 		margin-top: 10px;
+	}
+
+	div.chosen-container {
+		ul.chosen-choices {
+			input.chosen-search-input {
+				border: 1px solid #ddd;
+				height: 20px;
+			}
+
+			border: 1px solid #ddd;
+		}
+	}
+
+	select {
+		vertical-align: inherit;
+		margin: 0;
+		height: 26px;
+		line-height: 26px;
+		border: 1px solid #ddd;
 	}
 }
 

@@ -38,15 +38,26 @@ function give_get_errors() {
  *
  * @param int    $error_id      ID of the error being set.
  * @param string $error_message Message to store with the error.
+ * @param array  $notice_args
  *
  * @return void
  */
-function give_set_error( $error_id, $error_message ) {
+function give_set_error( $error_id, $error_message, $notice_args = array() ) {
 	$errors = give_get_errors();
 	if ( ! $errors ) {
 		$errors = array();
 	}
-	$errors[ $error_id ] = $error_message;
+
+	if( is_array( $notice_args ) && ! empty( $notice_args ) ) {
+		$errors[ $error_id ] = array(
+			'message'     => $error_message,
+			'notice_args' => $notice_args,
+		);
+	} else {
+		// Backward compatibility v<1.8.11.
+		$errors[ $error_id ] = $error_message;
+	}
+
 	Give()->session->set( 'give_errors', $errors );
 }
 
@@ -74,7 +85,15 @@ function give_clear_errors() {
 function give_unset_error( $error_id ) {
 	$errors = give_get_errors();
 	if ( $errors ) {
-		unset( $errors[ $error_id ] );
+		/**
+		 * Check If $error_id exists in the array.
+		 * If exists then unset it.
+		 *
+		 * @since 1.8.13
+		 */
+		if ( isset( $errors[ $error_id ] ) ) {
+			unset( $errors[ $error_id ] );
+		}
 		Give()->session->set( 'give_errors', $errors );
 	}
 }

@@ -141,7 +141,7 @@ class Give_Donor {
 	 */
 	public function __construct( $_id_or_email = false, $by_user_id = false ) {
 
-		$this->db = new Give_DB_Donors();
+		$this->db = Give()->donors;
 
 		if (
 			false === $_id_or_email

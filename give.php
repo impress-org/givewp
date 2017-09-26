@@ -5,7 +5,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: WordImpress
  * Author URI: https://wordimpress.com
- * Version: 1.8.10
+ * Version: 1.8.14
  * Text Domain: give
  * Domain Path: /languages
  * GitHub Plugin URI: https://github.com/WordImpress/Give
@@ -178,7 +178,7 @@ if ( ! class_exists( 'Give' ) ) :
 		public $email_access;
 
 		/**
-		* Give notices Object
+		 * Give notices Object
 		 *
 		 * @since  2.0
 		 * @access public
@@ -213,7 +213,20 @@ if ( ! class_exists( 'Give' ) ) :
 		 * Give Constructor.
 		 */
 		public function __construct() {
+			// PHP version
+			if ( ! defined( 'GIVE_REQUIRED_PHP_VERSION' ) ) {
+				define( 'GIVE_REQUIRED_PHP_VERSION', '5.3' );
+			}
+
+			// Bailout: Need minimum php version to load plugin.
+			if ( function_exists( 'phpversion' ) && version_compare( GIVE_REQUIRED_PHP_VERSION, phpversion(), '>' ) ) {
+				add_action( 'admin_notices', array( $this, 'minmum_phpversion_notice' ) );
+
+				return;
+			}
+
 			$this->setup_constants();
+
 			$this->includes();
 			$this->init_hooks();
 
@@ -311,7 +324,7 @@ if ( ! class_exists( 'Give' ) ) :
 
 			// Plugin version
 			if ( ! defined( 'GIVE_VERSION' ) ) {
-				define( 'GIVE_VERSION', '1.8.10' );
+				define( 'GIVE_VERSION', '1.8.14' );
 			}
 
 			// Plugin Folder Path
@@ -338,11 +351,6 @@ if ( ! class_exists( 'Give' ) ) :
 			if ( ! defined( 'CAL_GREGORIAN' ) ) {
 				define( 'CAL_GREGORIAN', 1 );
 			}
-
-			// PHP version
-			if ( ! defined( 'GIVE_REQUIRED_PHP_VERSION' ) ) {
-				define( 'GIVE_REQUIRED_PHP_VERSION', '5.3' );
-			}
 		}
 
 		/**
@@ -360,6 +368,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/class-give-settings.php';
 			$give_options = give_get_settings();
 
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-cron.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/give-metabox-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-cache.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/post-types.php';
@@ -382,12 +391,12 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-html-elements.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-logging.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-license-handler.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/class-give-cron.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-email-access.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/country-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/template-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/misc-functions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/import-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/template.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/widget.php';
@@ -422,6 +431,8 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/template.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/actions.php';
 
+			require_once GIVE_PLUGIN_DIR . 'includes/donors/class-give-donors-query.php';
+
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				require_once GIVE_PLUGIN_DIR . 'includes/class-give-cli-commands.php';
 			}
@@ -435,10 +446,10 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/class-i18n-module.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-actions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-filters.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/system-info.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/add-ons.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/plugins.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/dashboard-widgets.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/class-blank-slate.php';
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/actions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/payments-history.php';
@@ -456,9 +467,11 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/export-actions.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/pdf-reports.php';
 
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/reports.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/class-give-graph.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/reporting/graphing.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/reports/reports.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/reports/class-give-graph.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/reports/graphing.php';
+
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/logs.php';
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/data/tools-actions.php';
 
@@ -472,8 +485,7 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-donation-history.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-receipt.php';
 
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrade-functions.php';
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrades.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/class-give-updates.php';
 
 			}// End if().
 
@@ -503,6 +515,33 @@ if ( ! class_exists( 'Give' ) ) :
 			load_textdomain( 'give', WP_LANG_DIR . '/give/give-' . $locale . '.mo' );
 			load_plugin_textdomain( 'give', false, $give_lang_dir );
 
+		}
+
+
+		/**
+		 *  Show minimu phpversion notice
+		 *
+		 * @since  1.8.12
+		 * @access public
+		 */
+		public function minmum_phpversion_notice() {
+			// Bailout.
+			if ( ! is_admin() ) {
+				return;
+			}
+
+			$notice_desc = '<p><strong>' . __( 'Your site could be faster and more secure with a newer PHP version.', 'give' ) . '</strong></p>';
+			$notice_desc .= '<p>' . __( 'Hey, we\'ve noticed that you\'re running an outdated version of PHP. PHP is the programming language that WordPress and Give are built on. The version that is currently used for your site is no longer supported. Newer versions of PHP are both faster and more secure. In fact, your version of PHP no longer receives security updates, which is why we\'re sending you this notice.', 'give' ) . '</p>';
+			$notice_desc .= '<p>' . __( 'Hosts have the ability to update your PHP version, but sometimes they don\'t dare to do that because they\'re afraid they\'ll break your site.', 'give' ) . '</p>';
+			$notice_desc .= '<p><strong>' . __( 'To which version should I update?', 'give' ) . '</strong></p>';
+			$notice_desc .= '<p>' . __( 'You should update your PHP version to either 5.6 or to 7.0 or 7.1. On a normal WordPress site, switching to PHP 5.6 should never cause issues. We would however actually recommend you switch to PHP7. There are some plugins that are not ready for PHP7 though, so do some testing first. PHP7 is much faster than PHP 5.6. It\'s also the only PHP version still in active development and therefore the better option for your site in the long run.', 'give' ) . '</p>';
+			$notice_desc .= '<p><strong>' . __( 'Can\'t update? Ask your host!', 'give' ) . '</strong></p>';
+			$notice_desc .= '<p>' . sprintf( __( 'If you cannot upgrade your PHP version yourself, you can send an email to your host. If they don\'t want to upgrade your PHP version, we would suggest you switch hosts. Have a look at one of the recommended %1$sWordPress hosting partners%2$s.', 'give' ), sprintf( '<a href="%1$s" target="_blank">', esc_url( 'https://wordpress.org/hosting/' ) ), '</a>' ) . '</p>';
+
+			echo sprintf(
+				'<div class="notice notice-error">%1$s</div>',
+				$notice_desc
+			);
 		}
 
 	}

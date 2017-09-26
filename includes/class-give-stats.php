@@ -102,7 +102,7 @@ class Give_Stats {
 			'this_quarter' => esc_html__( 'This Quarter', 'give' ),
 			'last_quarter' => esc_html__( 'Last Quarter', 'give' ),
 			'this_year'    => esc_html__( 'This Year', 'give' ),
-			'last_year'    => esc_html__( 'Last Year', 'give' )
+			'last_year'    => esc_html__( 'Last Year', 'give' ),
 		);
 
 		return apply_filters( 'give_stats_predefined_dates', $predefined );
@@ -158,7 +158,7 @@ class Give_Stats {
 		$month           = date( 'n', current_time( 'timestamp' ) );
 		$year            = date( 'Y', current_time( 'timestamp' ) );
 
-		if ( array_key_exists( $date, $this->get_predefined_dates() ) ) {
+		if ( array_key_exists( (string) $date, $this->get_predefined_dates() ) ) {
 
 			// This is a predefined date rate, such as last_week
 			switch ( $date ) {

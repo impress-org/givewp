@@ -344,6 +344,15 @@ function give_register_post_type_statuses() {
 		'label_count'               => _n_noop( 'Processing <span class="count">(%s)</span>', 'Processing <span class="count">(%s)</span>', 'give' )
 	)  );
 
+	register_post_status( 'preapproval', array(
+		'label'                     => _x( 'Preapproval', 'Preapproval payment status', 'give' ),
+		'public'                    => true,
+		'exclude_from_search'       => false,
+		'show_in_admin_all_list'    => true,
+		'show_in_admin_status_list' => true,
+		'label_count'               => _n_noop( 'Preapproval <span class="count">(%s)</span>', 'Preapproval <span class="count">(%s)</span>', 'give' ),
+	) );
+
 }
 
 add_action( 'init', 'give_register_post_type_statuses' );
@@ -389,12 +398,6 @@ function give_updated_messages( $messages ) {
 
 add_filter( 'post_updated_messages', 'give_updated_messages' );
 
-
-/**
- * Setup Post Type Images
- */
-add_action( 'after_setup_theme', 'give_add_thumbnail_support', 10 );
-
 /**
  * Ensure post thumbnail support is turned on
  */
@@ -409,6 +412,8 @@ function give_add_thumbnail_support() {
 
 	add_post_type_support( 'give_forms', 'thumbnail' );
 }
+
+add_action( 'after_setup_theme', 'give_add_thumbnail_support', 10 );
 
 /**
  * Give Sidebars
