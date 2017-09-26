@@ -115,7 +115,7 @@ class Give_Notices {
 			if ( ! empty( $notice_args['auto_dismissible'] ) ) {
 				$notice_args['dismissible'] = 'auto';
 			}
-			// unset auto_dismissible as it has being deprecated.
+			// unset auto_dismissible as it has been deprecated.
 			unset( $notice_args['auto_dismissible'] );
 		}
 
@@ -499,7 +499,7 @@ class Give_Notices {
 					if ( ! empty( $notice_args['auto_dismissible'] ) ) {
 						$notice_args['dismissible'] = 'auto';
 					}
-					// unset auto_dismissible as it has being deprecated.
+					// unset auto_dismissible as it has been deprecated.
 					unset( $notice_args['auto_dismissible'] );
 				}
 
@@ -559,7 +559,7 @@ class Give_Notices {
 			if ( ! empty( $notice_args['auto_dismissible'] ) ) {
 				$notice_args['dismissible'] = 'auto';
 			}
-			// unset auto_dismissible as it has being deprecated.
+			// unset auto_dismissible as it has been deprecated.
 			unset( $notice_args['auto_dismissible'] );
 		}
 
