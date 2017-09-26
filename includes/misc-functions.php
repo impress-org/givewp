@@ -848,30 +848,51 @@ function modify_nav_menu_meta_box_object( $post_type ) {
 add_filter( 'nav_menu_meta_box_object', 'modify_nav_menu_meta_box_object' );
 
 /**
- * Enable 'Donation Form' meta enabled by default on Menu page.
+ * Show Donation Forms Post Type in Appearance > Menus by default on fresh install.
  *
- * @since 1.8.9
+ * @since 1.8.14
+ *
+ * @todo Remove this, when WordPress Core ticket is resolved (https://core.trac.wordpress.org/ticket/16828).
+ *
+ * @return bool
  */
-function give_nav_donation_metabox_enabled() {
+function give_donation_metabox_menu() {
 
-	// Return false, if it fails to retrieve hidden meta box list and is not admin.
-	if ( ( ! $hidden_meta_boxes = get_user_option( 'metaboxhidden_nav-menus' ) ) || ! is_admin() ) {
-		return false;
+	// Get Current Screen.
+	$screen = get_current_screen();
+
+	// Proceed, if current screen is navigation menus.
+	if(
+		'nav-menus' === $screen->id &&
+		give_is_setting_enabled( give_get_option( 'forms_singular' ) ) &&
+		! get_user_option( 'give_is_donation_forms_menu_updated' )
+	) {
+
+		// Return false, if it fails to retrieve hidden meta box list and is not admin.
+		if (
+			! is_admin() ||
+			( ! $hidden_meta_boxes = get_user_option( 'metaboxhidden_nav-menus' ) )
+		) {
+			return false;
+		}
+
+		// Return false, In case, we don't find 'Donation Form' in hidden meta box list.
+		if ( ! in_array( 'add-post-type-give_forms', $hidden_meta_boxes, true ) ) {
+			return false;
+		}
+
+		// Exclude 'Donation Form' value from hidden meta box's list.
+		$hidden_meta_boxes = array_diff( $hidden_meta_boxes, array( 'add-post-type-give_forms' ) );
+
+		// Get current user ID.
+		$user = wp_get_current_user();
+
+		update_user_option( $user->ID, 'metaboxhidden_nav-menus', $hidden_meta_boxes, true );
+		update_user_option( $user->ID, 'give_is_donation_forms_menu_updated', true, true );
 	}
-
-	// Return false, In case, we don't find 'Donation Form' in hidden meta box list.
-	if ( ! in_array( 'add-post-type-give_forms', $hidden_meta_boxes, true ) ) {
-		return false;
-	}
-
-	// Exclude 'Donation Form' value from hidden meta box's list.
-	$hidden_meta_boxes = array_diff( $hidden_meta_boxes, array( 'add-post-type-give_forms' ) );
-
-	// Get current user ID.
-	$user = wp_get_current_user();
-
-	update_user_option( $user->ID, 'metaboxhidden_nav-menus', $hidden_meta_boxes, true );
 }
+
+add_action( 'current_screen', 'give_donation_metabox_menu' );
 
 /**
  * Array_column backup usage
