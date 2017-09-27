@@ -992,7 +992,8 @@ var give_setting_edit = false;
 
 				$(this).addClass('active').fadeOut();
 				self.el.update_link.addClass('active').fadeOut();
-
+				$( '#give-db-updates .give-run-update-containt' ).slideUp();
+				
 				self.el.progress_container.find('.notice-wrap').remove();
 				self.el.progress_container.append('<div class="notice-wrap give-clearfix"><span class="spinner is-active"></span><div class="give-progress"><div></div></div></div>');
 				self.el.progress_main_container.removeClass('give-hidden');
@@ -1036,7 +1037,7 @@ var give_setting_edit = false;
 
 							self.el.update_link.closest('p').remove();
 							notice_wrap.html('<div class="notice notice-success is-dismissible"><p>' + response.data.message + '</p><button type="button" class="notice-dismiss"></button></div>');
-							$( '#give-db-updates .give-run-update-containt' ).remove();
+							
 						} else {
 							// Update steps info
 							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
