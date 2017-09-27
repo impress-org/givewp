@@ -664,7 +664,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			<tr valign="top">
 				<th colspan="2">
 					<h2 id="give-import-title"><?php esc_html_e( 'Import donations from a CSV file', 'give' ) ?></h2>
-					<p class="give-field-description"><?php esc_html_e( 'This tool allows you to import (or merge) donation data to give from a CSV file.', 'give' ) ?></p>
+					<p class="give-field-description"><?php esc_html_e( 'This tool allows you to import or add donation data to your give form(s) via a CSV file.', 'give' ) ?></p>
 				</th>
 			</tr>
 			<?php
