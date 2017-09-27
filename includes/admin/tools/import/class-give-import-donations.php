@@ -669,6 +669,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			</tr>
 			<?php
 			$csv         = ( isset( $_REQUEST['csv'] ) ? give_clean( $_POST['csv'] ) : '' );
+			$csv_id      = ( isset( $_REQUEST['csv_id'] ) ? give_clean( $_POST['csv_id'] ) : '' );
 			$delimiter   = ( isset( $_REQUEST['delimiter'] ) ? give_clean( $_POST['delimiter'] ) : ',' );
 			$mode        = ( ! empty( $_REQUEST['mode'] ) ? 'on' : '' );
 			$create_user = ( isset( $_REQUEST['create_user'] ) && isset( $_REQUEST['csv'] ) && 1 === absint( $_REQUEST['create_user'] ) ? 'on' : ( isset( $_REQUEST['csv'] ) ? '' : 'on' ) );
@@ -681,8 +682,13 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 					'type'        => 'file',
 					'attributes'  => array( 'editing' => 'false', 'library' => 'text' ),
 					'description' => __( 'The file must be a Comma Seperated Version (CSV) file type only.', 'give' ),
-					'fvalue'      => 'id',
+					'fvalue'      => 'url',
 					'default'     => $csv,
+				),
+				array(
+					'id'    => 'csv_id',
+					'type'  => 'hidden',
+					'value' => $csv_id,
 				),
 				array(
 					'id'          => 'delimiter',
@@ -700,18 +706,18 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 					'default'     => $mode,
 				),
 				array(
-					'id'      => 'create_user',
-					'name'    => __( 'Create WP users for new donors:', 'give' ),
-					'type'    => 'checkbox',
+					'id'          => 'create_user',
+					'name'        => __( 'Create WP users for new donors:', 'give' ),
+					'type'        => 'checkbox',
 					'description' => __( 'The importer can create WordPress user accounts based on the names and email addresses of the donations in your CSV file. Enable this option if you\'d like the importer to do that.', 'give' ),
-					'default' => $create_user,
+					'default'     => $create_user,
 				),
 				array(
-					'id'      => 'delete_csv',
-					'name'    => __( 'Delete CSV after import:', 'give' ),
-					'type'    => 'checkbox',
+					'id'          => 'delete_csv',
+					'name'        => __( 'Delete CSV after import:', 'give' ),
+					'type'        => 'checkbox',
 					'description' => __( 'Your CSV file will be uploaded via the WordPress Media Library. It\'s a good idea to delete it after the import is finished so that your sensitive data is not accessible on the web. Disable this only if you plan to delete the file manually later.', 'give' ),
-					'default' => $delete_csv,
+					'default'     => $delete_csv,
 				),
 			);
 
@@ -731,7 +737,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 
 			// Validation for first step.
 			if ( 1 === $step ) {
-				$csv = absint( $_POST['csv'] );
+				$csv = absint( $_POST['csv_id'] );
 
 				$has_error = $this->csv_check( $csv );
 
@@ -781,7 +787,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 
 			return $has_error;
 		}
-		
+
 
 		/**
 		 * Render report import field
