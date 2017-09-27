@@ -1494,6 +1494,16 @@ var give_setting_edit = false;
 
 					// Set input field value.
 					$input_field.val(fvalue);
+
+					// Update attachment id field value if fvalue is not set to id.
+					if( 'id' !== $give_upload_button.data('fvalue') ) {
+						var attachment_id_field_name = 'input[name="' + $input_field.attr('name') + '_id"]',
+							id_field = $input_field.closest('tr').next('tr').find( attachment_id_field_name );
+
+						if( id_field.length ){
+							$input_field.closest('tr').next('tr').find( attachment_id_field_name ).val( attachment.id );
+						}
+					}
 				});
 
 				// Open the uploader dialog

@@ -781,48 +781,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 
 			return $has_error;
 		}
-
-		/**
-		 * Get settings array.
-		 *
-		 * @since  1.8.14
-		 * @return array
-		 */
-		public function get_settings() {
-			// Hide save button.
-			$GLOBALS['give_hide_save_button'] = true;
-
-			/**
-			 * Filter the settings.
-			 *
-			 * @since  1.8.14
-			 *
-			 * @param  array $settings
-			 */
-			$settings = apply_filters(
-				'give_get_settings_' . $this->id,
-				array(
-					array(
-						'id'         => 'give_tools_import',
-						'type'       => 'title',
-						'table_html' => false,
-					),
-					array(
-						'id'   => 'import',
-						'name' => __( 'Import', 'give' ),
-						'type' => 'tools_import',
-					),
-					array(
-						'id'         => 'give_tools_import',
-						'type'       => 'sectionend',
-						'table_html' => false,
-					),
-				)
-			);
-
-			// Output.
-			return $settings;
-		}
+		
 
 		/**
 		 * Render report import field
