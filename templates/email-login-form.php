@@ -77,9 +77,10 @@ if ( is_email( $email ) && wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
 
 		if ( ! $payment_match ) {
 			give_set_error( 'give_email_access_token_not_match',  __( 'It looks like that email address provided and access token of the link does not match.', 'give' ) );
-		}
 
-		wp_safe_redirect( get_permalink( give_get_option( 'history_page' ) ) . '?give_nl=' . $donor->token  );
+		} else {
+			wp_safe_redirect( esc_url( get_permalink( give_get_option( 'history_page' ) ) . '?give_nl=' . $donor->token ) );
+		}
 
 	}
 } // End if().
