@@ -42,23 +42,23 @@ if ( is_email( $email ) && wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
 
 				// reCAPTCHA fail
 				if ( ! $response['success'] ) {
-					give_set_error( 'give_recaptcha_test_failed', apply_filters( 'give_recaptcha_test_failed_message', esc_html__( 'reCAPTCHA test failed.', 'give' ) ) );
+					give_set_error( 'give_recaptcha_test_failed', apply_filters( 'give_recaptcha_test_failed_message', __( 'reCAPTCHA test failed.', 'give' ) ) );
 				}
 			} else {
 
-				// Connection issue
-				give_set_error( 'give_recaptcha_connection_issue', apply_filters( 'give_recaptcha_connection_issue_message', esc_html__( 'Unable to connect to reCAPTCHA server.', 'give' ) ) );
+				// Connection issue.
+				give_set_error( 'give_recaptcha_connection_issue', apply_filters( 'give_recaptcha_connection_issue_message', __( 'Unable to connect to reCAPTCHA server.', 'give' ) ) );
 
 			}
 		} // End if().
 		else {
 
-			give_set_error( 'give_recaptcha_failed', apply_filters( 'give_recaptcha_failed_message', esc_html__( 'It looks like the reCAPTCHA test has failed.', 'give' ) ) );
+			give_set_error( 'give_recaptcha_failed', apply_filters( 'give_recaptcha_failed_message', __( 'It looks like the reCAPTCHA test has failed.', 'give' ) ) );
 
 		}
 	}
 
-	// If no errors or only expired token key error - then send email
+	// If no errors or only expired token key error - then send email.
 	if ( ! give_get_errors() ) {
 
 		$donor = Give()->donors->get_donor_by( 'email', $email );
@@ -78,20 +78,12 @@ if ( is_email( $email ) && wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
 			give_set_error( 'give_email_access_token_not_match',  __( 'It looks like that email address provided and access token of the link does not match.', 'give' ) );
 		}
 
-//		give_die();
-//
-//		if ( isset( $donor->id ) ) {
-//			if ( Give()->email_access->can_send_email( $donor->id ) ) {
-//				Give()->email_access->send_email( $donor->id, $email );
-//				$show_form = false;
-//			}
-//		} else {
-//			give_set_error( 'give_no_donor_email_exists', apply_filters( 'give_no_donor_email_exists_message', __( 'It looks like that donor email address does not exist.', 'give' ) ) );
-//		}
-	}
-}// End if().
+		wp_safe_redirect( get_permalink( give_get_option( 'history_page' ) ) . '?give_nl=' . $donor->token  );
 
-// Print any messages & errors
+	}
+} // End if().
+
+// Print any messages & errors.
 Give()->notices->render_frontend_notices( 0 );
 
 // Show the email login form?
