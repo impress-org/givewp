@@ -965,7 +965,8 @@ var give_setting_edit = false;
 			var self = this, step = 1, resume_update_step = 0;
 
 			self.el.main_container = Give_Selector_Cache.get('#give-db-updates');
-			self.el.update_link = Give_Selector_Cache.get('a', self.el.main_container);
+			self.el.update_link = Give_Selector_Cache.get('.give-update-button a', self.el.main_container);
+			self.el.run_upload_container = Give_Selector_Cache.get('.give-run-database-update', self.el.progress_main_container);
 			self.el.progress_main_container = Give_Selector_Cache.get('.progress-container', self.el.main_container);
 			self.el.heading = Give_Selector_Cache.get('.update-message', self.el.progress_main_container);
 			self.el.progress_container = Give_Selector_Cache.get('.progress-content', self.el.progress_main_container);
@@ -978,16 +979,21 @@ var give_setting_edit = false;
 			self.el.update_link.on('click', '', function (e) {
 				e.preventDefault();
 
+				self.el.run_upload_container.find('.notice').remove();
+				self.el.run_upload_container.append('<div class="notice notice-error non-dismissible give-run-update-containt"><p> <a href="#" class="give-run-update-button button">'+ give_vars.db_update_confirmation_msg_button +'</a> ' + give_vars.db_update_confirmation_msg + '</p></div>');
+			});
+
+			$( '#give-db-updates' ).on('click', 'a.give-run-update-button' ,function (e) {
+				e.preventDefault();
+
 				if ($(this).hasClass('active')) {
 					return false;
 				}
 
-				// Ask for admin confirmation.
-				if (!window.confirm(give_vars.db_update_confirmation_msg)) {
-					return;
-				}
-
 				$(this).addClass('active').fadeOut();
+				self.el.update_link.addClass('active').fadeOut();
+				$( '#give-db-updates .give-run-update-containt' ).slideUp();
+				
 				self.el.progress_container.find('.notice-wrap').remove();
 				self.el.progress_container.append('<div class="notice-wrap give-clearfix"><span class="spinner is-active"></span><div class="give-progress"><div></div></div></div>');
 				self.el.progress_main_container.removeClass('give-hidden');
@@ -1005,6 +1011,8 @@ var give_setting_edit = false;
 
 		process_step: function (step, update, self) {
 
+			give_setting_edit = true;
+
 			$.ajax({
 				type: 'POST',
 				url: ajaxurl,
@@ -1015,6 +1023,7 @@ var give_setting_edit = false;
 				},
 				dataType: 'json',
 				success: function (response) {
+					give_setting_edit = false;
 
 					// We need to get the actual in progress form, not all forms on the page
 					var notice_wrap = Give_Selector_Cache.get('.notice-wrap', self.el.progress_container, true);
@@ -1028,7 +1037,7 @@ var give_setting_edit = false;
 
 							self.el.update_link.closest('p').remove();
 							notice_wrap.html('<div class="notice notice-success is-dismissible"><p>' + response.data.message + '</p><button type="button" class="notice-dismiss"></button></div>');
-
+							
 						} else {
 							// Update steps info
 							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
@@ -1060,6 +1069,9 @@ var give_setting_edit = false;
 
 				}
 			}).fail(function (response) {
+
+				give_setting_edit = false;
+
 				if (window.console && window.console.log) {
 					console.log(response);
 				}
@@ -1483,6 +1495,16 @@ var give_setting_edit = false;
 
 					// Set input field value.
 					$input_field.val(fvalue);
+
+					// Update attachment id field value if fvalue is not set to id.
+					if( 'id' !== $give_upload_button.data('fvalue') ) {
+						var attachment_id_field_name = 'input[name="' + $input_field.attr('name') + '_id"]',
+							id_field = $input_field.closest('tr').next('tr').find( attachment_id_field_name );
+
+						if( id_field.length ){
+							$input_field.closest('tr').next('tr').find( attachment_id_field_name ).val( attachment.id );
+						}
+					}
 				});
 
 				// Open the uploader dialog
