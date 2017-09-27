@@ -268,17 +268,6 @@ function give_donation_form_validate_fields() {
 	}
 
 	$form_id = ! empty( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : '';
-	$user_id = ! empty( $_POST['give-user-id'] ) ? $_POST['give-user-id'] : '';
-
-	// Check for logged in user as well as donor and user profile disconnection.
-	$is_donor_disconnected = get_user_meta( $user_id, '_give_is_donor_disconnected', true );
-	if( is_user_logged_in() && $is_donor_disconnected ) {
-		// Donor and User are disconnected.
-		give_set_error(
-			'donor_user_disconnected',
-			__( 'Your Donor and User profile are no longer connected. Please contact the site administrator.', 'give' )
-		);
-	}
 
 	// Start an array to collect valid data
 	$valid_data = array(
