@@ -9,7 +9,7 @@ global $give_access_form_outputted;
 $show_form = true;
 $email     = isset( $_POST['give_email'] ) ? $_POST['give_email'] : '';
 
-// reCAPTCHA
+// Declare Variables.
 $recaptcha_key    = give_get_option( 'recaptcha_key' );
 $recaptcha_secret = give_get_option( 'recaptcha_secret' );
 $enable_recaptcha = ( ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ) ? true : false;
@@ -20,7 +20,7 @@ if ( $give_access_form_outputted ) {
 	return;
 }
 
-// Form submission
+// Form submission.
 if ( is_email( $email ) && wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
 
 	// Use reCAPTCHA
@@ -40,7 +40,7 @@ if ( is_email( $email ) && wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
 
 				$response = json_decode( $request['body'], true );
 
-				// reCAPTCHA fail
+				// reCAPTCHA fail.
 				if ( ! $response['success'] ) {
 					give_set_error( 'give_recaptcha_test_failed', apply_filters( 'give_recaptcha_test_failed_message', __( 'reCAPTCHA test failed.', 'give' ) ) );
 				}
@@ -68,6 +68,7 @@ if ( is_email( $email ) && wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
 		foreach( $payment_ids AS $payment_id ) {
 			$payment = new Give_Payment( $payment_id );
 
+			// Make sure Donation Access Token matches with donation details of donor whose email is provided.
 			if ( $access_token === $payment->key ) {
 				$payment_match = true;
 			}
@@ -105,7 +106,7 @@ if ( $show_form ) { ?>
 			if ( $enable_recaptcha ) { ?>
 
 				<script>
-					//IP verify for reCAPTCHA
+					// IP verify for reCAPTCHA.
 					(function( $ ) {
 						$( function() {
 							$.getJSON( 'https://api.ipify.org?format=jsonp&callback=?', function( json ) {
