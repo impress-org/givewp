@@ -50,10 +50,10 @@ function __give_get_format_address( $address, $address_args = array() ) {
 
 	// Address html.
 	$address_html = '';
-	$address_html .= "{$address['line1']}<br>";
-	$address_html .= "{$address['line2']}<br>";
-	$address_html .= "{$address['city']}, {$address['state']} {$address['zip']}<br>";
-	$address_html .= "{$address['country']}<br>";
+	$address_html .= "<span data-address-type='address1'>{$address['line1']}</span><br>";
+	$address_html .= "<span data-address-type='address2'>{$address['line2']}</span><br>";
+	$address_html .= "<span data-address-type='city'>{$address['city']}</span>, <span data-address-type='state'>{$address['state']}</span> <span data-address-type='zip'>{$address['zip']}</span><br>";
+	$address_html .= "<span data-address-type='country'>{$address['country']}</span><br>";
 
 	// Address action.
 	$address_html .= sprintf(
@@ -584,14 +584,14 @@ function give_donor_view( $donor ) {
 							<tbody>
 								<tr>
 									<th class="col">
-										<label class="order-data-address-line"><?php esc_html_e( 'Country:', 'give' ); ?></label>
+										<label class="country"><?php esc_html_e( 'Country:', 'give' ); ?></label>
 									</th>
 									<td>
 										<?php
 										echo Give()->html->select( array(
 											'options'          => give_get_country_list(),
-											'name'             => 'give-payment-address[0][country]',
-											// 'selected'         => $address['country'],
+											'name'             => 'country',
+											'selected'         => give_get_option('base_country' ),
 											'show_option_all'  => false,
 											'show_option_none' => false,
 											'chosen'           => true,
@@ -603,31 +603,30 @@ function give_donor_view( $donor ) {
 								</tr>
 								<tr>
 									<th class="col">
-										<label for="give-payment-address-line1" class="order-data-address"><?php esc_html_e( 'Address 1:', 'give' ); ?></label>
+										<label for="address1"><?php esc_html_e( 'Address 1:', 'give' ); ?></label>
 									</th>
 									<td>
-										<input id="give-payment-address-line1" type="text" name="give-payment-address[0][line1]" value="" class="medium-text"/>
+										<input id="address1" name="address1" type="text" class="medium-text"/>
 									</td>
 								</tr>
 								<tr>
 									<th class="col">
-										<label for="give-payment-address-line2" class="order-data-address-line"><?php esc_html_e( 'Address 2:', 'give' ); ?></label>
+										<label for="address2"><?php esc_html_e( 'Address 2:', 'give' ); ?></label>
 									</th>
 									<td>
-										<input id="give-payment-address-line2" type="text" name="give-payment-address[0][line2]" value="" class="medium-text"/>
+										<input id="address2" type="text" name="address2" value="" class="medium-text"/>
 
 									</td>
 								</tr>
-								<tr>
+								<tr class="give-field-wrap">
 									<th class="col">
-										<label for="give-payment-address-state" class="order-data-address-line"><?php esc_html_e( 'State / Province / County:', 'give' ); ?></label>
+										<label for="state"><?php esc_html_e( 'State / Province / County:', 'give' ); ?></label>
 									</th>
 									<td>
 										<?php
 										echo Give()->html->select( array(
-											'options'          => array(),
-											'name'             => 'give-payment-address[0][state]',
-											// 'selected'         => $address['state'],
+											'options'          => give_get_states( give_get_option('base_country' ) ),
+											'name'             => 'state',
 											'show_option_all'  => false,
 											'show_option_none' => false,
 											'chosen'           => true,
@@ -639,18 +638,18 @@ function give_donor_view( $donor ) {
 								</tr>
 								<tr>
 									<th class="col">
-										<label for="give-payment-address-city" class="order-data-address-line"><?php esc_html_e( 'City:', 'give' ); ?></label>
+										<label for="city"><?php esc_html_e( 'City:', 'give' ); ?></label>
 									</th>
 									<td>
-										<input id="give-payment-address-city" type="text" name="give-payment-address[0][city]" value="" class="medium-text"/>
+										<input id="city" type="text" name="city" value="" class="medium-text"/>
 									</td>
 								</tr>
 								<tr>
 									<th class="col">
-										<label for="give-payment-address-zip" class="order-data-address-line"><?php esc_html_e( 'Zip / Postal Code:', 'give' ); ?></label>
+										<label for="zip"><?php esc_html_e( 'Zip / Postal Code:', 'give' ); ?></label>
 									</th>
 									<td>
-										<input id="give-payment-address-zip" type="text" name="give-payment-address[0][zip]" value="" class="medium-text"/>
+										<input id="zip" type="text" name="zip" value="" class="medium-text"/>
 									</td>
 								</tr>
 								<tr>

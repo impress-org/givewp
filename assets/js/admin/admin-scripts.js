@@ -1304,8 +1304,19 @@ var give_setting_edit = false;
 
 
 			// Edit current address button event
-			$allAddressEditBtn.on( 'click', function(e){
+			$allAddressEditBtn.on( 'click', function( e ){
+				var $form = $( this ).closest( '.address' );
+
 				e.preventDefault();
+
+				// Fill address.
+				$( 'select[name="country"]', $addressForm ).val( $( '[data-address-type="country"]', $form ).text().trim() ).trigger('chosen:updated');
+				$( 'input[name="address1"]', $addressForm ).val( $( '[data-address-type="address1"]', $form ).text().trim() );
+				$( 'input[name="address2"]', $addressForm ).val( $( '[data-address-type="address2"]', $form ).text().trim() );
+				$( 'input[name="city"]', $addressForm ).val( $( '[data-address-type="city"]', $form ).text().trim() );
+				$( '[name="state"]', $addressForm ).val( $( '[data-address-type="state"]', $form ).text().trim() ).trigger('chosen:updated');
+				$( 'input[name="zip"]', $addressForm ).val( $( '[data-address-type="zip"]', $form ).text().trim() );
+
 
 				$addNewAddressBtn.hide();
 				$allAddress.addClass('give-hidden');
@@ -1330,6 +1341,14 @@ var give_setting_edit = false;
 			// Cancel add new address form button event
 			$addressFormCancelBtn.on( 'click', function(e){
 				e.preventDefault();
+
+				// Fill address.
+				// $( 'select[name="country"]', $addressForm ).val().trigger('chosen:updated');
+				$( 'input[name="address1"]', $addressForm ).val('');
+				$( 'input[name="address2"]', $addressForm ).val('');
+				$( 'input[name="city"]', $addressForm ).val('');
+				// $( '[name="state"]', $addressForm ).val('').trigger('chosen:updated');
+				$( 'input[name="zip"]', $addressForm ).val('');
 
 				$addNewAddressBtn.show();
 				$allAddress.removeClass('give-hidden');
@@ -2085,6 +2104,7 @@ var give_setting_edit = false;
 		form_edit_alert();
 		handle_status_change();
 		setup_chosen_give_selects();
+		$.giveAjaxifyFields({ type: 'country_state', debug: true });
 		GiveListDonation.init();
 		Give_Edit_Donation.init();
 		Give_Settings.init();
