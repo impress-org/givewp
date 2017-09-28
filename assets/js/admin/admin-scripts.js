@@ -1310,12 +1310,17 @@ var give_setting_edit = false;
 				e.preventDefault();
 
 				// Fill address.
-				$( 'select[name="country"]', $addressForm ).val( $( '[data-address-type="country"]', $form ).text().trim() ).trigger('chosen:updated');
+				$( 'select[name="country"]', $addressForm ).val( $( '[data-address-type="country"]', $form ).text().trim() ).trigger('chosen:updated').change();
 				$( 'input[name="address1"]', $addressForm ).val( $( '[data-address-type="address1"]', $form ).text().trim() );
 				$( 'input[name="address2"]', $addressForm ).val( $( '[data-address-type="address2"]', $form ).text().trim() );
 				$( 'input[name="city"]', $addressForm ).val( $( '[data-address-type="city"]', $form ).text().trim() );
-				$( '[name="state"]', $addressForm ).val( $( '[data-address-type="state"]', $form ).text().trim() ).trigger('chosen:updated');
 				$( 'input[name="zip"]', $addressForm ).val( $( '[data-address-type="zip"]', $form ).text().trim() );
+
+				// Update state after some time because state load by ajax for each country.
+				window.setTimeout(function(){
+					var state = $( '[data-address-type="state"]', $form ).text().trim();
+					$( '[name="state"]', $addressForm ).val( state ).trigger('chosen:updated');
+				}, 200 );
 
 
 				$addNewAddressBtn.hide();
