@@ -1179,7 +1179,7 @@ class Give_Donor {
 	 * @type string country
 	 * }
 	 *
-	 * @return void
+	 * @return bool
 	 */
 	public function add_address( $address_type, $address ) {
 		$is_address_empty = true;
@@ -1204,7 +1204,7 @@ class Give_Donor {
 
 		// Bailout: do not save duplicate orders
 		if( $this->is_address_exist( $address_type, $address ) ) {
-			return;
+			return false;
 		}
 
 		// Set default address.
@@ -1263,6 +1263,8 @@ class Give_Donor {
 		}
 
 		$this->setup_address();
+
+		return true;
 	}
 
 
@@ -1306,7 +1308,8 @@ class Give_Donor {
 						continue;
 					}
 
-					$status = ( $current_address == $address );
+					$status = array_diff( $current_address, $address );
+					$status = empty( $status );
 
 					// Exit loop immediately if address exist.
 					if( $status ) {
