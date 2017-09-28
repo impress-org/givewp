@@ -267,7 +267,7 @@ function give_donation_form_validate_fields() {
 		return false;
 	}
 
-	$form_id = isset( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : '';
+	$form_id = ! empty( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : '';
 
 	// Start an array to collect valid data
 	$valid_data = array(
@@ -715,6 +715,7 @@ function give_donation_form_validate_user_login() {
 				);
 				// All is correct.
 			} else {
+
 				// Repopulate the valid user data array.
 				$valid_user_data = array(
 					'user_id'    => $user_data->ID,
