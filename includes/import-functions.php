@@ -358,7 +358,6 @@ function give_import_donations_options() {
 	 * @return array
 	 */
 	return (array) apply_filters( 'give_import_donations_options', array(
-		''            => __( 'Do not import', 'give' ),
 		'id'          => __( 'Donation ID', 'give' ),
 		'amount'      => __( 'Donation Amount', 'give' ),
 		'post_date'   => __( 'Donation Date', 'give' ),
