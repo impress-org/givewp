@@ -103,6 +103,55 @@ function give_get_currencies() {
 
 
 /**
+ * Get all currency symbols
+ *
+ * @since 1.8.14
+ *
+ * @param bool $decode_currencies
+ *
+ * @return array
+ */
+function give_currency_symbols( $decode_currencies = false ) {
+	$currencies = array(
+		'GBP'  => '&pound;',
+		'BRL'  => '&#82;&#36;',
+		'EUR'  => '&euro;',
+		'NOK'  => '&#107;&#114;.',
+		'INR'  => '&#8377;',
+		'USD'  => '&#36;',
+		'AUD'  => '&#36;',
+		'CAD'  => '&#36;',
+		'HKD'  => '&#36;',
+		'MXN'  => '&#36;',
+		'SGD'  => '&#36;',
+		'JPY'  => '&yen;',
+		'THB'  => '&#3647;',
+		'TRY'  => '&#8378;',
+		'TWD'  => '&#78;&#84;&#36;',
+		'ILS'  => '&#8362;',
+		'RIAL' => '&#xfdfc;',
+		'RUB'  => '&#8381;',
+		'DKK'  => '&nbsp;kr.&nbsp;',
+		'SEK'  => '&nbsp;kr.&nbsp;',
+		'PLN'  => '&#122;&#322;',
+		'PHP'  => '&#8369;',
+		'MYR'  => '&#82;&#77;',
+		'HUF'  => '&#70;&#116;',
+		'CZK'  => '&#75;&#269;',
+		'KRW'  => '&#8361;',
+		'ZAR'  => '&#82;',
+		'MAD'  => '&#x2e;&#x62f;&#x2e;&#x645;',
+	);
+
+	if( $decode_currencies ) {
+		$currencies = array_map( 'html_entity_decode', $currencies );
+	}
+
+	return apply_filters( 'give_currency_symbols', $currencies );
+}
+
+
+/**
  * Give Currency Symbol
  *
  * Given a currency determine the symbol to use. If no currency given, site default is used. If no symbol is determine,
@@ -120,85 +169,9 @@ function give_currency_symbol( $currency = '', $decode_currency = false ) {
 	if ( empty( $currency ) ) {
 		$currency = give_get_currency();
 	}
-	switch ( $currency ) :
-		case 'GBP' :
-			$symbol = '&pound;';
-			break;
-		case 'BRL' :
-			$symbol = '&#82;&#36;';
-			break;
-		case 'EUR' :
-			$symbol = '&euro;';
-			break;
-		case 'NOK' :
-			$symbol = '&#107;&#114;.';
-			break;
-		case 'INR' :
-			$symbol = '&#8377;';
-			break;
-		case 'USD' :
-		case 'AUD' :
-		case 'CAD' :
-		case 'HKD' :
-		case 'MXN' :
-		case 'SGD' :
-			$symbol = '&#36;';
-			break;
-		case 'JPY' :
-			$symbol = '&yen;';
-			break;
-		case 'THB' :
-			$symbol = '&#3647;';
-			break;
-		case 'TRY' :
-			$symbol = '&#8378;';
-			break;
-		case 'TWD' :
-			$symbol = '&#78;&#84;&#36;';
-			break;
-		case 'ILS' :
-			$symbol = '&#8362;';
-			break;
-		case 'RIAL' :
-			$symbol = '&#xfdfc;';
-			break;
-		case 'RUB' :
-			$symbol = '&#8381;';
-			break;
-		case 'DKK' :
-		case 'SEK' :
-			$symbol = '&nbsp;kr.&nbsp;';
-			break;
-		case 'PLN' :
-			$symbol = '&#122;&#322;';
-			break;
-		case 'PHP' :
-			$symbol = '&#8369;';
-			break;
-		case 'MYR' :
-			$symbol = '&#82;&#77;';
-			break;
-		case 'HUF' :
-			$symbol = '&#70;&#116;';
-			break;
-		case 'CZK' :
-			$symbol = '&#75;&#269;';
-			break;
-		case 'KRW' :
-			$symbol = '&#8361;';
-			break;
-		case 'ZAR' :
-			$symbol = '&#82;';
-			break;
-		case 'MAD' :
-			$symbol = '&#x2e;&#x62f;&#x2e;&#x645;';
-			break;
-		default :
-			$symbol = $currency;
-			break;
-	endswitch;
 
-	$symbol = ( ! $decode_currency ? $symbol : html_entity_decode( $symbol ) );
+	$currencies = give_currency_symbols( $decode_currency  );
+	$symbol = in_array( $currency, $currencies ) ? $currencies[$currency] : $currency;
 
 	return apply_filters( 'give_currency_symbol', $symbol, $currency );
 }
