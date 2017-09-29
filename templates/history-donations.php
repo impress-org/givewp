@@ -67,11 +67,13 @@ if ( $donations ) : ?>
 				<td class="give-donation-amount">
 					<span class="give-donation-amount">
 					<?php
+					$currency_code = give_get_payment_currency_code( $post->ID );
 					$donation_amount = give_currency_filter(
 						give_format_amount( give_get_payment_amount( $post->ID ), array(
 							'sanitize' => false,
+							'currency' => $currency_code
 						) ),
-						give_get_payment_currency_code( $post->ID )
+						$currency_code
 					);
 
 					/**
