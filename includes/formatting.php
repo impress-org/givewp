@@ -94,6 +94,7 @@ function give_maybe_sanitize_amount( $number, $dp = false, $trim_zeros = false )
 	$decimal_separator  = give_get_price_decimal_separator();
 	$number_decimals    = give_get_price_decimals();
 
+
 	// Explode number by . decimal separator.
 	$number_parts = explode( '.', $number );
 
@@ -102,10 +103,15 @@ function give_maybe_sanitize_amount( $number, $dp = false, $trim_zeros = false )
 	 */
 	if ( empty( $number ) || ( ! is_numeric( $number ) && ! is_string( $number ) ) ) {
 		return $number;
-	} elseif (
+	}
+
+	// Remove currency symbols from number if any.
+	$number = trim( str_replace( give_currency_symbols( true ), '', $number ) );
+
+	if (
 		// Non formatted number.
 		(
-			( false == strpos( $number, $thousand_separator ) ) &&
+			( false === strpos( $number, $thousand_separator ) ) &&
 			( false === strpos( $number, $decimal_separator ) )
 		) ||
 
