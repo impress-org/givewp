@@ -3,7 +3,7 @@
  * This template is used to display the donation history of the current user.
  */
 
-// User's Donations
+// User's Donations.
 if ( is_user_logged_in() ) {
 	$donations = give_get_users_donations( get_current_user_id(), 20, true, 'any' );
 } elseif ( Give()->email_access->token_exists ) {
@@ -16,9 +16,9 @@ if ( is_user_logged_in() ) {
 }
 
 if ( $donations ) : ?>
-    <table id="give_user_history" class="give-table">
-        <thead>
-        <tr class="give-donation-row">
+	<table id="give_user_history" class="give-table">
+		<thead>
+		<tr class="give-donation-row">
 			<?php
 			/**
 			 * Fires in current user donation history table, before the header row start.
@@ -29,10 +29,10 @@ if ( $donations ) : ?>
 			 */
 			do_action( 'give_donation_history_header_before' );
 			?>
-            <th scope="col" class="give-donation-id"><?php esc_html_e( 'ID', 'give' ); ?></th>
-            <th scope="col" class="give-donation-date"><?php esc_html_e( 'Date', 'give' ); ?></th>
-            <th scope="col" class="give-donation-amount"><?php esc_html_e( 'Amount', 'give' ); ?></th>
-            <th scope="col" class="give-donation-details"><?php esc_html_e( 'Details', 'give' ); ?></th>
+			<th scope="col" class="give-donation-id"><?php esc_html_e( 'ID', 'give' ); ?></th>
+			<th scope="col" class="give-donation-date"><?php esc_html_e( 'Date', 'give' ); ?></th>
+			<th scope="col" class="give-donation-amount"><?php esc_html_e( 'Amount', 'give' ); ?></th>
+			<th scope="col" class="give-donation-details"><?php esc_html_e( 'Details', 'give' ); ?></th>
 			<?php
 			/**
 			 * Fires in current user donation history table, after the header row ends.
@@ -43,12 +43,12 @@ if ( $donations ) : ?>
 			 */
 			do_action( 'give_donation_history_header_after' );
 			?>
-        </tr>
-        </thead>
+		</tr>
+		</thead>
 		<?php foreach ( $donations as $post ) :
 			setup_postdata( $post );
 			$donation_data = give_get_payment_meta( $post->ID ); ?>
-            <tr class="give-donation-row">
+			<tr class="give-donation-row">
 				<?php
 				/**
 				 * Fires in current user donation history table, before the row statrs.
@@ -62,39 +62,44 @@ if ( $donations ) : ?>
 				 */
 				do_action( 'give_donation_history_row_start', $post->ID, $donation_data );
 				?>
-                <td class="give-donation-id">#<?php echo give_get_payment_number( $post->ID ); ?></td>
-                <td class="give-donation-date"><?php echo date_i18n( give_date_format(), strtotime( get_post_field( 'post_date', $post->ID ) ) ); ?></td>
-                <td class="give-donation-amount">
-                    <span class="give-donation-amount">
-	                    <?php
-	                    $donation_amount = give_currency_filter( give_format_amount( give_get_payment_amount( $post->ID ), array( 'sanitize' => false ) ) );
-
-	                    /**
-	                     * Filters the donation amount on Donation History Page.
-	                     *
-	                     * @param int $donation_amount Donation Amount.
-	                     * @param int $post->ID        Donation ID.
-	                     *
-	                     * @since 1.8.13
-	                     *
-	                     * @return int
-	                     */
-	                    echo apply_filters( 'give_donation_history_row_amount', $donation_amount, $post->ID );
-	                    ?>
-                    </span>
-                </td>
-                <td class="give-donation-details">
+				<td class="give-donation-id">#<?php echo give_get_payment_number( $post->ID ); ?></td>
+				<td class="give-donation-date"><?php echo date_i18n( give_date_format(), strtotime( get_post_field( 'post_date', $post->ID ) ) ); ?></td>
+				<td class="give-donation-amount">
+					<span class="give-donation-amount">
 					<?php
-					// Display View Receipt or
+					$donation_amount = give_currency_filter(
+						give_format_amount( give_get_payment_amount( $post->ID ), array(
+							'sanitize' => false,
+						) ),
+						give_get_payment_currency_code( $post->ID )
+					);
+
+					/**
+					 * Filters the donation amount on Donation History Page.
+					 *
+					 * @param int $donation_amount Donation Amount.
+					 * @param int $post_id         Donation ID.
+					 *
+					 * @since 1.8.13
+					 *
+					 * @return int
+					 */
+					echo apply_filters( 'give_donation_history_row_amount', $donation_amount, $post->ID );
+					?>
+					</span>
+				</td>
+				<td class="give-donation-details">
+					<?php
+					// Display View Receipt or.
 					if ( 'publish' !== $post->post_status
 					     && 'subscription' !== $post->post_status
 					) : ?>
-                        <a href="<?php echo esc_url( add_query_arg( 'payment_key', give_get_payment_key( $post->ID ), give_get_history_page_uri() ) ); ?>"><span
-                                    class="give-donation-status <?php echo $post->post_status; ?>"><?php echo esc_html__( 'View', 'give' ) . ' ' . give_get_payment_status( $post, true ) . ' &raquo;'; ?></span></a>
+						<a href="<?php echo esc_url( add_query_arg( 'payment_key', give_get_payment_key( $post->ID ), give_get_history_page_uri() ) ); ?>"><span
+									class="give-donation-status <?php echo $post->post_status; ?>"><?php echo esc_html__( 'View', 'give' ) . ' ' . give_get_payment_status( $post, true ) . ' &raquo;'; ?></span></a>
 					<?php else : ?>
-                        <a href="<?php echo esc_url( add_query_arg( 'payment_key', give_get_payment_key( $post->ID ), give_get_history_page_uri() ) ); ?>"><?php esc_html_e( 'View Receipt &raquo;', 'give' ); ?></a>
+						<a href="<?php echo esc_url( add_query_arg( 'payment_key', give_get_payment_key( $post->ID ), give_get_history_page_uri() ) ); ?>"><?php esc_html_e( 'View Receipt &raquo;', 'give' ); ?></a>
 					<?php endif; ?>
-                </td>
+				</td>
 				<?php
 				/**
 				 * Fires in current user donation history table, after the row ends.
@@ -108,10 +113,10 @@ if ( $donations ) : ?>
 				 */
 				do_action( 'give_donation_history_row_end', $post->ID, $donation_data );
 				?>
-            </tr>
+			</tr>
 		<?php endforeach; ?>
-    </table>
-    <div id="give-donation-history-pagination" class="give_pagination navigation">
+	</table>
+	<div id="give-donation-history-pagination" class="give_pagination navigation">
 		<?php
 		$big = 999999;
 		echo paginate_links( array(
@@ -121,7 +126,7 @@ if ( $donations ) : ?>
 			'total'   => ceil( give_count_donations_of_donor() / 20 ) // 20 items per page
 		) );
 		?>
-    </div>
+	</div>
 	<?php wp_reset_postdata(); ?>
 <?php else : ?>
 	<?php Give()->notices->print_frontend_notice( esc_html__( 'It looks like you haven\'t made any donations.', 'give' ), true, 'success' ); ?>
