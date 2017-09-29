@@ -68,7 +68,7 @@ do_action( 'give_tools_recount_stats_before' );
 							echo Give()->html->checkbox( array(
 								'name'    => 'delete-import-donors'
 							) );
-							_e( 'Delete Users from WordPress also?', 'give' );
+							_e( 'Delete imported WordPress users', 'give' );
 							?>
 						</label>
 					</span>

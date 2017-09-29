@@ -408,8 +408,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			$csv = (int) $_GET['csv'];
 
 			// TO check if the CSV files that is being add is valid or not if not then redirect to first step again
-			$has_error = $this->csv_check( $csv );
-			if ( $has_error ) {
+			if ( ! $this->is_valid_csv( $csv ) ) {
 				$url = give_import_page_url();
 				?>
 				<script type="text/javascript">
@@ -668,12 +667,17 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 				</th>
 			</tr>
 			<?php
-			$csv         = ( isset( $_REQUEST['csv'] ) ? give_clean( $_POST['csv'] ) : '' );
-			$csv_id      = ( isset( $_REQUEST['csv_id'] ) ? give_clean( $_POST['csv_id'] ) : '' );
-			$delimiter   = ( isset( $_REQUEST['delimiter'] ) ? give_clean( $_POST['delimiter'] ) : ',' );
-			$mode        = ( ! empty( $_REQUEST['mode'] ) ? 'on' : '' );
-			$create_user = ( isset( $_REQUEST['create_user'] ) && isset( $_REQUEST['csv'] ) && 1 === absint( $_REQUEST['create_user'] ) ? 'on' : ( isset( $_REQUEST['csv'] ) ? '' : 'on' ) );
-			$delete_csv  = ( isset( $_REQUEST['delete_csv'] ) && isset( $_REQUEST['csv'] ) && 1 === absint( $_REQUEST['delete_csv'] ) ? 'on' : ( isset( $_REQUEST['csv'] ) ? '' : 'on' ) );
+			$csv         = ( isset( $_POST['csv'] ) ? give_clean( $_POST['csv'] ) : '' );
+			$csv_id      = ( isset( $_POST['csv_id'] ) ? give_clean( $_POST['csv_id'] ) : '' );
+			$delimiter   = ( isset( $_POST['delimiter'] ) ? give_clean( $_POST['delimiter'] ) : ',' );
+			$mode        = ( ! empty( $_POST['mode'] ) ? 'on' : '' );
+			$create_user = ( isset( $_POST['create_user'] ) && isset( $_POST['csv'] ) && 1 === absint( $_POST['create_user'] ) ? 'on' : ( isset( $_POST['csv'] ) ? '' : 'on' ) );
+			$delete_csv  = ( isset( $_POST['delete_csv'] ) && isset( $_POST['csv'] ) && 1 === absint( $_POST['delete_csv'] ) ? 'on' : ( isset( $_POST['csv'] ) ? '' : 'on' ) );
+
+			// Reset csv and csv_id if csv
+			if ( empty( $csv_id ) || ! $this->is_valid_csv( $csv_id, $csv ) ) {
+				$csv_id = $csv = '';
+			}
 
 			$settings = array(
 				array(
@@ -733,24 +737,22 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 */
 		public function save() {
 			// Get the current step.
-			$step = Give_Import_Donations::get_step();
+			$step = $this->get_step();
 
 			// Validation for first step.
 			if ( 1 === $step ) {
-				$csv = absint( $_POST['csv_id'] );
+				$csv_id = absint( $_POST['csv_id'] );
 
-				$has_error = $this->csv_check( $csv );
-
-				if ( false == $has_error ) {
+				if ( $this->is_valid_csv( $csv_id, esc_url( $_POST['csv'] ) ) ) {
 
 					$url = give_import_page_url( (array) apply_filters( 'give_import_step_two_url', array(
 						'step'          => '2',
 						'importer-type' => $this->importer_type,
-						'csv'           => $csv,
-						'delimiter'     => ( isset( $_REQUEST['delimiter'] ) ) ? give_clean( $_REQUEST['delimiter'] ) : ',',
-						'mode'          => ( isset( $_REQUEST['mode'] ) ) ? give_clean( $_REQUEST['mode'] ) : '0',
-						'create_user'   => ( isset( $_REQUEST['create_user'] ) ) ? give_clean( $_REQUEST['create_user'] ) : '0',
-						'delete_csv'    => ( isset( $_REQUEST['delete_csv'] ) ) ? give_clean( $_REQUEST['delete_csv'] ) : '0',
+						'csv'           => $csv_id,
+						'delimiter'     => isset( $_REQUEST['delimiter'] ) ? give_clean( $_REQUEST['delimiter'] ) : ',',
+						'mode'          => isset( $_REQUEST['mode'] ) ? give_clean( $_REQUEST['mode'] ) : '0',
+						'create_user'   => isset( $_REQUEST['create_user'] ) ? give_clean( $_REQUEST['create_user'] ) : '0',
+						'delete_csv'    => isset( $_REQUEST['delete_csv'] ) ? give_clean( $_REQUEST['delete_csv'] ) : '0',
 					) ) );
 					?>
 					<script type="text/javascript">
@@ -764,28 +766,34 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		/**
 		 * Check if user uploaded csv is valid or not.
 		 *
-		 * @since 1.8.14
+		 * @since  1.8.14
+		 * @access public
 		 *
-		 * param int $csv Id of the CSV files.
+		 * @param int|bool $csv       ID of the CSV files.
+		 * @param string   $match_url ID of the CSV files.
 		 *
-		 * return bool $has_error CSV is valid or not.
+		 * @return bool $has_error CSV is valid or not.
 		 */
-		public function csv_check( $csv = false ) {
-			$has_error = false;
+		private function is_valid_csv( $csv = false, $match_url = '' ) {
+			$is_valid_csv = true;
+
 			if ( $csv ) {
-				if ( ! wp_get_attachment_url( $csv ) ) {
-					$has_error = true;
-					Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide the ID to a valid CSV file.', 'give' ) );
-				} elseif ( ( $mime_type = get_post_mime_type( $csv ) ) && ! strpos( $mime_type, 'csv' ) ) {
-					$has_error = true;
-					Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide the ID to a valid CSV file.', 'give' ) );
+				$csv_url = wp_get_attachment_url( $csv );
+
+				if (
+					! $csv_url ||
+					( ! empty( $match_url ) && ( $csv_url !== $match_url ) ) ||
+					( ( $mime_type = get_post_mime_type( $csv ) ) && ! strpos( $mime_type, 'csv' ) )
+				) {
+					$is_valid_csv = false;
+					Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide a valid CSV file.', 'give' ) );
 				}
 			} else {
-				$has_error = true;
-				Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide the ID to a valid CSV file.', 'give' ) );
+				$is_valid_csv = false;
+				Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide a valid CSV file.', 'give' ) );
 			}
 
-			return $has_error;
+			return $is_valid_csv;
 		}
 
 
