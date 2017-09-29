@@ -138,7 +138,7 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 
 				// Unset _give_default key from $prices.
 				foreach ( $prices as $key => $price ) {
-					if ( isset( $price['_give_default'] ) ) {
+					if ( isset( $prices[ $key ]['_give_default'] ) ) {
 						unset( $prices[ $key ]['_give_default'] );
 					}
 				}
