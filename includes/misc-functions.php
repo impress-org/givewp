@@ -147,6 +147,13 @@ function give_currency_symbols( $decode_currencies = false ) {
 		$currencies = array_map( 'html_entity_decode', $currencies );
 	}
 
+	/**
+	 * Filter the currency symbols
+	 *
+	 * @since 1.8.14
+	 *
+	 * @param array $currencies
+	 */
 	return apply_filters( 'give_currency_symbols', $currencies );
 }
 
@@ -173,6 +180,15 @@ function give_currency_symbol( $currency = '', $decode_currency = false ) {
 	$currencies = give_currency_symbols( $decode_currency  );
 	$symbol = array_key_exists( $currency, $currencies ) ? $currencies[$currency] : $currency;
 
+
+	/**
+	 * Filter the currency symbol
+	 *
+	 * @since 1.0
+	 *
+	 * @param string $symbol
+	 * @param string $currency
+	 */
 	return apply_filters( 'give_currency_symbol', $symbol, $currency );
 }
 
@@ -195,6 +211,13 @@ function give_get_currency_name( $currency_code ) {
 		$currency_name = trim( current( $currency_name ) );
 	}
 
+	/**
+	 * Filter the currency name
+	 *
+	 * @since 1.8.8
+	 * @param string $currency_name
+	 * @param string $currency_code
+	 */
 	return apply_filters( 'give_currency_name', $currency_name, $currency_code );
 }
 
@@ -223,6 +246,13 @@ function give_get_current_page_url() {
 		$current_uri = home_url( '/' );
 	}
 
+	/**
+	 * Filter the current page url
+	 *
+	 * @since 1.0
+	 *
+	 * @param string $current_uri
+	 */
 	return apply_filters( 'give_get_current_page_url', $current_uri );
 
 }
