@@ -171,7 +171,7 @@ function give_currency_symbol( $currency = '', $decode_currency = false ) {
 	}
 
 	$currencies = give_currency_symbols( $decode_currency  );
-	$symbol = in_array( $currency, $currencies ) ? $currencies[$currency] : $currency;
+	$symbol = array_key_exists( $currency, $currencies ) ? $currencies[$currency] : $currency;
 
 	return apply_filters( 'give_currency_symbol', $symbol, $currency );
 }
