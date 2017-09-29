@@ -475,9 +475,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 
 	$data = (array) apply_filters( 'give_save_import_donation_to_db', $data );
 
-	if ( ! strpos( $data['amount'], '.' ) ) {
-		$data['amount'] = $data['amount'] . '.00';
-	}
+	$data['amount'] = give_maybe_sanitize_amount(  $data['amount'] );
 
 	// Here come the login function.
 	$donor_data = give_import_get_user_from_csv( $data, $import_setting );
