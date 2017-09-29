@@ -670,7 +670,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			$csv         = ( isset( $_POST['csv'] ) ? give_clean( $_POST['csv'] ) : '' );
 			$csv_id      = ( isset( $_POST['csv_id'] ) ? give_clean( $_POST['csv_id'] ) : '' );
 			$delimiter   = ( isset( $_POST['delimiter'] ) ? give_clean( $_POST['delimiter'] ) : ',' );
-			$mode        = ( ! empty( $_POST['mode'] ) ? 'on' : '' );
+			$mode        = ( ! empty( $_POST['mode'] ) ? '1' : '0' );
 			$create_user = ( isset( $_POST['create_user'] ) && isset( $_POST['csv'] ) && 1 === absint( $_POST['create_user'] ) ? 'on' : ( isset( $_POST['csv'] ) ? '' : 'on' ) );
 			$delete_csv  = ( isset( $_POST['delete_csv'] ) && isset( $_POST['csv'] ) && 1 === absint( $_POST['delete_csv'] ) ? 'on' : ( isset( $_POST['csv'] ) ? '' : 'on' ) );
 
@@ -705,9 +705,13 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 				array(
 					'id'          => 'mode',
 					'name'        => __( 'Test Mode:', 'give' ),
-					'type'        => 'checkbox',
 					'description' => __( 'Test mode allows you to preview what this import would look like without making any actual changes to your site or your database.', 'give' ),
 					'default'     => $mode,
+					'type'    => 'radio_inline',
+					'options' => array(
+						'1'  => __( 'Enabled', 'give' ),
+						'0' => __( 'Disabled', 'give' ),
+					),
 				),
 				array(
 					'id'          => 'create_user',
