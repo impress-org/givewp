@@ -466,6 +466,8 @@ function give_log_user_in_on_register_callback( $value ) {
  * @param array $row_data       Feilds that are being imported from CSV
  * @param array $main_key       First row from the CSV
  * @param array $import_setting Contain the global variable.
+ *
+ * @return bool
  */
 function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array(), $import_setting = array() ) {
 	$data                          = array_combine( $raw_key, $row_data );
@@ -579,6 +581,8 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 
 	// update the report
 	give_import_donation_report_update( $report );
+
+	return true;
 }
 
 /**
