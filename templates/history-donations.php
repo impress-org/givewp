@@ -78,7 +78,7 @@ if ( $donations ) : ?>
 					 * Filters the donation amount on Donation History Page.
 					 *
 					 * @param int $donation_amount Donation Amount.
-					 * @param int $post            ->ID        Donation ID.
+					 * @param int $post_id         Donation ID.
 					 *
 					 * @since 1.8.13
 					 *
