@@ -129,6 +129,7 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 
 				if ( ! empty( $prices ) && is_array( $prices ) && ! empty( $prices[0] ) ) {
 					$prices = wp_parse_args( $multi_level_donations, $prices );
+					$prices = wp_list_sort( $prices, '_give_amount', 'ASC' );
 				} else {
 					$multi_level_donations[0]['_give_default'] = 'default';
 					$prices                                    = $multi_level_donations;
