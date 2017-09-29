@@ -325,7 +325,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 				$views[ $key ] = sprintf(
 					'<a href="%s" %s >%s&nbsp;<span class="count">(%s)</span></a>',
-					esc_url( ( 'all' === (string) $key ) ? remove_query_arg( array( 'status', 'paged' ) ) : add_query_arg( array( 'status' => $key, 'paged' => false ) ) ),
+					esc_url( ( 'all' === (string) $key ) ? remove_query_arg( array( 'status', 'paged' ) ) : add_query_arg( array( 'status' => $key, 'paged' => false ), admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ) ) ),
 					( ( 'all' === $key && empty( $current ) ) ) ? 'class="current"' : ( $current == $key ) ? 'class="current"' : '',
 					$name,
 					$count

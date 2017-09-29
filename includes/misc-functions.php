@@ -407,6 +407,7 @@ function give_payment_gateway_item_title( $payment_data ) {
 			$item_name .= ' - ' . give_check_variable( $custom_amount_text, 'empty', __( 'Custom Amount', 'give' ) );
 
 		} elseif ( ! empty( $item_price_level_text ) ) {
+			// Matches a donation level - append level text.
 			$item_name .= ' - ' . $item_price_level_text;
 		}
 	} // End if().

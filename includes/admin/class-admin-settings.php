@@ -398,11 +398,12 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 					// Standard text inputs and subtypes like 'number'.
 					case 'colorpicker':
+					case 'hidden' :
+						$value['wrapper_class'] = empty( $value['wrapper_class'] ) ? 'give-hidden' : trim( $value['wrapper_class'] ) . ' give-hidden';
 					case 'text':
 					case 'email':
 					case 'number':
 					case 'password' :
-
 						$type = $value['type'];
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
 
