@@ -672,7 +672,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			$delimiter   = ( isset( $_POST['delimiter'] ) ? give_clean( $_POST['delimiter'] ) : ',' );
 			$mode        = ( ! empty( $_POST['mode'] ) ? '1' : '0' );
 			$create_user = ( isset( $_POST['create_user'] ) && isset( $_POST['csv'] ) && 1 === absint( $_POST['create_user'] ) ? '1' : ( isset( $_POST['csv'] ) ? '0' : '1' ) );
-			$delete_csv  = ( isset( $_POST['delete_csv'] ) && isset( $_POST['csv'] ) && 1 === absint( $_POST['delete_csv'] ) ? 'on' : ( isset( $_POST['csv'] ) ? '' : 'on' ) );
+			$delete_csv  = ( isset( $_POST['delete_csv'] ) && isset( $_POST['csv'] ) && 1 === absint( $_POST['delete_csv'] ) ? '1' : ( isset( $_POST['csv'] ) ? '0' : '1' ) );
 
 			// Reset csv and csv_id if csv
 			if ( empty( $csv_id ) || ! $this->is_valid_csv( $csv_id, $csv ) ) {
@@ -727,9 +727,13 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 				array(
 					'id'          => 'delete_csv',
 					'name'        => __( 'Delete CSV after import:', 'give' ),
-					'type'        => 'checkbox',
 					'description' => __( 'Your CSV file will be uploaded via the WordPress Media Library. It\'s a good idea to delete it after the import is finished so that your sensitive data is not accessible on the web. Disable this only if you plan to delete the file manually later.', 'give' ),
 					'default'     => $delete_csv,
+					'type'    => 'radio_inline',
+					'options' => array(
+						'1'  => __( 'Enabled', 'give' ),
+						'0' => __( 'Disabled', 'give' ),
+					),
 				),
 			);
 
@@ -760,7 +764,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						'delimiter'     => isset( $_REQUEST['delimiter'] ) ? give_clean( $_REQUEST['delimiter'] ) : ',',
 						'mode'          => isset( $_REQUEST['mode'] ) ? give_clean( $_REQUEST['mode'] ) : '0',
 						'create_user'   => isset( $_REQUEST['create_user'] ) ? give_clean( $_REQUEST['create_user'] ) : '1',
-						'delete_csv'    => isset( $_REQUEST['delete_csv'] ) ? give_clean( $_REQUEST['delete_csv'] ) : '0',
+						'delete_csv'    => isset( $_REQUEST['delete_csv'] ) ? give_clean( $_REQUEST['delete_csv'] ) : '1',
 					) ) );
 					?>
 					<script type="text/javascript">
