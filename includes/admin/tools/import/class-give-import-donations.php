@@ -697,10 +697,13 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 				array(
 					'id'          => 'delimiter',
 					'name'        => __( 'CSV Delimiter:', 'give' ),
-					'type'        => 'text',
 					'description' => __( 'In case your CSV file supports a different type of separator (or delimiter) -- like a tab or space -- you can set that here.', 'give' ),
-					'attributes'  => array( 'placeholder' => ',', 'size' => '2' ),
 					'default'     => $delimiter,
+					'type'    => 'select',
+					'options' => array(
+						','  => esc_html__( 'Comma', 'give' ),
+						'\t' => esc_html__( 'Tab', 'give' ),
+					)
 				),
 				array(
 					'id'          => 'mode',
