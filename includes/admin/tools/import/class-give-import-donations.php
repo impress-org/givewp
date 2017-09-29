@@ -671,7 +671,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			$csv_id      = ( isset( $_POST['csv_id'] ) ? give_clean( $_POST['csv_id'] ) : '' );
 			$delimiter   = ( isset( $_POST['delimiter'] ) ? give_clean( $_POST['delimiter'] ) : ',' );
 			$mode        = ( ! empty( $_POST['mode'] ) ? '1' : '0' );
-			$create_user = ( isset( $_POST['create_user'] ) && isset( $_POST['csv'] ) && 1 === absint( $_POST['create_user'] ) ? 'on' : ( isset( $_POST['csv'] ) ? '' : 'on' ) );
+			$create_user = ( isset( $_POST['create_user'] ) && isset( $_POST['csv'] ) && 1 === absint( $_POST['create_user'] ) ? '1' : ( isset( $_POST['csv'] ) ? '0' : '1' ) );
 			$delete_csv  = ( isset( $_POST['delete_csv'] ) && isset( $_POST['csv'] ) && 1 === absint( $_POST['delete_csv'] ) ? 'on' : ( isset( $_POST['csv'] ) ? '' : 'on' ) );
 
 			// Reset csv and csv_id if csv
@@ -716,9 +716,13 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 				array(
 					'id'          => 'create_user',
 					'name'        => __( 'Create WP users for new donors:', 'give' ),
-					'type'        => 'checkbox',
 					'description' => __( 'The importer can create WordPress user accounts based on the names and email addresses of the donations in your CSV file. Enable this option if you\'d like the importer to do that.', 'give' ),
 					'default'     => $create_user,
+					'type'    => 'radio_inline',
+					'options' => array(
+						'1'  => __( 'Enabled', 'give' ),
+						'0' => __( 'Disabled', 'give' ),
+					),
 				),
 				array(
 					'id'          => 'delete_csv',
@@ -755,7 +759,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						'csv'           => $csv_id,
 						'delimiter'     => isset( $_REQUEST['delimiter'] ) ? give_clean( $_REQUEST['delimiter'] ) : ',',
 						'mode'          => isset( $_REQUEST['mode'] ) ? give_clean( $_REQUEST['mode'] ) : '0',
-						'create_user'   => isset( $_REQUEST['create_user'] ) ? give_clean( $_REQUEST['create_user'] ) : '0',
+						'create_user'   => isset( $_REQUEST['create_user'] ) ? give_clean( $_REQUEST['create_user'] ) : '1',
 						'delete_csv'    => isset( $_REQUEST['delete_csv'] ) ? give_clean( $_REQUEST['delete_csv'] ) : '0',
 					) ) );
 					?>
