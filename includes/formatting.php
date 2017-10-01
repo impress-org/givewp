@@ -129,7 +129,7 @@ function give_maybe_sanitize_amount( $number, $dp = false, $trim_zeros = false )
 			( $number_decimals >= strlen( $number_parts[1] ) )
 		)
 	) {
-		return number_format( (float) $number, ( is_bool( $dp ) ? give_get_price_decimals() : $dp ), '.', '' );
+		return number_format( $number, ( is_bool( $dp ) ? give_get_price_decimals() : $dp ), '.', '' );
 	}
 
 	// Handle thousand separator as '.'
