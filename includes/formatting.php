@@ -157,6 +157,8 @@ function give_maybe_sanitize_amount( $number, $dp = false, $trim_zeros = false )
 /**
  * Sanitize Amount
  *
+ * Note: Use this give_maybe_sanitize_amount function instead for sanitizing number.
+ *
  * Returns a sanitized amount by stripping out thousands separators.
  *
  * @since      1.0
