@@ -41,7 +41,7 @@ if( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs 
 		self::show_messages();
 		?>
 
-		<hr class="wp-header-end here">
+		<hr class="wp-header-end">
 
 		<div class="nav-tab-wrapper give-nav-tab-wrapper">
 			<?php
