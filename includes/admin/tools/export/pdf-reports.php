@@ -180,7 +180,7 @@ function give_generate_pdf( $data ) {
 			$pdf->SetWidths( 190 );
 		}
 		$title = utf8_decode( __( 'No forms found.', 'give' ) );
-		$pdf->MultiCell( 190, 5, $title, 1, 'C', false, 1, '', '', true, 0, false, true, 0, 'T', false );
+		$pdf->MultiCell( 220, 5, $title, 1, 'C', false, 1, '', '', true, 0, false, true, 0, 'T', false );
 	}// End if().
 
 	$pdf->Ln();
