@@ -195,7 +195,7 @@ function give_generate_pdf( $data ) {
 	$pdf->SetX( 25 );
 	$pdf->Image( $image . '&file=.png' );
 	$pdf->Ln( 7 );
-	$pdf->Output( apply_filters( 'give_sales_earnings_pdf_export_filename', 'give-report-' . date_i18n( 'Y-m-d' ) ) . '.pdf', 'I' );
+	$pdf->Output( apply_filters( 'give_sales_earnings_pdf_export_filename', 'give-report-' . date_i18n( 'Y-m-d' ) ) . '.pdf', 'D' );
 }
 
 add_action( 'give_generate_pdf', 'give_generate_pdf' );

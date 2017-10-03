@@ -7,6 +7,18 @@
  * @since       1.8.14
  */
 
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+// Exit if TCPDF lib not load through composer.
+if ( ! file_exists( GIVE_PLUGIN_DIR . '/vendor/autoload.php' ) ) {
+	wp_die( __( 'It requires TCPDF lib. Please install it through composer.', 'give' ) );
+	exit;
+}
+
+// Load autoloader.
 require_once GIVE_PLUGIN_DIR . '/vendor/autoload.php';
 
 /**
