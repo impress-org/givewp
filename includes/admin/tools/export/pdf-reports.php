@@ -79,7 +79,7 @@ function give_generate_pdf( $data ) {
 
 	$pdf->SetFillColor( 238, 238, 238 );
 	$pdf->Cell( 70, 6, utf8_decode( __( 'Form Name', 'give' ) ), 1, 0, 'L', true );
-	$pdf->Cell( 30, 6, utf8_decode( __( 'Price', 'give' ) ), 1, 0, 'L', true );
+	$pdf->Cell( 60, 6, utf8_decode( __( 'Price', 'give' ) ), 1, 0, 'L', true );
 
 	// Display Categories Heading only, if user has opted for it.
 	if ( $categories_enabled ) {
@@ -94,6 +94,7 @@ function give_generate_pdf( $data ) {
 	$pdf->Cell( 45, 6, utf8_decode( __( 'Number of Donations', 'give' ) ), 1, 0, 'L', true );
 	$pdf->Cell( 45, 6, utf8_decode( __( 'Income to Date', 'give' ) ), 1, 1, 'L', true );
 
+	$pdf->SetFont( 'dejavusans', '', 12 );
 	$year       = date( 'Y' );
 	$give_forms = get_posts( array(
 		'post_type'      => 'give_forms',
@@ -103,7 +104,7 @@ function give_generate_pdf( $data ) {
 	) );
 
 	if ( $give_forms ) {
-		$pdf->SetWidths( array( 70, 30, 45, 45, 45, 45 ) );
+		$pdf->SetWidths( array( 70, 60, 45, 45, 45, 45 ) );
 
 		foreach ( $give_forms as $form ):
 			$pdf->SetFillColor( 255, 255, 255 );
