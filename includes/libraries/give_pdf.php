@@ -21,6 +21,12 @@ if ( ! file_exists( GIVE_PLUGIN_DIR . '/vendor/autoload.php' ) ) {
 // Load autoloader.
 require_once GIVE_PLUGIN_DIR . '/vendor/autoload.php';
 
+// Check if TCPDF class exist.
+if ( ! class_exists( 'TCPDF') ) {
+	wp_die( __( 'It requires TCPDF lib. Please update composer to load TCPDF lib.', 'give' ) );
+	exit;
+}
+
 /**
  * Class Give_PDF
  */
