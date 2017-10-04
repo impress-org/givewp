@@ -492,7 +492,10 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 				<optgroup label="Donations">
 					<?php
 					foreach ( $donations as $option => $option_value ) {
-						$checked = $this->selected( $option_value, $value );
+						$checked = ( ( $current_mapto === $option ) ? 'selected' : false );
+						if ( empty( $checked ) ) {
+							$checked = $this->selected( $option_value, $value );
+						}
 						?>
 						<option value="<?php echo $option; ?>" <?php echo $checked; ?> ><?php echo $option_value; ?></option>
 						<?php
