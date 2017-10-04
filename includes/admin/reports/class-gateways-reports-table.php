@@ -144,7 +144,7 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 		<div class="tablenav gateways-report-tablenav give-clearfix <?php echo esc_attr( $which ); ?>">
 
 			<?php if ( 'top' === $which ) { ?>
-				<h2 class="alignleft reports-earnings-title">
+				<h2 class="alignleft reports-earnings-title screen-reader-text">
 					<?php esc_html_e( 'Donation Methods Report', 'give' ); ?>
 				</h2>
 			<?php } ?>
