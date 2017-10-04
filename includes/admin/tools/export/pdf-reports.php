@@ -51,6 +51,8 @@ function give_generate_pdf( $data ) {
 
 	$pdf          = new Give_PDF( 'L', 'mm', 'A', true, 'UTF-8', false );
 	$default_font = apply_filters( 'give_pdf_default_font', 'Helvetica' );
+	TCPDF_FONTS::addTTFfont( GIVE_PLUGIN_DIR . '/assets/fonts/CODE2000.TTF', '' );
+	$custom_font = ( 'RIAL' === give_get_currency() || 'RUB' === give_get_currency() ) ? 'CODE2000' : 'dejavusans';
 
 	$pdf->AddPage( 'L', 'A4' );
 	$pdf->setImageScale( 1.5 );
@@ -94,7 +96,9 @@ function give_generate_pdf( $data ) {
 	$pdf->Cell( 45, 6, utf8_decode( __( 'Number of Donations', 'give' ) ), 1, 0, 'L', true );
 	$pdf->Cell( 45, 6, utf8_decode( __( 'Income to Date', 'give' ) ), 1, 1, 'L', true );
 
-	$pdf->SetFont( 'dejavusans', '', 12 );
+	// Set Custom Font to support various currencies.
+	$pdf->SetFont( apply_filters( 'give_pdf_custom_font', $custom_font ), '', 12 );
+
 	$year       = date( 'Y' );
 	$give_forms = get_posts( array(
 		'post_type'      => 'give_forms',
@@ -168,6 +172,7 @@ function give_generate_pdf( $data ) {
 			$prepare_pdf_data[] = $earnings;
 
 			$pdf->Row( $prepare_pdf_data );
+
 		endforeach;
 	} else {
 
