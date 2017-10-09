@@ -390,7 +390,7 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 		 *
 		 * Change currency
 		 */
-		give_update_option( 'currency', 'RIAL' );
+		give_update_option( 'currency', 'IRR' );
 
 		// Get updated number of decimal
 		$output_number_of_decimal = give_get_price_decimals();
@@ -399,7 +399,7 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 		$this->assertEquals(
 			0,
 			$output_number_of_decimal,
-			'Some currency only have  0 number of decimal places. For example: RIAL, JPY, TWD, HUF'
+			'Some currency only have  0 number of decimal places. For example: IRR, JPY, TWD, HUF'
 		);
 
 	}
