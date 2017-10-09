@@ -438,7 +438,7 @@ function give_currency_filter( $price = '', $currency = '', $decode_currency = f
 		case 'JPY' :
 		case 'THB' :
 		case 'INR' :
-		case 'RIAL' :
+		case 'IRR' :
 		case 'TRY' :
 		case 'RUB' :
 		case 'SEK' :
@@ -509,7 +509,7 @@ function give_currency_decimal_filter() {
 	$currency = give_get_currency();
 
 	switch ( $currency ) {
-		case 'RIAL' :
+		case 'IRR' :
 		case 'JPY' :
 		case 'TWD' :
 		case 'HUF' :
