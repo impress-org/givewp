@@ -627,23 +627,23 @@ final class Give_Payment {
 		}
 
 		$payment_data = array(
-			'price'        => $this->total,
-			'date'         => $this->date,
-			'user_email'   => $this->email,
-			'purchase_key' => $this->key,
-			'form_title'   => $this->form_title,
-			'form_id'      => $this->form_id,
-			'donor_id'     => $this->donor_id,
-			'price_id'     => $this->price_id,
-			'currency'     => $this->currency,
-			'user_info'    => array(
+			'price'         => $this->total,
+			'date'          => $this->date,
+			'user_email'    => $this->email,
+			'purchase_key'  => $this->key,
+			'form_title'    => $this->form_title,
+			'form_id'       => $this->form_id,
+			'donor_id'      => $this->donor_id,
+			'price_id'      => $this->price_id,
+			'currency'      => $this->currency,
+			'user_info'     => array(
 				'id'         => $this->user_id,
 				'email'      => $this->email,
 				'first_name' => $this->first_name,
 				'last_name'  => $this->last_name,
 				'address'    => $this->address,
 			),
-			'status'       => $this->status,
+			'status'        => $this->status,
 		);
 
 		$args = apply_filters( 'give_insert_payment_args', array(
@@ -940,11 +940,16 @@ final class Give_Payment {
 			$this->update_meta( '_give_payment_total', give_sanitize_amount_for_db( $this->total ) );
 
 			$new_meta = array(
-				'form_title' => $this->form_title,
-				'form_id'    => $this->form_id,
-				'price_id'   => $this->price_id,
-				'currency'   => $this->currency,
-				'user_info'  => $this->user_info,
+				'form_title'    => $this->form_title,
+				'form_id'       => $this->form_id,
+				'price_id'      => $this->price_id,
+				'currency'      => $this->currency,
+				'currency_info' => array(
+					'thousands_separator' => give_get_option( 'thousands_separator', ',' ),
+					'decimal_separator'   => give_get_option( 'decimal_separator', '.' ),
+					'number_decimals'     => give_get_option( 'number_decimals', 2 ),
+				),
+				'user_info'     => $this->user_info,
 			);
 
 			$meta        = $this->get_meta();
