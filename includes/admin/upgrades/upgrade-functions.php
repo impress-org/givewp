@@ -1198,6 +1198,26 @@ function give_v1814_update_donation_iranian_currency_code() {
 }
 
 /**
+ * Correct currency code for "Iranian Currency" in Give setting.
+ *
+ * @since 1.8.14
+ */
+function give_v1814_update_core_iranian_currency_code() {
+
+	// Get Give settings.
+	$give_settings = give_get_settings();
+
+	if ( 'RIAL' === $give_settings['currency'] ) {
+
+		$give_settings['currency'] = 'IRR';
+		update_option( 'give_settings', $give_settings );
+	}
+
+	// The Update Ran.
+	give_set_upgrade_complete( 'v1814_update_core_iranian_currency_code' );
+}
+
+/**
  * Version 1.8.13 automatic updates
  *
  * @since 1.8.13
