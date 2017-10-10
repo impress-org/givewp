@@ -187,10 +187,12 @@ function give_generate_pdf( $data ) {
 		$title = utf8_decode( __( 'No forms found.', 'give' ) );
 		$pdf->MultiCell( $no_found_width, 5, $title, 1, 'C', false, 1, '', '', true, 0, false, true, 0, 'T', false );
 	}// End if().
-
 	$pdf->Ln();
 	$pdf->SetTextColor( 50, 50, 50 );
 	$pdf->SetFont( $default_font, '', 14 );
+
+	// Output Graph on a new page.
+	$pdf->AddPage( 'L', 'A4' );
 	$pdf->Cell( 0, 10, utf8_decode( __( 'Graph View', 'give' ) ), 0, 2, 'L', false );
 	$pdf->SetFont( $default_font, '', 12 );
 
