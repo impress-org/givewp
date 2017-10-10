@@ -66,6 +66,9 @@ function give_do_automatic_upgrades() {
 			give_v1813_upgrades();
 			$did_upgrade = true;
 
+		case version_compare( $give_version, '1.8.14', '<' ) :
+			give_v1814_upgrades();
+			$did_upgrade = true;
 	}
 
 	if ( $did_upgrade ) {
@@ -160,14 +163,6 @@ function give_show_upgrade_notices( $give_updates ) {
 		)
 	);
 
-	// v1.8.14 Upgrades for give core settings.
-	$give_updates->register(
-		array(
-			'id'       => 'v1814_update_core_iranian_currency_code',
-			'version'  => '1.8.14',
-			'callback' => 'give_v1814_update_core_iranian_currency_code',
-		)
-	);
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
@@ -1198,26 +1193,6 @@ function give_v1814_update_donation_iranian_currency_code() {
 }
 
 /**
- * Correct currency code for "Iranian Currency" in Give setting.
- *
- * @since 1.8.14
- */
-function give_v1814_update_core_iranian_currency_code() {
-
-	// Get Give settings.
-	$give_settings = give_get_settings();
-
-	if ( 'RIAL' === $give_settings['currency'] ) {
-
-		$give_settings['currency'] = 'IRR';
-		update_option( 'give_settings', $give_settings );
-	}
-
-	// The Update Ran.
-	give_set_upgrade_complete( 'v1814_update_core_iranian_currency_code' );
-}
-
-/**
  * Version 1.8.13 automatic updates
  *
  * @since 1.8.13
@@ -1230,4 +1205,22 @@ function give_v1813_upgrades() {
 	$roles = new Give_Roles();
 	$roles->add_roles();
 	$roles->add_caps();
+}
+
+/**
+ * Correct currency code for "Iranian Currency" in Give setting.
+ * Version 1.8.14 automatic updates
+ *
+ * @since 1.8.14
+ */
+function give_v1814_upgrades() {
+
+	// Get Give settings.
+	$give_settings = give_get_settings();
+
+	// If the base currency is Iranian currency.
+	if ( 'RIAL' === $give_settings['currency'] ) {
+		$give_settings['currency'] = 'IRR';
+		update_option( 'give_settings', $give_settings );
+	}
 }
