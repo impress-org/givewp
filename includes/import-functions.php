@@ -423,8 +423,8 @@ function give_import_donation_form_options() {
 	 * @return array
 	 */
 	return (array) apply_filters( 'give_import_donation_form_options', array(
-		'form_id'                 => __( 'Donation Form ID', 'give' ),
 		'form_title'              => __( 'Donation Form', 'give' ),
+		'form_id'                 => __( 'Donation Form ID', 'give' ),
 		'form_level'              => __( 'Donation Level', 'give' ),
 		'form_custom_amount_text' => __( 'Custom Amount Text', 'give' ),
 	) );
