@@ -694,7 +694,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			$csv         = ( isset( $_POST['csv'] ) ? give_clean( $_POST['csv'] ) : '' );
 			$csv_id      = ( isset( $_POST['csv_id'] ) ? give_clean( $_POST['csv_id'] ) : '' );
 			$delimiter   = ( isset( $_POST['delimiter'] ) ? give_clean( $_POST['delimiter'] ) : 'csv' );
-			$mode        = ( ! empty( $_POST['mode'] ) ? '1' : '0' );
+			$mode        = ( ( ! empty( $_POST['mode'] ) && 'enabled' === give_clean( $_POST['mode'] ) ) ? 'enabled' : 'disabled' );
 			$create_user = ( isset( $_POST['create_user'] ) && isset( $_POST['csv'] ) && 1 === absint( $_POST['create_user'] ) ? '1' : ( isset( $_POST['csv'] ) ? '0' : '1' ) );
 			$delete_csv  = ( isset( $_POST['delete_csv'] ) && isset( $_POST['csv'] ) && 1 === absint( $_POST['delete_csv'] ) ? '1' : ( isset( $_POST['csv'] ) ? '0' : '1' ) );
 
@@ -736,8 +736,8 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 					'default'     => $mode,
 					'type'    => 'radio_inline',
 					'options' => array(
-						'1'  => __( 'Enabled', 'give' ),
-						'0' => __( 'Disabled', 'give' ),
+						'enabled'  => __( 'Enabled', 'give' ),
+						'disabled' => __( 'Disabled', 'give' ),
 					),
 				),
 				array(
@@ -789,7 +789,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						'importer-type' => $this->importer_type,
 						'csv'           => $csv_id,
 						'delimiter'     => isset( $_REQUEST['delimiter'] ) ? give_clean( $_REQUEST['delimiter'] ) : 'csv',
-						'mode'          => isset( $_REQUEST['mode'] ) ? give_clean( $_REQUEST['mode'] ) : '0',
+						'mode'          => ( ( isset( $_REQUEST['mode'] ) && 'enabled' === give_clean( $_REQUEST['mode'] ) ) ? '1' : '0' ),
 						'create_user'   => isset( $_REQUEST['create_user'] ) ? give_clean( $_REQUEST['create_user'] ) : '1',
 						'delete_csv'    => isset( $_REQUEST['delete_csv'] ) ? give_clean( $_REQUEST['delete_csv'] ) : '1',
 					) ) );
