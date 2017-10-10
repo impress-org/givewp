@@ -79,6 +79,8 @@ class Give_PDF extends TCPDF {
 			$nb = max( $nb, $this->getNumLines( $data[ $i ], $this->widths[ $i ] ) );
 			$h  = 5 * $nb;
 
+			$this->checkPageBreak($h, $y='', $addpage=true);
+
 			for ( $i = 0; $i < count( $data ); $i ++ ) {
 				$w = $this->widths[ $i ];
 				$a = isset( $this->aligns[ $i ] ) ? $this->aligns[ $i ] : 'L';
