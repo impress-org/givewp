@@ -32,7 +32,7 @@ function give_process_donation_form() {
 	 */
 	do_action( 'give_pre_process_donation' );
 
-	// Validate the form $_POST data
+	// Validate the form $_POST data.
 	$valid_data = give_donation_form_validate_fields();
 
 	/**
@@ -49,12 +49,12 @@ function give_process_donation_form() {
 
 	$is_ajax = isset( $_POST['give_ajax'] );
 
-	// Process the login form
+	// Process the login form.
 	if ( isset( $_POST['give_login_submit'] ) ) {
 		give_process_form_login();
 	}
 
-	// Validate the user
+	// Validate the user.
 	$user = give_get_donation_form_user( $valid_data );
 
 	if ( false === $valid_data || give_get_errors() || ! $user ) {
@@ -71,16 +71,16 @@ function give_process_donation_form() {
 		}
 	}
 
-	// If AJAX send back success to proceed with form submission
+	// If AJAX send back success to proceed with form submission.
 	if ( $is_ajax ) {
 		echo 'success';
 		give_die();
 	}
 
-	// After AJAX: Setup session if not using php_sessions
+	// After AJAX: Setup session if not using php_sessions.
 	if ( ! Give()->session->use_php_sessions() ) {
-		// Double-check that set_cookie is publicly accessible;
-		// we're using a slightly modified class-wp-sessions.php
+		// Double-check that set_cookie is publicly accessible.
+		// we're using a slightly modified class-wp-sessions.php.
 		$session_reflection = new ReflectionMethod( 'WP_Session', 'set_cookie' );
 		if ( $session_reflection->isPublic() ) {
 			// Manually set the cookie.
@@ -88,7 +88,7 @@ function give_process_donation_form() {
 		}
 	}
 
-	// Setup user information
+	// Setup user information.
 	$user_info = array(
 		'id'         => $user['user_id'],
 		'email'      => $user['user_email'],
@@ -104,19 +104,19 @@ function give_process_donation_form() {
 		'0.00';
 	$purchase_key = strtolower( md5( $user['user_email'] . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) );
 
-	// Setup donation information
+	// Setup donation information.
 	$donation_data = array(
-		'price'        => $price,
-		'purchase_key' => $purchase_key,
-		'user_email'   => $user['user_email'],
-		'date'         => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
-		'user_info'    => stripslashes_deep( $user_info ),
-		'post_data'    => $_POST,
-		'gateway'      => $valid_data['gateway'],
-		'card_info'    => $valid_data['cc_info'],
+		'price'         => $price,
+		'purchase_key'  => $purchase_key,
+		'user_email'    => $user['user_email'],
+		'date'          => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
+		'user_info'     => stripslashes_deep( $user_info ),
+		'post_data'     => $_POST,
+		'gateway'       => $valid_data['gateway'],
+		'card_info'     => $valid_data['cc_info'],
 	);
 
-	// Add the user data for hooks
+	// Add the user data for hooks.
 	$valid_data['user'] = $user;
 
 	/**
@@ -132,9 +132,9 @@ function give_process_donation_form() {
 	 */
 	do_action( 'give_checkout_before_gateway', $_POST, $user_info, $valid_data );
 
-	// Sanity check for price
+	// Sanity check for price.
 	if ( ! $donation_data['price'] ) {
-		// Revert to manual
+		// Revert to manual.
 		$donation_data['gateway'] = 'manual';
 		$_POST['give-gateway']    = 'manual';
 	}
@@ -146,17 +146,17 @@ function give_process_donation_form() {
 	 */
 	$donation_data = apply_filters( 'give_donation_data_before_gateway', $donation_data, $valid_data );
 
-	// Setup the data we're storing in the donation session
+	// Setup the data we're storing in the donation session.
 	$session_data = $donation_data;
 
-	// Make sure credit card numbers are never stored in sessions
+	// Make sure credit card numbers are never stored in sessions.
 	unset( $session_data['card_info']['card_number'] );
 	unset( $session_data['post_data']['card_number'] );
 
 	// Used for showing data to non logged-in users after donation, and for other plugins needing donation data.
 	give_set_purchase_session( $session_data );
 
-	// Send info to the gateway for payment processing
+	// Send info to the gateway for payment processing.
 	give_send_to_gateway( $donation_data['gateway'], $donation_data );
 	give_die();
 
@@ -185,7 +185,7 @@ function give_check_logged_in_user_for_existing_email( $valid_data, $post ) {
 		$submitted_email = $valid_data['logged_in_user']['user_email'];
 		$donor           = new Give_Donor( get_current_user_id(), true );
 
-		// If this email address is not registered with this customer, see if it belongs to any other customer
+		// If this email address is not registered with this customer, see if it belongs to any other customer.
 		if (
 			$submitted_email !== $donor->email
 			&& ( is_array( $donor->emails ) && ! in_array( $submitted_email, $donor->emails ) )
@@ -262,26 +262,26 @@ add_action( 'wp_ajax_nopriv_give_process_donation_login', 'give_process_form_log
  */
 function give_donation_form_validate_fields() {
 
-	// Check if there is $_POST
+	// Check if there is $_POST.
 	if ( empty( $_POST ) ) {
 		return false;
 	}
 
 	$form_id = ! empty( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : '';
 
-	// Start an array to collect valid data
+	// Start an array to collect valid data.
 	$valid_data = array(
-		'gateway'          => give_donation_form_validate_gateway(), // Gateway fallback (amount is validated here)
-		'need_new_user'    => false,     // New user flag
-		'need_user_login'  => false,     // Login user flag
-		'logged_user_data' => array(),   // Logged user collected data
-		'new_user_data'    => array(),   // New user collected data
-		'login_user_data'  => array(),   // Login user collected data
-		'guest_user_data'  => array(),   // Guest user collected data
-		'cc_info'          => give_donation_form_validate_cc(),// Credit card info
+		'gateway'          => give_donation_form_validate_gateway(), // Gateway fallback (amount is validated here).
+		'need_new_user'    => false,     // New user flag.
+		'need_user_login'  => false,     // Login user flag.
+		'logged_user_data' => array(),   // Logged user collected data.
+		'new_user_data'    => array(),   // New user collected data.
+		'login_user_data'  => array(),   // Login user collected data.
+		'guest_user_data'  => array(),   // Guest user collected data.
+		'cc_info'          => give_donation_form_validate_cc(),// Credit card info.
 	);
 
-	// Validate Honeypot First
+	// Validate Honeypot First.
 	if ( ! empty( $_POST['give-honeypot'] ) ) {
 		give_set_error( 'invalid_honeypot', esc_html__( 'Honeypot field detected. Go away bad bot!', 'give' ) );
 	}
@@ -294,7 +294,7 @@ function give_donation_form_validate_fields() {
 		give_set_error( 'invalid_donation', __( 'This donation has been flagged as spam. Please try again.', 'give' ) );
 	}
 
-	// Validate agree to terms
+	// Validate agree to terms.
 	if ( give_is_terms_enabled( $form_id ) ) {
 		give_donation_form_validate_agree_to_terms();
 	}
