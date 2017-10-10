@@ -150,6 +150,15 @@ function give_show_upgrade_notices( $give_updates ) {
 			'callback' => 'give_v1813_update_donor_user_roles_callback',
 		)
 	);
+
+	// v1.8.14 Upgrades for donations.
+	$give_updates->register(
+		array(
+			'id'       => 'v1814_update_donation_iranian_currency_code',
+			'version'  => '1.8.14',
+			'callback' => 'give_v1814_update_donation_iranian_currency_code',
+		)
+	);
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
@@ -1134,7 +1143,6 @@ function give_v1813_update_donor_user_roles_callback() {
 		give_set_upgrade_complete( 'v1813_update_donor_user_roles' );
 	}
 }
-
 
 /**
  * Version 1.8.13 automatic updates
