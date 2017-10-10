@@ -80,8 +80,8 @@ function give_generate_pdf( $data ) {
 	$pdf->SetFont( $default_font, '', 12 );
 
 	$pdf->SetFillColor( 238, 238, 238 );
-	$pdf->Cell( 70, 6, utf8_decode( __( 'Form Name', 'give' ) ), 1, 0, 'L', true );
-	$pdf->Cell( 60, 6, utf8_decode( __( 'Price', 'give' ) ), 1, 0, 'L', true );
+	$pdf->Cell( 50, 6, utf8_decode( __( 'Form Name', 'give' ) ), 1, 0, 'L', true );
+	$pdf->Cell( 50, 6, utf8_decode( __( 'Price', 'give' ) ), 1, 0, 'L', true );
 
 	// Display Categories Heading only, if user has opted for it.
 	if ( $categories_enabled ) {
@@ -108,7 +108,7 @@ function give_generate_pdf( $data ) {
 	) );
 
 	if ( $give_forms ) {
-		$pdf->SetWidths( array( 70, 60, 45, 45, 45, 45 ) );
+		$pdf->SetWidths( array( 50, 50, 45, 45, 45, 45 ) );
 
 		foreach ( $give_forms as $form ):
 			$pdf->SetFillColor( 255, 255, 255 );
@@ -178,14 +178,14 @@ function give_generate_pdf( $data ) {
 
 		// Fix: Minor Styling Alignment Issue for PDF.
 		if ( $categories_enabled && $tags_enabled ) {
-			$pdf->SetWidths( 280 );
+			$no_found_width = 280;
 		} elseif ( $categories_enabled || $tags_enabled ) {
-			$pdf->SetWidths( 235 );
+			$no_found_width = 235;
 		} else {
-			$pdf->SetWidths( 190 );
+			$no_found_width = 190;
 		}
 		$title = utf8_decode( __( 'No forms found.', 'give' ) );
-		$pdf->MultiCell( 220, 5, $title, 1, 'C', false, 1, '', '', true, 0, false, true, 0, 'T', false );
+		$pdf->MultiCell( $no_found_width, 5, $title, 1, 'C', false, 1, '', '', true, 0, false, true, 0, 'T', false );
 	}// End if().
 
 	$pdf->Ln();

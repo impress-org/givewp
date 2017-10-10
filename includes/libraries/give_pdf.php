@@ -73,26 +73,29 @@ class Give_PDF extends TCPDF {
 	 * @param array $data Set data in a row.
 	 */
 	function Row( $data ) {
-		$nb = 0;
+		$nb         = 0;
+		$get_height = array();
+		for ( $i = 0; $i < count( $data ); $i ++ ) {
+			$get_height[] = max( $nb, $this->getNumLines( $data[ $i ], $this->widths[ $i ] ) );
+		}
+		// Get max height from the all column.
+		$max_height = max( $get_height );
 
 		for ( $i = 0; $i < count( $data ); $i ++ ) {
-			$nb = max( $nb, $this->getNumLines( $data[ $i ], $this->widths[ $i ] ) );
-			$h  = 5 * $nb;
+			$h = 7 * $max_height;
+			$this->checkPageBreak( $h, '', true );
 
-			$this->checkPageBreak($h, $y='', $addpage=true);
+			$w = $this->widths[ $i ];
+			$a = isset( $this->aligns[ $i ] ) ? $this->aligns[ $i ] : 'L';
+			$x = $this->GetX();
+			$y = $this->GetY();
+			$this->Rect( $x, $y, $w, $h );
 
-			for ( $i = 0; $i < count( $data ); $i ++ ) {
-				$w = $this->widths[ $i ];
-				$a = isset( $this->aligns[ $i ] ) ? $this->aligns[ $i ] : 'L';
-
-				$x = $this->GetX();
-				$y = $this->GetY();
-				$this->Rect( $x, $y, $w, $h );
-				$this->MultiCell( $w, $h, $data[ $i ], 0, $a, false, 1, '', '', true, 0, false, true, 0, 'M', false );
-				$this->SetXY( $x + $w, $y );
-			}
+			$this->MultiCell( $w, $h, $data[ $i ], 0, $a, false, 1, '', '', true, 0, false, true, 0, 'M', false );
+			$this->SetXY( $x + $w, $y );
 		}
 
-		$this->Ln( $h );
+		$this->Ln( $max_height * 7 );
 	}
+
 }
