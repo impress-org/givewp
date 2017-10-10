@@ -53,6 +53,7 @@ function give_generate_pdf( $data ) {
 	$default_font = apply_filters( 'give_pdf_default_font', 'Helvetica' );
 	TCPDF_FONTS::addTTFfont( GIVE_PLUGIN_DIR . '/includes/libraries/tcpdf/fonts/CODE2000.TTF', '' );
 	$custom_font = ( 'RIAL' === give_get_currency() || 'RUB' === give_get_currency() ) ? 'CODE2000' : 'dejavusans';
+	$font_style = ( 'CODE2000' === $custom_font ) ? 'B' : '';
 
 	$pdf->AddPage( 'L', 'A4' );
 	$pdf->setImageScale( 1.5 );
@@ -80,6 +81,7 @@ function give_generate_pdf( $data ) {
 	$pdf->SetFont( $default_font, '', 12 );
 
 	$pdf->SetFillColor( 238, 238, 238 );
+	$pdf->SetTextColor( 0, 0, 0, 100 ); // Set Black color.
 	$pdf->Cell( 50, 6, utf8_decode( __( 'Form Name', 'give' ) ), 1, 0, 'L', true );
 	$pdf->Cell( 50, 6, utf8_decode( __( 'Price', 'give' ) ), 1, 0, 'L', true );
 
@@ -97,7 +99,7 @@ function give_generate_pdf( $data ) {
 	$pdf->Cell( 45, 6, utf8_decode( __( 'Income to Date', 'give' ) ), 1, 1, 'L', true );
 
 	// Set Custom Font to support various currencies.
-	$pdf->SetFont( apply_filters( 'give_pdf_custom_font', $custom_font ), '', 12 );
+	$pdf->SetFont( apply_filters( 'give_pdf_custom_font', $custom_font ), $font_style, 12 );
 
 	$year       = date( 'Y' );
 	$give_forms = get_posts( array(
