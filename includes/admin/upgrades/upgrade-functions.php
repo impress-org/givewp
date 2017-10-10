@@ -159,6 +159,15 @@ function give_show_upgrade_notices( $give_updates ) {
 			'callback' => 'give_v1814_update_donation_iranian_currency_code',
 		)
 	);
+
+	// v1.8.14 Upgrades for give core settings.
+	$give_updates->register(
+		array(
+			'id'       => 'v1814_update_core_iranian_currency_code',
+			'version'  => '1.8.14',
+			'callback' => 'give_v1814_update_core_iranian_currency_code',
+		)
+	);
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
