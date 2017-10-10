@@ -694,9 +694,15 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			$csv         = ( isset( $_POST['csv'] ) ? give_clean( $_POST['csv'] ) : '' );
 			$csv_id      = ( isset( $_POST['csv_id'] ) ? give_clean( $_POST['csv_id'] ) : '' );
 			$delimiter   = ( isset( $_POST['delimiter'] ) ? give_clean( $_POST['delimiter'] ) : 'csv' );
-			$mode        = ( ( ! empty( $_POST['mode'] ) && 'enabled' === give_clean( $_POST['mode'] ) ) ? 'enabled' : 'disabled' );
-			$create_user = ( ( ! empty( $_POST['create_user'] ) && 'disabled' === give_clean( $_POST['create_user'] ) ) ? 'disabled' : 'enabled' );
-			$delete_csv  = ( ( ! empty( $_POST['delete_csv'] ) && 'disabled' === give_clean( $_POST['delete_csv'] ) ) ? 'disabled' : 'enabled' );
+			$mode        = empty( $_POST['mode'] ) ?
+				'disabled' :
+				( give_is_setting_enabled( give_clean( $_POST['mode'] ) ) ? 'enabled' : 'disabled' );
+			$create_user = empty( $_POST['create_user'] ) ?
+				'enabled' :
+				( give_is_setting_enabled( give_clean( $_POST['create_user'] ) ) ? 'enabled' : 'disabled' );
+			$delete_csv  = empty( $_POST['delete_csv'] ) ?
+				'enabled' :
+				( give_is_setting_enabled( give_clean( $_POST['delete_csv'] ) ) ? 'enabled' : 'disabled' );
 
 			// Reset csv and csv_id if csv
 			if ( empty( $csv_id ) || ! $this->is_valid_csv( $csv_id, $csv ) ) {
@@ -789,9 +795,15 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						'importer-type' => $this->importer_type,
 						'csv'           => $csv_id,
 						'delimiter'     => isset( $_REQUEST['delimiter'] ) ? give_clean( $_REQUEST['delimiter'] ) : 'csv',
-						'mode'          => ( ( isset( $_REQUEST['mode'] ) && 'enabled' === give_clean( $_REQUEST['mode'] ) ) ? '1' : '0' ),
-						'create_user'   => ( ( isset( $_REQUEST['create_user'] ) && 'disabled' === give_clean( $_REQUEST['create_user'] ) ) ? '0' : '1' ),
-						'delete_csv'    => ( ( isset( $_REQUEST['delete_csv'] ) && 'disabled' === give_clean( $_REQUEST['delete_csv'] ) ) ? '0' : '1' ),
+						'mode'          => empty( $_POST['mode'] ) ?
+							'0' :
+							( give_is_setting_enabled( give_clean( $_POST['mode'] ) ) ? '1' : '0' ),
+						'create_user'   => empty( $_POST['create_user'] ) ?
+							'0' :
+							( give_is_setting_enabled( give_clean( $_POST['create_user'] ) ) ? '1' : '0' ),
+						'delete_csv'    => empty( $_POST['delete_csv'] ) ?
+							'1' :
+							( give_is_setting_enabled( give_clean( $_POST['delete_csv'] ) ) ? '1' : '0' ),
 					) ) );
 					?>
 					<script type="text/javascript">
