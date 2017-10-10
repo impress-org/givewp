@@ -308,7 +308,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			give_import_donation_report_reset();
 
 			$csv         = (int) $_REQUEST['csv'];
-			$delimiter = ( ! empty( $_REQUEST['delimiter'] ) ? give_clean( $_REQUEST['delimiter'] ): 'csv' );
+			$delimiter   = ( ! empty( $_REQUEST['delimiter'] ) ? give_clean( $_REQUEST['delimiter'] ) : 'csv' );
 			$index_start = 1;
 			$index_end   = 1;
 			$next        = true;
@@ -405,7 +405,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 * @since 1.8.14
 		 */
 		public function render_dropdown() {
-			$csv = (int) $_GET['csv'];
+			$csv       = (int) $_GET['csv'];
 			$delimiter = ( ! empty( $_GET['delimiter'] ) ? give_clean( $_GET['delimiter'] ) : 'csv' );
 
 			// TO check if the CSV files that is being add is valid or not if not then redirect to first step again
@@ -475,8 +475,8 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 * @since 1.8.14
 		 */
 		public function get_columns( $index, $donations, $donors, $forms, $value = false, $mapto = array() ) {
-			$default = give_import_default_options();
-			$current_mapto = (string) ( ! empty( $mapto[$index] ) ? $mapto[$index] : '' );
+			$default       = give_import_default_options();
+			$current_mapto = (string) ( ! empty( $mapto[ $index ] ) ? $mapto[ $index ] : '' );
 			?>
 			<select name="mapto[<?php echo $index; ?>]">
 				<?php
@@ -729,19 +729,19 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 					'name'        => __( 'CSV Delimiter:', 'give' ),
 					'description' => __( 'In case your CSV file supports a different type of separator (or delimiter) -- like a tab or space -- you can set that here.', 'give' ),
 					'default'     => $delimiter,
-					'type'    => 'select',
-					'options' => array(
-						'csv'  => esc_html__( 'Comma', 'give' ),
+					'type'        => 'select',
+					'options'     => array(
+						'csv'                  => esc_html__( 'Comma', 'give' ),
 						'tab-separated-values' => esc_html__( 'Tab', 'give' ),
-					)
+					),
 				),
 				array(
 					'id'          => 'mode',
 					'name'        => __( 'Test Mode:', 'give' ),
 					'description' => __( 'Test mode allows you to preview what this import would look like without making any actual changes to your site or your database.', 'give' ),
 					'default'     => $mode,
-					'type'    => 'radio_inline',
-					'options' => array(
+					'type'        => 'radio_inline',
+					'options'     => array(
 						'enabled'  => __( 'Enabled', 'give' ),
 						'disabled' => __( 'Disabled', 'give' ),
 					),
@@ -751,8 +751,8 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 					'name'        => __( 'Create WP users for new donors:', 'give' ),
 					'description' => __( 'The importer can create WordPress user accounts based on the names and email addresses of the donations in your CSV file. Enable this option if you\'d like the importer to do that.', 'give' ),
 					'default'     => $create_user,
-					'type'    => 'radio_inline',
-					'options' => array(
+					'type'        => 'radio_inline',
+					'options'     => array(
 						'enabled'  => __( 'Enabled', 'give' ),
 						'disabled' => __( 'Disabled', 'give' ),
 					),
@@ -762,8 +762,8 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 					'name'        => __( 'Delete CSV after import:', 'give' ),
 					'description' => __( 'Your CSV file will be uploaded via the WordPress Media Library. It\'s a good idea to delete it after the import is finished so that your sensitive data is not accessible on the web. Disable this only if you plan to delete the file manually later.', 'give' ),
 					'default'     => $delete_csv,
-					'type'    => 'radio_inline',
-					'options' => array(
+					'type'        => 'radio_inline',
+					'options'     => array(
 						'enabled'  => __( 'Enabled', 'give' ),
 						'disabled' => __( 'Disabled', 'give' ),
 					),
