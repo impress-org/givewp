@@ -111,7 +111,7 @@ function give_process_donation_form() {
 		'user_email'    => $user['user_email'],
 		'date'          => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
 		'user_info'     => stripslashes_deep( $user_info ),
-		'post_data'     => $_POST,
+		'post_data'     => give_clean( $_POST ),
 		'gateway'       => $valid_data['gateway'],
 		'card_info'     => $valid_data['cc_info'],
 	);
