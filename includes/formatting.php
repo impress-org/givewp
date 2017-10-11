@@ -278,24 +278,25 @@ function give_sanitize_amount( $number, $dp = false, $trim_zeros = false ) {
  *
  * @return string $amount   Newly formatted amount or Price Not Available
  */
-function give_format_amount( $amount, $args = array(), $donation_id = null ) {
+function give_format_amount( $amount, $args = array() ) {
 	// Backward compatibility.
 	if( is_bool( $args ) ) {
 		$args = array( 'decimal' => $args );
 	}
 
 	$default_args = array(
-		'decimal'  => true,
-		'sanitize' => true,
-		'currency' => give_get_currency(),
+		'decimal'     => true,
+		'sanitize'    => true,
+		'currency'    => give_get_currency(),
+		'donation_id' => 0
 	);
 
 	$args = wp_parse_args( $args, $default_args );
 
 	$formatted     = 0;
-	$thousands_sep = give_get_price_thousand_separator( $donation_id );
-	$decimal_sep   = give_get_price_decimal_separator( $donation_id );
-	$decimals      = ! empty( $args['decimal'] ) ? give_get_price_decimals( $donation_id ) : 0;
+	$thousands_sep = give_get_price_thousand_separator( $args['donation_id'] );
+	$decimal_sep   = give_get_price_decimal_separator( $args['donation_id'] );
+	$decimals      = ! empty( $args['decimal'] ) ? give_get_price_decimals( $args['donation_id'] ) : 0;
 	$currency      = $args['currency'];
 
 	if ( ! empty( $amount ) ) {
