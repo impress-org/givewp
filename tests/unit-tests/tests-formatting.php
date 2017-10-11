@@ -353,7 +353,7 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	public function give_format_decimal_provider() {
 		return array(
 			array( '10.5678', '10.568', 3 ),
-			array( '10.56', '10.56', 2 ),
+			array( '10.567', '10.56', 2 ),
 			array( '10.567', '10.6', 1 ),
 			array( '10.567', '10.567' ),
 		);
