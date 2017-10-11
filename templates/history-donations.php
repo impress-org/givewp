@@ -72,7 +72,7 @@ if ( $donations ) : ?>
 						give_format_amount( give_get_payment_amount( $post->ID ), array(
 							'sanitize' => false,
 							'currency' => $currency_code
-						) ),
+						), $post->ID ),
 						$currency_code
 					);
 
