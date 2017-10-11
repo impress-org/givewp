@@ -70,8 +70,9 @@ if ( $donations ) : ?>
 					$currency_code = give_get_payment_currency_code( $post->ID );
 					$donation_amount = give_currency_filter(
 						give_format_amount( give_get_payment_amount( $post->ID ), array(
-							'sanitize' => false,
-							'currency' => $currency_code
+							'sanitize'    => false,
+							'currency'    => $currency_code,
+							'donation_id' => $post->ID
 						), $post->ID ),
 						$currency_code
 					);
