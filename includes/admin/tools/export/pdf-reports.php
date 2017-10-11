@@ -51,9 +51,14 @@ function give_generate_pdf( $data ) {
 
 	$pdf          = new Give_PDF( 'L', 'mm', 'A', true, 'UTF-8', false );
 	$default_font = apply_filters( 'give_pdf_default_font', 'Helvetica' );
-	TCPDF_FONTS::addTTFfont( GIVE_PLUGIN_DIR . '/includes/libraries/tcpdf/fonts/CODE2000.TTF', '' );
-	$custom_font = ( 'RIAL' === give_get_currency() || 'RUB' === give_get_currency() ) ? 'CODE2000' : 'dejavusans';
-	$font_style = ( 'CODE2000' === $custom_font ) ? 'B' : '';
+	$custom_font  = 'dejavusans';
+	$font_style   = '';
+
+	if ( in_array( give_get_currency(), array( 'RIAL', 'RUB' ) ) ) {
+		TCPDF_FONTS::addTTFfont( GIVE_PLUGIN_DIR . '/includes/libraries/tcpdf/fonts/CODE2000.TTF', '' );
+		$custom_font = 'CODE2000';
+		$font_style  = 'B';
+	}
 
 	$pdf->AddPage( 'L', 'A4' );
 	$pdf->setImageScale( 1.5 );
