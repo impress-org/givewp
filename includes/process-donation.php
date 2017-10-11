@@ -130,7 +130,7 @@ function give_process_donation_form() {
 	 * @param array $user_info Array containing basic user information.
 	 * @param bool|array $valid_data Validate fields.
 	 */
-	do_action( 'give_checkout_before_gateway', $_POST, $user_info, $valid_data );
+	do_action( 'give_checkout_before_gateway', give_clean( $_POST ), $user_info, $valid_data );
 
 	// Sanity check for price.
 	if ( ! $donation_data['price'] ) {
