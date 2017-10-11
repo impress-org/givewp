@@ -979,6 +979,11 @@ Dashboard Columns
 input.shortcode-input {
   width: 100%; }
 
+.price .give_price_range_low,
+.price .give_price_range_high,
+.price .give_price_range_sep {
+  display: inline-block; }
+
 /*-------------------------------------
 ASIDE
 -------------------------------------*/
