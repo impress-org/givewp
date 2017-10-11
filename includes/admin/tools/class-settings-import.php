@@ -390,6 +390,12 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 
 		static function selected( $option_value, $value ) {
 			$selected = '';
+
+			// Postal Code also needs to map with zip.
+			if ( 'Postal Code' === $value ) {
+				$value = 'Zip';
+			}
+
 			if ( stristr( $value, $option_value ) ) {
 				$selected = 'selected';
 			} elseif ( strrpos( $value, '_' ) && stristr( $option_value, 'Import as Meta' ) ) {
