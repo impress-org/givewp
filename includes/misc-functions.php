@@ -143,7 +143,7 @@ function give_currency_symbols( $decode_currencies = false ) {
 		'MAD'  => '&#x2e;&#x62f;&#x2e;&#x645;',
 	);
 
-	if( $decode_currencies ) {
+	if ( $decode_currencies ) {
 		$currencies = array_map( 'html_entity_decode', $currencies );
 	}
 
@@ -166,8 +166,8 @@ function give_currency_symbols( $decode_currencies = false ) {
  *
  * @since      1.0
  *
- * @param  string $currency The currency string.
- * @param  bool $decode_currency Option to HTML decode the currency symbol.
+ * @param  string $currency        The currency string.
+ * @param  bool   $decode_currency Option to HTML decode the currency symbol.
  *
  * @return string           The symbol to use for the currency
  */
@@ -177,9 +177,8 @@ function give_currency_symbol( $currency = '', $decode_currency = false ) {
 		$currency = give_get_currency();
 	}
 
-	$currencies = give_currency_symbols( $decode_currency  );
-	$symbol = array_key_exists( $currency, $currencies ) ? $currencies[$currency] : $currency;
-
+	$currencies = give_currency_symbols( $decode_currency );
+	$symbol     = array_key_exists( $currency, $currencies ) ? $currencies[ $currency ] : $currency;
 
 	/**
 	 * Filter the currency symbol
@@ -215,6 +214,7 @@ function give_get_currency_name( $currency_code ) {
 	 * Filter the currency name
 	 *
 	 * @since 1.8.8
+	 *
 	 * @param string $currency_name
 	 * @param string $currency_code
 	 */
@@ -283,7 +283,14 @@ function give_is_cc_verify_enabled() {
 		$ret = false;
 	}
 
-	return (bool) apply_filters( 'give_verify_credit_cards', $ret );
+	/**
+	 * Fire the filter
+	 *
+	 * @since 1.0
+	 *
+	 * @param bool $ret
+	 */
+	return (bool) apply_filters( 'give_is_cc_verify_enabled', $ret );
 }
 
 /**
@@ -442,8 +449,8 @@ function give_payment_gateway_item_title( $payment_data ) {
  * @since       1.8.12
  *
  * @param array $donation_data
- * @param bool $name_and_email
- * @param int $length
+ * @param bool  $name_and_email
+ * @param int   $length
  *
  * @return string
  */
@@ -619,10 +626,10 @@ function give_is_host( $host = false ) {
  * @uses apply_filters() Calls 'give_deprecated_function_trigger_error' and expects boolean value of true to do
  *   trigger or false to not trigger error.
  *
- * @param string $function The function that was called.
- * @param string $version The plugin version that deprecated the function.
+ * @param string $function    The function that was called.
+ * @param string $version     The plugin version that deprecated the function.
  * @param string $replacement Optional. The function that should have been called.
- * @param array $backtrace Optional. Contains stack backtrace of deprecated function.
+ * @param array  $backtrace   Optional. Contains stack backtrace of deprecated function.
  */
 function _give_deprecated_function( $function, $version, $replacement = null, $backtrace = null ) {
 
@@ -633,9 +640,9 @@ function _give_deprecated_function( $function, $version, $replacement = null, $b
 	 *
 	 * @since 1.0
 	 *
-	 * @param string $function The function that was called.
+	 * @param string $function    The function that was called.
 	 * @param string $replacement Optional. The function that should have been called.
-	 * @param string $version The plugin version that deprecated the function.
+	 * @param string $version     The plugin version that deprecated the function.
 	 */
 	do_action( 'give_deprecated_function_run', $function, $replacement, $version );
 
@@ -728,8 +735,8 @@ function give_get_newsletter() {
 	<div class="give-newsletter-form-wrap">
 
 		<form action="//givewp.us3.list-manage.com/subscribe/post?u=3ccb75d68bda4381e2f45794c&amp;id=12a081aa13"
-		      method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate"
-		      target="_blank" novalidate>
+			  method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate"
+			  target="_blank" novalidate>
 			<div class="give-newsletter-confirmation">
 				<p><?php esc_html_e( 'Thanks for Subscribing!', 'give' ); ?> :)</p>
 			</div>
@@ -738,26 +745,26 @@ function give_get_newsletter() {
 				<tr valign="middle">
 					<td>
 						<label for="mce-EMAIL"
-						       class="screen-reader-text"><?php esc_html_e( 'Email Address (required)', 'give' ); ?></label>
+							   class="screen-reader-text"><?php esc_html_e( 'Email Address (required)', 'give' ); ?></label>
 						<input type="email" name="EMAIL" id="mce-EMAIL"
-						       placeholder="<?php esc_attr_e( 'Email Address (required)', 'give' ); ?>"
-						       class="required email" value="">
+							   placeholder="<?php esc_attr_e( 'Email Address (required)', 'give' ); ?>"
+							   class="required email" value="">
 					</td>
 					<td>
 						<label for="mce-FNAME"
-						       class="screen-reader-text"><?php esc_html_e( 'First Name', 'give' ); ?></label>
+							   class="screen-reader-text"><?php esc_html_e( 'First Name', 'give' ); ?></label>
 						<input type="text" name="FNAME" id="mce-FNAME"
-						       placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" class="" value="">
+							   placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" class="" value="">
 					</td>
 					<td>
 						<label for="mce-LNAME"
-						       class="screen-reader-text"><?php esc_html_e( 'Last Name', 'give' ); ?></label>
+							   class="screen-reader-text"><?php esc_html_e( 'Last Name', 'give' ); ?></label>
 						<input type="text" name="LNAME" id="mce-LNAME"
-						       placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" class="" value="">
+							   placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" class="" value="">
 					</td>
 					<td>
 						<input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button"
-						       value="<?php esc_attr_e( 'Subscribe', 'give' ); ?>">
+							   value="<?php esc_attr_e( 'Subscribe', 'give' ); ?>">
 					</td>
 				</tr>
 			</table>
@@ -773,12 +780,12 @@ function give_get_newsletter() {
 	<script type='text/javascript'>(function ($) {
 			window.fnames = new Array();
 			window.ftypes = new Array();
-			fnames[0] = 'EMAIL';
-			ftypes[0] = 'email';
-			fnames[1] = 'FNAME';
-			ftypes[1] = 'text';
-			fnames[2] = 'LNAME';
-			ftypes[2] = 'text';
+			fnames[0]     = 'EMAIL';
+			ftypes[0]     = 'email';
+			fnames[1]     = 'FNAME';
+			ftypes[1]     = 'text';
+			fnames[2]     = 'LNAME';
+			ftypes[2]     = 'text';
 
 			//Successful submission
 			$('form[name="mc-embedded-subscribe-form"]').on('submit', function () {
@@ -799,7 +806,8 @@ function give_get_newsletter() {
 	</script>
 	<!--End mc_embed_signup-->
 
-<?php }
+<?php
+}
 
 
 /**
@@ -848,7 +856,7 @@ add_filter( 'nav_menu_meta_box_object', 'modify_nav_menu_meta_box_object' );
  *
  * @since 1.8.14
  *
- * @todo Remove this, when WordPress Core ticket is resolved (https://core.trac.wordpress.org/ticket/16828).
+ * @todo  Remove this, when WordPress Core ticket is resolved (https://core.trac.wordpress.org/ticket/16828).
  *
  * @return bool
  */
@@ -858,7 +866,7 @@ function give_donation_metabox_menu() {
 	$screen = get_current_screen();
 
 	// Proceed, if current screen is navigation menus.
-	if(
+	if (
 		'nav-menus' === $screen->id &&
 		give_is_setting_enabled( give_get_option( 'forms_singular' ) ) &&
 		! get_user_option( 'give_is_donation_forms_menu_updated' )
@@ -909,12 +917,12 @@ if ( ! function_exists( 'array_column' ) ) {
 	 * Optionally, you may provide an $indexKey to index the values in the returned
 	 * array by the values from the $indexKey column in the input array.
 	 *
-	 * @param array $input A multi-dimensional array (record set) from which to pull
+	 * @param array      $input     A multi-dimensional array (record set) from which to pull
 	 *                              a column of values.
 	 * @param int|string $columnKey The column of values to return. This value may be the
 	 *                              integer key of the column you wish to retrieve, or it
 	 *                              may be the string key name for an associative array.
-	 * @param mixed $indexKey (Optional.) The column to use as the index/keys for
+	 * @param mixed      $indexKey  (Optional.) The column to use as the index/keys for
 	 *                              the returned array. This value may be the integer key
 	 *                              of the column, or it may be the string key name.
 	 *
@@ -940,10 +948,10 @@ if ( ! function_exists( 'array_column' ) ) {
 		}
 
 		if ( ! is_int( $params[1] )
-		     && ! is_float( $params[1] )
-		     && ! is_string( $params[1] )
-		     && $params[1] !== null
-		     && ! ( is_object( $params[1] ) && method_exists( $params[1], '__toString' ) )
+			 && ! is_float( $params[1] )
+			 && ! is_string( $params[1] )
+			 && $params[1] !== null
+			 && ! ( is_object( $params[1] ) && method_exists( $params[1], '__toString' ) )
 		) {
 			trigger_error( esc_html__( 'array_column(): The column key should be either a string or an integer.', 'give' ), E_USER_WARNING );
 
@@ -951,10 +959,10 @@ if ( ! function_exists( 'array_column' ) ) {
 		}
 
 		if ( isset( $params[2] )
-		     && ! is_int( $params[2] )
-		     && ! is_float( $params[2] )
-		     && ! is_string( $params[2] )
-		     && ! ( is_object( $params[2] ) && method_exists( $params[2], '__toString' ) )
+			 && ! is_int( $params[2] )
+			 && ! is_float( $params[2] )
+			 && ! is_string( $params[2] )
+			 && ! ( is_object( $params[2] ) && method_exists( $params[2], '__toString' ) )
 		) {
 			trigger_error( esc_html__( 'array_column(): The index key should be either a string or an integer.', 'give' ), E_USER_WARNING );
 
@@ -1167,7 +1175,7 @@ function give_is_terms_enabled( $form_id ) {
  *                                 Date value should be in today, yesterday, this_week, last_week, this_month, last_month, this_quarter, last_quarter, this_year, last_year.
  *                                 For date value other, all cache will be removed.
  *
- * @param array $args
+ * @param array        $args
  *
  * @return WP_Error|bool
  */
@@ -1181,7 +1189,7 @@ function give_delete_donation_stats( $date_range = '', $args = array() ) {
 	 * @since 1.8.7
 	 *
 	 * @param string|array $date_range
-	 * @param array $args
+	 * @param array        $args
 	 */
 	do_action( 'give_delete_donation_stats', $status, $date_range, $args );
 
@@ -1194,10 +1202,10 @@ function give_delete_donation_stats( $date_range = '', $args = array() ) {
  *
  * @since 1.8.8
  *
- * @param int $id
+ * @param int    $id
  * @param string $meta_key
- * @param bool $single
- * @param bool $default
+ * @param bool   $single
+ * @param bool   $default
  *
  * @return mixed
  */
@@ -1230,7 +1238,7 @@ function give_get_meta( $id, $meta_key, $single = false, $default = false ) {
  *
  * @since 1.8.8
  *
- * @param int $id
+ * @param int    $id
  * @param string $meta_key
  * @param string $meta_value
  * @param string $prev_value
@@ -1253,7 +1261,7 @@ function give_update_meta( $id, $meta_key, $meta_value, $prev_value = '' ) {
  *
  * @since 1.8.8
  *
- * @param int $id
+ * @param int    $id
  * @param string $meta_key
  * @param string $meta_value
  *
@@ -1354,16 +1362,17 @@ function give_get_completed_upgrades() {
  * @since 1.8.13
  *
  * @param \WP_Query
- *
  */
 function give_remove_pages_from_search( $query ) {
 	if ( ! $query->is_admin && $query->is_search && $query->is_main_query() ) {
 		$transaction_failed = give_get_option( 'failure_page', 0 );
 		$success_page       = give_get_option( 'success_page', 0 );
-		$args               = apply_filters( 'give_remove_pages_from_search', array(
-			$transaction_failed,
-			$success_page
-		), $query );
+		$args               = apply_filters(
+			'give_remove_pages_from_search', array(
+				$transaction_failed,
+				$success_page,
+			), $query
+		);
 		$query->set( 'post__not_in', $args );
 	}
 }
@@ -1375,9 +1384,9 @@ add_action( 'pre_get_posts', 'give_remove_pages_from_search', 10, 1 );
  *
  * @since 1.8.13
  *
- * @param string $key The key to insert before.
- * @param array $array An array to insert in to.
- * @param string $new_key The key to insert.
+ * @param string       $key       The key to insert before.
+ * @param array        $array     An array to insert in to.
+ * @param string       $new_key   The key to insert.
  * @param array|string $new_value An value to insert.
  *
  * @return array The new array if the key exists, the passed array otherwise.
@@ -1405,9 +1414,9 @@ function give_array_insert_before( $key, array &$array, $new_key, $new_value ) {
  *
  * @since 1.8.13
  *
- * @param string $key The key to insert after.
- * @param array $array An array to insert in to.
- * @param string $new_key The key to insert.
+ * @param string       $key       The key to insert after.
+ * @param array        $array     An array to insert in to.
+ * @param string       $new_key   The key to insert.
  * @param array|string $new_value An value to insert.
  *
  * @return array The new array if the key exists, the passed array otherwise.
@@ -1438,8 +1447,8 @@ function give_array_insert_after( $key, array &$array, $new_key, $new_value ) {
  *
  * @since 1.8.13
  *
- * @param array $list List of objects or arrays
- * @param int|string $field Field from the object to place instead of the entire object
+ * @param array      $list      List of objects or arrays
+ * @param int|string $field     Field from the object to place instead of the entire object
  * @param int|string $index_key Optional. Field from the object to use as keys for the new array.
  *                              Default null.
  *
@@ -1500,10 +1509,10 @@ function give_list_pluck( $list, $field, $index_key = null ) {
  *
  * @since 1.8.13
  *
- * @param int $donor_id Donor ID.
- * @param string $meta_key Metadata name.
- * @param mixed $meta_value Metadata value. Must be serializable if non-scalar.
- * @param bool $unique Optional. Whether the same key should not be added.
+ * @param int    $donor_id   Donor ID.
+ * @param string $meta_key   Metadata name.
+ * @param mixed  $meta_value Metadata value. Must be serializable if non-scalar.
+ * @param bool   $unique     Optional. Whether the same key should not be added.
  *                           Default false.
  *
  * @return int|false Meta ID on success, false on failure.
@@ -1521,9 +1530,9 @@ function add_donor_meta( $donor_id, $meta_key, $meta_value, $unique = false ) {
  *
  * @since 1.8.13
  *
- * @param int $donor_id Donor ID
- * @param string $meta_key Metadata name.
- * @param mixed $meta_value Optional. Metadata value.
+ * @param int    $donor_id   Donor ID
+ * @param string $meta_key   Metadata name.
+ * @param mixed  $meta_value Optional. Metadata value.
  *
  * @return bool True on success, false on failure.
  */
@@ -1536,9 +1545,9 @@ function delete_donor_meta( $donor_id, $meta_key, $meta_value = '' ) {
  *
  * @since 1.8.13
  *
- * @param int $donor_id Donor ID.
- * @param string $key Optional. The meta key to retrieve. By default, returns data for all keys.
- * @param bool $single Whether to return a single value.
+ * @param int    $donor_id Donor ID.
+ * @param string $key      Optional. The meta key to retrieve. By default, returns data for all keys.
+ * @param bool   $single   Whether to return a single value.
  *
  * @return mixed Will be an array if $single is false. Will be value of meta data field if $single
  *  is true.
@@ -1554,10 +1563,10 @@ function get_donor_meta( $donor_id, $key = '', $single = false ) {
  *
  * @since 1.8.13
  *
- * @param int $donor_id Donor ID.
- * @param string $meta_key Metadata key.
- * @param mixed $meta_value Metadata value.
- * @param mixed $prev_value Optional. Previous value to check before removing.
+ * @param int    $donor_id   Donor ID.
+ * @param string $meta_key   Metadata key.
+ * @param mixed  $meta_value Metadata value.
+ * @param mixed  $prev_value Optional. Previous value to check before removing.
  *
  * @return int|bool Meta ID if the key didn't exist, true on successful update, false on failure.
  */
@@ -1587,12 +1596,14 @@ function give_recount_form_income_donation( $form_id = false ) {
 		 *
 		 * @since 1.8.13
 		 */
-		$args = apply_filters( 'give_recount_form_stats_args', array(
-			'give_forms'     => $form_id,
-			'status'         => $accepted_statuses,
-			'posts_per_page' => - 1,
-			'fields'         => 'ids',
-		) );
+		$args = apply_filters(
+			'give_recount_form_stats_args', array(
+				'give_forms'     => $form_id,
+				'status'         => $accepted_statuses,
+				'posts_per_page' => - 1,
+				'fields'         => 'ids',
+			)
+		);
 
 		$totals = array(
 			'sales'    => 0,
@@ -1604,12 +1615,12 @@ function give_recount_form_income_donation( $form_id = false ) {
 
 		if ( $payments ) {
 			foreach ( $payments as $payment ) {
-				//Ensure acceptible status only
+				// Ensure acceptible status only
 				if ( ! in_array( $payment->post_status, $accepted_statuses ) ) {
 					continue;
 				}
 
-				//Ensure only payments for this form are counted
+				// Ensure only payments for this form are counted
 				if ( $payment->form_id != $form_id ) {
 					continue;
 				}
@@ -1621,7 +1632,7 @@ function give_recount_form_income_donation( $form_id = false ) {
 		}
 		give_update_meta( $form_id, '_give_form_sales', $totals['sales'] );
 		give_update_meta( $form_id, '_give_form_earnings', give_sanitize_amount_for_db( $totals['earnings'] ) );
-	}
+	}// End if().
 }
 
 /**

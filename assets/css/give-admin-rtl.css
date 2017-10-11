@@ -979,6 +979,11 @@ Dashboard Columns
 input.shortcode-input {
   width: 100%; }
 
+.price .give_price_range_low,
+.price .give_price_range_high,
+.price .give_price_range_sep {
+  display: inline-block; }
+
 /*-------------------------------------
 ASIDE
 -------------------------------------*/
@@ -2838,8 +2843,22 @@ div.sc-shortcode {
     .give-status-table td ul {
       margin: 0; }
 
+/* System info download header */
 .wrap div.give-debug-report-wrapper {
-  margin-top: 1em; }
+  margin-bottom: 5px; }
+  .wrap div.give-debug-report-wrapper p {
+    font-size: 15px;
+    margin: 0.5em 0 0.5em;
+    padding: 0; }
+  .wrap div.give-debug-report-wrapper .give-debug-report-actions {
+    margin: 0 0 1em; }
+    .wrap div.give-debug-report-wrapper .give-debug-report-actions .js-give-debug-report-button {
+      margin-left: 10px; }
+    .wrap div.give-debug-report-wrapper .give-debug-report-actions .dashicons {
+      font-size: 16px;
+      position: relative;
+      top: 4px;
+      right: -2px; }
 
 .give-debug-report {
   display: none;
