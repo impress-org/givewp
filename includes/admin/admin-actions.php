@@ -48,7 +48,7 @@ function give_redirect_to_clean_url_admin_pages() {
 		'give-payment-history',
 		'give-donors',
 		'give-reports',
-		'give-tools'
+		'give-tools',
 	);
 
 	// Get current page.
@@ -353,6 +353,15 @@ function _give_register_admin_notices() {
 						'show'        => true,
 					) );
 					break;
+
+				case 'reconnect-user' :
+					Give()->notices->register_notice( array(
+						'id'          => 'give-donor-reconnect-user',
+						'type'        => 'updated',
+						'description' => __( 'User has been successfully connected with Donor.', 'give' ),
+						'show'        => true,
+					) );
+					break;
 			}
 		}
 	}
@@ -514,11 +523,12 @@ function give_donation_import_callback() {
 	}
 
 	$url              = give_import_page_url( array(
-		'step'       => '4',
-		'csv'        => $csv,
-		'total'      => $total,
-		'delete_csv' => $import_setting['delete_csv'],
-		'success'    => ( isset( $json_data['success'] ) ? $json_data['success'] : '' ),
+		'step'          => '4',
+		'importer-type' => 'import_donations',
+		'csv'           => $csv,
+		'total'         => $total,
+		'delete_csv'    => $import_setting['delete_csv'],
+		'success'       => ( isset( $json_data['success'] ) ? $json_data['success'] : '' ),
 	) );
 	$json_data['url'] = $url;
 

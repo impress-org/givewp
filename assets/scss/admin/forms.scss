@@ -332,6 +332,12 @@ input.shortcode-input {
 	width: 100%;
 }
 
+.price .give_price_range_low,
+.price .give_price_range_high,
+.price .give_price_range_sep{
+	display: inline-block;
+}
+
 /*-------------------------------------
 ASIDE
 -------------------------------------*/
@@ -408,7 +414,7 @@ ASIDE
 		}
 
 		.give-field-wrap {
-			padding: 1em 20px 1em 162px !important;
+			padding: 1em 20px 1em 162px;
 			margin: 0;
 			border-bottom: 1px solid #eee;
 
@@ -670,14 +676,31 @@ ASIDE
 					margin-right: 0;
 					font-size: 15px;
 				}
-				span {
+				span.give-label {
 					display: none;
+				}
+
+				span.give-icon:before {
+					margin: 0;
 				}
 			}
 
 		}
 		.give_options_panel {
 			padding-left: 40px;
+
+			.give-field-wrap {
+				padding: 10px;
+
+				span.give-field-label, label {
+					display: block;
+					float: none;
+					margin: 0 0 10px 0;
+					font-size: 14px;
+					width: 100%;
+				}
+
+			}
 		}
 
 	}

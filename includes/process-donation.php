@@ -267,7 +267,7 @@ function give_donation_form_validate_fields() {
 		return false;
 	}
 
-	$form_id = isset( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : '';
+	$form_id = ! empty( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : '';
 
 	// Start an array to collect valid data
 	$valid_data = array(
@@ -284,6 +284,14 @@ function give_donation_form_validate_fields() {
 	// Validate Honeypot First
 	if ( ! empty( $_POST['give-honeypot'] ) ) {
 		give_set_error( 'invalid_honeypot', esc_html__( 'Honeypot field detected. Go away bad bot!', 'give' ) );
+	}
+
+	// Check spam detect.
+	if ( isset( $_POST['action'] )
+	     && give_is_setting_enabled( give_get_option( 'akismet_spam_protection' ) )
+	     && give_is_spam_donation()
+	) {
+		give_set_error( 'invalid_donation', __( 'This donation has been flagged as spam. Please try again.', 'give' ) );
 	}
 
 	// Validate agree to terms
@@ -323,6 +331,26 @@ function give_donation_form_validate_fields() {
 
 	// Return collected data.
 	return $valid_data;
+}
+
+/**
+ * Detect spam donation.
+ *
+ * @since 1.8.14
+ *
+ * @return bool|mixed
+ */
+function give_is_spam_donation() {
+	$spam = false;
+
+	$user_agent = (string) isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : '';
+
+	if ( strlen( $user_agent ) < 2 ) {
+		$spam = true;
+	}
+
+	// Allow developer to customized Akismet spam detect API call and it's response.
+	return apply_filters( 'give_spam', $spam );
 }
 
 /**
@@ -687,6 +715,7 @@ function give_donation_form_validate_user_login() {
 				);
 				// All is correct.
 			} else {
+
 				// Repopulate the valid user data array.
 				$valid_user_data = array(
 					'user_id'    => $user_data->ID,
