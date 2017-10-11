@@ -284,17 +284,22 @@ function give_format_amount( $amount, $args = array() ) {
 	$default_args = array(
 		'decimal'     => true,
 		'sanitize'    => true,
-		'currency'    => give_get_currency(),
 		'donation_id' => 0
 	);
 
 	$args = wp_parse_args( $args, $default_args );
 
+	// Set Currency based on donation id, if required.
+	if( $args['donation_id'] ) {
+		$donation_meta =  give_get_meta( $args['donation_id'], '_give_payment_meta', true );
+		$args['currency'] = $donation_meta['currency'];
+	}
+
 	$formatted     = 0;
 	$thousands_sep = give_get_price_thousand_separator( $args['donation_id'] );
 	$decimal_sep   = give_get_price_decimal_separator( $args['donation_id'] );
 	$decimals      = ! empty( $args['decimal'] ) ? give_get_price_decimals( $args['donation_id'] ) : 0;
-	$currency      = $args['currency'];
+	$currency      = ! empty( $args['currency'] ) ? $args['currency'] : give_get_currency();
 
 	if ( ! empty( $amount ) ) {
 		// Sanitize amount before formatting.
