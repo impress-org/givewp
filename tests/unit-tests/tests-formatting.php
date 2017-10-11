@@ -20,6 +20,19 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	}
 
 	/**
+	 * Test function give_get_currency_formatting_settings
+	 *
+	 * @since 1.8.14
+	 *
+	 * @cover give_get_currency_formatting_settings
+	 */
+	function test_give_get_currency_formatting_settings() {
+		$currency_settings = give_get_currency_formatting_settings();
+
+		$this->assertEquals( '', $currency_settings );
+	}
+
+	/**
 	 * Test function give_get_price_thousand_separator
 	 *
 	 * @since 1.8
