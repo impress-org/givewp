@@ -30,9 +30,7 @@ function give_get_currency_formatting_settings( $donation_id = null ) {
 		return '';
 	}
 
-	$donation_meta = give_get_meta( $donation_id, '_give_payment_meta', true );
-
-	return $donation_meta['currency_info'];
+	return give_get_meta( $donation_id, '_give_currency_settings', true );
 }
 
 /**
@@ -274,7 +272,6 @@ function give_sanitize_amount( $number, $dp = false, $trim_zeros = false ) {
  *
  * @param string $amount      Price amount to format
  * @param array  $args        Array of arguments.
- * @param int    $donation_id Donation ID.
  *
  * @return string $amount   Newly formatted amount or Price Not Available
  */
