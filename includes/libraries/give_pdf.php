@@ -52,7 +52,7 @@ class Give_PDF extends TCPDF {
 	/**
 	 * Set Width.
 	 *
-	 * @param int $w Cell Width.
+	 * @param array $w Cell Width.
 	 */
 	function SetWidths( $w ) {
 		$this->widths = $w;
