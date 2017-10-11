@@ -469,7 +469,7 @@ function give_donor_view( $donor ) {
 
 			<span id="donor-edit-actions" class="edit-item">
 				<input type="hidden" data-key="id" name="customerinfo[id]" value="<?php echo $donor->id; ?>"/>
-				<?php wp_nonce_field( 'edit-donor', '_wpnonce', false, true ); ?>
+				<?php wp_nonce_field( 'give-manage-donor-addresses', '_wpnonce', false, true ); ?>
 				<input type="hidden" name="give_action" value="edit-donor"/>
 				<input type="submit" id="give-edit-donor-save" class="button-secondary" value="<?php _e( 'Update Donor', 'give' ); ?>"/>
 				<a id="give-edit-donor-cancel" href="" class="delete"><?php _e( 'Cancel', 'give' ); ?></a>
@@ -589,7 +589,7 @@ function give_donor_view( $donor ) {
 					</div>
 				</div>
 
-				<div class="address-form add-new-address-form-hidden">
+				<div class="address-form add-new-address-form-hidden" data-address-type="add">
 					<form action="" method="post">
 						<table class="widefat striped">
 							<tbody>

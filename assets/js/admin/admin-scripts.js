@@ -1348,21 +1348,38 @@ var give_setting_edit = false;
 		addressesAction: function(){
 			var $addressWrapper = $( '#donor-address-wrapper' ),
 				$allAddress = $( '.all-address', $addressWrapper ),
+				$allAddressParent = $( $allAddress ).parent(),
 				$allAddressEditBtn = $( '.js-edit', $allAddress ),
 				$allAddressRemoveBtn = $( '.js-remove', $allAddress ),
 				$addressForm = $( '.address-form', $addressWrapper ),
 				$addressFormCancelBtn = $( '.js-cancel', $addressForm ),
-				$addNewAddressBtn = $( '.add-new-address', $addressWrapper );
+				$addressFormSaveBtn = $( '.js-save', $addressForm ),
+				$addNewAddressBtn = $( '.add-new-address', $addressWrapper ),
+				donorID = parseInt( $('input[name="donor-id"]').val() );
 
 
 			// Edit current address button event
 			$allAddressEditBtn.on( 'click', function( e ){
-				var $form = $( this ).closest( '.address' );
+				var $form = $( this ).closest( '.address' ),
+					state = $( '[data-address-type="state"]', $form ).text().trim();
 
 				e.preventDefault();
 
-				// Fill address.
-				$( 'select[name="country"]', $addressForm ).val( $( '[data-address-type="country"]', $form ).text().trim() ).trigger('chosen:updated').change();
+				/*
+				 * Fill address.
+				 */
+
+				// Change country only if country changes.
+				if( $( 'select[name="country"]', $addressForm ).val().trim() !== $( '[data-address-type="country"]', $form ).text().trim() ){
+					$( 'select[name="country"]', $addressForm ).val( $( '[data-address-type="country"]', $form ).text().trim() ).trigger('chosen:updated').change();
+
+					// Update state after some time because state load by ajax for each country.
+					window.setTimeout(function(){
+						$( '[name="state"]', $addressForm ).val( state ).trigger('chosen:updated');
+					}, 300 );
+				} else{
+					$( '[name="state"]', $addressForm ).val( state ).trigger('chosen:updated');
+				}
 				$( 'input[name="address1"]', $addressForm ).val( $( '[data-address-type="address1"]', $form ).text().trim() );
 				$( 'input[name="address2"]', $addressForm ).val( $( '[data-address-type="address2"]', $form ).text().trim() );
 				$( 'input[name="city"]', $addressForm ).val( $( '[data-address-type="city"]', $form ).text().trim() );
@@ -1374,25 +1391,36 @@ var give_setting_edit = false;
 					$( '[name="state"]', $addressForm ).val( state ).trigger('chosen:updated');
 				}, 200 );
 
+				// Remove notice.
+				$( '.notice', $allAddressParent ).remove();
+
 
 				$addNewAddressBtn.hide();
 				$allAddress.addClass('give-hidden');
 				$addressForm.removeClass('add-new-address-form-hidden');
+				$addressForm.data( 'process', 'update' );
 			});
 
 			// Remove address button event
 			$allAddressRemoveBtn.on( 'click', function(e){
 				e.preventDefault();
 
+				// Remove notice.
+				$( '.notice', $allAddressParent ).remove();
 			});
 
 			// Add new address button event.
 			$addNewAddressBtn.on( 'click', function(e){
 				e.preventDefault();
 
+				// Remove notice.
+				$( '.notice', $allAddressParent ).remove();
+
 				$( this ).hide();
 				$allAddress.addClass('give-hidden');
 				$addressForm.removeClass('add-new-address-form-hidden');
+				$addressForm.data( 'process', 'add' );
+				$addressForm.data( 'address-type', 'billing' );
 			});
 
 			// Cancel add new address form button event
@@ -1410,6 +1438,46 @@ var give_setting_edit = false;
 				$addNewAddressBtn.show();
 				$allAddress.removeClass('give-hidden');
 				$addressForm.addClass('add-new-address-form-hidden');
+			});
+
+			// Save address.
+			$addressForm.on( 'submit', function(e){
+				e.preventDefault();
+
+				// Remove notice.
+				$( '.notice', $allAddressParent ).remove();
+
+				$.post(
+					ajaxurl,
+					{
+						action: 'donor_manage_addresses',
+						donorID: donorID,
+						addressType: $addressForm.data( 'address-type' ),
+						form: $( 'form', $addressForm ).serialize()
+					},
+					function( response ) {
+							if ( response.success ) {
+								$( '.give-grid-row', $allAddress ).append( response.data.address_html );
+
+								$addNewAddressBtn.show();
+								$allAddress.removeClass('give-hidden');
+								$addressForm.addClass('add-new-address-form-hidden');
+							} else {
+
+								switch( response.data.error ) {
+									case 4:
+										$allAddressParent.prepend( response.data.error_msg );
+
+										$addNewAddressBtn.show();
+										$allAddress.removeClass('give-hidden');
+										$addressForm.addClass('add-new-address-form-hidden');
+										break;
+								}
+							}
+					}
+				);
+
+				return false;
 			});
 		},
 	};

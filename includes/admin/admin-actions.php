@@ -631,3 +631,67 @@ function give_get_user_roles() {
 
 	return $user_roles;
 }
+
+
+/**
+ * Ajax handle for donor address.
+ *
+ * @since 2.0
+ *
+ * @return string
+ */
+function __give_ajax_donor_manage_addresses() {
+	// Bailout.
+	if (
+		empty( $_POST['form'] ) ||
+		empty( $_POST['donorID'] ) ||
+		empty( $_POST['addressType'] )
+
+	) {
+		wp_send_json_error( array( 'error' => 1 ) );
+	}
+
+	$donorID     = absint( $_POST['donorID'] );
+	$addressType = esc_attr( $_POST['addressType'] );
+	$form_data   = wp_parse_args( $_POST['form'] );
+
+	// Security check.
+	// check_ajax_referer( 'give-manage-donor-addresses' );
+
+	$donor = new Give_Donor( $donorID );
+
+	// Verify donor.
+	if ( ! $donor->id ) {
+		wp_send_json_error( array( 'error' => 3 ) );
+	}
+
+	// Unset all data except address.
+	unset( $form_data['_wpnonce'], $form_data['_wp_http_referer'] );
+
+	// Add address.
+	if ( ! $donor->add_address( "{$addressType}[]", $form_data ) ) {
+		wp_send_json_error( array(
+				'error' => 4,
+				'error_msg' => wp_sprintf(
+						'<div class="notice notice-error"><p>%s</p></div>',
+					__( 'Error: Address already exist', 'give' )
+				)
+			)
+		);
+	}
+
+	// Setup response.
+	$data = array(
+		'address_html' => __give_get_format_address(
+			end( $donor->address['billing'] ),
+			array(
+				'type'  => 'billing',
+				'index' => count( $donor->address ),
+			)
+		),
+	);
+
+	wp_send_json_success( $data );
+}
+
+add_action( 'wp_ajax_donor_manage_addresses', '__give_ajax_donor_manage_addresses' );
