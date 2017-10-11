@@ -856,6 +856,11 @@ Dashboard Columns
 input.shortcode-input {
   width: 100%; }
 
+.price .give_price_range_low,
+.price .give_price_range_high,
+.price .give_price_range_sep {
+  display: inline-block; }
+
 /*-------------------------------------
 ASIDE
 -------------------------------------*/
@@ -958,7 +963,7 @@ ASIDE
       padding: 0; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-remove {
       float: left;
-      width: 36px;
+      width: 22px;
       height: 36px;
       padding: 0;
       display: block;
@@ -970,11 +975,11 @@ ASIDE
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-remove:hover {
       background-color: red;
       color: white;
-      width: 30px;
-      height: 30px;
+      width: 22px;
+      height: 22px;
       border-radius: 30px;
-      margin-top: 3px;
-      line-height: 28px; }
+      margin-top: 8px;
+      line-height: 19px; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-row-head {
       border-bottom: 1px solid #eee;
       cursor: move; }
@@ -982,6 +987,8 @@ ASIDE
         text-align: right !important; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-row.closed .toggle-indicator:before {
       content: "\f140"; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-row .give-move .toggle-indicator:before {
+      margin-right: 7px; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-add-repeater-field-section-row-wrap {
       background-color: #f5f5f5; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-add-repeater-field-section-row {
@@ -2781,8 +2788,22 @@ div.sc-shortcode {
     .give-status-table td ul {
       margin: 0; }
 
+/* System info download header */
 .wrap div.give-debug-report-wrapper {
-  margin-top: 1em; }
+  margin-bottom: 5px; }
+  .wrap div.give-debug-report-wrapper p {
+    font-size: 15px;
+    margin: 0.5em 0 0.5em;
+    padding: 0; }
+  .wrap div.give-debug-report-wrapper .give-debug-report-actions {
+    margin: 0 0 1em; }
+    .wrap div.give-debug-report-wrapper .give-debug-report-actions .js-give-debug-report-button {
+      margin-left: 10px; }
+    .wrap div.give-debug-report-wrapper .give-debug-report-actions .dashicons {
+      font-size: 16px;
+      position: relative;
+      top: 4px;
+      right: -2px; }
 
 .give-debug-report {
   display: none;

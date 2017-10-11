@@ -413,30 +413,18 @@ function give_import_page_link_callback() {
 	<a href="<?php echo esc_url( give_import_page_url() ); ?>"
 	   class="page-import-action page-title-action"><?php esc_html_e( 'Import Donations', 'give' ); ?></a>
 
-	<style type="text/css">
-		<?php
-		// Check if view donation single page only.
-		if ( ! empty( $_REQUEST['view'] ) && 'view-payment-details' === (string) give_clean( $_REQUEST['view'] ) && 'give-payment-history' === give_clean( $_REQUEST['page'] ) ) {
-			?>
-		.wrap #transaction-details-heading {
-			display: inline-block;
-		}
-
-		<?php
-	} else {
-		?>
-		/* So the "New Donation" button aligns with the wp-admin h1 tag */
-		.wrap > h1 {
-			display: inline-block;
-			margin-right: 5px;
-		}
-
-		<?php
-	} ?>
-	</style>
 	<?php
+	// Check if view donation single page only.
+	if ( ! empty( $_REQUEST['view'] ) && 'view-payment-details' === (string) give_clean( $_REQUEST['view'] ) && 'give-payment-history' === give_clean( $_REQUEST['page'] ) ) {
+		?>
+		<style type="text/css">
+			.wrap #transaction-details-heading {
+				display: inline-block;
+			}
+		</style>
+		<?php
+	}
 }
-
 
 add_action( 'give_payments_page_top', 'give_import_page_link_callback', 11 );
 

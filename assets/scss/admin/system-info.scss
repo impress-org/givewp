@@ -19,60 +19,79 @@
   margin-bottom: 1em;
 
   h2 {
-    font-size: 14px;
-    margin: 0;
+	font-size: 14px;
+	margin: 0;
   }
 
   tr {
-    &:nth-child(2n) {
-      th,
-      td {
-        background: #fcfcfc;
-      }
-    }
+	&:nth-child(2n) {
+	  th,
+	  td {
+		background: #fcfcfc;
+	  }
+	}
   }
 
   th {
-    font-weight: 700;
-    padding: 9px;
+	font-weight: 700;
+	padding: 9px;
   }
 
   td:first-child {
-    width: 33%;
+	width: 33%;
   }
 
   td.help {
-    width: 1em;
+	width: 1em;
   }
 
   td {
-    padding: 9px;
-    font-size: 1.1em;
+	padding: 9px;
+	font-size: 1.1em;
 
-    mark {
-      background: transparent none;
-    }
+	mark {
+	  background: transparent none;
+	}
 
-    mark.yes {
-      color: $green;
-    }
+	mark.yes {
+	  color: $green;
+	}
 
-    mark.no {
-      color: #999;
-    }
+	mark.no {
+	  color: #999;
+	}
 
-    mark.error {
-      color: $red;
-    }
+	mark.error {
+	  color: $red;
+	}
 
-    ul {
-      margin: 0;
-    }
+	ul {
+	  margin: 0;
+	}
   }
 }
 
+/* System info download header */
 .wrap div.give-debug-report-wrapper {
-  margin-top: 1em;
+	margin-bottom: 5px;
+	p {
+		font-size: 15px;
+		margin: 0.5em 0 0.5em;
+		padding: 0;
+	}
+
+	.give-debug-report-actions {
+		margin: 0 0 1em;
+		.js-give-debug-report-button {
+			margin-right: 10px;
+		}
+		.dashicons {
+			font-size: 16px;
+			position: relative;
+			top: 4px;
+			left: -2px;
+		}
+	}
 }
 
 .give-debug-report {
@@ -82,17 +101,17 @@
   position: relative;
 
   textarea {
-    font-family: monospace;
-    width: 100%;
-    margin: 0;
-    height: 300px;
-    padding: 20px;
-    -moz-border-radius: 0;
-    -webkit-border-radius: 0;
-    border-radius: 0;
-    resize: none;
-    font-size: 12px;
-    line-height: 20px;
-    outline: 0;
+	font-family: monospace;
+	width: 100%;
+	margin: 0;
+	height: 300px;
+	padding: 20px;
+	-moz-border-radius: 0;
+	-webkit-border-radius: 0;
+	border-radius: 0;
+	resize: none;
+	font-size: 12px;
+	line-height: 20px;
+	outline: 0;
   }
 }
