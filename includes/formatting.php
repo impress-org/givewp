@@ -14,6 +14,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Get Currency Formatting Settings for each donation.
+ *
+ * @since 1.8.14
+ *
+ * @return mixed|array
+ */
+function give_get_currency_formatting_settings() {
+	global $post;
+
+	$donation_meta = give_get_meta( $post->ID, '_give_payment_meta', true );
+
+	return $donation_meta['currency_info'];
+}
 
 /**
  * Get decimal count
@@ -23,7 +37,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return mixed
  */
 function give_get_price_decimals() {
-	return apply_filters( 'give_sanitize_amount_decimals', give_get_option( 'number_decimals', 0 ) );
+
+	$currency_formatting_settings = give_get_currency_formatting_settings();
+	$price_decimals               = empty( $currency_formatting_settings['number_decimals'] ) ? give_get_option( 'number_decimals', 0 ) : $currency_formatting_settings['number_decimals'];
+
+	return apply_filters( 'give_sanitize_amount_decimals', $price_decimals );
 }
 
 /**
@@ -34,9 +52,12 @@ function give_get_price_decimals() {
  * @return mixed
  */
 function give_get_price_thousand_separator() {
-	$give_options       = give_get_settings();
-	$thousand_separator = isset( $give_options['thousands_separator'] ) ? $give_options['thousands_separator'] : ',';
-	$thousand_separator = empty( $thousand_separator ) ? ' ' : $thousand_separator;
+	$give_options                 = give_get_settings();
+	$currency_formatting_settings = give_get_currency_formatting_settings();
+	$thousand_separator           = empty( $currency_formatting_settings['thousands_separator'] ) ? $give_options['thousands_separator'] : $currency_formatting_settings['thousands_separator'];
+
+	//$thousand_separator = isset( $give_options['thousands_separator'] ) ? $give_options['thousands_separator'] : ',';
+	//$thousand_separator = empty( $thousand_separator ) ? ' ' : $thousand_separator;
 
 	return $thousand_separator;
 }
@@ -54,12 +75,14 @@ function give_get_price_decimal_separator() {
 		',' => '.',
 	);
 
-	$thousand_separator = give_get_price_thousand_separator();
-	$default_decimal_separator = in_array( $thousand_separator, $default_decimal_separators ) ?
+	$thousand_separator           = give_get_price_thousand_separator();
+	//$currency_formatting_settings = give_get_currency_formatting_settings();
+	$default_decimal_separator    = in_array( $thousand_separator, $default_decimal_separators ) ?
 		$default_decimal_separators[$thousand_separator] :
 		'.';
 
 	$decimal_separator = give_get_option( 'decimal_separator', $default_decimal_separator );
+	//$decimal_separator = empty( $currency_formatting_settings['decimal_separator'] ) ? $decimal_separator : $currency_formatting_settings['decimal_separator'];
 
 	return $decimal_separator;
 }
