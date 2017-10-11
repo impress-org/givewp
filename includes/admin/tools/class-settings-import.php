@@ -90,6 +90,13 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 						'type' => 'tools_import',
 					),
 					array(
+						'name'  => esc_html__( 'Import Docs Link', 'give' ),
+						'id'    => 'import_docs_link',
+						'url'   => esc_url( 'http://docs.givewp.com/tools-importer' ),
+						'title' => __( 'Import Tab', 'give' ),
+						'type'  => 'give_docs_link',
+					),
+					array(
 						'id'   => 'give_tools_import',
 						'type' => 'sectionend',
 						'table_html' => false

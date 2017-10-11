@@ -141,6 +141,9 @@ function give_donors_list() {
 		 */
 		do_action( 'give_donors_table_top' );
 		?>
+
+		<hr class="wp-header-end">
+
 		<form id="give-donors-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors' ); ?>">
 			<?php
 			$donors_table->search_box( __( 'Search Donors', 'give' ), 'give-donors' );
@@ -188,8 +191,14 @@ function give_render_donor_view( $view, $callbacks ) {
 		$render = false;
 	}
 
-	$donor_id = (int) $_GET['id'];
-	$donor    = new Give_Donor( $donor_id );
+	$donor_id          = (int) $_GET['id'];
+	$reconnect_user_id = ! empty( $_GET['user_id'] ) ? (int) $_GET['user_id'] : '';
+	$donor             = new Give_Donor( $donor_id );
+
+	// Reconnect User with Donor profile.
+	if( $reconnect_user_id ) {
+		give_connect_user_donor_profile( $donor, array( 'user_id' => $reconnect_user_id ), array() );
+	}
 
 	if ( empty( $donor->id ) ) {
 		give_set_error( 'give-invalid_donor', __( 'Invalid Donor ID.', 'give' ) );
@@ -217,6 +226,8 @@ function give_render_donor_view( $view, $callbacks ) {
 			?>
 		</h1>
 
+		<hr class="wp-header-end">
+		
 		<?php if ( $donor && $render ) : ?>
 
 			<h2 class="nav-tab-wrapper">
@@ -258,7 +269,7 @@ function give_render_donor_view( $view, $callbacks ) {
  */
 function give_donor_view( $donor ) {
 
-	$donor_edit_role = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
+	$donor_edit_role   = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
 
 	/**
 	 * Fires in donor profile screen, above the donor card.
@@ -360,8 +371,7 @@ function give_donor_view( $donor ) {
  												<?php _e( 'Disconnect User', 'give' ); ?>
 											</a>
  										</span>
-											<span class="view-user-profile">
- 											|
+										<span class="view-user-profile">
  											<a id="view-user-profile" href="<?php echo 'user-edit.php?user_id=' . $donor->user_id; ?>" aria-label="<?php _e( 'View User Profile of current user ID.', 'give' ); ?>">
  												<?php _e( 'View User Profile', 'give' ); ?>
 											</a>
@@ -392,21 +402,22 @@ function give_donor_view( $donor ) {
 											$address = wp_parse_args( $address, $defaults );
 											?>
 
-											<?php if ( ! empty( $address ) ) { ?>
+											<?php if ( ! empty( $address ) ) : ?>
 												<span class="donor-address info-item editable">
-												<span class="info-item" data-key="line1"><?php echo $address['line1']; ?></span>
-												<span class="info-item" data-key="line2"><?php echo $address['line2']; ?></span>
-												<span class="info-item" data-key="city"><?php echo $address['city']; ?></span>
-												<span class="info-item" data-key="state"><?php echo $address['state']; ?></span>
-												<span class="info-item" data-key="country"><?php echo $address['country']; ?></span>
-												<span class="info-item" data-key="zip"><?php echo $address['zip']; ?></span>
-											</span>
-											<?php }
-											// For country
-											$selected_country = $address['country'];
-											$countries        = give_get_country_list();
+													<span class="info-item" data-key="line1"><?php echo $address['line1']; ?></span>
+													<span class="info-item" data-key="line2"><?php echo $address['line2']; ?></span>
+													<span class="info-item" data-key="city"><?php echo $address['city']; ?></span>
+													<span class="info-item" data-key="state"><?php echo $address['state']; ?></span>
+													<span class="info-item" data-key="country"><?php echo $address['country']; ?></span>
+													<span class="info-item" data-key="zip"><?php echo $address['zip']; ?></span>
+												</span>
+											<?php endif;
 
-											// For State
+											// For country.
+											$selected_country = $address['country'];
+											$countries = give_get_country_list();
+
+											// For State.
 											$selected_state = give_get_state();
 											$states         = give_get_states( $selected_country );
 											$selected_state = ( isset( $address['state'] ) ? $address['state'] : $selected_state );
@@ -415,35 +426,35 @@ function give_donor_view( $donor ) {
 											$no_states_country = give_no_states_country_list();
 											?>
 											<span class="donor-address info-item edit-item">
-											<select data-key="country" name="customerinfo[country]" id="billing_country" class="billing_country give-select edit-item">
-												<?php
-												foreach ( $countries as $country_code => $country ) {
-													echo '<option value="' . esc_attr( $country_code ) . '"' . selected( $country_code, $selected_country, false ) . '>' . $country . '</option>';
-												}
-												?>
-											</select>
-											<input class="info-item" type="text" data-key="line1" name="customerinfo[line1]" placeholder="<?php _e( 'Address 1', 'give' ); ?>" value="<?php echo $address['line1']; ?>"/>
-											<input class="info-item" type="text" data-key="line2" name="customerinfo[line2]" placeholder="<?php _e( 'Address 2', 'give' ); ?>" value="<?php echo $address['line2']; ?>"/>
-												<?php
-												if ( ! empty( $states ) ) {
-													?>
-													<select data-key="state" name="customerinfo[state]" id="card_state" class="card_state give-select info-item">
+												<select data-key="country" name="customerinfo[country]" id="billing_country" class="billing_country give-select edit-item">
 													<?php
-													foreach ( $states as $state_code => $state ) {
-														echo '<option value="' . $state_code . '"' . selected( $state_code, $selected_state, false ) . '>' . $state . '</option>';
+													foreach ( $countries as $country_code => $country ) {
+														echo '<option value="' . esc_attr( $country_code ) . '"' . selected( $country_code, $selected_country, false ) . '>' . $country . '</option>';
 													}
 													?>
 												</select>
+												<input class="info-item" type="text" data-key="line1" name="customerinfo[line1]" placeholder="<?php _e( 'Address 1', 'give' ); ?>" value="<?php echo $address['line1']; ?>"/>
+												<input class="info-item" type="text" data-key="line2" name="customerinfo[line2]" placeholder="<?php _e( 'Address 2', 'give' ); ?>" value="<?php echo $address['line2']; ?>"/>
 													<?php
-												} else {
+													if ( ! empty( $states ) ) {
+														?>
+														<select data-key="state" name="customerinfo[state]" id="card_state" class="card_state give-select info-item">
+														<?php
+														foreach ( $states as $state_code => $state ) {
+															echo '<option value="' . $state_code . '"' . selected( $state_code, $selected_state, false ) . '>' . $state . '</option>';
+														}
+														?>
+													</select>
+														<?php
+													} else {
+														?>
+														<input type="text" size="6" data-key="state" name="customerinfo[state]" id="card_state" class="card_state give-input info-item <?php echo( ! empty( $selected_country ) && array_key_exists( $selected_country, $no_states_country ) ? 'give-hidden' : '' ); ?>" placeholder="<?php _e( 'State / Province / County', 'give' ); ?>"/>
+														<?php
+													}
 													?>
-													<input type="text" size="6" data-key="state" name="customerinfo[state]" id="card_state" class="card_state give-input info-item <?php echo( ! empty( $selected_country ) && array_key_exists( $selected_country, $no_states_country ) ? 'give-hidden' : '' ); ?>" placeholder="<?php _e( 'State / Province / County', 'give' ); ?>"/>
-													<?php
-												}
-												?>
-												<input class="info-item" type="text" data-key="city" name="customerinfo[city]" placeholder="<?php _e( 'City', 'give' ); ?>" value="<?php echo $address['city']; ?>"/>
-											<input class="info-item" type="text" data-key="zip" name="customerinfo[zip]" placeholder="<?php _e( 'Zip / Postal Code', 'give' ); ?>" value="<?php echo $address['zip']; ?>"/>
-										</span>
+													<input class="info-item" type="text" data-key="city" name="customerinfo[city]" placeholder="<?php _e( 'City', 'give' ); ?>" value="<?php echo $address['city']; ?>"/>
+												<input class="info-item" type="text" data-key="zip" name="customerinfo[zip]" placeholder="<?php _e( 'Zip / Postal Code', 'give' ); ?>" value="<?php echo $address['zip']; ?>"/>
+											</span>
 
 										</div>
 									</td>
@@ -485,7 +496,7 @@ function give_donor_view( $donor ) {
 				<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&donor=' . absint( $donor->id ) ); ?>">
 					<span class="dashicons dashicons-heart"></span>
 					<?php
-					// Completed Donations
+					// Completed Donations.
 					$completed_donations_text = sprintf( _n( '%d Completed Donation', '%d Completed Donations', $donor->purchase_count, 'give' ), $donor->purchase_count );
 					echo apply_filters( 'give_donor_completed_donations', $completed_donations_text, $donor );
 					?>

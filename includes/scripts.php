@@ -306,39 +306,39 @@ function give_load_admin_scripts( $hook ) {
 
 	// Localize strings & variables for JS.
 	wp_localize_script( 'give-admin-scripts', 'give_vars', array(
-		'post_id'                        => isset( $post->ID ) ? $post->ID : null,
-		'give_version'                   => GIVE_VERSION,
-		'thousands_separator'            => $thousand_separator,
-		'decimal_separator'              => $decimal_separator,
-		'quick_edit_warning'             => __( 'Not available for variable priced forms.', 'give' ),
-		'delete_payment'                 => __( 'Are you sure you want to delete this payment?', 'give' ),
-		'delete_payment_note'            => __( 'Are you sure you want to delete this note?', 'give' ),
-		'revoke_api_key'                 => __( 'Are you sure you want to revoke this API key?', 'give' ),
-		'regenerate_api_key'             => __( 'Are you sure you want to regenerate this API key?', 'give' ),
-		'resend_receipt'                 => __( 'Are you sure you want to resend the donation receipt?', 'give' ),
-		'disconnect_user'                => __( 'Are you sure you want to disconnect the user from this donor?', 'give' ),
-		'one_option'                     => __( 'Choose a form', 'give' ),
-		'one_or_more_option'             => __( 'Choose one or more forms', 'give' ),
-		'currency_sign'                  => give_currency_filter( '' ),
-		'currency_pos'                   => isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before',
-		'currency_decimals'              => give_currency_decimal_filter( give_get_price_decimals() ),
-		'batch_export_no_class'          => __( 'You must choose a method.', 'give' ),
-		'batch_export_no_reqs'           => __( 'Required fields not completed.', 'give' ),
-		'reset_stats_warn'               => __( 'Are you sure you want to reset Give? This process is <strong><em>not reversible</em></strong> and will delete all data regardless of test or live mode. Please be sure you have a recent backup before proceeding.', 'give' ),
-		'delete_test_donor'               => __( 'Are you sure you want to delete all the test donors? This process will also delete test donations as well.', 'give' ),
+		'post_id'                           => isset( $post->ID ) ? $post->ID : null,
+		'give_version'                      => GIVE_VERSION,
+		'thousands_separator'               => $thousand_separator,
+		'decimal_separator'                 => $decimal_separator,
+		'quick_edit_warning'                => __( 'Not available for variable priced forms.', 'give' ),
+		'delete_payment'                    => __( 'Are you sure you want to delete this payment?', 'give' ),
+		'delete_payment_note'               => __( 'Are you sure you want to delete this note?', 'give' ),
+		'revoke_api_key'                    => __( 'Are you sure you want to revoke this API key?', 'give' ),
+		'regenerate_api_key'                => __( 'Are you sure you want to regenerate this API key?', 'give' ),
+		'resend_receipt'                    => __( 'Are you sure you want to resend the donation receipt?', 'give' ),
+		'disconnect_user'                   => __( 'Are you sure you want to disconnect the user from this donor?', 'give' ),
+		'one_option'                        => __( 'Choose a form', 'give' ),
+		'one_or_more_option'                => __( 'Choose one or more forms', 'give' ),
+		'currency_sign'                     => give_currency_filter( '' ),
+		'currency_pos'                      => isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before',
+		'currency_decimals'                 => give_currency_decimal_filter( give_get_price_decimals() ),
+		'batch_export_no_class'             => __( 'You must choose a method.', 'give' ),
+		'batch_export_no_reqs'              => __( 'Required fields not completed.', 'give' ),
+		'reset_stats_warn'                  => __( 'Are you sure you want to reset Give? This process is <strong><em>not reversible</em></strong> and will delete all data regardless of test or live mode. Please be sure you have a recent backup before proceeding.', 'give' ),
+		'delete_test_donor'                 => __( 'Are you sure you want to delete all the test donors? This process will also delete test donations as well.', 'give' ),
 		'delete_import_donor'               => __( 'Are you sure you want to delete all the imported donors? This process will also delete imported donations as well.', 'give' ),
-		'price_format_guide'             => sprintf( __( 'Please enter amount in monetary decimal ( %1$s ) format without thousand separator ( %2$s ) .', 'give' ), $decimal_separator, $thousand_separator ),
+		'price_format_guide'                => sprintf( __( 'Please enter amount in monetary decimal ( %1$s ) format without thousand separator ( %2$s ) .', 'give' ), $decimal_separator, $thousand_separator ),
 		/* translators : %s: Donation form options metabox */
-		'confirm_before_remove_row_text' => __( 'Do you want to delete this level?', 'give' ),
-		'matched_success_failure_page'   => __( 'You cannot set the success and failed pages to the same page', 'give' ),
-		'dismiss_notice_text'            => __( 'Dismiss this notice.', 'give' ),
-		'search_placeholder'             => __( 'Type to search all forms', 'give' ),
-		'search_placeholder_donor'       => __( 'Type to search all donors', 'give' ),
-		'search_placeholder_country'     => __( 'Type to search all countries', 'give' ),
-		'search_placeholder_state'       => __( 'Type to search all states/provinces', 'give' ),
+		'confirm_before_remove_row_text'    => __( 'Do you want to delete this level?', 'give' ),
+		'matched_success_failure_page'      => __( 'You cannot set the success and failed pages to the same page', 'give' ),
+		'dismiss_notice_text'               => __( 'Dismiss this notice.', 'give' ),
+		'search_placeholder'                => __( 'Type to search all forms', 'give' ),
+		'search_placeholder_donor'          => __( 'Type to search all donors', 'give' ),
+		'search_placeholder_country'        => __( 'Type to search all countries', 'give' ),
+		'search_placeholder_state'          => __( 'Type to search all states/provinces', 'give' ),
 		'unlock_donor_fields'            => __( 'To edit first name and last name, please go to user profile of the donor.', 'give' ),
-		'bulk_action' => array(
-			'delete'    => array(
+		'bulk_action'                       => array(
+			'delete'         => array(
 				'zero'     => __( 'You must choose at least one or more payments to delete.', 'give' ),
 				'single'   => __( 'Are you sure you want to permanently delete this donation?', 'give' ),
 				'multiple' => __( 'Are you sure you want to permanently delete the selected {payment_count} donations?', 'give' ),
@@ -348,10 +348,10 @@ function give_load_admin_scripts( $hook ) {
 				'single'   => __( 'Are you sure you want to resend the email receipt to this recipient?', 'give' ),
 				'multiple' => __( 'Are you sure you want to resend the emails receipt to {payment_count} recipients?', 'give' ),
 			),
-			'set-to-status' => array(
-				'zero'      => __( 'You must choose at least one or more donations to set status to {status}.', 'give' ),
-				'single'    => __( 'Are you sure you want to set status of this donation to {status}?', 'give' ),
-				'multiple'  => __( 'Are you sure you want to set status of {payment_count} donations to {status}?', 'give' ),
+			'set-to-status'  => array(
+				'zero'     => __( 'You must choose at least one or more donations to set status to {status}.', 'give' ),
+				'single'   => __( 'Are you sure you want to set status of this donation to {status}?', 'give' ),
+				'multiple' => __( 'Are you sure you want to set status of {payment_count} donations to {status}?', 'give' ),
 			),
 		),
 		'updates' => array(
@@ -361,18 +361,19 @@ function give_load_admin_scripts( $hook ) {
 			'media' => array(
 				'button_title' => __( 'Choose Image', 'give' ),
 			),
-			'file' => array(
+			'file'  => array(
 				'button_title' => __( 'Choose File', 'give' ),
-			)
+			),
 		),
-		'chosen' => array(
+		'chosen'                            => array(
 			'no_results_msg'  => __( 'No results match {search_term}', 'give' ),
 			'ajax_search_msg' => __( 'Searching results for match {search_term}', 'give' ),
 		),
-		'db_update_confirmation_msg' => __( 'The following process will make updates to your site\'s database. Please create a database backup before proceeding with updates.', 'give' ),
-        'error_message' => __( 'Something went wrong kindly try again!','give' ),
-        'give_donation_import' => 'give_donation_import',
-		'setting_not_save_message' => __( 'Changes you made may not be saved.','give' ),
+		'db_update_confirmation_msg_button' => __( 'Run Updates', 'give' ),
+		'db_update_confirmation_msg'        => __( 'The following process will make updates to your site\'s database. Please create a database backup before proceeding with updates.', 'give' ),
+		'error_message'                     => __( 'Something went wrong kindly try again!', 'give' ),
+		'give_donation_import'              => 'give_donation_import',
+		'setting_not_save_message'          => __( 'Changes you made may not be saved.', 'give' ),
 	) );
 
 	if ( function_exists( 'wp_enqueue_media' ) && version_compare( get_bloginfo( 'version' ), '3.5', '>=' ) ) {

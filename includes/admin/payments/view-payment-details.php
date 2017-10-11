@@ -78,6 +78,9 @@ $payment_mode   = $payment->mode;
 	 */
 	do_action( 'give_view_order_details_before', $payment_id );
 	?>
+
+	<hr class="wp-header-end">
+
 	<form id="give-edit-order-form" method="post">
 		<?php
 		/**

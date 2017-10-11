@@ -331,6 +331,13 @@ function give_profile_editor_shortcode( $atts ) {
 
 	ob_start();
 
+	// Restrict access to donor profile, if donor and user are disconnected.
+	$is_donor_disconnected = get_user_meta( get_current_user_id(), '_give_is_donor_disconnected', true );
+	if( is_user_logged_in() && $is_donor_disconnected ) {
+		Give()->notices->print_frontend_notice( __( 'Your Donor and User profile are no longer connected. Please contact the site administrator.', 'give' ), true, 'error' );
+		return false;
+	}
+
 	give_get_template_part( 'shortcode', 'profile-editor' );
 
 	$display = ob_get_clean();
