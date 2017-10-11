@@ -118,22 +118,7 @@ function give_generate_pdf( $data ) {
 			$title = $form->post_title;
 
 			if ( give_has_variable_prices( $form->ID ) ) {
-
-				$prices = give_get_variable_prices( $form->ID );
-
-				$first = $prices[0]['_give_amount'];
-				$last  = array_pop( $prices );
-				$last  = $last['_give_amount'];
-
-				if ( $first < $last ) {
-					$min = $first;
-					$max = $last;
-				} else {
-					$min = $last;
-					$max = $first;
-				}
-
-				$price = give_currency_filter( give_format_amount( $min, array( 'sanitize' => false, ) ), '', true ) . ' - ' . give_currency_filter( give_format_amount( $max ), '', true );
+				$price = html_entity_decode( give_price_range( $form->ID, false ) );
 			} else {
 				$price = give_currency_filter( give_get_form_price( $form->ID ), '', true );
 			}
@@ -204,7 +189,7 @@ function give_generate_pdf( $data ) {
 	$pdf->SetX( 25 );
 	$pdf->Image( $image . '&file=.png' );
 	$pdf->Ln( 7 );
-	$pdf->Output( apply_filters( 'give_sales_earnings_pdf_export_filename', 'give-report-' . date_i18n( 'Y-m-d' ) ) . '.pdf', 'D' );
+	$pdf->Output( apply_filters( 'give_sales_earnings_pdf_export_filename', 'give-report-' . date_i18n( 'Y-m-d' ) ) . '.pdf' );
 }
 
 add_action( 'give_generate_pdf', 'give_generate_pdf' );
