@@ -31,6 +31,26 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 * @dataProvider give_get_currency_formatting_settings_provider
 	 */
 	function test_give_get_currency_formatting_settings( $currency_code, $expected ) {
+
+		// Setting.
+		$setting_arr = array( 'currency_position', 'thousands_separator', 'decimal_separator', 'number_decimals' );
+
+
+		/**
+		 * Case 1: Currency
+		 */
+		$currency_settings = give_get_currency_formatting_settings( $currency_code );
+
+		// Match setting.
+		foreach ( $currency_settings as $key => $setting ) {
+			$this->assertArrayHasKey( $key, $currency_settings );
+			$this->assertEquals( $expected[ $key ], $currency_settings[ $key ] );
+		}
+		
+
+		/**
+		 * Cse 2: Payment
+		 */
 		// Create Simple Donation.
 		$donation_id       = Give_Helper_Payment::create_simple_payment(
 			array(
@@ -39,10 +59,8 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 				),
 			)
 		);
-		$currency_settings = give_get_currency_formatting_settings( $donation_id );
 
-		// Setting.
-		$setting_arr = array( 'currency_position', 'thousands_separator', 'decimal_separator', 'number_decimals' );
+		$currency_settings = give_get_currency_formatting_settings( $donation_id );
 
 		// Match setting.
 		foreach ( $currency_settings as $key => $setting ) {
