@@ -17,23 +17,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Get Currency Formatting Settings for each donation.
  *
- * @param int $donation_id Donation ID.
+ * @param int|string $id_or_currency_code Donation ID.
  *
  * @since 1.8.15
  *
  * @return mixed
  */
-function give_get_currency_formatting_settings( $donation_id = null ) {
+function give_get_currency_formatting_settings( $id_or_currency_code = null ) {
 	$give_options = give_get_settings();
 	$setting      = array();
 
 	// Bail out, if donation id is null.
-	if ( ! empty( $donation_id ) ) {
+	if ( ! empty( $id_or_currency_code ) ) {
 		$currencies   = give_get_currencies('all');
-		$payment_meta = give_get_meta( $donation_id, '_give_payment_meta', true );
 
-		if ( $give_options['currency'] !== $payment_meta['currency'] ) {
-			$setting = $currencies[ $payment_meta['currency'] ]['setting'];
+		if( is_string( $id_or_currency_code ) && array_key_exists( $id_or_currency_code, $currencies ) ) {
+			$setting = $currencies[ $id_or_currency_code ]['setting'];
+		}elseif ( is_numeric( $id_or_currency_code ) && 'give_payment' === get_post_type( $id_or_currency_code ) ) {
+			$payment_meta = give_get_meta( $id_or_currency_code, '_give_payment_meta', true );
+
+			if ( $give_options['currency'] !== $payment_meta['currency'] ) {
+				$setting = $currencies[ $payment_meta['currency'] ]['setting'];
+			}
 		}
 	}
 
@@ -68,7 +73,7 @@ function give_get_currency_formatting_settings( $donation_id = null ) {
 	 *
 	 * @since 1.8.15
 	 */
-	return apply_filters( 'give_get_currency_formatting_settings', $setting, $donation_id );
+	return apply_filters( 'give_get_currency_formatting_settings', $setting, $id_or_currency_code );
 }
 
 /**
