@@ -71,10 +71,3 @@ function give_core_settings_import() {
 }
 
 add_action( 'give_core_settings_import', 'give_core_settings_import' );
-
-function q($data) {
-	echo '<pre>';
-	print_r($data);
-	echo '</pre>';
-	die;
-}
