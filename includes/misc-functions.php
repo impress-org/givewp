@@ -398,17 +398,15 @@ function give_get_currencies( $info = 'admin_label' ) {
 	if ( ! empty( $currencies ) ) {
 		// Backward compatibility: handle old way of currency registration.
 		foreach ( $currencies as $currency_code => $currency_setting ) {
-			if( is_string( $currencies ) ) {
+			if( is_string( $currency_setting ) ) {
 				$currencies[$currency_code] = array( 'admin_label' => $currency_setting );
 			}
 		}
 
 		// Backward compatibility: Return desired result.
 		if ( ! empty( $info ) && is_string( $info ) && 'all' !== $info ) {
-			if ( is_string( $info ) ) {
-				$first_currency_info = current( $currencies );
-				$currencies          = array_key_exists( $info, $first_currency_info ) ? wp_list_pluck( $currencies, $info ) : array();
-			}
+			$first_currency_info = array_pop( $currencies );
+			$currencies          = array_key_exists( $info, $first_currency_info ) ? wp_list_pluck( $currencies, $info ) : array();
 		}
 
 	}
