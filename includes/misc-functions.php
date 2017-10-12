@@ -33,13 +33,20 @@ function give_is_test_mode() {
  * Get the set currency
  *
  * @since 1.0
+ * @param int $id
  * @return string The currency code
  */
-function give_get_currency() {
+function give_get_currency( $id  = null ) {
+	// Get currency from donation
+	if( is_numeric( $id ) && 'give_payment' === get_post_type( $id ) ) {
+		$donation_meta = give_get_meta( $id, '_give_payment_meta', true );
+		$currency = $donation_meta['currency'];
+	} else{
+		$currency = give_get_option( 'currency', 'USD' );
+	}
 
-	$currency = give_get_option( 'currency', 'USD' );
 
-	return apply_filters( 'give_currency', $currency );
+	return apply_filters( 'give_currency', $currency, $id );
 }
 
 /**
