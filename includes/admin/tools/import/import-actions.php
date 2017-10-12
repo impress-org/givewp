@@ -9,10 +9,11 @@
  */
 function give_core_settings_import() {
 
-	require_once( ABSPATH . 'wp-admin/includes/file.php' );
-
 	$json_string   = file_get_contents( $_FILES['json_file']['tmp_name'] );
 	$json_to_array = json_decode( $json_string, true );
+
+	// Unset General Pages.
+	unset( $json_to_array['success_page'], $json_to_array['failure_page'], $json_to_array['history_page'] );
 
 	// Featured image sizes import.
 	if ( 'enabled' === $json_to_array['form_featured_img'] ) {
