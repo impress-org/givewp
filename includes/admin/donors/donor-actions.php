@@ -56,6 +56,12 @@ function give_edit_donor( $args ) {
 	$defaults = array(
 		'name'    => '',
 		'user_id' => 0,
+		'line1'   => '',
+		'line2'   => '',
+		'city'    => '',
+		'zip'     => '',
+		'state'   => '',
+		'country' => '',
 	);
 
 	$donor_info = wp_parse_args( $donor_info, $defaults );
@@ -85,14 +91,7 @@ function give_edit_donor( $args ) {
 		$current_address = (array) get_user_meta( $donor_info['user_id'], '_give_user_address', true );
 
 		if ( is_array( $current_address ) && 0 < count( $current_address ) ) {
-			$current_address    = wp_parse_args( $current_address, array(
-				'line1',
-				'line2',
-				'city',
-				'zip',
-				'state',
-				'country',
-			) );
+			$current_address = wp_parse_args( $current_address, $defaults);
 			$address['line1']   = ! empty( $donor_info['line1'] ) ? $donor_info['line1'] : $current_address['line1'];
 			$address['line2']   = ! empty( $donor_info['line2'] ) ? $donor_info['line2'] : $current_address['line2'];
 			$address['city']    = ! empty( $donor_info['city'] ) ? $donor_info['city'] : $current_address['city'];
