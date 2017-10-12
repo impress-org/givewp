@@ -34,10 +34,10 @@ function give_get_currency_formatting_settings( $id_or_currency_code = null ) {
 		if( is_string( $id_or_currency_code ) && array_key_exists( $id_or_currency_code, $currencies ) ) {
 			$setting = $currencies[ $id_or_currency_code ]['setting'];
 		}elseif ( is_numeric( $id_or_currency_code ) && 'give_payment' === get_post_type( $id_or_currency_code ) ) {
-			$payment_meta = give_get_meta( $id_or_currency_code, '_give_payment_meta', true );
+			$donation_meta = give_get_meta( $id_or_currency_code, '_give_payment_meta', true );
 
-			if ( $give_options['currency'] !== $payment_meta['currency'] ) {
-				$setting = $currencies[ $payment_meta['currency'] ]['setting'];
+			if ( $give_options['currency'] !== $donation_meta['currency'] ) {
+				$setting = $currencies[ $donation_meta['currency'] ]['setting'];
 			}
 		}
 	}
