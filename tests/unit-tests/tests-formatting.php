@@ -20,6 +20,37 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	}
 
 	/**
+	 * Test function give_get_currency_formatting_settings
+	 *
+	 * @since 1.8.14
+	 *
+	 * @cover give_get_currency_formatting_settings
+	 */
+	function test_give_get_currency_formatting_settings() {
+
+		// Create Simple Donation.
+		$donation_id = Give_Helper_Payment::create_simple_payment();
+
+		/**
+		 * Check 1: Check for general currency settings.
+		 */
+		$currency_settings = give_get_currency_formatting_settings();
+		$this->assertEquals( '', $currency_settings );
+
+		/**
+		 * Check 2: Check for donation based currency settings.
+		 */
+		$currency_settings = give_get_currency_formatting_settings( $donation_id );
+		$this->assertArrayHasKey( 'thousands_separator', $currency_settings );
+		$this->assertEquals( ',', $currency_settings['thousands_separator'] );
+		$this->assertArrayHasKey( 'decimal_separator', $currency_settings );
+		$this->assertEquals( '.', $currency_settings['decimal_separator'] );
+		$this->assertArrayHasKey( 'number_decimals', $currency_settings );
+		$this->assertEquals( 2, $currency_settings['number_decimals'] );
+
+	}
+
+	/**
 	 * Test function give_get_price_thousand_separator
 	 *
 	 * @since 1.8
@@ -27,9 +58,28 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 * @cover give_get_price_thousand_separator
 	 */
 	function test_give_get_price_thousand_separator() {
-		$output = give_get_price_thousand_separator();
+		// Create Simple Donation.
+		$donation_id = Give_Helper_Payment::create_simple_payment();
 
+		/**
+		 * Check 1: Check for general currency settings.
+		 */
+		$output = give_get_price_thousand_separator();
 		$this->assertEquals( ',', $output );
+
+		/**
+		 * Check 2: Update general currency option for thousands separator and check it.
+		 */
+		give_update_option( 'thousands_separator', '.' );
+		$output = give_get_price_thousand_separator();
+		$this->assertEquals( '.', $output );
+
+		/**
+		 * Check 3: Check for donation based currency settings.
+		 */
+		$output = give_get_price_thousand_separator( $donation_id );
+		$this->assertEquals( ',', $output );
+
 	}
 
 	/**
@@ -40,8 +90,26 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 * @cover give_get_price_decimal_separator
 	 */
 	function test_give_get_price_decimal_separator() {
-		$output = give_get_price_decimal_separator();
+		// Create Simple Donation.
+		$donation_id = Give_Helper_Payment::create_simple_payment();
 
+		/**
+		 * Check 1: Check for general currency settings.
+		 */
+		$output = give_get_price_decimal_separator();
+		$this->assertEquals( '.', $output );
+
+		/**
+		 * Check 2: Update general currency option for thousands separator and check it.
+		 */
+		give_update_option( 'decimal_separator', ',' );
+		$output = give_get_price_decimal_separator();
+		$this->assertEquals( ',', $output );
+
+		/**
+		 * Check 3: Check for donation based currency settings.
+		 */
+		$output = give_get_price_decimal_separator( $donation_id );
 		$this->assertEquals( '.', $output );
 	}
 

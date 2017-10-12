@@ -29,10 +29,10 @@ if ( $donations ) : ?>
 			 */
 			do_action( 'give_donation_history_header_before' );
 			?>
-			<th scope="col" class="give-donation-id"><?php esc_html_e( 'ID', 'give' ); ?></th>
-			<th scope="col" class="give-donation-date"><?php esc_html_e( 'Date', 'give' ); ?></th>
-			<th scope="col" class="give-donation-amount"><?php esc_html_e( 'Amount', 'give' ); ?></th>
-			<th scope="col" class="give-donation-details"><?php esc_html_e( 'Details', 'give' ); ?></th>
+			<th scope="col" class="give-donation-id"><?php _e( 'ID', 'give' ); ?></th>
+			<th scope="col" class="give-donation-date"><?php _e( 'Date', 'give' ); ?></th>
+			<th scope="col" class="give-donation-amount"><?php _e( 'Amount', 'give' ); ?></th>
+			<th scope="col" class="give-donation-details"><?php _e( 'Details', 'give' ); ?></th>
 			<?php
 			/**
 			 * Fires in current user donation history table, after the header row ends.
@@ -70,9 +70,10 @@ if ( $donations ) : ?>
 					$currency_code = give_get_payment_currency_code( $post->ID );
 					$donation_amount = give_currency_filter(
 						give_format_amount( give_get_payment_amount( $post->ID ), array(
-							'sanitize' => false,
-							'currency' => $currency_code
-						) ),
+							'sanitize'    => false,
+							'currency'    => $currency_code,
+							'donation_id' => $post->ID
+						), $post->ID ),
 						$currency_code
 					);
 
@@ -97,9 +98,9 @@ if ( $donations ) : ?>
 					     && 'subscription' !== $post->post_status
 					) : ?>
 						<a href="<?php echo esc_url( add_query_arg( 'payment_key', give_get_payment_key( $post->ID ), give_get_history_page_uri() ) ); ?>"><span
-									class="give-donation-status <?php echo $post->post_status; ?>"><?php echo esc_html__( 'View', 'give' ) . ' ' . give_get_payment_status( $post, true ) . ' &raquo;'; ?></span></a>
+									class="give-donation-status <?php echo $post->post_status; ?>"><?php echo __( 'View', 'give' ) . ' ' . give_get_payment_status( $post, true ) . ' &raquo;'; ?></span></a>
 					<?php else : ?>
-						<a href="<?php echo esc_url( add_query_arg( 'payment_key', give_get_payment_key( $post->ID ), give_get_history_page_uri() ) ); ?>"><?php esc_html_e( 'View Receipt &raquo;', 'give' ); ?></a>
+						<a href="<?php echo esc_url( add_query_arg( 'payment_key', give_get_payment_key( $post->ID ), give_get_history_page_uri() ) ); ?>"><?php _e( 'View Receipt &raquo;', 'give' ); ?></a>
 					<?php endif; ?>
 				</td>
 				<?php
@@ -131,5 +132,5 @@ if ( $donations ) : ?>
 	</div>
 	<?php wp_reset_postdata(); ?>
 <?php else : ?>
-	<?php Give()->notices->print_frontend_notice( esc_html__( 'It looks like you haven\'t made any donations.', 'give' ), true, 'success' ); ?>
+	<?php Give()->notices->print_frontend_notice( __( 'It looks like you haven\'t made any donations.', 'give' ), true, 'success' ); ?>
 <?php endif;

@@ -17,28 +17,34 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Get Currency Formatting Settings for each donation.
  *
+ * @param int $donation_id Donation ID.
+ *
  * @since 1.8.14
  *
- * @return mixed|array
+ * @return mixed
  */
-function give_get_currency_formatting_settings() {
-	global $post;
+function give_get_currency_formatting_settings( $donation_id = null ) {
 
-	$donation_meta = give_get_meta( $post->ID, '_give_payment_meta', true );
+	// Bail out, if donation id is null.
+	if( empty( $donation_id ) ) {
+		return '';
+	}
 
-	return $donation_meta['currency_info'];
+	return give_get_meta( $donation_id, '_give_currency_settings', true );
 }
 
 /**
  * Get decimal count
  *
+ * @param int $donation_id Donation ID.
+ *
  * @since 1.6
  *
  * @return mixed
  */
-function give_get_price_decimals() {
+function give_get_price_decimals( $donation_id = null ) {
 
-	$currency_formatting_settings = give_get_currency_formatting_settings();
+	$currency_formatting_settings = give_get_currency_formatting_settings( $donation_id );
 	$price_decimals               = empty( $currency_formatting_settings['number_decimals'] ) ? give_get_option( 'number_decimals', 0 ) : $currency_formatting_settings['number_decimals'];
 
 	return apply_filters( 'give_sanitize_amount_decimals', $price_decimals );
@@ -47,13 +53,15 @@ function give_get_price_decimals() {
 /**
  * Get thousand separator
  *
+ * @param int $donation_id Donation ID.
+ *
  * @since 1.6
  *
  * @return mixed
  */
-function give_get_price_thousand_separator() {
+function give_get_price_thousand_separator( $donation_id = null ) {
 	$give_options                 = give_get_settings();
-	$currency_formatting_settings = give_get_currency_formatting_settings();
+	$currency_formatting_settings = give_get_currency_formatting_settings( $donation_id );
 	$thousand_separator           = empty( $currency_formatting_settings['thousands_separator'] ) ? $give_options['thousands_separator'] : $currency_formatting_settings['thousands_separator'];
 
 	//$thousand_separator = isset( $give_options['thousands_separator'] ) ? $give_options['thousands_separator'] : ',';
@@ -65,24 +73,26 @@ function give_get_price_thousand_separator() {
 /**
  * Get decimal separator
  *
+ * @param int $donation_id Donation ID.
+ *
  * @since 1.6
  *
  * @return mixed
  */
-function give_get_price_decimal_separator() {
+function give_get_price_decimal_separator( $donation_id = null ) {
 	$default_decimal_separators = array(
 		'.' => ',',
 		',' => '.',
 	);
 
-	$thousand_separator           = give_get_price_thousand_separator();
-	//$currency_formatting_settings = give_get_currency_formatting_settings();
+	$thousand_separator           = give_get_price_thousand_separator( $donation_id );
+	$currency_formatting_settings = give_get_currency_formatting_settings( $donation_id );
 	$default_decimal_separator    = in_array( $thousand_separator, $default_decimal_separators ) ?
 		$default_decimal_separators[$thousand_separator] :
 		'.';
 
 	$decimal_separator = give_get_option( 'decimal_separator', $default_decimal_separator );
-	//$decimal_separator = empty( $currency_formatting_settings['decimal_separator'] ) ? $decimal_separator : $currency_formatting_settings['decimal_separator'];
+	$decimal_separator = empty( $currency_formatting_settings['decimal_separator'] ) ? $decimal_separator : $currency_formatting_settings['decimal_separator'];
 
 	return $decimal_separator;
 }
@@ -259,8 +269,8 @@ function give_sanitize_amount( $number, $dp = false, $trim_zeros = false ) {
  *
  * @since 1.0
  *
- * @param string $amount   Price amount to format
- * @param array  $args     Array of arguments.
+ * @param string $amount      Price amount to format
+ * @param array  $args        Array of arguments.
  *
  * @return string $amount   Newly formatted amount or Price Not Available
  */
@@ -271,18 +281,24 @@ function give_format_amount( $amount, $args = array() ) {
 	}
 
 	$default_args = array(
-		'decimal'  => true,
-		'sanitize' => true,
-		'currency' => give_get_currency(),
+		'decimal'     => true,
+		'sanitize'    => true,
+		'donation_id' => 0
 	);
 
 	$args = wp_parse_args( $args, $default_args );
 
+	// Set Currency based on donation id, if required.
+	if( $args['donation_id'] ) {
+		$donation_meta =  give_get_meta( $args['donation_id'], '_give_payment_meta', true );
+		$args['currency'] = $donation_meta['currency'];
+	}
+
 	$formatted     = 0;
-	$thousands_sep = give_get_price_thousand_separator();
-	$decimal_sep   = give_get_price_decimal_separator();
-	$decimals      = ! empty( $args['decimal'] ) ? give_get_price_decimals() : 0;
-	$currency      = $args['currency'];
+	$thousands_sep = give_get_price_thousand_separator( $args['donation_id'] );
+	$decimal_sep   = give_get_price_decimal_separator( $args['donation_id'] );
+	$decimals      = ! empty( $args['decimal'] ) ? give_get_price_decimals( $args['donation_id'] ) : 0;
+	$currency      = ! empty( $args['currency'] ) ? $args['currency'] : give_get_currency();
 
 	if ( ! empty( $amount ) ) {
 		// Sanitize amount before formatting.

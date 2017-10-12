@@ -111,7 +111,7 @@ function give_process_donation_form() {
 		'user_email'    => $user['user_email'],
 		'date'          => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
 		'user_info'     => stripslashes_deep( $user_info ),
-		'post_data'     => $_POST,
+		'post_data'     => give_clean( $_POST ),
 		'gateway'       => $valid_data['gateway'],
 		'card_info'     => $valid_data['cc_info'],
 	);
@@ -130,7 +130,7 @@ function give_process_donation_form() {
 	 * @param array $user_info Array containing basic user information.
 	 * @param bool|array $valid_data Validate fields.
 	 */
-	do_action( 'give_checkout_before_gateway', $_POST, $user_info, $valid_data );
+	do_action( 'give_checkout_before_gateway', give_clean( $_POST ), $user_info, $valid_data );
 
 	// Sanity check for price.
 	if ( ! $donation_data['price'] ) {
