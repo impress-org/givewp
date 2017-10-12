@@ -37,7 +37,7 @@ function give_core_settings_import() {
 		$tmp = download_url( $url );
 
 		if ( is_wp_error( $tmp ) ) {
-			die( 'SOME ERROR' );
+
 		}
 
 		$file_array = array();
@@ -66,7 +66,7 @@ function give_core_settings_import() {
 		$json_to_array['email_logo'] = $src;
 	}
 
-	update_option( 'give_settings_updated', $json_to_array );
+	update_option( 'give_settings', $json_to_array );
 }
 
 add_action( 'give_core_settings_import', 'give_core_settings_import' );
