@@ -129,10 +129,22 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 
 				if ( ! empty( $prices ) && is_array( $prices ) && ! empty( $prices[0] ) ) {
 					$prices = wp_parse_args( $multi_level_donations, $prices );
+
+					// Sort $prices by amount in ascending order.
+					$prices = wp_list_sort( $prices, '_give_amount', 'ASC' );
 				} else {
-					$multi_level_donations[0]['_give_default'] = 'default';
-					$prices                                    = $multi_level_donations;
+					$prices = $multi_level_donations;
 				}
+
+				// Unset _give_default key from $prices.
+				foreach ( $prices as $key => $price ) {
+					if ( isset( $prices[ $key ]['_give_default'] ) ) {
+						unset( $prices[ $key ]['_give_default'] );
+					}
+				}
+
+				// Set the first $price of the $prices as defalut.
+				$prices[0]['_give_default'] = 'default';
 			}
 			$form->price_id = array_search( $data['form_level'], $price_text );
 
@@ -411,8 +423,8 @@ function give_import_donation_form_options() {
 	 * @return array
 	 */
 	return (array) apply_filters( 'give_import_donation_form_options', array(
-		'form_id'                 => __( 'Donation Form ID', 'give' ),
 		'form_title'              => __( 'Donation Form', 'give' ),
+		'form_id'                 => __( 'Donation Form ID', 'give' ),
 		'form_level'              => __( 'Donation Level', 'give' ),
 		'form_custom_amount_text' => __( 'Custom Amount Text', 'give' ),
 	) );
@@ -426,7 +438,16 @@ function give_import_donation_form_options() {
  * @param int   $start   Start from which csv line.
  * @param int   $end     End from which csv line.
  */
-function give_get_donation_data_from_csv( $file_id, $start, $end, $delimiter = ',' ) {
+function give_get_donation_data_from_csv( $file_id, $start, $end, $delimiter = 'csv' ) {
+	/**
+	 * Filter to modify delimiter of Import.
+	 *
+	 * @since 1.8.15
+	 *
+	 * Return string $delimiter.
+	 */
+	$delimiter = (string) apply_filters( 'give_import_delimiter_set', $delimiter );
+
 	$raw_data = array();
 	$file_dir = get_attached_file( $file_id );
 	$count    = 0;
