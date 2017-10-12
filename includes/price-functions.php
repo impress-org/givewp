@@ -128,7 +128,7 @@ function give_get_default_form_amount( $form_id ) {
 
 	}
 
-	return apply_filters( 'give_default_form_amount', $default_amount );
+	return apply_filters( 'give_default_form_amount', $default_amount, $form_id );
 
 }
 
