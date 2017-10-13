@@ -35,6 +35,10 @@ function give_generate_pdf( $data ) {
 		wp_die( __( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
+	if ( ! file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/give-pdf.php' ) ) {
+		wp_die( __( 'Dependency missing.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+	}
+
 	require_once GIVE_PLUGIN_DIR . '/includes/libraries/give-pdf.php';
 
 	$daterange = utf8_decode(
@@ -54,7 +58,8 @@ function give_generate_pdf( $data ) {
 	$custom_font  = 'dejavusans';
 	$font_style   = '';
 
-	if ( in_array( give_get_currency(), array( 'RIAL', 'RUB' ) ) ) {
+	if ( file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/tcpdf/fonts/CODE2000.TTF' ) &&
+	     in_array( give_get_currency(), array( 'RIAL', 'RUB' ) ) ) {
 		TCPDF_FONTS::addTTFfont( GIVE_PLUGIN_DIR . '/includes/libraries/tcpdf/fonts/CODE2000.TTF', '' );
 		$custom_font = 'CODE2000';
 		$font_style  = 'B';
