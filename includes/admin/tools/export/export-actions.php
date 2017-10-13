@@ -75,7 +75,7 @@ add_action( 'give_earnings_export', 'give_export_earnings' );
 function give_core_settings_export() {
 	require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-core-settings-export.php';
 
-	$core_settings = new Core_Settings_Export();
+	$core_settings = new Give_Core_Settings_Export();
 
 	$core_settings->export();
 }
