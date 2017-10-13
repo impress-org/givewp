@@ -64,7 +64,7 @@ msgstr ""
 msgid "You do not have permission to install plugin updates"
 msgstr ""
 
-#: includes/admin/EDD_SL_Plugin_Updater.php:396, includes/admin/donors/donor-actions.php:31, includes/admin/donors/donor-actions.php:45, includes/admin/donors/donor-actions.php:151, includes/admin/donors/donor-actions.php:165, includes/admin/donors/donor-actions.php:233, includes/admin/donors/donor-actions.php:248, includes/admin/donors/donor-actions.php:332, includes/admin/donors/donor-actions.php:346, includes/admin/donors/donor-actions.php:435, includes/admin/donors/donor-actions.php:530, includes/admin/donors/donor-actions.php:576, includes/admin/forms/dashboard-columns.php:244, includes/admin/payments/actions.php:31, includes/admin/payments/actions.php:89, includes/admin/payments/actions.php:100, includes/admin/payments/actions.php:342, includes/admin/payments/actions.php:362, includes/admin/payments/actions.php:395, includes/admin/payments/actions.php:417, includes/admin/payments/view-payment-details.php:24, includes/admin/payments/view-payment-details.php:34, includes/admin/tools/data/class-give-tools-delete-import-donors.php:257, includes/admin/tools/data/class-give-tools-delete-test-donors.php:228, includes/admin/tools/data/class-give-tools-delete-test-transactions.php:172, includes/admin/tools/data/class-give-tools-recount-all-stats.php:235, includes/admin/tools/data/class-give-tools-recount-donor-stats.php:195, includes/admin/tools/data/class-give-tools-recount-form-stats.php:180, includes/admin/tools/data/class-give-tools-recount-income.php:156, includes/admin/tools/data/class-give-tools-recount-single-donor-stats.php:151, includes/admin/tools/data/class-give-tools-reset-stats.php:187, includes/admin/tools/export/class-batch-export.php:145, includes/admin/tools/export/class-export.php:177, includes/admin/tools/export/export-actions.php:26, includes/admin/tools/export/pdf-reports.php:31, includes/admin/tools/export/pdf-reports.php:35, includes/admin/tools/logs/class-api-requests-logs-list-table.php:141, includes/admin/tools/logs/class-gateway-error-logs-list-table.php:128, includes/admin/upgrades/upgrade-functions.php:168, includes/admin/upgrades/upgrade-functions.php:206, includes/api/class-give-api.php:1791, includes/api/class-give-api.php:1797, includes/api/class-give-api.php:1812, includes/api/class-give-api.php:1817, includes/class-give-license-handler.php:844, includes/class-notices.php:538, includes/emails/actions.php:56, includes/emails/template.php:274, includes/formatting.php:646, includes/gateways/manual.php:38
+#: includes/admin/EDD_SL_Plugin_Updater.php:396, includes/admin/donors/donor-actions.php:31, includes/admin/donors/donor-actions.php:45, includes/admin/donors/donor-actions.php:151, includes/admin/donors/donor-actions.php:165, includes/admin/donors/donor-actions.php:233, includes/admin/donors/donor-actions.php:248, includes/admin/donors/donor-actions.php:332, includes/admin/donors/donor-actions.php:346, includes/admin/donors/donor-actions.php:435, includes/admin/donors/donor-actions.php:530, includes/admin/donors/donor-actions.php:576, includes/admin/forms/dashboard-columns.php:244, includes/admin/payments/actions.php:31, includes/admin/payments/actions.php:89, includes/admin/payments/actions.php:100, includes/admin/payments/actions.php:342, includes/admin/payments/actions.php:362, includes/admin/payments/actions.php:395, includes/admin/payments/actions.php:417, includes/admin/payments/view-payment-details.php:24, includes/admin/payments/view-payment-details.php:34, includes/admin/tools/data/class-give-tools-delete-import-donors.php:257, includes/admin/tools/data/class-give-tools-delete-test-donors.php:228, includes/admin/tools/data/class-give-tools-delete-test-transactions.php:172, includes/admin/tools/data/class-give-tools-recount-all-stats.php:235, includes/admin/tools/data/class-give-tools-recount-donor-stats.php:195, includes/admin/tools/data/class-give-tools-recount-form-stats.php:180, includes/admin/tools/data/class-give-tools-recount-income.php:156, includes/admin/tools/data/class-give-tools-recount-single-donor-stats.php:151, includes/admin/tools/data/class-give-tools-reset-stats.php:187, includes/admin/tools/export/class-batch-export.php:145, includes/admin/tools/export/class-export.php:177, includes/admin/tools/export/export-actions.php:26, includes/admin/tools/export/pdf-reports.php:31, includes/admin/tools/export/pdf-reports.php:35, includes/admin/tools/logs/class-api-requests-logs-list-table.php:141, includes/admin/tools/logs/class-gateway-error-logs-list-table.php:128, includes/admin/upgrades/upgrade-functions.php:168, includes/admin/upgrades/upgrade-functions.php:206, includes/api/class-give-api.php:1791, includes/api/class-give-api.php:1797, includes/api/class-give-api.php:1812, includes/api/class-give-api.php:1817, includes/class-give-license-handler.php:844, includes/class-notices.php:551, includes/emails/actions.php:56, includes/emails/template.php:274, includes/formatting.php:646, includes/gateways/manual.php:38
 msgid "Error"
 msgstr ""
 
@@ -953,7 +953,7 @@ msgid "Your license key has reached it's activation limit. <a href=\"%s\">View p
 msgstr ""
 
 #: includes/admin/class-give-settings.php:1324
-msgid "Your license is not activated.Please <a href=\"%3$s\" target=\"_blank\" title=\"Visit account page\">visit your account page</a> to manage your license key URLs. %2$sError Code: %1$s."
+msgid "Your license is not activated. Please <a href=\"%3$s\" target=\"_blank\" title=\"Visit account page\">visit your account page</a> to manage your license key URLs. %2$sError Code: %1$s."
 msgstr ""
 
 #: includes/admin/class-give-settings.php:1351
@@ -4726,7 +4726,7 @@ msgstr ""
 msgid "Improper date provided."
 msgstr ""
 
-#: includes/class-notices.php:426
+#: includes/class-notices.php:439
 msgid "Click here"
 msgstr ""
 
@@ -9430,7 +9430,7 @@ msgstr ""
 msgid "Donation Form ID"
 msgstr ""
 
-#: includes/import-functions.php:730
+#: includes/import-functions.php:733
 msgid "This donation was imported by %s"
 msgstr ""
 
