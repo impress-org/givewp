@@ -266,7 +266,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<tr class="give-export-core-settings">
 						<td scope="row" class="row-title">
 							<h3>
-								<span><?php esc_html_e( 'Import/Export core settings', 'give' ); ?></span>
+								<span><?php esc_html_e( 'Export Give core settings', 'give' ); ?></span>
 							</h3>
 							<p><?php esc_html_e( 'Download an export of Give\'s core settings and import it in a new WordPress installation.', 'give' ); ?></p>
 						</td>
@@ -277,12 +277,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 								<input type="submit"
 								       value="<?php esc_attr_e( 'Export JSON', 'give' ); ?>"
 								       class="button-secondary"/>
-							</form>
-							<form id="core-settings-importer-form" method="post" enctype="multipart/form-data">
-								<input type="hidden" name="give-action"
-								       value="core_settings_import"/>
-								<input type="file" name="json_file">
-								<input type="submit">
 							</form>
 						</td>
 					</tr>

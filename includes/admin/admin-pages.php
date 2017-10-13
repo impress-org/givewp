@@ -436,6 +436,9 @@ function give_tools_page_pages( $settings ) {
 		// Export.
 		include( 'tools/class-settings-export.php' ),
 
+		// Import.
+		include( 'tools/class-settings-import.php' ),
+
 	);
 
 	// Output.
