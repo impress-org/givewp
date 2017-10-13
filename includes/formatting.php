@@ -561,46 +561,6 @@ function give_currency_filter( $price = '', $currency = '', $decode_currency = f
 	return $formatted;
 }
 
-/**
- * Set the number of decimal places per currency
- *
- * @since 1.0
- * @since 1.6 $decimals parameter removed from function params
- * *
- * @return int $decimals
- */
-function give_currency_decimal_filter() {
-
-	remove_filter( 'give_sanitize_amount_decimals', 'give_currency_decimal_filter' );
-
-	// Set default number of decimals.
-	$decimals = give_get_price_decimals();
-
-	add_filter( 'give_sanitize_amount_decimals', 'give_currency_decimal_filter' );
-
-	// Get number of decimals with backward compatibility ( version < 1.6 )
-	if ( 1 <= func_num_args() ) {
-		$decimals = ( false === func_get_arg( 0 ) ? $decimals : absint( func_get_arg( 0 ) ) );
-	}
-
-	$currency = give_get_currency();
-
-	switch ( $currency ) {
-		case 'RIAL' :
-		case 'JPY' :
-		case 'TWD' :
-		case 'HUF' :
-
-			$decimals = 0;
-			break;
-	}
-
-	return apply_filters( 'give_currency_decimal_count', $decimals, $currency );
-}
-
-add_filter( 'give_sanitize_amount_decimals', 'give_currency_decimal_filter' );
-add_filter( 'give_format_amount_decimals', 'give_currency_decimal_filter' );
-
 
 /**
  * Get date format string on basis of given context.
