@@ -1923,6 +1923,7 @@ function give_recount_form_income_donation( $form_id = false ) {
  * Zero Decimal based Currency.
  *
  * @since 1.8.14
+ * @see https://github.com/WordImpress/Give/issues/2191
  *
  * @return bool
  */
