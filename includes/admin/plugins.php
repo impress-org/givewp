@@ -82,7 +82,7 @@ function give_plugin_row_meta( $plugin_meta, $plugin_file ) {
 add_filter( 'plugin_row_meta', 'give_plugin_row_meta', 10, 2 );
 
 /**
- * Get the Dashboard Page Title in admin section.
+ * Get the Parent Page Title in admin section.
  * Based on get_admin_page_title WordPress Function.
  *
  * @since 1.8.15
@@ -96,7 +96,7 @@ add_filter( 'plugin_row_meta', 'give_plugin_row_meta', 10, 2 );
  *
  * @return string $title Page title
  */
-function give_get_admin_page_title() {
+function give_get_admin_page_parent_title() {
 	$title = '';
 	global $menu, $submenu, $pagenow, $plugin_page, $typenow;
 
