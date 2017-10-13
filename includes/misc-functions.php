@@ -95,7 +95,7 @@ function give_get_currencies() {
 		'INR'  => __( 'Indian Rupee (₹)', 'give' ),
 		'TRY'  => __( 'Turkish Lira (₺)', 'give' ),
 		'RIAL' => __( 'Iranian Rial (﷼)', 'give' ),
-		'RUB'  => __( 'Russian Rubles (руб)', 'give' ),
+		'RUB'  => __( 'Russian Rubles (₽)', 'give' ),
 	);
 
 	return apply_filters( 'give_currencies', $currencies );

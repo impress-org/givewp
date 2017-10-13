@@ -9595,7 +9595,7 @@ msgid "Iranian Rial (﷼)"
 msgstr ""
 
 #: includes/misc-functions.php:98
-msgid "Russian Rubles (руб)"
+msgid "Russian Rubles (₽)"
 msgstr ""
 
 #: includes/misc-functions.php:461
