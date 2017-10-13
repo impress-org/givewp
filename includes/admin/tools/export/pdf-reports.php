@@ -35,7 +35,7 @@ function give_generate_pdf( $data ) {
 		wp_die( __( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
-	require_once GIVE_PLUGIN_DIR . '/includes/libraries/give_pdf.php';
+	require_once GIVE_PLUGIN_DIR . '/includes/libraries/give-pdf.php';
 
 	$daterange = utf8_decode(
 		sprintf(
