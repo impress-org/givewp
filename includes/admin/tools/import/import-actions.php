@@ -9,18 +9,21 @@
  */
 function give_core_settings_import() {
 
-	$json_string   = file_get_contents( $_FILES['json_file']['tmp_name'] );
-	$json_to_array = json_decode( $json_string, true );
+	$json_string       = file_get_contents( $_FILES['json_file']['tmp_name'] );
+	$json_to_array     = json_decode( $json_string, true );
+	$host_give_options = get_option( 'give_settings' );
 
-	// Unset General Pages.
-	unset( $json_to_array['success_page'], $json_to_array['failure_page'], $json_to_array['history_page'] );
+	// Handle pages under General > General.
+	$json_to_array['success_page'] = ! empty( $host_give_options['success_page'] ) ? $host_give_options['success_page'] : '';
+	$json_to_array['failure_page'] = ! empty( $host_give_options['failure_page'] ) ? $host_give_options['failure_page'] : '';
+	$json_to_array['history_page'] = ! empty( $host_give_options['history_page'] ) ? $host_give_options['history_page'] : '';
 
-	// Featured image sizes import.
+	// Featured image sizes import under Display Options > Post Types > Featured Image Size.
 	if ( 'enabled' === $json_to_array['form_featured_img'] ) {
 		$images_sizes = get_intermediate_image_sizes();
 
 		if ( ! in_array( $json_to_array['featured_image_size'], $images_sizes ) ) {
-			unset( $json_to_array['featured_image_size'] );
+			$json_to_array['featured_image_size'] = $host_give_options['featured_image_size'];
 		}
 	}
 
@@ -35,13 +38,14 @@ function give_core_settings_import() {
 		}
 
 		$url = $json_to_array['email_logo'];
-		$url = 'https://nikonrumors.com/wp-content/uploads/2014/03/Nikon-1-V3-sample-photo.jpg';
 		$tmp = download_url( $url );
 
 		$new_url = media_sideload_image( $url, 0, null, 'src' );
 
 		if ( ! is_wp_error( $new_url ) ) {
 			$json_to_array['email_logo'] = $new_url;
+		} else {
+			$json_to_array['email_logo'] = $host_give_options['email_logo'];
 		}
 	}
 
