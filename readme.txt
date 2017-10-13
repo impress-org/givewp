@@ -208,6 +208,9 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
+= 1.8.14: October 13th, 2017  =
+* 
+
 = 1.8.13: September 7th, 2017  =
 * Important: Give will no longer work with PHP 5.2 and older versions. The minimum PHP version to use Give is now PHP 5.3 and newer. If you are using PHP 5.2 ask your host to upgrade your environment to be more secure, better supported, and faster. [#1949](https://github.com/WordImpress/Give/issues/1949)
 * New: Now you can import donations to Give using the new importer. Simply create a CSV file with the appropriate data and map use the importer to map your columns into Give accordingly. [#1966](https://github.com/WordImpress/Give/issues/1966)
