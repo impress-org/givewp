@@ -97,7 +97,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 						),
 						array(
 							'name'    => __( 'Akismet SPAM Protection', 'give' ),
-							'desc'    => __( 'Add a layer of SPAM protection to your donation submissions with Akismet. When enabled, donation submissions will be first sent to Akismet\'s API.', 'give' ),
+							'desc'    => __( 'Add a layer of SPAM protection to your donation submissions with Akismet. When enabled, donation submissions will be first sent to Akismet\'s API if you have the plugin activated and configured.', 'give' ),
 							'id'      => 'akismet_spam_protection',
 							'type'    => 'radio_inline',
 							'default' => ( give_check_akismet_key() ) ? 'enabled' : 'disabled',
