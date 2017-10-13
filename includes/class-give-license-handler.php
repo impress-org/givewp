@@ -863,7 +863,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			give_delete_option( "{$this->item_shortname}_license_key" );
 
 			// Unset license param.
-			// $this->license = '';
+			$this->license = '';
 		}
 	}
 
