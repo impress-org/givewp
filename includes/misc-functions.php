@@ -172,7 +172,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'currency_position'   => 'before',
 				'thousands_separator' => ',',
 				'decimal_separator'   => '.',
-				'number_decimals'     => 0,
+				'number_decimals'     => 2,
 			),
 		),
 		'ILS'  => array(
@@ -362,7 +362,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'currency_position'   => 'after',
 				'thousands_separator' => ',',
 				'decimal_separator'   => '.',
-				'number_decimals'     => 0,
+				'number_decimals'     => 2,
 			),
 		),
 		'RUB'  => array(
