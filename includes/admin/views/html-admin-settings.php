@@ -35,13 +35,14 @@ if( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs 
 	?>
 	<div class="wrap give-settings-page <?php echo self::$setting_filter_prefix . '-setting-page'; ?>">
 		<?php echo $form_open_tag; ?>
-		<h1 class="wp-heading-inline"><?php echo give_get_admin_page_parent_title() . ' - ' . esc_html( $tabs[ $current_tab ] ); ?></h1>
+
 		<?php
+		// Show Admin Page Header.
+		give_page_admin_page_header( $tabs, $current_tab );
+
 		// Show messages.
 		self::show_messages();
 		?>
-
-		<hr class="wp-header-end">
 
 		<div class="nav-tab-wrapper give-nav-tab-wrapper">
 			<?php

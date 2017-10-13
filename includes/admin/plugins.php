@@ -128,15 +128,61 @@ function give_get_admin_page_parent_title() {
 
 			if ( isset( $submenu_array[0] ) ) {
 				$title = $submenu_array[0];
-
-				return $submenu_array[0];
 			} else {
 				$title = $submenu_array[3];
-
-				return $title;
 			}
 		}
 	}
 
 	return $title;
+}
+
+/**
+ * Display header in give admin submenu sections.
+ *
+ * @since 1.8.15
+ *
+ * @param array $tabs
+ * @param string $current_tab
+ *
+ * @return void
+ */
+function give_page_admin_page_header( $tabs = array(), $current_tab = '' ) {
+
+	// Get the header title.
+	give_admin_page_title( $tabs, $current_tab );
+
+	// Display notices section
+	give_admin_notices_display();
+}
+
+/**
+ * Display title in give admin submenu sections.
+ *
+ * @since 1.8.15
+ *
+ * @param array $tabs
+ * @param string $current_tab
+ *
+ * @return void
+ */
+function give_admin_page_title( $tabs = array(), $current_tab = '' ) {
+	?>
+	<h1 class="wp-heading-inline">
+		<?php echo esc_html( wp_sprintf( __( '%s - %s', 'give' ), give_get_admin_page_parent_title(), ( isset( $tabs[ $current_tab ] ) ? $tabs[ $current_tab ] : '' ) ) ); ?>
+	</h1>
+	<?php
+}
+
+/**
+ * Add wp header end section in give menu sub page.
+ *
+ * @since 1.8.15
+ *
+ * @return void
+ */
+function give_admin_notices_display() {
+	?>
+	<hr class="wp-header-end">
+	<?php
 }
