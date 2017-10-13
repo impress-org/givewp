@@ -337,19 +337,19 @@ if ( ! class_exists( 'Give_License' ) ) :
 				return;
 			}
 
-			// Delete previous license setting if a empty license key submitted.
-			if ( empty( $_POST[ $this->item_shortname . '_license_key' ] ) ) {
-				delete_option( $this->item_shortname . '_license_active' );
-
-				return;
-			}
-
 			// Do not simultaneously activate add-ons if the user want to deactivate a specific add-on.
 			foreach ( $_POST as $key => $value ) {
 				if ( false !== strpos( $key, 'license_key_deactivate' ) ) {
 					// Don't activate a key when deactivating a different key
 					return;
 				}
+			}
+
+			// Delete previous license setting if a empty license key submitted.
+			if ( empty( $_POST["{$this->item_shortname}_license_key"] ) ) {
+				$this->unset_license();
+
+				return;
 			}
 
 			// Check if plugin previously installed.
@@ -368,11 +368,20 @@ if ( ! class_exists( 'Give_License' ) ) :
 				return;
 			}
 
+			// Make sure license is valid.
+			// return because admin will want to activate license again.
+			if ( ! $this->is_license( $license_data ) ) {
+				// Add license key.
+				give_update_option( "{$this->item_shortname}_license_key", $this->license );
+
+				return;
+			}
+
 			// Tell WordPress to look for updates.
 			set_site_transient( 'update_plugins', null );
 
 			// Add license data.
-			update_option( $this->item_shortname . '_license_active', $license_data );
+			update_option(  "{$this->item_shortname}_license_active", $license_data );
 
 			// Add license key.
 			give_update_option( "{$this->item_shortname}_license_key", $this->license );
@@ -414,16 +423,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 				// Ensure deactivated successfully.
 				if ( isset( $license_data->success ) ) {
-
-					// Remove license data.
-					delete_option( $this->item_shortname . '_license_active' );
-
-					// Delete licence data.
-					give_delete_option( $this->item_shortname . '_license_key' );
-
-					// Remove license key from subscriptions if exist.
-					$this->__remove_license_key_from_subscriptions();
-
+					$this->unset_license();
 				}
 			}// End if().
 		}
@@ -454,6 +454,11 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			// Make sure there are no api errors.
 			if ( ! ( $license_data = $this->get_license_info( 'check_license' ) ) ) {
+				return;
+			}
+
+			// Bailout.
+			if( ! $this->is_license( $license_data ) ) {
 				return;
 			}
 
@@ -683,13 +688,38 @@ if ( ! class_exists( 'Give_License' ) ) :
 		/**
 		 * Check if license is valid or not.
 		 *
-		 * @access public
 		 * @since  1.7
+		 * @access public
+		 *
+		 * @param null|object $licence_data
 		 *
 		 * @return bool
 		 */
-		public function is_valid_license() {
-			if ( apply_filters( 'give_is_valid_license', ( is_object( $this->license_data ) && ! empty( $this->license_data ) && property_exists( $this->license_data, 'license' ) && 'valid' === $this->license_data->license ) ) ) {
+		public function is_valid_license( $licence_data = null ) {
+			$license_data = empty( $licence_data ) ? $this->license_data : $licence_data;
+
+			if ( apply_filters( 'give_is_valid_license', ( $this->is_license( $license_data ) && 'valid' === $license_data->license ) ) ) {
+				return true;
+			}
+
+			return false;
+		}
+
+
+		/**
+		 * Check if license is license object of no.
+		 *
+		 * @since  1.7
+		 * @access public
+		 *
+		 * @param null|object $licence_data
+		 *
+		 * @return bool
+		 */
+		public function is_license( $licence_data = null ){
+			$license_data = empty( $licence_data ) ? $this->license_data : $licence_data;
+
+			if ( apply_filters( 'give_is_license', ( is_object( $license_data ) && ! empty( $license_data ) && property_exists( $license_data, 'license' ) ) ) ) {
 				return true;
 			}
 
@@ -793,20 +823,24 @@ if ( ! class_exists( 'Give_License' ) ) :
 		/**
 		 * Check if admin can edit license or not,
 		 *
-		 * @since 1.8.9
+		 * @since  1.8.9
 		 * @access private
 		 */
-		private function __is_user_can_edit_license(){
+		private function __is_user_can_edit_license() {
 			// Bailout.
 			if (
-				empty( $_POST[ $this->item_shortname . '_license_key' ] ) ||
-				! current_user_can( 'manage_give_settings' )
+				! Give_Admin_Settings::verify_nonce() ||
+				! current_user_can( 'manage_give_settings' ) ||
+				'licenses' !== give_get_current_setting_tab()
 			) {
 				return false;
 			}
 
 			// Security check.
-			if ( ! wp_verify_nonce( $_REQUEST[ $this->item_shortname . '_license_key-nonce' ], $this->item_shortname . '_license_key-nonce' ) ) {
+			if (
+				isset( $_POST[ $this->item_shortname . '_license_key-nonce'] ) &&
+				! wp_verify_nonce( $_REQUEST[ $this->item_shortname . '_license_key-nonce' ], $this->item_shortname . '_license_key-nonce' )
+			) {
 				wp_die( __( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 			}
 
@@ -854,6 +888,25 @@ if ( ! class_exists( 'Give_License' ) ) :
 			}
 
 			return json_decode( wp_remote_retrieve_body( $response ), $response_in_array );
+		}
+
+
+		/**
+		 * Unset license
+		 *
+		 * @since  1.8.14
+		 * @access private
+		 */
+		private function unset_license() {
+			// Remove license key from subscriptions if exist.
+			$this->__remove_license_key_from_subscriptions();
+
+			// Remove license from database.
+			delete_option( "{$this->item_shortname}_license_active" );
+			give_delete_option( "{$this->item_shortname}_license_key" );
+
+			// Unset license param.
+			$this->license = '';
 		}
 	}
 
