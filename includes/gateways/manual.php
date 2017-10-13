@@ -37,7 +37,7 @@ function give_manual_payment( $purchase_data ) {
 	if ( ! wp_verify_nonce( $purchase_data['gateway_nonce'], 'give-gateway' ) ) {
 		wp_die( esc_html__( 'Nonce verification failed.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
-	
+
 	//Create payment_data array
 	$payment_data = array(
 		'price'           => $purchase_data['price'],

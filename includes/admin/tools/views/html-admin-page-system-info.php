@@ -21,12 +21,12 @@ $give_options = give_get_settings();
 $plugins      = give_get_plugins();
 ?>
 
-<div class="give-debug-report-wrapper updated">
-	<p><?php _e( 'Please copy and paste this information in your ticket when contacting support:', 'give' ); ?> </p>
-	<p class="submit">
+<div class="give-debug-report-wrapper updated inline">
+	<p class="give-debug-report-text"><?php sprintf(_e( 'Please copy and paste this information in your ticket when contacting support:', 'give' )); ?> </p>
+	<div class="give-debug-report-actions">
 		<a class="button-primary js-give-debug-report-button" href="#"><?php _e( 'Get System Report', 'give' ); ?></a>
-		<a class="button-secondary docs" href="http://docs.givewp.com/settings-system-info" target="_blank"><?php _e( 'Understanding the System Report', 'give' ); ?></a>
-	</p>
+		<a class="button-secondary docs" href="http://docs.givewp.com/settings-system-info" target="_blank"><?php _e( 'Understanding the System Report', 'give' ); ?> <span class="dashicons dashicons-external"></span></a>
+	</div>
 	<div class="give-debug-report js-give-debug-report">
 		<textarea readonly="readonly"></textarea>
 	</div>
@@ -148,8 +148,8 @@ $plugins      = give_get_plugins();
 			<td><?php echo give_test_ajax_works() ? __( 'Accessible', 'give' ) : __( 'Inaccessible', 'give' ); ?></td>
 		</tr>
 		<tr>
-			<td data-export-label="Registered Post Stati"><?php _e( 'Registered Post Stati', 'give' ); ?>:</td>
-			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'A list of all registered post stati.', 'give' ) ); ?>"></span></td>
+			<td data-export-label="Registered Post Statuses"><?php _e( 'Registered Post Statuses', 'give' ); ?>:</td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'A list of all registered post statuses.', 'give' ) ); ?>"></span></td>
 			<td><?php echo esc_html( implode( ', ', get_post_stati() ) ); ?></td>
 		</tr>
 	</tbody>
@@ -166,6 +166,25 @@ $plugins      = give_get_plugins();
 			<td data-export-label="Hosting Provider"><?php _e( 'Hosting Provider', 'give' ); ?>:</td>
 			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The hosting provider for this WordPress installation.', 'give' ) ); ?>"></span></td>
 			<td><?php echo give_get_host() ? esc_html( give_get_host() ) : __( 'Unknown', 'give' ); ?></td>
+		</tr>
+		<tr>
+			<td data-export-label="TLS Connection"><?php _e( 'TLS Connection', 'give' ); ?>:</td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'Most payment gateway APIs only support connections using the TLS 1.2 security protocol.', 'give' ) ); ?>"></span></td>
+			<td><?php
+				$tls_check = wp_remote_post( 'https://www.howsmyssl.com/a/check' );
+				if ( ! is_wp_error( $tls_check ) ) {
+					$tls_check = json_decode( wp_remote_retrieve_body( $tls_check ) );
+					/* translators: %s: SSL connection response */
+					printf( __('Connection uses %s', 'give'), esc_html( $tls_check->tls_version )) ;
+				}
+				?></td>
+		</tr>
+		<tr>
+			<td data-export-label="TLS Connection"><?php _e( 'TLS Rating', 'give' ); ?>:</td>
+			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The server\'s connection as rated by https://www.howsmyssl.com/', 'give' ) ); ?>"></span></td>
+			<td><?php if ( ! is_wp_error( $tls_check ) ) {
+					esc_html_e( $tls_check->rating);
+				} ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Server Info"><?php _e( 'Server Info', 'give' ); ?>:</td>
@@ -369,7 +388,7 @@ $plugins      = give_get_plugins();
 		if ( ! is_wp_error( $response ) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 ) {
 			$posting['wp_remote_get']['success'] = true;
 		} else {
-			$posting['wp_remote_get']['note']    = __( 'wp_remote_get() failed. The WooCommerce plugin updater won\'t work with your server. Contact your hosting provider.', 'give' );
+			$posting['wp_remote_get']['note']    = __( 'wp_remote_get() failed. The Give plugin updater won\'t work with your server. Contact your hosting provider.', 'give' );
 			if ( is_wp_error( $response ) ) {
 				$posting['wp_remote_get']['note'] .= ' ' . sprintf( __( 'Error: %s', 'give' ), give_clean( $response->get_error_message() ) );
 			} else {
@@ -378,7 +397,7 @@ $plugins      = give_get_plugins();
 			$posting['wp_remote_get']['success'] = false;
 		}
 
-		$posting = apply_filters( 'woocommerce_debug_posting', $posting );
+		$posting = apply_filters( 'give_debug_posting', $posting );
 
 		foreach ( $posting as $post ) {
 			$mark = ! empty( $post['success'] ) ? 'yes' : 'error';
@@ -433,12 +452,12 @@ $plugins      = give_get_plugins();
 		<tr>
 			<td data-export-label="Decimal Separator"><?php _e( 'Decimal Separator', 'give' ); ?>:</td>
 			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The decimal separator defined in Give settings.', 'give' ) ); ?>"></span></td>
-			<td><?php echo esc_html( give_get_option( 'decimal_separator', '.' ) ); ?></td>
+			<td><?php echo esc_html( give_get_price_decimal_separator() ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Thousands Separator"><?php _e( 'Thousands Separator', 'give' ); ?>:</td>
 			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The thousands separator defined in Give settings.', 'give' ) ); ?>"></span></td>
-			<td><?php echo esc_html( give_get_option( 'thousands_separator', ',' ) ); ?></td>
+			<td><?php echo esc_html( give_get_price_thousand_separator() ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Success Page"><?php _e( 'Success Page', 'give' ); ?>:</td>

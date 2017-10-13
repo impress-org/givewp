@@ -60,7 +60,7 @@ class Give_Email_Template_Tags {
 			$this->tags[ $tag ] = array(
 				'tag'         => $tag,
 				'description' => $description,
-				'func'        => $func
+				'func'        => $func,
 			);
 		}
 	}
@@ -261,6 +261,7 @@ function give_load_email_tags() {
 	 */
 	do_action( 'give_add_email_tags' );
 }
+
 add_action( 'init', 'give_load_email_tags', - 999 );
 
 
@@ -276,82 +277,82 @@ function give_setup_email_tags() {
 		array(
 			'tag'         => 'donation',
 			'description' => __( 'The donation form name, and the donation level (if applicable).', 'give' ),
-			'function'    => 'give_email_tag_donation'
+			'function'    => 'give_email_tag_donation',
 		),
 		array(
 			'tag'         => 'form_title',
 			'description' => __( 'The donation form name.', 'give' ),
-			'function'    => 'give_email_tag_form_title'
+			'function'    => 'give_email_tag_form_title',
 		),
 		array(
 			'tag'         => 'amount',
 			'description' => __( 'The total donation amount with currency sign.', 'give' ),
-			'function'    => 'give_email_tag_amount'
+			'function'    => 'give_email_tag_amount',
 		),
 		array(
 			'tag'         => 'price',
 			'description' => __( 'The total donation amount with currency sign.', 'give' ),
-			'function'    => 'give_email_tag_price'
+			'function'    => 'give_email_tag_price',
 		),
 		array(
 			'tag'         => 'name',
 			'description' => __( 'The donor\'s first name.', 'give' ),
-			'function'    => 'give_email_tag_first_name'
+			'function'    => 'give_email_tag_first_name',
 		),
 		array(
 			'tag'         => 'fullname',
 			'description' => __( 'The donor\'s full name, first and last.', 'give' ),
-			'function'    => 'give_email_tag_fullname'
+			'function'    => 'give_email_tag_fullname',
 		),
 		array(
 			'tag'         => 'username',
 			'description' => __( 'The donor\'s user name on the site, if they registered an account.', 'give' ),
-			'function'    => 'give_email_tag_username'
+			'function'    => 'give_email_tag_username',
 		),
 		array(
 			'tag'         => 'user_email',
 			'description' => __( 'The donor\'s email address.', 'give' ),
-			'function'    => 'give_email_tag_user_email'
+			'function'    => 'give_email_tag_user_email',
 		),
 		array(
 			'tag'         => 'billing_address',
 			'description' => __( 'The donor\'s billing address.', 'give' ),
-			'function'    => 'give_email_tag_billing_address'
+			'function'    => 'give_email_tag_billing_address',
 		),
 		array(
 			'tag'         => 'date',
 			'description' => __( 'The date of the donation.', 'give' ),
-			'function'    => 'give_email_tag_date'
+			'function'    => 'give_email_tag_date',
 		),
 		array(
 			'tag'         => 'payment_id',
 			'description' => __( 'The unique ID number for this donation.', 'give' ),
-			'function'    => 'give_email_tag_payment_id'
+			'function'    => 'give_email_tag_payment_id',
 		),
 		array(
 			'tag'         => 'receipt_id',
 			'description' => __( 'The unique ID number for this donation receipt.', 'give' ),
-			'function'    => 'give_email_tag_receipt_id'
+			'function'    => 'give_email_tag_receipt_id',
 		),
 		array(
 			'tag'         => 'payment_method',
 			'description' => __( 'The method of payment used for this donation.', 'give' ),
-			'function'    => 'give_email_tag_payment_method'
+			'function'    => 'give_email_tag_payment_method',
 		),
 		array(
 			'tag'         => 'sitename',
 			'description' => __( 'The name of your site.', 'give' ),
-			'function'    => 'give_email_tag_sitename'
+			'function'    => 'give_email_tag_sitename',
 		),
 		array(
 			'tag'         => 'receipt_link',
 			'description' => __( 'The donation receipt direct link, to view the receipt on the website.', 'give' ),
-			'function'    => 'give_email_tag_receipt_link'
+			'function'    => 'give_email_tag_receipt_link',
 		),
 		array(
 			'tag'         => 'receipt_link_url',
 			'description' => __( 'The donation receipt direct URL, to view the receipt on the website.', 'give' ),
-			'function'    => 'give_email_tag_receipt_link_url'
+			'function'    => 'give_email_tag_receipt_link_url',
 		),
 	);
 
@@ -466,17 +467,32 @@ function give_email_tag_billing_address( $payment_id ) {
 		'city'    => '',
 		'country' => '',
 		'state'   => '',
-		'zip'     => ''
+		'zip'     => '',
 	);
 
-	$return = $user_address['line1'] . "\n";
+	$return = $user_address['line1'];
 	if ( ! empty( $user_address['line2'] ) ) {
-		$return .= $user_address['line2'] . "\n";
+		$return .= ', ' . $user_address['line2'];
 	}
-	$return .= $user_address['city'] . ' ' . $user_address['zip'] . ' ' . $user_address['state'] . "\n";
-	$return .= $user_address['country'];
+	if ( ! empty( $user_address['city'] ) ) {
+		$return .= "\n" . $user_address['city'];
+	}
+	if ( ! empty( $user_address['state'] ) ) {
+		$return .= ', ' . $user_address['state'];
+	}
+	if ( ! empty( $user_address['zip'] ) ) {
+		$return .= ' ' . $user_address['zip'];
+	}
+	if ( ! empty( $user_address['country'] ) ) {
+		$return .= "\n" . give_get_country_name_by_key( $user_address['country'] );
+	}
 
-	return $return;
+	if ( empty( $return ) ) {
+		$return = __( 'None provided', 'give' );
+	}
+
+	return apply_filters('give_email_tag_billing_address', $return, $payment_id);
+
 }
 
 /**
@@ -505,7 +521,7 @@ function give_email_tag_date( $payment_id ) {
  */
 function give_email_tag_amount( $payment_id ) {
 	$payment     = new Give_Payment( $payment_id );
-	$give_amount = give_currency_filter( give_format_amount( $payment->total ), $payment->currency );
+	$give_amount = give_currency_filter( give_format_amount( $payment->total, array( 'sanitize' => false ) ), $payment->currency );
 
 	return html_entity_decode( $give_amount, ENT_COMPAT, 'UTF-8' );
 }
@@ -631,12 +647,12 @@ function give_email_tag_receipt_link( $payment_id ) {
 
 	$receipt_url = esc_url( add_query_arg( array(
 		'payment_key' => give_get_payment_key( $payment_id ),
-		'give_action' => 'view_receipt'
+		'give_action' => 'view_receipt',
 	), home_url() ) );
 	$formatted   = sprintf(
 		'<a href="%1$s">%2$s</a>',
 		$receipt_url,
-		esc_html__( 'View it in your browser', 'give' )
+		esc_html__( 'View it in your browser &raquo;', 'give' )
 	);
 
 	if ( give_get_option( 'email_template' ) !== 'none' ) {
@@ -662,7 +678,7 @@ function give_email_tag_receipt_link_url( $payment_id ) {
 
 	$receipt_url = esc_url( add_query_arg( array(
 		'payment_key' => give_get_payment_key( $payment_id ),
-		'give_action' => 'view_receipt'
+		'give_action' => 'view_receipt',
 	), home_url() ) );
 
 	return $receipt_url;

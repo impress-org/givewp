@@ -9,6 +9,7 @@
  */
 
 var give_scripts;
+var give_float_labels;
 
 jQuery(function ($) {
 
@@ -26,31 +27,9 @@ jQuery(function ($) {
 	});
 
 	doc.on('give_checkout_billing_address_updated', function (ev, response, form_id) {
-
-		var form = $('form#' + form_id);
-
-		if (form.hasClass('float-labels-enabled')) {
-
-			var wrap = form.find('#give-card-state-wrap');
-			var el = wrap.find('#card_state');
-			var label = wrap.find('label[for="card_state"]');
-
-			label = label.length ? label.text().replace(/[*:]/g, '').trim() : '';
-
-			if ('nostates' === response) {
-				// fix input
-				el.attr('placeholder', label).parent().removeClass('styled select');
-			} else {
-				// fix select
-				el.children().first().text(label);
-				el.parent().addClass('styled select');
-			}
-
-			el.parent().removeClass('is-active');
-
-			// Trigger float-labels
-			give_fl_trigger();
-		}
+		if (!$('form#' + form_id).hasClass('float-labels-enabled')) return;
+		// Trigger float-labels
+		give_fl_trigger();
 	});
 
 	// Reveal Btn which displays the checkout content
@@ -92,8 +71,8 @@ jQuery(function ($) {
 	});
 
 	// Auto hide frontend notices.
-	var give_notices = jQuery('.give_notice[data-auto-dismissible="1"]');
-	if(  give_notices.length ){
+	var give_notices = jQuery('.give_notice[data-dismissible="auto"]');
+	if( give_notices.length ){
 		give_notices.each(function( index, $notice ){
 			$notice = $( $notice );
 
@@ -106,6 +85,8 @@ jQuery(function ($) {
 			);
 		});
 	}
+
+	doc.on('change', '#give_profile_billing_address_wrap #give_address_country', update_profile_state_field );
 
 });
 
@@ -183,8 +164,6 @@ function give_open_form_modal($form_wrap, $form) {
 					$mfp_content.addClass('give-responsive-mfp-content');
 				}
 
-
-
 				// Hide .give-hidden and .give-btn-modal  if admin only want to show only button.
 				if ($form_wrap.hasClass('give-display-button-only')) {
 					children = $form.children().not('.give-hidden, .give-btn-modal');
@@ -208,20 +187,15 @@ function give_open_form_modal($form_wrap, $form) {
  * Floating Labels Custom Events
  */
 function give_fl_trigger() {
-	var options = {
-		exclude: ['#give-amount, .give-select-level, .multiselect, .give-repeater-table input, input[type="url"]'],
-		customEvent: give_fl_custom_events
-	};
-	jQuery('.float-labels-enabled').floatlabels(options);
-}
-
-/**
- * Floating Labels Custom Events
- * @param el
- */
-function give_fl_custom_events(el) {
-	if (el.hasClass('card-number')) {
-		el.after('<span class="off card-type"/>');
+	if( give_float_labels instanceof FloatLabels ) {
+		give_float_labels.rebuild();
+	}
+	else {
+		give_float_labels = new FloatLabels( '.float-labels-enabled', {
+			exclude: '#give-amount, .give-select-level, [multiple]',
+			prioritize: 'placeholder',
+			style: 'give',
+		});
 	}
 }
 
@@ -260,4 +234,58 @@ function give_change_html5_form_field_validation_message() {
 			}
 		});
 	});
+}
+
+
+/**
+ * Update state/province fields per country selection
+ *
+ * @since 1.8.14
+ */
+function update_profile_state_field() {
+	var $this = jQuery( this ),
+		$form = $this.parents('form');
+	if ('give_address_country' === $this.attr('id')) {
+
+		//Disable the State field until updated
+		$form.find('#give_address_state').empty().append('<option value="1">' + give_global_vars.general_loading + '</option>').prop('disabled', true);
+
+		// If the country field has changed, we need to update the state/province field
+		var postData = {
+			action: 'give_get_states',
+			country: $this.val(),
+			field_name: 'give_address_state'
+		};
+
+		jQuery.ajax({
+			type: 'POST',
+			data: postData,
+			url: give_global_vars.ajaxurl,
+			xhrFields: {
+				withCredentials: true
+			},
+			success: function ( response ) {
+				var html = '';
+				var states_label = response.states_label;
+				if (typeof ( response.states_found ) != undefined && true == response.states_found) {
+					html = response.data;
+				} else {
+					html = '<input type="text" id="give_address_state"  name="give_address_state" class="text give-input" placeholder="' + states_label + '" value="' + response.default_state + '"/>';
+				}
+				$form.find('input[name="give_address_state"], select[name="give_address_state"]').replaceWith(html);
+
+				// Check if user want to show the feilds or not.
+				if (typeof ( response.show_field ) != undefined && true == response.show_field) {
+					$form.find('p#give-card-state-wrap').removeClass('give-hidden');
+				} else {
+					$form.find('p#give-card-state-wrap').addClass('give-hidden');
+				}
+			}
+		}).fail(function (data) {
+			if (window.console && window.console.log) {
+				console.log(data);
+			}
+		});
+	}
+	return false;
 }

@@ -332,6 +332,12 @@ input.shortcode-input {
 	width: 100%;
 }
 
+.price .give_price_range_low,
+.price .give_price_range_high,
+.price .give_price_range_sep{
+	display: inline-block;
+}
+
 /*-------------------------------------
 ASIDE
 -------------------------------------*/
@@ -399,10 +405,16 @@ ASIDE
 	}
 
 	.give_options_panel {
+		display: none;
 		padding-left: 170px;
 
+		&.active,
+		.no-js & {
+			display: block;
+		}
+
 		.give-field-wrap {
-			padding: 1em 20px 1em 162px !important;
+			padding: 1em 20px 1em 162px;
 			margin: 0;
 			border-bottom: 1px solid #eee;
 
@@ -491,7 +503,7 @@ ASIDE
 
 			.give-remove {
 				float: right;
-				width: 36px;
+				width: 22px;
 				height: 36px;
 				padding: 0;
 				display: block;
@@ -505,11 +517,11 @@ ASIDE
 			.give-remove:hover {
 				background-color: red;
 				color: white;
-				width: 30px;
-				height: 30px;
+				width: 22px;
+				height: 22px;
 				border-radius: 30px;
-				margin-top: 3px;
-				line-height: 28px;
+				margin-top: 8px;
+				line-height: 19px;
 			}
 
 			.give-row-head {
@@ -522,6 +534,10 @@ ASIDE
 
 			.give-row.closed .toggle-indicator:before {
 				content: "\f140";
+			}
+
+			.give-row .give-move .toggle-indicator:before {
+				margin-left: 7px;
 			}
 
 			.give-add-repeater-field-section-row-wrap {
@@ -644,7 +660,6 @@ ASIDE
 				left: 166px;
 				width: 170px;
 				max-height: 250px;
-				overflow-y: scroll;
 			}
 		}
 	}
@@ -665,14 +680,31 @@ ASIDE
 					margin-right: 0;
 					font-size: 15px;
 				}
-				span {
+				span.give-label {
 					display: none;
+				}
+
+				span.give-icon:before {
+					margin: 0;
 				}
 			}
 
 		}
 		.give_options_panel {
 			padding-left: 40px;
+
+			.give-field-wrap {
+				padding: 10px;
+
+				span.give-field-label, label {
+					display: block;
+					float: none;
+					margin: 0 0 10px 0;
+					font-size: 14px;
+					width: 100%;
+				}
+
+			}
 		}
 
 	}

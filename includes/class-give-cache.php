@@ -58,7 +58,7 @@ class Give_Cache {
 	 */
 	public function setup_hooks() {
 		// weekly delete all expired cache.
-		add_action( 'give_weekly_scheduled_events', array( $this, 'delete_all_expired' ) );
+		Give_Cron::add_weekly_event( array( $this, 'delete_all_expired' ) );
 	}
 
 	/**

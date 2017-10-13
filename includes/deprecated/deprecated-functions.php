@@ -16,6 +16,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Deprecated global variables.
+ *
+ * @since 2.0
+ *
+ * @param Give $give_object
+ */
+function _give_load_deprecated_global_params( $give_object ) {
+	$GLOBALS['give_cron'] = Give_Cron::get_instance();
+}
+
+add_action( 'give_init', '_give_load_deprecated_global_params' );
+
+
 
 /**
  * Checks if Guest checkout is enabled for a particular donation form
@@ -585,4 +599,46 @@ function give_output_error( $message, $echo = true, $error_id = 'warning' ) {
 	_give_deprecated_function( __FUNCTION__, '1.8.9', 'Give_Notice::print_frontend_notice', $backtrace );
 
 	Give()->notices->print_frontend_notice( $message, $echo, $error_id );
+}
+
+
+/**
+ * Get Donation Summary
+ *
+ * Retrieves the donation summary.
+ *
+ * @since       1.0
+ *
+ * @param array $purchase_data
+ * @param bool  $email
+ *
+ * @return string
+ */
+function give_get_purchase_summary( $purchase_data, $email = true ) {
+
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '1.8.12', 'give_payment_gateway_donation_summary', $backtrace );
+
+	give_payment_gateway_donation_summary($purchase_data, $email);
+
+}
+
+/**
+ * Generate Item Title for Payment Gateway
+ *
+ * @param array $payment_data Payment Data.
+ *
+ * @since 1.8.14
+ *
+ * @return string
+ */
+function give_build_paypal_item_title( $payment_data ) {
+
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '1.8.14', 'give_payment_gateway_item_title', $backtrace );
+
+	return give_payment_gateway_item_title( $payment_data );
+
 }

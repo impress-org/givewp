@@ -269,8 +269,7 @@ class Give_Donors_Gravatars {
 				// get the payment meta
 				$payment_meta = give_get_meta( $id, '_give_payment_meta', true );
 
-				// unserialize the payment meta
-				$user_info = maybe_unserialize( $payment_meta['user_info'] );
+				$user_info = $payment_meta['user_info'];
 
 				// get donor's first name
 				$name = $user_info['first_name'];

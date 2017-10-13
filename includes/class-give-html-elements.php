@@ -161,7 +161,7 @@ class Give_HTML_Elements {
 	/**
 	 * Donors Dropdown
 	 *
-	 * Renders an HTML Dropdown of all customers.
+	 * Renders an HTML Dropdown of all donors.
 	 *
 	 * @since  1.0
 	 * @access public

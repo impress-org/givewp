@@ -99,7 +99,9 @@ function give_process_donation_form() {
 
 	$auth_key = defined( 'AUTH_KEY' ) ? AUTH_KEY : '';
 
-	$price        = isset( $_POST['give-amount'] ) ? (float) apply_filters( 'give_donation_total', give_sanitize_amount( give_format_amount( $_POST['give-amount'] ) ) ) : '0.00';
+	$price        = isset( $_POST['give-amount'] ) ?
+		(float) apply_filters( 'give_donation_total', give_maybe_sanitize_amount( $_POST['give-amount'] ) ) :
+		'0.00';
 	$purchase_key = strtolower( md5( $user['user_email'] . date( 'Y-m-d H:i:s' ) . $auth_key . uniqid( 'give', true ) ) );
 
 	// Setup donation information
@@ -180,18 +182,18 @@ function give_check_logged_in_user_for_existing_email( $valid_data, $post ) {
 	// Verify that the email address belongs to this customer.
 	if ( is_user_logged_in() ) {
 
-		$submitted_email    = $valid_data['logged_in_user']['user_email'];
-		$customer = new Give_Donor( get_current_user_id(), true );
+		$submitted_email = $valid_data['logged_in_user']['user_email'];
+		$donor           = new Give_Donor( get_current_user_id(), true );
 
 		// If this email address is not registered with this customer, see if it belongs to any other customer
 		if (
-			$submitted_email !== $customer->email
-			&& ( is_array( $customer->emails ) && ! in_array( $submitted_email, $customer->emails ) )
+			$submitted_email !== $donor->email
+			&& ( is_array( $donor->emails ) && ! in_array( $submitted_email, $donor->emails ) )
 		) {
-			$found_customer = new Give_Donor( $submitted_email );
+			$found_donor = new Give_Donor( $submitted_email );
 
-			if ( $found_customer->id > 0 ) {
-				give_set_error( 'give-customer-email-exists', sprintf( __( 'You are logged in as %1$s, and are submitting a donation as %2$s, which is an existing donor. To ensure that the email address is tied to the correct donor, please submit this donation from a logged-out browser, or choose another email address.' ,'give' ), $customer->email, $submitted_email ) );
+			if ( $found_donor->id > 0 ) {
+				give_set_error( 'give-customer-email-exists', sprintf( __( 'You are logged in as %1$s, and are submitting a donation as %2$s, which is an existing donor. To ensure that the email address is tied to the correct donor, please submit this donation from a logged-out browser, or choose another email address.', 'give' ), $donor->email, $submitted_email ) );
 			}
 		}
 	}
@@ -219,8 +221,8 @@ function give_process_form_login() {
 			 * @since 1.0
 			 */
 			ob_start();
-				do_action( 'give_ajax_donation_errors' );
-				$message = ob_get_contents();
+			do_action( 'give_ajax_donation_errors' );
+			$message = ob_get_contents();
 			ob_end_clean();
 			wp_send_json_error( $message );
 		} else {
@@ -234,7 +236,7 @@ function give_process_form_login() {
 	if ( $is_ajax ) {
 		$message = Give()->notices->print_frontend_notice(
 			sprintf(
-				/* translators: %s: user first name */
+			/* translators: %s: user first name */
 				esc_html__( 'Welcome %s! You have successfully logged into your account.', 'give' ),
 				( ! empty( $user_data['user_first'] ) ) ? $user_data['user_first'] : $user_data['user_login']
 			),
@@ -265,7 +267,7 @@ function give_donation_form_validate_fields() {
 		return false;
 	}
 
-	$form_id = isset( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : '';
+	$form_id = ! empty( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : '';
 
 	// Start an array to collect valid data
 	$valid_data = array(
@@ -282,6 +284,14 @@ function give_donation_form_validate_fields() {
 	// Validate Honeypot First
 	if ( ! empty( $_POST['give-honeypot'] ) ) {
 		give_set_error( 'invalid_honeypot', esc_html__( 'Honeypot field detected. Go away bad bot!', 'give' ) );
+	}
+
+	// Check spam detect.
+	if ( isset( $_POST['action'] )
+	     && give_is_setting_enabled( give_get_option( 'akismet_spam_protection' ) )
+	     && give_is_spam_donation()
+	) {
+		give_set_error( 'invalid_donation', __( 'This donation has been flagged as spam. Please try again.', 'give' ) );
 	}
 
 	// Validate agree to terms
@@ -324,6 +334,26 @@ function give_donation_form_validate_fields() {
 }
 
 /**
+ * Detect spam donation.
+ *
+ * @since 1.8.14
+ *
+ * @return bool|mixed
+ */
+function give_is_spam_donation() {
+	$spam = false;
+
+	$user_agent = (string) isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : '';
+
+	if ( strlen( $user_agent ) < 2 ) {
+		$spam = true;
+	}
+
+	// Allow developer to customized Akismet spam detect API call and it's response.
+	return apply_filters( 'give_spam', $spam );
+}
+
+/**
  * Donation Form Validate Gateway
  *
  * Validate the gateway and donation amount.
@@ -335,7 +365,7 @@ function give_donation_form_validate_fields() {
 function give_donation_form_validate_gateway() {
 
 	$form_id = isset( $_REQUEST['give-form-id'] ) ? $_REQUEST['give-form-id'] : 0;
-	$amount  = isset( $_REQUEST['give-amount'] ) ? give_sanitize_amount( $_REQUEST['give-amount'] ) : 0;
+	$amount  = isset( $_REQUEST['give-amount'] ) ? give_maybe_sanitize_amount( $_REQUEST['give-amount'] ) : 0;
 	$gateway = give_get_default_gateway( $form_id );
 
 	// Check if a gateway value is present.
@@ -354,9 +384,9 @@ function give_donation_form_validate_gateway() {
 			give_set_error(
 				'invalid_donation_minimum',
 				sprintf(
-					/* translators: %s: minimum donation amount */
+				/* translators: %s: minimum donation amount */
 					__( 'This form has a minimum donation amount of %s.', 'give' ),
-					give_currency_filter( give_format_amount( give_get_form_minimum_price( $form_id ) ) )
+					give_currency_filter( give_format_amount( give_get_form_minimum_price( $form_id ), array( 'sanitize' => false ) ) )
 				)
 			);
 
@@ -386,7 +416,7 @@ function give_donation_form_validate_gateway() {
  */
 function give_verify_minimum_price() {
 
-	$amount          = give_sanitize_amount( $_REQUEST['give-amount'] );
+	$amount          = give_maybe_sanitize_amount( $_REQUEST['give-amount'] );
 	$form_id         = isset( $_REQUEST['give-form-id'] ) ? $_REQUEST['give-form-id'] : 0;
 	$price_id        = isset( $_REQUEST['give-price-id'] ) ? $_REQUEST['give-price-id'] : null;
 	$variable_prices = give_has_variable_prices( $form_id );
@@ -466,10 +496,27 @@ function give_get_required_fields( $form_id ) {
 			'error_id'      => 'invalid_country',
 			'error_message' => __( 'Please select your billing country.', 'give' ),
 		);
-		$required_fields['card_state']      = array(
+
+
+		$required_fields['card_state'] = array(
 			'error_id'      => 'invalid_state',
-			'error_message' => __( 'Please enter billing state / province.', 'give' ),
+			'error_message' => __( 'Please enter billing state / province / County.', 'give' ),
 		);
+
+		// Check if billing country alredy exists.
+		if ( ! empty( $_POST['billing_country'] ) ) {
+			// Get the value from $_POST.
+			$country = sanitize_text_field( $_POST['billing_country'] );
+
+			// Get the country list that does not required any states init.
+			$states_country = give_states_not_required_country_list();
+
+			// Check if states is empty or not.
+			if ( array_key_exists( $country, $states_country ) ) {
+				// If states is empty remove the required feilds of state in billing cart.
+				unset( $required_fields['card_state'] );
+			}
+		}
 	}
 
 	/**
@@ -668,6 +715,7 @@ function give_donation_form_validate_user_login() {
 				);
 				// All is correct.
 			} else {
+
 				// Repopulate the valid user data array.
 				$valid_user_data = array(
 					'user_id'    => $user_data->ID,
@@ -772,7 +820,7 @@ function give_register_and_login_new_user( $user_data = array() ) {
 		'first_name'      => isset( $user_data['user_first'] ) ? $user_data['user_first'] : '',
 		'last_name'       => isset( $user_data['user_last'] ) ? $user_data['user_last'] : '',
 		'user_registered' => date( 'Y-m-d H:i:s' ),
-		'role'            => get_option( 'default_role' ),
+		'role'            => give_get_option( 'donor_default_user_role', 'give_donor' ),
 	), $user_data );
 
 	// Insert new user.
@@ -796,8 +844,17 @@ function give_register_and_login_new_user( $user_data = array() ) {
 	 */
 	do_action( 'give_insert_user', $user_id, $user_data );
 
-	// Login new user.
-	give_log_user_in( $user_id, $user_data['user_login'], $user_data['user_pass'] );
+	/**
+	 * Filter allow user to alter if user when to login or not when user is register for the first time.
+	 *
+	 * @since 1.8.13
+	 *
+	 * return bool True if login with registration and False if only want to register.
+	 */
+	if ( true === (bool) apply_filters( 'give_log_user_in_on_register', true ) ) {
+		// Login new user.
+		give_log_user_in( $user_id, $user_data['user_login'], $user_data['user_pass'] );
+	}
 
 	// Return user id.
 	return $user_id;
@@ -872,12 +929,12 @@ function give_get_donation_form_user( $valid_data = array() ) {
 
 	// Get the user's billing address details.
 	$user['address']            = array();
-	$user['address']['line1']   = ! empty( $_POST['card_address'] ) ? sanitize_text_field( $_POST['card_address'] ) : false;
-	$user['address']['line2']   = ! empty( $_POST['card_address_2'] ) ? sanitize_text_field( $_POST['card_address_2'] ) : false;
-	$user['address']['city']    = ! empty( $_POST['card_city'] ) ? sanitize_text_field( $_POST['card_city'] ) : false;
-	$user['address']['state']   = ! empty( $_POST['card_state'] ) ? sanitize_text_field( $_POST['card_state'] ) : false;
-	$user['address']['country'] = ! empty( $_POST['billing_country'] ) ? sanitize_text_field( $_POST['billing_country'] ) : false;
-	$user['address']['zip']     = ! empty( $_POST['card_zip'] ) ? sanitize_text_field( $_POST['card_zip'] ) : false;
+	$user['address']['line1']   = ! empty( $_POST['card_address'] ) ? give_clean( $_POST['card_address'] ) : false;
+	$user['address']['line2']   = ! empty( $_POST['card_address_2'] ) ? give_clean( $_POST['card_address_2'] ) : false;
+	$user['address']['city']    = ! empty( $_POST['card_city'] ) ? give_clean( $_POST['card_city'] ) : false;
+	$user['address']['state']   = ! empty( $_POST['card_state'] ) ? give_clean( $_POST['card_state'] ) : false;
+	$user['address']['zip']     = ! empty( $_POST['card_zip'] ) ? give_clean( $_POST['card_zip'] ) : false;
+	$user['address']['country'] = ! empty( $_POST['billing_country'] ) ? give_clean( $_POST['billing_country'] ) : false;
 
 	if ( empty( $user['address']['country'] ) ) {
 		$user['address'] = false;
@@ -951,7 +1008,7 @@ function give_get_donation_cc_info() {
  *
  * @since  1.0
  *
- * @param int    $zip
+ * @param int $zip
  * @param string $country_code
  *
  * @return bool|mixed
@@ -1155,19 +1212,16 @@ function give_validate_multi_donation_form_level( $valid_data, $data ) {
 		}
 
 		// Sanitize donation amount.
-		$data['give-amount'] = give_sanitize_amount( $data['give-amount'] );
+		$data['give-amount'] = give_maybe_sanitize_amount( $data['give-amount'] );
 
-		// Get number of decimals.
-		$default_decimals = give_get_price_decimals();
-
-		if ( $data['give-amount'] === give_sanitize_amount( give_get_price_option_amount( $data['give-form-id'], $data['give-price-id'] ), $default_decimals ) ) {
+		if ( $data['give-amount'] === give_maybe_sanitize_amount( give_get_price_option_amount( $data['give-form-id'], $data['give-price-id'] ) ) ) {
 			return true;
 		}
 
 		// Find correct donation level from all donation levels.
 		foreach ( $variable_prices as $variable_price ) {
 			// Sanitize level amount.
-			$variable_price['_give_amount'] = give_sanitize_amount( $variable_price['_give_amount'], $default_decimals );
+			$variable_price['_give_amount'] = give_maybe_sanitize_amount( $variable_price['_give_amount'] );
 
 			// Set first match donation level ID.
 			if ( $data['give-amount'] === $variable_price['_give_amount'] ) {
@@ -1184,7 +1238,7 @@ function give_validate_multi_donation_form_level( $valid_data, $data ) {
 			&& ( give_is_setting_enabled( give_get_meta( $data['give-form-id'], '_give_custom_amount', true ) ) )
 		) {
 			// Sanitize custom minimum amount.
-			$custom_minimum_amount = give_sanitize_amount( give_get_meta( $data['give-form-id'], '_give_custom_amount_minimum', true ), $default_decimals );
+			$custom_minimum_amount = give_maybe_sanitize_amount( give_get_meta( $data['give-form-id'], '_give_custom_amount_minimum', true ) );
 
 			if ( $data['give-amount'] >= $custom_minimum_amount ) {
 				$_POST['give-price-id'] = 'custom';

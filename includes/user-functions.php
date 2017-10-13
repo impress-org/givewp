@@ -212,7 +212,7 @@ function give_get_donation_stats_by_user( $user = '' ) {
 	if ( $donor ) {
 		$donor = new Give_Donor( $donor->id );
 		$stats['purchases']   = absint( $donor->purchase_count );
-		$stats['total_spent'] = give_sanitize_amount( $donor->purchase_value );
+		$stats['total_spent'] = give_maybe_sanitize_amount( $donor->purchase_value );
 	}
 
 	/**
@@ -359,10 +359,14 @@ function give_validate_user_email( $email, $registering_new_user = false ) {
 		give_set_error( 'email_invalid', __( 'Invalid email.', 'give' ) );
 		$valid = false;
 
-	} elseif ( $registering_new_user && ( give_donor_email_exists( $email ) || email_exists( $email ) ) ) {
-		// Check if email exists.
-		give_set_error( 'email_used', __( 'The email address provided is already active for another user.', 'give' ) );
-		$valid = false;
+	} elseif ( $registering_new_user ) {
+
+		// If donor email is not primary
+		if ( ! email_exists( $email ) && give_donor_email_exists( $email ) && give_is_additional_email( $email ) ) {
+			// Check if email exists.
+			give_set_error( 'email_used', __( 'The email address provided is already active for another user.', 'give' ) );
+			$valid = false;
+		}
 	}
 
 	/**
@@ -407,10 +411,10 @@ function give_validate_user_password( $password = '', $confirm_password = '', $r
 		}
 	}
 	// Passwords Validation For New Donors as well as Existing Donors
-	if( $password || $confirm_password ) {
+	if ( $password || $confirm_password ) {
 		if ( strlen( $password ) < 6 || strlen( $confirm_password ) < 6 ) {
 			// Seems Weak Password
-			give_set_error( 'password_weak', __( 'Passwords should have atleast 6 characters.', 'give' ) );
+			give_set_error( 'password_weak', __( 'Passwords should have at least 6 characters.', 'give' ) );
 			$valid = false;
 		}
 		if ( $password && $confirm_password ) {
@@ -456,22 +460,21 @@ function give_add_past_donations_to_new_user( $user_id ) {
 	$email = get_the_author_meta( 'user_email', $user_id );
 
 	$payments = give_get_payments( array(
+		'output' => 'payments',
 		's' => $email,
 	) );
 
 	if ( $payments ) {
 		foreach ( $payments as $payment ) {
+			/* @var $payment \Give_Payment */
+
 			if ( intval( give_get_payment_user_id( $payment->ID ) ) > 0 ) {
 				continue;
-			} // End if().
+			}
 
-			$meta                    = give_get_payment_meta( $payment->ID );
-			$meta['user_info']       = maybe_unserialize( $meta['user_info'] );
-			$meta['user_info']['id'] = $user_id;
+			$payment->user_id = $user_id;
+			$payment->save();
 
-			// Store the updated user ID in the payment meta.
-			give_update_payment_meta( $payment->ID, '_give_payment_meta', $meta );
-			give_update_payment_meta( $payment->ID, '_give_payment_user_id', $user_id );
 		}
 	}
 
@@ -508,7 +511,7 @@ function give_get_donor_address( $user_id = 0 ) {
 		$user_id = get_current_user_id();
 	}
 
-	$address = get_user_meta( $user_id, '_give_user_address', true );
+	$address = (array) get_user_meta( $user_id, '_give_user_address', true );
 
 	if ( ! isset( $address['line1'] ) ) {
 		$address['line1'] = '';
@@ -557,7 +560,6 @@ function give_new_user_notification( $user_id = 0, $user_data = array() ) {
 	}
 	$blogname = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
 
-
 	// New User Registration: Email sends to the site admin.
 	$emails = Give()->emails;
 	$emails->__set( 'heading', esc_html__( 'New User Registration', 'give' ) );
@@ -567,9 +569,9 @@ function give_new_user_notification( $user_id = 0, $user_data = array() ) {
 	/* translators: %s: user login */
 	$message .= '<strong>' . esc_attr__( 'Username:', 'give' ) . '</strong> ' . $user_data['user_login'] . "\r\n";
 	/* translators: %s: user email */
-	$message .= '<strong>' . esc_attr__( 'E-mail:', 'give' ) . '</strong> ' . $user_data['user_email']  . "\r\n\r\n";
+	$message .= '<strong>' . esc_attr__( 'E-mail:', 'give' ) . '</strong> ' . $user_data['user_email'] . "\r\n\r\n";
 
-	$message .= '<a href="' . admin_url('user-edit.php?user_id=' . $user_id) . '" target="_blank"> ' . esc_attr__( 'Click here to view &raquo;', 'give' ) . '</a>' . "\r\n";
+	$message .= '<a href="' . admin_url( 'user-edit.php?user_id=' . $user_id ) . '" target="_blank"> ' . esc_attr__( 'Click here to view &raquo;', 'give' ) . '</a>' . "\r\n";
 
 	$emails->send(
 		get_option( 'admin_email' ),
@@ -581,16 +583,15 @@ function give_new_user_notification( $user_id = 0, $user_data = array() ) {
 		$message
 	);
 
-
 	// Account Information: Email sends to donor who registered.
 	$emails->__set( 'heading', esc_html__( 'Account Information', 'give' ) );
 
 	$message = sprintf( esc_attr__( 'The following email contains your account information for %s:', 'give' ), $blogname ) . "\r\n\r\n";
 
 	/* translators: %s: user login */
-	$message .=  '<strong>' . esc_attr__( 'Username:', 'give' ) . '</strong> ' .  $user_data['user_login'] . "\r\n";
+	$message .= '<strong>' . esc_attr__( 'Username:', 'give' ) . '</strong> ' . $user_data['user_login'] . "\r\n";
 	/* translators: %s: password */
-	$message .=  '<strong>' . esc_attr__( 'Password:', 'give' ) . '</strong> ' . esc_attr__( '[Password entered during donation]', 'give' ) . "\r\n\r\n";
+	$message .= '<strong>' . esc_attr__( 'Password:', 'give' ) . '</strong> ' . esc_attr__( '[Password entered during donation]', 'give' ) . "\r\n\r\n";
 
 	$message .= '<a href="' . wp_login_url() . '" target="_blank"> ' . esc_attr__( 'Click here to login &raquo;', 'give' ) . '</a>' . "\r\n";
 
@@ -658,7 +659,7 @@ function give_get_donor_name_by( $id = 0, $from = 'donation' ) {
  *
  * @since 1.8.9
  *
- * @param  string   $email Donor Email.
+ * @param  string $email Donor Email.
  * @return boolean  The user's ID on success, and false on failure.
  */
 function give_donor_email_exists( $email ) {
@@ -668,3 +669,22 @@ function give_donor_email_exists( $email ) {
 	return false;
 }
 
+/**
+ * This function will check whether the donor email is primary or additional.
+ *
+ * @param $email Donor Email.
+ *
+ * @since 1.8.13
+ *
+ * @return bool
+ */
+function give_is_additional_email( $email ) {
+	global $wpdb;
+	$meta_table  = Give()->donor_meta->table_name;
+	$donor_id = $wpdb->get_var( $wpdb->prepare( "SELECT customer_id FROM {$meta_table} WHERE meta_key = 'additional_email' AND meta_value = %s LIMIT 1", $email ) );
+
+	if ( empty( $donor_id ) ) {
+		return false;
+	}
+	return true;
+}

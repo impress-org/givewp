@@ -288,13 +288,12 @@ function give_receipt_shortcode( $atts ) {
 		return $login_form;
 	}
 
-	/*
+	/**
 	 * Check if the user has permission to view the receipt.
 	 *
 	 * If user is logged in, user ID is compared to user ID of ID stored in payment meta
 	 * or if user is logged out and donation was made as a guest, the donation session is checked for
 	 * or if user is logged in and the user can view sensitive shop data.
-	 *
 	 */
 	if ( ! apply_filters( 'give_user_can_view_receipt', $user_can_view, $give_receipt_args ) ) {
 		return Give()->notices->print_frontend_notice( $give_receipt_args['error'], false, 'error' );
@@ -331,6 +330,13 @@ add_shortcode( 'give_receipt', 'give_receipt_shortcode' );
 function give_profile_editor_shortcode( $atts ) {
 
 	ob_start();
+
+	// Restrict access to donor profile, if donor and user are disconnected.
+	$is_donor_disconnected = get_user_meta( get_current_user_id(), '_give_is_donor_disconnected', true );
+	if( is_user_logged_in() && $is_donor_disconnected ) {
+		Give()->notices->print_frontend_notice( __( 'Your Donor and User profile are no longer connected. Please contact the site administrator.', 'give' ), true, 'error' );
+		return false;
+	}
 
 	give_get_template_part( 'shortcode', 'profile-editor' );
 

@@ -24,6 +24,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Give_DB_Donor_Meta extends Give_DB {
 
 	/**
+	 * Meta type
+	 *
+	 * @since  1.8.14
+	 * @access public
+	 *
+	 * @var string
+	 */
+	public $meta_type = 'customer';
+
+	/**
 	 * Give_DB_Donor_Meta constructor.
 	 *
 	 * @access  public
@@ -33,9 +43,9 @@ class Give_DB_Donor_Meta extends Give_DB {
 		/* @var WPDB $wpdb */
 		global $wpdb;
 
-		$wpdb->customermeta = $this->table_name  = $wpdb->prefix . 'give_customermeta';
-		$this->primary_key = 'meta_id';
-		$this->version     = '1.0';
+		$wpdb->customermeta = $this->table_name = $wpdb->prefix . 'give_customermeta';
+		$this->primary_key  = 'meta_id';
+		$this->version      = '1.0';
 
 		$this->register_table();
 	}
@@ -67,7 +77,7 @@ class Give_DB_Donor_Meta extends Give_DB {
 	 *
 	 * @param   int    $donor_id Donor ID.
 	 * @param   string $meta_key The meta key to retrieve.
-	 * @param   bool   $single Whether to return a single value.
+	 * @param   bool   $single   Whether to return a single value.
 	 *
 	 * @return  mixed                 Will be an array if $single is false. Will be value of meta data field if $single is true.
 	 */
@@ -88,10 +98,10 @@ class Give_DB_Donor_Meta extends Give_DB {
 	 * @access  private
 	 * @since   1.6
 	 *
-	 * @param   int    $donor_id Donor ID.
-	 * @param   string $meta_key Metadata name.
+	 * @param   int    $donor_id   Donor ID.
+	 * @param   string $meta_key   Metadata name.
 	 * @param   mixed  $meta_value Metadata value.
-	 * @param   bool   $unique Optional, default is false. Whether the same key should not be added.
+	 * @param   bool   $unique     Optional, default is false. Whether the same key should not be added.
 	 *
 	 * @return  bool                  False for failure. True for success.
 	 */
@@ -117,8 +127,8 @@ class Give_DB_Donor_Meta extends Give_DB {
 	 * @access  private
 	 * @since   1.6
 	 *
-	 * @param   int    $donor_id Donor ID.
-	 * @param   string $meta_key Metadata key.
+	 * @param   int    $donor_id   Donor ID.
+	 * @param   string $meta_key   Metadata key.
 	 * @param   mixed  $meta_value Metadata value.
 	 * @param   mixed  $prev_value Optional. Previous value to check before removing.
 	 *
@@ -145,14 +155,29 @@ class Give_DB_Donor_Meta extends Give_DB {
 	 * @access  private
 	 * @since   1.6
 	 *
-	 * @param   int    $donor_id Donor ID.
-	 * @param   string $meta_key Metadata name.
+	 * @param   int    $donor_id   Donor ID.
+	 * @param   string $meta_key   Metadata name.
 	 * @param   mixed  $meta_value Optional. Metadata value.
 	 *
 	 * @return  bool                  False for failure. True for success.
 	 */
 	public function delete_meta( $donor_id = 0, $meta_key = '', $meta_value = '' ) {
 		return delete_metadata( 'customer', $donor_id, $meta_key, $meta_value );
+	}
+
+	/**
+	 * Remove all meta data matching criteria from a donor id.
+	 *
+	 * @access  private
+	 * @since   1.8.14
+	 *
+	 * @param   int $donor_id Donor ID.
+	 *
+	 * @return  bool  False for failure. True for success.
+	 */
+	public function delete_all_meta( $donor_id = 0 ) {
+		global $wpdb;
+		$wpdb->delete( $this->table_name, array( 'customer_id' => $donor_id ), array( '%d' ) );
 	}
 
 	/**

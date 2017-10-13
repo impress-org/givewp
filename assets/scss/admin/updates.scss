@@ -1,0 +1,37 @@
+/**
+ * Give Updates Panel SCSS
+ *
+ * @description Updates Panel Styles
+ * @package     Give
+ * @subpackage  SCSS/Admin
+ * @copyright   Copyright (c) 2017, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+
+#give-updates-h1 {
+  padding-top: 0;
+}
+
+.give-update-panel-content p {
+  font-size: 16px;
+}
+
+#give-updates .dashicons-no-alt {
+  color: red;
+}
+
+#give-updates .dashicons-yes {
+  color: green;
+}
+
+#give-db-updates .spinner {
+  margin-top:0;
+}
+
+body.give_forms_page_give-updates {
+	.give-run-update-containt {
+		.give-run-update-button {
+			margin-right: 10px;
+		}
+	}
+}

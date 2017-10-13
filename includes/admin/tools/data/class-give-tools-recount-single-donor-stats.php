@@ -235,7 +235,7 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 
 			// Before we start, let's zero out the customer's data
 			$donor = new Give_Donor( $this->customer_id );
-			$donor->update( array( 'purchase_value' => give_format_amount( 0 ), 'purchase_count' => 0 ) );
+			$donor->update( array( 'purchase_value' => give_format_amount( 0, array( 'sanitize' => false ) ), 'purchase_count' => 0 ) );
 
 			$attached_payment_ids = explode( ',', $donor->payment_ids );
 
@@ -280,7 +280,16 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 		global $wpdb;
 		$value = $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM $wpdb->options WHERE option_name = '%s'", $key ) );
 
-		return empty( $value ) ? false : maybe_unserialize( $value );
+		if ( empty( $value ) ) {
+			return false;
+		}
+
+		$maybe_json = json_decode( $value );
+		if ( ! is_null( $maybe_json ) ) {
+			$value = json_decode( $value, true );
+		}
+
+		return $value;
 	}
 
 	/**
@@ -296,7 +305,7 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 	private function store_data( $key, $value ) {
 		global $wpdb;
 
-		$value = maybe_serialize( $value );
+		$value = is_array( $value ) ? wp_json_encode( $value ) : esc_attr( $value );
 
 		$data = array(
 			'option_name'  => $key,

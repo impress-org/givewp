@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin View: Exports
+ * Admin View: Imports
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -14,9 +14,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 				<?php
 				/**
-				 * Fires before the reports import tab.
+				 * Fires before the reports Import tab.
 				 *
-				 * @since 1.0
+				 * @since 1.8.14
 				 */
 				do_action( 'give_tools_tab_import_content_top' );
 				?>
@@ -67,14 +67,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 					 */
 					do_action( 'give_tools_tab_import_table_bottom' );
 					?>
+
 					</tbody>
 				</table>
 
 				<?php
 				/**
-				 * Fires after the reports import tab.
+				 * Fires after the reports Import tab.
 				 *
-				 * @since 1.0
+				 * @since 1.8.14
 				 */
 				do_action( 'give_tools_tab_import_content_bottom' );
 				?>

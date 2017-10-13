@@ -3,7 +3,7 @@
  * Give Reports Page/Tab
  *
  * @package     Give
- * @subpackage  Classes/Give_Settings_Earnings
+ * @subpackage  Classes/Give_Earnings_Report
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.8
@@ -13,14 +13,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-if ( ! class_exists( 'Give_Settings_Earnings' ) ) :
+if ( ! class_exists( 'Give_Earnings_Report' ) ) :
 
 	/**
-	 * Give_Settings_Earnings.
+	 * Give_Earnings_Report.
 	 *
 	 * @sine 1.8
 	 */
-	class Give_Settings_Earnings {
+	class Give_Earnings_Report {
 
 		/**
 		 * Setting page id.
@@ -138,4 +138,4 @@ if ( ! class_exists( 'Give_Settings_Earnings' ) ) :
 
 endif;
 
-return new Give_Settings_Earnings();
+return new Give_Earnings_Report();

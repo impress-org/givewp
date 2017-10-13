@@ -3,7 +3,7 @@
 /**
  * Class Tests_Payment_Class
  */
-class Tests_Payment_Class extends WP_UnitTestCase {
+class Tests_Payment_Class extends Give_Unit_Test_Case {
 
 	protected $_payment_id = null;
 	protected $_key = null;

@@ -24,13 +24,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @global $give_payments_page
  * @global $give_reports_page
  * @global $give_add_ons_page
- * @global $give_upgrades_screen
  * @global $give_donors_page
  *
  * @return void
  */
 function give_add_options_links() {
-	global $give_settings_page, $give_payments_page, $give_reports_page, $give_add_ons_page, $give_upgrades_screen, $give_donors_page, $give_tools_page;
+	global $give_settings_page, $give_payments_page, $give_reports_page, $give_add_ons_page, $give_donors_page, $give_tools_page;
 
 	//Payments
 	$give_payment       = get_post_type_object( 'give_payment' );
@@ -73,11 +72,6 @@ function give_add_options_links() {
 
 	//Add-ons
 	$give_add_ons_page = add_submenu_page( 'edit.php?post_type=give_forms', esc_html__( 'Give Add-ons', 'give' ), esc_html__( 'Add-ons', 'give' ), 'install_plugins', 'give-addons', 'give_add_ons_page' );
-
-	//Upgrades
-	$give_upgrades_screen = add_submenu_page( null, esc_html__( 'Give Upgrades', 'give' ), esc_html__( 'Give Upgrades', 'give' ), 'manage_give_settings', 'give-upgrades', 'give_upgrades_screen' );
-
-
 }
 
 add_action( 'admin_menu', 'give_add_options_links', 10 );
@@ -310,7 +304,7 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 			}
 			break;
 		default:
-			global $give_payments_page, $give_settings_page, $give_reports_page, $give_system_info_page, $give_add_ons_page, $give_settings_export, $give_upgrades_screen, $give_donors_page, $give_tools_page;
+			global $give_payments_page, $give_settings_page, $give_reports_page, $give_system_info_page, $give_add_ons_page, $give_settings_export, $give_donors_page, $give_tools_page;
 
 			$admin_pages = apply_filters( 'give_admin_pages', array(
 				$give_payments_page,
@@ -318,7 +312,6 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 				$give_reports_page,
 				$give_system_info_page,
 				$give_add_ons_page,
-				$give_upgrades_screen,
 				$give_settings_export,
 				$give_donors_page,
 				$give_tools_page,
@@ -326,9 +319,6 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 		) );
 			if ( 'give_forms' == $typenow || 'index.php' == $pagenow || 'post-new.php' == $pagenow || 'post.php' == $pagenow ) {
 				$found = true;
-				if ( 'give-upgrades' === $page ) {
-					$found = false;
-				}
 			} elseif ( in_array( $pagenow, $admin_pages ) ) {
 				$found = true;
 			}
@@ -370,7 +360,7 @@ function give_settings_page_pages( $settings ) {
 		// License settings.
 		include( 'settings/class-settings-license.php' ),
 
-		// Advanced settinns.
+		// Advanced settings.
 		include( 'settings/class-settings-advanced.php' )
 	);
 
@@ -392,16 +382,13 @@ function give_reports_page_pages( $settings ) {
 
 	$settings = array(
 		// Earnings.
-		include( 'reporting/class-settings-earnings.php' ),
+		include( 'reports/class-earnings-report.php' ),
 
 		// Forms.
-		include( 'reporting/class-settings-forms.php' ),
-
-		// Donors.
-		include( 'reporting/class-settings-donors.php' ),
+		include( 'reports/class-forms-report.php' ),
 
 		// Gateways.
-		include( 'reporting/class-settings-gateways.php' ),
+		include( 'reports/class-gateways-report.php' ),
 
 	);
 
