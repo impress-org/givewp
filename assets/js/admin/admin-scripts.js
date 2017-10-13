@@ -2248,6 +2248,14 @@ var give_setting_edit = false;
 		// Called after all the form processing had being done.
 		enable_form_edit_alert_setting();
 	});
+
+	// Fix notice appearance issue.
+	window.setTimeout(
+		function(){
+			$('.give-notice').slideDown();
+		},
+		2000
+	);
 })(jQuery);
 
 /**
