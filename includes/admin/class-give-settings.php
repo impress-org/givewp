@@ -1321,7 +1321,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 				default:
 					$class          = $license->error;
 					$messages[]     = sprintf(
-							__( 'Your license is not activated.Please <a href="%3$s" target="_blank" title="Visit account page">visit your account page</a> to manage your license key URLs. %2$sError Code: %1$s.', 'give' ),
+							__( 'Your license is not activated. Please <a href="%3$s" target="_blank" title="Visit account page">visit your account page</a> to manage your license key URLs. %2$sError Code: %1$s.', 'give' ),
 							$license->error,
 							'<br/>',
 						 "{$account_page_link}?utm_campaign=admin&utm_source=licenses&utm_medium={$license->error}"

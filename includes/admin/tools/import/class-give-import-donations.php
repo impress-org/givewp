@@ -577,7 +577,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			/**
 			 * Filter to modify delimiter of Import.
 			 *
-			 * @since 1.8.15
+			 * @since 1.8.14
 			 *
 			 * Return string $delimiter.
 			 */
