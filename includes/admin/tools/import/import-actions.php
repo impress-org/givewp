@@ -35,36 +35,14 @@ function give_core_settings_import() {
 		}
 
 		$url = $json_to_array['email_logo'];
+		$url = 'https://nikonrumors.com/wp-content/uploads/2014/03/Nikon-1-V3-sample-photo.jpg';
 		$tmp = download_url( $url );
 
-		if ( is_wp_error( $tmp ) ) {
+		$new_url = media_sideload_image( $url, 0, null, 'src' );
 
+		if ( ! is_wp_error( $new_url ) ) {
+			$json_to_array['email_logo'] = $new_url;
 		}
-
-		$file_array = array();
-
-		// Set variables for storage and fix file filename for query strings.
-		preg_match( '/[^\?]+\.(jpg|jpe|jpeg|gif|png)/i', $url, $matches );
-		$file_array['name']     = basename( $matches[0] );
-		$file_array['tmp_name'] = $tmp;
-
-		// If error storing temporarily, unlink.
-		if ( is_wp_error( $tmp ) ) {
-			@unlink( $file_array['tmp_name'] );
-			$file_array['tmp_name'] = '';
-		}
-
-		// Do the validation and storage operation.
-		$id = media_handle_sideload( $file_array, 0 );
-
-		// If error storing permanently, unlink.
-		if ( is_wp_error( $id ) ) {
-			@unlink( $file_array['tmp_name'] );
-			return $id;
-		}
-
-		$src = wp_get_attachment_url( $id );
-		$json_to_array['email_logo'] = $src;
 	}
 
 	update_option( 'give_settings', $json_to_array );
