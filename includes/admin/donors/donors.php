@@ -83,7 +83,9 @@ function give_donors_list() {
 		do_action( 'give_donors_table_top' );
 		?>
 
-		<hr class="wp-header-end">
+		<?php
+		give_admin_notices_display();
+		?>
 
 		<form id="give-donors-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors' ); ?>">
 			<?php
@@ -167,7 +169,9 @@ function give_render_donor_view( $view, $callbacks ) {
 			?>
 		</h1>
 
-		<hr class="wp-header-end">
+		<?php
+		give_admin_notices_display();
+		?>
 		
 		<?php if ( $donor && $render ) : ?>
 

@@ -30,7 +30,9 @@ function give_add_ons_page() {
 				<span class="dashicons dashicons-external"></span></a>
 		</h1>
 
-		<hr class="wp-header-end">
+		<?php
+		give_admin_notices_display();
+		?>
 
 		<p><?php esc_html_e( 'The following Add-ons extend the functionality of Give.', 'give' ); ?></p>
 		<?php echo give_add_ons_get_feed(); ?>
