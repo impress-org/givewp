@@ -784,20 +784,20 @@ if ( ! class_exists( 'Give_License' ) ) :
 		/**
 		 * Check if admin can edit license or not,
 		 *
-		 * @since 1.8.9
+		 * @since  1.8.9
 		 * @access private
 		 */
-		private function __is_user_can_edit_license(){
+		private function __is_user_can_edit_license() {
 			// Bailout.
-			if (
-				empty( $_POST[ $this->item_shortname . '_license_key' ] ) ||
-				! current_user_can( 'manage_give_settings' )
-			) {
+			if ( ! current_user_can( 'manage_give_settings' ) ) {
 				return false;
 			}
 
 			// Security check.
-			if ( ! wp_verify_nonce( $_REQUEST[ $this->item_shortname . '_license_key-nonce' ], $this->item_shortname . '_license_key-nonce' ) ) {
+			if (
+				isset( $_POST[ $this->item_shortname . '_license_key-nonce'] ) &&
+				! wp_verify_nonce( $_REQUEST[ $this->item_shortname . '_license_key-nonce' ], $this->item_shortname . '_license_key-nonce' )
+			) {
 				wp_die( __( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 			}
 
