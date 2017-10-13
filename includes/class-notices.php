@@ -345,6 +345,19 @@ class Give_Notices {
 			</script>
 			<?php
 		endif;
+		?>
+		<script>
+			jQuery(document).ready(function($){
+				// Fix notice appearance issue.
+				window.setTimeout(
+					function(){
+						$('.give-notice').slideDown();
+					},
+					1000
+				);
+			});
+		</script>
+		<?php
 	}
 
 
