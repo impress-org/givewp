@@ -1,3 +1,4 @@
+
 <?php
 /**
  * Exports Actions
@@ -69,7 +70,7 @@ add_action( 'give_earnings_export', 'give_export_earnings' );
  *
  * Give_Core_Settings class.
  *
- * @since 1.5
+ * @since 1.8.15
  * @return void
  */
 function give_core_settings_export() {
