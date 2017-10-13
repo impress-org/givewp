@@ -92,42 +92,71 @@ function give_sanitize_amount_for_db( $number ) {
 function give_maybe_sanitize_amount( $number, $dp = false, $trim_zeros = false ) {
 	$thousand_separator = give_get_price_thousand_separator();
 	$decimal_separator  = give_get_price_decimal_separator();
+	$number_decimals    = is_bool( $dp ) ? give_get_price_decimals() : $dp;
 
-	// Bailout.
-	if( empty( $number ) || ( ! is_numeric( $number ) && ! is_string( $number ) ) ) {
+	// Explode number by . decimal separator.
+	$number_parts = explode( '.', $number );
+
+	/*
+	 * Bailout: Quick format number
+	 */
+	if ( empty( $number ) || ( ! is_numeric( $number ) && ! is_string( $number ) ) ) {
 		return $number;
-	}elseif (
-		( false == strpos( $number, $thousand_separator ) ) &&
-		( false === strpos( $number, $decimal_separator ) )
+	}
+
+	// Remove currency symbols from number if any.
+	$number = trim( str_replace( give_currency_symbols( true ), '', $number ) );
+
+	if (
+		// Non formatted number.
+		(
+			( false === strpos( $number, $thousand_separator ) ) &&
+			( false === strpos( $number, $decimal_separator ) )
+		) ||
+
+		// Decimal formatted number.
+
+		// If number of decimal place set to non zero and
+		// number only contains `.` as separator, precision set to less then or equal to number of decimal
+		// then number will be consider as decimal formatted which means number is already sanitized.
+		(
+			$number_decimals &&
+			'.' === $thousand_separator &&
+			false !== strpos( $number, $thousand_separator ) &&
+			false === strpos( $number, $decimal_separator ) &&
+			2 === count( $number_parts ) &&
+			( $number_decimals >= strlen( $number_parts[1] ) )
+		)
 	) {
-		return number_format( $number, ( is_bool( $dp ) ? give_get_price_decimals() : $dp ), '.', '' );
+		return number_format( $number, $number_decimals, '.', '' );
 	}
 
 	// Handle thousand separator as '.'
 	// Handle sanitize database values.
-	$number_parts = explode( '.', $number );
 	$is_db_sanitize_val = ( 2 === count( $number_parts ) &&
 	                        is_numeric( $number_parts[0] ) &&
 	                        is_numeric( $number_parts[1] ) &&
 	                        ( 6 === strlen( $number_parts[1] ) ) );
 
-	if( $is_db_sanitize_val ) {
+	if ( $is_db_sanitize_val ) {
 		// Sanitize database value.
-		return number_format( $number, ( is_bool( $dp ) ? give_get_price_decimals() : $dp ), '.', '' );
+		return number_format( $number, $number_decimals, '.', '' );
 
 	} elseif (
 		'.' === $thousand_separator &&
 		false !== strpos( $number, $thousand_separator )
-	){
+	) {
 		// Fix point thousand separator value.
 		$number = str_replace( '.', '', $number );
 	}
 
-	return give_sanitize_amount( $number, $dp, $trim_zeros );
+	return give_sanitize_amount( $number, $number_decimals, $trim_zeros );
 }
 
 /**
  * Sanitize Amount
+ *
+ * Note: Use this give_maybe_sanitize_amount function instead for sanitizing number.
  *
  * Returns a sanitized amount by stripping out thousands separators.
  *

@@ -48,7 +48,7 @@ function give_redirect_to_clean_url_admin_pages() {
 		'give-payment-history',
 		'give-donors',
 		'give-reports',
-		'give-tools'
+		'give-tools',
 	);
 
 	// Get current page.
@@ -353,6 +353,15 @@ function _give_register_admin_notices() {
 						'show'        => true,
 					) );
 					break;
+
+				case 'reconnect-user' :
+					Give()->notices->register_notice( array(
+						'id'          => 'give-donor-reconnect-user',
+						'type'        => 'updated',
+						'description' => __( 'User has been successfully connected with Donor.', 'give' ),
+						'show'        => true,
+					) );
+					break;
 			}
 		}
 	}
@@ -404,30 +413,18 @@ function give_import_page_link_callback() {
 	<a href="<?php echo esc_url( give_import_page_url() ); ?>"
 	   class="page-import-action page-title-action"><?php esc_html_e( 'Import Donations', 'give' ); ?></a>
 
-	<style type="text/css">
-		<?php
-		// Check if view donation single page only.
-		if ( ! empty( $_REQUEST['view'] ) && 'view-payment-details' === (string) give_clean( $_REQUEST['view'] ) && 'give-payment-history' === give_clean( $_REQUEST['page'] ) ) {
-			?>
-		.wrap #transaction-details-heading {
-			display: inline-block;
-		}
-
-		<?php
-	} else {
-		?>
-		/* So the "New Donation" button aligns with the wp-admin h1 tag */
-		.wrap > h1 {
-			display: inline-block;
-			margin-right: 5px;
-		}
-
-		<?php
-	} ?>
-	</style>
 	<?php
+	// Check if view donation single page only.
+	if ( ! empty( $_REQUEST['view'] ) && 'view-payment-details' === (string) give_clean( $_REQUEST['view'] ) && 'give-payment-history' === give_clean( $_REQUEST['page'] ) ) {
+		?>
+		<style type="text/css">
+			.wrap #transaction-details-heading {
+				display: inline-block;
+			}
+		</style>
+		<?php
+	}
 }
-
 
 add_action( 'give_payments_page_top', 'give_import_page_link_callback', 11 );
 
@@ -514,11 +511,12 @@ function give_donation_import_callback() {
 	}
 
 	$url              = give_import_page_url( array(
-		'step'       => '4',
-		'csv'        => $csv,
-		'total'      => $total,
-		'delete_csv' => $import_setting['delete_csv'],
-		'success'    => ( isset( $json_data['success'] ) ? $json_data['success'] : '' ),
+		'step'          => '4',
+		'importer-type' => 'import_donations',
+		'csv'           => $csv,
+		'total'         => $total,
+		'delete_csv'    => $import_setting['delete_csv'],
+		'success'       => ( isset( $json_data['success'] ) ? $json_data['success'] : '' ),
 	) );
 	$json_data['url'] = $url;
 

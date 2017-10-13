@@ -5,7 +5,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: WordImpress
  * Author URI: https://wordimpress.com
- * Version: 1.8.13
+ * Version: 1.8.15
  * Text Domain: give
  * Domain Path: /languages
  * GitHub Plugin URI: https://github.com/WordImpress/Give
@@ -324,7 +324,7 @@ if ( ! class_exists( 'Give' ) ) :
 
 			// Plugin version
 			if ( ! defined( 'GIVE_VERSION' ) ) {
-				define( 'GIVE_VERSION', '1.8.13' );
+				define( 'GIVE_VERSION', '1.8.15' );
 			}
 
 			// Plugin Folder Path
@@ -396,6 +396,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/country-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/template-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/misc-functions.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/import-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/template.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/widget.php';
@@ -429,6 +430,8 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/template.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/actions.php';
+
+			require_once GIVE_PLUGIN_DIR . 'includes/donors/class-give-donors-query.php';
 
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				require_once GIVE_PLUGIN_DIR . 'includes/class-give-cli-commands.php';

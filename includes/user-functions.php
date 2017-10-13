@@ -460,6 +460,7 @@ function give_add_past_donations_to_new_user( $user_id ) {
 	$email = get_the_author_meta( 'user_email', $user_id );
 
 	$payments = give_get_payments( array(
+		'output' => 'payments',
 		's' => $email,
 	) );
 
@@ -510,7 +511,7 @@ function give_get_donor_address( $user_id = 0 ) {
 		$user_id = get_current_user_id();
 	}
 
-	$address = get_user_meta( $user_id, '_give_user_address', true );
+	$address = (array) get_user_meta( $user_id, '_give_user_address', true );
 
 	if ( ! isset( $address['line1'] ) ) {
 		$address['line1'] = '';

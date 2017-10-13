@@ -280,7 +280,7 @@ add_action( 'give_reports_view_gateways', 'give_reports_gateways_table' );
 function give_reports_earnings() {
 	?>
 	<div class="tablenav top reports-table-nav">
-		<h3 class="alignleft reports-earnings-title"><span><?php esc_html_e( 'Income Report', 'give' ); ?></span></h3>
+		<h2 class="reports-earnings-title"><?php esc_html_e( 'Income Report', 'give' ); ?></h2>
 	</div>
 	<?php
 	give_reports_graph();
