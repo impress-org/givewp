@@ -462,7 +462,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			$selected = '';
 
 			// Postal Code also needs to map with zip.
-			if ( 'Postal Code' === $value ) {
+			if ( 'postal code' === strtolower( $value ) ) {
 				$value = 'Zip';
 			}
 
