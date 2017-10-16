@@ -337,7 +337,7 @@ function give_format_amount( $amount, $args = array() ) {
 	$thousands_sep = give_get_price_thousand_separator( $args['donation_id'] );
 	$decimal_sep   = give_get_price_decimal_separator( $args['donation_id'] );
 	$decimals      = ! empty( $args['decimal'] ) ? give_get_price_decimals( $args['donation_id'] ) : 0;
-	$currency      = ! empty( $args['currency'] ) ? $args['currency'] : give_get_currency();
+	$currency      = ! empty( $args['currency'] ) ? $args['currency'] : give_get_currency( $args['donation_id'] );
 
 	if ( ! empty( $amount ) ) {
 		// Sanitize amount before formatting.

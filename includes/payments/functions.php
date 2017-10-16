@@ -148,7 +148,7 @@ function give_insert_payment( $payment_data = array() ) {
 	// Set properties.
 	$payment->total          = $payment_data['price'];
 	$payment->status         = ! empty( $payment_data['status'] ) ? $payment_data['status'] : 'pending';
-	$payment->currency       = ! empty( $payment_data['currency'] ) ? $payment_data['currency'] : give_get_currency();
+	$payment->currency       = ! empty( $payment_data['currency'] ) ? $payment_data['currency'] : give_get_currency( $payment_data['give_form_id'] );
 	$payment->user_info      = $payment_data['user_info'];
 	$payment->gateway        = $gateway;
 	$payment->form_title     = $form_title;
@@ -230,7 +230,7 @@ function give_create_payment( $payment_data ) {
 		'date'            => $payment_data['date'],
 		'user_email'      => $payment_data['user_email'],
 		'purchase_key'    => $payment_data['purchase_key'],
-		'currency'        => give_get_currency(),
+		'currency'        => give_get_currency( $form_id ),
 		'user_info'       => $payment_data['user_info'],
 		'status'          => 'pending',
 		'gateway'         => 'paypal',
