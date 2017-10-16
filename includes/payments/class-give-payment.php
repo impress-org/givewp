@@ -1030,7 +1030,7 @@ final class Give_Payment {
 
 		// Sanitizing the price here so we don't have a dozen calls later.
 		$donation_amount = give_maybe_sanitize_amount( $donation_amount );
-		$total           = round( $donation_amount, give_currency_decimal_filter() );
+		$total           = round( $donation_amount, give_get_price_decimals( $this->ID ) );
 
 		// Add Options.
 		$default_options = array();
@@ -1047,8 +1047,8 @@ final class Give_Payment {
 		$donation = array(
 			'name'     => $donation->post_title,
 			'id'       => $donation->ID,
-			'price'    => round( $total, give_currency_decimal_filter() ),
-			'subtotal' => round( $total, give_currency_decimal_filter() ),
+			'price'    => round( $total, give_get_price_decimals( $this->ID ) ),
+			'subtotal' => round( $total, give_get_price_decimals( $this->ID ) ),
 			'price_id' => $args['price_id'],
 			'action'   => 'add',
 			'options'  => $options,

@@ -79,20 +79,18 @@ function give_get_currency_formatting_settings( $id_or_currency_code = null ) {
 /**
  * Get decimal count
  *
- * @param int $donation_id Donation ID.
- *
  * @since 1.6
  *
- * @param int $donation_id
+ * @param int $donation_or_form_id
  * @param string $currency
  *
  * @return mixed
  */
-function give_get_price_decimals( $donation_id = null, $currency = '' ) {
+function give_get_price_decimals( $donation_or_form_id = null, $currency = '' ) {
 	// Set currency on basis of donation id.
 	if( empty( $currency ) ) {
-		if( is_numeric( $donation_id ) && 'give_payment' === get_post_type( $donation_id ) ) {
-			$currency = give_get_currency( $donation_id );
+		if( is_numeric( $donation_or_form_id ) && 'give_payment' === get_post_type( $donation_or_form_id ) ) {
+			$currency = give_get_currency( $donation_or_form_id );
 		} else{
 			$currency = give_get_currency();
 		}
@@ -101,7 +99,7 @@ function give_get_price_decimals( $donation_id = null, $currency = '' ) {
 	$number_of_decimals = 0;
 
 	if( ! give_is_zero_based_currency( $currency ) ){
-		$setting = give_get_currency_formatting_settings( $donation_id );
+		$setting = give_get_currency_formatting_settings( $donation_or_form_id );
 		$number_of_decimals = $setting['number_decimals'];
 	}
 
@@ -111,7 +109,7 @@ function give_get_price_decimals( $donation_id = null, $currency = '' ) {
 	 *
 	 * @since 1.6
 	 */
-	return apply_filters( 'give_sanitize_amount_decimals', $number_of_decimals, $donation_id );
+	return apply_filters( 'give_sanitize_amount_decimals', $number_of_decimals, $donation_or_form_id );
 }
 
 /**

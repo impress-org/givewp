@@ -905,7 +905,7 @@ function give_get_total_earnings( $recalculate = false ) {
 		$total = 0; // Don't ever show negative earnings.
 	}
 
-	return apply_filters( 'give_total_earnings', round( $total, give_currency_decimal_filter() ) );
+	return apply_filters( 'give_total_earnings', round( $total, give_get_price_decimals() ), $total );
 }
 
 /**
