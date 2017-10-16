@@ -311,6 +311,24 @@ class Give_Roles {
 			$wp_roles->remove_cap( 'give_accountant', 'view_give_reports' );
 			$wp_roles->remove_cap( 'give_accountant', 'export_give_reports' );
 
+			// Add Give Capabilities to Author User Role.
+			$wp_roles->remove_cap( 'author', 'delete_give_forms' );
+			$wp_roles->remove_cap( 'author', 'delete_published_give_forms' );
+			$wp_roles->remove_cap( 'author', 'edit_give_forms' );
+			$wp_roles->remove_cap( 'author', 'delete_published_give_forms' );
+
+			// Add Give Capabilities to Editor User Role.
+			$wp_roles->remove_cap( 'editor', 'delete_give_forms' );
+			$wp_roles->remove_cap( 'editor', 'delete_others_give_forms' );
+			$wp_roles->remove_cap( 'editor', 'delete_private_give_forms' );
+			$wp_roles->remove_cap( 'editor', 'delete_published_give_forms' );
+			$wp_roles->remove_cap( 'editor', 'edit_give_forms' );
+			$wp_roles->remove_cap( 'editor', 'edit_others_give_forms' );
+			$wp_roles->remove_cap( 'editor', 'edit_private_give_forms' );
+			$wp_roles->remove_cap( 'editor', 'edit_published_give_forms' );
+			$wp_roles->remove_cap( 'editor', 'publish_give_forms' );
+			$wp_roles->remove_cap( 'editor', 'read_private_give_forms' );
+
 		}
 	}
 
