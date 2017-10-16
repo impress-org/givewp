@@ -3,6 +3,8 @@
  * This template is used to display the donation history of the current user.
  */
 
+$donation_history_args = Give()->session->get( 'give_donation_history_args' );
+
 // User's Donations.
 if ( is_user_logged_in() ) {
 	$donations = give_get_users_donations( get_current_user_id(), 20, true, 'any' );
@@ -28,11 +30,37 @@ if ( $donations ) : ?>
 			 * @since 1.7
 			 */
 			do_action( 'give_donation_history_header_before' );
-			?>
-			<th scope="col" class="give-donation-id"><?php esc_html_e( 'ID', 'give' ); ?></th>
-			<th scope="col" class="give-donation-date"><?php esc_html_e( 'Date', 'give' ); ?></th>
-			<th scope="col" class="give-donation-amount"><?php esc_html_e( 'Amount', 'give' ); ?></th>
-			<th scope="col" class="give-donation-details"><?php esc_html_e( 'Details', 'give' ); ?></th>
+
+			if ( filter_var( $donation_history_args['id'], FILTER_VALIDATE_BOOLEAN ) ) :
+				?>
+				<th scope="col" class="give-donation-id"><?php _e( 'ID', 'give' ); ?></th>
+				<?php
+			endif;
+			if ( filter_var( $donation_history_args['date'], FILTER_VALIDATE_BOOLEAN ) ) :
+				?>
+				<th scope="col" class="give-donation-date"><?php _e( 'Date', 'give' ); ?></th>
+				<?php
+			endif;
+			if ( filter_var( $donation_history_args['donor'], FILTER_VALIDATE_BOOLEAN ) ) :
+				?>
+				<th scope="col" class="give-donation-donor"><?php _e( 'Donor', 'give' ); ?></th>
+				<?php
+			endif;
+			if ( filter_var( $donation_history_args['amount'], FILTER_VALIDATE_BOOLEAN ) ) :
+				?>
+				<th scope="col" class="give-donation-amount"><?php _e( 'Amount', 'give' ); ?></th>
+				<?php
+			endif;
+			if ( filter_var( $donation_history_args['status'], FILTER_VALIDATE_BOOLEAN ) ) :
+				?>
+				<th scope="col" class="give-donation-status"><?php _e( 'Status', 'give' ); ?></th>
+				<?php
+			endif;
+			if ( filter_var( $donation_history_args['payment_method'], FILTER_VALIDATE_BOOLEAN ) ) :
+				?>
+				<th scope="col" class="give-donation-payment-method"><?php _e( 'Payment Method', 'give' ); ?></th>
+			<?php endif; ?>
+			<th scope="col" class="give-donation-details"><?php _e( 'Details', 'give' ); ?></th>
 			<?php
 			/**
 			 * Fires in current user donation history table, after the header row ends.
@@ -61,10 +89,25 @@ if ( $donations ) : ?>
 				 * @param mixed $donation_data Payment meta data.
 				 */
 				do_action( 'give_donation_history_row_start', $post->ID, $donation_data );
-				?>
-				<td class="give-donation-id">#<?php echo give_get_payment_number( $post->ID ); ?></td>
-				<td class="give-donation-date"><?php echo date_i18n( give_date_format(), strtotime( get_post_field( 'post_date', $post->ID ) ) ); ?></td>
-				<td class="give-donation-amount">
+
+				if ( filter_var( $donation_history_args['id'], FILTER_VALIDATE_BOOLEAN ) ) :
+					?>
+					<td class="give-donation-id">#<?php echo give_get_payment_number( $post->ID ); ?></td>
+					<?php
+				endif;
+				if ( filter_var( $donation_history_args['date'], FILTER_VALIDATE_BOOLEAN ) ) :
+					?>
+					<td class="give-donation-date"><?php echo date_i18n( give_date_format(), strtotime( get_post_field( 'post_date', $post->ID ) ) ); ?></td>
+					<?php
+				endif;
+				if ( filter_var( $donation_history_args['donor'], FILTER_VALIDATE_BOOLEAN ) ) :
+					?>
+					<td class="give-donation-donor"><?php echo give_get_donor_name_by( $post->ID ); ?></td>
+					<?php
+				endif;
+				if ( filter_var( $donation_history_args['amount'], FILTER_VALIDATE_BOOLEAN ) ) :
+					?>
+					<td class="give-donation-amount">
 					<span class="give-donation-amount">
 					<?php
 					$currency_code = give_get_payment_currency_code( $post->ID );
@@ -89,7 +132,18 @@ if ( $donations ) : ?>
 					echo apply_filters( 'give_donation_history_row_amount', $donation_amount, $post->ID );
 					?>
 					</span>
-				</td>
+					</td>
+					<?php
+				endif;
+				if ( filter_var( $donation_history_args['status'], FILTER_VALIDATE_BOOLEAN ) ) :
+					?>
+					<td class="give-donation-status"><?php echo give_get_payment_status( $post, true ); ?></td>
+					<?php
+				endif;
+				if ( filter_var( $donation_history_args['payment_method'], FILTER_VALIDATE_BOOLEAN ) ) :
+					?>
+					<td class="give-donation-payment-method"><?php echo give_get_gateway_checkout_label( give_get_payment_gateway( $post->ID ) ); ?></td>
+				<?php endif; ?>
 				<td class="give-donation-details">
 					<?php
 					// Display View Receipt or.
@@ -97,9 +151,9 @@ if ( $donations ) : ?>
 					     && 'subscription' !== $post->post_status
 					) : ?>
 						<a href="<?php echo esc_url( add_query_arg( 'payment_key', give_get_payment_key( $post->ID ), give_get_history_page_uri() ) ); ?>"><span
-									class="give-donation-status <?php echo $post->post_status; ?>"><?php echo esc_html__( 'View', 'give' ) . ' ' . give_get_payment_status( $post, true ) . ' &raquo;'; ?></span></a>
+									class="give-donation-status <?php echo $post->post_status; ?>"><?php echo __( 'View', 'give' ) . ' ' . give_get_payment_status( $post, true ) . ' &raquo;'; ?></span></a>
 					<?php else : ?>
-						<a href="<?php echo esc_url( add_query_arg( 'payment_key', give_get_payment_key( $post->ID ), give_get_history_page_uri() ) ); ?>"><?php esc_html_e( 'View Receipt &raquo;', 'give' ); ?></a>
+						<a href="<?php echo esc_url( add_query_arg( 'payment_key', give_get_payment_key( $post->ID ), give_get_history_page_uri() ) ); ?>"><?php _e( 'View Receipt &raquo;', 'give' ); ?></a>
 					<?php endif; ?>
 				</td>
 				<?php
@@ -131,5 +185,5 @@ if ( $donations ) : ?>
 	</div>
 	<?php wp_reset_postdata(); ?>
 <?php else : ?>
-	<?php Give()->notices->print_frontend_notice( esc_html__( 'It looks like you haven\'t made any donations.', 'give' ), true, 'success' ); ?>
+	<?php Give()->notices->print_frontend_notice( __( 'It looks like you haven\'t made any donations.', 'give' ), true, 'success' ); ?>
 <?php endif;
