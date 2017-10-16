@@ -221,7 +221,7 @@ class Give_i18n_Banner {
 				}
 
 			</style>
-			<div id="give-i18n-notice" class="give-addon-alert updated" style="">
+			<div id="give-i18n-notice" class="give-addon-alert updated give-notice" style="display: none">
 
 				<a href="https://wordpress.org/support/register.php" class="alignleft give-i18n-icon" style="margin:0" target="_blank"><span class="dashicons dashicons-translation"
 				                                                                                                                             style="font-size: 110px; text-decoration: none;"></span></a>
