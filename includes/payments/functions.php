@@ -138,6 +138,15 @@ function give_insert_payment( $payment_data = array() ) {
 		return false;
 	}
 
+	/**
+	 * Fire the filter on donation data before insert.
+	 *
+	 * @since 1.8.15
+	 *
+	 * @param array $payment_data Arguments passed.
+	 */
+	$payment_data = apply_filters( 'give_pre_insert_payment', $payment_data );
+
 	$payment    = new Give_Payment();
 	$gateway    = ! empty( $payment_data['gateway'] ) ? $payment_data['gateway'] : '';
 	$gateway    = empty( $gateway ) && isset( $_POST['give-gateway'] ) ? $_POST['give-gateway'] : $gateway;
