@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Get Currency Formatting Settings for each donation.
  *
- * @param int|string $id_or_currency_code Donation ID.
+ * @param int|string $id_or_currency_code Donation ID or Currency code.
  *
  * @since 1.8.15
  *
