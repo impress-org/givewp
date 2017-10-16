@@ -626,7 +626,7 @@ function give_donation_form_validate_new_user() {
 	);
 
 	// Get user data.
-	$user_data            = wp_parse_args( array_map( 'trim', give_clean( $_POST ) ), $default_user_data );
+	$user_data            = wp_parse_args( give_clean( $_POST ), $default_user_data );
 	$registering_new_user = false;
 	$form_id              = absint( $user_data['give-form-id'] );
 
