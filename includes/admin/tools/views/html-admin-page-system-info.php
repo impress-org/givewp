@@ -21,8 +21,8 @@ $give_options = give_get_settings();
 $plugins      = give_get_plugins();
 ?>
 
-<div class="give-debug-report-wrapper updated inline">
-	<p class="give-debug-report-text"><?php sprintf(_e( 'Please copy and paste this information in your ticket when contacting support:', 'give' )); ?> </p>
+<div class="give-debug-report-wrapper">
+	<p class="give-debug-report-text"><?php echo sprintf(__( 'Please copy and paste this information in your ticket when contacting support:', 'give' )); ?> </p>
 	<div class="give-debug-report-actions">
 		<a class="button-primary js-give-debug-report-button" href="#"><?php _e( 'Get System Report', 'give' ); ?></a>
 		<a class="button-secondary docs" href="http://docs.givewp.com/settings-system-info" target="_blank"><?php _e( 'Understanding the System Report', 'give' ); ?> <span class="dashicons dashicons-external"></span></a>

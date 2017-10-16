@@ -2792,11 +2792,11 @@ div.sc-shortcode {
 .wrap div.give-debug-report-wrapper {
   margin-bottom: 5px; }
   .wrap div.give-debug-report-wrapper p {
-    font-size: 15px;
-    margin: 0.5em 0 0.5em;
+    font-size: 18px;
+    margin: 1em 0 0.7em;
     padding: 0; }
   .wrap div.give-debug-report-wrapper .give-debug-report-actions {
-    margin: 0 0 1em; }
+    margin: 0 0 1.7em; }
     .wrap div.give-debug-report-wrapper .give-debug-report-actions .js-give-debug-report-button {
       margin-left: 10px; }
     .wrap div.give-debug-report-wrapper .give-debug-report-actions .dashicons {

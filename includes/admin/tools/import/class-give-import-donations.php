@@ -119,7 +119,6 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			add_action( 'give_tools_import_donations_form_end', array( $this, 'submit' ), 10 );
 		}
 
-
 		/**
 		 * Update notice
 		 *
@@ -309,6 +308,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			give_import_donation_report_reset();
 
 			$csv         = (int) $_REQUEST['csv'];
+			$delimiter   = ( ! empty( $_REQUEST['delimiter'] ) ? give_clean( $_REQUEST['delimiter'] ) : 'csv' );
 			$index_start = 1;
 			$index_end   = 1;
 			$next        = true;
@@ -354,8 +354,8 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						   class="create_user">
 					<input type="hidden" value="<?php echo $_REQUEST['delete_csv']; ?>" name="delete_csv"
 						   class="delete_csv">
-					<input type="hidden" value="<?php echo $_REQUEST['delimiter']; ?>" name="delimiter">
-					<input type="hidden" value='<?php echo maybe_serialize( self::get_importer( $csv ) ); ?>'
+					<input type="hidden" value="<?php echo $delimiter; ?>" name="delimiter">
+					<input type="hidden" value='<?php echo maybe_serialize( self::get_importer( $csv, 0, $delimiter ) ); ?>'
 						   name="main_key"
 						   class="main_key">
 				</th>
@@ -405,7 +405,8 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 * @since 1.8.14
 		 */
 		public function render_dropdown() {
-			$csv = (int) $_GET['csv'];
+			$csv       = (int) $_GET['csv'];
+			$delimiter = ( ! empty( $_GET['delimiter'] ) ? give_clean( $_GET['delimiter'] ) : 'csv' );
 
 			// TO check if the CSV files that is being add is valid or not if not then redirect to first step again
 			if ( ! $this->is_valid_csv( $csv ) ) {
@@ -430,7 +431,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 				</tr>
 
 				<?php
-				$raw_key   = $this->get_importer( $csv );
+				$raw_key   = $this->get_importer( $csv, 0, $delimiter );
 				$donations = give_import_donations_options();
 				$donors    = give_import_donor_options();
 				$forms     = give_import_donation_form_options();
@@ -474,8 +475,8 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 * @since 1.8.14
 		 */
 		public function get_columns( $index, $donations, $donors, $forms, $value = false, $mapto = array() ) {
-			$default = give_import_default_options();
-			$current_mapto = (string) ( ! empty( $mapto[$index] ) ? $mapto[$index] : '' );
+			$default       = give_import_default_options();
+			$current_mapto = (string) ( ! empty( $mapto[ $index ] ) ? $mapto[ $index ] : '' );
 			?>
 			<select name="mapto[<?php echo $index; ?>]">
 				<?php
@@ -572,7 +573,16 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 *
 		 * @return array|bool $raw_data title of the CSV file fields
 		 */
-		public function get_importer( $file_id, $index = 0, $delimiter = ',' ) {
+		public function get_importer( $file_id, $index = 0, $delimiter = 'csv' ) {
+			/**
+			 * Filter to modify delimiter of Import.
+			 *
+			 * @since 1.8.14
+			 *
+			 * Return string $delimiter.
+			 */
+			$delimiter = (string) apply_filters( 'give_import_delimiter_set', $delimiter );
+
 			$raw_data = false;
 			$file_dir = get_attached_file( $file_id );
 			if ( $file_dir ) {
@@ -683,10 +693,16 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			<?php
 			$csv         = ( isset( $_POST['csv'] ) ? give_clean( $_POST['csv'] ) : '' );
 			$csv_id      = ( isset( $_POST['csv_id'] ) ? give_clean( $_POST['csv_id'] ) : '' );
-			$delimiter   = ( isset( $_POST['delimiter'] ) ? give_clean( $_POST['delimiter'] ) : ',' );
-			$mode        = ( ! empty( $_POST['mode'] ) ? 'on' : '' );
-			$create_user = ( isset( $_POST['create_user'] ) && isset( $_POST['csv'] ) && 1 === absint( $_POST['create_user'] ) ? 'on' : ( isset( $_POST['csv'] ) ? '' : 'on' ) );
-			$delete_csv  = ( isset( $_POST['delete_csv'] ) && isset( $_POST['csv'] ) && 1 === absint( $_POST['delete_csv'] ) ? 'on' : ( isset( $_POST['csv'] ) ? '' : 'on' ) );
+			$delimiter   = ( isset( $_POST['delimiter'] ) ? give_clean( $_POST['delimiter'] ) : 'csv' );
+			$mode        = empty( $_POST['mode'] ) ?
+				'disabled' :
+				( give_is_setting_enabled( give_clean( $_POST['mode'] ) ) ? 'enabled' : 'disabled' );
+			$create_user = empty( $_POST['create_user'] ) ?
+				'enabled' :
+				( give_is_setting_enabled( give_clean( $_POST['create_user'] ) ) ? 'enabled' : 'disabled' );
+			$delete_csv  = empty( $_POST['delete_csv'] ) ?
+				'enabled' :
+				( give_is_setting_enabled( give_clean( $_POST['delete_csv'] ) ) ? 'enabled' : 'disabled' );
 
 			// Reset csv and csv_id if csv
 			if ( empty( $csv_id ) || ! $this->is_valid_csv( $csv_id, $csv ) ) {
@@ -711,31 +727,46 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 				array(
 					'id'          => 'delimiter',
 					'name'        => __( 'CSV Delimiter:', 'give' ),
-					'type'        => 'text',
 					'description' => __( 'In case your CSV file supports a different type of separator (or delimiter) -- like a tab or space -- you can set that here.', 'give' ),
-					'attributes'  => array( 'placeholder' => ',', 'size' => '2' ),
 					'default'     => $delimiter,
+					'type'        => 'select',
+					'options'     => array(
+						'csv'                  => esc_html__( 'Comma', 'give' ),
+						'tab-separated-values' => esc_html__( 'Tab', 'give' ),
+					),
 				),
 				array(
 					'id'          => 'mode',
 					'name'        => __( 'Test Mode:', 'give' ),
-					'type'        => 'checkbox',
 					'description' => __( 'Test mode allows you to preview what this import would look like without making any actual changes to your site or your database.', 'give' ),
 					'default'     => $mode,
+					'type'        => 'radio_inline',
+					'options'     => array(
+						'enabled'  => __( 'Enabled', 'give' ),
+						'disabled' => __( 'Disabled', 'give' ),
+					),
 				),
 				array(
 					'id'          => 'create_user',
 					'name'        => __( 'Create WP users for new donors:', 'give' ),
-					'type'        => 'checkbox',
 					'description' => __( 'The importer can create WordPress user accounts based on the names and email addresses of the donations in your CSV file. Enable this option if you\'d like the importer to do that.', 'give' ),
 					'default'     => $create_user,
+					'type'        => 'radio_inline',
+					'options'     => array(
+						'enabled'  => __( 'Enabled', 'give' ),
+						'disabled' => __( 'Disabled', 'give' ),
+					),
 				),
 				array(
 					'id'          => 'delete_csv',
 					'name'        => __( 'Delete CSV after import:', 'give' ),
-					'type'        => 'checkbox',
 					'description' => __( 'Your CSV file will be uploaded via the WordPress Media Library. It\'s a good idea to delete it after the import is finished so that your sensitive data is not accessible on the web. Disable this only if you plan to delete the file manually later.', 'give' ),
 					'default'     => $delete_csv,
+					'type'        => 'radio_inline',
+					'options'     => array(
+						'enabled'  => __( 'Enabled', 'give' ),
+						'disabled' => __( 'Disabled', 'give' ),
+					),
 				),
 			);
 
@@ -763,10 +794,16 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						'step'          => '2',
 						'importer-type' => $this->importer_type,
 						'csv'           => $csv_id,
-						'delimiter'     => isset( $_REQUEST['delimiter'] ) ? give_clean( $_REQUEST['delimiter'] ) : ',',
-						'mode'          => isset( $_REQUEST['mode'] ) ? give_clean( $_REQUEST['mode'] ) : '0',
-						'create_user'   => isset( $_REQUEST['create_user'] ) ? give_clean( $_REQUEST['create_user'] ) : '0',
-						'delete_csv'    => isset( $_REQUEST['delete_csv'] ) ? give_clean( $_REQUEST['delete_csv'] ) : '0',
+						'delimiter'     => isset( $_REQUEST['delimiter'] ) ? give_clean( $_REQUEST['delimiter'] ) : 'csv',
+						'mode'          => empty( $_POST['mode'] ) ?
+							'0' :
+							( give_is_setting_enabled( give_clean( $_POST['mode'] ) ) ? '1' : '0' ),
+						'create_user'   => empty( $_POST['create_user'] ) ?
+							'0' :
+							( give_is_setting_enabled( give_clean( $_POST['create_user'] ) ) ? '1' : '0' ),
+						'delete_csv'    => empty( $_POST['delete_csv'] ) ?
+							'1' :
+							( give_is_setting_enabled( give_clean( $_POST['delete_csv'] ) ) ? '1' : '0' ),
 					) ) );
 					?>
 					<script type="text/javascript">
@@ -794,10 +831,12 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			if ( $csv ) {
 				$csv_url = wp_get_attachment_url( $csv );
 
+				$delimiter = ( ! empty( $_REQUEST['delimiter'] ) ? give_clean( $_REQUEST['delimiter'] ) : 'csv' );
+
 				if (
 					! $csv_url ||
 					( ! empty( $match_url ) && ( $csv_url !== $match_url ) ) ||
-					( ( $mime_type = get_post_mime_type( $csv ) ) && ! strpos( $mime_type, 'csv' ) )
+					( ( $mime_type = get_post_mime_type( $csv ) ) && ! strpos( $mime_type, $delimiter ) )
 				) {
 					$is_valid_csv = false;
 					Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide a valid CSV file.', 'give' ) );

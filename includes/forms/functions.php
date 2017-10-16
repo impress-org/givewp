@@ -551,25 +551,28 @@ function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 
  *
  * @since 1.0
  *
- * @param int $form_id ID of the form
+ * @param int  $form_id   ID of the form
+ * @param bool $formatted Flag to decide which type of price range string return
  *
  * @return string $range A fully formatted price range
  */
-function give_price_range( $form_id = 0 ) {
+function give_price_range( $form_id = 0, $formatted = true ) {
 	$low        = give_get_lowest_price_option( $form_id );
 	$high       = give_get_highest_price_option( $form_id );
 	$order_type = ! empty( $_REQUEST['order'] ) ? $_REQUEST['order'] : 'asc';
 
 	$range = sprintf(
-		'<span class="give_price_range_%1$s">%2$s</span>
-				<span class="give_price_range_sep">&nbsp;&ndash;&nbsp;</span>
-				<span class="give_price_range_%3$s">%4$s</span>',
+		'<span class="give_price_range_%1$s">%2$s</span><span class="give_price_range_sep">&nbsp;&ndash;&nbsp;</span><span class="give_price_range_%3$s">%4$s</span>',
 		'asc' === $order_type ? 'low' : 'high',
 		'asc' === $order_type ? give_currency_filter( give_format_amount( $low, array( 'sanitize' => false ) ) ) : give_currency_filter( give_format_amount( $high, array( 'sanitize' => false ) ) ),
 		'asc' === $order_type ? 'high' : 'low',
 		'asc' === $order_type ? give_currency_filter( give_format_amount( $high, array( 'sanitize' => false ) ) ) : give_currency_filter( give_format_amount( $low, array( 'sanitize' => false ) ) )
 
 	);
+
+	if( ! $formatted ) {
+		$range = wp_strip_all_tags( $range );
+	}
 
 	return apply_filters( 'give_price_range', $range, $form_id, $low, $high );
 }

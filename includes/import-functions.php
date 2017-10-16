@@ -433,12 +433,24 @@ function give_import_donation_form_options() {
 /**
  * Import CSV in DB
  *
- * @param int   $file_id CSV id
- * @param array $mapto   Map csv to meta key.
- * @param int   $start   Start from which csv line.
- * @param int   $end     End from which csv line.
+ * @param int    $file_id   CSV id
+ * @param int    $start     Start from which csv line.
+ * @param int    $end       End from which csv line.
+ * @param string $delimiter CSV delimeter.
+ *
+ * @return array
  */
-function give_get_donation_data_from_csv( $file_id, $start, $end, $delimiter = ',' ) {
+function give_get_donation_data_from_csv( $file_id, $start, $end, $delimiter = 'csv' ) {
+	/**
+	 * Filter to modify delimiter of Import.
+	 *
+	 * @since
+	 * 1.8.14
+	 *
+	 * Return string $delimiter.
+	 */
+	$delimiter = (string) apply_filters( 'give_import_delimiter_set', $delimiter );
+
 	$raw_data = array();
 	$file_dir = get_attached_file( $file_id );
 	$count    = 0;
@@ -489,7 +501,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 
 	$data = (array) apply_filters( 'give_save_import_donation_to_db', $data );
 
-	$data['amount'] = give_maybe_sanitize_amount(  $data['amount'] );
+	$data['amount'] = give_maybe_sanitize_amount( $data['amount'] );
 
 	// Here come the login function.
 	$donor_data = give_import_get_user_from_csv( $data, $import_setting );
