@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_donation_history( $atts ) {
 
-	$give_donation_history_args = shortcode_atts( array(
+	$donation_history_args = shortcode_atts( array(
 		'id'             => true,
 		'date'           => true,
 		'donor'          => false,
@@ -35,7 +35,7 @@ function give_donation_history( $atts ) {
 	), $atts, 'donation_history' );
 
 	// Set Donation History Shortcode Arguments in session variable.
-	Give()->session->set( 'give_donation_history_args', $give_donation_history_args );
+	Give()->session->set( 'give_donation_history_args', $donation_history_args );
 
 	// If payment_key query arg exists, return receipt instead of donation history.
 	if ( isset( $_GET['payment_key'] ) ) {
