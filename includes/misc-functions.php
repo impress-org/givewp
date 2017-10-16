@@ -33,20 +33,29 @@ function give_is_test_mode() {
  * Get the set currency
  *
  * @since 1.0
- * @param int $id
+ * @since 1.8.15 Upgrade function to handle dynamic currency
+ *
+ * @param int   $donation_or_form_id Donation or Form ID
+ * @param array $args                Additional data
+ *
  * @return string The currency code
  */
-function give_get_currency( $id  = null ) {
+function give_get_currency( $donation_or_form_id = null, $args = array() ) {
+
 	// Get currency from donation
-	if( is_numeric( $id ) && 'give_payment' === get_post_type( $id ) ) {
-		$donation_meta = give_get_meta( $id, '_give_payment_meta', true );
-		$currency = $donation_meta['currency'];
-	} else{
+	if ( is_numeric( $donation_or_form_id ) && 'give_payment' === get_post_type( $donation_or_form_id ) ) {
+		$donation_meta = give_get_meta( $donation_or_form_id, '_give_payment_meta', true );
+		$currency      = $donation_meta['currency'];
+	} else {
 		$currency = give_get_option( 'currency', 'USD' );
 	}
 
-
-	return apply_filters( 'give_currency', $currency, $id );
+	/**
+	 * Filter the currency on basis of donation or form id or addtional data.
+	 *
+	 * @since 1.0
+	 */
+	return apply_filters( 'give_currency', $currency, $donation_or_form_id, $args );
 }
 
 /**
