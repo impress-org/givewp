@@ -1675,7 +1675,7 @@ final class Give_Payment {
 			}
 		}
 
-		return round( floatval( $amount ), give_currency_decimal_filter() );
+		return round( (float) $amount, give_get_price_decimals( $this->ID ) );
 	}
 
 	/**

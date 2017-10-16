@@ -93,16 +93,18 @@ function give_get_price_decimals( $donation_id = null, $currency = '' ) {
 	if( empty( $currency ) ) {
 		if( is_numeric( $donation_id ) && 'give_payment' === get_post_type( $donation_id ) ) {
 			$currency = give_get_currency( $donation_id );
+		} else{
+			$currency = give_get_currency();
 		}
 	}
-
-
+	
 	$number_of_decimals = 0;
 
 	if( ! give_is_zero_based_currency( $currency ) ){
 		$setting = give_get_currency_formatting_settings( $donation_id );
 		$number_of_decimals = $setting['number_decimals'];
 	}
+
 
 	/**
 	 * Filter the number of decimals
