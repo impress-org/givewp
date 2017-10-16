@@ -497,9 +497,9 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 
 		// Default number of decimals.
 		$this->assertEquals(
-			0,
+			3,
 			$output_number_of_decimal,
-			'Some currency only have  0 number of decimal places. For example: RIAL, JPY, TWD, HUF'
+			'Some currency only have  0 number of decimal places. For example: JPY, KRW'
 		);
 
 	}
