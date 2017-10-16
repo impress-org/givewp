@@ -57,23 +57,23 @@ class Give_Roles {
 			'delete_posts'           => true,
 			'unfiltered_html'        => true,
 			'upload_files'           => true,
-			'export'                 => true,
-			'import'                 => true,
-			'delete_others_pages'    => true,
-			'delete_others_posts'    => true,
+			'export'                 => false,
+			'import'                 => false,
+			'delete_others_pages'    => false,
+			'delete_others_posts'    => false,
 			'delete_pages'           => true,
 			'delete_private_pages'   => true,
 			'delete_private_posts'   => true,
 			'delete_published_pages' => true,
 			'delete_published_posts' => true,
-			'edit_others_pages'      => true,
-			'edit_others_posts'      => true,
+			'edit_others_pages'      => false,
+			'edit_others_posts'      => false,
 			'edit_pages'             => true,
 			'edit_private_pages'     => true,
 			'edit_private_posts'     => true,
 			'edit_published_pages'   => true,
 			'edit_published_posts'   => true,
-			'manage_categories'      => true,
+			'manage_categories'      => false,
 			'manage_links'           => true,
 			'moderate_comments'      => true,
 			'publish_pages'          => true,
@@ -149,6 +149,24 @@ class Give_Roles {
 			$wp_roles->add_cap( 'give_accountant', 'view_give_reports' );
 			$wp_roles->add_cap( 'give_accountant', 'export_give_reports' );
 			$wp_roles->add_cap( 'give_accountant', 'edit_give_payments' );
+
+			// Add Give Capabilities to Author User Role.
+			$wp_roles->add_cap( 'author', 'delete_give_forms' );
+			$wp_roles->add_cap( 'author', 'delete_published_give_forms' );
+			$wp_roles->add_cap( 'author', 'edit_give_forms' );
+			$wp_roles->add_cap( 'author', 'delete_published_give_forms' );
+
+			// Add Give Capabilities to Editor User Role.
+			$wp_roles->add_cap( 'editor', 'delete_give_forms' );
+			$wp_roles->add_cap( 'editor', 'delete_others_give_forms' );
+			$wp_roles->add_cap( 'editor', 'delete_private_give_forms' );
+			$wp_roles->add_cap( 'editor', 'delete_published_give_forms' );
+			$wp_roles->add_cap( 'editor', 'edit_give_forms' );
+			$wp_roles->add_cap( 'editor', 'edit_others_give_forms' );
+			$wp_roles->add_cap( 'editor', 'edit_private_give_forms' );
+			$wp_roles->add_cap( 'editor', 'edit_published_give_forms' );
+			$wp_roles->add_cap( 'editor', 'publish_give_forms' );
+			$wp_roles->add_cap( 'editor', 'read_private_give_forms' );
 
 		}
 	}
