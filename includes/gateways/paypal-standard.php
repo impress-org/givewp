@@ -612,7 +612,7 @@ function give_build_paypal_url( $payment_id, $payment_data ) {
 		'no_shipping'   => '1',
 		'shipping'      => '0',
 		'no_note'       => '1',
-		'currency_code' => give_get_currency( $payment_id ),
+		'currency_code' => give_get_currency( $payment_id, $payment_data ),
 		'charset'       => get_bloginfo( 'charset' ),
 		'custom'        => $payment_id,
 		'rm'            => '2',

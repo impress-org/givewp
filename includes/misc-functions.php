@@ -35,8 +35,8 @@ function give_is_test_mode() {
  * @since 1.0
  * @since 1.8.15 Upgrade function to handle dynamic currency
  *
- * @param int   $donation_or_form_id Donation or Form ID
- * @param array $args                Additional data
+ * @param int          $donation_or_form_id Donation or Form ID
+ * @param array|object $args                Additional data
  *
  * @return string The currency code
  */
@@ -1933,11 +1933,14 @@ function give_recount_form_income_donation( $form_id = false ) {
  * Zero Decimal based Currency.
  *
  * @since 1.8.14
- * @see https://github.com/WordImpress/Give/issues/2191
+ * @see   https://github.com/WordImpress/Give/issues/2191
+ *
+ *
+ * @param string $currency Currency code
  *
  * @return bool
  */
-function give_is_zero_based_currency() {
+function give_is_zero_based_currency( $currency = '' ) {
 	$zero_based_currency = array(
 		'PYG', // Paraguayan Guarani.
 		'GNF', // Guinean Franc.
@@ -1956,8 +1959,13 @@ function give_is_zero_based_currency() {
 		'XOF', // West African Cfa Franc.
 	);
 
+	// Set default currency.
+	if( empty( $currency ) ) {
+		$currency = give_get_currency();
+	}
+
 	// Check for Zero Based Currency.
-	if ( in_array( give_get_currency(), $zero_based_currency ) ) {
+	if ( in_array( $currency, $zero_based_currency ) ) {
 		return true;
 	}
 
