@@ -54,7 +54,7 @@ if ( $donations ) : ?>
 					);
 				endif;
 			}
-			
+
 			/**
 			 * Fires in current user donation history table, after the header row ends.
 			 *
@@ -84,70 +84,103 @@ if ( $donations ) : ?>
 				do_action( 'give_donation_history_row_start', $post->ID, $donation_data );
 
 				if ( filter_var( $donation_history_args['id'], FILTER_VALIDATE_BOOLEAN ) ) :
-					?>
-					<td class="give-donation-id">#<?php echo give_get_payment_number( $post->ID ); ?></td>
-					<?php
-				endif;
-				if ( filter_var( $donation_history_args['date'], FILTER_VALIDATE_BOOLEAN ) ) :
-					?>
-					<td class="give-donation-date"><?php echo date_i18n( give_date_format(), strtotime( get_post_field( 'post_date', $post->ID ) ) ); ?></td>
-					<?php
-				endif;
-				if ( filter_var( $donation_history_args['donor'], FILTER_VALIDATE_BOOLEAN ) ) :
-					?>
-					<td class="give-donation-donor"><?php echo give_get_donor_name_by( $post->ID ); ?></td>
-					<?php
-				endif;
-				if ( filter_var( $donation_history_args['amount'], FILTER_VALIDATE_BOOLEAN ) ) :
-					?>
-					<td class="give-donation-amount">
-					<span class="give-donation-amount">
-					<?php
-					$currency_code = give_get_payment_currency_code( $post->ID );
-					$donation_amount = give_currency_filter(
-						give_format_amount( give_get_payment_amount( $post->ID ), array(
-							'sanitize' => false,
-							'currency' => $currency_code
-						) ),
-						$currency_code
+					echo sprintf(
+						'<td class="give-donation-id">#%s</td>',
+						give_get_payment_number( $post->ID )
 					);
+				endif;
 
-					/**
-					 * Filters the donation amount on Donation History Page.
-					 *
-					 * @param int $donation_amount Donation Amount.
-					 * @param int $post_id         Donation ID.
-					 *
-					 * @since 1.8.13
-					 *
-					 * @return int
-					 */
-					echo apply_filters( 'give_donation_history_row_amount', $donation_amount, $post->ID );
-					?>
-					</span>
+				if ( filter_var( $donation_history_args['date'], FILTER_VALIDATE_BOOLEAN ) ) :
+					echo sprintf(
+						'<td class="give-donation-date">#%s</td>',
+						date_i18n( give_date_format(), strtotime( get_post_field( 'post_date', $post->ID ) ) )
+					);
+				endif;
+
+				if ( filter_var( $donation_history_args['donor'], FILTER_VALIDATE_BOOLEAN ) ) :
+					echo sprintf(
+						'<td class="give-donation-donor">#%s</td>',
+						give_get_donor_name_by( $post->ID )
+					);
+				endif;
+				?>
+
+				<?php if ( filter_var( $donation_history_args['amount'], FILTER_VALIDATE_BOOLEAN ) ) :?>
+					<td class="give-donation-amount">
+						<span class="give-donation-amount">
+							<?php
+							$currency_code = give_get_payment_currency_code( $post->ID );
+							$donation_amount = give_currency_filter(
+								give_format_amount( give_get_payment_amount( $post->ID ), array(
+									'sanitize' => false,
+									'currency' => $currency_code
+								) ),
+								$currency_code
+							);
+
+							/**
+							 * Filters the donation amount on Donation History Page.
+							 *
+							 * @param int $donation_amount Donation Amount.
+							 * @param int $post_id         Donation ID.
+							 *
+							 * @since 1.8.13
+							 *
+							 * @return int
+							 */
+							echo apply_filters( 'give_donation_history_row_amount', $donation_amount, $post->ID );
+							?>
+						</span>
 					</td>
-					<?php
-				endif;
-				if ( filter_var( $donation_history_args['status'], FILTER_VALIDATE_BOOLEAN ) ) :
-					?>
-					<td class="give-donation-status"><?php echo give_get_payment_status( $post, true ); ?></td>
-					<?php
-				endif;
-				if ( filter_var( $donation_history_args['payment_method'], FILTER_VALIDATE_BOOLEAN ) ) :
-					?>
-					<td class="give-donation-payment-method"><?php echo give_get_gateway_checkout_label( give_get_payment_gateway( $post->ID ) ); ?></td>
 				<?php endif; ?>
+
+				<?php
+				if ( filter_var( $donation_history_args['status'], FILTER_VALIDATE_BOOLEAN ) ) :
+					echo sprintf(
+						'<td class="give-donation-status">#%s</td>',
+						give_get_payment_status( $post, true )
+					);
+				endif;
+
+				if ( filter_var( $donation_history_args['payment_method'], FILTER_VALIDATE_BOOLEAN ) ) :
+					echo sprintf(
+						'<td class="give-donation-payment-method">#%s</td>',
+						give_get_gateway_checkout_label( give_get_payment_gateway( $post->ID ) )
+					);
+				endif;
+				?>
 				<td class="give-donation-details">
 					<?php
 					// Display View Receipt or.
-					if ( 'publish' !== $post->post_status
-					     && 'subscription' !== $post->post_status
-					) : ?>
-						<a href="<?php echo esc_url( add_query_arg( 'payment_key', give_get_payment_key( $post->ID ), give_get_history_page_uri() ) ); ?>"><span
-									class="give-donation-status <?php echo $post->post_status; ?>"><?php echo __( 'View', 'give' ) . ' ' . give_get_payment_status( $post, true ) . ' &raquo;'; ?></span></a>
-					<?php else : ?>
-						<a href="<?php echo esc_url( add_query_arg( 'payment_key', give_get_payment_key( $post->ID ), give_get_history_page_uri() ) ); ?>"><?php _e( 'View Receipt &raquo;', 'give' ); ?></a>
-					<?php endif; ?>
+					if ( 'publish' !== $post->post_status && 'subscription' !== $post->post_status ) :
+						echo sprintf(
+							'<a href="%1$s"><span class="give-donation-status %2$s">%3$s</span></a>',
+							esc_url(
+								add_query_arg(
+									'payment_key',
+									give_get_payment_key( $post->ID ),
+									give_get_history_page_uri()
+								)
+							),
+							$post->post_status,
+							__( 'View', 'give' ) . ' ' . give_get_payment_status( $post, true ) . ' &raquo;'
+						);
+
+					else :
+						echo sprintf(
+							'<a href="%1$s">%2$s</a>',
+							esc_url(
+								add_query_arg(
+									'payment_key',
+									give_get_payment_key( $post->ID ),
+									give_get_history_page_uri()
+								)
+							),
+							__( 'View Receipt &raquo;', 'give' )
+						);
+
+					endif;
+					?>
 				</td>
 				<?php
 				/**
