@@ -486,19 +486,19 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 				$this->get_dropdown_option_html( $default, $current_mapto, $value );
 				?>
 
-				<optgroup label="Donations">
+				<optgroup label="<?php _e( 'Donations', 'give' ); ?>">
 					<?php
 					$this->get_dropdown_option_html( $donations, $current_mapto, $value );
 					?>
 				</optgroup>
 
-				<optgroup label="Donors">
+				<optgroup label="<?php _e( 'Donors', 'give' ); ?>">
 					<?php
 					$this->get_dropdown_option_html( $donors, $current_mapto, $value );
 					?>
 				</optgroup>
 
-				<optgroup label="Forms">
+				<optgroup label="<?php _e( 'Forms', 'give' ); ?>">
 					<?php
 					$this->get_dropdown_option_html( $forms, $current_mapto, $value );
 					?>
