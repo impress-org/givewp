@@ -432,9 +432,6 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 
 				<?php
 				$raw_key   = $this->get_importer( $csv, 0, $delimiter );
-				$donations = give_import_donations_options();
-				$donors    = give_import_donor_options();
-				$forms     = give_import_donation_form_options();
 				$mapto     = (array) ( isset( $_REQUEST['mapto'] ) ? $_REQUEST['mapto'] : array() );
 
 				foreach ( $raw_key as $index => $value ) {
@@ -443,7 +440,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						<th><?php echo $value; ?></th>
 						<th>
 							<?php
-							$this->get_columns( $index, $donations, $donors, $forms, $value, $mapto );
+							$this->get_columns( $index, $value, $mapto );
 							?>
 						</th>
 					</tr>
@@ -476,46 +473,47 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 * Print the columns from the CSV.
 		 *
 		 * @since 1.8.14
-		 * @access public
+		 * @access private
 		 *
-		 * @param       $index
-		 * @param       $donations
-		 * @param       $donors
-		 * @param       $forms
+		 * @param string  $index
 		 * @param bool  $value
 		 * @param array $mapto
 		 *
 		 * @return void
 		 */
-		public function get_columns( $index, $donations, $donors, $forms, $value = false, $mapto = array() ) {
+		private function get_columns( $index, $value = false, $mapto = array() ) {
 			$default       = give_import_default_options();
 			$current_mapto = (string) ( ! empty( $mapto[ $index ] ) ? $mapto[ $index ] : '' );
 			?>
 			<select name="mapto[<?php echo $index; ?>]">
-				<?php
-				$this->get_dropdown_option_html( $default, $current_mapto, $value );
-				?>
+				<?php $this->get_dropdown_option_html( $default, $current_mapto, $value ); ?>
 
 				<optgroup label="<?php _e( 'Donations', 'give' ); ?>">
 					<?php
-					$this->get_dropdown_option_html( $donations, $current_mapto, $value );
+					$this->get_dropdown_option_html( give_import_donations_options(), $current_mapto, $value );
 					?>
 				</optgroup>
 
 				<optgroup label="<?php _e( 'Donors', 'give' ); ?>">
 					<?php
-					$this->get_dropdown_option_html( $donors, $current_mapto, $value );
+					$this->get_dropdown_option_html( give_import_donor_options(), $current_mapto, $value );
 					?>
 				</optgroup>
 
 				<optgroup label="<?php _e( 'Forms', 'give' ); ?>">
 					<?php
-					$this->get_dropdown_option_html( $forms, $current_mapto, $value );
+					$this->get_dropdown_option_html( give_import_donation_form_options(), $current_mapto, $value );
 					?>
 				</optgroup>
 
 				<?php
-				do_action( 'give_import_dropdown_option', $index, $donations, $donors, $forms, $value );
+				/**
+				 * Fire the action
+				 * You can use this filter to add new options.
+				 *
+				 * @since 1.8.15
+				 */
+				do_action( 'give_import_dropdown_option', $index, $value, $mapto, $current_mapto );
 				?>
 			</select>
 			<?php
