@@ -6,7 +6,7 @@
  * @subpackage  Admin/Notices
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       1.0
+ * @since       1.8.9
  */
 
 // Exit if accessed directly.
@@ -17,13 +17,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Give_Notices Class
  *
- * @since 1.0
+ * @since 1.8.9
  */
 class Give_Notices {
 	/**
 	 * List of notices
 	 * @var array
-	 * @since  1.8
+	 * @since  1.8.9
 	 * @access private
 	 */
 	private static $notices = array();
@@ -50,7 +50,7 @@ class Give_Notices {
 	/**
 	 * Get things started.
 	 *
-	 * @since 1.0
+	 * @since 1.8.9
 	 */
 	public function __construct() {
 		add_action( 'admin_notices', array( $this, 'render_admin_notices' ), 999 );
