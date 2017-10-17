@@ -518,8 +518,8 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 *
 		 * @return Void
 		 */
-		public function get_dropdown_option_html( $default, $current_mapto, $value ) {
-			foreach ( $default as $option => $option_value ) {
+		public function get_dropdown_option_html( $options, $current_mapto, $value = false ) {
+			foreach ( $options as $option => $option_value ) {
 				$option_value_texts = (array) $option_value;
 				$option_text = $option_value_texts[0];
 
@@ -527,6 +527,9 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 				if ( empty( $checked ) ) {
 					foreach ( $option_value_texts as $option_value_text ) {
 						$checked = $this->selected( $option_value_text, $value );
+						if ( $checked ) {
+							break;
+						}
 					}
 				}
 				?>
