@@ -154,7 +154,8 @@ form.give-form {
   }
 
   h3.give-section-break,
-  h4.give-section-break {
+  h4.give-section-break,
+  legend {
 	font-size: 1.15em;
 	font-weight: bold;
 	margin: 10px 0 15px;
@@ -166,12 +167,6 @@ form.give-form {
 	  font-style: italic;
 	  font-weight: normal;
 	}
-  }
-
-  legend {
-    font-size: 1.15em;
-    font-weight: bold;
-    padding: 0 5px;
   }
 
   //Form Layout
