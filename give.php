@@ -180,7 +180,7 @@ if ( ! class_exists( 'Give' ) ) :
 		/**
 		 * Give notices Object
 		 *
-		 * @since  2.0
+		 * @since  1.8.9
 		 * @access public
 		 *
 		 * @var    Give_Notices $notices

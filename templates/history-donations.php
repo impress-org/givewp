@@ -34,37 +34,37 @@ if ( $donations ) : ?>
 	?>
 	<table id="give_user_history" class="give-table">
 		<thead>
-		<tr class="give-donation-row">
-			<?php
-			/**
-			 * Fires in current user donation history table, before the header row start.
-			 *
-			 * Allows you to add new <th> elements to the header, before other headers in the row.
-			 *
-			 * @since 1.7
-			 */
-			do_action( 'give_donation_history_header_before' );
+			<tr class="give-donation-row">
+				<?php
+				/**
+				 * Fires in current user donation history table, before the header row start.
+				 *
+				 * Allows you to add new <th> elements to the header, before other headers in the row.
+				 *
+				 * @since 1.7
+				 */
+				do_action( 'give_donation_history_header_before' );
 
-			foreach ( $donation_history_args as $index => $value ) {
-				if ( filter_var( $donation_history_args[ $index ], FILTER_VALIDATE_BOOLEAN ) ) :
-					echo sprintf(
-						'<th scope="col" class="give-donation-%1$s>">%2$s</th>',
-						$index,
-						$table_headings[ $index ]
-					);
-				endif;
-			}
+				foreach ( $donation_history_args as $index => $value ) {
+					if ( filter_var( $donation_history_args[ $index ], FILTER_VALIDATE_BOOLEAN ) ) :
+						echo sprintf(
+							'<th scope="col" class="give-donation-%1$s>">%2$s</th>',
+							$index,
+							$table_headings[ $index ]
+						);
+					endif;
+				}
 
-			/**
-			 * Fires in current user donation history table, after the header row ends.
-			 *
-			 * Allows you to add new <th> elements to the header, after other headers in the row.
-			 *
-			 * @since 1.7
-			 */
-			do_action( 'give_donation_history_header_after' );
-			?>
-		</tr>
+				/**
+				 * Fires in current user donation history table, after the header row ends.
+				 *
+				 * Allows you to add new <th> elements to the header, after other headers in the row.
+				 *
+				 * @since 1.7
+				 */
+				do_action( 'give_donation_history_header_after' );
+				?>
+			</tr>
 		</thead>
 		<?php foreach ( $donations as $post ) :
 			setup_postdata( $post );
@@ -105,16 +105,17 @@ if ( $donations ) : ?>
 				endif;
 				?>
 
-				<?php if ( filter_var( $donation_history_args['amount'], FILTER_VALIDATE_BOOLEAN ) ) :?>
+				<?php if ( filter_var( $donation_history_args['amount'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
 					<td class="give-donation-amount">
 						<span class="give-donation-amount">
 							<?php
-							$currency_code = give_get_payment_currency_code( $post->ID );
+							$currency_code   = give_get_payment_currency_code( $post->ID );
 							$donation_amount = give_currency_filter(
 								give_format_amount( give_get_payment_amount( $post->ID ), array(
-									'sanitize' => false,
-									'currency' => $currency_code
-								) ),
+									'sanitize'    => false,
+									'currency'    => $currency_code,
+									'donation_id' => $post->ID,
+								), $post->ID ),
 								$currency_code
 							);
 
