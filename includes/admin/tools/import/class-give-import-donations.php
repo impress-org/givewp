@@ -483,78 +483,24 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			?>
 			<select name="mapto[<?php echo $index; ?>]">
 				<?php
-				foreach ( $default as $option => $option_value ) {
-					$option_value_texts = (array) $option_value;
-					$option_text = $option_value_texts[0];
-
-					$checked = ( ( $current_mapto === $option ) ? 'selected' : false );
-					if ( empty( $checked ) ) {
-						foreach ( $option_value_texts as $option_value_text ) {
-							$checked = $this->selected( $option_value_text, $value );
-						}
-					}
-					?>
-					<option value="<?php echo $option; ?>" <?php echo $checked; ?> ><?php echo $option_text; ?></option>
-					<?php
-				}
+				$this->get_dropdown_option_html( $default, $current_mapto, $value );
 				?>
+
 				<optgroup label="Donations">
 					<?php
-					foreach ( $donations as $option => $option_value ) {
-						$option_value_texts = (array) $option_value;
-						$option_text = $option_value_texts[0];
-
-						$checked = ( ( $current_mapto === $option ) ? 'selected' : false );
-
-						if ( empty( $checked ) ) {
-							foreach ( $option_value_texts as $option_value_text ) {
-								$checked = $this->selected( $option_value_text, $value );
-							}
-						}
-						?>
-						<option value="<?php echo $option; ?>" <?php echo $checked; ?> ><?php echo $option_text; ?></option>
-						<?php
-					}
+					$this->get_dropdown_option_html( $donations, $current_mapto, $value );
 					?>
 				</optgroup>
 
 				<optgroup label="Donors">
 					<?php
-					foreach ( $donors as $option => $option_value ) {
-
-						$option_value_texts = (array) $option_value;
-						$option_text = $option_value_texts[0];
-
-						$checked = ( ( $current_mapto === $option ) ? 'selected' : false );
-						if ( empty( $checked ) ) {
-							foreach ( $option_value_texts as $option_value_text ) {
-								$checked = $this->selected( $option_value_text, $value );
-							}
-						}
-
-						?>
-						<option value="<?php echo $option; ?>" <?php echo $checked; ?> ><?php echo $option_text; ?></option>
-						<?php
-					}
+					$this->get_dropdown_option_html( $donors, $current_mapto, $value );
 					?>
 				</optgroup>
 
 				<optgroup label="Forms">
 					<?php
-					foreach ( $forms as $option => $option_value ) {
-						$option_value_texts = (array) $option_value;
-						$option_text = $option_value_texts[0];
-
-						$checked = ( ( $current_mapto === $option ) ? 'selected' : false );
-						if ( empty( $checked ) ) {
-							foreach ( $option_value_texts as $option_value_text ) {
-								$checked = $this->selected( $option_value_text, $value );
-							}
-						}
-						?>
-						<option value="<?php echo $option; ?>" <?php echo $checked; ?> ><?php echo $option_text; ?></option>
-						<?php
-					}
+					$this->get_dropdown_option_html( $forms, $current_mapto, $value );
 					?>
 				</optgroup>
 
@@ -563,6 +509,30 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 				?>
 			</select>
 			<?php
+		}
+
+		/**
+		 * Print the option html for select in importer
+		 *
+		 * @since 1.8.15
+		 *
+		 * @return Void
+		 */
+		public function get_dropdown_option_html( $default, $current_mapto, $value ) {
+			foreach ( $default as $option => $option_value ) {
+				$option_value_texts = (array) $option_value;
+				$option_text = $option_value_texts[0];
+
+				$checked = ( ( $current_mapto === $option ) ? 'selected' : false );
+				if ( empty( $checked ) ) {
+					foreach ( $option_value_texts as $option_value_text ) {
+						$checked = $this->selected( $option_value_text, $value );
+					}
+				}
+				?>
+				<option value="<?php echo $option; ?>" <?php echo $checked; ?> ><?php echo $option_text; ?></option>
+				<?php
+			}
 		}
 
 		/**
