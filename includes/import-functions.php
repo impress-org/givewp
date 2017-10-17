@@ -345,7 +345,7 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
  */
 function give_import_default_options() {
 	/**
-	 * Filter to modify defalut option in the import dropdown
+	 * Filter to modify default option in the import dropdown
 	 *
 	 * @since 1.8.13
 	 *
