@@ -379,7 +379,12 @@ function give_import_donations_options() {
 		'line2'       => __( 'Address 2', 'give' ),
 		'city'        => __( 'City', 'give' ),
 		'state'       => __( 'State', 'give' ),
-		'country'     => __( 'Country', 'give' ),
+		'country'     => array(
+			__( 'Country', 'give' ),
+			__( 'County', 'give' ),
+			__( 'Region', 'give' ),
+			__( 'Province', 'give' ),
+		),
 		'zip'         => array(
 			__( 'Zip', 'give' ),
 			__( 'Postal Code', 'give' ),
