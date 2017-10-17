@@ -398,6 +398,11 @@ function give_format_amount( $amount, $args = array() ) {
 		}
 	}
 
+	/**
+	 * Filter the formatted amount
+	 *
+	 * @since 1.0
+	 */
 	return apply_filters( 'give_format_amount', $formatted, $amount, $decimals, $decimal_sep, $thousands_sep, $currency, $args );
 }
 
