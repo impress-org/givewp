@@ -34,6 +34,9 @@ function give_donation_history( $atts ) {
 		'payment_method' => false,
 	), $atts, 'donation_history' );
 
+	// Always show receipt link.
+	$donation_history_args['details'] = true;
+
 	// Set Donation History Shortcode Arguments in session variable.
 	Give()->session->set( 'give_donation_history_args', $donation_history_args );
 

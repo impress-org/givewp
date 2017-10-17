@@ -5,6 +5,8 @@
 
 $donation_history_args = Give()->session->get( 'give_donation_history_args' );
 
+$donations = array();
+
 // User's Donations.
 if ( is_user_logged_in() ) {
 	$donations = give_get_users_donations( get_current_user_id(), 20, true, 'any' );
@@ -17,7 +19,19 @@ if ( is_user_logged_in() ) {
 	$donations = give_get_users_donations( $email, 20, true, 'any' );
 }
 
+
 if ( $donations ) : ?>
+	<?php
+	$table_headings = array(
+		'id'             => __( 'ID', 'give' ),
+		'date'           => __( 'Date', 'give' ),
+		'donor'          => __( 'Donor', 'give' ),
+		'amount'         => __( 'Amount', 'give' ),
+		'status'         => __( 'Status', 'give' ),
+		'payment_method' => __( 'Payment Method', 'give' ),
+		'details'        => __( 'Details', 'give' ),
+	);
+	?>
 	<table id="give_user_history" class="give-table">
 		<thead>
 		<tr class="give-donation-row">
@@ -31,37 +45,16 @@ if ( $donations ) : ?>
 			 */
 			do_action( 'give_donation_history_header_before' );
 
-			if ( filter_var( $donation_history_args['id'], FILTER_VALIDATE_BOOLEAN ) ) :
-				?>
-				<th scope="col" class="give-donation-id"><?php _e( 'ID', 'give' ); ?></th>
-				<?php
-			endif;
-			if ( filter_var( $donation_history_args['date'], FILTER_VALIDATE_BOOLEAN ) ) :
-				?>
-				<th scope="col" class="give-donation-date"><?php _e( 'Date', 'give' ); ?></th>
-				<?php
-			endif;
-			if ( filter_var( $donation_history_args['donor'], FILTER_VALIDATE_BOOLEAN ) ) :
-				?>
-				<th scope="col" class="give-donation-donor"><?php _e( 'Donor', 'give' ); ?></th>
-				<?php
-			endif;
-			if ( filter_var( $donation_history_args['amount'], FILTER_VALIDATE_BOOLEAN ) ) :
-				?>
-				<th scope="col" class="give-donation-amount"><?php _e( 'Amount', 'give' ); ?></th>
-				<?php
-			endif;
-			if ( filter_var( $donation_history_args['status'], FILTER_VALIDATE_BOOLEAN ) ) :
-				?>
-				<th scope="col" class="give-donation-status"><?php _e( 'Status', 'give' ); ?></th>
-				<?php
-			endif;
-			if ( filter_var( $donation_history_args['payment_method'], FILTER_VALIDATE_BOOLEAN ) ) :
-				?>
-				<th scope="col" class="give-donation-payment-method"><?php _e( 'Payment Method', 'give' ); ?></th>
-			<?php endif; ?>
-			<th scope="col" class="give-donation-details"><?php _e( 'Details', 'give' ); ?></th>
-			<?php
+			foreach ( $donation_history_args as $index => $value ) {
+				if ( filter_var( $donation_history_args[ $index ], FILTER_VALIDATE_BOOLEAN ) ) :
+					echo sprintf(
+						'<th scope="col" class="give-donation-%1$s>">%2$s</th>',
+						$index,
+						$table_headings[ $index ]
+					);
+				endif;
+			}
+			
 			/**
 			 * Fires in current user donation history table, after the header row ends.
 			 *
