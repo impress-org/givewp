@@ -104,8 +104,8 @@ function give_get_currencies( $info = 'admin_label' ) {
 			'symbol'      => '&euro;',
 			'setting'     => array(
 				'currency_position'   => 'before',
-				'thousands_separator' => ',',
-				'decimal_separator'   => '.',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
 				'number_decimals'     => 2,
 			),
 		),
