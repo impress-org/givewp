@@ -27,11 +27,12 @@ function give_get_currency_formatting_settings( $id_or_currency_code = null ) {
 	$give_options = give_get_settings();
 	$setting      = array();
 
-	// Bail out, if donation id is null.
 	if ( ! empty( $id_or_currency_code ) ) {
 		$currencies   = give_get_currencies('all');
 
-		if( is_string( $id_or_currency_code ) && array_key_exists( $id_or_currency_code, $currencies ) ) {
+		// Set default formatting setting only if currency not set as global currency.
+
+		if( is_string( $id_or_currency_code ) && ( $id_or_currency_code !== $give_options['currency'] ) && array_key_exists( $id_or_currency_code, $currencies ) ) {
 			$setting = $currencies[ $id_or_currency_code ]['setting'];
 		}elseif ( is_numeric( $id_or_currency_code ) && 'give_payment' === get_post_type( $id_or_currency_code ) ) {
 			$donation_meta = give_get_meta( $id_or_currency_code, '_give_payment_meta', true );
