@@ -20,16 +20,100 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	}
 
 	/**
+	 * Test function give_get_currency_formatting_settings
+	 *
+	 * @since        1.8.15
+	 *
+	 * @param string $currency_code
+	 * @param array  $expected
+	 *
+	 * @cover        give_get_currency_formatting_settings
+	 * @dataProvider give_get_currency_formatting_settings_provider
+	 */
+	function test_give_get_currency_formatting_settings( $currency_code, $expected ) {
+
+		// Setting.
+		$setting_arr = array( 'currency_position', 'thousands_separator', 'decimal_separator', 'number_decimals' );
+
+
+		/**
+		 * Case 1: Currency
+		 */
+		$currency_settings = give_get_currency_formatting_settings( $currency_code );
+
+		// Match setting.
+		foreach ( $currency_settings as $key => $setting ) {
+			$this->assertArrayHasKey( $key, $currency_settings );
+			$this->assertEquals( $expected[ $key ], $currency_settings[ $key ] );
+		}
+		
+
+		/**
+		 * Cse 2: Payment
+		 */
+		// Create Simple Donation.
+		$donation_id       = Give_Helper_Payment::create_simple_payment(
+			array(
+				'donation' => array(
+					'currency' => $currency_code
+				),
+			)
+		);
+
+		$currency_settings = give_get_currency_formatting_settings( $donation_id );
+
+		// Match setting.
+		foreach ( $currency_settings as $key => $setting ) {
+			$this->assertArrayHasKey( $key, $currency_settings );
+			$this->assertEquals( $expected[ $key ], $currency_settings[ $key ] );
+		}
+	}
+
+	/**
+	 * Data set for give_get_currency_formatting_settings
+	 *
+	 * @since  1.8.15
+	 * @access public
+	 * @return array
+	 */
+	public function give_get_currency_formatting_settings_provider() {
+		$currencies = give_get_currencies( 'all' );
+		$data       = array();
+
+		// Set data.
+		foreach ( $currencies as $code => $currency ) {
+			$data[] = array( $code, $currency['setting'] );
+		}
+
+		return $data;
+	}
+
+
+	/**
 	 * Test function give_get_price_thousand_separator
 	 *
-	 * @since 1.8
+	 * @since        1.8
 	 *
-	 * @cover give_get_price_thousand_separator
+	 * @param  string $currency_code
+	 * @param  array  $expected
+	 *
+	 * @cover        give_get_price_thousand_separator
+	 * @dataProvider give_get_currency_formatting_settings_provider
 	 */
-	function test_give_get_price_thousand_separator() {
-		$output = give_get_price_thousand_separator();
+	function test_give_get_price_thousand_separator( $currency_code, $expected ) {
+		// Create Simple Donation.
+		$donation_id       = Give_Helper_Payment::create_simple_payment(
+			array(
+				'donation' => array(
+					'currency' => $currency_code,
+				),
+			)
+		);
+		$currency_settings = give_get_currency_formatting_settings( $donation_id );
 
-		$this->assertEquals( ',', $output );
+
+		$this->assertArrayHasKey( 'thousands_separator', $currency_settings );
+		$this->assertEquals( $expected['thousands_separator'], $currency_settings['thousands_separator'] );
 	}
 
 	/**
@@ -37,12 +121,26 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 *
 	 * @since 1.8
 	 *
+	 * @param string $currency_code
+	 * @param array  $expected
+	 *
 	 * @cover give_get_price_decimal_separator
+	 * @dataProvider give_get_currency_formatting_settings_provider
 	 */
-	function test_give_get_price_decimal_separator() {
-		$output = give_get_price_decimal_separator();
+	function test_give_get_price_decimal_separator( $currency_code, $expected ) {
+		// Create Simple Donation.
+		$donation_id       = Give_Helper_Payment::create_simple_payment(
+			array(
+				'donation' => array(
+					'currency' => $currency_code,
+				),
+			)
+		);
+		$currency_settings = give_get_currency_formatting_settings( $donation_id );
 
-		$this->assertEquals( '.', $output );
+
+		$this->assertArrayHasKey( 'decimal_separator', $currency_settings );
+		$this->assertEquals( $expected['decimal_separator'], $currency_settings['decimal_separator'] );
 	}
 
 	/**
@@ -399,9 +497,9 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 
 		// Default number of decimals.
 		$this->assertEquals(
-			0,
+			3,
 			$output_number_of_decimal,
-			'Some currency only have  0 number of decimal places. For example: RIAL, JPY, TWD, HUF'
+			'Some currency only have  0 number of decimal places. For example: JPY, KRW'
 		);
 
 	}
