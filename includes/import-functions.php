@@ -380,7 +380,10 @@ function give_import_donations_options() {
 		'city'        => __( 'City', 'give' ),
 		'state'       => __( 'State', 'give' ),
 		'country'     => __( 'Country', 'give' ),
-		'zip'         => __( 'Zip', 'give' ),
+		'zip'         => array(
+			__( 'Zip', 'give' ),
+			__( 'Postal Code', 'give' ),
+		),
 		'email'       => __( 'Donor Email', 'give' ),
 		'post_status' => __( 'Donation Status', 'give' ),
 		'gateway'     => __( 'Payment Method', 'give' ),
