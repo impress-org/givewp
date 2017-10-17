@@ -36,7 +36,10 @@ function give_get_currency_formatting_settings( $id_or_currency_code = null ) {
 		}elseif ( is_numeric( $id_or_currency_code ) && 'give_payment' === get_post_type( $id_or_currency_code ) ) {
 			$donation_meta = give_get_meta( $id_or_currency_code, '_give_payment_meta', true );
 
-			if ( $give_options['currency'] !== $donation_meta['currency'] ) {
+			if (
+				! empty( $donation_meta['currency'] ) &&
+				$give_options['currency'] !== $donation_meta['currency']
+			) {
 				$setting = $currencies[ $donation_meta['currency'] ]['setting'];
 			}
 		}
