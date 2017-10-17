@@ -115,7 +115,7 @@ if ( $donations ) : ?>
 									'sanitize'    => false,
 									'currency'    => $currency_code,
 									'donation_id' => $post->ID,
-								), $post->ID ),
+								)),
 								$currency_code
 							);
 
