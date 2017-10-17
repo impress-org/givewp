@@ -476,6 +476,16 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 * Print the columns from the CSV.
 		 *
 		 * @since 1.8.14
+		 * @access public
+		 *
+		 * @param       $index
+		 * @param       $donations
+		 * @param       $donors
+		 * @param       $forms
+		 * @param bool  $value
+		 * @param array $mapto
+		 *
+		 * @return void
 		 */
 		public function get_columns( $index, $donations, $donors, $forms, $value = false, $mapto = array() ) {
 			$default       = give_import_default_options();
