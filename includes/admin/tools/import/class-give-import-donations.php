@@ -514,9 +514,14 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		/**
 		 * Print the option html for select in importer
 		 *
-		 * @since 1.8.15
+		 * @since  1.8.15
+		 * @access public
 		 *
-		 * @return Void
+		 * @param  array  $options
+		 * @param  string $current_mapto
+		 * @param bool    $value
+		 *
+		 * @return void
 		 */
 		public function get_dropdown_option_html( $options, $current_mapto, $value = false ) {
 			foreach ( $options as $option => $option_value ) {
@@ -532,9 +537,13 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						}
 					}
 				}
-				?>
-				<option value="<?php echo $option; ?>" <?php echo $checked; ?> ><?php echo $option_text; ?></option>
-				<?php
+
+				echo sprintf(
+					'<option value="%1$s" %2$s >%3$s</option>',
+					$option,
+					$checked,
+					$option_text
+				);
 			}
 		}
 
