@@ -1701,7 +1701,7 @@ final class Give_Payment {
 	 * @return string The currency for the payment
 	 */
 	private function setup_currency() {
-		$currency = isset( $this->payment_meta['currency'] ) ? $this->payment_meta['currency'] : apply_filters( 'give_payment_currency_default', give_get_currency( $this->form_id, $this ), $this );
+		$currency = ! empty( $this->payment_meta['currency'] ) ? $this->payment_meta['currency'] : apply_filters( 'give_payment_currency_default', give_get_currency( $this->form_id, $this ), $this );
 
 		return $currency;
 	}
