@@ -1539,8 +1539,8 @@ function give_get_meta( $id, $meta_key, $single = false, $default = false ) {
  *
  * @param int    $id
  * @param string $meta_key
- * @param string $meta_value
- * @param string $prev_value
+ * @param mixed  $meta_value
+ * @param mixed  $prev_value
  *
  * @return mixed
  */
