@@ -121,7 +121,8 @@ add_action( 'give_insert_user', 'give_connect_donor_to_wpuser', 10, 2 );
  *
  * Note: if location of site changes then run cron to validate licenses
  *
- * @since  1.7
+ * @since   1.7
+ * @updated 1.8.15 - Resolved issue with endless looping because of URL mismatches.
  * @return void
  */
 function give_validate_license_when_site_migrated() {
@@ -131,12 +132,10 @@ function give_validate_license_when_site_migrated() {
 	$home_url                    .= isset( $home_url_parts['path'] ) ? $home_url_parts['path'] : '';
 	$site_address_before_migrate = get_option( 'give_site_address_before_migrate' );
 
-
 	// Need $home_url to proceed
 	if ( ! $home_url ) {
 		return;
 	}
-
 
 	// Save site address
 	if ( ! $site_address_before_migrate ) {
@@ -153,9 +152,6 @@ function give_validate_license_when_site_migrated() {
 		// Add path for multisite installs.
 		$site_address_before_migrate .= isset( $site_address_before_migrate['path'] ) ? $site_address_before_migrate['path'] : '';
 	}
-
-	error_log( print_r( 'Home: ' . $home_url, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-	error_log( print_r( 'Migrate: ' . $site_address_before_migrate, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
 
 	// If the two URLs don't match run CRON.
 	if ( $home_url !== $site_address_before_migrate ) {
