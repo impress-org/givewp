@@ -58,7 +58,6 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 			}
 		}
 
-
 		/**
 		 * Get settings array.
 		 *
