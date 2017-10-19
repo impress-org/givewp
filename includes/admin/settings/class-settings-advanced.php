@@ -50,7 +50,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 					$settings = array(
 						array(
 							'id'   => 'give_title_data_control_2',
-							'type' => 'title'
+							'type' => 'title',
 						),
 						array(
 							'name'    => __( 'Remove Data on Uninstall', 'give' ),
@@ -61,7 +61,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							'options' => array(
 								'enabled'  => __( 'Yes, Remove all data', 'give' ),
 								'disabled' => __( 'No, keep my Give settings and donation data', 'give' ),
-							)
+							),
 						),
 						array(
 							'name'    => __( 'Default User Role', 'give' ),
@@ -69,7 +69,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							'id'      => 'donor_default_user_role',
 							'type'    => 'select',
 							'default' => 'give_donor',
-							'options' => give_get_user_roles()
+							'options' => give_get_user_roles(),
 						),
 						array(
 							/* translators: %s: the_content */
@@ -82,7 +82,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							'options' => array(
 								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
-							)
+							),
 						),
 						array(
 							'name'    => __( 'Script Loading Location', 'give' ),
@@ -93,19 +93,30 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							'options' => array(
 								'enabled'  => __( 'Footer', 'give' ),
 								'disabled' => __( 'Head', 'give' ),
-							)
+							),
 						),
-                        array(
-                            'name'  => __( 'Advanced Settings Docs Link', 'give' ),
-                            'id'    => 'advanced_settings_docs_link',
-                            'url'   => esc_url( 'http://docs.givewp.com/settings-advanced' ),
-                            'title' => __( 'Advanced Settings', 'give' ),
-                            'type'  => 'give_docs_link',
-                        ),
+						array(
+							'name'    => __( 'Akismet SPAM Protection', 'give' ),
+							'desc'    => __( 'Add a layer of SPAM protection to your donation submissions with Akismet. When enabled, donation submissions will be first sent to Akismet\'s API if you have the plugin activated and configured.', 'give' ),
+							'id'      => 'akismet_spam_protection',
+							'type'    => 'radio_inline',
+							'default' => ( give_check_akismet_key() ) ? 'enabled' : 'disabled',
+							'options' => array(
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							),
+						),
+						array(
+							'name'  => __( 'Advanced Settings Docs Link', 'give' ),
+							'id'    => 'advanced_settings_docs_link',
+							'url'   => esc_url( 'http://docs.givewp.com/settings-advanced' ),
+							'title' => __( 'Advanced Settings', 'give' ),
+							'type'  => 'give_docs_link',
+						),
 						array(
 							'id'   => 'give_title_data_control_2',
-							'type' => 'sectionend'
-						)
+							'type' => 'sectionend',
+						),
 					);
 					break;
 			}
@@ -138,7 +149,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 		 */
 		public function get_sections() {
 			$sections = array(
-				'advanced-options' => __( 'Advanced Options', 'give' )
+				'advanced-options' => __( 'Advanced Options', 'give' ),
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );

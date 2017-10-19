@@ -64,6 +64,7 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/country-functions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/template-functions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/misc-functions.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/import-functions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/forms/functions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/forms/template.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/forms/widget.php' );
@@ -89,7 +90,8 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/emails/template.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/emails/actions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-notices.php' );
-
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/donors/class-give-donors-query.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/libraries/give-pdf.php' );
 
 		/** Check Admin Exist */
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/admin-footer.php' );

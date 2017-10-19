@@ -684,9 +684,7 @@ function give_get_country_locale() {
 		),
 		'NZ' => array(
 			'state' => array(
-				'required' => false,
 				'label'    => __( 'Region', 'give' ),
-				'hidden'   => true,
 			),
 		),
 		'NO' => array(

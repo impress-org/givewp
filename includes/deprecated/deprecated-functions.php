@@ -623,3 +623,57 @@ function give_get_purchase_summary( $purchase_data, $email = true ) {
 	give_payment_gateway_donation_summary($purchase_data, $email);
 
 }
+
+/**
+ * Generate Item Title for Payment Gateway
+ *
+ * @param array $payment_data Payment Data.
+ *
+ * @since 1.8.14
+ *
+ * @return string
+ */
+function give_build_paypal_item_title( $payment_data ) {
+
+	$backtrace = debug_backtrace();
+
+	_give_deprecated_function( __FUNCTION__, '1.8.14', 'give_payment_gateway_item_title', $backtrace );
+
+	return give_payment_gateway_item_title( $payment_data );
+
+}
+
+
+/**
+ * Set the number of decimal places per currency
+ *
+ * @since 1.0
+ * @since 1.6 $decimals parameter removed from function params
+ * @deprecated 1.8.15
+ * *
+ * @return int $decimals
+ */
+function give_currency_decimal_filter() {
+	// Set default number of decimals.
+	$decimals = give_get_price_decimals();
+
+	// Get number of decimals with backward compatibility ( version < 1.6 )
+	if ( 1 <= func_num_args() ) {
+		$decimals = ( false === func_get_arg( 0 ) ? $decimals : absint( func_get_arg( 0 ) ) );
+	}
+
+	$currency = give_get_currency();
+
+	switch ( $currency ) {
+		// case 'RIAL' :
+		case 'JPY' :
+		case 'KRW' :
+			// case 'TWD' :
+			// case 'HUF' :
+
+			$decimals = 0;
+			break;
+	}
+
+	return apply_filters( 'give_currency_decimal_count', $decimals, $currency );
+}

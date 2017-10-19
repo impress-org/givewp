@@ -712,6 +712,58 @@ x:-o-prefocus, .qtip .qtip-tip {
   width: 14px;
   line-height: 20px; }
 
+.give-grid-row {
+  position: relative;
+  width: 100%; }
+  .give-grid-row [class^="give-grid-col"] {
+    float: left;
+    margin: 0.5rem 1%;
+    min-height: 0.125rem; }
+  .give-grid-row::after {
+    content: "";
+    display: table;
+    clear: both; }
+
+.give-grid-col-1 {
+  width: 6.33333%; }
+
+.give-grid-col-2 {
+  width: 14.66667%; }
+
+.give-grid-col-3 {
+  width: 23%; }
+
+.give-grid-col-4 {
+  width: 31.33333%; }
+
+.give-grid-col-5 {
+  width: 39.66667%; }
+
+.give-grid-col-6 {
+  width: 48%; }
+
+.give-grid-col-7 {
+  width: 56.33333%; }
+
+.give-grid-col-8 {
+  width: 64.66667%; }
+
+.give-grid-col-9 {
+  width: 73%; }
+
+.give-grid-col-10 {
+  width: 81.33333%; }
+
+.give-grid-col-11 {
+  width: 89.66667%; }
+
+.give-grid-col-12 {
+  width: 98%; }
+
+@media only screen and (max-width: 33.75em) {
+  .give-grid-row [class^="give-grid-col"] {
+    width: 98%; } }
+
 /**
  * Give Forms SCSS
  *
@@ -927,6 +979,11 @@ Dashboard Columns
 input.shortcode-input {
   width: 100%; }
 
+.price .give_price_range_low,
+.price .give_price_range_high,
+.price .give_price_range_sep {
+  display: inline-block; }
+
 /*-------------------------------------
 ASIDE
 -------------------------------------*/
@@ -975,7 +1032,7 @@ ASIDE
   .no-js #give-metabox-form-data .give_options_panel {
     display: block; }
   #give-metabox-form-data .give_options_panel .give-field-wrap {
-    padding: 1em 20px 1em 162px !important;
+    padding: 1em 20px 1em 162px;
     margin: 0;
     border-bottom: 1px solid #eee; }
     #give-metabox-form-data .give_options_panel .give-field-wrap > label, #give-metabox-form-data .give_options_panel .give-field-wrap > span.give-field-label {
@@ -1029,7 +1086,7 @@ ASIDE
       padding: 0; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-remove {
       float: right;
-      width: 36px;
+      width: 22px;
       height: 36px;
       padding: 0;
       display: block;
@@ -1041,11 +1098,11 @@ ASIDE
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-remove:hover {
       background-color: red;
       color: white;
-      width: 30px;
-      height: 30px;
+      width: 22px;
+      height: 22px;
       border-radius: 30px;
-      margin-top: 3px;
-      line-height: 28px; }
+      margin-top: 8px;
+      line-height: 19px; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-row-head {
       border-bottom: 1px solid #eee;
       cursor: move; }
@@ -1053,6 +1110,8 @@ ASIDE
         text-align: left !important; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-row.closed .toggle-indicator:before {
       content: "\f140"; }
+    #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-row .give-move .toggle-indicator:before {
+      margin-left: 7px; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-add-repeater-field-section-row-wrap {
       background-color: #f5f5f5; }
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-add-repeater-field-section-row {
@@ -1139,10 +1198,20 @@ ASIDE
       #give-metabox-form-data ul.give-metabox-tabs li > a:before {
         margin-right: 0;
         font-size: 15px; }
-      #give-metabox-form-data ul.give-metabox-tabs li > a span {
+      #give-metabox-form-data ul.give-metabox-tabs li > a span.give-label {
         display: none; }
+      #give-metabox-form-data ul.give-metabox-tabs li > a span.give-icon:before {
+        margin: 0; }
   #give-metabox-form-data .give_options_panel {
-    padding-left: 40px; } }
+    padding-left: 40px; }
+    #give-metabox-form-data .give_options_panel .give-field-wrap {
+      padding: 10px; }
+      #give-metabox-form-data .give_options_panel .give-field-wrap span.give-field-label, #give-metabox-form-data .give_options_panel .give-field-wrap label {
+        display: block;
+        float: none;
+        margin: 0 0 10px 0;
+        font-size: 14px;
+        width: 100%; } }
 
 #give-export-payments .give_forms_categories,
 #give-export-payments .give_forms_tags {
@@ -1335,7 +1404,7 @@ body.give_forms_page_give-reports .reports-forms-details-wrap.top, body.give_for
 body.give_forms_page_give-reports .tablenav.bottom, body.give_forms_page_give-payment-history .tablenav.bottom {
   margin-top: 10px; }
 
-body.give_forms_page_give-reports h3.reports-earnings-title, body.give_forms_page_give-payment-history h3.reports-earnings-title {
+body.give_forms_page_give-reports h2.reports-earnings-title, body.give_forms_page_give-payment-history h2.reports-earnings-title {
   margin: 7px 0 0; }
 
 body.give_forms_page_give-reports .reports-views-wrap, body.give_forms_page_give-payment-history .reports-views-wrap {
@@ -1715,68 +1784,76 @@ a.give-delete {
   width: 100%; }
 
 /* Addon grid design */
-.give-settings-page {
-  margin-top: 20px; }
-  .give-settings-page .give-settings-wrap-licenses {
-    display: block;
-    position: relative;
-    float: left;
-    width: 30.5%;
-    min-height: 180px;
-    margin: 20px 1% 20px 0; }
-  .give-settings-page .give-license-key label {
-    margin: 0 0 0 10px;
+.give-settings-page .give-settings-wrap-licenses {
+  display: block;
+  position: relative;
+  float: left;
+  width: 30.5%;
+  min-height: 180px;
+  margin: 20px 1% 20px 0; }
+
+.give-settings-page .give-license-key label {
+  margin: 0 0 0 10px;
+  padding: 10px 0;
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: default; }
+
+.give-settings-page .give-license-block {
+  margin: 0 10px; }
+
+.give-settings-page input[type="text"].give-license-field,
+.give-settings-page input[type="password"].give-license-field {
+  width: 100%; }
+
+.give-settings-page .give-license-block input[type="submit"] {
+  position: absolute;
+  top: 3px;
+  right: 10px;
+  height: 24px;
+  line-height: 22px;
+  padding: 0 8px 1px;
+  font-size: 11px; }
+
+.give-settings-page .give-license-status-notice {
+  background: #fff;
+  border-left: 4px solid #fff;
+  -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+  margin: 5px 0 2px;
+  padding: 1px 12px; }
+  .give-settings-page .give-license-status-notice p {
     padding: 10px 0;
-    display: block;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: default; }
-  .give-settings-page .give-license-block {
-    margin: 0 10px; }
-  .give-settings-page input[type="text"].give-license-field,
-  .give-settings-page input[type="password"].give-license-field {
-    width: 100%; }
-  .give-settings-page .give-license-block input[type="submit"] {
-    position: absolute;
-    top: 3px;
-    right: 10px;
-    height: 24px;
-    line-height: 22px;
-    padding: 0 8px 1px;
-    font-size: 11px; }
-  .give-settings-page .give-license-status-notice {
-    background: #fff;
-    border-left: 4px solid #fff;
-    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
-    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
-    margin: 5px 0 2px;
-    padding: 1px 12px; }
-    .give-settings-page .give-license-status-notice p {
-      padding: 10px 0;
-      margin: 0; }
-    .give-settings-page .give-license-status-notice a {
-      color: #444;
-      cursor: pointer; }
-      .give-settings-page .give-license-status-notice a:hover {
-        text-decoration: none; }
-  .give-settings-page .give-license-status-notice.give-license-expires-soon {
-    border-color: #00a0d2; }
-  .give-settings-page .give-license-status-notice.give-inactive,
-  .give-settings-page .give-license-status-notice.give-license-expired {
-    border-color: #e24e4e; }
-  .give-settings-page .give-license-status-notice.give-license-error,
-  .give-settings-page .give-license-status-notice.give-license-no_activations_left,
-  .give-settings-page .give-license-status-notice.give-license-missing,
-  .give-settings-page .give-license-status-notice.give-license-invalid,
-  .give-settings-page .give-license-status-notice.give-license-site_inactive,
-  .give-settings-page .give-license-status-notice.give-license-item_name_mismatch {
-    border-color: orange; }
-  .give-settings-page .give-license-status-notice.give-license-lifetime-notice,
-  .give-settings-page .give-license-status-notice.give-license-expiration-date {
-    border-color: #46b450; }
-  .give-settings-page .give-license-status-notice.give-license-expires-soon a:hover,
-  .give-settings-page .give-license-status-notice.give-license-expired a:hover {
-    text-decoration: none; }
+    margin: 0; }
+  .give-settings-page .give-license-status-notice a {
+    color: #444;
+    cursor: pointer; }
+    .give-settings-page .give-license-status-notice a:hover {
+      text-decoration: none; }
+
+.give-settings-page .give-license-status-notice.give-license-expires-soon {
+  border-color: #00a0d2; }
+
+.give-settings-page .give-license-status-notice.give-inactive,
+.give-settings-page .give-license-status-notice.give-license-expired {
+  border-color: #e24e4e; }
+
+.give-settings-page .give-license-status-notice.give-license-error,
+.give-settings-page .give-license-status-notice.give-license-no_activations_left,
+.give-settings-page .give-license-status-notice.give-license-missing,
+.give-settings-page .give-license-status-notice.give-license-invalid,
+.give-settings-page .give-license-status-notice.give-license-site_inactive,
+.give-settings-page .give-license-status-notice.give-license-item_name_mismatch {
+  border-color: orange; }
+
+.give-settings-page .give-license-status-notice.give-license-lifetime-notice,
+.give-settings-page .give-license-status-notice.give-license-expiration-date {
+  border-color: #46b450; }
+
+.give-settings-page .give-license-status-notice.give-license-expires-soon a:hover,
+.give-settings-page .give-license-status-notice.give-license-expired a:hover {
+  text-decoration: none; }
 
 /* Responsive fixes: Addon grid design */
 @media screen and (max-width: 1100px) {
@@ -2188,7 +2265,10 @@ Responsiveness
   text-align: left; }
 
 #give-donation-overview .give-select-chosen {
-  width: 196px; }
+  width: 97%; }
+
+#give-edit-order-form .row {
+  margin-top: 10px; }
 
 #give-donation-overview ul,
 #give-order-address-country-wrap select,
@@ -2252,13 +2332,14 @@ input.give-price-field {
   margin: 0 0 10px; }
 
 #give-billing-details label {
-  display: block; }
+  display: block;
+  margin-bottom: 5px; }
 
 #give-billing-details .column-container {
   padding: 5px 0 10px; }
 
 #give-billing-details input[type="text"] {
-  width: 95%; }
+  width: 98%; }
 
 #give-billing-details .chosen-container {
   width: 98% !important; }
@@ -2266,6 +2347,8 @@ input.give-price-field {
 @media screen and (min-width: 1200px) {
   #give-edit-order-form .column {
     width: 33%; }
+  #give-order-address .column {
+    width: 49%; }
   #give-donation-overview.columns-4 li.actions {
     width: 25%;
     margin-top: 0;
@@ -2483,7 +2566,7 @@ input.give-price-field {
   font-size: 24px;
   font-weight: 600; }
 
-.disconnect-user a {
+#disconnect-donor, #view-user-profile {
   font-size: 12px;
   font-weight: normal;
   text-decoration: none; }
@@ -2761,8 +2844,22 @@ div.sc-shortcode {
     .give-status-table td ul {
       margin: 0; }
 
+/* System info download header */
 .wrap div.give-debug-report-wrapper {
-  margin-top: 1em; }
+  margin-bottom: 5px; }
+  .wrap div.give-debug-report-wrapper p {
+    font-size: 18px;
+    margin: 1em 0 0.7em;
+    padding: 0; }
+  .wrap div.give-debug-report-wrapper .give-debug-report-actions {
+    margin: 0 0 1.7em; }
+    .wrap div.give-debug-report-wrapper .give-debug-report-actions .js-give-debug-report-button {
+      margin-right: 10px; }
+    .wrap div.give-debug-report-wrapper .give-debug-report-actions .dashicons {
+      font-size: 16px;
+      position: relative;
+      top: 4px;
+      left: -2px; }
 
 .give-debug-report {
   display: none;
@@ -2836,6 +2933,9 @@ div.sc-shortcode {
 
 #give-db-updates .spinner {
   margin-top: 0; }
+
+body.give_forms_page_give-updates .give-run-update-containt .give-run-update-button {
+  margin-right: 10px; }
 
 /**
  * Give Blank Slate

@@ -80,3 +80,23 @@ function __give_validate_decimal_separator_setting_field( $value ) {
 }
 
 add_filter( 'give_admin_settings_sanitize_option_decimal_separator', '__give_validate_decimal_separator_setting_field', 10 );
+
+/**
+ * Change $delimiter text to symbol.
+ *
+ * @since 1.8.14
+ *
+ * @param string $delimiter.
+ *
+ * @return string $delimiter.
+ */
+function __give_import_delimiter_set_callback( $delimiter ) {
+	$delimite_type = array(
+		'csv'                  => ",",
+		'tab-separated-values' => "\t",
+	);
+
+	return ( array_key_exists( $delimiter, $delimite_type ) ? $delimite_type[ $delimiter ] : "," );
+}
+
+add_filter( 'give_import_delimiter_set', '__give_import_delimiter_set_callback', 10 );

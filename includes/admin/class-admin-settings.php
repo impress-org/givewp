@@ -78,6 +78,22 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		}
 
 		/**
+		 * Varify admin setting nonce
+		 *
+		 * @since  1.8.14
+		 * @access public
+		 *
+		 * @return bool
+		 */
+		public static function verify_nonce() {
+			if ( empty( $_REQUEST['_give-save-settings'] ) || ! wp_verify_nonce( $_REQUEST['_give-save-settings'], 'give-save-settings' ) ) {
+				return false;
+			}
+
+			return true;
+		}
+
+		/**
 		 * Save the settings.
 		 *
 		 * @since  1.8
@@ -86,9 +102,19 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		public static function save() {
 			$current_tab = give_get_current_setting_tab();
 
-			if ( empty( $_REQUEST['_give-save-settings'] ) || ! wp_verify_nonce( $_REQUEST['_give-save-settings'], 'give-save-settings' ) ) {
+			if( ! self::verify_nonce()  ) {
 				echo '<div class="notice error"><p>' . __( 'Action failed. Please refresh the page and retry.', 'give' ) . '</p></div>';
 				die();
+			}
+
+			// Show error message if Akismet not configured and Admin try to save 'enabled' option.
+			if ( isset( $_POST['akismet_spam_protection'] )
+			     && give_is_setting_enabled( $_POST['akismet_spam_protection'] )
+			     && ! give_check_akismet_key()
+			) {
+				self::add_error( 'give-akismet-protection', __( 'Please properly configure Akismet to enable SPAM protection.', 'give' ) );
+
+				return;
 			}
 
 			/**
@@ -379,31 +405,32 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 					// Standard text inputs and subtypes like 'number'.
 					case 'colorpicker':
+					case 'hidden' :
+						$value['wrapper_class'] = empty( $value['wrapper_class'] ) ? 'give-hidden' : trim( $value['wrapper_class'] ) . ' give-hidden';
 					case 'text':
 					case 'email':
 					case 'number':
 					case 'password' :
-
 						$type = $value['type'];
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
-
 						?>
-                    <tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
-                        <th scope="row" class="titledesc">
-                            <label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
-                        </th>
-                        <td class="give-forminp give-forminp-<?php echo sanitize_title( $value['type'] ) ?>">
-                            <input
-                                    name="<?php echo esc_attr( $value['id'] ); ?>"
-                                    id="<?php echo esc_attr( $value['id'] ); ?>"
-                                    type="<?php echo esc_attr( $type ); ?>"
-                                    style="<?php echo esc_attr( $value['css'] ); ?>"
-                                    value="<?php echo esc_attr( $option_value ); ?>"
-                                    class="give-input-field<?php echo( empty( $value['class'] ) ? '' : ' ' . esc_attr( $value['class'] ) ); ?>"
-								<?php echo implode( ' ', $custom_attributes ); ?>
-                            /> <?php echo $description; ?>
-                        </td>
-                        </tr><?php
+						<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
+							<th scope="row" class="titledesc">
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
+							</th>
+							<td class="give-forminp give-forminp-<?php echo sanitize_title( $value['type'] ) ?>">
+								<input
+										name="<?php echo esc_attr( $value['id'] ); ?>"
+										id="<?php echo esc_attr( $value['id'] ); ?>"
+										type="<?php echo esc_attr( $type ); ?>"
+										style="<?php echo esc_attr( $value['css'] ); ?>"
+										value="<?php echo esc_attr( $option_value ); ?>"
+										class="give-input-field<?php echo( empty( $value['class'] ) ? '' : ' ' . esc_attr( $value['class'] ) ); ?>"
+									<?php echo implode( ' ', $custom_attributes ); ?>
+								/> <?php echo $description; ?>
+							</td>
+						</tr>
+						<?php
 						break;
 
 					// Textarea.

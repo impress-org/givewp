@@ -6,7 +6,7 @@
  * @subpackage  Admin/Notices
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       1.0
+ * @since       1.8.9
  */
 
 // Exit if accessed directly.
@@ -17,13 +17,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Give_Notices Class
  *
- * @since 1.0
+ * @since 1.8.9
  */
 class Give_Notices {
 	/**
 	 * List of notices
 	 * @var array
-	 * @since  1.8
+	 * @since  1.8.9
 	 * @access private
 	 */
 	private static $notices = array();
@@ -50,7 +50,7 @@ class Give_Notices {
 	/**
 	 * Get things started.
 	 *
-	 * @since 1.0
+	 * @since 1.8.9
 	 */
 	public function __construct() {
 		add_action( 'admin_notices', array( $this, 'render_admin_notices' ), 999 );
@@ -59,6 +59,43 @@ class Give_Notices {
 		add_action( 'give_frontend_notices', array( $this, 'render_frontend_notices' ), 999 );
 		add_action( 'give_donation_form_before_personal_info', array( $this, 'render_frontend_notices' ) );
 		add_action( 'give_ajax_donation_errors', array( $this, 'render_frontend_notices' ) );
+
+		/**
+		 * Backward compatibility for deprecated params.
+		 *
+		 * @since 1.8.14
+		 */
+		add_filter( 'give_register_notice_args', array( $this, 'bc_deprecated_params' ) );
+		add_filter( 'give_frontend_errors_args', array( $this, 'bc_deprecated_params' ) );
+		add_filter( 'give_frontend_notice_args', array( $this, 'bc_deprecated_params' ) );
+	}
+
+	/**
+	 * Add backward compatibility to deprecated params.
+	 *
+	 * @since  1.8.14
+	 * @access public
+	 *
+	 * @param array $args Array of notice params
+	 *
+	 * @return array
+	 */
+	public function bc_deprecated_params( $args ) {
+		/**
+		 *  Param: auto_dismissible
+		 *  deprecated in 1.8.14
+		 *
+		 *  Check if auto_dismissible is set and it true then unset and change dismissible parameter value to auto
+		 */
+		if ( isset( $args['auto_dismissible'] ) ) {
+			if ( ! empty( $args['auto_dismissible'] ) ) {
+				$args['dismissible'] = 'auto';
+			}
+			// unset auto_dismissible as it has been deprecated.
+			unset( $args['auto_dismissible'] );
+		}
+
+		return $args;
 	}
 
 	/**
@@ -82,7 +119,14 @@ class Give_Notices {
 			array(
 				'id'                    => '',
 				'description'           => '',
-				'auto_dismissible'      => false,
+
+				/*
+				 * Add New Parameter and remove the auto_dismissible parameter.
+				 * Value: auto/true/false
+				 *
+				 * @since 1.8.14
+				 */
+				'dismissible'           => true,
 
 				// Value: error/warning/success/info/updated
 				'type'                  => 'error',
@@ -98,6 +142,13 @@ class Give_Notices {
 
 			)
 		);
+
+		/**
+		 * Filter to modify Notice args before it get add
+		 *
+		 * @since 1.8.14
+		 */
+		$notice_args = apply_filters( 'give_register_notice_args', $notice_args );
 
 		// Set extra dismiss links if any.
 		if ( false !== strpos( $notice_args['description'], 'data-dismiss-interval' ) ) {
@@ -157,7 +208,7 @@ class Give_Notices {
 
 			// Check if notice dismissible or not.
 			if ( ! self::$has_auto_dismissible_notice ) {
-				self::$has_auto_dismissible_notice = $notice['auto_dismissible'];
+				self::$has_auto_dismissible_notice = ( 'auto' === $notice['dismissible'] );
 			}
 
 			// Check if notice dismissible or not.
@@ -167,12 +218,12 @@ class Give_Notices {
 
 			$css_id = ( false === strpos( $notice['id'], 'give' ) ? "give-{$notice['id']}" : $notice['id'] );
 
-			$css_class = "give-notice notice is-dismissible {$notice['type']} notice-{$notice['type']}";
+			$css_class = 'give-notice notice ' . ( empty( $notice['dismissible'] ) ? 'non' : 'is' ) . "-dismissible {$notice['type']} notice-{$notice['type']}";
 			$output    .= sprintf(
-				'<div id="%1$s" class="%2$s" data-auto-dismissible="%3$s" data-dismissible-type="%4$s" data-dismiss-interval="%5$s" data-notice-id="%6$s" data-security="%7$s" data-dismiss-interval-time="%8$s">' . " \n",
+				'<div id="%1$s" class="%2$s" data-dismissible="%3$s" data-dismissible-type="%4$s" data-dismiss-interval="%5$s" data-notice-id="%6$s" data-security="%7$s" data-dismiss-interval-time="%8$s" style="display: none">' . " \n",
 				$css_id,
 				$css_class,
-				$notice['auto_dismissible'],
+				give_clean( $notice['dismissible'] ),
 				$notice['dismissible_type'],
 				$notice['dismiss_interval'],
 				$notice['id'],
@@ -201,7 +252,7 @@ class Give_Notices {
 	public function render_frontend_notices( $form_id = 0 ) {
 		$errors = give_get_errors();
 
-		$request_form_id = isset( $_REQUEST['form-id'] ) ? intval( $_REQUEST['form-id'] ) : 0;
+		$request_form_id = isset( $_REQUEST['form-id'] ) ? absint( $_REQUEST['form-id'] ) : 0;
 
 		// Sanity checks first: Ensure that gateway returned errors display on the appropriate form.
 		if ( ! isset( $_POST['give_ajax'] ) && $request_form_id !== $form_id ) {
@@ -229,7 +280,7 @@ class Give_Notices {
 					// auto hide setting message in 5 seconds.
 					window.setTimeout(
 						function () {
-							jQuery('.give-notice[data-auto-dismissible="1"]').slideUp();
+							jQuery('.give-notice[data-dismissible="auto"]').slideUp();
 						},
 						5000
 					);
@@ -247,8 +298,8 @@ class Give_Notices {
 					$body.on('click', '.give_dismiss_notice', function (e) {
 						var $parent            = jQuery(this).parents('.give-notice'),
 							custom_notice_data = {
-								'dismissible_type'     : jQuery(this).data('dismissible-type'),
-								'dismiss_interval'     : jQuery(this).data('dismiss-interval'),
+								'dismissible_type': jQuery(this).data('dismissible-type'),
+								'dismiss_interval': jQuery(this).data('dismiss-interval'),
 								'dismiss_interval_time': jQuery(this).data('dismiss-interval-time')
 							};
 
@@ -263,12 +314,12 @@ class Give_Notices {
 						e.preventDefault();
 
 						var data = {
-							'give-action'          : 'dismiss_notices',
-							'notice_id'            : $parent.data('notice-id'),
-							'dismissible_type'     : $parent.data('dismissible-type'),
-							'dismiss_interval'     : $parent.data('dismiss-interval'),
+							'give-action': 'dismiss_notices',
+							'notice_id': $parent.data('notice-id'),
+							'dismissible_type': $parent.data('dismissible-type'),
+							'dismiss_interval': $parent.data('dismiss-interval'),
 							'dismiss_interval_time': $parent.data('dismiss-interval-time'),
-							'_wpnonce'             : $parent.data('security')
+							'_wpnonce': $parent.data('security')
 						};
 
 						if (Object.keys(custom_notice_data).length) {
@@ -294,6 +345,19 @@ class Give_Notices {
 			</script>
 			<?php
 		endif;
+		?>
+		<script>
+			jQuery(document).ready(function($){
+				// Fix notice appearance issue.
+				window.setTimeout(
+					function(){
+						$('.give-notice').slideDown();
+					},
+					1000
+				);
+			});
+		</script>
+		<?php
 	}
 
 
@@ -435,15 +499,21 @@ class Give_Notices {
 	 * @since  1.8.9
 	 * @access public
 	 *
-	 * @param $errors
+	 * @param array $errors
 	 */
-	static function print_frontend_errors( $errors ) {
+	public static function print_frontend_errors( $errors ) {
+		// Bailout.
 		if ( ! $errors ) {
 			return;
 		}
 
+		/**
+		 * Change auto_dismissible to dismissible and set the value to true
+		 *
+		 * @since 1.8.14
+		 */
 		$default_notice_args = array(
-			'auto_dismissible' => false,
+			'dismissible'      => true,
 			'dismiss_interval' => 5000,
 		);
 
@@ -452,29 +522,36 @@ class Give_Notices {
 
 		echo sprintf( '<div class="%s">', implode( ' ', $classes ) );
 
-			// Loop error codes and display errors.
-			foreach ( $errors as $error_id => $error ) {
-				// Backward compatibility v<1.8.11
-				if ( is_string( $error ) ) {
-					$error = array(
-						'message'     => $error,
-						'notice_args' => array(),
-					);
-				}
-
-				$notice_args = wp_parse_args( $error['notice_args'], $default_notice_args );
-
-				echo sprintf(
-					'<div class="give_error give_notice" id="give_error_%1$s" data-auto-dismissible="%2$d" data-dismiss-interval="%3$d">
-								<p><strong>%4$s</strong>: %5$s</p>
-							</div>',
-					$error_id,
-					absint( $notice_args['auto_dismissible'] ),
-					absint( $notice_args['dismiss_interval'] ),
-					esc_html__( 'Error', 'give' ),
-					$error['message']
+		// Loop error codes and display errors.
+		foreach ( $errors as $error_id => $error ) {
+			// Backward compatibility v<1.8.11
+			if ( is_string( $error ) ) {
+				$error = array(
+					'message'     => $error,
+					'notice_args' => array(),
 				);
 			}
+
+			$notice_args = wp_parse_args( $error['notice_args'], $default_notice_args );
+
+			/**
+			 * Filter to modify Frontend Errors args before errors is display.
+			 *
+			 * @since 1.8.14
+			 */
+			$notice_args = apply_filters( 'give_frontend_errors_args', $notice_args );
+
+			echo sprintf(
+				'<div class="give_error give_notice" id="give_error_%1$s" data-dismissible="%2$s" data-dismiss-interval="%3$d">
+						<p><strong>%4$s</strong>: %5$s</p>
+					</div>',
+				$error_id,
+				give_clean( $notice_args['dismissible'] ),
+				absint( $notice_args['dismiss_interval'] ),
+				esc_html__( 'Error', 'give' ),
+				$error['message']
+			);
+		}
 
 		echo '</div>';
 	}
@@ -486,34 +563,46 @@ class Give_Notices {
 	 * @since  1.8.9
 	 * @access public
 	 *
-	 * @param        $message
+	 * @param string $message
 	 * @param bool   $echo
 	 * @param string $notice_type
 	 * @param array  $notice_args
 	 *
 	 * @return  string
 	 */
-	static function print_frontend_notice( $message, $echo = true, $notice_type = 'warning', $notice_args = array() ) {
+	public static function print_frontend_notice( $message, $echo = true, $notice_type = 'warning', $notice_args = array() ) {
 		if ( empty( $message ) ) {
 			return '';
 		}
 
+		/**
+		 * Change auto_dismissible to dismissible and set the value to true
+		 *
+		 * @since 1.8.14
+		 */
 		$default_notice_args = array(
-			'auto_dismissible' => false,
+			'dismissible'      => true,
 			'dismiss_interval' => 5000,
 		);
 
 		$notice_args = wp_parse_args( $notice_args, $default_notice_args );
 
+		/**
+		 * Filter to modify Frontend notice args before notices is display.
+		 *
+		 * @since 1.8.14
+		 */
+		$notice_args = apply_filters( 'give_frontend_notice_args', $notice_args );
+
 		// Note: we will remove give_errors class in future.
 		$error = sprintf(
 			'<div class="give_notices give_errors" id="give_error_%1$s">
-						<p class="give_error give_notice give_%1$s" data-auto-dismissible="%2$d" data-dismiss-interval="%3$d">
-							%4$s
-						</p>
-					</div>',
+				<p class="give_error give_notice give_%1$s" data-dismissible="%2$s" data-dismiss-interval="%3$d">
+					%4$s
+				</p>
+			</div>',
 			$notice_type,
-			absint( $notice_args['auto_dismissible'] ),
+			give_clean( $notice_args['dismissible'] ),
 			absint( $notice_args['dismiss_interval'] ),
 			$message
 		);

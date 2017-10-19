@@ -116,7 +116,7 @@ function give_offline_process_payment( $purchase_data ) {
 		'date'            => $purchase_data['date'],
 		'user_email'      => $purchase_data['user_email'],
 		'purchase_key'    => $purchase_data['purchase_key'],
-		'currency'        => give_get_currency(),
+		'currency'        => give_get_currency( $purchase_data['post_data']['give-form-id'], $purchase_data ),
 		'user_info'       => $purchase_data['user_info'],
 		'status'          => 'pending',
 		'gateway'         => 'offline'
@@ -467,36 +467,6 @@ function give_offline_donation_receipt_status_notice( $notice, $id ) {
 }
 
 add_filter( 'give_receipt_status_notice', 'give_offline_donation_receipt_status_notice', 10, 2 );
-
-/**
- * Add offline payment instruction on payment receipt.
- *
- * @since 1.7
- *
- * @param WP_Post $payment
- *
- * @return mixed
- */
-function give_offline_payment_receipt_after( $payment ) {
-	// Get payment object.
-	$payment = new Give_Payment( $payment->ID );
-
-	// Bailout.
-	if ( 'offline' !== $payment->gateway ) {
-		return false;
-	}
-
-	?>
-    <tr>
-        <td scope="row"><strong><?php esc_html_e( 'Offline Donations Instructions', 'give' ); ?></strong></td>
-        <td>
-			<?php echo give_get_offline_payment_instruction( $payment->form_id, true ); ?>
-        </td>
-    </tr>
-	<?php
-}
-
-add_filter( 'give_payment_receipt_after', 'give_offline_payment_receipt_after' );
 
 /**
  * Get offline payment instructions.

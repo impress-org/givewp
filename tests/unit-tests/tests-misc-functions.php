@@ -78,4 +78,44 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 		$status = give_delete_meta( $payment, 'testing_meta' );
 		$this->assertEquals( true, $status );
 	}
+
+	/**
+	 * Test for building Item Title of Payment Gateway.
+	 *
+	 * @since 1.8.14
+	 * @access public
+	 *
+	 * @cover give_payment_gateway_item_title
+	 */
+	public function test_give_payment_gateway_item_title() {
+
+		// Setup Simple Donation Form.
+		$donation = Give_Helper_Form::setup_simple_donation_form();
+
+		// Simple Donation Form using Payment Gateway Item Title.
+		$title = give_payment_gateway_item_title( $donation );
+		$this->assertEquals( 'Test Donation Form', $title );
+
+		// Setup Simple Donation Form with Custom Amount.
+		$donation = Give_Helper_Form::setup_simple_donation_form( true );
+
+		// Simple Donation Form using Payment Gateway Item Title with Custom Amount.
+		$title = give_payment_gateway_item_title( $donation );
+		$this->assertEquals( 'Test Donation Form - Would you like to set a custom amount?', $title );
+
+		// Setup MultiLevel Donation Form.
+		$donation = Give_Helper_Form::setup_multi_level_donation_form();
+
+		// MultiLevel Donation Form using Payment Gateway Item Title.
+		$title = give_payment_gateway_item_title( $donation );
+		$this->assertEquals( 'Test Donation Form - Mid-size Gift', $title );
+
+		// Setup MultiLevel Donation Form with Custom Amount.
+		$donation = Give_Helper_Form::setup_multi_level_donation_form( true );
+
+		// MultiLevel Donation Form using Payment Gateway Item Title with Custom Amount.
+		$title = give_payment_gateway_item_title( $donation );
+		$this->assertEquals( 'Test Donation Form - Custom Amount', $title );
+
+	}
 }
