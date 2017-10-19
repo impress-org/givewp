@@ -345,7 +345,7 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
  */
 function give_import_default_options() {
 	/**
-	 * Filter to modify defalut option in the import dropdown
+	 * Filter to modify default option in the import dropdown
 	 *
 	 * @since 1.8.13
 	 *
@@ -379,8 +379,16 @@ function give_import_donations_options() {
 		'line2'       => __( 'Address 2', 'give' ),
 		'city'        => __( 'City', 'give' ),
 		'state'       => __( 'State', 'give' ),
-		'country'     => __( 'Country', 'give' ),
-		'zip'         => __( 'Zip', 'give' ),
+		'country'     => array(
+			__( 'Country', 'give' ),
+			__( 'County', 'give' ),
+			__( 'Region', 'give' ),
+			__( 'Province', 'give' ),
+		),
+		'zip'         => array(
+			__( 'Zip', 'give' ),
+			__( 'Postal Code', 'give' ),
+		),
 		'email'       => __( 'Donor Email', 'give' ),
 		'post_status' => __( 'Donation Status', 'give' ),
 		'gateway'     => __( 'Payment Method', 'give' ),
@@ -423,7 +431,7 @@ function give_import_donation_form_options() {
 	 * @return array
 	 */
 	return (array) apply_filters( 'give_import_donation_form_options', array(
-		'form_title'              => __( 'Donation Form', 'give' ),
+		'form_title'              => __( 'Donation Form Title', 'give' ),
 		'form_id'                 => __( 'Donation Form ID', 'give' ),
 		'form_level'              => __( 'Donation Level', 'give' ),
 		'form_custom_amount_text' => __( 'Custom Amount Text', 'give' ),
