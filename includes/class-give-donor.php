@@ -1304,11 +1304,11 @@ class Give_Donor {
 
 		$address_count = false !== strpos( $address_id, '_' ) ?
 			array_pop( explode( '_', $address_id ) ) :
-			'';
+			null;
 
 		// Set meta key prefix.
 		$meta_key_prefix = "_give_donor_address_{$address_type}_%";
-		if ( $is_multi_address && ! empty( $address_count ) ) {
+		if ( $is_multi_address && is_numeric( $address_count ) ) {
 			$meta_key_prefix .= "_{$address_count}";
 		}
 

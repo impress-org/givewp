@@ -649,13 +649,17 @@ function __give_ajax_donor_manage_addresses() {
 		wp_send_json_error( array( 'error' => 1 ) );
 	}
 
-	$post          = give_clean( wp_parse_args( $_POST ) );
-	$donorID       = absint( $post['donorID'] );
-	$form_data     = give_clean( wp_parse_args( $post['form'] ) );
-	$addressType   = false !== strpos( $form_data['address-id'], '_' ) ?
+	$post                  = give_clean( wp_parse_args( $_POST ) );
+	$donorID               = absint( $post['donorID'] );
+	$form_data             = give_clean( wp_parse_args( $post['form'] ) );
+	$is_multi_address_type = ( 'billing' === $form_data['address-id'] || false !== strpos( $form_data['address-id'], '_' ) );
+	$address_type          = false !== strpos( $form_data['address-id'], '_' ) ?
 		array_shift( explode( '_', $form_data['address-id'] ) ) :
 		$form_data['address-id'];
-	$response_data = array(
+	$address_id            = false !== strpos( $form_data['address-id'], '_' ) ?
+		array_pop( explode( '_', $form_data['address-id'] ) ) :
+		$form_data['address-id'];
+	$response_data         = array(
 		'action' => $form_data['address-action'],
 		'id'     => $form_data['address-id'],
 	);
@@ -682,7 +686,7 @@ function __give_ajax_donor_manage_addresses() {
 	switch ( $response_data['action'] ) {
 
 		case 'add':
-			if ( ! $donor->add_address( "{$addressType}[]", $form_data ) ) {
+			if ( ! $donor->add_address( "{$address_type}[]", $form_data ) ) {
 				wp_send_json_error( array(
 						'error' => 4,
 						'error_msg' => wp_sprintf(
@@ -693,17 +697,26 @@ function __give_ajax_donor_manage_addresses() {
 				);
 			}
 
+			$address_index = $is_multi_address_type ?
+				array_pop( array_keys( $donor->address[ $address_type ] ) ) :
+				$address_type;
+
 			$response_data['address_html'] = __give_get_format_address(
 				end( $donor->address['billing'] ),
 				array(
 					'type'  => 'billing',
-					'index' => count( $donor->address ),
+					'index' => $address_index,
 				)
 			);
+
+			if( $is_multi_address_type ) {
+				$response_data['id'] = "{$response_data['id']}_{$address_index}";
+			}
+
 			break;
 
 		case 'remove':
-			if ( ! $donor->remove_address( $form_data['address-id'] ) ) {
+			if ( ! $donor->remove_address( $response_data['id'] ) ) {
 				wp_send_json_error( array(
 						'error' => 5,
 						'error_msg' => wp_sprintf(
@@ -717,6 +730,25 @@ function __give_ajax_donor_manage_addresses() {
 			break;
 
 		case 'update':
+			if ( ! $donor->update_address( $response_data['id'], $form_data ) ) {
+				wp_send_json_error( array(
+						'error' => 6,
+						'error_msg' => wp_sprintf(
+							'<div class="notice notice-error"><p>%s</p></div>',
+							__( 'Error: could not able to update address. please try after sometime.', 'give' )
+						)
+					)
+				);
+			}
+
+			$response_data['address_html'] = __give_get_format_address(
+				$donor->address['billing'][$address_id],
+				array(
+					'type'  => 'billing',
+					'index' => $address_id,
+				)
+			);
+
 			break;
 	}
 

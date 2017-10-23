@@ -1496,9 +1496,32 @@ var give_setting_edit = false;
 											$allAddress
 												.find('div[data-address-id*="'+ response.data.id +'"]').parent()
 												.animate( { 'margin-left': '-=999' }, 1000 );
-										},
-										700
+										}
 									);
+									break;
+
+								case 'update':
+									var parent           = $allAddress
+										.find('div[data-address-id*="' + response.data.id + '"]').parent(),
+										$prevParent      = parent.prev(),
+										$nextParent      = {},
+										is_address_added = false;
+
+									if ( $prevParent.length ) {
+										$prevParent.after( response.data.address_html );
+										is_address_added = true;
+									}
+
+									if( ! is_address_added ) {
+										$nextParent = parent.next();
+
+										if( $nextParent.length ) {
+											$nextParent.before( response.data.address_html );
+										}
+									}
+
+									parent.remove();
+
 									break;
 							}
 
