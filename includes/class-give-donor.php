@@ -1267,6 +1267,58 @@ class Give_Donor {
 		return true;
 	}
 
+	/**
+	 * Remove donor address
+	 *
+	 * @since  2.0
+	 * @access public
+	 * @global wpdb  $wpdb
+	 *
+	 * @param string $address_id
+	 *
+	 * @return bool
+	 */
+	public function remove_address( $address_id ) {
+		global $wpdb;
+
+		// Get address type.
+		$is_multi_address = false !== strpos( $address_id, '_' ) ? true : false;
+
+		$address_type = false !== strpos( $address_id, '_' ) ?
+			array_shift( explode( '_', $address_id ) ) :
+			$address_id;
+
+		$address_count = false !== strpos( $address_id, '_' ) ?
+			array_pop( explode( '_', $address_id ) ) :
+			'';
+
+		// Set meta key prefix.
+		$meta_key_prefix = "_give_donor_address_{$address_type}_%";
+		if ( $is_multi_address && ! empty( $address_count ) ) {
+			$meta_key_prefix .= "_{$address_count}";
+		}
+
+		$meta_type = Give()->donor_meta->meta_type;
+
+		// Process query.
+		$row_affected = $wpdb->query(
+			$wpdb->prepare(
+				"
+					DELETE FROM {$wpdb->donormeta}
+					WHERE meta_key
+					LIKE '%s'
+					AND {$meta_type}_id=%d
+					",
+				$meta_key_prefix,
+				$this->id
+			)
+		);
+
+		$this->setup_address();
+
+		return (bool) $row_affected;
+	}
+
 
 	/**
 	 * Check if donor already has current address
