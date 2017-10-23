@@ -2873,6 +2873,30 @@ div.sc-shortcode {
   background: #dd823b; }
 
 /**
+ * Spinner
+ */
+.give-spinner-wrapper {
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  top: 0;
+  background: rgba(245, 245, 245, 0.57);
+  z-index: 1;
+  display: none; }
+  .give-spinner-wrapper.is-active {
+    display: inline-block; }
+  .give-spinner-wrapper .aligncenter {
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    margin: 10px 0 0 10px; }
+
+.give-spinner.spinner.is-active {
+  margin: 0 2px 0 0;
+  float: none; }
+
+/**
  * Give Updates Panel SCSS
  *
  * @description Updates Panel Styles

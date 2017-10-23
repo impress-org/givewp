@@ -655,7 +655,10 @@ function __give_ajax_donor_manage_addresses() {
 	$addressType   = false !== strpos( $form_data['address-id'], '_' ) ?
 		array_shift( explode( '_', $form_data['address-id'] ) ) :
 		$form_data['address-id'];
-	$response_data = array();
+	$response_data = array(
+		'action' => $form_data['address-action'],
+		'id'     => $form_data['address-id'],
+	);
 
 	// Security check.
 	// check_ajax_referer( 'give-manage-donor-addresses' );
@@ -668,10 +671,15 @@ function __give_ajax_donor_manage_addresses() {
 	}
 
 	// Unset all data except address.
-	unset( $form_data['_wpnonce'], $form_data['_wp_http_referer'] );
+	unset(
+		$form_data['_wpnonce'],
+		$form_data['_wp_http_referer'],
+		$form_data['address-action'],
+		$form_data['address-id']
+	);
 
 	// Process action.
-	switch ( $form_data['address-action'] ) {
+	switch ( $response_data['action'] ) {
 
 		case 'add':
 			if ( ! $donor->add_address( "{$addressType}[]", $form_data ) ) {
@@ -711,9 +719,6 @@ function __give_ajax_donor_manage_addresses() {
 		case 'update':
 			break;
 	}
-
-	$response_data['action'] = $form_data['address-action'];
-	$response_data['id'] = $form_data['address-id'];
 
 	wp_send_json_success( $response_data );
 }

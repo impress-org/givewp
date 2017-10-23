@@ -536,6 +536,9 @@ function give_donor_view( $donor ) {
 		<h3><?php _e( 'Addresses', 'give' ); ?></h3>
 
 		<div class="postbox">
+			<div class="give-spinner-wrapper">
+				<span class="give-spinner spinner aligncenter"></span>
+			</div>
 			<div class="inside">
 
 				<button class="button add-new-address">

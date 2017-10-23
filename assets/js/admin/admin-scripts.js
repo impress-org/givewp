@@ -12,11 +12,48 @@ jQuery.noConflict();
 // Provided access to global level
 var give_setting_edit = false;
 ( function( $ ) {
+	/**
+	 * Show/Hide ajax loader.
+	 *
+	 * @since 2.0
+	 *
+	 * @param $parent
+	 * @param args
+	 */
+	var giveAjaxLoader = function ( $parent, args ){
+		args = jQuery.extend(
+			{
+				wrapper: true,
+				show: false
+			},
+			args
+		);
+
+		var $loaderParent = args.wrapper ? $( '.give-spinner-wrapper', $parent ) : {},
+			$loader = $( '.give-spinner', $parent );
+
+		// Show loader.
+		if( args.show ) {
+			if( $loaderParent.length ) {
+				$loaderParent.addClass('is-active');
+			}
+
+			$loader.addClass('is-active');
+			return;
+		}
+
+		// Hide loader
+		if( $loaderParent.length ) {
+			$loaderParent.removeClass('is-active');
+		}
+
+		$loader.removeClass('is-active');
+	};
 
 	/**
 	 * Onclick remove give-message parameter from url
 	 *
-	 * @ since 1.8.14
+	 * @since 1.8.14
 	 */
 	var give_dismiss_notice = function(){
 		$( 'body' ).on( 'click', 'button.notice-dismiss', function () {
@@ -1432,42 +1469,49 @@ var give_setting_edit = false;
 				// Remove notice.
 				$( '.notice', $allAddressParent ).remove();
 
-				$.post(
-					ajaxurl,
-					{
+				$.ajax({
+					type: 'POST',
+					url: ajaxurl,
+					data: {
 						action: 'donor_manage_addresses',
 						donorID: donorID,
 						form: $( 'form', $addressForm ).serialize()
 					},
-					function( response ) {
-							if ( response.success ) {
+					beforeSend: function(){
+						giveAjaxLoader( $addressWrapper, { show: true } );
+					},
+					success: function( response ) {
+						giveAjaxLoader( $addressWrapper );
 
-								switch ( response.data.action ) {
-									case 'add':
-										$( '.give-grid-row', $allAddress ).append( response.data.address_html );
-										break;
+						if ( response.success ) {
 
-									case 'remove':
-										window.setTimeout(
-											function(){
-												$allAddress
-													.find('div[data-address-id*="'+ response.data.id +'"]').parent()
-													.animate( { 'margin-left': '-=999' }, 1000 );
-											},
-											700
-										);
-										break;
-								}
+							switch ( response.data.action ) {
+								case 'add':
+									$( '.give-grid-row', $allAddress ).append( response.data.address_html );
+									break;
 
-							} else {
-								$allAddressParent.prepend( response.data.error_msg );
+								case 'remove':
+									window.setTimeout(
+										function(){
+											$allAddress
+												.find('div[data-address-id*="'+ response.data.id +'"]').parent()
+												.animate( { 'margin-left': '-=999' }, 1000 );
+										},
+										700
+									);
+									break;
 							}
+
+						} else {
+							$allAddressParent.prepend( response.data.error_msg );
+						}
 
 						$addNewAddressBtn.show();
 						$allAddress.removeClass('give-hidden');
 						$addressForm.addClass('add-new-address-form-hidden');
-					}
-				);
+					},
+					dataType: 'json'
+				});
 
 				return false;
 			});
@@ -1480,7 +1524,7 @@ var give_setting_edit = false;
 				$addressIDField     = $('input[name="address-id"]', $addressForm);
 
 			addressAction = addressAction || 'add';
-			addressID     = addressID || '';
+			addressID     = addressID || 'billing';
 
 			$addressActionField.val(addressAction);
 			$addressIDField.val(addressID);
