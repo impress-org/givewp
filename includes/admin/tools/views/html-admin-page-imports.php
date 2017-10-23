@@ -20,7 +20,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 				 */
 				do_action( 'give_tools_tab_import_content_top' );
 				?>
-				<table class="widefat import-options-table give-table striped">
+
+				<table class="widefat Import-options-table give-table">
 					<thead>
 					<tr>
 						<th scope="col"><?php esc_html_e( 'Import Type', 'give' ); ?></th>
@@ -30,15 +31,30 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<tbody>
 					<?php
 					/**
-					 * Fires in the reports import tab.
+					 * Fires in the reports Import tab.
 					 *
 					 * Allows you to add new TR elements to the table before
 					 * other elements.
 					 *
-					 * @since 1.0
+					 * @since 1.8.14
 					 */
 					do_action( 'give_tools_tab_import_table_top' );
 					?>
+
+					<tr class="give-Import-pdf-sales-earnings">
+						<td scope="row" class="row-title">
+							<h3>
+								<span><?php esc_html_e( 'Import Donations', 'give' ); ?></span>
+							</h3>
+							<p><?php esc_html_e( 'Import a CSV of Donations.', 'give' ); ?></p>
+						</td>
+						<td>
+							<a class="button" href="<?php echo add_query_arg( array( 'importer-type' => 'import_donations' ) ); ?>">
+								<?php esc_html_e( 'Import CSV', 'give' ); ?>
+							</a>
+						</td>
+					</tr>
+
 					<tr class="give-import-core-settings">
 						<td scope="row" class="row-title">
 							<h3>
@@ -48,25 +64,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 						</td>
 						<td>
 							<form id="core-settings-importer-form" method="post" enctype="multipart/form-data">
-								<input type="hidden" name="give-action"
-								       value="core_settings_import"/>
+								<input type="hidden" name="give-action" value="core_settings_import"/>
 								<input type="file" name="json_file">
 								<input type="submit">
 							</form>
 						</td>
 					</tr>
+
 					<?php
 					/**
-					 * Fires in the reports export tab.
+					 * Fires in the reports Import tab.
 					 *
 					 * Allows you to add new TR elements to the table after
 					 * other elements.
 					 *
-					 * @since 1.0
+					 * @since 1.8.14
 					 */
 					do_action( 'give_tools_tab_import_table_bottom' );
 					?>
-
 					</tbody>
 				</table>
 
