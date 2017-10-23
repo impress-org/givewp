@@ -656,7 +656,7 @@ function __give_ajax_donor_manage_addresses() {
 		array_shift( explode( '_', $form_data['address-id'] ) ) :
 		$form_data['address-id'];
 	$response_data = array();
-	
+
 	// Security check.
 	// check_ajax_referer( 'give-manage-donor-addresses' );
 
@@ -679,7 +679,7 @@ function __give_ajax_donor_manage_addresses() {
 						'error' => 4,
 						'error_msg' => wp_sprintf(
 							'<div class="notice notice-error"><p>%s</p></div>',
-							__( 'Error: Address already exist', 'give' )
+							__( 'Error: Address already exist.', 'give' )
 						)
 					)
 				);
@@ -695,6 +695,17 @@ function __give_ajax_donor_manage_addresses() {
 			break;
 
 		case 'remove':
+			if ( ! $donor->remove_address( $form_data['address-id'] ) ) {
+				wp_send_json_error( array(
+						'error' => 5,
+						'error_msg' => wp_sprintf(
+							'<div class="notice notice-error"><p>%s</p></div>',
+							__( 'Error: could not able to delete address. please try after sometime.', 'give' )
+						)
+					)
+				);
+			}
+
 			break;
 
 		case 'update':

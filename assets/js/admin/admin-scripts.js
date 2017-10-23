@@ -1459,21 +1459,13 @@ var give_setting_edit = false;
 										break;
 								}
 
-								$addNewAddressBtn.show();
-								$allAddress.removeClass('give-hidden');
-								$addressForm.addClass('add-new-address-form-hidden');
 							} else {
-
-								switch( response.data.error ) {
-									case 4:
-										$allAddressParent.prepend( response.data.error_msg );
-
-										$addNewAddressBtn.show();
-										$allAddress.removeClass('give-hidden');
-										$addressForm.addClass('add-new-address-form-hidden');
-										break;
-								}
+								$allAddressParent.prepend( response.data.error_msg );
 							}
+
+						$addNewAddressBtn.show();
+						$allAddress.removeClass('give-hidden');
+						$addressForm.addClass('add-new-address-form-hidden');
 					}
 				);
 
