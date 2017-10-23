@@ -644,17 +644,19 @@ function __give_ajax_donor_manage_addresses() {
 	// Bailout.
 	if (
 		empty( $_POST['form'] ) ||
-		empty( $_POST['donorID'] ) ||
-		empty( $_POST['addressType'] )
-
+		empty( $_POST['donorID'] )
 	) {
 		wp_send_json_error( array( 'error' => 1 ) );
 	}
 
-	$donorID     = absint( $_POST['donorID'] );
-	$addressType = esc_attr( $_POST['addressType'] );
-	$form_data   = give_clean( wp_parse_args( $_POST['form'] ) );
-
+	$post          = give_clean( wp_parse_args( $_POST ) );
+	$donorID       = absint( $post['donorID'] );
+	$form_data     = give_clean( wp_parse_args( $post['form'] ) );
+	$addressType   = false !== strpos( $form_data['address-id'], '_' ) ?
+		array_shift( explode( '_', $form_data['address-id'] ) ) :
+		$form_data['address-id'];
+	$response_data = array();
+	
 	// Security check.
 	// check_ajax_referer( 'give-manage-donor-addresses' );
 
@@ -668,30 +670,41 @@ function __give_ajax_donor_manage_addresses() {
 	// Unset all data except address.
 	unset( $form_data['_wpnonce'], $form_data['_wp_http_referer'] );
 
-	// Add address.
-	if ( ! $donor->add_address( "{$addressType}[]", $form_data ) ) {
-		wp_send_json_error( array(
-				'error' => 4,
-				'error_msg' => wp_sprintf(
-						'<div class="notice notice-error"><p>%s</p></div>',
-					__( 'Error: Address already exist', 'give' )
+	// Process action.
+	switch ( $form_data['address-action'] ) {
+
+		case 'add':
+			if ( ! $donor->add_address( "{$addressType}[]", $form_data ) ) {
+				wp_send_json_error( array(
+						'error' => 4,
+						'error_msg' => wp_sprintf(
+							'<div class="notice notice-error"><p>%s</p></div>',
+							__( 'Error: Address already exist', 'give' )
+						)
+					)
+				);
+			}
+
+			$response_data['address_html'] = __give_get_format_address(
+				end( $donor->address['billing'] ),
+				array(
+					'type'  => 'billing',
+					'index' => count( $donor->address ),
 				)
-			)
-		);
+			);
+			break;
+
+		case 'remove':
+			break;
+
+		case 'update':
+			break;
 	}
 
-	// Setup response.
-	$data = array(
-		'address_html' => __give_get_format_address(
-			end( $donor->address['billing'] ),
-			array(
-				'type'  => 'billing',
-				'index' => count( $donor->address ),
-			)
-		),
-	);
+	$response_data['action'] = $form_data['address-action'];
+	$response_data['id'] = $form_data['address-id'];
 
-	wp_send_json_success( $data );
+	wp_send_json_success( $response_data );
 }
 
 add_action( 'wp_ajax_donor_manage_addresses', '__give_ajax_donor_manage_addresses' );

@@ -2464,7 +2464,8 @@ input.give-price-field {
     min-height: 200px;
     border: 1px solid #dad9d9;
     padding: 9px;
-    border-radius: 5px; }
+    border-radius: 5px;
+    background-color: white; }
   #give-donor-card-wrapper .all-address a {
     text-decoration: none; }
   #give-donor-card-wrapper .add-new-address {

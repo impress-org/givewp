@@ -42,7 +42,7 @@ function __give_get_format_address( $address, $address_args = array() ) {
 	if( isset( $address_args['index'] ) ) {
 		$address_id = "{$address_id}_{$address_args['index']}";
 	}
-	
+
 	// Bailout.
 	if ( empty( $address ) || ! is_array( $address ) ) {
 		return $address_html;
@@ -589,7 +589,7 @@ function give_donor_view( $donor ) {
 					</div>
 				</div>
 
-				<div class="address-form add-new-address-form-hidden" data-address-type="add">
+				<div class="address-form add-new-address-form-hidden">
 					<form action="" method="post">
 						<table class="widefat striped">
 							<tbody>
@@ -666,6 +666,8 @@ function give_donor_view( $donor ) {
 								<tr>
 									<td colspan="2">
 										<?php wp_nonce_field( 'give-add-new-donor-address' ); ?>
+										<input type="hidden" name="address-action" value="add">
+										<input type="hidden" name="address-id" value="">
 										<input type="submit" class="button button-primary js-save" value="<?php _e( 'Save', 'give' ); ?>">&nbsp;&nbsp;<button class="button js-cancel"><?php _e( 'Cancel', 'give' ); ?></button>
 									</td>
 								</tr>

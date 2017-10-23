@@ -1348,7 +1348,8 @@ var give_setting_edit = false;
 			});
 		},
 		addressesAction: function(){
-			var $addressWrapper = $( '#donor-address-wrapper' ),
+			var $obj = this,
+				$addressWrapper = $( '#donor-address-wrapper' ),
 				$allAddress = $( '.all-address', $addressWrapper ),
 				$allAddressParent = $( $allAddress ).parent(),
 				$addressForm = $( '.address-form', $addressWrapper ),
@@ -1360,40 +1361,15 @@ var give_setting_edit = false;
 
 			// Edit current address button event
 			$allAddress.on( 'click', '.js-edit', function( e ){
-				var $form = $( this ).closest( '.address' ),
-					state = $( '[data-address-type="state"]', $form ).text().trim();
+				var $parent = $( this ).closest( '.address' );
 
 				e.preventDefault();
-
-				/*
-				 * Fill address.
-				 */
-
-				// Change country only if country changes.
-				if( $( 'select[name="country"]', $addressForm ).val().trim() !== $( '[data-address-type="country"]', $form ).text().trim() ){
-					$( 'select[name="country"]', $addressForm ).val( $( '[data-address-type="country"]', $form ).text().trim() ).trigger('chosen:updated').change();
-
-					// Update state after some time because state load by ajax for each country.
-					window.setTimeout(function(){
-						$( '[name="state"]', $addressForm ).val( state ).trigger('chosen:updated');
-					}, 300 );
-				} else{
-					$( '[name="state"]', $addressForm ).val( state ).trigger('chosen:updated');
-				}
-				$( 'input[name="address1"]', $addressForm ).val( $( '[data-address-type="address1"]', $form ).text().trim() );
-				$( 'input[name="address2"]', $addressForm ).val( $( '[data-address-type="address2"]', $form ).text().trim() );
-				$( 'input[name="city"]', $addressForm ).val( $( '[data-address-type="city"]', $form ).text().trim() );
-				$( 'input[name="zip"]', $addressForm ).val( $( '[data-address-type="zip"]', $form ).text().trim() );
-
-				// Update state after some time because state load by ajax for each country.
-				window.setTimeout(function(){
-					var state = $( '[data-address-type="state"]', $form ).text().trim();
-					$( '[name="state"]', $addressForm ).val( state ).trigger('chosen:updated');
-				}, 200 );
 
 				// Remove notice.
 				$( '.notice', $allAddressParent ).remove();
 
+				$obj.__set_address_form_val( $parent );
+				$obj.__set_address_form_action( 'update', $parent.data('address-id') );
 
 				$addNewAddressBtn.hide();
 				$allAddress.addClass('give-hidden');
@@ -1405,8 +1381,15 @@ var give_setting_edit = false;
 			$allAddress.on( 'click', '.js-remove', function( e ){
 				e.preventDefault();
 
+				var $parent = $(this).closest('.address');
+
 				// Remove notice.
 				$( '.notice', $allAddressParent ).remove();
+
+				$obj.__set_address_form_val( $parent );
+				$obj.__set_address_form_action( 'remove', $parent.data('address-id') );
+
+				$addressForm.trigger('submit');
 			});
 
 			// Add new address button event.
@@ -1421,6 +1404,8 @@ var give_setting_edit = false;
 				$addressForm.removeClass('add-new-address-form-hidden');
 				$addressForm.data( 'process', 'add' );
 				$addressForm.data( 'address-type', 'billing' );
+
+				$obj.__set_address_form_action();
 			});
 
 			// Cancel add new address form button event
@@ -1452,12 +1437,27 @@ var give_setting_edit = false;
 					{
 						action: 'donor_manage_addresses',
 						donorID: donorID,
-						addressType: $addressForm.data( 'address-type' ),
 						form: $( 'form', $addressForm ).serialize()
 					},
 					function( response ) {
 							if ( response.success ) {
-								$( '.give-grid-row', $allAddress ).append( response.data.address_html );
+
+								switch ( response.data.action ) {
+									case 'add':
+										$( '.give-grid-row', $allAddress ).append( response.data.address_html );
+										break;
+
+									case 'remove':
+										window.setTimeout(
+											function(){
+												$allAddress
+													.find('div[data-address-id*="'+ response.data.id +'"]').parent()
+													.animate( { 'margin-left': '-=999' }, 1000 );
+											},
+											700
+										);
+										break;
+								}
 
 								$addNewAddressBtn.show();
 								$allAddress.removeClass('give-hidden');
@@ -1480,6 +1480,40 @@ var give_setting_edit = false;
 				return false;
 			});
 		},
+
+		__set_address_form_action: function (addressAction, addressID) {
+			var $addressWrapper     = $('#donor-address-wrapper'),
+				$addressForm        = $('.address-form', $addressWrapper),
+				$addressActionField = $('input[name="address-action"]', $addressForm),
+				$addressIDField     = $('input[name="address-id"]', $addressForm);
+
+			addressAction = addressAction || 'add';
+			addressID     = addressID || '';
+
+			$addressActionField.val(addressAction);
+			$addressIDField.val(addressID);
+		},
+
+		__set_address_form_val: function ($form) {
+			var $addressWrapper = $('#donor-address-wrapper'),
+				$addressForm    = $('.address-form', $addressWrapper),
+				state           = $('[data-address-type="state"]', $form).text().trim();
+
+			if ($('select[name="country"]', $addressForm).val().trim() !== $('[data-address-type="country"]', $form).text().trim()) {
+				$('select[name="country"]', $addressForm).val($('[data-address-type="country"]', $form).text().trim()).trigger('chosen:updated').change();
+
+				// Update state after some time because state load by ajax for each country.
+				window.setTimeout(function () {
+					$('[name="state"]', $addressForm).val(state).trigger('chosen:updated');
+				}, 300);
+			} else {
+				$('[name="state"]', $addressForm).val(state).trigger('chosen:updated');
+			}
+			$('input[name="address1"]', $addressForm).val($('[data-address-type="address1"]', $form).text().trim());
+			$('input[name="address2"]', $addressForm).val($('[data-address-type="address2"]', $form).text().trim());
+			$('input[name="city"]', $addressForm).val($('[data-address-type="city"]', $form).text().trim());
+			$('input[name="zip"]', $addressForm).val($('[data-address-type="zip"]', $form).text().trim());
+		}
 	};
 
 	/**
