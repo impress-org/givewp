@@ -1516,16 +1516,20 @@ var give_setting_edit = false;
 										$nextParent      = {},
 										is_address_added = false;
 
-									if ( $prevParent.length ) {
-										$prevParent.after( response.data.address_html );
-										is_address_added = true;
-									}
+									if( parseInt( $('.give-grid-row>div', $allAddress ).length ) < 2 ) {
+										$('.give-grid-row', $allAddress ).append( response.data.address_html );
+									} else{
+										if ( $prevParent.length ) {
+											$prevParent.after( response.data.address_html );
+											is_address_added = true;
+										}
 
-									if( ! is_address_added ) {
-										$nextParent = parent.next();
+										if( ! is_address_added ) {
+											$nextParent = parent.next();
 
-										if( $nextParent.length ) {
-											$nextParent.before( response.data.address_html );
+											if( $nextParent.length ) {
+												$nextParent.before( response.data.address_html );
+											}
 										}
 									}
 
