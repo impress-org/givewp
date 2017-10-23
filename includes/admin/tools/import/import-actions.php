@@ -4,7 +4,7 @@
  *
  * Give_Core_Settings class.
  *
- * @since 1.8.15
+ * @since 1.8.16
  * @return void
  */
 function give_core_settings_import() {
