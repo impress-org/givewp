@@ -1366,23 +1366,12 @@ class Give_Donor {
 		}
 
 		$meta_type = Give()->donor_meta->meta_type;
-		
-		$query = $wpdb->prepare(
-			"
-				DELETE FROM {$wpdb->donormeta}
-				WHERE meta_key
-				LIKE '%s'
-				AND {$meta_type}_id=%d
-				",
-			$meta_key_prefix,
-			$this->id
-		);
 
 		// Process query.
-		$row_affected = $wpdb->query(
+		$row_affected = $wpdb->get_results(
 			$wpdb->prepare(
 				"
-				DELETE FROM {$wpdb->donormeta}
+				SELECT meta_key FROM {$wpdb->donormeta}
 				WHERE meta_key
 				LIKE '%s'
 				AND {$meta_type}_id=%d
@@ -1391,9 +1380,9 @@ class Give_Donor {
 				$this->id
 			)
 		);
-
+		
 		// Return result.
-		if( ! $row_affected ) {
+		if( ! count( $row_affected ) ) {
 			return false;
 		}
 
