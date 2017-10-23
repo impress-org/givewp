@@ -653,7 +653,7 @@ function __give_ajax_donor_manage_addresses() {
 
 	$donorID     = absint( $_POST['donorID'] );
 	$addressType = esc_attr( $_POST['addressType'] );
-	$form_data   = wp_parse_args( $_POST['form'] );
+	$form_data   = give_clean( wp_parse_args( $_POST['form'] ) );
 
 	// Security check.
 	// check_ajax_referer( 'give-manage-donor-addresses' );
