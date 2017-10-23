@@ -187,10 +187,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 										'chosen' => true,
 									) );
 									?>
-
-									<input type="submit"
-										   value="<?php esc_attr_e( 'Generate CSV', 'give' ); ?>"
-										   class="button-secondary"/>
+									<input type="submit" value="<?php esc_attr_e( 'Generate CSV', 'give' ); ?>" class="button-secondary"/>
 
 								<div id="export-donor-options-wrap"
 								     class="give-clearfix">
@@ -255,11 +252,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 									</ul>
 								</div>
 								<?php wp_nonce_field( 'give_ajax_export', 'give_ajax_export' ); ?>
-								<input type="hidden" name="give-export-class"
-								       value="Give_Batch_Donors_Export"/>
-								<input type="hidden"
-								       name="give_export_option[query_id]"
-								       value="<?php echo uniqid( 'give_' ); ?>"/>
+								<input type="hidden" name="give-export-class" value="Give_Batch_Donors_Export"/>
+								<input type="hidden" name="give_export_option[query_id]" value="<?php echo uniqid( 'give_' ); ?>"/>
 							</form>
 						</td>
 					</tr>
@@ -273,11 +267,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 						</td>
 						<td>
 							<form method="post">
-								<input type="hidden" name="give-action"
-								       value="core_settings_export"/>
-								<input type="submit"
-								       value="<?php esc_attr_e( 'Export JSON', 'give' ); ?>"
-								       class="button-secondary"/>
+								<input type="hidden" name="give-action" value="core_settings_export"/>
+								<input type="submit" value="<?php esc_attr_e( 'Export JSON', 'give' ); ?>" class="button-secondary"/>
 							</form>
 						</td>
 					</tr>
