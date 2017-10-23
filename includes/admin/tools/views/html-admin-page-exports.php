@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				do_action( 'give_tools_tab_export_content_top' );
 				?>
 
-				<table class="widefat export-options-table give-table">
+				<table class="widefat export-options-table give-table striped">
 					<thead>
 					<tr>
 						<th scope="col"><?php esc_html_e( 'Export Type', 'give' ); ?></th>
@@ -53,7 +53,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 							</a>
 						</td>
 					</tr>
-					<tr class="alternate give-export-sales-earnings">
+					<tr class="give-export-sales-earnings">
 						<td scope="row" class="row-title">
 							<h3>
 								<span><?php esc_html_e( 'Export Income and Donation Stats', 'give' ); ?></span>
@@ -154,7 +154,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 							</form>
 						</td>
 					</tr>
-					<tr class="alternate give-export-donors">
+					<tr class="give-export-donors">
 						<td scope="row" class="row-title">
 							<h3>
 								<span><?php esc_html_e( 'Export Donors in CSV', 'give' ); ?></span>
