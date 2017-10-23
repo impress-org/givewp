@@ -39,10 +39,10 @@ function __give_get_format_address( $address, $address_args = array() ) {
 	$is_default_address = $address_args['default_address'];
 
 	$address_id = $address_args['type'];
-	if( ! empty( $address_args['index'] ) ) {
+	if( isset( $address_args['index'] ) ) {
 		$address_id = "{$address_id}_{$address_args['index']}";
 	}
-
+	
 	// Bailout.
 	if ( empty( $address ) || ! is_array( $address ) ) {
 		return $address_html;
