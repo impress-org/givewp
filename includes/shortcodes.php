@@ -23,7 +23,22 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return string
  */
-function give_donation_history() {
+function give_donation_history( $atts ) {
+
+	$donation_history_args = shortcode_atts( array(
+		'id'             => true,
+		'date'           => true,
+		'donor'          => false,
+		'amount'         => true,
+		'status'         => false,
+		'payment_method' => false,
+	), $atts, 'donation_history' );
+
+	// Always show receipt link.
+	$donation_history_args['details'] = true;
+
+	// Set Donation History Shortcode Arguments in session variable.
+	Give()->session->set( 'give_donation_history_args', $donation_history_args );
 
 	// If payment_key query arg exists, return receipt instead of donation history.
 	if ( isset( $_GET['payment_key'] ) ) {

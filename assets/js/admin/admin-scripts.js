@@ -966,6 +966,8 @@ var give_setting_edit = false;
 						});
 						self.process_step(parseInt(response.step), data, self);
 					}
+					// Reset the form for preventing multiple ajax request.
+					$('#give-tools-recount-form')[0].reset();
 				}
 			}).fail(function (response) {
 				/**
