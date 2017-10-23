@@ -1391,9 +1391,18 @@ var give_setting_edit = false;
 				$allAddressParent = $( $allAddress ).parent(),
 				$addressForm = $( '.address-form', $addressWrapper ),
 				$addressFormCancelBtn = $( '.js-cancel', $addressForm ),
-				$addressFormSaveBtn = $( '.js-save', $addressForm ),
+				$addressFormCountryField = $( 'select[name="country"]', $addressForm ),
 				$addNewAddressBtn = $( '.add-new-address', $addressWrapper ),
 				donorID = parseInt( $('input[name="donor-id"]').val() );
+
+			$addressFormCountryField.on('change', function(){
+				var $this = $(this);
+
+				// Update state after some time because state load by ajax for each country.
+				window.setTimeout(function () {
+					$this.trigger('chosen:updated');
+				}, 300);
+			});
 
 
 			// Edit current address button event
@@ -1563,7 +1572,7 @@ var give_setting_edit = false;
 
 				// Update state after some time because state load by ajax for each country.
 				window.setTimeout(function () {
-					$('[name="state"]', $addressForm).val(state).trigger('chosen:updated');
+					$('[name="state"]', $addressForm).val(state);
 				}, 300);
 			} else {
 				$('[name="state"]', $addressForm).val(state).trigger('chosen:updated');
