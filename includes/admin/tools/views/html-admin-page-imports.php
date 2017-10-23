@@ -65,7 +65,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<td>
 							<form id="give-core-settings-importer-form" method="post" enctype="multipart/form-data">
 								<?php
-								$type = ( ! empty( $_REQUEST['type'] ) ? (string) $_REQUEST['type'] : 'merge' );
+								$type = (string) ( ! empty( $_REQUEST['type'] ) ? $_REQUEST['type'] : 'merge' );
 								?>
 								<p class="give-core-settings-type">
 									<span>
@@ -87,7 +87,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 								<input type="file" name="json_file">
 
-								<input type="submit" class="button-secondary">
+								<input type="submit" class="button-secondary" <?php esc_html_e( 'Name', 'give' ); ?>>
 							</form>
 						</td>
 					</tr>
