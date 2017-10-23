@@ -1194,13 +1194,24 @@ class Give_Donor {
 
 		// Bailout.
 		if ( empty( $address_type ) || $is_address_empty || ! $this->id ) {
-			return;
+			return false;
 		}
 
-		$is_multi_address = ( false !== strpos( $address_type, '[]' ) );
-		$address_type  = $is_multi_address ?
-			str_replace( '[]', '', $address_type ) :
-			$address_type;
+		// Check if multiple address exist or not and set params.
+		$multi_address_id = null;
+		if( $is_multi_address = ( false !== strpos( $address_type, '[]' ) ) ) {
+			$address_type  = $is_multi_address ?
+				str_replace( '[]', '', $address_type ) :
+				$address_type;
+		} elseif ( $is_multi_address = ( false !== strpos( $address_type, '_' ) ) ){
+			$multi_address_id =  $is_multi_address ?
+				array_pop( explode( '_', $address_type ) ) :
+				$address_type;
+
+			$address_type  = $is_multi_address ?
+				array_shift( explode( '_', $address_type ) ) :
+				$address_type;
+		}
 
 		// Bailout: do not save duplicate orders
 		if( $this->is_address_exist( $address_type, $address ) ) {
@@ -1226,21 +1237,24 @@ class Give_Donor {
 		$meta_type = Give()->donor_meta->meta_type;
 
 		if ( $is_multi_address ) {
-			$address_count = $wpdb->get_var(
-				$wpdb->prepare(
-					"
-					SELECT COUNT(*) FROM {$wpdb->donormeta}
-					WHERE meta_key
-					LIKE '%%%s%%'
-					AND {$meta_type}_id=%d
-					",
-					"_give_donor_address_{$address_type}_address1",
-					$this->id
-				)
-			);
+			if ( is_null( $multi_address_id ) ) {
+				$multi_address_id = $wpdb->get_var(
+					$wpdb->prepare(
+						"
+						SELECT COUNT(*) FROM {$wpdb->donormeta}
+						WHERE meta_key
+						LIKE '%%%s%%'
+						AND {$meta_type}_id=%d
+						",
+						"_give_donor_address_{$address_type}_address1",
+						$this->id
+					)
+				);
 
-			$address_count   = $address_count ? $address_count : 0;
-			$meta_key_prefix = "_give_donor_address_{$address_type}_{address_name}_{$address_count}";
+				$multi_address_id = absint( $multi_address_id );
+			}
+
+			$meta_key_prefix = "_give_donor_address_{$address_type}_{address_name}_{$multi_address_id}";
 		}
 
 		// Save donor address.
@@ -1304,11 +1318,11 @@ class Give_Donor {
 		$row_affected = $wpdb->query(
 			$wpdb->prepare(
 				"
-					DELETE FROM {$wpdb->donormeta}
-					WHERE meta_key
-					LIKE '%s'
-					AND {$meta_type}_id=%d
-					",
+				DELETE FROM {$wpdb->donormeta}
+				WHERE meta_key
+				LIKE '%s'
+				AND {$meta_type}_id=%d
+				",
 				$meta_key_prefix,
 				$this->id
 			)
@@ -1317,6 +1331,80 @@ class Give_Donor {
 		$this->setup_address();
 
 		return (bool) $row_affected;
+	}
+
+	/**
+	 * Update donor address
+	 *
+	 * @since  2.0
+	 * @access public
+	 * @global wpdb  $wpdb
+	 *
+	 * @param string $address_id
+	 * @param array  $address
+	 *
+	 * @return bool
+	 */
+	public function update_address( $address_id, $address ) {
+		global $wpdb;
+
+		// Get address type.
+		$is_multi_address = false !== strpos( $address_id, '_' ) ? true : false;
+
+		$address_type = false !== strpos( $address_id, '_' ) ?
+			array_shift( explode( '_', $address_id ) ) :
+			$address_id;
+
+		$address_count = false !== strpos( $address_id, '_' ) ?
+			array_pop( explode( '_', $address_id ) ) :
+			null;
+
+		// Set meta key prefix.
+		$meta_key_prefix = "_give_donor_address_{$address_type}_%";
+		if ( $is_multi_address && is_numeric( $address_count ) ) {
+			$meta_key_prefix .= "_{$address_count}";
+		}
+
+		$meta_type = Give()->donor_meta->meta_type;
+		
+		$query = $wpdb->prepare(
+			"
+				DELETE FROM {$wpdb->donormeta}
+				WHERE meta_key
+				LIKE '%s'
+				AND {$meta_type}_id=%d
+				",
+			$meta_key_prefix,
+			$this->id
+		);
+
+		// Process query.
+		$row_affected = $wpdb->query(
+			$wpdb->prepare(
+				"
+				DELETE FROM {$wpdb->donormeta}
+				WHERE meta_key
+				LIKE '%s'
+				AND {$meta_type}_id=%d
+				",
+				$meta_key_prefix,
+				$this->id
+			)
+		);
+
+		// Return result.
+		if( ! $row_affected ) {
+			return false;
+		}
+
+		// Update address.
+		if( ! $this->add_address( $address_id, $address ) ) {
+			return false;
+		}
+
+		$this->setup_address();
+
+		return true;
 	}
 
 
