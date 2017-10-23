@@ -1502,9 +1502,18 @@ var give_setting_edit = false;
 								case 'remove':
 									window.setTimeout(
 										function(){
-											$allAddress
+											var parent = $allAddress
 												.find('div[data-address-id*="'+ response.data.id +'"]').parent()
-												.animate( { 'margin-left': '-=999' }, 1000 );
+
+											if( parent.length ){
+												parent.animate(
+													{ 'margin-left': '-=999' },
+													1000,
+													function(){
+														parent.hide();
+													}
+												);
+											}
 										}
 									);
 									break;
