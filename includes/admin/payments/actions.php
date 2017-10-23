@@ -63,7 +63,7 @@ function give_update_payment_details( $data ) {
 		$minute = 00;
 	}
 
-	$address = array_map( 'trim', $data['give-payment-address'][0] );
+	$address = give_clean( $data['give-payment-address'][0] );
 
 	$curr_total = $payment->total;
 	$new_total  = give_maybe_sanitize_amount( $data['give-payment-total'] );

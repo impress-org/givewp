@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				do_action( 'give_tools_tab_import_content_top' );
 				?>
 
-				<table class="widefat Import-options-table give-table">
+				<table class="widefat import-options-table give-table striped">
 					<thead>
 						<tr>
 							<th scope="col"><?php esc_html_e( 'Import Type', 'give' ); ?></th>

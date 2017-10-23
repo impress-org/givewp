@@ -84,7 +84,7 @@ add_filter( 'give_admin_settings_sanitize_option_decimal_separator', '__give_val
 /**
  * Change $delimiter text to symbol.
  *
- * @since 1.8.15
+ * @since 1.8.14
  *
  * @param string $delimiter.
  *
