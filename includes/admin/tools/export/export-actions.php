@@ -1,3 +1,4 @@
+
 <?php
 /**
  * Exports Actions
@@ -63,6 +64,24 @@ function give_export_earnings() {
 }
 
 add_action( 'give_earnings_export', 'give_export_earnings' );
+
+/**
+ * Exports Give's core settings.
+ *
+ * Give_Core_Settings class.
+ *
+ * @since 1.8.15
+ * @return void
+ */
+function give_core_settings_export() {
+	require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/export/class-core-settings-export.php';
+
+	$core_settings = new Give_Core_Settings_Export();
+
+	$core_settings->export();
+}
+
+add_action( 'give_core_settings_export', 'give_core_settings_export' );
 
 
 /**
