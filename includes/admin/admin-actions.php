@@ -704,6 +704,7 @@ function __give_ajax_donor_manage_addresses() {
 			$response_data['address_html'] = __give_get_format_address(
 				end( $donor->address['billing'] ),
 				array(
+					// We can add only billing address from donor screen.
 					'type'  => 'billing',
 					'index' => $address_index,
 				)
@@ -742,9 +743,11 @@ function __give_ajax_donor_manage_addresses() {
 			}
 
 			$response_data['address_html'] = __give_get_format_address(
-				$donor->address['billing'][$address_id],
+				$is_multi_address_type ?
+					$donor->address[ $address_type ][ $address_id ] :
+					$donor->address[ $address_type ],
 				array(
-					'type'  => 'billing',
+					'type'  => $address_type,
 					'index' => $address_id,
 				)
 			);
