@@ -153,7 +153,7 @@ class Give_Payment_Stats extends Give_Stats {
 		}
 
 		//return earnings
-		return round( $earnings, give_currency_decimal_filter() );
+		return round( $earnings, give_get_price_decimals( $form_id ) );
 
 	}
 

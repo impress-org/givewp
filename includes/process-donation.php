@@ -80,8 +80,8 @@ function give_process_donation_form() {
 
 	// After AJAX: Setup session if not using php_sessions.
 	if ( ! Give()->session->use_php_sessions() ) {
-		// Double-check that set_cookie is publicly accessible;
-		// we're using a slightly modified class-wp-sessions.php
+		// Double-check that set_cookie is publicly accessible.
+		// we're using a slightly modified class-wp-sessions.php.
 		$session_reflection = new ReflectionMethod( 'WP_Session', 'set_cookie' );
 		if ( $session_reflection->isPublic() ) {
 			// Manually set the cookie.
@@ -107,14 +107,14 @@ function give_process_donation_form() {
 
 	// Setup donation information.
 	$donation_data = array(
-		'price'        => $price,
-		'purchase_key' => $purchase_key,
-		'user_email'   => $user['user_email'],
-		'date'         => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
-		'user_info'    => stripslashes_deep( $user_info ),
-		'post_data'    => $_POST,
-		'gateway'      => $valid_data['gateway'],
-		'card_info'    => $valid_data['cc_info'],
+		'price'         => $price,
+		'purchase_key'  => $purchase_key,
+		'user_email'    => $user['user_email'],
+		'date'          => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
+		'user_info'     => stripslashes_deep( $user_info ),
+		'post_data'     => give_clean( $_POST ),
+		'gateway'       => $valid_data['gateway'],
+		'card_info'     => $valid_data['cc_info'],
 	);
 
 	// Add the user data for hooks.
@@ -131,11 +131,11 @@ function give_process_donation_form() {
 	 * @param array $user_info Array containing basic user information.
 	 * @param bool|array $valid_data Validate fields.
 	 */
-	do_action( 'give_checkout_before_gateway', $_POST, $user_info, $valid_data );
+	do_action( 'give_checkout_before_gateway', give_clean( $_POST ), $user_info, $valid_data );
 
 	// Sanity check for price.
 	if ( ! $donation_data['price'] ) {
-		// Revert to manual
+		// Revert to manual.
 		$donation_data['gateway'] = 'manual';
 		$_POST['give-gateway']    = 'manual';
 	}
@@ -270,7 +270,7 @@ function give_donation_form_validate_fields() {
 
 	$form_id = ! empty( $_POST['give-form-id'] ) ? $_POST['give-form-id'] : '';
 
-	// Start an array to collect valid data
+	// Start an array to collect valid data.
 	$valid_data = array(
 		'gateway'          => give_donation_form_validate_gateway(), // Gateway fallback (amount is validated here).
 		'need_new_user'    => false,     // New user flag.
@@ -619,7 +619,7 @@ function give_donation_form_validate_new_user() {
 	);
 
 	// Get user data.
-	$user_data            = wp_parse_args( array_map( 'trim', give_clean( $_POST ) ), $default_user_data );
+	$user_data            = wp_parse_args( give_clean( $_POST ), $default_user_data );
 	$registering_new_user = false;
 	$form_id              = absint( $user_data['give-form-id'] );
 

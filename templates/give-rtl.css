@@ -954,10 +954,13 @@ form.give-form {
       color: #333; }
   form[id*='give-form'] h3.give-section-break,
   form[id*='give-form'] h4.give-section-break,
+  form[id*='give-form'] legend,
   #give-recurring-form h3.give-section-break,
   #give-recurring-form h4.give-section-break,
+  #give-recurring-form legend,
   form.give-form h3.give-section-break,
-  form.give-form h4.give-section-break {
+  form.give-form h4.give-section-break,
+  form.give-form legend {
     font-size: 1.15em;
     font-weight: bold;
     margin: 10px 0 15px;
@@ -966,18 +969,15 @@ form.give-form {
     width: 100%; }
     form[id*='give-form'] h3.give-section-break span.sub-text,
     form[id*='give-form'] h4.give-section-break span.sub-text,
+    form[id*='give-form'] legend span.sub-text,
     #give-recurring-form h3.give-section-break span.sub-text,
     #give-recurring-form h4.give-section-break span.sub-text,
+    #give-recurring-form legend span.sub-text,
     form.give-form h3.give-section-break span.sub-text,
-    form.give-form h4.give-section-break span.sub-text {
+    form.give-form h4.give-section-break span.sub-text,
+    form.give-form legend span.sub-text {
       font-style: italic;
       font-weight: normal; }
-  form[id*='give-form'] legend,
-  #give-recurring-form legend,
-  form.give-form legend {
-    font-size: 1.15em;
-    font-weight: bold;
-    padding: 0 5px; }
   form[id*='give-form'] .form-row,
   #give-recurring-form .form-row,
   form.give-form .form-row {

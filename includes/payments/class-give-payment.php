@@ -631,23 +631,23 @@ final class Give_Payment {
 		// @todo: payment data exist here only for backward compatibility
 		// issue: https://github.com/WordImpress/Give/issues/1132
 		$payment_data = array(
-			'price'        => $this->total,
-			'date'         => $this->date,
-			'user_email'   => $this->email,
-			'purchase_key' => $this->key,
-			'form_title'   => $this->form_title,
-			'form_id'      => $this->form_id,
-			'donor_id'     => $this->donor_id,
-			'price_id'     => $this->price_id,
-			'currency'     => $this->currency,
-			'user_info'    => array(
+			'price'         => $this->total,
+			'date'          => $this->date,
+			'user_email'    => $this->email,
+			'purchase_key'  => $this->key,
+			'form_title'    => $this->form_title,
+			'form_id'       => $this->form_id,
+			'donor_id'      => $this->donor_id,
+			'price_id'      => $this->price_id,
+			'currency'      => $this->currency,
+			'user_info'     => array(
 				'id'         => $this->user_id,
 				'email'      => $this->email,
 				'first_name' => $this->first_name,
 				'last_name'  => $this->last_name,
 				'address'    => $this->address,
 			),
-			'status'       => $this->status,
+			'status'        => $this->status,
 		);
 
 		$args = apply_filters( 'give_insert_payment_args', array(
@@ -1013,7 +1013,7 @@ final class Give_Payment {
 
 		// Sanitizing the price here so we don't have a dozen calls later.
 		$donation_amount = give_maybe_sanitize_amount( $donation_amount );
-		$total           = round( $donation_amount, give_currency_decimal_filter() );
+		$total           = round( $donation_amount, give_get_price_decimals( $this->ID ) );
 
 		// Add Options.
 		$default_options = array();
@@ -1030,8 +1030,8 @@ final class Give_Payment {
 		$donation = array(
 			'name'     => $donation->post_title,
 			'id'       => $donation->ID,
-			'price'    => round( $total, give_currency_decimal_filter() ),
-			'subtotal' => round( $total, give_currency_decimal_filter() ),
+			'price'    => round( $total, give_get_price_decimals( $this->ID ) ),
+			'subtotal' => round( $total, give_get_price_decimals( $this->ID ) ),
 			'price_id' => $args['price_id'],
 			'action'   => 'add',
 			'options'  => $options,
@@ -1613,7 +1613,7 @@ final class Give_Payment {
 	private function setup_total() {
 		$amount = $this->get_meta( '_give_payment_total', true );
 
-		return round( floatval( $amount ), give_currency_decimal_filter() );
+		return round( floatval( $amount ), give_get_price_decimals( $this->ID ) );
 	}
 
 	/**
@@ -1643,7 +1643,16 @@ final class Give_Payment {
 		$currency = $this->get_meta( '_give_payment_currency', true );
 		$currency = ! empty( $currency ) ?
 			$currency :
-			apply_filters( 'give_payment_currency_default', give_get_currency(), $this );
+			/**
+			 * Filter the default donation currency
+			 *
+			 * @since 1.5
+			 */
+			apply_filters(
+				'give_payment_currency_default',
+				give_get_currency( $this->form_id, $this ),
+				$this
+			);
 
 		return $currency;
 	}

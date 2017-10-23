@@ -392,7 +392,7 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 	$variable_pricing    = give_has_variable_prices( $form_id );
 	$allow_custom_amount = give_get_meta( $form_id, '_give_custom_amount', true );
 	$currency_position   = isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before';
-	$symbol              = give_currency_symbol( give_get_currency() );
+	$symbol              = give_currency_symbol( give_get_currency( $form_id, $args ) );
 	$currency_output     = '<span class="give-currency-symbol give-currency-position-' . $currency_position . '">' . $symbol . '</span>';
 	$default_amount      = give_format_amount( give_get_default_form_amount( $form_id ), array( 'sanitize' => false ) );
 	$custom_amount_text  = give_get_meta( $form_id, '_give_custom_amount_text', true );
@@ -1635,9 +1635,9 @@ function give_checkout_final_total( $form_id ) {
 		<span class="give-donation-total-label">
 			<?php echo apply_filters( 'give_donation_total_label', esc_html__( 'Donation Total:', 'give' ) ); ?>
 		</span>
-		<span class="give-final-total-amount"
-			  data-total="<?php echo give_format_amount( $total, array( 'sanitize' => false ) ); ?>">
-			<?php echo give_currency_filter( give_format_amount( $total, array( 'sanitize' => false ) ) ); ?>
+        <span class="give-final-total-amount"
+              data-total="<?php echo give_format_amount( $total, array( 'sanitize' => false ) ); ?>">
+			<?php echo give_currency_filter( give_format_amount( $total, array( 'sanitize' => false ) ), give_get_currency( $form_id ) ); ?>
 		</span>
 	</p>
 	<?php

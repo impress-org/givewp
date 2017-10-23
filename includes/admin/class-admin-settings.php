@@ -78,6 +78,22 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		}
 
 		/**
+		 * Varify admin setting nonce
+		 *
+		 * @since  1.8.14
+		 * @access public
+		 *
+		 * @return bool
+		 */
+		public static function verify_nonce() {
+			if ( empty( $_REQUEST['_give-save-settings'] ) || ! wp_verify_nonce( $_REQUEST['_give-save-settings'], 'give-save-settings' ) ) {
+				return false;
+			}
+
+			return true;
+		}
+
+		/**
 		 * Save the settings.
 		 *
 		 * @since  1.8
@@ -86,7 +102,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		public static function save() {
 			$current_tab = give_get_current_setting_tab();
 
-			if ( empty( $_REQUEST['_give-save-settings'] ) || ! wp_verify_nonce( $_REQUEST['_give-save-settings'], 'give-save-settings' ) ) {
+			if( ! self::verify_nonce()  ) {
 				echo '<div class="notice error"><p>' . __( 'Action failed. Please refresh the page and retry.', 'give' ) . '</p></div>';
 				die();
 			}

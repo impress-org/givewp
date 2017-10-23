@@ -388,6 +388,8 @@ class Give_Batch_Donors_Export extends Give_Batch_Export {
 			$data[ $i ]['donation_sum'] = give_format_amount( $donor->purchase_value, array( 'sanitize' => false ) );
 		}
 
+		$data[ $i ] = apply_filters( 'give_export_set_donor_data', $data[ $i ], $donor );
+
 		return $data[ $i ];
 
 	}

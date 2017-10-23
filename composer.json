@@ -11,7 +11,7 @@
     "squizlabs/php_codesniffer": "*",
     "wp-coding-standards/wpcs": "0.10.0",
     "wimg/php-compatibility": "*",
-    "simplyadmire/composer-plugins" : "@dev"
+    "simplyadmire/composer-plugins": "@dev"
   },
   "keywords": [
     "wordpress",

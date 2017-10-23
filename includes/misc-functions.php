@@ -33,13 +33,34 @@ function give_is_test_mode() {
  * Get the set currency
  *
  * @since 1.0
+ * @since 1.8.15 Upgrade function to handle dynamic currency
+ *
+ * @param int          $donation_or_form_id Donation or Form ID
+ * @param array|object $args                Additional data
+ *
  * @return string The currency code
  */
-function give_get_currency() {
+function give_get_currency( $donation_or_form_id = null, $args = array() ) {
 
-	$currency = give_get_option( 'currency', 'USD' );
+	// Get currency from donation
+	if ( is_numeric( $donation_or_form_id ) && 'give_payment' === get_post_type( $donation_or_form_id ) ) {
+		$donation_meta = give_get_meta( $donation_or_form_id, '_give_payment_meta', true );
 
-	return apply_filters( 'give_currency', $currency );
+		if ( ! empty( $donation_meta['currency'] ) ) {
+			$currency = $donation_meta['currency'];
+		} else {
+			$currency = give_get_option( 'currency', 'USD' );
+		}
+	} else {
+		$currency = give_get_option( 'currency', 'USD' );
+	}
+
+	/**
+	 * Filter the currency on basis of donation or form id or addtional data.
+	 *
+	 * @since 1.0
+	 */
+	return apply_filters( 'give_currency', $currency, $donation_or_form_id, $args );
 }
 
 /**
@@ -61,44 +82,351 @@ function give_get_currency_position() {
  * Get Currencies
  *
  * @since 1.0
+ *
+ * @param string $info Specify currency info
+ *
  * @return array $currencies A list of the available currencies
  */
-
-function give_get_currencies() {
+function give_get_currencies( $info = 'admin_label' ) {
 	$currencies = array(
-		'USD'  => __( 'US Dollars ($)', 'give' ),
-		'EUR'  => __( 'Euros (€)', 'give' ),
-		'GBP'  => __( 'Pounds Sterling (£)', 'give' ),
-		'AUD'  => __( 'Australian Dollars ($)', 'give' ),
-		'BRL'  => __( 'Brazilian Real (R$)', 'give' ),
-		'CAD'  => __( 'Canadian Dollars ($)', 'give' ),
-		'CZK'  => __( 'Czech Koruna (Kč)', 'give' ),
-		'DKK'  => __( 'Danish Krone (kr.)', 'give' ),
-		'HKD'  => __( 'Hong Kong Dollar ($)', 'give' ),
-		'HUF'  => __( 'Hungarian Forint (Ft)', 'give' ),
-		'ILS'  => __( 'Israeli Shekel (₪)', 'give' ),
-		'JPY'  => __( 'Japanese Yen (¥)', 'give' ),
-		'MYR'  => __( 'Malaysian Ringgits (RM)', 'give' ),
-		'MXN'  => __( 'Mexican Peso ($)', 'give' ),
-		'MAD'  => __( 'Moroccan Dirham (&#x2e;&#x62f;&#x2e;&#x645;)', 'give' ),
-		'NZD'  => __( 'New Zealand Dollar ($)', 'give' ),
-		'NOK'  => __( 'Norwegian Krone (Kr.)', 'give' ),
-		'PHP'  => __( 'Philippine Pesos (₱)', 'give' ),
-		'PLN'  => __( 'Polish Zloty (zł)', 'give' ),
-		'SGD'  => __( 'Singapore Dollar ($)', 'give' ),
-		'KRW'  => __( 'South Korean Won (₩)', 'give' ),
-		'ZAR'  => __( 'South African Rand (R)', 'give' ),
-		'SEK'  => __( 'Swedish Krona (kr)', 'give' ),
-		'CHF'  => __( 'Swiss Franc (CHF)', 'give' ),
-		'TWD'  => __( 'Taiwan New Dollars (NT$)', 'give' ),
-		'THB'  => __( 'Thai Baht (฿)', 'give' ),
-		'INR'  => __( 'Indian Rupee (₹)', 'give' ),
-		'TRY'  => __( 'Turkish Lira (₺)', 'give' ),
-		'RIAL' => __( 'Iranian Rial (﷼)', 'give' ),
-		'RUB'  => __( 'Russian Rubles (руб)', 'give' ),
+		'USD'  => array(
+			'admin_label' => __( 'US Dollars ($)', 'give' ),
+			'symbol'      => '&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'EUR'  => array(
+			'admin_label' => __( 'Euros (€)', 'give' ),
+			'symbol'      => '&euro;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'GBP'  => array(
+			'admin_label' => __( 'Pounds Sterling (£)', 'give' ),
+			'symbol'      => '&pound;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'AUD'  => array(
+			'admin_label' => __( 'Australian Dollars ($)', 'give' ),
+			'symbol'      => '&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'BRL'  => array(
+			'admin_label' => __( 'Brazilian Real (R$)', 'give' ),
+			'symbol'      => '&#82;&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'CAD'  => array(
+			'admin_label' => __( 'Canadian Dollars ($)', 'give' ),
+			'symbol'      => '&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'CZK'  => array(
+			'admin_label' => __( 'Czech Koruna (Kč)', 'give' ),
+			'symbol'      => '&#75;&#269;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'DKK'  => array(
+			'admin_label' => __( 'Danish Krone (kr.)', 'give' ),
+			'symbol'      => '&nbsp;kr.&nbsp;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'HKD'  => array(
+			'admin_label' => __( 'Hong Kong Dollar ($)', 'give' ),
+			'symbol'      => '&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'HUF'  => array(
+			'admin_label' => __( 'Hungarian Forint (Ft)', 'give' ),
+			'symbol'      => '&#70;&#116;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'ILS'  => array(
+			'admin_label' => __( 'Israeli Shekel (₪)', 'give' ),
+			'symbol'      => '&#8362;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'JPY'  => array(
+			'admin_label' => __( 'Japanese Yen (¥)', 'give' ),
+			'symbol'      => '&yen;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 0,
+			),
+		),
+		'MYR'  => array(
+			'admin_label' => __( 'Malaysian Ringgits (RM)', 'give' ),
+			'symbol'      => '&#82;&#77;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'MXN'  => array(
+			'admin_label' => __( 'Mexican Peso ($)', 'give' ),
+			'symbol'      => '&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'MAD'  => array(
+			'admin_label' => __( 'Moroccan Dirham (&#x2e;&#x62f;&#x2e;&#x645;)', 'give' ),
+			'symbol'      => '&#x2e;&#x62f;&#x2e;&#x645;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'NZD'  => array(
+			'admin_label' => __( 'New Zealand Dollar ($)', 'give' ),
+			'symbol'      => '&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'NOK'  => array(
+			'admin_label' => __( 'Norwegian Krone (Kr.)', 'give' ),
+			'symbol'      => '&#107;&#114;.',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'PHP'  => array(
+			'admin_label' => __( 'Philippine Pesos (₱)', 'give' ),
+			'symbol'      => '&#8369;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'PLN'  => array(
+			'admin_label' => __( 'Polish Zloty (zł)', 'give' ),
+			'symbol'      => '&#122;&#322;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ' ',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'SGD'  => array(
+			'admin_label' => __( 'Singapore Dollar ($)', 'give' ),
+			'symbol'      => '&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'KRW'  => array(
+			'admin_label' => __( 'South Korean Won (₩)', 'give' ),
+			'symbol'      => '&#8361;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 0,
+			),
+		),
+		'ZAR'  => array(
+			'admin_label' => __( 'South African Rand (R)', 'give' ),
+			'symbol'      => '&#82;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ' ',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'SEK'  => array(
+			'admin_label' => __( 'Swedish Krona (kr)', 'give' ),
+			'symbol'      => '&nbsp;kr.&nbsp;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ' ',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'CHF'  => array(
+			'admin_label' => __( 'Swiss Franc (CHF)', 'give' ),
+			'symbol'      => 'CHF',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'TWD'  => array(
+			'admin_label' => __( 'Taiwan New Dollars (NT$)', 'give' ),
+			'symbol'      => '&#78;&#84;&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '\'',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'THB'  => array(
+			'admin_label' => __( 'Thai Baht (฿)', 'give' ),
+			'symbol'      => '&#3647;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'INR'  => array(
+			'admin_label' => __( 'Indian Rupee (₹)', 'give' ),
+			'symbol'      => '&#8377;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'TRY'  => array(
+			'admin_label' => __( 'Turkish Lira (₺)', 'give' ),
+			'symbol'      => '&#8378;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'RIAL' => array(
+			'admin_label' => __( 'Iranian Rial (﷼)', 'give' ),
+			'symbol'      => '&#xfdfc;',
+			'setting'     => array(
+				'currency_position'   => 'after',
+				'thousands_separator' => ',',
+				'decimal_separator'   => '.',
+				'number_decimals'     => 2,
+			),
+		),
+		'RUB'  => array(
+			'admin_label' => __( 'Russian Rubles (руб)', 'give' ),
+			'symbol'      => '&#8381;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
 	);
 
-	return apply_filters( 'give_currencies', $currencies );
+
+	/**
+	 * Filter the currencies
+	 * Note: you can register new currency by using this filter
+	 * array(
+	 *     'admin_label' => '',  // required
+	 *     'symbol'      => '',  // required
+	 *     'setting'     => ''   // required
+	 *     ....
+	 * )
+	 *
+	 * @since 1.8.15
+	 *
+	 * @param array $currencies
+	 */
+	$currencies = apply_filters( 'give_currencies', $currencies );
+
+	// Backward compatibility: handle old way of currency registration.
+	// Backward compatibility: Return desired result.
+	if ( ! empty( $currencies ) ) {
+		foreach ( $currencies as $currency_code => $currency_setting ) {
+			if ( is_string( $currency_setting ) ) {
+				$currencies[ $currency_code ] = array(
+					'admin_label' => $currency_setting,
+					'symbol'      => '',
+					'setting'     => array(),
+				);
+			}
+		}
+
+		if ( ! empty( $info ) && is_string( $info ) && 'all' !== $info ) {
+			$currencies = wp_list_pluck( $currencies, $info );
+		}
+	}
+
+	return $currencies;
 }
 
 
@@ -112,36 +440,7 @@ function give_get_currencies() {
  * @return array
  */
 function give_currency_symbols( $decode_currencies = false ) {
-	$currencies = array(
-		'GBP'  => '&pound;',
-		'BRL'  => '&#82;&#36;',
-		'EUR'  => '&euro;',
-		'NOK'  => '&#107;&#114;.',
-		'INR'  => '&#8377;',
-		'USD'  => '&#36;',
-		'AUD'  => '&#36;',
-		'CAD'  => '&#36;',
-		'HKD'  => '&#36;',
-		'MXN'  => '&#36;',
-		'SGD'  => '&#36;',
-		'JPY'  => '&yen;',
-		'THB'  => '&#3647;',
-		'TRY'  => '&#8378;',
-		'TWD'  => '&#78;&#84;&#36;',
-		'ILS'  => '&#8362;',
-		'RIAL' => '&#xfdfc;',
-		'RUB'  => '&#8381;',
-		'DKK'  => '&nbsp;kr.&nbsp;',
-		'SEK'  => '&nbsp;kr.&nbsp;',
-		'PLN'  => '&#122;&#322;',
-		'PHP'  => '&#8369;',
-		'MYR'  => '&#82;&#77;',
-		'HUF'  => '&#70;&#116;',
-		'CZK'  => '&#75;&#269;',
-		'KRW'  => '&#8361;',
-		'ZAR'  => '&#82;',
-		'MAD'  => '&#x2e;&#x62f;&#x2e;&#x645;',
-	);
+	$currencies = give_get_currencies('symbol' );
 
 	if ( $decode_currencies ) {
 		$currencies = array_map( 'html_entity_decode', $currencies );
@@ -1263,8 +1562,8 @@ function give_get_meta( $id, $meta_key = '', $single = false, $default = false )
  *
  * @param int    $id
  * @param string $meta_key
- * @param string $meta_value
- * @param string $prev_value
+ * @param mixed  $meta_value
+ * @param mixed  $prev_value
  *
  * @return mixed
  */
@@ -1735,10 +2034,14 @@ function give_recount_form_income_donation( $form_id = 0 ) {
  * Zero Decimal based Currency.
  *
  * @since 1.8.14
+ * @see   https://github.com/WordImpress/Give/issues/2191
+ *
+ *
+ * @param string $currency Currency code
  *
  * @return bool
  */
-function give_is_zero_based_currency() {
+function give_is_zero_based_currency( $currency = '' ) {
 	$zero_based_currency = array(
 		'PYG', // Paraguayan Guarani.
 		'GNF', // Guinean Franc.
@@ -1757,8 +2060,13 @@ function give_is_zero_based_currency() {
 		'XOF', // West African Cfa Franc.
 	);
 
+	// Set default currency.
+	if( empty( $currency ) ) {
+		$currency = give_get_currency();
+	}
+
 	// Check for Zero Based Currency.
-	if ( in_array( give_get_currency(), $zero_based_currency ) ) {
+	if ( in_array( $currency, $zero_based_currency ) ) {
 		return true;
 	}
 

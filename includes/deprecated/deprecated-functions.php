@@ -674,3 +674,38 @@ function give_build_paypal_item_title( $payment_data ) {
 	return give_payment_gateway_item_title( $payment_data );
 
 }
+
+
+/**
+ * Set the number of decimal places per currency
+ *
+ * @since 1.0
+ * @since 1.6 $decimals parameter removed from function params
+ * @deprecated 1.8.15
+ * *
+ * @return int $decimals
+ */
+function give_currency_decimal_filter() {
+	// Set default number of decimals.
+	$decimals = give_get_price_decimals();
+
+	// Get number of decimals with backward compatibility ( version < 1.6 )
+	if ( 1 <= func_num_args() ) {
+		$decimals = ( false === func_get_arg( 0 ) ? $decimals : absint( func_get_arg( 0 ) ) );
+	}
+
+	$currency = give_get_currency();
+
+	switch ( $currency ) {
+		// case 'RIAL' :
+		case 'JPY' :
+		case 'KRW' :
+			// case 'TWD' :
+			// case 'HUF' :
+
+			$decimals = 0;
+			break;
+	}
+
+	return apply_filters( 'give_currency_decimal_count', $decimals, $currency );
+}

@@ -179,7 +179,7 @@ if ( ! class_exists( 'Give' ) ) :
 		/**
 		 * Give_tooltips Object
 		 *
-		 * @since  2.0
+		 * @since  1.8.9
 		 * @access public
 		 *
 		 * @var    Give_Tooltips object
