@@ -1351,8 +1351,6 @@ var give_setting_edit = false;
 			var $addressWrapper = $( '#donor-address-wrapper' ),
 				$allAddress = $( '.all-address', $addressWrapper ),
 				$allAddressParent = $( $allAddress ).parent(),
-				$allAddressEditBtn = $( '.js-edit', $allAddress ),
-				$allAddressRemoveBtn = $( '.js-remove', $allAddress ),
 				$addressForm = $( '.address-form', $addressWrapper ),
 				$addressFormCancelBtn = $( '.js-cancel', $addressForm ),
 				$addressFormSaveBtn = $( '.js-save', $addressForm ),
@@ -1361,7 +1359,7 @@ var give_setting_edit = false;
 
 
 			// Edit current address button event
-			$allAddressEditBtn.on( 'click', function( e ){
+			$allAddress.on( 'click', '.js-edit', function( e ){
 				var $form = $( this ).closest( '.address' ),
 					state = $( '[data-address-type="state"]', $form ).text().trim();
 
@@ -1404,7 +1402,7 @@ var give_setting_edit = false;
 			});
 
 			// Remove address button event
-			$allAddressRemoveBtn.on( 'click', function(e){
+			$allAddress.on( 'click', '.js-remove', function( e ){
 				e.preventDefault();
 
 				// Remove notice.
