@@ -63,32 +63,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 							<p><?php esc_html_e( 'Import Give\'s core settings in JSON format.', 'give' ); ?></p>
 						</td>
 						<td>
-							<form id="give-core-settings-importer-form" method="post" enctype="multipart/form-data">
-								<?php
-								$type = (string) ( ! empty( $_REQUEST['type'] ) ? $_REQUEST['type'] : 'merge' );
-								?>
-								<p class="give-core-settings-type">
-									<span>
-										<label for="give-core-settings-type-merge">
-											<span><?php esc_html_e( 'Merge:', 'give' ); ?></span>
-											<input type="radio" value="merge" <?php echo ( 'merge' === $type ? 'checked' : '' ); ?> name="type" class="give-core-settings-type-merge" id="give-core-settings-type-merge">
-										</label>
-									</span>
-
-									<span>
-										<label for="give-core-settings-type-replace">
-											<span><?php esc_html_e( 'Replace:', 'give' ); ?></span>
-											<input type="radio" value="replace" <?php echo ( 'replace' === $type ? 'checked' : '' ); ?> name="type" class="give-core-settings-type-replace" id="give-core-settings-type-replace">
-										</label>
-									</span>
-								</p>
-
-								<input type="hidden" name="give-action" value="core_settings_import"/>
-
-								<input type="file" name="json_file">
-
-								<input type="submit" class="button-secondary" <?php esc_html_e( 'Name', 'give' ); ?>>
-							</form>
+							<a class="button" href="<?php echo add_query_arg( array( 'importer-type' => 'import_core_setting' ) ); ?>">
+								<?php esc_html_e( 'Import JSON', 'give' ); ?>
+							</a>
 						</td>
 					</tr>
 
