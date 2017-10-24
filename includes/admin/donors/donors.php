@@ -31,6 +31,7 @@ function __give_get_format_address( $address, $address_args = array() ) {
 		$address_args,
 		array(
 			'type'            => '',
+			'id'              => null,
 			'index'           => 0,
 			'default_address' => false,
 		)
@@ -66,9 +67,13 @@ function __give_get_format_address( $address, $address_args = array() ) {
 	 */
 	$address_label = apply_filters( "give_donor_{$address_args['type']}_address_label", ucfirst( $address_args['type'] ), $address_args );
 
+	// Set unique id and index for multi type address.
 	if ( isset( $address_args['index'] ) ) {
 		$address_label = "{$address_label} #{$address_args['index']}";
-		$address_id    = "{$address_id}_{$address_args['index']}";
+	}
+
+	if ( isset( $address_args['id'] ) ) {
+		$address_id    = "{$address_id}_{$address_args['id']}";
 	}
 
 	// Add address wrapper.
@@ -564,16 +569,19 @@ function give_donor_view( $donor ) {
 							foreach ( $donor->address as $address_type => $addresses ) {
 
 								if ( is_array( $addresses ) ) {
-									$addresses = array_values( $addresses );
-									foreach ( $addresses as $index => $address ) {
+									$index = 0;
+									foreach ( $addresses as $id => $address ) {
 										echo __give_get_format_address(
 											$address,
 											array(
 												'type'            => $address_type,
+												'id'              => $id,
 												'index'           => $index,
 												'default_address' => $is_set_as_default,
 											)
 										);
+
+										$index ++;
 									}
 								} else {
 									echo __give_get_format_address(
