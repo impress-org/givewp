@@ -84,38 +84,20 @@ function give_edit_donor( $args ) {
 		return false;
 	}
 
-	// Setup the donor address, if present.
-	$address = array();
-	if ( intval( $donor_info['user_id'] ) > 0 ) {
-
-		$current_address = (array) get_user_meta( $donor_info['user_id'], '_give_user_address', true );
-
-		if ( is_array( $current_address ) && 0 < count( $current_address ) ) {
-			$current_address    = wp_parse_args( $current_address, $defaults );
-			$address['line1']   = ! empty( $donor_info['line1'] ) ? $donor_info['line1'] : $current_address['line1'];
-			$address['line2']   = ! empty( $donor_info['line2'] ) ? $donor_info['line2'] : $current_address['line2'];
-			$address['city']    = ! empty( $donor_info['city'] ) ? $donor_info['city'] : $current_address['city'];
-			$address['country'] = ! empty( $donor_info['country'] ) ? $donor_info['country'] : $current_address['country'];
-			$address['zip']     = ! empty( $donor_info['zip'] ) ? $donor_info['zip'] : $current_address['zip'];
-			$address['state']   = ! empty( $donor_info['state'] ) ? $donor_info['state'] : $current_address['state'];
-		} else {
-			$address['line1']   = ! empty( $donor_info['line1'] ) ? $donor_info['line1'] : '';
-			$address['line2']   = ! empty( $donor_info['line2'] ) ? $donor_info['line2'] : '';
-			$address['city']    = ! empty( $donor_info['city'] ) ? $donor_info['city'] : '';
-			$address['country'] = ! empty( $donor_info['country'] ) ? $donor_info['country'] : '';
-			$address['zip']     = ! empty( $donor_info['zip'] ) ? $donor_info['zip'] : '';
-			$address['state']   = ! empty( $donor_info['state'] ) ? $donor_info['state'] : '';
-		}
-
-	}
-
 	// Sanitize the inputs.
 	$donor_data            = array();
 	$donor_data['name']    = strip_tags( stripslashes( $donor_info['name'] ) );
 	$donor_data['user_id'] = $donor_info['user_id'];
 
 	$donor_data             = apply_filters( 'give_edit_donor_info', $donor_data, $donor_id );
-	$address                = apply_filters( 'give_edit_donor_address', $address, $donor_id );
+
+	/**
+	 * Filter the address
+	 * @todo unnecessary filter because we are not storing donor address to user.
+	 *
+	 * @since 1.0
+	 */
+	$address                = apply_filters( 'give_edit_donor_address', array(), $donor_id );
 
 	$donor_data             = give_clean( $donor_data );
 	$address                = give_clean( $address );
