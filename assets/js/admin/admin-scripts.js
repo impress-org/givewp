@@ -1365,6 +1365,9 @@ var give_setting_edit = false;
 				$addNewAddressBtn = $( '.add-new-address', $addressWrapper ),
 				donorID = parseInt( $('input[name="donor-id"]').val() );
 
+			$addressFormCountryField.on( 'change', function(){
+				$(this).trigger('chosen:updated');
+			});
 
 			// Edit current address button event
 			$allAddress.on( 'click', '.js-edit', function( e ){
