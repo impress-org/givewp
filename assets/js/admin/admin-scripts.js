@@ -1413,8 +1413,8 @@ var give_setting_edit = false;
 				$( this ).hide();
 				$allAddress.addClass('give-hidden');
 				$addressForm.removeClass('add-new-address-form-hidden');
-				$addressForm.data( 'process', 'add' );
-				$addressForm.data( 'address-type', 'billing' );
+				$obj.__set_address_form_action( 'add' );
+
 
 				$obj.__set_address_form_action();
 			});
@@ -1571,8 +1571,8 @@ var give_setting_edit = false;
 				$('[name="state"]', $addressForm).val(state).trigger('chosen:updated');
 			}
 
-			$('input[name="address1"]', $addressForm).val($('[data-address-type="address1"]', $form).text().trim());
-			$('input[name="address2"]', $addressForm).val($('[data-address-type="address2"]', $form).text().trim());
+			$('input[name="line1"]', $addressForm).val($('[data-address-type="line1"]', $form).text().trim());
+			$('input[name="line2"]', $addressForm).val($('[data-address-type="line2"]', $form).text().trim());
 			$('input[name="city"]', $addressForm).val($('[data-address-type="city"]', $form).text().trim());
 			$('input[name="zip"]', $addressForm).val($('[data-address-type="zip"]', $form).text().trim());
 		}

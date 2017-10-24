@@ -1262,7 +1262,7 @@ class Give_Donor {
 						ORDER BY meta_id DESC
 						LIMIT 1
 						",
-						"_give_donor_address_{$address_type}_address1",
+						"_give_donor_address_{$address_type}_line1",
 						$this->id
 					)
 				);

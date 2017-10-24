@@ -46,8 +46,8 @@ function __give_get_format_address( $address, $address_args = array() ) {
 
 	// Address html.
 	$address_html = '';
-	$address_html .= "<span data-address-type=\"address1\">{$address['line1']}</span><br>";
-	$address_html .= "<span data-address-type=\"address2\">{$address['line2']}</span><br>";
+	$address_html .= "<span data-address-type=\"line1\">{$address['line1']}</span><br>";
+	$address_html .= "<span data-address-type=\"line2\">{$address['line2']}</span><br>";
 	$address_html .= "<span data-address-type=\"city\">{$address['city']}</span>, <span data-address-type=\"state\">{$address['state']}</span> <span data-address-type=\"zip\">{$address['zip']}</span><br>";
 	$address_html .= "<span data-address-type=\"country\">{$address['country']}</span><br>";
 
@@ -555,18 +555,18 @@ function give_donor_view( $donor ) {
 								</tr>
 								<tr>
 									<th class="col">
-										<label for="address1"><?php esc_html_e( 'Address 1:', 'give' ); ?></label>
+										<label for="line1"><?php esc_html_e( 'Address 1:', 'give' ); ?></label>
 									</th>
 									<td>
-										<input id="address1" name="address1" type="text" class="medium-text"/>
+										<input id="line1" name="line1" type="text" class="medium-text"/>
 									</td>
 								</tr>
 								<tr>
 									<th class="col">
-										<label for="address2"><?php esc_html_e( 'Address 2:', 'give' ); ?></label>
+										<label for="line2"><?php esc_html_e( 'Address 2:', 'give' ); ?></label>
 									</th>
 									<td>
-										<input id="address2" type="text" name="address2" value="" class="medium-text"/>
+										<input id="line2" type="text" name="line2" value="" class="medium-text"/>
 
 									</td>
 								</tr>
