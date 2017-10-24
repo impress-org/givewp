@@ -1210,7 +1210,6 @@ var give_setting_edit = false;
 			this.add_email();
 			this.removeUser();
 			this.cancelEdit();
-			this.change_country();
 			this.add_note();
 			this.delete_checked();
 			this.addressesAction();
@@ -1228,7 +1227,6 @@ var give_setting_edit = false;
 				e.preventDefault();
 				$( '#give-donor-card-wrapper .editable' ).hide();
 				$( '#give-donor-card-wrapper .edit-item' ).fadeIn().css( 'display', 'block' );
-				$( '.give-select-chosen' ).css( 'width', '100%' );
 			});
 		},
 
@@ -1264,34 +1262,6 @@ var give_setting_edit = false;
 			});
 		},
 
-		change_country: function () {
-			$('select[name="customerinfo[country]"]').change(function () {
-				var $this = $(this);
-				var data = {
-					action: 'give_get_states',
-					country: $this.val(),
-					field_name: 'customerinfo[state]'
-				};
-
-				$.post(ajaxurl, data, function (response) {
-					// Show the states dropdown menu
-					$this.closest( '.donor-address' ).find( '[name="customerinfo[state]"]' ).removeClass( 'give-hidden' );
-
-					if (typeof ( response.states_found ) != undefined && true == response.states_found) {
-						$(':input[name="customerinfo[state]"]').replaceWith(response.data);
-					} else {
-						$(':input[name="customerinfo[state]"]').replaceWith('<input type="text" name="' + data.field_name + '" value="' + response.default_state + '" class="give-edit-toggles medium-text"/>');
-
-						if (typeof ( response.show_field ) != undefined && false == response.show_field ) {
-							// Hide the states dropdown menu
-							$this.closest( '.donor-address' ).find( '[name="customerinfo[state]"]' ).addClass( 'give-hidden' );
-						}
-					}
-				});
-
-				return false;
-			});
-		},
 		add_note: function () {
 			$('body').on('click', '#add-donor-note', function (e) {
 				e.preventDefault();
