@@ -471,7 +471,7 @@ function give_count_total_donors() {
  *
  * @return array The donor's address, if any
  */
-function give_get_donor_address( $donor_id = null, $args ) {
+function give_get_donor_address( $donor_id = null, $args = array() ) {
 	if ( empty( $donor_id ) ) {
 		$donor_id = get_current_user_id();
 	}
