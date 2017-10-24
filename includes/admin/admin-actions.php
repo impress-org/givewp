@@ -665,7 +665,16 @@ function __give_ajax_donor_manage_addresses() {
 	);
 
 	// Security check.
-	// check_ajax_referer( 'give-manage-donor-addresses' );
+	if( ! wp_verify_nonce( $form_data['_wpnonce'], 'give-manage-donor-addresses' ) ) {
+		wp_send_json_error( array(
+				'error' => 1,
+				'error_msg' => wp_sprintf(
+					'<div class="notice notice-error"><p>%s</p></div>',
+					__( 'Error: Security issue. please try after sometime.', 'give' )
+				)
+			)
+		);
+	}
 
 	$donor = new Give_Donor( $donorID );
 
@@ -677,7 +686,6 @@ function __give_ajax_donor_manage_addresses() {
 	// Unset all data except address.
 	unset(
 		$form_data['_wpnonce'],
-		$form_data['_wp_http_referer'],
 		$form_data['address-action'],
 		$form_data['address-id']
 	);

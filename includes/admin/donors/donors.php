@@ -606,7 +606,7 @@ function give_donor_view( $donor ) {
 								</tr>
 								<tr>
 									<td colspan="2">
-										<?php wp_nonce_field( 'give-add-new-donor-address' ); ?>
+										<?php wp_nonce_field( 'give-manage-donor-addresses', '_wpnonce', false ); ?>
 										<input type="hidden" name="address-action" value="add">
 										<input type="hidden" name="address-id" value="">
 										<input type="submit" class="button button-primary js-save" value="<?php _e( 'Save', 'give' ); ?>">&nbsp;&nbsp;<button class="button js-cancel"><?php _e( 'Cancel', 'give' ); ?></button>
