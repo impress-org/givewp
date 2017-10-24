@@ -1238,20 +1238,24 @@ class Give_Donor {
 
 		if ( $is_multi_address ) {
 			if ( is_null( $multi_address_id ) ) {
+				// Get latest address key to set multi address id.
 				$multi_address_id = $wpdb->get_var(
 					$wpdb->prepare(
 						"
-						SELECT COUNT(*) FROM {$wpdb->donormeta}
+						SELECT meta_key FROM {$wpdb->donormeta}
 						WHERE meta_key
 						LIKE '%%%s%%'
 						AND {$meta_type}_id=%d
+						ORDER BY meta_id DESC
+						LIMIT 1
 						",
 						"_give_donor_address_{$address_type}_address1",
 						$this->id
 					)
 				);
 
-				$multi_address_id = absint( $multi_address_id );
+				$multi_address_id = absint( substr( strrchr( $multi_address_id, '_' ), 1 ) );
+				$multi_address_id++;
 			}
 
 			$meta_key_prefix = "_give_donor_address_{$address_type}_{address_name}_{$multi_address_id}";
