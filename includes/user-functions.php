@@ -463,19 +463,26 @@ function give_count_total_donors() {
 /**
  * Returns the saved address for a donor
  *
- * @access        public
- * @since         1.0
+ * @access public
+ * @since  1.0
  *
- * @param         int $donor_id Donor ID
+ * @param  int   $donor_id Donor ID
+ * @param  array $args
  *
- * @return        array The donor's address, if any
+ * @return array The donor's address, if any
  */
-function give_get_donor_address( $donor_id = null ) {
+function give_get_donor_address( $donor_id = null, $args ) {
 	if ( empty( $donor_id ) ) {
 		$donor_id = get_current_user_id();
 	}
 
 	$address = array();
+	$args = wp_parse_args(
+		$args,
+		array(
+			'address_type' => 'billing'
+		)
+	);
 
 	// Backward compatibility for user id param.
 	$by_user_id = get_user_by( 'id', $donor_id ) ? true : false;
@@ -495,8 +502,14 @@ function give_get_donor_address( $donor_id = null ) {
 		return $default_address;
 	}
 
-	if ( $address = array_shift( $donor->address['billing'] ) ) {
-		$address = wp_parse_args( $address, $default_address );
+	switch ( true ){
+		case is_string( end( $donor->address[ $args['address_type'] ] ) ) :
+			$address = wp_parse_args( $donor->address[ $args['address_type'] ], $default_address );
+			break;
+
+		case is_array( end( $donor->address[ $args['address_type'] ] ) ) :
+			$address = wp_parse_args( array_shift( $donor->address[ $args['address_type'] ] ), $default_address );
+			break;
 	}
 
 	return $address;
