@@ -32,7 +32,7 @@ function __give_get_format_address( $address, $address_args = array() ) {
 		array(
 			'type'            => '',
 			'id'              => null,
-			'index'           => 0,
+			'index'           => null,
 			'default_address' => false,
 		)
 	);
