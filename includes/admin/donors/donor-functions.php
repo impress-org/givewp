@@ -116,15 +116,6 @@ function give_connect_user_donor_profile( $donor, $donor_data, $address ) {
 
 	if ( $donor->update( $donor_data ) ) {
 
-		// Update some donation meta if we need to.
-		$payments_array = explode( ',', $donor->payment_ids );
-
-		if ( $donor->user_id !== $previous_user_id ) {
-			foreach ( $payments_array as $payment_id ) {
-				give_update_payment_meta( $payment_id, '_give_payment_user_id', $donor->user_id );
-			}
-		}
-
 		// Fetch disconnected user id, if exists.
 		$disconnected_user_id = $donor->get_meta( '_give_disconnected_user_id', true );
 
