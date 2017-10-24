@@ -1395,15 +1395,6 @@ var give_setting_edit = false;
 				$addNewAddressBtn = $( '.add-new-address', $addressWrapper ),
 				donorID = parseInt( $('input[name="donor-id"]').val() );
 
-			$addressFormCountryField.on('change', function(){
-				var $this = $(this);
-
-				// Update state after some time because state load by ajax for each country.
-				window.setTimeout(function () {
-					$this.trigger('chosen:updated');
-				}, 300);
-			});
-
 
 			// Edit current address button event
 			$allAddress.on( 'click', '.js-edit', function( e ){
@@ -1432,6 +1423,7 @@ var give_setting_edit = false;
 				// Remove notice.
 				$( '.notice', $allAddressParent ).remove();
 
+				$addressForm.data('changed', true);
 				$obj.__set_address_form_val( $parent );
 				$obj.__set_address_form_action( 'remove', $parent.data('address-id') );
 
@@ -1458,13 +1450,8 @@ var give_setting_edit = false;
 			$addressFormCancelBtn.on( 'click', function(e){
 				e.preventDefault();
 
-				// Fill address.
-				// $( 'select[name="country"]', $addressForm ).val().trigger('chosen:updated');
-				$( 'input[name="address1"]', $addressForm ).val('');
-				$( 'input[name="address2"]', $addressForm ).val('');
-				$( 'input[name="city"]', $addressForm ).val('');
-				// $( '[name="state"]', $addressForm ).val('').trigger('chosen:updated');
-				$( 'input[name="zip"]', $addressForm ).val('');
+				// Reset form.
+				$addressForm.find( 'input[type="text"], select' ).val('');
 
 				$addNewAddressBtn.show();
 				$allAddress.removeClass('give-hidden');
@@ -1485,7 +1472,7 @@ var give_setting_edit = false;
 					$('.notice', $allAddressParent).remove();
 
 					// Do not send ajax if form does not change.
-					if ( ! $(this).data('changed')) {
+					if ( ! $(this).data('changed') ) {
 						$addNewAddressBtn.show();
 						$allAddress.removeClass('give-hidden');
 						$addressForm.addClass('add-new-address-form-hidden');
@@ -1570,6 +1557,9 @@ var give_setting_edit = false;
 					}).always(function () {
 						$this.data('changed', false);
 
+						// Reset form.
+						$addressForm.find( 'input[type="text"], select' ).val('');
+
 						$addNewAddressBtn.show();
 						$allAddress.removeClass('give-hidden');
 						$addressForm.addClass('add-new-address-form-hidden');
@@ -1602,11 +1592,12 @@ var give_setting_edit = false;
 
 				// Update state after some time because state load by ajax for each country.
 				window.setTimeout(function () {
-					$('[name="state"]', $addressForm).val(state);
-				}, 300);
-			} else {
+					$('[name="state"]', $addressForm).val(state).trigger('chosen:updated');
+				}, 500);
+			} else{
 				$('[name="state"]', $addressForm).val(state).trigger('chosen:updated');
 			}
+
 			$('input[name="address1"]', $addressForm).val($('[data-address-type="address1"]', $form).text().trim());
 			$('input[name="address2"]', $addressForm).val($('[data-address-type="address2"]', $form).text().trim());
 			$('input[name="city"]', $addressForm).val($('[data-address-type="city"]', $form).text().trim());
