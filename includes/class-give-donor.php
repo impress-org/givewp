@@ -1415,49 +1415,60 @@ class Give_Donor {
 	public function is_address_exist( $current_address_type, $current_address ) {
 		$status = false;
 
-
 		// Bailout.
 		if( empty( $current_address_type ) || empty( $current_address ) ) {
 			return null;
 		}
 
 		// Bailout.
-		if( empty( $this->address ) ) {
+		if( empty( $this->address ) || empty( $this->address[ $current_address_type ] ) ) {
 			return $status;
 		}
 
+		// Get address.
+		$address = $this->address[ $current_address_type ];
 
-		// Compare address.
-		foreach ( $this->address as $address_type => $saved_address ) {
-			if( $current_address_type !== $address_type ) {
-				continue;
+		switch ( true ){
 
-			} elseif( empty( $saved_address[0] ) || ! is_array( $saved_address[0] ) ) {
-				$status = ( $current_address == $saved_address );
+			// Single address.
+			case is_string( end( $address ) ) :
+				$status = $this->is_address_match( $current_address, $address );
+				break;
 
-			} else{
-				foreach ( $saved_address as $address ) {
+			// Multi address.
+			case is_array( end( $address ) ):
+				// Compare address.
+				foreach ( $address as $saved_address ) {
 					if( empty( $saved_address ) ) {
 						continue;
 					}
 
-					$status = array_diff( $current_address, $address );
-					$status = empty( $status );
-
 					// Exit loop immediately if address exist.
-					if( $status ) {
+					if( $status = $this->is_address_match( $current_address, $saved_address ) ) {
 						break;
 					}
 				}
-			}
-
-			// Exit loop immediately if address exist.
-			if( $status ) {
 				break;
-			}
 		}
 
 		return $status;
+	}
+
+	/**
+	 * Compare address.
+	 *
+	 * @since  2.0
+	 * @access private
+	 *
+	 * @param array $address_1
+	 * @param array $address_2
+	 *
+	 * @return bool
+	 */
+	private function is_address_match( $address_1, $address_2 ) {
+		$result = array_diff( $address_1, $address_2 );
+
+		return empty( $result );
 	}
 
 	/**
