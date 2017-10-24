@@ -116,10 +116,6 @@ function give_connect_user_donor_profile( $donor, $donor_data, $address ) {
 
 	if ( $donor->update( $donor_data ) ) {
 
-		if ( ! empty( $donor->user_id ) && $donor->user_id > 0 ) {
-			update_user_meta( $donor->user_id, '_give_user_address', $address );
-		}
-
 		// Update some donation meta if we need to.
 		$payments_array = explode( ',', $donor->payment_ids );
 
