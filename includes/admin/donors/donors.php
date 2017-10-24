@@ -26,8 +26,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function __give_get_format_address( $address, $address_args = array() ) {
-	$address_html       = '';
-	$address_args       = wp_parse_args(
+	$address_html = '';
+	$address_args = wp_parse_args(
 		$address_args,
 		array(
 			'type'            => '',
@@ -37,11 +37,7 @@ function __give_get_format_address( $address, $address_args = array() ) {
 	);
 
 	$is_default_address = $address_args['default_address'];
-
-	$address_id = $address_args['type'];
-	if( isset( $address_args['index'] ) ) {
-		$address_id = "{$address_id}_{$address_args['index']}";
-	}
+	$address_id         = $address_args['type'];
 
 	// Bailout.
 	if ( empty( $address ) || ! is_array( $address ) ) {
@@ -50,23 +46,36 @@ function __give_get_format_address( $address, $address_args = array() ) {
 
 	// Address html.
 	$address_html = '';
-	$address_html .= "<span data-address-type='address1'>{$address['line1']}</span><br>";
-	$address_html .= "<span data-address-type='address2'>{$address['line2']}</span><br>";
-	$address_html .= "<span data-address-type='city'>{$address['city']}</span>, <span data-address-type='state'>{$address['state']}</span> <span data-address-type='zip'>{$address['zip']}</span><br>";
-	$address_html .= "<span data-address-type='country'>{$address['country']}</span><br>";
+	$address_html .= "<span data-address-type=\"address1\">{$address['line1']}</span><br>";
+	$address_html .= "<span data-address-type=\"address2\">{$address['line2']}</span><br>";
+	$address_html .= "<span data-address-type=\"city\">{$address['city']}</span>, <span data-address-type=\"state\">{$address['state']}</span> <span data-address-type=\"zip\">{$address['zip']}</span><br>";
+	$address_html .= "<span data-address-type=\"country\">{$address['country']}</span><br>";
 
 	// Address action.
 	$address_html .= sprintf(
 		'<br><a href="#" class="js-edit">%1$s</a> | <a href="#" class="js-remove">%2$s</a>',
 		__( 'Edit', 'give' ),
 		__( 'Remove', 'give' )
-	//$is_default_address ? '' : sprintf( '| <a href="#">%s</a>', __( 'Set as default', 'give' ) )
+		//$is_default_address ? '' : sprintf( '| <a href="#">%s</a>', __( 'Set as default', 'give' ) )
 	);
+
+	/**
+	 * Filter the address label
+	 *
+	 * @since 2.0
+	 */
+	$address_label = apply_filters( "give_donor_{$address_args['type']}_address_label", ucfirst( $address_args['type'] ), $address_args );
+
+	if ( isset( $address_args['index'] ) ) {
+		$address_label = "{$address_label} #{$address_args['index']}";
+		$address_id    = "{$address_id}_{$address_args['index']}";
+	}
 
 	// Add address wrapper.
 	$address_html = sprintf(
-		'<div class="give-grid-col-4"><div data-address-id="%s" class="address">%s</div></div>',
+		'<div class="give-grid-col-4"><div data-address-id="%s" class="address"><span class="alignright address-number-label">%s</span>%s</div></div>',
 		$address_id,
+		$address_label,
 		$address_html
 	);
 

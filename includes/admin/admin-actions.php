@@ -658,7 +658,7 @@ function __give_ajax_donor_manage_addresses() {
 		$form_data['address-id'];
 	$address_id            = false !== strpos( $form_data['address-id'], '_' ) ?
 		array_pop( explode( '_', $form_data['address-id'] ) ) :
-		$form_data['address-id'];
+		null;
 	$response_data         = array(
 		'action' => $form_data['address-action'],
 		'id'     => $form_data['address-id'],
@@ -759,3 +759,20 @@ function __give_ajax_donor_manage_addresses() {
 }
 
 add_action( 'wp_ajax_donor_manage_addresses', '__give_ajax_donor_manage_addresses' );
+
+/**
+ * Admin donor address label
+ *
+ * @since 2.0
+ *
+ * @param string $address_label
+ *
+ * @return string
+ */
+function __give_donor_billing_address_label( $address_label ) {
+	$address_label = __( 'Billing Address', 'give' );
+
+	return $address_label;
+}
+
+add_action( 'give_donor_billing_address_label', '__give_donor_billing_address_label' );

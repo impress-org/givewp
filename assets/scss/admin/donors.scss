@@ -120,6 +120,11 @@
 			padding: 9px;
 			border-radius: 5px;
 			background-color: white;
+
+			.address-number-label{
+				color: gray;
+				cursor: default;
+			}
 		}
 
 		a{

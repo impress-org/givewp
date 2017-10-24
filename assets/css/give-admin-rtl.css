@@ -2466,6 +2466,9 @@ input.give-price-field {
     padding: 9px;
     border-radius: 5px;
     background-color: white; }
+    #give-donor-card-wrapper .all-address .address .address-number-label {
+      color: gray;
+      cursor: default; }
   #give-donor-card-wrapper .all-address a {
     text-decoration: none; }
   #give-donor-card-wrapper .add-new-address {
