@@ -222,20 +222,6 @@ class Give_Donor_List_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Outputs bulk reviews
-	 *
-	 * @access public
-	 *
-	 * @param $which
-	 *
-	 * @since  1.0
-	 * @return void
-	 */
-	public function bulk_actions( $which = '' ) {
-		// These aren't really bulk actions but this outputs the markup in the right place.
-	}
-
-	/**
 	 * Retrieve the current page number.
 	 *
 	 * @access public
@@ -255,6 +241,113 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 */
 	public function get_search() {
 		return ! empty( $_GET['s'] ) ? urldecode( trim( $_GET['s'] ) ) : false;
+	}
+
+	/**
+	 * @param object $item
+	 *
+	 * @return string
+	 */
+	function column_cb($item){
+		return sprintf(
+			'<input type="checkbox" name="%1$s[]" value="%2$s" />',
+			$this->_args['singular'],
+			$item['ID']
+		);
+	}
+
+	/**
+	 * Get the Bulk Actions.
+	 *
+	 * @access public
+	 * @since  1.8.16
+	 *
+	 * @return array
+	 */
+	public function get_bulk_actions() {
+		$actions = array(
+			'delete'    => 'Delete',
+		);
+		return $actions;
+	}
+
+	/**
+	 * Process the Bulk Actions.
+	 *
+	 * @access public
+	 * @since  1.8.16
+	 * @return void
+	 */
+	public function process_bulk_action() {
+		$ids    = isset( $_GET['donor'] ) ? $_GET['donor'] : false;
+		$action = $this->current_action();
+
+		if ( ! is_array( $ids ) ) {
+			$ids = array( $ids );
+		}
+
+		if ( empty( $action ) ) {
+			return;
+		}
+
+		foreach ( $ids as $id ) {
+
+			// Detect when a bulk action is being triggered.
+			switch ( $this->current_action() ) {
+
+				case'delete':
+					give_delete_donation( $id );
+					break;
+
+			} // End switch().
+
+			/**
+			 * Fires after triggering bulk action on payments table.
+			 *
+			 * @since 1.7
+			 *
+			 * @param int    $id             The ID of the payment.
+			 * @param string $current_action The action that is being triggered.
+			 */
+			do_action( 'give_donors_table_do_bulk_action', $id, $this->current_action() );
+		}// End foreach().
+
+	}
+
+	/**
+	 * Generate the table navigation above or below the table
+	 *
+	 * @param string $which
+	 *
+	 * @access protected
+	 * @since  1.8.16
+	 */
+	protected function display_tablenav( $which ) {
+		if ( 'top' === $which ) {
+			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
+		}
+		?>
+		<div class="tablenav <?php echo esc_attr( $which ); ?>">
+
+			<?php if ( $this->has_items() ): ?>
+				<div class="alignleft actions bulkactions">
+					<?php $this->bulk_actions( $which ); ?>
+				</div>
+				<div class="alignleft actions">
+					<?php
+					if( 'top' === $which ) {
+						$this->search_box( __( 'Search Donors', 'give' ), 'give-donors' );
+					}
+					?>
+				</div>
+			<?php endif;
+			$this->extra_tablenav( $which );
+			$this->pagination( $which );
+			?>
+
+			<br class="clear" />
+		</div>
+		<?php
 	}
 
 	/**
