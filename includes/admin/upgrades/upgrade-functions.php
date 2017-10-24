@@ -1748,7 +1748,9 @@ function give_v20_upgrades_user_address() {
 			);
 
 			if( ! empty( $address ) ) {
-				$donor->add_address( 'billing[]', maybe_unserialize( $address ) );
+				$address = maybe_unserialize( $address );
+				$donor->add_address( 'personal', $address );
+				$donor->add_address( 'billing[]', $address );
 				delete_user_meta( $user->ID, '_give_user_address' );
 			}
 		}
