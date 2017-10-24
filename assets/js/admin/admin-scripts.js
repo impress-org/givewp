@@ -1451,7 +1451,7 @@ var give_setting_edit = false;
 				e.preventDefault();
 
 				// Reset form.
-				$addressForm.find( 'input[type="text"], select' ).val('');
+				$addressForm.find( 'input[type="text"]' ).val('');
 
 				$addNewAddressBtn.show();
 				$allAddress.removeClass('give-hidden');
@@ -1558,7 +1558,7 @@ var give_setting_edit = false;
 						$this.data('changed', false);
 
 						// Reset form.
-						$addressForm.find( 'input[type="text"], select' ).val('');
+						$addressForm.find( 'input[type="text"]' ).val('');
 
 						$addNewAddressBtn.show();
 						$allAddress.removeClass('give-hidden');
