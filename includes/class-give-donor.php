@@ -1164,6 +1164,30 @@ class Give_Donor {
 	}
 
 	/**
+	 * Check if address valid or not.
+	 *
+	 * @since  2.0
+	 * @access private
+	 *
+	 * @param $address
+	 *
+	 * @return bool
+	 */
+	private function is_valid_address( $address ) {
+		$is_valid_address = true;
+
+		// Address ready to process even if only one value set.
+		foreach ( $address as $value ) {
+			if ( empty( $value ) ) {
+				$is_valid_address = false;
+				break;
+			}
+		}
+
+		return $is_valid_address;
+	}
+
+	/**
 	 * Add donor address
 	 *
 	 * @since  2.0
@@ -1182,18 +1206,8 @@ class Give_Donor {
 	 * @return bool
 	 */
 	public function add_address( $address_type, $address ) {
-		$is_address_empty = true;
-
-		// Address ready to process even if only one value set.
-		foreach ( $address as $value ) {
-			if( ! empty( $value ) ) {
-				$is_address_empty = false;
-				break;
-			}
-		}
-
 		// Bailout.
-		if ( empty( $address_type ) || $is_address_empty || ! $this->id ) {
+		if ( empty( $address_type ) || ! $this->is_valid_address( $address ) || ! $this->id ) {
 			return false;
 		}
 
