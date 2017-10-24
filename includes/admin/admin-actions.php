@@ -755,6 +755,7 @@ function __give_ajax_donor_manage_addresses() {
 					$donor->address[ $address_type ],
 				array(
 					'type'  => $address_type,
+					'id'    => $address_id,
 					'index' => $address_id,
 				)
 			);
