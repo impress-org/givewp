@@ -162,6 +162,15 @@ function give_show_upgrade_notices( $give_updates ) {
 		)
 	);
 
+	// v2.0.0 User Address Upgrades
+	$give_updates->register(
+		array(
+			'id'       => 'v20_upgrades_user_address',
+			'version'  => '2.0.0',
+			'callback' => 'give_v20_upgrades_user_address',
+		)
+	);
+
 	// v2.0.0 Upgrades
 	$give_updates->register(
 		array(
@@ -211,6 +220,7 @@ function give_show_upgrade_notices( $give_updates ) {
 				'v20_logs_upgrades',
 				'v20_upgrades_form_metadata',
 				'v20_upgrades_payment_metadata',
+				'v20_upgrades_user_address'
 			),
 		)
 	);
@@ -1685,6 +1695,67 @@ function give_v20_upgrades_donor_name() {
 	}else {
 		// The Update Ran.
 		give_set_upgrade_complete( 'v20_upgrades_donor_name' );
+	}
+
+}
+
+/**
+ * Upgrade routine for user addresses.
+ *
+ * @since 2.0
+ * @global wpdb $wpdb
+ *
+ * @return void
+ */
+function give_v20_upgrades_user_address() {
+	global $wpdb;
+
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
+
+	/* @var WP_User_Query $user_query */
+	$user_query = new WP_User_Query(
+		array(
+			'number' => 20,
+			'offset' => ( 1 === $give_updates->step ) ? 0 : $give_updates->step * 20
+		)
+	);
+
+	$users = $user_query->get_results();
+
+	if( $users ) {
+		$give_updates->set_percentage( $user_query->get_total(), $give_updates->step * 20 );
+
+		// Loop through Donors
+		foreach ( $users as $user ) {
+			/* @var Give_Donor $donor */
+			$donor = new Give_Donor( $user->ID, true );
+
+			if( ! $donor->id ){
+				continue;
+			}
+
+			$address = $wpdb->get_var(
+				$wpdb->prepare(
+					"
+					SELECT meta_value FROM {$wpdb->usermeta}
+					WHERE user_id=%s
+					AND meta_key=%s
+					",
+					$user->ID,
+					'_give_user_address'
+				)
+			);
+
+			if( ! empty( $address ) ) {
+				$donor->add_address( 'billing[]', maybe_unserialize( $address ) );
+				delete_user_meta( $user->ID, '_give_user_address' );
+			}
+		}
+
+	}else {
+		// The Update Ran.
+		give_set_upgrade_complete( 'v20_upgrades_user_address' );
 	}
 
 }
