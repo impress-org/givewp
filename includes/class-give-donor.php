@@ -259,12 +259,6 @@ class Give_Donor {
 			$address[0] = str_replace( '_give_donor_address_', '', $address[0] );
 			$address[0] = explode( '_', $address[0] );
 
-			if ( 'address1' === $address[0][1] ) {
-				$address[0][1] = 'line1';
-			} elseif ( 'address2' === $address[0][1] ) {
-				$address[0][1] = 'line2';
-			}
-
 			if ( 3 === count( $address[0] ) ) {
 				$this->address[ $address[0][0] ][ $address[0][2] ][ $address[0][1] ] = $address[1];
 			} else {
@@ -1287,20 +1281,7 @@ class Give_Donor {
 		// Save donor address.
 		foreach ( $address as $type => $value ) {
 			$meta_key = str_replace( '{address_name}', $type, $meta_key_prefix );
-			switch ( $type ) {
-				case 'line1':
-					$meta_key = str_replace( '{address_name}', 'address1', $meta_key_prefix );
-					Give()->donor_meta->update_meta( $this->id, $meta_key, $value );
-					break;
-
-				case 'line2':
-					$meta_key = str_replace( '{address_name}', 'address2', $meta_key_prefix );
-					Give()->donor_meta->update_meta( $this->id, $meta_key, $value );
-					break;
-
-				default:
-					Give()->donor_meta->update_meta( $this->id, $meta_key, $value );
-			}
+			Give()->donor_meta->update_meta( $this->id, $meta_key, $value );
 		}
 
 		$this->setup_address();
