@@ -863,12 +863,8 @@ function give_default_cc_address_fields( $form_id ) {
 	$logged_in = is_user_logged_in();
 
 	if ( $logged_in ) {
-		$user_address = get_user_meta( get_current_user_id(), '_give_user_address', true );
+		$user_address = give_get_donor_address( get_current_user_id() );
 	}
-	$line1 = $logged_in && ! empty( $user_address['line1'] ) ? $user_address['line1'] : '';
-	$line2 = $logged_in && ! empty( $user_address['line2'] ) ? $user_address['line2'] : '';
-	$city  = $logged_in && ! empty( $user_address['city'] ) ? $user_address['city'] : '';
-	$zip   = $logged_in && ! empty( $user_address['zip'] ) ? $user_address['zip'] : '';
 
 	ob_start();
 	?>
