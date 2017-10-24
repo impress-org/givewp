@@ -2409,7 +2409,7 @@ function give_on_core_settings_import_start() {
 		type: 'POST',
 		url: ajaxurl,
 		data: {
-			action: give_vars.give_core_settings_import,
+			action: give_vars.core_settings_import,
 			total_ajax: total_ajax,
 			current: current,
 			start: start,
@@ -2431,7 +2431,7 @@ function give_on_core_settings_import_start() {
 				if (response.last == true) {
 					jQuery(progress).data('next', false);
 				}
-				give_on_core_settings_import_start();
+				// give_on_core_settings_import_start();
 			} else {
 				give_setting_edit = false;
 				window.location = response.url;
