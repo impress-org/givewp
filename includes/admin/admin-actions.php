@@ -697,8 +697,10 @@ function __give_ajax_donor_manage_addresses() {
 				);
 			}
 
+			$total_addresses = count( $donor->address[ $address_type ] );
+
 			$address_index = $is_multi_address_type ?
-				array_pop( array_keys( $donor->address[ $address_type ] ) ) :
+				$total_addresses - 1 :
 				$address_type;
 
 			$response_data['address_html'] = __give_get_format_address(

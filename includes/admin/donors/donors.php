@@ -564,6 +564,7 @@ function give_donor_view( $donor ) {
 							foreach ( $donor->address as $address_type => $addresses ) {
 
 								if ( is_array( $addresses ) ) {
+									$addresses = array_values( $addresses );
 									foreach ( $addresses as $index => $address ) {
 										echo __give_get_format_address(
 											$address,
