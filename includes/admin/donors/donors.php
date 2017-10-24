@@ -568,29 +568,33 @@ function give_donor_view( $donor ) {
 
 							foreach ( $donor->address as $address_type => $addresses ) {
 
-								if ( is_array( $addresses ) ) {
-									$index = 0;
-									foreach ( $addresses as $id => $address ) {
+								switch ( true ) {
+									case is_array( end( $addresses ) ):
+										$index = 0;
+										foreach ( $addresses as $id => $address ) {
+											echo __give_get_format_address(
+												$address,
+												array(
+													'type'            => $address_type,
+													'id'              => $id,
+													'index'           => $index,
+													'default_address' => $is_set_as_default,
+												)
+											);
+
+											$index ++;
+										}
+										break;
+
+									case is_string( end( $addresses ) ):
 										echo __give_get_format_address(
-											$address,
+											$addresses,
 											array(
 												'type'            => $address_type,
-												'id'              => $id,
-												'index'           => $index,
 												'default_address' => $is_set_as_default,
 											)
 										);
-
-										$index ++;
-									}
-								} else {
-									echo __give_get_format_address(
-										$addresses,
-										array(
-											'type'            => $address_type,
-											'default_address' => $is_set_as_default,
-										)
-									);
+										break;
 								}
 							}
 						endif;
