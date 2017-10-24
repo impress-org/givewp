@@ -483,12 +483,6 @@ function give_get_donor_address( $donor_id = null, $args ) {
 			'address_type' => 'billing'
 		)
 	);
-
-	// Backward compatibility for user id param.
-	$by_user_id = get_user_by( 'id', $donor_id ) ? true : false;
-
-	$donor = new Give_Donor( $donor_id, $by_user_id );
-
 	$default_address = array(
 		'line1'   => '',
 		'line2'   => '',
@@ -497,6 +491,20 @@ function give_get_donor_address( $donor_id = null, $args ) {
 		'country' => '',
 		'zip'     => '',
 	);
+
+	// Backward compatibility for user id param.
+	$by_user_id = get_user_by( 'id', $donor_id ) ? true : false;
+
+	// Backward compatibility.
+	if( ! give_has_upgrade_completed( 'v20_upgrades_user_address' ) && $by_user_id ){
+		return wp_parse_args(
+			(array) get_user_meta( $donor_id, '_give_user_address', true ),
+			$default_address
+		);
+	}
+
+	$donor = new Give_Donor( $donor_id, $by_user_id );
+
 
 	if ( ! $donor->id || ! array_key_exists( 'billing', $donor->address ) ) {
 		return $default_address;
