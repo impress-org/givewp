@@ -406,8 +406,8 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 			'line1'   => 'No. 114',
 			'line2'   => '8th block yamuna, 4th phase yelahanka',
 			'city'    => 'Bangalore',
-			'state'   => 'Karnataka',
-			'country' => 'India',
+			'state'   => 'KA',
+			'country' => 'IN',
 			'zip'     => '560064',
 		);
 
@@ -415,8 +415,8 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 			'line1'   => 'No. 118',
 			'line2'   => '8th block yamuna, 4th phase yelahanka',
 			'city'    => 'Bangalore',
-			'state'   => 'Karnataka',
-			'country' => 'India',
+			'state'   => 'KA',
+			'country' => 'IN',
 			'zip'     => '560064',
 		);
 
@@ -424,8 +424,8 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 			'line1'   => 'No. 118',
 			'line2'   => '8th block yamuna, 4th phase yelahanka',
 			'city'    => 'Bangalore',
-			'state'   => 'Karnataka',
-			'country' => 'India',
+			'state'   => 'KA',
+			'country' => 'IN',
 			'zip'     => '560064',
 		);
 
