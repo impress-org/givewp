@@ -244,15 +244,20 @@ class Give_Donor_List_Table extends WP_List_Table {
 	}
 
 	/**
+	 * For CheckBox Column
+	 *
 	 * @param object $item
+	 *
+	 * @access public
+	 * @since  1.8.16
 	 *
 	 * @return string
 	 */
-	function column_cb($item){
+	public function column_cb( $item ){
 		return sprintf(
 			'<input type="checkbox" name="%1$s[]" value="%2$s" />',
 			$this->_args['singular'],
-			$item['ID']
+			$item['id']
 		);
 	}
 
@@ -276,6 +281,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.8.16
+	 *
 	 * @return void
 	 */
 	public function process_bulk_action() {
@@ -296,21 +302,24 @@ class Give_Donor_List_Table extends WP_List_Table {
 			switch ( $this->current_action() ) {
 
 				case'delete':
-					give_delete_donation( $id );
+					$args = array(
+						'customer_id' => $id,
+					);
+					give_donor_delete( $args );
 					break;
 
 			} // End switch().
 
 			/**
-			 * Fires after triggering bulk action on payments table.
+			 * Fires after triggering bulk action on donors table.
 			 *
-			 * @since 1.7
+			 * @since 1.8.16
 			 *
 			 * @param int    $id             The ID of the payment.
 			 * @param string $current_action The action that is being triggered.
 			 */
 			do_action( 'give_donors_table_do_bulk_action', $id, $this->current_action() );
-		}// End foreach().
+		} // End foreach().
 
 	}
 
@@ -452,7 +461,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 		$sortable = $this->get_sortable_columns();
 
 		$this->_column_headers = array( $columns, $hidden, $sortable );
-
+$this->process_bulk_action();
 		$this->items = $this->donor_data();
 
 		$this->total = $this->get_donor_count();
