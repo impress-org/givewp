@@ -1268,8 +1268,12 @@ class Give_Donor {
 					)
 				);
 
-				$multi_address_id = absint( substr( strrchr( $multi_address_id, '_' ), 1 ) );
-				$multi_address_id++;
+				if( ! empty( $multi_address_id ) ) {
+					$multi_address_id = absint( substr( strrchr( $multi_address_id, '_' ), 1 ) );
+					$multi_address_id++;
+				} else{
+					$multi_address_id = 0;
+				}
 			}
 
 			$meta_key_prefix = "_give_donor_address_{$address_type}_{address_name}_{$multi_address_id}";
