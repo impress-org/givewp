@@ -911,7 +911,7 @@ function _give_get_prefill_form_field_values( $form_id ) {
 
 	if ( is_user_logged_in() ) :
 		$donor_data    = get_userdata( get_current_user_id() );
-		$donor_address = get_user_meta( get_current_user_id(), '_give_user_address', true );
+		$donor_address = give_get_donor_address( get_current_user_id() );
 
 		$logged_in_donor_info = array(
 			// First name.
@@ -924,22 +924,22 @@ function _give_get_prefill_form_field_values( $form_id ) {
 			'give_email'      => $donor_data->user_email,
 
 			// Street address 1.
-			'card_address'    => ( ! empty( $donor_address['line1'] ) ? $donor_address['line1'] : '' ),
+			'card_address'    => $donor_address['line1'],
 
 			// Street address 2.
-			'card_address_2'  => ( ! empty( $donor_address['line2'] ) ? $donor_address['line2'] : '' ),
+			'card_address_2'  => $donor_address['line2'],
 
 			// Country.
-			'billing_country' => ( ! empty( $donor_address['country'] ) ? $donor_address['country'] : '' ),
+			'billing_country' => $donor_address['country'],
 
 			// State.
-			'card_state'      => ( ! empty( $donor_address['state'] ) ? $donor_address['state'] : '' ),
+			'card_state'      => $donor_address['state'],
 
 			// City.
-			'card_city'       => ( ! empty( $donor_address['city'] ) ? $donor_address['city'] : '' ),
+			'card_city'       => $donor_address['city'],
 
 			// Zipcode
-			'card_zip'        => ( ! empty( $donor_address['zip'] ) ? $donor_address['zip'] : '' ),
+			'card_zip'        => $donor_address['zip'],
 		);
 	endif;
 

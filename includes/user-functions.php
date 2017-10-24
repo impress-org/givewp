@@ -470,9 +470,9 @@ function give_count_total_donors() {
  *
  * @return        array The donor's address, if any
  */
-function give_get_donor_address( $donor_id = 0 ) {
-	if ( empty( $user_id ) ) {
-		$user_id = get_current_user_id();
+function give_get_donor_address( $donor_id = null ) {
+	if ( empty( $donor_id ) ) {
+		$donor_id = get_current_user_id();
 	}
 
 	$address = array();
@@ -480,27 +480,23 @@ function give_get_donor_address( $donor_id = 0 ) {
 	// Backward compatibility for user id param.
 	$by_user_id = get_user_by( 'id', $donor_id ) ? true : false;
 
-	$donor   = new Give_Donor( $donor_id, $by_user_id );
+	$donor = new Give_Donor( $donor_id, $by_user_id );
 
-	if ( ! $donor->id ) {
-		return array();
+	$default_address = array(
+		'line1'   => '',
+		'line2'   => '',
+		'city'    => '',
+		'state'   => '',
+		'country' => '',
+		'zip'     => '',
+	);
+
+	if ( ! $donor->id || ! array_key_exists( 'billing', $donor->address ) ) {
+		return $default_address;
 	}
 
-	if (
-		array_key_exists( 'billing', $donor->address ) &&
-		$address = array_shift( $donor->address['billing'] )
-	) {
-		$address = wp_parse_args(
-			$address,
-			array(
-				'line1'   => '',
-				'line2'   => '',
-				'city'    => '',
-				'state'   => '',
-				'country' => '',
-				'zip'     => '',
-			)
-		);
+	if ( $address = array_shift( $donor->address['billing'] ) ) {
+		$address = wp_parse_args( $address, $default_address );
 	}
 
 	return $address;
