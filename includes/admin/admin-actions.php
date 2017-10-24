@@ -743,7 +743,7 @@ function __give_ajax_donor_manage_addresses() {
 						'error' => 6,
 						'error_msg' => wp_sprintf(
 							'<div class="notice notice-error"><p>%s</p></div>',
-							__( 'Error: could not able to update address. please try after sometime.', 'give' )
+							__( 'Error: could not able to update address. check if address already exist or not otherwise please try after sometime.', 'give' )
 						)
 					)
 				);
