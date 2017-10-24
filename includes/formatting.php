@@ -32,7 +32,7 @@ function give_get_currency_formatting_settings( $id_or_currency_code = null ) {
 
 		// Set default formatting setting only if currency not set as global currency.
 
-		if( is_string( $id_or_currency_code ) && ( $id_or_currency_code !== $give_options['currency'] ) && array_key_exists( $id_or_currency_code, $currencies ) ) {
+		if( is_string( $id_or_currency_code ) && ( ! empty( $give_options['currency'] ) && $id_or_currency_code !== $give_options['currency'] ) && array_key_exists( $id_or_currency_code, $currencies ) ) {
 			$setting = $currencies[ $id_or_currency_code ]['setting'];
 		}elseif ( is_numeric( $id_or_currency_code ) && 'give_payment' === get_post_type( $id_or_currency_code ) ) {
 			$donation_meta = give_get_meta( $id_or_currency_code, '_give_payment_meta', true );
