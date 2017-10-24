@@ -927,11 +927,6 @@ function give_get_donation_form_user( $valid_data = array() ) {
 		$user['address'] = false;
 	} // End if().
 
-	if ( ! empty( $user['user_id'] ) && $user['user_id'] > 0 && ! empty( $user['address'] ) ) {
-		// Store the address in the user's meta so the donation form can be pre-populated with it on return donation.
-		update_user_meta( $user['user_id'], '_give_user_address', $user['address'] );
-	}
-
 	// Return valid user.
 	return $user;
 }
