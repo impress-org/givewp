@@ -1472,91 +1472,108 @@ var give_setting_edit = false;
 			});
 
 			// Save address.
-			$addressForm.on( 'submit', function(e){
-				e.preventDefault();
+			$addressForm
+				.on('change', function () {
+					$(this).data('changed', true);
+				})
+				.on('submit', function (e) {
+					e.preventDefault();
 
-				// Remove notice.
-				$( '.notice', $allAddressParent ).remove();
+					var $this = $(this);
 
-				$.ajax({
-					type: 'POST',
-					url: ajaxurl,
-					data: {
-						action: 'donor_manage_addresses',
-						donorID: donorID,
-						form: $( 'form', $addressForm ).serialize()
-					},
-					beforeSend: function(){
-						giveAjaxLoader( $addressWrapper, { show: true } );
-					},
-					success: function( response ) {
-						giveAjaxLoader( $addressWrapper );
+					// Remove notice.
+					$('.notice', $allAddressParent).remove();
 
-						if ( response.success ) {
+					// Do not send ajax if form does not change.
+					if ( ! $(this).data('changed')) {
+						$addNewAddressBtn.show();
+						$allAddress.removeClass('give-hidden');
+						$addressForm.addClass('add-new-address-form-hidden');
 
-							switch ( response.data.action ) {
-								case 'add':
-									$( '.give-grid-row', $allAddress ).append( response.data.address_html );
-									break;
+						return false;
+					}
 
-								case 'remove':
-									window.setTimeout(
-										function(){
-											var parent = $allAddress
-												.find('div[data-address-id*="'+ response.data.id +'"]').parent()
+					$.ajax({
+						type: 'POST',
+						url: ajaxurl,
+						data: {
+							action: 'donor_manage_addresses',
+							donorID: donorID,
+							form: $('form', $addressForm).serialize()
+						},
+						beforeSend: function () {
+							giveAjaxLoader($addressWrapper, {show: true});
+						},
+						success: function (response) {
+							giveAjaxLoader($addressWrapper);
 
-											if( parent.length ){
-												parent.animate(
-													{ 'margin-left': '-=999' },
-													1000,
-													function(){
-														parent.hide();
-													}
-												);
+							if (response.success) {
+
+								switch (response.data.action) {
+									case 'add':
+										$('.give-grid-row', $allAddress).append(response.data.address_html);
+										break;
+
+									case 'remove':
+										window.setTimeout(
+											function () {
+												var parent = $allAddress
+													.find('div[data-address-id*="' + response.data.id + '"]').parent()
+
+												if (parent.length) {
+													parent.animate(
+														{'margin-left': '-=999'},
+														1000,
+														function () {
+															parent.hide();
+														}
+													);
+												}
+											}
+										);
+										break;
+
+									case 'update':
+										var parent           = $allAddress
+											.find('div[data-address-id*="' + response.data.id + '"]').parent(),
+											$prevParent      = parent.prev(),
+											$nextParent      = {},
+											is_address_added = false;
+
+										if (parseInt($('.give-grid-row>div', $allAddress).length) < 2) {
+											$('.give-grid-row', $allAddress).append(response.data.address_html);
+										} else {
+											if ($prevParent.length) {
+												$prevParent.after(response.data.address_html);
+												is_address_added = true;
+											}
+
+											if (!is_address_added) {
+												$nextParent = parent.next();
+
+												if ($nextParent.length) {
+													$nextParent.before(response.data.address_html);
+												}
 											}
 										}
-									);
-									break;
 
-								case 'update':
-									var parent           = $allAddress
-										.find('div[data-address-id*="' + response.data.id + '"]').parent(),
-										$prevParent      = parent.prev(),
-										$nextParent      = {},
-										is_address_added = false;
+										parent.remove();
 
-									if( parseInt( $('.give-grid-row>div', $allAddress ).length ) < 2 ) {
-										$('.give-grid-row', $allAddress ).append( response.data.address_html );
-									} else{
-										if ( $prevParent.length ) {
-											$prevParent.after( response.data.address_html );
-											is_address_added = true;
-										}
+										break;
+								}
 
-										if( ! is_address_added ) {
-											$nextParent = parent.next();
-
-											if( $nextParent.length ) {
-												$nextParent.before( response.data.address_html );
-											}
-										}
-									}
-
-									parent.remove();
-
-									break;
+							} else {
+								$allAddressParent.prepend(response.data.error_msg);
 							}
-
-						} else {
-							$allAddressParent.prepend( response.data.error_msg );
-						}
+						},
+						dataType: 'json'
+					}).always(function () {
+						$this.data('changed', false);
 
 						$addNewAddressBtn.show();
 						$allAddress.removeClass('give-hidden');
 						$addressForm.addClass('add-new-address-form-hidden');
-					},
-					dataType: 'json'
-				});
+					});
 
 				return false;
 			});
