@@ -1175,9 +1175,14 @@ class Give_Donor {
 	 */
 	private function is_valid_address( $address ) {
 		$is_valid_address = true;
-
+		
 		// Address ready to process even if only one value set.
-		foreach ( $address as $value ) {
+		foreach ( $address as $address_type => $value ) {
+			// @todo: Handle state feield validation on basis of country.
+			if( 'state' === $address_type ) {
+				continue;
+			}
+
 			if ( empty( $value ) ) {
 				$is_valid_address = false;
 				break;
