@@ -459,8 +459,8 @@ function give_process_profile_editor_updates( $data ) {
 	Give()->donor_meta->update_meta( $donor->id, '_give_donor_last_name', $last_name );
 
 	// Update donor address.
-	if( ! $donor->update_address( 'billing_0', $address ) ) {
-		$donor->add_address( 'billing[]', $address );
+	if( ! $donor->update_address( 'personal', $address ) ) {
+		$donor->add_address( 'personal', $address );
 	}
 
 	// Update the user.
