@@ -387,6 +387,9 @@ function give_process_profile_editor_updates( $data ) {
 	$user_id       = get_current_user_id();
 	$old_user_data = get_userdata( $user_id );
 
+	/* @var Give_Donor $donor */
+	$donor = new Give_Donor( $user_id, true );
+
 	$display_name = isset( $data['give_display_name'] ) ? sanitize_text_field( $data['give_display_name'] ) : $old_user_data->display_name;
 	$first_name   = isset( $data['give_first_name'] ) ? sanitize_text_field( $data['give_first_name'] ) : $old_user_data->first_name;
 	$last_name    = isset( $data['give_last_name'] ) ? sanitize_text_field( $data['give_last_name'] ) : $old_user_data->last_name;
@@ -451,13 +454,16 @@ function give_process_profile_editor_updates( $data ) {
 	}
 
 	// Update Donor First Name and Last Name.
-	$donor   = Give()->donors->get_donor_by( 'user_id', $user_id );
 	Give()->donors->update( $donor->id, array( 'name' => $full_name ) );
 	Give()->donor_meta->update_meta( $donor->id, '_give_donor_first_name', $first_name );
 	Give()->donor_meta->update_meta( $donor->id, '_give_donor_last_name', $last_name );
 
+	// Update donor address.
+	if( ! $donor->update_address( 'billing_0', $address ) ) {
+		$donor->add_address( 'billing[]', $address );
+	}
+
 	// Update the user.
-	$meta    = update_user_meta( $user_id, '_give_user_address', $address );
 	$updated = wp_update_user( $userdata );
 
 	if ( $updated ) {
