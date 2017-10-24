@@ -691,7 +691,7 @@ function __give_ajax_donor_manage_addresses() {
 						'error' => 4,
 						'error_msg' => wp_sprintf(
 							'<div class="notice notice-error"><p>%s</p></div>',
-							__( 'Error: Address already exist.', 'give' )
+							__( 'Error: could not able to save address. check if address already exist or not otherwise please try after sometime.', 'give' )
 						)
 					)
 				);
