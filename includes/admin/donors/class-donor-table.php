@@ -164,6 +164,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
+			'cb'            => '<input type="checkbox" />', // Render a checkbox instead of text.
 			'name'          => __( 'Name', 'give' ),
 			'email'         => __( 'Email', 'give' ),
 			'num_donations' => __( 'Donations', 'give' ),
