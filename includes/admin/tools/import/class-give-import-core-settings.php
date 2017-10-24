@@ -42,6 +42,15 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		static private $instance;
 
 		/**
+		 * Importing donation per page.
+		 *
+		 * @since 1.8.16
+		 *
+		 * @var   int
+		 */
+		public static $per_page = 20;
+
+		/**
 		 * Singleton pattern.
 		 *
 		 * @since
@@ -189,7 +198,62 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		 * @since 1.8.16
 		 */
 		public function start_import() {
-			// Start Importing
+			$type = ( ! empty( $_GET['type'] ) ? give_clean( $_GET['type'] ) : 'replace' );
+			$file_name = ( ! empty( $_GET['file_name'] ) ? give_clean( $_GET['file_name'] ) : '' );
+			$core_setting = $this->get_widget_settings_json();
+			$core_setting = (array) json_decode( $core_setting );
+			$total        = count( $core_setting );
+
+			// Reset the donation form report.
+			give_import_donation_report_reset();
+
+			$index_start = 1;
+			$index_end   = 1;
+			$next        = true;
+			if ( self::$per_page < $total ) {
+				$total_ajax = ceil( $total / self::$per_page );
+				$index_end  = self::$per_page;
+			} else {
+				$total_ajax = 1;
+				$index_end  = $total;
+				$next       = false;
+			}
+			$current_percentage = 100 / ( $total_ajax + 1 );
+
+			?>
+			<tr valign="top" class="give-import-dropdown">
+				<th colspan="2">
+					<h2 id="give-import-title"><?php esc_html_e( 'Importing', 'give' ) ?></h2>
+					<p class="give-field-description"><?php esc_html_e( 'Your core settings are now being imported...', 'give' ) ?></p>
+				</th>
+			</tr>
+
+			<tr valign="top" class="give-import-dropdown">
+				<th colspan="2">
+					<span class="spinner is-active"></span>
+					<div class="give-progress"
+					     data-current="1"
+					     data-total_ajax="<?php echo $total_ajax; ?>"
+					     data-start="<?php echo $index_start; ?>"
+					     data-end="<?php echo $index_end; ?>"
+					     data-next="<?php echo $next; ?>"
+					     data-total="<?php echo $total; ?>"
+					     data-per_page="<?php echo self::$per_page; ?>">
+
+						<div style="width: <?php echo $current_percentage; ?>%"></div>
+					</div>
+					<input type="hidden" value="3" name="step">
+					<input type="hidden" value="<?php echo $type; ?>" name="type">
+					<input type="hidden" value="<?php echo $file_name; ?>" name="file_name">
+				</th>
+			</tr>
+
+			<script type="text/javascript">
+				jQuery( document ).ready( function () {
+					give_on_core_settings_import_start();
+				} );
+			</script>
+			<?php
 		}
 
 		/**
@@ -256,6 +320,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		public function render_upload_html() {
 			$json = ( isset( $_POST['json'] ) ? give_clean( $_POST['json'] ) : '' );
 			$type = ( isset( $_POST['type'] ) ? give_clean( $_POST['type'] ) : 'merge' );
+			$step = $this->get_step();
 
 			?>
 			<tr valign="top">
@@ -297,6 +362,17 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 			$settings = apply_filters( 'give_import_core_setting_html', $settings );
 
 			Give_Admin_Settings::output_fields( $settings, 'give_settings' );
+			?>
+			<tr valign="top">
+				<th></th>
+				<th>
+					<input type="submit"
+					       class="button button-primary button-large button-secondary <?php echo "step-{$step}"; ?>"
+					       id="recount-stats-submit"
+					       value="<?php esc_attr_e( 'Submit', 'give' ); ?>"/>
+				</th>
+			</tr>
+			<?php
 		}
 
 		/**
@@ -305,7 +381,33 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		 * @since 1.8.16
 		 */
 		public function save() {
-			// Check condition on save
+
+			// Get the current step.
+			$step = $this->get_step();
+
+			// Validation for first step.
+			if ( 1 === $step ) {
+				$type          = ( ! empty( $_REQUEST['type'] ) ? give_clean( $_REQUEST['type'] ) : 'replace' );
+				$core_settings = self::upload_widget_settings_file();
+				if ( ! empty( $core_settings['error'] ) ) {
+					Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please do not upload empty JSON file.', 'give' ) );
+				} else {
+					$file_path = explode( '/', $core_settings['file'] );
+					$count     = ( count( $file_path ) - 1 );
+					$url       = give_import_page_url( (array) apply_filters( 'give_import_step_two_url', array(
+						'step'          => '2',
+						'importer-type' => $this->importer_type,
+						'type'          => $type,
+						'file_name'     => $file_path[ $count ],
+					) ) );
+
+					?>
+					<script type="text/javascript">
+						window.location = "<?php echo $url; ?>";
+					</script>
+					<?php
+				}
+			}
 		}
 
 		/**
@@ -315,9 +417,62 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		 * @return bool
 		 */
 		private function is_donations_import_page() {
-			return 'import' === give_get_current_setting_tab() &&
-			       isset( $_GET['importer-type'] ) &&
-			       $this->importer_type === give_clean( $_GET['importer-type'] );
+			return 'import' === give_get_current_setting_tab() && isset( $_GET['importer-type'] ) && $this->importer_type === give_clean( $_GET['importer-type'] );
+		}
+
+		/**
+		 * Read uploaded JSON file
+		 * @return type
+		 */
+		public static function get_widget_settings_json() {
+			$upload_dir = Give_Import_Core_Settings::wp_upload_dir();
+			$file_path  = $upload_dir . '/' . give_clean( $_REQUEST['file_name'] );
+
+			if ( is_wp_error( $file_path ) || empty( $file_path ) ) {
+				Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide a valid JSON file.', 'give' ) );
+			}
+
+			$file_contents = file_get_contents( $file_path );
+
+			return $file_contents;
+		}
+
+		/**
+		 * Upload JSON file
+		 * @return boolean
+		 */
+		public static function upload_widget_settings_file() {
+			$upload = false;
+			if ( isset( $_FILES['json'] ) ) {
+				add_filter( 'upload_mimes', array( __CLASS__, 'json_upload_mimes' ) );
+
+				$upload = wp_handle_upload( $_FILES['json'], array( 'test_form' => false ) );
+
+				remove_filter( 'upload_mimes', array( __CLASS__, 'json_upload_mimes' ) );
+			} else {
+				Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide a valid JSON file.', 'give' ) );
+			}
+
+			return $upload;
+		}
+
+		/**
+		 * Add mime type for JSON
+		 *
+		 * @param array $existing_mimes
+		 *
+		 * @return string
+		 */
+		public static function json_upload_mimes( $existing_mimes = array() ) {
+			$existing_mimes['json'] = 'application/json';
+
+			return $existing_mimes;
+		}
+
+		private static function wp_upload_dir() {
+			$wp_upload_dir = wp_upload_dir();
+
+			return ( ! empty( $wp_upload_dir['path'] ) ? $wp_upload_dir['path'] : false );
 		}
 
 	}

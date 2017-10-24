@@ -31,7 +31,8 @@ do_action( 'give_tools_import_core_settings_main_before' );
 				do_action( 'give_tools_import_core_settings_form_before_start' );
 				?>
 				<form method="post" id="give-import-core-settings-form"
-				      class="give-import-form tools-setting-page-import tools-setting-page-import">
+				      class="give-import-form tools-setting-page-import tools-setting-page-import"
+				      enctype="multipart/form-data" >
 
 					<?php
 					/**

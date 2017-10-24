@@ -533,6 +533,29 @@ function give_donation_import_callback() {
 add_action( 'wp_ajax_give_donation_import', 'give_donation_import_callback' );
 
 
+function give_core_settings_import_callback() {
+	$current    = absint( $_REQUEST['current'] );
+	$total_ajax = absint( $_REQUEST['total_ajax'] );
+	$start      = absint( $_REQUEST['start'] );
+	$end        = absint( $_REQUEST['end'] );
+	$next       = absint( $_REQUEST['next'] );
+	$total      = absint( $_REQUEST['total'] );
+	$per_page   = absint( $_REQUEST['per_page'] );
+
+	$json_data['current'] = ++$current;
+	$json_data['total_ajax'] = $total_ajax;
+	$json_data['start'] = $start;
+	$json_data['end'] = $end;
+	$json_data['next'] = $next;
+	$json_data['total'] = $total;
+	$json_data['per_page'] = $per_page;
+
+	wp_die( json_encode( $json_data ) );
+}
+add_action( 'wp_ajax_give_core_settings_import', 'give_core_settings_import_callback' );
+
+
+
 /**
  * Initializes blank slate content if a list table is empty.
  *
