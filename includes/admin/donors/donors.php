@@ -37,8 +37,7 @@ function __give_get_format_address( $address, $address_args = array() ) {
 		)
 	);
 
-	$is_default_address = $address_args['default_address'];
-	$address_id         = $address_args['type'];
+	$address_id = $address_args['type'];
 
 	// Bailout.
 	if ( empty( $address ) || ! is_array( $address ) ) {
@@ -57,7 +56,6 @@ function __give_get_format_address( $address, $address_args = array() ) {
 		'<br><a href="#" class="js-edit">%1$s</a> | <a href="#" class="js-remove">%2$s</a>',
 		__( 'Edit', 'give' ),
 		__( 'Remove', 'give' )
-		//$is_default_address ? '' : sprintf( '| <a href="#">%s</a>', __( 'Set as default', 'give' ) )
 	);
 
 	/**
@@ -73,7 +71,7 @@ function __give_get_format_address( $address, $address_args = array() ) {
 	}
 
 	if ( isset( $address_args['id'] ) ) {
-		$address_id    = "{$address_id}_{$address_args['id']}";
+		$address_id = "{$address_id}_{$address_args['id']}";
 	}
 
 	// Add address wrapper.
@@ -578,7 +576,6 @@ function give_donor_view( $donor ) {
 													'type'            => $address_type,
 													'id'              => $id,
 													'index'           => $index,
-													'default_address' => $is_set_as_default,
 												)
 											);
 
@@ -591,7 +588,6 @@ function give_donor_view( $donor ) {
 											$addresses,
 											array(
 												'type'            => $address_type,
-												'default_address' => $is_set_as_default,
 											)
 										);
 										break;
