@@ -223,7 +223,7 @@ add_filter( 'give_import_core_settings_data', 'give_import_core_settings_merge_l
  *
  * @return array $json_to_array
  */
-function give_import_core_settings_merge_data( $json_to_array, $host_give_options, $type ) {
+function give_import_core_settings_merge_data( $json_to_array, $type, $host_give_options ) {
 	if ( 'merge' === $type ) {
 		$json_to_array_merge = array_merge( $host_give_options, $json_to_array );
 		$json_to_array       = $json_to_array_merge;
