@@ -534,16 +534,7 @@ function give_donation_import_callback() {
 
 	$percentage              = ( 100 / ( $total_ajax + 1 ) ) * $current;
 	$json_data['percentage'] = $percentage;
-
-	if ( $next ) {
-		$index_start = $index_start + $per_page;
-		$index_end   = $per_page + ( $index_start - 1 );
-	}
-	if ( $index_end >= $total ) {
-		$index_end = $total;
-		$last      = true;
-	}
-
+	
 	$json_data = apply_filters( 'give_import_ajax_responces', $json_data, $fields );
 	wp_die( json_encode( $json_data ) );
 }
