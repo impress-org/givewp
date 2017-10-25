@@ -107,13 +107,11 @@ add_filter( 'give_import_delimiter_set', '__give_import_delimiter_set_callback',
  * @since 1.8.16
  *
  * @param array $json_to_array Data from json file
- * @param array $host_give_options Setting from the Options table
  * @param string $type
- * @param array $fields
  *
  * @return array $json_to_array
  */
-function give_import_core_settings_merge_pages( $json_to_array, $host_give_options, $type, $fields ) {
+function give_import_core_settings_merge_pages( $json_to_array, $type ) {
 	if ( 'merge' === $type ) {
 		unset( $json_to_array['success_page'] );
 		unset( $json_to_array['failure_page'] );
@@ -123,7 +121,7 @@ function give_import_core_settings_merge_pages( $json_to_array, $host_give_optio
 	return $json_to_array;
 }
 
-add_filter( 'give_import_core_settings_data', 'give_import_core_settings_merge_pages', 11, 4 );
+add_filter( 'give_import_core_settings_data', 'give_import_core_settings_merge_pages', 11, 2 );
 
 /**
  * Give check the image size from the core setting data from the json files.
@@ -131,13 +129,11 @@ add_filter( 'give_import_core_settings_data', 'give_import_core_settings_merge_p
  * @since 1.8.16
  *
  * @param $json_to_array
- * @param $host_give_options
- * @param $type
- * @param $fields
+ * @param string $type
  *
  * @return array $json_to_array
  */
-function give_import_core_settings_merge_image_size( $json_to_array, $host_give_options, $type, $fields ) {
+function give_import_core_settings_merge_image_size( $json_to_array, $type ) {
 	if ( 'merge' === $type ) {
 		// Featured image sizes import under Display Options > Post Types > Featured Image Size.
 		if ( 'enabled' === $json_to_array['form_featured_img'] ) {
@@ -152,7 +148,7 @@ function give_import_core_settings_merge_image_size( $json_to_array, $host_give_
 	return $json_to_array;
 }
 
-add_filter( 'give_import_core_settings_data', 'give_import_core_settings_merge_image_size', 12, 4 );
+add_filter( 'give_import_core_settings_data', 'give_import_core_settings_merge_image_size', 12, 2 );
 
 /**
  * Give upload the image logo from the core setting data from the json files.
@@ -160,13 +156,11 @@ add_filter( 'give_import_core_settings_data', 'give_import_core_settings_merge_i
  * @since 1.8.16
  *
  * @param $json_to_array
- * @param $host_give_options
- * @param $type
- * @param $fields
+ * @param string $type
  *
  * @return array $json_to_array
  */
-function give_import_core_settings_merge_upload_image( $json_to_array, $host_give_options, $type, $fields ) {
+function give_import_core_settings_merge_upload_image( $json_to_array, $type ) {
 	if ( 'merge' === $type ) {
 		// Emails > Email Settings > Logo.
 		if ( ! empty( $json_to_array['email_logo'] ) ) {
@@ -191,7 +185,32 @@ function give_import_core_settings_merge_upload_image( $json_to_array, $host_giv
 	return $json_to_array;
 }
 
-add_filter( 'give_import_core_settings_data', 'give_import_core_settings_merge_upload_image', 13, 4 );
+add_filter( 'give_import_core_settings_data', 'give_import_core_settings_merge_upload_image', 13, 2 );
+
+/**
+ * Give unset the license key from the core setting data from the json files.
+ *
+ * @since 1.8.16
+ *
+ * @param array $json_to_array Data from json file
+ * @param string $type
+ *
+ * @return array $json_to_array
+ */
+function give_import_core_settings_merge_license_key( $json_to_array, $type ) {
+	if ( 'merge' === $type ) {
+		foreach ( $json_to_array as $key => $value ) {
+			$is_license_key = strpos( '_license_key', $key );
+			if ( ! empty( $is_license_key ) ) {
+				unset( $json_to_array[ $key ] );
+			}
+		}
+	}
+
+	return $json_to_array;
+}
+
+add_filter( 'give_import_core_settings_data', 'give_import_core_settings_merge_license_key', 14, 2 );
 
 /**
  * Give merge the json data and setting data.
@@ -199,13 +218,12 @@ add_filter( 'give_import_core_settings_data', 'give_import_core_settings_merge_u
  * @since 1.8.16
  *
  * @param $json_to_array
- * @param $host_give_options
  * @param $type
- * @param $fields
+ * @param $host_give_options
  *
  * @return array $json_to_array
  */
-function give_import_core_settings_merge_data( $json_to_array, $host_give_options, $type, $fields ) {
+function give_import_core_settings_merge_data( $json_to_array, $host_give_options, $type ) {
 	if ( 'merge' === $type ) {
 		$json_to_array_merge = array_merge( $host_give_options, $json_to_array );
 		$json_to_array       = $json_to_array_merge;
@@ -214,4 +232,4 @@ function give_import_core_settings_merge_data( $json_to_array, $host_give_option
 	return $json_to_array;
 }
 
-add_filter( 'give_import_core_settings_data', 'give_import_core_settings_merge_data', 1000, 4 );
+add_filter( 'give_import_core_settings_data', 'give_import_core_settings_merge_data', 1000, 3 );

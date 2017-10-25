@@ -575,7 +575,7 @@ function give_core_settings_import_callback() {
 		$type = ( ! empty( $fields['type'] ) ? give_clean( $fields['type'] ) : 'merge' );
 
 		// Get the json data from the file and then alter it in array format
-		$json_string   = get_widget_settings_json( $file_name );
+		$json_string   = give_get_core_settings_json( $file_name );
 		$json_to_array = json_decode( $json_string, true );
 
 		// get the current settign from the options table.
@@ -592,13 +592,13 @@ function give_core_settings_import_callback() {
 		 * @since 1.8.16
 		 *
 		 * @param array $json_to_array Setting that are being going to get imported
-		 * @param array $host_give_options Setting old setting that used to be in the options table.
 		 * @param array $type Type of Import
+		 * @param array $host_give_options Setting old setting that used to be in the options table.
 		 * @param array $fields Data that is being send from the ajax
 		 *
 		 * @return array $json_to_array Setting that are being going to get imported
 		 */
-		$json_to_array = (array) apply_filters( 'give_import_core_settings_data', $json_to_array, $host_give_options, $type, $fields );
+		$json_to_array = (array) apply_filters( 'give_import_core_settings_data', $json_to_array, $type, $host_give_options, $fields );
 
 		update_option( 'give_settings', $json_to_array );
 
