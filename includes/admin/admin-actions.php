@@ -551,7 +551,7 @@ add_action( 'wp_ajax_give_donation_import', 'give_donation_import_callback' );
  */
 
 function give_core_settings_import_callback() {
-	$fields         = isset( $_POST['fields'] ) ? $_POST['fields'] : null;
+	$fields = isset( $_POST['fields'] ) ? $_POST['fields'] : null;
 	parse_str( $fields, $fields );
 
 	$json_data['success'] = false;
@@ -575,8 +575,8 @@ function give_core_settings_import_callback() {
 		$type = ( ! empty( $fields['type'] ) ? give_clean( $fields['type'] ) : 'merge' );
 
 		// Get the json data from the file and then alter it in array format
-		$json_string = get_widget_settings_json( $file_name );
-		$json_to_array     = json_decode( $json_string, true );
+		$json_string   = get_widget_settings_json( $file_name );
+		$json_to_array = json_decode( $json_string, true );
 
 		// get the current settign from the options table.
 		$host_give_options = get_option( 'give_settings', array() );
@@ -602,12 +602,11 @@ function give_core_settings_import_callback() {
 
 		update_option( 'give_settings', $json_to_array );
 
-		$json_data['success']       = true;
+		$json_data['success'] = true;
 	}
 
-	$json_data['error_message'] = __( 'Please do not upload empty JSON file.', 'give' );
-	$json_data['percentage']    = 100;
-	$json_data['url']           = give_import_page_url( (array) apply_filters( 'give_import_core_settings_success_url', array(
+	$json_data['percentage'] = 100;
+	$json_data['url']        = give_import_page_url( (array) apply_filters( 'give_import_core_settings_success_url', array(
 		'step'          => ( empty( $json_data['success'] ) ? '1' : '3' ),
 		'importer-type' => 'import_core_setting',
 		'success'       => ( empty( $json_data['success'] ) ? '0' : '1' ),
