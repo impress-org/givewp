@@ -367,7 +367,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 				} else {
 					$file_path = explode( '/', $core_settings['file'] );
 					$count     = ( count( $file_path ) - 1 );
-					$url       = give_import_page_url( (array) apply_filters( 'give_import_step_two_url', array(
+					$url       = give_import_page_url( (array) apply_filters( 'give_import_core_settings_importing_url', array(
 						'step'          => '2',
 						'importer-type' => $this->importer_type,
 						'type'          => $type,

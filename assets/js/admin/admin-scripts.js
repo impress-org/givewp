@@ -2391,8 +2391,8 @@ function get_url_params() {
  * @since 1.8.16
  */
 function give_on_core_settings_import_start() {
-	alert( 'test1' );
 	var $form = jQuery('form.tools-setting-page-import');
+	var progress = $form.find('.give-progress');
 
 	give_setting_edit = true;
 
@@ -2405,7 +2405,13 @@ function give_on_core_settings_import_start() {
 		},
 		dataType: 'json',
 		success: function (response) {
-			console.log( response );
+			give_setting_edit = false;
+			if ( true === response.success ) {
+				jQuery( progress ).find( 'div' ).width( response.percentage + '%' );
+				window.location = response.url;
+			} else {
+				alert( 'failed' );
+			}
 		},
 		error: function () {
 			give_setting_edit = false;

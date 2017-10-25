@@ -541,63 +541,81 @@ function give_donation_import_callback() {
 
 add_action( 'wp_ajax_give_donation_import', 'give_donation_import_callback' );
 
+/**
+ * Load core settings import ajax callback
+ * Fire when importing from JSON start
+ *
+ * @since  1.8.16
+ *
+ * @return json $json_data
+ */
 
 function give_core_settings_import_callback() {
 	$fields         = isset( $_POST['fields'] ) ? $_POST['fields'] : null;
 	parse_str( $fields, $fields );
 
-	$file_name = $fields['file_name'];
-	$type = give_clean( $fields['type'] );
+	$json_data['success'] = false;
 
-	$json_string = get_widget_settings_json( $file_name );
-	$json_to_array     = json_decode( $json_string, true );
-	$host_give_options = get_option( 'give_settings', array() );
-	update_option( 'give_settings_old', $host_give_options );
+	/**
+	 * Filter to Modify fields that are being pass by the ajax before importing of the core setting start.
+	 *
+	 * @access public
+	 *
+	 * @since 1.8.16
+	 *
+	 * @param array $fields
+	 *
+	 * @return array $fields
+	 */
+	$fields = (array) apply_filters( 'give_import_core_settings_fields', $fields );
 
-	if ( 'merge' === $type ) {
-		$json_to_array['success_page'] = ! empty( $host_give_options['success_page'] ) ? $host_give_options['success_page'] : '';
-		$json_to_array['failure_page'] = ! empty( $host_give_options['failure_page'] ) ? $host_give_options['failure_page'] : '';
-		$json_to_array['history_page'] = ! empty( $host_give_options['history_page'] ) ? $host_give_options['history_page'] : '';
+	$file_name = ( ! empty( $fields['file_name'] ) ? give_clean( $fields['file_name'] ) : false );
 
-		// Featured image sizes import under Display Options > Post Types > Featured Image Size.
-		if ( 'enabled' === $json_to_array['form_featured_img'] ) {
-			$images_sizes = get_intermediate_image_sizes();
+	if ( ! empty( $file_name ) ) {
+		$type = ( ! empty( $fields['type'] ) ? give_clean( $fields['type'] ) : 'merge' );
 
-			if ( ! in_array( $json_to_array['featured_image_size'], $images_sizes ) ) {
-				$json_to_array['featured_image_size'] = $host_give_options['featured_image_size'];
-			}
-		}
+		// Get the json data from the file and then alter it in array format
+		$json_string = get_widget_settings_json( $file_name );
+		$json_to_array     = json_decode( $json_string, true );
 
-		// Emails > Email Settings > Logo.
-		if ( array_key_exists( 'email_logo', $json_to_array ) && ! empty( $json_to_array['email_logo'] ) ) {
+		// get the current settign from the options table.
+		$host_give_options = get_option( 'give_settings', array() );
 
-			// Need to require these files.
-			if ( ! function_exists( 'media_handle_upload' ) ) {
-				require_once( ABSPATH . 'wp-admin/includes/image.php' );
-				require_once( ABSPATH . 'wp-admin/includes/file.php' );
-				require_once( ABSPATH . 'wp-admin/includes/media.php' );
-			}
+		// Save old settins for backup.
+		update_option( 'give_settings_old', $host_give_options );
 
-			$url = $json_to_array['email_logo'];
-			$tmp = download_url( $url );
+		/**
+		 * Filter to Modify Core Settings that are being going to get import in options table as give settings.
+		 *
+		 * @access public
+		 *
+		 * @since 1.8.16
+		 *
+		 * @param array $json_to_array Setting that are being going to get imported
+		 * @param array $host_give_options Setting old setting that used to be in the options table.
+		 * @param array $type Type of Import
+		 * @param array $fields Data that is being send from the ajax
+		 *
+		 * @return array $json_to_array Setting that are being going to get imported
+		 */
+		$json_to_array = (array) apply_filters( 'give_import_core_settings_data', $json_to_array, $host_give_options, $type, $fields );
 
-			$new_url = media_sideload_image( $url, 0, null, 'src' );
+		update_option( 'give_settings', $json_to_array );
 
-			if ( ! is_wp_error( $new_url ) ) {
-				$json_to_array['email_logo'] = $new_url;
-			} else {
-				$json_to_array['email_logo'] = $host_give_options['email_logo'];
-			}
-		}
+		$json_data['success']       = true;
 	}
 
-	update_option( 'give_settings', $json_to_array );
+	$json_data['error_message'] = __( 'Please do not upload empty JSON file.', 'give' );
+	$json_data['percentage']    = 100;
+	$json_data['url']           = give_import_page_url( (array) apply_filters( 'give_import_core_settings_success_url', array(
+		'step'          => ( empty( $json_data['success'] ) ? '1' : '3' ),
+		'importer-type' => 'import_core_setting',
+	) ) );
 
-	wp_die( json_encode( $fields ) );
+	wp_die( json_encode( $json_data ) );
 }
 
 add_action( 'wp_ajax_give_core_settings_import', 'give_core_settings_import_callback' );
-
 
 /**
  * Read uploaded JSON file

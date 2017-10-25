@@ -100,3 +100,70 @@ function __give_import_delimiter_set_callback( $delimiter ) {
 }
 
 add_filter( 'give_import_delimiter_set', '__give_import_delimiter_set_callback', 10 );
+
+function give_import_core_settings_merge_pages( $json_to_array, $host_give_options, $type, $fields ) {
+	if ( 'merge' === $type ) {
+		unset( $json_to_array['success_page'] );
+		unset( $json_to_array['failure_page'] );
+		unset( $json_to_array['history_page'] );
+	}
+
+	return $json_to_array;
+}
+
+add_filter( 'give_import_core_settings_data', 'give_import_core_settings_merge_pages', 11, 4 );
+
+function give_import_core_settings_merge_image_size( $json_to_array, $host_give_options, $type, $fields ) {
+	if ( 'merge' === $type ) {
+		// Featured image sizes import under Display Options > Post Types > Featured Image Size.
+		if ( 'enabled' === $json_to_array['form_featured_img'] ) {
+			$images_sizes = get_intermediate_image_sizes();
+
+			if ( ! in_array( $json_to_array['featured_image_size'], $images_sizes ) ) {
+				 unset( $json_to_array['featured_image_size'] );
+			}
+		}
+	}
+
+	return $json_to_array;
+}
+
+add_filter( 'give_import_core_settings_data', 'give_import_core_settings_merge_image_size', 12, 4 );
+
+function give_import_core_settings_merge_upload_image( $json_to_array, $host_give_options, $type, $fields ) {
+	if ( 'merge' === $type ) {
+		// Emails > Email Settings > Logo.
+		if ( ! empty( $json_to_array['email_logo'] ) ) {
+
+			// Need to require these files.
+			if ( ! function_exists( 'media_handle_upload' ) ) {
+				require_once( ABSPATH . 'wp-admin/includes/image.php' );
+				require_once( ABSPATH . 'wp-admin/includes/file.php' );
+				require_once( ABSPATH . 'wp-admin/includes/media.php' );
+			}
+
+			$url = $json_to_array['email_logo'];
+			$new_url = media_sideload_image( $url, 0, null, 'src' );
+			if ( ! is_wp_error( $new_url ) ) {
+				$json_to_array['email_logo'] = $new_url;
+			} else {
+				 unset( $json_to_array['email_logo'] );
+			}
+		}
+	}
+
+	return $json_to_array;
+}
+
+add_filter( 'give_import_core_settings_data', 'give_import_core_settings_merge_upload_image', 13, 4 );
+
+function give_import_core_settings_merge_data( $json_to_array, $host_give_options, $type, $fields ) {
+	if ( 'merge' === $type ) {
+		$json_to_array_merge = array_merge( $host_give_options, $json_to_array );
+		$json_to_array       = $json_to_array_merge;
+	}
+
+	return $json_to_array;
+}
+
+add_filter( 'give_import_core_settings_data', 'give_import_core_settings_merge_data', 1000, 4 );
