@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Load WP_List_Table if not loaded
+// Load WP_List_Table if not loaded.
 if ( ! class_exists( 'WP_List_Table' ) ) {
 	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 }
@@ -60,11 +60,11 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 */
 	public function __construct() {
 
-		// Set parent defaults
+		// Set parent defaults.
 		parent::__construct( array(
-			'singular' => __( 'Donor', 'give' ),     // Singular name of the listed records.
-			'plural'   => __( 'Donors', 'give' ),    // Plural name of the listed records.
-			'ajax'     => false,// Does this table support ajax?.
+			'singular' => __( 'Donor', 'give' ), // Singular name of the listed records.
+			'plural'   => __( 'Donors', 'give' ), // Plural name of the listed records.
+			'ajax'     => false, // Does this table support ajax?.
 		) );
 
 	}
@@ -72,11 +72,11 @@ class Give_Donor_List_Table extends WP_List_Table {
 	/**
 	 * Show the search field.
 	 *
-	 * @since  1.0
-	 * @access public
-	 *
 	 * @param string $text     Label for the search box.
 	 * @param string $input_id ID of the search box.
+	 *
+	 * @since  1.0
+	 * @access public
 	 *
 	 * @return void
 	 */
@@ -84,10 +84,11 @@ class Give_Donor_List_Table extends WP_List_Table {
 		$input_id = $input_id . '-search-input';
 
 		if ( ! empty( $_REQUEST['orderby'] ) ) {
-			echo '<input type="hidden" name="orderby" value="' . esc_attr( $_REQUEST['orderby'] ) . '" />';
+			echo sprintf( '<input type="hidden" name="orderby" value="%1$s" />', esc_attr( $_REQUEST['orderby'] ) );
 		}
+
 		if ( ! empty( $_REQUEST['order'] ) ) {
-			echo '<input type="hidden" name="order" value="' . esc_attr( $_REQUEST['order'] ) . '" />';
+			echo sprintf( '<input type="hidden" name="order" value="%1$s" />', esc_attr( $_REQUEST['order'] ) );
 		}
 		?>
 		<p class="search-box" role="search">
@@ -103,11 +104,11 @@ class Give_Donor_List_Table extends WP_List_Table {
 	/**
 	 * This function renders most of the columns in the list table.
 	 *
-	 * @access public
-	 * @since  1.0
-	 *
 	 * @param array  $donor        Contains all the data of the donors.
 	 * @param string $column_name The name of the column.
+	 *
+	 * @access public
+	 * @since  1.0
 	 *
 	 * @return string Column Name.
 	 */
@@ -140,15 +141,36 @@ class Give_Donor_List_Table extends WP_List_Table {
 	}
 
 	/**
+	 * For CheckBox Column
+	 *
+	 * @param array $donor Donor Data.
+	 *
+	 * @access public
+	 * @since  1.8.16
+	 *
+	 * @return string
+	 */
+	public function column_cb( $donor ){
+		return sprintf(
+			'<input type="checkbox" name="%1$s[]" value="%2$s" />',
+			$this->_args['singular'],
+			$donor['id']
+		);
+	}
+
+	/**
 	 * Column name.
 	 *
-	 * @param $donor
+	 * @param array $donor Donor Data.
+	 *
+	 * @access public
+	 * @since  1.0
 	 *
 	 * @return string
 	 */
 	public function column_name( $donor ) {
 		$name     = '#' . $donor['id'] . ' ';
-		$name     .= ! empty( $donor['name'] ) ? $donor['name'] : '<em>' . esc_html__( 'Unnamed Donor', 'give' ) . '</em>';
+		$name     .= ! empty( $donor['name'] ) ? $donor['name'] : '<em>' . __( 'Unnamed Donor', 'give' ) . '</em>';
 		$view_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor['id'] );
 		$actions  = $this->get_row_actions( $donor );
 
@@ -160,6 +182,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
+	 *
 	 * @return array $columns Array of all the list table columns.
 	 */
 	public function get_columns() {
@@ -198,23 +221,19 @@ class Give_Donor_List_Table extends WP_List_Table {
 	/**
 	 * Retrieve row actions.
 	 *
+	 * @param array $donor Donor Data.
+	 *
 	 * @since  1.7
 	 * @access public
-	 *
-	 * @param $donor
 	 *
 	 * @return array An array of action links.
 	 */
 	public function get_row_actions( $donor ) {
 
 		$actions = array(
-
-			'view' => sprintf( '<a href="%1$s" aria-label="%2$s">%3$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor['id'] ), sprintf( esc_attr__( 'View "%s"', 'give' ), $donor['name'] ), __( 'View Donor', 'give' ) ),
-
-			'notes' => sprintf( '<a href="%1$s" aria-label="%2$s">%3$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=notes&id=' . $donor['id'] ), sprintf( esc_attr__( 'Notes for "%s"', 'give' ), $donor['name'] ), __( 'Notes', 'give' ) ),
-
+			'view'   => sprintf( '<a href="%1$s" aria-label="%2$s">%3$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor['id'] ), sprintf( esc_attr__( 'View "%s"', 'give' ), $donor['name'] ), __( 'View Donor', 'give' ) ),
+			'notes'  => sprintf( '<a href="%1$s" aria-label="%2$s">%3$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=notes&id=' . $donor['id'] ), sprintf( esc_attr__( 'Notes for "%s"', 'give' ), $donor['name'] ), __( 'Notes', 'give' ) ),
 			'delete' => sprintf( '<a href="%1$s" aria-label="%2$s">%3$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $donor['id'] ), sprintf( esc_attr__( 'Delete "%s"', 'give' ), $donor['name'] ), __( 'Delete', 'give' ) ),
-
 		);
 
 		return apply_filters( 'give_donor_row_actions', $actions, $donor );
@@ -226,6 +245,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
+	 *
 	 * @return int Current page number.
 	 */
 	public function get_paged() {
@@ -237,28 +257,11 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
+	 *
 	 * @return mixed string If search is present, false otherwise.
 	 */
 	public function get_search() {
 		return ! empty( $_GET['s'] ) ? urldecode( trim( $_GET['s'] ) ) : false;
-	}
-
-	/**
-	 * For CheckBox Column
-	 *
-	 * @param object $item
-	 *
-	 * @access public
-	 * @since  1.8.16
-	 *
-	 * @return string
-	 */
-	public function column_cb( $item ){
-		return sprintf(
-			'<input type="checkbox" name="%1$s[]" value="%2$s" />',
-			$this->_args['singular'],
-			$item['id']
-		);
 	}
 
 	/**
@@ -292,6 +295,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 			$ids = array( $ids );
 		}
 
+		// Bail Out, If Action is not set.
 		if ( empty( $action ) ) {
 			return;
 		}
@@ -317,10 +321,10 @@ class Give_Donor_List_Table extends WP_List_Table {
 			/**
 			 * Fires after triggering bulk action on donors table.
 			 *
-			 * @since 1.8.16
-			 *
 			 * @param int    $id             The ID of the payment.
 			 * @param string $current_action The action that is being triggered.
+			 *
+			 * @since 1.8.16
 			 */
 			do_action( 'give_donors_table_do_bulk_action', $id, $this->current_action() );
 		} // End foreach().
@@ -330,7 +334,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	/**
 	 * Generate the table navigation above or below the table
 	 *
-	 * @param string $which
+	 * @param string $which Position to trigger i.e. Top/Bottom.
 	 *
 	 * @access protected
 	 * @since  1.8.16
@@ -341,7 +345,6 @@ class Give_Donor_List_Table extends WP_List_Table {
 		}
 		?>
 		<div class="tablenav <?php echo esc_attr( $which ); ?>">
-
 			<?php if ( $this->has_items() ): ?>
 				<div class="alignleft actions bulkactions">
 					<?php $this->bulk_actions( $which ); ?>
@@ -357,7 +360,6 @@ class Give_Donor_List_Table extends WP_List_Table {
 			$this->extra_tablenav( $which );
 			$this->pagination( $which );
 			?>
-
 			<br class="clear" />
 		</div>
 		<?php
@@ -422,6 +424,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 *
 	 * @since  1.8.1
 	 * @access public
+	 *
 	 * @return array
 	 */
 	public function get_donor_query() {
@@ -456,6 +459,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
+	 *
 	 * @return void
 	 */
 	public function prepare_items() {
@@ -465,7 +469,9 @@ class Give_Donor_List_Table extends WP_List_Table {
 		$sortable = $this->get_sortable_columns();
 
 		$this->_column_headers = array( $columns, $hidden, $sortable );
-$this->process_bulk_action();
+
+		$this->process_bulk_action();
+
 		$this->items = $this->donor_data();
 
 		$this->total = $this->get_donor_count();
