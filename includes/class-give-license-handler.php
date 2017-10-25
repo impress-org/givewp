@@ -161,7 +161,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			// Add Setting for Give Add-on activation status.
 			$is_addon_activated = get_option( 'give_is_addon_activated' );
-			if( ! $is_addon_activated && is_object( $this ) && sizeof( $this ) > 0 ) {
+			if ( ! $is_addon_activated && is_object( $this ) && sizeof( $this ) > 0 ) {
 				update_option( 'give_is_addon_activated', true );
 				Give_Cache::set( 'give_cache_hide_license_notice_after_activation', true, DAY_IN_SECONDS );
 			}
@@ -326,7 +326,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 */
 		public function activate_license() {
 			// Bailout.
-			if( ! $this->__is_user_can_edit_license() ) {
+			if ( ! $this->__is_user_can_edit_license() ) {
 				return;
 			}
 
@@ -381,7 +381,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			set_site_transient( 'update_plugins', null );
 
 			// Add license data.
-			update_option(  "{$this->item_shortname}_license_active", $license_data );
+			update_option( "{$this->item_shortname}_license_active", $license_data );
 
 			// Add license key.
 			give_update_option( "{$this->item_shortname}_license_key", $this->license );
@@ -402,7 +402,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 */
 		public function deactivate_license() {
 			// Bailout.
-			if( ! $this->__is_user_can_edit_license() ) {
+			if ( ! $this->__is_user_can_edit_license() ) {
 				return;
 			}
 
@@ -458,7 +458,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			}
 
 			// Bailout.
-			if( ! $this->is_license( $license_data ) ) {
+			if ( ! $this->is_license( $license_data ) ) {
 				return;
 			}
 
@@ -513,10 +513,13 @@ if ( ! class_exists( 'Give_License' ) ) :
 				return;
 			}
 
-			// Make sure there are no api errors.
-			// Do not get confused with edd_action check_subscription.
-			// By default edd software licensing api does not have api to check subscription.
-			// This is a custom feature to check subscriptions.
+			/**
+			 * Make sure there are no api errors.
+			 *
+			 * Do not get confused with edd_action check_subscription.
+			 * By default edd software licensing api does not have api to check subscription.
+			 * This is a custom feature to check subscriptions.
+			 */
 			if ( ! ( $subscription_data = $this->get_license_info( 'check_subscription', true ) ) ) {
 				return;
 			}
@@ -526,17 +529,17 @@ if ( ! class_exists( 'Give_License' ) ) :
 				$subscriptions = get_option( 'give_subscriptions', array() );
 
 				// Update subscription data only if subscription does not exist already.
-				$subscriptions[ $subscription_data['id'] ]            = $subscription_data;
+				$subscriptions[ $subscription_data['id'] ] = $subscription_data;
 
 
 				// Initiate default set of license for subscription.
-				if( ! isset( $subscriptions[ $subscription_data['id'] ]['licenses'] ) ) {
-					$subscriptions[ $subscription_data['id']]['licenses'] = array();
+				if ( ! isset( $subscriptions[ $subscription_data['id'] ]['licenses'] ) ) {
+					$subscriptions[ $subscription_data['id'] ]['licenses'] = array();
 				}
 
 				// Store licenses for subscription.
 				if ( ! in_array( $this->license, $subscriptions[ $subscription_data['id'] ]['licenses'] ) ) {
-					$subscriptions[ $subscription_data['id']]['licenses'][] = $this->license;
+					$subscriptions[ $subscription_data['id'] ]['licenses'][] = $this->license;
 				}
 
 				update_option( 'give_subscriptions', $subscriptions );
@@ -625,11 +628,11 @@ if ( ! class_exists( 'Give_License' ) ) :
 								urldecode( $subscription['invoice_url'] ),
 								$subscription['payment_id'],
 								"{$this->checkout_url}?edd_license_key={$subscription['license_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired",
-								Give()->notices->get_dismiss_link(array(
-									'title' => __( 'Click here if already renewed', 'give' ),
-									'dismissible_type'      => 'user',
-									'dismiss_interval'      => 'permanent',
-								))
+								Give()->notices->get_dismiss_link( array(
+									'title'            => __( 'Click here if already renewed', 'give' ),
+									'dismissible_type' => 'user',
+									'dismiss_interval' => 'permanent',
+								) )
 							),
 							'dismissible_type' => 'user',
 							'dismiss_interval' => 'shortly',
@@ -644,11 +647,11 @@ if ( ! class_exists( 'Give_License' ) ) :
 								urldecode( $subscription['invoice_url'] ),
 								$subscription['payment_id'],
 								"{$this->checkout_url}?edd_license_key={$subscription['license_key']}&utm_campaign=admin&utm_source=licenses&utm_medium=expired",
-								Give()->notices->get_dismiss_link(array(
-									'title' => __( 'Click here if already renewed', 'give' ),
-									'dismissible_type'      => 'user',
-									'dismiss_interval'      => 'permanent',
-								))
+								Give()->notices->get_dismiss_link( array(
+									'title'            => __( 'Click here if already renewed', 'give' ),
+									'dismissible_type' => 'user',
+									'dismiss_interval' => 'permanent',
+								) )
 							),
 							'dismissible_type' => 'user',
 							'dismiss_interval' => 'shortly',
@@ -716,7 +719,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 *
 		 * @return bool
 		 */
-		public function is_license( $licence_data = null ){
+		public function is_license( $licence_data = null ) {
 			$license_data = empty( $licence_data ) ? $this->license_data : $licence_data;
 
 			if ( apply_filters( 'give_is_license', ( is_object( $license_data ) && ! empty( $license_data ) && property_exists( $license_data, 'license' ) ) ) ) {
@@ -838,7 +841,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			// Security check.
 			if (
-				isset( $_POST[ $this->item_shortname . '_license_key-nonce'] ) &&
+				isset( $_POST[ $this->item_shortname . '_license_key-nonce' ] ) &&
 				! wp_verify_nonce( $_REQUEST[ $this->item_shortname . '_license_key-nonce' ], $this->item_shortname . '_license_key-nonce' )
 			) {
 				wp_die( __( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
@@ -860,7 +863,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @return mixed
 		 */
 		public function get_license_info( $edd_action = '', $response_in_array = false ) {
-			if( empty( $edd_action ) ) {
+			if ( empty( $edd_action ) ) {
 				return false;
 			}
 
