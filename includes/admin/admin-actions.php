@@ -526,6 +526,15 @@ function give_donation_import_callback() {
 	$percentage              = ( 100 / ( $total_ajax + 1 ) ) * $current;
 	$json_data['percentage'] = $percentage;
 
+	if ( $next ) {
+		$index_start = $index_start + $per_page;
+		$index_end   = $per_page + ( $index_start - 1 );
+	}
+	if ( $index_end >= $total ) {
+		$index_end = $total;
+		$last      = true;
+	}
+
 	$json_data = apply_filters( 'give_import_ajax_responces', $json_data, $fields );
 	wp_die( json_encode( $json_data ) );
 }
@@ -534,6 +543,13 @@ add_action( 'wp_ajax_give_donation_import', 'give_donation_import_callback' );
 
 
 function give_core_settings_import_callback() {
+	$ignore_fields = array(
+		'success_page',
+		'failure_page',
+		'history_page',
+		'featured_image_size',
+		'email_logo',
+	);
 	$current    = absint( $_REQUEST['current'] );
 	$total_ajax = absint( $_REQUEST['total_ajax'] );
 	$start      = absint( $_REQUEST['start'] );
@@ -541,20 +557,88 @@ function give_core_settings_import_callback() {
 	$next       = absint( $_REQUEST['next'] );
 	$total      = absint( $_REQUEST['total'] );
 	$per_page   = absint( $_REQUEST['per_page'] );
+	$fields         = isset( $_POST['fields'] ) ? $_POST['fields'] : null;
 
-	$json_data['current'] = ++$current;
+	parse_str( $fields );
+	$host_give_options = (array) get_option( 'give_settings', array() );
+
+	$core_setting = get_widget_settings_json( $file_name );
+	$core_setting = (array) json_decode( $core_setting );
+
+	if ( 1 === (int) $current ) {
+		update_option( 'give_settings_old', $host_give_options );
+		if ( 'replace' === $type ) {
+//			delete_option( 'give_settings' );
+			$host_give_options = '';
+		}
+	}
+
+	$count = 0;
+	foreach ( $core_setting as $key => $value ) {
+		$count++;
+		if ( $count >= $start && $count <= $end ) {
+			if ( ! array_key_exists( $key, $ignore_fields ) ) {
+				$host_give_options[ $key ] = $value;
+			}
+		}
+	}
+
+	update_option( 'give_settings_new', $host_give_options );
+
+	$current++;
+
+	if ( $current === $total_ajax ) {
+		$next      = false;
+		$index_end = $total;
+		$last      = true;
+	} else {
+		$next = true;
+	}
+
+	$start = $start + $per_page;
+	$end   = $per_page + ( $start - 1 );
+
+	$json_data['current']    = $current;
 	$json_data['total_ajax'] = $total_ajax;
-	$json_data['start'] = $start;
-	$json_data['end'] = $end;
-	$json_data['next'] = $next;
-	$json_data['total'] = $total;
-	$json_data['per_page'] = $per_page;
+	$json_data['start']      = $start;
+	$json_data['end']        = $end;
+	$json_data['next']       = $next;
+	$json_data['total']      = $total;
+	$json_data['per_page']   = $per_page;
+	$json_data['start']      = $start;
+	$json_data['end']        = $end;
+
+	$percentage              = ( 100 / ( $total_ajax ) ) * $current;
+	$json_data['percentage'] = $percentage;
 
 	wp_die( json_encode( $json_data ) );
 }
+
 add_action( 'wp_ajax_give_core_settings_import', 'give_core_settings_import_callback' );
 
 
+/**
+ * Read uploaded JSON file
+ * @return type
+ */
+function get_widget_settings_json( $file_name ) {
+	$upload_dir = give_wp_upload_dir();
+	$file_path  = $upload_dir . '/' . $file_name;
+
+	if ( is_wp_error( $file_path ) || empty( $file_path ) ) {
+		Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide a valid JSON file.', 'give' ) );
+	}
+
+	$file_contents = file_get_contents( $file_path );
+
+	return $file_contents;
+}
+
+function give_wp_upload_dir() {
+	$wp_upload_dir = wp_upload_dir();
+
+	return ( ! empty( $wp_upload_dir['path'] ) ? $wp_upload_dir['path'] : false );
+}
 
 /**
  * Initializes blank slate content if a list table is empty.

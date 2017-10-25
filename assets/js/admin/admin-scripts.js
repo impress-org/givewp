@@ -2431,10 +2431,10 @@ function give_on_core_settings_import_start() {
 				if (response.last == true) {
 					jQuery(progress).data('next', false);
 				}
-				// give_on_core_settings_import_start();
+				give_on_core_settings_import_start();
 			} else {
 				give_setting_edit = false;
-				window.location = response.url;
+				// window.location = response.url;
 			}
 		},
 		error: function () {

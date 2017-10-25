@@ -200,7 +200,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		public function start_import() {
 			$type = ( ! empty( $_GET['type'] ) ? give_clean( $_GET['type'] ) : 'replace' );
 			$file_name = ( ! empty( $_GET['file_name'] ) ? give_clean( $_GET['file_name'] ) : '' );
-			$core_setting = $this->get_widget_settings_json();
+			$core_setting = Give_Import_Core_Settings::get_widget_settings_json( $file_name );
 			$core_setting = (array) json_decode( $core_setting );
 			$total        = count( $core_setting );
 
@@ -424,17 +424,8 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		 * Read uploaded JSON file
 		 * @return type
 		 */
-		public static function get_widget_settings_json() {
-			$upload_dir = Give_Import_Core_Settings::wp_upload_dir();
-			$file_path  = $upload_dir . '/' . give_clean( $_REQUEST['file_name'] );
-
-			if ( is_wp_error( $file_path ) || empty( $file_path ) ) {
-				Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide a valid JSON file.', 'give' ) );
-			}
-
-			$file_contents = file_get_contents( $file_path );
-
-			return $file_contents;
+		public static function get_widget_settings_json( $file_name ) {
+			return get_widget_settings_json( $file_name );
 		}
 
 		/**
@@ -460,21 +451,12 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		 * Add mime type for JSON
 		 *
 		 * @param array $existing_mimes
-		 *
-		 * @return string
 		 */
 		public static function json_upload_mimes( $existing_mimes = array() ) {
 			$existing_mimes['json'] = 'application/json';
 
 			return $existing_mimes;
 		}
-
-		private static function wp_upload_dir() {
-			$wp_upload_dir = wp_upload_dir();
-
-			return ( ! empty( $wp_upload_dir['path'] ) ? $wp_upload_dir['path'] : false );
-		}
-
 	}
 
 	Give_Import_Core_Settings::get_instance()->setup();
