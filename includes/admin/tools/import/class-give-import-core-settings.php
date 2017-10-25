@@ -442,14 +442,6 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		}
 
 		/**
-		 * Read uploaded JSON file
-		 * @return type
-		 */
-		public static function give_get_core_settings_json( $file_name ) {
-			return give_get_core_settings_json( $file_name );
-		}
-
-		/**
 		 * Upload JSON file
 		 * @return boolean
 		 */
