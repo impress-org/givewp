@@ -189,7 +189,59 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		 * @since 1.8.16
 		 */
 		public function import_success() {
+			$success = (bool) ( isset( $_GET['success'] ) ? give_clean( $_GET['success'] ) : false );
+			$undo = (bool) ( isset( $_GET['undo'] ) ? give_clean( $_GET['undo'] ) : false );
+			$query_arg_setting = array(
+				'post_type' => 'give_forms',
+				'page'      => 'give-settings',
+			);
+
+			if ( $undo ) {
+				$success = false;
+			}
+
+			$query_arg_success = array(
+				'post_type' => 'give_forms',
+				'page'      => 'give-tools',
+				'tab'      => 'import',
+				'importer-type'      => 'import_core_setting',
+				'step'      => '1',
+				'undo'      => 'true',
+			);
 			// Imported successfully
+			?>
+			<tr valign="top" class="give-import-dropdown">
+				<th colspan="2">
+					<h2>
+						<?php
+						if ( $success ) {
+							$query_arg_success['undo'] = '1';
+							$query_arg_success['step'] = '3';
+							$query_arg_success['success'] = '1';
+							$text = __( 'Undo Importing', 'give' );
+
+							echo __( 'Core Settings Importing Completed!', 'give' );
+						} else {
+							if ( $undo ) {
+								$host_give_options = get_option( 'give_settings_old', array() );
+								update_option( 'give_settings', $host_give_options );
+								echo __( 'Undo of Core Setting Imported Completed!', 'give' );
+							} else {
+								echo __( 'Failed to import', 'give' );
+							}
+
+							$text = __( 'Importing Again', 'give' );
+						}
+						?>
+					</h2>
+
+					<p>
+						<a class="button button-large button-secondary" href="<?php echo add_query_arg( $query_arg_success, admin_url( 'edit.php' ) ); ?>"><?php echo $text; ?></a>
+						<a class="button button-large button-secondary" href="<?php echo add_query_arg( $query_arg_setting, admin_url( 'edit.php' ) ); ?>"><?php echo __( 'View Setting', 'give' ); ?></a>
+					</p>
+				</th>
+			</tr>
+			<?php
 		}
 
 		/**

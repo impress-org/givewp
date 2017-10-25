@@ -610,6 +610,7 @@ function give_core_settings_import_callback() {
 	$json_data['url']           = give_import_page_url( (array) apply_filters( 'give_import_core_settings_success_url', array(
 		'step'          => ( empty( $json_data['success'] ) ? '1' : '3' ),
 		'importer-type' => 'import_core_setting',
+		'success'       => ( empty( $json_data['success'] ) ? '0' : '1' ),
 	) ) );
 
 	wp_die( json_encode( $json_data ) );
