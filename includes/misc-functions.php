@@ -1976,3 +1976,38 @@ function give_is_zero_based_currency( $currency = '' ) {
 
 	return false;
 }
+
+/**
+ * Get the upload dir path
+ *
+ * @since 1.8.16
+ *
+ * @return string $wp_upload_dir;
+ */
+function give_get_wp_upload_dir() {
+	$wp_upload_dir = wp_upload_dir();
+
+	return ( ! empty( $wp_upload_dir['path'] ) ? $wp_upload_dir['path'] : false );
+}
+
+/**
+ * Get the data from uploaded JSON file
+ *
+ * @since 1.8.16
+ *
+ * @param string $file_name filename of the json file that is being uploaded
+ *
+ * @return array/bool $file_contents File content
+ */
+function give_get_core_settings_json( $file_name ) {
+	$upload_dir = give_wp_upload_dir();
+	$file_path  = $upload_dir . '/' . $file_name;
+
+	if ( is_wp_error( $file_path ) || empty( $file_path ) ) {
+		Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide a valid JSON file.', 'give' ) );
+	}
+
+	$file_contents = file_get_contents( $file_path );
+
+	return $file_contents;
+}

@@ -618,29 +618,6 @@ function give_core_settings_import_callback() {
 add_action( 'wp_ajax_give_core_settings_import', 'give_core_settings_import_callback' );
 
 /**
- * Read uploaded JSON file
- * @return type
- */
-function get_widget_settings_json( $file_name ) {
-	$upload_dir = give_wp_upload_dir();
-	$file_path  = $upload_dir . '/' . $file_name;
-
-	if ( is_wp_error( $file_path ) || empty( $file_path ) ) {
-		Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide a valid JSON file.', 'give' ) );
-	}
-
-	$file_contents = file_get_contents( $file_path );
-
-	return $file_contents;
-}
-
-function give_wp_upload_dir() {
-	$wp_upload_dir = wp_upload_dir();
-
-	return ( ! empty( $wp_upload_dir['path'] ) ? $wp_upload_dir['path'] : false );
-}
-
-/**
  * Initializes blank slate content if a list table is empty.
  *
  * @since 1.8.13
