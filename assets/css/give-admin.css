@@ -2481,9 +2481,6 @@ input.give-price-field {
     float: left;
     margin: 0; }
 
-.give_forms_page_give-donors .tablenav.top {
-  clear: none; }
-
 #give-donor-card-wrapper {
   margin-left: -1px;
   z-index: 2;
