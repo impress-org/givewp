@@ -128,7 +128,11 @@ function give_edit_donor( $args ) {
 		wp_die();
 	}
 
-	return $output;
+	if ( $output['success'] ) {
+		wp_redirect( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor_id . '&give-message=profile-updated' ) );
+	}
+
+	exit;
 
 }
 
