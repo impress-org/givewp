@@ -271,7 +271,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 */
 	public function get_bulk_actions() {
 		$actions = array(
-			'delete'    => 'Delete',
+			'delete' => 'Delete',
 		);
 		return $actions;
 	}
@@ -301,9 +301,13 @@ class Give_Donor_List_Table extends WP_List_Table {
 			// Detect when a bulk action is being triggered.
 			switch ( $this->current_action() ) {
 
-				case'delete':
+				case 'delete':
 					$args = array(
-						'customer_id' => $id,
+						'_wpnonce'                  => wp_create_nonce( 'delete-donor' ),
+						'customer_id'               => $id,
+						'give-donor-delete-confirm' => true,
+						'give-donor-delete-records' => true,
+						'redirect'                  => false,
 					);
 					give_donor_delete( $args );
 					break;
