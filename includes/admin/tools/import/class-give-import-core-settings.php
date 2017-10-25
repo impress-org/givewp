@@ -35,9 +35,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		/**
 		 * Instance.
 		 *
-		 * @since
-		 * @access private
-		 * @var
+		 * @since 1.8.16
 		 */
 		static private $instance;
 
@@ -53,7 +51,8 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		/**
 		 * Singleton pattern.
 		 *
-		 * @since
+		 * @since 1.8.16
+		 *
 		 * @access private
 		 */
 		private function __construct() {
@@ -62,7 +61,8 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		/**
 		 * Get instance.
 		 *
-		 * @since
+		 * @since 1.8.16
+		 *
 		 * @access public
 		 *
 		 * @return static
@@ -142,14 +142,13 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		public function submit() {
 			wp_nonce_field( 'give-save-settings', '_give-save-settings' );
 			?>
-			<input type="hidden" class="import-step" id="import-step" name="step"
-			       value="<?php echo $this->get_step(); ?>"/>
+			<input type="hidden" class="import-step" id="import-step" name="step" value="<?php echo $this->get_step(); ?>"/>
 			<input type="hidden" class="importer-type" value="<?php echo $this->importer_type; ?>"/>
 			<?php
 		}
 
 		/**
-		 * Print the HTML for importer.
+		 * Print the HTML for core setting importer.
 		 *
 		 * @since 1.8.16
 		 */
@@ -184,11 +183,13 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		}
 
 		/**
-		 * Show success notice
+		 * Show message after the Core Settings Imported
 		 *
 		 * @since 1.8.16
 		 */
 		public function import_success() {
+			// Imported successfully
+
 			$success = (bool) ( isset( $_GET['success'] ) ? give_clean( $_GET['success'] ) : false );
 			$undo = (bool) ( isset( $_GET['undo'] ) ? give_clean( $_GET['undo'] ) : false );
 			$query_arg_setting = array(
@@ -208,33 +209,28 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 				'step'      => '1',
 				'undo'      => 'true',
 			);
-			// Imported successfully
+
+			$title = __( 'Core Settings Importing Completed!', 'give' );
+			if ( $success ) {
+				$query_arg_success['undo'] = '1';
+				$query_arg_success['step'] = '3';
+				$query_arg_success['success'] = '1';
+				$text = __( 'Undo Importing', 'give' );
+			} else {
+				if ( $undo ) {
+					$host_give_options = get_option( 'give_settings_old', array() );
+					update_option( 'give_settings', $host_give_options );
+					$title = __( 'Undo of Core Setting Imported Completed!', 'give' );
+				} else {
+					$title = __( 'Failed to import', 'give' );
+				}
+
+				$text = __( 'Importing Again', 'give' );
+			}
 			?>
 			<tr valign="top" class="give-import-dropdown">
 				<th colspan="2">
-					<h2>
-						<?php
-						if ( $success ) {
-							$query_arg_success['undo'] = '1';
-							$query_arg_success['step'] = '3';
-							$query_arg_success['success'] = '1';
-							$text = __( 'Undo Importing', 'give' );
-
-							echo __( 'Core Settings Importing Completed!', 'give' );
-						} else {
-							if ( $undo ) {
-								$host_give_options = get_option( 'give_settings_old', array() );
-								update_option( 'give_settings', $host_give_options );
-								echo __( 'Undo of Core Setting Imported Completed!', 'give' );
-							} else {
-								echo __( 'Failed to import', 'give' );
-							}
-
-							$text = __( 'Importing Again', 'give' );
-						}
-						?>
-					</h2>
-
+					<h2><?php echo $title; ?></h2>
 					<p>
 						<a class="button button-large button-secondary" href="<?php echo add_query_arg( $query_arg_success, admin_url( 'edit.php' ) ); ?>"><?php echo $text; ?></a>
 						<a class="button button-large button-secondary" href="<?php echo add_query_arg( $query_arg_setting, admin_url( 'edit.php' ) ); ?>"><?php echo __( 'View Setting', 'give' ); ?></a>
@@ -449,8 +445,8 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		 * Read uploaded JSON file
 		 * @return type
 		 */
-		public static function get_widget_settings_json( $file_name ) {
-			return get_widget_settings_json( $file_name );
+		public static function give_get_core_settings_json( $file_name ) {
+			return give_get_core_settings_json( $file_name );
 		}
 
 		/**
