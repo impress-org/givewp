@@ -696,7 +696,7 @@ function __give_ajax_donor_manage_addresses() {
 		case 'add':
 			if ( ! $donor->add_address( "{$address_type}[]", $form_data ) ) {
 				wp_send_json_error( array(
-						'error' => 4,
+						'error' => 1,
 						'error_msg' => wp_sprintf(
 							'<div class="notice notice-error"><p>%s</p></div>',
 							__( 'Error: could not able to save address. check if address already exist or not otherwise please try after sometime.', 'give' )
@@ -734,7 +734,7 @@ function __give_ajax_donor_manage_addresses() {
 		case 'remove':
 			if ( ! $donor->remove_address( $response_data['id'] ) ) {
 				wp_send_json_error( array(
-						'error' => 5,
+						'error' => 2,
 						'error_msg' => wp_sprintf(
 							'<div class="notice notice-error"><p>%s</p></div>',
 							__( 'Error: could not able to delete address. please try after sometime.', 'give' )
@@ -748,7 +748,7 @@ function __give_ajax_donor_manage_addresses() {
 		case 'update':
 			if ( ! $donor->update_address( $response_data['id'], $form_data ) ) {
 				wp_send_json_error( array(
-						'error' => 6,
+						'error' => 3,
 						'error_msg' => wp_sprintf(
 							'<div class="notice notice-error"><p>%s</p></div>',
 							__( 'Error: could not able to update address. check if address already exist or not otherwise please try after sometime.', 'give' )
