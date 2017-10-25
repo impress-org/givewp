@@ -362,6 +362,15 @@ function _give_register_admin_notices() {
 						'show'        => true,
 					) );
 					break;
+
+				case 'profile-updated' :
+					Give()->notices->register_notice( array(
+						'id'          => 'give-donor-profile-updated',
+						'type'        => 'updated',
+						'description' => __( 'Donor information updated successfully.', 'give' ),
+						'show'        => true,
+					) );
+					break;
 			}
 		}
 	}
