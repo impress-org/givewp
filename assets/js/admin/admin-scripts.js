@@ -2384,19 +2384,18 @@ function get_url_params() {
 	return vars;
 }
 
-
 /**
- * Run when user click on upload CSV.
+ * Run when user click on submit button.
  *
  * @since 1.8.16
  */
 function give_on_core_settings_import_start() {
-	var $form = jQuery('form.tools-setting-page-import');
-	var progress = $form.find('.give-progress');
+	var $form = jQuery( 'form.tools-setting-page-import' );
+	var progress = $form.find( '.give-progress' );
 
 	give_setting_edit = true;
 
-	jQuery.ajax({
+	jQuery.ajax( {
 		type: 'POST',
 		url: ajaxurl,
 		data: {
@@ -2404,20 +2403,20 @@ function give_on_core_settings_import_start() {
 			fields: $form.serialize()
 		},
 		dataType: 'json',
-		success: function (response) {
+		success: function ( response ) {
 			give_setting_edit = false;
 			if ( true === response.success ) {
 				jQuery( progress ).find( 'div' ).width( response.percentage + '%' );
-				window.location = response.url;
 			} else {
-				alert( 'failed' );
+				alert( give_vars.error_message );
 			}
+			window.location = response.url;
 		},
 		error: function () {
 			give_setting_edit = false;
-			alert(give_vars.error_message);
+			alert( give_vars.error_message );
 		}
-	});
+	} );
 }
 
 /**
