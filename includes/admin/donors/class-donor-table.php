@@ -341,6 +341,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 */
 	protected function display_tablenav( $which ) {
 		if ( 'top' === $which ) {
+			$this->search_box( __( 'Search Donors', 'give' ), 'give-donors' );
 			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
 		}
 		?>
@@ -348,13 +349,6 @@ class Give_Donor_List_Table extends WP_List_Table {
 			<?php if ( $this->has_items() ): ?>
 				<div class="alignleft actions bulkactions">
 					<?php $this->bulk_actions( $which ); ?>
-				</div>
-				<div class="alignleft actions">
-					<?php
-					if( 'top' === $which ) {
-						$this->search_box( __( 'Search Donors', 'give' ), 'give-donors' );
-					}
-					?>
 				</div>
 			<?php endif;
 			$this->extra_tablenav( $which );
