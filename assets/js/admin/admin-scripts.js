@@ -2391,51 +2391,21 @@ function get_url_params() {
  * @since 1.8.16
  */
 function give_on_core_settings_import_start() {
+	alert( 'test1' );
 	var $form = jQuery('form.tools-setting-page-import');
 
 	give_setting_edit = true;
-
-	var progress = $form.find('.give-progress');
-
-	var total_ajax = jQuery(progress).data('total_ajax'),
-		current = jQuery(progress).data('current'),
-		start = jQuery(progress).data('start'),
-		end = jQuery(progress).data('end'),
-		next = jQuery(progress).data('next'),
-		total = jQuery(progress).data('total'),
-		per_page = jQuery(progress).data('per_page');
 
 	jQuery.ajax({
 		type: 'POST',
 		url: ajaxurl,
 		data: {
 			action: give_vars.core_settings_import,
-			total_ajax: total_ajax,
-			current: current,
-			start: start,
-			end: end,
-			next: next,
-			total: total,
-			per_page: per_page,
 			fields: $form.serialize()
 		},
 		dataType: 'json',
 		success: function (response) {
-			jQuery(progress).data('current', response.current);
-			jQuery(progress).find('div').width(response.percentage + '%');
-
-			if (response.next == true) {
-				jQuery(progress).data('start', response.start);
-				jQuery(progress).data('end', response.end);
-
-				if (response.last == true) {
-					jQuery(progress).data('next', false);
-				}
-				give_on_core_settings_import_start();
-			} else {
-				give_setting_edit = false;
-				// window.location = response.url;
-			}
+			console.log( response );
 		},
 		error: function () {
 			give_setting_edit = false;

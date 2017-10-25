@@ -200,25 +200,6 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		public function start_import() {
 			$type = ( ! empty( $_GET['type'] ) ? give_clean( $_GET['type'] ) : 'replace' );
 			$file_name = ( ! empty( $_GET['file_name'] ) ? give_clean( $_GET['file_name'] ) : '' );
-			$core_setting = Give_Import_Core_Settings::get_widget_settings_json( $file_name );
-			$core_setting = (array) json_decode( $core_setting );
-			$total        = count( $core_setting );
-
-			// Reset the donation form report.
-			give_import_donation_report_reset();
-
-			$index_start = 1;
-			$index_end   = 1;
-			$next        = true;
-			if ( self::$per_page < $total ) {
-				$total_ajax = ceil( $total / self::$per_page );
-				$index_end  = self::$per_page;
-			} else {
-				$total_ajax = 1;
-				$index_end  = $total;
-				$next       = false;
-			}
-			$current_percentage = 100 / ( $total_ajax + 1 );
 
 			?>
 			<tr valign="top" class="give-import-dropdown">
@@ -230,19 +211,11 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 
 			<tr valign="top" class="give-import-dropdown">
 				<th colspan="2">
-					<span class="spinner is-active"></span>
-					<div class="give-progress"
-					     data-current="1"
-					     data-total_ajax="<?php echo $total_ajax; ?>"
-					     data-start="<?php echo $index_start; ?>"
-					     data-end="<?php echo $index_end; ?>"
-					     data-next="<?php echo $next; ?>"
-					     data-total="<?php echo $total; ?>"
-					     data-per_page="<?php echo self::$per_page; ?>">
-
-						<div style="width: <?php echo $current_percentage; ?>%"></div>
+					<div class="give-progress">
+						<div style="width: 50%"></div>
 					</div>
-					<input type="hidden" value="3" name="step">
+					<span class="spinner is-active"></span>
+					<input type="hidden" value="2" name="step">
 					<input type="hidden" value="<?php echo $type; ?>" name="type">
 					<input type="hidden" value="<?php echo $file_name; ?>" name="file_name">
 				</th>

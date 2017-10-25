@@ -543,75 +543,57 @@ add_action( 'wp_ajax_give_donation_import', 'give_donation_import_callback' );
 
 
 function give_core_settings_import_callback() {
-	$ignore_fields = array(
-		'success_page',
-		'failure_page',
-		'history_page',
-		'featured_image_size',
-		'email_logo',
-	);
-	$current    = absint( $_REQUEST['current'] );
-	$total_ajax = absint( $_REQUEST['total_ajax'] );
-	$start      = absint( $_REQUEST['start'] );
-	$end        = absint( $_REQUEST['end'] );
-	$next       = absint( $_REQUEST['next'] );
-	$total      = absint( $_REQUEST['total'] );
-	$per_page   = absint( $_REQUEST['per_page'] );
 	$fields         = isset( $_POST['fields'] ) ? $_POST['fields'] : null;
+	parse_str( $fields, $fields );
 
-	parse_str( $fields );
-	$host_give_options = (array) get_option( 'give_settings', array() );
+	$file_name = $fields['file_name'];
+	$type = give_clean( $fields['type'] );
 
-	$core_setting = get_widget_settings_json( $file_name );
-	$core_setting = (array) json_decode( $core_setting );
+	$json_string = get_widget_settings_json( $file_name );
+	$json_to_array     = json_decode( $json_string, true );
+	$host_give_options = get_option( 'give_settings', array() );
+	update_option( 'give_settings_old', $host_give_options );
 
-	if ( 1 === (int) $current ) {
-		update_option( 'give_settings_old', $host_give_options );
-		if ( 'replace' === $type ) {
-//			delete_option( 'give_settings' );
-			$host_give_options = '';
+	if ( 'merge' === $type ) {
+		$json_to_array['success_page'] = ! empty( $host_give_options['success_page'] ) ? $host_give_options['success_page'] : '';
+		$json_to_array['failure_page'] = ! empty( $host_give_options['failure_page'] ) ? $host_give_options['failure_page'] : '';
+		$json_to_array['history_page'] = ! empty( $host_give_options['history_page'] ) ? $host_give_options['history_page'] : '';
+
+		// Featured image sizes import under Display Options > Post Types > Featured Image Size.
+		if ( 'enabled' === $json_to_array['form_featured_img'] ) {
+			$images_sizes = get_intermediate_image_sizes();
+
+			if ( ! in_array( $json_to_array['featured_image_size'], $images_sizes ) ) {
+				$json_to_array['featured_image_size'] = $host_give_options['featured_image_size'];
+			}
 		}
-	}
 
-	$count = 0;
-	foreach ( $core_setting as $key => $value ) {
-		$count++;
-		if ( $count >= $start && $count <= $end ) {
-			if ( ! array_key_exists( $key, $ignore_fields ) ) {
-				$host_give_options[ $key ] = $value;
+		// Emails > Email Settings > Logo.
+		if ( array_key_exists( 'email_logo', $json_to_array ) && ! empty( $json_to_array['email_logo'] ) ) {
+
+			// Need to require these files.
+			if ( ! function_exists( 'media_handle_upload' ) ) {
+				require_once( ABSPATH . 'wp-admin/includes/image.php' );
+				require_once( ABSPATH . 'wp-admin/includes/file.php' );
+				require_once( ABSPATH . 'wp-admin/includes/media.php' );
+			}
+
+			$url = $json_to_array['email_logo'];
+			$tmp = download_url( $url );
+
+			$new_url = media_sideload_image( $url, 0, null, 'src' );
+
+			if ( ! is_wp_error( $new_url ) ) {
+				$json_to_array['email_logo'] = $new_url;
+			} else {
+				$json_to_array['email_logo'] = $host_give_options['email_logo'];
 			}
 		}
 	}
 
-	update_option( 'give_settings_new', $host_give_options );
+	update_option( 'give_settings', $json_to_array );
 
-	$current++;
-
-	if ( $current === $total_ajax ) {
-		$next      = false;
-		$index_end = $total;
-		$last      = true;
-	} else {
-		$next = true;
-	}
-
-	$start = $start + $per_page;
-	$end   = $per_page + ( $start - 1 );
-
-	$json_data['current']    = $current;
-	$json_data['total_ajax'] = $total_ajax;
-	$json_data['start']      = $start;
-	$json_data['end']        = $end;
-	$json_data['next']       = $next;
-	$json_data['total']      = $total;
-	$json_data['per_page']   = $per_page;
-	$json_data['start']      = $start;
-	$json_data['end']        = $end;
-
-	$percentage              = ( 100 / ( $total_ajax ) ) * $current;
-	$json_data['percentage'] = $percentage;
-
-	wp_die( json_encode( $json_data ) );
+	wp_die( json_encode( $fields ) );
 }
 
 add_action( 'wp_ajax_give_core_settings_import', 'give_core_settings_import_callback' );
