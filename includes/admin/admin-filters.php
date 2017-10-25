@@ -101,6 +101,18 @@ function __give_import_delimiter_set_callback( $delimiter ) {
 
 add_filter( 'give_import_delimiter_set', '__give_import_delimiter_set_callback', 10 );
 
+/**
+ * Give unset the page id from the core setting data from the json files.
+ *
+ * @since 1.8.16
+ *
+ * @param array $json_to_array Data from json file
+ * @param array $host_give_options Setting from the Options table
+ * @param string $type
+ * @param array $fields
+ *
+ * @return array $json_to_array
+ */
 function give_import_core_settings_merge_pages( $json_to_array, $host_give_options, $type, $fields ) {
 	if ( 'merge' === $type ) {
 		unset( $json_to_array['success_page'] );
@@ -113,6 +125,18 @@ function give_import_core_settings_merge_pages( $json_to_array, $host_give_optio
 
 add_filter( 'give_import_core_settings_data', 'give_import_core_settings_merge_pages', 11, 4 );
 
+/**
+ * Give check the image size from the core setting data from the json files.
+ *
+ * @since 1.8.16
+ *
+ * @param $json_to_array
+ * @param $host_give_options
+ * @param $type
+ * @param $fields
+ *
+ * @return array $json_to_array
+ */
 function give_import_core_settings_merge_image_size( $json_to_array, $host_give_options, $type, $fields ) {
 	if ( 'merge' === $type ) {
 		// Featured image sizes import under Display Options > Post Types > Featured Image Size.
@@ -120,7 +144,7 @@ function give_import_core_settings_merge_image_size( $json_to_array, $host_give_
 			$images_sizes = get_intermediate_image_sizes();
 
 			if ( ! in_array( $json_to_array['featured_image_size'], $images_sizes ) ) {
-				 unset( $json_to_array['featured_image_size'] );
+				unset( $json_to_array['featured_image_size'] );
 			}
 		}
 	}
@@ -130,6 +154,18 @@ function give_import_core_settings_merge_image_size( $json_to_array, $host_give_
 
 add_filter( 'give_import_core_settings_data', 'give_import_core_settings_merge_image_size', 12, 4 );
 
+/**
+ * Give upload the image logo from the core setting data from the json files.
+ *
+ * @since 1.8.16
+ *
+ * @param $json_to_array
+ * @param $host_give_options
+ * @param $type
+ * @param $fields
+ *
+ * @return array $json_to_array
+ */
 function give_import_core_settings_merge_upload_image( $json_to_array, $host_give_options, $type, $fields ) {
 	if ( 'merge' === $type ) {
 		// Emails > Email Settings > Logo.
@@ -142,12 +178,12 @@ function give_import_core_settings_merge_upload_image( $json_to_array, $host_giv
 				require_once( ABSPATH . 'wp-admin/includes/media.php' );
 			}
 
-			$url = $json_to_array['email_logo'];
+			$url     = $json_to_array['email_logo'];
 			$new_url = media_sideload_image( $url, 0, null, 'src' );
 			if ( ! is_wp_error( $new_url ) ) {
 				$json_to_array['email_logo'] = $new_url;
 			} else {
-				 unset( $json_to_array['email_logo'] );
+				unset( $json_to_array['email_logo'] );
 			}
 		}
 	}
@@ -157,6 +193,18 @@ function give_import_core_settings_merge_upload_image( $json_to_array, $host_giv
 
 add_filter( 'give_import_core_settings_data', 'give_import_core_settings_merge_upload_image', 13, 4 );
 
+/**
+ * Give merge the json data and setting data.
+ *
+ * @since 1.8.16
+ *
+ * @param $json_to_array
+ * @param $host_give_options
+ * @param $type
+ * @param $fields
+ *
+ * @return array $json_to_array
+ */
 function give_import_core_settings_merge_data( $json_to_array, $host_give_options, $type, $fields ) {
 	if ( 'merge' === $type ) {
 		$json_to_array_merge = array_merge( $host_give_options, $json_to_array );

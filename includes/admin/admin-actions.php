@@ -606,7 +606,17 @@ function give_core_settings_import_callback() {
 	}
 
 	$json_data['percentage'] = 100;
-	$json_data['url']        = give_import_page_url( (array) apply_filters( 'give_import_core_settings_success_url', array(
+
+	/**
+	 * Filter to Modify core import setting page url
+	 *
+	 * @access public
+	 *
+	 * @since 1.8.16
+	 *
+	 * @return array $url
+	 */
+	$json_data['url'] = give_import_page_url( (array) apply_filters( 'give_import_core_settings_success_url', array(
 		'step'          => ( empty( $json_data['success'] ) ? '1' : '3' ),
 		'importer-type' => 'import_core_setting',
 		'success'       => ( empty( $json_data['success'] ) ? '0' : '1' ),
