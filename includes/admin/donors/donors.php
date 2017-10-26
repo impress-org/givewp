@@ -559,6 +559,14 @@ function give_donor_view( $donor ) {
 
 									</td>
 								</tr>
+								<tr>
+									<th class="col">
+										<label for="city"><?php esc_html_e( 'City:', 'give' ); ?></label>
+									</th>
+									<td>
+										<input id="city" type="text" name="city" value="" class="medium-text"/>
+									</td>
+								</tr>
 								<tr class="give-field-wrap">
 									<th class="col">
 										<label for="state"><?php esc_html_e( 'State / Province / County:', 'give' ); ?></label>
@@ -575,14 +583,6 @@ function give_donor_view( $donor ) {
 											'data'             => array( 'search-type' => 'no_ajax' ),
 										) );
 										?>
-									</td>
-								</tr>
-								<tr>
-									<th class="col">
-										<label for="city"><?php esc_html_e( 'City:', 'give' ); ?></label>
-									</th>
-									<td>
-										<input id="city" type="text" name="city" value="" class="medium-text"/>
 									</td>
 								</tr>
 								<tr>
