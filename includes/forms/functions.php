@@ -256,10 +256,28 @@ function give_get_success_page_url( $query_string = null ) {
  */
 function give_get_failed_transaction_uri( $extras = false ) {
 	$give_options = give_get_settings();
+	$url          = '';
 
-	$uri = ! empty( $give_options['failure_page'] ) ? trailingslashit( get_permalink( $give_options['failure_page'] ) ) : home_url();
+	// Remove question mark.
+	if ( 0 === strpos( $extras, '?' ) ) {
+		$extras = substr( $extras, 1 );
+	}
+
+	$extras_args = wp_parse_args( $extras );
+
+	// Set nonce if payment id exist in extra params.
+	if ( array_key_exists( 'payment-id', $extras_args ) ) {
+		$extras_args['_wpnonce'] = wp_create_nonce( "give-failed-donation-{$extras_args['payment-id']}" );
+		$extras                  = http_build_query( $extras_args );
+	}
+
+	$uri = ! empty( $give_options['failure_page'] ) ?
+		trailingslashit( get_permalink( $give_options['failure_page'] ) ) :
+		home_url();
+
+
 	if ( $extras ) {
-		$uri .= $extras;
+		$uri .= "?{$extras}";
 	}
 
 	return apply_filters( 'give_get_failed_transaction_uri', $uri );
