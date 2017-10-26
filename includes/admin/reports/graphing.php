@@ -56,7 +56,7 @@ function give_reports_graph() {
 
 	if ( $dates['range'] == 'today' || $dates['range'] == 'yesterday' ) {
 		// Hour by hour
-		$hour  = 1;
+		$hour  = 0;
 		$month = date( 'n', current_time( 'timestamp' ) );
 		while ( $hour <= 23 ) :
 
@@ -67,6 +67,7 @@ function give_reports_graph() {
 			$earnings_totals += $earnings;
 
 			$date            = mktime( $hour, 0, 0, $month, $dates['day'], $dates['year'] ) * 1000;
+
 			$sales_data[]    = array( $date, $sales );
 			$earnings_data[] = array( $date, $earnings );
 
@@ -296,7 +297,7 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 
 		// Hour by hour
 		$month  = $dates['m_start'];
-		$hour   = 1;
+		$hour   = 0;
 		$minute = 0;
 		$second = 0;
 		while ( $hour <= 23 ) :
@@ -634,9 +635,11 @@ function give_get_report_dates() {
 
 		case 'today' :
 			$dates['day']     = date( 'd', $current_time );
+			$dates['day_end']     = date( 'd', $current_time );
 			$dates['m_start'] = date( 'n', $current_time );
 			$dates['m_end']   = date( 'n', $current_time );
 			$dates['year']    = date( 'Y', $current_time );
+			$dates['year_end']    = date( 'Y', $current_time );
 			break;
 
 		case 'yesterday' :
