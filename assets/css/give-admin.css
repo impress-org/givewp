@@ -2478,12 +2478,7 @@ input.give-price-field {
 .give_forms_page_give-donors #give-donors-filter {
   position: relative; }
   .give_forms_page_give-donors #give-donors-filter p.search-box {
-    float: left;
     margin: 0; }
-
-.give_forms_page_give-donors .tablenav.top {
-  float: right;
-  clear: none; }
 
 #give-donor-card-wrapper {
   margin-left: -1px;
