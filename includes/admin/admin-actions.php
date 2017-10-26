@@ -131,7 +131,6 @@ function _give_register_admin_notices() {
 	if (
 		isset( $_GET['action'] ) &&
 		! empty( $_GET['action'] )
-
 	) {
 
 		// Add payment bulk notice.
