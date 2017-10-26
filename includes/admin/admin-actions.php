@@ -194,8 +194,8 @@ function _give_register_admin_notices() {
 						'type'        => 'updated',
 						'description' => sprintf(
 							_n(
-								'Successfully deleted one donor.',
-								'Successfully deleted %d donors.',
+								'Successfully deleted one donor and associated records.',
+								'Successfully deleted %d donors and associated records.',
 								$donor_count,
 								'give'
 							),
