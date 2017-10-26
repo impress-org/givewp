@@ -1532,6 +1532,8 @@ var give_setting_edit = false;
 										break;
 								}
 
+								$allAddressParent.prepend(response.data.success_msg);
+
 							} else {
 								$allAddressParent.prepend(response.data.error_msg);
 							}

@@ -670,7 +670,7 @@ function __give_ajax_donor_manage_addresses() {
 				'error' => 1,
 				'error_msg' => wp_sprintf(
 					'<div class="notice notice-error"><p>%s</p></div>',
-					__( 'Error: Security issue. please try after sometime.', 'give' )
+					__( 'Error: Security issue.', 'give' )
 				)
 			)
 		);
@@ -699,7 +699,7 @@ function __give_ajax_donor_manage_addresses() {
 						'error' => 1,
 						'error_msg' => wp_sprintf(
 							'<div class="notice notice-error"><p>%s</p></div>',
-							__( 'Error: could not able to save address. check if address already exist or not otherwise please try after sometime.', 'give' )
+							__( 'Error: could not able to save address. check if address already exist or not.', 'give' )
 						)
 					)
 				);
@@ -724,6 +724,10 @@ function __give_ajax_donor_manage_addresses() {
 					'index' => $address_index,
 				)
 			);
+			$response_data['success_msg'] = wp_sprintf(
+				'<div class="notice updated"><p>%s</p></div>',
+				__( 'Successfully added a new address to the donor.', 'give' )
+			);
 
 			if( $is_multi_address_type ) {
 				$response_data['id'] = "{$response_data['id']}_{$address_index}";
@@ -737,11 +741,16 @@ function __give_ajax_donor_manage_addresses() {
 						'error' => 2,
 						'error_msg' => wp_sprintf(
 							'<div class="notice notice-error"><p>%s</p></div>',
-							__( 'Error: could not able to delete address. please try after sometime.', 'give' )
+							__( 'Error: could not able to delete address.', 'give' )
 						)
 					)
 				);
 			}
+
+			$response_data['success_msg'] = wp_sprintf(
+				'<div class="notice updated"><p>%s</p></div>',
+				__( 'Successfully removed a address of donor.', 'give' )
+			);
 
 			break;
 
@@ -751,7 +760,7 @@ function __give_ajax_donor_manage_addresses() {
 						'error' => 3,
 						'error_msg' => wp_sprintf(
 							'<div class="notice notice-error"><p>%s</p></div>',
-							__( 'Error: could not able to update address. check if address already exist or not otherwise please try after sometime.', 'give' )
+							__( 'Error: could not able to update address. check if address already exist or not.', 'give' )
 						)
 					)
 				);
@@ -766,6 +775,10 @@ function __give_ajax_donor_manage_addresses() {
 					'id'    => $address_id,
 					'index' => $address_id,
 				)
+			);
+			$response_data['success_msg'] = wp_sprintf(
+				'<div class="notice updated"><p>%s</p></div>',
+				__( 'Successfully updated a address of donor', 'give' )
 			);
 
 			break;
