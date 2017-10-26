@@ -38,7 +38,10 @@ if( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs 
 
 		<?php
 		// Show Admin Page Header.
-		give_page_admin_page_header( $tabs, $current_tab );
+		give_admin_page_title( $tabs, $current_tab );
+
+		// Display notices section
+		give_admin_notices_display();
 
 		// Show messages.
 		self::show_messages();

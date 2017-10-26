@@ -138,25 +138,6 @@ function give_get_admin_page_parent_title() {
 }
 
 /**
- * Display header in give admin submenu sections.
- *
- * @since 1.8.16
- *
- * @param array $tabs
- * @param string $current_tab
- *
- * @return void
- */
-function give_page_admin_page_header( $tabs = array(), $current_tab = '' ) {
-
-	// Get the header title.
-	give_admin_page_title( $tabs, $current_tab );
-
-	// Display notices section
-	give_admin_notices_display();
-}
-
-/**
  * Display title in give admin submenu sections.
  *
  * @since 1.8.16
