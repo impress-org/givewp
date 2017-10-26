@@ -61,10 +61,15 @@ if ( is_email( $email ) && wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
 	// If no errors or only expired token key error - then send email.
 	if ( ! give_get_errors() ) {
 
-		$donor = Give()->donors->get_donor_by( 'email', $email );
-		$payment_ids = explode( ',', $donor->payment_ids );
-
+		$payment_ids   = array();
 		$payment_match = false;
+
+		$donor = Give()->donors->get_donor_by( 'email', $email );
+
+		if( ! empty( $donor->payment_ids ) ) {
+			$payment_ids = explode( ',', $donor->payment_ids );
+		}
+
 		foreach( $payment_ids AS $payment_id ) {
 			$payment = new Give_Payment( $payment_id );
 
