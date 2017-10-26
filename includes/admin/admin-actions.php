@@ -721,7 +721,7 @@ function __give_ajax_donor_manage_addresses() {
 					// We can add only billing address from donor screen.
 					'type'  => 'billing',
 					'id'    => $address_id,
-					'index' => $address_index,
+					'index' => ++$address_index,
 				)
 			);
 			$response_data['success_msg'] = wp_sprintf(

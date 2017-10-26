@@ -500,7 +500,7 @@ function give_donor_view( $donor ) {
 
 								switch ( true ) {
 									case is_array( end( $addresses ) ):
-										$index = 0;
+										$index = 1;
 										foreach ( $addresses as $id => $address ) {
 											echo __give_get_format_address(
 												$address,
