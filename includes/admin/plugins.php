@@ -85,7 +85,7 @@ add_filter( 'plugin_row_meta', 'give_plugin_row_meta', 10, 2 );
  * Get the Parent Page Title in admin section.
  * Based on get_admin_page_title WordPress Function.
  *
- * @since 1.8.15
+ * @since 1.8.16
  *
  * @global string $title
  * @global array $menu
@@ -140,7 +140,7 @@ function give_get_admin_page_parent_title() {
 /**
  * Display header in give admin submenu sections.
  *
- * @since 1.8.15
+ * @since 1.8.16
  *
  * @param array $tabs
  * @param string $current_tab
@@ -159,7 +159,7 @@ function give_page_admin_page_header( $tabs = array(), $current_tab = '' ) {
 /**
  * Display title in give admin submenu sections.
  *
- * @since 1.8.15
+ * @since 1.8.16
  *
  * @param array $tabs
  * @param string $current_tab
@@ -177,7 +177,7 @@ function give_admin_page_title( $tabs = array(), $current_tab = '' ) {
 /**
  * Add wp header end section in give menu sub page.
  *
- * @since 1.8.15
+ * @since 1.8.16
  *
  * @return void
  */
