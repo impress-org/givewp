@@ -2625,7 +2625,7 @@ input.give-price-field {
   min-height: 200px; }
 
 #donor-address-wrapper .all-address .address {
-  min-height: 200px;
+  min-height: 90px;
   border: 1px solid #dad9d9;
   padding: 9px;
   border-radius: 5px;
