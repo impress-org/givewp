@@ -297,7 +297,7 @@ function give_get_default_settings() {
 		'currency'                                    => 'USD',
 		'currency_position'                           => 'before',
 		'session_lifetime'                            => '604800',
-		'email_access'                                => 'disabled',
+		'email_access'                                => 'enabled',
 		'thousands_separator'                         => ',',
 		'decimal_separator'                           => '.',
 		'number_decimals'                             => 2,

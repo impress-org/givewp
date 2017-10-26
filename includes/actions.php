@@ -28,7 +28,7 @@ function give_get_actions() {
 	$_get_action = ! empty( $_GET['give_action'] ) ? $_GET['give_action'] : null;
 
 	// Add backward compatibility to give-action param ( $_GET )
-	if(  empty( $_get_action ) ) {
+	if ( empty( $_get_action ) ) {
 		$_get_action = ! empty( $_GET['give-action'] ) ? $_GET['give-action'] : null;
 	}
 
@@ -62,7 +62,7 @@ function give_post_actions() {
 
 
 	// Add backward compatibility to give-action param ( $_POST ).
-	if(  empty( $_post_action ) ) {
+	if ( empty( $_post_action ) ) {
 		$_post_action = ! empty( $_POST['give-action'] ) ? $_POST['give-action'] : null;
 	}
 
@@ -85,31 +85,34 @@ add_action( 'init', 'give_post_actions' );
  * Connect WordPress user with Donor.
  *
  * @since  1.7
+ *
  * @param  int   $user_id   User ID
  * @param  array $user_data User Data
+ *
  * @return void
  */
-function give_connect_donor_to_wpuser( $user_id, $user_data ){
+function give_connect_donor_to_wpuser( $user_id, $user_data ) {
 	/* @var Give_Donor $donor */
 	$donor = new Give_Donor( $user_data['user_email'] );
 
 	// Validate donor id and check if do nor is already connect to wp user or not.
-	if( $donor->id && ! $donor->user_id ) {
+	if ( $donor->id && ! $donor->user_id ) {
 
 		// Update donor user_id.
-		if( $donor->update( array( 'user_id' => $user_id ) ) ) {
+		if ( $donor->update( array( 'user_id' => $user_id ) ) ) {
 			$donor_note = sprintf( esc_html__( 'WordPress user #%d is connected to #%d', 'give' ), $user_id, $donor->id );
 			$donor->add_note( $donor_note );
 
 			// Update user_id meta in payments.
-			if( ! empty( $donor->payment_ids ) && ( $donations = explode( ',', $donor->payment_ids ) ) ) {
-				foreach ( $donations as $donation  ) {
+			if ( ! empty( $donor->payment_ids ) && ( $donations = explode( ',', $donor->payment_ids ) ) ) {
+				foreach ( $donations as $donation ) {
 					give_update_meta( $donation, '_give_payment_user_id', $user_id );
 				}
 			}
 		}
 	}
 }
+
 add_action( 'give_insert_user', 'give_connect_donor_to_wpuser', 10, 2 );
 
 
@@ -118,29 +121,49 @@ add_action( 'give_insert_user', 'give_connect_donor_to_wpuser', 10, 2 );
  *
  * Note: if location of site changes then run cron to validate licenses
  *
- * @since  1.7
+ * @since   1.7
+ * @updated 1.8.15 - Resolved issue with endless looping because of URL mismatches.
  * @return void
  */
 function give_validate_license_when_site_migrated() {
 	// Store current site address if not already stored.
-	$homeurl = home_url();
-	if( ! get_option( 'give_site_address_before_migrate' ) ) {
+	$home_url_parts              = parse_url( home_url() );
+	$home_url                    = isset( $home_url_parts['host'] ) ? $home_url_parts['host'] : false;
+	$home_url                    .= isset( $home_url_parts['path'] ) ? $home_url_parts['path'] : '';
+	$site_address_before_migrate = get_option( 'give_site_address_before_migrate' );
+
+	// Need $home_url to proceed
+	if ( ! $home_url ) {
+		return;
+	}
+
+	// Save site address
+	if ( ! $site_address_before_migrate ) {
 		// Update site address.
-		update_option( 'give_site_address_before_migrate', $homeurl );
+		update_option( 'give_site_address_before_migrate', $home_url );
 
 		return;
 	}
 
-	if( $homeurl !== get_option( 'give_site_address_before_migrate' ) ) {
+	// Backwards compat. for before when we were storing URL scheme.
+	if ( strpos( $site_address_before_migrate, 'http' ) ) {
+		$site_address_before_migrate = parse_url( $site_address_before_migrate );
+		$site_address_before_migrate = isset( $site_address_before_migrate['host'] ) ? $site_address_before_migrate['host'] : false;
+		// Add path for multisite installs.
+		$site_address_before_migrate .= isset( $site_address_before_migrate['path'] ) ? $site_address_before_migrate['path'] : '';
+	}
+
+	// If the two URLs don't match run CRON.
+	if ( $home_url !== $site_address_before_migrate ) {
 		// Immediately run cron.
-		wp_schedule_single_event( time() , 'give_validate_license_when_site_migrated' );
+		wp_schedule_single_event( time(), 'give_validate_license_when_site_migrated' );
 
 		// Update site address.
-		update_option( 'give_site_address_before_migrate', home_url() );
+		update_option( 'give_site_address_before_migrate', $home_url );
 	}
 
 }
-add_action( 'init', 'give_validate_license_when_site_migrated' );
+
 add_action( 'admin_init', 'give_validate_license_when_site_migrated' );
 
 
@@ -148,11 +171,12 @@ add_action( 'admin_init', 'give_validate_license_when_site_migrated' );
  * Processing after donor batch export complete
  *
  * @since 1.8
+ *
  * @param $data
  */
 function give_donor_batch_export_complete( $data ) {
 	// Remove donor ids cache.
-	if(
+	if (
 		isset( $data['class'] )
 		&& 'Give_Batch_Donors_Export' === $data['class']
 		&& ! empty( $data['forms'] )
@@ -161,7 +185,8 @@ function give_donor_batch_export_complete( $data ) {
 		Give_Cache::delete( Give_Cache::get_key( $data['give_export_option']['query_id'] ) );
 	}
 }
-add_action('give_file_export_complete', 'give_donor_batch_export_complete' );
+
+add_action( 'give_file_export_complete', 'give_donor_batch_export_complete' );
 
 /**
  * Print css for wordpress setting pages.
@@ -172,7 +197,7 @@ function give_admin_quick_css() {
 	/* @var WP_Screen $screen */
 	$screen = get_current_screen();
 
-	if( ! ( $screen instanceof WP_Screen ) ) {
+	if ( ! ( $screen instanceof WP_Screen ) ) {
 		return false;
 	}
 
@@ -180,36 +205,40 @@ function give_admin_quick_css() {
 		case ( 'plugins' === $screen->base || 'plugins-network' === $screen->base ):
 			?>
 			<style>
-				tr.active.update + tr.give-addon-notice-tr td{
-                    box-shadow:none;
-                    -webkit-box-shadow:none;
+				tr.active.update + tr.give-addon-notice-tr td {
+					box-shadow: none;
+					-webkit-box-shadow: none;
 				}
-				tr.active + tr.give-addon-notice-tr td{
-                    position: relative;
-				    top:-1px;
-                }
-				tr.active + tr.give-addon-notice-tr .notice{
-                    margin: 5px 20px 15px 40px;
-                }
+
+				tr.active + tr.give-addon-notice-tr td {
+					position: relative;
+					top: -1px;
+				}
+
+				tr.active + tr.give-addon-notice-tr .notice {
+					margin: 5px 20px 15px 40px;
+				}
 
 				tr.give-addon-notice-tr .dashicons {
-                    color: #f56e28;
-                }
-				tr.give-addon-notice-tr td{
+					color: #f56e28;
+				}
+
+				tr.give-addon-notice-tr td {
 					border-left: 4px solid #00a0d2;
 				}
 
-				tr.give-addon-notice-tr td{
-					padding: 0!important;
+				tr.give-addon-notice-tr td {
+					padding: 0 !important;
 				}
 
-                tr.active.update + tr.give-addon-notice-tr .notice{
+				tr.active.update + tr.give-addon-notice-tr .notice {
 					margin: 5px 20px 5px 40px;
 				}
 			</style>
 			<?php
 	}
 }
+
 add_action( 'admin_head', 'give_admin_quick_css' );
 
 
@@ -244,7 +273,7 @@ function give_set_donation_levels_max_min_amount( $form_id ) {
 
 	// Set Minimum and Maximum amount for Multi Level Donation Forms
 	give_update_meta( $form_id, '_give_levels_minimum_amount', $min_amount ? give_sanitize_amount_for_db( $min_amount ) : 0 );
-	give_update_meta( $form_id, '_give_levels_maximum_amount', $max_amount? give_sanitize_amount_for_db( $max_amount ) : 0 );
+	give_update_meta( $form_id, '_give_levels_maximum_amount', $max_amount ? give_sanitize_amount_for_db( $max_amount ) : 0 );
 }
 
 add_action( 'give_pre_process_give_forms_meta', 'give_set_donation_levels_max_min_amount', 30 );

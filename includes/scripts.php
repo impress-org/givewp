@@ -318,7 +318,7 @@ function give_load_admin_scripts( $hook ) {
 		'one_or_more_option'                => __( 'Choose one or more forms', 'give' ),
 		'currency_sign'                     => give_currency_filter( '' ),
 		'currency_pos'                      => isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before',
-		'currency_decimals'                 => give_currency_decimal_filter( give_get_price_decimals() ),
+		'currency_decimals'                 => give_get_price_decimals(),
 		'batch_export_no_class'             => __( 'You must choose a method.', 'give' ),
 		'batch_export_no_reqs'              => __( 'Required fields not completed.', 'give' ),
 		'reset_stats_warn'                  => __( 'Are you sure you want to reset Give? This process is <strong><em>not reversible</em></strong> and will delete all data regardless of test or live mode. Please be sure you have a recent backup before proceeding.', 'give' ),
@@ -333,9 +333,16 @@ function give_load_admin_scripts( $hook ) {
 		'search_placeholder_donor'          => __( 'Type to search all donors', 'give' ),
 		'search_placeholder_country'        => __( 'Type to search all countries', 'give' ),
 		'search_placeholder_state'          => __( 'Type to search all states/provinces', 'give' ),
-		'bulk_action'                       => array(
+		'donors_bulk_action'                => array(
+			'delete' => array(
+				'zero'     => __( 'You must choose at least one or more donors to delete.', 'give' ),
+				'single'   => __( 'Are you sure you want to permanently delete this donor and associated records?', 'give' ),
+				'multiple' => __( 'Are you sure you want to permanently delete the selected {donor_count} donors and associated records?', 'give' ),
+			),
+		),
+		'donations_bulk_action'             => array(
 			'delete'         => array(
-				'zero'     => __( 'You must choose at least one or more payments to delete.', 'give' ),
+				'zero'     => __( 'You must choose at least one or more donations to delete.', 'give' ),
 				'single'   => __( 'Are you sure you want to permanently delete this donation?', 'give' ),
 				'multiple' => __( 'Are you sure you want to permanently delete the selected {payment_count} donations?', 'give' ),
 			),

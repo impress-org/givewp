@@ -255,7 +255,7 @@ function give_get_admin_notice_emails() {
 	$email_option = give_get_option( 'admin_notice_emails' );
 
 	$emails = ! empty( $email_option ) && strlen( trim( $email_option ) ) > 0 ? $email_option : get_bloginfo( 'admin_email' );
-	$emails = array_map( 'trim', explode( "\n", $emails ) );
+	$emails = give_clean( explode( "\n", $emails ) );
 
 	return apply_filters( 'give_admin_notice_emails', $emails );
 }

@@ -20,16 +20,100 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	}
 
 	/**
+	 * Test function give_get_currency_formatting_settings
+	 *
+	 * @since        1.8.15
+	 *
+	 * @param string $currency_code
+	 * @param array  $expected
+	 *
+	 * @cover        give_get_currency_formatting_settings
+	 * @dataProvider give_get_currency_formatting_settings_provider
+	 */
+	function test_give_get_currency_formatting_settings( $currency_code, $expected ) {
+
+		// Setting.
+		$setting_arr = array( 'currency_position', 'thousands_separator', 'decimal_separator', 'number_decimals' );
+
+
+		/**
+		 * Case 1: Currency
+		 */
+		$currency_settings = give_get_currency_formatting_settings( $currency_code );
+
+		// Match setting.
+		foreach ( $currency_settings as $key => $setting ) {
+			$this->assertArrayHasKey( $key, $currency_settings );
+			$this->assertEquals( $expected[ $key ], $currency_settings[ $key ] );
+		}
+		
+
+		/**
+		 * Cse 2: Payment
+		 */
+		// Create Simple Donation.
+		$donation_id       = Give_Helper_Payment::create_simple_payment(
+			array(
+				'donation' => array(
+					'currency' => $currency_code
+				),
+			)
+		);
+
+		$currency_settings = give_get_currency_formatting_settings( $donation_id );
+
+		// Match setting.
+		foreach ( $currency_settings as $key => $setting ) {
+			$this->assertArrayHasKey( $key, $currency_settings );
+			$this->assertEquals( $expected[ $key ], $currency_settings[ $key ] );
+		}
+	}
+
+	/**
+	 * Data set for give_get_currency_formatting_settings
+	 *
+	 * @since  1.8.15
+	 * @access public
+	 * @return array
+	 */
+	public function give_get_currency_formatting_settings_provider() {
+		$currencies = give_get_currencies( 'all' );
+		$data       = array();
+
+		// Set data.
+		foreach ( $currencies as $code => $currency ) {
+			$data[] = array( $code, $currency['setting'] );
+		}
+
+		return $data;
+	}
+
+
+	/**
 	 * Test function give_get_price_thousand_separator
 	 *
-	 * @since 1.8
+	 * @since        1.8
 	 *
-	 * @cover give_get_price_thousand_separator
+	 * @param  string $currency_code
+	 * @param  array  $expected
+	 *
+	 * @cover        give_get_price_thousand_separator
+	 * @dataProvider give_get_currency_formatting_settings_provider
 	 */
-	function test_give_get_price_thousand_separator() {
-		$output = give_get_price_thousand_separator();
+	function test_give_get_price_thousand_separator( $currency_code, $expected ) {
+		// Create Simple Donation.
+		$donation_id       = Give_Helper_Payment::create_simple_payment(
+			array(
+				'donation' => array(
+					'currency' => $currency_code,
+				),
+			)
+		);
+		$currency_settings = give_get_currency_formatting_settings( $donation_id );
 
-		$this->assertEquals( ',', $output );
+
+		$this->assertArrayHasKey( 'thousands_separator', $currency_settings );
+		$this->assertEquals( $expected['thousands_separator'], $currency_settings['thousands_separator'] );
 	}
 
 	/**
@@ -37,12 +121,26 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 *
 	 * @since 1.8
 	 *
+	 * @param string $currency_code
+	 * @param array  $expected
+	 *
 	 * @cover give_get_price_decimal_separator
+	 * @dataProvider give_get_currency_formatting_settings_provider
 	 */
-	function test_give_get_price_decimal_separator() {
-		$output = give_get_price_decimal_separator();
+	function test_give_get_price_decimal_separator( $currency_code, $expected ) {
+		// Create Simple Donation.
+		$donation_id       = Give_Helper_Payment::create_simple_payment(
+			array(
+				'donation' => array(
+					'currency' => $currency_code,
+				),
+			)
+		);
+		$currency_settings = give_get_currency_formatting_settings( $donation_id );
 
-		$this->assertEquals( '.', $output );
+
+		$this->assertArrayHasKey( 'decimal_separator', $currency_settings );
+		$this->assertEquals( $expected['decimal_separator'], $currency_settings['decimal_separator'] );
 	}
 
 	/**
@@ -126,22 +224,23 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 		}
 
 		$currency = $currency_settings[0];
-		give_update_option( 'number_decimals', 2 );
 
 		switch ( $currency ) {
 			default:
 				// Test 1: without decimal
+				give_update_option( 'number_decimals', 0 );
 				$output = give_format_amount( $amount, array( 'decimal' => false, 'sanitize' => ! is_numeric( $amount ), 'currency' => $currency ) );
-				$this->assertSame( $expected[0], $output, "Testing {$amount} with {$currency} currency and expected {$expected[1]} (without decimal)." );
+				$this->assertSame( $expected[0], $output, "Testing {$amount} with {$currency} currency and expected {$expected[0]} (without decimal)." );
 
 				// Test 2: with decimal(2)
+				give_update_option( 'number_decimals', 2 );
 				$output = give_format_amount( $amount, array( 'sanitize' => ! is_numeric( $amount ), 'currency' => $currency ) );
 				$this->assertSame( $expected[1], $output, "Testing {$amount} with {$currency} currency and expected {$expected[1]} (with decimal {2})." );
 
 				// Test 3: with decimal (more then 2)
 				give_update_option( 'number_decimals', 4 );
 				$output = give_format_amount( $amount, array( 'sanitize' => ! is_numeric( $amount ), 'currency' => $currency ) );
-				$this->assertSame( $expected[2], $output, "Testing {$amount} with {$currency} currency and expected {$expected[1]} (with decimal {4})." );
+				$this->assertSame( $expected[2], $output, "Testing {$amount} with {$currency} currency and expected {$expected[2]} (with decimal {4})." );
 		}
 	}
 
@@ -267,7 +366,7 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 * @dataProvider give_format_decimal_provider
 	 */
 	public function test_give_format_decimal( $number, $expected, $decimal_place = false ) {
-		$output = (string) give_format_decimal( floatval( $number ), $decimal_place );
+		$output = give_format_decimal( $number, $decimal_place );
 
 		$this->assertSame(
 			$expected,
@@ -285,9 +384,11 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	public function give_format_decimal_provider() {
 		return array(
 			array( '10.5678', '10.568', 3 ),
+			array( '10.564', '10.56', 2 ),
 			array( '10.56', '10.56', 2 ),
 			array( '10.567', '10.6', 1 ),
-			array( '10.567', '10.567' ),
+			array( '10.567', '11', 0 ),
+			array( '10.567', '10.57', 2 ), // Default decimal places is two.
 		);
 	}
 
@@ -397,9 +498,9 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 
 		// Default number of decimals.
 		$this->assertEquals(
-			0,
+			3,
 			$output_number_of_decimal,
-			'Some currency only have  0 number of decimal places. For example: IRR, JPY, TWD, HUF'
+			'Some currency only have  0 number of decimal places. For example: JPY, KRW'
 		);
 
 	}

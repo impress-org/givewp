@@ -82,11 +82,11 @@ function give_donors_list() {
 		 */
 		do_action( 'give_donors_table_top' );
 		?>
+
+		<hr class="wp-header-end">
+
 		<form id="give-donors-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors' ); ?>">
-			<?php
-			$donors_table->search_box( __( 'Search Donors', 'give' ), 'give-donors' );
-			$donors_table->display();
-			?>
+			<?php $donors_table->display(); ?>
 			<input type="hidden" name="post_type" value="give_forms" />
 			<input type="hidden" name="page" value="give-donors" />
 			<input type="hidden" name="view" value="donors" />
@@ -164,6 +164,8 @@ function give_render_donor_view( $view, $callbacks ) {
 			?>
 		</h1>
 
+		<hr class="wp-header-end">
+		
 		<?php if ( $donor && $render ) : ?>
 
 			<h2 class="nav-tab-wrapper">
