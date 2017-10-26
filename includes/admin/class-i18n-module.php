@@ -162,65 +162,11 @@ class Give_i18n_Banner {
 		$this->translation_details();
 		$message = $this->promo_message();
 
-		if ( $message ) { ?>
+		if ( $message ) {
+			$this->print_css();
 
-			<style>
-				/* Banner specific styles */
-				div.give-addon-alert.updated {
-					padding: 10px 20px;
-					position: relative;
-					border-color: #66BB6A;
-					overflow: hidden;
-				}
-
-				div.give-addon-alert a {
-					color: #66BB6A;
-				}
-
-				#give-i18n-notice > .give-i18n-icon {
-					overflow: hidden;
-				}
-
-				#give-i18n-notice > .give-i18n-icon .dashicons {
-					width: 110px;
-					height: 110px;
-				}
-
-				#give-i18n-notice > .give-i18n-icon:focus {
-					box-shadow: none;
-				}
-
-				.give-i18n-notice-content {
-					margin: 0 30px 0 125px;
-				}
-
-				div.give-addon-alert .dismiss {
-					position: absolute;
-					right: 20px;
-					height: 100%;
-					top: 50%;
-					margin-top: -10px;
-					outline: none;
-					box-shadow: none;
-					text-decoration: none;
-					color: #AAA;
-				}
-
-				div.give-addon-alert .dismiss:hover {
-					color: #333;
-				}
-
-				/* RTL Styles for banner */
-				body.rtl .give-i18n-notice-content {
-					margin: 0 125px 0 30px;
-				}
-
-				body.rtl div.give-addon-alert .dismiss {
-					left: 20px;
-					right: auto;
-				}
-
-			</style>
+			ob_start();
+			?>
 			<div id="give-i18n-notice" class="give-addon-alert updated give-notice" style="display: none">
 
 				<a href="https://wordpress.org/support/register.php" class="alignleft give-i18n-icon" style="margin:0" target="_blank"><span class="dashicons dashicons-translation"
@@ -237,7 +183,86 @@ class Give_i18n_Banner {
 				</div>
 			</div>
 			<?php
+
+			$notice_html = ob_get_clean();
+
+			// Register notice.
+			Give()->notices->register_notice( array(
+				'id'          => 'give-i18n-notice',
+				'type'        => 'updated',
+				'description_html' => $notice_html,
+				'show'        => true,
+			) );
 		}
+	}
+
+
+	/**
+	 * Output notice css
+	 *
+	 * @since  1.8.16
+	 * @access private
+	 */
+	private function print_css() {
+		?>
+		<style>
+			/* Banner specific styles */
+			div.give-addon-alert.updated {
+				padding: 10px 20px;
+				position: relative;
+				border-color: #66BB6A;
+				overflow: hidden;
+			}
+
+			div.give-addon-alert a {
+				color: #66BB6A;
+			}
+
+			#give-i18n-notice > .give-i18n-icon {
+				overflow: hidden;
+			}
+
+			#give-i18n-notice > .give-i18n-icon .dashicons {
+				width: 110px;
+				height: 110px;
+			}
+
+			#give-i18n-notice > .give-i18n-icon:focus {
+				box-shadow: none;
+			}
+
+			.give-i18n-notice-content {
+				margin: 0 30px 0 125px;
+			}
+
+			div.give-addon-alert .dismiss {
+				position: absolute;
+				right: 20px;
+				height: 100%;
+				top: 50%;
+				margin-top: -10px;
+				outline: none;
+				box-shadow: none;
+				text-decoration: none;
+				color: #AAA;
+			}
+
+			div.give-addon-alert .dismiss:hover {
+				color: #333;
+			}
+
+			/* RTL Styles for banner */
+			body.rtl .give-i18n-notice-content {
+				margin: 0 125px 0 30px;
+			}
+
+			body.rtl div.give-addon-alert .dismiss {
+				left: 20px;
+				right: auto;
+			}
+
+		</style>
+		<?php
 	}
 
 	/**
