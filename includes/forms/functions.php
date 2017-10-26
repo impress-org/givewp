@@ -299,21 +299,29 @@ function give_is_failed_transaction_page() {
 /**
  * Mark payments as Failed when returning to the Failed Donation Page
  *
- * @access      public
- * @since       1.0
- * @return      void
+ * @since  1.0
+ * @since  1.8.16 Add security check
+ *
+ * @return bool
  */
 function give_listen_for_failed_payments() {
 
 	$failed_page = give_get_option( 'failure_page', 0 );
+	$payment_id  = ! empty( $_GET['payment-id'] ) ? absint( $_GET['payment-id'] ) : 0;
+	$nonce       = ! empty( $_GET['_wpnonce'] ) ? give_clean( $_GET['_wpnonce'] ) : false;
 
-	if ( ! empty( $failed_page ) && is_page( $failed_page ) && ! empty( $_GET['payment-id'] ) ) {
-
-		$payment_id = absint( $_GET['payment-id'] );
-		give_update_payment_status( $payment_id, 'failed' );
-
+	// Bailout.
+	if ( ! $failed_page || ! is_page( $failed_page ) || ! $payment_id || ! $nonce ) {
+		return false;
 	}
 
+	// Security check.
+	if ( ! wp_verify_nonce( $nonce, "give-failed-donation-{$payment_id}" ) ) {
+		wp_die( __( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ) );
+	}
+
+	// Set payment status to failure
+	give_update_payment_status( $payment_id, 'failed' );
 }
 
 add_action( 'template_redirect', 'give_listen_for_failed_payments' );
