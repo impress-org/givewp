@@ -64,7 +64,7 @@ function __give_get_format_address( $address, $address_args = array() ) {
 		( ! empty( $address['country'] ) ? '<br>' : '' )
 	);
 	$address_html .= sprintf(
-		'<span data-address-type="country">%s</span>',
+		'<span data-address-type="country">%s</span><br>',
 		$address['country']
 	);
 
