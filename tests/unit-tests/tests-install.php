@@ -40,7 +40,7 @@ class Tests_Activation extends Give_Unit_Test_Case {
 		$this->assertEquals( '604800', $give_options['session_lifetime'] );
 
 		$this->assertArrayHasKey( 'email_access', $give_options );
-		$this->assertEquals( 'disabled', $give_options['email_access'] );
+		$this->assertEquals( 'enabled', $give_options['email_access'] );
 
 		$this->assertArrayHasKey( 'thousands_separator', $give_options );
 		$this->assertEquals( ',', $give_options['thousands_separator'] );
