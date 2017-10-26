@@ -515,18 +515,6 @@ function give_donor_view( $donor ) {
 							}
 						endif;
 						?>
-						<?php
-						/**
-						 * Fires in donor profile screen, in the address list.
-						 *
-						 * Allows you to add more list items to the stats list.
-						 *
-						 * @since 1.0
-						 *
-						 * @param Give_Donor $donor The donor object being displayed.
-						 */
-						do_action( 'give_donor_address_list', $donor );
-						?>
 					</div>
 				</div>
 
