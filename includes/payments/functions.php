@@ -726,7 +726,7 @@ function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour
 		$args['day'] = $day;
 	}
 
-	if ( ! empty( $hour ) ) {
+	if ( isset( $hour ) ) {
 		$args['hour'] = $hour;
 	}
 
@@ -801,7 +801,7 @@ function give_get_sales_by_date( $day = null, $month_num = null, $year = null, $
 		$args['day'] = $day;
 	}
 
-	if ( ! empty( $hour ) ) {
+	if ( isset( $hour ) ) {
 		$args['hour'] = $hour;
 	}
 
