@@ -127,50 +127,85 @@ function _give_register_admin_notices() {
 		return;
 	}
 
-	// Add payment bulk notice.
+	// Bulk action notices.
 	if (
-		current_user_can( 'edit_give_payments' )
-		&& isset( $_GET['action'] )
-		&& ! empty( $_GET['action'] )
-		&& isset( $_GET['payment'] )
-		&& ! empty( $_GET['payment'] )
+		isset( $_GET['action'] ) &&
+		! empty( $_GET['action'] )
+
 	) {
-		$payment_count = isset( $_GET['payment'] ) ? count( $_GET['payment'] ) : 0;
 
-		switch ( $_GET['action'] ) {
-			case 'delete':
-				Give()->notices->register_notice( array(
-					'id'          => 'bulk_action_delete',
-					'type'        => 'updated',
-					'description' => sprintf(
-						_n(
-							'Successfully deleted one transaction.',
-							'Successfully deleted %d transactions.',
-							$payment_count,
-							'give'
+		// Add payment bulk notice.
+		if (
+			current_user_can( 'edit_give_payments' ) &&
+			isset( $_GET['payment'] ) &&
+			! empty( $_GET['payment'] )
+		) {
+			$payment_count = isset( $_GET['payment'] ) ? count( $_GET['payment'] ) : 0;
+
+			switch ( $_GET['action'] ) {
+				case 'delete':
+					Give()->notices->register_notice( array(
+						'id'          => 'bulk_action_delete',
+						'type'        => 'updated',
+						'description' => sprintf(
+							_n(
+								'Successfully deleted one transaction.',
+								'Successfully deleted %d transactions.',
+								$payment_count,
+								'give'
+							),
+							$payment_count ),
+						'show'        => true,
+					) );
+
+					break;
+
+				case 'resend-receipt':
+					Give()->notices->register_notice( array(
+						'id'          => 'bulk_action_resend_receipt',
+						'type'        => 'updated',
+						'description' => sprintf(
+							_n(
+								'Successfully sent email receipt to one recipient.',
+								'Successfully sent email receipts to %d recipients.',
+								$payment_count,
+								'give'
+							),
+							$payment_count
 						),
-						$payment_count ),
-					'show'        => true,
-				) );
+						'show'        => true,
+					) );
+					break;
+			}
 
-				break;
+			// Add donor bulk notice.
+		} elseif (
+			isset( $_GET['page'] ) &&
+			'give-donors' === $_GET['page'] &&
+			isset( $_GET['donor'] ) &&
+			! empty( $_GET['donor'] )
+		) {
 
-			case 'resend-receipt':
-				Give()->notices->register_notice( array(
-					'id'          => 'bulk_action_resend_receipt',
-					'type'        => 'updated',
-					'description' => sprintf(
-						_n(
-							'Successfully sent email receipt to one recipient.',
-							'Successfully sent email receipts to %d recipients.',
-							$payment_count,
-							'give'
-						),
-						$payment_count
-					),
-					'show'        => true,
-				) );
-				break;
+			$donor_count = isset( $_GET['donor'] ) ? count( $_GET['donor'] ) : 0;
+
+			switch ( $_GET['action'] ) {
+				case 'delete':
+					Give()->notices->register_notice( array(
+						'id'          => 'bulk_action_delete',
+						'type'        => 'updated',
+						'description' => sprintf(
+							_n(
+								'Successfully deleted one donor.',
+								'Successfully deleted %d donors.',
+								$donor_count,
+								'give'
+							),
+							$donor_count ),
+						'show'        => true,
+					) );
+					
+					break;
+			}
 		}
 	}
 
