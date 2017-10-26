@@ -46,10 +46,27 @@ function __give_get_format_address( $address, $address_args = array() ) {
 
 	// Address html.
 	$address_html = '';
-	$address_html .= "<span data-address-type=\"line1\">{$address['line1']}</span><br>";
-	$address_html .= "<span data-address-type=\"line2\">{$address['line2']}</span><br>";
-	$address_html .= "<span data-address-type=\"city\">{$address['city']}</span>, <span data-address-type=\"state\">{$address['state']}</span> <span data-address-type=\"zip\">{$address['zip']}</span><br>";
-	$address_html .= "<span data-address-type=\"country\">{$address['country']}</span><br>";
+	$address_html .= sprintf(
+		'<span data-address-type="line1">%1$s</span>%2$s',
+		$address['line1'],
+		( ! empty( $address['line2'] ) ? '<br>' : '' )
+	);
+	$address_html .= sprintf(
+		'<span data-address-type="line2">%1$s</span>%2$s',
+		$address['line2'],
+		( ! empty( $address['city'] ) ? '<br>' : '' )
+	);
+	$address_html .= sprintf(
+		'<span data-address-type="city">%1$s</span><span data-address-type="state">%2$s</span><span data-address-type="zip">%3$s</span>%4$s',
+		$address['city'],
+		( ! empty( $address['state'] ) ? ", {$address['state']}" : '' ),
+		( ! empty( $address['zip'] ) ? " {$address['zip']}" : '' ),
+		( ! empty( $address['country'] ) ? '<br>' : '' )
+	);
+	$address_html .= sprintf(
+		'<span data-address-type="country">%s</span>',
+		$address['country']
+	);
 
 	// Address action.
 	$address_html .= sprintf(
