@@ -169,7 +169,7 @@ function give_page_admin_page_header( $tabs = array(), $current_tab = '' ) {
 function give_admin_page_title( $tabs = array(), $current_tab = '' ) {
 	?>
 	<h1 class="wp-heading-inline">
-		<?php echo esc_html( wp_sprintf( __( '%s - %s', 'give' ), give_get_admin_page_parent_title(), ( isset( $tabs[ $current_tab ] ) ? $tabs[ $current_tab ] : '' ) ) ); ?>
+		<?php echo esc_html( wp_sprintf( __( '%s > %s', 'give' ), give_get_admin_page_parent_title(), ( isset( $tabs[ $current_tab ] ) ? $tabs[ $current_tab ] : '' ) ) ); ?>
 	</h1>
 	<?php
 }
