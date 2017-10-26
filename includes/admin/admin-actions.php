@@ -423,12 +423,12 @@ function _give_show_test_mode_notice_in_admin_bar( $wp_admin_bar ) {
 		return false;
 	}
 
-	// Add the main siteadmin menu item.
+	// Add the main site admin menu item.
 	$wp_admin_bar->add_menu( array(
 		'id'     => 'give-test-notice',
 		'href'   => admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways' ),
 		'parent' => 'top-secondary',
-		'title'  => esc_html__( 'Give Test Mode Active', 'give' ),
+		'title'  => __( 'Give Test Mode Active', 'give' ),
 		'meta'   => array( 'class' => 'give-test-mode-active' ),
 	) );
 
@@ -445,7 +445,7 @@ add_action( 'admin_bar_menu', '_give_show_test_mode_notice_in_admin_bar', 1000, 
 function give_import_page_link_callback() {
 	?>
 	<a href="<?php echo esc_url( give_import_page_url() ); ?>"
-	   class="page-import-action page-title-action"><?php esc_html_e( 'Import Donations', 'give' ); ?></a>
+	   class="page-import-action page-title-action"><?php _e( 'Import Donations', 'give' ); ?></a>
 
 	<?php
 	// Check if view donation single page only.
@@ -496,11 +496,11 @@ function give_donation_import_callback() {
 		$delimiter = ',';
 	}
 
-	// processing done here.
+	// Processing done here.
 	$raw_data = give_get_donation_data_from_csv( $csv, $start, $end, $delimiter );
 	$raw_key  = maybe_unserialize( $mapto );
 
-	//Prevent normal emails
+	// Prevent normal emails.
 	remove_action( 'give_complete_donation', 'give_trigger_donation_receipt', 999 );
 	remove_action( 'give_insert_user', 'give_new_user_notification', 10 );
 	remove_action( 'give_insert_payment', 'give_payment_save_page_data' );
