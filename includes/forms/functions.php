@@ -256,7 +256,6 @@ function give_get_success_page_url( $query_string = null ) {
  */
 function give_get_failed_transaction_uri( $extras = false ) {
 	$give_options = give_get_settings();
-	$url          = '';
 
 	// Remove question mark.
 	if ( 0 === strpos( $extras, '?' ) ) {
