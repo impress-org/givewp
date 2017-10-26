@@ -1570,7 +1570,7 @@ var give_setting_edit = false;
 		__set_address_form_val: function ($form) {
 			var $addressWrapper = $('#donor-address-wrapper'),
 				$addressForm    = $('.address-form', $addressWrapper),
-				state           = $('[data-address-type="state"]', $form).text().trim();
+				state           = $('[data-address-type="state"]', $form).text().substr(2).trim(); // State will be like ", HR"
 
 			if ($('select[name="country"]', $addressForm).val().trim() !== $('[data-address-type="country"]', $form).text().trim()) {
 				$('select[name="country"]', $addressForm).val($('[data-address-type="country"]', $form).text().trim()).trigger('chosen:updated').change();
