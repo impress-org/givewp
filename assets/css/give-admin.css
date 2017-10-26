@@ -2621,9 +2621,6 @@ input.give-price-field {
   top: 0;
   visibility: hidden; }
 
-#donor-address-wrapper .all-address [class^="give-grid-col"] {
-  min-height: 200px; }
-
 #donor-address-wrapper .all-address .address {
   min-height: 90px;
   border: 1px solid #dad9d9;
