@@ -1358,6 +1358,7 @@ var give_setting_edit = false;
 			var $obj = this,
 				$addressWrapper = $( '#donor-address-wrapper' ),
 				$allAddress = $( '.all-address', $addressWrapper ),
+				$noAddressMessageWrapper = $( '.give-no-address-message', $addressWrapper ),
 				$allAddressParent = $( $allAddress ).parent(),
 				$addressForm = $( '.address-form', $addressWrapper ),
 				$addressFormCancelBtn = $( '.js-cancel', $addressForm ),
@@ -1468,35 +1469,44 @@ var give_setting_edit = false;
 							giveAjaxLoader($addressWrapper);
 
 							if (response.success) {
+								var parent;
 
 								switch (response.data.action) {
 									case 'add':
 										$('.give-grid-row', $allAddress).append(response.data.address_html);
+
+										if( ! $noAddressMessageWrapper.hasClass('give-hidden') && $( 'div.give-grid-col-4', $allAddress ).length ) {
+											$noAddressMessageWrapper.addClass('give-hidden');
+										}
 										break;
 
 									case 'remove':
-										window.setTimeout(
-											function () {
-												var parent = $allAddress
-													.find('div[data-address-id*="' + response.data.id + '"]').parent()
+										parent = $allAddress
+											.find('div[data-address-id*="' + response.data.id + '"]').parent();
 
-												if (parent.length) {
-													parent.animate(
-														{'margin-left': '-=999'},
-														1000,
-														function () {
-															parent.hide();
-														}
-													);
+										if (parent.length) {
+											parent.animate(
+												{'margin-left': '-999'},
+												1000,
+												function () {
+													parent.remove();
+
+													if(
+														$noAddressMessageWrapper.hasClass('give-hidden') &&
+														! $( 'div.give-grid-col-4', $allAddress ).length
+													) {
+														$noAddressMessageWrapper.removeClass('give-hidden');
+													}
 												}
-											}
-										);
+											);
+										}
+
 										break;
 
 									case 'update':
-										var parent           = $allAddress
-											.find('div[data-address-id*="' + response.data.id + '"]').parent(),
-											$prevParent      = parent.prev(),
+										parent           = $allAddress
+											.find('div[data-address-id*="' + response.data.id + '"]').parent();
+										var	$prevParent      = parent.prev(),
 											$nextParent      = {},
 											is_address_added = false;
 

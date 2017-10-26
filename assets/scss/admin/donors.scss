@@ -107,42 +107,6 @@
 		}
 
 	}
-
-	// Address meta-box
-	.all-address{
-		[class^="give-grid-col"] {
-			min-height: 200px;
-		}
-
-		.address{
-			min-height: 200px;
-			border: 1px solid #dad9d9;
-			padding: 9px;
-			border-radius: 5px;
-			background-color: white;
-
-			.address-number-label{
-				color: gray;
-				cursor: default;
-			}
-		}
-
-		a{
-			text-decoration: none;
-		}
-	}
-
-	.add-new-address {
-		margin: 0.5rem 1% !important;
-	}
-
-	.add-new-address-form-hidden{
-		position: absolute;
-		right: 13px;
-		left: 13px;
-		top: 0;
-		visibility: hidden;
-	}
 }
 
 .donor-main-wrapper {
@@ -343,6 +307,53 @@
 	i {
 		color: #000000;
 		font-size: 14px;
+	}
+}
+
+
+/*
+ * Donor address metabox
+ */
+#donor-address-wrapper{
+	.give-no-address-message{
+		margin: 0.5rem 1%;
+		line-height: 3.4em;
+	}
+
+	.add-new-address {
+		margin: 0.5rem 1% !important;
+	}
+
+	.add-new-address-form-hidden{
+		position: absolute;
+		right: 13px;
+		left: 13px;
+		top: 0;
+		visibility: hidden;
+	}
+
+	// Address meta-box
+	.all-address{
+		[class^="give-grid-col"] {
+			min-height: 200px;
+		}
+
+		.address{
+			min-height: 200px;
+			border: 1px solid #dad9d9;
+			padding: 9px;
+			border-radius: 5px;
+			background-color: white;
+
+			.address-number-label{
+				color: gray;
+				cursor: default;
+			}
+		}
+
+		a{
+			text-decoration: none;
+		}
 	}
 }
 

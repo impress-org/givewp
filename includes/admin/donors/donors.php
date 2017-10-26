@@ -472,12 +472,13 @@ function give_donor_view( $donor ) {
 				<span class="give-spinner spinner aligncenter"></span>
 			</div>
 			<div class="inside">
-
-				<button class="button add-new-address">
-					<?php _e( 'Add Address', 'give' ); ?>
-				</button>
-
 				<div class="all-address">
+					<span class="give-no-address-message<?php if ( ! empty( $donor->address ) ) { echo ' give-hidden';} ?>">
+						<?php _e( 'This donor does not have any addresses saved.', 'give' ); ?>
+					</span>
+					<button class="button add-new-address">
+						<?php _e( 'Add Address', 'give' ); ?>
+					</button>
 					<div class="give-grid-row">
 						<?php
 						if ( ! empty( $donor->address ) ) :
