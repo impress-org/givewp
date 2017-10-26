@@ -1173,7 +1173,7 @@ class Give_Donor {
 		// Address ready to process even if only one value set.
 		foreach ( $address as $address_type => $value ) {
 			// @todo: Handle state feield validation on basis of country.
-			if( 'state' === $address_type ) {
+			if( in_array( $address_type, array( 'line2', 'state' )) ) {
 				continue;
 			}
 
