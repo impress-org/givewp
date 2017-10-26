@@ -431,12 +431,12 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 
 	?>
 	<h3><span><?php
-		printf(
+			printf(
 			/* translators: %s: form title */
-			esc_html__( 'Income Report for %s', 'give' ),
-			get_the_title( $form_id )
-		);
-	?></span></h3>
+				esc_html__( 'Income Report for %s', 'give' ),
+				get_the_title( $form_id )
+			);
+			?></span></h3>
 	<div id="give-dashboard-widgets-wrap">
 		<div class="metabox-holder" style="padding-top: 0;">
 			<div class="postbox">
@@ -636,12 +636,12 @@ function give_get_report_dates() {
 			break;
 
 		case 'today' :
-			$dates['day']     = date( 'd', $current_time );
-			$dates['day_end']     = date( 'd', $current_time );
-			$dates['m_start'] = date( 'n', $current_time );
-			$dates['m_end']   = date( 'n', $current_time );
-			$dates['year']    = date( 'Y', $current_time );
-			$dates['year_end']    = date( 'Y', $current_time );
+			$dates['day']      = date( 'd', $current_time );
+			$dates['day_end']  = date( 'd', $current_time );
+			$dates['m_start']  = date( 'n', $current_time );
+			$dates['m_end']    = date( 'n', $current_time );
+			$dates['year']     = date( 'Y', $current_time );
+			$dates['year_end'] = date( 'Y', $current_time );
 			break;
 
 		case 'yesterday' :
