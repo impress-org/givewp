@@ -68,6 +68,19 @@ function give_get_donation_form( $args = array() ) {
 	//Get the <form> tag wrap CSS classes.
 	$form_classes = $form->get_form_classes( $args );
 
+	// Get donation form currency.
+	$form_currency = give_get_currency( $form->ID );
+
+	// Get currencies and their configurations.
+	$give_currencies = give_get_currencies( 'all' );
+
+	/**
+	 * Get and let allow the developer modify the currency setting like decimal_separator, thousand_separator etc.
+	 *
+	 * @since 1.8.16
+	 */
+	$currency_setting = apply_filters( 'give_form_currency_settings', $give_currencies[ $form_currency ]['setting'], $form_currency, $form->ID );
+
 	ob_start();
 
 	/**
@@ -127,6 +140,14 @@ function give_get_donation_form( $args = array() ) {
                        value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
                 <input type="hidden" name="give-form-minimum"
                        value="<?php echo give_format_amount( give_get_form_minimum_price( $form->ID ), array( 'sanitize' => false ) ); ?>"/>
+
+                <!-- The following field is for currency setting.-->
+                <input type="hidden" name="give-currency" value="<?php echo esc_attr( $form_currency ); ?>"/>
+                <input type="hidden" name="give-currency-sign" value="<?php echo esc_attr( $give_currencies[ $form_currency ]['symbol'] ); ?>"/>
+                <input type="hidden" name="give-currency-position" value="<?php echo esc_attr( $currency_setting['currency_position'] ); ?>"/>
+                <input type="hidden" name="give-currency-thousands_separator" value="<?php echo esc_attr( $currency_setting['thousands_separator'] ); ?>"/>
+                <input type="hidden" name="give-currency-decimal_separator" value="<?php echo esc_attr( $currency_setting['decimal_separator'] ); ?>"/>
+                <input type="hidden" name="give-currency-number_decimals" value="<?php echo esc_attr( $currency_setting['number_decimals'] ); ?>"/>
 
                 <!-- The following field is for robots only, invisible to humans: -->
                 <span class="give-hidden" style="display: none !important;">
