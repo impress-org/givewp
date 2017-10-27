@@ -389,7 +389,7 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 	 */
 	public function test_count_total_donors() {
 		$donor_count = give_count_total_donors();
-		$this->assertEquals( 1, $donor_count );
+		$this->assertEquals( 2, $donor_count );
 	}
 
 	/**
