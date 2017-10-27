@@ -133,7 +133,7 @@ jQuery(function ($) {
 	 */
 	function give_format_currency(price, args) {
 		price               = price.toString().trim();
-		var number_decimals = parseInt(args.decimal);
+		var number_decimals = parseInt(args.precision);
 
 		if ( 'INR' === args.currency ) {
 			actual_price = accounting.unformat( price, args.decimal ).toString();
@@ -209,7 +209,6 @@ jQuery(function ($) {
 		form = form || '';
 
 		if ( '' !== form ) {
-
 			//Set the custom amount input value format properly
 			var format_args = {
 				symbol: '',
@@ -232,7 +231,7 @@ jQuery(function ($) {
 	function give_get_variable_prices($form) {
 		var variable_prices = [];
 
-		// check if currect form type is muti or not.
+		// check if correct form type is multi or not.
 		if (!$form.hasClass('give-form-type-multi')) {
 			return variable_prices;
 		}
@@ -245,7 +244,7 @@ jQuery(function ($) {
 				) ? jQuery(item) : item
 			);
 
-			var decimal_separator = $form.find( 'give-currency-decimal_separator' ).val();
+			var decimal_separator = $form.find( 'input[name="give-currency-decimal_separator"]' ).val();
 
 			// Add price id and amount to collector.
 			variable_prices.push( {
@@ -305,7 +304,7 @@ jQuery(function ($) {
 
 		//Set data amount
 		var current_total = parent_form.find( '.give-final-total-amount' ).data( 'total' );
-		var decimal_separator = parent_form.find( 'give-currency-decimal_separator' ).val();
+		var decimal_separator = parent_form.find( 'input[name="give-currency-decimal_separator"]' ).val();
 		$( this ).data( 'amount', give_unformat_currency( current_total, decimal_separator ) );
 
 		//This class is used for CSS purposes
@@ -332,7 +331,7 @@ jQuery(function ($) {
 			pre_focus_amount = $( this ).data( 'amount' ),
 			this_value = (donation_amount != undefined) ? donation_amount : $( this ).val(),
 			$minimum_amount = parent_form.find( 'input[name="give-form-minimum"]' ),
-			decimal_separator = parent_form.find( 'give-currency-decimal_separator' ).val(),
+			decimal_separator = parent_form.find( 'input[name="give-currency-decimal_separator"]' ).val(),
 			value_min = give_unformat_currency( $minimum_amount.val(), decimal_separator ),
 			value_now = (this_value == 0) ? value_min : give_unformat_currency( this_value, decimal_separator ),
 			variable_prices = give_get_variable_prices( $( this ).parents( 'form' ) ),
@@ -532,7 +531,7 @@ jQuery(function ($) {
 		$parent_form.find('.give-amount-top').val(this_amount);
 		$parent_form.find('span.give-amount-top').text(this_amount);
 
-		var decimal_separator = $parent_form.find( 'give-currency-decimal_separator' ).val();
+		var decimal_separator = $parent_form.find( 'input[name="give-currency-decimal_separator"]' ).val();
 
 		// Cache previous amount and set data amount.
 		$( '.give-donation-amount .give-text-input', $parent_form )
