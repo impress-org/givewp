@@ -12,6 +12,7 @@ var give_scripts, give_global_vars;
 jQuery(function ($) {
 
 	var doc = $(document);
+    var format_args = {};
 
 	/**
 	 * Update state/province fields per country selection
@@ -187,33 +188,39 @@ jQuery(function ($) {
 
 	}
 
-	/**
-	 * Unformat Currency
-	 *
-	 * @param price
-	 * @returns {number}
-	 */
-	function give_unformat_currency(price) {
-		return Math.abs(parseFloat(accounting.unformat(price, give_global_vars.decimal_separator)));
-	}
+    /**
+     * Unformat Currency
+     *
+     * @param price
+     * @param {string} decimal_separator
+     * @returns {number}
+     */
+    function give_unformat_currency(price , decimal_separator) {
+        return Math.abs(parseFloat(accounting.unformat(price, decimal_separator)));
+    }
 
-	/**
-	 * Get formatted amount
-	 *
-	 * @param {string/number} amount
-	 */
-	function give_format_amount(amount) {
+    /**
+     * Get formatted amount
+     *
+     * @param {string/number} amount
+     * @param {object} form
+     */
+    function give_format_amount(amount, form) {
+        form = form || '';
 
-		//Set the custom amount input value format properly
-		var format_args = {
-			symbol: '',
-			decimal: give_global_vars.decimal_separator,
-			thousand: give_global_vars.thousands_separator,
-			precision: give_global_vars.number_decimals
-		};
+        if ( '' !== form ) {
 
-		return give_format_currency(amount, format_args);
-	}
+            //Set the custom amount input value format properly
+            var format_args = {
+                symbol: '',
+                decimal: form.find('input[name="give-currency-decimal_separator"]').val(),
+                thousand: form.find('input[name="give-currency-thousands_separator"]').val(),
+                precision: form.find('input[name="give-currency-number_decimals"]').val(),
+                currency: form.find('input[name="give-currency"]').val()
+            };
+        }
+        return give_format_currency(amount, format_args);
+    }
 
 	/**
 	 * Get Price ID and levels for multi donation form
@@ -341,13 +348,15 @@ jQuery(function ($) {
 			undefined != price_id
 		) ? price_id : -1;
 
-		//Set the custom amount input value format properly
-		var format_args = {
-			symbol: '',
-			decimal: give_global_vars.decimal_separator,
-			thousand: give_global_vars.thousands_separator,
-			precision: give_global_vars.number_decimals
-		};
+        //Set the custom amount input value format properly
+        format_args = {
+            symbol: '',
+            position: parent_form.find('input[name="give-currency-position"]').val(),
+            decimal: parent_form.find('input[name="give-currency-decimal_separator"]').val(),
+            thousand: parent_form.find('input[name="give-currency-thousands_separator"]').val(),
+            precision: parent_form.find('input[name="give-currency-number_decimals"]').val(),
+            currency: parent_form.find('input[name="give-currency"]').val()
+        };
 
 		var formatted_total = give_format_currency(value_now, format_args);
 		$(this).val(formatted_total);
