@@ -257,7 +257,7 @@ function give_maybe_sanitize_amount( $number, $args = array() ) {
 		$number = str_replace( '.', '', $number );
 	}
 
-	return give_sanitize_amount( $number, $number_decimals, $trim_zeros );
+	return give_sanitize_amount( $number, array( 'number_decimals' => $dp, 'trim_zeros' => $trim_zeros, 'currency' => $currency ) );
 }
 
 /**
@@ -330,7 +330,7 @@ function give_sanitize_amount( $number, $args = array() ) {
 
 	// Remove non numeric entity before decimal separator.
 	$number     = preg_replace( '/[^0-9\.]/', '', $number );
-	$default_dp = give_get_price_decimals();
+	$default_dp = give_get_price_decimals( $currency );
 
 	// Reset negative amount to zero.
 	if ( 0 > $number ) {
