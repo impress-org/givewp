@@ -175,41 +175,38 @@ function give_sanitize_amount_for_db( $number ) {
  * @return string $amount Newly sanitized amount
  */
 function give_maybe_sanitize_amount( $number, $args = array() ) {
-	$func_args = func_get_args();
-
-	// Get the arguments.
-	if ( isset( $func_args[1] ) && is_array( $func_args[1] ) ) {
-
-		// Set default if missing value.
-		$options = wp_parse_args( $func_args[1], array(
-			'number_decimals' => false,
-			'trim_zeros'      => false,
-			'currency'        => '',
-		) );
-
-		$dp         = $options['number_decimals'];
-		$trim_zeros = $options['trim_zeros'];
-		$currency   = $options['currency'];
-
-	} else {
-		$dp         = isset( $func_args[1] ) ? $func_args[1] : false;
-		$trim_zeros = isset( $func_args[2] ) ? $func_args[2] : true;
-		$currency   = '';
-	}
-
-	$thousand_separator = give_get_price_thousand_separator( $currency );
-	$decimal_separator  = give_get_price_decimal_separator( $currency );
-	$number_decimals    = is_bool( $dp ) ? give_get_price_decimals() : $dp;
-
-	// Explode number by . decimal separator.
-	$number_parts = explode( '.', $number );
-
-	/*
-	 * Bailout: Quick format number
-	 */
+	// Bailout.
 	if ( empty( $number ) || ( ! is_numeric( $number ) && ! is_string( $number ) ) ) {
 		return $number;
 	}
+	
+	$func_args = func_get_args();
+	
+	// Backward compatibility.
+	if ( isset( $func_args[1] ) && ( is_bool( $func_args[1] ) || is_numeric( $func_args[1] ) ) ) {
+		$args = array(
+			'number_decimals' => $func_args[1],
+			'trim_zeros'      => isset( $func_args[2] ) ? $func_args[2] : false
+		);
+	}
+	
+	$args = wp_parse_args(
+		$args,
+		array(
+			'number_decimals' => false,
+			'trim_zeros'      => false,
+			'currency'        => give_get_currency(),
+		)
+	);
+
+	$thousand_separator = give_get_price_thousand_separator( $args['currency'] );
+	$decimal_separator  = give_get_price_decimal_separator( $args['currency'] );
+	$number_decimals    = is_bool( $args['number_decimals'] ) ?
+		give_get_price_decimals() :
+		$args['number_decimals'];
+
+	// Explode number by . decimal separator.
+	$number_parts = explode( '.', $number );
 
 	// Remove currency symbols from number if any.
 	$number = trim( str_replace( give_currency_symbols( true ), '', $number ) );
@@ -257,7 +254,7 @@ function give_maybe_sanitize_amount( $number, $args = array() ) {
 		$number = str_replace( '.', '', $number );
 	}
 
-	return give_sanitize_amount( $number, array( 'number_decimals' => $dp, 'trim_zeros' => $trim_zeros, 'currency' => $currency ) );
+	return give_sanitize_amount( $number, $args );
 }
 
 /**
@@ -283,36 +280,33 @@ function give_sanitize_amount( $number, $args = array() ) {
 
 	// Get function arguments.
 	$func_args = func_get_args();
-
-	// Get the arguments.
-	if ( isset( $func_args[1] ) && is_array( $func_args[1] ) ) {
-
-		// Set default if missing value.
-		$options = wp_parse_args( $func_args[1], array(
+	
+	// Backward compatibility.
+	if ( isset( $func_args[1] ) && ( is_bool( $func_args[1] ) || is_numeric( $func_args[1] ) ) ) {
+		$args = array(
+			'number_decimals' => $func_args[1],
+			'trim_zeros'      => isset( $func_args[2] ) ? $func_args[2] : false
+		);
+	}
+	
+	$args = wp_parse_args(
+		$args,
+		array(
 			'number_decimals' => false,
 			'trim_zeros'      => false,
-			'currency'        => '',
-		) );
-
-		$dp         = $options['number_decimals'];
-		$trim_zeros = $options['trim_zeros'];
-		$currency   = $options['currency'];
-
-	} else {
-		$dp         = isset( $func_args[1] ) ? $func_args[1] : false;
-		$trim_zeros = isset( $func_args[2] ) ? $func_args[2] : true;
-		$currency   = '';
-	}
+			'currency'        => give_get_currency(),
+		)
+	);
 
 	// Remove slash from amount.
 	// If thousand or decimal separator is set to ' then in $_POST or $_GET param we will get an escaped number.
 	// To prevent notices and warning remove slash from amount/number.
 	$number = wp_unslash( $number );
 
-	$thousand_separator = give_get_price_thousand_separator( $currency );
+	$thousand_separator = give_get_price_thousand_separator( $args['currency'] );
 
 	$locale   = localeconv();
-	$decimals = array( give_get_price_decimal_separator( $currency ), $locale['decimal_point'], $locale['mon_decimal_point'] );
+	$decimals = array( give_get_price_decimal_separator( $args['currency'] ), $locale['decimal_point'], $locale['mon_decimal_point'] );
 
 	// Remove locale from string
 	if ( ! is_float( $number ) ) {
@@ -330,7 +324,7 @@ function give_sanitize_amount( $number, $args = array() ) {
 
 	// Remove non numeric entity before decimal separator.
 	$number     = preg_replace( '/[^0-9\.]/', '', $number );
-	$default_dp = give_get_price_decimals( $currency );
+	$default_dp = give_get_price_decimals( $args['currency'] );
 
 	// Reset negative amount to zero.
 	if ( 0 > $number ) {
@@ -346,17 +340,22 @@ function give_sanitize_amount( $number, $args = array() ) {
 	}
 
 	// Format number by custom number of decimals.
-	if ( false !== $dp ) {
-		$dp     = intval( is_bool( $dp ) ? $default_dp : $dp );
+	if ( false !== $args['number_decimals'] ) {
+		$dp     = intval( is_bool( $args['number_decimals'] ) ? $default_dp : $args['number_decimals'] );
 		$dp     = apply_filters( 'give_sanitize_amount_decimals', $dp, $number );
 		$number = number_format( floatval( $number ), $dp, '.', '' );
 	}
 
 	// Trim zeros.
-	if ( $trim_zeros && strstr( $number, '.' ) ) {
+	if ( $args['trim_zeros'] && strstr( $number, '.' ) ) {
 		$number = rtrim( rtrim( $number, '0' ), '.' );
 	}
-
+	
+	/**
+	 * Filter the sanitize amount
+	 *
+	 * @since 1.0
+	 */
 	return apply_filters( 'give_sanitize_amount', $number );
 }
 
