@@ -85,21 +85,21 @@ if ( $donations ) : ?>
 
 				if ( filter_var( $donation_history_args['id'], FILTER_VALIDATE_BOOLEAN ) ) :
 					echo sprintf(
-						'<td class="give-donation-id">#%s</td>',
+						'<td class="give-donation-id">#%1$s</td>',
 						give_get_payment_number( $post->ID )
 					);
 				endif;
 
 				if ( filter_var( $donation_history_args['date'], FILTER_VALIDATE_BOOLEAN ) ) :
 					echo sprintf(
-						'<td class="give-donation-date">#%s</td>',
+						'<td class="give-donation-date">%1$s</td>',
 						date_i18n( give_date_format(), strtotime( get_post_field( 'post_date', $post->ID ) ) )
 					);
 				endif;
 
 				if ( filter_var( $donation_history_args['donor'], FILTER_VALIDATE_BOOLEAN ) ) :
 					echo sprintf(
-						'<td class="give-donation-donor">#%s</td>',
+						'<td class="give-donation-donor">%1$s</td>',
 						give_get_donor_name_by( $post->ID )
 					);
 				endif;
@@ -137,14 +137,14 @@ if ( $donations ) : ?>
 				<?php
 				if ( filter_var( $donation_history_args['status'], FILTER_VALIDATE_BOOLEAN ) ) :
 					echo sprintf(
-						'<td class="give-donation-status">#%s</td>',
+						'<td class="give-donation-status">%1$s</td>',
 						give_get_payment_status( $post, true )
 					);
 				endif;
 
 				if ( filter_var( $donation_history_args['payment_method'], FILTER_VALIDATE_BOOLEAN ) ) :
 					echo sprintf(
-						'<td class="give-donation-payment-method">#%s</td>',
+						'<td class="give-donation-payment-method">%1$s</td>',
 						give_get_gateway_checkout_label( give_get_payment_gateway( $post->ID ) )
 					);
 				endif;

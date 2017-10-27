@@ -138,6 +138,11 @@ function give_get_reporting_view( $default = 'earnings' ) {
  * @return void
  */
 function give_reports_tab_reports() {
+
+	if( ! current_user_can( 'view_give_reports' ) ) {
+		wp_die( __( 'You do not have permission to access this report', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+	}
+
 	$current_view = 'earnings';
 	$views        = give_reports_default_views();
 
