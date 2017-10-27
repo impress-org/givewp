@@ -64,7 +64,7 @@ msgstr ""
 msgid "You do not have permission to install plugin updates"
 msgstr ""
 
-#: includes/admin/EDD_SL_Plugin_Updater.php:396, includes/admin/donors/donor-actions.php:31, includes/admin/donors/donor-actions.php:45, includes/admin/donors/donor-actions.php:151, includes/admin/donors/donor-actions.php:165, includes/admin/donors/donor-actions.php:233, includes/admin/donors/donor-actions.php:248, includes/admin/donors/donor-actions.php:332, includes/admin/donors/donor-actions.php:346, includes/admin/donors/donor-actions.php:435, includes/admin/donors/donor-actions.php:530, includes/admin/donors/donor-actions.php:576, includes/admin/forms/dashboard-columns.php:244, includes/admin/payments/actions.php:31, includes/admin/payments/actions.php:89, includes/admin/payments/actions.php:100, includes/admin/payments/actions.php:342, includes/admin/payments/actions.php:362, includes/admin/payments/actions.php:395, includes/admin/payments/actions.php:417, includes/admin/payments/view-payment-details.php:24, includes/admin/payments/view-payment-details.php:34, includes/admin/tools/data/class-give-tools-delete-import-donors.php:257, includes/admin/tools/data/class-give-tools-delete-test-donors.php:228, includes/admin/tools/data/class-give-tools-delete-test-transactions.php:172, includes/admin/tools/data/class-give-tools-recount-all-stats.php:235, includes/admin/tools/data/class-give-tools-recount-donor-stats.php:195, includes/admin/tools/data/class-give-tools-recount-form-stats.php:180, includes/admin/tools/data/class-give-tools-recount-income.php:156, includes/admin/tools/data/class-give-tools-recount-single-donor-stats.php:151, includes/admin/tools/data/class-give-tools-reset-stats.php:187, includes/admin/tools/export/class-batch-export.php:145, includes/admin/tools/export/class-export.php:177, includes/admin/tools/export/export-actions.php:26, includes/admin/tools/export/pdf-reports.php:31, includes/admin/tools/export/pdf-reports.php:35, includes/admin/tools/export/pdf-reports.php:39, includes/admin/tools/logs/class-api-requests-logs-list-table.php:141, includes/admin/tools/logs/class-gateway-error-logs-list-table.php:128, includes/admin/upgrades/upgrade-functions.php:168, includes/admin/upgrades/upgrade-functions.php:206, includes/api/class-give-api.php:1791, includes/api/class-give-api.php:1797, includes/api/class-give-api.php:1812, includes/api/class-give-api.php:1817, includes/class-give-license-handler.php:847, includes/class-notices.php:551, includes/emails/actions.php:56, includes/emails/template.php:274, includes/formatting.php:708, includes/gateways/manual.php:38
+#: includes/admin/EDD_SL_Plugin_Updater.php:396, includes/admin/donors/donor-actions.php:31, includes/admin/donors/donor-actions.php:45, includes/admin/donors/donor-actions.php:155, includes/admin/donors/donor-actions.php:169, includes/admin/donors/donor-actions.php:237, includes/admin/donors/donor-actions.php:257, includes/admin/donors/donor-actions.php:344, includes/admin/donors/donor-actions.php:358, includes/admin/donors/donor-actions.php:443, includes/admin/donors/donor-actions.php:539, includes/admin/donors/donor-actions.php:586, includes/admin/forms/dashboard-columns.php:244, includes/admin/payments/actions.php:31, includes/admin/payments/actions.php:89, includes/admin/payments/actions.php:100, includes/admin/payments/actions.php:342, includes/admin/payments/actions.php:362, includes/admin/payments/actions.php:395, includes/admin/payments/actions.php:417, includes/admin/payments/view-payment-details.php:24, includes/admin/payments/view-payment-details.php:34, includes/admin/reports/reports.php:143, includes/admin/tools/data/class-give-tools-delete-import-donors.php:257, includes/admin/tools/data/class-give-tools-delete-test-donors.php:228, includes/admin/tools/data/class-give-tools-delete-test-transactions.php:172, includes/admin/tools/data/class-give-tools-recount-all-stats.php:235, includes/admin/tools/data/class-give-tools-recount-donor-stats.php:195, includes/admin/tools/data/class-give-tools-recount-form-stats.php:180, includes/admin/tools/data/class-give-tools-recount-income.php:156, includes/admin/tools/data/class-give-tools-recount-single-donor-stats.php:151, includes/admin/tools/data/class-give-tools-reset-stats.php:187, includes/admin/tools/export/class-batch-export.php:145, includes/admin/tools/export/class-export.php:177, includes/admin/tools/export/export-actions.php:26, includes/admin/tools/export/pdf-reports.php:31, includes/admin/tools/export/pdf-reports.php:35, includes/admin/tools/export/pdf-reports.php:39, includes/admin/tools/logs/class-api-requests-logs-list-table.php:141, includes/admin/tools/logs/class-gateway-error-logs-list-table.php:128, includes/admin/upgrades/upgrade-functions.php:168, includes/admin/upgrades/upgrade-functions.php:206, includes/api/class-give-api.php:1791, includes/api/class-give-api.php:1797, includes/api/class-give-api.php:1812, includes/api/class-give-api.php:1817, includes/class-give-license-handler.php:847, includes/class-notices.php:569, includes/emails/actions.php:56, includes/emails/template.php:274, includes/formatting.php:708, includes/forms/functions.php:319, includes/gateways/manual.php:38
 msgid "Error"
 msgstr ""
 
@@ -84,107 +84,117 @@ msgstr ""
 msgid "There was an error retrieving the Give Add-ons list from the server. Please try again later."
 msgstr ""
 
-#: includes/admin/admin-actions.php:146
+#: includes/admin/admin-actions.php:150
 msgid "Successfully deleted one transaction."
 msgid_plural "Successfully deleted %d transactions."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/admin-actions.php:163
+#: includes/admin/admin-actions.php:167
 msgid "Successfully sent email receipt to one recipient."
 msgid_plural "Successfully sent email receipts to %d recipients."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/admin-actions.php:186
+#: includes/admin/admin-actions.php:196
+msgid "Successfully deleted one donor and associated records."
+msgid_plural "Successfully deleted %d donors and associated records."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/admin/admin-actions.php:220
 msgid "The donation has been deleted."
 msgstr ""
 
-#: includes/admin/admin-actions.php:194
+#: includes/admin/admin-actions.php:228
 msgid "The donation receipt has been resent."
 msgstr ""
 
-#: includes/admin/admin-actions.php:202
+#: includes/admin/admin-actions.php:236
 msgid "The reports cache has been cleared."
 msgstr ""
 
-#: includes/admin/admin-actions.php:210
+#: includes/admin/admin-actions.php:244
 msgid "The donation note has been deleted."
 msgstr ""
 
-#: includes/admin/admin-actions.php:224
+#: includes/admin/admin-actions.php:258
 msgid "The settings have been imported."
 msgstr ""
 
-#: includes/admin/admin-actions.php:232
+#: includes/admin/admin-actions.php:266
 msgid "API keys have been generated."
 msgstr ""
 
-#: includes/admin/admin-actions.php:240
+#: includes/admin/admin-actions.php:274
 msgid "The specified user already has API keys."
 msgstr ""
 
-#: includes/admin/admin-actions.php:248
+#: includes/admin/admin-actions.php:282
 msgid "API keys have been regenerated."
 msgstr ""
 
-#: includes/admin/admin-actions.php:256
+#: includes/admin/admin-actions.php:290
 msgid "API keys have been revoked."
 msgstr ""
 
-#: includes/admin/admin-actions.php:264
+#: includes/admin/admin-actions.php:298
 msgid "The test email has been sent."
 msgstr ""
 
-#: includes/admin/admin-actions.php:272, includes/scripts.php:330
+#: includes/admin/admin-actions.php:306, includes/scripts.php:330
 msgid "You cannot set the success and failed pages to the same page"
 msgstr ""
 
-#: includes/admin/admin-actions.php:285
+#: includes/admin/admin-actions.php:319
 msgid "The donation note has been added."
 msgstr ""
 
-#: includes/admin/admin-actions.php:293
+#: includes/admin/admin-actions.php:327
 msgid "The donation has been updated."
 msgstr ""
 
-#: includes/admin/admin-actions.php:307
+#: includes/admin/admin-actions.php:341
 msgid "The donor has been deleted."
 msgstr ""
 
-#: includes/admin/admin-actions.php:316
+#: includes/admin/admin-actions.php:350
 msgid "Donor email added."
 msgstr ""
 
-#: includes/admin/admin-actions.php:325
+#: includes/admin/admin-actions.php:359
 msgid "Donor email removed."
 msgstr ""
 
-#: includes/admin/admin-actions.php:334
+#: includes/admin/admin-actions.php:368
 msgid "Failed to remove donor email."
 msgstr ""
 
-#: includes/admin/admin-actions.php:343
+#: includes/admin/admin-actions.php:377
 msgid "Primary email updated for donor."
 msgstr ""
 
-#: includes/admin/admin-actions.php:352
+#: includes/admin/admin-actions.php:386
 msgid "Failed to set primary email."
 msgstr ""
 
-#: includes/admin/admin-actions.php:361
+#: includes/admin/admin-actions.php:395
 msgid "User has been successfully connected with Donor."
 msgstr ""
 
-#: includes/admin/admin-actions.php:397
+#: includes/admin/admin-actions.php:404
+msgid "Donor information updated successfully."
+msgstr ""
+
+#: includes/admin/admin-actions.php:440
 msgid "Give Test Mode Active"
 msgstr ""
 
-#: includes/admin/admin-actions.php:414, includes/admin/tools/views/html-admin-page-import-donations.php:23, includes/admin/tools/views/html-admin-page-imports.php:47
+#: includes/admin/admin-actions.php:457, includes/admin/tools/views/html-admin-page-import-donations.php:23, includes/admin/tools/views/html-admin-page-imports.php:47
 msgid "Import Donations"
 msgstr ""
 
-#: includes/admin/admin-actions.php:488
+#: includes/admin/admin-actions.php:531
 msgid "All donation uploaded successfully!"
 msgstr ""
 
@@ -244,27 +254,27 @@ msgstr ""
 msgid "Add-ons"
 msgstr ""
 
-#: includes/admin/class-addon-activation-banner.php:192
+#: includes/admin/class-addon-activation-banner.php:128
 msgid "Thank you for installing Give's %s Add-on!"
 msgstr ""
 
-#: includes/admin/class-addon-activation-banner.php:208
+#: includes/admin/class-addon-activation-banner.php:144
 msgid "Go to Settings"
 msgstr ""
 
-#: includes/admin/class-addon-activation-banner.php:219
+#: includes/admin/class-addon-activation-banner.php:155
 msgid "Documentation: %s Add-on"
 msgstr ""
 
-#: includes/admin/class-addon-activation-banner.php:229
+#: includes/admin/class-addon-activation-banner.php:165
 msgid "Get Support"
 msgstr ""
 
-#: includes/admin/class-addon-activation-banner.php:330
+#: includes/admin/class-addon-activation-banner.php:357
 msgid "File path must be added within the {$this->banner_details['name']} add-on in the banner details."
 msgstr ""
 
-#: includes/admin/class-addon-activation-banner.php:335
+#: includes/admin/class-addon-activation-banner.php:362
 msgid "Empty add-on plugin path for {$this->banner_details['name']} add-on."
 msgstr ""
 
@@ -344,7 +354,7 @@ msgstr ""
 msgid "Create Donation Form"
 msgstr ""
 
-#: includes/admin/class-blank-slate.php:259, includes/admin/class-blank-slate.php:263, includes/admin/donors/donors.php:591, includes/class-give-cli-commands.php:608, includes/class-give-html-elements.php:70, includes/emails/template.php:373, includes/post-types.php:104
+#: includes/admin/class-blank-slate.php:259, includes/admin/class-blank-slate.php:263, includes/admin/donors/donors.php:588, includes/class-give-cli-commands.php:608, includes/class-give-html-elements.php:70, includes/emails/template.php:373, includes/post-types.php:104
 msgid "No donations found."
 msgstr ""
 
@@ -1004,11 +1014,11 @@ msgstr ""
 msgid "complete the translation"
 msgstr ""
 
-#: includes/admin/class-i18n-module.php:232
+#: includes/admin/class-i18n-module.php:178
 msgid "Help Translate Give to %s"
 msgstr ""
 
-#: includes/admin/class-i18n-module.php:235
+#: includes/admin/class-i18n-module.php:181
 msgid "Register now &raquo;"
 msgstr ""
 
@@ -1029,11 +1039,11 @@ msgstr ""
 msgid "%s donations today"
 msgstr ""
 
-#: includes/admin/dashboard-widgets.php:79, includes/admin/dashboard-widgets.php:89, includes/admin/reports/graphing.php:490, includes/class-give-stats.php:98
+#: includes/admin/dashboard-widgets.php:79, includes/admin/dashboard-widgets.php:89, includes/admin/reports/graphing.php:492, includes/class-give-stats.php:98
 msgid "This Week"
 msgstr ""
 
-#: includes/admin/dashboard-widgets.php:80, includes/admin/dashboard-widgets.php:94, includes/admin/reports/graphing.php:492, includes/class-give-stats.php:100
+#: includes/admin/dashboard-widgets.php:80, includes/admin/dashboard-widgets.php:94, includes/admin/reports/graphing.php:494, includes/class-give-stats.php:100
 msgid "This Month"
 msgstr ""
 
@@ -1041,11 +1051,11 @@ msgstr ""
 msgid "Past 30 Days"
 msgstr ""
 
-#: includes/admin/dashboard-widgets.php:101, includes/admin/reports/graphing.php:493, includes/class-give-stats.php:101
+#: includes/admin/dashboard-widgets.php:101, includes/admin/reports/graphing.php:495, includes/class-give-stats.php:101
 msgid "Last Month"
 msgstr ""
 
-#: includes/admin/dashboard-widgets.php:106, includes/admin/reports/graphing.php:496, includes/class-give-stats.php:104
+#: includes/admin/dashboard-widgets.php:106, includes/admin/reports/graphing.php:498, includes/class-give-stats.php:104
 msgid "This Year"
 msgstr ""
 
@@ -1059,59 +1069,63 @@ msgstr[1] ""
 msgid "Donor"
 msgstr ""
 
-#: includes/admin/donors/class-donor-table.php:151, includes/admin/reports/class-donor-reports-table.php:181
+#: includes/admin/donors/class-donor-table.php:173, includes/admin/reports/class-donor-reports-table.php:181
 msgid "Unnamed Donor"
 msgstr ""
 
-#: includes/admin/donors/class-donor-table.php:167, includes/admin/forms/dashboard-columns.php:35, includes/admin/reports/class-donor-reports-table.php:215, includes/admin/tools/export/class-batch-export-forms.php:46, includes/admin/tools/views/html-admin-page-exports.php:203, includes/admin/tools/views/html-admin-page-system-info.php:790
+#: includes/admin/donors/class-donor-table.php:191, includes/admin/forms/dashboard-columns.php:35, includes/admin/reports/class-donor-reports-table.php:215, includes/admin/tools/export/class-batch-export-forms.php:46, includes/admin/tools/views/html-admin-page-exports.php:203, includes/admin/tools/views/html-admin-page-system-info.php:790
 msgid "Name"
 msgstr ""
 
-#: includes/admin/donors/class-donor-table.php:168, includes/admin/donors/donors.php:476, includes/admin/reports/class-donor-reports-table.php:216, includes/admin/tools/export/class-batch-export-payments.php:44, includes/admin/tools/views/html-admin-page-exports.php:210, templates/shortcode-register.php:39
+#: includes/admin/donors/class-donor-table.php:192, includes/admin/donors/donors.php:473, includes/admin/reports/class-donor-reports-table.php:216, includes/admin/tools/export/class-batch-export-payments.php:44, includes/admin/tools/views/html-admin-page-exports.php:210, templates/shortcode-register.php:39
 msgid "Email"
 msgstr ""
 
-#: includes/admin/donors/class-donor-table.php:169, includes/admin/forms/dashboard-columns.php:40, includes/admin/reports/class-donor-reports-table.php:217, includes/admin/reports/class-form-reports-table.php:121, includes/admin/reports/graphing.php:181, includes/admin/reports/graphing.php:427, includes/admin/tools/class-settings-logs.php:120, includes/admin/tools/export/class-batch-export-forms.php:56, includes/admin/tools/export/class-export-earnings.php:65, includes/admin/tools/export/pdf-reports.php:298, includes/admin/tools/import/class-give-import-donations.php:491, includes/deprecated/deprecated-functions.php:70, includes/post-types.php:53, includes/post-types.php:107
+#: includes/admin/donors/class-donor-table.php:193, includes/admin/forms/dashboard-columns.php:40, includes/admin/reports/class-donor-reports-table.php:217, includes/admin/reports/class-form-reports-table.php:121, includes/admin/reports/graphing.php:182, includes/admin/reports/graphing.php:429, includes/admin/tools/class-settings-logs.php:120, includes/admin/tools/export/class-batch-export-forms.php:56, includes/admin/tools/export/class-export-earnings.php:65, includes/admin/tools/export/pdf-reports.php:298, includes/admin/tools/import/class-give-import-donations.php:491, includes/deprecated/deprecated-functions.php:70, includes/post-types.php:53, includes/post-types.php:107
 msgid "Donations"
 msgstr ""
 
-#: includes/admin/donors/class-donor-table.php:170, includes/admin/reports/class-donor-reports-table.php:218, includes/admin/reports/class-gateways-reports-table.php:87, includes/admin/tools/views/html-admin-page-exports.php:252
+#: includes/admin/donors/class-donor-table.php:194, includes/admin/reports/class-donor-reports-table.php:218, includes/admin/reports/class-gateways-reports-table.php:87, includes/admin/tools/views/html-admin-page-exports.php:252
 msgid "Total Donated"
 msgstr ""
 
-#: includes/admin/donors/class-donor-table.php:171, includes/admin/tools/export/class-batch-export-forms.php:47
+#: includes/admin/donors/class-donor-table.php:195, includes/admin/tools/export/class-batch-export-forms.php:47
 msgid "Date Created"
 msgstr ""
 
-#: includes/admin/donors/class-donor-table.php:211
+#: includes/admin/donors/class-donor-table.php:234
 msgid "View \"%s\""
 msgstr ""
 
-#: includes/admin/donors/class-donor-table.php:211
+#: includes/admin/donors/class-donor-table.php:234
 msgid "View Donor"
 msgstr ""
 
-#: includes/admin/donors/class-donor-table.php:213
+#: includes/admin/donors/class-donor-table.php:235
 msgid "Notes for \"%s\""
 msgstr ""
 
-#: includes/admin/donors/class-donor-table.php:213, includes/admin/donors/donors.php:686, includes/import-functions.php:395
+#: includes/admin/donors/class-donor-table.php:235, includes/admin/donors/donors.php:683, includes/import-functions.php:395
 msgid "Notes"
 msgstr ""
 
-#: includes/admin/donors/class-donor-table.php:215
+#: includes/admin/donors/class-donor-table.php:236
 msgid "Delete \"%s\""
 msgstr ""
 
-#: includes/admin/donors/class-donor-table.php:215, includes/admin/payments/class-payments-table.php:508, includes/admin/payments/class-payments-table.php:612, includes/payments/functions.php:1630
+#: includes/admin/donors/class-donor-table.php:236, includes/admin/payments/class-payments-table.php:508, includes/admin/payments/class-payments-table.php:612, includes/payments/functions.php:1628
 msgid "Delete"
 msgstr ""
 
-#: includes/admin/donors/donor-actions.php:31, includes/admin/donors/donor-actions.php:151, includes/admin/donors/donor-actions.php:332, includes/admin/donors/donor-actions.php:435
+#: includes/admin/donors/class-donor-table.php:344, includes/admin/reports/class-donor-reports-table.php:145
+msgid "Search Donors"
+msgstr ""
+
+#: includes/admin/donors/donor-actions.php:31, includes/admin/donors/donor-actions.php:155, includes/admin/donors/donor-actions.php:344, includes/admin/donors/donor-actions.php:443
 msgid "You do not have permission to edit this donor."
 msgstr ""
 
-#: includes/admin/donors/donor-actions.php:45, includes/admin/donors/donor-actions.php:165, includes/admin/donors/donor-actions.php:248, includes/admin/donors/donor-actions.php:346
+#: includes/admin/donors/donor-actions.php:45, includes/admin/donors/donor-actions.php:169, includes/admin/donors/donor-actions.php:257, includes/admin/donors/donor-actions.php:358
 msgid "Cheatin&#8217; uh?"
 msgstr ""
 
@@ -1123,79 +1137,79 @@ msgstr ""
 msgid "The User ID #%d does not exist. Please assign an existing user."
 msgstr ""
 
-#: includes/admin/donors/donor-actions.php:171
+#: includes/admin/donors/donor-actions.php:175
 msgid "A note is required."
 msgstr ""
 
-#: includes/admin/donors/donor-actions.php:233
+#: includes/admin/donors/donor-actions.php:237
 msgid "You do not have permission to delete donors."
 msgstr ""
 
-#: includes/admin/donors/donor-actions.php:254
+#: includes/admin/donors/donor-actions.php:263
 msgid "Please confirm you want to delete this donor."
 msgstr ""
 
-#: includes/admin/donors/donor-actions.php:300
+#: includes/admin/donors/donor-actions.php:309
 msgid "Error deleting donor."
 msgstr ""
 
-#: includes/admin/donors/donor-actions.php:306, includes/admin/donors/donors.php:131, includes/admin/donors/donors.php:145
+#: includes/admin/donors/donor-actions.php:315, includes/admin/donors/donors.php:128, includes/admin/donors/donors.php:142
 msgid "Invalid Donor ID."
 msgstr ""
 
-#: includes/admin/donors/donor-actions.php:390
+#: includes/admin/donors/donor-actions.php:402
 msgid "Failed to disconnect user from donor."
 msgstr ""
 
-#: includes/admin/donors/donor-actions.php:444
+#: includes/admin/donors/donor-actions.php:452
 msgid "Email address is required."
 msgstr ""
 
-#: includes/admin/donors/donor-actions.php:446
+#: includes/admin/donors/donor-actions.php:454
 msgid "Donor ID is required."
 msgstr ""
 
-#: includes/admin/donors/donor-actions.php:448
+#: includes/admin/donors/donor-actions.php:456
 msgid "An error has occurred. Please try again."
 msgstr ""
 
-#: includes/admin/donors/donor-actions.php:453, includes/admin/tools/export/export-actions.php:26, includes/admin/tools/export/pdf-reports.php:35, includes/api/class-give-api.php:1791, includes/class-give-license-handler.php:847, includes/gateways/manual.php:38
+#: includes/admin/donors/donor-actions.php:461, includes/admin/tools/export/export-actions.php:26, includes/admin/tools/export/pdf-reports.php:35, includes/api/class-give-api.php:1791, includes/class-give-license-handler.php:847, includes/forms/functions.php:319, includes/gateways/manual.php:38
 msgid "Nonce verification failed."
 msgstr ""
 
-#: includes/admin/donors/donor-actions.php:458, includes/login-register.php:254, includes/process-donation.php:596, includes/process-donation.php:771, includes/user-functions.php:359
+#: includes/admin/donors/donor-actions.php:466, includes/login-register.php:254, includes/process-donation.php:596, includes/process-donation.php:771, includes/user-functions.php:359
 msgid "Invalid email."
 msgstr ""
 
-#: includes/admin/donors/donor-actions.php:469
+#: includes/admin/donors/donor-actions.php:477
 msgid "Email already associated with this donor."
 msgstr ""
 
-#: includes/admin/donors/donor-actions.php:474
+#: includes/admin/donors/donor-actions.php:482
 msgid "Email address is already associated with another donor."
 msgstr ""
 
-#: includes/admin/donors/donor-actions.php:481
+#: includes/admin/donors/donor-actions.php:489
 msgid "Email successfully added to donor."
 msgstr ""
 
-#: includes/admin/donors/donor-actions.php:486, includes/admin/donors/donor-actions.php:539, includes/admin/donors/donor-actions.php:586, includes/payments/functions.php:1615
+#: includes/admin/donors/donor-actions.php:494, includes/admin/donors/donor-actions.php:548, includes/admin/donors/donor-actions.php:596, includes/payments/functions.php:1613
 msgid "System"
 msgstr ""
 
-#: includes/admin/donors/donor-actions.php:487
+#: includes/admin/donors/donor-actions.php:495
 msgid "Email address %1$s added by %2$s"
 msgstr ""
 
-#: includes/admin/donors/donor-actions.php:491, includes/admin/donors/donor-actions.php:587
+#: includes/admin/donors/donor-actions.php:499, includes/admin/donors/donor-actions.php:597
 msgid "Email address %1$s set as primary by %2$s"
 msgstr ""
 
-#: includes/admin/donors/donor-actions.php:530, includes/admin/donors/donor-actions.php:576
+#: includes/admin/donors/donor-actions.php:539, includes/admin/donors/donor-actions.php:586
 msgid "Nonce verification failed"
 msgstr ""
 
-#: includes/admin/donors/donor-actions.php:540
+#: includes/admin/donors/donor-actions.php:549
 msgid "Email address %1$s removed by %2$s"
 msgstr ""
 
@@ -1207,185 +1221,181 @@ msgstr ""
 msgid "Donor Notes"
 msgstr ""
 
-#: includes/admin/donors/donor-functions.php:80, includes/admin/donors/donors.php:806
+#: includes/admin/donors/donor-functions.php:80, includes/admin/donors/donors.php:803
 msgid "Delete Donor"
 msgstr ""
 
-#: includes/admin/donors/donors.php:90, includes/admin/reports/class-donor-reports-table.php:145
-msgid "Search Donors"
-msgstr ""
-
-#: includes/admin/donors/donors.php:126
+#: includes/admin/donors/donors.php:123
 msgid "You are not permitted to view this data."
 msgstr ""
 
-#: includes/admin/donors/donors.php:164
+#: includes/admin/donors/donors.php:161
 msgid "Donor %s"
 msgstr ""
 
-#: includes/admin/donors/donors.php:239
+#: includes/admin/donors/donors.php:236
 msgid "Donor Name"
 msgstr ""
 
-#: includes/admin/donors/donors.php:243
+#: includes/admin/donors/donors.php:240
 msgid "Donor since"
 msgstr ""
 
-#: includes/admin/donors/donors.php:247
+#: includes/admin/donors/donors.php:244
 msgid "Edit Donor"
 msgstr ""
 
-#: includes/admin/donors/donors.php:257
+#: includes/admin/donors/donors.php:254
 msgid "User:"
 msgstr ""
 
-#: includes/admin/donors/donors.php:287, includes/admin/forms/class-metabox-form-data.php:311, includes/admin/payments/view-payment-details.php:390, includes/class-give-html-elements.php:399, includes/forms/widget.php:200
+#: includes/admin/donors/donors.php:284, includes/admin/forms/class-metabox-form-data.php:311, includes/admin/payments/view-payment-details.php:390, includes/class-give-html-elements.php:399, includes/forms/widget.php:200
 msgid "None"
 msgstr ""
 
-#: includes/admin/donors/donors.php:292
+#: includes/admin/donors/donors.php:289
 msgid "Disconnects the current user ID from this donor record."
 msgstr ""
 
-#: includes/admin/donors/donors.php:293
+#: includes/admin/donors/donors.php:290
 msgid "Disconnect User"
 msgstr ""
 
-#: includes/admin/donors/donors.php:298
+#: includes/admin/donors/donors.php:295
 msgid "View User Profile of current user ID."
 msgstr ""
 
-#: includes/admin/donors/donors.php:299
+#: includes/admin/donors/donors.php:296
 msgid "View User Profile"
 msgstr ""
 
-#: includes/admin/donors/donors.php:309
+#: includes/admin/donors/donors.php:306
 msgid "Address:"
 msgstr ""
 
-#: includes/admin/donors/donors.php:359, includes/admin/tools/export/class-batch-export-payments.php:47, includes/forms/template.php:957, includes/import-functions.php:378, templates/shortcode-profile-editor.php:161
+#: includes/admin/donors/donors.php:356, includes/admin/tools/export/class-batch-export-payments.php:47, includes/forms/template.php:957, includes/import-functions.php:378, templates/shortcode-profile-editor.php:161
 msgid "Address 1"
 msgstr ""
 
-#: includes/admin/donors/donors.php:360, includes/admin/tools/export/class-batch-export-donors.php:155, includes/admin/tools/export/class-batch-export-payments.php:48, includes/forms/template.php:979, includes/import-functions.php:379, templates/shortcode-profile-editor.php:167
+#: includes/admin/donors/donors.php:357, includes/admin/tools/export/class-batch-export-donors.php:155, includes/admin/tools/export/class-batch-export-payments.php:48, includes/forms/template.php:979, includes/import-functions.php:379, templates/shortcode-profile-editor.php:167
 msgid "Address 2"
 msgstr ""
 
-#: includes/admin/donors/donors.php:374, templates/shortcode-profile-editor.php:175
+#: includes/admin/donors/donors.php:371, templates/shortcode-profile-editor.php:175
 msgid "State / Province / County"
 msgstr ""
 
-#: includes/admin/donors/donors.php:378, includes/admin/tools/export/class-batch-export-donors.php:156, includes/admin/tools/export/class-batch-export-payments.php:49, includes/forms/template.php:1031, includes/forms/template.php:1043, includes/import-functions.php:380, templates/shortcode-profile-editor.php:197
+#: includes/admin/donors/donors.php:375, includes/admin/tools/export/class-batch-export-donors.php:156, includes/admin/tools/export/class-batch-export-payments.php:49, includes/forms/template.php:1031, includes/forms/template.php:1043, includes/import-functions.php:380, templates/shortcode-profile-editor.php:197
 msgid "City"
 msgstr ""
 
-#: includes/admin/donors/donors.php:379, includes/admin/tools/export/class-batch-export-payments.php:52, includes/forms/template.php:1051, includes/forms/template.php:1065, templates/shortcode-profile-editor.php:203
+#: includes/admin/donors/donors.php:376, includes/admin/tools/export/class-batch-export-payments.php:52, includes/forms/template.php:1051, includes/forms/template.php:1065, templates/shortcode-profile-editor.php:203
 msgid "Zip / Postal Code"
 msgstr ""
 
-#: includes/admin/donors/donors.php:397
+#: includes/admin/donors/donors.php:394
 msgid "Update Donor"
 msgstr ""
 
-#: includes/admin/donors/donors.php:398, includes/admin/donors/donors.php:807, includes/admin/payments/view-payment-details.php:553, includes/forms/template.php:1330
+#: includes/admin/donors/donors.php:395, includes/admin/donors/donors.php:804, includes/admin/payments/view-payment-details.php:553, includes/forms/template.php:1330
 msgid "Cancel"
 msgstr ""
 
-#: includes/admin/donors/donors.php:423
+#: includes/admin/donors/donors.php:420
 msgid "%d Completed Donation"
 msgid_plural "%d Completed Donations"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/donors/donors.php:430
+#: includes/admin/donors/donors.php:427
 msgid "Lifetime Donations"
 msgstr ""
 
-#: includes/admin/donors/donors.php:471
+#: includes/admin/donors/donors.php:468
 msgid "Donor Emails"
 msgstr ""
 
-#: includes/admin/donors/donors.php:477, includes/admin/donors/donors.php:548, includes/admin/donors/donors.php:606
+#: includes/admin/donors/donors.php:474, includes/admin/donors/donors.php:545, includes/admin/donors/donors.php:603
 msgid "Actions"
 msgstr ""
 
-#: includes/admin/donors/donors.php:505, includes/admin/donors/donors.php:519
+#: includes/admin/donors/donors.php:502, includes/admin/donors/donors.php:516
 msgid "Make Primary"
 msgstr ""
 
-#: includes/admin/donors/donors.php:507
+#: includes/admin/donors/donors.php:504
 msgid "Remove"
 msgstr ""
 
-#: includes/admin/donors/donors.php:518, includes/admin/tools/export/class-batch-export-donors.php:151, includes/forms/template.php:689, includes/forms/template.php:701, templates/shortcode-profile-editor.php:94
+#: includes/admin/donors/donors.php:515, includes/admin/tools/export/class-batch-export-donors.php:151, includes/forms/template.php:689, includes/forms/template.php:701, templates/email-login-form.php:110, templates/shortcode-profile-editor.php:94
 msgid "Email Address"
 msgstr ""
 
-#: includes/admin/donors/donors.php:520
+#: includes/admin/donors/donors.php:517
 msgid "Add Email"
 msgstr ""
 
-#: includes/admin/donors/donors.php:527
+#: includes/admin/donors/donors.php:524
 msgid "No Emails Found"
 msgstr ""
 
-#: includes/admin/donors/donors.php:533
+#: includes/admin/donors/donors.php:530
 msgid "Recent Donations"
 msgstr ""
 
-#: includes/admin/donors/donors.php:544, includes/admin/forms/class-metabox-form-data.php:207, includes/admin/tools/export/class-batch-export-forms.php:44, includes/admin/tools/export/class-batch-export-payments.php:42, includes/admin/tools/export/class-export.php:72, templates/history-donations.php:26
+#: includes/admin/donors/donors.php:541, includes/admin/forms/class-metabox-form-data.php:207, includes/admin/tools/export/class-batch-export-forms.php:44, includes/admin/tools/export/class-batch-export-payments.php:42, includes/admin/tools/export/class-export.php:72, templates/history-donations.php:26
 msgid "ID"
 msgstr ""
 
-#: includes/admin/donors/donors.php:545, includes/admin/forms/class-metabox-form-data.php:212, includes/admin/forms/class-metabox-form-data.php:384, includes/admin/forms/dashboard-columns.php:38, includes/admin/payments/class-payments-table.php:353, includes/admin/tools/export/class-batch-export-payments.php:55, templates/history-donations.php:29
+#: includes/admin/donors/donors.php:542, includes/admin/forms/class-metabox-form-data.php:212, includes/admin/forms/class-metabox-form-data.php:384, includes/admin/forms/dashboard-columns.php:38, includes/admin/payments/class-payments-table.php:353, includes/admin/tools/export/class-batch-export-payments.php:55, templates/history-donations.php:29
 msgid "Amount"
 msgstr ""
 
-#: includes/admin/donors/donors.php:546, includes/admin/forms/dashboard-columns.php:43, includes/admin/payments/class-payments-table.php:352, includes/admin/tools/export/class-batch-export-payments.php:59, includes/admin/tools/export/class-export-earnings.php:64, includes/admin/tools/export/class-export.php:73, includes/admin/tools/logs/class-api-requests-logs-list-table.php:96, includes/admin/tools/logs/class-gateway-error-logs-list-table.php:131, includes/admin/tools/logs/class-sales-logs-list-table.php:120, templates/history-donations.php:27, templates/shortcode-receipt.php:44
+#: includes/admin/donors/donors.php:543, includes/admin/forms/dashboard-columns.php:43, includes/admin/payments/class-payments-table.php:352, includes/admin/tools/export/class-batch-export-payments.php:59, includes/admin/tools/export/class-export-earnings.php:64, includes/admin/tools/export/class-export.php:73, includes/admin/tools/logs/class-api-requests-logs-list-table.php:96, includes/admin/tools/logs/class-gateway-error-logs-list-table.php:131, includes/admin/tools/logs/class-sales-logs-list-table.php:120, templates/history-donations.php:27, templates/shortcode-receipt.php:44
 msgid "Date"
 msgstr ""
 
-#: includes/admin/donors/donors.php:547, includes/admin/payments/class-payments-table.php:351, includes/admin/tools/export/class-batch-export-forms.php:51, includes/admin/tools/export/class-batch-export-payments.php:61, includes/admin/tools/logs/class-sales-logs-list-table.php:118, templates/history-donations.php:30
+#: includes/admin/donors/donors.php:544, includes/admin/payments/class-payments-table.php:351, includes/admin/tools/export/class-batch-export-forms.php:51, includes/admin/tools/export/class-batch-export-payments.php:61, includes/admin/tools/logs/class-sales-logs-list-table.php:118, templates/history-donations.php:30
 msgid "Status"
 msgstr ""
 
-#: includes/admin/donors/donors.php:566
+#: includes/admin/donors/donors.php:563
 msgid "View Donation %s."
 msgstr ""
 
-#: includes/admin/donors/donors.php:569, includes/post-types.php:102
+#: includes/admin/donors/donors.php:566, includes/post-types.php:102
 msgid "View Donation"
 msgstr ""
 
-#: includes/admin/donors/donors.php:598
+#: includes/admin/donors/donors.php:595
 msgid "Completed Forms"
 msgstr ""
 
-#: includes/admin/donors/donors.php:605, includes/admin/payments/class-payments-table.php:178, includes/admin/reports/class-form-reports-table.php:120, includes/admin/tools/logs/class-sales-logs-list-table.php:116, includes/post-types.php:42, includes/post-types.php:228
+#: includes/admin/donors/donors.php:602, includes/admin/payments/class-payments-table.php:178, includes/admin/reports/class-form-reports-table.php:120, includes/admin/tools/logs/class-sales-logs-list-table.php:116, includes/post-types.php:42, includes/post-types.php:228
 msgid "Form"
 msgstr ""
 
-#: includes/admin/donors/donors.php:621
+#: includes/admin/donors/donors.php:618
 msgid "View Form %s."
 msgstr ""
 
-#: includes/admin/donors/donors.php:624, includes/post-types.php:48, includes/post-types.php:387, includes/post-types.php:388, includes/post-types.php:389, includes/post-types.php:390, includes/post-types.php:391
+#: includes/admin/donors/donors.php:621, includes/post-types.php:48, includes/post-types.php:387, includes/post-types.php:388, includes/post-types.php:389, includes/post-types.php:390, includes/post-types.php:391
 msgid "View Form"
 msgstr ""
 
-#: includes/admin/donors/donors.php:632
+#: includes/admin/donors/donors.php:629
 msgid "No completed donations found."
 msgstr ""
 
-#: includes/admin/donors/donors.php:724
+#: includes/admin/donors/donors.php:721
 msgid "No donor notes found."
 msgstr ""
 
-#: includes/admin/donors/donors.php:775
+#: includes/admin/donors/donors.php:772
 msgid "Are you sure you want to delete this donor?"
 msgstr ""
 
-#: includes/admin/donors/donors.php:785
+#: includes/admin/donors/donors.php:782
 msgid "Delete all associated donations and records?"
 msgstr ""
 
@@ -1437,7 +1447,7 @@ msgstr ""
 msgid "Dropdown"
 msgstr ""
 
-#: includes/admin/forms/class-metabox-form-data.php:159, includes/misc-functions.php:716, includes/misc-functions.php:726, includes/payments/functions.php:1829
+#: includes/admin/forms/class-metabox-form-data.php:159, includes/misc-functions.php:716, includes/misc-functions.php:726, includes/payments/functions.php:1827
 msgid "Custom Amount"
 msgstr ""
 
@@ -1717,7 +1727,7 @@ msgstr ""
 msgid "Goal"
 msgstr ""
 
-#: includes/admin/forms/dashboard-columns.php:41, includes/admin/reports/class-earnings-report.php:46, includes/admin/reports/class-earnings-report.php:98, includes/admin/reports/class-form-reports-table.php:122, includes/admin/reports/graphing.php:180, includes/admin/reports/graphing.php:426, includes/admin/reports/reports.php:103, includes/admin/tools/export/class-batch-export-forms.php:57, includes/admin/tools/export/pdf-reports.php:268
+#: includes/admin/forms/dashboard-columns.php:41, includes/admin/reports/class-earnings-report.php:46, includes/admin/reports/class-earnings-report.php:98, includes/admin/reports/class-form-reports-table.php:122, includes/admin/reports/graphing.php:181, includes/admin/reports/graphing.php:428, includes/admin/reports/reports.php:103, includes/admin/tools/export/class-batch-export-forms.php:57, includes/admin/tools/export/pdf-reports.php:268
 msgid "Income"
 msgstr ""
 
@@ -1797,31 +1807,31 @@ msgstr ""
 msgid "Completed"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:277, includes/payments/functions.php:669
+#: includes/admin/payments/class-payments-table.php:277, includes/payments/functions.php:668
 msgid "Pending"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:281, includes/payments/functions.php:676
+#: includes/admin/payments/class-payments-table.php:281, includes/payments/functions.php:675
 msgid "Processing"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:285, includes/payments/functions.php:671, includes/post-types.php:299
+#: includes/admin/payments/class-payments-table.php:285, includes/payments/functions.php:670, includes/post-types.php:299
 msgid "Refunded"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:289, includes/payments/functions.php:677, includes/post-types.php:315
+#: includes/admin/payments/class-payments-table.php:289, includes/payments/functions.php:676, includes/post-types.php:315
 msgid "Revoked"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:293, includes/payments/functions.php:672, includes/post-types.php:307
+#: includes/admin/payments/class-payments-table.php:293, includes/payments/functions.php:671, includes/post-types.php:307
 msgid "Failed"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:297, includes/payments/functions.php:673, includes/post-types.php:323
+#: includes/admin/payments/class-payments-table.php:297, includes/payments/functions.php:672, includes/post-types.php:323
 msgid "Cancelled"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:301, includes/payments/functions.php:674, includes/post-types.php:331
+#: includes/admin/payments/class-payments-table.php:301, includes/payments/functions.php:673, includes/post-types.php:331
 msgid "Abandoned"
 msgstr ""
 
@@ -2145,7 +2155,7 @@ msgstr ""
 msgid "Donation Forms Report"
 msgstr ""
 
-#: includes/admin/reports/class-forms-report.php:46, includes/admin/reports/class-forms-report.php:93, includes/admin/reports/reports.php:104, includes/admin/tools/import/class-give-import-donations.php:503, includes/post-types.php:229
+#: includes/admin/reports/class-forms-report.php:46, includes/admin/reports/class-forms-report.php:98, includes/admin/reports/reports.php:104, includes/admin/tools/import/class-give-import-donations.php:503, includes/post-types.php:229
 msgid "Forms"
 msgstr ""
 
@@ -2177,79 +2187,79 @@ msgstr ""
 msgid "Donation Methods Report"
 msgstr ""
 
-#: includes/admin/reports/graphing.php:208, includes/admin/reports/graphing.php:455
+#: includes/admin/reports/graphing.php:209, includes/admin/reports/graphing.php:457
 msgid "Total income for period:"
 msgstr ""
 
-#: includes/admin/reports/graphing.php:212, includes/admin/reports/graphing.php:459
+#: includes/admin/reports/graphing.php:213, includes/admin/reports/graphing.php:461
 msgid "Total donations for period:"
 msgstr ""
 
-#: includes/admin/reports/graphing.php:217
+#: includes/admin/reports/graphing.php:218
 msgid "Estimated monthly income:"
 msgstr ""
 
-#: includes/admin/reports/graphing.php:221
+#: includes/admin/reports/graphing.php:222
 msgid "Estimated monthly donations:"
 msgstr ""
 
-#: includes/admin/reports/graphing.php:434
+#: includes/admin/reports/graphing.php:436
 msgid "Income Report for %s"
 msgstr ""
 
-#: includes/admin/reports/graphing.php:463
+#: includes/admin/reports/graphing.php:465
 msgid "Average monthly income:"
 msgstr ""
 
-#: includes/admin/reports/graphing.php:467
+#: includes/admin/reports/graphing.php:469
 msgid "Average monthly donations:"
 msgstr ""
 
-#: includes/admin/reports/graphing.php:488, includes/class-give-stats.php:96
+#: includes/admin/reports/graphing.php:490, includes/class-give-stats.php:96
 msgid "Today"
 msgstr ""
 
-#: includes/admin/reports/graphing.php:489, includes/class-give-stats.php:97
+#: includes/admin/reports/graphing.php:491, includes/class-give-stats.php:97
 msgid "Yesterday"
 msgstr ""
 
-#: includes/admin/reports/graphing.php:491, includes/class-give-stats.php:99
+#: includes/admin/reports/graphing.php:493, includes/class-give-stats.php:99
 msgid "Last Week"
 msgstr ""
 
-#: includes/admin/reports/graphing.php:494, includes/class-give-stats.php:102
+#: includes/admin/reports/graphing.php:496, includes/class-give-stats.php:102
 msgid "This Quarter"
 msgstr ""
 
-#: includes/admin/reports/graphing.php:495, includes/class-give-stats.php:103
+#: includes/admin/reports/graphing.php:497, includes/class-give-stats.php:103
 msgid "Last Quarter"
 msgstr ""
 
-#: includes/admin/reports/graphing.php:497, includes/class-give-stats.php:105
+#: includes/admin/reports/graphing.php:499, includes/class-give-stats.php:105
 msgid "Last Year"
 msgstr ""
 
-#: includes/admin/reports/graphing.php:498
+#: includes/admin/reports/graphing.php:500
 msgid "Custom"
 msgstr ""
 
-#: includes/admin/reports/graphing.php:536
+#: includes/admin/reports/graphing.php:538
 msgid "From"
 msgstr ""
 
-#: includes/admin/reports/graphing.php:552
+#: includes/admin/reports/graphing.php:554
 msgid "To"
 msgstr ""
 
-#: includes/admin/reports/graphing.php:571
+#: includes/admin/reports/graphing.php:573
 msgid "Filter"
 msgstr ""
 
-#: includes/admin/reports/graphing.php:818
+#: includes/admin/reports/graphing.php:823
 msgid "Clicking this will clear the reports cache."
 msgstr ""
 
-#: includes/admin/reports/graphing.php:821
+#: includes/admin/reports/graphing.php:826
 msgid "Refresh Report Data"
 msgstr ""
 
@@ -2257,19 +2267,23 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
-#: includes/admin/reports/reports.php:176
+#: includes/admin/reports/reports.php:143
+msgid "You do not have permission to access this report"
+msgstr ""
+
+#: includes/admin/reports/reports.php:181
 msgid "Report Type"
 msgstr ""
 
-#: includes/admin/reports/reports.php:195, includes/admin/shortcodes/shortcode-give-form.php:70, includes/admin/shortcodes/shortcode-give-form.php:80, includes/admin/shortcodes/shortcode-give-goal.php:71, includes/admin/shortcodes/shortcode-give-goal.php:81, includes/admin/shortcodes/shortcode-give-receipt.php:50, includes/admin/shortcodes/shortcode-give-receipt.php:59, includes/admin/shortcodes/shortcode-give-receipt.php:68, includes/admin/shortcodes/shortcode-give-receipt.php:77, includes/admin/shortcodes/shortcode-give-receipt.php:86, includes/admin/shortcodes/shortcode-give-receipt.php:95
+#: includes/admin/reports/reports.php:200, includes/admin/shortcodes/shortcode-give-form.php:70, includes/admin/shortcodes/shortcode-give-form.php:80, includes/admin/shortcodes/shortcode-give-goal.php:71, includes/admin/shortcodes/shortcode-give-goal.php:81, includes/admin/shortcodes/shortcode-give-receipt.php:50, includes/admin/shortcodes/shortcode-give-receipt.php:59, includes/admin/shortcodes/shortcode-give-receipt.php:68, includes/admin/shortcodes/shortcode-give-receipt.php:77, includes/admin/shortcodes/shortcode-give-receipt.php:86, includes/admin/shortcodes/shortcode-give-receipt.php:95
 msgid "Show"
 msgstr ""
 
-#: includes/admin/reports/reports.php:247
+#: includes/admin/reports/reports.php:252
 msgid "Go Back"
 msgstr ""
 
-#: includes/admin/reports/reports.php:283
+#: includes/admin/reports/reports.php:288
 msgid "Income Report"
 msgstr ""
 
@@ -4738,7 +4752,7 @@ msgstr ""
 msgid "Improper date provided."
 msgstr ""
 
-#: includes/class-notices.php:439
+#: includes/class-notices.php:457
 msgid "Click here"
 msgstr ""
 
@@ -9670,19 +9684,19 @@ msgstr ""
 msgid "Status changed from %1$s to %2$s."
 msgstr ""
 
-#: includes/payments/functions.php:670
+#: includes/payments/functions.php:669
 msgid "Complete"
 msgstr ""
 
-#: includes/payments/functions.php:675
+#: includes/payments/functions.php:674
 msgid "Pre-Approved"
 msgstr ""
 
-#: includes/payments/functions.php:1630
+#: includes/payments/functions.php:1628
 msgid "Delete this donation note."
 msgstr ""
 
-#: includes/payments/functions.php:1935
+#: includes/payments/functions.php:1933
 msgctxt "custom donation dropdown item"
 msgid "Custom"
 msgstr ""
@@ -10106,70 +10120,82 @@ msgid "Type to search all states/provinces"
 msgstr ""
 
 #: includes/scripts.php:338
-msgid "You must choose at least one or more payments to delete."
+msgid "You must choose at least one or more donors to delete."
 msgstr ""
 
 #: includes/scripts.php:339
-msgid "Are you sure you want to permanently delete this donation?"
+msgid "Are you sure you want to permanently delete this donor and associated records?"
 msgstr ""
 
 #: includes/scripts.php:340
-msgid "Are you sure you want to permanently delete the selected {payment_count} donations?"
-msgstr ""
-
-#: includes/scripts.php:343
-msgid "You must choose at least one or more recipients to resend the email receipt."
-msgstr ""
-
-#: includes/scripts.php:344
-msgid "Are you sure you want to resend the email receipt to this recipient?"
+msgid "Are you sure you want to permanently delete the selected {donor_count} donors and associated records?"
 msgstr ""
 
 #: includes/scripts.php:345
-msgid "Are you sure you want to resend the emails receipt to {payment_count} recipients?"
+msgid "You must choose at least one or more donations to delete."
 msgstr ""
 
-#: includes/scripts.php:348
-msgid "You must choose at least one or more donations to set status to {status}."
+#: includes/scripts.php:346
+msgid "Are you sure you want to permanently delete this donation?"
 msgstr ""
 
-#: includes/scripts.php:349
-msgid "Are you sure you want to set status of this donation to {status}?"
+#: includes/scripts.php:347
+msgid "Are you sure you want to permanently delete the selected {payment_count} donations?"
 msgstr ""
 
 #: includes/scripts.php:350
-msgid "Are you sure you want to set status of {payment_count} donations to {status}?"
+msgid "You must choose at least one or more recipients to resend the email receipt."
+msgstr ""
+
+#: includes/scripts.php:351
+msgid "Are you sure you want to resend the email receipt to this recipient?"
+msgstr ""
+
+#: includes/scripts.php:352
+msgid "Are you sure you want to resend the emails receipt to {payment_count} recipients?"
 msgstr ""
 
 #: includes/scripts.php:355
-msgid "Choose Image"
+msgid "You must choose at least one or more donations to set status to {status}."
 msgstr ""
 
-#: includes/scripts.php:358
-msgid "Choose File"
+#: includes/scripts.php:356
+msgid "Are you sure you want to set status of this donation to {status}?"
+msgstr ""
+
+#: includes/scripts.php:357
+msgid "Are you sure you want to set status of {payment_count} donations to {status}?"
 msgstr ""
 
 #: includes/scripts.php:362
-msgid "No results match {search_term}"
-msgstr ""
-
-#: includes/scripts.php:363
-msgid "Searching results for match {search_term}"
+msgid "Choose Image"
 msgstr ""
 
 #: includes/scripts.php:365
-msgid "Run Updates"
-msgstr ""
-
-#: includes/scripts.php:366
-msgid "The following process will make updates to your site's database. Please create a database backup before proceeding with updates."
-msgstr ""
-
-#: includes/scripts.php:367
-msgid "Something went wrong kindly try again!"
+msgid "Choose File"
 msgstr ""
 
 #: includes/scripts.php:369
+msgid "No results match {search_term}"
+msgstr ""
+
+#: includes/scripts.php:370
+msgid "Searching results for match {search_term}"
+msgstr ""
+
+#: includes/scripts.php:372
+msgid "Run Updates"
+msgstr ""
+
+#: includes/scripts.php:373
+msgid "The following process will make updates to your site's database. Please create a database backup before proceeding with updates."
+msgstr ""
+
+#: includes/scripts.php:374
+msgid "Something went wrong kindly try again!"
+msgstr ""
+
+#: includes/scripts.php:376
 msgid "Changes you made may not be saved."
 msgstr ""
 
@@ -10285,40 +10311,32 @@ msgstr ""
 msgid "[%s] Your username and password"
 msgstr ""
 
-#: templates/email-login-form.php:44
+#: templates/email-login-form.php:45
 msgid "reCAPTCHA test failed."
 msgstr ""
 
-#: templates/email-login-form.php:49
+#: templates/email-login-form.php:50
 msgid "Unable to connect to reCAPTCHA server."
 msgstr ""
 
-#: templates/email-login-form.php:55
+#: templates/email-login-form.php:56
 msgid "It looks like the reCAPTCHA test has failed."
 msgstr ""
 
-#: templates/email-login-form.php:71
-msgid "It looks like that donor email address does not exist."
+#: templates/email-login-form.php:84
+msgid "It looks like that email address provided and access token of the link does not match."
 msgstr ""
 
-#: templates/email-login-form.php:85
-msgid "Please enter the email address you used for your donation. A verification email containing an access link will be sent to you."
+#: templates/email-login-form.php:105
+msgid "Please enter the email address you used for your donation."
 msgstr ""
 
-#: templates/email-login-form.php:89
+#: templates/email-login-form.php:109
 msgid "Donation Email:"
 msgstr ""
 
-#: templates/email-login-form.php:90
-msgid "Your donation email"
-msgstr ""
-
-#: templates/email-login-form.php:113
-msgid "Email access token"
-msgstr ""
-
-#: templates/email-login-form.php:124
-msgid "An email with an access link has been sent to %s."
+#: templates/email-login-form.php:133
+msgid "Verify Email"
 msgstr ""
 
 #: templates/history-donations.php:166
