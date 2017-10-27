@@ -224,22 +224,23 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 		}
 
 		$currency = $currency_settings[0];
-		give_update_option( 'number_decimals', 2 );
 
 		switch ( $currency ) {
 			default:
 				// Test 1: without decimal
+				give_update_option( 'number_decimals', 0 );
 				$output = give_format_amount( $amount, array( 'decimal' => false, 'sanitize' => ! is_numeric( $amount ), 'currency' => $currency ) );
-				$this->assertSame( $expected[0], $output, "Testing {$amount} with {$currency} currency and expected {$expected[1]} (without decimal)." );
+				$this->assertSame( $expected[0], $output, "Testing {$amount} with {$currency} currency and expected {$expected[0]} (without decimal)." );
 
 				// Test 2: with decimal(2)
+				give_update_option( 'number_decimals', 2 );
 				$output = give_format_amount( $amount, array( 'sanitize' => ! is_numeric( $amount ), 'currency' => $currency ) );
 				$this->assertSame( $expected[1], $output, "Testing {$amount} with {$currency} currency and expected {$expected[1]} (with decimal {2})." );
 
 				// Test 3: with decimal (more then 2)
 				give_update_option( 'number_decimals', 4 );
 				$output = give_format_amount( $amount, array( 'sanitize' => ! is_numeric( $amount ), 'currency' => $currency ) );
-				$this->assertSame( $expected[2], $output, "Testing {$amount} with {$currency} currency and expected {$expected[1]} (with decimal {4})." );
+				$this->assertSame( $expected[2], $output, "Testing {$amount} with {$currency} currency and expected {$expected[2]} (with decimal {4})." );
 		}
 	}
 

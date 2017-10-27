@@ -157,7 +157,7 @@ function give_insert_payment( $payment_data = array() ) {
 	// Set properties.
 	$payment->total          = $payment_data['price'];
 	$payment->status         = ! empty( $payment_data['status'] ) ? $payment_data['status'] : 'pending';
-	$payment->currency       = ! empty( $payment_data['currency'] ) ? $payment_data['currency'] : give_get_currency();
+	$payment->currency       = ! empty( $payment_data['currency'] ) ? $payment_data['currency'] : give_get_currency( $payment_data['give_form_id'], $payment_data );
 	$payment->user_info      = $payment_data['user_info'];
 	$payment->gateway        = $gateway;
 	$payment->form_title     = $form_title;
@@ -239,7 +239,7 @@ function give_create_payment( $payment_data ) {
 		'date'            => $payment_data['date'],
 		'user_email'      => $payment_data['user_email'],
 		'purchase_key'    => $payment_data['purchase_key'],
-		'currency'        => give_get_currency(),
+		'currency'        => give_get_currency( $form_id, $payment_data ),
 		'user_info'       => $payment_data['user_info'],
 		'status'          => 'pending',
 		'gateway'         => 'paypal',
@@ -914,7 +914,7 @@ function give_get_total_earnings( $recalculate = false ) {
 		$total = 0; // Don't ever show negative earnings.
 	}
 
-	return apply_filters( 'give_total_earnings', round( $total, give_currency_decimal_filter() ) );
+	return apply_filters( 'give_total_earnings', round( $total, give_get_price_decimals() ), $total );
 }
 
 /**

@@ -1,11 +1,11 @@
 === Give - Donation Plugin and Fundraising Platform ===
-Contributors: givewp, wordimpress, dlocc, webdevmattcrom, ravinderk, raftaar1191, mehul0810
+Contributors: givewp, wordimpress, dlocc, webdevmattcrom, ravinderk, kevinwhoffman, raftaar1191, mehul0810
 Donate link: https://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
 Requires at least: 4.2
 Tested up to: 4.8
 Requires PHP: 5.3
-Stable tag: 1.8.14
+Stable tag: 1.8.16
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -207,6 +207,13 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 1.8.15: October 18th, 2017  =
+* New: Added support for dynamic currencies. [#2197](https://github.com/WordImpress/Give/issues/2197)
+* Fix: The importer should map "Postal Code" and "Zip" to the single field. [#2164](https://github.com/WordImpress/Give/issues/2164)
+* Fix: Renamed importer field "Donation Form" to proper naming "Donation Form Title". [#2165](https://github.com/WordImpress/Give/issues/2165)
+* Fix: Issue with give_validate_license_when_site_migrated() causing sites to have excessive $_POST requests to the licensing server.
+* Fix: Improved the Tools > Data confirmation checkbox and submit button functionality to prevent excessive clicks. [#2195](https://github.com/WordImpress/Give/issues/2195)
 
 = 1.8.14: October 13th, 2017  =
 * New: Integrated with Akismet for improved spam filtering [#673](https://github.com/WordImpress/Give/issues/673)

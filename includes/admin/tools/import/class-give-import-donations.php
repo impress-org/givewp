@@ -432,9 +432,6 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 
 				<?php
 				$raw_key   = $this->get_importer( $csv, 0, $delimiter );
-				$donations = give_import_donations_options();
-				$donors    = give_import_donor_options();
-				$forms     = give_import_donation_form_options();
 				$mapto     = (array) ( isset( $_REQUEST['mapto'] ) ? $_REQUEST['mapto'] : array() );
 
 				foreach ( $raw_key as $index => $value ) {
@@ -443,7 +440,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						<th><?php echo $value; ?></th>
 						<th>
 							<?php
-							$this->get_columns( $index, $donations, $donors, $forms, $value, $mapto );
+							$this->get_columns( $index, $value, $mapto );
 							?>
 						</th>
 					</tr>
@@ -459,16 +456,13 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 * @return string
 		 */
 		public function selected( $option_value, $value ) {
+			$option_value = strtolower( $option_value );
+			$value = strtolower( $value );
+
 			$selected = '';
-
-			// Postal Code also needs to map with zip.
-			if ( 'postal code' === strtolower( $value ) ) {
-				$value = 'Zip';
-			}
-
 			if ( stristr( $value, $option_value ) ) {
 				$selected = 'selected';
-			} elseif ( strrpos( $value, '_' ) && stristr( $option_value, 'Import as Meta' ) ) {
+			} elseif ( strrpos( $value, '_' ) && stristr( $option_value, __( 'Import as Meta', 'give' ) ) ) {
 				$selected = 'selected';
 			}
 
@@ -479,70 +473,86 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 * Print the columns from the CSV.
 		 *
 		 * @since 1.8.14
+		 * @access private
+		 *
+		 * @param string  $index
+		 * @param bool  $value
+		 * @param array $mapto
+		 *
+		 * @return void
 		 */
-		public function get_columns( $index, $donations, $donors, $forms, $value = false, $mapto = array() ) {
+		private function get_columns( $index, $value = false, $mapto = array() ) {
 			$default       = give_import_default_options();
 			$current_mapto = (string) ( ! empty( $mapto[ $index ] ) ? $mapto[ $index ] : '' );
 			?>
 			<select name="mapto[<?php echo $index; ?>]">
-				<?php
-				foreach ( $default as $option => $option_value ) {
-					$checked = ( ( $current_mapto === $option ) ? 'selected' : false );
-					if ( empty( $checked ) ) {
-						$checked = $this->selected( $option_value, $value );
-					}
-					?>
-					<option value="<?php echo $option; ?>" <?php echo $checked; ?> ><?php echo $option_value; ?></option>
+				<?php $this->get_dropdown_option_html( $default, $current_mapto, $value ); ?>
+
+				<optgroup label="<?php _e( 'Donations', 'give' ); ?>">
 					<?php
-				}
-				?>
-				<optgroup label="Donations">
-					<?php
-					foreach ( $donations as $option => $option_value ) {
-						$checked = ( ( $current_mapto === $option ) ? 'selected' : false );
-						if ( empty( $checked ) ) {
-							$checked = $this->selected( $option_value, $value );
-						}
-						?>
-						<option value="<?php echo $option; ?>" <?php echo $checked; ?> ><?php echo $option_value; ?></option>
-						<?php
-					}
+					$this->get_dropdown_option_html( give_import_donations_options(), $current_mapto, $value );
 					?>
 				</optgroup>
 
-				<optgroup label="Donors">
+				<optgroup label="<?php _e( 'Donors', 'give' ); ?>">
 					<?php
-					foreach ( $donors as $option => $option_value ) {
-						$checked = ( ( $current_mapto === $option ) ? 'selected' : false );
-						if ( empty( $checked ) ) {
-							$checked = $this->selected( $option_value, $value );
-						}
-						?>
-						<option value="<?php echo $option; ?>" <?php echo $checked; ?> ><?php echo $option_value; ?></option>
-						<?php
-					}
+					$this->get_dropdown_option_html( give_import_donor_options(), $current_mapto, $value );
 					?>
 				</optgroup>
 
-				<optgroup label="Forms">
+				<optgroup label="<?php _e( 'Forms', 'give' ); ?>">
 					<?php
-					foreach ( $forms as $option => $option_value ) {
-						$checked = ( ( $current_mapto === $option ) ? 'selected' : false );
-						if ( empty( $checked ) ) {
-							$checked = $this->selected( $option_value, $value );
-						}
-						?>
-						<option value="<?php echo $option; ?>" <?php echo $checked; ?> ><?php echo $option_value; ?></option>
-						<?php
-					}
+					$this->get_dropdown_option_html( give_import_donation_form_options(), $current_mapto, $value );
 					?>
 				</optgroup>
 
 				<?php
-				do_action( 'give_import_dropdown_option', $index, $donations, $donors, $forms, $value );
+				/**
+				 * Fire the action
+				 * You can use this filter to add new options.
+				 *
+				 * @since 1.8.15
+				 */
+				do_action( 'give_import_dropdown_option', $index, $value, $mapto, $current_mapto );
 				?>
 			</select>
 			<?php
+		}
+
+		/**
+		 * Print the option html for select in importer
+		 *
+		 * @since  1.8.15
+		 * @access public
+		 *
+		 * @param  array  $options
+		 * @param  string $current_mapto
+		 * @param bool    $value
+		 *
+		 * @return void
+		 */
+		public function get_dropdown_option_html( $options, $current_mapto, $value = false ) {
+			foreach ( $options as $option => $option_value ) {
+				$option_value_texts = (array) $option_value;
+				$option_text = $option_value_texts[0];
+
+				$checked = ( ( $current_mapto === $option ) ? 'selected' : false );
+				if ( empty( $checked ) ) {
+					foreach ( $option_value_texts as $option_value_text ) {
+						$checked = $this->selected( $option_value_text, $value );
+						if ( $checked ) {
+							break;
+						}
+					}
+				}
+
+				echo sprintf(
+					'<option value="%1$s" %2$s >%3$s</option>',
+					$option,
+					$checked,
+					$option_text
+				);
+			}
 		}
 
 		/**
