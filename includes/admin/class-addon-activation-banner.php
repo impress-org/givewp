@@ -109,77 +109,13 @@ class Give_Addon_Activation_Banner {
 		// If the user hasn't already dismissed the alert, output activation banner.
 		if ( ! get_user_meta( $this->user_id, $this->nag_meta_key ) ) {
 
+			$this->print_css();
+
 			// Output inline styles here because there's no reason
 			// to enqueued them after the alert is dismissed.
+
+			ob_start();
 			?>
-			<style>
-				div.give-addon-alert.updated {
-					padding: 20px;
-					position: relative;
-					border-color: #66BB6A;
-				}
-
-				div.give-alert-message {
-					margin-left: 70px;
-				}
-
-				div.give-addon-alert img.give-logo {
-					max-width: 50px;
-					float: left;
-				}
-
-				div.give-addon-alert h3 {
-					margin: -5px 0 10px;
-					font-size: 22px;
-					font-weight: 300;
-					line-height: 30px;
-				}
-
-				div.give-addon-alert h3 span {
-					font-weight: 700;
-					color: #66BB6A;
-				}
-
-				div.give-addon-alert .alert-actions {
-				}
-
-				div.give-addon-alert a {
-					color: #66BB6A;
-				}
-
-				div.give-addon-alert .alert-actions a {
-					margin-right: 2em;
-				}
-
-				div.give-addon-alert .alert-actions a {
-					text-decoration: underline;
-				}
-
-				div.give-addon-alert .alert-actions a:hover {
-					color: #555555;
-				}
-
-				div.give-addon-alert .alert-actions a span {
-					text-decoration: none;
-					margin-right: 5px;
-				}
-
-				div.give-addon-alert .dismiss {
-					position: absolute;
-					right: 20px;
-					height: 100%;
-					top: 50%;
-					margin-top: -10px;
-					outline: none;
-					box-shadow: none;
-					text-decoration: none;
-					color: #AAA;
-				}
-
-				div.give-addon-alert .dismiss:hover {
-					color: #333;
-				}
-			</style>
 
 			<div class="updated give-addon-alert give-notice" style="display: none">
 
@@ -235,7 +171,98 @@ class Give_Addon_Activation_Banner {
 				</div>
 			</div>
 			<?php
+
+			$notice_html = ob_get_clean();
+			
+			
+			// Register notice.
+			Give()->notices->register_notice( array(
+				'id'          => 'give_' . sanitize_title( $this->banner_details['name'] ) . '_notice',
+				'type'        => 'updated',
+				'description_html' => $notice_html,
+				'show'        => true,
+			) );
 		}
+	}
+
+
+	/**
+	 * Add activation banner css.
+	 *
+	 * @since 1.8.16
+	 * @access private
+	 */
+	private function print_css(){
+		?>
+		<style>
+			div.give-addon-alert.updated {
+				padding: 20px;
+				position: relative;
+				border-color: #66BB6A;
+			}
+
+			div.give-alert-message {
+				margin-left: 70px;
+			}
+
+			div.give-addon-alert img.give-logo {
+				max-width: 50px;
+				float: left;
+			}
+
+			div.give-addon-alert h3 {
+				margin: -5px 0 10px;
+				font-size: 22px;
+				font-weight: 300;
+				line-height: 30px;
+			}
+
+			div.give-addon-alert h3 span {
+				font-weight: 700;
+				color: #66BB6A;
+			}
+
+			div.give-addon-alert .alert-actions {
+			}
+
+			div.give-addon-alert a {
+				color: #66BB6A;
+			}
+
+			div.give-addon-alert .alert-actions a {
+				margin-right: 2em;
+			}
+
+			div.give-addon-alert .alert-actions a {
+				text-decoration: underline;
+			}
+
+			div.give-addon-alert .alert-actions a:hover {
+				color: #555555;
+			}
+
+			div.give-addon-alert .alert-actions a span {
+				text-decoration: none;
+				margin-right: 5px;
+			}
+
+			div.give-addon-alert .dismiss {
+				position: absolute;
+				right: 20px;
+				height: 100%;
+				top: 50%;
+				margin-top: -10px;
+				outline: none;
+				box-shadow: none;
+				text-decoration: none;
+				color: #AAA;
+			}
+
+			div.give-addon-alert .dismiss:hover {
+				color: #333;
+			}
+		</style>
+		<?php
 	}
 
 

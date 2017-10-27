@@ -121,6 +121,16 @@ class Give_Notices {
 				'description'           => '',
 
 				/*
+				 * Add custom notice html
+				 * Note: This param has more priority then description, so if you have  both param then this one will be use
+				 *       for generating notice html. Most of feature of notice attach to core generated html, so if you set
+				 *       custom html then please add required classes and data attribute which help to apply feature on notice.
+				 *
+				 * @since 1.8.16
+				 */
+				'description_html'      => '',
+
+				/*
 				 * Add New Parameter and remove the auto_dismissible parameter.
 				 * Value: auto/true/false
 				 *
@@ -139,6 +149,7 @@ class Give_Notices {
 
 				// Only set it when custom is defined.
 				'dismiss_interval_time' => null,
+
 
 			)
 		);
@@ -203,6 +214,13 @@ class Give_Notices {
 		foreach ( self::$notices as $notice_id => $notice ) {
 			// Check flag set to true to show notice.
 			if ( ! $notice['show'] ) {
+				continue;
+			}
+
+
+			// Render custom html.
+			if( ! empty( $notice['description_html'] ) ) {
+				$output .= "{$notice['description_html']} \n";
 				continue;
 			}
 
