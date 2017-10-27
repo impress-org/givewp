@@ -351,8 +351,11 @@ class Give_Payment_History_Table extends WP_List_Table {
 			'status'        => esc_html__( 'Status', 'give' ),
 			'date'          => esc_html__( 'Date', 'give' ),
 			'amount'        => esc_html__( 'Amount', 'give' ),
-			'details'       => esc_html__( 'Details', 'give' ),
 		);
+
+		if( current_user_can( 'view_give_payments' ) ) {
+			$columns['details'] = __( 'Details', 'give' );
+		}
 
 		return apply_filters( 'give_payments_table_columns', $columns );
 	}
@@ -510,10 +513,12 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 		}
 
-		$actions['delete'] = sprintf( '<a class="delete-single-donation" href="%1$s" aria-label="%2$s">%3$s</a>', wp_nonce_url( add_query_arg( array(
-			'give-action' => 'delete_payment',
-			'purchase_id' => $payment->ID,
-		), $this->base_url ), 'give_donation_nonce' ), sprintf( esc_attr__( 'Delete Donation %s', 'give' ), $payment->ID ), esc_html__( 'Delete', 'give' ) );
+		if( current_user_can( 'view_give_payments' ) ) {
+			$actions['delete'] = sprintf( '<a class="delete-single-donation" href="%1$s" aria-label="%2$s">%3$s</a>', wp_nonce_url( add_query_arg( array(
+				'give-action' => 'delete_payment',
+				'purchase_id' => $payment->ID,
+			), $this->base_url ), 'give_donation_nonce' ), sprintf( esc_attr__( 'Delete Donation %s', 'give' ), $payment->ID ), esc_html__( 'Delete', 'give' ) );
+		}
 
 		return apply_filters( 'give_payment_row_actions', $actions, $payment );
 	}
