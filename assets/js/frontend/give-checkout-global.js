@@ -11,8 +11,8 @@ var give_scripts, give_global_vars;
 
 jQuery(function ($) {
 
-	var doc = $(document);
-    var format_args = {};
+	var doc = $( document );
+	var format_args = {};
 
 	/**
 	 * Update state/province fields per country selection
@@ -135,8 +135,8 @@ jQuery(function ($) {
 		price               = price.toString().trim();
 		var number_decimals = parseInt(args.decimal);
 
-        if ('INR' === args.currency) {
-            actual_price = accounting.unformat(price, args.decimal).toString();
+		if ( 'INR' === args.currency ) {
+			actual_price = accounting.unformat( price, args.decimal ).toString();
 
 			var decimal_amount = result = amount = '',
 				decimal_index = actual_price.indexOf('.');
@@ -156,11 +156,11 @@ jQuery(function ($) {
 			result = actual_price.substr(-3);
 			amount = actual_price.substr(0, parseInt(actual_price.length) - 3);
 
-            // Apply digits 2 by 2
-            while (amount.length > 0) {
-                result = amount.substr(-2) + args.thousand + result;
-                amount = amount.substr(0, parseInt(amount.length) - 2);
-            }
+			// Apply digits 2 by 2
+			while ( amount.length > 0 ) {
+				result = amount.substr( -2 ) + args.thousand + result;
+				amount = amount.substr( 0, parseInt( amount.length ) - 2 );
+			}
 
 			if (decimal_amount.length) {
 				result = result + decimal_amount;
@@ -168,59 +168,59 @@ jQuery(function ($) {
 
 			price = result;
 
-            if (undefined !== args.symbol && args.symbol.length) {
-                if ('after' === args.position) {
-                    price = price + args.symbol;
-                } else {
-                    price = args.symbol + price;
-                }
-            }
-        } else {
-            //Properly position symbol after if selected
-            if ('after' === args.position) {
-                args.format = "%v%s";
-            }
+			if ( undefined !== args.symbol && args.symbol.length ) {
+				if ( 'after' === args.position ) {
+					price = price + args.symbol;
+				} else {
+					price = args.symbol + price;
+				}
+			}
+		} else {
+			//Properly position symbol after if selected
+			if ( 'after' === args.position ) {
+				args.format = "%v%s";
+			}
 
-			price = accounting.formatMoney(price, args);
+			price = accounting.formatMoney( price, args );
 		}
 
 		return price;
 
 	}
 
-    /**
-     * Unformat Currency
-     *
-     * @param price
-     * @param {string} decimal_separator
-     * @returns {number}
-     */
-    function give_unformat_currency(price , decimal_separator) {
-        return Math.abs(parseFloat(accounting.unformat(price, decimal_separator)));
-    }
+	/**
+	 * Unformat Currency
+	 *
+	 * @param price
+	 * @param {string} decimal_separator
+	 * @returns {number}
+	 */
+	function give_unformat_currency( price, decimal_separator ) {
+		return Math.abs( parseFloat( accounting.unformat( price, decimal_separator ) ) );
+	}
 
-    /**
-     * Get formatted amount
-     *
-     * @param {string/number} amount
-     * @param {object} form
-     */
-    function give_format_amount(amount, form) {
-        form = form || '';
+	/**
+	 * Get formatted amount
+	 *
+	 * @param {string/number} amount
+	 * @param {object} form
+	 */
+	function give_format_amount( amount, form ) {
+		form = form || '';
 
-        if ( '' !== form ) {
+		if ( '' !== form ) {
 
-            //Set the custom amount input value format properly
-            var format_args = {
-                symbol: '',
-                decimal: form.find('input[name="give-currency-decimal_separator"]').val(),
-                thousand: form.find('input[name="give-currency-thousands_separator"]').val(),
-                precision: form.find('input[name="give-currency-number_decimals"]').val(),
-                currency: form.find('input[name="give-currency"]').val()
-            };
-        }
-        return give_format_currency(amount, format_args);
-    }
+			//Set the custom amount input value format properly
+			var format_args = {
+				symbol: '',
+				decimal: form.find( 'input[name="give-currency-decimal_separator"]' ).val(),
+				thousand: form.find( 'input[name="give-currency-thousands_separator"]' ).val(),
+				precision: form.find( 'input[name="give-currency-number_decimals"]' ).val(),
+				currency: form.find( 'input[name="give-currency"]' ).val()
+			};
+		}
+		return give_format_currency( amount, format_args );
+	}
 
 	/**
 	 * Get Price ID and levels for multi donation form
@@ -245,14 +245,14 @@ jQuery(function ($) {
 				) ? jQuery(item) : item
 			);
 
-            var decimal_separator = $form.find('give-currency-decimal_separator').val();
+			var decimal_separator = $form.find( 'give-currency-decimal_separator' ).val();
 
-            // Add price id and amount to collector.
-            variable_prices.push({
-                price_id: item.data('price-id'),
-                amount: give_unformat_currency(item.val(), decimal_separator)
-            });
-        });
+			// Add price id and amount to collector.
+			variable_prices.push( {
+				price_id: item.data( 'price-id' ),
+				amount: give_unformat_currency( item.val(), decimal_separator )
+			} );
+		} );
 
 		return variable_prices;
 	}
@@ -303,10 +303,10 @@ jQuery(function ($) {
 		//Remove any invalid class
 		$(this).removeClass('invalid-amount');
 
-        //Set data amount
-        var current_total = parent_form.find('.give-final-total-amount').data('total');
-        var decimal_separator = parent_form.find('give-currency-decimal_separator').val();
-        $(this).data('amount', give_unformat_currency(current_total, decimal_separator));
+		//Set data amount
+		var current_total = parent_form.find( '.give-final-total-amount' ).data( 'total' );
+		var decimal_separator = parent_form.find( 'give-currency-decimal_separator' ).val();
+		$( this ).data( 'amount', give_unformat_currency( current_total, decimal_separator ) );
 
 		//This class is used for CSS purposes
 		$(this).parent('.give-donation-amount').addClass('give-custom-amount-focus-in');
@@ -319,24 +319,24 @@ jQuery(function ($) {
 		parent_form.find('.give-select-level').prop('selected', false); //Select
 		parent_form.find('.give-select-level .give-donation-level-custom').prop('selected', true); //Select
 
-	});
+	} );
 
-    /**
-     * Custom Donation Focus Out
-     *
-     * @description: Fires on focus end aka "blur"
-     *
-     */
-    doc.on('blur', '.give-donation-amount .give-text-input', function (e, $parent_form, donation_amount, price_id) {
-        var parent_form = ($parent_form != undefined) ? $parent_form : $(this).closest('form'),
-            pre_focus_amount = $(this).data('amount'),
-            this_value = (donation_amount != undefined) ? donation_amount : $(this).val(),
-            $minimum_amount = parent_form.find('input[name="give-form-minimum"]'),
-            decimal_separator = parent_form.find('give-currency-decimal_separator').val(),
-            value_min = give_unformat_currency($minimum_amount.val(), decimal_separator),
-            value_now = (this_value == 0) ? value_min : give_unformat_currency(this_value, decimal_separator),
-            variable_prices = give_get_variable_prices($(this).parents('form')),
-            error_msg = '';
+	/**
+	 * Custom Donation Focus Out
+	 *
+	 * @description: Fires on focus end aka "blur"
+	 *
+	 */
+	doc.on( 'blur', '.give-donation-amount .give-text-input', function ( e, $parent_form, donation_amount, price_id ) {
+		var parent_form = ($parent_form != undefined) ? $parent_form : $( this ).closest( 'form' ),
+			pre_focus_amount = $( this ).data( 'amount' ),
+			this_value = (donation_amount != undefined) ? donation_amount : $( this ).val(),
+			$minimum_amount = parent_form.find( 'input[name="give-form-minimum"]' ),
+			decimal_separator = parent_form.find( 'give-currency-decimal_separator' ).val(),
+			value_min = give_unformat_currency( $minimum_amount.val(), decimal_separator ),
+			value_now = (this_value == 0) ? value_min : give_unformat_currency( this_value, decimal_separator ),
+			variable_prices = give_get_variable_prices( $( this ).parents( 'form' ) ),
+			error_msg = '';
 
 		/**
 		 * Flag Multi-levels for min. donation conditional.
@@ -352,15 +352,15 @@ jQuery(function ($) {
 			undefined != price_id
 		) ? price_id : -1;
 
-        //Set the custom amount input value format properly
-        format_args = {
-            symbol: '',
-            position: parent_form.find('input[name="give-currency-position"]').val(),
-            decimal: parent_form.find('input[name="give-currency-decimal_separator"]').val(),
-            thousand: parent_form.find('input[name="give-currency-thousands_separator"]').val(),
-            precision: parent_form.find('input[name="give-currency-number_decimals"]').val(),
-            currency: parent_form.find('input[name="give-currency"]').val()
-        };
+		//Set the custom amount input value format properly
+		format_args = {
+			symbol: '',
+			position: parent_form.find( 'input[name="give-currency-position"]' ).val(),
+			decimal: parent_form.find( 'input[name="give-currency-decimal_separator"]' ).val(),
+			thousand: parent_form.find( 'input[name="give-currency-thousands_separator"]' ).val(),
+			precision: parent_form.find( 'input[name="give-currency-number_decimals"]' ).val(),
+			currency: parent_form.find( 'input[name="give-currency"]' ).val()
+		};
 
 		var formatted_total = give_format_currency(value_now, format_args);
 		$(this).val(formatted_total);
@@ -532,17 +532,17 @@ jQuery(function ($) {
 		$parent_form.find('.give-amount-top').val(this_amount);
 		$parent_form.find('span.give-amount-top').text(this_amount);
 
-        var decimal_separator = $parent_form.find('give-currency-decimal_separator').val();
+		var decimal_separator = $parent_form.find( 'give-currency-decimal_separator' ).val();
 
-        // Cache previous amount and set data amount.
-        $('.give-donation-amount .give-text-input', $parent_form)
-            .data(
-                'amount',
-                give_unformat_currency(
-                    $parent_form.find('.give-final-total-amount').data('total'),
-                    decimal_separator
-                )
-            );
+		// Cache previous amount and set data amount.
+		$( '.give-donation-amount .give-text-input', $parent_form )
+			.data(
+				'amount',
+				give_unformat_currency(
+					$parent_form.find( '.give-final-total-amount' ).data( 'total' ),
+					decimal_separator
+				)
+			);
 
 		// Manually trigger blur event with two params:
 		// (a) form jquery object
