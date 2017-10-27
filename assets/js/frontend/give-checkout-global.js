@@ -133,10 +133,10 @@ jQuery(function ($) {
 	 */
 	function give_format_currency(price, args) {
 		price               = price.toString().trim();
-		var number_decimals = parseInt(give_global_vars.number_decimals);
+		var number_decimals = parseInt(args.decimal);
 
-		if ('INR' === give_global_vars.currency) {
-			actual_price = accounting.unformat(price, give_global_vars.decimal_separator).toString();
+        if ('INR' === args.currency) {
+            actual_price = accounting.unformat(price, args.decimal).toString();
 
 			var decimal_amount = result = amount = '',
 				decimal_index = actual_price.indexOf('.');
@@ -156,11 +156,11 @@ jQuery(function ($) {
 			result = actual_price.substr(-3);
 			amount = actual_price.substr(0, parseInt(actual_price.length) - 3);
 
-			// Apply digits 2 by 2
-			while (amount.length > 0) {
-				result = amount.substr(-2) + give_global_vars.thousands_separator + result;
-				amount = amount.substr(0, parseInt(amount.length) - 2);
-			}
+            // Apply digits 2 by 2
+            while (amount.length > 0) {
+                result = amount.substr(-2) + args.thousand + result;
+                amount = amount.substr(0, parseInt(amount.length) - 2);
+            }
 
 			if (decimal_amount.length) {
 				result = result + decimal_amount;
@@ -168,18 +168,18 @@ jQuery(function ($) {
 
 			price = result;
 
-			if (undefined !== args.symbol && args.symbol.length) {
-				if ('after' === give_global_vars.currency_pos) {
-					price = price + args.symbol;
-				} else {
-					price = args.symbol + price;
-				}
-			}
-		} else {
-			//Properly position symbol after if selected
-			if ('after' === give_global_vars.currency_pos) {
-				args.format = "%v%s";
-			}
+            if (undefined !== args.symbol && args.symbol.length) {
+                if ('after' === args.position) {
+                    price = price + args.symbol;
+                } else {
+                    price = args.symbol + price;
+                }
+            }
+        } else {
+            //Properly position symbol after if selected
+            if ('after' === args.position) {
+                args.format = "%v%s";
+            }
 
 			price = accounting.formatMoney(price, args);
 		}
@@ -245,12 +245,14 @@ jQuery(function ($) {
 				) ? jQuery(item) : item
 			);
 
-			// Add price id and amount to collector.
-			variable_prices.push({
-				price_id: item.data('price-id'),
-				amount: give_unformat_currency(item.val())
-			});
-		});
+            var decimal_separator = $form.find('give-currency-decimal_separator').val();
+
+            // Add price id and amount to collector.
+            variable_prices.push({
+                price_id: item.data('price-id'),
+                amount: give_unformat_currency(item.val(), decimal_separator)
+            });
+        });
 
 		return variable_prices;
 	}
@@ -301,9 +303,10 @@ jQuery(function ($) {
 		//Remove any invalid class
 		$(this).removeClass('invalid-amount');
 
-		//Set data amount
-		var current_total = parent_form.find('.give-final-total-amount').data('total');
-		$(this).data('amount', give_unformat_currency(current_total));
+        //Set data amount
+        var current_total = parent_form.find('.give-final-total-amount').data('total');
+        var decimal_separator = parent_form.find('give-currency-decimal_separator').val();
+        $(this).data('amount', give_unformat_currency(current_total, decimal_separator));
 
 		//This class is used for CSS purposes
 		$(this).parent('.give-donation-amount').addClass('give-custom-amount-focus-in');
@@ -318,21 +321,22 @@ jQuery(function ($) {
 
 	});
 
-	/**
-	 * Custom Donation Focus Out
-	 *
-	 * @description: Fires on focus end aka "blur"
-	 *
-	 */
-	doc.on('blur', '.give-donation-amount .give-text-input', function (e, $parent_form, donation_amount, price_id) {
-		var parent_form      = ($parent_form != undefined) ? $parent_form : $(this).closest('form'),
-			pre_focus_amount = $(this).data('amount'),
-			this_value       = (donation_amount != undefined) ? donation_amount : $(this).val(),
-			$minimum_amount  = parent_form.find('input[name="give-form-minimum"]'),
-			value_min        = give_unformat_currency($minimum_amount.val()),
-			value_now        = (this_value == 0) ? value_min : give_unformat_currency(this_value),
-			variable_prices  = give_get_variable_prices($(this).parents('form')),
-			error_msg        = '';
+    /**
+     * Custom Donation Focus Out
+     *
+     * @description: Fires on focus end aka "blur"
+     *
+     */
+    doc.on('blur', '.give-donation-amount .give-text-input', function (e, $parent_form, donation_amount, price_id) {
+        var parent_form = ($parent_form != undefined) ? $parent_form : $(this).closest('form'),
+            pre_focus_amount = $(this).data('amount'),
+            this_value = (donation_amount != undefined) ? donation_amount : $(this).val(),
+            $minimum_amount = parent_form.find('input[name="give-form-minimum"]'),
+            decimal_separator = parent_form.find('give-currency-decimal_separator').val(),
+            value_min = give_unformat_currency($minimum_amount.val(), decimal_separator),
+            value_now = (this_value == 0) ? value_min : give_unformat_currency(this_value, decimal_separator),
+            variable_prices = give_get_variable_prices($(this).parents('form')),
+            error_msg = '';
 
 		/**
 		 * Flag Multi-levels for min. donation conditional.
@@ -390,10 +394,10 @@ jQuery(function ($) {
 			&& (-1 === price_id)
 		) {
 
-			//It doesn't... Invalid Minimum
-			$(this).addClass('give-invalid-amount');
-			format_args.symbol = give_global_vars.currency_sign;
-			error_msg          = give_global_vars.bad_minimum + ' ' + give_format_currency(value_min, format_args);
+            //It doesn't... Invalid Minimum
+            $(this).addClass('give-invalid-amount');
+            format_args.symbol = parent_form.find('input[name="give-currency-sign"]').val();
+            error_msg = give_global_vars.bad_minimum + ' ' + give_format_currency(value_min, format_args);
 
 			//Disable submit
 			parent_form.find('.give-submit').prop('disabled', true);
@@ -423,9 +427,9 @@ jQuery(function ($) {
 		//If values don't match up then proceed with updating donation total value
 		if (pre_focus_amount !== value_now) {
 
-			//update donation total (include currency symbol)
-			format_args.symbol = give_global_vars.currency_sign;
-			parent_form.find('.give-final-total-amount').data('total', value_now).text(give_format_currency(value_now, format_args));
+            //update donation total (include currency symbol)
+            format_args.symbol = parent_form.find('input[name="give-currency-sign"]').val();
+            parent_form.find('.give-final-total-amount').data('total', value_now).text(give_format_currency(value_now, format_args));
 
 		}
 
@@ -435,8 +439,8 @@ jQuery(function ($) {
 			// Auto set give price id.
 			$('input[name="give-price-id"]', parent_form).val(price_id);
 
-			// Update hidden amount field
-			parent_form.find('.give-amount-hidden').val(give_format_amount(value_now));
+            // Update hidden amount field
+            parent_form.find('.give-amount-hidden').val(give_format_amount(value_now, parent_form));
 
 			// Remove old selected class & add class for CSS purposes
 			parent_form.find('.give-default-level').removeClass('give-default-level');
@@ -528,14 +532,17 @@ jQuery(function ($) {
 		$parent_form.find('.give-amount-top').val(this_amount);
 		$parent_form.find('span.give-amount-top').text(this_amount);
 
-		// Cache previous amount and set data amount.
-		$('.give-donation-amount .give-text-input', $parent_form)
-			.data(
-				'amount',
-				give_unformat_currency(
-					$parent_form.find('.give-final-total-amount').data('total')
-				)
-			);
+        var decimal_separator = $parent_form.find('give-currency-decimal_separator').val();
+
+        // Cache previous amount and set data amount.
+        $('.give-donation-amount .give-text-input', $parent_form)
+            .data(
+                'amount',
+                give_unformat_currency(
+                    $parent_form.find('.give-final-total-amount').data('total'),
+                    decimal_separator
+                )
+            );
 
 		// Manually trigger blur event with two params:
 		// (a) form jquery object
