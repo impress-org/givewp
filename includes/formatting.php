@@ -169,9 +169,8 @@ function give_sanitize_amount_for_db( $number ) {
  *
  * @since      1.8.12
  *
- * @param  int|float|string $number     Expects either a float or a string with a decimal separator only (no thousands)
- * @param  int|bool         $dp         Number of decimals
- * @param  bool             $trim_zeros From end of string
+ * @param  int|float|string $number Expects either a float or a string with a decimal separator only (no thousands)
+ * @param  array|bool       $args   It accepts 'number_decimals', 'trim_zeros', 'currency'.
  *
  * @return string $amount Newly sanitized amount
  */
@@ -271,8 +270,7 @@ function give_maybe_sanitize_amount( $number, $args = array() ) {
  * @since      1.0
  *
  * @param  int|float|string $number Expects either a float or a string with a decimal separator only (no thousands)
- * @param  int|bool         $dp Number of decimals
- * @param  bool             $trim_zeros From end of string
+ * @param  array|bool       $args   It accepts 'number_decimals', 'trim_zeros', 'currency'.
  *
  * @return string $amount Newly sanitized amount
  */
