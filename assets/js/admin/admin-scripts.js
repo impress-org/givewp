@@ -2374,7 +2374,9 @@ function give_render_responsive_tabs() {
 
 				jQuery.each($hide_tabs, function (index, $tab_link) {
 					$tab_link = jQuery($tab_link);
-					$tab_link.addClass('give-hidden');
+					if( ! $tab_link.hasClass( 'nav-tab-active' ) ) {
+						$tab_link.addClass('give-hidden');
+					}
 					$tab_link.clone().removeClass().appendTo($sub_tab_nav);
 				});
 
