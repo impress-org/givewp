@@ -1158,37 +1158,43 @@ function give_v1817_update_donation_iranian_currency_code() {
 	/* @var Give_Updates $give_updates */
 	$give_updates = Give_Updates::get_instance();
 
-	// Payment query.
-	$payment = new WP_Query( array(
-		'paged'          => $give_updates->step,
-		'status'         => 'any',
-		'post_type'      => array( 'give_payment' ),
-		'posts_per_page' => 20,
-	) );
+	// Get base currency.
+	$base_currency = give_get_currency();
 
-	if ( $payment->have_posts() ) {
-		$give_updates->set_percentage( $payment->found_posts, ( $give_updates->step * 20 ) );
+	if ( 'RIAL' === $base_currency ) {
 
-		while ( $payment->have_posts() ) {
-			$payment->the_post();
-			global $post;
+		// Payment query.
+		$payment = new WP_Query( array(
+			'paged'          => $give_updates->step,
+			'status'         => 'any',
+			'post_type'      => array( 'give_payment' ),
+			'posts_per_page' => 20,
+		) );
 
-			$payment_meta = give_get_meta( $post->ID, '_give_payment_meta', true );
+		if ( $payment->have_posts() ) {
+			$give_updates->set_percentage( $payment->found_posts, ( $give_updates->step * 20 ) );
 
-			if ( ! empty( $payment_meta ) ) {
+			while ( $payment->have_posts() ) {
+				$payment->the_post();
+				global $post;
 
-				if ( 'RIAL' === $payment_meta['currency'] ) {
-					$payment_meta['currency'] = 'IRR';
-					update_post_meta( $post->ID, '_give_payment_meta', $payment_meta );
+				$payment_meta = give_get_meta( $post->ID, '_give_payment_meta', true );
+
+				if ( ! empty( $payment_meta ) ) {
+
+					if ( 'RIAL' === $payment_meta['currency'] ) {
+						$payment_meta['currency'] = 'IRR';
+						update_post_meta( $post->ID, '_give_payment_meta', $payment_meta );
+					}
 				}
 			}
-		}
 
-		/* Restore original Post Data */
-		wp_reset_postdata();
-	} else {
-		// The Update Ran.
-		give_set_upgrade_complete( 'v1814_update_donation_iranian_currency_code' );
+			/* Restore original Post Data */
+			wp_reset_postdata();
+		} else {
+			// The Update Ran.
+			give_set_upgrade_complete( 'v1814_update_donation_iranian_currency_code' );
+		}
 	}
 }
 
