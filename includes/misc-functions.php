@@ -369,7 +369,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 2,
 			),
 		),
-		'IRR' => array(
+		'RIAL' => array(
 			'admin_label' => __( 'Iranian Rial (﷼)', 'give' ),
 			'symbol'      => '&#xfdfc;',
 			'setting'     => array(
@@ -391,6 +391,13 @@ function give_get_currencies( $info = 'admin_label' ) {
 		),
 	);
 
+	if ( give_has_upgrade_completed( 'v1817_update_donation_iranian_currency_code' ) ) {
+
+		$currency_option = $currencies['RIAL'];
+		unset( $currencies['RIAL'] );
+
+		$currencies['IRR'] = $currency_option;
+	}
 
 	/**
 	 * Filter the currencies

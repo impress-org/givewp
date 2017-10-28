@@ -90,6 +90,8 @@ add_action( 'give_upgrades', 'give_do_automatic_upgrades' );
  * @return void
  */
 function give_show_upgrade_notices( $give_updates ) {
+	$base_currency = give_get_currency();
+
 	// v1.3.2 Upgrades
 	$give_updates->register(
 		array(
@@ -154,15 +156,14 @@ function give_show_upgrade_notices( $give_updates ) {
 		)
 	);
 
-	// v1.8.17 Upgrades for donations.
-	$give_updates->register(
-		array(
+	if ( 'RIAL' === $base_currency ) {
+		// v1.8.17 Upgrades for donations.
+		$give_updates->register( array(
 			'id'       => 'v1817_update_donation_iranian_currency_code',
 			'version'  => '1.8.17',
 			'callback' => 'give_v1817_update_donation_iranian_currency_code',
-		)
-	);
-
+		) );
+	}
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
@@ -1155,45 +1156,28 @@ function give_v1813_update_donor_user_roles_callback() {
  */
 function give_v1817_update_donation_iranian_currency_code() {
 
-	/* @var Give_Updates $give_updates */
-	$give_updates = Give_Updates::get_instance();
+	// Payment query.
+	$get_payments = new Give_Payments_Query( array(
+		'status' => 'any',
+		'number' => - 1,
+	) );
 
-	// Get base currency.
-	$base_currency = give_get_currency();
+	// Get payments.
+	$payments = $get_payments->get_payments();
+	if ( $payments ) {
 
-	if ( 'RIAL' === $base_currency ) {
+		foreach ( $payments as $payment ) {
+			$payment_meta = give_get_payment_meta( $payment->ID );
 
-		// Payment query.
-		$payments = new Give_Payments_Query( array(
-			'page'   => $give_updates->step,
-			'status' => 'any',
-			'number' => 20,
-		) );
-
-		// Get payments.
-		$payments = $payments->get_payments();
-
-		if ( $payments ) {
-
-			// Get total number of payments.
-			$total_posts = count( $payments );
-			$give_updates->set_percentage( $total_posts, ( $give_updates->step * 20 ) );
-
-			foreach ( $payments as $payment ) {
-				$payment_meta = give_get_payment_meta( $payment->ID );
-
-				if ( ! empty( $payment_meta ) ) {
-					if ( 'RIAL' === $payment_meta['currency'] ) {
-						$payment_meta['currency'] = 'IRR';
-						give_update_meta( $payment->ID, '_give_payment_meta', $payment_meta );
-					}
-				}
+			if ( 'RIAL' === $payment_meta['currency'] ) {
+				$payment_meta['currency'] = 'IRR';
+				give_update_meta( $payment->ID, '_give_payment_meta', $payment_meta );
 			}
-		} else {
-			// The Update Ran.
-			give_set_upgrade_complete( 'v1817_update_donation_iranian_currency_code' );
 		}
 	}
+
+	// The Update Ran.
+	give_set_upgrade_complete( 'v1817_update_donation_iranian_currency_code' );
 }
 
 /**
