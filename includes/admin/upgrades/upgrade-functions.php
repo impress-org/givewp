@@ -66,8 +66,8 @@ function give_do_automatic_upgrades() {
 			give_v1813_upgrades();
 			$did_upgrade = true;
 
-		case version_compare( $give_version, '1.8.14', '<' ) :
-			give_v1814_upgrades();
+		case version_compare( $give_version, '1.8.17', '<' ) :
+			give_v1817_upgrades();
 			$did_upgrade = true;
 	}
 
@@ -154,12 +154,12 @@ function give_show_upgrade_notices( $give_updates ) {
 		)
 	);
 
-	// v1.8.14 Upgrades for donations.
+	// v1.8.17 Upgrades for donations.
 	$give_updates->register(
 		array(
-			'id'       => 'v1814_update_donation_iranian_currency_code',
-			'version'  => '1.8.14',
-			'callback' => 'give_v1814_update_donation_iranian_currency_code',
+			'id'       => 'v1817_update_donation_iranian_currency_code',
+			'version'  => '1.8.17',
+			'callback' => 'give_v1817_update_donation_iranian_currency_code',
 		)
 	);
 
@@ -1151,9 +1151,9 @@ function give_v1813_update_donor_user_roles_callback() {
 /**
  * Correct currency code for "Iranian Currency" for all of the payments.
  *
- * @since 1.8.14
+ * @since 1.8.17
  */
-function give_v1814_update_donation_iranian_currency_code() {
+function give_v1817_update_donation_iranian_currency_code() {
 
 	/* @var Give_Updates $give_updates */
 	$give_updates = Give_Updates::get_instance();
@@ -1209,11 +1209,11 @@ function give_v1813_upgrades() {
 
 /**
  * Correct currency code for "Iranian Currency" in Give setting.
- * Version 1.8.14 automatic updates
+ * Version 1.8.17 automatic updates
  *
- * @since 1.8.14
+ * @since 1.8.17
  */
-function give_v1814_upgrades() {
+function give_v1817_upgrades() {
 
 	// Get Give settings.
 	$give_settings = give_get_settings();
