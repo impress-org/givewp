@@ -1202,12 +1202,9 @@ function give_v1813_upgrades() {
  * @since 1.8.17
  */
 function give_v1817_upgrades() {
-
-	// Get Give settings.
 	$give_settings = give_get_settings();
 
-	// If the base currency is Iranian currency.
-	if ( 'RIAL' === $give_settings['currency'] ) {
+	if ( give_has_upgrade_completed( 'v1817_update_donation_iranian_currency_code' ) && 'RIAL' === $give_settings['currency'] ) {
 		$give_settings['currency'] = 'IRR';
 		update_option( 'give_settings', $give_settings );
 	}
