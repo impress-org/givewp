@@ -6,7 +6,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-
 // Bailout: Do not output anything if setting tab is not defined.
 if( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs ) ) :
 	/**
@@ -46,7 +45,7 @@ if( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs 
 		<div class="nav-tab-wrapper give-nav-tab-wrapper">
 			<?php
 			foreach ( $tabs as $name => $label ) {
-				echo '<a href="' . admin_url( "edit.php?post_type=give_forms&page=" . self::$setting_filter_prefix . "&tab={$name}" ) . '" class="nav-tab ' . ( $current_tab == $name ? 'nav-tab-active' : '' ) . '">' . $label . '</a>';
+				echo '<a href="' . admin_url( "edit.php?post_type=give_forms&page=" . self::$setting_filter_prefix . "&tab={$name}" ) . '" class="nav-tab ' . ( $current_tab === $name ? 'nav-tab-active' : 'give-mobile-hidden' ) . '">' . $label . '</a>';
 			}
 
 			/**
@@ -92,7 +91,7 @@ if( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs 
 		if ( empty( $GLOBALS['give_hide_save_button'] ) ) : ?>
 			<div class="give-submit-wrap">
 				<?php wp_nonce_field( 'give-save-settings', '_give-save-settings' ); ?>
-				<input name="save" class="button-primary give-save-button" type="submit" value="<?php esc_attr_e( 'Save changes', 'give' ); ?>" />
+				<input name="save" class="button-primary give-save-button" type="submit" value="<?php _e( 'Save changes', 'give' ); ?>" />
 			</div>
 		<?php endif; ?>
 		<?php echo $form_close_tag; ?>
