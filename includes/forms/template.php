@@ -91,7 +91,7 @@ function give_get_donation_form( $args = array() ) {
 	 * @param int $form_id The form ID.
 	 * @param array $args An array of form arguments.
 	 */
-	do_action( 'give_pre_form_output', $form->ID, $args );
+	do_action( 'give_pre_form_output', $form->ID, $args, $form );
 
 	?>
     <div id="give-form-<?php echo $form->ID; ?>-wrap" class="<?php echo $form_wrap_classes; ?>">
@@ -103,7 +103,7 @@ function give_get_donation_form( $args = array() ) {
 			$goal_achieved_message = ! empty( $goal_achieved_message ) ? apply_filters( 'the_content', $goal_achieved_message ) : '';
 
 			// Print thank you message.
-			echo apply_filters( 'give_goal_closed_output', $goal_achieved_message, $form->ID );
+			echo apply_filters( 'give_goal_closed_output', $goal_achieved_message, $form->ID, $form );
 
 		} else {
 			/**
@@ -186,7 +186,7 @@ function give_get_donation_form( $args = array() ) {
 				 * @param int $form_id The form ID.
 				 * @param array $args An array of form arguments.
 				 */
-				do_action( 'give_donation_form_top', $form->ID, $args );
+				do_action( 'give_donation_form_top', $form->ID, $args, $form );
 
 				/**
 				 * Fires while outputting donation form, for payment gateway fields.
@@ -196,7 +196,7 @@ function give_get_donation_form( $args = array() ) {
 				 * @param int $form_id The form ID.
 				 * @param array $args An array of form arguments.
 				 */
-				do_action( 'give_payment_mode_select', $form->ID, $args );
+				do_action( 'give_payment_mode_select', $form->ID, $args, $form );
 
 				/**
 				 * Fires while outputting donation form, after all other fields.
@@ -206,7 +206,7 @@ function give_get_donation_form( $args = array() ) {
 				 * @param int $form_id The form ID.
 				 * @param array $args An array of form arguments.
 				 */
-				do_action( 'give_donation_form_bottom', $form->ID, $args );
+				do_action( 'give_donation_form_bottom', $form->ID, $args, $form );
 
 				?>
             </form>
@@ -220,7 +220,7 @@ function give_get_donation_form( $args = array() ) {
 			 * @param int $form_id The form ID.
 			 * @param array $args An array of form arguments.
 			 */
-			do_action( 'give_post_form', $form->ID, $args );
+			do_action( 'give_post_form', $form->ID, $args, $form );
 
 		}
 		?>
