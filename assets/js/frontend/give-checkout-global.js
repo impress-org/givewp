@@ -27,18 +27,18 @@ Give.form = {
 		 *
 		 * @return {string}
 		 */
-		getFormInfo: function( str, $form ){
+		getFormInfo: function (str, $form) {
 			var data = '';
 
 			// Bailout.
-			if( ! str.length || !$form.length){
+			if (!str.length || !$form.length) {
 				return data;
 			}
 
-			if( $form.get(0).hasAttribute( 'data-' + str ) ) {
-				data = $form.attr( 'data-' + str );
-			} else{
-				data = $form.attr( str );
+			if ($form.get(0).hasAttribute('data-' + str)) {
+				data = $form.attr('data-' + str);
+			} else {
+				data = $form.attr(str);
 			}
 
 			return 'undefined' !== typeof data ? data.trim() : data;
@@ -55,21 +55,21 @@ Give.form = {
 		 *
 		 * @return {string|boolean}
 		 */
-		setFormInfo: function( str, val, $form, type ){
+		setFormInfo: function (str, val, $form, type) {
 			// Bailout.
-			if( ! str.length || !$form.length){
+			if (!str.length || !$form.length) {
 				return false;
 			}
 
 			type = 'undefined' === typeof type ? 'data' : type;
 
-			switch ( type ) {
+			switch (type) {
 				case 'attr':
-					$form.attr( str, val );
+					$form.attr(str, val);
 					break;
 
 				default:
-					$form.data( str, val );
+					$form.data(str, val);
 					break;
 			}
 
