@@ -81,56 +81,70 @@ Give.form = {
 		 *
 		 * @param {string/number} amount
 		 * @param {object} $form
+		 * @param {array} args
 		 */
-		formatAmount: function (amount, $form) {
+		formatFormAmount: function (amount, $form, args) {
 			// Do not format amount if form did not exist.
 			if (!$form.length) {
 				return amount;
 			}
 
-			//Set the custom amount input value format properly
-			var format_args = {
-				symbol: '',
-				decimal: $form.find('input[name="give-currency-decimal_separator"]').val(),
-				thousand: $form.find('input[name="give-currency-thousands_separator"]').val(),
-				precision: $form.find('input[name="give-currency-number_decimals"]').val(),
-				currency: $form.find('input[name="give-currency"]').val()
-			};
-
-			return Give.form.fn.formatCurrency(amount, format_args);
+			return Give.form.fn.formatCurrency(amount, args, $form);
 		},
 
 		/**
 		 * Format Currency
 		 *
 		 * @description format the currency with accounting.js
-		 * @param price
-		 * @param args object
+		 * @param {string} price
+		 * @param {object}  args
+		 * @param {object} $form
 		 * @returns {*|string}
 		 */
-		formatCurrency: function (price, args) {
+		formatCurrency: function (price, args, $form) {
+			// Global currency setting.
+			var format_args = {
+				decimal: parseInt(give_global_vars.decimal_separator),
+				thousand: give_global_vars.thousands_separator,
+				precision: give_global_vars.number_decimals,
+				currency: give_global_vars.currency
+			};
+
 			price = price.toString().trim();
-			var number_decimals = parseInt(args.precision);
+			$form = 'undefined' === typeof $form ? {} : $form;
+
+			// Form specific currency setting.
+			if ($form.length) {
+				//Set the custom amount input value format properly
+				format_args = {
+					decimal: Give.form.fn.getFormInfo('decimal_separator', $form),
+					thousand: Give.form.fn.getFormInfo('thousands_separator', $form),
+					precision: Give.form.fn.getFormInfo('number_decimals', $form),
+					currency: Give.form.fn.getFormInfo('currency_code', $form),
+				};
+			}
+
+			args = jQuery.extend(format_args, args);
 
 			if ('INR' === args.currency) {
 				var actual_price = accounting.unformat(price, args.decimal).toString();
 
 				var decimal_amount = '',
-					result = '',
-					amount = '',
+					result,
+					amount,
 					decimal_index = actual_price.indexOf('.');
 
-				if (( -1 !== decimal_index ) && number_decimals) {
+				if (( -1 !== decimal_index ) && args.precision) {
 					decimal_amount = Number(actual_price.substr(parseInt(decimal_index)))
-						.toFixed(number_decimals)
+						.toFixed(args.precision)
 						.toString()
 						.substr(1);
 					actual_price = actual_price.substr(0, parseInt(decimal_index));
 
 					if (!decimal_amount.length) {
-						decimal_amount = '.0000000000'.substr(0, ( pa + 1 ));
-					} else if (( number_decimals + 1 ) > decimal_amount.length) {
-						decimal_amount = ( decimal_amount + '000000000' ).substr(0, number_decimals + 1);
+						decimal_amount = '.0000000000'.substr(0, ( parseInt( decimal_index ) + 1 ));
+					} else if (( args.precision + 1 ) > decimal_amount.length) {
+						decimal_amount = ( decimal_amount + '000000000' ).substr(0, args.precision + 1);
 					}
 				}
 
