@@ -7,7 +7,10 @@
  * @copyright:   Copyright (c) 2016, WordImpress
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
+
+/* global jQuery */
 var give_scripts, give_global_vars;
+
 
 jQuery(function ($) {
 
