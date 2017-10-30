@@ -1936,21 +1936,23 @@ add_action( 'give_donation_form_top', '__give_form_add_donation_hidden_field', 0
  * @return array
  */
 function __give_form_add_currency_settings( $form_html_tags, $form ) {
-	$form_currency = give_get_currency( $form->ID );
-	$all_currencies = give_get_currencies('all');
+	$form_currency  = give_get_currency( $form->ID );
+	$all_currencies = give_get_currencies( 'all' );
 
 	// Check if currency exist.
-	if( ! array_key_exists( $form_currency, $all_currencies ) ) {
+	if ( ! array_key_exists( $form_currency, $all_currencies ) ) {
 		return $form_html_tags;
 	}
 
-	$form_html_tags['data-currency-symbol'] = $all_currencies[$form_currency]['symbol'];
+	$form_html_tags['data-currency_symbol'] = $all_currencies[ $form_currency ]['symbol'];
+	$form_html_tags['data-currency_code']   = $form_currency;
 
-	if( ! empty( $all_currencies[$form_currency]['setting'] ) ) {
-		foreach ( $all_currencies[$form_currency]['setting'] as $key => $value ){
-			$form_html_tags[ "data-{$key}" ] = $value;
+	if ( ! empty( $all_currencies[ $form_currency ]['setting'] ) ) {
+		foreach ( $all_currencies[ $form_currency ]['setting'] as $key => $value ) {
+			$form_html_tags["data-{$key}"] = $value;
 		}
 	}
+
 	return $form_html_tags;
 }
 
