@@ -21,12 +21,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Retrieves a list of all donations by a specific user.
  *
- * @since  1.0
+ * @param int    $user       User ID or email address.
+ * @param int    $number     Number of donations to retrieve.
+ * @param bool   $pagination Enable/Disable Pagination.
+ * @param string $status     Donation Status.
  *
- * @param int    $user   User ID or email address.
- * @param int    $number Number of donations to retrieve.
- * @param bool   $pagination
- * @param string $status
+ * @since  1.0
  *
  * @return bool|array List of all user donations.
  */
@@ -89,10 +89,10 @@ function give_get_users_donations( $user = 0, $number = 20, $pagination = false,
  *
  * Returns a list of unique donation forms given to by a specific user.
  *
- * @since  1.0
+ * @param int    $user   User ID or email address
+ * @param string $status Donation Status.
  *
- * @param int    $user User ID or email address
- * @param string $status
+ * @since 1.0
  *
  * @return bool|object List of unique forms donated by user
  */
@@ -163,12 +163,12 @@ function give_get_users_completed_donations( $user = 0, $status = 'complete' ) {
  *
  * Checks to see if a user has donated to at least one form.
  *
- * @access      public
- * @since       1.0
+ * @param int $user_id The ID of the user to check.
  *
- * @param       int $user_id The ID of the user to check.
+ * @access public
+ * @since  1.0
  *
- * @return      bool True if has donated, false other wise.
+ * @return bool True if has donated, false other wise.
  */
 function give_has_donations( $user_id = null ) {
 	if ( empty( $user_id ) ) {
@@ -189,12 +189,12 @@ function give_has_donations( $user_id = null ) {
  *
  * Retrieves the donation count and the total amount spent for a specific user.
  *
- * @access      public
- * @since       1.0
+ * @param int|string $user The ID or email of the donor to retrieve stats for.
  *
- * @param       int|string $user The ID or email of the donor to retrieve stats for.
+ * @access public
+ * @since  1.0
  *
- * @return      array
+ * @return array
  */
 function give_get_donation_stats_by_user( $user = '' ) {
 
@@ -231,12 +231,12 @@ function give_get_donation_stats_by_user( $user = '' ) {
  *
  * Returns total number of donations a donor has made.
  *
- * @access      public
- * @since       1.0
+ * @param int|string $user The ID or email of the donor.
  *
- * @param       int|string $user The ID or email of the donor.
+ * @access public
+ * @since  1.0
  *
- * @return      int The total number of donations.
+ * @return int The total number of donations.
  */
 function give_count_donations_of_donor( $user = null ) {
 
@@ -258,12 +258,12 @@ function give_count_donations_of_donor( $user = null ) {
 /**
  * Calculates the total amount spent by a user.
  *
- * @access      public
- * @since       1.0
+ * @param int|string $user The ID or email of the donor.
  *
- * @param       int|string $user The ID or email of the donor.
+ * @access public
+ * @since  1.0
  *
- * @return      float The total amount the user has spent
+ * @return float The total amount the user has spent
  */
 function give_donation_total_of_user( $user = null ) {
 
@@ -276,10 +276,10 @@ function give_donation_total_of_user( $user = null ) {
 /**
  * Validate a potential username.
  *
- * @since 1.0
- *
  * @param string $username The username to validate.
- * @param int    $form_id
+ * @param int    $form_id  Donation Form ID.
+ *
+ * @since 1.0
  *
  * @return bool
  */
@@ -324,11 +324,11 @@ function give_validate_username( $username, $form_id = 0 ) {
 	/**
 	 * Filter the username validation result.
 	 *
-	 * @since 1.8
+	 * @param bool   $valid    Username is valid or not.
+	 * @param string $username Username to check.
+	 * @param bool   $form_id  Donation Form ID.
 	 *
-	 * @param bool   $valid
-	 * @param string $username
-	 * @param bool   $form_id
+	 * @since 1.8
 	 */
 	$valid = (bool) apply_filters( 'give_validate_username', $valid, $username, $form_id );
 
@@ -339,10 +339,10 @@ function give_validate_username( $username, $form_id = 0 ) {
 /**
  * Validate user email.
  *
- * @since 1.8
- *
  * @param string $email                User email.
  * @param bool   $registering_new_user Flag to check user register or not.
+ *
+ * @since 1.8
  *
  * @return bool
  */
@@ -366,7 +366,7 @@ function give_validate_user_email( $email, $registering_new_user = false ) {
 
 	} elseif ( $registering_new_user ) {
 
-		// If donor email is not primary
+		// If donor email is not primary.
 		if ( ! email_exists( $email ) && give_donor_email_exists( $email ) && give_is_additional_email( $email ) ) {
 			// Check if email exists.
 			give_set_error( 'email_used', __( 'The email address provided is already active for another user.', 'give' ) );
@@ -377,11 +377,11 @@ function give_validate_user_email( $email, $registering_new_user = false ) {
 	/**
 	 * Filter the email validation result.
 	 *
-	 * @since 1.8
+	 * @param bool   $valid                Email is valid or not.
+	 * @param string $email                Email to check.
+	 * @param bool   $registering_new_user Registering New or Existing User.
 	 *
-	 * @param bool   $valid
-	 * @param string $email
-	 * @param bool   $registering_new_user
+	 * @since 1.8
 	 */
 	$valid = (bool) apply_filters( 'give_validate_user_email', $valid, $email, $registering_new_user );
 
@@ -391,11 +391,11 @@ function give_validate_user_email( $email, $registering_new_user = false ) {
 /**
  * Validate password.
  *
- * @since 1.8
+ * @param string $password             Password to Validate.
+ * @param string $confirm_password     Password to Confirm Validation.
+ * @param bool   $registering_new_user Registering New or Existing User.
  *
- * @param string $password
- * @param string $confirm_password
- * @param bool   $registering_new_user
+ * @since 1.8
  *
  * @return bool
  */
@@ -418,7 +418,7 @@ function give_validate_user_password( $password = '', $confirm_password = '', $r
 	// Passwords Validation For New Donors as well as Existing Donors.
 	if ( $password || $confirm_password ) {
 		if ( strlen( $password ) < 6 || strlen( $confirm_password ) < 6 ) {
-			// Seems Weak Password
+			// Seems Weak Password.
 			give_set_error( 'password_weak', __( 'Passwords should have at least 6 characters.', 'give' ) );
 			$valid = false;
 		}
@@ -435,12 +435,12 @@ function give_validate_user_password( $password = '', $confirm_password = '', $r
 	/**
 	 * Filter the password validation result.
 	 *
-	 * @since 1.8
+	 * @param bool   $valid                Password is Valid or not.
+	 * @param string $password             Password to check validation.
+	 * @param string $confirm_password     Password to confirm validation.
+	 * @param bool   $registering_new_user Registering New or Existing User.
 	 *
-	 * @param bool   $valid
-	 * @param string $password
-	 * @param string $confirm_password
-	 * @param bool   $registering_new_user
+	 * @since 1.8
 	 */
 	$valid = (bool) apply_filters( 'give_validate_user_email', $valid, $password, $confirm_password, $registering_new_user );
 
@@ -450,10 +450,10 @@ function give_validate_user_password( $password = '', $confirm_password = '', $r
 /**
  * Counts the total number of donors.
  *
- * @access        public
- * @since         1.0
+ * @access public
+ * @since  1.0
  *
- * @return        int The total number of donors.
+ * @return int The total number of donors.
  */
 function give_count_total_donors() {
 	return Give()->donors->count();
@@ -528,13 +528,13 @@ function give_get_donor_address( $donor_id = null, $args = array() ) {
  *
  * Sends the new user notification email when a user registers within the donation form
  *
- * @access        public
- * @since         1.0
+ * @param int   $user_id   User ID.
+ * @param array $user_data An Array of User Data.
  *
- * @param int   $user_id
- * @param array $user_data
+ * @access public
+ * @since  1.0
  *
- * @return        void
+ * @return void
  */
 function give_new_user_notification( $user_id = 0, $user_data = array() ) {
 	// Bailout.
@@ -554,13 +554,13 @@ add_action( 'give_insert_user', 'give_new_user_notification', 10, 2 );
  *
  * Retrieves the donor name based on the id and the name of the user or donation
  *
- * @access      public
- * @since       1.8.9
+ * @param int    $id   The ID of donation or donor.
+ * @param string $from From will be a string to be passed as donation or donor.
  *
- * @param       int    $id     The ID of donation or donor
- * @param       string $from   From will be a string to be passed as donation or donor
+ * @access public
+ * @since  1.8.9
  *
- * @return      string
+ * @return string
  */
 function give_get_donor_name_by( $id = 0, $from = 'donation' ) {
 
@@ -575,17 +575,20 @@ function give_get_donor_name_by( $id = 0, $from = 'donation' ) {
 
 		case 'donation':
 
-			$user_info = give_get_payment_meta_user_info( $id );
-			$name = $user_info['first_name'] . ' ' . $user_info['last_name'];
+			$donation_info = new Give_Payment( $id );
+			$first_name    = $donation_info->get_meta( '_give_donor_billing_first_name', true );
+			$last_name     = $donation_info->get_meta( '_give_donor_billing_last_name', true );
 
-		break;
+			$name = $first_name . ' ' . $last_name;
+
+			break;
 
 		case 'donor':
 
 			$donor = new Give_Donor( $id );
 			$name = $donor->name;
 
-		break;
+			break;
 
 	}
 
@@ -596,9 +599,10 @@ function give_get_donor_name_by( $id = 0, $from = 'donation' ) {
 /**
  * Checks whether the given donor email exists in users as well as additional_email of donors.
  *
+ * @param string $email Donor Email.
+ *
  * @since 1.8.9
  *
- * @param  string   $email Donor Email.
  * @return boolean  The user's ID on success, and false on failure.
  */
 function give_donor_email_exists( $email ) {
@@ -619,7 +623,7 @@ function give_donor_email_exists( $email ) {
  */
 function give_is_additional_email( $email ) {
 	global $wpdb;
-	
+
 	$meta_table = Give()->donor_meta->table_name;
 	$meta_type  = Give()->donor_meta->meta_type;
 	$donor_id   = $wpdb->get_var( $wpdb->prepare( "SELECT {$meta_type}_id FROM {$meta_table} WHERE meta_key = 'additional_email' AND meta_value = %s LIMIT 1", $email ) );
