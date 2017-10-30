@@ -110,8 +110,7 @@ Give.form = {
 
 			return price;
 
-		}
-		,
+		},
 
 		/**
 		 * Unformat Currency
@@ -122,8 +121,42 @@ Give.form = {
 		 */
 		unformatCurrency: function (price, decimal_separator) {
 			return Math.abs(parseFloat(accounting.unformat(price, decimal_separator)));
-		}
-		,
+		},
+
+		/**
+		 * Get Price ID and levels for multi donation form
+		 *
+		 * @param   {Object} $form Form jQuery object
+		 *
+		 * @returns {Object}
+		 */
+		getFormVariablePrices: function ($form) {
+			var variable_prices = [], formLevels;
+
+			// check if correct form type is multi or not.
+			if (
+				!$form.length ||
+				!$form.hasClass('give-form-type-multi') ||
+				! ( formLevels = $form.find('.give-donation-levels-wrap [data-price-id] ') )
+			) {
+				return variable_prices;
+			}
+
+			jQuery.each(formLevels, function (index, item) {
+				// Get Jquery instance for item.
+				item = !(item instanceof jQuery) ? jQuery(item) : item;
+
+				var decimal_separator = $form.find('input[name="give-currency-decimal_separator"]').val();
+
+				// Add price id and amount to collector.
+				variable_prices.push({
+					price_id: item.data('price-id'),
+					amount: Give.form.fn.unformatCurrency(item.val(), decimal_separator)
+				});
+			});
+
+			return variable_prices;
+		},
 
 		field: {
 			/**
@@ -165,8 +198,7 @@ Give.form = {
 			}
 		}
 	}
-}
-;
+};
 
 
 jQuery(function ($) {
@@ -262,41 +294,6 @@ jQuery(function ($) {
 		return this;
 	};
 
-	/**
-	 * Get Price ID and levels for multi donation form
-	 *
-	 * @param   {Object} $form Form jQuery object
-	 *
-	 * @returns {Object}
-	 */
-	function give_get_variable_prices($form) {
-		var variable_prices = [];
-
-		// check if correct form type is multi or not.
-		if (!$form.hasClass('give-form-type-multi')) {
-			return variable_prices;
-		}
-
-		$.each($form.find('.give-donation-levels-wrap [data-price-id] '), function (index, item) {
-			// Get Jquery instance for item.
-			item = (
-				!(
-					item instanceof jQuery
-				) ? jQuery(item) : item
-			);
-
-			var decimal_separator = $form.find('input[name="give-currency-decimal_separator"]').val();
-
-			// Add price id and amount to collector.
-			variable_prices.push({
-				price_id: item.data('price-id'),
-				amount: Give.form.fn.unformatCurrency(item.val(), decimal_separator)
-			});
-		});
-
-		return variable_prices;
-	}
-
 	// Make sure a gateway is selected
 	doc.on('submit', '#give_payment_mode', function () {
 		var gateway = $('#give-gateway option:selected').val();
@@ -375,7 +372,7 @@ jQuery(function ($) {
 			decimal_separator = parent_form.find('input[name="give-currency-decimal_separator"]').val(),
 			value_min = Give.form.fn.unformatCurrency($minimum_amount.val(), decimal_separator),
 			value_now = (this_value == 0) ? value_min : Give.form.fn.unformatCurrency(this_value, decimal_separator),
-			variable_prices = give_get_variable_prices($(this).parents('form')),
+			variable_prices = Give.form.fn.getFormVariablePrices($(this).parents('form')),
 			error_msg = '';
 
 		/**
