@@ -24,11 +24,10 @@ Give.form = {
 		 * @since 1.8.17
 		 * @param {string} str
 		 * @param {object} $form
-		 * @param {string} type
 		 *
 		 * @return {string}
 		 */
-		getFormInfo: function( str, $form, type ){
+		getFormInfo: function( str, $form ){
 			var data = '';
 
 			// Bailout.
@@ -36,19 +35,13 @@ Give.form = {
 				return data;
 			}
 
-			type = 'undefined' === typeof type ? 'data' : type;
-
-			switch ( type ) {
-				case 'attr':
-					data = $form.attr( str );
-					break;
-
-				default:
-					data = $form.attr( 'data-' + str );
-					break;
+			if( $form.get(0).hasAttribute( 'data-' + str ) ) {
+				data = $form.attr( 'data-' + str );
+			} else{
+				data = $form.attr( str );
 			}
 
-			return data;
+			return 'undefined' !== typeof data ? data.trim() : data;
 		},
 
 		/**
