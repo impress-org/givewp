@@ -1892,7 +1892,9 @@ h2.give-nav-tab-wrapper {
     .give-nav-tab-wrapper > a {
       width: 100%;
       box-sizing: border-box;
-      margin: 0; }
+      margin: 0;
+      background-color: #ffffff;
+      border: 1px solid #cccccc; }
       .give-nav-tab-wrapper > a:hover {
         border-bottom: 1px solid #ccc; }
     .give-nav-tab-wrapper div.give-sub-nav-tab-wrapper {
@@ -1908,7 +1910,9 @@ h2.give-nav-tab-wrapper {
           margin: 6px auto 0;
           display: block; }
       .give-nav-tab-wrapper div.give-sub-nav-tab-wrapper nav.give-sub-nav-tab {
-        top: 35px; } }
+        top: 35px; }
+  .give-mobile-hidden {
+    display: none; } }
 
 .give-sub-nav-tab-wrapper {
   position: relative;
