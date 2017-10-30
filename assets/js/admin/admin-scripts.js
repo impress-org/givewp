@@ -2410,7 +2410,7 @@ function get_url_params() {
 /**
  * Run when user click on submit button.
  *
- * @since 1.8.16
+ * @since 1.8.17
  */
 function give_on_core_settings_import_start() {
 	var $form = jQuery( 'form.tools-setting-page-import' );

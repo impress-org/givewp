@@ -1980,7 +1980,7 @@ function give_is_zero_based_currency( $currency = '' ) {
 /**
  * Get the upload dir path
  *
- * @since 1.8.16
+ * @since 1.8.17
  *
  * @return string $wp_upload_dir;
  */
@@ -1993,7 +1993,7 @@ function give_get_wp_upload_dir() {
 /**
  * Get the data from uploaded JSON file
  *
- * @since 1.8.16
+ * @since 1.8.17
  *
  * @param string $file_name filename of the json file that is being uploaded
  *

@@ -8,7 +8,7 @@
  * @subpackage  Classes/Give_Import_Core_Settings
  * @copyright   Copyright (c) 2017, WordImpress
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       1.8.16
+ * @since       1.8.17
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -20,14 +20,14 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 	/**
 	 * Give_Import_Core_Settings.
 	 *
-	 * @since 1.8.16
+	 * @since 1.8.17
 	 */
 	final class Give_Import_Core_Settings {
 
 		/**
 		 * Importer type
 		 *
-		 * @since 1.8.16
+		 * @since 1.8.17
 		 * @var string
 		 */
 		private $importer_type = 'import_core_setting';
@@ -35,14 +35,14 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		/**
 		 * Instance.
 		 *
-		 * @since 1.8.16
+		 * @since 1.8.17
 		 */
 		static private $instance;
 
 		/**
 		 * Importing donation per page.
 		 *
-		 * @since 1.8.16
+		 * @since 1.8.17
 		 *
 		 * @var   int
 		 */
@@ -51,7 +51,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		/**
 		 * Singleton pattern.
 		 *
-		 * @since 1.8.16
+		 * @since 1.8.17
 		 *
 		 * @access private
 		 */
@@ -61,7 +61,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		/**
 		 * Get instance.
 		 *
-		 * @since 1.8.16
+		 * @since 1.8.17
 		 *
 		 * @access public
 		 *
@@ -78,7 +78,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		/**
 		 * Setup
 		 *
-		 * @since 1.8.16
+		 * @since 1.8.17
 		 *
 		 * @return void
 		 */
@@ -90,7 +90,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		/**
 		 * Setup Hooks.
 		 *
-		 * @since 1.8.16
+		 * @since 1.8.17
 		 *
 		 * @return void
 		 */
@@ -120,7 +120,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		/**
 		 * Update notice
 		 *
-		 * @since 1.8.16
+		 * @since 1.8.17
 		 *
 		 * @param $messages
 		 *
@@ -137,7 +137,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		/**
 		 * Print submit and nonce button.
 		 *
-		 * @since 1.8.16
+		 * @since 1.8.17
 		 */
 		public function submit() {
 			wp_nonce_field( 'give-save-settings', '_give-save-settings' );
@@ -150,7 +150,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		/**
 		 * Print the HTML for core setting importer.
 		 *
-		 * @since 1.8.16
+		 * @since 1.8.17
 		 */
 		public function html() {
 			$step = $this->get_step();
@@ -185,7 +185,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		/**
 		 * Show message after the Core Settings Imported
 		 *
-		 * @since 1.8.16
+		 * @since 1.8.17
 		 */
 		public function import_success() {
 			// Imported successfully
@@ -243,7 +243,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		/**
 		 * Will start Import
 		 *
-		 * @since 1.8.16
+		 * @since 1.8.17
 		 */
 		public function start_import() {
 			$type = ( ! empty( $_GET['type'] ) ? give_clean( $_GET['type'] ) : 'replace' );
@@ -280,7 +280,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		/**
 		 * Is used to show the process when user upload the donor form.
 		 *
-		 * @since 1.8.16
+		 * @since 1.8.17
 		 */
 		public function render_progress() {
 			$step = $this->get_step();
@@ -302,7 +302,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		/**
 		 * Will return the import step.
 		 *
-		 * @since 1.8.16
+		 * @since 1.8.17
 		 *
 		 * @return int $step on which step doest the import is on.
 		 */
@@ -324,7 +324,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		/**
 		 * Render donations import page
 		 *
-		 * @since 1.8.16
+		 * @since 1.8.17
 		 */
 		public function render_page() {
 			include_once GIVE_PLUGIN_DIR . 'includes/admin/tools/views/html-admin-page-import-core-settings.php';
@@ -335,7 +335,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		 *
 		 * Print the html of the file upload from which json will be uploaded.
 		 *
-		 * @since 1.8.16
+		 * @since 1.8.17
 		 * @return void
 		 */
 		public function render_upload_html() {
@@ -399,7 +399,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		/**
 		 * Run when user click on the submit button.
 		 *
-		 * @since 1.8.16
+		 * @since 1.8.17
 		 */
 		public function save() {
 
@@ -434,7 +434,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		/**
 		 * Get if current page import donations page or not
 		 *
-		 * @since 1.8.16
+		 * @since 1.8.17
 		 * @return bool
 		 */
 		private function is_donations_import_page() {

@@ -104,7 +104,7 @@ add_filter( 'give_import_delimiter_set', '__give_import_delimiter_set_callback',
 /**
  * Give unset the page id from the core setting data from the json files.
  *
- * @since 1.8.16
+ * @since 1.8.17
  *
  * @param array $json_to_array Data from json file
  * @param string $type
@@ -126,7 +126,7 @@ add_filter( 'give_import_core_settings_data', 'give_import_core_settings_merge_p
 /**
  * Give check the image size from the core setting data from the json files.
  *
- * @since 1.8.16
+ * @since 1.8.17
  *
  * @param $json_to_array
  * @param string $type
@@ -153,7 +153,7 @@ add_filter( 'give_import_core_settings_data', 'give_import_core_settings_merge_i
 /**
  * Give upload the image logo from the core setting data from the json files.
  *
- * @since 1.8.16
+ * @since 1.8.17
  *
  * @param $json_to_array
  * @param string $type
@@ -190,7 +190,7 @@ add_filter( 'give_import_core_settings_data', 'give_import_core_settings_merge_u
 /**
  * Give unset the license key from the core setting data from the json files.
  *
- * @since 1.8.16
+ * @since 1.8.17
  *
  * @param array $json_to_array Data from json file
  * @param string $type
@@ -215,7 +215,7 @@ add_filter( 'give_import_core_settings_data', 'give_import_core_settings_merge_l
 /**
  * Give merge the json data and setting data.
  *
- * @since 1.8.16
+ * @since 1.8.17
  *
  * @param $json_to_array
  * @param $type

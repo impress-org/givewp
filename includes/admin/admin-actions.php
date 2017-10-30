@@ -579,7 +579,7 @@ add_action( 'wp_ajax_give_donation_import', 'give_donation_import_callback' );
  * Load core settings import ajax callback
  * Fire when importing from JSON start
  *
- * @since  1.8.16
+ * @since  1.8.17
  *
  * @return json $json_data
  */
@@ -595,7 +595,7 @@ function give_core_settings_import_callback() {
 	 *
 	 * @access public
 	 *
-	 * @since 1.8.16
+	 * @since 1.8.17
 	 *
 	 * @param array $fields
 	 *
@@ -623,7 +623,7 @@ function give_core_settings_import_callback() {
 		 *
 		 * @access public
 		 *
-		 * @since 1.8.16
+		 * @since 1.8.17
 		 *
 		 * @param array $json_to_array Setting that are being going to get imported
 		 * @param array $type Type of Import
@@ -646,7 +646,7 @@ function give_core_settings_import_callback() {
 	 *
 	 * @access public
 	 *
-	 * @since 1.8.16
+	 * @since 1.8.17
 	 *
 	 * @return array $url
 	 */

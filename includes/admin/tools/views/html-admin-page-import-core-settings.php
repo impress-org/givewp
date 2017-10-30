@@ -14,7 +14,7 @@ if ( ! current_user_can( 'manage_give_settings' ) ) {
 /**
  * Fires before displaying the import div tools.
  *
- * @since 1.8.16
+ * @since 1.8.17
  */
 do_action( 'give_tools_import_core_settings_main_before' );
 ?>
@@ -26,7 +26,7 @@ do_action( 'give_tools_import_core_settings_main_before' );
 				/**
 				 * Fires before from start.
 				 *
-				 * @since 1.8.16
+				 * @since 1.8.17
 				 */
 				do_action( 'give_tools_import_core_settings_form_before_start' );
 				?>
@@ -38,7 +38,7 @@ do_action( 'give_tools_import_core_settings_main_before' );
 					/**
 					 * Fires just after form start.
 					 *
-					 * @since 1.8.16
+					 * @since 1.8.17
 					 */
 					do_action( 'give_tools_import_core_settings_form_start' );
 					?>
@@ -47,7 +47,7 @@ do_action( 'give_tools_import_core_settings_main_before' );
 					/**
 					 * Fires just after before form end.
 					 *
-					 * @since 1.8.16
+					 * @since 1.8.17
 					 */
 					do_action( 'give_tools_import_core_settings_form_end' );
 					?>
@@ -56,7 +56,7 @@ do_action( 'give_tools_import_core_settings_main_before' );
 				/**
 				 * Fires just after form end.
 				 *
-				 * @since 1.8.16
+				 * @since 1.8.17
 				 */
 				do_action( 'give_tools_import_core_settings_form_after_end' );
 				?>
@@ -67,6 +67,6 @@ do_action( 'give_tools_import_core_settings_main_before' );
 /**
  * Fires after displaying the import div tools.
  *
- * @since 1.8.16
+ * @since 1.8.17
  */
 do_action( 'give_tools_import_core_settings_main_after' );
