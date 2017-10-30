@@ -15,9 +15,57 @@ var Give = 'undefined' !== typeof Give ? Give : {};
 Give.form = {
 	init: function () {
 		this.fn.field.formatCreditCard(jQuery('form.give-form'));
+		this.fn.sendBackToForm();
 	},
 
 	fn: {
+		/**
+		 * Get Parameter by Name
+		 *
+		 * @see: http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
+		 * @param name
+		 * @param url
+		 * @since 1.4.2
+		 * @returns {*}
+		 */
+		getParameterByName: function (name, url) {
+			if (!url) {
+				url = window.location.href;
+			}
+
+			name = name.replace(/[\[\]]/g, "\\$&");
+
+			var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+				results = regex.exec(url);
+
+			if (!results) {
+				return null;
+			}
+
+			if (!results[2]) {
+				return '';
+			}
+
+			return decodeURIComponent(results[2].replace(/\+/g, " "));
+		},
+
+		/**
+		 * Get information from global var
+		 *
+		 * @since 1.8.17
+		 * @param {string} str
+		 *
+		 * @return {string}
+		 */
+		getGlobalVar: function (str) {
+			if ('undefined' === give_global_vars[str]) {
+				return '';
+			}
+
+			return give_global_vars[str];
+		},
+
+
 		/**
 		 * Get form information
 		 *
@@ -36,12 +84,12 @@ Give.form = {
 				return data;
 			}
 
-			switch( str ){
+			switch (str) {
 				case 'gateways':
 					data = [];
-					jQuery.each( $form.find('input[name="payment-mode"]'), function( index, gateway ){
-						gateway = ! ( gateway instanceof jQuery ) ? jQuery(gateway) : gateway;
-						data.push( gateway.val().trim() );
+					jQuery.each($form.find('input[name="payment-mode"]'), function (index, gateway) {
+						gateway = !( gateway instanceof jQuery ) ? jQuery(gateway) : gateway;
+						data.push(gateway.val().trim());
 					});
 					break;
 
@@ -96,10 +144,10 @@ Give.form = {
 		 * @since 1.8.17
 		 * @param {object} $form
 		 */
-		getFormGateway: function( $form ){
+		getFormGateway: function ($form) {
 			var gateway = '';
 
-			if( ! $form.length ){
+			if (!$form.length) {
 				return gateway;
 			}
 
@@ -322,6 +370,52 @@ Give.form = {
 			return Give.form.fn.unformatCurrency($form.find('input[name="give-form-minimum"]').val());
 		},
 
+		/**
+		 * Donor sent back to the form
+		 */
+		sendBackToForm: function () {
+
+			var form_id = this.getParameterByName('form-id'),
+				payment_mode = this.getParameterByName('payment-mode');
+
+			// Sanity check - only proceed if query strings in place.
+			if (!form_id || !payment_mode) {
+				return false;
+			}
+
+			var $form_wrapper = jQuery('body').find('#give-form-' + form_id + '-wrap'),
+				$form = $form_wrapper.find('form.give-form'),
+				display_modal = $form_wrapper.hasClass('give-display-modal'),
+				display_reveal = $form_wrapper.hasClass('give-display-reveal');
+
+			// Update payment mode radio so it's correctly checked.
+			$form.find('#give-gateway-radio-list label')
+				.removeClass('give-gateway-option-selected');
+			$form.find('input[name=payment-mode][value=' + payment_mode + ']')
+				.prop('checked', true)
+				.parent()
+				.addClass('give-gateway-option-selected');
+
+			// Select the proper level for Multi-level forms.
+			// It can either be a dropdown, buttons, or radio list. Default is buttons field type.
+			var level_id = this.getParameterByName('level-id'),
+				level_field = $form.find('*[data-price-id="' + level_id + '"]');
+
+			if (level_field.length > 0) {
+				update_multiselect_vals(level_field);
+			}
+
+			// This form is modal display so show the modal.
+			if (display_modal) {
+				give_open_form_modal($form_wrapper, $form);
+			} else if (display_reveal) {
+				// This is a reveal form, show it.
+				$form.find('.give-btn-reveal').hide();
+				$form.find('#give-payment-mode-select, #give_purchase_form_wrap').slideDown();
+			}
+
+		},
+
 		field: {
 			/**
 			 * Format CC Fields
@@ -353,7 +447,16 @@ Give.form = {
 
 jQuery(function ($) {
 
-	var $forms = jQuery('form.give-form'), doc = $(document);
+	var $forms = jQuery('form.give-form'),
+		doc = $(document);
+
+	// Toggle validation classes
+	$.fn.toggleError = function (errored) {
+		this.toggleClass('error', errored);
+		this.toggleClass('valid', !errored);
+
+		return this;
+	};
 
 	// Initialize Give object.
 	Give.form.init();
@@ -431,54 +534,55 @@ jQuery(function ($) {
 		update_billing_state_field
 	);
 
-	// Trigger formatting function when gateway changes
+	// Trigger formatting function when gateway changes.
 	doc.on(
 		'give_gateway_loaded',
 		function () {
 			Give.form.fn.field.formatCreditCard($forms);
-		});
-
-	// Toggle validation classes
-	$.fn.toggleError = function (errored) {
-		this.toggleClass('error', errored);
-		this.toggleClass('valid', !errored);
-
-		return this;
-	};
-
-	// Make sure a gateway is selected
-	doc.on('submit', '#give_payment_mode', function () {
-		var gateway = Give.form.fn.getFormGateway( $(this).closest('form') );
-		if ( ! gateway.length ) {
-			alert(give_global_vars.no_gateway);
-			return false;
 		}
-	});
+	);
+
+	// Make sure a gateway is selected.
+	doc.on(
+		'submit',
+		'#give_payment_mode',
+		function () {
+			var gateway = Give.form.fn.getFormGateway($(this).closest('form'));
+			if (!gateway.length) {
+				alert(Give.form.fn.getGlobalVar('no_gateway'));
+				return false;
+			}
+		}
+	);
 
 	// Add a class to the currently selected gateway on click
-	doc.on('click', '#give-payment-mode-select input', function () {
-		var $form = $(this).parents('form'),
-			$gateways_li = $('#give-payment-mode-select li'),
-			old_payment_gateway = $('#give-payment-mode-select li.give-gateway-option-selected input[name="payment-mode"]').val(),
-			new_payment_gateways = '';
+	doc.on(
+		'click',
+		'#give-payment-mode-select input',
+		function () {
+			var $form = $(this).parents('form'),
+				$gateways_li = $form.find('#give-payment-mode-select li'),
+				old_payment_gateway = $form.find('li.give-gateway-option-selected input[name="payment-mode"]').val().trim(),
+				new_payment_gateways;
 
-		// Unselect all payment gateways.
-		$gateways_li.removeClass('give-gateway-option-selected');
-		$gateways_li.prop('checked', false);
+			// Unselect all payment gateways.
+			$gateways_li.removeClass('give-gateway-option-selected');
+			$gateways_li.prop('checked', false);
 
-		// Select payment gateway.
-		$(this).prop('checked', true);
-		$(this).parent().addClass('give-gateway-option-selected');
+			// Select payment gateway.
+			$(this).prop('checked', true);
+			$(this).parent().addClass('give-gateway-option-selected');
 
-		// Get new payment gateway.
-		new_payment_gateways = $('#give-payment-mode-select li.give-gateway-option-selected input[name="payment-mode"]').val();
+			// Get new payment gateway.
+			new_payment_gateways = Give.form.fn.getFormGateway($form);
 
-		// Change form action.
-		$form.attr('action', $form.attr('action').replace(
-			'payment-mode=' + old_payment_gateway,
-			'payment-mode=' + new_payment_gateways)
-		);
-	});
+			// Change form action.
+			$form.attr('action', $form.attr('action').replace(
+				'payment-mode=' + old_payment_gateway,
+				'payment-mode=' + new_payment_gateways)
+			);
+		}
+	);
 
 	/**
 	 * Custom Donation Amount Focus In
@@ -531,7 +635,7 @@ jQuery(function ($) {
 		$(this).val(formatted_total);
 
 		//Does this number have an accepted minimum value?
-		if ( value_now < value_min || value_now < 1 ) {
+		if (value_now < value_min || value_now < 1) {
 
 			//It doesn't... Invalid Minimum
 			$(this).addClass('give-invalid-amount');
@@ -693,74 +797,6 @@ jQuery(function ($) {
 
 		// trigger an event for hooks
 		$(document).trigger('give_donation_value_updated', [$parent_form, this_amount, price_id]);
-	}
-
-	/**
-	 * Donor sent back to the form
-	 */
-	function sent_back_to_form() {
-
-		var form_id = give_get_parameter_by_name('form-id');
-		var payment_mode = give_get_parameter_by_name('payment-mode');
-
-		// Sanity check - only proceed if query strings in place.
-		if (!form_id || !payment_mode) {
-			return false;
-		}
-
-		var form_wrap = $('body').find('#give-form-' + form_id + '-wrap');
-		var form = form_wrap.find('form.give-form');
-		var display_modal = form_wrap.hasClass('give-display-modal');
-		var display_reveal = form_wrap.hasClass('give-display-reveal');
-
-		// Update payment mode radio so it's correctly checked.
-		form.find('#give-gateway-radio-list label').removeClass('give-gateway-option-selected');
-		form.find('input[name=payment-mode][value=' + payment_mode + ']').prop('checked', true).parent().addClass('give-gateway-option-selected');
-
-		// Select the proper level for Multi-level forms.
-		// It can either be a dropdown, buttons, or radio list. Default is buttons field type.
-		var level_id = give_get_parameter_by_name('level-id');
-		var level_field = form.find('*[data-price-id="' + level_id + '"]');
-		if (level_field.length > 0) {
-			update_multiselect_vals(level_field);
-		}
-
-		// This form is modal display so show the modal.
-		if (display_modal) {
-			give_open_form_modal(form_wrap, form);
-		} else if (display_reveal) {
-			// This is a reveal form, show it.
-			form.find('.give-btn-reveal').hide();
-			form.find('#give-payment-mode-select, #give_purchase_form_wrap').slideDown();
-		}
-
-	}
-
-	sent_back_to_form();
-
-	/**
-	 * Get Parameter by Name
-	 *
-	 * @see: http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
-	 * @param name
-	 * @param url
-	 * @since 1.4.2
-	 * @returns {*}
-	 */
-	function give_get_parameter_by_name(name, url) {
-		if (!url) {
-			url = window.location.href;
-		}
-		name = name.replace(/[\[\]]/g, "\\$&");
-		var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-			results = regex.exec(url);
-		if (!results) {
-			return null;
-		}
-		if (!results[2]) {
-			return '';
-		}
-		return decodeURIComponent(results[2].replace(/\+/g, " "));
 	}
 
 	/**
