@@ -1976,3 +1976,26 @@ function give_is_zero_based_currency( $currency = '' ) {
 
 	return false;
 }
+
+/**
+ * Get attribute string
+ *
+ * @since 2.0
+ *
+ * @param array $attributes
+ *
+ * @return string
+ */
+function give_get_attribute_str( $attributes ) {
+	$attribute_str = '';
+
+	if ( empty( $attributes ) ) {
+		return $attribute_str;
+	}
+
+	foreach ( $attributes as $tag => $value ) {
+		$attribute_str .= " {$tag}=\"{$value}\"";
+	}
+
+	return trim( $attribute_str );
+}
