@@ -30,6 +30,7 @@ class Tests_Roles extends Give_Unit_Test_Case {
 		$this->assertArrayHasKey( 'give_manager', (array) $wp_roles->role_names );
 		$this->assertArrayHasKey( 'give_accountant', (array) $wp_roles->role_names );
 		$this->assertArrayHasKey( 'give_worker', (array) $wp_roles->role_names );
+		$this->assertArrayHasKey( 'give_donor', (array) $wp_roles->role_names );
 
 	}
 
@@ -101,6 +102,116 @@ class Tests_Roles extends Give_Unit_Test_Case {
 	 * Test accountant caps.
 	 */
 	public function test_give_accountant_caps() {
+		global $wp_roles;
+
+		if ( class_exists( 'WP_Roles' ) ) {
+			if ( ! isset( $wp_roles ) ) {
+				$wp_roles = new WP_Roles();
+			}
+		}
+		echo "<pre>"; print_r($wp_roles->roles['give_accountant']); echo "</pre>";
+
+		// Check 1.
+		$this->assertArrayHasKey( 'read', (array) $wp_roles->roles['give_accountant']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['give_accountant']['capabilities']['read'] );
+
+		// Check 2.
+		$this->assertArrayHasKey( 'edit_posts', (array) $wp_roles->roles['give_accountant']['capabilities'] );
+		$this->assertEquals( false, $wp_roles->roles['give_accountant']['capabilities']['edit_posts'] );
+
+		// Check 3.
+		$this->assertArrayHasKey( 'delete_posts', (array) $wp_roles->roles['give_accountant']['capabilities'] );
+		$this->assertEquals( false, $wp_roles->roles['give_accountant']['capabilities']['delete_posts'] );
+
+		// Check 4.
+		$this->assertArrayHasKey( 'edit_give_forms', (array) $wp_roles->roles['give_accountant']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['give_accountant']['capabilities']['edit_give_forms'] );
+
+		// Check 5.
+		$this->assertArrayHasKey( 'read_private_give_forms', (array) $wp_roles->roles['give_accountant']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['give_accountant']['capabilities']['read_private_give_forms'] );
+
+		// Check 6.
+		$this->assertArrayHasKey( 'view_give_reports', (array) $wp_roles->roles['give_accountant']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['give_accountant']['capabilities']['view_give_reports'] );
+
+		// Check 7.
+		$this->assertArrayHasKey( 'export_give_reports', (array) $wp_roles->roles['give_accountant']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['give_accountant']['capabilities']['export_give_reports'] );
+
+		// Check 8.
+		$this->assertArrayHasKey( 'edit_give_payments', (array) $wp_roles->roles['give_accountant']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['give_accountant']['capabilities']['edit_give_payments'] );
+
+	}
+
+	/**
+	 * Test accountant caps.
+	 */
+	public function test_give_worker_caps() {
+		global $wp_roles;
+
+		if ( class_exists( 'WP_Roles' ) ) {
+			if ( ! isset( $wp_roles ) ) {
+				$wp_roles = new WP_Roles();
+			}
+		}
+
+		$this->assertArrayHasKey( 'read', (array) $wp_roles->roles['give_accountant']['capabilities'] );
+		$this->assertArrayHasKey( 'edit_posts', (array) $wp_roles->roles['give_accountant']['capabilities'] );
+		$this->assertArrayHasKey( 'delete_posts', (array) $wp_roles->roles['give_accountant']['capabilities'] );
+		$this->assertArrayHasKey( 'read_private_give_forms', (array) $wp_roles->roles['give_accountant']['capabilities'] );
+		$this->assertArrayHasKey( 'view_give_reports', (array) $wp_roles->roles['give_accountant']['capabilities'] );
+		$this->assertArrayHasKey( 'export_give_reports', (array) $wp_roles->roles['give_accountant']['capabilities'] );
+		$this->assertArrayHasKey( 'edit_give_payments', (array) $wp_roles->roles['give_accountant']['capabilities'] );
+	}
+
+	/**
+	 * Test accountant caps.
+	 */
+	public function test_give_donor_caps() {
+		global $wp_roles;
+
+		if ( class_exists( 'WP_Roles' ) ) {
+			if ( ! isset( $wp_roles ) ) {
+				$wp_roles = new WP_Roles();
+			}
+		}
+
+		$this->assertArrayHasKey( 'read', (array) $wp_roles->roles['give_accountant']['capabilities'] );
+		$this->assertArrayHasKey( 'edit_posts', (array) $wp_roles->roles['give_accountant']['capabilities'] );
+		$this->assertArrayHasKey( 'delete_posts', (array) $wp_roles->roles['give_accountant']['capabilities'] );
+		$this->assertArrayHasKey( 'read_private_give_forms', (array) $wp_roles->roles['give_accountant']['capabilities'] );
+		$this->assertArrayHasKey( 'view_give_reports', (array) $wp_roles->roles['give_accountant']['capabilities'] );
+		$this->assertArrayHasKey( 'export_give_reports', (array) $wp_roles->roles['give_accountant']['capabilities'] );
+		$this->assertArrayHasKey( 'edit_give_payments', (array) $wp_roles->roles['give_accountant']['capabilities'] );
+	}
+
+	/**
+	 * Test accountant caps.
+	 */
+	public function test_author_caps() {
+		global $wp_roles;
+
+		if ( class_exists( 'WP_Roles' ) ) {
+			if ( ! isset( $wp_roles ) ) {
+				$wp_roles = new WP_Roles();
+			}
+		}
+
+		$this->assertArrayHasKey( 'read', (array) $wp_roles->roles['give_accountant']['capabilities'] );
+		$this->assertArrayHasKey( 'edit_posts', (array) $wp_roles->roles['give_accountant']['capabilities'] );
+		$this->assertArrayHasKey( 'delete_posts', (array) $wp_roles->roles['give_accountant']['capabilities'] );
+		$this->assertArrayHasKey( 'read_private_give_forms', (array) $wp_roles->roles['give_accountant']['capabilities'] );
+		$this->assertArrayHasKey( 'view_give_reports', (array) $wp_roles->roles['give_accountant']['capabilities'] );
+		$this->assertArrayHasKey( 'export_give_reports', (array) $wp_roles->roles['give_accountant']['capabilities'] );
+		$this->assertArrayHasKey( 'edit_give_payments', (array) $wp_roles->roles['give_accountant']['capabilities'] );
+	}
+
+	/**
+	 * Test accountant caps.
+	 */
+	public function test_editor_caps() {
 		global $wp_roles;
 
 		if ( class_exists( 'WP_Roles' ) ) {
