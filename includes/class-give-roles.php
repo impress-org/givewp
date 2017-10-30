@@ -149,11 +149,16 @@ class Give_Roles {
 				}
 			}
 
+			// Revoke Capability access from Give Worker User Role.
+			$wp_roles->add_cap( 'give_worker', 'view_give_payments', false );
+
+			// Add Capabilities to Give Accountant User Role.
 			$wp_roles->add_cap( 'give_accountant', 'edit_give_forms' );
 			$wp_roles->add_cap( 'give_accountant', 'read_private_give_forms' );
 			$wp_roles->add_cap( 'give_accountant', 'view_give_reports' );
 			$wp_roles->add_cap( 'give_accountant', 'export_give_reports' );
 			$wp_roles->add_cap( 'give_accountant', 'edit_give_payments' );
+			$wp_roles->add_cap( 'give_accountant', 'view_give_payments' );
 
 			// Add Give Capabilities to Author User Role.
 			$wp_roles->add_cap( 'author', 'delete_give_forms' );
@@ -315,19 +320,21 @@ class Give_Roles {
 				}
 			}
 
-			/** Give Accountant Capabilities */
+			// Remove Capabilities from Give Accountant User Role.
 			$wp_roles->remove_cap( 'give_accountant', 'edit_give_forms' );
 			$wp_roles->remove_cap( 'give_accountant', 'read_private_give_forms' );
 			$wp_roles->remove_cap( 'give_accountant', 'view_give_reports' );
 			$wp_roles->remove_cap( 'give_accountant', 'export_give_reports' );
+			$wp_roles->remove_cap( 'give_accountant', 'edit_give_payments' );
+			$wp_roles->remove_cap( 'give_accountant', 'view_give_payments' );
 
-			// Add Give Capabilities to Author User Role.
+			// Remove Give Capabilities from Author User Role.
 			$wp_roles->remove_cap( 'author', 'delete_give_forms' );
 			$wp_roles->remove_cap( 'author', 'delete_published_give_forms' );
 			$wp_roles->remove_cap( 'author', 'edit_give_forms' );
 			$wp_roles->remove_cap( 'author', 'delete_published_give_forms' );
 
-			// Add Give Capabilities to Editor User Role.
+			// Remove Give Capabilities from Editor User Role.
 			$wp_roles->remove_cap( 'editor', 'delete_give_forms' );
 			$wp_roles->remove_cap( 'editor', 'delete_others_give_forms' );
 			$wp_roles->remove_cap( 'editor', 'delete_private_give_forms' );
