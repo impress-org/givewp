@@ -562,14 +562,14 @@ function give_get_donor_name_by( $id = 0, $from = 'donation' ) {
 
 			$name = $first_name . ' ' . $last_name;
 
-		break;
+			break;
 
 		case 'donor':
 
 			$donor = new Give_Donor( $id );
 			$name = $donor->name;
 
-		break;
+			break;
 
 	}
 
@@ -604,7 +604,7 @@ function give_donor_email_exists( $email ) {
  */
 function give_is_additional_email( $email ) {
 	global $wpdb;
-	
+
 	$meta_table = Give()->donor_meta->table_name;
 	$meta_type  = Give()->donor_meta->meta_type;
 	$donor_id   = $wpdb->get_var( $wpdb->prepare( "SELECT {$meta_type}_id FROM {$meta_table} WHERE meta_key = 'additional_email' AND meta_value = %s LIMIT 1", $email ) );
