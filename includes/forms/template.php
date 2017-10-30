@@ -130,30 +130,35 @@ function give_get_donation_form( $args = array() ) {
 			do_action( 'give_pre_form', $form->ID, $args );
 			?>
 
-            <form id="give-form-<?php echo $form_id; ?>" class="<?php echo $form_classes; ?>"
-                  action="<?php echo esc_url_raw( $form_action ); ?>" method="post">
-                <input type="hidden" name="give-form-id" value="<?php echo $form->ID; ?>"/>
-                <input type="hidden" name="give-form-title" value="<?php echo htmlentities( $form->post_title ); ?>"/>
-                <input type="hidden" name="give-current-url"
-                       value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
-                <input type="hidden" name="give-form-url"
-                       value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
-                <input type="hidden" name="give-form-minimum"
-                       value="<?php echo give_format_amount( give_get_form_minimum_price( $form->ID ), array( 'sanitize' => false ) ); ?>"/>
+			<form id="give-form-<?php echo $form_id; ?>" class="<?php echo $form_classes; ?>"
+				  action="<?php echo esc_url_raw( $form_action ); ?>" method="post">
+				<input type="hidden" name="give-form-id" value="<?php echo $form->ID; ?>"/>
+				<input type="hidden" name="give-form-title" value="<?php echo htmlentities( $form->post_title ); ?>"/>
+				<input type="hidden" name="give-current-url"
+					   value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
+				<input type="hidden" name="give-form-url"
+					   value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
+				<input type="hidden" name="give-form-minimum"
+					   value="<?php echo give_format_amount( give_get_form_minimum_price( $form->ID ), array( 'sanitize' => false ) ); ?>"/>
 
-                <!-- The following field is for currency setting.-->
-                <input type="hidden" name="give-currency" value="<?php echo esc_attr( $form_currency ); ?>"/>
-                <input type="hidden" name="give-currency-sign" value="<?php echo esc_attr( $give_currencies[ $form_currency ]['symbol'] ); ?>"/>
-                <input type="hidden" name="give-currency-position" value="<?php echo esc_attr( $currency_setting['currency_position'] ); ?>"/>
-                <input type="hidden" name="give-currency-thousands_separator" value="<?php echo esc_attr( $currency_setting['thousands_separator'] ); ?>"/>
-                <input type="hidden" name="give-currency-decimal_separator" value="<?php echo esc_attr( $currency_setting['decimal_separator'] ); ?>"/>
-                <input type="hidden" name="give-currency-number_decimals" value="<?php echo esc_attr( $currency_setting['number_decimals'] ); ?>"/>
+				<!-- The following field is for currency setting.-->
+				<input type="hidden" name="give-currency" value="<?php echo esc_attr( $form_currency ); ?>"/>
+				<input type="hidden" name="give-currency-sign"
+					   value="<?php echo esc_attr( $give_currencies[ $form_currency ]['symbol'] ); ?>"/>
+				<input type="hidden" name="give-currency-position"
+					   value="<?php echo esc_attr( $currency_setting['currency_position'] ); ?>"/>
+				<input type="hidden" name="give-currency-thousands_separator"
+					   value="<?php echo esc_attr( $currency_setting['thousands_separator'] ); ?>"/>
+				<input type="hidden" name="give-currency-decimal_separator"
+					   value="<?php echo esc_attr( $currency_setting['decimal_separator'] ); ?>"/>
+				<input type="hidden" name="give-currency-number_decimals"
+					   value="<?php echo esc_attr( $currency_setting['number_decimals'] ); ?>"/>
 
-                <!-- The following field is for robots only, invisible to humans: -->
-                <span class="give-hidden" style="display: none !important;">
+				<!-- The following field is for robots only, invisible to humans: -->
+				<span class="give-hidden" style="display: none !important;">
 					<label for="give-form-honeypot-<?php echo $form_id; ?>"></label>
 					<input id="give-form-honeypot-<?php echo $form_id; ?>" type="text" name="give-honeypot"
-                           class="give-honeypot give-hidden"/>
+						   class="give-honeypot give-hidden"/>
 				</span>
 
 				<?php
