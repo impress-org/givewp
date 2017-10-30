@@ -58,9 +58,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<tr class="give-import-core-settings">
 						<td scope="row" class="row-title">
 							<h3>
-								<span><?php esc_html_e( 'Import Give core settings', 'give' ); ?></span>
+								<span><?php esc_html_e( 'Import Give Settings', 'give' ); ?></span>
 							</h3>
-							<p><?php esc_html_e( 'Import Give\'s core settings in JSON format.', 'give' ); ?></p>
+							<p><?php esc_html_e( 'Import Give\'s settings in JSON format.', 'give' ); ?></p>
 						</td>
 						<td>
 							<a class="button" href="<?php echo add_query_arg( array( 'importer-type' => 'import_core_setting' ) ); ?>">

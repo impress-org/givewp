@@ -210,7 +210,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 				'undo'      => 'true',
 			);
 
-			$title = __( 'Core Settings Importing Completed!', 'give' );
+			$title = __( 'Settings Importing Completed!', 'give' );
 			if ( $success ) {
 				$query_arg_success['undo'] = '1';
 				$query_arg_success['step'] = '3';
@@ -220,7 +220,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 				if ( $undo ) {
 					$host_give_options = get_option( 'give_settings_old', array() );
 					update_option( 'give_settings', $host_give_options );
-					$title = __( 'Undo of Core Setting Imported Completed!', 'give' );
+					$title = __( 'Undo of Setting Imported Completed!', 'give' );
 				} else {
 					$title = __( 'Failed to import', 'give' );
 				}
@@ -233,7 +233,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 					<h2><?php echo $title; ?></h2>
 					<p>
 						<a class="button button-large button-secondary" href="<?php echo add_query_arg( $query_arg_success, admin_url( 'edit.php' ) ); ?>"><?php echo $text; ?></a>
-						<a class="button button-large button-secondary" href="<?php echo add_query_arg( $query_arg_setting, admin_url( 'edit.php' ) ); ?>"><?php echo __( 'View Setting', 'give' ); ?></a>
+						<a class="button button-large button-secondary" href="<?php echo add_query_arg( $query_arg_setting, admin_url( 'edit.php' ) ); ?>"><?php echo __( 'View Settings', 'give' ); ?></a>
 					</p>
 				</th>
 			</tr>
@@ -253,7 +253,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 			<tr valign="top" class="give-import-dropdown">
 				<th colspan="2">
 					<h2 id="give-import-title"><?php esc_html_e( 'Importing', 'give' ) ?></h2>
-					<p class="give-field-description"><?php esc_html_e( 'Your core settings are now being imported...', 'give' ) ?></p>
+					<p class="give-field-description"><?php esc_html_e( 'Your settings are now being imported...', 'give' ) ?></p>
 				</th>
 			</tr>
 
@@ -347,7 +347,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 			<tr valign="top">
 				<th colspan="2">
 					<h2 id="give-import-title"><?php esc_html_e( 'Import Core Settings from a JSON file', 'give' ) ?></h2>
-					<p class="give-field-description"><?php esc_html_e( 'This tool allows you to merge or replace core settings data to your give settings via a JSON file.', 'give' ) ?></p>
+					<p class="give-field-description"><?php esc_html_e( 'This tool allows you to merge or replace settings data to your give settings via a JSON file.', 'give' ) ?></p>
 				</th>
 			</tr>
 
@@ -370,7 +370,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 				array(
 					'id'          => 'type',
 					'name'        => __( 'Merge Type:', 'give' ),
-					'description' => __( 'Import the Core Setting from the JSON and then merge or replace with the current settings', 'give' ),
+					'description' => __( 'Import the Setting from the JSON and then merge or replace with the current settings', 'give' ),
 					'default'     => $type,
 					'type'        => 'radio_inline',
 					'options'     => array(
@@ -411,7 +411,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 				$type          = ( ! empty( $_REQUEST['type'] ) ? give_clean( $_REQUEST['type'] ) : 'replace' );
 				$core_settings = self::upload_widget_settings_file();
 				if ( ! empty( $core_settings['error'] ) ) {
-					Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please do not upload empty JSON file.', 'give' ) );
+					Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload a valid JSON settings file.', 'give' ) );
 				} else {
 					$file_path = explode( '/', $core_settings['file'] );
 					$count     = ( count( $file_path ) - 1 );

@@ -29,7 +29,7 @@ class Give_Core_Settings_Export extends Give_Export {
 	 * @var string
 	 * @since 1.8.17
 	 */
-	public $export_type = 'core-settings';
+	public $export_type = 'settings';
 
 	/**
 	 * Set the export headers

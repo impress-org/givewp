@@ -261,9 +261,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<tr class="give-export-core-settings">
 						<td scope="row" class="row-title">
 							<h3>
-								<span><?php esc_html_e( 'Export Give core settings', 'give' ); ?></span>
+								<span><?php esc_html_e( 'Export Give Settings', 'give' ); ?></span>
 							</h3>
-							<p><?php esc_html_e( 'Download an export of Give\'s core settings and import it in a new WordPress installation.', 'give' ); ?></p>
+							<p><?php esc_html_e( 'Download an export of Give\'s settings and import it in a new WordPress installation.', 'give' ); ?></p>
 						</td>
 						<td>
 							<form method="post">
