@@ -114,10 +114,24 @@ function give_get_donation_form( $args = array() ) {
 			 * @param int $form_id The form ID.
 			 * @param array $args An array of form arguments.
 			 */
-			do_action( 'give_pre_form', $form->ID, $args, $form );
+			do_action('give_pre_form', $form->ID, $args, $form );
+
+			// Set form html tags.
+			$form_html_tags = array(
+				'id' => "give-form-{$form_id}",
+				'class' => $form_classes,
+				'action' => esc_url_raw( $form_action ),
+			);
+
+			/**
+			 * Filter the form html tags.
+			 *
+			 * @since 1.8.17
+			 */
+			$form_html_tags = apply_filters('give_form_html_tags', (array) $form_html_tags, $form );
 			?>
 
-			<form id="give-form-<?php echo $form_id; ?>" class="<?php echo $form_classes; ?>" action="<?php echo esc_url_raw( $form_action ); ?>" method="post">
+			<form method="post" <?php echo give_get_attribute_str( $form_html_tags ); ?>>
 
 				<!-- The following field is for robots only, invisible to humans: -->
 				<span class="give-hidden" style="display: none !important;">
