@@ -101,7 +101,7 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 
 		$payments = $this->get_stored_data( 'give_temp_all_payments_data' );
 
-		if ( false === $payments ) {
+		if ( empty( $payments ) ) {
 			$args = apply_filters( 'give_recount_form_stats_args', array(
 				'post_parent__in' => $all_forms,
 				'number'          => $this->per_step,
@@ -114,7 +114,7 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 			$payments       = $payments_query->get_payments();
 		}
 
-		if ( $payments ) {
+		if ( ! empty( $payments ) ) {
 
 			//Loop through payments
 			foreach ( $payments as $payment ) {
