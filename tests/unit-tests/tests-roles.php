@@ -46,96 +46,127 @@ class Tests_Roles extends Give_Unit_Test_Case {
 			}
 		}
 
+		// Check 1.
 		$this->assertArrayHasKey( 'read', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['give_manager']['capabilities']['read'] );
 
+		// Check 2.
 		$this->assertArrayHasKey( 'edit_posts', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['give_manager']['capabilities']['edit_posts'] );
 
+		// Check 3.
 		$this->assertArrayHasKey( 'delete_posts', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['give_manager']['capabilities']['delete_posts'] );
 
+		// Check 4.
 		$this->assertArrayHasKey( 'unfiltered_html', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['give_manager']['capabilities']['unfiltered_html'] );
 
+		// Check 5.
 		$this->assertArrayHasKey( 'upload_files', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['give_manager']['capabilities']['upload_files'] );
 
+		// Check 6.
 		$this->assertArrayHasKey( 'export', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['give_manager']['capabilities']['export'] );
 
+		// Check 7.
 		$this->assertArrayHasKey( 'import', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['give_manager']['capabilities']['import'] );
 
+		// Check 8.
 		$this->assertArrayHasKey( 'delete_others_pages', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['give_manager']['capabilities']['delete_others_pages'] );
 
+		// Check 9.
 		$this->assertArrayHasKey( 'delete_others_posts', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['give_manager']['capabilities']['delete_others_posts'] );
 
+		// Check 10.
 		$this->assertArrayHasKey( 'delete_pages', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['give_manager']['capabilities']['delete_pages'] );
 
+		// Check 11.
 		$this->assertArrayHasKey( 'delete_private_pages', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['give_manager']['capabilities']['delete_private_pages'] );
 
+		// Check 12.
 		$this->assertArrayHasKey( 'delete_private_posts', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['give_manager']['capabilities']['delete_private_posts'] );
 
+		// Check 13.
 		$this->assertArrayHasKey( 'delete_published_pages', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['give_manager']['capabilities']['delete_published_pages'] );
 
+		// Check 14.
 		$this->assertArrayHasKey( 'delete_published_posts', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['give_manager']['capabilities']['delete_published_posts'] );
 
+		// Check 15.
 		$this->assertArrayHasKey( 'edit_others_pages', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( false, $wp_roles->roles['give_manager']['capabilities']['edit_others_pages'] );
 
+		// Check 16.
 		$this->assertArrayHasKey( 'edit_others_posts', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( false, $wp_roles->roles['give_manager']['capabilities']['edit_others_posts'] );
 
+		// Check 17.
 		$this->assertArrayHasKey( 'edit_pages', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['give_manager']['capabilities']['edit_pages'] );
 
+		// Check 18.
 		$this->assertArrayHasKey( 'edit_posts', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['give_manager']['capabilities']['edit_posts'] );
 
+		// Check 19.
 		$this->assertArrayHasKey( 'edit_private_pages', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['give_manager']['capabilities']['edit_private_pages'] );
 
+		// Check 20.
 		$this->assertArrayHasKey( 'edit_private_posts', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['give_manager']['capabilities']['edit_private_posts'] );
 
+		// Check 21.
 		$this->assertArrayHasKey( 'edit_published_pages', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['give_manager']['capabilities']['edit_published_pages'] );
 
+		// Check 22.
 		$this->assertArrayHasKey( 'edit_published_posts', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['give_manager']['capabilities']['edit_published_posts'] );
 
+		// Check 23.
 		$this->assertArrayHasKey( 'manage_categories', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['give_manager']['capabilities']['manage_categories'] );
 
+		// Check 24.
 		$this->assertArrayHasKey( 'manage_links', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['give_manager']['capabilities']['manage_links'] );
 
+		// Check 25.
 		$this->assertArrayHasKey( 'moderate_comments', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['give_manager']['capabilities']['moderate_comments'] );
 
+		// Check 26.
 		$this->assertArrayHasKey( 'publish_pages', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['give_manager']['capabilities']['publish_pages'] );
 
+		// Check 27.
 		$this->assertArrayHasKey( 'publish_posts', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['give_manager']['capabilities']['publish_posts'] );
 
+		// Check 28.
 		$this->assertArrayHasKey( 'read_private_pages', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['give_manager']['capabilities']['read_private_pages'] );
 
+		// Check 29.
 		$this->assertArrayHasKey( 'view_give_sensitive_data', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['give_manager']['capabilities']['view_give_sensitive_data'] );
 
+		// Check 30.
 		$this->assertArrayHasKey( 'export_give_reports', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['give_manager']['capabilities']['export_give_reports'] );
 
+		// Check 31.
 		$this->assertArrayHasKey( 'manage_give_settings', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertEquals( true, $wp_roles->roles['give_manager']['capabilities']['manage_give_settings'] );
 
