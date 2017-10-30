@@ -46,6 +46,8 @@ class Tests_Roles extends Give_Unit_Test_Case {
 			}
 		}
 
+		echo "<pre>"; print_r($wp_roles->roles['give_manager']); echo "</pre>";
+
 		$this->assertArrayHasKey( 'read', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertArrayHasKey( 'edit_posts', (array) $wp_roles->roles['give_manager']['capabilities'] );
 		$this->assertArrayHasKey( 'delete_posts', (array) $wp_roles->roles['give_manager']['capabilities'] );
@@ -81,7 +83,7 @@ class Tests_Roles extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Test admin capabilities.
+	 * Test Administrator User Role.
 	 */
 	public function test_administrator_caps() {
 		global $wp_roles;
@@ -92,14 +94,174 @@ class Tests_Roles extends Give_Unit_Test_Case {
 			}
 		}
 
+		// Check 1.
+		$this->assertArrayHasKey( 'view_give_reports', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['view_give_reports'] );
+
+		// Check 2.
 		$this->assertArrayHasKey( 'view_give_sensitive_data', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['view_give_sensitive_data'] );
+
+		// Check 3.
 		$this->assertArrayHasKey( 'export_give_reports', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['export_give_reports'] );
+
+		// Check 4.
 		$this->assertArrayHasKey( 'manage_give_settings', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['manage_give_settings'] );
+
+		// Check 5.
+		$this->assertArrayHasKey( 'edit_give_form', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['edit_give_form'] );
+
+		// Check 6.
+		$this->assertArrayHasKey( 'read_give_form', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['read_give_form'] );
+
+		// Check 7.
+		$this->assertArrayHasKey( 'delete_give_form', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['delete_give_form'] );
+
+		// Check 8.
+		$this->assertArrayHasKey( 'edit_give_forms', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['edit_give_forms'] );
+
+		// Check 9.
+		$this->assertArrayHasKey( 'delete_give_forms', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['delete_give_forms'] );
+
+		// Check 10.
+		$this->assertArrayHasKey( 'edit_others_give_forms', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['edit_others_give_forms'] );
+
+		// Check 11.
+		$this->assertArrayHasKey( 'publish_give_forms', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['publish_give_forms'] );
+
+		// Check 12.
+		$this->assertArrayHasKey( 'read_private_give_forms', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['read_private_give_forms'] );
+
+		// Check 13.
+		$this->assertArrayHasKey( 'delete_private_give_forms', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['delete_private_give_forms'] );
+
+		// Check 14.
+		$this->assertArrayHasKey( 'delete_published_give_forms', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['delete_published_give_forms'] );
+
+		// Check 15.
+		$this->assertArrayHasKey( 'delete_others_give_forms', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['delete_others_give_forms'] );
+
+		// Check 16.
+		$this->assertArrayHasKey( 'edit_private_give_forms', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['edit_private_give_forms'] );
+
+		// Check 17.
+		$this->assertArrayHasKey( 'edit_published_give_forms', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['edit_published_give_forms'] );
+
+		// Check 18.
+		$this->assertArrayHasKey( 'manage_give_form_terms', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['manage_give_form_terms'] );
+
+		// Check 19.
+		$this->assertArrayHasKey( 'edit_give_form_terms', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['edit_give_form_terms'] );
+
+		// Check 20.
+		$this->assertArrayHasKey( 'delete_give_form_terms', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['delete_give_form_terms'] );
+
+		// Check 21.
+		$this->assertArrayHasKey( 'assign_give_form_terms', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['assign_give_form_terms'] );
+
+		// Check 22.
+		$this->assertArrayHasKey( 'view_give_form_stats', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['view_give_form_stats'] );
+
+		// Check 23.
+		$this->assertArrayHasKey( 'import_give_forms', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['import_give_forms'] );
+
+		// Check 24.
+		$this->assertArrayHasKey( 'edit_give_payment', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['edit_give_payment'] );
+
+		// Check 25.
+		$this->assertArrayHasKey( 'read_give_payment', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['read_give_payment'] );
+
+		// Check 26.
+		$this->assertArrayHasKey( 'delete_give_payment', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['delete_give_payment'] );
+
+		// Check 27.
+		$this->assertArrayHasKey( 'edit_give_payments', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['edit_give_payments'] );
+
+		// Check 28.
+		$this->assertArrayHasKey( 'delete_give_payments', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['delete_give_payments'] );
+
+		// Check 29.
+		$this->assertArrayHasKey( 'edit_others_give_payments', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['edit_others_give_payments'] );
+
+		// Check 30.
+		$this->assertArrayHasKey( 'edit_private_give_payments', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['edit_private_give_payments'] );
+
+		// Check 31.
+		$this->assertArrayHasKey( 'edit_published_give_payments', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['edit_published_give_payments'] );
+
+		// Check 32.
+		$this->assertArrayHasKey( 'read_private_give_payments', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['read_private_give_payments'] );
+
+		// Check 33.
+		$this->assertArrayHasKey( 'delete_private_give_payments', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['delete_private_give_payments'] );
+
+		// Check 34.
+		$this->assertArrayHasKey( 'delete_published_give_payments', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['delete_published_give_payments'] );
+
+		// Check 35.
+		$this->assertArrayHasKey( 'delete_others_give_payments', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['delete_others_give_payments'] );
+
+		// Check 36.
+		$this->assertArrayHasKey( 'manage_give_payment_terms', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['manage_give_payment_terms'] );
+
+		// Check 37.
+		$this->assertArrayHasKey( 'edit_give_payment_terms', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['edit_give_payment_terms'] );
+
+		// Check 38.
+		$this->assertArrayHasKey( 'delete_give_payment_terms', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['delete_give_payment_terms'] );
+
+		// Check 39.
+		$this->assertArrayHasKey( 'assign_give_payment_terms', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['assign_give_payment_terms'] );
+
+		// Check 40.
+		$this->assertArrayHasKey( 'view_give_payment_stats', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['view_give_payment_stats'] );
+
+		// Check 41.
+		$this->assertArrayHasKey( 'import_give_payments', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['administrator']['capabilities']['import_give_payments'] );
 
 	}
 
 	/**
-	 * Test accountant caps.
+	 * Tests for Give Accountant User Roles.
 	 */
 	public function test_give_accountant_caps() {
 		global $wp_roles;
@@ -145,7 +307,9 @@ class Tests_Roles extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Test accountant caps.
+	 * Tests for Give Worker User Role.
+	 *
+	 * @since 1.8.17
 	 */
 	public function test_give_worker_caps() {
 		global $wp_roles;
@@ -334,7 +498,9 @@ class Tests_Roles extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Test accountant caps.
+	 * Tests for Give Donor User Role.
+	 *
+	 * @since 1.8.17
 	 */
 	public function test_give_donor_caps() {
 		global $wp_roles;
@@ -351,7 +517,9 @@ class Tests_Roles extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Test Author caps.
+	 * Tests for Author User Role.
+	 *
+	 * @since 1.8.17
 	 */
 	public function test_author_caps() {
 		global $wp_roles;
@@ -377,7 +545,9 @@ class Tests_Roles extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Test Editor caps.
+	 * Test for Editor User Role.
+	 *
+	 * @since 1.8.17
 	 */
 	public function test_editor_caps() {
 		global $wp_roles;
@@ -387,8 +557,6 @@ class Tests_Roles extends Give_Unit_Test_Case {
 				$wp_roles = new WP_Roles();
 			}
 		}
-
-		echo "<pre>"; print_r($wp_roles->roles['editor']); echo "</pre>";
 
 		// Check 1.
 		$this->assertArrayHasKey( 'edit_give_forms', (array) $wp_roles->roles['editor']['capabilities'] );
