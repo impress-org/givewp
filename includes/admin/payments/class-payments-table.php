@@ -613,7 +613,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 		if ( ! empty( $donor_id ) ) {
 
 			// Check whether the donor name and WP_User name is same or not.
-			if ( sanitize_title( $donor_billing_name ) != sanitize_title( $donor_name ) ) {
+			if ( sanitize_title( $donor_billing_name ) !== sanitize_title( $donor_name ) ) {
 				$value .= $donor_billing_name . ' (';
 			}
 

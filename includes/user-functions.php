@@ -556,8 +556,11 @@ function give_get_donor_name_by( $id = 0, $from = 'donation' ) {
 
 		case 'donation':
 
-			$user_info = give_get_payment_meta_user_info( $id );
-			$name = $user_info['first_name'] . ' ' . $user_info['last_name'];
+			$donation_info = new Give_Payment( $id );
+			$first_name    = $donation_info->get_meta( '_give_donor_billing_first_name', true );
+			$last_name     = $donation_info->get_meta( '_give_donor_billing_last_name', true );
+
+			$name = $first_name . ' ' . $last_name;
 
 		break;
 
