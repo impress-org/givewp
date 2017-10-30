@@ -10,12 +10,65 @@
 
 /* global jQuery */
 var give_scripts, give_global_vars;
+var Give = 'undefined' !== typeof Give ? Give : {};
+
+Give.form = {
+	init: function () {
+		this.format.field.credit_card(jQuery('form.give-form'));
+	},
+
+	format: {
+		field: {
+			/**
+			 * Format CC Fields
+			 * @description Set variables and format cc fields
+			 * @since 1.2
+			 *
+			 * @param {object} forms
+			 */
+			credit_card: function (forms) {
+				//Loop through forms on page and set CC validation
+				forms.each(function (index, form) {
+					form = jQuery(form);
+					var card_number = form.find('.card-number'),
+						card_cvc = form.find('.card-cvc'),
+						card_expiry = form.find('.card-expiry');
+
+					//Only validate if there is a card field
+					if (card_number.length) {
+						card_number.payment('formatCardNumber');
+						card_cvc.payment('formatCardCVC');
+						card_expiry.payment('formatCardExpiry');
+
+						/**
+						 * Trigger action when formatting credit card fields.
+						 *
+						 * 1.8.17
+						 */
+						form.trigger('Give:Form:CreditCardFieldUpdated');
+					}
+				});
+
+				/**
+				 * Trigger action when formatting credit card fields.
+				 *
+				 * @since 1.8.17
+				 */
+				jQuery(document).trigger('Give:Form:CreditCardFieldUpdated', forms);
+			}
+		}
+	}
+};
 
 
 jQuery(function ($) {
 
-	var doc = $( document );
-	var format_args = {};
+	var $forms = jQuery('form.give-form'),
+		doc = $( document ),
+		format_args = {};
+
+	// Initialize Give object.
+	Give.form.init();
 
 	/**
 	 * Update state/province fields per country selection
@@ -86,36 +139,11 @@ jQuery(function ($) {
 	doc.on('change', '#give_cc_address input.card_state, #give_cc_address select', update_billing_state_field
 	);
 
-	/**
-	 * Format CC Fields
-	 * @description Set variables and format cc fields
-	 * @since 1.2
-	 */
-	function format_cc_fields() {
-		var $give_form = $('form.give-form');
-
-		//Loop through forms on page and set CC validation
-		$give_form.each(function (index, form) {
-			form            = $(form);
-			var card_number = form.find('.card-number'),
-				card_cvc    = form.find('.card-cvc'),
-				card_expiry = form.find('.card-expiry');
-
-			//Only validate if there is a card field
-			if (card_number.length) {
-				card_number.payment('formatCardNumber');
-				card_cvc.payment('formatCardCVC');
-				card_expiry.payment('formatCardExpiry');
-			}
-		});
-
-	}
-
-	format_cc_fields();
-
 	// Trigger formatting function when gateway changes
-	doc.on('give_gateway_loaded', function (e) {
-		format_cc_fields();
+	doc.on(
+		'give_gateway_loaded',
+		function (e) {
+		Give.form.format.field.credit_card( $forms );
 	});
 
 	// Toggle validation classes
