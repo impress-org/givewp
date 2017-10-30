@@ -29,19 +29,33 @@ Give.form = {
 		 */
 		getFormInfo: function (str, $form) {
 			var data = '';
+			$form = 'undefined' !== typeof $form ? $form : {};
 
 			// Bailout.
 			if (!str.length || !$form.length) {
 				return data;
 			}
 
-			if ($form.get(0).hasAttribute('data-' + str)) {
-				data = $form.attr('data-' + str);
-			} else {
-				data = $form.attr(str);
+			switch( str ){
+				case 'gateways':
+					data = [];
+					jQuery.each( $form.find('input[name="payment-mode"]'), function( index, gateway ){
+						gateway = ! ( gateway instanceof jQuery ) ? jQuery(gateway) : gateway;
+						data.push( gateway.val().trim() );
+					});
+					break;
+
+				default:
+					if ($form.get(0).hasAttribute('data-' + str)) {
+						data = $form.attr('data-' + str);
+					} else {
+						data = $form.attr(str);
+					}
+
+					'undefined' !== typeof data ? data.trim() : data;
 			}
 
-			return 'undefined' !== typeof data ? data.trim() : data;
+			return data;
 		},
 
 		/**
@@ -79,9 +93,27 @@ Give.form = {
 		/**
 		 * Get formatted amount
 		 *
+		 * @since 1.8.17
+		 * @param {object} $form
+		 */
+		getFormGateway: function( $form ){
+			var gateway = '';
+
+			if( ! $form.length ){
+				return gateway;
+			}
+
+			gateway = $form.find('input[name="payment-mode"]:checked').val().trim();
+
+			return 'undefined' !== gateway ? gateway : '';
+		},
+
+		/**
+		 * Get formatted amount
+		 *
 		 * @param {string/number} amount
 		 * @param {object} $form
-		 * @param {array} args
+		 * @param {object} args
 		 */
 		formatFormAmount: function (amount, $form, args) {
 			// Do not format amount if form did not exist.
@@ -142,7 +174,7 @@ Give.form = {
 					actual_price = actual_price.substr(0, parseInt(decimal_index));
 
 					if (!decimal_amount.length) {
-						decimal_amount = '.0000000000'.substr(0, ( parseInt( decimal_index ) + 1 ));
+						decimal_amount = '.0000000000'.substr(0, ( parseInt(decimal_index) + 1 ));
 					} else if (( args.precision + 1 ) > decimal_amount.length) {
 						decimal_amount = ( decimal_amount + '000000000' ).substr(0, args.precision + 1);
 					}
@@ -209,7 +241,7 @@ Give.form = {
 			if (
 				!$form.length ||
 				!$form.hasClass('give-form-type-multi') ||
-				! ( formLevels = $form.find('.give-donation-levels-wrap [data-price-id] ') )
+				!( formLevels = $form.find('.give-donation-levels-wrap [data-price-id] ') )
 			) {
 				return variable_prices;
 			}
@@ -218,7 +250,7 @@ Give.form = {
 				// Get Jquery instance for item.
 				item = !(item instanceof jQuery) ? jQuery(item) : item;
 
-				var decimal_separator = $form.find('input[name="give-currency-decimal_separator"]').val();
+				var decimal_separator = Give.form.fn.getFormInfo('decimal_separator', $form);
 
 				// Add price id and amount to collector.
 				variable_prices.push({
@@ -228,6 +260,66 @@ Give.form = {
 			});
 
 			return variable_prices;
+		},
+
+		/**
+		 * Get form price ID
+		 *
+		 * @since 1.8.17
+		 * @param {object} $form
+		 *
+		 * @return {string}
+		 */
+		getFormPriceID: function ($form) {
+			var variable_prices = this.getFormVariablePrices($form),
+				current_amount = this.unformatCurrency(
+					$form.find('input[name="give-amount"]').val(),
+					this.getFormInfo('decimal_separator', $form)
+				),
+
+				/**
+				 * Flag Multi-levels for min. donation conditional.
+				 *
+				 * Note: Value of this variable will be:
+				 *  a. -1      if no any level found.
+				 *  b. [0-*]   Any number from zero if donation level found.
+				 *  c  custom  if donation level not found and donation amount is greater than the custom minimum amount.
+				 *
+				 * @type {number/string} Donation level ID.
+				 */
+				price_id = -1;
+
+
+			// Find price id with amount in variable prices.
+			if (variable_prices.length) {
+
+				// Find amount in donation levels.
+				jQuery.each(variable_prices, function (index, variable_price) {
+					if (variable_price.amount === current_amount) {
+						price_id = variable_price.price_id;
+						return false;
+					}
+				});
+
+				// Set level to custom.
+				if (-1 === price_id && this.getFormMinimumAmount($form) <= current_amount) {
+					price_id = 'custom';
+				}
+			}
+
+			return price_id;
+		},
+
+		/**
+		 * Get form minimum amount
+		 *
+		 * @since 1.8.17
+		 * @param {object} $form
+		 *
+		 * @return {string}
+		 */
+		getFormMinimumAmount: function ($form) {
+			return Give.form.fn.unformatCurrency($form.find('input[name="give-form-minimum"]').val());
 		},
 
 		field: {
@@ -251,22 +343,8 @@ Give.form = {
 						card_number.payment('formatCardNumber');
 						card_cvc.payment('formatCardCVC');
 						card_expiry.payment('formatCardExpiry');
-
-						/**
-						 * Trigger action when formatting credit card fields.
-						 *
-						 * 1.8.17
-						 */
-						form.trigger('Give:Form:CreditCardFieldUpdated');
 					}
 				});
-
-				/**
-				 * Trigger action when formatting credit card fields.
-				 *
-				 * @since 1.8.17
-				 */
-				jQuery(document).trigger('Give:Form:CreditCardFieldUpdated', forms);
 			}
 		}
 	}
@@ -275,9 +353,7 @@ Give.form = {
 
 jQuery(function ($) {
 
-	var $forms = jQuery('form.give-form'),
-		doc = $(document),
-		format_args = {};
+	var $forms = jQuery('form.give-form'), doc = $(document);
 
 	// Initialize Give object.
 	Give.form.init();
@@ -348,13 +424,17 @@ jQuery(function ($) {
 		return false;
 	}
 
-	doc.on('change', '#give_cc_address input.card_state, #give_cc_address select', update_billing_state_field
+	// Sync state field with country.
+	doc.on(
+		'change',
+		'#give_cc_address input.card_state, #give_cc_address select',
+		update_billing_state_field
 	);
 
 	// Trigger formatting function when gateway changes
 	doc.on(
 		'give_gateway_loaded',
-		function (e) {
+		function () {
 			Give.form.fn.field.formatCreditCard($forms);
 		});
 
@@ -368,8 +448,8 @@ jQuery(function ($) {
 
 	// Make sure a gateway is selected
 	doc.on('submit', '#give_payment_mode', function () {
-		var gateway = $('#give-gateway option:selected').val();
-		if (gateway == 0) {
+		var gateway = Give.form.fn.getFormGateway( $(this).closest('form') );
+		if ( ! gateway.length ) {
 			alert(give_global_vars.no_gateway);
 			return false;
 		}
@@ -414,7 +494,7 @@ jQuery(function ($) {
 
 		//Set data amount
 		var current_total = parent_form.find('.give-final-total-amount').data('total');
-		var decimal_separator = parent_form.find('input[name="give-currency-decimal_separator"]').val();
+		var decimal_separator = Give.form.fn.getFormInfo('decimal_separator', parent_form);
 		$(this).data('amount', Give.form.fn.unformatCurrency(current_total, decimal_separator));
 
 		//This class is used for CSS purposes
@@ -437,76 +517,25 @@ jQuery(function ($) {
 	 *
 	 */
 	doc.on('blur', '.give-donation-amount .give-text-input', function (e, $parent_form, donation_amount, price_id) {
-		var parent_form = ($parent_form != undefined) ? $parent_form : $(this).closest('form'),
+		var parent_form = ( 'undefined' !== typeof $parent_form ) ? $parent_form : $(this).closest('form'),
 			pre_focus_amount = $(this).data('amount'),
-			this_value = (donation_amount != undefined) ? donation_amount : $(this).val(),
-			$minimum_amount = parent_form.find('input[name="give-form-minimum"]'),
-			decimal_separator = parent_form.find('input[name="give-currency-decimal_separator"]').val(),
-			value_min = Give.form.fn.unformatCurrency($minimum_amount.val(), decimal_separator),
-			value_now = (this_value == 0) ? value_min : Give.form.fn.unformatCurrency(this_value, decimal_separator),
-			variable_prices = Give.form.fn.getFormVariablePrices($(this).parents('form')),
-			error_msg = '';
+			this_value = ( 'undefined' !== typeof donation_amount ) ? donation_amount : parseInt($(this).val()),
+			decimal_separator = Give.form.fn.getFormInfo('decimal_separator', parent_form),
+			value_min = Give.form.fn.getFormMinimumAmount(parent_form),
+			value_now = (this_value === 0) ? value_min : Give.form.fn.unformatCurrency(this_value, decimal_separator),
+			error_msg = '',
+			formatted_total = Give.form.fn.formatFormAmount(value_now, parent_form, {});
 
-		/**
-		 * Flag Multi-levels for min. donation conditional.
-		 *
-		 * Note: Value of this variable will be:
-		 *  a. -1      if no any level found.
-		 *  b. [0-*]   Any number from zero if donation level found.
-		 *  c  custom  if donation level not found and donation amount is greater than the custom minimum amount.
-		 *
-		 * @type {number/string} Donation level ID.
-		 */
-		price_id = (
-			undefined != price_id
-		) ? price_id : -1;
+		price_id = Give.form.fn.getFormPriceID(parent_form);
 
-		//Set the custom amount input value format properly
-		format_args = {
-			symbol: '',
-			position: parent_form.find('input[name="give-currency-position"]').val(),
-			decimal: parent_form.find('input[name="give-currency-decimal_separator"]').val(),
-			thousand: parent_form.find('input[name="give-currency-thousands_separator"]').val(),
-			precision: parent_form.find('input[name="give-currency-number_decimals"]').val(),
-			currency: parent_form.find('input[name="give-currency"]').val()
-		};
-
-		var formatted_total = Give.form.fn.formatCurrency(value_now, format_args);
 		$(this).val(formatted_total);
 
-		// Find price id with amount in variable prices.
-		if (
-			variable_prices.length
-			&& !(-1 < price_id )
-		) {
-
-			// Find amount in donation levels.
-			$.each(variable_prices, function (index, variable_price) {
-				if (variable_price.amount === value_now) {
-					price_id = variable_price.price_id;
-					return false;
-				}
-			});
-
-			// Set level to custom.
-			if (
-				!(-1 < price_id)
-				&& (value_min <= value_now)
-			) {
-				price_id = 'custom';
-			}
-		}
-
 		//Does this number have an accepted minimum value?
-		if (
-			(value_now < value_min || value_now < 1)
-			&& (-1 === price_id)
-		) {
+		if ( value_now < value_min || value_now < 1 ) {
 
 			//It doesn't... Invalid Minimum
 			$(this).addClass('give-invalid-amount');
-			format_args.symbol = parent_form.find('input[name="give-currency-sign"]').val();
-			error_msg = give_global_vars.bad_minimum + ' ' + Give.form.fn.formatCurrency(value_min, format_args);
+			error_msg = give_global_vars.bad_minimum + ' ' + Give.form.fn.formatCurrency(value_min, {symbol: Give.form.fn.getFormInfo('currency_symbol', parent_form)});
 
 			//Disable submit
 			parent_form.find('.give-submit').prop('disabled', true);
@@ -536,9 +565,10 @@ jQuery(function ($) {
 		//If values don't match up then proceed with updating donation total value
 		if (pre_focus_amount !== value_now) {
 
-			//update donation total (include currency symbol)
-			format_args.symbol = parent_form.find('input[name="give-currency-sign"]').val();
-			parent_form.find('.give-final-total-amount').data('total', value_now).text(Give.form.fn.formatCurrency(value_now, format_args));
+			// Update donation total (include currency symbol)
+			parent_form.find('.give-final-total-amount')
+				.data('total', value_now)
+				.text(Give.form.fn.formatCurrency(value_now, {}, parent_form));
 
 		}
 
@@ -549,7 +579,7 @@ jQuery(function ($) {
 			$('input[name="give-price-id"]', parent_form).val(price_id);
 
 			// Update hidden amount field
-			parent_form.find('.give-amount-hidden').val(Give.form.fn.formatAmount(value_now, parent_form));
+			parent_form.find('.give-amount-hidden').val(Give.form.fn.formatFormAmount(value_now, parent_form, {}));
 
 			// Remove old selected class & add class for CSS purposes
 			parent_form.find('.give-default-level').removeClass('give-default-level');
@@ -558,30 +588,27 @@ jQuery(function ($) {
 			switch (true) {
 
 				// Auto select radio button.
-				case (
-					!!parent_form.find('.give-radio-input').length
-				) :
-					parent_form.find('.give-radio-input').prop('checked', false);
+				case (!!parent_form.find('.give-radio-input').length) :
+					parent_form.find('.give-radio-input')
+						.prop('checked', false);
 					parent_form.find('.give-radio-input[data-price-id="' + price_id + '"]')
 						.prop('checked', true)
 						.addClass('give-default-level');
 					break;
 
 				// Set focus to price id button.
-				case (
-					!!parent_form.find('button.give-donation-level-btn').length
-				) :
-					parent_form.find('button.give-donation-level-btn').blur();
+				case (!!parent_form.find('button.give-donation-level-btn').length) :
+					parent_form.find('button.give-donation-level-btn')
+						.blur();
 					parent_form.find('button.give-donation-level-btn[data-price-id="' + price_id + '"]')
 						.focus()
 						.addClass('give-default-level');
 					break;
 
 				// Auto select option.
-				case (
-					!!parent_form.find('select.give-select-level').length
-				) :
-					parent_form.find('select.give-select-level option').prop('selected', false);
+				case (!!parent_form.find('select.give-select-level').length) :
+					parent_form.find('select.give-select-level option')
+						.prop('selected', false);
 					parent_form.find('select.give-select-level option[data-price-id="' + price_id + '"]')
 						.prop('selected', true)
 						.addClass('give-default-level');
@@ -591,7 +618,8 @@ jQuery(function ($) {
 		}
 
 		//This class is used for CSS purposes
-		$(this).parent('.give-donation-amount').removeClass('give-custom-amount-focus-in');
+		$(this).parent('.give-donation-amount')
+			.removeClass('give-custom-amount-focus-in');
 
 	});
 
@@ -626,7 +654,7 @@ jQuery(function ($) {
 			price_id = selected_field.data('price-id');
 
 		// Check if price ID blank because of dropdown type
-		if (undefined == price_id) {
+		if ('undefined' === price_id) {
 			price_id = selected_field.find('option:selected').data('price-id');
 		}
 
@@ -641,7 +669,7 @@ jQuery(function ($) {
 		$parent_form.find('.give-amount-top').val(this_amount);
 		$parent_form.find('span.give-amount-top').text(this_amount);
 
-		var decimal_separator = $parent_form.find('input[name="give-currency-decimal_separator"]').val();
+		var decimal_separator = Give.form.fn.getFormInfo('decimal_separator', $parent_form);
 
 		// Cache previous amount and set data amount.
 		$('.give-donation-amount .give-text-input', $parent_form)
