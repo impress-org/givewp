@@ -19,6 +19,71 @@ Give.form = {
 
 	fn: {
 		/**
+		 * Get form information
+		 *
+		 * @since 1.8.17
+		 * @param {string} str
+		 * @param {object} $form
+		 * @param {string} type
+		 *
+		 * @return {string}
+		 */
+		getFormInfo: function( str, $form, type ){
+			var data = '';
+
+			// Bailout.
+			if( ! str.length || !$form.length){
+				return data;
+			}
+
+			type = 'undefined' === typeof type ? 'data' : type;
+
+			switch ( type ) {
+				case 'attr':
+					data = $form.attr( str );
+					break;
+
+				default:
+					data = $form.attr( 'data-' + str );
+					break;
+			}
+
+			return data;
+		},
+
+		/**
+		 * Set form information
+		 *
+		 * @since 1.8.17
+		 * @param {string} str
+		 * @param {string} val
+		 * @param {object} $form
+		 * @param {string} type
+		 *
+		 * @return {string|boolean}
+		 */
+		setFormInfo: function( str, val, $form, type ){
+			// Bailout.
+			if( ! str.length || !$form.length){
+				return false;
+			}
+
+			type = 'undefined' === typeof type ? 'data' : type;
+
+			switch ( type ) {
+				case 'attr':
+					$form.attr( str, val );
+					break;
+
+				default:
+					$form.data( str, val );
+					break;
+			}
+
+			return true;
+		},
+
+		/**
 		 * Get formatted amount
 		 *
 		 * @param {string/number} amount
