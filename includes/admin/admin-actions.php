@@ -656,7 +656,7 @@ function give_core_settings_import_callback() {
 		'success'       => ( empty( $json_data['success'] ) ? '0' : '1' ),
 	) ) );
 
-	wp_die( json_encode( $json_data ) );
+	wp_send_json( $json_data );
 }
 
 add_action( 'wp_ajax_give_core_settings_import', 'give_core_settings_import_callback' );
