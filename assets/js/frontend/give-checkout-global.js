@@ -442,6 +442,21 @@ Give.form = {
 
 		},
 
+		/**
+		 * Check if donation amount valid or not
+		 * @since 1.8.17
+		 *
+		 * @param {object} $form
+		 *
+		 * @return {boolean}
+		 */
+		isValidDonationAmount: function ($form) {
+			var min_amount = this.getFormMinimumAmount( $form ),
+				amount = this.getFormAmount( $form );
+
+			return ( -1 < amount && amount > min_amount );
+		},
+
 		field: {
 			/**
 			 * Format CC Fields
