@@ -637,7 +637,7 @@ function give_get_donor_name_by( $id = 0, $from = 'donation' ) {
 		case 'donation':
 
 			$user_info = give_get_payment_meta_user_info( $id );
-			$name = $user_info['first_name'] . ' ' . $user_info['last_name'];
+			$name = trim( "{$user_info['first_name']} {$user_info['last_name']}" );
 
 		break;
 
