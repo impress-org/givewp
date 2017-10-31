@@ -15,10 +15,129 @@ var Give = 'undefined' !== typeof Give ? Give : {};
 Give.form = {
 	init: function () {
 		this.fn.field.formatCreditCard(jQuery('form.give-form'));
-		this.fn.sendBackToForm();
+		this.fn.__sendBackToForm();
 	},
 
 	fn: {
+		/**
+		 * Get formatted amount
+		 *
+		 * @param {string/number} amount
+		 * @param {object} $form
+		 * @param {object} args
+		 */
+		formatFormAmount: function (amount, $form, args) {
+			// Do not format amount if form did not exist.
+			if (!$form.length) {
+				return amount;
+			}
+
+			return Give.form.fn.formatCurrency(amount, args, $form);
+		},
+
+		/**
+		 * Format Currency
+		 *
+		 * @description format the currency with accounting.js
+		 * @param {string} price
+		 * @param {object}  args
+		 * @param {object} $form
+		 * @returns {*|string}
+		 */
+		formatCurrency: function (price, args, $form) {
+			// Global currency setting.
+			var format_args = {
+				decimal: parseInt(give_global_vars.decimal_separator),
+				thousand: give_global_vars.thousands_separator,
+				precision: give_global_vars.number_decimals,
+				currency: give_global_vars.currency
+			};
+
+			price = price.toString().trim();
+			$form = 'undefined' === typeof $form ? {} : $form;
+
+			// Form specific currency setting.
+			if ($form.length) {
+				//Set the custom amount input value format properly
+				format_args = {
+					decimal: Give.form.fn.getFormInfo('decimal_separator', $form),
+					thousand: Give.form.fn.getFormInfo('thousands_separator', $form),
+					precision: Give.form.fn.getFormInfo('number_decimals', $form),
+					currency: Give.form.fn.getFormInfo('currency_code', $form),
+				};
+			}
+
+			args = jQuery.extend(format_args, args);
+
+			if ('INR' === args.currency) {
+				var actual_price = accounting.unformat(price, args.decimal).toString();
+
+				var decimal_amount = '',
+					result,
+					amount,
+					decimal_index = actual_price.indexOf('.');
+
+				if (( -1 !== decimal_index ) && args.precision) {
+					decimal_amount = Number(actual_price.substr(parseInt(decimal_index)))
+						.toFixed(args.precision)
+						.toString()
+						.substr(1);
+					actual_price = actual_price.substr(0, parseInt(decimal_index));
+
+					if (!decimal_amount.length) {
+						decimal_amount = '.0000000000'.substr(0, ( parseInt(decimal_index) + 1 ));
+					} else if (( args.precision + 1 ) > decimal_amount.length) {
+						decimal_amount = ( decimal_amount + '000000000' ).substr(0, args.precision + 1);
+					}
+				}
+
+				// Extract last 3 from amount
+				result = actual_price.substr(-3);
+				amount = actual_price.substr(0, parseInt(actual_price.length) - 3);
+
+				// Apply digits 2 by 2
+				while (amount.length > 0) {
+					result = amount.substr(-2) + args.thousand + result;
+					amount = amount.substr(0, parseInt(amount.length) - 2);
+				}
+
+				if (decimal_amount.length) {
+					result = result + decimal_amount;
+				}
+
+				price = result;
+
+				if (undefined !== args.symbol && args.symbol.length) {
+					if ('after' === args.position) {
+						price = price + args.symbol;
+					} else {
+						price = args.symbol + price;
+					}
+				}
+			} else {
+				//Properly position symbol after if selected
+				if ('after' === args.position) {
+					args.format = "%v%s";
+				}
+
+				price = accounting.formatMoney(price, args);
+			}
+
+			return price;
+
+		},
+
+		/**
+		 * Unformat Currency
+		 *
+		 * @param price
+		 * @param {string} decimal_separator
+		 * @returns {number}
+		 */
+		unformatCurrency: function (price, decimal_separator) {
+			return Math.abs(parseFloat(accounting.unformat(price, decimal_separator)));
+		},
+
 		/**
 		 * Get Parameter by Name
 		 *
@@ -157,125 +276,6 @@ Give.form = {
 		},
 
 		/**
-		 * Get formatted amount
-		 *
-		 * @param {string/number} amount
-		 * @param {object} $form
-		 * @param {object} args
-		 */
-		formatFormAmount: function (amount, $form, args) {
-			// Do not format amount if form did not exist.
-			if (!$form.length) {
-				return amount;
-			}
-
-			return Give.form.fn.formatCurrency(amount, args, $form);
-		},
-
-		/**
-		 * Format Currency
-		 *
-		 * @description format the currency with accounting.js
-		 * @param {string} price
-		 * @param {object}  args
-		 * @param {object} $form
-		 * @returns {*|string}
-		 */
-		formatCurrency: function (price, args, $form) {
-			// Global currency setting.
-			var format_args = {
-				decimal: parseInt(give_global_vars.decimal_separator),
-				thousand: give_global_vars.thousands_separator,
-				precision: give_global_vars.number_decimals,
-				currency: give_global_vars.currency
-			};
-
-			price = price.toString().trim();
-			$form = 'undefined' === typeof $form ? {} : $form;
-
-			// Form specific currency setting.
-			if ($form.length) {
-				//Set the custom amount input value format properly
-				format_args = {
-					decimal: Give.form.fn.getFormInfo('decimal_separator', $form),
-					thousand: Give.form.fn.getFormInfo('thousands_separator', $form),
-					precision: Give.form.fn.getFormInfo('number_decimals', $form),
-					currency: Give.form.fn.getFormInfo('currency_code', $form),
-				};
-			}
-
-			args = jQuery.extend(format_args, args);
-
-			if ('INR' === args.currency) {
-				var actual_price = accounting.unformat(price, args.decimal).toString();
-
-				var decimal_amount = '',
-					result,
-					amount,
-					decimal_index = actual_price.indexOf('.');
-
-				if (( -1 !== decimal_index ) && args.precision) {
-					decimal_amount = Number(actual_price.substr(parseInt(decimal_index)))
-						.toFixed(args.precision)
-						.toString()
-						.substr(1);
-					actual_price = actual_price.substr(0, parseInt(decimal_index));
-
-					if (!decimal_amount.length) {
-						decimal_amount = '.0000000000'.substr(0, ( parseInt(decimal_index) + 1 ));
-					} else if (( args.precision + 1 ) > decimal_amount.length) {
-						decimal_amount = ( decimal_amount + '000000000' ).substr(0, args.precision + 1);
-					}
-				}
-
-				// Extract last 3 from amount
-				result = actual_price.substr(-3);
-				amount = actual_price.substr(0, parseInt(actual_price.length) - 3);
-
-				// Apply digits 2 by 2
-				while (amount.length > 0) {
-					result = amount.substr(-2) + args.thousand + result;
-					amount = amount.substr(0, parseInt(amount.length) - 2);
-				}
-
-				if (decimal_amount.length) {
-					result = result + decimal_amount;
-				}
-
-				price = result;
-
-				if (undefined !== args.symbol && args.symbol.length) {
-					if ('after' === args.position) {
-						price = price + args.symbol;
-					} else {
-						price = args.symbol + price;
-					}
-				}
-			} else {
-				//Properly position symbol after if selected
-				if ('after' === args.position) {
-					args.format = "%v%s";
-				}
-
-				price = accounting.formatMoney(price, args);
-			}
-
-			return price;
-
-		},
-
-		/**
-		 * Unformat Currency
-		 *
-		 * @param price
-		 * @param {string} decimal_separator
-		 * @returns {number}
-		 */
-		unformatCurrency: function (price, decimal_separator) {
-			return Math.abs(parseFloat(accounting.unformat(price, decimal_separator)));
-		},
-
-		/**
 		 * Get Price ID and levels for multi donation form
 		 *
 		 * @param   {Object} $form Form jQuery object
@@ -373,7 +373,7 @@ Give.form = {
 		/**
 		 * Donor sent back to the form
 		 */
-		sendBackToForm: function () {
+		__sendBackToForm: function () {
 
 			var form_id = this.getParameterByName('form-id'),
 				payment_mode = this.getParameterByName('payment-mode');
@@ -422,11 +422,11 @@ Give.form = {
 			 * @description Set variables and format cc fields
 			 * @since 1.2
 			 *
-			 * @param {object} forms
+			 * @param {object} $forms
 			 */
-			formatCreditCard: function (forms) {
+			formatCreditCard: function ($forms) {
 				//Loop through forms on page and set CC validation
-				forms.each(function (index, form) {
+				$forms.each(function (index, form) {
 					form = jQuery(form);
 					var card_number = form.find('.card-number'),
 						card_cvc = form.find('.card-cvc'),
