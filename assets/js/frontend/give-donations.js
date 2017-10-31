@@ -767,7 +767,6 @@ jQuery(function ($) {
 			decimal_separator = Give.form.fn.getInfo('decimal_separator', parent_form),
 			value_min = Give.form.fn.getMinimumAmount(parent_form),
 			value_now = (this_value === 0) ? value_min : Give.fn.unFormatCurrency(this_value, decimal_separator),
-			error_msg = '',
 			formatted_total = Give.form.fn.formatAmount(value_now, parent_form, {});
 
 		price_id = Give.form.fn.getPriceID(parent_form);
