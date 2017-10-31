@@ -22,6 +22,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 1.6
  */
 class Give_DB_Donor_Meta extends Give_DB_Meta {
+	
+	/**
+	 * Meta supports.
+	 *
+	 * @since  2.0
+	 * @access protected
+	 * @var array
+	 */
+	protected $supports = array();
 
 	/**
 	 * Meta type

@@ -1610,10 +1610,17 @@ function give_delete_meta( $id, $meta_key, $meta_value = '' ) {
  * @return bool                   If the action has been added to the completed actions array
  */
 function give_has_upgrade_completed( $upgrade_action = '' ) {
-
+	// Bailout.
 	if ( empty( $upgrade_action ) ) {
 		return false;
 	}
+
+	// Fresh install?
+	// If fresh install then all upgrades will be consider as completed.
+	if ( ! get_option( 'give_version' ) ) {
+		return true;
+	}
+
 
 	$completed_upgrades = give_get_completed_upgrades();
 
