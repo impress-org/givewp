@@ -391,7 +391,6 @@ function give_get_currencies( $info = 'admin_label' ) {
 		),
 	);
 
-
 	/**
 	 * Filter the currencies
 	 * Note: you can register new currency by using this filter
@@ -440,7 +439,7 @@ function give_get_currencies( $info = 'admin_label' ) {
  * @return array
  */
 function give_currency_symbols( $decode_currencies = false ) {
-	$currencies = give_get_currencies('symbol' );
+	$currencies = give_get_currencies( 'symbol' );
 
 	if ( $decode_currencies ) {
 		$currencies = array_map( 'html_entity_decode', $currencies );
@@ -1940,7 +1939,6 @@ function give_recount_form_income_donation( $form_id = false ) {
  * @since 1.8.14
  * @see   https://github.com/WordImpress/Give/issues/2191
  *
- *
  * @param string $currency Currency code
  *
  * @return bool
@@ -1965,7 +1963,7 @@ function give_is_zero_based_currency( $currency = '' ) {
 	);
 
 	// Set default currency.
-	if( empty( $currency ) ) {
+	if ( empty( $currency ) ) {
 		$currency = give_get_currency();
 	}
 
