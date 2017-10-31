@@ -113,6 +113,7 @@ function give_get_donation_form( $args = array() ) {
 			 *
 			 * @param int $form_id The form ID.
 			 * @param array $args An array of form arguments.
+			 * @param Give_Donate_Form $form Form object.
 			 */
 			do_action( 'give_pre_form', $form->ID, $args, $form );
 
@@ -127,6 +128,9 @@ function give_get_donation_form( $args = array() ) {
 			 * Filter the form html tags.
 			 *
 			 * @since 1.8.17
+			 *
+			 * @param array $form_html_tags Array of form html tags.
+			 * @param Give_Donate_Form $form Form object.
 			 */
 			$form_html_tags = apply_filters( 'give_form_html_tags', (array) $form_html_tags, $form );
 			?>
@@ -149,6 +153,7 @@ function give_get_donation_form( $args = array() ) {
 				 *
 				 * @param int $form_id The form ID.
 				 * @param array $args An array of form arguments.
+				 * @param Give_Donate_Form $form Form object.
 				 */
 				do_action( 'give_donation_form_top', $form->ID, $args, $form );
 
@@ -159,6 +164,7 @@ function give_get_donation_form( $args = array() ) {
 				 *
 				 * @param int $form_id The form ID.
 				 * @param array $args An array of form arguments.
+				 * @param Give_Donate_Form $form Form object.
 				 */
 				do_action( 'give_payment_mode_select', $form->ID, $args, $form );
 
@@ -169,6 +175,7 @@ function give_get_donation_form( $args = array() ) {
 				 *
 				 * @param int $form_id The form ID.
 				 * @param array $args An array of form arguments.
+				 * @param Give_Donate_Form $form Form object.
 				 */
 				do_action( 'give_donation_form_bottom', $form->ID, $args, $form );
 
@@ -183,6 +190,7 @@ function give_get_donation_form( $args = array() ) {
 			 *
 			 * @param int $form_id The form ID.
 			 * @param array $args An array of form arguments.
+			 * @param Give_Donate_Form $form Form object.
 			 */
 			do_action( 'give_post_form', $form->ID, $args, $form );
 
