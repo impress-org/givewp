@@ -370,8 +370,34 @@ Give.form = {
 			return Give.form.fn.unformatCurrency($form.find('input[name="give-form-minimum"]').val());
 		},
 
+
+		/**
+		 * Get form amount
+		 *
+		 * @since 1.8.17
+		 * @param $form
+		 * @return {*}
+		 */
+		getFormAmount: function( $form ){
+			// Bailout
+			if( ! $form.length ) {
+				return null;
+			}
+
+			var amount = $form.find('input[name="give-amount"]').val();
+
+			if( 'undefined' === amount || ! amount ) {
+				amount = 0;
+			}
+
+			return this.unformatCurrency(amount, this.getFormInfo('decimal_separator', $form));
+		},
+
 		/**
 		 * Donor sent back to the form
+		 *
+		 * @since 1.8.17
+		 * @access private
 		 */
 		__sendBackToForm: function () {
 
