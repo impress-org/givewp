@@ -1980,7 +1980,7 @@ function give_is_zero_based_currency( $currency = '' ) {
 /**
  * Get attribute string
  *
- * @since 2.0
+ * @since 1.8.17
  *
  * @param array $attributes
  *
