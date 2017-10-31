@@ -394,6 +394,40 @@ Give.form = {
 		},
 
 		/**
+		 * Get error notice
+		 *
+		 * @since 1.8.17
+		 * @param {string} error_code
+		 * @param {object} $form
+		 *
+		 * @return {*}
+		 */
+		getNotice: function( error_code, $form ) {
+			// Bailout.
+			if( ! error_code.length ) {
+				return null;
+			}
+
+			var notice = '';
+
+			switch ( error_code ) {
+				case 'bad_minimum':
+					if( $form.length ) {
+						notice = Give.form.fn.getGlobalVar('bad_minimum') +
+							' ' +
+							Give.form.fn.formatCurrency(
+								this.getFormMinimumAmount($form),
+								{symbol: Give.form.fn.getFormInfo('currency_symbol', $form)},
+								$form
+							);
+					}
+					break;
+			}
+
+			return notice;
+		},
+
+		/**
 		 * Donor sent back to the form
 		 *
 		 * @since 1.8.17
