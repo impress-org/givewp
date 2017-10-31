@@ -69,6 +69,9 @@ Give.form = {
 
 			args = jQuery.extend(format_args, args);
 
+			// Make sure precision is integer type
+			args.precision = parseInt( args.precision );
+
 			if ('INR' === args.currency) {
 				var actual_price = accounting.unformat(price, args.decimal).toString();
 
