@@ -148,8 +148,8 @@ function _give_register_admin_notices() {
 						'type'        => 'updated',
 						'description' => sprintf(
 							_n(
-								'Successfully deleted one transaction.',
-								'Successfully deleted %d transactions.',
+								'Successfully deleted one donation.',
+								'Successfully deleted %d donations.',
 								$payment_count,
 								'give'
 							),
