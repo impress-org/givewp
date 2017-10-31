@@ -579,7 +579,7 @@ function give_get_donor_name_by( $id = 0, $from = 'donation' ) {
 			$first_name    = $donation_info->get_meta( '_give_donor_billing_first_name', true );
 			$last_name     = $donation_info->get_meta( '_give_donor_billing_last_name', true );
 
-			$name = $first_name . ' ' . $last_name;
+			$name = trim( "{$first_name} {$last_name}" );
 
 			break;
 
