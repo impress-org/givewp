@@ -53,8 +53,6 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 	 * @return array|bool $data The data for the CSV file
 	 */
 	public function get_data() {
-		global $wpdb;
-
 		$items = $this->get_stored_data( 'give_temp_delete_test_ids' );
 
 		if ( ! is_array( $items ) ) {
@@ -65,61 +63,10 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 		$step_items = array_slice( $items, $offset, $this->per_step );
 
 		if ( $step_items ) {
-
-			$step_ids = array(
-				'other' => array(),
-			);
-
 			foreach ( $step_items as $item ) {
-
-				$step_ids['other'][] = $item['id'];
-
+				// Delete the main payment.
+				give_delete_donation( (int) $item['id'] );
 			}
-
-			$sql = array();
-
-			foreach ( $step_ids as $type => $ids ) {
-
-				if ( empty( $ids ) ) {
-					continue;
-				}
-
-				$parent_query = '';
-
-				switch ( $type ) {
-					case 'other':
-
-						$temp_ids = implode( ',', $ids );
-
-						// Get all the test logs of the donations ids.
-						$parent_query = "SELECT DISTINCT post_id as id FROM $wpdb->postmeta WHERE meta_key = '_give_log_payment_id' AND meta_value IN ( $temp_ids )";
-						$parent_ids   = $wpdb->get_results( $parent_query, 'ARRAY_A' );
-
-						// List of all test logs.
-						if ( $parent_ids ) {
-							foreach ( $parent_ids as $parent_id ) {
-								// Adding all the test log in post ids that are going to get deleted.
-								$ids[] = $parent_id['id'];
-							}
-						}
-						$ids = implode( ',', $ids );
-
-						$sql[] = "DELETE FROM $wpdb->posts WHERE id IN ($ids)";
-						$sql[] = "DELETE FROM $wpdb->postmeta WHERE post_id IN ($ids)";
-						$sql[] = "DELETE FROM $wpdb->comments WHERE comment_post_ID IN ($ids)";
-						$sql[] = "DELETE FROM $wpdb->commentmeta WHERE comment_id NOT IN (SELECT comment_ID FROM $wpdb->comments)";
-						break;
-				}
-
-			}
-
-			if ( ! empty( $sql ) ) {
-				foreach ( $sql as $query ) {
-					$wpdb->query( $query );
-				}
-				do_action( 'give_delete_log_cache' );
-			}
-
 			return true;
 		}
 
