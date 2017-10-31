@@ -714,7 +714,7 @@ jQuery(function ($) {
 
 			//It doesn't... Invalid Minimum
 			$(this).addClass('give-invalid-amount');
-			error_msg = Give.form.fn.getGlobalVar('bad_minimum') + ' ' + Give.form.fn.formatCurrency(value_min, {symbol: Give.form.fn.getFormInfo('currency_symbol', parent_form)}, parent_form);
+			error_msg = Give.form.fn.getNotice('bad_minimum', parent_form);
 
 			//Disable submit
 			parent_form.find('.give-submit').prop('disabled', true);
