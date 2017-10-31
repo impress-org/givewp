@@ -175,6 +175,28 @@ function _give_register_admin_notices() {
 						'show'        => true,
 					) );
 					break;
+
+				case 'set-status-publish' :
+				case 'set-status-pending' :
+				case 'set-status-processing' :
+				case 'set-status-refunded' :
+				case 'set-status-revoked' :
+				case 'set-status-failed' :
+				case 'set-status-cancelled' :
+				case 'set-status-abandoned' :
+				case 'set-status-preapproval' :
+					Give()->notices->register_notice( array(
+						'id'          => 'bulk_action_status_change',
+						'type'        => 'updated',
+						'description' => _n(
+							'Donation status updated successfully',
+							'Donations status updated successfully',
+							$payment_count,
+							'give'
+						),
+						'show'        => true,
+					) );
+					break;
 			}
 
 			// Add donor bulk notice.
