@@ -631,3 +631,194 @@ function give_get_user_roles() {
 
 	return $user_roles;
 }
+
+
+/**
+ * Ajax handle for donor address.
+ *
+ * @since 2.0
+ *
+ * @return string
+ */
+function __give_ajax_donor_manage_addresses() {
+	// Bailout.
+	if (
+		empty( $_POST['form'] ) ||
+		empty( $_POST['donorID'] )
+	) {
+		wp_send_json_error( array( 'error' => 1 ) );
+	}
+
+	$post                  = give_clean( wp_parse_args( $_POST ) );
+	$donorID               = absint( $post['donorID'] );
+	$form_data             = give_clean( wp_parse_args( $post['form'] ) );
+	$is_multi_address_type = ( 'billing' === $form_data['address-id'] || false !== strpos( $form_data['address-id'], '_' ) );
+	$address_type          = false !== strpos( $form_data['address-id'], '_' ) ?
+		array_shift( explode( '_', $form_data['address-id'] ) ) :
+		$form_data['address-id'];
+	$address_id            = false !== strpos( $form_data['address-id'], '_' ) ?
+		array_pop( explode( '_', $form_data['address-id'] ) ) :
+		null;
+	$response_data         = array(
+		'action' => $form_data['address-action'],
+		'id'     => $form_data['address-id'],
+	);
+
+	// Security check.
+	if( ! wp_verify_nonce( $form_data['_wpnonce'], 'give-manage-donor-addresses' ) ) {
+		wp_send_json_error( array(
+				'error' => 1,
+				'error_msg' => wp_sprintf(
+					'<div class="notice notice-error"><p>%s</p></div>',
+					__( 'Error: Security issue.', 'give' )
+				)
+			)
+		);
+	}
+
+	$donor = new Give_Donor( $donorID );
+
+	// Verify donor.
+	if ( ! $donor->id ) {
+		wp_send_json_error( array( 'error' => 3 ) );
+	}
+
+	// Unset all data except address.
+	unset(
+		$form_data['_wpnonce'],
+		$form_data['address-action'],
+		$form_data['address-id']
+	);
+
+	// Process action.
+	switch ( $response_data['action'] ) {
+
+		case 'add':
+			if ( ! $donor->add_address( "{$address_type}[]", $form_data ) ) {
+				wp_send_json_error( array(
+						'error' => 1,
+						'error_msg' => wp_sprintf(
+							'<div class="notice notice-error"><p>%s</p></div>',
+							__( 'Error: Unable to save the address. Please check if address already exist.', 'give' )
+						)
+					)
+				);
+			}
+
+			$total_addresses = count( $donor->address[ $address_type ] );
+
+			$address_index = $is_multi_address_type ?
+				$total_addresses - 1 :
+				$address_type;
+
+			$address_id = $is_multi_address_type ?
+				end( array_keys( $donor->address[ $address_type ] ) ) :
+				$address_type;
+
+			$response_data['address_html'] = __give_get_format_address(
+				end( $donor->address['billing'] ),
+				array(
+					// We can add only billing address from donor screen.
+					'type'  => 'billing',
+					'id'    => $address_id,
+					'index' => ++$address_index,
+				)
+			);
+			$response_data['success_msg'] = wp_sprintf(
+				'<div class="notice updated"><p>%s</p></div>',
+				__( 'Successfully added a new address to the donor.', 'give' )
+			);
+
+			if( $is_multi_address_type ) {
+				$response_data['id'] = "{$response_data['id']}_{$address_index}";
+			}
+
+			break;
+
+		case 'remove':
+			if ( ! $donor->remove_address( $response_data['id'] ) ) {
+				wp_send_json_error( array(
+						'error' => 2,
+						'error_msg' => wp_sprintf(
+							'<div class="notice notice-error"><p>%s</p></div>',
+							__( 'Error: Unable to delete address.', 'give' )
+						)
+					)
+				);
+			}
+
+			$response_data['success_msg'] = wp_sprintf(
+				'<div class="notice updated"><p>%s</p></div>',
+				__( 'Successfully removed a address of donor.', 'give' )
+			);
+
+			break;
+
+		case 'update':
+			if ( ! $donor->update_address( $response_data['id'], $form_data ) ) {
+				wp_send_json_error( array(
+						'error' => 3,
+						'error_msg' => wp_sprintf(
+							'<div class="notice notice-error"><p>%s</p></div>',
+							__( 'Error: Unable to update address. Please check if address already exist.', 'give' )
+						)
+					)
+				);
+			}
+
+			$response_data['address_html'] = __give_get_format_address(
+				$is_multi_address_type ?
+					$donor->address[ $address_type ][ $address_id ] :
+					$donor->address[ $address_type ],
+				array(
+					'type'  => $address_type,
+					'id'    => $address_id,
+					'index' => $address_id,
+				)
+			);
+			$response_data['success_msg'] = wp_sprintf(
+				'<div class="notice updated"><p>%s</p></div>',
+				__( 'Successfully updated a address of donor', 'give' )
+			);
+
+			break;
+	}
+
+	wp_send_json_success( $response_data );
+}
+
+add_action( 'wp_ajax_donor_manage_addresses', '__give_ajax_donor_manage_addresses' );
+
+/**
+ * Admin donor billing address label
+ *
+ * @since 2.0
+ *
+ * @param string $address_label
+ *
+ * @return string
+ */
+function __give_donor_billing_address_label( $address_label ) {
+	$address_label = __( 'Billing Address', 'give' );
+
+	return $address_label;
+}
+
+add_action( 'give_donor_billing_address_label', '__give_donor_billing_address_label' );
+
+/**
+ * Admin donor personal address label
+ *
+ * @since 2.0
+ *
+ * @param string $address_label
+ *
+ * @return string
+ */
+function __give_donor_personal_address_label( $address_label ) {
+	$address_label = __( 'Personal Address', 'give' );
+
+	return $address_label;
+}
+
+add_action( 'give_donor_personal_address_label', '__give_donor_personal_address_label' );

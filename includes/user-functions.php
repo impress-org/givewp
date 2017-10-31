@@ -463,42 +463,61 @@ function give_count_total_donors() {
 /**
  * Returns the saved address for a donor
  *
- * @param int $user_id The donor ID.x
- *
  * @access public
  * @since  1.0
  *
+ * @param  int   $donor_id Donor ID
+ * @param  array $args
+ *
  * @return array The donor's address, if any
  */
-function give_get_donor_address( $user_id = 0 ) {
-	if ( empty( $user_id ) ) {
-		$user_id = get_current_user_id();
+function give_get_donor_address( $donor_id = null, $args = array() ) {
+	if ( empty( $donor_id ) ) {
+		$donor_id = get_current_user_id();
 	}
 
-	$address = (array) get_user_meta( $user_id, '_give_user_address', true );
+	$address = array();
+	$args = wp_parse_args(
+		$args,
+		array(
+			'address_type' => 'billing'
+		)
+	);
+	$default_address = array(
+		'line1'   => '',
+		'line2'   => '',
+		'city'    => '',
+		'state'   => '',
+		'country' => '',
+		'zip'     => '',
+	);
 
-	if ( ! isset( $address['line1'] ) ) {
-		$address['line1'] = '';
+	// Backward compatibility for user id param.
+	$by_user_id = get_user_by( 'id', $donor_id ) ? true : false;
+
+	// Backward compatibility.
+	if( ! give_has_upgrade_completed( 'v20_upgrades_user_address' ) && $by_user_id ){
+		return wp_parse_args(
+			(array) get_user_meta( $donor_id, '_give_user_address', true ),
+			$default_address
+		);
 	}
 
-	if ( ! isset( $address['line2'] ) ) {
-		$address['line2'] = '';
+	$donor = new Give_Donor( $donor_id, $by_user_id );
+
+
+	if ( ! $donor->id || ! array_key_exists( 'billing', $donor->address ) ) {
+		return $default_address;
 	}
 
-	if ( ! isset( $address['city'] ) ) {
-		$address['city'] = '';
-	}
+	switch ( true ){
+		case is_string( end( $donor->address[ $args['address_type'] ] ) ) :
+			$address = wp_parse_args( $donor->address[ $args['address_type'] ], $default_address );
+			break;
 
-	if ( ! isset( $address['zip'] ) ) {
-		$address['zip'] = '';
-	}
-
-	if ( ! isset( $address['country'] ) ) {
-		$address['country'] = '';
-	}
-
-	if ( ! isset( $address['state'] ) ) {
-		$address['state'] = '';
+		case is_array( end( $donor->address[ $args['address_type'] ] ) ) :
+			$address = wp_parse_args( array_shift( $donor->address[ $args['address_type'] ] ), $default_address );
+			break;
 	}
 
 	return $address;

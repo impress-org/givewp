@@ -409,23 +409,30 @@ class Give_HTML_Elements {
 			$data_elements .= ' data-' . esc_attr( $key ) . '="' . esc_attr( $value ) . '"';
 		}
 
+		$multiple = '';
 		if ( $args['multiple'] ) {
-			$multiple = ' MULTIPLE';
-		} else {
-			$multiple = '';
+			$multiple = 'MULTIPLE';
 		}
 
 		if ( $args['chosen'] ) {
 			$args['class'] .= ' give-select-chosen';
 		}
 
+		$placeholder = '';
 		if ( $args['placeholder'] ) {
 			$placeholder = $args['placeholder'];
-		} else {
-			$placeholder = '';
 		}
 
-		$output = '<select name="' . esc_attr( $args['name'] ) . '" id="' . esc_attr( sanitize_key( str_replace( '-', '_', $args['id'] ) ) ) . '" class="give-select ' . esc_attr( $args['class'] ) . '"' . $multiple . ' ' . $args['select_atts'] . ' data-placeholder="' . $placeholder . '"' . $data_elements . '>';
+		$output = sprintf(
+			'<select name="%1$s" id="%2$s" class="give-select %3$s" %4$s %5$s placeholder="%6$s" data-placeholder="%6$s" %7$s>',
+			esc_attr( $args['name'] ),
+			esc_attr( sanitize_key( str_replace( '-', '_', $args['id'] ) ) ),
+			esc_attr( $args['class'] ),
+			$multiple,
+			$args['select_atts'],
+			$placeholder,
+			$data_elements
+		);
 
 		if ( $args['show_option_all'] ) {
 			if ( $args['multiple'] ) {
