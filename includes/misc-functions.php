@@ -1617,7 +1617,8 @@ function give_has_upgrade_completed( $upgrade_action = '' ) {
 
 	// Fresh install?
 	// If fresh install then all upgrades will be consider as completed.
-	if ( ! get_option( 'give_version' ) ) {
+	$is_fresh_install = ! get_option( 'give_version' );
+	if ( $is_fresh_install ) {
 		return true;
 	}
 
