@@ -70,7 +70,7 @@ Give.form = {
 			args = jQuery.extend(format_args, args);
 
 			// Make sure precision is integer type
-			args.precision = parseInt( args.precision );
+			args.precision = parseInt(args.precision);
 
 			if ('INR' === args.currency) {
 				var actual_price = accounting.unformat(price, args.decimal).toString();
@@ -397,40 +397,6 @@ Give.form = {
 		},
 
 		/**
-		 * Get error notice
-		 *
-		 * @since 1.8.17
-		 * @param {string} error_code
-		 * @param {object} $form
-		 *
-		 * @return {*}
-		 */
-		getNotice: function (error_code, $form) {
-			// Bailout.
-			if (!error_code.length) {
-				return null;
-			}
-
-			var notice = '';
-
-			switch (error_code) {
-				case 'bad_minimum':
-					if ($form.length) {
-						notice = Give.form.fn.getGlobalVar('bad_minimum') +
-							' ' +
-							Give.form.fn.formatCurrency(
-								this.getFormMinimumAmount($form),
-								{symbol: Give.form.fn.getFormInfo('currency_symbol', $form)},
-								$form
-							);
-					}
-					break;
-			}
-
-			return notice;
-		},
-
-		/**
 		 * Donor sent back to the form
 		 *
 		 * @since 1.8.17
@@ -525,6 +491,76 @@ Give.form = {
 		}
 	}
 };
+
+Give.notice = {
+	fn: {
+		/**
+		 * Render notice
+		 * @since 1.8.17
+		 *
+		 * @param {string} notice_code
+		 * @param {object} $container
+		 *
+		 * @return {string}
+		 */
+		renderNotice: function (notice_code, $container) {
+			var notice_html = '',
+				$notice;
+			$container = 'undefined' !== typeof $container ? $container : {};
+
+			switch (notice_code) {
+				case 'bad_minimum':
+					$notice = jQuery(
+						'<div class="give_error give-invalid-minimum give-hidden">' +
+						this.getNotice(notice_code, $container) +
+						'</div>'
+					);
+					break;
+			}
+
+			// Return html if container did not find.
+			if (!$container.length) {
+				return notice_html;
+			}
+
+			$notice.insertBefore($container.find('.give-total-wrap')).show();
+		},
+
+		/**
+		 * Get error notice
+		 *
+		 * @since 1.8.17
+		 * @param {string} error_code
+		 * @param {object} $form
+		 *
+		 * @return {*}
+		 */
+		getNotice: function (error_code, $form) {
+			// Bailout.
+			if (!error_code.length) {
+				return null;
+			}
+
+			var notice = '';
+
+			switch (error_code) {
+				case 'bad_minimum':
+					if ($form.length) {
+						notice = Give.form.fn.getGlobalVar('bad_minimum') +
+							' ' +
+							Give.form.fn.formatCurrency(
+								Give.form.fn.getFormMinimumAmount($form),
+								{symbol: Give.form.fn.getFormInfo('currency_symbol', $form)},
+								$form
+							);
+					}
+					break;
+			}
+
+			return notice;
+		},
+	}
+}
 
 
 jQuery(function ($) {
@@ -721,7 +757,6 @@ jQuery(function ($) {
 
 			//It doesn't... Invalid Minimum
 			$(this).addClass('give-invalid-amount');
-			error_msg = Give.form.fn.getNotice('bad_minimum', parent_form);
 
 			//Disable submit
 			parent_form.find('.give-submit').prop('disabled', true);
@@ -729,8 +764,7 @@ jQuery(function ($) {
 
 			//If no error present, create it, insert, slide down (show)
 			if (invalid_minimum.length === 0) {
-				var error = $('<div class="give_error give-invalid-minimum">' + error_msg + '</div>').hide();
-				error.insertBefore(parent_form.find('.give-total-wrap')).show();
+				Give.notice.fn.renderNotice( 'bad_minimum', parent_form );
 			}
 
 		} else {
@@ -757,8 +791,8 @@ jQuery(function ($) {
 				.text(Give.form.fn.formatCurrency(
 					value_now,
 					{
-						symbol: Give.form.fn.getFormInfo('currency_symbol', parent_form ),
-						position: Give.form.fn.getFormInfo('currency_position', parent_form )
+						symbol: Give.form.fn.getFormInfo('currency_symbol', parent_form),
+						position: Give.form.fn.getFormInfo('currency_position', parent_form)
 					},
 					parent_form)
 				);
