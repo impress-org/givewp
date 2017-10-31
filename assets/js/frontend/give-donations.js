@@ -26,6 +26,7 @@ Give = {
 		formatCurrency: function (price, args, $form) {
 			// Global currency setting.
 			var format_args = {
+				symbol: '',
 				decimal: parseInt(give_global_vars.decimal_separator),
 				thousand: give_global_vars.thousands_separator,
 				precision: give_global_vars.number_decimals,
@@ -39,6 +40,7 @@ Give = {
 			if ($form.length) {
 				//Set the custom amount input value format properly
 				format_args = {
+					symbol: '',
 					decimal: Give.form.fn.getInfo('decimal_separator', $form),
 					thousand: Give.form.fn.getInfo('thousands_separator', $form),
 					precision: Give.form.fn.getInfo('number_decimals', $form),
