@@ -378,15 +378,15 @@ Give.form = {
 		 * @param $form
 		 * @return {*}
 		 */
-		getFormAmount: function( $form ){
+		getFormAmount: function ($form) {
 			// Bailout
-			if( ! $form.length ) {
+			if (!$form.length) {
 				return null;
 			}
 
 			var amount = $form.find('input[name="give-amount"]').val();
 
-			if( 'undefined' === amount || ! amount ) {
+			if ('undefined' === amount || !amount) {
 				amount = 0;
 			}
 
@@ -402,17 +402,17 @@ Give.form = {
 		 *
 		 * @return {*}
 		 */
-		getNotice: function( error_code, $form ) {
+		getNotice: function (error_code, $form) {
 			// Bailout.
-			if( ! error_code.length ) {
+			if (!error_code.length) {
 				return null;
 			}
 
 			var notice = '';
 
-			switch ( error_code ) {
+			switch (error_code) {
 				case 'bad_minimum':
-					if( $form.length ) {
+					if ($form.length) {
 						notice = Give.form.fn.getGlobalVar('bad_minimum') +
 							' ' +
 							Give.form.fn.formatCurrency(
@@ -485,10 +485,14 @@ Give.form = {
 		 * @return {boolean}
 		 */
 		isValidDonationAmount: function ($form) {
-			var min_amount = this.getFormMinimumAmount( $form ),
-				amount = this.getFormAmount( $form );
+			var min_amount = this.getFormMinimumAmount($form),
+				amount = this.getFormAmount($form),
+				price_id = this.getFormPriceID($form);
 
-			return ( -1 < amount && amount > min_amount );
+			return (
+				( ( -1 < amount ) && ( amount > min_amount ) ) ||
+				( -1 !== price_id )
+			);
 		},
 
 		field: {
@@ -710,7 +714,7 @@ jQuery(function ($) {
 		$(this).val(formatted_total);
 
 		//Does this number have an accepted minimum value?
-		if ( !Give.form.fn.isValidDonationAmount(parent_form)) {
+		if (!Give.form.fn.isValidDonationAmount(parent_form)) {
 
 			//It doesn't... Invalid Minimum
 			$(this).addClass('give-invalid-amount');
