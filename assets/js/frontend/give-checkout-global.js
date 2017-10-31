@@ -13,7 +13,7 @@ var give_scripts, give_global_vars;
 var Give = 'undefined' !== typeof Give ? Give : {};
 
 Give = {
-	fn:{
+	fn: {
 		/**
 		 * Format Currency
 		 *
@@ -175,6 +175,24 @@ Give.form = {
 	},
 
 	fn: {
+
+		/**
+		 * Disable donation form.
+		 *
+		 * @param {object} $form
+		 * @param {boolean} is_disable
+		 *
+		 * @return {*}
+		 */
+		disable: function ($form, is_disable) {
+			if (!$form.length) {
+				return false;
+			}
+
+			$form.find('.give-submit').prop('disabled', is_disable);
+		},
+
+
 		/**
 		 * Get formatted amount
 		 *
@@ -562,9 +580,9 @@ Give.notice = {
 			}
 
 			return notice;
-		},
+		}
 	}
-}
+};
 
 
 jQuery(function ($) {
@@ -763,12 +781,12 @@ jQuery(function ($) {
 			$(this).addClass('give-invalid-amount');
 
 			//Disable submit
-			parent_form.find('.give-submit').prop('disabled', true);
+			Give.form.fn.disable(parent_form, true);
 			var invalid_minimum = parent_form.find('.give-invalid-minimum');
 
 			//If no error present, create it, insert, slide down (show)
 			if (invalid_minimum.length === 0) {
-				Give.notice.fn.renderNotice( 'bad_minimum', parent_form );
+				Give.notice.fn.renderNotice('bad_minimum', parent_form);
 			}
 
 		} else {
@@ -782,8 +800,7 @@ jQuery(function ($) {
 			});
 
 			//Re-enable submit
-			parent_form.find('.give-submit').prop('disabled', false);
-
+			Give.form.fn.disable(parent_form, false);
 		}
 
 		//If values don't match up then proceed with updating donation total value
@@ -972,7 +989,7 @@ jQuery(window).load(function () {
 				}
 
 				// Disable submit button
-				el.parents('form').find('.give-submit').prop('disabled', error);
+				Give.form.fn.disable(el.parents('form'), error);
 				break;
 
 			default:
