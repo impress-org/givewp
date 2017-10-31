@@ -428,6 +428,54 @@ Give.form = {
 			return Give.fn.unFormatCurrency(amount, this.getInfo('decimal_separator', $form));
 		},
 
+
+		/**
+		 * Auto select donation level
+		 *
+		 * @since 1.8.17
+		 * @param {object} $form
+		 *
+		 * @return {boolean}
+		 */
+		autoSelectDonationLevel: function ($form) {
+			if (!$form.length || 'multi' !== this.getInfo('form-type', $form)) {
+				return false;
+			}
+
+			var price_id = this.getPriceID($form);
+
+			switch (true) {
+
+				// Auto select radio button.
+				case (!!$form.find('.give-radio-input').length) :
+					$form.find('.give-radio-input')
+						.prop('checked', false);
+					$form.find('.give-radio-input[data-price-id="' + price_id + '"]')
+						.prop('checked', true)
+						.addClass('give-default-level');
+					break;
+
+				// Set focus to price id button.
+				case (!!$form.find('button.give-donation-level-btn').length) :
+					$form.find('button.give-donation-level-btn')
+						.blur();
+					$form.find('button.give-donation-level-btn[data-price-id="' + price_id + '"]')
+						.focus()
+						.addClass('give-default-level');
+					break;
+
+				// Auto select option.
+				case (!!$form.find('select.give-select-level').length) :
+					$form.find('select.give-select-level option')
+						.prop('selected', false);
+					$form.find('select.give-select-level option[data-price-id="' + price_id + '"]')
+						.prop('selected', true)
+						.addClass('give-default-level');
+					break;
+
+			}
+		},
+
 		/**
 		 * Donor sent back to the form
 		 *
@@ -842,36 +890,7 @@ jQuery(function ($) {
 			parent_form.find('.give-default-level').removeClass('give-default-level');
 
 			// Auto select variable price items ( Radio/Button/Select ).
-			switch (true) {
-
-				// Auto select radio button.
-				case (!!parent_form.find('.give-radio-input').length) :
-					parent_form.find('.give-radio-input')
-						.prop('checked', false);
-					parent_form.find('.give-radio-input[data-price-id="' + price_id + '"]')
-						.prop('checked', true)
-						.addClass('give-default-level');
-					break;
-
-				// Set focus to price id button.
-				case (!!parent_form.find('button.give-donation-level-btn').length) :
-					parent_form.find('button.give-donation-level-btn')
-						.blur();
-					parent_form.find('button.give-donation-level-btn[data-price-id="' + price_id + '"]')
-						.focus()
-						.addClass('give-default-level');
-					break;
-
-				// Auto select option.
-				case (!!parent_form.find('select.give-select-level').length) :
-					parent_form.find('select.give-select-level option')
-						.prop('selected', false);
-					parent_form.find('select.give-select-level option[data-price-id="' + price_id + '"]')
-						.prop('selected', true)
-						.addClass('give-default-level');
-					break;
-
-			}
+			Give.form.fn.autoSelectDonationLevel( parent_form );
 		}
 
 		//This class is used for CSS purposes
