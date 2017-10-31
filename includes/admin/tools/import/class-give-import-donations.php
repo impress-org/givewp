@@ -379,17 +379,17 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			if ( isset( $_REQUEST['mapto'] ) ) {
 				$mapto = (array) $_REQUEST['mapto'];
 				if ( false === in_array( 'form_title', $mapto ) && false === in_array( 'form_id', $mapto ) ) {
-					Give_Admin_Settings::add_error( 'give-import-csv-form', __( 'Please select Form ID or Form Name options from the dropdown.', 'give' ) );
+					Give_Admin_Settings::add_error( 'give-import-csv-form', __( 'In order to import donations, a column must be mapped to either the "Donation Form Title" or "Donation Form ID" field. Please map a column to one of those fields.', 'give' ) );
 					$return = false;
 				}
 
 				if ( false === in_array( 'amount', $mapto ) ) {
-					Give_Admin_Settings::add_error( 'give-import-csv-amount', __( 'Please select Amount option from the dropdown.', 'give' ) );
+					Give_Admin_Settings::add_error( 'give-import-csv-amount', __( 'In order to import donations, a column must be mapped to the "Amount" field. Please map a column to that field.', 'give' ) );
 					$return = false;
 				}
 
 				if ( false === in_array( 'email', $mapto ) && false === in_array( 'donor_id', $mapto ) ) {
-					Give_Admin_Settings::add_error( 'give-import-csv-donor', __( 'Please select Email id or Customer ID options from the dropdown.', 'give' ) );
+					Give_Admin_Settings::add_error( 'give-import-csv-donor', __( 'In order to import donations, a column must be mapped to either the "Donor Email" or "Donor ID" field. Please map a column to that field.', 'give' ) );
 					$return = false;
 				}
 			} else {

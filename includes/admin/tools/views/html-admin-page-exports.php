@@ -187,93 +187,102 @@ if ( ! defined( 'ABSPATH' ) ) {
 										'chosen' => true,
 									) );
 									?>
+									<input type="submit" value="<?php esc_attr_e( 'Generate CSV', 'give' ); ?>" class="button-secondary"/>
 
-									<input type="submit"
-										   value="<?php esc_attr_e( 'Generate CSV', 'give' ); ?>"
-										   class="button-secondary"/>
+								<div id="export-donor-options-wrap"
+								     class="give-clearfix">
+									<p><?php esc_html_e( 'Export Columns:', 'give' ); ?></p>
+									<ul id="give-export-option-ul">
+										<li>
+											<label for="give-export-fullname">
+												<input type="checkbox" checked
+												       name="give_export_option[full_name]"
+												       id="give-export-fullname"><?php esc_html_e( 'Name', 'give' ); ?>
+											</label>
+										</li>
+										<li>
+											<label for="give-export-email">
+												<input type="checkbox" checked
+												       name="give_export_option[email]"
+												       id="give-export-email"><?php esc_html_e( 'Email', 'give' ); ?>
+											</label>
+										</li>
+										<li>
+											<label for="give-export-address">
+												<input type="checkbox" checked
+												       name="give_export_option[address]"
+												       id="give-export-address"><?php esc_html_e( 'Address', 'give' ); ?>
+											</label>
+										</li>
+										<li>
+											<label for="give-export-userid">
+												<input type="checkbox" checked
+												       name="give_export_option[userid]"
+												       id="give-export-userid"><?php esc_html_e( 'User ID', 'give' ); ?>
+											</label>
+										</li>
+										<li>
+											<label for="give-export-donation-form">
+												<input type="checkbox" checked
+												       name="give_export_option[donation_form]"
+												       id="give-export-donation-form"><?php esc_html_e( 'Donation Form', 'give' ); ?>
+											</label>
+										</li>
+										<li>
+											<label for="give-export-first-donation-date">
+												<input type="checkbox" checked
+												       name="give_export_option[date_first_donated]"
+												       id="give-export-first-donation-date"><?php esc_html_e( 'First Donation Date', 'give' ); ?>
+											</label>
+										</li>
+										<li>
+											<label for="give-export-donation-number">
+												<input type="checkbox" checked
+												       name="give_export_option[donations]"
+												       id="give-export-donation-number"><?php esc_html_e( 'Number of Donations', 'give' ); ?>
+											</label>
+										</li>
+										<li>
+											<label for="give-export-donation-sum">
+												<input type="checkbox" checked
+												       name="give_export_option[donation_sum]"
+												       id="give-export-donation-sum"><?php esc_html_e( 'Total Donated', 'give' ); ?>
+											</label>
+										</li>
+									</ul>
+								</div>
+								<?php wp_nonce_field( 'give_ajax_export', 'give_ajax_export' ); ?>
+								<input type="hidden" name="give-export-class" value="Give_Batch_Donors_Export"/>
+								<input type="hidden" name="give_export_option[query_id]" value="<?php echo uniqid( 'give_' ); ?>"/>
+							</form>
+						</td>
+					</tr>
 
-									<div id="export-donor-options-wrap"
-										 class="give-clearfix">
-										<p><?php esc_html_e( 'Export Columns:', 'give' ); ?></p>
-										<ul id="give-export-option-ul">
-											<li>
-												<label for="give-export-fullname">
-													<input type="checkbox" checked
-														   name="give_export_option[full_name]"
-														   id="give-export-fullname"><?php esc_html_e( 'Name', 'give' ); ?>
-												</label>
-											</li>
-											<li>
-												<label for="give-export-email">
-													<input type="checkbox" checked
-														   name="give_export_option[email]"
-														   id="give-export-email"><?php esc_html_e( 'Email', 'give' ); ?>
-												</label>
-											</li>
-											<li>
-												<label for="give-export-address">
-													<input type="checkbox" checked
-														   name="give_export_option[address]"
-														   id="give-export-address"><?php esc_html_e( 'Address', 'give' ); ?>
-												</label>
-											</li>
-											<li>
-												<label for="give-export-userid">
-													<input type="checkbox" checked
-														   name="give_export_option[userid]"
-														   id="give-export-userid"><?php esc_html_e( 'User ID', 'give' ); ?>
-												</label>
-											</li>
-											<li>
-												<label for="give-export-donation-form">
-													<input type="checkbox" checked
-														   name="give_export_option[donation_form]"
-														   id="give-export-donation-form"><?php esc_html_e( 'Donation Form', 'give' ); ?>
-												</label>
-											</li>
-											<li>
-												<label for="give-export-first-donation-date">
-													<input type="checkbox" checked
-														   name="give_export_option[date_first_donated]"
-														   id="give-export-first-donation-date"><?php esc_html_e( 'First Donation Date', 'give' ); ?>
-												</label>
-											</li>
-											<li>
-												<label for="give-export-donation-number">
-													<input type="checkbox" checked
-														   name="give_export_option[donations]"
-														   id="give-export-donation-number"><?php esc_html_e( 'Number of Donations', 'give' ); ?>
-												</label>
-											</li>
-											<li>
-												<label for="give-export-donation-sum">
-													<input type="checkbox" checked
-														   name="give_export_option[donation_sum]"
-														   id="give-export-donation-sum"><?php esc_html_e( 'Total Donated', 'give' ); ?>
-												</label>
-											</li>
-										</ul>
-									</div>
-									<?php wp_nonce_field( 'give_ajax_export', 'give_ajax_export' ); ?>
-									<input type="hidden" name="give-export-class"
-										   value="Give_Batch_Donors_Export"/>
-									<input type="hidden"
-										   name="give_export_option[query_id]"
-										   value="<?php echo uniqid( 'give_' ); ?>"/>
-								</form>
-							</td>
-						</tr>
-						<?php
-						/**
-						 * Fires in the reports export tab.
-						 *
-						 * Allows you to add new TR elements to the table after
-						 * other elements.
-						 *
-						 * @since 1.0
-						 */
-						do_action( 'give_tools_tab_export_table_bottom' );
-						?>
+					<tr class="give-export-core-settings">
+						<td scope="row" class="row-title">
+							<h3>
+								<span><?php esc_html_e( 'Export Give Settings', 'give' ); ?></span>
+							</h3>
+							<p><?php esc_html_e( 'Download an export of Give\'s settings and import it in a new WordPress installation.', 'give' ); ?></p>
+						</td>
+						<td>
+							<form method="post">
+								<input type="hidden" name="give-action" value="core_settings_export"/>
+								<input type="submit" value="<?php esc_attr_e( 'Export JSON', 'give' ); ?>" class="button-secondary"/>
+							</form>
+						</td>
+					</tr>
+					<?php
+					/**
+					 * Fires in the reports export tab.
+					 *
+					 * Allows you to add new TR elements to the table after
+					 * other elements.
+					 *
+					 * @since 1.0
+					 */
+					do_action( 'give_tools_tab_export_table_bottom' );
+					?>
 					</tbody>
 				</table>
 
