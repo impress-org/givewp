@@ -239,6 +239,14 @@ Give.form = {
 					});
 					break;
 
+				case 'form-type':
+					if ($form.hasClass('give-form-type-set')) {
+						data = 'set';
+					} else if ($form.hasClass('give-form-type-multi')) {
+						data = 'multi';
+					}
+					break;
+
 				default:
 					if ($form.get(0).hasAttribute('data-' + str)) {
 						data = $form.attr('data-' + str);
