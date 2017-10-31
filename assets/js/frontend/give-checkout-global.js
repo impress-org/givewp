@@ -751,7 +751,14 @@ jQuery(function ($) {
 			// Update donation total (include currency symbol)
 			parent_form.find('.give-final-total-amount')
 				.data('total', value_now)
-				.text(Give.form.fn.formatCurrency(value_now, {}, parent_form));
+				.text(Give.form.fn.formatCurrency(
+					value_now,
+					{
+						symbol: Give.form.fn.getFormInfo('currency_symbol', parent_form ),
+						position: Give.form.fn.getFormInfo('currency_position', parent_form )
+					},
+					parent_form)
+				);
 
 		}
 
