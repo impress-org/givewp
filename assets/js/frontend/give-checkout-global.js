@@ -676,11 +676,11 @@ jQuery(function ($) {
 		$(this).val(formatted_total);
 
 		//Does this number have an accepted minimum value?
-		if (value_now < value_min || value_now < 1) {
+		if ( !Give.form.fn.isValidDonationAmount(parent_form)) {
 
 			//It doesn't... Invalid Minimum
 			$(this).addClass('give-invalid-amount');
-			error_msg = give_global_vars.bad_minimum + ' ' + Give.form.fn.formatCurrency(value_min, {symbol: Give.form.fn.getFormInfo('currency_symbol', parent_form)});
+			error_msg = Give.form.fn.getGlobalVar('bad_minimum') + ' ' + Give.form.fn.formatCurrency(value_min, {symbol: Give.form.fn.getFormInfo('currency_symbol', parent_form)}, parent_form);
 
 			//Disable submit
 			parent_form.find('.give-submit').prop('disabled', true);
