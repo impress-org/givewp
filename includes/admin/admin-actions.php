@@ -699,7 +699,7 @@ function __give_ajax_donor_manage_addresses() {
 						'error' => 1,
 						'error_msg' => wp_sprintf(
 							'<div class="notice notice-error"><p>%s</p></div>',
-							__( 'Error: could not able to save address. check if address already exist or not.', 'give' )
+							__( 'Error: Unable to save the address. Please check if address already exist.', 'give' )
 						)
 					)
 				);
@@ -741,7 +741,7 @@ function __give_ajax_donor_manage_addresses() {
 						'error' => 2,
 						'error_msg' => wp_sprintf(
 							'<div class="notice notice-error"><p>%s</p></div>',
-							__( 'Error: could not able to delete address.', 'give' )
+							__( 'Error: Unable to delete address.', 'give' )
 						)
 					)
 				);
@@ -760,7 +760,7 @@ function __give_ajax_donor_manage_addresses() {
 						'error' => 3,
 						'error_msg' => wp_sprintf(
 							'<div class="notice notice-error"><p>%s</p></div>',
-							__( 'Error: could not able to update address. check if address already exist or not.', 'give' )
+							__( 'Error: Unable to update address. Please check if address already exist.', 'give' )
 						)
 					)
 				);
