@@ -702,7 +702,7 @@ jQuery(function ($) {
 	doc.on('blur', '.give-donation-amount .give-text-input', function (e, $parent_form, donation_amount, price_id) {
 		var parent_form = ( 'undefined' !== typeof $parent_form ) ? $parent_form : $(this).closest('form'),
 			pre_focus_amount = $(this).data('amount'),
-			this_value = ( 'undefined' !== typeof donation_amount ) ? donation_amount : parseInt($(this).val()),
+			this_value = ( 'undefined' !== typeof donation_amount ) ? donation_amount : $(this).val(),
 			decimal_separator = Give.form.fn.getFormInfo('decimal_separator', parent_form),
 			value_min = Give.form.fn.getFormMinimumAmount(parent_form),
 			value_now = (this_value === 0) ? value_min : Give.form.fn.unformatCurrency(this_value, decimal_separator),
