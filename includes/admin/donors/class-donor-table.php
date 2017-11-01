@@ -300,6 +300,9 @@ class Give_Donor_List_Table extends WP_List_Table {
 			return;
 		}
 
+		// Convert strings to int.
+		$ids = array_map( 'absint', $ids );
+
 		foreach ( $ids as $id ) {
 
 			// Detect when a bulk action is being triggered.
