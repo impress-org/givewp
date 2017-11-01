@@ -189,8 +189,8 @@ function _give_register_admin_notices() {
 						'id'          => 'bulk_action_status_change',
 						'type'        => 'updated',
 						'description' => _n(
-							'Donation status updated successfully',
-							'Donations status updated successfully',
+							'Donation status updated successfully.',
+							'Donations status updated successfully.',
 							$payment_count,
 							'give'
 						),
