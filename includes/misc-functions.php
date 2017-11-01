@@ -414,10 +414,17 @@ function give_get_currencies( $info = 'admin_label' ) {
 			if ( is_string( $currency_setting ) ) {
 				$currencies[ $currency_code ] = array(
 					'admin_label' => $currency_setting,
-					'symbol'      => '',
-					'setting'     => array(),
 				);
 			}
+
+			$currencies[ $currency_code ] = wp_parse_args(
+				$currencies[ $currency_code ],
+				array(
+					'admin_label' => '',
+					'symbol'      => $currency_code,
+					'setting'     => array(),
+				)
+			);
 		}
 
 		if ( ! empty( $info ) && is_string( $info ) && 'all' !== $info ) {
@@ -1078,12 +1085,12 @@ function give_get_newsletter() {
 	<script type='text/javascript'>(function ($) {
 			window.fnames = new Array();
 			window.ftypes = new Array();
-			fnames[0]     = 'EMAIL';
-			ftypes[0]     = 'email';
-			fnames[1]     = 'FNAME';
-			ftypes[1]     = 'text';
-			fnames[2]     = 'LNAME';
-			ftypes[2]     = 'text';
+			fnames[0] = 'EMAIL';
+			ftypes[0] = 'email';
+			fnames[1] = 'FNAME';
+			ftypes[1] = 'text';
+			fnames[2] = 'LNAME';
+			ftypes[2] = 'text';
 
 			//Successful submission
 			$('form[name="mc-embedded-subscribe-form"]').on('submit', function () {
@@ -1104,7 +1111,7 @@ function give_get_newsletter() {
 	</script>
 	<!--End mc_embed_signup-->
 
-<?php
+	<?php
 }
 
 
@@ -1470,8 +1477,9 @@ function give_is_terms_enabled( $form_id ) {
  * @since 1.8.7
  *
  * @param string|array $date_range Date for stats.
- *                                 Date value should be in today, yesterday, this_week, last_week, this_month, last_month, this_quarter, last_quarter, this_year, last_year.
- *                                 For date value other, all cache will be removed.
+ *                                 Date value should be in today, yesterday, this_week, last_week, this_month,
+ *                                 last_month, this_quarter, last_quarter, this_year, last_year. For date value other,
+ *                                 all cache will be removed.
  *
  * @param array        $args
  *
@@ -1667,9 +1675,9 @@ function give_remove_pages_from_search( $query ) {
 		$success_page       = give_get_option( 'success_page', 0 );
 		$args               = apply_filters(
 			'give_remove_pages_from_search', array(
-				$transaction_failed,
-				$success_page,
-			), $query
+			$transaction_failed,
+			$success_page,
+		), $query
 		);
 		$query->set( 'post__not_in', $args );
 	}

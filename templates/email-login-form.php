@@ -23,7 +23,7 @@ if ( $give_access_form_outputted ) {
 // Form submission.
 if ( is_email( $email ) && wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
 
-	// Use reCAPTCHA
+	// Use reCAPTCHA.
 	if ( $enable_recaptcha ) {
 
 		$args = array(
@@ -70,7 +70,7 @@ if ( is_email( $email ) && wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
 			$payment_ids = explode( ',', $donor->payment_ids );
 		}
 
-		foreach( $payment_ids AS $payment_id ) {
+		foreach( $payment_ids as $payment_id ) {
 			$payment = new Give_Payment( $payment_id );
 
 			// Make sure Donation Access Token matches with donation details of donor whose email is provided.
