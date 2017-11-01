@@ -447,7 +447,7 @@ function give_get_currencies( $info = 'admin_label' ) {
  * @return array
  */
 function give_currency_symbols( $decode_currencies = false ) {
-	$currencies = give_get_currencies('symbol' );
+	$currencies = give_get_currencies( 'symbol' );
 
 	if ( $decode_currencies ) {
 		$currencies = array_map( 'html_entity_decode', $currencies );
@@ -1086,12 +1086,12 @@ function give_get_newsletter() {
 	<script type='text/javascript'>(function ($) {
 			window.fnames = new Array();
 			window.ftypes = new Array();
-			fnames[0]     = 'EMAIL';
-			ftypes[0]     = 'email';
-			fnames[1]     = 'FNAME';
-			ftypes[1]     = 'text';
-			fnames[2]     = 'LNAME';
-			ftypes[2]     = 'text';
+			fnames[0] = 'EMAIL';
+			ftypes[0] = 'email';
+			fnames[1] = 'FNAME';
+			ftypes[1] = 'text';
+			fnames[2] = 'LNAME';
+			ftypes[2] = 'text';
 
 			//Successful submission
 			$('form[name="mc-embedded-subscribe-form"]').on('submit', function () {
@@ -1112,7 +1112,7 @@ function give_get_newsletter() {
 	</script>
 	<!--End mc_embed_signup-->
 
-<?php
+	<?php
 }
 
 
@@ -1478,8 +1478,9 @@ function give_is_terms_enabled( $form_id ) {
  * @since 1.8.7
  *
  * @param string|array $date_range Date for stats.
- *                                 Date value should be in today, yesterday, this_week, last_week, this_month, last_month, this_quarter, last_quarter, this_year, last_year.
- *                                 For date value other, all cache will be removed.
+ *                                 Date value should be in today, yesterday, this_week, last_week, this_month,
+ *                                 last_month, this_quarter, last_quarter, this_year, last_year. For date value other,
+ *                                 all cache will be removed.
  *
  * @param array        $args
  *
@@ -1675,9 +1676,9 @@ function give_remove_pages_from_search( $query ) {
 		$success_page       = give_get_option( 'success_page', 0 );
 		$args               = apply_filters(
 			'give_remove_pages_from_search', array(
-				$transaction_failed,
-				$success_page,
-			), $query
+			$transaction_failed,
+			$success_page,
+		), $query
 		);
 		$query->set( 'post__not_in', $args );
 	}
@@ -1972,7 +1973,7 @@ function give_is_zero_based_currency( $currency = '' ) {
 	);
 
 	// Set default currency.
-	if( empty( $currency ) ) {
+	if ( empty( $currency ) ) {
 		$currency = give_get_currency();
 	}
 
