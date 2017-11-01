@@ -36,7 +36,7 @@ if ( ! give_get_errors() && $enable_recaptcha ) {
 				'body' => $args,
 			)
 		);
-		if ( ! is_wp_error( $request ) || 200 == wp_remote_retrieve_response_code( $request ) ) {
+		if ( ! is_wp_error( $request ) || 200 === wp_remote_retrieve_response_code( $request ) ) {
 
 			$response = json_decode( $request['body'], true );
 
