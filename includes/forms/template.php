@@ -892,8 +892,6 @@ function give_default_cc_address_fields( $form_id ) {
 		 */
 		do_action( 'give_cc_billing_top' );
 
-
-
 		// For Country.
 		$selected_country = give_get_country();
 		if ( ! empty( $give_user_info['billing_country'] ) && '*' !== $give_user_info['billing_country'] ) {
