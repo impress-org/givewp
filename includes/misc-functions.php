@@ -415,10 +415,17 @@ function give_get_currencies( $info = 'admin_label' ) {
 			if ( is_string( $currency_setting ) ) {
 				$currencies[ $currency_code ] = array(
 					'admin_label' => $currency_setting,
-					'symbol'      => '',
-					'setting'     => array(),
 				);
 			}
+
+			$currencies[ $currency_code ] = wp_parse_args(
+				$currencies[ $currency_code ],
+				array(
+					'admin_label' => '',
+					'symbol'      => $currency_code,
+					'setting'     => array(),
+				)
+			);
 		}
 
 		if ( ! empty( $info ) && is_string( $info ) && 'all' !== $info ) {
