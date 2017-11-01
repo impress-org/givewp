@@ -337,9 +337,16 @@ function give_load_admin_scripts( $hook ) {
 		'search_placeholder_country'        => __( 'Type to search all countries', 'give' ),
 		'search_placeholder_state'          => __( 'Type to search all states/provinces', 'give' ),
 		'unlock_donor_fields'            => __( 'To edit first name and last name, please go to user profile of the donor.', 'give' ),
-		'bulk_action'                       => array(
+		'donors_bulk_action'                => array(
+			'delete' => array(
+				'zero'     => __( 'You must choose at least one or more donors to delete.', 'give' ),
+				'single'   => __( 'Are you sure you want to permanently delete this donor and associated records?', 'give' ),
+				'multiple' => __( 'Are you sure you want to permanently delete the selected {donor_count} donors and associated records?', 'give' ),
+			),
+		),
+		'donations_bulk_action'             => array(
 			'delete'         => array(
-				'zero'     => __( 'You must choose at least one or more payments to delete.', 'give' ),
+				'zero'     => __( 'You must choose at least one or more donations to delete.', 'give' ),
 				'single'   => __( 'Are you sure you want to permanently delete this donation?', 'give' ),
 				'multiple' => __( 'Are you sure you want to permanently delete the selected {payment_count} donations?', 'give' ),
 			),
@@ -373,6 +380,7 @@ function give_load_admin_scripts( $hook ) {
 		'db_update_confirmation_msg'        => __( 'The following process will make updates to your site\'s database. Please create a database backup before proceeding with updates.', 'give' ),
 		'error_message'                     => __( 'Something went wrong kindly try again!', 'give' ),
 		'give_donation_import'              => 'give_donation_import',
+		'core_settings_import'              => 'give_core_settings_import',
 		'setting_not_save_message'          => __( 'Changes you made may not be saved.', 'give' ),
 	) );
 

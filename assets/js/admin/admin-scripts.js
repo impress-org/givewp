@@ -11,7 +11,7 @@
 jQuery.noConflict();
 // Provided access to global level
 var give_setting_edit = false;
-( function( $ ) {
+(function ($) {
 	/**
 	 * Show/Hide ajax loader.
 	 *
@@ -20,7 +20,7 @@ var give_setting_edit = false;
 	 * @param $parent
 	 * @param args
 	 */
-	var giveAjaxLoader = function ( $parent, args ){
+	var giveAjaxLoader = function ($parent, args) {
 		args = jQuery.extend(
 			{
 				wrapper: true,
@@ -29,12 +29,12 @@ var give_setting_edit = false;
 			args
 		);
 
-		var $loaderParent = args.wrapper ? $( '.give-spinner-wrapper', $parent ) : {},
-			$loader = $( '.give-spinner', $parent );
+		var $loaderParent = args.wrapper ? $('.give-spinner-wrapper', $parent) : {},
+			$loader = $('.give-spinner', $parent);
 
 		// Show loader.
-		if( args.show ) {
-			if( $loaderParent.length ) {
+		if (args.show) {
+			if ($loaderParent.length) {
 				$loaderParent.addClass('is-active');
 			}
 
@@ -43,7 +43,7 @@ var give_setting_edit = false;
 		}
 
 		// Hide loader
-		if( $loaderParent.length ) {
+		if ($loaderParent.length) {
 			$loaderParent.removeClass('is-active');
 		}
 
@@ -55,12 +55,12 @@ var give_setting_edit = false;
 	 *
 	 * @since 1.8.14
 	 */
-	var give_dismiss_notice = function(){
-		$( 'body' ).on( 'click', 'button.notice-dismiss', function () {
-			if ( 'give-invalid-license' !== jQuery( this ).closest( 'div.give-notice' ).data( 'notice-id' ) ) {
+	var give_dismiss_notice = function () {
+		$('body').on('click', 'button.notice-dismiss', function () {
+			if ('give-invalid-license' !== jQuery(this).closest('div.give-notice').data('notice-id')) {
 				give_remove_give_message();
 			}
-		} );
+		});
 	};
 
 	/**
@@ -71,21 +71,21 @@ var give_setting_edit = false;
 	var give_remove_give_message = function () {
 		var parameter = 'give-message',
 			url = document.location.href,
-			urlparts = url.split( '?' );
+			urlparts = url.split('?');
 
-		if ( urlparts.length >= 2 ) {
+		if (urlparts.length >= 2) {
 			var urlBase = urlparts.shift();
-			var queryString = urlparts.join( "?" );
+			var queryString = urlparts.join("?");
 
-			var prefix = encodeURIComponent( parameter ) + '=';
-			var pars = queryString.split( /[&;]/g );
-			for ( var i = pars.length; i-- > 0; ) {
-				if ( pars[ i ].lastIndexOf( prefix, 0 ) !== -1 ) {
-					pars.splice( i, 1 );
+			var prefix = encodeURIComponent(parameter) + '=';
+			var pars = queryString.split(/[&;]/g);
+			for (var i = pars.length; i-- > 0;) {
+				if (pars[i].lastIndexOf(prefix, 0) !== -1) {
+					pars.splice(i, 1);
 				}
 			}
-			url = urlBase + '?' + pars.join( '&' );
-			window.history.pushState( '', document.title, url ); // added this line to push the new url directly to url bar .
+			url = urlBase + '?' + pars.join('&');
+			window.history.pushState('', document.title, url); // added this line to push the new url directly to url bar .
 		}
 		return url;
 	};
@@ -94,12 +94,12 @@ var give_setting_edit = false;
 	 * Setup Admin Datepicker
 	 * @since: 1.0
 	 */
-	var enable_admin_datepicker = function() {
+	var enable_admin_datepicker = function () {
 
 		// Date picker.
-		if ( $( '.give_datepicker' ).length > 0 ) {
+		if ($('.give_datepicker').length > 0) {
 			var dateFormat = 'mm/dd/yy';
-			$( '.give_datepicker' ).datepicker({
+			$('.give_datepicker').datepicker({
 				dateFormat: dateFormat
 			});
 		}
@@ -109,18 +109,18 @@ var give_setting_edit = false;
 	 * Show alert when admin try to reload the page with saving the changes.
 	 *
 	 * @since 1.8.14
-	*/
-	var form_edit_alert = function(){
-		if ( jQuery( 'body.post-type-give_forms' ).length > 0 ) {
+	 */
+	var form_edit_alert = function () {
+		if (jQuery('body.post-type-give_forms').length > 0) {
 			window.addEventListener("beforeunload", function (e) {
 				var confirmationMessage = give_vars.setting_not_save_message;
-				if ( give_setting_edit ) {
+				if (give_setting_edit) {
 					(e || window.event).returnValue = confirmationMessage; //Gecko + IE
 					return confirmationMessage;                            //Webkit, Safari, Chrome
 				}
 			});
 
-			jQuery( 'body' ).on( 'click', '.give-save-button', function () {
+			jQuery('body').on('click', '.give-save-button', function () {
 				give_setting_edit = false;
 			});
 		}
@@ -131,60 +131,60 @@ var give_setting_edit = false;
 	 *
 	 * @since 1.8.14
 	 */
-	var enable_form_edit_alert_setting  = function () {
+	var enable_form_edit_alert_setting = function () {
 		// Check if it give setting page or not.
-		if ( jQuery( 'body.give_forms_page_give-settings' ).length > 0 ) {
+		if (jQuery('body.give_forms_page_give-settings').length > 0) {
 
 			// Get the default value
-			var on_load_value = jQuery( 'body.give_forms_page_give-settings #give-mainform' ).serialize();
+			var on_load_value = jQuery('body.give_forms_page_give-settings #give-mainform').serialize();
 
 			/**
 			 * Keyup event add to support to text box and textarea.
 			 * blur event add to support to dropdown.
 			 * Change event add to support to rest all element.
 			 */
-			jQuery( '.give-settings-page' ).on( 'change keyup blur', 'form', function ( event  ) {
+			jQuery('.give-settings-page').on('change keyup blur', 'form', function (event) {
 				// Get the form value after change.
-				var on_change_value = jQuery( 'body.give_forms_page_give-settings #give-mainform' ).serialize();
+				var on_change_value = jQuery('body.give_forms_page_give-settings #give-mainform').serialize();
 
 				// If both the value are same then no change has being made else change has being made.
-				if( on_load_value == on_change_value ) {
+				if (on_load_value == on_change_value) {
 					give_setting_edit = false;
-				} else{
+				} else {
 					give_setting_edit = true;
 				}
-			} );
+			});
 		}
 	};
 
 	/**
 	 * Setup Pretty Chosen Select Fields
 	 */
-	var setup_chosen_give_selects = function() {
+	var setup_chosen_give_selects = function () {
 
 		// Setup Chosen Selects.
-		var $give_chosen_containers = $( '.give-select-chosen' );
+		var $give_chosen_containers = $('.give-select-chosen');
 
 		// Add loader with each input field.
-		$give_chosen_containers.on( 'chosen:ready', function() {
-			$( this ).next( '.chosen-container' )
-				.find( 'input.chosen-search-input' )
-				.after( '<span class="spinner"></span>' );
+		$give_chosen_containers.on('chosen:ready', function () {
+			$(this).next('.chosen-container')
+				.find('input.chosen-search-input')
+				.after('<span class="spinner"></span>');
 		});
 
 		// No results returned from search trigger.
-		$give_chosen_containers.on( 'chosen:no_results', function() {
-			var $container = $( this ).next( '.chosen-container' ),
-				$no_results_li = $container.find( 'li.no-results' ),
+		$give_chosen_containers.on('chosen:no_results', function () {
+			var $container = $(this).next('.chosen-container'),
+				$no_results_li = $container.find('li.no-results'),
 				error_string = '';
 
-			if ($container.hasClass( 'give-select-chosen-ajax' ) && $no_results_li.length ) {
-				error_string = give_vars.chosen.ajax_search_msg.replace( '{search_term}', '"' + $( 'input', $container ).val() + '"' );
+			if ($container.hasClass('give-select-chosen-ajax') && $no_results_li.length) {
+				error_string = give_vars.chosen.ajax_search_msg.replace('{search_term}', '"' + $('input', $container).val() + '"');
 			} else {
-				error_string = give_vars.chosen.no_results_msg.replace( '{search_term}', '"' + $( 'input', $container ).val() + '"' );
+				error_string = give_vars.chosen.no_results_msg.replace('{search_term}', '"' + $('input', $container).val() + '"');
 			}
 
-			$no_results_li.html( error_string );
+			$no_results_li.html(error_string);
 
 		});
 
@@ -196,8 +196,8 @@ var give_setting_edit = false;
 		});
 
 		// This fixes the Chosen box being 0px wide when the thickbox is opened
-		$( '#post' ).on( 'click', '.give-thickbox', function() {
-			$( '.give-select-chosen', '#choose-give-form' ).css( 'width', '100%' );
+		$('#post').on('click', '.give-thickbox', function () {
+			$('.give-select-chosen', '#choose-give-form').css('width', '100%');
 		});
 
 		// Variables for setting up the typing timer.
@@ -205,31 +205,31 @@ var give_setting_edit = false;
 		var doneTypingInterval = 342;  // Time in ms, Slow - 521ms, Moderate - 342ms, Fast - 300ms
 
 		// Replace options with search results
-		$( document.body ).on( 'keyup', '.give-select.chosen-container .chosen-search input, .give-select.chosen-container .search-field input', function( e ) {
+		$(document.body).on('keyup', '.give-select.chosen-container .chosen-search input, .give-select.chosen-container .search-field input', function (e) {
 
-			var val           = $(this).val(),
-				$container    = $(this).closest('.give-select-chosen'),
-				select        = $container.prev(),
+			var val = $(this).val(),
+				$container = $(this).closest('.give-select-chosen'),
+				select = $container.prev(),
 				$search_field = $container.find('input[type="text"]'),
-				variations    = $container.hasClass('variations'),
-				lastKey       = e.which,
-				search_type   = 'give_forms_search';
+				variations = $container.hasClass('variations'),
+				lastKey = e.which,
+				search_type = 'give_forms_search';
 
 			// Detect if we have a defined search type, otherwise default to donation forms.
-			if ( $container.prev().data( 'search-type' ) ) {
+			if ($container.prev().data('search-type')) {
 
 				// Don't trigger AJAX if this select has all options loaded.
-				if ( 'no_ajax' === select.data( 'search-type' ) ) {
+				if ('no_ajax' === select.data('search-type')) {
 					return;
 				}
 
-				search_type = 'give_' + select.data( 'search-type' ) + '_search';
+				search_type = 'give_' + select.data('search-type') + '_search';
 			}
 
 			// Don't fire if short or is a modifier key (shift, ctrl, apple command key, or arrow keys).
 			if (
 				val.length <= 3 ||
-				! search_type.length ||
+				!search_type.length ||
 				(
 					( 9 === lastKey ) || // Tab
 					( 13 === lastKey ) || // Enter
@@ -259,78 +259,78 @@ var give_setting_edit = false;
 			) {
 				return;
 			}
-			clearTimeout( typingTimer );
-			$container.addClass( 'give-select-chosen-ajax' );
+			clearTimeout(typingTimer);
+			$container.addClass('give-select-chosen-ajax');
 
 			typingTimer = setTimeout(
-				function() {
+				function () {
 					$.ajax({
-						type      : 'GET',
-						url       : ajaxurl,
-						data      : {
+						type: 'GET',
+						url: ajaxurl,
+						data: {
 							action: search_type,
 							s: val
 						},
 						dataType: 'json',
-						beforeSend: function() {
-							select.closest( 'ul.chosen-results' ).empty();
-							$search_field.prop( 'disabled', true );
+						beforeSend: function () {
+							select.closest('ul.chosen-results').empty();
+							$search_field.prop('disabled', true);
 						},
-						success: function( data ) {
+						success: function (data) {
 
-							$container.removeClass( 'give-select-chosen-ajax' );
+							$container.removeClass('give-select-chosen-ajax');
 
 							// Remove all options but those that are selected.
-							$( 'option:not(:selected)', select ).remove();
+							$('option:not(:selected)', select).remove();
 
-							if ( data.length ) {
-								$.each( data, function( key, item ) {
+							if (data.length) {
+								$.each(data, function (key, item) {
 
 									// Add any option that doesn't already exist.
-									if ( ! $( 'option[value="' + item.id + '"]', select ).length ) {
-										select.prepend( '<option value="' + item.id + '">' + item.name + '</option>' );
+									if (!$('option[value="' + item.id + '"]', select).length) {
+										select.prepend('<option value="' + item.id + '">' + item.name + '</option>');
 									}
 								});
 
 								// Trigger update event.
-								$container.prev( 'select.give-select-chosen' ).trigger( 'chosen:updated' );
+								$container.prev('select.give-select-chosen').trigger('chosen:updated');
 
 							} else {
 
 								// Trigger no result message event.
-								$container.prev( 'select.give-select-chosen' ).trigger( 'chosen:no_results' );
+								$container.prev('select.give-select-chosen').trigger('chosen:no_results');
 							}
 
 							// Ensure the original query is retained within the search input.
-							$search_field.prop( 'disabled', false );
-							$search_field.val( val ).focus();
+							$search_field.prop('disabled', false);
+							$search_field.val(val).focus();
 
 						}
-					}).fail( function( response ) {
-						if ( window.console && window.console.log ) {
-							console.log( response );
+					}).fail(function (response) {
+						if (window.console && window.console.log) {
+							console.log(response);
 						}
-					}).done( function( response ) {
-						$search_field.prop( 'disabled', false );
+					}).done(function (response) {
+						$search_field.prop('disabled', false);
 					});
 				},
 				doneTypingInterval
 			);
 		});
 
-		$( '.give-select-chosen .chosen-search input' ).each( function() {
-			var type = $( this ).parent().parent().parent().prev( 'select.give-select-chosen' ).data( 'search-type' );
+		$('.give-select-chosen .chosen-search input').each(function () {
+			var type = $(this).parent().parent().parent().prev('select.give-select-chosen').data('search-type');
 			var placeholder = '';
 
-			if ( 'form' === type ) {
+			if ('form' === type) {
 				placeholder = give_vars.search_placeholder;
 			} else {
 				type = 'search_placeholder_' + type;
-				if ( give_vars[type] ) {
+				if (give_vars[type]) {
 					placeholder = give_vars[type];
 				}
 			}
-			$( this ).attr( 'placeholder', placeholder );
+			$(this).attr('placeholder', placeholder);
 
 		});
 
@@ -346,17 +346,17 @@ var give_setting_edit = false;
 	 *
 	 * @returns {string}
 	 */
-	function give_unformat_currency( price, dp ) {
-		price = accounting.unformat( price, give_vars.decimal_separator ).toString();
+	function give_unformat_currency(price, dp) {
+		price = accounting.unformat(price, give_vars.decimal_separator).toString();
 		dp = ( 'undefined' === dp ? false : dp );
 
 		// Set default value for number of decimals.
-		if ( false !== dp ) {
-			price = parseFloat( price ).toFixed( dp );
+		if (false !== dp) {
+			price = parseFloat(price).toFixed(dp);
 		} else {
 
 			// If price do not have decimal value then set default number of decimals.
-			price = parseFloat( price ).toFixed( give_vars.currency_decimals );
+			price = parseFloat(price).toFixed(give_vars.currency_decimals);
 		}
 
 		return price;
@@ -368,20 +368,20 @@ var give_setting_edit = false;
 
 	var GiveListDonation = {
 
-		init: function() {
+		init: function () {
 			this.deleteSingleDonation();
 			this.resendSingleDonationReceipt();
 		},
 
-		deleteSingleDonation: function() {
-			$( 'body' ).on( 'click', '.delete-single-donation', function() {
-				return confirm( give_vars.delete_payment );
+		deleteSingleDonation: function () {
+			$('body').on('click', '.delete-single-donation', function () {
+				return confirm(give_vars.delete_payment);
 			});
 		},
 
-		resendSingleDonationReceipt: function() {
-			$( 'body' ).on( 'click', '.resend-single-donation-receipt', function() {
-				return confirm( give_vars.resend_receipt );
+		resendSingleDonationReceipt: function () {
+			$('body').on('click', '.resend-single-donation-receipt', function () {
+				return confirm(give_vars.resend_receipt);
 			});
 		}
 
@@ -415,7 +415,7 @@ var give_setting_edit = false;
 				$.post(ajaxurl, data, function (response) {
 
 					// Show the states dropdown menu
-					$this.closest( '.column-container' ).find( '#give-order-address-state-wrap' ).removeClass( 'give-hidden' );
+					$this.closest('.column-container').find('#give-order-address-state-wrap').removeClass('give-hidden');
 
 					var state_wrap = $('#give-order-address-state-wrap');
 					state_wrap.find('*').not('.order-data-address-line').remove();
@@ -425,9 +425,9 @@ var give_setting_edit = false;
 					} else {
 						state_wrap.append('<input type="text" name="give-payment-address[0][state]" value="' + response.default_state + '" class="give-edit-toggles medium-text"/>');
 
-						if (typeof ( response.show_field ) != undefined && false == response.show_field ) {
+						if (typeof ( response.show_field ) != undefined && false == response.show_field) {
 							// Hide the states dropdown menu
-							$this.closest( '.column-container' ).find( '#give-order-address-state-wrap' ).addClass( 'give-hidden' );
+							$this.closest('.column-container').find('#give-order-address-state-wrap').addClass('give-hidden');
 						}
 					}
 				});
@@ -629,13 +629,13 @@ var give_setting_edit = false;
 
 				$.post(ajaxurl, data, function (response) {
 					// Show the states dropdown menu
-					$this.closest( 'tr' ).next().show()
+					$this.closest('tr').next().show()
 					if (typeof ( response.states_found ) != undefined && true == response.states_found) {
-						$(':input[name="base_state"]').replaceWith( response.data );
+						$(':input[name="base_state"]').replaceWith(response.data);
 					} else {
-						if (typeof ( response.show_field ) != undefined && false == response.show_field ) {
+						if (typeof ( response.show_field ) != undefined && false == response.show_field) {
 							// Hide the states dropdown menu
-							$this.closest( 'tr' ).next().hide();
+							$this.closest('tr').next().hide();
 						}
 						$(':input[name="base_state"]').replaceWith('<input type="text" name="' + data.field_name + '" value="' + response.default_state + '" class="give-edit-toggles medium-text"/>');
 					}
@@ -855,7 +855,7 @@ var give_setting_edit = false;
 					forms.val(0);
 				}
 
-				current_forms = $( '.tools-form-dropdown-' + selected_type );
+				current_forms = $('.tools-form-dropdown-' + selected_type);
 				current_forms.show();
 				current_forms.find('.give-select-chosen').css({
 					'width': 'auto',
@@ -956,10 +956,10 @@ var give_setting_edit = false;
 
 		process_step: function (step, data, self) {
 			/**
-			* Do not allow user to reload the page
-			*
-			* @since 1.8.14
-			*/
+			 * Do not allow user to reload the page
+			 *
+			 * @since 1.8.14
+			 */
 			give_setting_edit = true;
 
 			$.ajax({
@@ -1059,10 +1059,10 @@ var give_setting_edit = false;
 				e.preventDefault();
 
 				self.el.run_upload_container.find('.notice').remove();
-				self.el.run_upload_container.append('<div class="notice notice-error non-dismissible give-run-update-containt"><p> <a href="#" class="give-run-update-button button">'+ give_vars.db_update_confirmation_msg_button +'</a> ' + give_vars.db_update_confirmation_msg + '</p></div>');
+				self.el.run_upload_container.append('<div class="notice notice-error non-dismissible give-run-update-containt"><p> <a href="#" class="give-run-update-button button">' + give_vars.db_update_confirmation_msg_button + '</a> ' + give_vars.db_update_confirmation_msg + '</p></div>');
 			});
 
-			$( '#give-db-updates' ).on('click', 'a.give-run-update-button' ,function (e) {
+			$('#give-db-updates').on('click', 'a.give-run-update-button', function (e) {
 				e.preventDefault();
 
 				if ($(this).hasClass('active')) {
@@ -1071,8 +1071,8 @@ var give_setting_edit = false;
 
 				$(this).addClass('active').fadeOut();
 				self.el.update_link.addClass('active').fadeOut();
-				$( '#give-db-updates .give-run-update-containt' ).slideUp();
-				
+				$('#give-db-updates .give-run-update-containt').slideUp();
+
 				self.el.progress_container.find('.notice-wrap').remove();
 				self.el.progress_container.append('<div class="notice-wrap give-clearfix"><span class="spinner is-active"></span><div class="give-progress"><div></div></div></div>');
 				self.el.progress_main_container.removeClass('give-hidden');
@@ -1116,7 +1116,7 @@ var give_setting_edit = false;
 
 							self.el.update_link.closest('p').remove();
 							notice_wrap.html('<div class="notice notice-success is-dismissible"><p>' + response.data.message + '</p><button type="button" class="notice-dismiss"></button></div>');
-							
+
 						} else {
 							// Update steps info
 							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
@@ -1131,7 +1131,7 @@ var give_setting_edit = false;
 							}, 5000);
 						}
 					} else {
-						if ( response && -1 !== $.inArray('percentage', Object.keys(response.data))) {
+						if (response && -1 !== $.inArray('percentage', Object.keys(response.data))) {
 							// Update progress.
 							$('.give-progress div', '#give-db-updates').animate({
 								width: response.data.percentage + '%',
@@ -1145,7 +1145,7 @@ var give_setting_edit = false;
 							}
 
 							self.process_step(parseInt(response.data.step), response.data.update, self);
-						} else{
+						} else {
 							notice_wrap.html('<div class="notice notice-error"><p>' + give_vars.updates.ajax_error + '</p></div>');
 
 							setTimeout(function () {
@@ -1205,7 +1205,7 @@ var give_setting_edit = false;
 	 */
 	var GiveDonor = {
 
-		init: function() {
+		init: function () {
 			this.editDonor();
 			this.add_email();
 			this.removeUser();
@@ -1213,37 +1213,39 @@ var give_setting_edit = false;
 			this.add_note();
 			this.delete_checked();
 			this.addressesAction();
-
-			$( 'body' ).on( 'click', '.give-lock-block', this.unlockDonorFields );
+			this.unlockDonorFields();
+			this.handleBulkActions();
 		},
 
-		unlockDonorFields: function( e ) {
-			alert( give_vars.unlock_donor_fields );
-			e.preventDefault();
-		},
-
-		editDonor: function() {
-			$( 'body' ).on( 'click', '#edit-donor', function( e ) {
+		unlockDonorFields: function (e) {
+			$('body').on('click', '.give-lock-block', function (e) {
+				alert(give_vars.unlock_donor_fields);
 				e.preventDefault();
-				$( '#give-donor-card-wrapper .editable' ).hide();
-				$( '#give-donor-card-wrapper .edit-item' ).fadeIn().css( 'display', 'block' );
 			});
 		},
 
-		removeUser: function() {
-			$( 'body' ).on( 'click', '#disconnect-donor', function( e ) {
+		editDonor: function () {
+			$('body').on('click', '#edit-donor', function (e) {
+				e.preventDefault();
+				$('#give-donor-card-wrapper .editable').hide();
+				$('#give-donor-card-wrapper .edit-item').fadeIn().css('display', 'block');
+			});
+		},
+
+		removeUser: function () {
+			$('body').on('click', '#disconnect-donor', function (e) {
 				e.preventDefault();
 
-				if ( ! confirm( give_vars.disconnect_user ) ) {
+				if (!confirm(give_vars.disconnect_user)) {
 					return false;
 				}
 
-				var donorID = $( 'input[name="customerinfo[id]"]' ).val();
+				var donorID = $('input[name="customerinfo[id]"]').val();
 
 				var postData = {
 					give_action: 'disconnect-userid',
 					customer_id: donorID,
-					_wpnonce   : $( '#edit-donor-info #_wpnonce' ).val()
+					_wpnonce: $('#edit-donor-info #_wpnonce').val()
 				};
 
 				$.post(ajaxurl, postData, function (response) {
@@ -1253,12 +1255,12 @@ var give_setting_edit = false;
 			});
 		},
 
-		cancelEdit: function() {
-			$( 'body' ).on( 'click', '#give-edit-donor-cancel', function( e ) {
+		cancelEdit: function () {
+			$('body').on('click', '#give-edit-donor-cancel', function (e) {
 				e.preventDefault();
-				$( '#give-donor-card-wrapper .edit-item' ).hide();
-				$( '#give-donor-card-wrapper .editable' ).show();
-				$( '.give_user_search_results' ).html( '' );
+				$('#give-donor-card-wrapper .edit-item').hide();
+				$('#give-donor-card-wrapper .editable').show();
+				$('.give_user_search_results').html('');
 			});
 		},
 
@@ -1354,78 +1356,79 @@ var give_setting_edit = false;
 
 			});
 		},
-		addressesAction: function(){
-			var $obj = this,
-				$addressWrapper = $( '#donor-address-wrapper' ),
-				$allAddress = $( '.all-address', $addressWrapper ),
-				$noAddressMessageWrapper = $( '.give-no-address-message', $addressWrapper ),
-				$allAddressParent = $( $allAddress ).parent(),
-				$addressForm = $( '.address-form', $addressWrapper ),
-				$addressFormCancelBtn = $( '.js-cancel', $addressForm ),
-				$addressFormCountryField = $( 'select[name="country"]', $addressForm ),
-				$addNewAddressBtn = $( '.add-new-address', $addressWrapper ),
-				donorID = parseInt( $('input[name="donor-id"]').val() );
 
-			$addressFormCountryField.on( 'change', function(){
+		addressesAction: function () {
+			var $obj = this,
+				$addressWrapper = $('#donor-address-wrapper'),
+				$allAddress = $('.all-address', $addressWrapper),
+				$noAddressMessageWrapper = $('.give-no-address-message', $addressWrapper),
+				$allAddressParent = $($allAddress).parent(),
+				$addressForm = $('.address-form', $addressWrapper),
+				$addressFormCancelBtn = $('.js-cancel', $addressForm),
+				$addressFormCountryField = $('select[name="country"]', $addressForm),
+				$addNewAddressBtn = $('.add-new-address', $addressWrapper),
+				donorID = parseInt($('input[name="donor-id"]').val());
+
+			$addressFormCountryField.on('change', function () {
 				$(this).trigger('chosen:updated');
 			});
 
 			// Edit current address button event
-			$allAddress.on( 'click', '.js-edit', function( e ){
-				var $parent = $( this ).closest( '.address' );
+			$allAddress.on('click', '.js-edit', function (e) {
+				var $parent = $(this).closest('.address');
 
 				e.preventDefault();
 
 				// Remove notice.
-				$( '.notice', $allAddressParent ).remove();
+				$('.notice', $allAddressParent).remove();
 
-				$obj.__set_address_form_val( $parent );
-				$obj.__set_address_form_action( 'update', $parent.data('address-id') );
+				$obj.__set_address_form_val($parent);
+				$obj.__set_address_form_action('update', $parent.data('address-id'));
 
 				$addNewAddressBtn.hide();
 				$allAddress.addClass('give-hidden');
 				$addressForm.removeClass('add-new-address-form-hidden');
-				$addressForm.data( 'process', 'update' );
+				$addressForm.data('process', 'update');
 			});
 
 			// Remove address button event
-			$allAddress.on( 'click', '.js-remove', function( e ){
+			$allAddress.on('click', '.js-remove', function (e) {
 				e.preventDefault();
 
 				var $parent = $(this).closest('.address');
 
 				// Remove notice.
-				$( '.notice', $allAddressParent ).remove();
+				$('.notice', $allAddressParent).remove();
 
 				$addressForm.data('changed', true);
-				$obj.__set_address_form_val( $parent );
-				$obj.__set_address_form_action( 'remove', $parent.data('address-id') );
+				$obj.__set_address_form_val($parent);
+				$obj.__set_address_form_action('remove', $parent.data('address-id'));
 
 				$addressForm.trigger('submit');
 			});
 
 			// Add new address button event.
-			$addNewAddressBtn.on( 'click', function(e){
+			$addNewAddressBtn.on('click', function (e) {
 				e.preventDefault();
 
 				// Remove notice.
-				$( '.notice', $allAddressParent ).remove();
+				$('.notice', $allAddressParent).remove();
 
-				$( this ).hide();
+				$(this).hide();
 				$allAddress.addClass('give-hidden');
 				$addressForm.removeClass('add-new-address-form-hidden');
-				$obj.__set_address_form_action( 'add' );
+				$obj.__set_address_form_action('add');
 
 
 				$obj.__set_address_form_action();
 			});
 
 			// Cancel add new address form button event
-			$addressFormCancelBtn.on( 'click', function(e){
+			$addressFormCancelBtn.on('click', function (e) {
 				e.preventDefault();
 
 				// Reset form.
-				$addressForm.find( 'input[type="text"]' ).val('');
+				$addressForm.find('input[type="text"]').val('');
 
 				$addNewAddressBtn.show();
 				$allAddress.removeClass('give-hidden');
@@ -1446,7 +1449,7 @@ var give_setting_edit = false;
 					$('.notice', $allAddressParent).remove();
 
 					// Do not send ajax if form does not change.
-					if ( ! $(this).data('changed') ) {
+					if (!$(this).data('changed')) {
 						$addNewAddressBtn.show();
 						$allAddress.removeClass('give-hidden');
 						$addressForm.addClass('add-new-address-form-hidden');
@@ -1475,7 +1478,7 @@ var give_setting_edit = false;
 									case 'add':
 										$('.give-grid-row', $allAddress).append(response.data.address_html);
 
-										if( ! $noAddressMessageWrapper.hasClass('give-hidden') && $( 'div.give-grid-col-4', $allAddress ).length ) {
+										if (!$noAddressMessageWrapper.hasClass('give-hidden') && $('div.give-grid-col-4', $allAddress).length) {
 											$noAddressMessageWrapper.addClass('give-hidden');
 										}
 										break;
@@ -1491,9 +1494,9 @@ var give_setting_edit = false;
 												function () {
 													parent.remove();
 
-													if(
+													if (
 														$noAddressMessageWrapper.hasClass('give-hidden') &&
-														! $( 'div.give-grid-col-4', $allAddress ).length
+														!$('div.give-grid-col-4', $allAddress).length
 													) {
 														$noAddressMessageWrapper.removeClass('give-hidden');
 													}
@@ -1504,10 +1507,10 @@ var give_setting_edit = false;
 										break;
 
 									case 'update':
-										parent           = $allAddress
+										parent = $allAddress
 											.find('div[data-address-id*="' + response.data.id + '"]').parent();
-										var	$prevParent      = parent.prev(),
-											$nextParent      = {},
+										var $prevParent = parent.prev(),
+											$nextParent = {},
 											is_address_added = false;
 
 										if (parseInt($('.give-grid-row>div', $allAddress).length) < 2) {
@@ -1543,25 +1546,25 @@ var give_setting_edit = false;
 						$this.data('changed', false);
 
 						// Reset form.
-						$addressForm.find( 'input[type="text"]' ).val('');
+						$addressForm.find('input[type="text"]').val('');
 
 						$addNewAddressBtn.show();
 						$allAddress.removeClass('give-hidden');
 						$addressForm.addClass('add-new-address-form-hidden');
 					});
 
-				return false;
-			});
+					return false;
+				});
 		},
 
 		__set_address_form_action: function (addressAction, addressID) {
-			var $addressWrapper     = $('#donor-address-wrapper'),
-				$addressForm        = $('.address-form', $addressWrapper),
+			var $addressWrapper = $('#donor-address-wrapper'),
+				$addressForm = $('.address-form', $addressWrapper),
 				$addressActionField = $('input[name="address-action"]', $addressForm),
-				$addressIDField     = $('input[name="address-id"]', $addressForm);
+				$addressIDField = $('input[name="address-id"]', $addressForm);
 
 			addressAction = addressAction || 'add';
-			addressID     = addressID || 'billing';
+			addressID = addressID || 'billing';
 
 			$addressActionField.val(addressAction);
 			$addressIDField.val(addressID);
@@ -1569,8 +1572,8 @@ var give_setting_edit = false;
 
 		__set_address_form_val: function ($form) {
 			var $addressWrapper = $('#donor-address-wrapper'),
-				$addressForm    = $('.address-form', $addressWrapper),
-				state           = $('[data-address-type="state"]', $form).text().substr(2).trim(); // State will be like ", HR"
+				$addressForm = $('.address-form', $addressWrapper),
+				state = $('[data-address-type="state"]', $form).text().substr(2).trim(); // State will be like ", HR"
 
 			if ($('select[name="country"]', $addressForm).val().trim() !== $('[data-address-type="country"]', $form).text().trim()) {
 				$('select[name="country"]', $addressForm).val($('[data-address-type="country"]', $form).text().trim()).trigger('chosen:updated').change();
@@ -1579,7 +1582,7 @@ var give_setting_edit = false;
 				window.setTimeout(function () {
 					$('[name="state"]', $addressForm).val(state).trigger('chosen:updated');
 				}, 500);
-			} else{
+			} else {
 				$('[name="state"]', $addressForm).val(state).trigger('chosen:updated');
 			}
 
@@ -1587,6 +1590,31 @@ var give_setting_edit = false;
 			$('input[name="line2"]', $addressForm).val($('[data-address-type="line2"]', $form).text().trim());
 			$('input[name="city"]', $addressForm).val($('[data-address-type="city"]', $form).text().trim());
 			$('input[name="zip"]', $addressForm).val($('[data-address-type="zip"]', $form).text().trim());
+		},
+
+		handleBulkActions: function () {
+			$('body').on(
+				'click',
+				'#give-donors-filter .bulkactions input[type="submit"]',
+				function (e) {
+					var currentAction = $(this).closest('.tablenav').find('select').val(),
+						$donors = $('input[name="donor[]"]:checked').length,
+						confirmActionNotice = give_vars.donors_bulk_action[currentAction].zero;
+
+					// Check if admin selected any donors or not.
+					if (!parseInt($donors)) {
+						alert(confirmActionNotice);
+						return false;
+					}
+
+					// Get message on basis of donors count.
+					confirmActionNotice = ( 1 < $donors ) ?
+						give_vars.donors_bulk_action[currentAction].multiple.replace('{donor_count}', $donors) :
+						give_vars.donors_bulk_action[currentAction].single;
+
+					return window.confirm(confirmActionNotice);
+				}
+			);
 		}
 	};
 
@@ -1778,11 +1806,11 @@ var give_setting_edit = false;
 				}
 
 				var editing = jQuery(this).closest('.give-field-wrap').find('.give-input-field').attr('editing');
-				if ( 'undefined' !== typeof( editing ) ) {
+				if ('undefined' !== typeof( editing )) {
 					wp.media.controller.Library.prototype.defaults.contentUserSetting = false;
 				}
 
-				var $library = jQuery( this ).closest('.give-field-wrap').find('.give-input-field').attr('library');
+				var $library = jQuery(this).closest('.give-field-wrap').find('.give-input-field').attr('library');
 				if ('undefined' !== typeof( $library ) && '' !== $library) {
 					$media_modal_config.library = {type: $library};
 				}
@@ -1802,12 +1830,12 @@ var give_setting_edit = false;
 					$input_field.val(fvalue);
 
 					// Update attachment id field value if fvalue is not set to id.
-					if( 'id' !== $give_upload_button.data('fvalue') ) {
+					if ('id' !== $give_upload_button.data('fvalue')) {
 						var attachment_id_field_name = 'input[name="' + $input_field.attr('name') + '_id"]',
-							id_field = $input_field.closest('tr').next('tr').find( attachment_id_field_name );
+							id_field = $input_field.closest('tr').next('tr').find(attachment_id_field_name);
 
-						if( id_field.length ){
-							$input_field.closest('tr').next('tr').find( attachment_id_field_name ).val( attachment.id );
+						if (id_field.length) {
+							$input_field.closest('tr').next('tr').find(attachment_id_field_name).val(attachment.id);
 						}
 					}
 				});
@@ -2225,64 +2253,64 @@ var give_setting_edit = false;
 	/**
 	 * Handle row count and field count for repeatable field.
 	 */
-	var handle_metabox_repeater_field_row_count = function( container, new_row ) {
-		var row_count = $( container ).attr( 'data-rf-row-count' ),
-			$container = $( container ),
-			$parent = $container.parents( '.give-repeatable-field-section' );
+	var handle_metabox_repeater_field_row_count = function (container, new_row) {
+		var row_count = $(container).attr('data-rf-row-count'),
+			$container = $(container),
+			$parent = $container.parents('.give-repeatable-field-section');
 
 		row_count++;
 
 		// Set name for fields.
-		$( '*', new_row ).each( function() {
-			$.each( this.attributes, function( index, element ) {
-				this.value = this.value.replace( '{{row-count-placeholder}}', row_count - 1 );
+		$('*', new_row).each(function () {
+			$.each(this.attributes, function (index, element) {
+				this.value = this.value.replace('{{row-count-placeholder}}', row_count - 1);
 			});
 		});
 
 		// Set row counter.
-		$( container ).attr( 'data-rf-row-count', row_count );
+		$(container).attr('data-rf-row-count', row_count);
 
 		// Fire event: Row added.
-		$parent.trigger( 'repeater_field_new_row_added', [container, new_row] );
+		$parent.trigger('repeater_field_new_row_added', [container, new_row]);
 	};
 
 	/**
 	 * Handle row remove for repeatable field.
 	 */
 	var handle_metabox_repeater_field_row_remove = function (container) {
-		var $container = $( container ),
-			$parent = $container.parents( '.give-repeatable-field-section' ),
-			row_count = $( container ).attr( 'data-rf-row-count' );
+		var $container = $(container),
+			$parent = $container.parents('.give-repeatable-field-section'),
+			row_count = $(container).attr('data-rf-row-count');
 
 		// Reduce row count.
-		$container.attr( 'data-rf-row-count', --row_count );
+		$container.attr('data-rf-row-count', --row_count);
 
 		// Fire event: Row deleted.
-		$parent.trigger( 'repeater_field_row_deleted' );
+		$parent.trigger('repeater_field_row_deleted');
 	};
 
 	/**
 	 * Add number suffix to repeater group.
 	 */
-	var handle_repeater_group_add_number_suffix = function( $parent ) {
+	var handle_repeater_group_add_number_suffix = function ($parent) {
 
 		// Bailout: check if auto group numbering is on or not.
-		if ( ! parseInt( $parent.data( 'group-numbering' ) ) ) {
+		if (!parseInt($parent.data('group-numbering'))) {
 			return;
 		}
 
-		var $header_title_container = $( '.give-row-head h2 span', $parent ),
-			header_text_prefix = $header_title_container.data( 'header-title' );
+		var $header_title_container = $('.give-row-head h2 span', $parent),
+			header_text_prefix = $header_title_container.data('header-title');
 
-		$header_title_container.each( function( index, item ) {
-			var $item = $( item );
+		$header_title_container.each(function (index, item) {
+			var $item = $(item);
 
 			// Bailout: do not rename header title in fields template.
-			if ( $item.parents( '.give-template' ).length ) {
+			if ($item.parents('.give-template').length) {
 				return;
 			}
 
-			$item.html( header_text_prefix + ': ' + index );
+			$item.html(header_text_prefix + ': ' + index);
 		});
 	};
 
@@ -2290,15 +2318,15 @@ var give_setting_edit = false;
 	 * Payment history listing page js
 	 */
 	var GivePaymentHistory = {
-		init: function() {
-			$( 'body' ).on( 'click', '#give-payments-filter input[type="submit"]', this.handleBulkActions ) ;
+		init: function () {
+			$('body').on('click', '#give-payments-filter input[type="submit"]', this.handleBulkActions);
 		},
 
-		handleBulkActions: function() {
-			var currentAction = $( this ).closest( '.tablenav' ).find( 'select' ).val(),
-				currentActionLabel = $( this ).closest( '.tablenav' ).find( 'option[value="' + currentAction + '"]' ).text(),
-				$payments = $( 'input[name="payment[]"]:checked' ).length,
-				isStatusTypeAction = ( -1 !== currentAction.indexOf( 'set-status-' ) ),
+		handleBulkActions: function () {
+			var currentAction = $(this).closest('.tablenav').find('select').val(),
+				currentActionLabel = $(this).closest('.tablenav').find('option[value="' + currentAction + '"]').text(),
+				$payments = $('input[name="payment[]"]:checked').length,
+				isStatusTypeAction = ( -1 !== currentAction.indexOf('set-status-') ),
 				confirmActionNotice = '',
 				status = '';
 
@@ -2307,30 +2335,30 @@ var give_setting_edit = false;
 				'set-to-status' :
 				currentAction;
 
-			if ( Object.keys( give_vars.bulk_action ).length ) {
-				for ( status in give_vars.bulk_action ) {
-					if ( status === currentAction ) {
+			if (Object.keys(give_vars.donations_bulk_action).length) {
+				for (status in give_vars.donations_bulk_action) {
+					if (status === currentAction) {
 
 						// Get status text if current action types is status.
 						confirmActionNotice = isStatusTypeAction ?
-							give_vars.bulk_action[currentAction].zero.replace( '{status}', currentActionLabel.replace( 'Set To ', '' ) ) :
-							give_vars.bulk_action[currentAction].zero;
+							give_vars.donations_bulk_action[currentAction].zero.replace('{status}', currentActionLabel.replace('Set To ', '')) :
+							give_vars.donations_bulk_action[currentAction].zero;
 
 						// Check if admin selected any donations or not.
-						if ( ! parseInt( $payments ) ) {
-							alert( confirmActionNotice );
+						if (!parseInt($payments)) {
+							alert(confirmActionNotice);
 							return false;
 						}
 
 						// Get message on basis of payment count.
 						confirmActionNotice = ( 1 < $payments ) ?
-							give_vars.bulk_action[currentAction].multiple :
-							give_vars.bulk_action[currentAction].single;
+							give_vars.donations_bulk_action[currentAction].multiple :
+							give_vars.donations_bulk_action[currentAction].single;
 
 						// Trigger Admin Confirmation PopUp.
-						return window.confirm( confirmActionNotice
-							.replace( '{payment_count}', $payments )
-							.replace( '{status}', currentActionLabel.replace( 'Set To ', '' ) )
+						return window.confirm(confirmActionNotice
+							.replace('{payment_count}', $payments)
+							.replace('{status}', currentActionLabel.replace('Set To ', ''))
 						);
 					}
 				}
@@ -2341,14 +2369,14 @@ var give_setting_edit = false;
 	};
 
 	// On DOM Ready.
-	$( function() {
+	$(function () {
 
 		give_dismiss_notice();
 		enable_admin_datepicker();
 		form_edit_alert();
 		handle_status_change();
 		setup_chosen_give_selects();
-		$.giveAjaxifyFields({ type: 'country_state', debug: true });
+		$.giveAjaxifyFields({type: 'country_state', debug: true});
 		GiveListDonation.init();
 		Give_Edit_Donation.init();
 		Give_Settings.init();
@@ -2367,15 +2395,15 @@ var give_setting_edit = false;
 		});
 
 		// Ajax user search
-		$( '.give-ajax-user-search' ).on( 'keyup', function() {
-			var user_search = $( this ).val();
+		$('.give-ajax-user-search').on('keyup', function () {
+			var user_search = $(this).val();
 			var exclude = '';
 
-			if ( $( this ).data( 'exclude' ) ) {
-				exclude = $( this ).data( 'exclude' );
+			if ($(this).data('exclude')) {
+				exclude = $(this).data('exclude');
 			}
 
-			$( '.give-ajax' ).show();
+			$('.give-ajax').show();
 			data = {
 				action: 'give_search_users',
 				user_name: user_search,
@@ -2384,38 +2412,38 @@ var give_setting_edit = false;
 
 			document.body.style.cursor = 'wait';
 
-			$.ajax( {
+			$.ajax({
 				type: 'POST',
 				data: data,
 				dataType: 'json',
 				url: ajaxurl,
-				success: function( search_response ) {
-					$( '.give-ajax' ).hide();
-					$( '.give_user_search_results' ).removeClass( 'hidden' );
-					$( '.give_user_search_results span' ).html( '' );
-					$( search_response.results ).appendTo( '.give_user_search_results span' );
+				success: function (search_response) {
+					$('.give-ajax').hide();
+					$('.give_user_search_results').removeClass('hidden');
+					$('.give_user_search_results span').html('');
+					$(search_response.results).appendTo('.give_user_search_results span');
 					document.body.style.cursor = 'default';
 				}
-			} );
-		} );
+			});
+		});
 
-		$( 'body' ).on( 'click.giveSelectUser', '.give_user_search_results span a', function( e ) {
+		$('body').on('click.giveSelectUser', '.give_user_search_results span a', function (e) {
 			e.preventDefault();
-			var login = $( this ).data( 'login' );
-			$( '.give-ajax-user-search' ).val( login );
-			$( '.give_user_search_results' ).addClass( 'hidden' );
-			$( '.give_user_search_results span' ).html( '' );
-		} );
+			var login = $(this).data('login');
+			$('.give-ajax-user-search').val(login);
+			$('.give_user_search_results').addClass('hidden');
+			$('.give_user_search_results span').html('');
+		});
 
-		$( 'body' ).on( 'click.giveCancelUserSearch', '.give_user_search_results a.give-ajax-user-cancel', function( e ) {
+		$('body').on('click.giveCancelUserSearch', '.give_user_search_results a.give-ajax-user-cancel', function (e) {
 			e.preventDefault();
-			$( '.give-ajax-user-search' ).val( '' );
-			$( '.give_user_search_results' ).addClass( 'hidden' );
-			$( '.give_user_search_results span' ).html( '' );
-		} );
+			$('.give-ajax-user-search').val('');
+			$('.give_user_search_results').addClass('hidden');
+			$('.give_user_search_results span').html('');
+		});
 
 		// This function uses for adding qtip to money/price field.
-		function give_add_qtip( $fields ) {
+		function give_add_qtip($fields) {
 
 			// Add qtip to all existing money input fields.
 			$fields.each(function () {
@@ -2433,34 +2461,34 @@ var give_setting_edit = false;
 			});
 		}
 
-		var $give_money_fields       = $( 'input.give-money-field, input.give-price-field' ),
-			thousand_separator       = give_vars.thousands_separator,
-			decimal_separator        = give_vars.decimal_separator,
+		var $give_money_fields = $('input.give-money-field, input.give-price-field'),
+			thousand_separator = give_vars.thousands_separator,
+			decimal_separator = give_vars.decimal_separator,
 			thousand_separator_count = '',
-			alphabet_count           = '',
-			price_string             = '',
+			alphabet_count = '',
+			price_string = '',
 
 			// Thousand separation limit in price depends upon decimal separator symbol.
 			// If thousand separator is equal to decimal separator then price does not have more then 1 thousand separator otherwise limit is zero.
 			thousand_separator_limit = ( decimal_separator === thousand_separator ? 1 : 0 );
 
 		// Check & show message on keyup event.
-		$( '#poststuff' ).on( 'keyup', 'input.give-money-field, input.give-price-field', function() {
+		$('#poststuff').on('keyup', 'input.give-money-field, input.give-price-field', function () {
 			var tootltip_setting = {
 				label: give_vars.price_format_guide.trim()
 			};
 
 			// Count thousand separator in price string.
-			thousand_separator_count = ( $( this ).val().match( new RegExp( thousand_separator, 'g' ) ) || [] ).length;
-			alphabet_count           = ( $( this ).val().match( new RegExp( '[a-z]', 'g' ) ) || [] ).length;
+			thousand_separator_count = ( $(this).val().match(new RegExp(thousand_separator, 'g')) || [] ).length;
+			alphabet_count = ( $(this).val().match(new RegExp('[a-z]', 'g')) || [] ).length;
 
 			// Show qtip conditionally if thousand separator detected on price string.
-			if (( -1 !== $(this).val().indexOf(thousand_separator) ) && ( thousand_separator_limit < thousand_separator_count ) ) {
-				$( this ).give_hintcss( 'show', tootltip_setting );
-			} else if ( alphabet_count ) {
-				$( this ).give_hintcss( 'show', tootltip_setting );
+			if (( -1 !== $(this).val().indexOf(thousand_separator) ) && ( thousand_separator_limit < thousand_separator_count )) {
+				$(this).give_hintcss('show', tootltip_setting);
+			} else if (alphabet_count) {
+				$(this).give_hintcss('show', tootltip_setting);
 			} else {
-				$( this ).give_hintcss( 'hide', tootltip_setting );
+				$(this).give_hintcss('hide', tootltip_setting);
 			}
 
 			// Reset thousand separator count.
@@ -2518,38 +2546,38 @@ var give_setting_edit = false;
 		/**
 		 * Automatically show/hide email setting fields.
 		 */
-		$( '.give_email_api_notification_status_setting input' ).change( function() {
+		$('.give_email_api_notification_status_setting input').change(function () {
 			// Bailout.
-			var value = $( this ).val(),
+			var value = $(this).val(),
 				is_enabled = ( 'enabled' === value ),
 				$setting_fields = {};
 
 			// Get setting fields.
-			if ( $( this ).closest( '.give_options_panel' ).length ) {
-				$setting_fields = $( this ).closest( '.give_options_panel' ).find( '.give-field-wrap:not(.give_email_api_notification_status_setting)' );
-			} else if ( $( this ).closest( 'table' ).length ) {
-				$setting_fields = $( this ).closest( 'table' ).find( 'tr:not(.give_email_api_notification_status_setting)' );
+			if ($(this).closest('.give_options_panel').length) {
+				$setting_fields = $(this).closest('.give_options_panel').find('.give-field-wrap:not(.give_email_api_notification_status_setting)');
+			} else if ($(this).closest('table').length) {
+				$setting_fields = $(this).closest('table').find('tr:not(.give_email_api_notification_status_setting)');
 			}
 
-			if ( - 1 === jQuery.inArray( value, [ 'enabled', 'disabled', 'global' ] ) ) {
+			if (-1 === jQuery.inArray(value, ['enabled', 'disabled', 'global'])) {
 				return false;
 			}
 
 			// Bailout.
-			if ( ! $setting_fields.length ) {
+			if (!$setting_fields.length) {
 				return false;
 			}
 
 			// Show hide setting fields.
 			is_enabled ? $setting_fields.show() : $setting_fields.hide();
-		} );
+		});
 
-		$( '.give_email_api_notification_status_setting input:checked' ).change();
+		$('.give_email_api_notification_status_setting input:checked').change();
 
 		// Called after all the form processing had being done.
 		enable_form_edit_alert_setting();
-	} );
-})( jQuery );
+	});
+})(jQuery);
 
 /**
  * Responsive js.
@@ -2562,15 +2590,15 @@ jQuery(window).resize(function () {
  * Render responsive tabs
  */
 function give_render_responsive_tabs() {
-	var $setting_page_form      = jQuery('.give-settings-page'),
-		$main_tab_nav           = jQuery('h2.give-nav-tab-wrapper'),
+	var $setting_page_form = jQuery('.give-settings-page'),
+		$main_tab_nav = jQuery('h2.give-nav-tab-wrapper'),
 		setting_page_form_width = $setting_page_form.width(),
-		$sub_tab_nav_wrapper    = jQuery('.give-sub-nav-tab-wrapper'),
-		$sub_tab_nav            = jQuery('nav', $sub_tab_nav_wrapper),
-		$setting_tab_links      = jQuery('h2.give-nav-tab-wrapper>a:not(give-not-tab)'),
-		$show_tabs              = [],
-		$hide_tabs              = [],
-		tab_width               = 0;
+		$sub_tab_nav_wrapper = jQuery('.give-sub-nav-tab-wrapper'),
+		$sub_tab_nav = jQuery('nav', $sub_tab_nav_wrapper),
+		$setting_tab_links = jQuery('h2.give-nav-tab-wrapper>a:not(give-not-tab)'),
+		$show_tabs = [],
+		$hide_tabs = [],
+		tab_width = 0;
 
 	if (600 < jQuery(window).outerWidth()) {
 		tab_width = 200;
@@ -2612,7 +2640,7 @@ function give_render_responsive_tabs() {
 		// Remove current tab from sub menu and add this to main menu if exist and get last tab from main menu and add this to sub menu.
 		if ($hide_tabs.length && ( -1 != window.location.search.indexOf('&tab=') )) {
 			var $current_tab_nav = {},
-				query_params     = get_url_params();
+				query_params = get_url_params();
 
 			$hide_tabs = $hide_tabs.filter(function ($tab_link) {
 				var is_current_nav_item = ( -1 != parseInt($tab_link.attr('href').indexOf('&tab=' + query_params['tab'])) );
@@ -2652,7 +2680,9 @@ function give_render_responsive_tabs() {
 
 				jQuery.each($hide_tabs, function (index, $tab_link) {
 					$tab_link = jQuery($tab_link);
-					$tab_link.addClass('give-hidden');
+					if (!$tab_link.hasClass('nav-tab-active')) {
+						$tab_link.addClass('give-hidden');
+					}
 					$tab_link.clone().removeClass().appendTo($sub_tab_nav);
 				});
 
@@ -2681,6 +2711,41 @@ function get_url_params() {
 		vars[hash[0]] = hash[1];
 	}
 	return vars;
+}
+
+/**
+ * Run when user click on submit button.
+ *
+ * @since 1.8.17
+ */
+function give_on_core_settings_import_start() {
+	var $form = jQuery('form.tools-setting-page-import');
+	var progress = $form.find('.give-progress');
+
+	give_setting_edit = true;
+
+	jQuery.ajax({
+		type: 'POST',
+		url: ajaxurl,
+		data: {
+			action: give_vars.core_settings_import,
+			fields: $form.serialize()
+		},
+		dataType: 'json',
+		success: function (response) {
+			give_setting_edit = false;
+			if (true === response.success) {
+				jQuery(progress).find('div').width(response.percentage + '%');
+			} else {
+				alert(give_vars.error_message);
+			}
+			window.location = response.url;
+		},
+		error: function () {
+			give_setting_edit = false;
+			alert(give_vars.error_message);
+		}
+	});
 }
 
 /**

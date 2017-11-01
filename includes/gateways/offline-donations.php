@@ -280,7 +280,7 @@ function give_offline_send_admin_notice( $payment_id = 0 ) {
 function give_offline_add_settings( $settings ) {
 
 	// Bailout: Do not show offline gateways setting in to metabox if its disabled globally.
-	if ( in_array( 'offline', give_get_option( 'gateways' ) ) ) {
+	if ( in_array( 'offline', (array) give_get_option( 'gateways' ) ) ) {
 		return $settings;
 	}
 

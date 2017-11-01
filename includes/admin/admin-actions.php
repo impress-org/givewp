@@ -127,50 +127,84 @@ function _give_register_admin_notices() {
 		return;
 	}
 
-	// Add payment bulk notice.
+	// Bulk action notices.
 	if (
-		current_user_can( 'edit_give_payments' )
-		&& isset( $_GET['action'] )
-		&& ! empty( $_GET['action'] )
-		&& isset( $_GET['payment'] )
-		&& ! empty( $_GET['payment'] )
+		isset( $_GET['action'] ) &&
+		! empty( $_GET['action'] )
 	) {
-		$payment_count = isset( $_GET['payment'] ) ? count( $_GET['payment'] ) : 0;
 
-		switch ( $_GET['action'] ) {
-			case 'delete':
-				Give()->notices->register_notice( array(
-					'id'          => 'bulk_action_delete',
-					'type'        => 'updated',
-					'description' => sprintf(
-						_n(
-							'Successfully deleted one transaction.',
-							'Successfully deleted %d transactions.',
-							$payment_count,
-							'give'
+		// Add payment bulk notice.
+		if (
+			current_user_can( 'edit_give_payments' ) &&
+			isset( $_GET['payment'] ) &&
+			! empty( $_GET['payment'] )
+		) {
+			$payment_count = isset( $_GET['payment'] ) ? count( $_GET['payment'] ) : 0;
+
+			switch ( $_GET['action'] ) {
+				case 'delete':
+					Give()->notices->register_notice( array(
+						'id'          => 'bulk_action_delete',
+						'type'        => 'updated',
+						'description' => sprintf(
+							_n(
+								'Successfully deleted one transaction.',
+								'Successfully deleted %d transactions.',
+								$payment_count,
+								'give'
+							),
+							$payment_count ),
+						'show'        => true,
+					) );
+
+					break;
+
+				case 'resend-receipt':
+					Give()->notices->register_notice( array(
+						'id'          => 'bulk_action_resend_receipt',
+						'type'        => 'updated',
+						'description' => sprintf(
+							_n(
+								'Successfully sent email receipt to one recipient.',
+								'Successfully sent email receipts to %d recipients.',
+								$payment_count,
+								'give'
+							),
+							$payment_count
 						),
-						$payment_count ),
-					'show'        => true,
-				) );
+						'show'        => true,
+					) );
+					break;
+			}
 
-				break;
+			// Add donor bulk notice.
+		} elseif (
+			isset( $_GET['page'] ) &&
+			'give-donors' === $_GET['page'] &&
+			isset( $_GET['donor'] ) &&
+			! empty( $_GET['donor'] )
+		) {
 
-			case 'resend-receipt':
-				Give()->notices->register_notice( array(
-					'id'          => 'bulk_action_resend_receipt',
-					'type'        => 'updated',
-					'description' => sprintf(
-						_n(
-							'Successfully sent email receipt to one recipient.',
-							'Successfully sent email receipts to %d recipients.',
-							$payment_count,
-							'give'
-						),
-						$payment_count
-					),
-					'show'        => true,
-				) );
-				break;
+			$donor_count = isset( $_GET['donor'] ) ? count( $_GET['donor'] ) : 0;
+
+			switch ( $_GET['action'] ) {
+				case 'delete':
+					Give()->notices->register_notice( array(
+						'id'          => 'bulk_action_delete',
+						'type'        => 'updated',
+						'description' => sprintf(
+							_n(
+								'Successfully deleted one donor and associated records.',
+								'Successfully deleted %d donors and associated records.',
+								$donor_count,
+								'give'
+							),
+							$donor_count ),
+						'show'        => true,
+					) );
+					
+					break;
+			}
 		}
 	}
 
@@ -362,6 +396,15 @@ function _give_register_admin_notices() {
 						'show'        => true,
 					) );
 					break;
+
+				case 'profile-updated' :
+					Give()->notices->register_notice( array(
+						'id'          => 'give-donor-profile-updated',
+						'type'        => 'updated',
+						'description' => __( 'Donor information updated successfully.', 'give' ),
+						'show'        => true,
+					) );
+					break;
 			}
 		}
 	}
@@ -411,7 +454,7 @@ add_action( 'admin_bar_menu', '_give_show_test_mode_notice_in_admin_bar', 1000, 
 function give_import_page_link_callback() {
 	?>
 	<a href="<?php echo esc_url( give_import_page_url() ); ?>"
-	   class="page-import-action page-title-action"><?php esc_html_e( 'Import Donations', 'give' ); ?></a>
+	   class="page-import-action page-title-action"><?php _e( 'Import Donations', 'give' ); ?></a>
 
 	<?php
 	// Check if view donation single page only.
@@ -462,11 +505,11 @@ function give_donation_import_callback() {
 		$delimiter = ',';
 	}
 
-	// processing done here.
+	// Processing done here.
 	$raw_data = give_get_donation_data_from_csv( $csv, $start, $end, $delimiter );
 	$raw_key  = maybe_unserialize( $mapto );
 
-	//Prevent normal emails
+	// Prevent normal emails.
 	remove_action( 'give_complete_donation', 'give_trigger_donation_receipt', 999 );
 	remove_action( 'give_insert_user', 'give_new_user_notification', 10 );
 	remove_action( 'give_insert_payment', 'give_payment_save_page_data' );
@@ -525,13 +568,98 @@ function give_donation_import_callback() {
 
 	$percentage              = ( 100 / ( $total_ajax + 1 ) ) * $current;
 	$json_data['percentage'] = $percentage;
-
+	
 	$json_data = apply_filters( 'give_import_ajax_responces', $json_data, $fields );
 	wp_die( json_encode( $json_data ) );
 }
 
 add_action( 'wp_ajax_give_donation_import', 'give_donation_import_callback' );
 
+/**
+ * Load core settings import ajax callback
+ * Fire when importing from JSON start
+ *
+ * @since  1.8.17
+ *
+ * @return json $json_data
+ */
+
+function give_core_settings_import_callback() {
+	$fields = isset( $_POST['fields'] ) ? $_POST['fields'] : null;
+	parse_str( $fields, $fields );
+
+	$json_data['success'] = false;
+
+	/**
+	 * Filter to Modify fields that are being pass by the ajax before importing of the core setting start.
+	 *
+	 * @access public
+	 *
+	 * @since 1.8.17
+	 *
+	 * @param array $fields
+	 *
+	 * @return array $fields
+	 */
+	$fields = (array) apply_filters( 'give_import_core_settings_fields', $fields );
+
+	$file_name = ( ! empty( $fields['file_name'] ) ? give_clean( $fields['file_name'] ) : false );
+
+	if ( ! empty( $file_name ) ) {
+		$type = ( ! empty( $fields['type'] ) ? give_clean( $fields['type'] ) : 'merge' );
+
+		// Get the json data from the file and then alter it in array format
+		$json_string   = give_get_core_settings_json( $file_name );
+		$json_to_array = json_decode( $json_string, true );
+
+		// get the current settign from the options table.
+		$host_give_options = get_option( 'give_settings', array() );
+
+		// Save old settins for backup.
+		update_option( 'give_settings_old', $host_give_options );
+
+		/**
+		 * Filter to Modify Core Settings that are being going to get import in options table as give settings.
+		 *
+		 * @access public
+		 *
+		 * @since 1.8.17
+		 *
+		 * @param array $json_to_array Setting that are being going to get imported
+		 * @param array $type Type of Import
+		 * @param array $host_give_options Setting old setting that used to be in the options table.
+		 * @param array $fields Data that is being send from the ajax
+		 *
+		 * @return array $json_to_array Setting that are being going to get imported
+		 */
+		$json_to_array = (array) apply_filters( 'give_import_core_settings_data', $json_to_array, $type, $host_give_options, $fields );
+
+		update_option( 'give_settings', $json_to_array );
+
+		$json_data['success'] = true;
+	}
+
+	$json_data['percentage'] = 100;
+
+	/**
+	 * Filter to Modify core import setting page url
+	 *
+	 * @access public
+	 *
+	 * @since 1.8.17
+	 *
+	 * @return array $url
+	 */
+	$json_data['url'] = give_import_page_url( (array) apply_filters( 'give_import_core_settings_success_url', array(
+		'step'          => ( empty( $json_data['success'] ) ? '1' : '3' ),
+		'importer-type' => 'import_core_setting',
+		'success'       => ( empty( $json_data['success'] ) ? '0' : '1' ),
+	) ) );
+
+	wp_send_json( $json_data );
+}
+
+add_action( 'wp_ajax_give_core_settings_import', 'give_core_settings_import_callback' );
 
 /**
  * Initializes blank slate content if a list table is empty.

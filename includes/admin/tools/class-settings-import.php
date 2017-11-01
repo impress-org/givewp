@@ -55,9 +55,9 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 				add_action( "give-tools_close_form", '__return_empty_string' );
 
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/import/class-give-import-donations.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/import/class-give-import-core-settings.php';
 			}
 		}
-
 
 		/**
 		 * Get settings array.
