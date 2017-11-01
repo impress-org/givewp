@@ -135,7 +135,7 @@ function give_get_donation_form( $args = array() ) {
 			$form_html_tags = apply_filters( 'give_form_html_tags', (array) $form_html_tags, $form );
 			?>
 
-			<form method="post" <?php echo give_get_attribute_str( $form_html_tags ); ?>>
+			<form <?php echo give_get_attribute_str( $form_html_tags ); ?> method="post">
 
 				<!-- The following field is for robots only, invisible to humans: -->
 				<span class="give-hidden" style="display: none !important;">
