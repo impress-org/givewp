@@ -1910,7 +1910,9 @@ h2.give-nav-tab-wrapper {
           margin: 6px auto 0;
           display: block; }
       .give-nav-tab-wrapper div.give-sub-nav-tab-wrapper nav.give-sub-nav-tab {
-        top: 35px; }
+        top: 35px;
+        left: 0;
+        right: auto; }
   .give-mobile-hidden {
     display: none; } }
 
