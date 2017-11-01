@@ -440,12 +440,12 @@ h2.give-nav-tab-wrapper {
     border: 1px solid #ccc;
     border-bottom: 0;
     position: absolute;
-    top: 32px;
-    right: 0;
+    top: 35px;
+    left: 0;
 
     a {
       float: left;
-      background: white;
+      background: #e5e5e5;
       padding: 6px 10px;
       clear: both;
       text-decoration: none;
@@ -456,7 +456,7 @@ h2.give-nav-tab-wrapper {
     }
 
     a:hover {
-      background: #e5e5e5;
+      background: #ffffff;
     }
   }
 }

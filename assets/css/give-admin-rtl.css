@@ -1923,11 +1923,11 @@ h2.give-nav-tab-wrapper {
     border: 1px solid #ccc;
     border-bottom: 0;
     position: absolute;
-    top: 32px;
-    left: 0; }
+    top: 35px;
+    right: 0; }
     .give-sub-nav-tab-wrapper nav.give-sub-nav-tab a {
       float: right;
-      background: white;
+      background: #e5e5e5;
       padding: 6px 10px;
       clear: both;
       text-decoration: none;
@@ -1936,7 +1936,7 @@ h2.give-nav-tab-wrapper {
       color: #555;
       font-size: 14px; }
     .give-sub-nav-tab-wrapper nav.give-sub-nav-tab a:hover {
-      background: #e5e5e5; }
+      background: #ffffff; }
 
 .give-sub-nav-tab-wrapper {
   display: none; }
