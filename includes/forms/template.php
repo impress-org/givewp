@@ -995,38 +995,7 @@ function give_default_cc_address_fields( $form_id ) {
 		    />
 	    </p>
 
-	    <p id="give-card-state-wrap"
-	       class="form-row form-row-wide <?php echo ( ! empty( $selected_country ) && array_key_exists( $selected_country, $no_states_country ) ) ? 'give-hidden' : ''; ?> ">
-		    <label for="card_state" class="give-label">
-			    <span class="state-label-text"><?php echo $label; ?></span>
-			    <?php if ( give_field_is_required( 'card_state', $form_id ) ) :
-				    ?>
-				    <span class="give-required-indicator <?php echo( array_key_exists( $selected_country, $states_not_required_country_list ) ? 'give-hidden' : '' ) ?> ">*</span>
-			    <?php endif; ?>
-			    <span class="give-tooltip give-icon give-icon-question"
-			          data-tooltip="<?php esc_attr_e( 'The state, province, or county for your billing address.', 'give' ); ?>"></span>
-		    </label>
-		    <?php
-
-		    if ( ! empty( $states ) ) : ?>
-			    <select
-					    name="card_state"
-					    id="card_state"
-					    class="card_state give-select<?php echo( give_field_is_required( 'card_state', $form_id ) ? ' required' : '' ); ?>"
-				    <?php echo( give_field_is_required( 'card_state', $form_id ) ? ' required aria-required="true" ' : '' ); ?>>
-				    <?php
-				    foreach ( $states as $state_code => $state ) {
-					    echo '<option value="' . $state_code . '"' . selected( $state_code, $selected_state, false ) . '>' . $state . '</option>';
-				    }
-				    ?>
-			    </select>
-		    <?php else : ?>
-			    <input type="text" size="6" name="card_state" id="card_state" class="card_state give-input"
-			           placeholder="<?php echo $label; ?>" value="<?php echo $selected_state; ?>"/>
-		    <?php endif; ?>
-	    </p>
-
-	    <p id="give-card-city-wrap" class="form-row form-row-first form-row-responsive">
+	    <p id="give-card-city-wrap" class="form-row form-row-wide">
 		    <label for="card_city" class="give-label">
 			    <?php esc_html_e( 'City', 'give' ); ?>
 			    <?php if ( give_field_is_required( 'card_city', $form_id ) ) : ?>
@@ -1046,7 +1015,38 @@ function give_default_cc_address_fields( $form_id ) {
 		    />
 	    </p>
 
-	    <p id="give-card-zip-wrap" class="form-row form-row-last form-row-responsive">
+	    <p id="give-card-state-wrap"
+	       class="form-row form-row-first form-row-responsive <?php echo ( ! empty( $selected_country ) && array_key_exists( $selected_country, $no_states_country ) ) ? 'give-hidden' : ''; ?>">
+		    <label for="card_state" class="give-label">
+			    <span class="state-label-text"><?php echo $label; ?></span>
+			    <?php if ( give_field_is_required( 'card_state', $form_id ) ) :
+				    ?>
+				    <span class="give-required-indicator <?php echo( array_key_exists( $selected_country, $states_not_required_country_list ) ? 'give-hidden' : '' ) ?> ">*</span>
+			    <?php endif; ?>
+			    <span class="give-tooltip give-icon give-icon-question"
+			          data-tooltip="<?php esc_attr_e( 'The state, province, or county for your billing address.', 'give' ); ?>"></span>
+		    </label>
+		    <?php
+
+		    if ( ! empty( $states ) ) : ?>
+			    <select
+				    name="card_state"
+				    id="card_state"
+				    class="card_state give-select<?php echo( give_field_is_required( 'card_state', $form_id ) ? ' required' : '' ); ?>"
+				    <?php echo( give_field_is_required( 'card_state', $form_id ) ? ' required aria-required="true" ' : '' ); ?>>
+				    <?php
+				    foreach ( $states as $state_code => $state ) {
+					    echo '<option value="' . $state_code . '"' . selected( $state_code, $selected_state, false ) . '>' . $state . '</option>';
+				    }
+				    ?>
+			    </select>
+		    <?php else : ?>
+			    <input type="text" size="6" name="card_state" id="card_state" class="card_state give-input"
+			           placeholder="<?php echo $label; ?>" value="<?php echo $selected_state; ?>"/>
+		    <?php endif; ?>
+	    </p>
+
+	    <p id="give-card-zip-wrap" class="form-row <?php echo ( ! empty( $selected_country ) && array_key_exists( $selected_country, $no_states_country ) ) ? 'form-row-wide' : 'form-row-last'; ?> form-row-responsive">
 		    <label for="card_zip" class="give-label">
 			    <?php esc_html_e( 'Zip / Postal Code', 'give' ); ?>
 			    <?php if ( give_field_is_required( 'card_zip', $form_id ) ) : ?>
