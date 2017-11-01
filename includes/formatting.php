@@ -545,15 +545,15 @@ function give_format_decimal( $amount, $dp = false, $sanitize = true ) {
  * @since 1.0
  *
  * @param string $price The donation amount.
- * @param string $currency The currency code.
+ * @param string $currency_code The currency code.
  * @param bool   $decode_currency Whether to decode the currency HTML format or not.
  *
  * @return mixed|string
  */
-function give_currency_filter( $price = '', $currency = '', $decode_currency = false ) {
+function give_currency_filter( $price = '', $currency_code = '', $decode_currency = false ) {
 
-	if ( empty( $currency ) || ! array_key_exists( (string) $currency, give_get_currencies() ) ) {
-		$currency = give_get_currency();
+	if ( empty( $currency_code ) || ! array_key_exists( (string) $currency_code, give_get_currencies() ) ) {
+		$currency_code = give_get_currency();
 	}
 
 	$position = give_get_option( 'currency_position', 'before' );
@@ -565,9 +565,9 @@ function give_currency_filter( $price = '', $currency = '', $decode_currency = f
 		$price = substr( $price, 1 );
 	}
 
-	$symbol = give_currency_symbol( $currency, $decode_currency );
+	$symbol = give_currency_symbol( $currency_code, $decode_currency );
 
-	switch ( $currency ) :
+	switch ( $currency_code ) :
 		case 'GBP' :
 		case 'BRL' :
 		case 'EUR' :
@@ -602,7 +602,8 @@ function give_currency_filter( $price = '', $currency = '', $decode_currency = f
 			$formatted = ( 'before' === $position ? $symbol . ' ' . $price : $price . ' ' . $symbol );
 			break;
 		default :
-			$formatted = ( 'before' === $position ? $currency . ' ' . $price : $price . ' ' . $currency );
+			$currency_symbol = give_currency_symbol( $currency_code );
+			$formatted = ( 'before' === $position ? $currency_symbol . ' ' . $price : $price . ' ' . $currency_symbol );
 			break;
 	endswitch;
 
@@ -617,7 +618,7 @@ function give_currency_filter( $price = '', $currency = '', $decode_currency = f
 	 *           and if currency is USD and currency position is after then
 	 *           filter name will be give_usd_currency_filter_after
 	 */
-	$formatted = apply_filters( 'give_' . strtolower( $currency ) . "_currency_filter_{$position}", $formatted, $currency, $price );
+	$formatted = apply_filters( 'give_' . strtolower( $currency_code ) . "_currency_filter_{$position}", $formatted, $currency_code, $price );
 
 	if ( $negative ) {
 		// Prepend the minus sign before the currency sign.
