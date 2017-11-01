@@ -65,7 +65,7 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 		if ( $step_items ) {
 			foreach ( $step_items as $item ) {
 				// Delete the main payment.
-				give_delete_donation( intval( $item['id'] ) );
+				give_delete_donation( absint( $item['id'] ) );
 			}
 			return true;
 		}

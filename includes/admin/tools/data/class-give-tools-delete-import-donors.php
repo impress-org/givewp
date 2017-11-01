@@ -347,7 +347,7 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 				$form_ids[] = get_post_meta( $item, '_give_payment_form_id', true );
 
 				// Delete the main payment.
-				give_delete_donation( intval( $item ) );
+				give_delete_donation( absint( $item ) );
 			}
 
 			// update the new form list.
