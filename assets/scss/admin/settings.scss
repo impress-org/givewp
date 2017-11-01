@@ -422,6 +422,14 @@ h2.give-nav-tab-wrapper {
         top:35px;
         right: 0;
         left: auto;
+
+        a {
+          background: #ffffff;
+          &:hover {
+            background: #e5e5e5;
+          }
+        }
+
       }
     }
 

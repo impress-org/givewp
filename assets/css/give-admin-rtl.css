@@ -1913,6 +1913,10 @@ h2.give-nav-tab-wrapper {
         top: 35px;
         left: 0;
         right: auto; }
+        .give-nav-tab-wrapper div.give-sub-nav-tab-wrapper nav.give-sub-nav-tab a {
+          background: #ffffff; }
+          .give-nav-tab-wrapper div.give-sub-nav-tab-wrapper nav.give-sub-nav-tab a:hover {
+            background: #e5e5e5; }
   .give-mobile-hidden {
     display: none; } }
 
