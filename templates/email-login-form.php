@@ -21,13 +21,6 @@ if ( $give_access_form_outputted ) {
 	return;
 }
 
-// Form submission.
-if ( ! wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
-	wp_die( __( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ) );
-} elseif ( ! is_email( $email ) ) {
-	give_set_error( 'invalid_email', __( 'Please enter a valid email address.', 'give' ) );
-}
-
 // Use reCAPTCHA.
 if ( ! give_get_errors() && $enable_recaptcha ) {
 
@@ -97,29 +90,22 @@ if ( ! give_get_errors() && $enable_recaptcha ) {
 }
 
 // If no errors or only expired token key error - then send email.
-if ( ! give_get_errors() ) {
+if ( give_clean( $_POST['give-email-access'] ) && ! give_get_errors() ) {
+
+	// Verify security nonce.
+	if ( ! wp_verify_nonce( $_POST['_wpnonce'], 'give-email-access' ) ) {
+		wp_die( __( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ) );
+	}
+
+	// Verify valid email.
+	if ( ! is_email( $email ) ) {
+		give_set_error( 'invalid_email', __( 'Please enter a valid email address.', 'give' ) );
+	}
 
 	$payment_ids   = array();
 	$payment_match = false;
 
 	$donor = Give()->donors->get_donor_by( 'email', $email );
-
-
-	if ( isset( $donor->id ) ) {
-		if ( Give()->email_access->can_send_email( $donor->id ) ) {
-			/**
-			 *  Fire the action
-			 *
-			 * @since 2.0
-			 *
-			 * @param int    $customer ::$id
-			 * @param string $email
-			 */
-			do_action( 'give_email-access_email_notification', $donor->id, $email );
-			$show_form = false;
-
-		}
-	}
 
 	if ( ! empty( $donor->payment_ids ) ) {
 		$payment_ids = explode( ',', $donor->payment_ids );
@@ -160,9 +146,7 @@ if ( $show_form ) { ?>
 
 		<form method="post" action="" id="give-email-access-form">
 			<label for="give-email"><?php _e( 'Donation Email:', 'give' ); ?></label>
-			<input id="give-email" type="email" name="give_email" value=""
-				   placeholder="<?php _e( 'Email Address', 'give' ); ?>"/>
-			<input type="hidden" name="_wpnonce" value="<?php echo wp_create_nonce( 'give' ); ?>"/>
+			<input id="give-email" type="email" name="give_email" value="" placeholder="<?php _e( 'Email Address', 'give' ); ?>"/>
 
 			<?php
 			// Enable reCAPTCHA?
@@ -186,6 +170,8 @@ if ( $show_form ) { ?>
 			<?php } ?>
 
 			<input type="submit" class="give-submit" value="<?php _e( 'Verify Email', 'give' ); ?>"/>
+			<input type="hidden" name="give-email-access" value="1" />
+ 			<input type="hidden" name="_wpnonce" value="<?php echo wp_create_nonce( 'give-email-access' );?>" />
 		</form>
 	</div>
 
