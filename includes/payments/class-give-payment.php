@@ -512,7 +512,7 @@ final class Give_Payment {
 		 */
 		do_action( 'give_pre_setup_payment', $this, $payment_id );
 
-		if ( ! ( $donation_vars = Give_Cache::setup_cache( $payment_id, 'give-donations' ) ) ) {
+		if ( ! ( $donation_vars = Give_Cache::get_group( $payment_id, 'give-donations' ) ) ) {
 			// Primary Identifier.
 			$this->ID = absint( $payment_id );
 

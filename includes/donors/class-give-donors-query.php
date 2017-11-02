@@ -150,7 +150,7 @@ class Give_Donors_Query {
 
 		$cache_key = 'give_donor_' . substr( md5( serialize( $this->get_sql() ) ), 0, 15 );
 
-		if( ! ( $this->donors = Give_Cache::setup_cache( $cache_key, 'give-donors' ) ) ) {
+		if( ! ( $this->donors = Give_Cache::get_group( $cache_key, 'give-donors' ) ) ) {
 			if ( empty( $this->args['count'] ) ) {
 				$this->donors = $wpdb->get_results( $this->get_sql() );
 			} else {
