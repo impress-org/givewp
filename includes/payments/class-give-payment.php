@@ -512,53 +512,62 @@ final class Give_Payment {
 		 */
 		do_action( 'give_pre_setup_payment', $this, $payment_id );
 
-		// Primary Identifier.
-		$this->ID = absint( $payment_id );
+		if ( ! ( $donation_vars = Give_Cache::setup_cache( $payment_id, 'give-donations' ) ) ) {
+			// Primary Identifier.
+			$this->ID = absint( $payment_id );
 
-		// Protected ID that can never be changed.
-		$this->_ID = absint( $payment_id );
+			// Protected ID that can never be changed.
+			$this->_ID = absint( $payment_id );
 
-		// We have a payment, get the generic payment_meta item to reduce calls to it.
-		$this->payment_meta = $this->get_meta();
+			// We have a payment, get the generic payment_meta item to reduce calls to it.
+			$this->payment_meta = $this->get_meta();
 
-		// Status and Dates.
-		$this->date           = $payment->post_date;
-		$this->post_date      = $payment->post_date;
-		$this->completed_date = $this->setup_completed_date();
-		$this->status         = $payment->post_status;
-		$this->post_status    = $this->status;
-		$this->mode           = $this->setup_mode();
-		$this->import         = $this->setup_import();
-		$this->parent_payment = $payment->post_parent;
+			// Status and Dates.
+			$this->date           = $payment->post_date;
+			$this->post_date      = $payment->post_date;
+			$this->completed_date = $this->setup_completed_date();
+			$this->status         = $payment->post_status;
+			$this->post_status    = $this->status;
+			$this->mode           = $this->setup_mode();
+			$this->import         = $this->setup_import();
+			$this->parent_payment = $payment->post_parent;
 
-		$all_payment_statuses  = give_get_payment_statuses();
-		$this->status_nicename = array_key_exists( $this->status, $all_payment_statuses ) ? $all_payment_statuses[ $this->status ] : ucfirst( $this->status );
+			$all_payment_statuses  = give_get_payment_statuses();
+			$this->status_nicename = array_key_exists( $this->status, $all_payment_statuses ) ? $all_payment_statuses[ $this->status ] : ucfirst( $this->status );
 
-		// Currency Based.
-		$this->total    = $this->setup_total();
-		$this->subtotal = $this->setup_subtotal();
-		$this->currency = $this->setup_currency();
+			// Currency Based.
+			$this->total    = $this->setup_total();
+			$this->subtotal = $this->setup_subtotal();
+			$this->currency = $this->setup_currency();
 
-		// Gateway based.
-		$this->gateway        = $this->setup_gateway();
-		$this->transaction_id = $this->setup_transaction_id();
+			// Gateway based.
+			$this->gateway        = $this->setup_gateway();
+			$this->transaction_id = $this->setup_transaction_id();
 
-		// User based.
-		$this->ip          = $this->setup_ip();
-		$this->customer_id = $this->setup_donor_id();
-		$this->user_id     = $this->setup_user_id();
-		$this->email       = $this->setup_email();
-		$this->user_info   = $this->setup_user_info();
-		$this->address     = $this->setup_address();
-		$this->first_name  = $this->user_info['first_name'];
-		$this->last_name   = $this->user_info['last_name'];
+			// User based.
+			$this->ip          = $this->setup_ip();
+			$this->customer_id = $this->setup_donor_id();
+			$this->user_id     = $this->setup_user_id();
+			$this->email       = $this->setup_email();
+			$this->user_info   = $this->setup_user_info();
+			$this->address     = $this->setup_address();
+			$this->first_name  = $this->user_info['first_name'];
+			$this->last_name   = $this->user_info['last_name'];
 
-		// Other Identifiers.
-		$this->form_title = $this->setup_form_title();
-		$this->form_id    = $this->setup_form_id();
-		$this->price_id   = $this->setup_price_id();
-		$this->key        = $this->setup_payment_key();
-		$this->number     = $this->setup_payment_number();
+			// Other Identifiers.
+			$this->form_title = $this->setup_form_title();
+			$this->form_id    = $this->setup_form_id();
+			$this->price_id   = $this->setup_price_id();
+			$this->key        = $this->setup_payment_key();
+			$this->number     = $this->setup_payment_number();
+
+			wp_cache_set( $this->ID, get_object_vars( $this ), 'give-donations' );
+		} else {
+
+			foreach ( $donation_vars as $donation_var => $value ) {
+				$this->$donation_var = $value;
+			}
+		}
 
 		/**
 		 * Fires after payment setup.
@@ -574,6 +583,7 @@ final class Give_Payment {
 
 		return true;
 	}
+
 
 	/**
 	 * Payment class object is storing various meta value in object parameter.
@@ -631,23 +641,23 @@ final class Give_Payment {
 		// @todo: payment data exist here only for backward compatibility
 		// issue: https://github.com/WordImpress/Give/issues/1132
 		$payment_data = array(
-			'price'         => $this->total,
-			'date'          => $this->date,
-			'user_email'    => $this->email,
-			'purchase_key'  => $this->key,
-			'form_title'    => $this->form_title,
-			'form_id'       => $this->form_id,
-			'donor_id'      => $this->donor_id,
-			'price_id'      => $this->price_id,
-			'currency'      => $this->currency,
-			'user_info'     => array(
+			'price'        => $this->total,
+			'date'         => $this->date,
+			'user_email'   => $this->email,
+			'purchase_key' => $this->key,
+			'form_title'   => $this->form_title,
+			'form_id'      => $this->form_id,
+			'donor_id'     => $this->donor_id,
+			'price_id'     => $this->price_id,
+			'currency'     => $this->currency,
+			'user_info'    => array(
 				'id'         => $this->user_id,
 				'email'      => $this->email,
 				'first_name' => $this->first_name,
 				'last_name'  => $this->last_name,
 				'address'    => $this->address,
 			),
-			'status'        => $this->status,
+			'status'       => $this->status,
 		);
 
 		$args = apply_filters( 'give_insert_payment_args', array(
