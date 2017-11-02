@@ -46,7 +46,9 @@ function give_payment_history_page() {
 		 */
 		do_action( 'give_payments_page_top' );
 		?>
-		<hr class="wp-header-end">
+		<?php
+		give_admin_notices_display();
+		?>
 
 		<form id="give-payments-advanced-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ); ?>">
 			<input type="hidden" name="post_type" value="give_forms" />

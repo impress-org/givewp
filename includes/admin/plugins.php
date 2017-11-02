@@ -80,3 +80,90 @@ function give_plugin_row_meta( $plugin_meta, $plugin_file ) {
 }
 
 add_filter( 'plugin_row_meta', 'give_plugin_row_meta', 10, 2 );
+
+/**
+ * Get the Parent Page Title in admin section.
+ * Based on get_admin_page_title WordPress Function.
+ *
+ * @since 1.8.16
+ *
+ * @global string $title
+ * @global array $menu
+ * @global array $submenu
+ * @global string $pagenow
+ * @global string $plugin_page
+ * @global string $typenow
+ *
+ * @return string $title Page title
+ */
+function give_get_admin_page_parent_title() {
+	$title = '';
+	global $menu, $submenu, $pagenow, $plugin_page, $typenow;
+
+	$hook = get_plugin_page_hook( $plugin_page, $pagenow );
+
+	$parent  = get_admin_page_parent();
+	$parent1 = $parent;
+
+	foreach ( array_keys( $submenu ) as $parent ) {
+		foreach ( $submenu[ $parent ] as $submenu_array ) {
+			if ( isset( $plugin_page ) &&
+			     ( $plugin_page === $submenu_array[2] ) &&
+			     (
+				     ( $parent === $pagenow ) ||
+				     ( $parent === $plugin_page ) ||
+				     ( $plugin_page === $hook ) ||
+				     ( $pagenow === 'admin.php' && $parent1 !== $submenu_array[2] ) ||
+				     ( ! empty( $typenow ) && $parent === $pagenow . '?post_type=' . $typenow )
+			     )
+			) {
+				$title = $submenu_array[0];
+
+				return $submenu_array[0];
+			}
+
+			if ( $submenu_array[2] !== $pagenow || isset( $_GET['page'] ) ) { // not the current page
+				continue;
+			}
+
+			if ( isset( $submenu_array[0] ) ) {
+				$title = $submenu_array[0];
+			} else {
+				$title = $submenu_array[3];
+			}
+		}
+	}
+
+	return $title;
+}
+
+/**
+ * Display title in give admin submenu sections.
+ *
+ * @since 1.8.16
+ *
+ * @param array $tabs
+ * @param string $current_tab
+ *
+ * @return void
+ */
+function give_admin_page_title( $tabs = array(), $current_tab = '' ) {
+	?>
+	<h1 class="wp-heading-inline">
+		<?php echo esc_html( wp_sprintf( __( '%s > %s', 'give' ), give_get_admin_page_parent_title(), ( isset( $tabs[ $current_tab ] ) ? $tabs[ $current_tab ] : '' ) ) ); ?>
+	</h1>
+	<?php
+}
+
+/**
+ * Add wp header end section in give menu sub page.
+ *
+ * @since 1.8.16
+ *
+ * @return void
+ */
+function give_admin_notices_display() {
+	?>
+	<hr class="wp-header-end">
+	<?php
+}

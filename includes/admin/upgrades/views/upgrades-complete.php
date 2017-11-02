@@ -17,7 +17,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="wrap" id="poststuff">
 	<div id="give-updates">
 		<h1 id="give-updates-h1"><?php esc_html_e( 'Give - Updates Complete', 'give' ); ?></h1>
-		<hr class="wp-header-end">
+
+		<?php
+		give_admin_notices_display();
+		?>
 
 		<div class="give-update-panel-content">
 			<p><?php esc_html_e( 'Congratulations! You are running the latest versions of Give and it\'s add-ons.', 'give' ); ?></p>

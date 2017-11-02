@@ -71,7 +71,9 @@ $payment_mode   = $payment->mode;
 	do_action( 'give_view_order_details_before', $payment_id );
 	?>
 
-	<hr class="wp-header-end">
+	<?php
+	give_admin_notices_display();
+	?>
 
 	<form id="give-edit-order-form" method="post">
 		<?php
