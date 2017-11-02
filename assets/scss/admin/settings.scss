@@ -14,29 +14,29 @@
 .give-settings-page {
 
   .nav-tab-wrapper {
-    margin-bottom: 5px;
-    overflow: visible;
+	margin-bottom: 5px;
+	overflow: visible;
   }
 
   .cmb2-wrap .cmb-type-checkbox input[type="checkbox"] {
-    display: block;
-    margin-bottom: 5px;
+	display: block;
+	margin-bottom: 5px;
   }
 
   div.give-submit-wrap {
-    margin: 20px 0;
+	margin: 20px 0;
   }
 
   .give_forms_page_give-payment-history .postbox .hndle {
-    cursor: default;
+	cursor: default;
   }
 
   .give-input-field {
-    width: 25em;
+	width: 25em;
   }
 
   table table input[type="text"] {
-    width: 15em;
+	width: 15em;
   }
 }
 
@@ -46,22 +46,22 @@
   margin: 30px 0;
 
   h2 {
-    margin-top: 8px;
+	margin-top: 8px;
   }
 }
 
 .give-radio-inline {
   ul {
-    margin-top: 0;
+	margin-top: 0;
   }
 
   li {
-    display: inline-block;
-    margin: 0 0 0 15px;
+	display: inline-block;
+	margin: 0 0 0 15px;
   }
 
   li:first-child {
-    margin-left: 0;
+	margin-left: 0;
   }
 }
 
@@ -105,33 +105,33 @@ p.give-field-description, .cmb2-metabox-description {
 .cmb-type-checkbox .cmb-td {
   width: 80%;
   label {
-    font-size: 13px;
+	font-size: 13px;
   }
 }
 
 /* Responsive Settings Rows */
 .give_settings {
   .cmb2-wrap .cmb-row {
-    display: table-row;
-    > .cmb-th, > .cmb-td {
-      display: table-cell;
-      float: none;
-    }
+	display: table-row;
+	> .cmb-th, > .cmb-td {
+	  display: table-cell;
+	  float: none;
+	}
   }
 }
 
 /* Custom Title Separators */
 .cmb2-id-give-title {
   label {
-    font-style: italic;
-    color: #AAA;
-    cursor: default;
+	font-style: italic;
+	color: #AAA;
+	cursor: default;
   }
   > div.cmb-th {
-    padding-bottom: 10px;
+	padding-bottom: 10px;
   }
   > div.cmb-td {
-    padding-bottom: 5px;
+	padding-bottom: 5px;
   }
 }
 
@@ -141,15 +141,15 @@ p.give-field-description, .cmb2-metabox-description {
 .give-payment-gatways-list li.ui-sortable-handle {
 
   span.give-drag-handle {
-    padding: 3px 4px 0 0;
-    font-size: 15px;
-    font-weight: normal;
-    color: #bdbdbd;
-    cursor: move;
+	padding: 3px 4px 0 0;
+	font-size: 15px;
+	font-weight: normal;
+	color: #bdbdbd;
+	cursor: move;
 
-    &:hover {
-      color: #333;
-    }
+	&:hover {
+	  color: #333;
+	}
 
   }
 
@@ -162,19 +162,19 @@ p.give-field-description, .cmb2-metabox-description {
 .give-email-tags-wrap {
   margin: 5px 0 0;
   code {
-    font-style: normal;
-    padding: 1px 2px;
-    font-size: 12px;
+	font-style: normal;
+	padding: 1px 2px;
+	font-size: 12px;
   }
   span {
-    display: block;
-    color: #AAA;
-    font-style: italic;
-    margin: 0 0 2px;
-    font-size: 13px;
+	display: block;
+	color: #AAA;
+	font-style: italic;
+	margin: 0 0 2px;
+	font-size: 13px;
   }
   .give_price_tag {
-    display: none;
+	display: none;
   }
 }
 
@@ -204,7 +204,7 @@ p.give-field-description, .cmb2-metabox-description {
 
 #api {
   .tablenav .actions {
-    overflow: visible;
+	overflow: visible;
   }
 }
 
@@ -217,24 +217,24 @@ a.give-delete {
 //--------------------------------------------------------------
 .give-settings-wrap-licenses {
   .give-license-deactivate {
-    margin: 1px 0 0 10px;
-    height: 30px;
+	margin: 1px 0 0 10px;
+	height: 30px;
   }
 
   .give-license-field {
-    background: #FFF url('../images/close.png') no-repeat;
-    background-position: 98.5% center;
-    background-size: 18px;
+	background: #FFF url('../images/close.png') no-repeat;
+	background-position: 98.5% center;
+	background-size: 18px;
   }
 
   .give-license-active, .give-license-active:focus {
-    background-image: url('../images/tick.png');
-    background-color: #FFF;
-    background-repeat: no-repeat;
-    background-position: 98.5% center;
-    outline: none;
-    background-size: 16px;
-    width: 100%;
+	background-image: url('../images/tick.png');
+	background-color: #FFF;
+	background-repeat: no-repeat;
+	background-position: 98.5% center;
+	outline: none;
+	background-size: 16px;
+	width: 100%;
   }
 
 }
@@ -242,76 +242,76 @@ a.give-delete {
 /* Addon grid design */
 .give-settings-page {
   .give-settings-wrap-licenses {
-    display: block;
-    position: relative;
-    float: left;
-    width: 30.5%;
-    min-height: 180px;
-    margin: 20px 1% 20px 0;
+	display: block;
+	position: relative;
+	float: left;
+	width: 30.5%;
+	min-height: 180px;
+	margin: 20px 1% 20px 0;
   }
 
   .give-license-key {
-    label {
-      margin: 0 0 0 10px;
-      padding: 10px 0;
-      display: block;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: default;
-    }
+	label {
+	  margin: 0 0 0 10px;
+	  padding: 10px 0;
+	  display: block;
+	  font-size: 14px;
+	  font-weight: 600;
+	  cursor: default;
+	}
   }
 
   .give-license-block {
-    margin: 0 10px;
+	margin: 0 10px;
   }
 
   input[type="text"].give-license-field,
   input[type="password"].give-license-field {
-    width: 100%;
+	width: 100%;
   }
 
   .give-license-block input[type="submit"] {
-    position: absolute;
-    top: 3px;
-    right: 10px;
-    height: 24px;
-    line-height: 22px;
-    padding: 0 8px 1px;
-    font-size: 11px;
+	position: absolute;
+	top: 3px;
+	right: 10px;
+	height: 24px;
+	line-height: 22px;
+	padding: 0 8px 1px;
+	font-size: 11px;
   }
 
   //License status notice.
   .give-license-status-notice {
-    background: #fff;
-    border-left: 4px solid #fff;
-    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
-    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
-    margin: 5px 0 2px;
-    padding: 1px 12px;
+	background: #fff;
+	border-left: 4px solid #fff;
+	-webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+	margin: 5px 0 2px;
+	padding: 1px 12px;
 
-    p {
-      padding: 10px 0;
-      margin: 0;
-    }
+	p {
+	  padding: 10px 0;
+	  margin: 0;
+	}
 
-    a {
-      color: #444;
-      cursor: pointer;
-      &:hover {
-        text-decoration: none;
-      }
-    }
+	a {
+	  color: #444;
+	  cursor: pointer;
+	  &:hover {
+		text-decoration: none;
+	  }
+	}
 
   }
 
   .give-license-status-notice.give-license-expires-soon {
-    border-color: #00a0d2;
+	border-color: #00a0d2;
   }
 
   //Inactive or Expired.
   .give-license-status-notice.give-inactive,
   .give-license-status-notice.give-license-expired {
-    border-color: #e24e4e;
+	border-color: #e24e4e;
   }
 
   .give-license-status-notice.give-license-error,
@@ -320,32 +320,32 @@ a.give-delete {
   .give-license-status-notice.give-license-invalid,
   .give-license-status-notice.give-license-site_inactive,
   .give-license-status-notice.give-license-item_name_mismatch {
-    border-color: orange;
+	border-color: orange;
   }
 
   .give-license-status-notice.give-license-lifetime-notice,
   .give-license-status-notice.give-license-expiration-date {
-    border-color: #46b450;
+	border-color: #46b450;
   }
 
   .give-license-status-notice.give-license-expires-soon a:hover,
   .give-license-status-notice.give-license-expired a:hover {
-    text-decoration: none;
+	text-decoration: none;
   }
 }
 
 /* Responsive fixes: Addon grid design */
 @media screen and (max-width: 1100px) {
   .give-settings-page .give-settings-wrap-licenses {
-    width: 45%;
-    min-height: 150px;
+	width: 45%;
+	min-height: 150px;
   }
 }
 
 @media screen and (max-width: 600px) {
   .give-settings-page .give-settings-wrap-licenses {
-    width: 100%;
-    max-width: 320px;
+	width: 100%;
+	max-width: 320px;
   }
 }
 
@@ -354,9 +354,9 @@ a.give-delete {
 .give-table {
 
   thead {
-    th {
-      padding: 8px 10px !important;
-    }
+	th {
+	  padding: 8px 10px !important;
+	}
   }
 
 }
@@ -387,46 +387,56 @@ h2.give-nav-tab-wrapper {
 
 @media screen and (max-width: 600px) {
   .give-nav-tab-wrapper {
-    position: relative;
-    padding-top:0 !important;
+	position: relative;
+	padding-top:0 !important;
 
-    > a {
-      width: 100%;
-      box-sizing: border-box;
-      margin:0;
-      background-color: #ffffff;
-      border: 1px solid #cccccc;
-      &:hover {
-        border-bottom: 1px solid #ccc;
-      }
-    }
+	> a {
+	  width: 100%;
+	  box-sizing: border-box;
+	  margin:0;
+	  background-color: #ffffff;
+	  border: 1px solid #cccccc;
+	  &:hover {
+		border-bottom: 1px solid #ccc;
+	  }
+	}
 
-    div.give-sub-nav-tab-wrapper {
-      position: absolute;
-      top:0;
-      right:0;
+	div.give-sub-nav-tab-wrapper {
+	  position: absolute;
+	  top:0;
+	  right:0;
 
-      #give-show-sub-nav {
-        height: 28px;
-        width: 30px;
-        border-radius: 0;
-        margin:0;
-        > span.dashicons {
-          margin: 6px auto 0;
-          display: block;
-        }
+	  #give-show-sub-nav {
+		height: 28px;
+		width: 30px;
+		border-radius: 0;
+		margin:0;
+		> span.dashicons {
+		  margin: 6px auto 0;
+		  display: block;
+		}
 
-      }
+	  }
 
-      nav.give-sub-nav-tab {
-        top:35px;
-      }
-    }
+	  nav.give-sub-nav-tab {
+		top:35px;
+		right: 0;
+		left: auto;
+
+		a {
+		  background: #ffffff;
+		  &:hover {
+			background: #e5e5e5;
+		  }
+		}
+
+	  }
+	}
 
   }
 
   .give-mobile-hidden {
-    display: none;
+	display: none;
   }
 }
 
@@ -437,27 +447,27 @@ h2.give-nav-tab-wrapper {
   float: left;
 
   nav.give-sub-nav-tab {
-    border: 1px solid #ccc;
-    border-bottom: 0;
-    position: absolute;
-    top: 32px;
-    right: 0;
+	border: 1px solid #ccc;
+	border-bottom: 0;
+	position: absolute;
+	top: 35px;
+	left: 0;
 
-    a {
-      float: left;
-      background: white;
-      padding: 6px 10px;
-      clear: both;
-      text-decoration: none;
-      border-bottom: 1px solid #ccc;
-      min-width: 170px;
-      color: #555;
-      font-size: 14px;
-    }
+	a {
+	  float: left;
+	  background: #e5e5e5;
+	  padding: 6px 10px;
+	  clear: both;
+	  text-decoration: none;
+	  border-bottom: 1px solid #ccc;
+	  min-width: 170px;
+	  color: #555;
+	  font-size: 14px;
+	}
 
-    a:hover {
-      background: #e5e5e5;
-    }
+	a:hover {
+	  background: #ffffff;
+	}
   }
 }
 
@@ -476,9 +486,9 @@ h2.give-nav-tab-wrapper {
   margin-top:5px;
 
   > span.dashicons {
-    font-size:16px;
-    height:16px;
-    width:16px;
+	font-size:16px;
+	height:16px;
+	width:16px;
   }
 }
 
@@ -496,17 +506,17 @@ h2.give-nav-tab-wrapper {
   margin-top: 14px;
 
   span.give-delete-image-thumb {
-    position: absolute;
-    background: red;
-    color: white;
-    border-radius: 30px;
-    left: -10px;
-    top: -10px;
-    cursor: pointer;
+	position: absolute;
+	background: red;
+	color: white;
+	border-radius: 30px;
+	left: -10px;
+	top: -10px;
+	cursor: pointer;
   }
 
   img {
-    max-width: 250px;
-    border: 4px solid white;
+	max-width: 250px;
+	border: 4px solid white;
   }
 }

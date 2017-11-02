@@ -300,20 +300,16 @@ class Give_Donor_List_Table extends WP_List_Table {
 			return;
 		}
 
+		// Convert strings to int.
+		$ids = array_map( 'absint', $ids );
+
 		foreach ( $ids as $id ) {
 
 			// Detect when a bulk action is being triggered.
 			switch ( $this->current_action() ) {
 
 				case 'delete':
-					$args = array(
-						'_wpnonce'                  => wp_create_nonce( 'delete-donor' ),
-						'customer_id'               => $id,
-						'give-donor-delete-confirm' => true,
-						'give-donor-delete-records' => true,
-						'redirect'                  => false,
-					);
-					give_donor_delete( $args );
+					give_delete_bulk_donors( $id, array( '_wpnonce' => wp_create_nonce( 'delete-bulk-donors' ) ) );
 					break;
 
 			} // End switch().

@@ -1911,7 +1911,13 @@ h2.give-nav-tab-wrapper {
           margin: 6px auto 0;
           display: block; }
       .give-nav-tab-wrapper div.give-sub-nav-tab-wrapper nav.give-sub-nav-tab {
-        top: 35px; }
+        top: 35px;
+        right: 0;
+        left: auto; }
+        .give-nav-tab-wrapper div.give-sub-nav-tab-wrapper nav.give-sub-nav-tab a {
+          background: #ffffff; }
+          .give-nav-tab-wrapper div.give-sub-nav-tab-wrapper nav.give-sub-nav-tab a:hover {
+            background: #e5e5e5; }
   .give-mobile-hidden {
     display: none; } }
 
@@ -1924,11 +1930,11 @@ h2.give-nav-tab-wrapper {
     border: 1px solid #ccc;
     border-bottom: 0;
     position: absolute;
-    top: 32px;
-    right: 0; }
+    top: 35px;
+    left: 0; }
     .give-sub-nav-tab-wrapper nav.give-sub-nav-tab a {
       float: left;
-      background: white;
+      background: #e5e5e5;
       padding: 6px 10px;
       clear: both;
       text-decoration: none;
@@ -1937,7 +1943,7 @@ h2.give-nav-tab-wrapper {
       color: #555;
       font-size: 14px; }
     .give-sub-nav-tab-wrapper nav.give-sub-nav-tab a:hover {
-      background: #e5e5e5; }
+      background: #ffffff; }
 
 .give-sub-nav-tab-wrapper {
   display: none; }
