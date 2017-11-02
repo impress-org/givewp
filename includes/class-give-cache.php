@@ -324,80 +324,27 @@ class Give_Cache {
 	 * @since  2.0
 	 * @access public
 	 *
-	 * @param       $group_type
-	 * @param array $args {
+	 * @param int    $id
+	 * @param string $group
+	 * @param string $cache_type
 	 *
-	 * @type string $id
-	 * @type string $key
-	 * @type string $data
-	 *
-	 * }
-	 *
-	 * @return bool|array|WP_Error
+	 * @return mixed
 	 */
-	public static function group( $group_type, $args = array() ) {
+	public static function get_group( $id, $group, $cache_type = 'persistent' ) {
 		// Bailout
-		if ( empty( $group_type ) || empty( $args ) || empty( $args['id'] ) ) {
+		if ( empty( $group ) || empty( $id ) || empty( $cache_type ) ) {
 			return false;
-		} elseif ( empty( $args['key'] ) ) {
-			return new WP_Error( 'give_invalid_payment_cache_key', __( 'We did not find valid payment cache key.', 'give' ) );
 		}
 
-		$cache_id = "give_{$group_type}_{$args['id']}";
+		$cached_data = null;
 
-		// Get cache.
-		if ( ! ( $donation_cache = Give_Cache::get( $cache_id, true ) ) ) {
-			$donation_cache = array();
+		switch ( $cache_type ) {
+			case 'persistent':
+				$cached_data = wp_cache_get( $id, $group );
+				break;
 		}
 
-		// Get cache.
-		if ( empty( $args['data'] ) ) {
-			return ( isset( $donation_cache[ $args['key'] ] ) ? $donation_cache[ $args['key'] ] : '' );
-		}
-
-		// Store donation address to cache (save queries).
-		$donation_cache[ $args['key'] ] = $args['data'];
-
-		return Give_Cache::set( $cache_id, $donation_cache, null, true );
-	}
-
-	/**
-	 * Delete payment cache.
-	 *
-	 * @since  2.0
-	 * @access public
-	 *
-	 * @param string $group_type
-	 * @param string $id
-	 *
-	 * @return mixed
-	 */
-	public static function delete_group( $group_type, $id ) {
-		if ( empty( $group_type ) ) {
-			return false;
-		} elseif ( ! $id ) {
-			return new WP_Error( 'give_invalid_payment_cache_id', __( 'We did not find valid payment cache id.', 'give' ) );
-		}
-
-		return Give_Cache::delete( "give_cache_give_{$group_type}_{$id}" );
-	}
-
-	/**
-	 * Setup payment from cache
-	 *
-	 * @since 2.0
-	 *
-	 * @param int     $id
-	 * @param  string $group
-	 *
-	 * @return mixed
-	 */
-	public static function setup_cache( $id, $group ) {
-		if ( $cache = wp_cache_get( $id, $group ) ) {
-			return $cache;
-		}
-
-		return false;
+		return $cached_data;
 	}
 }
 
