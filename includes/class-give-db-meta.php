@@ -165,7 +165,7 @@ class Give_DB_Meta extends Give_DB {
 		$meta_id = add_metadata( $this->meta_type, $id, $meta_key, $meta_value, $unique );
 
 		if ( $meta_id ) {
-			$this->update_last_changed( $id );
+			$this->delete_cache( $id );
 		}
 
 		return $meta_id;
@@ -201,8 +201,8 @@ class Give_DB_Meta extends Give_DB {
 
 		$meta_id = update_metadata( $this->meta_type, $id, $meta_key, $meta_value, $prev_value );
 
-		if( $meta_id ) {
-			$this->update_last_changed( $id );
+		if ( $meta_id ) {
+			$this->delete_cache( $id );
 		}
 
 		return $meta_id;
@@ -235,8 +235,8 @@ class Give_DB_Meta extends Give_DB {
 
 		$is_meta_deleted = delete_metadata( $this->meta_type, $id, $meta_key, $meta_value, $delete_all );
 
-		if( $is_meta_deleted ) {
-			$this->update_last_changed( $id );
+		if ( $is_meta_deleted ) {
+			$this->delete_cache( $id );
 		}
 
 		return $is_meta_deleted;
@@ -322,18 +322,18 @@ class Give_DB_Meta extends Give_DB {
 	 *
 	 * @return void
 	 */
-	private function update_last_changed( $id, $meta_type = '' ) {
-		global $wpdb;
+	private function delete_cache( $id, $meta_type = '' ) {
 		$meta_type = empty( $meta_type ) ? $this->meta_type : $meta_type;
 
-		if( $meta_table = _get_meta_table( $meta_type ) ) {
-			$wpdb->insert(
-				$meta_table,
-				array(
-					'meta_key'   => '_last_changed',
-					'meta_value' => current_time( 'timestamp', 1 ),
-				)
-			);
+		$group = array(
+			'form'    => 'give-forms',
+			'payment' => 'give-donations',
+			'donor'   => 'give-donors',
+			'log'     => 'give-logs',
+		);
+
+		if ( array_key_exists( $meta_type, $group ) ) {
+			wp_cache_delete( $id, $group[ $meta_type ] );
 		}
 	}
 
