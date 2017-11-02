@@ -1910,7 +1910,13 @@ h2.give-nav-tab-wrapper {
           margin: 6px auto 0;
           display: block; }
       .give-nav-tab-wrapper div.give-sub-nav-tab-wrapper nav.give-sub-nav-tab {
-        top: 35px; }
+        top: 35px;
+        left: 0;
+        right: auto; }
+        .give-nav-tab-wrapper div.give-sub-nav-tab-wrapper nav.give-sub-nav-tab a {
+          background: #ffffff; }
+          .give-nav-tab-wrapper div.give-sub-nav-tab-wrapper nav.give-sub-nav-tab a:hover {
+            background: #e5e5e5; }
   .give-mobile-hidden {
     display: none; } }
 
@@ -1923,11 +1929,11 @@ h2.give-nav-tab-wrapper {
     border: 1px solid #ccc;
     border-bottom: 0;
     position: absolute;
-    top: 32px;
-    left: 0; }
+    top: 35px;
+    right: 0; }
     .give-sub-nav-tab-wrapper nav.give-sub-nav-tab a {
       float: right;
-      background: white;
+      background: #e5e5e5;
       padding: 6px 10px;
       clear: both;
       text-decoration: none;
@@ -1936,7 +1942,7 @@ h2.give-nav-tab-wrapper {
       color: #555;
       font-size: 14px; }
     .give-sub-nav-tab-wrapper nav.give-sub-nav-tab a:hover {
-      background: #e5e5e5; }
+      background: #ffffff; }
 
 .give-sub-nav-tab-wrapper {
   display: none; }
@@ -3040,7 +3046,17 @@ body.give_forms_page_give-updates .give-run-update-containt .give-run-update-but
   margin: -8px -22px 11px;
   padding: 12px 22px; }
 
-form#give-import-donations-form table.widefat {
+.give-import-core-settings .give-progress-steps li {
+  width: 33.33%; }
+
+.give-import-core-settings .step-3 h2 {
+  text-align: center;
+  font-size: 20px !important; }
+
+.give-import-core-settings .step-3 p {
+  text-align: center; }
+
+form.give-import-form table.widefat {
   border: none; }
 
 .wrap .give-importer-h1 {

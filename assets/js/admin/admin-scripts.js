@@ -2408,6 +2408,41 @@ function get_url_params() {
 }
 
 /**
+ * Run when user click on submit button.
+ *
+ * @since 1.8.17
+ */
+function give_on_core_settings_import_start() {
+	var $form = jQuery( 'form.tools-setting-page-import' );
+	var progress = $form.find( '.give-progress' );
+
+	give_setting_edit = true;
+
+	jQuery.ajax( {
+		type: 'POST',
+		url: ajaxurl,
+		data: {
+			action: give_vars.core_settings_import,
+			fields: $form.serialize()
+		},
+		dataType: 'json',
+		success: function ( response ) {
+			give_setting_edit = false;
+			if ( true === response.success ) {
+				jQuery( progress ).find( 'div' ).width( response.percentage + '%' );
+			} else {
+				alert( give_vars.error_message );
+			}
+			window.location = response.url;
+		},
+		error: function () {
+			give_setting_edit = false;
+			alert( give_vars.error_message );
+		}
+	} );
+}
+
+/**
  * Run when user click on upload CSV.
  *
  * @since 1.8.13
