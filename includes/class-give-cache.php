@@ -381,6 +381,24 @@ class Give_Cache {
 
 		return Give_Cache::delete( "give_cache_give_{$group_type}_{$id}" );
 	}
+
+	/**
+	 * Setup payment from cache
+	 *
+	 * @since 2.0
+	 *
+	 * @param int     $id
+	 * @param  string $group
+	 *
+	 * @return mixed
+	 */
+	public static function setup_cache( $id, $group ) {
+		if ( $cache = wp_cache_get( $id, $group ) ) {
+			return $cache;
+		}
+
+		return false;
+	}
 }
 
 // Initialize
