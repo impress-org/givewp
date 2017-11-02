@@ -196,26 +196,34 @@ class Give_Donor {
 			return false;
 		}
 
-		foreach ( $donor as $key => $value ) {
+		if( ! ( $donor_vars = Give_Cache::setup_cache( $donor->id, 'give-donors' )) ){
+			foreach ( $donor as $key => $value ) {
 
-			switch ( $key ) {
+				switch ( $key ) {
 
-				case 'notes':
-					$this->$key = $this->get_notes();
-					break;
+					case 'notes':
+						$this->$key = $this->get_notes();
+						break;
 
-				default:
-					$this->$key = $value;
-					break;
+					default:
+						$this->$key = $value;
+						break;
 
+				}
+			}
+
+			// Get donor's all email including primary email.
+			$this->emails = (array) $this->get_meta( 'additional_email', false );
+			$this->emails = array( 'primary' => $this->email ) + $this->emails;
+
+			$this->setup_address();
+
+			wp_cache_set( $donor->id, get_object_vars( $this ), 'give-donors' );
+		} else{
+			foreach ( $donor_vars as $donor_var => $value ) {
+				$this->$donor_var = $value;
 			}
 		}
-
-		// Get donor's all email including primary email.
-		$this->emails = (array) $this->get_meta( 'additional_email', false );
-		$this->emails = array( 'primary' => $this->email ) + $this->emails;
-
-		$this->setup_address();
 
 		// Donor ID and email are the only things that are necessary, make sure they exist.
 		if ( ! empty( $this->id ) && ! empty( $this->email ) ) {
