@@ -152,7 +152,7 @@ class Give_DB_Meta extends Give_DB {
 	 * @param   mixed  $meta_value Metadata value.
 	 * @param   bool   $unique     Optional, default is false. Whether the same key should not be added.
 	 *
-	 * @return  bool                  False for failure. True for success.
+	 * @return  int|bool                  False for failure. True for success.
 	 */
 	public function add_meta( $id = 0, $meta_key = '', $meta_value, $unique = false ) {
 		$id = $this->sanitize_id( $id );
@@ -162,7 +162,13 @@ class Give_DB_Meta extends Give_DB {
 			return $this->check;
 		}
 
-		return add_metadata( $this->meta_type, $id, $meta_key, $meta_value, $unique );
+		$meta_id = add_metadata( $this->meta_type, $id, $meta_key, $meta_value, $unique );
+
+		if ( $meta_id ) {
+			$this->update_last_changed( $id );
+		}
+
+		return $meta_id;
 	}
 
 	/**
@@ -183,7 +189,7 @@ class Give_DB_Meta extends Give_DB {
 	 * @param   mixed  $meta_value Metadata value.
 	 * @param   mixed  $prev_value Optional. Previous value to check before removing.
 	 *
-	 * @return  bool                  False on failure, true if success.
+	 * @return  int|bool                  False on failure, true if success.
 	 */
 	public function update_meta( $id = 0, $meta_key = '', $meta_value, $prev_value = '' ) {
 		$id = $this->sanitize_id( $id );
@@ -193,7 +199,13 @@ class Give_DB_Meta extends Give_DB {
 			return $this->check;
 		}
 
-		return update_metadata( $this->meta_type, $id, $meta_key, $meta_value, $prev_value );
+		$meta_id = update_metadata( $this->meta_type, $id, $meta_key, $meta_value, $prev_value );
+
+		if( $meta_id ) {
+			$this->update_last_changed( $id );
+		}
+
+		return $meta_id;
 	}
 
 	/**
@@ -221,7 +233,13 @@ class Give_DB_Meta extends Give_DB {
 			return $this->check;
 		}
 
-		return delete_metadata( $this->meta_type, $id, $meta_key, $meta_value, $delete_all );
+		$is_meta_deleted = delete_metadata( $this->meta_type, $id, $meta_key, $meta_value, $delete_all );
+
+		if( $is_meta_deleted ) {
+			$this->update_last_changed( $id );
+		}
+
+		return $is_meta_deleted;
 	}
 
 	/**
@@ -292,6 +310,33 @@ class Give_DB_Meta extends Give_DB {
 		return $join;
 	}
 
+
+	/**
+	 * Update last_changed key
+	 *
+	 * @since  2.0
+	 * @access private
+	 *
+	 * @param int    $id
+	 * @param string $meta_type
+	 *
+	 * @return void
+	 */
+	private function update_last_changed( $id, $meta_type = '' ) {
+		global $wpdb;
+		$meta_type = empty( $meta_type ) ? $this->meta_type : $meta_type;
+
+		if( $meta_table = _get_meta_table( $meta_type ) ) {
+			$wpdb->insert(
+				$meta_table,
+				array(
+					'meta_key'   => '_last_changed',
+					'meta_value' => current_time( 'timestamp', 1 ),
+				)
+			);
+		}
+	}
+
 	/**
 	 * Add support for hidden functions.
 	 *
@@ -311,12 +356,12 @@ class Give_DB_Meta extends Give_DB {
 				$meta_key    = $arguments[2];
 				$meta_value  = $arguments[3];
 				$unique      = $arguments[4];
-				
+
 				// Bailout.
 				if ( ! $this->is_valid_post_type( $id ) ) {
 					return $this->check;
 				}
-				
+
 				return $this->add_meta( $id, $meta_key, $meta_value, $unique );
 
 			case '__get_meta':
@@ -324,7 +369,7 @@ class Give_DB_Meta extends Give_DB {
 				$id          = $arguments[1];
 				$meta_key    = $arguments[2];
 				$single      = $arguments[3];
-				
+
 				// Bailout.
 				if ( ! $this->is_valid_post_type( $id ) ) {
 					return $this->check;
@@ -339,12 +384,12 @@ class Give_DB_Meta extends Give_DB {
 				$id          = $arguments[1];
 				$meta_key    = $arguments[2];
 				$meta_value  = $arguments[3];
-				
+
 				// Bailout.
 				if ( ! $this->is_valid_post_type( $id ) ) {
 					return $this->check;
 				}
-				
+
 				return $this->update_meta( $id, $meta_key, $meta_value );
 
 			case '__delete_meta':
@@ -353,7 +398,7 @@ class Give_DB_Meta extends Give_DB {
 				$meta_key    = $arguments[2];
 				$meta_value  = $arguments[3];
 				$delete_all  = $arguments[3];
-				
+
 				// Bailout.
 				if ( ! $this->is_valid_post_type( $id ) ) {
 					return $this->check;
