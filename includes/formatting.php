@@ -555,7 +555,7 @@ function give_currency_filter( $price = '', $currency = '', $decode_currency = f
 		case 'MAD' :
 		case 'KRW' :
 		case 'ZAR' :
-			$formatted = ( 'before' === $position ? $symbol . $price : $price . $symbol );
+			$formatted = ( 'before' === $position ? $symbol . '&#x200e;' . $price : $price . '&#x200f;' . $symbol );
 			break;
 		case 'NOK' :
 			$formatted = ( 'before' === $position ? $symbol . ' ' . $price : $price . ' ' . $symbol );
