@@ -190,7 +190,7 @@ function _give_register_admin_notices() {
 						'type'        => 'updated',
 						'description' => _n(
 							'Donation status updated successfully.',
-							'Donations status updated successfully.',
+							'Donation statuses updated successfully.',
 							$payment_count,
 							'give'
 						),
