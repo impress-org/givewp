@@ -505,7 +505,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 					</fieldset>
 
 					<p class="submit inline-edit-save">
-						<button type="button" class="button cancel alignleft">Cancel</button>
+						<button type="button" id="give-bulk-delete-cancel" class="button cancel alignleft">Cancel</button>
 						<input type="hidden" name="give_action" value="delete_donor"/>
 						<input type="submit" id="give-bulk-delete-button" disabled class="button button-primary alignright" value="Delete">
 						<br class="clear">
