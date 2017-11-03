@@ -544,16 +544,17 @@ function give_format_decimal( $amount, $dp = false, $sanitize = true ) {
  *
  * @since 1.0
  *
- * @param string $price The donation amount.
- * @param string $currency The currency code.
- * @param bool   $decode_currency Whether to decode the currency HTML format or not.
+ * @param string         $price           The donation amount.
+ * @param string         $currency        The currency code.
+ * @param bool           $decode_currency Whether to decode the currency HTML format or not.
+ * @param string|integer $form_id         Donation Form ID.
  *
  * @return mixed|string
  */
-function give_currency_filter( $price = '', $currency = '', $decode_currency = false ) {
+function give_currency_filter( $price = '', $currency = '', $decode_currency = false, $form_id = '' ) {
 
 	if ( empty( $currency ) || ! array_key_exists( (string) $currency, give_get_currencies() ) ) {
-		$currency = give_get_currency();
+		$currency = give_get_currency( $form_id );
 	}
 
 	$position = give_get_option( 'currency_position', 'before' );
