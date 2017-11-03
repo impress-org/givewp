@@ -280,49 +280,6 @@ class Give_Donor_List_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Process the Bulk Actions.
-	 *
-	 * @access public
-	 * @since  1.8.16
-	 *
-	 * @return void
-	 */
-	public function process_bulk_action() {
-		$ids    = isset( $_GET['donor'] ) ? $_GET['donor'] : false;
-		$action = $this->current_action();
-
-		if ( ! is_array( $ids ) ) {
-			$ids = array( $ids );
-		}
-
-		// Bail Out, If Action is not set.
-		if ( empty( $action ) ) {
-			return;
-		}
-
-		// Convert strings to int.
-		$ids = array_map( 'absint', $ids );
-
-
-		// Detect when a bulk action is being triggered.
-		switch ( $this->current_action() ) {
-
-			case 'delete':
-				$args = array(
-					'_wpnonce'  => wp_create_nonce( 'delete-bulk-donors' ),
-					'donor_ids' => $ids,
-				);
-				$message = give_delete_donor( $args );
-				$redirect_url = add_query_arg( 'give-message', $message, admin_url( 'edit.php?post_type=give_forms&page=give-donors' ) );
-//wp_safe_redirect( esc_url($redirect_url) );
-				//wp_safe_redirect( add_query_arg( array( 'give-message' => 'delete-donor' ), $url ) );
-				break;
-
-		} // End switch().
-
-	}
-
-	/**
 	 * Generate the table navigation above or below the table
 	 *
 	 * @param string $which Position to trigger i.e. Top/Bottom.
@@ -541,8 +498,6 @@ class Give_Donor_List_Table extends WP_List_Table {
 		$sortable = $this->get_sortable_columns();
 
 		$this->_column_headers = array( $columns, $hidden, $sortable );
-
-		$this->process_bulk_action();
 
 		$this->items = $this->donor_data();
 
