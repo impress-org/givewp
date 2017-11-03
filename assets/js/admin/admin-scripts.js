@@ -1341,7 +1341,7 @@ var give_setting_edit = false;
 				var donorId   = $( this ).closest( 'tr' ).data( 'id' ),
 					donorName = $( this ).closest( 'tr' ).data( 'name' ),
 					donorHtml = '<div id="give-donor-' + donorId + '">' +
-					'<a data-id="' + donorId + '" class="give-skip-donor" title="Remove From Bulk Delete">X</a>' +
+					'<a data-id="' + donorId + '" class="give-skip-donor" title="' + give_vars.remove_from_bulk_delete + '">X</a>' +
 					donorName + '</div>';
 
 				if( $( this ).is( ':checked' ) ) {
