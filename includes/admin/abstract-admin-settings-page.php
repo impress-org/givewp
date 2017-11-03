@@ -77,18 +77,17 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 			// Output section only if exist.
 			$sections = $this->get_sections();
 			if ( ! empty( $sections ) ) {
-				add_action(
-					"{$this->current_setting_page}_sections_{$this->id}_page",
-					array(
-						$this,
-						'output_sections',
-					) );
+				add_action( "{$this->current_setting_page}_sections_{$this->id}_page", array(
+					$this,
+					'output_sections',
+				) );
 			}
 
-			// Add saving feature only if enabled.
+			// Save hide button by default.
 			$GLOBALS['give_hide_save_button'] = true;
+
+			// Enable saving feature.
 			if ( $this->enable_save ) {
-				$GLOBALS['give_hide_save_button'] = false;
 				add_action( "{$this->current_setting_page}_save_{$this->id}", array( $this, 'save' ) );
 			}
 		}
@@ -200,10 +199,16 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 		/**
 		 * Output the settings.
 		 *
+		 * Note: if you want to overwrite this function then manage show/hide save button in your class.
+		 *
 		 * @since  1.8
 		 * @return void
 		 */
 		public function output() {
+			if ( $this->enable_save ) {
+				$GLOBALS['give_hide_save_button'] = false;
+			}
+
 			$settings = $this->get_settings();
 
 			Give_Admin_Settings::output_fields( $settings, 'give_settings' );
