@@ -606,7 +606,7 @@ add_action( 'give_set_donor_primary_email', 'give_set_donor_primary_email', 10 )
  *
  * @since 1.8.17
  *
- * @return bool
+ * @return void
  */
 function give_delete_donor( $args ) {
 
