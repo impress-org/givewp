@@ -618,9 +618,11 @@ function give_delete_donor( $args ) {
 		) );
 	}
 
-	$give_message = array();
-	$donor_ids    = ( is_array( $_GET['donor'] ) && count( $_POST['donor'] ) > 0 ) ? $_POST['donor'] : array();
-	$nonce        = $args['_wpnonce'];
+	$give_message     = array();
+	$donor_ids        = ( is_array( $_GET['donor'] ) && count( $_GET['donor'] ) > 0 ) ? $_GET['donor'] : array();
+	$delete_donor     = ! empty( $_GET['give-delete-donor-confirm'] ) ? $_GET['give-delete-donor-confirm'] : '';
+	$delete_donations = ! empty( $_GET['give-delete-donor-records'] ) ? $_GET['give-delete-donor-records'] : '';
+	$nonce            = $args['_wpnonce'];
 
 	// Verify Nonce for deleting bulk donors.
 	if ( ! wp_verify_nonce( $nonce, 'bulk-donors' ) ) {
@@ -634,20 +636,36 @@ function give_delete_donor( $args ) {
 			$donor = new Give_Donor( $donor_id );
 
 			if ( $donor->id > 0 ) {
-				$donation_ids  = explode( ',', $donor->payment_ids );
-				$donor_deleted = Give()->donors->delete( $donor->id );
-				if ( $donor_deleted ) {
 
-					// Remove all donations, logs, etc.
-					foreach ( $donation_ids as $donation_id ) {
-						give_delete_donation( $donation_id );
+				if( $delete_donor ) {
+					$donor_deleted = Give()->donors->delete( $donor->id );
+
+					if ( $donor_deleted ) {
+						$donation_ids  = explode( ',', $donor->payment_ids );
+
+						if( $delete_donations ) {
+
+							// Remove all donations, logs, etc.
+							foreach ( $donation_ids as $donation_id ) {
+								give_delete_donation( $donation_id );
+							}
+
+							$give_message = 'donor-donations-deleted';
+						} else {
+
+							// Just set the donations to customer_id of 0.
+							foreach ( $donation_ids as $donation_id ) {
+								give_update_payment_meta( $donation_id, '_give_payment_customer_id', 0 );
+							}
+
+							$give_message = 'donor-deleted';
+						}
+					} else {
+						$give_message = 'donor-delete-failed';
 					}
-
-					$give_message = 'delete-donor';
 				} else {
-					$give_message = 'donor-delete-failed';
+					$give_message = 'confirm-delete-donor';
 				}
-
 			} else {
 				$give_message = 'invalid-donor-id';
 			}
