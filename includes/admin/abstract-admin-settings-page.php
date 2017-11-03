@@ -200,6 +200,42 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 			 */
 			do_action( 'give_update_options_' . $this->id . '_' . $current_section );
 		}
+
+		/**
+		 * Get heading labels
+		 *
+		 * @since  1.8.7
+		 * @access private
+		 *
+		 * @return array
+		 */
+		private function get_heading() {
+			$heading[]       = give_get_admin_page_parent_title();
+			$heading[]       = $this->label;
+			$section         = $this->get_sections();
+			$current_section = give_get_current_setting_section();
+
+			if ( array_key_exists( $current_section, $section ) ) {
+				$heading[] = $section[ $current_section ];
+			}
+
+			return $heading;
+		}
+
+		/**
+		 * Get heading html
+		 *
+		 * @since  1.8.7
+		 * @access private
+		 *
+		 * @return string
+		 */
+		public function get_heading_html() {
+			return sprintf(
+				'<h1 class="wp-heading-inline">%s</h1><hr class="wp-header-end">',
+				implode( ' > ', $this->get_heading() )
+			);
+		}
 	}
 
 endif;
