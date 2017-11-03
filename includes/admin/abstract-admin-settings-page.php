@@ -238,7 +238,7 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 		 * @return array
 		 */
 		private function get_heading() {
-			$heading[]       = give_get_admin_page_parent_title();
+			$heading[]       = give_get_admin_page_menu_title();
 			$heading[]       = $this->label;
 			$section         = $this->get_sections();
 			$current_section = give_get_current_setting_section();
