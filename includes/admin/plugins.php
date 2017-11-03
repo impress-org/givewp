@@ -83,50 +83,33 @@ add_filter( 'plugin_row_meta', 'give_plugin_row_meta', 10, 2 );
 
 
 /**
- * Get the Parent Page Title in admin section.
+ * Get the Parent Page Menu Title in admin section.
  * Based on get_admin_page_title WordPress Function.
  *
- * @since 1.8.16
+ * @since 1.8.17
  *
- * @global string $title
- * @global array  $menu
  * @global array  $submenu
- * @global string $pagenow
  * @global string $plugin_page
- * @global string $typenow
  *
  * @return string $title Page title
  */
 function give_get_admin_page_menu_title() {
 	$title = '';
-	global $menu, $submenu, $pagenow, $plugin_page, $typenow;
-	$hook    = get_plugin_page_hook( $plugin_page, $pagenow );
-	$parent  = get_admin_page_parent();
-	$parent1 = $parent;
-	foreach ( array_keys( $submenu ) as $parent ) {
-		foreach ( $submenu[ $parent ] as $submenu_array ) {
-			if ( isset( $plugin_page ) &&
-			     ( $plugin_page === $submenu_array[2] ) &&
-			     (
-				     ( $parent === $pagenow ) ||
-				     ( $parent === $plugin_page ) ||
-				     ( $plugin_page === $hook ) ||
-				     ( $pagenow === 'admin.php' && $parent1 !== $submenu_array[2] ) ||
-				     ( ! empty( $typenow ) && $parent === $pagenow . '?post_type=' . $typenow )
-			     )
-			) {
-				$title = $submenu_array[0];
+	global $submenu, $plugin_page;
 
-				return $submenu_array[0];
-			}
-			if ( $submenu_array[2] !== $pagenow || isset( $_GET['page'] ) ) { // not the current page
+	foreach ( array_keys( $submenu ) as $parent ) {
+		if( 'edit.php?post_type=give_forms' !== $parent ) {
+			continue;
+		}
+
+		foreach ( $submenu[ $parent ] as $submenu_array ) {
+			if( $plugin_page !== $submenu_array[2] ){
 				continue;
 			}
-			if ( isset( $submenu_array[0] ) ) {
-				$title = $submenu_array[0];
-			} else {
-				$title = $submenu_array[3];
-			}
+
+			$title = isset( $submenu_array[0] ) ?
+				$submenu_array[0] :
+				$submenu_array[3];
 		}
 	}
 
