@@ -1345,14 +1345,14 @@ var give_setting_edit = false;
 					donorName + '</div>';
 
 				if( $( this ).is( ':checked' ) ) {
-					$('#give-bulk-donors').append( donorHtml );
+					$( '#give-bulk-donors' ).append( donorHtml );
 				} else {
-					$('#give-bulk-donors').find( '#give-donor-' + donorId ).remove();
+					$( '#give-bulk-donors' ).find( '#give-donor-' + donorId ).remove();
 				}
 			});
 
 			// CheckBox click event to confirm deletion of donor.
-			$body.on( 'click', '#give-delete-donor-confirm', function(){
+			$body.on( 'click', '#give-delete-donor-confirm', function() {
 				if( $( this ).is( ':checked' ) ) {
 					$('#give-bulk-delete-button').removeAttr( 'disabled' );
 				} else {
@@ -1364,8 +1364,8 @@ var give_setting_edit = false;
 			// CheckBox click event to delete records with donor.
 			$body.on( 'click', '#give-delete-donor-records', function() {
 				if( $( this ).is(':checked') ) {
-					$('#give-delete-donor-confirm').attr('checked', 'checked');
-					$('#give-bulk-delete-button').removeAttr( 'disabled' );
+					$( '#give-delete-donor-confirm' ).attr( 'checked', 'checked' );
+					$( '#give-bulk-delete-button' ).removeAttr( 'disabled' );
 				}
 			});
 
@@ -1373,12 +1373,12 @@ var give_setting_edit = false;
 			$body.on( 'click', '.give-skip-donor', function() {
 				var donorId = $( this ).data( 'id' );
 				$( '#give-donor-' + donorId ).remove();
-				$( '#donor-' + donorId ).find( 'input[type="checkbox"]').removeAttr( 'checked' );
+				$( '#donor-' + donorId ).find( 'input[type="checkbox"]' ).removeAttr( 'checked' );
 			});
 
 			// Cancel button click event for donor.
 			$body.on( 'click', '#give-bulk-delete-cancel', function( e ) {
-				$( '#give-bulk-delete' ).slideUp( '2000' );
+				$( '#give-bulk-delete' ).slideUp( 'slow' );
 				e.preventDefault();
 			});
 
@@ -1395,7 +1395,7 @@ var give_setting_edit = false;
 				donors              = [],
 				confirmActionNotice = give_vars.donors_bulk_action[currentAction].zero;
 				
-			$.each($("input[name='donor[]']:checked"), function(){
+			$.each( $( "input[name='donor[]']:checked" ), function() {
 				donors.push( $( this ).val() );
 			});
 
