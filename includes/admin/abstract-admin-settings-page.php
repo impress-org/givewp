@@ -92,6 +92,14 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 			}
 		}
 
+
+		/**
+		 * Get setting id
+		 *
+		 * @since  1.8.17
+		 * @access public
+		 * @return string
+		 */
 		public function get_id() {
 			return $this->id;
 		}
