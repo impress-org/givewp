@@ -333,11 +333,10 @@ function give_load_admin_scripts( $hook ) {
 		'search_placeholder_donor'          => __( 'Type to search all donors', 'give' ),
 		'search_placeholder_country'        => __( 'Type to search all countries', 'give' ),
 		'search_placeholder_state'          => __( 'Type to search all states/provinces', 'give' ),
+		'remove_from_bulk_delete'           => __( 'Remove from Bulk Delete', 'give' ),
 		'donors_bulk_action'                => array(
 			'delete' => array(
 				'zero'     => __( 'You must choose at least one or more donors to delete.', 'give' ),
-				'single'   => __( 'Are you sure you want to permanently delete this donor and associated records?', 'give' ),
-				'multiple' => __( 'Are you sure you want to permanently delete the selected {donor_count} donors and associated records?', 'give' ),
 			),
 		),
 		'donations_bulk_action'             => array(
