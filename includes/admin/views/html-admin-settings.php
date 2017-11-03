@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Bailout: Do not output anything if setting tab is not defined.
-if( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs ) ) :
+if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs ) ) :
 	/**
 	 * Filter the form action.
 	 *
@@ -17,7 +17,7 @@ if( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs 
 	 *
 	 * @since 1.8
 	 */
-	$form_method    = apply_filters( self::$setting_filter_prefix . '_form_method_tab_' . $current_tab, 'post' );
+	$form_method = apply_filters( self::$setting_filter_prefix . '_form_method_tab_' . $current_tab, 'post' );
 
 	/**
 	 * Filter the main form tab.
@@ -29,14 +29,28 @@ if( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs 
 	 *
 	 * @since 1.8
 	 */
-	$form_open_tag  = apply_filters( self::$setting_filter_prefix . '_open_form', '<form method="' . $form_method  . '" id="give-mainform" action="" enctype="multipart/form-data">' );
+	$form_open_tag  = apply_filters( self::$setting_filter_prefix . '_open_form', '<form method="' . $form_method . '" id="give-mainform" action="" enctype="multipart/form-data">' );
 	$form_close_tag = apply_filters( self::$setting_filter_prefix . '_close_form', '</form>' );
 	?>
 	<div class="wrap give-settings-page <?php echo self::$setting_filter_prefix . '-setting-page'; ?>">
-		<?php echo $form_open_tag; ?>
-		<h1 class="wp-heading-inline"><?php echo esc_html( $tabs[ $current_tab ] ); ?></h1>
 		<?php
-		// Show messages.
+		echo $form_open_tag;
+
+		/* @var Give_Settings_Page $current_setting_obj */
+		if (
+			! empty( $current_setting_obj ) &&
+			method_exists( $current_setting_obj, 'get_heading_html' )
+		) {
+			echo $current_setting_obj->get_heading_html();
+		} else {
+
+			// Backward compatibility.
+			echo sprintf(
+				'<h1 class="wp-heading-inline">%s</h1><hr class="wp-header-end">',
+				esc_html( $tabs[ $current_tab ] )
+			);
+		}
+
 		self::show_messages();
 		?>
 
@@ -61,7 +75,8 @@ if( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs 
 			?>
 		</div>
 		<div class="give-sub-nav-tab-wrapper">
-			<a href="#" id="give-show-sub-nav" class="nav-tab give-not-tab" title="<?php _e( 'View remaining setting tabs', 'give' ); ?>"><span class="dashicons dashicons-arrow-down-alt2"></span></span></a>
+			<a href="#" id="give-show-sub-nav" class="nav-tab give-not-tab" title="<?php _e( 'View remaining setting tabs', 'give' ); ?>"><span class="dashicons dashicons-arrow-down-alt2"></span></span>
+			</a>
 			<nav class="give-sub-nav-tab give-hidden"></nav>
 		</div>
 		<?php
@@ -91,7 +106,7 @@ if( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs 
 		if ( empty( $GLOBALS['give_hide_save_button'] ) ) : ?>
 			<div class="give-submit-wrap">
 				<?php wp_nonce_field( 'give-save-settings', '_give-save-settings' ); ?>
-				<input name="save" class="button-primary give-save-button" type="submit" value="<?php _e( 'Save changes', 'give' ); ?>" />
+				<input name="save" class="button-primary give-save-button" type="submit" value="<?php _e( 'Save changes', 'give' ); ?>"/>
 			</div>
 		<?php endif; ?>
 		<?php echo $form_close_tag; ?>
