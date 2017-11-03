@@ -602,6 +602,8 @@ add_action( 'give_set_donor_primary_email', 'give_set_donor_primary_email', 10 )
 /**
  * Delete Donor using Bulk Actions.
  *
+ * @param array $args An array of donor arguments.
+ *
  * @since 1.8.17
  *
  * @return bool
