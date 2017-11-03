@@ -1331,6 +1331,7 @@ var give_setting_edit = false;
 		bulkDeleteDonor: function() {
 			var $body = $( 'body' );
 
+			// Select All checkbox.
 			$body.on( 'click', '#cb-select-all-1, #cb-select-all-2', function() {
 				$( '#give-donors-filter tbody input[type="checkbox"]' ).trigger( 'click' );
 			});
