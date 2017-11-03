@@ -1167,6 +1167,9 @@ var give_setting_edit = false;
 			this.change_country();
 			this.add_note();
 			this.delete_checked();
+			this.bulkDeleteDonor();
+			//this.confirmDeleteDonor();
+			//this.deleteDonor();
 			$( 'body' ).on( 'click', '#give-donors-filter .bulkactions input[type="submit"]', this.handleBulkActions ) ;
 		},
 		edit_donor: function () {
@@ -1327,23 +1330,108 @@ var give_setting_edit = false;
 			});
 		},
 
-		handleBulkActions: function() {
-			var currentAction       = $( this ).closest( '.tablenav' ).find( 'select' ).val(),
-				$donors             = $( 'input[name="donor[]"]:checked' ).length,
-				confirmActionNotice = give_vars.donors_bulk_action[currentAction].zero;
+		bulkDeleteDonor: function() {
+			var $body = $( 'body' );
 
-			// Check if admin selected any donors or not.
-			if ( ! parseInt( $donors ) ) {
+			// On checking checkbox, add to bulk delete donor.
+			$body.on( 'click', 'input[type="checkbox"]', function() {
+				var donorId   = $( this ).closest( 'tr' ).data( 'id' ),
+					donorName = $( this ).closest( 'tr' ).data( 'name' ),
+					donorHtml = '<div id="give-donor-' + donorId + '">' +
+					'<a data-id="' + donorId + '" class="give-skip-donor" title="Remove From Bulk Delete">X</a>' +
+					donorName + '</div>';
+
+				if( $( this ).is( ':checked' ) ) {
+					$('#give-bulk-donors').append( donorHtml );
+				} else {
+					$('#give-bulk-donors').find( '#give-donor-' + donorId ).remove();
+				}
+			});
+
+			// Skip Donor from Bulk Delete List.
+			$body.on( 'click', '.give-skip-donor', function() {
+				var donorId = $( this ).data( 'id' );
+				$( '#give-donor-' + donorId ).remove();
+				$( '#donor-' + donorId ).find( 'input[type="checkbox"]').removeAttr( 'checked' );
+			});
+		},
+
+		confirmDeleteDonor: function() {
+			$( 'body' ).on( 'click', '#give-delete-donor-records', function() {
+				if( $( this ).is(':checked') ) {
+					$('#give-delete-donor-confirm').attr('checked', 'checked');
+				}
+			});
+		},
+
+		deleteDonor: function() {
+			$( 'body' ).on( 'click', '#give-bulk-delete', function( e ) {
+				var donors = [];
+
+				$.each($("input[name='donor[]']:checked"), function(){
+					donors.push( $( this ).val() );
+				});
+
+				var data = {
+					'action'    : 'give_delete_donor',
+					'donor_ids' : donors
+				};
+
+				jQuery.post( ajaxurl, data, function(response) {
+					window.location.href = response;
+					//$form.find('#the-list').find( '#bulk-delete' ).html(response);
+				});
+				e.preventDefault();
+			});
+		},
+
+		handleBulkActions: function( e ) {
+
+			var currentAction       = $( this ).closest( '.tablenav' ).find( 'select' ).val(),
+				donors              = [],
+				confirmActionNotice = give_vars.donors_bulk_action[currentAction].zero,
+				$form               = $( this ).closest( '#give-donors-filter' );
+
+			$.each($("input[name='donor[]']:checked"), function(){
+				donors.push( $( this ).val() );
+			});
+
+			// If there is no donor selected the show an alert.
+			if ( ! parseInt( donors ) ) {
 				alert( confirmActionNotice );
 				return false;
 			}
 
-			// Get message on basis of donors count.
-			confirmActionNotice = ( 1 < $donors ) ?
-				give_vars.donors_bulk_action[currentAction].multiple.replace( '{donor_count}', $donors ) :
-				give_vars.donors_bulk_action[currentAction].single;
+			var data   = {
+				'action'    : 'give_bulk_delete_donor',
+				'donor_ids' : donors
+			};
 
-			return window.confirm( confirmActionNotice );
+			jQuery.post( ajaxurl, data, function(response) {
+				$form.find('#the-list').find( '#bulk-delete' ).html(response);
+			});
+			e.preventDefault();
+
+//inline-edit-row inline-edit-row-page inline-edit-page bulk-edit-row bulk-edit-row-page bulk-edit-page inline-editor
+			//var currentAction       = $( this ).closest( '.tablenav' ).find( 'select' ).val()
+
+
+			// var currentAction       = $( this ).closest( '.tablenav' ).find( 'select' ).val(),
+			// 	$donors             = $( 'input[name="donor[]"]:checked' ).length,
+			// 	confirmActionNotice = give_vars.donors_bulk_action[currentAction].zero;
+			//
+			// // Check if admin selected any donors or not.
+			// if ( ! parseInt( $donors ) ) {
+			// 	alert( confirmActionNotice );
+			// 	return false;
+			// }
+			//
+			// // Get message on basis of donors count.
+			// confirmActionNotice = ( 1 < $donors ) ?
+			// 	give_vars.donors_bulk_action[currentAction].multiple.replace( '{donor_count}', $donors ) :
+			// 	give_vars.donors_bulk_action[currentAction].single;
+			//
+			// return window.confirm( confirmActionNotice );
 
 		}
 	};

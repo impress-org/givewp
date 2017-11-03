@@ -343,6 +343,15 @@ function _give_register_admin_notices() {
 					) );
 					break;
 
+				case 'donor-delete-failed' :
+					Give()->notices->register_notice( array(
+						'id'          => 'give-donor-delete-failed',
+						'type'        => 'error',
+						'description' => __( 'Unable to delete donor.', 'give' ),
+						'show'        => true,
+					) );
+					break;
+
 				case 'email-added' :
 					Give()->notices->register_notice( array(
 						'id'          => 'give-donor-email-added',

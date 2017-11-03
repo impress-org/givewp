@@ -169,14 +169,12 @@ function give_connect_user_donor_profile( $donor, $donor_data, $address ) {
 /**
  * Delete Donor using Bulk Actions.
  *
- * @param int   $donor_id Donor ID.
- * @param array $args     An Array of Additional Donor Arguments.
- *
  * @since 1.8.17
  *
  * @return bool
  */
-function give_delete_bulk_donors( $donor_id, $args ) {
+function give_delete_donor( $args ) {
+
 	$donor_edit_role = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
 
 	if ( ! is_admin() || ! current_user_can( $donor_edit_role ) ) {
@@ -185,12 +183,8 @@ function give_delete_bulk_donors( $donor_id, $args ) {
 		) );
 	}
 
-	// Bail Out, if Donor ID doesn't exists.
-	if ( empty( $donor_id ) ) {
-		return false;
-	}
-
-	$nonce = $args['_wpnonce'];
+	$donor_ids = ( is_array( $args['donor_ids'] ) && count( $args['donor_ids'] ) > 0 ) ? $args['donor_ids'] : array();
+	$nonce     = $args['_wpnonce'];
 
 	// Verify Nonce for deleting bulk donors.
 	if ( ! wp_verify_nonce( $nonce, 'delete-bulk-donors' ) ) {
@@ -199,26 +193,110 @@ function give_delete_bulk_donors( $donor_id, $args ) {
 		) );
 	}
 
-	$donor = new Give_Donor( $donor_id );
+	$give_message = array();
+	$redirect_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors' );
 
-	if ( $donor->id > 0 ) {
-		$payments_ids  = explode( ',', $donor->payment_ids );
-		$donor_deleted = Give()->donors->delete( $donor->id );
+	if( count( $donor_ids ) > 0 ) {
+		foreach ( $donor_ids as $donor_id ) {
+			$donor = new Give_Donor( $donor_id );
 
-		if ( $donor_deleted ) {
+			if ( $donor->id > 0 ) {
+				$donation_ids = explode( ',', $donor->payment_ids );
+				//$donor_deleted = Give()->donors->delete( $donor->id );
+				$donor_deleted = false;
+				if ( $donor_deleted ) {
 
-			// Remove all donations, logs, etc.
-			foreach ( $payments_ids as $payment_id ) {
-				give_delete_donation( $payment_id );
-			}
-		} else {
+					// Remove all donations, logs, etc.
+					foreach ( $donation_ids as $donation_id ) {
+						give_delete_donation( $donation_id );
+					}
 
-			// Just set the donations to customer_id of 0.
-			foreach ( $payments_ids as $payment_id ) {
-				give_update_payment_meta( $payment_id, '_give_payment_customer_id', 0 );
+					$give_message = 'delete-donor';
+					//$give_message['delete-donor']['count'] = 0;
+
+				} else {
+					$give_message = 'donor-delete-failed';
+					//$give_message['donor-delete-failed']['count'] = 0;
+					//$redirect_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&give-message=donor-delete-failed' );
+
+				}
+
+			} else {
+				$give_message = 'invalid-donor-id';
+				//$give_message['invalid-donor-id']['count']   = 0;
+				//$give_message = 'invalid-donor-id';
+				//$redirect_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&give-message=invalid-donor-id' );
 			}
 		}
-
 	}
+// $redirect_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&give-message=invalid-donor-id' );
+	//echo "<pre>"; print_R($give_message);
+	//add_query_arg( 'give-message', $give_message, $redirect_url );
+	return $give_message;
+	give_die();
+
 
 }
+
+add_filter( 'handle_bulk_actions-edit-post', 'my_bulk_action_handler', 10, 3 );
+
+function my_bulk_action_handler( $redirect_to, $action, $post_ids ) {
+	var_dump($action); give_die();
+}
+
+//add_action( 'give_delete_donor', 'give_delete_donor' );
+
+function give_bulk_delete_donor() {
+	$donor_ids = $_POST['donor_ids'];
+	?>
+	<td colspan="6" class="colspanchange">
+
+		<fieldset class="inline-edit-col-left">
+			<legend class="inline-edit-legend"><?php _e( 'BULK DELETE', 'give' ); ?></legend>
+			<div class="inline-edit-col">
+				<div id="bulk-title-div">
+					<div id="bulk-titles">
+						<?php
+						if ( count( $donor_ids ) > 0 ) {
+							foreach( $donor_ids as $donor_id ) {
+								?>
+								<div id="give-donor-<?php echo $donor_id; ?>">
+									<a data-id="<?php echo $donor_id; ?>" class="give-skip-donor" title="Remove From Bulk Delete">X</a>
+									<input type="hidden" name="donor[]" value="<?php echo $donor_id; ?>" />
+									<?php echo give_get_donor_name_by( $donor_id, 'donor' ); ?>
+								</div>
+								<?php
+							}
+						} else {
+							_e( 'No Donors', 'give' );
+						}
+						?>
+					</div>
+				</div>
+		</fieldset>
+
+		<fieldset class="inline-edit-col-right">
+			<div class="inline-edit-col">
+				<label>
+					<input id="give-delete-donor-confirm" type="checkbox" name="give-delete-donor-confirm"/>
+					<?php _e( 'Are you sure you want to delete the selected donor(s)?', 'give' ); ?>
+				</label>
+				<label>
+					<input id="give-delete-donor-records" type="checkbox" name="give-delete-donor-records"/>
+					<?php _e( 'Delete all associated donations and records?', 'give' ); ?>
+				</label>
+			</div>
+		</fieldset>
+
+		<p class="submit inline-edit-save">
+			<button type="button" class="button cancel alignleft">Cancel</button>
+			<input type="button" name="bulk_delete" id="give-bulk-delete" class="button button-primary alignright" value="Delete">
+			<br class="clear">
+		</p>
+	</td>
+
+	<?php
+}
+
+//add_action( 'wp_ajax_give_bulk_delete_donor' ,'give_bulk_delete_donor' );
+//add_action( 'wp_ajax_nopriv_give_bulk_delete_donor' ,'give_bulk_delete_donor' );
