@@ -23,14 +23,6 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 	class Give_Settings_License extends Give_Settings_Page {
 
 		/**
-		 * Flag to check if enable saving option for setting page or not
-		 *
-		 * @since 1.8.17
-		 * @var bool
-		 */
-		protected $enable_save = false;
-
-		/**
 		 * Constructor.
 		 */
 		public function __construct() {
