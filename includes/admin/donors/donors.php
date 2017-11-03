@@ -85,7 +85,7 @@ function give_donors_list() {
 
 		<hr class="wp-header-end">
 
-		<form id="give-donors-filter" method="get" action="<?php //echo admin_url( 'edit.php?post_type=give_forms&page=give-donors' ); ?>">
+		<form id="give-donors-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors' ); ?>">
 			<?php $donors_table->display(); ?>
 			<input type="hidden" name="post_type" value="give_forms" />
 			<input type="hidden" name="page" value="give-donors" />

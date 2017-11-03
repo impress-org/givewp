@@ -184,10 +184,11 @@ function give_delete_donor( $args ) {
 	}
 
 	$donor_ids = ( is_array( $args['donor_ids'] ) && count( $args['donor_ids'] ) > 0 ) ? $args['donor_ids'] : array();
+	$donor_ids = ( is_array( $_GET['donor'] ) && count( $_POST['donor'] ) > 0 ) ? $_POST['donor'] : array();
 	$nonce     = $args['_wpnonce'];
 
 	// Verify Nonce for deleting bulk donors.
-	if ( ! wp_verify_nonce( $nonce, 'delete-bulk-donors' ) ) {
+	if ( ! wp_verify_nonce( $nonce, 'bulk-donors' ) ) {
 		wp_die( __( 'Cheatin&#8217; uh?', 'give' ), __( 'Error', 'give' ), array(
 			'response' => 400,
 		) );
@@ -229,22 +230,17 @@ function give_delete_donor( $args ) {
 			}
 		}
 	}
-// $redirect_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&give-message=invalid-donor-id' );
+ $redirect_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&give-message=invalid-donor-id' );
 	//echo "<pre>"; print_R($give_message);
 	//add_query_arg( 'give-message', $give_message, $redirect_url );
-	return $give_message;
+	wp_redirect( $redirect_url);
+	//return $give_message;
 	give_die();
 
 
 }
 
-add_filter( 'handle_bulk_actions-edit-post', 'my_bulk_action_handler', 10, 3 );
-
-function my_bulk_action_handler( $redirect_to, $action, $post_ids ) {
-	var_dump($action); give_die();
-}
-
-//add_action( 'give_delete_donor', 'give_delete_donor' );
+add_action( 'give_delete_donor', 'give_delete_donor' );
 
 function give_bulk_delete_donor() {
 	$donor_ids = $_POST['donor_ids'];
