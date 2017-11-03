@@ -435,6 +435,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 			if ( $singular ) {
 				echo " data-wp-lists='list:$singular'";
 			} ?>>
+			<tr class="hidden"></tr>
 			<tr id="give-bulk-delete" class="inline-edit-row inline-edit-row-page inline-edit-page bulk-edit-row bulk-edit-row-page bulk-edit-page inline-editor" style="display: none;">
 				<td colspan="6" class="colspanchange">
 
@@ -462,8 +463,8 @@ class Give_Donor_List_Table extends WP_List_Table {
 					</fieldset>
 
 					<p class="submit inline-edit-save">
-						<button type="button" id="give-bulk-delete-cancel" class="button cancel alignleft">Cancel</button>
 						<input type="hidden" name="give_action" value="delete_donor"/>
+						<button type="button" id="give-bulk-delete-cancel" class="button cancel alignleft">Cancel</button>
 						<input type="submit" id="give-bulk-delete-button" disabled class="button button-primary alignright" value="Delete">
 						<br class="clear">
 					</p>
