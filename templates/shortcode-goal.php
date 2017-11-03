@@ -65,8 +65,8 @@ if ( $income >= $goal ) {
 				echo sprintf(
 				/* translators: 1: amount of income raised 2: goal target ammount */
 					__( '%1$s of %2$s raised', 'give' ),
-					'<span class="income">' . give_currency_filter( $income ) . '</span>',
-					'<span class="goal-text">' . give_currency_filter( $goal ) . '</span>'
+					'<span class="income">' . give_currency_filter( $income, '', false, $form_id ) . '</span>',
+					'<span class="goal-text">' . give_currency_filter( $goal, '', false, $form_id ) . '</span>'
 				);
 
 
