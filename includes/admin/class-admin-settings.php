@@ -229,7 +229,20 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			$current_tab = give_get_current_setting_tab();
 
 			// Include settings pages.
-			self::get_settings_pages();
+			$all_setting = self::get_settings_pages();
+
+			/* @var object $current_setting_obj */
+			$current_setting_obj = new StdClass;
+
+			foreach ( $all_setting as $setting ) {
+				if (
+					method_exists( $setting, 'get_id' ) &&
+					$current_tab === $setting->get_id()
+				) {
+					$current_setting_obj = $setting;
+					break;
+				}
+			}
 
 			// Save settings if data has been posted.
 			if ( ! empty( $_POST ) ) {
