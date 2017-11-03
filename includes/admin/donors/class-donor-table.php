@@ -152,7 +152,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 */
 	public function column_cb( $donor ){
 		return sprintf(
-			'<input type="checkbox" name="%1$s[]" value="%2$s" />',
+			'<input class="donor-selector" type="checkbox" name="%1$s[]" value="%2$s" />',
 			$this->_args['singular'],
 			$donor['id']
 		);
