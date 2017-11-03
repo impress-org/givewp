@@ -1168,8 +1168,6 @@ var give_setting_edit = false;
 			this.add_note();
 			this.delete_checked();
 			this.bulkDeleteDonor();
-			//this.confirmDeleteDonor();
-			//this.deleteDonor();
 			$( 'body' ).on( 'click', '#give-donors-filter .bulkactions input[type="submit"]', this.handleBulkActions ) ;
 		},
 		edit_donor: function () {
@@ -1370,27 +1368,6 @@ var give_setting_edit = false;
 				var donorId = $( this ).data( 'id' );
 				$( '#give-donor-' + donorId ).remove();
 				$( '#donor-' + donorId ).find( 'input[type="checkbox"]').removeAttr( 'checked' );
-			});
-		},
-
-		deleteDonor: function() {
-			$( 'body' ).on( 'click', '#give-bulk-delete', function( e ) {
-				var donors = [];
-
-				$.each($("input[name='donor[]']:checked"), function(){
-					donors.push( $( this ).val() );
-				});
-
-				var data = {
-					'action'    : 'give_delete_donor',
-					'donor_ids' : donors
-				};
-
-				jQuery.post( ajaxurl, data, function(response) {
-					window.location.href = response;
-					//$form.find('#the-list').find( '#bulk-delete' ).html(response);
-				});
-				e.preventDefault();
 			});
 		},
 
