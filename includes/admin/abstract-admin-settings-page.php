@@ -56,6 +56,14 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 		private $current_setting_page = null;
 
 		/**
+		 * Flag to check if enable saving option for setting page or not
+		 *
+		 * @since 1.8.17
+		 * @var bool
+		 */
+		protected $enable_save = true;
+
+		/**
 		 * Constructor.
 		 */
 		public function __construct() {
@@ -64,9 +72,29 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 
 			add_filter( "give_default_setting_tab_section_{$this->id}", array( $this, 'set_default_setting_tab' ), 10 );
 			add_filter( "{$this->current_setting_page}_tabs_array", array( $this, 'add_settings_page' ), 20 );
-			add_action( "{$this->current_setting_page}_sections_{$this->id}_page", array( $this, 'output_sections' ) );
 			add_action( "{$this->current_setting_page}_settings_{$this->id}_page", array( $this, 'output' ) );
-			add_action( "{$this->current_setting_page}_save_{$this->id}", array( $this, 'save' ) );
+
+			// Output section only if exist.
+			$sections = $this->get_sections();
+			if ( ! empty( $sections ) ) {
+				add_action(
+					"{$this->current_setting_page}_sections_{$this->id}_page",
+					array(
+						$this,
+						'output_sections',
+					) );
+			}
+
+			// Add saving feature only if enabled.
+			$GLOBALS['give_hide_save_button'] = true;
+			if ( $this->enable_save ) {
+				$GLOBALS['give_hide_save_button'] = false;
+				add_action( "{$this->current_setting_page}_save_{$this->id}", array( $this, 'save' ) );
+			}
+		}
+
+		public function get_id() {
+			return $this->id;
 		}
 
 		/**
