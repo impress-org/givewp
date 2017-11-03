@@ -1380,6 +1380,12 @@ var give_setting_edit = false;
 				$( '#give-bulk-delete' ).slideUp( '2000' );
 				e.preventDefault();
 			});
+
+			// Clicking Event to Delete Single Donor.
+			$body.on( 'click', '.give-single-donor-delete', function() {
+				$( this ).closest( 'tr' ).find( 'input[type="checkbox"]' ).trigger( 'click' );
+				$( '#give-bulk-delete' ).slideDown( 'slow' );
+			});
 		},
 
 		handleBulkActions: function( e ) {
