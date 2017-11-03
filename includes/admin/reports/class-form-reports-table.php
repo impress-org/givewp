@@ -198,7 +198,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 
 			<?php if ( 'top' === $which ) { ?>
 				<h2 class="alignleft reports-earnings-title screen-reader-text">
-					<?php esc_html_e( 'Donation Forms Report', 'give' ); ?>
+					<?php _e( 'Donation Forms Report', 'give' ); ?>
 				</h2>
 			<?php } ?>
 
