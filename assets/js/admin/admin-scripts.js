@@ -1334,7 +1334,7 @@ var give_setting_edit = false;
 			var $body = $( 'body' );
 
 			// On checking checkbox, add to bulk delete donor.
-			$body.on( 'click', 'input[type="checkbox"]', function() {
+			$body.on( 'click', '.check-column > input[type="checkbox"]', function() {
 				var donorId   = $( this ).closest( 'tr' ).data( 'id' ),
 					donorName = $( this ).closest( 'tr' ).data( 'name' ),
 					donorHtml = '<div id="give-donor-' + donorId + '">' +
@@ -1348,19 +1348,28 @@ var give_setting_edit = false;
 				}
 			});
 
+			// CheckBox click event to confirm deletion of donor.
+			$body.on( 'click', '#give-delete-donor-confirm', function(){
+				if( $( this ).is( ':checked' ) ) {
+					$('#give-bulk-delete-button').removeAttr( 'disabled' );
+				} else {
+					$('#give-bulk-delete-button').attr( 'disabled', true );
+					$( '#give-delete-donor-records' ).removeAttr( 'checked' );
+				}
+			});
+
+			// CheckBox click event to delete records with donor.
+			$body.on( 'click', '#give-delete-donor-records', function() {
+				if( $( this ).is(':checked') ) {
+					$('#give-delete-donor-confirm').trigger( 'click' ).attr('checked', 'checked');
+				}
+			});
+
 			// Skip Donor from Bulk Delete List.
 			$body.on( 'click', '.give-skip-donor', function() {
 				var donorId = $( this ).data( 'id' );
 				$( '#give-donor-' + donorId ).remove();
 				$( '#donor-' + donorId ).find( 'input[type="checkbox"]').removeAttr( 'checked' );
-			});
-		},
-
-		confirmDeleteDonor: function() {
-			$( 'body' ).on( 'click', '#give-delete-donor-records', function() {
-				if( $( this ).is(':checked') ) {
-					$('#give-delete-donor-confirm').attr('checked', 'checked');
-				}
 			});
 		},
 
