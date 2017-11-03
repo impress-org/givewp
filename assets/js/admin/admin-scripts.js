@@ -1331,8 +1331,12 @@ var give_setting_edit = false;
 		bulkDeleteDonor: function() {
 			var $body = $( 'body' );
 
+			$body.on( 'click', '#cb-select-all-1, #cb-select-all-2', function() {
+				$( '#give-donors-filter tbody input[type="checkbox"]' ).trigger( 'click' );
+			});
+
 			// On checking checkbox, add to bulk delete donor.
-			$body.on( 'click', '.check-column > input[type="checkbox"]', function() {
+			$body.on( 'click', '#give-donors-filter tbody .check-column > input[type="checkbox"]', function() {
 				var donorId   = $( this ).closest( 'tr' ).data( 'id' ),
 					donorName = $( this ).closest( 'tr' ).data( 'name' ),
 					donorHtml = '<div id="give-donor-' + donorId + '">' +
@@ -1359,7 +1363,8 @@ var give_setting_edit = false;
 			// CheckBox click event to delete records with donor.
 			$body.on( 'click', '#give-delete-donor-records', function() {
 				if( $( this ).is(':checked') ) {
-					$('#give-delete-donor-confirm').trigger( 'click' ).attr('checked', 'checked');
+					$('#give-delete-donor-confirm').attr('checked', 'checked');
+					$('#give-bulk-delete-button').removeAttr( 'disabled' );
 				}
 			});
 
