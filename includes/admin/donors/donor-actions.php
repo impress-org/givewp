@@ -616,9 +616,9 @@ function give_delete_donor( $args ) {
 		) );
 	}
 
-	$donor_ids = ( is_array( $args['donor_ids'] ) && count( $args['donor_ids'] ) > 0 ) ? $args['donor_ids'] : array();
-	$donor_ids = ( is_array( $_GET['donor'] ) && count( $_POST['donor'] ) > 0 ) ? $_POST['donor'] : array();
-	$nonce     = $args['_wpnonce'];
+	$give_message = array();
+	$donor_ids    = ( is_array( $_GET['donor'] ) && count( $_POST['donor'] ) > 0 ) ? $_POST['donor'] : array();
+	$nonce        = $args['_wpnonce'];
 
 	// Verify Nonce for deleting bulk donors.
 	if ( ! wp_verify_nonce( $nonce, 'bulk-donors' ) ) {
@@ -627,17 +627,13 @@ function give_delete_donor( $args ) {
 		) );
 	}
 
-	$give_message = array();
-	$redirect_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors' );
-
 	if( count( $donor_ids ) > 0 ) {
 		foreach ( $donor_ids as $donor_id ) {
 			$donor = new Give_Donor( $donor_id );
 
 			if ( $donor->id > 0 ) {
-				$donation_ids = explode( ',', $donor->payment_ids );
-				//$donor_deleted = Give()->donors->delete( $donor->id );
-				$donor_deleted = false;
+				$donation_ids  = explode( ',', $donor->payment_ids );
+				$donor_deleted = Give()->donors->delete( $donor->id );
 				if ( $donor_deleted ) {
 
 					// Remove all donations, logs, etc.
@@ -646,30 +642,18 @@ function give_delete_donor( $args ) {
 					}
 
 					$give_message = 'delete-donor';
-					//$give_message['delete-donor']['count'] = 0;
-
 				} else {
 					$give_message = 'donor-delete-failed';
-					//$give_message['donor-delete-failed']['count'] = 0;
-					//$redirect_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&give-message=donor-delete-failed' );
-
 				}
 
 			} else {
 				$give_message = 'invalid-donor-id';
-				//$give_message['invalid-donor-id']['count']   = 0;
-				//$give_message = 'invalid-donor-id';
-				//$redirect_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&give-message=invalid-donor-id' );
 			}
 		}
 	}
-	$redirect_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&give-message=invalid-donor-id' );
-	//echo "<pre>"; print_R($give_message);
-	//add_query_arg( 'give-message', $give_message, $redirect_url );
-	wp_redirect( $redirect_url);
-	//return $give_message;
-	give_die();
 
+	wp_redirect( add_query_arg( 'give-message', $give_message, admin_url( 'edit.php?post_type=give_forms&page=give-donors' ) ) );
+	give_die();
 
 }
 
