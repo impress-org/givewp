@@ -258,7 +258,7 @@ function give_get_country_list() {
 		'PG' => esc_html__( 'Papua New Guinea', 'give' ),
 		'PY' => esc_html__( 'Paraguay', 'give' ),
 		'PE' => esc_html__( 'Peru', 'give' ),
-		'PH' => esc_html__( 'Phillipines', 'give' ),
+		'PH' => esc_html__( 'Philippines', 'give' ),
 		'PN' => esc_html__( 'Pitcairn Island', 'give' ),
 		'PL' => esc_html__( 'Poland', 'give' ),
 		'PT' => esc_html__( 'Portugal', 'give' ),
