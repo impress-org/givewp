@@ -152,9 +152,10 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 */
 	public function column_cb( $donor ){
 		return sprintf(
-			'<input class="donor-selector" type="checkbox" name="%1$s[]" value="%2$s" />',
+			'<input class="donor-selector" type="checkbox" name="%1$s[]" value="%2$d" data-name="%3$s" />',
 			$this->_args['singular'],
-			$donor['id']
+			$donor['id'],
+			$donor['name']
 		);
 	}
 
@@ -436,7 +437,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 				echo " data-wp-lists='list:$singular'";
 			} ?>>
 			<tr class="hidden"></tr>
-			<tr id="give-bulk-delete" class="inline-edit-row inline-edit-row-page inline-edit-page bulk-edit-row bulk-edit-row-page bulk-edit-page inline-editor" style="display: none;">
+			<tr id="give-bulk-delete" class="inline-edit-row inline-edit-row-page inline-edit-page bulk-edit-row bulk-edit-row-page bulk-edit-page inline-editor" >
 				<td colspan="6" class="colspanchange">
 
 					<fieldset class="inline-edit-col-left">
