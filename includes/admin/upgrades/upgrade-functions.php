@@ -66,6 +66,9 @@ function give_do_automatic_upgrades() {
 			give_v1813_upgrades();
 			$did_upgrade = true;
 
+		case version_compare( $give_version, '1.8.17', '<' ) :
+			give_v1817_upgrades();
+			$did_upgrade = true;
 	}
 
 	if ( $did_upgrade ) {
@@ -150,6 +153,13 @@ function give_show_upgrade_notices( $give_updates ) {
 			'callback' => 'give_v1813_update_donor_user_roles_callback',
 		)
 	);
+
+	// v1.8.17 Upgrades for donations.
+	$give_updates->register( array(
+		'id'       => 'v1817_update_donation_iranian_currency_code',
+		'version'  => '1.8.17',
+		'callback' => 'give_v1817_update_donation_iranian_currency_code',
+	) );
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
@@ -1135,6 +1145,45 @@ function give_v1813_update_donor_user_roles_callback() {
 	}
 }
 
+/**
+ * Correct currency code for "Iranian Currency" for all of the payments.
+ *
+ * @since 1.8.17
+ */
+function give_v1817_update_donation_iranian_currency_code() {
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
+
+	// form query
+	$payments = new WP_Query( array(
+			'paged'          => $give_updates->step,
+			'status'         => 'any',
+			'order'          => 'ASC',
+			'post_type'      => array( 'give_payment' ),
+			'posts_per_page' => 20,
+		)
+	);
+
+	if ( $payments->have_posts() ) {
+		$give_updates->set_percentage( $payments->found_posts, ( $give_updates->step * 20 ) );
+
+		while( $payments->have_posts() ) {
+			$payments->the_post();
+
+			$payment_meta = give_get_payment_meta( get_the_ID() );
+
+			if ( 'RIAL' === $payment_meta['currency'] ) {
+				$payment_meta['currency'] = 'IRR';
+				give_update_meta( get_the_ID(), '_give_payment_meta', $payment_meta );
+			}
+
+		}
+
+	}else{
+		// The Update Ran.
+		give_set_upgrade_complete( 'v1817_update_donation_iranian_currency_code' );
+	}
+}
 
 /**
  * Version 1.8.13 automatic updates
@@ -1149,4 +1198,19 @@ function give_v1813_upgrades() {
 	$roles = new Give_Roles();
 	$roles->add_roles();
 	$roles->add_caps();
+}
+
+/**
+ * Correct currency code for "Iranian Currency" in Give setting.
+ * Version 1.8.17 automatic updates
+ *
+ * @since 1.8.17
+ */
+function give_v1817_upgrades() {
+	$give_settings = give_get_settings();
+
+	if ( 'RIAL' === $give_settings['currency'] ) {
+		$give_settings['currency'] = 'IRR';
+		update_option( 'give_settings', $give_settings );
+	}
 }

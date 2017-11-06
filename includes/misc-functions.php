@@ -369,7 +369,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 2,
 			),
 		),
-		'RIAL' => array(
+		'IRR' => array(
 			'admin_label' => __( 'Iranian Rial (﷼)', 'give' ),
 			'symbol'      => '&#xfdfc;',
 			'setting'     => array(
