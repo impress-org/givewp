@@ -469,12 +469,12 @@ function give_format_amount( $amount, $args = array() ) {
  * @param string $amount formatted amount number.
  * @param array  $args   Array of arguments.
  *
- * @return float|string  formatted amount number with large number names.
+ * @return string  formatted amount number with large number names.
  */
 function give_human_format_large_amount( $amount, $args = array() ) {
 	// Bailout.
 	if ( empty( $amount ) ) {
-		return '';
+		return '0';
 	};
 
 	// Set default currency;
