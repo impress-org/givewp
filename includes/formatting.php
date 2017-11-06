@@ -472,8 +472,11 @@ function give_format_amount( $amount, $args = array() ) {
  * @return string  formatted amount number with large number names.
  */
 function give_human_format_large_amount( $amount, $args = array() ) {
+	// Sanitize amount.
+	$sanitize_amount = give_maybe_sanitize_amount( $amount );
+
 	// Bailout.
-	if ( empty( $amount ) ) {
+	if ( ! floatval( $sanitize_amount ) ) {
 		return '0';
 	};
 
@@ -484,9 +487,6 @@ function give_human_format_large_amount( $amount, $args = array() ) {
 
 	// Get thousand separator.
 	$thousands_sep = give_get_price_thousand_separator();
-
-	// Sanitize amount.
-	$sanitize_amount = give_maybe_sanitize_amount( $amount );
 
 	// Explode amount to calculate name of large numbers.
 	$amount_array = explode( $thousands_sep, $amount );
