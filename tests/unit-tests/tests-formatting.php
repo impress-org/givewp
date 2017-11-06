@@ -356,7 +356,7 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 			array( '10000', array( '10,000.00', '10,000.00' ) ),
 			array( '100', array( '100.00', '100.00' ) ),
 			array( '0', array( '0', '0' ) ),
-			array( '0.000', array( '0.00', '0.00' ) ),
+			array( '0.000', array( '0', '0' ) ),
 		);
 	}
 
