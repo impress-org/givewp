@@ -183,7 +183,6 @@ function give_akismet_spam_check( $args ) {
 function give_bc_v1817_iranian_currency_code( $currencies ) {
 	if ( ! give_has_upgrade_completed( 'v1817_update_donation_iranian_currency_code' ) ) {
 		$currencies['RIAL'] = $currencies['IRR'];
-		unset( $currencies['IRR'] );
 	}
 
 	return $currencies;

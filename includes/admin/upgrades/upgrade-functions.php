@@ -1209,7 +1209,7 @@ function give_v1813_upgrades() {
 function give_v1817_upgrades() {
 	$give_settings = give_get_settings();
 
-	if ( give_has_upgrade_completed( 'v1817_update_donation_iranian_currency_code' ) && 'RIAL' === $give_settings['currency'] ) {
+	if ( 'RIAL' === $give_settings['currency'] ) {
 		$give_settings['currency'] = 'IRR';
 		update_option( 'give_settings', $give_settings );
 	}
