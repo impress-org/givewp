@@ -375,7 +375,7 @@ $payment_mode   = $payment->mode;
 													if ( empty( $var_prices ) ) {
 														esc_html_e( 'n/a', 'give' );
 													} else {
-														$prices_atts = '';
+														$prices_atts = array();
 														if( $variable_prices = give_get_variable_prices( $payment_meta['form_id'] ) ) {
 															foreach ( $variable_prices as $variable_price ) {
 																$prices_atts[$variable_price['_give_id']['level_id']] = give_format_amount( $variable_price['_give_amount'], array( 'sanitize' => false ) );
@@ -388,7 +388,7 @@ $payment_mode   = $payment->mode;
 															'chosen'           => true,
 															'show_option_all'  => '',
 															'show_option_none' => ( '' === get_post_meta( $payment_id, '_give_payment_price_id', true ) ? __( 'None', 'give' )  : '' ),
-															'select_atts'      => 'data-prices=' . esc_attr( json_encode( $prices_atts ) ),
+															'select_atts'      => 'data-prices=' . esc_attr( wp_json_encode( $prices_atts ) ),
 															'selected'         => $payment_meta['price_id'],
 														);
 														// Render variable prices select tag html.
