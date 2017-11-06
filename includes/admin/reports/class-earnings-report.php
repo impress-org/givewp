@@ -20,23 +20,15 @@ if ( ! class_exists( 'Give_Earnings_Report' ) ) :
 	 *
 	 * @sine 1.8
 	 */
-	class Give_Earnings_Report {
+	class Give_Earnings_Report extends Give_Settings_Page {
 
 		/**
-		 * Setting page id.
+		 * Flag to check if enable saving option for setting page or not
 		 *
-		 * @since 1.8
-		 * @var   string
+		 * @since 1.8.17
+		 * @var bool
 		 */
-		protected $id = '';
-
-		/**
-		 * Setting page label.
-		 *
-		 * @since 1.8
-		 * @var   string
-		 */
-		protected $label = '';
+		protected $enable_save = false;
 
 		/**
 		 * Constructor.
@@ -45,29 +37,17 @@ if ( ! class_exists( 'Give_Earnings_Report' ) ) :
 			$this->id    = 'earnings';
 			$this->label = esc_html__( 'Income', 'give' );
 
-			add_filter( 'give-reports_tabs_array', array( $this, 'add_settings_page' ), 20 );
-			add_action( "give-reports_settings_{$this->id}_page", array( $this, 'output' ) );
+			parent::__construct();
+
 			add_action( 'give_admin_field_report_earnings', array( $this, 'render_report_earnings_field' ), 10, 2 );
 
 			// Do not use main form for this tab.
-			if( give_get_current_setting_tab() === $this->id ) {
+			if ( give_get_current_setting_tab() === $this->id ) {
 				add_action( 'give-reports_open_form', '__return_empty_string' );
 				add_action( 'give-reports_close_form', '__return_empty_string' );
 			}
 		}
 
-		/**
-		 * Add this page to settings.
-		 *
-		 * @since  1.8
-		 * @param  array $pages Lst of pages.
-		 * @return array
-		 */
-		public function add_settings_page( $pages ) {
-			$pages[ $this->id ] = $this->label;
-
-			return $pages;
-		}
 
 		/**
 		 * Get settings array.
@@ -76,22 +56,20 @@ if ( ! class_exists( 'Give_Earnings_Report' ) ) :
 		 * @return array
 		 */
 		public function get_settings() {
-			// Hide save button.
-			$GLOBALS['give_hide_save_button'] = true;
-
 			/**
 			 * Filter the settings.
 			 *
 			 * @since  1.8
+			 *
 			 * @param  array $settings
 			 */
 			$settings = apply_filters(
 				'give_get_settings_' . $this->id,
 				array(
 					array(
-						'id'   => 'give_tools_earnings',
-						'type' => 'title',
-						'table_html' => false
+						'id'         => 'give_tools_earnings',
+						'type'       => 'title',
+						'table_html' => false,
 					),
 					array(
 						'id'   => 'earnings',
@@ -99,27 +77,15 @@ if ( ! class_exists( 'Give_Earnings_Report' ) ) :
 						'type' => 'report_earnings',
 					),
 					array(
-						'id'   => 'give_tools_earnings',
-						'type' => 'sectionend',
-						'table_html' => false
-					)
+						'id'         => 'give_tools_earnings',
+						'type'       => 'sectionend',
+						'table_html' => false,
+					),
 				)
 			);
 
 			// Output.
 			return $settings;
-		}
-
-		/**
-		 * Output the settings.
-		 *
-		 * @since  1.8
-		 * @return void
-		 */
-		public function output() {
-			$settings = $this->get_settings();
-
-			Give_Admin_Settings::output_fields( $settings, 'give_settings' );
 		}
 
 		/**
