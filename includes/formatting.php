@@ -572,9 +572,9 @@ function give_currency_filter( $price = '', $currency_code = '', $decode_currenc
 		$price = substr( $price, 1 );
 	}
 
-	$symbol = give_currency_symbol( $currency, $decode_currency );
+	$symbol = give_currency_symbol( $currency_code, $decode_currency );
 
-	switch ( $currency ) :
+	switch ( $currency_code ) :
 		case 'GBP' :
 		case 'BRL' :
 		case 'EUR' :
