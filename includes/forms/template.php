@@ -924,7 +924,6 @@ function give_default_cc_address_fields( $form_id ) {
 		$states_not_required_country_list = give_states_not_required_country_list();
 
 		?>
-<<<<<<< HEAD
 	    <p id="give-card-country-wrap" class="form-row form-row-wide">
 		    <label for="billing_country" class="give-label">
 			    <?php esc_html_e( 'Country', 'give' ); ?>
