@@ -23,6 +23,13 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 	 * @since 1.8.13
 	 */
 	class Give_Settings_Import extends Give_Settings_Page {
+		/**
+		 * Flag to check if enable saving option for setting page or not
+		 *
+		 * @since 1.8.17
+		 * @var bool
+		 */
+		protected $enable_save = false;
 
 		/**
 		 * Importing donation per page.
@@ -40,14 +47,13 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 			$this->id    = 'import';
 			$this->label = __( 'Import', 'give' );
 
-			// Add Import tab in submenu.
-			add_filter( 'give-tools_tabs_array', array( $this, 'add_settings_page' ), 20 );
+			parent::__construct();
 
 			// Will display html of the import donation.
-			add_action( 'give_admin_field_tools_import', array( 'Give_Settings_Import', 'render_import_field' ), 10, 2 );
-
-			// Will call the function that generated the hook called 'give_admin_field_tools_import'.
-			add_action( "give-tools_settings_{$this->id}_page", array( $this, 'output' ) );
+			add_action( 'give_admin_field_tools_import', array(
+				'Give_Settings_Import',
+				'render_import_field',
+			), 10, 2 );
 
 			// Do not use main form for this tab.
 			if ( give_get_current_setting_tab() === $this->id ) {
@@ -66,9 +72,6 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 		 * @return array
 		 */
 		public function get_settings() {
-			// Hide save button.
-			$GLOBALS['give_hide_save_button'] = true;
-
 			/**
 			 * Filter the settings.
 			 *
@@ -80,9 +83,9 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 				'give_get_settings_' . $this->id,
 				array(
 					array(
-						'id'   => 'give_tools_import',
-						'type' => 'title',
-						'table_html' => false
+						'id'         => 'give_tools_import',
+						'type'       => 'title',
+						'table_html' => false,
 					),
 					array(
 						'id'   => 'import',
@@ -97,10 +100,10 @@ if ( ! class_exists( 'Give_Settings_Import' ) ) {
 						'type'  => 'give_docs_link',
 					),
 					array(
-						'id'   => 'give_tools_import',
-						'type' => 'sectionend',
-						'table_html' => false
-					)
+						'id'         => 'give_tools_import',
+						'type'       => 'sectionend',
+						'table_html' => false,
+					),
 				)
 			);
 

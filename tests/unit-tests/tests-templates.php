@@ -43,6 +43,12 @@ class Tests_Templates extends Give_Unit_Test_Case {
 		$this->assertContains( '<form id="give-form-', $form );
 		$this->assertContains( 'class="give-form', $form );
 		$this->assertContains( 'method="post">', $form );
+		$this->assertContains( 'data-currency_position="before"', $form );
+		$this->assertContains( 'data-currency_code="USD"', $form );
+		$this->assertContains( 'data-currency_symbol="&#36;"', $form );
+		$this->assertContains( 'data-decimal_separator="."', $form );
+		$this->assertContains( 'data-thousands_separator=","', $form );
+		$this->assertContains( 'data-number_decimals="2"', $form );
 
 
 		//Test Hidden fields.

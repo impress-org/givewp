@@ -471,7 +471,12 @@ function give_decrease_earnings( $form_id = 0, $amount ) {
 function give_get_form_earnings_stats( $form_id = 0 ) {
 	$give_form = new Give_Donate_Form( $form_id );
 
-	return $give_form->earnings;
+	/**
+	 * Filter the form earnings
+	 *
+	 * @since 1.8.17
+	 */
+	return apply_filters( 'give_get_form_earnings_stats',  $give_form->earnings, $form_id, $give_form );
 }
 
 
