@@ -609,8 +609,7 @@ function give_currency_filter( $price = '', $currency_code = '', $decode_currenc
 			$formatted = ( 'before' === $position ? $symbol . ' ' . $price : $price . ' ' . $symbol );
 			break;
 		default:
-			$currency_symbol = give_currency_symbol( $currency_code );
-			$formatted       = ( 'before' === $position ? $currency_symbol . ' ' . $price : $price . ' ' . $currency_symbol );
+			$formatted = ( 'before' === $position ? $symbol . ' ' . $price : $price . ' ' . $symbol );
 			break;
 	endswitch;
 
