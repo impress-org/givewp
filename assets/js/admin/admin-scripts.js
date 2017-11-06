@@ -1333,7 +1333,7 @@ var give_setting_edit = false;
 
 			// Cancel button click event for donor.
 			$body.on( 'click', '#give-bulk-delete-cancel', function( e ) {
-				$( this ).closest( 'tr' ).slideUp();
+				$( this ).closest( 'tr' ).hide();
 				$( '.donor-selector' ).removeAttr( 'checked' );
 				$( '.give-skip-donor' ).trigger( 'click' );
 				e.preventDefault();
@@ -1342,17 +1342,21 @@ var give_setting_edit = false;
 			// Select All checkbox.
 			$body.on( 'click', '#cb-select-all-1, #cb-select-all-2', function() {
 
-				$.each( $( ".donor-selector" ), function() {
+				var selectAll = $( this );
+
+				// Loop through donor selector checkbox.
+				$.each( $( '.donor-selector' ), function() {
+
 					var donorId   = $( this ).val(),
 						donorName = $( this ).data( 'name' ),
 						donorHtml = '<div id="give-donor-' + donorId + '" data-id="' + donorId + '">' +
 							'<a class="give-skip-donor" title="' + give_vars.remove_from_bulk_delete + '">X</a>' +
 							donorName + '</div>';
 
-					if( $( this ).is(':checked') ) {
+					if( selectAll.is( ':checked' ) && ! $( this ).is( ':checked' ) ) {
+							$( '#give-bulk-donors' ).append( donorHtml );
+					} else if ( ! selectAll.is( ':checked' ) ) {
 						$( '#give-bulk-donors' ).find( '#give-donor-' + donorId ).remove();
-					} else {
-						$( '#give-bulk-donors' ).append( donorHtml );
 					}
 				});
 			});
@@ -1365,7 +1369,7 @@ var give_setting_edit = false;
 						'<a data-id="' + donorId + '" class="give-skip-donor" title="' + give_vars.remove_from_bulk_delete + '">X</a>' +
 						donorName + '</div>';
 
-				if( $( this ).is(':checked') ) {
+				if( $( this ).is( ':checked' ) ) {
 					$( '#give-bulk-donors' ).append( donorHtml );
 				} else {
 					$( '#give-bulk-donors' ).find( '#give-donor-' + donorId ).remove();
@@ -1375,9 +1379,9 @@ var give_setting_edit = false;
 			// CheckBox click event to confirm deletion of donor.
 			$body.on( 'click', '#give-delete-donor-confirm', function() {
 				if( $( this ).is( ':checked' ) ) {
-					$('#give-bulk-delete-button').removeAttr( 'disabled' );
+					$( '#give-bulk-delete-button' ).removeAttr( 'disabled' );
 				} else {
-					$('#give-bulk-delete-button').attr( 'disabled', true );
+					$( '#give-bulk-delete-button' ).attr( 'disabled', true );
 					$( '#give-delete-donor-records' ).removeAttr( 'checked' );
 				}
 			});
