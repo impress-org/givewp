@@ -216,5 +216,5 @@ function give_bc_v1817_iranian_currency_filter( $formatted_price, $currency_code
 
 	return $formatted_price;
 }
-add_filter( 'give_RIAL_currency_filter_after', 'give_bc_v1817_iranian_currency_filter', 0, 3 );
-add_filter( 'give_RIAL_currency_filter_before', 'give_bc_v1817_iranian_currency_filter', 0, 3 );
+add_filter( 'give_rial_currency_filter_after', 'give_bc_v1817_iranian_currency_filter', 0, 3 );
+add_filter( 'give_rial_currency_filter_before', 'give_bc_v1817_iranian_currency_filter', 0, 3 );
