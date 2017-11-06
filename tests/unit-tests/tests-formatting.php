@@ -158,9 +158,9 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 * @dataProvider give_sanitize_amount_provider
 	 */
 	function test_give_sanitize_amount( $amount, $expected, $dp = false, $trim_zeros = false ) {
-
-		$output = give_sanitize_amount( $amount, $dp, $trim_zeros );
-
+		
+		$output = give_sanitize_amount( $amount, array( 'number_decimals' => $dp, 'trim_zeros' => $trim_zeros ) );
+		
 		$this->assertSame(
 			$expected,
 			$output
@@ -191,6 +191,11 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 			array( '1,000,000.00', '1000000', false, true ),
 			array( '10,000.00', '10000', false, true ),
 			array( '100.00', '100', false, true ),
+			array( '1,000,000,000,000.120', '1000000000000.1', 1, true ),
+			array( '1,000,000,000.240', '1000000000.24', 2, true ),
+			array( '1,000,000.560', '1000000.6', 1, true ),
+			array( '10,000.768000', '10000.77', 2, true ),
+			array( '100.87850000', '100.879', 3, true ),
 		);
 	}
 

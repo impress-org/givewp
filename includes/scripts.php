@@ -103,7 +103,7 @@ function give_load_scripts() {
 		wp_register_script( 'give-magnific', $js_plugins . 'jquery.magnific-popup' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, $scripts_footer );
 		wp_enqueue_script( 'give-magnific' );
 
-		wp_register_script( 'give-checkout-global', $js_dir . 'give-checkout-global' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, $scripts_footer );
+		wp_register_script( 'give-checkout-global', $js_dir . 'give-donations' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, $scripts_footer );
 		wp_enqueue_script( 'give-checkout-global' );
 
 		// General scripts.
@@ -373,6 +373,7 @@ function give_load_admin_scripts( $hook ) {
 		'db_update_confirmation_msg'        => __( 'The following process will make updates to your site\'s database. Please create a database backup before proceeding with updates.', 'give' ),
 		'error_message'                     => __( 'Something went wrong kindly try again!', 'give' ),
 		'give_donation_import'              => 'give_donation_import',
+		'core_settings_import'              => 'give_core_settings_import',
 		'setting_not_save_message'          => __( 'Changes you made may not be saved.', 'give' ),
 	) );
 
