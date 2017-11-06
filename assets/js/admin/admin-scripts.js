@@ -1334,7 +1334,6 @@ var give_setting_edit = false;
 			// Cancel button click event for donor.
 			$body.on( 'click', '#give-bulk-delete-cancel', function( e ) {
 				$( this ).closest( 'tr' ).hide();
-				$( '.donor-selector' ).removeAttr( 'checked' );
 				$( '.give-skip-donor' ).trigger( 'click' );
 				e.preventDefault();
 			});
