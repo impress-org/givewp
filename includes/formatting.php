@@ -474,7 +474,7 @@ function give_format_amount( $amount, $args = array() ) {
 function give_human_format_large_amount( $amount, $args = array() ) {
 	// Bailout.
 	if ( empty( $amount ) ) {
-		return (string) $amount;
+		return '0';
 	};
 
 	// Set default currency;
