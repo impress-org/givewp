@@ -437,7 +437,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 				echo " data-wp-lists='list:$singular'";
 			} ?>>
 			<tr class="hidden"></tr>
-			<tr id="give-bulk-delete" class="inline-edit-row inline-edit-row-page inline-edit-page bulk-edit-row bulk-edit-row-page bulk-edit-page inline-editor" >
+			<tr id="give-bulk-delete" class="inline-edit-row inline-edit-row-page inline-edit-page bulk-edit-row bulk-edit-row-page bulk-edit-page inline-editor" style="display: none;" >
 				<td colspan="6" class="colspanchange">
 
 					<fieldset class="inline-edit-col-left">
