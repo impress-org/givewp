@@ -214,7 +214,7 @@ function give_process_paypal_ipn() {
 	);
 	update_option( 'give_last_paypal_ipn_received', $paypal_ipn_vars );
 	give_insert_payment_note( $payment_id, sprintf(
-			__( 'Last IPN received on %s at %s', 'give' ),
+			__( 'IPN received on %s at %s', 'give' ),
 			date_i18n( 'm/d/Y', $current_timestamp ),
 			date_i18n( 'H:i', $current_timestamp )
 		)
