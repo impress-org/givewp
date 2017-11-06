@@ -169,3 +169,24 @@ function give_akismet_spam_check( $args ) {
 	// Allow developer to modified Akismet spam detection response.
 	return apply_filters( 'give_akismet_spam_check', $spam, $args );
 }
+
+/**
+ * Add support of RIAL code for backward compatibility.
+ * Note: for internal use only
+ *
+ * @since 1.8.17
+ *
+ * @param array $currencies
+ *
+ * @return array
+ */
+function give_bc_v1817_iranian_currency_code( $currencies ) {
+	if ( ! give_has_upgrade_completed( 'v1817_update_donation_iranian_currency_code' ) ) {
+		$currencies['IRR'] = $currencies['RIAL'];
+		unset( $currencies['RIAL'] );
+	}
+
+	return $currencies;
+}
+
+add_filter( 'give_currencies', 'give_bc_v1817_iranian_currency_code' );
