@@ -188,5 +188,32 @@ function give_bc_v1817_iranian_currency_code( $currencies ) {
 
 	return $currencies;
 }
+add_filter( 'give_currencies', 'give_bc_v1817_iranian_currency_code', 0 );
 
-add_filter( 'give_currencies', 'give_bc_v1817_iranian_currency_code' );
+
+/**
+ * Add support of RIAL currency formatting for backward compatibility.
+ * Note: for internal use only
+ *
+ * @since 1.8.17
+ *
+ * @param string $formatted_price
+ * @param string $currency_code
+ * @param string $price
+ *
+ * @return string
+ */
+function give_bc_v1817_iranian_currency_filter( $formatted_price, $currency_code, $price ){
+	if ( give_has_upgrade_completed( 'v1817_update_donation_iranian_currency_code' ) ) {
+		return $formatted_price;
+	}
+
+	$currency_symbol = give_currency_symbol( $currency_code );
+	$position = false !== strpos( current_filter(), 'after' ) ? 'after' : 'before';
+	$formatted_price = ( 'before' === $position ?
+		$currency_symbol . '&#x200e;' . $price :
+		$price . '&#x200f;' . $currency_symbol );
+
+	return $formatted_price;
+}
+add_filter( 'give_RIAL_currency_filter_after', 'give_bc_v1817_iranian_currency_filter', 0, 3 );
