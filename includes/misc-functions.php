@@ -449,7 +449,9 @@ function give_currency_symbols( $decode_currencies = false ) {
 	$currencies = give_get_currencies( 'symbol' );
 
 	if ( $decode_currencies ) {
-		$currencies = array_map( 'html_entity_decode', $currencies );
+		array_walk( $currencies, function( &$currency_symbol ){
+			$currency_symbol = html_entity_decode( $currency_symbol, ENT_COMPAT, 'UTF-8' );
+		});
 	}
 
 	/**
