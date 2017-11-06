@@ -150,6 +150,8 @@ function give_process_paypal_ipn() {
 		}
 	}
 
+	$api_response = false;
+
 	// Validate IPN request w/ PayPal if user hasn't disabled this security measure.
 	if ( give_is_setting_enabled( give_get_option( 'paypal_verification' ) ) ) {
 
@@ -205,9 +207,9 @@ function give_process_paypal_ipn() {
 
 	// Check for PayPal IPN Notifications and update data based on it.
 	$current_timestamp = current_time( 'timestamp' );
-	$paypal_ipn_vars = array(
-		'auth_status'    => ( $api_response['body'] ) ? $api_response['body'] : 'N/A',
-		'transaction_id' => $encoded_data_array['txn_id'],
+	$paypal_ipn_vars   = array(
+		'auth_status'    => isset( $api_response['body'] ) ? $api_response['body'] : 'N/A',
+		'transaction_id' => isset( $encoded_data_array['txn_id'] ) ? $encoded_data_array['txn_id'] : 'N/A',
 		'payment_id'     => $payment_id,
 	);
 	update_option( 'give_last_paypal_ipn_received', $paypal_ipn_vars );
