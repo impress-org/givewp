@@ -366,6 +366,84 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
+		'AED'  => array(
+			'admin_label' => __( 'United Arab Emirates dirham (د.إ)', 'give' ),
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'AFN'  => array(
+			'admin_label' => __( 'Afghan afghani (؋)', 'give' ),
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'ALL'  => array(
+			'admin_label' => __( 'Albanian lek (L)', 'give' ),
+			'symbol'      => '&#76;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'AMD'  => array(
+			'admin_label' => __( 'Armenian dram (֏)', 'give' ),
+			'symbol'      => '&#1423;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'ANG'  => array(
+			'admin_label' => __( 'Netherlands Antillean guilder (ƒ)', 'give' ),
+			'symbol'      => '&#402;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'AOA'  => array(
+			'admin_label' => __( 'Angolan kwanza (Kz)', 'give' ),
+			'symbol'      => '&#75;&#122;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'ARS'  => array(
+			'admin_label' => __( 'Argentine peso ($)', 'give' ),
+			'symbol'      => '&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'AWG'  => array(
+			'admin_label' => __( 'Aruban florin (ƒ)', 'give' ),
+			'symbol'      => '&#402;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
 	);
 
 	/**
