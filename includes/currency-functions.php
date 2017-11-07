@@ -587,7 +587,13 @@ function give_currency_filter( $price = '', $currency_code = '', $decode_currenc
 	 *           and if currency is USD and currency position is after then
 	 *           filter name will be give_usd_currency_filter_after
 	 */
-	$formatted = apply_filters( 'give_' . strtolower( $currency_code ) . "_currency_filter_{$position}", $formatted, $currency_code, $price );
+	$formatted = apply_filters(
+		'give_' . strtolower( $currency_code ) . "_currency_filter_{$position}",
+		$formatted,
+		$currency_code,
+		$price,
+		$decode_currency
+	);
 
 	if ( $negative ) {
 		// Prepend the minus sign before the currency sign.
