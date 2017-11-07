@@ -591,6 +591,7 @@ function give_currency_filter( $price = '', $args = array() ) {
 		case 'KRW' :
 		case 'ZAR' :
 			$formatted = ( 'before' === $position ? $symbol . '&#x200e;' . $price : $price . '&#x200f;' . $symbol );
+			$formatted = html_entity_decode( $formatted, ENT_COMPAT, 'UTF-8' );
 			break;
 		case 'NOK':
 			$formatted = ( 'before' === $position ? $symbol . ' ' . $price : $price . ' ' . $symbol );
