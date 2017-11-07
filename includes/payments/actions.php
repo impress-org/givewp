@@ -279,7 +279,7 @@ function give_bc_v20_get_payment_meta( $check, $object_id, $meta_key, $single ) 
 	}
 
 	// Remove filter.
-	remove_filter( 'get_post_metadata', 'give_bc_v20_get_payment_meta', 0 );
+	remove_filter( 'get_post_metadata', 'give_bc_v20_get_payment_meta', 999 );
 
 	// Get all payment meta.
 	$payment_meta = give_get_meta( $object_id );
@@ -390,7 +390,7 @@ function give_bc_v20_get_payment_meta( $check, $object_id, $meta_key, $single ) 
 	$payment_meta['user_info'] = $donor_data;
 
 	// Add filter
-	add_filter( 'get_post_metadata', 'give_bc_v20_get_payment_meta', 0, 4 );
+	add_filter( 'get_post_metadata', 'give_bc_v20_get_payment_meta', 999, 4 );
 
 	/**
 	 * Filter the payment meta
@@ -406,7 +406,7 @@ function give_bc_v20_get_payment_meta( $check, $object_id, $meta_key, $single ) 
 	return $payment_meta;
 }
 
-add_filter( 'get_post_metadata', 'give_bc_v20_get_payment_meta', 0, 4 );
+add_filter( 'get_post_metadata', 'give_bc_v20_get_payment_meta', 999, 4 );
 
 /**
  * Add meta in payment that store page id and page url.
