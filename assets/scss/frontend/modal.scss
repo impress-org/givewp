@@ -9,136 +9,145 @@
 
 // Wrapper for popup
 .give-modal {
-	top: 0;
-	left: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: $mfp-z-index-base + 2147482500;
+  position: fixed;
+  outline: none !important;
+  -webkit-backface-visibility: hidden; // fixes webkit bug that can cause "false" scrollbar
+  -webkit-overflow-scrolling: touch;
+  -webkit-transform: translateZ(0);
+
+  form[id*='give-form'] {
+	margin-bottom: 0;
+	.give-submit {
+	  margin-bottom: 0;
+	}
+	.give-payment-mode-label {
+	  margin-top: 0;
+	  padding-top: 0;
+	}
+  }
+
+  // Root container
+  .mfp-container {
+	text-align: center;
+	position: absolute;
 	width: 100%;
 	height: 100%;
-	z-index: $mfp-z-index-base + 2147482500;
-	position: fixed;
-	outline: none !important;
-	-webkit-backface-visibility: hidden; // fixes webkit bug that can cause "false" scrollbar
-  	-webkit-overflow-scrolling: touch;
-  	-webkit-transform: translateZ(0);
+	left: 0;
+	top: 0;
+	padding: 0 $mfp-popup-padding-left;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+  }
 
-	form[id*='give-form'] {
-		margin-bottom: 0;
-		.give-submit {
-			margin-bottom: 0;
-		}
-		.give-payment-mode-label {
-			margin-top: 0;
-			padding-top: 0;
-		}
+  // Vertical centerer helper
+  .mfp-container {
+	&:before {
+	  content: '';
+	  display: inline-block;
+	  height: 100%;
+	  vertical-align: middle;
 	}
+  }
 
-	// Root container
+  // Remove vertical centering when popup has class `mfp-align-top`
+  .mfp-align-top {
 	.mfp-container {
-		text-align: center;
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		left: 0;
-		top: 0;
-		padding: 0 $mfp-popup-padding-left;
-		-webkit-box-sizing: border-box;
-		-moz-box-sizing: border-box;
-		box-sizing: border-box;
+	  &:before {
+		display: none;
+	  }
+	}
+  }
+
+  // Popup content holder
+  .mfp-content {
+	display: inline-block;
+	box-sizing: border-box;
+	vertical-align: middle;
+	text-align: left;
+	position: relative;
+	background: #FFF;
+	padding: 20px;
+	width: auto;
+	max-width: 500px;
+	margin: 40px auto;
+	z-index: $mfp-z-index-base + 2147482600;
+
+	[id*='give-form'] #give-payment-mode-select,
+	[id*='give-form'] #give_purchase_form_wrap,
+	[id*='give-form'].give-display-button-only .give-donation-amount,
+	[id*='give-form'].give-display-button-only .give-donation-levels-wrap {
+	  display: block;
 	}
 
-	// Vertical centerer helper
-	.mfp-container {
-		&:before {
-			content: '';
-			display: inline-block;
-			height: 100%;
-			vertical-align: middle;
-		}
-	}
+  }
 
-	// Remove vertical centering when popup has class `mfp-align-top`
-	.mfp-align-top {
-		.mfp-container {
-			&:before {
-				display: none;
-			}
-		}
-	}
-
-	// Popup content holder
+  .mfp-inline-holder,
+  .mfp-ajax-holder {
 	.mfp-content {
-		display: inline-block;
-	  	box-sizing: border-box;
-		vertical-align: middle;
-		text-align: left;
-		position: relative;
-		background: #FFF;
-		padding: 20px;
-		width: auto;
-		max-width: 500px;
-		margin: 40px auto;
-		z-index: $mfp-z-index-base + 2147482600;
-
-		[id*='give-form'] #give-payment-mode-select,
-		[id*='give-form'] #give_purchase_form_wrap,
-		[id*='give-form'].give-display-button-only .give-donation-amount,
-		[id*='give-form'].give-display-button-only .give-donation-levels-wrap {
-			display: block;
-		}
-
+	  width: 100%;
+	  cursor: auto;
 	}
+  }
 
-	.mfp-inline-holder,
-	.mfp-ajax-holder {
-		.mfp-content {
-			width: 100%;
-			cursor: auto;
-		}
-	}
+  // Cursors
+  .mfp-ajax-cur {
+	cursor: progress;
+  }
 
-	// Cursors
-	.mfp-ajax-cur {
-		cursor: progress;
+  .mfp-zoom-out-cur {
+	&, .mfp-image-holder .mfp-close {
+	  cursor: -moz-zoom-out;
+	  cursor: -webkit-zoom-out;
+	  cursor: zoom-out;
 	}
+  }
 
-	.mfp-zoom-out-cur {
-		&, .mfp-image-holder .mfp-close {
-			cursor: -moz-zoom-out;
-			cursor: -webkit-zoom-out;
-			cursor: zoom-out;
-		}
-	}
+  .mfp-zoom {
+	cursor: pointer;
+	cursor: -webkit-zoom-in;
+	cursor: -moz-zoom-in;
+	cursor: zoom-in;
+  }
 
-	.mfp-zoom {
-		cursor: pointer;
-		cursor: -webkit-zoom-in;
-		cursor: -moz-zoom-in;
-		cursor: zoom-in;
+  .mfp-auto-cursor {
+	.mfp-content {
+	  cursor: auto;
 	}
+  }
 
-	.mfp-auto-cursor {
-		.mfp-content {
-			cursor: auto;
-		}
-	}
+  .mfp-close,
+  .mfp-arrow,
+  .mfp-preloader,
+  .mfp-counter {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+  }
 
-	.mfp-close,
-	.mfp-arrow,
-	.mfp-preloader,
-	.mfp-counter {
-		-webkit-user-select: none;
-		-moz-user-select: none;
-		user-select: none;
-	}
+  .mfp-close:hover {
+	background-color: transparent;
+  }
 
-	.mfp-close:hover {
-		background-color: transparent;
-	}
+  form.give-form button.mfp-close {
+	position: absolute;
+	display: block !important;
+  }
 
-	// Hide the image during the loading
-	.mfp-loading {
-		&.mfp-figure {
-			display: none;
-		}
+  .mfp-container:after {
+	display: none;
+  }
+
+  // Hide the image during the loading
+  .mfp-loading {
+	&.mfp-figure {
+	  display: none;
 	}
+  }
 
 }
