@@ -199,10 +199,11 @@ add_filter( 'give_currencies', 'give_bc_v1817_iranian_currency_code', 0 );
  * @param string $formatted_price
  * @param string $currency_code
  * @param string $price
+ * @param bool $decode_currency
  *
  * @return string
  */
-function give_bc_v1817_iranian_currency_filter( $formatted_price, $currency_code, $price ){
+function give_bc_v1817_iranian_currency_filter( $formatted_price, $currency_code, $price, $decode_currency ){
 	if ( give_has_upgrade_completed( 'v1817_update_donation_iranian_currency_code' ) ) {
 		return $formatted_price;
 	}
@@ -213,7 +214,10 @@ function give_bc_v1817_iranian_currency_filter( $formatted_price, $currency_code
 		$currency_symbol . '&#x200e;' . $price :
 		$price . '&#x200f;' . $currency_symbol );
 
-	return html_entity_decode( $formatted_price, ENT_COMPAT, 'UTF-8' );
+	return ( $decode_currency ?
+		html_entity_decode( $formatted_price, ENT_COMPAT, 'UTF-8' ) :
+		$formatted_price
+	);
 }
-add_filter( 'give_rial_currency_filter_after', 'give_bc_v1817_iranian_currency_filter', 0, 3 );
-add_filter( 'give_rial_currency_filter_before', 'give_bc_v1817_iranian_currency_filter', 0, 3 );
+add_filter( 'give_rial_currency_filter_after', 'give_bc_v1817_iranian_currency_filter', 0, 4 );
+add_filter( 'give_rial_currency_filter_before', 'give_bc_v1817_iranian_currency_filter', 0, 4 );
