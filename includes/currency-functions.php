@@ -57,17 +57,14 @@ function give_get_currency_position() {
 	return apply_filters( 'give_currency_position', $currency_pos );
 }
 
-
 /**
- * Get Currencies
+ * Get Currencies List
  *
- * @since 1.0
- *
- * @param string $info Specify currency info
+ * @since 1.8.17
  *
  * @return array $currencies A list of the available currencies
  */
-function give_get_currencies( $info = 'admin_label' ) {
+function give_get_currencies_list() {
 	$currencies = array(
 		'USD'  => array(
 			'admin_label' => __( 'US Dollars ($)', 'give' ),
@@ -385,7 +382,21 @@ function give_get_currencies( $info = 'admin_label' ) {
 	 *
 	 * @param array $currencies
 	 */
-	$currencies = apply_filters( 'give_currencies', $currencies );
+	return (array) apply_filters( 'give_currencies', $currencies );
+}
+
+/**
+ * Get Currencies
+ *
+ * @since 1.0
+ *
+ * @param string $info Specify currency info
+ *
+ * @return array $currencies A list of the available currencies
+ */
+function give_get_currencies( $info = 'admin_label' ) {
+
+	$currencies = give_get_currencies_list();
 
 	// Backward compatibility: handle old way of currency registration.
 	// Backward compatibility: Return desired result.
