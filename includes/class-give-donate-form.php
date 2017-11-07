@@ -594,6 +594,25 @@ class Give_Donate_Form {
 	}
 
 	/**
+	 * Is Goal Mode?
+	 *
+	 * @access public
+	 * @since  1.8.17
+	 *
+	 * @return bool
+	 */
+	public function is_goal_mode() {
+		$option = give_get_meta( $this->ID, '_give_goal_option', true );
+		$mode   = 0;
+
+		if ( give_is_setting_enabled( $option ) ) {
+			$mode = 1;
+		}
+
+		return (bool) $mode;
+	}
+
+	/**
 	 * Determine if single price mode is enabled or disabled
 	 *
 	 * @since  1.0
