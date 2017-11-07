@@ -925,6 +925,8 @@ var give_setting_edit = false;
 			 */
 			give_setting_edit = true;
 
+			var reset_form = false;
+
 			$.ajax({
 				type: 'POST',
 				url: ajaxurl,
@@ -943,6 +945,8 @@ var give_setting_edit = false;
 						 * @since 1.8.14
 						 */
 						give_setting_edit = false;
+
+						reset_form = true;
 
 						// We need to get the actual in progress form, not all forms on the page
 						var export_form = $('.give-export-form').find('.give-progress').parent().parent();
@@ -966,8 +970,11 @@ var give_setting_edit = false;
 						});
 						self.process_step(parseInt(response.step), data, self);
 					}
-					// Reset the form for preventing multiple ajax request.
-					$('#give-tools-recount-form')[0].reset();
+
+					if ( true === reset_form ) {
+						// Reset the form for preventing multiple ajax request.
+						$( '#give-tools-recount-form' )[ 0 ].reset();
+					}
 				}
 			}).fail(function (response) {
 				/**
