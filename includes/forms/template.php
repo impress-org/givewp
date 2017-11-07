@@ -78,7 +78,7 @@ function give_get_donation_form( $args = array() ) {
 	 * @param int   $form_id The form ID.
 	 * @param array $args    An array of form arguments.
 	 */
-	do_action( 'give_pre_form_output', $form->ID, $args );
+	do_action( 'give_pre_form_output', $form->ID, $args, $form );
 
 	?>
 	<div id="give-form-<?php echo $form->ID; ?>-wrap" class="<?php echo $form_wrap_classes; ?>">
@@ -90,7 +90,7 @@ function give_get_donation_form( $args = array() ) {
 			$goal_achieved_message = ! empty( $goal_achieved_message ) ? apply_filters( 'the_content', $goal_achieved_message ) : '';
 
 			// Print thank you message.
-			echo apply_filters( 'give_goal_closed_output', $goal_achieved_message, $form->ID );
+			echo apply_filters( 'give_goal_closed_output', $goal_achieved_message, $form->ID, $form );
 
 		} else {
 			/**
@@ -114,22 +114,30 @@ function give_get_donation_form( $args = array() ) {
 			 *
 			 * @since 1.0
 			 *
-			 * @param int   $form_id The form ID.
-			 * @param array $args    An array of form arguments.
+			 * @param int              $form_id The form ID.
+			 * @param array            $args    An array of form arguments.
+			 * @param Give_Donate_Form $form    Form object.
 			 */
-			do_action( 'give_pre_form', $form->ID, $args );
-			?>
+			do_action( 'give_pre_form', $form->ID, $args, $form );
 
-			<form id="give-form-<?php echo $form_id; ?>" class="<?php echo $form_classes; ?>"
-				  action="<?php echo esc_url_raw( $form_action ); ?>" method="post">
-				<input type="hidden" name="give-form-id" value="<?php echo $form->ID; ?>"/>
-				<input type="hidden" name="give-form-title" value="<?php echo htmlentities( $form->post_title ); ?>"/>
-				<input type="hidden" name="give-current-url"
-					   value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
-				<input type="hidden" name="give-form-url"
-					   value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
-				<input type="hidden" name="give-form-minimum"
-					   value="<?php echo give_format_amount( give_get_form_minimum_price( $form->ID ), array( 'sanitize' => false ) ); ?>"/>
+			// Set form html tags.
+			$form_html_tags = array(
+				'id'     => "give-form-{$form_id}",
+				'class'  => $form_classes,
+				'action' => esc_url_raw( $form_action ),
+			);
+
+			/**
+			 * Filter the form html tags.
+			 *
+			 * @since 1.8.17
+			 *
+			 * @param array            $form_html_tags Array of form html tags.
+			 * @param Give_Donate_Form $form           Form object.
+			 */
+			$form_html_tags = apply_filters( 'give_form_html_tags', (array) $form_html_tags, $form );
+			?>
+			<form <?php echo give_get_attribute_str( $form_html_tags ); ?> method="post">
 
 				<!-- The following field is for robots only, invisible to humans: -->
 				<span class="give-hidden" style="display: none !important;">
@@ -139,51 +147,38 @@ function give_get_donation_form( $args = array() ) {
 				</span>
 
 				<?php
-
-				// Price ID hidden field for variable (multi-level) donation forms.
-				if ( give_has_variable_prices( $form_id ) ) {
-					// Get default selected price ID.
-					$prices   = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
-					$price_id = 0;
-					//loop through prices.
-					foreach ( $prices as $price ) {
-						if ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) {
-							$price_id = $price['_give_id']['level_id'];
-						};
-					}
-					?>
-					<input type="hidden" name="give-price-id" value="<?php echo $price_id; ?>"/>
-				<?php }
-
 				/**
 				 * Fires while outputting donation form, before all other fields.
 				 *
 				 * @since 1.0
 				 *
-				 * @param int   $form_id The form ID.
-				 * @param array $args    An array of form arguments.
+				 * @param int              $form_id The form ID.
+				 * @param array            $args    An array of form arguments.
+				 * @param Give_Donate_Form $form    Form object.
 				 */
-				do_action( 'give_donation_form_top', $form->ID, $args );
+				do_action( 'give_donation_form_top', $form->ID, $args, $form );
 
 				/**
 				 * Fires while outputting donation form, for payment gateway fields.
 				 *
 				 * @since 1.7
 				 *
-				 * @param int   $form_id The form ID.
-				 * @param array $args    An array of form arguments.
+				 * @param int              $form_id The form ID.
+				 * @param array            $args    An array of form arguments.
+				 * @param Give_Donate_Form $form    Form object.
 				 */
-				do_action( 'give_payment_mode_select', $form->ID, $args );
+				do_action( 'give_payment_mode_select', $form->ID, $args, $form );
 
 				/**
 				 * Fires while outputting donation form, after all other fields.
 				 *
 				 * @since 1.0
 				 *
-				 * @param int   $form_id The form ID.
-				 * @param array $args    An array of form arguments.
+				 * @param int              $form_id The form ID.
+				 * @param array            $args    An array of form arguments.
+				 * @param Give_Donate_Form $form    Form object.
 				 */
-				do_action( 'give_donation_form_bottom', $form->ID, $args );
+				do_action( 'give_donation_form_bottom', $form->ID, $args, $form );
 
 				?>
 			</form>
@@ -194,10 +189,11 @@ function give_get_donation_form( $args = array() ) {
 			 *
 			 * @since 1.0
 			 *
-			 * @param int   $form_id The form ID.
-			 * @param array $args    An array of form arguments.
+			 * @param int              $form_id The form ID.
+			 * @param array            $args    An array of form arguments.
+			 * @param Give_Donate_Form $form    Form object.
 			 */
-			do_action( 'give_post_form', $form->ID, $args );
+			do_action( 'give_post_form', $form->ID, $args, $form );
 
 		}
 		?>
@@ -1203,7 +1199,6 @@ function give_get_register_fields( $form_id ) {
 			 */
 			do_action( 'give_register_account_fields_before', $form_id );
 			?>
-
 			<div id="give-create-account-wrap-<?php echo $form_id; ?>" class="form-row form-row-first form-row-responsive">
 				<label for="give-create-account-<?php echo $form_id; ?>">
 					<?php
@@ -1631,8 +1626,8 @@ function give_checkout_final_total( $form_id ) {
 		<span class="give-donation-total-label">
 			<?php echo apply_filters( 'give_donation_total_label', esc_html__( 'Donation Total:', 'give' ) ); ?>
 		</span>
-        <span class="give-final-total-amount"
-              data-total="<?php echo give_format_amount( $total, array( 'sanitize' => false ) ); ?>">
+		<span class="give-final-total-amount"
+			  data-total="<?php echo give_format_amount( $total, array( 'sanitize' => false ) ); ?>">
 			<?php echo give_currency_filter( give_format_amount( $total, array( 'sanitize' => false ) ), give_get_currency( $form_id ) ); ?>
 		</span>
 	</p>
@@ -1934,3 +1929,79 @@ function give_members_only_form( $final_output, $args ) {
 }
 
 add_filter( 'give_donate_form', 'give_members_only_form', 10, 2 );
+
+
+/**
+ * Add donation form hidden fields.
+ *
+ * @since 1.8.17
+ *
+ * @param int              $form_id
+ * @param array            $args
+ * @param Give_Donate_Form $form
+ */
+function __give_form_add_donation_hidden_field( $form_id, $args, $form ) {
+	?>
+	<input type="hidden" name="give-form-id" value="<?php echo $form_id; ?>"/>
+	<input type="hidden" name="give-form-title" value="<?php echo htmlentities( $form->post_title ); ?>"/>
+	<input type="hidden" name="give-current-url"
+		   value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
+	<input type="hidden" name="give-form-url" value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
+	<input type="hidden" name="give-form-minimum"
+		   value="<?php echo give_format_amount( give_get_form_minimum_price( $form_id ), array( 'sanitize' => false ) ); ?>"/>
+	<?php
+
+	// Price ID hidden field for variable (multi-level) donation forms.
+	if ( give_has_variable_prices( $form_id ) ) {
+		// Get default selected price ID.
+		$prices   = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
+		$price_id = 0;
+		//loop through prices.
+		foreach ( $prices as $price ) {
+			if ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) {
+				$price_id = $price['_give_id']['level_id'];
+			};
+		}
+
+
+		echo sprintf(
+			'<input type="hidden" name="give-price-id" value="%s"/>',
+			$price_id
+		);
+	}
+}
+
+add_action( 'give_donation_form_top', '__give_form_add_donation_hidden_field', 0, 3 );
+
+/**
+ * Add currency settings on donation form.
+ *
+ * @since 1.8.17
+ *
+ * @param array            $form_html_tags
+ * @param Give_Donate_Form $form
+ *
+ * @return array
+ */
+function __give_form_add_currency_settings( $form_html_tags, $form ) {
+	$form_currency     = give_get_currency( $form->ID );
+	$currency_settings = give_get_currency_formatting_settings( $form_currency );
+
+	// Check if currency exist.
+	if ( empty( $currency_settings ) ) {
+		return $form_html_tags;
+	}
+
+	$form_html_tags['data-currency_symbol'] = give_currency_symbol( $form_currency );
+	$form_html_tags['data-currency_code']   = $form_currency;
+
+	if ( ! empty( $currency_settings ) ) {
+		foreach ( $currency_settings as $key => $value ) {
+			$form_html_tags["data-{$key}"] = $value;
+		}
+	}
+
+	return $form_html_tags;
+}
+
+add_filter( 'give_form_html_tags', '__give_form_add_currency_settings', 0, 2 );

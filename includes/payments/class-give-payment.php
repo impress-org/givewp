@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @property string|int $fees_total
  * @property string     $post_status
  * @property string     $date
- * @property string     $postdate
+ * @property string     $post_date
  * @property string     $status
  * @property string     $email
  * @property array      $payment_meta

@@ -2232,6 +2232,11 @@ Avada
     user-select: none; }
   .give-modal .mfp-close:hover {
     background-color: transparent; }
+  .give-modal form.give-form button.mfp-close {
+    position: absolute;
+    display: block !important; }
+  .give-modal .mfp-container:after {
+    display: none; }
   .give-modal .mfp-loading.mfp-figure {
     display: none; }
 

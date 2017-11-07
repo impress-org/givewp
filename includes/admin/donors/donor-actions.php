@@ -225,11 +225,6 @@ function give_donor_delete( $args ) {
 		return false;
 	}
 
-	$defaults = array(
-		'redirect' => true,
-	);
-	wp_parse_args( $args, $defaults );
-
 	$donor_id    = (int) $args['customer_id'];
 	$confirm     = ! empty( $args['give-donor-delete-confirm'] ) ? true : false;
 	$remove_data = ! empty( $args['give-donor-delete-records'] ) ? true : false;
@@ -299,11 +294,8 @@ function give_donor_delete( $args ) {
 
 	}
 
-	// Proceed Redirect, only if redirect argument is set to true.
-	if( $args['redirect'] ) {
-		wp_redirect( $redirect );
-		exit;
-	}
+	wp_redirect( $redirect );
+	exit;
 
 }
 

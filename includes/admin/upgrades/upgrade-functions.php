@@ -65,6 +65,10 @@ function give_do_automatic_upgrades() {
 			give_v1813_upgrades();
 			$did_upgrade = true;
 
+		case version_compare( $give_version, '1.8.17', '<' ) :
+			give_v1817_upgrades();
+			$did_upgrade = true;
+
 		case version_compare( $give_version, '2.0', '<' ) :
 			give_v20_upgrades();
 			$did_upgrade = true;
@@ -153,6 +157,13 @@ function give_show_upgrade_notices( $give_updates ) {
 		)
 	);
 
+	// v1.8.17 Upgrades for donations.
+	$give_updates->register( array(
+		'id'       => 'v1817_update_donation_iranian_currency_code',
+		'version'  => '1.8.17',
+		'callback' => 'give_v1817_update_donation_iranian_currency_code',
+	) );
+
 	// v2.0.0 Upgrades
 	$give_updates->register(
 		array(
@@ -220,7 +231,7 @@ function give_show_upgrade_notices( $give_updates ) {
 				'v20_logs_upgrades',
 				'v20_upgrades_form_metadata',
 				'v20_upgrades_payment_metadata',
-				'v20_upgrades_user_address'
+				'v20_upgrades_user_address',
 			),
 		)
 	);
@@ -1305,6 +1316,7 @@ function give_v1813_update_donor_user_roles_callback() {
 	}
 }
 
+
 /**
  * Version 1.8.13 automatic updates
  *
@@ -1318,6 +1330,61 @@ function give_v1813_upgrades() {
 	$roles = new Give_Roles();
 	$roles->add_roles();
 	$roles->add_caps();
+}
+
+/**
+ * Correct currency code for "Iranian Currency" for all of the payments.
+ *
+ * @since 1.8.17
+ */
+function give_v1817_update_donation_iranian_currency_code() {
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
+
+	// form query
+	$payments = new WP_Query( array(
+			'paged'          => $give_updates->step,
+			'status'         => 'any',
+			'order'          => 'ASC',
+			'post_type'      => array( 'give_payment' ),
+			'posts_per_page' => 20,
+		)
+	);
+
+	if ( $payments->have_posts() ) {
+		$give_updates->set_percentage( $payments->found_posts, ( $give_updates->step * 20 ) );
+
+		while ( $payments->have_posts() ) {
+			$payments->the_post();
+
+			$payment_meta = give_get_payment_meta( get_the_ID() );
+
+			if ( 'RIAL' === $payment_meta['currency'] ) {
+				$payment_meta['currency'] = 'IRR';
+				give_update_meta( get_the_ID(), '_give_payment_meta', $payment_meta );
+			}
+
+		}
+
+	} else {
+		// The Update Ran.
+		give_set_upgrade_complete( 'v1817_update_donation_iranian_currency_code' );
+	}
+}
+
+/**
+ * Correct currency code for "Iranian Currency" in Give setting.
+ * Version 1.8.17 automatic updates
+ *
+ * @since 1.8.17
+ */
+function give_v1817_upgrades() {
+	$give_settings = give_get_settings();
+
+	if ( 'RIAL' === $give_settings['currency'] ) {
+		$give_settings['currency'] = 'IRR';
+		update_option( 'give_settings', $give_settings );
+	}
 }
 
 /**
@@ -1348,7 +1415,10 @@ function give_v20_upgrades_form_metadata_callback() {
 
 			// Update offline instruction email notification status.
 			$offline_instruction_notification_status = get_post_meta( get_the_ID(), '_give_customize_offline_donations', true );
-			$offline_instruction_notification_status = give_is_setting_enabled( $offline_instruction_notification_status, array( 'enabled', 'global' ) )
+			$offline_instruction_notification_status = give_is_setting_enabled( $offline_instruction_notification_status, array(
+				'enabled',
+				'global',
+			) )
 				? $offline_instruction_notification_status
 				: 'global';
 			update_post_meta( get_the_ID(), '_give_offline-donation-instruction_notification', $offline_instruction_notification_status );
@@ -1665,7 +1735,7 @@ function give_v20_upgrades_donor_name() {
 
 	$donors = Give()->donors->get_donors( $args );
 
-	if( $donors ) {
+	if ( $donors ) {
 		$give_updates->set_percentage( count( $donors ), $give_updates->step * 20 );
 		// Loop through Donors
 		foreach ( $donors as $donor ) {
@@ -1675,24 +1745,24 @@ function give_v20_upgrades_donor_name() {
 			$donor_last_name  = Give()->donor_meta->get_meta( $donor->id, '_give_donor_last_name' );
 
 			// If first name meta of donor is not created, then create it.
-			if( ! $donor_first_name ) {
+			if ( ! $donor_first_name ) {
 				Give()->donor_meta->add_meta( $donor->id, '_give_donor_first_name', $donor_name[0] );
 			}
 
 			// If last name meta of donor is not created, then create it.
-			if( ! $donor_last_name ) {
+			if ( ! $donor_last_name ) {
 				Give()->donor_meta->add_meta( $donor->id, '_give_donor_last_name', $donor_name[1] );
 			}
 
 			// If Donor is connected with WP User then update user meta.
-			if( $donor->user_id ) {
+			if ( $donor->user_id ) {
 				update_user_meta( $donor->user_id, 'first_name', $donor_name[0] );
 				update_user_meta( $donor->user_id, 'last_name', $donor_name[1] );
 			}
 
 		}
 
-	}else {
+	} else {
 		// The Update Ran.
 		give_set_upgrade_complete( 'v20_upgrades_donor_name' );
 	}
@@ -1717,13 +1787,13 @@ function give_v20_upgrades_user_address() {
 	$user_query = new WP_User_Query(
 		array(
 			'number' => 20,
-			'offset' => ( 1 === $give_updates->step ) ? 0 : $give_updates->step * 20
+			'offset' => ( 1 === $give_updates->step ) ? 0 : $give_updates->step * 20,
 		)
 	);
 
 	$users = $user_query->get_results();
 
-	if( $users ) {
+	if ( $users ) {
 		$give_updates->set_percentage( $user_query->get_total(), $give_updates->step * 20 );
 
 		// Loop through Donors
@@ -1731,7 +1801,7 @@ function give_v20_upgrades_user_address() {
 			/* @var Give_Donor $donor */
 			$donor = new Give_Donor( $user->ID, true );
 
-			if( ! $donor->id ){
+			if ( ! $donor->id ) {
 				continue;
 			}
 
@@ -1747,7 +1817,7 @@ function give_v20_upgrades_user_address() {
 				)
 			);
 
-			if( ! empty( $address ) ) {
+			if ( ! empty( $address ) ) {
 				$address = maybe_unserialize( $address );
 				$donor->add_address( 'personal', $address );
 				$donor->add_address( 'billing[]', $address );
@@ -1755,7 +1825,7 @@ function give_v20_upgrades_user_address() {
 			}
 		}
 
-	}else {
+	} else {
 		// The Update Ran.
 		give_set_upgrade_complete( 'v20_upgrades_user_address' );
 	}

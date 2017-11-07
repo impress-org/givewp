@@ -852,29 +852,6 @@ function give_get_field_description( $field ) {
 
 
 /**
- * Get field custom attributes as string.
- *
- * @since 1.8
- *
- * @param $field
- *
- * @return string
- */
-function give_get_custom_attributes( $field ) {
-	// Custom attribute handling
-	$custom_attributes = array();
-
-	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
-
-		foreach ( $field['attributes'] as $attribute => $value ) {
-			$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $value ) . '"';
-		}
-	}
-
-	return implode( ' ', $custom_attributes );
-}
-
-/**
  * Get repeater field value.
  *
  * Note: Use only for single post, page or custom post type.

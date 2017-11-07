@@ -90,7 +90,7 @@ if ( ! give_get_errors() && $enable_recaptcha ) {
 }
 
 // If no errors or only expired token key error - then send email.
-if ( give_clean( $_POST['give-email-access'] ) && ! give_get_errors() ) {
+if ( isset( $_POST['give-email-access'] ) && ! give_get_errors() ) {
 
 	// Verify security nonce.
 	if ( ! wp_verify_nonce( $_POST['_wpnonce'], 'give-email-access' ) ) {

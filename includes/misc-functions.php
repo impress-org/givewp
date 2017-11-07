@@ -369,7 +369,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 2,
 			),
 		),
-		'RIAL' => array(
+		'IRR' => array(
 			'admin_label' => __( 'Iranian Rial (﷼)', 'give' ),
 			'symbol'      => '&#xfdfc;',
 			'setting'     => array(
@@ -390,7 +390,6 @@ function give_get_currencies( $info = 'admin_label' ) {
 			),
 		),
 	);
-
 
 	/**
 	 * Filter the currencies
@@ -415,10 +414,17 @@ function give_get_currencies( $info = 'admin_label' ) {
 			if ( is_string( $currency_setting ) ) {
 				$currencies[ $currency_code ] = array(
 					'admin_label' => $currency_setting,
-					'symbol'      => '',
-					'setting'     => array(),
 				);
 			}
+
+			$currencies[ $currency_code ] = wp_parse_args(
+				$currencies[ $currency_code ],
+				array(
+					'admin_label' => '',
+					'symbol'      => $currency_code,
+					'setting'     => array(),
+				)
+			);
 		}
 
 		if ( ! empty( $info ) && is_string( $info ) && 'all' !== $info ) {
@@ -440,10 +446,12 @@ function give_get_currencies( $info = 'admin_label' ) {
  * @return array
  */
 function give_currency_symbols( $decode_currencies = false ) {
-	$currencies = give_get_currencies('symbol' );
+	$currencies = give_get_currencies( 'symbol' );
 
 	if ( $decode_currencies ) {
-		$currencies = array_map( 'html_entity_decode', $currencies );
+		array_walk( $currencies, function( &$currency_symbol ){
+			$currency_symbol = html_entity_decode( $currency_symbol, ENT_COMPAT, 'UTF-8' );
+		});
 	}
 
 	/**
@@ -1087,12 +1095,12 @@ function give_get_newsletter() {
 	<script type='text/javascript'>(function ($) {
 			window.fnames = new Array();
 			window.ftypes = new Array();
-			fnames[0]     = 'EMAIL';
-			ftypes[0]     = 'email';
-			fnames[1]     = 'FNAME';
-			ftypes[1]     = 'text';
-			fnames[2]     = 'LNAME';
-			ftypes[2]     = 'text';
+			fnames[0] = 'EMAIL';
+			ftypes[0] = 'email';
+			fnames[1] = 'FNAME';
+			ftypes[1] = 'text';
+			fnames[2] = 'LNAME';
+			ftypes[2] = 'text';
 
 			//Successful submission
 			$('form[name="mc-embedded-subscribe-form"]').on('submit', function () {
@@ -1113,7 +1121,7 @@ function give_get_newsletter() {
 	</script>
 	<!--End mc_embed_signup-->
 
-<?php
+	<?php
 }
 
 
@@ -1479,8 +1487,9 @@ function give_is_terms_enabled( $form_id ) {
  * @since 1.8.7
  *
  * @param string|array $date_range Date for stats.
- *                                 Date value should be in today, yesterday, this_week, last_week, this_month, last_month, this_quarter, last_quarter, this_year, last_year.
- *                                 For date value other, all cache will be removed.
+ *                                 Date value should be in today, yesterday, this_week, last_week, this_month,
+ *                                 last_month, this_quarter, last_quarter, this_year, last_year. For date value other,
+ *                                 all cache will be removed.
  *
  * @param array        $args
  *
@@ -1769,9 +1778,9 @@ function give_remove_pages_from_search( $query ) {
 
 		$args               = apply_filters(
 			'give_remove_pages_from_search', array(
-				$transaction_failed,
-				$success_page,
-			), $query
+			$transaction_failed,
+			$success_page,
+		), $query
 		);
 		$query->set( 'post__not_in', $args );
 	}
@@ -2044,7 +2053,6 @@ function give_recount_form_income_donation( $form_id = 0 ) {
  * @since 1.8.14
  * @see   https://github.com/WordImpress/Give/issues/2191
  *
- *
  * @param string $currency Currency code
  *
  * @return bool
@@ -2069,7 +2077,7 @@ function give_is_zero_based_currency( $currency = '' ) {
 	);
 
 	// Set default currency.
-	if( empty( $currency ) ) {
+	if ( empty( $currency ) ) {
 		$currency = give_get_currency();
 	}
 
@@ -2079,6 +2087,29 @@ function give_is_zero_based_currency( $currency = '' ) {
 	}
 
 	return false;
+}
+
+/**
+ * Get attribute string
+ *
+ * @since 1.8.17
+ *
+ * @param array $attributes
+ *
+ * @return string
+ */
+function give_get_attribute_str( $attributes ) {
+	$attribute_str = '';
+
+	if ( empty( $attributes ) ) {
+		return $attribute_str;
+	}
+
+	foreach ( $attributes as $tag => $value ) {
+		$attribute_str .= " {$tag}=\"{$value}\"";
+	}
+
+	return trim( $attribute_str );
 }
 
 /**
@@ -2101,7 +2132,7 @@ function give_get_wp_upload_dir() {
  *
  * @param string $file_name filename of the json file that is being uploaded
  *
- * @return array/bool $file_contents File content
+ * @return string/bool $file_contents File content
  */
 function give_get_core_settings_json( $file_name ) {
 	$upload_dir = give_get_wp_upload_dir();

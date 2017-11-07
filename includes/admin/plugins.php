@@ -80,3 +80,38 @@ function give_plugin_row_meta( $plugin_meta, $plugin_file ) {
 }
 
 add_filter( 'plugin_row_meta', 'give_plugin_row_meta', 10, 2 );
+
+
+/**
+ * Get the Parent Page Menu Title in admin section.
+ * Based on get_admin_page_title WordPress Function.
+ *
+ * @since 1.8.17
+ *
+ * @global array  $submenu
+ * @global string $plugin_page
+ *
+ * @return string $title Page title
+ */
+function give_get_admin_page_menu_title() {
+	$title = '';
+	global $submenu, $plugin_page;
+
+	foreach ( array_keys( $submenu ) as $parent ) {
+		if( 'edit.php?post_type=give_forms' !== $parent ) {
+			continue;
+		}
+
+		foreach ( $submenu[ $parent ] as $submenu_array ) {
+			if( $plugin_page !== $submenu_array[2] ){
+				continue;
+			}
+
+			$title = isset( $submenu_array[0] ) ?
+				$submenu_array[0] :
+				$submenu_array[3];
+		}
+	}
+
+	return $title;
+}

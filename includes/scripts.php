@@ -100,7 +100,7 @@ function give_load_scripts() {
 		wp_register_script( 'give-magnific', $js_plugins . 'jquery.magnific-popup' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, $scripts_footer );
 		wp_enqueue_script( 'give-magnific' );
 
-		wp_register_script( 'give-checkout-global', $js_dir . 'give-checkout-global' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, $scripts_footer );
+		wp_register_script( 'give-checkout-global', $js_dir . 'give-donations' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, $scripts_footer );
 		wp_enqueue_script( 'give-checkout-global' );
 
 		wp_register_script( 'give-hint.css', $js_plugins . 'give-hint.css' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
