@@ -890,7 +890,6 @@ function give_default_cc_address_fields( $form_id ) {
 		 */
 		do_action( 'give_cc_billing_top' );
 
-
 		// For Country.
 		$selected_country = give_get_country();
 		if ( ! empty( $give_user_info['billing_country'] ) && '*' !== $give_user_info['billing_country'] ) {
@@ -925,145 +924,146 @@ function give_default_cc_address_fields( $form_id ) {
 		$states_not_required_country_list = give_states_not_required_country_list();
 
 		?>
-		<p id="give-card-country-wrap" class="form-row form-row-wide">
-			<label for="billing_country" class="give-label">
-				<?php esc_html_e( 'Country', 'give' ); ?>
-				<?php if ( give_field_is_required( 'billing_country', $form_id ) ) : ?>
-					<span class="give-required-indicator">*</span>
-				<?php endif; ?>
-				<span class="give-tooltip give-icon give-icon-question"
-					  data-tooltip="<?php esc_attr_e( 'The country for your billing address.', 'give' ); ?>"></span>
-			</label>
+	    <p id="give-card-country-wrap" class="form-row form-row-wide">
+		    <label for="billing_country" class="give-label">
+			    <?php esc_html_e( 'Country', 'give' ); ?>
+			    <?php if ( give_field_is_required( 'billing_country', $form_id ) ) : ?>
+				    <span class="give-required-indicator">*</span>
+			    <?php endif; ?>
+			    <span class="give-tooltip give-icon give-icon-question"
+			          data-tooltip="<?php esc_attr_e( 'The country for your billing address.', 'give' ); ?>"></span>
+		    </label>
 
-			<select
-					name="billing_country"
-					id="billing_country"
-					class="billing-country billing_country give-select<?php echo( give_field_is_required( 'billing_country', $form_id ) ? ' required' : '' ); ?>"
-				<?php echo( give_field_is_required( 'billing_country', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
-			>
-				<?php
-				foreach ( $countries as $country_code => $country ) {
-					echo '<option value="' . esc_attr( $country_code ) . '"' . selected( $country_code, $selected_country, false ) . '>' . $country . '</option>';
-				}
-				?>
-			</select>
-		</p>
+		    <select
+				    name="billing_country"
+				    id="billing_country"
+				    class="billing-country billing_country give-select<?php echo( give_field_is_required( 'billing_country', $form_id ) ? ' required' : '' ); ?>"
+			    <?php echo( give_field_is_required( 'billing_country', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
+		    >
+			    <?php
+			    foreach ( $countries as $country_code => $country ) {
+				    echo '<option value="' . esc_attr( $country_code ) . '"' . selected( $country_code, $selected_country, false ) . '>' . $country . '</option>';
+			    }
+			    ?>
+		    </select>
+	    </p>
 
-		<p id="give-card-address-wrap" class="form-row form-row-wide">
-			<label for="card_address" class="give-label">
-				<?php esc_html_e( 'Address 1', 'give' ); ?>
-				<?php
-				if ( give_field_is_required( 'card_address', $form_id ) ) : ?>
-					<span class="give-required-indicator">*</span>
-				<?php endif; ?>
-				<span class="give-tooltip give-icon give-icon-question"
-					  data-tooltip="<?php esc_attr_e( 'The primary billing address for your credit card.', 'give' ); ?>"></span>
-			</label>
+	    <p id="give-card-address-wrap" class="form-row form-row-wide">
+		    <label for="card_address" class="give-label">
+			    <?php esc_html_e( 'Address 1', 'give' ); ?>
+			    <?php
+			    if ( give_field_is_required( 'card_address', $form_id ) ) : ?>
+				    <span class="give-required-indicator">*</span>
+			    <?php endif; ?>
+			    <span class="give-tooltip give-icon give-icon-question"
+			          data-tooltip="<?php esc_attr_e( 'The primary billing address for your credit card.', 'give' ); ?>"></span>
+		    </label>
 
-			<input
-					type="text"
-					id="card_address"
-					name="card_address"
-					class="card-address give-input<?php echo( give_field_is_required( 'card_address', $form_id ) ? ' required' : '' ); ?>"
-					placeholder="<?php esc_attr_e( 'Address line 1', 'give' ); ?>"
-					value="<?php echo isset( $give_user_info['card_address'] ) ? $give_user_info['card_address'] : ''; ?>"
-				<?php echo( give_field_is_required( 'card_address', $form_id ) ? '  required aria-required="true" ' : '' ); ?>
-			/>
-		</p>
+		    <input
+				    type="text"
+				    id="card_address"
+				    name="card_address"
+				    class="card-address give-input<?php echo( give_field_is_required( 'card_address', $form_id ) ? ' required' : '' ); ?>"
+				    placeholder="<?php esc_attr_e( 'Address line 1', 'give' ); ?>"
+				    value="<?php echo isset( $give_user_info['card_address'] ) ? $give_user_info['card_address'] : ''; ?>"
+			    <?php echo( give_field_is_required( 'card_address', $form_id ) ? '  required aria-required="true" ' : '' ); ?>
+		    />
+	    </p>
 
-		<p id="give-card-address-2-wrap" class="form-row form-row-wide">
-			<label for="card_address_2" class="give-label">
-				<?php esc_html_e( 'Address 2', 'give' ); ?>
-				<?php if ( give_field_is_required( 'card_address_2', $form_id ) ) : ?>
-					<span class="give-required-indicator">*</span>
-				<?php endif; ?>
-				<span class="give-tooltip give-icon give-icon-question"
-					  data-tooltip="<?php esc_attr_e( '(optional) The suite, apt no, PO box, etc, associated with your billing address.', 'give' ); ?>"></span>
-			</label>
+	    <p id="give-card-address-2-wrap" class="form-row form-row-wide">
+		    <label for="card_address_2" class="give-label">
+			    <?php esc_html_e( 'Address 2', 'give' ); ?>
+			    <?php if ( give_field_is_required( 'card_address_2', $form_id ) ) : ?>
+				    <span class="give-required-indicator">*</span>
+			    <?php endif; ?>
+			    <span class="give-tooltip give-icon give-icon-question"
+			          data-tooltip="<?php esc_attr_e( '(optional) The suite, apt no, PO box, etc, associated with your billing address.', 'give' ); ?>"></span>
+		    </label>
 
-			<input
-					type="text"
-					id="card_address_2"
-					name="card_address_2"
-					class="card-address-2 give-input<?php echo( give_field_is_required( 'card_address_2', $form_id ) ? ' required' : '' ); ?>"
-					placeholder="<?php esc_attr_e( 'Address line 2', 'give' ); ?>"
-					value="<?php echo isset( $give_user_info['card_address_2'] ) ? $give_user_info['card_address_2'] : ''; ?>"
-				<?php echo( give_field_is_required( 'card_address_2', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
-			/>
-		</p>
+		    <input
+				    type="text"
+				    id="card_address_2"
+				    name="card_address_2"
+				    class="card-address-2 give-input<?php echo( give_field_is_required( 'card_address_2', $form_id ) ? ' required' : '' ); ?>"
+				    placeholder="<?php esc_attr_e( 'Address line 2', 'give' ); ?>"
+				    value="<?php echo isset( $give_user_info['card_address_2'] ) ? $give_user_info['card_address_2'] : ''; ?>"
+			    <?php echo( give_field_is_required( 'card_address_2', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
+		    />
+	    </p>
 
-		<p id="give-card-state-wrap"
-		   class="form-row form-row-wide <?php echo ( ! empty( $selected_country ) && array_key_exists( $selected_country, $no_states_country ) ) ? 'give-hidden' : ''; ?> ">
-			<label for="card_state" class="give-label">
-				<span class="state-label-text"><?php echo $label; ?></span>
-				<?php if ( give_field_is_required( 'card_state', $form_id ) ) :
-					?>
-					<span class="give-required-indicator <?php echo( array_key_exists( $selected_country, $states_not_required_country_list ) ? 'give-hidden' : '' ) ?> ">*</span>
-				<?php endif; ?>
-				<span class="give-tooltip give-icon give-icon-question"
-					  data-tooltip="<?php esc_attr_e( 'The state, province, or county for your billing address.', 'give' ); ?>"></span>
-			</label>
-			<?php
+	    <p id="give-card-city-wrap" class="form-row form-row-wide">
+		    <label for="card_city" class="give-label">
+			    <?php esc_html_e( 'City', 'give' ); ?>
+			    <?php if ( give_field_is_required( 'card_city', $form_id ) ) : ?>
+				    <span class="give-required-indicator">*</span>
+			    <?php endif; ?>
+			    <span class="give-tooltip give-icon give-icon-question"
+			          data-tooltip="<?php esc_attr_e( 'The city for your billing address.', 'give' ); ?>"></span>
+		    </label>
+		    <input
+				    type="text"
+				    id="card_city"
+				    name="card_city"
+				    class="card-city give-input<?php echo( give_field_is_required( 'card_city', $form_id ) ? ' required' : '' ); ?>"
+				    placeholder="<?php esc_attr_e( 'City', 'give' ); ?>"
+				    value="<?php echo isset( $give_user_info['card_city'] ) ? $give_user_info['card_city'] : ''; ?>"
+			    <?php echo( give_field_is_required( 'card_city', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
+		    />
+	    </p>
 
-			if ( ! empty( $states ) ) : ?>
-				<select
-						name="card_state"
-						id="card_state"
-						class="card_state give-select<?php echo( give_field_is_required( 'card_state', $form_id ) ? ' required' : '' ); ?>"
-					<?php echo( give_field_is_required( 'card_state', $form_id ) ? ' required aria-required="true" ' : '' ); ?>>
-					<?php
-					foreach ( $states as $state_code => $state ) {
-						echo '<option value="' . $state_code . '"' . selected( $state_code, $selected_state, false ) . '>' . $state . '</option>';
-					}
-					?>
-				</select>
-			<?php else : ?>
-				<input type="text" size="6" name="card_state" id="card_state" class="card_state give-input"
-					   placeholder="<?php echo $label; ?>" value="<?php echo $selected_state; ?>"/>
-			<?php endif; ?>
-		</p>
+	    <p id="give-card-state-wrap"
+	       class="form-row form-row-first form-row-responsive <?php echo ( ! empty( $selected_country ) && array_key_exists( $selected_country, $no_states_country ) ) ? 'give-hidden' : ''; ?>">
+		    <label for="card_state" class="give-label">
+			    <span class="state-label-text"><?php echo $label; ?></span>
+			    <?php if ( give_field_is_required( 'card_state', $form_id ) ) :
+				    ?>
+				    <span class="give-required-indicator <?php echo( array_key_exists( $selected_country, $states_not_required_country_list ) ? 'give-hidden' : '' ) ?> ">*</span>
+			    <?php endif; ?>
+			    <span class="give-tooltip give-icon give-icon-question"
+			          data-tooltip="<?php esc_attr_e( 'The state, province, or county for your billing address.', 'give' ); ?>"></span>
+		    </label>
+		    <?php
 
-		<p id="give-card-city-wrap" class="form-row form-row-first form-row-responsive">
-			<label for="card_city" class="give-label">
-				<?php esc_html_e( 'City', 'give' ); ?>
-				<?php if ( give_field_is_required( 'card_city', $form_id ) ) : ?>
-					<span class="give-required-indicator">*</span>
-				<?php endif; ?>
-				<span class="give-tooltip give-icon give-icon-question"
-					  data-tooltip="<?php esc_attr_e( 'The city for your billing address.', 'give' ); ?>"></span>
-			</label>
-			<input
-					type="text"
-					id="card_city"
-					name="card_city"
-					class="card-city give-input<?php echo( give_field_is_required( 'card_city', $form_id ) ? ' required' : '' ); ?>"
-					placeholder="<?php esc_attr_e( 'City', 'give' ); ?>"
-					value="<?php echo isset( $give_user_info['card_city'] ) ? $give_user_info['card_city'] : ''; ?>"
-				<?php echo( give_field_is_required( 'card_city', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
-			/>
-		</p>
+		    if ( ! empty( $states ) ) : ?>
+			    <select
+				    name="card_state"
+				    id="card_state"
+				    class="card_state give-select<?php echo( give_field_is_required( 'card_state', $form_id ) ? ' required' : '' ); ?>"
+				    <?php echo( give_field_is_required( 'card_state', $form_id ) ? ' required aria-required="true" ' : '' ); ?>>
+				    <?php
+				    foreach ( $states as $state_code => $state ) {
+					    echo '<option value="' . $state_code . '"' . selected( $state_code, $selected_state, false ) . '>' . $state . '</option>';
+				    }
+				    ?>
+			    </select>
+		    <?php else : ?>
+			    <input type="text" size="6" name="card_state" id="card_state" class="card_state give-input"
+			           placeholder="<?php echo $label; ?>" value="<?php echo $selected_state; ?>"/>
+		    <?php endif; ?>
+	    </p>
 
-		<p id="give-card-zip-wrap" class="form-row form-row-last form-row-responsive">
-			<label for="card_zip" class="give-label">
-				<?php esc_html_e( 'Zip / Postal Code', 'give' ); ?>
-				<?php if ( give_field_is_required( 'card_zip', $form_id ) ) : ?>
-					<span class="give-required-indicator">*</span>
-				<?php endif; ?>
-				<span class="give-tooltip give-icon give-icon-question"
-					  data-tooltip="<?php esc_attr_e( 'The zip or postal code for your billing address.', 'give' ); ?>"></span>
-			</label>
+	    <p id="give-card-zip-wrap" class="form-row <?php echo ( ! empty( $selected_country ) && array_key_exists( $selected_country, $no_states_country ) ) ? 'form-row-wide' : 'form-row-last'; ?> form-row-responsive">
+		    <label for="card_zip" class="give-label">
+			    <?php esc_html_e( 'Zip / Postal Code', 'give' ); ?>
+			    <?php if ( give_field_is_required( 'card_zip', $form_id ) ) : ?>
+				    <span class="give-required-indicator">*</span>
+			    <?php endif; ?>
+			    <span class="give-tooltip give-icon give-icon-question"
+			          data-tooltip="<?php esc_attr_e( 'The zip or postal code for your billing address.', 'give' ); ?>"></span>
+		    </label>
 
-			<input
-					type="text"
-					size="4"
-					id="card_zip"
-					name="card_zip"
-					class="card-zip give-input<?php echo( give_field_is_required( 'card_zip', $form_id ) ? ' required' : '' ); ?>"
-					placeholder="<?php esc_attr_e( 'Zip / Postal Code', 'give' ); ?>"
-					value="<?php echo isset( $give_user_info['card_zip'] ) ? $give_user_info['card_zip'] : ''; ?>"
-				<?php echo( give_field_is_required( 'card_zip', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
-			/>
-		</p>
+		    <input
+				    type="text"
+				    size="4"
+				    id="card_zip"
+				    name="card_zip"
+				    class="card-zip give-input<?php echo( give_field_is_required( 'card_zip', $form_id ) ? ' required' : '' ); ?>"
+				    placeholder="<?php esc_attr_e( 'Zip / Postal Code', 'give' ); ?>"
+				    value="<?php echo isset( $give_user_info['card_zip'] ) ? $give_user_info['card_zip'] : ''; ?>"
+			    <?php echo( give_field_is_required( 'card_zip', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
+		    />
+	    </p>
+
 		<?php
 		/**
 		 * Fires while rendering credit card billing form, after address fields.
