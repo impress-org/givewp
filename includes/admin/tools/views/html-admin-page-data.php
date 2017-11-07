@@ -57,6 +57,7 @@ do_action( 'give_tools_recount_stats_before' );
 							'name'   => 'form_id',
 							'number' => - 1,
 							'chosen' => true,
+							'placeholder' => 'Select Forms',
 						);
 						echo Give()->html->forms_dropdown( $args );
 						?>
