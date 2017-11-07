@@ -119,6 +119,10 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 			//Loop through payments
 			foreach ( $payments as $payment ) {
 
+				$payment_id = ( ! empty( $payment['ID'] ) ? absint( $payment['ID'] ) : ( ! empty( $payment->ID ) ? absint( $payment->ID ) : false ) );
+
+				$payment = new Give_Payment( $payment_id );
+
 				// Prevent payments that have all ready been retrieved from a previous sales log from counting again.
 				if ( in_array( $payment->ID, $processed_payments ) ) {
 					continue;
@@ -354,11 +358,8 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 							'price'      => $payment->total,
 						);
 					}
-
 				}
-
 			}
-
 			$this->store_data( 'give_temp_payment_items', $payment_items );
 			$this->store_data( 'give_recount_all_total', $total );
 		}
