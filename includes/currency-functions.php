@@ -520,10 +520,36 @@ function give_get_currency_name( $currency_code ) {
  *
  * @return mixed|string
  */
-function give_currency_filter( $price = '', $currency_code = '', $decode_currency = false, $form_id = '' ) {
+function give_currency_filter( $price = '', $args = array() ) {
 
-	if ( empty( $currency_code ) || ! array_key_exists( (string) $currency_code, give_get_currencies() ) ) {
-		$currency_code = give_get_currency( $form_id );
+	// Bailout.
+	if ( empty( $price ) || ( ! is_numeric( $price ) && ! is_string( $price ) ) ) {
+		return $price;
+	}
+
+	// Get functions arguments.
+	$func_args = func_get_args();
+
+	if ( isset( $func_args[1] ) && ( is_string( $func_args[1] ) || is_numeric( $func_args[1] ) ) ) {
+		$args = array(
+			'currency_code'   => isset( $func_args[1] ) ? $func_args[1] : '',
+			'decode_currency' => isset( $func_args[2] ) ? $func_args[2] : false,
+			'form_id'         => isset( $func_args[3] ) ? $func_args[3] : '',
+		);
+	}
+
+	// Set default values.
+	$args = wp_parse_args(
+		$args,
+		array(
+			'currency_code'   => '',
+			'decode_currency' => false,
+			'form_id'         => '',
+		)
+	);
+
+	if ( empty( $args['currency_code'] ) || ! array_key_exists( (string) $args['currency_code'], give_get_currencies() ) ) {
+		$args['currency_code'] = give_get_currency( $args['form_id'] );
 	}
 
 	$position = give_get_option( 'currency_position', 'before' );
@@ -535,9 +561,9 @@ function give_currency_filter( $price = '', $currency_code = '', $decode_currenc
 		$price = substr( $price, 1 );
 	}
 
-	$symbol = give_currency_symbol( $currency_code, $decode_currency );
+	$symbol = give_currency_symbol( $args['currency_code'], $args['decode_currency'] );
 
-	switch ( $currency_code ) :
+	switch ( $args['currency_code'] ) :
 		case 'GBP' :
 		case 'BRL' :
 		case 'EUR' :
@@ -587,7 +613,7 @@ function give_currency_filter( $price = '', $currency_code = '', $decode_currenc
 	 *           and if currency is USD and currency position is after then
 	 *           filter name will be give_usd_currency_filter_after
 	 */
-	$formatted = apply_filters( 'give_' . strtolower( $currency_code ) . "_currency_filter_{$position}", $formatted, $currency_code, $price );
+	$formatted = apply_filters( 'give_' . strtolower( $args['currency_code'] ) . "_currency_filter_{$position}", $formatted, $args['currency_code'], $price );
 
 	if ( $negative ) {
 		// Prepend the minus sign before the currency sign.
