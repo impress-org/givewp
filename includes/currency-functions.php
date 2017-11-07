@@ -444,6 +444,163 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
+		'AZN'  => array(
+			'admin_label' => __( 'Azerbaijani manat (ман)', 'give' ),
+			'symbol'      => '&#77;&#97;&#72;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'BAM'  => array(
+			'admin_label' => __( 'Bosnia and Herzegovina convertible mark (KM)', 'give' ),
+			'symbol'      => '&#75;&#77;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'BBD'  => array(
+			'admin_label' => __( 'Barbadian dollar (Bds$)', 'give' ),
+			'symbol'      => '&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'BDT'  => array(
+			'admin_label' => __( 'Bangladeshi taka (৳)', 'give' ),
+			'symbol'      => '&#2547;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'BGN'  => array(
+			'admin_label' => __( 'Bulgarian lev (лв)', 'give' ),
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'BHD'  => array(
+			'admin_label' => __( 'Bahraini dinar (.د.ب)', 'give' ),
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'BIF'  => array(
+			'admin_label' => __( 'Burundian franc (FBu)', 'give' ),
+			'symbol'      => '&#70;&#66;&#117;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'BMD'  => array(
+			'admin_label' => __( 'Bermudian dollar (BD$)', 'give' ),
+			'symbol'      => '&#66;&#68;&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'BND'  => array(
+			'admin_label' => __( 'Brunei dollar (B$)', 'give' ),
+			'symbol'      => '&#66;&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'BOB'  => array(
+			'admin_label' => __( 'Bolivian boliviano (Bs.)', 'give' ),
+			'symbol'      => '&#66;&#115;&#46;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'BSD'  => array(
+			'admin_label' => __( 'Bahamian dollar (B$)', 'give' ),
+			'symbol'      => '&#66;&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'BTC'  => array(
+			'admin_label' => __( 'Bitcoin (Ƀ)', 'give' ),
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'BTN'  => array(
+			'admin_label' => __( 'Bhutanese ngultrum (Nu.)', 'give' ),
+			'symbol'      => '&#78;&#117;&#46;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'BWP'  => array(
+			'admin_label' => __( 'Botswana pula (P)', 'give' ),
+			'symbol'      => '&#80;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'BYR'  => array(
+			'admin_label' => __( 'Belarusian ruble (Br)', 'give' ),
+			'symbol'      => '&#66;&#114;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'BZD'  => array(
+			'admin_label' => __( 'Belizean dollar (BZ$)', 'give' ),
+			'symbol'      => '&#66;&#90;&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
 	);
 
 	/**
