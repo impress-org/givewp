@@ -601,6 +601,244 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
+		'CDF'  => array(
+			'admin_label' => __( 'Congolese franc (FC)', 'give' ),
+			'symbol'      => '&#70;&#67;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'CLP'  => array(
+			'admin_label' => __( 'Chilean peso ($)', 'give' ),
+			'symbol'      => '&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'CNY'  => array(
+			'admin_label' => __( 'Chinese yuan (¥)', 'give' ),
+			'symbol'      => '&yen;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'COP'  => array(
+			'admin_label' => __( 'Colombian peso ($)', 'give' ),
+			'symbol'      => '&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'CRC'  => array(
+			'admin_label' => __( 'Costa Rican colón (₡)', 'give' ),
+			'symbol'      => '&#8353;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'CUC'  => array(
+			'admin_label' => __( 'Cuban convertible peso (₱)', 'give' ),
+			'symbol'      => '&#8369;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'CUP'  => array(
+			'admin_label' => __( 'Cuban convertible peso (₱)', 'give' ),
+			'symbol'      => '&#8369;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'CVE'  => array(
+			'admin_label' => __( 'Cape Verdean escudo (Ecs)', 'give' ),
+			'symbol'      => '&#69;&#99;&#115;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'DJP'  => array(
+			'admin_label' => __( 'Djiboutian franc (Fdj)', 'give' ),
+			'symbol'      => '&#70;&#100;&#106;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'DOP'  => array(
+			'admin_label' => __( 'Dominican peso (RD$)', 'give' ),
+			'symbol'      => '&#82;&#68;&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'DZD'  => array(
+			'admin_label' => __( 'Algerian dinar (د.ج)', 'give' ),
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'EGP'  => array(
+			'admin_label' => __( 'Egyptian pound (E£)', 'give' ),
+			'symbol'      => '&#69;&pound;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'ERN'  => array(
+			'admin_label' => __( 'Eritrean nakfa (Nfa)', 'give' ),
+			'symbol'      => '&#78;&#102;&#97;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'ETB'  => array(
+			'admin_label' => __( 'Ethiopian birr (Br)', 'give' ),
+			'symbol'      => '&#66;&#114;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'FJD'  => array(
+			'admin_label' => __( 'Fijian dollar (FJ$)', 'give' ),
+			'symbol'      => '&#70;&#74;&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'FKP'  => array(
+			'admin_label' => __( 'Falkland Islands pound (FK£)', 'give' ),
+			'symbol'      => '&#70;&#75;&pound;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'GEL'  => array(
+			'admin_label' => __( 'Georgian lari (ლ)', 'give' ),
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'GGP'  => array(
+			'admin_label' => __( 'Guernsey pound (£)', 'give' ),
+			'symbol'      => '&pound;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'GHS'  => array(
+			'admin_label' => __( 'Ghana cedi (₵)', 'give' ),
+			'symbol'      => '&#8373;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'GIP'  => array(
+			'admin_label' => __( 'Gibraltar pound (	£)', 'give' ),
+			'symbol'      => '&pound;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'GMD'  => array(
+			'admin_label' => __( 'Gambian dalasi (D)', 'give' ),
+			'symbol'      => '&#68;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'GNF'  => array(
+			'admin_label' => __( 'Guinean franc (FG)', 'give' ),
+			'symbol'      => '&#70;&#71;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'GTQ'  => array(
+			'admin_label' => __( 'Guatemalan quetzal (Q)', 'give' ),
+			'symbol'      => '&#81;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'GYD'  => array(
+			'admin_label' => __( 'Guyanese dollar (GY$)', 'give' ),
+			'symbol'      => '&#71;&#89;&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
 	);
 
 	/**
