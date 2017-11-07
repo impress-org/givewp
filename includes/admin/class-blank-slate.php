@@ -190,18 +190,21 @@ class Give_Blank_Slate {
 	 * @since 1.8.13
 	 */
 	function hide_ui() {
-		ob_start();
 		?>
-		<style
-			type="text/css">.page-title-action, .give-filters, .search-box, .subsubsub, .wp-list-table, .tablenav.top, .give_forms_page_give-payment-history .tablenav.bottom, .give_forms_page_give-donors .tablenav.bottom, .tablenav-pages {
+		<style type="text/css">
+			.page-title-action,
+			.give-filters,
+			.search-box,
+			.subsubsub,
+			.wp-list-table,
+			.tablenav.top,
+			.give_forms_page_give-payment-history .tablenav.bottom,
+			.give_forms_page_give-donors .tablenav.bottom,
+			.tablenav-pages {
 				display: none;
 			}
 		</style>
 		<?php
-		$html = ob_get_contents();
-		ob_end_clean();
-
-		return $html;
 	}
 
 	/**
