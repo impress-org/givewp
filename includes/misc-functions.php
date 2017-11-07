@@ -1524,29 +1524,6 @@ function give_recount_form_income_donation( $form_id = 0 ) {
 }
 
 /**
- * Get attribute string
- *
- * @since 1.8.17
- *
- * @param array $attributes
- *
- * @return string
- */
-function give_get_attribute_str( $attributes ) {
-	$attribute_str = '';
-
-	if ( empty( $attributes ) ) {
-		return $attribute_str;
-	}
-
-	foreach ( $attributes as $tag => $value ) {
-		$attribute_str .= " {$tag}=\"{$value}\"";
-	}
-
-	return trim( $attribute_str );
-}
-
-/**
  * Get the upload dir path
  *
  * @since 1.8.17
