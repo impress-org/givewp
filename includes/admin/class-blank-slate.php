@@ -192,7 +192,6 @@ class Give_Blank_Slate {
 	function hide_ui() {
 		?>
 		<style type="text/css">
-			.page-title-action,
 			.give-filters,
 			.search-box,
 			.subsubsub,
