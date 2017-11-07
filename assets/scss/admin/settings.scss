@@ -502,6 +502,15 @@ h2.give-nav-tab-wrapper {
 
 			nav.give-sub-nav-tab {
 				top: 35px;
+				right: 0;
+				left: auto;
+
+				a {
+					background: #ffffff;
+					&:hover {
+						background: #e5e5e5;
+					}
+				}
 			}
 		}
 
@@ -522,7 +531,7 @@ h2.give-nav-tab-wrapper {
 		border: 1px solid #ccc;
 		border-bottom: 0;
 		position: absolute;
-		top: 32px;
+		top: 35px;
 		right: 0;
 
 		a {
@@ -538,7 +547,7 @@ h2.give-nav-tab-wrapper {
 		}
 
 		a:hover {
-			background: #e5e5e5;
+			background: #ffffff;
 		}
 	}
 }

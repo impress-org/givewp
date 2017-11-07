@@ -148,8 +148,8 @@ function _give_register_admin_notices() {
 						'type'        => 'updated',
 						'description' => sprintf(
 							_n(
-								'Successfully deleted one transaction.',
-								'Successfully deleted %d transactions.',
+								'Successfully deleted one donation.',
+								'Successfully deleted %d donations.',
 								$payment_count,
 								'give'
 							),
@@ -171,6 +171,28 @@ function _give_register_admin_notices() {
 								'give'
 							),
 							$payment_count
+						),
+						'show'        => true,
+					) );
+					break;
+
+				case 'set-status-publish' :
+				case 'set-status-pending' :
+				case 'set-status-processing' :
+				case 'set-status-refunded' :
+				case 'set-status-revoked' :
+				case 'set-status-failed' :
+				case 'set-status-cancelled' :
+				case 'set-status-abandoned' :
+				case 'set-status-preapproval' :
+					Give()->notices->register_notice( array(
+						'id'          => 'bulk_action_status_change',
+						'type'        => 'updated',
+						'description' => _n(
+							'Donation status updated successfully.',
+							'Donation statuses updated successfully.',
+							$payment_count,
+							'give'
 						),
 						'show'        => true,
 					) );

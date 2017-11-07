@@ -20,23 +20,15 @@ if ( ! class_exists( 'Give_Settings_Data' ) ) :
 	 *
 	 * @sine 1.8
 	 */
-	class Give_Settings_Data {
+	class Give_Settings_Data extends Give_Settings_Page {
 
 		/**
-		 * Setting page id.
+		 * Flag to check if enable saving option for setting page or not
 		 *
-		 * @since 1.8
-		 * @var   string
+		 * @since 1.8.17
+		 * @var bool
 		 */
-		protected $id = '';
-
-		/**
-		 * Setting page label.
-		 *
-		 * @since 1.8
-		 * @var   string
-		 */
-		protected $label = '';
+		protected $enable_save = false;
 
 		/**
 		 * Constructor.
@@ -45,8 +37,7 @@ if ( ! class_exists( 'Give_Settings_Data' ) ) :
 			$this->id    = 'data';
 			$this->label = esc_html__( 'Data', 'give' );
 
-			add_filter( 'give-tools_tabs_array', array( $this, 'add_settings_page' ), 20 );
-			add_action( "give-tools_settings_{$this->id}_page", array( $this, 'output' ) );
+			parent::__construct();
 
 			// Do not use main form for this tab.
 			if( give_get_current_setting_tab() === $this->id ) {
@@ -56,28 +47,12 @@ if ( ! class_exists( 'Give_Settings_Data' ) ) :
 		}
 
 		/**
-		 * Add this page to settings.
-		 *
-		 * @since  1.8
-		 * @param  array $pages Lst of pages.
-		 * @return array
-		 */
-		public function add_settings_page( $pages ) {
-			$pages[ $this->id ] = $this->label;
-
-			return $pages;
-		}
-
-		/**
 		 * Get settings array.
 		 *
 		 * @since  1.8
 		 * @return array
 		 */
 		public function get_settings() {
-			// Hide save button.
-			$GLOBALS['give_hide_save_button'] = true;
-
 			// Get settings.
 			$settings = apply_filters( 'give_settings_data', array(
 				array(
@@ -107,18 +82,6 @@ if ( ! class_exists( 'Give_Settings_Data' ) ) :
 
 			// Output.
 			return $settings;
-		}
-
-		/**
-		 * Output the settings.
-		 *
-		 * @since  1.8
-		 * @return void
-		 */
-		public function output() {
-			$settings = $this->get_settings();
-
-			Give_Admin_Settings::output_fields( $settings, 'give_settings' );
 		}
 	}
 

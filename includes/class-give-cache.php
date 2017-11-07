@@ -1,6 +1,7 @@
 <?php
 /**
  * Class for managing cache
+ * Note: only use for internal purpose.
  *
  * @package     Give
  * @subpackage  Classes/Give_Cache

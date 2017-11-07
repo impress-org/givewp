@@ -709,3 +709,25 @@ function give_currency_decimal_filter() {
 
 	return apply_filters( 'give_currency_decimal_count', $decimals, $currency );
 }
+
+
+/**
+ * Get field custom attributes as string.
+ *
+ * @since 1.8
+ * @deprecated 1.8.17
+ *
+ * @param $field
+ *
+ * @return string
+ */
+function give_get_custom_attributes( $field ) {
+	// Custom attribute handling
+	$custom_attributes = '';
+
+	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
+		$custom_attributes = give_get_attribute_str( $field['attributes'] );
+	}
+
+	return $custom_attributes;
+}

@@ -69,7 +69,8 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Setup metabox related data.
 	 *
-	 * @since  1.8
+	 * @since 1.8
+	 *
 	 * @return void
 	 */
 	function setup() {
@@ -80,7 +81,8 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Get metabox settings
 	 *
-	 * @since  1.8
+	 * @since 1.8
+	 *
 	 * @return array
 	 */
 	function get_settings() {
@@ -90,7 +92,7 @@ class Give_MetaBox_Form_Data {
 		$goal                  = give_format_amount( give_get_form_goal( $post_id ), array( 'sanitize' => false ) );
 		$price_placeholder     = give_format_decimal( '1.00', false, false );
 
-		// No empty prices - min. 1.00 for new forms
+		// No empty prices - min. 1.00 for new forms.
 		if ( empty( $price ) && is_null( $post_id ) ) {
 			$price = '1.00';
 		}
@@ -116,13 +118,13 @@ class Give_MetaBox_Form_Data {
 				'title'     => __( 'Donation Options', 'give' ),
 				'icon-html' => '<span class="give-icon give-icon-heart"></span>',
 				'fields'    => apply_filters( 'give_forms_donation_form_metabox_fields', array(
-					// Donation Option
+					// Donation Option.
 					array(
 						'name'        => __( 'Donation Option', 'give' ),
 						'description' => __( 'Do you want this form to have one set donation price or multiple levels (for example, $10, $20, $50)?', 'give' ),
 						'id'          => $prefix . 'price_option',
 						'type'        => 'radio_inline',
-						'default'     => 'set',
+						'default'     => 'multi',
 						'options'     => apply_filters( 'give_forms_price_options', array(
 							'set'   => __( 'Set Donation', 'give' ),
 							'multi' => __( 'Multi-level Donation', 'give' ),
@@ -140,7 +142,7 @@ class Give_MetaBox_Form_Data {
 							'class'       => 'give-money-field',
 						),
 					),
-					// Display Style
+					// Display Style.
 					array(
 						'name'          => __( 'Display Style', 'give' ),
 						'description'   => __( 'Set how the donations levels will display on the form.', 'give' ),
@@ -154,7 +156,7 @@ class Give_MetaBox_Form_Data {
 						),
 						'wrapper_class' => 'give-hidden',
 					),
-					// Custom Amount
+					// Custom Amount.
 					array(
 						'name'        => __( 'Custom Amount', 'give' ),
 						'description' => __( 'Do you want the user to be able to input their own donation amount?', 'give' ),
@@ -186,11 +188,11 @@ class Give_MetaBox_Form_Data {
 						'type'          => 'text_medium',
 						'attributes'    => array(
 							'rows'        => 3,
-							'placeholder' => esc_attr__( 'Give a Custom Amount', 'give' ),
+							'placeholder' => __( 'Give a Custom Amount', 'give' ),
 						),
 						'wrapper_class' => 'give-hidden',
 					),
-					// Donation Levels: Repeatable CMB2 Group
+					// Donation Levels: Repeatable CMB2 Group.
 					array(
 						'id'            => $prefix . 'donation_levels',
 						'type'          => 'group',
@@ -272,7 +274,7 @@ class Give_MetaBox_Form_Data {
 							'desc'          => __( 'The button label for displaying the additional payment fields.', 'give' ),
 							'type'          => 'text_small',
 							'attributes'    => array(
-								'placeholder' => esc_attr__( 'Donate Now', 'give' ),
+								'placeholder' => __( 'Donate Now', 'give' ),
 							),
 							'wrapper_class' => 'give-hidden',
 						),
@@ -518,7 +520,7 @@ class Give_MetaBox_Form_Data {
 						'type'          => 'text',
 						'size'          => 'regular',
 						'attributes'    => array(
-							'placeholder' => esc_attr__( 'Agree to Terms?', 'give' ),
+							'placeholder' => __( 'Agree to Terms?', 'give' ),
 						),
 						'wrapper_class' => 'give-hidden',
 					),
@@ -554,7 +556,8 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Add metabox.
 	 *
-	 * @since  1.8
+	 * @since 1.8
+	 *
 	 * @return void
 	 */
 	public function add_meta_box() {
@@ -572,7 +575,8 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Enqueue scripts.
 	 *
-	 * @since  1.8
+	 * @since 1.8
+	 *
 	 * @return void
 	 */
 	function enqueue_script() {
@@ -586,7 +590,8 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Get metabox id.
 	 *
-	 * @since  1.8
+	 * @since 1.8
+	 *
 	 * @return string
 	 */
 	function get_metabox_ID() {
@@ -596,7 +601,8 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Get metabox label.
 	 *
-	 * @since  1.8
+	 * @since 1.8
+	 *
 	 * @return string
 	 */
 	function get_metabox_label() {
@@ -607,7 +613,8 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Get metabox tabs.
 	 *
-	 * @since  1.8
+	 * @since 1.8
+	 *
 	 * @return array
 	 */
 	public function get_tabs() {
@@ -650,7 +657,8 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Output metabox settings.
 	 *
-	 * @since  1.8
+	 * @since 1.8
+	 *
 	 * @return void
 	 */
 	public function output() {
@@ -737,9 +745,9 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Check if setting field has sub tabs/fields
 	 *
-	 * @since 1.8
+	 * @param array $field_setting Field Settings.
 	 *
-	 * @param $field_setting
+	 * @since 1.8
 	 *
 	 * @return bool
 	 */
@@ -755,7 +763,8 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * CMB2 settings loader.
 	 *
-	 * @since  1.8
+	 * @since 1.8
+	 *
 	 * @return array
 	 */
 	function cmb2_metabox_settings() {
@@ -776,10 +785,10 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Check if we're saving, the trigger an action based on the post type.
 	 *
-	 * @since  1.8
+	 * @param int        $post_id Post ID.
+	 * @param int|object $post    Post Object.
 	 *
-	 * @param  int    $post_id
-	 * @param  object $post
+	 * @since 1.8
 	 *
 	 * @return void
 	 */
@@ -906,9 +915,9 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Get field ID.
 	 *
-	 * @since 1.8
+	 * @param array $field Array of Fields.
 	 *
-	 * @param array $field
+	 * @since 1.8
 	 *
 	 * @return string
 	 */
@@ -926,9 +935,9 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Get fields ID.
 	 *
-	 * @since 1.8
+	 * @param array $setting Array of settings.
 	 *
-	 * @param $setting
+	 * @since 1.8
 	 *
 	 * @return array
 	 */
@@ -949,9 +958,9 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Get sub fields ID.
 	 *
-	 * @since 1.8
+	 * @param array $setting Array of settings.
 	 *
-	 * @param $setting
+	 * @since 1.8
 	 *
 	 * @return array
 	 */
@@ -977,7 +986,8 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Get all setting field ids.
 	 *
-	 * @since  1.8
+	 * @since 1.8
+	 *
 	 * @return array
 	 */
 	private function get_meta_keys_from_settings() {
@@ -1000,10 +1010,10 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Get field type.
 	 *
-	 * @since  1.8
+	 * @param string $field_id Field ID.
+	 * @param string $group_id Field Group ID.
 	 *
-	 * @param  string $field_id
-	 * @param  string $group_id
+	 * @since 1.8
 	 *
 	 * @return string
 	 */
@@ -1021,10 +1031,10 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Get Field
 	 *
-	 * @since 1.8
+	 * @param array  $setting  Settings array.
+	 * @param string $field_id Field ID.
 	 *
-	 * @param array  $setting
-	 * @param string $field_id
+	 * @since 1.8
 	 *
 	 * @return array
 	 */
@@ -1046,10 +1056,10 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Get Sub Field
 	 *
-	 * @since 1.8
+	 * @param array  $setting  Settings array.
+	 * @param string $field_id Field ID.
 	 *
-	 * @param array  $setting
-	 * @param string $field_id
+	 * @since 1.8
 	 *
 	 * @return array
 	 */
@@ -1071,10 +1081,10 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Get setting field.
 	 *
-	 * @since  1.8
+	 * @param string $field_id Field ID.
+	 * @param string $group_id Get sub field from group.
 	 *
-	 * @param  string $field_id
-	 * @param  string $group_id Get sub field from group.
+	 * @since 1.8
 	 *
 	 * @return array
 	 */
@@ -1111,9 +1121,9 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Add offline donations setting tab to donation form options metabox.
 	 *
-	 * @since  1.8
+	 * @param array $settings List of form settings.
 	 *
-	 * @param  array $settings List of form settings.
+	 * @since 1.8
 	 *
 	 * @return mixed
 	 */
@@ -1134,11 +1144,11 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Sanitize form meta values before saving.
 	 *
+	 * @param mixed $meta_value    Meta Value for sanitizing before saving.
+	 * @param array $setting_field Setting Field.
+	 *
 	 * @since  1.8.9
 	 * @access public
-	 *
-	 * @param mixed $meta_value
-	 * @param array $setting_field
 	 *
 	 * @return mixed
 	 */
@@ -1176,11 +1186,11 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Maintain the active tab after save.
 	 *
-	 * @since  1.8.13
-	 * @access public
-	 *
 	 * @param string $location The destination URL.
 	 * @param int    $post_id  The post ID.
+	 *
+	 * @since  1.8.13
+	 * @access public
 	 *
 	 * @return string The URL after redirect.
 	 */
