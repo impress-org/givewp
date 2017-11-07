@@ -513,10 +513,8 @@ function give_get_currency_name( $currency_code ) {
  *
  * @since 1.0
  *
- * @param string         $price           The donation amount.
- * @param string         $currency_code   The currency code.
- * @param bool           $decode_currency Whether to decode the currency HTML format or not.
- * @param string|integer $form_id         Donation Form ID.
+ * @param string $price The donation amount.
+ * @param array  $args  It accepts 'currency_code', 'decode_currency' and 'form_id'.
  *
  * @return mixed|string
  */
