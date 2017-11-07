@@ -445,8 +445,8 @@ class Tests_Payments extends Give_Unit_Test_Case {
 		$total1 = give_currency_filter( give_format_amount( $payment->total ), $payment->currency );
 		$total2 = give_currency_filter( give_format_amount( $payment->total ) );
 
-		$this->assertEquals( '&#36;20.00', $total1 );
-		$this->assertEquals( '&#36;20.00', $total2 );
+		$this->assertEquals( '&#36;&#x200e;20.00', $total1 );
+		$this->assertEquals( '&#36;&#x200e;20.00', $total2 );
 
 	}
 
@@ -461,8 +461,8 @@ class Tests_Payments extends Give_Unit_Test_Case {
 		$total1 = give_currency_filter( give_format_amount( give_get_payment_amount( $this->_payment_id ) ), give_get_payment_currency_code( $this->_payment_id ) );
 		$total2 = give_currency_filter( give_format_amount( give_get_payment_amount( $this->_payment_id ) ) );
 
-		$this->assertEquals( '&#36;20.00', $total1 );
-		$this->assertEquals( '&#36;20.00', $total2 );
+		$this->assertEquals( '&#36;&#x200e;20.00', $total1 );
+		$this->assertEquals( '&#36;&#x200e;20.00', $total2 );
 
 	}
 

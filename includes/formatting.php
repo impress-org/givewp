@@ -575,42 +575,41 @@ function give_currency_filter( $price = '', $currency_code = '', $decode_currenc
 	$symbol = give_currency_symbol( $currency_code, $decode_currency );
 
 	switch ( $currency_code ) :
-		case 'GBP':
-		case 'BRL':
-		case 'EUR':
-		case 'USD':
-		case 'AUD':
-		case 'CAD':
-		case 'HKD':
-		case 'MXN':
-		case 'NZD':
-		case 'SGD':
-		case 'JPY':
-		case 'THB':
-		case 'INR':
-		case 'RIAL':
-		case 'TRY':
-		case 'RUB':
-		case 'SEK':
-		case 'PLN':
-		case 'PHP':
-		case 'TWD':
-		case 'MYR':
-		case 'CZK':
-		case 'DKK':
-		case 'HUF':
-		case 'ILS':
-		case 'MAD':
-		case 'KRW':
-		case 'ZAR':
-			$formatted = ( 'before' === $position ? $symbol . $price : $price . $symbol );
+		case 'GBP' :
+		case 'BRL' :
+		case 'EUR' :
+		case 'USD' :
+		case 'AUD' :
+		case 'CAD' :
+		case 'HKD' :
+		case 'MXN' :
+		case 'NZD' :
+		case 'SGD' :
+		case 'JPY' :
+		case 'THB' :
+		case 'INR' :
+		case 'IRR' :
+		case 'TRY' :
+		case 'RUB' :
+		case 'SEK' :
+		case 'PLN' :
+		case 'PHP' :
+		case 'TWD' :
+		case 'MYR' :
+		case 'CZK' :
+		case 'DKK' :
+		case 'HUF' :
+		case 'ILS' :
+		case 'MAD' :
+		case 'KRW' :
+		case 'ZAR' :
+			$formatted = ( 'before' === $position ? $symbol . '&#x200e;' . $price : $price . '&#x200f;' . $symbol );
 			break;
 		case 'NOK':
 			$formatted = ( 'before' === $position ? $symbol . ' ' . $price : $price . ' ' . $symbol );
 			break;
 		default:
-			$currency_symbol = give_currency_symbol( $currency_code );
-			$formatted       = ( 'before' === $position ? $currency_symbol . ' ' . $price : $price . ' ' . $currency_symbol );
+			$formatted = ( 'before' === $position ? $symbol . ' ' . $price : $price . ' ' . $symbol );
 			break;
 	endswitch;
 
