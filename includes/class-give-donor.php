@@ -790,6 +790,24 @@ class Give_Donor {
 	}
 
 	/**
+	 * Get the purchase value.
+	 *
+	 * @since 1.8.17
+	 *
+	 * @return string|float
+	 */
+	public function get_purchase_value() {
+
+		/**
+		 * Filter the purchase value.
+		 *
+		 * @param string|float $purchase_value Donor Purchase value.
+		 * @param integer      $donor_id       Donor ID.
+		 */
+		return apply_filters( 'give_get_donor_purchase_value', $this->purchase_value, $this->id );
+	}
+
+	/**
 	 * Add a note for the donor.
 	 *
 	 * @since  1.0
