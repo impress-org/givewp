@@ -1078,6 +1078,20 @@ jQuery(function ($) {
 		$('a.give_terms_links', $fieldset_wrapper).toggle();
 		return false;
 	});
+
+	/**
+	 * Prevent level jump which happen due to same id.
+	 * @see https://github.com/WordImpress/Give/issues/2292
+	 */
+	$('label[for^="give-radio-level"]').on('click', function (e) {
+		var $form = $(this).closest('form'),
+			$inputField = $form.find('#' + $(this).attr('for'));
+		
+		if( $inputField.length ) {
+			$inputField.trigger('click');
+			e.preventDefault();
+		}
+	});
 });
 
 jQuery(window).load(function () {
