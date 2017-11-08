@@ -277,8 +277,16 @@ function update_profile_state_field() {
 				// Check if user want to show the feilds or not.
 				if ( typeof ( response.show_field ) != undefined && true == response.show_field ) {
 					$form.find( 'p#give-card-state-wrap' ).removeClass( 'give-hidden' );
+
+					// Add support to zip fields.
+					$form.find('p#give-card-zip-wrap').addClass('form-row-last');
+					$form.find('p#give-card-zip-wrap').removeClass('form-row-wide');
 				} else {
 					$form.find( 'p#give-card-state-wrap' ).addClass( 'give-hidden' );
+
+					// Add support to zip fields.
+					$form.find('p#give-card-zip-wrap').addClass('form-row-wide');
+					$form.find('p#give-card-zip-wrap').removeClass('form-row-last');
 				}
 			}
 		} ).fail( function( data ) {
