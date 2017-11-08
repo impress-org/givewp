@@ -388,21 +388,31 @@ Give.form = {
 			// Find price id with amount in variable prices.
 			if (variable_prices.length) {
 
-				if (is_amount) {
-					// Find amount in donation levels.
-					jQuery.each(variable_prices, function (index, variable_price) {
-						if (variable_price.amount === current_amount) {
-							price_id = variable_price.price_id;
-							return false;
-						}
-					});
+				// Get resent selected price id for same amount.
+				if(
+					'undefined' !== typeof Give.cache['amount_' + current_amount ] &&
+					price_id !== Give.cache['amount_' + current_amount ]
+				) {
+					price_id = Give.cache['amount_' + current_amount ];
 
-					// Set level to custom.
-					if (-1 === price_id && this.getMinimumAmount($form) <= current_amount) {
-						price_id = 'custom';
+				}else{
+					if (is_amount) {
+						// Find amount in donation levels.
+						jQuery.each(variable_prices, function (index, variable_price) {
+							if (variable_price.amount === current_amount) {
+								price_id = variable_price.price_id;
+
+								return false;
+							}
+						});
+
+						// Set level to custom.
+						if (-1 === price_id && this.getMinimumAmount($form) <= current_amount) {
+							price_id = 'custom';
+						}
+					} else {
+						price_id = jQuery('input[name="give-price-id"]', $form).val();
 					}
-				} else {
-					price_id = jQuery('input[name="give-price-id"]', $form).val();
 				}
 			}
 
@@ -551,8 +561,8 @@ Give.form = {
 		 */
 		isValidDonationAmount: function ($form) {
 			var min_amount = this.getMinimumAmount($form),
-				amount = this.getAmount($form),
-				price_id = this.getPriceID($form);
+				amount     = this.getAmount($form),
+				price_id   = this.getPriceID($form, true);
 
 			return (
 				( ( -1 < amount ) && ( amount > min_amount ) ) ||
@@ -844,14 +854,18 @@ jQuery(function ($) {
 	 * Fires on focus end aka "blur"
 	 */
 	doc.on('blur', '.give-donation-amount .give-text-input', function (e, $parent_form, donation_amount, price_id) {
-		var parent_form = ( 'undefined' !== typeof $parent_form ) ? $parent_form : $(this).closest('form'),
-			pre_focus_amount = $(this).data('amount'),
-			this_value = ( 'undefined' !== typeof donation_amount ) ? donation_amount : $(this).val(),
+		var parent_form       = ( 'undefined' !== typeof $parent_form ) ? $parent_form : $(this).closest('form'),
+			pre_focus_amount  = $(this).data('amount'),
+			this_value        = ( 'undefined' !== typeof donation_amount ) ? donation_amount : $(this).val(),
 			decimal_separator = Give.form.fn.getInfo('decimal_separator', parent_form),
-			value_min = Give.form.fn.getMinimumAmount(parent_form),
-			value_now = (this_value === 0) ? value_min : Give.fn.unFormatCurrency(this_value, decimal_separator),
-			formatted_total = Give.form.fn.formatAmount(value_now, parent_form, {}),
-			price_id = Give.form.fn.getPriceID(parent_form);
+			value_min         = Give.form.fn.getMinimumAmount(parent_form),
+			value_now         = (this_value === 0) ? value_min : Give.fn.unFormatCurrency(this_value, decimal_separator),
+			formatted_total   = Give.form.fn.formatAmount(value_now, parent_form, {});
+
+		price_id = 'undefined' === typeof price_id ? Give.form.fn.getPriceID(parent_form, true) : price_id;
+
+		// Cache donor selected price id for a amount.
+		Give.cache['amount_' + value_now ] = price_id;
 
 		$(this).val(formatted_total);
 
@@ -914,7 +928,7 @@ jQuery(function ($) {
 			parent_form.find('.give-default-level').removeClass('give-default-level');
 
 			// Auto select variable price items ( Radio/Button/Select ).
-			Give.form.fn.autoSelectDonationLevel( parent_form );
+			Give.form.fn.autoSelectDonationLevel(parent_form, price_id);
 		}
 
 		//This class is used for CSS purposes
