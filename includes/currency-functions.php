@@ -520,11 +520,6 @@ function give_get_currency_name( $currency_code ) {
  */
 function give_currency_filter( $price = '', $args = array() ) {
 
-	// Bailout.
-	if ( empty( $price ) || ( ! is_numeric( $price ) && ! is_string( $price ) ) ) {
-		return $price;
-	}
-
 	// Get functions arguments.
 	$func_args = func_get_args();
 
