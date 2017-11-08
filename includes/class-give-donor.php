@@ -801,6 +801,8 @@ class Give_Donor {
 		/**
 		 * Filter the purchase value.
 		 *
+		 * @since 1.8.17
+		 *
 		 * @param string|float $purchase_value Donor Purchase value.
 		 * @param integer      $donor_id       Donor ID.
 		 */
