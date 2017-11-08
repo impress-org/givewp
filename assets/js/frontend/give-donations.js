@@ -459,16 +459,16 @@ Give.form = {
 				 *
 				 * @type {number/string} Donation level ID.
 				 */
-				price_id        = !! Give.fn.getCache( 'amount_' + current_amount, $form ) ? Give.fn.getCache( 'amount_' + current_amount, $form ) : -1;
+				price_id        = !!Give.fn.getCache('amount_' + current_amount, $form) ? Give.fn.getCache('amount_' + current_amount, $form) : -1;
 
 			// Flag to decide on which param we want to find price_id
 			is_amount = 'undefined' === typeof is_amount ? true : is_amount;
-			
+
 			// Find price id with amount in variable prices.
 			if (variable_prices.length) {
 
 				// Get recent selected price id for same amount.
-				if ( -1 === price_id ) {
+				if (-1 === price_id) {
 					if (is_amount) {
 						// Find amount in donation levels.
 						jQuery.each(variable_prices, function (index, variable_price) {
@@ -938,7 +938,7 @@ jQuery(function ($) {
 		price_id = 'undefined' === typeof price_id ? Give.form.fn.getPriceID(parent_form, true) : price_id;
 
 		// Cache donor selected price id for a amount.
-		Give.fn.setCache( 'amount_' + value_now, price_id, parent_form );
+		Give.fn.setCache('amount_' + value_now, price_id, parent_form);
 
 		$(this).val(formatted_total);
 
@@ -1041,7 +1041,7 @@ jQuery(function ($) {
 			price_id     = selected_field.data('price-id');
 
 		// Check if price ID blank because of dropdown type
-		if ('undefined' === typeof  price_id ) {
+		if ('undefined' === typeof  price_id) {
 			price_id = selected_field.find('option:selected').data('price-id');
 		}
 
@@ -1098,10 +1098,10 @@ jQuery(function ($) {
 	 * @see https://github.com/WordImpress/Give/issues/2292
 	 */
 	$('label[for^="give-radio-level"]').on('click', function (e) {
-		var $form = $(this).closest('form'),
+		var $form       = $(this).closest('form'),
 			$inputField = $form.find('#' + $(this).attr('for'));
-		
-		if( $inputField.length ) {
+
+		if ($inputField.length) {
 			$inputField.trigger('click');
 			e.preventDefault();
 		}
