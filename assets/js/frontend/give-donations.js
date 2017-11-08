@@ -351,13 +351,14 @@ Give.form = {
 		 *
 		 * @since 1.8.17
 		 * @param {object} $form
+		 * @param {boolean} is_amount
 		 *
 		 * @return {string}
 		 */
-		getPriceID: function ($form) {
+		getPriceID: function ($form, is_amount) {
 
 			var variable_prices = this.getVariablePrices($form),
-				current_amount = Give.fn.unFormatCurrency(
+				current_amount  = Give.fn.unFormatCurrency(
 					$form.find('input[name="give-amount"]').val(),
 					this.getInfo('decimal_separator', $form)
 				),
@@ -372,22 +373,29 @@ Give.form = {
 				 *
 				 * @type {number/string} Donation level ID.
 				 */
-				price_id = -1;
+				price_id        = -1;
+
+			// Flag to decide on which param we want to find price_id
+			is_amount = 'undefined' === typeof is_amount ? true : is_amount;
 
 			// Find price id with amount in variable prices.
 			if (variable_prices.length) {
 
-				// Find amount in donation levels.
-				jQuery.each(variable_prices, function (index, variable_price) {
-					if (variable_price.amount === current_amount) {
-						price_id = variable_price.price_id;
-						return false;
-					}
-				});
+				if (is_amount) {
+					// Find amount in donation levels.
+					jQuery.each(variable_prices, function (index, variable_price) {
+						if (variable_price.amount === current_amount) {
+							price_id = variable_price.price_id;
+							return false;
+						}
+					});
 
-				// Set level to custom.
-				if (-1 === price_id && this.getMinimumAmount($form) <= current_amount) {
-					price_id = 'custom';
+					// Set level to custom.
+					if (-1 === price_id && this.getMinimumAmount($form) <= current_amount) {
+						price_id = 'custom';
+					}
+				} else {
+					price_id = jQuery('input[name="give-price-id"]', $form).val();
 				}
 			}
 
