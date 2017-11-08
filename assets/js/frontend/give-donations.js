@@ -17,19 +17,19 @@ Give = {
 		var subHelperObjs = ['form'],
 			counter       = 0;
 
-		jQuery(document).trigger( 'give:preInit');
+		jQuery(document).trigger('give:preInit');
 
 		this.fn.__initialize_cache();
 
 		// Initialize all init methods od sub helper objects.
-		while (counter < subHelperObjs.length ) {
-			if( !! Give[subHelperObjs[counter]].init ) {
+		while (counter < subHelperObjs.length) {
+			if (!!Give[subHelperObjs[counter]].init) {
 				Give[subHelperObjs[counter]].init();
 			}
 			counter++;
 		}
 
-		jQuery(document).trigger( 'give:postInit');
+		jQuery(document).trigger('give:postInit');
 	},
 
 	fn: {
@@ -129,8 +129,7 @@ Give = {
 
 			return price;
 
-		}
-		,
+		},
 
 		/**
 		 * Unformat Currency
@@ -141,8 +140,7 @@ Give = {
 		 */
 		unFormatCurrency: function (price, decimal_separator) {
 			return Math.abs(parseFloat(accounting.unformat(price, decimal_separator)));
-		}
-		,
+		},
 
 		/**
 		 * Get Parameter by Name
@@ -172,8 +170,7 @@ Give = {
 			}
 
 			return decodeURIComponent(results[2].replace(/\+/g, " "));
-		}
-		,
+		},
 
 		/**
 		 * Get information from global var
@@ -759,7 +756,7 @@ jQuery(function ($) {
 
 	// Initialize Give object.
 	Give.init();
-	
+
 	/**
 	 * Update state/province fields per country selection
 	 */
