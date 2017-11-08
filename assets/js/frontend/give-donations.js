@@ -168,6 +168,15 @@ Give = {
 
 			return give_global_vars[str];
 		}
+	},
+
+	/**
+	 * This object key will be use to cache predicted data or donor activity.
+	 *
+	 * @since 1.8.17
+	 */
+	cache: {
+
 	}
 };
 
