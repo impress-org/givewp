@@ -14,7 +14,22 @@ var Give = 'undefined' !== typeof Give ? Give : {};
 
 Give = {
 	init: function () {
+		var subHelperObjs = ['form'],
+			counter       = 0;
+
+		jQuery(document).trigger( 'give:preInit');
+
 		this.fn.__initialize_cache();
+
+		// Initialize all init methods od sub helper objects.
+		while (counter < subHelperObjs.length ) {
+			if( !! Give[subHelperObjs[counter]].init ) {
+				Give[subHelperObjs[counter]].init();
+			}
+			counter++;
+		}
+
+		jQuery(document).trigger( 'give:postInit');
 	},
 
 	fn: {
@@ -744,8 +759,7 @@ jQuery(function ($) {
 
 	// Initialize Give object.
 	Give.init();
-	Give.form.init();
-
+	
 	/**
 	 * Update state/province fields per country selection
 	 */
