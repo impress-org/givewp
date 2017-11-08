@@ -806,7 +806,7 @@ class Give_Donor {
 		 * @param string|float $purchase_value Donor Purchase value.
 		 * @param integer      $donor_id       Donor ID.
 		 */
-		return apply_filters( 'give_get_donor_purchase_value', $this->purchase_value, $this->id );
+		return apply_filters( 'give_donor_purchase_value', $this->purchase_value, $this->id );
 	}
 
 	/**
