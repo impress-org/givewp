@@ -13,6 +13,10 @@ var give_scripts, give_global_vars;
 var Give = 'undefined' !== typeof Give ? Give : {};
 
 Give = {
+	init: function () {
+		this.fn.__initialize_cache();
+	},
+
 	fn: {
 		/**
 		 * Format Currency
@@ -110,7 +114,8 @@ Give = {
 
 			return price;
 
-		},
+		}
+		,
 
 		/**
 		 * Unformat Currency
@@ -121,7 +126,8 @@ Give = {
 		 */
 		unFormatCurrency: function (price, decimal_separator) {
 			return Math.abs(parseFloat(accounting.unformat(price, decimal_separator)));
-		},
+		}
+		,
 
 		/**
 		 * Get Parameter by Name
@@ -151,7 +157,8 @@ Give = {
 			}
 
 			return decodeURIComponent(results[2].replace(/\+/g, " "));
-		},
+		}
+		,
 
 		/**
 		 * Get information from global var
@@ -167,18 +174,71 @@ Give = {
 			}
 
 			return give_global_vars[str];
+		},
+
+		/**
+		 * set cache
+		 *
+		 * @since 1.8.17
+		 *
+		 * @param {string} key
+		 * @param {string} value
+		 * @param {object} $form
+		 */
+		setCache: function (key, value, $form) {
+			if ($form.length) {
+				Give.cache['form_' + Give.form.fn.getInfo('form-id', $form)][key] = value;
+			} else {
+				Give.cache[key] = value;
+			}
+		},
+
+		/**
+		 * Get cache
+		 *
+		 * @since 1.8.17
+		 * @param key
+		 * @param $form
+		 * @return {string|*}
+		 */
+		getCache: function (key, $form) {
+			var cache;
+
+			if ($form.length) {
+				cache = Give.cache['form_' + Give.form.fn.getInfo('form-id', $form)][key];
+			} else {
+				cache = Give.cache[key];
+			}
+
+			cache = 'undefined' === typeof cache ? '' : cache;
+
+			return cache;
+		},
+
+		/**
+		 * Initialize cache.
+		 *
+		 * @since 1.8.17
+		 * @private
+		 */
+		__initialize_cache: function () {
+			jQuery.each(jQuery('.give-form'), function (index, $item) {
+				$item = $item instanceof jQuery ? $item : jQuery($item);
+
+				Give.cache['form_' + Give.form.fn.getInfo('form-id', $item)] = [];
+			});
 		}
-	},
+	}
+	,
 
 	/**
 	 * This object key will be use to cache predicted data or donor activity.
 	 *
 	 * @since 1.8.17
 	 */
-	cache: {
-
-	}
-};
+	cache: {}
+}
+;
 
 Give.form = {
 	init: function () {
@@ -253,6 +313,10 @@ Give.form = {
 					} else if ($form.hasClass('give-form-type-multi')) {
 						data = 'multi';
 					}
+					break;
+
+				case 'form-id':
+					data = $form.find('input[name="give-form-id"]').val();
 					break;
 
 				default:
@@ -388,14 +452,8 @@ Give.form = {
 			// Find price id with amount in variable prices.
 			if (variable_prices.length) {
 
-				// Get resent selected price id for same amount.
-				if(
-					'undefined' !== typeof Give.cache['amount_' + current_amount ] &&
-					price_id !== Give.cache['amount_' + current_amount ]
-				) {
-					price_id = Give.cache['amount_' + current_amount ];
-
-				}else{
+				// Get recent selected price id for same amount.
+				if ( ! ( price_id = Give.fn.getCache( 'amount_' + current_amount, $form ) ) ) {
 					if (is_amount) {
 						// Find amount in donation levels.
 						jQuery.each(variable_prices, function (index, variable_price) {
@@ -685,6 +743,7 @@ jQuery(function ($) {
 	};
 
 	// Initialize Give object.
+	Give.init();
 	Give.form.init();
 
 	/**
@@ -865,7 +924,7 @@ jQuery(function ($) {
 		price_id = 'undefined' === typeof price_id ? Give.form.fn.getPriceID(parent_form, true) : price_id;
 
 		// Cache donor selected price id for a amount.
-		Give.cache['amount_' + value_now ] = price_id;
+		Give.fn.setCache( 'amount_' + value_now, price_id, parent_form );
 
 		$(this).val(formatted_total);
 
