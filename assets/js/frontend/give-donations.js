@@ -444,16 +444,16 @@ Give.form = {
 				 *
 				 * @type {number/string} Donation level ID.
 				 */
-				price_id        = -1;
+				price_id        = !! Give.fn.getCache( 'amount_' + current_amount, $form ) ? Give.fn.getCache( 'amount_' + current_amount, $form ) : -1;
 
 			// Flag to decide on which param we want to find price_id
 			is_amount = 'undefined' === typeof is_amount ? true : is_amount;
-
+			
 			// Find price id with amount in variable prices.
 			if (variable_prices.length) {
 
 				// Get recent selected price id for same amount.
-				if ( ! ( price_id = Give.fn.getCache( 'amount_' + current_amount, $form ) ) ) {
+				if ( -1 === price_id ) {
 					if (is_amount) {
 						// Find amount in donation levels.
 						jQuery.each(variable_prices, function (index, variable_price) {
