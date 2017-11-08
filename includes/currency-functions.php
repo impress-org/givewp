@@ -528,7 +528,7 @@ function give_currency_filter( $price = '', $args = array() ) {
 	// Get functions arguments.
 	$func_args = func_get_args();
 
-	if ( isset( $func_args[1] ) && ( is_string( $func_args[1] ) || is_numeric( $func_args[1] ) ) ) {
+	if ( isset( $func_args[1] ) && is_string( $func_args[1] ) ) {
 		$args = array(
 			'currency_code'   => isset( $func_args[1] ) ? $func_args[1] : '',
 			'decode_currency' => isset( $func_args[2] ) ? $func_args[2] : false,
