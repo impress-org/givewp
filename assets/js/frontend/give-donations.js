@@ -169,7 +169,7 @@ Give = {
 		 * @return {string}
 		 */
 		getGlobalVar: function (str) {
-			if ('undefined' === give_global_vars[str]) {
+			if ('undefined' === typeof give_global_vars[str]) {
 				return '';
 			}
 
@@ -379,7 +379,7 @@ Give.form = {
 
 			gateway = $form.find('input[name="payment-mode"]:checked').val().trim();
 
-			return 'undefined' !== gateway ? gateway : '';
+			return 'undefined' !== typeof gateway ? gateway : '';
 		},
 
 		/**
@@ -504,7 +504,7 @@ Give.form = {
 
 			var amount = $form.find('input[name="give-amount"]').val();
 
-			if ('undefined' === amount || !amount) {
+			if ('undefined' === typeof amount || !amount) {
 				amount = 0;
 			}
 
@@ -1027,7 +1027,7 @@ jQuery(function ($) {
 			price_id     = selected_field.data('price-id');
 
 		// Check if price ID blank because of dropdown type
-		if ('undefined' === price_id) {
+		if ('undefined' === typeof  price_id ) {
 			price_id = selected_field.find('option:selected').data('price-id');
 		}
 
