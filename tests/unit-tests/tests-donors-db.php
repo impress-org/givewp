@@ -202,14 +202,14 @@ class Tests_Donors_DB extends Give_Unit_Test_Case {
 
 		$customer = new Give_Donor( 'testadmin@domain.com' );
 
-		$this->assertEquals( '20', $customer->get_purchase_value() );
+		$this->assertEquals( '20', $customer->get_total_donation_amount() );
 		$this->assertEquals( '1', $customer->purchase_count );
 
 		Give()->donors->increment_stats( $customer->id, 10 );
 
 		$updated_customer = new Give_Donor( 'testadmin@domain.com' );
 
-		$this->assertEquals( '30', $updated_customer->get_purchase_value() );
+		$this->assertEquals( '30', $updated_customer->get_total_donation_amount() );
 		$this->assertEquals( '2', $updated_customer->purchase_count );
 	}
 
@@ -220,14 +220,14 @@ class Tests_Donors_DB extends Give_Unit_Test_Case {
 
 		$customer = new Give_Donor( 'testadmin@domain.com' );
 
-		$this->assertEquals( '20', $customer->get_purchase_value() );
+		$this->assertEquals( '20', $customer->get_total_donation_amount() );
 		$this->assertEquals( '1', $customer->purchase_count );
 
 		Give()->donors->decrement_stats( $customer->id, 10 );
 
 		$updated_customer = new Give_Donor( 'testadmin@domain.com' );
 
-		$this->assertEquals( '10', $updated_customer->get_purchase_value() );
+		$this->assertEquals( '10', $updated_customer->get_total_donation_amount() );
 		$this->assertEquals( '0', $updated_customer->purchase_count );
 	}
 

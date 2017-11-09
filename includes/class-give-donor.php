@@ -790,13 +790,13 @@ class Give_Donor {
 	}
 
 	/**
-	 * Get the purchase value.
+	 * Get the total donation amount.
 	 *
 	 * @since 1.8.17
 	 *
 	 * @return string|float
 	 */
-	public function get_purchase_value() {
+	public function get_total_donation_amount() {
 
 		/**
 		 * Filter the purchase value.
