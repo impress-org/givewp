@@ -18,3 +18,10 @@
 - [ ] My code is tested.
 - [ ] My code follows the WordPress code style.
 - [ ] My code follows has proper inline documentation.
+
+## WordPress Environment
+<details>
+```
+Copy and paste the system Info report from **Donations > Tools > System Info** in WordPress admin here.
+```
+</details>

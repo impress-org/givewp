@@ -152,6 +152,19 @@ class Give_Payment_Stats extends Give_Stats {
 			Give_Cache::set( $key, give_sanitize_amount_for_db( $earnings ), 60 * 60 );
 		}
 
+		/**
+		 * Filter the earnings.
+		 *
+		 * @since 1.8.17
+		 *
+		 * @param  float       $earnings   Earning amount.
+		 * @param  int         $form_id    Donation Form ID.
+		 * @param  string|bool $start_date Earning start date.
+		 * @param  string|bool $end_date   Earning end date.
+		 * @param  string|bool $gateway_id Payment gateway id.
+		 */
+		$earnings = apply_filters( 'give_get_earnings', $earnings, $form_id, $start_date, $end_date, $gateway_id );
+
 		//return earnings
 		return round( $earnings, give_get_price_decimals( $form_id ) );
 
