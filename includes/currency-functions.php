@@ -523,6 +523,7 @@ function give_currency_filter( $price = '', $args = array() ) {
 	// Get functions arguments.
 	$func_args = func_get_args();
 
+	// Backward compatibility: modify second param to array
 	if ( isset( $func_args[1] ) && is_string( $func_args[1] ) ) {
 		$args = array(
 			'currency_code'   => isset( $func_args[1] ) ? $func_args[1] : '',
