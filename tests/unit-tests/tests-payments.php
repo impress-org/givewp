@@ -547,4 +547,14 @@ class Tests_Payments extends Give_Unit_Test_Case {
 			$this->assertEquals( $level_id, give_get_price_id( $form->ID, $amount ) );
 		}
 	}
+
+	/**
+	 * Test give_payment_amount().
+	 */
+	public function test_payment_amount() {
+		$payment = new Give_Payment( $this->_payment_id );
+
+		$this->assertEquals( '&#36;&#x200e;20.00', give_payment_amount( $payment->ID ) );
+		$this->assertEquals( '&#36;&#x200e;20.00', give_payment_amount( $payment->ID ), 'donor' );
+	}
 }
