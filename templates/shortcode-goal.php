@@ -60,11 +60,12 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
  */
 $form_currency = apply_filters( 'give_goal_form_currency', give_get_currency( $form_id ), $form_id );
 
-// Set progress to 100 percentage if income > goal.
-if ( ( $income >= $goal ) || ( $donations_completed >= $donations_goal ) ) {
-	$progress = 100;
+// Set progress to 100 percentage if income > goal or completed donations > donation goal count.
+if ( 'donation' === $goal_format ) {
+	$progress = $donations_completed >= $donations_goal ? 100 : $progress;
+} else {
+	$progress = $income >= $goal ? 100 : $progress;
 }
-
 ?>
 <div class="give-goal-progress">
 	<?php if ( ! empty( $show_text ) ) : ?>
@@ -113,7 +114,8 @@ if ( ( $income >= $goal ) || ( $donations_completed >= $donations_goal ) ) {
 
 
 	<?php if ( ! empty( $show_bar ) ) : ?>
-		<div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="<?php echo esc_attr( $progress ); ?>">
+		<div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+			 aria-valuenow="<?php echo esc_attr( $progress ); ?>">
 			<span style="width: <?php echo esc_attr( $progress ); ?>%;<?php if ( ! empty( $color ) ) {
 				echo 'background-color:' . $color;
 			} ?>"></span>
