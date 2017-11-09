@@ -262,7 +262,7 @@ function give_maybe_sanitize_amount( $number, $args = array() ) {
 /**
  * Sanitize Amount
  *
- * Note: Use this give_maybe_sanitize_amount function instead for sanitizing number.
+ * Note: Do not this function to sanitize amount instead use give_maybe_sanitize_amount function.
  *
  * Returns a sanitized amount by stripping out thousands separators.
  *
