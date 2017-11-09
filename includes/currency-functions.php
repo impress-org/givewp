@@ -69,7 +69,7 @@ function give_get_currency_position() {
  */
 function give_get_currencies( $info = 'admin_label' ) {
 	$currencies = array(
-		'USD'  => array(
+		'USD' => array(
 			'admin_label' => __( 'US Dollars ($)', 'give' ),
 			'symbol'      => '&#36;',
 			'setting'     => array(
@@ -79,7 +79,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 2,
 			),
 		),
-		'EUR'  => array(
+		'EUR' => array(
 			'admin_label' => __( 'Euros (€)', 'give' ),
 			'symbol'      => '&euro;',
 			'setting'     => array(
@@ -89,7 +89,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 2,
 			),
 		),
-		'GBP'  => array(
+		'GBP' => array(
 			'admin_label' => __( 'Pounds Sterling (£)', 'give' ),
 			'symbol'      => '&pound;',
 			'setting'     => array(
@@ -99,7 +99,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 2,
 			),
 		),
-		'AUD'  => array(
+		'AUD' => array(
 			'admin_label' => __( 'Australian Dollars ($)', 'give' ),
 			'symbol'      => '&#36;',
 			'setting'     => array(
@@ -109,7 +109,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 2,
 			),
 		),
-		'BRL'  => array(
+		'BRL' => array(
 			'admin_label' => __( 'Brazilian Real (R$)', 'give' ),
 			'symbol'      => '&#82;&#36;',
 			'setting'     => array(
@@ -119,7 +119,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 2,
 			),
 		),
-		'CAD'  => array(
+		'CAD' => array(
 			'admin_label' => __( 'Canadian Dollars ($)', 'give' ),
 			'symbol'      => '&#36;',
 			'setting'     => array(
@@ -129,7 +129,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 2,
 			),
 		),
-		'CZK'  => array(
+		'CZK' => array(
 			'admin_label' => __( 'Czech Koruna (Kč)', 'give' ),
 			'symbol'      => '&#75;&#269;',
 			'setting'     => array(
@@ -139,7 +139,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 2,
 			),
 		),
-		'DKK'  => array(
+		'DKK' => array(
 			'admin_label' => __( 'Danish Krone (kr.)', 'give' ),
 			'symbol'      => '&nbsp;kr.&nbsp;',
 			'setting'     => array(
@@ -149,7 +149,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 2,
 			),
 		),
-		'HKD'  => array(
+		'HKD' => array(
 			'admin_label' => __( 'Hong Kong Dollar ($)', 'give' ),
 			'symbol'      => '&#36;',
 			'setting'     => array(
@@ -159,7 +159,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 2,
 			),
 		),
-		'HUF'  => array(
+		'HUF' => array(
 			'admin_label' => __( 'Hungarian Forint (Ft)', 'give' ),
 			'symbol'      => '&#70;&#116;',
 			'setting'     => array(
@@ -169,7 +169,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 2,
 			),
 		),
-		'ILS'  => array(
+		'ILS' => array(
 			'admin_label' => __( 'Israeli Shekel (₪)', 'give' ),
 			'symbol'      => '&#8362;',
 			'setting'     => array(
@@ -179,7 +179,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 2,
 			),
 		),
-		'JPY'  => array(
+		'JPY' => array(
 			'admin_label' => __( 'Japanese Yen (¥)', 'give' ),
 			'symbol'      => '&yen;',
 			'setting'     => array(
@@ -189,7 +189,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 0,
 			),
 		),
-		'MYR'  => array(
+		'MYR' => array(
 			'admin_label' => __( 'Malaysian Ringgits (RM)', 'give' ),
 			'symbol'      => '&#82;&#77;',
 			'setting'     => array(
@@ -199,7 +199,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 2,
 			),
 		),
-		'MXN'  => array(
+		'MXN' => array(
 			'admin_label' => __( 'Mexican Peso ($)', 'give' ),
 			'symbol'      => '&#36;',
 			'setting'     => array(
@@ -209,7 +209,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 2,
 			),
 		),
-		'MAD'  => array(
+		'MAD' => array(
 			'admin_label' => __( 'Moroccan Dirham (&#x2e;&#x62f;&#x2e;&#x645;)', 'give' ),
 			'symbol'      => '&#x2e;&#x62f;&#x2e;&#x645;',
 			'setting'     => array(
@@ -219,7 +219,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 2,
 			),
 		),
-		'NZD'  => array(
+		'NZD' => array(
 			'admin_label' => __( 'New Zealand Dollar ($)', 'give' ),
 			'symbol'      => '&#36;',
 			'setting'     => array(
@@ -229,7 +229,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 2,
 			),
 		),
-		'NOK'  => array(
+		'NOK' => array(
 			'admin_label' => __( 'Norwegian Krone (Kr.)', 'give' ),
 			'symbol'      => '&#107;&#114;.',
 			'setting'     => array(
@@ -239,7 +239,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 2,
 			),
 		),
-		'PHP'  => array(
+		'PHP' => array(
 			'admin_label' => __( 'Philippine Pesos (₱)', 'give' ),
 			'symbol'      => '&#8369;',
 			'setting'     => array(
@@ -249,7 +249,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 2,
 			),
 		),
-		'PLN'  => array(
+		'PLN' => array(
 			'admin_label' => __( 'Polish Zloty (zł)', 'give' ),
 			'symbol'      => '&#122;&#322;',
 			'setting'     => array(
@@ -259,7 +259,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 2,
 			),
 		),
-		'SGD'  => array(
+		'SGD' => array(
 			'admin_label' => __( 'Singapore Dollar ($)', 'give' ),
 			'symbol'      => '&#36;',
 			'setting'     => array(
@@ -269,7 +269,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 2,
 			),
 		),
-		'KRW'  => array(
+		'KRW' => array(
 			'admin_label' => __( 'South Korean Won (₩)', 'give' ),
 			'symbol'      => '&#8361;',
 			'setting'     => array(
@@ -279,7 +279,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 0,
 			),
 		),
-		'ZAR'  => array(
+		'ZAR' => array(
 			'admin_label' => __( 'South African Rand (R)', 'give' ),
 			'symbol'      => '&#82;',
 			'setting'     => array(
@@ -289,7 +289,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 2,
 			),
 		),
-		'SEK'  => array(
+		'SEK' => array(
 			'admin_label' => __( 'Swedish Krona (kr)', 'give' ),
 			'symbol'      => '&nbsp;kr.&nbsp;',
 			'setting'     => array(
@@ -299,7 +299,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 2,
 			),
 		),
-		'CHF'  => array(
+		'CHF' => array(
 			'admin_label' => __( 'Swiss Franc (CHF)', 'give' ),
 			'symbol'      => 'CHF',
 			'setting'     => array(
@@ -309,7 +309,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 2,
 			),
 		),
-		'TWD'  => array(
+		'TWD' => array(
 			'admin_label' => __( 'Taiwan New Dollars (NT$)', 'give' ),
 			'symbol'      => '&#78;&#84;&#36;',
 			'setting'     => array(
@@ -319,7 +319,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 2,
 			),
 		),
-		'THB'  => array(
+		'THB' => array(
 			'admin_label' => __( 'Thai Baht (฿)', 'give' ),
 			'symbol'      => '&#3647;',
 			'setting'     => array(
@@ -329,7 +329,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 2,
 			),
 		),
-		'INR'  => array(
+		'INR' => array(
 			'admin_label' => __( 'Indian Rupee (₹)', 'give' ),
 			'symbol'      => '&#8377;',
 			'setting'     => array(
@@ -339,7 +339,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 2,
 			),
 		),
-		'TRY'  => array(
+		'TRY' => array(
 			'admin_label' => __( 'Turkish Lira (₺)', 'give' ),
 			'symbol'      => '&#8378;',
 			'setting'     => array(
@@ -359,7 +359,7 @@ function give_get_currencies( $info = 'admin_label' ) {
 				'number_decimals'     => 2,
 			),
 		),
-		'RUB'  => array(
+		'RUB' => array(
 			'admin_label' => __( 'Russian Rubles (руб)', 'give' ),
 			'symbol'      => '&#8381;',
 			'setting'     => array(
@@ -429,9 +429,9 @@ function give_currency_symbols( $decode_currencies = false ) {
 	$currencies = give_get_currencies( 'symbol' );
 
 	if ( $decode_currencies ) {
-		array_walk( $currencies, function( &$currency_symbol ){
+		array_walk( $currencies, function ( &$currency_symbol ) {
 			$currency_symbol = html_entity_decode( $currency_symbol, ENT_COMPAT, 'UTF-8' );
-		});
+		} );
 	}
 
 	/**
@@ -513,16 +513,37 @@ function give_get_currency_name( $currency_code ) {
  *
  * @since 1.0
  *
- * @param string $price           The donation amount.
- * @param string $currency_code   The currency code.
- * @param bool   $decode_currency Whether to decode the currency HTML format or not.
+ * @param string $price The donation amount.
+ * @param array  $args  It accepts 'currency_code', 'decode_currency' and 'form_id'.
  *
  * @return mixed|string
  */
-function give_currency_filter( $price = '', $currency_code = '', $decode_currency = false ) {
+function give_currency_filter( $price = '', $args = array() ) {
 
-	if ( empty( $currency_code ) || ! array_key_exists( (string) $currency_code, give_get_currencies() ) ) {
-		$currency_code = give_get_currency();
+	// Get functions arguments.
+	$func_args = func_get_args();
+
+	// Backward compatibility: modify second param to array
+	if ( isset( $func_args[1] ) && is_string( $func_args[1] ) ) {
+		$args = array(
+			'currency_code'   => isset( $func_args[1] ) ? $func_args[1] : '',
+			'decode_currency' => isset( $func_args[2] ) ? $func_args[2] : false,
+			'form_id'         => isset( $func_args[3] ) ? $func_args[3] : '',
+		);
+	}
+
+	// Set default values.
+	$args = wp_parse_args(
+		$args,
+		array(
+			'currency_code'   => '',
+			'decode_currency' => false,
+			'form_id'         => '',
+		)
+	);
+
+	if ( empty( $args['currency_code'] ) || ! array_key_exists( (string) $args['currency_code'], give_get_currencies() ) ) {
+		$args['currency_code'] = give_get_currency( $args['form_id'] );
 	}
 
 	$position = give_get_option( 'currency_position', 'before' );
@@ -534,9 +555,9 @@ function give_currency_filter( $price = '', $currency_code = '', $decode_currenc
 		$price = substr( $price, 1 );
 	}
 
-	$symbol = give_currency_symbol( $currency_code, $decode_currency );
+	$symbol = give_currency_symbol( $args['currency_code'], $args['decode_currency'] );
 
-	switch ( $currency_code ) :
+	switch ( $args['currency_code'] ) :
 		case 'GBP' :
 		case 'BRL' :
 		case 'EUR' :
@@ -566,6 +587,7 @@ function give_currency_filter( $price = '', $currency_code = '', $decode_currenc
 		case 'KRW' :
 		case 'ZAR' :
 			$formatted = ( 'before' === $position ? $symbol . '&#x200e;' . $price : $price . '&#x200f;' . $symbol );
+			$formatted = $args['decode_currency'] ? html_entity_decode( $formatted, ENT_COMPAT, 'UTF-8' ) : $formatted;
 			break;
 		case 'NOK':
 			$formatted = ( 'before' === $position ? $symbol . ' ' . $price : $price . ' ' . $symbol );
@@ -586,7 +608,13 @@ function give_currency_filter( $price = '', $currency_code = '', $decode_currenc
 	 *           and if currency is USD and currency position is after then
 	 *           filter name will be give_usd_currency_filter_after
 	 */
-	$formatted = apply_filters( 'give_' . strtolower( $currency_code ) . "_currency_filter_{$position}", $formatted, $currency_code, $price );
+	$formatted = apply_filters(
+		'give_' . strtolower( $args['currency_code'] ) . "_currency_filter_{$position}",
+		$formatted,
+		$args['currency_code'],
+		$price,
+		$args
+	);
 
 	if ( $negative ) {
 		// Prepend the minus sign before the currency sign.

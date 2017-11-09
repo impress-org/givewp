@@ -422,7 +422,8 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 
 		$this->assertSame(
 			$expected,
-			$output
+			// Compare decoded currency by encoding them.
+			$decode_currency ? htmlentities( $output, ENT_COMPAT, 'UTF-8' ) : $output
 		);
 	}
 
@@ -441,11 +442,11 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 			array( '10', 'ZAR', 'before', false, '&#82;&#x200e;10' ),
 			array( '10', 'NOK', 'before', false, '&#107;&#114;. 10' ),
 
-			array( '10', 'USD', 'after', true, '10&#x200f;$' ),
-			array( '10', 'ZAR', 'after', true, '10&#x200f;R' ),
+			array( '10', 'USD', 'after', true, '10&rlm;$' ),
+			array( '10', 'ZAR', 'after', true, '10&rlm;R' ),
 			array( '10', 'NOK', 'after', true, '10 kr.' ),
-			array( '10', 'USD', 'before', true, '$&#x200e;10' ),
-			array( '10', 'ZAR', 'before', true, 'R&#x200e;10' ),
+			array( '10', 'USD', 'before', true, '$&lrm;10' ),
+			array( '10', 'ZAR', 'before', true, 'R&lrm;10' ),
 			array( '10', 'NOK', 'before', true, 'kr. 10' ),
 		);
 	}
