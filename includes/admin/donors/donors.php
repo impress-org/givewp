@@ -424,7 +424,7 @@ function give_donor_view( $donor ) {
 			</li>
 			<li>
 				<span class="dashicons dashicons-chart-area"></span>
-				<?php echo give_currency_filter( give_format_amount( $donor->purchase_value, array( 'sanitize' => false ) ) ); ?> <?php _e( 'Lifetime Donations', 'give' ); ?>
+				<?php echo give_currency_filter( give_format_amount( $donor->get_total_donation_amount(), array( 'sanitize' => false ) ) ); ?> <?php _e( 'Lifetime Donations', 'give' ); ?>
 			</li>
 			<?php
 			/**
