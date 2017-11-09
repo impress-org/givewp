@@ -613,7 +613,7 @@ function give_currency_filter( $price = '', $args = array() ) {
 		$formatted,
 		$args['currency_code'],
 		$price,
-		$args['decode_currency']
+		$args
 	);
 
 	if ( $negative ) {
