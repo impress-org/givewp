@@ -513,16 +513,37 @@ function give_get_currency_name( $currency_code ) {
  *
  * @since 1.0
  *
- * @param string $price           The donation amount.
- * @param string $currency_code   The currency code.
- * @param bool   $decode_currency Whether to decode the currency HTML format or not.
+ * @param string $price The donation amount.
+ * @param array  $args  It accepts 'currency_code', 'decode_currency' and 'form_id'.
  *
  * @return mixed|string
  */
-function give_currency_filter( $price = '', $currency_code = '', $decode_currency = false ) {
+function give_currency_filter( $price = '', $args = array() ) {
 
-	if ( empty( $currency_code ) || ! array_key_exists( (string) $currency_code, give_get_currencies() ) ) {
-		$currency_code = give_get_currency();
+	// Get functions arguments.
+	$func_args = func_get_args();
+
+	// Backward compatibility: modify second param to array
+	if ( isset( $func_args[1] ) && is_string( $func_args[1] ) ) {
+		$args = array(
+			'currency_code'   => isset( $func_args[1] ) ? $func_args[1] : '',
+			'decode_currency' => isset( $func_args[2] ) ? $func_args[2] : false,
+			'form_id'         => isset( $func_args[3] ) ? $func_args[3] : '',
+		);
+	}
+
+	// Set default values.
+	$args = wp_parse_args(
+		$args,
+		array(
+			'currency_code'   => '',
+			'decode_currency' => false,
+			'form_id'         => '',
+		)
+	);
+
+	if ( empty( $args['currency_code'] ) || ! array_key_exists( (string) $args['currency_code'], give_get_currencies() ) ) {
+		$args['currency_code'] = give_get_currency( $args['form_id'] );
 	}
 
 	$position = give_get_option( 'currency_position', 'before' );
@@ -534,9 +555,9 @@ function give_currency_filter( $price = '', $currency_code = '', $decode_currenc
 		$price = substr( $price, 1 );
 	}
 
-	$symbol = give_currency_symbol( $currency_code, $decode_currency );
+	$symbol = give_currency_symbol( $args['currency_code'], $args['decode_currency'] );
 
-	switch ( $currency_code ) :
+	switch ( $args['currency_code'] ) :
 		case 'GBP' :
 		case 'BRL' :
 		case 'EUR' :
@@ -566,7 +587,7 @@ function give_currency_filter( $price = '', $currency_code = '', $decode_currenc
 		case 'KRW' :
 		case 'ZAR' :
 			$formatted = ( 'before' === $position ? $symbol . '&#x200e;' . $price : $price . '&#x200f;' . $symbol );
-			$formatted = $decode_currency ? html_entity_decode( $formatted, ENT_COMPAT, 'UTF-8' ) : $formatted;
+			$formatted = $args['decode_currency'] ? html_entity_decode( $formatted, ENT_COMPAT, 'UTF-8' ) : $formatted;
 			break;
 		case 'NOK':
 			$formatted = ( 'before' === $position ? $symbol . ' ' . $price : $price . ' ' . $symbol );
@@ -588,11 +609,11 @@ function give_currency_filter( $price = '', $currency_code = '', $decode_currenc
 	 *           filter name will be give_usd_currency_filter_after
 	 */
 	$formatted = apply_filters(
-		'give_' . strtolower( $currency_code ) . "_currency_filter_{$position}",
+		'give_' . strtolower( $args['currency_code'] ) . "_currency_filter_{$position}",
 		$formatted,
-		$currency_code,
+		$args['currency_code'],
 		$price,
-		$decode_currency
+		$args
 	);
 
 	if ( $negative ) {

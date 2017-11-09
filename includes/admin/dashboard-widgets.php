@@ -61,7 +61,7 @@ function give_dashboard_sales_widget() {
 				echo give_currency_filter( give_format_amount( $earnings_today, array( 'sanitize' => false ) ) );
 			?></p>
 
-			<p class="give-orders-today"><?php
+			<p class="give-donations-today"><?php
 				$donations_today = $stats->get_sales( 0, 'today', false );
 				printf(
 					/* translators: %s: daily donation count */
