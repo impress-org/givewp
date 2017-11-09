@@ -113,6 +113,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 * @return string Column Name.
 	 */
 	public function column_default( $donor, $column_name ) {
+
 		switch ( $column_name ) {
 
 			case 'num_donations' :
