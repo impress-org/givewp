@@ -1316,16 +1316,28 @@ function give_remove_payment_prefix_postfix( $number ) {
  * Get the fully formatted payment amount. The payment amount is retrieved using give_get_payment_amount() and is then
  * sent through give_currency_filter() and  give_format_amount() to format the amount correctly.
  *
- * @param int $payment_id Payment ID.
+ * @param int    $payment_id Payment ID.
+ * @param string $type       Indicate where it is going to be appear eg: 'donor', 'receipt'.
  *
  * @since 1.0
  *
  * @return string $amount Fully formatted payment amount.
  */
-function give_payment_amount( $payment_id = 0 ) {
-	$amount = give_get_payment_amount( $payment_id );
+function give_payment_amount( $payment_id = 0, $type = '' ) {
+	$amount           = give_get_payment_amount( $payment_id );
+	$formatted_amount = give_currency_filter( give_format_amount( $amount, array( 'sanitize' => false ) ), give_get_payment_currency_code( $payment_id ) );
 
-	return give_currency_filter( give_format_amount( $amount, array( 'sanitize' => false ) ), give_get_payment_currency_code( $payment_id ) );
+	/**
+	 * Filter payment amount.
+	 *
+	 * @since 1.8.17
+	 *
+	 * @param string  $formatted_amount Formatted amount.
+	 * @param double  $amount           Payment amount.
+	 * @param integer $payment_id       Donation ID.
+	 * @param string  $type             Type.
+	 */
+	return apply_filters( 'give_get_payment_amount', $formatted_amount, $amount, $payment_id, $type );
 }
 
 /**
