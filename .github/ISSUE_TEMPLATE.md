@@ -24,13 +24,13 @@
 ## Related Issues and/or PRs
 <!-- List related issues or PRs against other branches:  -->
 
+## Todos
+- [ ] Tests
+- [ ] Documentation
+
 ## WordPress Environment
 <details>
 ```
 Copy and paste the system Info report from **Donations > Tools > System Info** in WordPress admin here.
 ```
 </details>
-
-## Todos
-- [ ] Tests
-- [ ] Documentation
