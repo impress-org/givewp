@@ -974,6 +974,25 @@ function give_default_cc_address_fields( $form_id ) {
 			/>
 		</p>
 
+		<p id="give-card-city-wrap" class="form-row form-row-first form-row-responsive">
+			<label for="card_city" class="give-label">
+				<?php _e( 'City', 'give' ); ?>
+				<?php if ( give_field_is_required( 'card_city', $form_id ) ) : ?>
+					<span class="give-required-indicator">*</span>
+				<?php endif; ?>
+				<?php echo Give()->tooltips->render_help( __( 'The city for your billing address.', 'give' ) ); ?>
+			</label>
+			<input
+					type="text"
+					id="card_city"
+					name="card_city"
+					class="card-city give-input<?php echo( give_field_is_required( 'card_city', $form_id ) ? ' required' : '' ); ?>"
+					placeholder="<?php _e( 'City', 'give' ); ?>"
+					value="<?php echo isset( $give_user_info['card_city'] ) ? $give_user_info['card_city'] : ''; ?>"
+				<?php echo( give_field_is_required( 'card_city', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
+			/>
+		</p>
+
 	    <p id="give-card-state-wrap"
 	       class="form-row form-row-wide <?php echo ( ! empty( $selected_country ) && array_key_exists( $selected_country, $no_states_country ) ) ? 'give-hidden' : ''; ?> ">
 		    <label for="card_state" class="give-label">
@@ -1004,25 +1023,6 @@ function give_default_cc_address_fields( $form_id ) {
 			           placeholder="<?php echo $label; ?>" value="<?php echo $selected_state; ?>"/>
 		    <?php endif; ?>
 	    </p>
-
-		<p id="give-card-city-wrap" class="form-row form-row-first form-row-responsive">
-			<label for="card_city" class="give-label">
-				<?php _e( 'City', 'give' ); ?>
-				<?php if ( give_field_is_required( 'card_city', $form_id ) ) : ?>
-					<span class="give-required-indicator">*</span>
-				<?php endif; ?>
-				<?php echo Give()->tooltips->render_help( __( 'The city for your billing address.', 'give' ) ); ?>
-			</label>
-			<input
-					type="text"
-					id="card_city"
-					name="card_city"
-					class="card-city give-input<?php echo( give_field_is_required( 'card_city', $form_id ) ? ' required' : '' ); ?>"
-					placeholder="<?php _e( 'City', 'give' ); ?>"
-					value="<?php echo isset( $give_user_info['card_city'] ) ? $give_user_info['card_city'] : ''; ?>"
-				<?php echo( give_field_is_required( 'card_city', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
-			/>
-		</p>
 
 		<p id="give-card-zip-wrap" class="form-row form-row-last form-row-responsive">
 			<label for="card_zip" class="give-label">

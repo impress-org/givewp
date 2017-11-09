@@ -175,9 +175,9 @@ function give_donors_list() {
 
 		<form id="give-donors-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors' ); ?>">
 			<?php $donors_table->display(); ?>
-			<input type="hidden" name="post_type" value="give_forms" />
-			<input type="hidden" name="page" value="give-donors" />
-			<input type="hidden" name="view" value="donors" />
+			<input type="hidden" name="post_type" value="give_forms"/>
+			<input type="hidden" name="page" value="give-donors"/>
+			<input type="hidden" name="view" value="donors"/>
 		</form>
 		<?php
 		/**
@@ -222,7 +222,7 @@ function give_render_donor_view( $view, $callbacks ) {
 	$donor             = new Give_Donor( $donor_id );
 
 	// Reconnect User with Donor profile.
-	if( $reconnect_user_id ) {
+	if ( $reconnect_user_id ) {
 		give_connect_user_donor_profile( $donor, array( 'user_id' => $reconnect_user_id ), array() );
 	}
 
@@ -253,7 +253,7 @@ function give_render_donor_view( $view, $callbacks ) {
 		</h1>
 
 		<hr class="wp-header-end">
-		
+
 		<?php if ( $donor && $render ) : ?>
 
 			<h2 class="nav-tab-wrapper">
@@ -295,7 +295,7 @@ function give_render_donor_view( $view, $callbacks ) {
  */
 function give_donor_view( $donor ) {
 
-	$donor_edit_role   = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
+	$donor_edit_role = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
 
 	/**
 	 * Fires in donor profile screen, above the donor card.
@@ -360,50 +360,50 @@ function give_donor_view( $donor ) {
 							<tr class="alternate">
 								<th scope="col"><label for="tablecell"><?php _e( 'User:', 'give' ); ?></label></th>
 								<td>
-								<span class="donor-user-id info-item edit-item">
-									<?php
+									<span class="donor-user-id info-item edit-item">
+										<?php
 
-									$user_id = $donor->user_id > 0 ? $donor->user_id : '';
+										$user_id = $donor->user_id > 0 ? $donor->user_id : '';
 
-									$data_atts = array(
-										'key'         => 'user_login',
-										'search-type' => 'user',
-									);
-									$user_args = array(
-										'name'  => 'customerinfo[user_id]',
-										'class' => 'give-user-dropdown',
-										'data'  => $data_atts,
-									);
+										$data_atts = array(
+											'key'         => 'user_login',
+											'search-type' => 'user',
+										);
+										$user_args = array(
+											'name'  => 'customerinfo[user_id]',
+											'class' => 'give-user-dropdown',
+											'data'  => $data_atts,
+										);
 
-									if ( ! empty( $user_id ) ) {
-										$userdata              = get_userdata( $user_id );
-										$user_args['selected'] = $user_id;
-									}
+										if ( ! empty( $user_id ) ) {
+											$userdata              = get_userdata( $user_id );
+											$user_args['selected'] = $user_id;
+										}
 
-									echo Give()->html->ajax_user_search( $user_args );
-									?>
-								</span>
+										echo Give()->html->ajax_user_search( $user_args );
+										?>
+									</span>
 
 									<span class="donor-user-id info-item editable">
-									<?php if ( ! empty( $userdata ) ) { ?>
-										<span data-key="user_id">#<?php echo $donor->user_id . ' - ' . $userdata->display_name; ?></span>
-									<?php } else { ?>
-										<span data-key="user_id"><?php _e( 'None', 'give' ); ?></span>
-									<?php } ?>
-										<?php if ( current_user_can( $donor_edit_role ) && intval( $donor->user_id ) > 0 ) { ?>
+										<?php if ( ! empty( $userdata ) ) : ?>
+											<span data-key="user_id">#<?php echo $donor->user_id . ' - ' . $userdata->display_name; ?></span>
+										<?php else: ?>
+											<span data-key="user_id"><?php _e( 'None', 'give' ); ?></span>
+										<?php endif; ?>
+										<?php if ( current_user_can( $donor_edit_role ) && intval( $donor->user_id ) > 0 ): ?>
 											<span class="disconnect-user">
  											-
  											<a id="disconnect-donor" href="#disconnect" aria-label="<?php _e( 'Disconnects the current user ID from this donor record.', 'give' ); ?>">
  												<?php _e( 'Disconnect User', 'give' ); ?>
 											</a>
  										</span>
-										<span class="view-user-profile">
+											<span class="view-user-profile">
  											<a id="view-user-profile" href="<?php echo 'user-edit.php?user_id=' . $donor->user_id; ?>" aria-label="<?php _e( 'View User Profile of current user ID.', 'give' ); ?>">
  												<?php _e( 'View User Profile', 'give' ); ?>
 											</a>
  										</span>
-										<?php } ?>
-								</span>
+										<?php endif; ?>
+									</span>
 								</td>
 							</tr>
 						</tbody>
@@ -502,9 +502,9 @@ function give_donor_view( $donor ) {
 											echo __give_get_format_address(
 												$address,
 												array(
-													'type'            => $address_type,
-													'id'              => $id,
-													'index'           => $index,
+													'type'  => $address_type,
+													'id'    => $id,
+													'index' => $index,
 												)
 											);
 
@@ -516,7 +516,7 @@ function give_donor_view( $donor ) {
 										echo __give_get_format_address(
 											$addresses,
 											array(
-												'type'            => $address_type,
+												'type' => $address_type,
 											)
 										);
 										break;
@@ -525,7 +525,9 @@ function give_donor_view( $donor ) {
 						endif;
 						?>
 					</div>
-					<span class="give-no-address-message<?php if ( ! empty( $donor->address ) ) { echo ' give-hidden';} ?>">
+					<span class="give-no-address-message<?php if ( ! empty( $donor->address ) ) {
+						echo ' give-hidden';
+					} ?>">
 						<?php _e( 'This donor does not have any addresses saved.', 'give' ); ?>
 					</span>
 					<button class="button add-new-address">
@@ -546,7 +548,7 @@ function give_donor_view( $donor ) {
 										echo Give()->html->select( array(
 											'options'          => give_get_country_list(),
 											'name'             => 'country',
-											'selected'         => give_get_option('base_country' ),
+											'selected'         => give_get_option( 'base_country' ),
 											'show_option_all'  => false,
 											'show_option_none' => false,
 											'chosen'           => true,
@@ -588,7 +590,7 @@ function give_donor_view( $donor ) {
 									<td>
 										<?php
 										echo Give()->html->select( array(
-											'options'          => give_get_states( give_get_option('base_country' ) ),
+											'options'          => give_get_states( give_get_option( 'base_country' ) ),
 											'name'             => 'state',
 											'show_option_all'  => false,
 											'show_option_none' => false,

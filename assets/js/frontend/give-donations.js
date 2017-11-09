@@ -17,7 +17,8 @@ Give = {
 		/**
 		 * Format Currency
 		 *
-		 * @description format the currency with accounting.js
+		 * Formats the currency with accounting.js
+		 *
 		 * @param {string} price
 		 * @param {object}  args
 		 * @param {object} $form
@@ -354,6 +355,7 @@ Give.form = {
 		 * @return {string}
 		 */
 		getPriceID: function ($form) {
+
 			var variable_prices = this.getVariablePrices($form),
 				current_amount = Give.fn.unFormatCurrency(
 					$form.find('input[name="give-amount"]').val(),
@@ -371,7 +373,6 @@ Give.form = {
 				 * @type {number/string} Donation level ID.
 				 */
 				price_id = -1;
-
 
 			// Find price id with amount in variable prices.
 			if (variable_prices.length) {
@@ -438,6 +439,7 @@ Give.form = {
 		 * @return {boolean}
 		 */
 		autoSelectDonationLevel: function ($form) {
+
 			if (!$form.length || 'multi' !== this.getInfo('form-type', $form)) {
 				return false;
 			}
@@ -545,9 +547,12 @@ Give.form = {
 		},
 
 		field: {
+
 			/**
 			 * Format CC Fields
-			 * @description Set variables and format cc fields
+			 *
+			 * Set variables and format cc fields.
+			 *
 			 * @since 1.2
 			 *
 			 * @param {object} $forms
@@ -709,8 +714,16 @@ jQuery(function ($) {
 					// Check if user want to show the feilds or not.
 					if (typeof ( response.show_field ) != undefined && true == response.show_field) {
 						$form.find('p#give-card-state-wrap').removeClass('give-hidden');
+
+						// Add support to zip fields.
+						$form.find('p#give-card-zip-wrap').addClass('form-row-last');
+						$form.find('p#give-card-zip-wrap').removeClass('form-row-wide');
 					} else {
 						$form.find('p#give-card-state-wrap').addClass('give-hidden');
+
+						// Add support to zip fields.
+						$form.find('p#give-card-zip-wrap').addClass('form-row-wide');
+						$form.find('p#give-card-zip-wrap').removeClass('form-row-last');
 					}
 
 					doc.trigger('give_checkout_billing_address_updated', [response, $form.attr('id')]);
@@ -815,8 +828,7 @@ jQuery(function ($) {
 	/**
 	 * Custom Donation Focus Out
 	 *
-	 * @description: Fires on focus end aka "blur"
-	 *
+	 * Fires on focus end aka "blur"
 	 */
 	doc.on('blur', '.give-donation-amount .give-text-input', function (e, $parent_form, donation_amount, price_id) {
 		var parent_form = ( 'undefined' !== typeof $parent_form ) ? $parent_form : $(this).closest('form'),
@@ -825,9 +837,8 @@ jQuery(function ($) {
 			decimal_separator = Give.form.fn.getInfo('decimal_separator', parent_form),
 			value_min = Give.form.fn.getMinimumAmount(parent_form),
 			value_now = (this_value === 0) ? value_min : Give.fn.unFormatCurrency(this_value, decimal_separator),
-			formatted_total = Give.form.fn.formatAmount(value_now, parent_form, {});
-
-		price_id = Give.form.fn.getPriceID(parent_form);
+			formatted_total = Give.form.fn.formatAmount(value_now, parent_form, {}),
+			price_id = Give.form.fn.getPriceID(parent_form);
 
 		$(this).val(formatted_total);
 
@@ -851,12 +862,12 @@ jQuery(function ($) {
 			// Remove error massage class from price field.
 			$(this).removeClass('give-invalid-amount');
 
-			//Minimum amount met - slide up error & remove it from DOM
+			// Minimum amount met - slide up error & remove it from DOM.
 			parent_form.find('.give-invalid-minimum').slideUp(300, function () {
 				$(this).remove();
 			});
 
-			//Re-enable submit
+			// Re-enable submit.
 			Give.form.fn.disable(parent_form, false);
 		}
 
@@ -899,18 +910,18 @@ jQuery(function ($) {
 
 	});
 
-	//Multi-level Buttons: Update Amount Field based on Multi-level Donation Select
+	// Multi-level Buttons: Update Amount Field based on Multi-level Donation Select
 	doc.on('click touchend', '.give-donation-level-btn', function (e) {
 		e.preventDefault(); //don't let the form submit
 		update_multiselect_vals($(this));
 	});
 
-	//Multi-level Radios: Update Amount Field based on Multi-level Donation Select
+	// Multi-level Radios: Update Amount Field based on Multi-level Donation Select
 	doc.on('click touchend', '.give-radio-input-level', function (e) {
 		update_multiselect_vals($(this));
 	});
 
-	//Multi-level Radios: Update Amount Field based on Multi-level Donation Select
+	// Multi-level Checkboxes: Update Amount Field based on Multi-level Donation Select
 	doc.on('change', '.give-select-level', function (e) {
 		update_multiselect_vals($(this));
 	});
@@ -918,7 +929,7 @@ jQuery(function ($) {
 	/**
 	 * Update Multiselect Values
 	 *
-	 * @description Helper function: Sets the multiselect amount values
+	 * Helper function: Sets the multiselect amount values
 	 *
 	 * @param selected_field
 	 * @returns {boolean}
@@ -935,13 +946,13 @@ jQuery(function ($) {
 		}
 
 		// Is this a custom amount selection?
-		if (this_amount === 'custom') {
-			//It is, so focus on the custom amount input
+		if ('custom' === this_amount) {
+			// It is, so focus on the custom amount input.
 			$parent_form.find('.give-amount-top').val('').focus();
-			return false; //Bounce out
+			return false; // Bounce out
 		}
 
-		//update custom amount field
+		// Update custom amount field
 		$parent_form.find('.give-amount-top').val(this_amount);
 		$parent_form.find('span.give-amount-top').text(this_amount);
 

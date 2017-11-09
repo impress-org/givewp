@@ -262,7 +262,7 @@ function give_maybe_sanitize_amount( $number, $args = array() ) {
 /**
  * Sanitize Amount
  *
- * Note: Use this give_maybe_sanitize_amount function instead for sanitizing number.
+ * Note: Do not this function to sanitize amount instead use give_maybe_sanitize_amount function.
  *
  * Returns a sanitized amount by stripping out thousands separators.
  *
@@ -545,95 +545,6 @@ function give_format_decimal( $amount, $dp = false, $sanitize = true ) {
 
 	return apply_filters( 'give_format_decimal', $formatted_amount, $amount, $decimal_separator );
 }
-
-/**
- * Formats the currency displayed.
- *
- * @since 1.0
- *
- * @param string $price           The donation amount.
- * @param string $currency_code   The currency code.
- * @param bool   $decode_currency Whether to decode the currency HTML format or not.
- *
- * @return mixed|string
- */
-function give_currency_filter( $price = '', $currency_code = '', $decode_currency = false ) {
-
-	if ( empty( $currency_code ) || ! array_key_exists( (string) $currency_code, give_get_currencies() ) ) {
-		$currency_code = give_get_currency();
-	}
-
-	$position = give_get_option( 'currency_position', 'before' );
-
-	$negative = $price < 0;
-
-	if ( $negative ) {
-		// Remove proceeding "-".
-		$price = substr( $price, 1 );
-	}
-
-	$symbol = give_currency_symbol( $currency_code, $decode_currency );
-
-	switch ( $currency_code ) :
-		case 'GBP' :
-		case 'BRL' :
-		case 'EUR' :
-		case 'USD' :
-		case 'AUD' :
-		case 'CAD' :
-		case 'HKD' :
-		case 'MXN' :
-		case 'NZD' :
-		case 'SGD' :
-		case 'JPY' :
-		case 'THB' :
-		case 'INR' :
-		case 'IRR' :
-		case 'TRY' :
-		case 'RUB' :
-		case 'SEK' :
-		case 'PLN' :
-		case 'PHP' :
-		case 'TWD' :
-		case 'MYR' :
-		case 'CZK' :
-		case 'DKK' :
-		case 'HUF' :
-		case 'ILS' :
-		case 'MAD' :
-		case 'KRW' :
-		case 'ZAR' :
-			$formatted = ( 'before' === $position ? $symbol . '&#x200e;' . $price : $price . '&#x200f;' . $symbol );
-			break;
-		case 'NOK':
-			$formatted = ( 'before' === $position ? $symbol . ' ' . $price : $price . ' ' . $symbol );
-			break;
-		default:
-			$formatted = ( 'before' === $position ? $symbol . ' ' . $price : $price . ' ' . $symbol );
-			break;
-	endswitch;
-
-	/**
-	 * Filter formatted amount with currency
-	 *
-	 * Filter name depends upon current value of currency and currency position.
-	 * For example :
-	 *           if currency is USD and currency position is before then
-	 *           filter name will be give_usd_currency_filter_before
-	 *
-	 *           and if currency is USD and currency position is after then
-	 *           filter name will be give_usd_currency_filter_after
-	 */
-	$formatted = apply_filters( 'give_' . strtolower( $currency_code ) . "_currency_filter_{$position}", $formatted, $currency_code, $price );
-
-	if ( $negative ) {
-		// Prepend the minus sign before the currency sign.
-		$formatted = '-' . $formatted;
-	}
-
-	return $formatted;
-}
-
 
 /**
  * Get date format string on basis of given context.
