@@ -799,14 +799,14 @@ class Give_Donor {
 	public function get_total_donation_amount() {
 
 		/**
-		 * Filter the purchase value.
+		 * Filter total donation amount.
 		 *
 		 * @since 1.8.17
 		 *
 		 * @param string|float $purchase_value Donor Purchase value.
 		 * @param integer      $donor_id       Donor ID.
 		 */
-		return apply_filters( 'give_donor_purchase_value', $this->purchase_value, $this->id );
+		return apply_filters( 'give_get_total_donation_amount', $this->purchase_value, $this->id );
 	}
 
 	/**
