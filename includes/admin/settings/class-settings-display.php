@@ -30,12 +30,12 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 			/**
 			 * Fire once user click on the save change under Settings > Display Options > Taxonomies
 			 */
-			add_action( 'give_update_options_display_taxonomies', array( $this, 'give_flush_rewrite_rules' ) );
+			add_action( 'give_update_options_display_taxonomies', array( $this, 'give_reset_rewrite_rules' ) );
 
 			/**
 			 * Fire once user click on the save change under Settings > Display Options > Post Types
 			 */
-			add_action( 'give_update_options_display_post-types', array( $this, 'give_flush_rewrite_rules' ) );
+			add_action( 'give_update_options_display_post-types', array( $this, 'give_reset_rewrite_rules' ) );
 
 			$this->id    = 'display';
 			$this->label = __( 'Display Options', 'give' );
@@ -50,8 +50,8 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 		 *
 		 * @since 1.8.17
 		 */
-		public function give_flush_rewrite_rules() {
-			flush_rewrite_rules();
+		public function give_reset_rewrite_rules() {
+			delete_transient( 'give_flush_rewrite_rules' );
 		}
 
 		/**
