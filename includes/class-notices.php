@@ -669,7 +669,7 @@ class Give_Notices {
 			$message
 		);
 
-		if( ! $notice_args['echo'] ) {
+		if ( ! $notice_args['echo'] ) {
 			return $output;
 		}
 
