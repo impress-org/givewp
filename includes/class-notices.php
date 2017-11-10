@@ -656,7 +656,7 @@ class Give_Notices {
 			'notice_type' => 'warning',
 			'dismissible' => true,
 		);
-		wp_parse_args( $notice_args, $defaults );
+		$notice_args = wp_parse_args( $notice_args, $defaults );
 
 		$output    = '';
 		$css_id    = 'give-inline-notice';
