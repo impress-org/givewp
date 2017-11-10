@@ -407,7 +407,7 @@ function give_format_amount( $amount, $args = array() ) {
 	if ( ! empty( $amount ) ) {
 		// Sanitize amount before formatting.
 		$amount = ! empty( $args['sanitize'] ) ?
-			give_maybe_sanitize_amount( $amount, $decimals ) :
+			give_maybe_sanitize_amount( $amount, array( 'number_decimals' => $decimals, 'currency' => $currency ) ) :
 			number_format( $amount, $decimals, '.', '' );
 
 		switch ( $currency ) {
