@@ -1337,7 +1337,7 @@ function give_payment_amount( $payment_id = 0, $type = '' ) {
 	 * @param integer $payment_id       Donation ID.
 	 * @param string  $type             Type.
 	 */
-	return apply_filters( 'give_get_payment_amount', $formatted_amount, $amount, $payment_id, $type );
+	return apply_filters( 'give_get_donation_amount', $formatted_amount, $amount, $payment_id, $type );
 }
 
 /**
