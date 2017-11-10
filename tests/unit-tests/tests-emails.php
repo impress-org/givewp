@@ -174,7 +174,8 @@ class Tests_Emails extends Give_Unit_Test_Case {
 	 * Test {amount} email tag.
 	 */
 	public function test_email_tags_amount() {
-		$this->assertEquals( '$20.00', give_email_tag_price( $this->_payment_id ) );
+		// Actual output without html decode is &#36;&#x200e;20.00.
+		$this->assertEquals( '$&lrm;20.00', htmlentities( give_email_tag_price( $this->_payment_id ), ENT_COMPAT, 'UTF-8' ) );
 	}
 
 	/**

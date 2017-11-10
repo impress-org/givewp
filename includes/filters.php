@@ -169,3 +169,57 @@ function give_akismet_spam_check( $args ) {
 	// Allow developer to modified Akismet spam detection response.
 	return apply_filters( 'give_akismet_spam_check', $spam, $args );
 }
+
+/**
+ * Add support of RIAL code for backward compatibility.
+ * Note: for internal use only
+ *
+ * @since 1.8.17
+ *
+ * @param array $currencies
+ *
+ * @return array
+ */
+function give_bc_v1817_iranian_currency_code( $currencies ) {
+	if ( ! give_has_upgrade_completed( 'v1817_update_donation_iranian_currency_code' ) ) {
+		$currencies['RIAL'] = $currencies['IRR'];
+	}
+
+	return $currencies;
+}
+
+add_filter( 'give_currencies', 'give_bc_v1817_iranian_currency_code', 0 );
+
+
+/**
+ * Add support of RIAL currency formatting for backward compatibility.
+ * Note: for internal use only
+ *
+ * @since 1.8.17
+ *
+ * @param string $formatted_price
+ * @param string $currency_code
+ * @param string $price
+ * @param array   $args
+ *
+ * @return string
+ */
+function give_bc_v1817_iranian_currency_filter( $formatted_price, $currency_code, $price, $args ) {
+	if ( give_has_upgrade_completed( 'v1817_update_donation_iranian_currency_code' ) ) {
+		return $formatted_price;
+	}
+
+	$currency_symbol = give_currency_symbol( $currency_code );
+	$position        = false !== strpos( current_filter(), 'after' ) ? 'after' : 'before';
+	$formatted_price = ( 'before' === $position ?
+		$currency_symbol . '&#x200e;' . $price :
+		$price . '&#x200f;' . $currency_symbol );
+
+	return ( $args['decode_currency'] ?
+		html_entity_decode( $formatted_price, ENT_COMPAT, 'UTF-8' ) :
+		$formatted_price
+	);
+}
+
+add_filter( 'give_rial_currency_filter_after', 'give_bc_v1817_iranian_currency_filter', 0, 4 );
+add_filter( 'give_rial_currency_filter_before', 'give_bc_v1817_iranian_currency_filter', 0, 4 );

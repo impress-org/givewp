@@ -208,11 +208,11 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 		$payments = array_map( 'absint', explode( ',', $donor->payment_ids ) );
 
 		$expected_purchase_count = $donor->purchase_count;
-		$expected_purchase_value = $donor->purchase_value;
+		$expected_purchase_value = $donor->get_total_donation_amount();
 
 		$donor->attach_payment( $payments[0] );
 		$this->assertEquals( $expected_purchase_count, $donor->purchase_count );
-		$this->assertEquals( $expected_purchase_value, $donor->purchase_value );
+		$this->assertEquals( $expected_purchase_value, $donor->get_total_donation_amount() );
 
 	}
 
@@ -240,13 +240,13 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 
 		$donor = new Give_Donor( 'testadmin@domain.com' );
 
-		$this->assertEquals( '20', $donor->purchase_value );
+		$this->assertEquals( '20', $donor->get_total_donation_amount() );
 		$this->assertEquals( '1', $donor->purchase_count );
 
 		$donor->increase_purchase_count();
 		$donor->increase_value( 10 );
 
-		$this->assertEquals( '30', $donor->purchase_value );
+		$this->assertEquals( '30', $donor->get_total_donation_amount() );
 		$this->assertEquals( '2', $donor->purchase_count );
 
 		$this->assertEquals( give_count_donations_of_donor( $this->_user_id ), '2' );
@@ -268,7 +268,7 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 		$donor->decrease_donation_count();
 		$donor->decrease_value( 10 );
 
-		$this->assertEquals( $donor->purchase_value, '10' );
+		$this->assertEquals( $donor->get_total_donation_amount(), '10' );
 		$this->assertEquals( $donor->purchase_count, '0' );
 
 		$this->assertEquals( give_count_donations_of_donor( $this->_user_id ), '0' );
@@ -281,7 +281,7 @@ class Give_Tests_Donors extends Give_Unit_Test_Case {
 		$donor->decrease_donation_count( 100 );
 		$donor->decrease_value( 100000 );
 
-		$this->assertEquals( intval( $donor->purchase_value ), intval( '0' ) );
+		$this->assertEquals( intval( $donor->get_total_donation_amount() ), intval( '0' ) );
 		$this->assertEquals( intval( $donor->purchase_count ), intval( '0' ) );
 
 	}

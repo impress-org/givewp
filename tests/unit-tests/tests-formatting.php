@@ -158,9 +158,9 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 * @dataProvider give_sanitize_amount_provider
 	 */
 	function test_give_sanitize_amount( $amount, $expected, $dp = false, $trim_zeros = false ) {
-
-		$output = give_sanitize_amount( $amount, $dp, $trim_zeros );
-
+		
+		$output = give_sanitize_amount( $amount, array( 'number_decimals' => $dp, 'trim_zeros' => $trim_zeros ) );
+		
 		$this->assertSame(
 			$expected,
 			$output
@@ -191,6 +191,11 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 			array( '1,000,000.00', '1000000', false, true ),
 			array( '10,000.00', '10000', false, true ),
 			array( '100.00', '100', false, true ),
+			array( '1,000,000,000,000.120', '1000000000000.1', 1, true ),
+			array( '1,000,000,000.240', '1000000000.24', 2, true ),
+			array( '1,000,000.560', '1000000.6', 1, true ),
+			array( '10,000.768000', '10000.77', 2, true ),
+			array( '100.87850000', '100.879', 3, true ),
 		);
 	}
 
@@ -350,6 +355,8 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 			array( '599000', array( '599,000.00', '5.99 lakh') ),
 			array( '10000', array( '10,000.00', '10,000.00' ) ),
 			array( '100', array( '100.00', '100.00' ) ),
+			array( '0', array( '0', '0' ) ),
+			array( '0.000', array( '0', '0' ) ),
 		);
 	}
 
@@ -415,7 +422,8 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 
 		$this->assertSame(
 			$expected,
-			$output
+			// Compare decoded currency by encoding them.
+			$decode_currency ? htmlentities( $output, ENT_COMPAT, 'UTF-8' ) : $output
 		);
 	}
 
@@ -427,18 +435,18 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 */
 	public function give_currency_filter_provider() {
 		return array(
-			array( '10', 'USD', 'after', false, '10&#36;' ),
-			array( '10', 'ZAR', 'after', false, '10&#82;' ),
+			array( '10', 'USD', 'after', false, '10&#x200f;&#36;' ),
+			array( '10', 'ZAR', 'after', false, '10&#x200f;&#82;' ),
 			array( '10', 'NOK', 'after', false, '10 &#107;&#114;.' ),
-			array( '10', 'USD', 'before', false, '&#36;10' ),
-			array( '10', 'ZAR', 'before', false, '&#82;10' ),
+			array( '10', 'USD', 'before', false, '&#36;&#x200e;10' ),
+			array( '10', 'ZAR', 'before', false, '&#82;&#x200e;10' ),
 			array( '10', 'NOK', 'before', false, '&#107;&#114;. 10' ),
 
-			array( '10', 'USD', 'after', true, '10$' ),
-			array( '10', 'ZAR', 'after', true, '10R' ),
+			array( '10', 'USD', 'after', true, '10&rlm;$' ),
+			array( '10', 'ZAR', 'after', true, '10&rlm;R' ),
 			array( '10', 'NOK', 'after', true, '10 kr.' ),
-			array( '10', 'USD', 'before', true, '$10' ),
-			array( '10', 'ZAR', 'before', true, 'R10' ),
+			array( '10', 'USD', 'before', true, '$&lrm;10' ),
+			array( '10', 'ZAR', 'before', true, 'R&lrm;10' ),
 			array( '10', 'NOK', 'before', true, 'kr. 10' ),
 		);
 	}
@@ -491,7 +499,7 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 		 *
 		 * Change currency
 		 */
-		give_update_option( 'currency', 'RIAL' );
+		give_update_option( 'currency', 'IRR' );
 
 		// Get updated number of decimal
 		$output_number_of_decimal = give_get_price_decimals();

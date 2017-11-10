@@ -70,6 +70,7 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/forms/widget.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/shortcodes.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/formatting.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/currency-functions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/error-tracking.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/price-functions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/process-donation.php' );
@@ -212,8 +213,8 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/frontend/give.all.min.js' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/frontend/give-ajax.js' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/frontend/give-ajax.min.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/frontend/give-checkout-global.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/frontend/give-checkout-global.min.js' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/frontend/give-donations.js' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/frontend/give-donations.min.js' );
 
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/chosen.jquery.js' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/chosen.jquery.min.js' );

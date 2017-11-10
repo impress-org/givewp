@@ -313,7 +313,7 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 
 			foreach ( $donation_ids as $item ) {
 				// Delete the main payment.
-				give_delete_donation( (int) $item );
+				give_delete_donation( absint( $item ) );
 			}
 			do_action( 'give_delete_log_cache' );
 		}

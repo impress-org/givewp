@@ -380,17 +380,25 @@ var give_setting_edit = false;
 					// Show the states dropdown menu
 					$this.closest( '.column-container' ).find( '#give-order-address-state-wrap' ).removeClass( 'give-hidden' );
 
-					var state_wrap = $('#give-order-address-state-wrap');
-					state_wrap.find('*').not('.order-data-address-line').remove();
-					if (typeof ( response.states_found ) != undefined && true == response.states_found) {
-						state_wrap.append(response.data);
-						state_wrap.find('select').chosen();
-					} else {
-						state_wrap.append('<input type="text" name="give-payment-address[0][state]" value="' + response.default_state + '" class="give-edit-toggles medium-text"/>');
+					// Add support to zip fields.
+					$this.closest( '.column-container' ).find( '.give-column' ).removeClass( 'column-full' );
+					$this.closest( '.column-container' ).find( '.give-column' ).addClass( 'column' );
 
-						if (typeof ( response.show_field ) != undefined && false == response.show_field ) {
+					var state_wrap = $( '#give-order-address-state-wrap' );
+					state_wrap.find( '*' ).not( '.order-data-address-line' ).remove();
+					if ( typeof ( response.states_found ) !== undefined && true === response.states_found ) {
+						state_wrap.append( response.data );
+						state_wrap.find( 'select' ).chosen();
+					} else {
+						state_wrap.append( '<input type="text" name="give-payment-address[0][state]" value="' + response.default_state + '" class="give-edit-toggles medium-text"/>' );
+
+						if ( typeof ( response.show_field ) !== undefined && false === response.show_field ) {
 							// Hide the states dropdown menu
 							$this.closest( '.column-container' ).find( '#give-order-address-state-wrap' ).addClass( 'give-hidden' );
+
+							// Add support to zip fields.
+							$this.closest( '.column-container' ).find( '.give-column' ).addClass( 'column-full' );
+							$this.closest( '.column-container' ).find( '.give-column' ).removeClass( 'column' );
 						}
 					}
 				});
@@ -2374,7 +2382,9 @@ function give_render_responsive_tabs() {
 
 				jQuery.each($hide_tabs, function (index, $tab_link) {
 					$tab_link = jQuery($tab_link);
-					$tab_link.addClass('give-hidden');
+					if( ! $tab_link.hasClass( 'nav-tab-active' ) ) {
+						$tab_link.addClass('give-hidden');
+					}
 					$tab_link.clone().removeClass().appendTo($sub_tab_nav);
 				});
 
@@ -2403,6 +2413,41 @@ function get_url_params() {
 		vars[hash[0]] = hash[1];
 	}
 	return vars;
+}
+
+/**
+ * Run when user click on submit button.
+ *
+ * @since 1.8.17
+ */
+function give_on_core_settings_import_start() {
+	var $form = jQuery( 'form.tools-setting-page-import' );
+	var progress = $form.find( '.give-progress' );
+
+	give_setting_edit = true;
+
+	jQuery.ajax( {
+		type: 'POST',
+		url: ajaxurl,
+		data: {
+			action: give_vars.core_settings_import,
+			fields: $form.serialize()
+		},
+		dataType: 'json',
+		success: function ( response ) {
+			give_setting_edit = false;
+			if ( true === response.success ) {
+				jQuery( progress ).find( 'div' ).width( response.percentage + '%' );
+			} else {
+				alert( give_vars.error_message );
+			}
+			window.location = response.url;
+		},
+		error: function () {
+			give_setting_edit = false;
+			alert( give_vars.error_message );
+		}
+	} );
 }
 
 /**
