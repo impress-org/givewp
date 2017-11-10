@@ -1313,20 +1313,39 @@ function give_remove_payment_prefix_postfix( $number ) {
 /**
  * Get Payment Amount
  *
- * Get the fully formatted payment amount. The payment amount is retrieved using give_get_payment_amount() and is then
+ * Get the fully formatted donation amount. The donation amount is retrieved using give_get_donation_amount() and is then
  * sent through give_currency_filter() and  give_format_amount() to format the amount correctly.
  *
- * @param int    $payment_id Payment ID.
- * @param string $type       Indicate where it is going to be appear eg: 'donor', 'receipt'.
+ * @param int          $donation_id Donation ID.
+ * @param array|string $args        Array of arguments or you can pass string parameter which will define context of donation amount.
  *
  * @since 1.0
  * @since 1.8.17 Added filter and internally use functions.
  *
- * @return string $amount Fully formatted payment amount.
+ * @return string $amount Fully formatted donation amount.
  */
-function give_payment_amount( $payment_id = 0, $type = '' ) {
-	$amount           = give_get_payment_amount( $payment_id );
-	$formatted_amount = give_currency_filter( give_format_amount( $amount, array( 'sanitize' => false ) ), give_get_payment_currency_code( $payment_id ) );
+function give_donation_amount( $donation_id = 0, $args = array() ) {
+	// Set donation amount context.
+	if ( is_string( $args ) ) {
+		$args = array( 'type' => $args );
+	}
+
+	// Set $args.
+	$args = wp_parse_args(
+		$args,
+		array(
+			// Indicate where it is going to be appear eg: 'donor', 'receipt'
+			'type'          => '',
+
+			// Amount format settings.
+			'format_amount' => array(
+				'sanitize' => false,
+			),
+		)
+	);
+
+	$amount           = give_get_payment_amount( $donation_id );
+	$formatted_amount = give_currency_filter( give_format_amount( $amount, $args['format_amount'] ), give_get_payment_currency_code( $donation_id ) );
 
 	/**
 	 * Filter payment amount.
@@ -1334,11 +1353,11 @@ function give_payment_amount( $payment_id = 0, $type = '' ) {
 	 * @since 1.8.17
 	 *
 	 * @param string  $formatted_amount Formatted amount.
-	 * @param double  $amount           Payment amount.
-	 * @param integer $payment_id       Donation ID.
-	 * @param string  $type             Type.
+	 * @param double  $amount           Donation amount.
+	 * @param integer $donation_id      Donation ID.
+	 * @param string  $args             Array of arguments.
 	 */
-	return apply_filters( 'give_get_donation_amount', $formatted_amount, $amount, $payment_id, $type );
+	return apply_filters( 'give_get_donation_amount', $formatted_amount, $amount, $donation_id, $args );
 }
 
 /**
