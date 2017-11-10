@@ -84,7 +84,6 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 		$payment_items      = $this->get_stored_data( 'give_temp_payment_items' );
 		$processed_payments = $this->get_stored_data( 'give_temp_processed_payments' );
 		$accepted_statuses  = apply_filters( 'give_recount_accepted_statuses', array( 'publish' ) );
-
 		if ( false === $totals ) {
 			$totals = array();
 		}
@@ -412,7 +411,6 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 		global $wpdb;
 
 		$value = is_array( $value ) ? wp_json_encode( $value ) : esc_attr( $value );
-		error_log( print_r( $value, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
 
 		$data = array(
 			'option_name'  => $key,
