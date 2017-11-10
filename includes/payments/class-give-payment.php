@@ -1104,7 +1104,7 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  string $note The note to add
+	 * @param  string|bool $note The note to add
 	 *
 	 * @return bool           If the note was specified or not
 	 */

@@ -616,7 +616,7 @@ function give_get_purchase_summary( $purchase_data, $email = true ) {
 
 	_give_deprecated_function( __FUNCTION__, '1.8.12', 'give_payment_gateway_donation_summary', $backtrace );
 
-	give_payment_gateway_donation_summary($purchase_data, $email);
+	give_payment_gateway_donation_summary( $purchase_data, $email );
 
 }
 
@@ -679,8 +679,8 @@ function give_build_paypal_item_title( $payment_data ) {
 /**
  * Set the number of decimal places per currency
  *
- * @since 1.0
- * @since 1.6 $decimals parameter removed from function params
+ * @since      1.0
+ * @since      1.6 $decimals parameter removed from function params
  * @deprecated 1.8.15
  * *
  * @return int $decimals
@@ -714,7 +714,7 @@ function give_currency_decimal_filter() {
 /**
  * Get field custom attributes as string.
  *
- * @since 1.8
+ * @since      1.8
  * @deprecated 1.8.17
  *
  * @param $field
@@ -730,4 +730,22 @@ function give_get_custom_attributes( $field ) {
 	}
 
 	return $custom_attributes;
+}
+
+
+/**
+ * Get Payment Amount
+ *
+ * Get the fully formatted payment amount. The payment amount is retrieved using give_get_payment_amount() and is then
+ * sent through give_currency_filter() and  give_format_amount() to format the amount correctly.
+ *
+ * @param int $payment_id Payment ID.
+ *
+ * @since      1.0
+ * @deprecated 1.8.17
+ *
+ * @return string $amount Fully formatted payment amount.
+ */
+function give_payment_amount( $payment_id ) {
+	return give_donation_amount( $payment_id );
 }

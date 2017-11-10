@@ -169,9 +169,14 @@ if ( is_user_logged_in() ):
 					       value="<?php echo esc_attr( $address['line2'] ); ?>"/>
 				</p>
 
+				<p id="give-card-city-wrap" class="form-row form-row-wide">
+					<label for="give_address_city"><?php _e( 'City', 'give' ); ?></label>
+					<input name="give_address_city" id="give_address_city" class="text give-input" type="text"
+					       value="<?php echo esc_attr( $address['city'] ); ?>"/>
+				</p>
 
 				<p id="give-card-state-wrap"
-				   class="form-row form-row-wide <?php echo ( ! empty( $selected_country ) && array_key_exists( $selected_country, $no_states_country ) ) ? 'give-hidden' : ''; ?>">
+				   class="form-row form-row-first form-row-responsive <?php echo ( ! empty( $selected_country ) && array_key_exists( $selected_country, $no_states_country ) ) ? 'give-hidden' : ''; ?>">
 					<label for="give_address_state"><?php _e( 'State / Province / County', 'give' ); ?></label>
 					<?php
 					if ( ! empty( $states ) ) : ?>
@@ -193,13 +198,7 @@ if ( is_user_logged_in() ):
 					?>
 				</p>
 
-				<p id="give-card-city-wrap" class="form-row form-row-first form-row-responsive">
-					<label for="give_address_city"><?php _e( 'City', 'give' ); ?></label>
-					<input name="give_address_city" id="give_address_city" class="text give-input" type="text"
-					       value="<?php echo esc_attr( $address['city'] ); ?>"/>
-				</p>
-
-				<p id="give-card-zip-wrap" class="form-row form-row-last form-row-responsive">
+				<p id="give-card-zip-wrap" class="form-row <?php echo ( ! empty( $selected_country ) && array_key_exists( $selected_country, $no_states_country ) ) ? 'form-row-wide' : 'form-row-last'; ?> form-row-responsive">
 					<label for="give_address_zip"><?php _e( 'Zip / Postal Code', 'give' ); ?></label>
 					<input name="give_address_zip" id="give_address_zip" class="text give-input" type="text"
 					       value="<?php echo esc_attr( $address['zip'] ); ?>"/>
