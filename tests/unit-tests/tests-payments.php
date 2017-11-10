@@ -549,9 +549,9 @@ class Tests_Payments extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Test give_payment_amount().
+	 * Test give_donation_amount().
 	 */
-	public function test_get_donation_amount() {
+	public function test_give_donation_amount() {
 		$donation = new Give_Payment( $this->_payment_id );
 
 		$this->assertEquals( '&#36;&#x200e;20.00', give_donation_amount( $donation->ID ) );
