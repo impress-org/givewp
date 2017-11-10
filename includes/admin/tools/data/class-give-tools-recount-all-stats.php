@@ -84,6 +84,7 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 		$payment_items      = $this->get_stored_data( 'give_temp_payment_items' );
 		$processed_payments = $this->get_stored_data( 'give_temp_processed_payments' );
 		$accepted_statuses  = apply_filters( 'give_recount_accepted_statuses', array( 'publish' ) );
+
 		if ( false === $totals ) {
 			$totals = array();
 		}
@@ -102,11 +103,11 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 
 		if ( false === $payments ) {
 			$args = apply_filters( 'give_recount_form_stats_args', array(
-				'post_parent__in' => $all_forms,
-				'number'          => $this->per_step,
-				'status'          => $accepted_statuses,
-				'paged'           => $this->step,
-				'output'          => 'give_payments',
+				'give_forms' => $all_forms,
+				'number'     => $this->per_step,
+				'status'     => $accepted_statuses,
+				'paged'      => $this->step,
+				'output'     => 'give_payments',
 			) );
 
 			$payments_query = new Give_Payments_Query( $args );
@@ -324,11 +325,11 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 			$this->store_data( 'give_temp_form_ids', $all_forms );
 
 			$args = apply_filters( 'give_recount_form_stats_total_args', array(
-				'post_parent__in' => $all_forms,
-				'number'          => $this->per_step,
-				'status'          => 'publish',
-				'page'            => $this->step,
-				'output'          => 'payments',
+				'give_forms' => $all_forms,
+				'number'     => $this->per_step,
+				'status'     => $accepted_statuses,
+				'page'       => $this->step,
+				'output'     => 'payments',
 			) );
 
 			$payments_query = new Give_Payments_Query( $args );
