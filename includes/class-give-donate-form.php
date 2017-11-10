@@ -816,7 +816,7 @@ class Give_Donate_Form {
 			$this->sales = give_get_meta( $this->ID, '_give_form_sales', true );
 
 			if ( $this->sales < 0 ) {
-				// Never let sales be less than zero
+				// Never let sales be less than zero.
 				$this->sales = 0;
 			}
 

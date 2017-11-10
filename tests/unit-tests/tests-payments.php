@@ -445,8 +445,8 @@ class Tests_Payments extends Give_Unit_Test_Case {
 		$total1 = give_currency_filter( give_format_amount( $payment->total ), $payment->currency );
 		$total2 = give_currency_filter( give_format_amount( $payment->total ) );
 
-		$this->assertEquals( '&#36;20.00', $total1 );
-		$this->assertEquals( '&#36;20.00', $total2 );
+		$this->assertEquals( '&#36;&#x200e;20.00', $total1 );
+		$this->assertEquals( '&#36;&#x200e;20.00', $total2 );
 
 	}
 
@@ -461,8 +461,8 @@ class Tests_Payments extends Give_Unit_Test_Case {
 		$total1 = give_currency_filter( give_format_amount( give_get_payment_amount( $this->_payment_id ) ), give_get_payment_currency_code( $this->_payment_id ) );
 		$total2 = give_currency_filter( give_format_amount( give_get_payment_amount( $this->_payment_id ) ) );
 
-		$this->assertEquals( '&#36;20.00', $total1 );
-		$this->assertEquals( '&#36;20.00', $total2 );
+		$this->assertEquals( '&#36;&#x200e;20.00', $total1 );
+		$this->assertEquals( '&#36;&#x200e;20.00', $total2 );
 
 	}
 
@@ -546,5 +546,21 @@ class Tests_Payments extends Give_Unit_Test_Case {
 		foreach ( $amount_with_levels as $level_id => $amount ) {
 			$this->assertEquals( $level_id, give_get_price_id( $form->ID, $amount ) );
 		}
+	}
+
+	/**
+	 * Test give_donation_amount().
+	 */
+	public function test_give_donation_amount() {
+		$donation = new Give_Payment( $this->_payment_id );
+
+		$this->assertEquals( '&#36;&#x200e;20.00', give_donation_amount( $donation->ID ) );
+		$this->assertEquals( '&#36;&#x200e;20.00', give_donation_amount( $donation->ID ), 'donor' );
+
+		$payment_meta = give_get_payment_meta( $donation->ID );
+		$payment_meta['currency'] = 'INR';
+
+		give_update_meta( $donation->ID, '_give_payment_meta', $payment_meta );
+		$this->assertEquals( '&#8377;&#x200e;20.00', give_donation_amount( $donation->ID, 'receipt' ) );
 	}
 }
