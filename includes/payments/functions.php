@@ -1320,6 +1320,7 @@ function give_remove_payment_prefix_postfix( $number ) {
  * @param string $type       Indicate where it is going to be appear eg: 'donor', 'receipt'.
  *
  * @since 1.0
+ * @since 1.8.17 Added filter and internally use functions.
  *
  * @return string $amount Fully formatted payment amount.
  */
