@@ -132,6 +132,36 @@ jQuery(document).ready(function ($) {
 
 	});
 
+	jQuery( 'body.give-donation-history' ).on( 'click', 'a.give_donation_history_send_confirmation', function( e ) {
+		$init = this;
+
+		// If the country field has changed, we need to update the state/province field
+		var postData = {
+			action: 'give_donation_history_send_confirmation',
+			nonce: jQuery( $init ).closest( 'table' ).find( '.give_donation_history_send_confirmation_nonce' ).val(),
+		};
+
+		jQuery.ajax({
+			type: 'POST',
+			data: postData,
+			url: give_global_vars.ajaxurl,
+			xhrFields: {
+				withCredentials: true
+			},
+			success: function ( response ) {
+				if ( 'undefined' !== typeof( response.success ) && true === response.success ) {
+					jQuery( $init ).text( response.text );
+				}
+			}
+		}).fail(function (data) {
+			if (window.console && window.console.log) {
+				console.log(data);
+			}
+		});
+
+		return false;
+	});
+
 	/**
 	 * Donation Form AJAX Submission
 	 *
@@ -264,5 +294,4 @@ function setup_give_tooltips() {
 		}
 	});
 	jQuery.fn.qtip.zindex = 2147483641; // Higher z-index than Give's magnific modal
-
 }

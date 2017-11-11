@@ -2396,6 +2396,9 @@ table.give-table {
   table.give-table tbody tr:nth-child(even) td {
     background: #fcfcfc; }
 
+.give-donation-history table#give_user_history {
+  table-layout: auto; }
+
 /**
  * Give Frontend Theme Compatibility
  *

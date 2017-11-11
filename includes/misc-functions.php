@@ -1684,10 +1684,26 @@ function give_get_non_login_users_donations() {
 }
 
 function give_donation_history_table_end() {
+	$email   = Give()->session->get( 'give_email' );
+	$page_id = give_get_option( 'history_page' );
 	?>
 	<tfoot>
 	<tr>
-		<td>$180</td>
+		<td colspan="9999">
+			<div class="donation_history_send_email_link">
+				<?php
+				echo sprintf(
+					__( 'For security reason, please confirm your email address (%s) to view your complete donation history.', 'give' ),
+					$email
+				);
+				?>
+				<input type="hidden" name="give_donation_history_send_confirmation_nonce"
+				       class="give_donation_history_send_confirmation_nonce"
+				       value="<?php echo wp_create_nonce( 'give_donation_history_send_confirmation' ); ?>">
+				<a href="<?php echo get_permalink( $page_id ); ?>"
+				   class="give_donation_history_send_confirmation"><?php _e( 'Confirm Email', 'give' ); ?></a>
+			</div>
+		</td>
 	</tr>
 	</tfoot>
 	<?php
