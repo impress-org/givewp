@@ -277,3 +277,17 @@ function give_set_donation_levels_max_min_amount( $form_id ) {
 }
 
 add_action( 'give_pre_process_give_forms_meta', 'give_set_donation_levels_max_min_amount', 30 );
+
+/**
+ * On load check to flush the rewrite rule or not.
+ *
+ * @since 1.8.17
+ */
+function give_flush_rewrite_rules() {
+	if ( false === get_transient( 'give_flush_rewrite_rules' ) ) {
+		flush_rewrite_rules();
+		set_transient( 'give_flush_rewrite_rules', true, 0 );
+	}
+}
+
+add_action( 'init', 'give_flush_rewrite_rules' );
