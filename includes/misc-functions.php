@@ -1668,3 +1668,17 @@ function give_is_zero_based_currency() {
 
 	return false;
 }
+
+/**
+ * Get number of donation to show when user is not login.
+ *
+ * @since 1.8.17
+ *
+ * @return int $country The two letter country code for the site's base country
+ */
+function give_get_non_login_users_donations() {
+	$give_options = give_get_settings();
+	$number      = ! empty( $give_options['non_login_users_donations'] ) ? absint( $give_options['non_login_users_donations'] ) : 1;
+
+	return apply_filters( 'give_get_non_login_users_donations', $number );
+}

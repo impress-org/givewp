@@ -12,7 +12,7 @@ if ( is_user_logged_in() ) {
 	$donations = give_get_users_donations( $email, 20, true, 'any' );
 } elseif ( Give()->email_access->token_exists ) {
 	// Email Access Token?
-	$donations = give_get_users_donations( 0, 1, true, 'any' );
+	$donations = give_get_users_donations( 0, 20, true, 'any' );
 }
 
 if ( $donations ) : ?>

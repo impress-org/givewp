@@ -65,6 +65,13 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							)
 						),
 						array(
+							'id'      => 'non_login_users_donations',
+							'name'    => esc_html__( 'Donations History', 'give' ),
+							'desc'    => esc_html__( 'Number of donation to display when non login user session is activate.', 'give' ),
+							'default' => '1',
+							'type'    => 'number'
+						),
+						array(
 							'name'    => esc_html__( 'Email Access', 'give' ),
 							'desc'    => esc_html__( 'Would you like your donors to be able to access their donation history using only email? Donors whose sessions have expired and do not have an account may still access their donation history via a temporary email access link.', 'give' ),
 							'id'      => 'email_access',
