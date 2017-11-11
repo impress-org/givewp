@@ -12,7 +12,7 @@ if ( is_user_logged_in() ) {
 } elseif ( Give()->session->get_session_expiration() !== false ) {
 	// Session active?
 	$email     = Give()->session->get( 'give_email' );
-	$donations = give_get_users_donations( $email, 20, true, 'any' );
+	$donations = give_get_users_donations( $email, give_get_non_login_users_donations(), true, 'any' );
 }
 
 if ( $donations ) : ?>
