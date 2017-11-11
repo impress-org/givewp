@@ -1682,3 +1682,13 @@ function give_get_non_login_users_donations() {
 
 	return apply_filters( 'give_get_non_login_users_donations', $number );
 }
+
+function give_donation_history_table_end() {
+	?>
+	<tfoot>
+	<trcolspan="9999">
+		<td colspan="9999">$180</td>
+	</tr>
+	</tfoot>
+	<?php
+}

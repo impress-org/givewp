@@ -13,6 +13,8 @@ if ( is_user_logged_in() ) {
 	// Session active?
 	$email     = Give()->session->get( 'give_email' );
 	$donations = give_get_users_donations( $email, give_get_non_login_users_donations(), true, 'any' );
+
+	add_action( 'give_donation_history_table_end', 'give_donation_history_table_end' );
 }
 
 if ( $donations ) : ?>
@@ -117,6 +119,18 @@ if ( $donations ) : ?>
 				?>
 			</tr>
 		<?php endforeach; ?>
+
+		<?php
+		/**
+		 * Fires in footer of user donation history table.
+		 *
+		 * Allows you to add new <tfoot> elements to the row, after other elements in the row.
+		 *
+		 * @since 1.8.17
+		 */
+		do_action( 'give_donation_history_table_end' );
+		?>
+
 	</table>
 	<div id="give-donation-history-pagination" class="give_pagination navigation">
 		<?php
