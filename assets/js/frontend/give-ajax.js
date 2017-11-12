@@ -160,7 +160,7 @@ jQuery(document).ready(function ($) {
 				success: function ( response ) {
 					if ( 'undefined' !== typeof( response.success ) && true === response.success ) {
 						// jQuery( 'give_user_history_main .give_user_history_notice' ).remove();
-						jQuery( response.success_message ).insertAfter( '.give_user_history_main .give_user_history_notice' );
+						jQuery( '.give_user_history_main .give_user_history_notice' ).html( response.success_message );
 						jQuery( $init ).text( response.text );
 						jQuery( $init ).removeClass( 'give_donation_history_send_confirmation' );
 					} else {
