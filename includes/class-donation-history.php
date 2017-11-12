@@ -59,7 +59,7 @@ class Give_Donation_History {
 				$response = array(
 					'success' => true,
 					'text' => __( 'Email send', 'give' ),
-					'success_message' => __( 'Please check your email and click on the link to access your complete donation history', 'give' ),
+					'success_message' => Give()->notices->print_frontend_notice( apply_filters( 'give_email_access_message', __( 'Please check your email and click on the link to access your complete donation history.', 'give' ) ), false, 'success' ),
 				);
 			}
 		}
