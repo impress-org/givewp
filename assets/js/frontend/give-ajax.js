@@ -132,35 +132,49 @@ jQuery(document).ready(function ($) {
 
 	});
 
-	jQuery( 'body.give-donation-history' ).on( 'click', 'a.give_donation_history_send_confirmation', function( e ) {
+	/**
+	 * Donation history non login user want to see email list after making a donation
+	 *
+	 * @since 1.8.17
+	 */
+	jQuery( 'body.give-donation-history' ).on( 'click', 'a.give_donation_history_button', function ( e ) {
+
 		$init = this;
 
-		// If the country field has changed, we need to update the state/province field
-		var postData = {
-			action: 'give_donation_history_send_confirmation',
-			nonce: jQuery( $init ).closest( 'table' ).find( '.give_donation_history_send_confirmation_nonce' ).val(),
-		};
+		if ( jQuery( $init ).hasClass( 'give_donation_history_send_confirmation' ) ) {
 
-		jQuery.ajax({
-			type: 'POST',
-			data: postData,
-			url: give_global_vars.ajaxurl,
-			xhrFields: {
-				withCredentials: true
-			},
-			success: function ( response ) {
-				if ( 'undefined' !== typeof( response.success ) && true === response.success ) {
-					jQuery( $init ).text( response.text );
+			// If the country field has changed, we need to update the state/province field
+			var postData = {
+				action: 'give_donation_history_send_confirmation',
+				email: jQuery( $init ).attr( 'data-email' ),
+				nonce: jQuery( $init ).closest( 'table' ).find( '.give_donation_history_send_confirmation_nonce' ).val(),
+			};
+
+			jQuery.ajax( {
+				type: 'POST',
+				data: postData,
+				url: give_global_vars.ajaxurl,
+				xhrFields: {
+					withCredentials: true
+				},
+				success: function ( response ) {
+					if ( 'undefined' !== typeof( response.success ) && true === response.success ) {
+						jQuery( $init ).text( response.text );
+						jQuery( $init ).removeClass( 'give_donation_history_send_confirmation' );
+					} else {
+						alert( give_global_vars.error_message );
+					}
 				}
-			}
-		}).fail(function (data) {
-			if (window.console && window.console.log) {
-				console.log(data);
-			}
-		});
-
+			} ).fail( function ( data ) {
+				if ( window.console && window.console.log ) {
+					console.log( data );
+				}
+			} );
+		} else {
+			alert( give_global_vars.donation_history_mail_already_send );
+		}
 		return false;
-	});
+	} );
 
 	/**
 	 * Donation Form AJAX Submission

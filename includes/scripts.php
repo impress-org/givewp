@@ -67,6 +67,8 @@ function give_load_scripts() {
 				'give_agree_to_terms'    => __( 'You must agree to the terms and conditions.', 'give' ),
 			)
 		),
+		'error_message'                      => __( 'Something went wrong kindly try again!', 'give' ),
+		'donation_history_mail_already_send' => __( 'Email all already being sent kindly check your email!', 'give' ),
 	) );
 
 	$localize_give_ajax = apply_filters( 'give_global_ajax_vars', array(

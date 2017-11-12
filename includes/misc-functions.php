@@ -1683,6 +1683,11 @@ function give_get_non_login_users_donations() {
 	return apply_filters( 'give_get_non_login_users_donations', $number );
 }
 
+/**
+ * Add footer to the table when donor is view the donation history page with out login
+ *
+ * @since 1.8.17
+ */
 function give_donation_history_table_end() {
 	$email   = Give()->session->get( 'give_email' );
 	$page_id = give_get_option( 'history_page' );
@@ -1699,9 +1704,9 @@ function give_donation_history_table_end() {
 				?>
 				<input type="hidden" name="give_donation_history_send_confirmation_nonce"
 				       class="give_donation_history_send_confirmation_nonce"
-				       value="<?php echo wp_create_nonce( 'give_donation_history_send_confirmation' ); ?>">
-				<a href="<?php echo get_permalink( $page_id ); ?>"
-				   class="give_donation_history_send_confirmation"><?php _e( 'Confirm Email', 'give' ); ?></a>
+				       value="<?php echo wp_create_nonce( 'give_donation_history' ); ?>">
+				<a href="<?php echo get_permalink( $page_id ); ?>" data-email="<?php echo $email; ?>"
+				   class="give_donation_history_button give_donation_history_send_confirmation"><?php _e( 'Confirm Email', 'give' ); ?></a>
 			</div>
 		</td>
 	</tr>
