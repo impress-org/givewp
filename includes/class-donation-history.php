@@ -91,8 +91,14 @@ class Give_Donation_History {
 				'give_nl' => $verify_key,
 			), get_permalink( $page_id ) );
 
-			// Nice subject and message.
-			$subject = apply_filters( 'give_email_access_token_subject1', sprintf( __( 'Please confirm your email for %s', 'give' ), $home ) );
+			/**
+			 * Filter to modify donation history email access subject
+			 *
+			 * @since 1.8.17
+			 *
+			 * @return string $subject.
+			 */
+			$subject = apply_filters( 'give_donation_history_email_access_token_subject', sprintf( __( 'Please confirm your email for %s', 'give' ), $home ) );
 
 			$message = __( 'Dear,', 'give' ) . "\n";
 			$message .= sprintf( __( 'Please click the link below to access you donation history on %s. If you did not request this email please contact admin@email.com.', 'give' ), $home ) . "\n\n";
@@ -103,10 +109,23 @@ class Give_Donation_History {
 			$message .= __( 'Sincerely,', 'give' ) . "\n";
 			$message .= $name . "\n";
 
-			$message = apply_filters( 'give_email_access_token_message1', $message );
+			/**
+			 * Filter to modify donation history email access message
+			 *
+			 * @since 1.8.17
+			 *
+			 * @return string $message.
+			 */
+			$message = apply_filters( 'give_donation_history_email_access_token_message', $message );
 
-			// Send the email.
-			Give()->emails->__set( 'heading', apply_filters( 'give_email_access_token_heading1', __( 'Confirm Email', 'give' ) ) );
+			/**
+			 * Filter to modify donation history email access header
+			 *
+			 * @since 1.8.17
+			 *
+			 * @return string $header.
+			 */
+			Give()->emails->__set( 'heading', apply_filters( 'give_donation_history_email_access_token_heading', __( 'Confirm Email', 'give' ) ) );
 			Give()->emails->send( $email, $subject, $message );
 		}
 	}
