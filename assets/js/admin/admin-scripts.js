@@ -2234,7 +2234,7 @@ var give_setting_edit = false;
 
 			// Back out.
 			if (give_unformat_currency('0', false) === give_unformat_currency($(this).val(), false)) {
-				$(this).val('');
+				$(this).val('0');
 				return false;
 			}
 
