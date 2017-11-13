@@ -743,9 +743,18 @@ function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour
 		$earnings  = 0;
 		if ( $donations ) {
 			$donations = implode( ',', $donations );
+			$earning_totals = $wpdb->get_var( "SELECT SUM(meta_value) FROM $wpdb->postmeta WHERE meta_key = '_give_payment_total' AND post_id IN ({$donations})" );
 
-			$earnings = $wpdb->get_var( "SELECT SUM(meta_value) FROM $wpdb->postmeta WHERE meta_key = '_give_payment_total' AND post_id IN ({$donations})" );
-
+			/**
+			 * Filter The earnings by dates.
+			 *
+			 * @since 1.8.17
+			 *
+			 * @param float $earning_totals Total earnings between the dates.
+			 * @param array $donations      Donations lists.
+			 * @param array $args           Donation query args.
+			 */
+			$earnings = apply_filters( 'give_earnings_by_date', $earning_totals, $donations, $args );
 		}
 		// Cache the results for one hour.
 		Give_Cache::set( $key, $earnings, HOUR_IN_SECONDS );
