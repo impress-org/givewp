@@ -26,6 +26,19 @@ function give_setup_post_types() {
 	$give_forms_singular = give_is_setting_enabled( give_get_option( 'forms_singular' ) );
 	$give_forms_archives = give_is_setting_enabled( give_get_option( 'forms_archives' ) );
 
+	// Enable/Disable give_forms links if form is saving.
+	if ( Give_Admin_Settings::is_saving_settings() ) {
+		if ( isset( $_POST['forms_singular'] ) ) {
+			$give_forms_singular = give_is_setting_enabled( give_clean( $_POST['forms_singular'] ) );
+			flush_rewrite_rules();
+		}
+
+		if ( isset( $_POST['forms_archives'] ) ) {
+			$give_forms_archives = give_is_setting_enabled( give_clean( $_POST['forms_archives'] ) );
+			flush_rewrite_rules();
+		}
+	}
+
 	$give_forms_slug = defined( 'GIVE_SLUG' ) ? GIVE_SLUG : 'donations';
 	// Support for old 'GIVE_FORMS_SLUG' constant
 	if ( defined( 'GIVE_FORMS_SLUG' ) ) {
@@ -211,12 +224,12 @@ function give_setup_taxonomies() {
 	if ( Give_Admin_Settings::is_saving_settings() ) {
 		if ( isset( $_POST['categories'] ) ) {
 			$enable_category = give_is_setting_enabled( give_clean( $_POST['categories'] ) );
-			update_option( 'give_flush_rewrite_rules', absint( $enable_category ) );
+			flush_rewrite_rules();
 		}
 
 		if ( isset( $_POST['tags'] ) ) {
 			$enable_tag = give_is_setting_enabled( give_clean( $_POST['tags'] ) );
-			update_option( 'give_flush_rewrite_rules', absint( $enable_tag ) );
+			flush_rewrite_rules();
 		}
 	}
 
