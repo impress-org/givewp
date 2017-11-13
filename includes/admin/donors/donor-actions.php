@@ -17,9 +17,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Processes a donor edit.
  *
- * @since  1.0
+ * @param array $args The $_POST array being passed.
  *
- * @param  array $args The $_POST array being passed
+ * @since 1.0
  *
  * @return array|bool $output Response messages
  */
@@ -128,7 +128,11 @@ function give_edit_donor( $args ) {
 		wp_die();
 	}
 
-	return $output;
+	if ( $output['success'] ) {
+		wp_redirect( admin_url( "edit.php?post_type=give_forms&page=give-donors&view=overview&id={$donor_id}&give-message=profile-updated" ) );
+	}
+
+	exit;
 
 }
 
@@ -137,11 +141,11 @@ add_action( 'give_edit-donor', 'give_edit_donor', 10, 1 );
 /**
  * Save a donor note.
  *
- * @since  1.0
+ * @param array $args The $_POST array being passed.
  *
- * @param  array $args The $_POST array being passed.
+ * @since 1.0
  *
- * @return int         The Note ID that was saved, or 0 if nothing was saved.
+ * @return int The Note ID that was saved, or 0 if nothing was saved.
  */
 function give_donor_save_note( $args ) {
 
@@ -181,10 +185,10 @@ function give_donor_save_note( $args ) {
 	/**
 	 * Fires before inserting donor note.
 	 *
-	 * @since 1.0
-	 *
 	 * @param int    $donor_id The ID of the donor.
 	 * @param string $new_note Note content.
+	 *
+	 * @since 1.0
 	 */
 	do_action( 'give_pre_insert_donor_note', $donor_id, $new_note );
 
@@ -219,9 +223,9 @@ add_action( 'give_add-donor-note', 'give_donor_save_note', 10, 1 );
 /**
  * Delete a donor.
  *
- * @since  1.0
+ * @param array $args The $_POST array being passed.
  *
- * @param  array $args The $_POST array being passed.
+ * @since 1.0
  *
  * @return int Whether it was a successful deletion.
  */
@@ -264,11 +268,11 @@ function give_donor_delete( $args ) {
 	/**
 	 * Fires before deleting donor.
 	 *
-	 * @since 1.0
-	 *
 	 * @param int  $donor_id    The ID of the donor.
 	 * @param bool $confirm     Delete confirmation.
 	 * @param bool $remove_data Records delete confirmation.
+	 *
+	 * @since 1.0
 	 */
 	do_action( 'give_pre_delete_donor', $donor_id, $confirm, $remove_data );
 
@@ -318,11 +322,11 @@ add_action( 'give_delete-donor', 'give_donor_delete', 10, 1 );
 /**
  * Disconnect a user ID from a donor
  *
- * @since  1.0
+ * @param array $args Array of arguments.
  *
- * @param  array $args Array of arguments.
+ * @since 1.0
  *
- * @return bool|array        If the disconnect was successful.
+ * @return bool|array If the disconnect was successful.
  */
 function give_disconnect_donor_user_id( $args ) {
 
@@ -358,10 +362,10 @@ function give_disconnect_donor_user_id( $args ) {
 	/**
 	 * Fires before disconnecting user ID from a donor.
 	 *
-	 * @since 1.0
-	 *
 	 * @param int $donor_id The ID of the donor.
 	 * @param int $user_id  The ID of the user.
+	 *
+	 * @since 1.0
 	 */
 	do_action( 'give_pre_donor_disconnect_user_id', $donor_id, $user_id );
 
@@ -395,9 +399,9 @@ function give_disconnect_donor_user_id( $args ) {
 	/**
 	 * Fires after disconnecting user ID from a donor.
 	 *
-	 * @since 1.0
-	 *
 	 * @param int $donor_id The ID of the donor.
+	 *
+	 * @since 1.0
 	 */
 	do_action( 'give_post_donor_disconnect_user_id', $donor_id );
 
@@ -416,18 +420,14 @@ add_action( 'give_disconnect-userid', 'give_disconnect_donor_user_id', 10, 1 );
 /**
  * Add an email address to the donor from within the admin and log a donor note.
  *
- * @since  1.7
+ * @param array $args Array of arguments: nonce, donor id, and email address.
  *
- * @param  array $args Array of arguments: nonce, donor id, and email address.
+ * @since 1.7
  *
- * @return mixed        If DOING_AJAX echos out JSON, otherwise returns array of success (bool) and message (string).
+ * @return mixed If DOING_AJAX echos out JSON, otherwise returns array of success (bool) and message (string).
  */
 function give_add_donor_email( $args ) {
-	/**
-	 * Define variable
-	 *
-	 * @since 1.8.14
-	 */
+
 	$donor_id = '';
 	$donor_edit_role = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
 
@@ -492,7 +492,7 @@ function give_add_donor_email( $args ) {
 				$donor->add_note( $donor_note );
 			}
 		}
-	}// End if().
+	} // End if().
 
 	do_action( 'give_post_add_donor_email', $donor_id, $args );
 
@@ -512,6 +512,7 @@ add_action( 'give_add_donor_email', 'give_add_donor_email', 10, 1 );
  * Remove an email address to the donor from within the admin and log a donor note and redirect back to the donor interface for feedback.
  *
  * @since  1.7
+ *
  * @return bool|null
  */
 function give_remove_donor_email() {
@@ -555,6 +556,7 @@ add_action( 'give_remove_donor_email', 'give_remove_donor_email', 10 );
  * and redirect back to the donor interface for feedback
  *
  * @since  1.7
+ *
  * @return bool|null
  */
 function give_set_donor_primary_email() {

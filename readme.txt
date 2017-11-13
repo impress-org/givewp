@@ -1,11 +1,11 @@
 === Give - Donation Plugin and Fundraising Platform ===
-Contributors: givewp, wordimpress, dlocc, webdevmattcrom, ravinderk, raftaar1191, mehul0810
+Contributors: givewp, wordimpress, dlocc, webdevmattcrom, ravinderk, kevinwhoffman, raftaar1191, mehul0810
 Donate link: https://givewp.com/
 Tags: donation, donations, donation plugin, wordpress donation plugin, wp donation, ecommerce, e-commerce, fundraising, fundraiser, crowdfunding, wordpress donations, commerce, wordpress ecommerce, giving, charity, donate, gifts, non-profit, paypal, stripe, churches, nonprofit, paypal donations, paypal donate, stripe donations, stripe donate, authorize.net, authorize.net donations
-Requires at least: 4.2
-Tested up to: 4.8
+Requires at least: 4.5
+Tested up to: 4.9
 Requires PHP: 5.3
-Stable tag: 1.8.14
+Stable tag: 1.8.17
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -207,6 +207,24 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 1.8.16: October 27th, 2017  =
+* New: Bulk actions now for Donors allow you to more easily delete donors and associated records. [#2086](https://github.com/WordImpress/Give/issues/2086)
+* New: Payments now save the currency settings used to make the donation in preparation for the new currency switcher add-on coming soon and also improved future reporting. [#2153](https://github.com/WordImpress/Give/issues/2153)
+* Tweak: The link for donor's to view their receipt ("View in Browser >") which appears in emails has better logic so that no matter where the donor clicks that link (on a different device, using a different browser, etc), they will have access to the donation receipt and other associated donor account information. [#1790](https://github.com/WordImpress/Give/issues/1790)
+* Tweak: CSS improvements to the [give_donor_profile] shortcode. [#2190](https://github.com/WordImpress/Give/issues/2190)
+* Tweak: Hardened give_listen_for_failed_payments(). [#2240](https://github.com/WordImpress/Give/issues/2240)
+* Fix: Add-on activation banners weren't displaying due to a change made in a recent release. Now they are again. [#2241](https://github.com/WordImpress/Give/issues/2241)
+* Fix: A notice now displays when you update/save a donor's records. [#2181](https://github.com/WordImpress/Give/issues/2181)
+* Fix: Donations set to 00:00 time don't show within the "Today" or "Yesterday" reports filter. [#2221](https://github.com/WordImpress/Give/issues/2221)
+* Fix: If using polyfill JS on your theme Give's CC fields would appear invalid on page load. [#2244](https://github.com/WordImpress/Give/issues/2244)
+
+= 1.8.15: October 18th, 2017  =
+* New: Added support for dynamic currencies. [#2197](https://github.com/WordImpress/Give/issues/2197)
+* Fix: The importer should map "Postal Code" and "Zip" to the single field. [#2164](https://github.com/WordImpress/Give/issues/2164)
+* Fix: Renamed importer field "Donation Form" to proper naming "Donation Form Title". [#2165](https://github.com/WordImpress/Give/issues/2165)
+* Fix: Issue with give_validate_license_when_site_migrated() causing sites to have excessive $_POST requests to the licensing server.
+* Fix: Improved the Tools > Data confirmation checkbox and submit button functionality to prevent excessive clicks. [#2195](https://github.com/WordImpress/Give/issues/2195)
 
 = 1.8.14: October 13th, 2017  =
 * New: Integrated with Akismet for improved spam filtering [#673](https://github.com/WordImpress/Give/issues/673)

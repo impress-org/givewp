@@ -27,3 +27,10 @@
 ## Todos
 - [ ] Tests
 - [ ] Documentation
+
+## WordPress Environment
+<details>
+```
+Copy and paste the system Info report from **Donations > Tools > System Info** in WordPress admin here.
+```
+</details>

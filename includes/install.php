@@ -122,7 +122,8 @@ function give_run_install() {
 			'v1812_update_amount_values',
 			'v1812_update_donor_purchase_values',
 			'v1813_update_user_roles',
-			'v1813_update_donor_user_roles'
+			'v1813_update_donor_user_roles',
+			'v1817_update_donation_iranian_currency_code'
 		);
 
 		foreach ( $upgrade_routines as $upgrade ) {
@@ -297,7 +298,7 @@ function give_get_default_settings() {
 		'currency'                                    => 'USD',
 		'currency_position'                           => 'before',
 		'session_lifetime'                            => '604800',
-		'email_access'                                => 'disabled',
+		'email_access'                                => 'enabled',
 		'thousands_separator'                         => ',',
 		'decimal_separator'                           => '.',
 		'number_decimals'                             => 2,

@@ -388,12 +388,14 @@ h2.give-nav-tab-wrapper {
 @media screen and (max-width: 600px) {
 	.give-nav-tab-wrapper {
 		position: relative;
-		padding-top:0 !important;
+		padding-top: 0 !important;
 
 		> a {
 			width: 100%;
 			box-sizing: border-box;
-			margin:0;
+			margin: 0;
+			background-color: #ffffff;
+			border: 1px solid #cccccc;
 			&:hover {
 				border-bottom: 1px solid #ccc;
 			}
@@ -401,14 +403,14 @@ h2.give-nav-tab-wrapper {
 
 		div.give-sub-nav-tab-wrapper {
 			position: absolute;
-			top:0;
-			right:0;
+			top: 0;
+			right: 0;
 
 			#give-show-sub-nav {
 				height: 28px;
 				width: 30px;
 				border-radius: 0;
-				margin:0;
+				margin: 0;
 				> span.dashicons {
 					margin: 6px auto 0;
 					display: block;
@@ -417,10 +419,24 @@ h2.give-nav-tab-wrapper {
 			}
 
 			nav.give-sub-nav-tab {
-				top:35px;
+				top: 35px;
+				right: 0;
+				left: auto;
+
+				a {
+					background: #ffffff;
+					&:hover {
+						background: #e5e5e5;
+					}
+				}
+
 			}
 		}
 
+	}
+
+	.give-mobile-hidden {
+		display: none;
 	}
 }
 
@@ -434,12 +450,12 @@ h2.give-nav-tab-wrapper {
 		border: 1px solid #ccc;
 		border-bottom: 0;
 		position: absolute;
-		top: 32px;
-		right: 0;
+		top: 35px;
+		left: 0;
 
 		a {
 			float: left;
-			background: white;
+			background: #e5e5e5;
 			padding: 6px 10px;
 			clear: both;
 			text-decoration: none;
@@ -450,14 +466,14 @@ h2.give-nav-tab-wrapper {
 		}
 
 		a:hover {
-			background: #e5e5e5;
+			background: #ffffff;
 		}
 	}
 }
 
 // By default hide setting tab wrapper.
-.give-sub-nav-tab-wrapper{
-	display:none;
+.give-sub-nav-tab-wrapper {
+	display: none;
 }
 
 #give-show-sub-nav {
@@ -467,12 +483,12 @@ h2.give-nav-tab-wrapper {
 	line-height: 0;
 	background: white;
 	border-radius: 4px;
-    margin-top:5px;
+	margin-top: 5px;
 
 	> span.dashicons {
-      font-size:16px;
-      height:16px;
-      width:16px;
+		font-size: 16px;
+		height: 16px;
+		width: 16px;
 	}
 }
 
@@ -480,7 +496,6 @@ h2.give-nav-tab-wrapper {
 	outline: none;
 	box-shadow: inset 0px 0px 4px #ddd;
 }
-
 
 //--------------------------------------------------------------
 // Image preview container

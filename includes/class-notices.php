@@ -6,7 +6,7 @@
  * @subpackage  Admin/Notices
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       1.0
+ * @since       1.8.9
  */
 
 // Exit if accessed directly.
@@ -17,13 +17,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Give_Notices Class
  *
- * @since 1.0
+ * @since 1.8.9
  */
 class Give_Notices {
 	/**
 	 * List of notices
 	 * @var array
-	 * @since  1.8
+	 * @since  1.8.9
 	 * @access private
 	 */
 	private static $notices = array();
@@ -50,7 +50,7 @@ class Give_Notices {
 	/**
 	 * Get things started.
 	 *
-	 * @since 1.0
+	 * @since 1.8.9
 	 */
 	public function __construct() {
 		add_action( 'admin_notices', array( $this, 'render_admin_notices' ), 999 );
@@ -121,6 +121,16 @@ class Give_Notices {
 				'description'           => '',
 
 				/*
+				 * Add custom notice html
+				 * Note: This param has more priority then description, so if you have  both param then this one will be use
+				 *       for generating notice html. Most of feature of notice attach to core generated html, so if you set
+				 *       custom html then please add required classes and data attribute which help to apply feature on notice.
+				 *
+				 * @since 1.8.16
+				 */
+				'description_html'      => '',
+
+				/*
 				 * Add New Parameter and remove the auto_dismissible parameter.
 				 * Value: auto/true/false
 				 *
@@ -139,6 +149,7 @@ class Give_Notices {
 
 				// Only set it when custom is defined.
 				'dismiss_interval_time' => null,
+
 
 			)
 		);
@@ -203,6 +214,13 @@ class Give_Notices {
 		foreach ( self::$notices as $notice_id => $notice ) {
 			// Check flag set to true to show notice.
 			if ( ! $notice['show'] ) {
+				continue;
+			}
+
+
+			// Render custom html.
+			if( ! empty( $notice['description_html'] ) ) {
+				$output .= "{$notice['description_html']} \n";
 				continue;
 			}
 
@@ -612,5 +630,50 @@ class Give_Notices {
 		}
 
 		echo $error;
+	}
+
+	/**
+	 * Print Inline Notice.
+	 * Note: dismissible feature will note work if notice will add to dom by javascript after document load.
+	 *
+	 * @param array $notice_args An array of notice arguments.
+	 *
+	 * @todo   Implement render_admin_notices function within this function in future.
+	 *
+	 * @access public
+	 * @since  1.8.17
+	 *
+	 * @return string
+	 */
+	public function print_admin_notices( $notice_args = array() ) {
+		// Bailout.
+		if ( empty( $notice_args['description'] ) ) {
+			return '';
+		}
+
+		$defaults    = array(
+			'id'          => '',
+			'echo'        => true,
+			'notice_type' => 'warning',
+			'dismissible' => true,
+		);
+		$notice_args = wp_parse_args( $notice_args, $defaults );
+
+		$output    = '';
+		$css_id    = ! empty( $notice_args['id'] ) ? $notice_args['id'] : uniqid( 'give-inline-notice-' );
+		$css_class = "notice-{$notice_args['notice_type']} give-notice notice inline";
+		$css_class .= ( $notice_args['dismissible'] ) ? ' is-dismissible' : '';
+		$output    .= sprintf(
+			'<div id="%1$s" class="%2$s"><p>%3$s</p></div>',
+			$css_id,
+			$css_class,
+			$notice_args['description']
+		);
+
+		if ( ! $notice_args['echo'] ) {
+			return $output;
+		}
+
+		echo $output;
 	}
 }

@@ -105,7 +105,7 @@ function give_load_scripts() {
 		wp_register_script( 'give-magnific', $js_plugins . 'jquery.magnific-popup' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, $scripts_footer );
 		wp_enqueue_script( 'give-magnific' );
 
-		wp_register_script( 'give-checkout-global', $js_dir . 'give-checkout-global' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, $scripts_footer );
+		wp_register_script( 'give-checkout-global', $js_dir . 'give-donations' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, $scripts_footer );
 		wp_enqueue_script( 'give-checkout-global' );
 
 		// General scripts.
@@ -320,7 +320,7 @@ function give_load_admin_scripts( $hook ) {
 		'one_or_more_option'                => __( 'Choose one or more forms', 'give' ),
 		'currency_sign'                     => give_currency_filter( '' ),
 		'currency_pos'                      => isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before',
-		'currency_decimals'                 => give_currency_decimal_filter( give_get_price_decimals() ),
+		'currency_decimals'                 => give_get_price_decimals(),
 		'batch_export_no_class'             => __( 'You must choose a method.', 'give' ),
 		'batch_export_no_reqs'              => __( 'Required fields not completed.', 'give' ),
 		'reset_stats_warn'                  => __( 'Are you sure you want to reset Give? This process is <strong><em>not reversible</em></strong> and will delete all data regardless of test or live mode. Please be sure you have a recent backup before proceeding.', 'give' ),
@@ -335,9 +335,16 @@ function give_load_admin_scripts( $hook ) {
 		'search_placeholder_donor'          => __( 'Type to search all donors', 'give' ),
 		'search_placeholder_country'        => __( 'Type to search all countries', 'give' ),
 		'search_placeholder_state'          => __( 'Type to search all states/provinces', 'give' ),
-		'bulk_action'                       => array(
+		'donors_bulk_action'                => array(
+			'delete' => array(
+				'zero'     => __( 'You must choose at least one or more donors to delete.', 'give' ),
+				'single'   => __( 'Are you sure you want to permanently delete this donor and associated records?', 'give' ),
+				'multiple' => __( 'Are you sure you want to permanently delete the selected {donor_count} donors and associated records?', 'give' ),
+			),
+		),
+		'donations_bulk_action'             => array(
 			'delete'         => array(
-				'zero'     => __( 'You must choose at least one or more payments to delete.', 'give' ),
+				'zero'     => __( 'You must choose at least one or more donations to delete.', 'give' ),
 				'single'   => __( 'Are you sure you want to permanently delete this donation?', 'give' ),
 				'multiple' => __( 'Are you sure you want to permanently delete the selected {payment_count} donations?', 'give' ),
 			),
@@ -368,6 +375,7 @@ function give_load_admin_scripts( $hook ) {
 		'db_update_confirmation_msg'        => __( 'The following process will make updates to your site\'s database. Please create a database backup before proceeding with updates.', 'give' ),
 		'error_message'                     => __( 'Something went wrong kindly try again!', 'give' ),
 		'give_donation_import'              => 'give_donation_import',
+		'core_settings_import'              => 'give_core_settings_import',
 		'setting_not_save_message'          => __( 'Changes you made may not be saved.', 'give' ),
 	) );
 

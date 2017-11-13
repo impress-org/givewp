@@ -30,199 +30,6 @@ function give_is_test_mode() {
 }
 
 /**
- * Get the set currency
- *
- * @since 1.0
- * @return string The currency code
- */
-function give_get_currency() {
-
-	$currency = give_get_option( 'currency', 'USD' );
-
-	return apply_filters( 'give_currency', $currency );
-}
-
-/**
- * Get the set currency position
- *
- * @since 1.3.6
- *
- * @return string The currency code
- */
-function give_get_currency_position() {
-
-	$currency_pos = give_get_option( 'currency_position', 'before' );
-
-	return apply_filters( 'give_currency_position', $currency_pos );
-}
-
-
-/**
- * Get Currencies
- *
- * @since 1.0
- * @return array $currencies A list of the available currencies
- */
-
-function give_get_currencies() {
-	$currencies = array(
-		'USD'  => __( 'US Dollars ($)', 'give' ),
-		'EUR'  => __( 'Euros (€)', 'give' ),
-		'GBP'  => __( 'Pounds Sterling (£)', 'give' ),
-		'AUD'  => __( 'Australian Dollars ($)', 'give' ),
-		'BRL'  => __( 'Brazilian Real (R$)', 'give' ),
-		'CAD'  => __( 'Canadian Dollars ($)', 'give' ),
-		'CZK'  => __( 'Czech Koruna (Kč)', 'give' ),
-		'DKK'  => __( 'Danish Krone (kr.)', 'give' ),
-		'HKD'  => __( 'Hong Kong Dollar ($)', 'give' ),
-		'HUF'  => __( 'Hungarian Forint (Ft)', 'give' ),
-		'ILS'  => __( 'Israeli Shekel (₪)', 'give' ),
-		'JPY'  => __( 'Japanese Yen (¥)', 'give' ),
-		'MYR'  => __( 'Malaysian Ringgits (RM)', 'give' ),
-		'MXN'  => __( 'Mexican Peso ($)', 'give' ),
-		'MAD'  => __( 'Moroccan Dirham (&#x2e;&#x62f;&#x2e;&#x645;)', 'give' ),
-		'NZD'  => __( 'New Zealand Dollar ($)', 'give' ),
-		'NOK'  => __( 'Norwegian Krone (Kr.)', 'give' ),
-		'PHP'  => __( 'Philippine Pesos (₱)', 'give' ),
-		'PLN'  => __( 'Polish Zloty (zł)', 'give' ),
-		'SGD'  => __( 'Singapore Dollar ($)', 'give' ),
-		'KRW'  => __( 'South Korean Won (₩)', 'give' ),
-		'ZAR'  => __( 'South African Rand (R)', 'give' ),
-		'SEK'  => __( 'Swedish Krona (kr)', 'give' ),
-		'CHF'  => __( 'Swiss Franc (CHF)', 'give' ),
-		'TWD'  => __( 'Taiwan New Dollars (NT$)', 'give' ),
-		'THB'  => __( 'Thai Baht (฿)', 'give' ),
-		'INR'  => __( 'Indian Rupee (₹)', 'give' ),
-		'TRY'  => __( 'Turkish Lira (₺)', 'give' ),
-		'RIAL' => __( 'Iranian Rial (﷼)', 'give' ),
-		'RUB'  => __( 'Russian Rubles (₽)', 'give' ),
-	);
-
-	return apply_filters( 'give_currencies', $currencies );
-}
-
-
-/**
- * Get all currency symbols
- *
- * @since 1.8.14
- *
- * @param bool $decode_currencies
- *
- * @return array
- */
-function give_currency_symbols( $decode_currencies = false ) {
-	$currencies = array(
-		'GBP'  => '&pound;',
-		'BRL'  => '&#82;&#36;',
-		'EUR'  => '&euro;',
-		'NOK'  => '&#107;&#114;.',
-		'INR'  => '&#8377;',
-		'USD'  => '&#36;',
-		'AUD'  => '&#36;',
-		'CAD'  => '&#36;',
-		'HKD'  => '&#36;',
-		'MXN'  => '&#36;',
-		'SGD'  => '&#36;',
-		'JPY'  => '&yen;',
-		'THB'  => '&#3647;',
-		'TRY'  => '&#8378;',
-		'TWD'  => '&#78;&#84;&#36;',
-		'ILS'  => '&#8362;',
-		'RIAL' => '&#xfdfc;',
-		'RUB'  => '&#8381;',
-		'DKK'  => '&nbsp;kr.&nbsp;',
-		'SEK'  => '&nbsp;kr.&nbsp;',
-		'PLN'  => '&#122;&#322;',
-		'PHP'  => '&#8369;',
-		'MYR'  => '&#82;&#77;',
-		'HUF'  => '&#70;&#116;',
-		'CZK'  => '&#75;&#269;',
-		'KRW'  => '&#8361;',
-		'ZAR'  => '&#82;',
-		'MAD'  => '&#x2e;&#x62f;&#x2e;&#x645;',
-	);
-
-	if ( $decode_currencies ) {
-		$currencies = array_map( 'html_entity_decode', $currencies );
-	}
-
-	/**
-	 * Filter the currency symbols
-	 *
-	 * @since 1.8.14
-	 *
-	 * @param array $currencies
-	 */
-	return apply_filters( 'give_currency_symbols', $currencies );
-}
-
-
-/**
- * Give Currency Symbol
- *
- * Given a currency determine the symbol to use. If no currency given, site default is used. If no symbol is determine,
- * the currency string is returned.
- *
- * @since      1.0
- *
- * @param  string $currency        The currency string.
- * @param  bool   $decode_currency Option to HTML decode the currency symbol.
- *
- * @return string           The symbol to use for the currency
- */
-function give_currency_symbol( $currency = '', $decode_currency = false ) {
-
-	if ( empty( $currency ) ) {
-		$currency = give_get_currency();
-	}
-
-	$currencies = give_currency_symbols( $decode_currency );
-	$symbol     = array_key_exists( $currency, $currencies ) ? $currencies[ $currency ] : $currency;
-
-	/**
-	 * Filter the currency symbol
-	 *
-	 * @since 1.0
-	 *
-	 * @param string $symbol
-	 * @param string $currency
-	 */
-	return apply_filters( 'give_currency_symbol', $symbol, $currency );
-}
-
-
-/**
- * Get currency name.
- *
- * @since 1.8.8
- *
- * @param string $currency_code
- *
- * @return string
- */
-function give_get_currency_name( $currency_code ) {
-	$currency_name  = '';
-	$currency_names = give_get_currencies();
-
-	if ( $currency_code && array_key_exists( $currency_code, $currency_names ) ) {
-		$currency_name = explode( '(', $currency_names[ $currency_code ] );
-		$currency_name = trim( current( $currency_name ) );
-	}
-
-	/**
-	 * Filter the currency name
-	 *
-	 * @since 1.8.8
-	 *
-	 * @param string $currency_name
-	 * @param string $currency_code
-	 */
-	return apply_filters( 'give_currency_name', $currency_name, $currency_code );
-}
-
-
-/**
  * Get the current page URL.
  *
  * @since 1.0
@@ -780,12 +587,12 @@ function give_get_newsletter() {
 	<script type='text/javascript'>(function ($) {
 			window.fnames = new Array();
 			window.ftypes = new Array();
-			fnames[0]     = 'EMAIL';
-			ftypes[0]     = 'email';
-			fnames[1]     = 'FNAME';
-			ftypes[1]     = 'text';
-			fnames[2]     = 'LNAME';
-			ftypes[2]     = 'text';
+			fnames[0] = 'EMAIL';
+			ftypes[0] = 'email';
+			fnames[1] = 'FNAME';
+			ftypes[1] = 'text';
+			fnames[2] = 'LNAME';
+			ftypes[2] = 'text';
 
 			//Successful submission
 			$('form[name="mc-embedded-subscribe-form"]').on('submit', function () {
@@ -806,7 +613,7 @@ function give_get_newsletter() {
 	</script>
 	<!--End mc_embed_signup-->
 
-<?php
+	<?php
 }
 
 
@@ -1172,8 +979,9 @@ function give_is_terms_enabled( $form_id ) {
  * @since 1.8.7
  *
  * @param string|array $date_range Date for stats.
- *                                 Date value should be in today, yesterday, this_week, last_week, this_month, last_month, this_quarter, last_quarter, this_year, last_year.
- *                                 For date value other, all cache will be removed.
+ *                                 Date value should be in today, yesterday, this_week, last_week, this_month,
+ *                                 last_month, this_quarter, last_quarter, this_year, last_year. For date value other,
+ *                                 all cache will be removed.
  *
  * @param array        $args
  *
@@ -1240,8 +1048,8 @@ function give_get_meta( $id, $meta_key, $single = false, $default = false ) {
  *
  * @param int    $id
  * @param string $meta_key
- * @param string $meta_value
- * @param string $prev_value
+ * @param mixed  $meta_value
+ * @param mixed  $prev_value
  *
  * @return mixed
  */
@@ -1369,9 +1177,9 @@ function give_remove_pages_from_search( $query ) {
 		$success_page       = give_get_option( 'success_page', 0 );
 		$args               = apply_filters(
 			'give_remove_pages_from_search', array(
-				$transaction_failed,
-				$success_page,
-			), $query
+			$transaction_failed,
+			$success_page,
+		), $query
 		);
 		$query->set( 'post__not_in', $args );
 	}
@@ -1636,37 +1444,61 @@ function give_recount_form_income_donation( $form_id = false ) {
 }
 
 /**
- * Zero Decimal based Currency.
+ * Get attribute string
  *
- * @since 1.8.14
+ * @since 1.8.17
  *
- * @return bool
+ * @param array $attributes
+ *
+ * @return string
  */
-function give_is_zero_based_currency() {
-	$zero_based_currency = array(
-		'PYG', // Paraguayan Guarani.
-		'GNF', // Guinean Franc.
-		'RWF', // Rwandan Franc.
-		'JPY', // Japanese Yen.
-		'BIF', // Burundian Franc.
-		'KRW', // South Korean Won.
-		'MGA', // Malagasy Ariary.
-		'XAF', // Central African Cfa Franc.
-		'XPF', // Cfp Franc.
-		'CLP', // Chilean Peso.
-		'KMF', // Comorian Franc.
-		'DJF', // Djiboutian Franc.
-		'VUV', // Vanuatu Vatu.
-		'VND', // Vietnamese Dong.
-		'XOF', // West African Cfa Franc.
-	);
+function give_get_attribute_str( $attributes ) {
+	$attribute_str = '';
 
-	// Check for Zero Based Currency.
-	if ( in_array( give_get_currency(), $zero_based_currency ) ) {
-		return true;
+	if ( empty( $attributes ) ) {
+		return $attribute_str;
 	}
 
-	return false;
+	foreach ( $attributes as $tag => $value ) {
+		$attribute_str .= " {$tag}=\"{$value}\"";
+	}
+
+	return trim( $attribute_str );
+}
+
+/**
+ * Get the upload dir path
+ *
+ * @since 1.8.17
+ *
+ * @return string $wp_upload_dir;
+ */
+function give_get_wp_upload_dir() {
+	$wp_upload_dir = wp_upload_dir();
+
+	return ( ! empty( $wp_upload_dir['path'] ) ? $wp_upload_dir['path'] : false );
+}
+
+/**
+ * Get the data from uploaded JSON file
+ *
+ * @since 1.8.17
+ *
+ * @param string $file_name filename of the json file that is being uploaded
+ *
+ * @return string/bool $file_contents File content
+ */
+function give_get_core_settings_json( $file_name ) {
+	$upload_dir = give_get_wp_upload_dir();
+	$file_path  = $upload_dir . '/' . $file_name;
+
+	if ( is_wp_error( $file_path ) || empty( $file_path ) ) {
+		Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide a valid JSON file.', 'give' ) );
+	}
+
+	$file_contents = file_get_contents( $file_path );
+
+	return $file_contents;
 }
 
 /**

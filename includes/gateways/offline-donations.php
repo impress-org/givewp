@@ -116,7 +116,7 @@ function give_offline_process_payment( $purchase_data ) {
 		'date'            => $purchase_data['date'],
 		'user_email'      => $purchase_data['user_email'],
 		'purchase_key'    => $purchase_data['purchase_key'],
-		'currency'        => give_get_currency(),
+		'currency'        => give_get_currency( $purchase_data['post_data']['give-form-id'], $purchase_data ),
 		'user_info'       => $purchase_data['user_info'],
 		'status'          => 'pending',
 		'gateway'         => 'offline'
@@ -281,7 +281,7 @@ function give_offline_send_admin_notice( $payment_id = 0 ) {
 function give_offline_add_settings( $settings ) {
 
 	// Bailout: Do not show offline gateways setting in to metabox if its disabled globally.
-	if ( in_array( 'offline', give_get_option( 'gateways' ) ) ) {
+	if ( in_array( 'offline', (array) give_get_option( 'gateways' ) ) ) {
 		return $settings;
 	}
 

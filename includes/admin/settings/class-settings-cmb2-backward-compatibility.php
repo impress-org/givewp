@@ -164,7 +164,7 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			$pages_diff = array_keys( array_diff( $previous_pages, $page_ids ) );
 
 			// Merge old settings with new settings.
-			$pages = array_merge( $page_ids, $previous_pages );
+			// $pages = array_merge( $page_ids, $previous_pages );
 
 			if ( in_array( $this->current_tab, $pages_diff ) ) {
 				// Filter & actions.

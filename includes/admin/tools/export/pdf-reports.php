@@ -58,8 +58,12 @@ function give_generate_pdf( $data ) {
 	$custom_font  = 'dejavusans';
 	$font_style   = '';
 
-	if ( file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/tcpdf/fonts/CODE2000.TTF' ) &&
-	     in_array( give_get_currency(), array( 'RIAL', 'RUB' ) ) ) {
+	if (
+		file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/tcpdf/fonts/CODE2000.TTF' ) &&
+
+		// RIAL exist for backward compatibility.
+		in_array( give_get_currency(), array( 'RIAL', 'RUB', 'IRR' ) )
+	) {
 		TCPDF_FONTS::addTTFfont( GIVE_PLUGIN_DIR . '/includes/libraries/tcpdf/fonts/CODE2000.TTF', '' );
 		$custom_font = 'CODE2000';
 		$font_style  = 'B';

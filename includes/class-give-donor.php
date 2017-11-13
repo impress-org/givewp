@@ -790,6 +790,29 @@ class Give_Donor {
 	}
 
 	/**
+	 * Get the total donation amount.
+	 *
+	 * @since 1.8.17
+	 *
+	 * @param array $args Pass any additional data.
+	 *
+	 * @return string|float
+	 */
+	public function get_total_donation_amount( $args = array() ) {
+
+		/**
+		 * Filter total donation amount.
+		 *
+		 * @since 1.8.17
+		 *
+		 * @param string|float $purchase_value Donor Purchase value.
+		 * @param integer      $donor_id       Donor ID.
+		 * @param array        $args           Pass additional data.
+		 */
+		return apply_filters( 'give_get_total_donation_amount', $this->purchase_value, $this->id, $args );
+	}
+
+	/**
 	 * Add a note for the donor.
 	 *
 	 * @since  1.0
