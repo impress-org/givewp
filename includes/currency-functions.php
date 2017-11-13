@@ -666,3 +666,33 @@ function give_is_zero_based_currency( $currency = '' ) {
 
 	return false;
 }
+
+
+/**
+ * Check if currency support right to left direction or not.
+ *
+ * @param string $currency
+ *
+ * @return bool
+ */
+function give_is_right_to_left_supported_currency( $currency = '' ) {
+	$zero_based_currency = apply_filters(
+		'give_right_to_left_supported_currency',
+		array(
+			'IRR',
+			'RIAL',
+		)
+	);
+
+	// Set default currency.
+	if ( empty( $currency ) ) {
+		$currency = give_get_currency();
+	}
+
+	// Check for Zero Based Currency.
+	if ( in_array( $currency, $zero_based_currency ) ) {
+		return true;
+	}
+
+	return false;
+}
