@@ -213,7 +213,7 @@ function give_bc_v1817_iranian_currency_filter( $formatted_price, $currency_code
 	$position        = false !== strpos( current_filter(), 'after' ) ? 'after' : 'before';
 	$formatted_price = ( 'before' === $position ?
 		$currency_symbol . '&#x200e;' . $price :
-		$price . '&#x200f;' . $currency_symbol );
+		$price . $currency_symbol . '&#x200f;' );
 
 	return ( $args['decode_currency'] ?
 		html_entity_decode( $formatted_price, ENT_COMPAT, 'UTF-8' ) :
