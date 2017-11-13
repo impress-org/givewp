@@ -290,15 +290,15 @@ function give_update_payment_status( $payment_id, $new_status = 'publish' ) {
  *
  * @since  1.0
  *
- * @param  int $payment_id Payment ID (default: 0).
+ * @param  int  $payment_id   Payment ID (default: 0).
  * @param  bool $update_donor If we should update the donor stats (default:true).
  *
  * @return void
  */
 function give_delete_donation( $payment_id = 0, $update_donor = true ) {
-	$payment     = new Give_Payment( $payment_id );
-	$amount      = give_get_payment_amount( $payment_id );
-	$status      = $payment->post_status;
+	$payment = new Give_Payment( $payment_id );
+	$amount  = give_get_payment_amount( $payment_id );
+	$status  = $payment->post_status;
 
 	$donor_id = give_get_payment_donor_id( $payment_id );
 	$donor    = new Give_Donor( $donor_id );
@@ -605,7 +605,8 @@ function give_check_for_existing_payment( $payment_id ) {
  * Get Payment Status
  *
  * @param WP_Post|Give_Payment|int $payment      Payment object or payment ID.
- * @param bool                     $return_label Whether to return the translated status label instead of status value. Default false.
+ * @param bool                     $return_label Whether to return the translated status label instead of status value.
+ *                                               Default false.
  *
  * @since 1.0
  *
@@ -739,10 +740,19 @@ function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour
 		$donations = get_posts( $args );
 		$earnings  = 0;
 		if ( $donations ) {
-			$donations = implode( ',', $donations );
+			$donations      = implode( ',', $donations );
+			$earning_totals = $wpdb->get_var( "SELECT SUM(meta_value) FROM $wpdb->postmeta WHERE meta_key = '_give_payment_total' AND post_id IN ({$donations})" );
 
-			$earnings = $wpdb->get_var( "SELECT SUM(meta_value) FROM {$meta_table['name']} WHERE meta_key = '_give_payment_total' AND {$meta_table['column']['id']} IN ({$donations})" );
-
+			/**
+			 * Filter The earnings by dates.
+			 *
+			 * @since 1.8.17
+			 *
+			 * @param float $earning_totals Total earnings between the dates.
+			 * @param array $donations      Donations lists.
+			 * @param array $args           Donation query args.
+			 */
+			$earnings = apply_filters( 'give_earnings_by_date', $earning_totals, $donations, $args );
 		}
 		// Cache the results for one hour.
 		Give_Cache::set( $key, $earnings, HOUR_IN_SECONDS );
@@ -870,7 +880,7 @@ function give_get_total_donations() {
  */
 function give_get_total_earnings( $recalculate = false ) {
 
-	$total = get_option( 'give_earnings_total', 0 );
+	$total      = get_option( 'give_earnings_total', 0 );
 	$meta_table = __give_v20_bc_table_details( 'payment' );
 
 	// Calculate total earnings.
@@ -1311,8 +1321,8 @@ function give_remove_payment_prefix_postfix( $number ) {
 /**
  * Get Payment Amount
  *
- * Get the fully formatted donation amount. The donation amount is retrieved using give_get_donation_amount() and is then
- * sent through give_currency_filter() and  give_format_amount() to format the amount correctly.
+ * Get the fully formatted donation amount. The donation amount is retrieved using give_get_donation_amount() and is
+ * then sent through give_currency_filter() and  give_format_amount() to format the amount correctly.
  *
  * @param int    $donation_id Donation ID.
  * @param string $type        String parameter which will define context of donation amount.
@@ -1476,7 +1486,7 @@ function give_get_purchase_id_by_key( $key ) {
  */
 function give_get_purchase_id_by_transaction_id( $key ) {
 	global $wpdb;
-	$meta_table = __give_v20_bc_table_details('payment');
+	$meta_table = __give_v20_bc_table_details( 'payment' );
 
 	$purchase = $wpdb->get_var( $wpdb->prepare( "SELECT {$meta_table['column']['id']} FROM {$meta_table['name']} WHERE meta_key = '_give_payment_transaction_id' AND meta_value = %s LIMIT 1", $key ) );
 

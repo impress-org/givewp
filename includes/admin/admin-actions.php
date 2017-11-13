@@ -224,7 +224,7 @@ function _give_register_admin_notices() {
 							$donor_count ),
 						'show'        => true,
 					) );
-					
+
 					break;
 			}
 		}
@@ -590,7 +590,7 @@ function give_donation_import_callback() {
 
 	$percentage              = ( 100 / ( $total_ajax + 1 ) ) * $current;
 	$json_data['percentage'] = $percentage;
-	
+
 	$json_data = apply_filters( 'give_import_ajax_responces', $json_data, $fields );
 	wp_die( json_encode( $json_data ) );
 }
@@ -617,7 +617,7 @@ function give_core_settings_import_callback() {
 	 *
 	 * @access public
 	 *
-	 * @since 1.8.17
+	 * @since  1.8.17
 	 *
 	 * @param array $fields
 	 *
@@ -645,12 +645,12 @@ function give_core_settings_import_callback() {
 		 *
 		 * @access public
 		 *
-		 * @since 1.8.17
+		 * @since  1.8.17
 		 *
-		 * @param array $json_to_array Setting that are being going to get imported
-		 * @param array $type Type of Import
+		 * @param array $json_to_array     Setting that are being going to get imported
+		 * @param array $type              Type of Import
 		 * @param array $host_give_options Setting old setting that used to be in the options table.
-		 * @param array $fields Data that is being send from the ajax
+		 * @param array $fields            Data that is being send from the ajax
 		 *
 		 * @return array $json_to_array Setting that are being going to get imported
 		 */
@@ -668,7 +668,7 @@ function give_core_settings_import_callback() {
 	 *
 	 * @access public
 	 *
-	 * @since 1.8.17
+	 * @since  1.8.17
 	 *
 	 * @return array $url
 	 */
@@ -712,10 +712,10 @@ function give_validate_user_profile( $errors, $update, $user ) {
 		return;
 	}
 
-	if( ! empty( $user->ID ) ) {
+	if ( ! empty( $user->ID ) ) {
 		$donor = Give()->donors->get_donor_by( 'user_id', $user->ID );
 
-		if( $donor ) {
+		if ( $donor ) {
 			// If Donor is attached with User, then validate first name.
 			if ( empty( $_POST['first_name'] ) ) {
 				$errors->add(
@@ -745,7 +745,7 @@ function give_donor_information_profile_fields( $user ) {
 	$donor = Give()->donors->get_donor_by( 'user_id', $user->ID );
 
 	// Display Donor Information, only if donor is attached with User.
-	if( ! empty( $donor->user_id ) ) {
+	if ( ! empty( $donor->user_id ) ) {
 		?>
 		<table class="form-table">
 			<tbody>
@@ -782,6 +782,20 @@ function give_get_user_roles() {
 	return $user_roles;
 }
 
+/**
+ * Flush rewrite rule
+ *
+ * @since 1.8.17
+ */
+function give_flush_rewrite_rules() {
+	if ( get_option( 'give_flush_rewrite_rules', 0 ) ) {
+		flush_rewrite_rules();
+		update_option( 'give_flush_rewrite_rules', 0, 'no' );
+	}
+}
+
+add_action( 'init', 'give_flush_rewrite_rules' );
+
 
 /**
  * Ajax handle for donor address.
@@ -815,9 +829,9 @@ function __give_ajax_donor_manage_addresses() {
 	);
 
 	// Security check.
-	if( ! wp_verify_nonce( $form_data['_wpnonce'], 'give-manage-donor-addresses' ) ) {
+	if ( ! wp_verify_nonce( $form_data['_wpnonce'], 'give-manage-donor-addresses' ) ) {
 		wp_send_json_error( array(
-				'error' => 1,
+				'error'     => 1,
 				'error_msg' => wp_sprintf(
 					'<div class="notice notice-error"><p>%s</p></div>',
 					__( 'Error: Security issue.', 'give' )
@@ -846,7 +860,7 @@ function __give_ajax_donor_manage_addresses() {
 		case 'add':
 			if ( ! $donor->add_address( "{$address_type}[]", $form_data ) ) {
 				wp_send_json_error( array(
-						'error' => 1,
+						'error'     => 1,
 						'error_msg' => wp_sprintf(
 							'<div class="notice notice-error"><p>%s</p></div>',
 							__( 'Error: Unable to save the address. Please check if address already exist.', 'give' )
@@ -871,15 +885,15 @@ function __give_ajax_donor_manage_addresses() {
 					// We can add only billing address from donor screen.
 					'type'  => 'billing',
 					'id'    => $address_id,
-					'index' => ++$address_index,
+					'index' => ++ $address_index,
 				)
 			);
-			$response_data['success_msg'] = wp_sprintf(
+			$response_data['success_msg']  = wp_sprintf(
 				'<div class="notice updated"><p>%s</p></div>',
 				__( 'Successfully added a new address to the donor.', 'give' )
 			);
 
-			if( $is_multi_address_type ) {
+			if ( $is_multi_address_type ) {
 				$response_data['id'] = "{$response_data['id']}_{$address_index}";
 			}
 
@@ -888,7 +902,7 @@ function __give_ajax_donor_manage_addresses() {
 		case 'remove':
 			if ( ! $donor->remove_address( $response_data['id'] ) ) {
 				wp_send_json_error( array(
-						'error' => 2,
+						'error'     => 2,
 						'error_msg' => wp_sprintf(
 							'<div class="notice notice-error"><p>%s</p></div>',
 							__( 'Error: Unable to delete address.', 'give' )
@@ -907,7 +921,7 @@ function __give_ajax_donor_manage_addresses() {
 		case 'update':
 			if ( ! $donor->update_address( $response_data['id'], $form_data ) ) {
 				wp_send_json_error( array(
-						'error' => 3,
+						'error'     => 3,
 						'error_msg' => wp_sprintf(
 							'<div class="notice notice-error"><p>%s</p></div>',
 							__( 'Error: Unable to update address. Please check if address already exist.', 'give' )
@@ -926,7 +940,7 @@ function __give_ajax_donor_manage_addresses() {
 					'index' => $address_id,
 				)
 			);
-			$response_data['success_msg'] = wp_sprintf(
+			$response_data['success_msg']  = wp_sprintf(
 				'<div class="notice updated"><p>%s</p></div>',
 				__( 'Successfully updated a address of donor', 'give' )
 			);
