@@ -635,23 +635,23 @@ class Give_Notices {
 	/**
 	 * Print Inline Notice.
 	 *
-	 * @param string $message     Message Text.
-	 * @param array  $notice_args An array of notice arguments.
+	 * @param array $notice_args An array of notice arguments.
 	 *
-	 * @todo Implement render_admin_notices function within this function in future.
+	 * @todo   Implement render_admin_notices function within this function in future.
 	 *
 	 * @access public
 	 * @since  1.8.17
 	 *
 	 * @return string
 	 */
-	public function print_admin_notices( $message, $notice_args = array() ) {
+	public function print_admin_notices( $notice_args = array() ) {
 		// Bailout.
-		if ( empty( $message ) ) {
+		if ( empty( $notice_args['description'] ) ) {
 			return '';
 		}
 
-		$defaults = array(
+		$defaults    = array(
+			'id'          => '',
 			'echo'        => true,
 			'notice_type' => 'warning',
 			'dismissible' => true,
@@ -659,14 +659,14 @@ class Give_Notices {
 		$notice_args = wp_parse_args( $notice_args, $defaults );
 
 		$output    = '';
-		$css_id    = 'give-inline-notice';
-		$css_class = 'notice-' . $notice_args['notice_type'] . ' give-notice notice inline ';
-		$css_class .= ( $notice_args['dismissible'] ) ? 'is-dismissible' : '';
+		$css_id    = ! empty( $notice_args['id'] ) ? $notice_args['id'] : uniqid( 'give-inline-notice-' );
+		$css_class = "notice-{$notice_args['notice_type']} give-notice notice inline";
+		$css_class .= ( $notice_args['dismissible'] ) ? ' is-dismissible' : '';
 		$output    .= sprintf(
-			'<div id="%1$s" class="%2$s">%3$s</div>' . " \n",
+			'<div id="%1$s" class="%2$s">%3$s</div>',
 			$css_id,
 			$css_class,
-			$message
+			$notice_args['description']
 		);
 
 		if ( ! $notice_args['echo'] ) {
