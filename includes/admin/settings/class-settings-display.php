@@ -26,32 +26,18 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 		 * Constructor.
 		 */
 		public function __construct() {
-
-			/**
-			 * Fire once user click on the save change under Settings > Display Options > Taxonomies
-			 */
-			add_action( 'give_update_options_display_taxonomies', array( $this, 'give_reset_rewrite_rules' ) );
-
-			/**
-			 * Fire once user click on the save change under Settings > Display Options > Post Types
-			 */
-			add_action( 'give_update_options_display_post-types', array( $this, 'give_reset_rewrite_rules' ) );
-
 			$this->id    = 'display';
 			$this->label = __( 'Display Options', 'give' );
 
 			$this->default_tab = 'display-settings';
 
 			parent::__construct();
-		}
 
-		/**
-		 * Flush url on setting save.
-		 *
-		 * @since 1.8.17
-		 */
-		public function give_reset_rewrite_rules() {
-			delete_transient( 'give_flush_rewrite_rules' );
+			// Fire once user click on the save change under Settings > Display Options > Taxonomies
+			add_action( 'give_update_options_display_taxonomies', array( $this, 'give_reset_rewrite_rules' ) );
+
+			// Fire once user click on the save change under Settings > Display Options > Post Types
+			add_action( 'give_update_options_display_post-types', array( $this, 'give_reset_rewrite_rules' ) );
 		}
 
 		/**
@@ -61,7 +47,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 		 * @return array
 		 */
 		public function get_settings() {
-			$settings = array();
+			$settings        = array();
 			$current_section = give_get_current_setting_section();
 
 			switch ( $current_section ) {
@@ -70,7 +56,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						// Section 1: Display
 						array(
 							'id'   => 'give_title_display_settings_1',
-							'type' => 'title'
+							'type' => 'title',
 						),
 						array(
 							'name'    => __( 'Default Give Styles', 'give' ),
@@ -79,45 +65,55 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'type'    => 'radio_inline',
 							'default' => 'enabled',
 							'options' => array(
-								'enabled' => __( 'Enabled', 'give' ),
+								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
-							)
+							),
 						),
 						array(
-							'name' => __( 'Floating Labels', 'give' ),
+							'name'    => __( 'Floating Labels', 'give' ),
 							/* translators: %s: http://docs.givewp.com/form-floating-labels */
-							'desc' => sprintf( wp_kses( __( '<a href="%s" target="_blank">Floating labels</a> allows your labels to be inset within the form fields to provide a cleaner form appearance. Note that if the "Disable CSS" option is enabled, you will need to style the floating labels yourself.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( 'http://docs.givewp.com/form-floating-labels' ) ),
-							'id'   => 'floatlabels',
+							'desc'    => sprintf( wp_kses( __( '<a href="%s" target="_blank">Floating labels</a> allows your labels to be inset within the form fields to provide a cleaner form appearance. Note that if the "Disable CSS" option is enabled, you will need to style the floating labels yourself.', 'give' ), array(
+								'a' => array(
+									'href'   => array(),
+									'target' => array(),
+								),
+							) ), esc_url( 'http://docs.givewp.com/form-floating-labels' ) ),
+							'id'      => 'floatlabels',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
 							'options' => array(
-								'enabled' => __( 'Enabled', 'give' ),
+								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
-							)
+							),
 						),
 						array(
 							'name'    => __( 'Welcome Screen', 'give' ),
 							/* translators: %s: about page URL */
-							'desc'    => sprintf( wp_kses( __( 'Enable this option if you would like to disable the <a href="%s" target="_blank">Give Welcome screen</a> that displays each time Give is activated or updated.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( admin_url( 'index.php?page=give-about' ) ) ),
+							'desc'    => sprintf( wp_kses( __( 'Enable this option if you would like to disable the <a href="%s" target="_blank">Give Welcome screen</a> that displays each time Give is activated or updated.', 'give' ), array(
+								'a' => array(
+									'href'   => array(),
+									'target' => array(),
+								),
+							) ), esc_url( admin_url( 'index.php?page=give-about' ) ) ),
 							'id'      => 'welcome',
 							'type'    => 'radio_inline',
 							'default' => 'enabled',
 							'options' => array(
-								'enabled' => __( 'Enabled', 'give' ),
+								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
-							)
+							),
 						),
-                        array(
-                            'name'  => __( 'Display Settings Docs Link', 'give' ),
-                            'id'    => 'display_settings_docs_link',
-                            'url'   => esc_url( 'http://docs.givewp.com/form-display-options' ),
-                            'title' => __( 'Display Options Settings', 'give' ),
-                            'type'  => 'give_docs_link',
-                        ),
+						array(
+							'name'  => __( 'Display Settings Docs Link', 'give' ),
+							'id'    => 'display_settings_docs_link',
+							'url'   => esc_url( 'http://docs.givewp.com/form-display-options' ),
+							'title' => __( 'Display Options Settings', 'give' ),
+							'type'  => 'give_docs_link',
+						),
 						array(
 							'id'   => 'give_title_display_settings_1',
-							'type' => 'sectionend'
-						)
+							'type' => 'sectionend',
+						),
 					);
 					break;
 
@@ -125,7 +121,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 					$settings = array(
 						array(
 							'id'   => 'give_title_display_settings_2',
-							'type' => 'title'
+							'type' => 'title',
 						),
 						array(
 							'name'    => __( 'Form Single Views', 'give' ),
@@ -134,20 +130,25 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'type'    => 'radio_inline',
 							'default' => 'enabled',
 							'options' => array(
-								'enabled' => __( 'Enabled', 'give' ),
+								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
-							)
+							),
 						),
 						array(
 							'name'    => __( 'Form Archives', 'give' ),
-							'desc'    => sprintf( wp_kses( __( 'Archives pages list all the donation forms you have created. This option will disable only the form\'s archive page(s). The single form\'s view will remain in place. Note: you will need to <a href="%s">refresh your permalinks</a> after this option has been enabled.', 'give' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), esc_url( admin_url( 'options-permalink.php' ) ) ),
+							'desc'    => sprintf( wp_kses( __( 'Archives pages list all the donation forms you have created. This option will disable only the form\'s archive page(s). The single form\'s view will remain in place. Note: you will need to <a href="%s">refresh your permalinks</a> after this option has been enabled.', 'give' ), array(
+								'a' => array(
+									'href'   => array(),
+									'target' => array(),
+								),
+							) ), esc_url( admin_url( 'options-permalink.php' ) ) ),
 							'id'      => 'forms_archives',
 							'type'    => 'radio_inline',
 							'default' => 'enabled',
 							'options' => array(
-								'enabled' => __( 'Enabled', 'give' ),
+								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
-							)
+							),
 						),
 						array(
 							'name'    => __( 'Form Excerpts', 'give' ),
@@ -156,9 +157,9 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'type'    => 'radio_inline',
 							'default' => 'enabled',
 							'options' => array(
-								'enabled' => __( 'Enabled', 'give' ),
+								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
-							)
+							),
 						),
 						array(
 							'name'    => __( 'Form Featured Image', 'give' ),
@@ -167,9 +168,9 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'type'    => 'radio_inline',
 							'default' => 'enabled',
 							'options' => array(
-								'enabled' => __( 'Enabled', 'give' ),
+								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
-							)
+							),
 						),
 						array(
 							'name'    => __( 'Featured Image Size', 'give' ),
@@ -177,7 +178,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'id'      => 'featured_image_size',
 							'type'    => 'select',
 							'default' => 'large',
-							'options' => give_get_featured_image_sizes()
+							'options' => give_get_featured_image_sizes(),
 						),
 						array(
 							'name'    => __( 'Single Form Sidebar', 'give' ),
@@ -186,21 +187,21 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'type'    => 'radio_inline',
 							'default' => 'enabled',
 							'options' => array(
-								'enabled' => __( 'Enabled', 'give' ),
+								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
-							)
+							),
 						),
-                        array(
-                            'name'  => __( 'Post Types Docs Link', 'give' ),
-                            'id'    => 'post_types_settings_docs_link',
-                            'url'   => esc_url( 'http://docs.givewp.com/settings-post-types' ),
-                            'title' => __( 'Post Types Settings', 'give' ),
-                            'type'  => 'give_docs_link',
-                        ),
+						array(
+							'name'  => __( 'Post Types Docs Link', 'give' ),
+							'id'    => 'post_types_settings_docs_link',
+							'url'   => esc_url( 'http://docs.givewp.com/settings-post-types' ),
+							'title' => __( 'Post Types Settings', 'give' ),
+							'type'  => 'give_docs_link',
+						),
 						array(
 							'id'   => 'give_title_display_settings_2',
-							'type' => 'sectionend'
-						)
+							'type' => 'sectionend',
+						),
 					);
 					break;
 
@@ -208,41 +209,41 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 					$settings = array(
 						array(
 							'id'   => 'give_title_display_settings_3',
-							'type' => 'title'
+							'type' => 'title',
 						),
 						array(
-							'name' => __( 'Form Categories', 'give' ),
-							'desc' => __( 'Enable Categories for all Give forms.', 'give' ),
-							'id'   => 'categories',
+							'name'    => __( 'Form Categories', 'give' ),
+							'desc'    => __( 'Enable Categories for all Give forms.', 'give' ),
+							'id'      => 'categories',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
 							'options' => array(
-								'enabled' => __( 'Enabled', 'give' ),
+								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
-							)
+							),
 						),
 						array(
-							'name' => __( 'Form Tags', 'give' ),
-							'desc' => __( 'Enable Tags for all Give forms.', 'give' ),
-							'id'   => 'tags',
+							'name'    => __( 'Form Tags', 'give' ),
+							'desc'    => __( 'Enable Tags for all Give forms.', 'give' ),
+							'id'      => 'tags',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
 							'options' => array(
-								'enabled' => __( 'Enabled', 'give' ),
+								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
-							)
+							),
 						),
-                        array(
-                            'name'  => __( 'Taxonomies Docs Link', 'give' ),
-                            'id'    => 'taxonomies_settings_docs_link',
-                            'url'   => esc_url( 'http://docs.givewp.com/settings-taxonomies' ),
-                            'title' => __( 'Taxonomies Settings', 'give' ),
-                            'type'  => 'give_docs_link',
-                        ),
+						array(
+							'name'  => __( 'Taxonomies Docs Link', 'give' ),
+							'id'    => 'taxonomies_settings_docs_link',
+							'url'   => esc_url( 'http://docs.givewp.com/settings-taxonomies' ),
+							'title' => __( 'Taxonomies Settings', 'give' ),
+							'type'  => 'give_docs_link',
+						),
 						array(
 							'id'   => 'give_title_display_settings_3',
-							'type' => 'sectionend'
-						)
+							'type' => 'sectionend',
+						),
 					);
 					break;
 
@@ -250,7 +251,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 					$settings = array(
 						array(
 							'id'   => 'give_title_display_settings_4',
-							'type' => 'title'
+							'type' => 'title',
 						),
 						array(
 							'name'    => __( 'Terms and Conditions', 'give' ),
@@ -259,36 +260,36 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
 							'options' => array(
-								'enabled' => __( 'Enabled', 'give' ),
+								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
-							)
+							),
 						),
 						array(
-							'name' => __( 'Agree to Terms Label', 'give' ),
-							'desc' => __( 'The label shown next to the agree to terms check box. Customize it here or leave blank to use the default placeholder text. Note: You can customize the label per form.', 'give' ),
-							'id'   => 'agree_to_terms_label',
-							'attributes'  => array(
+							'name'       => __( 'Agree to Terms Label', 'give' ),
+							'desc'       => __( 'The label shown next to the agree to terms check box. Customize it here or leave blank to use the default placeholder text. Note: You can customize the label per form.', 'give' ),
+							'id'         => 'agree_to_terms_label',
+							'attributes' => array(
 								'placeholder' => esc_attr__( 'Agree to Terms?', 'give' ),
 							),
-							'type' => 'text'
+							'type'       => 'text',
 						),
 						array(
 							'name' => __( 'Agreement Text', 'give' ),
 							'desc' => __( 'This is the actual text which the user will be asked to agree to in order to donate. Note: You can customize the content per form as needed.', 'give' ),
 							'id'   => 'agreement_text',
-							'type' => 'wysiwyg'
+							'type' => 'wysiwyg',
 						),
-                        array(
-                            'name'  => __( 'Terms and Conditions Docs Link', 'give' ),
-                            'id'    => 'terms_settings_docs_link',
-                            'url'   => esc_url( 'http://docs.givewp.com/settings-terms' ),
-                            'title' => __( 'Terms and Conditions Settings', 'give' ),
-                            'type'  => 'give_docs_link',
-                        ),
+						array(
+							'name'  => __( 'Terms and Conditions Docs Link', 'give' ),
+							'id'    => 'terms_settings_docs_link',
+							'url'   => esc_url( 'http://docs.givewp.com/settings-terms' ),
+							'title' => __( 'Terms and Conditions Settings', 'give' ),
+							'type'  => 'give_docs_link',
+						),
 						array(
 							'id'   => 'give_title_display_settings_4',
-							'type' => 'sectionend'
-						)
+							'type' => 'sectionend',
+						),
 					);
 					break;
 			}
@@ -303,6 +304,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 			 * Filter the settings.
 			 *
 			 * @since  1.8
+			 *
 			 * @param  array $settings
 			 */
 			$settings = apply_filters( 'give_get_settings_' . $this->id, $settings );
@@ -322,10 +324,19 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 				'display-settings'    => __( 'Display', 'give' ),
 				'post-types'          => __( 'Post Types', 'give' ),
 				'taxonomies'          => __( 'Taxonomies', 'give' ),
-				'term-and-conditions' => __( 'Terms and Conditions', 'give' )
+				'term-and-conditions' => __( 'Terms and Conditions', 'give' ),
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );
+		}
+
+		/**
+		 * Flush url on setting save.
+		 *
+		 * @since 1.8.17
+		 */
+		public function give_reset_rewrite_rules() {
+			update_option( 'give_flush_rewrite_rules', 1 );
 		}
 	}
 

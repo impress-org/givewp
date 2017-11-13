@@ -714,14 +714,14 @@ function give_get_user_roles() {
 }
 
 /**
- * On load check to flush the rewrite rule or not.
+ * Flush rewrite rule
  *
  * @since 1.8.17
  */
 function give_flush_rewrite_rules() {
-	if ( false === get_transient( 'give_flush_rewrite_rules' ) ) {
+	if ( get_option( 'give_flush_rewrite_rules', 0 ) ) {
 		flush_rewrite_rules();
-		set_transient( 'give_flush_rewrite_rules', true, 0 );
+		update_option( 'give_flush_rewrite_rules', 0, 'no' );
 	}
 }
 
