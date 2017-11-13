@@ -200,7 +200,7 @@ add_filter( 'give_currencies', 'give_bc_v1817_iranian_currency_code', 0 );
  * @param string $formatted_price
  * @param string $currency_code
  * @param string $price
- * @param array   $args
+ * @param array  $args
  *
  * @return string
  */
@@ -211,9 +211,11 @@ function give_bc_v1817_iranian_currency_filter( $formatted_price, $currency_code
 
 	$currency_symbol = give_currency_symbol( $currency_code );
 	$position        = false !== strpos( current_filter(), 'after' ) ? 'after' : 'before';
-	$formatted_price = ( 'before' === $position ?
-		$currency_symbol . '&#x200e;' . $price :
-		$price . $currency_symbol . '&#x200f;' );
+	$formatted_price = (
+	'before' ===  $position ?
+		'&#x202B;' . $price . $currency_symbol . '&#x202C;' :
+		'&#x202A;' . $price . $currency_symbol . '&#x202C;'
+	);
 
 	return ( $args['decode_currency'] ?
 		html_entity_decode( $formatted_price, ENT_COMPAT, 'UTF-8' ) :
@@ -223,3 +225,31 @@ function give_bc_v1817_iranian_currency_filter( $formatted_price, $currency_code
 
 add_filter( 'give_rial_currency_filter_after', 'give_bc_v1817_iranian_currency_filter', 0, 4 );
 add_filter( 'give_rial_currency_filter_before', 'give_bc_v1817_iranian_currency_filter', 0, 4 );
+
+
+/**
+ * @param $formatted_amount
+ * @param $currency_args
+ * @param $price
+ *
+ * @return string
+ */
+function __give_currency_filter( $formatted_amount, $currency_args, $price ) {
+	if ( ! give_is_right_to_left_supported_currency( $currency_args['currency_code'] ) ) {
+		return $formatted_amount;
+	}
+
+	$formatted_amount = (
+	'before' ===  (string) $currency_args['position'] ?
+		'&#x202B;' . $price . $currency_args['symbol'] . '&#x202C;' :
+		'&#x202A;' . $price . $currency_args['symbol'] . '&#x202C;'
+	);
+
+	$formatted_amount = $currency_args['decode_currency'] ?
+		html_entity_decode( $formatted_amount, ENT_COMPAT, 'UTF-8' ) :
+		$formatted_amount;
+
+	return $formatted_amount;
+}
+
+add_filter( 'give_currency_filter', '__give_currency_filter', 10, 3 );
