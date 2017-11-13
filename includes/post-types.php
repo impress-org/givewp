@@ -211,10 +211,12 @@ function give_setup_taxonomies() {
 	if ( Give_Admin_Settings::is_saving_settings() ) {
 		if ( isset( $_POST['categories'] ) ) {
 			$enable_category = give_is_setting_enabled( give_clean( $_POST['categories'] ) );
+			update_option( 'give_flush_rewrite_rules', absint( $enable_category ) );
 		}
 
 		if ( isset( $_POST['tags'] ) ) {
 			$enable_tag = give_is_setting_enabled( give_clean( $_POST['tags'] ) );
+			update_option( 'give_flush_rewrite_rules', absint( $enable_tag ) );
 		}
 	}
 
