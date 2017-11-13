@@ -663,7 +663,7 @@ class Give_Notices {
 		$css_class = "notice-{$notice_args['notice_type']} give-notice notice inline";
 		$css_class .= ( $notice_args['dismissible'] ) ? ' is-dismissible' : '';
 		$output    .= sprintf(
-			'<div id="%1$s" class="%2$s">%3$s</div>',
+			'<div id="%1$s" class="%2$s"><p>%3$s</p></div>',
 			$css_id,
 			$css_class,
 			$notice_args['description']
