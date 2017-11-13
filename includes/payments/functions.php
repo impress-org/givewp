@@ -314,7 +314,10 @@ function give_delete_donation( $payment_id = 0, $update_donor = true ) {
 		give_undo_donation( $payment_id );
 	}
 
-	if ( $status == 'publish' ) {
+	// Only undo donations that aren't these statuses.
+	$statuses_to_delete = apply_filters( 'give_undo_donation_statuses', array( 'publish' ) );
+
+	if ( in_array( $status, $statuses_to_delete ) ) {
 
 		// Only decrease earnings if they haven't already been decreased (or were never increased for this payment).
 		give_decrease_total_earnings( $amount );
@@ -387,7 +390,7 @@ function give_undo_donation( $payment_id ) {
 	$maybe_decrease_earnings = apply_filters( 'give_decrease_earnings_on_undo', true, $payment, $payment->form_id );
 	if ( true === $maybe_decrease_earnings ) {
 		// Decrease earnings.
-		give_decrease_earnings( $payment->form_id, $payment->total );
+		give_decrease_form_earnings( $payment->form_id, $payment->total );
 	}
 
 	$maybe_decrease_donations = apply_filters( 'give_decrease_donations_on_undo', true, $payment, $payment->form_id );
@@ -742,7 +745,7 @@ function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour
 		$donations = get_posts( $args );
 		$earnings  = 0;
 		if ( $donations ) {
-			$donations = implode( ',', $donations );
+			$donations      = implode( ',', $donations );
 			$earning_totals = $wpdb->get_var( "SELECT SUM(meta_value) FROM $wpdb->postmeta WHERE meta_key = '_give_payment_total' AND post_id IN ({$donations})" );
 
 			/**
