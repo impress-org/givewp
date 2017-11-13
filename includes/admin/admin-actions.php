@@ -725,4 +725,4 @@ function give_flush_rewrite_rules() {
 	}
 }
 
-add_action( 'init', 'give_flush_rewrite_rules' );
+add_action( 'init', 'give_flush_rewrite_rules', 9999 );
