@@ -45,7 +45,7 @@ class Tests_Notices extends Give_Unit_Test_Case {
 					'notice_type' => 'info',
 					'dismissible' => false,
 				),
-				'<div id="give-inline-notice-1" class="notice-info give-notice notice inline">This is admin notice 1</div>',
+				'<div id="give-inline-notice-1" class="notice-info give-notice notice inline"><p>This is admin notice 1</p></div>',
 			),
 
 			// Check 2 - Error Notice.
@@ -56,7 +56,7 @@ class Tests_Notices extends Give_Unit_Test_Case {
 					'echo'        => false,
 					'dismissible' => false,
 				),
-				'<div id="give-inline-notice-2" class="notice-warning give-notice notice inline">This is admin notice 2</div>',
+				'<div id="give-inline-notice-2" class="notice-warning give-notice notice inline"><p>This is admin notice 2</p></div>',
 			),
 
 			// Check 3 - Default Warning Notice.
@@ -67,7 +67,7 @@ class Tests_Notices extends Give_Unit_Test_Case {
 					'echo'        => false,
 					'dismissible' => false,
 				),
-				'<div id="give-inline-notice-3" class="notice-warning give-notice notice inline">This is admin notice 3</div>',
+				'<div id="give-inline-notice-3" class="notice-warning give-notice notice inline"><p>This is admin notice 3</p></div>',
 			),
 
 			// Check 4 - Success Notice.
@@ -79,7 +79,7 @@ class Tests_Notices extends Give_Unit_Test_Case {
 					'notice_type' => 'updated',
 					'dismissible' => false,
 				),
-				'<div id="give-inline-notice-4" class="notice-updated give-notice notice inline">This is admin notice 4</div>',
+				'<div id="give-inline-notice-4" class="notice-updated give-notice notice inline"><p>This is admin notice 4</p></div>',
 			),
 
 			// Check 5 - Dismissible Success Notice.
@@ -91,7 +91,7 @@ class Tests_Notices extends Give_Unit_Test_Case {
 					'notice_type' => 'updated',
 					'dismissible' => true,
 				),
-				'<div id="give-inline-notice-5" class="notice-updated give-notice notice inline is-dismissible">This is admin notice 5</div>',
+				'<div id="give-inline-notice-5" class="notice-updated give-notice notice inline is-dismissible"><p>This is admin notice 5</p></div>',
 			),
 		);
 	}
