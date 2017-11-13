@@ -296,6 +296,7 @@ function give_update_payment_status( $payment_id, $new_status = 'publish' ) {
  * @return void
  */
 function give_delete_donation( $payment_id = 0, $update_donor = true ) {
+
 	global $give_logs;
 
 	$payment  = new Give_Payment( $payment_id );
@@ -315,9 +316,9 @@ function give_delete_donation( $payment_id = 0, $update_donor = true ) {
 	}
 
 	// Only undo donations that aren't these statuses.
-	$statuses_to_delete = apply_filters( 'give_undo_donation_statuses', array( 'publish' ) );
+	$status_to_decrease_stats = apply_filters( 'give_decrease_donor_statuses', array( 'publish' ) );
 
-	if ( in_array( $status, $statuses_to_delete ) ) {
+	if ( in_array( $status, $status_to_decrease_stats ) ) {
 
 		// Only decrease earnings if they haven't already been decreased (or were never increased for this payment).
 		give_decrease_total_earnings( $amount );
@@ -344,10 +345,8 @@ function give_delete_donation( $payment_id = 0, $update_donor = true ) {
 	do_action( 'give_payment_delete', $payment_id );
 
 	if ( $donor->id && $update_donor ) {
-
 		// Remove the payment ID from the donor.
 		$donor->remove_payment( $payment_id );
-
 	}
 
 	// Remove the payment.
