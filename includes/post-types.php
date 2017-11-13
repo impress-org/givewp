@@ -170,12 +170,6 @@ function give_setup_taxonomies() {
 		)
 	);
 
-	// Does the user want categories?
-	if ( give_is_setting_enabled( give_get_option( 'categories', 'disabled' ) ) ) {
-		register_taxonomy( 'give_forms_category', array( 'give_forms' ), $category_args );
-		register_taxonomy_for_object_type( 'give_forms_category', 'give_forms' );
-	}
-
 	/** Tags */
 	$tag_labels = array(
 		'name'                  => _x( 'Form Tags', 'taxonomy general name', 'give' ),
@@ -207,11 +201,32 @@ function give_setup_taxonomies() {
 		)
 	);
 
-	if ( give_is_setting_enabled( give_get_option( 'tags', 'disabled' ) ) ) {
+	// Does the user want category?
+	$enable_category = give_is_setting_enabled( give_get_option( 'categories', 'disabled' ) );
+
+	// Does the user want tag?
+	$enable_tag = give_is_setting_enabled( give_get_option( 'tags', 'disabled' ) );
+
+	// Enable/Disable category and tag if form is saving.
+	if ( Give_Admin_Settings::is_saving_settings() ) {
+		if ( isset( $_POST['categories'] ) ) {
+			$enable_category = give_is_setting_enabled( give_clean( $_POST['categories'] ) );
+		}
+
+		if ( isset( $_POST['tags'] ) ) {
+			$enable_tag = give_is_setting_enabled( give_clean( $_POST['tags'] ) );
+		}
+	}
+
+	if ( $enable_category ) {
+		register_taxonomy( 'give_forms_category', array( 'give_forms' ), $category_args );
+		register_taxonomy_for_object_type( 'give_forms_category', 'give_forms' );
+	}
+
+	if ( $enable_tag ) {
 		register_taxonomy( 'give_forms_tag', array( 'give_forms' ), $tag_args );
 		register_taxonomy_for_object_type( 'give_forms_tag', 'give_forms' );
 	}
-
 }
 
 add_action( 'init', 'give_setup_taxonomies', 0 );
