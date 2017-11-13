@@ -25,19 +25,19 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0
  *
- * @param array $args {
+ * @param array $args     {
  *                        Optional. Array of arguments passed to payments query.
  *
- * @type int $offset The number of payments to offset before retrieval.
+ * @type int    $offset   The number of payments to offset before retrieval.
  *                            Default is 0.
- * @type int $number The number of payments to query for. Use -1 to request all
+ * @type int    $number   The number of payments to query for. Use -1 to request all
  *                            payments. Default is 20.
- * @type string $mode Default is 'live'.
- * @type string $order Designates ascending or descending order of payments.
+ * @type string $mode     Default is 'live'.
+ * @type string $order    Designates ascending or descending order of payments.
  *                            Accepts 'ASC', 'DESC'. Default is 'DESC'.
- * @type string $orderby Sort retrieved payments by parameter. Default is 'ID'.
- * @type string $status The status of the payments. Default is 'any'.
- * @type string $user User. Default is null.
+ * @type string $orderby  Sort retrieved payments by parameter. Default is 'ID'.
+ * @type string $status   The status of the payments. Default is 'any'.
+ * @type string $user     User. Default is null.
  * @type string $meta_key Custom field key. Default is null.
  * }
  *
@@ -62,7 +62,7 @@ function give_get_payments( $args = array() ) {
  * @since  1.0
  *
  * @param  string $field The field to retrieve the payment with.
- * @param  mixed $value The value for $field.
+ * @param  mixed  $value The value for $field.
  *
  * @return mixed
  */
@@ -203,7 +203,7 @@ function give_insert_payment( $payment_data = array() ) {
 	 *
 	 * @since 1.0
 	 *
-	 * @param int $payment_id The payment ID.
+	 * @param int   $payment_id   The payment ID.
 	 * @param array $payment_data Arguments passed.
 	 */
 	do_action( 'give_insert_payment', $payment->ID, $payment_data );
@@ -261,7 +261,7 @@ function give_create_payment( $payment_data ) {
 /**
  * Updates a payment status.
  *
- * @param  int $payment_id Payment ID.
+ * @param  int    $payment_id Payment ID.
  * @param  string $new_status New Payment Status. Default is 'publish'.
  *
  * @since  1.0
@@ -287,11 +287,11 @@ function give_update_payment_status( $payment_id, $new_status = 'publish' ) {
 /**
  * Deletes a Donation
  *
- * @param  int $payment_id Payment ID (default: 0).
+ * @param  int  $payment_id   Payment ID (default: 0).
  * @param  bool $update_donor If we should update the donor stats (default:true).
  *
  * @since  1.0
- * @global $give_logs
+ * @global      $give_logs
  *
  * @return void
  */
@@ -608,8 +608,8 @@ function give_check_for_existing_payment( $payment_id ) {
 /**
  * Get Payment Status
  *
- * @param WP_Post|Give_Payment|int $payment Payment object or payment ID.
- * @param bool $return_label Whether to return the translated status label instead of status value. Default false.
+ * @param WP_Post|Give_Payment|int $payment      Payment object or payment ID.
+ * @param bool                     $return_label Whether to return the translated status label instead of status value. Default false.
  *
  * @since 1.0
  *
@@ -743,9 +743,18 @@ function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour
 		$earnings  = 0;
 		if ( $donations ) {
 			$donations = implode( ',', $donations );
+			$earning_totals = $wpdb->get_var( "SELECT SUM(meta_value) FROM $wpdb->postmeta WHERE meta_key = '_give_payment_total' AND post_id IN ({$donations})" );
 
-			$earnings = $wpdb->get_var( "SELECT SUM(meta_value) FROM $wpdb->postmeta WHERE meta_key = '_give_payment_total' AND post_id IN ({$donations})" );
-
+			/**
+			 * Filter The earnings by dates.
+			 *
+			 * @since 1.8.17
+			 *
+			 * @param float $earning_totals Total earnings between the dates.
+			 * @param array $donations      Donations lists.
+			 * @param array $args           Donation query args.
+			 */
+			$earnings = apply_filters( 'give_earnings_by_date', $earning_totals, $donations, $args );
 		}
 		// Cache the results for one hour.
 		Give_Cache::set( $key, $earnings, HOUR_IN_SECONDS );
@@ -1313,19 +1322,43 @@ function give_remove_payment_prefix_postfix( $number ) {
 /**
  * Get Payment Amount
  *
- * Get the fully formatted payment amount. The payment amount is retrieved using give_get_payment_amount() and is then
+ * Get the fully formatted donation amount. The donation amount is retrieved using give_get_donation_amount() and is then
  * sent through give_currency_filter() and  give_format_amount() to format the amount correctly.
  *
- * @param int $payment_id Payment ID.
+ * @param int    $donation_id Donation ID.
+ * @param string $type        String parameter which will define context of donation amount.
  *
  * @since 1.0
+ * @since 1.8.17 Added filter and internally use functions.
  *
- * @return string $amount Fully formatted payment amount.
+ * @return string $amount Fully formatted donation amount.
  */
-function give_payment_amount( $payment_id = 0 ) {
-	$amount = give_get_payment_amount( $payment_id );
+function give_donation_amount( $donation_id = 0, $type = '' ) {
+	$donation_currency = give_get_payment_currency_code( $donation_id );
+	$amount            = give_get_payment_amount( $donation_id );
 
-	return give_currency_filter( give_format_amount( $amount, array( 'sanitize' => false ) ), give_get_payment_currency_code( $payment_id ) );
+	$formatted_amount = give_currency_filter(
+		give_format_amount(
+			$amount,
+			array(
+				'sanitize' => false,
+				'currency' => $donation_currency,
+			)
+		),
+		$donation_currency
+	);
+
+	/**
+	 * Filter payment amount.
+	 *
+	 * @since 1.8.17
+	 *
+	 * @param string  $formatted_amount Formatted amount.
+	 * @param double  $amount           Donation amount.
+	 * @param integer $donation_id      Donation ID.
+	 * @param string  $type             String parameter which will define context of donation amount..
+	 */
+	return apply_filters( 'give_get_donation_amount', $formatted_amount, $amount, $donation_id, $type );
 }
 
 /**
@@ -1355,7 +1388,7 @@ function give_get_payment_amount( $payment_id ) {
  *
  * @since 1.5
  *
- * @see give_get_payment_subtotal()
+ * @see   give_get_payment_subtotal()
  *
  * @return array Fully formatted payment subtotal.
  */
@@ -1421,7 +1454,7 @@ function give_set_payment_transaction_id( $payment_id = 0, $transaction_id = '' 
 /**
  * Retrieve the donation ID based on the key
  *
- * @param string $key the key to search for.
+ * @param string  $key  the key to search for.
  *
  * @since 1.0
  * @global object $wpdb Used to query the database using the WordPress Database API.
@@ -1444,7 +1477,7 @@ function give_get_purchase_id_by_key( $key ) {
 /**
  * Retrieve the donation ID based on the transaction ID
  *
- * @param string $key The transaction ID to search for.
+ * @param string  $key  The transaction ID to search for.
  *
  * @since 1.3
  * @global object $wpdb Used to query the database using the WordPress Database API.
@@ -1539,9 +1572,9 @@ function give_insert_payment_note( $payment_id = 0, $note = '' ) {
 	/**
 	 * Fires after payment note inserted.
 	 *
-	 * @param int    $note_id Note ID.
+	 * @param int    $note_id    Note ID.
 	 * @param int    $payment_id Payment ID.
-	 * @param string $note The note.
+	 * @param string $note       The note.
 	 *
 	 * @since 1.0
 	 */
@@ -1794,9 +1827,9 @@ function give_filter_where_older_than_week( $where = '' ) {
  *
  * Retrieves the form title and appends the level name if present.
  *
- * @param array $payment_meta Payment meta data.
- * @param bool $only_level If set to true will only return the level name if multi-level enabled.
- * @param string $separator The separator between the .
+ * @param array  $payment_meta Payment meta data.
+ * @param bool   $only_level   If set to true will only return the level name if multi-level enabled.
+ * @param string $separator    The separator between the .
  *
  * @since 1.5
  *
@@ -1842,8 +1875,8 @@ function give_get_payment_form_title( $payment_meta, $only_level = false, $separ
  *
  * Retrieves the Price ID when provided a proper form ID and price (donation) total
  *
- * @param int $form_id Form ID.
- * @param string $price Price ID.
+ * @param int    $form_id Form ID.
+ * @param string $price   Price ID.
  *
  * @return string $price_id
  */
@@ -1867,7 +1900,7 @@ function give_get_price_id( $form_id, $price ) {
 			}
 		}
 
-		if( is_null( $price_id ) && give_is_custom_price_mode( $form_id ) ) {
+		if ( is_null( $price_id ) && give_is_custom_price_mode( $form_id ) ) {
 			$price_id = 'custom';
 		}
 	}

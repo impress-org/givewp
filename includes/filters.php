@@ -200,11 +200,11 @@ add_filter( 'give_currencies', 'give_bc_v1817_iranian_currency_code', 0 );
  * @param string $formatted_price
  * @param string $currency_code
  * @param string $price
- * @param bool   $decode_currency
+ * @param array   $args
  *
  * @return string
  */
-function give_bc_v1817_iranian_currency_filter( $formatted_price, $currency_code, $price, $decode_currency ) {
+function give_bc_v1817_iranian_currency_filter( $formatted_price, $currency_code, $price, $args ) {
 	if ( give_has_upgrade_completed( 'v1817_update_donation_iranian_currency_code' ) ) {
 		return $formatted_price;
 	}
@@ -213,9 +213,9 @@ function give_bc_v1817_iranian_currency_filter( $formatted_price, $currency_code
 	$position        = false !== strpos( current_filter(), 'after' ) ? 'after' : 'before';
 	$formatted_price = ( 'before' === $position ?
 		$currency_symbol . '&#x200e;' . $price :
-		$price . '&#x200f;' . $currency_symbol );
+		$price . $currency_symbol . '&#x200f;' );
 
-	return ( $decode_currency ?
+	return ( $args['decode_currency'] ?
 		html_entity_decode( $formatted_price, ENT_COMPAT, 'UTF-8' ) :
 		$formatted_price
 	);

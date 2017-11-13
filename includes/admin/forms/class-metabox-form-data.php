@@ -192,7 +192,7 @@ class Give_MetaBox_Form_Data {
 						),
 						'wrapper_class' => 'give-hidden',
 					),
-					// Donation Levels: Repeatable CMB2 Group.
+					// Donation Levels.
 					array(
 						'id'            => $prefix . 'donation_levels',
 						'type'          => 'group',
