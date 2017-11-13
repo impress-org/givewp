@@ -634,6 +634,7 @@ class Give_Notices {
 
 	/**
 	 * Print Inline Notice.
+	 * Note: dismissible feature will note work if notice will add to dom by javascript after document load.
 	 *
 	 * @param array $notice_args An array of notice arguments.
 	 *
