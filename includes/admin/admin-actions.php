@@ -712,3 +712,17 @@ function give_get_user_roles() {
 
 	return $user_roles;
 }
+
+/**
+ * Flush rewrite rule
+ *
+ * @since 1.8.17
+ */
+function give_flush_rewrite_rules() {
+	if ( get_option( 'give_flush_rewrite_rules', 0 ) ) {
+		flush_rewrite_rules();
+		update_option( 'give_flush_rewrite_rules', 0, 'no' );
+	}
+}
+
+add_action( 'init', 'give_flush_rewrite_rules' );
