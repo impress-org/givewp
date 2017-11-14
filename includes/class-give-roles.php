@@ -97,7 +97,7 @@ class Give_Roles {
 		) );
 
 		add_role( 'give_donor', __( 'Give Donor', 'give' ), array(
-			'read'         => true,
+			'read' => true,
 		) );
 
 	}
@@ -143,9 +143,6 @@ class Give_Roles {
 					$wp_roles->add_cap( 'give_worker', $cap );
 				}
 			}
-
-			// Revoke Capability access from Give Worker User Role.
-			$wp_roles->add_cap( 'give_worker', 'view_give_payments', false );
 
 			// Add Capabilities to Give Accountant User Role.
 			$wp_roles->add_cap( 'give_accountant', 'edit_give_forms' );
