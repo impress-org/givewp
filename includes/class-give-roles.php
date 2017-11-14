@@ -140,9 +140,13 @@ class Give_Roles {
 				foreach ( $cap_group as $cap ) {
 					$wp_roles->add_cap( 'administrator', $cap );
 					$wp_roles->add_cap( 'give_manager', $cap );
-					$wp_roles->add_cap( 'give_worker', $cap );
 				}
 			}
+
+			// Add Capabilities to Give Worker User Role.
+			$wp_roles->add_cap( 'give_worker', 'edit_give_forms' );
+			$wp_roles->add_cap( 'give_worker', 'read_private_give_forms' );
+			$wp_roles->add_cap( 'give_worker', 'edit_give_payments' );
 
 			// Add Capabilities to Give Accountant User Role.
 			$wp_roles->add_cap( 'give_accountant', 'edit_give_forms' );
@@ -179,7 +183,7 @@ class Give_Roles {
 				"edit_{$capability_type}s",
 				"edit_others_{$capability_type}s",
 				"publish_{$capability_type}s",
-				"read_private_{$capability_type}s",
+				//"read_private_{$capability_type}s",
 				"delete_{$capability_type}s",
 				"delete_private_{$capability_type}s",
 				"delete_published_{$capability_type}s",
@@ -285,9 +289,13 @@ class Give_Roles {
 				foreach ( $cap_group as $cap ) {
 					$wp_roles->remove_cap( 'give_manager', $cap );
 					$wp_roles->remove_cap( 'administrator', $cap );
-					$wp_roles->remove_cap( 'give_worker', $cap );
 				}
 			}
+
+			// Add Capabilities to Give Worker User Role.
+			$wp_roles->remove_cap( 'give_worker', 'edit_give_forms' );
+			$wp_roles->remove_cap( 'give_worker', 'read_private_give_forms' );
+			$wp_roles->remove_cap( 'give_worker', 'edit_give_payments' );
 
 			// Remove Capabilities from Give Accountant User Role.
 			$wp_roles->remove_cap( 'give_accountant', 'edit_give_forms' );
