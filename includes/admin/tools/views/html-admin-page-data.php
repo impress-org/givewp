@@ -54,11 +54,11 @@ do_action( 'give_tools_recount_stats_before' );
 					<span class="tools-form-dropdown tools-form-dropdown-recount-form" style="display: none">
 						<?php
 						$args = array(
-							'class'   => 'tools-form-dropdown-recount-form-select',
-							'name'   => 'form_id',
-							'number' => - 1,
-							'chosen' => true,
-							'placeholder' => 'Select Form',
+							'class'       => 'tools-form-dropdown-recount-form-select',
+							'name'        => 'form_id',
+							'number'      => - 1,
+							'chosen'      => true,
+							'placeholder' => __( 'Select Form', 'give' ),
 						);
 						echo Give()->html->forms_dropdown( $args );
 						?>
