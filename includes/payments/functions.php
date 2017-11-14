@@ -296,6 +296,7 @@ function give_update_payment_status( $payment_id, $new_status = 'publish' ) {
  * @return void
  */
 function give_delete_donation( $payment_id = 0, $update_donor = true ) {
+
 	global $give_logs;
 
 	$payment  = new Give_Payment( $payment_id );
@@ -314,7 +315,10 @@ function give_delete_donation( $payment_id = 0, $update_donor = true ) {
 		give_undo_donation( $payment_id );
 	}
 
-	if ( $status == 'publish' ) {
+	// Only undo donations that aren't these statuses.
+	$status_to_decrease_stats = apply_filters( 'give_decrease_donor_statuses', array( 'publish' ) );
+
+	if ( in_array( $status, $status_to_decrease_stats ) ) {
 
 		// Only decrease earnings if they haven't already been decreased (or were never increased for this payment).
 		give_decrease_total_earnings( $amount );
@@ -341,10 +345,8 @@ function give_delete_donation( $payment_id = 0, $update_donor = true ) {
 	do_action( 'give_payment_delete', $payment_id );
 
 	if ( $donor->id && $update_donor ) {
-
 		// Remove the payment ID from the donor.
 		$donor->remove_payment( $payment_id );
-
 	}
 
 	// Remove the payment.
@@ -387,7 +389,7 @@ function give_undo_donation( $payment_id ) {
 	$maybe_decrease_earnings = apply_filters( 'give_decrease_earnings_on_undo', true, $payment, $payment->form_id );
 	if ( true === $maybe_decrease_earnings ) {
 		// Decrease earnings.
-		give_decrease_earnings( $payment->form_id, $payment->total );
+		give_decrease_form_earnings( $payment->form_id, $payment->total );
 	}
 
 	$maybe_decrease_donations = apply_filters( 'give_decrease_donations_on_undo', true, $payment, $payment->form_id );
@@ -742,7 +744,7 @@ function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour
 		$donations = get_posts( $args );
 		$earnings  = 0;
 		if ( $donations ) {
-			$donations = implode( ',', $donations );
+			$donations      = implode( ',', $donations );
 			$earning_totals = $wpdb->get_var( "SELECT SUM(meta_value) FROM $wpdb->postmeta WHERE meta_key = '_give_payment_total' AND post_id IN ({$donations})" );
 
 			/**

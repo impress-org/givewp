@@ -1030,7 +1030,7 @@ function give_currency_filter( $price = '', $args = array() ) {
 		$args['currency_code'] = give_get_currency( $args['form_id'] );
 	}
 
-	$position = give_get_option( 'currency_position', 'before' );
+	$args['position'] = give_get_option( 'currency_position', 'before' );
 
 	$negative = $price < 0;
 
@@ -1039,7 +1039,7 @@ function give_currency_filter( $price = '', $args = array() ) {
 		$price = substr( $price, 1 );
 	}
 
-	$symbol = give_currency_symbol( $args['currency_code'], $args['decode_currency'] );
+	$args['symbol'] = give_currency_symbol( $args['currency_code'], $args['decode_currency'] );
 
 	switch ( $args['currency_code'] ) :
 		case 'GBP' :
@@ -1070,16 +1070,22 @@ function give_currency_filter( $price = '', $args = array() ) {
 		case 'MAD' :
 		case 'KRW' :
 		case 'ZAR' :
-			$formatted = ( 'before' === $position ? $symbol . '&#x200e;' . $price : $price . $symbol  .'&#x200f;');
-			$formatted = $args['decode_currency'] ? html_entity_decode( $formatted, ENT_COMPAT, 'UTF-8' ) : $formatted;
+			$formatted = ( 'before' === $args['position'] ? $args['symbol'] . $price : $price . $args['symbol'] );
 			break;
 		case 'NOK':
-			$formatted = ( 'before' === $position ? $symbol . ' ' . $price : $price . ' ' . $symbol );
+			$formatted = ( 'before' === $args['position'] ? $args['symbol'] . ' ' . $price : $price . ' ' . $args['symbol'] );
 			break;
 		default:
-			$formatted = ( 'before' === $position ? $symbol . ' ' . $price : $price . ' ' . $symbol );
+			$formatted = ( 'before' === $args['position'] ? $args['symbol'] . ' ' . $price : $price . ' ' . $args['symbol'] );
 			break;
 	endswitch;
+
+	/**
+	 * Filter formatted amount
+	 *
+	 * @since 1.8.17
+	 */
+	$formatted = apply_filters( 'give_currency_filter', $formatted, $args, $price );
 
 	/**
 	 * Filter formatted amount with currency
@@ -1093,7 +1099,7 @@ function give_currency_filter( $price = '', $args = array() ) {
 	 *           filter name will be give_usd_currency_filter_after
 	 */
 	$formatted = apply_filters(
-		'give_' . strtolower( $args['currency_code'] ) . "_currency_filter_{$position}",
+		'give_' . strtolower( $args['currency_code'] ) . "_currency_filter_{$args['position']}",
 		$formatted,
 		$args['currency_code'],
 		$price,
@@ -1136,6 +1142,36 @@ function give_is_zero_based_currency( $currency = '' ) {
 		'VUV', // Vanuatu Vatu.
 		'VND', // Vietnamese Dong.
 		'XOF', // West African Cfa Franc.
+	);
+
+	// Set default currency.
+	if ( empty( $currency ) ) {
+		$currency = give_get_currency();
+	}
+
+	// Check for Zero Based Currency.
+	if ( in_array( $currency, $zero_based_currency ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+
+/**
+ * Check if currency support right to left direction or not.
+ *
+ * @param string $currency
+ *
+ * @return bool
+ */
+function give_is_right_to_left_supported_currency( $currency = '' ) {
+	$zero_based_currency = apply_filters(
+		'give_right_to_left_supported_currency',
+		array(
+			'IRR',
+			'RIAL',
+		)
 	);
 
 	// Set default currency.
