@@ -547,4 +547,20 @@ class Tests_Payments extends Give_Unit_Test_Case {
 			$this->assertEquals( $level_id, give_get_price_id( $form->ID, $amount ) );
 		}
 	}
+
+	/**
+	 * Test give_donation_amount().
+	 */
+	public function test_give_donation_amount() {
+		$donation = new Give_Payment( $this->_payment_id );
+
+		$this->assertEquals( '&#36;20.00', give_donation_amount( $donation->ID ) );
+		$this->assertEquals( '&#36;20.00', give_donation_amount( $donation->ID ), 'donor' );
+
+		$payment_meta = give_get_payment_meta( $donation->ID );
+		$payment_meta['currency'] = 'INR';
+
+		give_update_meta( $donation->ID, '_give_payment_meta', $payment_meta );
+		$this->assertEquals( '&#8377;20.00', give_donation_amount( $donation->ID, 'receipt' ) );
+	}
 }

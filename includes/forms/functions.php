@@ -443,7 +443,9 @@ function give_increase_earnings( $give_form_id = 0, $amount ) {
 }
 
 /**
- * Decreases the total earnings of a form. Primarily for when a donation is refunded.
+ * Decreases the total earnings of a form.
+ *
+ * Primarily for when a donation is refunded.
  *
  * @since 1.0
  *
@@ -452,7 +454,8 @@ function give_increase_earnings( $give_form_id = 0, $amount ) {
  *
  * @return bool|int
  */
-function give_decrease_earnings( $form_id = 0, $amount ) {
+function give_decrease_form_earnings( $form_id = 0, $amount ) {
+
 	$form = new Give_Donate_Form( $form_id );
 
 	return $form->decrease_earnings( $amount );
@@ -471,7 +474,12 @@ function give_decrease_earnings( $form_id = 0, $amount ) {
 function give_get_form_earnings_stats( $form_id = 0 ) {
 	$give_form = new Give_Donate_Form( $form_id );
 
-	return $give_form->earnings;
+	/**
+	 * Filter the form earnings
+	 *
+	 * @since 1.8.17
+	 */
+	return apply_filters( 'give_get_form_earnings_stats',  $give_form->earnings, $form_id, $give_form );
 }
 
 
