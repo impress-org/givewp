@@ -271,11 +271,6 @@ class Give_Roles {
 			$wp_roles->remove_cap( 'give_manager', 'view_give_sensitive_data' );
 			$wp_roles->remove_cap( 'give_manager', 'export_give_reports' );
 			$wp_roles->remove_cap( 'give_manager', 'manage_give_settings' );
-			$wp_roles->remove_cap( 'give_manager', 'delete_others_pages' );
-			$wp_roles->remove_cap( 'give_manager', 'delete_others_posts' );
-			$wp_roles->remove_cap( 'give_manager', 'manage_categories' );
-			$wp_roles->remove_cap( 'give_manager', 'import' );
-			$wp_roles->remove_cap( 'give_manager', 'export' );
 
 			// Site Administrator Capabilities.
 			$wp_roles->remove_cap( 'administrator', 'view_give_reports' );
