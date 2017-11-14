@@ -1339,18 +1339,42 @@ var give_setting_edit = false;
 		bulkDeleteDonor: function() {
 			var $body = $( 'body' );
 
+			// Cancel button click event for donor.
+			$body.on( 'click', '#give-bulk-delete-cancel', function( e ) {
+				$( this ).closest( 'tr' ).hide();
+				$( '.give-skip-donor' ).trigger( 'click' );
+				e.preventDefault();
+			});
+
 			// Select All checkbox.
 			$body.on( 'click', '#cb-select-all-1, #cb-select-all-2', function() {
-				$( '#give-donors-filter tbody input[type="checkbox"]' ).trigger( 'click' );
+
+				var selectAll = $( this );
+
+				// Loop through donor selector checkbox.
+				$.each( $( '.donor-selector' ), function() {
+
+					var donorId   = $( this ).val(),
+						donorName = $( this ).data( 'name' ),
+						donorHtml = '<div id="give-donor-' + donorId + '" data-id="' + donorId + '">' +
+							'<a class="give-skip-donor" title="' + give_vars.remove_from_bulk_delete + '">X</a>' +
+							donorName + '</div>';
+
+					if( selectAll.is( ':checked' ) && ! $( this ).is( ':checked' ) ) {
+							$( '#give-bulk-donors' ).append( donorHtml );
+					} else if ( ! selectAll.is( ':checked' ) ) {
+						$( '#give-bulk-donors' ).find( '#give-donor-' + donorId ).remove();
+					}
+				});
 			});
 
 			// On checking checkbox, add to bulk delete donor.
-			$body.on( 'click', '#give-donors-filter tbody .check-column > input[type="checkbox"]', function() {
-				var donorId   = $( this ).closest( 'tr' ).data( 'id' ),
-					donorName = $( this ).closest( 'tr' ).data( 'name' ),
+			$body.on( 'click', '.donor-selector', function() {
+				var donorId   = $( this ).val(),
+					donorName = $( this ).data( 'name' ),
 					donorHtml = '<div id="give-donor-' + donorId + '">' +
-					'<a data-id="' + donorId + '" class="give-skip-donor" title="Remove From Bulk Delete">X</a>' +
-					donorName + '</div>';
+						'<a data-id="' + donorId + '" class="give-skip-donor" title="' + give_vars.remove_from_bulk_delete + '">X</a>' +
+						donorName + '</div>';
 
 				if( $( this ).is( ':checked' ) ) {
 					$( '#give-bulk-donors' ).append( donorHtml );
@@ -1362,9 +1386,9 @@ var give_setting_edit = false;
 			// CheckBox click event to confirm deletion of donor.
 			$body.on( 'click', '#give-delete-donor-confirm', function() {
 				if( $( this ).is( ':checked' ) ) {
-					$('#give-bulk-delete-button').removeAttr( 'disabled' );
+					$( '#give-bulk-delete-button' ).removeAttr( 'disabled' );
 				} else {
-					$('#give-bulk-delete-button').attr( 'disabled', true );
+					$( '#give-bulk-delete-button' ).attr( 'disabled', true );
 					$( '#give-delete-donor-records' ).removeAttr( 'checked' );
 				}
 			});
@@ -1384,16 +1408,14 @@ var give_setting_edit = false;
 				$( '#donor-' + donorId ).find( 'input[type="checkbox"]' ).removeAttr( 'checked' );
 			});
 
-			// Cancel button click event for donor.
-			$body.on( 'click', '#give-bulk-delete-cancel', function( e ) {
-				$( '#give-bulk-delete' ).slideUp( 'slow' );
-				e.preventDefault();
-			});
-
 			// Clicking Event to Delete Single Donor.
-			$body.on( 'click', '.give-single-donor-delete', function() {
-				$( this ).closest( 'tr' ).find( 'input[type="checkbox"]' ).trigger( 'click' );
-				$( '#give-bulk-delete' ).slideDown( 'slow' );
+			$body.on( 'click', '.give-single-donor-delete', function( e ) {
+				var donorSelector = $( this ).closest( 'tr' ).find( '.donor-selector');
+				if( donorSelector.is( ':checked' ) ) {} else {
+					donorSelector.trigger( 'click' );
+					$( '#give-bulk-delete' ).slideDown();
+				}
+				e.preventDefault();
 			});
 		},
 
@@ -1403,7 +1425,7 @@ var give_setting_edit = false;
 				donors              = [],
 				confirmActionNotice = give_vars.donors_bulk_action[currentAction].zero;
 				
-			$.each( $( "input[name='donor[]']:checked" ), function() {
+			$.each( $( ".donor-selector:checked" ), function() {
 				donors.push( $( this ).val() );
 			});
 
@@ -1414,7 +1436,7 @@ var give_setting_edit = false;
 			}
 
 			if( 'delete' === currentAction ) {
-				$( '#give-bulk-delete' ).slideDown( 'slow' );
+				$( '#give-bulk-delete' ).slideDown();
 			}
 
 			e.preventDefault();

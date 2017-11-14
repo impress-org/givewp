@@ -153,9 +153,10 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 */
 	public function column_cb( $donor ){
 		return sprintf(
-			'<input type="checkbox" name="%1$s[]" value="%2$s" />',
+			'<input class="donor-selector" type="checkbox" name="%1$s[]" value="%2$d" data-name="%3$s" />',
 			$this->_args['singular'],
-			$donor['id']
+			$donor['id'],
+			$donor['name']
 		);
 	}
 
@@ -278,49 +279,6 @@ class Give_Donor_List_Table extends WP_List_Table {
 			'delete' => 'Delete',
 		);
 		return $actions;
-	}
-
-	/**
-	 * Process the Bulk Actions.
-	 *
-	 * @access public
-	 * @since  1.8.16
-	 *
-	 * @return void
-	 */
-	public function process_bulk_action() {
-		$ids    = isset( $_GET['donor'] ) ? $_GET['donor'] : false;
-		$action = $this->current_action();
-
-		if ( ! is_array( $ids ) ) {
-			$ids = array( $ids );
-		}
-
-		// Bail Out, If Action is not set.
-		if ( empty( $action ) ) {
-			return;
-		}
-
-		// Convert strings to int.
-		$ids = array_map( 'absint', $ids );
-
-
-		// Detect when a bulk action is being triggered.
-		switch ( $this->current_action() ) {
-
-			case 'delete':
-				$args = array(
-					'_wpnonce'  => wp_create_nonce( 'delete-bulk-donors' ),
-					'donor_ids' => $ids,
-				);
-				$message = give_delete_donor( $args );
-				$redirect_url = add_query_arg( 'give-message', $message, admin_url( 'edit.php?post_type=give_forms&page=give-donors' ) );
-//wp_safe_redirect( esc_url($redirect_url) );
-				//wp_safe_redirect( add_query_arg( array( 'give-message' => 'delete-donor' ), $url ) );
-				break;
-
-		} // End switch().
-
 	}
 
 	/**
@@ -479,7 +437,8 @@ class Give_Donor_List_Table extends WP_List_Table {
 			if ( $singular ) {
 				echo " data-wp-lists='list:$singular'";
 			} ?>>
-			<tr id="give-bulk-delete" class="inline-edit-row inline-edit-row-page inline-edit-page bulk-edit-row bulk-edit-row-page bulk-edit-page inline-editor" style="display: none;">
+			<tr class="hidden"></tr>
+			<tr id="give-bulk-delete" class="inline-edit-row inline-edit-row-page inline-edit-page bulk-edit-row bulk-edit-row-page bulk-edit-page inline-editor" style="display: none;" >
 				<td colspan="6" class="colspanchange">
 
 					<fieldset class="inline-edit-col-left">
@@ -506,8 +465,8 @@ class Give_Donor_List_Table extends WP_List_Table {
 					</fieldset>
 
 					<p class="submit inline-edit-save">
-						<button type="button" id="give-bulk-delete-cancel" class="button cancel alignleft">Cancel</button>
 						<input type="hidden" name="give_action" value="delete_donor"/>
+						<button type="button" id="give-bulk-delete-cancel" class="button cancel alignleft">Cancel</button>
 						<input type="submit" id="give-bulk-delete-button" disabled class="button button-primary alignright" value="Delete">
 						<br class="clear">
 					</p>
@@ -542,8 +501,6 @@ class Give_Donor_List_Table extends WP_List_Table {
 		$sortable = $this->get_sortable_columns();
 
 		$this->_column_headers = array( $columns, $hidden, $sortable );
-
-		$this->process_bulk_action();
 
 		$this->items = $this->donor_data();
 
