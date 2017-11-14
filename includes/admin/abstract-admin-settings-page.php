@@ -282,7 +282,7 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 		public function get_heading_html() {
 			return sprintf(
 				'<h1 class="wp-heading-inline">%s</h1><hr class="wp-header-end">',
-				implode( ' > ', $this->get_heading() )
+				implode( ' <span class="give-settings-heading-sep dashicons dashicons-arrow-right-alt2"></span> ', $this->get_heading() )
 			);
 		}
 	}

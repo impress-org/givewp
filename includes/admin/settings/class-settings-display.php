@@ -32,12 +32,6 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 			$this->default_tab = 'display-settings';
 
 			parent::__construct();
-
-			// Fire once user click on the save change under Settings > Display Options > Taxonomies
-			add_action( 'give_update_options_display_taxonomies', array( $this, 'give_reset_rewrite_rules' ) );
-
-			// Fire once user click on the save change under Settings > Display Options > Post Types
-			add_action( 'give_update_options_display_post-types', array( $this, 'give_reset_rewrite_rules' ) );
 		}
 
 		/**
@@ -328,15 +322,6 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );
-		}
-
-		/**
-		 * Flush url on setting save.
-		 *
-		 * @since 1.8.17
-		 */
-		public function give_reset_rewrite_rules() {
-			update_option( 'give_flush_rewrite_rules', 1 );
 		}
 	}
 
