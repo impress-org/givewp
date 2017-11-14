@@ -1509,6 +1509,11 @@ table.give-table td.row-title p {
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
+.give-settings-page .give-settings-heading-sep {
+  font-size: 14px;
+  line-height: 32px;
+  width: 15px; }
+
 .give-settings-page .nav-tab-wrapper {
   margin-bottom: 5px;
   overflow: visible; }
