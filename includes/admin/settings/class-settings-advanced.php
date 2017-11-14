@@ -91,8 +91,8 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
 							'options' => array(
-								'enabled'  => __( 'Footer', 'give' ),
 								'disabled' => __( 'Head', 'give' ),
+								'enabled'  => __( 'Footer', 'give' ),
 							),
 						),
 						array(

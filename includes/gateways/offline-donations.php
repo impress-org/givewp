@@ -544,7 +544,7 @@ add_filter( 'give_enabled_payment_gateways', 'give_filter_offline_gateway', 10, 
  * @return void
  */
 function _give_customize_offline_donations_on_save_callback( $meta_key, $meta_value, $postid ) {
-	if ( ! give_is_setting_enabled( $meta_value ) && ( 'offline' === give_get_meta( $postid, '_give_default_gateway', true ) ) ) {
+	if ( ! give_is_setting_enabled( $meta_value, array( 'global', 'enabled' ) ) && ( 'offline' === give_get_meta( $postid, '_give_default_gateway', true ) ) ) {
 		give_update_meta( $postid, '_give_default_gateway', 'global' );
 	}
 }
