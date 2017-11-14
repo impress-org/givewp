@@ -1000,6 +1000,6 @@ class GIVE_CLI_COMMAND {
 	 * @return string
 	 */
 	private function get_random_email( $name ) {
-		return implode( '.', explode( ' ', strtolower( $name ) ) ) . '@gmail.com';
+		return implode( '.', explode( ' ', strtolower( $name ) ) ) . '@test.com';
 	}
 }
