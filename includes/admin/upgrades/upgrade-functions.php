@@ -1229,52 +1229,53 @@ function give_v1817_upgrades() {
  */
 function give_v1817_cleanup_user_roles() {
 
-	$give_version = get_option( 'give_version' );
-
-	if ( ! $give_version ) {
-		// 1.0 is the first version to use this option so we must add it.
-		$give_version = '1.0';
-	}
-
-	$give_version = preg_replace( '/[^0-9.].*/', '', $give_version );
-
-	// v1.8.17 Upgrades.
-	if ( version_compare( $give_version, '1.8.17', '<' ) || ! give_has_upgrade_completed( 'v1817_cleanup_user_roles' ) ) {
-
-		// Add Capabilities to user roles as required.
-		$add_caps = array(
-			'give_manager' => array(
-				'delete_others_pages' => true,
-				'delete_others_posts' => true,
-				'manage_categories'   => true,
-				'import'              => true,
-				'export'              => true,
-			),
-			'give_accountant' => array(
-				'view_give_payments' => true,
-			),
-			'give_worker' => array(
-				'view_give_payments' => false,
-			),
-		);
-
-		global $wp_roles;
-		foreach ( $add_caps as $role => $role_caps ) {
-			foreach ( $role_caps as $cap => $cap_item ) {
-				$wp_roles->add_cap( $role, $cap, $cap_item );
-			}
-		}
-
-		// Create Give plugin roles.
-		$roles = new Give_Roles();
-		$roles->add_roles();
-		$roles->add_caps();
-
-		// The Update Ran.
-		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
-		give_set_upgrade_complete( 'v1817_cleanup_user_roles' );
-		delete_option( 'give_doing_upgrade' );
-
-	}// End if().
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
+//
+//	$give_version = get_option( 'give_version' );
+//
+//	if ( ! $give_version ) {
+//		// 1.0 is the first version to use this option so we must add it.
+//		$give_version = '1.0';
+//	}
+//
+//	$give_version = preg_replace( '/[^0-9.].*/', '', $give_version );
+//
+//	// v1.8.17 Upgrades.
+//	if ( version_compare( $give_version, '1.8.17', '<' ) || ! give_has_upgrade_completed( 'v1817_cleanup_user_roles' ) ) {
+//
+//		// Add Capabilities to user roles as required.
+//		$add_caps = array(
+//			'give_manager' => array(
+//				'delete_others_pages' => true,
+//				'delete_others_posts' => true,
+//				'manage_categories'   => true,
+//				'import'              => true,
+//				'export'              => true,
+//			),
+//			'give_accountant' => array(
+//				'view_give_payments' => true,
+//			),
+//			'give_worker' => array(
+//				'view_give_payments' => false,
+//			),
+//		);
+//
+//		global $wp_roles;
+//		$give_updates->set_percentage( count( $add_caps ), ( $give_updates->step * 20 ) );
+//
+//		foreach ( $add_caps as $role => $role_caps ) {
+//			foreach ( $role_caps as $cap => $cap_item ) {
+//				$wp_roles->add_cap( $role, $cap, $cap_item );
+//			}
+//		}
+//
+//		// Create Give plugin roles.
+//		$roles = new Give_Roles();
+//		$roles->add_roles();
+//		$roles->add_caps();
+//	} else {
+//		give_set_upgrade_complete( 'v1817_cleanup_user_roles' );
+//	}
 
 }
