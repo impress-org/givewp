@@ -1499,6 +1499,145 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
+		'UAH'  => array(
+			'admin_label' => __( 'Ukrainian hryvnia (₴)', 'give' ),
+			'symbol'      => '&#8372;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'UGX'  => array(
+			'admin_label' => __( 'Ugandan shilling (USh)', 'give' ),
+			'symbol'      => '&#85;&#83;&#104;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'UYU'  => array(
+			'admin_label' => __( 'Uruguayan peso ($U)', 'give' ),
+			'symbol'      => '&#36;&#85;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'UZS'  => array(
+			'admin_label' => __( 'Uzbekistani som (лв)', 'give' ),
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'VEF'  => array(
+			'admin_label' => __( 'Venezuelan bolívar (Bs)', 'give' ),
+			'symbol'      => '&#66;&#115;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'VND'  => array(
+			'admin_label' => __( 'Vietnamese đồng (	₫)', 'give' ),
+			'symbol'      => '&#8363;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'VUV'  => array(
+			'admin_label' => __( 'Vanuatu vatu (VT)', 'give' ),
+			'symbol'      => '&#86;&#84;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'WST'  => array(
+			'admin_label' => __( 'Samoan tālā (T)', 'give' ),
+			'symbol'      => '&#84;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'XAF'  => array(
+			'admin_label' => __( 'Central African CFA franc (CFA)', 'give' ),
+			'symbol'      => '&#67;&#70;&#65;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'XCD'  => array(
+			'admin_label' => __( 'East Caribbean dollar (EC$)', 'give' ),
+			'symbol'      => '&#69;&#67;&#36;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'XOF'  => array(
+			'admin_label' => __( 'West African CFA franc (CFA)', 'give' ),
+			'symbol'      => '&#67;&#70;&#65;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'XPF'  => array(
+			'admin_label' => __( 'CFP franc (F)', 'give' ),
+			'symbol'      => '&#70;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'YER'  => array(
+			'admin_label' => __( 'Yemeni rial (﷼)', 'give' ),
+			'symbol'      => '&#65020;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
+		'ZMW'  => array(
+			'admin_label' => __( 'Zambian kwacha (ZK)', 'give' ),
+			'symbol'      => '&#90;&#75;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
 	);
 
 	/**
