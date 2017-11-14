@@ -1221,3 +1221,12 @@ function give_v1817_upgrades() {
 		update_option( 'give_settings', $give_settings );
 	}
 }
+
+/**
+ * Cleanup User Roles for more flexibility.
+ *
+ * @since 1.8.17
+ */
+function give_v1817_cleanup_user_roles() {
+
+}
