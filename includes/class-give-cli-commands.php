@@ -747,7 +747,7 @@ class GIVE_CLI_COMMAND {
 		}
 
 		switch ( $action ) {
-			case 'delete' :
+			case 'delete':
 				// Reset counter.
 				self::$counter = 1;
 
@@ -920,7 +920,7 @@ class GIVE_CLI_COMMAND {
 		/* @var Give_Payment|object $donation Payment object. */
 		foreach ( $donations as $donation ) {
 
-			if ( in_array( $donation->customer_id, $skip_donors ,true ) ) {
+			if ( in_array( $donation->customer_id, $skip_donors, true ) ) {
 				continue;
 			}
 
