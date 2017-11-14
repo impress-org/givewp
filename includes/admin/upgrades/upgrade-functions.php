@@ -160,6 +160,13 @@ function give_show_upgrade_notices( $give_updates ) {
 		'version'  => '1.8.17',
 		'callback' => 'give_v1817_update_donation_iranian_currency_code',
 	) );
+
+	// v1.8.17 Upgrades for cleanup of user roles.
+	$give_updates->register( array(
+		'id'       => 'v1817_cleanup_user_roles',
+		'version'  => '1.8.17',
+		'callback' => 'give_v1817_cleanup_user_roles',
+	) );
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
