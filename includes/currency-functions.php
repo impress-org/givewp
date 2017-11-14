@@ -366,7 +366,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'AED'  => array(
+		'AED' => array(
 			'admin_label' => __( 'United Arab Emirates dirham (د.إ)', 'give' ),
 			'setting'     => array(
 				'currency_position'   => 'before',
@@ -375,7 +375,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'AFN'  => array(
+		'AFN' => array(
 			'admin_label' => __( 'Afghan afghani (؋)', 'give' ),
 			'setting'     => array(
 				'currency_position'   => 'before',
@@ -384,7 +384,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'ALL'  => array(
+		'ALL' => array(
 			'admin_label' => __( 'Albanian lek (L)', 'give' ),
 			'symbol'      => '&#76;',
 			'setting'     => array(
@@ -394,7 +394,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'AMD'  => array(
+		'AMD' => array(
 			'admin_label' => __( 'Armenian dram (֏)', 'give' ),
 			'symbol'      => '&#1423;',
 			'setting'     => array(
@@ -404,7 +404,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'ANG'  => array(
+		'ANG' => array(
 			'admin_label' => __( 'Netherlands Antillean guilder (ƒ)', 'give' ),
 			'symbol'      => '&#402;',
 			'setting'     => array(
@@ -414,7 +414,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'AOA'  => array(
+		'AOA' => array(
 			'admin_label' => __( 'Angolan kwanza (Kz)', 'give' ),
 			'symbol'      => '&#75;&#122;',
 			'setting'     => array(
@@ -424,7 +424,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'ARS'  => array(
+		'ARS' => array(
 			'admin_label' => __( 'Argentine peso ($)', 'give' ),
 			'symbol'      => '&#36;',
 			'setting'     => array(
@@ -434,7 +434,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'AWG'  => array(
+		'AWG' => array(
 			'admin_label' => __( 'Aruban florin (ƒ)', 'give' ),
 			'symbol'      => '&#402;',
 			'setting'     => array(
@@ -444,7 +444,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'AZN'  => array(
+		'AZN' => array(
 			'admin_label' => __( 'Azerbaijani manat (ман)', 'give' ),
 			'symbol'      => '&#77;&#97;&#72;',
 			'setting'     => array(
@@ -454,7 +454,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'BAM'  => array(
+		'BAM' => array(
 			'admin_label' => __( 'Bosnia and Herzegovina convertible mark (KM)', 'give' ),
 			'symbol'      => '&#75;&#77;',
 			'setting'     => array(
@@ -464,7 +464,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'BBD'  => array(
+		'BBD' => array(
 			'admin_label' => __( 'Barbadian dollar (Bds$)', 'give' ),
 			'symbol'      => '&#36;',
 			'setting'     => array(
@@ -474,7 +474,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'BDT'  => array(
+		'BDT' => array(
 			'admin_label' => __( 'Bangladeshi taka (৳)', 'give' ),
 			'symbol'      => '&#2547;',
 			'setting'     => array(
@@ -484,7 +484,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'BGN'  => array(
+		'BGN' => array(
 			'admin_label' => __( 'Bulgarian lev (лв)', 'give' ),
 			'setting'     => array(
 				'currency_position'   => 'before',
@@ -493,7 +493,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'BHD'  => array(
+		'BHD' => array(
 			'admin_label' => __( 'Bahraini dinar (.د.ب)', 'give' ),
 			'setting'     => array(
 				'currency_position'   => 'before',
@@ -502,7 +502,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'BIF'  => array(
+		'BIF' => array(
 			'admin_label' => __( 'Burundian franc (FBu)', 'give' ),
 			'symbol'      => '&#70;&#66;&#117;',
 			'setting'     => array(
@@ -512,7 +512,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'BMD'  => array(
+		'BMD' => array(
 			'admin_label' => __( 'Bermudian dollar (BD$)', 'give' ),
 			'symbol'      => '&#66;&#68;&#36;',
 			'setting'     => array(
@@ -522,7 +522,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'BND'  => array(
+		'BND' => array(
 			'admin_label' => __( 'Brunei dollar (B$)', 'give' ),
 			'symbol'      => '&#66;&#36;',
 			'setting'     => array(
@@ -532,7 +532,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'BOB'  => array(
+		'BOB' => array(
 			'admin_label' => __( 'Bolivian boliviano (Bs.)', 'give' ),
 			'symbol'      => '&#66;&#115;&#46;',
 			'setting'     => array(
@@ -542,7 +542,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'BSD'  => array(
+		'BSD' => array(
 			'admin_label' => __( 'Bahamian dollar (B$)', 'give' ),
 			'symbol'      => '&#66;&#36;',
 			'setting'     => array(
@@ -552,7 +552,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'BTC'  => array(
+		'BTC' => array(
 			'admin_label' => __( 'Bitcoin (Ƀ)', 'give' ),
 			'setting'     => array(
 				'currency_position'   => 'before',
@@ -561,7 +561,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'BTN'  => array(
+		'BTN' => array(
 			'admin_label' => __( 'Bhutanese ngultrum (Nu.)', 'give' ),
 			'symbol'      => '&#78;&#117;&#46;',
 			'setting'     => array(
@@ -571,7 +571,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'BWP'  => array(
+		'BWP' => array(
 			'admin_label' => __( 'Botswana pula (P)', 'give' ),
 			'symbol'      => '&#80;',
 			'setting'     => array(
@@ -581,7 +581,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'BYR'  => array(
+		'BYR' => array(
 			'admin_label' => __( 'Belarusian ruble (Br)', 'give' ),
 			'symbol'      => '&#66;&#114;',
 			'setting'     => array(
@@ -591,7 +591,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'BZD'  => array(
+		'BZD' => array(
 			'admin_label' => __( 'Belizean dollar (BZ$)', 'give' ),
 			'symbol'      => '&#66;&#90;&#36;',
 			'setting'     => array(
@@ -601,7 +601,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'CDF'  => array(
+		'CDF' => array(
 			'admin_label' => __( 'Congolese franc (FC)', 'give' ),
 			'symbol'      => '&#70;&#67;',
 			'setting'     => array(
@@ -611,7 +611,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'CLP'  => array(
+		'CLP' => array(
 			'admin_label' => __( 'Chilean peso ($)', 'give' ),
 			'symbol'      => '&#36;',
 			'setting'     => array(
@@ -621,7 +621,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'CNY'  => array(
+		'CNY' => array(
 			'admin_label' => __( 'Chinese yuan (¥)', 'give' ),
 			'symbol'      => '&yen;',
 			'setting'     => array(
@@ -631,7 +631,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'COP'  => array(
+		'COP' => array(
 			'admin_label' => __( 'Colombian peso ($)', 'give' ),
 			'symbol'      => '&#36;',
 			'setting'     => array(
@@ -641,7 +641,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'CRC'  => array(
+		'CRC' => array(
 			'admin_label' => __( 'Costa Rican colón (₡)', 'give' ),
 			'symbol'      => '&#8353;',
 			'setting'     => array(
@@ -651,7 +651,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'CUC'  => array(
+		'CUC' => array(
 			'admin_label' => __( 'Cuban convertible peso (₱)', 'give' ),
 			'symbol'      => '&#8369;',
 			'setting'     => array(
@@ -661,7 +661,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'CUP'  => array(
+		'CUP' => array(
 			'admin_label' => __( 'Cuban convertible peso (₱)', 'give' ),
 			'symbol'      => '&#8369;',
 			'setting'     => array(
@@ -671,7 +671,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'CVE'  => array(
+		'CVE' => array(
 			'admin_label' => __( 'Cape Verdean escudo (Ecs)', 'give' ),
 			'symbol'      => '&#69;&#99;&#115;',
 			'setting'     => array(
@@ -681,7 +681,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'DJP'  => array(
+		'DJP' => array(
 			'admin_label' => __( 'Djiboutian franc (Fdj)', 'give' ),
 			'symbol'      => '&#70;&#100;&#106;',
 			'setting'     => array(
@@ -691,7 +691,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'DOP'  => array(
+		'DOP' => array(
 			'admin_label' => __( 'Dominican peso (RD$)', 'give' ),
 			'symbol'      => '&#82;&#68;&#36;',
 			'setting'     => array(
@@ -701,7 +701,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'DZD'  => array(
+		'DZD' => array(
 			'admin_label' => __( 'Algerian dinar (د.ج)', 'give' ),
 			'setting'     => array(
 				'currency_position'   => 'before',
@@ -710,7 +710,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'EGP'  => array(
+		'EGP' => array(
 			'admin_label' => __( 'Egyptian pound (E£)', 'give' ),
 			'symbol'      => '&#69;&pound;',
 			'setting'     => array(
@@ -720,7 +720,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'ERN'  => array(
+		'ERN' => array(
 			'admin_label' => __( 'Eritrean nakfa (Nfa)', 'give' ),
 			'symbol'      => '&#78;&#102;&#97;',
 			'setting'     => array(
@@ -730,7 +730,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'ETB'  => array(
+		'ETB' => array(
 			'admin_label' => __( 'Ethiopian birr (Br)', 'give' ),
 			'symbol'      => '&#66;&#114;',
 			'setting'     => array(
@@ -740,7 +740,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'FJD'  => array(
+		'FJD' => array(
 			'admin_label' => __( 'Fijian dollar (FJ$)', 'give' ),
 			'symbol'      => '&#70;&#74;&#36;',
 			'setting'     => array(
@@ -750,7 +750,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'FKP'  => array(
+		'FKP' => array(
 			'admin_label' => __( 'Falkland Islands pound (FK£)', 'give' ),
 			'symbol'      => '&#70;&#75;&pound;',
 			'setting'     => array(
@@ -760,7 +760,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'GEL'  => array(
+		'GEL' => array(
 			'admin_label' => __( 'Georgian lari (ლ)', 'give' ),
 			'setting'     => array(
 				'currency_position'   => 'before',
@@ -769,7 +769,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'GGP'  => array(
+		'GGP' => array(
 			'admin_label' => __( 'Guernsey pound (£)', 'give' ),
 			'symbol'      => '&pound;',
 			'setting'     => array(
@@ -779,7 +779,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'GHS'  => array(
+		'GHS' => array(
 			'admin_label' => __( 'Ghana cedi (₵)', 'give' ),
 			'symbol'      => '&#8373;',
 			'setting'     => array(
@@ -789,7 +789,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'GIP'  => array(
+		'GIP' => array(
 			'admin_label' => __( 'Gibraltar pound (	£)', 'give' ),
 			'symbol'      => '&pound;',
 			'setting'     => array(
@@ -799,7 +799,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'GMD'  => array(
+		'GMD' => array(
 			'admin_label' => __( 'Gambian dalasi (D)', 'give' ),
 			'symbol'      => '&#68;',
 			'setting'     => array(
@@ -809,7 +809,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'GNF'  => array(
+		'GNF' => array(
 			'admin_label' => __( 'Guinean franc (FG)', 'give' ),
 			'symbol'      => '&#70;&#71;',
 			'setting'     => array(
@@ -819,7 +819,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'GTQ'  => array(
+		'GTQ' => array(
 			'admin_label' => __( 'Guatemalan quetzal (Q)', 'give' ),
 			'symbol'      => '&#81;',
 			'setting'     => array(
@@ -829,7 +829,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'GYD'  => array(
+		'GYD' => array(
 			'admin_label' => __( 'Guyanese dollar (GY$)', 'give' ),
 			'symbol'      => '&#71;&#89;&#36;',
 			'setting'     => array(
@@ -839,7 +839,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'HNL'  => array(
+		'HNL' => array(
 			'admin_label' => __( 'Honduran lempira (L)', 'give' ),
 			'symbol'      => '&#76;',
 			'setting'     => array(
@@ -849,7 +849,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'HRK'  => array(
+		'HRK' => array(
 			'admin_label' => __( 'Croatian kuna (kn)', 'give' ),
 			'symbol'      => '&#107;&#110;',
 			'setting'     => array(
@@ -859,7 +859,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'HTG'  => array(
+		'HTG' => array(
 			'admin_label' => __( 'Haitian gourde (G)', 'give' ),
 			'symbol'      => '&#71;',
 			'setting'     => array(
@@ -869,7 +869,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'IMP'  => array(
+		'IMP' => array(
 			'admin_label' => __( 'Manx pound (£)', 'give' ),
 			'symbol'      => '&pound;',
 			'setting'     => array(
@@ -879,7 +879,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'IQD'  => array(
+		'IQD' => array(
 			'admin_label' => __( 'Iraqi dinar (ع.د)', 'give' ),
 			'setting'     => array(
 				'currency_position'   => 'before',
@@ -888,7 +888,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'IRT'  => array(
+		'IRT' => array(
 			'admin_label' => __( 'Iranian toman', 'give' ),
 			'setting'     => array(
 				'currency_position'   => 'before',
@@ -897,7 +897,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'ISK'  => array(
+		'ISK' => array(
 			'admin_label' => __( 'Icelandic króna (kr)', 'give' ),
 			'symbol'      => '&#107;&#114;',
 			'setting'     => array(
@@ -907,7 +907,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'JEP'  => array(
+		'JEP' => array(
 			'admin_label' => __( 'Jersey pound (£)', 'give' ),
 			'symbol'      => '&pound;',
 			'setting'     => array(
@@ -917,7 +917,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'JMD'  => array(
+		'JMD' => array(
 			'admin_label' => __( 'Jamaican dollar (J$)', 'give' ),
 			'symbol'      => '&#106;&#36;',
 			'setting'     => array(
@@ -927,7 +927,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'JOD'  => array(
+		'JOD' => array(
 			'admin_label' => __( 'Jordanian dinar', 'give' ),
 			'setting'     => array(
 				'currency_position'   => 'before',
@@ -936,7 +936,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'KES'  => array(
+		'KES' => array(
 			'admin_label' => __( 'Kenyan shilling (KSh)', 'give' ),
 			'symbol'      => '&#75;&#83;&#104;',
 			'setting'     => array(
@@ -946,7 +946,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'KGS'  => array(
+		'KGS' => array(
 			'admin_label' => __( 'Kyrgyzstani som (лв)', 'give' ),
 			'setting'     => array(
 				'currency_position'   => 'before',
@@ -955,7 +955,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'KHR'  => array(
+		'KHR' => array(
 			'admin_label' => __( 'Cambodian riel (៛)', 'give' ),
 			'symbol'      => '&#6107;',
 			'setting'     => array(
@@ -965,7 +965,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'KMF'  => array(
+		'KMF' => array(
 			'admin_label' => __( 'Comorian franc (CF)', 'give' ),
 			'symbol'      => '&#75;&#70;',
 			'setting'     => array(
@@ -975,7 +975,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'KPW'  => array(
+		'KPW' => array(
 			'admin_label' => __( 'North Korean won (₩)', 'give' ),
 			'symbol'      => '&#8361;',
 			'setting'     => array(
@@ -985,7 +985,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'KWD'  => array(
+		'KWD' => array(
 			'admin_label' => __( 'Kuwaiti dinar (د.ك)', 'give' ),
 			'setting'     => array(
 				'currency_position'   => 'before',
@@ -994,7 +994,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'KTD'  => array(
+		'KTD' => array(
 			'admin_label' => __( 'Cayman Islands dollar (KY$)', 'give' ),
 			'symbol'      => '&#75;&#89;&#36;',
 			'setting'     => array(
@@ -1004,7 +1004,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'KTZ'  => array(
+		'KTZ' => array(
 			'admin_label' => __( 'Kazakhstani tenge (₸)', 'give' ),
 			'symbol'      => '&#8376;',
 			'setting'     => array(
@@ -1014,7 +1014,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'LAK'  => array(
+		'LAK' => array(
 			'admin_label' => __( 'Lao kip (₭)', 'give' ),
 			'symbol'      => '&#8365;',
 			'setting'     => array(
@@ -1024,7 +1024,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'LBP'  => array(
+		'LBP' => array(
 			'admin_label' => __( 'Lebanese pound (L£)', 'give' ),
 			'symbol'      => '&#76;&#163;',
 			'setting'     => array(
@@ -1034,7 +1034,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'LKR'  => array(
+		'LKR' => array(
 			'admin_label' => __( 'Sri Lankan rupee (Ɍs)', 'give' ),
 			'setting'     => array(
 				'currency_position'   => 'before',
@@ -1043,7 +1043,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'LRD'  => array(
+		'LRD' => array(
 			'admin_label' => __( 'Liberian dollar (L$)', 'give' ),
 			'symbol'      => '&#76;&#36;',
 			'setting'     => array(
@@ -1053,7 +1053,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'lSL'  => array(
+		'lSL' => array(
 			'admin_label' => __( 'Lesotho loti (L)', 'give' ),
 			'symbol'      => '&#76;',
 			'setting'     => array(
@@ -1063,7 +1063,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'LYD'  => array(
+		'LYD' => array(
 			'admin_label' => __( 'Libyan dinar (ل.د)', 'give' ),
 			'setting'     => array(
 				'currency_position'   => 'before',
@@ -1072,7 +1072,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'MDL'  => array(
+		'MDL' => array(
 			'admin_label' => __( 'Moldovan leu (L)', 'give' ),
 			'symbol'      => '&#76;',
 			'setting'     => array(
@@ -1082,7 +1082,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'MGA'  => array(
+		'MGA' => array(
 			'admin_label' => __( 'Malagasy ariary (Ar)', 'give' ),
 			'symbol'      => '&#65;&#114;',
 			'setting'     => array(
@@ -1092,7 +1092,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'MKD'  => array(
+		'MKD' => array(
 			'admin_label' => __( 'Macedonian denar (ден)', 'give' ),
 			'setting'     => array(
 				'currency_position'   => 'before',
@@ -1101,7 +1101,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'MMK'  => array(
+		'MMK' => array(
 			'admin_label' => __( 'Burmese kyat (K)', 'give' ),
 			'symbol'      => '&#75;',
 			'setting'     => array(
@@ -1111,7 +1111,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'MNT'  => array(
+		'MNT' => array(
 			'admin_label' => __( 'Mongolian tögrög (₮)', 'give' ),
 			'symbol'      => '&#8366;',
 			'setting'     => array(
@@ -1121,7 +1121,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'MOP'  => array(
+		'MOP' => array(
 			'admin_label' => __( 'Macanese pataca (P)', 'give' ),
 			'symbol'      => '&#80;',
 			'setting'     => array(
@@ -1131,7 +1131,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'MRO'  => array(
+		'MRO' => array(
 			'admin_label' => __( 'Mauritanian ouguiya (UM)', 'give' ),
 			'symbol'      => '&#85;&#77;',
 			'setting'     => array(
@@ -1141,7 +1141,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'MUR'  => array(
+		'MUR' => array(
 			'admin_label' => __( 'Mauritian rupee (Ɍs)', 'give' ),
 			'setting'     => array(
 				'currency_position'   => 'before',
@@ -1150,7 +1150,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'MVR'  => array(
+		'MVR' => array(
 			'admin_label' => __( 'Maldivian rufiyaa (Rf)', 'give' ),
 			'symbol'      => '&#82;&#70;',
 			'setting'     => array(
@@ -1160,7 +1160,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'MWK'  => array(
+		'MWK' => array(
 			'admin_label' => __( 'Malawian kwacha (MK)', 'give' ),
 			'symbol'      => '&#77;&#75;',
 			'setting'     => array(
@@ -1170,7 +1170,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'MZN'  => array(
+		'MZN' => array(
 			'admin_label' => __( 'Mozambican metical (MT)', 'give' ),
 			'symbol'      => '&#77;&#84;',
 			'setting'     => array(
@@ -1180,7 +1180,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'NAD'  => array(
+		'NAD' => array(
 			'admin_label' => __( 'Namibian dollar (N$)', 'give' ),
 			'symbol'      => '&#78;&#36;',
 			'setting'     => array(
@@ -1190,7 +1190,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'NGN'  => array(
+		'NGN' => array(
 			'admin_label' => __( 'Nigerian naira (₦)', 'give' ),
 			'symbol'      => '&#8358;',
 			'setting'     => array(
@@ -1200,7 +1200,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'NIO'  => array(
+		'NIO' => array(
 			'admin_label' => __( 'Nicaraguan córdoba (C$)', 'give' ),
 			'symbol'      => '&#67;&#36;',
 			'setting'     => array(
@@ -1210,7 +1210,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'NPR'  => array(
+		'NPR' => array(
 			'admin_label' => __( 'Nepalese rupee (NɌs)', 'give' ),
 			'setting'     => array(
 				'currency_position'   => 'before',
@@ -1219,7 +1219,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'OMR'  => array(
+		'OMR' => array(
 			'admin_label' => __( 'Omani rial (ر.ع.)', 'give' ),
 			'setting'     => array(
 				'currency_position'   => 'before',
@@ -1228,7 +1228,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'PAB'  => array(
+		'PAB' => array(
 			'admin_label' => __( 'Panamanian balboa (B/.)', 'give' ),
 			'setting'     => array(
 				'currency_position'   => 'before',
@@ -1237,7 +1237,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'PEN'  => array(
+		'PEN' => array(
 			'admin_label' => __( 'Peruvian nuevo sol (S/.)', 'give' ),
 			'setting'     => array(
 				'currency_position'   => 'before',
@@ -1246,7 +1246,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'PGK'  => array(
+		'PGK' => array(
 			'admin_label' => __( 'Papua New Guinean kina (B)', 'give' ),
 			'symbol'      => '&#66;',
 			'setting'     => array(
@@ -1256,7 +1256,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'PKR'  => array(
+		'PKR' => array(
 			'admin_label' => __( 'Pakistani rupee (	Ɍs)', 'give' ),
 			'setting'     => array(
 				'currency_position'   => 'before',
@@ -1265,7 +1265,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'PRB'  => array(
+		'PRB' => array(
 			'admin_label' => __( 'Transnistrian ruble', 'give' ),
 			'setting'     => array(
 				'currency_position'   => 'before',
@@ -1274,7 +1274,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'PYG'  => array(
+		'PYG' => array(
 			'admin_label' => __( 'Paraguayan guaraní (₲)', 'give' ),
 			'symbol'      => '&#8370;',
 			'setting'     => array(
@@ -1284,7 +1284,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'QAR'  => array(
+		'QAR' => array(
 			'admin_label' => __( 'Qatari riyal (ر.ق)', 'give' ),
 			'setting'     => array(
 				'currency_position'   => 'before',
@@ -1293,7 +1293,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'RON'  => array(
+		'RON' => array(
 			'admin_label' => __( 'Romanian leu (L)', 'give' ),
 			'symbol'      => '&#76;',
 			'setting'     => array(
@@ -1303,7 +1303,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'RSD'  => array(
+		'RSD' => array(
 			'admin_label' => __( 'Serbian dinar (Дин.)', 'give' ),
 			'setting'     => array(
 				'currency_position'   => 'before',
@@ -1312,7 +1312,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'RWF'  => array(
+		'RWF' => array(
 			'admin_label' => __( 'Rwandan franc (RF)', 'give' ),
 			'symbol'      => '&#82;&#70;',
 			'setting'     => array(
@@ -1322,7 +1322,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'SAR'  => array(
+		'SAR' => array(
 			'admin_label' => __( 'Saudi riyal (ر.س)', 'give' ),
 			'setting'     => array(
 				'currency_position'   => 'before',
@@ -1331,7 +1331,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'SBD'  => array(
+		'SBD' => array(
 			'admin_label' => __( 'Solomon Islands dollar (SI$)', 'give' ),
 			'symbol'      => '&#83;&#73;&#36;',
 			'setting'     => array(
@@ -1341,7 +1341,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'SCR'  => array(
+		'SCR' => array(
 			'admin_label' => __( 'Seychellois rupee (Ɍs)', 'give' ),
 			'setting'     => array(
 				'currency_position'   => 'before',
@@ -1350,7 +1350,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'SDG'  => array(
+		'SDG' => array(
 			'admin_label' => __( 'Sudanese pound (£Sd)', 'give' ),
 			'symbol'      => '&#163;&#83;&#100;',
 			'setting'     => array(
@@ -1360,7 +1360,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'SHP'  => array(
+		'SHP' => array(
 			'admin_label' => __( 'Saint Helena pound (£)', 'give' ),
 			'symbol'      => '&#163;',
 			'setting'     => array(
@@ -1370,7 +1370,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'SLL'  => array(
+		'SLL' => array(
 			'admin_label' => __( 'Sierra Leonean leone (Le)', 'give' ),
 			'symbol'      => '&#76;&#101;',
 			'setting'     => array(
@@ -1380,7 +1380,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'SOS'  => array(
+		'SOS' => array(
 			'admin_label' => __( 'Somali shilling (So. Sh.)', 'give' ),
 			'symbol'      => '&#83;&#111;&#46;&#83;&#1014;&#46;',
 			'setting'     => array(
@@ -1390,7 +1390,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'SRD'  => array(
+		'SRD' => array(
 			'admin_label' => __( 'Surinamese dollar ($)', 'give' ),
 			'symbol'      => '&#36;',
 			'setting'     => array(
@@ -1400,7 +1400,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'SSP'  => array(
+		'SSP' => array(
 			'admin_label' => __( 'South Sudanese pound (£Sd)', 'give' ),
 			'symbol'      => '&#163;&#83;&#100;',
 			'setting'     => array(
@@ -1410,7 +1410,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'STD'  => array(
+		'STD' => array(
 			'admin_label' => __( 'São Tomé and Príncipe dobra (Db)', 'give' ),
 			'symbol'      => '&#68;&#98;',
 			'setting'     => array(
@@ -1420,7 +1420,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'SYP'  => array(
+		'SYP' => array(
 			'admin_label' => __( 'Syrian pound (S£)', 'give' ),
 			'symbol'      => '&#83;&#163;',
 			'setting'     => array(
@@ -1430,7 +1430,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'SZL'  => array(
+		'SZL' => array(
 			'admin_label' => __( 'Swazi lilangeni (L)', 'give' ),
 			'symbol'      => '&#76;',
 			'setting'     => array(
@@ -1440,7 +1440,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'TJS'  => array(
+		'TJS' => array(
 			'admin_label' => __( 'Tajikistani somoni (SM)', 'give' ),
 			'symbol'      => '&#83;&#77;',
 			'setting'     => array(
@@ -1450,7 +1450,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'TMT'  => array(
+		'TMT' => array(
 			'admin_label' => __( 'Turkmenistan manat (m)', 'give' ),
 			'symbol'      => '&#109;',
 			'setting'     => array(
@@ -1460,7 +1460,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'TND'  => array(
+		'TND' => array(
 			'admin_label' => __( 'Tunisian dinar (د.ت)', 'give' ),
 			'setting'     => array(
 				'currency_position'   => 'before',
@@ -1469,7 +1469,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'TOP'  => array(
+		'TOP' => array(
 			'admin_label' => __( 'Tongan paʻanga (T$)', 'give' ),
 			'symbol'      => '&#84;&#36;',
 			'setting'     => array(
@@ -1479,7 +1479,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'TTD'  => array(
+		'TTD' => array(
 			'admin_label' => __( 'Trinidad and Tobago dollar (TT$)', 'give' ),
 			'symbol'      => '&#x0024;',
 			'setting'     => array(
@@ -1489,7 +1489,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'TZS'  => array(
+		'TZS' => array(
 			'admin_label' => __( 'Tanzanian shilling (TSh)', 'give' ),
 			'symbol'      => '&#84;&#83;&#104;',
 			'setting'     => array(
@@ -1499,7 +1499,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'UAH'  => array(
+		'UAH' => array(
 			'admin_label' => __( 'Ukrainian hryvnia (₴)', 'give' ),
 			'symbol'      => '&#8372;',
 			'setting'     => array(
@@ -1509,7 +1509,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'UGX'  => array(
+		'UGX' => array(
 			'admin_label' => __( 'Ugandan shilling (USh)', 'give' ),
 			'symbol'      => '&#85;&#83;&#104;',
 			'setting'     => array(
@@ -1519,7 +1519,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'UYU'  => array(
+		'UYU' => array(
 			'admin_label' => __( 'Uruguayan peso ($U)', 'give' ),
 			'symbol'      => '&#36;&#85;',
 			'setting'     => array(
@@ -1529,7 +1529,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'UZS'  => array(
+		'UZS' => array(
 			'admin_label' => __( 'Uzbekistani som (лв)', 'give' ),
 			'setting'     => array(
 				'currency_position'   => 'before',
@@ -1538,7 +1538,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'VEF'  => array(
+		'VEF' => array(
 			'admin_label' => __( 'Venezuelan bolívar (Bs)', 'give' ),
 			'symbol'      => '&#66;&#115;',
 			'setting'     => array(
@@ -1548,7 +1548,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'VND'  => array(
+		'VND' => array(
 			'admin_label' => __( 'Vietnamese đồng (	₫)', 'give' ),
 			'symbol'      => '&#8363;',
 			'setting'     => array(
@@ -1558,7 +1558,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'VUV'  => array(
+		'VUV' => array(
 			'admin_label' => __( 'Vanuatu vatu (VT)', 'give' ),
 			'symbol'      => '&#86;&#84;',
 			'setting'     => array(
@@ -1568,7 +1568,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'WST'  => array(
+		'WST' => array(
 			'admin_label' => __( 'Samoan tālā (T)', 'give' ),
 			'symbol'      => '&#84;',
 			'setting'     => array(
@@ -1578,7 +1578,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'XAF'  => array(
+		'XAF' => array(
 			'admin_label' => __( 'Central African CFA franc (CFA)', 'give' ),
 			'symbol'      => '&#67;&#70;&#65;',
 			'setting'     => array(
@@ -1588,7 +1588,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'XCD'  => array(
+		'XCD' => array(
 			'admin_label' => __( 'East Caribbean dollar (EC$)', 'give' ),
 			'symbol'      => '&#69;&#67;&#36;',
 			'setting'     => array(
@@ -1598,7 +1598,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'XOF'  => array(
+		'XOF' => array(
 			'admin_label' => __( 'West African CFA franc (CFA)', 'give' ),
 			'symbol'      => '&#67;&#70;&#65;',
 			'setting'     => array(
@@ -1608,7 +1608,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'XPF'  => array(
+		'XPF' => array(
 			'admin_label' => __( 'CFP franc (F)', 'give' ),
 			'symbol'      => '&#70;',
 			'setting'     => array(
@@ -1618,7 +1618,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'YER'  => array(
+		'YER' => array(
 			'admin_label' => __( 'Yemeni rial (﷼)', 'give' ),
 			'symbol'      => '&#65020;',
 			'setting'     => array(
@@ -1628,7 +1628,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'ZMW'  => array(
+		'ZMW' => array(
 			'admin_label' => __( 'Zambian kwacha (ZK)', 'give' ),
 			'symbol'      => '&#90;&#75;',
 			'setting'     => array(
