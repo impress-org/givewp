@@ -123,7 +123,8 @@ function give_run_install() {
 			'v1812_update_donor_purchase_values',
 			'v1813_update_user_roles',
 			'v1813_update_donor_user_roles',
-			'v1817_update_donation_iranian_currency_code'
+			'v1817_update_donation_iranian_currency_code',
+			'v1817_cleanup_user_roles'
 		);
 
 		foreach ( $upgrade_routines as $upgrade ) {
