@@ -164,7 +164,7 @@ function give_get_price_decimal_separator( $id_or_currency_code = null ) {
  * @return string $amount Newly sanitized amount
  */
 function give_sanitize_amount_for_db( $number ) {
-	return give_maybe_sanitize_amount( $number, 6 );
+	return give_maybe_sanitize_amount( $number, array( 'number_decimals' => 6 ) );
 }
 
 /**
@@ -536,7 +536,7 @@ function give_human_format_large_amount( $amount, $args = array() ) {
 function give_format_decimal( $amount, $dp = false, $sanitize = true ) {
 	$decimal_separator = give_get_price_decimal_separator();
 	$formatted_amount  = $sanitize ?
-		give_maybe_sanitize_amount( $amount, $dp ) :
+		give_maybe_sanitize_amount( $amount, array( 'number_decimals' => $dp ) ) :
 		number_format( $amount, ( is_bool( $dp ) ? give_get_price_decimals() : $dp ), '.', '' );
 
 	if ( false !== strpos( $formatted_amount, '.' ) ) {
