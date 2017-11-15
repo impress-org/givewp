@@ -329,10 +329,10 @@ class Give_Cache {
 	 * @param string $group
 	 * @param string $cache_type
 	 *
-	 * @return null|bool
+	 * @return mixed
 	 */
 	public static function get_group( $id, $group = '', $cache_type = 'persistent' ) {
-		$cached_data = null;
+		$cached_data = false;
 
 		// Bailout.
 		if (
