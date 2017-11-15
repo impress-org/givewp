@@ -75,7 +75,7 @@ class Give_Cache {
 
 	public static function get_key( $action, $query_args = null ) {
 		// Bailout.
-		if( empty( $action ) ) {
+		if ( empty( $action ) ) {
 			return new WP_Error( 'give_invalid_cache_key_action', __( 'Do not pass empty action to generate cache key.', 'give' ) );
 		}
 
@@ -96,7 +96,12 @@ class Give_Cache {
 			$cache_key = "{$cache_key}_" . substr( md5( serialize( $query_args ) ), 0, 15 );
 		}
 
-		return $cache_key;
+		/**
+		 * Filter the cache key name.
+		 *
+		 * @since 2.0
+		 */
+		return apply_filters( 'give_get_cache_key', $cache_key, $action, $query_args );
 	}
 
 	/**
