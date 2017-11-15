@@ -136,7 +136,7 @@ class Tests_Roles extends Give_Unit_Test_Case {
 
 		// Check 23.
 		$this->assertArrayHasKey( 'manage_categories', (array) $wp_roles->roles['give_manager']['capabilities'] );
-		$this->assertEquals( true, $wp_roles->roles['give_manager']['capabilities']['manage_categories'] );
+		$this->assertEquals( false, $wp_roles->roles['give_manager']['capabilities']['manage_categories'] );
 
 		// Check 24.
 		$this->assertArrayHasKey( 'manage_links', (array) $wp_roles->roles['give_manager']['capabilities'] );
