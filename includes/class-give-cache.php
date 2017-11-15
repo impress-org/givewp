@@ -70,10 +70,25 @@ class Give_Cache {
 	 * @param  string $action     Cache key prefix.
 	 * @param  array  $query_args (optional) Query array.
 	 *
-	 * @return string
+	 * @return string|WP_Error
 	 */
 
 	public static function get_key( $action, $query_args = null ) {
+		// Bailout.
+		if( empty( $action ) ) {
+			return new WP_Error( 'give_invalid_cache_key_action', __( 'Do not pass empty action to generate cache key.', 'give' ) );
+		}
+
+		// Handle specific cache key prefix.
+		if ( 'give-db-queries' === $action ) {
+			$timestamp = get_option( 'give-last-cache-updated' );
+			$timestamp = empty( $timestamp ) ? current_time( 'timestamp', 1 ) : $timestamp;
+
+			return "give-db-queries-{$timestamp}";
+		}
+
+
+		// Set cache key.
 		$cache_key = "give_cache_{$action}";
 
 		// Bailout.
@@ -386,6 +401,8 @@ class Give_Cache {
 				break;
 		}
 
+		update_option( 'give-last-cache-updated', current_time( 'timestamp', 1 ) );
+
 		return $status;
 	}
 
@@ -420,6 +437,8 @@ class Give_Cache {
 				$status = wp_cache_delete( $id, $group, $expire );
 				break;
 		}
+
+		update_option( 'give-last-cache-updated', current_time( 'timestamp', 1 ) );
 
 		return $status;
 	}
