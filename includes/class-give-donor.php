@@ -131,7 +131,7 @@ class Give_Donor {
 	 *
 	 * @var    array
 	 */
-	public $address;
+	public $address = array();
 
 	/**
 	 * The Database Abstraction
@@ -260,7 +260,7 @@ class Give_Donor {
 		);
 
 		if ( empty( $addresses ) ) {
-			return array();
+			return $this->address;
 		}
 
 		foreach ( $addresses as $address ) {
