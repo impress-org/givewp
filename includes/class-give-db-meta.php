@@ -333,7 +333,7 @@ class Give_DB_Meta extends Give_DB {
 		);
 
 		if ( array_key_exists( $meta_type, $group ) ) {
-			wp_cache_delete( $id, $group[ $meta_type ] );
+			Give_Cache::delete_group( $id, $group[ $meta_type ] );
 		}
 	}
 
