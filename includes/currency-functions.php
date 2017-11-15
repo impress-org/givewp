@@ -297,8 +297,8 @@ function give_get_currencies_list() {
 			),
 		),
 		'CHF' => array(
-			'admin_label' => __( 'Swiss Franc (CHF)', 'give' ),
-			'symbol'      => 'CHF',
+			'admin_label' => __( 'Swiss Franc (Fr)', 'give' ),
+			'symbol'      => '&#70;&#114;',
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => ',',
@@ -368,6 +368,7 @@ function give_get_currencies_list() {
 		),
 		'AED' => array(
 			'admin_label' => __( 'United Arab Emirates dirham (د.إ)', 'give' ),
+			'symbol'      => 'د.إ',
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => '.',
@@ -377,6 +378,7 @@ function give_get_currencies_list() {
 		),
 		'AFN' => array(
 			'admin_label' => __( 'Afghan afghani (؋)', 'give' ),
+			'symbol'      => '&#1547;',
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => '.',
@@ -486,6 +488,7 @@ function give_get_currencies_list() {
 		),
 		'BGN' => array(
 			'admin_label' => __( 'Bulgarian lev (лв)', 'give' ),
+			'symbol'      => 'лв',
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => '.',
