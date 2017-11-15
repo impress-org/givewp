@@ -173,6 +173,7 @@ class Give_DB_Donors extends Give_DB {
 		if( $status ) {
 			Give_Cache::delete_group( $row_id, 'give-donors' );
 		}
+		
 		return $status;
 	}
 
