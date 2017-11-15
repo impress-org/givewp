@@ -326,10 +326,10 @@ class Give_DB_Meta extends Give_DB {
 		$meta_type = empty( $meta_type ) ? $this->meta_type : $meta_type;
 
 		$group = array(
-			'form'    => 'give-forms',
+			// 'form'    => 'give-forms',
 			'payment' => 'give-donations',
 			'donor'   => 'give-donors',
-			'log'     => 'give-logs',
+			// 'log'     => 'give-logs',
 		);
 
 		if ( array_key_exists( $meta_type, $group ) ) {
