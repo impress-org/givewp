@@ -121,7 +121,7 @@ if ( is_user_logged_in() ):
 			<div id="give_profile_billing_address_wrap">
 				<?php
 				// Get selected country from address.
-				$selected_country = ( ! empty( $address['country'] ) ? $address['country'] : '' );
+				$selected_country = ( ! empty( $address['country'] ) ? $address['country'] : give_get_option('base_country') );
 
 				$selected_state = '';
 				if ( $selected_country === give_get_country() ) {
