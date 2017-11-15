@@ -686,7 +686,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'DJP' => array(
+		'DJF' => array(
 			'admin_label' => __( 'Djiboutian franc (Fdj)', 'give' ),
 			'symbol'      => '&#70;&#100;&#106;',
 			'setting'     => array(
@@ -1016,7 +1016,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'KTD' => array(
+		'KYD' => array(
 			'admin_label' => __( 'Cayman Islands dollar (KY$)', 'give' ),
 			'symbol'      => '&#75;&#89;&#36;',
 			'setting'     => array(
@@ -1026,7 +1026,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'KTZ' => array(
+		'KZT' => array(
 			'admin_label' => __( 'Kazakhstani tenge (₸)', 'give' ),
 			'symbol'      => '&#8376;',
 			'setting'     => array(
@@ -1076,7 +1076,7 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
-		'lSL' => array(
+		'LSL' => array(
 			'admin_label' => __( 'Lesotho loti (L)', 'give' ),
 			'symbol'      => '&#76;',
 			'setting'     => array(
