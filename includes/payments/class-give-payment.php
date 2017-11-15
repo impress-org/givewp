@@ -599,6 +599,9 @@ final class Give_Payment {
 	 * @return void
 	 */
 	public function update_payment_setup( $payment_id ) {
+		// Delete cache.
+		Give_Cache::delete_group( $this->ID,'give-donations' );
+		
 		$this->setup_payment( $payment_id );
 	}
 
