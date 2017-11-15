@@ -320,7 +320,7 @@ class Give_Cache {
 
 
 	/**
-	 * Cache small chunks inside group
+	 * Get cache from group
 	 *
 	 * @since  2.0
 	 * @access public
