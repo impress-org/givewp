@@ -131,7 +131,7 @@ class Give_Payment_Stats extends Give_Stats {
 		$args = apply_filters( 'give_stats_earnings_args', $args );
 		$key  = Give_Cache::get_key( 'give_stats', $args );
 
-		//Set transient for faster stats
+		// Set transient for faster stats.
 		$earnings = Give_Cache::get( $key );
 
 		if ( false === $earnings ) {
@@ -148,7 +148,7 @@ class Give_Payment_Stats extends Give_Stats {
 
 			}
 
-			// Cache the results for one hour
+			// Cache the results for one hour.
 			Give_Cache::set( $key, give_sanitize_amount_for_db( $earnings ), 60 * 60 );
 		}
 
