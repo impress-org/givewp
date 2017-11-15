@@ -875,6 +875,16 @@ function give_get_currencies_list() {
 				'number_decimals'     => 2,
 			),
 		),
+		'IDR' => array(
+			'admin_label' => __( 'Indonesian rupiah (Rp)', 'give' ),
+			'symbol'      => '&#82;&#112;',
+			'setting'     => array(
+				'currency_position'   => 'before',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
+				'number_decimals'     => 2,
+			),
+		),
 		'IMP' => array(
 			'admin_label' => __( 'Manx pound (£)', 'give' ),
 			'symbol'      => '&pound;',
@@ -1879,6 +1889,7 @@ function give_currency_filter( $price = '', $args = array() ) {
 		case 'JPY' :
 		case 'THB' :
 		case 'INR' :
+		case 'IDR' :
 		case 'IRR' :
 		case 'TRY' :
 		case 'RUB' :
