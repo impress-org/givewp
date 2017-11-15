@@ -773,7 +773,7 @@ class Give_Donate_Form {
 		 *
 		 * @since 1.0
 		 */
-		$form_wrap_classes_array = apply_filters( 'give_form_wrap_classes', $custom_class, $this->ID, $args );
+		$form_wrap_classes_array = (array) apply_filters( 'give_form_wrap_classes', $custom_class, $this->ID, $args );
 
 
 		return implode( ' ', $form_wrap_classes_array );
