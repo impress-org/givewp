@@ -148,16 +148,17 @@ class Give_Donors_Query {
 		 */
 		do_action( 'give_pre_get_donors', $this );
 
-		$cache_key = 'give_donor_' . substr( md5( serialize( $this->get_sql() ) ), 0, 15 );
+		$cache_key        = 'give_donor_' . substr( md5( serialize( $this->get_sql() ) ), 0, 15 );
+		$cache_gruop_name = Give_Cache::get_key( 'give-db-queries' );
 
-		if( ! ( $this->donors = Give_Cache::get_group( $cache_key, 'give-donors' ) ) ) {
+		if ( ! ( $this->donors = Give_Cache::get_group( $cache_key, $cache_gruop_name ) ) ) {
 			if ( empty( $this->args['count'] ) ) {
 				$this->donors = $wpdb->get_results( $this->get_sql() );
 			} else {
 				$this->donors = $wpdb->get_var( $this->get_sql() );
 			}
 
-			Give_Cache::set_group( $cache_key, $this->donors, 'give-donors' );
+			Give_Cache::set_group( $cache_key, $this->donors, $cache_gruop_name );
 		}
 
 
