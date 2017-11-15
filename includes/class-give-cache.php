@@ -352,6 +352,42 @@ class Give_Cache {
 
 		return $cached_data;
 	}
+
+	/**
+	 * Cache small chunks inside group
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param int    $id
+	 * @param mixed  $data
+	 * @param string $group
+	 * @param int    $expire
+	 * @param string $cache_type
+	 *
+	 * @return bool
+	 */
+	public static function set_group( $id, $data, $group = '', $expire = 0, $cache_type = 'persistent' ) {
+		// Bailout.
+		if (
+			// We can disable cache by setting GIVE_CACHE false.
+			( defined( 'GIVE_CACHE' ) && ! GIVE_CACHE ) ||
+			empty( $id ) ||
+			empty( $cache_type )
+		) {
+			return false;
+		}
+
+		$cached_data = null;
+
+		switch ( $cache_type ) {
+			case 'persistent':
+				wp_cache_set( $id, $data, $group, $expire );
+				break;
+		}
+
+		return true;
+	}
 }
 
 // Initialize
