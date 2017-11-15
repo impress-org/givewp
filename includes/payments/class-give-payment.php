@@ -561,7 +561,7 @@ final class Give_Payment {
 			$this->key        = $this->setup_payment_key();
 			$this->number     = $this->setup_payment_number();
 
-			wp_cache_set( $this->ID, get_object_vars( $this ), 'give-donations' );
+			Give_Cache::set_group( $this->ID, get_object_vars( $this ), 'give-donations' );
 		} else {
 
 			foreach ( $donation_vars as $donation_var => $value ) {

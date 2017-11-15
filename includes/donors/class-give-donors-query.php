@@ -157,7 +157,7 @@ class Give_Donors_Query {
 				$this->donors = $wpdb->get_var( $this->get_sql() );
 			}
 
-			wp_cache_set( $cache_key, $this->donors, 'give-donors' );
+			Give_Cache::set_group( $cache_key, $this->donors, 'give-donors' );
 		}
 
 

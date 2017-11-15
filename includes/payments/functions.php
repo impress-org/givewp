@@ -549,7 +549,7 @@ function give_count_payments( $args = array() ) {
 
 	$cache_key = md5( $query );
 
-	$count = wp_cache_get( $cache_key, 'counts' );
+	$count = Give_Cache::get_group( $cache_key, 'counts' );
 	if ( false !== $count ) {
 		return $count;
 	}
@@ -576,7 +576,7 @@ function give_count_payments( $args = array() ) {
 	}
 
 	$stats = (object) $stats;
-	wp_cache_set( $cache_key, $stats, 'counts' );
+	Give_Cache::set_group( $cache_key, $stats, 'counts' );
 
 	return $stats;
 }
@@ -1757,7 +1757,7 @@ function give_remove_payment_notes_in_comment_counts( $stats, $post_id ) {
 		return $stats;
 	}
 
-	$stats = wp_cache_get( "comments-{$post_id}", 'counts' );
+	$stats = Give_Cache::get_group( "comments-{$post_id}", 'counts' );
 
 	if ( false !== $stats ) {
 		return $stats;
@@ -1797,7 +1797,7 @@ function give_remove_payment_notes_in_comment_counts( $stats, $post_id ) {
 	}
 
 	$stats = (object) $stats;
-	wp_cache_set( "comments-{$post_id}", $stats, 'counts' );
+	Give_Cache::set_group( "comments-{$post_id}", $stats, 'counts' );
 
 	return $stats;
 }

@@ -218,7 +218,7 @@ class Give_Donor {
 
 			$this->setup_address();
 
-			wp_cache_set( $donor->id, get_object_vars( $this ), 'give-donors' );
+			Give_Cache::set_group( $donor->id, get_object_vars( $this ), 'give-donors' );
 		} else{
 			foreach ( $donor_vars as $donor_var => $value ) {
 				$this->$donor_var = $value;

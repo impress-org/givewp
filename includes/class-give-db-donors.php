@@ -519,13 +519,13 @@ class Give_DB_Donors extends Give_DB {
 
 		$cache_key = md5( 'give_donors_' . serialize( $args ) );
 
-		$donors = wp_cache_get( $cache_key, 'donors' );
+		$donors = Give_Cache::get_group( $cache_key, 'donors' );
 
 		if ( $donors === false ) {
 			$donors = new Give_Donors_Query( $args );
 			$donors = $donors->get_donors();
 
-			wp_cache_set( $cache_key, $donors, 'donors', 3600 );
+			Give_Cache::set_group( $cache_key, $donors, 'donors', 3600 );
 		}
 
 		return $donors;
@@ -548,13 +548,13 @@ class Give_DB_Donors extends Give_DB {
 		$args['count'] = true;
 
 		$cache_key = md5( 'give_donors_count' . serialize( $args ) );
-		$count     = wp_cache_get( $cache_key, 'donors' );
+		$count     = Give_Cache::get_group( $cache_key, 'donors' );
 
 		if ( $count === false ) {
 			$donors = new Give_Donors_Query( $args );
 			$count  = $donors->get_donors();
 
-			wp_cache_set( $cache_key, $count, 'donors', 3600 );
+			Give_Cache::set_group( $cache_key, $count, 'donors', 3600 );
 		}
 
 		return absint( $count );
