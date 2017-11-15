@@ -1857,7 +1857,7 @@ function give_get_payment_form_title( $payment_meta, $only_level = false, $separ
 
 		$form_title .= '<span class="donation-level-text-wrap">';
 
-		if ( $price_id == 'custom' ) {
+		if ( 'custom' === $price_id ) {
 			$custom_amount_text = give_get_meta( $form_id, '_give_custom_amount_text', true );
 			$form_title         .= ! empty( $custom_amount_text ) ? $custom_amount_text : __( 'Custom Amount', 'give' );
 		} else {
