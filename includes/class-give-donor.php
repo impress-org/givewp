@@ -400,6 +400,10 @@ class Give_Donor {
 		if ( $this->db->update( $this->id, $data ) ) {
 
 			$donor = $this->db->get_donor_by( 'id', $this->id );
+
+			// Delete cache.
+			Give_Cache::delete_group( $this->id, 'give-donors' );
+
 			$this->setup_donor( $donor );
 
 			$updated = true;
