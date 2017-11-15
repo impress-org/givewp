@@ -331,3 +331,106 @@ function __give_update_log_form_id( $new_form_id, $payment_id ) {
 	// Delete cache.
 	Give()->logs->delete_cache();
 }
+
+/**
+ * Update Donor Information when User Profile is updated from admin.
+ * Note: for internal use only.
+ *
+ * @param int $user_id
+ *
+ * @access public
+ * @since  2.0
+ *
+ * @return bool
+ */
+function give_update_donor_name_on_user_update( $user_id = 0 ) {
+
+	if ( current_user_can( 'edit_user', $user_id ) ) {
+
+		$donor = new Give_Donor( $user_id, true );
+
+		// Bailout, if donor doesn't exists.
+		if ( ! $donor ) {
+			return false;
+		}
+
+		// Get User First name and Last name.
+		$first_name = ( $_POST['first_name'] ) ? give_clean( $_POST['first_name'] ) : get_user_meta( $user_id, 'first_name', true );
+		$last_name  = ( $_POST['last_name'] ) ? give_clean( $_POST['last_name'] ) : get_user_meta( $user_id, 'last_name', true );
+		$full_name  = strip_tags( wp_unslash( trim( "{$first_name} {$last_name}" ) ) );
+
+		// Assign User First name and Last name to Donor.
+		Give()->donors->update( $donor->id, array( 'name' => $full_name ) );
+		Give()->donor_meta->update_meta( $donor->id, '_give_donor_first_name', $first_name );
+		Give()->donor_meta->update_meta( $donor->id, '_give_donor_last_name', $last_name );
+
+	}
+}
+
+add_action( 'edit_user_profile_update', 'give_update_donor_name_on_user_update', 10 );
+add_action( 'personal_options_update', 'give_update_donor_name_on_user_update', 10 );
+
+
+/**
+ * Updates the email address of a donor record when the email on a user is updated
+ * Note: for internal use only.
+ *
+ * @since  1.4.3
+ * @access public
+ *
+ * @param  int          $user_id       User ID.
+ * @param  WP_User|bool $old_user_data User data.
+ *
+ * @return bool
+ */
+function give_update_donor_email_on_user_update( $user_id = 0, $old_user_data = false ) {
+
+	$donor = new Give_Donor( $user_id, true );
+
+	if ( ! $donor ) {
+		return false;
+	}
+
+	$user = get_userdata( $user_id );
+
+	if ( ! empty( $user ) && $user->user_email !== $donor->email ) {
+
+		if ( ! Give()->donors->get_donor_by( 'email', $user->user_email ) ) {
+
+			$success = Give()->donors->update( $donor->id, array( 'email' => $user->user_email ) );
+
+			if ( $success ) {
+				// Update some payment meta if we need to
+				$payments_array = explode( ',', $donor->payment_ids );
+
+				if ( ! empty( $payments_array ) ) {
+
+					foreach ( $payments_array as $payment_id ) {
+
+						give_update_payment_meta( $payment_id, 'email', $user->user_email );
+
+					}
+
+				}
+
+				/**
+				 * Fires after updating donor email on user update.
+				 *
+				 * @since 1.4.3
+				 *
+				 * @param  WP_User    $user  WordPress User object.
+				 * @param  Give_Donor $donor Give donor object.
+				 */
+				do_action( 'give_update_donor_email_on_user_update', $user, $donor );
+
+			}
+
+		}
+
+	}
+
+}
+
+add_action( 'profile_update', 'give_update_donor_email_on_user_update', 10, 2 );
+
+
