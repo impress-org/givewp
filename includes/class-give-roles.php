@@ -292,7 +292,7 @@ class Give_Roles {
 				}
 			}
 
-			// Add Capabilities to Give Worker User Role.
+			// Remove Capabilities from Give Worker User Role.
 			$wp_roles->remove_cap( 'give_worker', 'edit_give_forms' );
 			$wp_roles->remove_cap( 'give_worker', 'read_private_give_forms' );
 			$wp_roles->remove_cap( 'give_worker', 'edit_give_payments' );
