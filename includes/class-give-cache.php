@@ -331,15 +331,13 @@ class Give_Cache {
 	 *
 	 * @return mixed
 	 */
-	public static function get_group( $id, $group, $cache_type = 'persistent' ) {
+	public static function get_group( $id, $group = '', $cache_type = 'persistent' ) {
 		// Bailout.
 		if (
-			empty( $group ) ||
-			empty( $id ) ||
-			empty( $cache_type ) ||
-
 			// We can disable cache by setting GIVE_CACHE false.
-			( defined( 'GIVE_CACHE' ) && ! GIVE_CACHE )
+			( defined( 'GIVE_CACHE' ) && ! GIVE_CACHE ) ||
+			empty( $id ) ||
+			empty( $cache_type )
 		) {
 			return false;
 		}
