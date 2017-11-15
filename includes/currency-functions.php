@@ -1318,7 +1318,7 @@ function give_get_currencies_list() {
 		),
 		'QAR' => array(
 			'admin_label' => __( 'Qatari riyal (ر.ق)', 'give' ),
-			'symbol' => '&#x631;.&#x642;',
+			'symbol'      => '&#x631;.&#x642;',
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => '.',
