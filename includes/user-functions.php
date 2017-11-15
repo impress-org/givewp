@@ -506,7 +506,11 @@ function give_get_donor_address( $donor_id = null, $args = array() ) {
 	$donor = new Give_Donor( $donor_id, $by_user_id );
 
 
-	if ( ! $donor->id || ! array_key_exists( 'billing', $donor->address ) ) {
+	if (
+		! $donor->id ||
+		empty( $donor->address ) ||
+		! array_key_exists( $args['address_type'], $donor->address )
+	) {
 		return $default_address;
 	}
 
