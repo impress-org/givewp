@@ -368,7 +368,7 @@ function give_get_currencies_list() {
 		),
 		'AED' => array(
 			'admin_label' => __( 'United Arab Emirates dirham (د.إ)', 'give' ),
-			'symbol'      => 'د.إ',
+			'symbol'      => '&#x62f;.&#x625;',
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => '.',
@@ -488,7 +488,7 @@ function give_get_currencies_list() {
 		),
 		'BGN' => array(
 			'admin_label' => __( 'Bulgarian lev (лв)', 'give' ),
-			'symbol'      => 'лв',
+			'symbol'      => '&#1083;&#1074;.',
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => '.',
@@ -498,7 +498,7 @@ function give_get_currencies_list() {
 		),
 		'BHD' => array(
 			'admin_label' => __( 'Bahraini dinar (.د.ب)', 'give' ),
-			'symbol'      => '.د.ب',
+			'symbol'      => '.&#x62f;.&#x628;',
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => '.',
@@ -558,7 +558,7 @@ function give_get_currencies_list() {
 		),
 		'BTC' => array(
 			'admin_label' => __( 'Bitcoin (Ƀ)', 'give' ),
-			'symbol'      => 'Ƀ',
+			'symbol'      => '&#3647;',
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => '.',
@@ -708,7 +708,7 @@ function give_get_currencies_list() {
 		),
 		'DZD' => array(
 			'admin_label' => __( 'Algerian dinar (د.ج)', 'give' ),
-			'symbol'      => 'د.ج',
+			'symbol'      => '&#x62f;.&#x62c;',
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => '.',
@@ -768,6 +768,7 @@ function give_get_currencies_list() {
 		),
 		'GEL' => array(
 			'admin_label' => __( 'Georgian lari (ლ)', 'give' ),
+			'symbol'      => '&#x10da;',
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => '.',
@@ -796,7 +797,7 @@ function give_get_currencies_list() {
 			),
 		),
 		'GIP' => array(
-			'admin_label' => __( 'Gibraltar pound (	£)', 'give' ),
+			'admin_label' => __( 'Gibraltar pound (£)', 'give' ),
 			'symbol'      => '&pound;',
 			'setting'     => array(
 				'currency_position'   => 'before',
@@ -897,7 +898,7 @@ function give_get_currencies_list() {
 		),
 		'IQD' => array(
 			'admin_label' => __( 'Iraqi dinar (ع.د)', 'give' ),
-			'symbol'      => 'ع.د',
+			'symbol'      => '&#x639;.&#x62f;',
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => '.',
@@ -907,7 +908,7 @@ function give_get_currencies_list() {
 		),
 		'IRT' => array(
 			'admin_label' => __( 'Iranian toman (﷼)', 'give' ),
-			'symbol'      => '﷼',
+			'symbol'      => '&#x062A;&#x0648;&#x0645;&#x0627;&#x0646;',
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => '.',
@@ -947,7 +948,7 @@ function give_get_currencies_list() {
 		),
 		'JOD' => array(
 			'admin_label' => __( 'Jordanian dinar (د.ا)', 'give' ),
-			'symbol'      => 'د.ا',
+			'symbol'      => '&#x62f;.&#x627;',
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => '.',
@@ -967,7 +968,7 @@ function give_get_currencies_list() {
 		),
 		'KGS' => array(
 			'admin_label' => __( 'Kyrgyzstani som (лв)', 'give' ),
-			'symbol'      => 'лв',
+			'symbol'      => '&#x441;&#x43e;&#x43c;',
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => '.',
@@ -1007,7 +1008,7 @@ function give_get_currencies_list() {
 		),
 		'KWD' => array(
 			'admin_label' => __( 'Kuwaiti dinar (د.ك)', 'give' ),
-			'symbol'      => 'د.ك',
+			'symbol'      => '&#x62f;.&#x643;',
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => '.',
@@ -1057,6 +1058,7 @@ function give_get_currencies_list() {
 		),
 		'LKR' => array(
 			'admin_label' => __( 'Sri Lankan rupee (Ɍs)', 'give' ),
+			'symbol'      => '&#xdbb;&#xdd4;',
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => '.',
@@ -1086,7 +1088,7 @@ function give_get_currencies_list() {
 		),
 		'LYD' => array(
 			'admin_label' => __( 'Libyan dinar (ل.د)', 'give' ),
-			'symbol'      => 'ل.د',
+			'symbol'      => '&#x644;.&#x62f;',
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => '.',
@@ -1116,7 +1118,7 @@ function give_get_currencies_list() {
 		),
 		'MKD' => array(
 			'admin_label' => __( 'Macedonian denar (ден)', 'give' ),
-			'symbol'      => 'ден',
+			'symbol'      => '&#x434;&#x435;&#x43d;',
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => '.',
@@ -1166,7 +1168,7 @@ function give_get_currencies_list() {
 		),
 		'MUR' => array(
 			'admin_label' => __( 'Mauritian rupee (Ɍs)', 'give' ),
-			'symbol'      => 'Ɍs',
+			'symbol'      => '&#x20a8;',
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => '.',
@@ -1236,7 +1238,7 @@ function give_get_currencies_list() {
 		),
 		'NPR' => array(
 			'admin_label' => __( 'Nepalese rupee (NɌs)', 'give' ),
-			'symbol'      => 'NɌs',
+			'symbol'      => '&#8360;',
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => '.',
@@ -1246,7 +1248,7 @@ function give_get_currencies_list() {
 		),
 		'OMR' => array(
 			'admin_label' => __( 'Omani rial (ر.ع.)', 'give' ),
-			'symbol'      => 'ر.ع.',
+			'symbol'      => '&#x631;.&#x639;&#46;',
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => '.',
@@ -1286,7 +1288,7 @@ function give_get_currencies_list() {
 		),
 		'PKR' => array(
 			'admin_label' => __( 'Pakistani rupee (Ɍs)', 'give' ),
-			'symbol'      => 'Ɍs',
+			'symbol'      => '&#8360;',
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => '.',
@@ -1316,6 +1318,7 @@ function give_get_currencies_list() {
 		),
 		'QAR' => array(
 			'admin_label' => __( 'Qatari riyal (ر.ق)', 'give' ),
+			'symbol' => '&#x631;.&#x642;',
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => '.',
@@ -1335,7 +1338,7 @@ function give_get_currencies_list() {
 		),
 		'RSD' => array(
 			'admin_label' => __( 'Serbian dinar (Дин.)', 'give' ),
-			'symbol'      => 'Дин.',
+			'symbol'      => '&#x434;&#x438;&#x43d;&#46;',
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => '.',
@@ -1355,7 +1358,7 @@ function give_get_currencies_list() {
 		),
 		'SAR' => array(
 			'admin_label' => __( 'Saudi riyal (ر.س)', 'give' ),
-			'symbol'      => 'ر.س',
+			'symbol'      => '&#x631;.&#x633;',
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => '.',
@@ -1375,7 +1378,7 @@ function give_get_currencies_list() {
 		),
 		'SCR' => array(
 			'admin_label' => __( 'Seychellois rupee (Ɍs)', 'give' ),
-			'symbol'      => 'Ɍs',
+			'symbol'      => '&#x20a8;',
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => '.',
@@ -1495,7 +1498,7 @@ function give_get_currencies_list() {
 		),
 		'TND' => array(
 			'admin_label' => __( 'Tunisian dinar (د.ت)', 'give' ),
-			'symbol'      => 'د.ت',
+			'symbol'      => '&#x62f;.&#x62a;',
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => '.',
@@ -1584,7 +1587,7 @@ function give_get_currencies_list() {
 			),
 		),
 		'VND' => array(
-			'admin_label' => __( 'Vietnamese đồng (	₫)', 'give' ),
+			'admin_label' => __( 'Vietnamese đồng (₫)', 'give' ),
 			'symbol'      => '&#8363;',
 			'setting'     => array(
 				'currency_position'   => 'before',
@@ -1655,7 +1658,7 @@ function give_get_currencies_list() {
 		),
 		'YER' => array(
 			'admin_label' => __( 'Yemeni rial (﷼)', 'give' ),
-			'symbol'      => '&#65020;',
+			'symbol'      => '&#xfdfc;',
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => '.',
