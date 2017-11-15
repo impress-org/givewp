@@ -192,34 +192,32 @@ add_filter( 'give_currencies', 'give_bc_v1817_iranian_currency_code', 0 );
 
 
 /**
- * Add support of RIAL currency formatting for backward compatibility.
- * Note: for internal use only
+ * Format right to left supported currency amount.
  *
  * @since 1.8.17
  *
- * @param string $formatted_price
- * @param string $currency_code
- * @param string $price
- * @param array   $args
+ * @param $formatted_amount
+ * @param $currency_args
+ * @param $price
  *
  * @return string
  */
-function give_bc_v1817_iranian_currency_filter( $formatted_price, $currency_code, $price, $args ) {
-	if ( give_has_upgrade_completed( 'v1817_update_donation_iranian_currency_code' ) ) {
-		return $formatted_price;
+function give_format_price_for_right_to_left_supported_currency( $formatted_amount, $currency_args, $price ) {
+	if ( ! give_is_right_to_left_supported_currency( $currency_args['currency_code'] ) ) {
+		return $formatted_amount;
 	}
 
-	$currency_symbol = give_currency_symbol( $currency_code );
-	$position        = false !== strpos( current_filter(), 'after' ) ? 'after' : 'before';
-	$formatted_price = ( 'before' === $position ?
-		$currency_symbol . '&#x200e;' . $price :
-		$price . '&#x200f;' . $currency_symbol );
-
-	return ( $args['decode_currency'] ?
-		html_entity_decode( $formatted_price, ENT_COMPAT, 'UTF-8' ) :
-		$formatted_price
+	$formatted_amount = (
+	'before' === (string) $currency_args['position'] ?
+		'&#x202B;' . $price . $currency_args['symbol'] . '&#x202C;' :
+		'&#x202A;' . $price . $currency_args['symbol'] . '&#x202C;'
 	);
+
+	$formatted_amount = $currency_args['decode_currency'] ?
+		html_entity_decode( $formatted_amount, ENT_COMPAT, 'UTF-8' ) :
+		$formatted_amount;
+
+	return $formatted_amount;
 }
 
-add_filter( 'give_rial_currency_filter_after', 'give_bc_v1817_iranian_currency_filter', 0, 4 );
-add_filter( 'give_rial_currency_filter_before', 'give_bc_v1817_iranian_currency_filter', 0, 4 );
+add_filter( 'give_currency_filter', 'give_format_price_for_right_to_left_supported_currency', 10, 3 );

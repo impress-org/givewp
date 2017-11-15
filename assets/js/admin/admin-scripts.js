@@ -9,7 +9,7 @@
  */
 
 jQuery.noConflict();
-// Provided access to global level
+// Provided access to global level.
 var give_setting_edit = false;
 (function ($) {
 	/**
@@ -42,7 +42,7 @@ var give_setting_edit = false;
 			return;
 		}
 
-		// Hide loader
+		// Hide loader.
 		if ($loaderParent.length) {
 			$loaderParent.removeClass('is-active');
 		}
@@ -135,7 +135,7 @@ var give_setting_edit = false;
 		// Check if it give setting page or not.
 		if (jQuery('body.give_forms_page_give-settings').length > 0) {
 
-			// Get the default value
+			// Get the default value.
 			var on_load_value = jQuery('body.give_forms_page_give-settings #give-mainform').serialize();
 
 			/**
@@ -193,18 +193,19 @@ var give_setting_edit = false;
 			inherit_select_classes: true,
 			placeholder_text_single: give_vars.one_option,
 			placeholder_text_multiple: give_vars.one_or_more_option,
+			width: '100%'
 		});
 
-		// This fixes the Chosen box being 0px wide when the thickbox is opened
+		// This fixes the Chosen box being 0px wide when the thickbox is opened.
 		$('#post').on('click', '.give-thickbox', function () {
 			$('.give-select-chosen', '#choose-give-form').css('width', '100%');
 		});
 
 		// Variables for setting up the typing timer.
-		var typingTimer;               // Timer identifier
-		var doneTypingInterval = 342;  // Time in ms, Slow - 521ms, Moderate - 342ms, Fast - 300ms
+		var typingTimer;               // Timer identifier.
+		var doneTypingInterval = 342;  // Time in ms, Slow - 521ms, Moderate - 342ms, Fast - 300ms.
 
-		// Replace options with search results
+		// Replace options with search results.
 		$(document.body).on('keyup', '.give-select.chosen-container .chosen-search input, .give-select.chosen-container .search-field input', function (e) {
 
 			var val = $(this).val(),
@@ -231,30 +232,30 @@ var give_setting_edit = false;
 				val.length <= 3 ||
 				!search_type.length ||
 				(
-					( 9 === lastKey ) || // Tab
-					( 13 === lastKey ) || // Enter
-					( 16 === lastKey ) || // Shift
-					( 17 === lastKey ) || // Ctrl
-					( 18 === lastKey ) || // Alt
-					( 19 === lastKey ) || // Pause, Break
-					( 20 === lastKey ) || // CapsLock
-					( 27 === lastKey ) || // Esc
-					( 33 === lastKey ) || // Page Up
-					( 34 === lastKey ) || // Page Down
-					( 35 === lastKey ) || // End
-					( 36 === lastKey ) || // Home
-					( 37 === lastKey ) || // Left arrow
-					( 38 === lastKey ) || // Up arrow
-					( 39 === lastKey ) || // Right arrow
-					( 40 === lastKey ) || // Down arrow
-					( 44 === lastKey ) || // PrntScrn
-					( 45 === lastKey ) || // Insert
-					( 144 === lastKey ) || // NumLock
-					( 145 === lastKey ) || // ScrollLock
-					( 91 === lastKey ) || // WIN Key (Start)
-					( 93 === lastKey ) || // WIN Menu
-					( 224 === lastKey ) || // command key
-					( 112 <= lastKey && 123 >= lastKey ) // F1 to F12lastKey
+					( 9 === lastKey ) || // Tab.
+					( 13 === lastKey ) || // Enter.
+					( 16 === lastKey ) || // Shift.
+					( 17 === lastKey ) || // Ctrl.
+					( 18 === lastKey ) || // Alt.
+					( 19 === lastKey ) || // Pause, Break.
+					( 20 === lastKey ) || // CapsLock.
+					( 27 === lastKey ) || // Esc.
+					( 33 === lastKey ) || // Page Up.
+					( 34 === lastKey ) || // Page Down.
+					( 35 === lastKey ) || // End.
+					( 36 === lastKey ) || // Home.
+					( 37 === lastKey ) || // Left arrow.
+					( 38 === lastKey ) || // Up arrow.
+					( 39 === lastKey ) || // Right arrow.
+					( 40 === lastKey ) || // Down arrow.
+					( 44 === lastKey ) || // PrntScrn.
+					( 45 === lastKey ) || // Insert.
+					( 144 === lastKey ) || // NumLock.
+					( 145 === lastKey ) || // ScrollLock.
+					( 91 === lastKey ) || // WIN Key (Start).
+					( 93 === lastKey ) || // WIN Menu.
+					( 224 === lastKey ) || // Command key.
+					( 112 <= lastKey && 123 >= lastKey ) // F1 to F12 lastKey.
 				)
 			) {
 				return;
@@ -403,7 +404,7 @@ var give_setting_edit = false;
 
 		edit_address: function () {
 
-			// Update base state field based on selected base country
+			// Update base state field based on selected base country.
 			$('select[name="give-payment-address[0][country]"]').change(function () {
 				var $this = $(this);
 
@@ -414,7 +415,7 @@ var give_setting_edit = false;
 				};
 				$.post(ajaxurl, data, function (response) {
 
-					// Show the states dropdown menu
+					// Show the states dropdown menu.
 					$this.closest('.column-container').find('#give-order-address-state-wrap').removeClass('give-hidden');
 
 					// Add support to zip fields.
@@ -430,7 +431,7 @@ var give_setting_edit = false;
 						state_wrap.append( '<input type="text" name="give-payment-address[0][state]" value="' + response.default_state + '" class="give-edit-toggles medium-text"/>' );
 
 						if ( typeof ( response.show_field ) !== undefined && false === response.show_field ) {
-							// Hide the states dropdown menu
+							// Hide the states dropdown menu.
 							$this.closest( '.column-container' ).find( '#give-order-address-state-wrap' ).addClass( 'give-hidden' );
 
 							// Add support to zip fields.
@@ -636,13 +637,13 @@ var give_setting_edit = false;
 				};
 
 				$.post(ajaxurl, data, function (response) {
-					// Show the states dropdown menu
+					// Show the states dropdown menu.
 					$this.closest('tr').next().show()
 					if (typeof ( response.states_found ) != undefined && true == response.states_found) {
 						$(':input[name="base_state"]').replaceWith(response.data);
 					} else {
 						if (typeof ( response.show_field ) != undefined && false == response.show_field) {
-							// Hide the states dropdown menu
+							// Hide the states dropdown menu.
 							$this.closest('tr').next().hide();
 						}
 						$(':input[name="base_state"]').replaceWith('<input type="text" name="' + data.field_name + '" value="' + response.default_state + '" class="give-edit-toggles medium-text"/>');
@@ -775,7 +776,7 @@ var give_setting_edit = false;
 
 		date_options: function () {
 
-			// Show hide extended date options
+			// Show hide extended date options.
 			$('#give-graphs-date-options').change(function () {
 				var $this = $(this);
 				if ('other' === $this.val()) {
@@ -789,7 +790,7 @@ var give_setting_edit = false;
 
 		donors_export: function () {
 
-			// Show / hide Donation Form option when exporting donors
+			// Show / hide Donation Form option when exporting donors.
 			$('#give_donor_export_form').change(function () {
 
 				var $this = $(this),
@@ -804,7 +805,7 @@ var give_setting_edit = false;
 
 				var price_options_select = $('.give_price_options_select');
 
-				// On Form Select, Check if Variable Prices Exist
+				// On Form Select, Check if Variable Prices Exist.
 				if (parseInt(form_id) != 0) {
 					var data = {
 						action: 'give_check_for_form_price_variations',
@@ -902,7 +903,7 @@ var give_setting_edit = false;
 				var has_errors = false;
 
 				if (null === selection || 0 === selection) {
-					// Needs to pick a method give_vars.batch_export_no_class
+					// Needs to pick a method give_vars.batch_export_no_class.
 					notice_wrap.html('<div class="updated error"><p>' + give_vars.batch_export_no_class + '</p></div>');
 					has_errors = true;
 				}
@@ -911,7 +912,7 @@ var give_setting_edit = false;
 
 					var selected_form = $('select[name="form_id"]').val();
 					if (selected_form == 0) {
-						// Needs to pick give_vars.batch_export_no_reqs
+						// Needs to pick give_vars.batch_export_no_reqs.
 						notice_wrap.html('<div class="updated error"><p>' + give_vars.batch_export_no_reqs + '</p></div>');
 						has_errors = true;
 					}
@@ -970,6 +971,8 @@ var give_setting_edit = false;
 			 */
 			give_setting_edit = true;
 
+			var reset_form = false;
+
 			$.ajax({
 				type: 'POST',
 				url: ajaxurl,
@@ -988,6 +991,8 @@ var give_setting_edit = false;
 						 * @since 1.8.14
 						 */
 						give_setting_edit = false;
+
+						reset_form = true;
 
 						// We need to get the actual in progress form, not all forms on the page
 						var export_form = $('.give-export-form').find('.give-progress').parent().parent();
@@ -1011,8 +1016,12 @@ var give_setting_edit = false;
 						});
 						self.process_step(parseInt(response.step), data, self);
 					}
-					// Reset the form for preventing multiple ajax request.
-					$('#give-tools-recount-form')[0].reset();
+
+					if ( true === reset_form ) {
+						// Reset the form for preventing multiple ajax request.
+						$( '#give-tools-recount-form' )[ 0 ].reset();
+						$( '#give-tools-recount-form .tools-form-dropdown' ).hide();
+					}
 				}
 			}).fail(function (response) {
 				/**
@@ -1058,7 +1067,7 @@ var give_setting_edit = false;
 			self.el.heading = Give_Selector_Cache.get('.update-message', self.el.progress_main_container);
 			self.el.progress_container = Give_Selector_Cache.get('.progress-content', self.el.progress_main_container);
 
-			// Bailout
+			// Bailout.
 			if (self.el.update_link.hasClass('active')) {
 				return;
 			}
@@ -1112,12 +1121,12 @@ var give_setting_edit = false;
 				success: function (response) {
 					give_setting_edit = false;
 
-					// We need to get the actual in progress form, not all forms on the page
+					// We need to get the actual in progress form, not all forms on the page.
 					var notice_wrap = Give_Selector_Cache.get('.notice-wrap', self.el.progress_container, true);
 
 					if (-1 !== $.inArray('success', Object.keys(response))) {
 						if (response.success) {
-							// Update steps info
+							// Update steps info.
 							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
 								self.el.heading.html('<strong>' + response.data.heading + '</strong>');
 							}
@@ -1126,7 +1135,7 @@ var give_setting_edit = false;
 							notice_wrap.html('<div class="notice notice-success is-dismissible"><p>' + response.data.message + '</p><button type="button" class="notice-dismiss"></button></div>');
 
 						} else {
-							// Update steps info
+							// Update steps info.
 							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
 								self.el.heading.html('<strong>' + response.data.heading + '</strong>');
 							}
@@ -1147,7 +1156,7 @@ var give_setting_edit = false;
 								// Animation complete.
 							});
 
-							// Update steps info
+							// Update steps info.
 							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
 								self.el.heading.html('<strong>' + response.data.heading.replace('{update_count}', self.el.heading.data('update-count')) + '</strong>');
 							}
@@ -1195,7 +1204,6 @@ var give_setting_edit = false;
 	 */
 	var handle_status_change = function () {
 
-		//When sta
 		$('select[name="give-payment-status"]').on('change', function () {
 
 			var status = $(this).val();
@@ -1381,7 +1389,7 @@ var give_setting_edit = false;
 				$(this).trigger('chosen:updated');
 			});
 
-			// Edit current address button event
+			// Edit current address button event.
 			$allAddress.on('click', '.js-edit', function (e) {
 				var $parent = $(this).closest('.address');
 
@@ -1399,7 +1407,7 @@ var give_setting_edit = false;
 				$addressForm.data('process', 'update');
 			});
 
-			// Remove address button event
+			// Remove address button event.
 			$allAddress.on('click', '.js-remove', function (e) {
 				e.preventDefault();
 
@@ -1431,7 +1439,7 @@ var give_setting_edit = false;
 				$obj.__set_address_form_action();
 			});
 
-			// Cancel add new address form button event
+			// Cancel add new address form button event.
 			$addressFormCancelBtn.on('click', function (e) {
 				e.preventDefault();
 
@@ -1581,7 +1589,7 @@ var give_setting_edit = false;
 		__set_address_form_val: function ($form) {
 			var $addressWrapper = $('#donor-address-wrapper'),
 				$addressForm = $('.address-form', $addressWrapper),
-				state = $('[data-address-type="state"]', $form).text().substr(2).trim(); // State will be like ", HR"
+				state = $('[data-address-type="state"]', $form).text().substr(2).trim(); // State will be like ", HR".
 
 			if ($('select[name="country"]', $addressForm).val().trim() !== $('[data-address-type="country"]', $form).text().trim()) {
 				$('select[name="country"]', $addressForm).val($('[data-address-type="country"]', $form).text().trim()).trigger('chosen:updated').change();
@@ -1794,13 +1802,13 @@ var give_setting_edit = false;
 				// Cache input field.
 				$give_upload_button = $(this);
 
-				// Set modal config
+				// Set modal config.
 				switch ($(this).data('field-type')) {
 					case 'media':
 						$media_modal_config = {
 							title: give_vars.metabox_fields.media.button_title,
 							button: {text: give_vars.metabox_fields.media.button_title},
-							multiple: false, // Set to true to allow multiple files to be selected
+							multiple: false, // Set to true to allow multiple files to be selected.
 							library: {type: 'image'}
 						};
 						break;
@@ -1823,10 +1831,10 @@ var give_setting_edit = false;
 					$media_modal_config.library = {type: $library};
 				}
 
-				// Extend the wp.media object
+				// Extend the wp.media object.
 				give_media_uploader = wp.media($media_modal_config);
 
-				// When a file is selected, grab the URL and set it as the text field's value
+				// When a file is selected, grab the URL and set it as the text field's value.
 				give_media_uploader.on('select', function () {
 					var attachment = give_media_uploader.state().get('selection').first().toJSON(),
 						$input_field = $give_upload_button.prev(),
@@ -1848,7 +1856,7 @@ var give_setting_edit = false;
 					}
 				});
 
-				// Open the uploader dialog
+				// Open the uploader dialog.
 				give_media_uploader.open();
 			});
 
@@ -1874,7 +1882,7 @@ var give_setting_edit = false;
 				// Set the attachment URL to our custom image input field.
 				$image_container.find('img').attr('src', attachment.url);
 
-				// Hide the add image link
+				// Hide the add image link.
 				$image_container.removeClass('give-hidden');
 			});
 
@@ -1889,13 +1897,13 @@ var give_setting_edit = false;
 					$image_container = $(this).parent(),
 					$image_input_field = $('input[type="text"]', $parent);
 
-				// Clear out the preview image
+				// Clear out the preview image.
 				$image_container.addClass('give-hidden');
 
 				// Remove image link from input field.
 				$image_input_field.val('');
 
-				// Hide the add image link
+				// Hide the add image link.
 				$('img', $image_container).attr('src', '');
 			});
 		},
@@ -2083,7 +2091,7 @@ var give_setting_edit = false;
 					$item.wpColorPicker();
 				});
 
-				// Load WordPress editor by ajax..
+				// Load WordPress editor by ajax.
 				var wysiwyg_editor_container = $('div[data-wp-editor]', new_row);
 
 				if (wysiwyg_editor_container.length) {
@@ -2402,7 +2410,7 @@ var give_setting_edit = false;
 			jQuery(this).parent().text(jQuery(this).data('rated'));
 		});
 
-		// Ajax user search
+		// Ajax user search.
 		$('.give-ajax-user-search').on('keyup', function () {
 			var user_search = $(this).val();
 			var exclude = '';
@@ -2509,7 +2517,7 @@ var give_setting_edit = false;
 
 			// Back out.
 			if (give_unformat_currency('0', false) === give_unformat_currency($(this).val(), false)) {
-				$(this).val('');
+				$(this).val('0');
 				return false;
 			}
 

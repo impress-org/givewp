@@ -1007,6 +1007,18 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 			return true;
 		}
+
+
+		/**
+		 * Check if admin saving setting or not.
+		 *
+		 * @since 1.8.17
+		 *
+		 * @return bool
+		 */
+		public static function is_saving_settings() {
+			return self::verify_nonce();
+		}
 	}
 
 endif;

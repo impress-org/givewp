@@ -440,7 +440,9 @@ function give_increase_earnings( $give_form_id = 0, $amount ) {
 }
 
 /**
- * Decreases the total earnings of a form. Primarily for when a donation is refunded.
+ * Decreases the total earnings of a form.
+ *
+ * Primarily for when a donation is refunded.
  *
  * @since 1.0
  *
@@ -449,7 +451,8 @@ function give_increase_earnings( $give_form_id = 0, $amount ) {
  *
  * @return bool|int
  */
-function give_decrease_earnings( $form_id = 0, $amount ) {
+function give_decrease_form_earnings( $form_id = 0, $amount ) {
+
 	$form = new Give_Donate_Form( $form_id );
 
 	return $form->decrease_earnings( $amount );

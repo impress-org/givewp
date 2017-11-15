@@ -749,3 +749,17 @@ function give_get_custom_attributes( $field ) {
 function give_payment_amount( $payment_id ) {
 	return give_donation_amount( $payment_id );
 }
+
+/**
+ * Decrease form earnings.
+ *
+ * @deprecated 1.8.17
+ *
+ * @param int $form_id
+ * @param     $amount
+ *
+ * @return bool|int
+ */
+function give_decrease_earnings( $form_id = 0, $amount ) {
+	return give_decrease_form_earnings( $form_id, $amount );
+}
