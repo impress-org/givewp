@@ -43,10 +43,6 @@ class Give_DB_Donors extends Give_DB {
 
 		// Set hooks and register table only if instance loading first time.
 		if ( ! ( Give()->donors instanceof Give_DB_Donors ) ) {
-			// Setup hook.
-			add_action( 'profile_update', array( $this, 'update_donor_email_on_user_update' ), 10, 2 );
-			add_action( 'edit_user_profile_update', array( $this, 'update_donor_info_on_user_update' ), 11, 2 );
-
 			// Install table.
 			$this->register_table();
 		}
@@ -356,68 +352,6 @@ class Give_DB_Donors extends Give_DB {
 	}
 
 	/**
-	 * Updates the email address of a donor record when the email on a user is updated
-	 *
-	 * @since  1.4.3
-	 * @access public
-	 *
-	 * @param  int          $user_id       User ID.
-	 * @param  WP_User|bool $old_user_data User data.
-	 *
-	 * @since  1.4.3
-	 * @access public
-	 *
-	 * @return bool
-	 */
-	public function update_donor_email_on_user_update( $user_id = 0, $old_user_data = false ) {
-
-		$donor = new Give_Donor( $user_id, true );
-
-		if ( ! $donor ) {
-			return false;
-		}
-
-		$user = get_userdata( $user_id );
-
-		if ( ! empty( $user ) && $user->user_email !== $donor->email ) {
-
-			if ( ! $this->get_donor_by( 'email', $user->user_email ) ) {
-
-				$success = $this->update( $donor->id, array( 'email' => $user->user_email ) );
-
-				if ( $success ) {
-					// Update some payment meta if we need to
-					$payments_array = explode( ',', $donor->payment_ids );
-
-					if ( ! empty( $payments_array ) ) {
-
-						foreach ( $payments_array as $payment_id ) {
-
-							give_update_payment_meta( $payment_id, 'email', $user->user_email );
-
-						}
-
-					}
-
-					/**
-					 * Fires after updating donor email on user update.
-					 *
-					 * @since 1.4.3
-					 *
-					 * @param  WP_User    $user  WordPress User object.
-					 * @param  Give_Donor $donor Give donor object.
-					 */
-					do_action( 'give_update_donor_email_on_user_update', $user, $donor );
-
-				}
-
-			}
-
-		}
-
-	}
-
-	/**
 	 * Retrieves a single donor from the database
 	 *
 	 * @since  1.0
@@ -656,40 +590,6 @@ class Give_DB_Donors extends Give_DB {
 				$args['date_query']['month'] = date( 'm', strtotime( $args['date'] ) );
 				$args['date_query']['day']   = date( 'd', strtotime( $args['date'] ) );
 			}
-		}
-	}
-
-	/**
-	 * Update Donor Information when User Profile is updated from admin.
-	 *
-	 * @param int $user_id
-	 *
-	 * @access public
-	 * @since  2.0
-	 *
-	 * @return bool
-	 */
-	public function update_donor_info_on_user_update( $user_id = 0 ) {
-
-		if ( current_user_can( 'edit_user', $user_id ) ) {
-
-			$donor = new Give_Donor( $user_id, true );
-
-			// Bailout, if donor doesn't exists.
-			if ( ! $donor ) {
-				return false;
-			}
-
-			// Get User First name and Last name.
-			$first_name = ( $_POST['first_name'] ) ? give_clean( $_POST['first_name'] ) : get_user_meta( $user_id, 'first_name', true );
-			$last_name  = ( $_POST['last_name'] ) ? give_clean( $_POST['last_name'] ) : get_user_meta( $user_id, 'last_name', true );
-			$full_name  = strip_tags( wp_unslash( trim( "{$first_name} {$last_name}" ) ) );
-
-			// Assign User First name and Last name to Donor.
-			Give()->donors->update( $donor->id, array( 'name' => $full_name ) );
-			Give()->donor_meta->update_meta( $donor->id, '_give_donor_first_name', $first_name );
-			Give()->donor_meta->update_meta( $donor->id, '_give_donor_last_name', $last_name );
-
 		}
 	}
 }
