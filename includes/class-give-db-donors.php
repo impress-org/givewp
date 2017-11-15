@@ -155,6 +155,27 @@ class Give_DB_Donors extends Give_DB {
 
 	}
 
+
+	/**
+	 * Update a donor.
+	 *
+	 *
+	 * @param int    $row_id
+	 * @param array  $data
+	 * @param string $where
+	 *
+	 * @return bool
+	 */
+	public function update( $row_id, $data = array(), $where = '' ) {
+
+		$status = parent::update( $row_id, $data, $where );
+
+		if( $status ) {
+			Give_Cache::delete_group( $row_id, 'give-donors' );
+		}
+		return $status;
+	}
+
 	/**
 	 * Delete a donor.
 	 *
