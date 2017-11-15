@@ -988,6 +988,7 @@ function give_is_terms_enabled( $form_id ) {
  * @return WP_Error|bool
  */
 function give_delete_donation_stats( $date_range = '', $args = array() ) {
+
 	// Delete all cache.
 	$status = Give_Cache::delete( Give_Cache::get_options_like( 'give_stats' ) );
 
