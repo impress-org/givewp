@@ -395,9 +395,9 @@ function give_update_donor_email_on_user_update( $user_id = 0, $old_user_data = 
 
 	if ( ! empty( $user ) && $user->user_email !== $donor->email ) {
 
-		if ( ! $this->get_donor_by( 'email', $user->user_email ) ) {
+		if ( ! Give()->donors->get_donor_by( 'email', $user->user_email ) ) {
 
-			$success = $this->update( $donor->id, array( 'email' => $user->user_email ) );
+			$success = Give()->donors->update( $donor->id, array( 'email' => $user->user_email ) );
 
 			if ( $success ) {
 				// Update some payment meta if we need to
@@ -431,6 +431,6 @@ function give_update_donor_email_on_user_update( $user_id = 0, $old_user_data = 
 
 }
 
-add_action( 'profile_update', array( $this, 'give_update_donor_email_on_user_update' ), 10, 2 );
+add_action( 'profile_update', 'give_update_donor_email_on_user_update', 10, 2 );
 
 
