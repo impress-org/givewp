@@ -329,9 +329,11 @@ class Give_Cache {
 	 * @param string $group
 	 * @param string $cache_type
 	 *
-	 * @return mixed
+	 * @return null|bool
 	 */
 	public static function get_group( $id, $group = '', $cache_type = 'persistent' ) {
+		$cached_data = null;
+
 		// Bailout.
 		if (
 			// We can disable cache by setting GIVE_CACHE false.
@@ -339,10 +341,8 @@ class Give_Cache {
 			empty( $id ) ||
 			empty( $cache_type )
 		) {
-			return false;
+			return $cached_data;
 		}
-
-		$cached_data = null;
 
 		switch ( $cache_type ) {
 			case 'persistent':
@@ -368,6 +368,8 @@ class Give_Cache {
 	 * @return bool
 	 */
 	public static function set_group( $id, $data, $group = '', $expire = 0, $cache_type = 'persistent' ) {
+		$status = false;
+
 		// Bailout.
 		if (
 			// We can disable cache by setting GIVE_CACHE false.
@@ -375,18 +377,51 @@ class Give_Cache {
 			empty( $id ) ||
 			empty( $cache_type )
 		) {
-			return false;
+			return $status;
 		}
-
-		$cached_data = null;
 
 		switch ( $cache_type ) {
 			case 'persistent':
-				wp_cache_set( $id, $data, $group, $expire );
+				$status = wp_cache_set( $id, $data, $group, $expire );
 				break;
 		}
 
-		return true;
+		return $status;
+	}
+
+	/**
+	 * Delete group cache
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param int    $id
+	 * @param string $group
+	 * @param int    $expire
+	 * @param string $cache_type
+	 *
+	 * @return bool
+	 */
+	public static function delete_group( $id, $group = '', $expire = 0, $cache_type = 'persistent' ) {
+		$status = false;
+
+		// Bailout.
+		if (
+			// We can disable cache by setting GIVE_CACHE false.
+			( defined( 'GIVE_CACHE' ) && ! GIVE_CACHE ) ||
+			empty( $id ) ||
+			empty( $cache_type )
+		) {
+			return $status;
+		}
+
+		switch ( $cache_type ) {
+			case 'persistent':
+				$status = wp_cache_delete( $id, $group, $expire );
+				break;
+		}
+
+		return $status;
 	}
 }
 
