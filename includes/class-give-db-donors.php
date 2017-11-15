@@ -173,7 +173,7 @@ class Give_DB_Donors extends Give_DB {
 		if( $status ) {
 			Give_Cache::delete_group( $row_id, 'give-donors' );
 		}
-		
+
 		return $status;
 	}
 
@@ -473,18 +473,9 @@ class Give_DB_Donors extends Give_DB {
 	public function get_donors( $args = array() ) {
 		$this->bc_1814_params( $args );
 
-		$cache_key = md5( 'give_donors_' . serialize( $args ) );
+		$donors = new Give_Donors_Query( $args );
 
-		$donors = Give_Cache::get_group( $cache_key, 'donors' );
-
-		if ( $donors === false ) {
-			$donors = new Give_Donors_Query( $args );
-			$donors = $donors->get_donors();
-
-			Give_Cache::set_group( $cache_key, $donors, 'donors', 3600 );
-		}
-
-		return $donors;
+		return $donors->get_donors();
 
 	}
 
