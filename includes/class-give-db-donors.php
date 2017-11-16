@@ -170,11 +170,29 @@ class Give_DB_Donors extends Give_DB {
 
 		$status = parent::update( $row_id, $data, $where );
 
-		if( $status ) {
+		if ( $status ) {
 			Give_Cache::delete_group( $row_id, 'give-donors' );
 		}
 
 		return $status;
+	}
+
+	/**
+	 * Insert a donor.
+	 *
+	 * @param array  $data
+	 * @param string $type
+	 *
+	 * @return int
+	 */
+	public function insert( $data, $type = '' ) {
+		$donor_id = parent::insert( $data, $type );
+
+		if ( $donor_id ) {
+			Give_Cache::delete_group( $donor_id, 'give-donors' );
+		}
+
+		return $donor_id;
 	}
 
 	/**
