@@ -5,8 +5,19 @@
  * @group give_mime
  */
 class Tests_Donate_Form_Class extends Give_Unit_Test_Case {
+	/**
+	 * @since  1.0
+	 * @access protected
+	 * @var Give_Donate_Form
+	 */
+	protected $_simple_form;
 
-	protected $_post;
+	/**
+	 * @since  1.0
+	 * @access protected
+	 * @var Give_Donate_Form
+	 */
+	protected $_multi_form;
 
 	/**
 	 * Set it Up
@@ -14,9 +25,9 @@ class Tests_Donate_Form_Class extends Give_Unit_Test_Case {
 	public function setUp() {
 		parent::setUp();
 
+		// Create form.
 		$this->_simple_form = Give_Helper_Form::create_simple_form();
 		$this->_multi_form  = Give_Helper_Form::create_multilevel_form();
-
 	}
 
 	/**
