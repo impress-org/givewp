@@ -1380,8 +1380,8 @@ var give_setting_edit = false;
 			$body.on( 'click', '.donor-selector', function() {
 				var donorId   = $( this ).val(),
 					donorName = $( this ).data( 'name' ),
-					donorHtml = '<div id="give-donor-' + donorId + '">' +
-						'<a data-id="' + donorId + '" class="give-skip-donor" title="' + give_vars.remove_from_bulk_delete + '">X</a>' +
+					donorHtml = '<div id="give-donor-' + donorId + '" data-id="' + donorId + '">' +
+						'<a class="give-skip-donor" title="' + give_vars.remove_from_bulk_delete + '">X</a>' +
 						donorName + '</div>';
 
 				if( $( this ).is( ':checked' ) ) {
@@ -1411,7 +1411,7 @@ var give_setting_edit = false;
 
 			// Skip Donor from Bulk Delete List.
 			$body.on( 'click', '.give-skip-donor', function() {
-				var donorId = $( this ).data( 'id' );
+				var donorId = $( this ).closest( 'div' ).data( 'id' );
 				$( '#give-donor-' + donorId ).remove();
 				$( '#donor-' + donorId ).find( 'input[type="checkbox"]' ).removeAttr( 'checked' );
 			});
