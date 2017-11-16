@@ -100,35 +100,58 @@ class Tests_Donate_Form_Class extends Give_Unit_Test_Case {
 	/**
 	 * Test get form wrap classes
 	 *
-	 * @covers Give_Donate_Form::get_form_wrap_classes
+	 * @since        1.8.17
+	 *
+	 * @param string $display_styles
+	 * @param string $expected
+	 *
+	 * @covers       Give_Donate_Form::get_form_wrap_classes
+	 *
+	 * @dataProvider get_form_wrap_classes_provider
 	 */
-	public function test_get_form_wrap_classes() {
+	public function test_get_form_wrap_classes( $display_styles, $expected ) {
+		// Disable goal.
+		give_update_meta( $this->_simple_form->ID, '_give_goal_option', 'disabled' );
+
+		/* @var Give_Donate_Form $simple_form */
 		$simple_form = new Give_Donate_Form( $this->_simple_form->ID );
-		$donation_form_close = $simple_form->is_close_donation_form();
 
-		// Testing donation form is closed class
-		$class = $simple_form->get_form_wrap_classes( array() );
-		if ( true === $donation_form_close ) {
-			$this->assertContains('give-form-closed', $class);
-		} else {
-			$this->assertNotContains('give-form-closed', $class);
-		}
+		/**
+		 * Case 1: without goal completed
+		 */
+		$this->assertSame( $expected, $simple_form->get_form_wrap_classes( array( 'display_style' => $display_styles ) ) );
 
-		// Check the model display type class that is pass
-		$class = $simple_form->get_form_wrap_classes( array( 'display_style' => 'modal' ) );
-		$this->assertContains('give-display-modal', $class);
+		// Update display style in DB.
+		give_update_meta( $this->_simple_form->ID, '_give_payment_display', $display_styles );
+		$this->assertSame( $expected, $simple_form->get_form_wrap_classes( array() ) );
 
-		// Checking the button display type class that is pass through it
-		$class = $simple_form->get_form_wrap_classes( array( 'display_style' => 'button' ) );
-		$this->assertContains('give-display-button', $class);
-		$this->assertContains('give-display-button-only', $class);
+		/**
+		 * Case 2: with goal completed
+		 */
 
-		// Update the DB and  checking if get_form_wrap_classes is fetching the proper class from the give meta.
-		$payment_display = give_get_meta( $this->_simple_form->ID, '_give_payment_display', true );
-		give_update_meta( $this->_simple_form->ID, '_give_payment_display', 'modal' );
-		$class = $simple_form->get_form_wrap_classes( array() );
-		$this->assertContains('give-display-modal', $class);
-		$payment_display = give_update_meta( $this->_simple_form->ID, '_give_payment_display', $payment_display );
+		// Enable goal.
+		give_update_meta( $this->_simple_form->ID, '_give_goal_option', 'enabled' );
+
+		// Default earning for form is 40.00, so set donation goal to less then earnings.
+		give_update_meta( $this->_simple_form->ID, '_give_set_goal', '30.00' );
+		give_update_meta( $this->_simple_form->ID, '_give_close_form_when_goal_achieved', 'enabled' );
+
+		$this->assertSame( 'give-form-wrap give-form-closed', $simple_form->get_form_wrap_classes( array() ) );
 	}
 
+
+	/**
+	 * Data provider for get_form_wrap_classes
+	 *
+	 * @since 1.8.17
+	 * @return array
+	 */
+	public function get_form_wrap_classes_provider() {
+		return array(
+			array( 'onpage', 'give-form-wrap give-display-onpage' ),
+			array( 'modal', 'give-form-wrap give-display-modal' ),
+			array( 'reveal', 'give-form-wrap give-display-reveal' ),
+			array( 'button', 'give-form-wrap give-display-button give-display-button-only' ),
+		);
+	}
 }
