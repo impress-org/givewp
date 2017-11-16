@@ -328,6 +328,7 @@ function give_get_default_settings() {
 		'tags'                                        => 'disabled',
 		'terms'                                       => 'disabled',
 		'admin_notices'                               => 'enabled',
+		'cache'                                       => 'enabled',
 		'uninstall_on_delete'                         => 'disabled',
 		'the_content_filter'                          => 'enabled',
 		'scripts_footer'                              => 'disabled',
