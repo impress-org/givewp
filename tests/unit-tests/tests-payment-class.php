@@ -471,7 +471,7 @@ class Tests_Payment_Class extends Give_Unit_Test_Case {
 
 		//Add a multi-level donation amount
 		$payment->add_donation( $form->ID, array( 'price_id' => 2 ) );
-		$this->assertEquals( give_sanitize_amount( '25', true ), give_sanitize_amount( $payment->total, true ) );
+		$this->assertEquals( give_sanitize_amount( '25', array( 'number_decimals' => true ) ), give_sanitize_amount( $payment->total, array( 'number_decimals' => true ) ) );
 		$payment->status = 'complete';
 		$payment->save();
 
