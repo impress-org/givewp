@@ -121,6 +121,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'name'    => esc_html__( 'Currency', 'give' ),
 							'desc'    => esc_html__( 'The donation currency. Note that some payment gateways have currency restrictions.', 'give' ),
 							'id'      => 'currency',
+							'class'   => 'give-select-chosen',
 							'type'    => 'select',
 							'options' => give_get_currencies(),
 							'default' => 'USD',
