@@ -748,20 +748,32 @@ class Give_Donate_Form {
 	 * @return string
 	 */
 	public function get_form_wrap_classes( $args ) {
+		$custom_class = array(
+			'give-form-wrap',
+		);
 
-		$display_option = ( isset( $args['display_style'] ) && ! empty( $args['display_style'] ) )
-			? $args['display_style']
-			: give_get_meta( $this->ID, '_give_payment_display', true );
+		if ( $this->is_close_donation_form() ) {
+			$custom_class[] = 'give-form-closed';
+		} else{
+			$display_option = ( isset( $args['display_style'] ) && ! empty( $args['display_style'] ) )
+				? $args['display_style']
+				: give_get_meta( $this->ID, '_give_payment_display', true );
 
-		// If admin want to show only button for form then user inbuilt modal functionality.
-		if( 'button' === $display_option ) {
-			$display_option = 'modal give-display-button-only';
+			$custom_class[] = "give-display-{$display_option}";
+
+			// If admin want to show only button for form then user inbuilt modal functionality.
+			if ( 'button' === $display_option ) {
+				$custom_class[] = 'give-display-button-only';
+			}
 		}
 
-		$form_wrap_classes_array = apply_filters( 'give_form_wrap_classes', array(
-			'give-form-wrap',
-			'give-display-' . $display_option,
-		), $this->ID, $args );
+
+		/**
+		 * Filter the donation form classes.
+		 *
+		 * @since 1.0
+		 */
+		$form_wrap_classes_array = (array) apply_filters( 'give_form_wrap_classes', $custom_class, $this->ID, $args );
 
 
 		return implode( ' ', $form_wrap_classes_array );
