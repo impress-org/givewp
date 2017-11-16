@@ -45,18 +45,21 @@ class Give_Helper_Form extends Give_Unit_Test_Case {
 		$meta = wp_parse_args(
 			( ! empty( $args['meta'] ) ? $args['meta'] : array() ),
 			array(
-				'_give_set_price'                   => '20.00',
-				'_give_custom_amount'               => 'enabled',
-				'_give_custom_amount_minimum'       => '1',
-				'_give_custom_amount_text'          => 'Would you like to set a custom amount?',
-				'_give_goal_option'                 => 'disabled',
-				'_give_payment_display'             => 'onpage',
-				'_give_show_register_form'          => 'none',
-				'_give_customize_offline_donations' => 'disabled',
-				'_give_terms_option'                => 'disabled',
-				'_give_form_earnings'               => '40.00',
-				'_give_form_sales'                  => '2',
-				'_give_default_gateway'             => 'global',
+				'_give_set_price'                     => '20.000000',
+				'_give_custom_amount'                 => 'enabled',
+				'_give_custom_amount_minimum'         => '1',
+				'_give_custom_amount_text'            => 'Would you like to set a custom amount?',
+				'_give_goal_option'                   => 'disabled',
+				'_give_set_goal'                      => '0.000000',
+				'_give_goal_format'                   => 'amount',
+				'_give_close_form_when_goal_achieved' => 'disabled',
+				'_give_payment_display'               => 'onpage',
+				'_give_show_register_form'            => 'none',
+				'_give_customize_offline_donations'   => 'disabled',
+				'_give_terms_option'                  => 'disabled',
+				'_give_form_earnings'                 => '40.000000',
+				'_give_form_sales'                    => '2',
+				'_give_default_gateway'               => 'global',
 			)
 		);
 
@@ -180,7 +183,7 @@ class Give_Helper_Form extends Give_Unit_Test_Case {
 	 *
 	 * @param bool $is_custom_amount Status for custom amount enabled or not.
 	 *
-	 * @since 1.8.14
+	 * @since  1.8.14
 	 * @access public
 	 *
 	 * @return array
@@ -204,19 +207,19 @@ class Give_Helper_Form extends Give_Unit_Test_Case {
 		$donation = wp_parse_args(
 			( ! empty( $args['donation'] ) ? $args['donation'] : array() ),
 			array(
-				'price'           => $actual_amount,
-				'date'            => date( 'Y-m-d H:i:s', strtotime( '-1 day' ) ),
-				'purchase_key'    => strtolower( md5( uniqid() ) ),
-				'user_email'      => $user_info['email'],
-				'user_info'       => $user_info,
-				'currency'        => 'USD',
-				'status'          => 'pending',
-				'gateway'         => 'manual',
-				'post_data'       => array(
+				'price'        => $actual_amount,
+				'date'         => date( 'Y-m-d H:i:s', strtotime( '-1 day' ) ),
+				'purchase_key' => strtolower( md5( uniqid() ) ),
+				'user_email'   => $user_info['email'],
+				'user_info'    => $user_info,
+				'currency'     => 'USD',
+				'status'       => 'pending',
+				'gateway'      => 'manual',
+				'post_data'    => array(
 					'give-form-id'    => $simple_form->ID,
 					'give-form-title' => 'Test Donation Form',
 					'give-amount'     => $is_custom_amount ? $custom_amount : $actual_amount,
-				)
+				),
 			)
 		);
 
@@ -228,7 +231,7 @@ class Give_Helper_Form extends Give_Unit_Test_Case {
 	 *
 	 * @param bool $is_custom_amount Status for custom amount enabled or not.
 	 *
-	 * @since 1.8.14
+	 * @since  1.8.14
 	 * @access public
 	 *
 	 * @return array
@@ -245,36 +248,36 @@ class Give_Helper_Form extends Give_Unit_Test_Case {
 		);
 
 		// Setup simple donation form.
-		$multi_level_form          = self::create_multilevel_form();
-		$donation_levels           = give_get_meta( $multi_level_form->ID, '_give_donation_levels', true );
+		$multi_level_form = self::create_multilevel_form();
+		$donation_levels  = give_get_meta( $multi_level_form->ID, '_give_donation_levels', true );
 
 		$multi_level_donation_data = array();
-		foreach( $donation_levels as $level ) {
-			if( ! empty( $level['_give_default'] ) ) {
+		foreach ( $donation_levels as $level ) {
+			if ( ! empty( $level['_give_default'] ) ) {
 				$multi_level_donation_data = $level;
 			}
 		}
 
-		$actual_amount    = number_format( (float) $multi_level_donation_data['_give_amount'], 2 );
-		$custom_amount    = number_format( (float) $multi_level_donation_data['_give_amount'] + 10, 2 );
+		$actual_amount = number_format( (float) $multi_level_donation_data['_give_amount'], 2 );
+		$custom_amount = number_format( (float) $multi_level_donation_data['_give_amount'] + 10, 2 );
 
 		$donation = wp_parse_args(
 			( ! empty( $args['donation'] ) ? $args['donation'] : array() ),
 			array(
-				'price'           => $actual_amount,
-				'date'            => date( 'Y-m-d H:i:s', strtotime( '-1 day' ) ),
-				'purchase_key'    => strtolower( md5( uniqid() ) ),
-				'user_email'      => $user_info['email'],
-				'user_info'       => $user_info,
-				'currency'        => 'USD',
-				'status'          => 'pending',
-				'gateway'         => 'manual',
-				'post_data'       => array(
+				'price'        => $actual_amount,
+				'date'         => date( 'Y-m-d H:i:s', strtotime( '-1 day' ) ),
+				'purchase_key' => strtolower( md5( uniqid() ) ),
+				'user_email'   => $user_info['email'],
+				'user_info'    => $user_info,
+				'currency'     => 'USD',
+				'status'       => 'pending',
+				'gateway'      => 'manual',
+				'post_data'    => array(
 					'give-form-id'    => $multi_level_form->ID,
 					'give-form-title' => 'Test Donation Form',
 					'give-amount'     => $is_custom_amount ? $custom_amount : $actual_amount,
-					'give-price-id'   => $multi_level_donation_data['_give_id']['level_id']
-				)
+					'give-price-id'   => $multi_level_donation_data['_give_id']['level_id'],
+				),
 			)
 		);
 
