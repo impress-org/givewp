@@ -58,7 +58,7 @@ class Give_Cache {
 	 * @access public
 	 */
 	public function setup_hooks() {
-		// weekly delete all expired cache.
+		// Weekly delete all expired cache.
 		Give_Cron::add_weekly_event( array( $this, 'delete_all_expired' ) );
 	}
 
