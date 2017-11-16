@@ -395,35 +395,31 @@ function give_update_donor_email_on_user_update( $user_id = 0, $old_user_data = 
 
 	if ( ! empty( $user ) && $user->user_email !== $donor->email ) {
 
-		if ( ! Give()->donors->get_donor_by( 'email', $user->user_email ) ) {
+		$success = Give()->donors->update( $donor->id, array( 'email' => $user->user_email ) );
 
-			$success = Give()->donors->update( $donor->id, array( 'email' => $user->user_email ) );
+		if ( $success ) {
+			// Update some payment meta if we need to
+			$payments_array = explode( ',', $donor->payment_ids );
 
-			if ( $success ) {
-				// Update some payment meta if we need to
-				$payments_array = explode( ',', $donor->payment_ids );
+			if ( ! empty( $payments_array ) ) {
 
-				if ( ! empty( $payments_array ) ) {
+				foreach ( $payments_array as $payment_id ) {
 
-					foreach ( $payments_array as $payment_id ) {
-
-						give_update_payment_meta( $payment_id, 'email', $user->user_email );
-
-					}
+					give_update_payment_meta( $payment_id, 'email', $user->user_email );
 
 				}
 
-				/**
-				 * Fires after updating donor email on user update.
-				 *
-				 * @since 1.4.3
-				 *
-				 * @param  WP_User    $user  WordPress User object.
-				 * @param  Give_Donor $donor Give donor object.
-				 */
-				do_action( 'give_update_donor_email_on_user_update', $user, $donor );
-
 			}
+
+			/**
+			 * Fires after updating donor email on user update.
+			 *
+			 * @since 1.4.3
+			 *
+			 * @param  WP_User    $user  WordPress User object.
+			 * @param  Give_Donor $donor Give donor object.
+			 */
+			do_action( 'give_update_donor_email_on_user_update', $user, $donor );
 
 		}
 
