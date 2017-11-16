@@ -170,6 +170,11 @@ input.give-text_medium {
 
 }
 
+div[id^="give-donor-"] {
+  display: block;
+  overflow: hidden;
+}
+
 //---------------------------------------------------
 // Responsive
 //---------------------------------------------------
