@@ -1385,7 +1385,7 @@ var give_setting_edit = false;
 						donorName + '</div>';
 
 				if( $( this ).is( ':checked' ) ) {
-					$( '#give-bulk-donors' ).append( donorHtml );
+					$( '#give-bulk-donors' ).prepend( donorHtml );
 				} else {
 					$( '#give-bulk-donors' ).find( '#give-donor-' + donorId ).remove();
 				}
