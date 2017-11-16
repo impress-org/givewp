@@ -20,10 +20,19 @@ class Give_Cache {
 	 * Instance.
 	 *
 	 * @since  1.8.7
-	 * @access static
-	 * @var
+	 * @access private
+	 * @var Give_Cache
 	 */
 	static private $instance;
+
+	/**
+	 * Flag to check if caching enabled or not.
+	 *
+	 * @since  2.0
+	 * @access private
+	 * @var
+	 */
+	private $is_cache;
 
 	/**
 	 * Singleton pattern.
@@ -57,7 +66,9 @@ class Give_Cache {
 	 * @since  1.8.7
 	 * @access public
 	 */
-	public function setup_hooks() {
+	public function setup() {
+		self::$instance->is_cache = give_is_setting_enabled( give_get_option( 'cache', 'enabled' ) );
+
 		// weekly delete all expired cache.
 		Give_Cron::add_weekly_event( array( $this, 'delete_all_expired' ) );
 	}
@@ -357,8 +368,7 @@ class Give_Cache {
 
 		// Bailout.
 		if (
-			// We can disable cache by setting GIVE_CACHE false.
-			( defined( 'GIVE_CACHE' ) && ! GIVE_CACHE ) ||
+			! self::$instance->is_cache ||
 			empty( $id ) ||
 			empty( $cache_type )
 		) {
@@ -393,8 +403,7 @@ class Give_Cache {
 
 		// Bailout.
 		if (
-			// We can disable cache by setting GIVE_CACHE false.
-			( defined( 'GIVE_CACHE' ) && ! GIVE_CACHE ) ||
+			! self::$instance->is_cache ||
 			empty( $id ) ||
 			empty( $cache_type )
 		) {
@@ -430,8 +439,7 @@ class Give_Cache {
 
 		// Bailout.
 		if (
-			// We can disable cache by setting GIVE_CACHE false.
-			( defined( 'GIVE_CACHE' ) && ! GIVE_CACHE ) ||
+			! self::$instance->is_cache ||
 			empty( $id ) ||
 			empty( $cache_type )
 		) {
@@ -451,6 +459,6 @@ class Give_Cache {
 }
 
 // Initialize
-Give_Cache::get_instance()->setup_hooks();
+Give_Cache::get_instance()->setup();
 
 // @todo Check if we can implement GIVE_CACHE for persistent and non-persistent cache.
