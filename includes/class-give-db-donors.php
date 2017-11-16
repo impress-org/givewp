@@ -210,6 +210,8 @@ class Give_DB_Donors extends Give_DB {
 			 */
 			Give()->donor_meta->delete_all_meta( $donor->id );
 
+			// Cache already deleted in delete_all_meta fn.
+
 			return $wpdb->delete( $this->table_name, array( 'id' => $donor->id ), array( '%d' ) );
 
 		} else {
@@ -232,6 +234,7 @@ class Give_DB_Donors extends Give_DB {
 	 * @return bool|int
 	 */
 	public function delete_by_user_id( $user_id = false ) {
+		global $wpdb;
 
 		if ( empty( $user_id ) ) {
 			return false;
@@ -247,7 +250,7 @@ class Give_DB_Donors extends Give_DB {
 			Give()->donor_meta->delete_all_meta( $donor->id );
 		}
 
-		global $wpdb;
+		// Cache is already deleted in delete_all_meta fn.
 
 		return $wpdb->delete( $this->table_name, array( 'user_id' => $user_id ), array( '%d' ) );
 	}
