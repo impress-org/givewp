@@ -53,6 +53,17 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							'type' => 'title',
 						),
 						array(
+							'name'    => __( 'Cache', 'give' ),
+							'desc'    => __( 'If caching enbaled then plugin start caching custom post type related queries and reduce load from your site.', 'give' ),
+							'id'      => 'cache',
+							'type'    => 'radio_inline',
+							'default' => 'enabled',
+							'options' => array(
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							),
+						),
+						array(
 							'name'    => __( 'Remove Data on Uninstall', 'give' ),
 							'desc'    => __( 'When the plugin is deleted, completely remove all Give data. This includes all Give settings, forms, form meta, donor, donor data, donations. Everything.', 'give' ),
 							'id'      => 'uninstall_on_delete',
