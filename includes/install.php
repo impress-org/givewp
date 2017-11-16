@@ -17,7 +17,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Install
  *
- * Runs on plugin install by setting up the post types, custom taxonomies, flushing rewrite rules to initiate the new 'donations' slug and also creates the plugin and populates the settings fields for those plugin pages. After successful install, the user is redirected to the Give Welcome screen.
+ * Runs on plugin install by setting up the post types, custom taxonomies, flushing rewrite rules to initiate the new
+ * 'donations' slug and also creates the plugin and populates the settings fields for those plugin pages. After
+ * successful install, the user is redirected to the Give Welcome screen.
  *
  * @since 1.0
  *
@@ -155,16 +157,17 @@ function give_run_install() {
 /**
  * Network Activated New Site Setup.
  *
- * When a new site is created when Give is network activated this function runs the appropriate install function to set up the site for Give.
+ * When a new site is created when Give is network activated this function runs the appropriate install function to set
+ * up the site for Give.
  *
  * @since      1.3.5
  *
- * @param  int $blog_id The Blog ID created.
- * @param  int $user_id The User ID set as the admin.
- * @param  string $domain The URL.
- * @param  string $path Site Path.
- * @param  int $site_id The Site ID.
- * @param  array $meta Blog Meta.
+ * @param  int    $blog_id The Blog ID created.
+ * @param  int    $user_id The User ID set as the admin.
+ * @param  string $domain  The URL.
+ * @param  string $path    Site Path.
+ * @param  int    $site_id The Site ID.
+ * @param  array  $meta    Blog Meta.
  */
 function give_on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
 
@@ -186,8 +189,8 @@ add_action( 'wpmu_new_blog', 'give_on_create_blog', 10, 6 );
  *
  * @since  1.4.3
  *
- * @param  array $tables The tables to drop.
- * @param  int $blog_id The Blog ID being deleted.
+ * @param  array $tables  The tables to drop.
+ * @param  int   $blog_id The Blog ID being deleted.
  *
  * @return array          The tables to drop.
  */
@@ -355,7 +358,7 @@ function give_get_default_settings() {
 		// Default email receipt message.
 		'donation_receipt'                            => give_get_default_donation_receipt_email(),
 
-		'donor_default_user_role'                     => 'give_donor',
+		'donor_default_user_role' => 'give_donor',
 
 	);
 
@@ -392,10 +395,10 @@ function give_get_default_agreement_text() {
  *
  * @return void
  */
-function give_create_pages(){
+function give_create_pages() {
 
 	// Bailout if pages already created.
-	if( get_option( 'give_install_pages_created') ) {
+	if ( get_option( 'give_install_pages_created' ) ) {
 		return false;
 	}
 
@@ -455,10 +458,11 @@ function give_create_pages(){
 		$options['history_page'] = $history;
 	}
 
-	if( ! empty( $options ) ) {
+	if ( ! empty( $options ) ) {
 		update_option( 'give_settings', array_merge( give_get_settings(), $options ) );
 	}
 
 	add_option( 'give_install_pages_created', 1, '', 'no' );
 }
-add_action( 'admin_init', 'give_create_pages', -1 );
+
+add_action( 'admin_init', 'give_create_pages', - 1 );
