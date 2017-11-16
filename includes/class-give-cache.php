@@ -162,6 +162,8 @@ class Give_Cache {
 	/**
 	 * Delete cache.
 	 *
+	 * Note: only for internal use
+	 *
 	 * @since  1.8.7
 	 *
 	 * @param  string|array $cache_keys
@@ -199,6 +201,8 @@ class Give_Cache {
 
 	/**
 	 * Delete all logging cache.
+	 *
+	 * Note: only for internal use
 	 *
 	 * @since  1.8.7
 	 * @access public
@@ -252,6 +256,8 @@ class Give_Cache {
 
 	/**
 	 * Get list of options like.
+	 *
+	 * Note: only for internal use
 	 *
 	 * @since  1.8.7
 	 * @access public
