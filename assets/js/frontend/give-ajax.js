@@ -192,7 +192,7 @@ jQuery(document).ready(function ($) {
 				this_form.find('.give_errors').remove();
 				this_form.find('input[type="submit"].give-submit').before(data);
 
-				// Unable the form donation button.
+				// Enable the form donation button.
 				Give.form.fn.disable( this_form, false );
 			}
 		});
