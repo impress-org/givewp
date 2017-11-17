@@ -170,7 +170,10 @@ jQuery(document).ready(function ($) {
 		var complete_purchase_val = $(this).val();
 
 		//Update submit button text
-		$(this).val(give_global_vars.purchase_loading);
+		$( this ).val( give_global_vars.purchase_loading );
+
+		// Disable the form donation button.
+		Give.form.fn.disable( this_form, true );
 
         //Submit form via AJAX
         $.post(give_global_vars.ajaxurl, this_form.serialize() + '&action=give_process_donation&give_ajax=true', function (data) {
@@ -188,8 +191,10 @@ jQuery(document).ready(function ($) {
 				loading_animation.fadeOut();
 				this_form.find('.give_errors').remove();
 				this_form.find('input[type="submit"].give-submit').before(data);
-			}
 
+				// Unable the form donation button.
+				Give.form.fn.disable( this_form, false );
+			}
 		});
 
 	});
