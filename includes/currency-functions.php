@@ -130,7 +130,7 @@ function give_get_currencies_list() {
 			'admin_label' => __( 'Czech Koruna (Kč)', 'give' ),
 			'symbol'      => '&#75;&#269;',
 			'setting'     => array(
-				'currency_position'   => 'before',
+				'currency_position'   => 'after',
 				'thousands_separator' => ',',
 				'decimal_separator'   => '.',
 				'number_decimals'     => 2,
@@ -160,7 +160,7 @@ function give_get_currencies_list() {
 			'admin_label' => __( 'Hungarian Forint (Ft)', 'give' ),
 			'symbol'      => '&#70;&#116;',
 			'setting'     => array(
-				'currency_position'   => 'before',
+				'currency_position'   => 'after',
 				'thousands_separator' => ',',
 				'decimal_separator'   => '.',
 				'number_decimals'     => 2,
@@ -170,7 +170,7 @@ function give_get_currencies_list() {
 			'admin_label' => __( 'Israeli Shekel (₪)', 'give' ),
 			'symbol'      => '&#8362;',
 			'setting'     => array(
-				'currency_position'   => 'before',
+				'currency_position'   => 'after',
 				'thousands_separator' => ',',
 				'decimal_separator'   => '.',
 				'number_decimals'     => 2,
@@ -250,7 +250,7 @@ function give_get_currencies_list() {
 			'admin_label' => __( 'Polish Zloty (zł)', 'give' ),
 			'symbol'      => '&#122;&#322;',
 			'setting'     => array(
-				'currency_position'   => 'before',
+				'currency_position'   => 'after',
 				'thousands_separator' => ' ',
 				'decimal_separator'   => ',',
 				'number_decimals'     => 2,
@@ -340,7 +340,7 @@ function give_get_currencies_list() {
 			'admin_label' => __( 'Turkish Lira (₺)', 'give' ),
 			'symbol'      => '&#8378;',
 			'setting'     => array(
-				'currency_position'   => 'before',
+				'currency_position'   => 'after',
 				'thousands_separator' => ',',
 				'decimal_separator'   => '.',
 				'number_decimals'     => 2,
@@ -490,9 +490,9 @@ function give_get_currencies_list() {
 			'admin_label' => __( 'Bulgarian lev (лв)', 'give' ),
 			'symbol'      => '&#1083;&#1074;.',
 			'setting'     => array(
-				'currency_position'   => 'before',
-				'thousands_separator' => ',',
-				'decimal_separator'   => '.',
+				'currency_position'   => 'after',
+				'thousands_separator' => ' ',
+				'decimal_separator'   => ',',
 				'number_decimals'     => 2,
 			),
 		),
@@ -503,7 +503,7 @@ function give_get_currencies_list() {
 				'currency_position'   => 'before',
 				'thousands_separator' => ',',
 				'decimal_separator'   => '.',
-				'number_decimals'     => 2,
+				'number_decimals'     => 3,
 			),
 		),
 		'BIF' => array(
@@ -592,7 +592,7 @@ function give_get_currencies_list() {
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => ',',
-				'decimal_separator'   => '.',
+				'decimal_separator'   => '',
 				'number_decimals'     => 0,
 			),
 		),
@@ -692,7 +692,7 @@ function give_get_currencies_list() {
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => ',',
-				'decimal_separator'   => '.',
+				'decimal_separator'   => '',
 				'number_decimals'     => 0,
 			),
 		),
@@ -710,7 +710,7 @@ function give_get_currencies_list() {
 			'admin_label' => __( 'Algerian dinar (د.ج)', 'give' ),
 			'symbol'      => '&#x62f;.&#x62c;',
 			'setting'     => array(
-				'currency_position'   => 'before',
+				'currency_position'   => 'after',
 				'thousands_separator' => ',',
 				'decimal_separator'   => '.',
 				'number_decimals'     => 2,
@@ -860,7 +860,7 @@ function give_get_currencies_list() {
 			'admin_label' => __( 'Croatian kuna (kn)', 'give' ),
 			'symbol'      => '&#107;&#110;',
 			'setting'     => array(
-				'currency_position'   => 'before',
+				'currency_position'   => 'after',
 				'thousands_separator' => '.',
 				'decimal_separator'   => ',',
 				'number_decimals'     => 2,
@@ -900,7 +900,7 @@ function give_get_currencies_list() {
 			'admin_label' => __( 'Iraqi dinar (ع.د)', 'give' ),
 			'symbol'      => '&#x639;.&#x62f;',
 			'setting'     => array(
-				'currency_position'   => 'before',
+				'currency_position'   => 'after',
 				'thousands_separator' => ',',
 				'decimal_separator'   => '.',
 				'number_decimals'     => 3,
@@ -920,7 +920,7 @@ function give_get_currencies_list() {
 			'admin_label' => __( 'Icelandic króna (kr)', 'give' ),
 			'symbol'      => '&#107;&#114;',
 			'setting'     => array(
-				'currency_position'   => 'before',
+				'currency_position'   => 'after',
 				'thousands_separator' => '.',
 				'decimal_separator'   => '',
 				'number_decimals'     => 2,
@@ -970,7 +970,7 @@ function give_get_currencies_list() {
 			'admin_label' => __( 'Kyrgyzstani som (лв)', 'give' ),
 			'symbol'      => '&#x441;&#x43e;&#x43c;',
 			'setting'     => array(
-				'currency_position'   => 'before',
+				'currency_position'   => 'after',
 				'thousands_separator' => ',',
 				'decimal_separator'   => '.',
 				'number_decimals'     => 2,
@@ -992,7 +992,7 @@ function give_get_currencies_list() {
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => ',',
-				'decimal_separator'   => '.',
+				'decimal_separator'   => '',
 				'number_decimals'     => 0,
 			),
 		),
@@ -1051,8 +1051,8 @@ function give_get_currencies_list() {
 			'symbol'      => '&#76;&#163;',
 			'setting'     => array(
 				'currency_position'   => 'before',
-				'thousands_separator' => '',
-				'decimal_separator'   => ' ',
+				'thousands_separator' => ' ',
+				'decimal_separator'   => ',',
 				'number_decimals'     => 2,
 			),
 		),
@@ -1300,7 +1300,7 @@ function give_get_currencies_list() {
 			'admin_label' => __( 'Transnistrian ruble (p.)', 'give' ),
 			'symbol'      => '&#112;&#46;',
 			'setting'     => array(
-				'currency_position'   => 'before',
+				'currency_position'   => 'after',
 				'thousands_separator' => ',',
 				'decimal_separator'   => '.',
 				'number_decimals'     => 2,
@@ -1330,7 +1330,7 @@ function give_get_currencies_list() {
 			'admin_label' => __( 'Romanian leu (L)', 'give' ),
 			'symbol'      => '&#76;',
 			'setting'     => array(
-				'currency_position'   => 'before',
+				'currency_position'   => 'after',
 				'thousands_separator' => '.',
 				'decimal_separator'   => ',',
 				'number_decimals'     => 2,
@@ -1340,9 +1340,9 @@ function give_get_currencies_list() {
 			'admin_label' => __( 'Serbian dinar (Дин.)', 'give' ),
 			'symbol'      => '&#x434;&#x438;&#x43d;&#46;',
 			'setting'     => array(
-				'currency_position'   => 'before',
-				'thousands_separator' => ',',
-				'decimal_separator'   => '.',
+				'currency_position'   => 'after',
+				'thousands_separator' => '.',
+				'decimal_separator'   => ',',
 				'number_decimals'     => 2,
 			),
 		),
@@ -1352,7 +1352,7 @@ function give_get_currencies_list() {
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => ',',
-				'decimal_separator'   => '.',
+				'decimal_separator'   => '',
 				'number_decimals'     => 0,
 			),
 		),
@@ -1590,7 +1590,7 @@ function give_get_currencies_list() {
 			'admin_label' => __( 'Vietnamese đồng (₫)', 'give' ),
 			'symbol'      => '&#8363;',
 			'setting'     => array(
-				'currency_position'   => 'before',
+				'currency_position'   => 'after',
 				'thousands_separator' => '.',
 				'decimal_separator'   => ',',
 				'number_decimals'     => 2,
