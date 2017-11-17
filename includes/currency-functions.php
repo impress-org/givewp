@@ -398,7 +398,7 @@ function give_get_currencies_list() {
 		),
 		'AMD' => array(
 			'admin_label' => __( 'Armenian dram (֏)', 'give' ),
-			'symbol'      => '&#1423;',
+			'symbol'      => 'AMD', // Add backward compatibility. Using AMD in place of &#1423;
 			'setting'     => array(
 				'currency_position'   => 'before',
 				'thousands_separator' => '.',
