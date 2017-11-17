@@ -2024,7 +2024,6 @@ function give_is_right_to_left_supported_currency( $currency = '' ) {
 			'SAR',
 			'TND',
 			'YER',
-			'IRR',
 		)
 	);
 
