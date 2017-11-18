@@ -259,7 +259,7 @@ class Give_Helper_Form extends Give_Unit_Test_Case {
 		}
 
 		$actual_amount = number_format( (float) $multi_level_donation_data['_give_amount'], 2 );
-		$custom_amount = number_format( (float) $multi_level_donation_data['_give_amount'] + 10, 2 );
+		$custom_amount = number_format( (float) $multi_level_donation_data['_give_amount'] + 40, 2 );
 
 		$donation = wp_parse_args(
 			( ! empty( $args['donation'] ) ? $args['donation'] : array() ),
@@ -276,7 +276,7 @@ class Give_Helper_Form extends Give_Unit_Test_Case {
 					'give-form-id'    => $multi_level_form->ID,
 					'give-form-title' => 'Test Donation Form',
 					'give-amount'     => $is_custom_amount ? $custom_amount : $actual_amount,
-					'give-price-id'   => $multi_level_donation_data['_give_id']['level_id'],
+					'give-price-id'   => $is_custom_amount ? 'custom' : $multi_level_donation_data['_give_id']['level_id'],
 				),
 			)
 		);
