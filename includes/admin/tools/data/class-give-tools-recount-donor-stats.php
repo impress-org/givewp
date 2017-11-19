@@ -51,7 +51,7 @@ class Give_Tools_Recount_Donor_Stats extends Give_Batch_Export {
 	 * @access public
 	 * @since 1.5
 	 *
-	 * @return array $data The data for the CSV file
+	 * @return array|bool $data The data for the CSV file
 	 */
 	public function get_data() {
 

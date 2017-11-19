@@ -95,7 +95,7 @@ function give_connect_donor_to_wpuser( $user_id, $user_data ) {
 	/* @var Give_Donor $donor */
 	$donor = new Give_Donor( $user_data['user_email'] );
 
-	// Validate donor id and check if do not is already connect to wp user or not.
+	// Validate donor id and check if do nor is already connect to wp user or not.
 	if ( $donor->id && ! $donor->user_id ) {
 
 		// Update donor user_id.
@@ -122,30 +122,49 @@ add_action( 'give_insert_user', 'give_connect_donor_to_wpuser', 10, 2 );
  *
  * Note: if location of site changes then run cron to validate licenses
  *
- * @since  1.7
+ * @since   1.7
+ * @updated 1.8.15 - Resolved issue with endless looping because of URL mismatches.
  * @return void
  */
 function give_validate_license_when_site_migrated() {
 	// Store current site address if not already stored.
-	$homeurl = home_url();
-	if ( ! get_option( 'give_site_address_before_migrate' ) ) {
+	$home_url_parts              = parse_url( home_url() );
+	$home_url                    = isset( $home_url_parts['host'] ) ? $home_url_parts['host'] : false;
+	$home_url                    .= isset( $home_url_parts['path'] ) ? $home_url_parts['path'] : '';
+	$site_address_before_migrate = get_option( 'give_site_address_before_migrate' );
+
+	// Need $home_url to proceed
+	if ( ! $home_url ) {
+		return;
+	}
+
+	// Save site address
+	if ( ! $site_address_before_migrate ) {
 		// Update site address.
-		update_option( 'give_site_address_before_migrate', $homeurl );
+		update_option( 'give_site_address_before_migrate', $home_url );
 
 		return;
 	}
 
-	if ( $homeurl !== get_option( 'give_site_address_before_migrate' ) ) {
+	// Backwards compat. for before when we were storing URL scheme.
+	if ( strpos( $site_address_before_migrate, 'http' ) ) {
+		$site_address_before_migrate = parse_url( $site_address_before_migrate );
+		$site_address_before_migrate = isset( $site_address_before_migrate['host'] ) ? $site_address_before_migrate['host'] : false;
+		// Add path for multisite installs.
+		$site_address_before_migrate .= isset( $site_address_before_migrate['path'] ) ? $site_address_before_migrate['path'] : '';
+	}
+
+	// If the two URLs don't match run CRON.
+	if ( $home_url !== $site_address_before_migrate ) {
 		// Immediately run cron.
 		wp_schedule_single_event( time(), 'give_validate_license_when_site_migrated' );
 
 		// Update site address.
-		update_option( 'give_site_address_before_migrate', home_url() );
+		update_option( 'give_site_address_before_migrate', $home_url );
 	}
 
 }
 
-add_action( 'init', 'give_validate_license_when_site_migrated' );
 add_action( 'admin_init', 'give_validate_license_when_site_migrated' );
 
 
@@ -284,7 +303,7 @@ function _give_save_donor_billing_address( $payment_id ) {
 	$donor->add_address( 'billing[]', $donation->address );
 }
 
-add_action( 'save_post_give_payment', '_give_save_donor_billing_address', 9999 );
+add_action( 'give_complete_donation', '_give_save_donor_billing_address', 9999 );
 
 
 /**
@@ -312,3 +331,102 @@ function __give_update_log_form_id( $new_form_id, $payment_id ) {
 	// Delete cache.
 	Give()->logs->delete_cache();
 }
+
+/**
+ * Update Donor Information when User Profile is updated from admin.
+ * Note: for internal use only.
+ *
+ * @param int $user_id
+ *
+ * @access public
+ * @since  2.0
+ *
+ * @return bool
+ */
+function give_update_donor_name_on_user_update( $user_id = 0 ) {
+
+	if ( current_user_can( 'edit_user', $user_id ) ) {
+
+		$donor = new Give_Donor( $user_id, true );
+
+		// Bailout, if donor doesn't exists.
+		if ( ! $donor ) {
+			return false;
+		}
+
+		// Get User First name and Last name.
+		$first_name = ( $_POST['first_name'] ) ? give_clean( $_POST['first_name'] ) : get_user_meta( $user_id, 'first_name', true );
+		$last_name  = ( $_POST['last_name'] ) ? give_clean( $_POST['last_name'] ) : get_user_meta( $user_id, 'last_name', true );
+		$full_name  = strip_tags( wp_unslash( trim( "{$first_name} {$last_name}" ) ) );
+
+		// Assign User First name and Last name to Donor.
+		Give()->donors->update( $donor->id, array( 'name' => $full_name ) );
+		Give()->donor_meta->update_meta( $donor->id, '_give_donor_first_name', $first_name );
+		Give()->donor_meta->update_meta( $donor->id, '_give_donor_last_name', $last_name );
+
+	}
+}
+
+add_action( 'edit_user_profile_update', 'give_update_donor_name_on_user_update', 10 );
+add_action( 'personal_options_update', 'give_update_donor_name_on_user_update', 10 );
+
+
+/**
+ * Updates the email address of a donor record when the email on a user is updated
+ * Note: for internal use only.
+ *
+ * @since  1.4.3
+ * @access public
+ *
+ * @param  int          $user_id       User ID.
+ * @param  WP_User|bool $old_user_data User data.
+ *
+ * @return bool
+ */
+function give_update_donor_email_on_user_update( $user_id = 0, $old_user_data = false ) {
+
+	$donor = new Give_Donor( $user_id, true );
+
+	if ( ! $donor ) {
+		return false;
+	}
+
+	$user = get_userdata( $user_id );
+
+	if ( ! empty( $user ) && $user->user_email !== $donor->email ) {
+
+		$success = Give()->donors->update( $donor->id, array( 'email' => $user->user_email ) );
+
+		if ( $success ) {
+			// Update some payment meta if we need to
+			$payments_array = explode( ',', $donor->payment_ids );
+
+			if ( ! empty( $payments_array ) ) {
+
+				foreach ( $payments_array as $payment_id ) {
+
+					give_update_payment_meta( $payment_id, 'email', $user->user_email );
+
+				}
+
+			}
+
+			/**
+			 * Fires after updating donor email on user update.
+			 *
+			 * @since 1.4.3
+			 *
+			 * @param  WP_User    $user  WordPress User object.
+			 * @param  Give_Donor $donor Give donor object.
+			 */
+			do_action( 'give_update_donor_email_on_user_update', $user, $donor );
+
+		}
+
+	}
+
+}
+
+add_action( 'profile_update', 'give_update_donor_email_on_user_update', 10, 2 );
+
+

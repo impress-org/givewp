@@ -28,6 +28,7 @@ Layout
 	}
 
 	.give-form-title {
+		padding: 0;
 		margin: 0 0 15px;
 	}
 
@@ -140,6 +141,7 @@ form.give-form {
 	.give-hidden {
 		display: none;
 	}
+
 	.give-tooltip {
 		margin: 0 3px;
 		padding: 0;
@@ -152,9 +154,9 @@ form.give-form {
 		}
 	}
 
-	legend,
 	h3.give-section-break,
-	h4.give-section-break {
+	h4.give-section-break,
+	legend {
 		font-size: 1.15em;
 		font-weight: bold;
 		margin: 10px 0 15px;
@@ -278,7 +280,9 @@ form.give-form {
 		}
 
 	}
-	.give-disabled, [disabled]{cursor: not-allowed;}
+	.give-disabled, [disabled] {
+		cursor: not-allowed;
+	}
 }
 
 /*---------------------------------
@@ -532,7 +536,7 @@ CC Validation
 #give_purchase_form_wrap {
 	input.give-input.card-number.valid,
 	input.give-input.card-cvc.valid,
-	input.give-input.card-expiry.valid{
+	input.give-input.card-expiry.valid {
 		background-image: url('../assets/images/tick.png');
 		background-repeat: no-repeat;
 		background-position: right 10px top 50%;
@@ -756,6 +760,17 @@ Basic Button Style
 		background: #dbdbdb;
 	}
 
+}
+
+/*---------------------------------
+Profile Editor Form
+-----------------------------------*/
+#give_profile_editor_form {
+	legend {
+		width: auto;
+		padding: 0 5px 5px 5px;
+		border-bottom: 0;
+	}
 }
 
 /*---------------------------------

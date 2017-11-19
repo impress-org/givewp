@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since  1.0
  *
- * @param string $data
+ * @param string $data Data.
  *
  * @uses   give_pdf
  */
@@ -35,8 +35,11 @@ function give_generate_pdf( $data ) {
 		wp_die( __( 'Nonce verification failed.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
-	require_once GIVE_PLUGIN_DIR . '/includes/libraries/fpdf/fpdf.php';
-	require_once GIVE_PLUGIN_DIR . '/includes/libraries/fpdf/give_pdf.php';
+	if ( ! file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/give-pdf.php' ) ) {
+		wp_die( __( 'Dependency missing.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+	}
+
+	require_once GIVE_PLUGIN_DIR . '/includes/libraries/give-pdf.php';
 
 	$daterange = utf8_decode(
 		sprintf(
@@ -47,12 +50,27 @@ function give_generate_pdf( $data ) {
 		)
 	);
 
-    $categories_enabled = give_is_setting_enabled( give_get_option( 'categories', 'disabled' ) );
-    $tags_enabled = give_is_setting_enabled( give_get_option( 'tags', 'disabled' ) );
+	$categories_enabled = give_is_setting_enabled( give_get_option( 'categories', 'disabled' ) );
+	$tags_enabled       = give_is_setting_enabled( give_get_option( 'tags', 'disabled' ) );
 
-	$pdf = new give_pdf();
+	$pdf          = new Give_PDF( 'L', 'mm', 'A', true, 'UTF-8', false );
+	$default_font = apply_filters( 'give_pdf_default_font', 'Helvetica' );
+	$custom_font  = 'dejavusans';
+	$font_style   = '';
+
+	if (
+		file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/tcpdf/fonts/CODE2000.TTF' ) &&
+
+		// RIAL exist for backward compatibility.
+		in_array( give_get_currency(), array( 'RIAL', 'RUB', 'IRR' ) )
+	) {
+		TCPDF_FONTS::addTTFfont( GIVE_PLUGIN_DIR . '/includes/libraries/tcpdf/fonts/CODE2000.TTF', '' );
+		$custom_font = 'CODE2000';
+		$font_style  = 'B';
+	}
+
 	$pdf->AddPage( 'L', 'A4' );
-
+	$pdf->setImageScale( 1.5 );
 	$pdf->SetTitle( utf8_decode( __( 'Donation report for the current year for all forms', 'give' ) ) );
 	$pdf->SetAuthor( utf8_decode( __( 'Give - Democratizing Generosity', 'give' ) ) );
 	$pdf->SetCreator( utf8_decode( __( 'Give - Democratizing Generosity', 'give' ) ) );
@@ -62,42 +80,51 @@ function give_generate_pdf( $data ) {
 	$pdf->SetMargins( 8, 8, 8 );
 	$pdf->SetX( 8 );
 
-	$pdf->SetFont( 'Helvetica', '', 16 );
+	$pdf->SetFont( $default_font, '', 16 );
 	$pdf->SetTextColor( 50, 50, 50 );
 	$pdf->Cell( 0, 3, utf8_decode( __( 'Donation report for the current year for all forms', 'give' ) ), 0, 2, 'L', false );
 
-	$pdf->SetFont( 'Helvetica', '', 13 );
-	$pdf->Ln();
+	$pdf->SetFont( $default_font, '', 13 );
 	$pdf->SetTextColor( 150, 150, 150 );
+	$pdf->Ln( 1 );
 	$pdf->Cell( 0, 6, utf8_decode( __( 'Date Range: ', 'give' ) ) . $daterange, 0, 2, 'L', false );
 	$pdf->Ln();
 	$pdf->SetTextColor( 50, 50, 50 );
-	$pdf->SetFont( 'Helvetica', '', 14 );
+	$pdf->SetFont( $default_font, '', 14 );
 	$pdf->Cell( 0, 10, utf8_decode( __( 'Table View', 'give' ) ), 0, 2, 'L', false );
-	$pdf->SetFont( 'Helvetica', '', 12 );
+	$pdf->SetFont( $default_font, '', 12 );
 
 	$pdf->SetFillColor( 238, 238, 238 );
-	$pdf->Cell( 70, 6, utf8_decode( __( 'Form Name', 'give' ) ), 1, 0, 'L', true );
-	$pdf->Cell( 30, 6, utf8_decode( __( 'Price', 'give' ) ), 1, 0, 'L', true );
+	$pdf->SetTextColor( 0, 0, 0, 100 ); // Set Black color.
+	$pdf->Cell( 50, 6, utf8_decode( __( 'Form Name', 'give' ) ), 1, 0, 'L', true );
+	$pdf->Cell( 50, 6, utf8_decode( __( 'Price', 'give' ) ), 1, 0, 'L', true );
 
-    // Display Categories Heading only, if user has opted for it.
-    if ( $categories_enabled ) {
-	   $pdf->Cell( 45, 6, utf8_decode( __( 'Categories', 'give' ) ), 1, 0, 'L', true );
-    }
+	// Display Categories Heading only, if user has opted for it.
+	if ( $categories_enabled ) {
+		$pdf->Cell( 45, 6, utf8_decode( __( 'Categories', 'give' ) ), 1, 0, 'L', true );
+	}
 
-    // Display Tags Heading only, if user has opted for it.
-    if ( $tags_enabled ) {
-	   $pdf->Cell( 45, 6, utf8_decode( __( 'Tags', 'give' ) ), 1, 0, 'L', true );
-    }
+	// Display Tags Heading only, if user has opted for it.
+	if ( $tags_enabled ) {
+		$pdf->Cell( 45, 6, utf8_decode( __( 'Tags', 'give' ) ), 1, 0, 'L', true );
+	}
 
 	$pdf->Cell( 45, 6, utf8_decode( __( 'Number of Donations', 'give' ) ), 1, 0, 'L', true );
 	$pdf->Cell( 45, 6, utf8_decode( __( 'Income to Date', 'give' ) ), 1, 1, 'L', true );
 
+	// Set Custom Font to support various currencies.
+	$pdf->SetFont( apply_filters( 'give_pdf_custom_font', $custom_font ), $font_style, 12 );
+
 	$year       = date( 'Y' );
-	$give_forms = get_posts( array( 'post_type' => 'give_forms', 'year' => $year, 'posts_per_page' => - 1 ) );
+	$give_forms = get_posts( array(
+		'post_type'      => 'give_forms',
+		'year'           => $year,
+		'posts_per_page' => - 1,
+		'supply_filter'  => false,
+	) );
 
 	if ( $give_forms ) {
-		$pdf->SetWidths( array( 70, 30, 45, 45, 45, 45 ) );
+		$pdf->SetWidths( array( 50, 50, 45, 45, 45, 45 ) );
 
 		foreach ( $give_forms as $form ):
 			$pdf->SetFillColor( 255, 255, 255 );
@@ -105,88 +132,70 @@ function give_generate_pdf( $data ) {
 			$title = $form->post_title;
 
 			if ( give_has_variable_prices( $form->ID ) ) {
-
-				$prices = give_get_variable_prices( $form->ID );
-
-				$first = $prices[0]['_give_amount'];
-				$last  = array_pop( $prices );
-				$last  = $last['_give_amount'];
-
-				if ( $first < $last ) {
-					$min = $first;
-					$max = $last;
-				} else {
-					$min = $last;
-					$max = $first;
-				}
-
-				$price = give_currency_filter( give_format_amount( $min, array( 'sanitize' => false ) ), '', true ) . ' - ' . give_currency_filter( give_format_amount( $max ), '', true );
+				$price = html_entity_decode( give_price_range( $form->ID, false ) );
 			} else {
 				$price = give_currency_filter( give_get_form_price( $form->ID ), '', true );
 			}
 
-            // Display Categories Data only, if user has opted for it.
-            if ( $categories_enabled ) {
-                $categories = get_the_term_list( $form->ID, 'give_forms_category', '', ', ', '' );
-                $categories = ! is_wp_error( $categories ) ? strip_tags( $categories ) : '';
-            }
-
-            // Display Tags Data only, if user has opted for it.
-            if ( $tags_enabled ) {
-                $tags = get_the_term_list( $form->ID, 'give_forms_tag', '', ', ', '' );
-                $tags = ! is_wp_error( $tags ) ? strip_tags( $tags ) : '';
-            }
-
-			$sales    = give_get_form_sales_stats( $form->ID );
-			$link     = get_permalink( $form->ID );
-			$earnings = give_currency_filter( give_get_form_earnings_stats( $form->ID ), '', true );
-
-			if ( function_exists( 'iconv' ) ) {
-				// Ensure characters like euro; are properly converted.
-				$price    = iconv( 'UTF-8', 'windows-1252', utf8_encode( $price ) );
-				$earnings = iconv( 'UTF-8', 'windows-1252', utf8_encode( $earnings ) );
+			// Display Categories Data only, if user has opted for it.
+			$categories = array();
+			if ( $categories_enabled ) {
+				$categories = get_the_term_list( $form->ID, 'give_forms_category', '', ', ', '' );
+				$categories = ! is_wp_error( $categories ) ? strip_tags( $categories ) : '';
 			}
 
-            // This will help filter data before appending it to PDF Receipt.
-            $prepare_pdf_data = array();
-            $prepare_pdf_data[] = $title;
-            $prepare_pdf_data[] = $price;
+			// Display Tags Data only, if user has opted for it.
+			$tags = array();
+			if ( $tags_enabled ) {
+				$tags = get_the_term_list( $form->ID, 'give_forms_tag', '', ', ', '' );
+				$tags = ! is_wp_error( $tags ) ? strip_tags( $tags ) : '';
+			}
 
-            // Append Categories Data only, if user has opted for it.
-            if ( $categories_enabled ) {
-                $prepare_pdf_data[] = $categories;
-            }
+			$sales    = give_get_form_sales_stats( $form->ID );
+			$earnings = give_currency_filter( give_format_amount( give_get_form_earnings_stats( $form->ID ), array( 'sanitize' => false, ) ), '', true );
 
-            // Append Tags Data only, if user has opted for it.
-            if ( $tags_enabled ) {
-                $prepare_pdf_data[] = $tags;
-            }
+			// This will help filter data before appending it to PDF Receipt.
+			$prepare_pdf_data   = array();
+			$prepare_pdf_data[] = $title;
+			$prepare_pdf_data[] = $price;
 
-            $prepare_pdf_data[] = $sales;
-            $prepare_pdf_data[] = $earnings;
+			// Append Categories Data only, if user has opted for it.
+			if ( $categories_enabled ) {
+				$prepare_pdf_data[] = $categories;
+			}
+
+			// Append Tags Data only, if user has opted for it.
+			if ( $tags_enabled ) {
+				$prepare_pdf_data[] = $tags;
+			}
+
+			$prepare_pdf_data[] = $sales;
+			$prepare_pdf_data[] = $earnings;
 
 			$pdf->Row( $prepare_pdf_data );
+
 		endforeach;
 	} else {
 
-        // Fix: Minor Styling Alignment Issue for PDF
-        if( $categories_enabled && $tags_enabled ) {
-            $pdf->SetWidths( array( 280 ) );
-        } elseif( $categories_enabled || $tags_enabled ) {
-            $pdf->SetWidths( array( 235 ) );
-        } else {
-            $pdf->SetWidths( array( 190 ) );
-        }
-
-        $title = utf8_decode( __( 'No forms found.', 'give' ) );
-		$pdf->Row( array( $title ) );
-	}
-
+		// Fix: Minor Styling Alignment Issue for PDF.
+		if ( $categories_enabled && $tags_enabled ) {
+			$no_found_width = 280;
+		} elseif ( $categories_enabled || $tags_enabled ) {
+			$no_found_width = 235;
+		} else {
+			$no_found_width = 190;
+		}
+		$title = utf8_decode( __( 'No forms found.', 'give' ) );
+		$pdf->MultiCell( $no_found_width, 5, $title, 1, 'C', false, 1, '', '', true, 0, false, true, 0, 'T', false );
+	}// End if().
 	$pdf->Ln();
 	$pdf->SetTextColor( 50, 50, 50 );
-	$pdf->SetFont( 'Helvetica', '', 14 );
+	$pdf->SetFont( $default_font, '', 14 );
+
+	// Output Graph on a new page.
+	$pdf->AddPage( 'L', 'A4' );
 	$pdf->Cell( 0, 10, utf8_decode( __( 'Graph View', 'give' ) ), 0, 2, 'L', false );
-	$pdf->SetFont( 'Helvetica', '', 12 );
+	$pdf->SetFont( $default_font, '', 12 );
 
 	$image = html_entity_decode( urldecode( give_draw_chart_image() ) );
 	$image = str_replace( ' ', '%20', $image );
@@ -226,7 +235,7 @@ function give_draw_chart_image() {
 
 	while ( $i <= 12 ) :
 		$earnings .= give_get_earnings_by_date( null, $i, date( 'Y' ) ) . ",";
-		$sales .= give_get_sales_by_date( null, $i, date( 'Y' ) ) . ",";
+		$sales    .= give_get_sales_by_date( null, $i, date( 'Y' ) ) . ",";
 		$i ++;
 	endwhile;
 
@@ -257,7 +266,7 @@ function give_draw_chart_image() {
 		$earnings_array[8],
 		$earnings_array[9],
 		$earnings_array[10],
-		$earnings_array[11]
+		$earnings_array[11],
 	) );
 
 	$data->setLegend( __( 'Income', 'give' ) );
@@ -288,7 +297,7 @@ function give_draw_chart_image() {
 		$sales_array[8],
 		$sales_array[9],
 		$sales_array[10],
-		$sales_array[11]
+		$sales_array[11],
 	) );
 	$data->setLegend( __( 'Donations', 'give' ) );
 	$data->setColor( 'ff6c1c' );
@@ -316,7 +325,7 @@ function give_draw_chart_image() {
 		__( 'Sept', 'give' ),
 		__( 'Oct', 'give' ),
 		__( 'Nov', 'give' ),
-		__( 'Dec', 'give' )
+		__( 'Dec', 'give' ),
 	) );
 	$chart->addAxis( $x_axis );
 

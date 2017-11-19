@@ -19,6 +19,8 @@ $give_updates = Give_Updates::get_instance();
 <div class="wrap" id="poststuff">
 	<div id="give-updates">
 		<h1 id="give-updates-h1"><?php esc_html_e( 'Give - Updates', 'give' ); ?></h1>
+		<hr class="wp-header-end">
+
 		<div class="give-update-panel-content">
 			<p><?php printf( __( 'Give regularly receives new features, bug fixes, and enhancements. It is important to always stay up-to-date with latest version of Give core and its add-ons.  Please create a backup of your site before updating. To update add-ons be sure your <a href="%1$s">license keys</a> are activated.', 'give' ), 'https://givewp.com/my-account/' ); ?></p>
 		</div>
@@ -36,13 +38,20 @@ $give_updates = Give_Updates::get_instance();
 						<h2 class="hndle"><?php _e( 'Database Updates', 'give' ); ?></h2>
 						<div class="inside">
 							<div class="panel-content">
-								<p><?php echo sprintf( __( 'Give needs to update the database. <a href="%s">Update now ></a>', 'give' ), $db_update_url ); ?></p>
+								<p class="give-update-button"><?php echo sprintf( __( 'Give needs to update the database. <a href="%s">Update now</a>', 'give' ), $db_update_url ); ?></p>
 							</div>
 							<div class="progress-container give-hidden">
-								<p class="update-message" data-update-count="<?php echo $db_updates; ?>"
+								<p class="update-message"
+								   data-update-count="<?php echo $db_updates; ?>"
 								   data-resume-update="<?php echo $give_updates->resume_updates(); ?>">
-									<strong><?php echo sprintf( __( 'Update 1 of %s', 'give' ), $db_updates ); ?></strong></p>
+									<strong><?php echo sprintf( __( 'Update 1 of %s', 'give' ), $db_updates ); ?></strong>
+								</p>
 								<div class="progress-content"></div>
+							</div>
+
+							<div class="give-run-database-update">
+								<div class="notice-wrap give-clearfix">
+								</div>
 							</div>
 						</div>
 						<!-- .inside -->
@@ -62,7 +71,7 @@ $give_updates = Give_Updates::get_instance();
 						<h2 class="hndle"><?php _e( 'Add-on Updates', 'give' ); ?></h2>
 						<div class="inside">
 							<div class="panel-content">
-								<p><?php echo sprintf( __( 'There %1$s %2$s Give %3$s that %4$s to be updated. <a href="%5$s">Update now ></a>', 'give' ), _n( 'is', 'are', $plugin_updates, 'give' ), $plugin_updates, _n( 'add-on', 'add-ons', $plugin_updates, 'give' ), _n( 'needs', 'need', $plugin_updates, 'give' ), $plugin_update_url  ); ?></p>
+								<p><?php echo sprintf( __( 'There %1$s %2$s Give %3$s that %4$s to be updated. <a href="%5$s">Update now</a>', 'give' ), _n( 'is', 'are', $plugin_updates, 'give' ), $plugin_updates, _n( 'add-on', 'add-ons', $plugin_updates, 'give' ), _n( 'needs', 'need', $plugin_updates, 'give' ), $plugin_update_url  ); ?></p>
 								<?php include_once 'plugins-update-section.php'; ?>
 							</div>
 						</div>

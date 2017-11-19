@@ -170,6 +170,11 @@ input.give-text_medium {
 
 }
 
+div[id^="give-donor-"] {
+  display: block;
+  overflow: hidden;
+}
+
 //---------------------------------------------------
 // Responsive
 //---------------------------------------------------
@@ -330,6 +335,12 @@ Dashboard Columns
 
 input.shortcode-input {
 	width: 100%;
+}
+
+.price .give_price_range_low,
+.price .give_price_range_high,
+.price .give_price_range_sep{
+	display: inline-block;
 }
 
 /*-------------------------------------
@@ -497,7 +508,7 @@ ASIDE
 
 			.give-remove {
 				float: right;
-				width: 36px;
+				width: 22px;
 				height: 36px;
 				padding: 0;
 				display: block;
@@ -511,11 +522,11 @@ ASIDE
 			.give-remove:hover {
 				background-color: red;
 				color: white;
-				width: 30px;
-				height: 30px;
+				width: 22px;
+				height: 22px;
 				border-radius: 30px;
-				margin-top: 3px;
-				line-height: 28px;
+				margin-top: 8px;
+				line-height: 19px;
 			}
 
 			.give-row-head {
@@ -528,6 +539,10 @@ ASIDE
 
 			.give-row.closed .toggle-indicator:before {
 				content: "\f140";
+			}
+
+			.give-row .give-move .toggle-indicator:before {
+				margin-left: 7px;
 			}
 
 			.give-add-repeater-field-section-row-wrap {

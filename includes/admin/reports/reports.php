@@ -138,6 +138,11 @@ function give_get_reporting_view( $default = 'earnings' ) {
  * @return void
  */
 function give_reports_tab_reports() {
+
+	if( ! current_user_can( 'view_give_reports' ) ) {
+		wp_die( __( 'You do not have permission to access this report', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+	}
+
 	$current_view = 'earnings';
 	$views        = give_reports_default_views();
 
@@ -280,7 +285,7 @@ add_action( 'give_reports_view_gateways', 'give_reports_gateways_table' );
 function give_reports_earnings() {
 	?>
 	<div class="tablenav top reports-table-nav">
-		<h2 class="reports-earnings-title"><?php esc_html_e( 'Income Report', 'give' ); ?></h2>
+		<h2 class="reports-earnings-title screen-reader-text"><?php _e( 'Income Report', 'give' ); ?></h2>
 	</div>
 	<?php
 	give_reports_graph();

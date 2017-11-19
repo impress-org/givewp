@@ -23,7 +23,22 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return string
  */
-function give_donation_history() {
+function give_donation_history( $atts ) {
+
+	$donation_history_args = shortcode_atts( array(
+		'id'             => true,
+		'date'           => true,
+		'donor'          => false,
+		'amount'         => true,
+		'status'         => false,
+		'payment_method' => false,
+	), $atts, 'donation_history' );
+
+	// Always show receipt link.
+	$donation_history_args['details'] = true;
+
+	// Set Donation History Shortcode Arguments in session variable.
+	Give()->session->set( 'give_donation_history_args', $donation_history_args );
 
 	// If payment_key query arg exists, return receipt instead of donation history.
 	if ( isset( $_GET['payment_key'] ) ) {
@@ -244,7 +259,7 @@ function give_receipt_shortcode( $atts ) {
 
 	$email_access = give_get_option( 'email_access' );
 
-	// No payment_key found & Email Access is Turned on:
+	// No payment_key found & Email Access is Turned on.
 	if ( ! isset( $payment_key ) && give_is_setting_enabled( $email_access ) && ! Give()->email_access->token_exists ) {
 
 		ob_start();
@@ -331,6 +346,13 @@ function give_profile_editor_shortcode( $atts ) {
 
 	ob_start();
 
+	// Restrict access to donor profile, if donor and user are disconnected.
+	$is_donor_disconnected = get_user_meta( get_current_user_id(), '_give_is_donor_disconnected', true );
+	if( is_user_logged_in() && $is_donor_disconnected ) {
+		Give()->notices->print_frontend_notice( __( 'Your Donor and User profile are no longer connected. Please contact the site administrator.', 'give' ), true, 'error' );
+		return false;
+	}
+
 	give_get_template_part( 'shortcode', 'profile-editor' );
 
 	$display = ob_get_clean();
@@ -352,18 +374,21 @@ add_shortcode( 'give_profile_editor', 'give_profile_editor_shortcode' );
  * @return bool
  */
 function give_process_profile_editor_updates( $data ) {
-	// Profile field change request
+	// Profile field change request.
 	if ( empty( $_POST['give_profile_editor_submit'] ) && ! is_user_logged_in() ) {
 		return false;
 	}
 
-	// Nonce security
+	// Nonce security.
 	if ( ! wp_verify_nonce( $data['give_profile_editor_nonce'], 'give-profile-editor-nonce' ) ) {
 		return false;
 	}
 
 	$user_id       = get_current_user_id();
 	$old_user_data = get_userdata( $user_id );
+
+	/* @var Give_Donor $donor */
+	$donor = new Give_Donor( $user_id, true );
 
 	$display_name = isset( $data['give_display_name'] ) ? sanitize_text_field( $data['give_display_name'] ) : $old_user_data->display_name;
 	$first_name   = isset( $data['give_first_name'] ) ? sanitize_text_field( $data['give_first_name'] ) : $old_user_data->first_name;
@@ -411,29 +436,34 @@ function give_process_profile_editor_updates( $data ) {
 		give_set_error( 'empty_first_name', __( 'Please enter your first name.', 'give' ) );
 	}
 
-	// Make sure to validate user email for existing Donors.
-	give_validate_user_email( $email );
+	// Make sure to validate user email only if user changes email.
+	if( $old_user_data->data->user_email !== $email ) {
+		give_validate_user_email( $email, true );
+	}
 
-	// Make sure to validate passwords for existing Donors
+	// Make sure to validate passwords for existing Donors.
 	give_validate_user_password( $data['give_new_user_pass1'], $data['give_new_user_pass2'] );
 
-	// Check for errors
+	// Check for errors.
 	$errors = give_get_errors();
 
 	if ( $errors ) {
-		// Send back to the profile editor if there are errors
+		// Send back to the profile editor if there are errors.
 		wp_redirect( $data['give_redirect'] );
 		give_die();
 	}
 
 	// Update Donor First Name and Last Name.
-	$donor   = Give()->donors->get_donor_by( 'user_id', $user_id );
 	Give()->donors->update( $donor->id, array( 'name' => $full_name ) );
 	Give()->donor_meta->update_meta( $donor->id, '_give_donor_first_name', $first_name );
 	Give()->donor_meta->update_meta( $donor->id, '_give_donor_last_name', $last_name );
 
-	// Update the user
-	$meta    = update_user_meta( $user_id, '_give_user_address', $address );
+	// Update donor address.
+	if( ! $donor->update_address( 'personal', $address ) ) {
+		$donor->add_address( 'personal', $address );
+	}
+
+	// Update the user.
 	$updated = wp_update_user( $userdata );
 
 	if ( $updated ) {

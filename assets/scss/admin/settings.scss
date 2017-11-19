@@ -13,6 +13,12 @@
 
 .give-settings-page {
 
+	.give-settings-heading-sep {
+	  font-size:14px;
+	  line-height: 32px;
+	  width:15px;
+	}
+
 	.nav-tab-wrapper {
 		margin-bottom: 5px;
 		overflow: visible;
@@ -39,11 +45,11 @@
 		width: 15em;
 	}
 
-	.give-repeat-setting-field{
+	.give-repeat-setting-field {
 		margin: 10px 0;
 	}
 
-	.give-remove-setting-field{
+	.give-remove-setting-field {
 		width: 25px;
 		height: 25px;
 		padding: 0;
@@ -56,13 +62,13 @@
 		display: inline-block;
 	}
 
-	.give-remove-setting-field:hover{
+	.give-remove-setting-field:hover {
 		background-color: red;
 		color: white;
 		border-radius: 30px;
 	}
 
-	.give-forminp p:first-child .give-remove-setting-field{
+	.give-forminp p:first-child .give-remove-setting-field {
 		display: none;
 	}
 }
@@ -72,9 +78,13 @@
 	overflow: hidden;
 	margin: 30px 0;
 
-	h2 {  margin-top: 8px;  }
+	h2 {
+		margin-top: 8px;
+	}
 
-	p {  margin-bottom: 0;  }
+	p {
+		margin-bottom: 0;
+	}
 }
 
 .give-radio-inline {
@@ -408,7 +418,7 @@ a.give-delete {
 
 // Email notification list.
 .giveemailnotifications {
-	.check-column{
+	.check-column {
 		padding: 13px 10px 0 20px !important;
 	}
 
@@ -418,23 +428,23 @@ a.give-delete {
 	}
 
 	th.check-column {
-		.give-email-notification-status{
+		.give-email-notification-status {
 			color: white;
 			cursor: pointer;
 
-			i.dashicons{
+			i.dashicons {
 				border-radius: 1em;
 				padding: 2px;
 			}
 		}
 
 		.give-email-notification-enabled .dashicons-yes,
-		.give-email-notification-disabled:hover .dashicons-no-alt{
+		.give-email-notification-disabled:hover .dashicons-no-alt {
 			background: #46b450;
 		}
 
 		.give-email-notification-disabled .dashicons-no-alt,
-		.give-email-notification-enabled:hover .dashicons-yes{
+		.give-email-notification-enabled:hover .dashicons-yes {
 			background: #bbbbbb;
 		}
 
@@ -466,12 +476,14 @@ h2.give-nav-tab-wrapper {
 @media screen and (max-width: 600px) {
 	.give-nav-tab-wrapper {
 		position: relative;
-		padding-top:0 !important;
+		padding-top: 0 !important;
 
 		> a {
 			width: 100%;
 			box-sizing: border-box;
-			margin:0;
+			margin: 0;
+			background-color: #ffffff;
+			border: 1px solid #cccccc;
 			&:hover {
 				border-bottom: 1px solid #ccc;
 			}
@@ -479,14 +491,14 @@ h2.give-nav-tab-wrapper {
 
 		div.give-sub-nav-tab-wrapper {
 			position: absolute;
-			top:0;
-			right:0;
+			top: 0;
+			right: 0;
 
 			#give-show-sub-nav {
 				height: 28px;
 				width: 30px;
 				border-radius: 0;
-				margin:0;
+				margin: 0;
 				> span.dashicons {
 					margin: 6px auto 0;
 					display: block;
@@ -495,10 +507,23 @@ h2.give-nav-tab-wrapper {
 			}
 
 			nav.give-sub-nav-tab {
-				top:35px;
+				top: 35px;
+				right: 0;
+				left: auto;
+
+				a {
+					background: #ffffff;
+					&:hover {
+						background: #e5e5e5;
+					}
+				}
 			}
 		}
 
+	}
+
+	.give-mobile-hidden {
+		display: none;
 	}
 }
 
@@ -512,7 +537,7 @@ h2.give-nav-tab-wrapper {
 		border: 1px solid #ccc;
 		border-bottom: 0;
 		position: absolute;
-		top: 32px;
+		top: 35px;
 		right: 0;
 
 		a {
@@ -528,14 +553,14 @@ h2.give-nav-tab-wrapper {
 		}
 
 		a:hover {
-			background: #e5e5e5;
+			background: #ffffff;
 		}
 	}
 }
 
 // By default hide setting tab wrapper.
-.give-sub-nav-tab-wrapper{
-	display:none;
+.give-sub-nav-tab-wrapper {
+	display: none;
 }
 
 #give-show-sub-nav {
@@ -545,12 +570,12 @@ h2.give-nav-tab-wrapper {
 	line-height: 0;
 	background: white;
 	border-radius: 4px;
-    margin-top:5px;
+	margin-top: 5px;
 
 	> span.dashicons {
-      font-size:16px;
-      height:16px;
-      width:16px;
+		font-size: 16px;
+		height: 16px;
+		width: 16px;
 	}
 }
 
@@ -558,7 +583,6 @@ h2.give-nav-tab-wrapper {
 	outline: none;
 	box-shadow: inset 0px 0px 4px #ddd;
 }
-
 
 //--------------------------------------------------------------
 // Image preview container
