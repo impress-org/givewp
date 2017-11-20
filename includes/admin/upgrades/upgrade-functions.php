@@ -1020,6 +1020,9 @@ function give_v189_upgrades() {
  * @return void
  */
 function give_v20_upgrades() {
+	// Update cache setting.
+	give_update_option( 'cache', 'enabled' );
+
 	// Upgrade email settings.
 	give_v20_upgrades_email_setting();
 	give_v20_upgrade_donor_register_email_message();
