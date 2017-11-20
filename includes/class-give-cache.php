@@ -463,5 +463,3 @@ class Give_Cache {
 
 // Initialize
 Give_Cache::get_instance()->setup();
-
-// @todo Check if we can implement GIVE_CACHE for persistent and non-persistent cache.
