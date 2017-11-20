@@ -233,3 +233,26 @@ function give_import_core_settings_merge_data( $json_to_array, $type, $host_give
 }
 
 add_filter( 'give_import_core_settings_data', 'give_import_core_settings_merge_data', 1000, 3 );
+
+/**
+ * Backward Compatibility - Cleanup User Roles.
+ *
+ * @param array $caps List of capabilities.
+ *
+ * @since 1.8.17
+ *
+ * @return mixed
+ */
+function give_bc_1817_cleanup_user_roles( $caps ){
+
+	if (
+		! give_has_upgrade_completed( 'v1817_cleanup_user_roles' ) &&
+		! isset( $caps['view_give_payments'] )
+	) {
+		give_v1817_process_cleanup_user_roles();
+	}
+
+	return $caps;
+}
+
+add_filter( 'user_has_cap', 'give_bc_1817_cleanup_user_roles' );

@@ -117,7 +117,7 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 
 		// Simple Donation Form using Payment Gateway Item Title with Custom Amount.
 		$title = give_payment_gateway_item_title( $donation );
-		$this->assertEquals( 'Test Donation Form - Would you like to set a custom amount?', $title );
+		$this->assertEquals( 'Test Donation Form', $title );
 
 		// Setup MultiLevel Donation Form.
 		$donation = Give_Helper_Form::setup_multi_level_donation_form();
@@ -131,7 +131,7 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 
 		// MultiLevel Donation Form using Payment Gateway Item Title with Custom Amount.
 		$title = give_payment_gateway_item_title( $donation );
-		$this->assertEquals( 'Test Donation Form - Custom Amount', $title );
+		$this->assertEquals( 'Test Donation Form', $title );
 
 	}
 }

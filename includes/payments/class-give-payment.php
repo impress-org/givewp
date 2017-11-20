@@ -39,6 +39,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @property string     $email
  * @property array      $payment_meta
  * @property string     $customer_id
+ * @property string     $donor_id
  * @property string     $completed_date
  * @property string     $currency
  * @property string     $ip
@@ -546,6 +547,7 @@ final class Give_Payment {
 		// User based.
 		$this->ip          = $this->setup_ip();
 		$this->customer_id = $this->setup_donor_id();
+		$this->donor_id    = $this->setup_donor_id();
 		$this->user_id     = $this->setup_user_id();
 		$this->email       = $this->setup_email();
 		$this->user_info   = $this->setup_user_info();
@@ -631,23 +633,23 @@ final class Give_Payment {
 		// @todo: payment data exist here only for backward compatibility
 		// issue: https://github.com/WordImpress/Give/issues/1132
 		$payment_data = array(
-			'price'         => $this->total,
-			'date'          => $this->date,
-			'user_email'    => $this->email,
-			'purchase_key'  => $this->key,
-			'form_title'    => $this->form_title,
-			'form_id'       => $this->form_id,
-			'donor_id'      => $this->donor_id,
-			'price_id'      => $this->price_id,
-			'currency'      => $this->currency,
-			'user_info'     => array(
+			'price'        => $this->total,
+			'date'         => $this->date,
+			'user_email'   => $this->email,
+			'purchase_key' => $this->key,
+			'form_title'   => $this->form_title,
+			'form_id'      => $this->form_id,
+			'donor_id'     => $this->donor_id,
+			'price_id'     => $this->price_id,
+			'currency'     => $this->currency,
+			'user_info'    => array(
 				'id'         => $this->user_id,
 				'email'      => $this->email,
 				'first_name' => $this->first_name,
 				'last_name'  => $this->last_name,
 				'address'    => $this->address,
 			),
-			'status'        => $this->status,
+			'status'       => $this->status,
 		);
 
 		$args = apply_filters( 'give_insert_payment_args', array(

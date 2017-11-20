@@ -206,7 +206,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
 								'post_type'   => 'page',
-								'numberposts' => - 1
+								'numberposts' =>  999
 							) ),
 						),
 						array(
@@ -216,7 +216,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
 								'post_type'   => 'page',
-								'numberposts' => - 1
+								'numberposts' => 999
 							) ),
 						),
 						array(
@@ -227,7 +227,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
 								'post_type'   => 'page',
-								'numberposts' => - 1
+								'numberposts' => 999
 							) ),
 						),
 						array(
