@@ -720,3 +720,18 @@ function give_get_user_roles() {
 
 	return $user_roles;
 }
+
+/**
+ * Restrict Give Worker User Role to access the Donation detail page.
+ *
+ * @since 1.8.17
+ */
+function give_worker_restrict_donation_detail_page() {
+	if ( isset( $_GET['view'] ) && 'view-payment-details' === $_GET['view'] && ! current_user_can('view_give_payments' ) ) {
+		wp_die( __( 'Sorry, you are not allowed to access this page.', 'give' ), __( 'Error', 'give' ), array(
+			'response' => 403,
+		) );
+	}
+}
+
+add_action( 'admin_init', 'give_worker_restrict_donation_detail_page' );
