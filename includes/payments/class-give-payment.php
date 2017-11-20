@@ -965,7 +965,7 @@ final class Give_Payment {
 		}// End if().
 
 		if ( true === $saved ) {
-			$this->setup_payment( $this->ID );
+			$this->update_payment_setup( $this->ID );
 		}
 
 		return $saved;
