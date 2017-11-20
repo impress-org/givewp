@@ -373,11 +373,10 @@ class Give_Cache {
 	 *
 	 * @param int    $id
 	 * @param string $group
-	 * @param string $cache_type
 	 *
 	 * @return mixed
 	 */
-	public static function get_group( $id, $group = '', $cache_type = 'non-persistent' ) {
+	public static function get_group( $id, $group = '' ) {
 		$cached_data = false;
 
 		// Bailout.
@@ -389,11 +388,7 @@ class Give_Cache {
 			return $cached_data;
 		}
 
-		switch ( $cache_type ) {
-			case 'non-persistent':
-				$cached_data = wp_cache_get( $id, $group );
-				break;
-		}
+		$cached_data = wp_cache_get( $id, $group );
 
 		return $cached_data;
 	}
@@ -408,11 +403,10 @@ class Give_Cache {
 	 * @param mixed  $data
 	 * @param string $group
 	 * @param int    $expire
-	 * @param string $cache_type
 	 *
 	 * @return bool
 	 */
-	public static function set_group( $id, $data, $group = '', $expire = 0, $cache_type = 'non-persistent' ) {
+	public static function set_group( $id, $data, $group = '', $expire = 0 ) {
 		$status = false;
 
 		// Bailout.
@@ -424,11 +418,7 @@ class Give_Cache {
 			return $status;
 		}
 
-		switch ( $cache_type ) {
-			case 'non-persistent':
-				$status = wp_cache_set( $id, $data, $group, $expire );
-				break;
-		}
+		$status = wp_cache_set( $id, $data, $group, $expire );
 
 		update_option( 'give-last-cache-updated', current_time( 'timestamp', 1 ) );
 
@@ -444,11 +434,10 @@ class Give_Cache {
 	 * @param int    $id
 	 * @param string $group
 	 * @param int    $expire
-	 * @param string $cache_type
 	 *
 	 * @return bool
 	 */
-	public static function delete_group( $id, $group = '', $expire = 0, $cache_type = 'non-persistent' ) {
+	public static function delete_group( $id, $group = '', $expire = 0 ) {
 		$status = false;
 
 		// Bailout.
@@ -460,12 +449,7 @@ class Give_Cache {
 			return $status;
 		}
 
-		switch ( $cache_type ) {
-			case 'non-persistent':
-				$status = wp_cache_delete( $id, $group, $expire );
-				break;
-		}
-
+		$status = wp_cache_delete( $id, $group, $expire );
 
 		// Perform action when specific cache deleted.
 		// @todo: move this code to async task.
