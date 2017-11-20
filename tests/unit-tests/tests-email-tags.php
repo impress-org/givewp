@@ -34,9 +34,10 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$this->assertEquals( 'Admin', $firstname );
 
 		/*
-		 * Case 3: First name from user_id.
+		 * Case 3: First name from donor_id.
 		 */
-		$firstname = give_email_tag_first_name( array( 'donor_id' => 1 ) );
+		$donor = Give_Helper_Donor::create_simple_payment();
+		$firstname = give_email_tag_first_name( array( 'donor_id' => $donor ) );
 		$this->assertEquals( 'Admin', $firstname );
 
 		/*
@@ -90,7 +91,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$this->assertEquals( 'Admin User', $fullname );
 
 		/*
-		 * Case 3: Full name from user_id.
+		 * Case 3: Full name from donor_id.
 		 */
 		$donor = Give_Helper_Donor::create_simple_payment();
 		$fullname = give_email_tag_fullname( array( 'donor_id' => $donor ) );
@@ -147,7 +148,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$this->assertEquals( 'admin', $username );
 
 		/*
-		 * Case 3: User name from user_id.
+		 * Case 3: User name from donor_id.
 		 */
 		$donor = Give_Helper_Donor::create_simple_payment( array( 'user_id' => 1 ) );
 		$username = give_email_tag_username( array( 'donor_id' => $donor ) );
@@ -204,7 +205,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$this->assertEquals( 'admin@example.org', $user_email );
 
 		/*
-		 * Case 3: User email from user_id.
+		 * Case 3: User email from donor_id.
 		 */
 		$donor = Give_Helper_Donor::create_simple_payment();
 		$user_email = give_email_tag_user_email( array( 'donor_id' => $donor ) );
