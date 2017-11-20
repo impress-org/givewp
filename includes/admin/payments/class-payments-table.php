@@ -415,6 +415,8 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 		$single_donation_url = esc_url( add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details' ) ) );
 		$row_actions         = $this->get_row_actions( $payment );
+		$value               = '';
+
 
 		switch ( $column_name ) {
 			case 'donation' :
@@ -424,6 +426,8 @@ class Give_Payment_History_Table extends WP_List_Table {
 						'tag_content' => "#$payment->ID",
 						'link'        => $single_donation_url,
 					) );
+				} else {
+					$value = "#{$payment->ID}";
 				}
 
 				$value .= sprintf(
@@ -608,6 +612,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * Get payment ID html.
 	 *
 	 * @param object $payment Contains all the data for the checkbox column.
+	 *
 	 * @access public
 	 * @since  1.0
 	 *
@@ -748,6 +753,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 				case 'resend-receipt':
 					/**
 					 * Fire the action
+					 *
 					 * @since 2.0
 					 */
 					do_action( 'give_donation-receipt_email_notification', $id );
