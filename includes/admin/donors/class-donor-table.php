@@ -153,9 +153,10 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 */
 	public function column_cb( $donor ){
 		return sprintf(
-			'<input type="checkbox" name="%1$s[]" value="%2$s" />',
+			'<input class="donor-selector" type="checkbox" name="%1$s[]" value="%2$d" data-name="%3$s" />',
 			$this->_args['singular'],
-			$donor['id']
+			$donor['id'],
+			$donor['name']
 		);
 	}
 
@@ -234,7 +235,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 		$actions = array(
 			'view'   => sprintf( '<a href="%1$s" aria-label="%2$s">%3$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor['id'] ), sprintf( esc_attr__( 'View "%s"', 'give' ), $donor['name'] ), __( 'View Donor', 'give' ) ),
 			'notes'  => sprintf( '<a href="%1$s" aria-label="%2$s">%3$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=notes&id=' . $donor['id'] ), sprintf( esc_attr__( 'Notes for "%s"', 'give' ), $donor['name'] ), __( 'Notes', 'give' ) ),
-			'delete' => sprintf( '<a href="%1$s" aria-label="%2$s">%3$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $donor['id'] ), sprintf( esc_attr__( 'Delete "%s"', 'give' ), $donor['name'] ), __( 'Delete', 'give' ) ),
+			'delete' => sprintf( '<a class="%1$s" href="#" aria-label="%2$s">%3$s</a>', 'give-single-donor-delete', sprintf( esc_attr__( 'Delete "%s"', 'give' ), $donor['name'] ), __( 'Delete', 'give' ) ),
 		);
 
 		return apply_filters( 'give_donor_row_actions', $actions, $donor );
@@ -275,57 +276,9 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 */
 	public function get_bulk_actions() {
 		$actions = array(
-			'delete' => 'Delete',
+			'delete' => __( 'Delete', 'give' ),
 		);
 		return $actions;
-	}
-
-	/**
-	 * Process the Bulk Actions.
-	 *
-	 * @access public
-	 * @since  1.8.16
-	 *
-	 * @return void
-	 */
-	public function process_bulk_action() {
-		$ids    = isset( $_GET['donor'] ) ? $_GET['donor'] : false;
-		$action = $this->current_action();
-
-		if ( ! is_array( $ids ) ) {
-			$ids = array( $ids );
-		}
-
-		// Bail Out, If Action is not set.
-		if ( empty( $action ) ) {
-			return;
-		}
-
-		// Convert strings to int.
-		$ids = array_map( 'absint', $ids );
-
-		foreach ( $ids as $id ) {
-
-			// Detect when a bulk action is being triggered.
-			switch ( $this->current_action() ) {
-
-				case 'delete':
-					give_delete_bulk_donors( $id, array( '_wpnonce' => wp_create_nonce( 'delete-bulk-donors' ) ) );
-					break;
-
-			} // End switch().
-
-			/**
-			 * Fires after triggering bulk action on donors table.
-			 *
-			 * @param int    $id             The ID of the payment.
-			 * @param string $current_action The action that is being triggered.
-			 *
-			 * @since 1.8.16
-			 */
-			do_action( 'give_donors_table_do_bulk_action', $id, $this->current_action() );
-		} // End foreach().
-
 	}
 
 	/**
@@ -339,7 +292,8 @@ class Give_Donor_List_Table extends WP_List_Table {
 	protected function display_tablenav( $which ) {
 		if ( 'top' === $which ) {
 			$this->search_box( __( 'Search Donors', 'give' ), 'give-donors' );
-			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
+
+			wp_nonce_field( 'bulk-' . $this->_args['plural'], '_wpnonce', false );
 		}
 		?>
 		<div class="tablenav <?php echo esc_attr( $which ); ?>">
@@ -446,6 +400,93 @@ class Give_Donor_List_Table extends WP_List_Table {
 	}
 
 	/**
+	 * Generates content for a single row of the table
+	 *
+	 * @param object $item The current item.
+	 *
+	 * @since  1.8.17
+	 * @access public
+	 */
+	public function single_row( $item ) {
+		echo sprintf( '<tr id="donor-%1$d" data-id="%2$d" data-name="%3$s">', $item['id'], $item['id'], $item['name'] );
+		$this->single_row_columns( $item );
+		echo '</tr>';
+	}
+
+	/**
+	 * Display the final donor table
+	 *
+	 * @since 1.8.17
+	 * @access public
+	 */
+	public function display() {
+		$singular = $this->_args['singular'];
+
+		$this->display_tablenav( 'top' );
+
+		$this->screen->render_screen_reader_content( 'heading_list' );
+		?>
+		<table class="wp-list-table <?php echo implode( ' ', $this->get_table_classes() ); ?>">
+			<thead>
+			<tr>
+				<?php $this->print_column_headers(); ?>
+			</tr>
+			</thead>
+
+			<tbody id="the-list"<?php
+			if ( $singular ) {
+				echo " data-wp-lists='list:$singular'";
+			} ?>>
+			<tr class="hidden"></tr>
+			<tr id="give-bulk-delete" class="inline-edit-row inline-edit-row-page inline-edit-page bulk-edit-row bulk-edit-row-page bulk-edit-page inline-editor" style="display: none;" >
+				<td colspan="6" class="colspanchange">
+
+					<fieldset class="inline-edit-col-left">
+						<legend class="inline-edit-legend"><?php _e( 'BULK DELETE', 'give' ); ?></legend>
+						<div class="inline-edit-col">
+							<div id="bulk-titles">
+								<div id="give-bulk-donors" class="give-bulk-donors">
+
+								</div>
+							</div>
+					</fieldset>
+
+					<fieldset class="inline-edit-col-right">
+						<div class="inline-edit-col">
+							<label>
+								<input id="give-delete-donor-confirm" type="checkbox" name="give-delete-donor-confirm"/>
+								<?php _e( 'Are you sure you want to delete the selected donor(s)?', 'give' ); ?>
+							</label>
+							<label>
+								<input id="give-delete-donor-records" type="checkbox" name="give-delete-donor-records"/>
+								<?php _e( 'Delete all associated donations and records?', 'give' ); ?>
+							</label>
+						</div>
+					</fieldset>
+
+					<p class="submit inline-edit-save">
+						<input type="hidden" name="give_action" value="delete_donor"/>
+						<button type="button" id="give-bulk-delete-cancel" class="button cancel alignleft">Cancel</button>
+						<input type="submit" id="give-bulk-delete-button" disabled class="button button-primary alignright" value="Delete">
+						<br class="clear">
+					</p>
+				</td>
+			</tr>
+			<?php $this->display_rows_or_placeholder(); ?>
+			</tbody>
+
+			<tfoot>
+			<tr>
+				<?php $this->print_column_headers( false ); ?>
+			</tr>
+			</tfoot>
+
+		</table>
+		<?php
+		$this->display_tablenav( 'bottom' );
+	}
+
+	/**
 	 * Setup the final data for the table.
 	 *
 	 * @access public
@@ -460,8 +501,6 @@ class Give_Donor_List_Table extends WP_List_Table {
 		$sortable = $this->get_sortable_columns();
 
 		$this->_column_headers = array( $columns, $hidden, $sortable );
-
-		$this->process_bulk_action();
 
 		$this->items = $this->donor_data();
 

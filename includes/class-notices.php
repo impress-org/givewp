@@ -631,4 +631,49 @@ class Give_Notices {
 
 		echo $error;
 	}
+
+	/**
+	 * Print Inline Notice.
+	 * Note: dismissible feature will note work if notice will add to dom by javascript after document load.
+	 *
+	 * @param array $notice_args An array of notice arguments.
+	 *
+	 * @todo   Implement render_admin_notices function within this function in future.
+	 *
+	 * @access public
+	 * @since  1.8.17
+	 *
+	 * @return string
+	 */
+	public function print_admin_notices( $notice_args = array() ) {
+		// Bailout.
+		if ( empty( $notice_args['description'] ) ) {
+			return '';
+		}
+
+		$defaults    = array(
+			'id'          => '',
+			'echo'        => true,
+			'notice_type' => 'warning',
+			'dismissible' => true,
+		);
+		$notice_args = wp_parse_args( $notice_args, $defaults );
+
+		$output    = '';
+		$css_id    = ! empty( $notice_args['id'] ) ? $notice_args['id'] : uniqid( 'give-inline-notice-' );
+		$css_class = "notice-{$notice_args['notice_type']} give-notice notice inline";
+		$css_class .= ( $notice_args['dismissible'] ) ? ' is-dismissible' : '';
+		$output    .= sprintf(
+			'<div id="%1$s" class="%2$s"><p>%3$s</p></div>',
+			$css_id,
+			$css_class,
+			$notice_args['description']
+		);
+
+		if ( ! $notice_args['echo'] ) {
+			return $output;
+		}
+
+		echo $output;
+	}
 }

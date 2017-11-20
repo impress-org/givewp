@@ -635,7 +635,7 @@ Give.form = {
 				price_id   = this.getPriceID($form, true);
 
 			return (
-				( ( -1 < amount ) && ( amount > min_amount ) ) ||
+				( ( -1 < amount ) && ( amount >= min_amount ) ) ||
 				( -1 !== price_id )
 			);
 		},

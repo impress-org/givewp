@@ -933,6 +933,8 @@ var give_setting_edit = false;
 			 */
 			give_setting_edit = true;
 
+			var reset_form = false;
+
 			$.ajax({
 				type: 'POST',
 				url: ajaxurl,
@@ -951,6 +953,8 @@ var give_setting_edit = false;
 						 * @since 1.8.14
 						 */
 						give_setting_edit = false;
+
+						reset_form = true;
 
 						// We need to get the actual in progress form, not all forms on the page
 						var export_form = $('.give-export-form').find('.give-progress').parent().parent();
@@ -974,8 +978,12 @@ var give_setting_edit = false;
 						});
 						self.process_step(parseInt(response.step), data, self);
 					}
-					// Reset the form for preventing multiple ajax request.
-					$('#give-tools-recount-form')[0].reset();
+
+					if ( true === reset_form ) {
+						// Reset the form for preventing multiple ajax request.
+						$( '#give-tools-recount-form' )[ 0 ].reset();
+						$( '#give-tools-recount-form .tools-form-dropdown' ).hide();
+					}
 				}
 			}).fail(function (response) {
 				/**
@@ -1175,6 +1183,7 @@ var give_setting_edit = false;
 			this.change_country();
 			this.add_note();
 			this.delete_checked();
+			this.bulkDeleteDonor();
 			$( 'body' ).on( 'click', '#give-donors-filter .bulkactions input[type="submit"]', this.handleBulkActions ) ;
 		},
 		edit_donor: function () {
@@ -1335,23 +1344,110 @@ var give_setting_edit = false;
 			});
 		},
 
-		handleBulkActions: function() {
-			var currentAction       = $( this ).closest( '.tablenav' ).find( 'select' ).val(),
-				$donors             = $( 'input[name="donor[]"]:checked' ).length,
-				confirmActionNotice = give_vars.donors_bulk_action[currentAction].zero;
+		bulkDeleteDonor: function() {
+			var $body = $( 'body' );
 
-			// Check if admin selected any donors or not.
-			if ( ! parseInt( $donors ) ) {
+			// Cancel button click event for donor.
+			$body.on( 'click', '#give-bulk-delete-cancel', function( e ) {
+				$( this ).closest( 'tr' ).hide();
+				$( '.give-skip-donor' ).trigger( 'click' );
+				e.preventDefault();
+			});
+
+			// Select All checkbox.
+			$body.on( 'click', '#cb-select-all-1, #cb-select-all-2', function() {
+
+				var selectAll = $( this );
+
+				// Loop through donor selector checkbox.
+				$.each( $( '.donor-selector' ), function() {
+
+					var donorId   = $( this ).val(),
+						donorName = $( this ).data( 'name' ),
+						donorHtml = '<div id="give-donor-' + donorId + '" data-id="' + donorId + '">' +
+							'<a class="give-skip-donor" title="' + give_vars.remove_from_bulk_delete + '">X</a>' +
+							donorName + '</div>';
+
+					if( selectAll.is( ':checked' ) && ! $( this ).is( ':checked' ) ) {
+							$( '#give-bulk-donors' ).append( donorHtml );
+					} else if ( ! selectAll.is( ':checked' ) ) {
+						$( '#give-bulk-donors' ).find( '#give-donor-' + donorId ).remove();
+					}
+				});
+			});
+
+			// On checking checkbox, add to bulk delete donor.
+			$body.on( 'click', '.donor-selector', function() {
+				var donorId   = $( this ).val(),
+					donorName = $( this ).data( 'name' ),
+					donorHtml = '<div id="give-donor-' + donorId + '" data-id="' + donorId + '">' +
+						'<a class="give-skip-donor" title="' + give_vars.remove_from_bulk_delete + '">X</a>' +
+						donorName + '</div>';
+
+				if( $( this ).is( ':checked' ) ) {
+					$( '#give-bulk-donors' ).prepend( donorHtml );
+				} else {
+					$( '#give-bulk-donors' ).find( '#give-donor-' + donorId ).remove();
+				}
+			});
+
+			// CheckBox click event to confirm deletion of donor.
+			$body.on( 'click', '#give-delete-donor-confirm', function() {
+				if( $( this ).is( ':checked' ) ) {
+					$( '#give-bulk-delete-button' ).removeAttr( 'disabled' );
+				} else {
+					$( '#give-bulk-delete-button' ).attr( 'disabled', true );
+					$( '#give-delete-donor-records' ).removeAttr( 'checked' );
+				}
+			});
+
+			// CheckBox click event to delete records with donor.
+			$body.on( 'click', '#give-delete-donor-records', function() {
+				if( $( this ).is(':checked') ) {
+					$( '#give-delete-donor-confirm' ).attr( 'checked', 'checked' );
+					$( '#give-bulk-delete-button' ).removeAttr( 'disabled' );
+				}
+			});
+
+			// Skip Donor from Bulk Delete List.
+			$body.on( 'click', '.give-skip-donor', function() {
+				var donorId = $( this ).closest( 'div' ).data( 'id' );
+				$( '#give-donor-' + donorId ).remove();
+				$( '#donor-' + donorId ).find( 'input[type="checkbox"]' ).removeAttr( 'checked' );
+			});
+
+			// Clicking Event to Delete Single Donor.
+			$body.on( 'click', '.give-single-donor-delete', function( e ) {
+				var donorSelector = $( this ).closest( 'tr' ).find( '.donor-selector');
+				if( donorSelector.is( ':checked' ) ) {} else {
+					donorSelector.trigger( 'click' );
+					$( '#give-bulk-delete' ).slideDown();
+				}
+				e.preventDefault();
+			});
+		},
+
+		handleBulkActions: function( e ) {
+
+			var currentAction       = $( this ).closest( '.tablenav' ).find( 'select' ).val(),
+				donors              = [],
+				confirmActionNotice = give_vars.donors_bulk_action[currentAction].zero;
+				
+			$.each( $( ".donor-selector:checked" ), function() {
+				donors.push( $( this ).val() );
+			});
+
+			// If there is no donor selected the show an alert.
+			if ( ! parseInt( donors ) ) {
 				alert( confirmActionNotice );
 				return false;
 			}
 
-			// Get message on basis of donors count.
-			confirmActionNotice = ( 1 < $donors ) ?
-				give_vars.donors_bulk_action[currentAction].multiple.replace( '{donor_count}', $donors ) :
-				give_vars.donors_bulk_action[currentAction].single;
+			if( 'delete' === currentAction ) {
+				$( '#give-bulk-delete' ).slideDown();
+			}
 
-			return window.confirm( confirmActionNotice );
+			e.preventDefault();
 
 		}
 	};
@@ -2234,7 +2330,7 @@ var give_setting_edit = false;
 
 			// Back out.
 			if (give_unformat_currency('0', false) === give_unformat_currency($(this).val(), false)) {
-				$(this).val('');
+				$(this).val('0');
 				return false;
 			}
 

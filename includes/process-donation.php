@@ -300,7 +300,7 @@ function give_donation_form_validate_fields() {
 	}
 
 	// Stop processing donor registration, if donor registration is optional and donor can do guest checkout.
-	// If registration form username field is empty that means donor do not want to registration instead want guest checkout.
+	// If registration form username field is empty that means donor does want to registration instead wants guest checkout.
 	if (
 		! give_logged_in_only( $form_id )
 		&& isset( $_POST['give-purchase-var'] )

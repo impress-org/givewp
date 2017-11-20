@@ -364,12 +364,12 @@ function give_field_is_required( $field = '', $form_id ) {
  * Stores log information for a donation.
  *
  * @since 1.0
- * @global            $give_logs Give_Logging
+ * @global            $give_logs     Give_Logging
  *
- * @param int         $give_form_id Give Form ID.
- * @param int         $payment_id   Payment ID.
- * @param bool|int    $price_id     Price ID, if any.
- * @param string|null $donation_date    The date of the donation.
+ * @param int         $give_form_id  Give Form ID.
+ * @param int         $payment_id    Payment ID.
+ * @param bool|int    $price_id      Price ID, if any.
+ * @param string|null $donation_date The date of the donation.
  *
  * @return void
  */
@@ -443,7 +443,9 @@ function give_increase_earnings( $give_form_id = 0, $amount ) {
 }
 
 /**
- * Decreases the total earnings of a form. Primarily for when a donation is refunded.
+ * Decreases the total earnings of a form.
+ *
+ * Primarily for when a donation is refunded.
  *
  * @since 1.0
  *
@@ -452,7 +454,8 @@ function give_increase_earnings( $give_form_id = 0, $amount ) {
  *
  * @return bool|int
  */
-function give_decrease_earnings( $form_id = 0, $amount ) {
+function give_decrease_form_earnings( $form_id = 0, $amount ) {
+
 	$form = new Give_Donate_Form( $form_id );
 
 	return $form->decrease_earnings( $amount );
@@ -476,7 +479,7 @@ function give_get_form_earnings_stats( $form_id = 0 ) {
 	 *
 	 * @since 1.8.17
 	 */
-	return apply_filters( 'give_get_form_earnings_stats',  $give_form->earnings, $form_id, $give_form );
+	return apply_filters( 'give_get_form_earnings_stats', $give_form->earnings, $form_id, $give_form );
 }
 
 
@@ -553,13 +556,14 @@ function give_get_average_monthly_form_earnings( $form_id = 0 ) {
  *
  * @since       1.0
  *
- * @param int $form_id    ID of the donation form.
- * @param int $price_id   ID of the price option.
- * @param int $payment_id payment ID for use in filters ( optional ).
+ * @param int  $form_id      ID of the donation form.
+ * @param int  $price_id     ID of the price option.
+ * @param int  $payment_id   payment ID for use in filters ( optional ).
+ * @param bool $use_fallback Outputsz the level amount if no level text is provided.
  *
  * @return string $price_name Name of the price option
  */
-function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 0 ) {
+function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 0, $use_fallback = true ) {
 
 	$prices     = give_get_variable_prices( $form_id );
 	$price_name = '';
@@ -569,7 +573,7 @@ function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 
 		if ( intval( $price['_give_id']['level_id'] ) == intval( $price_id ) ) {
 
 			$price_text     = isset( $price['_give_text'] ) ? $price['_give_text'] : '';
-			$price_fallback = give_currency_filter( give_format_amount( $price['_give_amount'], array( 'sanitize' => false ) ), '', true );
+			$price_fallback = $use_fallback ? give_currency_filter( give_format_amount( $price['_give_amount'], array( 'sanitize' => false ) ), '', true ) : '';
 			$price_name     = ! empty( $price_text ) ? $price_text : $price_fallback;
 
 		}
@@ -603,7 +607,7 @@ function give_price_range( $form_id = 0, $formatted = true ) {
 
 	);
 
-	if( ! $formatted ) {
+	if ( ! $formatted ) {
 		$range = wp_strip_all_tags( $range );
 	}
 

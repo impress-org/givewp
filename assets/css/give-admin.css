@@ -885,6 +885,10 @@ input.give-text_medium {
   .postbox-container .cmb-row .cmb-th label {
     padding-left: 8px; }
 
+div[id^="give-donor-"] {
+  display: block;
+  overflow: hidden; }
+
 @media only screen and (min-width: 851px) {
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row {
     float: left;
@@ -1632,6 +1636,11 @@ table.give-table td.row-title p {
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
+.give-settings-page .give-settings-heading-sep {
+  font-size: 14px;
+  line-height: 32px;
+  width: 15px; }
+
 .give-settings-page .nav-tab-wrapper {
   margin-bottom: 5px;
   overflow: visible; }

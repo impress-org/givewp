@@ -59,6 +59,7 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 	 * @return bool
 	 */
 	public function get_data() {
+
 		$accepted_statuses = apply_filters( 'give_recount_accepted_statuses', array( 'publish' ) );
 
 		if ( $this->step == 1 ) {
@@ -88,12 +89,13 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 
 		if ( $payments ) {
 			foreach ( $payments as $payment ) {
-				//Ensure acceptible status only
+
+				// Ensure acceptable status only.
 				if ( ! in_array( $payment->post_status, $accepted_statuses ) ) {
 					continue;
 				}
 
-				//Ensure only payments for this form are counted
+				// Ensure only payments for this form are counted.
 				if ( $payment->form_id != $this->form_id ) {
 					continue;
 				}

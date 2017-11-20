@@ -199,34 +199,6 @@ function _give_register_admin_notices() {
 					break;
 			}
 
-			// Add donor bulk notice.
-		} elseif (
-			isset( $_GET['page'] ) &&
-			'give-donors' === $_GET['page'] &&
-			isset( $_GET['donor'] ) &&
-			! empty( $_GET['donor'] )
-		) {
-
-			$donor_count = isset( $_GET['donor'] ) ? count( $_GET['donor'] ) : 0;
-
-			switch ( $_GET['action'] ) {
-				case 'delete':
-					Give()->notices->register_notice( array(
-						'id'          => 'bulk_action_delete',
-						'type'        => 'updated',
-						'description' => sprintf(
-							_n(
-								'Successfully deleted one donor and associated records.',
-								'Successfully deleted %d donors and associated records.',
-								$donor_count,
-								'give'
-							),
-							$donor_count ),
-						'show'        => true,
-					) );
-					
-					break;
-			}
 		}
 	}
 
@@ -360,7 +332,43 @@ function _give_register_admin_notices() {
 					Give()->notices->register_notice( array(
 						'id'          => 'give-donor-deleted',
 						'type'        => 'updated',
-						'description' => __( 'The donor has been deleted.', 'give' ),
+						'description' => __( 'The selected donor(s) has been deleted.', 'give' ),
+						'show'        => true,
+					) );
+					break;
+
+				case 'donor-donations-deleted' :
+					Give()->notices->register_notice( array(
+						'id'          => 'give-donor-donations-deleted',
+						'type'        => 'updated',
+						'description' => __( 'The selected donor(s) and its associated donations has been deleted.', 'give' ),
+						'show'        => true,
+					) );
+					break;
+
+				case 'confirm-delete-donor' :
+					Give()->notices->register_notice( array(
+						'id'          => 'give-confirm-delete-donor',
+						'type'        => 'updated',
+						'description' => __( 'You must confirm to delete the selected donor(s).', 'give' ),
+						'show'        => true,
+					) );
+					break;
+
+				case 'invalid-donor-id' :
+					Give()->notices->register_notice( array(
+						'id'          => 'give-invalid-donor-id',
+						'type'        => 'updated',
+						'description' => __( 'Invalid Donor ID.', 'give' ),
+						'show'        => true,
+					) );
+					break;
+
+				case 'donor-delete-failed' :
+					Give()->notices->register_notice( array(
+						'id'          => 'give-donor-delete-failed',
+						'type'        => 'error',
+						'description' => __( 'Unable to delete selected donor(s).', 'give' ),
 						'show'        => true,
 					) );
 					break;
