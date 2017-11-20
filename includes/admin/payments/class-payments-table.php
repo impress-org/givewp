@@ -359,7 +359,6 @@ class Give_Payment_History_Table extends WP_List_Table {
 			'status'        => __( 'Status', 'give' ),
 			'date'          => __( 'Date', 'give' ),
 			'amount'        => __( 'Amount', 'give' ),
-			'details'       => __( 'Details', 'give' ),
 		);
 
 		if ( current_user_can( 'view_give_payments' ) ) {
