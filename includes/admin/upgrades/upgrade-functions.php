@@ -1223,14 +1223,20 @@ function give_v1817_upgrades() {
 }
 
 /**
- * Clean up of User Roles for more flexibility.
+ * Process Clean up of User Roles for more flexibility.
  *
  * @since 1.8.17
  */
-function give_v1817_cleanup_user_roles() {
+function give_v1817_process_cleanup_user_roles() {
 
-	/* @var Give_Updates $give_updates */
-	$give_updates = Give_Updates::get_instance();
+	global $wp_roles;
+
+	// Add Capabilities to user roles as required.
+	$add_caps = array(
+		'administrator' => array(
+			'view_give_payments',
+		),
+	);
 
 	// Remove Capabilities to user roles as required.
 	$remove_caps = array(
@@ -1245,14 +1251,33 @@ function give_v1817_cleanup_user_roles() {
 		),
 	);
 
-	global $wp_roles;
-	$give_updates->set_percentage( count( $remove_caps ), ( $give_updates->step * 20 ) );
+	foreach ( $add_caps as $role => $caps ) {
+		foreach( $caps as $cap ) {
+			$wp_roles->add_cap( $role, $cap );
+		}
+	}
 
 	foreach ( $remove_caps as $role => $caps ) {
 		foreach( $caps as $cap ) {
 			$wp_roles->remove_cap( $role, $cap );
 		}
 	}
+
+}
+
+/**
+ * Upgrade Routine - Clean up of User Roles for more flexibility.
+ *
+ * @since 1.8.17
+ */
+function give_v1817_cleanup_user_roles() {
+
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
+
+	give_v1817_process_cleanup_user_roles();
+
+	$give_updates->percentage = 100;
 
 	// Create Give plugin roles.
 	$roles = new Give_Roles();
