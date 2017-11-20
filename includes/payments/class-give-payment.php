@@ -39,6 +39,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @property string     $email
  * @property array      $payment_meta
  * @property string     $customer_id
+ * @property string     $donor_id
  * @property string     $completed_date
  * @property string     $currency
  * @property string     $ip

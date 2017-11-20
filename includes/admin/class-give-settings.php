@@ -213,7 +213,7 @@ class Give_Plugin_Settings {
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
 								'post_type'   => 'page',
-								'numberposts' => - 1,
+								'numberposts' => 999,
 							) ),
 						),
 						array(
@@ -223,7 +223,7 @@ class Give_Plugin_Settings {
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
 								'post_type'   => 'page',
-								'numberposts' => - 1,
+								'numberposts' => 999,
 							) ),
 						),
 						array(
@@ -234,7 +234,7 @@ class Give_Plugin_Settings {
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
 								'post_type'   => 'page',
-								'numberposts' => - 1,
+								'numberposts' => 999,
 							) ),
 						),
 						array(
