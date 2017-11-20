@@ -1232,6 +1232,13 @@ function give_v1817_cleanup_user_roles() {
 	/* @var Give_Updates $give_updates */
 	$give_updates = Give_Updates::get_instance();
 
+	// Add Capabilities to user roles as required.
+	$add_caps = array(
+		'administrator' => array(
+			'view_give_payments',
+		),
+	);
+
 	// Remove Capabilities to user roles as required.
 	$remove_caps = array(
 		'give_manager' => array(
@@ -1246,7 +1253,13 @@ function give_v1817_cleanup_user_roles() {
 	);
 
 	global $wp_roles;
-	$give_updates->set_percentage( count( $remove_caps ), ( $give_updates->step * 20 ) );
+	$give_updates->set_percentage( count( $remove_caps ) + count( $add_caps ), ( $give_updates->step * 20 ) );
+
+	foreach ( $add_caps as $role => $caps ) {
+		foreach( $caps as $cap ) {
+			$wp_roles->add_cap( $role, $cap );
+		}
+	}
 
 	foreach ( $remove_caps as $role => $caps ) {
 		foreach( $caps as $cap ) {
