@@ -34,7 +34,13 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$this->assertEquals( 'Admin', $firstname );
 
 		/*
-		 * Case 3: First name with filter
+		 * Case 3: First name from user_id.
+		 */
+		$firstname = give_email_tag_first_name( array( 'donor_id' => 1 ) );
+		$this->assertEquals( 'Admin', $firstname );
+
+		/*
+		 * Case 4: First name with filter
 		 */
 		add_filter( 'give_email_tag_first_name', array( $this, 'give_first_name' ), 10, 2 );
 
@@ -84,7 +90,13 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$this->assertEquals( 'Admin User', $fullname );
 
 		/*
-		 * Case 3: Full name with filter
+		 * Case 3: Full name from user_id.
+		 */
+		$fullname = give_email_tag_fullname( array( 'donor_id' => 1 ) );
+		$this->assertEquals( 'Admin User', $fullname );
+
+		/*
+		 * Case 4: Full name with filter
 		 */
 		add_filter( 'give_email_tag_fullname', array( $this, 'give_fullname' ), 10, 2 );
 
@@ -134,7 +146,13 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$this->assertEquals( 'admin', $username );
 
 		/*
-		 * Case 3: User name with filter
+		 * Case 3: User name from user_id.
+		 */
+//		$username = give_email_tag_username( array( 'donor_id' => 1 ) );
+//		$this->assertEquals( 'admin', $username );
+
+		/*
+		 * Case 4: User name with filter
 		 */
 		add_filter( 'give_email_tag_username', array( $this, 'give_username' ), 10, 2 );
 
@@ -184,7 +202,13 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$this->assertEquals( 'admin@example.org', $user_email );
 
 		/*
-		 * Case 3: User email with filter
+		 * Case 3: User email from user_id.
+		 */
+//		$user_email = give_email_tag_user_email( array( 'donor_id' => 1 ) );
+//		$this->assertEquals( 'admin@example.org', $user_email );
+
+		/*
+		 * Case 4: User email with filter
 		 */
 		add_filter( 'give_email_tag_user_email', array( $this, 'give_user_email' ), 10, 2 );
 

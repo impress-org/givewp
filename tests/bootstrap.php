@@ -121,6 +121,7 @@ class Give_Unit_Tests_Bootstrap {
 
 		// Helpers
 		require_once( $this->tests_dir . '/framework/helpers/shims.php' );
+		require_once( $this->tests_dir . '/framework/helpers/class-helper-donor.php' );
 		require_once( $this->tests_dir . '/framework/helpers/class-helper-form.php' );
 		require_once( $this->tests_dir . '/framework/helpers/class-helper-payment.php' );
 	}
