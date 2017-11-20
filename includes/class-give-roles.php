@@ -133,6 +133,7 @@ class Give_Roles {
 			$wp_roles->add_cap( 'administrator', 'view_give_sensitive_data' );
 			$wp_roles->add_cap( 'administrator', 'export_give_reports' );
 			$wp_roles->add_cap( 'administrator', 'manage_give_settings' );
+			$wp_roles->add_cap( 'administrator', 'view_give_payments' );
 
 			// Add the main post type capabilities.
 			$capabilities = $this->get_core_caps();
@@ -277,6 +278,7 @@ class Give_Roles {
 			$wp_roles->remove_cap( 'administrator', 'view_give_sensitive_data' );
 			$wp_roles->remove_cap( 'administrator', 'export_give_reports' );
 			$wp_roles->remove_cap( 'administrator', 'manage_give_settings' );
+			$wp_roles->remove_cap( 'administrator', 'view_give_payments' );
 
 			// Remove the Main Post Type Capabilities.
 			$capabilities = $this->get_core_caps();
