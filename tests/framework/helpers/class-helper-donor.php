@@ -19,13 +19,15 @@ class Give_Helper_Donor extends Give_Unit_Test_Case {
 	public static function create_simple_payment( $donor_args = array() ) {
 
 		$args = array(
-			'name'  => 'Admin User',
-			'email' => 'testadmin@domain.com',
+			'user_id' => 1,
+			'name'    => 'Admin User',
+			'email'   => 'admin@example.org',
 		);
 
 		$donor_args = wp_parse_args( $donor_args, $args );
 
 		$donor = new Give_Donor();
+
 		return $donor->create( $donor_args );
 	}
 }

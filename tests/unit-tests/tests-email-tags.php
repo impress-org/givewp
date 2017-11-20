@@ -92,7 +92,8 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		/*
 		 * Case 3: Full name from user_id.
 		 */
-		$fullname = give_email_tag_fullname( array( 'donor_id' => 1 ) );
+		$donor = Give_Helper_Donor::create_simple_payment();
+		$fullname = give_email_tag_fullname( array( 'donor_id' => $donor ) );
 		$this->assertEquals( 'Admin User', $fullname );
 
 		/*
@@ -148,8 +149,9 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		/*
 		 * Case 3: User name from user_id.
 		 */
-//		$username = give_email_tag_username( array( 'donor_id' => 1 ) );
-//		$this->assertEquals( 'admin', $username );
+		$donor = Give_Helper_Donor::create_simple_payment( array( 'user_id' => 1 ) );
+		$username = give_email_tag_username( array( 'donor_id' => $donor ) );
+		$this->assertEquals( 'admin', $username );
 
 		/*
 		 * Case 4: User name with filter
@@ -204,8 +206,9 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		/*
 		 * Case 3: User email from user_id.
 		 */
-//		$user_email = give_email_tag_user_email( array( 'donor_id' => 1 ) );
-//		$this->assertEquals( 'admin@example.org', $user_email );
+		$donor = Give_Helper_Donor::create_simple_payment();
+		$user_email = give_email_tag_user_email( array( 'donor_id' => $donor ) );
+		$this->assertEquals( 'admin@example.org', $user_email );
 
 		/*
 		 * Case 4: User email with filter
