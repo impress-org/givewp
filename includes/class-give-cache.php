@@ -380,11 +380,7 @@ class Give_Cache {
 		$cached_data = false;
 
 		// Bailout.
-		if (
-			! self::$instance->is_cache ||
-			empty( $id ) ||
-			empty( $cache_type )
-		) {
+		if ( ! self::$instance->is_cache || empty( $id ) ) {
 			return $cached_data;
 		}
 
@@ -410,11 +406,7 @@ class Give_Cache {
 		$status = false;
 
 		// Bailout.
-		if (
-			! self::$instance->is_cache ||
-			empty( $id ) ||
-			empty( $cache_type )
-		) {
+		if ( ! self::$instance->is_cache || empty( $id ) ) {
 			return $status;
 		}
 
@@ -441,11 +433,7 @@ class Give_Cache {
 		$status = false;
 
 		// Bailout.
-		if (
-			! self::$instance->is_cache ||
-			empty( $id ) ||
-			empty( $cache_type )
-		) {
+		if ( ! self::$instance->is_cache || empty( $id ) ) {
 			return $status;
 		}
 
@@ -453,12 +441,12 @@ class Give_Cache {
 
 		// Perform action when specific cache deleted.
 		// @todo: move this code to async task.
-		switch( $group ) {
+		switch ( $group ) {
 			case 'give-donors':
-				$donor = new Give_Donor( $id );
-				$payment_ids = array_map('trim', (array) explode( ',', trim( $donor->payment_ids ) ) );
+				$donor       = new Give_Donor( $id );
+				$payment_ids = array_map( 'trim', (array) explode( ',', trim( $donor->payment_ids ) ) );
 
-				if( ! empty( $payment_ids ) ) {
+				if ( ! empty( $payment_ids ) ) {
 					foreach ( $payment_ids as $payment_id ) {
 						wp_cache_delete( $payment_id, 'give-donations' );
 					}
