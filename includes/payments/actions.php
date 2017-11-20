@@ -327,21 +327,20 @@ function give_bc_v20_get_payment_meta( $check, $object_id, $meta_key, $single ) 
 	$payment_meta['currency'] = ! empty( $payment_meta['_give_payment_currency'] ) ? $payment_meta['_give_payment_currency'] : '';
 
 	// Decode donor data.
-	$donor_names = give_get_donor_name_by( ( ! empty( $payment_meta['_give_payment_donor_id'] ) ? $payment_meta['_give_payment_donor_id'] : 0 ), 'donor' );
-	$donor_names = explode( ' ', $donor_names, 2 );
-
+	$donor_id = ! empty( $payment_meta['_give_payment_donor_id'] ) ? $payment_meta['_give_payment_donor_id'] : 0;
+	$donor = new Give_Donor( $donor_id );
 
 	// Donor first name.
-	$donor_data['first_name'] = ! empty( $payment_meta['_give_payment_billing_first_name'] ) ? $payment_meta['_give_payment_billing_first_name'] : '';
+	$donor_data['first_name'] = ! empty( $payment_meta['_give_donor_billing_first_name'] ) ? $payment_meta['_give_donor_billing_first_name'] : '';
 	$donor_data['first_name'] = ! empty( $donor_data['first_name'] ) ?
 		$donor_data['first_name'] :
-		$donor_names[0];
+		$donor->get_first_name();
 
 	// Donor last name.
-	$donor_data['last_name'] = ! empty( $payment_meta['_give_payment_billing_last_name'] ) ? $payment_meta['_give_payment_billing_last_name'] : '';
+	$donor_data['last_name'] = ! empty( $payment_meta['_give_donor_billing_last_name'] ) ? $payment_meta['_give_donor_billing_last_name'] : '';
 	$donor_data['last_name'] = ! empty( $donor_data['last_name'] ) ?
 		$donor_data['last_name'] :
-		( isset( $donor_names[1] ) ? $donor_names[1] : '' );
+		$donor->get_last_name();
 
 	// Donor email.
 	$donor_data['email'] = $payment_meta['email'];

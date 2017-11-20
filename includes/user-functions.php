@@ -570,7 +570,7 @@ function give_get_donor_name_by( $id = 0, $from = 'donation' ) {
 
 	// ID shouldn't be empty.
 	if ( empty( $id ) ) {
-		return;
+		return '';
 	}
 
 	$name = '';
