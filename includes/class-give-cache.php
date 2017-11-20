@@ -466,6 +466,22 @@ class Give_Cache {
 				break;
 		}
 
+
+		// Perform action when specific cache deleted.
+		switch( $group ) {
+			case 'give-donors':
+				$donor = new Give_Donor( $id );
+				$payment_ids = array_map('trim', (array) explode( ',', trim( $donor->payment_ids ) ) );
+
+				if( ! empty( $payment_ids ) ) {
+					foreach ( $payment_ids as $payment_id ) {
+						wp_cache_delete( $payment_id, 'give-donations' );
+					}
+				}
+		}
+
+
+		// Update timestamp in DB when cache update.
 		update_option( 'give-last-cache-updated', current_time( 'timestamp', 1 ) );
 
 		return $status;
