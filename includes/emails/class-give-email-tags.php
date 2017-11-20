@@ -145,7 +145,7 @@ class Give_Email_Template_Tags {
 
 		$this->tag_args = $tag_args;
 
-		$new_content = preg_replace_callback( "/{([A-z0-9\-\_]+)}/s", array( $this, 'do_tag' ), $content );
+		$new_content = preg_replace_callback( '/{([A-z0-9\-\_]+)}/s', array( $this, 'do_tag' ), $content );
 
 		$this->tag_args = null;
 
@@ -246,7 +246,8 @@ function give_get_emails_tags_list() {
 				</span>
 			<?php endforeach; ?>
 		</div>
-	<?php endif;
+	<?php
+	endif;
 
 	// Return the list.
 	return ob_get_clean();
@@ -651,7 +652,7 @@ function give_email_tag_user_email( $tag_args ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'donor_id' ):
 			$donor = new Give_Donor( $tag_args['donor_id'] );
 
-			if( $donor ){
+			if ( $donor ) {
 				$email = $donor->email;
 			}
 			break;
@@ -1151,10 +1152,14 @@ function give_get_receipt_url( $payment_id ) {
 	$receipt_url = '';
 
 	if ( $payment_id ) {
-		$receipt_url = esc_url( add_query_arg( array(
-			'payment_key' => give_get_payment_key( $payment_id ),
-			'give_action' => 'view_receipt',
-		), home_url() ) );
+		$receipt_url = esc_url(
+			add_query_arg(
+				array(
+					'payment_key' => give_get_payment_key( $payment_id ),
+					'give_action' => 'view_receipt',
+				), home_url()
+			)
+		);
 	}
 
 	return $receipt_url;
@@ -1299,14 +1304,14 @@ function give_email_tag_reset_password_link( $tag_args, $payment_id ) {
 			break;
 	}
 
-	if( empty( $tag_args['email_content_type'] ) || 'text/html' === $tag_args['email_content_type'] ) {
+	if ( empty( $tag_args['email_content_type'] ) || 'text/html' === $tag_args['email_content_type'] ) {
 		// Generate link, if Email content type is html.
 		$reset_password_link = sprintf(
 			'<a href="%1$s" target="_blank">%2$s</a>',
 			esc_url( $reset_password_url ),
 			__( 'Reset your password &raquo;', 'give' )
 		);
-	} else{
+	} else {
 		$reset_password_link = sprintf(
 			'%1$s: %2$s',
 			__( 'Reset your password', 'give' ),
@@ -1349,11 +1354,15 @@ function give_get_reset_password_url( $user_id ) {
 		$user = get_user_by( 'ID', $user_id );
 
 		// Prepare Reset Password URL.
-		$reset_password_url = esc_url( add_query_arg( array(
-			'action' => 'rp',
-			'key' => get_password_reset_key( $user ),
-			'login' => $user->user_login,
-		), wp_login_url() ) );
+		$reset_password_url = esc_url(
+			add_query_arg(
+				array(
+					'action' => 'rp',
+					'key'    => get_password_reset_key( $user ),
+					'login'  => $user->user_login,
+				), wp_login_url()
+			)
+		);
 	}
 
 	return $reset_password_url;
