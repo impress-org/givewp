@@ -1499,3 +1499,24 @@ function give_get_core_settings_json( $file_name ) {
 
 	return $file_contents;
 }
+
+/**
+ * Sync form title with donation
+ * Note: for internal use only
+ *
+ * This function will be call by cron when form title updates.
+ * @see   includes/admin/forms/actions.php:56
+ *
+ * @since 1.8.17
+ *
+ * @param int   $form_id
+ * @param array $donations_ids
+ */
+function give_sync_form_title_with_donations( $form_id, $donations_ids ) {
+	/* @var Give_Donate_Form */
+	$form = new Give_Donate_Form( $form_id );
+
+	foreach ( $donations_ids as $donation_id ) {
+		give_update_meta( $donation_id, '_give_payment_form_title', $form->post_title );
+	}
+}
