@@ -16,7 +16,7 @@ class Give_Helper_Donor extends Give_Unit_Test_Case {
 	 *
 	 * @return int|Give_Donor
 	 */
-	public static function create_simple_payment( $donor_args = array() ) {
+	public static function create_donor( $donor_args = array() ) {
 
 		$args = array(
 			'user_id' => 1,
