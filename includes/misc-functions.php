@@ -540,8 +540,8 @@ function give_get_newsletter() {
 	<div class="give-newsletter-form-wrap">
 
 		<form action="//givewp.us3.list-manage.com/subscribe/post?u=3ccb75d68bda4381e2f45794c&amp;id=12a081aa13"
-		      method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate"
-		      target="_blank" novalidate>
+			  method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate"
+			  target="_blank" novalidate>
 			<div class="give-newsletter-confirmation">
 				<p><?php esc_html_e( 'Thanks for Subscribing!', 'give' ); ?> :)</p>
 			</div>
@@ -550,26 +550,26 @@ function give_get_newsletter() {
 				<tr valign="middle">
 					<td>
 						<label for="mce-EMAIL"
-						       class="screen-reader-text"><?php esc_html_e( 'Email Address (required)', 'give' ); ?></label>
+							   class="screen-reader-text"><?php esc_html_e( 'Email Address (required)', 'give' ); ?></label>
 						<input type="email" name="EMAIL" id="mce-EMAIL"
-						       placeholder="<?php esc_attr_e( 'Email Address (required)', 'give' ); ?>"
-						       class="required email" value="">
+							   placeholder="<?php esc_attr_e( 'Email Address (required)', 'give' ); ?>"
+							   class="required email" value="">
 					</td>
 					<td>
 						<label for="mce-FNAME"
-						       class="screen-reader-text"><?php esc_html_e( 'First Name', 'give' ); ?></label>
+							   class="screen-reader-text"><?php esc_html_e( 'First Name', 'give' ); ?></label>
 						<input type="text" name="FNAME" id="mce-FNAME"
-						       placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" class="" value="">
+							   placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" class="" value="">
 					</td>
 					<td>
 						<label for="mce-LNAME"
-						       class="screen-reader-text"><?php esc_html_e( 'Last Name', 'give' ); ?></label>
+							   class="screen-reader-text"><?php esc_html_e( 'Last Name', 'give' ); ?></label>
 						<input type="text" name="LNAME" id="mce-LNAME"
-						       placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" class="" value="">
+							   placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" class="" value="">
 					</td>
 					<td>
 						<input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button"
-						       value="<?php esc_attr_e( 'Subscribe', 'give' ); ?>">
+							   value="<?php esc_attr_e( 'Subscribe', 'give' ); ?>">
 					</td>
 				</tr>
 			</table>
@@ -582,30 +582,30 @@ function give_get_newsletter() {
 	</div>
 
 	<script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>
-	<script type='text/javascript'>(function( $ ) {
-				window.fnames = new Array();
-				window.ftypes = new Array();
-				fnames[ 0 ] = 'EMAIL';
-				ftypes[ 0 ] = 'email';
-				fnames[ 1 ] = 'FNAME';
-				ftypes[ 1 ] = 'text';
-				fnames[ 2 ] = 'LNAME';
-				ftypes[ 2 ] = 'text';
+	<script type='text/javascript'>(function ($) {
+			window.fnames = new Array();
+			window.ftypes = new Array();
+			fnames[0]     = 'EMAIL';
+			ftypes[0]     = 'email';
+			fnames[1]     = 'FNAME';
+			ftypes[1]     = 'text';
+			fnames[2]     = 'LNAME';
+			ftypes[2]     = 'text';
 
-				//Successful submission
-				$( 'form[name="mc-embedded-subscribe-form"]' ).on( 'submit', function() {
+			//Successful submission
+			$('form[name="mc-embedded-subscribe-form"]').on('submit', function () {
 
-					var email_field = $( this ).find( '#mce-EMAIL' ).val();
-					if ( ! email_field ) {
-						return false;
-					}
-					$( this ).find( '.give-newsletter-confirmation' ).show().delay( 5000 ).slideUp();
-					$( this ).find( '.give-newsletter-form' ).hide();
+				var email_field = $(this).find('#mce-EMAIL').val();
+				if (!email_field) {
+					return false;
+				}
+				$(this).find('.give-newsletter-confirmation').show().delay(5000).slideUp();
+				$(this).find('.give-newsletter-form').hide();
 
-				} );
+			});
 
-			}( jQuery ));
-			var $mcj = jQuery.noConflict( true );
+		}(jQuery));
+		var $mcj = jQuery.noConflict(true);
 
 
 	</script>
