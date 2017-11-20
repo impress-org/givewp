@@ -488,11 +488,6 @@ function give_email_tag_first_name( $tag_args ) {
 			$firstname = $donor->get_first_name();
 			break;
 
-		/**
-		 * Get Donor First Name from donor id.
-		 *
-		 * @since 2.0
-		 */
 		case give_check_variable( $tag_args, 'isset', 0, 'donor_id' ):
 			$donor     = new Give_Donor( $tag_args['donor_id'] );
 			$firstname = $donor->get_first_name();
