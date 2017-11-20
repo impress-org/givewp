@@ -203,35 +203,33 @@ function give_get_purchase_session() {
  *
  * @since 1.8.14
  *
- * @return string
+ * @return string By default, the name of the form. Then the price level text if any is found.
  */
 function give_payment_gateway_item_title( $payment_data ) {
-	$form_id          = intval( $payment_data['post_data']['give-form-id'] );
-	$item_name        = $payment_data['post_data']['give-form-title'];
-	$is_custom_amount = give_is_setting_enabled( give_get_meta( $form_id, '_give_custom_amount', true ) );
+
+	$form_id   = intval( $payment_data['post_data']['give-form-id'] );
+	$item_name = isset( $payment_data['post_data']['give-form-title'] ) ? $payment_data['post_data']['give-form-title'] : '';
+	$price_id  = isset( $payment_data['post_data']['give-price-id'] ) ? $payment_data['post_data']['give-price-id'] : '';
+
 
 	// Verify has variable prices.
-	if ( give_has_variable_prices( $form_id ) && isset( $payment_data['post_data']['give-price-id'] ) ) {
+	if ( give_has_variable_prices( $form_id ) && ! empty( $price_id ) ) {
 
-		$item_price_level_text = give_get_price_option_name( $form_id, $payment_data['post_data']['give-price-id'] );
-		$price_level_amount    = give_get_price_option_amount( $form_id, $payment_data['post_data']['give-price-id'] );
+		$item_price_level_text = give_get_price_option_name( $form_id, $price_id, 0, false );
 
-		// Donation given doesn't match selected level (must be a custom amount).
-		if ( $price_level_amount !== give_maybe_sanitize_amount( $payment_data['post_data']['give-amount'] ) ) {
-			$custom_amount_text = give_get_meta( $form_id, '_give_custom_amount_text', true );
-
-			// user custom amount text if any, fallback to default if not.
-			$item_name .= ' - ' . give_check_variable( $custom_amount_text, 'empty', __( 'Custom Amount', 'give' ) );
-
-		} elseif ( ! empty( $item_price_level_text ) ) {
+		/**
+		 * Output donation level text if:
+		 *
+		 * 1. It's not a custom amount
+		 * 2. The level field has actual text and isn't the amount (which is already displayed on the receipt).
+		 */
+		if (
+			'custom' !== $price_id
+			&& ! empty( $item_price_level_text )
+		) {
 			// Matches a donation level - append level text.
 			$item_name .= ' - ' . $item_price_level_text;
 		}
-	} // End if().
-	elseif ( $is_custom_amount && give_get_form_price( $form_id ) !== give_maybe_sanitize_amount( $payment_data['post_data']['give-amount'] ) ) {
-		$custom_amount_text = give_get_meta( $form_id, '_give_custom_amount_text', true );
-		// user custom amount text if any, fallback to default if not.
-		$item_name .= ' - ' . give_check_variable( $custom_amount_text, 'empty', __( 'Custom Amount', 'give' ) );
 	}
 
 	/**
@@ -550,8 +548,8 @@ function give_get_newsletter() {
 	<div class="give-newsletter-form-wrap">
 
 		<form action="//givewp.us3.list-manage.com/subscribe/post?u=3ccb75d68bda4381e2f45794c&amp;id=12a081aa13"
-			  method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate"
-			  target="_blank" novalidate>
+		      method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate"
+		      target="_blank" novalidate>
 			<div class="give-newsletter-confirmation">
 				<p><?php esc_html_e( 'Thanks for Subscribing!', 'give' ); ?> :)</p>
 			</div>
@@ -560,26 +558,26 @@ function give_get_newsletter() {
 				<tr valign="middle">
 					<td>
 						<label for="mce-EMAIL"
-							   class="screen-reader-text"><?php esc_html_e( 'Email Address (required)', 'give' ); ?></label>
+						       class="screen-reader-text"><?php esc_html_e( 'Email Address (required)', 'give' ); ?></label>
 						<input type="email" name="EMAIL" id="mce-EMAIL"
-							   placeholder="<?php esc_attr_e( 'Email Address (required)', 'give' ); ?>"
-							   class="required email" value="">
+						       placeholder="<?php esc_attr_e( 'Email Address (required)', 'give' ); ?>"
+						       class="required email" value="">
 					</td>
 					<td>
 						<label for="mce-FNAME"
-							   class="screen-reader-text"><?php esc_html_e( 'First Name', 'give' ); ?></label>
+						       class="screen-reader-text"><?php esc_html_e( 'First Name', 'give' ); ?></label>
 						<input type="text" name="FNAME" id="mce-FNAME"
-							   placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" class="" value="">
+						       placeholder="<?php esc_attr_e( 'First Name', 'give' ); ?>" class="" value="">
 					</td>
 					<td>
 						<label for="mce-LNAME"
-							   class="screen-reader-text"><?php esc_html_e( 'Last Name', 'give' ); ?></label>
+						       class="screen-reader-text"><?php esc_html_e( 'Last Name', 'give' ); ?></label>
 						<input type="text" name="LNAME" id="mce-LNAME"
-							   placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" class="" value="">
+						       placeholder="<?php esc_attr_e( 'Last Name', 'give' ); ?>" class="" value="">
 					</td>
 					<td>
 						<input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button"
-							   value="<?php esc_attr_e( 'Subscribe', 'give' ); ?>">
+						       value="<?php esc_attr_e( 'Subscribe', 'give' ); ?>">
 					</td>
 				</tr>
 			</table>
@@ -592,30 +590,30 @@ function give_get_newsletter() {
 	</div>
 
 	<script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>
-	<script type='text/javascript'>(function ($) {
-			window.fnames = new Array();
-			window.ftypes = new Array();
-			fnames[0] = 'EMAIL';
-			ftypes[0] = 'email';
-			fnames[1] = 'FNAME';
-			ftypes[1] = 'text';
-			fnames[2] = 'LNAME';
-			ftypes[2] = 'text';
+	<script type='text/javascript'>(function( $ ) {
+				window.fnames = new Array();
+				window.ftypes = new Array();
+				fnames[ 0 ] = 'EMAIL';
+				ftypes[ 0 ] = 'email';
+				fnames[ 1 ] = 'FNAME';
+				ftypes[ 1 ] = 'text';
+				fnames[ 2 ] = 'LNAME';
+				ftypes[ 2 ] = 'text';
 
-			//Successful submission
-			$('form[name="mc-embedded-subscribe-form"]').on('submit', function () {
+				//Successful submission
+				$( 'form[name="mc-embedded-subscribe-form"]' ).on( 'submit', function() {
 
-				var email_field = $(this).find('#mce-EMAIL').val();
-				if (!email_field) {
-					return false;
-				}
-				$(this).find('.give-newsletter-confirmation').show().delay(5000).slideUp();
-				$(this).find('.give-newsletter-form').hide();
+					var email_field = $( this ).find( '#mce-EMAIL' ).val();
+					if ( ! email_field ) {
+						return false;
+					}
+					$( this ).find( '.give-newsletter-confirmation' ).show().delay( 5000 ).slideUp();
+					$( this ).find( '.give-newsletter-form' ).hide();
 
-			});
+				} );
 
-		}(jQuery));
-		var $mcj = jQuery.noConflict(true);
+			}( jQuery ));
+			var $mcj = jQuery.noConflict( true );
 
 
 	</script>
@@ -763,10 +761,10 @@ if ( ! function_exists( 'array_column' ) ) {
 		}
 
 		if ( ! is_int( $params[1] )
-			 && ! is_float( $params[1] )
-			 && ! is_string( $params[1] )
-			 && $params[1] !== null
-			 && ! ( is_object( $params[1] ) && method_exists( $params[1], '__toString' ) )
+		     && ! is_float( $params[1] )
+		     && ! is_string( $params[1] )
+		     && $params[1] !== null
+		     && ! ( is_object( $params[1] ) && method_exists( $params[1], '__toString' ) )
 		) {
 			trigger_error( esc_html__( 'array_column(): The column key should be either a string or an integer.', 'give' ), E_USER_WARNING );
 
@@ -774,10 +772,10 @@ if ( ! function_exists( 'array_column' ) ) {
 		}
 
 		if ( isset( $params[2] )
-			 && ! is_int( $params[2] )
-			 && ! is_float( $params[2] )
-			 && ! is_string( $params[2] )
-			 && ! ( is_object( $params[2] ) && method_exists( $params[2], '__toString' ) )
+		     && ! is_int( $params[2] )
+		     && ! is_float( $params[2] )
+		     && ! is_string( $params[2] )
+		     && ! ( is_object( $params[2] ) && method_exists( $params[2], '__toString' ) )
 		) {
 			trigger_error( esc_html__( 'array_column(): The index key should be either a string or an integer.', 'give' ), E_USER_WARNING );
 
