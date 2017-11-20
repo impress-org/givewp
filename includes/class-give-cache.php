@@ -468,6 +468,7 @@ class Give_Cache {
 
 
 		// Perform action when specific cache deleted.
+		// @todo: move this code to async task.
 		switch( $group ) {
 			case 'give-donors':
 				$donor = new Give_Donor( $id );
