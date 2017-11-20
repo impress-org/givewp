@@ -14,6 +14,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+if ( ! current_user_can('view_give_payments') ) {
+	wp_die( __( 'Sorry, you are not allowed to access this page.', 'give' ), __( 'Error', 'give' ), array(
+		'response' => 403,
+	) );
+}
+
 /**
  * View Order Details Page
  *
