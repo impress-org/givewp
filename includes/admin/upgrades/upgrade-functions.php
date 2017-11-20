@@ -1263,8 +1263,6 @@ function give_v1817_process_cleanup_user_roles() {
 		}
 	}
 
-	return count( $add_caps ) + count( $remove_caps );
-
 }
 
 /**
@@ -1277,9 +1275,9 @@ function give_v1817_cleanup_user_roles() {
 	/* @var Give_Updates $give_updates */
 	$give_updates = Give_Updates::get_instance();
 
-	$percentage_count = give_v1817_process_cleanup_user_roles();
+	give_v1817_process_cleanup_user_roles();
 
-	$give_updates->set_percentage( $percentage_count, ( $give_updates->step * 20 ) );
+	$give_updates->percentage = 100;
 
 	// Create Give plugin roles.
 	$roles = new Give_Roles();
