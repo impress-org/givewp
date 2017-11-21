@@ -466,11 +466,14 @@ function give_check_for_form_price_variations_html() {
 		wp_die();
 	}
 
-	$form_id    = ! empty( $_POST['form_id'] ) ? intval( $_POST['form_id'] ) : 0;
-	$payment_id = ! empty( $_POST['payment_id'] ) ? intval( $_POST['payment_id'] ) : 0;
-	$form       = get_post( $form_id );
+	$form_id    = ! empty( $_POST['form_id'] ) ? intval( $_POST['form_id'] ) : false;
+	$payment_id = ! empty( $_POST['payment_id'] ) ? intval( $_POST['payment_id'] ) : false;
+	if ( empty( $form_id ) || empty( $payment_id ) ) {
+		wp_die();
+	}
 
-	if ( 'give_forms' != $form->post_type ) {
+	$form = get_post( $form_id );
+	if ( ! empty( $form->post_type ) && 'give_forms' != $form->post_type ) {
 		wp_die();
 	}
 
