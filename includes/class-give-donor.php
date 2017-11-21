@@ -413,7 +413,7 @@ class Give_Donor {
 
 			// We added this payment successfully, increment the stats
 			if ( $update_stats ) {
-				$payment_amount = give_get_payment_amount( $payment_id );
+				$payment_amount = give_get_payment_amount( $payment_id, 'stats' );
 
 				if ( ! empty( $payment_amount ) ) {
 					$this->increase_value( $payment_amount );
@@ -498,7 +498,7 @@ class Give_Donor {
 
 			if ( $update_stats ) {
 				// We removed this payment successfully, decrement the stats
-				$payment_amount = give_get_payment_amount( $payment_id );
+				$payment_amount = give_get_payment_amount( $payment_id, 'stats' );
 
 				if ( ! empty( $payment_amount ) ) {
 					$this->decrease_value( $payment_amount );
