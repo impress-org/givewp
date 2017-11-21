@@ -260,7 +260,7 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 				$heading[] = $section[ $current_section ];
 			}
 
-			return $heading;
+			return array_unique( $heading );
 		}
 
 		/**
