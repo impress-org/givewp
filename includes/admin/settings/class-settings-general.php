@@ -10,7 +10,7 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
+	exit; // Exit if accessed directly.
 }
 
 if ( ! class_exists( 'Give_Settings_General' ) ) :
@@ -194,7 +194,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 					// Get default country code.
 					$country = give_get_country();
 
-					// get the list of the states of which defalut country is selected
+					// get the list of the states of which default country is selected.
 					$states = give_get_states( $country );
 
 					// Get the country list that does not have any states init.
