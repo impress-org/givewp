@@ -1366,18 +1366,20 @@ function give_donation_amount( $donation_id = 0, $type = '' ) {
 /**
  * Get the amount associated with a payment
  *
- * @param int $payment_id Payment ID.
+ * @param int    $payment_id Payment ID.
+ * @param string $type       Donation total type.
  *
  * @access public
  * @since  1.0
+ * @since  1.8.17 Added new argument $type.
  *
  * @return mixed
  */
-function give_get_payment_amount( $payment_id ) {
+function give_get_payment_amount( $payment_id, $type = 'donation' ) {
 
 	$payment = new Give_Payment( $payment_id );
 
-	return apply_filters( 'give_payment_amount', floatval( $payment->total ), $payment_id );
+	return apply_filters( 'give_payment_amount', floatval( $payment->total ), $payment_id, $type );
 }
 
 /**
