@@ -71,6 +71,10 @@ class Give_Cache {
 
 		// weekly delete all expired cache.
 		Give_Cron::add_weekly_event( array( $this, 'delete_all_expired' ) );
+
+		add_action( 'save_post_give_forms', array( $this, 'delete_form_related_cache' ) );
+		add_action( 'give_deleted_give-donors_cache', array( $this, 'delete_donor_related_cache' ), 10, 3 );
+		add_action( 'give_deleted_give-donations_cache', array( $this, 'delete_donations_related_cache' ), 10, 3 );
 	}
 
 	/**
@@ -423,41 +427,138 @@ class Give_Cache {
 	 * @since  2.0
 	 * @access public
 	 *
-	 * @param int    $id
-	 * @param string $group
-	 * @param int    $expire
+	 * @param int|array $ids
+	 * @param string    $group
+	 * @param int       $expire
 	 *
 	 * @return bool
 	 */
-	public static function delete_group( $id, $group = '', $expire = 0 ) {
+	public static function delete_group( $ids, $group = '', $expire = 0 ) {
 		$status = false;
 
 		// Bailout.
-		if ( ! self::$instance->is_cache || empty( $id ) ) {
+		if ( ! self::$instance->is_cache || empty( $ids ) ) {
 			return $status;
 		}
 
-		$status = wp_cache_delete( $id, $group, $expire );
+		// Delete single or multiple cache items from cache.
+		if ( ! is_array( $ids ) ) {
+			$status = wp_cache_delete( $ids, $group, $expire );
 
-		// Perform action when specific cache deleted.
-		// @todo: move this code to async task.
-		switch ( $group ) {
-			case 'give-donors':
-				$donor       = new Give_Donor( $id );
-				$payment_ids = array_map( 'trim', (array) explode( ',', trim( $donor->payment_ids ) ) );
+			/**
+			 * Fire action when cache deleted for specific id.
+			 *
+			 * @since 2.0
+			 *
+			 * @param string $ids
+			 * @param string $group
+			 * @param int    $expire
+			 */
+			do_action( "give_deleted_{$group}_cache", $ids, $group, $expire );
 
-				if ( ! empty( $payment_ids ) ) {
-					foreach ( $payment_ids as $payment_id ) {
-						wp_cache_delete( $payment_id, 'give-donations' );
-					}
-				}
+		} else {
+			foreach ( $ids as $id ) {
+				$status = wp_cache_delete( $id, $group, $expire );
+
+				/**
+				 * Fire action when cache deleted for specific id .
+				 *
+				 * @since 2.0
+				 *
+				 * @param string $ids
+				 * @param string $group
+				 * @param int    $expire
+				 */
+				do_action( "give_deleted_{$group}_cache", $id, $group, $expire );
+			}
 		}
-
 
 		// Update timestamp in DB when cache update.
 		update_option( 'give-last-cache-updated', current_time( 'timestamp', 1 ) );
 
 		return $status;
+	}
+
+
+	/**
+	 * Delete form related cache
+	 * Note: only use for internal purpose.
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param int $form_id
+	 */
+	public function delete_form_related_cache( $form_id ) {
+		// If this is just a revision, don't send the email.
+		if ( wp_is_post_revision( $form_id ) ) {
+			return;
+		}
+
+		$donation_query = new Give_Payments_Query(
+			array(
+				'number'     => - 1,
+				'give_forms' => $form_id
+			)
+		);
+
+		$donations = $donation_query->get_payments();
+
+		// Bailout.
+		if ( empty( $donations ) ) {
+			return;
+		}
+
+		/* @var Give_Payment $donation */
+		foreach ( $donations as $donation ) {
+			wp_cache_delete( $donation->ID, 'give-donations' );
+			wp_cache_delete( $donation->donor_id, 'give-donors' );
+		}
+	}
+
+	/**
+	 * Delete donor related cache
+	 * Note: only use for internal purpose.
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param string $id
+	 * @param string $group
+	 * @param int    $expire
+	 */
+	public function delete_donor_related_cache( $id, $group, $expire ) {
+		$donor        = new Give_Donor( $id );
+		$donation_ids = array_map( 'trim', (array) explode( ',', trim( $donor->payment_ids ) ) );
+
+		// bailout.
+		if ( empty( $donation_ids ) ) {
+			return;
+		}
+
+		foreach ( $donation_ids as $donation ) {
+			wp_cache_delete( $donation, 'give-donations' );
+		}
+	}
+
+	/**
+	 * Delete donations related cache
+	 * Note: only use for internal purpose.
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param string $id
+	 * @param string $group
+	 * @param int    $expire
+	 */
+	public function delete_donations_related_cache( $id, $group, $expire ) {
+		/* @var Give_Payment $donation */
+		$donation = new Give_Payment( $id );
+
+		if ( $donation && $donation->donor_id ) {
+			wp_cache_delete( $donation->donor_id, 'give-donors' );
+		}
 	}
 }
 
