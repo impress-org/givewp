@@ -27,7 +27,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 		 */
 		public function __construct() {
 			$this->id    = 'general';
-			$this->label = esc_html__( 'General', 'give' );
+			$this->label = __( 'General', 'give' );
 
 			$this->default_tab = 'general-settings';
 
@@ -54,14 +54,14 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						),
 						array(
 							'id'      => 'session_lifetime',
-							'name'    => esc_html__( 'Session Lifetime', 'give' ),
-							'desc'    => esc_html__( 'The length of time a user\'s session is kept alive. Give starts a new session per user upon donation. Sessions allow donors to view their donation receipts without being logged in.', 'give' ),
+							'name'    => __( 'Session Lifetime', 'give' ),
+							'desc'    => __( 'The length of time a user\'s session is kept alive. Give starts a new session per user upon donation. Sessions allow donors to view their donation receipts without being logged in.', 'give' ),
 							'type'    => 'select',
 							'options' => array(
-								'86400'  => esc_html__( '24 Hours', 'give' ),
-								'172800' => esc_html__( '48 Hours', 'give' ),
-								'259200' => esc_html__( '72 Hours', 'give' ),
-								'604800' => esc_html__( '1 Week', 'give' ),
+								'86400'  => __( '24 Hours', 'give' ),
+								'172800' => __( '48 Hours', 'give' ),
+								'259200' => __( '72 Hours', 'give' ),
+								'604800' => __( '1 Week', 'give' ),
 							)
 						),
 						array(
@@ -79,8 +79,8 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							)
 						),
 						array(
-							'name'    => esc_html__( 'Email Access', 'give' ),
-							'desc'    => esc_html__( 'Would you like your donors to be able to access their donation history using only email? Donors whose sessions have expired and do not have an account may still access their donation history via a temporary email access link.', 'give' ),
+							'name'    => __( 'Email Access', 'give' ),
+							'desc'    => __( 'Would you like your donors to be able to access their donation history using only email? Donors whose sessions have expired and do not have an account may still access their donation history via a temporary email access link.', 'give' ),
 							'id'      => 'email_access',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
@@ -91,7 +91,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						),
 						array(
 							'id'      => 'recaptcha_key',
-							'name'    => esc_html__( 'reCAPTCHA Site Key', 'give' ),
+							'name'    => __( 'reCAPTCHA Site Key', 'give' ),
 							/* translators: %s: https://www.google.com/recaptcha/ */
 							'desc'    => sprintf( __( 'Please paste your reCAPTCHA site key here. <br />If you would like to prevent spam on the email access form navigate to <a href="%s" target="_blank">the reCAPTCHA website</a> and sign up for an API key. The reCAPTCHA uses Google\'s user-friendly single click verification method.', 'give' ), esc_url( 'http://docs.givewp.com/recaptcha' ) ),
 							'default' => '',
@@ -99,13 +99,13 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						),
 						array(
 							'id'      => 'recaptcha_secret',
-							'name'    => esc_html__( 'reCAPTCHA Secret Key', 'give' ),
-							'desc'    => esc_html__( 'Please paste the reCAPTCHA secret key here from your  reCAPTCHA API Keys panel.', 'give' ),
+							'name'    => __( 'reCAPTCHA Secret Key', 'give' ),
+							'desc'    => __( 'Please paste the reCAPTCHA secret key here from your  reCAPTCHA API Keys panel.', 'give' ),
 							'default' => '',
 							'type'    => 'text'
 						),
 						array(
-							'name'  => esc_html__( 'Access Control Docs Link', 'give' ),
+							'name'  => __( 'Access Control Docs Link', 'give' ),
 							'id'    => 'access_control_docs_link',
 							'url'   => esc_url( 'http://docs.givewp.com/settings-access-control' ),
 							'title' => __( 'Access Control', 'give' ),
@@ -126,43 +126,43 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'id'   => 'give_title_general_settings_2'
 						),
 						array(
-							'name' => esc_html__( 'Currency Settings', 'give' ),
+							'name' => __( 'Currency Settings', 'give' ),
 							'desc' => '',
 							'type' => 'give_title',
 							'id'   => 'give_title_general_settings_2'
 						),
 						array(
-							'name'    => esc_html__( 'Currency', 'give' ),
-							'desc'    => esc_html__( 'The donation currency. Note that some payment gateways have currency restrictions.', 'give' ),
+							'name'    => __( 'Currency', 'give' ),
+							'desc'    => __( 'The donation currency. Note that some payment gateways have currency restrictions.', 'give' ),
 							'id'      => 'currency',
 							'type'    => 'select',
 							'options' => give_get_currencies(),
 							'default' => 'USD',
 						),
 						array(
-							'name'    => esc_html__( 'Currency Position', 'give' ),
-							'desc'    => esc_html__( 'The position of the currency symbol.', 'give' ),
+							'name'    => __( 'Currency Position', 'give' ),
+							'desc'    => __( 'The position of the currency symbol.', 'give' ),
 							'id'      => 'currency_position',
 							'type'    => 'select',
 							'options' => array(
 								/* translators: %s: currency symbol */
-								'before' => sprintf( esc_html__( 'Before - %s&#x200e;10', 'give' ), give_currency_symbol( give_get_currency() ) ),
+								'before' => sprintf( __( 'Before - %s&#x200e;10', 'give' ), give_currency_symbol( give_get_currency() ) ),
 								/* translators: %s: currency symbol */
-								'after'  => sprintf( esc_html__( 'After - 10%s&#x200f;', 'give' ), give_currency_symbol( give_get_currency() ) ),
+								'after'  => sprintf( __( 'After - 10%s&#x200f;', 'give' ), give_currency_symbol( give_get_currency() ) ),
 							),
 							'default' => 'before',
 						),
 						array(
-							'name'    => esc_html__( 'Thousands Separator', 'give' ),
-							'desc'    => esc_html__( 'The symbol (typically , or .) to separate thousands.', 'give' ),
+							'name'    => __( 'Thousands Separator', 'give' ),
+							'desc'    => __( 'The symbol (typically , or .) to separate thousands.', 'give' ),
 							'id'      => 'thousands_separator',
 							'type'    => 'text',
 							'default' => ',',
 							'css'     => 'width:12em;',
 						),
 						array(
-							'name'    => esc_html__( 'Decimal Separator', 'give' ),
-							'desc'    => esc_html__( 'The symbol (usually , or .) to separate decimal points.', 'give' ),
+							'name'    => __( 'Decimal Separator', 'give' ),
+							'desc'    => __( 'The symbol (usually , or .) to separate decimal points.', 'give' ),
 							'id'      => 'decimal_separator',
 							'type'    => 'text',
 							'default' => '.',
@@ -177,7 +177,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'css'     => 'width:12em;',
 						),
 						array(
-							'name'  => esc_html__( 'Currency Options Docs Link', 'give' ),
+							'name'  => __( 'Currency Options Docs Link', 'give' ),
 							'id'    => 'currency_settings_docs_link',
 							'url'   => esc_url( 'http://docs.givewp.com/settings-currency' ),
 							'title' => __( 'Currency Settings', 'give' ),
@@ -207,13 +207,13 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'id'   => 'give_title_general_settings_1'
 						),
 						array(
-							'name' => esc_html__( 'General Settings', 'give' ),
+							'name' => __( 'General Settings', 'give' ),
 							'desc' => '',
 							'type' => 'give_title',
 							'id'   => 'give_title_general_settings_1'
 						),
 						array(
-							'name'    => esc_html__( 'Success Page', 'give' ),
+							'name'    => __( 'Success Page', 'give' ),
 							/* translators: %s: [give_receipt] */
 							'desc'    => sprintf( __( 'The page donors are sent to after completing their donations. The %s shortcode should be on this page.', 'give' ), '<code>[give_receipt]</code>' ),
 							'id'      => 'success_page',
@@ -224,8 +224,8 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							) ),
 						),
 						array(
-							'name'    => esc_html__( 'Failed Donation Page', 'give' ),
-							'desc'    => esc_html__( 'The page donors are sent to if their donation is cancelled or fails.', 'give' ),
+							'name'    => __( 'Failed Donation Page', 'give' ),
+							'desc'    => __( 'The page donors are sent to if their donation is cancelled or fails.', 'give' ),
 							'id'      => 'failure_page',
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
@@ -234,7 +234,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							) ),
 						),
 						array(
-							'name'    => esc_html__( 'Donation History Page', 'give' ),
+							'name'    => __( 'Donation History Page', 'give' ),
 							/* translators: %s: [donation_history] */
 							'desc'    => sprintf( __( 'The page showing a complete donation history for the current user. The %s shortcode should be on this page.', 'give' ), '<code>[donation_history]</code>' ),
 							'id'      => 'history_page',
@@ -245,8 +245,8 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							) ),
 						),
 						array(
-							'name'    => esc_html__( 'Base Country', 'give' ),
-							'desc'    => esc_html__( 'The country your site operates from.', 'give' ),
+							'name'    => __( 'Base Country', 'give' ),
+							'desc'    => __( 'The country your site operates from.', 'give' ),
 							'id'      => 'base_country',
 							'type'    => 'select',
 							'options' => give_get_country_list(),
@@ -265,7 +265,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'options' => $states,
 						),
 						array(
-							'name'  => esc_html__( 'General Options Docs Link', 'give' ),
+							'name'  => __( 'General Options Docs Link', 'give' ),
 							'id'    => 'general_options_docs_link',
 							'url'   => esc_url( 'http://docs.givewp.com/settings-general' ),
 							'title' => __( 'General Options', 'give' ),
@@ -306,9 +306,9 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 		 */
 		public function get_sections() {
 			$sections = array(
-				'general-settings'  => esc_html__( 'General', 'give' ),
-				'currency-settings' => esc_html__( 'Currency', 'give' ),
-				'access-control'    => esc_html__( 'Access Control', 'give' )
+				'general-settings'  => __( 'General', 'give' ),
+				'currency-settings' => __( 'Currency', 'give' ),
+				'access-control'    => __( 'Access Control', 'give' )
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );
