@@ -1272,17 +1272,11 @@ function give_is_right_to_left_supported_currency( $currency = '' ) {
 			'MAD',
 			'AED',
 			'BHD',
-			'DZD',
-			'IQD',
-			'IRT',
-			'JOD',
 			'KWD',
 			'LYD',
 			'OMR',
-			'QAR',
 			'SAR',
 			'TND',
-			'YER',
 		)
 	);
 
