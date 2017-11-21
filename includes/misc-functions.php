@@ -1499,3 +1499,48 @@ function give_get_core_settings_json( $file_name ) {
 
 	return $file_contents;
 }
+
+/**
+ * Get number of donation to show when user is not login.
+ *
+ * @since 1.8.17
+ *
+ * @return int $country The two letter country code for the site's base country
+ */
+function give_get_non_login_users_donations() {
+	$give_options = give_get_settings();
+	$number      = ! empty( $give_options['non_login_users_donations'] ) ? absint( $give_options['non_login_users_donations'] ) : 1;
+
+	return apply_filters( 'give_get_non_login_users_donations', $number );
+}
+
+/**
+ * Add footer to the table when donor is view the donation history page with out login
+ *
+ * @since 1.8.17
+ */
+function give_donation_history_table_end() {
+	$email   = Give()->session->get( 'give_email' );
+	$page_id = give_get_option( 'history_page' );
+	?>
+	<tfoot>
+	<tr>
+		<td colspan="9999">
+			<div class="donation_history_send_email_link">
+				<?php
+				echo sprintf(
+					__( 'For security reason, please confirm your email address (%s) to view your complete donation history.', 'give' ),
+					$email
+				);
+				?>
+				<input type="hidden" name="give_donation_history_send_confirmation_nonce"
+				       class="give_donation_history_send_confirmation_nonce"
+				       value="<?php echo wp_create_nonce( 'give_donation_history' ); ?>">
+				<a href="<?php echo get_permalink( $page_id ); ?>" data-email="<?php echo $email; ?>"
+				   class="give_donation_history_button give_donation_history_send_confirmation"><?php _e( 'Confirm Email', 'give' ); ?></a>
+			</div>
+		</td>
+	</tr>
+	</tfoot>
+	<?php
+}

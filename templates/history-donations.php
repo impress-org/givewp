@@ -16,7 +16,9 @@ if ( is_user_logged_in() ) {
 } elseif ( Give()->session->get_session_expiration() !== false ) {
 	// Session active?
 	$email     = Give()->session->get( 'give_email' );
-	$donations = give_get_users_donations( $email, 20, true, 'any' );
+	$donations = give_get_users_donations( $email, give_get_non_login_users_donations(), true, 'any' );
+
+	add_action( 'give_donation_history_table_end', 'give_donation_history_table_end' );
 }
 
 
@@ -32,39 +34,41 @@ if ( $donations ) : ?>
 		'details'        => __( 'Details', 'give' ),
 	);
 	?>
-	<table id="give_user_history" class="give-table">
+	<div class="give_user_history_main" >
+		<div class="give_user_history_notice"></div>
+		<table id="give_user_history" class="give-table">
 		<thead>
-			<tr class="give-donation-row">
-				<?php
-				/**
-				 * Fires in current user donation history table, before the header row start.
-				 *
-				 * Allows you to add new <th> elements to the header, before other headers in the row.
-				 *
-				 * @since 1.7
-				 */
-				do_action( 'give_donation_history_header_before' );
+		<tr class="give-donation-row">
+			<?php
+			/**
+			 * Fires in current user donation history table, before the header row start.
+			 *
+			 * Allows you to add new <th> elements to the header, before other headers in the row.
+			 *
+			 * @since 1.7
+			 */
+			do_action( 'give_donation_history_header_before' );
 
-				foreach ( $donation_history_args as $index => $value ) {
-					if ( filter_var( $donation_history_args[ $index ], FILTER_VALIDATE_BOOLEAN ) ) :
-						echo sprintf(
-							'<th scope="col" class="give-donation-%1$s>">%2$s</th>',
-							$index,
-							$table_headings[ $index ]
-						);
-					endif;
-				}
+			foreach ( $donation_history_args as $index => $value ) {
+				if ( filter_var( $donation_history_args[ $index ], FILTER_VALIDATE_BOOLEAN ) ) :
+					echo sprintf(
+						'<th scope="col" class="give-donation-%1$s>">%2$s</th>',
+						$index,
+						$table_headings[ $index ]
+					);
+				endif;
+			}
 
-				/**
-				 * Fires in current user donation history table, after the header row ends.
-				 *
-				 * Allows you to add new <th> elements to the header, after other headers in the row.
-				 *
-				 * @since 1.7
-				 */
-				do_action( 'give_donation_history_header_after' );
-				?>
-			</tr>
+			/**
+			 * Fires in current user donation history table, after the header row ends.
+			 *
+			 * Allows you to add new <th> elements to the header, after other headers in the row.
+			 *
+			 * @since 1.7
+			 */
+			do_action( 'give_donation_history_header_after' );
+			?>
+		</tr>
 		</thead>
 		<?php foreach ( $donations as $post ) :
 			setup_postdata( $post );
@@ -197,17 +201,29 @@ if ( $donations ) : ?>
 				?>
 			</tr>
 		<?php endforeach; ?>
+
+			<?php
+			/**
+			 * Fires in footer of user donation history table.
+			 *
+			 * Allows you to add new <tfoot> elements to the row, after other elements in the row.
+			 *
+			 * @since 1.8.17
+			 */
+			do_action( 'give_donation_history_table_end' );
+			?>
 	</table>
-	<div id="give-donation-history-pagination" class="give_pagination navigation">
-		<?php
-		$big = 999999;
-		echo paginate_links( array(
-			'base'    => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
-			'format'  => '?paged=%#%',
-			'current' => max( 1, get_query_var( 'paged' ) ),
-			'total'   => ceil( give_count_donations_of_donor() / 20 ) // 20 items per page
-		) );
-		?>
+		<div id="give-donation-history-pagination" class="give_pagination navigation">
+			<?php
+			$big = 999999;
+			echo paginate_links( array(
+				'base'    => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+				'format'  => '?paged=%#%',
+				'current' => max( 1, get_query_var( 'paged' ) ),
+				'total'   => ceil( give_count_donations_of_donor() / 20 ) // 20 items per page
+			) );
+			?>
+		</div>
 	</div>
 	<?php wp_reset_postdata(); ?>
 <?php else : ?>
