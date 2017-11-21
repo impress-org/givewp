@@ -5,6 +5,8 @@
  * This template is used to display an email form which will when submitted send an update donation receipt and also refresh the users session
  */
 
+global $give_access_form_outputted;
+
 $recaptcha_key    = give_get_option( 'recaptcha_key' );
 $recaptcha_secret = give_get_option( 'recaptcha_secret' );
 $enable_recaptcha = ( ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ) ? true : false;

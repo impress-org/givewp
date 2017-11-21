@@ -284,6 +284,7 @@ add_action( 'give_pre_process_give_forms_meta', 'give_set_donation_levels_max_mi
  * @since 1.8.17
  */
 function give_process_donation_email_access_form() {
+
 	global $give_access_form_outputted;
 
 	$email            = isset( $_POST['give_email'] ) ? $_POST['give_email'] : '';
@@ -298,7 +299,11 @@ function give_process_donation_email_access_form() {
 	}
 
 	// Form submission.
-	if ( is_email( $email ) && wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
+	if ( wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
+
+		if ( empty( $email ) ) {
+			give_set_error( 'give_empty_email', __( 'Please enter the email address you used for your donation.', 'give' ) );
+		}
 
 		// Use reCAPTCHA.
 		if ( $enable_recaptcha ) {
@@ -343,11 +348,11 @@ function give_process_donation_email_access_form() {
 			$donor          = Give()->donors->get_donor_by( 'email', $email );
 
 			// Verify that donor object is present and donor is connected with its user profile or not.
-			if ( ! $access_token && is_object( $donor) && 0 === (int) $donor->user_id ) {
+			if ( ! $access_token && is_object( $donor ) && 0 === (int) $donor->user_id ) {
 
 
-				give_set_error( 'give_email_access_donor_only',__( 'To access complete donation history, please click the <strong>View it in browser</strong> link in your Donation Receipt Email', 'give' ) );
-			} else if ( $access_token && is_object( $donor) ) {
+				give_set_error( 'give_email_access_donor_only', __( 'To access complete donation history, please click the <strong>View it in browser</strong> link in your Donation Receipt Email', 'give' ) );
+			} else if ( $access_token && is_object( $donor ) ) {
 
 				// Scenario: Donation - Receipt Access.
 				if ( ! empty( $donor->payment_ids ) ) {
@@ -368,7 +373,7 @@ function give_process_donation_email_access_form() {
 				if ( ! $donation_match ) {
 					give_set_error( 'give_email_access_token_not_match', __( 'It looks like that email address provided and access token of the link does not match.', 'give' ) );
 				} else {
-					Give()->email_access->set_verify_key( $donor->id, $donor->email, $access_token );
+					Give()->session->set( 'receipt_access', $access_token );
 					wp_safe_redirect( esc_url( get_permalink( give_get_option( 'history_page' ) ) . '?payment_key=' . $access_token ) );
 				}
 
@@ -376,6 +381,8 @@ function give_process_donation_email_access_form() {
 				give_set_error( 'give-no-donations', __( 'We are unable to fetch donations from the email you entered. Please try again.', 'give' ) );
 			}
 		}
+
+
 	} // End if().
 
 }
