@@ -1337,7 +1337,7 @@ function give_remove_payment_prefix_postfix( $number ) {
  */
 function give_donation_amount( $donation_id = 0, $type = '' ) {
 	$donation_currency = give_get_payment_currency_code( $donation_id );
-	$amount            = give_get_payment_amount( $donation_id );
+	$amount            = give_get_payment_amount( $donation_id, $type );
 
 	$formatted_amount = give_currency_filter(
 		give_format_amount(
