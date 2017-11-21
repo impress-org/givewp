@@ -66,10 +66,17 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						),
 						array(
 							'id'      => 'non_login_users_donations',
-							'name'    => esc_html__( 'Donations History', 'give' ),
-							'desc'    => esc_html__( 'Number of donation to display when non login user session is activate.', 'give' ),
+							'name'    => __( 'Limit Display of Donations', 'give' ),
+							'desc'    => __( 'Number of donations to display when non logged-in user access donation history page with purchase session deactivated.', 'give' ),
 							'default' => '1',
-							'type'    => 'number'
+							'type'    => 'select',
+							'options' => array(
+								'1'  => __( 'Recent First Donation', 'give' ),
+								'2' => __( 'Recent Two Donations', 'give' ),
+								'3' => __( 'Recent Three Donations', 'give' ),
+								'4' => __( 'Recent Four Donations', 'give' ),
+								'5' => __( 'Recent Five Donations', 'give' ),
+							)
 						),
 						array(
 							'name'    => esc_html__( 'Email Access', 'give' ),
