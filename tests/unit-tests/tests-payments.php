@@ -460,9 +460,13 @@ class Tests_Payments extends Give_Unit_Test_Case {
 
 		$total1 = give_currency_filter( give_format_amount( give_get_payment_amount( $this->_payment_id ) ), give_get_payment_currency_code( $this->_payment_id ) );
 		$total2 = give_currency_filter( give_format_amount( give_get_payment_amount( $this->_payment_id ) ) );
+		$total3 = give_currency_filter( give_format_amount( give_get_payment_amount( $this->_payment_id, 'stats' ) ), give_get_payment_currency_code( $this->_payment_id ) );
+		$total4 = give_currency_filter( give_format_amount( give_get_payment_amount( $this->_payment_id, 'stats' ) ) );
 
 		$this->assertEquals( '&#36;20.00', $total1 );
 		$this->assertEquals( '&#36;20.00', $total2 );
+		$this->assertEquals( '&#36;20.00', $total3 );
+		$this->assertEquals( '&#36;20.00', $total4 );
 
 	}
 
