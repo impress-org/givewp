@@ -197,6 +197,17 @@ function give_get_purchase_session() {
 }
 
 /**
+ * Retrieve Payment Key of the Receipt Access Session.
+ *
+ * @since 1.8.17
+ *
+ * @return array|string
+ */
+function give_get_receipt_session() {
+	return Give()->session->get( 'receipt_access' );
+}
+
+/**
  * Generate Item Title for Payment Gateway.
  *
  * @param array $payment_data Payment Data.
@@ -853,9 +864,18 @@ function give_can_view_receipt( $payment_key = '' ) {
 		}
 	}
 
-	$session = give_get_purchase_session();
-	if ( ! empty( $session ) && ! is_user_logged_in() ) {
-		if ( $session['purchase_key'] === $payment_meta['key'] ) {
+	// Check whether it is purchase session?
+	$purchase_session = give_get_purchase_session();
+	if ( ! empty( $purchase_session ) && ! is_user_logged_in() ) {
+		if ( $purchase_session['purchase_key'] === $payment_meta['key'] ) {
+			$return = true;
+		}
+	}
+
+	// Check whether it is receipt access session?
+	$receipt_session = give_get_receipt_session();
+	if ( ! empty( $receipt_session ) && ! is_user_logged_in() ) {
+		if ( $receipt_session === $payment_meta['key'] ) {
 			$return = true;
 		}
 	}
