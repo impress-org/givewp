@@ -285,6 +285,8 @@ function give_bc_v20_get_payment_meta( $check, $object_id, $meta_key, $single ) 
 		// Remove filter.
 		remove_filter( 'get_post_metadata', 'give_bc_v20_get_payment_meta', 999 );
 
+		$donation = new Give_Payment( $object_id );
+
 		// Get all payment meta.
 		$payment_meta = give_get_meta( $object_id );
 
@@ -311,7 +313,7 @@ function give_bc_v20_get_payment_meta( $check, $object_id, $meta_key, $single ) 
 		$payment_meta['email'] = ! empty( $payment_meta['_give_payment_donor_email'] ) ? $payment_meta['_give_payment_donor_email'] : '';
 		$payment_meta['email'] = ! empty( $payment_meta['email'] ) ?
 			$payment_meta['email'] :
-			Give()->donors->get_column( 'email', give_get_payment_donor_id( $object_id ) );
+			Give()->donors->get_column( 'email', $donation->donor_id );
 
 		// Form id.
 		$payment_meta['form_id'] = ! empty( $payment_meta['_give_payment_form_id'] ) ? $payment_meta['_give_payment_form_id'] : '';
@@ -349,7 +351,7 @@ function give_bc_v20_get_payment_meta( $check, $object_id, $meta_key, $single ) 
 		$donor_data['email'] = $payment_meta['email'];
 
 		// User ID.
-		$donor_data['id'] = give_get_payment_user_id( $object_id );
+		$donor_data['id'] = $donation->user_id;
 
 		$donor_data['address'] = false;
 
