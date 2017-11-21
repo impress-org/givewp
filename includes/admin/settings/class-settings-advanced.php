@@ -53,17 +53,6 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							'type' => 'title',
 						),
 						array(
-							'name'    => __( 'Remove Data on Uninstall', 'give' ),
-							'desc'    => __( 'When the plugin is deleted, completely remove all Give data. This includes all Give settings, forms, form meta, donor, donor data, donations. Everything.', 'give' ),
-							'id'      => 'uninstall_on_delete',
-							'type'    => 'radio_inline',
-							'default' => 'disabled',
-							'options' => array(
-								'enabled'  => __( 'Yes, Remove all data', 'give' ),
-								'disabled' => __( 'No, keep my Give settings and donation data', 'give' ),
-							),
-						),
-						array(
 							'name'    => __( 'Default User Role', 'give' ),
 							'desc'    => __( 'Assign default user roles for donors when donors opt to register as a WP User.', 'give' ),
 							'id'      => 'donor_default_user_role',
@@ -91,19 +80,30 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
 							'options' => array(
-								'enabled'  => __( 'Footer', 'give' ),
 								'disabled' => __( 'Head', 'give' ),
+								'enabled'  => __( 'Footer', 'give' ),
 							),
 						),
 						array(
 							'name'    => __( 'Akismet SPAM Protection', 'give' ),
-							'desc'    => __( 'Add a layer of SPAM protection to your donation submissions with Akismet. When enabled, donation submissions will be first sent to Akismet\'s API.', 'give' ),
+							'desc'    => __( 'Add a layer of SPAM protection to your donation submissions with Akismet. When enabled, donation submissions will be first sent to Akismet\'s API if you have the plugin activated and configured.', 'give' ),
 							'id'      => 'akismet_spam_protection',
 							'type'    => 'radio_inline',
 							'default' => ( give_check_akismet_key() ) ? 'enabled' : 'disabled',
 							'options' => array(
 								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
+							),
+						),
+						array(
+							'name'    => __( 'Remove Data on Uninstall', 'give' ),
+							'desc'    => __( 'When the plugin is deleted, completely remove all Give data. This includes all Give settings, forms, form meta, donor, donor data, donations. Everything.', 'give' ),
+							'id'      => 'uninstall_on_delete',
+							'type'    => 'radio_inline',
+							'default' => 'disabled',
+							'options' => array(
+								'enabled'  => __( 'Yes, Remove all data', 'give' ),
+								'disabled' => __( 'No, keep my Give settings and donation data', 'give' ),
 							),
 						),
 						array(

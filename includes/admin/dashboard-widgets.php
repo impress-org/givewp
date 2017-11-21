@@ -41,7 +41,7 @@ function give_dashboard_sales_widget() {
 	if ( ! current_user_can( apply_filters( 'give_dashboard_stats_cap', 'view_give_reports' ) ) ) {
 		return;
 	}
-	$stats = new Give_Payment_Stats; ?>
+	$stats = new Give_Payment_Stats(); ?>
 
 	<div class="give-dashboard-widget">
 
@@ -61,7 +61,7 @@ function give_dashboard_sales_widget() {
 				echo give_currency_filter( give_format_amount( $earnings_today, array( 'sanitize' => false ) ) );
 			?></p>
 
-			<p class="give-orders-today"><?php
+			<p class="give-donations-today"><?php
 				$donations_today = $stats->get_sales( 0, 'today', false );
 				printf(
 					/* translators: %s: daily donation count */
@@ -124,6 +124,7 @@ function give_dashboard_sales_widget() {
  * @return array
  */
 function give_dashboard_at_a_glance_widget( $items ) {
+
 	$num_posts = wp_count_posts( 'give_forms' );
 
 	if ( $num_posts && $num_posts->publish ) {

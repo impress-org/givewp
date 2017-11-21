@@ -8,7 +8,7 @@ $goal_option = give_get_meta( $form->ID, '_give_goal_option', true );
 
 //Sanity check - ensure form has pass all condition to show goal.
 if (
-	( isset( $args['show_goal'] ) &&  ! filter_var( $args['show_goal'], FILTER_VALIDATE_BOOLEAN ) )
+	( isset( $args['show_goal'] ) && ! filter_var( $args['show_goal'], FILTER_VALIDATE_BOOLEAN ) )
 	|| empty( $form->ID )
 	|| ( is_singular( 'give_forms' ) && ! give_is_setting_enabled( $goal_option ) )
 	|| ! give_is_setting_enabled( $goal_option )
@@ -46,17 +46,26 @@ $goal = apply_filters( 'give_goal_amount_target_output', $form->goal, $form_id, 
  *
  * @since 1.8.8
  */
-if ( 'donation' !== $goal_format ) {
-	$progress = apply_filters( 'give_goal_amount_funded_percentage_output', round( ( $income / $goal ) * 100, 2 ), $form_id, $form );
+$progress = 'donation' !== $goal_format ?
+	round( ( $income / $goal ) * 100, 2 ) :
+	round( ( $donations_completed / $donations_goal ) * 100, 2 );
+
+$progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progress, $form_id, $form );
+
+
+/**
+ * Filter the give currency.
+ *
+ * @since 1.8.17
+ */
+$form_currency = apply_filters( 'give_goal_form_currency', give_get_currency( $form_id ), $form_id );
+
+// Set progress to 100 percentage if income > goal or completed donations > donation goal count.
+if ( 'donation' === $goal_format ) {
+	$progress = $donations_completed >= $donations_goal ? 100 : $progress;
 } else {
-	$progress = apply_filters( 'give_goal_amount_funded_percentage_output', round( ( $donations_completed / $donations_goal ) * 100, 2 ), $form_id, $form );
+	$progress = $income >= $goal ? 100 : $progress;
 }
-
-// Set progress to 100 percentage if income > goal.
-if ( ( $income >= $goal ) || ( $donations_completed >= $donations_goal ) ) {
-	$progress = 100;
-}
-
 ?>
 <div class="give-goal-progress">
 	<?php if ( ! empty( $show_text ) ) : ?>
@@ -65,14 +74,20 @@ if ( ( $income >= $goal ) || ( $donations_completed >= $donations_goal ) ) {
 			if ( $goal_format === 'amount' ) :
 
 				// Get formatted amount.
-				$income = give_human_format_large_amount( give_format_amount( $income, array( 'sanitize' => false ) ) );
-				$goal   = give_human_format_large_amount( give_format_amount( $goal, array( 'sanitize' => false ) ) );
+				$income = give_human_format_large_amount( give_format_amount( $income, array(
+					'sanitize' => false,
+					'currency' => $form_currency,
+				) ) );
+				$goal   = give_human_format_large_amount( give_format_amount( $goal, array(
+					'sanitize' => false,
+					'currency' => $form_currency,
+				) ) );
 
 				echo sprintf(
-				/* translators: 1: amount of income raised 2: goal target ammount */
+				/* translators: 1: amount of income raised 2: goal target amount. */
 					__( '%1$s of %2$s raised', 'give' ),
-					'<span class="income">' . give_currency_filter( $income ) . '</span>',
-					'<span class="goal-text">' . give_currency_filter( $goal ) . '</span>'
+					'<span class="income">' . give_currency_filter( $income, array( 'form_id' => $form_id ) ) . '</span>',
+					'<span class="goal-text">' . give_currency_filter( $goal, array( 'form_id' => $form_id ) ) . '</span>'
 				);
 
 			elseif ( $goal_format === 'percentage' ) :
@@ -99,7 +114,8 @@ if ( ( $income >= $goal ) || ( $donations_completed >= $donations_goal ) ) {
 
 
 	<?php if ( ! empty( $show_bar ) ) : ?>
-		<div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="<?php echo esc_attr( $progress ); ?>">
+		<div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+			 aria-valuenow="<?php echo esc_attr( $progress ); ?>">
 			<span style="width: <?php echo esc_attr( $progress ); ?>%;<?php if ( ! empty( $color ) ) {
 				echo 'background-color:' . $color;
 			} ?>"></span>

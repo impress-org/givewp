@@ -54,7 +54,12 @@ class Tests_Donors_DB extends Give_Unit_Test_Case {
 		}
 
 		/** Generate some donations */
-		$this->_user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
+		$this->_user_id = $this->factory->user->create( array(
+				'role'       => 'administrator',
+				'first_name' => 'Admin',
+				'last_name'  => 'User',
+		) );
+
 		$user           = get_userdata( $this->_user_id );
 
 		$user_info = array(
@@ -202,14 +207,14 @@ class Tests_Donors_DB extends Give_Unit_Test_Case {
 
 		$customer = new Give_Donor( 'testadmin@domain.com' );
 
-		$this->assertEquals( '20', $customer->purchase_value );
+		$this->assertEquals( '20', $customer->get_total_donation_amount() );
 		$this->assertEquals( '1', $customer->purchase_count );
 
 		Give()->donors->increment_stats( $customer->id, 10 );
 
 		$updated_customer = new Give_Donor( 'testadmin@domain.com' );
 
-		$this->assertEquals( '30', $updated_customer->purchase_value );
+		$this->assertEquals( '30', $updated_customer->get_total_donation_amount() );
 		$this->assertEquals( '2', $updated_customer->purchase_count );
 	}
 
@@ -220,14 +225,14 @@ class Tests_Donors_DB extends Give_Unit_Test_Case {
 
 		$customer = new Give_Donor( 'testadmin@domain.com' );
 
-		$this->assertEquals( '20', $customer->purchase_value );
+		$this->assertEquals( '20', $customer->get_total_donation_amount() );
 		$this->assertEquals( '1', $customer->purchase_count );
 
 		Give()->donors->decrement_stats( $customer->id, 10 );
 
 		$updated_customer = new Give_Donor( 'testadmin@domain.com' );
 
-		$this->assertEquals( '10', $updated_customer->purchase_value );
+		$this->assertEquals( '10', $updated_customer->get_total_donation_amount() );
 		$this->assertEquals( '0', $updated_customer->purchase_count );
 	}
 
@@ -238,7 +243,7 @@ class Tests_Donors_DB extends Give_Unit_Test_Case {
 
 		$donors = Give()->donors->get_donors();
 
-		$this->assertEquals( 1, count( $donors ) );
+		$this->assertEquals( 2, count( $donors ) );
 
 	}
 
@@ -247,7 +252,7 @@ class Tests_Donors_DB extends Give_Unit_Test_Case {
 	 */
 	public function test_count_customers() {
 
-		$this->assertEquals( 1, intval( Give()->donors->count() ) );
+		$this->assertEquals( 2, intval( Give()->donors->count() ) );
 
 		$args = array(
 			'date' => array(

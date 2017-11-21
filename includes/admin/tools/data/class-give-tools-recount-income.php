@@ -87,7 +87,7 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 				$totals = 0;
 			}
 
-			$total = round( $total, give_currency_decimal_filter() );
+			$total = round( $total, give_get_price_decimals() );
 
 			$this->store_data( 'give_temp_recount_earnings', $total );
 

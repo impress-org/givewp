@@ -8,7 +8,8 @@
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       1.0
  *
- * NOTICE: When adding new upgrade notices, please be sure to put the action into the upgrades array during install: /includes/install.php @ Appox Line 156
+ * NOTICE: When adding new upgrade notices, please be sure to put the action into the upgrades array during install:
+ * /includes/install.php @ Appox Line 156
  */
 
 // Exit if accessed directly.
@@ -16,11 +17,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-
 /**
  * Perform automatic database upgrades when necessary.
  *
- * @since 1.6
+ * @since  1.6
  * @return void
  */
 function give_do_automatic_upgrades() {
@@ -64,6 +64,10 @@ function give_do_automatic_upgrades() {
 
 		case version_compare( $give_version, '1.8.13', '<' ) :
 			give_v1813_upgrades();
+			$did_upgrade = true;
+
+		case version_compare( $give_version, '1.8.17', '<' ) :
+			give_v1817_upgrades();
 			$did_upgrade = true;
 
 		case version_compare( $give_version, '2.0', '<' ) :
@@ -154,12 +158,35 @@ function give_show_upgrade_notices( $give_updates ) {
 		)
 	);
 
+	// v1.8.17 Upgrades for donations.
+	$give_updates->register( array(
+		'id'       => 'v1817_update_donation_iranian_currency_code',
+		'version'  => '1.8.17',
+		'callback' => 'give_v1817_update_donation_iranian_currency_code',
+	) );
+
+	// v1.8.17 Upgrades for cleanup of user roles.
+	$give_updates->register( array(
+		'id'       => 'v1817_cleanup_user_roles',
+		'version'  => '1.8.17',
+		'callback' => 'give_v1817_cleanup_user_roles',
+	) );
+
 	// v2.0.0 Upgrades
 	$give_updates->register(
 		array(
 			'id'       => 'v20_upgrades_form_metadata',
 			'version'  => '2.0.0',
 			'callback' => 'give_v20_upgrades_form_metadata_callback',
+		)
+	);
+
+	// v2.0.0 User Address Upgrades
+	$give_updates->register(
+		array(
+			'id'       => 'v20_upgrades_user_address',
+			'version'  => '2.0.0',
+			'callback' => 'give_v20_upgrades_user_address',
 		)
 	);
 
@@ -192,6 +219,15 @@ function give_show_upgrade_notices( $give_updates ) {
 		)
 	);
 
+	// v2.0.0 Donor Name Upgrades
+	$give_updates->register(
+		array(
+			'id'       => 'v20_upgrades_donor_name',
+			'version'  => '2.0.0',
+			'callback' => 'give_v20_upgrades_donor_name',
+		)
+	);
+
 	// v2.0.0 Upgrades
 	$give_updates->register(
 		array(
@@ -203,6 +239,7 @@ function give_show_upgrade_notices( $give_updates ) {
 				'v20_logs_upgrades',
 				'v20_upgrades_form_metadata',
 				'v20_upgrades_payment_metadata',
+				'v20_upgrades_user_address',
 			),
 		)
 	);
@@ -491,7 +528,7 @@ function give_v17_upgrade_addon_license_data() {
 
 		$addon_name = implode( ' ', $addon_name );
 
-		// Data to send to the API
+		// Data to send to the API.
 		$api_params = array(
 			'edd_action' => 'activate_license', // never change from "edd_" to "give_"!
 			'license'    => $addon_license,
@@ -534,7 +571,7 @@ function give_v17_upgrade_addon_license_data() {
  */
 function give_v17_cleanup_roles() {
 
-	// Delete all caps with "_give_forms_" and "_give_payments_"
+	// Delete all caps with "_give_forms_" and "_give_payments_".
 	// These roles have no usage; the proper is singular.
 	$delete_caps = array(
 		'view_give_forms_stats',
@@ -618,7 +655,7 @@ function give_v18_upgrades_core_setting() {
 			// Set checkbox value to radio value.
 			$give_settings[ $setting_name ] = ( ! empty( $give_settings[ $setting_name ] ) && 'on' === $give_settings[ $setting_name ] ? 'enabled' : 'disabled' );
 
-			// @see https://github.com/WordImpress/Give/issues/1063
+			// @see https://github.com/WordImpress/Give/issues/1063.
 			if ( false !== strpos( $setting_name, 'disable_' ) ) {
 
 				$give_settings[ $new_setting_name ] = ( give_is_setting_enabled( $give_settings[ $setting_name ] ) ? 'disabled' : 'enabled' );
@@ -670,7 +707,7 @@ function give_v18_upgrades_form_metadata() {
 
 			// Form content.
 			// Note in version 1.8 display content setting split into display content and content placement setting.
-			// You can delete _give_content_option in future
+			// You can delete _give_content_option in future.
 			$show_content = give_get_meta( get_the_ID(), '_give_content_option', true );
 			if ( $show_content && ! give_get_meta( get_the_ID(), '_give_display_content', true ) ) {
 				$field_value = ( 'none' !== $show_content ? 'enabled' : 'disabled' );
@@ -680,14 +717,14 @@ function give_v18_upgrades_form_metadata() {
 				give_update_meta( get_the_ID(), '_give_content_placement', $field_value );
 			}
 
-			// "Disable" Guest Donation. Checkbox
-			// See: https://github.com/WordImpress/Give/issues/1470
+			// "Disable" Guest Donation. Checkbox.
+			// See: https://github.com/WordImpress/Give/issues/1470.
 			$guest_donation        = give_get_meta( get_the_ID(), '_give_logged_in_only', true );
 			$guest_donation_newval = ( in_array( $guest_donation, array( 'yes', 'on' ) ) ? 'disabled' : 'enabled' );
 			give_update_meta( get_the_ID(), '_give_logged_in_only', $guest_donation_newval );
 
-			// Offline Donations
-			// See: https://github.com/WordImpress/Give/issues/1579
+			// Offline Donations.
+			// See: https://github.com/WordImpress/Give/issues/1579.
 			$offline_donation = give_get_meta( get_the_ID(), '_give_customize_offline_donations', true );
 			if ( 'no' === $offline_donation ) {
 				$offline_donation_newval = 'global';
@@ -870,7 +907,7 @@ function give_v189_upgrades_levels_post_meta_callback() {
 	/* @var Give_Updates $give_updates */
 	$give_updates = Give_Updates::get_instance();
 
-	// form query
+	// form query.
 	$donation_forms = new WP_Query( array(
 			'paged'          => $give_updates->step,
 			'status'         => 'any',
@@ -887,14 +924,14 @@ function give_v189_upgrades_levels_post_meta_callback() {
 			$donation_forms->the_post();
 			$form_id = get_the_ID();
 
-			// Remove formatting from _give_set_price
+			// Remove formatting from _give_set_price.
 			update_post_meta(
 				$form_id,
 				'_give_set_price',
 				give_sanitize_amount( get_post_meta( $form_id, '_give_set_price', true ) )
 			);
 
-			// Remove formatting from _give_custom_amount_minimum
+			// Remove formatting from _give_custom_amount_minimum.
 			update_post_meta(
 				$form_id,
 				'_give_custom_amount_minimum',
@@ -1078,7 +1115,7 @@ function give_v20_upgrade_donor_register_email_message() {
 /**
  * Give version 1.8.9 upgrades
  *
- * @since      1.8.9
+ * @since 1.8.9
  */
 function give_v1812_upgrades() {
 	/**
@@ -1120,7 +1157,7 @@ function give_v1812_update_amount_values_callback() {
 	/* @var Give_Updates $give_updates */
 	$give_updates = Give_Updates::get_instance();
 
-	// form query
+	// form query.
 	$donation_forms = new WP_Query( array(
 			'paged'          => $give_updates->step,
 			'status'         => 'any',
@@ -1140,37 +1177,37 @@ function give_v1812_update_amount_values_callback() {
 
 			switch ( $post->post_type ) {
 				case 'give_forms':
-					// _give_set_price
+					// _give_set_price.
 					if ( ! empty( $meta['_give_set_price'][0] ) ) {
 						update_post_meta( $post->ID, '_give_set_price', give_sanitize_amount_for_db( $meta['_give_set_price'][0] ) );
 					}
 
-					// _give_custom_amount_minimum
+					// _give_custom_amount_minimum.
 					if ( ! empty( $meta['_give_custom_amount_minimum'][0] ) ) {
 						update_post_meta( $post->ID, '_give_custom_amount_minimum', give_sanitize_amount_for_db( $meta['_give_custom_amount_minimum'][0] ) );
 					}
 
-					// _give_levels_minimum_amount
+					// _give_levels_minimum_amount.
 					if ( ! empty( $meta['_give_levels_minimum_amount'][0] ) ) {
 						update_post_meta( $post->ID, '_give_levels_minimum_amount', give_sanitize_amount_for_db( $meta['_give_levels_minimum_amount'][0] ) );
 					}
 
-					// _give_levels_maximum_amount
+					// _give_levels_maximum_amount.
 					if ( ! empty( $meta['_give_levels_maximum_amount'][0] ) ) {
 						update_post_meta( $post->ID, '_give_levels_maximum_amount', give_sanitize_amount_for_db( $meta['_give_levels_maximum_amount'][0] ) );
 					}
 
-					// _give_set_goal
+					// _give_set_goal.
 					if ( ! empty( $meta['_give_set_goal'][0] ) ) {
 						update_post_meta( $post->ID, '_give_set_goal', give_sanitize_amount_for_db( $meta['_give_set_goal'][0] ) );
 					}
 
-					// _give_form_earnings
+					// _give_form_earnings.
 					if ( ! empty( $meta['_give_form_earnings'][0] ) ) {
 						update_post_meta( $post->ID, '_give_form_earnings', give_sanitize_amount_for_db( $meta['_give_form_earnings'][0] ) );
 					}
 
-					// _give_custom_amount_minimum
+					// _give_custom_amount_minimum.
 					if ( ! empty( $meta['_give_donation_levels'][0] ) ) {
 						$donation_levels = unserialize( $meta['_give_donation_levels'][0] );
 
@@ -1190,7 +1227,7 @@ function give_v1812_update_amount_values_callback() {
 					break;
 
 				case 'give_payment':
-					// _give_payment_total
+					// _give_payment_total.
 					if ( ! empty( $meta['_give_payment_total'][0] ) ) {
 						update_post_meta( $post->ID, '_give_payment_total', give_sanitize_amount_for_db( $meta['_give_payment_total'][0] ) );
 					}
@@ -1222,7 +1259,7 @@ function give_v1812_update_donor_purchase_value_callback() {
 	$give_updates = Give_Updates::get_instance();
 	$offset       = 1 === $give_updates->step ? 0 : $give_updates->step * 20;
 
-	// form query
+	// form query.
 	$donors = Give()->donors->get_donors( array(
 			'number' => 20,
 			'offset' => $offset,
@@ -1287,6 +1324,7 @@ function give_v1813_update_donor_user_roles_callback() {
 	}
 }
 
+
 /**
  * Version 1.8.13 automatic updates
  *
@@ -1303,6 +1341,129 @@ function give_v1813_upgrades() {
 }
 
 /**
+ * Correct currency code for "Iranian Currency" for all of the payments.
+ *
+ * @since 1.8.17
+ */
+function give_v1817_update_donation_iranian_currency_code() {
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
+
+	// form query.
+	$payments = new WP_Query( array(
+			'paged'          => $give_updates->step,
+			'status'         => 'any',
+			'order'          => 'ASC',
+			'post_type'      => array( 'give_payment' ),
+			'posts_per_page' => 20,
+		)
+	);
+
+	if ( $payments->have_posts() ) {
+		$give_updates->set_percentage( $payments->found_posts, ( $give_updates->step * 20 ) );
+
+		while ( $payments->have_posts() ) {
+			$payments->the_post();
+
+			$payment_meta = give_get_payment_meta( get_the_ID() );
+
+			if ( 'RIAL' === $payment_meta['currency'] ) {
+				$payment_meta['currency'] = 'IRR';
+				give_update_meta( get_the_ID(), '_give_payment_meta', $payment_meta );
+			}
+
+		}
+
+	} else {
+		// The Update Ran.
+		give_set_upgrade_complete( 'v1817_update_donation_iranian_currency_code' );
+	}
+}
+
+/**
+ * Correct currency code for "Iranian Currency" in Give setting.
+ * Version 1.8.17 automatic updates
+ *
+ * @since 1.8.17
+ */
+function give_v1817_upgrades() {
+	$give_settings = give_get_settings();
+
+	if ( 'RIAL' === $give_settings['currency'] ) {
+		$give_settings['currency'] = 'IRR';
+		update_option( 'give_settings', $give_settings );
+	}
+}
+
+/**
+ * Process Clean up of User Roles for more flexibility.
+ *
+ * @since 1.8.17
+ */
+function give_v1817_process_cleanup_user_roles() {
+
+	global $wp_roles;
+
+	if( ! ( $wp_roles instanceof  WP_Role ) ) {
+		return;
+	}
+
+	// Add Capabilities to user roles as required.
+	$add_caps = array(
+		'administrator' => array(
+			'view_give_payments',
+		),
+	);
+
+	// Remove Capabilities to user roles as required.
+	$remove_caps = array(
+		'give_manager' => array(
+			'edit_others_pages',
+			'edit_others_posts',
+			'delete_others_pages',
+			'delete_others_posts',
+			'manage_categories',
+			'import',
+			'export',
+		),
+	);
+
+	foreach ( $add_caps as $role => $caps ) {
+		foreach ( $caps as $cap ) {
+			$wp_roles->add_cap( $role, $cap );
+		}
+	}
+
+	foreach ( $remove_caps as $role => $caps ) {
+		foreach ( $caps as $cap ) {
+			$wp_roles->remove_cap( $role, $cap );
+		}
+	}
+
+}
+
+/** Upgrade Routine - Clean up of User Roles for more flexibility.
+ *
+ * @since 1.8.17
+ */
+function give_v1817_cleanup_user_roles() {
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
+
+	give_v1817_process_cleanup_user_roles();
+
+	$give_updates->percentage = 100;
+
+	// Create Give plugin roles.
+	$roles = new Give_Roles();
+	$roles->add_roles();
+	$roles->add_caps();
+
+	give_set_upgrade_complete( 'v1817_cleanup_user_roles' );
+}
+
+/**
+ *
  * Upgrade form metadata for new metabox settings.
  *
  * @since  2.0
@@ -1330,7 +1491,10 @@ function give_v20_upgrades_form_metadata_callback() {
 
 			// Update offline instruction email notification status.
 			$offline_instruction_notification_status = get_post_meta( get_the_ID(), '_give_customize_offline_donations', true );
-			$offline_instruction_notification_status = give_is_setting_enabled( $offline_instruction_notification_status, array( 'enabled', 'global' ) )
+			$offline_instruction_notification_status = give_is_setting_enabled( $offline_instruction_notification_status, array(
+				'enabled',
+				'global',
+			) )
 				? $offline_instruction_notification_status
 				: 'global';
 			update_post_meta( get_the_ID(), '_give_offline-donation-instruction_notification', $offline_instruction_notification_status );
@@ -1453,6 +1617,7 @@ function give_v20_upgrades_payment_metadata_callback() {
 
 /**
  * Upgrade logs data.
+ *
  * @todo   : check if payment price id is necessary to store in log meta or not
  *
  * @since  2.0
@@ -1532,7 +1697,7 @@ function give_v20_logs_upgrades_callback() {
 			}
 		}
 
-		// Delete logs
+		// Delete logs.
 		$logIDs = get_posts( array(
 				'order'          => 'DESC',
 				'post_type'      => 'give_log',
@@ -1630,6 +1795,119 @@ function give_v20_move_metadata_into_new_table_callback() {
 
 }
 
+/**
+ * Upgrade routine for splitting donor name into first name and last name.
+ *
+ * @since 2.0
+ *
+ * @return void
+ */
+function give_v20_upgrades_donor_name() {
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
+
+	$args = array(
+		'offset' => ( 1 === $give_updates->step ) ? 0 : $give_updates->step * 20,
+	);
+
+	$donors = Give()->donors->get_donors( $args );
+
+	if ( $donors ) {
+		$give_updates->set_percentage( count( $donors ), $give_updates->step * 20 );
+		// Loop through Donors
+		foreach ( $donors as $donor ) {
+
+			$donor_name       = explode( ' ', $donor->name, 2 );
+			$donor_first_name = Give()->donor_meta->get_meta( $donor->id, '_give_donor_first_name' );
+			$donor_last_name  = Give()->donor_meta->get_meta( $donor->id, '_give_donor_last_name' );
+
+			// If first name meta of donor is not created, then create it.
+			if ( ! $donor_first_name ) {
+				Give()->donor_meta->add_meta( $donor->id, '_give_donor_first_name', $donor_name[0] );
+			}
+
+			// If last name meta of donor is not created, then create it.
+			if ( ! $donor_last_name ) {
+				Give()->donor_meta->add_meta( $donor->id, '_give_donor_last_name', $donor_name[1] );
+			}
+
+			// If Donor is connected with WP User then update user meta.
+			if ( $donor->user_id ) {
+				update_user_meta( $donor->user_id, 'first_name', $donor_name[0] );
+				update_user_meta( $donor->user_id, 'last_name', $donor_name[1] );
+			}
+
+		}
+
+	} else {
+		// The Update Ran.
+		give_set_upgrade_complete( 'v20_upgrades_donor_name' );
+	}
+
+}
+
+/**
+ * Upgrade routine for user addresses.
+ *
+ * @since 2.0
+ * @global wpdb $wpdb
+ *
+ * @return void
+ */
+function give_v20_upgrades_user_address() {
+	global $wpdb;
+
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
+
+	/* @var WP_User_Query $user_query */
+	$user_query = new WP_User_Query(
+		array(
+			'number' => 20,
+			'offset' => ( 1 === $give_updates->step ) ? 0 : $give_updates->step * 20,
+		)
+	);
+
+	$users = $user_query->get_results();
+
+	if ( $users ) {
+		$give_updates->set_percentage( $user_query->get_total(), $give_updates->step * 20 );
+
+		// Loop through Donors
+		foreach ( $users as $user ) {
+			/* @var Give_Donor $donor */
+			$donor = new Give_Donor( $user->ID, true );
+
+			if ( ! $donor->id ) {
+				continue;
+			}
+
+			$address = $wpdb->get_var(
+				$wpdb->prepare(
+					"
+					SELECT meta_value FROM {$wpdb->usermeta}
+					WHERE user_id=%s
+					AND meta_key=%s
+					",
+					$user->ID,
+					'_give_user_address'
+				)
+			);
+
+			if ( ! empty( $address ) ) {
+				$address = maybe_unserialize( $address );
+				$donor->add_address( 'personal', $address );
+				$donor->add_address( 'billing[]', $address );
+				delete_user_meta( $user->ID, '_give_user_address' );
+			}
+		}
+
+	} else {
+		// The Update Ran.
+		give_set_upgrade_complete( 'v20_upgrades_user_address' );
+	}
+
+}
 
 /**
  * Upgrade logs data.

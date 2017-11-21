@@ -169,6 +169,32 @@ class Give_API {
 	}
 
 	/**
+	 * There are certain responsibility of this function:
+	 *  1. handle backward compatibility for deprecated functions
+	 *
+	 * @since 2.0
+	 *
+	 * @param $name
+	 * @param $arguments
+	 *
+	 * @return mixed
+	 */
+	public function __call( $name, $arguments ) {
+		$deprecated_function_arr = array(
+			'get_customers',
+		);
+
+		if ( in_array( $name, $deprecated_function_arr, true ) ) {
+			switch ( $name ) {
+				case 'get_customers':
+					$args = ! empty( $arguments[0] ) ? $arguments[0] : array();
+
+					return $this->get_donors( $args );
+			}
+		}
+	}
+
+	/**
 	 * Registers a new rewrite endpoint for accessing the API
 	 *
 	 * @access public

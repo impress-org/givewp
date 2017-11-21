@@ -2,11 +2,11 @@
 /**
  * Donors
  *
- * @package     Give
- * @subpackage  Admin/Donors
- * @copyright   Copyright (c) 2016, WordImpress
- * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       1.0
+ * @package    Give
+ * @subpackage Admin/Donors
+ * @copyright  Copyright (c) 2016, WordImpress
+ * @license    https://opensource.org/licenses/gpl-license GNU Public License
+ * @since      1.0
  */
 
 // Exit if accessed directly.
@@ -17,9 +17,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Register a view for the single donor view.
  *
- * @since  1.0
+ * @param array $views An array of existing views.
  *
- * @param  array $views An array of existing views.
+ * @since 1.0
  *
  * @return array        The altered list of views.
  */
@@ -40,9 +40,9 @@ add_filter( 'give_donor_views', 'give_register_default_donor_views', 1, 1 );
 /**
  * Register a tab for the single donor view.
  *
- * @since  1.0
+ * @param array $tabs An array of existing tabs.
  *
- * @param  array $tabs An array of existing tabs
+ * @since 1.0
  *
  * @return array       The altered list of tabs
  */
@@ -67,9 +67,9 @@ add_filter( 'give_donor_tabs', 'give_register_default_donor_tabs', 1, 1 );
 /**
  * Register the Delete icon as late as possible so it's at the bottom.
  *
- * @since  1.0
+ * @param array $tabs An array of existing tabs.
  *
- * @param  array $tabs An array of existing tabs
+ * @since 1.0
  *
  * @return array       The altered list of tabs, with 'delete' at the bottom.
  */
@@ -77,10 +77,79 @@ function give_register_delete_donor_tab( $tabs ) {
 
 	$tabs['delete'] = array(
 		'dashicon' => 'dashicons-trash',
-		'title' => esc_html__( 'Delete Donor', 'give' ),
+		'title'    => __( 'Delete Donor', 'give' ),
 	);
 
 	return $tabs;
 }
 
 add_filter( 'give_donor_tabs', 'give_register_delete_donor_tab', PHP_INT_MAX, 1 );
+
+/**
+ * Connect and Reconnect Donor with User profile.
+ * @todo $address is unnecessary param because we are store address to user.
+ *
+ * @param object $donor      Donor Object.
+ * @param array  $donor_data Donor Post Variables.
+ * @param array  $address    Address Information.
+ *
+ * @since 1.8.14
+ *
+ * @return array
+ */
+function give_connect_user_donor_profile( $donor, $donor_data, $address ) {
+
+	$donor_id         = $donor->id;
+	$previous_user_id = $donor->user_id;
+
+	/**
+	 * Fires before editing a donor.
+	 *
+	 * @param int   $donor_id   The ID of the donor.
+	 * @param array $donor_data The donor data.
+	 * @param array $address    The donor's address.
+	 *
+	 * @since 1.0
+	 */
+	do_action( 'give_pre_edit_donor', $donor_id, $donor_data, $address );
+
+	$output = array();
+
+	if ( $donor->update( $donor_data ) ) {
+
+		// Fetch disconnected user id, if exists.
+		$disconnected_user_id = $donor->get_meta( '_give_disconnected_user_id', true );
+
+		// Flag User and Donor Disconnection.
+		delete_user_meta( $disconnected_user_id, '_give_is_donor_disconnected' );
+
+		// Check whether the disconnected user id and the reconnected user id are same or not.
+		// If both are same then delete user id store in donor meta.
+		if( $donor_data['user_id'] === $disconnected_user_id ) {
+			delete_user_meta( $disconnected_user_id, '_give_disconnected_donor_id' );
+			$donor->delete_meta( '_give_disconnected_user_id' );
+		}
+
+		$output['success']       = true;
+		$donor_data              = array_merge( $donor_data, $address );
+		$output['customer_info'] = $donor_data;
+
+	} else {
+
+		$output['success'] = false;
+
+	}
+
+	/**
+	 * Fires after editing a donor.
+	 *
+	 * @param int   $donor_id   The ID of the donor.
+	 * @param array $donor_data The donor data.
+	 *
+	 * @since 1.0
+	 */
+	do_action( 'give_post_edit_donor', $donor_id, $donor_data );
+
+
+	return $output;
+}

@@ -179,7 +179,7 @@ if ( ! class_exists( 'Give' ) ) :
 		/**
 		 * Give_tooltips Object
 		 *
-		 * @since  2.0
+		 * @since  1.8.9
 		 * @access public
 		 *
 		 * @var    Give_Tooltips object
@@ -303,7 +303,6 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->notices         = new Give_Notices();
 			$this->payment_meta    = new Give_DB_Payment_Meta();
 			$this->logs            = new Give_Logging();
-			$this->payment_meta    = new Give_DB_Payment_Meta();
 			$this->form_meta       = new Give_DB_Form_Meta();
 
 			/**
@@ -441,6 +440,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/forms/widget.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/shortcodes.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/formatting.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/currency-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/price-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/error-tracking.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/process-donation.php';
@@ -471,6 +471,9 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/template.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/emails/actions.php';
+
+			require_once GIVE_PLUGIN_DIR . 'includes/donors/class-give-donors-query.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/donors/backward-compatibility.php';
 
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				require_once GIVE_PLUGIN_DIR . 'includes/class-give-cli-commands.php';

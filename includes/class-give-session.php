@@ -225,7 +225,7 @@ class Give_Session {
 	 * @access public
 	 *
 	 * @param  string $key   Session key.
-	 * @param  string $value Session variable.
+	 * @param  mixed  $value Session variable.
 	 *
 	 * @return string        Session variable.
 	 */

@@ -1,70 +1,100 @@
 <?php
 /**
- * Admin View: Import Donations
+ * Admin View: Imports
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
-}
+} ?>
 
-if ( ! current_user_can( 'manage_give_settings' ) ) {
-	return;
-}
+<div id="poststuff">
+	<div id="give-dashboard-widgets-wrap">
+		<div id="post-body">
+			<div id="post-body-content">
 
-/**
- * Fires before displaying the import div tools.
- *
- * @since 1.8.13
- */
-do_action( 'give_tools_import_main_before' );
-?>
-    <div id="poststuff">
-        <div class="postbox">
-            <h1 class="give-importer-h1" align="center"><?php esc_html_e( 'Import Donations', 'give' ); ?></h1>
-            <div class="inside give-tools-setting-page-import">
 				<?php
 				/**
-				 * Fires before from start.
+				 * Fires before the reports Import tab.
 				 *
-				 * @since 1.5
+				 * @since 1.8.14
 				 */
-				do_action( 'give_tools_import_form_before_start' );
+				do_action( 'give_tools_tab_import_content_top' );
 				?>
-                <form method="post" id="give-import-donations-form" class="give-import-form tools-setting-page-import tools-setting-page-import">
+
+				<table class="widefat Import-options-table give-table">
+					<thead>
+					<tr>
+						<th scope="col"><?php esc_html_e( 'Import Type', 'give' ); ?></th>
+						<th scope="col"><?php esc_html_e( 'Import Options', 'give' ); ?></th>
+					</tr>
+					</thead>
+					<tbody>
+					<?php
+					/**
+					 * Fires in the reports Import tab.
+					 *
+					 * Allows you to add new TR elements to the table before
+					 * other elements.
+					 *
+					 * @since 1.8.14
+					 */
+					do_action( 'give_tools_tab_import_table_top' );
+					?>
+
+					<tr class="give-Import-pdf-sales-earnings">
+						<td scope="row" class="row-title">
+							<h3>
+								<span><?php esc_html_e( 'Import Donations', 'give' ); ?></span>
+							</h3>
+							<p><?php esc_html_e( 'Import a CSV of Donations.', 'give' ); ?></p>
+						</td>
+						<td>
+							<a class="button" href="<?php echo add_query_arg( array( 'importer-type' => 'import_donations' ) ); ?>">
+								<?php esc_html_e( 'Import CSV', 'give' ); ?>
+							</a>
+						</td>
+					</tr>
+
+					<tr class="give-import-core-settings">
+						<td scope="row" class="row-title">
+							<h3>
+								<span><?php esc_html_e( 'Import Give Settings', 'give' ); ?></span>
+							</h3>
+							<p><?php esc_html_e( 'Import Give\'s settings in JSON format.', 'give' ); ?></p>
+						</td>
+						<td>
+							<a class="button" href="<?php echo add_query_arg( array( 'importer-type' => 'import_core_setting' ) ); ?>">
+								<?php esc_html_e( 'Import JSON', 'give' ); ?>
+							</a>
+						</td>
+					</tr>
 
 					<?php
 					/**
-					 * Fires just after form start.
+					 * Fires in the reports Import tab.
 					 *
-					 * @since 1.5
+					 * Allows you to add new TR elements to the table after
+					 * other elements.
+					 *
+					 * @since 1.8.14
 					 */
-					do_action( 'give_tools_import_form_start' );
+					do_action( 'give_tools_tab_import_table_bottom' );
 					?>
+					</tbody>
+				</table>
 
-					<?php
-					/**
-					 * Fires just after before form end.
-					 *
-					 * @since 1.5
-					 */
-					do_action( 'give_tools_import_form_end' );
-					?>
-                </form>
 				<?php
 				/**
-				 * Fires just after form end.
+				 * Fires after the reports Import tab.
 				 *
-				 * @since 1.5
+				 * @since 1.8.14
 				 */
-				do_action( 'give_tools_import_form_after_end' );
+				do_action( 'give_tools_tab_import_content_bottom' );
 				?>
-            </div><!-- .inside -->
-        </div><!-- .postbox -->
-    </div><!-- #poststuff -->
-<?php
-/**
- * Fires after displaying the import div tools.
- *
- * @since 1.8.13
- */
-do_action( 'give_tools_import_main_after' );
+
+			</div>
+			<!-- .post-body-content -->
+		</div>
+		<!-- .post-body -->
+	</div><!-- #give-dashboard-widgets-wrap -->
+</div><!-- #poststuff -->

@@ -34,11 +34,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @property string|int $fees_total
  * @property string     $post_status
  * @property string     $date
- * @property string     $postdate
+ * @property string     $post_date
  * @property string     $status
  * @property string     $email
  * @property array      $payment_meta
  * @property string     $customer_id
+ * @property string     $donor_id
  * @property string     $completed_date
  * @property string     $currency
  * @property string     $ip
@@ -546,6 +547,7 @@ final class Give_Payment {
 		// User based.
 		$this->ip          = $this->setup_ip();
 		$this->customer_id = $this->setup_donor_id();
+		$this->donor_id    = $this->setup_donor_id();
 		$this->user_id     = $this->setup_user_id();
 		$this->email       = $this->setup_email();
 		$this->user_info   = $this->setup_user_info();
@@ -700,6 +702,10 @@ final class Give_Payment {
 				$donor->create( $donor_data );
 
 			}
+
+			// Update Donor Meta once donor is created.
+			$donor->update_meta( '_give_donor_first_name', $this->first_name );
+			$donor->update_meta( '_give_donor_last_name', $this->last_name );
 
 			$this->customer_id            = $donor->id;
 			$this->pending['customer_id'] = $this->customer_id;
@@ -1009,7 +1015,7 @@ final class Give_Payment {
 
 		// Sanitizing the price here so we don't have a dozen calls later.
 		$donation_amount = give_maybe_sanitize_amount( $donation_amount );
-		$total           = round( $donation_amount, give_currency_decimal_filter() );
+		$total           = round( $donation_amount, give_get_price_decimals( $this->ID ) );
 
 		// Add Options.
 		$default_options = array();
@@ -1026,8 +1032,8 @@ final class Give_Payment {
 		$donation = array(
 			'name'     => $donation->post_title,
 			'id'       => $donation->ID,
-			'price'    => round( $total, give_currency_decimal_filter() ),
-			'subtotal' => round( $total, give_currency_decimal_filter() ),
+			'price'    => round( $total, give_get_price_decimals( $this->ID ) ),
+			'subtotal' => round( $total, give_get_price_decimals( $this->ID ) ),
 			'price_id' => $args['price_id'],
 			'action'   => 'add',
 			'options'  => $options,
@@ -1090,7 +1096,7 @@ final class Give_Payment {
 	 * @since  1.5
 	 * @access public
 	 *
-	 * @param  string $note The note to add
+	 * @param  string|bool $note The note to add
 	 *
 	 * @return bool           If the note was specified or not
 	 */
@@ -1609,7 +1615,7 @@ final class Give_Payment {
 	private function setup_total() {
 		$amount = $this->get_meta( '_give_payment_total', true );
 
-		return round( floatval( $amount ), give_currency_decimal_filter() );
+		return round( floatval( $amount ), give_get_price_decimals( $this->ID ) );
 	}
 
 	/**
@@ -1639,7 +1645,16 @@ final class Give_Payment {
 		$currency = $this->get_meta( '_give_payment_currency', true );
 		$currency = ! empty( $currency ) ?
 			$currency :
-			apply_filters( 'give_payment_currency_default', give_get_currency(), $this );
+			/**
+			 * Filter the default donation currency
+			 *
+			 * @since 1.5
+			 */
+			apply_filters(
+				'give_payment_currency_default',
+				give_get_currency( $this->form_id, $this ),
+				$this
+			);
 
 		return $currency;
 	}
@@ -1776,10 +1791,9 @@ final class Give_Payment {
 			$donor = new Give_Donor( $this->customer_id );
 
 			if ( $donor->id > 0 ) {
-				$name      = explode( ' ', $donor->name, 2 );
 				$user_info = array(
-					'first_name' => $name[0],
-					'last_name'  => $name[1],
+					'first_name' => $donor->get_first_name(),
+					'last_name'  => $donor->get_last_name(),
 					'email'      => $donor->email,
 					'discount'   => 'none',
 				);
@@ -1787,6 +1801,7 @@ final class Give_Payment {
 		} else {
 			// Get the donor, but only if it's been created.
 			$donor = new Give_Donor( $this->customer_id );
+
 			if ( $donor->id > 0 ) {
 				foreach ( $user_info as $key => $value ) {
 					if ( ! empty( $value ) ) {
@@ -1795,16 +1810,11 @@ final class Give_Payment {
 
 					switch ( $key ) {
 						case 'first_name':
-							$name = explode( ' ', $donor->name, 2 );
-
-							$user_info[ $key ] = $name[0];
+							$user_info[ $key ] = $donor->get_first_name();
 							break;
 
 						case 'last_name':
-							$name      = explode( ' ', $donor->name, 2 );
-							$last_name = ! empty( $name[1] ) ? $name[1] : '';
-
-							$user_info[ $key ] = $last_name;
+							$user_info[ $key ] = $donor->get_last_name();
 							break;
 
 						case 'email':

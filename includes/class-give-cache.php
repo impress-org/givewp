@@ -1,6 +1,7 @@
 <?php
 /**
  * Class for managing cache
+ * Note: only use for internal purpose.
  *
  * @package     Give
  * @subpackage  Classes/Give_Cache
@@ -57,7 +58,7 @@ class Give_Cache {
 	 * @access public
 	 */
 	public function setup_hooks() {
-		// weekly delete all expired cache.
+		// Weekly delete all expired cache.
 		Give_Cron::add_weekly_event( array( $this, 'delete_all_expired' ) );
 	}
 
@@ -161,6 +162,8 @@ class Give_Cache {
 	/**
 	 * Delete cache.
 	 *
+	 * Note: only for internal use
+	 *
 	 * @since  1.8.7
 	 *
 	 * @param  string|array $cache_keys
@@ -198,6 +201,8 @@ class Give_Cache {
 
 	/**
 	 * Delete all logging cache.
+	 *
+	 * Note: only for internal use
 	 *
 	 * @since  1.8.7
 	 * @access public
@@ -251,6 +256,8 @@ class Give_Cache {
 
 	/**
 	 * Get list of options like.
+	 *
+	 * Note: only for internal use
 	 *
 	 * @since  1.8.7
 	 * @access public
@@ -311,10 +318,18 @@ class Give_Cache {
 	 *
 	 * @param $cache_key
 	 *
-	 * @return bool|int
+	 * @return bool
 	 */
 	public static function is_valid_cache_key( $cache_key ) {
-		return ( false !== strpos( $cache_key, 'give_cache_' ) );
+		$is_valid = ( false !== strpos( $cache_key, 'give_cache_' ) );
+
+
+		/**
+		 * Filter the flag which tell about cache key valid or not
+		 *
+		 * @since 2.0
+		 */
+		return apply_filters( 'give_is_valid_cache_key', $is_valid, $cache_key );
 	}
 
 

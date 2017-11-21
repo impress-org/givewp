@@ -621,15 +621,15 @@ table#give_donation_receipt span.donation-level-text-wrap {
  * @url: https://geminilabs.github.io/float-labels.js
  * @license: MIT
  */
-[id*="give-form"] .fl-form .fl-wrap {
+[id*="give-form"].fl-form .fl-wrap {
   position: relative;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
-[id*="give-form"] .fl-form input.fl-input,
-[id*="give-form"] .fl-form select.fl-select,
-[id*="give-form"] .fl-form textarea.fl-textarea {
+[id*="give-form"].fl-form input.fl-input,
+[id*="give-form"].fl-form select.fl-select,
+[id*="give-form"].fl-form textarea.fl-textarea {
   width: 100%;
   outline: 0;
   font-size: 16px;
@@ -640,44 +640,44 @@ table#give_donation_receipt span.donation-level-text-wrap {
   box-sizing: border-box;
   transition: all 0.2s ease-in-out;
   margin-bottom: 0; }
-  [id*="give-form"] .fl-form input.fl-input:-moz-placeholder,
-  [id*="give-form"] .fl-form select.fl-select:-moz-placeholder,
-  [id*="give-form"] .fl-form textarea.fl-textarea:-moz-placeholder {
+  [id*="give-form"].fl-form input.fl-input:-moz-placeholder,
+  [id*="give-form"].fl-form select.fl-select:-moz-placeholder,
+  [id*="give-form"].fl-form textarea.fl-textarea:-moz-placeholder {
     color: #bbb; }
-  [id*="give-form"] .fl-form input.fl-input::-moz-placeholder,
-  [id*="give-form"] .fl-form select.fl-select::-moz-placeholder,
-  [id*="give-form"] .fl-form textarea.fl-textarea::-moz-placeholder {
+  [id*="give-form"].fl-form input.fl-input::-moz-placeholder,
+  [id*="give-form"].fl-form select.fl-select::-moz-placeholder,
+  [id*="give-form"].fl-form textarea.fl-textarea::-moz-placeholder {
     color: #bbb; }
-  [id*="give-form"] .fl-form input.fl-input:-ms-input-placeholder,
-  [id*="give-form"] .fl-form select.fl-select:-ms-input-placeholder,
-  [id*="give-form"] .fl-form textarea.fl-textarea:-ms-input-placeholder {
+  [id*="give-form"].fl-form input.fl-input:-ms-input-placeholder,
+  [id*="give-form"].fl-form select.fl-select:-ms-input-placeholder,
+  [id*="give-form"].fl-form textarea.fl-textarea:-ms-input-placeholder {
     color: #bbb; }
-  [id*="give-form"] .fl-form input.fl-input::-webkit-input-placeholder,
-  [id*="give-form"] .fl-form select.fl-select::-webkit-input-placeholder,
-  [id*="give-form"] .fl-form textarea.fl-textarea::-webkit-input-placeholder {
+  [id*="give-form"].fl-form input.fl-input::-webkit-input-placeholder,
+  [id*="give-form"].fl-form select.fl-select::-webkit-input-placeholder,
+  [id*="give-form"].fl-form textarea.fl-textarea::-webkit-input-placeholder {
     color: #bbb; }
 
-[id*="give-form"] .fl-form select.fl-select {
+[id*="give-form"].fl-form select.fl-select {
   position: relative;
   color: #bbb;
   cursor: pointer;
   -webkit-appearance: none;
   -moz-appearance: none; }
 
-[id*="give-form"] .fl-form .fl-is-active input.fl-input,
-[id*="give-form"] .fl-form .fl-is-active select.fl-select,
-[id*="give-form"] .fl-form .fl-is-active textarea.fl-textarea {
+[id*="give-form"].fl-form .fl-is-active input.fl-input,
+[id*="give-form"].fl-form .fl-is-active select.fl-select,
+[id*="give-form"].fl-form .fl-is-active textarea.fl-textarea {
   color: #333;
   background-color: inherit;
   border-color: #ccc; }
 
-[id*="give-form"] .fl-form .fl-has-focus input.fl-input,
-[id*="give-form"] .fl-form .fl-has-focus select.fl-select,
-[id*="give-form"] .fl-form .fl-has-focus textarea.fl-textarea {
+[id*="give-form"].fl-form .fl-has-focus input.fl-input,
+[id*="give-form"].fl-form .fl-has-focus select.fl-select,
+[id*="give-form"].fl-form .fl-has-focus textarea.fl-textarea {
   background-color: inherit;
   border-color: #ccc; }
 
-[id*="give-form"] .fl-form label.fl-label {
+[id*="give-form"].fl-form label.fl-label {
   opacity: 0;
   visibility: hidden;
   display: block;
@@ -692,14 +692,14 @@ table#give_donation_receipt span.donation-level-text-wrap {
   transition: all 0.2s ease-in-out;
   z-index: 1; }
 
-[id*="give-form"] .fl-form .fl-is-active label.fl-label {
+[id*="give-form"].fl-form .fl-is-active label.fl-label {
   opacity: 1;
   visibility: visible; }
 
-[id*="give-form"] .fl-form .fl-has-focus label.fl-label {
+[id*="give-form"].fl-form .fl-has-focus label.fl-label {
   color: #1976D2; }
 
-[id*="give-form"] .fl-form .fl-is-required:before {
+[id*="give-form"].fl-form .fl-is-required:before {
   opacity: 1;
   content: '*';
   display: block;
@@ -713,29 +713,29 @@ table#give_donation_receipt span.donation-level-text-wrap {
   padding: 6px 0 0;
   z-index: 1; }
 
-[id*="give-form"] .fl-form .fl-is-required.fl-is-active:before {
+[id*="give-form"].fl-form .fl-is-required.fl-is-active:before {
   opacity: 0; }
 
-[id*="give-form"] .fl-form.fl-style-1 input.fl-input,
-[id*="give-form"] .fl-form.fl-style-1 select.fl-select,
-[id*="give-form"] .fl-form.fl-style-1 textarea.fl-textarea {
+[id*="give-form"].fl-form.fl-style-1 input.fl-input,
+[id*="give-form"].fl-form.fl-style-1 select.fl-select,
+[id*="give-form"].fl-form.fl-style-1 textarea.fl-textarea {
   padding: 6px 12px; }
 
-[id*="give-form"] .fl-form.fl-style-1 select.fl-select {
+[id*="give-form"].fl-form.fl-style-1 select.fl-select {
   height: 44px; }
 
-[id*="give-form"] .fl-form.fl-style-1 .fl-is-active input.fl-input,
-[id*="give-form"] .fl-form.fl-style-1 .fl-is-active select.fl-select,
-[id*="give-form"] .fl-form.fl-style-1 .fl-is-active textarea.fl-textarea {
+[id*="give-form"].fl-form.fl-style-1 .fl-is-active input.fl-input,
+[id*="give-form"].fl-form.fl-style-1 .fl-is-active select.fl-select,
+[id*="give-form"].fl-form.fl-style-1 .fl-is-active textarea.fl-textarea {
   padding: 6px 12px; }
 
-[id*="give-form"] .fl-form.fl-style-1 label.fl-label {
+[id*="give-form"].fl-form.fl-style-1 label.fl-label {
   top: 1px;
   right: 10px;
   background-color: transparent;
   padding: 12px 3px; }
 
-[id*="give-form"] .fl-form.fl-style-1 label.fl-label:before {
+[id*="give-form"].fl-form.fl-style-1 label.fl-label:before {
   content: '';
   display: block;
   position: absolute;
@@ -746,35 +746,35 @@ table#give_donation_receipt span.donation-level-text-wrap {
   background-color: inherit;
   z-index: -1; }
 
-[id*="give-form"] .fl-form.fl-style-1 .fl-is-active label.fl-label {
+[id*="give-form"].fl-form.fl-style-1 .fl-is-active label.fl-label {
   top: -9px;
   padding: 3px; }
 
-[id*="give-form"] .fl-form.fl-style-1 .fl-is-active label.fl-label:before {
+[id*="give-form"].fl-form.fl-style-1 .fl-is-active label.fl-label:before {
   top: 9px; }
 
-[id*="give-form"] .fl-form.fl-style-2 input.fl-input,
-[id*="give-form"] .fl-form.fl-style-2 select.fl-select,
-[id*="give-form"] .fl-form.fl-style-2 textarea.fl-textarea {
+[id*="give-form"].fl-form.fl-style-2 input.fl-input,
+[id*="give-form"].fl-form.fl-style-2 select.fl-select,
+[id*="give-form"].fl-form.fl-style-2 textarea.fl-textarea {
   padding: 12px; }
 
-[id*="give-form"] .fl-form.fl-style-2 select.fl-select {
+[id*="give-form"].fl-form.fl-style-2 select.fl-select {
   height: 56px; }
 
-[id*="give-form"] .fl-form.fl-style-2 .fl-is-active input.fl-input,
-[id*="give-form"] .fl-form.fl-style-2 .fl-is-active select.fl-select,
-[id*="give-form"] .fl-form.fl-style-2 .fl-is-active textarea.fl-textarea {
+[id*="give-form"].fl-form.fl-style-2 .fl-is-active input.fl-input,
+[id*="give-form"].fl-form.fl-style-2 .fl-is-active select.fl-select,
+[id*="give-form"].fl-form.fl-style-2 .fl-is-active textarea.fl-textarea {
   padding: 18px 12px 6px; }
 
-[id*="give-form"] .fl-form.fl-style-2 label.fl-label {
+[id*="give-form"].fl-form.fl-style-2 label.fl-label {
   top: 1px;
   right: 10px;
   padding: 6px 3px 3px; }
 
-[id*="give-form"] .fl-form.fl-style-2 .fl-is-required:before {
+[id*="give-form"].fl-form.fl-style-2 .fl-is-required:before {
   padding-top: 12px; }
 
-[id*="give-form"] .fl-form .fl-wrap-select:after {
+[id*="give-form"].fl-form .fl-wrap-select:after {
   content: '';
   position: absolute;
   display: block;
@@ -787,41 +787,41 @@ table#give_donation_receipt span.donation-level-text-wrap {
   background-size: 7px 14px;
   z-index: 2; }
 
-[id*="give-form"] .fl-form.fl-style-give input.fl-input,
-[id*="give-form"] .fl-form.fl-style-give select.fl-select,
-[id*="give-form"] .fl-form.fl-style-give textarea.fl-textarea {
+[id*="give-form"].fl-form.fl-style-give input.fl-input,
+[id*="give-form"].fl-form.fl-style-give select.fl-select,
+[id*="give-form"].fl-form.fl-style-give textarea.fl-textarea {
   line-height: inherit;
   padding: 12px; }
 
-[id*="give-form"] .fl-form.fl-style-give select.fl-select {
+[id*="give-form"].fl-form.fl-style-give select.fl-select {
   line-height: inherit; }
 
-[id*="give-form"] .fl-form.fl-style-give .fl-is-active input.fl-input,
-[id*="give-form"] .fl-form.fl-style-give .fl-is-active select.fl-select,
-[id*="give-form"] .fl-form.fl-style-give .fl-is-active textarea.fl-textarea {
+[id*="give-form"].fl-form.fl-style-give .fl-is-active input.fl-input,
+[id*="give-form"].fl-form.fl-style-give .fl-is-active select.fl-select,
+[id*="give-form"].fl-form.fl-style-give .fl-is-active textarea.fl-textarea {
   padding: 20px 12px 4px;
   transition: padding 0.2s ease-in-out, border 0.2s ease-in-out; }
 
-[id*="give-form"] .fl-form.fl-style-give label.fl-label {
+[id*="give-form"].fl-form.fl-style-give label.fl-label {
   top: 1px;
   right: 13px;
   left: 0;
   padding: 6px 0 0; }
 
-[id*="give-form"] .fl-form.fl-style-give .fl-is-required:before {
+[id*="give-form"].fl-form.fl-style-give .fl-is-required:before {
   padding-top: 12px; }
 
-[id*="give-form"] .fl-form.fl-style-give label.fl-label .give-required-indicator {
+[id*="give-form"].fl-form.fl-style-give label.fl-label .give-required-indicator {
   display: none; }
 
-[id*="give-form"] .fl-form.fl-style-give label.fl-label .give-tooltip {
+[id*="give-form"].fl-form.fl-style-give label.fl-label .give-tooltip {
   position: absolute;
   top: 0;
   width: 100%;
   height: 100%;
   margin: 0;
   z-index: 1; }
-  [id*="give-form"] .fl-form.fl-style-give label.fl-label .give-tooltip::before {
+  [id*="give-form"].fl-form.fl-style-give label.fl-label .give-tooltip::before {
     content: unset; }
 
 /**
@@ -853,6 +853,7 @@ Layout
   border: 0; }
 
 [id*='give-form'] .give-form-title {
+  padding: 0;
   margin: 0 0 15px; }
 
 [id*='give-form'] div#give-sidebar-left {
@@ -951,30 +952,30 @@ form.give-form {
     #give-recurring-form .give-tooltip:hover,
     form.give-form .give-tooltip:hover {
       color: #333; }
-  form[id*='give-form'] legend,
   form[id*='give-form'] h3.give-section-break,
   form[id*='give-form'] h4.give-section-break,
-  #give-recurring-form legend,
+  form[id*='give-form'] legend,
   #give-recurring-form h3.give-section-break,
   #give-recurring-form h4.give-section-break,
-  form.give-form legend,
+  #give-recurring-form legend,
   form.give-form h3.give-section-break,
-  form.give-form h4.give-section-break {
+  form.give-form h4.give-section-break,
+  form.give-form legend {
     font-size: 1.15em;
     font-weight: bold;
     margin: 10px 0 15px;
     padding: 0 0 5px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     width: 100%; }
-    form[id*='give-form'] legend span.sub-text,
     form[id*='give-form'] h3.give-section-break span.sub-text,
     form[id*='give-form'] h4.give-section-break span.sub-text,
-    #give-recurring-form legend span.sub-text,
+    form[id*='give-form'] legend span.sub-text,
     #give-recurring-form h3.give-section-break span.sub-text,
     #give-recurring-form h4.give-section-break span.sub-text,
-    form.give-form legend span.sub-text,
+    #give-recurring-form legend span.sub-text,
     form.give-form h3.give-section-break span.sub-text,
-    form.give-form h4.give-section-break span.sub-text {
+    form.give-form h4.give-section-break span.sub-text,
+    form.give-form legend span.sub-text {
       font-style: italic;
       font-weight: normal; }
   form[id*='give-form'] .form-row,
@@ -1581,6 +1582,14 @@ Basic Button Style
   font-size: 1em; }
   .give-btn:hover {
     background: #dbdbdb; }
+
+/*---------------------------------
+Profile Editor Form
+-----------------------------------*/
+#give_profile_editor_form legend {
+  width: auto;
+  padding: 0 5px 5px 5px;
+  border-bottom: 0; }
 
 /*---------------------------------
 Email Access Form
@@ -2223,6 +2232,11 @@ Avada
     user-select: none; }
   .give-modal .mfp-close:hover {
     background-color: transparent; }
+  .give-modal form.give-form button.mfp-close {
+    position: absolute;
+    display: block !important; }
+  .give-modal .mfp-container:after {
+    display: none; }
   .give-modal .mfp-loading.mfp-figure {
     display: none; }
 

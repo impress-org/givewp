@@ -78,7 +78,7 @@ function give_get_donation_form( $args = array() ) {
 	 * @param int   $form_id The form ID.
 	 * @param array $args    An array of form arguments.
 	 */
-	do_action( 'give_pre_form_output', $form->ID, $args );
+	do_action( 'give_pre_form_output', $form->ID, $args, $form );
 
 	?>
 	<div id="give-form-<?php echo $form->ID; ?>-wrap" class="<?php echo $form_wrap_classes; ?>">
@@ -90,7 +90,7 @@ function give_get_donation_form( $args = array() ) {
 			$goal_achieved_message = ! empty( $goal_achieved_message ) ? apply_filters( 'the_content', $goal_achieved_message ) : '';
 
 			// Print thank you message.
-			echo apply_filters( 'give_goal_closed_output', $goal_achieved_message, $form->ID );
+			echo apply_filters( 'give_goal_closed_output', $goal_achieved_message, $form->ID, $form );
 
 		} else {
 			/**
@@ -114,22 +114,30 @@ function give_get_donation_form( $args = array() ) {
 			 *
 			 * @since 1.0
 			 *
-			 * @param int   $form_id The form ID.
-			 * @param array $args    An array of form arguments.
+			 * @param int              $form_id The form ID.
+			 * @param array            $args    An array of form arguments.
+			 * @param Give_Donate_Form $form    Form object.
 			 */
-			do_action( 'give_pre_form', $form->ID, $args );
-			?>
+			do_action( 'give_pre_form', $form->ID, $args, $form );
 
-			<form id="give-form-<?php echo $form_id; ?>" class="<?php echo $form_classes; ?>"
-				  action="<?php echo esc_url_raw( $form_action ); ?>" method="post">
-				<input type="hidden" name="give-form-id" value="<?php echo $form->ID; ?>"/>
-				<input type="hidden" name="give-form-title" value="<?php echo htmlentities( $form->post_title ); ?>"/>
-				<input type="hidden" name="give-current-url"
-					   value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
-				<input type="hidden" name="give-form-url"
-					   value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
-				<input type="hidden" name="give-form-minimum"
-					   value="<?php echo give_format_amount( give_get_form_minimum_price( $form->ID ), array( 'sanitize' => false ) ); ?>"/>
+			// Set form html tags.
+			$form_html_tags = array(
+				'id'     => "give-form-{$form_id}",
+				'class'  => $form_classes,
+				'action' => esc_url_raw( $form_action ),
+			);
+
+			/**
+			 * Filter the form html tags.
+			 *
+			 * @since 1.8.17
+			 *
+			 * @param array            $form_html_tags Array of form html tags.
+			 * @param Give_Donate_Form $form           Form object.
+			 */
+			$form_html_tags = apply_filters( 'give_form_html_tags', (array) $form_html_tags, $form );
+			?>
+			<form <?php echo give_get_attribute_str( $form_html_tags ); ?> method="post">
 
 				<!-- The following field is for robots only, invisible to humans: -->
 				<span class="give-hidden" style="display: none !important;">
@@ -139,51 +147,38 @@ function give_get_donation_form( $args = array() ) {
 				</span>
 
 				<?php
-
-				// Price ID hidden field for variable (multi-level) donation forms.
-				if ( give_has_variable_prices( $form_id ) ) {
-					// Get default selected price ID.
-					$prices   = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
-					$price_id = 0;
-					//loop through prices.
-					foreach ( $prices as $price ) {
-						if ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) {
-							$price_id = $price['_give_id']['level_id'];
-						};
-					}
-					?>
-					<input type="hidden" name="give-price-id" value="<?php echo $price_id; ?>"/>
-				<?php }
-
 				/**
 				 * Fires while outputting donation form, before all other fields.
 				 *
 				 * @since 1.0
 				 *
-				 * @param int   $form_id The form ID.
-				 * @param array $args    An array of form arguments.
+				 * @param int              $form_id The form ID.
+				 * @param array            $args    An array of form arguments.
+				 * @param Give_Donate_Form $form    Form object.
 				 */
-				do_action( 'give_donation_form_top', $form->ID, $args );
+				do_action( 'give_donation_form_top', $form->ID, $args, $form );
 
 				/**
 				 * Fires while outputting donation form, for payment gateway fields.
 				 *
 				 * @since 1.7
 				 *
-				 * @param int   $form_id The form ID.
-				 * @param array $args    An array of form arguments.
+				 * @param int              $form_id The form ID.
+				 * @param array            $args    An array of form arguments.
+				 * @param Give_Donate_Form $form    Form object.
 				 */
-				do_action( 'give_payment_mode_select', $form->ID, $args );
+				do_action( 'give_payment_mode_select', $form->ID, $args, $form );
 
 				/**
 				 * Fires while outputting donation form, after all other fields.
 				 *
 				 * @since 1.0
 				 *
-				 * @param int   $form_id The form ID.
-				 * @param array $args    An array of form arguments.
+				 * @param int              $form_id The form ID.
+				 * @param array            $args    An array of form arguments.
+				 * @param Give_Donate_Form $form    Form object.
 				 */
-				do_action( 'give_donation_form_bottom', $form->ID, $args );
+				do_action( 'give_donation_form_bottom', $form->ID, $args, $form );
 
 				?>
 			</form>
@@ -194,10 +189,11 @@ function give_get_donation_form( $args = array() ) {
 			 *
 			 * @since 1.0
 			 *
-			 * @param int   $form_id The form ID.
-			 * @param array $args    An array of form arguments.
+			 * @param int              $form_id The form ID.
+			 * @param array            $args    An array of form arguments.
+			 * @param Give_Donate_Form $form    Form object.
 			 */
-			do_action( 'give_post_form', $form->ID, $args );
+			do_action( 'give_post_form', $form->ID, $args, $form );
 
 		}
 		?>
@@ -392,9 +388,9 @@ function give_output_donation_amount_top( $form_id = 0, $args = array() ) {
 	$variable_pricing    = give_has_variable_prices( $form_id );
 	$allow_custom_amount = give_get_meta( $form_id, '_give_custom_amount', true );
 	$currency_position   = isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before';
-	$symbol              = give_currency_symbol( give_get_currency() );
+	$symbol              = give_currency_symbol( give_get_currency( $form_id, $args ) );
 	$currency_output     = '<span class="give-currency-symbol give-currency-position-' . $currency_position . '">' . $symbol . '</span>';
-	$default_amount      = give_format_amount( give_get_default_form_amount( $form_id ), array( 'sanitize' => false ) );
+	$default_amount      = give_format_amount( give_get_default_form_amount( $form_id ), array( 'sanitize' => false, 'currency' => give_get_currency( $form_id ) ) );
 	$custom_amount_text  = give_get_meta( $form_id, '_give_custom_amount_text', true );
 
 	/**
@@ -863,12 +859,8 @@ function give_default_cc_address_fields( $form_id ) {
 	$logged_in = is_user_logged_in();
 
 	if ( $logged_in ) {
-		$user_address = get_user_meta( get_current_user_id(), '_give_user_address', true );
+		$user_address = give_get_donor_address( get_current_user_id() );
 	}
-	$line1 = $logged_in && ! empty( $user_address['line1'] ) ? $user_address['line1'] : '';
-	$line2 = $logged_in && ! empty( $user_address['line2'] ) ? $user_address['line2'] : '';
-	$city  = $logged_in && ! empty( $user_address['city'] ) ? $user_address['city'] : '';
-	$zip   = $logged_in && ! empty( $user_address['zip'] ) ? $user_address['zip'] : '';
 
 	ob_start();
 	?>
@@ -982,8 +974,27 @@ function give_default_cc_address_fields( $form_id ) {
 			/>
 		</p>
 
+		<p id="give-card-city-wrap" class="form-row form-row-wide">
+			<label for="card_city" class="give-label">
+				<?php _e( 'City', 'give' ); ?>
+				<?php if ( give_field_is_required( 'card_city', $form_id ) ) : ?>
+					<span class="give-required-indicator">*</span>
+				<?php endif; ?>
+				<?php echo Give()->tooltips->render_help( __( 'The city for your billing address.', 'give' ) ); ?>
+			</label>
+			<input
+					type="text"
+					id="card_city"
+					name="card_city"
+					class="card-city give-input<?php echo( give_field_is_required( 'card_city', $form_id ) ? ' required' : '' ); ?>"
+					placeholder="<?php _e( 'City', 'give' ); ?>"
+					value="<?php echo isset( $give_user_info['card_city'] ) ? $give_user_info['card_city'] : ''; ?>"
+				<?php echo( give_field_is_required( 'card_city', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
+			/>
+		</p>
+
 	    <p id="give-card-state-wrap"
-	       class="form-row form-row-wide <?php echo ( ! empty( $selected_country ) && array_key_exists( $selected_country, $no_states_country ) ) ? 'give-hidden' : ''; ?> ">
+	       class="form-row form-row-first form-row-responsive <?php echo ( ! empty( $selected_country ) && array_key_exists( $selected_country, $no_states_country ) ) ? 'give-hidden' : ''; ?> ">
 		    <label for="card_state" class="give-label">
 			    <span class="state-label-text"><?php echo $label; ?></span>
 			    <?php if ( give_field_is_required( 'card_state', $form_id ) ) :
@@ -1013,25 +1024,6 @@ function give_default_cc_address_fields( $form_id ) {
 		    <?php endif; ?>
 	    </p>
 
-		<p id="give-card-city-wrap" class="form-row form-row-first form-row-responsive">
-			<label for="card_city" class="give-label">
-				<?php _e( 'City', 'give' ); ?>
-				<?php if ( give_field_is_required( 'card_city', $form_id ) ) : ?>
-					<span class="give-required-indicator">*</span>
-				<?php endif; ?>
-				<?php echo Give()->tooltips->render_help( __( 'The city for your billing address.', 'give' ) ); ?>
-			</label>
-			<input
-					type="text"
-					id="card_city"
-					name="card_city"
-					class="card-city give-input<?php echo( give_field_is_required( 'card_city', $form_id ) ? ' required' : '' ); ?>"
-					placeholder="<?php _e( 'City', 'give' ); ?>"
-					value="<?php echo isset( $give_user_info['card_city'] ) ? $give_user_info['card_city'] : ''; ?>"
-				<?php echo( give_field_is_required( 'card_city', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
-			/>
-		</p>
-
 		<p id="give-card-zip-wrap" class="form-row form-row-last form-row-responsive">
 			<label for="card_zip" class="give-label">
 				<?php _e( 'Zip / Postal Code', 'give' ); ?>
@@ -1051,98 +1043,6 @@ function give_default_cc_address_fields( $form_id ) {
 					value="<?php echo isset( $give_user_info['card_zip'] ) ? $give_user_info['card_zip'] : ''; ?>"
 				<?php echo( give_field_is_required( 'card_zip', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
 			/>
-		</p>
-
-		<p id="give-card-country-wrap" class="form-row form-row-first form-row-responsive">
-			<label for="billing_country" class="give-label">
-				<?php _e( 'Country', 'give' ); ?>
-				<?php if ( give_field_is_required( 'billing_country', $form_id ) ) : ?>
-					<span class="give-required-indicator">*</span>
-				<?php endif; ?>
-				<?php echo Give()->tooltips->render_help( __( 'The country for your billing address.', 'give' ) ); ?>
-			</label>
-
-			<select
-					name="billing_country"
-					id="billing_country"
-					class="billing-country billing_country give-select<?php echo( give_field_is_required( 'billing_country', $form_id ) ? ' required' : '' ); ?>"
-				<?php echo( give_field_is_required( 'billing_country', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
-			>
-				<?php
-
-				$selected_country = give_get_country();
-
-				if ( ! empty( $give_user_info['billing_country'] ) && '*' !== $give_user_info['billing_country'] ) {
-					$selected_country = $give_user_info['billing_country'];
-				}
-
-				$countries = give_get_country_list();
-				foreach ( $countries as $country_code => $country ) {
-					echo '<option value="' . esc_attr( $country_code ) . '"' . selected( $country_code, $selected_country, false ) . '>' . $country . '</option>';
-				}
-				?>
-			</select>
-		</p>
-
-
-		<?php
-		$selected_state = '';
-
-		if ( $selected_country === give_get_country() ) {
-			// Get defalut selected state by admin.
-			$selected_state = give_get_state();
-		}
-
-		// Get the last payment made by user states.
-		if ( ! empty( $give_user_info['card_state'] ) && '*' !== $give_user_info['card_state'] ) {
-			$selected_state = $give_user_info['card_state'];
-		}
-
-		// Get the country code
-		if ( ! empty( $give_user_info['billing_country'] ) && '*' !== $give_user_info['billing_country'] ) {
-			$selected_country = $give_user_info['billing_country'];
-		}
-
-		$label        = __( 'State', 'give' );
-		$states_label = give_get_states_label();
-		// Check if $country code exists in the array key for states label.
-		if ( array_key_exists( $selected_country, $states_label ) ) {
-			$label = $states_label[ $selected_country ];
-		}
-
-		$states = give_get_states( $selected_country );
-
-		// Get the country list that do not have any states init.
-		$no_states_country = give_no_states_country_list();
-
-		// Get the country list that does not require states.
-		$states_not_required_country_list = give_states_not_required_country_list();
-		?>
-		<p id="give-card-state-wrap"
-		   class="form-row form-row-last form-row-responsive <?php echo ( ! empty( $selected_country ) && array_key_exists( $selected_country, $no_states_country ) ) ? 'give-hidden' : ''; ?> ">
-			<label for="card_state" class="give-label">
-				<span class="state-label-text"><?php echo $label; ?></span>
-				<?php if ( give_field_is_required( 'card_state', $form_id ) ) :?>
-					<span class="give-required-indicator <?php echo( array_key_exists( $selected_country, $states_not_required_country_list ) ? 'give-hidden' : '' ) ?> ">*</span>
-				<?php endif; ?>
-				<?php echo Give()->tooltips->render_help( __( 'The state or province for your billing address.', 'give' ) ); ?>
-			</label>
-			<?php if ( ! empty( $states ) ) : ?>
-				<select
-						name="card_state"
-						id="card_state"
-						class="card_state give-select<?php echo( give_field_is_required( 'card_state', $form_id ) ? ' required' : '' ); ?>"
-					<?php echo( give_field_is_required( 'card_state', $form_id ) ? ' required aria-required="true" ' : '' ); ?>>
-					<?php
-					foreach ( $states as $state_code => $state ) {
-						echo '<option value="' . $state_code . '"' . selected( $state_code, $selected_state, false ) . '>' . $state . '</option>';
-					}
-					?>
-				</select>
-			<?php else : ?>
-				<input type="text" size="6" name="card_state" id="card_state" class="card_state give-input"
-					   placeholder="<?php echo $label; ?>"/>
-			<?php endif; ?>
 		</p>
 		<?php
 		/**
@@ -1207,7 +1107,6 @@ function give_get_register_fields( $form_id ) {
 			 */
 			do_action( 'give_register_account_fields_before', $form_id );
 			?>
-
 			<div id="give-create-account-wrap-<?php echo $form_id; ?>" class="form-row form-row-first form-row-responsive">
 				<label for="give-create-account-<?php echo $form_id; ?>">
 					<?php
@@ -1637,7 +1536,7 @@ function give_checkout_final_total( $form_id ) {
 		</span>
 		<span class="give-final-total-amount"
 			  data-total="<?php echo give_format_amount( $total, array( 'sanitize' => false ) ); ?>">
-			<?php echo give_currency_filter( give_format_amount( $total, array( 'sanitize' => false ) ) ); ?>
+			<?php echo give_currency_filter( give_format_amount( $total, array( 'sanitize' => false ) ), give_get_currency( $form_id ) ); ?>
 		</span>
 	</p>
 	<?php
@@ -1938,3 +1837,79 @@ function give_members_only_form( $final_output, $args ) {
 }
 
 add_filter( 'give_donate_form', 'give_members_only_form', 10, 2 );
+
+
+/**
+ * Add donation form hidden fields.
+ *
+ * @since 1.8.17
+ *
+ * @param int              $form_id
+ * @param array            $args
+ * @param Give_Donate_Form $form
+ */
+function __give_form_add_donation_hidden_field( $form_id, $args, $form ) {
+	?>
+	<input type="hidden" name="give-form-id" value="<?php echo $form_id; ?>"/>
+	<input type="hidden" name="give-form-title" value="<?php echo htmlentities( $form->post_title ); ?>"/>
+	<input type="hidden" name="give-current-url"
+		   value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
+	<input type="hidden" name="give-form-url" value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
+	<input type="hidden" name="give-form-minimum"
+		   value="<?php echo give_format_amount( give_get_form_minimum_price( $form_id ), array( 'sanitize' => false ) ); ?>"/>
+	<?php
+
+	// Price ID hidden field for variable (multi-level) donation forms.
+	if ( give_has_variable_prices( $form_id ) ) {
+		// Get default selected price ID.
+		$prices   = apply_filters( 'give_form_variable_prices', give_get_variable_prices( $form_id ), $form_id );
+		$price_id = 0;
+		//loop through prices.
+		foreach ( $prices as $price ) {
+			if ( isset( $price['_give_default'] ) && $price['_give_default'] === 'default' ) {
+				$price_id = $price['_give_id']['level_id'];
+			};
+		}
+
+
+		echo sprintf(
+			'<input type="hidden" name="give-price-id" value="%s"/>',
+			$price_id
+		);
+	}
+}
+
+add_action( 'give_donation_form_top', '__give_form_add_donation_hidden_field', 0, 3 );
+
+/**
+ * Add currency settings on donation form.
+ *
+ * @since 1.8.17
+ *
+ * @param array            $form_html_tags
+ * @param Give_Donate_Form $form
+ *
+ * @return array
+ */
+function __give_form_add_currency_settings( $form_html_tags, $form ) {
+	$form_currency     = give_get_currency( $form->ID );
+	$currency_settings = give_get_currency_formatting_settings( $form_currency );
+
+	// Check if currency exist.
+	if ( empty( $currency_settings ) ) {
+		return $form_html_tags;
+	}
+
+	$form_html_tags['data-currency_symbol'] = give_currency_symbol( $form_currency );
+	$form_html_tags['data-currency_code']   = $form_currency;
+
+	if ( ! empty( $currency_settings ) ) {
+		foreach ( $currency_settings as $key => $value ) {
+			$form_html_tags["data-{$key}"] = $value;
+		}
+	}
+
+	return $form_html_tags;
+}
+
+add_filter( 'give_form_html_tags', '__give_form_add_currency_settings', 0, 2 );

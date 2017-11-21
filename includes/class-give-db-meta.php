@@ -311,7 +311,12 @@ class Give_DB_Meta extends Give_DB {
 				$meta_key    = $arguments[2];
 				$meta_value  = $arguments[3];
 				$unique      = $arguments[4];
-
+				
+				// Bailout.
+				if ( ! $this->is_valid_post_type( $id ) ) {
+					return $this->check;
+				}
+				
 				return $this->add_meta( $id, $meta_key, $meta_value, $unique );
 
 			case '__get_meta':
@@ -319,6 +324,11 @@ class Give_DB_Meta extends Give_DB {
 				$id          = $arguments[1];
 				$meta_key    = $arguments[2];
 				$single      = $arguments[3];
+				
+				// Bailout.
+				if ( ! $this->is_valid_post_type( $id ) ) {
+					return $this->check;
+				}
 
 				$this->raw_result = true;
 
@@ -329,7 +339,12 @@ class Give_DB_Meta extends Give_DB {
 				$id          = $arguments[1];
 				$meta_key    = $arguments[2];
 				$meta_value  = $arguments[3];
-
+				
+				// Bailout.
+				if ( ! $this->is_valid_post_type( $id ) ) {
+					return $this->check;
+				}
+				
 				return $this->update_meta( $id, $meta_key, $meta_value );
 
 			case '__delete_meta':
@@ -338,6 +353,11 @@ class Give_DB_Meta extends Give_DB {
 				$meta_key    = $arguments[2];
 				$meta_value  = $arguments[3];
 				$delete_all  = $arguments[3];
+				
+				// Bailout.
+				if ( ! $this->is_valid_post_type( $id ) ) {
+					return $this->check;
+				}
 
 				return $this->delete_meta( $id, $meta_key, $meta_value, $delete_all );
 		}

@@ -17,9 +17,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Processes a donor edit.
  *
- * @since  1.0
+ * @param array $args The $_POST array being passed.
  *
- * @param  array $args The $_POST array being passed
+ * @since 1.0
  *
  * @return array|bool $output Response messages
  */
@@ -56,6 +56,12 @@ function give_edit_donor( $args ) {
 	$defaults = array(
 		'name'    => '',
 		'user_id' => 0,
+		'line1'   => '',
+		'line2'   => '',
+		'city'    => '',
+		'zip'     => '',
+		'state'   => '',
+		'country' => '',
 	);
 
 	$donor_info = wp_parse_args( $donor_info, $defaults );
@@ -74,99 +80,29 @@ function give_edit_donor( $args ) {
 		}
 	}
 
-	// Record this for later.
-	$previous_user_id = $donor->user_id;
-
 	if ( give_get_errors() ) {
 		return false;
 	}
 
-	// Setup the donor address, if present.
-	$address = array();
-	if ( intval( $donor_info['user_id'] ) > 0 ) {
-
-		$current_address = (array) get_user_meta( $donor_info['user_id'], '_give_user_address', true );
-
-		if ( false === $current_address ) {
-			$address['line1']   = isset( $donor_info['line1'] ) ? $donor_info['line1'] : '';
-			$address['line2']   = isset( $donor_info['line2'] ) ? $donor_info['line2'] : '';
-			$address['city']    = isset( $donor_info['city'] ) ? $donor_info['city'] : '';
-			$address['country'] = isset( $donor_info['country'] ) ? $donor_info['country'] : '';
-			$address['zip']     = isset( $donor_info['zip'] ) ? $donor_info['zip'] : '';
-			$address['state']   = isset( $donor_info['state'] ) ? $donor_info['state'] : '';
-		} else {
-			$current_address    = wp_parse_args( $current_address, array(
-				'line1',
-				'line2',
-				'city',
-				'zip',
-				'state',
-				'country',
-			) );
-			$address['line1']   = isset( $donor_info['line1'] ) ? $donor_info['line1'] : $current_address['line1'];
-			$address['line2']   = isset( $donor_info['line2'] ) ? $donor_info['line2'] : $current_address['line2'];
-			$address['city']    = isset( $donor_info['city'] ) ? $donor_info['city'] : $current_address['city'];
-			$address['country'] = isset( $donor_info['country'] ) ? $donor_info['country'] : $current_address['country'];
-			$address['zip']     = isset( $donor_info['zip'] ) ? $donor_info['zip'] : $current_address['zip'];
-			$address['state']   = isset( $donor_info['state'] ) ? $donor_info['state'] : $current_address['state'];
-		}
-	}
-
-	// Sanitize the inputs
+	// Sanitize the inputs.
 	$donor_data            = array();
 	$donor_data['name']    = strip_tags( stripslashes( $donor_info['name'] ) );
 	$donor_data['user_id'] = $donor_info['user_id'];
 
-	$donor_data = apply_filters( 'give_edit_donor_info', $donor_data, $donor_id );
-	$address    = apply_filters( 'give_edit_donor_address', $address, $donor_id );
-
-	$donor_data = array_map( 'sanitize_text_field', $donor_data );
-	$address    = array_map( 'sanitize_text_field', $address );
+	$donor_data             = apply_filters( 'give_edit_donor_info', $donor_data, $donor_id );
 
 	/**
-	 * Fires before editing a donor.
+	 * Filter the address
+	 * @todo unnecessary filter because we are not storing donor address to user.
 	 *
 	 * @since 1.0
-	 *
-	 * @param int   $donor_id   The ID of the donor.
-	 * @param array $donor_data The donor data.
-	 * @param array $address    The donor's address.
 	 */
-	do_action( 'give_pre_edit_donor', $donor_id, $donor_data, $address );
+	$address                = apply_filters( 'give_edit_donor_address', array(), $donor_id );
 
-	$output = array();
+	$donor_data             = give_clean( $donor_data );
+	$address                = give_clean( $address );
 
-	$output['success'] = false;
-	if ( $donor->update( $donor_data ) ) {
-
-		if ( ! empty( $donor->user_id ) && $donor->user_id > 0 ) {
-			update_user_meta( $donor->user_id, '_give_user_address', $address );
-		}
-
-		// Update some donation meta if we need to.
-		// $payments_array = explode( ',', $donor->payment_ids );
-		//
-		// if ( $donor->user_id != $previous_user_id ) {
-		// 	foreach ( $payments_array as $payment_id ) {
-		// 		give_update_payment_meta( $payment_id, '_give_payment_user_id', $donor->user_id );
-		// 	}
-		// }
-
-		$output['success']       = true;
-		$donor_data              = array_merge( $donor_data, $address );
-		$output['customer_info'] = $donor_data;
-
-	}
-
-	/**
-	 * Fires after editing a donor.
-	 *
-	 * @since 1.0
-	 *
-	 * @param int   $donor_id   The ID of the donor.
-	 * @param array $donor_data The donor data.
-	 */
-	do_action( 'give_post_edit_donor', $donor_id, $donor_data );
+	$output = give_connect_user_donor_profile( $donor, $donor_data, $address );
 
 	if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 		header( 'Content-Type: application/json' );
@@ -174,7 +110,11 @@ function give_edit_donor( $args ) {
 		wp_die();
 	}
 
-	return $output;
+	if ( $output['success'] ) {
+		wp_redirect( admin_url( "edit.php?post_type=give_forms&page=give-donors&view=overview&id={$donor_id}&give-message=profile-updated" ) );
+	}
+
+	exit;
 
 }
 
@@ -183,11 +123,11 @@ add_action( 'give_edit-donor', 'give_edit_donor', 10, 1 );
 /**
  * Save a donor note.
  *
- * @since  1.0
+ * @param array $args The $_POST array being passed.
  *
- * @param  array $args The $_POST array being passed.
+ * @since 1.0
  *
- * @return int         The Note ID that was saved, or 0 if nothing was saved.
+ * @return int The Note ID that was saved, or 0 if nothing was saved.
  */
 function give_donor_save_note( $args ) {
 
@@ -203,7 +143,7 @@ function give_donor_save_note( $args ) {
 		return false;
 	}
 
-	$donor_note = trim( sanitize_text_field( $args['donor_note'] ) );
+	$donor_note = trim( give_clean( $args['donor_note'] ) );
 	$donor_id   = (int) $args['customer_id'];
 	$nonce      = $args['add_donor_note_nonce'];
 
@@ -227,10 +167,10 @@ function give_donor_save_note( $args ) {
 	/**
 	 * Fires before inserting donor note.
 	 *
-	 * @since 1.0
-	 *
 	 * @param int    $donor_id The ID of the donor.
 	 * @param string $new_note Note content.
+	 *
+	 * @since 1.0
 	 */
 	do_action( 'give_pre_insert_donor_note', $donor_id, $new_note );
 
@@ -265,9 +205,9 @@ add_action( 'give_add-donor-note', 'give_donor_save_note', 10, 1 );
 /**
  * Delete a donor.
  *
- * @since  1.0
+ * @param array $args The $_POST array being passed.
  *
- * @param  array $args The $_POST array being passed.
+ * @since 1.0
  *
  * @return int Whether it was a successful deletion.
  */
@@ -310,11 +250,11 @@ function give_donor_delete( $args ) {
 	/**
 	 * Fires before deleting donor.
 	 *
-	 * @since 1.0
-	 *
 	 * @param int  $donor_id    The ID of the donor.
 	 * @param bool $confirm     Delete confirmation.
 	 * @param bool $remove_data Records delete confirmation.
+	 *
+	 * @since 1.0
 	 */
 	do_action( 'give_pre_delete_donor', $donor_id, $confirm, $remove_data );
 
@@ -327,13 +267,13 @@ function give_donor_delete( $args ) {
 
 			if ( $remove_data ) {
 
-				// Remove all donations, logs, etc
+				// Remove all donations, logs, etc.
 				foreach ( $payments_array as $payment_id ) {
 					give_delete_donation( $payment_id );
 				}
 			} else {
 
-				// Just set the donations to customer_id of 0
+				// Just set the donations to customer_id of 0.
 				foreach ( $payments_array as $payment_id ) {
 					give_update_payment_meta( $payment_id, '_give_payment_donor_id', 0 );
 				}
@@ -343,13 +283,13 @@ function give_donor_delete( $args ) {
 
 		} else {
 
-			give_set_error( 'give-donor-delete-failed', esc_html__( 'Error deleting donor.', 'give' ) );
+			give_set_error( 'give-donor-delete-failed', __( 'Error deleting donor.', 'give' ) );
 			$redirect = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $donor_id );
 
 		}
 	} else {
 
-		give_set_error( 'give-donor-delete-invalid-id', esc_html__( 'Invalid Donor ID.', 'give' ) );
+		give_set_error( 'give-donor-delete-invalid-id', __( 'Invalid Donor ID.', 'give' ) );
 		$redirect = admin_url( 'edit.php?post_type=give_forms&page=give-donors' );
 
 	}
@@ -364,11 +304,11 @@ add_action( 'give_delete-donor', 'give_donor_delete', 10, 1 );
 /**
  * Disconnect a user ID from a donor
  *
- * @since  1.0
+ * @param array $args Array of arguments.
  *
- * @param  array $args Array of arguments.
+ * @since 1.0
  *
- * @return bool|array        If the disconnect was successful.
+ * @return bool|array If the disconnect was successful.
  */
 function give_disconnect_donor_user_id( $args ) {
 
@@ -404,10 +344,10 @@ function give_disconnect_donor_user_id( $args ) {
 	/**
 	 * Fires before disconnecting user ID from a donor.
 	 *
-	 * @since 1.0
-	 *
 	 * @param int $donor_id The ID of the donor.
 	 * @param int $user_id  The ID of the user.
+	 *
+	 * @since 1.0
 	 */
 	do_action( 'give_pre_donor_disconnect_user_id', $donor_id, $user_id );
 
@@ -419,27 +359,25 @@ function give_disconnect_donor_user_id( $args ) {
 
 	$output['success'] = true;
 	if ( ! $donor->update( $donor_args ) ) {
-		// if ( $donor->update( $donor_args ) ) {
-		// 	global $wpdb;
-		//
-		// 	if ( ! empty( $donor->payment_ids ) ) {
-		// 		$wpdb->query( "UPDATE $wpdb->postmeta SET meta_value = 0 WHERE meta_key = '_give_payment_user_id' AND post_id IN ( $donor->payment_ids )" );
-		// 	}
-		//
-		// 	$output['success'] = true;
-		//
-		// } else {
+		update_user_meta( $user_id, '_give_is_donor_disconnected', true );
+		update_user_meta( $user_id, '_give_disconnected_donor_id', $donor->id );
+		$donor->update_meta( '_give_disconnected_user_id', $user_id );
 
+		$output['success'] = true;
+
+	} else {
 		$output['success'] = false;
 		give_set_error( 'give-disconnect-user-fail', __( 'Failed to disconnect user from donor.', 'give' ) );
 	}
 
+	$output['redirect'] = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' ) . $donor_id;
+
 	/**
 	 * Fires after disconnecting user ID from a donor.
 	 *
-	 * @since 1.0
-	 *
 	 * @param int $donor_id The ID of the donor.
+	 *
+	 * @since 1.0
 	 */
 	do_action( 'give_post_donor_disconnect_user_id', $donor_id );
 
@@ -458,23 +396,19 @@ add_action( 'give_disconnect-userid', 'give_disconnect_donor_user_id', 10, 1 );
 /**
  * Add an email address to the donor from within the admin and log a donor note.
  *
- * @since  1.7
+ * @param array $args Array of arguments: nonce, donor id, and email address.
  *
- * @param  array $args Array of arguments: nonce, donor id, and email address.
+ * @since 1.7
  *
- * @return mixed        If DOING_AJAX echos out JSON, otherwise returns array of success (bool) and message (string).
+ * @return mixed If DOING_AJAX echos out JSON, otherwise returns array of success (bool) and message (string).
  */
 function give_add_donor_email( $args ) {
-	/**
-	 * Define variable
-	 *
-	 * @since 1.8.14
-	 */
+
 	$donor_id = '';
 	$donor_edit_role = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
 
 	if ( ! is_admin() || ! current_user_can( $donor_edit_role ) ) {
-		wp_die( esc_html__( 'You do not have permission to edit this donor.', 'give' ), esc_html__( 'Error', 'give' ), array(
+		wp_die( __( 'You do not have permission to edit this donor.', 'give' ), __( 'Error', 'give' ), array(
 			'response' => 403,
 		) );
 	}
@@ -492,12 +426,12 @@ function give_add_donor_email( $args ) {
 	} elseif ( ! wp_verify_nonce( $args['_wpnonce'], 'give_add_donor_email' ) ) {
 		$output = array(
 			'success' => false,
-			'message' => esc_html__( 'Nonce verification failed.', 'give' ),
+			'message' => __( 'Nonce verification failed.', 'give' ),
 		);
 	} elseif ( ! is_email( $args['email'] ) ) {
 		$output = array(
 			'success' => false,
-			'message' => esc_html__( 'Invalid email.', 'give' ),
+			'message' => __( 'Invalid email.', 'give' ),
 		);
 	} else {
 		$email    = sanitize_email( $args['email'] );
@@ -534,7 +468,7 @@ function give_add_donor_email( $args ) {
 				$donor->add_note( $donor_note );
 			}
 		}
-	}// End if().
+	} // End if().
 
 	do_action( 'give_post_add_donor_email', $donor_id, $args );
 
@@ -554,6 +488,7 @@ add_action( 'give_add_donor_email', 'give_add_donor_email', 10, 1 );
  * Remove an email address to the donor from within the admin and log a donor note and redirect back to the donor interface for feedback.
  *
  * @since  1.7
+ *
  * @return bool|null
  */
 function give_remove_donor_email() {
@@ -569,7 +504,7 @@ function give_remove_donor_email() {
 
 	$nonce = $_GET['_wpnonce'];
 	if ( ! wp_verify_nonce( $nonce, 'give-remove-donor-email' ) ) {
-		wp_die( esc_html__( 'Nonce verification failed', 'give' ), esc_html__( 'Error', 'give' ), array(
+		wp_die( __( 'Nonce verification failed', 'give' ), __( 'Error', 'give' ), array(
 			'response' => 403,
 		) );
 	}
@@ -597,6 +532,7 @@ add_action( 'give_remove_donor_email', 'give_remove_donor_email', 10 );
  * and redirect back to the donor interface for feedback
  *
  * @since  1.7
+ *
  * @return bool|null
  */
 function give_set_donor_primary_email() {
@@ -615,7 +551,7 @@ function give_set_donor_primary_email() {
 	$nonce = $_GET['_wpnonce'];
 
 	if ( ! wp_verify_nonce( $nonce, 'give-set-donor-primary-email' ) ) {
-		wp_die( esc_html__( 'Nonce verification failed', 'give' ), esc_html__( 'Error', 'give' ), array(
+		wp_die( __( 'Nonce verification failed', 'give' ), __( 'Error', 'give' ), array(
 			'response' => 403,
 		) );
 	}
@@ -625,7 +561,7 @@ function give_set_donor_primary_email() {
 	if ( $donor->set_primary_email( $_GET['email'] ) ) {
 		$url        = add_query_arg( 'give-message', 'primary-email-updated', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ) );
 		$user       = wp_get_current_user();
-		$user_login = ! empty( $user->user_login ) ? $user->user_login : esc_html__( 'System', 'give' );
+		$user_login = ! empty( $user->user_login ) ? $user->user_login : __( 'System', 'give' );
 		$donor_note = sprintf( __( 'Email address %1$s set as primary by %2$s', 'give' ), $_GET['email'], $user_login );
 
 		$donor->add_note( $donor_note );
@@ -638,3 +574,83 @@ function give_set_donor_primary_email() {
 }
 
 add_action( 'give_set_donor_primary_email', 'give_set_donor_primary_email', 10 );
+
+/**
+ * Delete Donor using Bulk Actions.
+ *
+ * @param array $args An array of donor arguments.
+ *
+ * @since 1.8.17
+ *
+ * @return void
+ */
+function give_delete_donor( $args ) {
+
+	$donor_edit_role = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
+
+	if ( ! is_admin() || ! current_user_can( $donor_edit_role ) ) {
+		wp_die( __( 'You do not have permission to delete donors.', 'give' ), __( 'Error', 'give' ), array(
+			'response' => 403,
+		) );
+	}
+
+	$give_message     = array();
+	$donor_ids        = ( is_array( $_GET['donor'] ) && count( $_GET['donor'] ) > 0 ) ? $_GET['donor'] : array();
+	$delete_donor     = ! empty( $_GET['give-delete-donor-confirm'] ) ? $_GET['give-delete-donor-confirm'] : '';
+	$delete_donations = ! empty( $_GET['give-delete-donor-records'] ) ? $_GET['give-delete-donor-records'] : '';
+	$nonce            = $args['_wpnonce'];
+
+	// Verify Nonce for deleting bulk donors.
+	if ( ! wp_verify_nonce( $nonce, 'bulk-donors' ) ) {
+		wp_die( __( 'Cheatin&#8217; uh?', 'give' ), __( 'Error', 'give' ), array(
+			'response' => 400,
+		) );
+	}
+
+	if( count( $donor_ids ) > 0 ) {
+		foreach ( $donor_ids as $donor_id ) {
+			$donor = new Give_Donor( $donor_id );
+
+			if ( $donor->id > 0 ) {
+
+				if( $delete_donor ) {
+					$donor_deleted = Give()->donors->delete( $donor->id );
+
+					if ( $donor_deleted ) {
+						$donation_ids  = explode( ',', $donor->payment_ids );
+
+						if( $delete_donations ) {
+
+							// Remove all donations, logs, etc.
+							foreach ( $donation_ids as $donation_id ) {
+								give_delete_donation( $donation_id );
+							}
+
+							$give_message = 'donor-donations-deleted';
+						} else {
+
+							// Just set the donations to customer_id of 0.
+							foreach ( $donation_ids as $donation_id ) {
+								give_update_payment_meta( $donation_id, '_give_payment_customer_id', 0 );
+							}
+
+							$give_message = 'donor-deleted';
+						}
+					} else {
+						$give_message = 'donor-delete-failed';
+					}
+				} else {
+					$give_message = 'confirm-delete-donor';
+				}
+			} else {
+				$give_message = 'invalid-donor-id';
+			}
+		}
+	}
+
+	wp_redirect( add_query_arg( 'give-message', $give_message, admin_url( 'edit.php?post_type=give_forms&page=give-donors' ) ) );
+	give_die();
+
+}
+
+add_action( 'give_delete_donor', 'give_delete_donor' );

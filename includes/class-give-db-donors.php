@@ -43,9 +43,6 @@ class Give_DB_Donors extends Give_DB {
 
 		// Set hooks and register table only if instance loading first time.
 		if ( ! ( Give()->donors instanceof Give_DB_Donors ) ) {
-			// Setup hook.
-			add_action( 'profile_update', array( $this, 'update_donor_email_on_user_update' ), 10, 2 );
-
 			// Install table.
 			$this->register_table();
 		}
@@ -98,10 +95,10 @@ class Give_DB_Donors extends Give_DB {
 	/**
 	 * Add a donor
 	 *
+	 * @param  array $data List of donor data to add.
+	 *
 	 * @since  1.0
 	 * @access public
-	 *
-	 * @param  array $data
 	 *
 	 * @return int|bool
 	 */
@@ -164,10 +161,10 @@ class Give_DB_Donors extends Give_DB {
 	 * NOTE: This should not be called directly as it does not make necessary changes to
 	 * the payment meta and logs. Use give_donor_delete() instead.
 	 *
+	 * @param  bool|string|int $_id_or_email ID or Email of Donor.
+	 *
 	 * @since  1.0
 	 * @access public
-	 *
-	 * @param  bool|string|int $_id_or_email
 	 *
 	 * @return bool|int
 	 */
@@ -200,7 +197,7 @@ class Give_DB_Donors extends Give_DB {
 	}
 
 	/**
-	 * Delete a donor.
+	 * Delete a donor by user ID.
 	 *
 	 * NOTE: This should not be called directly as it does not make necessary changes to
 	 * the payment meta and logs. Use give_donor_delete() instead.
@@ -224,22 +221,23 @@ class Give_DB_Donors extends Give_DB {
 		 * @since 1.8.14
 		 */
 		$donor = new Give_Donor( $user_id, true );
-		if( ! empty( $donor->id ) ) {
+		if ( ! empty( $donor->id ) ) {
 			Give()->donor_meta->delete_all_meta( $donor->id );
 		}
 
 		global $wpdb;
+
 		return $wpdb->delete( $this->table_name, array( 'user_id' => $user_id ), array( '%d' ) );
 	}
 
 	/**
 	 * Checks if a donor exists
 	 *
-	 * @since  1.0
-	 * @access public
-	 *
 	 * @param  string $value The value to search for. Default is empty.
 	 * @param  string $field The Donor ID or email to search in. Default is 'email'.
+	 *
+	 * @since  1.0
+	 * @access public
 	 *
 	 * @return bool          True is exists, false otherwise.
 	 */
@@ -308,7 +306,7 @@ class Give_DB_Donors extends Give_DB {
 	 * @access public
 	 *
 	 * @param int   $donor_id Donor ID.
-	 * @param float $amount   Amoumt.
+	 * @param float $amount   THe amount to increase.
 	 *
 	 * @return bool
 	 */
@@ -354,91 +352,33 @@ class Give_DB_Donors extends Give_DB {
 	}
 
 	/**
-	 * Updates the email address of a donor record when the email on a user is updated
-	 *
-	 * @since  1.4.3
-	 * @access public
-	 *
-	 * @param  int $user_id User ID.
-	 * @param  WP_User|bool $old_user_data User data.
-	 *
-	 * @return bool
-	 */
-	public function update_donor_email_on_user_update( $user_id = 0, $old_user_data = false ) {
-
-		$donor = new Give_Donor( $user_id, true );
-
-		if ( ! $donor ) {
-			return false;
-		}
-
-		$user = get_userdata( $user_id );
-
-		if ( ! empty( $user ) && $user->user_email !== $donor->email ) {
-
-			if ( ! $this->get_donor_by( 'email', $user->user_email ) ) {
-
-				$success = $this->update( $donor->id, array( 'email' => $user->user_email ) );
-
-				if ( $success ) {
-					// Update some payment meta if we need to
-					$payments_array = explode( ',', $donor->payment_ids );
-
-					if ( ! empty( $payments_array ) ) {
-
-						foreach ( $payments_array as $payment_id ) {
-
-							give_update_payment_meta( $payment_id, 'email', $user->user_email );
-
-						}
-
-					}
-
-					/**
-					 * Fires after updating donor email on user update.
-					 *
-					 * @since 1.4.3
-					 *
-					 * @param  WP_User    $user  WordPress User object.
-					 * @param  Give_Donor $donor Give donor object.
-					 */
-					do_action( 'give_update_donor_email_on_user_update', $user, $donor );
-
-				}
-
-			}
-
-		}
-
-	}
-
-	/**
 	 * Retrieves a single donor from the database
 	 *
 	 * @since  1.0
 	 * @access public
 	 *
 	 * @param  string $field ID or email. Default is 'id'.
-	 * @param  mixed $value The Customer ID or email to search. Default is 0.
+	 * @param  mixed  $value The Customer ID or email to search. Default is 0.
 	 *
 	 * @return mixed         Upon success, an object of the donor. Upon failure, NULL
 	 */
 	public function get_donor_by( $field = 'id', $value = 0 ) {
-		/* @var WPDB $wpdb */
-		global $wpdb;
+		$value = sanitize_text_field( $value );
 
+		// Bailout.
 		if ( empty( $field ) || empty( $value ) ) {
 			return null;
 		}
 
-		if ( 'id' == $field || 'user_id' == $field ) {
+		// Verify values.
+		if ( 'id' === $field || 'user_id' === $field ) {
 			// Make sure the value is numeric to avoid casting objects, for example,
 			// to int 1.
 			if ( ! is_numeric( $value ) ) {
 				return false;
 			}
 
-			$value = intval( $value );
+			$value = absint( $value );
 
 			if ( $value < 1 ) {
 				return false;
@@ -453,41 +393,49 @@ class Give_DB_Donors extends Give_DB {
 			$value = trim( $value );
 		}
 
+		// Bailout
 		if ( ! $value ) {
 			return false;
 		}
 
+		// Set query params.
 		switch ( $field ) {
 			case 'id':
-				$db_field = 'id';
+				$args['donor'] = $value;
 				break;
 			case 'email':
-				$value    = sanitize_text_field( $value );
-				$db_field = 'email';
+				$args['email'] = $value;
 				break;
 			case 'user_id':
-				$db_field = 'user_id';
+				$args['user'] = $value;
 				break;
 			default:
 				return false;
 		}
 
-		if ( ! $donor = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $this->table_name WHERE $db_field = %s LIMIT 1", $value ) ) ) {
+		// Get donors.
+		$donor = new Give_Donors_Query( $args );
 
+		if ( ! $donor = $donor->get_donors() ) {
 			// Look for donor from an additional email.
-			if ( 'email' === $field ) {
-				$meta_type  = Give()->donor_meta->meta_type;
-				$donor_id   = $wpdb->get_var( $wpdb->prepare( "SELECT {$meta_type}_id FROM $wpdb->donormeta WHERE meta_key = 'additional_email' AND meta_value = %s LIMIT 1", $value ) );
+			$args = array(
+				'meta_query' => array(
+					array(
+						'key'   => 'additional_email',
+						'value' => $value,
+					),
+				),
+			);
 
-				if ( ! empty( $donor_id ) ) {
-					return $this->get( $donor_id );
-				}
+			$donor = new Give_Donors_Query( $args );
+			$donor = $donor->get_donors();
+
+			if ( empty( $donor ) ) {
+				return false;
 			}
-
-			return false;
 		}
 
-		return $donor;
+		return current( $donor );
 	}
 
 	/**
@@ -498,121 +446,19 @@ class Give_DB_Donors extends Give_DB {
 	 *
 	 * @param  array $args
 	 *
-	 * @return array|object|null Customers array or object. Null if not found.
+	 * @return array|object|null Donors array or object. Null if not found.
 	 */
 	public function get_donors( $args = array() ) {
-		/* @var WPDB $wpdb */
-		global $wpdb;
-
-		$defaults = array(
-			'number'  => 20,
-			'offset'  => 0,
-			'user_id' => 0,
-			'orderby' => 'id',
-			'order'   => 'DESC',
-		);
-
-		$args = wp_parse_args( $args, $defaults );
-
-		if ( $args['number'] < 1 ) {
-			$args['number'] = 999999999999;
-		}
-
-		$where = ' WHERE 1=1 ';
-
-		// specific donors.
-		if ( ! empty( $args['id'] ) ) {
-
-			if ( is_array( $args['id'] ) ) {
-				$ids = implode( ',', array_map( 'intval', $args['id'] ) );
-			} else {
-				$ids = intval( $args['id'] );
-			}
-
-			$where .= " AND `id` IN( {$ids} ) ";
-
-		}
-
-		// donors for specific user accounts
-		if ( ! empty( $args['user_id'] ) ) {
-
-			if ( is_array( $args['user_id'] ) ) {
-				$user_ids = implode( ',', array_map( 'intval', $args['user_id'] ) );
-			} else {
-				$user_ids = intval( $args['user_id'] );
-			}
-
-			$where .= " AND `user_id` IN( {$user_ids} ) ";
-
-		}
-
-		//specific donors by email
-		if ( ! empty( $args['email'] ) ) {
-
-			if ( is_array( $args['email'] ) ) {
-
-				$emails_count       = count( $args['email'] );
-				$emails_placeholder = array_fill( 0, $emails_count, '%s' );
-				$emails             = implode( ', ', $emails_placeholder );
-
-				$where .= $wpdb->prepare( " AND `email` IN( $emails ) ", $args['email'] );
-			} else {
-				$where .= $wpdb->prepare( " AND `email` = %s ", $args['email'] );
-			}
-		}
-
-		// specific donors by name
-		if ( ! empty( $args['name'] ) ) {
-			$where .= $wpdb->prepare( " AND `name` LIKE '%%%%" . '%s' . "%%%%' ", $args['name'] );
-		}
-
-		// Donors created for a specific date or in a date range
-		if ( ! empty( $args['date'] ) ) {
-
-			if ( is_array( $args['date'] ) ) {
-
-				if ( ! empty( $args['date']['start'] ) ) {
-
-					$start = date( 'Y-m-d H:i:s', strtotime( $args['date']['start'] ) );
-
-					$where .= " AND `date_created` >= '{$start}'";
-
-				}
-
-				if ( ! empty( $args['date']['end'] ) ) {
-
-					$end = date( 'Y-m-d H:i:s', strtotime( $args['date']['end'] ) );
-
-					$where .= " AND `date_created` <= '{$end}'";
-
-				}
-
-			} else {
-
-				$year  = date( 'Y', strtotime( $args['date'] ) );
-				$month = date( 'm', strtotime( $args['date'] ) );
-				$day   = date( 'd', strtotime( $args['date'] ) );
-
-				$where .= " AND $year = YEAR ( date_created ) AND $month = MONTH ( date_created ) AND $day = DAY ( date_created )";
-			}
-
-		}
-
-		$args['orderby'] = ! array_key_exists( $args['orderby'], $this->get_columns() ) ? 'id' : $args['orderby'];
-
-		if ( 'purchase_value' == $args['orderby'] ) {
-			$args['orderby'] = 'purchase_value+0';
-		}
+		$this->bc_1814_params( $args );
 
 		$cache_key = md5( 'give_donors_' . serialize( $args ) );
 
 		$donors = wp_cache_get( $cache_key, 'donors' );
 
-		$args['orderby'] = esc_sql( $args['orderby'] );
-		$args['order']   = esc_sql( $args['order'] );
-
 		if ( $donors === false ) {
-			$donors = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM  $this->table_name $where ORDER BY {$args['orderby']} {$args['order']} LIMIT %d,%d;", absint( $args['offset'] ), absint( $args['number'] ) ) );
+			$donors = new Give_Donors_Query( $args );
+			$donors = $donors->get_donors();
+
 			wp_cache_set( $cache_key, $donors, 'donors', 3600 );
 		}
 
@@ -632,38 +478,16 @@ class Give_DB_Donors extends Give_DB {
 	 * @return int         Total number of donors.
 	 */
 	public function count( $args = array() ) {
-		/* @var WPDB $wpdb */
-		global $wpdb;
-
-		$where = ' WHERE 1=1 ';
-
-		if ( ! empty( $args['date'] ) ) {
-
-			if ( is_array( $args['date'] ) ) {
-
-				$start = date( 'Y-m-d H:i:s', strtotime( $args['date']['start'] ) );
-				$end   = date( 'Y-m-d H:i:s', strtotime( $args['date']['end'] ) );
-
-				$where .= " AND `date_created` >= '{$start}' AND `date_created` <= '{$end}'";
-
-			} else {
-
-				$year  = date( 'Y', strtotime( $args['date'] ) );
-				$month = date( 'm', strtotime( $args['date'] ) );
-				$day   = date( 'd', strtotime( $args['date'] ) );
-
-				$where .= " AND $year = YEAR ( date_created ) AND $month = MONTH ( date_created ) AND $day = DAY ( date_created )";
-			}
-
-		}
-
+		$this->bc_1814_params( $args );
+		$args['count'] = true;
 
 		$cache_key = md5( 'give_donors_count' . serialize( $args ) );
-
-		$count = wp_cache_get( $cache_key, 'donors' );
+		$count     = wp_cache_get( $cache_key, 'donors' );
 
 		if ( $count === false ) {
-			$count = $wpdb->get_var( "SELECT COUNT($this->primary_key) FROM " . $this->table_name . "{$where};" );
+			$donors = new Give_Donors_Query( $args );
+			$count  = $donors->get_donors();
+
 			wp_cache_set( $cache_key, $count, 'donors', 3600 );
 		}
 
@@ -716,9 +540,56 @@ class Give_DB_Donors extends Give_DB {
 
 		if (
 			! give_has_upgrade_completed( 'v20_rename_donor_tables' ) &&
-			$wpdb->query( $wpdb->prepare( "SHOW TABLES LIKE %s","{$wpdb->prefix}give_customers" ) )
+			$wpdb->query( $wpdb->prepare( "SHOW TABLES LIKE %s", "{$wpdb->prefix}give_customers" ) )
 		) {
 			$wpdb->donors = $this->table_name = "{$wpdb->prefix}give_customers";
+		}
+	}
+
+	/**
+	 * Add backward compatibility for deprecated param
+	 *
+	 * @since  1.8.14
+	 * @access private
+	 *
+	 * @param $args
+	 */
+	private function bc_1814_params( &$args ) {
+		// Backward compatibility: user_id
+		if ( ! empty( $args['user_id'] ) ) {
+			$args['user'] = $args['user_id'];
+		}
+
+		// Backward compatibility: id
+		if ( ! empty( $args['id'] ) ) {
+			$args['donor'] = $args['id'];
+		}
+
+		// Backward compatibility: name
+		if ( ! empty( $args['name'] ) ) {
+			$args['s'] = "name:{$args['name']}";
+		}
+
+		// Backward compatibility: date
+		// Donors created for a specific date or in a date range.
+		if ( ! empty( $args['date'] ) ) {
+
+			if ( is_array( $args['date'] ) ) {
+
+				if ( ! empty( $args['date']['start'] ) ) {
+					$args['date_query']['after'] = date( 'Y-m-d H:i:s', strtotime( $args['date']['start'] ) );
+				}
+
+				if ( ! empty( $args['date']['end'] ) ) {
+					$args['date_query']['before'] = date( 'Y-m-d H:i:s', strtotime( $args['date']['end'] ) );
+				}
+
+			} else {
+
+				$args['date_query']['year']  = date( 'Y', strtotime( $args['date'] ) );
+				$args['date_query']['month'] = date( 'm', strtotime( $args['date'] ) );
+				$args['date_query']['day']   = date( 'd', strtotime( $args['date'] ) );
+			}
 		}
 	}
 }

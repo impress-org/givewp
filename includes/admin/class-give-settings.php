@@ -213,7 +213,7 @@ class Give_Plugin_Settings {
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
 								'post_type'   => 'page',
-								'numberposts' => - 1,
+								'numberposts' => 999,
 							) ),
 						),
 						array(
@@ -223,7 +223,7 @@ class Give_Plugin_Settings {
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
 								'post_type'   => 'page',
-								'numberposts' => - 1,
+								'numberposts' => 999,
 							) ),
 						),
 						array(
@@ -234,7 +234,7 @@ class Give_Plugin_Settings {
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
 								'post_type'   => 'page',
-								'numberposts' => - 1,
+								'numberposts' => 999,
 							) ),
 						),
 						array(
@@ -265,9 +265,9 @@ class Give_Plugin_Settings {
 							'type'    => 'select',
 							'options' => array(
 								/* translators: %s: currency symbol */
-								'before' => sprintf( __( 'Before - %s10', 'give' ), give_currency_symbol( give_get_currency() ) ),
+								'before' => sprintf( __( 'Before - %s&#x200e;10', 'give' ), give_currency_symbol( give_get_currency() ) ),
 								/* translators: %s: currency symbol */
-								'after'  => sprintf( __( 'After - 10%s', 'give' ), give_currency_symbol( give_get_currency() ) ),
+								'after'  => sprintf( __( 'After - 10%s&#x200f;', 'give' ), give_currency_symbol( give_get_currency() ) ),
 							),
 							'default' => 'before',
 						),
@@ -1316,6 +1316,17 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 					$class          = $license->error;
 					$messages[]     = sprintf( __( 'Your license key has reached it\'s activation limit. <a href="%s">View possible upgrades</a> now.', 'give' ), $account_page_link );
 					$license_status = 'license-' . $class;
+					break;
+
+				default:
+					$class          = $license->error;
+					$messages[]     = sprintf(
+							__( 'Your license is not activated. Please <a href="%3$s" target="_blank" title="Visit account page">visit your account page</a> to manage your license key URLs. %2$sError Code: %1$s.', 'give' ),
+							$license->error,
+							'<br/>',
+						 "{$account_page_link}?utm_campaign=admin&utm_source=licenses&utm_medium={$license->error}"
+					);
+					$license_status = 'license-error';
 					break;
 			}
 

@@ -229,7 +229,7 @@ class Give_Donor {
 
 	/**
 	 * Setup donor address.
-	 * 
+	 *
 	 * @since 2.0
 	 * @access public
 	 */
@@ -258,12 +258,6 @@ class Give_Donor {
 		foreach ( $addresses as $address ) {
 			$address[0] = str_replace( '_give_donor_address_', '', $address[0] );
 			$address[0] = explode( '_', $address[0] );
-
-			if ( 'address1' === $address[0][1] ) {
-				$address[0][1] = 'line1';
-			} elseif ( 'address2' === $address[0][1] ) {
-				$address[0][1] = 'line2';
-			}
 
 			if ( 3 === count( $address[0] ) ) {
 				$this->address[ $address[0][0] ][ $address[0][2] ][ $address[0][1] ] = $address[1];
@@ -849,6 +843,29 @@ class Give_Donor {
 	}
 
 	/**
+	 * Get the total donation amount.
+	 *
+	 * @since 1.8.17
+	 *
+	 * @param array $args Pass any additional data.
+	 *
+	 * @return string|float
+	 */
+	public function get_total_donation_amount( $args = array() ) {
+
+		/**
+		 * Filter total donation amount.
+		 *
+		 * @since 1.8.17
+		 *
+		 * @param string|float $purchase_value Donor Purchase value.
+		 * @param integer      $donor_id       Donor ID.
+		 * @param array        $args           Pass additional data.
+		 */
+		return apply_filters( 'give_get_total_donation_amount', $this->purchase_value, $this->id, $args );
+	}
+
+	/**
 	 * Add a note for the donor.
 	 *
 	 * @since  1.0
@@ -1164,6 +1181,35 @@ class Give_Donor {
 	}
 
 	/**
+	 * Check if address valid or not.
+	 *
+	 * @since  2.0
+	 * @access private
+	 *
+	 * @param $address
+	 *
+	 * @return bool
+	 */
+	private function is_valid_address( $address ) {
+		$is_valid_address = true;
+		
+		// Address ready to process even if only one value set.
+		foreach ( $address as $address_type => $value ) {
+			// @todo: Handle state feield validation on basis of country.
+			if( in_array( $address_type, array( 'line2', 'state' )) ) {
+				continue;
+			}
+
+			if ( empty( $value ) ) {
+				$is_valid_address = false;
+				break;
+			}
+		}
+
+		return $is_valid_address;
+	}
+
+	/**
 	 * Add donor address
 	 *
 	 * @since  2.0
@@ -1179,32 +1225,33 @@ class Give_Donor {
 	 * @type string country
 	 * }
 	 *
-	 * @return void
+	 * @return bool
 	 */
 	public function add_address( $address_type, $address ) {
-		$is_address_empty = true;
-
-		// Address ready to process even if only one value set.
-		foreach ( $address as $value ) {
-			if( ! empty( $value ) ) {
-				$is_address_empty = false;
-				break;
-			}
-		}
-
 		// Bailout.
-		if ( empty( $address_type ) || $is_address_empty || ! $this->id ) {
-			return;
+		if ( empty( $address_type ) || ! $this->is_valid_address( $address ) || ! $this->id ) {
+			return false;
 		}
 
-		$is_multi_address = ( false !== strpos( $address_type, '[]' ) );
-		$address_type  = $is_multi_address ?
-			str_replace( '[]', '', $address_type ) :
-			$address_type;
+		// Check if multiple address exist or not and set params.
+		$multi_address_id = null;
+		if( $is_multi_address = ( false !== strpos( $address_type, '[]' ) ) ) {
+			$address_type  = $is_multi_address ?
+				str_replace( '[]', '', $address_type ) :
+				$address_type;
+		} elseif ( $is_multi_address = ( false !== strpos( $address_type, '_' ) ) ){
+			$multi_address_id =  $is_multi_address ?
+				array_pop( explode( '_', $address_type ) ) :
+				$address_type;
+
+			$address_type  = $is_multi_address ?
+				array_shift( explode( '_', $address_type ) ) :
+				$address_type;
+		}
 
 		// Bailout: do not save duplicate orders
 		if( $this->is_address_exist( $address_type, $address ) ) {
-			return;
+			return false;
 		}
 
 		// Set default address.
@@ -1226,43 +1273,158 @@ class Give_Donor {
 		$meta_type = Give()->donor_meta->meta_type;
 
 		if ( $is_multi_address ) {
-			$address_count = $wpdb->get_var(
-				$wpdb->prepare(
-					"
-					SELECT COUNT(*) FROM {$wpdb->donormeta}
-					WHERE meta_key
-					LIKE '%%%s%%'
-					AND {$meta_type}_id=%d
-					",
-					"_give_donor_address_{$address_type}_address1",
-					$this->id
-				)
-			);
+			if ( is_null( $multi_address_id ) ) {
+				// Get latest address key to set multi address id.
+				$multi_address_id = $wpdb->get_var(
+					$wpdb->prepare(
+						"
+						SELECT meta_key FROM {$wpdb->donormeta}
+						WHERE meta_key
+						LIKE '%%%s%%'
+						AND {$meta_type}_id=%d
+						ORDER BY meta_id DESC
+						LIMIT 1
+						",
+						"_give_donor_address_{$address_type}_line1",
+						$this->id
+					)
+				);
 
-			$address_count   = $address_count ? $address_count : 0;
-			$meta_key_prefix = "_give_donor_address_{$address_type}_{address_name}_{$address_count}";
+				if( ! empty( $multi_address_id ) ) {
+					$multi_address_id = absint( substr( strrchr( $multi_address_id, '_' ), 1 ) );
+					$multi_address_id++;
+				} else{
+					$multi_address_id = 0;
+				}
+			}
+
+			$meta_key_prefix = "_give_donor_address_{$address_type}_{address_name}_{$multi_address_id}";
 		}
 
 		// Save donor address.
 		foreach ( $address as $type => $value ) {
 			$meta_key = str_replace( '{address_name}', $type, $meta_key_prefix );
-			switch ( $type ) {
-				case 'line1':
-					$meta_key = str_replace( '{address_name}', 'address1', $meta_key_prefix );
-					Give()->donor_meta->update_meta( $this->id, $meta_key, $value );
-					break;
-
-				case 'line2':
-					$meta_key = str_replace( '{address_name}', 'address2', $meta_key_prefix );
-					Give()->donor_meta->update_meta( $this->id, $meta_key, $value );
-					break;
-
-				default:
-					Give()->donor_meta->update_meta( $this->id, $meta_key, $value );
-			}
+			Give()->donor_meta->update_meta( $this->id, $meta_key, $value );
 		}
 
 		$this->setup_address();
+
+		return true;
+	}
+
+	/**
+	 * Remove donor address
+	 *
+	 * @since  2.0
+	 * @access public
+	 * @global wpdb  $wpdb
+	 *
+	 * @param string $address_id
+	 *
+	 * @return bool
+	 */
+	public function remove_address( $address_id ) {
+		global $wpdb;
+
+		// Get address type.
+		$is_multi_address = false !== strpos( $address_id, '_' ) ? true : false;
+
+		$address_type = false !== strpos( $address_id, '_' ) ?
+			array_shift( explode( '_', $address_id ) ) :
+			$address_id;
+
+		$address_count = false !== strpos( $address_id, '_' ) ?
+			array_pop( explode( '_', $address_id ) ) :
+			null;
+
+		// Set meta key prefix.
+		$meta_key_prefix = "_give_donor_address_{$address_type}_%";
+		if ( $is_multi_address && is_numeric( $address_count ) ) {
+			$meta_key_prefix .= "_{$address_count}";
+		}
+
+		$meta_type = Give()->donor_meta->meta_type;
+
+		// Process query.
+		$row_affected = $wpdb->query(
+			$wpdb->prepare(
+				"
+				DELETE FROM {$wpdb->donormeta}
+				WHERE meta_key
+				LIKE '%s'
+				AND {$meta_type}_id=%d
+				",
+				$meta_key_prefix,
+				$this->id
+			)
+		);
+
+		$this->setup_address();
+
+		return (bool) $row_affected;
+	}
+
+	/**
+	 * Update donor address
+	 *
+	 * @since  2.0
+	 * @access public
+	 * @global wpdb  $wpdb
+	 *
+	 * @param string $address_id
+	 * @param array  $address
+	 *
+	 * @return bool
+	 */
+	public function update_address( $address_id, $address ) {
+		global $wpdb;
+
+		// Get address type.
+		$is_multi_address = false !== strpos( $address_id, '_' ) ? true : false;
+
+		$address_type = false !== strpos( $address_id, '_' ) ?
+			array_shift( explode( '_', $address_id ) ) :
+			$address_id;
+
+		$address_count = false !== strpos( $address_id, '_' ) ?
+			array_pop( explode( '_', $address_id ) ) :
+			null;
+
+		// Set meta key prefix.
+		$meta_key_prefix = "_give_donor_address_{$address_type}_%";
+		if ( $is_multi_address && is_numeric( $address_count ) ) {
+			$meta_key_prefix .= "_{$address_count}";
+		}
+
+		$meta_type = Give()->donor_meta->meta_type;
+
+		// Process query.
+		$row_affected = $wpdb->get_results(
+			$wpdb->prepare(
+				"
+				SELECT meta_key FROM {$wpdb->donormeta}
+				WHERE meta_key
+				LIKE '%s'
+				AND {$meta_type}_id=%d
+				",
+				$meta_key_prefix,
+				$this->id
+			)
+		);
+		
+		// Return result.
+		if( ! count( $row_affected ) ) {
+			return false;
+		}
+
+		// Update address.
+		if( ! $this->add_address( $address_id, $address ) ) {
+			return false;
+		}
+
+		$this->setup_address();
+
+		return true;
 	}
 
 
@@ -1280,85 +1442,117 @@ class Give_Donor {
 	public function is_address_exist( $current_address_type, $current_address ) {
 		$status = false;
 
-
 		// Bailout.
 		if( empty( $current_address_type ) || empty( $current_address ) ) {
 			return null;
 		}
 
 		// Bailout.
-		if( empty( $this->address ) ) {
+		if( empty( $this->address ) || empty( $this->address[ $current_address_type ] ) ) {
 			return $status;
 		}
 
+		// Get address.
+		$address = $this->address[ $current_address_type ];
 
-		// Compare address.
-		foreach ( $this->address as $address_type => $saved_address ) {
-			if( $current_address_type !== $address_type ) {
-				continue;
+		switch ( true ){
 
-			} elseif( empty( $saved_address[0] ) || ! is_array( $saved_address[0] ) ) {
-				$status = ( $current_address == $saved_address );
+			// Single address.
+			case is_string( end( $address ) ) :
+				$status = $this->is_address_match( $current_address, $address );
+				break;
 
-			} else{
-				foreach ( $saved_address as $address ) {
+			// Multi address.
+			case is_array( end( $address ) ):
+				// Compare address.
+				foreach ( $address as $saved_address ) {
 					if( empty( $saved_address ) ) {
 						continue;
 					}
 
-					$status = ( $current_address == $address );
-
 					// Exit loop immediately if address exist.
-					if( $status ) {
+					if( $status = $this->is_address_match( $current_address, $saved_address ) ) {
 						break;
 					}
 				}
-			}
-
-			// Exit loop immediately if address exist.
-			if( $status ) {
 				break;
-			}
 		}
 
 		return $status;
 	}
 
 	/**
-	 * Get First Name from the name of the donor.
+	 * Compare address.
 	 *
-	 * @since 2.0
+	 * @since  2.0
+	 * @access private
 	 *
-	 * return string $first_name First Name of the donor
+	 * @param array $address_1
+	 * @param array $address_2
+	 *
+	 * @return bool
+	 */
+	private function is_address_match( $address_1, $address_2 ) {
+		$result = array_diff( $address_1, $address_2 );
+
+		return empty( $result );
+	}
+
+	/**
+	 * Split donor name into first name and last name
+	 *
+	 * @param   int     $id     Donor ID
+	 * @since   2.0
+	 * @return  object
+	 */
+	public function split_donor_name( $id ) {
+		$first_name = $last_name  = '';
+		$donor      = new Give_Donor( $id );
+
+		$split_donor_name = explode( ' ', $donor->name, 2 );
+
+		// Check for existence of first name after split of donor name.
+		if( is_array( $split_donor_name ) && ! empty( $split_donor_name[0] ) ) {
+			$first_name = $split_donor_name[0];
+		}
+
+		// Check for existence of last name after split of donor name.
+		if( is_array( $split_donor_name ) && ! empty( $split_donor_name[1] ) ) {
+			$last_name = $split_donor_name[1];
+		}
+		return (object) array( 'first_name' => $first_name, 'last_name' => $last_name );
+	}
+
+	/**
+	 * Retrieves first name of donor with backward compatibility
+	 *
+	 * @since   2.0
+	 * @return  string
 	 */
 	public function get_first_name() {
-		$first_name = '';
-		if ( ! empty( $this->name ) ) {
-			$name = explode( ' ', $this->name );
-			if ( ! empty( $name[0] ) ) {
-				$first_name = $name[0];
-			}
+		$first_name = $this->get_meta( '_give_donor_first_name');
+		if( ! $first_name ) {
+			$first_name = $this->split_donor_name( $this->id )->first_name;
 		}
 
 		return $first_name;
 	}
 
 	/**
-	 * Get Last Name from the name of the donor.
+	 * Retrieves last name of donor with backward compatibility
 	 *
-	 * @since 2.0
-	 *
-	 * return string $last_name Last Name of the donor
+	 * @since   2.0
+	 * @return  string
 	 */
 	public function get_last_name() {
-		$last_name = '';
-		if ( ! empty( $this->name ) ) {
-			$name = explode( ' ', $this->name );
-			if ( ! empty( $name[1] ) ) {
-				$last_name = $name[1];
-			}
+		$first_name = $this->get_meta( '_give_donor_first_name');
+		$last_name = $this->get_meta( '_give_donor_last_name');
+
+		// This condition will prevent unnecessary splitting of donor name to fetch last name.
+		if( ! $first_name && ! $last_name ) {
+			$last_name = $this->split_donor_name( $this->id )->last_name;
 		}
 
-		return $last_name;
+		return ( $last_name ) ? $last_name : '';
 	}
 }

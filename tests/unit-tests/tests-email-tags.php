@@ -320,7 +320,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$payment_id = Give_Helper_Payment::create_simple_payment();
 		$amount     = give_email_tag_amount( array( 'payment_id' => $payment_id ) );
 
-		$this->assertEquals( '$20.00', $amount );
+		$this->assertEquals( '$20.00', htmlentities( $amount, ENT_COMPAT, 'UTF-8' ) );
 
 		/*
 		 * Case 2: Amount with filter
@@ -584,15 +584,18 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		 */
 		$payment       = Give_Helper_Payment::create_simple_payment();
 		$payment_total = give_email_tag_payment_total( array( 'payment_id' => $payment ) );
+		$payment_total = html_entity_decode( $payment_total, ENT_COMPAT, 'UTF-8' );
 
-		$this->assertEquals( '$20', html_entity_decode( $payment_total) );
+		$this->assertEquals( '$20', htmlentities( $payment_total, ENT_COMPAT, 'UTF-8' ) );
 
 		/*
 		 * Case 2: Payment total with filter
 		 */
 		add_filter( 'give_email_tag_payment_total', array( $this, 'give_payment_total' ) );
 		$payment_total = give_email_tag_payment_total( array( 'payment_id' => $payment ) );
-		$this->assertEquals( '$30', html_entity_decode( $payment_total  ));
+		$payment_total = html_entity_decode( $payment_total, ENT_COMPAT, 'UTF-8' );
+
+		$this->assertEquals( '$30', htmlentities( $payment_total, ENT_COMPAT, 'UTF-8' ) );
 		remove_filter( 'give_email_tag_payment_total', array( $this, 'give_payment_total' ), 10 );
 	}
 

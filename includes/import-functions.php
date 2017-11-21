@@ -129,10 +129,22 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 
 				if ( ! empty( $prices ) && is_array( $prices ) && ! empty( $prices[0] ) ) {
 					$prices = wp_parse_args( $multi_level_donations, $prices );
+
+					// Sort $prices by amount in ascending order.
+					$prices = wp_list_sort( $prices, '_give_amount', 'ASC' );
 				} else {
-					$multi_level_donations[0]['_give_default'] = 'default';
-					$prices                                    = $multi_level_donations;
+					$prices = $multi_level_donations;
 				}
+
+				// Unset _give_default key from $prices.
+				foreach ( $prices as $key => $price ) {
+					if ( isset( $prices[ $key ]['_give_default'] ) ) {
+						unset( $prices[ $key ]['_give_default'] );
+					}
+				}
+
+				// Set the first $price of the $prices as defalut.
+				$prices[0]['_give_default'] = 'default';
 			}
 			$form->price_id = array_search( $data['form_level'], $price_text );
 
@@ -320,7 +332,7 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
 		}
 	}
 
-// update the report
+	// update the report
 	give_import_donation_report_update( $report );
 
 	return $donor_data;
@@ -333,7 +345,7 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
  */
 function give_import_default_options() {
 	/**
-	 * Filter to modify defalut option in the import dropdown
+	 * Filter to modify default option in the import dropdown
 	 *
 	 * @since 1.8.13
 	 *
@@ -358,7 +370,6 @@ function give_import_donations_options() {
 	 * @return array
 	 */
 	return (array) apply_filters( 'give_import_donations_options', array(
-		''            => __( 'Do not import', 'give' ),
 		'id'          => __( 'Donation ID', 'give' ),
 		'amount'      => __( 'Donation Amount', 'give' ),
 		'post_date'   => __( 'Donation Date', 'give' ),
@@ -368,8 +379,16 @@ function give_import_donations_options() {
 		'line2'       => __( 'Address 2', 'give' ),
 		'city'        => __( 'City', 'give' ),
 		'state'       => __( 'State', 'give' ),
-		'country'     => __( 'Country', 'give' ),
-		'zip'         => __( 'Zip', 'give' ),
+		'country'     => array(
+			__( 'Country', 'give' ),
+			__( 'County', 'give' ),
+			__( 'Region', 'give' ),
+			__( 'Province', 'give' ),
+		),
+		'zip'         => array(
+			__( 'Zip', 'give' ),
+			__( 'Postal Code', 'give' ),
+		),
 		'email'       => __( 'Donor Email', 'give' ),
 		'post_status' => __( 'Donation Status', 'give' ),
 		'gateway'     => __( 'Payment Method', 'give' ),
@@ -412,8 +431,11 @@ function give_import_donation_form_options() {
 	 * @return array
 	 */
 	return (array) apply_filters( 'give_import_donation_form_options', array(
+		'form_title'              => array(
+			__( 'Donation Form Title', 'give' ),
+			__( 'Donation Form', 'give' ),
+		),
 		'form_id'                 => __( 'Donation Form ID', 'give' ),
-		'form_title'              => __( 'Donation Form', 'give' ),
 		'form_level'              => __( 'Donation Level', 'give' ),
 		'form_custom_amount_text' => __( 'Custom Amount Text', 'give' ),
 	) );
@@ -422,12 +444,24 @@ function give_import_donation_form_options() {
 /**
  * Import CSV in DB
  *
- * @param int $file_id CSV id
- * @param array $mapto Map csv to meta key.
- * @param int $start Start from which csv line.
- * @param int $end End from which csv line.
+ * @param int    $file_id   CSV id
+ * @param int    $start     Start from which csv line.
+ * @param int    $end       End from which csv line.
+ * @param string $delimiter CSV delimeter.
+ *
+ * @return array
  */
-function give_get_donation_data_from_csv( $file_id, $start, $end, $delimiter = ',' ) {
+function give_get_donation_data_from_csv( $file_id, $start, $end, $delimiter = 'csv' ) {
+	/**
+	 * Filter to modify delimiter of Import.
+	 *
+	 * @since
+	 * 1.8.14
+	 *
+	 * Return string $delimiter.
+	 */
+	$delimiter = (string) apply_filters( 'give_import_delimiter_set', $delimiter );
+
 	$raw_data = array();
 	$file_dir = get_attached_file( $file_id );
 	$count    = 0;
@@ -463,10 +497,12 @@ function give_log_user_in_on_register_callback( $value ) {
  *
  * @since 1.8.13
  *
- * @param array $raw_key Setup bu user at step 2.
- * @param array $row_data Feilds that are being imported from CSV
- * @param array $main_key First row from the CSV
+ * @param array $raw_key        Setup bu user at step 2.
+ * @param array $row_data       Feilds that are being imported from CSV
+ * @param array $main_key       First row from the CSV
  * @param array $import_setting Contain the global variable.
+ *
+ * @return bool
  */
 function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array(), $import_setting = array() ) {
 	$data                          = array_combine( $raw_key, $row_data );
@@ -476,9 +512,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 
 	$data = (array) apply_filters( 'give_save_import_donation_to_db', $data );
 
-	if ( ! strpos( $data['amount'], '.' ) ) {
-		$data['amount'] = $data['amount'] . '.00';
-	}
+	$data['amount'] = give_maybe_sanitize_amount( $data['amount'] );
 
 	// Here come the login function.
 	$donor_data = give_import_get_user_from_csv( $data, $import_setting );
@@ -582,6 +616,8 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 
 	// update the report
 	give_import_donation_report_update( $report );
+
+	return true;
 }
 
 /**
@@ -719,9 +755,10 @@ function give_donation_import_insert_default_payment_note( $payment_id ) {
  */
 function give_import_page_url( $parameter = array() ) {
 	$defalut_query_arg = array(
-		'post_type' => 'give_forms',
-		'page'      => 'give-tools',
-		'tab'       => 'import',
+		'post_type'     => 'give_forms',
+		'page'          => 'give-tools',
+		'tab'           => 'import',
+		'importer-type' => 'import_donations',
 	);
 	$import_query_arg  = wp_parse_args( $parameter, $defalut_query_arg );
 

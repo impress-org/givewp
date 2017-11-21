@@ -100,6 +100,12 @@ function give_run_install() {
 
 	flush_rewrite_rules();
 
+	// Create the donor databases.
+	$donors_db = new Give_DB_Donors();
+	$donors_db->create_table();
+	$donor_meta = new Give_DB_Donor_Meta();
+	$donor_meta->create_table();
+
 	// Check for PHP Session support, and enable if available.
 	$give_sessions = new Give_Session();
 	$give_sessions->use_php_sessions();
@@ -123,10 +129,15 @@ function give_run_install() {
 			'v1812_update_donor_purchase_values',
 			'v1813_update_user_roles',
 			'v1813_update_donor_user_roles',
+			'v1817_update_donation_iranian_currency_code',
+			'v1817_cleanup_user_roles',
 			'v20_upgrades_form_metadata',
 			'v20_logs_upgrades',
 			'v20_move_metadata_into_new_table',
-			'v20_rename_donor_tables'
+			'v20_rename_donor_tables',
+			'v20_upgrades_donor_name',
+			'v20_upgrades_user_address',
+			'v20_upgrades_payment_metadata'
 		);
 
 		foreach ( $upgrade_routines as $upgrade ) {
@@ -141,9 +152,6 @@ function give_run_install() {
 
 	// Add the transient to redirect.
 	Give_Cache::set( '_give_activation_redirect', true, 30, true );
-
-	// Set 'Donation Form' meta box enabled by default.
-	give_nav_donation_metabox_enabled();
 }
 
 /**
@@ -304,7 +312,7 @@ function give_get_default_settings() {
 		'currency'                                    => 'USD',
 		'currency_position'                           => 'before',
 		'session_lifetime'                            => '604800',
-		'email_access'                                => 'disabled',
+		'email_access'                                => 'enabled',
 		'thousands_separator'                         => ',',
 		'decimal_separator'                           => '.',
 		'number_decimals'                             => 2,

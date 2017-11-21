@@ -616,7 +616,7 @@ function give_get_purchase_summary( $purchase_data, $email = true ) {
 
 	_give_deprecated_function( __FUNCTION__, '1.8.12', 'give_payment_gateway_donation_summary', $backtrace );
 
-	give_payment_gateway_donation_summary($purchase_data, $email);
+	give_payment_gateway_donation_summary( $purchase_data, $email );
 
 }
 
@@ -673,4 +673,93 @@ function give_build_paypal_item_title( $payment_data ) {
 
 	return give_payment_gateway_item_title( $payment_data );
 
+}
+
+
+/**
+ * Set the number of decimal places per currency
+ *
+ * @since      1.0
+ * @since      1.6 $decimals parameter removed from function params
+ * @deprecated 1.8.15
+ * *
+ * @return int $decimals
+ */
+function give_currency_decimal_filter() {
+	// Set default number of decimals.
+	$decimals = give_get_price_decimals();
+
+	// Get number of decimals with backward compatibility ( version < 1.6 )
+	if ( 1 <= func_num_args() ) {
+		$decimals = ( false === func_get_arg( 0 ) ? $decimals : absint( func_get_arg( 0 ) ) );
+	}
+
+	$currency = give_get_currency();
+
+	switch ( $currency ) {
+		// case 'RIAL' :
+		case 'JPY' :
+		case 'KRW' :
+			// case 'TWD' :
+			// case 'HUF' :
+
+			$decimals = 0;
+			break;
+	}
+
+	return apply_filters( 'give_currency_decimal_count', $decimals, $currency );
+}
+
+
+/**
+ * Get field custom attributes as string.
+ *
+ * @since      1.8
+ * @deprecated 1.8.17
+ *
+ * @param $field
+ *
+ * @return string
+ */
+function give_get_custom_attributes( $field ) {
+	// Custom attribute handling
+	$custom_attributes = '';
+
+	if ( ! empty( $field['attributes'] ) && is_array( $field['attributes'] ) ) {
+		$custom_attributes = give_get_attribute_str( $field['attributes'] );
+	}
+
+	return $custom_attributes;
+}
+
+
+/**
+ * Get Payment Amount
+ *
+ * Get the fully formatted payment amount. The payment amount is retrieved using give_get_payment_amount() and is then
+ * sent through give_currency_filter() and  give_format_amount() to format the amount correctly.
+ *
+ * @param int $payment_id Payment ID.
+ *
+ * @since      1.0
+ * @deprecated 1.8.17
+ *
+ * @return string $amount Fully formatted payment amount.
+ */
+function give_payment_amount( $payment_id ) {
+	return give_donation_amount( $payment_id );
+}
+
+/**
+ * Decrease form earnings.
+ *
+ * @deprecated 1.8.17
+ *
+ * @param int $form_id
+ * @param     $amount
+ *
+ * @return bool|int
+ */
+function give_decrease_earnings( $form_id = 0, $amount ) {
+	return give_decrease_form_earnings( $form_id, $amount );
 }
