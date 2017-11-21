@@ -416,7 +416,7 @@ class Give_Cache {
 
 		$status = wp_cache_set( $id, $data, $group, $expire );
 
-		update_option( 'give-last-cache-updated', current_time( 'timestamp', 1 ) );
+		update_option( 'give-last-cache-updated', self::get_instance()->get_unique_timestamp( 'db_query_cache' ) );
 
 		return $status;
 	}
@@ -473,8 +473,9 @@ class Give_Cache {
 			}
 		}
 
+
 		// Update timestamp in DB when cache update.
-		update_option( 'give-last-cache-updated', current_time( 'timestamp', 1 ) );
+		update_option( 'give-last-cache-updated', self::get_instance()->get_unique_timestamp( 'db_query_cache' ) );
 
 		return $status;
 	}
@@ -559,6 +560,32 @@ class Give_Cache {
 		if ( $donation && $donation->donor_id ) {
 			wp_cache_delete( $donation->donor_id, 'give-donors' );
 		}
+	}
+
+
+	/**
+	 * Get unique timestamp.
+	 *
+	 * @since  2.0
+	 * @access private
+	 *
+	 * @param $context
+	 *
+	 * @return string
+	 */
+	private function get_unique_timestamp( $context ) {
+		$timestamp = current_time( 'timestamp', 1 );
+
+		switch ( $context ) {
+			case 'db_query_cache':
+				$timestamp = get_option( 'give-last-cache-updated' );
+				$timestamp = empty( $timestamp ) ?
+					current_time( 'timestamp', 1 ) :
+					++ $timestamp;
+				break;
+		}
+
+		return (string) $timestamp;
 	}
 }
 
