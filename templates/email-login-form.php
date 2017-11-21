@@ -69,8 +69,9 @@ if ( is_email( $email ) && wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
 		// Verify that donor object is present and donor is connected with its user profile or not.
 		if ( ! $access_token && is_object( $donor) && 0 === (int) $donor->user_id ) {
 			give_set_error( 'give_email_access_donor_only',__( 'To access complete donation history, please click the <strong>View it in browser</strong> link in your Donation Receipt Email', 'give' ) );
-		} else {
+		} else if ( $access_token && is_object( $donor) ) {
 
+			// Scenario: Donation - Receipt Access.
 			if ( ! empty( $donor->payment_ids ) ) {
 				$donation_ids = explode( ',', $donor->payment_ids );
 			}
@@ -84,28 +85,16 @@ if ( is_email( $email ) && wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
 				}
 
 			}
-			$donation_match = true;
 
-//			if( ( empty( $access_token ) && ! $donation_match ) || $donation_match ) {
-//				// Set Verification for Access.
-//				$verify_key = wp_generate_password( 20, false );
-//				Give()->email_access->set_verify_key( $donor->id, $donor->email, $verify_key );
-//				wp_redirect( esc_url( add_query_arg( array(
-//					'give_nl' => $verify_key,
-//				), get_permalink( give_get_option( 'history_page' ) ) ) ) );
-//			} else {
-//				give_set_error( 'give_email_access_token_not_match', __( 'It looks like that email address provided and access token of the link does not match.', 'give' ) );
-//			}
-			//var_dump($donor);
-
+			// Do required based on Payment Key and Access Token Match.
 			if ( ! $donation_match ) {
 				give_set_error( 'give_email_access_token_not_match', __( 'It looks like that email address provided and access token of the link does not match.', 'give' ) );
 			} else {
 				Give()->email_access->set_verify_key( $donor->id, $donor->email, $access_token );
-				wp_safe_redirect( esc_url( get_permalink( give_get_option( 'history_page' ) ) . '?give_nl=' . $access_token ) );
+				wp_safe_redirect( esc_url( get_permalink( give_get_option( 'history_page' ) ) . '?payment_key=' . $access_token ) );
 			}
+
 		}
-		//give_die();
 	}
 } // End if().
 
