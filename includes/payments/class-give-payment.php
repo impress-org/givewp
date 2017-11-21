@@ -1286,6 +1286,9 @@ final class Give_Payment {
 	 * @return mixed             The value from the post meta
 	 */
 	public function get_meta( $meta_key = '_give_payment_meta', $single = true ) {
+		if( ! has_filter( 'get_post_metadata', 'give_bc_v20_get_payment_meta' ) && ! doing_filter( 'get_post_metadata' ) ) {
+			add_filter( 'get_post_metadata', 'give_bc_v20_get_payment_meta', 999, 4 );
+		}
 
 		$meta = give_get_meta( $this->ID, $meta_key, $single );
 
