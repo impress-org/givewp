@@ -44,8 +44,11 @@ function give_donation_history( $atts ) {
 	if ( isset( $_GET['payment_key'] ) ) {
 		ob_start();
 		echo give_receipt_shortcode( array() );
-		echo '<a href="' . esc_url( give_get_history_page_uri() ) . '">&laquo; ' . __( 'Return to All Donations', 'give' ) . '</a>';
 
+		// Display donation history link only if it is not accessed via Receipt Access Link.
+		if ( ! give_get_receipt_session() ) {
+			echo '<a href="' . esc_url( give_get_history_page_uri() ) . '">&laquo; ' . __( 'Return to All Donations', 'give' ) . '</a>';
+		}
 		return ob_get_clean();
 	}
 
