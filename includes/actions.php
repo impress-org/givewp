@@ -291,7 +291,7 @@ function give_process_donation_email_access_form() {
 	$recaptcha_secret = give_get_option( 'recaptcha_secret' );
 	$enable_recaptcha = ( ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ) ? true : false;
 	$access_token     = ! empty( $_GET['payment_key'] ) ? $_GET['payment_key'] : '';
-	give_set_error( 'give_email_access_token_not_match', __( 'It looks like that email address provided and access token of the link does not match.', 'give' ) );
+
 	// Only output the form once.
 	if ( $give_access_form_outputted ) {
 		return;
@@ -372,6 +372,8 @@ function give_process_donation_email_access_form() {
 					wp_safe_redirect( esc_url( get_permalink( give_get_option( 'history_page' ) ) . '?payment_key=' . $access_token ) );
 				}
 
+			} else {
+				give_set_error( 'give-no-donations', __( 'We are unable to fetch donations from the email you entered. Please try again.', 'give' ) );
 			}
 		}
 	} // End if().
