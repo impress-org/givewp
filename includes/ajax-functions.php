@@ -480,7 +480,7 @@ function give_check_for_form_price_variations_html() {
 	if ( ! give_has_variable_prices( $form_id ) || ! $form_id ) {
 		esc_html_e( 'n/a', 'give' );
 	} else {
-		$prices_atts = '';
+		$prices_atts = array();
 		if ( $variable_prices = give_get_variable_prices( $form_id ) ) {
 			foreach ( $variable_prices as $variable_price ) {
 				$prices_atts[ $variable_price['_give_id']['level_id'] ] = give_format_amount( $variable_price['_give_amount'], array( 'sanitize' => false ) );
