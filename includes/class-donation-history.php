@@ -43,7 +43,7 @@ class Give_Donation_History {
 	 * @since 1.8.17
 	 */
 	public function donation_history_send_confirmation() {
-		$email   = give_clean( $_REQUEST['email'] );
+		$email   = sanitize_email( $_REQUEST['email'] );
 
 		$response = array(
 			'success' => false,
