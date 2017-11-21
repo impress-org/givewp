@@ -328,7 +328,7 @@ function give_bc_v20_get_payment_meta( $check, $object_id, $meta_key, $single ) 
 
 	// Decode donor data.
 	$donor_id = ! empty( $payment_meta['_give_payment_donor_id'] ) ? $payment_meta['_give_payment_donor_id'] : 0;
-	$donor = new Give_Donor( $donor_id );
+	$donor    = new Give_Donor( $donor_id );
 
 	// Donor first name.
 	$donor_data['first_name'] = ! empty( $payment_meta['_give_donor_billing_first_name'] ) ? $payment_meta['_give_donor_billing_first_name'] : '';
@@ -398,10 +398,10 @@ function give_bc_v20_get_payment_meta( $check, $object_id, $meta_key, $single ) 
 	 * @since 2.0
 	 */
 	if ( $single ) {
-		$payment_meta[0] = apply_filters( 'give_get_payment_meta', $payment_meta, $object_id, $meta_key );
+		$new_payment_meta[0] = apply_filters( 'give_get_payment_meta', $payment_meta, $object_id, $meta_key );
+		$payment_meta        = $new_payment_meta;
 	}
-
-
+	
 	return $payment_meta;
 }
 
