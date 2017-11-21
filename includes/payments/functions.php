@@ -1367,7 +1367,7 @@ function give_donation_amount( $donation_id = 0, $type = '' ) {
  * Get the amount associated with a payment
  *
  * @param int    $payment_id Payment ID.
- * @param string $type       Donation total type.
+ * @param string $type       Define context of donation amount..
  *
  * @access public
  * @since  1.0
