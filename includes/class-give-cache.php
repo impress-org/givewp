@@ -73,6 +73,7 @@ class Give_Cache {
 		Give_Cron::add_weekly_event( array( $this, 'delete_all_expired' ) );
 
 		add_action( 'save_post_give_forms', array( $this, 'delete_form_related_cache' ) );
+		add_action( 'save_post_give_payment', array( $this, 'delete_payment_related_cache' ) );
 		add_action( 'give_deleted_give-donors_cache', array( $this, 'delete_donor_related_cache' ), 10, 3 );
 		add_action( 'give_deleted_give-donations_cache', array( $this, 'delete_donations_related_cache' ), 10, 3 );
 	}
@@ -515,6 +516,31 @@ class Give_Cache {
 			wp_cache_delete( $donation->ID, 'give-donations' );
 			wp_cache_delete( $donation->donor_id, 'give-donors' );
 		}
+	}
+
+	/**
+	 * Delete payment related cache
+	 * Note: only use for internal purpose.
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param int $donation_id
+	 */
+	public function delete_payment_related_cache( $donation_id ) {
+		// If this is just a revision, don't send the email.
+		if ( wp_is_post_revision( $donation_id ) ) {
+			return;
+		}
+
+		/* @var Give_Payment $donation */
+		$donation = new Give_Payment( $donation_id );
+
+		if ( $donation && $donation->donor_id ) {
+			wp_cache_delete( $donation->donor_id, 'give-donors' );
+		}
+
+		wp_cache_delete( $donation->ID, 'give-donations' );
 	}
 
 	/**
