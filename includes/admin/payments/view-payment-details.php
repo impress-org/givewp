@@ -360,12 +360,17 @@ $payment_mode   = $payment->mode;
 											</p>
 											<p>
 												<strong><?php esc_html_e( 'Donation Form Title:', 'give' ); ?></strong><br>
-												<?php echo Give()->html->forms_dropdown( array(
-													'selected' => $payment_meta['form_id'],
-													'name'   => 'give-payment-form-select',
-													'id'     => 'give-payment-form-select',
-													'chosen' => true,
-												) ); ?>
+												<?php
+												echo Give()->html->forms_dropdown(
+													array(
+														'selected' => $payment_meta['form_id'],
+														'name' => 'give-payment-form-select',
+														'id'   => 'give-payment-form-select',
+														'chosen' => true,
+														'placeholder' => '',
+													)
+												);
+												?>
 											</p>
 										</div>
 										<div class="column">
