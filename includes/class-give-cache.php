@@ -98,12 +98,13 @@ class Give_Cache {
 		// Handle specific cache key prefix.
 		// @see https://core.trac.wordpress.org/ticket/4476
 		if ( 'give-db-queries' === $action ) {
-			if( ! ( $timestamp = get_option( 'give-last-cache-updated' ) ) ) {
+			if ( ! ( $timestamp = get_option( 'give-last-cache-updated' ) ) ) {
 
 				// Set default timestamp for cache if not set yet.
 				$timestamp = current_time( 'timestamp', 1 );
 				update_option( 'give-last-cache-updated', $timestamp );
 			}
+
 			return "give-db-queries-{$timestamp}";
 		}
 
