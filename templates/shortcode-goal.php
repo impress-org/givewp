@@ -88,8 +88,8 @@ if ( 'donation' === $goal_format ) {
 				$goal_format_args   = apply_filters( 'give_goal_amount_format_args', array( 'sanitize' => false, 'currency' => $form_currency, 'decimal' => false ), $form_id );
 
 				// Get formatted amount.
-				$income = give_human_format_large_amount( give_format_amount( $income, $income_format_args ) );
-				$goal   = give_human_format_large_amount( give_format_amount( $goal, $goal_format_args ) );
+				$income = give_human_format_large_amount( give_format_amount( $income, $income_format_args ), array( 'currency' => $form_currency ) );
+				$goal   = give_human_format_large_amount( give_format_amount( $goal, $goal_format_args ), array( 'currency' => $form_currency ) );
 
 				echo sprintf(
 				/* translators: 1: amount of income raised 2: goal target amount. */
