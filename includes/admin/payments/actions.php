@@ -216,7 +216,7 @@ function give_update_payment_details( $data ) {
 	// We are adding payment transfer code in last to remove any conflict with above functionality.
 	// For example: above code will automatically handle form stat (increase/decrease) when payment status changes.
 	// Check if user want to transfer current payment to new give form id.
-	if ( $new_form_id != $current_form_id ) {
+	if ( $new_form_id && $new_form_id != $current_form_id ) {
 
 		// Get new give form title.
 		$new_form_title = get_the_title( $new_form_id );
