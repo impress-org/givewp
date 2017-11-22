@@ -478,7 +478,7 @@ class Give_Cache {
 			}
 		}
 
-		self::get_instance()->update_cache_version( $group );
+		self::get_instance()->update_cache_version( $group, true );
 
 		return $status;
 	}
@@ -518,6 +518,8 @@ class Give_Cache {
 			wp_cache_delete( $donation->ID, 'give-donations' );
 			wp_cache_delete( $donation->donor_id, 'give-donors' );
 		}
+
+		self::get_instance()->update_cache_version( '', true );
 	}
 
 	/**
@@ -543,6 +545,8 @@ class Give_Cache {
 		}
 
 		wp_cache_delete( $donation->ID, 'give-donations' );
+
+		self::get_instance()->update_cache_version( '', true );
 	}
 
 	/**
@@ -624,9 +628,10 @@ class Give_Cache {
 	 * @access private
 	 *
 	 * @param string $group
+	 * @param bool   $force Force update version
 	 */
-	private function update_cache_version( $group ) {
-		if ( false === strpos( $group, 'give-db-queries-' ) ) {
+	private function update_cache_version( $group, $force = false ) {
+		if ( false === strpos( $group, 'give-db-queries-' ) || $force ) {
 			update_option(
 				'give-last-cache-updated',
 				self::get_instance()->get_unique_timestamp( 'db_query_cache' )
