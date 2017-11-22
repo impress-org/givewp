@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since  1.0
  *
- * @return string
+ * @return string|bool
  */
 function give_donation_history( $atts ) {
 
@@ -61,8 +61,10 @@ function give_donation_history( $atts ) {
 	 * b. Does an email-access token exist?
 	 */
 	if (
-		is_user_logged_in() || false !== Give()->session->get_session_expiration()
-		|| ( give_is_setting_enabled( $email_access ) && Give()->email_access->token_exists )
+		is_user_logged_in() ||
+		false !== Give()->session->get_session_expiration() ||
+		( give_is_setting_enabled( $email_access ) && Give()->email_access->token_exists ) ||
+		true === give_get_history_session()
 	) {
 		ob_start();
 		give_get_template_part( 'history', 'donations' );
