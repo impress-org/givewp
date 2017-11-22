@@ -14,10 +14,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! current_user_can('view_give_payments') ) {
-	wp_die( __( 'Sorry, you are not allowed to access this page.', 'give' ), __( 'Error', 'give' ), array(
-		'response' => 403,
-	) );
+if ( ! current_user_can( 'view_give_payments' ) ) {
+	wp_die(
+		__( 'Sorry, you are not allowed to access this page.', 'give' ), __( 'Error', 'give' ), array(
+			'response' => 403,
+		)
+	);
 }
 
 /**
@@ -55,7 +57,8 @@ $payment_mode   = $payment->mode;
 ?>
 <div class="wrap give-wrap">
 
-	<h1 id="transaction-details-heading" class="wp-heading-inline"><?php
+	<h1 id="transaction-details-heading" class="wp-heading-inline">
+	<?php
 		printf(
 			/* translators: %s: donation number */
 			esc_html__( 'Donation %s', 'give' ),
@@ -64,7 +67,8 @@ $payment_mode   = $payment->mode;
 		if ( $payment_mode == 'test' ) {
 			echo '<span id="test-payment-label" class="give-item-label give-item-label-orange" data-tooltip="' . esc_attr__( 'This donation was made in test mode.', 'give' ) . '" data-tooltip-my-position="center left" data-tooltip-target-position="center right">' . esc_html__( 'Test Donation', 'give' ) . '</span>';
 		}
-		?></h1>
+		?>
+		</h1>
 
 	<?php
 	/**
@@ -162,7 +166,8 @@ $payment_mode   = $payment->mode;
 										 *
 										 * @param int $payment_id Payment id.
 										 */
-										do_action( 'give_view_order_details_update_inner', $payment_id ); ?>
+										do_action( 'give_view_order_details_update_inner', $payment_id );
+										?>
 
 										<div class="give-order-payment give-admin-box-inside">
 											<p>
@@ -204,12 +209,22 @@ $payment_mode   = $payment->mode;
 									<div id="major-publishing-actions">
 										<div id="publishing-action">
 											<input type="submit" class="button button-primary right" value="<?php esc_attr_e( 'Save Donation', 'give' ); ?>"/>
-											<?php if ( give_is_payment_complete( $payment_id ) ) : ?>
-												<a href="<?php echo esc_url( add_query_arg( array(
-													'give-action' => 'email_links',
-													'purchase_id' => $payment_id,
-												) ) ); ?>" id="give-resend-receipt" class="button-secondary right"><?php esc_html_e( 'Resend Receipt', 'give' ); ?></a>
-											<?php endif; ?>
+											<?php
+											if ( give_is_payment_complete( $payment_id ) ) {
+												echo sprintf(
+													'<a href="%1$s" id="give-resend-receipt" class="button-secondary right">%2$s</a>',
+													esc_url(
+														add_query_arg(
+															array(
+																'give-action' => 'email_links',
+																'purchase_id' => $payment_id,
+															)
+														)
+													),
+													__( 'Resend Receipt', 'give' )
+												);
+											}
+											?>
 										</div>
 										<div class="clear"></div>
 									</div>
@@ -249,7 +264,8 @@ $payment_mode   = $payment->mode;
 										do_action( 'give_view_order_details_payment_meta_before', $payment_id );
 
 										$gateway = give_get_payment_gateway( $payment_id );
-										if ( $gateway ) : ?>
+										if ( $gateway ) :
+										?>
 											<div class="give-order-gateway give-admin-box-inside">
 												<p>
 													<strong><?php esc_html_e( 'Gateway:', 'give' ); ?></strong>&nbsp;
@@ -360,12 +376,17 @@ $payment_mode   = $payment->mode;
 											</p>
 											<p>
 												<strong><?php esc_html_e( 'Donation Form Title:', 'give' ); ?></strong><br>
-												<?php echo Give()->html->forms_dropdown( array(
-													'selected' => $payment_meta['form_id'],
-													'name'   => 'give-payment-form-select',
-													'id'     => 'give-payment-form-select',
-													'chosen' => true,
-												) ); ?>
+												<?php
+												echo Give()->html->forms_dropdown(
+													array(
+														'selected' => $payment_meta['form_id'],
+														'name' => 'give-payment-form-select',
+														'id'   => 'give-payment-form-select',
+														'chosen' => true,
+														'placeholder' => '',
+													)
+												);
+												?>
 											</p>
 										</div>
 										<div class="column">
@@ -382,9 +403,9 @@ $payment_mode   = $payment->mode;
 														esc_html_e( 'n/a', 'give' );
 													} else {
 														$prices_atts = array();
-														if( $variable_prices = give_get_variable_prices( $payment_meta['form_id'] ) ) {
+														if ( $variable_prices = give_get_variable_prices( $payment_meta['form_id'] ) ) {
 															foreach ( $variable_prices as $variable_price ) {
-																$prices_atts[$variable_price['_give_id']['level_id']] = give_format_amount( $variable_price['_give_amount'], array( 'sanitize' => false ) );
+																$prices_atts[ $variable_price['_give_id']['level_id'] ] = give_format_amount( $variable_price['_give_amount'], array( 'sanitize' => false ) );
 															}
 														}
 														// Variable price dropdown options.
@@ -393,7 +414,7 @@ $payment_mode   = $payment->mode;
 															'name'             => 'give-variable-price',
 															'chosen'           => true,
 															'show_option_all'  => '',
-															'show_option_none' => ( '' === get_post_meta( $payment_id, '_give_payment_price_id', true ) ? __( 'None', 'give' )  : '' ),
+															'show_option_none' => ( '' === get_post_meta( $payment_id, '_give_payment_price_id', true ) ? __( 'None', 'give' ) : '' ),
 															'select_atts'      => 'data-prices=' . esc_attr( wp_json_encode( $prices_atts ) ),
 															'selected'         => $payment_meta['price_id'],
 														);
@@ -500,23 +521,23 @@ $payment_mode   = $payment->mode;
 											</p>
 											<p>
 												<strong><?php esc_html_e( 'Donor Since:', 'give' ); ?></strong><br>
-												<?php echo date_i18n( give_date_format(), strtotime( $donor->date_created ) ) ?>
+												<?php echo date_i18n( give_date_format(), strtotime( $donor->date_created ) ); ?>
 											</p>
 										</div>
 										<div class="column">
 											<p>
 												<strong><?php esc_html_e( 'Donor Name:', 'give' ); ?></strong><br>
 												<?php
-                                                $donor_billing_name = give_get_donor_name_by( $payment_id, 'donation' );
-                                                $donor_name = give_get_donor_name_by( $donor_id, 'donor' );
+												$donor_billing_name = give_get_donor_name_by( $payment_id, 'donation' );
+												$donor_name         = give_get_donor_name_by( $donor_id, 'donor' );
 
-                                                // Check whether the donor name and WP_User name is same or not.
-                                                if( sanitize_title( $donor_billing_name ) != sanitize_title( $donor_name ) ){
-                                                    echo $donor_billing_name . ' (<a href="' . esc_url( admin_url( "edit.php?post_type=give_forms&page=give-donors&view=overview&id=$donor_id" ) ) . '">' . $donor_name . '</a>)';
-                                                }else{
-                                                    echo $donor_name;
-                                                }
-                                                ?>
+												// Check whether the donor name and WP_User name is same or not.
+												if ( sanitize_title( $donor_billing_name ) != sanitize_title( $donor_name ) ) {
+													echo $donor_billing_name . ' (<a href="' . esc_url( admin_url( "edit.php?post_type=give_forms&page=give-donors&view=overview&id=$donor_id" ) ) . '">' . $donor_name . '</a>)';
+												} else {
+													echo $donor_name;
+												}
+												?>
 											</p>
 											<p>
 												<strong><?php esc_html_e( 'Donor Email:', 'give' ); ?></strong><br>
@@ -527,10 +548,12 @@ $payment_mode   = $payment->mode;
 											<p>
 												<strong><?php esc_html_e( 'Change Donor:', 'give' ); ?></strong><br>
 												<?php
-												echo Give()->html->donor_dropdown( array(
-													'selected' => $donor->id,
-													'name'     => 'donor-id',
-												) );
+												echo Give()->html->donor_dropdown(
+													array(
+														'selected' => $donor->id,
+														'name' => 'donor-id',
+													)
+												);
 												?>
 											</p>
 											<p>
@@ -625,16 +648,18 @@ $payment_mode   = $payment->mode;
 													<div id="give-order-address-country-wrap">
 														<label class="order-data-address-line"><?php esc_html_e( 'Country:', 'give' ); ?></label>
 														<?php
-														echo Give()->html->select( array(
-															'options'          => give_get_country_list(),
-															'name'             => 'give-payment-address[0][country]',
-															'selected'         => $address['country'],
-															'show_option_all'  => false,
-															'show_option_none' => false,
-															'chosen'           => true,
-															'placeholder'      => esc_attr__( 'Select a country', 'give' ),
-															'data'             => array( 'search-type' => 'no_ajax' ),
-														) );
+														echo Give()->html->select(
+															array(
+																'options'          => give_get_country_list(),
+																'name'             => 'give-payment-address[0][country]',
+																'selected'         => $address['country'],
+																'show_option_all'  => false,
+																'show_option_none' => false,
+																'chosen'           => true,
+																'placeholder'      => esc_attr__( 'Select a country', 'give' ),
+																'data'             => array( 'search-type' => 'no_ajax' ),
+															)
+														);
 														?>
 													</div>
 												</div>
@@ -664,31 +689,34 @@ $payment_mode   = $payment->mode;
 												$state_exists = ( ! empty( $address['country'] ) && array_key_exists( $address['country'], $no_states_country ) ? true : false );
 												?>
 												<div class="row">
-													<div class="<?php echo ( ! empty( $state_exists ) ? 'column-full' : 'column' ); ?> give-column give-column-state">
-														<div id="give-order-address-state-wrap" class="<?php echo ( ! empty( $state_exists ) ? 'give-hidden' : '' ); ?>">
+													<div class="<?php echo( ! empty( $state_exists ) ? 'column-full' : 'column' ); ?> give-column give-column-state">
+														<div id="give-order-address-state-wrap" class="<?php echo( ! empty( $state_exists ) ? 'give-hidden' : '' ); ?>">
 															<label for="give-payment-address-state" class="order-data-address-line"><?php esc_html_e( 'State / Province / County:', 'give' ); ?></label>
 															<?php
 															$states = give_get_states( $address['country'] );
 															if ( ! empty( $states ) ) {
-																echo Give()->html->select( array(
-																	'options'          => $states,
-																	'name'             => 'give-payment-address[0][state]',
-																	'selected'         => $address['state'],
-																	'show_option_all'  => false,
-																	'show_option_none' => false,
-																	'chosen'           => true,
-																	'placeholder'      => esc_attr__( 'Select a state', 'give' ),
-																	'data'             => array( 'search-type' => 'no_ajax' ),
-																) );
+																echo Give()->html->select(
+																	array(
+																		'options'          => $states,
+																		'name'             => 'give-payment-address[0][state]',
+																		'selected'         => $address['state'],
+																		'show_option_all'  => false,
+																		'show_option_none' => false,
+																		'chosen'           => true,
+																		'placeholder'      => esc_attr__( 'Select a state', 'give' ),
+																		'data'             => array( 'search-type' => 'no_ajax' ),
+																	)
+																);
 															} else {
 																?>
 																<input id="give-payment-address-state" type="text" name="give-payment-address[0][state]" value="<?php echo esc_attr( $address['state'] ); ?>" class="medium-text"/>
 																<?php
-															} ?>
+															}
+															?>
 														</div>
 													</div>
 
-													<div class="<?php echo ( ! empty( $state_exists ) ? 'column-full' : 'column' ); ?> give-column give-column-zip">
+													<div class="<?php echo( ! empty( $state_exists ) ? 'column-full' : 'column' ); ?> give-column give-column-zip">
 														<div class="give-wrap-address-zip">
 															<label for="give-payment-address-zip" class="order-data-address-line"><?php esc_html_e( 'Zip / Postal Code:', 'give' ); ?></label>
 															<input id="give-payment-address-zip" type="text" name="give-payment-address[0][zip]" value="<?php echo esc_attr( $address['zip'] ); ?>" class="medium-text"/>
@@ -746,7 +774,8 @@ $payment_mode   = $payment->mode;
 										} else {
 											$no_notes_display = '';
 										}
-										echo '<p class="give-no-payment-notes"' . $no_notes_display . '>' . esc_html__( 'No donation notes.', 'give' ) . '</p>'; ?>
+										echo '<p class="give-no-payment-notes"' . $no_notes_display . '>' . esc_html__( 'No donation notes.', 'give' ) . '</p>';
+										?>
 									</div>
 									<textarea name="give-payment-note" id="give-payment-note" class="large-text"></textarea>
 
