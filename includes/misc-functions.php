@@ -208,6 +208,17 @@ function give_get_receipt_session() {
 }
 
 /**
+ * Retrieve Payment Key of the History Access Session.
+ *
+ * @since 1.8.17
+ *
+ * @return array|string
+ */
+function give_get_history_session() {
+	return Give()->session->get( 'history_access' );
+}
+
+/**
  * Generate Item Title for Payment Gateway.
  *
  * @param array $payment_data Payment Data.
@@ -878,6 +889,10 @@ function give_can_view_receipt( $payment_key = '' ) {
 		if ( $receipt_session === $payment_meta['key'] ) {
 			$return = true;
 		}
+	}
+
+	if ( true === (bool) Give()->session->get( 'history_access') ) {
+		$return = true;
 	}
 
 	return (bool) apply_filters( 'give_can_view_receipt', $return, $payment_key );
