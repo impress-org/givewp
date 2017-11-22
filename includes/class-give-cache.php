@@ -449,6 +449,7 @@ class Give_Cache {
 		// Delete single or multiple cache items from cache.
 		if ( ! is_array( $ids ) ) {
 			$status = wp_cache_delete( $ids, $group, $expire );
+			self::get_instance()->update_cache_version( $group, true );
 
 			/**
 			 * Fire action when cache deleted for specific id.
@@ -459,11 +460,12 @@ class Give_Cache {
 			 * @param string $group
 			 * @param int    $expire
 			 */
-			do_action( "give_deleted_{$group}_cache", $ids, $group, $expire );
+			do_action( "give_deleted_{$group}_cache", $ids, $group, $expire, $status );
 
 		} else {
 			foreach ( $ids as $id ) {
 				$status = wp_cache_delete( $id, $group, $expire );
+				self::get_instance()->update_cache_version( $group, true );
 
 				/**
 				 * Fire action when cache deleted for specific id .
@@ -474,11 +476,9 @@ class Give_Cache {
 				 * @param string $group
 				 * @param int    $expire
 				 */
-				do_action( "give_deleted_{$group}_cache", $id, $group, $expire );
+				do_action( "give_deleted_{$group}_cache", $id, $group, $expire, $status );
 			}
 		}
-
-		self::get_instance()->update_cache_version( $group, true );
 
 		return $status;
 	}
@@ -572,6 +572,8 @@ class Give_Cache {
 		foreach ( $donation_ids as $donation ) {
 			wp_cache_delete( $donation, 'give-donations' );
 		}
+
+		self::get_instance()->update_cache_version( '', true );
 	}
 
 	/**
@@ -592,6 +594,8 @@ class Give_Cache {
 		if ( $donation && $donation->donor_id ) {
 			wp_cache_delete( $donation->donor_id, 'give-donors' );
 		}
+
+		self::get_instance()->update_cache_version( '', true );
 	}
 
 
