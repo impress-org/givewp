@@ -420,7 +420,7 @@ class Give_Cache {
 
 		$status = wp_cache_set( $id, $data, $group, $expire );
 
-		update_option( 'give-last-cache-updated', self::get_instance()->get_unique_timestamp( 'db_query_cache' ) );
+		self::get_instance()->update_cache_version( $group );
 
 		return $status;
 	}
@@ -477,9 +477,7 @@ class Give_Cache {
 			}
 		}
 
-
-		// Update timestamp in DB when cache update.
-		update_option( 'give-last-cache-updated', self::get_instance()->get_unique_timestamp( 'db_query_cache' ) );
+		self::get_instance()->update_cache_version( $group );
 
 		return $status;
 	}
@@ -615,6 +613,32 @@ class Give_Cache {
 		}
 
 		return (string) $timestamp;
+	}
+
+
+	/**
+	 * Update cache version
+	 *
+	 * @since  2.0
+	 * @access private
+	 *
+	 * @param string $group
+	 */
+	private function update_cache_version( $group ) {
+		if ( false === strpos( $group, 'give-db-queries-' ) ) {
+			update_option(
+				'give-last-cache-updated',
+				self::get_instance()->get_unique_timestamp( 'db_query_cache' )
+			);
+
+
+			/**
+			 * Fire the action.
+			 *
+			 * @since 2.0
+			 */
+			do_action( 'give_update_cache_version', $group );
+		}
 	}
 }
 
