@@ -215,7 +215,7 @@ function give_get_receipt_session() {
  * @return array|string
  */
 function give_get_history_session() {
-	return Give()->session->get( 'history_access' );
+	return (bool) Give()->session->get( 'history_access' );
 }
 
 /**
@@ -891,7 +891,8 @@ function give_can_view_receipt( $payment_key = '' ) {
 		}
 	}
 
-	if ( true === (bool) Give()->session->get( 'history_access') ) {
+	// Check whether it is history access session?
+	if ( true === give_get_history_session() ) {
 		$return = true;
 	}
 
