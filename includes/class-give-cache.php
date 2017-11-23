@@ -86,11 +86,12 @@ class Give_Cache {
 	 *
 	 * @param  string $action     Cache key prefix.
 	 * @param  array  $query_args (optional) Query array.
+	 * @param  bool   $is_prefix
 	 *
 	 * @return string
 	 */
 
-	public static function get_key( $action, $query_args = null ) {
+	public static function get_key( $action, $query_args = null, $is_prefix = true ) {
 		// Bailout.
 		if ( empty( $action ) ) {
 			return new WP_Error( 'give_invalid_cache_key_action', __( 'Do not pass empty action to generate cache key.', 'give' ) );
@@ -103,7 +104,7 @@ class Give_Cache {
 
 
 		// Set cache key.
-		$cache_key = "give_cache_{$action}";
+		$cache_key = $is_prefix ? "give_cache_{$action}" : $action;
 
 		// Bailout.
 		if ( ! empty( $query_args ) ) {
