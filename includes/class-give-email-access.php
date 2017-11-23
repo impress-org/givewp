@@ -193,7 +193,7 @@ class Give_Email_Access {
 	 * @param  $customer_id string Customer id.
 	 * @param  $email       string Customer email.
 	 *
-	 * @return void
+	 * @return bool
 	 */
 	public function send_email( $customer_id, $email ) {
 
@@ -210,10 +210,10 @@ class Give_Email_Access {
 		), get_permalink( $page_id ) );
 
 		// Nice subject and message.
-		$subject = apply_filters( 'give_email_access_token_subject', sprintf( __( 'Your Access Link to %s', 'give' ), get_bloginfo( 'name' ) ) );
+		$subject = apply_filters( 'give_email_access_token_subject', sprintf( __( 'Please confirm your email for %s', 'give' ), get_bloginfo( 'url' ) ) );
 
-		$message = __( 'You or someone in your organization requested an access link be sent to this email address. This is a temporary access link for you to view your donation information. Click on the link below to view:', 'give' ) . "\n\n";
-		$message .= '<a href="' . esc_url( $access_url ) . '" target="_blank">' . __( 'Access Donation Details &raquo;', 'give' ) . '</a>' . "\n\n";
+		$message = sprintf( __( 'Please click the link to access your donation history on %s. If you did not request this email, please contact %s.', 'give' ), get_bloginfo( 'url' ), get_bloginfo( 'admin_email' ) ) . "\n\n";
+		$message .= '<a href="' . esc_url( $access_url ) . '" target="_blank">' . __( 'Click here to view donation history &raquo;', 'give' ) . '</a>' . "\n\n";
 		$message .= "\n\n";
 		$message .= __( 'Sincerely,', 'give' ) . "\n";
 		$message .= get_bloginfo( 'name' ) . "\n";
@@ -221,8 +221,8 @@ class Give_Email_Access {
 		$message = apply_filters( 'give_email_access_token_message', $message );
 
 		// Send the email.
-		Give()->emails->__set( 'heading', apply_filters( 'give_email_access_token_heading', __( 'Your Access Link', 'give' ) ) );
-		Give()->emails->send( $email, $subject, $message );
+		Give()->emails->__set( 'heading', apply_filters( 'give_email_access_token_heading', __( 'Confirm Email', 'give' ) ) );
+		return Give()->emails->send( $email, $subject, $message );
 
 	}
 
