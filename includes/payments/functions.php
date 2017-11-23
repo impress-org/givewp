@@ -297,9 +297,14 @@ function give_update_payment_status( $payment_id, $new_status = 'publish' ) {
  */
 function give_delete_donation( $payment_id = 0, $update_donor = true ) {
 	$payment = new Give_Payment( $payment_id );
-	$amount  = give_get_payment_amount( $payment_id );
-	$status  = $payment->post_status;
 
+	// Bailout.
+	if( ! $payment->ID ) {
+		return;
+	}
+
+	$amount   = give_get_payment_amount( $payment_id );
+	$status   = $payment->post_status;
 	$donor_id = give_get_payment_donor_id( $payment_id );
 	$donor    = new Give_Donor( $donor_id );
 
