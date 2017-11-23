@@ -65,20 +65,6 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							)
 						),
 						array(
-							'id'      => 'non_login_users_donations',
-							'name'    => __( 'Limit Display of Donations', 'give' ),
-							'desc'    => __( 'Number of donations to display when non logged-in user access donation history page with purchase session deactivated.', 'give' ),
-							'default' => '1',
-							'type'    => 'select',
-							'options' => array(
-								'1'  => __( 'Recent First Donation', 'give' ),
-								'2' => __( 'Recent Two Donations', 'give' ),
-								'3' => __( 'Recent Three Donations', 'give' ),
-								'4' => __( 'Recent Four Donations', 'give' ),
-								'5' => __( 'Recent Five Donations', 'give' ),
-							)
-						),
-						array(
 							'name'    => __( 'Email Access', 'give' ),
 							'desc'    => __( 'Would you like your donors to be able to access their donation history using only email? Donors whose sessions have expired and do not have an account may still access their donation history via a temporary email access link.', 'give' ),
 							'id'      => 'email_access',
@@ -88,6 +74,30 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
 							)
+						),
+						array(
+							'id'      => 'non_login_users_donations',
+							'name'    => __( 'Limit Display of Donations', 'give' ),
+							'desc'    => __( 'Number of donations to display when non logged-in user access donation history page with purchase session deactivated.', 'give' ),
+							'default' => '1',
+							'type'    => 'number',
+							'css'     => 'width:12em;',
+						),
+						array(
+							'id'      => 'limit_email_throttle_time',
+							'name'    => __( 'Limit Email Throttle Time (in minutes)', 'give' ),
+							'desc'    => __( 'Specified Time in which user can send a specific amount of emails. For Example, X number of emails in 5 minutes.', 'give' ),
+							'default' => '5',
+							'type'    => 'number',
+							'css'     => 'width:12em;',
+						),
+						array(
+							'id'      => 'total_email_throttle',
+							'name'    => __( 'Limit Number of Emails', 'give' ),
+							'desc'    => __( 'Limit Number of Emails a user can send in a specified amount of time. For Example, 3 emails to be send in X amount of time.', 'give' ),
+							'default' => '3',
+							'type'    => 'number',
+							'css'     => 'width:12em;',
 						),
 						array(
 							'id'      => 'recaptcha_key',

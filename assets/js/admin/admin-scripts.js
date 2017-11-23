@@ -614,20 +614,26 @@ var give_setting_edit = false;
 			});
 		},
 
-		toggle_options: function () {
+		toggle_options: function() {
 
 			/**
 			 * Email access
 			 */
-			var email_access = $('input[name="email_access"]', '.give-setting-tab-body-general');
-			email_access.on('change', function () {
-				var field_value = $('input[name="email_access"]:checked', '.give-setting-tab-body-general').val();
-				if ('enabled' === field_value) {
-					$('#recaptcha_key').parents('tr').show();
-					$('#recaptcha_secret').parents('tr').show();
+			var emailAccess = $( 'input[name="email_access"]', '.give-setting-tab-body-general' );
+			emailAccess.on( 'change', function() {
+				var fieldValue = $( 'input[name="email_access"]:checked', '.give-setting-tab-body-general' ).val();
+				if ( 'enabled' === fieldValue ) {
+					$( '#non_login_users_donations' ).parents( 'tr' ).show();
+					$( '#limit_email_throttle_time' ).parents( 'tr' ).show();
+					$( '#total_email_throttle' ).parents( 'tr' ).show();
+					$( '#recaptcha_key' ).parents( 'tr' ).show();
+					$( '#recaptcha_secret' ).parents( 'tr' ).show();
 				} else {
-					$('#recaptcha_key').parents('tr').hide();
-					$('#recaptcha_secret').parents('tr').hide();
+					$( '#non_login_users_donations' ).parents( 'tr' ).hide();
+					$( '#limit_email_throttle_time' ).parents( 'tr' ).hide();
+					$( '#total_email_throttle' ).parents( 'tr' ).hide();
+					$( '#recaptcha_key' ).parents( 'tr' ).hide();
+					$( '#recaptcha_secret' ).parents( 'tr' ).hide();
 				}
 			}).change();
 
