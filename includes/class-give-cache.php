@@ -99,7 +99,7 @@ class Give_Cache {
 
 		// Handle specific cache key prefix.
 		if ( 'give-db-queries' === $action ) {
-			return 'give-db-queries-' . self::get_instance()->get_incrementor();
+			return 'give-db-queries-' . self::get_instance()->get_incrementer();
 		}
 
 
@@ -441,7 +441,7 @@ class Give_Cache {
 		// Delete single or multiple cache items from cache.
 		if ( ! is_array( $ids ) ) {
 			$status = wp_cache_delete( $ids, $group, $expire );
-			self::get_instance()->get_incrementor( true );
+			self::get_instance()->get_incrementer( true );
 
 			/**
 			 * Fire action when cache deleted for specific id.
@@ -457,7 +457,7 @@ class Give_Cache {
 		} else {
 			foreach ( $ids as $id ) {
 				$status = wp_cache_delete( $id, $group, $expire );
-				self::get_instance()->get_incrementor( true );
+				self::get_instance()->get_incrementer( true );
 
 				/**
 				 * Fire action when cache deleted for specific id .
@@ -508,7 +508,7 @@ class Give_Cache {
 			}
 		}
 
-		self::get_instance()->get_incrementor( true );
+		self::get_instance()->get_incrementer( true );
 	}
 
 	/**
@@ -535,7 +535,7 @@ class Give_Cache {
 
 		wp_cache_delete( $donation->ID, 'give-donations' );
 
-		self::get_instance()->get_incrementor( true );
+		self::get_instance()->get_incrementer( true );
 	}
 
 	/**
@@ -559,7 +559,7 @@ class Give_Cache {
 			}
 		}
 
-		self::get_instance()->get_incrementor( true );
+		self::get_instance()->get_incrementer( true );
 	}
 
 	/**
@@ -581,12 +581,12 @@ class Give_Cache {
 			wp_cache_delete( $donation->donor_id, 'give-donors' );
 		}
 
-		self::get_instance()->get_incrementor( true );
+		self::get_instance()->get_incrementer( true );
 	}
 
 
 	/**
-	 * Get unique incrementor.
+	 * Get unique incrementer.
 	 *
 	 * @see    https://core.trac.wordpress.org/ticket/4476
 	 * @see    https://www.tollmanz.com/invalidation-schemes/
@@ -598,7 +598,7 @@ class Give_Cache {
 	 *
 	 * @return string
 	 */
-	private function get_incrementor( $refresh = false ) {
+	private function get_incrementer( $refresh = false ) {
 		$incrementor_key   = 'give-cache-incrementor';
 		$incrementor_value = wp_cache_get( $incrementor_key );
 
