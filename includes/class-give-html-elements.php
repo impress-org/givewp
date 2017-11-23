@@ -117,12 +117,20 @@ class Give_HTML_Elements {
 
 		$args = wp_parse_args( $args, $defaults );
 
-		$forms = get_posts( array(
+		$form_args = array(
 			'post_type'      => 'give_forms',
 			'orderby'        => 'title',
 			'order'          => 'ASC',
 			'posts_per_page' => $args['number'],
-		) );
+		);
+
+		$cache_key   = Give_Cache::get_key( 'give_forms', $form_args, false );
+		$cache_group = Give_Cache::get_key( 'give-db-queries' );
+
+		if ( ! ( $forms = Give_Cache::get_group( $cache_key, $cache_group ) ) ) {
+			$forms = get_posts( $form_args );
+			Give_Cache::set_group( $cache_key, $forms, $cache_group );
+		}
 
 		$options = array();
 
