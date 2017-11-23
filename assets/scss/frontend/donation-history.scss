@@ -15,6 +15,11 @@
 	  &.give-security-button-wrap {
 		width: 25%;
 		padding: 25px 5px;
+
+		span {
+		  display: none;
+		  padding: 0 20px;
+		}
 	  }
 	}
   }
