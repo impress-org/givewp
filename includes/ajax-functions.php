@@ -555,9 +555,17 @@ function give_confirm_email_for_donation_access() {
 			'success'
 		);
 
-		echo json_encode( $return );
+
+	} else {
+		$return['status']  = 'error';
+		$return['message'] = Give()->notices->print_frontend_notice(
+			__( 'Please wait a few minutes before requesting a new donation history access link..', 'give' ),
+			false,
+			'error'
+		);
 	}
 
+	echo json_encode( $return );
 	give_die();
 }
 
