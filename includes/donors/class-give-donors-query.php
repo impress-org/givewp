@@ -149,7 +149,7 @@ class Give_Donors_Query {
 		 */
 		do_action( 'give_pre_get_donors', $this );
 
-		$cache_key        = 'give_donor_' . substr( md5( serialize( $this->get_sql() ) ), 0, 15 );
+		$cache_key        = Give_Cache::get_key( 'give_donor', $this->get_sql(), false );
 		$cache_gruop_name = Give_Cache::get_key( 'give-db-queries' );
 
 		if ( ! ( $this->donors = Give_Cache::get_group( $cache_key, $cache_gruop_name ) ) ) {
