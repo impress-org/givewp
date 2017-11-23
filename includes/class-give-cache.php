@@ -500,15 +500,12 @@ class Give_Cache {
 
 		$donations = $donation_query->get_payments();
 
-		// Bailout.
-		if ( empty( $donations ) ) {
-			return;
-		}
-
-		/* @var Give_Payment $donation */
-		foreach ( $donations as $donation ) {
-			wp_cache_delete( $donation->ID, 'give-donations' );
-			wp_cache_delete( $donation->donor_id, 'give-donors' );
+		if ( ! empty( $donations ) ) {
+			/* @var Give_Payment $donation */
+			foreach ( $donations as $donation ) {
+				wp_cache_delete( $donation->ID, 'give-donations' );
+				wp_cache_delete( $donation->donor_id, 'give-donors' );
+			}
 		}
 
 		self::get_instance()->get_incrementor( true );
@@ -556,13 +553,10 @@ class Give_Cache {
 		$donor        = new Give_Donor( $id );
 		$donation_ids = array_map( 'trim', (array) explode( ',', trim( $donor->payment_ids ) ) );
 
-		// bailout.
-		if ( empty( $donation_ids ) ) {
-			return;
-		}
-
-		foreach ( $donation_ids as $donation ) {
-			wp_cache_delete( $donation, 'give-donations' );
+		if ( ! empty( $donation_ids ) ) {
+			foreach ( $donation_ids as $donation ) {
+				wp_cache_delete( $donation, 'give-donations' );
+			}
 		}
 
 		self::get_instance()->get_incrementor( true );
