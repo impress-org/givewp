@@ -300,6 +300,12 @@ function give_delete_donation( $payment_id = 0, $update_donor = true ) {
 	global $give_logs;
 
 	$payment  = new Give_Payment( $payment_id );
+
+	// Bailout.
+	if( ! $payment->ID ) {
+		return;
+	}
+
 	$amount   = give_get_payment_amount( $payment_id );
 	$status   = $payment->post_status;
 	$donor_id = give_get_payment_donor_id( $payment_id );
