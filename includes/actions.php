@@ -292,10 +292,12 @@ function give_verify_donation_history_access() {
 			$donation_ids = array();
 			$donor        = Give()->donors->get_donor_by( 'email', $_POST['give_email'] );
 
-			// Scenario: Donation - Receipt Access.
-			if ( ! empty( $donor->payment_ids ) ) {
-				$donation_ids = explode( ',', $donor->payment_ids );
+			// Bail Out, if donation by specific donor doesn't exists.
+			if( empty( $donor->payment_ids ) ) {
+				return false;
 			}
+
+			$donation_ids = explode( ',', $donor->payment_ids );
 
 			foreach ( $donation_ids as $donation_id ) {
 				$donation = new Give_Payment( $donation_id );
