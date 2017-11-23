@@ -139,46 +139,23 @@ jQuery(document).ready(function ($) {
 	 *
 	 * @since 1.8.17
 	 */
-	jQuery( 'body.give-donation-history' ).on( 'click', 'a.give_donation_history_button', function ( e ) {
+	jQuery( 'body' ).on( 'click', '#give-confirm-email-btn', function( e ) {
 
-		$init = this;
+		var $this = jQuery( this );
+		var data = {
+			action: 'give_confirm_email_for_donations_access',
+			email: $this.attr( 'data-email' ),
+			nonce: give_scripts.ajaxNonce
+		};
 
-		if ( jQuery( $init ).hasClass( 'give_donation_history_send_confirmation' ) ) {
+		jQuery.post( give_global_vars.ajaxurl, data, function( response ) {
+			jQuery( '.give_user_history_main .give_user_history_notice' ).html( response.success_message );
+			$this.text( response.text );
+			$this.removeClass( 'give-security-wrap' );
+		});
 
-			// If the country field has changed, we need to update the state/province field
-			var postData = {
-				action: 'give_donation_history_send_confirmation',
-				email: jQuery( $init ).attr( 'data-email' ),
-				nonce: jQuery( $init ).closest( 'table' ).find( '.give_donation_history_send_confirmation_nonce' ).val(),
-			};
-
-			jQuery.ajax( {
-				type: 'POST',
-				data: postData,
-				url: give_global_vars.ajaxurl,
-				xhrFields: {
-					withCredentials: true
-				},
-				success: function ( response ) {
-					if ( 'undefined' !== typeof( response.success ) && true === response.success ) {
-						// jQuery( 'give_user_history_main .give_user_history_notice' ).remove();
-						jQuery( '.give_user_history_main .give_user_history_notice' ).html( response.success_message );
-						jQuery( $init ).text( response.text );
-						jQuery( $init ).removeClass( 'give_donation_history_send_confirmation' );
-					} else {
-						alert( give_global_vars.error_message );
-					}
-				}
-			} ).fail( function ( data ) {
-				if ( window.console && window.console.log ) {
-					console.log( data );
-				}
-			} );
-		} else {
-			alert( give_global_vars.donation_history_mail_already_send );
-		}
 		return false;
-	} );
+	});
 
 	/**
 	 * Donation Form AJAX Submission
