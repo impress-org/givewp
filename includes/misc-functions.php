@@ -1574,6 +1574,7 @@ function give_donation_history_table_end() {
 					<a href="#" data-email="<?php echo $email; ?>" id="give-confirm-email-btn" class="give-confirm-email-btn give-btn">
 						<?php _e( 'Confirm Email', 'give' ); ?>
 					</a>
+					<span><?php _e( 'Email Sent!', 'give' ); ?></span>
 				</div>
 			</div>
 		</td>

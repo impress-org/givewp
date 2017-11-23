@@ -69,6 +69,7 @@ function give_load_scripts() {
 		),
 		'error_message'                      => __( 'Something went wrong kindly try again!', 'give' ),
 		'donation_history_mail_already_send' => __( 'Email already being sent to your mail id. Kindly check your mail!', 'give' ),
+		'confirm_email_sent_message'         => __( 'Please check your email and click on the link to access your complete donation history.', 'give' ),
 	) );
 
 	$localize_give_ajax = apply_filters( 'give_global_ajax_vars', array(

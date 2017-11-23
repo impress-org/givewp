@@ -524,17 +524,41 @@ add_action( 'wp_ajax_give_check_for_form_price_variations_html', 'give_check_for
  */
 function give_confirm_email_for_donation_access() {
 
-	// Bail Out, if email is empty
+	// Verify Security using Nonce.
+	if ( ! check_ajax_referer( 'give_ajax_nonce', 'nonce' ) ) {
+		return false;
+	}
+
+	// Bail Out, if email is empty.
 	if ( empty( $_POST['email'] ) ) {
 		return false;
 	}
 
 	$donor = Give()->donors->get_donor_by( 'email', $_POST['email'] );
 	if ( Give()->email_access->can_send_email( $donor->id ) ) {
-		Give()->email_access->send_email( $donor->id, $donor->email );
+		$return     = array();
+		$email_sent = Give()->email_access->send_email( $donor->id, $donor->email );
+
+		if ( ! $email_sent ) {
+			$return['status']  = 'error';
+			$return['message'] = Give()->notices->print_frontend_notice(
+				__( 'Unable to send email. Please try again.', 'give' ),
+				false,
+				'error'
+			);
+		}
+
+		$return['status']  = 'success';
+		$return['message'] = Give()->notices->print_frontend_notice(
+			__( 'Please check your email and click on the link to access your complete donation history.', 'give' ),
+			false,
+			'success'
+		);
+
+		echo json_encode( $return );
 	}
 
 	give_die();
 }
 
-add_action( 'wp_ajax_nopriv_give_confirm_email_for_donations_access', array( $this, 'give_confirm_email_for_donation_access' ) );
+add_action( 'wp_ajax_nopriv_give_confirm_email_for_donations_access', 'give_confirm_email_for_donation_access' );

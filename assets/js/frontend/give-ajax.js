@@ -148,10 +148,17 @@ jQuery(document).ready(function ($) {
 			nonce: give_scripts.ajaxNonce
 		};
 
+		$this.text( give_global_vars.loading );
+		$this.attr( 'disabled', 'disabled' );
 		jQuery.post( give_global_vars.ajaxurl, data, function( response ) {
-			jQuery( '.give_user_history_main .give_user_history_notice' ).html( response.success_message );
-			$this.text( response.text );
-			$this.removeClass( 'give-security-wrap' );
+			response = JSON.parse( response );
+			if ( 'error' === response.status ) {
+				$this.closest( '.give_user_history_notice' ).html( response.message );
+			} else if ( 'success' === response.status ) {
+				$this.closest( '.give_user_history_main' ).find( '.give_user_history_notice' ).html( response.message );
+				$this.hide();
+				$this.closest( '.give-security-button-wrap' ).find( 'span' ).show();
+			}
 		});
 
 		return false;
