@@ -67,7 +67,8 @@ class Give_Cache {
 	 * @access public
 	 */
 	public function setup() {
-		self::$instance->is_cache = give_is_setting_enabled( give_get_option( 'cache', 'enabled' ) );
+		// Currently enable cache only for backend.
+		self::$instance->is_cache = give_is_setting_enabled( give_get_option( 'cache', 'enabled' ) ) && is_admin();
 
 		// weekly delete all expired cache.
 		Give_Cron::add_weekly_event( array( $this, 'delete_all_expired' ) );
@@ -86,7 +87,7 @@ class Give_Cache {
 	 * @param  string $action     Cache key prefix.
 	 * @param  array  $query_args (optional) Query array.
 	 *
-	 * @return string|WP_Error
+	 * @return string
 	 */
 
 	public static function get_key( $action, $query_args = null ) {
@@ -96,16 +97,8 @@ class Give_Cache {
 		}
 
 		// Handle specific cache key prefix.
-		// @see https://core.trac.wordpress.org/ticket/4476
 		if ( 'give-db-queries' === $action ) {
-			if ( ! ( $timestamp = get_option( 'give-last-cache-updated' ) ) ) {
-
-				// Set default timestamp for cache if not set yet.
-				$timestamp = current_time( 'timestamp', 1 );
-				update_option( 'give-last-cache-updated', $timestamp );
-			}
-
-			return "give-db-queries-{$timestamp}";
+			return 'give-db-queries-' . self::get_instance()->get_incrementor();
 		}
 
 
@@ -421,8 +414,6 @@ class Give_Cache {
 
 		$status = wp_cache_set( $id, $data, $group, $expire );
 
-		self::get_instance()->update_cache_version( $group );
-
 		return $status;
 	}
 
@@ -449,7 +440,7 @@ class Give_Cache {
 		// Delete single or multiple cache items from cache.
 		if ( ! is_array( $ids ) ) {
 			$status = wp_cache_delete( $ids, $group, $expire );
-			self::get_instance()->update_cache_version( $group, true );
+			self::get_instance()->get_incrementor( true );
 
 			/**
 			 * Fire action when cache deleted for specific id.
@@ -465,7 +456,7 @@ class Give_Cache {
 		} else {
 			foreach ( $ids as $id ) {
 				$status = wp_cache_delete( $id, $group, $expire );
-				self::get_instance()->update_cache_version( $group, true );
+				self::get_instance()->get_incrementor( true );
 
 				/**
 				 * Fire action when cache deleted for specific id .
@@ -519,7 +510,7 @@ class Give_Cache {
 			wp_cache_delete( $donation->donor_id, 'give-donors' );
 		}
 
-		self::get_instance()->update_cache_version( '', true );
+		self::get_instance()->get_incrementor( true );
 	}
 
 	/**
@@ -546,7 +537,7 @@ class Give_Cache {
 
 		wp_cache_delete( $donation->ID, 'give-donations' );
 
-		self::get_instance()->update_cache_version( '', true );
+		self::get_instance()->get_incrementor( true );
 	}
 
 	/**
@@ -573,7 +564,7 @@ class Give_Cache {
 			wp_cache_delete( $donation, 'give-donations' );
 		}
 
-		self::get_instance()->update_cache_version( '', true );
+		self::get_instance()->get_incrementor( true );
 	}
 
 	/**
@@ -595,60 +586,33 @@ class Give_Cache {
 			wp_cache_delete( $donation->donor_id, 'give-donors' );
 		}
 
-		self::get_instance()->update_cache_version( '', true );
+		self::get_instance()->get_incrementor( true );
 	}
 
 
 	/**
-	 * Get unique timestamp.
+	 * Get unique incrementor.
+	 *
+	 * @see    https://core.trac.wordpress.org/ticket/4476
+	 * @see    https://www.tollmanz.com/invalidation-schemes/
 	 *
 	 * @since  2.0
 	 * @access private
 	 *
-	 * @param $context
+	 * @param bool $refresh
 	 *
 	 * @return string
 	 */
-	private function get_unique_timestamp( $context ) {
-		$timestamp = current_time( 'timestamp', 1 );
+	private function get_incrementor( $refresh = false ) {
+		$incrementor_key   = 'give-cache-incrementor';
+		$incrementor_value = wp_cache_get( $incrementor_key );
 
-		switch ( $context ) {
-			case 'db_query_cache':
-				$timestamp = get_option( 'give-last-cache-updated' );
-				$timestamp = empty( $timestamp ) ?
-					current_time( 'timestamp', 1 ) :
-					++ $timestamp;
-				break;
+		if ( false === $incrementor_value || true === $refresh ) {
+			$incrementor_value = microtime( true );
+			wp_cache_set( $incrementor_key, $incrementor_value );
 		}
 
-		return (string) $timestamp;
-	}
-
-
-	/**
-	 * Update cache version
-	 *
-	 * @since  2.0
-	 * @access private
-	 *
-	 * @param string $group
-	 * @param bool   $force Force update version
-	 */
-	private function update_cache_version( $group, $force = false ) {
-		if ( false === strpos( $group, 'give-db-queries-' ) || $force ) {
-			update_option(
-				'give-last-cache-updated',
-				self::get_instance()->get_unique_timestamp( 'db_query_cache' )
-			);
-
-
-			/**
-			 * Fire the action.
-			 *
-			 * @since 2.0
-			 */
-			do_action( 'give_update_cache_version', $group );
-		}
+		return $incrementor_value;
 	}
 }
 

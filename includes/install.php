@@ -79,9 +79,6 @@ function give_run_install() {
 	// Populate the default values.
 	update_option( 'give_settings', array_merge( $give_options, $options ) );
 
-	// Default cache version.
-	update_option( 'give-last-cache-updated', current_time( 'timestamp', 1 ) );
-
 	/**
 	 * Run plugin upgrades.
 	 *

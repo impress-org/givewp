@@ -1022,7 +1022,6 @@ function give_v189_upgrades() {
 function give_v20_upgrades() {
 	// Update cache setting.
 	give_update_option( 'cache', 'enabled' );
-	update_option( 'give-last-cache-updated', current_time( 'timestamp', 1 ) );
 
 	// Upgrade email settings.
 	give_v20_upgrades_email_setting();
