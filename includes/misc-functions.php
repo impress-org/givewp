@@ -605,29 +605,29 @@ function give_get_newsletter() {
 
 	<script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>
 	<script type='text/javascript'>(function( $ ) {
-				window.fnames = new Array();
-				window.ftypes = new Array();
-				fnames[ 0 ] = 'EMAIL';
-				ftypes[ 0 ] = 'email';
-				fnames[ 1 ] = 'FNAME';
-				ftypes[ 1 ] = 'text';
-				fnames[ 2 ] = 'LNAME';
-				ftypes[ 2 ] = 'text';
+			window.fnames = new Array();
+			window.ftypes = new Array();
+			fnames[ 0 ] = 'EMAIL';
+			ftypes[ 0 ] = 'email';
+			fnames[ 1 ] = 'FNAME';
+			ftypes[ 1 ] = 'text';
+			fnames[ 2 ] = 'LNAME';
+			ftypes[ 2 ] = 'text';
 
-				//Successful submission
-				$( 'form[name="mc-embedded-subscribe-form"]' ).on( 'submit', function() {
+			//Successful submission
+			$( 'form[name="mc-embedded-subscribe-form"]' ).on( 'submit', function() {
 
-					var email_field = $( this ).find( '#mce-EMAIL' ).val();
-					if ( ! email_field ) {
-						return false;
-					}
-					$( this ).find( '.give-newsletter-confirmation' ).show().delay( 5000 ).slideUp();
-					$( this ).find( '.give-newsletter-form' ).hide();
+				var email_field = $( this ).find( '#mce-EMAIL' ).val();
+				if ( ! email_field ) {
+					return false;
+				}
+				$( this ).find( '.give-newsletter-confirmation' ).show().delay( 5000 ).slideUp();
+				$( this ).find( '.give-newsletter-form' ).hide();
 
-				} );
+			} );
 
-			}( jQuery ));
-			var $mcj = jQuery.noConflict( true );
+		}( jQuery ));
+		var $mcj = jQuery.noConflict( true );
 
 
 	</script>
@@ -1556,24 +1556,25 @@ function give_get_non_login_users_donations() {
  * @since 1.8.17
  */
 function give_donation_history_table_end() {
-	$email   = Give()->session->get( 'give_email' );
-	$page_id = give_get_option( 'history_page' );
+	$email = Give()->session->get( 'give_email' );
 	?>
 	<tfoot>
 	<tr>
 		<td colspan="9999">
-			<div class="donation_history_send_email_link">
-				<?php
-				echo sprintf(
-					__( 'For security reason, please confirm your email address (%s) to view your complete donation history.', 'give' ),
-					$email
-				);
-				?>
-				<input type="hidden" name="give_donation_history_send_confirmation_nonce"
-				       class="give_donation_history_send_confirmation_nonce"
-				       value="<?php echo wp_create_nonce( 'give_donation_history' ); ?>">
-				<a href="<?php echo get_permalink( $page_id ); ?>" data-email="<?php echo $email; ?>"
-				   class="give_donation_history_button give_donation_history_send_confirmation"><?php _e( 'Confirm Email', 'give' ); ?></a>
+			<div class="give-security-wrap">
+				<div class="give-security-column give-security-description-wrap">
+					<?php
+					echo sprintf(
+						__( 'For security reason, please confirm your email address (%s) to view your complete donation history.', 'give' ),
+						$email
+					);
+					?>
+				</div>
+				<div class="give-security-column give-security-button-wrap">
+					<a href="#" data-email="<?php echo $email; ?>" id="give-confirm-email-btn" class="give-confirm-email-btn give-btn">
+						<?php _e( 'Confirm Email', 'give' ); ?>
+					</a>
+				</div>
 			</div>
 		</td>
 	</tr>
