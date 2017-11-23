@@ -125,7 +125,7 @@ class Give_HTML_Elements {
 		);
 
 		$cache_key   = Give_Cache::get_key( 'give_forms', $form_args, false );
-		$cache_group = Give_Cache::get_key( 'give-db-queries' );
+		$cache_group = 'give-db-queries';
 
 		if ( ! ( $forms = Give_Cache::get_group( $cache_key, $cache_group ) ) ) {
 			$forms = get_posts( $form_args );
