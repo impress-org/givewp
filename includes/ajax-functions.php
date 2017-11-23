@@ -511,3 +511,27 @@ function give_check_for_form_price_variations_html() {
 }
 
 add_action( 'wp_ajax_give_check_for_form_price_variations_html', 'give_check_for_form_price_variations_html' );
+
+/**
+ * Send Confirmation Email For Complete Donation History Access.
+ *
+ * @since 1.8.17
+ *
+ * @return bool
+ */
+function give_confirm_email_for_donation_access() {
+
+	// Bail Out, if email is empty
+	if ( empty( $_POST['email'] ) ) {
+		return false;
+	}
+
+	$donor = Give()->donors->get_donor_by( 'email', $_POST['email'] );
+	if ( Give()->email_access->can_send_email( $donor->id ) ) {
+		Give()->email_access->send_email( $donor->id, $donor->email );
+	}
+
+	give_die();
+}
+
+add_action( 'wp_ajax_nopriv_give_confirm_email_for_donations_access', array( $this, 'give_confirm_email_for_donation_access' ) );
