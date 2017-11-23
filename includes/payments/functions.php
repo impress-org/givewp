@@ -1838,34 +1838,38 @@ function give_filter_where_older_than_week( $where = '' ) {
  * @return string $form_title Returns the full title if $only_level is false, otherwise returns the levels title.
  */
 function give_get_payment_form_title( $payment_meta, $only_level = false, $separator = '' ) {
-
 	$form_id    = isset( $payment_meta['form_id'] ) ? $payment_meta['form_id'] : 0;
 	$price_id   = isset( $payment_meta['price_id'] ) ? $payment_meta['price_id'] : null;
 	$form_title = isset( $payment_meta['form_title'] ) ? $payment_meta['form_title'] : '';
 
-	if ( $only_level == true ) {
-		$form_title = '';
-	}
+	$cache_key   = Give_Cache::get_key( 'give_forms', array( $form_id, $price_id, $form_title, $only_level, $separator ), false );
+	$cache_group = Give_Cache::get_key( 'give-db-queries' );
 
-	// If multi-level, append to the form title.
-	if ( give_has_variable_prices( $form_id ) ) {
-
-		// Only add separator if there is a form title.
-		if ( ! empty( $form_title ) ) {
-			$form_title .= ' ' . $separator . ' ';
+	if( ! ( $form_title = Give_Cache::get_group( $cache_key, $cache_group ) ) ) {
+		if ( $only_level == true ) {
+			$form_title = '';
 		}
 
-		$form_title .= '<span class="donation-level-text-wrap">';
+		// If multi-level, append to the form title.
+		if ( give_has_variable_prices( $form_id ) ) {
 
-		if ( 'custom' === $price_id ) {
-			$custom_amount_text = give_get_meta( $form_id, '_give_custom_amount_text', true );
-			$form_title         .= ! empty( $custom_amount_text ) ? $custom_amount_text : __( 'Custom Amount', 'give' );
-		} else {
-			$form_title .= give_get_price_option_name( $form_id, $price_id );
+			// Only add separator if there is a form title.
+			if ( ! empty( $form_title ) ) {
+				$form_title .= ' ' . $separator . ' ';
+			}
+
+			$form_title .= '<span class="donation-level-text-wrap">';
+
+			if ( 'custom' === $price_id ) {
+				$custom_amount_text = give_get_meta( $form_id, '_give_custom_amount_text', true );
+				$form_title         .= ! empty( $custom_amount_text ) ? $custom_amount_text : __( 'Custom Amount', 'give' );
+			} else {
+				$form_title .= give_get_price_option_name( $form_id, $price_id );
+			}
+
+			$form_title .= '</span>';
+
 		}
-
-		$form_title .= '</span>';
-
 	}
 
 	return apply_filters( 'give_get_payment_form_title', $form_title, $payment_meta );
