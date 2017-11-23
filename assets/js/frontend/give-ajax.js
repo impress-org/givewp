@@ -144,7 +144,7 @@ jQuery(document).ready(function ($) {
 		var $this = jQuery( this );
 		var data = {
 			action: 'give_confirm_email_for_donations_access',
-			email: $this.attr( 'data-email' ),
+			email: $this.data( 'email' ),
 			nonce: give_scripts.ajaxNonce
 		};
 
