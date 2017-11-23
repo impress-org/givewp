@@ -153,7 +153,7 @@ jQuery(document).ready(function ($) {
 		jQuery.post( give_global_vars.ajaxurl, data, function( response ) {
 			response = JSON.parse( response );
 			if ( 'error' === response.status ) {
-				$this.closest( '.give_user_history_notice' ).html( response.message );
+				$this.closest( '.give_user_history_main' ).find( '.give_user_history_notice' ).html( response.message );
 			} else if ( 'success' === response.status ) {
 				$this.closest( '.give_user_history_main' ).find( '.give_user_history_notice' ).html( response.message );
 				$this.hide();
