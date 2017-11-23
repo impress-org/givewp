@@ -76,6 +76,16 @@ class Give_Email_Access {
 	private $verify_throttle;
 
 	/**
+	 * Limit throttle
+	 *
+	 * @since  1.8.17
+	 * @access private
+	 *
+	 * @var
+	 */
+	private $limit_throttle;
+
+	/**
 	 * Verify expiration
 	 *
 	 * @since  1.0
@@ -133,7 +143,6 @@ class Give_Email_Access {
 		}
 
 		// Timeouts.
-		$this->verify_throttle  = apply_filters( 'give_nl_verify_throttle', 300 );
 		$this->token_expiration = apply_filters( 'give_nl_token_expiration', 7200 );
 
 		// Setup login.
@@ -150,35 +159,33 @@ class Give_Email_Access {
 	/**
 	 * Prevent email spamming.
 	 *
+	 * @param int $donor_id Donor ID.
+	 *
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  $customer_id string Customer id.
-	 *
 	 * @return bool
 	 */
-	public function can_send_email( $customer_id ) {
-		/* @var WPDB $wpdb */
-		global $wpdb;
+	public function can_send_email( $donor_id ) {
 
-		// Prevent multiple emails within X minutes
-		$throttle = date( 'Y-m-d H:i:s', time() - $this->verify_throttle );
+		$this->verify_throttle = apply_filters( 'give_nl_verify_throttle', give_get_option( 'limit_email_throttle_time', 5 ) * 60 );
+		$this->limit_throttle  = apply_filters( 'give_nl_limit_throttle', give_get_option( 'total_email_throttle', 3 ) );
 
-		// Does a user row exist?
-		$exists = (int) $wpdb->get_var(
-			$wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}give_customers WHERE id = %d", $customer_id )
-		);
+		$donor = Give()->donors->get_donor_by( 'id', $donor_id );
 
-		if ( 0 < $exists ) {
-			$row_id = (int) $wpdb->get_var(
-				$wpdb->prepare( "SELECT id FROM {$wpdb->prefix}give_customers WHERE id = %d AND (verify_throttle < %s OR verify_key = '') LIMIT 1", $customer_id, $throttle )
-			);
-
-			if ( $row_id < 1 ) {
-				give_set_error( 'give_email_access_attempts_exhausted', __( 'Please wait a few minutes before requesting a new email access link.', 'give' ) );
-
+		if ( is_object( $donor ) && count( $donor ) > 0 ) {
+			$email_throttle_count = give_get_meta( $donor_id, '_give_email_throttle_count', true );
+			if (
+				$email_throttle_count < $this->limit_throttle &&
+				true !== Give_Cache::get( 'give_cache_email_throttle_limit_exhausted' )
+			) {
+				give_update_meta( $donor_id, '_give_email_throttle_count', $email_throttle_count + 1 );
+			} else {
+				give_update_meta( $donor_id, '_give_email_throttle_count', 0 );
+				Give_Cache::set( 'give_cache_email_throttle_limit_exhausted', true ,$this->verify_throttle * 60 );
 				return false;
 			}
+
 		}
 
 		return true;
