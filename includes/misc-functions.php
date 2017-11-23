@@ -1543,11 +1543,8 @@ function give_get_core_settings_json( $file_name ) {
  *
  * @return int $country The two letter country code for the site's base country
  */
-function give_get_non_login_users_donations() {
-	$give_options = give_get_settings();
-	$number      = ! empty( $give_options['non_login_users_donations'] ) ? absint( $give_options['non_login_users_donations'] ) : 1;
-
-	return apply_filters( 'give_get_non_login_users_donations', $number );
+function give_get_limit_display_donations() {
+	return give_get_option( 'limit_display_donations', 1 );
 }
 
 /**

@@ -19,7 +19,7 @@ if ( is_user_logged_in() ) {
 ) {
 	// Session active?
 	$email     = Give()->session->get( 'give_email' );
-	$donations = give_get_users_donations( $email, give_get_non_login_users_donations(), true, 'any' );
+	$donations = give_get_users_donations( $email, give_get_limit_display_donations(), true, 'any' );
 
 	add_action( 'give_donation_history_table_end', 'give_donation_history_table_end' );
 }
