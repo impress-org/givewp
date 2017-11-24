@@ -763,7 +763,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @return void
+	 * @return object
 	 */
 	public function get_payment_counts() {
 
@@ -808,6 +808,8 @@ class Give_Payment_History_Table extends WP_List_Table {
 		foreach ( $payment_count as $count ) {
 			$this->total_count += $count;
 		}
+
+		return $payment_count;
 	}
 
 	/**
