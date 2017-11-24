@@ -26,6 +26,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Give_Payments_Query extends Give_Stats {
 
 	/**
+	 * Preserve args
+	 *
+	 * @since  1.8.17
+	 * @access public
+	 *
+	 * @var    array
+	 */
+	public $_args = array();
+
+	/**
 	 * The args to pass to the give_get_payments() query
 	 *
 	 * @since  1.0
@@ -80,7 +90,7 @@ class Give_Payments_Query extends Give_Stats {
 			'give_forms'      => null,
 		);
 
-		$this->args = wp_parse_args( $args, $defaults );
+		$this->args = $this->_args = wp_parse_args( $args, $defaults );
 
 		$this->init();
 	}
@@ -133,6 +143,10 @@ class Give_Payments_Query extends Give_Stats {
 	 * @access private
 	 */
 	private function set_filters() {
+		// Reset param to apply filters.
+		// While set filters $args will get override and multiple get_payments call will not work.
+		$this->args = $this->_args;
+
 		$this->date_filter_pre();
 		$this->orderby();
 		$this->status();
@@ -187,7 +201,8 @@ class Give_Payments_Query extends Give_Stats {
 		 */
 		do_action( 'give_pre_get_payments', $this );
 
-		$query = new WP_Query( $this->args );
+		$query          = new WP_Query( $this->args );
+		$this->payments = array();
 
 		$custom_output = array(
 			'payments',
@@ -224,6 +239,65 @@ class Give_Payments_Query extends Give_Stats {
 		do_action( 'give_post_get_payments', $this );
 
 		return $this->payments;
+	}
+
+
+	/**
+	 * Get payments by group
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param string $group_by Valid donation property
+	 * @param bool   $count
+	 *
+	 * @return array
+	 */
+	public function get_payment_by_group( $group_by, $count = false ) {
+		$donations      = $this->get_payments();
+		$allowed_groups = array( 'post_status' );
+
+		if ( ! in_array( $group_by, $allowed_groups ) ) {
+			return $donations;
+		}
+
+		$result = array();
+
+		/* @var $donation Give_Payment */
+		foreach ( $donations as $donation ) {
+			$result[ $donation->{$group_by} ][] = $donation;
+		}
+
+		// Set only count in result.
+		if ( $count ) {
+			$new_result = array();
+
+			foreach ( $result as $index => $items ) {
+				$new_result[ $index ] = count( $items );
+			}
+
+			$result = $new_result;
+
+			switch ( $group_by ) {
+				case 'post_status':
+					$statuses = get_post_stati();
+
+					if ( isset( $statuses['private'] ) && empty( $args['s'] ) ) {
+						unset( $statuses['private'] );
+					}
+
+					/* @var Give_Payment $donation */
+					foreach ( $statuses as $status => $status_label ) {
+						if( ! isset( $result[$status] ) ) {
+							$result[$status] = 0;
+						}
+					}
+
+					break;
+			}
+		}
+
+		return $result;
 	}
 
 	/**
