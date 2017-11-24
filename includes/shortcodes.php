@@ -400,6 +400,7 @@ function give_process_profile_editor_updates( $data ) {
 	$state        = ( isset( $data['give_address_state'] ) ? sanitize_text_field( $data['give_address_state'] ) : '' );
 	$zip          = ( isset( $data['give_address_zip'] ) ? sanitize_text_field( $data['give_address_zip'] ) : '' );
 	$country      = ( isset( $data['give_address_country'] ) ? sanitize_text_field( $data['give_address_country'] ) : '' );
+	$password     = ! empty( $data['give_new_user_pass1'] ) ? $data['give_new_user_pass1'] : '';
 	$full_name    = trim("{$first_name} {$last_name}");
 
 	$userdata = array(
@@ -408,6 +409,7 @@ function give_process_profile_editor_updates( $data ) {
 		'last_name'    => $last_name,
 		'display_name' => $display_name,
 		'user_email'   => $email,
+		'user_pass'    => $password,
 	);
 
 
