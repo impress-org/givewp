@@ -618,11 +618,14 @@ function give_delete_donor( $args ) {
 		) );
 	}
 
-	$give_message     = array();
-	$donor_ids        = ( ! empty( $_GET['donor'] ) && is_array( $_GET['donor'] ) && count( $_GET['donor'] ) > 0 ) ? $_GET['donor'] : array();
-	$delete_donor     = ! empty( $_GET['give-delete-donor-confirm'] ) ? $_GET['give-delete-donor-confirm'] : '';
-	$delete_donations = ! empty( $_GET['give-delete-donor-records'] ) ? $_GET['give-delete-donor-records'] : '';
-	$nonce            = $args['_wpnonce'];
+	$give_args            = array();
+	$donor_ids            = ( ! empty( $_GET['donor'] ) && is_array( $_GET['donor'] ) && count( $_GET['donor'] ) > 0 ) ? $_GET['donor'] : array();
+	$delete_donor         = ! empty( $_GET['give-delete-donor-confirm'] ) ? $_GET['give-delete-donor-confirm'] : '';
+	$delete_donations     = ! empty( $_GET['give-delete-donor-records'] ) ? $_GET['give-delete-donor-records'] : '';
+	$search_keyword       = ! empty( $_GET['s'] ) ? $_GET['s'] : '';
+	$give_args['orderby'] = ! empty( $_GET['orderby'] ) ? $_GET['orderby'] : 'id';
+	$give_args['order']   = ! empty( $_GET['order'] ) ? $_GET['order'] : 'desc';
+	$nonce                = $args['_wpnonce'];
 
 	// Verify Nonce for deleting bulk donors.
 	if ( ! wp_verify_nonce( $nonce, 'bulk-donors' ) ) {
@@ -650,7 +653,7 @@ function give_delete_donor( $args ) {
 								give_delete_donation( $donation_id );
 							}
 
-							$give_message = 'donor-donations-deleted';
+							$give_args['give-message'] = 'donor-donations-deleted';
 						} else {
 
 							// Just set the donations to customer_id of 0.
@@ -658,30 +661,25 @@ function give_delete_donor( $args ) {
 								give_update_payment_meta( $donation_id, '_give_payment_customer_id', 0 );
 							}
 
-							$give_message = 'donor-deleted';
+							$give_args['give-message'] = 'donor-deleted';
 						}
 					} else {
-						$give_message = 'donor-delete-failed';
+						$give_args['give-message'] = 'donor-delete-failed';
 					}
 				} else {
-					$give_message = 'confirm-delete-donor';
+					$give_args['give-message'] = 'confirm-delete-donor';
 				}
 			} else {
-				$give_message = 'invalid-donor-id';
+				$give_args['give-message'] = 'invalid-donor-id';
 			}
 		}
 
-		$args = array();
-		if ( ! empty( $give_message ) ) {
-			$args['give-message'] = $give_message;
+		// Add Search Keyword on redirection, if it exists.
+		if ( ! empty( $search_keyword ) ) {
+			$give_args['s'] = $search_keyword;
 		}
-
-		$search = ( ! empty( $_REQUEST['s'] ) ? give_clean( $_REQUEST['s'] ) : false );
-		if ( ! empty( $search ) ) {
-			$args['s'] = $search;
-		}
-
-		wp_redirect( add_query_arg( $args, admin_url( 'edit.php?post_type=give_forms&page=give-donors' ) ) );
+//var_dump($give_args);give_die();
+		wp_redirect( add_query_arg( $give_args, admin_url( 'edit.php?post_type=give_forms&page=give-donors' ) ) );
 		give_die();
 	}
 }
