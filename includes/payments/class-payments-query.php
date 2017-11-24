@@ -245,7 +245,7 @@ class Give_Payments_Query extends Give_Stats {
 	/**
 	 * Get payments by group
 	 *
-	 * @since  2.0
+	 * @since  1.8.17
 	 * @access public
 	 *
 	 * @param string $group_by Valid donation property
