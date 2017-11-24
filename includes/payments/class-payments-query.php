@@ -256,48 +256,51 @@ class Give_Payments_Query extends Give_Stats {
 	public function get_payment_by_group( $group_by, $count = false ) {
 		$donations      = $this->get_payments();
 		$allowed_groups = array( 'post_status' );
+		$result         = array();
 
-		if ( ! in_array( $group_by, $allowed_groups ) ) {
-			return $donations;
-		}
 
-		$result = array();
-
-		/* @var $donation Give_Payment */
-		foreach ( $donations as $donation ) {
-			$result[ $donation->{$group_by} ][] = $donation;
-		}
-
-		// Set only count in result.
-		if ( $count ) {
-			$new_result = array();
-
-			foreach ( $result as $index => $items ) {
-				$new_result[ $index ] = count( $items );
+		if ( in_array( $group_by, $allowed_groups ) ) {
+			/* @var $donation Give_Payment */
+			foreach ( $donations as $donation ) {
+				$result[ $donation->{$group_by} ][] = $donation;
 			}
 
-			$result = $new_result;
+			// Set only count in result.
+			if ( $count ) {
+				$new_result = array();
 
-			switch ( $group_by ) {
-				case 'post_status':
-					$statuses = get_post_stati();
+				foreach ( $result as $index => $items ) {
+					$new_result[ $index ] = count( $items );
+				}
 
-					if ( isset( $statuses['private'] ) && empty( $args['s'] ) ) {
-						unset( $statuses['private'] );
-					}
+				$result = $new_result;
 
-					/* @var Give_Payment $donation */
-					foreach ( $statuses as $status => $status_label ) {
-						if( ! isset( $result[$status] ) ) {
-							$result[$status] = 0;
+				switch ( $group_by ) {
+					case 'post_status':
+						$statuses = get_post_stati();
+
+						if ( isset( $statuses['private'] ) && empty( $args['s'] ) ) {
+							unset( $statuses['private'] );
 						}
-					}
 
-					break;
+						/* @var Give_Payment $donation */
+						foreach ( $statuses as $status => $status_label ) {
+							if ( ! isset( $result[ $status ] ) ) {
+								$result[ $status ] = 0;
+							}
+						}
+
+						break;
+				}
 			}
 		}
-
-		return $result;
+		
+		/**
+		 * Filter the result
+		 *
+		 * @since 1.8.17
+		 */
+		return apply_filters( 'give_get_payment_by_group', $result, $donations, $this );
 	}
 
 	/**
