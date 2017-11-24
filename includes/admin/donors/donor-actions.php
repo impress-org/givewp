@@ -678,7 +678,7 @@ function give_delete_donor( $args ) {
 		if ( ! empty( $search_keyword ) ) {
 			$give_args['s'] = $search_keyword;
 		}
-//var_dump($give_args);give_die();
+
 		wp_redirect( add_query_arg( $give_args, admin_url( 'edit.php?post_type=give_forms&page=give-donors' ) ) );
 		give_die();
 	}
