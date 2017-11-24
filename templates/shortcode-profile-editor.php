@@ -94,7 +94,9 @@ if ( is_user_logged_in() ):
 			?>
 
 			<p class="form-row form-row-last form-row-responsive">
-				<label for="give_email"><?php _e( 'Email Address', 'give' ); ?></label>
+				<label for="give_email">
+					<?php _e( 'Email Address', 'give' ); ?>
+					<span class="give-required-indicator  ">*</span></label>
 				<input name="give_email" id="give_email" class="text give-input required" type="email" value="<?php echo esc_attr( $current_user->user_email ); ?>" required aria-required="true"/>
 				<?php
 				/**
