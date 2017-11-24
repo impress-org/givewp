@@ -76,6 +76,7 @@ class Give_Payments_Query extends Give_Stats {
 			'search_in_notes' => false,
 			'children'        => false,
 			'fields'          => null,
+			'gateway'         => null,
 			'give_forms'      => null,
 		);
 
@@ -144,6 +145,7 @@ class Give_Payments_Query extends Give_Stats {
 		$this->mode();
 		$this->children();
 		$this->give_forms();
+		$this->gateway_filter();
 
 		add_filter( 'posts_orderby', array( $this, 'custom_orderby' ), 10, 2 );
 	}
@@ -616,6 +618,38 @@ class Give_Payments_Query extends Give_Stats {
 		) );
 
 		$this->__unset( 'give_forms' );
+
+	}
+
+	/**
+	 * Specific Gateway
+	 *
+	 * @since  1.8.17
+	 * @access public
+	 *
+	 * @return void
+	 */
+	public function gateway_filter() {
+
+		if ( empty( $this->args['gateway'] ) ) {
+			return;
+		}
+
+		$compare = '=';
+
+		if ( is_array( $this->args['gateway'] ) ) {
+			$compare = 'IN';
+		}
+
+		$this->__set( 'meta_query', array(
+			array(
+				'key'     => '_give_payment_gateway',
+				'value'   => $this->args['gateway'],
+				'compare' => $compare,
+			),
+		) );
+
+		$this->__unset( 'gateway' );
 
 	}
 
