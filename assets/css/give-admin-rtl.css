@@ -2498,6 +2498,10 @@ input.give-price-field {
   .give_forms_page_give-donors #give-donors-filter p.search-box {
     margin: 0; }
 
+.give_forms_page_give-donors #give-donors-search-filter {
+  display: block;
+  overflow: hidden; }
+
 #give-donor-card-wrapper {
   margin-right: -1px;
   z-index: 2;
