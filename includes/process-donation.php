@@ -300,17 +300,6 @@ function give_donation_form_validate_fields() {
 		give_donation_form_validate_agree_to_terms();
 	}
 
-	// Stop processing donor registration, if donor registration is optional and donor can do guest checkout.
-	// If registration form username field is empty that means donor does want to registration instead wants guest checkout.
-	if (
-		! give_logged_in_only( $form_id )
-		&& isset( $_POST['give-purchase-var'] )
-		&& $_POST['give-purchase-var'] == 'needs-to-register'
-		&& empty( $_POST['give_user_login'] )
-	) {
-		unset( $_POST['give-purchase-var'] );
-	}
-
 	if ( is_user_logged_in() ) {
 		// Collect logged in user data.
 		$valid_data['logged_in_user'] = give_donation_form_validate_logged_in_user();
@@ -752,11 +741,6 @@ function give_donation_form_validate_guest_user() {
 		// Set a default id for guests.
 		'user_id' => 0,
 	);
-
-	// Show error message if user must be logged in.
-	if ( give_logged_in_only( $form_id ) ) {
-		give_set_error( 'logged_in_only', __( 'You must be logged in to donate.', 'give' ) );
-	}
 
 	// Get the guest email.
 	$guest_email = isset( $_POST['give_email'] ) ? $_POST['give_email'] : false;
