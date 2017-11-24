@@ -799,6 +799,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$start_date = isset( $_GET['start-date'] ) ? sanitize_text_field( $_GET['start-date'] ) : null;
 		$end_date   = isset( $_GET['end-date'] ) ? sanitize_text_field( $_GET['end-date'] ) : $start_date;
 		$form_id    = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : null;
+		$gateway    = ! empty( $_GET['gateway'] ) ? give_clean( $_GET['gateway'] ) : null;
 
 		if ( ! empty( $search ) ) {
 			$status = 'any'; // Force all payment statuses when searching.
@@ -819,6 +820,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 			'day'        => $day,
 			's'          => $search,
 			'start_date' => $start_date,
+			'gateway'    => $gateway,
 			'end_date'   => $end_date,
 			'give_forms' => $form_id,
 		);
