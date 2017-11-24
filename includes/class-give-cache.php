@@ -621,7 +621,11 @@ class Give_Cache {
 	 * @access public
 	 */
 	public function flush_cache() {
-		if ( isset( $_POST['cache'] ) && give_is_setting_enabled( give_clean( $_POST['cache'] ) ) ) {
+		if (
+			Give_Admin_Settings::is_saving_settings() &&
+			isset( $_POST['cache'] ) &&
+			give_is_setting_enabled( give_clean( $_POST['cache'] ) )
+		) {
 			$this->get_incrementer( true );
 			$this->get_incrementer( true, 'give-cahce-incrementer' );
 		}
