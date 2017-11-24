@@ -792,6 +792,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 		}
 
 		$args['form_id'] = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : null;
+		$args['gateway'] = ! empty( $_GET['gateway'] ) ? give_clean( $_GET['gateway'] ) : null;
 
 		$payment_count           = give_count_payments( $args );
 		$this->complete_count    = $payment_count->publish;
