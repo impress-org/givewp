@@ -430,7 +430,17 @@ function give_verify_minimum_price() {
 		}
 	}
 
-	if ( give_get_form_minimum_price( $form_id ) > $amount ) {
+	/**
+	 * Filter the minimum price.
+	 *
+	 * @since 1.8.17
+	 *
+	 * @param float|string $minimum_amount Donation custom minimum amount.
+	 * @param integer      $form_id        Donation Form ID.
+	 */
+	$minimum_price = apply_filters( 'give_verify_minimum_price', give_get_form_minimum_price( $form_id ), $form_id );
+
+	if ( $minimum_price > $amount ) {
 		return false;
 	}
 
