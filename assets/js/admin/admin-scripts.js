@@ -196,6 +196,13 @@ var give_setting_edit = false;
 			width: '100%'
 		});
 
+		// Fix: Chosen JS - Zero Width Issue.
+		$( '.chosen-container' ).each( function() {
+			if ( 0 === $( this ).width() ) {
+				$( this ).css( 'width', '100%' );
+			}
+		});
+
 		// This fixes the Chosen box being 0px wide when the thickbox is opened.
 		$('#post').on('click', '.give-thickbox', function () {
 			$('.give-select-chosen', '#choose-give-form').css('width', '100%');
