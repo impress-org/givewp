@@ -410,6 +410,7 @@ function give_process_profile_editor_updates( $data ) {
 		'last_name'    => $last_name,
 		'display_name' => $display_name,
 		'user_email'   => $email,
+		'user_pass'    => $password,
 	);
 
 	$address = array(
