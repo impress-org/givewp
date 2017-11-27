@@ -451,7 +451,10 @@ function give_process_profile_editor_updates( $data ) {
 	} else if ( $email != $old_user_data->user_email ) {
 		// Make sure the new email doesn't belong to another user
 		if ( email_exists( $email ) ) {
-			give_set_error( 'email_exists', __( 'The email you entered belongs to another user. Please use another.', 'give' ) );
+			give_set_error( 'user_email_exists', __( 'The email you entered belongs to another user. Please use another.', 'give' ) );
+		} elseif ( Give()->donors->get_donor_by( 'email', $email ) ){
+			// Make sure the new email doesn't belong to another user
+			give_set_error( 'donor_email_exists', __( 'The email you entered belongs to another donor. Please use another.', 'give' ) );
 		}
 	}
 
