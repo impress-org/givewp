@@ -26,6 +26,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Give_Payments_Query extends Give_Stats {
 
 	/**
+	 * Preserve args
+	 *
+	 * @since  1.8.17
+	 * @access public
+	 *
+	 * @var    array
+	 */
+	public $_args = array();
+
+	/**
 	 * The args to pass to the give_get_payments() query
 	 *
 	 * @since  1.0
@@ -76,10 +86,11 @@ class Give_Payments_Query extends Give_Stats {
 			'search_in_notes' => false,
 			'children'        => false,
 			'fields'          => null,
+			'gateway'         => null,
 			'give_forms'      => null,
 		);
 
-		$this->args = wp_parse_args( $args, $defaults );
+		$this->args = $this->_args = wp_parse_args( $args, $defaults );
 
 		$this->init();
 	}
@@ -132,6 +143,10 @@ class Give_Payments_Query extends Give_Stats {
 	 * @access private
 	 */
 	private function set_filters() {
+		// Reset param to apply filters.
+		// While set filters $args will get override and multiple get_payments call will not work.
+		$this->args = $this->_args;
+
 		$this->date_filter_pre();
 		$this->orderby();
 		$this->status();
@@ -144,6 +159,7 @@ class Give_Payments_Query extends Give_Stats {
 		$this->mode();
 		$this->children();
 		$this->give_forms();
+		$this->gateway_filter();
 
 		add_filter( 'posts_orderby', array( $this, 'custom_orderby' ), 10, 2 );
 	}
@@ -185,7 +201,8 @@ class Give_Payments_Query extends Give_Stats {
 		 */
 		do_action( 'give_pre_get_payments', $this );
 
-		$query = new WP_Query( $this->args );
+		$query          = new WP_Query( $this->args );
+		$this->payments = array();
 
 		$custom_output = array(
 			'payments',
@@ -209,7 +226,6 @@ class Give_Payments_Query extends Give_Stats {
 			wp_reset_postdata();
 		}
 
-
 		// Remove query filters after we retrieve payments.
 		$this->unset_filters();
 
@@ -223,6 +239,68 @@ class Give_Payments_Query extends Give_Stats {
 		do_action( 'give_post_get_payments', $this );
 
 		return $this->payments;
+	}
+
+
+	/**
+	 * Get payments by group
+	 *
+	 * @since  1.8.17
+	 * @access public
+	 *
+	 * @param string $group_by Valid donation property
+	 * @param bool   $count
+	 *
+	 * @return array
+	 */
+	public function get_payment_by_group( $group_by, $count = false ) {
+		$donations      = $this->get_payments();
+		$allowed_groups = array( 'post_status' );
+		$result         = array();
+
+
+		if ( in_array( $group_by, $allowed_groups ) ) {
+			/* @var $donation Give_Payment */
+			foreach ( $donations as $donation ) {
+				$result[ $donation->{$group_by} ][] = $donation;
+			}
+
+			// Set only count in result.
+			if ( $count ) {
+				$new_result = array();
+
+				foreach ( $result as $index => $items ) {
+					$new_result[ $index ] = count( $items );
+				}
+
+				$result = $new_result;
+
+				switch ( $group_by ) {
+					case 'post_status':
+						$statuses = get_post_stati();
+
+						if ( isset( $statuses['private'] ) && empty( $args['s'] ) ) {
+							unset( $statuses['private'] );
+						}
+
+						/* @var Give_Payment $donation */
+						foreach ( $statuses as $status => $status_label ) {
+							if ( ! isset( $result[ $status ] ) ) {
+								$result[ $status ] = 0;
+							}
+						}
+
+						break;
+				}
+			}
+		}
+		
+		/**
+		 * Filter the result
+		 *
+		 * @since 1.8.17
+		 */
+		return apply_filters( 'give_get_payment_by_group', $result, $donations, $this );
 	}
 
 	/**
@@ -269,7 +347,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * @return void
 	 */
 	public function status() {
-		if ( ! isset ( $this->args['status'] ) ) {
+		if ( ! isset( $this->args['status'] ) ) {
 			return;
 		}
 
@@ -286,7 +364,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * @return void
 	 */
 	public function page() {
-		if ( ! isset ( $this->args['page'] ) ) {
+		if ( ! isset( $this->args['page'] ) ) {
 			return;
 		}
 
@@ -326,7 +404,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * @return void
 	 */
 	public function month() {
-		if ( ! isset ( $this->args['month'] ) ) {
+		if ( ! isset( $this->args['month'] ) ) {
 			return;
 		}
 
@@ -344,21 +422,21 @@ class Give_Payments_Query extends Give_Stats {
 	 */
 	public function orderby() {
 		switch ( $this->args['orderby'] ) {
-			case 'amount' :
+			case 'amount':
 				$this->__set( 'orderby', 'meta_value_num' );
 				$this->__set( 'meta_key', '_give_payment_total' );
 				break;
 
-			case 'status' :
+			case 'status':
 				$this->__set( 'orderby', 'post_status' );
 				break;
 
-			case 'donation_form' :
+			case 'donation_form':
 				$this->__set( 'orderby', 'meta_value' );
 				$this->__set( 'meta_key', '_give_payment_form_title' );
 				break;
 
-			default :
+			default:
 				$this->__set( 'orderby', $this->args['orderby'] );
 				break;
 		}
@@ -386,7 +464,7 @@ class Give_Payments_Query extends Give_Stats {
 
 		switch ( $query->query['orderby'] ) {
 			case 'post_status':
-				$order = $wpdb->posts .'.post_status ' . strtoupper( $query->query['order'] );
+				$order = $wpdb->posts . '.post_status ' . strtoupper( $query->query['order'] );
 				break;
 		}
 
@@ -412,10 +490,12 @@ class Give_Payments_Query extends Give_Stats {
 			$user_key = '_give_payment_user_email';
 		}
 
-		$this->__set( 'meta_query', array(
-			'key'   => $user_key,
-			'value' => $this->args['user'],
-		) );
+		$this->__set(
+			'meta_query', array(
+				'key'   => $user_key,
+				'value' => $this->args['user'],
+			)
+		);
 	}
 
 	/**
@@ -430,10 +510,12 @@ class Give_Payments_Query extends Give_Stats {
 			return;
 		}
 
-		$this->__set( 'meta_query', array(
-			'key'   => '_give_payment_customer_id',
-			'value' => (int) $this->args['donor'],
-		) );
+		$this->__set(
+			'meta_query', array(
+				'key'   => '_give_payment_customer_id',
+				'value' => (int) $this->args['donor'],
+			)
+		);
 	}
 
 	/**
@@ -566,10 +648,12 @@ class Give_Payments_Query extends Give_Stats {
 			return;
 		}
 
-		$this->__set( 'meta_query', array(
-			'key'   => '_give_payment_mode',
-			'value' => $this->args['mode'],
-		) );
+		$this->__set(
+			'meta_query', array(
+				'key'   => '_give_payment_mode',
+				'value' => $this->args['mode'],
+			)
+		);
 	}
 
 	/**
@@ -607,15 +691,51 @@ class Give_Payments_Query extends Give_Stats {
 			$compare = 'IN';
 		}
 
-		$this->__set( 'meta_query', array(
-			array(
-				'key'     => '_give_payment_form_id',
-				'value'   => $this->args['give_forms'],
-				'compare' => $compare,
-			),
-		) );
+		$this->__set(
+			'meta_query', array(
+				array(
+					'key'     => '_give_payment_form_id',
+					'value'   => $this->args['give_forms'],
+					'compare' => $compare,
+				),
+			)
+		);
 
 		$this->__unset( 'give_forms' );
+
+	}
+
+	/**
+	 * Specific Gateway
+	 *
+	 * @since  1.8.17
+	 * @access public
+	 *
+	 * @return void
+	 */
+	public function gateway_filter() {
+
+		if ( empty( $this->args['gateway'] ) ) {
+			return;
+		}
+
+		$compare = '=';
+
+		if ( is_array( $this->args['gateway'] ) ) {
+			$compare = 'IN';
+		}
+
+		$this->__set(
+			'meta_query', array(
+				array(
+					'key'     => '_give_payment_gateway',
+					'value'   => $this->args['gateway'],
+					'compare' => $compare,
+				),
+			)
+		);
+
+		$this->__unset( 'gateway' );
 
 	}
 
