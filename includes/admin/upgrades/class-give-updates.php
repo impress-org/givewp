@@ -370,6 +370,9 @@ class Give_Updates {
 	 * @access public
 	 */
 	public function __give_ajax_updates() {
+		// Disable cache.
+		Give_Cache::disable();
+
 		// Check permission.
 		if ( ! current_user_can( 'manage_give_settings' ) ) {
 			$this->send_ajax_response(
@@ -486,6 +489,9 @@ class Give_Updates {
 
 		// Set data.
 		$data = wp_parse_args( $data, $default );
+
+		// Enable cache.
+		Give_Cache::enable();
 
 		switch ( $type ) {
 			case 'success':
