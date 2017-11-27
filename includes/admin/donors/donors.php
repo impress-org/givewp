@@ -607,15 +607,27 @@ function give_donor_view( $donor ) {
 								</th>
 								<td>
 									<?php
-									echo Give()->html->select( array(
-										'options'          => give_get_states( give_get_option( 'base_country' ) ),
-										'name'             => 'state',
-										'show_option_all'  => false,
-										'show_option_none' => false,
-										'chosen'           => true,
-										'placeholder'      => esc_attr__( 'Select a state', 'give' ),
-										'data'             => array( 'search-type' => 'no_ajax' ),
-									) );
+									$states = give_get_states( give_get_option( 'base_country' ) );
+									if( empty( $states ) ) {
+										$state_args = array(
+											'name'  => 'state',
+											'class' => 'regular-text',
+											'value' => give_get_option( 'base_state' ),
+										);
+										echo Give()->html->text( $state_args );
+									} else {
+										$state_args = array(
+											'options'          => $states,
+											'name'             => 'state',
+											'class'            => 'regular-text',
+											'show_option_all'  => false,
+											'show_option_none' => false,
+											'chosen'           => true,
+											'placeholder'      => __( 'Select a state', 'give' ),
+											'data'             => array( 'search-type' => 'no_ajax' ),
+										);
+										echo Give()->html->select( $state_args );
+									}
 									?>
 								</td>
 							</tr>
