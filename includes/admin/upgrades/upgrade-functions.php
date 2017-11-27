@@ -1566,6 +1566,7 @@ function give_v20_upgrades_payment_metadata_callback() {
 			global $post;
 
 			// Split _give_payment_meta meta.
+			// @todo Remove _give_payment_meta in after releases 2.0
 			$payment_meta = maybe_unserialize( $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM $wpdb->postmeta WHERE meta_key=%s", '_give_payment_meta' ) ) );
 			if ( ! empty( $payment_meta ) ) {
 				_give_20_bc_split_and_save_give_payment_meta( $post->ID, maybe_unserialize( $payment_meta ) );
