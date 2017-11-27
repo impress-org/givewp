@@ -1431,8 +1431,6 @@ class Give_Donor {
 			return false;
 		}
 
-		$this->setup_address();
-
 		return true;
 	}
 
