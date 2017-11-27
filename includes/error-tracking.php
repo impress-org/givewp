@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0
  * @uses  Give_Session::get()
- * @return mixed array if errors are present, false if none found
+ * @return array|bool array if errors are present, false if none found
  */
 function give_get_errors() {
 	return Give()->session->get( 'give_errors' );
