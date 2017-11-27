@@ -1202,6 +1202,7 @@ class Give_Donor {
 
 			if ( empty( $value ) ) {
 				$is_valid_address = false;
+				give_set_error( 'give-required-address-fields', __( 'Please enter required address fields.', 'give' ) );
 				break;
 			}
 		}
