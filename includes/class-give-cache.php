@@ -660,6 +660,27 @@ class Give_Cache {
 		 */
 		return $group;
 	}
+
+
+	/**
+	 * Disable cache.
+	 *
+	 * @since  2.0
+	 * @access public
+	 */
+	public static function disable() {
+		self::get_instance()->is_cache = false;
+	}
+
+	/**
+	 * Enable cache.
+	 *
+	 * @since  2.0
+	 * @access public
+	 */
+	public static function enable() {
+		self::get_instance()->is_cache = true;
+	}
 }
 
 // Initialize
