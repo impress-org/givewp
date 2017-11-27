@@ -170,6 +170,12 @@ input.give-text_medium {
 
 }
 
+// Show unnamed donors one per line.
+#give-bulk-donors div[id^="give-donor-"] {
+  display: block;
+  overflow: hidden;
+}
+
 //---------------------------------------------------
 // Responsive
 //---------------------------------------------------

@@ -885,6 +885,10 @@ input.give-text_medium {
   .postbox-container .cmb-row .cmb-th label {
     padding-left: 8px; }
 
+#give-bulk-donors div[id^="give-donor-"] {
+  display: block;
+  overflow: hidden; }
+
 @media only screen and (min-width: 851px) {
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row {
     float: left;
