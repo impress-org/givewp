@@ -406,15 +406,18 @@ function give_process_profile_editor_updates( $data ) {
 		'user_email'   => $email,
 	);
 
-
-	$address = array(
-		'line1'   => $line1,
-		'line2'   => $line2,
-		'city'    => $city,
-		'state'   => $state,
-		'zip'     => $zip,
-		'country' => $country,
-	);
+	if( empty( $line1 ) || empty( $city ) || empty( $state ) || empty( $zip ) || empty( $country ) ) {
+		give_set_error( 'give-empty-address-fields', __( 'Please fill in the required address fields.', 'give' ) );
+	} else {
+		$address = array(
+			'line1'   => $line1,
+			'line2'   => $line2,
+			'city'    => $city,
+			'state'   => $state,
+			'zip'     => $zip,
+			'country' => $country,
+		);
+	}
 
 	/**
 	 * Fires before updating user profile.
