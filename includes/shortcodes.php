@@ -390,17 +390,19 @@ function give_process_profile_editor_updates( $data ) {
 	/* @var Give_Donor $donor */
 	$donor = new Give_Donor( $user_id, true );
 
-	$display_name = isset( $data['give_display_name'] ) ? sanitize_text_field( $data['give_display_name'] ) : $old_user_data->display_name;
-	$first_name   = isset( $data['give_first_name'] ) ? sanitize_text_field( $data['give_first_name'] ) : $old_user_data->first_name;
-	$last_name    = isset( $data['give_last_name'] ) ? sanitize_text_field( $data['give_last_name'] ) : $old_user_data->last_name;
-	$email        = isset( $data['give_email'] ) ? sanitize_email( $data['give_email'] ) : $old_user_data->user_email;
-	$line1        = ( isset( $data['give_address_line1'] ) ? sanitize_text_field( $data['give_address_line1'] ) : '' );
-	$line2        = ( isset( $data['give_address_line2'] ) ? sanitize_text_field( $data['give_address_line2'] ) : '' );
-	$city         = ( isset( $data['give_address_city'] ) ? sanitize_text_field( $data['give_address_city'] ) : '' );
-	$state        = ( isset( $data['give_address_state'] ) ? sanitize_text_field( $data['give_address_state'] ) : '' );
-	$zip          = ( isset( $data['give_address_zip'] ) ? sanitize_text_field( $data['give_address_zip'] ) : '' );
-	$country      = ( isset( $data['give_address_country'] ) ? sanitize_text_field( $data['give_address_country'] ) : '' );
-	$full_name    = trim("{$first_name} {$last_name}");
+	$display_name     = isset( $data['give_display_name'] ) ? sanitize_text_field( $data['give_display_name'] ) : $old_user_data->display_name;
+	$first_name       = isset( $data['give_first_name'] ) ? sanitize_text_field( $data['give_first_name'] ) : $old_user_data->first_name;
+	$last_name        = isset( $data['give_last_name'] ) ? sanitize_text_field( $data['give_last_name'] ) : $old_user_data->last_name;
+	$email            = isset( $data['give_email'] ) ? sanitize_email( $data['give_email'] ) : $old_user_data->user_email;
+	$line1            = ( isset( $data['give_address_line1'] ) ? sanitize_text_field( $data['give_address_line1'] ) : '' );
+	$line2            = ( isset( $data['give_address_line2'] ) ? sanitize_text_field( $data['give_address_line2'] ) : '' );
+	$city             = ( isset( $data['give_address_city'] ) ? sanitize_text_field( $data['give_address_city'] ) : '' );
+	$state            = ( isset( $data['give_address_state'] ) ? sanitize_text_field( $data['give_address_state'] ) : '' );
+	$zip              = ( isset( $data['give_address_zip'] ) ? sanitize_text_field( $data['give_address_zip'] ) : '' );
+	$country          = ( isset( $data['give_address_country'] ) ? sanitize_text_field( $data['give_address_country'] ) : '' );
+	$password         = ! empty( $data['give_new_user_pass1'] ) ? $data['give_new_user_pass1'] : '';
+	$confirm_password = ! empty( $data['give_new_user_pass2'] ) ? $data['give_new_user_pass2'] : '';
+	$full_name        = trim("{$first_name} {$last_name}");
 
 	$userdata = array(
 		'ID'           => $user_id,
@@ -409,7 +411,6 @@ function give_process_profile_editor_updates( $data ) {
 		'display_name' => $display_name,
 		'user_email'   => $email,
 	);
-
 
 	$address = array(
 		'line1'   => $line1,
@@ -442,7 +443,7 @@ function give_process_profile_editor_updates( $data ) {
 	}
 
 	// Make sure to validate passwords for existing Donors.
-	give_validate_user_password( $data['give_new_user_pass1'], $data['give_new_user_pass2'] );
+	give_validate_user_password( $password, $confirm_password );
 
 	// Check for errors.
 	$errors = give_get_errors();
