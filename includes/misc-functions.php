@@ -1562,7 +1562,7 @@ function give_donation_history_table_end() {
 				<div class="give-security-column give-security-description-wrap">
 					<?php
 					echo sprintf(
-						__( 'For security reason, please confirm your email address (%s) to view your complete donation history.', 'give' ),
+						__( 'For security reasons, please confirm your email address (%s) to view your complete donation history.', 'give' ),
 						$email
 					);
 					?>
