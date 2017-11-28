@@ -84,22 +84,6 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'css'     => 'width:12em;',
 						),
 						array(
-							'id'      => 'limit_email_throttle_time',
-							'name'    => __( 'Limit Email Throttle Time (in minutes)', 'give' ),
-							'desc'    => __( 'Specified Time in which user can send a specific amount of emails. For Example, X number of emails in 5 minutes.', 'give' ),
-							'default' => '5',
-							'type'    => 'number',
-							'css'     => 'width:12em;',
-						),
-						array(
-							'id'      => 'total_email_throttle',
-							'name'    => __( 'Limit Number of Emails', 'give' ),
-							'desc'    => __( 'Limit Number of Emails a user can send in a specified amount of time. For Example, 3 emails to be send in X amount of time.', 'give' ),
-							'default' => '3',
-							'type'    => 'number',
-							'css'     => 'width:12em;',
-						),
-						array(
 							'id'      => 'recaptcha_key',
 							'name'    => __( 'reCAPTCHA Site Key', 'give' ),
 							/* translators: %s: https://www.google.com/recaptcha/ */
