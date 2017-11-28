@@ -371,26 +371,45 @@ function give_import_donations_options() {
 	 */
 	return (array) apply_filters( 'give_import_donations_options', array(
 		'id'          => __( 'Donation ID', 'give' ),
-		'amount'      => __( 'Donation Amount', 'give' ),
-		'post_date'   => __( 'Donation Date', 'give' ),
-		'first_name'  => __( 'Donor First Name', 'give' ),
-		'last_name'   => __( 'Donor Last Name', 'give' ),
+		'amount'      => array(
+			__( 'Donation Amount', 'give' ),
+			__( 'Amount', 'give' )
+		),
+		'post_date'   => array(
+			__( 'Donation Date', 'give' ),
+			__( 'Date', 'give' ),
+		),
+		'first_name'  => array(
+			__( 'Donor First Name', 'give' ),
+			__( 'First Name', 'give' )
+		),
+		'last_name'   => array(
+			__( 'Donor Last Name', 'give' ),
+			__( 'Last Name', 'give' ),
+		),
 		'line1'       => __( 'Address 1', 'give' ),
 		'line2'       => __( 'Address 2', 'give' ),
 		'city'        => __( 'City', 'give' ),
-		'state'       => __( 'State', 'give' ),
-		'country'     => array(
-			__( 'Country', 'give' ),
+		'state'       => array(
+			__( 'State', 'give' ),
+			__( 'Province', 'give' ),
 			__( 'County', 'give' ),
 			__( 'Region', 'give' ),
-			__( 'Province', 'give' ),
 		),
+		'country'     => __( 'Country', 'give' ),
 		'zip'         => array(
 			__( 'Zip', 'give' ),
+			__( 'Zip Code', 'give' ),
 			__( 'Postal Code', 'give' ),
 		),
-		'email'       => __( 'Donor Email', 'give' ),
-		'post_status' => __( 'Donation Status', 'give' ),
+		'email'       => array(
+			__( 'Donor Email', 'give' ),
+			__( 'Email', 'give' )
+		),
+		'post_status' => array(
+			__( 'Donation Status', 'give' ),
+			__( 'Status', 'give' ),
+		),
 		'gateway'     => __( 'Payment Method', 'give' ),
 		'notes'       => __( 'Notes', 'give' ),
 		'mode'        => __( 'Test Mode', 'give' ),
@@ -434,9 +453,16 @@ function give_import_donation_form_options() {
 		'form_title'              => array(
 			__( 'Donation Form Title', 'give' ),
 			__( 'Donation Form', 'give' ),
+			__( 'Form Name', 'give' ),
 		),
-		'form_id'                 => __( 'Donation Form ID', 'give' ),
-		'form_level'              => __( 'Donation Level', 'give' ),
+		'form_id'                 => array(
+			__( 'Donation Form ID', 'give' ),
+			__( 'Form ID', 'give' )
+		),
+		'form_level'              => array(
+			__( 'Donation Level', 'give' ),
+			__( 'Level', 'give' ),
+		),
 		'form_custom_amount_text' => __( 'Custom Amount Text', 'give' ),
 	) );
 }
