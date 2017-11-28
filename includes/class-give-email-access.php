@@ -216,8 +216,16 @@ class Give_Email_Access {
 		// Nice subject and message.
 		$subject = apply_filters( 'give_email_access_token_subject', sprintf( __( 'Please confirm your email for %s', 'give' ), get_bloginfo( 'url' ) ) );
 
-		$message = sprintf( __( 'Please click the link to access your donation history on %s. If you did not request this email, please contact %s.', 'give' ), get_bloginfo( 'url' ), get_bloginfo( 'admin_email' ) ) . "\n\n";
-		$message .= '<a href="' . esc_url( $access_url ) . '" target="_blank">' . __( 'Click here to view donation history &raquo;', 'give' ) . '</a>' . "\n\n";
+		$message = sprintf(
+			__( 'Please click the link to access your donation history on <a target="_blank" href="%1$s">%1$s</a>. If you did not request this email, please contact <a href="mailto:%2$s">%2$s</a>.', 'give' ),
+			get_bloginfo( 'url' ),
+			get_bloginfo( 'admin_email' )
+		) . "\n\n";
+		$message .= sprintf(
+			__( '<a href="%s" target="_blank">%s</a>', 'give' ),
+			esc_url( $access_url ),
+			__( 'View your donation history &raquo;', 'give' )
+		) . "\n\n";
 		$message .= "\n\n";
 		$message .= __( 'Sincerely,', 'give' ) . "\n";
 		$message .= get_bloginfo( 'name' ) . "\n";
