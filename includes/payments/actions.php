@@ -278,7 +278,7 @@ function give_bc_v20_get_payment_meta( $check, $object_id, $meta_key, $single ) 
 		return $check;
 	}
 
-	$cache_key = "give_payment_meta_{$object_id}";
+	$cache_key = "_give_payment_meta_{$object_id}";
 
 	// Get already calculate payment meta from cache.
 	$payment_meta = Give_Cache::get_group( $cache_key, 'give-db-queries' );
