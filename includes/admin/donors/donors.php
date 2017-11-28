@@ -601,42 +601,50 @@ function give_donor_view( $donor ) {
 									<input id="city" type="text" name="city" value="" class="medium-text"/>
 								</td>
 							</tr>
-							<tr class="give-field-wrap">
-								<th class="col">
-									<label for="state"><?php esc_html_e( 'State / Province / County:', 'give' ); ?></label>
-								</th>
-								<td>
-									<?php
-									$states = give_get_states( give_get_option( 'base_country' ) );
-									$state_args = array(
-										'name'  => 'state',
-										'class' => 'regular-text',
-									);
+							<?php
+							$no_states_country = give_no_states_country_list();
+							$base_country      = give_get_option( 'base_country' );
+							if ( ! array_key_exists( $base_country, $no_states_country ) ) {
+								?>
+								<tr class="give-field-wrap">
+									<th class="col">
+										<label for="state"><?php esc_html_e( 'State / Province / County:', 'give' ); ?></label>
+									</th>
+									<td>
+										<?php
+										$states     = give_get_states( $base_country );
+										$state_args = array(
+											'name'  => 'state',
+											'class' => 'regular-text',
+										);
 
-									if( empty( $states ) ) {
+										if ( empty( $states ) ) {
 
-										// Show Text field, if empty states.
-										$state_args = wp_parse_args( $state_args, array(
-											'value' => give_get_option( 'base_state' ),
-										) );
-										echo Give()->html->text( $state_args );
-									} else {
+											// Show Text field, if empty states.
+											$state_args = wp_parse_args( $state_args, array(
+												'value' => give_get_option( 'base_state' ),
+											) );
+											echo Give()->html->text( $state_args );
+										} else {
 
-										// Show Chosen DropDown, if states are not empty.
-										$state_args = wp_parse_args( $state_args, array(
-											'options'          => $states,
-											'selected'         => give_get_option( 'base_state' ),
-											'show_option_all'  => false,
-											'show_option_none' => false,
-											'chosen'           => true,
-											'placeholder'      => __( 'Select a state', 'give' ),
-											'data'             => array( 'search-type' => 'no_ajax' ),
-										) );
-										echo Give()->html->select( $state_args );
-									}
-									?>
-								</td>
-							</tr>
+											// Show Chosen DropDown, if states are not empty.
+											$state_args = wp_parse_args( $state_args, array(
+												'options'          => $states,
+												'selected'         => give_get_option( 'base_state' ),
+												'show_option_all'  => false,
+												'show_option_none' => false,
+												'chosen'           => true,
+												'placeholder'      => __( 'Select a state', 'give' ),
+												'data'             => array( 'search-type' => 'no_ajax' ),
+											) );
+											echo Give()->html->select( $state_args );
+										}
+										?>
+									</td>
+								</tr>
+								<?php
+							}
+							?>
 							<tr>
 								<th class="col">
 									<label for="zip"><?php esc_html_e( 'Zip / Postal Code:', 'give' ); ?></label>
