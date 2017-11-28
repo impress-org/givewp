@@ -271,6 +271,13 @@ class Give_DB_Meta extends Give_DB {
 		if ( $this->is_post_type_query( $wp_query ) && ! empty( $wp_query->meta_query->queries ) ) {
 			$clause = str_replace( "{$wpdb->postmeta}.post_id", "{$this->table_name}.{$this->meta_type}_id", $clause );
 			$clause = str_replace( $wpdb->postmeta, $this->table_name, $clause );
+
+			if( false !== strpos( $clause, 'INNER JOIN' ) ) {
+				preg_match( '/INNER JOIN wp_give_paymentmeta AS (.*) ON/', $clause, $alias_table_name );
+				if( isset( $alias_table_name[1] ) ) {
+					$clause = str_replace( "{$alias_table_name[1]}.post_id", "{$this->table_name}.{$this->meta_type}_id", $clause );
+				}
+			}
 		}
 
 		return $clause;
