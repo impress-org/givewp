@@ -897,6 +897,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 			// Remove license from database.
 			delete_option( "{$this->item_shortname}_license_active" );
 			give_delete_option( "{$this->item_shortname}_license_key" );
+			unset( $_POST["{$this->item_shortname}_license_key"] );
 
 			// Unset license param.
 			$this->license = '';
