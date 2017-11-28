@@ -496,7 +496,7 @@ class Give_Cache {
 		$donation_query = new Give_Payments_Query(
 			array(
 				'number'     => - 1,
-				'give_forms' => $form_id
+				'give_forms' => $form_id,
 			)
 		);
 
