@@ -229,6 +229,7 @@ class Give_DB_Meta extends Give_DB {
 	 *
 	 * @since  2.0
 	 * @access public
+	 * @global wpdb    $wpdb
 	 *
 	 * @param string   $where
 	 * @param WP_Query $wp_query
@@ -238,19 +239,8 @@ class Give_DB_Meta extends Give_DB {
 	public function __posts_where( $where, $wp_query ) {
 		global $wpdb;
 
-		$is_payment_post_type = false;
-
-		// Check if it is payment query.
-		if ( ! empty( $wp_query->query['post_type'] ) ) {
-			if ( is_string( $wp_query->query['post_type'] ) && $this->post_type === $wp_query->query['post_type'] ) {
-				$is_payment_post_type = true;
-			} elseif ( is_array( $wp_query->query['post_type'] ) && in_array( $this->post_type, $wp_query->query['post_type'] ) ) {
-				$is_payment_post_type = true;
-			}
-		}
-
 		// Add new table to sql query.
-		if ( $is_payment_post_type && ! empty( $wp_query->meta_query->queries ) ) {
+		if ( $this->is_post_type_query( $wp_query ) && ! empty( $wp_query->meta_query->queries ) ) {
 			$where = str_replace( $wpdb->postmeta, $this->table_name, $where );
 		}
 
@@ -272,24 +262,70 @@ class Give_DB_Meta extends Give_DB {
 	public function __posts_join( $join, $wp_query ) {
 		global $wpdb;
 
-		$is_payment_post_type = false;
-
-		// Check if it is payment query.
-		if ( ! empty( $wp_query->query['post_type'] ) ) {
-			if ( is_string( $wp_query->query['post_type'] ) && $this->post_type === $wp_query->query['post_type'] ) {
-				$is_payment_post_type = true;
-			} elseif ( is_array( $wp_query->query['post_type'] ) && in_array( $this->post_type, $wp_query->query['post_type'] ) ) {
-				$is_payment_post_type = true;
-			}
-		}
-
 		// Add new table to sql query.
-		if ( $is_payment_post_type && ! empty( $wp_query->meta_query->queries ) ) {
+		if ( $this->is_post_type_query( $wp_query ) && ! empty( $wp_query->meta_query->queries ) ) {
 			$join = str_replace( "{$wpdb->postmeta}.post_id", "{$this->table_name}.payment_id", $join );
 			$join = str_replace( $wpdb->postmeta, $this->table_name, $join );
 		}
 
 		return $join;
+	}
+
+
+	/**
+	 * Check if current query for post type or not.
+	 * 
+	 * @since 2.0
+	 * @access protected
+	 * 
+	 * @param WP_Query $wp_query
+	 * 
+	 * @return bool
+	 */
+	protected function is_post_type_query( $wp_query ){
+		$status = false;
+		
+		// Check if it is payment query.
+		if ( ! empty( $wp_query->query['post_type'] ) ) {
+			if (
+				is_string( $wp_query->query['post_type'] ) &&
+				$this->post_type === $wp_query->query['post_type']
+			) {
+				$status = true;
+			} elseif (
+				is_array( $wp_query->query['post_type'] ) &&
+				in_array( $this->post_type, $wp_query->query['post_type'] )
+			) {
+				$status = true;
+			}
+		}
+		
+		return $status;
+	}
+
+	/**
+	 * Check if current id of post type or not
+	 *
+	 * @since  2.0
+	 * @access protected
+	 *
+	 * @param $ID
+	 *
+	 * @return bool
+	 */
+	protected function is_valid_post_type( $ID ) {
+		return $ID && ( $this->post_type === get_post_type( $ID ) );
+	}
+
+	/**
+	 * check if custom meta table enabled or not.
+	 *
+	 * @since  2.0
+	 * @access protected
+	 * @return bool
+	 */
+	protected function is_custom_meta_table_active() {
+		return false;
 	}
 
 	/**
@@ -361,30 +397,5 @@ class Give_DB_Meta extends Give_DB {
 
 				return $this->delete_meta( $id, $meta_key, $meta_value, $delete_all );
 		}
-	}
-
-	/**
-	 * Check if current id of post type or not
-	 *
-	 * @since  2.0
-	 * @access protected
-	 *
-	 * @param $ID
-	 *
-	 * @return bool
-	 */
-	protected function is_valid_post_type( $ID ) {
-		return $ID && ( $this->post_type === get_post_type( $ID ) );
-	}
-
-	/**
-	 * check if custom meta table enabled or not.
-	 *
-	 * @since  2.0
-	 * @access protected
-	 * @return bool
-	 */
-	protected function is_custom_meta_table_active() {
-		return false;
 	}
 }
