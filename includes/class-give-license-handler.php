@@ -338,11 +338,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 			}
 
 			// Do not simultaneously activate add-ons if the user want to deactivate a specific add-on.
-			foreach ( $_POST as $key => $value ) {
-				if ( false !== strpos( $key, 'license_key_deactivate' ) ) {
-					// Don't activate a key when deactivating a different key
-					return;
-				}
+			if( $this->is_deactivating_license() ) {
+				return;
 			}
 
 			// Delete previous license setting if a empty license key submitted.
