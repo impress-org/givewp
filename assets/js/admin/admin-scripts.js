@@ -624,14 +624,10 @@ var give_setting_edit = false;
 				var fieldValue = $( 'input[name="email_access"]:checked', '.give-setting-tab-body-general' ).val();
 				if ( 'enabled' === fieldValue ) {
 					$( '#limit_display_donations' ).parents( 'tr' ).show();
-					$( '#limit_email_throttle_time' ).parents( 'tr' ).show();
-					$( '#total_email_throttle' ).parents( 'tr' ).show();
 					$( '#recaptcha_key' ).parents( 'tr' ).show();
 					$( '#recaptcha_secret' ).parents( 'tr' ).show();
 				} else {
 					$( '#limit_display_donations' ).parents( 'tr' ).hide();
-					$( '#limit_email_throttle_time' ).parents( 'tr' ).hide();
-					$( '#total_email_throttle' ).parents( 'tr' ).hide();
 					$( '#recaptcha_key' ).parents( 'tr' ).hide();
 					$( '#recaptcha_secret' ).parents( 'tr' ).hide();
 				}
