@@ -64,6 +64,8 @@ class Give_DB_Meta extends Give_DB {
 		'delete_post_metadata',
 		'posts_where',
 		'posts_join',
+		'posts_groupby',
+		'posts_orderby'
 	);
 
 	/**
@@ -94,11 +96,19 @@ class Give_DB_Meta extends Give_DB {
 		}
 
 		if ( in_array( 'posts_where', $this->supports ) ) {
-			add_filter( 'posts_where', array( $this, '__posts_where' ), 99999, 2 );
+			add_filter( 'posts_where', array( $this, '__rename_meta_table_name_in_query' ), 99999, 2 );
 		}
 
 		if ( in_array( 'posts_join', $this->supports ) ) {
-			add_filter( 'posts_join', array( $this, '__posts_join' ), 99999, 2 );
+			add_filter( 'posts_join', array( $this, '__rename_meta_table_name_in_query' ), 99999, 2 );
+		}
+
+		if ( in_array( 'posts_groupby', $this->supports ) ) {
+			add_filter( 'posts_groupby', array( $this, '__rename_meta_table_name_in_query' ), 99999, 2 );
+		}
+
+		if ( in_array( 'posts_orderby', $this->supports ) ) {
+			add_filter( 'posts_orderby', array( $this, '__rename_meta_table_name_in_query' ), 99999, 2 );
 		}
 	}
 
@@ -113,7 +123,8 @@ class Give_DB_Meta extends Give_DB {
 	 * @param   string $meta_key The meta key to retrieve.
 	 * @param   bool   $single   Whether to return a single value.
 	 *
-	 * @return  mixed                 Will be an array if $single is false. Will be value of meta data field if $single is true.
+	 * @return  mixed                 Will be an array if $single is false. Will be value of meta data field if $single
+	 *                                is true.
 	 */
 	public function get_meta( $id = 0, $meta_key = '', $single = false ) {
 		$id = $this->sanitize_id( $id );
@@ -225,66 +236,42 @@ class Give_DB_Meta extends Give_DB {
 	}
 
 	/**
-	 * Filter where clause of every query for new payment meta table
-	 *
-	 * @since  2.0
-	 * @access public
-	 * @global wpdb    $wpdb
-	 *
-	 * @param string   $where
-	 * @param WP_Query $wp_query
-	 *
-	 * @return string
-	 */
-	public function __posts_where( $where, $wp_query ) {
-		global $wpdb;
-
-		// Add new table to sql query.
-		if ( $this->is_post_type_query( $wp_query ) && ! empty( $wp_query->meta_query->queries ) ) {
-			$where = str_replace( $wpdb->postmeta, $this->table_name, $where );
-		}
-
-		return $where;
-	}
-
-
-	/**
-	 * Filter join clause of every query for new payment meta table
+	 * Rename query clauses of every query for new meta table
 	 *
 	 * @since  2.0
 	 * @access public
 	 *
-	 * @param string   $join
+	 * @param string   $clause
 	 * @param WP_Query $wp_query
 	 *
 	 * @return string
 	 */
-	public function __posts_join( $join, $wp_query ) {
+	public function __rename_meta_table_name_in_query( $clause, $wp_query ) {
 		global $wpdb;
 
 		// Add new table to sql query.
 		if ( $this->is_post_type_query( $wp_query ) && ! empty( $wp_query->meta_query->queries ) ) {
-			$join = str_replace( "{$wpdb->postmeta}.post_id", "{$this->table_name}.payment_id", $join );
-			$join = str_replace( $wpdb->postmeta, $this->table_name, $join );
+			$clause = str_replace( "{$wpdb->postmeta}.post_id", "{$this->table_name}.{$this->meta_type}_id", $clause );
+			$clause = str_replace( $wpdb->postmeta, $this->table_name, $clause );
 		}
 
-		return $join;
+		return $clause;
 	}
 
 
 	/**
 	 * Check if current query for post type or not.
-	 * 
-	 * @since 2.0
+	 *
+	 * @since  2.0
 	 * @access protected
-	 * 
+	 *
 	 * @param WP_Query $wp_query
-	 * 
+	 *
 	 * @return bool
 	 */
-	protected function is_post_type_query( $wp_query ){
+	protected function is_post_type_query( $wp_query ) {
 		$status = false;
-		
+
 		// Check if it is payment query.
 		if ( ! empty( $wp_query->query['post_type'] ) ) {
 			if (
@@ -299,7 +286,7 @@ class Give_DB_Meta extends Give_DB {
 				$status = true;
 			}
 		}
-		
+
 		return $status;
 	}
 
@@ -347,12 +334,12 @@ class Give_DB_Meta extends Give_DB {
 				$meta_key    = $arguments[2];
 				$meta_value  = $arguments[3];
 				$unique      = $arguments[4];
-				
+
 				// Bailout.
 				if ( ! $this->is_valid_post_type( $id ) ) {
 					return $this->check;
 				}
-				
+
 				return $this->add_meta( $id, $meta_key, $meta_value, $unique );
 
 			case '__get_meta':
@@ -360,7 +347,7 @@ class Give_DB_Meta extends Give_DB {
 				$id          = $arguments[1];
 				$meta_key    = $arguments[2];
 				$single      = $arguments[3];
-				
+
 				// Bailout.
 				if ( ! $this->is_valid_post_type( $id ) ) {
 					return $this->check;
@@ -375,12 +362,12 @@ class Give_DB_Meta extends Give_DB {
 				$id          = $arguments[1];
 				$meta_key    = $arguments[2];
 				$meta_value  = $arguments[3];
-				
+
 				// Bailout.
 				if ( ! $this->is_valid_post_type( $id ) ) {
 					return $this->check;
 				}
-				
+
 				return $this->update_meta( $id, $meta_key, $meta_value );
 
 			case '__delete_meta':
@@ -389,7 +376,7 @@ class Give_DB_Meta extends Give_DB {
 				$meta_key    = $arguments[2];
 				$meta_value  = $arguments[3];
 				$delete_all  = $arguments[3];
-				
+
 				// Bailout.
 				if ( ! $this->is_valid_post_type( $id ) ) {
 					return $this->check;
