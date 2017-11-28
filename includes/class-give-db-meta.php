@@ -94,11 +94,11 @@ class Give_DB_Meta extends Give_DB {
 		}
 
 		if ( in_array( 'posts_where', $this->supports ) ) {
-			add_filter( 'posts_where', array( $this, '__posts_where' ), 10, 2 );
+			add_filter( 'posts_where', array( $this, '__posts_where' ), 99999, 2 );
 		}
 
 		if ( in_array( 'posts_join', $this->supports ) ) {
-			add_filter( 'posts_join', array( $this, '__posts_join' ), 10, 2 );
+			add_filter( 'posts_join', array( $this, '__posts_join' ), 99999, 2 );
 		}
 	}
 
