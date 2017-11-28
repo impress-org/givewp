@@ -415,17 +415,8 @@ if ( ! class_exists( 'Give_License' ) ) :
 
 			// Run on deactivate button press.
 			if ( isset( $_POST[ $this->item_shortname . '_license_key_deactivate' ] ) ) {
-
-				// Make sure there are no api errors.
-				if ( ! ( $license_data = $this->get_license_info( 'deactivate_license' ) ) ) {
-					return;
-				}
-
-				// Ensure deactivated successfully.
-				if ( isset( $license_data->success ) ) {
-					$this->unset_license();
-				}
-			}// End if().
+				$this->unset_license();
+			}
 		}
 
 		/**
@@ -520,17 +511,14 @@ if ( ! class_exists( 'Give_License' ) ) :
 			 * By default edd software licensing api does not have api to check subscription.
 			 * This is a custom feature to check subscriptions.
 			 */
-			if ( ! ( $subscription_data = $this->get_license_info( 'check_subscription', true ) ) ) {
-				return;
-			}
-
+			$subscription_data = $this->get_license_info( 'check_subscription', true );
 
 			if ( ! empty( $subscription_data['success'] ) && absint( $subscription_data['success'] ) ) {
+
 				$subscriptions = get_option( 'give_subscriptions', array() );
 
 				// Update subscription data only if subscription does not exist already.
 				$subscriptions[ $subscription_data['id'] ] = $subscription_data;
-
 
 				// Initiate default set of license for subscription.
 				if ( ! isset( $subscriptions[ $subscription_data['id'] ]['licenses'] ) ) {
@@ -863,6 +851,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @return mixed
 		 */
 		public function get_license_info( $edd_action = '', $response_in_array = false ) {
+
 			if ( empty( $edd_action ) ) {
 				return false;
 			}
@@ -901,6 +890,7 @@ if ( ! class_exists( 'Give_License' ) ) :
 		 * @access private
 		 */
 		private function unset_license() {
+
 			// Remove license key from subscriptions if exist.
 			$this->__remove_license_key_from_subscriptions();
 

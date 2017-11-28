@@ -72,8 +72,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 			case 'form' :
 				$form_title = get_the_title( $item[ $column_name ] );
 				$form_title = empty( $form_title ) ? sprintf( __( 'Untitled (#%s)', 'give' ), $item[ $column_name ] ) : $form_title;
-
-				return '<a href="' . esc_url( add_query_arg( 'form', $item[ $column_name ] ) ) . '" >' . $form_title . '</a>';
+				return '<a href="' . esc_url( add_query_arg( 'form', $item[ $column_name ] ) ) . '" >' . esc_html( $form_title ). '</a>';
 
 			case 'amount' :
 				$value = give_currency_filter( give_format_amount( $item['amount'], array( 'sanitize' => false, 'donation_id' => $item['payment_id'] ) ), give_get_payment_currency_code( $item['payment_id'] ) );
