@@ -337,15 +337,15 @@ if ( ! class_exists( 'Give_License' ) ) :
 				return;
 			}
 
-			// Do not simultaneously activate add-ons if the user want to deactivate a specific add-on.
-			if( $this->is_deactivating_license() ) {
-				return;
-			}
-
 			// Delete previous license setting if a empty license key submitted.
 			if ( empty( $_POST["{$this->item_shortname}_license_key"] ) ) {
 				$this->unset_license();
 
+				return;
+			}
+
+			// Do not simultaneously activate add-ons if the user want to deactivate a specific add-on.
+			if( $this->is_deactivating_license() ) {
 				return;
 			}
 
