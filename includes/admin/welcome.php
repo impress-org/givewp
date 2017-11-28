@@ -154,9 +154,9 @@ class Give_Welcome {
 
             <p class="about-text"><?php
 				printf(
-				/* translators: %s: https://givewp.com/documentation/ */
+				/* translators: %s: http://docs.givewp.com/docs */
 					__( 'Thank you for activating or updating to the latest version of Give! If you\'re a first time user, welcome! You\'re well on your way to empowering your cause. We encourage you to check out the <a href="%s" target="_blank">plugin documentation</a> and getting started guide below.', 'give' ),
-					esc_url( 'https://givewp.com/documentation/' )
+					esc_url( 'http://docs.givewp.com/docs' )
 				);
 				?></p>
 
