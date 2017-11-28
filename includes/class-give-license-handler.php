@@ -205,10 +205,10 @@ if ( ! class_exists( 'Give_License' ) ) :
 			add_filter( 'give_settings_licenses', array( $this, 'settings' ), 1 );
 
 			// Activate license key on settings save.
-			add_action( 'admin_init', array( $this, 'activate_license' ) );
+			add_action( 'admin_init', array( $this, 'activate_license' ), 10 );
 
 			// Deactivate license key.
-			add_action( 'admin_init', array( $this, 'deactivate_license' ) );
+			add_action( 'admin_init', array( $this, 'deactivate_license' ), 11 );
 
 			// Updater.
 			add_action( 'admin_init', array( $this, 'auto_updater' ), 0 );
