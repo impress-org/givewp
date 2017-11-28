@@ -201,7 +201,7 @@ function give_ajax_get_states_field() {
 	// Get the field name from the $_POST.
 	$field_name = sanitize_text_field( $_POST['field_name'] );
 
-	$label = __( 'State', 'give' );
+	$label = __( 'Select a state', 'give' );
 	$states_label = give_get_states_label();
 
 	$default_state = '';
@@ -255,7 +255,6 @@ function give_ajax_get_states_field() {
 		'success'        => true,
 		'states_found'   => $states_found,
 		'show_field'     => $show_field,
-		'states_label'   => $label,
 		'states_require' => $states_require,
 		'data'           => $data,
 		'default_state'  => $default_state,
