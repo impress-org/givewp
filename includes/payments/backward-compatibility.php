@@ -259,7 +259,7 @@ function _give_20_bc_get_old_payment_meta( $check, $object_id, $meta_key, $singl
 	);
 
 	// Add _give_payment_meta to backward compatibility
-	if( ! give_has_upgrade_completed( 'v20_upgrades_payment_metadata' ) ) {
+	if ( ! give_has_upgrade_completed( 'v20_upgrades_payment_metadata' ) ) {
 		$old_meta_keys[] = '_give_payment_meta';
 	}
 
@@ -340,7 +340,7 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 	if ( give_has_upgrade_completed( 'v20_upgrades_payment_metadata' ) ) {
 		return $check;
 	}
-	
+
 	global $wpdb;
 	$new_meta_keys = array(
 		'_give_payment_donor_id',
@@ -514,7 +514,7 @@ add_filter( 'get_post_metadata', '_give_20_bc_get_new_payment_meta', 10, 5 );
  */
 function _give_20_bc_support_deprecated_meta_key_query( $query ) {
 	// Bailout.
-	if( give_has_upgrade_completed( 'v20_upgrades_payment_metadata' ) ) {
+	if ( give_has_upgrade_completed( 'v20_upgrades_payment_metadata' ) ) {
 		return;
 	}
 
@@ -598,43 +598,43 @@ add_action( 'pre_get_posts', '_give_20_bc_support_deprecated_meta_key_query' );
  * Save payment backward compatibility.
  * Note: some addon still can use user_info in set payment meta
  *       we will use this info to set first name, last name and address of donor
- * 
+ *
  * @since 2.0
  *
  * @param Give_Payment $payment
- * @param string $key
+ * @param string       $key
  */
-function _give_20_bc_payment_save( $payment, $key ){
+function _give_20_bc_payment_save( $payment, $key ) {
 	// Bailout.
-	if( ! give_has_upgrade_completed( 'v20_upgrades_payment_metadata' ) ) {
+	if ( ! give_has_upgrade_completed( 'v20_upgrades_payment_metadata' ) ) {
 		return;
 	}
 
 	switch ( $key ) {
 		case 'user_info':
-			if( empty( $payment->user_info ) ) {
+			if ( empty( $payment->user_info ) ) {
 				// Bailout.
 				break;
-			}elseif( is_string( $payment->user_info ) ) {
+			} elseif ( is_string( $payment->user_info ) ) {
 				// Check if value serialize.
 				$payment->user_info = maybe_unserialize( $payment->user_info );
 			}
 
 
 			// Save first name.
-			if( isset( $payment->user_info['first_name'] ) ) {
+			if ( isset( $payment->user_info['first_name'] ) ) {
 				$payment->update_meta( '_give_donor_billing_first_name', $payment->user_info['first_name'] );
 			}
 
 
 			// Save last name.
-			if( isset( $payment->user_info['last_name'] ) ) {
+			if ( isset( $payment->user_info['last_name'] ) ) {
 				$payment->update_meta( '_give_donor_billing_last_name', $payment->user_info['last_name'] );
 			}
 
 
 			// Save address.
-			if( ! empty( $payment->user_info['address'] ) ) {
+			if ( ! empty( $payment->user_info['address'] ) ) {
 				foreach ( $payment->user_info['address'] as $address_name => $address ) {
 					switch ( $address_name ) {
 						case 'line1':
@@ -654,4 +654,5 @@ function _give_20_bc_payment_save( $payment, $key ){
 			break;
 	}
 }
+
 add_action( 'give_payment_save', '_give_20_bc_payment_save', 10, 2 );
