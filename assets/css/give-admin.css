@@ -885,7 +885,7 @@ input.give-text_medium {
   .postbox-container .cmb-row .cmb-th label {
     padding-left: 8px; }
 
-div[id^="give-donor-"] {
+#give-bulk-donors div[id^="give-donor-"] {
   display: block;
   overflow: hidden; }
 
