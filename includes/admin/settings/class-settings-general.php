@@ -77,7 +77,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						),
 						array(
 							'id'      => 'limit_display_donations',
-							'name'    => __( 'Limit Display of Donations', 'give' ),
+							'name'    => __( 'Limit Donations Displayed', 'give' ),
 							'desc'    => __( 'Number of donations to display when non logged-in user access donation history page with purchase session deactivated.', 'give' ),
 							'default' => '1',
 							'type'    => 'number',
