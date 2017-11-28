@@ -881,10 +881,6 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$form_id    = ! empty( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : null;
 		$gateway    = ! empty( $_GET['gateway'] ) ? give_clean( $_GET['gateway'] ) : null;
 
-		if ( ! empty( $search ) ) {
-			$status = 'any'; // Force all payment statuses when searching.
-		}
-
 		$args = array(
 			'output'     => 'payments',
 			'number'     => $per_page,
@@ -911,7 +907,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 		}
 
 		$p_query = new Give_Payments_Query( $args );
-
+		
 		return $p_query->get_payments();
 
 	}
