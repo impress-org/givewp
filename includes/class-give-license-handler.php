@@ -902,6 +902,29 @@ if ( ! class_exists( 'Give_License' ) ) :
 			// Unset license param.
 			$this->license = '';
 		}
+
+
+		/**
+		 * Check if deactivating any license key or not.
+		 *
+		 * @since  1.8.17
+		 * @access private
+		 *
+		 * @return bool
+		 */
+		private function is_deactivating_license() {
+			$status = false;
+
+			foreach ( $_POST as $key => $value ) {
+				if ( false !== strpos( $key, 'license_key_deactivate' ) ) {
+					// Don't activate a key when deactivating a different key
+					$status = true;
+					break;
+				}
+			}
+
+			return $status;
+		}
 	}
 
 endif; // end class_exists check.
