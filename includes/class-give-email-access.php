@@ -168,8 +168,8 @@ class Give_Email_Access {
 	 */
 	public function can_send_email( $donor_id ) {
 
-		$this->verify_throttle = apply_filters( 'give_nl_verify_throttle', give_get_option( 'limit_email_throttle_time', 5 ) * 60 );
-		$this->limit_throttle  = apply_filters( 'give_nl_limit_throttle', give_get_option( 'total_email_throttle', 3 ) );
+		$this->verify_throttle = apply_filters( 'give_nl_verify_throttle',  300 );
+		$this->limit_throttle  = apply_filters( 'give_nl_limit_throttle', 3 );
 
 		$donor = Give()->donors->get_donor_by( 'id', $donor_id );
 
