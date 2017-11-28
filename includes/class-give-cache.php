@@ -376,7 +376,7 @@ class Give_Cache {
 	 * @return mixed
 	 */
 	public static function get_group( $id, $group = '' ) {
-		$cached_data = false;
+		$cached_data = null;
 
 		// Bailout.
 		if ( ! self::$instance->is_cache || empty( $id ) ) {
