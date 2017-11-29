@@ -58,7 +58,8 @@ class Give_Payments_Query extends Give_Stats {
 	/**
 	 * Default query arguments.
 	 *
-	 * Not all of these are valid arguments that can be passed to WP_Query. The ones that are not, are modified before the query is run to convert them to the proper syntax.
+	 * Not all of these are valid arguments that can be passed to WP_Query. The ones that are not, are modified before
+	 * the query is run to convert them to the proper syntax.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -189,6 +190,15 @@ class Give_Payments_Query extends Give_Stats {
 	 * @return array
 	 */
 	public function get_payments() {
+		$cache_key      = Give_Cache::get_key( 'give_payment_query', $this->args, false );
+		$this->payments = Give_Cache::get_group( $cache_key, 'give-db-queries' );
+
+		// Return cached result.
+		if ( ! is_null( $this->payments ) ) {
+			return $this->payments;
+		}
+
+
 		// Modify the query/query arguments before we retrieve payments.
 		$this->set_filters();
 
@@ -225,6 +235,8 @@ class Give_Payments_Query extends Give_Stats {
 
 			wp_reset_postdata();
 		}
+
+		Give_Cache::set_group( $cache_key, $this->payments, 'give-db-queries' );
 
 		// Remove query filters after we retrieve payments.
 		$this->unset_filters();
@@ -294,7 +306,7 @@ class Give_Payments_Query extends Give_Stats {
 				}
 			}
 		}
-		
+
 		/**
 		 * Filter the result
 		 *
