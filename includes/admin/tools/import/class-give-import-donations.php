@@ -48,7 +48,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 *
 		 * @var   int
 		 */
-		public static $per_page = 10;
+		public static $per_page = 5;
 
 		/**
 		 * Singleton pattern.
