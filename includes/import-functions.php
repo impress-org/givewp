@@ -267,7 +267,8 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
 		if ( empty( $donor_data->id ) ) {
 			$donor_data = get_user_by( 'email', $data['email'] );
 
-			if ( empty( $donor_data->ID ) && ! empty( $data['first_name'] ) && isset( $import_setting['create_user'] ) && 1 === absint( $import_setting['create_user'] ) ) {
+			if ( empty( $donor_data->ID ) && isset( $import_setting['create_user'] ) && 1 === absint( $import_setting['create_user'] ) ) {
+				$data['first_name'] = ( ! empty( $data['first_name'] ) ? $data['first_name'] : $data['email'] );
 				$data['last_name'] = ( ! empty( $data['last_name'] ) ? $data['last_name'] : '' );
 				$give_role         = (array) give_get_option( 'donor_default_user_role', get_option( 'default_role', ( ( $give_donor = wp_roles()->is_role( 'give_donor' ) ) && ! empty( $give_donor ) ? 'give_donor' : 'subscriber' ) ) );
 				$donor_args        = array(
