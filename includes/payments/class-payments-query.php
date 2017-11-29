@@ -89,6 +89,8 @@ class Give_Payments_Query extends Give_Stats {
 			'fields'          => null,
 			'gateway'         => null,
 			'give_forms'      => null,
+
+			// Currently these params only works with get_payment_by_group
 			'group_by'        => '',
 			'count'           => false,
 		);
