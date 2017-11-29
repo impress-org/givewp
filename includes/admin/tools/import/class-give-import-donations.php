@@ -48,7 +48,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 *
 		 * @var   int
 		 */
-		public static $per_page = 5;
+		public static $per_page = 10;
 
 		/**
 		 * Singleton pattern.
@@ -215,6 +215,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			}
 
 			$report      = give_import_donation_report();
+
 			$report_html = array(
 				'duplicate_donor'    => array(
 					__( '%s duplicate %s detected', 'give' ),

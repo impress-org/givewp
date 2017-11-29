@@ -250,7 +250,6 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
 				}
 
 				$report['create_donor'] = ( ! empty( $report['create_donor'] ) ? ( absint( $report['create_donor'] ) + 1 ) : 1 );
-			} else {
 			}
 		} else {
 			// Add is used to ensure duplicate emails are not added
@@ -333,7 +332,6 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
 			$report['duplicate_donor'] = ( ! empty( $report['duplicate_donor'] ) ? ( absint( $report['duplicate_donor'] ) + 1 ) : 1 );
 		}
 	}
-
 	// update the report
 	give_import_donation_report_update( $report );
 
@@ -601,7 +599,9 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 	$report = give_import_donation_report();
 
 	// Check for duplicate code.
-	if ( true === give_check_import_donation_duplicate( $payment_data, $data, $form, $donor_data ) ) {
+	$donation_duplicate = give_check_import_donation_duplicate( $payment_data, $data, $form, $donor_data );
+	if ( false !== $donation_duplicate ) {
+		$report['donation_details'][ $import_setting['donation_key'] ]['duplicate'] = $donation_duplicate;
 		$report['duplicate_donation'] = ( ! empty( $report['duplicate_donation'] ) ? ( absint( $report['duplicate_donation'] ) + 1 ) : 1 );
 	} else {
 		add_action( 'give_update_payment_status', 'give_donation_import_insert_default_payment_note', 1, 1 );
@@ -711,8 +711,8 @@ function give_check_import_donation_duplicate( $payment_data, $data, $form, $don
 	if ( ! empty( $data['post_date'] ) ) {
 		$post_date = mysql2date( 'Y-m-d-H-i-s', $data['post_date'] );
 		$post_date = explode( '-', $post_date );
-		$args      = array(
-			'post_type'              => 'give_payment',
+		$args = array(
+			'output'                 => 'post',
 			'cache_results'          => false,
 			'no_found_rows'          => true,
 			'update_post_meta_cache' => false,
@@ -745,17 +745,27 @@ function give_check_import_donation_duplicate( $payment_data, $data, $form, $don
 					'value'   => $payment_data['gateway'],
 					'compare' => '=',
 				),
+				array(
+					'key'     => '_give_payment_customer_id',
+					'value'   => $donor_data->id,
+					'compare' => '=',
+				),
 			),
 		);
 
 		$payments  = new Give_Payments_Query( $args );
 		$donations = $payments->get_payments();
 		if ( ! empty( $donations ) ) {
-			return true;
+			$return = $donations;
 		}
 	}
 
-	return $return;
+	/**
+	 * Filter to modify donation which is getting add is duplicate or not.
+	 *
+	 * @since 1.8.17
+	 */
+	return apply_filters( 'give_check_import_donation_duplicate', $return, $payment_data, $data, $form, $donor_data );
 }
 
 /**
