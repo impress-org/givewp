@@ -255,7 +255,10 @@ Give = {
 Give.form = {
 	init: function () {
 		this.fn.field.formatCreditCard(jQuery('form.give-form'));
-		this.fn.__sendBackToForm();
+		
+		window.onload = function () {
+			Give.form.fn.__sendBackToForm();
+		};
 	},
 
 	fn: {
