@@ -2329,7 +2329,11 @@ var give_setting_edit = false;
 
 			// Back out.
 			if (give_unformat_currency('0', false) === give_unformat_currency($(this).val(), false)) {
-				$(this).val('0');
+				var default_amount = $(this).attr('placeholder');
+				default_amount     = !default_amount ? '0' : default_amount;
+
+				$(this).val(default_amount);
+
 				return false;
 			}
 
