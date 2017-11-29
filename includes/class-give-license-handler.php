@@ -205,10 +205,10 @@ if ( ! class_exists( 'Give_License' ) ) :
 			add_filter( 'give_settings_licenses', array( $this, 'settings' ), 1 );
 
 			// Activate license key on settings save.
-			add_action( 'admin_init', array( $this, 'activate_license' ) );
+			add_action( 'admin_init', array( $this, 'activate_license' ), 10 );
 
 			// Deactivate license key.
-			add_action( 'admin_init', array( $this, 'deactivate_license' ) );
+			add_action( 'admin_init', array( $this, 'deactivate_license' ), 11 );
 
 			// Updater.
 			add_action( 'admin_init', array( $this, 'auto_updater' ), 0 );
@@ -337,18 +337,15 @@ if ( ! class_exists( 'Give_License' ) ) :
 				return;
 			}
 
-			// Do not simultaneously activate add-ons if the user want to deactivate a specific add-on.
-			foreach ( $_POST as $key => $value ) {
-				if ( false !== strpos( $key, 'license_key_deactivate' ) ) {
-					// Don't activate a key when deactivating a different key
-					return;
-				}
-			}
-
 			// Delete previous license setting if a empty license key submitted.
 			if ( empty( $_POST["{$this->item_shortname}_license_key"] ) ) {
 				$this->unset_license();
 
+				return;
+			}
+
+			// Do not simultaneously activate add-ons if the user want to deactivate a specific add-on.
+			if( $this->is_deactivating_license() ) {
 				return;
 			}
 
@@ -897,9 +894,32 @@ if ( ! class_exists( 'Give_License' ) ) :
 			// Remove license from database.
 			delete_option( "{$this->item_shortname}_license_active" );
 			give_delete_option( "{$this->item_shortname}_license_key" );
+			unset( $_POST["{$this->item_shortname}_license_key"] );
 
 			// Unset license param.
 			$this->license = '';
+		}
+
+
+		/**
+		 * Check if deactivating any license key or not.
+		 *
+		 * @since  1.8.17
+		 * @access private
+		 *
+		 * @return bool
+		 */
+		private function is_deactivating_license() {
+			$status = false;
+
+			foreach ( $_POST as $key => $value ) {
+				if ( false !== strpos( $key, 'license_key_deactivate' ) ) {
+					$status = true;
+					break;
+				}
+			}
+
+			return $status;
 		}
 	}
 
