@@ -518,7 +518,7 @@ class Give_DB_Donors extends Give_DB {
 		$cache_key = md5( 'give_donors_count' . serialize( $args ) );
 		$count     = Give_Cache::get_group( $cache_key, 'donors' );
 
-		if ( $count === false ) {
+		if ( is_null( $count ) ) {
 			$donors = new Give_Donors_Query( $args );
 			$count  = $donors->get_donors();
 

@@ -95,7 +95,8 @@ class Give_Donors_Gravatars {
 		$uri     = 'http://www.gravatar.com/avatar/' . $hashkey . '?d=404';
 
 		$data = Give_Cache::get_group( $hashkey );
-		if ( false === $data ) {
+
+		if ( is_null( $data ) ) {
 			$response = wp_remote_head( $uri );
 			if ( is_wp_error( $response ) ) {
 				$data = 'not200';

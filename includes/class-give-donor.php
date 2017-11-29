@@ -196,7 +196,10 @@ class Give_Donor {
 			return false;
 		}
 
-		if( ! ( $donor_vars = Give_Cache::get_group( $donor->id, 'give-donors' )) ){
+		// Get cached donors.
+		$donor_vars = Give_Cache::get_group( $donor->id, 'give-donors' );
+
+		if( is_null( $donor_vars ) ){
 			foreach ( $donor as $key => $value ) {
 
 				switch ( $key ) {

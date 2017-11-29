@@ -283,7 +283,7 @@ function give_bc_v20_get_payment_meta( $check, $object_id, $meta_key, $single ) 
 	// Get already calculate payment meta from cache.
 	$payment_meta = Give_Cache::get_group( $cache_key, 'give-db-queries' );
 
-	if ( empty( $payment_meta ) ) {
+	if ( is_null( $payment_meta ) ) {
 		// Remove filter.
 		remove_filter( 'get_post_metadata', 'give_bc_v20_get_payment_meta', 999 );
 

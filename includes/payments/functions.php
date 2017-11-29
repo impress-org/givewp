@@ -1614,7 +1614,7 @@ function give_remove_payment_notes_in_comment_counts( $stats, $post_id ) {
 
 	$stats = Give_Cache::get_group( "comments-{$post_id}", 'counts' );
 
-	if ( false !== $stats ) {
+	if ( ! is_null( $stats  ) ) {
 		return $stats;
 	}
 
@@ -1709,8 +1709,9 @@ function give_get_payment_form_title( $payment_meta, $only_level = false, $separ
 		, false
 	);
 	$cache_group = Give_Cache::get_key( 'give-db-queries' );
+	$form_title_html = Give_Cache::get_group( $cache_key, $cache_group );
 
-	if ( ! ( $form_title_html = Give_Cache::get_group( $cache_key, $cache_group ) ) ) {
+	if ( is_null( $form_title_html ) ) {
 		if ( $only_level == true ) {
 			$form_title = '';
 		}
