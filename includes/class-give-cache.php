@@ -379,13 +379,12 @@ class Give_Cache {
 		$cached_data = null;
 
 		// Bailout.
-		if ( ! self::$instance->is_cache || empty( $id ) ) {
-			return $cached_data;
+		if ( self::$instance->is_cache && ! empty( $id ) ) {
+			$group = self::$instance->filter_group_name( $group );
+
+			$cached_data = wp_cache_get( $id, $group );
+			$cached_data = false !== $cached_data ? $cached_data : null;
 		}
-
-		$group = self::$instance->filter_group_name( $group );
-
-		$cached_data = wp_cache_get( $id, $group );
 
 		return $cached_data;
 	}
