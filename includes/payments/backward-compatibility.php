@@ -436,8 +436,7 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 			case '_give_donor_billing_country':
 			case '_give_payment_date':
 			case '_give_payment_currency':
-				$cache_key     = "_give_payment_meta_{$object_id}";
-				$donation_meta = Give_Cache::get_db_query( $cache_key );
+				$donation_meta = Give_Cache::get_db_query( "_give_payment_meta_{$object_id}" );
 
 				if ( is_null( $donation_meta ) ) {
 					$donation_meta = $wpdb->get_var(
