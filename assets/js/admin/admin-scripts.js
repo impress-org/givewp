@@ -676,7 +676,7 @@ var give_setting_edit = false;
 
 		saveButtonTriggered: function() {
 			$( 'body' ).on( 'click', '.give-save-button', function () {
-				$(window).unbind( 'beforeunload' );
+				$( window ).unbind( 'beforeunload' );
 			});
 		},
 
