@@ -686,7 +686,7 @@ var give_setting_edit = false;
 		 * @since 1.8.14
 		 */
 		changeSettingsUnload: function() {
-			if ( $( 'body' ).closest( '.post-type-give_forms' ).length > 0 ) {
+			if ( $( 'body.give_forms_page_give-settings' ).length > 0 ) {
 
 				$( window ).bind( 'beforeunload', function (e) {
 
