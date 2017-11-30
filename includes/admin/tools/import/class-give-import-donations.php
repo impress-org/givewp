@@ -57,7 +57,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 * @access private
 		 */
 		private function __construct() {
-			self::$per_page  = absint( ! empty( $_REQUEST['per_page'] ) ? $_REQUEST['per_page'] : self::$per_page );
+			self::$per_page  = absint( ! empty( $_GET['per_page'] ) ? $_GET['per_page'] : self::$per_page );
 		}
 
 		/**
