@@ -19,9 +19,17 @@ if ( is_user_logged_in() ) {
 ) {
 	// Session active?
 	$email     = Give()->session->get( 'give_email' );
-	$donations = give_get_users_donations( $email, give_get_limit_display_donations(), true, 'any' );
+	$donor = Give()->donors->get_donor_by( 'email', $email );
+	$donations_count = count( explode( ',', $donor->payment_ids ) );
 
-	add_action( 'give_donation_history_table_end', 'give_donation_history_table_end' );
+	if( $donations_count > give_get_limit_display_donations() ) {
+
+		// Restrict Security Email Access option, if donation count of a donor is less than or equal to limit.
+		add_action( 'give_donation_history_table_end', 'give_donation_history_table_end' );
+		$donations = give_get_users_donations( $email, give_get_limit_display_donations(), true, 'any' );
+	} else {
+		$donations = give_get_users_donations( $email, 20, true, 'any' );
+	}
 }
 
 
