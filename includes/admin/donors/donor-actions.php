@@ -37,7 +37,7 @@ function give_edit_donor( $args ) {
 		return false;
 	}
 
-	$donor_info = $args['customerinfo'];
+	$donor_info = give_clean( $args['customerinfo'] );
 	$donor_id   = (int) $args['customerinfo']['id'];
 	$nonce      = $args['_wpnonce'];
 
@@ -84,10 +84,17 @@ function give_edit_donor( $args ) {
 		return false;
 	}
 
+	// If First name of donor is empty, then fetch the current first name of donor.
+	if ( empty( $donor_info['first_name'] ) ) {
+		$donor_info['first_name'] = $donor->get_first_name();
+	}
+
 	// Sanitize the inputs.
-	$donor_data            = array();
-	$donor_data['name']    = strip_tags( stripslashes( $donor_info['name'] ) );
-	$donor_data['user_id'] = $donor_info['user_id'];
+	$donor_data               = array();
+	$donor_data['name']       = trim( "{$donor_info['first_name']} {$donor_info['last_name']}" );
+	$donor_data['first_name'] = $donor_info['first_name'];
+	$donor_data['last_name']  = $donor_info['last_name'];
+	$donor_data['user_id']    = $donor_info['user_id'];
 
 	$donor_data             = apply_filters( 'give_edit_donor_info', $donor_data, $donor_id );
 
