@@ -240,6 +240,7 @@ function give_show_upgrade_notices( $give_updates ) {
 				'v20_upgrades_form_metadata',
 				'v20_upgrades_payment_metadata',
 				'v20_upgrades_user_address',
+				'v20_upgrades_donor_name'
 			),
 		)
 	);
