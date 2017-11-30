@@ -3,9 +3,8 @@
  * This template is used to display the donation history of the current user.
  */
 
+$donations             = array();
 $donation_history_args = Give()->session->get( 'give_donation_history_args' );
-
-$donations = array();
 
 // User's Donations.
 if ( is_user_logged_in() ) {

@@ -125,12 +125,10 @@ class Give_Email_Access {
 		 * Do NOT pass go if:
 		 *
 		 * a. User is logged in
-		 * b. Email access setting is not enabled
-		 * c. You're in the admin
+		 * b. You're in the admin
 		 */
 		if (
 			is_user_logged_in()
-			|| ! give_is_setting_enabled( give_get_option( 'email_access' ) )
 			|| is_admin()
 		) {
 			return;
