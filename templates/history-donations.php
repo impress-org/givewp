@@ -17,8 +17,8 @@ if ( is_user_logged_in() ) {
 	true === give_get_history_session()
 ) {
 	// Session active?
-	$email     = Give()->session->get( 'give_email' );
-	$donor = Give()->donors->get_donor_by( 'email', $email );
+	$email           = Give()->session->get( 'give_email' );
+	$donor           = Give()->donors->get_donor_by( 'email', $email );
 	$donations_count = count( explode( ',', $donor->payment_ids ) );
 
 	if( $donations_count > give_get_limit_display_donations() ) {
