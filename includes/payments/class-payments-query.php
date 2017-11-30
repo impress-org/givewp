@@ -329,7 +329,7 @@ class Give_Payments_Query extends Give_Stats {
 				}
 			}
 		}
-
+		
 		/**
 		 * Filter the result
 		 *
