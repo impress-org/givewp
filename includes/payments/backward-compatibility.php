@@ -656,3 +656,27 @@ function _give_20_bc_payment_save( $payment, $key ) {
 }
 
 add_action( 'give_payment_save', '_give_20_bc_payment_save', 10, 2 );
+
+
+/**
+ * Delete pre upgrade cache for donations.
+ *
+ * @since 2.0
+ *
+ * @param $check
+ * @param $object_id
+ *
+ * @return mixed
+ */
+function __give_20_bc_flush_cache( $check, $object_id ) {
+	if (
+		! give_has_upgrade_completed( 'v20_move_metadata_into_new_table' ) &&
+		'give_payment' === get_post_type( $object_id )
+	) {
+		Give_Cache::delete_group( $object_id, 'give-donations' );
+	}
+
+	return $check;
+}
+
+add_action( 'update_postmeta', '__give_20_bc_flush_cache', 9999, 2 );
