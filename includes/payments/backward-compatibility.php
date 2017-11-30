@@ -272,9 +272,9 @@ function _give_20_bc_get_old_payment_meta( $check, $object_id, $meta_key, $singl
 	}
 
 	$cache_key = "{$meta_key}_{$object_id}";
-	$cache     = Give_Cache::get_db_query( $cache_key );
+	$check     = Give_Cache::get_db_query( $cache_key );
 
-	if ( is_null( $cache ) ) {
+	if ( is_null( $check ) ) {
 		switch ( $meta_key ) {
 
 			// Handle old meta keys.
