@@ -87,7 +87,7 @@ function _give_20_bc_split_and_save_give_payment_meta( $object_id, $meta_value )
  */
 function _give_20_bc_give_payment_meta_value( $object_id, $meta_value ) {
 	$cache_key = "_give_payment_meta_{$object_id}";
-	$cache     = Give_Cache::get_group( $cache_key, 'give-db-queries' );
+	$cache     = Give_Cache::get_db_query( $cache_key );
 
 	if ( ! is_null( $cache ) ) {
 		return $cache;
@@ -181,7 +181,7 @@ function _give_20_bc_give_payment_meta_value( $object_id, $meta_value ) {
 
 	$meta_value['user_info'] = maybe_unserialize( $donor_data );
 
-	Give_Cache::set_group( $cache_key, $meta_value, 'give-db-queries' );
+	Give_Cache::set_db_query( $cache_key, $meta_value );
 
 	return $meta_value;
 }
@@ -272,7 +272,7 @@ function _give_20_bc_get_old_payment_meta( $check, $object_id, $meta_key, $singl
 	}
 
 	$cache_key = "{$meta_key}_{$object_id}";
-	$cache     = Give_Cache::get_group( $cache_key, 'give-db-queries' );
+	$cache     = Give_Cache::get_db_query( $cache_key );
 
 	if ( is_null( $cache ) ) {
 		switch ( $meta_key ) {
@@ -309,7 +309,7 @@ function _give_20_bc_get_old_payment_meta( $check, $object_id, $meta_key, $singl
 				break;
 		}// End switch().
 
-		Give_Cache::set_group( $cache_key, $check, 'give-db-queries' );
+		Give_Cache::set_db_query( $cache_key, $check );
 	}
 
 	// Put result in an array on zero index.
@@ -375,7 +375,7 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 	add_filter( 'get_post_metadata', '_give_20_bc_get_new_payment_meta', 10, 5 );
 
 	$cache_key = "{$meta_key}_{$object_id}";
-	$cache     = Give_Cache::get_group( $cache_key, 'give-db-queries' );
+	$cache     = Give_Cache::get_db_query( $cache_key );
 
 	if ( is_null($cache) ) {
 		switch ( $meta_key ) {
@@ -437,7 +437,7 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 			case '_give_payment_date':
 			case '_give_payment_currency':
 				$cache_key = "_give_payment_meta_{$object_id}";
-				$cache     = Give_Cache::get_group( $cache_key, 'give-db-queries' );
+				$cache     = Give_Cache::get_db_query( $cache_key );
 
 				if ( is_null($cache) ) {
 					$donation_meta = $wpdb->get_var(
@@ -449,7 +449,7 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 					);
 					$donation_meta = maybe_unserialize( $donation_meta );
 					$donation_meta = ! is_array( $donation_meta ) ? array() : $donation_meta;
-					Give_Cache::set_group( $cache_key, $donation_meta, 'give-db-queries' );
+					Give_Cache::set_db_query( $cache_key, $donation_meta );
 				}
 
 				// Get results.
@@ -487,7 +487,7 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 		}// End switch().
 
 		// Set cache.
-		Give_Cache::set_group( $cache_key, $check, 'give-db-queries' );
+		Give_Cache::set_db_query( $cache_key, $check );
 	}
 
 	// Put result in an array on zero index.

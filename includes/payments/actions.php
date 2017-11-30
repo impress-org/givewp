@@ -281,7 +281,7 @@ function give_bc_v20_get_payment_meta( $check, $object_id, $meta_key, $single ) 
 	$cache_key = "_give_payment_meta_{$object_id}";
 
 	// Get already calculate payment meta from cache.
-	$payment_meta = Give_Cache::get_group( $cache_key, 'give-db-queries' );
+	$payment_meta = Give_Cache::get_db_query( $cache_key );
 
 	if ( is_null( $payment_meta ) ) {
 		// Remove filter.
@@ -399,7 +399,7 @@ function give_bc_v20_get_payment_meta( $check, $object_id, $meta_key, $single ) 
 		add_filter( 'get_post_metadata', 'give_bc_v20_get_payment_meta', 999, 4 );
 
 		// Set cache.
-		Give_Cache::set_group( $cache_key, $payment_meta, 'give-db-queries' );
+		Give_Cache::set_db_query( $cache_key, $payment_meta );
 	}
 
 	if ( $single ) {

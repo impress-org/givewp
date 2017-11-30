@@ -414,6 +414,42 @@ class Give_Cache {
 	}
 
 	/**
+	 * Cache small db query chunks inside group
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param int   $id
+	 * @param mixed $data
+	 *
+	 * @return bool
+	 */
+	public static function set_db_query( $id, $data ) {
+		$status = false;
+
+		// Bailout.
+		if ( ! self::$instance->is_cache || empty( $id ) ) {
+			return $status;
+		}
+
+		return self::set_group( $id, $data, 'give-db-queries', 0 );
+	}
+
+	/**
+	 * Get cache from group
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param int $id
+	 *
+	 * @return mixed
+	 */
+	public static function get_db_query( $id ) {
+		return self::get_group( $id, 'give-db-queries' );
+	}
+
+	/**
 	 * Delete group cache
 	 *
 	 * @since  2.0

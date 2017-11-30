@@ -125,14 +125,13 @@ class Give_HTML_Elements {
 		);
 
 		$cache_key   = Give_Cache::get_key( 'give_forms', $form_args, false );
-		$cache_group = 'give-db-queries';
 
 		// Get forms from cache.
-		$forms = Give_Cache::get_group( $cache_key, $cache_group );
+		$forms = Give_Cache::get_db_query( $cache_key );
 
 		if ( is_null( $forms ) ) {
 			$forms = get_posts( $form_args );
-			Give_Cache::set_group( $cache_key, $forms, $cache_group );
+			Give_Cache::set_db_query( $cache_key, $forms );
 		}
 
 		$options = array();
