@@ -84,6 +84,11 @@ function give_edit_donor( $args ) {
 		return false;
 	}
 
+	// If First name of donor is empty, then fetch the current first name of donor.
+	if ( empty( $donor_info['first_name'] ) ) {
+		$donor_info['first_name'] = $donor->get_first_name();
+	}
+
 	// Sanitize the inputs.
 	$donor_data               = array();
 	$donor_data['name']       = trim( "{$donor_info['first_name']} {$donor_info['last_name']}" );
