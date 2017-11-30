@@ -828,7 +828,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						'delete_csv'    => empty( $_POST['delete_csv'] ) ?
 							'1' :
 							( give_is_setting_enabled( give_clean( $_POST['delete_csv'] ) ) ? '1' : '0' ),
-						'per_page'      => absint( isset( $_POST['per_page'] ) ? give_clean( $_POST['per_page'] ) : self::$per_page ),
+						'per_page'      => absint( isset( $_POST['per_page'] ) ? $_POST['per_page'] : self::$per_page ),
 					) ) );
 					?>
 					<script type="text/javascript">
