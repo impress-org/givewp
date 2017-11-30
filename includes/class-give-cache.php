@@ -92,7 +92,6 @@ class Give_Cache {
 	 *
 	 * @return string
 	 */
-
 	public static function get_key( $action, $query_args = null, $is_prefix = true ) {
 		// Bailout.
 		if ( empty( $action ) ) {
@@ -126,7 +125,6 @@ class Give_Cache {
 	 *
 	 * @return mixed
 	 */
-
 	public static function get( $cache_key, $custom_key = false, $query_args = array() ) {
 		if ( ! self::is_valid_cache_key( $cache_key ) ) {
 			if ( ! $custom_key ) {
@@ -168,7 +166,6 @@ class Give_Cache {
 	 *
 	 * @return mixed
 	 */
-
 	public static function set( $cache_key, $data, $expiration = null, $custom_key = false, $query_args = array() ) {
 		if ( ! self::is_valid_cache_key( $cache_key ) ) {
 			if ( ! $custom_key ) {
@@ -201,7 +198,6 @@ class Give_Cache {
 	 *
 	 * @return bool|WP_Error
 	 */
-
 	public static function delete( $cache_keys ) {
 		$result       = true;
 		$invalid_keys = array();
