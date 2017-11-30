@@ -720,7 +720,7 @@ var give_setting_edit = false;
 		},
 
 		saveButtonTriggered: function() {
-			$( 'body' ).on( 'click', '.give-save-button', function () {
+			$( '.give-save-button' ).on( 'click', function () {
 				$( window ).unbind( 'beforeunload' );
 			});
 		},
