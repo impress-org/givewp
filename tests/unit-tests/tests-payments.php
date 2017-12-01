@@ -568,7 +568,6 @@ class Tests_Payments extends Give_Unit_Test_Case {
 		$this->assertSame( $expected1, give_donation_amount( $donation->ID, $format_args ) );
 
 		// Change payment data.
-		$donation->total = 2873892713.34468;
 		$donation->currency = 'INR';
 		$donation->save();
 
@@ -591,6 +590,7 @@ class Tests_Payments extends Give_Unit_Test_Case {
 			array( array( 'currency' => true, 'amount' => false ), '&#36;2873892713.34', '&#8377;2873892713.34' ),
 			array( array( 'currency' => false, 'amount' => true ), '2,873,892,713.34', '2,87,38,92,713.34' ),
 			array( array( 'currency' => true, 'amount' => true ), '&#36;2,873,892,713.34', '&#8377;2,87,38,92,713.34' ),
+			array( array( 'currency' => false, 'amount' => false ), '2873892713.34', '2873892713.34' ),
 		);
 	}
 }
