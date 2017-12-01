@@ -1224,7 +1224,7 @@ function give_donation_amount( $donation ) {
 	 * @param double  $amount           Donation amount.
 	 * @param integer $donation_id      Donation ID.
 	 */
-	return apply_filters( 'give_get_donation_amount', $formatted_amount, $amount, $donation->id );
+	return apply_filters( 'give_donation_amount', $formatted_amount, $amount, $donation->id );
 }
 
 /**
