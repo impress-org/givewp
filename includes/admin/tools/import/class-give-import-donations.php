@@ -791,6 +791,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 					'type'        => 'number',
 					'description' => __( 'Determine how many rows you would like to import per cycle.', 'give' ),
 					'default'     => $per_page,
+					'class'       => 'give-text-small',
 				),
 			);
 
