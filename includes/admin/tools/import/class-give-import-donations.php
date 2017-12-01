@@ -57,7 +57,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 * @access private
 		 */
 		private function __construct() {
-			self::$per_page  = absint( ! empty( $_GET['per_page'] ) ? $_GET['per_page'] : self::$per_page );
+			self::$per_page  = ! empty( $_GET['per_page'] ) ? absint( $_GET['per_page'] ) : self::$per_page;
 		}
 
 		/**
@@ -724,7 +724,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			if ( empty( $csv_id ) || ! $this->is_valid_csv( $csv_id, $csv ) ) {
 				$csv_id = $csv = '';
 			}
-			$per_page = absint( isset( $_POST['per_page'] ) ? give_clean( $_POST['per_page'] ) : self::$per_page );
+			$per_page = isset( $_POST['per_page'] ) ? absint( $_POST['per_page'] ) : self::$per_page;
 
 			$settings = array(
 				array(
@@ -828,7 +828,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						'delete_csv'    => empty( $_POST['delete_csv'] ) ?
 							'1' :
 							( give_is_setting_enabled( give_clean( $_POST['delete_csv'] ) ) ? '1' : '0' ),
-						'per_page'      => absint( isset( $_POST['per_page'] ) ? $_POST['per_page'] : self::$per_page ),
+						'per_page'      => isset( $_POST['per_page'] ) ? absint( $_POST['per_page'] ) : self::$per_page,
 					) ) );
 					?>
 					<script type="text/javascript">
