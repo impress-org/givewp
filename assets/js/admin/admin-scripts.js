@@ -675,7 +675,7 @@ var give_setting_edit = false;
 		},
 
 		saveButtonTriggered: function() {
-			$( '.give-save-button' ).on( 'click', function () {
+			$( '.give-settings-setting-page' ).on( 'click', '.give-save-button', function() {
 				$( window ).unbind( 'beforeunload' );
 			});
 		},
@@ -686,9 +686,9 @@ var give_setting_edit = false;
 		 * @since 1.8.14
 		 */
 		changeSettingsUnload: function() {
-			if ( $( 'body.give_forms_page_give-settings' ).length > 0 ) {
+			if ( $( '.give-settings-setting-page' ).length > 0 ) {
 
-				$( window ).bind( 'beforeunload', function (e) {
+				$( window ).bind( 'beforeunload', function( e ) {
 
 					var confirmationMessage = give_vars.setting_not_save_message;
 
@@ -707,10 +707,12 @@ var give_setting_edit = false;
 		 */
 		detectSettingsChange: function() {
 
-			// Check if it give setting page or not.
-			if ( $( 'body.give_forms_page_give-settings' ).length > 0 ) {
+			var settingsPage = $( '.give-settings-setting-page' );
 
-				// Get the default value
+			// Check if it give setting page or not.
+			if ( settingsPage.length > 0 ) {
+
+				// Get the default value.
 				var on_load_value = $( '#give-mainform' ).serialize();
 
 				/**
@@ -718,7 +720,7 @@ var give_setting_edit = false;
 				 * blur event add to support to dropdown.
 				 * Change event add to support to rest all element.
 				 */
-				$( '.give-settings-page' ).on( 'change keyup blur', 'form', function() {
+				settingsPage.on( 'change keyup blur', 'form', function() {
 					// Get the form value after change.
 					var on_change_value = $( '#give-mainform' ).serialize();
 
