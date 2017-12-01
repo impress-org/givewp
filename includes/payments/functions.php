@@ -1188,7 +1188,6 @@ function give_remove_payment_prefix_postfix( $number ) {
  * sent through give_currency_filter() and  give_format_amount() to format the amount correctly.
  *
  * @param int    $donation_id Donation ID.
- * @param string $type        String parameter which will define context of donation amount.
  *
  * @since 1.0
  * @since 1.8.17 Added filter and internally use functions.
