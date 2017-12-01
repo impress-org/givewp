@@ -703,8 +703,8 @@ function give_get_custom_attributes( $field ) {
 /**
  * Get Payment Amount
  *
- * Get the fully formatted payment amount. The payment amount is retrieved using give_get_payment_amount() and is then
- * sent through give_currency_filter() and  give_format_amount() to format the amount correctly.
+ * Get the fully formatted payment amount which is sent through give_currency_filter()
+ * and give_format_amount() to format the amount correctly.
  *
  * @param int $payment_id Payment ID.
  *
@@ -714,6 +714,23 @@ function give_get_custom_attributes( $field ) {
  * @return string $amount Fully formatted payment amount.
  */
 function give_payment_amount( $payment_id ) {
+	return give_donation_amount( $payment_id );
+}
+
+/**
+ * Get Payment Amount
+ *
+ * Get the fully formatted payment amount which is sent through give_currency_filter()
+ * and give_format_amount() to format the amount correctly.
+ *
+ * @param int $payment_id Payment ID.
+ *
+ * @since      1.0
+ * @deprecated 1.8.17
+ *
+ * @return string $amount Fully formatted payment amount.
+ */
+function give_get_payment_amount( $payment_id ) {
 	return give_donation_amount( $payment_id );
 }
 

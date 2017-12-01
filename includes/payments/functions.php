@@ -1228,23 +1228,6 @@ function give_donation_amount( $donation ) {
 }
 
 /**
- * Get the amount associated with a payment
- *
- * @param int $payment_id Payment ID.
- *
- * @access public
- * @since  1.0
- *
- * @return mixed
- */
-function give_get_payment_amount( $payment_id ) {
-
-	$payment = new Give_Payment( $payment_id );
-
-	return apply_filters( 'give_payment_amount', floatval( $payment->total ), $payment_id );
-}
-
-/**
  * Payment Subtotal
  *
  * Retrieves subtotal for payment and then returns a full formatted amount. This
