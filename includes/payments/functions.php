@@ -1187,34 +1187,55 @@ function give_remove_payment_prefix_postfix( $number ) {
  * Get the fully formatted or unformatted donation amount which is sent through give_currency_filter()
  * and give_format_amount() to format the amount correctly in case of formatted amount.
  *
- * @param int|Give_Payment $donation     Donation ID or Donation Object.
- * @param bool             $is_formatted Is Amount formatted or un-formatted.
+ * @param int|Give_Payment $donation    Donation ID or Donation Object.
+ * @param bool|array       $format_args Is Amount formatted or un-formatted.
  *
  * @since 1.0
  * @since 1.8.17 Added filter and internally use functions.
  *
  * @return string $amount Fully formatted donation amount.
  */
-function give_donation_amount( $donation, $is_formatted = false ) {
+function give_donation_amount( $donation, $format_args = false ) {
+	/* @var Give_Payment $donation */
+	if ( ! ( $donation instanceof Give_Payment ) ) {
+		$donation = new Give_Payment( absint( $donation ) );
 
-	// If $donation is numeric and positive number, then create a donation object.
-	if ( is_numeric( $donation ) ) {
-		$donation = new Give_Payment( $donation );
+		if ( ! $donation->ID ) {
+			return '0';
+		}
 	}
 
-	$amount           = floatval( $donation->total );
-	$formatted_amount = give_currency_filter(
-		give_format_amount(
+	if ( ! is_array( $format_args ) ) {
+		$format_args = array(
+			'currency' => (bool) $format_args,
+			'amount'   => (bool) $format_args,
+		);
+	}
+
+	$format_args = wp_parse_args(
+		$format_args,
+		array(
+			'currency' => false,
+			'amount'   => false,
+		)
+	);
+
+	$amount           = $donation->total;
+	$formatted_amount = $amount;
+
+	if ( $format_args['amount'] ) {
+		$formatted_amount = give_format_amount(
 			$amount,
 			array(
 				'sanitize' => false,
 				'currency' => $donation->currency,
 			)
-		),
-		$donation->currency
-	);
+		);
+	}
 
-	$final_amount = $is_formatted ? $formatted_amount : $amount;
+	if ( $format_args['currency'] ) {
+		$formatted_amount = give_currency_filter( $formatted_amount, $donation->currency );
+	}
 
 	/**
 	 * Filter Donation amount.
@@ -1225,7 +1246,7 @@ function give_donation_amount( $donation, $is_formatted = false ) {
 	 * @param float $amount       Donation amount.
 	 * @param int   $donation_id  Donation ID.
 	 */
-	return apply_filters( 'give_donation_amount', $final_amount, $amount, $donation->ID );
+	return apply_filters( 'give_donation_amount', (string) $formatted_amount, $amount, $donation->ID );
 }
 
 /**
