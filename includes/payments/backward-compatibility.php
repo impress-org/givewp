@@ -448,6 +448,7 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 					);
 					$donation_meta = maybe_unserialize( $donation_meta );
 					$donation_meta = ! is_array( $donation_meta ) ? array() : $donation_meta;
+					Give_Cache::set_db_query( "_give_payment_meta_{$object_id}", $donation_meta );
 				}
 
 				// Get results.
