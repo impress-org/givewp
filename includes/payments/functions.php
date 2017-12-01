@@ -1223,7 +1223,6 @@ function give_donation_amount( $donation ) {
 	 * @param string  $formatted_amount Formatted amount.
 	 * @param double  $amount           Donation amount.
 	 * @param integer $donation_id      Donation ID.
-	 * @param string  $type             String parameter which will define context of donation amount..
 	 */
 	return apply_filters( 'give_get_donation_amount', $formatted_amount, $amount, $donation->id );
 }
