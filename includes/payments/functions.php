@@ -1197,7 +1197,7 @@ function give_remove_payment_prefix_postfix( $number ) {
 function give_donation_amount( $donation ) {
 
 	// If $donation is numeric and positive number, then create a donation object.
-	if ( is_numeric( absint( $donation ) ) ) {
+	if ( is_numeric( $donation ) ) {
 		$donation = new Give_Payment( $donation );
 	}
 
