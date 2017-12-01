@@ -1195,7 +1195,7 @@ function give_remove_payment_prefix_postfix( $number ) {
  *
  * @return string $amount Fully formatted donation amount.
  */
-function give_donation_amount( $donation_id = 0, $type = '' ) {
+function give_donation_amount( $donation_id = 0 ) {
 	$donation_currency = give_get_payment_currency_code( $donation_id );
 	$amount            = give_get_payment_amount( $donation_id );
 
@@ -1220,7 +1220,7 @@ function give_donation_amount( $donation_id = 0, $type = '' ) {
 	 * @param integer $donation_id      Donation ID.
 	 * @param string  $type             String parameter which will define context of donation amount..
 	 */
-	return apply_filters( 'give_get_donation_amount', $formatted_amount, $amount, $donation_id, $type );
+	return apply_filters( 'give_get_donation_amount', $formatted_amount, $amount, $donation_id );
 }
 
 /**
