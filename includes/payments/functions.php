@@ -1187,16 +1187,22 @@ function give_remove_payment_prefix_postfix( $number ) {
  * Get the fully formatted donation amount. The donation amount is retrieved using give_get_donation_amount() and is then
  * sent through give_currency_filter() and  give_format_amount() to format the amount correctly.
  *
- * @param int    $donation_id Donation ID.
+ * @param int|object $donation Donation ID or Donation Object.
  *
  * @since 1.0
  * @since 1.8.17 Added filter and internally use functions.
  *
  * @return string $amount Fully formatted donation amount.
  */
-function give_donation_amount( $donation_id = 0 ) {
-	$donation_currency = give_get_payment_currency_code( $donation_id );
-	$amount            = give_get_payment_amount( $donation_id );
+function give_donation_amount( $donation ) {
+
+	// If $donation is numeric and positive number, then create a donation object.
+	if ( is_numeric( absint( $donation ) ) ) {
+		$donation = new Give_Payment( $donation );
+	}
+
+	$donation_currency = give_get_payment_currency_code( $donation->id );
+	$amount            = floatval( $donation->total );
 
 	$formatted_amount = give_currency_filter(
 		give_format_amount(
@@ -1219,7 +1225,7 @@ function give_donation_amount( $donation_id = 0 ) {
 	 * @param integer $donation_id      Donation ID.
 	 * @param string  $type             String parameter which will define context of donation amount..
 	 */
-	return apply_filters( 'give_get_donation_amount', $formatted_amount, $amount, $donation_id );
+	return apply_filters( 'give_get_donation_amount', $formatted_amount, $amount, $donation->id );
 }
 
 /**
