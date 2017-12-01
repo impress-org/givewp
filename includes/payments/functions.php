@@ -1199,10 +1199,6 @@ function give_donation_amount( $donation, $format_args = false ) {
 	/* @var Give_Payment $donation */
 	if ( ! ( $donation instanceof Give_Payment ) ) {
 		$donation = new Give_Payment( absint( $donation ) );
-
-		if ( ! $donation->ID ) {
-			return '0';
-		}
 	}
 
 	if ( ! is_array( $format_args ) ) {
@@ -1246,7 +1242,7 @@ function give_donation_amount( $donation, $format_args = false ) {
 	 * @param float $amount       Donation amount.
 	 * @param int   $donation_id  Donation ID.
 	 */
-	return apply_filters( 'give_donation_amount', (string) $formatted_amount, $amount, $donation->ID );
+	return apply_filters( 'give_donation_amount', (string) $formatted_amount, $amount, $donation );
 }
 
 /**
