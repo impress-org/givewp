@@ -1182,10 +1182,10 @@ function give_remove_payment_prefix_postfix( $number ) {
 }
 
 /**
- * Get Payment Amount
+ * Get Donation Amount
  *
- * Get the fully formatted donation amount. The donation amount is retrieved using give_get_donation_amount() and is then
- * sent through give_currency_filter() and  give_format_amount() to format the amount correctly.
+ * Get the fully formatted or unformatted donation amount which is sent through give_currency_filter()
+ * and give_format_amount() to format the amount correctly in case of formatted amount.
  *
  * @param int|Give_Payment $donation     Donation ID or Donation Object.
  * @param bool             $is_formatted Is Amount formatted or un-formatted.
@@ -1217,7 +1217,7 @@ function give_donation_amount( $donation, $is_formatted = false ) {
 	$final_amount = $is_formatted ? $formatted_amount : $amount;
 
 	/**
-	 * Filter payment amount.
+	 * Filter Donation amount.
 	 *
 	 * @since 1.8.17
 	 *
