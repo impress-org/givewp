@@ -458,8 +458,8 @@ class Tests_Payments extends Give_Unit_Test_Case {
 		$this->assertEquals( 'USD', give_get_payment_currency_code( $this->_payment_id ) );
 		$this->assertEquals( 'US Dollars', give_get_payment_currency( $this->_payment_id ) );
 
-		$total1 = give_currency_filter( give_format_amount( give_donation_amount( $this->_payment_id ) ), give_get_payment_currency_code( $this->_payment_id ) );
-		$total2 = give_currency_filter( give_format_amount( give_donation_amount( $this->_payment_id, true ) ) );
+		$total1 = give_donation_amount( $this->_payment_id, true );
+		$total2 = give_donation_amount( $this->_payment_id, true );
 
 		$this->assertEquals( '&#36;20.00', $total1 );
 		$this->assertEquals( '&#36;20.00', $total2 );
