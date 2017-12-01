@@ -306,7 +306,7 @@ function give_delete_donation( $payment_id = 0, $update_donor = true ) {
 		return;
 	}
 
-	$amount   = give_get_payment_amount( $payment_id );
+	$amount   = give_donation_amount( $payment_id );
 	$status   = $payment->post_status;
 	$donor_id = give_get_payment_donor_id( $payment_id );
 	$donor    = new Give_Donor( $donor_id );
