@@ -1188,7 +1188,7 @@ function give_remove_payment_prefix_postfix( $number ) {
  * and give_format_amount() to format the amount correctly in case of formatted amount.
  *
  * @param int|Give_Payment $donation    Donation ID or Donation Object.
- * @param bool|array       $format_args Is Amount formatted or un-formatted.
+ * @param bool|array       $format_args Currency Formatting Arguments.
  *
  * @since 1.0
  * @since 1.8.17 Added filter and internally use functions.
@@ -1238,9 +1238,9 @@ function give_donation_amount( $donation, $format_args = false ) {
 	 *
 	 * @since 1.8.17
 	 *
-	 * @param float $final_amount Formatted/Un-formatted amount.
-	 * @param float $amount       Donation amount.
-	 * @param int   $donation_id  Donation ID.
+	 * @param string $formatted_amount Formatted/Un-formatted amount.
+	 * @param float  $amount           Donation amount.
+	 * @param int    $donation_id      Donation ID.
 	 */
 	return apply_filters( 'give_donation_amount', (string) $formatted_amount, $amount, $donation );
 }
