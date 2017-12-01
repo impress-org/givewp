@@ -110,7 +110,7 @@ if ( $donations ) : ?>
 						<span class="give-donation-amount">
 							<?php
 							$currency_code   = give_get_payment_currency_code( $post->ID );
-							$donation_amount = give_donation_amount( $post->ID );
+							$donation_amount = give_donation_amount( $post->ID, true );
 
 							/**
 							 * Filters the donation amount on Donation History Page.
