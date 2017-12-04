@@ -201,7 +201,7 @@ function give_ajax_get_states_field() {
 	// Get the field name from the $_POST.
 	$field_name = sanitize_text_field( $_POST['field_name'] );
 
-	$label = __( 'State', 'give' );
+	$label = __( 'Select a state', 'give' );
 	$states_label = give_get_states_label();
 
 	$default_state = '';
@@ -255,7 +255,6 @@ function give_ajax_get_states_field() {
 		'success'        => true,
 		'states_found'   => $states_found,
 		'show_field'     => $show_field,
-		'states_label'   => $label,
 		'states_require' => $states_require,
 		'data'           => $data,
 		'default_state'  => $default_state,
@@ -466,18 +465,21 @@ function give_check_for_form_price_variations_html() {
 		wp_die();
 	}
 
-	$form_id    = ! empty( $_POST['form_id'] ) ? intval( $_POST['form_id'] ) : 0;
-	$payment_id = ! empty( $_POST['payment_id'] ) ? intval( $_POST['payment_id'] ) : 0;
-	$form       = get_post( $form_id );
+	$form_id    = ! empty( $_POST['form_id'] ) ? intval( $_POST['form_id'] ) : false;
+	$payment_id = ! empty( $_POST['payment_id'] ) ? intval( $_POST['payment_id'] ) : false;
+	if ( empty( $form_id ) || empty( $payment_id ) ) {
+		wp_die();
+	}
 
-	if ( 'give_forms' != $form->post_type ) {
+	$form = get_post( $form_id );
+	if ( ! empty( $form->post_type ) && 'give_forms' != $form->post_type ) {
 		wp_die();
 	}
 
 	if ( ! give_has_variable_prices( $form_id ) || ! $form_id ) {
 		esc_html_e( 'n/a', 'give' );
 	} else {
-		$prices_atts = '';
+		$prices_atts = array();
 		if ( $variable_prices = give_get_variable_prices( $form_id ) ) {
 			foreach ( $variable_prices as $variable_price ) {
 				$prices_atts[ $variable_price['_give_id']['level_id'] ] = give_format_amount( $variable_price['_give_amount'], array( 'sanitize' => false ) );

@@ -297,9 +297,14 @@ function give_update_payment_status( $payment_id, $new_status = 'publish' ) {
  */
 function give_delete_donation( $payment_id = 0, $update_donor = true ) {
 	$payment = new Give_Payment( $payment_id );
-	$amount  = give_get_payment_amount( $payment_id );
-	$status  = $payment->post_status;
 
+	// Bailout.
+	if( ! $payment->ID ) {
+		return;
+	}
+
+	$amount   = give_donation_amount( $payment_id );
+	$status   = $payment->post_status;
 	$donor_id = give_get_payment_donor_id( $payment_id );
 	$donor    = new Give_Donor( $donor_id );
 
@@ -406,179 +411,31 @@ function give_undo_donation( $payment_id ) {
  * @return object $stats Contains the number of payments per payment status.
  */
 function give_count_payments( $args = array() ) {
-
-	global $wpdb;
-	$meta_table      = __give_v20_bc_table_details( 'payment' );
-	$donor_meta_type = Give()->donor_meta->meta_type;
-
-	$defaults = array(
-		'user'       => null,
-		's'          => null,
-		'start-date' => null,
-		'end-date'   => null,
-		'form_id'    => null,
-	);
-
-	$args = wp_parse_args( $args, $defaults );
-
-	$select = 'SELECT p.post_status,count( * ) AS num_posts';
-	$join   = '';
-	$where  = "WHERE p.post_type = 'give_payment' AND p.post_status IN ('" . implode( "','", give_get_payment_status_keys() ) . "')";
-
-	// Count payments for a specific user.
-	if ( ! empty( $args['user'] ) ) {
-
-		if ( is_email( $args['user'] ) ) {
-			$field = 'email';
-		} elseif ( is_numeric( $args['user'] ) ) {
-			$field = 'id';
-		} else {
-			$field = '';
-		}
-
-		$join = "LEFT JOIN {$meta_table['name']} m ON (p.ID = m.{$meta_table['column']['id']})";
-
-		if ( ! empty( $field ) ) {
-			$where .= "
-				AND m.meta_key = '_give_payment_user_{$field}'
-				AND m.meta_value = '{$args['user']}'";
-		}
-	} elseif ( ! empty( $args['donor'] ) ) {
-
-		$join  = "LEFT JOIN {$meta_table['name']} m ON (p.ID = m.{$meta_table['column']['id']})";
-		$where .= "
-			AND m.meta_key = '_give_payment_{$donor_meta_type}_id'
-			AND m.meta_value = '{$args['donor']}'";
-
-		// Count payments for a search.
-	} elseif ( ! empty( $args['s'] ) ) {
-
-		if ( is_email( $args['s'] ) || strlen( $args['s'] ) == 32 ) {
-
-			if ( is_email( $args['s'] ) ) {
-				$field = '_give_payment_donor_email';
-			} else {
-				$field = '_give_payment_purchase_key';
-			}
-
-			$join  = "LEFT JOIN {$meta_table['name']} m ON (p.ID = m.{$meta_table['column']['id']})";
-			$where .= $wpdb->prepare( '
-                AND m.meta_key = %s
-                AND m.meta_value = %s', $field, $args['s'] );
-
-		} elseif ( '#' == substr( $args['s'], 0, 1 ) ) {
-
-			$search = str_replace( '#:', '', $args['s'] );
-			$search = str_replace( '#', '', $search );
-
-			$select = 'SELECT p.post_status,count( * ) AS num_posts ';
-			$join   = '';
-			$where  = $wpdb->prepare( 'WHERE p.post_type=%s  AND p.ID = %d ', 'give_payment', $search );
-
-		} elseif ( is_numeric( $args['s'] ) ) {
-
-			$join  = "LEFT JOIN {$meta_table['column']} m ON (p.ID = m.{$meta_table['column']})";
-			$where .= $wpdb->prepare( "
-				AND m.meta_key = '_give_payment_donor_id'
-				AND m.meta_value = %d", $args['s'] );
-
-		} else {
-			$search = $wpdb->esc_like( $args['s'] );
-			$search = '%' . $search . '%';
-
-			$where .= $wpdb->prepare( 'AND ((p.post_title LIKE %s) OR (p.post_content LIKE %s))', $search, $search );
-		}// End if().
-	}// End if().
-
-	if ( ! empty( $args['form_id'] ) && is_numeric( $args['form_id'] ) ) {
-
-		$join  = "LEFT JOIN {$meta_table['name']} m ON (p.ID = m.{$meta_table['column']['id']})";
-		$where .= $wpdb->prepare( '
-                AND m.meta_key = %s
-                AND m.meta_value = %s', '_give_payment_form_id', $args['form_id'] );
+	// Backward compatibility.
+	if( ! empty( $args['start-date'] ) ) {
+		$args['start_date'] = $args['start-date'];
+		unset( $args['start-date'] );
 	}
 
-	// Limit payments count by date.
-	if ( ! empty( $args['start-date'] ) && false !== strpos( $args['start-date'], '/' ) ) {
-
-		$date_parts = explode( '/', $args['start-date'] );
-		$month      = ! empty( $date_parts[0] ) && is_numeric( $date_parts[0] ) ? $date_parts[0] : 0;
-		$day        = ! empty( $date_parts[1] ) && is_numeric( $date_parts[1] ) ? $date_parts[1] : 0;
-		$year       = ! empty( $date_parts[2] ) && is_numeric( $date_parts[2] ) ? $date_parts[2] : 0;
-
-		$is_date = checkdate( $month, $day, $year );
-		if ( false !== $is_date ) {
-
-			$date  = new DateTime( $args['start-date'] );
-			$where .= $wpdb->prepare( " AND p.post_date >= '%s'", $date->format( 'Y-m-d' ) );
-
-		}
-
-		// Fixes an issue with the payments list table counts when no end date is specified (with stats class).
-		if ( empty( $args['end-date'] ) ) {
-			$args['end-date'] = $args['start-date'];
-		}
+	if( ! empty( $args['end-date'] ) ) {
+		$args['end_date'] = $args['end-date'];
+		unset( $args['end-date'] );
 	}
 
-	if ( ! empty( $args['end-date'] ) && false !== strpos( $args['end-date'], '/' ) ) {
-
-		$date_parts = explode( '/', $args['end-date'] );
-
-		$month = ! empty( $date_parts[0] ) ? $date_parts[0] : 0;
-		$day   = ! empty( $date_parts[1] ) ? $date_parts[1] : 0;
-		$year  = ! empty( $date_parts[2] ) ? $date_parts[2] : 0;
-
-		$is_date = checkdate( $month, $day, $year );
-		if ( false !== $is_date ) {
-
-			$date  = new DateTime( $args['end-date'] );
-			$where .= $wpdb->prepare( " AND p.post_date <= '%s'", $date->format( 'Y-m-d' ) );
-
-		}
+	if( ! empty( $args['form_id'] ) ) {
+		$args['give_forms'] = $args['form_id'];
+		unset( $args['form_id'] );
 	}
 
-	$where = apply_filters( 'give_count_payments_where', $where );
-	$join  = apply_filters( 'give_count_payments_join', $join );
+	// Extract all donations
+	$args['number']   = - 1;
+	$args['group_by'] = 'post_status';
+	$args['count']    = 'true';
 
-	$query = "$select
-		FROM $wpdb->posts p
-		$join
-		$where
-		GROUP BY p.post_status
-	";
+	$donations_obj = new Give_Payments_Query( $args );
+	$donations_count = $donations_obj->get_payment_by_group();
 
-	$cache_key = md5( $query );
-
-	$count = wp_cache_get( $cache_key, 'counts' );
-	if ( false !== $count ) {
-		return $count;
-	}
-
-	$count = $wpdb->get_results( $query, ARRAY_A );
-
-	$stats    = array();
-	$statuses = get_post_stati();
-	if ( isset( $statuses['private'] ) && empty( $args['s'] ) ) {
-		unset( $statuses['private'] );
-	}
-
-	foreach ( $statuses as $state ) {
-		$stats[ $state ] = 0;
-	}
-
-	foreach ( (array) $count as $row ) {
-
-		if ( 'private' == $row['post_status'] && empty( $args['s'] ) ) {
-			continue;
-		}
-
-		$stats[ $row['post_status'] ] = $row['num_posts'];
-	}
-
-	$stats = (object) $stats;
-	wp_cache_set( $cache_key, $stats, 'counts' );
-
-	return $stats;
+	return (object) apply_filters( 'give_count_payments', $donations_count, $args, $donations_obj );
 }
 
 
@@ -1320,62 +1177,67 @@ function give_remove_payment_prefix_postfix( $number ) {
 }
 
 /**
- * Get Payment Amount
+ * Get Donation Amount
  *
- * Get the fully formatted donation amount. The donation amount is retrieved using give_get_donation_amount() and is
- * then sent through give_currency_filter() and  give_format_amount() to format the amount correctly.
+ * Get the fully formatted or unformatted donation amount which is sent through give_currency_filter()
+ * and give_format_amount() to format the amount correctly in case of formatted amount.
  *
- * @param int    $donation_id Donation ID.
- * @param string $type        String parameter which will define context of donation amount.
+ * @param int|Give_Payment $donation    Donation ID or Donation Object.
+ * @param bool|array       $format_args Currency Formatting Arguments.
  *
  * @since 1.0
  * @since 1.8.17 Added filter and internally use functions.
  *
  * @return string $amount Fully formatted donation amount.
  */
-function give_donation_amount( $donation_id = 0, $type = '' ) {
-	$donation_currency = give_get_payment_currency_code( $donation_id );
-	$amount            = give_get_payment_amount( $donation_id );
+function give_donation_amount( $donation, $format_args = false ) {
+	/* @var Give_Payment $donation */
+	if ( ! ( $donation instanceof Give_Payment ) ) {
+		$donation = new Give_Payment( absint( $donation ) );
+	}
 
-	$formatted_amount = give_currency_filter(
-		give_format_amount(
+	if ( ! is_array( $format_args ) ) {
+		$format_args = array(
+			'currency' => (bool) $format_args,
+			'amount'   => (bool) $format_args,
+		);
+	}
+
+	$format_args = wp_parse_args(
+		$format_args,
+		array(
+			'currency' => false,
+			'amount'   => false,
+		)
+	);
+
+	$amount           = $donation->total;
+	$formatted_amount = $amount;
+
+	if ( $format_args['amount'] ) {
+		$formatted_amount = give_format_amount(
 			$amount,
 			array(
 				'sanitize' => false,
-				'currency' => $donation_currency,
+				'currency' => $donation->currency,
 			)
-		),
-		$donation_currency
-	);
+		);
+	}
+
+	if ( $format_args['currency'] ) {
+		$formatted_amount = give_currency_filter( $formatted_amount, $donation->currency );
+	}
 
 	/**
-	 * Filter payment amount.
+	 * Filter Donation amount.
 	 *
 	 * @since 1.8.17
 	 *
-	 * @param string  $formatted_amount Formatted amount.
-	 * @param double  $amount           Donation amount.
-	 * @param integer $donation_id      Donation ID.
-	 * @param string  $type             String parameter which will define context of donation amount..
+	 * @param string $formatted_amount Formatted/Un-formatted amount.
+	 * @param float  $amount           Donation amount.
+	 * @param int    $donation_id      Donation ID.
 	 */
-	return apply_filters( 'give_get_donation_amount', $formatted_amount, $amount, $donation_id, $type );
-}
-
-/**
- * Get the amount associated with a payment
- *
- * @param int $payment_id Payment ID.
- *
- * @access public
- * @since  1.0
- *
- * @return mixed
- */
-function give_get_payment_amount( $payment_id ) {
-
-	$payment = new Give_Payment( $payment_id );
-
-	return apply_filters( 'give_payment_amount', floatval( $payment->total ), $payment_id );
+	return apply_filters( 'give_donation_amount', (string) $formatted_amount, $amount, $donation );
 }
 
 /**

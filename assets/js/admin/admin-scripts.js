@@ -106,58 +106,6 @@ var give_setting_edit = false;
 	};
 
 	/**
-	 * Show alert when admin try to reload the page with saving the changes.
-	 *
-	 * @since 1.8.14
-	 */
-	var form_edit_alert = function () {
-		if (jQuery('body.post-type-give_forms').length > 0) {
-			window.addEventListener("beforeunload", function (e) {
-				var confirmationMessage = give_vars.setting_not_save_message;
-				if (give_setting_edit) {
-					(e || window.event).returnValue = confirmationMessage; //Gecko + IE
-					return confirmationMessage;                            //Webkit, Safari, Chrome
-				}
-			});
-
-			jQuery('body').on('click', '.give-save-button', function () {
-				give_setting_edit = false;
-			});
-		}
-	};
-
-	/**
-	 * Display alert in setting page of give if user try to reload the page with saving the changes.
-	 *
-	 * @since 1.8.14
-	 */
-	var enable_form_edit_alert_setting = function () {
-		// Check if it give setting page or not.
-		if (jQuery('body.give_forms_page_give-settings').length > 0) {
-
-			// Get the default value.
-			var on_load_value = jQuery('body.give_forms_page_give-settings #give-mainform').serialize();
-
-			/**
-			 * Keyup event add to support to text box and textarea.
-			 * blur event add to support to dropdown.
-			 * Change event add to support to rest all element.
-			 */
-			jQuery('.give-settings-page').on('change keyup blur', 'form', function (event) {
-				// Get the form value after change.
-				var on_change_value = jQuery('body.give_forms_page_give-settings #give-mainform').serialize();
-
-				// If both the value are same then no change has being made else change has being made.
-				if (on_load_value == on_change_value) {
-					give_setting_edit = false;
-				} else {
-					give_setting_edit = true;
-				}
-			});
-		}
-	};
-
-	/**
 	 * Setup Pretty Chosen Select Fields
 	 */
 	var setup_chosen_give_selects = function () {
@@ -192,13 +140,20 @@ var give_setting_edit = false;
 		$give_chosen_containers.chosen({
 			inherit_select_classes: true,
 			placeholder_text_single: give_vars.one_option,
-			placeholder_text_multiple: give_vars.one_or_more_option,
-			width: '100%'
+			placeholder_text_multiple: give_vars.one_or_more_option
+		});
+
+		// Fix: Chosen JS - Zero Width Issue.
+		// @see https://github.com/harvesthq/chosen/issues/472#issuecomment-344414059
+		$( '.chosen-container' ).each( function() {
+			if ( 0 === $( this ).width() ) {
+				$( this ).css( 'width', '100%' );
+			}
 		});
 
 		// This fixes the Chosen box being 0px wide when the thickbox is opened.
-		$('#post').on('click', '.give-thickbox', function () {
-			$('.give-select-chosen', '#choose-give-form').css('width', '100%');
+		$( '#post' ).on( 'click', '.give-thickbox', function() {
+			$( '.give-select-chosen', '#choose-give-form' ).css( 'width', '100%' );
 		});
 
 		// Variables for setting up the typing timer.
@@ -589,23 +544,22 @@ var give_setting_edit = false;
 			});
 
 			// Add total donation amount if level changes.
-			$('#give-donation-overview').on('change', 'select[name="give-variable-price"]', function () {
-				var prices = jQuery(this).data('prices'),
-					$total_amount = $('#give-payment-total');
+			$( '#give-donation-overview' ).on( 'change', 'select[name="give-variable-price"]', function () {
+				var prices = jQuery( this ).data( 'prices' ),
+					$total_amount = $( '#give-payment-total' );
 
-				if ($(this).val() in prices) {
-					$total_amount
-						.val(prices[$(this).val()])
-						.css('background-color', 'yellow');
+				if ( '' !== prices && $( this ).val() in prices ) {
+
+					$total_amount.val( prices[ $( this ).val() ] ).css( 'background-color', 'yellow' );
 
 					window.setTimeout(
 						function () {
-							$total_amount.css('background-color', 'white');
+							$total_amount.css( 'background-color', 'white' );
 						},
 						1000
 					);
 				}
-			});
+			} );
 		}
 
 	};
@@ -620,6 +574,9 @@ var give_setting_edit = false;
 			this.toggle_options();
 			this.main_setting_update_notice();
 			this.verify_settings();
+			this.saveButtonTriggered();
+			this.changeSettingsUnload();
+			this.detectSettingsChange();
 		},
 
 		/**
@@ -760,7 +717,65 @@ var give_setting_edit = false;
 					});
 				}
 			}).change();
+		},
+
+		saveButtonTriggered: function() {
+			$( '.give-settings-setting-page' ).on( 'click', '.give-save-button', function() {
+				$( window ).unbind( 'beforeunload' );
+			});
+		},
+
+		/**
+		 * Show alert when admin try to reload the page with saving the changes.
+		 *
+		 * @since 1.8.14
+		 */
+		changeSettingsUnload: function() {
+			if ( $( '.give-settings-setting-page' ).length > 0 ) {
+
+				$( window ).bind( 'beforeunload', function( e ) {
+
+					var confirmationMessage = give_vars.setting_not_save_message;
+
+					if ( give_setting_edit ) {
+						( e || window.event ).returnValue = confirmationMessage; //Gecko + IE.
+						return confirmationMessage;                              //Webkit, Safari, Chrome.
+					}
+				});
+			}
+		},
+
+		/**
+		 * Display alert in setting page of give if user try to reload the page with saving the changes.
+		 *
+		 * @since 1.8.14
+		 */
+		detectSettingsChange: function() {
+
+			var settingsPage = $( '.give-settings-setting-page' );
+
+			// Check if it give setting page or not.
+			if ( settingsPage.length > 0 ) {
+
+				// Get the default value.
+				var on_load_value = $( '#give-mainform' ).serialize();
+
+				/**
+				 * Keyup event add to support to text box and textarea.
+				 * blur event add to support to dropdown.
+				 * Change event add to support to rest all element.
+				 */
+				settingsPage.on( 'change keyup blur', 'form', function() {
+					// Get the form value after change.
+					var on_change_value = $( '#give-mainform' ).serialize();
+
+					// If both the value are same then no change has being made else change has being made.
+					give_setting_edit = ( on_load_value !== on_change_value ) ? true : false;
+
+				} );
+			}
 		}
+
 	};
 
 	/**
@@ -1662,10 +1677,10 @@ var give_setting_edit = false;
 							'<a class="give-skip-donor" title="' + give_vars.remove_from_bulk_delete + '">X</a>' +
 							donorName + '</div>';
 
-					if (selectAll.is(':checked') && !$(this).is(':checked')) {
-						$('#give-bulk-donors').append(donorHtml);
-					} else if (!selectAll.is(':checked')) {
-						$('#give-bulk-donors').find('#give-donor-' + donorId).remove();
+					if( selectAll.is( ':checked' ) && ! $( this ).is( ':checked' ) ) {
+						$( '#give-bulk-donors' ).append( donorHtml );
+					} else if ( ! selectAll.is( ':checked' ) ) {
+						$( '#give-bulk-donors' ).find( '#give-donor-' + donorId ).remove();
 					}
 				});
 			});
@@ -1720,7 +1735,7 @@ var give_setting_edit = false;
 				}
 				e.preventDefault();
 			});
-		},
+		}
 	};
 
 	/**
@@ -2478,7 +2493,6 @@ var give_setting_edit = false;
 
 		give_dismiss_notice();
 		enable_admin_datepicker();
-		form_edit_alert();
 		handle_status_change();
 		setup_chosen_give_selects();
 		$.giveAjaxifyFields({type: 'country_state', debug: true});
@@ -2606,7 +2620,11 @@ var give_setting_edit = false;
 
 			// Back out.
 			if (give_unformat_currency('0', false) === give_unformat_currency($(this).val(), false)) {
-				$(this).val('0');
+				var default_amount = $(this).attr('placeholder');
+				default_amount     = !default_amount ? '0' : default_amount;
+
+				$(this).val(default_amount);
+
 				return false;
 			}
 
@@ -2645,9 +2663,6 @@ var give_setting_edit = false;
 			}
 		});
 
-		// Render setting tab.
-		give_render_responsive_tabs();
-
 		/**
 		 * Automatically show/hide email setting fields.
 		 */
@@ -2678,9 +2693,8 @@ var give_setting_edit = false;
 		});
 
 		$('.give_email_api_notification_status_setting input:checked').change();
-
-		// Called after all the form processing had being done.
-		enable_form_edit_alert_setting();
+		// Render setting tab.
+		give_render_responsive_tabs();
 	});
 })(jQuery);
 

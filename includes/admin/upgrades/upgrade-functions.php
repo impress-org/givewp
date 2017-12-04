@@ -814,22 +814,40 @@ function give_v187_upgrades() {
 	 */
 	$cached_options = $wpdb->get_col(
 		$wpdb->prepare(
-			"SELECT * FROM {$wpdb->options} where (option_name LIKE '%%%s%%' OR option_name LIKE '%%%s%%')",
+			"
+					SELECT *
+					FROM {$wpdb->options}
+					WHERE (
+					option_name LIKE %s
+					OR option_name LIKE %s
+					OR option_name LIKE %s
+					OR option_name LIKE %s
+					OR option_name LIKE %s
+					OR option_name LIKE %s
+					OR option_name LIKE %s
+					OR option_name LIKE %s
+					OR option_name LIKE %s
+					OR option_name LIKE %s
+					OR option_name LIKE %s
+					OR option_name LIKE %s
+					OR option_name LIKE %s
+					)
+					",
 			array(
-				'_transient_give_stats_',
-				'give_cache',
-				'_transient_give_add_ons_feed',
-				'_transient__give_ajax_works',
-				'_transient_give_total_api_keys',
-				'_transient_give_i18n_give_promo_hide',
-				'_transient_give_contributors',
-				'_transient_give_estimated_monthly_stats',
-				'_transient_give_earnings_total',
-				'_transient_give_i18n_give_',
-				'_transient__give_installed',
-				'_transient__give_activation_redirect',
-				'_transient__give_hide_license_notices_shortly_',
-				'give_income_total',
+				'%_transient_give_stats_%',
+				'give_cache%',
+				'%_transient_give_add_ons_feed%',
+				'%_transient__give_ajax_works' .
+				'%_transient_give_total_api_keys%',
+				'%_transient_give_i18n_give_promo_hide%',
+				'%_transient_give_contributors%',
+				'%_transient_give_estimated_monthly_stats%',
+				'%_transient_give_earnings_total%',
+				'%_transient_give_i18n_give_%',
+				'%_transient__give_installed%',
+				'%_transient__give_activation_redirect%',
+				'%_transient__give_hide_license_notices_shortly_%',
+				'%give_income_total%',
 			)
 		),
 		1
@@ -1022,7 +1040,6 @@ function give_v189_upgrades() {
 function give_v20_upgrades() {
 	// Upgrade email settings.
 	give_v20_upgrades_email_setting();
-	give_v20_upgrade_donor_register_email_message();
 }
 
 /**
@@ -1093,24 +1110,6 @@ function give_v20_upgrades_email_setting() {
 		}
 	}
 }
-
-/**
- * Update Donor Register Email Message.
- *
- * @since 2.0
- */
-function give_v20_upgrade_donor_register_email_message() {
-	$all_setting = give_get_settings();
-
-	// Bailout on fresh install.
-	if ( empty( $all_setting ) ) {
-		return;
-	}
-
-	$donor_register_email = Give_Donor_Register_Email::get_instance();
-	give_update_option( 'donor-register_email_message', $donor_register_email->get_default_email_message() );
-}
-
 
 /**
  * Give version 1.8.9 upgrades
@@ -1822,21 +1821,24 @@ function give_v20_upgrades_donor_name() {
 			$donor_last_name  = Give()->donor_meta->get_meta( $donor->id, '_give_donor_last_name' );
 
 			// If first name meta of donor is not created, then create it.
-			if ( ! $donor_first_name ) {
+			if ( ! $donor_first_name && isset( $donor_name[0] ) ) {
 				Give()->donor_meta->add_meta( $donor->id, '_give_donor_first_name', $donor_name[0] );
 			}
 
 			// If last name meta of donor is not created, then create it.
-			if ( ! $donor_last_name ) {
+			if ( ! $donor_last_name && isset( $donor_name[1] ) ) {
 				Give()->donor_meta->add_meta( $donor->id, '_give_donor_last_name', $donor_name[1] );
 			}
 
 			// If Donor is connected with WP User then update user meta.
 			if ( $donor->user_id ) {
-				update_user_meta( $donor->user_id, 'first_name', $donor_name[0] );
-				update_user_meta( $donor->user_id, 'last_name', $donor_name[1] );
+				if ( isset( $donor_name[0] ) ) {
+					update_user_meta( $donor->user_id, 'first_name', $donor_name[0] );
+				}
+				if ( isset( $donor_name[1] ) ) {
+					update_user_meta( $donor->user_id, 'last_name', $donor_name[1] );
+				}
 			}
-
 		}
 
 	} else {

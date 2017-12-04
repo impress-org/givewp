@@ -466,7 +466,7 @@ class Give_Donor {
 
 			// We added this payment successfully, increment the stats
 			if ( $update_stats ) {
-				$payment_amount = give_get_payment_amount( $payment_id );
+				$payment_amount = give_donation_amount( $payment_id );
 
 				if ( ! empty( $payment_amount ) ) {
 					$this->increase_value( $payment_amount );
@@ -551,7 +551,7 @@ class Give_Donor {
 
 			if ( $update_stats ) {
 				// We removed this payment successfully, decrement the stats
-				$payment_amount = give_get_payment_amount( $payment_id );
+				$payment_amount = give_donation_amount( $payment_id );
 
 				if ( ! empty( $payment_amount ) ) {
 					$this->decrease_value( $payment_amount );
@@ -1421,8 +1421,6 @@ class Give_Donor {
 		if( ! $this->add_address( $address_id, $address ) ) {
 			return false;
 		}
-
-		$this->setup_address();
 
 		return true;
 	}
