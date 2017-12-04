@@ -815,22 +815,40 @@ function give_v187_upgrades() {
 	 */
 	$cached_options = $wpdb->get_col(
 		$wpdb->prepare(
-			"SELECT * FROM {$wpdb->options} where (option_name LIKE '%%%s%%' OR option_name LIKE '%%%s%%')",
+			"
+					SELECT *
+					FROM {$wpdb->options}
+					WHERE (
+					option_name LIKE %s
+					OR option_name LIKE %s
+					OR option_name LIKE %s
+					OR option_name LIKE %s
+					OR option_name LIKE %s
+					OR option_name LIKE %s
+					OR option_name LIKE %s
+					OR option_name LIKE %s
+					OR option_name LIKE %s
+					OR option_name LIKE %s
+					OR option_name LIKE %s
+					OR option_name LIKE %s
+					OR option_name LIKE %s
+					)
+					",
 			array(
-				'_transient_give_stats_',
-				'give_cache',
-				'_transient_give_add_ons_feed',
-				'_transient__give_ajax_works',
-				'_transient_give_total_api_keys',
-				'_transient_give_i18n_give_promo_hide',
-				'_transient_give_contributors',
-				'_transient_give_estimated_monthly_stats',
-				'_transient_give_earnings_total',
-				'_transient_give_i18n_give_',
-				'_transient__give_installed',
-				'_transient__give_activation_redirect',
-				'_transient__give_hide_license_notices_shortly_',
-				'give_income_total',
+				'%_transient_give_stats_%',
+				'give_cache%',
+				'%_transient_give_add_ons_feed%',
+				'%_transient__give_ajax_works' .
+				'%_transient_give_total_api_keys%',
+				'%_transient_give_i18n_give_promo_hide%',
+				'%_transient_give_contributors%',
+				'%_transient_give_estimated_monthly_stats%',
+				'%_transient_give_earnings_total%',
+				'%_transient_give_i18n_give_%',
+				'%_transient__give_installed%',
+				'%_transient__give_activation_redirect%',
+				'%_transient__give_hide_license_notices_shortly_%',
+				'%give_income_total%',
 			)
 		),
 		1
