@@ -306,7 +306,7 @@ function give_delete_donation( $payment_id = 0, $update_donor = true ) {
 		return;
 	}
 
-	$amount   = give_get_payment_amount( $payment_id );
+	$amount   = give_donation_amount( $payment_id );
 	$status   = $payment->post_status;
 	$donor_id = give_get_payment_donor_id( $payment_id );
 	$donor    = new Give_Donor( $donor_id );
@@ -616,7 +616,7 @@ function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour
 			 * @param array $donations      Donations lists.
 			 * @param array $args           Donation query args.
 			 */
-			$earnings = apply_filters( 'give_earnings_by_date', $earning_totals, $donations, $args );
+			$earnings = apply_filters( 'give_get_earnings_by_date', $earning_totals, $donations, $args );
 		}
 		// Cache the results for one hour.
 		Give_Cache::set( $key, $earnings, HOUR_IN_SECONDS );
@@ -1182,62 +1182,67 @@ function give_remove_payment_prefix_postfix( $number ) {
 }
 
 /**
- * Get Payment Amount
+ * Get Donation Amount
  *
- * Get the fully formatted donation amount. The donation amount is retrieved using give_get_donation_amount() and is then
- * sent through give_currency_filter() and  give_format_amount() to format the amount correctly.
+ * Get the fully formatted or unformatted donation amount which is sent through give_currency_filter()
+ * and give_format_amount() to format the amount correctly in case of formatted amount.
  *
- * @param int    $donation_id Donation ID.
- * @param string $type        String parameter which will define context of donation amount.
+ * @param int|Give_Payment $donation    Donation ID or Donation Object.
+ * @param bool|array       $format_args Currency Formatting Arguments.
  *
  * @since 1.0
  * @since 1.8.17 Added filter and internally use functions.
  *
  * @return string $amount Fully formatted donation amount.
  */
-function give_donation_amount( $donation_id = 0, $type = '' ) {
-	$donation_currency = give_get_payment_currency_code( $donation_id );
-	$amount            = give_get_payment_amount( $donation_id );
+function give_donation_amount( $donation, $format_args = false ) {
+	/* @var Give_Payment $donation */
+	if ( ! ( $donation instanceof Give_Payment ) ) {
+		$donation = new Give_Payment( absint( $donation ) );
+	}
 
-	$formatted_amount = give_currency_filter(
-		give_format_amount(
+	if ( ! is_array( $format_args ) ) {
+		$format_args = array(
+			'currency' => (bool) $format_args,
+			'amount'   => (bool) $format_args,
+		);
+	}
+
+	$format_args = wp_parse_args(
+		$format_args,
+		array(
+			'currency' => false,
+			'amount'   => false,
+		)
+	);
+
+	$amount           = $donation->total;
+	$formatted_amount = $amount;
+
+	if ( $format_args['amount'] ) {
+		$formatted_amount = give_format_amount(
 			$amount,
 			array(
 				'sanitize' => false,
-				'currency' => $donation_currency,
+				'currency' => $donation->currency,
 			)
-		),
-		$donation_currency
-	);
+		);
+	}
+
+	if ( $format_args['currency'] ) {
+		$formatted_amount = give_currency_filter( $formatted_amount, $donation->currency );
+	}
 
 	/**
-	 * Filter payment amount.
+	 * Filter Donation amount.
 	 *
 	 * @since 1.8.17
 	 *
-	 * @param string  $formatted_amount Formatted amount.
-	 * @param double  $amount           Donation amount.
-	 * @param integer $donation_id      Donation ID.
-	 * @param string  $type             String parameter which will define context of donation amount..
+	 * @param string $formatted_amount Formatted/Un-formatted amount.
+	 * @param float  $amount           Donation amount.
+	 * @param int    $donation_id      Donation ID.
 	 */
-	return apply_filters( 'give_get_donation_amount', $formatted_amount, $amount, $donation_id, $type );
-}
-
-/**
- * Get the amount associated with a payment
- *
- * @param int $payment_id Payment ID.
- *
- * @access public
- * @since  1.0
- *
- * @return mixed
- */
-function give_get_payment_amount( $payment_id ) {
-
-	$payment = new Give_Payment( $payment_id );
-
-	return apply_filters( 'give_payment_amount', floatval( $payment->total ), $payment_id );
+	return apply_filters( 'give_donation_amount', (string) $formatted_amount, $amount, $donation );
 }
 
 /**
