@@ -171,28 +171,6 @@ class Tests_Give_Donors extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Test Get First Name functions.
-	 *
-	 * @since 2.0
-	 */
-	public function test_get_first_name() {
-		$user  = get_userdata( $this->_user_id );
-		$donor = new Give_Donor( 'testadmin@domain.com' );
-		$this->assertEquals( $user->first_name, $donor->get_first_name() );
-	}
-
-	/**
-	 * Test Get Last Name functions.
-	 *
-	 * @since 2.0
-	 */
-	public function test_get_last_name() {
-		$user  = get_userdata( $this->_user_id );
-		$donor = new Give_Donor( 'testadmin@domain.com' );
-		$this->assertEquals( $user->last_name, $donor->get_last_name() );
-	}
-
-	/**
 	 * Test Magic Get Method
 	 *
 	 * @covers Give_Donor::__get
