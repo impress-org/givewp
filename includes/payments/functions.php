@@ -616,7 +616,7 @@ function give_get_earnings_by_date( $day = null, $month_num, $year = null, $hour
 			 * @param array $donations      Donations lists.
 			 * @param array $args           Donation query args.
 			 */
-			$earnings = apply_filters( 'give_earnings_by_date', $earning_totals, $donations, $args );
+			$earnings = apply_filters( 'give_get_earnings_by_date', $earning_totals, $donations, $args );
 		}
 		// Cache the results for one hour.
 		Give_Cache::set( $key, $earnings, HOUR_IN_SECONDS );
