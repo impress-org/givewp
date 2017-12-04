@@ -380,9 +380,9 @@ function give_import_donations_options() {
 			__( 'Date', 'give' ),
 		),
 		'first_name'  => array(
-			__( 'Name', 'give' ),
 			__( 'Donor First Name', 'give' ),
-			__( 'First Name', 'give' )
+			__( 'First Name', 'give' ),
+			__( 'Name', 'give' ),
 		),
 		'last_name'   => array(
 			__( 'Donor Last Name', 'give' ),
