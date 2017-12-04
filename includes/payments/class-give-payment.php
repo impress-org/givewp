@@ -546,7 +546,7 @@ final class Give_Payment {
 
 		// User based.
 		$this->ip          = $this->setup_ip();
-		$this->customer_id = $this->setup_donor_id();
+		$this->customer_id = $this->setup_donor_id(); // Backward compatibility
 		$this->donor_id    = $this->setup_donor_id();
 		$this->user_id     = $this->setup_user_id();
 		$this->email       = $this->setup_email();
