@@ -1299,8 +1299,15 @@ function give_email_tag_reset_password_link( $tag_args, $payment_id ) {
 			$payment    = new Give_Payment( $tag_args['payment_id'] );
 			$payment_id = $payment->number;
 			break;
+
 		case give_check_variable( $tag_args, 'isset', 0, 'user_id' ):
 			$reset_password_url = give_get_reset_password_url( $tag_args['user_id'] );
+			break;
+
+		case give_check_variable( $tag_args, 'isset', 0, 'donor_id' ):
+			/* @var Give_Donor $donor */
+			$donor = new Give_Donor( $tag_args['user_id'], true );
+			$reset_password_url = give_get_reset_password_url( $donor->user_id );
 			break;
 	}
 
