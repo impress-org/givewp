@@ -1553,5 +1553,4 @@ class Give_Donor {
 
 		return ( $last_name ) ? $last_name : '';
 	}
-
 }
