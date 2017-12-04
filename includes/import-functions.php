@@ -380,6 +380,7 @@ function give_import_donations_options() {
 			__( 'Date', 'give' ),
 		),
 		'first_name'  => array(
+			__( 'Name', 'give' ),
 			__( 'Donor First Name', 'give' ),
 			__( 'First Name', 'give' )
 		),
@@ -387,7 +388,10 @@ function give_import_donations_options() {
 			__( 'Donor Last Name', 'give' ),
 			__( 'Last Name', 'give' ),
 		),
-		'line1'       => __( 'Address 1', 'give' ),
+		'line1'       => array(
+			__( 'Address 1', 'give' ),
+			__( 'Address', 'give' ),
+		),
 		'line2'       => __( 'Address 2', 'give' ),
 		'city'        => __( 'City', 'give' ),
 		'state'       => array(
@@ -410,9 +414,15 @@ function give_import_donations_options() {
 			__( 'Donation Status', 'give' ),
 			__( 'Status', 'give' ),
 		),
-		'gateway'     => __( 'Payment Method', 'give' ),
+		'gateway'     => array(
+			__( 'Payment Method', 'give' ),
+			__( 'Method', 'give' ),
+		),
 		'notes'       => __( 'Notes', 'give' ),
-		'mode'        => __( 'Test Mode', 'give' ),
+		'mode'        => array(
+			__( 'Test Mode', 'give' ),
+			__( 'Mode', 'give' ),
+		),
 		'post_meta'   => __( 'Import as Meta', 'give' ),
 	) );
 }
@@ -454,6 +464,7 @@ function give_import_donation_form_options() {
 			__( 'Donation Form Title', 'give' ),
 			__( 'Donation Form', 'give' ),
 			__( 'Form Name', 'give' ),
+			__( 'Title', 'give' ),
 		),
 		'form_id'                 => array(
 			__( 'Donation Form ID', 'give' ),
