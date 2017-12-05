@@ -458,8 +458,8 @@ class Tests_Payments extends Give_Unit_Test_Case {
 		$this->assertEquals( 'USD', give_get_payment_currency_code( $this->_payment_id ) );
 		$this->assertEquals( 'US Dollars', give_get_payment_currency( $this->_payment_id ) );
 
-		$total1 = give_currency_filter( give_format_amount( give_get_payment_amount( $this->_payment_id ) ), give_get_payment_currency_code( $this->_payment_id ) );
-		$total2 = give_currency_filter( give_format_amount( give_get_payment_amount( $this->_payment_id ) ) );
+		$total1 = give_donation_amount( $this->_payment_id, true );
+		$total2 = give_donation_amount( $this->_payment_id, true );
 
 		$this->assertEquals( '&#36;20.00', $total1 );
 		$this->assertEquals( '&#36;20.00', $total2 );
@@ -549,18 +549,48 @@ class Tests_Payments extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Test give_donation_amount().
+	 * Test for give_donation_amount fn
+	 *
+	 * @since        1.8.17
+	 * @access       public
+	 *
+	 * @param bool|array $format_args
+	 * @param string     $expected1
+	 * @param string     $expected2
+	 *
+	 * @dataProvider give_donation_amount_provider
 	 */
-	public function test_give_donation_amount() {
-		$donation = new Give_Payment( $this->_payment_id );
+	public function test_give_donation_amount( $format_args, $expected1, $expected2 ) {
+		$donation = Give_Helper_Payment::create_simple_payment( array( 'donation' => array( 'price' => 2873892713.34468 ) ) );
 
-		$this->assertEquals( '&#36;20.00', give_donation_amount( $donation->ID ) );
-		$this->assertEquals( '&#36;20.00', give_donation_amount( $donation->ID ), 'donor' );
+		$donation = new Give_Payment( $donation );
 
-		$payment_meta = give_get_payment_meta( $donation->ID );
-		$payment_meta['currency'] = 'INR';
+		$this->assertSame( $expected1, give_donation_amount( $donation->ID, $format_args ) );
 
-		give_update_meta( $donation->ID, '_give_payment_meta', $payment_meta );
-		$this->assertEquals( '&#8377;20.00', give_donation_amount( $donation->ID, 'receipt' ) );
+		// Change payment data.
+		$donation->currency = 'INR';
+		$donation->save();
+
+		$this->assertSame( $expected2, give_donation_amount( $donation->ID, $format_args ) );
+
+	}
+
+
+	/**
+	 * Data provider for test_give_donation_amount
+	 *
+	 * @since  1.8.17
+	 * @access public
+	 * @return array
+	 */
+	public function give_donation_amount_provider() {
+		return array(
+			array( false, '2873892713.34', '2873892713.34' ),
+			array( true, '&#36;2,873,892,713.34', '&#8377;2,87,38,92,713.34' ),
+			array( array( 'currency' => true, 'amount' => false ), '&#36;2873892713.34', '&#8377;2873892713.34' ),
+			array( array( 'currency' => false, 'amount' => true ), '2,873,892,713.34', '2,87,38,92,713.34' ),
+			array( array( 'currency' => true, 'amount' => true ), '&#36;2,873,892,713.34', '&#8377;2,87,38,92,713.34' ),
+			array( array( 'currency' => false, 'amount' => false ), '2873892713.34', '2873892713.34' ),
+		);
 	}
 }

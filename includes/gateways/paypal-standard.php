@@ -320,7 +320,7 @@ function give_process_paypal_web_accept( $data, $payment_id ) {
 	}
 
 	// Retrieve the total donation amount (before PayPal).
-	$payment_amount = give_get_payment_amount( $payment_id );
+	$payment_amount = give_donation_amount( $payment_id );
 
 	// Check that the donation PP and local db amounts match.
 	if ( number_format( (float) $paypal_amount, 2 ) < number_format( (float) $payment_amount, 2 ) ) {
@@ -377,7 +377,7 @@ function give_process_paypal_refund( $data, $payment_id = 0 ) {
 		return;
 	}
 
-	$payment_amount = give_get_payment_amount( $payment_id );
+	$payment_amount = give_donation_amount( $payment_id );
 	$refund_amount  = $data['payment_gross'] * - 1;
 
 	if ( number_format( (float) $refund_amount, 2 ) < number_format( (float) $payment_amount, 2 ) ) {
