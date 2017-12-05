@@ -31,9 +31,7 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 
 
 	/**
-	 * Data Provider
-	 *
-	 * @todo  Add more currencies for testing.
+	 * Data Provider.
 	 *
 	 * @since 1.8.8
 	 * @return array
@@ -41,8 +39,35 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 	public function give_get_currency_name_data_provider() {
 		return array(
 			array( give_get_currency_name( 'USD' ), __( 'US Dollars', 'give' ) ),
+			array( give_get_currency_name( 'EUR' ), __( 'Euros', 'give' ) ),
 			array( give_get_currency_name( 'GBP' ), __( 'Pounds Sterling', 'give' ) ),
+			array( give_get_currency_name( 'AUD' ), __( 'Australian Dollars', 'give' ) ),
+			array( give_get_currency_name( 'BRL' ), __( 'Brazilian Real', 'give' ) ),
+			array( give_get_currency_name( 'CAD' ), __( 'Canadian Dollars', 'give' ) ),
+			array( give_get_currency_name( 'CZK' ), __( 'Czech Koruna', 'give' ) ),
+			array( give_get_currency_name( 'DKK' ), __( 'Danish Krone', 'give' ) ),
+			array( give_get_currency_name( 'HKD' ), __( 'Hong Kong Dollar', 'give' ) ),
+			array( give_get_currency_name( 'HUF' ), __( 'Hungarian Forint', 'give' ) ),
+			array( give_get_currency_name( 'ILS' ), __( 'Israeli Shekel', 'give' ) ),
+			array( give_get_currency_name( 'JPY' ), __( 'Japanese Yen', 'give' ) ),
+			array( give_get_currency_name( 'MYR' ), __( 'Malaysian Ringgits', 'give' ) ),
+			array( give_get_currency_name( 'MXN' ), __( 'Mexican Peso', 'give' ) ),
+			array( give_get_currency_name( 'MAD' ), __( 'Moroccan Dirham', 'give' ) ),
+			array( give_get_currency_name( 'NZD' ), __( 'New Zealand Dollar', 'give' ) ),
+			array( give_get_currency_name( 'NOK' ), __( 'Norwegian Krone', 'give' ) ),
+			array( give_get_currency_name( 'PHP' ), __( 'Philippine Pesos', 'give' ) ),
+			array( give_get_currency_name( 'PLN' ), __( 'Polish Zloty', 'give' ) ),
+			array( give_get_currency_name( 'SGD' ), __( 'Singapore Dollar', 'give' ) ),
+			array( give_get_currency_name( 'KRW' ), __( 'South Korean Won', 'give' ) ),
+			array( give_get_currency_name( 'ZAR' ), __( 'South African Rand', 'give' ) ),
+			array( give_get_currency_name( 'SEK' ), __( 'Swedish Krona', 'give' ) ),
+			array( give_get_currency_name( 'CHF' ), __( 'Swiss Franc', 'give' ) ),
 			array( give_get_currency_name( 'TWD' ), __( 'Taiwan New Dollars', 'give' ) ),
+			array( give_get_currency_name( 'THB' ), __( 'Thai Baht', 'give' ) ),
+			array( give_get_currency_name( 'INR' ), __( 'Indian Rupee', 'give' ) ),
+			array( give_get_currency_name( 'TRY' ), __( 'Turkish Lira', 'give' ) ),
+			array( give_get_currency_name( 'RIAL' ), __( 'Iranian Rial', 'give' ) ),
+			array( give_get_currency_name( 'RUB' ), __( 'Russian Rubles', 'give' ) ),
 			array( give_get_currency_name( 'Wrong_Currency_Symbol' ), '' ),
 		);
 	}
