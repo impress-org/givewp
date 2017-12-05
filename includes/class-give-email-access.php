@@ -69,21 +69,21 @@ class Give_Email_Access {
 	 * Verify throttle
 	 *
 	 * @since  1.0
-	 * @access private
+	 * @access public
 	 *
 	 * @var
 	 */
-	private $verify_throttle;
+	public $verify_throttle;
 
 	/**
 	 * Limit throttle
 	 *
 	 * @since  1.8.17
-	 * @access private
+	 * @access public
 	 *
 	 * @var
 	 */
-	private $limit_throttle;
+	public $limit_throttle;
 
 	/**
 	 * Verify expiration
