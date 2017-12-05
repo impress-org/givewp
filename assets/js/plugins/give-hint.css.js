@@ -1,4 +1,4 @@
-jQuery.fn.give_hintcss = function(action, settings ) {
+jQuery.fn.giveHintCss = function(action, settings ) {
 	return this.each(function(){
 		var $this = jQuery(this);
 		settings = jQuery.extend({

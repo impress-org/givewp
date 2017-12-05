@@ -2603,11 +2603,11 @@ var give_setting_edit = false;
 
 			// Show qtip conditionally if thousand separator detected on price string.
 			if (( -1 !== $(this).val().indexOf(thousand_separator) ) && ( thousand_separator_limit < thousand_separator_count )) {
-				$(this).give_hintcss('show', tootltip_setting);
+				$(this).giveHintCss('show', tootltip_setting);
 			} else if (alphabet_count) {
-				$(this).give_hintcss('show', tootltip_setting);
+				$(this).giveHintCss('show', tootltip_setting);
 			} else {
-				$(this).give_hintcss('hide', tootltip_setting);
+				$(this).giveHintCss('hide', tootltip_setting);
 			}
 
 			// Reset thousand separator count.
