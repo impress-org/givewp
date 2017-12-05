@@ -1715,8 +1715,8 @@ function give_get_payment_form_title( $payment_meta, $only_level = false, $separ
 		)
 		, false
 	);
-	$cache_group = Give_Cache::get_key( 'give-db-queries' );
-	$form_title_html = Give_Cache::get_group( $cache_key, $cache_group );
+
+	$form_title_html = Give_Cache::get_db_query( $cache_key );
 
 	if ( is_null( $form_title_html ) ) {
 		if ( $only_level == true ) {
@@ -1746,7 +1746,7 @@ function give_get_payment_form_title( $payment_meta, $only_level = false, $separ
 
 		}
 
-		Give_Cache::set_group( $cache_key, $form_title_html, $cache_group );
+		Give_Cache::set_db_query( $cache_key, $form_title_html );
 	}
 
 	return apply_filters( 'give_get_payment_form_title', $form_title_html, $payment_meta );

@@ -209,6 +209,15 @@ function give_show_upgrade_notices( $give_updates ) {
 		)
 	);
 
+	// v2.0.0 Donor Name Upgrades
+	$give_updates->register(
+		array(
+			'id'       => 'v20_upgrades_donor_name',
+			'version'  => '2.0.0',
+			'callback' => 'give_v20_upgrades_donor_name',
+		)
+	);
+
 	// v2.0.0 Upgrades
 	$give_updates->register(
 		array(
@@ -216,15 +225,6 @@ function give_show_upgrade_notices( $give_updates ) {
 			'version'  => '2.0.0',
 			'callback' => 'give_v20_move_metadata_into_new_table_callback',
 			'depend'   => array( 'v20_upgrades_payment_metadata', 'v20_upgrades_form_metadata' ),
-		)
-	);
-
-	// v2.0.0 Donor Name Upgrades
-	$give_updates->register(
-		array(
-			'id'       => 'v20_upgrades_donor_name',
-			'version'  => '2.0.0',
-			'callback' => 'give_v20_upgrades_donor_name',
 		)
 	);
 
@@ -240,6 +240,7 @@ function give_show_upgrade_notices( $give_updates ) {
 				'v20_upgrades_form_metadata',
 				'v20_upgrades_payment_metadata',
 				'v20_upgrades_user_address',
+				'v20_upgrades_donor_name'
 			),
 		)
 	);
@@ -1565,7 +1566,7 @@ function give_v20_upgrades_payment_metadata_callback() {
 			global $post;
 
 			// Split _give_payment_meta meta.
-			// @todo Remove _give_payment_meta in after releases 2.0
+			// @todo Remove _give_payment_meta after releases 2.0
 			$payment_meta = maybe_unserialize( $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM $wpdb->postmeta WHERE meta_key=%s", '_give_payment_meta' ) ) );
 			if ( ! empty( $payment_meta ) ) {
 				_give_20_bc_split_and_save_give_payment_meta( $post->ID, maybe_unserialize( $payment_meta ) );
@@ -1609,8 +1610,8 @@ function give_v20_upgrades_payment_metadata_callback() {
 
 		wp_reset_postdata();
 	} else {
-		// Delete user id meta.
-		$wpdb->get_var( $wpdb->prepare( "DELETE FROM $wpdb->postmeta WHERE meta_key=%s", '_give_payment_user_id' ) );
+		// @todo Delete user id meta after releases 2.0
+		// $wpdb->get_var( $wpdb->prepare( "DELETE FROM $wpdb->postmeta WHERE meta_key=%s", '_give_payment_user_id' ) );
 
 		// No more forms found, finish up.
 		give_set_upgrade_complete( 'v20_upgrades_payment_metadata' );
@@ -1620,8 +1621,6 @@ function give_v20_upgrades_payment_metadata_callback() {
 
 /**
  * Upgrade logs data.
- *
- * @todo   : check if payment price id is necessary to store in log meta or not
  *
  * @since  2.0
  * @return void
@@ -1692,33 +1691,34 @@ function give_v20_logs_upgrades_callback() {
 
 		wp_reset_postdata();
 	} else {
-		// Delete terms and taxonomy.
-		$terms = get_terms( 'give_log_type', array( 'fields' => 'ids', 'hide_empty' => false ) );
+		// @todo: Delete terms and taxonomy after releases 2.0.
+		/*$terms = get_terms( 'give_log_type', array( 'fields' => 'ids', 'hide_empty' => false ) );
 		if ( ! empty( $terms ) ) {
 			foreach ( $terms as $term ) {
 				wp_delete_term( $term, 'give_log_type' );
 			}
-		}
+		}*/
 
-		// Delete logs.
-		$logIDs = get_posts( array(
+		// @todo: Delete logs after releases 2.0.
+		/*$logIDs = get_posts( array(
 				'order'          => 'DESC',
 				'post_type'      => 'give_log',
 				'post_status'    => 'any',
 				'posts_per_page' => - 1,
 				'fields'         => 'ids',
 			)
-		);
+		);*/
 
-		if ( ! empty( $logIDs ) ) {
+		/*if ( ! empty( $logIDs ) ) {
 			foreach ( $logIDs as $log ) {
 				// Delete term relationship and posts.
 				wp_delete_object_term_relationships( $log, 'give_log_type' );
 				wp_delete_post( $log, true );
 			}
-		}
+		}*/
 
-		unregister_taxonomy( 'give_log_type' );
+		// @todo: Unregister taxonomy after releases 2.0.
+		/*unregister_taxonomy( 'give_log_type' );*/
 
 		// Delete log cache.
 		Give()->logs->delete_cache();
@@ -1772,7 +1772,8 @@ function give_v20_move_metadata_into_new_table_callback() {
 							unset( $data['post_id'] );
 
 							Give()->form_meta->insert( $data );
-							delete_post_meta( get_the_ID(), $data['meta_key'] );
+							// @todo: delete form meta from post meta table after releases 2.0.
+							/*delete_post_meta( get_the_ID(), $data['meta_key'] );*/
 
 							break;
 
@@ -1781,7 +1782,9 @@ function give_v20_move_metadata_into_new_table_callback() {
 							unset( $data['post_id'] );
 
 							Give()->payment_meta->insert( $data );
-							delete_post_meta( get_the_ID(), $data['meta_key'] );
+
+							// @todo: delete donation meta from post meta table after releases 2.0.
+							/*delete_post_meta( get_the_ID(), $data['meta_key'] );*/
 
 							break;
 					}
@@ -1904,7 +1907,10 @@ function give_v20_upgrades_user_address() {
 				$address = maybe_unserialize( $address );
 				$donor->add_address( 'personal', $address );
 				$donor->add_address( 'billing[]', $address );
-				delete_user_meta( $user->ID, '_give_user_address' );
+
+
+				// @todo: delete _give_user_address from user meta after releases 2.0.
+				/*delete_user_meta( $user->ID, '_give_user_address' );*/
 			}
 		}
 

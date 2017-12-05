@@ -150,10 +150,9 @@ class Give_Donors_Query {
 		do_action( 'give_pre_get_donors', $this );
 
 		$cache_key        = Give_Cache::get_key( 'give_donor', $this->get_sql(), false );
-		$cache_gruop_name = 'give-db-queries';
 
 		// Get donors from cache.
-		$this->donors = Give_Cache::get_group( $cache_key, $cache_gruop_name );
+		$this->donors = Give_Cache::get_db_query( $cache_key );
 
 		if ( is_null( $this->donors  ) ) {
 			if ( empty( $this->args['count'] ) ) {
@@ -162,7 +161,7 @@ class Give_Donors_Query {
 				$this->donors = $wpdb->get_var( $this->get_sql() );
 			}
 
-			Give_Cache::set_group( $cache_key, $this->donors, $cache_gruop_name );
+			Give_Cache::set_db_query( $cache_key, $this->donors );
 		}
 
 

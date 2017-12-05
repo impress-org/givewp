@@ -92,7 +92,6 @@ class Give_Cache {
 	 *
 	 * @return string
 	 */
-
 	public static function get_key( $action, $query_args = null, $is_prefix = true ) {
 		// Bailout.
 		if ( empty( $action ) ) {
@@ -126,7 +125,6 @@ class Give_Cache {
 	 *
 	 * @return mixed
 	 */
-
 	public static function get( $cache_key, $custom_key = false, $query_args = array() ) {
 		if ( ! self::is_valid_cache_key( $cache_key ) ) {
 			if ( ! $custom_key ) {
@@ -168,7 +166,6 @@ class Give_Cache {
 	 *
 	 * @return mixed
 	 */
-
 	public static function set( $cache_key, $data, $expiration = null, $custom_key = false, $query_args = array() ) {
 		if ( ! self::is_valid_cache_key( $cache_key ) ) {
 			if ( ! $custom_key ) {
@@ -201,7 +198,6 @@ class Give_Cache {
 	 *
 	 * @return bool|WP_Error
 	 */
-
 	public static function delete( $cache_keys ) {
 		$result       = true;
 		$invalid_keys = array();
@@ -415,6 +411,42 @@ class Give_Cache {
 		$status = wp_cache_set( $id, $data, $group, $expire );
 
 		return $status;
+	}
+
+	/**
+	 * Cache small db query chunks inside group
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param int   $id
+	 * @param mixed $data
+	 *
+	 * @return bool
+	 */
+	public static function set_db_query( $id, $data ) {
+		$status = false;
+
+		// Bailout.
+		if ( ! self::$instance->is_cache || empty( $id ) ) {
+			return $status;
+		}
+
+		return self::set_group( $id, $data, 'give-db-queries', 0 );
+	}
+
+	/**
+	 * Get cache from group
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param int $id
+	 *
+	 * @return mixed
+	 */
+	public static function get_db_query( $id ) {
+		return self::get_group( $id, 'give-db-queries' );
 	}
 
 	/**

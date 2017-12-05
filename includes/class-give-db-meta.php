@@ -357,8 +357,9 @@ class Give_DB_Meta extends Give_DB {
 
 		$group = array(
 			// 'form'    => 'give-forms',
-			'payment' => 'give-donations',
-			'donor'   => 'give-donors',
+			'payment'  => 'give-donations',
+			'donor'    => 'give-donors',
+			'customer' => 'give-donors', // Backward compatibility for pre upgrade in 2.0
 			// 'log'     => 'give-logs',
 		);
 
