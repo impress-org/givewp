@@ -121,16 +121,8 @@ class Give_Email_Access {
 	 */
 	public function init() {
 
-		/**
-		 * Do NOT pass go if:
-		 *
-		 * a. User is logged in
-		 * b. You're in the admin
-		 */
-		if (
-			is_user_logged_in()
-			|| is_admin()
-		) {
+		// Bail Out, if user is logged in.
+		if ( is_user_logged_in() ) {
 			return;
 		}
 
@@ -141,6 +133,8 @@ class Give_Email_Access {
 		}
 
 		// Timeouts.
+		$this->verify_throttle  = apply_filters( 'give_nl_verify_throttle', 300 );
+		$this->limit_throttle   = apply_filters( 'give_nl_limit_throttle', 3 );
 		$this->token_expiration = apply_filters( 'give_nl_token_expiration', 7200 );
 
 		// Setup login.
@@ -166,9 +160,6 @@ class Give_Email_Access {
 	 */
 	public function can_send_email( $donor_id ) {
 
-		$this->verify_throttle = apply_filters( 'give_nl_verify_throttle',  300 );
-		$this->limit_throttle  = apply_filters( 'give_nl_limit_throttle', 3 );
-
 		$donor = Give()->donors->get_donor_by( 'id', $donor_id );
 
 		if ( is_object( $donor ) && count( $donor ) > 0 ) {
@@ -180,7 +171,7 @@ class Give_Email_Access {
 				give_update_meta( $donor_id, '_give_email_throttle_count', $email_throttle_count + 1 );
 			} else {
 				give_update_meta( $donor_id, '_give_email_throttle_count', 0 );
-				Give_Cache::set( 'give_cache_email_throttle_limit_exhausted', true ,$this->verify_throttle * 60 );
+				Give_Cache::set( 'give_cache_email_throttle_limit_exhausted', true, $this->verify_throttle );
 				return false;
 			}
 
