@@ -561,7 +561,7 @@ function give_confirm_email_for_donation_access() {
 		$return['status']  = 'error';
 		$return['message'] = Give()->notices->print_frontend_notice(
 			sprintf(
-				__( 'Please wait for %s minute(s) before requesting a new donation history access link.', 'give' ),
+				__( 'Please refresh the page in for %s minutes before requesting a new donation history access link.', 'give' ),
 				$value
 			),
 			false,
