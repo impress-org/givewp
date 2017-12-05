@@ -144,7 +144,6 @@ class Give_MetaBox_Form_Data {
 						'data_type'   => 'price',
 						'attributes'  => array(
 							'placeholder' => $price_placeholder,
-							'value'       => $price,
 							'class'       => 'give-money-field',
 						),
 					),
@@ -221,7 +220,6 @@ class Give_MetaBox_Form_Data {
 								'id'         => $prefix . 'amount',
 								'type'       => 'text_small',
 								'data_type'  => 'price',
-								'default'    => $price_placeholder,
 								'attributes' => array(
 									'placeholder' => $price_placeholder,
 									'class'       => 'give-money-field',
