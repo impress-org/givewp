@@ -66,7 +66,7 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 			array( give_get_currency_name( 'THB' ), __( 'Thai Baht', 'give' ) ),
 			array( give_get_currency_name( 'INR' ), __( 'Indian Rupee', 'give' ) ),
 			array( give_get_currency_name( 'TRY' ), __( 'Turkish Lira', 'give' ) ),
-			array( give_get_currency_name( 'RIAL' ), __( 'Iranian Rial', 'give' ) ),
+			array( give_get_currency_name( 'IRR' ), __( 'Iranian Rial', 'give' ) ),
 			array( give_get_currency_name( 'RUB' ), __( 'Russian Rubles', 'give' ) ),
 			array( give_get_currency_name( 'Wrong_Currency_Symbol' ), '' ),
 		);
