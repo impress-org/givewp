@@ -557,11 +557,11 @@ function give_confirm_email_for_donation_access() {
 
 
 	} else {
-		$value = Give()->email_access->verify_throttle / 60;
+		$value             = Give()->email_access->verify_throttle / 60;
 		$return['status']  = 'error';
 		$return['message'] = Give()->notices->print_frontend_notice(
 			sprintf(
-				__( 'Please refresh the page in for %s minutes before requesting a new donation history access link.', 'give' ),
+				__( 'Please refresh the page in %s minutes before requesting a new donation history access link.', 'give' ),
 				$value
 			),
 			false,
