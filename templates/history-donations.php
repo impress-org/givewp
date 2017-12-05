@@ -24,13 +24,28 @@ if ( is_user_logged_in() ) {
 	if( $donations_count > give_get_limit_display_donations() ) {
 
 		// Restrict Security Email Access option, if donation count of a donor is less than or equal to limit.
-		add_action( 'give_donation_history_table_end', 'give_donation_history_table_end' );
+		if( true !== Give_Cache::get( 'give_cache_email_throttle_limit_exhausted' ) ) {
+			add_action( 'give_donation_history_table_end', 'give_donation_history_table_end' );
+		}
 		$donations = give_get_users_donations( $email, give_get_limit_display_donations(), true, 'any' );
 	} else {
 		$donations = give_get_users_donations( $email, 20, true, 'any' );
 	}
 }
 
+$donor = Give()->donors->get_donor_by( 'email', $_SESSION['give']['give_email'] );
+if ( ! Give()->email_access->can_send_email( $donor->id ) ) {
+
+	$value = Give()->email_access->verify_throttle / 60;
+
+	give_set_error( 'give-limited-throttle', sprintf(
+		__( 'Please refresh the page in for %s minutes before requesting a new donation history access link.', 'give' ),
+		$value
+	) );
+
+}
+
+Give()->notices->render_frontend_notices( 0 );
 
 if ( $donations ) : ?>
 	<?php
