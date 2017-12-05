@@ -126,7 +126,7 @@ function give_get_gateway_admin_label( $gateway ) {
 	$payment  = isset( $_GET['id'] ) ? absint( $_GET['id'] ) : false;
 
 	if ( $gateway == 'manual' && $payment ) {
-		if ( give_get_payment_amount( $payment ) == 0 ) {
+		if ( give_donation_amount( $payment ) == 0 ) {
 			$label = __( 'Test Donation', 'give' );
 		}
 	}

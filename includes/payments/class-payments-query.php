@@ -89,6 +89,10 @@ class Give_Payments_Query extends Give_Stats {
 			'fields'          => null,
 			'gateway'         => null,
 			'give_forms'      => null,
+
+			// Currently these params only works with get_payment_by_group
+			'group_by'        => '',
+			'count'           => false,
 		);
 
 		$this->args = $this->_args = wp_parse_args( $args, $defaults );
@@ -260,36 +264,48 @@ class Give_Payments_Query extends Give_Stats {
 	 * @since  1.8.17
 	 * @access public
 	 *
-	 * @param string $group_by Valid donation property
-	 * @param bool   $count
-	 *
 	 * @return array
 	 */
-	public function get_payment_by_group( $group_by, $count = false ) {
-		$donations      = $this->get_payments();
+	public function get_payment_by_group() {
+		global $wpdb;
+
 		$allowed_groups = array( 'post_status' );
 		$result         = array();
 
 
-		if ( in_array( $group_by, $allowed_groups ) ) {
-			/* @var $donation Give_Payment */
-			foreach ( $donations as $donation ) {
-				$result[ $donation->{$group_by} ][] = $donation;
-			}
-
+		if ( in_array( $this->args['group_by'], $allowed_groups ) ) {
 			// Set only count in result.
-			if ( $count ) {
-				$new_result = array();
+			if ( $this->args['count'] ) {
+				$statuses     = get_post_stati();
+				$status_query = '';
 
-				foreach ( $result as $index => $items ) {
-					$new_result[ $index ] = count( $items );
+				$counter = 0;
+				foreach ( $statuses as $status ) {
+					$prefix       = $counter ? " OR " : '';
+					$status_query .= "{$prefix}{$wpdb->posts}.post_status=\"{$status}\"";
+					$counter ++;
 				}
 
-				$result = $new_result;
+				$new_results = $wpdb->get_results(
+					"
+					SELECT {$wpdb->posts}.post_status, COUNT({$wpdb->posts}.ID)
+					FROM {$wpdb->posts}
+					WHERE 1=1 
+					AND {$wpdb->posts}.post_parent = 0 
+					AND {$wpdb->posts}.post_type = 'give_payment'
+					AND (($status_query))
+					GROUP BY {$wpdb->posts}.{$this->args['group_by']}
+					ORDER BY {$wpdb->posts}.ID
+					DESC
+					"
+					, ARRAY_N );
 
-				switch ( $group_by ) {
+				foreach ( $new_results as $results ) {
+					$result[ $results[0] ] = $results[1];
+				}
+
+				switch ( $this->args['group_by'] ) {
 					case 'post_status':
-						$statuses = get_post_stati();
 
 						if ( isset( $statuses['private'] ) && empty( $args['s'] ) ) {
 							unset( $statuses['private'] );
@@ -304,6 +320,13 @@ class Give_Payments_Query extends Give_Stats {
 
 						break;
 				}
+			} else {
+				$donations = $this->get_payments();
+
+				/* @var $donation Give_Payment */
+				foreach ( $donations as $donation ) {
+					$result[ $donation->{$this->args['group_by']} ][] = $donation;
+				}
 			}
 		}
 
@@ -312,7 +335,7 @@ class Give_Payments_Query extends Give_Stats {
 		 *
 		 * @since 1.8.17
 		 */
-		return apply_filters( 'give_get_payment_by_group', $result, $donations, $this );
+		return apply_filters( 'give_get_payment_by_group', $result, $this );
 	}
 
 	/**
