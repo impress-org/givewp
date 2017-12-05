@@ -47,7 +47,11 @@ function give_donation_history( $atts ) {
 
 		// Display donation history link only if it is not accessed via Receipt Access Link.
 		if ( ! give_get_receipt_session() ) {
-			echo '<a href="' . esc_url( give_get_history_page_uri() ) . '">&laquo; ' . __( 'Return to All Donations', 'give' ) . '</a>';
+			echo sprintf(
+				'<a href="%s">%s</a>',
+				esc_url( give_get_history_page_uri() ),
+				__( '&laquo; Return to All Donations', 'give' )
+			);
 		}
 		return ob_get_clean();
 	}

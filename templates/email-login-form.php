@@ -7,7 +7,7 @@
 
 global $give_access_form_outputted;
 
-$email            = isset( $_POST['give_email'] ) ? $_POST['give_email'] : '';
+$email            = isset( $_POST['give_email'] ) ? give_clean( $_POST['give_email'] ) : '';
 $recaptcha_key    = give_get_option( 'recaptcha_key' );
 $recaptcha_secret = give_get_option( 'recaptcha_secret' );
 $enable_recaptcha = ( ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ) ? true : false;
