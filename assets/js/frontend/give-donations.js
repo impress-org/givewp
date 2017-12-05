@@ -12,6 +12,11 @@
 var give_scripts, give_global_vars;
 var Give = 'undefined' !== typeof Give ? Give : {};
 
+/**
+ *  This API is under development.
+ *
+ *  Currently uses only for internal purpose.
+ */
 Give = {
 	init: function () {
 		var subHelperObjs = ['form'],
