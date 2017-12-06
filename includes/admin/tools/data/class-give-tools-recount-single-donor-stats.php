@@ -85,7 +85,7 @@ class Give_Tools_Recount_Single_Customer_Stats extends Give_Batch_Export {
 					$found_payment_ids[] = $payment->ID;
 
 					if ( apply_filters( 'give_donor_recount_should_increase_value', true, $payment ) ) {
-						$payment_amount = give_get_payment_amount( $payment->ID, 'stats' );
+						$payment_amount = give_donation_amount( $payment->ID );
 						$step_total     += $payment_amount;
 					}
 

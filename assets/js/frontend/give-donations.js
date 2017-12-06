@@ -255,7 +255,10 @@ Give = {
 Give.form = {
 	init: function () {
 		this.fn.field.formatCreditCard(jQuery('form.give-form'));
-		this.fn.__sendBackToForm();
+		
+		window.onload = function () {
+			Give.form.fn.__sendBackToForm();
+		};
 	},
 
 	fn: {
@@ -573,6 +576,60 @@ Give.form = {
 		},
 
 		/**
+		 * Update level values
+		 *
+		 * Helper function: Sets the multi-select amount values
+		 *
+		 * @since 1.8.17
+		 * @param {object} $level
+		 * @returns {boolean}
+		 */
+		autoSetMultiLevel: function ($level) {
+
+			var $form          = $level.parents('form'),
+				level_amount   = $level.val(),
+				level_price_id = $level.data('price-id');
+
+			// Check if price ID blank because of dropdown type
+			if ('undefined' === typeof  level_price_id) {
+				level_price_id = $level.find('option:selected').data('price-id');
+			}
+
+			// Is this a custom amount selection?
+			if ('custom' === level_amount) {
+				// It is, so focus on the custom amount input.
+				$form.find('.give-amount-top').val('').focus();
+				return false; // Bounce out
+			}
+
+			// Update custom amount field
+			$form.find('.give-amount-top').val(level_amount);
+			$form.find('span.give-amount-top').text(level_amount);
+
+			var decimal_separator = Give.form.fn.getInfo('decimal_separator', $form);
+
+			// Cache previous amount and set data amount.
+			jQuery('.give-donation-amount .give-text-input', $form)
+				.data(
+					'amount',
+					Give.fn.unFormatCurrency(
+						$form.find('.give-final-total-amount').data('total'),
+						decimal_separator
+					)
+				);
+
+			// Manually trigger blur event with two params:
+			// (a) form jquery object
+			// (b) price id
+			// (c) donation amount
+			$form.find('.give-donation-amount .give-text-input')
+				.trigger('blur', [$form, level_amount, level_price_id]);
+
+			// trigger an event for hooks
+			jQuery(document).trigger('give_donation_value_updated', [$form, level_amount, level_price_id]);
+		},
+
+		/**
 		 * Donor sent back to the form
 		 *
 		 * @since 1.8.17
@@ -607,7 +664,7 @@ Give.form = {
 				level_field = $form.find('*[data-price-id="' + level_id + '"]');
 
 			if (level_field.length > 0) {
-				update_multiselect_vals(level_field);
+				this.autoSetMultiLevel(level_field);
 			}
 
 			// This form is modal display so show the modal.
@@ -1010,74 +1067,18 @@ jQuery(function ($) {
 	// Multi-level Buttons: Update Amount Field based on Multi-level Donation Select
 	doc.on('click touchend', '.give-donation-level-btn', function (e) {
 		e.preventDefault(); //don't let the form submit
-		update_multiselect_vals($(this));
+		Give.form.fn.autoSetMultiLevel($(this));
 	});
 
 	// Multi-level Radios: Update Amount Field based on Multi-level Donation Select
 	doc.on('click touchend', '.give-radio-input-level', function (e) {
-		update_multiselect_vals($(this));
+		Give.form.fn.autoSetMultiLevel($(this));
 	});
 
 	// Multi-level Checkboxes: Update Amount Field based on Multi-level Donation Select
 	doc.on('change', '.give-select-level', function (e) {
-		update_multiselect_vals($(this));
+		Give.form.fn.autoSetMultiLevel($(this));
 	});
-
-	/**
-	 * Update Multiselect Values
-	 *
-	 * Helper function: Sets the multiselect amount values
-	 *
-	 * @param selected_field
-	 * @returns {boolean}
-	 */
-	function update_multiselect_vals(selected_field) {
-
-		var $parent_form = selected_field.parents('form'),
-			this_amount  = selected_field.val(),
-			price_id     = selected_field.data('price-id');
-
-		// Check if price ID blank because of dropdown type
-		if ('undefined' === typeof  price_id) {
-			price_id = selected_field.find('option:selected').data('price-id');
-		}
-
-		// Is this a custom amount selection?
-		if ('custom' === this_amount) {
-			// It is, so focus on the custom amount input.
-			$parent_form.find('.give-amount-top').val('').focus();
-			return false; // Bounce out
-		}
-
-		// Update custom amount field
-		$parent_form.find('.give-amount-top').val(this_amount);
-		$parent_form.find('span.give-amount-top').text(this_amount);
-
-		var decimal_separator = Give.form.fn.getInfo('decimal_separator', $parent_form);
-
-		// Cache previous amount and set data amount.
-		$('.give-donation-amount .give-text-input', $parent_form)
-			.data(
-				'amount',
-				Give.fn.unFormatCurrency(
-					$parent_form.find('.give-final-total-amount').data('total'),
-					decimal_separator
-				)
-			);
-
-		// Manually trigger blur event with two params:
-		// (a) form jquery object
-		// (b) price id
-		// (c) donation amount
-		$parent_form.find('.give-donation-amount .give-text-input').trigger('blur', [
-			$parent_form,
-			this_amount,
-			price_id
-		]);
-
-		// trigger an event for hooks
-		$(document).trigger('give_donation_value_updated', [$parent_form, this_amount, price_id]);
-	}
 
 	/**
 	 * Show/Hide term and condition

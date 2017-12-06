@@ -885,7 +885,7 @@ input.give-text_medium {
   .postbox-container .cmb-row .cmb-th label {
     padding-left: 8px; }
 
-div[id^="give-donor-"] {
+#give-bulk-donors div[id^="give-donor-"] {
   display: block;
   overflow: hidden; }
 
@@ -2498,6 +2498,10 @@ input.give-price-field {
   position: relative; }
   .give_forms_page_give-donors #give-donors-filter p.search-box {
     margin: 0; }
+
+.give_forms_page_give-donors #give-donors-search-filter {
+  display: block;
+  overflow: hidden; }
 
 #give-donor-card-wrapper {
   margin-left: -1px;

@@ -291,8 +291,6 @@ class Give_Donor_List_Table extends WP_List_Table {
 	 */
 	protected function display_tablenav( $which ) {
 		if ( 'top' === $which ) {
-			$this->search_box( __( 'Search Donors', 'give' ), 'give-donors' );
-
 			wp_nonce_field( 'bulk-' . $this->_args['plural'], '_wpnonce', false );
 		}
 		?>
@@ -466,8 +464,11 @@ class Give_Donor_List_Table extends WP_List_Table {
 
 					<p class="submit inline-edit-save">
 						<input type="hidden" name="give_action" value="delete_donor"/>
-						<button type="button" id="give-bulk-delete-cancel" class="button cancel alignleft">Cancel</button>
-						<input type="submit" id="give-bulk-delete-button" disabled class="button button-primary alignright" value="Delete">
+						<input type="hidden" name="s" value="<?php echo ( ! empty( $_GET['s'] ) ) ? $_GET['s'] : ''; ?>"/>
+						<input type="hidden" name="orderby" value="<?php echo ( ! empty( $_GET['orderby'] ) ) ? $_GET['orderby'] : 'id'; ?>"/>
+						<input type="hidden" name="order" value="<?php echo ( ! empty( $_GET['order'] ) ) ? $_GET['order'] : 'desc'; ?>"/>
+						<button type="button" id="give-bulk-delete-cancel" class="button cancel alignleft"><?php _e( 'Cancel', 'give' ); ?></button>
+						<input type="submit" id="give-bulk-delete-button" disabled class="button button-primary alignright" value="<?php _e( 'Delete', 'give' ); ?>">
 						<br class="clear">
 					</p>
 				</td>
