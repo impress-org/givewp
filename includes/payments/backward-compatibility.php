@@ -242,6 +242,8 @@ add_filter( 'update_post_metadata', '_give_20_bc_saving_old_payment_meta', 10, 5
  * @return mixed
  */
 function _give_20_bc_get_old_payment_meta( $check, $object_id, $meta_key, $single ) {
+	global $wpdb;
+
 	// Deprecated meta keys.
 	$old_meta_keys = array(
 		'_give_payment_customer_id',
@@ -269,8 +271,23 @@ function _give_20_bc_get_old_payment_meta( $check, $object_id, $meta_key, $singl
 			remove_filter( 'get_post_metadata', '_give_20_bc_get_old_payment_meta' );
 
 			// if ( $meta_value = give_get_meta( $object_id, '_give_payment_meta' ) ) {
-				$meta_value = ! empty( $meta_value ) ? current( $meta_value ) : array();
-				$check      = _give_20_bc_give_payment_meta_value( $object_id, $meta_value );
+			$meta_value = ! empty( $meta_value ) ?
+				current( $meta_value ) :
+				(array) maybe_unserialize(
+					$wpdb->get_var(
+						$wpdb->prepare(
+							"
+						SELECT meta_value
+						FROM $wpdb->postmeta
+						WHERE post_id=%d
+						AND meta_key=%s
+						",
+							$object_id,
+							'_give_payment_meta'
+						)
+					)
+				);
+			$check      = _give_20_bc_give_payment_meta_value( $object_id, $meta_value );
 			// }
 
 			add_filter( 'get_post_metadata', '_give_20_bc_get_old_payment_meta', 10, 5 );
