@@ -386,11 +386,6 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 					'_give_payment_customer_id'
 				)
 			);
-
-			// Set new meta key to save queries.
-			remove_filter( 'get_post_metadata', '_give_20_bc_get_new_payment_meta', 10 );
-			give_update_meta( $object_id, '_give_payment_donor_id', $check );
-			add_filter( 'get_post_metadata', '_give_20_bc_get_new_payment_meta', 10, 5 );
 			break;
 
 		case '_give_payment_donor_email':
@@ -401,11 +396,6 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 					'_give_payment_user_email'
 				)
 			);
-
-			// Set new meta key to save queries.
-			remove_filter( 'get_post_metadata', '_give_20_bc_get_new_payment_meta', 10 );
-			give_update_meta( $object_id, '_give_payment_donor_email', $check );
-			add_filter( 'get_post_metadata', '_give_20_bc_get_new_payment_meta', 10, 5 );
 			break;
 
 		case '_give_payment_donor_ip':
@@ -416,11 +406,6 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 					'_give_payment_user_ip'
 				)
 			);
-
-			// Set new meta key to save queries.
-			remove_filter( 'get_post_metadata', '_give_20_bc_get_new_payment_meta', 10 );
-			give_update_meta( $object_id, '_give_payment_donor_ip', $check );
-			add_filter( 'get_post_metadata', '_give_20_bc_get_new_payment_meta', 10, 5 );
 			break;
 
 		case '_give_donor_billing_first_name':
