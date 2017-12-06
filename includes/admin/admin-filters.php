@@ -247,10 +247,9 @@ function give_bc_1817_cleanup_user_roles( $caps ){
 
 	if (
 		! give_has_upgrade_completed( 'v1817_cleanup_user_roles' ) &&
-		! isset( $caps['view_give_payments'] ) &&
-		current_user_can( 'manage_options' )
+		! isset( $caps['view_give_payments'] )
 	) {
-		$caps['view_give_payments'] = true;
+		give_v1817_process_cleanup_user_roles();
 	}
 
 	return $caps;
