@@ -280,7 +280,7 @@ class Give_Email_Access {
 		$expires = date( 'Y-m-d H:i:s', time() - $this->token_expiration );
 
 		$email = $wpdb->get_var(
-			$wpdb->prepare( "SELECT email FROM {$wpdb->prefix}give_customers WHERE token = %s AND verify_throttle >= %s LIMIT 1", $token, $expires )
+			$wpdb->prepare( "SELECT email FROM {$wpdb->prefix}give_customers WHERE verify_key = %s AND verify_throttle >= %s LIMIT 1", $token, $expires )
 		);
 
 		if ( ! empty( $email ) ) {
@@ -289,7 +289,7 @@ class Give_Email_Access {
 			return true;
 		}
 
-		// Set error only if email access form isn't being submitted
+		// Set error only if email access form isn't being submitted.
 		if ( ! isset( $_POST['give_email'] ) && ! isset( $_POST['_wpnonce'] ) ) {
 			give_set_error( 'give_email_token_expired', apply_filters( 'give_email_token_expired_message', __( 'Your access token has expired. Please request a new one below:', 'give' ) ) );
 		}
