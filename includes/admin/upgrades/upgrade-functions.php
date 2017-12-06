@@ -1562,7 +1562,7 @@ function give_v20_upgrades_payment_metadata_callback() {
 			global $post;
 
 			// Split _give_payment_meta meta.
-			$payment_meta = maybe_unserialize( $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM $wpdb->postmeta WHERE meta_key=%s", '_give_payment_meta' ) ) );
+			$payment_meta = give_get_meta( $post->ID, '_give_payment_meta', true );
 			if ( ! empty( $payment_meta ) ) {
 				_give_20_bc_split_and_save_give_payment_meta( $post->ID, maybe_unserialize( $payment_meta ) );
 			}
@@ -1579,7 +1579,7 @@ function give_v20_upgrades_payment_metadata_callback() {
 					continue;
 				}
 
-				$meta_id = $wpdb->get_var( $wpdb->prepare( "SELECT meta_id FROM $wpdb->postmeta WHERE meta_key=%s", $old_meta_key ) );
+				$meta_id = $wpdb->get_var( $wpdb->prepare( "SELECT meta_id FROM $wpdb->postmeta WHERE post_id=%d AND meta_key=%s", $post->ID, $old_meta_key ) );
 				if ( ! empty( $meta_id ) ) {
 					$wpdb->get_var( $wpdb->prepare( "UPDATE $wpdb->postmeta SET meta_key=%s WHERE meta_id=%d", $new_meta_key, $meta_id ) );
 				}
