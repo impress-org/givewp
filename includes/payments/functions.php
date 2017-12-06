@@ -1189,13 +1189,14 @@ function give_remove_payment_prefix_postfix( $number ) {
  *
  * @param int|Give_Payment $donation    Donation ID or Donation Object.
  * @param bool|array       $format_args Currency Formatting Arguments.
+ * @param string           $type        Currency Formatting Arguments.
  *
  * @since 1.0
  * @since 1.8.17 Added filter and internally use functions.
  *
  * @return string $amount Fully formatted donation amount.
  */
-function give_donation_amount( $donation, $format_args = false ) {
+function give_donation_amount( $donation, $format_args = false, $type = 'donation' ) {
 	/* @var Give_Payment $donation */
 	if ( ! ( $donation instanceof Give_Payment ) ) {
 		$donation = new Give_Payment( absint( $donation ) );
@@ -1241,8 +1242,9 @@ function give_donation_amount( $donation, $format_args = false ) {
 	 * @param string $formatted_amount Formatted/Un-formatted amount.
 	 * @param float  $amount           Donation amount.
 	 * @param int    $donation_id      Donation ID.
+	 * @param string $type             Donation amount type.
 	 */
-	return apply_filters( 'give_donation_amount', (string) $formatted_amount, $amount, $donation );
+	return apply_filters( 'give_donation_amount', (string) $formatted_amount, $amount, $donation, $type );
 }
 
 /**
