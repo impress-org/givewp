@@ -135,18 +135,19 @@ function give_update_payment_details( $data ) {
 		$donor_changed = true;
 
 	} else {
-
 		$donor = new Give_Donor( $curr_donor_id );
 		$email    = $donor->email;
 		$names    = $donor->name;
-
 	}
 
-	// Setup first and last name from input values.
-	$first_name = $donor->get_first_name();
-	$last_name  = $donor->get_last_name();
-
 	if ( $donor_changed ) {
+
+		// Setup first and last name from input values.
+		$first_name = $donor->get_first_name();
+		$last_name  = $donor->get_last_name();
+
+		$payment->first_name = $first_name;
+		$payment->last_name  = $last_name;
 
 		// Remove the stats and payment from the previous donor and attach it to the new donor.
 		$previous_donor->remove_payment( $payment_id, false );
@@ -175,8 +176,6 @@ function give_update_payment_details( $data ) {
 	// Set new meta values.
 	$payment->user_id    = $donor->user_id;
 	$payment->email      = $donor->email;
-	$payment->first_name = $first_name;
-	$payment->last_name  = $last_name;
 	$payment->address    = $address;
 	$payment->total      = $new_total;
 
