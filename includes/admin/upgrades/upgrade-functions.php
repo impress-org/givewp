@@ -1403,7 +1403,7 @@ function give_v1817_process_cleanup_user_roles() {
 
 	global $wp_roles;
 
-	if( ! ( $wp_roles instanceof  WP_Role ) ) {
+	if( ! ( $wp_roles instanceof  WP_Roles ) ) {
 		return;
 	}
 
