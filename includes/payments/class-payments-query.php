@@ -473,7 +473,7 @@ class Give_Payments_Query extends Give_Stats {
 	 * @since  1.8
 	 * @access public
 	 *
-	 * @param string   $order
+	 * @param string $order
 	 * @param WP_Query $query
 	 *
 	 * @return mixed
@@ -481,7 +481,8 @@ class Give_Payments_Query extends Give_Stats {
 	public function custom_orderby( $order, $query ) {
 		global $wpdb;
 
-		$post_types = is_array( $query->query['post_type'] ) ? $query->query['post_type'] : array( $query->query['post_type'] );
+		$post_types = ! empty( $query->query['post_type'] ) ? is_array( $query->query['post_type'] ) ? $query->query['post_type'] : array( $query->query['post_type'] ) : array();
+
 		if ( ! in_array( 'give_payment', $post_types ) || is_array( $query->query['orderby'] ) ) {
 			return $order;
 		}
