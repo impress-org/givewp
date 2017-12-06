@@ -398,8 +398,22 @@ function give_bc_v20_get_payment_meta( $check, $object_id, $meta_key, $single ) 
 		// Add filter
 		add_filter( 'get_post_metadata', 'give_bc_v20_get_payment_meta', 999, 4 );
 
+		// Set custom meta key into payment meta.
+		$payment_meta = array_merge( maybe_unserialize( $payment_meta['_give_payment_meta'] ), $payment_meta );
+
 		// Set cache.
 		Give_Cache::set_db_query( $cache_key, $payment_meta );
+
+	}
+
+	/**
+	 * Filter the payment meta
+	 * Add custom meta key to payment meta
+	 *
+	 * @since 2.0
+	 */
+	if ( $single ) {
+		$payment_meta[0] = apply_filters( 'give_get_payment_meta', $payment_meta, $object_id, $meta_key );
 	}
 
 	if ( $single ) {
