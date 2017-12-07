@@ -339,9 +339,8 @@ function give_load_admin_scripts( $hook ) {
 		'unlock_donor_fields'            => __( 'To edit first name and last name, please go to user profile of the donor.', 'give' ),
 		'remove_from_bulk_delete'           => __( 'Remove from Bulk Delete', 'give' ),
 		'donors_bulk_action'                => array(
-			'delete' => array(
-				'zero'     => __( 'You must choose at least one or more donors to delete.', 'give' ),
-			),
+			'no_donor_selected'  => __( 'You must choose at least one or more donors to delete.', 'give' ),
+			'no_action_selected' => __( 'You must select a bulk action to proceed.', 'give' ),
 		),
 		'donations_bulk_action'             => array(
 			'delete'         => array(

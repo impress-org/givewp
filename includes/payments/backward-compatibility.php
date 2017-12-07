@@ -251,6 +251,8 @@ add_filter( 'update_post_metadata', '_give_20_bc_saving_old_payment_meta', 10, 5
  * @return mixed
  */
 function _give_20_bc_get_old_payment_meta( $check, $object_id, $meta_key, $single ) {
+	global $wpdb;
+
 	// Deprecated meta keys.
 	$old_meta_keys = array(
 		'_give_payment_customer_id',
@@ -282,7 +284,22 @@ function _give_20_bc_get_old_payment_meta( $check, $object_id, $meta_key, $singl
 				remove_filter( 'get_post_metadata', '_give_20_bc_get_old_payment_meta' );
 
 				// if ( $meta_value = give_get_meta( $object_id, '_give_payment_meta' ) ) {
-				$meta_value = ! empty( $meta_value ) ? current( $meta_value ) : array();
+				$meta_value = ! empty( $meta_value ) ?
+					current( $meta_value ) :
+					(array) maybe_unserialize(
+						$wpdb->get_var(
+							$wpdb->prepare(
+								"
+						SELECT meta_value
+						FROM $wpdb->postmeta
+						WHERE post_id=%d
+						AND meta_key=%s
+						",
+								$object_id,
+								'_give_payment_meta'
+							)
+						)
+					);
 				$check      = _give_20_bc_give_payment_meta_value( $object_id, $meta_value );
 				// }
 
@@ -455,14 +472,14 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 				if ( empty( $donation_meta ) ) {
 					$check = '';
 				} elseif ( in_array( $meta_key, array( '_give_payment_date', '_give_payment_currency' ) ) ) {
-					$meta_key = str_replace( '_give_payment_', '', $meta_key );
-					if ( isset( $donation_meta[ $meta_key ] ) ) {
-						$check = $donation_meta[ $meta_key ];
+					$payment_meta_key = str_replace( '_give_payment_', '', $meta_key );
+					if ( isset( $donation_meta[ $payment_meta_key ] ) ) {
+						$check = $donation_meta[ $payment_meta_key ];
 					}
 				} else {
-					$meta_key = str_replace( '_give_donor_billing_', '', $meta_key );
+					$payment_meta_key = str_replace( '_give_donor_billing_', '', $meta_key );
 
-					switch ( $meta_key ) {
+					switch ( $payment_meta_key ) {
 						case 'address1':
 							if ( isset( $donation_meta['user_info']['address']['line1'] ) ) {
 								$check = $donation_meta['user_info']['address']['line1'];
@@ -475,9 +492,21 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 							}
 							break;
 
+						case 'first_name':
+							if ( isset( $donation_meta['user_info']['first_name'] ) ) {
+								$check = $donation_meta['user_info']['first_name'];
+							}
+							break;
+
+						case 'last_name':
+							if ( isset( $donation_meta['user_info']['last_name'] ) ) {
+								$check = $donation_meta['user_info']['last_name'];
+							}
+							break;
+
 						default:
-							if ( isset( $donation_meta['user_info']['address'][ $meta_key ] ) ) {
-								$check = $donation_meta['user_info']['address'][ $meta_key ];
+							if ( isset( $donation_meta['user_info']['address'][ $payment_meta_key ] ) ) {
+								$check = $donation_meta['user_info']['address'][ $payment_meta_key ];
 							}
 					}
 				}
