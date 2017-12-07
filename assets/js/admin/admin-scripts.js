@@ -1245,8 +1245,8 @@ var give_setting_edit = false;
 			this.delete_checked();
 			this.addressesAction();
 			this.unlockDonorFields();
-			this.handleBulkActions();
 			this.bulkDeleteDonor();
+			$( 'body' ).on( 'click', '#give-donors-filter .bulkactions input[type="submit"]', this.handleBulkActions );
 		},
 
 		unlockDonorFields: function (e) {
