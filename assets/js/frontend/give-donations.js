@@ -79,14 +79,14 @@ Give = {
 			args.precision = parseInt(args.precision);
 
 			if ('INR' === args.currency) {
-				var actual_price = accounting.unformat(price, args.decimal).toString();
+				var actual_price = accounting.unformat(price, '.').toString();
 
 				var decimal_amount = '',
 					result,
 					amount,
 					decimal_index  = actual_price.indexOf('.');
 
-				if (( -1 !== decimal_index ) && args.precision) {
+				if ((-1 !== decimal_index) && args.precision) {
 					decimal_amount = Number(actual_price.substr(parseInt(decimal_index)))
 						.toFixed(args.precision)
 						.toString()
@@ -94,10 +94,12 @@ Give = {
 					actual_price   = actual_price.substr(0, parseInt(decimal_index));
 
 					if (!decimal_amount.length) {
-						decimal_amount = '.0000000000'.substr(0, ( parseInt(decimal_index) + 1 ));
-					} else if (( args.precision + 1 ) > decimal_amount.length) {
-						decimal_amount = ( decimal_amount + '000000000' ).substr(0, args.precision + 1);
+						decimal_amount = '.0000000000'.substr(0, (parseInt(decimal_index) + 1));
+					} else if ((args.precision + 1) > decimal_amount.length) {
+						decimal_amount = (decimal_amount + '000000000').substr(0, args.precision + 1);
 					}
+				} else {
+					decimal_amount = '.000000000'.substr(0, args.precision + 1);
 				}
 
 				// Extract last 3 from amount
