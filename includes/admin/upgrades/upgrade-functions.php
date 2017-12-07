@@ -1581,7 +1581,7 @@ function give_v20_upgrades_payment_metadata_callback() {
 
 				$meta_id = $wpdb->get_var( $wpdb->prepare( "SELECT meta_id FROM $wpdb->postmeta WHERE post_id=%d AND meta_key=%s", $post->ID, $old_meta_key ) );
 				if ( ! empty( $meta_id ) ) {
-					$wpdb->get_var( $wpdb->prepare( "UPDATE $wpdb->postmeta SET meta_key=%s WHERE meta_id=%d", $new_meta_key, $meta_id ) );
+					$wpdb->query( $wpdb->prepare( "UPDATE $wpdb->postmeta SET meta_key=%s WHERE meta_id=%d", $new_meta_key, $meta_id ) );
 				}
 			}
 
