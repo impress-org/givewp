@@ -17,6 +17,8 @@ function _give_20_bc_split_and_save_give_payment_meta( $object_id, $meta_value )
 		$meta_value = array();
 	}
 
+	remove_filter( 'get_post_metadata', '_give_20_bc_get_new_payment_meta', 10 );
+
 	// Date payment meta.
 	if ( ! empty( $meta_value['date'] ) ) {
 		give_update_meta( $object_id, '_give_payment_date', $meta_value['date'] );
@@ -73,6 +75,8 @@ function _give_20_bc_split_and_save_give_payment_meta( $object_id, $meta_value )
 			}
 		}
 	}// End if().
+
+	add_filter( 'get_post_metadata', '_give_20_bc_get_new_payment_meta', 10, 5 );
 }
 
 /**
