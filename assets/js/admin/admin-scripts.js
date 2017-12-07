@@ -1624,35 +1624,6 @@ var give_setting_edit = false;
 			$('input[name="zip"]', $addressForm).val($('[data-address-type="zip"]', $form).text().trim());
 		},
 
-		handleBulkActions: function () {
-			$('body').on(
-				'click',
-				'#give-donors-filter .bulkactions input[type="submit"]',
-				function (e) {
-
-					var currentAction = $(this).closest('.tablenav').find('select').val(),
-						donors = [],
-						confirmActionNotice = give_vars.donors_bulk_action[currentAction].zero;
-
-					$.each($(".donor-selector:checked"), function () {
-						donors.push($(this).val());
-					});
-
-					// If there is no donor selected the show an alert.
-					if (!parseInt(donors)) {
-						alert(confirmActionNotice);
-						return false;
-					}
-
-					if ('delete' === currentAction) {
-						$('#give-bulk-delete').slideDown();
-					}
-
-					e.preventDefault();
-				}
-			);
-		},
-
 		bulkDeleteDonor: function() {
 			var $body = $('body');
 
@@ -1735,6 +1706,36 @@ var give_setting_edit = false;
 				}
 				e.preventDefault();
 			});
+		},
+
+		handleBulkActions: function( e ) {
+
+			var currentAction          = $( this ).closest( '.tablenav' ).find( 'select' ).val(),
+				donors                 = [],
+				selectBulkActionNotice = give_vars.donors_bulk_action.no_action_selected,
+				confirmActionNotice    = give_vars.donors_bulk_action.no_donor_selected;
+
+			$.each( $( ".donor-selector:checked" ), function() {
+				donors.push( $( this ).val() );
+			});
+
+			// If there is no bulk action selected then show an alert message.
+			if ( '-1' === currentAction ) {
+				alert( selectBulkActionNotice );
+				return false;
+			}
+
+			// If there is no donor selected then show an alert.
+			if ( ! parseInt( donors ) ) {
+				alert( confirmActionNotice );
+				return false;
+			}
+
+			if( 'delete' === currentAction ) {
+				$( '#give-bulk-delete' ).slideDown();
+			}
+
+			e.preventDefault();
 		}
 	};
 
