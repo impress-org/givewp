@@ -67,10 +67,12 @@ function give_load_scripts() {
 				'give_agree_to_terms'    => __( 'You must agree to the terms and conditions.', 'give' ),
 			)
 		),
+		'confirm_email_sent_message'         => __( 'Please check your email and click on the link to access your complete donation history.', 'give' ),
 	) );
 
 	$localize_give_ajax = apply_filters( 'give_global_ajax_vars', array(
 		'ajaxurl'         => give_get_ajax_url(),
+		'ajaxNonce'       => wp_create_nonce( 'give_ajax_nonce' ),
 		'loading'         => __( 'Loading', 'give' ),
 		// General loading message.
 		'select_option'   => __( 'Please select an option', 'give' ),

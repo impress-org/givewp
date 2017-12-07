@@ -2419,4 +2419,20 @@ body.give-twentyseventeen.colors-dark div.give_notices p {
 body.give-twentyseventeen.colors-dark form[id*="give"] fieldset {
   background-color: transparent; }
 
+.give-donation-history .give-table {
+  table-layout: auto; }
+  .give-donation-history .give-table .give-security-column {
+    float: left; }
+    .give-donation-history .give-table .give-security-column.give-security-description-wrap {
+      width: 75%;
+      padding: 16px 13px;
+      font-size: 12px;
+      font-style: italic; }
+    .give-donation-history .give-table .give-security-column.give-security-button-wrap {
+      width: 25%;
+      padding: 25px 5px; }
+      .give-donation-history .give-table .give-security-column.give-security-button-wrap span {
+        display: none;
+        padding: 0 20px; }
+
 /*# sourceMappingURL=../assets/sourcemaps/give.css.map */

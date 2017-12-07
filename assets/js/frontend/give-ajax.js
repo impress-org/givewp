@@ -135,6 +135,37 @@ jQuery(document).ready(function ($) {
 	});
 
 	/**
+	 * Donation history non login user want to see email list after making a donation
+	 *
+	 * @since 1.8.17
+	 */
+	jQuery( 'body' ).on( 'click', '#give-confirm-email-btn', function( e ) {
+
+		var $this = jQuery( this );
+		var data = {
+			action: 'give_confirm_email_for_donations_access',
+			email: $this.data( 'email' ),
+			nonce: give_scripts.ajaxNonce
+		};
+
+		$this.text( give_global_vars.loading );
+		$this.attr( 'disabled', 'disabled' );
+		jQuery.post( give_global_vars.ajaxurl, data, function( response ) {
+			response = JSON.parse( response );
+			if ( 'error' === response.status ) {
+				$this.closest( '#give_user_history tfoot' ).hide();
+				$this.closest( '.give_user_history_main' ).find( '.give_user_history_notice' ).html( response.message );
+			} else if ( 'success' === response.status ) {
+				$this.closest( '.give_user_history_main' ).find( '.give_user_history_notice' ).html( response.message );
+				$this.hide();
+				$this.closest( '.give-security-button-wrap' ).find( 'span' ).show();
+			}
+		});
+
+		return false;
+	});
+
+	/**
 	 * Donation Form AJAX Submission
 	 *
 	 * @description: Process the donation submit
@@ -271,5 +302,4 @@ function setup_give_tooltips() {
 		}
 	});
 	jQuery.fn.qtip.zindex = 2147483641; // Higher z-index than Give's magnific modal
-
 }
