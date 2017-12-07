@@ -61,7 +61,7 @@ function give_donation_history( $atts ) {
 	/**
 	 * Determine access
 	 *
-	 * a. Check if a user is logged in or does a session exist?
+	 * a. Check if a user is logged in or does a session exists
 	 * b. Does an email-access token exist?
 	 */
 	if (
@@ -240,7 +240,7 @@ add_shortcode( 'give_register', 'give_register_form_shortcode' );
  */
 function give_receipt_shortcode( $atts ) {
 
-	global $give_receipt_args, $payment;
+	global $give_receipt_args;
 
 	$give_receipt_args = shortcode_atts( array(
 		'error'          => __( 'You are missing the payment key to view this donation receipt.', 'give' ),
@@ -283,7 +283,6 @@ function give_receipt_shortcode( $atts ) {
 
 	}
 
-	$payment_id    = give_get_purchase_id_by_key( $payment_key );
 	$user_can_view = give_can_view_receipt( $payment_key );
 
 	// Key was provided, but user is logged out. Offer them the ability to login and view the receipt.
