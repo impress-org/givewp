@@ -2294,6 +2294,8 @@ Avada
     .give-modal form[id*='give-form'] .give-payment-mode-label {
       margin-top: 0;
       padding-top: 0; }
+    .give-modal form[id*='give-form'] .give-input {
+      font-size: 16px; }
   .give-modal .mfp-content {
     box-sizing: border-box;
     position: relative;
