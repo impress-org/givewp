@@ -337,9 +337,8 @@ function give_load_admin_scripts( $hook ) {
 		'search_placeholder_state'          => __( 'Type to search all states/provinces', 'give' ),
 		'remove_from_bulk_delete'           => __( 'Remove from Bulk Delete', 'give' ),
 		'donors_bulk_action'                => array(
-			'delete' => array(
-				'zero'     => __( 'You must choose at least one or more donors to delete.', 'give' ),
-			),
+			'no_donor_selected'  => __( 'You must choose at least one or more donors to delete.', 'give' ),
+			'no_action_selected' => __( 'You must select a bulk action to proceed.', 'give' ),
 		),
 		'donations_bulk_action'             => array(
 			'delete'         => array(
