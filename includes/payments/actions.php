@@ -407,7 +407,6 @@ function give_bc_v20_get_payment_meta( $check, $object_id, $meta_key, $single ) 
 		Give_Cache::set_db_query( $cache_key, $payment_meta );
 	}
 
-
 	if ( $single ) {
 		/**
 		 * Filter the payment meta

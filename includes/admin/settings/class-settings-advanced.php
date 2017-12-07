@@ -118,17 +118,6 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							),
 						),
 						array(
-							'name'    => __( 'Remove Data on Uninstall', 'give' ),
-							'desc'    => __( 'When the plugin is deleted, completely remove all Give data. This includes all Give settings, forms, form meta, donor, donor data, donations. Everything.', 'give' ),
-							'id'      => 'uninstall_on_delete',
-							'type'    => 'radio_inline',
-							'default' => 'disabled',
-							'options' => array(
-								'enabled'  => __( 'Yes, Remove all data', 'give' ),
-								'disabled' => __( 'No, keep my Give settings and donation data', 'give' ),
-							),
-						),
-						array(
 							'name'  => __( 'Advanced Settings Docs Link', 'give' ),
 							'id'    => 'advanced_settings_docs_link',
 							'url'   => esc_url( 'http://docs.givewp.com/settings-advanced' ),

@@ -290,11 +290,11 @@ function _give_20_bc_get_old_payment_meta( $check, $object_id, $meta_key, $singl
 						$wpdb->get_var(
 							$wpdb->prepare(
 								"
-						SELECT meta_value
-						FROM $wpdb->postmeta
-						WHERE post_id=%d
-						AND meta_key=%s
-						",
+								SELECT meta_value
+								FROM $wpdb->postmeta
+								WHERE post_id=%d
+								AND meta_key=%s
+								",
 								$object_id,
 								'_give_payment_meta'
 							)
@@ -394,7 +394,7 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 	$cache_key = "{$meta_key}_{$object_id}";
 	$cache     = Give_Cache::get_db_query( $cache_key );
 
-	if ( is_null($cache) ) {
+	if ( is_null( $cache ) ) {
 		switch ( $meta_key ) {
 
 			// Handle new meta keys.
@@ -406,11 +406,6 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 						'_give_payment_customer_id'
 					)
 				);
-
-				// Set new meta key to save queries.
-				remove_filter( 'get_post_metadata', '_give_20_bc_get_new_payment_meta', 10 );
-				give_update_meta( $object_id, '_give_payment_donor_id', $check );
-				add_filter( 'get_post_metadata', '_give_20_bc_get_new_payment_meta', 10, 5 );
 				break;
 
 			case '_give_payment_donor_email':
@@ -421,11 +416,6 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 						'_give_payment_user_email'
 					)
 				);
-
-				// Set new meta key to save queries.
-				remove_filter( 'get_post_metadata', '_give_20_bc_get_new_payment_meta', 10 );
-				give_update_meta( $object_id, '_give_payment_donor_email', $check );
-				add_filter( 'get_post_metadata', '_give_20_bc_get_new_payment_meta', 10, 5 );
 				break;
 
 			case '_give_payment_donor_ip':
@@ -436,11 +426,6 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 						'_give_payment_user_ip'
 					)
 				);
-
-				// Set new meta key to save queries.
-				remove_filter( 'get_post_metadata', '_give_20_bc_get_new_payment_meta', 10 );
-				give_update_meta( $object_id, '_give_payment_donor_ip', $check );
-				add_filter( 'get_post_metadata', '_give_20_bc_get_new_payment_meta', 10, 5 );
 				break;
 
 			case '_give_donor_billing_first_name':
@@ -473,6 +458,7 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 					$check = '';
 				} elseif ( in_array( $meta_key, array( '_give_payment_date', '_give_payment_currency' ) ) ) {
 					$payment_meta_key = str_replace( '_give_payment_', '', $meta_key );
+
 					if ( isset( $donation_meta[ $payment_meta_key ] ) ) {
 						$check = $donation_meta[ $payment_meta_key ];
 					}
@@ -522,7 +508,6 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 	if ( ! is_null( $check ) ) {
 		$check = array( $check );
 	}
-
 
 
 	return $check;
