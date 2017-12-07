@@ -1570,7 +1570,7 @@ function give_v20_upgrades_payment_metadata_callback() {
 			$payment_meta = give_get_meta( $post->ID, '_give_payment_meta', true );
 
 			if ( ! empty( $payment_meta ) ) {
-				_give_20_bc_split_and_save_give_payment_meta( $post->ID, maybe_unserialize( $payment_meta ) );
+				_give_20_bc_split_and_save_give_payment_meta( $post->ID, $payment_meta );
 			}
 
 			$deprecated_meta_keys = array(
@@ -1581,14 +1581,18 @@ function give_v20_upgrades_payment_metadata_callback() {
 
 			foreach ( $deprecated_meta_keys as $old_meta_key => $new_meta_key ) {
 				// Do not add new meta key if already exist.
-				if ( give_get_meta( $post->ID, $new_meta_key, true ) ) {
+				if ( $wpdb->get_var( $wpdb->prepare( "SELECT meta_id FROM $wpdb->postmeta WHERE post_id=%d AND meta_key=%s", $post->ID, $new_meta_key ) ) ) {
 					continue;
 				}
 
-				$meta_id = $wpdb->get_var( $wpdb->prepare( "SELECT meta_id FROM $wpdb->postmeta WHERE post_id=%d AND meta_key=%s", $post->ID, $old_meta_key ) );
-				if ( ! empty( $meta_id ) ) {
-					$wpdb->get_var( $wpdb->prepare( "UPDATE $wpdb->postmeta SET meta_key=%s WHERE meta_id=%d", $new_meta_key, $meta_id ) );
-				}
+				$wpdb->insert(
+					$wpdb->postmeta,
+					array(
+						'post_id' => $post->ID,
+						'meta_key' => $new_meta_key,
+						'meta_value' => give_get_meta( $post->ID, $old_meta_key, true )
+					)
+				);
 			}
 
 			// Bailout
