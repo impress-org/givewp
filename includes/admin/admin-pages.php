@@ -459,7 +459,9 @@ function give_set_default_tab_form_reports_page( $default_tab ) {
 add_filter( 'give_default_setting_tab_give-reports', 'give_set_default_tab_form_reports_page', 10, 1 );
 
 /**
- * Add a post display state for special Give pages in the page list table.
+ * Add a page display state for special Give pages in the page list table.
+ *
+ * @since 1.8.18
  *
  * @param array $post_states An array of post display states.
  * @param WP_Post $post The current post object.
@@ -467,18 +469,18 @@ add_filter( 'give_default_setting_tab_give-reports', 'give_set_default_tab_form_
 function give_add_display_page_states( $post_states, $post ) {
 
 	// Checks if it's a Success Page.
-	if ( give_get_option( 'success_page' ) === $post->ID ) {
-		$post_states['wc_page_for_shop'] = __( 'Donation Successfully Page', 'woocommerce' );
+	if ( $post->ID === absint( give_get_option( 'success_page' ) ) ) {
+		$post_states['give_successfully_page'] = __( 'Donation Successfully Page', 'woocommerce' );
 	}
 
 	// Checks if it's a Failure Page.
-	if ( give_get_option( 'failure_page' ) === $post->ID ) {
-		$post_states['wc_page_for_shop'] = __( 'Donation Failed Page', 'woocommerce' );
+	if ( $post->ID === absint( give_get_option( 'failure_page' ) ) ) {
+		$post_states['give_failure_page'] = __( 'Donation Failed Page', 'woocommerce' );
 	}
 
 	// Checks if it's a History Page.
-	if ( give_get_option( 'history_page' ) === $post->ID ) {
-		$post_states['wc_page_for_shop'] = __( 'Donation History Page', 'woocommerce' );
+	if ( $post->ID === absint( give_get_option( 'history_page' ) ) ) {
+		$post_states['give_history_page'] = __( 'Donation History Page', 'woocommerce' );
 	}
 
 	return $post_states;
