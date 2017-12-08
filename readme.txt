@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, wp donati
 Requires at least: 4.5
 Tested up to: 4.9
 Requires PHP: 5.3
-Stable tag: 1.8.17
+Stable tag: 1.8.18
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
