@@ -9,7 +9,7 @@ if ( ! is_user_logged_in() ) {
 
 	$give_login_redirect = give_get_history_page_uri();
 	if ( ! empty( $_GET['payment_key'] ) ) {
-		$give_login_redirect = add_query_arg( 'payment_key', $_GET['payment_key'] , give_get_history_page_uri() );
+		$give_login_redirect = add_query_arg( 'payment_key', give_clean( $_GET['payment_key'] ) , give_get_history_page_uri() );
 	}
 
 	// Show any error messages after form submission

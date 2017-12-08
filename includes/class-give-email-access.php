@@ -206,7 +206,7 @@ class Give_Email_Access {
 
 		if ( ! empty( $_GET['payment_key'] ) ) {
 			$access_url = add_query_arg( array(
-				'payment_key' => $_GET['payment_key'],
+				'payment_key' => give_clean( $_GET['payment_key'] ),
 			), $access_url );
 		}
 
