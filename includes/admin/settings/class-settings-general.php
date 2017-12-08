@@ -50,7 +50,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						// Section 3: Access control.
 						array(
 							'id'   => 'give_title_session_control_1',
-							'type' => 'title'
+							'type' => 'title',
 						),
 						array(
 							'id'      => 'session_lifetime',
@@ -62,15 +62,19 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 								'172800' => __( '48 Hours', 'give' ),
 								'259200' => __( '72 Hours', 'give' ),
 								'604800' => __( '1 Week', 'give' ),
-							)
+							),
 						),
 						array(
-							'id'      => 'limit_display_donations',
-							'name'    => __( 'Limit Donations Displayed', 'give' ),
-							'desc'    => __( 'Adjusts the number of donations displayed to a non logged-in user when they attempt to access the Donation History page without an active session. For security reasons, it\'s best to leave this at 1-3 donations.', 'give' ),
-							'default' => '1',
-							'type'    => 'number',
-							'css'     => 'width:12em;',
+							'id'         => 'limit_display_donations',
+							'name'       => __( 'Limit Donations Displayed', 'give' ),
+							'desc'       => __( 'Adjusts the number of donations displayed to a non logged-in user when they attempt to access the Donation History page without an active session. For security reasons, it\'s best to leave this at 1-3 donations.', 'give' ),
+							'default'    => '1',
+							'type'       => 'number',
+							'css'        => 'width:50px;',
+							'attributes' => array(
+								'min' => '1',
+								'max' => '10',
+							),
 						),
 						array(
 							'name'    => __( 'Email Access', 'give' ),
@@ -81,7 +85,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'options' => array(
 								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
-							)
+							),
 						),
 						array(
 							'id'      => 'recaptcha_key',
@@ -89,14 +93,14 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							/* translators: %s: https://www.google.com/recaptcha/ */
 							'desc'    => sprintf( __( 'If you would like to prevent spam on the email access form navigate to <a href="%s" target="_blank">the reCAPTCHA website</a> and sign up for an API key and paste your reCAPTCHA site key here. The reCAPTCHA uses Google\'s user-friendly single click verification method.', 'give' ), esc_url( 'http://docs.givewp.com/recaptcha' ) ),
 							'default' => '',
-							'type'    => 'text'
+							'type'    => 'text',
 						),
 						array(
 							'id'      => 'recaptcha_secret',
 							'name'    => __( 'reCAPTCHA Secret Key', 'give' ),
 							'desc'    => __( 'Please paste the reCAPTCHA secret key here from your  reCAPTCHA API Keys panel.', 'give' ),
 							'default' => '',
-							'type'    => 'text'
+							'type'    => 'text',
 						),
 						array(
 							'name'  => __( 'Access Control Docs Link', 'give' ),
@@ -107,7 +111,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						),
 						array(
 							'id'   => 'give_title_session_control_1',
-							'type' => 'sectionend'
+							'type' => 'sectionend',
 						),
 					);
 					break;
@@ -117,13 +121,13 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						// Section 2: Currency
 						array(
 							'type' => 'title',
-							'id'   => 'give_title_general_settings_2'
+							'id'   => 'give_title_general_settings_2',
 						),
 						array(
 							'name' => __( 'Currency Settings', 'give' ),
 							'desc' => '',
 							'type' => 'give_title',
-							'id'   => 'give_title_general_settings_2'
+							'id'   => 'give_title_general_settings_2',
 						),
 						array(
 							'name'    => __( 'Currency', 'give' ),
@@ -180,8 +184,8 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						),
 						array(
 							'type' => 'sectionend',
-							'id'   => 'give_title_general_settings_2'
-						)
+							'id'   => 'give_title_general_settings_2',
+						),
 					);
 					break;
 
@@ -199,13 +203,13 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						// Section 1: General.
 						array(
 							'type' => 'title',
-							'id'   => 'give_title_general_settings_1'
+							'id'   => 'give_title_general_settings_1',
 						),
 						array(
 							'name' => __( 'General Settings', 'give' ),
 							'desc' => '',
 							'type' => 'give_title',
-							'id'   => 'give_title_general_settings_1'
+							'id'   => 'give_title_general_settings_1',
 						),
 						array(
 							'name'    => __( 'Success Page', 'give' ),
@@ -215,7 +219,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
 								'post_type'   => 'page',
-								'numberposts' =>  999
+								'numberposts' => 999,
 							) ),
 						),
 						array(
@@ -225,7 +229,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
 								'post_type'   => 'page',
-								'numberposts' => 999
+								'numberposts' => 999,
 							) ),
 						),
 						array(
@@ -236,7 +240,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
 								'post_type'   => 'page',
-								'numberposts' => 999
+								'numberposts' => 999,
 							) ),
 						),
 						array(
@@ -252,12 +256,12 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						 * @since 1.8.14
 						 */
 						array(
-							'wrapper_class'    => ( array_key_exists( $country, $no_states_country ) ? 'give-hidden' : '' ),
-							'name'    => __( 'Base State/Province', 'give' ),
-							'desc'    => __( 'The state/province your site operates from.', 'give' ),
-							'id'      => 'base_state',
-							'type'    => ( empty( $states ) ? 'text' : 'select' ),
-							'options' => $states,
+							'wrapper_class' => ( array_key_exists( $country, $no_states_country ) ? 'give-hidden' : '' ),
+							'name'          => __( 'Base State/Province', 'give' ),
+							'desc'          => __( 'The state/province your site operates from.', 'give' ),
+							'id'            => 'base_state',
+							'type'          => ( empty( $states ) ? 'text' : 'select' ),
+							'options'       => $states,
 						),
 						array(
 							'name'  => __( 'General Options Docs Link', 'give' ),
@@ -268,8 +272,8 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						),
 						array(
 							'type' => 'sectionend',
-							'id'   => 'give_title_general_settings_1'
-						)
+							'id'   => 'give_title_general_settings_1',
+						),
 					);
 					break;
 			}
@@ -303,7 +307,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 			$sections = array(
 				'general-settings'  => __( 'General', 'give' ),
 				'currency-settings' => __( 'Currency', 'give' ),
-				'access-control'    => __( 'Access Control', 'give' )
+				'access-control'    => __( 'Access Control', 'give' ),
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );
