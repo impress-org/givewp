@@ -139,9 +139,9 @@ jQuery(document).ready(function ($) {
 	 *
 	 * @since 1.8.17
 	 */
-	jQuery( 'body' ).on( 'click', '#give-confirm-email-btn', function( e ) {
+	$( 'body' ).on( 'click', '#give-confirm-email-btn', function( e ) {
 
-		var $this = jQuery( this );
+		var $this = $( this );
 		var data = {
 			action: 'give_confirm_email_for_donations_access',
 			email: $this.data( 'email' ),
@@ -150,7 +150,8 @@ jQuery(document).ready(function ($) {
 
 		$this.text( give_global_vars.loading );
 		$this.attr( 'disabled', 'disabled' );
-		jQuery.post( give_global_vars.ajaxurl, data, function( response ) {
+
+		$.post( give_global_vars.ajaxurl, data, function( response ) {
 			response = JSON.parse( response );
 			if ( 'error' === response.status ) {
 				$this.closest( '#give_user_history tfoot' ).hide();
