@@ -296,13 +296,22 @@ function give_process_register_form( $data ) {
 add_action( 'give_user_register', 'give_process_register_form' );
 
 
+/**
+ * Email access login form.
+ *
+ * @since 1.8.17
+ *
+ * @return bool
+ */
 function give_email_access_login() {
 
-	// Form submission.
+	// Verify nonce.
 	if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'give' ) ) {
 		return false;
 	}
 
+	// Need email to proceed.
+	$email = isset( $_POST['give_email'] ) ? give_clean( $_POST['give_email'] ) : '';
 	if ( empty( $email ) ) {
 		give_set_error( 'give_empty_email', __( 'Please enter the email address you used for your donation.', 'give' ) );
 	}
@@ -311,7 +320,6 @@ function give_email_access_login() {
 	$recaptcha_secret = give_get_option( 'recaptcha_secret' );
 	$enable_recaptcha = ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ? true : false;
 	$access_token     = ! empty( $_GET['payment_key'] ) ? $_GET['payment_key'] : '';
-	$email            = isset( $_POST['give_email'] ) ? give_clean( $_POST['give_email'] ) : '';
 
 	// Use reCAPTCHA.
 	if ( $enable_recaptcha ) {
@@ -350,45 +358,41 @@ function give_email_access_login() {
 	// If no errors or only expired token key error - then send email.
 	if ( ! give_get_errors() ) {
 
-		$donation_ids   = array();
-		$donation_match = false;
-		$donor          = Give()->donors->get_donor_by( 'email', $email );
+		$donor = Give()->donors->get_donor_by( 'email', $email );
+
+		Give()->email_access->init();
 
 		// Verify that donor object is present and donor is connected with its user profile or not.
 		if ( ! $access_token && is_object( $donor ) ) {
 
-			Give()->session->set( 'receipt_access', $donation->key );
+			// Verify that email can be sent.
+			if ( ! Give()->email_access->can_send_email( $donor->id ) ) {
 
-		} else if ( $access_token && is_object( $donor ) ) {
+				$_POST['email-access-exhausted'] = true;
 
-			// Scenario: Donation - Receipt Access.
-			if ( ! empty( $donor->payment_ids ) ) {
-				$donation_ids = explode( ',', $donor->payment_ids );
-			}
+				return false;
 
-			foreach ( $donation_ids as $donation_id ) {
-				$donation = new Give_Payment( $donation_id );
+			} else {
+				// Send the email. Requests not
+				$email_sent = Give()->email_access->send_email( $donor->id, $donor->email );
 
-				// Make sure Donation Access Token matches with donation details of donor whose email is provided.
-				if ( $access_token === $donation->key ) {
-					$donation_match = true;
+				if ( ! $email_sent ) {
+					give_set_error( 'give_email_access_send_issue', __( 'Unable to send email. Please try again.', 'give' ) );
+					return false;
 				}
 
-			}
+				$_POST['email-access-sent'] = true;
 
-			// Do required based on Payment Key and Access Token Match.
-			if ( ! $donation_match ) {
-				give_set_error( 'give_email_access_token_not_match', __( 'It looks like that email address provided and access token of the link does not match.', 'give' ) );
-			} else {
-				Give()->session->set( 'receipt_access', $access_token );
-				wp_safe_redirect( esc_url( get_permalink( give_get_option( 'history_page' ) ) . '?payment_key=' . $access_token ) );
+				return true;
 			}
 
 		} else {
-			give_set_error( 'give-no-donations', __( 'We are unable to fetch donations from the email you entered. Please try again.', 'give' ) );
-		}  // End if().
-	}
 
+			give_set_error( 'give-no-donations', __( 'We were unable to find any donations associated with the email address provided. Please try again using another email.', 'give' ) );
+
+		}  // End if().
+
+	} // End if().
 
 }
 
