@@ -98,6 +98,12 @@ function give_register_form( $redirect = '' ) {
  */
 function give_process_login_form( $data ) {
 	if ( wp_verify_nonce( $data['give_login_nonce'], 'give-login-nonce' ) ) {
+
+		// Set Receipt Access Session.
+		if ( ! empty( $_GET['payment_key'] ) ) {
+			Give()->session->set( 'receipt_access', true );
+		}
+
 		$user_data = get_user_by( 'login', $data['give_user_login'] );
 		if ( ! $user_data ) {
 			$user_data = get_user_by( 'email', $data['give_user_login'] );
@@ -363,7 +369,7 @@ function give_email_access_login() {
 		Give()->email_access->init();
 
 		// Verify that donor object is present and donor is connected with its user profile or not.
-		if ( ! $access_token && is_object( $donor ) ) {
+		if ( is_object( $donor ) ) {
 
 			// Verify that email can be sent.
 			if ( ! Give()->email_access->can_send_email( $donor->id ) ) {

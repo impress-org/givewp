@@ -65,8 +65,8 @@ function give_email_preview_template_tags( $message ) {
 	$receipt_id = strtolower( md5( uniqid() ) );
 
 	$payment_id = rand( 1, 100 );
+	$receipt_link_url = esc_url( add_query_arg( array( 'payment_key' => $receipt_id ), give_get_history_page_uri() ) );
 
-	$receipt_link_url = esc_url( add_query_arg( array( 'payment_key' => $receipt_id, 'give_action' => 'view_receipt' ), home_url() ) );
 	$receipt_link     = sprintf(
 		'<a href="%1$s">%2$s</a>',
 		$receipt_link_url,

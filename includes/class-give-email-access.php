@@ -166,14 +166,15 @@ class Give_Email_Access {
 
 			$email_throttle_count = (int) give_get_meta( $donor_id, '_give_email_throttle_count', true );
 
+			$cache_key = "give_cache_email_throttle_limit_exhausted_{$donor_id}";
 			if (
 				$email_throttle_count < $this->limit_throttle &&
-				true !== Give_Cache::get( 'give_cache_email_throttle_limit_exhausted' )
+				true !== Give_Cache::get( $cache_key )
 			) {
 				give_update_meta( $donor_id, '_give_email_throttle_count', $email_throttle_count + 1 );
 			} else {
 				give_update_meta( $donor_id, '_give_email_throttle_count', 0 );
-				Give_Cache::set( 'give_cache_email_throttle_limit_exhausted', true, $this->verify_throttle );
+				Give_Cache::set( $cache_key, true, $this->verify_throttle );
 				return false;
 			}
 
@@ -203,6 +204,12 @@ class Give_Email_Access {
 		$access_url = add_query_arg( array(
 			'give_nl' => $verify_key,
 		), give_get_history_page_uri() );
+
+		if ( ! empty( $_GET['payment_key'] ) ) {
+			$access_url = add_query_arg( array(
+				'payment_key' => give_clean( $_GET['payment_key'] ),
+			), $access_url );
+		}
 
 		// Nice subject and message.
 		$subject = apply_filters( 'give_email_access_token_subject', sprintf( __( 'Please confirm your email for %s', 'give' ), get_bloginfo( 'url' ) ) );
@@ -251,10 +258,12 @@ class Give_Email_Access {
 
 			if ( ! $this->is_valid_token( $token ) ) {
 				if ( ! $this->is_valid_verify_key( $token ) ) {
-					return;
+					return false;
 				}
 			}
 
+			// Set Receipt Access Session.
+			Give()->session->set( 'receipt_access', true );
 			$this->token_exists = true;
 			// Set cookie.
 			$lifetime = current_time( 'timestamp' ) + Give()->session->set_expiration_time();
