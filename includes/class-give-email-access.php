@@ -257,7 +257,7 @@ class Give_Email_Access {
 
 			if ( ! $this->is_valid_token( $token ) ) {
 				if ( ! $this->is_valid_verify_key( $token ) ) {
-					return;
+					return false;
 				}
 			}
 
