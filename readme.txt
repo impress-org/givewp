@@ -226,7 +226,6 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 * Tweak: Enforced a font size of 16px for input fields within a Give modal window on mobile devices to prevent the zoom effect that happens and can cause issues with the cursor position. [#2239](https://github.com/WordImpress/Give/issues/2239)
 * Tweak: The default country is now set to the base country within address fieldsets. [#2343](https://github.com/WordImpress/Give/issues/2343)
 * Tweak: Performance improvement via checking before deleting any payment for quick exit within give_delete_donation(). [#2393](https://github.com/WordImpress/Give/issues/2393)
-* Tweak: Performance improvement for get_payment_by_group(). [#2432](https://github.com/WordImpress/Give/issues/2432)
 * Tweak: Donation goals now display without decimal amounts. [#2372](https://github.com/WordImpress/Give/issues/2372)
 * Fix: Resolved WP dashboard timeouts due to inefficient stats query for sites with many donations. [#2383](https://github.com/WordImpress/Give/issues/2383)
 * Fix: Floating labels were broken within the Give modal due to a CSS change in 1.8.16 - the floating labels functionality has been restored. [#2341](https://github.com/WordImpress/Give/issues/2341)
