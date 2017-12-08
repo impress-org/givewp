@@ -16,6 +16,13 @@ $recaptcha_key    = give_get_option( 'recaptcha_key' );
 $recaptcha_secret = give_get_option( 'recaptcha_secret' );
 $enable_recaptcha = ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ? true : false;
 
+/**
+ * Perform processing for email access form login.
+ *
+ * @since 1.8.17
+ */
+do_action( 'give_email_access_form_login' );
+
 // Email already sent?
 if ( isset( $_POST['email-access-sent'] ) ) {
 	Give()->notices->print_frontend_notice( __( 'Please check your email and click on the link to access your complete donation history.', 'give' ), true, 'success' );
