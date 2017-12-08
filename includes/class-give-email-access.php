@@ -163,7 +163,9 @@ class Give_Email_Access {
 		$donor = Give()->donors->get_donor_by( 'id', $donor_id );
 
 		if ( is_object( $donor ) && count( $donor ) > 0 ) {
-			$email_throttle_count = give_get_meta( $donor_id, '_give_email_throttle_count', true );
+
+			$email_throttle_count = (int) give_get_meta( $donor_id, '_give_email_throttle_count', true );
+
 			if (
 				$email_throttle_count < $this->limit_throttle &&
 				true !== Give_Cache::get( 'give_cache_email_throttle_limit_exhausted' )
