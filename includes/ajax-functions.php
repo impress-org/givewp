@@ -561,8 +561,8 @@ function give_confirm_email_for_donation_access() {
 		$return['status']  = 'error';
 		$return['message'] = Give()->notices->print_frontend_notice(
 			sprintf(
-				__( 'Please refresh the page in %s minutes before requesting a new donation history access link.', 'give' ),
-				$value
+				__( 'Too many access email requests detected. Please wait %s before requesting a new donation history access link.', 'give' ),
+				sprintf( _n( '%s minute', '%s minutes', $value, 'give' ), $value
 			),
 			false,
 			'error'
