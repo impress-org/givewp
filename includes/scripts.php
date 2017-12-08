@@ -67,10 +67,12 @@ function give_load_scripts() {
 				'give_agree_to_terms'    => __( 'You must agree to the terms and conditions.', 'give' ),
 			)
 		),
+		'confirm_email_sent_message'         => __( 'Please check your email and click on the link to access your complete donation history.', 'give' ),
 	) );
 
 	$localize_give_ajax = apply_filters( 'give_global_ajax_vars', array(
 		'ajaxurl'         => give_get_ajax_url(),
+		'ajaxNonce'       => wp_create_nonce( 'give_ajax_nonce' ),
 		'loading'         => __( 'Loading', 'give' ),
 		// General loading message.
 		'select_option'   => __( 'Please select an option', 'give' ),
@@ -103,7 +105,7 @@ function give_load_scripts() {
 		wp_register_script( 'give-magnific', $js_plugins . 'jquery.magnific-popup' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, $scripts_footer );
 		wp_enqueue_script( 'give-magnific' );
 
-		wp_register_script( 'give-checkout-global', $js_dir . 'give-checkout-global' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, $scripts_footer );
+		wp_register_script( 'give-checkout-global', $js_dir . 'give-donations' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, $scripts_footer );
 		wp_enqueue_script( 'give-checkout-global' );
 
 		// General scripts.
@@ -333,12 +335,10 @@ function give_load_admin_scripts( $hook ) {
 		'search_placeholder_donor'          => __( 'Type to search all donors', 'give' ),
 		'search_placeholder_country'        => __( 'Type to search all countries', 'give' ),
 		'search_placeholder_state'          => __( 'Type to search all states/provinces', 'give' ),
+		'remove_from_bulk_delete'           => __( 'Remove from Bulk Delete', 'give' ),
 		'donors_bulk_action'                => array(
-			'delete' => array(
-				'zero'     => __( 'You must choose at least one or more donors to delete.', 'give' ),
-				'single'   => __( 'Are you sure you want to permanently delete this donor and associated records?', 'give' ),
-				'multiple' => __( 'Are you sure you want to permanently delete the selected {donor_count} donors and associated records?', 'give' ),
-			),
+			'no_donor_selected'  => __( 'You must choose at least one or more donors to delete.', 'give' ),
+			'no_action_selected' => __( 'You must select a bulk action to proceed.', 'give' ),
 		),
 		'donations_bulk_action'             => array(
 			'delete'         => array(
@@ -373,6 +373,7 @@ function give_load_admin_scripts( $hook ) {
 		'db_update_confirmation_msg'        => __( 'The following process will make updates to your site\'s database. Please create a database backup before proceeding with updates.', 'give' ),
 		'error_message'                     => __( 'Something went wrong kindly try again!', 'give' ),
 		'give_donation_import'              => 'give_donation_import',
+		'core_settings_import'              => 'give_core_settings_import',
 		'setting_not_save_message'          => __( 'Changes you made may not be saved.', 'give' ),
 	) );
 

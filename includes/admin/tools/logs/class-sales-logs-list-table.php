@@ -72,7 +72,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 			case 'form' :
 				$form_title = get_the_title( $item[ $column_name ] );
 				$form_title = empty( $form_title ) ? sprintf( __( 'Untitled (#%s)', 'give' ), $item[ $column_name ] ) : $form_title;
-				return '<a href="' . esc_url( add_query_arg( 'form', $item[ $column_name ] ) ) . '" >' . $form_title . '</a>';
+				return '<a href="' . esc_url( add_query_arg( 'form', $item[ $column_name ] ) ) . '" >' . esc_html( $form_title ). '</a>';
 
 			case 'donor_id' :
 				return sprintf(
@@ -355,7 +355,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 					// Make sure this payment hasn't been deleted.
 					if ( get_post( $payment_id ) ) :
 						$user_info      = give_get_payment_meta_user_info( $payment_id );
-						$payment_amount = give_get_payment_amount( $payment_id );
+						$payment_amount = give_donation_amount( $payment_id );
 
 						$logs_data[] = array(
 							'ID'         => '<span class="give-item-label give-item-label-gray">' . $log->ID . '</span>',

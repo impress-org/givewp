@@ -106,12 +106,16 @@ function give_open_form_modal( $form_wrap, $form ) {
 		closeOnBgClick: give_global_vars.magnific_options.close_on_bg_click,
 		fixedContentPos: true,
 		fixedBgPos: true,
+		removalDelay: 250, //delay removal by X to allow out-animation
 		items: {
 			src: $form,
 			type: 'inline'
 		},
 		callbacks: {
 			beforeOpen: function() {
+
+				jQuery( 'body' ).addClass( 'give-modal-open' );
+
 				// add title, content, goal and error to form if admin want to show button only
 				if ( $form_wrap.hasClass( 'give-display-button-only' ) && ! $form.data( 'content' ) ) {
 
@@ -158,6 +162,7 @@ function give_open_form_modal( $form_wrap, $form ) {
 				}
 			},
 			open: function() {
+
 				// Will fire when this exact popup is opened
 				// this - is Magnific Popup object
 				var $mfp_content = jQuery( '.mfp-content' );
@@ -176,6 +181,8 @@ function give_open_form_modal( $form_wrap, $form ) {
 			close: function() {
 				//Remove popup class
 				$form.removeClass( 'mfp-hide' );
+
+				jQuery( 'body' ).removeClass( 'give-modal-open' );
 
 				//Show all fields again
 				$form.children().not( children ).show();
@@ -267,7 +274,7 @@ function update_profile_state_field() {
 			success: function( response ) {
 				var html = '';
 				var states_label = response.states_label;
-				if ( typeof ( response.states_found ) != undefined && true == response.states_found ) {
+				if ( typeof (response.states_found) != undefined && true == response.states_found ) {
 					html = response.data;
 				} else {
 					html = '<input type="text" id="give_address_state"  name="give_address_state" class="text give-input" placeholder="' + states_label + '" value="' + response.default_state + '"/>';
@@ -275,10 +282,18 @@ function update_profile_state_field() {
 				$form.find( 'input[name="give_address_state"], select[name="give_address_state"]' ).replaceWith( html );
 
 				// Check if user want to show the feilds or not.
-				if ( typeof ( response.show_field ) != undefined && true == response.show_field ) {
+				if ( typeof (response.show_field) != undefined && true == response.show_field ) {
 					$form.find( 'p#give-card-state-wrap' ).removeClass( 'give-hidden' );
+
+					// Add support to zip fields.
+					$form.find( 'p#give-card-zip-wrap' ).addClass( 'form-row-last' );
+					$form.find( 'p#give-card-zip-wrap' ).removeClass( 'form-row-wide' );
 				} else {
 					$form.find( 'p#give-card-state-wrap' ).addClass( 'give-hidden' );
+
+					// Add support to zip fields.
+					$form.find( 'p#give-card-zip-wrap' ).addClass( 'form-row-wide' );
+					$form.find( 'p#give-card-zip-wrap' ).removeClass( 'form-row-last' );
 				}
 			}
 		} ).fail( function( data ) {

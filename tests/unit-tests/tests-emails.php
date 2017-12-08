@@ -174,6 +174,7 @@ class Tests_Emails extends Give_Unit_Test_Case {
 	 * Test {amount} email tag.
 	 */
 	public function test_email_tags_amount() {
+		// Actual output without html decode is &#36;&#x200e;20.00.
 		$this->assertEquals( '$20.00', give_email_tag_price( $this->_payment_id ) );
 	}
 
@@ -219,8 +220,7 @@ class Tests_Emails extends Give_Unit_Test_Case {
 
 		$receipt_url = esc_url( add_query_arg( array(
 			'payment_key' => give_get_payment_key( $this->_payment_id ),
-			'give_action' => 'view_receipt',
-		), home_url() ) );
+		), give_get_history_page_uri() ) );
 
 		$this->assertContains( $receipt_url, give_email_tag_receipt_link( $this->_payment_id ) );
 	}

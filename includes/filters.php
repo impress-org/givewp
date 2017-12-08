@@ -169,3 +169,55 @@ function give_akismet_spam_check( $args ) {
 	// Allow developer to modified Akismet spam detection response.
 	return apply_filters( 'give_akismet_spam_check', $spam, $args );
 }
+
+/**
+ * Add support of RIAL code for backward compatibility.
+ * Note: for internal use only
+ *
+ * @since 1.8.17
+ *
+ * @param array $currencies
+ *
+ * @return array
+ */
+function give_bc_v1817_iranian_currency_code( $currencies ) {
+	if ( ! give_has_upgrade_completed( 'v1817_update_donation_iranian_currency_code' ) ) {
+		$currencies['RIAL'] = $currencies['IRR'];
+	}
+
+	return $currencies;
+}
+
+add_filter( 'give_currencies', 'give_bc_v1817_iranian_currency_code', 0 );
+
+
+/**
+ * Format right to left supported currency amount.
+ *
+ * @since 1.8.17
+ *
+ * @param $formatted_amount
+ * @param $currency_args
+ * @param $price
+ *
+ * @return string
+ */
+function give_format_price_for_right_to_left_supported_currency( $formatted_amount, $currency_args, $price ) {
+	if ( ! give_is_right_to_left_supported_currency( $currency_args['currency_code'] ) ) {
+		return $formatted_amount;
+	}
+
+	$formatted_amount = (
+	'before' === (string) $currency_args['position'] ?
+		'&#x202B;' . $price . $currency_args['symbol'] . '&#x202C;' :
+		'&#x202A;' . $price . $currency_args['symbol'] . '&#x202C;'
+	);
+
+	$formatted_amount = $currency_args['decode_currency'] ?
+		html_entity_decode( $formatted_amount, ENT_COMPAT, 'UTF-8' ) :
+		$formatted_amount;
+
+	return $formatted_amount;
+}
+
+add_filter( 'give_currency_filter', 'give_format_price_for_right_to_left_supported_currency', 10, 3 );

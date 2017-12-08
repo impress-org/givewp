@@ -48,7 +48,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 *
 		 * @var   int
 		 */
-		public static $per_page = 5;
+		public static $per_page = 25;
 
 		/**
 		 * Singleton pattern.
@@ -57,8 +57,8 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 * @access private
 		 */
 		private function __construct() {
+			self::$per_page  = ! empty( $_GET['per_page'] ) ? absint( $_GET['per_page'] ) : self::$per_page;
 		}
-
 
 		/**
 		 * Get instance.
@@ -379,17 +379,17 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			if ( isset( $_REQUEST['mapto'] ) ) {
 				$mapto = (array) $_REQUEST['mapto'];
 				if ( false === in_array( 'form_title', $mapto ) && false === in_array( 'form_id', $mapto ) ) {
-					Give_Admin_Settings::add_error( 'give-import-csv-form', __( 'Please select Form ID or Form Name options from the dropdown.', 'give' ) );
+					Give_Admin_Settings::add_error( 'give-import-csv-form', __( 'In order to import donations, a column must be mapped to either the "Donation Form Title" or "Donation Form ID" field. Please map a column to one of those fields.', 'give' ) );
 					$return = false;
 				}
 
 				if ( false === in_array( 'amount', $mapto ) ) {
-					Give_Admin_Settings::add_error( 'give-import-csv-amount', __( 'Please select Amount option from the dropdown.', 'give' ) );
+					Give_Admin_Settings::add_error( 'give-import-csv-amount', __( 'In order to import donations, a column must be mapped to the "Amount" field. Please map a column to that field.', 'give' ) );
 					$return = false;
 				}
 
 				if ( false === in_array( 'email', $mapto ) && false === in_array( 'donor_id', $mapto ) ) {
-					Give_Admin_Settings::add_error( 'give-import-csv-donor', __( 'Please select Email id or Customer ID options from the dropdown.', 'give' ) );
+					Give_Admin_Settings::add_error( 'give-import-csv-donor', __( 'In order to import donations, a column must be mapped to either the "Donor Email" or "Donor ID" field. Please map a column to that field.', 'give' ) );
 					$return = false;
 				}
 			} else {
@@ -724,6 +724,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			if ( empty( $csv_id ) || ! $this->is_valid_csv( $csv_id, $csv ) ) {
 				$csv_id = $csv = '';
 			}
+			$per_page = isset( $_POST['per_page'] ) ? absint( $_POST['per_page'] ) : self::$per_page;
 
 			$settings = array(
 				array(
@@ -784,6 +785,14 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						'disabled' => __( 'Disabled', 'give' ),
 					),
 				),
+				array(
+					'id'          => 'per_page',
+					'name'        => __( 'Process Rows Per Batch:', 'give' ),
+					'type'        => 'number',
+					'description' => __( 'Determine how many rows you would like to import per cycle.', 'give' ),
+					'default'     => $per_page,
+					'class'       => 'give-text-small',
+				),
 			);
 
 			$settings = apply_filters( 'give_import_file_upload_html', $settings );
@@ -820,6 +829,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						'delete_csv'    => empty( $_POST['delete_csv'] ) ?
 							'1' :
 							( give_is_setting_enabled( give_clean( $_POST['delete_csv'] ) ) ? '1' : '0' ),
+						'per_page'      => isset( $_POST['per_page'] ) ? absint( $_POST['per_page'] ) : self::$per_page,
 					) ) );
 					?>
 					<script type="text/javascript">

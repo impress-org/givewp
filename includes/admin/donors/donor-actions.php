@@ -243,11 +243,6 @@ function give_donor_delete( $args ) {
 		return false;
 	}
 
-	$defaults = array(
-		'redirect' => true,
-	);
-	wp_parse_args( $args, $defaults );
-
 	$donor_id    = (int) $args['customer_id'];
 	$confirm     = ! empty( $args['give-donor-delete-confirm'] ) ? true : false;
 	$remove_data = ! empty( $args['give-donor-delete-records'] ) ? true : false;
@@ -317,11 +312,8 @@ function give_donor_delete( $args ) {
 
 	}
 
-	// Proceed Redirect, only if redirect argument is set to true.
-	if( $args['redirect'] ) {
-		wp_redirect( $redirect );
-		exit;
-	}
+	wp_redirect( $redirect );
+	exit;
 
 }
 
@@ -606,3 +598,90 @@ function give_set_donor_primary_email() {
 }
 
 add_action( 'give_set_donor_primary_email', 'give_set_donor_primary_email', 10 );
+
+/**
+ * Delete Donor using Bulk Actions.
+ *
+ * @param array $args An array of donor arguments.
+ *
+ * @since 1.8.17
+ *
+ * @return void
+ */
+function give_delete_donor( $args ) {
+
+	$donor_edit_role = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
+
+	if ( ! is_admin() || ! current_user_can( $donor_edit_role ) ) {
+		wp_die( __( 'You do not have permission to delete donors.', 'give' ), __( 'Error', 'give' ), array(
+			'response' => 403,
+		) );
+	}
+
+	$give_args            = array();
+	$donor_ids            = ( ! empty( $_GET['donor'] ) && is_array( $_GET['donor'] ) && count( $_GET['donor'] ) > 0 ) ? $_GET['donor'] : array();
+	$delete_donor         = ! empty( $_GET['give-delete-donor-confirm'] ) ? $_GET['give-delete-donor-confirm'] : '';
+	$delete_donations     = ! empty( $_GET['give-delete-donor-records'] ) ? $_GET['give-delete-donor-records'] : '';
+	$search_keyword       = ! empty( $_GET['s'] ) ? $_GET['s'] : '';
+	$give_args['orderby'] = ! empty( $_GET['orderby'] ) ? $_GET['orderby'] : 'id';
+	$give_args['order']   = ! empty( $_GET['order'] ) ? $_GET['order'] : 'desc';
+	$nonce                = $args['_wpnonce'];
+
+	// Verify Nonce for deleting bulk donors.
+	if ( ! wp_verify_nonce( $nonce, 'bulk-donors' ) ) {
+		wp_die( __( 'Cheatin&#8217; uh?', 'give' ), __( 'Error', 'give' ), array(
+			'response' => 400,
+		) );
+	}
+
+	if( count( $donor_ids ) > 0 ) {
+		foreach ( $donor_ids as $donor_id ) {
+			$donor = new Give_Donor( $donor_id );
+
+			if ( $donor->id > 0 ) {
+
+				if( $delete_donor ) {
+					$donor_deleted = Give()->donors->delete( $donor->id );
+
+					if ( $donor_deleted ) {
+						$donation_ids  = explode( ',', $donor->payment_ids );
+
+						if( $delete_donations ) {
+
+							// Remove all donations, logs, etc.
+							foreach ( $donation_ids as $donation_id ) {
+								give_delete_donation( $donation_id );
+							}
+
+							$give_args['give-message'] = 'donor-donations-deleted';
+						} else {
+
+							// Just set the donations to customer_id of 0.
+							foreach ( $donation_ids as $donation_id ) {
+								give_update_payment_meta( $donation_id, '_give_payment_customer_id', 0 );
+							}
+
+							$give_args['give-message'] = 'donor-deleted';
+						}
+					} else {
+						$give_args['give-message'] = 'donor-delete-failed';
+					}
+				} else {
+					$give_args['give-message'] = 'confirm-delete-donor';
+				}
+			} else {
+				$give_args['give-message'] = 'invalid-donor-id';
+			}
+		}
+
+		// Add Search Keyword on redirection, if it exists.
+		if ( ! empty( $search_keyword ) ) {
+			$give_args['s'] = $search_keyword;
+		}
+
+		wp_redirect( add_query_arg( $give_args, admin_url( 'edit.php?post_type=give_forms&page=give-donors' ) ) );
+		give_die();
+	}
+}
+
+add_action( 'give_delete_donor', 'give_delete_donor' );

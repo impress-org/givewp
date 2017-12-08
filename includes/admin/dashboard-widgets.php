@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_register_dashboard_widgets() {
 	if ( current_user_can( apply_filters( 'give_dashboard_stats_cap', 'view_give_reports' ) ) ) {
-		wp_add_dashboard_widget( 'give_dashboard_sales', esc_html__( 'Give: Donation Statistics', 'give' ), 'give_dashboard_sales_widget' );
+		wp_add_dashboard_widget( 'give_dashboard_sales', __( 'Give: Donation Statistics', 'give' ), 'give_dashboard_sales_widget' );
 	}
 }
 
@@ -41,7 +41,7 @@ function give_dashboard_sales_widget() {
 	if ( ! current_user_can( apply_filters( 'give_dashboard_stats_cap', 'view_give_reports' ) ) ) {
 		return;
 	}
-	$stats = new Give_Payment_Stats; ?>
+	$stats = new Give_Payment_Stats(); ?>
 
 	<div class="give-dashboard-widget">
 
@@ -51,7 +51,7 @@ function give_dashboard_sales_widget() {
 			<p class="give-dashboard-happy-day"><?php
 				printf(
 				/* translators: %s: day of the week */
-					esc_html__( 'Happy %s!', 'give' ),
+					__( 'Happy %s!', 'give' ),
 					date( 'l', current_time( 'timestamp' ) )
 				);
 			?></p>
@@ -61,11 +61,11 @@ function give_dashboard_sales_widget() {
 				echo give_currency_filter( give_format_amount( $earnings_today, array( 'sanitize' => false ) ) );
 			?></p>
 
-			<p class="give-orders-today"><?php
+			<p class="give-donations-today"><?php
 				$donations_today = $stats->get_sales( 0, 'today', false );
 				printf(
 					/* translators: %s: daily donation count */
-					esc_html__( '%s donations today', 'give' ),
+					__( '%s donations today', 'give' ),
 					give_format_amount( $donations_today, array( 'decimal' => false, 'sanitize' => false ) )
 				);
 			?></p>
@@ -76,9 +76,9 @@ function give_dashboard_sales_widget() {
 		<table class="give-table-stats">
 			<thead style="display: none;">
 			<tr>
-				<th><?php esc_html_e( 'This Week', 'give' ); ?></th>
-				<th><?php esc_html_e( 'This Month', 'give' ); ?></th>
-				<th><?php esc_html_e( 'Past 30 Days', 'give' ); ?></th>
+				<th><?php _e( 'This Week', 'give' ); ?></th>
+				<th><?php _e( 'This Month', 'give' ); ?></th>
+				<th><?php _e( 'Past 30 Days', 'give' ); ?></th>
 			</tr>
 			</thead>
 			<tbody>
@@ -86,24 +86,24 @@ function give_dashboard_sales_widget() {
 				<td>
 					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_week' ), array( 'sanitize' => false ) ) ); ?></p>
 
-					<p class="give-dashboard-stat-total-label"><?php esc_html_e( 'This Week', 'give' ); ?></p>
+					<p class="give-dashboard-stat-total-label"><?php _e( 'This Week', 'give' ); ?></p>
 				</td>
 				<td>
 					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_month' ), array( 'sanitize' => false ) ) ); ?></p>
 
-					<p class="give-dashboard-stat-total-label"><?php esc_html_e( 'This Month', 'give' ); ?></p>
+					<p class="give-dashboard-stat-total-label"><?php _e( 'This Month', 'give' ); ?></p>
 				</td>
 			</tr>
 			<tr id="give-table-stats-tr-2">
 				<td>
 					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'last_month' ), array( 'sanitize' => false ) ) ) ?></p>
 
-					<p class="give-dashboard-stat-total-label"><?php esc_html_e( 'Last Month', 'give' ); ?></p>
+					<p class="give-dashboard-stat-total-label"><?php _e( 'Last Month', 'give' ); ?></p>
 				</td>
 				<td>
-					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_year', false ), array( 'decimal' => false, 'sanitize' => false ) ) ) ?></p>
+					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( give_get_total_earnings(), array( 'sanitize' => false ) ) ) ?></p>
 
-					<p class="give-dashboard-stat-total-label"><?php esc_html_e( 'This Year', 'give' ); ?></p>
+					<p class="give-dashboard-stat-total-label"><?php _e( 'This Year', 'give' ); ?></p>
 				</td>
 			</tr>
 			</tbody>
@@ -124,6 +124,7 @@ function give_dashboard_sales_widget() {
  * @return array
  */
 function give_dashboard_at_a_glance_widget( $items ) {
+
 	$num_posts = wp_count_posts( 'give_forms' );
 
 	if ( $num_posts && $num_posts->publish ) {

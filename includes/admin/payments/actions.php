@@ -66,7 +66,7 @@ function give_update_payment_details( $data ) {
 	$address = give_clean( $data['give-payment-address'][0] );
 
 	$curr_total = $payment->total;
-	$new_total  = give_maybe_sanitize_amount( $data['give-payment-total'] );
+	$new_total  = give_maybe_sanitize_amount( ( ! empty( $data['give-payment-total'] ) ? $data['give-payment-total'] : 0 ) );
 	$date       = date( 'Y-m-d', strtotime( $date ) ) . ' ' . $hour . ':' . $minute . ':00';
 
 	$curr_donor_id = sanitize_text_field( $data['give-current-donor'] );
@@ -133,23 +133,25 @@ function give_update_payment_details( $data ) {
 		$donor_changed = true;
 
 	} else {
-
 		$donor = new Give_Donor( $curr_donor_id );
 		$email    = $donor->email;
 		$names    = $donor->name;
 
 	}
 
-	// Setup first and last name from input values.
-	$names      = explode( ' ', $names );
-	$first_name = ! empty( $names[0] ) ? $names[0] : '';
-	$last_name  = '';
-	if ( ! empty( $names[1] ) ) {
-		unset( $names[0] );
-		$last_name = implode( ' ', $names );
-	}
-
 	if ( $donor_changed ) {
+
+		// Setup first and last name from input values.
+		$names      = explode( ' ', $names );
+		$first_name = ! empty( $names[0] ) ? $names[0] : '';
+		$last_name  = '';
+		if ( ! empty( $names[1] ) ) {
+			unset( $names[0] );
+			$last_name = implode( ' ', $names );
+		}
+
+		$payment->first_name = $first_name;
+		$payment->last_name  = $last_name;
 
 		// Remove the stats and payment from the previous donor and attach it to the new donor.
 		$previous_donor->remove_payment( $payment_id, false );
@@ -178,8 +180,6 @@ function give_update_payment_details( $data ) {
 	// Set new meta values.
 	$payment->user_id    = $donor->user_id;
 	$payment->email      = $donor->email;
-	$payment->first_name = $first_name;
-	$payment->last_name  = $last_name;
 	$payment->address    = $address;
 	$payment->total      = $new_total;
 
@@ -219,7 +219,7 @@ function give_update_payment_details( $data ) {
 	// We are adding payment transfer code in last to remove any conflict with above functionality.
 	// For example: above code will automatically handle form stat (increase/decrease) when payment status changes.
 	// Check if user want to transfer current payment to new give form id.
-	if ( $new_form_id != $current_form_id ) {
+	if ( $new_form_id && $new_form_id != $current_form_id ) {
 
 		// Get new give form title.
 		$new_form_title = get_the_title( $new_form_id );

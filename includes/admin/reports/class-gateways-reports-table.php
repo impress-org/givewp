@@ -66,9 +66,16 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 	 */
 	public function column_default( $item, $column_name ) {
 		switch ( $column_name ) {
+			case 'complete_sales':
+				$value = $item[ $column_name ];
+
+				break;
+
 			default:
-				return $item[ $column_name ];
+				$value = $item[ $column_name ];
 		}
+
+		return $value;
 	}
 
 	/**
@@ -144,8 +151,8 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 		<div class="tablenav gateways-report-tablenav give-clearfix <?php echo esc_attr( $which ); ?>">
 
 			<?php if ( 'top' === $which ) { ?>
-				<h2 class="alignleft reports-earnings-title">
-					<?php esc_html_e( 'Donation Methods Report', 'give' ); ?>
+				<h2 class="alignleft reports-earnings-title screen-reader-text">
+					<?php _e( 'Donation Methods Report', 'give' ); ?>
 				</h2>
 			<?php } ?>
 

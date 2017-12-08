@@ -212,7 +212,7 @@ function give_get_donation_stats_by_user( $user = '' ) {
 	if ( $donor ) {
 		$donor = new Give_Donor( $donor->id );
 		$stats['purchases']   = absint( $donor->purchase_count );
-		$stats['total_spent'] = give_maybe_sanitize_amount( $donor->purchase_value );
+		$stats['total_spent'] = give_maybe_sanitize_amount( $donor->get_total_donation_amount() );
 	}
 
 	/**
@@ -637,7 +637,7 @@ function give_get_donor_name_by( $id = 0, $from = 'donation' ) {
 		case 'donation':
 
 			$user_info = give_get_payment_meta_user_info( $id );
-			$name = $user_info['first_name'] . ' ' . $user_info['last_name'];
+			$name = trim( "{$user_info['first_name']} {$user_info['last_name']}" );
 
 		break;
 

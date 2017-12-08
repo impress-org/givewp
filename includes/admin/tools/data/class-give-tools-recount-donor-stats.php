@@ -51,7 +51,7 @@ class Give_Tools_Recount_Donor_Stats extends Give_Batch_Export {
 	 * @access public
 	 * @since 1.5
 	 *
-	 * @return array $data The data for the CSV file
+	 * @return array|bool $data The data for the CSV file
 	 */
 	public function get_data() {
 
@@ -111,7 +111,7 @@ class Give_Tools_Recount_Donor_Stats extends Give_Batch_Export {
 						if ( true === $should_process_payment ) {
 
 							if ( apply_filters( 'give_donor_recount_should_increase_value', true, $payment ) ) {
-								$purchase_value += give_get_payment_amount( $payment->ID );
+								$purchase_value += give_donation_amount( $payment->ID );
 							}
 
 							if ( apply_filters( 'give_donor_recount_should_increase_count', true, $payment ) ) {

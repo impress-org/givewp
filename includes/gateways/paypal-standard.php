@@ -150,6 +150,8 @@ function give_process_paypal_ipn() {
 		}
 	}
 
+	$api_response = false;
+
 	// Validate IPN request w/ PayPal if user hasn't disabled this security measure.
 	if ( give_is_setting_enabled( give_get_option( 'paypal_verification' ) ) ) {
 
@@ -205,14 +207,14 @@ function give_process_paypal_ipn() {
 
 	// Check for PayPal IPN Notifications and update data based on it.
 	$current_timestamp = current_time( 'timestamp' );
-	$paypal_ipn_vars = array(
-		'auth_status'    => ( $api_response['body'] ) ? $api_response['body'] : 'N/A',
-		'transaction_id' => $encoded_data_array['txn_id'],
+	$paypal_ipn_vars   = array(
+		'auth_status'    => isset( $api_response['body'] ) ? $api_response['body'] : 'N/A',
+		'transaction_id' => isset( $encoded_data_array['txn_id'] ) ? $encoded_data_array['txn_id'] : 'N/A',
 		'payment_id'     => $payment_id,
 	);
 	update_option( 'give_last_paypal_ipn_received', $paypal_ipn_vars );
 	give_insert_payment_note( $payment_id, sprintf(
-			__( 'Last IPN received on %s at %s', 'give' ),
+			__( 'IPN received on %s at %s', 'give' ),
 			date_i18n( 'm/d/Y', $current_timestamp ),
 			date_i18n( 'H:i', $current_timestamp )
 		)
@@ -318,7 +320,7 @@ function give_process_paypal_web_accept( $data, $payment_id ) {
 	}
 
 	// Retrieve the total donation amount (before PayPal).
-	$payment_amount = give_get_payment_amount( $payment_id );
+	$payment_amount = give_donation_amount( $payment_id );
 
 	// Check that the donation PP and local db amounts match.
 	if ( number_format( (float) $paypal_amount, 2 ) < number_format( (float) $payment_amount, 2 ) ) {
@@ -375,7 +377,7 @@ function give_process_paypal_refund( $data, $payment_id = 0 ) {
 		return;
 	}
 
-	$payment_amount = give_get_payment_amount( $payment_id );
+	$payment_amount = give_donation_amount( $payment_id );
 	$refund_amount  = $data['payment_gross'] * - 1;
 
 	if ( number_format( (float) $refund_amount, 2 ) < number_format( (float) $payment_amount, 2 ) ) {

@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since  1.0
  *
- * @return string
+ * @return string|bool
  */
 function give_donation_history( $atts ) {
 
@@ -44,8 +44,15 @@ function give_donation_history( $atts ) {
 	if ( isset( $_GET['payment_key'] ) ) {
 		ob_start();
 		echo give_receipt_shortcode( array() );
-		echo '<a href="' . esc_url( give_get_history_page_uri() ) . '">&laquo; ' . __( 'Return to All Donations', 'give' ) . '</a>';
 
+		// Display donation history link only if it is not accessed via Receipt Access Link.
+		if ( give_get_receipt_session() ) {
+			echo sprintf(
+				'<a href="%s">%s</a>',
+				esc_url( give_get_history_page_uri() ),
+				__( '&laquo; Return to All Donations', 'give' )
+			);
+		}
 		return ob_get_clean();
 	}
 
@@ -54,12 +61,14 @@ function give_donation_history( $atts ) {
 	/**
 	 * Determine access
 	 *
-	 * a. Check if a user is logged in or does a session exist?
+	 * a. Check if a user is logged in or does a session exists
 	 * b. Does an email-access token exist?
 	 */
 	if (
-		is_user_logged_in() || false !== Give()->session->get_session_expiration()
-		|| ( give_is_setting_enabled( $email_access ) && Give()->email_access->token_exists )
+		is_user_logged_in() ||
+		false !== Give()->session->get_session_expiration() ||
+		( give_is_setting_enabled( $email_access ) && Give()->email_access->token_exists ) ||
+		true === give_get_history_session()
 	) {
 		ob_start();
 		give_get_template_part( 'history', 'donations' );
@@ -231,7 +240,7 @@ add_shortcode( 'give_register', 'give_register_form_shortcode' );
  */
 function give_receipt_shortcode( $atts ) {
 
-	global $give_receipt_args, $payment;
+	global $give_receipt_args;
 
 	$give_receipt_args = shortcode_atts( array(
 		'error'          => __( 'You are missing the payment key to view this donation receipt.', 'give' ),
@@ -274,7 +283,6 @@ function give_receipt_shortcode( $atts ) {
 
 	}
 
-	$payment_id    = give_get_purchase_id_by_key( $payment_key );
 	$user_can_view = give_can_view_receipt( $payment_key );
 
 	// Key was provided, but user is logged out. Offer them the ability to login and view the receipt.
@@ -387,16 +395,18 @@ function give_process_profile_editor_updates( $data ) {
 	$user_id       = get_current_user_id();
 	$old_user_data = get_userdata( $user_id );
 
-	$display_name = isset( $data['give_display_name'] ) ? sanitize_text_field( $data['give_display_name'] ) : $old_user_data->display_name;
-	$first_name   = isset( $data['give_first_name'] ) ? sanitize_text_field( $data['give_first_name'] ) : $old_user_data->first_name;
-	$last_name    = isset( $data['give_last_name'] ) ? sanitize_text_field( $data['give_last_name'] ) : $old_user_data->last_name;
-	$email        = isset( $data['give_email'] ) ? sanitize_email( $data['give_email'] ) : $old_user_data->user_email;
-	$line1        = ( isset( $data['give_address_line1'] ) ? sanitize_text_field( $data['give_address_line1'] ) : '' );
-	$line2        = ( isset( $data['give_address_line2'] ) ? sanitize_text_field( $data['give_address_line2'] ) : '' );
-	$city         = ( isset( $data['give_address_city'] ) ? sanitize_text_field( $data['give_address_city'] ) : '' );
-	$state        = ( isset( $data['give_address_state'] ) ? sanitize_text_field( $data['give_address_state'] ) : '' );
-	$zip          = ( isset( $data['give_address_zip'] ) ? sanitize_text_field( $data['give_address_zip'] ) : '' );
-	$country      = ( isset( $data['give_address_country'] ) ? sanitize_text_field( $data['give_address_country'] ) : '' );
+	$display_name     = isset( $data['give_display_name'] ) ? sanitize_text_field( $data['give_display_name'] ) : $old_user_data->display_name;
+	$first_name       = isset( $data['give_first_name'] ) ? sanitize_text_field( $data['give_first_name'] ) : $old_user_data->first_name;
+	$last_name        = isset( $data['give_last_name'] ) ? sanitize_text_field( $data['give_last_name'] ) : $old_user_data->last_name;
+	$email            = isset( $data['give_email'] ) ? sanitize_email( $data['give_email'] ) : $old_user_data->user_email;
+	$line1            = ( isset( $data['give_address_line1'] ) ? sanitize_text_field( $data['give_address_line1'] ) : '' );
+	$line2            = ( isset( $data['give_address_line2'] ) ? sanitize_text_field( $data['give_address_line2'] ) : '' );
+	$city             = ( isset( $data['give_address_city'] ) ? sanitize_text_field( $data['give_address_city'] ) : '' );
+	$state            = ( isset( $data['give_address_state'] ) ? sanitize_text_field( $data['give_address_state'] ) : '' );
+	$zip              = ( isset( $data['give_address_zip'] ) ? sanitize_text_field( $data['give_address_zip'] ) : '' );
+	$country          = ( isset( $data['give_address_country'] ) ? sanitize_text_field( $data['give_address_country'] ) : '' );
+	$password         = ! empty( $data['give_new_user_pass1'] ) ? $data['give_new_user_pass1'] : '';
+	$confirm_password = ! empty( $data['give_new_user_pass2'] ) ? $data['give_new_user_pass2'] : '';
 
 	$userdata = array(
 		'ID'           => $user_id,
@@ -404,8 +414,12 @@ function give_process_profile_editor_updates( $data ) {
 		'last_name'    => $last_name,
 		'display_name' => $display_name,
 		'user_email'   => $email,
+		'user_pass'    => $password,
 	);
 
+	if( empty( $line1 ) || empty( $city ) || empty( $state ) || empty( $zip ) || empty( $country ) ) {
+		give_set_error( 'give-empty-address-fields', __( 'Please fill in the required address fields.', 'give' ) );
+	}
 
 	$address = array(
 		'line1'   => $line1,
@@ -426,8 +440,13 @@ function give_process_profile_editor_updates( $data ) {
 	 */
 	do_action( 'give_pre_update_user_profile', $user_id, $userdata );
 
-	// Make sure to validate passwords for existing Donors
-	give_validate_user_password( $data['give_new_user_pass1'], $data['give_new_user_pass2'] );
+	// Validate First Name.
+	if( empty( $first_name ) ) {
+		give_set_error( 'give-empty-first-name', __( 'Please enter first name.', 'give' ) );
+	}
+
+	// Make sure to validate passwords for existing Donors.
+	give_validate_user_password( $password, $confirm_password );
 
 	if ( empty( $email ) ) {
 		// Make sure email should not be empty.
@@ -440,7 +459,10 @@ function give_process_profile_editor_updates( $data ) {
 	} else if ( $email != $old_user_data->user_email ) {
 		// Make sure the new email doesn't belong to another user
 		if ( email_exists( $email ) ) {
-			give_set_error( 'email_exists', __( 'The email you entered belongs to another user. Please use another.', 'give' ) );
+			give_set_error( 'user_email_exists', __( 'The email you entered belongs to another user. Please use another.', 'give' ) );
+		} elseif ( Give()->donors->get_donor_by( 'email', $email ) ){
+			// Make sure the new email doesn't belong to another user
+			give_set_error( 'donor_email_exists', __( 'The email you entered belongs to another donor. Please use another.', 'give' ) );
 		}
 	}
 

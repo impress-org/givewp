@@ -292,7 +292,7 @@ class Tests_Payment_Class extends Give_Unit_Test_Case {
 		$form  = new Give_Donate_Form( $payment->form_id );
 
 		$donor_sales    = $donor->purchase_count;
-		$donor_earnings = $donor->purchase_value;
+		$donor_earnings = $donor->get_total_donation_amount();
 
 		$form_sales    = $form->sales;
 		$form_earnings = $form->earnings;
@@ -306,7 +306,7 @@ class Tests_Payment_Class extends Give_Unit_Test_Case {
 		$donor = new Give_Donor( $payment->customer_id );
 		$form  = new Give_Donate_Form( $payment->form_id );
 
-		$this->assertEquals( $donor_earnings - $payment->total, $donor->purchase_value );
+		$this->assertEquals( $donor_earnings - $payment->total, $donor->get_total_donation_amount() );
 		$this->assertEquals( $donor_sales - 1, $donor->purchase_count );
 
 		$this->assertEquals( $form_earnings - $payment->total, $form->earnings );
@@ -335,7 +335,7 @@ class Tests_Payment_Class extends Give_Unit_Test_Case {
 		$form  = new Give_Donate_Form( $payment->form_id );
 
 		$donor_sales    = $donor->purchase_count;
-		$donor_earnings = $donor->purchase_value;
+		$donor_earnings = $donor->get_total_donation_amount();
 
 		$form_sales    = $form->sales;
 		$form_earnings = $form->earnings;
@@ -349,7 +349,7 @@ class Tests_Payment_Class extends Give_Unit_Test_Case {
 		$donor = new Give_Donor( $payment->customer_id );
 		$form  = new Give_Donate_Form( $payment->form_id );
 
-		$this->assertEquals( $donor_earnings, $donor->purchase_value );
+		$this->assertEquals( $donor_earnings, $donor->get_total_donation_amount() );
 		$this->assertEquals( $donor_sales, $donor->purchase_count );
 
 		$this->assertEquals( $form_earnings, $form->earnings );
@@ -378,7 +378,7 @@ class Tests_Payment_Class extends Give_Unit_Test_Case {
 		$form  = new Give_Donate_Form( $payment->form_id );
 
 		$donor_sales    = $donor->purchase_count;
-		$donor_earnings = $donor->purchase_value;
+		$donor_earnings = $donor->get_total_donation_amount();
 
 		$form_sales    = $form->sales;
 		$form_earnings = $form->earnings;
@@ -396,7 +396,7 @@ class Tests_Payment_Class extends Give_Unit_Test_Case {
 		$donor = new Give_Donor( $payment->customer_id );
 		$form  = new Give_Donate_Form( $payment->form_id );
 
-		$this->assertEquals( $donor_earnings - $payment->total, $donor->purchase_value );
+		$this->assertEquals( $donor_earnings - $payment->total, $donor->get_total_donation_amount() );
 		$this->assertEquals( $donor_sales - 1, $donor->purchase_count );
 
 		$this->assertEquals( $form_earnings - $payment->total, $form->earnings );
@@ -424,7 +424,7 @@ class Tests_Payment_Class extends Give_Unit_Test_Case {
 		$form  = new Give_Donate_Form( $payment->form_id );
 
 		$donor_sales    = $donor->purchase_count;
-		$donor_earnings = $donor->purchase_value;
+		$donor_earnings = $donor->get_total_donation_amount();
 
 		$form_sales    = $form->sales;
 		$form_earnings = $form->earnings;
@@ -442,7 +442,7 @@ class Tests_Payment_Class extends Give_Unit_Test_Case {
 		$donor = new Give_Donor( $payment->customer_id );
 		$form  = new Give_Donate_Form( $payment->form_id );
 
-		$this->assertEquals( $donor_earnings, $donor->purchase_value );
+		$this->assertEquals( $donor_earnings, $donor->get_total_donation_amount() );
 		$this->assertEquals( $donor_sales, $donor->purchase_count );
 
 		$this->assertEquals( $form_earnings, $form->earnings );
@@ -471,7 +471,7 @@ class Tests_Payment_Class extends Give_Unit_Test_Case {
 
 		//Add a multi-level donation amount
 		$payment->add_donation( $form->ID, array( 'price_id' => 2 ) );
-		$this->assertEquals( give_sanitize_amount( '25', true ), give_sanitize_amount( $payment->total, true ) );
+		$this->assertEquals( give_sanitize_amount( '25', array( 'number_decimals' => true ) ), give_sanitize_amount( $payment->total, array( 'number_decimals' => true ) ) );
 		$payment->status = 'complete';
 		$payment->save();
 

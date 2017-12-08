@@ -21,7 +21,7 @@ do_action( 'give_tools_import_donations_main_before' );
     <div id="poststuff">
         <div class="postbox">
             <h1 class="give-importer-h1" align="center"><?php esc_html_e( 'Import Donations', 'give' ); ?></h1>
-            <div class="inside give-tools-setting-page-import">
+            <div class="inside give-tools-setting-page-import give-import-donations">
 				<?php
 				/**
 				 * Fires before from start.

@@ -8,7 +8,7 @@ $goal_option = give_get_meta( $form->ID, '_give_goal_option', true );
 
 //Sanity check - ensure form has pass all condition to show goal.
 if (
-	( isset( $args['show_goal'] ) &&  ! filter_var( $args['show_goal'], FILTER_VALIDATE_BOOLEAN ) )
+	( isset( $args['show_goal'] ) && ! filter_var( $args['show_goal'], FILTER_VALIDATE_BOOLEAN ) )
 	|| empty( $form->ID )
 	|| ( is_singular( 'give_forms' ) && ! give_is_setting_enabled( $goal_option ) )
 	|| ! give_is_setting_enabled( $goal_option )
@@ -45,6 +45,12 @@ $goal = apply_filters( 'give_goal_amount_target_output', $form->goal, $form_id, 
  */
 $progress = apply_filters( 'give_goal_amount_funded_percentage_output', round( ( $income / $goal ) * 100, 2 ), $form_id, $form );
 
+/**
+ * Filter the give currency.
+ *
+ * @since 1.8.17
+ */
+$form_currency = apply_filters( 'give_goal_form_currency', give_get_currency( $form_id ), $form_id );
 
 // Set progress to 100 percentage if income > goal.
 if ( $income >= $goal ) {
@@ -58,15 +64,29 @@ if ( $income >= $goal ) {
 			<?php
 			if ( $goal_format !== 'percentage' ) :
 
+				/**
+				 * Filter the income formatting arguments.
+				 *
+				 * @since 1.8.17
+				 */
+				$income_format_args = apply_filters( 'give_goal_income_format_args', array( 'sanitize' => false, 'currency' => $form_currency, 'decimal' => false ), $form_id );
+
+				/**
+				 * Filter the goal formatting arguments.
+				 *
+				 * @since 1.8.17
+				 */
+				$goal_format_args   = apply_filters( 'give_goal_amount_format_args', array( 'sanitize' => false, 'currency' => $form_currency, 'decimal' => false ), $form_id );
+
 				// Get formatted amount.
-				$income = give_human_format_large_amount( give_format_amount( $income, array( 'sanitize' => false ) ) );
-				$goal   = give_human_format_large_amount( give_format_amount( $goal, array( 'sanitize' => false ) ) );
+				$income = give_human_format_large_amount( give_format_amount( $income, $income_format_args ), array( 'currency' => $form_currency ) );
+				$goal   = give_human_format_large_amount( give_format_amount( $goal, $goal_format_args ), array( 'currency' => $form_currency ) );
 
 				echo sprintf(
-				/* translators: 1: amount of income raised 2: goal target ammount */
+				/* translators: 1: amount of income raised 2: goal target amount. */
 					__( '%1$s of %2$s raised', 'give' ),
-					'<span class="income">' . give_currency_filter( $income ) . '</span>',
-					'<span class="goal-text">' . give_currency_filter( $goal ) . '</span>'
+					'<span class="income">' . give_currency_filter( $income, array( 'form_id' => $form_id ) ) . '</span>',
+					'<span class="goal-text">' . give_currency_filter( $goal, array( 'form_id' => $form_id ) ) . '</span>'
 				);
 
 

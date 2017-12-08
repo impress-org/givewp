@@ -885,6 +885,10 @@ input.give-text_medium {
   .postbox-container .cmb-row .cmb-th label {
     padding-left: 8px; }
 
+#give-bulk-donors div[id^="give-donor-"] {
+  display: block;
+  overflow: hidden; }
+
 @media only screen and (min-width: 851px) {
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row {
     float: left;
@@ -1632,6 +1636,11 @@ table.give-table td.row-title p {
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
+.give-settings-page .give-settings-heading-sep {
+  font-size: 14px;
+  line-height: 32px;
+  width: 15px; }
+
 .give-settings-page .nav-tab-wrapper {
   margin-bottom: 5px;
   overflow: visible; }
@@ -1893,7 +1902,9 @@ h2.give-nav-tab-wrapper {
     .give-nav-tab-wrapper > a {
       width: 100%;
       box-sizing: border-box;
-      margin: 0; }
+      margin: 0;
+      background-color: #ffffff;
+      border: 1px solid #cccccc; }
       .give-nav-tab-wrapper > a:hover {
         border-bottom: 1px solid #ccc; }
     .give-nav-tab-wrapper div.give-sub-nav-tab-wrapper {
@@ -1909,7 +1920,15 @@ h2.give-nav-tab-wrapper {
           margin: 6px auto 0;
           display: block; }
       .give-nav-tab-wrapper div.give-sub-nav-tab-wrapper nav.give-sub-nav-tab {
-        top: 35px; } }
+        top: 35px;
+        right: 0;
+        left: auto; }
+        .give-nav-tab-wrapper div.give-sub-nav-tab-wrapper nav.give-sub-nav-tab a {
+          background: #ffffff; }
+          .give-nav-tab-wrapper div.give-sub-nav-tab-wrapper nav.give-sub-nav-tab a:hover {
+            background: #e5e5e5; }
+  .give-mobile-hidden {
+    display: none; } }
 
 .give-sub-nav-tab-wrapper {
   position: relative;
@@ -1920,11 +1939,11 @@ h2.give-nav-tab-wrapper {
     border: 1px solid #ccc;
     border-bottom: 0;
     position: absolute;
-    top: 32px;
-    right: 0; }
+    top: 35px;
+    left: 0; }
     .give-sub-nav-tab-wrapper nav.give-sub-nav-tab a {
       float: left;
-      background: white;
+      background: #e5e5e5;
       padding: 6px 10px;
       clear: both;
       text-decoration: none;
@@ -1933,7 +1952,7 @@ h2.give-nav-tab-wrapper {
       color: #555;
       font-size: 14px; }
     .give-sub-nav-tab-wrapper nav.give-sub-nav-tab a:hover {
-      background: #e5e5e5; }
+      background: #ffffff; }
 
 .give-sub-nav-tab-wrapper {
   display: none; }
@@ -2479,6 +2498,10 @@ input.give-price-field {
   position: relative; }
   .give_forms_page_give-donors #give-donors-filter p.search-box {
     margin: 0; }
+
+.give_forms_page_give-donors #give-donors-search-filter {
+  display: block;
+  overflow: hidden; }
 
 #give-donor-card-wrapper {
   margin-left: -1px;
@@ -3037,7 +3060,17 @@ body.give_forms_page_give-updates .give-run-update-containt .give-run-update-but
   margin: -8px -22px 11px;
   padding: 12px 22px; }
 
-form#give-import-donations-form table.widefat {
+.give-import-core-settings .give-progress-steps li {
+  width: 33.33%; }
+
+.give-import-core-settings .step-3 h2 {
+  text-align: center;
+  font-size: 20px !important; }
+
+.give-import-core-settings .step-3 p {
+  text-align: center; }
+
+form.give-import-form table.widefat {
   border: none; }
 
 .wrap .give-importer-h1 {

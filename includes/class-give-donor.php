@@ -413,7 +413,7 @@ class Give_Donor {
 
 			// We added this payment successfully, increment the stats
 			if ( $update_stats ) {
-				$payment_amount = give_get_payment_amount( $payment_id );
+				$payment_amount = give_donation_amount( $payment_id );
 
 				if ( ! empty( $payment_amount ) ) {
 					$this->increase_value( $payment_amount );
@@ -498,7 +498,7 @@ class Give_Donor {
 
 			if ( $update_stats ) {
 				// We removed this payment successfully, decrement the stats
-				$payment_amount = give_get_payment_amount( $payment_id );
+				$payment_amount = give_donation_amount( $payment_id );
 
 				if ( ! empty( $payment_amount ) ) {
 					$this->decrease_value( $payment_amount );
@@ -787,6 +787,29 @@ class Give_Donor {
 
 		return count( $notes_array );
 
+	}
+
+	/**
+	 * Get the total donation amount.
+	 *
+	 * @since 1.8.17
+	 *
+	 * @param array $args Pass any additional data.
+	 *
+	 * @return string|float
+	 */
+	public function get_total_donation_amount( $args = array() ) {
+
+		/**
+		 * Filter total donation amount.
+		 *
+		 * @since 1.8.17
+		 *
+		 * @param string|float $purchase_value Donor Purchase value.
+		 * @param integer      $donor_id       Donor ID.
+		 * @param array        $args           Pass additional data.
+		 */
+		return apply_filters( 'give_get_total_donation_amount', $this->purchase_value, $this->id, $args );
 	}
 
 	/**

@@ -213,7 +213,7 @@ class Give_Plugin_Settings {
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
 								'post_type'   => 'page',
-								'numberposts' => - 1,
+								'numberposts' => 999,
 							) ),
 						),
 						array(
@@ -223,7 +223,7 @@ class Give_Plugin_Settings {
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
 								'post_type'   => 'page',
-								'numberposts' => - 1,
+								'numberposts' => 999,
 							) ),
 						),
 						array(
@@ -234,7 +234,7 @@ class Give_Plugin_Settings {
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
 								'post_type'   => 'page',
-								'numberposts' => - 1,
+								'numberposts' => 999,
 							) ),
 						),
 						array(
@@ -265,9 +265,9 @@ class Give_Plugin_Settings {
 							'type'    => 'select',
 							'options' => array(
 								/* translators: %s: currency symbol */
-								'before' => sprintf( __( 'Before - %s10', 'give' ), give_currency_symbol( give_get_currency() ) ),
+								'before' => sprintf( __( 'Before - %s&#x200e;10', 'give' ), give_currency_symbol( give_get_currency() ) ),
 								/* translators: %s: currency symbol */
-								'after'  => sprintf( __( 'After - 10%s', 'give' ), give_currency_symbol( give_get_currency() ) ),
+								'after'  => sprintf( __( 'After - 10%s&#x200f;', 'give' ), give_currency_symbol( give_get_currency() ) ),
 							),
 							'default' => 'before',
 						),
@@ -572,7 +572,7 @@ class Give_Plugin_Settings {
 							'id'      => 'donation_receipt',
 							'name'    => __( 'Donation Receipt', 'give' ),
 							'desc'    => sprintf(
-								/* translators: %s: emails tags list */
+							/* translators: %s: emails tags list */
 								__( 'Enter the email that is sent to users after completing a successful donation. HTML is accepted. Available template tags: %s', 'give' ),
 								'<br/>' . give_get_emails_tags_list()
 							),
@@ -596,7 +596,7 @@ class Give_Plugin_Settings {
 							'id'      => 'donation_notification',
 							'name'    => __( 'Donation Notification', 'give' ),
 							'desc'    => sprintf(
-								/* translators: %s: emails tags list */
+							/* translators: %s: emails tags list */
 								__( 'Enter the email that is sent to donation notification emails after completion of a donation. HTML is accepted. Available template tags: %s', 'give' ),
 								'<br/>' . give_get_emails_tags_list()
 							),
@@ -1121,8 +1121,8 @@ function give_cmb2_get_post_options( $query_args, $force = false ) {
 function give_get_featured_image_sizes() {
 	global $_wp_additional_image_sizes;
 
-	$sizes     = array();
-	$get_sizes = get_intermediate_image_sizes();
+	$sizes            = array();
+	$get_sizes        = get_intermediate_image_sizes();
 	$core_image_sizes = array( 'thumbnail', 'medium', 'medium_large', 'large' );
 
 
@@ -1158,21 +1158,21 @@ function give_get_featured_image_sizes() {
  *
  *  Converts a string with hyphen(-) or underscores(_) or any special character to a string with Title case
  *
- *  @since 1.8.8
+ * @since 1.8.8
  *
- *  @params $string text
- *  @params $filter array
+ * @params $string text
+ * @params $filter array
  *
- *  @return text $string
+ * @return text $string
  */
-function give_slug_to_title( $string, $filters = array() ){
+function give_slug_to_title( $string, $filters = array() ) {
 
-    foreach( $filters as $filter_item ){
-        $string = str_replace( $filter_item, ' ', $string );
-    }
+	foreach ( $filters as $filter_item ) {
+		$string = str_replace( $filter_item, ' ', $string );
+	}
 
-    // Return updated string after converting it to title case
-    return ucwords( $string );
+	// Return updated string after converting it to title case
+	return ucwords( $string );
 
 }
 
@@ -1228,42 +1228,8 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 	}
 
 	if ( $is_license_key ) {
-		if ( $is_in_subscription ) {
-			$subscription_expires = strtotime( $subscriptions[ $is_in_subscription ]['expires'] );
-			$subscription_status  = __( 'renew', 'give' );
 
-			if ( ( 'active' !== $subscriptions[ $is_in_subscription ]['status'] ) ) {
-				$subscription_status = __( 'expire', 'give' );
-			}
-
-			if ( $subscription_expires < current_time( 'timestamp', 1 ) ) {
-				$messages[]     = sprintf(
-					__( 'Your subscription (<a href="%1$s" target="_blank">#%2$d</a>) expired. Please <a href="%3$s" target="_blank" title="Renew your license key">renew your license key</a>', 'give' ),
-					urldecode( $subscriptions[ $is_in_subscription ]['invoice_url'] ),
-					$subscriptions[ $is_in_subscription ]['payment_id'],
-					$checkout_page_link . '?edd_license_key=' . $subscriptions[ $is_in_subscription ]['license_key'] . '&utm_campaign=admin&utm_source=licenses&utm_medium=expired'
-				);
-				$license_status = 'license-expired';
-			} elseif ( strtotime( '- 7 days', $subscription_expires ) < current_time( 'timestamp', 1 ) ) {
-				$messages[]     = sprintf(
-					__( 'Your subscription (<a href="%1$s" target="_blank">#%2$d</a>) will %3$s in %4$s.', 'give' ),
-					urldecode( $subscriptions[ $is_in_subscription ]['invoice_url'] ),
-					$subscriptions[ $is_in_subscription ]['payment_id'],
-					$subscription_status,
-					human_time_diff( current_time( 'timestamp', 1 ), strtotime( $subscriptions[ $is_in_subscription ]['expires'] ) )
-				);
-				$license_status = 'license-expires-soon';
-			} else {
-				$messages[]     = sprintf(
-					__( 'Your subscription (<a href="%1$s" target="_blank">#%2$d</a>) will %3$s on %4$s.', 'give' ),
-					urldecode( $subscriptions[ $is_in_subscription ]['invoice_url'] ),
-					$subscriptions[ $is_in_subscription ]['payment_id'],
-					$subscription_status,
-					date_i18n( get_option( 'date_format' ), strtotime( $subscriptions[ $is_in_subscription ]['expires'], current_time( 'timestamp' ) ) )
-				);
-				$license_status = 'license-expiration-date';
-			}
-		} elseif ( empty( $license->success ) && property_exists( $license, 'error' ) ) {
+		if ( empty( $license->success ) && property_exists( $license, 'error' ) ) {
 
 			// activate_license 'invalid' on anything other than valid, so if there was an error capture it
 			switch ( $license->error ) {
@@ -1321,16 +1287,53 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 				default:
 					$class          = $license->error;
 					$messages[]     = sprintf(
-							__( 'Your license is not activated. Please <a href="%3$s" target="_blank" title="Visit account page">visit your account page</a> to manage your license key URLs. %2$sError Code: %1$s.', 'give' ),
-							$license->error,
-							'<br/>',
-						 "{$account_page_link}?utm_campaign=admin&utm_source=licenses&utm_medium={$license->error}"
+						__( 'Your license is not activated. Please <a href="%3$s" target="_blank" title="Visit account page">visit your account page</a> to manage your license key URLs. %2$sError Code: %1$s.', 'give' ),
+						$license->error,
+						'<br/>',
+						"{$account_page_link}?utm_campaign=admin&utm_source=licenses&utm_medium={$license->error}"
 					);
 					$license_status = 'license-error';
 					break;
 			}
 
-		} elseif ( empty( $license->success ) ){
+		} elseif ( $is_in_subscription ) {
+
+			$subscription_expires = strtotime( $subscriptions[ $is_in_subscription ]['expires'] );
+			$subscription_status  = __( 'renew', 'give' );
+
+			if ( ( 'active' !== $subscriptions[ $is_in_subscription ]['status'] ) ) {
+				$subscription_status = __( 'expire', 'give' );
+			}
+
+			if ( $subscription_expires < current_time( 'timestamp', 1 ) ) {
+				$messages[]     = sprintf(
+					__( 'Your subscription (<a href="%1$s" target="_blank">#%2$d</a>) expired. Please <a href="%3$s" target="_blank" title="Renew your license key">renew your license key</a>', 'give' ),
+					urldecode( $subscriptions[ $is_in_subscription ]['invoice_url'] ),
+					$subscriptions[ $is_in_subscription ]['payment_id'],
+					$checkout_page_link . '?edd_license_key=' . $subscriptions[ $is_in_subscription ]['license_key'] . '&utm_campaign=admin&utm_source=licenses&utm_medium=expired'
+				);
+				$license_status = 'license-expired';
+			} elseif ( strtotime( '- 7 days', $subscription_expires ) < current_time( 'timestamp', 1 ) ) {
+				$messages[]     = sprintf(
+					__( 'Your subscription (<a href="%1$s" target="_blank">#%2$d</a>) will %3$s in %4$s.', 'give' ),
+					urldecode( $subscriptions[ $is_in_subscription ]['invoice_url'] ),
+					$subscriptions[ $is_in_subscription ]['payment_id'],
+					$subscription_status,
+					human_time_diff( current_time( 'timestamp', 1 ), strtotime( $subscriptions[ $is_in_subscription ]['expires'] ) )
+				);
+				$license_status = 'license-expires-soon';
+			} else {
+				$messages[]     = sprintf(
+					__( 'Your subscription (<a href="%1$s" target="_blank">#%2$d</a>) will %3$s on %4$s.', 'give' ),
+					urldecode( $subscriptions[ $is_in_subscription ]['invoice_url'] ),
+					$subscriptions[ $is_in_subscription ]['payment_id'],
+					$subscription_status,
+					date_i18n( get_option( 'date_format' ), strtotime( $subscriptions[ $is_in_subscription ]['expires'], current_time( 'timestamp' ) ) )
+				);
+				$license_status = 'license-expiration-date';
+			}
+
+		} elseif ( empty( $license->success ) ) {
 			$class          = 'invalid';
 			$messages[]     = sprintf(
 				__( 'Your %1$s is not active for this URL. Please <a href="%2$s" target="_blank" title="Visit account page">visit your account page</a> to manage your license key URLs.', 'give' ),
@@ -1339,7 +1342,7 @@ function give_license_key_callback( $field_object, $escaped_value, $object_id, $
 			);
 			$license_status = 'license-' . $class;
 
-		}else {
+		} else {
 			switch ( $license->license ) {
 				case 'valid' :
 				default:
@@ -1444,7 +1447,7 @@ function give_api_callback() {
 	?>
 	<span class="cmb2-metabox-description api-description">
 		<?php echo sprintf(
-			/* translators: 1: http://docs.givewp.com/api 2: http://docs.givewp.com/addon-zapier */
+		/* translators: 1: http://docs.givewp.com/api 2: http://docs.givewp.com/addon-zapier */
 			__( 'You can create API keys for individual users within their profile edit screen. API keys allow users to use the <a href="%1$s" target="_blank">Give REST API</a> to retrieve donation data in JSON or XML for external applications or devices, such as <a href="%2$s" target="_blank">Zapier</a>.', 'give' ),
 			esc_url( 'http://docs.givewp.com/api' ),
 			esc_url( 'http://docs.givewp.com/addon-zapier' )

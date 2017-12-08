@@ -84,8 +84,13 @@ function give_donors_list() {
 		?>
 
 		<hr class="wp-header-end">
-
-		<form id="give-donors-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors' ); ?>">
+		<form id="give-donors-search-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors' ); ?>">
+			<?php $donors_table->search_box( __( 'Search Donors', 'give' ), 'give-donors' ); ?>
+			<input type="hidden" name="post_type" value="give_forms" />
+			<input type="hidden" name="page" value="give-donors" />
+			<input type="hidden" name="view" value="donors" />
+		</form>
+		<form id="give-donors-filter" method="get">
 			<?php $donors_table->display(); ?>
 			<input type="hidden" name="post_type" value="give_forms" />
 			<input type="hidden" name="page" value="give-donors" />
@@ -355,6 +360,7 @@ function give_donor_view( $donor ) {
 											</select>
 											<input class="info-item" type="text" data-key="line1" name="customerinfo[line1]" placeholder="<?php _e( 'Address 1', 'give' ); ?>" value="<?php echo $address['line1']; ?>" />
 											<input class="info-item" type="text" data-key="line2" name="customerinfo[line2]" placeholder="<?php _e( 'Address 2', 'give' ); ?>" value="<?php echo $address['line2']; ?>" />
+											<input class="info-item" type="text" data-key="city" name="customerinfo[city]" placeholder="<?php _e( 'City', 'give' ); ?>" value="<?php echo $address['city']; ?>" />
 											<?php
 											if ( ! empty( $states ) ) {
 												?>
@@ -372,7 +378,6 @@ function give_donor_view( $donor ) {
 												<?php
 											}
 											?>
-											<input class="info-item" type="text" data-key="city" name="customerinfo[city]" placeholder="<?php _e( 'City', 'give' ); ?>" value="<?php echo $address['city']; ?>" />
 											<input class="info-item" type="text" data-key="zip" name="customerinfo[zip]" placeholder="<?php _e( 'Zip / Postal Code', 'give' ); ?>" value="<?php echo $address['zip']; ?>" />
 										</span>
 
@@ -424,7 +429,7 @@ function give_donor_view( $donor ) {
 			</li>
 			<li>
 				<span class="dashicons dashicons-chart-area"></span>
-				<?php echo give_currency_filter( give_format_amount( $donor->purchase_value, array( 'sanitize' => false ) ) ); ?> <?php _e( 'Lifetime Donations', 'give' ); ?>
+				<?php echo give_currency_filter( give_format_amount( $donor->get_total_donation_amount(), array( 'sanitize' => false ) ) ); ?> <?php _e( 'Lifetime Donations', 'give' ); ?>
 			</li>
 			<?php
 			/**
@@ -550,7 +555,7 @@ function give_donor_view( $donor ) {
 				<?php foreach ( $payments as $payment ) : ?>
 					<tr>
 						<td><?php echo $payment->ID; ?></td>
-						<td><?php echo give_payment_amount( $payment->ID ); ?></td>
+						<td><?php echo give_donation_amount( $payment->ID, 'donor' ); ?></td>
 						<td><?php echo date_i18n( give_date_format(), strtotime( $payment->post_date ) ); ?></td>
 						<td><?php echo give_get_payment_status( $payment, true ); ?></td>
 						<td>
