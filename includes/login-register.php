@@ -98,6 +98,12 @@ function give_register_form( $redirect = '' ) {
  */
 function give_process_login_form( $data ) {
 	if ( wp_verify_nonce( $data['give_login_nonce'], 'give-login-nonce' ) ) {
+
+		// Set Receipt Access Session.
+		if ( ! empty( $_GET['payment_key'] ) ) {
+			Give()->session->set( 'receipt_access', true );
+		}
+
 		$user_data = get_user_by( 'login', $data['give_user_login'] );
 		if ( ! $user_data ) {
 			$user_data = get_user_by( 'email', $data['give_user_login'] );

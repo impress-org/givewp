@@ -46,7 +46,7 @@ function give_donation_history( $atts ) {
 		echo give_receipt_shortcode( array() );
 
 		// Display donation history link only if it is not accessed via Receipt Access Link.
-		if ( Give()->session->get( 'give_donation_history_args' ) ) {
+		if ( give_get_receipt_session() ) {
 			echo sprintf(
 				'<a href="%s">%s</a>',
 				esc_url( give_get_history_page_uri() ),
