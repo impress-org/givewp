@@ -457,3 +457,32 @@ function give_set_default_tab_form_reports_page( $default_tab ) {
 	return 'earnings';
 }
 add_filter( 'give_default_setting_tab_give-reports', 'give_set_default_tab_form_reports_page', 10, 1 );
+
+/**
+ * Add a post display state for special Give pages in the page list table.
+ *
+ * @param array $post_states An array of post display states.
+ * @param WP_Post $post The current post object.
+ */
+function give_add_display_page_states( $post_states, $post ) {
+
+	// Checks if it's a Success Page.
+	if ( give_get_option( 'success_page' ) === $post->ID ) {
+		$post_states['wc_page_for_shop'] = __( 'Donation Successfully Page', 'woocommerce' );
+	}
+
+	// Checks if it's a Failure Page.
+	if ( give_get_option( 'failure_page' ) === $post->ID ) {
+		$post_states['wc_page_for_shop'] = __( 'Donation Failed Page', 'woocommerce' );
+	}
+
+	// Checks if it's a History Page.
+	if ( give_get_option( 'history_page' ) === $post->ID ) {
+		$post_states['wc_page_for_shop'] = __( 'Donation History Page', 'woocommerce' );
+	}
+
+	return $post_states;
+}
+
+// Add a post display state for special WC pages.
+add_filter( 'display_post_states', 'give_add_display_page_states', 10, 2 );
