@@ -67,7 +67,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						array(
 							'id'      => 'limit_display_donations',
 							'name'    => __( 'Limit Donations Displayed', 'give' ),
-							'desc'    => __( 'Adjusts the number of donations displayed to a non logged-in user when they attempt to access the donation history page without an active session. For security reasons, it\'s best to leave this at 1-3 donations.', 'give' ),
+							'desc'    => __( 'Adjusts the number of donations displayed to a non logged-in user when they attempt to access the Donation History page without an active session. For security reasons, it\'s best to leave this at 1-3 donations.', 'give' ),
 							'default' => '1',
 							'type'    => 'number',
 							'css'     => 'width:12em;',
