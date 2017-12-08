@@ -65,6 +65,14 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							)
 						),
 						array(
+							'id'      => 'limit_display_donations',
+							'name'    => __( 'Limit Donations Displayed', 'give' ),
+							'desc'    => __( 'Adjusts the number of donations displayed to a non logged-in user when they attempt to access the donation history page without an active session. For security reasons, it\'s best to leave this at 1-3 donations.', 'give' ),
+							'default' => '1',
+							'type'    => 'number',
+							'css'     => 'width:12em;',
+						),
+						array(
 							'name'    => __( 'Email Access', 'give' ),
 							'desc'    => __( 'Would you like your donors to be able to access their donation history using only email? Donors whose sessions have expired and do not have an account may still access their donation history via a temporary email access link.', 'give' ),
 							'id'      => 'email_access',
@@ -74,14 +82,6 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
 							)
-						),
-						array(
-							'id'      => 'limit_display_donations',
-							'name'    => __( 'Limit Donations Displayed', 'give' ),
-							'desc'    => __( 'Adjusts the number of donations displayed to a non logged-in user when they attempt to access the donation history page without an active session. For security reasons, it\'s best to leave this at 1-3 donations.', 'give' ),
-							'default' => '1',
-							'type'    => 'number',
-							'css'     => 'width:12em;',
 						),
 						array(
 							'id'      => 'recaptcha_key',
