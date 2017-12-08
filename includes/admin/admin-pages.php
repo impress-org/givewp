@@ -470,21 +470,21 @@ function give_add_display_page_states( $post_states, $post ) {
 
 	// Checks if it's a Success Page.
 	if ( $post->ID === absint( give_get_option( 'success_page' ) ) ) {
-		$post_states['give_successfully_page'] = __( 'Donation Successfully Page', 'woocommerce' );
+		$post_states['give_successfully_page'] = __( 'Donation Successfully Page', 'give' );
 	}
 
 	// Checks if it's a Failure Page.
 	if ( $post->ID === absint( give_get_option( 'failure_page' ) ) ) {
-		$post_states['give_failure_page'] = __( 'Donation Failed Page', 'woocommerce' );
+		$post_states['give_failure_page'] = __( 'Donation Failed Page', 'give' );
 	}
 
 	// Checks if it's a History Page.
 	if ( $post->ID === absint( give_get_option( 'history_page' ) ) ) {
-		$post_states['give_history_page'] = __( 'Donation History Page', 'woocommerce' );
+		$post_states['give_history_page'] = __( 'Donation History Page', 'give' );
 	}
 
 	return $post_states;
 }
 
-// Add a post display state for special WC pages.
+// Add a post display state for special Give pages.
 add_filter( 'display_post_states', 'give_add_display_page_states', 10, 2 );
