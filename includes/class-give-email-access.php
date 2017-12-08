@@ -204,6 +204,12 @@ class Give_Email_Access {
 			'give_nl' => $verify_key,
 		), give_get_history_page_uri() );
 
+		if ( ! empty( $_GET['payment_key'] ) ) {
+			$access_url = add_query_arg( array(
+				'payment_key' => $_GET['payment_key'],
+			), $access_url );
+		}
+
 		// Nice subject and message.
 		$subject = apply_filters( 'give_email_access_token_subject', sprintf( __( 'Please confirm your email for %s', 'give' ), get_bloginfo( 'url' ) ) );
 
@@ -255,6 +261,8 @@ class Give_Email_Access {
 				}
 			}
 
+			// Set Receipt Access Session.
+			Give()->session->set( 'receipt_access', true );
 			$this->token_exists = true;
 			// Set cookie.
 			$lifetime = current_time( 'timestamp' ) + Give()->session->set_expiration_time();
