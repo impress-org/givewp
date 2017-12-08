@@ -48,9 +48,6 @@ Give()->notices->render_frontend_notices();
 
 ?>
 	<div class="give-form">
-		<?php if ( isset( $_GET['give_action'] ) && 'view_receipt' === $_GET['give_action'] ) { ?>
-			<h1><?php _e( 'Access Donation Receipt', 'give' ); ?></h1>
-		<?php } ?>
 		<form method="post" id="give-email-access-form">
 
 			<p><?php echo apply_filters( 'give_email_access_welcome_message', __( 'Please verify your email to access your donation history.', 'give' ) ); ?></p>
