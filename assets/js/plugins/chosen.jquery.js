@@ -1,8 +1,8 @@
 (function() {
-  var $, AbstractChosen, Chosen, SelectParser,
-    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-    hasProp = {}.hasOwnProperty;
+  var $, AbstractChosen, Chosen, SelectParser, _ref,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   SelectParser = (function() {
     function SelectParser() {
@@ -19,24 +19,24 @@
     };
 
     SelectParser.prototype.add_group = function(group) {
-      var group_position, i, len, option, ref, results1;
+      var group_position, option, _i, _len, _ref, _results;
       group_position = this.parsed.length;
       this.parsed.push({
         array_index: group_position,
         group: true,
-        label: group.label,
+        label: this.escapeExpression(group.label),
         title: group.title ? group.title : void 0,
         children: 0,
         disabled: group.disabled,
         classes: group.className
       });
-      ref = group.childNodes;
-      results1 = [];
-      for (i = 0, len = ref.length; i < len; i++) {
-        option = ref[i];
-        results1.push(this.add_option(option, group_position, group.disabled));
+      _ref = group.childNodes;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        option = _ref[_i];
+        _results.push(this.add_option(option, group_position, group.disabled));
       }
-      return results1;
+      return _results;
     };
 
     SelectParser.prototype.add_option = function(option, group_position, group_disabled) {
@@ -70,26 +70,47 @@
       }
     };
 
+    SelectParser.prototype.escapeExpression = function(text) {
+      var map, unsafe_chars;
+      if ((text == null) || text === false) {
+        return "";
+      }
+      if (!/[\&\<\>\"\'\`]/.test(text)) {
+        return text;
+      }
+      map = {
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#x27;",
+        "`": "&#x60;"
+      };
+      unsafe_chars = /&(?!\w+;)|[\<\>\"\'\`]/g;
+      return text.replace(unsafe_chars, function(chr) {
+        return map[chr] || "&amp;";
+      });
+    };
+
     return SelectParser;
 
   })();
 
   SelectParser.select_to_array = function(select) {
-    var child, i, len, parser, ref;
+    var child, parser, _i, _len, _ref;
     parser = new SelectParser();
-    ref = select.childNodes;
-    for (i = 0, len = ref.length; i < len; i++) {
-      child = ref[i];
+    _ref = select.childNodes;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      child = _ref[_i];
       parser.add_node(child);
     }
     return parser.parsed;
   };
 
   AbstractChosen = (function() {
-    function AbstractChosen(form_field, options1) {
+    function AbstractChosen(form_field, options) {
       this.form_field = form_field;
-      this.options = options1 != null ? options1 : {};
-      this.label_click_handler = bind(this.label_click_handler, this);
+      this.options = options != null ? options : {};
+      this.label_click_handler = __bind(this.label_click_handler, this);
       if (!AbstractChosen.browser_is_supported()) {
         return;
       }
@@ -103,16 +124,13 @@
     }
 
     AbstractChosen.prototype.set_default_values = function() {
-      this.click_test_action = (function(_this) {
-        return function(evt) {
-          return _this.test_active_click(evt);
-        };
-      })(this);
-      this.activate_action = (function(_this) {
-        return function(evt) {
-          return _this.activate_field(evt);
-        };
-      })(this);
+      var _this = this;
+      this.click_test_action = function(evt) {
+        return _this.test_active_click(evt);
+      };
+      this.activate_action = function(evt) {
+        return _this.activate_field(evt);
+      };
       this.active_field = false;
       this.mouse_on_container = false;
       this.results_showing = false;
@@ -164,13 +182,12 @@
     };
 
     AbstractChosen.prototype.input_focus = function(evt) {
+      var _this = this;
       if (this.is_multiple) {
         if (!this.active_field) {
-          return setTimeout(((function(_this) {
-            return function() {
-              return _this.container_mousedown();
-            };
-          })(this)), 50);
+          return setTimeout((function() {
+            return _this.container_mousedown();
+          }), 50);
         }
       } else {
         if (!this.active_field) {
@@ -180,13 +197,12 @@
     };
 
     AbstractChosen.prototype.input_blur = function(evt) {
+      var _this = this;
       if (!this.mouse_on_container) {
         this.active_field = false;
-        return setTimeout(((function(_this) {
-          return function() {
-            return _this.blur_test();
-          };
-        })(this)), 100);
+        return setTimeout((function() {
+          return _this.blur_test();
+        }), 100);
       }
     };
 
@@ -199,12 +215,12 @@
     };
 
     AbstractChosen.prototype.results_option_build = function(options) {
-      var content, data, data_content, i, len, ref, shown_results;
+      var content, data, data_content, shown_results, _i, _len, _ref;
       content = '';
       shown_results = 0;
-      ref = this.results_data;
-      for (i = 0, len = ref.length; i < len; i++) {
-        data = ref[i];
+      _ref = this.results_data;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        data = _ref[_i];
         data_content = '';
         if (data.group) {
           data_content = this.result_add_group(data);
@@ -257,7 +273,7 @@
       option_el.className = classes.join(" ");
       option_el.style.cssText = option.style;
       option_el.setAttribute("data-option-array-index", option.array_index);
-      option_el.innerHTML = option.highlighted_html || option.html;
+      option_el.innerHTML = option.search_text;
       if (option.title) {
         option_el.title = option.title;
       }
@@ -279,7 +295,7 @@
       }
       group_el = document.createElement("li");
       group_el.className = classes.join(" ");
-      group_el.innerHTML = group.highlighted_html || this.escape_html(group.label);
+      group_el.innerHTML = group.search_text;
       if (group.title) {
         group_el.title = group.title;
       }
@@ -299,18 +315,18 @@
     };
 
     AbstractChosen.prototype.reset_single_select_options = function() {
-      var i, len, ref, result, results1;
-      ref = this.results_data;
-      results1 = [];
-      for (i = 0, len = ref.length; i < len; i++) {
-        result = ref[i];
+      var result, _i, _len, _ref, _results;
+      _ref = this.results_data;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        result = _ref[_i];
         if (result.selected) {
-          results1.push(result.selected = false);
+          _results.push(result.selected = false);
         } else {
-          results1.push(void 0);
+          _results.push(void 0);
         }
       }
-      return results1;
+      return _results;
     };
 
     AbstractChosen.prototype.results_toggle = function() {
@@ -330,19 +346,18 @@
     };
 
     AbstractChosen.prototype.winnow_results = function() {
-      var escapedQuery, fix, i, len, option, prefix, query, ref, regex, results, results_group, search_match, startpos, suffix, text;
+      var escapedSearchText, highlightRegex, option, regex, results, results_group, searchText, startpos, text, _i, _len, _ref;
       this.no_results_clear();
       results = 0;
-      query = this.get_search_text();
-      escapedQuery = query.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-      regex = this.get_search_regex(escapedQuery);
-      ref = this.results_data;
-      for (i = 0, len = ref.length; i < len; i++) {
-        option = ref[i];
+      searchText = this.get_search_text();
+      escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+      regex = this.get_search_regex(escapedSearchText);
+      highlightRegex = this.get_highlight_regex(escapedSearchText);
+      _ref = this.results_data;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        option = _ref[_i];
         option.search_match = false;
         results_group = null;
-        search_match = null;
-        option.highlighted_html = '';
         if (this.include_option_in_results(option)) {
           if (option.group) {
             option.group_match = false;
@@ -355,20 +370,17 @@
             }
             results_group.active_options += 1;
           }
-          text = option.group ? option.label : option.text;
+          option.search_text = option.group ? option.label : option.html;
           if (!(option.group && !this.group_search)) {
-            search_match = this.search_string_match(text, regex);
-            option.search_match = search_match != null;
+            option.search_match = this.search_string_match(option.search_text, regex);
             if (option.search_match && !option.group) {
               results += 1;
             }
             if (option.search_match) {
-              if (query.length) {
-                startpos = search_match.index;
-                prefix = text.slice(0, startpos);
-                fix = text.slice(startpos, startpos + query.length);
-                suffix = text.slice(startpos + query.length);
-                option.highlighted_html = (this.escape_html(prefix)) + "<em>" + (this.escape_html(fix)) + "</em>" + (this.escape_html(suffix));
+              if (searchText.length) {
+                startpos = option.search_text.search(highlightRegex);
+                text = option.search_text.substr(0, startpos + searchText.length) + '</em>' + option.search_text.substr(startpos + searchText.length);
+                option.search_text = text.substr(0, startpos) + '<em>' + text.substr(startpos);
               }
               if (results_group != null) {
                 results_group.group_match = true;
@@ -380,9 +392,9 @@
         }
       }
       this.result_clear_highlight();
-      if (results < 1 && query.length) {
+      if (results < 1 && searchText.length) {
         this.update_results_content("");
-        return this.no_results(query);
+        return this.no_results(searchText);
       } else {
         this.update_results_content(this.results_option_build());
         return this.winnow_results_set_highlight();
@@ -390,33 +402,45 @@
     };
 
     AbstractChosen.prototype.get_search_regex = function(escaped_search_string) {
-      var regex_flag, regex_string;
-      regex_string = this.search_contains ? escaped_search_string : "(^|\\s|\\b)" + escaped_search_string + "[^\\s]*";
-      if (!(this.enable_split_word_search || this.search_contains)) {
-        regex_string = "^" + regex_string;
-      }
+      var regex_anchor, regex_flag;
+      regex_anchor = this.search_contains ? "" : "^";
       regex_flag = this.case_sensitive_search ? "" : "i";
-      return new RegExp(regex_string, regex_flag);
+      return new RegExp(regex_anchor + escaped_search_string, regex_flag);
+    };
+
+    AbstractChosen.prototype.get_highlight_regex = function(escaped_search_string) {
+      var regex_anchor, regex_flag;
+      regex_anchor = this.search_contains ? "" : "\\b";
+      regex_flag = this.case_sensitive_search ? "" : "i";
+      return new RegExp(regex_anchor + escaped_search_string, regex_flag);
     };
 
     AbstractChosen.prototype.search_string_match = function(search_string, regex) {
-      var match;
-      match = regex.exec(search_string);
-      if (!this.search_contains && (match != null ? match[1] : void 0)) {
-        match.index += 1;
+      var part, parts, _i, _len;
+      if (regex.test(search_string)) {
+        return true;
+      } else if (this.enable_split_word_search && (search_string.indexOf(" ") >= 0 || search_string.indexOf("[") === 0)) {
+        parts = search_string.replace(/\[|\]/g, "").split(" ");
+        if (parts.length) {
+          for (_i = 0, _len = parts.length; _i < _len; _i++) {
+            part = parts[_i];
+            if (regex.test(part)) {
+              return true;
+            }
+          }
+        }
       }
-      return match;
     };
 
     AbstractChosen.prototype.choices_count = function() {
-      var i, len, option, ref;
+      var option, _i, _len, _ref;
       if (this.selected_option_count != null) {
         return this.selected_option_count;
       }
       this.selected_option_count = 0;
-      ref = this.form_field.options;
-      for (i = 0, len = ref.length; i < len; i++) {
-        option = ref[i];
+      _ref = this.form_field.options;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        option = _ref[_i];
         if (option.selected) {
           this.selected_option_count += 1;
         }
@@ -433,8 +457,8 @@
     };
 
     AbstractChosen.prototype.keydown_checker = function(evt) {
-      var ref, stroke;
-      stroke = (ref = evt.which) != null ? ref : evt.keyCode;
+      var stroke, _ref;
+      stroke = (_ref = evt.which) != null ? _ref : evt.keyCode;
       this.search_field_scale();
       if (stroke !== 8 && this.pending_backstroke) {
         this.clear_backstroke();
@@ -476,8 +500,8 @@
     };
 
     AbstractChosen.prototype.keyup_checker = function(evt) {
-      var ref, stroke;
-      stroke = (ref = evt.which) != null ? ref : evt.keyCode;
+      var stroke, _ref;
+      stroke = (_ref = evt.which) != null ? _ref : evt.keyCode;
       this.search_field_scale();
       switch (stroke) {
         case 8:
@@ -514,21 +538,20 @@
     };
 
     AbstractChosen.prototype.clipboard_event_checker = function(evt) {
+      var _this = this;
       if (this.is_disabled) {
         return;
       }
-      return setTimeout(((function(_this) {
-        return function() {
-          return _this.results_search();
-        };
-      })(this)), 50);
+      return setTimeout((function() {
+        return _this.results_search();
+      }), 50);
     };
 
     AbstractChosen.prototype.container_width = function() {
       if (this.options.width != null) {
         return this.options.width;
       } else {
-        return this.form_field.offsetWidth + "px";
+        return "" + this.form_field.offsetWidth + "px";
       }
     };
 
@@ -580,7 +603,7 @@
     };
 
     AbstractChosen.prototype.get_no_results_html = function(terms) {
-      return "<li class=\"no-results\">\n  " + this.results_none_found + " <span>" + (this.escape_html(terms)) + "</span>\n</li>";
+      return "<li class=\"no-results\">\n  " + this.results_none_found + " <span>" + terms + "</span>\n</li>";
     };
 
     AbstractChosen.browser_is_supported = function() {
@@ -627,11 +650,12 @@
     }
   });
 
-  Chosen = (function(superClass) {
-    extend(Chosen, superClass);
+  Chosen = (function(_super) {
+    __extends(Chosen, _super);
 
     function Chosen() {
-      return Chosen.__super__.constructor.apply(this, arguments);
+      _ref = Chosen.__super__.constructor.apply(this, arguments);
+      return _ref;
     }
 
     Chosen.prototype.setup = function() {
@@ -688,138 +712,91 @@
     };
 
     Chosen.prototype.register_observers = function() {
-      this.container.on('touchstart.chosen', (function(_this) {
-        return function(evt) {
-          _this.container_mousedown(evt);
-        };
-      })(this));
-      this.container.on('touchend.chosen', (function(_this) {
-        return function(evt) {
-          _this.container_mouseup(evt);
-        };
-      })(this));
-      this.container.on('mousedown.chosen', (function(_this) {
-        return function(evt) {
-          _this.container_mousedown(evt);
-        };
-      })(this));
-      this.container.on('mouseup.chosen', (function(_this) {
-        return function(evt) {
-          _this.container_mouseup(evt);
-        };
-      })(this));
-      this.container.on('mouseenter.chosen', (function(_this) {
-        return function(evt) {
-          _this.mouse_enter(evt);
-        };
-      })(this));
-      this.container.on('mouseleave.chosen', (function(_this) {
-        return function(evt) {
-          _this.mouse_leave(evt);
-        };
-      })(this));
-      this.search_results.on('mouseup.chosen', (function(_this) {
-        return function(evt) {
-          _this.search_results_mouseup(evt);
-        };
-      })(this));
-      this.search_results.on('mouseover.chosen', (function(_this) {
-        return function(evt) {
-          _this.search_results_mouseover(evt);
-        };
-      })(this));
-      this.search_results.on('mouseout.chosen', (function(_this) {
-        return function(evt) {
-          _this.search_results_mouseout(evt);
-        };
-      })(this));
-      this.search_results.on('mousewheel.chosen DOMMouseScroll.chosen', (function(_this) {
-        return function(evt) {
-          _this.search_results_mousewheel(evt);
-        };
-      })(this));
-      this.search_results.on('touchstart.chosen', (function(_this) {
-        return function(evt) {
-          _this.search_results_touchstart(evt);
-        };
-      })(this));
-      this.search_results.on('touchmove.chosen', (function(_this) {
-        return function(evt) {
-          _this.search_results_touchmove(evt);
-        };
-      })(this));
-      this.search_results.on('touchend.chosen', (function(_this) {
-        return function(evt) {
-          _this.search_results_touchend(evt);
-        };
-      })(this));
-      this.form_field_jq.on("chosen:updated.chosen", (function(_this) {
-        return function(evt) {
-          _this.results_update_field(evt);
-        };
-      })(this));
-      this.form_field_jq.on("chosen:activate.chosen", (function(_this) {
-        return function(evt) {
-          _this.activate_field(evt);
-        };
-      })(this));
-      this.form_field_jq.on("chosen:open.chosen", (function(_this) {
-        return function(evt) {
-          _this.container_mousedown(evt);
-        };
-      })(this));
-      this.form_field_jq.on("chosen:close.chosen", (function(_this) {
-        return function(evt) {
-          _this.close_field(evt);
-        };
-      })(this));
-      this.search_field.on('blur.chosen', (function(_this) {
-        return function(evt) {
-          _this.input_blur(evt);
-        };
-      })(this));
-      this.search_field.on('keyup.chosen', (function(_this) {
-        return function(evt) {
-          _this.keyup_checker(evt);
-        };
-      })(this));
-      this.search_field.on('keydown.chosen', (function(_this) {
-        return function(evt) {
-          _this.keydown_checker(evt);
-        };
-      })(this));
-      this.search_field.on('focus.chosen', (function(_this) {
-        return function(evt) {
-          _this.input_focus(evt);
-        };
-      })(this));
-      this.search_field.on('cut.chosen', (function(_this) {
-        return function(evt) {
-          _this.clipboard_event_checker(evt);
-        };
-      })(this));
-      this.search_field.on('paste.chosen', (function(_this) {
-        return function(evt) {
-          _this.clipboard_event_checker(evt);
-        };
-      })(this));
+      var _this = this;
+      this.container.bind('touchstart.chosen', function(evt) {
+        _this.container_mousedown(evt);
+      });
+      this.container.bind('touchend.chosen', function(evt) {
+        _this.container_mouseup(evt);
+      });
+      this.container.bind('mousedown.chosen', function(evt) {
+        _this.container_mousedown(evt);
+      });
+      this.container.bind('mouseup.chosen', function(evt) {
+        _this.container_mouseup(evt);
+      });
+      this.container.bind('mouseenter.chosen', function(evt) {
+        _this.mouse_enter(evt);
+      });
+      this.container.bind('mouseleave.chosen', function(evt) {
+        _this.mouse_leave(evt);
+      });
+      this.search_results.bind('mouseup.chosen', function(evt) {
+        _this.search_results_mouseup(evt);
+      });
+      this.search_results.bind('mouseover.chosen', function(evt) {
+        _this.search_results_mouseover(evt);
+      });
+      this.search_results.bind('mouseout.chosen', function(evt) {
+        _this.search_results_mouseout(evt);
+      });
+      this.search_results.bind('mousewheel.chosen DOMMouseScroll.chosen', function(evt) {
+        _this.search_results_mousewheel(evt);
+      });
+      this.search_results.bind('touchstart.chosen', function(evt) {
+        _this.search_results_touchstart(evt);
+      });
+      this.search_results.bind('touchmove.chosen', function(evt) {
+        _this.search_results_touchmove(evt);
+      });
+      this.search_results.bind('touchend.chosen', function(evt) {
+        _this.search_results_touchend(evt);
+      });
+      this.form_field_jq.bind("chosen:updated.chosen", function(evt) {
+        _this.results_update_field(evt);
+      });
+      this.form_field_jq.bind("chosen:activate.chosen", function(evt) {
+        _this.activate_field(evt);
+      });
+      this.form_field_jq.bind("chosen:open.chosen", function(evt) {
+        _this.container_mousedown(evt);
+      });
+      this.form_field_jq.bind("chosen:close.chosen", function(evt) {
+        _this.close_field(evt);
+      });
+      this.search_field.bind('blur.chosen', function(evt) {
+        _this.input_blur(evt);
+      });
+      this.search_field.bind('keyup.chosen', function(evt) {
+        _this.keyup_checker(evt);
+      });
+      this.search_field.bind('keydown.chosen', function(evt) {
+        _this.keydown_checker(evt);
+      });
+      this.search_field.bind('focus.chosen', function(evt) {
+        _this.input_focus(evt);
+      });
+      this.search_field.bind('cut.chosen', function(evt) {
+        _this.clipboard_event_checker(evt);
+      });
+      this.search_field.bind('paste.chosen', function(evt) {
+        _this.clipboard_event_checker(evt);
+      });
       if (this.is_multiple) {
-        return this.search_choices.on('click.chosen', (function(_this) {
-          return function(evt) {
-            _this.choices_click(evt);
-          };
-        })(this));
+        return this.search_choices.bind('click.chosen', function(evt) {
+          _this.choices_click(evt);
+        });
       } else {
-        return this.container.on('click.chosen', function(evt) {
+        return this.container.bind('click.chosen', function(evt) {
           evt.preventDefault();
         });
       }
     };
 
     Chosen.prototype.destroy = function() {
-      $(this.container[0].ownerDocument).off('click.chosen', this.click_test_action);
+      $(this.container[0].ownerDocument).unbind('click.chosen', this.click_test_action);
       if (this.form_field_label.length > 0) {
-        this.form_field_label.off('click.chosen');
+        this.form_field_label.unbind('click.chosen');
       }
       if (this.search_field[0].tabIndex) {
         this.form_field_jq[0].tabIndex = this.search_field[0].tabIndex;
@@ -834,21 +811,21 @@
       this.container.toggleClass('chosen-disabled', this.is_disabled);
       this.search_field[0].disabled = this.is_disabled;
       if (!this.is_multiple) {
-        this.selected_item.off('focus.chosen', this.activate_field);
+        this.selected_item.unbind('focus.chosen', this.activate_field);
       }
       if (this.is_disabled) {
         return this.close_field();
       } else if (!this.is_multiple) {
-        return this.selected_item.on('focus.chosen', this.activate_field);
+        return this.selected_item.bind('focus.chosen', this.activate_field);
       }
     };
 
     Chosen.prototype.container_mousedown = function(evt) {
-      var ref;
+      var _ref1;
       if (this.is_disabled) {
         return;
       }
-      if (evt && ((ref = evt.type) === 'mousedown' || ref === 'touchstart') && !this.results_showing) {
+      if (evt && ((_ref1 = evt.type) === 'mousedown' || _ref1 === 'touchstart') && !this.results_showing) {
         evt.preventDefault();
       }
       if (!((evt != null) && ($(evt.target)).hasClass("search-choice-close"))) {
@@ -856,7 +833,7 @@
           if (this.is_multiple) {
             this.search_field.val("");
           }
-          $(this.container[0].ownerDocument).on('click.chosen', this.click_test_action);
+          $(this.container[0].ownerDocument).bind('click.chosen', this.click_test_action);
           this.results_show();
         } else if (!this.is_multiple && evt && (($(evt.target)[0] === this.selected_item[0]) || $(evt.target).parents("a.chosen-single").length)) {
           evt.preventDefault();
@@ -893,7 +870,7 @@
     };
 
     Chosen.prototype.close_field = function() {
-      $(this.container[0].ownerDocument).off("click.chosen", this.click_test_action);
+      $(this.container[0].ownerDocument).unbind("click.chosen", this.click_test_action);
       this.active_field = false;
       this.results_hide();
       this.container.removeClass("chosen-container-active");
@@ -1021,7 +998,7 @@
         this.form_field_label = $("label[for='" + this.form_field.id + "']");
       }
       if (this.form_field_label.length > 0) {
-        return this.form_field_label.on('click.chosen', this.label_click_handler);
+        return this.form_field_label.bind('click.chosen', this.label_click_handler);
       }
     };
 
@@ -1054,13 +1031,14 @@
     };
 
     Chosen.prototype.search_results_mouseout = function(evt) {
-      if ($(evt.target).hasClass("active-result") || $(evt.target).parents('.active-result').first()) {
+      if ($(evt.target).hasClass("active-result" || $(evt.target).parents('.active-result').first())) {
         return this.result_clear_highlight();
       }
     };
 
     Chosen.prototype.choice_build = function(item) {
-      var choice, close_link;
+      var choice, close_link,
+        _this = this;
       choice = $('<li />', {
         "class": "search-choice"
       }).html("<span>" + (this.choice_label(item)) + "</span>");
@@ -1071,11 +1049,9 @@
           "class": 'search-choice-close',
           'data-option-array-index': item.array_index
         });
-        close_link.on('click.chosen', (function(_this) {
-          return function(evt) {
-            return _this.choice_destroy_link_click(evt);
-          };
-        })(this));
+        close_link.bind('click.chosen', function(evt) {
+          return _this.choice_destroy_link_click(evt);
+        });
         choice.append(close_link);
       }
       return this.search_container.before(choice);
@@ -1142,15 +1118,12 @@
         item.selected = true;
         this.form_field.options[item.options_index].selected = true;
         this.selected_option_count = null;
-        this.search_field.val("");
         if (this.is_multiple) {
           this.choice_build(item);
         } else {
           this.single_set_selected_text(this.choice_label(item));
         }
-        if (this.is_multiple && (!this.hide_results_on_select || (evt.metaKey || evt.ctrlKey))) {
-          this.winnow_results();
-        } else {
+        if (!(this.is_multiple && (!this.hide_results_on_select || (evt.metaKey || evt.ctrlKey)))) {
           this.results_hide();
           this.show_search_field_default();
         }
@@ -1214,7 +1187,7 @@
     };
 
     Chosen.prototype.get_search_text = function() {
-      return $.trim(this.get_search_field_value());
+      return this.escape_html($.trim(this.get_search_field_value()));
     };
 
     Chosen.prototype.escape_html = function(text) {
@@ -1298,7 +1271,7 @@
     };
 
     Chosen.prototype.search_field_scale = function() {
-      var div, i, len, style, style_block, styles, width;
+      var container_width, div, style, style_block, styles, width, _i, _len;
       if (!this.is_multiple) {
         return;
       }
@@ -1310,8 +1283,8 @@
         whiteSpace: 'pre'
       };
       styles = ['fontSize', 'fontStyle', 'fontWeight', 'fontFamily', 'lineHeight', 'textTransform', 'letterSpacing'];
-      for (i = 0, len = styles.length; i < len; i++) {
-        style = styles[i];
+      for (_i = 0, _len = styles.length; _i < _len; _i++) {
+        style = styles[_i];
         style_block[style] = this.search_field.css(style);
       }
       div = $('<div />').css(style_block);
@@ -1319,9 +1292,8 @@
       $('body').append(div);
       width = div.width() + 25;
       div.remove();
-      if (this.container.is(':visible')) {
-        width = Math.min(this.container.outerWidth() - 10, width);
-      }
+      container_width = this.container.outerWidth();
+      width = Math.min(container_width - 10, width);
       return this.search_field.width(width);
     };
 
