@@ -2,9 +2,15 @@
 /**
  * This template is used to display the login form with [give_login]
  */
+
+global $give_logout_redirect;
+
 if ( ! is_user_logged_in() ) {
 
-	global $give_login_redirect, $give_logout_redirect;
+	$give_login_redirect = give_get_history_page_uri();
+	if ( ! empty( $_GET['payment_key'] ) ) {
+		$give_login_redirect = add_query_arg( 'payment_key', $_GET['payment_key'] , give_get_history_page_uri() );
+	}
 
 	// Show any error messages after form submission
 	Give()->notices->render_frontend_notices( 0 ); ?>
