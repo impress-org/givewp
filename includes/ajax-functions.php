@@ -37,7 +37,7 @@ function give_test_ajax_works() {
 			}
 		} else {
 
-			if ( 'on' === $airplane->check_status()  ) {
+			if ( 'on' === $airplane->check_status() ) {
 				return true;
 			}
 		}
@@ -192,8 +192,8 @@ add_action( 'wp_ajax_nopriv_give_get_form_title', 'give_ajax_get_form_title' );
  * @return void
  */
 function give_ajax_get_states_field() {
-	$states_found = false;
-	$show_field = true;
+	$states_found   = false;
+	$show_field     = true;
 	$states_require = true;
 	// Get the Country code from the $_POST.
 	$country = sanitize_text_field( $_POST['country'] );
@@ -201,7 +201,7 @@ function give_ajax_get_states_field() {
 	// Get the field name from the $_POST.
 	$field_name = sanitize_text_field( $_POST['field_name'] );
 
-	$label = __( 'State', 'give' );
+	$label        = __( 'State', 'give' );
 	$states_label = give_get_states_label();
 
 	$default_state = '';
@@ -220,7 +220,7 @@ function give_ajax_get_states_field() {
 
 	$states = give_get_states( $country );
 	if ( ! empty( $states ) ) {
-		$args = array(
+		$args         = array(
 			'name'             => $field_name,
 			'id'               => $field_name,
 			'class'            => $field_name . '  give-select',
@@ -230,7 +230,7 @@ function give_ajax_get_states_field() {
 			'placeholder'      => $label,
 			'selected'         => $default_state,
 		);
-		$data = Give()->html->select( $args );
+		$data         = Give()->html->select( $args );
 		$states_found = true;
 	} else {
 		$data = 'nostates';
@@ -262,6 +262,7 @@ function give_ajax_get_states_field() {
 	);
 	wp_send_json( $response );
 }
+
 add_action( 'wp_ajax_give_get_states', 'give_ajax_get_states_field' );
 add_action( 'wp_ajax_nopriv_give_get_states', 'give_ajax_get_states_field' );
 
@@ -366,7 +367,7 @@ function give_ajax_search_users() {
 
 	if ( current_user_can( 'manage_give_settings' ) ) {
 
-		$search   = esc_sql( sanitize_text_field( $_GET['s'] ) );
+		$search = esc_sql( sanitize_text_field( $_GET['s'] ) );
 
 		$get_users_args = array(
 			'number' => 9999,
@@ -562,7 +563,7 @@ function give_confirm_email_for_donation_access() {
 		$return['message'] = Give()->notices->print_frontend_notice(
 			sprintf(
 				__( 'Too many access email requests detected. Please wait %s before requesting a new donation history access link.', 'give' ),
-				sprintf( _n( '%s minute', '%s minutes', $value, 'give' ), $value
+				sprintf( _n( '%s minute', '%s minutes', $value, 'give' ), $value )
 			),
 			false,
 			'error'
