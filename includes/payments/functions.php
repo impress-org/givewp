@@ -1189,14 +1189,20 @@ function give_remove_payment_prefix_postfix( $number ) {
  *
  * @param int|Give_Payment $donation    Donation ID or Donation Object.
  * @param bool|array       $format_args Currency Formatting Arguments.
- * @param string           $type        Currency Formatting Arguments.
+ * @param string           $type        Define context of donation amount, by default keep $type as blank.
+ *                                      Pass as 'stats' to calculate donation report on basis of base amount
+ *                                      for the Currency-Switcher Add-on.
+ *                                      For Eg. In Currency-Switcher add on when donation has been made through
+ *                                      different currency other than base currency, in that case for correct
+ *                                      report calculation based on base currency we will need to return donation
+ *                                      base amount and not the converted amount.
  *
  * @since 1.0
  * @since 1.8.17 Added filter and internally use functions.
  *
  * @return string $amount Fully formatted donation amount.
  */
-function give_donation_amount( $donation, $format_args = false, $type = 'donation' ) {
+function give_donation_amount( $donation, $format_args = false, $type = '' ) {
 	/* @var Give_Payment $donation */
 	if ( ! ( $donation instanceof Give_Payment ) ) {
 		$donation = new Give_Payment( absint( $donation ) );
