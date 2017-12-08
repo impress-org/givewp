@@ -24,7 +24,7 @@ if ( is_user_logged_in() ) {
 	if( $donations_count > give_get_limit_display_donations() ) {
 
 		// Restrict Security Email Access option, if donation count of a donor is less than or equal to limit.
-		if( true !== Give_Cache::get( 'give_cache_email_throttle_limit_exhausted' ) ) {
+		if( true !== Give_Cache::get( 'give_cache_email_throttle_limit_exhausted_' . $donor->id ) ) {
 			add_action( 'give_donation_history_table_end', 'give_donation_history_table_end' );
 		} else {
 			$value = Give()->email_access->verify_throttle / 60;

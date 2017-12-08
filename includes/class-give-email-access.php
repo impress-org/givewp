@@ -168,12 +168,12 @@ class Give_Email_Access {
 
 			if (
 				$email_throttle_count < $this->limit_throttle &&
-				true !== Give_Cache::get( 'give_cache_email_throttle_limit_exhausted' )
+				true !== Give_Cache::get( 'give_cache_email_throttle_limit_exhausted_' . $donor_id )
 			) {
 				give_update_meta( $donor_id, '_give_email_throttle_count', $email_throttle_count + 1 );
 			} else {
 				give_update_meta( $donor_id, '_give_email_throttle_count', 0 );
-				Give_Cache::set( 'give_cache_email_throttle_limit_exhausted', true, $this->verify_throttle );
+				Give_Cache::set( 'give_cache_email_throttle_limit_exhausted_' . $donor_id, true, $this->verify_throttle );
 				return false;
 			}
 
