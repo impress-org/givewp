@@ -363,7 +363,7 @@ function give_email_access_login() {
 		Give()->email_access->init();
 
 		// Verify that donor object is present and donor is connected with its user profile or not.
-		if ( ! $access_token && is_object( $donor ) ) {
+		if ( $access_token && is_object( $donor ) ) {
 
 			// Verify that email can be sent.
 			if ( ! Give()->email_access->can_send_email( $donor->id ) ) {
