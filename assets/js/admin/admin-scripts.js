@@ -991,6 +991,7 @@ var give_setting_edit = false;
 						// Reset the form for preventing multiple ajax request.
 						$( '#give-tools-recount-form' )[ 0 ].reset();
 						$( '#give-tools-recount-form .tools-form-dropdown' ).hide();
+						$( '#give-tools-recount-form .tools-form-dropdown-recount-form-select' ).val('0').trigger('chosen:updated');
 					}
 				}
 			}).fail(function (response) {
