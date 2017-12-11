@@ -411,16 +411,15 @@ class Give_Email_Access {
 	public function create_columns() {
 
 		global $wpdb;
-		$donor_table_name = "{$wpdb->prefix}give_customers";
 
-		$is_token_exists           = Give()->donors->is_column_exists( $donor_table_name, 'token' );
-		$is_verify_key_exists      = Give()->donors->is_column_exists( $donor_table_name, 'token' );
-		$is_verify_throttle_exists = Give()->donors->is_column_exists( $donor_table_name, 'token' );
+		$is_token_exists           = Give()->donors->is_column_exists( 'token' );
+		$is_verify_key_exists      = Give()->donors->is_column_exists( 'verify_key' );
+		$is_verify_throttle_exists = Give()->donors->is_column_exists( 'verify_throttle' );
 
 		if ( ! $is_token_exists && ! $is_verify_key_exists && ! $is_verify_throttle_exists ) {
 
 			// Create columns in customers table.
-			$query = $wpdb->query( "ALTER TABLE {$donor_table_name} ADD `token` VARCHAR(255) CHARACTER SET utf8 NOT NULL, ADD `verify_key` VARCHAR(255) CHARACTER SET utf8 NOT NULL AFTER `token`, ADD `verify_throttle` DATETIME NOT NULL AFTER `verify_key`" );
+			$query = $wpdb->query( "ALTER TABLE {$wpdb->prefix}give_customers ADD `token` VARCHAR(255) CHARACTER SET utf8 NOT NULL, ADD `verify_key` VARCHAR(255) CHARACTER SET utf8 NOT NULL AFTER `token`, ADD `verify_throttle` DATETIME NOT NULL AFTER `verify_key`" );
 
 			// Columns added properly.
 			if ( $query ) {
