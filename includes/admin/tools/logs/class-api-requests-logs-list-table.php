@@ -113,7 +113,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	public function column_default( $item, $column_name ) {
 		switch ( $column_name ) {
 			default:
-				return $item[ $column_name ];
+				return esc_attr( $item[ $column_name ] );
 		}
 	}
 
