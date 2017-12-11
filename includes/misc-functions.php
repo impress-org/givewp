@@ -173,9 +173,10 @@ function give_get_ip() {
 	if( false !== strpos( $ip, ',' ) ) {
 		$ip = give_clean( explode( ',', $ip ) );
 		$ip = array_filter( $ip );
+		$ip = implode( ',', $ip );
 	}
 
-	return implode( ', ', $ip );
+	return $ip;
 }
 
 
