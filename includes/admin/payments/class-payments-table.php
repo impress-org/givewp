@@ -447,7 +447,8 @@ class Give_Payment_History_Table extends WP_List_Table {
 							'sanitize'    => false,
 							'donation_id' => $payment->ID,
 						)
-					), give_get_payment_currency_code( $payment->ID )
+					),
+					array( 'currency_code' => give_get_payment_currency_code( $payment->ID ) )
 				);
 				$value .= sprintf( '<br><small>%1$s %2$s</small>', __( 'via', 'give' ), give_get_gateway_admin_label( $payment->gateway ) );
 				break;

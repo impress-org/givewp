@@ -1408,7 +1408,7 @@ function give_donation_amount( $donation, $format_args = false ) {
 function give_payment_subtotal( $payment_id = 0 ) {
 	$subtotal = give_get_payment_subtotal( $payment_id );
 
-	return give_currency_filter( give_format_amount( $subtotal, array( 'sanitize' => false ) ), give_get_payment_currency_code( $payment_id ) );
+	return give_currency_filter( give_format_amount( $subtotal, array( 'sanitize' => false ) ), array( 'currency_code' => give_get_payment_currency_code( $payment_id ) ) );
 }
 
 /**
