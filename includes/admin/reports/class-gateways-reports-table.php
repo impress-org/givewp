@@ -213,7 +213,7 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 
 		/**
 		 * Filter to modify $gateways that are being to display in Report section.
-         * Payment Gateways list in Report section
+		 * Payment Gateways list in Report section
 		 *
 		 * @since 1.8.18
 		 *
