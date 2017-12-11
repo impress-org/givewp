@@ -1373,7 +1373,10 @@ function give_donation_amount( $donation, $format_args = false ) {
 	}
 
 	if ( $format_args['currency'] ) {
-		$formatted_amount = give_currency_filter( $formatted_amount, $donation->currency );
+		$formatted_amount = give_currency_filter(
+			$formatted_amount,
+			array( 'currency_code' => $donation->currency )
+		);
 	}
 
 	/**
