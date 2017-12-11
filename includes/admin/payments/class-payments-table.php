@@ -426,6 +426,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 		$single_donation_url = esc_url( add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details' ) ) );
 		$row_actions         = $this->get_row_actions( $payment );
+		$value = '';
 
 		switch ( $column_name ) {
 			case 'donation':

@@ -69,11 +69,21 @@ class Give_Email_Access {
 	 * Verify throttle
 	 *
 	 * @since  1.0
-	 * @access private
+	 * @access public
 	 *
 	 * @var
 	 */
-	private $verify_throttle;
+	public $verify_throttle;
+
+	/**
+	 * Limit throttle
+	 *
+	 * @since  1.8.17
+	 * @access public
+	 *
+	 * @var
+	 */
+	public $limit_throttle;
 
 	/**
 	 * Verify expiration
@@ -111,18 +121,8 @@ class Give_Email_Access {
 	 */
 	public function init() {
 
-		/**
-		 * Do NOT pass go if:
-		 *
-		 * a. User is logged in
-		 * b. Email access setting is not enabled
-		 * c. You're in the admin
-		 */
-		if (
-			is_user_logged_in()
-			|| ! give_is_setting_enabled( give_get_option( 'email_access' ) )
-			|| is_admin()
-		) {
+		// Bail Out, if user is logged in.
+		if ( is_user_logged_in() ) {
 			return;
 		}
 
@@ -134,6 +134,7 @@ class Give_Email_Access {
 
 		// Timeouts.
 		$this->verify_throttle  = apply_filters( 'give_nl_verify_throttle', 300 );
+		$this->limit_throttle   = apply_filters( 'give_nl_limit_throttle', 3 );
 		$this->token_expiration = apply_filters( 'give_nl_token_expiration', 7200 );
 
 		// Setup login.
@@ -150,35 +151,33 @@ class Give_Email_Access {
 	/**
 	 * Prevent email spamming.
 	 *
+	 * @param int $donor_id Donor ID.
+	 *
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  $customer_id string Customer id.
-	 *
 	 * @return bool
 	 */
-	public function can_send_email( $customer_id ) {
-		/* @var WPDB $wpdb */
-		global $wpdb;
+	public function can_send_email( $donor_id ) {
 
-		// Prevent multiple emails within X minutes
-		$throttle = date( 'Y-m-d H:i:s', time() - $this->verify_throttle );
+		$donor = Give()->donors->get_donor_by( 'id', $donor_id );
 
-		// Does a user row exist?
-		$exists = (int) $wpdb->get_var(
-			$wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}give_customers WHERE id = %d", $customer_id )
-		);
+		if ( is_object( $donor ) && count( $donor ) > 0 ) {
 
-		if ( 0 < $exists ) {
-			$row_id = (int) $wpdb->get_var(
-				$wpdb->prepare( "SELECT id FROM {$wpdb->prefix}give_customers WHERE id = %d AND (verify_throttle < %s OR verify_key = '') LIMIT 1", $customer_id, $throttle )
-			);
+			$email_throttle_count = (int) give_get_meta( $donor_id, '_give_email_throttle_count', true );
 
-			if ( $row_id < 1 ) {
-				give_set_error( 'give_email_access_attempts_exhausted', __( 'Please wait a few minutes before requesting a new email access link.', 'give' ) );
-
+			$cache_key = "give_cache_email_throttle_limit_exhausted_{$donor_id}";
+			if (
+				$email_throttle_count < $this->limit_throttle &&
+				true !== Give_Cache::get( $cache_key )
+			) {
+				give_update_meta( $donor_id, '_give_email_throttle_count', $email_throttle_count + 1 );
+			} else {
+				give_update_meta( $donor_id, '_give_email_throttle_count', 0 );
+				Give_Cache::set( $cache_key, true, $this->verify_throttle );
 				return false;
 			}
+
 		}
 
 		return true;
@@ -193,7 +192,7 @@ class Give_Email_Access {
 	 * @param  $customer_id string Customer id.
 	 * @param  $email       string Customer email.
 	 *
-	 * @return void
+	 * @return bool
 	 */
 	public function send_email( $customer_id, $email ) {
 
@@ -202,18 +201,29 @@ class Give_Email_Access {
 		// Generate a new verify key
 		$this->set_verify_key( $customer_id, $email, $verify_key );
 
-		// Get the donation history page
-		$page_id = give_get_option( 'history_page' );
-
 		$access_url = add_query_arg( array(
 			'give_nl' => $verify_key,
-		), get_permalink( $page_id ) );
+		), give_get_history_page_uri() );
+
+		if ( ! empty( $_GET['payment_key'] ) ) {
+			$access_url = add_query_arg( array(
+				'payment_key' => give_clean( $_GET['payment_key'] ),
+			), $access_url );
+		}
 
 		// Nice subject and message.
-		$subject = apply_filters( 'give_email_access_token_subject', sprintf( __( 'Your Access Link to %s', 'give' ), get_bloginfo( 'name' ) ) );
+		$subject = apply_filters( 'give_email_access_token_subject', sprintf( __( 'Please confirm your email for %s', 'give' ), get_bloginfo( 'url' ) ) );
 
-		$message = __( 'You or someone in your organization requested an access link be sent to this email address. This is a temporary access link for you to view your donation information. Click on the link below to view:', 'give' ) . "\n\n";
-		$message .= '<a href="' . esc_url( $access_url ) . '" target="_blank">' . __( 'Access Donation Details &raquo;', 'give' ) . '</a>' . "\n\n";
+		$message = sprintf(
+			__( 'Please click the link to access your donation history on <a target="_blank" href="%1$s">%1$s</a>. If you did not request this email, please contact <a href="mailto:%2$s">%2$s</a>.', 'give' ),
+			get_bloginfo( 'url' ),
+			get_bloginfo( 'admin_email' )
+		) . "\n\n";
+		$message .= sprintf(
+			__( '<a href="%s" target="_blank">%s</a>', 'give' ),
+			esc_url( $access_url ),
+			__( 'View your donation history &raquo;', 'give' )
+		) . "\n\n";
 		$message .= "\n\n";
 		$message .= __( 'Sincerely,', 'give' ) . "\n";
 		$message .= get_bloginfo( 'name' ) . "\n";
@@ -221,8 +231,8 @@ class Give_Email_Access {
 		$message = apply_filters( 'give_email_access_token_message', $message );
 
 		// Send the email.
-		Give()->emails->__set( 'heading', apply_filters( 'give_email_access_token_heading', __( 'Your Access Link', 'give' ) ) );
-		Give()->emails->send( $email, $subject, $message );
+		Give()->emails->__set( 'heading', apply_filters( 'give_email_access_token_heading', __( 'Confirm Email', 'give' ) ) );
+		return Give()->emails->send( $email, $subject, $message );
 
 	}
 
@@ -248,10 +258,12 @@ class Give_Email_Access {
 
 			if ( ! $this->is_valid_token( $token ) ) {
 				if ( ! $this->is_valid_verify_key( $token ) ) {
-					return;
+					return false;
 				}
 			}
 
+			// Set Receipt Access Session.
+			Give()->session->set( 'receipt_access', true );
 			$this->token_exists = true;
 			// Set cookie.
 			$lifetime = current_time( 'timestamp' ) + Give()->session->set_expiration_time();
@@ -279,7 +291,7 @@ class Give_Email_Access {
 		$expires = date( 'Y-m-d H:i:s', time() - $this->token_expiration );
 
 		$email = $wpdb->get_var(
-			$wpdb->prepare( "SELECT email FROM {$wpdb->prefix}give_customers WHERE token = %s AND verify_throttle >= %s LIMIT 1", $token, $expires )
+			$wpdb->prepare( "SELECT email FROM {$wpdb->prefix}give_customers WHERE verify_key = %s AND verify_throttle >= %s LIMIT 1", $token, $expires )
 		);
 
 		if ( ! empty( $email ) ) {
@@ -288,7 +300,7 @@ class Give_Email_Access {
 			return true;
 		}
 
-		// Set error only if email access form isn't being submitted
+		// Set error only if email access form isn't being submitted.
 		if ( ! isset( $_POST['give_email'] ) && ! isset( $_POST['_wpnonce'] ) ) {
 			give_set_error( 'give_email_token_expired', apply_filters( 'give_email_token_expired_message', __( 'Your access token has expired. Please request a new one below:', 'give' ) ) );
 		}

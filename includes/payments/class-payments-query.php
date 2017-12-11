@@ -88,10 +88,6 @@ class Give_Payments_Query extends Give_Stats {
 			'fields'          => null,
 			'gateway'         => null,
 			'give_forms'      => null,
-
-			// Currently these params only works with get_payment_by_group
-			'group_by'        => '',
-			'count'           => false,
 		);
 
 		$this->args = $this->_args = wp_parse_args( $args, $defaults );
@@ -245,88 +241,6 @@ class Give_Payments_Query extends Give_Stats {
 		return $this->payments;
 	}
 
-
-	/**
-	 * Get payments by group
-	 *
-	 * @since  1.8.17
-	 * @access public
-	 *
-	 * @return array
-	 */
-	public function get_payment_by_group() {
-		global $wpdb;
-
-		$allowed_groups = array( 'post_status' );
-		$result         = array();
-
-
-		if ( in_array( $this->args['group_by'], $allowed_groups ) ) {
-			// Set only count in result.
-			if ( $this->args['count'] ) {
-				$statuses     = get_post_stati();
-				$status_query = '';
-
-				$counter = 0;
-				foreach ( $statuses as $status ) {
-					$prefix       = $counter ? " OR " : '';
-					$status_query .= "{$prefix}{$wpdb->posts}.post_status=\"{$status}\"";
-					$counter ++;
-				}
-
-				$new_results = $wpdb->get_results(
-					"
-					SELECT {$wpdb->posts}.post_status, COUNT({$wpdb->posts}.ID)
-					FROM {$wpdb->posts}
-					WHERE 1=1 
-					AND {$wpdb->posts}.post_parent = 0 
-					AND {$wpdb->posts}.post_type = 'give_payment'
-					AND (($status_query))
-					GROUP BY {$wpdb->posts}.{$this->args['group_by']}
-					ORDER BY {$wpdb->posts}.ID
-					DESC
-					"
-					, ARRAY_N );
-
-				foreach ( $new_results as $results ) {
-					$result[ $results[0] ] = $results[1];
-				}
-
-				switch ( $this->args['group_by'] ) {
-					case 'post_status':
-
-						if ( isset( $statuses['private'] ) && empty( $args['s'] ) ) {
-							unset( $statuses['private'] );
-						}
-
-						/* @var Give_Payment $donation */
-						foreach ( $statuses as $status => $status_label ) {
-							if ( ! isset( $result[ $status ] ) ) {
-								$result[ $status ] = 0;
-							}
-						}
-
-						break;
-				}
-			} else {
-				$donations = $this->get_payments();
-
-				/* @var $donation Give_Payment */
-				foreach ( $donations as $donation ) {
-					$result[ $donation->{$this->args['group_by']} ][] = $donation;
-				}
-			}
-		}
-
-
-		/**
-		 * Filter the result
-		 *
-		 * @since 1.8.17
-		 */
-		return apply_filters( 'give_get_payment_by_group', $result, $this );
-	}
-
 	/**
 	 * If querying a specific date, add the proper filters.
 	 *
@@ -473,23 +387,26 @@ class Give_Payments_Query extends Give_Stats {
 	 * @since  1.8
 	 * @access public
 	 *
-	 * @param string   $order
+	 * @param string $order
 	 * @param WP_Query $query
 	 *
 	 * @return mixed
 	 */
 	public function custom_orderby( $order, $query ) {
-		global $wpdb;
 
-		$post_types = is_array( $query->query['post_type'] ) ? $query->query['post_type'] : array( $query->query['post_type'] );
-		if ( ! in_array( 'give_payment', $post_types ) || is_array( $query->query['orderby'] ) ) {
-			return $order;
-		}
+		if ( ! empty( $query->query['post_type'] ) ) {
+			$post_types = is_array( $query->query['post_type'] ) ? $query->query['post_type'] : array( $query->query['post_type'] );
 
-		switch ( $query->query['orderby'] ) {
-			case 'post_status':
-				$order = $wpdb->posts . '.post_status ' . strtoupper( $query->query['order'] );
-				break;
+			if ( ! in_array( 'give_payment', $post_types ) || is_array( $query->query['orderby'] ) ) {
+				return $order;
+			}
+
+			global $wpdb;
+			switch ( $query->query['orderby'] ) {
+				case 'post_status':
+					$order = $wpdb->posts . '.post_status ' . strtoupper( $query->query['order'] );
+					break;
+			}
 		}
 
 		return $order;
