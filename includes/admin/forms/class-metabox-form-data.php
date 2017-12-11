@@ -838,6 +838,7 @@ class Give_MetaBox_Form_Data {
 												break;
 
 											default:
+												$field_value                   = ( '_give_amount' === $field_id && empty( $field_value ) ) ? 1.00 : $field_value;
 												$group_meta_value[ $field_id ] = give_clean( $field_value );
 										}
 									}
