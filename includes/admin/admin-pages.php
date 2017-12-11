@@ -473,7 +473,7 @@ function give_add_display_page_states( $post_states, $post ) {
 
 	switch( $post->ID ) {
 		case give_get_option( 'success_page' ):
-			$post_states['give_successfully_page'] = __( 'Donation Successfully Page', 'give' );
+			$post_states['give_successfully_page'] = __( 'Donation Success Page', 'give' );
 			break;
 
 		case give_get_option( 'failure_page' ):
