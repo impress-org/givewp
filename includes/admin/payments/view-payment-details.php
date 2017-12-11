@@ -428,7 +428,8 @@ $payment_mode   = $payment->mode;
 										<div class="column">
 											<p>
 												<strong><?php esc_html_e( 'Total Donation:', 'give' ); ?></strong><br>
-												<?php echo give_currency_filter( give_format_amount( $payment->total, array( 'sanitize' => false ) ), give_get_payment_currency_code( $payment->ID ) ); ?>
+												<?php echo give_currency_filter( give_format_amount( $payment->total, array( 'sanitize' => false ) ),
+													array( 'currency_code' => give_get_payment_currency_code( $payment->ID ) ) ); ?>
 											</p>
 											<p>
 												<?php
