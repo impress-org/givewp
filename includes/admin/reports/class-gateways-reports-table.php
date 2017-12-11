@@ -213,6 +213,7 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 
 		/**
 		 * Filter to modify $gateways that are being to display in Report section.
+         * Payment Gateways list in Report section
 		 *
 		 * @since 1.8.18
 		 *
@@ -220,7 +221,7 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 		 *
 		 * @return array $gateways list
 		 */
-		$gateways = apply_filters( 'give_payment_gateways_reports_data', $gateways );
+		$gateways = (array) apply_filters( 'give_payment_gateways_list_reports', $gateways );
 
 		foreach ( $gateways as $gateway_id => $gateway ) {
 
