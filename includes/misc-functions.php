@@ -174,6 +174,8 @@ function give_get_ip() {
 		$ip = give_clean( explode( ',', $ip ) );
 		$ip = array_filter( $ip );
 		$ip = implode( ',', $ip );
+	} else{
+		$ip = give_clean( $ip );
 	}
 
 	return $ip;
