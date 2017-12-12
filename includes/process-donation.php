@@ -1204,7 +1204,18 @@ function give_validate_multi_donation_form_level( $valid_data, $data ) {
 
 	$donation_level_matched = false;
 
-	if ( $form->is_multi_type_donation_form() ) {
+	if( $this->is_set_type_donation_form() ) {
+		// Sanitize donation amount.
+		$data['give-amount'] = give_maybe_sanitize_amount( $data['give-amount'] );
+
+		// Backward compatibility.
+		if( $form->is_custom_price( $data['give-amount'] ) ) {
+			$_POST['give-price-id'] = 'custom';
+		}
+
+		$donation_level_matched = true;
+
+	}elseif ( $form->is_multi_type_donation_form() ) {
 
 		// Bailout.
 		if ( ! ( $variable_prices = $form->get_prices() ) ) {
