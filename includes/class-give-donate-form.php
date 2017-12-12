@@ -651,6 +651,41 @@ class Give_Donate_Form {
 	}
 
 	/**
+	 * Determine if custom price mode is enabled or disabled
+	 *
+	 * @since  1.8.18
+	 * @access public
+	 *
+	 * @param string|float $amount
+	 *
+	 * @return bool
+	 */
+	public function is_custom_price( $amount ) {
+		$result = false;
+		$amount = give_maybe_sanitize_amount( $amount );
+
+		if ( $this->is_custom_price_mode() ) {
+
+			if ( 'set' === $this->get_type() ) {
+				if ( $amount !== $this->get_price() ) {
+					$result = true;
+				}
+
+			} elseif ( 'multi' === $this->get_type() ) {
+				$level_amounts = array_map( 'give_maybe_sanitize_amount', wp_list_pluck( $this->get_prices(), '_give_amount' ) );
+				$result        = ! in_array( $amount, $level_amounts );
+			}
+		}
+
+		/**
+		 * Filter
+		 *
+		 * @since 1.8.18
+		 */
+		return (bool) apply_filters( 'give_is_custom_price', $result, $amount, $this->ID );
+	}
+
+	/**
 	 * Has Variable Prices
 	 *
 	 * Determine if the donation form has variable prices enabled
