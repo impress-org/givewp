@@ -336,6 +336,33 @@ abstract class Give_DB {
 	}
 
 	/**
+	 * Checks whether column exists in a table or not.
+	 *
+	 * @param string $column_name Name of the Column in Database Table.
+	 *
+	 * @since 1.8.18
+	 *
+	 * @see https://gist.github.com/datafeedr/54e89e07f87232fb055121bb766743fe
+	 *
+	 * @return bool
+	 */
+	public function is_column_exists( $column_name ) {
+
+		global $wpdb;
+
+		$column = $wpdb->get_results( $wpdb->prepare(
+			"SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s ",
+			DB_NAME, $this->table_name, $column_name
+		) );
+
+		if ( ! empty( $column ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Check if the table was ever installed
 	 *
 	 * @since  1.6

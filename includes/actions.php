@@ -60,7 +60,6 @@ function give_post_actions() {
 
 	$_post_action = ! empty( $_POST['give_action'] ) ? $_POST['give_action'] : null;
 
-
 	// Add backward compatibility to give-action param ( $_POST ).
 	if ( empty( $_post_action ) ) {
 		$_post_action = ! empty( $_POST['give-action'] ) ? $_POST['give-action'] : null;
@@ -84,10 +83,10 @@ add_action( 'init', 'give_post_actions' );
 /**
  * Connect WordPress user with Donor.
  *
- * @since  1.7
+ * @param  int   $user_id   User ID.
+ * @param  array $user_data User Data.
  *
- * @param  int   $user_id   User ID
- * @param  array $user_data User Data
+ * @since  1.7
  *
  * @return void
  */
@@ -133,12 +132,12 @@ function give_validate_license_when_site_migrated() {
 	$home_url                    .= isset( $home_url_parts['path'] ) ? $home_url_parts['path'] : '';
 	$site_address_before_migrate = get_option( 'give_site_address_before_migrate' );
 
-	// Need $home_url to proceed
+	// Need $home_url to proceed.
 	if ( ! $home_url ) {
 		return;
 	}
 
-	// Save site address
+	// Save site address.
 	if ( ! $site_address_before_migrate ) {
 		// Update site address.
 		update_option( 'give_site_address_before_migrate', $home_url );
@@ -150,6 +149,7 @@ function give_validate_license_when_site_migrated() {
 	if ( strpos( $site_address_before_migrate, 'http' ) ) {
 		$site_address_before_migrate = parse_url( $site_address_before_migrate );
 		$site_address_before_migrate = isset( $site_address_before_migrate['host'] ) ? $site_address_before_migrate['host'] : false;
+
 		// Add path for multisite installs.
 		$site_address_before_migrate .= isset( $site_address_before_migrate['path'] ) ? $site_address_before_migrate['path'] : '';
 	}
@@ -246,7 +246,7 @@ add_action( 'admin_head', 'give_admin_quick_css' );
 /**
  * Set Donation Amount for Multi Level Donation Forms
  *
- * @param int $form_id
+ * @param int $form_id Donation Form ID.
  *
  * @since 1.8.9
  *
@@ -271,7 +271,7 @@ function give_set_donation_levels_max_min_amount( $form_id ) {
 	$min_amount = min( $donation_levels_amounts );
 	$max_amount = max( $donation_levels_amounts );
 
-	// Set Minimum and Maximum amount for Multi Level Donation Forms
+	// Set Minimum and Maximum amount for Multi Level Donation Forms.
 	give_update_meta( $form_id, '_give_levels_minimum_amount', $min_amount ? give_sanitize_amount_for_db( $min_amount ) : 0 );
 	give_update_meta( $form_id, '_give_levels_maximum_amount', $max_amount ? give_sanitize_amount_for_db( $max_amount ) : 0 );
 }

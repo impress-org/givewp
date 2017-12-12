@@ -784,7 +784,7 @@ function give_email_tag_amount( $tag_args ) {
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
 			$payment     = new Give_Payment( $tag_args['payment_id'] );
-			$give_amount = give_currency_filter( give_format_amount( $payment->total, array( 'sanitize' => false ) ), $payment->currency );
+			$give_amount = give_currency_filter( give_format_amount( $payment->total, array( 'sanitize' => false ) ), array( 'currency_code' => $payment->currency ) );
 			$amount      = html_entity_decode( $give_amount, ENT_COMPAT, 'UTF-8' );
 			break;
 	}
@@ -1089,10 +1089,15 @@ function give_email_tag_receipt_link( $tag_args ) {
 		return $receipt_url;
 	}
 
-	$formatted = sprintf(
+
+	$receipt_url = esc_url( add_query_arg( array(
+		'payment_key' => give_get_payment_key( $tag_args['payment_id'] ),
+	), give_get_history_page_uri() ) );
+
+	$formatted   = sprintf(
 		'<a href="%1$s">%2$s</a>',
 		$receipt_url,
-		esc_html__( 'View it in your browser &raquo;', 'give' )
+		__( 'View it in your browser &raquo;', 'give' )
 	);
 
 	/**

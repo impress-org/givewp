@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since  1.0
  *
- * @return string
+ * @return string|bool
  */
 function give_donation_history( $atts ) {
 
@@ -44,8 +44,15 @@ function give_donation_history( $atts ) {
 	if ( isset( $_GET['payment_key'] ) ) {
 		ob_start();
 		echo give_receipt_shortcode( array() );
-		echo '<a href="' . esc_url( give_get_history_page_uri() ) . '">&laquo; ' . __( 'Return to All Donations', 'give' ) . '</a>';
 
+		// Display donation history link only if it is not accessed via Receipt Access Link.
+		if ( give_get_receipt_session() ) {
+			echo sprintf(
+				'<a href="%s">%s</a>',
+				esc_url( give_get_history_page_uri() ),
+				__( '&laquo; Return to All Donations', 'give' )
+			);
+		}
 		return ob_get_clean();
 	}
 
@@ -54,12 +61,14 @@ function give_donation_history( $atts ) {
 	/**
 	 * Determine access
 	 *
-	 * a. Check if a user is logged in or does a session exist?
+	 * a. Check if a user is logged in or does a session exists
 	 * b. Does an email-access token exist?
 	 */
 	if (
-		is_user_logged_in() || false !== Give()->session->get_session_expiration()
-		|| ( give_is_setting_enabled( $email_access ) && Give()->email_access->token_exists )
+		is_user_logged_in() ||
+		false !== Give()->session->get_session_expiration() ||
+		( give_is_setting_enabled( $email_access ) && Give()->email_access->token_exists ) ||
+		true === give_get_history_session()
 	) {
 		ob_start();
 		give_get_template_part( 'history', 'donations' );
@@ -231,7 +240,7 @@ add_shortcode( 'give_register', 'give_register_form_shortcode' );
  */
 function give_receipt_shortcode( $atts ) {
 
-	global $give_receipt_args, $payment;
+	global $give_receipt_args;
 
 	$give_receipt_args = shortcode_atts( array(
 		'error'          => __( 'You are missing the payment key to view this donation receipt.', 'give' ),
@@ -274,7 +283,6 @@ function give_receipt_shortcode( $atts ) {
 
 	}
 
-	$payment_id    = give_get_purchase_id_by_key( $payment_key );
 	$user_can_view = give_can_view_receipt( $payment_key );
 
 	// Key was provided, but user is logged out. Offer them the ability to login and view the receipt.
