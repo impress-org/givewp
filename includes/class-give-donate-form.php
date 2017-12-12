@@ -656,7 +656,7 @@ class Give_Donate_Form {
 	 * @since  1.8.18
 	 * @access public
 	 *
-	 * @param string|float $amount
+	 * @param string|float $amount Donation Amount.
 	 *
 	 * @return bool
 	 */
@@ -678,7 +678,11 @@ class Give_Donate_Form {
 		}
 
 		/**
-		 * Filter
+		 * Filter to reset whether it is custom price or not.
+		 *
+		 * @param bool         $result True/False.
+		 * @param string|float $amount Donation Amount.
+		 * @param int          $this->ID Form ID.
 		 *
 		 * @since 1.8.18
 		 */
