@@ -171,6 +171,13 @@ function give_show_upgrade_notices( $give_updates ) {
 		'version'  => '1.8.17',
 		'callback' => 'give_v1817_cleanup_user_roles',
 	) );
+
+	// v1.8.18 Upgrades for assigning custom amount to existing set donations.
+	$give_updates->register( array(
+		'id'       => 'v1818_assign_custom_amount_set_donation',
+		'version'  => '1.8.18',
+		'callback' => 'give_v1818_assign_custom_amount_set_donation',
+	) );
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
@@ -1322,5 +1329,48 @@ function give_v1817_cleanup_user_roles() {
 	$roles->add_caps();
 
 	give_set_upgrade_complete( 'v1817_cleanup_user_roles' );
+
+}
+
+/**
+ * Upgrade Routine - Assigns Custom Amount to existing donation of type set donation.
+ *
+ * @since 1.8.18
+ */
+function give_v1818_assign_custom_amount_set_donation() {
+
+	/* @var Give_Updates $give_updates */
+	$give_updates   = Give_Updates::get_instance();
+	$donations      = new Give_Payments_Query();
+	$donations_list = $donations->get_payments( array(
+		'page'   => $give_updates->step,
+		'number' => 20,
+	) );
+
+	if ( is_array( $donations_list ) && count( $donations_list ) > 0 ) {
+
+		// Set Percentage based on each page.
+		$give_updates->set_percentage( count( $donations_list), ( $give_updates->step * 20 ) );
+
+		foreach ( $donations_list as $donation ) {
+			$form = new Give_Donate_Form( $donation->form_id );
+
+			// Update Donation meta with price_id set as custom, only if it is:
+			// 1. Donation Type = Set Donation.
+			// 2. Donation Price Id is not set to custom.
+			// 3. Form has not enabled custom price and donation amount assures that it is custom amount.
+			if (
+				$form->is_set_type_donation_form() &&
+				'custom' !== $donation->price_id &&
+				$form->is_custom_price( $donation->total )
+			) {
+				give_update_meta( $donation->ID, '_give_payment_price_id', 'custom' );
+			}
+
+		}
+	} else {
+		// Update Ran Successfully.
+		give_set_upgrade_complete( 'v1818_assign_custom_amount_set_donation' );
+	}
 
 }
