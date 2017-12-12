@@ -683,7 +683,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$receipt_link = give_email_tag_receipt_link( array( 'payment_id' => $payment ) );
 
 		$this->assertRegExp(
-			'/give_action=view_receipt">View it in your browser &raquo;<\/a>/',
+			'/payment_key=/',
 			$receipt_link
 		);
 	}
