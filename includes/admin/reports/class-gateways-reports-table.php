@@ -211,6 +211,18 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 		$gateways     = give_get_payment_gateways();
 		$stats        = new Give_Payment_Stats();
 
+		/**
+		 * Filter to modify $gateways that are being to display in Report section.
+		 * Payment Gateways list in Report section
+		 *
+		 * @since 1.8.18
+		 *
+		 * @param array $gateways list
+		 *
+		 * @return array $gateways list
+		 */
+		$gateways = (array) apply_filters( 'give_payment_gateways_list_reports', $gateways );
+
 		foreach ( $gateways as $gateway_id => $gateway ) {
 
 			$complete_count = give_count_sales_by_gateway( $gateway_id, 'publish' );
