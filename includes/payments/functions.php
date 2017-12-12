@@ -1858,26 +1858,21 @@ function give_get_payment_form_title( $payment_meta, $only_level = false, $separ
 		$form_title = '';
 	}
 
-	// If multi-level, append to the form title.
-	if ( give_has_variable_prices( $form_id ) ) {
-
-		// Only add separator if there is a form title.
-		if ( ! empty( $form_title ) ) {
-			$form_title .= ' ' . $separator . ' ';
-		}
-
-		$form_title .= '<span class="donation-level-text-wrap">';
-
-		if ( 'custom' === $price_id ) {
-			$custom_amount_text = give_get_meta( $form_id, '_give_custom_amount_text', true );
-			$form_title         .= ! empty( $custom_amount_text ) ? $custom_amount_text : __( 'Custom Amount', 'give' );
-		} else {
-			$form_title .= give_get_price_option_name( $form_id, $price_id );
-		}
-
-		$form_title .= '</span>';
-
+	// Only add separator if there is a form title.
+	if ( ! empty( $form_title ) ) {
+		$form_title .= ' ' . $separator . ' ';
 	}
+
+	$form_title .= '<span class="donation-level-text-wrap">';
+
+	if ( 'custom' === $price_id ) {
+		$custom_amount_text = give_get_meta( $form_id, '_give_custom_amount_text', true );
+		$form_title         .= ! empty( $custom_amount_text ) ? $custom_amount_text : __( 'Custom Amount', 'give' );
+	} elseif ( give_has_variable_prices( $form_id ) ) {
+		$form_title .= give_get_price_option_name( $form_id, $price_id );
+	}
+
+	$form_title .= '</span>';
 
 	return apply_filters( 'give_get_payment_form_title', $form_title, $payment_meta );
 
