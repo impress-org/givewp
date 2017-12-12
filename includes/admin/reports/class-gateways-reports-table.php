@@ -69,6 +69,14 @@ class Give_Gateway_Reports_Table extends WP_List_Table {
 			case 'complete_sales':
 				$value = $item[ $column_name ];
 
+				if ( $item[ $column_name ] ) {
+					$value = sprintf(
+						'<a href="%1$s" target="_blank">%2$s</a>',
+						admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&status=publish&gateway=' . urlencode( $item['ID'] ) ),
+						$item[ $column_name ]
+					);
+				}
+
 				break;
 
 			default:
