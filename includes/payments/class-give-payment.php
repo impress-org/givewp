@@ -1935,7 +1935,13 @@ final class Give_Payment {
 	 * @return int The Form Price ID.
 	 */
 	private function setup_price_id() {
-		$price_id = $this->get_meta( '_give_payment_price_id', true );
+		$form = new Give_Donate_Form( $this->form_id );
+
+		if( 'set' === $form->get_type() && $form->is_custom_price( $this->total ) ) {
+			$price_id = 'custom';
+		} else{
+			$price_id = $this->get_meta( '_give_payment_price_id', true );
+		}
 
 		return $price_id;
 	}
