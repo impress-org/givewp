@@ -396,9 +396,9 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 	add_filter( 'get_post_metadata', '_give_20_bc_get_new_payment_meta', 10, 5 );
 
 	$cache_key = "{$meta_key}_{$object_id}";
-	$cache     = Give_Cache::get_db_query( $cache_key );
+	$check    = Give_Cache::get_db_query( $cache_key );
 
-	if ( is_null( $cache ) ) {
+	if ( is_null( $check ) ) {
 		switch ( $meta_key ) {
 
 			// Handle new meta keys.
@@ -509,7 +509,7 @@ function _give_20_bc_get_new_payment_meta( $check, $object_id, $meta_key, $singl
 	}
 
 	// Put result in an array on zero index.
-	if ( ! is_null( $check ) ) {
+	if ( ! $single ) {
 		$check = array( $check );
 	}
 
