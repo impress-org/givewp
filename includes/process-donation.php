@@ -1193,12 +1193,12 @@ function give_donation_form_validate_cc_zip( $zip = 0, $country_code = '' ) {
  *
  * Note: If amount does not match to donation level amount then level id will be auto select to first match level id on basis of amount.
  *
- * @param array $valid_data
- * @param array $data
+ * @param array $valid_data List of Valid Data.
+ * @param array $data       List of Posted Data.
  *
  * @return bool
  */
-function give_validate_multi_donation_form_level( $valid_data, $data ) {
+function give_validate_donation_custom_amount( $valid_data, $data ) {
 	/* @var Give_Donate_Form $form */
 	$form = new Give_Donate_Form( $data['give-form-id'] );
 
@@ -1255,4 +1255,4 @@ function give_validate_multi_donation_form_level( $valid_data, $data ) {
 	return ( $donation_level_matched ? true : false );
 }
 
-add_action( 'give_checkout_error_checks', 'give_validate_multi_donation_form_level', 10, 2 );
+add_action( 'give_checkout_error_checks', 'give_validate_donation_custom_amount', 10, 2 );
