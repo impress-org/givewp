@@ -265,15 +265,6 @@ class Give_Payments_Query extends Give_Stats {
 		if ( in_array( $this->args['group_by'], $allowed_groups ) ) {
 			// Set only count in result.
 			if ( $this->args['count'] ) {
-				$statuses     = get_post_stati();
-				$status_query = '';
-
-				$counter = 0;
-				foreach ( $statuses as $status ) {
-					$prefix       = $counter ? " OR " : '';
-					$status_query .= "{$prefix}{$wpdb->posts}.post_status=\"{$status}\"";
-					$counter ++;
-				}
 
 				$new_results = $wpdb->get_results( $this->get_sql(), ARRAY_N );
 
@@ -284,12 +275,8 @@ class Give_Payments_Query extends Give_Stats {
 				switch ( $this->args['group_by'] ) {
 					case 'post_status':
 
-						if ( isset( $statuses['private'] ) && empty( $args['s'] ) ) {
-							unset( $statuses['private'] );
-						}
-
 						/* @var Give_Payment $donation */
-						foreach ( $statuses as $status => $status_label ) {
+						foreach ( give_get_payment_status_keys() as $status ) {
 							if ( ! isset( $result[ $status ] ) ) {
 								$result[ $status ] = 0;
 							}
