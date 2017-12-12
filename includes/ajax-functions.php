@@ -535,7 +535,7 @@ function give_confirm_email_for_donation_access() {
 		return false;
 	}
 
-	$donor = Give()->donors->get_donor_by( 'email', $_POST['email'] );
+	$donor = Give()->donors->get_donor_by( 'email', give_clean( $_POST['email'] ) );
 	if ( Give()->email_access->can_send_email( $donor->id ) ) {
 		$return     = array();
 		$email_sent = Give()->email_access->send_email( $donor->id, $donor->email );
