@@ -1252,6 +1252,14 @@ function give_validate_multi_donation_form_level( $valid_data, $data ) {
 
 add_action( 'give_checkout_error_checks', 'give_validate_multi_donation_form_level', 10, 2 );
 
+/**
+ * Check whether the donation is performed with custom amount or not.
+ *
+ * @param array $valid_data List of Valid Data.
+ * @param array $data       List of Posted Data.
+ *
+ * @since 1.8.18
+ */
 function give_validate_set_donation_form( $valid_data, $data ) {
 
 	$form = new Give_Donate_Form( $data['give-form-id'] );
