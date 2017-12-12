@@ -1251,3 +1251,17 @@ function give_validate_multi_donation_form_level( $valid_data, $data ) {
 }
 
 add_action( 'give_checkout_error_checks', 'give_validate_multi_donation_form_level', 10, 2 );
+
+function give_validate_set_donation_form( $valid_data, $data ) {
+
+	$form = new Give_Donate_Form( $data['give-form-id'] );
+
+	if ( $form->is_set_type_donation_form() ) {
+
+		if ( $data['give-amount'] !== $form->get_price() ) {
+			$_POST['give-price-id'] = 'custom';
+		}
+	}
+
+}
+add_action( 'give_checkout_error_checks', 'give_validate_set_donation_form', 10, 2 );
