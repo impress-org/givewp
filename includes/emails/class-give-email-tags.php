@@ -521,7 +521,7 @@ function give_email_tag_date( $payment_id ) {
  */
 function give_email_tag_amount( $payment_id ) {
 	$payment     = new Give_Payment( $payment_id );
-	$give_amount = give_currency_filter( give_format_amount( $payment->total, array( 'sanitize' => false ) ), $payment->currency );
+	$give_amount = give_currency_filter( give_format_amount( $payment->total, array( 'sanitize' => false ) ), array( 'currency_code' => $payment->currency ) );
 
 	return html_entity_decode( $give_amount, ENT_COMPAT, 'UTF-8' );
 }

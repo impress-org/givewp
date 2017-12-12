@@ -162,7 +162,23 @@ function give_get_ip() {
 		$ip = $_SERVER['REMOTE_ADDR'];
 	}
 
-	return apply_filters( 'give_get_ip', $ip );
+	/**
+	 * Filter the IP
+	 *
+	 * @since 1.0
+	 */
+	$ip = apply_filters( 'give_get_ip', $ip );
+
+	// Filter empty values.
+	if( false !== strpos( $ip, ',' ) ) {
+		$ip = give_clean( explode( ',', $ip ) );
+		$ip = array_filter( $ip );
+		$ip = implode( ',', $ip );
+	} else{
+		$ip = give_clean( $ip );
+	}
+
+	return $ip;
 }
 
 

@@ -333,24 +333,30 @@ class Give_Payment_History_Table extends WP_List_Table {
 			 * @since 1.8.12
 			 */
 			if ( 'all' === $key || $key === $current || apply_filters( 'give_payments_table_show_all_status', 0 < $count, $key, $count ) ) {
+				// Build URL.
+				$staus_url = remove_query_arg( array( 'paged', '_wpnonce', '_wp_http_referer' ) );
+				$staus_url = 'all' === $key ?
+					add_query_arg( array( 'status' => false ), $staus_url ) :
+					add_query_arg( array( 'status' => $key ), $staus_url );
 
 				$views[ $key ] = sprintf(
-					'<a href="%s" %s >%s&nbsp;<span class="count">(%s)</span></a>',
-					esc_url(
-						( 'all' === (string) $key ) ? remove_query_arg( array( 'status', 'paged' ) ) : add_query_arg(
-							array(
-								'status' => $key,
-								'paged'  => false,
-							), admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' )
-						)
-					),
-					( ( 'all' === $key && empty( $current ) ) ) ? 'class="current"' : ( $current == $key ) ? 'class="current"' : '',
+					'<a href="%s"%s>%s&nbsp;<span class="count">(%s)</span></a>',
+					esc_url( $staus_url ),
+					( ( 'all' === $key && empty( $current ) ) ) ? ' class="current"' : ( $current == $key ? 'class="current"' : '' ),
 					$name,
 					$count
 				);
 			}
 		}
 
+		/**
+		 * Filter the donation listing page views.
+		 *
+		 * @since 1.0
+		 *
+		 * @param array $views
+		 * @param Give_Payment_History_Table 
+		 */
 		return apply_filters( 'give_payments_table_views', $views, $this );
 	}
 
@@ -441,14 +447,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 			case 'amount':
 				$amount = ! empty( $payment->total ) ? $payment->total : 0;
-				$value  = give_currency_filter(
-					give_format_amount(
-						$amount, array(
-							'sanitize'    => false,
-							'donation_id' => $payment->ID,
-						)
-					), give_get_payment_currency_code( $payment->ID )
-				);
+				$value  = give_donation_amount( $payment, true );
 				$value .= sprintf( '<br><small>%1$s %2$s</small>', __( 'via', 'give' ), give_get_gateway_admin_label( $payment->gateway ) );
 				break;
 
