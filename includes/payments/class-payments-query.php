@@ -58,7 +58,8 @@ class Give_Payments_Query extends Give_Stats {
 	/**
 	 * Default query arguments.
 	 *
-	 * Not all of these are valid arguments that can be passed to WP_Query. The ones that are not, are modified before the query is run to convert them to the proper syntax.
+	 * Not all of these are valid arguments that can be passed to WP_Query. The ones that are not, are modified before
+	 * the query is run to convert them to the proper syntax.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -266,7 +267,11 @@ class Give_Payments_Query extends Give_Stats {
 			// Set only count in result.
 			if ( $this->args['count'] ) {
 
+				$this->set_filters();
+
 				$new_results = $wpdb->get_results( $this->get_sql(), ARRAY_N );
+
+				$this->unset_filters();
 
 				foreach ( $new_results as $results ) {
 					$result[ $results[0] ] = $results[1];
@@ -318,16 +323,16 @@ class Give_Payments_Query extends Give_Stats {
 
 		$this->setup_dates( $this->args['start_date'], $this->args['end_date'] );
 		$is_start_date = property_exists( __CLASS__, 'start_date' );
-		$is_end_date = property_exists( __CLASS__, 'end_date' );
+		$is_end_date   = property_exists( __CLASS__, 'end_date' );
 
-		if( $is_start_date || $is_end_date ) {
+		if ( $is_start_date || $is_end_date ) {
 			$date_query = array();
 
-			if( $is_start_date && ! is_wp_error(  $this->start_date )) {
+			if ( $is_start_date && ! is_wp_error( $this->start_date ) ) {
 				$date_query['after'] = date( 'Y-m-d H:i:s', $this->start_date );
 			}
 
-			if( $is_end_date && ! is_wp_error(  $this->end_date ) ) {
+			if ( $is_end_date && ! is_wp_error( $this->end_date ) ) {
 				$date_query['before'] = date( 'Y-m-d H:i:s', $this->end_date );
 			}
 
@@ -753,20 +758,16 @@ class Give_Payments_Query extends Give_Stats {
 	 *
 	 * @return string
 	 */
-	public function get_sql() {
+	private function get_sql() {
 		global $wpdb;
-
-		$this->set_filters();
-
-		// echo print_r( $this->args, true );
 
 		$where = "WHERE {$wpdb->posts}.post_type = 'give_payment'";
 		$where .= " AND {$wpdb->posts}.post_status IN ('" . implode( "','", $this->args['post_status'] ) . "')";
 		$where .= " AND {$wpdb->posts}.post_parent={$this->args['post_parent']}";
 
 		// Set orderby.
-		$orderby    = "ORDER BY {$wpdb->posts}.{$this->args['orderby']}";
-		$group_by   = '';
+		$orderby  = "ORDER BY {$wpdb->posts}.{$this->args['orderby']}";
+		$group_by = '';
 
 		// Set group by.
 		if ( ! empty( $this->args['group_by'] ) ) {
@@ -787,7 +788,7 @@ class Give_Payments_Query extends Give_Stats {
 		if ( ! empty( $this->args['fields'] ) && 'all' !== $this->args['fields'] ) {
 			if ( is_string( $this->args['fields'] ) ) {
 				$fields = "{$wpdb->posts}.{$this->args['fields']}";
-			} else if ( is_array( $this->args['fields'] ) ) {
+			} elseif ( is_array( $this->args['fields'] ) ) {
 				$fields = "{$wpdb->posts}." . implode( " , {$wpdb->posts}.", $this->args['fields'] );
 			}
 		}
@@ -804,7 +805,7 @@ class Give_Payments_Query extends Give_Stats {
 		// Date query.
 		if ( ! empty( $this->args['date_query'] ) ) {
 			$date_query_obj = new WP_Date_Query( $this->args['date_query'] );
-			$where .= str_replace(
+			$where          .= str_replace(
 				array(
 					"\n",
 					'(   (',
@@ -822,7 +823,7 @@ class Give_Payments_Query extends Give_Stats {
 		// Meta query.
 		if ( ! empty( $this->args['meta_query'] ) ) {
 			$meta_query_obj = new WP_Meta_Query( $this->args['meta_query'] );
-			$where     = implode( ' ', $meta_query_obj->get_sql( 'post', $wpdb->posts, 'ID' ) ) . " {$where}";
+			$where          = implode( ' ', $meta_query_obj->get_sql( 'post', $wpdb->posts, 'ID' ) ) . " {$where}";
 		}
 
 		// Set sql query.
@@ -835,9 +836,6 @@ class Give_Payments_Query extends Give_Stats {
 		// $where, $orderby and order already prepared query they can generate notice if you re prepare them in above.
 		// WordPress consider LIKE condition as placeholder if start with s,f, or d.
 		$sql = str_replace( 'LIMIT', "{$where} {$group_by} {$orderby} {$this->args['order']} LIMIT", $sql );
-
-		$this->unset_filters();
-
 
 		return $sql;
 	}
