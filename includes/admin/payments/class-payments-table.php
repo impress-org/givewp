@@ -349,6 +349,14 @@ class Give_Payment_History_Table extends WP_List_Table {
 			}
 		}
 
+		/**
+		 * Filter the donation listing page views.
+		 *
+		 * @since 1.0
+		 *
+		 * @param array $views
+		 * @param Give_Payment_History_Table 
+		 */
 		return apply_filters( 'give_payments_table_views', $views, $this );
 	}
 

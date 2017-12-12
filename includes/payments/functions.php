@@ -443,6 +443,11 @@ function give_count_payments( $args = array() ) {
 	$donations_obj = new Give_Payments_Query( $args );
 	$donations_count = $donations_obj->get_payment_by_group();
 
+	/**
+	 * Filter the payment counts group by status
+	 *
+	 * @since 1.0
+	 */
 	return (object) apply_filters( 'give_count_payments', $donations_count, $args, $donations_obj );
 }
 
