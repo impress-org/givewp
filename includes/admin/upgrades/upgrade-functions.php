@@ -1341,19 +1341,27 @@ function give_v1818_assign_custom_amount_set_donation() {
 
 	/* @var Give_Updates $give_updates */
 	$give_updates   = Give_Updates::get_instance();
-	$donations      = new Give_Payments_Query();
-	$donations_list = $donations->get_payments( array(
-		'page'   => $give_updates->step,
+
+	$donations_count = count( give_get_payments( array(
+		'number' => - 1,
+		'output' => 'payments',
+	) ) );
+
+	$donations_list = give_get_payments( array(
+		'offset' => ( 1 === $give_updates->step ) ? 0 : $give_updates->step * 20,
 		'number' => 20,
+		'status' => 'any',
+		'output' => 'payments',
 	) );
 
 	if ( is_array( $donations_list ) && count( $donations_list ) > 0 ) {
 
 		// Set Percentage based on each page.
-		$give_updates->set_percentage( count( $donations_list), ( $give_updates->step * 20 ) );
+		$give_updates->set_percentage( $donations_count, ( $give_updates->step * 20 ) );
 
 		foreach ( $donations_list as $donation ) {
-			$form = new Give_Donate_Form( $donation->form_id );
+			$form          = new Give_Donate_Form( $donation->form_id );
+			$donation_meta = give_get_payment_meta( $donation->ID );
 
 			// Update Donation meta with price_id set as custom, only if it is:
 			// 1. Donation Type = Set Donation.
@@ -1361,9 +1369,11 @@ function give_v1818_assign_custom_amount_set_donation() {
 			// 3. Form has not enabled custom price and donation amount assures that it is custom amount.
 			if (
 				$form->is_set_type_donation_form() &&
-				'custom' !== $donation->price_id &&
+				'custom' !== $donation_meta['price_id'] &&
 				$form->is_custom_price( $donation->total )
 			) {
+				$donation_meta['price_id'] = 'custom';
+				give_update_meta( $donation->ID, '_give_payment_meta', $donation_meta );
 				give_update_meta( $donation->ID, '_give_payment_price_id', 'custom' );
 			}
 
