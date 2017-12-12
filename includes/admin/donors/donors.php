@@ -786,7 +786,7 @@ function give_donor_view( $donor ) {
 				<?php foreach ( $payments as $payment ) : ?>
 					<tr>
 						<td><?php echo $payment->ID; ?></td>
-						<td><?php echo give_payment_amount( $payment->ID ); ?></td>
+						<td><?php echo give_donation_amount( $payment->ID, true ); ?></td>
 						<td><?php echo date_i18n( give_date_format(), strtotime( $payment->post_date ) ); ?></td>
 						<td><?php echo give_get_payment_status( $payment, true ); ?></td>
 						<td>

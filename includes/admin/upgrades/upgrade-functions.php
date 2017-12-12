@@ -70,6 +70,10 @@ function give_do_automatic_upgrades() {
 			give_v1817_upgrades();
 			$did_upgrade = true;
 
+		case version_compare( $give_version, '1.8.18', '<' ) :
+			give_v1818_upgrades();
+			$did_upgrade = true;
+
 		case version_compare( $give_version, '2.0', '<' ) :
 			give_v20_upgrades();
 			$did_upgrade = true;
@@ -1396,6 +1400,17 @@ function give_v1817_upgrades() {
 		$give_settings['currency'] = 'IRR';
 		update_option( 'give_settings', $give_settings );
 	}
+}
+
+/**
+ * Automatic Upgrade for release 1.8.18.
+ *
+ * @since 1.8.18
+ */
+function give_v1818_upgrades() {
+
+	// Remove email_access_installed from give_settings.
+	give_delete_option( 'email_access_installed' );
 }
 
 /**

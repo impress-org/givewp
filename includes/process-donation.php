@@ -493,7 +493,7 @@ function give_get_required_fields( $form_id ) {
 			'error_message' => __( 'Please enter billing state / province / County.', 'give' ),
 		);
 
-		// Check if billing country alredy exists.
+		// Check if billing country already exists.
 		if ( ! empty( $_POST['billing_country'] ) ) {
 			// Get the value from $_POST.
 			$country = sanitize_text_field( $_POST['billing_country'] );

@@ -486,7 +486,7 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 		give_update_option( 'currency', $currency );
 		give_update_option( 'currency_position', $currency_position );
 
-		$output = give_currency_filter( $price, $currency, $decode_currency );
+		$output = give_currency_filter( $price, array( 'currency_code' => $currency, 'decode_currency' => $decode_currency ) );
 
 		$this->assertSame(
 			$expected,

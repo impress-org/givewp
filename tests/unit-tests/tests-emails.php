@@ -257,8 +257,7 @@ class Tests_Emails extends Give_Unit_Test_Case {
 
 		$receipt_url = esc_url( add_query_arg( array(
 			'payment_key' => give_get_payment_key( $this->_payment_id ),
-			'give_action' => 'view_receipt',
-		), home_url() ) );
+		), give_get_history_page_uri() ) );
 
 		$this->assertContains( $receipt_url, give_email_tag_receipt_link( $this->_payment_id ) );
 	}
