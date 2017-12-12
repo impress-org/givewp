@@ -774,7 +774,7 @@ function give_check_import_donation_duplicate( $payment_data, $data, $form, $don
 	/**
 	 * Filter to modify donation which is getting add is duplicate or not.
 	 *
-	 * @since 1.8.17
+	 * @since 1.8.18
 	 */
 	return apply_filters( 'give_check_import_donation_duplicate', $return, $payment_data, $data, $form, $donor_data );
 }
