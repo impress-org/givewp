@@ -1595,3 +1595,20 @@ function give_donation_history_table_end() {
 	</tfoot>
 	<?php
 }
+
+
+/**
+ * Wrapper for _doing_it_wrong.
+ *
+ * @since  1.8.18
+ * @param  string $function
+ * @param  string $message
+ * @param  string $version
+ *
+ * @return void
+ */
+function give_doing_it_wrong( $function, $message, $version ) {
+	$message .= "\nBacktrace:" . wp_debug_backtrace_summary();
+
+	_doing_it_wrong( $function, $message , $version );
+}
