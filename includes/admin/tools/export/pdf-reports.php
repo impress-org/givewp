@@ -134,7 +134,7 @@ function give_generate_pdf( $data ) {
 			if ( give_has_variable_prices( $form->ID ) ) {
 				$price = html_entity_decode( give_price_range( $form->ID, false ) );
 			} else {
-				$price = give_currency_filter( give_get_form_price( $form->ID ), '', true );
+				$price = give_currency_filter( give_get_form_price( $form->ID ), array( 'decode_currency' => true ) );
 			}
 
 			// Display Categories Data only, if user has opted for it.
@@ -152,7 +152,7 @@ function give_generate_pdf( $data ) {
 			}
 
 			$sales    = give_get_form_sales_stats( $form->ID );
-			$earnings = give_currency_filter( give_format_amount( give_get_form_earnings_stats( $form->ID ), array( 'sanitize' => false, ) ), '', true );
+			$earnings = give_currency_filter( give_format_amount( give_get_form_earnings_stats( $form->ID ), array( 'sanitize' => false, ) ), array( 'decode_currency' => true ) );
 
 			// This will help filter data before appending it to PDF Receipt.
 			$prepare_pdf_data   = array();
