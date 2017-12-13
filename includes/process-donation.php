@@ -1189,22 +1189,33 @@ function give_donation_form_validate_cc_zip( $zip = 0, $country_code = '' ) {
 
 
 /**
- * Auto set correct donation level id on basis of amount.
+ * Validate donation amount and auto set correct donation level id on basis of amount.
  *
  * Note: If amount does not match to donation level amount then level id will be auto select to first match level id on basis of amount.
  *
- * @param array $valid_data
- * @param array $data
+ * @param array $valid_data List of Valid Data.
+ * @param array $data       List of Posted Data.
  *
  * @return bool
  */
-function give_validate_multi_donation_form_level( $valid_data, $data ) {
+function give_validate_donation_amount( $valid_data, $data ) {
 	/* @var Give_Donate_Form $form */
 	$form = new Give_Donate_Form( $data['give-form-id'] );
 
 	$donation_level_matched = false;
 
-	if ( $form->is_multi_type_donation_form() ) {
+	if ( $form->is_set_type_donation_form() ) {
+		// Sanitize donation amount.
+		$data['give-amount'] = give_maybe_sanitize_amount( $data['give-amount'] );
+
+		// Backward compatibility.
+		if ( $form->is_custom_price( $data['give-amount'] ) ) {
+			$_POST['give-price-id'] = 'custom';
+		}
+
+		$donation_level_matched = true;
+
+	} elseif ( $form->is_multi_type_donation_form() ) {
 
 		// Bailout.
 		if ( ! ( $variable_prices = $form->get_prices() ) ) {
@@ -1218,36 +1229,30 @@ function give_validate_multi_donation_form_level( $valid_data, $data ) {
 			return true;
 		}
 
-		// Find correct donation level from all donation levels.
-		foreach ( $variable_prices as $variable_price ) {
-			// Sanitize level amount.
-			$variable_price['_give_amount'] = give_maybe_sanitize_amount( $variable_price['_give_amount'] );
+		if ( $form->is_custom_price( $data['give-amount'] ) ) {
+			$_POST['give-price-id'] = 'custom';
+		} else {
+			// Find correct donation level from all donation levels.
+			foreach ( $variable_prices as $variable_price ) {
+				// Sanitize level amount.
+				$variable_price['_give_amount'] = give_maybe_sanitize_amount( $variable_price['_give_amount'] );
 
-			// Set first match donation level ID.
-			if ( $data['give-amount'] === $variable_price['_give_amount'] ) {
-				$_POST['give-price-id'] = $variable_price['_give_id']['level_id'];
-				$donation_level_matched = true;
-				break;
+				// Set first match donation level ID.
+				if ( $data['give-amount'] === $variable_price['_give_amount'] ) {
+					$_POST['give-price-id'] = $variable_price['_give_id']['level_id'];
+					break;
+				}
 			}
 		}
 
 		// If donation amount is not find in donation levels then check if form has custom donation feature enable or not.
 		// If yes then set price id to custom if amount is greater then custom minimum amount (if any).
-		if (
-			! $donation_level_matched
-			&& ( give_is_setting_enabled( give_get_meta( $data['give-form-id'], '_give_custom_amount', true ) ) )
-		) {
-			// Sanitize custom minimum amount.
-			$custom_minimum_amount = give_maybe_sanitize_amount( give_get_meta( $data['give-form-id'], '_give_custom_amount_minimum', true ) );
-
-			if ( $data['give-amount'] >= $custom_minimum_amount ) {
-				$_POST['give-price-id'] = 'custom';
-				$donation_level_matched = true;
-			}
+		if ( ! empty( $_POST['give-price-id'] ) ) {
+			$donation_level_matched = true;
 		}
 	}// End if().
 
 	return ( $donation_level_matched ? true : false );
 }
 
-add_action( 'give_checkout_error_checks', 'give_validate_multi_donation_form_level', 10, 2 );
+add_action( 'give_checkout_error_checks', 'give_validate_donation_amount', 10, 2 );
