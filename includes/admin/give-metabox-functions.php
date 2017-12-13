@@ -739,7 +739,7 @@ function give_email_preview_buttons( $field ) {
 	/* @var WP_Post $post */
 	global $post;
 
-	$field_id = str_replace( '_preview_buttons', '', $field['id'] );
+	$field_id = str_replace( array( '_give_', '_preview_buttons' ), '', $field['id'] );
 
 	ob_start();
 
