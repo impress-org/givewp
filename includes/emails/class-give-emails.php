@@ -223,6 +223,12 @@ class Give_Emails {
 	public function build_email( $message ) {
 
 		if ( false === $this->html ) {
+
+			// Added Replacement check to simply behaviour of anchor tags.
+			$pattern     = '/<a.+?href\=(?:["|\'])(.+?)(?:["|\']).*?>(.+?)<\/a>/i';
+			$replacement = '$2 ($1)';
+			$message     = preg_replace( $pattern, $replacement, $message );
+
 			return apply_filters( 'give_email_message', wp_strip_all_tags( $message ), $this );
 		}
 
