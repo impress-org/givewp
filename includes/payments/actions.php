@@ -278,134 +278,146 @@ function give_bc_v20_get_payment_meta( $check, $object_id, $meta_key, $single ) 
 		return $check;
 	}
 
-	// Remove filter.
-	remove_filter( 'get_post_metadata', 'give_bc_v20_get_payment_meta', 999 );
+	$cache_key = "_give_payment_meta_{$object_id}";
 
-	// Get all payment meta.
-	$payment_meta = give_get_meta( $object_id );
+	// Get already calculate payment meta from cache.
+	$payment_meta = Give_Cache::get_db_query( $cache_key );
+
+	if ( is_null( $payment_meta ) ) {
+		// Remove filter.
+		remove_filter( 'get_post_metadata', 'give_bc_v20_get_payment_meta', 999 );
+
+		$donation = new Give_Payment( $object_id );
+
+		// Get all payment meta.
+		$payment_meta = give_get_meta( $object_id );
+
+		// Set default value to array.
+		if ( empty( $payment_meta ) ) {
+			return $check;
+		}
+
+		// Convert all meta key value to string instead of array
+		array_walk( $payment_meta, function ( &$meta, $key ) {
+			$meta = current( $meta );
+		} );
+
+		/**
+		 * Add backward compatibility to old meta keys.
+		 */
+		// Donation key.
+		$payment_meta['key'] = ! empty( $payment_meta['_give_payment_purchase_key'] ) ? $payment_meta['_give_payment_purchase_key'] : '';
+
+		// Donation form.
+		$payment_meta['form_title'] = ! empty( $payment_meta['_give_payment_form_title'] ) ? $payment_meta['_give_payment_form_title'] : '';
+
+		// Donor email.
+		$payment_meta['email'] = ! empty( $payment_meta['_give_payment_donor_email'] ) ? $payment_meta['_give_payment_donor_email'] : '';
+		$payment_meta['email'] = ! empty( $payment_meta['email'] ) ?
+			$payment_meta['email'] :
+			Give()->donors->get_column( 'email', $donation->donor_id );
+
+		// Form id.
+		$payment_meta['form_id'] = ! empty( $payment_meta['_give_payment_form_id'] ) ? $payment_meta['_give_payment_form_id'] : '';
+
+		// Price id.
+		$payment_meta['price_id'] = ! empty( $payment_meta['_give_payment_price_id'] ) ? $payment_meta['_give_payment_price_id'] : '';
+
+		// Date.
+		$payment_meta['date'] = ! empty( $payment_meta['_give_payment_date'] ) ? $payment_meta['_give_payment_date'] : '';
+		$payment_meta['date'] = ! empty( $payment_meta['date'] ) ?
+			$payment_meta['date'] :
+			get_post_field( 'post_date', $object_id );
 
 
-	// Set default value to array.
-	if ( empty( $payment_meta ) ) {
-		return $check;
+		// Currency.
+		$payment_meta['currency'] = ! empty( $payment_meta['_give_payment_currency'] ) ? $payment_meta['_give_payment_currency'] : '';
+
+		// Decode donor data.
+		$donor_id = ! empty( $payment_meta['_give_payment_donor_id'] ) ? $payment_meta['_give_payment_donor_id'] : 0;
+		$donor    = new Give_Donor( $donor_id );
+
+		// Donor first name.
+		$donor_data['first_name'] = ! empty( $payment_meta['_give_donor_billing_first_name'] ) ? $payment_meta['_give_donor_billing_first_name'] : '';
+		$donor_data['first_name'] = ! empty( $donor_data['first_name'] ) ?
+			$donor_data['first_name'] :
+			$donor->get_first_name();
+
+		// Donor last name.
+		$donor_data['last_name'] = ! empty( $payment_meta['_give_donor_billing_last_name'] ) ? $payment_meta['_give_donor_billing_last_name'] : '';
+		$donor_data['last_name'] = ! empty( $donor_data['last_name'] ) ?
+			$donor_data['last_name'] :
+			$donor->get_last_name();
+
+		// Donor email.
+		$donor_data['email'] = $payment_meta['email'];
+
+		// User ID.
+		$donor_data['id'] = $donation->user_id;
+
+		$donor_data['address'] = false;
+
+		// Address1.
+		$address1 = ! empty( $payment_meta['_give_payment_billing_address1'] ) ? $payment_meta['_give_payment_billing_address1'] : '';
+		if ( $address1 ) {
+			$donor_data['address']['line1'] = $address1;
+		}
+
+		// Address2.
+		$address2 = ! empty( $payment_meta['_give_payment_billing_address2'] ) ? $payment_meta['_give_payment_billing_address2'] : '';
+		if ( $address2 ) {
+			$donor_data['address']['line2'] = $address2;
+		}
+
+		// City.
+		$city = ! empty( $payment_meta['_give_payment_billing_city'] ) ? $payment_meta['_give_payment_billing_city'] : '';
+		if ( $city ) {
+			$donor_data['address']['city'] = $city;
+		}
+
+		// Zip.
+		$zip = ! empty( $payment_meta['_give_payment_billing_zip'] ) ? $payment_meta['_give_payment_billing_zip'] : '';
+		if ( $zip ) {
+			$donor_data['address']['zip'] = $zip;
+		}
+
+		// State.
+		$state = ! empty( $payment_meta['_give_payment_billing_state'] ) ? $payment_meta['_give_payment_billing_state'] : '';
+		if ( $state ) {
+			$donor_data['address']['state'] = $state;
+		}
+
+		// Country.
+		$country = ! empty( $payment_meta['_give_payment_billing_country'] ) ? $payment_meta['_give_payment_billing_country'] : '';
+		if ( $country ) {
+			$donor_data['address']['country'] = $country;
+		}
+
+		$payment_meta['user_info'] = $donor_data;
+
+		// Add filter
+		add_filter( 'get_post_metadata', 'give_bc_v20_get_payment_meta', 999, 4 );
+
+		// Set custom meta key into payment meta.
+		if ( ! empty( $payment_meta['_give_payment_meta'] ) ) {
+			$payment_meta = array_merge( maybe_unserialize( $payment_meta['_give_payment_meta'] ), $payment_meta );
+		}
+
+		// Set cache.
+		Give_Cache::set_db_query( $cache_key, $payment_meta );
 	}
 
-	// Convert all meta key value to string instead of array
-	array_walk( $payment_meta, function ( &$meta, $key ) {
-		$meta = current( $meta );
-	} );
-
-	/**
-	 * Add backward compatibility to old meta keys.
-	 */
-	// Donation key.
-	$payment_meta['key'] = ! empty( $payment_meta['_give_payment_purchase_key'] ) ? $payment_meta['_give_payment_purchase_key'] : '';
-
-	// Donation form.
-	$payment_meta['form_title'] = ! empty( $payment_meta['_give_payment_form_title'] ) ? $payment_meta['_give_payment_form_title'] : '';
-
-	// Donor email.
-	$payment_meta['email'] = ! empty( $payment_meta['_give_payment_donor_email'] ) ? $payment_meta['_give_payment_donor_email'] : '';
-	$payment_meta['email'] = ! empty( $payment_meta['email'] ) ?
-		$payment_meta['email'] :
-		Give()->donors->get_column( 'email', give_get_payment_donor_id( $object_id ) );
-
-	// Form id.
-	$payment_meta['form_id'] = ! empty( $payment_meta['_give_payment_form_id'] ) ? $payment_meta['_give_payment_form_id'] : '';
-
-	// Price id.
-	$payment_meta['price_id'] = ! empty( $payment_meta['_give_payment_price_id'] ) ? $payment_meta['_give_payment_price_id'] : '';
-
-	// Date.
-	$payment_meta['date'] = ! empty( $payment_meta['_give_payment_date'] ) ? $payment_meta['_give_payment_date'] : '';
-	$payment_meta['date'] = ! empty( $payment_meta['date'] ) ?
-		$payment_meta['date'] :
-		get_post_field( 'post_date', $object_id );
-
-
-	// Currency.
-	$payment_meta['currency'] = ! empty( $payment_meta['_give_payment_currency'] ) ? $payment_meta['_give_payment_currency'] : '';
-
-	// Decode donor data.
-	$donor_id = ! empty( $payment_meta['_give_payment_donor_id'] ) ? $payment_meta['_give_payment_donor_id'] : 0;
-	$donor = new Give_Donor( $donor_id );
-
-	// Donor first name.
-	$donor_data['first_name'] = ! empty( $payment_meta['_give_donor_billing_first_name'] ) ? $payment_meta['_give_donor_billing_first_name'] : '';
-	$donor_data['first_name'] = ! empty( $donor_data['first_name'] ) ?
-		$donor_data['first_name'] :
-		$donor->get_first_name();
-
-	// Donor last name.
-	$donor_data['last_name'] = ! empty( $payment_meta['_give_donor_billing_last_name'] ) ? $payment_meta['_give_donor_billing_last_name'] : '';
-	$donor_data['last_name'] = ! empty( $donor_data['last_name'] ) ?
-		$donor_data['last_name'] :
-		$donor->get_last_name();
-
-	// Donor email.
-	$donor_data['email'] = $payment_meta['email'];
-
-	// User ID.
-	$donor_data['id'] = give_get_payment_user_id( $object_id );
-
-	$donor_data['address'] = false;
-
-	// Address1.
-	$address1 = ! empty( $payment_meta['_give_payment_billing_address1'] ) ? $payment_meta['_give_payment_billing_address1'] : '';
-	if ( $address1 ) {
-		$donor_data['address']['line1'] = $address1;
-	}
-
-	// Address2.
-	$address2 = ! empty( $payment_meta['_give_payment_billing_address2'] ) ? $payment_meta['_give_payment_billing_address2'] : '';
-	if ( $address2 ) {
-		$donor_data['address']['line2'] = $address2;
-	}
-
-	// City.
-	$city = ! empty( $payment_meta['_give_payment_billing_city'] ) ? $payment_meta['_give_payment_billing_city'] : '';
-	if ( $city ) {
-		$donor_data['address']['city'] = $city;
-	}
-
-	// Zip.
-	$zip = ! empty( $payment_meta['_give_payment_billing_zip'] ) ? $payment_meta['_give_payment_billing_zip'] : '';
-	if ( $zip ) {
-		$donor_data['address']['zip'] = $zip;
-	}
-
-	// State.
-	$state = ! empty( $payment_meta['_give_payment_billing_state'] ) ? $payment_meta['_give_payment_billing_state'] : '';
-	if ( $state ) {
-		$donor_data['address']['state'] = $state;
-	}
-
-	// Country.
-	$country = ! empty( $payment_meta['_give_payment_billing_country'] ) ? $payment_meta['_give_payment_billing_country'] : '';
-	if ( $country ) {
-		$donor_data['address']['country'] = $country;
-	}
-
-	$payment_meta['user_info'] = $donor_data;
-
-	// Add filter
-	add_filter( 'get_post_metadata', 'give_bc_v20_get_payment_meta', 999, 4 );
-
-	// Set custom meta key into payment meta.
-	if( ! empty( $payment_meta['_give_payment_meta'] ) ) {
-		$payment_meta = array_merge( maybe_unserialize( $payment_meta['_give_payment_meta'] ), $payment_meta );
-	}
-
-	/**
-	 * Filter the payment meta
-	 * Add custom meta key to payment meta
-	 *
-	 * @since 2.0
-	 */
 	if ( $single ) {
-		$payment_meta[0] = apply_filters( 'give_get_payment_meta', $payment_meta, $object_id, $meta_key );
-	}
+		/**
+		 * Filter the payment meta
+		 * Add custom meta key to payment meta
+		 *
+		 * @since 2.0
+		 */
+		$new_payment_meta[0] = apply_filters( 'give_get_payment_meta', $payment_meta, $object_id, $meta_key );
 
+		$payment_meta = $new_payment_meta;
+	}
 
 	return $payment_meta;
 }

@@ -155,6 +155,46 @@ class Give_DB_Donors extends Give_DB {
 
 	}
 
+
+	/**
+	 * Update a donor.
+	 *
+	 *
+	 * @param int    $row_id
+	 * @param array  $data
+	 * @param string $where
+	 *
+	 * @return bool
+	 */
+	public function update( $row_id, $data = array(), $where = '' ) {
+
+		$status = parent::update( $row_id, $data, $where );
+
+		if ( $status ) {
+			Give_Cache::delete_group( $row_id, 'give-donors' );
+		}
+
+		return $status;
+	}
+
+	/**
+	 * Insert a donor.
+	 *
+	 * @param array  $data
+	 * @param string $type
+	 *
+	 * @return int
+	 */
+	public function insert( $data, $type = '' ) {
+		$donor_id = parent::insert( $data, $type );
+
+		if ( $donor_id ) {
+			Give_Cache::delete_group( $donor_id, 'give-donors' );
+		}
+
+		return $donor_id;
+	}
+
 	/**
 	 * Delete a donor.
 	 *
@@ -188,6 +228,8 @@ class Give_DB_Donors extends Give_DB {
 			 */
 			Give()->donor_meta->delete_all_meta( $donor->id );
 
+			// Cache already deleted in delete_all_meta fn.
+
 			return $wpdb->delete( $this->table_name, array( 'id' => $donor->id ), array( '%d' ) );
 
 		} else {
@@ -210,6 +252,7 @@ class Give_DB_Donors extends Give_DB {
 	 * @return bool|int
 	 */
 	public function delete_by_user_id( $user_id = false ) {
+		global $wpdb;
 
 		if ( empty( $user_id ) ) {
 			return false;
@@ -225,7 +268,7 @@ class Give_DB_Donors extends Give_DB {
 			Give()->donor_meta->delete_all_meta( $donor->id );
 		}
 
-		global $wpdb;
+		// Cache is already deleted in delete_all_meta fn.
 
 		return $wpdb->delete( $this->table_name, array( 'user_id' => $user_id ), array( '%d' ) );
 	}
@@ -451,18 +494,9 @@ class Give_DB_Donors extends Give_DB {
 	public function get_donors( $args = array() ) {
 		$this->bc_1814_params( $args );
 
-		$cache_key = md5( 'give_donors_' . serialize( $args ) );
+		$donors = new Give_Donors_Query( $args );
 
-		$donors = wp_cache_get( $cache_key, 'donors' );
-
-		if ( $donors === false ) {
-			$donors = new Give_Donors_Query( $args );
-			$donors = $donors->get_donors();
-
-			wp_cache_set( $cache_key, $donors, 'donors', 3600 );
-		}
-
-		return $donors;
+		return $donors->get_donors();
 
 	}
 
@@ -482,13 +516,13 @@ class Give_DB_Donors extends Give_DB {
 		$args['count'] = true;
 
 		$cache_key = md5( 'give_donors_count' . serialize( $args ) );
-		$count     = wp_cache_get( $cache_key, 'donors' );
+		$count     = Give_Cache::get_group( $cache_key, 'donors' );
 
-		if ( $count === false ) {
+		if ( is_null( $count ) ) {
 			$donors = new Give_Donors_Query( $args );
 			$count  = $donors->get_donors();
 
-			wp_cache_set( $cache_key, $count, 'donors', 3600 );
+			Give_Cache::set_group( $cache_key, $count, 'donors', 3600 );
 		}
 
 		return absint( $count );

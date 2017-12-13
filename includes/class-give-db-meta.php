@@ -163,7 +163,7 @@ class Give_DB_Meta extends Give_DB {
 	 * @param   mixed  $meta_value Metadata value.
 	 * @param   bool   $unique     Optional, default is false. Whether the same key should not be added.
 	 *
-	 * @return  bool                  False for failure. True for success.
+	 * @return  int|bool                  False for failure. True for success.
 	 */
 	public function add_meta( $id = 0, $meta_key = '', $meta_value, $unique = false ) {
 		$id = $this->sanitize_id( $id );
@@ -173,7 +173,13 @@ class Give_DB_Meta extends Give_DB {
 			return $this->check;
 		}
 
-		return add_metadata( $this->meta_type, $id, $meta_key, $meta_value, $unique );
+		$meta_id = add_metadata( $this->meta_type, $id, $meta_key, $meta_value, $unique );
+
+		if ( $meta_id ) {
+			$this->delete_cache( $id );
+		}
+
+		return $meta_id;
 	}
 
 	/**
@@ -194,7 +200,7 @@ class Give_DB_Meta extends Give_DB {
 	 * @param   mixed  $meta_value Metadata value.
 	 * @param   mixed  $prev_value Optional. Previous value to check before removing.
 	 *
-	 * @return  bool                  False on failure, true if success.
+	 * @return  int|bool                  False on failure, true if success.
 	 */
 	public function update_meta( $id = 0, $meta_key = '', $meta_value, $prev_value = '' ) {
 		$id = $this->sanitize_id( $id );
@@ -204,7 +210,13 @@ class Give_DB_Meta extends Give_DB {
 			return $this->check;
 		}
 
-		return update_metadata( $this->meta_type, $id, $meta_key, $meta_value, $prev_value );
+		$meta_id = update_metadata( $this->meta_type, $id, $meta_key, $meta_value, $prev_value );
+
+		if ( $meta_id ) {
+			$this->delete_cache( $id );
+		}
+
+		return $meta_id;
 	}
 
 	/**
@@ -232,7 +244,13 @@ class Give_DB_Meta extends Give_DB {
 			return $this->check;
 		}
 
-		return delete_metadata( $this->meta_type, $id, $meta_key, $meta_value, $delete_all );
+		$is_meta_deleted = delete_metadata( $this->meta_type, $id, $meta_key, $meta_value, $delete_all );
+
+		if ( $is_meta_deleted ) {
+			$this->delete_cache( $id );
+		}
+
+		return $is_meta_deleted;
 	}
 
 	/**
@@ -320,6 +338,34 @@ class Give_DB_Meta extends Give_DB {
 	 */
 	protected function is_custom_meta_table_active() {
 		return false;
+	}
+
+
+	/**
+	 * Update last_changed key
+	 *
+	 * @since  2.0
+	 * @access private
+	 *
+	 * @param int    $id
+	 * @param string $meta_type
+	 *
+	 * @return void
+	 */
+	private function delete_cache( $id, $meta_type = '' ) {
+		$meta_type = empty( $meta_type ) ? $this->meta_type : $meta_type;
+
+		$group = array(
+			// 'form'    => 'give-forms',
+			'payment'  => 'give-donations',
+			'donor'    => 'give-donors',
+			'customer' => 'give-donors', // Backward compatibility for pre upgrade in 2.0
+			// 'log'     => 'give-logs',
+		);
+
+		if ( array_key_exists( $meta_type, $group ) ) {
+			Give_Cache::delete_group( $id, $group[ $meta_type ] );
+		}
 	}
 
 	/**

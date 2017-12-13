@@ -1574,6 +1574,7 @@ function give_recount_form_income_donation( $form_id = 0 ) {
 	}// End if().
 }
 
+
 /**
  * Get attribute string
  *

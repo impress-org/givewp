@@ -330,7 +330,9 @@ class Give_Payment_History_Table extends WP_List_Table {
 			if ( 'all' === $key || $key === $current || apply_filters( 'give_payments_table_show_all_status', 0 < $count, $key, $count ) ) {
 				// Build URL.
 				$staus_url = remove_query_arg( array( 'paged', '_wpnonce', '_wp_http_referer' ) );
-				$staus_url = 'all' === $key ? add_query_arg( array( 'status' => false ), $staus_url ) : add_query_arg( array( 'status' => $key ), $staus_url );
+				$staus_url = 'all' === $key ?
+					add_query_arg( array( 'status' => false ), $staus_url ) :
+					add_query_arg( array( 'status' => $key ), $staus_url );
 
 				$views[ $key ] = sprintf(
 					'<a href="%s"%s>%s&nbsp;<span class="count">(%s)</span></a>',
@@ -342,6 +344,14 @@ class Give_Payment_History_Table extends WP_List_Table {
 			}
 		}
 
+		/**
+		 * Filter the donation listing page views.
+		 *
+		 * @since 1.0
+		 *
+		 * @param array $views
+		 * @param Give_Payment_History_Table 
+		 */
 		return apply_filters( 'give_payments_table_views', $views, $this );
 	}
 

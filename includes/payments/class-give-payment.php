@@ -513,54 +513,66 @@ final class Give_Payment {
 		 */
 		do_action( 'give_pre_setup_payment', $this, $payment_id );
 
-		// Primary Identifier.
-		$this->ID = absint( $payment_id );
+		// Get payment from cache.
+		$donation_vars = Give_Cache::get_group( $payment_id, 'give-donations' );
 
-		// Protected ID that can never be changed.
-		$this->_ID = absint( $payment_id );
+		if ( is_null( $donation_vars ) ) {
+			// Primary Identifier.
+			$this->ID = absint( $payment_id );
 
-		// We have a payment, get the generic payment_meta item to reduce calls to it.
-		$this->payment_meta = $this->get_meta();
+			// Protected ID that can never be changed.
+			$this->_ID = absint( $payment_id );
 
-		// Status and Dates.
-		$this->date           = $payment->post_date;
-		$this->post_date      = $payment->post_date;
-		$this->completed_date = $this->setup_completed_date();
-		$this->status         = $payment->post_status;
-		$this->post_status    = $this->status;
-		$this->mode           = $this->setup_mode();
-		$this->import         = $this->setup_import();
-		$this->parent_payment = $payment->post_parent;
+			// We have a payment, get the generic payment_meta item to reduce calls to it.
+			$this->payment_meta = $this->get_meta();
 
-		$all_payment_statuses  = give_get_payment_statuses();
-		$this->status_nicename = array_key_exists( $this->status, $all_payment_statuses ) ? $all_payment_statuses[ $this->status ] : ucfirst( $this->status );
+			// Status and Dates.
+			$this->date           = $payment->post_date;
+			$this->post_date      = $payment->post_date;
+			$this->completed_date = $this->setup_completed_date();
+			$this->status         = $payment->post_status;
+			$this->post_status    = $this->status;
+			$this->mode           = $this->setup_mode();
+			$this->import         = $this->setup_import();
+			$this->parent_payment = $payment->post_parent;
 
-		// Currency Based.
-		$this->total    = $this->setup_total();
-		$this->subtotal = $this->setup_subtotal();
-		$this->currency = $this->setup_currency();
+			$all_payment_statuses  = give_get_payment_statuses();
+			$this->status_nicename = array_key_exists( $this->status, $all_payment_statuses ) ? $all_payment_statuses[ $this->status ] : ucfirst( $this->status );
 
-		// Gateway based.
-		$this->gateway        = $this->setup_gateway();
-		$this->transaction_id = $this->setup_transaction_id();
+			// Currency Based.
+			$this->total    = $this->setup_total();
+			$this->subtotal = $this->setup_subtotal();
+			$this->currency = $this->setup_currency();
 
-		// User based.
-		$this->ip          = $this->setup_ip();
-		$this->customer_id = $this->setup_donor_id(); // Backward compatibility
-		$this->donor_id    = $this->setup_donor_id();
-		$this->user_id     = $this->setup_user_id();
-		$this->email       = $this->setup_email();
-		$this->user_info   = $this->setup_user_info();
-		$this->address     = $this->setup_address();
-		$this->first_name  = $this->user_info['first_name'];
-		$this->last_name   = $this->user_info['last_name'];
+			// Gateway based.
+			$this->gateway        = $this->setup_gateway();
+			$this->transaction_id = $this->setup_transaction_id();
 
-		// Other Identifiers.
-		$this->form_title = $this->setup_form_title();
-		$this->form_id    = $this->setup_form_id();
-		$this->price_id   = $this->setup_price_id();
-		$this->key        = $this->setup_payment_key();
-		$this->number     = $this->setup_payment_number();
+			// User based.
+			$this->ip          = $this->setup_ip();
+			$this->customer_id = $this->setup_donor_id(); // Backward compatibility
+			$this->donor_id    = $this->setup_donor_id();
+			$this->user_id     = $this->setup_user_id();
+			$this->email       = $this->setup_email();
+			$this->user_info   = $this->setup_user_info();
+			$this->address     = $this->setup_address();
+			$this->first_name  = $this->user_info['first_name'];
+			$this->last_name   = $this->user_info['last_name'];
+
+			// Other Identifiers.
+			$this->form_title = $this->setup_form_title();
+			$this->form_id    = $this->setup_form_id();
+			$this->price_id   = $this->setup_price_id();
+			$this->key        = $this->setup_payment_key();
+			$this->number     = $this->setup_payment_number();
+
+			Give_Cache::set_group( $this->ID, get_object_vars( $this ), 'give-donations' );
+		} else {
+
+			foreach ( $donation_vars as $donation_var => $value ) {
+				$this->$donation_var = $value;
+			}
+		}
 
 		/**
 		 * Fires after payment setup.
@@ -577,6 +589,7 @@ final class Give_Payment {
 		return true;
 	}
 
+
 	/**
 	 * Payment class object is storing various meta value in object parameter.
 	 * So if user is updating payment meta but not updating payment object, then payment meta values will not reflect/changes on payment meta automatically
@@ -591,6 +604,9 @@ final class Give_Payment {
 	 * @return void
 	 */
 	public function update_payment_setup( $payment_id ) {
+		// Delete cache.
+		Give_Cache::delete_group( $this->ID,'give-donations' );
+		
 		$this->setup_payment( $payment_id );
 	}
 
@@ -1274,6 +1290,9 @@ final class Give_Payment {
 	 * @return mixed             The value from the post meta
 	 */
 	public function get_meta( $meta_key = '_give_payment_meta', $single = true ) {
+		if( ! has_filter( 'get_post_metadata', 'give_bc_v20_get_payment_meta' ) && ! doing_filter( 'get_post_metadata' ) ) {
+			add_filter( 'get_post_metadata', 'give_bc_v20_get_payment_meta', 999, 4 );
+		}
 
 		$meta = give_get_meta( $this->ID, $meta_key, $single );
 

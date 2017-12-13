@@ -53,6 +53,28 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							'type' => 'title',
 						),
 						array(
+							'name'    => __( 'Cache', 'give' ),
+							'desc'    => __( 'If caching enabled then plugin start caching custom post type related queries and reduce load from your site.', 'give' ),
+							'id'      => 'cache',
+							'type'    => 'radio_inline',
+							'default' => 'enabled',
+							'options' => array(
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							),
+						),
+						array(
+							'name'    => __( 'Remove Data on Uninstall', 'give' ),
+							'desc'    => __( 'When the plugin is deleted, completely remove all Give data. This includes all Give settings, forms, form meta, donor, donor data, donations. Everything.', 'give' ),
+							'id'      => 'uninstall_on_delete',
+							'type'    => 'radio_inline',
+							'default' => 'disabled',
+							'options' => array(
+								'enabled'  => __( 'Yes, Remove all data', 'give' ),
+								'disabled' => __( 'No, keep my Give settings and donation data', 'give' ),
+							),
+						),
+						array(
 							'name'    => __( 'Default User Role', 'give' ),
 							'desc'    => __( 'Assign default user roles for donors when donors opt to register as a WP User.', 'give' ),
 							'id'      => 'donor_default_user_role',
@@ -93,17 +115,6 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							'options' => array(
 								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' ),
-							),
-						),
-						array(
-							'name'    => __( 'Remove Data on Uninstall', 'give' ),
-							'desc'    => __( 'When the plugin is deleted, completely remove all Give data. This includes all Give settings, forms, form meta, donor, donor data, donations. Everything.', 'give' ),
-							'id'      => 'uninstall_on_delete',
-							'type'    => 'radio_inline',
-							'default' => 'disabled',
-							'options' => array(
-								'enabled'  => __( 'Yes, Remove all data', 'give' ),
-								'disabled' => __( 'No, keep my Give settings and donation data', 'give' ),
 							),
 						),
 						array(
