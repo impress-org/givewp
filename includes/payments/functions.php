@@ -1209,30 +1209,30 @@ function give_donation_amount( $donation, $format_args = array() ) {
 	$amount           = $donation->total;
 	$formatted_amount = $amount;
 
-	if ( ! empty( $format_args ) ) {
-
-		if ( is_bool( $format_args ) ) {
-			$format_args = array(
-				'currency' => (bool) $format_args,
-				'amount'   => (bool) $format_args,
-			);
-		}
-
-		$format_args = wp_parse_args(
-			$format_args,
-			array(
-				'currency' => false,
-				'amount'   => false,
-
-				// Define context of donation amount, by default keep $type as blank.
-				// Pass as 'stats' to calculate donation report on basis of base amount for the Currency-Switcher Add-on.
-				// For Eg. In Currency-Switcher add on when donation has been made through
-				// different currency other than base currency, in that case for correct
-				//report calculation based on base currency we will need to return donation
-				// base amount and not the converted amount .
-				'type'     => '',
-			)
+	if ( is_bool( $format_args ) ) {
+		$format_args = array(
+			'currency' => (bool) $format_args,
+			'amount'   => (bool) $format_args,
 		);
+	}
+
+	$format_args = wp_parse_args(
+		$format_args,
+		array(
+			'currency' => false,
+			'amount'   => false,
+
+			// Define context of donation amount, by default keep $type as blank.
+			// Pass as 'stats' to calculate donation report on basis of base amount for the Currency-Switcher Add-on.
+			// For Eg. In Currency-Switcher add on when donation has been made through
+			// different currency other than base currency, in that case for correct
+			//report calculation based on base currency we will need to return donation
+			// base amount and not the converted amount .
+			'type'     => '',
+		)
+	);
+
+	if ( $format_args['amount'] || $format_args['currency'] ) {
 
 		if ( $format_args['amount'] ) {
 
