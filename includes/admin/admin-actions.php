@@ -543,8 +543,11 @@ function give_donation_import_callback() {
 	remove_action( 'give_insert_user', 'give_new_user_notification', 10 );
 	remove_action( 'give_insert_payment', 'give_payment_save_page_data' );
 
+	$current_key  = $start;
 	foreach ( $raw_data as $row_data ) {
+		$import_setting['donation_key']  = $current_key;
 		give_save_import_donation_to_db( $raw_key, $row_data, $main_key, $import_setting );
+		$current_key++;
 	}
 
 	// Check if function exists or not.

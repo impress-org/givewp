@@ -89,8 +89,7 @@ class Give_Payments_Query extends Give_Stats {
 			'fields'          => null,
 			'gateway'         => null,
 			'give_forms'      => null,
-			'offset'          => 0,
-			'paged'           => 0,
+			'offset'          => null,
 			'post_parent'     => 0,
 
 			// Currently these params only works with get_payment_by_group
@@ -789,9 +788,9 @@ class Give_Payments_Query extends Give_Stats {
 		if (
 			empty( $this->args['nopaging'] ) &&
 			empty( $this->args['offset'] ) &&
-			( ! empty( $this->args['paged'] ) && 0 < $this->args['paged'] )
+			( ! empty( $this->args['page'] ) && 0 < $this->args['page'] )
 		) {
-			$this->args['offset'] = $this->args['posts_per_page'] * ( $this->args['paged'] - 1 );
+			$this->args['offset'] = $this->args['posts_per_page'] * ( $this->args['page'] - 1 );
 		}
 
 		// Set fields.
