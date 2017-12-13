@@ -1733,7 +1733,7 @@ function give_get_payment_form_title( $payment_meta, $only_level = false, $separ
 		$form_title .= ' ' . $separator . ' ';
 	}
 
-	$form_title .= "{$form_title}<span class=\"donation-level-text-wrap\">{$level_label}</span>";
+	$form_title .= "<span class=\"donation-level-text-wrap\">{$level_label}</span>";
 
 	return apply_filters( 'give_get_payment_form_title', $form_title, $payment_meta );
 
