@@ -89,8 +89,7 @@ class Give_Payments_Query extends Give_Stats {
 			'fields'          => null,
 			'gateway'         => null,
 			'give_forms'      => null,
-			'offset'          => 0,
-			'paged'           => 0,
+			'offset'          => null,
 			'post_parent'     => 0,
 
 			// Currently these params only works with get_payment_by_group
