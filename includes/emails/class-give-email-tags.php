@@ -1214,7 +1214,7 @@ function give_email_tag_email_access_link( $tag_args ) {
 			array(
 				'give_nl' => $verify_key,
 			),
-			get_permalink( give_get_option( 'history_page' ) )
+			get_permalink( give_get_history_page_uri() )
 		);
 
 		if ( empty( $tag_args['email_content_type'] ) || 'text/html' === $tag_args['email_content_type'] ) {
