@@ -1342,42 +1342,41 @@ function give_v1818_assign_custom_amount_set_donation() {
 	/* @var Give_Updates $give_updates */
 	$give_updates   = Give_Updates::get_instance();
 
-	$donations_count = count( give_get_payments( array(
-		'number' => - 1,
-		'output' => 'payments',
-	) ) );
+	$donations = new WP_Query( array(
+			'paged'          => $give_updates->step,
+			'status'         => 'any',
+			'order'          => 'ASC',
+			'post_type'      => array( 'give_payment' ),
+			'posts_per_page' => 100,
+		)
+	);
 
-	$donations_list = give_get_payments( array(
-		'offset' => ( 1 === $give_updates->step ) ? 0 : $give_updates->step * 20,
-		'number' => 20,
-		'status' => 'any',
-		'output' => 'payments',
-	) );
+	if ( $donations->have_posts() ) {
+		$give_updates->set_percentage( $donations->found_posts, $give_updates->step * 20 );
 
-	if ( is_array( $donations_list ) && count( $donations_list ) > 0 ) {
+		while ( $donations->have_posts() ) {
+			$donations->the_post();
 
-		// Set Percentage based on each page.
-		$give_updates->set_percentage( $donations_count, ( $give_updates->step * 20 ) );
-
-		foreach ( $donations_list as $donation ) {
-			$form          = new Give_Donate_Form( $donation->form_id );
-			$donation_meta = give_get_payment_meta( $donation->ID );
+			$form          = new Give_Donate_Form( give_get_meta( get_the_ID(), '_give_payment_form_id', true ) );
+			$donation_meta = give_get_payment_meta( get_the_ID() );
 
 			// Update Donation meta with price_id set as custom, only if it is:
 			// 1. Donation Type = Set Donation.
 			// 2. Donation Price Id is not set to custom.
 			// 3. Form has not enabled custom price and donation amount assures that it is custom amount.
 			if (
+				$form->ID &&
 				$form->is_set_type_donation_form() &&
-				'custom' !== $donation_meta['price_id'] &&
-				$form->is_custom_price( $donation->total )
+				( 'custom' !== $donation_meta['price_id'] ) &&
+				$form->is_custom_price( give_get_meta( get_the_ID(), '_give_payment_total', true ) )
 			) {
 				$donation_meta['price_id'] = 'custom';
-				give_update_meta( $donation->ID, '_give_payment_meta', $donation_meta );
-				give_update_meta( $donation->ID, '_give_payment_price_id', 'custom' );
+				give_update_meta( get_the_ID(), '_give_payment_meta', $donation_meta );
+				give_update_meta( get_the_ID(), '_give_payment_price_id', 'custom' );
 			}
-
 		}
+
+		wp_reset_postdata();
 	} else {
 		// Update Ran Successfully.
 		give_set_upgrade_complete( 'v1818_assign_custom_amount_set_donation' );
