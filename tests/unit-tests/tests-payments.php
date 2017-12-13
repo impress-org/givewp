@@ -575,6 +575,14 @@ class Tests_Payments extends Give_Unit_Test_Case {
 		$donation->currency = 'INR';
 		$donation->save();
 
+		if( is_array( $format_args['currency'] ) ) {
+			$format_args['currency']['currency_code'] = 'INR';
+		}
+
+		if( is_array( $format_args['amount'] ) ) {
+			$format_args['amount']['currency'] = 'INR';
+		}
+
 		$this->assertSame( $expected2, give_donation_amount( $donation->ID, $format_args ) );
 
 	}
@@ -588,6 +596,8 @@ class Tests_Payments extends Give_Unit_Test_Case {
 	 * @return array
 	 */
 	public function give_donation_amount_provider() {
+		$global_currency_code = give_get_option( 'currency' );
+
 		return array(
 			array( false, '2873892713.34', '2873892713.34' ),
 			array( true, '&#36;2,873,892,713.34', '&#8377;2,87,38,92,713.34' ),
@@ -595,6 +605,45 @@ class Tests_Payments extends Give_Unit_Test_Case {
 			array( array( 'currency' => false, 'amount' => true ), '2,873,892,713.34', '2,87,38,92,713.34' ),
 			array( array( 'currency' => true, 'amount' => true ), '&#36;2,873,892,713.34', '&#8377;2,87,38,92,713.34' ),
 			array( array( 'currency' => false, 'amount' => false ), '2873892713.34', '2873892713.34' ),
+
+			array(
+				array(
+					'currency' => array(
+						'decode_currency' => true,
+						'currency_code'   => $global_currency_code,
+					),
+					'amount'   => false,
+				),
+				'$2873892713.34',
+				'₹2873892713.34',
+			),
+
+			array(
+				array(
+					'currency' => false,
+					'amount'   => array(
+						'decimal'  => false,
+						'currency' => $global_currency_code,
+					),
+				),
+				'2,873,892,713',
+				'2,87,38,92,713',
+			),
+
+			array(
+				array(
+					'currency' => array(
+						'decode_currency' => true,
+						'currency_code'   => $global_currency_code,
+					),
+					'amount'   => array(
+						'decimal'  => false,
+						'currency' => $global_currency_code,
+					),
+				),
+				'$2,873,892,713',
+				'₹2,87,38,92,713',
+			),
 		);
 	}
 }
