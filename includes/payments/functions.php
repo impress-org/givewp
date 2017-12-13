@@ -299,7 +299,7 @@ function give_delete_donation( $payment_id = 0, $update_donor = true ) {
 	$payment = new Give_Payment( $payment_id );
 
 	// Bailout.
-	if( ! $payment->ID ) {
+	if ( ! $payment->ID ) {
 		return;
 	}
 
@@ -412,17 +412,17 @@ function give_undo_donation( $payment_id ) {
  */
 function give_count_payments( $args = array() ) {
 	// Backward compatibility.
-	if( ! empty( $args['start-date'] ) ) {
+	if ( ! empty( $args['start-date'] ) ) {
 		$args['start_date'] = $args['start-date'];
 		unset( $args['start-date'] );
 	}
 
-	if( ! empty( $args['end-date'] ) ) {
+	if ( ! empty( $args['end-date'] ) ) {
 		$args['end_date'] = $args['end-date'];
 		unset( $args['end-date'] );
 	}
 
-	if( ! empty( $args['form_id'] ) ) {
+	if ( ! empty( $args['form_id'] ) ) {
 		$args['give_forms'] = $args['form_id'];
 		unset( $args['form_id'] );
 	}
@@ -432,7 +432,7 @@ function give_count_payments( $args = array() ) {
 	$args['group_by'] = 'post_status';
 	$args['count']    = 'true';
 
-	$donations_obj = new Give_Payments_Query( $args );
+	$donations_obj   = new Give_Payments_Query( $args );
 	$donations_count = $donations_obj->get_payment_by_group();
 
 	/**
@@ -1627,9 +1627,9 @@ function give_remove_payment_notes_in_comment_counts( $stats, $post_id ) {
 		return $stats;
 	}
 
-	$stats = wp_cache_get( "comments-{$post_id}", 'counts' );
+	$stats = Give_Cache::get_group( "comments-{$post_id}", 'counts' );
 
-	if ( false !== $stats ) {
+	if ( ! is_null( $stats ) ) {
 		return $stats;
 	}
 
@@ -1667,7 +1667,7 @@ function give_remove_payment_notes_in_comment_counts( $stats, $post_id ) {
 	}
 
 	$stats = (object) $stats;
-	wp_cache_set( "comments-{$post_id}", $stats, 'counts' );
+	Give_Cache::set_group( "comments-{$post_id}", $stats, 'counts' );
 
 	return $stats;
 }
@@ -1708,35 +1708,57 @@ function give_filter_where_older_than_week( $where = '' ) {
  * @return string $form_title Returns the full title if $only_level is false, otherwise returns the levels title.
  */
 function give_get_payment_form_title( $payment_meta, $only_level = false, $separator = '' ) {
-
 	$form_id     = isset( $payment_meta['form_id'] ) ? $payment_meta['form_id'] : 0;
 	$price_id    = isset( $payment_meta['price_id'] ) ? $payment_meta['price_id'] : null;
 	$form_title  = isset( $payment_meta['form_title'] ) ? $payment_meta['form_title'] : '';
 	$level_label = '';
 
-	if ( $only_level == true ) {
-		$form_title = '';
+	$cache_key = Give_Cache::get_key(
+		'give_forms',
+		array(
+			$form_id,
+			$price_id,
+			$form_title,
+			$only_level,
+			$separator
+		)
+		, false
+	);
+
+	$form_title_html = Give_Cache::get_db_query( $cache_key );
+
+	if ( is_null( $form_title_html ) ) {
+		if ( $only_level == true ) {
+			$form_title = '';
+		}
+
+		$form_title_html = $form_title;
+
+		if ( 'custom' === $price_id ) {
+			$custom_amount_text = give_get_meta( $form_id, '_give_custom_amount_text', true );
+			$level_label        = ! empty( $custom_amount_text ) ? $custom_amount_text : __( 'Custom Amount', 'give' );
+		} elseif ( give_has_variable_prices( $form_id ) ) {
+			$level_label = give_get_price_option_name( $form_id, $price_id );
+		}
+
+		// Only add separator if there is a form title.
+		if (
+			! empty( $form_title_html ) &&
+			! empty( $level_label )
+		) {
+			$form_title_html .= " {$separator} ";
+		}
+
+		$form_title_html .= "<span class=\"donation-level-text-wrap\">{$level_label}</span>";
+		Give_Cache::set_db_query( $cache_key, $form_title_html );
 	}
 
-	if ( 'custom' === $price_id ) {
-		$custom_amount_text = give_get_meta( $form_id, '_give_custom_amount_text', true );
-		$level_label        = ! empty( $custom_amount_text ) ? $custom_amount_text : __( 'Custom Amount', 'give' );
-	} elseif ( give_has_variable_prices( $form_id ) ) {
-		$level_label = give_get_price_option_name( $form_id, $price_id );
-	}
-
-	// Only add separator if there is a form title.
-	if (
-		! empty( $form_title ) &&
-		! empty( $level_label )
-	) {
-		$form_title .= ' ' . $separator . ' ';
-	}
-
-	$form_title .= "<span class=\"donation-level-text-wrap\">{$level_label}</span>";
-
-	return apply_filters( 'give_get_payment_form_title', $form_title, $payment_meta );
-
+	/**
+	 * Filter form title with level html
+	 *
+	 * @since 1.0
+	 */
+	return apply_filters( 'give_get_payment_form_title', $form_title_html, $payment_meta );
 }
 
 /**

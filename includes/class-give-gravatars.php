@@ -94,15 +94,16 @@ class Give_Donors_Gravatars {
 		$hashkey = md5( strtolower( trim( $email ) ) );
 		$uri     = 'http://www.gravatar.com/avatar/' . $hashkey . '?d=404';
 
-		$data = wp_cache_get( $hashkey );
-		if ( false === $data ) {
+		$data = Give_Cache::get_group( $hashkey );
+
+		if ( is_null( $data ) ) {
 			$response = wp_remote_head( $uri );
 			if ( is_wp_error( $response ) ) {
 				$data = 'not200';
 			} else {
 				$data = $response['response']['code'];
 			}
-			wp_cache_set( $hashkey, $data, $group = '', $expire = 60 * 5 );
+			Give_Cache::set_group( $hashkey, $data, $group = '', $expire = 60 * 5 );
 
 		}
 		if ( $data == '200' ) {

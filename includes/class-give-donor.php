@@ -131,7 +131,7 @@ class Give_Donor {
 	 *
 	 * @var    array
 	 */
-	public $address;
+	public $address = array();
 
 	/**
 	 * The Database Abstraction
@@ -196,26 +196,37 @@ class Give_Donor {
 			return false;
 		}
 
-		foreach ( $donor as $key => $value ) {
+		// Get cached donors.
+		$donor_vars = Give_Cache::get_group( $donor->id, 'give-donors' );
 
-			switch ( $key ) {
+		if( is_null( $donor_vars ) ){
+			foreach ( $donor as $key => $value ) {
 
-				case 'notes':
-					$this->$key = $this->get_notes();
-					break;
+				switch ( $key ) {
 
-				default:
-					$this->$key = $value;
-					break;
+					case 'notes':
+						$this->$key = $this->get_notes();
+						break;
 
+					default:
+						$this->$key = $value;
+						break;
+
+				}
+			}
+
+			// Get donor's all email including primary email.
+			$this->emails = (array) $this->get_meta( 'additional_email', false );
+			$this->emails = array( 'primary' => $this->email ) + $this->emails;
+
+			$this->setup_address();
+
+			Give_Cache::set_group( $donor->id, get_object_vars( $this ), 'give-donors' );
+		} else{
+			foreach ( $donor_vars as $donor_var => $value ) {
+				$this->$donor_var = $value;
 			}
 		}
-
-		// Get donor's all email including primary email.
-		$this->emails = (array) $this->get_meta( 'additional_email', false );
-		$this->emails = array( 'primary' => $this->email ) + $this->emails;
-
-		$this->setup_address();
 
 		// Donor ID and email are the only things that are necessary, make sure they exist.
 		if ( ! empty( $this->id ) && ! empty( $this->email ) ) {
@@ -252,7 +263,7 @@ class Give_Donor {
 		);
 
 		if ( empty( $addresses ) ) {
-			return array();
+			return $this->address;
 		}
 
 		foreach ( $addresses as $address ) {
@@ -392,6 +403,7 @@ class Give_Donor {
 		if ( $this->db->update( $this->id, $data ) ) {
 
 			$donor = $this->db->get_donor_by( 'id', $this->id );
+
 			$this->setup_donor( $donor );
 
 			$updated = true;
@@ -1195,7 +1207,7 @@ class Give_Donor {
 		
 		// Address ready to process even if only one value set.
 		foreach ( $address as $address_type => $value ) {
-			// @todo: Handle state feield validation on basis of country.
+			// @todo: Handle state field validation on basis of country.
 			if( in_array( $address_type, array( 'line2', 'state' )) ) {
 				continue;
 			}

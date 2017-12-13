@@ -2716,6 +2716,7 @@ var give_setting_edit = false;
 		});
 
 		$('.give_email_api_notification_status_setting input:checked').change();
+
 		// Render setting tab.
 		give_render_responsive_tabs();
 	});

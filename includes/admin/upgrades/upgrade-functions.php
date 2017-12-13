@@ -220,6 +220,15 @@ function give_show_upgrade_notices( $give_updates ) {
 		)
 	);
 
+	// v2.0.0 Donor Name Upgrades
+	$give_updates->register(
+		array(
+			'id'       => 'v20_upgrades_donor_name',
+			'version'  => '2.0.0',
+			'callback' => 'give_v20_upgrades_donor_name',
+		)
+	);
+
 	// v2.0.0 Upgrades
 	$give_updates->register(
 		array(
@@ -227,15 +236,6 @@ function give_show_upgrade_notices( $give_updates ) {
 			'version'  => '2.0.0',
 			'callback' => 'give_v20_move_metadata_into_new_table_callback',
 			'depend'   => array( 'v20_upgrades_payment_metadata', 'v20_upgrades_form_metadata' ),
-		)
-	);
-
-	// v2.0.0 Donor Name Upgrades
-	$give_updates->register(
-		array(
-			'id'       => 'v20_upgrades_donor_name',
-			'version'  => '2.0.0',
-			'callback' => 'give_v20_upgrades_donor_name',
 		)
 	);
 
@@ -251,6 +251,7 @@ function give_show_upgrade_notices( $give_updates ) {
 				'v20_upgrades_form_metadata',
 				'v20_upgrades_payment_metadata',
 				'v20_upgrades_user_address',
+				'v20_upgrades_donor_name'
 			),
 		)
 	);
@@ -1049,6 +1050,9 @@ function give_v189_upgrades() {
  * @return void
  */
 function give_v20_upgrades() {
+	// Update cache setting.
+	give_update_option( 'cache', 'enabled' );
+
 	// Upgrade email settings.
 	give_v20_upgrades_email_setting();
 }
@@ -1550,12 +1554,12 @@ function give_v20_upgrades_form_metadata_callback() {
 			'status'         => 'any',
 			'order'          => 'ASC',
 			'post_type'      => 'give_forms',
-			'posts_per_page' => 20,
+			'posts_per_page' => 100,
 		)
 	);
 
 	if ( $forms->have_posts() ) {
-		$give_updates->set_percentage( $forms->found_posts, ( $give_updates->step * 20 ) );
+		$give_updates->set_percentage( $forms->found_posts, ( $give_updates->step * 100 ) );
 
 		while ( $forms->have_posts() ) {
 			$forms->the_post();
@@ -1623,19 +1627,21 @@ function give_v20_upgrades_payment_metadata_callback() {
 			'status'         => 'any',
 			'order'          => 'ASC',
 			'post_type'      => 'give_payment',
-			'posts_per_page' => 20,
+			'posts_per_page' => 100,
 		)
 	);
 
 	if ( $forms->have_posts() ) {
-		$give_updates->set_percentage( $forms->found_posts, ( $give_updates->step * 20 ) );
+		$give_updates->set_percentage( $forms->found_posts, ( $give_updates->step * 100 ) );
 
 		while ( $forms->have_posts() ) {
 			$forms->the_post();
 			global $post;
 
 			// Split _give_payment_meta meta.
+			// @todo Remove _give_payment_meta after releases 2.0
 			$payment_meta = give_get_meta( $post->ID, '_give_payment_meta', true );
+
 			if ( ! empty( $payment_meta ) ) {
 				_give_20_bc_split_and_save_give_payment_meta( $post->ID, $payment_meta );
 			}
@@ -1652,10 +1658,14 @@ function give_v20_upgrades_payment_metadata_callback() {
 					continue;
 				}
 
-				$meta_id = $wpdb->get_var( $wpdb->prepare( "SELECT meta_id FROM $wpdb->postmeta WHERE post_id=%d AND meta_key=%s", $post->ID, $old_meta_key ) );
-				if ( ! empty( $meta_id ) ) {
-					$wpdb->query( $wpdb->prepare( "UPDATE $wpdb->postmeta SET meta_key=%s WHERE meta_id=%d", $new_meta_key, $meta_id ) );
-				}
+				$wpdb->insert(
+					$wpdb->postmeta,
+					array(
+						'post_id' => $post->ID,
+						'meta_key' => $new_meta_key,
+						'meta_value' => give_get_meta( $post->ID, $old_meta_key, true )
+					)
+				);
 			}
 
 			// Bailout
@@ -1678,8 +1688,8 @@ function give_v20_upgrades_payment_metadata_callback() {
 
 		wp_reset_postdata();
 	} else {
-		// Delete user id meta.
-		$wpdb->get_var( $wpdb->prepare( "DELETE FROM $wpdb->postmeta WHERE meta_key=%s", '_give_payment_user_id' ) );
+		// @todo Delete user id meta after releases 2.0
+		// $wpdb->get_var( $wpdb->prepare( "DELETE FROM $wpdb->postmeta WHERE meta_key=%s", '_give_payment_user_id' ) );
 
 		// No more forms found, finish up.
 		give_set_upgrade_complete( 'v20_upgrades_payment_metadata' );
@@ -1689,8 +1699,6 @@ function give_v20_upgrades_payment_metadata_callback() {
 
 /**
  * Upgrade logs data.
- *
- * @todo   : check if payment price id is necessary to store in log meta or not
  *
  * @since  2.0
  * @return void
@@ -1705,12 +1713,12 @@ function give_v20_logs_upgrades_callback() {
 			'order'          => 'DESC',
 			'post_type'      => 'give_log',
 			'post_status'    => 'any',
-			'posts_per_page' => 20,
+			'posts_per_page' => 100,
 		)
 	);
 
 	if ( $forms->have_posts() ) {
-		$give_updates->set_percentage( $forms->found_posts, $give_updates->step * 20 );
+		$give_updates->set_percentage( $forms->found_posts, $give_updates->step * 100 );
 
 		while ( $forms->have_posts() ) {
 			$forms->the_post();
@@ -1761,33 +1769,34 @@ function give_v20_logs_upgrades_callback() {
 
 		wp_reset_postdata();
 	} else {
-		// Delete terms and taxonomy.
-		$terms = get_terms( 'give_log_type', array( 'fields' => 'ids', 'hide_empty' => false ) );
+		// @todo: Delete terms and taxonomy after releases 2.0.
+		/*$terms = get_terms( 'give_log_type', array( 'fields' => 'ids', 'hide_empty' => false ) );
 		if ( ! empty( $terms ) ) {
 			foreach ( $terms as $term ) {
 				wp_delete_term( $term, 'give_log_type' );
 			}
-		}
+		}*/
 
-		// Delete logs.
-		$logIDs = get_posts( array(
+		// @todo: Delete logs after releases 2.0.
+		/*$logIDs = get_posts( array(
 				'order'          => 'DESC',
 				'post_type'      => 'give_log',
 				'post_status'    => 'any',
 				'posts_per_page' => - 1,
 				'fields'         => 'ids',
 			)
-		);
+		);*/
 
-		if ( ! empty( $logIDs ) ) {
+		/*if ( ! empty( $logIDs ) ) {
 			foreach ( $logIDs as $log ) {
 				// Delete term relationship and posts.
 				wp_delete_object_term_relationships( $log, 'give_log_type' );
 				wp_delete_post( $log, true );
 			}
-		}
+		}*/
 
-		unregister_taxonomy( 'give_log_type' );
+		// @todo: Unregister taxonomy after releases 2.0.
+		/*unregister_taxonomy( 'give_log_type' );*/
 
 		// Delete log cache.
 		Give()->logs->delete_cache();
@@ -1814,12 +1823,12 @@ function give_v20_move_metadata_into_new_table_callback() {
 			'status'         => 'any',
 			'order'          => 'ASC',
 			'post_type'      => array( 'give_forms', 'give_payment' ),
-			'posts_per_page' => 20,
+			'posts_per_page' => 100,
 		)
 	);
 
 	if ( $payments->have_posts() ) {
-		$give_updates->set_percentage( $payments->found_posts, $give_updates->step * 20 );
+		$give_updates->set_percentage( $payments->found_posts, $give_updates->step * 100 );
 
 		while ( $payments->have_posts() ) {
 			$payments->the_post();
@@ -1841,7 +1850,8 @@ function give_v20_move_metadata_into_new_table_callback() {
 							unset( $data['post_id'] );
 
 							Give()->form_meta->insert( $data );
-							delete_post_meta( get_the_ID(), $data['meta_key'] );
+							// @todo: delete form meta from post meta table after releases 2.0.
+							/*delete_post_meta( get_the_ID(), $data['meta_key'] );*/
 
 							break;
 
@@ -1850,7 +1860,9 @@ function give_v20_move_metadata_into_new_table_callback() {
 							unset( $data['post_id'] );
 
 							Give()->payment_meta->insert( $data );
-							delete_post_meta( get_the_ID(), $data['meta_key'] );
+
+							// @todo: delete donation meta from post meta table after releases 2.0.
+							/*delete_post_meta( get_the_ID(), $data['meta_key'] );*/
 
 							break;
 					}
@@ -1879,13 +1891,13 @@ function give_v20_upgrades_donor_name() {
 	$give_updates = Give_Updates::get_instance();
 
 	$args = array(
-		'offset' => ( 1 === $give_updates->step ) ? 0 : $give_updates->step * 20,
+		'offset' => ( 1 === $give_updates->step ) ? 0 : $give_updates->step * 100,
 	);
 
 	$donors = Give()->donors->get_donors( $args );
 
 	if ( $donors ) {
-		$give_updates->set_percentage( count( $donors ), $give_updates->step * 20 );
+		$give_updates->set_percentage( count( $donors ), $give_updates->step * 100 );
 		// Loop through Donors
 		foreach ( $donors as $donor ) {
 
@@ -1938,15 +1950,15 @@ function give_v20_upgrades_user_address() {
 	/* @var WP_User_Query $user_query */
 	$user_query = new WP_User_Query(
 		array(
-			'number' => 20,
-			'offset' => ( 1 === $give_updates->step ) ? 0 : $give_updates->step * 20,
+			'number' => 100,
+			'offset' => ( 1 === $give_updates->step ) ? 0 : $give_updates->step * 100,
 		)
 	);
 
 	$users = $user_query->get_results();
 
 	if ( $users ) {
-		$give_updates->set_percentage( $user_query->get_total(), $give_updates->step * 20 );
+		$give_updates->set_percentage( $user_query->get_total(), $give_updates->step * 100 );
 
 		// Loop through Donors
 		foreach ( $users as $user ) {
@@ -1973,7 +1985,10 @@ function give_v20_upgrades_user_address() {
 				$address = maybe_unserialize( $address );
 				$donor->add_address( 'personal', $address );
 				$donor->add_address( 'billing[]', $address );
-				delete_user_meta( $user->ID, '_give_user_address' );
+
+
+				// @todo: delete _give_user_address from user meta after releases 2.0.
+				/*delete_user_meta( $user->ID, '_give_user_address' );*/
 			}
 		}
 

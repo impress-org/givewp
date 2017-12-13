@@ -430,6 +430,11 @@ $plugins      = give_get_plugins();
 			<td><?php echo esc_html( GIVE_VERSION ); ?></td>
 		</tr>
 		<tr>
+			<td data-export-label="Give Cache"><?php _e( 'Give Cache', 'give' ); ?>:</td>
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'Whether cache is enabled in Give settings.', 'give' ) ); ?></td>
+			<td><?php echo give_is_setting_enabled( give_get_option('cache', 'enabled' ) ) ? __( 'Enabled', 'give' ) : __( 'Disabled', 'give' ); ?></td>
+		</tr>
+		<tr>
 			<td data-export-label="Upgraded From"><?php _e( 'Upgraded From', 'give' ); ?>:</td>
 			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The version of Give installed prior to the last update.', 'give' ) ); ?></td>
 			<td><?php echo esc_html( get_option( 'give_version_upgraded_from', '&ndash;' ) ); ?></td>
