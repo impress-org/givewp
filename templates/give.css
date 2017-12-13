@@ -2282,6 +2282,7 @@ Avada
   height: 100%;
   z-index: 2147483540;
   position: fixed;
+  overflow: hidden;
   outline: none !important;
   -webkit-backface-visibility: hidden;
   -webkit-overflow-scrolling: touch;
@@ -2293,29 +2294,11 @@ Avada
     .give-modal form[id*='give-form'] .give-payment-mode-label {
       margin-top: 0;
       padding-top: 0; }
-  .give-modal .mfp-container {
-    text-align: center;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    padding: 0 8px;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box; }
-  .give-modal .mfp-container:before {
-    content: '';
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle; }
-  .give-modal .mfp-align-top .mfp-container:before {
-    display: none; }
+    @media (max-width: 580px) {
+      .give-modal form[id*='give-form'] .give-input {
+        font-size: 16px; } }
   .give-modal .mfp-content {
-    display: inline-block;
     box-sizing: border-box;
-    vertical-align: middle;
-    text-align: left;
     position: relative;
     background: #FFF;
     padding: 20px;
@@ -2328,39 +2311,35 @@ Avada
     .give-modal .mfp-content [id*='give-form'].give-display-button-only .give-donation-amount,
     .give-modal .mfp-content [id*='give-form'].give-display-button-only .give-donation-levels-wrap {
       display: block; }
-  .give-modal .mfp-inline-holder .mfp-content,
-  .give-modal .mfp-ajax-holder .mfp-content {
-    width: 100%;
-    cursor: auto; }
-  .give-modal .mfp-ajax-cur {
-    cursor: progress; }
-  .give-modal .mfp-zoom-out-cur, .give-modal .mfp-zoom-out-cur .mfp-image-holder .mfp-close {
-    cursor: -moz-zoom-out;
-    cursor: -webkit-zoom-out;
-    cursor: zoom-out; }
-  .give-modal .mfp-zoom {
-    cursor: pointer;
-    cursor: -webkit-zoom-in;
-    cursor: -moz-zoom-in;
-    cursor: zoom-in; }
-  .give-modal .mfp-auto-cursor .mfp-content {
-    cursor: auto; }
-  .give-modal .mfp-close,
-  .give-modal .mfp-arrow,
-  .give-modal .mfp-preloader,
-  .give-modal .mfp-counter {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none; }
-  .give-modal .mfp-close:hover {
-    background-color: transparent; }
+    .give-modal .mfp-content .mfp-close:hover {
+      background-color: transparent; }
   .give-modal form.give-form button.mfp-close {
     position: absolute;
     display: block !important; }
   .give-modal .mfp-container:after {
     display: none; }
-  .give-modal .mfp-loading.mfp-figure {
-    display: none; }
+
+.give-modal {
+  /* animate in */
+  /* animate out */ }
+  .give-modal .mfp-content {
+    vertical-align: middle;
+    opacity: 0;
+    transition: all 0.2s;
+    transform: translateY(-100px); }
+  .give-modal.mfp-bg {
+    opacity: 0;
+    transition: all 0.2s; }
+  .give-modal.mfp-ready .mfp-content {
+    opacity: 1;
+    transform: translateY(0); }
+  .give-modal.mfp-ready.mfp-bg {
+    opacity: 0.8; }
+  .give-modal.mfp-removing .mfp-content {
+    transform: translateY(-50px);
+    opacity: 0; }
+  .give-modal.mfp-removing.mfp-bg {
+    opacity: 0; }
 
 /**
  * Give Frontend Tables SCSS
@@ -2440,5 +2419,21 @@ body.give-twentyseventeen.colors-dark div.give_notices p {
 
 body.give-twentyseventeen.colors-dark form[id*="give"] fieldset {
   background-color: transparent; }
+
+.give-donation-history .give-table {
+  table-layout: auto; }
+  .give-donation-history .give-table .give-security-column {
+    float: left; }
+    .give-donation-history .give-table .give-security-column.give-security-description-wrap {
+      width: 75%;
+      padding: 16px 13px;
+      font-size: 12px;
+      font-style: italic; }
+    .give-donation-history .give-table .give-security-column.give-security-button-wrap {
+      width: 25%;
+      padding: 25px 5px; }
+      .give-donation-history .give-table .give-security-column.give-security-button-wrap span {
+        display: none;
+        padding: 0 20px; }
 
 /*# sourceMappingURL=../assets/sourcemaps/give.css.map */

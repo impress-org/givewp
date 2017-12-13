@@ -162,7 +162,23 @@ function give_get_ip() {
 		$ip = $_SERVER['REMOTE_ADDR'];
 	}
 
-	return apply_filters( 'give_get_ip', $ip );
+	/**
+	 * Filter the IP
+	 *
+	 * @since 1.0
+	 */
+	$ip = apply_filters( 'give_get_ip', $ip );
+
+	// Filter empty values.
+	if( false !== strpos( $ip, ',' ) ) {
+		$ip = give_clean( explode( ',', $ip ) );
+		$ip = array_filter( $ip );
+		$ip = implode( ',', $ip );
+	} else{
+		$ip = give_clean( $ip );
+	}
+
+	return $ip;
 }
 
 
@@ -194,6 +210,28 @@ function give_set_purchase_session( $purchase_data = array() ) {
  */
 function give_get_purchase_session() {
 	return Give()->session->get( 'give_purchase' );
+}
+
+/**
+ * Retrieve Payment Key of the Receipt Access Session.
+ *
+ * @since 1.8.17
+ *
+ * @return array|string
+ */
+function give_get_receipt_session() {
+	return Give()->session->get( 'receipt_access' );
+}
+
+/**
+ * Retrieve Payment Key of the History Access Session.
+ *
+ * @since 1.8.17
+ *
+ * @return array|string
+ */
+function give_get_history_session() {
+	return (bool) Give()->session->get( 'history_access' );
 }
 
 /**
@@ -583,29 +621,29 @@ function give_get_newsletter() {
 
 	<script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>
 	<script type='text/javascript'>(function( $ ) {
-				window.fnames = new Array();
-				window.ftypes = new Array();
-				fnames[ 0 ] = 'EMAIL';
-				ftypes[ 0 ] = 'email';
-				fnames[ 1 ] = 'FNAME';
-				ftypes[ 1 ] = 'text';
-				fnames[ 2 ] = 'LNAME';
-				ftypes[ 2 ] = 'text';
+			window.fnames = new Array();
+			window.ftypes = new Array();
+			fnames[ 0 ] = 'EMAIL';
+			ftypes[ 0 ] = 'email';
+			fnames[ 1 ] = 'FNAME';
+			ftypes[ 1 ] = 'text';
+			fnames[ 2 ] = 'LNAME';
+			ftypes[ 2 ] = 'text';
 
-				//Successful submission
-				$( 'form[name="mc-embedded-subscribe-form"]' ).on( 'submit', function() {
+			//Successful submission
+			$( 'form[name="mc-embedded-subscribe-form"]' ).on( 'submit', function() {
 
-					var email_field = $( this ).find( '#mce-EMAIL' ).val();
-					if ( ! email_field ) {
-						return false;
-					}
-					$( this ).find( '.give-newsletter-confirmation' ).show().delay( 5000 ).slideUp();
-					$( this ).find( '.give-newsletter-form' ).hide();
+				var email_field = $( this ).find( '#mce-EMAIL' ).val();
+				if ( ! email_field ) {
+					return false;
+				}
+				$( this ).find( '.give-newsletter-confirmation' ).show().delay( 5000 ).slideUp();
+				$( this ).find( '.give-newsletter-form' ).hide();
 
-				} );
+			} );
 
-			}( jQuery ));
-			var $mcj = jQuery.noConflict( true );
+		}( jQuery ));
+		var $mcj = jQuery.noConflict( true );
 
 
 	</script>
@@ -853,11 +891,25 @@ function give_can_view_receipt( $payment_key = '' ) {
 		}
 	}
 
-	$session = give_get_purchase_session();
-	if ( ! empty( $session ) && ! is_user_logged_in() ) {
-		if ( $session['purchase_key'] === $payment_meta['key'] ) {
+	// Check whether it is purchase session?
+	$purchase_session = give_get_purchase_session();
+	if ( ! empty( $purchase_session ) && ! is_user_logged_in() ) {
+		if ( $purchase_session['purchase_key'] === $payment_meta['key'] ) {
 			$return = true;
 		}
+	}
+
+	// Check whether it is receipt access session?
+	$receipt_session = give_get_receipt_session();
+	if ( ! empty( $receipt_session ) && ! is_user_logged_in() ) {
+		if ( $receipt_session === $payment_meta['key'] ) {
+			$return = true;
+		}
+	}
+
+	// Check whether it is history access session?
+	if ( true === give_get_history_session() ) {
+		$return = true;
 	}
 
 	return (bool) apply_filters( 'give_can_view_receipt', $return, $payment_key );
@@ -1498,4 +1550,48 @@ function give_get_core_settings_json( $file_name ) {
 	$file_contents = file_get_contents( $file_path );
 
 	return $file_contents;
+}
+
+/**
+ * Get number of donation to show when user is not login.
+ *
+ * @since 1.8.17
+ *
+ * @return int $country The two letter country code for the site's base country
+ */
+function give_get_limit_display_donations() {
+	return give_get_option( 'limit_display_donations', 1 );
+}
+
+/**
+ * Add footer to the table when donor is view the donation history page with out login
+ *
+ * @since 1.8.17
+ */
+function give_donation_history_table_end() {
+	$email = Give()->session->get( 'give_email' );
+	?>
+	<tfoot>
+	<tr>
+		<td colspan="9999">
+			<div class="give-security-wrap">
+				<div class="give-security-column give-security-description-wrap">
+					<?php
+					echo sprintf(
+						__( 'For security reasons, please confirm your email address (%s) to view your complete donation history.', 'give' ),
+						$email
+					);
+					?>
+				</div>
+				<div class="give-security-column give-security-button-wrap">
+					<a href="#" data-email="<?php echo $email; ?>" id="give-confirm-email-btn" class="give-confirm-email-btn give-btn">
+						<?php _e( 'Confirm Email', 'give' ); ?>
+					</a>
+					<span><?php _e( 'Email Sent!', 'give' ); ?></span>
+				</div>
+			</div>
+		</td>
+	</tr>
+	</tfoot>
+	<?php
 }

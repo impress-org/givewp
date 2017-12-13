@@ -58,7 +58,8 @@ class Give_Payments_Query extends Give_Stats {
 	/**
 	 * Default query arguments.
 	 *
-	 * Not all of these are valid arguments that can be passed to WP_Query. The ones that are not, are modified before the query is run to convert them to the proper syntax.
+	 * Not all of these are valid arguments that can be passed to WP_Query. The ones that are not, are modified before
+	 * the query is run to convert them to the proper syntax.
 	 *
 	 * @since  1.0
 	 * @access public
@@ -88,6 +89,9 @@ class Give_Payments_Query extends Give_Stats {
 			'fields'          => null,
 			'gateway'         => null,
 			'give_forms'      => null,
+			'offset'          => 0,
+			'paged'           => 0,
+			'post_parent'     => 0,
 
 			// Currently these params only works with get_payment_by_group
 			'group_by'        => '',
@@ -175,7 +179,6 @@ class Give_Payments_Query extends Give_Stats {
 	 * @access private
 	 */
 	private function unset_filters() {
-		$this->date_filter_post();
 		remove_filter( 'posts_orderby', array( $this, 'custom_orderby' ) );
 	}
 
@@ -245,7 +248,6 @@ class Give_Payments_Query extends Give_Stats {
 		return $this->payments;
 	}
 
-
 	/**
 	 * Get payments by group
 	 *
@@ -264,29 +266,12 @@ class Give_Payments_Query extends Give_Stats {
 		if ( in_array( $this->args['group_by'], $allowed_groups ) ) {
 			// Set only count in result.
 			if ( $this->args['count'] ) {
-				$statuses     = get_post_stati();
-				$status_query = '';
 
-				$counter = 0;
-				foreach ( $statuses as $status ) {
-					$prefix       = $counter ? " OR " : '';
-					$status_query .= "{$prefix}{$wpdb->posts}.post_status=\"{$status}\"";
-					$counter ++;
-				}
+				$this->set_filters();
 
-				$new_results = $wpdb->get_results(
-					"
-					SELECT {$wpdb->posts}.post_status, COUNT({$wpdb->posts}.ID)
-					FROM {$wpdb->posts}
-					WHERE 1=1 
-					AND {$wpdb->posts}.post_parent = 0 
-					AND {$wpdb->posts}.post_type = 'give_payment'
-					AND (($status_query))
-					GROUP BY {$wpdb->posts}.{$this->args['group_by']}
-					ORDER BY {$wpdb->posts}.ID
-					DESC
-					"
-					, ARRAY_N );
+				$new_results = $wpdb->get_results( $this->get_sql(), ARRAY_N );
+
+				$this->unset_filters();
 
 				foreach ( $new_results as $results ) {
 					$result[ $results[0] ] = $results[1];
@@ -295,12 +280,8 @@ class Give_Payments_Query extends Give_Stats {
 				switch ( $this->args['group_by'] ) {
 					case 'post_status':
 
-						if ( isset( $statuses['private'] ) && empty( $args['s'] ) ) {
-							unset( $statuses['private'] );
-						}
-
 						/* @var Give_Payment $donation */
-						foreach ( $statuses as $status => $status_label ) {
+						foreach ( give_get_payment_status_keys() as $status ) {
 							if ( ! isset( $result[ $status ] ) ) {
 								$result[ $status ] = 0;
 							}
@@ -341,25 +322,24 @@ class Give_Payments_Query extends Give_Stats {
 		}
 
 		$this->setup_dates( $this->args['start_date'], $this->args['end_date'] );
+		$is_start_date = property_exists( __CLASS__, 'start_date' );
+		$is_end_date   = property_exists( __CLASS__, 'end_date' );
 
-		add_filter( 'posts_where', array( $this, 'payments_where' ) );
-	}
+		if ( $is_start_date || $is_end_date ) {
+			$date_query = array();
 
-	/**
-	 * If querying a specific date, remove filters after the query has been run
-	 * to avoid affecting future queries.
-	 *
-	 * @since  1.0
-	 * @access public
-	 *
-	 * @return void
-	 */
-	public function date_filter_post() {
-		if ( ! ( $this->args['start_date'] || $this->args['end_date'] ) ) {
-			return;
+			if ( $is_start_date && ! is_wp_error( $this->start_date ) ) {
+				$date_query['after'] = date( 'Y-m-d H:i:s', $this->start_date );
+			}
+
+			if ( $is_end_date && ! is_wp_error( $this->end_date ) ) {
+				$date_query['before'] = date( 'Y-m-d H:i:s', $this->end_date );
+			}
+
+			$this->__set( 'date_query', $date_query );
+
 		}
 
-		remove_filter( 'posts_where', array( $this, 'payments_where' ) );
 	}
 
 	/**
@@ -479,17 +459,20 @@ class Give_Payments_Query extends Give_Stats {
 	 * @return mixed
 	 */
 	public function custom_orderby( $order, $query ) {
-		global $wpdb;
 
-		$post_types = is_array( $query->query['post_type'] ) ? $query->query['post_type'] : array( $query->query['post_type'] );
-		if ( ! in_array( 'give_payment', $post_types ) || is_array( $query->query['orderby'] ) ) {
-			return $order;
-		}
+		if ( ! empty( $query->query['post_type'] ) ) {
+			$post_types = is_array( $query->query['post_type'] ) ? $query->query['post_type'] : array( $query->query['post_type'] );
 
-		switch ( $query->query['orderby'] ) {
-			case 'post_status':
-				$order = $wpdb->posts . '.post_status ' . strtoupper( $query->query['order'] );
-				break;
+			if ( ! in_array( 'give_payment', $post_types ) || is_array( $query->query['orderby'] ) ) {
+				return $order;
+			}
+
+			global $wpdb;
+			switch ( $query->query['orderby'] ) {
+				case 'post_status':
+					$order = $wpdb->posts . '.post_status ' . strtoupper( $query->query['order'] );
+					break;
+			}
 		}
 
 		return $order;
@@ -761,6 +744,100 @@ class Give_Payments_Query extends Give_Stats {
 
 		$this->__unset( 'gateway' );
 
+	}
+
+
+	/**
+	 * Get sql query
+	 *
+	 * Note: Internal purpose only. We are developing on this fn.
+	 *
+	 * @since  1.8.18
+	 * @access public
+	 * @global $wpdb
+	 *
+	 * @return string
+	 */
+	private function get_sql() {
+		global $wpdb;
+
+		$where = "WHERE {$wpdb->posts}.post_type = 'give_payment'";
+		$where .= " AND {$wpdb->posts}.post_status IN ('" . implode( "','", $this->args['post_status'] ) . "')";
+		$where .= " AND {$wpdb->posts}.post_parent={$this->args['post_parent']}";
+
+		// Set orderby.
+		$orderby  = "ORDER BY {$wpdb->posts}.{$this->args['orderby']}";
+		$group_by = '';
+
+		// Set group by.
+		if ( ! empty( $this->args['group_by'] ) ) {
+			$group_by = "GROUP BY {$wpdb->posts}.{$this->args['group_by']}";
+		}
+
+		// Set offset.
+		if (
+			empty( $this->args['nopaging'] ) &&
+			empty( $this->args['offset'] ) &&
+			( ! empty( $this->args['paged'] ) && 0 < $this->args['paged'] )
+		) {
+			$this->args['offset'] = $this->args['posts_per_page'] * ( $this->args['paged'] - 1 );
+		}
+
+		// Set fields.
+		$fields = "{$wpdb->posts}.*";
+		if ( ! empty( $this->args['fields'] ) && 'all' !== $this->args['fields'] ) {
+			if ( is_string( $this->args['fields'] ) ) {
+				$fields = "{$wpdb->posts}.{$this->args['fields']}";
+			} elseif ( is_array( $this->args['fields'] ) ) {
+				$fields = "{$wpdb->posts}." . implode( " , {$wpdb->posts}.", $this->args['fields'] );
+			}
+		}
+
+		// Set count.
+		if ( ! empty( $this->args['count'] ) ) {
+			$fields = "COUNT({$wpdb->posts}.ID)";
+
+			if ( ! empty( $this->args['group_by'] ) ) {
+				$fields = "{$wpdb->posts}.{$this->args['group_by']}, {$fields}";
+			}
+		}
+
+		// Date query.
+		if ( ! empty( $this->args['date_query'] ) ) {
+			$date_query_obj = new WP_Date_Query( $this->args['date_query'] );
+			$where          .= str_replace(
+				array(
+					"\n",
+					'(   (',
+					'))',
+				),
+				array(
+					'',
+					'( (',
+					') )',
+				),
+				$date_query_obj->get_sql()
+			);
+		}
+
+		// Meta query.
+		if ( ! empty( $this->args['meta_query'] ) ) {
+			$meta_query_obj = new WP_Meta_Query( $this->args['meta_query'] );
+			$where          = implode( ' ', $meta_query_obj->get_sql( 'post', $wpdb->posts, 'ID' ) ) . " {$where}";
+		}
+
+		// Set sql query.
+		$sql = $wpdb->prepare(
+			"SELECT {$fields} FROM {$wpdb->posts} LIMIT %d,%d;",
+			absint( $this->args['offset'] ),
+			( empty( $this->args['nopaging'] ) ? absint( $this->args['posts_per_page'] ) : 999999999999999 )
+		);
+
+		// $where, $orderby and order already prepared query they can generate notice if you re prepare them in above.
+		// WordPress consider LIKE condition as placeholder if start with s,f, or d.
+		$sql = str_replace( 'LIMIT', "{$where} {$group_by} {$orderby} {$this->args['order']} LIMIT", $sql );
+
+		return $sql;
 	}
 
 }

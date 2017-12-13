@@ -442,7 +442,7 @@ class Tests_Payments extends Give_Unit_Test_Case {
 		$this->assertEquals( 'USD', $payment->currency );
 		$this->assertEquals( 'US Dollars', give_get_payment_currency( $payment->ID ) );
 
-		$total1 = give_currency_filter( give_format_amount( $payment->total ), $payment->currency );
+		$total1 = give_currency_filter( give_format_amount( $payment->total ), array( 'currency_code' => $payment->currency ) );
 		$total2 = give_currency_filter( give_format_amount( $payment->total ) );
 
 		$this->assertEquals( '&#36;20.00', $total1 );

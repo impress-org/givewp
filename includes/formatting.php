@@ -421,7 +421,7 @@ function give_format_amount( $amount, $args = array() ) {
 						$amount         = substr( $amount, 0, $pos );
 
 						if ( ! $decimal_amount ) {
-							$decimal_amount = substr( '.0000000000', 0, ( $decimals + 1 ) );
+							$decimal_amount = substr( "{$decimal_sep}0000000000", 0, ( $decimals + 1 ) );
 						} elseif ( ( $decimals + 1 ) > strlen( $decimal_amount ) ) {
 							$decimal_amount = substr( "{$decimal_amount}000000000", 0, ( $decimals + 1 ) );
 						}

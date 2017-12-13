@@ -443,6 +443,11 @@ function give_count_payments( $args = array() ) {
 	$donations_obj = new Give_Payments_Query( $args );
 	$donations_count = $donations_obj->get_payment_by_group();
 
+	/**
+	 * Filter the payment counts group by status
+	 *
+	 * @since 1.0
+	 */
 	return (object) apply_filters( 'give_count_payments', $donations_count, $args, $donations_obj );
 }
 
@@ -1246,7 +1251,7 @@ function give_donation_amount( $donation, $format_args = array() ) {
 			$formatted_amount = give_currency_filter(
 				$formatted_amount,
 				! is_array( $format_args['currency'] ) ?
-					$donation->currency :
+					array( 'currency_code' => $donation->currency ) :
 					$format_args['currency']
 			);
 		}
@@ -1282,7 +1287,7 @@ function give_donation_amount( $donation, $format_args = array() ) {
 function give_payment_subtotal( $payment_id = 0 ) {
 	$subtotal = give_get_payment_subtotal( $payment_id );
 
-	return give_currency_filter( give_format_amount( $subtotal, array( 'sanitize' => false ) ), give_get_payment_currency_code( $payment_id ) );
+	return give_currency_filter( give_format_amount( $subtotal, array( 'sanitize' => false ) ), array( 'currency_code' => give_get_payment_currency_code( $payment_id ) ) );
 }
 
 /**
@@ -1724,34 +1729,31 @@ function give_filter_where_older_than_week( $where = '' ) {
  */
 function give_get_payment_form_title( $payment_meta, $only_level = false, $separator = '' ) {
 
-	$form_id    = isset( $payment_meta['form_id'] ) ? $payment_meta['form_id'] : 0;
-	$price_id   = isset( $payment_meta['price_id'] ) ? $payment_meta['price_id'] : null;
-	$form_title = isset( $payment_meta['form_title'] ) ? $payment_meta['form_title'] : '';
+	$form_id     = isset( $payment_meta['form_id'] ) ? $payment_meta['form_id'] : 0;
+	$price_id    = isset( $payment_meta['price_id'] ) ? $payment_meta['price_id'] : null;
+	$form_title  = isset( $payment_meta['form_title'] ) ? $payment_meta['form_title'] : '';
+	$level_label = '';
 
 	if ( $only_level == true ) {
 		$form_title = '';
 	}
 
-	// If multi-level, append to the form title.
-	if ( give_has_variable_prices( $form_id ) ) {
-
-		// Only add separator if there is a form title.
-		if ( ! empty( $form_title ) ) {
-			$form_title .= ' ' . $separator . ' ';
-		}
-
-		$form_title .= '<span class="donation-level-text-wrap">';
-
-		if ( 'custom' === $price_id ) {
-			$custom_amount_text = give_get_meta( $form_id, '_give_custom_amount_text', true );
-			$form_title         .= ! empty( $custom_amount_text ) ? $custom_amount_text : __( 'Custom Amount', 'give' );
-		} else {
-			$form_title .= give_get_price_option_name( $form_id, $price_id );
-		}
-
-		$form_title .= '</span>';
-
+	if ( 'custom' === $price_id ) {
+		$custom_amount_text = give_get_meta( $form_id, '_give_custom_amount_text', true );
+		$level_label        = ! empty( $custom_amount_text ) ? $custom_amount_text : __( 'Custom Amount', 'give' );
+	} elseif ( give_has_variable_prices( $form_id ) ) {
+		$level_label = give_get_price_option_name( $form_id, $price_id );
 	}
+
+	// Only add separator if there is a form title.
+	if (
+		! empty( $form_title ) &&
+		! empty( $level_label )
+	) {
+		$form_title .= ' ' . $separator . ' ';
+	}
+
+	$form_title .= "<span class=\"donation-level-text-wrap\">{$level_label}</span>";
 
 	return apply_filters( 'give_get_payment_form_title', $form_title, $payment_meta );
 

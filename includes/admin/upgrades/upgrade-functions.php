@@ -69,6 +69,10 @@ function give_do_automatic_upgrades() {
 		case version_compare( $give_version, '1.8.17', '<' ) :
 			give_v1817_upgrades();
 			$did_upgrade = true;
+
+		case version_compare( $give_version, '1.8.18', '<' ) :
+			give_v1818_upgrades();
+			$did_upgrade = true;
 	}
 
 	if ( $did_upgrade ) {
@@ -166,6 +170,13 @@ function give_show_upgrade_notices( $give_updates ) {
 		'id'       => 'v1817_cleanup_user_roles',
 		'version'  => '1.8.17',
 		'callback' => 'give_v1817_cleanup_user_roles',
+	) );
+
+	// v1.8.18 Upgrades for assigning custom amount to existing set donations.
+	$give_updates->register( array(
+		'id'       => 'v1818_assign_custom_amount_set_donation',
+		'version'  => '1.8.18',
+		'callback' => 'give_v1818_assign_custom_amount_set_donation',
 	) );
 }
 
@@ -1241,6 +1252,17 @@ function give_v1817_upgrades() {
 }
 
 /**
+ * Automatic Upgrade for release 1.8.18.
+ *
+ * @since 1.8.18
+ */
+function give_v1818_upgrades() {
+
+	// Remove email_access_installed from give_settings.
+	give_delete_option( 'email_access_installed' );
+}
+
+/**
  * Process Clean up of User Roles for more flexibility.
  *
  * @since 1.8.17
@@ -1249,7 +1271,7 @@ function give_v1817_process_cleanup_user_roles() {
 
 	global $wp_roles;
 
-	if( ! ( $wp_roles instanceof  WP_Role ) ) {
+	if( ! ( $wp_roles instanceof  WP_Roles ) ) {
 		return;
 	}
 
@@ -1307,5 +1329,57 @@ function give_v1817_cleanup_user_roles() {
 	$roles->add_caps();
 
 	give_set_upgrade_complete( 'v1817_cleanup_user_roles' );
+
+}
+
+/**
+ * Upgrade Routine - Assigns Custom Amount to existing donation of type set donation.
+ *
+ * @since 1.8.18
+ */
+function give_v1818_assign_custom_amount_set_donation() {
+
+	/* @var Give_Updates $give_updates */
+	$give_updates   = Give_Updates::get_instance();
+
+	$donations = new WP_Query( array(
+			'paged'          => $give_updates->step,
+			'status'         => 'any',
+			'order'          => 'ASC',
+			'post_type'      => array( 'give_payment' ),
+			'posts_per_page' => 100,
+		)
+	);
+
+	if ( $donations->have_posts() ) {
+		$give_updates->set_percentage( $donations->found_posts, $give_updates->step * 20 );
+
+		while ( $donations->have_posts() ) {
+			$donations->the_post();
+
+			$form          = new Give_Donate_Form( give_get_meta( get_the_ID(), '_give_payment_form_id', true ) );
+			$donation_meta = give_get_payment_meta( get_the_ID() );
+
+			// Update Donation meta with price_id set as custom, only if it is:
+			// 1. Donation Type = Set Donation.
+			// 2. Donation Price Id is not set to custom.
+			// 3. Form has not enabled custom price and donation amount assures that it is custom amount.
+			if (
+				$form->ID &&
+				$form->is_set_type_donation_form() &&
+				( 'custom' !== $donation_meta['price_id'] ) &&
+				$form->is_custom_price( give_get_meta( get_the_ID(), '_give_payment_total', true ) )
+			) {
+				$donation_meta['price_id'] = 'custom';
+				give_update_meta( get_the_ID(), '_give_payment_meta', $donation_meta );
+				give_update_meta( get_the_ID(), '_give_payment_price_id', 'custom' );
+			}
+		}
+
+		wp_reset_postdata();
+	} else {
+		// Update Ran Successfully.
+		give_set_upgrade_complete( 'v1818_assign_custom_amount_set_donation' );
+	}
 
 }

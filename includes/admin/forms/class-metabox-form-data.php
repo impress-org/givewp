@@ -1137,9 +1137,11 @@ class Give_MetaBox_Form_Data {
 								continue;
 							}
 
-							$meta_value[ $index ][ $field['id'] ] = ! empty( $meta_value[ $index ][ $field['id'] ] )
-								? give_sanitize_amount_for_db( $meta_value[ $index ][ $field['id'] ] )
-								: 0;
+							$meta_value[ $index ][ $field['id'] ] = ! empty( $meta_value[ $index ][ $field['id'] ] ) ?
+								give_sanitize_amount_for_db( $meta_value[ $index ][ $field['id'] ] ) :
+								( ( '_give_amount' === $field['id'] && empty( $field_value ) ) ?
+									give_sanitize_amount_for_db( '1.00' ) :
+									0 );
 						}
 					}
 				}
@@ -1147,7 +1149,11 @@ class Give_MetaBox_Form_Data {
 
 			default:
 				if ( ! empty( $setting_field['data_type'] ) && 'price' === $setting_field['data_type'] ) {
-					$meta_value = $meta_value ? give_sanitize_amount_for_db( $meta_value ) : 0;
+					$meta_value = $meta_value ?
+						give_sanitize_amount_for_db( $meta_value ) :
+						( in_array( $setting_field['id'], array( '_give_set_price', '_give_custom_amount_minimum', '_give_set_goal' ) ) ?
+							give_sanitize_amount_for_db( '1.00' ) :
+							0 );
 				}
 		}
 

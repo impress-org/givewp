@@ -565,20 +565,20 @@ var give_setting_edit = false;
 			});
 		},
 
-		toggle_options: function () {
+		toggle_options: function() {
 
 			/**
 			 * Email access
 			 */
-			var email_access = $('input[name="email_access"]', '.give-setting-tab-body-general');
-			email_access.on('change', function () {
-				var field_value = $('input[name="email_access"]:checked', '.give-setting-tab-body-general').val();
-				if ('enabled' === field_value) {
-					$('#recaptcha_key').parents('tr').show();
-					$('#recaptcha_secret').parents('tr').show();
+			var emailAccess = $( 'input[name="email_access"]', '.give-setting-tab-body-general' );
+			emailAccess.on( 'change', function() {
+				var fieldValue = $( 'input[name="email_access"]:checked', '.give-setting-tab-body-general' ).val();
+				if ( 'enabled' === fieldValue ) {
+					$( '#recaptcha_key' ).parents( 'tr' ).show();
+					$( '#recaptcha_secret' ).parents( 'tr' ).show();
 				} else {
-					$('#recaptcha_key').parents('tr').hide();
-					$('#recaptcha_secret').parents('tr').hide();
+					$( '#recaptcha_key' ).parents( 'tr' ).hide();
+					$( '#recaptcha_secret' ).parents( 'tr' ).hide();
 				}
 			}).change();
 
@@ -991,6 +991,7 @@ var give_setting_edit = false;
 						// Reset the form for preventing multiple ajax request.
 						$( '#give-tools-recount-form' )[ 0 ].reset();
 						$( '#give-tools-recount-form .tools-form-dropdown' ).hide();
+						$( '#give-tools-recount-form .tools-form-dropdown-recount-form-select' ).val('0').trigger('chosen:updated');
 					}
 				}
 			}).fail(function (response) {
@@ -1426,26 +1427,55 @@ var give_setting_edit = false;
 
 			// Clicking Event to Delete Single Donor.
 			$body.on( 'click', '.give-single-donor-delete', function( e ) {
-				var donorSelector = $( this ).closest( 'tr' ).find( '.donor-selector');
-				if( donorSelector.is( ':checked' ) ) {} else {
-					donorSelector.trigger( 'click' );
-					$( '#give-bulk-delete' ).slideDown();
+				var donorId        = $( this ).data( 'id' ),
+					donorSelector  = $( 'tr#donor-' + donorId ).find( '.donor-selector' ),
+					selectAll      = $( '[id^="cb-select-all-"]' ),
+					bulkDeleteList = $('#give-bulk-donors'),
+					donorName      = donorSelector.data( 'name' ),
+					donorHtml      = '<div id="give-donor-' + donorId + '" data-id="' + donorId + '">' +
+						'<a class="give-skip-donor" title="' + give_vars.remove_from_bulk_delete + '">X</a>' +
+						donorName + '</div>';
+
+				// Reset Donors List.
+				bulkDeleteList.html('');
+
+				// Check whether the select all donor checkbox is already set, then unset it.
+				if ( selectAll.is( ':checked' ) ) {
+					selectAll.removeAttr( 'checked' );
 				}
+
+				// Select the donor checkbox for which delete is clicked and others should be de-selected.
+				$( '.donor-selector' ).removeAttr( 'checked' );
+				donorSelector.attr( 'checked', 'checked' );
+
+				// Add Donor to the Bulk Delete List, if donor doesn't exists in the list.
+				if ( $( '#give-donor-' + donorId ).length === 0 ) {
+					bulkDeleteList.prepend(donorHtml);
+					$('#give-bulk-delete').slideDown();
+				}
+
 				e.preventDefault();
 			});
 		},
 
 		handleBulkActions: function( e ) {
 
-			var currentAction       = $( this ).closest( '.tablenav' ).find( 'select' ).val(),
-				donors              = [],
-				confirmActionNotice = give_vars.donors_bulk_action[currentAction].zero;
+			var currentAction          = $( this ).closest( '.tablenav' ).find( 'select' ).val(),
+				donors                 = [],
+				selectBulkActionNotice = give_vars.donors_bulk_action.no_action_selected,
+				confirmActionNotice    = give_vars.donors_bulk_action.no_donor_selected;
 
 			$.each( $( ".donor-selector:checked" ), function() {
 				donors.push( $( this ).val() );
 			});
 
-			// If there is no donor selected the show an alert.
+			// If there is no bulk action selected then show an alert message.
+			if ( '-1' === currentAction ) {
+				alert( selectBulkActionNotice );
+				return false;
+			}
+
+			// If there is no donor selected then show an alert.
 			if ( ! parseInt( donors ) ) {
 				alert( confirmActionNotice );
 				return false;
