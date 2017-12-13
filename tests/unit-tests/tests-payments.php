@@ -460,8 +460,8 @@ class Tests_Payments extends Give_Unit_Test_Case {
 
 		$total1 = give_donation_amount( $this->_payment_id, true );
 		$total2 = give_donation_amount( $this->_payment_id, true );
-		$total3 = give_donation_amount( $this->_payment_id, true, 'stats' );
-		$total4 = give_donation_amount( $this->_payment_id, true, 'stats' );
+		$total3 = give_donation_amount( $this->_payment_id, array( 'currency' => true, 'amount' => true,  'type' => 'stats' ) );
+		$total4 = give_donation_amount( $this->_payment_id, array( 'currency' => true, 'amount' => true,  'type' => 'stats' ) );
 
 		$this->assertEquals( '&#36;20.00', $total1 );
 		$this->assertEquals( '&#36;20.00', $total2 );
