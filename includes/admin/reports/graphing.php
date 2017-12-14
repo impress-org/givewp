@@ -152,25 +152,16 @@ function give_reports_graph() {
 
 				} else {
 
-					$sales = give_get_sales_by_date( null, $i, $y );
-					$sales_totals += $sales;
+					$start_date = mktime( 0, 0, 0, $i, 1, $y );
+					$end_date   = mktime( 23, 59, 59, $i + 1, 0, $y );
+					$sales      = $donation_stats->get_sales( 0, $start_date, $end_date );
+					$earnings   = $donation_stats->get_earnings( 0, $start_date, $end_date );
 
-					$earnings = give_get_earnings_by_date( null, $i, $y );
+					$sales_totals    += $sales;
 					$earnings_totals += $earnings;
 
-					if ( $i == $month_end ) {
-
-						$num_of_days = cal_days_in_month( CAL_GREGORIAN, $i, $y );
-
-					} else {
-
-						$num_of_days = 1;
-
-					}
-
-					$date            = mktime( 0, 0, 0, $i, $num_of_days, $y ) * 1000;
-					$sales_data[]    = array( $date, $sales );
-					$earnings_data[] = array( $date, $earnings );
+					$sales_data[]    = array( $start_date * 1000, $sales );
+					$earnings_data[] = array( $start_date * 1000, $earnings );
 
 				}
 
