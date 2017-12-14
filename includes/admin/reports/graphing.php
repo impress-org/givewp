@@ -85,7 +85,7 @@ function give_reports_graph() {
 		while ( $day <= $day_end ) :
 
 			$start_date = mktime( 0, 0, 0, $month, $day, $dates['year'] );
-			$end_date   = mktime( 23, 59, 59, $month, $day_end, $dates['year'] );
+			$end_date   = mktime( 23, 59, 59, $month, $day, $dates['year'] );
 			$sales      = $donation_stats->get_sales( 0, $start_date, $end_date );
 			$earnings   = $donation_stats->get_earnings( 0, $start_date, $end_date );
 
