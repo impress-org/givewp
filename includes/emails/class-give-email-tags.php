@@ -677,8 +677,7 @@ function give_email_tag_receipt_link_url( $payment_id ) {
 
 	$receipt_url = esc_url( add_query_arg( array(
 		'payment_key' => give_get_payment_key( $payment_id ),
-		'give_action' => 'view_receipt',
-	), home_url() ) );
+	), give_get_history_page_uri() ) );
 
 	return $receipt_url;
 
