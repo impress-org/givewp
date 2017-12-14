@@ -875,7 +875,7 @@ function give_can_view_receipt( $payment_key = '' ) {
 
 	global $give_receipt_args;
 
-	$give_receipt_args['id'] = give_get_purchase_id_by_key( $payment_key );
+	$give_receipt_args['id'] = give_get_donation_id_by_key( $payment_key );
 
 	$user_id = (int) give_get_payment_user_id( $give_receipt_args['id'] );
 
