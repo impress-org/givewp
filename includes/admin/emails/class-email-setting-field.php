@@ -309,7 +309,8 @@ class Give_Email_Setting_Field {
 	public static function get_preview_setting_field( Give_Email_Notification $email, $form_id = null ) {
 		return array(
 			'name' => __( 'Preview Email', 'give' ),
-			'desc' => __( 'Click "Preview Email" button to preview email in browser and Click "Send Test Email" button to send a test email directly to your inbox.', 'give' ),
+			'desc' => __( 'Click the "Preview Email" button to preview the email in your browser. Click the "Send Test Email" button to send a test email directly to your inbox.',
+				'give' ),
 			'id'   => self::get_prefix( $email, $form_id ) . 'preview_buttons',
 			'type' => 'email_preview_buttons',
 		);
