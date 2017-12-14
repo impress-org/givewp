@@ -135,18 +135,16 @@ function give_reports_graph() {
 
 					while ( $d <= $num_of_days ) :
 
-						$start_date = mktime( 0, 0, 0, $i, $d, $y ) * 1000;
-						$end_date   = mktime( 23, 59, 59, $i, $d, $y ) * 1000;
+						$start_date = mktime( 0, 0, 0, $i, $d, $y );
+						$end_date   = mktime( 23, 59, 59, $i, $d, $y );
+						$sales      = $donation_stats->get_sales( 0, $start_date, $end_date );
+						$earnings   = $donation_stats->get_earnings( 0, $start_date, $end_date );
 
-						$sales = give_get_sales_by_date( $d, $i, $y );
-						$sales_totals += $sales;
-
-						$earnings = $donation_stats->get_earnings( 0, $start_date, $end_date );
-						//$earnings = give_get_earnings_by_date( $d, $i, $y );
+						$sales_totals    += $sales;
 						$earnings_totals += $earnings;
 
-						$sales_data[]    = array( $start_date, $sales );
-						$earnings_data[] = array( $start_date, $earnings );
+						$sales_data[]    = array( $start_date * 1000, $sales );
+						$earnings_data[] = array( $start_date * 1000, $earnings );
 
 						$d ++;
 
