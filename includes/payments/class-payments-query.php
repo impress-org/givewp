@@ -346,6 +346,9 @@ class Give_Payments_Query extends Give_Stats {
 				$date_query['before'] = date( 'Y-m-d H:i:s', $this->end_date );
 			}
 
+			// Include Start Date and End Date while querying.
+			$date_query['inclusive'] = true;
+
 			$this->__set( 'date_query', $date_query );
 
 		}
