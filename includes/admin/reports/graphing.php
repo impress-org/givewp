@@ -76,22 +76,24 @@ function give_reports_graph() {
 			$hour ++;
 		endwhile;
 
-	} elseif ( $dates['range'] == 'this_week' || $dates['range'] == 'last_week' ) {
+	} elseif ( 'this_week' === $dates['range'] || 'last_week' === $dates['range'] ) {
 
 		// Day by day.
 		$day     = $dates['day'];
 		$day_end = $dates['day_end'];
 		$month   = $dates['m_start'];
 		while ( $day <= $day_end ) :
-			$sales = give_get_sales_by_date( $day, $month, $dates['year'] );
-			$sales_totals += $sales;
 
-			$earnings = give_get_earnings_by_date( $day, $month, $dates['year'] );
+			$start_date = mktime( 0, 0, 0, $month, $day, $dates['year'] );
+			$end_date   = mktime( 23, 59, 59, $month, $day_end, $dates['year'] );
+			$sales      = $donation_stats->get_sales( 0, $start_date, $end_date );
+			$earnings   = $donation_stats->get_earnings( 0, $start_date, $end_date );
+
+			$sales_totals    += $sales;
 			$earnings_totals += $earnings;
 
-			$date            = mktime( 0, 0, 0, $month, $day, $dates['year'] ) * 1000;
-			$sales_data[]    = array( $date, $sales );
-			$earnings_data[] = array( $date, $earnings );
+			$sales_data[]    = array( $start_date * 1000, $sales );
+			$earnings_data[] = array( $start_date * 1000, $earnings );
 			$day ++;
 		endwhile;
 
