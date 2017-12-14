@@ -143,7 +143,7 @@ class Give_Payment_Stats extends Give_Stats {
 
 			if ( ! empty( $payments ) ) {
 				foreach ( $payments as $payment ) {
-					$earnings += give_donation_amount( $payment->ID );
+					$earnings += (float) give_donation_amount( $payment->ID, array( 'type' => 'stats' ) );
 				}
 
 			}

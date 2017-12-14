@@ -79,7 +79,7 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 
 			foreach ( $payments as $payment ) {
 
-				$total += give_donation_amount( $payment );
+				$total += (float) give_donation_amount( $payment, array( 'type' => 'stats' ) );
 
 			}
 

@@ -1200,13 +1200,16 @@ function give_remove_payment_prefix_postfix( $number ) {
  *
  * @return string $amount Fully formatted donation amount.
  */
-function give_donation_amount( $donation, $format_args = false ) {
+function give_donation_amount( $donation, $format_args = array() ) {
 	/* @var Give_Payment $donation */
 	if ( ! ( $donation instanceof Give_Payment ) ) {
 		$donation = new Give_Payment( absint( $donation ) );
 	}
 
-	if ( ! is_array( $format_args ) ) {
+	$amount           = $donation->total;
+	$formatted_amount = $amount;
+
+	if ( is_bool( $format_args ) ) {
 		$format_args = array(
 			'currency' => (bool) $format_args,
 			'amount'   => (bool) $format_args,
@@ -1218,27 +1221,40 @@ function give_donation_amount( $donation, $format_args = false ) {
 		array(
 			'currency' => false,
 			'amount'   => false,
+
+			// Define context of donation amount, by default keep $type as blank.
+			// Pass as 'stats' to calculate donation report on basis of base amount for the Currency-Switcher Add-on.
+			// For Eg. In Currency-Switcher add on when donation has been made through
+			// different currency other than base currency, in that case for correct
+			//report calculation based on base currency we will need to return donation
+			// base amount and not the converted amount .
+			'type'     => '',
 		)
 	);
 
-	$amount           = $donation->total;
-	$formatted_amount = $amount;
+	if ( $format_args['amount'] || $format_args['currency'] ) {
 
-	if ( $format_args['amount'] ) {
-		$formatted_amount = give_format_amount(
-			$amount,
-			array(
-				'sanitize' => false,
-				'currency' => $donation->currency,
-			)
-		);
-	}
+		if ( $format_args['amount'] ) {
 
-	if ( $format_args['currency'] ) {
-		$formatted_amount = give_currency_filter(
-			$formatted_amount,
-			array( 'currency_code' => $donation->currency )
-		);
+			$formatted_amount = give_format_amount(
+				$amount,
+				! is_array( $format_args['amount'] ) ?
+					array(
+						'sanitize' => false,
+						'currency' => $donation->currency,
+					) :
+					$format_args['amount']
+			);
+		}
+
+		if ( $format_args['currency'] ) {
+			$formatted_amount = give_currency_filter(
+				$formatted_amount,
+				! is_array( $format_args['currency'] ) ?
+					array( 'currency_code' => $donation->currency ) :
+					$format_args['currency']
+			);
+		}
 	}
 
 	/**
@@ -1249,8 +1265,9 @@ function give_donation_amount( $donation, $format_args = false ) {
 	 * @param string $formatted_amount Formatted/Un-formatted amount.
 	 * @param float  $amount           Donation amount.
 	 * @param int    $donation_id      Donation ID.
+	 * @param string $type             Donation amount type.
 	 */
-	return apply_filters( 'give_donation_amount', (string) $formatted_amount, $amount, $donation );
+	return apply_filters( 'give_donation_amount', (string) $formatted_amount, $amount, $donation, $format_args );
 }
 
 /**
