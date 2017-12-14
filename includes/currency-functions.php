@@ -1012,7 +1012,7 @@ function give_currency_filter( $price = '', $args = array() ) {
 			'form_id'         => isset( $func_args[3] ) ? $func_args[3] : '',
 		);
 
-		_doing_it_wrong( __FUNCTION__, 'Pass second argument as Array.', GIVE_VERSION );
+		give_doing_it_wrong( __FUNCTION__, 'Pass second argument as Array.', GIVE_VERSION );
 	}
 
 	// Set default values.

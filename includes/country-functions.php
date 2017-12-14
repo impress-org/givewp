@@ -416,9 +416,9 @@ function give_no_states_country_list() {
 }
 
 /**
- * List of Country in which states feilds is not required.
+ * List of Country in which states fields is not required.
  *
- * There are some country in which states feilds is not required Example: United Kingdom ( uk ).
+ * There are some country in which states fields is not required Example: United Kingdom ( uk ).
  *
  * @since 1.8.11
  *
@@ -434,7 +434,7 @@ function give_states_not_required_country_list() {
 	}
 
 	/**
-	 * Filter can be used to add or remove the Country in which states feilds is not required.
+	 * Filter can be used to add or remove the Country in which states fields is not required.
 	 *
 	 * @since 1.8.11
 	 *
