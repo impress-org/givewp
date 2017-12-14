@@ -1353,7 +1353,7 @@ function give_set_payment_transaction_id( $payment_id = 0, $transaction_id = '' 
  *
  * @return int $purchase Donation ID.
  */
-function give_get_purchase_id_by_key( $key ) {
+function give_get_donation_id_by_key( $key ) {
 	global $wpdb;
 
 	$purchase = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_give_payment_purchase_key' AND meta_value = %s LIMIT 1", $key ) );
