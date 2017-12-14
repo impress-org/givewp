@@ -587,6 +587,11 @@ ASIDE
 	}
 }
 
+// Hide first row remove button for multi-level.
+#_give_donation_levels_field .give-row:nth-of-type(2) .give-remove {
+  display: none !important;
+}
+
 //-------------------------------------
 // Metabox Tabs
 //-------------------------------------
