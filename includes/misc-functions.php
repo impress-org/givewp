@@ -1612,3 +1612,17 @@ function give_doing_it_wrong( $function, $message, $version ) {
 
 	_doing_it_wrong( $function, $message , $version );
 }
+
+
+/**
+ * Remove limit from running php script complete.
+ *
+ * @since 1.8.18
+ */
+function give_ignore_user_abort(){
+	ignore_user_abort( true );
+
+	if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
+		set_time_limit( 0 );
+	}
+}
