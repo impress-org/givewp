@@ -48,7 +48,7 @@ $give_receipt_args['donation_receipt']['date'] = array(
 
 $give_receipt_args['donation_receipt']['total_donation'] = array(
 	'name'    => __( 'Total Donation', 'give' ),
-	'value'   => give_donation_amount( $donation_id, true ),
+	'value'   => give_donation_amount( $donation_id, array( 'currency' => true, 'amount' => true, 'type' => 'receipt' ) ),
 	'display' => $give_receipt_args['price'],
 );
 

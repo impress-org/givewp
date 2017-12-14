@@ -19,6 +19,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 global $wpdb;
 $give_options = give_get_settings();
 $plugins      = give_get_plugins();
+
+/* @var  Give_Updates $give_updates */
+$give_updates = Give_Updates::get_instance();
 ?>
 
 <div class="give-debug-report-wrapper">
@@ -52,12 +55,13 @@ $plugins      = give_get_plugins();
 		<tr>
 			<td data-export-label="WP Version"><?php _e( 'WP Version', 'give' ); ?>:</td>
 			<td class="help"><?php echo Give()->tooltips->render_help(  __( 'The version of WordPress installed on your site.', 'give' ) ); ?></td>
-			<td><?php bloginfo('version'); ?></td>
+			<td><?php bloginfo( 'version' ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="WP Multisite"><?php _e( 'WP Multisite', 'give' ); ?>:</td>
 			<td class="help"><?php echo Give()->tooltips->render_help( __( 'Whether or not you have WordPress Multisite enabled.', 'give' ) ); ?></td>
 			<td><?php if ( is_multisite() ) echo '<span class="dashicons dashicons-yes"></span>'; else echo '&ndash;'; ?></td>
+
 		</tr>
 		<tr>
 			<td data-export-label="WP Memory Limit"><?php _e( 'WP Memory Limit', 'give' ); ?>:</td>
@@ -149,7 +153,7 @@ $plugins      = give_get_plugins();
 		</tr>
 		<tr>
 			<td data-export-label="Registered Post Statuses"><?php _e( 'Registered Post Statuses', 'give' ); ?>:</td>
-			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'A list of all registered post statuses.', 'give' ) ); ?>"></span></td>
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'A list of all registered post statuses.', 'give' ) ); ?></td>
 			<td><?php echo esc_html( implode( ', ', get_post_stati() ) ); ?></td>
 		</tr>
 	</tbody>
@@ -169,22 +173,28 @@ $plugins      = give_get_plugins();
 		</tr>
 		<tr>
 			<td data-export-label="TLS Connection"><?php _e( 'TLS Connection', 'give' ); ?>:</td>
-			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'Most payment gateway APIs only support connections using the TLS 1.2 security protocol.', 'give' ) ); ?>"></span></td>
-			<td><?php
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'Most payment gateway APIs only support connections using the TLS 1.2 security protocol.', 'give' ) ); ?></td>
+			<td>
+				<?php
 				$tls_check = wp_remote_post( 'https://www.howsmyssl.com/a/check' );
 				if ( ! is_wp_error( $tls_check ) ) {
 					$tls_check = json_decode( wp_remote_retrieve_body( $tls_check ) );
 					/* translators: %s: SSL connection response */
 					printf( __('Connection uses %s', 'give'), esc_html( $tls_check->tls_version )) ;
 				}
-				?></td>
+				?>
+			</td>
 		</tr>
 		<tr>
 			<td data-export-label="TLS Connection"><?php _e( 'TLS Rating', 'give' ); ?>:</td>
-			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The server\'s connection as rated by https://www.howsmyssl.com/', 'give' ) ); ?>"></span></td>
-			<td><?php if ( ! is_wp_error( $tls_check ) ) {
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The server\'s connection as rated by https://www.howsmyssl.com/', 'give' ) ); ?></td>
+			<td>
+				<?php
+				if ( ! is_wp_error( $tls_check ) ) {
 					esc_html_e( $tls_check->rating);
-				} ?></td>
+				}
+				?>
+			</td>
 		</tr>
 		<tr>
 			<td data-export-label="Server Info"><?php _e( 'Server Info', 'give' ); ?>:</td>
@@ -194,7 +204,8 @@ $plugins      = give_get_plugins();
 		<tr>
 			<td data-export-label="PHP Version"><?php _e( 'PHP Version', 'give' ); ?>:</td>
 			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The version of PHP installed on your hosting server.', 'give' ) ); ?></td>
-			<td><?php
+			<td>
+				<?php
 				// Check if phpversion function exists.
 				if ( function_exists( 'phpversion' ) ) {
 					$php_version = phpversion();
@@ -339,8 +350,8 @@ $plugins      = give_get_plugins();
 		}
 
 		// GD Graphics Library.
-		$posting['gd']['name'] = 'GD Graphics Library';
-		$posting['gd']['help'] = __( 'GD Graphics Library is used for dynamically manipulating images.', 'give' );
+		$posting['gd']['name']    = 'GD Graphics Library';
+		$posting['gd']['help']    = __( 'GD Graphics Library is used for dynamically manipulating images.', 'give' );
 		$posting['gd']['success'] = extension_loaded( 'gd' ) && function_exists( 'gd_info' ) ? true : false;
 
 		// Multibyte String.
@@ -355,7 +366,7 @@ $plugins      = give_get_plugins();
 		}
 
 		// WP Remote Post Check.
-		$posting['wp_remote_post']['name'] = __( 'Remote Post', 'give');
+		$posting['wp_remote_post']['name'] = __( 'Remote Post', 'give' );
 		$posting['wp_remote_post']['help'] = __( 'PayPal uses this method of communicating when sending back transaction information.', 'give' );
 
 		$response = wp_safe_remote_post( 'https://www.paypal.com/cgi-bin/webscr', array(
@@ -363,14 +374,14 @@ $plugins      = give_get_plugins();
 			'user-agent'  => 'Give/' . GIVE_VERSION,
 			'httpversion' => '1.1',
 			'body'        => array(
-				'cmd'     => '_notify-validate'
-			)
+				'cmd' => '_notify-validate',
+			),
 		) );
 
 		if ( ! is_wp_error( $response ) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 ) {
 			$posting['wp_remote_post']['success'] = true;
 		} else {
-			$posting['wp_remote_post']['note']    = __( 'wp_remote_post() failed. PayPal IPN won\'t work with your server. Contact your hosting provider.', 'give' );
+			$posting['wp_remote_post']['note'] = __( 'wp_remote_post() failed. PayPal IPN won\'t work with your server. Contact your hosting provider.', 'give' );
 			if ( is_wp_error( $response ) ) {
 				$posting['wp_remote_post']['note'] .= ' ' . sprintf( __( 'Error: %s', 'give' ), sanitize_text_field( $response->get_error_message() ) );
 			} else {
@@ -380,7 +391,7 @@ $plugins      = give_get_plugins();
 		}
 
 		// WP Remote Get Check.
-		$posting['wp_remote_get']['name'] = __( 'Remote Get', 'give');
+		$posting['wp_remote_get']['name'] = __( 'Remote Get', 'give' );
 		$posting['wp_remote_get']['help'] = __( 'Give plugins may use this method of communication when checking for plugin updates.', 'give' );
 
 		$response = wp_safe_remote_get( 'https://woocommerce.com/wc-api/product-key-api?request=ping&network=' . ( is_multisite() ? '1' : '0' ) );
@@ -388,7 +399,7 @@ $plugins      = give_get_plugins();
 		if ( ! is_wp_error( $response ) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 ) {
 			$posting['wp_remote_get']['success'] = true;
 		} else {
-			$posting['wp_remote_get']['note']    = __( 'wp_remote_get() failed. The Give plugin updater won\'t work with your server. Contact your hosting provider.', 'give' );
+			$posting['wp_remote_get']['note'] = __( 'wp_remote_get() failed. The Give plugin updater won\'t work with your server. Contact your hosting provider.', 'give' );
 			if ( is_wp_error( $response ) ) {
 				$posting['wp_remote_get']['note'] .= ' ' . sprintf( __( 'Error: %s', 'give' ), give_clean( $response->get_error_message() ) );
 			} else {
@@ -435,6 +446,28 @@ $plugins      = give_get_plugins();
 			<td><?php echo give_is_setting_enabled( give_get_option('cache', 'enabled' ) ) ? __( 'Enabled', 'give' ) : __( 'Disabled', 'give' ); ?></td>
 		</tr>
 		<tr>
+			<td data-export-label="Database Updates"><?php _e( 'Database Updates', 'give' ); ?>:</td>
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'This will show the number of pending database updates.', 'give' ) ); ?></td>
+			<td>
+				<?php
+				if( $remaining_upgrades = $give_updates->get_db_update_count() ) {
+					echo sprintf(
+						__( '%1$s of %2$s updates still need to run.', 'give' ),
+						$remaining_upgrades,
+						$give_updates->get_total_db_update_count()
+					);
+				} else{
+					_e( 'N/A', 'give' );
+				}
+				?>
+			</td>
+		</tr>
+		<tr>
+			<td data-export-label="Give Cache"><?php _e( 'Give Cache', 'give' ); ?>:</td>
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'Whether cache is enabled in Give settings.', 'give' ) ); ?></td>
+			<td><?php echo give_is_setting_enabled( give_get_option('cache', 'enabled' ) ) ? __( 'Enabled', 'give' ) : __( 'Disabled', 'give' ); ?></td>
+		</tr>
+		<tr>
 			<td data-export-label="Upgraded From"><?php _e( 'Upgraded From', 'give' ); ?>:</td>
 			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The version of Give installed prior to the last update.', 'give' ) ); ?></td>
 			<td><?php echo esc_html( get_option( 'give_version_upgraded_from', '&ndash;' ) ); ?></td>
@@ -456,12 +489,12 @@ $plugins      = give_get_plugins();
 		</tr>
 		<tr>
 			<td data-export-label="Decimal Separator"><?php _e( 'Decimal Separator', 'give' ); ?>:</td>
-			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The decimal separator defined in Give settings.', 'give' ) ); ?>"></span></td>
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The decimal separator defined in Give settings.', 'give' ) ); ?></td>
 			<td><?php echo esc_html( give_get_price_decimal_separator() ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="Thousands Separator"><?php _e( 'Thousands Separator', 'give' ); ?>:</td>
-			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The thousands separator defined in Give settings.', 'give' ) ); ?>"></span></td>
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The thousands separator defined in Give settings.', 'give' ) ); ?></td>
 			<td><?php echo esc_html( give_get_price_thousand_separator() ); ?></td>
 		</tr>
 		<tr>
@@ -476,7 +509,7 @@ $plugins      = give_get_plugins();
 		</tr>
 		<tr>
 			<td data-export-label="Donation History Page"><?php _e( 'Donation History Page', 'give' ); ?>:</td>
-			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'The page where past donations are listed.', 'give' ) ); ?>"></span></td>
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The page where past donations are listed.', 'give' ) ); ?></td>
 			<td><?php echo ! empty( $give_options['history_page'] ) ? esc_url( get_permalink( $give_options['history_page'] ) ) : '&ndash;'; ?></td>
 		</tr>
 		<tr>
@@ -485,7 +518,7 @@ $plugins      = give_get_plugins();
 			<td><?php echo esc_html( defined( 'GIVE_SLUG' ) ? '/' . GIVE_SLUG . '/' : '/donations/' ); ?></td>
 		</tr>
 		<?php
-		$active_gateways = give_get_enabled_payment_gateways();
+		$active_gateways  = give_get_enabled_payment_gateways();
 		$enabled_gateways = $default_gateway = '';
 
 		if ( $active_gateways ) {
@@ -519,29 +552,29 @@ $plugins      = give_get_plugins();
 		</tr>
 		<tr>
 			<td data-export-label="PayPal IPN Verification"><?php _e( 'PayPal IPN Verification', 'give' ); ?>:</td>
-			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'Whether admins requires verification of IPN notifications with PayPal.', 'give' ) ); ?>"></span></td>
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'Whether admins requires verification of IPN notifications with PayPal.', 'give' ) ); ?></td>
 			<td><?php echo 'enabled' === give_get_option( 'paypal_verification' ) ? __( 'Enabled', 'give' ) : __( 'Disabled', 'give' ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="PayPal IPN Notifications"><?php _e( 'PayPal IPN Notifications', 'give' ); ?>:</td>
-			<td class="help"><span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php echo esc_attr( __( 'Displays whether when last PayPal IPN is received with which donation or transaction.', 'give' ) ); ?>"></span></td>
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'Displays whether when last PayPal IPN is received with which donation or transaction.', 'give' ) ); ?></td>
 			<td>
 				<?php
 				$last_paypal_ipn_received = get_option( 'give_last_paypal_ipn_received' );
-				if( is_array( $last_paypal_ipn_received ) && count( $last_paypal_ipn_received ) > 0 ) {
+				if ( is_array( $last_paypal_ipn_received ) && count( $last_paypal_ipn_received ) > 0 ) {
 					$donation_id     = $last_paypal_ipn_received['payment_id'];
 					$ipn_timestamp   = give_get_meta( $donation_id, 'give_last_paypal_ipn_received', true );
 					$transaction_url = 'https://history.paypal.com/cgi-bin/webscr?cmd=_history-details-from-hub&id=' . $last_paypal_ipn_received['transaction_id'];
 					$donation_url    = site_url() . '/wp-admin/edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . $donation_id;
 					echo sprintf(
-							__( 'IPN received for <a href="%s">#%s</a> ( <a href="%s" target="_blank">%s</a> ) on %s at %s. Status %s', 'give' ),
-							$donation_url,
-							$donation_id,
-							$transaction_url,
-							$last_paypal_ipn_received['transaction_id'],
-							date_i18n( 'm/d/Y', $ipn_timestamp ),
-							date_i18n( 'H:i', $ipn_timestamp ),
-							$last_paypal_ipn_received['auth_status']
+						__( 'IPN received for <a href="%s">#%s</a> ( <a href="%s" target="_blank">%s</a> ) on %s at %s. Status %s', 'give' ),
+						$donation_url,
+						$donation_id,
+						$transaction_url,
+						$last_paypal_ipn_received['transaction_id'],
+						date_i18n( 'm/d/Y', $ipn_timestamp ),
+						date_i18n( 'H:i', $ipn_timestamp ),
+						$last_paypal_ipn_received['auth_status']
 					);
 				} else {
 					echo 'N/A';
@@ -627,12 +660,22 @@ $plugins      = give_get_plugins();
 
 			// Link the plugin name to the plugin URL if available.
 			if ( ! empty( $plugin_data['PluginURI'] ) ) {
-				$plugin_name = '<a href="' . esc_url( $plugin_data['PluginURI'] ) . '" title="' . esc_attr__( 'Visit plugin homepage' , 'give' ) . '">' . $plugin_name . '</a>';
+				$plugin_name = sprintf(
+					'<a href="%s" title="%s">%s</a>',
+					esc_url( $plugin_data['PluginURI'] ),
+					esc_attr__( 'Visit plugin homepage', 'give' ),
+					$plugin_name
+				);
 			}
 
 			// Link the author name to the author URL if available.
 			if ( ! empty( $plugin_data['AuthorURI'] ) ) {
-				$author_name = '<a href="' . esc_url( $plugin_data['AuthorURI'] ) . '" title="' . esc_attr__( 'Visit author homepage' , 'give' ) . '">' . $author_name . '</a>';
+				$author_name = sprintf(
+					'<a href="%s" title="%s">%s</a>',
+					esc_url( $plugin_data['AuthorURI'] ),
+					esc_attr__( 'Visit author homepage', 'give' ),
+					$author_name
+				);
 			}
 			?>
 			<tr>
@@ -682,12 +725,22 @@ $plugins      = give_get_plugins();
 
 			// Link the plugin name to the plugin URL if available.
 			if ( ! empty( $plugin_data['PluginURI'] ) ) {
-				$plugin_name = '<a href="' . esc_url( $plugin_data['PluginURI'] ) . '" title="' . esc_attr__( 'Visit plugin homepage' , 'give' ) . '">' . $plugin_name . '</a>';
+				$plugin_name = sprintf(
+					'<a href="%s" title="%s">%s</a>',
+					esc_url( $plugin_data['PluginURI'] ),
+					esc_attr__( 'Visit plugin homepage', 'give' ),
+					$plugin_name
+				);
 			}
 
 			// Link the author name to the author URL if available.
 			if ( ! empty( $plugin_data['AuthorURI'] ) ) {
-				$author_name = '<a href="' . esc_url( $plugin_data['AuthorURI'] ) . '" title="' . esc_attr__( 'Visit author homepage' , 'give' ) . '">' . $author_name . '</a>';
+				$author_name = sprintf(
+					'<a href="%s" title="%s">%s</a>',
+					esc_url( $plugin_data['AuthorURI'] ),
+					esc_attr__( 'Visit author homepage', 'give' ),
+					$author_name
+				);
 			}
 			?>
 			<tr>
@@ -695,7 +748,7 @@ $plugins      = give_get_plugins();
 				<td class="help">&nbsp;</td>
 				<td><?php echo sprintf( _x( 'by %s', 'by author', 'give' ), wp_kses( $author_name, wp_kses_allowed_html( 'post' ) ) ) . ' &ndash; ' . esc_html( $plugin_data['Version'] ); ?></td>
 			</tr>
-		<?php
+			<?php
 		}
 		?>
 	</tbody>
@@ -719,12 +772,22 @@ $plugins      = give_get_plugins();
 
 			// Link the plugin name to the plugin URL if available.
 			if ( ! empty( $plugin_data['PluginURI'] ) ) {
-				$plugin_name = '<a href="' . esc_url( $plugin_data['PluginURI'] ) . '" title="' . esc_attr__( 'Visit plugin homepage' , 'give' ) . '">' . $plugin_name . '</a>';
+				$plugin_name = sprintf(
+					'<a href="%s" title="%s">%s</a>',
+					esc_url( $plugin_data['PluginURI'] ),
+					esc_attr__( 'Visit plugin homepage', 'give' ),
+					$plugin_name
+				);
 			}
 
 			// Link the author name to the author URL if available.
 			if ( ! empty( $plugin_data['AuthorURI'] ) ) {
-				$author_name = '<a href="' . esc_url( $plugin_data['AuthorURI'] ) . '" title="' . esc_attr__( 'Visit author homepage' , 'give' ) . '">' . $author_name . '</a>';
+				$author_name = sprintf(
+					'<a href="%s" title="%s">%s</a>',
+					esc_url( $plugin_data['AuthorURI'] ),
+					esc_attr__( 'Visit author homepage', 'give' ),
+					$author_name
+				);
 			}
 			?>
 			<tr>
@@ -757,14 +820,23 @@ if ( ! empty( $active_mu_plugins ) ) {
 					$plugin_name = esc_html( $mu_plugin_data['Name'] );
 
 					if ( ! empty( $mu_plugin_data['PluginURI'] ) ) {
-						$plugin_name = '<a href="' . esc_url( $mu_plugin_data['PluginURI'] ) . '" title="' . esc_attr__( 'Visit plugin homepage' , 'give' ) . '">' . $plugin_name . '</a>';
+						$plugin_name = sprintf(
+							'<a href="%s" title="%s">%s</a>',
+							esc_url( $mu_plugin_data['PluginURI'] ),
+							esc_attr__( 'Visit plugin homepage', 'give' ),
+							$plugin_name
+						);
 					}
 
 					// Link the author name to the author URL if available.
 					$author_name = esc_html( $mu_plugin_data['Author'] );
 
 					if ( ! empty( $mu_plugin_data['AuthorURI'] ) ) {
-						$author_name = '<a href="' . esc_url( $mu_plugin_data['AuthorURI'] ) . '">' . $author_name . '</a>';
+						$author_name = sprintf(
+							'<a href="%s">%s</a>',
+							esc_url( $mu_plugin_data['AuthorURI'] ),
+							$author_name
+						);
 					}
 					?>
 					<tr>
@@ -772,7 +844,7 @@ if ( ! empty( $active_mu_plugins ) ) {
 						<td class="help">&nbsp;</td>
 						<td><?php echo sprintf( _x( 'by %s', 'by author', 'give' ), $author_name ) . ' &ndash; ' . esc_html( $mu_plugin_data['Version'] ); ?></td>
 					</tr>
-			<?php
+					<?php
 				}
 			}
 			?>
@@ -837,36 +909,36 @@ if ( ! empty( $active_mu_plugins ) ) {
 </table>
 
 <script type="text/javascript">
-	jQuery( '.js-give-debug-report-button' ).click( function() {
-		var report = '';
-		var first_row  = true;
+	jQuery('.js-give-debug-report-button').click(function () {
+		var report    = '';
+		var first_row = true;
 
-		jQuery( '.give-status-table thead, .give-status-table tbody' ).each( function() {
-			if ( jQuery( this ).is( 'thead' ) ) {
+		jQuery('.give-status-table thead, .give-status-table tbody').each(function () {
+			if (jQuery(this).is('thead')) {
 
-				var label = jQuery( this ).find( 'th:eq(0)' ).data( 'export-label' ) || jQuery( this ).text();
+				var label = jQuery(this).find('th:eq(0)').data('export-label') || jQuery(this).text();
 
-				if ( true === first_row ) {
-					report = '### ' + jQuery.trim( label ) + ' ###\n\n';
-					first_row  = false;
+				if (true === first_row) {
+					report    = '### ' + jQuery.trim(label) + ' ###\n\n';
+					first_row = false;
 				} else {
-					report = report + '\n### ' + jQuery.trim( label ) + ' ###\n\n';
+					report = report + '\n### ' + jQuery.trim(label) + ' ###\n\n';
 				}
 			} else {
 
-				jQuery( 'tr', jQuery( this ) ).each( function() {
+				jQuery('tr', jQuery(this)).each(function () {
 
-					var label       = jQuery( this ).find( 'td:eq(0)' ).data( 'export-label' ) || jQuery( this ).find( 'td:eq(0)' ).text();
-					var the_name    = jQuery.trim( label ).replace( /(<([^>]+)>)/ig, '' ); // Remove HTML.
+					var label    = jQuery(this).find('td:eq(0)').data('export-label') || jQuery(this).find('td:eq(0)').text();
+					var the_name = jQuery.trim(label).replace(/(<([^>]+)>)/ig, ''); // Remove HTML.
 
 					// Find value
-					var $value_html = jQuery( this ).find( 'td:eq(2)' ).clone();
-					$value_html.find( '.private' ).remove();
-					$value_html.find( '.dashicons-yes' ).replaceWith( '&#10004;' );
-					$value_html.find( '.dashicons-no-alt, .dashicons-warning' ).replaceWith( '&#10060;' );
+					var $value_html = jQuery(this).find('td:eq(2)').clone();
+					$value_html.find('.private').remove();
+					$value_html.find('.dashicons-yes').replaceWith('&#10004;');
+					$value_html.find('.dashicons-no-alt, .dashicons-warning').replaceWith('&#10060;');
 
 					// Format value
-					var the_value   = jQuery.trim( $value_html.text() );
+					var the_value = jQuery.trim($value_html.text());
 //					var value_array = the_value.split( ', ' );
 //
 //					if ( value_array.length > 1 ) {
@@ -887,13 +959,13 @@ if ( ! empty( $active_mu_plugins ) ) {
 		});
 
 		try {
-			jQuery( '.js-give-debug-report' ).slideDown();
-			jQuery( '.js-give-debug-report' ).find( 'textarea' ).val( report ).focus().select();
-			jQuery( this ).hide();
+			jQuery('.js-give-debug-report').slideDown();
+			jQuery('.js-give-debug-report').find('textarea').val(report).focus().select();
+			jQuery(this).hide();
 			return false;
-		} catch ( e ) {
+		} catch (e) {
 			/* jshint devel: true */
-			console.log( e );
+			console.log(e);
 		}
 
 		return false;

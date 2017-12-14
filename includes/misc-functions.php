@@ -883,7 +883,7 @@ function give_can_view_receipt( $payment_key = '' ) {
 
 	global $give_receipt_args;
 
-	$give_receipt_args['id'] = give_get_purchase_id_by_key( $payment_key );
+	$give_receipt_args['id'] = give_get_donation_id_by_key( $payment_key );
 
 	$user_id = (int) give_get_payment_user_id( $give_receipt_args['id'] );
 
@@ -1692,4 +1692,18 @@ function give_doing_it_wrong( $function, $message, $version ) {
 	$message .= "\nBacktrace:" . wp_debug_backtrace_summary();
 
 	_doing_it_wrong( $function, $message , $version );
+}
+
+
+/**
+ * Remove limit from running php script complete.
+ *
+ * @since 1.8.18
+ */
+function give_ignore_user_abort(){
+	ignore_user_abort( true );
+
+	if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
+		set_time_limit( 0 );
+	}
 }
