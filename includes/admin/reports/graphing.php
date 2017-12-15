@@ -102,13 +102,13 @@ function give_reports_graph() {
 		$y = $dates['year'];
 		while ( $y <= $dates['year_end'] ) :
 
-			if ( $dates['year'] == $dates['year_end'] ) {
+			if ( $dates['year'] === $dates['year_end'] ) {
 				$month_start = $dates['m_start'];
 				$month_end   = $dates['m_end'];
-			} elseif ( $y == $dates['year'] ) {
+			} elseif ( $y === $dates['year'] ) {
 				$month_start = $dates['m_start'];
 				$month_end   = 12;
-			} elseif ( $y == $dates['year_end'] ) {
+			} elseif ( $y === $dates['year_end'] ) {
 				$month_start = 1;
 				$month_end   = $dates['m_end'];
 			} else {
@@ -121,7 +121,7 @@ function give_reports_graph() {
 
 				if ( $day_by_day ) {
 
-					if ( $i == $month_end ) {
+					if ( $i === $month_end ) {
 
 						$num_of_days = $dates['day_end'];
 
@@ -211,7 +211,7 @@ function give_reports_graph() {
 					<th scope="row"><strong><?php _e( 'Total donations for period:', 'give' ); ?><strong></th>
 					<td><?php echo $sales_totals; ?></td>
 				</tr>
-				<?php if ( 'this_month' == $dates['range'] ) : ?>
+				<?php if ( 'this_month' === $dates['range'] ) : ?>
 					<tr>
 						<th scope="row"><strong><?php _e( 'Estimated monthly income:', 'give' ); ?></strong></th>
 						<td><?php echo give_currency_filter( give_format_amount( $estimated['earnings'], array( 'sanitize' => false ) ) ); ?></td>
