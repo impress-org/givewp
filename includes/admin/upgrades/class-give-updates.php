@@ -188,7 +188,8 @@ class Give_Updates {
 
 			if ( isset( $_GET['page'] ) && 'give-updates' === give_clean( $_GET['page'] ) ) {
 				add_action( 'give_set_upgrade_completed', array( $this, '__flush_resume_updates' ), 9999 );
-				add_action( 'wp_ajax_give_do_ajax_updates', array( $this, '__give_ajax_updates' ) );
+				// add_action( 'wp_ajax_give_do_ajax_updates', array( $this, '__give_ajax_updates' ) );
+				add_action( 'wp_ajax_give_db_updates_info', array( $this, '__give_db_updates_info' ) );
 				add_action( 'wp_ajax_give_run_db_updates', array( $this, '__give_start_updating' ) );
 			}
 		}
@@ -538,6 +539,19 @@ class Give_Updates {
 		}
 
 		self::$background_updater->save();
+	}
+
+
+	/**
+	 * This function handle ajax query for dn update status.
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @return string
+	 */
+	public function give_db_updates_info() {
+		$this->send_ajax_response( get_option( 'give_doing_upgrade' ) );
 	}
 
 	/**

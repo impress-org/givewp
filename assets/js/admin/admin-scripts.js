@@ -1110,10 +1110,10 @@ var give_setting_edit = false;
 				self.el.progress_container.append('<div class="notice-wrap give-clearfix"><span class="spinner is-active"></span><div class="give-progress"><div></div></div></div>');
 				self.el.progress_main_container.removeClass('give-hidden');
 
-				resume_update_step = parseInt(self.el.heading.data('resume-update'));
-				if (resume_update_step) {
-					step = resume_update_step;
-				}
+				// resume_update_step = parseInt(self.el.heading.data('resume-update'));
+				// if (resume_update_step) {
+				// 	step = resume_update_step;
+				// }
 
 				// Start the process from first step of first update.
 				// self.process_step(step, 1, self);
@@ -1132,7 +1132,79 @@ var give_setting_edit = false;
 					}
 				});
 
+				window.setTimeout(
+					Give_Updates.get_db_updates_info(),
+					1000
+				);
+
 				return false;
+			});
+		},
+
+		get_db_updates_info: function(){
+			$.ajax({
+				type: 'POST',
+				url: ajaxurl,
+				data: {
+					action: 'give_db_updates_info',
+					nonce: '', // @todo: add security nonce
+				},
+				dataType: 'json',
+				success: function (response) {
+					// We need to get the actual in progress form, not all forms on the page.
+					var notice_wrap = Give_Selector_Cache.get('.notice-wrap', self.el.progress_container, true);
+
+					if (-1 !== $.inArray('success', Object.keys(response))) {
+						if (response.success) {
+							// Update steps info.
+							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
+								self.el.heading.html('<strong>' + response.data.heading + '</strong>');
+							}
+
+							self.el.update_link.closest('p').remove();
+							notice_wrap.html('<div class="notice notice-success is-dismissible"><p>' + response.data.message + '</p><button type="button" class="notice-dismiss"></button></div>');
+
+						} else {
+							// Update steps info.
+							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
+								self.el.heading.html('<strong>' + response.data.heading + '</strong>');
+							}
+
+							notice_wrap.html('<div class="notice notice-error"><p>' + response.data.message + '</p></div>');
+
+							setTimeout(function () {
+								self.el.update_link.removeClass('active').show();
+								self.el.progress_main_container.addClass('give-hidden');
+							}, 5000);
+						}
+					} else {
+						if (response && -1 !== $.inArray('percentage', Object.keys(response.data))) {
+							// Update progress.
+							$('.give-progress div', '#give-db-updates').animate({
+								width: response.data.percentage + '%',
+							}, 50, function () {
+								// Animation complete.
+							});
+
+							// Update steps info.
+							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
+								self.el.heading.html('<strong>' + response.data.heading.replace('{update_count}', self.el.heading.data('update-count')) + '</strong>');
+							}
+
+							window.setTimeout(
+								Give_Updates.get_db_updates_info(),
+								1000
+							);
+						} else {
+							notice_wrap.html('<div class="notice notice-error"><p>' + give_vars.updates.ajax_error + '</p></div>');
+
+							setTimeout(function () {
+								self.el.update_link.removeClass('active').show();
+								self.el.progress_main_container.addClass('give-hidden');
+							}, 5000);
+						}
+					}
+				}
 			});
 		},
 
