@@ -618,7 +618,7 @@ class Give_Updates {
 	 *
 	 * @return bool
 	 */
-	private function is_parent_updates_completed( $update ) {
+	public function is_parent_updates_completed( $update ) {
 		// Bailout.
 		if ( empty( $update['depend'] ) ) {
 			return true;
