@@ -82,21 +82,67 @@ class Give_Background_Updater extends WP_Background_Process {
 	 * in the next pass through. Or, return false to remove the
 	 * item from the queue.
 	 *
-	 * @param string $callback Update callback function
+	 * @param array $update Update info
 	 *
 	 * @return mixed
 	 */
-	protected function task( $callback ) {
-		// @todo add which upgrade we are processing currently.
-		//update_option('give_doing_upgrade', true );
+	protected function task( $update ) {
+		/* @var  Give_Updates $give_updates */
+		$give_updates  = Give_Updates::get_instance();
+		$resume_update = get_option(
+			'give_doing_upgrade',
 
-		include_once( dirname( __FILE__ ) . '/wc-update-functions.php' );
+			// Default update.
+			array(
+				'update_info' => $update,
+				'step'        => 0,
+				'update'      => $update['id'],
+				'heading'     => sprintf( 'Update %s of {update_count}', 1 ),
+				'percentage'  => $give_updates->percentage,
+			)
+		);
 
-		if ( is_callable( $callback ) ) {
-			call_user_func( $callback );
+		// Set params.
+		$give_updates->step   = absint( $resume_update['step'] );
+		$give_updates->update = absint( $resume_update['update'] );
+
+		// Disable cache.
+		Give_Cache::disable();
+
+		// Check if update depend upon any other update.
+		if ( ! $give_updates->is_parent_updates_completed( $update ) ) {
+			// @todo: set error when you have only one update with invalid dependency
+			$this->data( $update )->save();
+
+			// Enable cache.
+			Give_Cache::enable();
+
+			return false;
 		}
 
-		return false;
+		// Run update.
+		if ( is_array( $update['callback'] ) ) {
+			$update['callback'][0]->$update['callback'][1]();
+		} else {
+			$update['callback']();
+		}
+
+		// Set update info.
+		$doing_upgrade_args = array(
+			'update_info' => $update,
+			'step'        => ++ $give_updates->step,
+			'update'      => $give_updates->update,
+			'heading'     => sprintf( 'Update %s of {update_count}', $give_updates->update ),
+			'percentage'  => $give_updates->percentage,
+		);
+
+		// Cache upgrade.
+		update_option( 'give_doing_upgrade', $doing_upgrade_args );
+
+		// Check if current update completed or not.
+		if ( give_has_upgrade_completed( $update['id'] ) ) {
+			return false;
+		}
 	}
 
 	/**
