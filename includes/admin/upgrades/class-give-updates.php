@@ -161,18 +161,25 @@ class Give_Updates {
 	 */
 	public function setup() {
 		/**
+		 * Load file
+		 */
+		require_once GIVE_PLUGIN_DIR . 'includes/class-give-background-updater.php';
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrade-functions.php';
+
+		/**
 		 * Setup hooks.
 		 */
 		add_action( 'init', array( $this, '__register_upgrade' ), 9999 );
-		add_action( 'admin_init', array( $this, '__change_donations_label' ), 9999 );
-		add_action( 'admin_menu', array( $this, '__register_menu' ), 9999 );
-		add_action( 'give_set_upgrade_completed', array( $this, '__flush_resume_updates' ), 9999 );
-		add_action( 'wp_ajax_give_do_ajax_updates', array( $this, '__give_ajax_updates' ) );
 
-		/**
-		 * Load file
-		 */
-		require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrade-functions.php';
+		if( is_admin() ) {
+			add_action( 'admin_init', array( $this, '__change_donations_label' ), 9999 );
+			add_action( 'admin_menu', array( $this, '__register_menu' ), 9999 );
+
+			if( isset( $_GET['page'] ) && 'give-updates' !== give_clean( $_GET['page'] ) ) {
+				add_action( 'give_set_upgrade_completed', array( $this, '__flush_resume_updates' ), 9999 );
+				add_action( 'wp_ajax_give_do_ajax_updates', array( $this, '__give_ajax_updates' ) );
+			}
+		}
 	}
 
 	/**

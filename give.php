@@ -475,6 +475,8 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/donors/class-give-donors-query.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/donors/backward-compatibility.php';
 
+			require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/class-give-updates.php';
+
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				require_once GIVE_PLUGIN_DIR . 'includes/class-give-cli-commands.php';
 			}
@@ -526,9 +528,6 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-profile-editor.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-donation-history.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-receipt.php';
-
-				require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/class-give-updates.php';
-
 			}// End if().
 
 			require_once GIVE_PLUGIN_DIR . 'includes/install.php';
