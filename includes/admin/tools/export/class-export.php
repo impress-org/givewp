@@ -48,11 +48,7 @@ class Give_Export {
 	 * @return void
 	 */
 	public function headers() {
-		ignore_user_abort( true );
-
-		if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
-			set_time_limit( 0 );
-		}
+		give_ignore_user_abort();
 
 		nocache_headers();
 		header( 'Content-Type: text/csv; charset=utf-8' );

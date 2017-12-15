@@ -132,7 +132,7 @@ function give_generate_pdf( $data ) {
 			$title = $form->post_title;
 
 			if ( give_has_variable_prices( $form->ID ) ) {
-				$price = html_entity_decode( give_price_range( $form->ID, false ) );
+				$price = html_entity_decode( give_price_range( $form->ID, false ), ENT_COMPAT, 'UTF-8' );
 			} else {
 				$price = give_currency_filter( give_get_form_price( $form->ID ), array( 'decode_currency' => true ) );
 			}

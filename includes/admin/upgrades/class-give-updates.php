@@ -291,14 +291,27 @@ class Give_Updates {
 	}
 
 	/**
-	 * Get total updates count
+	 * Get total pending updates count
 	 *
 	 * @since  1.8.12
 	 * @access public
+	 *
 	 * @return int
 	 */
 	public function get_db_update_count() {
 		return count( $this->get_updates( 'database', 'new' ) );
+	}
+
+	/**
+	 * Get total updates count
+	 *
+	 * @since  1.8.18
+	 * @access public
+	 *
+	 * @return int
+	 */
+	public function get_total_db_update_count() {
+		return count( $this->get_updates( 'database', 'all' ) );
 	}
 
 	/**
