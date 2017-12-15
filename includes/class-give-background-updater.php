@@ -153,5 +153,7 @@ class Give_Background_Updater extends WP_Background_Process {
 	 */
 	protected function complete() {
 		parent::complete();
+
+		delete_option( 'give_doing_upgrade' );
 	}
 }
