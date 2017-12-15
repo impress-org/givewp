@@ -517,6 +517,16 @@ class Give_Updates {
 	 * @return void
 	 */
 	public function __give_start_updating() {
+		// Check permission.
+		if ( ! current_user_can( 'manage_give_settings' ) ) {
+			$this->send_ajax_response(
+				array(
+					'message' => esc_html__( 'You do not have permission to do Give upgrades.', 'give' ),
+				),
+				'error'
+			);
+		}
+
 		// @todo: validate nonce
 		// @todo: set http method to post
 		if ( empty( $_REQUEST['run_db_upgrade'] ) ) {
