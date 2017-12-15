@@ -17,6 +17,15 @@ class Give_Updates {
 	static private $instance;
 
 	/**
+	 * Instance.
+	 *
+	 * @since
+	 * @access static
+	 * @var Give_Background_Updater
+	 */
+	static private $background_updater;
+
+	/**
 	 * Updates
 	 *
 	 * @since  1.8.12
@@ -166,18 +175,21 @@ class Give_Updates {
 		require_once GIVE_PLUGIN_DIR . 'includes/class-give-background-updater.php';
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrade-functions.php';
 
+		self::$background_updater = new Give_Background_Updater();
+
 		/**
 		 * Setup hooks.
 		 */
 		add_action( 'init', array( $this, '__register_upgrade' ), 9999 );
 
-		if( is_admin() ) {
+		if ( is_admin() ) {
 			add_action( 'admin_init', array( $this, '__change_donations_label' ), 9999 );
 			add_action( 'admin_menu', array( $this, '__register_menu' ), 9999 );
 
-			if( isset( $_GET['page'] ) && 'give-updates' !== give_clean( $_GET['page'] ) ) {
+			if ( isset( $_GET['page'] ) && 'give-updates' === give_clean( $_GET['page'] ) ) {
 				add_action( 'give_set_upgrade_completed', array( $this, '__flush_resume_updates' ), 9999 );
 				add_action( 'wp_ajax_give_do_ajax_updates', array( $this, '__give_ajax_updates' ) );
+				add_action( 'wp_ajax_give_run_db_updates', array( $this, '__give_start_updating' ) );
 			}
 		}
 	}
@@ -408,7 +420,7 @@ class Give_Updates {
 		if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
 			set_time_limit( 0 );
 		}
-		
+
 		// Set params.
 		$this->step   = absint( $_POST['step'] );
 		$this->update = absint( $_POST['update'] );
@@ -493,6 +505,29 @@ class Give_Updates {
 
 			$this->send_ajax_response( $doing_upgrade_args );
 		}// End foreach().
+	}
+
+
+	/**
+	 * Initialize updates
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @return void
+	 */
+	public function __give_start_updating() {
+		// @todo: validate nonce
+		// @todo: set http method to post
+		if ( empty( $_REQUEST['run_db_upgrade'] ) ) {
+			wp_send_json_error();
+		}
+
+		foreach ( $this->get_updates( 'database', 'new' ) as $update ) {
+			self::$background_updater->push_to_queue( $update );
+		}
+
+		self::$background_updater->save();
 	}
 
 	/**

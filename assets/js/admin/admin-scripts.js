@@ -1116,7 +1116,22 @@ var give_setting_edit = false;
 				}
 
 				// Start the process from first step of first update.
-				self.process_step(step, 1, self);
+				// self.process_step(step, 1, self);
+
+				$.ajax({
+					type: 'POST',
+					url: ajaxurl,
+					data: {
+						action: 'give_run_db_updates',
+						nonce: '', // @todo: add security nonce
+						run_db_updates: 1
+					},
+					dataType: 'json',
+					success: function (response) {
+
+					}
+				});
+
 				return false;
 			});
 		},
