@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_reports_graph() {
 	// Retrieve the queried dates.
 	$donation_stats = new Give_Payment_Stats();
-	$dates = give_get_report_dates();
+	$dates          = give_get_report_dates();
 
 	// Determine graph options.
 	switch ( $dates['range'] ) :
@@ -152,6 +152,7 @@ function give_reports_graph() {
 
 				} else {
 
+					// This Quarter, Last Quarter, This Year, Last Year.
 					$start_date = mktime( 0, 0, 0, $i, 1, $y );
 					$end_date   = mktime( 23, 59, 59, $i + 1, 0, $y );
 					$sales      = $donation_stats->get_sales( 0, $start_date, $end_date );
@@ -700,63 +701,58 @@ function give_get_report_dates() {
 			break;
 
 		case 'this_quarter' :
-			$month_now = date( 'n', $current_time );
+			$month_now     = date( 'n', $current_time );
+			$dates['year'] = date( 'Y', $current_time );
 
 			if ( $month_now <= 3 ) {
 
 				$dates['m_start'] = 1;
 				$dates['m_end']   = 4;
-				$dates['year']    = date( 'Y', $current_time );
 
 			} else if ( $month_now <= 6 ) {
 
 				$dates['m_start'] = 4;
 				$dates['m_end']   = 7;
-				$dates['year']    = date( 'Y', $current_time );
 
 			} else if ( $month_now <= 9 ) {
 
 				$dates['m_start'] = 7;
 				$dates['m_end']   = 10;
-				$dates['year']    = date( 'Y', $current_time );
 
 			} else {
 
 				$dates['m_start']  = 10;
 				$dates['m_end']    = 1;
-				$dates['year']     = date( 'Y', $current_time );
 				$dates['year_end'] = date( 'Y', $current_time ) + 1;
 
 			}
 			break;
 
 		case 'last_quarter' :
-			$month_now = date( 'n' );
+			$month_now         = date( 'n', $current_time );
+			$dates['year']     = date( 'Y', $current_time );
+			$dates['year_end'] = date( 'Y', $current_time );
 
 			if ( $month_now <= 3 ) {
 
-				$dates['m_start']  = 10;
-				$dates['m_end']    = 12;
-				$dates['year']     = date( 'Y', $current_time ) - 1; // Previous year
-				$dates['year_end'] = date( 'Y', $current_time ) - 1; // Previous year
+				$dates['m_start'] = 10;
+				$dates['m_end']   = 1;
+				$dates['year']    = date( 'Y', $current_time ) - 1; // Previous year.
 
 			} else if ( $month_now <= 6 ) {
 
 				$dates['m_start'] = 1;
-				$dates['m_end']   = 3;
-				$dates['year']    = date( 'Y', $current_time );
+				$dates['m_end']   = 4;
 
 			} else if ( $month_now <= 9 ) {
 
 				$dates['m_start'] = 4;
-				$dates['m_end']   = 6;
-				$dates['year']    = date( 'Y', $current_time );
+				$dates['m_end']   = 7;
 
 			} else {
 
 				$dates['m_start'] = 7;
-				$dates['m_end']   = 9;
-				$dates['year']    = date( 'Y', $current_time );
+				$dates['m_end']   = 10;
 
 			}
 			break;
