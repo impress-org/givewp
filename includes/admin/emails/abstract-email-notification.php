@@ -759,7 +759,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 
 			$receipt_link_url = esc_url( add_query_arg( array(
 				'payment_key' => $receipt_id,
-			), home_url() ) );
+			), give_get_history_page_uri() ) );
 
 			$receipt_link = sprintf(
 				'<a href="%1$s">%2$s</a>',
