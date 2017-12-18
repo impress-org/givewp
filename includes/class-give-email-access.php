@@ -195,45 +195,7 @@ class Give_Email_Access {
 	 * @return bool
 	 */
 	public function send_email( $donor_id, $email ) {
-
-		$verify_key = wp_generate_password( 20, false );
-
-		// Generate a new verify key
-		$this->set_verify_key( $donor_id, $email, $verify_key );
-
-		$access_url = add_query_arg( array(
-			'give_nl' => $verify_key,
-		), give_get_history_page_uri() );
-
-		if ( ! empty( $_GET['payment_key'] ) ) {
-			$access_url = add_query_arg( array(
-				'payment_key' => give_clean( $_GET['payment_key'] ),
-			), $access_url );
-		}
-
-		// Nice subject and message.
-		$subject = apply_filters( 'give_email_access_token_subject', sprintf( __( 'Please confirm your email for %s', 'give' ), get_bloginfo( 'url' ) ) );
-
-		$message = sprintf(
-			           __( 'Please click the link to access your donation history on <a target="_blank" href="%1$s">%1$s</a>. If you did not request this email, please contact <a href="mailto:%2$s">%2$s</a>.', 'give' ),
-			           get_bloginfo( 'url' ),
-			           get_bloginfo( 'admin_email' )
-		           ) . "\n\n";
-		$message .= sprintf(
-			            __( '<a href="%s" target="_blank">%s</a>', 'give' ),
-			            esc_url( $access_url ),
-			            __( 'View your donation history &raquo;', 'give' )
-		            ) . "\n\n";
-		$message .= "\n\n";
-		$message .= __( 'Sincerely,', 'give' ) . "\n";
-		$message .= get_bloginfo( 'name' ) . "\n";
-
-		$message = apply_filters( 'give_email_access_token_message', $message );
-
-		// Send the email.
-		Give()->emails->__set( 'heading', apply_filters( 'give_email_access_token_heading', __( 'Confirm Email', 'give' ) ) );
-		return Give()->emails->send( $email, $subject, $message );
-
+		return apply_filters( 'give_email-access_email_notification', $donor_id, $email );
 	}
 
 	/**
