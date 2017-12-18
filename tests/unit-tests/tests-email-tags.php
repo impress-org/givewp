@@ -707,7 +707,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$link = give_email_tag_email_access_link( array( 'user_id' => 1 ) );
 
 		$this->assertRegExp(
-			'/target="_blank">Access Donation Details &raquo;<\/a>/',
+			'/target="_blank">View your donation history &raquo;<\/a>/',
 			$link
 		);
 
