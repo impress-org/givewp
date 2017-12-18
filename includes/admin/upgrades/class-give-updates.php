@@ -535,7 +535,7 @@ class Give_Updates {
 			self::$background_updater->push_to_queue( $update );
 		}
 
-		update_option( 'give_db_update_count', count( $updates ) );
+		add_option( 'give_db_update_count', count( $updates ), '', 'no' );
 		self::$background_updater->save()->dispatch();
 
 		wp_send_json_success();
@@ -551,7 +551,18 @@ class Give_Updates {
 	 * @return string
 	 */
 	public function __give_db_updates_info() {
-		$this->send_ajax_response( get_option( 'give_doing_upgrade' ) );
+		$update_info = get_option( 'give_doing_upgrade' );
+		$response_type = '';
+
+		if( empty( $update_info ) ) {
+			$update_info = array(
+				'message'    => __( 'Database updated successfully.', 'give' ),
+				'heading'    => __( 'Updates Completed.', 'give' ),
+				'percentage' => 0,
+			);
+			$response_type = 'success';
+		}
+		$this->send_ajax_response( $update_info, $response_type );
 	}
 
 	/**

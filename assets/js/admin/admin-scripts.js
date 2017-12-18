@@ -1074,25 +1074,25 @@ var give_setting_edit = false;
 		},
 
 		submit: function () {
-			var self = this, step = 1, resume_update_step = 0;
+			var $self = this, step = 1, resume_update_step = 0;
 
-			self.el.main_container = Give_Selector_Cache.get('#give-db-updates');
-			self.el.update_link = Give_Selector_Cache.get('.give-update-button a', self.el.main_container);
-			self.el.run_upload_container = Give_Selector_Cache.get('.give-run-database-update', self.el.progress_main_container);
-			self.el.progress_main_container = Give_Selector_Cache.get('.progress-container', self.el.main_container);
-			self.el.heading = Give_Selector_Cache.get('.update-message', self.el.progress_main_container);
-			self.el.progress_container = Give_Selector_Cache.get('.progress-content', self.el.progress_main_container);
+			$self.el.main_container = Give_Selector_Cache.get('#give-db-updates');
+			$self.el.update_link = Give_Selector_Cache.get('.give-update-button a', $self.el.main_container);
+			$self.el.run_upload_container = Give_Selector_Cache.get('.give-run-database-update', $self.el.progress_main_container);
+			$self.el.progress_main_container = Give_Selector_Cache.get('.progress-container', $self.el.main_container);
+			$self.el.heading = Give_Selector_Cache.get('.update-message', $self.el.progress_main_container);
+			$self.el.progress_container = Give_Selector_Cache.get('.progress-content', $self.el.progress_main_container);
 
 			// Bailout.
-			if (self.el.update_link.hasClass('active')) {
+			if ($self.el.update_link.hasClass('active')) {
 				return;
 			}
 
-			self.el.update_link.on('click', '', function (e) {
+			$self.el.update_link.on('click', '', function (e) {
 				e.preventDefault();
 
-				self.el.run_upload_container.find('.notice').remove();
-				self.el.run_upload_container.append('<div class="notice notice-error non-dismissible give-run-update-containt"><p> <a href="#" class="give-run-update-button button">' + give_vars.db_update_confirmation_msg_button + '</a> ' + give_vars.db_update_confirmation_msg + '</p></div>');
+				$self.el.run_upload_container.find('.notice').remove();
+				$self.el.run_upload_container.append('<div class="notice notice-error non-dismissible give-run-update-containt"><p> <a href="#" class="give-run-update-button button">' + give_vars.db_update_confirmation_msg_button + '</a> ' + give_vars.db_update_confirmation_msg + '</p></div>');
 			});
 
 			$('#give-db-updates').on('click', 'a.give-run-update-button', function (e) {
@@ -1103,20 +1103,20 @@ var give_setting_edit = false;
 				}
 
 				$(this).addClass('active').fadeOut();
-				self.el.update_link.addClass('active').fadeOut();
+				$self.el.update_link.addClass('active').fadeOut();
 				$('#give-db-updates .give-run-update-containt').slideUp();
 
-				self.el.progress_container.find('.notice-wrap').remove();
-				self.el.progress_container.append('<div class="notice-wrap give-clearfix"><span class="spinner is-active"></span><div class="give-progress"><div></div></div></div>');
-				self.el.progress_main_container.removeClass('give-hidden');
+				$self.el.progress_container.find('.notice-wrap').remove();
+				$self.el.progress_container.append('<div class="notice-wrap give-clearfix"><span class="spinner is-active"></span><div class="give-progress"><div></div></div></div>');
+				$self.el.progress_main_container.removeClass('give-hidden');
 
-				// resume_update_step = parseInt(self.el.heading.data('resume-update'));
+				// resume_update_step = parseInt($self.el.heading.data('resume-update'));
 				// if (resume_update_step) {
 				// 	step = resume_update_step;
 				// }
 
 				// Start the process from first step of first update.
-				// self.process_step(step, 1, self);
+				// $self.process_step(step, 1, $self);
 
 				$.ajax({
 					type: 'POST',
@@ -1132,53 +1132,58 @@ var give_setting_edit = false;
 					}
 				});
 
-				window.setTimeout(
-					Give_Updates.get_db_updates_info(),
-					1000
-				);
+
+				window.setTimeout(Give_Updates.get_db_updates_info, 500, $self );
 
 				return false;
 			});
 		},
 
-		get_db_updates_info: function(){
+		get_db_updates_info: function( $self ){
+			console.log($self);
 			$.ajax({
 				type: 'POST',
 				url: ajaxurl,
 				data: {
 					action: 'give_db_updates_info',
-					nonce: '', // @todo: add security nonce
+					nonce: '' // @todo: add security nonce
 				},
 				dataType: 'json',
 				success: function (response) {
 					// We need to get the actual in progress form, not all forms on the page.
-					var notice_wrap = Give_Selector_Cache.get('.notice-wrap', self.el.progress_container, true);
+					var notice_wrap = Give_Selector_Cache.get('.notice-wrap', $self.el.progress_container, true);
 
 					if (-1 !== $.inArray('success', Object.keys(response))) {
 						if (response.success) {
 							// Update steps info.
 							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
-								self.el.heading.html('<strong>' + response.data.heading + '</strong>');
+								$self.el.heading.html('<strong>' + response.data.heading + '</strong>');
 							}
 
-							self.el.update_link.closest('p').remove();
+							$self.el.update_link.closest('p').remove();
 							notice_wrap.html('<div class="notice notice-success is-dismissible"><p>' + response.data.message + '</p><button type="button" class="notice-dismiss"></button></div>');
 
 						} else {
 							// Update steps info.
 							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
-								self.el.heading.html('<strong>' + response.data.heading + '</strong>');
+								$self.el.heading.html('<strong>' + response.data.heading + '</strong>');
 							}
 
 							notice_wrap.html('<div class="notice notice-error"><p>' + response.data.message + '</p></div>');
 
 							setTimeout(function () {
-								self.el.update_link.removeClass('active').show();
-								self.el.progress_main_container.addClass('give-hidden');
-							}, 5000);
+								$self.el.update_link.removeClass('active').show();
+								$self.el.progress_main_container.addClass('give-hidden');
+							}, 1000);
 						}
 					} else {
 						if (response && -1 !== $.inArray('percentage', Object.keys(response.data))) {
+
+							// Update steps info.
+							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
+								$self.el.heading.html('<strong>' + response.data.heading + '</strong>');
+							}
+
 							// Update progress.
 							$('.give-progress div', '#give-db-updates').animate({
 								width: response.data.percentage + '%',
@@ -1186,29 +1191,21 @@ var give_setting_edit = false;
 								// Animation complete.
 							});
 
-							// Update steps info.
-							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
-								self.el.heading.html('<strong>' + response.data.heading.replace('{update_count}', self.el.heading.data('update-count')) + '</strong>');
-							}
-
-							window.setTimeout(
-								Give_Updates.get_db_updates_info(),
-								1000
-							);
+							window.setTimeout(Give_Updates.get_db_updates_info, 1000, $self );
 						} else {
 							notice_wrap.html('<div class="notice notice-error"><p>' + give_vars.updates.ajax_error + '</p></div>');
 
 							setTimeout(function () {
-								self.el.update_link.removeClass('active').show();
-								self.el.progress_main_container.addClass('give-hidden');
-							}, 5000);
+								$self.el.update_link.removeClass('active').show();
+								$self.el.progress_main_container.addClass('give-hidden');
+							}, 1000);
 						}
 					}
 				}
 			});
 		},
 
-		process_step: function (step, update, self) {
+		process_step: function (step, update, $self) {
 
 			give_setting_edit = true;
 
@@ -1225,29 +1222,29 @@ var give_setting_edit = false;
 					give_setting_edit = false;
 
 					// We need to get the actual in progress form, not all forms on the page.
-					var notice_wrap = Give_Selector_Cache.get('.notice-wrap', self.el.progress_container, true);
+					var notice_wrap = Give_Selector_Cache.get('.notice-wrap', $self.el.progress_container, true);
 
 					if (-1 !== $.inArray('success', Object.keys(response))) {
 						if (response.success) {
 							// Update steps info.
 							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
-								self.el.heading.html('<strong>' + response.data.heading + '</strong>');
+								$self.el.heading.html('<strong>' + response.data.heading + '</strong>');
 							}
 
-							self.el.update_link.closest('p').remove();
+							$self.el.update_link.closest('p').remove();
 							notice_wrap.html('<div class="notice notice-success is-dismissible"><p>' + response.data.message + '</p><button type="button" class="notice-dismiss"></button></div>');
 
 						} else {
 							// Update steps info.
 							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
-								self.el.heading.html('<strong>' + response.data.heading + '</strong>');
+								$self.el.heading.html('<strong>' + response.data.heading + '</strong>');
 							}
 
 							notice_wrap.html('<div class="notice notice-error"><p>' + response.data.message + '</p></div>');
 
 							setTimeout(function () {
-								self.el.update_link.removeClass('active').show();
-								self.el.progress_main_container.addClass('give-hidden');
+								$self.el.update_link.removeClass('active').show();
+								$self.el.progress_main_container.addClass('give-hidden');
 							}, 5000);
 						}
 					} else {
@@ -1261,16 +1258,16 @@ var give_setting_edit = false;
 
 							// Update steps info.
 							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
-								self.el.heading.html('<strong>' + response.data.heading.replace('{update_count}', self.el.heading.data('update-count')) + '</strong>');
+								$self.el.heading.html('<strong>' + response.data.heading.replace('{update_count}', $self.el.heading.data('update-count')) + '</strong>');
 							}
 
-							self.process_step(parseInt(response.data.step), response.data.update, self);
+							$self.process_step(parseInt(response.data.step), response.data.update, $self);
 						} else {
 							notice_wrap.html('<div class="notice notice-error"><p>' + give_vars.updates.ajax_error + '</p></div>');
 
 							setTimeout(function () {
-								self.el.update_link.removeClass('active').show();
-								self.el.progress_main_container.addClass('give-hidden');
+								$self.el.update_link.removeClass('active').show();
+								$self.el.progress_main_container.addClass('give-hidden');
 							}, 5000);
 						}
 					}
