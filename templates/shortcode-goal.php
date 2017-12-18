@@ -71,7 +71,7 @@ if ( 'donation' === $goal_format ) {
 	<?php if ( ! empty( $show_text ) ) : ?>
 		<div class="raised">
 			<?php
-			if ( $goal_format === 'amount' ) :
+			if ( 'amount' === $goal_format ) :
 
 				/**
 				 * Filter the income formatting arguments.
@@ -98,7 +98,7 @@ if ( 'donation' === $goal_format ) {
 					give_currency_filter( $goal, array( 'form_id' => $form_id ) )
 				);
 
-			elseif ( $goal_format === 'percentage' ) :
+			elseif ( 'percentage' === $goal_format ) :
 
 				echo sprintf(
 				/* translators: %s: percentage of the amount raised compared to the goal target */
@@ -106,7 +106,7 @@ if ( 'donation' === $goal_format ) {
 					round( $progress )
 				);
 
-			elseif ( $goal_format === 'donation' ) :
+			elseif ( 'donation' === $goal_format ) :
 
 				echo sprintf(
 				/* translators: 1: total number of donations completed 2: total number of donations set as goal */
