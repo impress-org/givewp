@@ -561,11 +561,11 @@ class Give_Updates {
 	 * @return string
 	 */
 	public function __give_db_updates_info() {
-		$update_info = get_option( 'give_doing_upgrade' );
+		$update_info   = get_option( 'give_doing_upgrade' );
 		$response_type = '';
 
-		if( empty( $update_info ) && ! $this->get_db_update_count() ) {
-			$update_info = array(
+		if ( empty( $update_info ) && ! $this->get_db_update_count() ) {
+			$update_info   = array(
 				'message'    => __( 'Database updated successfully.', 'give' ),
 				'heading'    => __( 'Updates Completed.', 'give' ),
 				'percentage' => 0,
