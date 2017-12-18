@@ -186,20 +186,20 @@ class Give_Email_Access {
 	/**
 	 * Send the user's token
 	 *
+	 * @param int    $donor_id Donor id.
+	 * @param string $email    Donor email.
+	 *
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  $customer_id string Customer id.
-	 * @param  $email       string Customer email.
-	 *
 	 * @return bool
 	 */
-	public function send_email( $customer_id, $email ) {
+	public function send_email( $donor_id, $email ) {
 
 		$verify_key = wp_generate_password( 20, false );
 
 		// Generate a new verify key
-		$this->set_verify_key( $customer_id, $email, $verify_key );
+		$this->set_verify_key( $donor_id, $email, $verify_key );
 
 		$access_url = add_query_arg( array(
 			'give_nl' => $verify_key,
@@ -215,15 +215,15 @@ class Give_Email_Access {
 		$subject = apply_filters( 'give_email_access_token_subject', sprintf( __( 'Please confirm your email for %s', 'give' ), get_bloginfo( 'url' ) ) );
 
 		$message = sprintf(
-			__( 'Please click the link to access your donation history on <a target="_blank" href="%1$s">%1$s</a>. If you did not request this email, please contact <a href="mailto:%2$s">%2$s</a>.', 'give' ),
-			get_bloginfo( 'url' ),
-			get_bloginfo( 'admin_email' )
-		) . "\n\n";
+			           __( 'Please click the link to access your donation history on <a target="_blank" href="%1$s">%1$s</a>. If you did not request this email, please contact <a href="mailto:%2$s">%2$s</a>.', 'give' ),
+			           get_bloginfo( 'url' ),
+			           get_bloginfo( 'admin_email' )
+		           ) . "\n\n";
 		$message .= sprintf(
-			__( '<a href="%s" target="_blank">%s</a>', 'give' ),
-			esc_url( $access_url ),
-			__( 'View your donation history &raquo;', 'give' )
-		) . "\n\n";
+			            __( '<a href="%s" target="_blank">%s</a>', 'give' ),
+			            esc_url( $access_url ),
+			            __( 'View your donation history &raquo;', 'give' )
+		            ) . "\n\n";
 		$message .= "\n\n";
 		$message .= __( 'Sincerely,', 'give' ) . "\n";
 		$message .= get_bloginfo( 'name' ) . "\n";
@@ -291,7 +291,7 @@ class Give_Email_Access {
 		$expires = date( 'Y-m-d H:i:s', time() - $this->token_expiration );
 
 		$email = $wpdb->get_var(
-			$wpdb->prepare( "SELECT email FROM {$wpdb->prefix}give_customers WHERE verify_key = %s AND verify_throttle >= %s LIMIT 1", $token, $expires )
+			$wpdb->prepare( "SELECT email FROM {$wpdb->donors} WHERE verify_key = %s AND verify_throttle >= %s LIMIT 1", $token, $expires )
 		);
 
 		if ( ! empty( $email ) ) {
@@ -312,34 +312,34 @@ class Give_Email_Access {
 	/**
 	 * Add the verify key to DB
 	 *
+	 * @param int    $donor_id   Donor id.
+	 * @param string $email      Donor email.
+	 * @param string $verify_key The verification key.
+	 *
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @param  $customer_id string Customer id.
-	 * @param  $email       string Customer email.
-	 * @param  $verify_key  string The verification key.
-	 *
 	 * @return void
 	 */
-	public function set_verify_key( $customer_id, $email, $verify_key ) {
+	public function set_verify_key( $donor_id, $email, $verify_key ) {
 		global $wpdb;
 
 		$now = date( 'Y-m-d H:i:s' );
 
 		// Insert or update?
 		$row_id = (int) $wpdb->get_var(
-			$wpdb->prepare( "SELECT id FROM $wpdb->donors WHERE id = %d LIMIT 1", $customer_id )
+			$wpdb->prepare( "SELECT id FROM {$wpdb->donors} WHERE id = %d LIMIT 1", $donor_id )
 		);
 
 		// Update.
 		if ( ! empty( $row_id ) ) {
 			$wpdb->query(
-				$wpdb->prepare( "UPDATE $wpdb->donors SET verify_key = %s, verify_throttle = %s WHERE id = %d LIMIT 1", $verify_key, $now, $row_id )
+				$wpdb->prepare( "UPDATE {$wpdb->donors} SET verify_key = %s, verify_throttle = %s WHERE id = %d LIMIT 1", $verify_key, $now, $row_id )
 			);
 		} // Insert.
 		else {
 			$wpdb->query(
-				$wpdb->prepare( "INSERT INTO $wpdb->donors ( verify_key, verify_throttle) VALUES (%s, %s)", $verify_key, $now )
+				$wpdb->prepare( "INSERT INTO {$wpdb->donors} ( verify_key, verify_throttle) VALUES (%s, %s)", $verify_key, $now )
 			);
 		}
 	}
@@ -360,7 +360,7 @@ class Give_Email_Access {
 
 		// See if the verify_key exists.
 		$row = $wpdb->get_row(
-			$wpdb->prepare( "SELECT id, email FROM $wpdb->donors WHERE verify_key = %s LIMIT 1", $token )
+			$wpdb->prepare( "SELECT id, email FROM {$wpdb->donors} WHERE verify_key = %s LIMIT 1", $token )
 		);
 
 		$now = date( 'Y-m-d H:i:s' );
@@ -368,7 +368,7 @@ class Give_Email_Access {
 		// Set token and remove verify key.
 		if ( ! empty( $row ) ) {
 			$wpdb->query(
-				$wpdb->prepare( "UPDATE $wpdb->donors SET verify_key = '', token = %s, verify_throttle = %s WHERE id = %d LIMIT 1", $token, $now, $row->id )
+				$wpdb->prepare( "UPDATE {$wpdb->donors} SET verify_key = '', token = %s, verify_throttle = %s WHERE id = %d LIMIT 1", $token, $now, $row->id )
 			);
 
 			$this->token_email = $row->email;
@@ -412,7 +412,7 @@ class Give_Email_Access {
 
 		global $wpdb;
 
-		// Create columns in customers table.
+		// Create columns in donors table.
 		$wpdb->query( "ALTER TABLE {$wpdb->donors} ADD `token` VARCHAR(255) CHARACTER SET utf8 NOT NULL, ADD `verify_key` VARCHAR(255) CHARACTER SET utf8 NOT NULL AFTER `token`, ADD `verify_throttle` DATETIME NOT NULL AFTER `verify_key`" );
 	}
 
