@@ -145,7 +145,7 @@ class Give_Background_Updater extends WP_Background_Process {
 			'update_info' => $update,
 			'step'        => ++ $give_updates->step,
 			'update'      => $give_updates->update,
-			'heading'     => sprintf( 'Update %s of {update_count}', $give_updates->update ),
+			'heading'     => sprintf( 'Update %s of %s', $give_updates->update, get_option( 'give_db_update_count' ) ),
 			'percentage'  => $give_updates->percentage,
 		);
 
