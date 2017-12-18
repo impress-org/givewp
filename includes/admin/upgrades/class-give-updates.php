@@ -202,7 +202,6 @@ class Give_Updates {
 	 */
 	function __change_donations_label() {
 		global $menu;
-		global $submenu;
 
 		// Bailout.
 		if ( empty( $menu ) || ! $this->get_total_update_count() ) {
@@ -215,15 +214,20 @@ class Give_Updates {
 			}
 
 			$menu[ $index ][0] = sprintf(
-				__( 'Donations %s', 'give' ),
-				sprintf(
-					'<span class="update-plugins count-%1$d"><span class="plugin-count">%1$d</span></span>',
-					$this->get_total_update_count()
-				)
+				'%1$s <span class="update-plugins count-%2$s"><span class="plugin-count">%2$s%3$s</span></span>',
+				__( 'Donations', 'give' ),
+				$this->is_doing_updates() ?
+					$this->get_db_update_processing_percentage() :
+					$this->get_total_new_db_update_count(),
+				$this->is_doing_updates() ? '%' : ''
 			);
 
 			break;
 		}
+
+		error_log( print_r( $this->get_running_db_update(), true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
+		error_log( print_r( $this->get_total_new_db_update_count(), true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
+		error_log( print_r( ( absint( $this->get_running_db_update() ) / absint( $this->get_total_new_db_update_count() ) * 100 ), true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
 	}
 
 	/**
@@ -260,9 +264,12 @@ class Give_Updates {
 			'edit.php?post_type=give_forms',
 			esc_html__( 'Give Updates', 'give' ),
 			sprintf(
-				'%1$s <span class="update-plugins count-%2$d"><span class="plugin-count">%2$d</span></span>',
+				'%1$s <span class="update-plugins count-%2$s"><span class="plugin-count">%2$s%3$s</span></span>',
 				__( 'Updates', 'give' ),
-				$this->get_total_update_count()
+				$this->is_doing_updates() ?
+					$this->get_db_update_processing_percentage() :
+					$this->get_total_new_db_update_count(),
+				$this->is_doing_updates() ? '%' : ''
 			),
 			'manage_give_settings',
 			'give-updates',
@@ -618,6 +625,19 @@ class Give_Updates {
 		return $this->is_doing_updates() ?
 			$current_update['update'] :
 			1;
+	}
+
+	/**
+	 * Get database update processing percentage.
+	 *
+	 * @since  2.0
+	 * @access public
+	 * @return float|int
+	 */
+	public function get_db_update_processing_percentage() {
+		return $this->is_doing_updates() ?
+			absint( ( $this->get_running_db_update() / $this->get_total_new_db_update_count() ) * 100 ) :
+			0;
 	}
 }
 
