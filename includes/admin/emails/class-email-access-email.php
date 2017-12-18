@@ -44,7 +44,7 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 				'default_email_message'        => $this->get_default_email_message(),
 			) );
 
-			add_action( "give_{$this->config['id']}_email_notification", array( $this, 'setup_email_notification' ), 10, 2 );
+			add_filter( "give_{$this->config['id']}_email_notification", array( $this, 'setup_email_notification' ), 10, 2 );
 			add_action( 'give_save_settings_give_settings', array( $this, 'set_notification_status' ), 10, 2 );
 			add_filter( 'give_email_preview_header', array( $this, 'email_preview_header' ), 10, 2 );
 		}
@@ -222,21 +222,23 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 		/**
 		 * Setup email notification.
 		 *
+		 * @param int    $donor_id Donor ID.
+		 * @param string $email    Donor Email.
+		 *
 		 * @since  2.0
 		 * @access public
 		 *
-		 * @param int    $donor_id
-		 * @param string $email
+		 * @return bool
 		 */
 		public function setup_email_notification( $donor_id, $email ) {
-			$donor = Give()->customers->get_by( 'id', $donor_id );
+			$donor = Give()->donors->get_donor_by( 'email', $email );
 			$this->recipient_email = $email;
 
 			// Set email data.
 			$this->setup_email_data();
 
 			// Send email.
-			$this->send_email_notification(
+			return $this->send_email_notification(
 				array(
 					'donor_id' => $donor_id,
 					'user_id'  => $donor->user_id
