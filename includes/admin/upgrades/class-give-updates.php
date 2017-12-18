@@ -385,7 +385,7 @@ class Give_Updates {
 	 * @access public
 	 */
 	public function __flush_resume_updates() {
-		delete_option( 'give_doing_upgrade' );
+		//delete_option( 'give_doing_upgrade' );
 		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
 
 		// Reset counter.
