@@ -685,6 +685,32 @@ class Give_Updates {
 
 
 	/**
+	 * Check if update has valid dependency or not.
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param $update
+	 *
+	 * @return bool
+	 */
+	public function has_valid_dependency( $update ) {
+		$is_valid_dependency = true;
+		$update_ids          = wp_list_pluck( $this->get_updates( 'database' ), 'id' );
+
+		foreach ( $update['depend'] as $depend ) {
+			// Check if dependency is valid or not.
+			if ( ! in_array( $depend, $update_ids ) ) {
+				$is_valid_dependency = false;
+				break;
+			}
+		}
+
+		return $is_valid_dependency;
+	}
+
+
+	/**
 	 * Flag to check if DB updates running or not.
 	 *
 	 * @since  2.0
