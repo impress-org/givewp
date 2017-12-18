@@ -580,9 +580,11 @@ function _give_20_bc_support_deprecated_meta_key_query( $query ) {
 		! empty( $query->query_vars['meta_query'] ) &&
 		( 1 === count( $query->query_vars['meta_query'] ) )
 	) {
-		if ( in_array( $query->query_vars['meta_query'][0]['key'], $new_meta_keys ) ) {
+		$meta_query = current( $query->query_vars['meta_query'] );
+
+		if ( in_array( $meta_query[0]['key'], $new_meta_keys ) ) {
 			$meta_keys = $deprecated_meta_keys;
-		} elseif ( in_array( $query->query_vars['meta_query'][0]['key'], $deprecated_meta_keys ) ) {
+		} elseif ( in_array( $meta_query[0]['key'], $deprecated_meta_keys ) ) {
 			$meta_keys = $new_meta_keys;
 		} else {
 			return;

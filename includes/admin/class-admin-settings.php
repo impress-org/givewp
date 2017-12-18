@@ -654,7 +654,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						$fvalue       = empty( $value['fvalue'] ) ? 'url' : $value['fvalue'];
 
 						$allow_media_preview_tags = array( 'jpg', 'jpeg', 'png', 'gif', 'ico' );
-						$preview_image_src        = $option_value ? ( 'id' === $fvalue ? wp_get_attachment_url( $option_value ) : $option_value ) : '#';
+						$preview_image_src        = $option_value ? ( 'id' === $fvalue ? wp_get_attachment_url( $option_value ) : $option_value ) : '';
 						$preview_image_extension  = $preview_image_src ? pathinfo( $preview_image_src, PATHINFO_EXTENSION ) : '';
 						$is_show_preview          = in_array( $preview_image_extension, $allow_media_preview_tags );
 						?>

@@ -141,7 +141,7 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 			foreach ( $payments as $payment ) {
 				$payment_meta = give_get_payment_meta( $payment->ID );
 				$user_info    = give_get_payment_meta_user_info( $payment->ID );
-				$total        = give_donation_amount( $payment->ID );
+				$total        = give_donation_amount( $payment->ID, array( 'type' => 'stats' ) );
 				$user_id      = isset( $user_info['id'] ) && $user_info['id'] != - 1 ? $user_info['id'] : $user_info['email'];
 
 				if ( is_numeric( $user_id ) ) {

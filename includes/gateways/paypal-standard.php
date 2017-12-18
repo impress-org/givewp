@@ -458,7 +458,7 @@ function give_paypal_success_page_content( $content ) {
 
 	if ( ! $payment_id ) {
 		$session    = give_get_purchase_session();
-		$payment_id = give_get_purchase_id_by_key( $session['purchase_key'] );
+		$payment_id = give_get_donation_id_by_key( $session['purchase_key'] );
 	}
 
 	$payment = get_post( $payment_id );

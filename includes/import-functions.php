@@ -250,7 +250,6 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
 				}
 
 				$report['create_donor'] = ( ! empty( $report['create_donor'] ) ? ( absint( $report['create_donor'] ) + 1 ) : 1 );
-			} else {
 			}
 		} else {
 			// Add is used to ensure duplicate emails are not added
@@ -267,9 +266,11 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
 		if ( empty( $donor_data->id ) ) {
 			$donor_data = get_user_by( 'email', $data['email'] );
 
-			if ( empty( $donor_data->ID ) && ! empty( $data['first_name'] ) && ! empty( $data['last_name'] ) && isset( $import_setting['create_user'] ) && 1 === absint( $import_setting['create_user'] ) ) {
-				$give_role  = (array) give_get_option( 'donor_default_user_role', get_option( 'default_role', ( ( $give_donor = wp_roles()->is_role( 'give_donor' ) ) && ! empty( $give_donor ) ? 'give_donor' : 'subscriber' ) ) );
-				$donor_args = array(
+			if ( empty( $donor_data->ID ) && isset( $import_setting['create_user'] ) && 1 === absint( $import_setting['create_user'] ) ) {
+				$data['first_name'] = ( ! empty( $data['first_name'] ) ? $data['first_name'] : $data['email'] );
+				$data['last_name'] = ( ! empty( $data['last_name'] ) ? $data['last_name'] : '' );
+				$give_role         = (array) give_get_option( 'donor_default_user_role', get_option( 'default_role', ( ( $give_donor = wp_roles()->is_role( 'give_donor' ) ) && ! empty( $give_donor ) ? 'give_donor' : 'subscriber' ) ) );
+				$donor_args        = array(
 					'user_login'      => $data['email'],
 					'user_email'      => $data['email'],
 					'user_registered' => date( 'Y-m-d H:i:s' ),
@@ -331,7 +332,6 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
 			$report['duplicate_donor'] = ( ! empty( $report['duplicate_donor'] ) ? ( absint( $report['duplicate_donor'] ) + 1 ) : 1 );
 		}
 	}
-
 	// update the report
 	give_import_donation_report_update( $report );
 
@@ -371,29 +371,58 @@ function give_import_donations_options() {
 	 */
 	return (array) apply_filters( 'give_import_donations_options', array(
 		'id'          => __( 'Donation ID', 'give' ),
-		'amount'      => __( 'Donation Amount', 'give' ),
-		'post_date'   => __( 'Donation Date', 'give' ),
-		'first_name'  => __( 'Donor First Name', 'give' ),
-		'last_name'   => __( 'Donor Last Name', 'give' ),
-		'line1'       => __( 'Address 1', 'give' ),
+		'amount'      => array(
+			__( 'Donation Amount', 'give' ),
+			__( 'Amount', 'give' )
+		),
+		'post_date'   => array(
+			__( 'Donation Date', 'give' ),
+			__( 'Date', 'give' ),
+		),
+		'first_name'  => array(
+			__( 'Donor First Name', 'give' ),
+			__( 'First Name', 'give' ),
+			__( 'Name', 'give' ),
+		),
+		'last_name'   => array(
+			__( 'Donor Last Name', 'give' ),
+			__( 'Last Name', 'give' ),
+		),
+		'line1'       => array(
+			__( 'Address 1', 'give' ),
+			__( 'Address', 'give' ),
+		),
 		'line2'       => __( 'Address 2', 'give' ),
 		'city'        => __( 'City', 'give' ),
-		'state'       => __( 'State', 'give' ),
-		'country'     => array(
-			__( 'Country', 'give' ),
+		'state'       => array(
+			__( 'State', 'give' ),
+			__( 'Province', 'give' ),
 			__( 'County', 'give' ),
 			__( 'Region', 'give' ),
-			__( 'Province', 'give' ),
 		),
+		'country'     => __( 'Country', 'give' ),
 		'zip'         => array(
 			__( 'Zip', 'give' ),
+			__( 'Zip Code', 'give' ),
 			__( 'Postal Code', 'give' ),
 		),
-		'email'       => __( 'Donor Email', 'give' ),
-		'post_status' => __( 'Donation Status', 'give' ),
-		'gateway'     => __( 'Payment Method', 'give' ),
+		'email'       => array(
+			__( 'Donor Email', 'give' ),
+			__( 'Email', 'give' )
+		),
+		'post_status' => array(
+			__( 'Donation Status', 'give' ),
+			__( 'Status', 'give' ),
+		),
+		'gateway'     => array(
+			__( 'Payment Method', 'give' ),
+			__( 'Method', 'give' ),
+		),
 		'notes'       => __( 'Notes', 'give' ),
-		'mode'        => __( 'Test Mode', 'give' ),
+		'mode'        => array(
+			__( 'Test Mode', 'give' ),
+			__( 'Mode', 'give' ),
+		),
 		'post_meta'   => __( 'Import as Meta', 'give' ),
 	) );
 }
@@ -434,9 +463,17 @@ function give_import_donation_form_options() {
 		'form_title'              => array(
 			__( 'Donation Form Title', 'give' ),
 			__( 'Donation Form', 'give' ),
+			__( 'Form Name', 'give' ),
+			__( 'Title', 'give' ),
 		),
-		'form_id'                 => __( 'Donation Form ID', 'give' ),
-		'form_level'              => __( 'Donation Level', 'give' ),
+		'form_id'                 => array(
+			__( 'Donation Form ID', 'give' ),
+			__( 'Form ID', 'give' )
+		),
+		'form_level'              => array(
+			__( 'Donation Level', 'give' ),
+			__( 'Level', 'give' ),
+		),
 		'form_custom_amount_text' => __( 'Custom Amount Text', 'give' ),
 	) );
 }
@@ -573,7 +610,9 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 	$report = give_import_donation_report();
 
 	// Check for duplicate code.
-	if ( true === give_check_import_donation_duplicate( $payment_data, $data, $form, $donor_data ) ) {
+	$donation_duplicate = give_check_import_donation_duplicate( $payment_data, $data, $form, $donor_data );
+	if ( false !== $donation_duplicate ) {
+		$report['donation_details'][ $import_setting['donation_key'] ]['duplicate'] = $donation_duplicate;
 		$report['duplicate_donation'] = ( ! empty( $report['duplicate_donation'] ) ? ( absint( $report['duplicate_donation'] ) + 1 ) : 1 );
 	} else {
 		add_action( 'give_update_payment_status', 'give_donation_import_insert_default_payment_note', 1, 1 );
@@ -683,8 +722,8 @@ function give_check_import_donation_duplicate( $payment_data, $data, $form, $don
 	if ( ! empty( $data['post_date'] ) ) {
 		$post_date = mysql2date( 'Y-m-d-H-i-s', $data['post_date'] );
 		$post_date = explode( '-', $post_date );
-		$args      = array(
-			'post_type'              => 'give_payment',
+		$args = array(
+			'output'                 => 'post',
 			'cache_results'          => false,
 			'no_found_rows'          => true,
 			'update_post_meta_cache' => false,
@@ -717,17 +756,27 @@ function give_check_import_donation_duplicate( $payment_data, $data, $form, $don
 					'value'   => $payment_data['gateway'],
 					'compare' => '=',
 				),
+				array(
+					'key'     => '_give_payment_customer_id',
+					'value'   => $donor_data->id,
+					'compare' => '=',
+				),
 			),
 		);
 
 		$payments  = new Give_Payments_Query( $args );
 		$donations = $payments->get_payments();
 		if ( ! empty( $donations ) ) {
-			return true;
+			$return = $donations;
 		}
 	}
 
-	return $return;
+	/**
+	 * Filter to modify donation which is getting add is duplicate or not.
+	 *
+	 * @since 1.8.18
+	 */
+	return apply_filters( 'give_check_import_donation_duplicate', $return, $payment_data, $data, $form, $donor_data );
 }
 
 /**
