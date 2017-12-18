@@ -508,7 +508,10 @@ Give.form = {
 		 * @return {string}
 		 */
 		getMinimumAmount: function ($form) {
-			return Give.fn.unFormatCurrency($form.find('input[name="give-form-minimum"]').val());
+			return Give.fn.unFormatCurrency(
+				$form.find('input[name="give-form-minimum"]').val(),
+				Give.form.fn.getInfo('decimal_separator', $form )
+			);
 		},
 
 		/**
