@@ -192,7 +192,6 @@ class Give_Updates {
 		 */
 		add_action( 'init', array( $this, '__register_upgrade' ), 9999 );
 		add_action( 'give_set_upgrade_completed', array( $this, '__flush_resume_updates' ), 9999 );
-		// add_action( 'wp_ajax_give_do_ajax_updates', array( $this, '__give_ajax_updates' ) );
 		add_action( 'wp_ajax_give_db_updates_info', array( $this, '__give_db_updates_info' ) );
 		add_action( 'wp_ajax_give_run_db_updates', array( $this, '__give_start_updating' ) );
 
@@ -401,118 +400,6 @@ class Give_Updates {
 		// Reset counter.
 		$this->step = $this->percentage = 0;
 		++ $this->update;
-	}
-
-	/**
-	 *  Process give updates.
-	 *
-	 * @since  1.8.12
-	 * @access public
-	 */
-	public function __give_ajax_updates() {
-		// Disable cache.
-		Give_Cache::disable();
-
-		// Check permission.
-		if ( ! current_user_can( 'manage_give_settings' ) ) {
-			$this->send_ajax_response(
-				array(
-					'message' => esc_html__( 'You do not have permission to do Give upgrades.', 'give' ),
-				),
-				'error'
-			);
-		}
-
-		ignore_user_abort( true );
-
-		if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
-			set_time_limit( 0 );
-		}
-
-		// Set params.
-		$this->step   = absint( $_POST['step'] );
-		$this->update = absint( $_POST['update'] );
-
-		// Bailout: step and update must be positive and greater then zero.
-		if ( ! $this->step ) {
-			$this->send_ajax_response(
-				array(
-					'message'    => __( 'Please reload this page and try again', 'give' ),
-					'heading'    => '',
-					'percentage' => 0,
-				),
-				'error'
-			);
-		}
-
-		// Get updates.
-		$updates = $this->get_updates( 'database', 'new' );
-
-		// Bailout if we do not have nay updates.
-		if ( empty( $updates ) ) {
-			$this->send_ajax_response(
-				array(
-					'message'    => __( 'The database is already up to date.', 'give' ),
-					'heading'    => __( 'Updates Completed.', 'give' ),
-					'percentage' => 0,
-				),
-				'success'
-			);
-		}
-
-
-		// Process update.
-		foreach ( $updates as $index => $update ) {
-			// Check if update depend upon any other update.
-			if ( ! $this->is_parent_updates_completed( $update ) ) {
-				if ( 1 === count( $updates ) ) {
-					$this->send_ajax_response(
-						array(
-							'message'    => __( 'Error occurred while running current update because it contains invalid update dependencies', 'give' ),
-							'heading'    => '',
-							'percentage' => 0,
-						),
-						'error'
-					);
-				}
-
-				continue;
-			}
-
-			// Run update.
-			if ( is_array( $update['callback'] ) ) {
-				$update['callback'][0]->$update['callback'][1]();
-			} else {
-				$update['callback']();
-			}
-
-			// Check if current update completed or not.
-			if ( give_has_upgrade_completed( $update['id'] ) ) {
-				if ( 1 === count( $updates ) ) {
-					$this->send_ajax_response(
-						array(
-							'message'    => __( 'Database updated successfully.', 'give' ),
-							'heading'    => __( 'Updates Completed.', 'give' ),
-							'percentage' => 0,
-						),
-						'success'
-					);
-				}
-			}
-
-			$doing_upgrade_args = array(
-				'update_info' => $update,
-				'step'        => ++ $this->step,
-				'update'      => $this->update,
-				'heading'     => sprintf( 'Update %s of {update_count}', $this->update ),
-				'percentage'  => $this->percentage,
-			);
-
-			// Cache upgrade.
-			update_option( 'give_doing_upgrade', $doing_upgrade_args );
-
-			$this->send_ajax_response( $doing_upgrade_args );
-		}// End foreach().
 	}
 
 
