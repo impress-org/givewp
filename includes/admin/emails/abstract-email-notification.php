@@ -759,7 +759,6 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 
 			$receipt_link_url = esc_url( add_query_arg( array(
 				'payment_key' => $receipt_id,
-				'give_action' => 'view_receipt',
 			), home_url() ) );
 
 			$receipt_link = sprintf(
