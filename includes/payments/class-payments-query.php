@@ -90,7 +90,6 @@ class Give_Payments_Query extends Give_Stats {
 			'gateway'         => null,
 			'give_forms'      => null,
 			'offset'          => null,
-			'post_parent'     => 0,
 
 			// Currently these params only works with get_payment_by_group
 			'group_by'        => '',
@@ -169,6 +168,15 @@ class Give_Payments_Query extends Give_Stats {
 		$this->gateway_filter();
 
 		add_filter( 'posts_orderby', array( $this, 'custom_orderby' ), 10, 2 );
+
+		/**
+		 * Fires after setup filters.
+		 *
+		 * @since 1.0
+		 *
+		 * @param Give_Payments_Query $this Payments query object.
+		 */
+		do_action( 'give_pre_get_payments', $this );
 	}
 
 	/**
@@ -179,6 +187,15 @@ class Give_Payments_Query extends Give_Stats {
 	 */
 	private function unset_filters() {
 		remove_filter( 'posts_orderby', array( $this, 'custom_orderby' ) );
+
+		/**
+		 * Fires after retrieving payments.
+		 *
+		 * @since 1.0
+		 *
+		 * @param Give_Payments_Query $this Payments query object.
+		 */
+		do_action( 'give_post_get_payments', $this );
 	}
 
 
@@ -197,15 +214,6 @@ class Give_Payments_Query extends Give_Stats {
 	public function get_payments() {
 		// Modify the query/query arguments before we retrieve payments.
 		$this->set_filters();
-
-		/**
-		 * Fires before retrieving payments.
-		 *
-		 * @since 1.0
-		 *
-		 * @param Give_Payments_Query $this Payments query object.
-		 */
-		do_action( 'give_pre_get_payments', $this );
 
 		$query          = new WP_Query( $this->args );
 		$this->payments = array();
@@ -234,15 +242,6 @@ class Give_Payments_Query extends Give_Stats {
 
 		// Remove query filters after we retrieve payments.
 		$this->unset_filters();
-
-		/**
-		 * Fires after retrieving payments.
-		 *
-		 * @since 1.0
-		 *
-		 * @param Give_Payments_Query $this Payments query object.
-		 */
-		do_action( 'give_post_get_payments', $this );
 
 		return $this->payments;
 	}
@@ -762,7 +761,10 @@ class Give_Payments_Query extends Give_Stats {
 
 		$where = "WHERE {$wpdb->posts}.post_type = 'give_payment'";
 		$where .= " AND {$wpdb->posts}.post_status IN ('" . implode( "','", $this->args['post_status'] ) . "')";
-		$where .= " AND {$wpdb->posts}.post_parent={$this->args['post_parent']}";
+
+		if( is_numeric( $this->args['post_parent'] ) ) {
+			$where .= " AND {$wpdb->posts}.post_parent={$this->args['post_parent']}";
+		}
 
 		// Set orderby.
 		$orderby  = "ORDER BY {$wpdb->posts}.{$this->args['orderby']}";
