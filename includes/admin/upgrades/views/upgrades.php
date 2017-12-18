@@ -25,16 +25,14 @@ $give_updates = Give_Updates::get_instance();
 			<p><?php printf( __( 'Give regularly receives new features, bug fixes, and enhancements. It is important to always stay up-to-date with latest version of Give core and its add-ons.  Please create a backup of your site before updating. To update add-ons be sure your <a href="%1$s">license keys</a> are activated.', 'give' ), 'https://givewp.com/my-account/' ); ?></p>
 		</div>
 
-		<?php $update_counter = 1; ?>
-
-		<?php $db_updates = $give_updates->get_db_update_count(); ?>
+		<?php $db_updates = $give_updates->get_pending_db_update_count(); ?>
 		<?php if ( ! empty( $db_updates ) ) : ?>
 			<?php
-			$db_update_url  = add_query_arg( array( 'type' => 'database', ) );
-			$resume_updates = get_option( 'give_doing_upgrade', false );
-			$width          = ! empty( $resume_updates ) ? $resume_updates['percentage'] : 0;
+			$is_doing_updates = $give_updates->is_doing_updates();
+			$db_update_url    = add_query_arg( array( 'type' => 'database', ) );
+			$width            = ! empty( $resume_updates ) ? $resume_updates['percentage'] : 0;
 			?>
-			<div id="give-db-updates" data-resume-update="<?php echo absint( (bool) $resume_updates ); ?>">
+			<div id="give-db-updates" data-resume-update="<?php echo absint( $give_updates->is_doing_updates() ); ?>">
 				<div class="postbox-container">
 					<div class="postbox">
 						<h2 class="hndle"><?php _e( 'Database Updates', 'give' ); ?></h2>
@@ -42,24 +40,20 @@ $give_updates = Give_Updates::get_instance();
 							<div class="panel-content">
 								<p class="give-update-button"><?php echo sprintf( __( 'Give needs to update the database. <a href="%s">Update now</a>', 'give' ), $db_update_url ); ?></p>
 							</div>
-							<div class="progress-container<?php echo empty( $resume_updates ) ? ' give-hidden' : ''; ?>">
+							<div class="progress-container<?php echo $is_doing_updates ? '' : ' give-hidden'; ?>">
 								<p class="update-message">
 									<strong>
 										<?php
 										echo sprintf(
-												__( 'Update %s of %s', 'give' ),
-											! empty( $resume_updates ) ?
-												$resume_updates['update'] :
-												1,
-												! empty( $resume_updates ) ?
-													get_option('give_db_update_count') :
-													$db_updates
+											__( 'Update %s of %s', 'give' ),
+											$give_updates->get_running_db_update(),
+											$give_updates->get_total_new_db_update_count()
 										);
 										?>
 									</strong>
 								</p>
 								<div class="progress-content">
-									<?php if ( ! empty( $resume_updates ) ) : ?>
+									<?php if ( $is_doing_updates ) : ?>
 										<div class="notice-wrap give-clearfix">
 											<span class="spinner is-active"></span>
 											<div class="give-progress">
@@ -81,7 +75,7 @@ $give_updates = Give_Updates::get_instance();
 			</div>
 		<?php endif; ?>
 
-		<?php $plugin_updates = $give_updates->get_plugin_update_count(); ?>
+		<?php $plugin_updates = $give_updates->get_total_plugin_update_count(); ?>
 		<?php if ( ! empty( $plugin_updates ) ) : ?>
 			<?php $plugin_update_url = add_query_arg( array(
 				's' => 'Give',

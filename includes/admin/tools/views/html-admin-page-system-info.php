@@ -450,7 +450,7 @@ $give_updates = Give_Updates::get_instance();
 			<td class="help"><?php echo Give()->tooltips->render_help( __( 'This will show the number of pending database updates.', 'give' ) ); ?></td>
 			<td>
 				<?php
-				if( $remaining_upgrades = $give_updates->get_db_update_count() ) {
+				if( $remaining_upgrades = $give_updates->get_pending_db_update_count() ) {
 					echo sprintf(
 						__( '%1$s of %2$s updates still need to run.', 'give' ),
 						$remaining_upgrades,

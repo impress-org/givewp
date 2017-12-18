@@ -103,57 +103,11 @@ class Give_Updates {
 		}
 
 		// Change depend param to array.
-		if ( is_string( $args['depend'] ) ) {
+		if ( isset( $args['depend'] ) && is_string( $args['depend'] ) ) {
 			$args['depend'] = array( $args['depend'] );
 		}
 
 		$this->updates[ $args['type'] ][] = $args;
-	}
-
-
-	/**
-	 * Get updates.
-	 *
-	 * @since  1.8.12
-	 * @access public
-	 *
-	 * @param string $update_type Tye of update.
-	 * @param string $status      Tye of update.
-	 *
-	 * @return array
-	 */
-	public function get_updates( $update_type = '', $status = 'all' ) {
-		// return all updates.
-		if ( empty( $update_type ) ) {
-			return $this->updates;
-		}
-
-		// Get specific update.
-		$updates = ! empty( $this->updates[ $update_type ] ) ? $this->updates[ $update_type ] : array();
-
-		// Bailout.
-		if ( empty( $updates ) ) {
-			return $updates;
-		}
-
-		switch ( $status ) {
-			case 'new':
-				// Remove already completed updates.
-				$completed_updates = give_get_completed_upgrades();
-
-				if ( ! empty( $completed_updates ) ) {
-					foreach ( $updates as $index => $update ) {
-						if ( in_array( $update['id'], $completed_updates ) ) {
-							unset( $updates[ $index ] );
-						}
-					}
-					$updates = array_values( $updates );
-				}
-
-				break;
-		}
-
-		return $updates;
 	}
 
 	/**
@@ -251,7 +205,7 @@ class Give_Updates {
 		global $submenu;
 
 		// Bailout.
-		if ( empty( $menu ) || ! $this->get_update_count() ) {
+		if ( empty( $menu ) || ! $this->get_total_update_count() ) {
 			return;
 		}
 
@@ -264,7 +218,7 @@ class Give_Updates {
 				__( 'Donations %s', 'give' ),
 				sprintf(
 					'<span class="update-plugins count-%1$d"><span class="plugin-count">%1$d</span></span>',
-					$this->get_update_count()
+					$this->get_total_update_count()
 				)
 			);
 
@@ -284,7 +238,7 @@ class Give_Updates {
 		$this->__register_plugin_addon_updates();
 
 		// Bailout.
-		if ( ! $this->get_update_count() ) {
+		if ( ! $this->get_total_update_count() ) {
 			// Show complete update message if still on update setting page.
 			if ( isset( $_GET['page'] ) && 'give-updates' === $_GET['page'] ) {
 				// Upgrades
@@ -308,36 +262,12 @@ class Give_Updates {
 			sprintf(
 				'%1$s <span class="update-plugins count-%2$d"><span class="plugin-count">%2$d</span></span>',
 				__( 'Updates', 'give' ),
-				$this->get_update_count()
+				$this->get_total_update_count()
 			),
 			'manage_give_settings',
 			'give-updates',
 			array( $this, 'render_page' )
 		);
-	}
-
-	/**
-	 * Get total pending updates count
-	 *
-	 * @since  1.8.12
-	 * @access public
-	 *
-	 * @return int
-	 */
-	public function get_db_update_count() {
-		return count( $this->get_updates( 'database', 'new' ) );
-	}
-
-	/**
-	 * Get total updates count
-	 *
-	 * @since  1.8.18
-	 * @access public
-	 *
-	 * @return int
-	 */
-	public function get_total_db_update_count() {
-		return count( $this->get_updates( 'database', 'all' ) );
 	}
 
 	/**
@@ -358,32 +288,6 @@ class Give_Updates {
 	 */
 	public function render_page() {
 		include_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/views/upgrades.php';
-	}
-
-	/**
-	 * Get addon update count.
-	 *
-	 * @since  1.8.12
-	 * @access public
-	 * @return int
-	 */
-	public function get_plugin_update_count() {
-		return count( $this->get_updates( 'plugin' ) );
-	}
-
-	/**
-	 * Get total update count
-	 *
-	 * @since  1.8.12
-	 * @access public
-	 *
-	 * @return int
-	 */
-	public function get_update_count() {
-		$db_update_count     = $this->get_db_update_count();
-		$plugin_update_count = $this->get_plugin_update_count();
-
-		return ( $db_update_count + $plugin_update_count );
 	}
 
 
@@ -451,7 +355,7 @@ class Give_Updates {
 		$update_info   = get_option( 'give_doing_upgrade' );
 		$response_type = '';
 
-		if ( empty( $update_info ) && ! $this->get_db_update_count() ) {
+		if ( empty( $update_info ) && ! $this->get_pending_db_update_count() ) {
 			$update_info   = array(
 				'message'    => __( 'Database updated successfully.', 'give' ),
 				'heading'    => __( 'Updates Completed.', 'give' ),
@@ -502,26 +406,6 @@ class Give_Updates {
 				break;
 		}
 	}
-
-
-	/**
-	 * Resume updates
-	 *
-	 * @since  1.8.12
-	 * @access public
-	 *
-	 * @return bool|int
-	 */
-	public function resume_updates() {
-		$status = false;
-
-		if ( $update = get_option( 'give_doing_upgrade' ) ) {
-			$status = ! empty( $update['step'] ) ? $update['step'] : $status;
-		}
-
-		return $status;
-	}
-
 
 	/**
 	 * Set current update percentage.
@@ -574,6 +458,17 @@ class Give_Updates {
 		return $is_dependency_completed;
 	}
 
+	/**
+	 * Flag to check if DB updates running or not.
+	 *
+	 * @since  2.0
+	 * @access public
+	 * @return bool
+	 */
+	public function is_doing_updates() {
+		return (bool) get_option( 'give_doing_upgrade' );
+	}
+
 
 	/**
 	 * Check if update has valid dependency or not.
@@ -600,16 +495,129 @@ class Give_Updates {
 		return $is_valid_dependency;
 	}
 
+	/**
+	 * Get updates.
+	 *
+	 * @since  1.8.12
+	 * @access public
+	 *
+	 * @param string $update_type Tye of update.
+	 * @param string $status      Tye of update.
+	 *
+	 * @return array
+	 */
+	public function get_updates( $update_type = '', $status = 'all' ) {
+		// return all updates.
+		if ( empty( $update_type ) ) {
+			return $this->updates;
+		}
+
+		// Get specific update.
+		$updates = ! empty( $this->updates[ $update_type ] ) ? $this->updates[ $update_type ] : array();
+
+		// Bailout.
+		if ( empty( $updates ) ) {
+			return $updates;
+		}
+
+		switch ( $status ) {
+			case 'new':
+				// Remove already completed updates.
+				$completed_updates = give_get_completed_upgrades();
+
+				if ( ! empty( $completed_updates ) ) {
+					foreach ( $updates as $index => $update ) {
+						if ( in_array( $update['id'], $completed_updates ) ) {
+							unset( $updates[ $index ] );
+						}
+					}
+					$updates = array_values( $updates );
+				}
+
+				break;
+		}
+
+		return $updates;
+	}
 
 	/**
-	 * Flag to check if DB updates running or not.
+	 * Get addon update count.
+	 *
+	 * @since  1.8.12
+	 * @access public
+	 * @return int
+	 */
+	public function get_total_plugin_update_count() {
+		return count( $this->get_updates( 'plugin' ) );
+	}
+
+	/**
+	 * Get total update count
+	 *
+	 * @since  1.8.12
+	 * @access public
+	 *
+	 * @return int
+	 */
+	public function get_total_update_count() {
+		$db_update_count     = $this->get_pending_db_update_count();
+		$plugin_update_count = $this->get_total_plugin_update_count();
+
+		return ( $db_update_count + $plugin_update_count );
+	}
+
+	/**
+	 * Get total pending updates count
+	 *
+	 * @since  1.8.12
+	 * @access public
+	 *
+	 * @return int
+	 */
+	public function get_pending_db_update_count() {
+		return count( $this->get_updates( 'database', 'new' ) );
+	}
+
+	/**
+	 * Get total updates count
+	 *
+	 * @since  1.8.18
+	 * @access public
+	 *
+	 * @return int
+	 */
+	public function get_total_db_update_count() {
+		return count( $this->get_updates( 'database', 'all' ) );
+	}
+
+	/**
+	 * Get total new updates count
 	 *
 	 * @since  2.0
 	 * @access public
-	 * @return bool
+	 *
+	 * @return int
 	 */
-	public function is_doing_updates() {
-		return (bool) get_option( 'give_doing_upgrade' );
+	public function get_total_new_db_update_count() {
+		return $this->is_doing_updates() ?
+			get_option( 'give_db_update_count' ) :
+			$this->get_pending_db_update_count();
+	}
+
+	/**
+	 * Get total new updates count
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @return int
+	 */
+	public function get_running_db_update() {
+		$current_update = get_option( 'give_doing_upgrade' );
+
+		return $this->is_doing_updates() ?
+			$current_update['update'] :
+			1;
 	}
 }
 
