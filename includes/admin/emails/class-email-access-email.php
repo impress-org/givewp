@@ -21,14 +21,14 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 	 * Give_Email_Access_Email
 	 *
 	 * @abstract
-	 * @since       2.0
+	 * @since 2.0
 	 */
 	class Give_Email_Access_Email extends Give_Email_Notification {
 		/**
 		 * Create a class instance.
 		 *
-		 * @access  public
-		 * @since   2.0
+		 * @access public
+		 * @since  2.0
 		 */
 		public function init() {
 			$this->load( array(
@@ -167,10 +167,10 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 		 */
 		public function get_default_email_message() {
 			$message = sprintf(
-			           __( 'Please click the link to access your donation history on <a target="_blank" href="%1$s">%1$s</a>. If you did not request this email, please contact <a href="mailto:%2$s">%2$s</a>.', 'give' ),
-			           get_bloginfo( 'url' ),
-			           get_bloginfo( 'admin_email' )
-		           ) . "\n\n";
+				           __( 'Please click the link to access your donation history on <a target="_blank" href="%1$s">%1$s</a>. If you did not request this email, please contact <a href="mailto:%2$s">%2$s</a>.', 'give' ),
+				           get_bloginfo( 'url' ),
+				           get_bloginfo( 'admin_email' )
+			           ) . "\n\n";
 			$message .= '{email_access_link}' . "\n\n";
 			$message .= "\n\n";
 			$message .= __( 'Sincerely,', 'give' ) . "\n";
