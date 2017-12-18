@@ -93,8 +93,18 @@ class Give_Updates {
 		$args['type'] = 'database';
 
 		// Bailout.
-		if ( empty( $args['id'] ) || empty( $args['version'] ) || empty( $args['callback'] ) || ! is_callable( $args['callback'] ) ) {
+		if (
+			empty( $args['id'] ) ||
+			empty( $args['version'] ) ||
+			empty( $args['callback'] ) ||
+			! is_callable( $args['callback'] )
+		) {
 			return;
+		}
+
+		// Change depend param to array.
+		if ( is_string( $args['depend'] ) ) {
+			$args['depend'] = array( $args['depend'] );
 		}
 
 		$this->updates[ $args['type'] ][] = $args;
