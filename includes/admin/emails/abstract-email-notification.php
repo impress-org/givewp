@@ -808,7 +808,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 							array(
 								'give_nl' => uniqid(),
 							),
-							get_permalink( give_get_option( 'history_page' ) )
+							give_get_history_page_uri()
 						),
 						__( 'Access Donation Details &raquo;', 'give' )
 					),
