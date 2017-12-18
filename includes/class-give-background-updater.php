@@ -99,34 +99,39 @@ class Give_Background_Updater extends WP_Background_Process {
 			// Default update.
 			array(
 				'update_info' => $update,
-				'step'        => 0,
-				'update'      => $update['id'],
+				'step'        => 1,
+				'update'      => 1,
 				'heading'     => sprintf( 'Update %s of {update_count}', 1 ),
 				'percentage'  => $give_updates->percentage,
 			)
 		);
 
+		// Continuously skip update if previous update does not complete yet.
+		if(
+			$resume_update['update_info']['id'] !== $update['id'] &&
+			! give_has_upgrade_completed( $resume_update['update_info']['id'] )
+		) {
+			return $update;
+		}
+
 		// Set params.
-		$give_updates->step         = absint( $resume_update['step'] );
-		$give_updates->update       = absint( $resume_update['update'] );
-		$is_parent_update_completed = $give_updates->is_parent_updates_completed( $update );
+		$resume_update['update_info'] = $update;
+		$give_updates->step           = absint( $resume_update['step'] );
+		$give_updates->update         = absint( $resume_update['update'] );
+		$is_parent_update_completed   = $give_updates->is_parent_updates_completed( $update );
 
-		// Disable cache.
-		Give_Cache::disable();
-
-		// Check if update depend upon any other update.
-		if( is_null( $is_parent_update_completed ) ) {
-			// @todo log.
-			error_log( print_r( "{$update['id']} does not has valid dependency", true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-		}elseif ( ! $give_updates->is_parent_updates_completed( $update ) ) {
+		// Skip update if dependency update does not complete yet.
+		if ( empty( $is_parent_update_completed ) ) {
 			// @todo: set error when you have only one update with invalid dependency
-			$this->push_to_queue( $update )->save();
-
-			// Enable cache.
-			Give_Cache::enable();
+			if ( ! is_null( $is_parent_update_completed ) ) {
+				return $update;
+			}
 
 			return false;
 		}
+
+		// Disable cache.
+		Give_Cache::disable();
 
 		// Run update.
 		if ( is_array( $update['callback'] ) ) {
@@ -154,6 +159,8 @@ class Give_Background_Updater extends WP_Background_Process {
 		if ( give_has_upgrade_completed( $update['id'] ) ) {
 			return false;
 		}
+
+		return $update;
 	}
 
 	/**
