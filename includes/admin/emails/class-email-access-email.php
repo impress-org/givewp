@@ -40,7 +40,7 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 				'notification_status_editable' => false,
 				'email_tag_context'            => 'donor',
 				'recipient_group_name'         => __( 'Donor', 'give' ),
-				'default_email_subject'        => sprintf( __( 'Your Access Link to %s', 'give' ), get_bloginfo( 'name' ) ),
+				'default_email_subject'        => sprintf( __( 'Please confirm your email for %s', 'give' ), get_bloginfo( 'url' ) ),
 				'default_email_message'        => $this->get_default_email_message(),
 			) );
 
@@ -166,7 +166,11 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 		 * @return string
 		 */
 		public function get_default_email_message() {
-			$message = __( 'You or someone in your organization requested an access link be sent to this email address. This is a temporary access link for you to view your donation information. Click on the link below to view:', 'give' ) . "\n\n";
+			$message = sprintf(
+			           __( 'Please click the link to access your donation history on <a target="_blank" href="%1$s">%1$s</a>. If you did not request this email, please contact <a href="mailto:%2$s">%2$s</a>.', 'give' ),
+			           get_bloginfo( 'url' ),
+			           get_bloginfo( 'admin_email' )
+		           ) . "\n\n";
 			$message .= '{email_access_link}' . "\n\n";
 			$message .= "\n\n";
 			$message .= __( 'Sincerely,', 'give' ) . "\n";
@@ -207,7 +211,7 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 
 			Give()->emails->__set( 'from_name', $from_name );
 			Give()->emails->__set( 'from_email', $from_email );
-			Give()->emails->__set( 'heading', apply_filters( 'give_email_access_token_heading', __( 'Your Access Link', 'give' ) ) );
+			Give()->emails->__set( 'heading', apply_filters( 'give_email_access_token_heading', __( 'Confirm Email', 'give' ) ) );
 
 			/**
 			 * Filters the donation notification email headers.
