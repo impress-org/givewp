@@ -670,16 +670,10 @@ class Give_Updates {
 		}
 
 		$is_dependency_completed = true;
-		$update_ids              = wp_list_pluck( $this->get_updates( 'database' ), 'id' );
-
-		// Change param to array.
-		if ( is_string( $update['depend'] ) ) {
-			$update['depend'] = array( $update['depend'] );
-		}
 
 		foreach ( $update['depend'] as $depend ) {
 			// Check if dependency is valid or not.
-			if ( ! in_array( $depend, $update_ids ) ) {
+			if ( ! $this->has_valid_dependency( $update ) ) {
 				$is_dependency_completed = null;
 				break;
 			}
