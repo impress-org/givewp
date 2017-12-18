@@ -529,10 +529,13 @@ class Give_Updates {
 			wp_send_json_error();
 		}
 
-		foreach ( $this->get_updates( 'database', 'new' ) as $update ) {
+		$updates = $this->get_updates( 'database', 'new' );
+
+		foreach ( $updates as $update ) {
 			self::$background_updater->push_to_queue( $update );
 		}
 
+		update_option( 'give_db_update_count', count( $updates ) );
 		self::$background_updater->save()->dispatch();
 
 		wp_send_json_success();
