@@ -436,9 +436,11 @@ function give_count_payments( $args = array() ) {
 	}
 
 	// Extract all donations
-	$args['number']   = - 1;
-	$args['group_by'] = 'post_status';
-	$args['count']    = 'true';
+	$args['number']      = - 1;
+	$args['group_by']    = 'post_status';
+	$args['count']       = 'true';
+	$args['post_parent'] = 0;
+
 
 	$donations_obj = new Give_Payments_Query( $args );
 	$donations_count = $donations_obj->get_payment_by_group();
