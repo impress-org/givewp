@@ -93,17 +93,17 @@ if ( 'donation' === $goal_format ) {
 
 				echo sprintf(
 				/* translators: 1: amount of income raised 2: goal target amount. */
-					__( '%1$s of %2$s raised', 'give' ),
-					'<span class="income">' . give_currency_filter( $income, array( 'form_id' => $form_id ) ) . '</span>',
-					'<span class="goal-text">' . give_currency_filter( $goal, array( 'form_id' => $form_id ) ) . '</span>'
+					__( '<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> raised', 'give' ),
+					give_currency_filter( $income, array( 'form_id' => $form_id ) ),
+					give_currency_filter( $goal, array( 'form_id' => $form_id ) )
 				);
 
 			elseif ( $goal_format === 'percentage' ) :
 
 				echo sprintf(
 				/* translators: %s: percentage of the amount raised compared to the goal target */
-					__( '%s%% funded', 'give' ),
-					'<span class="give-percentage">' . round( $progress ) . '</span>'
+					__( '<span class="give-percentage">%s</span> funded', 'give' ),
+					round( $progress )
 				);
 
 			elseif ( $goal_format === 'donation' ) :
