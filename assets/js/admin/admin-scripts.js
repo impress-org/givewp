@@ -1124,7 +1124,7 @@ var give_setting_edit = false;
 					data: {
 						action: 'give_run_db_updates',
 						nonce: '', // @todo: add security nonce
-						run_db_updates: 1
+						run_db_update: 1
 					},
 					dataType: 'json',
 					success: function (response) {

@@ -87,6 +87,10 @@ class Give_Background_Updater extends WP_Background_Process {
 	 * @return mixed
 	 */
 	protected function task( $update ) {
+		if ( empty( $update ) ) {
+			return false;
+		}
+
 		/* @var  Give_Updates $give_updates */
 		$give_updates  = Give_Updates::get_instance();
 		$resume_update = get_option(
@@ -103,16 +107,20 @@ class Give_Background_Updater extends WP_Background_Process {
 		);
 
 		// Set params.
-		$give_updates->step   = absint( $resume_update['step'] );
-		$give_updates->update = absint( $resume_update['update'] );
+		$give_updates->step         = absint( $resume_update['step'] );
+		$give_updates->update       = absint( $resume_update['update'] );
+		$is_parent_update_completed = $give_updates->is_parent_updates_completed( $update );
 
 		// Disable cache.
 		Give_Cache::disable();
 
 		// Check if update depend upon any other update.
-		if ( ! $give_updates->is_parent_updates_completed( $update ) ) {
+		if( is_null( $is_parent_update_completed ) ) {
+			// @todo log.
+			error_log( print_r( "{$update['id']} does not has valid dependency", true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
+		}elseif ( ! $give_updates->is_parent_updates_completed( $update ) ) {
 			// @todo: set error when you have only one update with invalid dependency
-			$this->data( $update )->save();
+			$this->push_to_queue( $update )->save();
 
 			// Enable cache.
 			Give_Cache::enable();
@@ -138,6 +146,9 @@ class Give_Background_Updater extends WP_Background_Process {
 
 		// Cache upgrade.
 		update_option( 'give_doing_upgrade', $doing_upgrade_args );
+
+		// Enable cache.
+		Give_Cache::enable();
 
 		// Check if current update completed or not.
 		if ( give_has_upgrade_completed( $update['id'] ) ) {

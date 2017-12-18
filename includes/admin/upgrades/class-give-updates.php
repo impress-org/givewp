@@ -181,17 +181,14 @@ class Give_Updates {
 		 * Setup hooks.
 		 */
 		add_action( 'init', array( $this, '__register_upgrade' ), 9999 );
+		add_action( 'give_set_upgrade_completed', array( $this, '__flush_resume_updates' ), 9999 );
+		// add_action( 'wp_ajax_give_do_ajax_updates', array( $this, '__give_ajax_updates' ) );
+		add_action( 'wp_ajax_give_db_updates_info', array( $this, '__give_db_updates_info' ) );
+		add_action( 'wp_ajax_give_run_db_updates', array( $this, '__give_start_updating' ) );
 
 		if ( is_admin() ) {
 			add_action( 'admin_init', array( $this, '__change_donations_label' ), 9999 );
 			add_action( 'admin_menu', array( $this, '__register_menu' ), 9999 );
-
-			if ( isset( $_GET['page'] ) && 'give-updates' === give_clean( $_GET['page'] ) ) {
-				add_action( 'give_set_upgrade_completed', array( $this, '__flush_resume_updates' ), 9999 );
-				// add_action( 'wp_ajax_give_do_ajax_updates', array( $this, '__give_ajax_updates' ) );
-				add_action( 'wp_ajax_give_db_updates_info', array( $this, '__give_db_updates_info' ) );
-				add_action( 'wp_ajax_give_run_db_updates', array( $this, '__give_start_updating' ) );
-			}
 		}
 	}
 
@@ -519,18 +516,16 @@ class Give_Updates {
 	 */
 	public function __give_start_updating() {
 		// Check permission.
-		if ( ! current_user_can( 'manage_give_settings' ) ) {
-			$this->send_ajax_response(
-				array(
-					'message' => esc_html__( 'You do not have permission to do Give upgrades.', 'give' ),
-				),
-				'error'
-			);
+		if (
+			! current_user_can( 'manage_give_settings' ) ||
+			$this->is_doing_updates()
+		) {
+			wp_send_json_error();
 		}
 
 		// @todo: validate nonce
 		// @todo: set http method to post
-		if ( empty( $_REQUEST['run_db_upgrade'] ) ) {
+		if ( empty( $_POST['run_db_update'] ) ) {
 			wp_send_json_error();
 		}
 
@@ -538,7 +533,9 @@ class Give_Updates {
 			self::$background_updater->push_to_queue( $update );
 		}
 
-		self::$background_updater->save();
+		self::$background_updater->save()->dispatch();
+
+		wp_send_json_success();
 	}
 
 
@@ -550,7 +547,7 @@ class Give_Updates {
 	 *
 	 * @return string
 	 */
-	public function give_db_updates_info() {
+	public function __give_db_updates_info() {
 		$this->send_ajax_response( get_option( 'give_doing_upgrade' ) );
 	}
 
@@ -640,7 +637,7 @@ class Give_Updates {
 	 *
 	 * @param array $update
 	 *
-	 * @return bool
+	 * @return bool|null
 	 */
 	public function is_parent_updates_completed( $update ) {
 		// Bailout.
@@ -649,6 +646,7 @@ class Give_Updates {
 		}
 
 		$is_dependency_completed = true;
+		$update_ids              = wp_list_pluck( $this->get_updates( 'database' ), 'id' );
 
 		// Change param to array.
 		if ( is_string( $update['depend'] ) ) {
@@ -656,6 +654,12 @@ class Give_Updates {
 		}
 
 		foreach ( $update['depend'] as $depend ) {
+			// Check if dependency is valid or not.
+			if ( ! in_array( $depend, $update_ids ) ) {
+				$is_dependency_completed = null;
+				break;
+			}
+
 			if ( ! give_has_upgrade_completed( $depend ) ) {
 				$is_dependency_completed = false;
 				break;
@@ -663,6 +667,18 @@ class Give_Updates {
 		}
 
 		return $is_dependency_completed;
+	}
+
+
+	/**
+	 * Flag to check if DB updates running or not.
+	 *
+	 * @since  2.0
+	 * @access public
+	 * @return bool
+	 */
+	public function is_doing_updates() {
+		return (bool) get_option( 'give_doing_upgrade' );
 	}
 }
 
