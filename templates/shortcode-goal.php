@@ -128,7 +128,7 @@ if ( 'donation' === $goal_format ) {
 
 	<?php if ( ! empty( $show_bar ) ) : ?>
 		<div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"
-			 aria-valuenow="<?php echo esc_attr( $progress ); ?>">
+		     aria-valuenow="<?php echo esc_attr( $progress ); ?>">
 			<span style="width: <?php echo esc_attr( $progress ); ?>%;<?php if ( ! empty( $color ) ) {
 				echo 'background-color:' . $color;
 			} ?>"></span>
