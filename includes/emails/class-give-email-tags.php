@@ -1210,21 +1210,21 @@ function give_email_tag_email_access_link( $tag_args ) {
 		// Generate a new verify key
 		Give()->email_access->set_verify_key( $donor_id, $donor->email, $verify_key );
 
-		$access_url = esc_url( add_query_arg(
+		$access_url = add_query_arg(
 			array(
 				'give_nl' => $verify_key,
 			),
 			give_get_history_page_uri()
-		) );
+		);
 
 		// Add Payment Key to email access url, if it exists.
 		if ( ! empty( $_GET['payment_key'] ) ) {
-			$access_url = esc_url( add_query_arg(
+			$access_url = add_query_arg(
 				array(
 					'payment_key' => give_clean( $_GET['payment_key'] ),
 				),
 				$access_url
-			) );
+			);
 		}
 
 		if ( empty( $tag_args['email_content_type'] ) || 'text/html' === $tag_args['email_content_type'] ) {
