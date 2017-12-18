@@ -34,7 +34,7 @@ $give_updates = Give_Updates::get_instance();
 			$resume_updates = get_option( 'give_doing_upgrade', false );
 			$width          = ! empty( $resume_updates ) ? $resume_updates['percentage'] : 0;
 			?>
-			<div id="give-db-updates">
+			<div id="give-db-updates" data-resume-update="<?php echo absint( (bool) $resume_updates ); ?>">
 				<div class="postbox-container">
 					<div class="postbox">
 						<h2 class="hndle"><?php _e( 'Database Updates', 'give' ); ?></h2>
@@ -43,10 +43,20 @@ $give_updates = Give_Updates::get_instance();
 								<p class="give-update-button"><?php echo sprintf( __( 'Give needs to update the database. <a href="%s">Update now</a>', 'give' ), $db_update_url ); ?></p>
 							</div>
 							<div class="progress-container<?php echo empty( $resume_updates ) ? ' give-hidden' : ''; ?>">
-								<p class="update-message"
-								   data-update-count="<?php echo $db_updates; ?>"
-								   data-resume-update="<?php echo $give_updates->resume_updates(); ?>">
-									<strong><?php echo sprintf( __( 'Update 1 of %s', 'give' ), $db_updates ); ?></strong>
+								<p class="update-message">
+									<strong>
+										<?php
+										echo sprintf(
+												__( 'Update %s of %s', 'give' ),
+											! empty( $resume_updates ) ?
+												$resume_updates['update'] :
+												1,
+												! empty( $resume_updates ) ?
+													get_option('give_db_update_count') :
+													$db_updates
+										);
+										?>
+									</strong>
 								</p>
 								<div class="progress-content">
 									<?php if ( ! empty( $resume_updates ) ) : ?>
