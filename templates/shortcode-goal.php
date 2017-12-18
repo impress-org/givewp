@@ -110,9 +110,14 @@ if ( 'donation' === $goal_format ) {
 
 				echo sprintf(
 				/* translators: 1: total number of donations completed 2: total number of donations set as goal */
-					__( '%1$s of %2$s donations', 'give' ),
-					'<span class="income">' . $donations_completed . '</span>',
-					'<span class="goal-text">' . $donations_goal . '</span>'
+					_n(
+						'<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donation',
+						'<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donations',
+						$donations_goal,
+						'give'
+					),
+					$donations_completed,
+					$donations_goal
 				);
 
 			endif;
