@@ -389,8 +389,7 @@ class Give_Updates {
 		update_option( 'give_version', preg_replace( '/[^0-9.].*/', '', GIVE_VERSION ) );
 
 		// Reset counter.
-		$this->step       = 1;
-		$this->percentage = 0;
+		$this->step = $this->percentage = 0;
 		++ $this->update;
 	}
 
