@@ -1115,14 +1115,6 @@ var give_setting_edit = false;
 				$self.el.progress_container.append('<div class="notice-wrap give-clearfix"><span class="spinner is-active"></span><div class="give-progress"><div></div></div></div>');
 				$self.el.progress_main_container.removeClass('give-hidden');
 
-				// resume_update_step = parseInt($self.el.heading.data('resume-update'));
-				// if (resume_update_step) {
-				// 	step = resume_update_step;
-				// }
-
-				// Start the process from first step of first update.
-				// $self.process_step(step, 1, $self);
-
 				$.ajax({
 					type: 'POST',
 					url: ajaxurl,
