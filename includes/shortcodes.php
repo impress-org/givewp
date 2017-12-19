@@ -399,12 +399,6 @@ function give_process_profile_editor_updates( $data ) {
 	$first_name       = isset( $data['give_first_name'] ) ? sanitize_text_field( $data['give_first_name'] ) : $old_user_data->first_name;
 	$last_name        = isset( $data['give_last_name'] ) ? sanitize_text_field( $data['give_last_name'] ) : $old_user_data->last_name;
 	$email            = isset( $data['give_email'] ) ? sanitize_email( $data['give_email'] ) : $old_user_data->user_email;
-	$line1            = ( isset( $data['give_address_line1'] ) ? sanitize_text_field( $data['give_address_line1'] ) : '' );
-	$line2            = ( isset( $data['give_address_line2'] ) ? sanitize_text_field( $data['give_address_line2'] ) : '' );
-	$city             = ( isset( $data['give_address_city'] ) ? sanitize_text_field( $data['give_address_city'] ) : '' );
-	$state            = ( isset( $data['give_address_state'] ) ? sanitize_text_field( $data['give_address_state'] ) : '' );
-	$zip              = ( isset( $data['give_address_zip'] ) ? sanitize_text_field( $data['give_address_zip'] ) : '' );
-	$country          = ( isset( $data['give_address_country'] ) ? sanitize_text_field( $data['give_address_country'] ) : '' );
 	$password         = ! empty( $data['give_new_user_pass1'] ) ? $data['give_new_user_pass1'] : '';
 	$confirm_password = ! empty( $data['give_new_user_pass2'] ) ? $data['give_new_user_pass2'] : '';
 
@@ -415,19 +409,6 @@ function give_process_profile_editor_updates( $data ) {
 		'display_name' => $display_name,
 		'user_email'   => $email,
 		'user_pass'    => $password,
-	);
-
-	if( empty( $line1 ) || empty( $city ) || empty( $state ) || empty( $zip ) || empty( $country ) ) {
-		give_set_error( 'give-empty-address-fields', __( 'Please fill in the required address fields.', 'give' ) );
-	}
-
-	$address = array(
-		'line1'   => $line1,
-		'line2'   => $line2,
-		'city'    => $city,
-		'state'   => $state,
-		'zip'     => $zip,
-		'country' => $country,
 	);
 
 	/**
@@ -476,7 +457,6 @@ function give_process_profile_editor_updates( $data ) {
 	}
 
 	// Update the user
-	$meta    = update_user_meta( $user_id, '_give_user_address', $address );
 	$updated = wp_update_user( $userdata );
 
 	if ( $updated ) {
