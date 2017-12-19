@@ -309,7 +309,7 @@ class Give_Updates {
 		if (
 			current_user_can( 'manage_give_settings' ) &&
 			! empty( $_GET['give-update-message'] ) &&
-			( isset( $_GET['page'] ) && 'give-updates' !== $_GET['page'] )
+			( ! isset( $_GET['page'] ) || 'give-updates' !== $_GET['page'] )
 		) {
 			Give()->notices->register_notice( array(
 				'id'          => 'give_db_upgrade_completed',
