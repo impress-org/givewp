@@ -631,8 +631,18 @@ class Give_Updates {
 	 * @return float|int
 	 */
 	public function get_db_update_processing_percentage() {
+		// Bailout.
+		if( ! $this->get_total_new_db_update_count() ) {
+			return 0;
+		}
+
+		$resume_update            = get_option( 'give_doing_upgrade' );
+		$update_count_percentages = ( ( $this->get_running_db_update() - 1 ) / $this->get_total_new_db_update_count() ) * 100;
+		$update_percentage_share  = ( 1 / $this->get_total_new_db_update_count() ) * 100;
+		$upgrade_percentage       = ( ( $resume_update['percentage'] * $update_percentage_share ) / 100 );
+		
 		return $this->is_doing_updates() ?
-			absint( ( $this->get_running_db_update() / $this->get_total_new_db_update_count() ) * 100 ) :
+			absint( $update_count_percentages + $upgrade_percentage ) :
 			0;
 	}
 }
