@@ -288,11 +288,11 @@ class Give_Updates {
 			! wp_doing_ajax() &&
 			current_user_can( 'manage_give_settings' ) &&
 			get_option( 'give_show_db_upgrade_complete_notice' ) &&
-			! isset( $_GET['give-update-message'] )
+			! isset( $_GET['give-db-update-completed'] )
 		) {
-			delete_option('give_show_db_upgrade_complete_notice' );
+			delete_option( 'give_show_db_upgrade_complete_notice' );
 
-			wp_redirect( add_query_arg( array( 'give-update-message' => 'give_db_upgrade_completed' ) ) );
+			wp_redirect( add_query_arg( array( 'give-db-update-completed' => 'give_db_upgrade_completed' ) ) );
 			exit();
 		}
 	}
@@ -305,17 +305,70 @@ class Give_Updates {
 	 * @access public
 	 */
 	public function __show_notice() {
-		// Show db upgrade completed notice.
 		if (
-			current_user_can( 'manage_give_settings' ) &&
-			! empty( $_GET['give-update-message'] ) &&
-			( ! isset( $_GET['page'] ) || 'give-updates' !== $_GET['page'] )
+			! current_user_can( 'manage_give_settings' ) ||
+			( isset( $_GET['page'] ) && 'give-updates' === $_GET['page'] ) ||
+			$this->is_doing_updates()
 		) {
+			return;
+		}
+
+		// Show db upgrade completed notice.
+		if ( ! empty( $_GET['give-db-update-completed'] ) ) {
 			Give()->notices->register_notice( array(
 				'id'          => 'give_db_upgrade_completed',
 				'type'        => 'updated',
-				'description' => __( 'Database updated successfully.', 'give' ),
+				'description' => __( 'Give database updates completed successfully. Thank you for updating to the latest version!', 'give' ),
 				'show'        => true,
+			) );
+
+			// Show update running notice.
+		} elseif ( ! empty( $_GET['give-run-db-update'] ) ) {
+			$this->run_db_update();
+
+			ob_start();
+			?>
+			<p>
+				<strong><?php _e( 'Give database update', 'give' ); ?></strong>
+				&nbsp;&#8211;&nbsp;<?php _e( 'Your database is being updated in the background.', 'give' ); ?>
+				&nbsp;<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-updates' ); ?>">
+					<?php _e( 'Click here to check database update progress.', 'give' ); ?>
+				</a>
+			</p>
+			<?php
+			$desc_html = ob_get_clean();
+			Give()->notices->register_notice( array(
+				'id'          => 'give_upgrade_db',
+				'type'        => 'updated',
+				'description' => $desc_html,
+			) );
+
+			// Show run the update notice.
+		} elseif ( $this->get_total_new_db_update_count() ) {
+			ob_start();
+			?>
+			<p>
+				<strong><?php _e( 'Give database update', 'give' ); ?></strong>
+				&nbsp;&#8211;&nbsp;<?php _e( 'We need to update your site database to the latest version.  The following process will make updates to your site\'s database. Please create a database backup before proceeding with updates.', 'give' ); ?>
+			</p>
+			<p class="submit">
+				<a href="<?php echo esc_url( add_query_arg( array( 'give-run-db-update' => 1 ), admin_url( 'edit.php?post_type=give_forms&page=give-settings' ) ) ); ?>" class="button button-primary give-run-update-now">
+					<?php _e( 'Run the updater', 'woocommerce' ); ?>
+				</a>
+			</p>
+			<script type="text/javascript">
+				jQuery('.give-run-update-now').click('click', function () {
+					return window.confirm('<?php echo esc_js( __( 'It is strongly recommended that you backup your database before proceeding. Are you sure you wish to run the updater now?', 'give' ) ); ?>'); // jshint ignore:line
+				});
+			</script>
+			<?php
+			$desc_html = ob_get_clean();
+
+
+			Give()->notices->register_notice( array(
+				'id'          => 'give_upgrade_db',
+				'type'        => 'updated',
+				'description' => $desc_html,
 			) );
 		}
 	}
@@ -338,6 +391,37 @@ class Give_Updates {
 	 */
 	public function render_page() {
 		include_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/views/upgrades.php';
+	}
+
+	/**
+	 * Run database upgrades
+	 *
+	 * @since  2.0
+	 * @access private
+	 */
+	private function run_db_update() {
+		// Bailout.
+		if ( $this->is_doing_updates() || ! $this->get_total_new_db_update_count() ) {
+			return;
+		}
+
+		$updates = $this->get_updates( 'database', 'new' );
+
+		foreach ( $updates as $update ) {
+			self::$background_updater->push_to_queue( $update );
+		}
+
+		add_option( 'give_db_update_count', count( $updates ), '', 'no' );
+
+		add_option( 'give_doing_upgrade', array(
+			'update_info' => $updates[0],
+			'step'        => 1,
+			'update'      => 1,
+			'heading'     => sprintf( 'Update %s of %s', 1, count( $updates ) ),
+			'percentage'  => 0,
+		), '', 'no' );
+
+		self::$background_updater->save()->dispatch();
 	}
 
 
@@ -380,23 +464,7 @@ class Give_Updates {
 			wp_send_json_error();
 		}
 
-		$updates = $this->get_updates( 'database', 'new' );
-
-		foreach ( $updates as $update ) {
-			self::$background_updater->push_to_queue( $update );
-		}
-
-		add_option( 'give_db_update_count', count( $updates ), '', 'no' );
-
-		add_option( 'give_doing_upgrade', array(
-			'update_info' => $updates[0],
-			'step'        => 1,
-			'update'      => 1,
-			'heading'     => sprintf( 'Update %s of %s', 1, count( $updates ) ),
-			'percentage'  => 0,
-		), '', 'no' );
-
-		self::$background_updater->save()->dispatch();
+		$this->run_db_update();
 
 		wp_send_json_success();
 	}
@@ -416,7 +484,7 @@ class Give_Updates {
 
 		if ( empty( $update_info ) && ! $this->get_pending_db_update_count() ) {
 			$update_info   = array(
-				'message'    => __( 'Database updated successfully.', 'give' ),
+				'message'    => __( 'Give database updates completed successfully. Thank you for updating to the latest version!', 'give' ),
 				'heading'    => __( 'Updates Completed.', 'give' ),
 				'percentage' => 0,
 			);
@@ -701,7 +769,7 @@ class Give_Updates {
 		$upgrade_percentage       = ( ( $resume_update['percentage'] * $update_percentage_share ) / 100 );
 
 		$final_percentage = $update_count_percentages + $upgrade_percentage;
-		
+
 		return $this->is_doing_updates() ?
 			( absint( $final_percentage ) ?
 				absint( $final_percentage ) :
