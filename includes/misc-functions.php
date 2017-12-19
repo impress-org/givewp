@@ -1318,7 +1318,7 @@ function give_array_insert_after( $key, array &$array, $new_key, $new_value ) {
 function give_list_pluck( $list, $field, $index_key = null ) {
 
 	if ( ! $index_key ) {
-		/*
+		/**
 		 * This is simple. Could at some point wrap array_column()
 		 * if we knew we had an array of arrays.
 		 */

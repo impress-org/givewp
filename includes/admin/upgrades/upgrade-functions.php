@@ -84,7 +84,9 @@ add_action( 'admin_init', 'give_do_automatic_upgrades' );
 add_action( 'give_upgrades', 'give_do_automatic_upgrades' );
 
 /**
- * Display Upgrade Notices
+ * Display Upgrade Notices.
+ *
+ * IMPORTANT: ALSO UPDATE INSTALL.PHP WITH THE ID OF THE UPGRADE ROUTINE SO IT DOES NOT AFFECT NEW INSTALLS.
  *
  * @since 1.0
  * @since 1.8.12 Update new update process code.
@@ -177,6 +179,12 @@ function give_show_upgrade_notices( $give_updates ) {
 		'id'       => 'v1818_assign_custom_amount_set_donation',
 		'version'  => '1.8.18',
 		'callback' => 'give_v1818_assign_custom_amount_set_donation',
+	) );
+	// v1.8.18 Cleanup the Give Worker Role Caps.
+	$give_updates->register( array(
+		'id'       => 'v1818_give_worker_role_cleanup',
+		'version'  => '1.8.18',
+		'callback' => 'give_v1818_give_worker_role_cleanup',
 	) );
 }
 
@@ -1248,17 +1256,6 @@ function give_v1817_upgrades() {
 }
 
 /**
- * Automatic Upgrade for release 1.8.18.
- *
- * @since 1.8.18
- */
-function give_v1818_upgrades() {
-
-	// Remove email_access_installed from give_settings.
-	give_delete_option( 'email_access_installed' );
-}
-
-/**
  * Process Clean up of User Roles for more flexibility.
  *
  * @since 1.8.17
@@ -1305,6 +1302,7 @@ function give_v1817_process_cleanup_user_roles() {
 
 }
 
+
 /**
  * Upgrade Routine - Clean up of User Roles for more flexibility.
  *
@@ -1326,6 +1324,17 @@ function give_v1817_cleanup_user_roles() {
 
 	give_set_upgrade_complete( 'v1817_cleanup_user_roles' );
 
+}
+
+/**
+ * Automatic Upgrade for release 1.8.18.
+ *
+ * @since 1.8.18
+ */
+function give_v1818_upgrades() {
+
+	// Remove email_access_installed from give_settings.
+	give_delete_option( 'email_access_installed' );
 }
 
 /**
@@ -1377,5 +1386,55 @@ function give_v1818_assign_custom_amount_set_donation() {
 		// Update Ran Successfully.
 		give_set_upgrade_complete( 'v1818_assign_custom_amount_set_donation' );
 	}
+
+}
+
+
+/**
+ * Upgrade Routine - Removed Give Worker caps.
+ *
+ * See: https://github.com/WordImpress/Give/issues/2476
+ *
+ * @since 1.8.18
+ */
+function give_v1818_give_worker_role_cleanup(){
+
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
+
+	global $wp_roles;
+
+	if( ! ( $wp_roles instanceof  WP_Roles ) ) {
+		return;
+	}
+
+	// Remove Capabilities to user roles as required.
+	$remove_caps = array(
+		'give_worker' => array(
+			'delete_give_payments',
+			'delete_others_give_payments',
+			'delete_private_give_payments',
+			'delete_published_give_payments',
+			'edit_others_give_payments',
+			'edit_private_give_payments',
+			'edit_published_give_payments',
+			'read_private_give_payments',
+		),
+	);
+
+	foreach ( $remove_caps as $role => $caps ) {
+		foreach( $caps as $cap ) {
+			$wp_roles->remove_cap( $role, $cap );
+		}
+	}
+
+	$give_updates->percentage = 100;
+
+	// Create Give plugin roles.
+	$roles = new Give_Roles();
+	$roles->add_roles();
+	$roles->add_caps();
+
+	give_set_upgrade_complete( 'v1818_give_worker_role_cleanup' );
 
 }

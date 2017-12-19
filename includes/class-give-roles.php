@@ -37,7 +37,7 @@ class Give_Roles {
 	public function __construct() {
 		add_filter( 'give_map_meta_cap', array( $this, 'meta_caps' ), 10, 4 );
 		add_filter( 'woocommerce_disable_admin_bar', array( $this, 'manage_admin_dashboard' ), 10 );
-		add_filter( 'woocommerce_prevent_admin_access', array( $this, 'manage_admin_dashboard'), 10 );
+		add_filter( 'woocommerce_prevent_admin_access', array( $this, 'manage_admin_dashboard' ), 10 );
 	}
 
 	/**
@@ -85,7 +85,7 @@ class Give_Roles {
 		add_role( 'give_accountant', __( 'Give Accountant', 'give' ), array(
 			'read'         => true,
 			'edit_posts'   => false,
-			'delete_posts' => false
+			'delete_posts' => false,
 		) );
 
 		add_role( 'give_worker', __( 'Give Worker', 'give' ), array(
@@ -141,9 +141,21 @@ class Give_Roles {
 				foreach ( $cap_group as $cap ) {
 					$wp_roles->add_cap( 'administrator', $cap );
 					$wp_roles->add_cap( 'give_manager', $cap );
-					$wp_roles->add_cap( 'give_worker', $cap );
 				}
 			}
+
+			// Add Capabilities to Give Workers User Role.
+			$wp_roles->add_cap( 'give_worker', 'edit_give_payments' );
+			$wp_roles->add_cap( 'give_worker', 'delete_give_forms' );
+			$wp_roles->add_cap( 'give_worker', 'delete_others_give_forms' );
+			$wp_roles->add_cap( 'give_worker', 'delete_private_give_forms' );
+			$wp_roles->add_cap( 'give_worker', 'delete_published_give_forms' );
+			$wp_roles->add_cap( 'give_worker', 'edit_give_forms' );
+			$wp_roles->add_cap( 'give_worker', 'edit_others_give_forms' );
+			$wp_roles->add_cap( 'give_worker', 'edit_private_give_forms' );
+			$wp_roles->add_cap( 'give_worker', 'edit_published_give_forms' );
+			$wp_roles->add_cap( 'give_worker', 'publish_give_forms' );
+			$wp_roles->add_cap( 'give_worker', 'read_private_give_forms' );
 
 			// Add Capabilities to Give Accountant User Role.
 			$wp_roles->add_cap( 'give_accountant', 'edit_give_forms' );
@@ -287,9 +299,22 @@ class Give_Roles {
 				foreach ( $cap_group as $cap ) {
 					$wp_roles->remove_cap( 'give_manager', $cap );
 					$wp_roles->remove_cap( 'administrator', $cap );
-					$wp_roles->remove_cap( 'give_worker', $cap );
+
 				}
 			}
+
+			// Remove capabilities from the Give Worker role.
+			$wp_roles->remove_cap( 'give_worker', 'edit_give_payments' );
+			$wp_roles->remove_cap( 'give_worker', 'delete_give_forms' );
+			$wp_roles->remove_cap( 'give_worker', 'delete_others_give_forms' );
+			$wp_roles->remove_cap( 'give_worker', 'delete_private_give_forms' );
+			$wp_roles->remove_cap( 'give_worker', 'delete_published_give_forms' );
+			$wp_roles->remove_cap( 'give_worker', 'edit_give_forms' );
+			$wp_roles->remove_cap( 'give_worker', 'edit_others_give_forms' );
+			$wp_roles->remove_cap( 'give_worker', 'edit_private_give_forms' );
+			$wp_roles->remove_cap( 'give_worker', 'edit_published_give_forms' );
+			$wp_roles->remove_cap( 'give_worker', 'publish_give_forms' );
+			$wp_roles->remove_cap( 'give_worker', 'read_private_give_forms' );
 
 			// Remove Capabilities from Give Accountant User Role.
 			$wp_roles->remove_cap( 'give_accountant', 'edit_give_forms' );
