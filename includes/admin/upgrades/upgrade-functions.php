@@ -1365,12 +1365,12 @@ function give_v1817_update_donation_iranian_currency_code() {
 			'status'         => 'any',
 			'order'          => 'ASC',
 			'post_type'      => array( 'give_payment' ),
-			'posts_per_page' => 20,
+			'posts_per_page' => 1000,
 		)
 	);
 
 	if ( $payments->have_posts() ) {
-		$give_updates->set_percentage( $payments->found_posts, ( $give_updates->step * 20 ) );
+		$give_updates->set_percentage( $payments->found_posts, ( $give_updates->step * 1000 ) );
 
 		while ( $payments->have_posts() ) {
 			$payments->the_post();
@@ -1498,12 +1498,12 @@ function give_v1818_assign_custom_amount_set_donation() {
 			'status'         => 'any',
 			'order'          => 'ASC',
 			'post_type'      => array( 'give_payment' ),
-			'posts_per_page' => 100,
+			'posts_per_page' => 1000,
 		)
 	);
 
 	if ( $donations->have_posts() ) {
-		$give_updates->set_percentage( $donations->found_posts, $give_updates->step * 20 );
+		$give_updates->set_percentage( $donations->found_posts, $give_updates->step * 1000 );
 
 		while ( $donations->have_posts() ) {
 			$donations->the_post();
@@ -1550,12 +1550,12 @@ function give_v20_upgrades_form_metadata_callback() {
 			'status'         => 'any',
 			'order'          => 'ASC',
 			'post_type'      => 'give_forms',
-			'posts_per_page' => 100,
+			'posts_per_page' => 1000,
 		)
 	);
 
 	if ( $forms->have_posts() ) {
-		$give_updates->set_percentage( $forms->found_posts, ( $give_updates->step * 100 ) );
+		$give_updates->set_percentage( $forms->found_posts, ( $give_updates->step * 1000 ) );
 
 		while ( $forms->have_posts() ) {
 			$forms->the_post();
@@ -1623,12 +1623,12 @@ function give_v20_upgrades_payment_metadata_callback() {
 			'status'         => 'any',
 			'order'          => 'ASC',
 			'post_type'      => 'give_payment',
-			'posts_per_page' => 100,
+			'posts_per_page' => 1000,
 		)
 	);
 
 	if ( $forms->have_posts() ) {
-		$give_updates->set_percentage( $forms->found_posts, ( $give_updates->step * 100 ) );
+		$give_updates->set_percentage( $forms->found_posts, ( $give_updates->step * 1000 ) );
 
 		while ( $forms->have_posts() ) {
 			$forms->the_post();
@@ -1709,12 +1709,12 @@ function give_v20_logs_upgrades_callback() {
 			'order'          => 'DESC',
 			'post_type'      => 'give_log',
 			'post_status'    => 'any',
-			'posts_per_page' => 100,
+			'posts_per_page' => 1000,
 		)
 	);
 
 	if ( $forms->have_posts() ) {
-		$give_updates->set_percentage( $forms->found_posts, $give_updates->step * 100 );
+		$give_updates->set_percentage( $forms->found_posts, $give_updates->step * 1000 );
 
 		while ( $forms->have_posts() ) {
 			$forms->the_post();
@@ -1819,12 +1819,12 @@ function give_v20_move_metadata_into_new_table_callback() {
 			'status'         => 'any',
 			'order'          => 'ASC',
 			'post_type'      => array( 'give_forms', 'give_payment' ),
-			'posts_per_page' => 100,
+			'posts_per_page' => 1000,
 		)
 	);
 
 	if ( $payments->have_posts() ) {
-		$give_updates->set_percentage( $payments->found_posts, $give_updates->step * 100 );
+		$give_updates->set_percentage( $payments->found_posts, $give_updates->step * 1000 );
 
 		while ( $payments->have_posts() ) {
 			$payments->the_post();
@@ -1888,11 +1888,11 @@ function give_v20_upgrades_donor_name() {
 
 	$donors = Give()->donors->get_donors( array(
 		'paged'  => $give_updates->step,
-		'number' => 100,
+		'number' => 1000,
 	) );
 
 	if ( $donors ) {
-		$give_updates->set_percentage( count( $donors ), $give_updates->step * 100 );
+		$give_updates->set_percentage( count( $donors ), $give_updates->step * 1000 );
 		// Loop through Donors
 		foreach ( $donors as $donor ) {
 
@@ -1945,7 +1945,7 @@ function give_v20_upgrades_user_address() {
 	/* @var WP_User_Query $user_query */
 	$user_query = new WP_User_Query(
 		array(
-			'number' => 100,
+			'number' => 1000,
 			'paged'  => $give_updates->step,
 		)
 	);
@@ -1953,7 +1953,7 @@ function give_v20_upgrades_user_address() {
 	$users = $user_query->get_results();
 
 	if ( $users ) {
-		$give_updates->set_percentage( $user_query->get_total(), $give_updates->step * 100 );
+		$give_updates->set_percentage( $user_query->get_total(), $give_updates->step * 1000 );
 
 		// Loop through Donors
 		foreach ( $users as $user ) {
