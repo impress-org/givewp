@@ -41,10 +41,10 @@ $give_updates = Give_Updates::get_instance();
 							<div class="panel-content">
 								<p class="give-update-button">
 									<?php echo sprintf(
-										__( '%1$s <a href="%2$s" class"%3$s">%4$s</a>', 'give' ),
+										__( '%1$s <a href="%2$s" class="%3$s">%4$s</a>', 'give' ),
 										__( 'Give needs to update the database.', 'give' ),
 										$db_update_url,
-										( $is_doing_updates ? '' : ' give-hidden' ),
+										( $is_doing_updates ? 'give-hidden' : '' ),
 										__( 'Update now', 'give' )
 									);
 									?>
