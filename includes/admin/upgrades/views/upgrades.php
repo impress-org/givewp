@@ -30,6 +30,7 @@ $give_updates = Give_Updates::get_instance();
 			<?php
 			$is_doing_updates = $give_updates->is_doing_updates();
 			$db_update_url    = add_query_arg( array( 'type' => 'database', ) );
+			$resume_updates   = get_option( 'give_doing_upgrade' );
 			$width            = ! empty( $resume_updates ) ? $resume_updates['percentage'] : 0;
 			?>
 			<div id="give-db-updates" data-resume-update="<?php echo absint( $give_updates->is_doing_updates() ); ?>">
@@ -57,7 +58,7 @@ $give_updates = Give_Updates::get_instance();
 										<div class="notice-wrap give-clearfix">
 											<span class="spinner is-active"></span>
 											<div class="give-progress">
-												<div style="width: <?php echo $width ?>px;"></div>
+												<div style="width: <?php echo $width ?>%;"></div>
 											</div>
 										</div>
 									<?php endif; ?>
