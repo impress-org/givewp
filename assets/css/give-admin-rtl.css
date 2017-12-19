@@ -2840,7 +2840,8 @@ div.sc-shortcode {
   height: 15px;
   width: 95%;
   border-radius: 4px;
-  overflow: hidden; }
+  overflow: hidden;
+  background-color: whitesmoke; }
   .give-progress > div {
     height: 100%;
     width: 0; }
