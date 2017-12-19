@@ -387,6 +387,15 @@ class Give_Updates {
 		}
 
 		add_option( 'give_db_update_count', count( $updates ), '', 'no' );
+
+		add_option( 'give_doing_upgrade', array(
+			'update_info' => $updates[0],
+			'step'        => 1,
+			'update'      => 1,
+			'heading'     => sprintf( 'Update %s of %s', 1, count( $updates ) ),
+			'percentage'  => 0,
+		), '', 'no' );
+
 		self::$background_updater->save()->dispatch();
 
 		wp_send_json_success();
