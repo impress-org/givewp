@@ -1084,7 +1084,7 @@ var give_setting_edit = false;
 			$self.el.progress_container = Give_Selector_Cache.get('.progress-content', $self.el.progress_main_container);
 
 			if( $self.el.main_container.data('resume-update') ) {
-				$self.el.update_link.addClass('active').fadeOut().removeClass('give-hidden');
+				$self.el.update_link.addClass('active').hide().removeClass('give-hidden');
 				window.setTimeout(Give_Updates.get_db_updates_info, 1000, $self );
 			}
 
