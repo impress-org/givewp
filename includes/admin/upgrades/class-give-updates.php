@@ -148,6 +148,7 @@ class Give_Updates {
 		add_action( 'give_set_upgrade_completed', array( $this, '__flush_resume_updates' ), 9999 );
 		add_action( 'wp_ajax_give_db_updates_info', array( $this, '__give_db_updates_info' ) );
 		add_action( 'wp_ajax_give_run_db_updates', array( $this, '__give_start_updating' ) );
+		add_action( 'admin_notices', array( $this, '__show_notice' ) );
 
 		if ( is_admin() ) {
 			add_action( 'admin_init', array( $this, '__change_donations_label' ), 9999 );
@@ -273,6 +274,29 @@ class Give_Updates {
 		);
 	}
 
+
+	/**
+	 * Show update related notices
+	 *
+	 * @since  2.0
+	 * @access public
+	 */
+	public function __show_notice() {
+		// Show db upgrade completed notice.
+		if (
+			current_user_can( 'manage_give_settings' ) &&
+			get_option( 'give_show_db_upgrade_complete_notice' )
+		) {
+			Give()->notices->register_notice( array(
+				'id'               => 'give_db_upgrade_completed',
+				'type'             => 'updated',
+				'description'      => __( 'Database updated successfully.', 'give' ),
+				'dismissible_type' => 'all',
+				'dismiss_interval' => 'permanent',
+			) );
+		}
+	}
+
 	/**
 	 * Render Give Updates Completed page
 	 *
@@ -365,7 +389,10 @@ class Give_Updates {
 				'percentage' => 0,
 			);
 			$response_type = 'success';
+
+			delete_option( 'give_show_db_upgrade_complete_notice' );
 		}
+
 		$this->send_ajax_response( $update_info, $response_type );
 	}
 
@@ -632,7 +659,7 @@ class Give_Updates {
 	 */
 	public function get_db_update_processing_percentage() {
 		// Bailout.
-		if( ! $this->get_total_new_db_update_count() ) {
+		if ( ! $this->get_total_new_db_update_count() ) {
 			return 0;
 		}
 
@@ -640,7 +667,7 @@ class Give_Updates {
 		$update_count_percentages = ( ( $this->get_running_db_update() - 1 ) / $this->get_total_new_db_update_count() ) * 100;
 		$update_percentage_share  = ( 1 / $this->get_total_new_db_update_count() ) * 100;
 		$upgrade_percentage       = ( ( $resume_update['percentage'] * $update_percentage_share ) / 100 );
-		
+
 		return $this->is_doing_updates() ?
 			absint( $update_count_percentages + $upgrade_percentage ) :
 			0;
