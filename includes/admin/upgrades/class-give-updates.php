@@ -285,6 +285,7 @@ class Give_Updates {
 	public function __redirect_admin() {
 		// Show db upgrade completed notice.
 		if (
+			! wp_doing_ajax() &&
 			current_user_can( 'manage_give_settings' ) &&
 			get_option( 'give_show_db_upgrade_complete_notice' ) &&
 			! isset( $_GET['give-update-message'] )
