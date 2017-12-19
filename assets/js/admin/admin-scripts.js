@@ -1083,6 +1083,11 @@ var give_setting_edit = false;
 			$self.el.heading = Give_Selector_Cache.get('.update-message', $self.el.progress_main_container);
 			$self.el.progress_container = Give_Selector_Cache.get('.progress-content', $self.el.progress_main_container);
 
+			if( $self.el.main_container.data('resume-update') ) {
+				$self.el.update_link.addClass('active').fadeOut().removeClass('give-hidden');
+				window.setTimeout(Give_Updates.get_db_updates_info, 1000, $self );
+			}
+
 			// Bailout.
 			if ($self.el.update_link.hasClass('active')) {
 				return;
@@ -1136,10 +1141,6 @@ var give_setting_edit = false;
 
 				return false;
 			});
-
-			if( $self.el.main_container.data('resume-update') ) {
-				window.setTimeout(Give_Updates.get_db_updates_info, 1000, $self );
-			}
 		},
 
 		get_db_updates_info: function( $self ){
