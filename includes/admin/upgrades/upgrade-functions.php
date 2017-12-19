@@ -1886,11 +1886,10 @@ function give_v20_upgrades_donor_name() {
 	/* @var Give_Updates $give_updates */
 	$give_updates = Give_Updates::get_instance();
 
-	$args = array(
-		'offset' => ( 1 === $give_updates->step ) ? 0 : $give_updates->step * 100,
-	);
-
-	$donors = Give()->donors->get_donors( $args );
+	$donors = Give()->donors->get_donors( array(
+		'paged'  => $give_updates->step,
+		'number' => 100,
+	) );
 
 	if ( $donors ) {
 		$give_updates->set_percentage( count( $donors ), $give_updates->step * 100 );
@@ -1947,7 +1946,7 @@ function give_v20_upgrades_user_address() {
 	$user_query = new WP_User_Query(
 		array(
 			'number' => 100,
-			'offset' => ( 1 === $give_updates->step ) ? 0 : $give_updates->step * 100,
+			'paged'  => $give_updates->step,
 		)
 	);
 
