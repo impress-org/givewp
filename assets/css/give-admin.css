@@ -2605,7 +2605,7 @@ input.give-price-field {
     top: 0;
     visibility: hidden; }
   .give_forms_page_give-donors #donor-address-wrapper .all-address .address {
-    min-height: 108px;
+    min-height: 146px;
     border: 1px solid #dad9d9;
     padding: 9px;
     border-radius: 5px;
