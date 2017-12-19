@@ -148,6 +148,7 @@ class Give_Updates {
 		add_action( 'give_set_upgrade_completed', array( $this, '__flush_resume_updates' ), 9999 );
 		add_action( 'wp_ajax_give_db_updates_info', array( $this, '__give_db_updates_info' ) );
 		add_action( 'wp_ajax_give_run_db_updates', array( $this, '__give_start_updating' ) );
+		add_action( 'admin_init', array( $this, '__redirect_admin' ) );
 		add_action( 'admin_notices', array( $this, '__show_notice' ) );
 
 		if ( is_admin() ) {
@@ -281,18 +282,38 @@ class Give_Updates {
 	 * @since  2.0
 	 * @access public
 	 */
+	public function __redirect_admin() {
+		// Show db upgrade completed notice.
+		if (
+			current_user_can( 'manage_give_settings' ) &&
+			get_option( 'give_show_db_upgrade_complete_notice' ) &&
+			! isset( $_GET['give-update-message'] )
+		) {
+			delete_option('give_show_db_upgrade_complete_notice' );
+
+			wp_redirect( add_query_arg( array( 'give-update-message' => 'give_db_upgrade_completed' ) ) );
+			exit();
+		}
+	}
+
+
+	/**
+	 * Show update related notices
+	 *
+	 * @since  2.0
+	 * @access public
+	 */
 	public function __show_notice() {
 		// Show db upgrade completed notice.
 		if (
 			current_user_can( 'manage_give_settings' ) &&
-			get_option( 'give_show_db_upgrade_complete_notice' )
+			! empty( $_GET['give-update-message'] )
 		) {
 			Give()->notices->register_notice( array(
-				'id'               => 'give_db_upgrade_completed',
-				'type'             => 'updated',
-				'description'      => __( 'Database updated successfully.', 'give' ),
-				'dismissible_type' => 'all',
-				'dismiss_interval' => 'permanent',
+				'id'          => 'give_db_upgrade_completed',
+				'type'        => 'updated',
+				'description' => __( 'Database updated successfully.', 'give' ),
+				'show'        => true,
 			) );
 		}
 	}
