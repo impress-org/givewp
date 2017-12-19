@@ -224,10 +224,6 @@ class Give_Updates {
 
 			break;
 		}
-
-		error_log( print_r( $this->get_running_db_update(), true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-		error_log( print_r( $this->get_total_new_db_update_count(), true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-		error_log( print_r( ( absint( $this->get_running_db_update() ) / absint( $this->get_total_new_db_update_count() ) * 100 ), true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
 	}
 
 	/**
