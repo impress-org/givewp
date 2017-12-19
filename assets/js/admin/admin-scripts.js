@@ -1137,7 +1137,7 @@ var give_setting_edit = false;
 					}
 				});
 
-				window.setTimeout(Give_Updates.get_db_updates_info, 500, $self );
+				window.setTimeout(Give_Updates.get_db_updates_info, 1000, $self );
 
 				return false;
 			});
