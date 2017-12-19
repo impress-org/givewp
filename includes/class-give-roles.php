@@ -351,7 +351,7 @@ class Give_Roles {
 			return false;
 		}
 
-//		return $show_admin_bar;
+		return $show_admin_bar;
 
 	}
 }
