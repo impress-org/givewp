@@ -700,8 +700,13 @@ class Give_Updates {
 		$update_percentage_share  = ( 1 / $this->get_total_new_db_update_count() ) * 100;
 		$upgrade_percentage       = ( ( $resume_update['percentage'] * $update_percentage_share ) / 100 );
 
+		$final_percentage = $update_count_percentages + $upgrade_percentage;
+		
 		return $this->is_doing_updates() ?
-			absint( $update_count_percentages + $upgrade_percentage ) :
+			( absint( $final_percentage ) ?
+				absint( $final_percentage ) :
+				round( $final_percentage, 2 )
+			) :
 			0;
 	}
 }
