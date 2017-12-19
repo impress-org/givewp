@@ -1139,7 +1139,6 @@ var give_setting_edit = false;
 
 			if( $self.el.main_container.data('resume-update') ) {
 				window.setTimeout(Give_Updates.get_db_updates_info, 1000, $self );
-				console.log('auto start update');
 			}
 		},
 
