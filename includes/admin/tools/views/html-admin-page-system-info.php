@@ -349,6 +349,7 @@ $give_updates = Give_Updates::get_instance();
 			$posting['gzip']['note']    = sprintf( __( 'Your server does not support the %s function - this is used for file compression and decompression.', 'give' ), '<a href="https://php.net/manual/en/zlib.installation.php">gzopen</a>' );
 		}
 
+
 		// GD Graphics Library.
 		$posting['gd']['name']    = 'GD Graphics Library';
 		$posting['gd']['help']    = __( 'GD Graphics Library is used for dynamically manipulating images.', 'give' );
@@ -450,15 +451,28 @@ $give_updates = Give_Updates::get_instance();
 			<td class="help"><?php echo Give()->tooltips->render_help( __( 'This will show the number of pending database updates.', 'give' ) ); ?></td>
 			<td>
 				<?php
-				if( $remaining_upgrades = $give_updates->get_db_update_count() ) {
-					echo sprintf(
-						__( '%1$s of %2$s updates still need to run.', 'give' ),
-						$remaining_upgrades,
-						$give_updates->get_total_db_update_count()
+				$updates_text    = __( 'All DB Updates Completed.', 'give' );
+				$pending_updates = $give_updates->get_db_update_count();
+				$total_updates   = $give_updates->get_total_db_update_count();
+
+				if( $pending_updates === $total_updates ) {
+
+					// When all the db updates are pending.
+					$updates_text = sprintf(
+						__( '%1$s updates still need to run.', 'give' ),
+						$total_updates
 					);
-				} else{
-					_e( 'N/A', 'give' );
+				} elseif( $pending_updates > 0 ) {
+
+					// When some of the db updates are completed and some are pending.
+					$updates_text = sprintf(
+						__( '%1$s of %2$s updates still need to run.', 'give' ),
+						$pending_updates,
+						$total_updates
+					);
 				}
+
+				echo $updates_text;
 				?>
 			</td>
 		</tr>

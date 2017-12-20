@@ -127,8 +127,8 @@ class Give_Email_Access {
 		}
 
 		// Are db columns setup?
-		$is_column_exists = Give()->donors->is_column_exists( 'token' );
-		if ( ! $is_column_exists ) {
+		$column_exists = Give()->donors->does_column_exist( 'token' );
+		if ( ! $column_exists ) {
 			$this->create_columns();
 		}
 
