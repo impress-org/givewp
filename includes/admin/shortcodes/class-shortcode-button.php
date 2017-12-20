@@ -171,27 +171,27 @@ final class Give_Shortcode_Button {
 
 				reset( $shortcodes );
 
-				if ( count( $shortcodes ) == 1 ) {
+				if ( 1 === count( $shortcodes ) ) {
 
 					$shortcode = key( $shortcodes );
 
 					printf(
-						'<button class="button sc-shortcode" data-shortcode="%s">%s</button>',
+						'<button type="button" class="button sc-shortcode" data-shortcode="%s">%s</button>',
 						$shortcode,
 						sprintf( '%s %s %s',
 							$img,
-							esc_html__( 'Insert', 'give' ),
+							__( 'Insert', 'give' ),
 							self::$shortcodes[ $shortcode ]['label']
 						)
 					);
 				} else {
 					printf(
 						'<div class="sc-wrap">' .
-						'<button class="button sc-button">%s %s</button>' .
+						'<button class="button sc-button" type="button">%s %s</button>' .
 						'<div class="sc-menu mce-menu">%s</div>' .
 						'</div>',
 						$img,
-						esc_html__( 'Give Shortcodes', 'give' ),
+						__( 'Give Shortcodes', 'give' ),
 						implode( '', array_values( $shortcodes ) )
 					);
 				}
