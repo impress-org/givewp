@@ -36,7 +36,7 @@ class Give_Roles {
 	 */
 	public function __construct() {
 		add_filter( 'give_map_meta_cap', array( $this, 'meta_caps' ), 10, 4 );
-		add_filter( 'woocommerce_disable_admin_bar', array( $this, 'manage_admin_dashboard' ), 10 );
+		add_filter( 'woocommerce_disable_admin_bar', array( $this, 'manage_admin_dashboard' ), 10, 1 );
 		add_filter( 'woocommerce_prevent_admin_access', array( $this, 'manage_admin_dashboard' ), 10 );
 	}
 
@@ -333,10 +333,13 @@ class Give_Roles {
 	 * Note: WooCommerce doesn't allow the user to access the WP dashboard who holds "Give Accountant" role.
 	 *
 	 * @since 1.8.14
+	 * @updated 1.8.18 - Fixed Give conflicting by not returning $show_admin_bar https://github.com/WordImpress/Give/issues/2539
+	 *
+	 * @param bool
 	 *
 	 * @return bool
 	 */
-	public function manage_admin_dashboard() {
+	public function manage_admin_dashboard($show_admin_bar) {
 
 		// Get the current logged user.
 		$current_user = wp_get_current_user();
@@ -347,5 +350,8 @@ class Give_Roles {
 			// Return false, means no prevention.
 			return false;
 		}
+
+		return $show_admin_bar;
+
 	}
 }
