@@ -60,15 +60,18 @@ class Give_DB_Donors extends Give_DB {
 	 */
 	public function get_columns() {
 		return array(
-			'id'             => '%d',
-			'user_id'        => '%d',
-			'name'           => '%s',
-			'email'          => '%s',
-			'payment_ids'    => '%s',
-			'purchase_value' => '%f',
-			'purchase_count' => '%d',
-			'notes'          => '%s',
-			'date_created'   => '%s',
+			'id'              => '%d',
+			'user_id'         => '%d',
+			'name'            => '%s',
+			'email'           => '%s',
+			'payment_ids'     => '%s',
+			'purchase_value'  => '%f',
+			'purchase_count'  => '%d',
+			'notes'           => '%s',
+			'date_created'    => '%s',
+			'token'           => '%s',
+			'verify_key'      => '%s',
+			'verify_throttle' => '%s',
 		);
 	}
 
@@ -82,14 +85,17 @@ class Give_DB_Donors extends Give_DB {
 	 */
 	public function get_column_defaults() {
 		return array(
-			'user_id'        => 0,
-			'email'          => '',
-			'name'           => '',
-			'payment_ids'    => '',
-			'purchase_value' => 0.00,
-			'purchase_count' => 0,
-			'notes'          => '',
-			'date_created'   => date( 'Y-m-d H:i:s' ),
+			'user_id'         => 0,
+			'email'           => '',
+			'name'            => '',
+			'payment_ids'     => '',
+			'purchase_value'  => 0.00,
+			'purchase_count'  => 0,
+			'notes'           => '',
+			'date_created'    => date( 'Y-m-d H:i:s' ),
+			'token'           => '',
+			'verify_key'      => '',
+			'verify_throttle' => '',
 		);
 	}
 
@@ -577,6 +583,9 @@ class Give_DB_Donors extends Give_DB {
 		payment_ids longtext NOT NULL,
 		notes longtext NOT NULL,
 		date_created datetime NOT NULL,
+		token VARCHAR(255) CHARACTER SET utf8 NOT NULL,
+		verify_key VARCHAR(255) CHARACTER SET utf8 NOT NULL,
+		verify_throttle DATETIME NOT NULL,
 		PRIMARY KEY  (id),
 		UNIQUE KEY email (email),
 		KEY user (user_id)
