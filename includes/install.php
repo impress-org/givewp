@@ -134,6 +134,7 @@ function give_run_install() {
 			'v1817_update_donation_iranian_currency_code',
 			'v1817_cleanup_user_roles',
 			'v1818_assign_custom_amount_set_donation',
+			'v1818_give_worker_role_cleanup',
 			'v20_upgrades_form_metadata',
 			'v20_logs_upgrades',
 			'v20_move_metadata_into_new_table',

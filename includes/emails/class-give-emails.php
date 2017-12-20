@@ -238,9 +238,9 @@ class Give_Emails {
 				$pattern,
 				function( $return ) {
 					if ( $return[1] !== $return[2] ) {
-						return "{$return[2]} ({$return[1]})";
+						return "{$return[2]} ( {$return[1]} )";
 					}
-					return $return[1];
+					return trailingslashit( $return[1] );
 				},
 				$message
 			);
