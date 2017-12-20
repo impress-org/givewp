@@ -468,6 +468,33 @@ $give_updates = Give_Updates::get_instance();
 			<td><?php echo give_is_setting_enabled( give_get_option('cache', 'enabled' ) ) ? __( 'Enabled', 'give' ) : __( 'Disabled', 'give' ); ?></td>
 		</tr>
 		<tr>
+			<td data-export-label="Give Cache"><?php _e( 'Give Emails', 'give' ); ?>:</td>
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'Whether emails is enabled in Give settings.', 'give' ) ); ?></td>
+			<td>
+				<?php
+				/* @var Give_Email_Notification $email_notification */
+				if( $email_notifications = Give_Email_Notifications::get_instance()->get_email_notifications() ) {
+					ob_start();
+
+					foreach ( Give_Email_Notifications::get_instance()->get_email_notifications() as $email_notification ) {
+						$status = Give_Email_Notification_Util::is_email_notification_active( $email_notification ) ?
+							'yes' :
+							'error';
+
+						echo sprintf(
+							'<li><mark class="%1$s"><span class="dashicons dashicons-%2$s"></mark></span>%3$s</li>',
+							Give_Email_Notification_Util::is_email_notification_active( $email_notification ) ? 'yes' : 'error',
+							Give_Email_Notification_Util::is_email_notification_active( $email_notification ) ? 'yes' : 'no-alt',
+							$email_notification->config['label']
+						);
+					}
+
+					echo sprintf( '<ul>%s</ul>', ob_get_clean() );
+				}
+				?>
+			</td>
+		</tr>
+		<tr>
 			<td data-export-label="Upgraded From"><?php _e( 'Upgraded From', 'give' ); ?>:</td>
 			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The version of Give installed prior to the last update.', 'give' ) ); ?></td>
 			<td><?php echo esc_html( get_option( 'give_version_upgraded_from', '&ndash;' ) ); ?></td>
