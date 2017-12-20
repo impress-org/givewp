@@ -73,10 +73,6 @@ function give_get_field_callback( $field ) {
 			$func_name = "{$func_name_prefix}_radio";
 			break;
 
-		case 'number':
-			$func_name = "{$func_name_prefix}_number_input";
-			break;
-
 		default:
 
 			if (
@@ -271,58 +267,6 @@ function give_text_input( $field ) {
 			id="<?php echo esc_attr( $field['id'] ); ?>"
 			value="<?php echo esc_attr( $field['value'] ); ?>"
 		<?php echo give_get_custom_attributes( $field ); ?>
-	/>
-	<?php echo $field['after_field']; ?>
-	<?php
-	echo give_get_field_description( $field );
-	echo '</p>';
-}
-
-/**
- * Output a number input box.
- *
- * @since 2.0
- *
- * @param array $field         {
- *                              Optional. Array of text input field arguments.
- *
- * @type string  $id            Field ID. Default ''.
- * @type string  $style         CSS style for input field. Default ''.
- * @type string  $wrapper_class CSS class to use for wrapper of input field. Default ''.
- * @type string  $value         Value of input field. Default ''.
- * @type string  $name          Name of input field. Default ''.
- * @type string  $type          Type of input field. Default 'text'.
- * @type string  $before_field  Text/HTML to add before input field. Default ''.
- * @type string  $after_field   Text/HTML to add after input field. Default ''.
- * @type string  $description   Description of input field. Default ''.
- * @type array   $attributes    List of attributes of input field. Default array().
- *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class'
- *                                               => '****' )
- * }
- *
- * @return void
- */
-function give_number_input( $field ) {
-	global $thepostid, $post;
-
-	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
-	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
-	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
-	$field['value']         = give_get_field_value( $field, $thepostid );
-	$field['type']          = isset( $field['type'] ) ? $field['type'] : 'text';
-	$field['before_field']  = '';
-	$field['after_field']   = '';
-	?>
-	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
-	<label for="<?php echo give_get_field_name( $field ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
-	<?php echo $field['before_field']; ?>
-	<input
-			type="<?php echo esc_attr( $field['type'] ); ?>"
-			style="<?php echo esc_attr( $field['style'] ); ?>"
-			name="<?php echo give_get_field_name( $field ); ?>"
-			id="<?php echo esc_attr( $field['id'] ); ?>"
-			value="<?php echo esc_attr( $field['value'] ); ?>"
-		<?php echo give_get_attribute_str( $field ); ?>
 	/>
 	<?php echo $field['after_field']; ?>
 	<?php
