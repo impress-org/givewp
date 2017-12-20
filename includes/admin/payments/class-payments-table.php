@@ -193,6 +193,15 @@ class Give_Payment_History_Table extends WP_List_Table {
 				?>
 			</div>
 
+			<?php
+			/**
+			 * Action to add hidden fields and HTML in Payment search.
+			 *
+			 * @since 1.8.18
+			 */
+			do_action( 'give_payment_table_advanced_filters' );
+			?>
+
 			<?php if ( ! empty( $status ) ) : ?>
 				<input type="hidden" name="status" value="<?php echo esc_attr( $status ); ?>" />
 			<?php endif; ?>
@@ -317,6 +326,16 @@ class Give_Payment_History_Table extends WP_List_Table {
 			),
 		);
 
+		/**
+		 * Remove Query from Args of the URL that are being pass to Donation Status.
+		 *
+		 * @since 1.8.18
+		 */
+		$args = (array) apply_filters( 'give_payments_table_status_remove_query_arg', array( 'paged', '_wpnonce', '_wp_http_referer' ) );
+
+		// Build URL.
+		$staus_url = remove_query_arg( $args );
+
 		foreach ( $tabs as $key => $tab ) {
 			$count_key = $tab[0];
 			$name      = $tab[1];
@@ -333,16 +352,15 @@ class Give_Payment_History_Table extends WP_List_Table {
 			 * @since 1.8.12
 			 */
 			if ( 'all' === $key || $key === $current || apply_filters( 'give_payments_table_show_all_status', 0 < $count, $key, $count ) ) {
-				// Build URL.
-				$staus_url = remove_query_arg( array( 'paged', '_wpnonce', '_wp_http_referer' ) );
+
 				$staus_url = 'all' === $key ?
-					add_query_arg( array( 'status' => false ), $staus_url ) :
+					add_query_arg( array( 'status' => false ), apply_filters( 'give_payments_table_status_all_query_arg', $staus_url ) ) :
 					add_query_arg( array( 'status' => $key ), $staus_url );
 
 				$views[ $key ] = sprintf(
 					'<a href="%s"%s>%s&nbsp;<span class="count">(%s)</span></a>',
 					esc_url( $staus_url ),
-					( ( 'all' === $key && empty( $current ) ) ) ? ' class="current"' : ( $current == $key ? 'class="current"' : '' ),
+					( ( 'all' === $key && empty( $current ) && apply_filters( 'give_payments_table_show_all_default_selected', true ) ) ) ? ' class="current"' : ( $current == $key ? 'class="current"' : '' ),
 					$name,
 					$count
 				);
@@ -866,6 +884,13 @@ class Give_Payment_History_Table extends WP_List_Table {
 			$args['search_in_notes'] = true;
 			$args['s']               = trim( str_replace( 'txn:', '', $args['s'] ) );
 		}
+
+		/**
+		 * Filter to modify payment table argument.
+		 *
+		 * @since 1.8.18
+		 */
+		$args = (array) apply_filters( 'give_payment_table_payments_query', $args );
 
 		$p_query = new Give_Payments_Query( $args );
 
