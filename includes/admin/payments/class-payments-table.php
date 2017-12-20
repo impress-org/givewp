@@ -354,13 +354,13 @@ class Give_Payment_History_Table extends WP_List_Table {
 			if ( 'all' === $key || $key === $current || apply_filters( 'give_payments_table_show_all_status', 0 < $count, $key, $count ) ) {
 
 				$staus_url = 'all' === $key ?
-					add_query_arg( array( 'status' => false ), apply_filters( 'give_payments_table_status_all_query_arg', $staus_url ) ) :
+					add_query_arg( array( 'status' => false ), $staus_url ) :
 					add_query_arg( array( 'status' => $key ), $staus_url );
 
 				$views[ $key ] = sprintf(
 					'<a href="%s"%s>%s&nbsp;<span class="count">(%s)</span></a>',
 					esc_url( $staus_url ),
-					( ( 'all' === $key && empty( $current ) && apply_filters( 'give_payments_table_show_all_default_selected', true ) ) ) ? ' class="current"' : ( $current == $key ? 'class="current"' : '' ),
+					( ( 'all' === $key && empty( $current ) ) ) ? ' class="current"' : ( $current == $key ? 'class="current"' : '' ),
 					$name,
 					$count
 				);
@@ -962,6 +962,13 @@ class Give_Payment_History_Table extends WP_List_Table {
 		}
 
 		$this->items = $data;
+
+		/**
+		 * Filter to modify total count of the pagination.
+		 *
+		 * @since 1.8.19
+		 */
+		$total_items = (int) apply_filters( 'give_payment_table_pagination_total_count', $total_items, $this );
 
 		$this->set_pagination_args(
 			array(
