@@ -346,8 +346,8 @@ class Give_Payment_History_Table extends WP_List_Table {
 			 *
 			 * Filter can be used to show all the status inside the donation submenu tabs return true to show all the tab.
 			 *
-			 * @param string $key   Current view tab value.
-			 * @param int    $count Number of donation inside the tab.
+			 * @param string $key Current view tab value.
+			 * @param int $count Number of donation inside the tab.
 			 *
 			 * @since 1.8.12
 			 */
@@ -977,7 +977,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 				'per_page'    => $this->per_page,
 				// We have to determine how many items to show on a page.
 				'total_pages' => ceil( $total_items / $this->per_page ),
-			// We have to calculate the total number of pages.
+				// We have to calculate the total number of pages.
 			)
 		);
 	}
