@@ -577,6 +577,9 @@ class Give_DB_Donors extends Give_DB {
 		payment_ids longtext NOT NULL,
 		notes longtext NOT NULL,
 		date_created datetime NOT NULL,
+		token VARCHAR(255) CHARACTER SET utf8 NOT NULL,
+		verify_key VARCHAR(255) CHARACTER SET utf8 NOT NULL,
+		verify_throttle DATETIME NOT NULL,
 		PRIMARY KEY  (id),
 		UNIQUE KEY email (email),
 		KEY user (user_id)
