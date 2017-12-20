@@ -397,6 +397,20 @@ if ( ! class_exists( 'Give' ) ) :
 		private function includes() {
 			global $give_options;
 
+			/**
+			 * Load libraries.
+			 */
+			if ( ! class_exists( 'WP_Async_Request' ) ) {
+				include_once( GIVE_PLUGIN_DIR . 'includes/libraries/wp-async-request.php' );
+			}
+
+			if ( ! class_exists( 'WP_Background_Process' ) ) {
+				include_once( GIVE_PLUGIN_DIR . 'includes/libraries/wp-background-process.php' );
+			}
+
+			/**
+			 * Load plugin files
+			 */
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/class-admin-settings.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/class-give-settings.php';
 			$give_options = give_get_settings();

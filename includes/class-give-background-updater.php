@@ -15,14 +15,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! class_exists( 'WP_Async_Request' ) ) {
-	include_once( GIVE_PLUGIN_DIR . 'includes/libraries/wp-async-request.php' );
-}
-
-if ( ! class_exists( 'WP_Background_Process' ) ) {
-	include_once( GIVE_PLUGIN_DIR . 'includes/libraries/wp-background-process.php' );
-}
-
 /**
  * Give_Background_Updater Class.
  */
