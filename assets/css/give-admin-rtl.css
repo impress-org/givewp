@@ -1139,6 +1139,9 @@ ASIDE
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-row.ui-sortable-helper {
       border-bottom: 0; }
 
+#_give_donation_levels_field .give-row:nth-of-type(2) .give-remove {
+  display: none !important; }
+
 #give-metabox-form-data .give-metabox-tabs {
   margin: 0;
   max-width: 170px;
