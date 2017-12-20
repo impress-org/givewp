@@ -43,9 +43,10 @@ function give_donation_history( $atts ) {
 	// If payment_key query arg exists, return receipt instead of donation history.
 	if ( isset( $_GET['payment_key'] ) ) {
 		ob_start();
+
 		echo give_receipt_shortcode( array() );
 
-		// Display donation history link only if it is not accessed via Receipt Access Link.
+		// Display donation history link only if Receipt Access Session is available.
 		if ( give_get_receipt_session() ) {
 			echo sprintf(
 				'<a href="%s">%s</a>',

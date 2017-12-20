@@ -31,7 +31,7 @@ if ( is_user_logged_in() ) {
 
 			give_set_error( 'give-limited-throttle', sprintf(
 				__( 'Too many access email requests detected. Please wait %s before requesting a new donation history access link.', 'give' ),
-				sprintf( _n( '%s minute', '%s minutes', Give()->email_access->verify_throttle / 60, 'give' ), Give()->email_access->verify_throttle / 60 )
+				sprintf( _n( '%s minute', '%s minutes', $value, 'give' ), $value )
 			) );
 
 		}
