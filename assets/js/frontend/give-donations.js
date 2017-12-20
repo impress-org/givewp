@@ -508,7 +508,10 @@ Give.form = {
 		 * @return {string}
 		 */
 		getMinimumAmount: function ($form) {
-			return Give.fn.unFormatCurrency($form.find('input[name="give-form-minimum"]').val());
+			return Give.fn.unFormatCurrency(
+				$form.find('input[name="give-form-minimum"]').val(),
+				Give.form.fn.getInfo('decimal_separator', $form )
+			);
 		},
 
 		/**
@@ -827,7 +830,7 @@ jQuery(function ($) {
 	function update_billing_state_field() {
 		var $this = $(this),
 			$form = $this.parents('form');
-		if ('card_state' != $this.attr('id')) {
+		if ('card_state' !== $this.attr('id')) {
 
 			//Disable the State field until updated
 			$form.find('#card_state').empty().append('<option value="1">' + give_global_vars.general_loading + '</option>').prop('disabled', true);

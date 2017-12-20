@@ -127,8 +127,8 @@ class Give_Email_Access {
 		}
 
 		// Are db columns setup?
-		$is_setup = give_get_option( 'email_access_installed' );
-		if ( empty( $is_setup ) ) {
+		$column_exists = Give()->donors->does_column_exist( 'token' );
+		if ( ! $column_exists ) {
 			$this->create_columns();
 		}
 
@@ -399,7 +399,7 @@ class Give_Email_Access {
 	}
 
 	/**
-	 * Create בolumns
+	 * Create required columns
 	 *
 	 * Create the necessary columns for email access
 	 *
@@ -412,13 +412,8 @@ class Give_Email_Access {
 
 		global $wpdb;
 
-		// Create columns in customers table
-		$query = $wpdb->query( "ALTER TABLE {$wpdb->prefix}give_customers ADD `token` VARCHAR(255) CHARACTER SET utf8 NOT NULL, ADD `verify_key` VARCHAR(255) CHARACTER SET utf8 NOT NULL AFTER `token`, ADD `verify_throttle` DATETIME NOT NULL AFTER `verify_key`" );
-
-		// Columns added properly
-		if ( $query ) {
-			give_update_option( 'email_access_installed', 1 );
-		}
+		// Create columns in customers table.
+		$wpdb->query( "ALTER TABLE {$wpdb->prefix}give_customers ADD `token` VARCHAR(255) CHARACTER SET utf8 NOT NULL, ADD `verify_key` VARCHAR(255) CHARACTER SET utf8 NOT NULL AFTER `token`, ADD `verify_throttle` DATETIME NOT NULL AFTER `verify_key`" );
 
 	}
 

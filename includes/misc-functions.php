@@ -162,7 +162,23 @@ function give_get_ip() {
 		$ip = $_SERVER['REMOTE_ADDR'];
 	}
 
-	return apply_filters( 'give_get_ip', $ip );
+	/**
+	 * Filter the IP
+	 *
+	 * @since 1.0
+	 */
+	$ip = apply_filters( 'give_get_ip', $ip );
+
+	// Filter empty values.
+	if( false !== strpos( $ip, ',' ) ) {
+		$ip = give_clean( explode( ',', $ip ) );
+		$ip = array_filter( $ip );
+		$ip = implode( ',', $ip );
+	} else{
+		$ip = give_clean( $ip );
+	}
+
+	return $ip;
 }
 
 
@@ -859,7 +875,7 @@ function give_can_view_receipt( $payment_key = '' ) {
 
 	global $give_receipt_args;
 
-	$give_receipt_args['id'] = give_get_purchase_id_by_key( $payment_key );
+	$give_receipt_args['id'] = give_get_donation_id_by_key( $payment_key );
 
 	$user_id = (int) give_get_payment_user_id( $give_receipt_args['id'] );
 
@@ -1302,7 +1318,7 @@ function give_array_insert_after( $key, array &$array, $new_key, $new_value ) {
 function give_list_pluck( $list, $field, $index_key = null ) {
 
 	if ( ! $index_key ) {
-		/*
+		/**
 		 * This is simple. Could at some point wrap array_column()
 		 * if we knew we had an array of arrays.
 		 */
@@ -1578,4 +1594,35 @@ function give_donation_history_table_end() {
 	</tr>
 	</tfoot>
 	<?php
+}
+
+
+/**
+ * Wrapper for _doing_it_wrong.
+ *
+ * @since  1.8.18
+ * @param  string $function
+ * @param  string $message
+ * @param  string $version
+ *
+ * @return void
+ */
+function give_doing_it_wrong( $function, $message, $version ) {
+	$message .= "\nBacktrace:" . wp_debug_backtrace_summary();
+
+	_doing_it_wrong( $function, $message , $version );
+}
+
+
+/**
+ * Remove limit from running php script complete.
+ *
+ * @since 1.8.18
+ */
+function give_ignore_user_abort(){
+	ignore_user_abort( true );
+
+	if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
+		set_time_limit( 0 );
+	}
 }

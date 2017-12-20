@@ -132,9 +132,9 @@ function give_generate_pdf( $data ) {
 			$title = $form->post_title;
 
 			if ( give_has_variable_prices( $form->ID ) ) {
-				$price = html_entity_decode( give_price_range( $form->ID, false ) );
+				$price = html_entity_decode( give_price_range( $form->ID, false ), ENT_COMPAT, 'UTF-8' );
 			} else {
-				$price = give_currency_filter( give_get_form_price( $form->ID ), '', true );
+				$price = give_currency_filter( give_get_form_price( $form->ID ), array( 'decode_currency' => true ) );
 			}
 
 			// Display Categories Data only, if user has opted for it.
@@ -152,7 +152,7 @@ function give_generate_pdf( $data ) {
 			}
 
 			$sales    = give_get_form_sales_stats( $form->ID );
-			$earnings = give_currency_filter( give_format_amount( give_get_form_earnings_stats( $form->ID ), array( 'sanitize' => false, ) ), '', true );
+			$earnings = give_currency_filter( give_format_amount( give_get_form_earnings_stats( $form->ID ), array( 'sanitize' => false, ) ), array( 'decode_currency' => true ) );
 
 			// This will help filter data before appending it to PDF Receipt.
 			$prepare_pdf_data   = array();
@@ -204,6 +204,7 @@ function give_generate_pdf( $data ) {
 	$pdf->Image( $image . '&file=.png' );
 	$pdf->Ln( 7 );
 	$pdf->Output( apply_filters( 'give_sales_earnings_pdf_export_filename', 'give-report-' . date_i18n( 'Y-m-d' ) ) . '.pdf', 'D' );
+	exit();
 }
 
 add_action( 'give_generate_pdf', 'give_generate_pdf' );

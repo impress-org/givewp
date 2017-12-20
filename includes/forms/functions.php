@@ -577,7 +577,15 @@ function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 
 		if ( intval( $price['_give_id']['level_id'] ) == intval( $price_id ) ) {
 
 			$price_text     = isset( $price['_give_text'] ) ? $price['_give_text'] : '';
-			$price_fallback = $use_fallback ? give_currency_filter( give_format_amount( $price['_give_amount'], array( 'sanitize' => false ) ), '', true ) : '';
+			$price_fallback = $use_fallback ?
+				give_currency_filter(
+					give_format_amount(
+						$price['_give_amount'],
+						array( 'sanitize' => false )
+					),
+					array( 'decode_currency' => true )
+				) :
+				'';
 			$price_name     = ! empty( $price_text ) ? $price_text : $price_fallback;
 
 		}

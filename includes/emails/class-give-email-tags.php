@@ -521,7 +521,7 @@ function give_email_tag_date( $payment_id ) {
  */
 function give_email_tag_amount( $payment_id ) {
 	$payment     = new Give_Payment( $payment_id );
-	$give_amount = give_currency_filter( give_format_amount( $payment->total, array( 'sanitize' => false ) ), $payment->currency );
+	$give_amount = give_currency_filter( give_format_amount( $payment->total, array( 'sanitize' => false ) ), array( 'currency_code' => $payment->currency ) );
 
 	return html_entity_decode( $give_amount, ENT_COMPAT, 'UTF-8' );
 }
@@ -677,8 +677,7 @@ function give_email_tag_receipt_link_url( $payment_id ) {
 
 	$receipt_url = esc_url( add_query_arg( array(
 		'payment_key' => give_get_payment_key( $payment_id ),
-		'give_action' => 'view_receipt',
-	), home_url() ) );
+	), give_get_history_page_uri() ) );
 
 	return $receipt_url;
 

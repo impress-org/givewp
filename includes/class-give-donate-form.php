@@ -529,10 +529,9 @@ class Give_Donate_Form {
 
 		if ( ! isset( $this->minimum_price ) ) {
 
-			$allow_custom_amount = give_get_meta( $this->ID, '_give_custom_amount', true );
 			$this->minimum_price = give_get_meta( $this->ID, '_give_custom_amount_minimum', true );
 
-			if ( ! give_is_setting_enabled( $allow_custom_amount ) ) {
+			if ( ! $this->is_custom_price_mode() ) {
 				$this->minimum_price = 0;
 			}
 
@@ -649,6 +648,45 @@ class Give_Donate_Form {
 		 */
 		return (bool) apply_filters( 'give_custom_price_option_mode', $ret, $this->ID );
 
+	}
+
+	/**
+	 * Determine if custom price mode is enabled or disabled
+	 *
+	 * @since  1.8.18
+	 * @access public
+	 *
+	 * @param string|float $amount Donation Amount.
+	 *
+	 * @return bool
+	 */
+	public function is_custom_price( $amount ) {
+		$result = false;
+		$amount = give_maybe_sanitize_amount( $amount );
+
+		if ( $this->is_custom_price_mode() ) {
+
+			if ( 'set' === $this->get_type() ) {
+				if ( $amount !== $this->get_price() ) {
+					$result = true;
+				}
+
+			} elseif ( 'multi' === $this->get_type() ) {
+				$level_amounts = array_map( 'give_maybe_sanitize_amount', wp_list_pluck( $this->get_prices(), '_give_amount' ) );
+				$result        = ! in_array( $amount, $level_amounts );
+			}
+		}
+
+		/**
+		 * Filter to reset whether it is custom price or not.
+		 *
+		 * @param bool         $result True/False.
+		 * @param string|float $amount Donation Amount.
+		 * @param int          $this->ID Form ID.
+		 *
+		 * @since 1.8.18
+		 */
+		return (bool) apply_filters( 'give_is_custom_price', $result, $amount, $this->ID );
 	}
 
 	/**

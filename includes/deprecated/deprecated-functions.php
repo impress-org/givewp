@@ -747,3 +747,17 @@ function give_get_payment_amount( $payment_id ) {
 function give_decrease_earnings( $form_id = 0, $amount ) {
 	return give_decrease_form_earnings( $form_id, $amount );
 }
+
+/**
+ * Retrieve the donation ID based on the key
+ *
+ * @param string  $key  the key to search for.
+ *
+ * @since 1.0
+ * @deprecated 1.8.18
+ *
+ * @return int $purchase Donation ID.
+ */
+function give_get_purchase_id_by_key( $key ) {
+	return give_get_donation_id_by_key( $key );
+}

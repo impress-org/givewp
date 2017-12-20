@@ -1011,6 +1011,8 @@ function give_currency_filter( $price = '', $args = array() ) {
 			'decode_currency' => isset( $func_args[2] ) ? $func_args[2] : false,
 			'form_id'         => isset( $func_args[3] ) ? $func_args[3] : '',
 		);
+
+		give_doing_it_wrong( __FUNCTION__, 'Pass second argument as Array.', GIVE_VERSION );
 	}
 
 	// Set default values.

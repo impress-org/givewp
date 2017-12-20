@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<hr class="wp-header-end">
 
 		<div class="give-update-panel-content">
-			<p><?php esc_html_e( 'Congratulations! You are running the latest versions of Give and it\'s add-ons.', 'give' ); ?></p>
+			<p><?php esc_html_e( 'Congratulations! You are running the latest versions of Give and its add-ons.', 'give' ); ?></p>
 		</div>
 
 	</div>

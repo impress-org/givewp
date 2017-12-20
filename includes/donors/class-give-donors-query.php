@@ -104,7 +104,6 @@ class Give_Donors_Query {
 		);
 
 		$this->args = wp_parse_args( $args, $defaults );
-
 		$this->table_name      = Give()->donors->table_name;
 		$this->meta_table_name = Give()->donor_meta->table_name;
 		$this->meta_type       = Give()->donor_meta->meta_type;
@@ -252,6 +251,7 @@ class Give_Donors_Query {
 		$where .= $this->get_where_date();
 
 		return trim( $where );
+		
 	}
 
 	/**
