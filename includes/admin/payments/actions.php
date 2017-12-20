@@ -245,9 +245,12 @@ function give_update_payment_details( $data ) {
 
 		// Re setup payment to update new meta value in object.
 		$payment->update_payment_setup( $payment->ID );
-		
+
 		// Update form id in payment logs.
-		Give_Cron::add_async_event( '__give_update_log_form_id', array( $new_form_id, $payment_id ) );
+		Give()->async_process->data( array(
+			'data' => array( $new_form_id, $payment_id ),
+			'hook' => 'give_update_log_form_id',
+		) )->dispatch();
 	}
 
 	// Update price id if current form is variable form.
