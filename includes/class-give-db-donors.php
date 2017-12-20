@@ -85,14 +85,17 @@ class Give_DB_Donors extends Give_DB {
 	 */
 	public function get_column_defaults() {
 		return array(
-			'user_id'        => 0,
-			'email'          => '',
-			'name'           => '',
-			'payment_ids'    => '',
-			'purchase_value' => 0.00,
-			'purchase_count' => 0,
-			'notes'          => '',
-			'date_created'   => date( 'Y-m-d H:i:s' ),
+			'user_id'         => 0,
+			'email'           => '',
+			'name'            => '',
+			'payment_ids'     => '',
+			'purchase_value'  => 0.00,
+			'purchase_count'  => 0,
+			'notes'           => '',
+			'date_created'    => date( 'Y-m-d H:i:s' ),
+			'token'           => '',
+			'verify_key'      => '',
+			'verify_throttle' => '',
 		);
 	}
 
