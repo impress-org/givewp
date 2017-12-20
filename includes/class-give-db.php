@@ -347,7 +347,7 @@ abstract class Give_DB {
 	 *
 	 * @return bool
 	 */
-	public function is_column_exists( $column_name ) {
+	public function does_column_exist( $column_name ) {
 
 		global $wpdb;
 

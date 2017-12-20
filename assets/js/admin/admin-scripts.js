@@ -2680,19 +2680,19 @@ var give_setting_edit = false;
 			});
 		}
 
-		var $give_money_fields = $('input.give-money-field, input.give-price-field'),
-			thousand_separator = give_vars.thousands_separator,
-			decimal_separator = give_vars.decimal_separator,
+		var $poststuff               = $( '#poststuff' ),
+			thousand_separator       = give_vars.thousands_separator,
+			decimal_separator        = give_vars.decimal_separator,
 			thousand_separator_count = '',
-			alphabet_count = '',
-			price_string = '',
+			alphabet_count           = '',
+			price_string             = '',
 
 			// Thousand separation limit in price depends upon decimal separator symbol.
 			// If thousand separator is equal to decimal separator then price does not have more then 1 thousand separator otherwise limit is zero.
 			thousand_separator_limit = ( decimal_separator === thousand_separator ? 1 : 0 );
 
 		// Check & show message on keyup event.
-		$('#poststuff').on('keyup', 'input.give-money-field, input.give-price-field', function () {
+		$poststuff.on('keyup', 'input.give-money-field, input.give-price-field', function () {
 			var tootltip_setting = {
 				label: give_vars.price_format_guide.trim()
 			};
@@ -2715,7 +2715,7 @@ var give_setting_edit = false;
 		});
 
 		// Format price sting of input field on focusout.
-		$('#poststuff').on('focusout', 'input.give-money-field, input.give-price-field', function () {
+		$poststuff.on('focusout', 'input.give-money-field, input.give-price-field', function () {
 			price_string = give_unformat_currency($(this).val(), false);
 
 			// Back out.
@@ -2738,6 +2738,13 @@ var give_setting_edit = false;
 
 			// Update format price string in input field.
 			$(this).val(price_string);
+		});
+
+		// Set default value to 1 even if user inputs empty or negative number of donations.
+		$poststuff.on( 'focusout', '#_give_number_of_donation_goal', function() {
+			if ( 1 > $( this ).val() ) {
+				$( this ).val( 1 );
+			}
 		});
 
 		/**

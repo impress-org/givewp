@@ -707,19 +707,19 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$link = give_email_tag_email_access_link( array( 'user_id' => 1 ) );
 
 		$this->assertRegExp(
-			'/target="_blank">Access Donation Details &raquo;<\/a>/',
+			'/target="_blank">View your donation history &raquo;<\/a>/',
 			$link
 		);
 
 		$this->assertRegExp(
-			'/<a href="\?give_nl=/',
+			'/<a href=".+?\?give_nl=/',
 			$link
 		);
 
 		$link = give_email_tag_email_access_link( array( 'user_id' => 1, 'email_content_type' => 'text/plain' ) );
 
 		$this->assertRegExp(
-			'/Access Donation Details: \?give_nl=/',
+			'/View your donation history: .+?\?give_nl=/',
 			$link
 		);
 

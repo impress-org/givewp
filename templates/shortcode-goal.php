@@ -71,7 +71,7 @@ if ( 'donation' === $goal_format ) {
 	<?php if ( ! empty( $show_text ) ) : ?>
 		<div class="raised">
 			<?php
-			if ( $goal_format === 'amount' ) :
+			if ( 'amount' === $goal_format ) :
 
 				/**
 				 * Filter the income formatting arguments.
@@ -93,26 +93,31 @@ if ( 'donation' === $goal_format ) {
 
 				echo sprintf(
 				/* translators: 1: amount of income raised 2: goal target amount. */
-					__( '%1$s of %2$s raised', 'give' ),
-					'<span class="income">' . give_currency_filter( $income, array( 'form_id' => $form_id ) ) . '</span>',
-					'<span class="goal-text">' . give_currency_filter( $goal, array( 'form_id' => $form_id ) ) . '</span>'
+					__( '<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> raised', 'give' ),
+					give_currency_filter( $income, array( 'form_id' => $form_id ) ),
+					give_currency_filter( $goal, array( 'form_id' => $form_id ) )
 				);
 
-			elseif ( $goal_format === 'percentage' ) :
+			elseif ( 'percentage' === $goal_format ) :
 
 				echo sprintf(
 				/* translators: %s: percentage of the amount raised compared to the goal target */
-					__( '%s%% funded', 'give' ),
-					'<span class="give-percentage">' . round( $progress ) . '</span>'
+					__( '<span class="give-percentage">%s%%</span> funded', 'give' ),
+					round( $progress )
 				);
 
-			elseif ( $goal_format === 'donation' ) :
+			elseif ( 'donation' === $goal_format ) :
 
 				echo sprintf(
 				/* translators: 1: total number of donations completed 2: total number of donations set as goal */
-					__( '%1$s of %2$s donations', 'give' ),
-					'<span class="income">' . $donations_completed . '</span>',
-					'<span class="goal-text">' . $donations_goal . '</span>'
+					_n(
+						'<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donation',
+						'<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donations',
+						$donations_goal,
+						'give'
+					),
+					$donations_completed,
+					$donations_goal
 				);
 
 			endif;
@@ -123,7 +128,7 @@ if ( 'donation' === $goal_format ) {
 
 	<?php if ( ! empty( $show_bar ) ) : ?>
 		<div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"
-			 aria-valuenow="<?php echo esc_attr( $progress ); ?>">
+		     aria-valuenow="<?php echo esc_attr( $progress ); ?>">
 			<span style="width: <?php echo esc_attr( $progress ); ?>%;<?php if ( ! empty( $color ) ) {
 				echo 'background-color:' . $color;
 			} ?>"></span>
