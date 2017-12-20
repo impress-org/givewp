@@ -216,6 +216,13 @@ if ( ! class_exists( 'Give' ) ) :
 		public $form_meta;
 
 		/**
+		 * Give form Object
+		 *
+		 * @var    Give_Async_Process $async_process
+		 */
+		public $async_process;
+
+		/**
 		 * Main Give Instance
 		 *
 		 * Ensures that only one instance of Give exists in memory at any one
@@ -288,22 +295,23 @@ if ( ! class_exists( 'Give' ) ) :
 			// Set up localization.
 			$this->load_textdomain();
 
-			$this->roles           = new Give_Roles();
-			$this->api             = new Give_API();
-			$this->give_settings   = new Give_Admin_Settings();
-			$this->session         = new Give_Session();
-			$this->html            = new Give_HTML_Elements();
-			$this->emails          = new Give_Emails();
-			$this->email_tags      = new Give_Email_Template_Tags();
-			$this->donors          = new Give_DB_Donors();
-			$this->donor_meta      = new Give_DB_Donor_Meta();
-			$this->template_loader = new Give_Template_Loader();
-			$this->email_access    = new Give_Email_Access();
-			$this->tooltips        = new Give_Tooltips();
-			$this->notices         = new Give_Notices();
-			$this->payment_meta    = new Give_DB_Payment_Meta();
-			$this->logs            = new Give_Logging();
-			$this->form_meta       = new Give_DB_Form_Meta();
+			$this->roles              = new Give_Roles();
+			$this->api                = new Give_API();
+			$this->give_settings      = new Give_Admin_Settings();
+			$this->session            = new Give_Session();
+			$this->html               = new Give_HTML_Elements();
+			$this->emails             = new Give_Emails();
+			$this->email_tags         = new Give_Email_Template_Tags();
+			$this->donors             = new Give_DB_Donors();
+			$this->donor_meta         = new Give_DB_Donor_Meta();
+			$this->template_loader    = new Give_Template_Loader();
+			$this->email_access       = new Give_Email_Access();
+			$this->tooltips           = new Give_Tooltips();
+			$this->notices            = new Give_Notices();
+			$this->payment_meta       = new Give_DB_Payment_Meta();
+			$this->logs               = new Give_Logging();
+			$this->form_meta          = new Give_DB_Form_Meta();
+			$this->async_process      = new Give_Async_Process();
 
 			/**
 			 * Fire the action after Give core loads.
@@ -416,6 +424,7 @@ if ( ! class_exists( 'Give' ) ) :
 			$give_options = give_get_settings();
 
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-cron.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-async-process.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/give-metabox-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-cache.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/post-types.php';
