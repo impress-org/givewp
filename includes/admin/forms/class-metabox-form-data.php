@@ -259,15 +259,15 @@ class Give_MetaBox_Form_Data {
 							),
 							'wrapper_class' => 'give-hidden',
 						),
-							array(
-								'id'         => $prefix . 'checkout_label',
-								'name'       => __( 'Submit Button', 'give' ),
-								'desc'       => __( 'The button label for completing a donation.', 'give' ),
-								'type'       => 'text_small',
-								'attributes' => array(
-									'placeholder' => __( 'Donate Now', 'give' ),
-								),
+						array(
+							'id'         => $prefix . 'checkout_label',
+							'name'       => __( 'Submit Button', 'give' ),
+							'desc'       => __( 'The button label for completing a donation.', 'give' ),
+							'type'       => 'text_small',
+							'attributes' => array(
+								'placeholder' => __( 'Donate Now', 'give' ),
 							),
+						),
 						array(
 							'name' => __( 'Default Gateway', 'give' ),
 							'desc' => __( 'By default, the gateway for this form will inherit the global default gateway (set under Give > Settings > Payment Gateways). This option allows you to customize the default gateway for this form only.', 'give' ),
@@ -346,7 +346,7 @@ class Give_MetaBox_Form_Data {
 
 					array(
 						'name'        => __( 'Goal Format', 'give' ),
-						'description' => __( 'Do you want to display the total amount raised based on your monetary goal or a percentage? For instance, "$500 of $1,000 raised" or "50% funded".', 'give' ),
+						'description' => __( 'Do you want to display the total amount raised based on your monetary goal or a percentage? For instance, "$500 of $1,000 raised" or "50% funded" or "1 of 5 donations".', 'give' ),
 						'id'          => $prefix . 'goal_format',
 						'type'        => 'radio_inline',
 						'default'     => 'amount',
@@ -374,7 +374,11 @@ class Give_MetaBox_Form_Data {
 						'id'         => $prefix . 'number_of_donation_goal',
 						'name'       => __( 'Donation Goal', 'give' ),
 						'desc'       => __( 'Set total number of donations as a goal.', 'give' ),
-						'type'       => 'text_small',
+						'type'       => 'number',
+						'default'    => 1,
+						'attributes' => array(
+							'placeholder' => 1,
+						),
 					),
 
 					array(
