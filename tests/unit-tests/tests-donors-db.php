@@ -20,24 +20,24 @@ class Tests_Donors_DB extends Give_Unit_Test_Case {
 		$this->_post_id = $this->factory->post->create( array(
 			'post_title'  => 'Test Donation',
 			'post_type'   => 'give_forms',
-			'post_status' => 'publish'
+			'post_status' => 'publish',
 		) );
 
 		$_multi_level_donations = array(
 			array(
 				'_give_id'     => array( 'level_id' => '1' ),
 				'_give_amount' => '10.00',
-				'_give_text'   => 'Basic Level'
+				'_give_text'   => 'Basic Level',
 			),
 			array(
 				'_give_id'     => array( 'level_id' => '2' ),
 				'_give_amount' => '20.00',
-				'_give_text'   => 'Intermediate Level'
+				'_give_text'   => 'Intermediate Level',
 			),
 			array(
 				'_give_id'     => array( 'level_id' => '3' ),
 				'_give_amount' => '40.00',
-				'_give_text'   => 'Advanced Level'
+				'_give_text'   => 'Advanced Level',
 			),
 		);
 
@@ -46,7 +46,7 @@ class Tests_Donors_DB extends Give_Unit_Test_Case {
 			'_give_price_option'    => 'multi',
 			'_give_donation_levels' => array_values( $_multi_level_donations ),
 			'give_product_notes'    => 'Donation Notes',
-			'_give_product_type'    => 'default'
+			'_give_product_type'    => 'default',
 		);
 
 		foreach ( $meta as $key => $value ) {
@@ -61,16 +61,16 @@ class Tests_Donors_DB extends Give_Unit_Test_Case {
 			'id'         => $user->ID,
 			'email'      => 'testadmin@domain.com',
 			'first_name' => $user->first_name,
-			'last_name'  => $user->last_name
+			'last_name'  => $user->last_name,
 		);
 
 		$donation_details = array(
 			array(
 				'id'      => $this->_post_id,
 				'options' => array(
-					'price_id' => 1
-				)
-			)
+					'price_id' => 1,
+				),
+			),
 		);
 
 		$total = 0;
@@ -90,7 +90,7 @@ class Tests_Donors_DB extends Give_Unit_Test_Case {
 			'user_info'       => $user_info,
 			'currency'        => 'USD',
 			'status'          => 'pending',
-			'gateway'         => 'manual'
+			'gateway'         => 'manual',
 		);
 
 		$_SERVER['REMOTE_ADDR'] = '10.0.0.0';
@@ -112,17 +112,20 @@ class Tests_Donors_DB extends Give_Unit_Test_Case {
 	/**
 	 * Test get customer columns.
 	 */
-	public function test_get_customer_columns() {
+	public function test_get_columns() {
 		$columns = array(
-			'id'             => '%d',
-			'user_id'        => '%d',
-			'name'           => '%s',
-			'email'          => '%s',
-			'payment_ids'    => '%s',
-			'purchase_value' => '%f',
-			'purchase_count' => '%d',
-			'notes'          => '%s',
-			'date_created'   => '%s',
+			'id'              => '%d',
+			'user_id'         => '%d',
+			'name'            => '%s',
+			'email'           => '%s',
+			'payment_ids'     => '%s',
+			'purchase_value'  => '%f',
+			'purchase_count'  => '%d',
+			'notes'           => '%s',
+			'date_created'    => '%s',
+			'token'           => '%s',
+			'verify_key'      => '%s',
+			'verify_throttle' => '%s',
 		);
 
 		$this->assertEquals( $columns, Give()->donors->get_columns() );
@@ -253,7 +256,7 @@ class Tests_Donors_DB extends Give_Unit_Test_Case {
 			'date' => array(
 				'start' => 'January 1 ' . ( date( 'Y' ) + 1 ),
 				'end'   => 'January 1 ' . ( date( 'Y' ) + 2 ),
-			)
+			),
 		);
 
 		$this->assertEquals( 0, Give()->donors->count( $args ) );
