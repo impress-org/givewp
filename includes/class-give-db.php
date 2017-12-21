@@ -355,7 +355,9 @@ abstract class Give_DB {
 			DB_NAME, $this->table_name, $column_name
 		) );
 
-		if ( ! empty( $column ) || get_option( 'give_version' ) ) {
+		$give_version = get_option( 'give_version' );
+
+		if ( ! empty( $column ) || $give_version ) {
 			return true;
 		}
 
