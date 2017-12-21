@@ -208,7 +208,7 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
-= 1.8.20: December 20th, 2017  =
+= 1.8.19: December 20th, 2017  =
 * Fix: There was a edge case bug released where a donor viewing a donation receipt in the browser could not due to the necessary columns not being created on install
 
 = 1.8.18: December 19th, 2017  =
