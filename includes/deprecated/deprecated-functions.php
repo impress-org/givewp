@@ -794,3 +794,15 @@ function give_decrease_earnings( $form_id = 0, $amount ) {
 function give_get_purchase_id_by_key( $key ) {
 	return give_get_donation_id_by_key( $key );
 }
+
+/**
+ * Retrieve Donation Form Title with/without Donation Levels.
+ *
+ * @param int|Give_Payment $donation Donation ID or Donation Object.
+ * @param array            $args     List of arguments.
+ *
+ * @return string
+ */
+function give_get_payment_form_title( $donation, $args ) {
+	return give_get_donation_form_title( $donation, $args );
+}
