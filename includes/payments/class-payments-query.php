@@ -708,12 +708,11 @@ class Give_Payments_Query extends Give_Stats {
 		}
 
 		$this->__set(
-			'meta_query', array(
-				array(
-					'key'     => '_give_payment_form_id',
-					'value'   => $this->args['give_forms'],
-					'compare' => $compare,
-				),
+			'meta_query',
+			array(
+				'key'     => '_give_payment_form_id',
+				'value'   => $this->args['give_forms'],
+				'compare' => $compare,
 			)
 		);
 
