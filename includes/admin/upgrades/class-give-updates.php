@@ -322,26 +322,9 @@ class Give_Updates {
 				'show'        => true,
 			) );
 
-			// Show update running notice.
+			// Start update.
 		} elseif ( ! empty( $_GET['give-run-db-update'] ) ) {
 			$this->run_db_update();
-
-			ob_start();
-			?>
-			<p>
-				<strong><?php _e( 'Give database update', 'give' ); ?></strong>
-				&nbsp;&#8211;&nbsp;<?php _e( 'Your database is being updated in the background.', 'give' ); ?>
-				&nbsp;<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-updates' ); ?>">
-					<?php _e( 'Click here to check database update progress.', 'give' ); ?>
-				</a>
-			</p>
-			<?php
-			$desc_html = ob_get_clean();
-			Give()->notices->register_notice( array(
-				'id'          => 'give_upgrade_db',
-				'type'        => 'updated',
-				'description' => $desc_html,
-			) );
 
 			// Show run the update notice.
 		} elseif ( $this->get_total_new_db_update_count() ) {
