@@ -305,11 +305,19 @@ class Give_Updates {
 	 * @access public
 	 */
 	public function __show_notice() {
-		if (
-			! current_user_can( 'manage_give_settings' ) ||
-			( isset( $_GET['page'] ) && 'give-updates' === $_GET['page'] ) ||
-			$this->is_doing_updates()
-		) {
+		// Bailout.
+		if ( ! current_user_can( 'manage_give_settings' ) || $this->is_doing_updates() ) {
+			return;
+		}
+
+		// Run DB updates.
+		if ( ! empty( $_GET['give-run-db-update'] ) ) {
+			$this->run_db_update();
+		}
+
+
+		// Bailout.
+		if ( isset( $_GET['page'] ) && 'give-updates' === $_GET['page'] ) {
 			return;
 		}
 
