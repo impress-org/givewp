@@ -619,6 +619,8 @@ add_action( 'give_after_donation_levels', 'give_display_checkout_button', 10, 2 
  *
  * @param  int $form_id The form ID.
  *
+ * @see For Pattern Attribute: https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/Form_validation
+ *
  * @return void
  */
 function give_user_info_fields( $form_id ) {
@@ -648,6 +650,8 @@ function give_user_info_fields( $form_id ) {
 					name="give_first"
 					placeholder="<?php _e( 'First Name', 'give' ); ?>"
 					id="give-first"
+					pattern="[A-Za-z]+"
+					title="<?php _e( 'First Name should only contain uppercase and lowercase alphabets. Numbers, Whitespaces and Special Characters are not allowed.', 'give' ); ?>"
 					value="<?php echo isset( $give_user_info['give_first'] ) ? $give_user_info['give_first'] : ''; ?>"
 				<?php echo( give_field_is_required( 'give_first', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
 			/>
