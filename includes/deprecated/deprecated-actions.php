@@ -90,6 +90,8 @@ function give_deprecated_actions() {
 		'give_update_edited_donation'              => 'give_update_edited_purchase',
 		'give_updated_edited_donation'             => 'give_updated_edited_purchase',
 		'give_pre_complete_donation'               => 'give_pre_complete_purchase',
+		'give_profile_editor_after_email'          => 'give_profile_editor_address',
+		'give_profile_editor_after_email'          => 'give_profile_editor_after_address',
 	);
 
 	return $give_deprecated_actions;
