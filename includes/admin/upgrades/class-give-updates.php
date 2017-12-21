@@ -368,6 +368,7 @@ class Give_Updates {
 			Give()->notices->register_notice( array(
 				'id'          => 'give_upgrade_db',
 				'type'        => 'updated',
+				'dismissible' => false,
 				'description' => $desc_html,
 			) );
 		}
