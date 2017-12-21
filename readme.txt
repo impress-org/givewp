@@ -208,6 +208,9 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
+= 1.8.20: December 20th, 2017  =
+* Fix: There was a edge case bug released where a donor viewing a donation receipt in the browser could not due to the necessary columns not being created on install
+
 = 1.8.18: December 19th, 2017  =
 * New: There is now a new line item in Tools > System Info that displays whether upgrades have completed or not. [#2452](https://github.com/WordImpress/Give/issues/2452)
 * New: You can now view donations based on the gateway that used for the donation. For instance, if you want to view all donations given via Stripe or PayPal you can view them all on the donations listing screen. See details: [#2397](https://github.com/WordImpress/Give/issues/2397)
