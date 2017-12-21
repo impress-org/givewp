@@ -1729,15 +1729,15 @@ function give_filter_where_older_than_week( $where = '' ) {
  *
  * Retrieves the form title and appends the level name if present.
  *
- * @param int|Give_Payment $donation   Donation Data Object.
- * @param array            $args       a. only_level = If set to true will only return the level name if multi-level enabled.
- *                                     b. separator  = The separator between the Form Title and the Donation Level.
+ * @param int|Give_Payment $donation Donation Data Object.
+ * @param array            $args     a. only_level = If set to true will only return the level name if multi-level enabled.
+ *                                   b. separator  = The separator between the Form Title and the Donation Level.
  *
  * @since 1.5
  *
  * @return string $form_title Returns the full title if $only_level is false, otherwise returns the levels title.
  */
-function give_get_payment_form_title( $donation, $args = array() ) {
+function give_get_donation_form_title( $donation, $args = array() ) {
 
 	if ( ! $donation instanceof Give_Payment ) {
 		$donation = new Give_Payment( $donation );
@@ -1802,7 +1802,7 @@ function give_get_payment_form_title( $donation, $args = array() ) {
 	 *
 	 * @since 1.0
 	 */
-	return apply_filters( 'give_get_payment_form_title', $form_title_html, $donation->payment_meta, $donation );
+	return apply_filters( 'give_get_donation_form_title', $form_title_html, $donation->payment_meta, $donation );
 }
 
 /**
