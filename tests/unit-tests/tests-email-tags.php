@@ -698,7 +698,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	function test_give_email_tag_email_access_link() {
 		// Create new table columns manually.
 		// Are db columns setup?
-		if( ! give_update_option( 'email_access_installed' ) ) {
+		if( ! Give()->donors->does_column_exist( 'token' ) ) {
 			Give()->email_access->create_columns();
 		}
 
