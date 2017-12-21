@@ -193,6 +193,15 @@ class Give_Payment_History_Table extends WP_List_Table {
 				?>
 			</div>
 
+			<?php
+			/**
+			 * Action to add hidden fields and HTML in Payment search.
+			 *
+			 * @since 1.8.18
+			 */
+			do_action( 'give_payment_table_advanced_filters' );
+			?>
+
 			<?php if ( ! empty( $status ) ) : ?>
 				<input type="hidden" name="status" value="<?php echo esc_attr( $status ); ?>"/>
 			<?php endif; ?>
@@ -312,6 +321,16 @@ class Give_Payment_History_Table extends WP_List_Table {
 			),
 		);
 
+		/**
+		 * Remove Query from Args of the URL that are being pass to Donation Status.
+		 *
+		 * @since 1.8.18
+		 */
+		$args = (array) apply_filters( 'give_payments_table_status_remove_query_arg', array( 'paged', '_wpnonce', '_wp_http_referer' ) );
+
+		// Build URL.
+		$staus_url = remove_query_arg( $args );
+
 		foreach ( $tabs as $key => $tab ) {
 			$count_key = $tab[0];
 			$name      = $tab[1];
@@ -322,14 +341,13 @@ class Give_Payment_History_Table extends WP_List_Table {
 			 *
 			 * Filter can be used to show all the status inside the donation submenu tabs return true to show all the tab.
 			 *
-			 * @param string $key   Current view tab value.
-			 * @param int    $count Number of donation inside the tab.
+			 * @param string $key Current view tab value.
+			 * @param int $count Number of donation inside the tab.
 			 *
 			 * @since 1.8.12
 			 */
 			if ( 'all' === $key || $key === $current || apply_filters( 'give_payments_table_show_all_status', 0 < $count, $key, $count ) ) {
-				// Build URL.
-				$staus_url = remove_query_arg( array( 'paged', '_wpnonce', '_wp_http_referer' ) );
+
 				$staus_url = 'all' === $key ?
 					add_query_arg( array( 'status' => false ), $staus_url ) :
 					add_query_arg( array( 'status' => $key ), $staus_url );
@@ -908,6 +926,13 @@ class Give_Payment_History_Table extends WP_List_Table {
 			$args['s']               = trim( str_replace( 'txn:', '', $args['s'] ) );
 		}
 
+		/**
+		 * Filter to modify payment table argument.
+		 *
+		 * @since 1.8.18
+		 */
+		$args = (array) apply_filters( 'give_payment_table_payments_query', $args );
+
 		$p_query = new Give_Payments_Query( $args );
 		
 		return $p_query->get_payments();
@@ -979,6 +1004,13 @@ class Give_Payment_History_Table extends WP_List_Table {
 
 		$this->items = $data;
 
+		/**
+		 * Filter to modify total count of the pagination.
+		 *
+		 * @since 1.8.19
+		 */
+		$total_items = (int) apply_filters( 'give_payment_table_pagination_total_count', $total_items, $this );
+
 		$this->set_pagination_args(
 			array(
 				'total_items' => $total_items,
@@ -986,7 +1018,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 				'per_page'    => $this->per_page,
 				// We have to determine how many items to show on a page.
 				'total_pages' => ceil( $total_items / $this->per_page ),
-			// We have to calculate the total number of pages.
+				// We have to calculate the total number of pages.
 			)
 		);
 	}

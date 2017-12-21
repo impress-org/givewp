@@ -347,7 +347,7 @@ abstract class Give_DB {
 	 *
 	 * @return bool
 	 */
-	public function is_column_exists( $column_name ) {
+	public function does_column_exist( $column_name ) {
 
 		global $wpdb;
 
@@ -356,7 +356,7 @@ abstract class Give_DB {
 			DB_NAME, $this->table_name, $column_name
 		) );
 
-		if ( ! empty( $column ) || get_option( 'give_version' ) ) {
+		if ( ! empty( $column ) ) {
 			return true;
 		}
 

@@ -54,7 +54,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 						),
 						array(
 							'name'    => __( 'Cache', 'give' ),
-							'desc'    => __( 'If caching enabled then plugin start caching custom post type related queries and reduce load from your site.', 'give' ),
+							'desc'    => __( 'If caching is enabled the plugin will start caching custom post type related queries and reduce the overall load time.', 'give' ),
 							'id'      => 'cache',
 							'type'    => 'radio_inline',
 							'default' => 'enabled',

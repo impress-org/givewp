@@ -248,6 +248,30 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 				update_option( $option_name, $update_options );
 			}
 		}
+
+
+		/**
+		 * Register email settings to form metabox.
+		 *
+		 * @since  2.0
+		 * @access public
+		 *
+		 * @param array $settings
+		 * @param int   $form_id
+		 *
+		 * @return array
+		 */
+		public function add_metabox_setting_field( $settings, $form_id ) {
+			if ( in_array( 'offline', array_keys( give_get_enabled_payment_gateways($form_id) ) ) ) {
+				$settings[] = array(
+					'id'     => $this->config['id'],
+					'title'  => $this->config['label'],
+					'fields' => $this->get_setting_fields( $form_id ),
+				);
+			}
+
+			return $settings;
+		}
 	}
 
 endif; // End class_exists check
