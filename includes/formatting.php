@@ -691,6 +691,8 @@ function give_validate_nonce( $nonce, $action = - 1, $wp_die_args = array() ) {
 			$wp_die_args['args']
 		);
 	}
+
+	return true;
 }
 
 /**
