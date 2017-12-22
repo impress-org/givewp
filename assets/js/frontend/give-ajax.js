@@ -96,7 +96,7 @@ jQuery(document).ready(function ($) {
 				this_form.find('.give_notices.give_errors').delay(5000).slideUp();
 
 				// Update nonce field.
-				this_form.find( '[name=_wpnonce]' ).val( response.data.form_nonce );
+				Give.form.fn.setInfo( 'nonce', response.data.form_nonce, this_form );
 
 				//reload the selected gateway so it contains their logged in information
 				give_load_gateway(this_form, this_form.find('.give-gateway-option-selected input').val());
