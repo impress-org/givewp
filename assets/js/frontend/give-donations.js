@@ -537,6 +537,28 @@ Give.form = {
 		},
 
 		/**
+		 * Get form security nonce
+		 *
+		 * @since 1.8.17
+		 * @param $form
+		 * @return {*}
+		 */
+		getNonce: function ($form) {
+			// Bailout
+			if (!$form.length) {
+				return '';
+			}
+
+			var nonce = $form.find('input[name="_wpnonce"]').val();
+
+			if ('undefined' === typeof nonce || !nonce) {
+				nonce = '';
+			}
+
+			return nonce;
+		},
+
+		/**
 		 * Auto select donation level
 		 *
 		 * @since 1.8.17
