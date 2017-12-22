@@ -798,11 +798,25 @@ function give_get_purchase_id_by_key( $key ) {
 /**
  * Retrieve Donation Form Title with/without Donation Levels.
  *
- * @param int|Give_Payment $donation Donation ID or Donation Object.
- * @param array            $args     List of arguments.
+ * @param array  $meta       List of Donation Meta.
+ * @param bool   $only_level True/False, whether to show only level or not.
+ * @param string $separator  Display separator symbol to separate the form title and donation level.
+ *
+ * @since 2.0
  *
  * @return string
  */
-function give_get_payment_form_title( $donation, $args ) {
+function give_get_payment_form_title( $meta, $only_level = false, $separator = '' ) {
+
+	$donation = '';
+	if( is_array( $meta ) && ! empty( $meta['key'] ) ) {
+		$donation = give_get_payment_by( 'key', $meta['key'] );
+	}
+
+	$args = array(
+		'only_level' => $only_level,
+		'separator'  => $separator,
+	);
+
 	return give_get_donation_form_title( $donation, $args );
 }
