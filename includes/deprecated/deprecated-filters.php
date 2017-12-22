@@ -51,6 +51,7 @@ function give_deprecated_filters() {
 		'give_donor_recount_should_increase_value'         => 'give_customer_recount_sholud_increase_value',
 		'give_customer_recount_should_increase_count'      => 'give_donor_recount_should_increase_count',
 		'give_payment_amount'                              => 'give_donation_amount',
+		'give_get_payment_form_title'                      => 'give_get_donation_form_title',
 	);
 
 	return $give_deprecated_filters;
