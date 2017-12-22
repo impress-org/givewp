@@ -216,7 +216,7 @@ class Give_Updates {
 			}
 
 			$menu[ $index ][0] = sprintf(
-				'%1$s <span class="update-plugins"><span class="plugin-count">%2$s%3$s</span></span>',
+				'%1$s <span class="update-plugins"><span class="plugin-count give-update-progress-count">%2$s%3$s</span></span>',
 				__( 'Donations', 'give' ),
 				$this->is_doing_updates() ?
 					$this->get_db_update_processing_percentage() :
@@ -262,7 +262,7 @@ class Give_Updates {
 			'edit.php?post_type=give_forms',
 			esc_html__( 'Give Updates', 'give' ),
 			sprintf(
-				'%1$s <span class="update-plugins"><span class="plugin-count">%2$s%3$s</span></span>',
+				'%1$s <span class="update-plugins"><span class="plugin-count give-update-progress-count">%2$s%3$s</span></span>',
 				__( 'Updates', 'give' ),
 				$this->is_doing_updates() ?
 					$this->get_db_update_processing_percentage() :
@@ -411,6 +411,7 @@ class Give_Updates {
 			'update'      => 1,
 			'heading'     => sprintf( 'Update %s of %s', 1, count( $updates ) ),
 			'percentage'  => 0,
+			'total_percentage'  => 0,
 		), '', 'no' );
 
 		self::$background_updater->save()->dispatch();

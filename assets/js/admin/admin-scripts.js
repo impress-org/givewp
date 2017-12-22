@@ -1082,6 +1082,7 @@ var give_setting_edit = false;
 			$self.el.progress_main_container = Give_Selector_Cache.get('.progress-container', $self.el.main_container);
 			$self.el.heading = Give_Selector_Cache.get('.update-message', $self.el.progress_main_container);
 			$self.el.progress_container = Give_Selector_Cache.get('.progress-content', $self.el.progress_main_container);
+			$self.el.update_progress_counter = Give_Selector_Cache.get( $( '.give-update-progress-count') );
 
 			if( $self.el.main_container.data('resume-update') ) {
 				$self.el.update_link.addClass('active').hide().removeClass('give-hidden');
@@ -1148,6 +1149,10 @@ var give_setting_edit = false;
 
 					if (-1 !== $.inArray('success', Object.keys(response))) {
 						if (response.success) {
+							if ($self.el.update_progress_counter.length) {
+								$self.el.update_progress_counter.text('100%');
+							}
+
 							// Update steps info.
 							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
 								$self.el.heading.html('<strong>' + response.data.heading + '</strong>');
@@ -1171,6 +1176,9 @@ var give_setting_edit = false;
 						}
 					} else {
 						if (response && -1 !== $.inArray('percentage', Object.keys(response.data))) {
+							if ($self.el.update_progress_counter.length) {
+								$self.el.update_progress_counter.text(response.data.total_percentage + '%');
+							}
 
 							// Update steps info.
 							if (-1 !== $.inArray('heading', Object.keys(response.data))) {

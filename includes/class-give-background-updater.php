@@ -134,11 +134,12 @@ class Give_Background_Updater extends WP_Background_Process {
 
 		// Set update info.
 		$doing_upgrade_args = array(
-			'update_info' => $update,
-			'step'        => ++ $give_updates->step,
-			'update'      => $give_updates->update,
-			'heading'     => sprintf( 'Update %s of %s', $give_updates->update, get_option( 'give_db_update_count' ) ),
-			'percentage'  => $give_updates->percentage,
+			'update_info'      => $update,
+			'step'             => ++ $give_updates->step,
+			'update'           => $give_updates->update,
+			'heading'          => sprintf( 'Update %s of %s', $give_updates->update, get_option( 'give_db_update_count' ) ),
+			'percentage'       => $give_updates->percentage,
+			'total_percentage' => $give_updates->get_db_update_processing_percentage(),
 		);
 
 		// Cache upgrade.
