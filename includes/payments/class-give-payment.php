@@ -491,7 +491,7 @@ final class Give_Payment {
 			return false;
 		}
 
-		$payment = get_post( $payment_id );
+		$payment = get_post( absint( $payment_id ) );
 
 		if ( ! $payment || is_wp_error( $payment ) ) {
 			return false;
