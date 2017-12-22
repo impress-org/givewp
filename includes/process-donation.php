@@ -246,7 +246,12 @@ function give_process_form_login() {
 			'success'
 		);
 
-		wp_send_json_success( $message );
+		wp_send_json_success(
+			array(
+				'message'    => $message,
+				'form_nonce' => wp_create_nonce( "donation_form_nonce_{$form_id}" ),
+			)
+		);
 	} else {
 		wp_redirect( $_SERVER['HTTP_REFERER'] );
 	}
@@ -282,6 +287,9 @@ function give_donation_form_validate_fields() {
 		'guest_user_data'  => array(),   // Guest user collected data.
 		'cc_info'          => give_donation_form_validate_cc(),// Credit card info.
 	);
+
+	// Verify donation form nonce.
+	give_verify_donation_form_nonce();
 
 	// Validate Honeypot First.
 	if ( ! empty( $_POST['give-honeypot'] ) ) {
