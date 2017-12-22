@@ -365,7 +365,7 @@ Give.form = {
 		 *
 		 * @return {string|boolean}
 		 */
-		setInfo: function (str, val, $form, type) {
+		setInfo: function (type, val, $form, str ) {
 			// Bailout.
 			if (!str.length || !$form.length) {
 				return false;
@@ -376,6 +376,10 @@ Give.form = {
 			switch (type) {
 				case 'attr':
 					$form.attr(str, val);
+					break;
+
+				case 'nonce':
+					$form.find('input[name="_wpnonce"]').val( val );
 					break;
 
 				default:
