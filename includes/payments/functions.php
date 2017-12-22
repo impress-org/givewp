@@ -1743,6 +1743,10 @@ function give_get_donation_form_title( $donation, $args = array() ) {
 		$donation = new Give_Payment( $donation );
 	}
 
+	if( ! $donation->ID ) {
+		return '';
+	}
+
 	$defaults = array(
 		'only_level' => false,
 		'separator'  => '',
