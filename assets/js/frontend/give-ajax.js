@@ -92,11 +92,11 @@ jQuery(document).ready(function ($) {
 				this_form.find('.give_errors').remove();
 
 				// Login successfully message.
-				this_form.find('#give-payment-mode-select').after(response.data.message);
+				this_form.find('#give-payment-mode-select').after(response.data);
 				this_form.find('.give_notices.give_errors').delay(5000).slideUp();
 
-				// Update nonce field.
-				Give.form.fn.setInfo( 'nonce', response.data.form_nonce, this_form );
+				// Create and update nonce.
+				give_donation_form_nonce( this_form );
 
 				//reload the selected gateway so it contains their logged in information
 				give_load_gateway(this_form, this_form.find('.give-gateway-option-selected input').val());
@@ -276,6 +276,32 @@ function give_load_gateway(form_object, payment_mode) {
 
 			// trigger an event on success for hooks
 			jQuery(document).trigger('give_gateway_loaded', [response, jQuery(form_object).attr('id')]);
+		}
+	);
+}
+
+/**
+ * Create WP nonce and update form.
+ *
+ * @since 2.0
+ *
+ * @param form_object Donation form object.
+ * @returns {boolean}
+ */
+function give_donation_form_nonce( form_object ) {
+	// Return false, if form is missing.
+	if ( undefined === form_object ) {
+		return false;
+	}
+
+	//Post via AJAX to Give
+	jQuery.post( give_scripts.ajaxurl, {
+			action: 'give_donation_form_nonce',
+			give_form_id: Give.form.fn.getInfo( 'form-id', form_object )
+		},
+		function( response ) {
+			// Update nonce field.
+			Give.form.fn.setInfo( 'nonce', response.data, form_object );
 		}
 	);
 }
