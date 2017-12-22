@@ -53,17 +53,6 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							'type' => 'title',
 						),
 						array(
-							'name'    => __( 'Cache', 'give' ),
-							'desc'    => __( 'If caching is enabled the plugin will start caching custom post type related queries and reduce the overall load time.', 'give' ),
-							'id'      => 'cache',
-							'type'    => 'radio_inline',
-							'default' => 'enabled',
-							'options' => array(
-								'enabled'  => __( 'Enabled', 'give' ),
-								'disabled' => __( 'Disabled', 'give' ),
-							),
-						),
-						array(
 							'name'    => __( 'Remove Data on Uninstall', 'give' ),
 							'desc'    => __( 'When the plugin is deleted, completely remove all Give data. This includes all Give settings, forms, form meta, donor, donor data, donations. Everything.', 'give' ),
 							'id'      => 'uninstall_on_delete',
@@ -130,6 +119,27 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 						),
 					);
 					break;
+			}
+
+			/**
+			 * Hide caching setting by default.
+			 *
+			 * @since 2.0
+			 */
+			if( apply_filters( 'give_settings_advanced_show_cache_setting', false ) ) {
+				array_splice( $settings, 1, 0, array(
+					array(
+						'name'    => __( 'Cache', 'give' ),
+						'desc'    => __( 'If caching is enabled the plugin will start caching custom post type related queries and reduce the overall load time.', 'give' ),
+						'id'      => 'cache',
+						'type'    => 'radio_inline',
+						'default' => 'enabled',
+						'options' => array(
+							'enabled'  => __( 'Enabled', 'give' ),
+							'disabled' => __( 'Disabled', 'give' ),
+						),
+					)
+				) );
 			}
 
 

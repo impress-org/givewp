@@ -794,3 +794,35 @@ function give_decrease_earnings( $form_id = 0, $amount ) {
 function give_get_purchase_id_by_key( $key ) {
 	return give_get_donation_id_by_key( $key );
 }
+
+/**
+ * Retrieve Donation Form Title with/without Donation Levels.
+ *
+ * @param array  $meta       List of Donation Meta.
+ * @param bool   $only_level True/False, whether to show only level or not.
+ * @param string $separator  Display separator symbol to separate the form title and donation level.
+ *
+ * @since 2.0
+ *
+ * @return string
+ */
+function give_get_payment_form_title( $meta, $only_level = false, $separator = '' ) {
+
+	_give_deprecated_function(
+		__FUNCTION__,
+		'2.0',
+		'give_get_donation_form_title'
+	);
+
+	$donation = '';
+	if( is_array( $meta ) && ! empty( $meta['key'] ) ) {
+		$donation = give_get_payment_by( 'key', $meta['key'] );
+	}
+
+	$args = array(
+		'only_level' => $only_level,
+		'separator'  => $separator,
+	);
+
+	return give_get_donation_form_title( $donation, $args );
+}
