@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @access private
  * @since  1.0
  *
- * @return false|null
+ * @return mixed
  */
 function give_process_donation_form() {
 
@@ -32,6 +32,18 @@ function give_process_donation_form() {
 	 * @since 1.0
 	 */
 	do_action( 'give_pre_process_donation' );
+
+	$is_ajax = isset( $_POST['give_ajax'] );
+
+	// Verify donation form nonce.
+	if(  give_verify_donation_form_nonce() ) {
+		if( $is_ajax ) {
+			echo 'success';
+			give_die();
+		} else{
+			give_send_back_to_checkout();
+		}
+	}
 
 	// Validate the form $_POST data.
 	$valid_data = give_donation_form_validate_fields();
@@ -47,8 +59,6 @@ function give_process_donation_form() {
 	 * @param array $_POST Array of variables passed via the HTTP POST.
 	 */
 	do_action( 'give_checkout_error_checks', $valid_data, $_POST );
-
-	$is_ajax = isset( $_POST['give_ajax'] );
 
 	// Process the login form.
 	if ( isset( $_POST['give_login_submit'] ) ) {
@@ -160,7 +170,6 @@ function give_process_donation_form() {
 	// Send info to the gateway for payment processing.
 	give_send_to_gateway( $donation_data['gateway'], $donation_data );
 	give_die();
-
 }
 
 add_action( 'give_purchase', 'give_process_donation_form' );
@@ -287,9 +296,6 @@ function give_donation_form_validate_fields() {
 		'guest_user_data'  => array(),   // Guest user collected data.
 		'cc_info'          => give_donation_form_validate_cc(),// Credit card info.
 	);
-
-	// Verify donation form nonce.
-	give_verify_donation_form_nonce();
 
 	// Validate Honeypot First.
 	if ( ! empty( $_POST['give-honeypot'] ) ) {
