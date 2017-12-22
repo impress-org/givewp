@@ -1777,6 +1777,11 @@ function give_v20_logs_upgrades_callback() {
 		while ( $forms->have_posts() ) {
 			$forms->the_post();
 			global $post;
+
+			if( $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}give_logs WHERE ID=%d", $post->ID ) ) ) {
+				continue;
+			}
+
 			$term      = get_the_terms( $post->ID, 'give_log_type' );
 			$term      = ! is_wp_error( $term ) && ! empty( $term ) ? $term[0] : array();
 			$term_name = ! empty( $term ) ? $term->slug : '';
