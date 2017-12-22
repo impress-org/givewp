@@ -227,7 +227,6 @@ function give_process_form_login() {
 	$is_ajax = isset( $_POST['give_ajax'] );
 
 	$user_data = give_donation_form_validate_user_login();
-	$form_id   = isset( $form_id ) ? absint( $_POST['give_form_id'] ) : 0;
 
 	if ( give_get_errors() || $user_data['user_id'] < 1 ) {
 		if ( $is_ajax ) {
@@ -250,6 +249,7 @@ function give_process_form_login() {
 	give_log_user_in( $user_data['user_id'], $user_data['user_login'], $user_data['user_pass'] );
 
 	if ( $is_ajax ) {
+		$form_id = isset( $_POST['give_form_id'] ) ? absint( $_POST['give_form_id'] ) : 0;
 		$message = Give()->notices->print_frontend_notice(
 			sprintf(
 			/* translators: %s: user first name */
