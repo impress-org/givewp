@@ -221,7 +221,7 @@ jQuery(document).ready(function ($) {
 				this_form.find('input[type="submit"].give-submit').val(complete_purchase_val);
 				loading_animation.fadeOut();
 				this_form.find('.give_errors').remove();
-				this_form.find('input[type="submit"].give-submit').before(data);
+				this_form.find('#give_purchase_submit input[type="submit"].give-submit').before(data);
 
 				// Enable the form donation button.
 				Give.form.fn.disable(this_form, false);
