@@ -249,7 +249,6 @@ function give_process_form_login() {
 	give_log_user_in( $user_data['user_id'], $user_data['user_login'], $user_data['user_pass'] );
 
 	if ( $is_ajax ) {
-		$form_id = isset( $_POST['give_form_id'] ) ? absint( $_POST['give_form_id'] ) : 0;
 		$message = Give()->notices->print_frontend_notice(
 			sprintf(
 			/* translators: %s: user first name */
@@ -260,12 +259,7 @@ function give_process_form_login() {
 			'success'
 		);
 
-		wp_send_json_success(
-			array(
-				'message'    => $message,
-				'form_nonce' => wp_create_nonce( "donation_form_nonce_{$form_id}" ),
-			)
-		);
+		wp_send_json_success( $message );
 	} else {
 		wp_redirect( $_SERVER['HTTP_REFERER'] );
 	}
