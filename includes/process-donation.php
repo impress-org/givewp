@@ -25,6 +25,23 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return mixed
  */
 function give_process_donation_form() {
+	$is_ajax = isset( $_POST['give_ajax'] );
+
+	// Verify donation form nonce.
+	if(  ! give_verify_donation_form_nonce() ) {
+		if( $is_ajax ) {
+			/**
+			 * Fires when AJAX sends back errors from the donation form.
+			 *
+			 * @since 1.0
+			 */
+			do_action( 'give_ajax_donation_errors' );
+			
+			give_die();
+		} else{
+			give_send_back_to_checkout();
+		}
+	}
 
 	/**
 	 * Fires before processing the donation form.
@@ -32,18 +49,6 @@ function give_process_donation_form() {
 	 * @since 1.0
 	 */
 	do_action( 'give_pre_process_donation' );
-
-	$is_ajax = isset( $_POST['give_ajax'] );
-
-	// Verify donation form nonce.
-	if(  give_verify_donation_form_nonce() ) {
-		if( $is_ajax ) {
-			echo 'success';
-			give_die();
-		} else{
-			give_send_back_to_checkout();
-		}
-	}
 
 	// Validate the form $_POST data.
 	$valid_data = give_donation_form_validate_fields();
