@@ -673,12 +673,23 @@ function give_validate_nonce( $nonce, $action = - 1, $wp_die_args = array() ) {
 
 	$wp_die_args = wp_parse_args( $wp_die_args, $default_wp_die_args );
 
-	if ( ! wp_verify_nonce( $nonce, $action ) ) {
-		wp_die(
-			$wp_die_args['message'],
-			$wp_die_args['title'],
-			$wp_die_args['args']
-		);
+	// Verify nonce.
+	$verify_nonce = wp_verify_nonce( $nonce, $action );
+
+	if ( ! $verify_nonce ) {
+		if ( ! wp_doing_ajax() ) {
+			wp_die(
+				$wp_die_args['message'],
+				$wp_die_args['title'],
+				$wp_die_args['args']
+			);
+		}
+
+		// Return nonce failed message.
+		return $wp_die_args['message'];
+	}
+}
+
 /**
  * Verify nonce while processing donation form.
  *
