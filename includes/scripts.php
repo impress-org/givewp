@@ -59,7 +59,7 @@ function give_load_scripts() {
 			array(
 				// Field name               Validation message.
 				'payment-mode'           => __( 'Please select payment mode.', 'give' ),
-				'give_first'             => __( 'Please enter your first name. Only uppercase and lowercase letters (A-Z,a-z) are allowed.', 'give' ),
+				'give_first'             => __( 'Please enter your first name.', 'give' ),
 				'give_email'             => __( 'Please enter a valid email address.', 'give' ),
 				'give_user_login'        => __( 'Invalid username. Only lowercase letters (a-z) and numbers are allowed.', 'give' ),
 				'give_user_pass'         => __( 'Enter a password.', 'give' ),

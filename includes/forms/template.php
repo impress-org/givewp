@@ -650,8 +650,6 @@ function give_user_info_fields( $form_id ) {
 					name="give_first"
 					placeholder="<?php _e( 'First Name', 'give' ); ?>"
 					id="give-first"
-					pattern="[A-Za-z]+"
-					title="<?php _e( 'First Name should only contain uppercase and lowercase alphabets. Numbers, Whitespaces and Special Characters are not allowed.', 'give' ); ?>"
 					value="<?php echo isset( $give_user_info['give_first'] ) ? $give_user_info['give_first'] : ''; ?>"
 				<?php echo( give_field_is_required( 'give_first', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
 			/>
