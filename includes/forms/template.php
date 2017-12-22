@@ -1860,7 +1860,7 @@ function __give_form_add_donation_hidden_field( $form_id, $args, $form ) {
 	<?php
 
 	// WP nonce field.
-	wp_nonce_field( "donation_form_nonce_{$form_id}" );
+	wp_nonce_field( "donation_form_nonce_{$form_id}", '_wpnonce', false );
 
 	// Price ID hidden field for variable (multi-level) donation forms.
 	if ( give_has_variable_prices( $form_id ) ) {
