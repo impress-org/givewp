@@ -367,7 +367,12 @@ Give.form = {
 		 */
 		setInfo: function (type, val, $form, str ) {
 			// Bailout.
-			if (!str.length || !$form.length) {
+			if ( !$form.length) {
+				return false;
+			}
+
+			// Bailout.
+			if( 'undefined' !== typeof str && ! str.length ) {
 				return false;
 			}
 
