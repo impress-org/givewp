@@ -699,6 +699,8 @@ function give_validate_nonce( $nonce, $action = - 1, $wp_die_args = array() ) {
  * @since 2.0
  *
  * @param string $nonce Pass nonce value.
+ *
+ * @return bool
  */
 function give_verify_donation_form_nonce( $nonce = '' ) {
 	// Get nonce key from donation.
@@ -714,6 +716,8 @@ function give_verify_donation_form_nonce( $nonce = '' ) {
 	if ( ! $verify_nonce ) {
 		give_set_error( 'donation_form_nonce', __( 'Nonce verification has failed.', 'give' ) );
 	}
+
+	return $verify_nonce;
 }
 
 /**
