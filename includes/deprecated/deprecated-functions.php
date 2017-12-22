@@ -808,6 +808,12 @@ function give_get_purchase_id_by_key( $key ) {
  */
 function give_get_payment_form_title( $meta, $only_level = false, $separator = '' ) {
 
+	_give_deprecated_function(
+		__FUNCTION__,
+		'2.0',
+		'give_get_donation_form_title'
+	);
+
 	$donation = '';
 	if( is_array( $meta ) && ! empty( $meta['key'] ) ) {
 		$donation = give_get_payment_by( 'key', $meta['key'] );
