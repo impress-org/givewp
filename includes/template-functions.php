@@ -51,7 +51,7 @@ function give_get_template( $template_name, $args = array(), $template_path = ''
 
 	$template_names = array( $template_name . '.php' );
 
-	$located = give_locate_template( $template_names, $template_path, $default_path );
+	$located = give_locate_template( $template_names );
 
 	if ( ! file_exists( $located ) ) {
 		/* translators: %s: the template */
