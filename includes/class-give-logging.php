@@ -557,6 +557,8 @@ class Give_Logging {
 					continue;
 				} elseif ( ! isset( $log_query[ $new_query_param ] ) ) {
 					continue;
+				} elseif( empty( $log_query[ $new_query_param ] ) ) {
+					continue;
 				}
 
 				switch ( $new_query_param ) {
@@ -588,7 +590,18 @@ class Give_Logging {
 						break;
 
 					default:
-						$log_query[ $old_query_param ] = $log_query[ $new_query_param ];
+						switch( $new_query_param ){
+							case 'log_parent':
+								$log_query['meta_query'][] = array(
+									'key' => '_give_log_payment_id',
+									'value' => $log_query[ $new_query_param ]
+								);
+
+								break;
+
+							default:
+								$log_query[ $old_query_param ] = $log_query[ $new_query_param ];
+						}
 				}
 			}
 		} else {

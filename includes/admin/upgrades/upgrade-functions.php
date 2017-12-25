@@ -1374,12 +1374,12 @@ function give_v1817_update_donation_iranian_currency_code() {
 			'status'         => 'any',
 			'order'          => 'ASC',
 			'post_type'      => array( 'give_payment' ),
-			'posts_per_page' => 20,
+			'posts_per_page' => 100,
 		)
 	);
 
 	if ( $payments->have_posts() ) {
-		$give_updates->set_percentage( $payments->found_posts, ( $give_updates->step * 20 ) );
+		$give_updates->set_percentage( $payments->found_posts, ( $give_updates->step * 100 ) );
 
 		while ( $payments->have_posts() ) {
 			$payments->the_post();
@@ -1513,7 +1513,7 @@ function give_v1818_assign_custom_amount_set_donation() {
 	);
 
 	if ( $donations->have_posts() ) {
-		$give_updates->set_percentage( $donations->found_posts, $give_updates->step * 20 );
+		$give_updates->set_percentage( $donations->found_posts, $give_updates->step * 100 );
 
 		while ( $donations->have_posts() ) {
 			$donations->the_post();
@@ -1949,11 +1949,10 @@ function give_v20_upgrades_donor_name() {
 	/* @var Give_Updates $give_updates */
 	$give_updates = Give_Updates::get_instance();
 
-	$args = array(
-		'offset' => ( 1 === $give_updates->step ) ? 0 : $give_updates->step * 100,
-	);
-
-	$donors = Give()->donors->get_donors( $args );
+	$donors = Give()->donors->get_donors( array(
+		'paged'  => $give_updates->step,
+		'number' => 100,
+	) );
 
 	if ( $donors ) {
 		$give_updates->set_percentage( count( $donors ), $give_updates->step * 100 );
@@ -2010,7 +2009,7 @@ function give_v20_upgrades_user_address() {
 	$user_query = new WP_User_Query(
 		array(
 			'number' => 100,
-			'offset' => ( 1 === $give_updates->step ) ? 0 : $give_updates->step * 100,
+			'paged'  => $give_updates->step,
 		)
 	);
 

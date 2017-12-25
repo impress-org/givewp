@@ -452,7 +452,7 @@ $give_updates = Give_Updates::get_instance();
 			<td>
 				<?php
 				$updates_text    = __( 'All DB Updates Completed.', 'give' );
-				$pending_updates = $give_updates->get_db_update_count();
+				$pending_updates = $give_updates->get_total_new_db_update_count();
 				$total_updates   = $give_updates->get_total_db_update_count();
 
 				if( $pending_updates === $total_updates ) {
