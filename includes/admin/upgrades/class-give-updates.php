@@ -220,7 +220,7 @@ class Give_Updates {
 				__( 'Donations', 'give' ),
 				$this->is_doing_updates() ?
 					$this->get_db_update_processing_percentage() :
-					$this->get_total_new_db_update_count(),
+					$this->get_total_update_count(),
 				$this->is_doing_updates() ? '%' : ''
 			);
 
@@ -266,7 +266,7 @@ class Give_Updates {
 				__( 'Updates', 'give' ),
 				$this->is_doing_updates() ?
 					$this->get_db_update_processing_percentage() :
-					$this->get_total_new_db_update_count(),
+					$this->get_total_update_count(),
 				$this->is_doing_updates() ? '%' : ''
 			),
 			'manage_give_settings',
