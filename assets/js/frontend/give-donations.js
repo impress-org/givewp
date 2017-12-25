@@ -549,8 +549,8 @@ Give.form = {
 		 * Get form security nonce
 		 *
 		 * @since 1.8.17
-		 * @param $form
-		 * @return {*}
+		 * @param {object} $form
+		 * @return {string}
 		 */
 		getNonce: function ($form) {
 			// Bailout
@@ -565,6 +565,32 @@ Give.form = {
 			}
 
 			return nonce;
+		},
+
+		/**
+		 * Reset form noce.
+		 *
+		 * @since 2.0
+		 *
+		 * @param {object} $form Donation form object.
+		 * @returns {boolean}
+		 */
+		resetNonce: function ($form) {
+			// Return false, if form is missing.
+			if ( ! $form.length ) {
+				return false;
+			}
+
+			//Post via AJAX to Give
+			jQuery.post(give_scripts.ajaxurl, {
+					action: 'give_donation_form_nonce',
+					give_form_id: Give.form.fn.getInfo('form-id', $form )
+				},
+				function (response) {
+					// Update nonce field.
+					Give.form.fn.setInfo( 'nonce', response.data, $form, '' );
+				}
+			);
 		},
 
 		/**
