@@ -556,7 +556,7 @@ function give_get_average_monthly_form_earnings( $form_id = 0 ) {
  * @param int  $form_id      ID of the donation form.
  * @param int  $price_id     ID of the price option.
  * @param int  $payment_id   payment ID for use in filters ( optional ).
- * @param bool $use_fallback Outputsz the level amount if no level text is provided.
+ * @param bool $use_fallback Outputs the level amount if no level text is provided.
  *
  * @return string $price_name Name of the price option
  */
@@ -570,8 +570,8 @@ function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 
 	}
 
 	foreach ( $prices as $price ) {
-
-		if ( intval( $price['_give_id']['level_id'] ) == intval( $price_id ) ) {
+		
+		if ( intval( $price['_give_id']['level_id'] ) === intval( $price_id ) ) {
 
 			$price_text     = isset( $price['_give_text'] ) ? $price['_give_text'] : '';
 			$price_fallback = $use_fallback ?
@@ -581,8 +581,7 @@ function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 
 						array( 'sanitize' => false )
 					),
 					array( 'decode_currency' => true )
-				) :
-				'';
+				) : '';
 			$price_name     = ! empty( $price_text ) ? $price_text : $price_fallback;
 
 		}

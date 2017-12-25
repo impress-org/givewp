@@ -308,15 +308,15 @@ add_action( 'give_complete_donation', '_give_save_donor_billing_address', 9999 )
 
 /**
  * Update form id in payment logs
- * This function will be use by cron to sync form id ( if changes ) between payment and log.
  *
  * @since 2.0
  *
- * @param $new_form_id
- * @param $payment_id
+ * @param array $args
  */
-function __give_update_log_form_id( $new_form_id, $payment_id ) {
-	$logs = Give()->logs->get_logs( $payment_id );
+function give_update_log_form_id( $args ) {
+	$new_form_id = absint( $args[0] );
+	$payment_id  = absint( $args[1] );
+	$logs        = Give()->logs->get_logs( $payment_id );
 
 	// Bailout.
 	if ( empty( $logs ) ) {
@@ -331,5 +331,7 @@ function __give_update_log_form_id( $new_form_id, $payment_id ) {
 	// Delete cache.
 	Give()->logs->delete_cache();
 }
+
+add_action( 'give_update_log_form_id', 'give_update_log_form_id' );
 
 

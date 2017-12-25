@@ -84,9 +84,6 @@ class Tests_Activation extends Give_Unit_Test_Case {
 		$this->assertArrayHasKey( 'terms', $give_options );
 		$this->assertEquals( 'disabled', $give_options['terms'] );
 
-		$this->assertArrayHasKey( 'admin_notices', $give_options );
-		$this->assertEquals( 'enabled', $give_options['admin_notices'] );
-
 		$this->assertArrayHasKey( 'uninstall_on_delete', $give_options );
 		$this->assertEquals( 'disabled', $give_options['uninstall_on_delete'] );
 

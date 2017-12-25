@@ -410,6 +410,13 @@ class Give_Notices {
 		// Save option to hide notice.
 		Give_Cache::set( $notice_key, true, $notice_dismiss_time, true );
 
+		/**
+		 * Fire the action when notice dismissed
+		 *
+		 * @since 2.0
+		 */
+		do_action( 'give_dismiss_notices', $_post );
+
 		wp_send_json_success();
 	}
 
