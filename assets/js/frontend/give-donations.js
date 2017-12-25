@@ -383,7 +383,7 @@ Give.form = {
 			if( 'undefined' !== typeof str && ! str.length ) {
 				return false;
 			}
-			
+
 			switch (type) {
 				case 'attr':
 					$form.attr(str, val);
