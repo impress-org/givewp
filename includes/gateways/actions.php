@@ -70,7 +70,6 @@ function give_donation_form_nonce() {
 
 		// Send nonce json data.
 		wp_send_json_success( wp_create_nonce( "donation_form_nonce_{$form_id}" ) );
-		wp_die();
 	}
 }
 
