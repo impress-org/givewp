@@ -371,20 +371,22 @@ Give.form = {
 				return false;
 			}
 
+			type = 'undefined' === typeof type ? 'data' : type;
+
+			switch (type){
+				case 'nonce':
+					$form.find('input[name="_wpnonce"]').val( val );
+					break;
+			}
+
 			// Bailout.
 			if( 'undefined' !== typeof str && ! str.length ) {
 				return false;
 			}
-
-			type = 'undefined' === typeof type ? 'data' : type;
-
+			
 			switch (type) {
 				case 'attr':
 					$form.attr(str, val);
-					break;
-
-				case 'nonce':
-					$form.find('input[name="_wpnonce"]').val( val );
 					break;
 
 				default:
