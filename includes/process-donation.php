@@ -22,9 +22,26 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @access private
  * @since  1.0
  *
- * @return false|null
+ * @return mixed
  */
 function give_process_donation_form() {
+	$is_ajax = isset( $_POST['give_ajax'] );
+
+	// Verify donation form nonce.
+	if(  ! give_verify_donation_form_nonce() ) {
+		if( $is_ajax ) {
+			/**
+			 * Fires when AJAX sends back errors from the donation form.
+			 *
+			 * @since 1.0
+			 */
+			do_action( 'give_ajax_donation_errors' );
+			
+			give_die();
+		} else{
+			give_send_back_to_checkout();
+		}
+	}
 
 	/**
 	 * Fires before processing the donation form.
@@ -47,8 +64,6 @@ function give_process_donation_form() {
 	 * @param array $_POST Array of variables passed via the HTTP POST.
 	 */
 	do_action( 'give_checkout_error_checks', $valid_data, $_POST );
-
-	$is_ajax = isset( $_POST['give_ajax'] );
 
 	// Process the login form.
 	if ( isset( $_POST['give_login_submit'] ) ) {
@@ -160,7 +175,6 @@ function give_process_donation_form() {
 	// Send info to the gateway for payment processing.
 	give_send_to_gateway( $donation_data['gateway'], $donation_data );
 	give_die();
-
 }
 
 add_action( 'give_purchase', 'give_process_donation_form' );
