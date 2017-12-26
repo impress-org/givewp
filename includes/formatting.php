@@ -658,28 +658,68 @@ function give_let_to_num( $size ) {
  * @since 1.8
  *
  * @param        $nonce
- * @param int   $action
- * @param array $wp_die_args
+ * @param int    $action
+ * @param array  $wp_die_args
+ *
+ * @return bool
  */
 function give_validate_nonce( $nonce, $action = - 1, $wp_die_args = array() ) {
 
-	$default_wp_die_args = array(
-		'message' => esc_html__( 'Nonce verification has failed.', 'give' ),
-		'title'   => esc_html__( 'Error', 'give' ),
-		'args'    => array(
-			'response' => 403,
-		),
-	);
+	// Verify nonce.
+	$verify_nonce = wp_verify_nonce( $nonce, $action );
 
-	$wp_die_args = wp_parse_args( $wp_die_args, $default_wp_die_args );
+	// On ajax request send nonce verification status.
+	if ( wp_doing_ajax() ) {
+		return $verify_nonce;
+	}
 
-	if ( ! wp_verify_nonce( $nonce, $action ) ) {
+	if ( ! $verify_nonce ) {
+		$wp_die_args = wp_parse_args(
+			$wp_die_args,
+			array(
+				'message' => __( 'Nonce verification has failed.', 'give' ),
+				'title'   => __( 'Error', 'give' ),
+				'args'    => array(
+					'response' => 403,
+				)
+			)
+		);
+
 		wp_die(
 			$wp_die_args['message'],
 			$wp_die_args['title'],
 			$wp_die_args['args']
 		);
 	}
+
+	return true;
+}
+
+/**
+ * Verify nonce while processing donation form.
+ *
+ * @since 2.0
+ *
+ * @param string $nonce Pass nonce value.
+ *
+ * @return bool
+ */
+function give_verify_donation_form_nonce( $nonce = '' ) {
+	// Get nonce key from donation.
+	$nonce   = empty( $nonce ) ? give_clean( $_POST['_wpnonce'] ) : $nonce;
+	$form_id = isset( $_POST['give-form-id'] ) ? absint( $_POST['give-form-id'] ) : 0;
+
+	// Form nonce action.
+	$nonce_action = "donation_form_nonce_{$form_id}";
+
+	// Nonce validation.
+	$verify_nonce = give_validate_nonce( $nonce, $nonce_action );
+
+	if ( ! $verify_nonce ) {
+		give_set_error( 'donation_form_nonce', __( 'Nonce verification has failed.', 'give' ) );
+	}
+
+	return $verify_nonce;
 }
 
 /**
