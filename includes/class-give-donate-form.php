@@ -580,7 +580,11 @@ class Give_Donate_Form {
 
 		if ( ! isset( $this->goal ) ) {
 
-			$this->goal = give_get_meta( $this->ID, '_give_set_goal', true );
+			if ( 'donation' === give_get_form_goal_format( $this->ID ) ) {
+				$this->goal = give_get_meta( $this->ID, '_give_number_of_donation_goal', true );
+			} else {
+				$this->goal = give_get_meta( $this->ID, '_give_set_goal', true );
+			}
 
 			if ( ! $this->goal ) {
 				$this->goal = 0;
