@@ -339,8 +339,8 @@ class Give_Updates {
 			ob_start();
 			?>
 			<p>
-				<strong><?php _e( 'Give database update', 'give' ); ?></strong>
-				&nbsp;&#8211;&nbsp;<?php _e( 'We need to update your site database to the latest version.  The following process will make updates to your site\'s database. Please create a database backup before proceeding with updates.', 'give' ); ?>
+				<strong><?php _e( 'Database Update', 'give' ); ?></strong>
+				&nbsp;&#8211;&nbsp;<?php _e( 'GiveWP needs to update your database to the latest version. The following process will make updates to your site\'s database. Please create a complete backup before proceeding.', 'give' ); ?>
 			</p>
 			<p class="submit">
 				<a href="<?php echo esc_url( add_query_arg( array( 'give-run-db-update' => 1 ), admin_url( 'edit.php?post_type=give_forms&page=give-updates' ) ) ); ?>" class="button button-primary give-run-update-now">
