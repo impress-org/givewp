@@ -570,7 +570,7 @@ function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 
 	}
 
 	foreach ( $prices as $price ) {
-		
+
 		if ( intval( $price['_give_id']['level_id'] ) === intval( $price_id ) ) {
 
 			$price_text     = isset( $price['_give_text'] ) ? $price['_give_text'] : '';
@@ -869,6 +869,25 @@ function give_get_form_goal( $form_id = 0 ) {
 }
 
 /**
+ * Returns the goal format of a form
+ *
+ * @since 2.0
+ *
+ * @param int $form_id ID number of the form to retrieve a goal for
+ *
+ * @return mixed string|int Goal of the form
+ */
+function give_get_form_goal_format( $form_id = 0 ) {
+
+	if ( empty( $form_id ) ) {
+		return false;
+	}
+
+	return give_get_meta( $form_id, '_give_goal_format', true );
+
+}
+
+/**
  * Display/Return a formatted goal for a donation form
  *
  * @since 1.0
@@ -884,10 +903,20 @@ function give_goal( $form_id = 0, $echo = true ) {
 		$form_id = get_the_ID();
 	}
 
-	$goal = give_get_form_goal( $form_id );
+	$goal        = give_get_form_goal( $form_id );
+	$goal_format = give_get_form_goal_format($form_id);
 
-	$goal           = apply_filters( 'give_form_goal', give_maybe_sanitize_amount( $goal ), $form_id );
-	$formatted_goal = '<span class="give_price" id="give_price_' . $form_id . '">' . $goal . '</span>';
+	if ( 'donation' === $goal_format ) {
+		$goal = "{$goal} donations";
+	} else {
+		$goal = apply_filters( 'give_form_goal', give_maybe_sanitize_amount( $goal ), $form_id );
+	}
+
+	$formatted_goal = sprintf(
+		'<span class="give_price" id="give_price_%1$s">%2$s</span>',
+		$form_id,
+		$goal
+	);
 	$formatted_goal = apply_filters( 'give_form_price_after_html', $formatted_goal, $form_id, $goal );
 
 	if ( $echo ) {
