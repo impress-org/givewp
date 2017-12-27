@@ -1,7 +1,7 @@
 const webpack = require( 'webpack' );
 const path = require( 'path' );
 const ExtractTextPlugin = require( 'extract-text-webpack-plugin' );
-const inProduction = ( 'production' === process.env.NODE_ENV );
+const inProduction = ('production' === process.env.NODE_ENV);
 const BrowserSyncPlugin = require( 'browser-sync-webpack-plugin' );
 const ImageminPlugin = require( 'imagemin-webpack-plugin' ).default;
 const CleanWebpackPlugin = require( 'clean-webpack-plugin' );
@@ -13,7 +13,7 @@ const config = {
 	},
 	output: {
 		path: path.resolve( __dirname, './assets/dist/' ),
-		filename: ( inProduction ? 'js/[name].min.js' : 'js/[name].js' )
+		filename: (inProduction ? 'js/[name].min.js' : 'js/[name].js')
 	},
 	devtool: 'source-map',
 	module: {
@@ -25,7 +25,7 @@ const config = {
 			},
 			{
 				test: /\.scss$/,
-				use: ExtractTextPlugin.extract({
+				use: ExtractTextPlugin.extract( {
 					use: [ {
 						loader: 'css-loader',
 						options: {
@@ -43,7 +43,7 @@ const config = {
 							outputStyle: 'production' === process.env.NODE_ENV ? 'compressed' : 'nested'
 						}
 					} ]
-				})
+				} )
 			}, {
 				test: /\.(png|jpg|gif)$/,
 				use: [
@@ -59,23 +59,23 @@ const config = {
 		]
 	},
 	plugins: [
-		new ExtractTextPlugin( ( inProduction ? 'css/[name].min.css' : 'css/[name].css' ) ),
-		new CleanWebpackPlugin([ 'assets/dist' ]),
-		new ImageminPlugin({ test: /\.(jpe?g|png|gif|svg)$/i }),
-		new BrowserSyncPlugin({
+		new ExtractTextPlugin( (inProduction ? 'css/[name].min.css' : 'css/[name].css') ),
+		new CleanWebpackPlugin( [ 'assets/dist' ] ),
+		new ImageminPlugin( { test: /\.(jpe?g|png|gif|svg)$/i } ),
+		new BrowserSyncPlugin( {
 			files: [
 				'**/*.php'
 			],
 			host: 'localhost',
 			port: 3000,
 			proxy: 'wp-business-reviews-client.localhost'
-		})
+		} )
 	]
 };
 
 if ( inProduction ) {
-	config.plugins.push( new webpack.optimize.UglifyJsPlugin({ sourceMap: true }) ); // Uglify JS.
-	config.plugins.push( new webpack.LoaderOptionsPlugin({ minimize: true }) ); // Minify CSS.
+	config.plugins.push( new webpack.optimize.UglifyJsPlugin( { sourceMap: true } ) ); // Uglify JS.
+	config.plugins.push( new webpack.LoaderOptionsPlugin( { minimize: true } ) ); // Minify CSS.
 }
 
 module.exports = config;
