@@ -1,10 +1,10 @@
 // Plugins
-import '../plugins/jquery.payment';
-import '../plugins/float-labels';
-import '../plugins/jquery.blockUI';
-import '../plugins/accounting';
-import '../plugins/jquery.magnific-popup';
-import '../plugins/give-hint.css';
+import 'jquery.payment';
+import 'float-labels.js';
+import 'uiblocker';
+import 'accounting-js';
+import 'magnific-popup';
+import 'hint.css';
 
 // Give core.
 import './give-ajax';

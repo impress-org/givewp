@@ -72,7 +72,7 @@ const config = {
 			],
 			host: 'localhost',
 			port: 3000,
-			proxy: 'wp-business-reviews-client.localhost'
+			proxy: 'give-client.localhost'
 		} )
 	]
 };
