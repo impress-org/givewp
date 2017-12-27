@@ -9,11 +9,15 @@ const CleanWebpackPlugin = require( 'clean-webpack-plugin' );
 // Webpack config.
 const config = {
 	entry: {
-		'admin-main': './assets/src/js/admin-main.js'
+		'admin': './assets/src/js/admin/admin.js',
+		'frontend': './assets/src/js/frontend/give.js'
 	},
 	output: {
 		path: path.resolve( __dirname, './assets/dist/' ),
 		filename: (inProduction ? 'js/[name].min.js' : 'js/[name].js')
+	},
+	externals: {
+		'jquery': '$'
 	},
 	devtool: 'source-map',
 	module: {
