@@ -2825,22 +2825,22 @@ jQuery(window).resize(function () {
  * Render responsive tabs
  */
 function give_render_responsive_tabs() {
-	var $setting_page_form = jQuery('.give-settings-page'),
-		$main_tab_nav = jQuery('h2.give-nav-tab-wrapper'),
+	var $setting_page_form      = jQuery( '.give-settings-page' ),
+		$main_tab_nav           = jQuery( 'h2.give-nav-tab-wrapper' ),
 		setting_page_form_width = $setting_page_form.width(),
-		$sub_tab_nav_wrapper = jQuery('.give-sub-nav-tab-wrapper'),
-		$sub_tab_nav = jQuery('nav', $sub_tab_nav_wrapper),
-		$setting_tab_links = jQuery('h2.give-nav-tab-wrapper>a:not(give-not-tab)'),
-		$show_tabs = [],
-		$hide_tabs = [],
-		tab_width = 0;
+		$sub_tab_nav_wrapper    = jQuery( '.give-sub-nav-tab-wrapper' ),
+		$sub_tab_nav            = jQuery( 'nav', $sub_tab_nav_wrapper ),
+		$setting_tab_links      = jQuery( 'div.give-nav-tab-wrapper > a:not(give-not-tab)' ),
+		$show_tabs              = [],
+		$hide_tabs              = [],
+		tab_width               = 0;
 
-	if (600 < jQuery(window).outerWidth()) {
+	if ( 600 < jQuery( window ).outerWidth() ) {
 		tab_width = 200;
 	}
 
 	// Bailout.
-	if (!$setting_page_form.length) {
+	if ( ! $setting_page_form.length ) {
 		return false;
 	}
 
@@ -2851,78 +2851,82 @@ function give_render_responsive_tabs() {
 	});
 
 	// Show all tab if anyone hidden to calculate correct tab width.
-	$setting_tab_links.removeClass('give-hidden');
+	$setting_tab_links.removeClass( 'give-hidden' );
 
 	var refactor_tabs = new Promise(
-		function (resolve, reject) {
-			// Collect tabs to show or hide.
-			jQuery.each($setting_tab_links, function (index, $tab_link) {
-				$tab_link = jQuery($tab_link);
-				tab_width = tab_width + parseInt($tab_link.outerWidth());
+		function( resolve, reject ) {
 
-				if (tab_width < setting_page_form_width) {
-					$show_tabs.push($tab_link);
+			// Collect tabs to show or hide.
+			jQuery.each( $setting_tab_links, function( index, $tab_link ) {
+				$tab_link = jQuery( $tab_link );
+				tab_width = tab_width + parseInt( $tab_link.outerWidth() );
+
+				if ( tab_width < setting_page_form_width ) {
+					$show_tabs.push( $tab_link );
 				} else {
-					$hide_tabs.push($tab_link);
+					$hide_tabs.push( $tab_link );
 				}
 			});
 
-			resolve(true);
+			resolve( true );
 		}
 	);
 
-	refactor_tabs.then(function (is_refactor_tabs) {
+	refactor_tabs.then( function( is_refactor_tabs ) {
+
 		// Remove current tab from sub menu and add this to main menu if exist and get last tab from main menu and add this to sub menu.
-		if ($hide_tabs.length && ( -1 != window.location.search.indexOf('&tab=') )) {
+		if ( $hide_tabs.length && ( -1 !== window.location.search.indexOf( '&tab=' ) ) ) {
 			var $current_tab_nav = {},
-				query_params = get_url_params();
+				query_params     = get_url_params();
 
-			$hide_tabs = $hide_tabs.filter(function ($tab_link) {
-				var is_current_nav_item = ( -1 != parseInt($tab_link.attr('href').indexOf('&tab=' + query_params['tab'])) );
+			$hide_tabs = $hide_tabs.filter( function( $tab_link ) {
+				var is_current_nav_item = ( -1 !== parseInt( $tab_link.attr( 'href' ).indexOf( '&tab=' + query_params['tab'] ) ) );
 
-				if (is_current_nav_item) {
+				if ( is_current_nav_item ) {
 					$current_tab_nav = $tab_link;
 				}
 
-				return ( !is_current_nav_item );
+				return ( ! is_current_nav_item );
 			});
 
-			if ($current_tab_nav.length) {
-				$hide_tabs.unshift($show_tabs.pop());
-				$show_tabs.push($current_tab_nav);
+			if ( $current_tab_nav.length ) {
+				$hide_tabs.unshift( $show_tabs.pop() );
+				$show_tabs.push( $current_tab_nav );
 			}
 		}
 
-		var show_tabs = new Promise(function (resolve, reject) {
-			// Show main menu tabs.
-			if ($show_tabs.length) {
-				jQuery.each($show_tabs, function (index, $tab_link) {
-					$tab_link = jQuery($tab_link);
+		var show_tabs = new Promise( function( resolve, reject ) {
 
-					if ($tab_link.hasClass('give-hidden')) {
-						$tab_link.removeClass('give-hidden');
+			// Show main menu tabs.
+			if ( $show_tabs.length ) {
+				jQuery.each( $show_tabs, function( index, $tab_link ) {
+					$tab_link = jQuery( $tab_link );
+
+					if ( $tab_link.hasClass( 'give-hidden' ) ) {
+						$tab_link.removeClass( 'give-hidden' );
 					}
 				});
 			}
 
-			resolve(true);
+			resolve( true );
 		});
 
-		show_tabs.then(function (is_show_tabs) {
-			// Hide sub menu tabs.
-			if ($hide_tabs.length) {
-				$sub_tab_nav.html('');
+		show_tabs.then( function( is_show_tabs ) {
 
-				jQuery.each($hide_tabs, function (index, $tab_link) {
-					$tab_link = jQuery($tab_link);
-					if (!$tab_link.hasClass('nav-tab-active')) {
-						$tab_link.addClass('give-hidden');
+			// Hide sub menu tabs.
+			if ( $hide_tabs.length ) {
+				$sub_tab_nav.html( '' );
+
+				jQuery.each( $hide_tabs, function( index, $tab_link ) {
+					$tab_link = jQuery( $tab_link );
+					if ( ! $tab_link.hasClass( 'nav-tab-active' ) ) {
+						$tab_link.addClass( 'give-hidden' );
 					}
-					$tab_link.clone().removeClass().appendTo($sub_tab_nav);
+					$tab_link.clone().removeClass().appendTo( $sub_tab_nav );
 				});
 
-				if (!jQuery('.give-sub-nav-tab-wrapper', $main_tab_nav).length) {
-					$main_tab_nav.append($sub_tab_nav_wrapper);
+				if ( ! jQuery( '.give-sub-nav-tab-wrapper', $main_tab_nav ).length ) {
+					$main_tab_nav.append( $sub_tab_nav_wrapper );
 				}
 
 				$sub_tab_nav_wrapper.show();
