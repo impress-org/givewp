@@ -16,8 +16,12 @@ const config = {
 		path: path.resolve( __dirname, './assets/dist/' ),
 		filename: (inProduction ? 'js/[name].min.js' : 'js/[name].js')
 	},
-	externals: {
-		'jquery': '$'
+	// externals,
+	resolve: {
+		modules: [
+			__dirname,
+			'node_modules',
+		],
 	},
 	devtool: 'source-map',
 	module: {
@@ -25,7 +29,9 @@ const config = {
 			{
 				test: /\.js$/,
 				exclude: /node_modules/,
-				loader: 'babel-loader'
+				loaders: [
+					'babel-loader',
+				]
 			},
 			{
 				test: /\.scss$/,

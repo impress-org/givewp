@@ -45,14 +45,15 @@
     "webpack": "^3.6.0"
   },
   "dependencies": {
-    "hint.css": "^2.5.0",
-    "query-string": "^5.0.0",
-    "flot": "^0.8.0-alpha",
     "accounting-js": "latest",
-    "uiblocker": "latest",
     "chosen-js": "latest",
     "float-labels.js": "latest",
+    "flot": "^0.8.0-alpha",
+    "hint.css": "^2.5.0",
     "jquery.payment": "latest",
-    "magnific-popup": "latest"
+    "magnific-popup": "latest",
+    "query-string": "^5.0.0",
+    "script-loader": "^0.7.2",
+    "uiblocker": "latest"
   }
 }
