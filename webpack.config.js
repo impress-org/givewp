@@ -10,7 +10,7 @@ const CleanWebpackPlugin = require( 'clean-webpack-plugin' );
 const config = {
 	entry: {
 		'admin': './assets/src/js/admin/admin.js',
-		'frontend': './assets/src/js/frontend/give.js'
+		'give': './assets/src/js/frontend/give.js'
 	},
 	output: {
 		path: path.resolve( __dirname, './assets/dist/' ),
@@ -72,7 +72,7 @@ const config = {
 			],
 			host: 'localhost',
 			port: 3000,
-			proxy: 'give-client.localhost'
+			proxy: 'givetest.local'
 		} )
 	]
 };

@@ -20,23 +20,6 @@ namespace Give\Includes;
  * @since 2.1.0
  */
 class Assets {
-	/**
-	 * URL of the assets directory.
-	 *
-	 * @since  2.1.0
-	 * @var    string
-	 * @access private
-	 */
-	private $url;
-
-	/**
-	 * Assets version.
-	 *
-	 * @since  2.1.0
-	 * @var    string
-	 * @access private
-	 */
-	private $version;
 
 	/**
 	 * Suffix used when loading minified assets.
@@ -48,12 +31,23 @@ class Assets {
 	private $suffix;
 
 	/**
+	 * Whether scripts should be loaded in the footer or not.
+	 *
+	 * @since  2.1.0
+	 * @var    bool
+	 * @access private
+	 */
+	private $scripts_footer;
+
+	/**
 	 * Instantiates the Assets class.
 	 *
 	 * @since 2.1.0
 	 */
 	public function __construct( ) {
 		$this->suffix  = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '': '.min';
+		$this->scripts_footer = ( give_is_setting_enabled( give_get_option( 'scripts_footer' ) ) ) ? true : false;
+		$this->register();
 	}
 
 	/**
@@ -64,6 +58,8 @@ class Assets {
 	public function register() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_scripts' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'register_styles' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ) );
 
 		if ( is_admin() ) {
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
@@ -80,7 +76,7 @@ class Assets {
 	 * @since 2.1.0
 	 */
 	public function register_styles() {
-		wp_register_style( 'give-main-styles', GIVE_PLUGIN_URL . 'assets/dist/css/admin' . $this->suffix . '.css', array(), GIVE_VERSION );
+		wp_register_style( 'give-admin', GIVE_PLUGIN_URL . 'assets/dist/css/admin' . $this->suffix . '.css', array(), GIVE_VERSION );
 		wp_register_style( 'give-styles', GIVE_PLUGIN_URL . 'assets/dist/css/give' . $this->suffix . '.css', array(), GIVE_VERSION );
 	}
 
@@ -90,7 +86,8 @@ class Assets {
 	 * @since 2.1.0
 	 */
 	public function register_scripts() {
-		wp_register_script( 'give', GIVE_PLUGIN_URL . 'assets/dist/js/admin' . $this->suffix . '.js', array(), GIVE_VERSION, true );
+		wp_register_script( 'give-admin', GIVE_PLUGIN_URL . 'assets/dist/js/admin' . $this->suffix . '.js', array(), GIVE_VERSION, true );
+		wp_register_script( 'give', GIVE_PLUGIN_URL . 'assets/dist/js/give' . $this->suffix . '.js', array('jquery'), GIVE_VERSION, true );
 	}
 
 	/**
@@ -126,5 +123,6 @@ class Assets {
 	 * @since 2.1.0
 	 */
 	public function enqueue_public_scripts() {
+		wp_enqueue_script( 'give' );
 	}
 }
