@@ -44,8 +44,8 @@ class Assets {
 	 *
 	 * @since 2.1.0
 	 */
-	public function __construct( ) {
-		$this->suffix  = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '': '.min';
+	public function __construct() {
+		$this->suffix         = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 		$this->scripts_footer = ( give_is_setting_enabled( give_get_option( 'scripts_footer' ) ) ) ? true : false;
 		$this->register();
 	}
@@ -86,8 +86,8 @@ class Assets {
 	 * @since 2.1.0
 	 */
 	public function register_scripts() {
-		wp_register_script( 'give-admin', GIVE_PLUGIN_URL . 'assets/dist/js/admin' . $this->suffix . '.js', array(), GIVE_VERSION, true );
-		wp_register_script( 'give', GIVE_PLUGIN_URL . 'assets/dist/js/give' . $this->suffix . '.js', array('jquery'), GIVE_VERSION, true );
+		wp_register_script( 'give-admin', GIVE_PLUGIN_URL . 'assets/dist/js/admin' . $this->suffix . '.js', array( 'jquery' ), GIVE_VERSION, $this->scripts_footer );
+		wp_register_script( 'give', GIVE_PLUGIN_URL . 'assets/dist/js/give' . $this->suffix . '.js', array( 'jquery' ), GIVE_VERSION, $this->scripts_footer );
 	}
 
 	/**
@@ -96,7 +96,7 @@ class Assets {
 	 * @since 2.1.0
 	 */
 	public function enqueue_admin_styles() {
-		wp_enqueue_style( 'give-main-styles' );
+		wp_enqueue_style( 'give-styles' );
 	}
 
 	/**
