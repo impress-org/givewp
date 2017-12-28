@@ -45,7 +45,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 					esc_attr__( '[%s] New User Registration', 'give' ),
 					get_bloginfo( 'name' )
 				),
-				'default_email_massage' => $this->get_default_email_message(),
+				'default_email_message' => $this->get_default_email_message(),
 			) );
 
 			// Setup action hook.

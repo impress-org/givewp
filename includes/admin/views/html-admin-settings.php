@@ -70,11 +70,11 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 			 */
 			do_action( self::$setting_filter_prefix . '_tabs' );
 			?>
-		</div>
-		<div class="give-sub-nav-tab-wrapper">
-			<a href="#" id="give-show-sub-nav" class="nav-tab give-not-tab" title="<?php _e( 'View remaining setting tabs', 'give' ); ?>"><span class="dashicons dashicons-arrow-down-alt2"></span></span>
-			</a>
-			<nav class="give-sub-nav-tab give-hidden"></nav>
+			<div class="give-sub-nav-tab-wrapper">
+				<a href="#" id="give-show-sub-nav" class="nav-tab give-not-tab" title="<?php _e( 'View remaining setting tabs', 'give' ); ?>"><span class="dashicons dashicons-arrow-down-alt2"></span></span>
+				</a>
+				<nav class="give-sub-nav-tab give-hidden"></nav>
+			</div>
 		</div>
 		<?php
 
