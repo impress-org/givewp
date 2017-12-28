@@ -619,6 +619,8 @@ add_action( 'give_after_donation_levels', 'give_display_checkout_button', 10, 2 
  *
  * @param  int $form_id The form ID.
  *
+ * @see For Pattern Attribute: https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/Form_validation
+ *
  * @return void
  */
 function give_user_info_fields( $form_id ) {

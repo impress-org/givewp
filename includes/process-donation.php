@@ -579,12 +579,8 @@ function give_donation_form_validate_logged_in_user() {
 		// Get the logged in user data.
 		$user_data = get_userdata( $user_ID );
 
-		// Loop through required fields and show error messages.
-		foreach ( give_get_required_fields( $form_id ) as $field_name => $value ) {
-			if ( in_array( $value, give_get_required_fields( $form_id ) ) && empty( $_POST[ $field_name ] ) ) {
-				give_set_error( $value['error_id'], $value['error_message'] );
-			}
-		}
+		// Validate Required Form Fields.
+		give_validate_required_form_fields( $form_id );
 
 		// Verify data.
 		if ( $user_data ) {
@@ -652,12 +648,8 @@ function give_donation_form_validate_new_user() {
 		'user_pass'  => $user_data['give_user_pass'],
 	);
 
-	// Loop through required fields and show error messages.
-	foreach ( give_get_required_fields( $form_id ) as $field_name => $value ) {
-		if ( in_array( $value, give_get_required_fields( $form_id ) ) && empty( $_POST[ $field_name ] ) ) {
-			give_set_error( $value['error_id'], $value['error_message'] );
-		}
-	}
+	// Validate Required Form Fields.
+	give_validate_required_form_fields( $form_id );
 
 	// Set Email as Username.
 	$valid_user_data['user_login'] = $user_data['give_email'];
@@ -780,12 +772,8 @@ function give_donation_form_validate_guest_user() {
 		give_set_error( 'email_empty', __( 'Enter an email.', 'give' ) );
 	}
 
-	// Loop through required fields and show error messages.
-	foreach ( give_get_required_fields( $form_id ) as $field_name => $value ) {
-		if ( in_array( $value, give_get_required_fields( $form_id ) ) && empty( $_POST[ $field_name ] ) ) {
-			give_set_error( $value['error_id'], $value['error_message'] );
-		}
-	}
+	// Validate Required Form Fields.
+	give_validate_required_form_fields( $form_id );
 
 	return $valid_user_data;
 }
@@ -1247,3 +1235,25 @@ function give_validate_donation_amount( $valid_data, $data ) {
 }
 
 add_action( 'give_checkout_error_checks', 'give_validate_donation_amount', 10, 2 );
+
+/**
+ * Validate Required Form Fields.
+ *
+ * @param int $form_id Form ID.
+ *
+ * @since 2.0
+ */
+function give_validate_required_form_fields( $form_id ) {
+
+	// Loop through required fields and show error messages.
+	foreach ( give_get_required_fields( $form_id ) as $field_name => $value ) {
+
+		// Clean Up Data of the input fields.
+		$field_value = give_clean( $_POST[ $field_name ] );
+
+		// Check whether the required field is empty, then show the error message.
+		if ( in_array( $value, give_get_required_fields( $form_id ) ) && empty( $field_value ) ) {
+			give_set_error( $value['error_id'], $value['error_message'] );
+		}
+	}
+}
