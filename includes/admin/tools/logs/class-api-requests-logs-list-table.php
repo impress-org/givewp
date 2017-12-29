@@ -86,14 +86,15 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
+	 *
 	 * @return array $columns Array of all the list table columns
 	 */
 	public function get_columns() {
 		$columns = array(
-			'ID'      => esc_html__( 'Log ID', 'give' ),
-			'ip'      => esc_html__( 'Request IP', 'give' ),
-			'date'    => esc_html__( 'Date', 'give' ),
-			'details' => esc_html__( 'Request Details', 'give' ),
+			'ID'      => __( 'Log ID', 'give' ),
+			'ip'      => __( 'Request IP', 'give' ),
+			'date'    => __( 'Date', 'give' ),
+			'details' => __( 'Request Details', 'give' ),
 		);
 
 		return $columns;
@@ -141,8 +142,8 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 			<?php
 			// Print API Request.
 			echo sprintf(
-					'<p><strong>%1$s</strong></p><div>%2$s</div>',
-					__( 'API Request:', 'give' ),
+				'<p><strong>%1$s</strong></p><div>%2$s</div>',
+				__( 'API Request:', 'give' ),
 				Give()->log_meta->get_meta( $item['ID'], '_give_log_api_query', true )
 			);
 
@@ -157,23 +158,23 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 
 			// Print User who requested data using API.
 			echo sprintf(
-					'<p><strong>%1$s</strong></p><div>%2$s</div>',
-					__( 'API User:', 'give' ),
+				'<p><strong>%1$s</strong></p><div>%2$s</div>',
+				__( 'API User:', 'give' ),
 				Give()->log_meta->get_meta( $item['ID'], '_give_log_user', true )
 			);
 
 			// Print the logged key used by API.
 			echo sprintf(
-					'<p><strong>%1$s</strong></p><div>%2$s</div>',
-					__( 'API Key:', 'give' ),
+				'<p><strong>%1$s</strong></p><div>%2$s</div>',
+				__( 'API Key:', 'give' ),
 				Give()->log_meta->get_meta( $item['ID'], '_give_log_key', true )
 			);
 
 			// Print the API Request Date.
 			echo sprintf(
-					'<p><strong>%1$s</strong></p><div>%2$s</div>',
-					__( 'Request Date:', 'give' ),
-					$item['log_date']
+				'<p><strong>%1$s</strong></p><div>%2$s</div>',
+				__( 'Request Date:', 'give' ),
+				$item['log_date']
 			);
 			?>
 		</div>
@@ -185,6 +186,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
+	 *
 	 * @return string|bool String if search is present, false otherwise
 	 */
 	public function get_search() {
@@ -231,19 +233,23 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
+	 *
 	 * @return array $meta_query
 	 */
 	function get_meta_query() {
-		$meta_query = array();
 
-		$search = $this->get_search();
+		$meta_query = array();
+		$search     = $this->get_search();
 
 		if ( $search ) {
 			if ( filter_var( $search, FILTER_VALIDATE_IP ) ) {
-				// This is an IP address search
+
+				// This is an IP address search.
 				$key = '_give_log_request_ip';
+
 			} elseif ( is_email( $search ) ) {
-				// This is an email search
+
+				// This is an email search.
 				$userdata = get_user_by( 'email', $search );
 
 				if ( $userdata ) {
@@ -251,15 +257,21 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 				}
 
 				$key = '_give_log_user';
+
 			} elseif ( strlen( $search ) == 32 ) {
-				// Look for an API key
+
+				// Look for an API key.
 				$key = '_give_log_key';
+
 			} elseif ( stristr( $search, 'token:' ) ) {
-				// Look for an API token
+
+				// Look for an API token.
 				$search = str_ireplace( 'token:', '', $search );
 				$key    = '_give_log_token';
+
 			} else {
-				// This is (probably) a user ID search
+
+				// This is (probably) a user ID search.
 				$userdata = get_userdata( $search );
 
 				if ( $userdata ) {
@@ -267,9 +279,10 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 				}
 
 				$key = '_give_log_user';
+
 			}
 
-			// Setup the meta query
+			// Setup the meta query.
 			$meta_query[] = array(
 				'key'     => $key,
 				'value'   => $search,
@@ -285,6 +298,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
+	 *
 	 * @return int Current page number
 	 */
 	public function get_paged() {
@@ -294,8 +308,11 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	/**
 	 * Outputs the log views
 	 *
+	 * @param string $which Top or Bottom.
+	 *
 	 * @access public
 	 * @since  1.0
+	 *
 	 * @return void
 	 */
 	function bulk_actions( $which = '' ) {
