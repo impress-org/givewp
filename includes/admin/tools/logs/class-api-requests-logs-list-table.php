@@ -258,7 +258,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 
 				$key = '_give_log_user';
 
-			} elseif ( strlen( $search ) == 32 ) {
+			} elseif ( 32 === strlen( $search ) ) {
 
 				// Look for an API key.
 				$key = '_give_log_key';
