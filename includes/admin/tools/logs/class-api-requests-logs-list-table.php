@@ -139,20 +139,42 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 		?>
 		<div id="log-details-<?php echo $item['ID']; ?>" style="display:none;">
 			<?php
+			// Print API Request.
+			echo sprintf(
+					'<p><strong>%1$s</strong></p><div>%2$s</div>',
+					__( 'API Request:', 'give' ),
+				Give()->log_meta->get_meta( $item['ID'], '_give_log_api_query', true )
+			);
 
-			$request = get_post_meta( $item['ID'], '_give_log_api_query', true );
-			echo '<p><strong>' . esc_html__( 'API Request:', 'give' ) . '</strong></p>';
-			echo '<div>' . $request . '</div>';
+			// Print Log Content, if not empty.
 			if ( ! empty( $item['log_content'] ) ) {
-				echo '<p><strong>' . esc_html__( 'Error', 'give' ) . '</strong></p>';
-				echo '<div>' . esc_html( $item['log_content'] ) . '</div>';
+				echo sprintf(
+					'<p><strong>%1$s</strong></p><div>%2$s</div>',
+					__( 'Error', 'give' ),
+					esc_html( $item['log_content'] )
+				);
 			}
-			echo '<p><strong>' . esc_html__( 'API User:', 'give' ) . '</strong></p>';
-			echo '<div>' . give_get_meta( $item['ID'], '_give_log_user', true ) . '</div>';
-			echo '<p><strong>' . esc_html__( 'API Key:', 'give' ) . '</strong></p>';
-			echo '<div>' . give_get_meta( $item['ID'], '_give_log_key', true ) . '</div>';
-			echo '<p><strong>' . esc_html__( 'Request Date:', 'give' ) . '</strong></p>';
-			echo '<div>' . $item['log_date']  . '</div>';
+
+			// Print User who requested data using API.
+			echo sprintf(
+					'<p><strong>%1$s</strong></p><div>%2$s</div>',
+					__( 'API User:', 'give' ),
+				Give()->log_meta->get_meta( $item['ID'], '_give_log_user', true )
+			);
+
+			// Print the logged key used by API.
+			echo sprintf(
+					'<p><strong>%1$s</strong></p><div>%2$s</div>',
+					__( 'API Key:', 'give' ),
+				Give()->log_meta->get_meta( $item['ID'], '_give_log_key', true )
+			);
+
+			// Print the API Request Date.
+			echo sprintf(
+					'<p><strong>%1$s</strong></p><div>%2$s</div>',
+					__( 'Request Date:', 'give' ),
+					$item['log_date']
+			);
 			?>
 		</div>
 		<?php
@@ -305,7 +327,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 
 				$logs_data[] = array(
 					'ID'          => $log->ID,
-					'ip'          => give_get_meta( $log->ID, '_give_log_request_ip', true ),
+					'ip'          => Give()->log_meta->get_meta( $log->ID, '_give_log_request_ip', true ),
 					'date'        => $log->log_date,
 					'log_content' => $log->log_content,
 					'log_date'    => $log->log_date,
