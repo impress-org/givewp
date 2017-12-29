@@ -86,14 +86,15 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
+	 *
 	 * @return array $columns Array of all the list table columns
 	 */
 	public function get_columns() {
 		$columns = array(
-			'ID'      => esc_html__( 'Log ID', 'give' ),
-			'ip'      => esc_html__( 'Request IP', 'give' ),
-			'date'    => esc_html__( 'Date', 'give' ),
-			'details' => esc_html__( 'Request Details', 'give' ),
+			'ID'      => __( 'Log ID', 'give' ),
+			'ip'      => __( 'Request IP', 'give' ),
+			'date'    => __( 'Date', 'give' ),
+			'details' => __( 'Request Details', 'give' ),
 		);
 
 		return $columns;
@@ -139,20 +140,42 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 		?>
 		<div id="log-details-<?php echo $item['ID']; ?>" style="display:none;">
 			<?php
+			// Print API Request.
+			echo sprintf(
+				'<p><strong>%1$s</strong></p><div>%2$s</div>',
+				__( 'API Request:', 'give' ),
+				Give()->log_meta->get_meta( $item['ID'], '_give_log_api_query', true )
+			);
 
-			$request = get_post_meta( $item['ID'], '_give_log_api_query', true );
-			echo '<p><strong>' . esc_html__( 'API Request:', 'give' ) . '</strong></p>';
-			echo '<div>' . $request . '</div>';
+			// Print Log Content, if not empty.
 			if ( ! empty( $item['log_content'] ) ) {
-				echo '<p><strong>' . esc_html__( 'Error', 'give' ) . '</strong></p>';
-				echo '<div>' . esc_html( $item['log_content'] ) . '</div>';
+				echo sprintf(
+					'<p><strong>%1$s</strong></p><div>%2$s</div>',
+					__( 'Error', 'give' ),
+					esc_html( $item['log_content'] )
+				);
 			}
-			echo '<p><strong>' . esc_html__( 'API User:', 'give' ) . '</strong></p>';
-			echo '<div>' . give_get_meta( $item['ID'], '_give_log_user', true ) . '</div>';
-			echo '<p><strong>' . esc_html__( 'API Key:', 'give' ) . '</strong></p>';
-			echo '<div>' . give_get_meta( $item['ID'], '_give_log_key', true ) . '</div>';
-			echo '<p><strong>' . esc_html__( 'Request Date:', 'give' ) . '</strong></p>';
-			echo '<div>' . $item['log_date']  . '</div>';
+
+			// Print User who requested data using API.
+			echo sprintf(
+				'<p><strong>%1$s</strong></p><div>%2$s</div>',
+				__( 'API User:', 'give' ),
+				Give()->log_meta->get_meta( $item['ID'], '_give_log_user', true )
+			);
+
+			// Print the logged key used by API.
+			echo sprintf(
+				'<p><strong>%1$s</strong></p><div>%2$s</div>',
+				__( 'API Key:', 'give' ),
+				Give()->log_meta->get_meta( $item['ID'], '_give_log_key', true )
+			);
+
+			// Print the API Request Date.
+			echo sprintf(
+				'<p><strong>%1$s</strong></p><div>%2$s</div>',
+				__( 'Request Date:', 'give' ),
+				$item['log_date']
+			);
 			?>
 		</div>
 		<?php
@@ -163,6 +186,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
+	 *
 	 * @return string|bool String if search is present, false otherwise
 	 */
 	public function get_search() {
@@ -209,19 +233,23 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
+	 *
 	 * @return array $meta_query
 	 */
 	function get_meta_query() {
-		$meta_query = array();
 
-		$search = $this->get_search();
+		$meta_query = array();
+		$search     = $this->get_search();
 
 		if ( $search ) {
 			if ( filter_var( $search, FILTER_VALIDATE_IP ) ) {
-				// This is an IP address search
+
+				// This is an IP address search.
 				$key = '_give_log_request_ip';
+
 			} elseif ( is_email( $search ) ) {
-				// This is an email search
+
+				// This is an email search.
 				$userdata = get_user_by( 'email', $search );
 
 				if ( $userdata ) {
@@ -229,15 +257,21 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 				}
 
 				$key = '_give_log_user';
-			} elseif ( strlen( $search ) == 32 ) {
-				// Look for an API key
+
+			} elseif ( 32 === strlen( $search ) ) {
+
+				// Look for an API key.
 				$key = '_give_log_key';
+
 			} elseif ( stristr( $search, 'token:' ) ) {
-				// Look for an API token
+
+				// Look for an API token.
 				$search = str_ireplace( 'token:', '', $search );
 				$key    = '_give_log_token';
+
 			} else {
-				// This is (probably) a user ID search
+
+				// This is (probably) a user ID search.
 				$userdata = get_userdata( $search );
 
 				if ( $userdata ) {
@@ -245,9 +279,10 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 				}
 
 				$key = '_give_log_user';
+
 			}
 
-			// Setup the meta query
+			// Setup the meta query.
 			$meta_query[] = array(
 				'key'     => $key,
 				'value'   => $search,
@@ -263,6 +298,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
+	 *
 	 * @return int Current page number
 	 */
 	public function get_paged() {
@@ -272,8 +308,11 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 	/**
 	 * Outputs the log views
 	 *
+	 * @param string $which Top or Bottom.
+	 *
 	 * @access public
 	 * @since  1.0
+	 *
 	 * @return void
 	 */
 	function bulk_actions( $which = '' ) {
@@ -305,7 +344,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 
 				$logs_data[] = array(
 					'ID'          => $log->ID,
-					'ip'          => give_get_meta( $log->ID, '_give_log_request_ip', true ),
+					'ip'          => Give()->log_meta->get_meta( $log->ID, '_give_log_request_ip', true ),
 					'date'        => $log->log_date,
 					'log_content' => $log->log_content,
 					'log_date'    => $log->log_date,
