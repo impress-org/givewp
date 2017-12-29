@@ -310,6 +310,7 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->notices            = new Give_Notices();
 			$this->payment_meta       = new Give_DB_Payment_Meta();
 			$this->logs               = new Give_Logging();
+			$this->log_meta           = new Give_DB_Log_Meta();
 			$this->form_meta          = new Give_DB_Form_Meta();
 			$this->async_process      = new Give_Async_Process();
 
