@@ -1640,6 +1640,7 @@ class Give_API {
 		);
 
 		$log_meta = array(
+			'api_query'  => http_build_query( $query ),
 			'request_ip' => give_get_ip(),
 			'user'       => $this->user_id,
 			'key'        => isset( $wp_query->query_vars['key'] ) ? $wp_query->query_vars['key'] : null,
