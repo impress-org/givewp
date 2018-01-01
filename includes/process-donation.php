@@ -394,6 +394,17 @@ function give_donation_form_validate_gateway() {
 				)
 			);
 
+		}elseif ( ! give_verify_maximum_price() ) {
+			// translators: %s: Maximum donation amount.
+			give_set_error(
+				'invalid_donation_maximum',
+				sprintf(
+				/* translators: %s: minimum donation amount */
+					__( 'This form has a maximum donation amount of %s.', 'give' ),
+					give_currency_filter( give_format_amount( give_get_form_minimum_price( $form_id ), array( 'sanitize' => false ) ) )
+				)
+			);
+
 		} //Is this test mode zero donation? Let it through but set to manual gateway.
 		elseif ( $amount == 0 && give_is_test_mode() ) {
 
@@ -435,6 +446,36 @@ function give_verify_minimum_price() {
 	}
 
 	if ( give_get_form_minimum_price( $form_id ) > $amount ) {
+		return false;
+	}
+
+	return true;
+}
+
+/**
+ * Donation Form Validate Maximum Donation Amount
+ *
+ * @access      private
+ * @since       2.1
+ * @return      bool
+ */
+function give_verify_maximum_price() {
+
+	$amount          = give_maybe_sanitize_amount( $_REQUEST['give-amount'] );
+	$form_id         = isset( $_REQUEST['give-form-id'] ) ? $_REQUEST['give-form-id'] : 0;
+	$price_id        = isset( $_REQUEST['give-price-id'] ) ? $_REQUEST['give-price-id'] : null;
+	$variable_prices = give_has_variable_prices( $form_id );
+
+	if ( $variable_prices && in_array( $price_id, give_get_variable_price_ids( $form_id ) ) ) {
+
+		$price_level_amount = give_get_price_option_amount( $form_id, $price_id );
+
+		if ( $price_level_amount == $amount ) {
+			return true;
+		}
+	}
+
+	if ( give_get_form_maximum_price( $form_id ) < $amount ) {
 		return false;
 	}
 

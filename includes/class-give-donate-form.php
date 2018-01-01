@@ -540,7 +540,12 @@ class Give_Donate_Form {
 
 		if ( ! isset( $this->minimum_price ) ) {
 
+			// Compatibility < Give 2.1
 			$this->minimum_price = give_get_meta( $this->ID, '_give_custom_amount_minimum', true );
+
+			if ( is_array( $this->minimum_price ) ) {
+				$this->minimum_price = $this->minimum_price['min_amount'];
+			}
 
 			if ( ! $this->is_custom_price_mode() ) {
 				$this->minimum_price = 0;
