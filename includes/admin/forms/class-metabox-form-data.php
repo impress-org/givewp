@@ -152,14 +152,9 @@ class Give_MetaBox_Form_Data {
 					),
 					array(
 						'name'          => __( 'Minimum Amount', 'give' ),
-						'description'   => __( 'Enter the minimum custom donation amount.', 'give' ),
+						'description'   => __( 'Set minimum and maximum amount limit.', 'give' ),
 						'id'            => $prefix . 'custom_amount_minimum',
-						'type'          => 'text_small',
-						'data_type'     => 'price',
-						'attributes'    => array(
-							'placeholder' => $price_placeholder,
-							'class'       => 'give-money-field',
-						),
+						'type'          => 'range_slider',
 						'wrapper_class' => 'give-hidden',
 					),
 					array(
