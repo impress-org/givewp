@@ -74,6 +74,10 @@ function give_get_field_callback( $field ) {
 			$func_name = "{$func_name_prefix}_radio";
 			break;
 
+		case 'range_slider':
+			$func_name = "{$func_name_prefix}_range_slider";
+			break;
+
 		default:
 
 			if (
@@ -186,6 +190,11 @@ function give_render_field( $field ) {
 				'default' => __( 'Default' ),
 			);
 			break;
+
+		case 'range_slider':
+			$field['type']  = 'range_slider';
+			$field['class'] = 'give-range_slider';
+			break;
 	}
 
 	// CMB2 compatibility: Add support to define field description by desc & description param.
@@ -270,6 +279,52 @@ function give_text_input( $field ) {
 		<?php echo give_get_custom_attributes( $field ); ?>
 	/>
 	<?php echo $field['after_field']; ?>
+	<?php
+	echo give_get_field_description( $field );
+	echo '</p>';
+}
+
+function give_range_slider( $field ) {
+	global $thepostid, $post;
+
+	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
+	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
+	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
+	$field['value']         = give_get_field_value( $field, $thepostid );
+	$field['type']          = isset( $field['type'] ) ? $field['type'] : 'text';
+
+	// Get minimum and maximum amount.
+	$minimum_amount = ! empty( $field['value']['min_amount'] ) ? $field['value']['min_amount'] : 1;
+	$maximum_amount = ! empty( $field['value']['max_amount'] ) ? $field['value']['max_amount'] : 999999.99;
+	?>
+	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+	<label for="<?php echo give_get_field_name( $field ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
+	<input
+			name="<?php echo give_get_field_name( $field ); ?>[min_amount]"
+			type="hidden"
+			value="<?php echo esc_attr( $minimum_amount ); ?>"
+	/>
+	<input
+			name="<?php echo give_get_field_name( $field ); ?>[max_amount]"
+			type="hidden"
+			value="<?php echo esc_attr( $maximum_amount ); ?>"
+	/>
+
+	<span>
+		<?php
+		echo sprintf( '<span class="give_donation_limits_text"> %1$s</span> <span class="min"> %2$s </span> - <span class="max"> %3$s</span>',
+			__( 'Donation Limits:', 'give' ),
+			give_currency_filter( give_format_amount( $minimum_amount ) ),
+			give_currency_filter( give_format_amount( $maximum_amount ) )
+		);
+		?>
+	</span>
+
+	<span
+			id="<?php echo esc_attr( $field['id'] ); ?>"
+			style="display: block; <?php echo esc_attr( $field['style'] ); ?>"
+		<?php echo give_get_custom_attributes( $field ); ?>
+	></span>
 	<?php
 	echo give_get_field_description( $field );
 	echo '</p>';
