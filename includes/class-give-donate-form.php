@@ -23,6 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @property $price
  * @property $minimum_price
+ * @property $maximum_price
  * @property $prices
  * @property $goal
  * @property $sales
@@ -60,6 +61,16 @@ class Give_Donate_Form {
 	 * @var    float
 	 */
 	private $minimum_price;
+
+	/**
+	 * The maximum donation price.
+	 *
+	 * @since  2.0
+	 * @access private
+	 *
+	 * @var    float
+	 */
+	private $maximum_price;
 
 	/**
 	 * The donation prices, if Price Levels are enabled.
@@ -538,6 +549,26 @@ class Give_Donate_Form {
 		}
 
 		return apply_filters( 'give_get_set_minimum_price', $this->minimum_price, $this->ID );
+	}
+
+	/**
+	 * Retrieve the maximum price.
+	 *
+	 * @since  2.1
+	 * @access public
+	 *
+	 * @return float  Maximum price.
+	 */
+	public function get_maximum_price() {
+		if ( ! isset( $this->maximum_price ) ) {
+			if ( ! isset( $this->minimum_price ) ) {
+				$this->minimum_price = $this->get_minimum_price();
+			}
+
+			$this->maximum_price = $this->minimum_price['max_amount'];
+		}
+
+		return apply_filters( 'give_get_set_maximum_price', $this->maximum_price, $this->ID );
 	}
 
 	/**

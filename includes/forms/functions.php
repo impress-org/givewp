@@ -768,6 +768,26 @@ function give_get_form_minimum_price( $form_id = 0 ) {
 }
 
 /**
+ * Return the maximum price amount of form.
+ *
+ * @since 2.1
+ *
+ * @param int $form_id Donate Form ID
+ *
+ * @return bool|float
+ */
+function give_get_form_maximum_price( $form_id = 0 ) {
+
+	if ( empty( $form_id ) ) {
+		return false;
+	}
+
+	$form = new Give_Donate_Form( $form_id );
+
+	return $form->get_maximum_price();
+}
+
+/**
  * Displays a formatted price for a donation form
  *
  * @since 1.0
