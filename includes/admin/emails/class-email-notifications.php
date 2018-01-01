@@ -216,7 +216,6 @@ class Give_Email_Notifications {
 			Give()->emails->__set( 'template', $email->get_email_template( $form_id ) );
 
 			if ( 'text/plain' === $email->config['content_type'] ) {
-				// Give()->emails->__set( 'html', false );
 				Give()->emails->__set( 'template', 'none' );
 			} else {
 				Give()->emails->html = true;
