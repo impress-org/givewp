@@ -1880,6 +1880,7 @@ var give_setting_edit = false;
 			this.setup_media_fields();
 			this.setup_repeatable_fields();
 			this.handle_repeater_group_events();
+			this.setup_rangeslider_fields();
 
 			// Multi level repeater field js.
 			this.handle_multi_levels_repeater_group_events();
@@ -2475,6 +2476,42 @@ var give_setting_edit = false;
 				// Auto set level id for new setting level setting group.
 				$('input[type="hidden"].give-levels_id', new_row).val(++max_level_id);
 			});
+		},
+
+		/**
+		 * Initialize range slider.
+		 */
+		setup_rangeslider_fields: function() {
+			$( document ).ready( function() {
+				var $range_slider_fields = $( '.give-range_slider' );
+
+				if ( $range_slider_fields.length ) {
+					$range_slider_fields.each( function( index, item ) {
+						var $item = $( item ),
+							$field_container = $item.closest( 'p' ),
+							$min_value = $field_container.find( 'input[name*=min_amount]' ),
+							$max_value = $field_container.find( 'input[name*=max_amount]' );
+
+						// Bailout: do not automatically initialize range slider for repeater field group template.
+						if ( $item.parents( '.give-template' ).length ) {
+							return;
+						}
+
+						$item.slider( {
+							range: true,
+							min: 1,
+							max: 999999.99,
+							values: [ $min_value.val(), $max_value.val() ],
+							slide: function( event, ui ) {
+								$min_value.val( ui.values[ 0 ].toFixed( 2 ) );
+								$max_value.val( ui.values[ 1 ].toFixed( 2 ) );
+								$field_container.find( 'span > span.min' ).text( give_vars.currency_sign + ui.values[ 0 ].toFixed( 2 ) );
+								$field_container.find( 'span > span.max' ).text( give_vars.currency_sign + ui.values[ 1 ].toFixed( 2 ) );
+							}
+						} );
+					} );
+				}
+			} );
 		}
 	};
 
