@@ -8,8 +8,6 @@
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-var give_scripts;
-var give_float_labels;
 
 jQuery( function( $ ) {
 
@@ -199,7 +197,7 @@ function give_fl_trigger() {
 		give_float_labels.rebuild();
 	}
 	else {
-		give_float_labels = new FloatLabels( '.float-labels-enabled', {
+		var give_float_labels = new FloatLabels( '.float-labels-enabled', {
 			exclude: '#give-amount, .give-select-level, [multiple]',
 			prioritize: 'placeholder',
 			style: 'give',

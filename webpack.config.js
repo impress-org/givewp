@@ -16,7 +16,10 @@ const config = {
 		path: path.resolve( __dirname, './assets/dist/' ),
 		filename: (inProduction ? 'js/[name].min.js' : 'js/[name].js')
 	},
-	// externals,
+	externals: {
+		$: 'jQuery',
+		jquery: 'jQuery',
+	},
 	resolve: {
 		modules: [
 			__dirname,

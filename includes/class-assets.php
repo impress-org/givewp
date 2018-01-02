@@ -123,6 +123,59 @@ class Assets {
 	 * @since 2.1.0
 	 */
 	public function enqueue_public_scripts() {
+
 		wp_enqueue_script( 'give' );
+
+		// Localize / PHP to AJAX vars.
+		$localize_give_vars = apply_filters( 'give_global_script_vars', array(
+			'ajaxurl'                    => give_get_ajax_url(),
+			'checkout_nonce'             => wp_create_nonce( 'give_checkout_nonce' ), // Do not use this nonce. Its deprecated.
+			'currency'                   => give_get_currency(),
+			'currency_sign'              => give_currency_filter( '' ),
+			'currency_pos'               => give_get_currency_position(),
+			'thousands_separator'        => give_get_price_thousand_separator(),
+			'decimal_separator'          => give_get_price_decimal_separator(),
+			'no_gateway'                 => __( 'Please select a payment method.', 'give' ),
+			'bad_minimum'                => __( 'The minimum custom donation amount for this form is', 'give' ),
+			'general_loading'            => __( 'Loading...', 'give' ),
+			'purchase_loading'           => __( 'Please Wait...', 'give' ),
+			'number_decimals'            => give_get_price_decimals(),
+			'give_version'               => GIVE_VERSION,
+			'magnific_options'           => apply_filters(
+				'give_magnific_options',
+				array(
+					'main_class'        => 'give-modal',
+					'close_on_bg_click' => false,
+				)
+			),
+			'form_translation'           => apply_filters(
+				'give_form_translation_js',
+				array(
+					// Field name               Validation message.
+					'payment-mode'           => __( 'Please select payment mode.', 'give' ),
+					'give_first'             => __( 'Please enter your first name.', 'give' ),
+					'give_email'             => __( 'Please enter a valid email address.', 'give' ),
+					'give_user_login'        => __( 'Invalid username. Only lowercase letters (a-z) and numbers are allowed.', 'give' ),
+					'give_user_pass'         => __( 'Enter a password.', 'give' ),
+					'give_user_pass_confirm' => __( 'Enter the password confirmation.', 'give' ),
+					'give_agree_to_terms'    => __( 'You must agree to the terms and conditions.', 'give' ),
+				)
+			),
+			'confirm_email_sent_message' => __( 'Please check your email and click on the link to access your complete donation history.', 'give' ),
+			'ajax_vars'                  => apply_filters( 'give_global_ajax_vars', array(
+				'ajaxurl'         => give_get_ajax_url(),
+				'ajaxNonce'       => wp_create_nonce( 'give_ajax_nonce' ),
+				'loading'         => __( 'Loading', 'give' ),
+				// General loading message.
+				'select_option'   => __( 'Please select an option', 'give' ),
+				// Variable pricing error with multi-donation option enabled.
+				'default_gateway' => give_get_default_gateway( null ),
+				'permalinks'      => get_option( 'permalink_structure' ) ? '1' : '0',
+				'number_decimals' => give_get_price_decimals(),
+			) ),
+		) );
+
+		wp_localize_script( 'give', 'give_global_vars', $localize_give_vars );
+
 	}
 }
