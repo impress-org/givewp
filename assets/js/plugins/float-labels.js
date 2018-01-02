@@ -44,7 +44,7 @@
 			customPlaceholder: null,
 			exclude: '.no-label',
 			inputRegex: /email|number|password|search|tel|text|url/,
-			prefix: 'fl-',
+			prefix: 'give-fl-',
 			prioritize: 'label', // label|placeholder
 			requiredClass: 'required',
 			style: 0, // 0|1|2
