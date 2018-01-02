@@ -791,7 +791,8 @@ table#give_donation_receipt span.donation-level-text-wrap {
 [id*="give-form"].fl-form.fl-style-give select.fl-select,
 [id*="give-form"].fl-form.fl-style-give textarea.fl-textarea {
   line-height: inherit;
-  padding: 12px; }
+  padding: 12px;
+  background-color: #fff; }
 
 [id*="give-form"].fl-form.fl-style-give select.fl-select {
   line-height: inherit; }
