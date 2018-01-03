@@ -287,11 +287,31 @@ function give_text_input( $field ) {
 function give_range_slider( $field ) {
 	global $thepostid, $post;
 
-	$thepostid              = empty( $thepostid ) ? $post->ID : $thepostid;
-	$field['style']         = isset( $field['style'] ) ? $field['style'] : '';
-	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
-	$field['value']         = give_get_field_value( $field, $thepostid );
-	$field['type']          = isset( $field['type'] ) ? $field['type'] : 'text';
+	// Get Give donation form ID.
+	$thepostid = empty( $thepostid ) ? $post->ID : $thepostid;
+
+	// Default arguments.
+	$default_options = array(
+		'style'         => '',
+		'wrapper_class' => '',
+		'value'         => give_get_field_value( $field, $thepostid ),
+		'type'          => 'text',
+		'options'       => array(
+			'display_value' => false,
+			'display_type'  => 'number',
+			'display_text'  => __( 'Range', 'give' ),
+		),
+	);
+
+	// Get field argument.
+	$field_options = wp_parse_args( $field, $default_options );
+
+	// Field values.
+	$range_values = $field_options['value'];
+
+	// Get range slider (min, max) values.
+	$min_value = ! empty( $range_values['min_value'] ) ? $range_values['min_value'] : 1;
+	$max_value = ! empty( $range_values['max_value'] ) ? $range_values['max_value'] : 999999.99;
 
 	// Get minimum and maximum amount.
 	$minimum_amount = ! empty( $field['value']['min_amount'] ) ? $field['value']['min_amount'] : 1;
