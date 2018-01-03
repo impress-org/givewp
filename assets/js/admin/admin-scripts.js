@@ -2503,8 +2503,8 @@ var give_setting_edit = false;
 
 						$item.slider( {
 							range: true,
-							min: 1,
-							max: 999999.99,
+							min: give_vars.give_donation_amounts.minimum,
+							max: give_vars.give_donation_amounts.maximum,
 							values: [ $min_value.val(), $max_value.val() ],
 							slide: function( event, ui ) {
 								$min_value.val( ui.values[ 0 ].toFixed( 2 ) );

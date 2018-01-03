@@ -384,6 +384,10 @@ function give_load_admin_scripts( $hook ) {
 		'give_donation_import'              => 'give_donation_import',
 		'core_settings_import'              => 'give_core_settings_import',
 		'setting_not_save_message'          => __( 'Changes you made may not be saved.', 'give' ),
+		'give_donation_amounts'             => array(
+			'minimum' => 1,
+			'maximum' => 999999.99,
+		),
 	) );
 
 	if ( function_exists( 'wp_enqueue_media' ) && version_compare( get_bloginfo( 'version' ), '3.5', '>=' ) ) {
