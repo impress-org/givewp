@@ -404,22 +404,23 @@ function give_donor_view( $donor ) {
 										<?php else: ?>
 											<span data-key="user_id"><?php _e( 'None', 'give' ); ?></span>
 										<?php endif; ?>
-									<?php if ( current_user_can( $donor_edit_role ) && intval( $donor->user_id ) > 0 ): ?>
-										<span class="disconnect-user">
- 											-
- 											<a id="disconnect-donor" href="#disconnect"
-										       aria-label="<?php _e( 'Disconnects the current user ID from this donor record.', 'give' ); ?>">
- 												<?php _e( 'Disconnect User', 'give' ); ?>
-											</a>
- 										</span>
-										<span class="view-user-profile">
- 											<a id="view-user-profile"
-										       href="<?php echo 'user-edit.php?user_id=' . $donor->user_id; ?>"
-										       aria-label="<?php _e( 'View User Profile of current user ID.', 'give' ); ?>">
- 												<?php _e( 'View User Profile', 'give' ); ?>
-											</a>
- 										</span>
-									<?php endif; ?>
+									<?php if ( current_user_can( $donor_edit_role ) && intval( $donor->user_id ) > 0 ):
+
+										echo sprintf(
+											'- <span class="disconnect-user">
+				                                            <a id="disconnect-donor" href="#disconnect" aria-label="%1$s">%2$s</a>
+				                                       </span>
+				                                       | <span class="view-user-profile">
+ 											                <a id="view-user-profile" href="%3$s" aria-label="%4$s">%5$s</a>
+ 										               </span>',
+											__( 'Disconnects the current user ID from this donor record.', 'give' ),
+											__( 'Disconnect User', 'give' ),
+											'user-edit.php?user_id=' . $donor->user_id,
+											__( 'View User Profile of current user ID.', 'give' ),
+											__( 'View User Profile', 'give' )
+										);
+
+										endif; ?>
 									</span>
 							</td>
 						</tr>
