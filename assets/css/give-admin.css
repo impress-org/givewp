@@ -766,8 +766,8 @@ input.give-text_medium {
   display: block;
   overflow: hidden; }
 
-span.give_donation_limits_text {
-  font-size: 15px;
+.give-field-wrap span.give_range_slider_display {
+  font-size: 13px;
   padding-bottom: 12px;
   display: inline-block; }
 
