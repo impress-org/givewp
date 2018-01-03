@@ -964,6 +964,12 @@ class Give_API {
 				$donors['donors'][ $donor_count ]['stats']['total_donations'] = $donor_obj->purchase_count;
 				$donors['donors'][ $donor_count ]['stats']['total_spent']     = $donor_obj->purchase_value;
 
+				/** @var $donor \Give_Donor */
+				$donor = new Give_Donor( $donor_obj->id );
+
+				// Get donor's addresses.
+				$donors['donors'][ $donor_count ]['address'] = $donor->address;
+
 				$donor_count ++;
 
 			}
