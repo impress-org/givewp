@@ -323,6 +323,7 @@ function give_load_admin_scripts( $hook ) {
 		'disconnect_user'                   => __( 'Are you sure you want to disconnect the user from this donor?', 'give' ),
 		'one_option'                        => __( 'Choose a form', 'give' ),
 		'one_or_more_option'                => __( 'Choose one or more forms', 'give' ),
+		'currency'                          => give_get_currency(),
 		'currency_sign'                     => give_currency_filter( '' ),
 		'currency_pos'                      => isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before',
 		'currency_decimals'                 => give_get_price_decimals(),

@@ -1880,7 +1880,7 @@ var give_setting_edit = false;
 			this.setup_media_fields();
 			this.setup_repeatable_fields();
 			this.handle_repeater_group_events();
-			this.setup_rangeslider_fields();
+			this.setup_range_slider_fields();
 
 			// Multi level repeater field js.
 			this.handle_multi_levels_repeater_group_events();
@@ -2483,7 +2483,7 @@ var give_setting_edit = false;
 		 *
 		 * @since 2.1
 		 */
-		setup_rangeslider_fields: function() {
+		setup_range_slider_fields: function() {
 			$( document ).ready( function() {
 
 				// Get range slider field.
@@ -2509,8 +2509,8 @@ var give_setting_edit = false;
 							slide: function( event, ui ) {
 								$min_value.val( ui.values[ 0 ].toFixed( 2 ) );
 								$max_value.val( ui.values[ 1 ].toFixed( 2 ) );
-								$field_container.find( 'span > span.give_min_range' ).text( give_vars.currency_sign + ui.values[ 0 ].toFixed( 2 ) );
-								$field_container.find( 'span > span.give_max_range' ).text( give_vars.currency_sign + ui.values[ 1 ].toFixed( 2 ) );
+								$field_container.find( 'span > span.give_min_range' ).text( giveFormatAmount( ui.values[ 0 ] ) );
+								$field_container.find( 'span > span.give_max_range' ).text( giveFormatAmount( ui.values[ 1 ] ) );
 							}
 						} );
 					} );
@@ -3109,4 +3109,37 @@ function give_on_donation_import_ajax() {
 			alert(give_vars.error_message);
 		}
 	});
+}
+
+/**
+ * Give format amount according to give setting.
+ *
+ * @since 2.1
+ *
+ * @param {float} amount
+ * @returns {*}
+ */
+function giveFormatAmount( amount ) {
+
+	// Global currency setting.
+	var format_args = {
+		symbol: give_vars.currency_sign,
+		decimal: give_vars.decimal_separator,
+		thousand: give_vars.thousands_separator,
+		precision: give_vars.currency_decimals,
+		currency: give_vars.currency
+	};
+
+	// Trim amount.
+	amount = amount.toString().trim();
+
+	//Properly position symbol after if selected
+	if ( 'after' === give_vars.currency_pos ) {
+		format_args.format = '%v%s';
+	}
+
+	// Format amount.
+	amount = accounting.formatMoney( amount, format_args );
+
+	return ( amount !== undefined ) ? amount : 0;
 }
