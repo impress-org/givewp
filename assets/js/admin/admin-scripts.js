@@ -2479,18 +2479,22 @@ var give_setting_edit = false;
 		},
 
 		/**
-		 * Initialize range slider.
+		 * Initialize range slider field.
+		 *
+		 * @since 2.1
 		 */
 		setup_rangeslider_fields: function() {
 			$( document ).ready( function() {
-				var $range_slider_fields = $( '.give-range_slider' );
 
+				// Get range slider field.
+				var $range_slider_fields = $( '.give-range_slider' );
 				if ( $range_slider_fields.length ) {
 					$range_slider_fields.each( function( index, item ) {
+
 						var $item = $( item ),
-							$field_container = $item.closest( 'p' ),
-							$min_value = $field_container.find( 'input[name*=min_amount]' ),
-							$max_value = $field_container.find( 'input[name*=max_amount]' );
+							$field_container = $item.closest( 'p.give-field-wrap' ),
+							$min_value = $field_container.find( 'input[name*=min_value]' ),
+							$max_value = $field_container.find( 'input[name*=max_value]' );
 
 						// Bailout: do not automatically initialize range slider for repeater field group template.
 						if ( $item.parents( '.give-template' ).length ) {
