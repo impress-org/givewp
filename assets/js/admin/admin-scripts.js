@@ -2509,8 +2509,8 @@ var give_setting_edit = false;
 							slide: function( event, ui ) {
 								$min_value.val( ui.values[ 0 ].toFixed( 2 ) );
 								$max_value.val( ui.values[ 1 ].toFixed( 2 ) );
-								$field_container.find( 'span > span.min' ).text( give_vars.currency_sign + ui.values[ 0 ].toFixed( 2 ) );
-								$field_container.find( 'span > span.max' ).text( give_vars.currency_sign + ui.values[ 1 ].toFixed( 2 ) );
+								$field_container.find( 'span > span.give_min_range' ).text( give_vars.currency_sign + ui.values[ 0 ].toFixed( 2 ) );
+								$field_container.find( 'span > span.give_max_range' ).text( give_vars.currency_sign + ui.values[ 1 ].toFixed( 2 ) );
 							}
 						} );
 					} );
