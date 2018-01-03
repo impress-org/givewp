@@ -284,6 +284,31 @@ function give_text_input( $field ) {
 	echo '</p>';
 }
 
+/**
+ * Give range slider
+ *
+ * @since 2.0
+ *
+ * @param  array $field         {
+ *                              Optional. Array of text input field arguments.
+ *
+ * @type string  $id            Field ID. Default ''.
+ * @type string  $style         CSS style for input field. Default ''.
+ * @type string  $wrapper_class CSS class to use for wrapper of input field. Default ''.
+ * @type string  $value         Value of input field. Default ''.
+ * @type string  $name          Name of input field. Default ''.
+ * @type string  $type          Type of input field. Default 'text'.
+ * @type string  $before_field  Text/HTML to add before input field. Default ''.
+ * @type string  $after_field   Text/HTML to add after input field. Default ''.
+ * @type string  $data_type     Define data type for value of input to filter it properly. Default ''.
+ * @type string  $description   Description of input field. Default ''.
+ * @type array   $attributes    List of attributes of input field. Default array().
+ *                                               for example: 'attributes' => array( 'placeholder' => '*****', 'class'
+ *                                               => '****' )
+ * }
+ *
+ * @return void
+ */
 function give_range_slider( $field ) {
 	global $thepostid, $post;
 
