@@ -37,6 +37,14 @@ const config = {
 				]
 			},
 			{
+				test: require.resolve( 'accounting' ),
+				use: 'imports-loader?this=>window'
+			},
+			{
+				test: require.resolve( 'accounting' ),
+				use: 'exports-loader?file,parse=accounting'
+			},
+			{
 				test: /\.scss$/,
 				use: ExtractTextPlugin.extract( {
 					use: [ {
@@ -87,7 +95,7 @@ const config = {
 			host: 'localhost',
 			port: 3000,
 			proxy: 'givetest.local'
-		} )
+		} ),
 	]
 };
 
