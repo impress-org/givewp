@@ -313,41 +313,47 @@ function give_range_slider( $field ) {
 	$min_value = ! empty( $range_values['min_value'] ) ? $range_values['min_value'] : 1;
 	$max_value = ! empty( $range_values['max_value'] ) ? $range_values['max_value'] : 999999.99;
 
-	// Get minimum and maximum amount.
-	$minimum_amount = ! empty( $field['value']['min_amount'] ) ? $field['value']['min_amount'] : 1;
-	$maximum_amount = ! empty( $field['value']['max_amount'] ) ? $field['value']['max_amount'] : 999999.99;
 	?>
-	<p class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
-	<label for="<?php echo give_get_field_name( $field ); ?>"><?php echo wp_kses_post( $field['name'] ); ?></label>
+	<p class="give-field-wrap <?php echo esc_attr( $field_options['id'] ); ?>_field <?php echo esc_attr( $field_options['wrapper_class'] ); ?>"
+	   data-range_type="<?php echo esc_attr( $field_options['options']['display_type'] ); ?>">
+	<label for="<?php echo give_get_field_name( $field_options ); ?>"><?php echo wp_kses_post( $field_options['name'] ); ?></label>
 	<input
-			name="<?php echo give_get_field_name( $field ); ?>[min_amount]"
+			name="<?php echo give_get_field_name( $field_options ); ?>[min_value]"
 			type="hidden"
-			value="<?php echo esc_attr( $minimum_amount ); ?>"
+			value="<?php echo esc_attr( $min_value ); ?>"
 	/>
 	<input
-			name="<?php echo give_get_field_name( $field ); ?>[max_amount]"
+			name="<?php echo give_get_field_name( $field_options ); ?>[max_value]"
 			type="hidden"
-			value="<?php echo esc_attr( $maximum_amount ); ?>"
+			value="<?php echo esc_attr( $max_value ); ?>"
 	/>
-
-	<span>
-		<?php
-		echo sprintf( '<span class="give_donation_limits_text"> %1$s</span> <span class="min"> %2$s </span> - <span class="max"> %3$s</span>',
-			__( 'Donation Limits:', 'give' ),
-			give_currency_filter( give_format_amount( $minimum_amount ) ),
-			give_currency_filter( give_format_amount( $maximum_amount ) )
-		);
-		?>
-	</span>
-
-	<span
-			id="<?php echo esc_attr( $field['id'] ); ?>"
-			style="display: block; <?php echo esc_attr( $field['style'] ); ?>"
-		<?php echo give_get_custom_attributes( $field ); ?>
-	></span>
 	<?php
-	echo give_get_field_description( $field );
-	echo '</p>';
+	// Do we need to show min max values?
+	if ( $field_options['options']['display_value'] ) {
+		// Convert values in amount.
+		if ( 'amount' === $field_options['options']['display_type'] ) {
+			$min_value = give_currency_filter( give_format_amount( $min_value ) );
+			$max_value = give_currency_filter( give_format_amount( $max_value ) );
+		}
+		?>
+		<span class="give_range_slider_display">
+			<span class="give_range_slider_label">
+				<?php echo esc_html( $field_options['options']['display_label'] ); ?>
+			</span>
+			<span class="give_min_range"><?php echo esc_html( $min_value ); ?></span> -
+			<span class="give_max_range"><?php echo esc_html( $max_value ); ?></span>
+		</span>
+		<?php
+	}
+	?>
+	<span
+		<?php echo give_get_custom_attributes( $field_options ); ?>
+			id="<?php echo esc_attr( $field_options['id'] ); ?>"
+			style="display: block; <?php echo esc_attr( $field_options['style'] ); ?>"
+	></span>
+		<?php echo give_get_field_description( $field_options ); ?>
+	</p>
+	<?php
 }
 
 /**
