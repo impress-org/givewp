@@ -156,6 +156,11 @@ class Give_MetaBox_Form_Data {
 						'id'            => $prefix . 'custom_amount_minimum',
 						'type'          => 'range_slider',
 						'wrapper_class' => 'give-hidden',
+						'options'       => array(
+							'display_value' => true,
+							'display_type'  => 'amount',
+							'display_label' => __( 'Donation Limits:', 'give' ),
+						),
 					),
 					array(
 						'name'          => __( 'Custom Amount Text', 'give' ),
