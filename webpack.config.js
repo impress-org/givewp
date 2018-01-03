@@ -36,13 +36,10 @@ const config = {
 					'babel-loader',
 				]
 			},
+			// Expose accounting.js for plugin usage.
 			{
 				test: require.resolve( 'accounting' ),
-				use: 'imports-loader?this=>window'
-			},
-			{
-				test: require.resolve( 'accounting' ),
-				use: 'exports-loader?file,parse=accounting'
+				loader: 'expose-loader?accounting'
 			},
 			{
 				test: /\.scss$/,
