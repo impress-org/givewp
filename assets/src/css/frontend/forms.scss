@@ -537,7 +537,7 @@ CC Validation
 	input.give-input.card-number.valid,
 	input.give-input.card-cvc.valid,
 	input.give-input.card-expiry.valid {
-		background-image: url('../assets/images/tick.png');
+		background-image: url('../../images/tick.png');
 		background-repeat: no-repeat;
 		background-position: right 10px top 50%;
 		background-size: 16px;
@@ -566,31 +566,31 @@ CC Validation
 		display: none;
 	}
 	span.card-type.visa {
-		background: url('../assets/images/visa.png') no-repeat;
+		background: url('../../images/visa.png') no-repeat;
 	}
 	span.card-type.mastercard {
-		background: url('../assets/images/mastercard.png') no-repeat;
+		background: url('../../images/mastercard.png') no-repeat;
 	}
 	span.card-type.discover {
-		background: url('../assets/images/discover.png') no-repeat;
+		background: url('../../images/discover.png') no-repeat;
 	}
 	span.card-type.amex {
-		background: url('../assets/images/amex.png') no-repeat;
+		background: url('../../images/amex.png') no-repeat;
 	}
 	span.card-type.maestro {
-		background: url('../assets/images/maestro.png') no-repeat;
+		background: url('../../images/maestro.png') no-repeat;
 	}
 	span.card-type.dinersclub {
-		background: url('../assets/images/diners-club.png') no-repeat;
+		background: url('../../images/diners-club.png') no-repeat;
 	}
 	span.card-type.jcb {
-		background: url('../assets/images/jcb.png') no-repeat;
+		background: url('../../images/jcb.png') no-repeat;
 	}
 	span.card-type.dankort {
-		background: url('../assets/images/dankort.png') no-repeat;
+		background: url('../../images/dankort.png') no-repeat;
 	}
 	span.card-type.unionpay {
-		background: url('../assets/images/unionpay.png') no-repeat;
+		background: url('../../images/unionpay.png') no-repeat;
 	}
 }
 

@@ -1,16 +1,11 @@
-/**
- * Give Form Checkout JS
- */
-
 import accounting from 'accounting';
 
-/* global jQuery, accounting */
 var Give = 'undefined' !== typeof Give ? Give : {};
 
 /**
  *  This API is under development.
  *
- *  Currently uses only for internal purpose.
+ *  Currently used only for internal purpose.
  */
 export default Give = {
 	init: function() {

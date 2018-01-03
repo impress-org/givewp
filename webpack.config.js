@@ -9,8 +9,8 @@ const CleanWebpackPlugin = require( 'clean-webpack-plugin' );
 // Webpack config.
 const config = {
 	entry: {
-		'admin': './assets/src/js/admin/admin.js',
-		'give': './assets/src/js/frontend/give.js'
+		'admin': [ './assets/src/js/admin/admin.js', './assets/src/css/admin/give-admin.scss' ],
+		'give': [ './assets/src/js/frontend/give.js', './assets/src/css/frontend/give-frontend.scss' ],
 	},
 	output: {
 		path: path.resolve( __dirname, './assets/dist/' ),
@@ -48,7 +48,7 @@ const config = {
 						loader: 'postcss-loader',
 						options: {
 							sourceMap: true
-						}
+						},
 					}, {
 						loader: 'sass-loader',
 						options: {
@@ -57,7 +57,12 @@ const config = {
 						}
 					} ]
 				} )
-			}, {
+			},
+			{
+				test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+				loader: 'file-loader?name=fonts/[name].[ext]'
+			},
+			{
 				test: /\.(png|jpg|gif)$/,
 				use: [
 					{

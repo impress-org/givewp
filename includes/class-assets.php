@@ -62,11 +62,11 @@ class Assets {
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ) );
 
 		if ( is_admin() ) {
-			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
-			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_styles' ) );
 		} else {
-			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_public_styles' ) );
-			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_public_scripts' ) );
+			add_action( 'wp_enqueue_scripts', array( $this, 'public_enqueue_styles' ) );
+			add_action( 'wp_enqueue_scripts', array( $this, 'public_enqueue_scripts' ) );
 		}
 	}
 
@@ -86,7 +86,7 @@ class Assets {
 	 * @since 2.1.0
 	 */
 	public function register_scripts() {
-		wp_register_script( 'give-admin', GIVE_PLUGIN_URL . 'assets/dist/js/admin' . $this->suffix . '.js', array( 'jquery' ), GIVE_VERSION, $this->scripts_footer );
+		wp_register_script( 'give-admin', GIVE_PLUGIN_URL . 'assets/dist/js/admin' . $this->suffix . '.js', array( 'jquery' ), GIVE_VERSION );
 		wp_register_script( 'give', GIVE_PLUGIN_URL . 'assets/dist/js/give' . $this->suffix . '.js', array( 'jquery' ), GIVE_VERSION, $this->scripts_footer );
 	}
 
@@ -95,8 +95,8 @@ class Assets {
 	 *
 	 * @since 2.1.0
 	 */
-	public function enqueue_admin_styles() {
-		wp_enqueue_style( 'give-styles' );
+	public function admin_enqueue_styles() {
+		wp_enqueue_style( 'give-admin' );
 	}
 
 	/**
@@ -104,7 +104,7 @@ class Assets {
 	 *
 	 * @since 2.1.0
 	 */
-	public function enqueue_public_styles() {
+	public function public_enqueue_styles() {
 		wp_enqueue_style( 'give-styles' );
 	}
 
@@ -112,9 +112,17 @@ class Assets {
 	 * Enqueues admin scripts.
 	 *
 	 * @since 2.1.0
+	 *
+	 * @param $hook
 	 */
-	public function enqueue_admin_scripts() {
-		wp_enqueue_script( 'give-main-script' );
+	public function admin_enqueue_scripts( $hook ) {
+
+		// Give Admin Only.
+		if ( ! apply_filters( 'give_load_admin_scripts', give_is_admin_page(), $hook ) ) {
+			return;
+		}
+
+		wp_enqueue_script( 'give-admin' );
 	}
 
 	/**
@@ -122,7 +130,7 @@ class Assets {
 	 *
 	 * @since 2.1.0
 	 */
-	public function enqueue_public_scripts() {
+	public function public_enqueue_scripts() {
 
 		wp_enqueue_script( 'give' );
 
