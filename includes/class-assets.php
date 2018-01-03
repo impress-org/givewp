@@ -77,7 +77,7 @@ class Assets {
 	 */
 	public function register_styles() {
 		wp_register_style( 'give-admin', GIVE_PLUGIN_URL . 'assets/dist/css/admin' . $this->suffix . '.css', array(), GIVE_VERSION );
-		wp_register_style( 'give-styles', GIVE_PLUGIN_URL . 'assets/dist/css/give' . $this->suffix . '.css', array(), GIVE_VERSION );
+		wp_register_style( 'give-styles', $this->get_frontend_stylesheet_uri(), array(), GIVE_VERSION, 'all' );
 	}
 
 	/**
@@ -186,4 +186,58 @@ class Assets {
 		wp_localize_script( 'give', 'give_global_vars', $localize_give_vars );
 
 	}
+
+	/**
+	 * Get the stylesheet URI.
+	 *
+	 * @since   1.6
+	 * @updated 2.0.1 Moved to class and renamed as method.
+	 *
+	 * @return string
+	 */
+	public function get_frontend_stylesheet_uri() {
+
+		// Use minified libraries if SCRIPT_DEBUG is turned off.
+		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+		// LTR or RTL files.
+		$direction     = ( is_rtl() ) ? '-rtl' : '';
+		$file          = 'give' . $direction . $suffix . '.css';
+		$templates_dir = give_get_theme_template_dir_name();
+		// Directory paths to CSS files to support checking via file_exists().
+		$child_theme_style_sheet    = trailingslashit( get_stylesheet_directory() ) . $templates_dir . $file;
+		$child_theme_style_sheet_2  = trailingslashit( get_stylesheet_directory() ) . $templates_dir . 'give' . $direction . '.css';
+		$parent_theme_style_sheet   = trailingslashit( get_template_directory() ) . $templates_dir . $file;
+		$parent_theme_style_sheet_2 = trailingslashit( get_template_directory() ) . $templates_dir . 'give' . $direction . '.css';
+		$give_plugin_style_sheet    = trailingslashit( GIVE_PLUGIN_DIR ) . 'assets/dist/css/' . $file;
+
+		$uri = false;
+
+		/**
+		 * Locate the Give stylesheet:
+		 *
+		 * a. Look in the child theme directory first, followed by the parent theme
+		 * b. followed by the Give core templates directory also look for the min version first,
+		 * c. followed by non minified version, even if SCRIPT_DEBUG is not enabled. This allows users to copy just give.css to their theme.
+		 * d. Finally, fallback to the standard Give version. This is the default styles included within the plugin.
+		 */
+		if ( file_exists( $child_theme_style_sheet ) || ( ! empty( $suffix ) && ( $nonmin = file_exists( $child_theme_style_sheet_2 ) ) ) ) {
+			if ( ! empty( $nonmin ) ) {
+				$uri = trailingslashit( get_stylesheet_directory_uri() ) . $templates_dir . 'give' . $direction . '.css';
+			} else {
+				$uri = trailingslashit( get_stylesheet_directory_uri() ) . $templates_dir . $file;
+			}
+		} elseif ( file_exists( $parent_theme_style_sheet ) || ( ! empty( $suffix ) && ( $nonmin = file_exists( $parent_theme_style_sheet_2 ) ) ) ) {
+			if ( ! empty( $nonmin ) ) {
+				$uri = trailingslashit( get_template_directory_uri() ) . $templates_dir . 'give' . $direction . '.css';
+			} else {
+				$uri = trailingslashit( get_template_directory_uri() ) . $templates_dir . $file;
+			}
+		} elseif ( file_exists( $give_plugin_style_sheet ) ) {
+			$uri = trailingslashit( GIVE_PLUGIN_URL ) . 'assets/dist/css/' . $file;
+		}
+
+		return apply_filters( 'give_get_stylesheet_uri', $uri );
+
+	}
+
 }
