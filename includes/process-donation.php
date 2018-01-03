@@ -383,7 +383,7 @@ function give_donation_form_validate_gateway() {
 			give_set_error( 'invalid_donation_amount', __( 'Please insert a valid donation amount.', 'give' ) );
 
 		} // End if().
-		elseif ( ! give_verify_minimum_price() ) {
+		elseif ( ! give_verify_minimum_price( 'minimum' ) ) {
 			// translators: %s: minimum donation amount.
 			give_set_error(
 				'invalid_donation_minimum',
@@ -394,14 +394,15 @@ function give_donation_form_validate_gateway() {
 				)
 			);
 
-		}elseif ( ! give_verify_maximum_price() ) {
+		} // End if().
+		elseif ( ! give_verify_minimum_price( 'maximum' ) ) {
 			// translators: %s: Maximum donation amount.
 			give_set_error(
 				'invalid_donation_maximum',
 				sprintf(
-				/* translators: %s: minimum donation amount */
+				/* translators: %s: Maximum donation amount */
 					__( 'This form has a maximum donation amount of %s.', 'give' ),
-					give_currency_filter( give_format_amount( give_get_form_minimum_price( $form_id ), array( 'sanitize' => false ) ) )
+					give_currency_filter( give_format_amount( give_get_form_maximum_price( $form_id ), array( 'sanitize' => false ) ) )
 				)
 			);
 
@@ -423,43 +424,16 @@ function give_donation_form_validate_gateway() {
 }
 
 /**
- * Donation Form Validate Minimum Donation Amount
+ * Donation Form Validate Minimum or Maximum Donation Amount
  *
  * @access      private
  * @since       1.3.6
- * @return      bool
- */
-function give_verify_minimum_price() {
-
-	$amount          = give_maybe_sanitize_amount( $_REQUEST['give-amount'] );
-	$form_id         = isset( $_REQUEST['give-form-id'] ) ? $_REQUEST['give-form-id'] : 0;
-	$price_id        = isset( $_REQUEST['give-price-id'] ) ? $_REQUEST['give-price-id'] : null;
-	$variable_prices = give_has_variable_prices( $form_id );
-
-	if ( $variable_prices && in_array( $price_id, give_get_variable_price_ids( $form_id ) ) ) {
-
-		$price_level_amount = give_get_price_option_amount( $form_id, $price_id );
-
-		if ( $price_level_amount == $amount ) {
-			return true;
-		}
-	}
-
-	if ( give_get_form_minimum_price( $form_id ) > $amount ) {
-		return false;
-	}
-
-	return true;
-}
-
-/**
- * Donation Form Validate Maximum Donation Amount
  *
- * @access      private
- * @since       2.1
+ * @param string $amount_range Which amount needs to verify? minimum or maximum.
+ *
  * @return      bool
  */
-function give_verify_maximum_price() {
+function give_verify_minimum_price( $amount_range = 'minimum' ) {
 
 	$amount          = give_maybe_sanitize_amount( $_REQUEST['give-amount'] );
 	$form_id         = isset( $_REQUEST['give-form-id'] ) ? $_REQUEST['give-form-id'] : 0;
@@ -475,8 +449,17 @@ function give_verify_maximum_price() {
 		}
 	}
 
-	if ( give_get_form_maximum_price( $form_id ) < $amount ) {
-		return false;
+	switch ( $amount_range ) {
+		case 'minimum' :
+			if ( give_get_form_minimum_price( $form_id ) > $amount ) {
+				return false;
+			}
+			break;
+		case 'maximum' :
+			if ( give_get_form_maximum_price( $form_id ) < $amount ) {
+				return false;
+			}
+			break;
 	}
 
 	return true;

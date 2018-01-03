@@ -285,9 +285,9 @@ function give_text_input( $field ) {
 }
 
 /**
- * Give range slider
+ * Give range slider field.
  *
- * @since 2.0
+ * @since 2.1
  *
  * @param  array $field         {
  *                              Optional. Array of text input field arguments.
