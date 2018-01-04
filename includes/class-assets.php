@@ -102,8 +102,7 @@ class Assets {
 	public function register_scripts() {
 
 		// WP-Admin.
-		wp_register_script( 'give-admin-scripts', GIVE_PLUGIN_URL . 'assets/dist/js/admin' . $this->suffix . '.js', array( 'jquery' ), GIVE_VERSION );
-
+		wp_register_script( 'give-admin-scripts', GIVE_PLUGIN_URL . 'assets/dist/js/admin' . $this->suffix . '.js', array( 'jquery', 'jquery-ui-datepicker', 'wp-color-picker', 'jquery-query'  ), GIVE_VERSION );
 
 		// Frontend.
 		wp_register_script( 'give', GIVE_PLUGIN_URL . 'assets/dist/js/give' . $this->suffix . '.js', array( 'jquery' ), GIVE_VERSION, $this->scripts_footer );
@@ -152,6 +151,11 @@ class Assets {
 
 		global $post;
 		$give_options = give_get_settings();
+
+		// WP Scripts.
+		wp_enqueue_script( 'wp-color-picker' );
+		wp_enqueue_script( 'jquery-ui-datepicker' );
+		wp_enqueue_script( 'thickbox' );
 
 		// Give admin scripts.
 		wp_enqueue_script( 'give-admin-scripts' );
