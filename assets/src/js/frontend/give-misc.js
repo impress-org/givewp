@@ -190,6 +190,7 @@ function give_fl_trigger() {
 		var give_float_labels = new FloatLabels( '.float-labels-enabled', {
 			exclude: '#give-amount, .give-select-level, [multiple]',
 			prioritize: 'placeholder',
+			prefix: 'give-fl-',
 			style: 'give',
 		} );
 	}
