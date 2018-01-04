@@ -1082,9 +1082,9 @@ class Give_Donate_Form {
 		$is_close_form = apply_filters(
 			'give_is_close_donation_form',
 			(
-			give_is_setting_enabled( give_get_meta( $this->ID, '_give_goal_option', true ) ) )
-			&& give_is_setting_enabled( give_get_meta( $this->ID, '_give_close_form_when_goal_achieved', true ) )
-			&& ( $this->get_goal() <= $this->get_sales()
+				give_is_setting_enabled( give_get_meta( $this->ID, '_give_goal_option', true ) ) &&
+				give_is_setting_enabled( give_get_meta( $this->ID, '_give_close_form_when_goal_achieved', true ) ) &&
+				( $this->get_goal() <= $this->get_sales() )
 			),
 			$this->ID
 		);
