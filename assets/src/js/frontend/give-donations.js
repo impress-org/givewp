@@ -9,7 +9,7 @@ var Give = 'undefined' !== typeof Give ? Give : {};
  *
  *  Currently used only for internal purpose.
  */
-Give = {
+export default Give = {
 	init: function() {
 		var subHelperObjs = [ 'form' ],
 			counter = 0;
