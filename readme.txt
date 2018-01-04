@@ -125,9 +125,9 @@ Give version 1.8 is a major update. Please make sure you make a backup of your d
 
 = Minimum Requirements =
 
-* WordPress 4.2 or greater
-* PHP version 5.3 or greater
-* MySQL version 5.0.15 or greater
+* WordPress 4.8 or greater
+* PHP version 7.0 or greater
+* MySQL version 5.6 or greater
 * Some payment gateways require fsockopen support (for IPN access)
 * cURL version 5.40 or higher
 * A SSL certificate -- while this is not strictly required for PayPal Standard users, it soon will be and we highly recommend it for every website that accepts donations. If you are converting your site to use SSL/HTTPS now, [we have a detailed guide to help you here](http://docs.givewp.com/ssl).
