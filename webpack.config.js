@@ -21,7 +21,6 @@ const config = {
 	externals: {
 		$: 'jQuery',
 		jquery: 'jQuery',
-		// window: 'Window',
 	},
 	devtool: 'source-map',
 	module: {
@@ -90,6 +89,7 @@ const config = {
 			}
 		]
 	},
+	// Plugins. Gotta have em'.
 	plugins: [
 		new ExtractTextPlugin( (inProduction ? 'css/[name].min.css' : 'css/[name].css') ),
 		new CleanWebpackPlugin( [ 'assets/dist' ] ),
@@ -105,6 +105,7 @@ const config = {
 	]
 };
 
+// inProd?
 if ( inProduction ) {
 	config.plugins.push( new webpack.optimize.UglifyJsPlugin( { sourceMap: true } ) ); // Uglify JS.
 	config.plugins.push( new webpack.LoaderOptionsPlugin( { minimize: true } ) ); // Minify CSS.
