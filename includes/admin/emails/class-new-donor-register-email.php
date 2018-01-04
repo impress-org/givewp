@@ -147,17 +147,13 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 				}
 			}
 
-			// Inline JS function for switching donations.
-			$request_url = $_SERVER['REQUEST_URI'];
+			$request_url_data = wp_parse_url( $_SERVER['REQUEST_URI'] );
+			$query            = $request_url_data['query'];
 
-			// Remove payment id query param if set from request url.
-			if ( $user_id ) {
-				$request_url_data = wp_parse_url( $request_url );
-				$query            = $request_url_data['query'];
-				$query            = str_replace( "&user_id={$user_id}", '', $query );
+			// Remove user id query param if set from request url.
+			$query = remove_query_arg( array( 'user_id' ), $query );
 
-				$request_url = home_url( '/?' . str_replace( '', '', $query ) );
-			}
+			$request_url = home_url( '/?' . str_replace( '', '', $query ) );
 			?>
 			<script type="text/javascript">
 				function change_preview() {
