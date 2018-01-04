@@ -100,7 +100,7 @@ const config = {
 			],
 			host: 'localhost',
 			port: 3000,
-			proxy: 'give.test'
+			proxy: 'give.test' // This is the proxy you should be using. If not ... (specify... wp-config?)
 		} ),
 	]
 };
