@@ -100,7 +100,7 @@ const config = {
 			],
 			host: 'localhost',
 			port: 3000,
-			proxy: 'givetest.local'
+			proxy: 'give.test'
 		} ),
 	]
 };
