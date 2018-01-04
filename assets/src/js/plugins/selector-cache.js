@@ -1,24 +1,26 @@
-var Give_Selector_Cache = {
+const Give_Selector_Cache = {
 	collection: {},
 
-	get: function (selector, parent, refresh_cache) {
+	get: function( selector, parent, refresh_cache ) {
 		// Bailout.
-		if( ! jQuery ) {
-			return -1;
+		if ( ! jQuery ) {
+			return - 1;
 		}
 
 		// Set default parent.
-		parent        = ( undefined !== parent ) ? parent : undefined;
-		refresh_cache = ( refresh_cache === true );
+		parent = (undefined !== parent) ? parent : undefined;
+		refresh_cache = (refresh_cache === true);
 
-		if (( undefined === this.collection[selector] ) || refresh_cache) {
+		if ( (undefined === this.collection[ selector ]) || refresh_cache ) {
 			if ( undefined !== parent ) {
-				this.collection[selector] = jQuery(selector, parent);
+				this.collection[ selector ] = jQuery( selector, parent );
 			} else {
-				this.collection[selector] = jQuery(selector);
+				this.collection[ selector ] = jQuery( selector );
 			}
 		}
 
-		return this.collection[selector];
+		return this.collection[ selector ];
 	}
 };
+
+window.Give_Selector_Cache = Give_Selector_Cache;

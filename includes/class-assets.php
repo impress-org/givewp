@@ -31,6 +31,15 @@ class Assets {
 	private $suffix;
 
 	/**
+	 * Whether RTL or not.
+	 *
+	 * @since  2.1.0
+	 * @var    string
+	 * @access private
+	 */
+	private $direction;
+
+	/**
 	 * Whether scripts should be loaded in the footer or not.
 	 *
 	 * @since  2.1.0
@@ -46,6 +55,7 @@ class Assets {
 	 */
 	public function __construct() {
 		$this->suffix         = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+		$this->direction      = ( is_rtl() ) ? '-rtl' : '';
 		$this->scripts_footer = ( give_is_setting_enabled( give_get_option( 'scripts_footer' ) ) ) ? true : false;
 		$this->register();
 	}
@@ -78,7 +88,7 @@ class Assets {
 	public function register_styles() {
 
 		// WP-admin.
-		wp_register_style( 'give-admin', GIVE_PLUGIN_URL . 'assets/dist/css/admin' . $this->suffix . '.css', array(), GIVE_VERSION );
+		wp_register_style( 'give-admin-styles', GIVE_PLUGIN_URL . 'assets/dist/css/admin' . $this->suffix . '.css', array(), GIVE_VERSION );
 
 		// Frontend.
 		wp_register_style( 'give-styles', $this->get_frontend_stylesheet_uri(), array(), GIVE_VERSION, 'all' );
@@ -90,7 +100,12 @@ class Assets {
 	 * @since 2.1.0
 	 */
 	public function register_scripts() {
-		wp_register_script( 'give-admin', GIVE_PLUGIN_URL . 'assets/dist/js/admin' . $this->suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+
+		// WP-Admin.
+		wp_register_script( 'give-admin-scripts', GIVE_PLUGIN_URL . 'assets/dist/js/admin' . $this->suffix . '.js', array( 'jquery' ), GIVE_VERSION );
+
+
+		// Frontend.
 		wp_register_script( 'give', GIVE_PLUGIN_URL . 'assets/dist/js/give' . $this->suffix . '.js', array( 'jquery' ), GIVE_VERSION, $this->scripts_footer );
 	}
 
@@ -98,19 +113,27 @@ class Assets {
 	 * Enqueues admin styles.
 	 *
 	 * @since 2.1.0
-	 */
-	public function admin_enqueue_styles() {
-		wp_enqueue_style( 'give-admin' );
-		wp_enqueue_style( 'give-admin-bar-notification' );
-	}
-
-	/**
-	 * Enqueues public styles.
 	 *
-	 * @since 2.1.0
+	 * @param string $hook Page hook.
 	 */
-	public function public_enqueue_styles() {
-		wp_enqueue_style( 'give-styles' );
+	public function admin_enqueue_styles( $hook ) {
+
+		// Give Admin Only.
+		if ( ! apply_filters( 'give_load_admin_styles', give_is_admin_page(), $hook ) ) {
+			return;
+		}
+
+
+		// Give enqueues.
+		wp_enqueue_style( 'give-admin-styles' );
+		wp_enqueue_style( 'give-admin-bar-notification' );
+
+
+		// WP Core enqueues.
+		wp_enqueue_style( 'wp-color-picker' );
+		wp_enqueue_style( 'thickbox' ); //@TODO remove once we have modal API.
+
+
 	}
 
 	/**
@@ -118,7 +141,7 @@ class Assets {
 	 *
 	 * @since 2.1.0
 	 *
-	 * @param $hook
+	 * @param string $hook Page hook.
 	 */
 	public function admin_enqueue_scripts( $hook ) {
 
@@ -127,14 +150,15 @@ class Assets {
 			return;
 		}
 
-		global $post, $post_type;
-		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-
-		// LTR or RTL files.
-		$direction    = ( is_rtl() ) ? '-rtl' : '';
+		global $post;
 		$give_options = give_get_settings();
 
-		wp_enqueue_script( 'give-admin' );
+		// Give admin scripts.
+		wp_enqueue_script( 'give-admin-scripts' );
+
+		// Price Separators.
+		$thousand_separator = give_get_price_thousand_separator();
+		$decimal_separator  = give_get_price_decimal_separator();
 
 		// Localize strings & variables for JS.
 		wp_localize_script( 'give-admin-scripts', 'give_vars', array(
@@ -215,6 +239,17 @@ class Assets {
 		) );
 
 	}
+
+
+	/**
+	 * Enqueues public styles.
+	 *
+	 * @since 2.1.0
+	 */
+	public function public_enqueue_styles() {
+		wp_enqueue_style( 'give-styles' );
+	}
+
 
 	/**
 	 * Enqueues public scripts.

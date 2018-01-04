@@ -1,8 +1,6 @@
 import accounting from 'accounting';
 
-var Give = 'undefined' !== typeof Give ? Give : {};
-
-
+let Give = 'undefined' !== typeof Give ? Give : {};
 
 /**
  *  This API is under development.
