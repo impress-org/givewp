@@ -193,7 +193,6 @@ function give_render_field( $field ) {
 
 		case 'range_slider':
 			$field['type']  = 'range_slider';
-			$field['class'] = 'give-range_slider';
 			break;
 	}
 
@@ -320,62 +319,78 @@ function give_range_slider( $field ) {
 		'style'         => '',
 		'wrapper_class' => '',
 		'value'         => give_get_field_value( $field, $thepostid ),
-		'type'          => 'text',
+		'data_type'     => 'decimal',
+		'before_field'  => '',
+		'after_field'   => '',
 		'options'       => array(
-			'display_value' => false,
-			'display_type'  => 'number',
-			'display_text'  => __( 'Range', 'give' ),
+			'display_label' => '',
 		),
 	);
 
-	// Get field argument.
 	$field_options = wp_parse_args( $field, $default_options );
-
-	// Field values.
-	$range_values = $field_options['value'];
-
-	// Get range slider (min, max) values.
-	$min_value = ! empty( $range_values['min_value'] ) ? $range_values['min_value'] : 1;
-	$max_value = ! empty( $range_values['max_value'] ) ? $range_values['max_value'] : 999999.99;
-
 	?>
-	<p class="give-field-wrap <?php echo esc_attr( $field_options['id'] ); ?>_field <?php echo esc_attr( $field_options['wrapper_class'] ); ?>"
-	   data-range_type="<?php echo esc_attr( $field_options['options']['display_type'] ); ?>">
+	<p class="give-field-wrap <?php echo esc_attr( $field_options['id'] ); ?>_field <?php echo esc_attr( $field_options['wrapper_class'] ); ?>">
 	<label for="<?php echo give_get_field_name( $field_options ); ?>"><?php echo wp_kses_post( $field_options['name'] ); ?></label>
-	<input
-			name="<?php echo give_get_field_name( $field_options ); ?>[min_value]"
-			type="hidden"
-			value="<?php echo esc_attr( $min_value ); ?>"
-	/>
-	<input
-			name="<?php echo give_get_field_name( $field_options ); ?>[max_value]"
-			type="hidden"
-			value="<?php echo esc_attr( $max_value ); ?>"
-	/>
-	<?php
-	// Do we need to show min max values?
-	if ( $field_options['options']['display_value'] ) {
-		// Convert values in amount.
-		if ( 'amount' === $field_options['options']['display_type'] ) {
-			$min_value = give_currency_filter( give_format_amount( $min_value ) );
-			$max_value = give_currency_filter( give_format_amount( $max_value ) );
-		}
-		?>
-		<span class="give_range_slider_display">
-			<span class="give_range_slider_label">
-				<?php echo esc_html( $field_options['options']['display_label'] ); ?>
-			</span>
-			<span class="give_min_range"><?php echo esc_html( $min_value ); ?></span> -
-			<span class="give_max_range"><?php echo esc_html( $max_value ); ?></span>
+	<span class="give_range_slider_display">
+		<span class="give_range_slider_label">
+			<?php echo esc_html( $field_options['options']['display_label'] ); ?>
 		</span>
 		<?php
-	}
-	?>
-	<span
-		<?php echo give_get_custom_attributes( $field_options ); ?>
-			id="<?php echo esc_attr( $field_options['id'] ); ?>"
-			style="display: block; <?php echo esc_attr( $field_options['style'] ); ?>"
-	></span>
+
+		foreach ( $field_options['value'] as $amount_range => $amount_value ) {
+			switch ( $field_options['data_type'] ) {
+				case 'price' :
+					$currency_position = give_get_option( 'currency_position', 'before' );
+					$tooltip_label     = 'min_value' === $amount_range ? __( 'Minimum amount', 'give' ) : __( 'Maximum amount', 'give' );
+
+					$tooltip_html = array(
+						'before' => Give()->tooltips->render_span( array(
+							'label'       => $tooltip_label,
+							'tag_content' => sprintf( '<span class="give-money-symbol give-money-symbol-before">%s</span>', give_currency_symbol() ),
+						) ),
+						'after'  => Give()->tooltips->render_span( array(
+							'label'       => $tooltip_label,
+							'tag_content' => sprintf( '<span class="give-money-symbol give-money-symbol-after">%s</span>', give_currency_symbol() ),
+						) ),
+					);
+
+					// Sanitize amount.
+					$field_options['value'][ $amount_range ] = ! empty( $amount_value ) ? give_format_amount( give_maybe_sanitize_amount( $amount_value ), array( 'sanitize' => false ) )
+						: $amount_value;
+					$field_options['before_field']           = ! empty( $field_options['before_field'] ) ? $field_options['before_field'] : 'before' === $currency_position ?
+						$tooltip_html['before'] : '';
+					$field_options['after_field']            = ! empty( $field_options['after_field'] ) ? $field_options['after_field'] : 'after' === $currency_position ?
+						$tooltip_html['after'] : '';
+					break;
+				case 'decimal' :
+					$field_options['attributes']['class']    .= ' give_input_decimal';
+					$field_options['value'][ $amount_range ] = ! empty( $amount_value ) ? give_format_decimal( give_maybe_sanitize_amount( $amount_value ), false, false ) : $amount_value;
+					break;
+
+				default :
+					break;
+			}
+			echo $field_options['before_field'];
+			?>
+			<input
+					name="<?php echo give_get_field_name( $field_options ); ?>[<?php echo esc_attr( $amount_range ); ?>]"
+					type="text"
+					id="<?php echo $field_options['id'];?> _give_range_slider_<?php echo $amount_range;?>"
+					data-range_type="<?php echo esc_attr( $amount_range ); ?>"
+					value="<?php echo esc_attr( $amount_value ); ?>"
+					placeholder="<?php echo 'min_value' === $amount_range ? 1.00 : 99999.99 ;?>"
+				<?php echo give_get_custom_attributes( $field_options ); ?>
+			/>
+			<?php
+			echo $field_options['after_field'];
+		}
+		?>
+	</span>
+		<span
+				id="<?php echo esc_attr( $field_options['id'] ); ?>"
+				style="display: block; <?php echo esc_attr( $field_options['style'] ); ?>"
+				class="<?php echo apply_filters( 'give_range_slider_field_classes', 'give-range_slider_field' ); ?>"
+		></span>
 		<?php echo give_get_field_description( $field_options ); ?>
 	</p>
 	<?php
