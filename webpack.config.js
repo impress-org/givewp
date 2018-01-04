@@ -12,23 +12,21 @@ const config = {
 		'admin': [ './assets/src/js/admin/admin.js', './assets/src/css/admin/give-admin.scss' ],
 		'give': [ './assets/src/js/frontend/give.js', './assets/src/css/frontend/give-frontend.scss' ],
 	},
+	// Tell webpack where to output.
 	output: {
 		path: path.resolve( __dirname, './assets/dist/' ),
 		filename: (inProduction ? 'js/[name].min.js' : 'js/[name].js')
 	},
+	// Ensure modules like magnific know jQuery is external (loaded via WP).
 	externals: {
 		$: 'jQuery',
 		jquery: 'jQuery',
-	},
-	resolve: {
-		modules: [
-			__dirname,
-			'node_modules',
-		],
+		// window: 'Window',
 	},
 	devtool: 'source-map',
 	module: {
 		rules: [
+			// Use Babel to compile JS.
 			{
 				test: /\.js$/,
 				exclude: /node_modules/,
@@ -41,6 +39,7 @@ const config = {
 				test: require.resolve( 'accounting' ),
 				loader: 'expose-loader?accounting'
 			},
+			// SASS to CSS.
 			{
 				test: /\.scss$/,
 				use: ExtractTextPlugin.extract( {
@@ -63,10 +62,12 @@ const config = {
 					} ]
 				} )
 			},
+			// Font files.
 			{
 				test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
 				loader: 'file-loader?name=fonts/[name].[ext]'
 			},
+			// Image files.
 			{
 				test: /\.(png|jpg|gif)$/,
 				use: [

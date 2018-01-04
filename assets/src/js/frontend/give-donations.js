@@ -2,12 +2,14 @@ import accounting from 'accounting';
 
 var Give = 'undefined' !== typeof Give ? Give : {};
 
+
+
 /**
  *  This API is under development.
  *
  *  Currently used only for internal purpose.
  */
-export default Give = {
+Give = {
 	init: function() {
 		var subHelperObjs = [ 'form' ],
 			counter = 0;
@@ -854,6 +856,8 @@ Give.notice = {
 		}
 	}
 };
+
+window.Give = Give;
 
 jQuery( function( $ ) {
 
