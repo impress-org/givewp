@@ -111,7 +111,6 @@ var give_setting_edit = false;
 	 */
 	var setup_chosen_give_selects = function() {
 
-		console.log( give_vars );
 		// Setup Chosen Selects.
 		var $give_chosen_containers = $( '.give-select-chosen' );
 
@@ -138,6 +137,7 @@ var give_setting_edit = false;
 
 		} );
 
+		console.log($give_chosen_containers);
 		// Initiate chosen.
 		$give_chosen_containers.chosen( {
 			inherit_select_classes: true,
