@@ -526,6 +526,21 @@ Give.form = {
 		},
 
 		/**
+		 * Get form maximum amount
+		 *
+		 * @since 2.1
+		 * @param {object} $form
+		 *
+		 * @return {string}
+		 */
+		getMaximumAmount: function ($form) {
+			return Give.fn.unFormatCurrency(
+				$form.find('input[name="give-form-maximum"]').val(),
+				Give.form.fn.getInfo('decimal_separator', $form )
+			);
+		},
+
+		/**
 		 * Get form amount
 		 *
 		 * @since 1.8.17

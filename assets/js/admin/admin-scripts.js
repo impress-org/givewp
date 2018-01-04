@@ -2485,12 +2485,10 @@ var give_setting_edit = false;
 		 */
 		setup_range_slider_fields: function() {
 			$( document ).ready( function() {
-
 				// Get range slider field.
-				var $range_slider_fields = $( '.give-range_slider' );
+				var $range_slider_fields = $( '.give-range_slider_field' );
 				if ( $range_slider_fields.length ) {
 					$range_slider_fields.each( function( index, item ) {
-
 						var $item = $( item ),
 							$field_container = $item.closest( 'p.give-field-wrap' ),
 							$min_value = $field_container.find( 'input[name*=min_value]' ),
@@ -2503,18 +2501,43 @@ var give_setting_edit = false;
 
 						$item.slider( {
 							range: true,
+							step: 0.1,
 							min: give_vars.give_donation_amounts.minimum,
 							max: give_vars.give_donation_amounts.maximum,
 							values: [ $min_value.val(), $max_value.val() ],
 							slide: function( event, ui ) {
-								$min_value.val( ui.values[ 0 ].toFixed( 2 ) );
-								$max_value.val( ui.values[ 1 ].toFixed( 2 ) );
-								$field_container.find( 'span > span.give_min_range' ).text( giveFormatAmount( ui.values[ 0 ] ) );
-								$field_container.find( 'span > span.give_max_range' ).text( giveFormatAmount( ui.values[ 1 ] ) );
+								$min_value.val( ui.values[ 0 ].toFixed( give_vars.currency_decimals ) );
+								$max_value.val( ui.values[ 1 ].toFixed( give_vars.currency_decimals ) );
 							}
 						} );
 					} );
 				}
+
+				// Don't allow to enter less than or greater than value to another field.
+				$( '.give-range_slider' ).on( 'focusout', function( e ) {
+					var $current_value = parseFloat( $( this ).val() ),
+						$field_parent = $( this ).closest( '.give-field-wrap' ),
+						$type = $( this ).data( 'range_type' ),
+						$ranges = [ 'min_value', 'max_value' ],
+						$compare_with = $field_parent.find( '[data-range_type="' + $ranges.slice( $ranges.indexOf( $type ) - 1 )[ 0 ] + '"]' ).val();
+
+					// Check if value is not more or less than to compare field.
+					if ( 'min_value' === $type
+						&& $current_value > $compare_with
+					) {
+						$( this ).val( $compare_with ); // Set same as maximum amount field.
+					} else if ( 'max_value' === $type ) {
+						if ( $current_value < $compare_with ) {
+							$( this ).val( $compare_with ); // Set as minimum amount field..
+						} else if ( $current_value > give_vars.give_donation_amounts.maximum ) {
+							$( this ).val( give_vars.give_donation_amounts.maximum ); // Set to maximum amount.
+						}
+					}
+
+					console.log(  give_vars.give_donation_amounts.maximum);
+					// Update min and max range slider value.
+					$field_parent.find( '.give-range_slider_field' ).slider( 'values', ( 'min_value' === $type ? 0 : 1 ), $( this ).val() );
+				} );
 			} );
 		}
 	};
@@ -3109,37 +3132,4 @@ function give_on_donation_import_ajax() {
 			alert(give_vars.error_message);
 		}
 	});
-}
-
-/**
- * Give format amount according to give setting.
- *
- * @since 2.1
- *
- * @param {float} amount
- * @returns {*}
- */
-function giveFormatAmount( amount ) {
-
-	// Global currency setting.
-	var format_args = {
-		symbol: give_vars.currency_sign,
-		decimal: give_vars.decimal_separator,
-		thousand: give_vars.thousands_separator,
-		precision: give_vars.currency_decimals,
-		currency: give_vars.currency
-	};
-
-	// Trim amount.
-	amount = amount.toString().trim();
-
-	//Properly position symbol after if selected
-	if ( 'after' === give_vars.currency_pos ) {
-		format_args.format = '%v%s';
-	}
-
-	// Format amount.
-	amount = accounting.formatMoney( amount, format_args );
-
-	return ( amount !== undefined ) ? amount : 0;
 }

@@ -386,8 +386,8 @@ function give_load_admin_scripts( $hook ) {
 		'core_settings_import'              => 'give_core_settings_import',
 		'setting_not_save_message'          => __( 'Changes you made may not be saved.', 'give' ),
 		'give_donation_amounts'             => array(
-			'minimum' => 1,
-			'maximum' => 999999.99,
+			'minimum' => apply_filters( 'give_donation_minimum_limit', 1 ),
+			'maximum' => apply_filters( 'give_donation_maximum_limit', 999999.99 ),
 		),
 	) );
 
