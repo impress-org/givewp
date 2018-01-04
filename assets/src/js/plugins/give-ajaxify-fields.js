@@ -1,4 +1,3 @@
-/*global $:false, jQuery:false */
 /**
  * Note: This script is under development. We are using this inside core only and can be update in future.
  */
