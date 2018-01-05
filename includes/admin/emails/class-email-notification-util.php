@@ -171,7 +171,7 @@ class Give_Email_Notification_Util {
 		$notification_status = empty( $form_id )
 			? give_is_setting_enabled( $notification_status )
 			: give_is_setting_enabled( give_get_option( "{$email->config['id']}_notification", $email->config['notification_status'] ) ) && give_is_setting_enabled( $notification_status, array( 'enabled', 'global' ) );
-			// To check if email notification active or not on per form basis, email notification must be globally active other it will consider as disable.
+			// To check if email notification is active or not on a per-form basis, email notification must be globally active—otherwise it will be considered disabled.
 
 		return $notification_status;
 	}
