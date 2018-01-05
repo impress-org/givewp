@@ -316,7 +316,7 @@ if ( ! class_exists( 'Give' ) ) :
 			/**
 			 * Fire the action after Give core loads.
 			 *
-			 * @param Give Give class instance.
+			 * @param Give Instance of Give Class
 			 *
 			 * @since 1.8.7
 			 */
