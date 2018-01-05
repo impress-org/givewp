@@ -133,10 +133,54 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 		'view'      => false,
 		'tab'       => false,
 	) );
+
+	// Is it main menu?
+	if ( in_array( $passed_page, array( 'give_forms', 'categories', 'tags', 'payments', 'reports', 'settings', 'addons', 'donors', 'reports' ), 1 ) ) {
+
+		// Expected view and pages.
+		$expected_view   = array( 'list-table', 'edit', 'tags', 'new', 'earnings', 'donors', 'gateways', 'export', 'logs' );
+		$give_edit_pages = array( 'edit.php', 'post.php', 'post-new.php', 'edit-tags.php' );
+
+		// Check sub menu.
+		if ( in_array( $passed_view, $expected_view, 1 ) || 'give_forms' === $typenow || 'give_forms' === $query_vars['post_type'] ) {
+
+			// Give category and tag page slug.
+			$taxonomy_page_slugs = array(
+				'give_forms_category',
+				'give_forms_tag',
+			);
+
+			// Give setting page slugs.
+			$setting_page_slugs = array(
+				'give-donors',
+				'give-settings',
+				'give-addons',
+				'give-reports',
+				'give-payment-history',
+			);
+
 			}
+		}
+	} else {
+		global $give_payments_page, $give_settings_page, $give_reports_page, $give_system_info_page, $give_add_ons_page, $give_settings_export, $give_donors_page, $give_tools_page;
+		$admin_pages = apply_filters( 'give_admin_pages', array(
+			$give_payments_page,
+			$give_settings_page,
+			$give_reports_page,
+			$give_system_info_page,
+			$give_add_ons_page,
+			$give_settings_export,
+			$give_donors_page,
+			$give_tools_page,
+			'widgets.php',
 		) );
 
+		if ( 'give_forms' == $typenow || in_array( $pagenow, array( 'index.php', 'post-new.php', 'post.php' ), 1 ) || in_array( $pagenow, $admin_pages ) ) {
+			$is_admin = true;
+		}
+	}
 
+	return (bool) apply_filters( 'give_is_admin_page', $is_admin, $query_vars['page'], $query_vars['view'], $passed_page, $passed_view );
 }
 
 
