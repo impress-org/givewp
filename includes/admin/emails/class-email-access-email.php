@@ -34,7 +34,7 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 			$this->load( array(
 				'id'                           => 'email-access',
 				'label'                        => __( 'Email access', 'give' ),
-				'description'                  => __( 'Email Access Notification will be sent to recipient(s) when want to access their donation history using only email.', 'give' ),
+				'description'                  => __( 'Sent when donors request access to their donation history using only their email as verification. (See Settings > General > Access Control)', 'give' ),
 				'notification_status'          => give_get_option( 'email_access', 'disabled' ),
 				'form_metabox_setting'         => false,
 				'notification_status_editable' => false,

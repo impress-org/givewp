@@ -34,7 +34,7 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 			$this->load( array(
 				'id'                    => 'donor-register',
 				'label'                 => __( 'Donor Register', 'give' ),
-				'description'           => __( 'Donor Register Notification will be sent to donor when new donor registered.', 'give' ),
+				'description'           => __( 'Sent to the donor when they register for an account on the site.', 'give' ),
 				'notification_status'   => 'enabled',
 				'email_tag_contex'      => 'donor',
 				'form_metabox_setting'  => false,
@@ -75,7 +75,7 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 		function get_default_email_message() {
 			$message = esc_attr__( 'Username: {username}', 'give' ) . "\r\n\r\n";
 
-			$message .= __( 'To reset your password, simply click the link below. That will take you to a web page where you can create a new password.', 'give' ) . "\r\n";
+			$message .= __( 'To reset your password, simply click the link below which will take you to a web page where you can create a new password.', 'give' ) . "\r\n";
 			$message .= '{reset_password_link}' . "\r\n\r\n";
 
 			$message .= __( 'After resetting password, Please login to your account with link below.', 'give' ) . "\r\n";
