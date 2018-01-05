@@ -84,9 +84,6 @@ class Tests_Activation extends Give_Unit_Test_Case {
 		$this->assertArrayHasKey( 'terms', $give_options );
 		$this->assertEquals( 'disabled', $give_options['terms'] );
 
-		$this->assertArrayHasKey( 'admin_notices', $give_options );
-		$this->assertEquals( 'enabled', $give_options['admin_notices'] );
-
 		$this->assertArrayHasKey( 'uninstall_on_delete', $give_options );
 		$this->assertEquals( 'disabled', $give_options['uninstall_on_delete'] );
 
@@ -132,19 +129,17 @@ class Tests_Activation extends Give_Unit_Test_Case {
 	 * @since 1.3.3
 	 */
 	public function test_install() {
-
-		$give_options         = give_get_settings();
 		$origin_upgraded_from = get_option( 'give_version_upgraded_from' );
 		$origin_give_version  = get_option( 'give_version' );
 
 		// Prepare values for testing
 		delete_option( 'give_settings' );
-		update_option( 'give_version', '2.0' );
+		delete_option( 'give_version' );
 
 		give_install();
 
 		// Test the give_version_upgraded_from value
-		$this->assertEquals( get_option( 'give_version_upgraded_from' ), '2.0' );
+		$this->assertFalse( get_option( 'give_version_upgraded_from' ) );
 
 		$this->assertEquals( GIVE_VERSION, get_option( 'give_version' ) );
 		$this->assertInstanceOf( 'WP_Role', get_role( 'give_manager' ) );
@@ -156,7 +151,6 @@ class Tests_Activation extends Give_Unit_Test_Case {
 		// Reset to origin.
 		update_option( 'give_version_upgraded_from', $origin_upgraded_from );
 		update_option( 'give_version', $origin_give_version );
-
 	}
 
 	/**

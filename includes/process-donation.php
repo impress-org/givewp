@@ -22,9 +22,26 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @access private
  * @since  1.0
  *
- * @return false|null
+ * @return mixed
  */
 function give_process_donation_form() {
+	$is_ajax = isset( $_POST['give_ajax'] );
+
+	// Verify donation form nonce.
+	if(  ! give_verify_donation_form_nonce() ) {
+		if( $is_ajax ) {
+			/**
+			 * Fires when AJAX sends back errors from the donation form.
+			 *
+			 * @since 1.0
+			 */
+			do_action( 'give_ajax_donation_errors' );
+			
+			give_die();
+		} else{
+			give_send_back_to_checkout();
+		}
+	}
 
 	/**
 	 * Fires before processing the donation form.
@@ -47,8 +64,6 @@ function give_process_donation_form() {
 	 * @param array $_POST Array of variables passed via the HTTP POST.
 	 */
 	do_action( 'give_checkout_error_checks', $valid_data, $_POST );
-
-	$is_ajax = isset( $_POST['give_ajax'] );
 
 	// Process the login form.
 	if ( isset( $_POST['give_login_submit'] ) ) {
@@ -160,7 +175,6 @@ function give_process_donation_form() {
 	// Send info to the gateway for payment processing.
 	give_send_to_gateway( $donation_data['gateway'], $donation_data );
 	give_die();
-
 }
 
 add_action( 'give_purchase', 'give_process_donation_form' );
@@ -565,12 +579,8 @@ function give_donation_form_validate_logged_in_user() {
 		// Get the logged in user data.
 		$user_data = get_userdata( $user_ID );
 
-		// Loop through required fields and show error messages.
-		foreach ( give_get_required_fields( $form_id ) as $field_name => $value ) {
-			if ( in_array( $value, give_get_required_fields( $form_id ) ) && empty( $_POST[ $field_name ] ) ) {
-				give_set_error( $value['error_id'], $value['error_message'] );
-			}
-		}
+		// Validate Required Form Fields.
+		give_validate_required_form_fields( $form_id );
 
 		// Verify data.
 		if ( $user_data ) {
@@ -638,12 +648,8 @@ function give_donation_form_validate_new_user() {
 		'user_pass'  => $user_data['give_user_pass'],
 	);
 
-	// Loop through required fields and show error messages.
-	foreach ( give_get_required_fields( $form_id ) as $field_name => $value ) {
-		if ( in_array( $value, give_get_required_fields( $form_id ) ) && empty( $_POST[ $field_name ] ) ) {
-			give_set_error( $value['error_id'], $value['error_message'] );
-		}
-	}
+	// Validate Required Form Fields.
+	give_validate_required_form_fields( $form_id );
 
 	// Set Email as Username.
 	$valid_user_data['user_login'] = $user_data['give_email'];
@@ -766,12 +772,8 @@ function give_donation_form_validate_guest_user() {
 		give_set_error( 'email_empty', __( 'Enter an email.', 'give' ) );
 	}
 
-	// Loop through required fields and show error messages.
-	foreach ( give_get_required_fields( $form_id ) as $field_name => $value ) {
-		if ( in_array( $value, give_get_required_fields( $form_id ) ) && empty( $_POST[ $field_name ] ) ) {
-			give_set_error( $value['error_id'], $value['error_message'] );
-		}
-	}
+	// Validate Required Form Fields.
+	give_validate_required_form_fields( $form_id );
 
 	return $valid_user_data;
 }
@@ -1233,3 +1235,25 @@ function give_validate_donation_amount( $valid_data, $data ) {
 }
 
 add_action( 'give_checkout_error_checks', 'give_validate_donation_amount', 10, 2 );
+
+/**
+ * Validate Required Form Fields.
+ *
+ * @param int $form_id Form ID.
+ *
+ * @since 2.0
+ */
+function give_validate_required_form_fields( $form_id ) {
+
+	// Loop through required fields and show error messages.
+	foreach ( give_get_required_fields( $form_id ) as $field_name => $value ) {
+
+		// Clean Up Data of the input fields.
+		$field_value = give_clean( $_POST[ $field_name ] );
+
+		// Check whether the required field is empty, then show the error message.
+		if ( in_array( $value, give_get_required_fields( $form_id ) ) && empty( $field_value ) ) {
+			give_set_error( $value['error_id'], $value['error_message'] );
+		}
+	}
+}

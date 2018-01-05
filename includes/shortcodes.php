@@ -43,9 +43,10 @@ function give_donation_history( $atts ) {
 	// If payment_key query arg exists, return receipt instead of donation history.
 	if ( isset( $_GET['payment_key'] ) ) {
 		ob_start();
+
 		echo give_receipt_shortcode( array() );
 
-		// Display donation history link only if it is not accessed via Receipt Access Link.
+		// Display donation history link only if Receipt Access Session is available.
 		if ( give_get_receipt_session() ) {
 			echo sprintf(
 				'<a href="%s">%s</a>',
@@ -119,7 +120,7 @@ function give_form_shortcode( $atts ) {
 	$atts['show_title'] = filter_var( $atts['show_title'], FILTER_VALIDATE_BOOLEAN );
 	$atts['show_goal']  = filter_var( $atts['show_goal'], FILTER_VALIDATE_BOOLEAN );
 
-	//get the Give Form
+	// get the Give Form
 	ob_start();
 	give_get_donation_form( $atts );
 	$final_output = ob_get_clean();
@@ -147,21 +148,20 @@ function give_goal_shortcode( $atts ) {
 		'show_bar'  => true,
 	), $atts, 'give_goal' );
 
-
-	//get the Give Form.
+	// get the Give Form.
 	ob_start();
 
-	//Sanity check 1: ensure there is an ID Provided.
+	// Sanity check 1: ensure there is an ID Provided.
 	if ( empty( $atts['id'] ) ) {
 		Give()->notices->print_frontend_notice( __( 'The shortcode is missing Donation Form ID attribute.', 'give' ), true );
 	}
 
-	//Sanity check 2: Check the form even has Goals enabled.
+	// Sanity check 2: Check the form even has Goals enabled.
 	if ( ! give_is_setting_enabled( give_get_meta( $atts['id'], '_give_goal_option', true ) ) ) {
 
 		Give()->notices->print_frontend_notice( __( 'The form does not have Goals enabled.', 'give' ), true );
 	} else {
-		//Passed all sanity checks: output Goal.
+		// Passed all sanity checks: output Goal.
 		give_show_goal_progress( $atts['id'], $atts );
 	}
 
@@ -188,10 +188,10 @@ add_shortcode( 'give_goal', 'give_goal_shortcode' );
  * @return string
  */
 function give_login_form_shortcode( $atts ) {
+
 	$atts = shortcode_atts( array(
 		// Add backward compatibility for redirect attribute.
 		'redirect' => '',
-
 		'login-redirect'  => '',
 		'logout-redirect' => '',
 	), $atts, 'give_login' );
@@ -254,10 +254,10 @@ function give_receipt_shortcode( $atts ) {
 		'status_notice'  => true,
 	), $atts, 'give_receipt' );
 
-	//set $session var
+	// set $session var
 	$session = give_get_purchase_session();
 
-	//set payment key var
+	// set payment key var
 	if ( isset( $_GET['payment_key'] ) ) {
 		$payment_key = urldecode( $_GET['payment_key'] );
 	} elseif ( $session ) {
@@ -356,7 +356,7 @@ function give_profile_editor_shortcode( $atts ) {
 
 	// Restrict access to donor profile, if donor and user are disconnected.
 	$is_donor_disconnected = get_user_meta( get_current_user_id(), '_give_is_donor_disconnected', true );
-	if( is_user_logged_in() && $is_donor_disconnected ) {
+	if ( is_user_logged_in() && $is_donor_disconnected ) {
 		Give()->notices->print_frontend_notice( __( 'Your Donor and User profile are no longer connected. Please contact the site administrator.', 'give' ), true, 'error' );
 		return false;
 	}
@@ -402,12 +402,6 @@ function give_process_profile_editor_updates( $data ) {
 	$first_name       = isset( $data['give_first_name'] ) ? sanitize_text_field( $data['give_first_name'] ) : $old_user_data->first_name;
 	$last_name        = isset( $data['give_last_name'] ) ? sanitize_text_field( $data['give_last_name'] ) : $old_user_data->last_name;
 	$email            = isset( $data['give_email'] ) ? sanitize_email( $data['give_email'] ) : $old_user_data->user_email;
-	$line1            = ( isset( $data['give_address_line1'] ) ? sanitize_text_field( $data['give_address_line1'] ) : '' );
-	$line2            = ( isset( $data['give_address_line2'] ) ? sanitize_text_field( $data['give_address_line2'] ) : '' );
-	$city             = ( isset( $data['give_address_city'] ) ? sanitize_text_field( $data['give_address_city'] ) : '' );
-	$state            = ( isset( $data['give_address_state'] ) ? sanitize_text_field( $data['give_address_state'] ) : '' );
-	$zip              = ( isset( $data['give_address_zip'] ) ? sanitize_text_field( $data['give_address_zip'] ) : '' );
-	$country          = ( isset( $data['give_address_country'] ) ? sanitize_text_field( $data['give_address_country'] ) : '' );
 	$password         = ! empty( $data['give_new_user_pass1'] ) ? $data['give_new_user_pass1'] : '';
 	$confirm_password = ! empty( $data['give_new_user_pass2'] ) ? $data['give_new_user_pass2'] : '';
 
@@ -418,19 +412,6 @@ function give_process_profile_editor_updates( $data ) {
 		'display_name' => $display_name,
 		'user_email'   => $email,
 		'user_pass'    => $password,
-	);
-
-	if( empty( $line1 ) || empty( $city ) || empty( $state ) || empty( $zip ) || empty( $country ) ) {
-		give_set_error( 'give-empty-address-fields', __( 'Please fill in the required address fields.', 'give' ) );
-	}
-
-	$address = array(
-		'line1'   => $line1,
-		'line2'   => $line2,
-		'city'    => $city,
-		'state'   => $state,
-		'zip'     => $zip,
-		'country' => $country,
 	);
 
 	/**
@@ -449,7 +430,6 @@ function give_process_profile_editor_updates( $data ) {
 		give_set_error( 'empty_first_name', __( 'Please enter your first name.', 'give' ) );
 	}
 
-
 	// Make sure to validate passwords for existing Donors.
 	give_validate_user_password( $password, $confirm_password );
 
@@ -465,12 +445,11 @@ function give_process_profile_editor_updates( $data ) {
 		// Make sure the new email doesn't belong to another user
 		if ( email_exists( $email ) ) {
 			give_set_error( 'user_email_exists', __( 'The email you entered belongs to another user. Please use another.', 'give' ) );
-		} elseif ( Give()->donors->get_donor_by( 'email', $email ) ){
+		} elseif ( Give()->donors->get_donor_by( 'email', $email ) ) {
 			// Make sure the new email doesn't belong to another user
 			give_set_error( 'donor_email_exists', __( 'The email you entered belongs to another donor. Please use another.', 'give' ) );
 		}
 	}
-
 
 	// Check for errors.
 	$errors = give_get_errors();
@@ -482,14 +461,11 @@ function give_process_profile_editor_updates( $data ) {
 	}
 
 	// Update Donor First Name and Last Name.
-	Give()->donors->update( $donor->id, array( 'name' => $full_name ) );
+	Give()->donors->update( $donor->id, array(
+		'name' => trim( "{$first_name} {$last_name}" ),
+	) );
 	Give()->donor_meta->update_meta( $donor->id, '_give_donor_first_name', $first_name );
 	Give()->donor_meta->update_meta( $donor->id, '_give_donor_last_name', $last_name );
-
-	// Update donor address.
-	if( ! $donor->update_address( 'personal', $address ) ) {
-		$donor->add_address( 'personal', $address );
-	}
 
 	// Update the user.
 	$updated = wp_update_user( $userdata );

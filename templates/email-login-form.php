@@ -80,8 +80,6 @@ Give()->notices->render_frontend_notices();
 			<?php endif; ?>
 
 			<input type="submit" class="give-submit" value="<?php _e( 'Verify Email', 'give' ); ?>"/>
-			<input type="hidden" name="give-email-access" value="1"/>
-			<input type="hidden" name="_wpnonce" value="<?php echo wp_create_nonce( 'give-email-access' ); ?>"/>
 		</form>
 	</div>
 <?php

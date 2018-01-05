@@ -68,54 +68,6 @@ class Give_Cron {
 	private function setup() {
 		add_filter( 'cron_schedules', array( self::$instance, '__add_schedules' ) );
 		add_action( 'wp', array( self::$instance, '__schedule_events' ) );
-
-		// Load async event only when cron is running.
-		if( defined( 'DOING_CRON' ) && DOING_CRON ) {
-			add_action( 'init', array( self::$instance, '__load_async_events' ) );
-		}
-	}
-
-
-	/**
-	 * Load async events
-	 *
-	 * @since 1.8.13
-	 */
-	public function __load_async_events() {
-		$async_events = get_option( 'give_async_events', array() );
-
-		// Bailout.
-		if ( empty( $async_events ) ) {
-			return;
-		}
-
-		foreach ( $async_events as $index => $event ) {
-			// Set cron name.
-			$cron_name = "give_async_scheduled_events_{$index}";
-
-			// Setup cron.
-			wp_schedule_single_event( current_time( 'timestamp', 1 ), $cron_name, $event['params'] );
-
-			// Add cron action.
-			add_action( $cron_name, $event['callback'], 10, count( $event['params'] ) );
-			add_action( $cron_name, array( $this, '__delete_async_events' ), 9999, 0 );
-		}
-	}
-
-	/**
-	 * Delete async cron info after run
-	 *
-	 * @since 1.8.13
-	 */
-	public function __delete_async_events() {
-		$async_events    = get_option( 'give_async_events', array() );
-		$cron_name_parts = explode( '_', current_action() );
-		$cron_id         = end( $cron_name_parts );
-
-		if ( ! empty( $async_events[ $cron_id ] ) ) {
-			unset( $async_events[ $cron_id ] );
-			update_option( 'give_async_events', $async_events );
-		}
 	}
 
 	/**
@@ -239,29 +191,6 @@ class Give_Cron {
 	 */
 	public static function add_daily_event( $action ) {
 		self::add_event( $action, 'daily' );
-	}
-
-	/**
-	 * Add async event
-	 * Note: it is good for small jobs if you have bigger task to do then either test it or manage with custom cron job.
-	 *
-	 * @since  1.8.13
-	 * @access public
-	 *
-	 * @param string $action
-	 * @param array  $args
-	 */
-	public static function add_async_event( $action, $args = array() ) {
-
-		// Cache async events.
-		$async_events             = get_option( 'give_async_events', array() );
-		$async_events[ uniqid() ] = array(
-			'callback' => $action,
-			'params'   => $args,
-		);
-
-
-		update_option( 'give_async_events', $async_events );
 	}
 }
 

@@ -80,7 +80,8 @@ jQuery(document).ready(function ($) {
 			action: 'give_process_donation_login',
 			give_ajax: 1,
 			give_user_login: this_form.find('[name=give_user_login]').val(),
-			give_user_pass: this_form.find('[name=give_user_pass]').val()
+			give_user_pass: this_form.find('[name=give_user_pass]').val(),
+			give_form_id: this_form.find('[name=give-form-id]').val()
 		};
 
 		$.post(give_global_vars.ajaxurl, data, function (response) {
@@ -93,6 +94,9 @@ jQuery(document).ready(function ($) {
 				// Login successfully message.
 				this_form.find('#give-payment-mode-select').after(response.data);
 				this_form.find('.give_notices.give_errors').delay(5000).slideUp();
+
+				// Create and update nonce.
+				Give.form.fn.resetNonce( this_form );
 
 				//reload the selected gateway so it contains their logged in information
 				give_load_gateway(this_form, this_form.find('.give-gateway-option-selected input').val());
@@ -217,7 +221,7 @@ jQuery(document).ready(function ($) {
 				this_form.find('input[type="submit"].give-submit').val(complete_purchase_val);
 				loading_animation.fadeOut();
 				this_form.find('.give_errors').remove();
-				this_form.find('input[type="submit"].give-submit').before(data);
+				this_form.find('#give_purchase_submit input[type="submit"].give-submit').before(data);
 
 				// Enable the form donation button.
 				Give.form.fn.disable(this_form, false);

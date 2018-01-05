@@ -94,16 +94,18 @@ function give_is_gateway_active( $gateway ) {
  */
 function give_get_default_gateway( $form_id ) {
 
-	$give_options = give_get_settings();
-	$default      = isset( $give_options['default_gateway'] ) && give_is_gateway_active( $give_options['default_gateway'] ) ? $give_options['default_gateway'] : 'paypal';
-	$form_default = give_get_meta( $form_id, '_give_default_gateway', true );
+	$enabled_gateways = array_keys( give_get_enabled_payment_gateways() );
+	$default_gateway  = give_get_option('default_gateway');
+	$default          = ! empty( $default_gateway ) && give_is_gateway_active( $default_gateway ) ? $default_gateway : $enabled_gateways[0];
+	$form_default     = give_get_meta( $form_id, '_give_default_gateway', true );
 
 	// Single Form settings varies compared to the Global default settings.
-	if ( ! empty( $form_default ) &&
-		 $form_id !== null &&
-		 $default !== $form_default &&
-		 $form_default !== 'global' &&
-		 give_is_gateway_active( $form_default )
+	if (
+		! empty( $form_default ) &&
+		$form_id !== null &&
+		$default !== $form_default &&
+		'global' !== $form_default &&
+		give_is_gateway_active( $form_default )
 	) {
 		$default = $form_default;
 	}

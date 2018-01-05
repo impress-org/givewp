@@ -1074,25 +1074,31 @@ var give_setting_edit = false;
 		},
 
 		submit: function () {
-			var self = this, step = 1, resume_update_step = 0;
+			var $self = this, step = 1, resume_update_step = 0;
 
-			self.el.main_container = Give_Selector_Cache.get('#give-db-updates');
-			self.el.update_link = Give_Selector_Cache.get('.give-update-button a', self.el.main_container);
-			self.el.run_upload_container = Give_Selector_Cache.get('.give-run-database-update', self.el.progress_main_container);
-			self.el.progress_main_container = Give_Selector_Cache.get('.progress-container', self.el.main_container);
-			self.el.heading = Give_Selector_Cache.get('.update-message', self.el.progress_main_container);
-			self.el.progress_container = Give_Selector_Cache.get('.progress-content', self.el.progress_main_container);
+			$self.el.main_container = Give_Selector_Cache.get('#give-db-updates');
+			$self.el.update_link = Give_Selector_Cache.get('.give-update-button a', $self.el.main_container);
+			$self.el.run_upload_container = Give_Selector_Cache.get('.give-run-database-update', $self.el.progress_main_container);
+			$self.el.progress_main_container = Give_Selector_Cache.get('.progress-container', $self.el.main_container);
+			$self.el.heading = Give_Selector_Cache.get('.update-message', $self.el.progress_main_container);
+			$self.el.progress_container = Give_Selector_Cache.get('.progress-content', $self.el.progress_main_container);
+			$self.el.update_progress_counter = Give_Selector_Cache.get( $( '.give-update-progress-count') );
+
+			if( $self.el.main_container.data('resume-update') ) {
+				$self.el.update_link.addClass('active').hide().removeClass('give-hidden');
+				window.setTimeout(Give_Updates.get_db_updates_info, 1000, $self );
+			}
 
 			// Bailout.
-			if (self.el.update_link.hasClass('active')) {
+			if ($self.el.update_link.hasClass('active')) {
 				return;
 			}
 
-			self.el.update_link.on('click', '', function (e) {
+			$self.el.update_link.on('click', '', function (e) {
 				e.preventDefault();
 
-				self.el.run_upload_container.find('.notice').remove();
-				self.el.run_upload_container.append('<div class="notice notice-error non-dismissible give-run-update-containt"><p> <a href="#" class="give-run-update-button button">' + give_vars.db_update_confirmation_msg_button + '</a> ' + give_vars.db_update_confirmation_msg + '</p></div>');
+				$self.el.run_upload_container.find('.notice').remove();
+				$self.el.run_upload_container.append('<div class="notice notice-error non-dismissible give-run-update-containt"><p> <a href="#" class="give-run-update-button button">' + give_vars.db_update_confirmation_msg_button + '</a> ' + give_vars.db_update_confirmation_msg + '</p></div>');
 			});
 
 			$('#give-db-updates').on('click', 'a.give-run-update-button', function (e) {
@@ -1103,25 +1109,104 @@ var give_setting_edit = false;
 				}
 
 				$(this).addClass('active').fadeOut();
-				self.el.update_link.addClass('active').fadeOut();
+				$self.el.update_link.addClass('active').fadeOut();
 				$('#give-db-updates .give-run-update-containt').slideUp();
 
-				self.el.progress_container.find('.notice-wrap').remove();
-				self.el.progress_container.append('<div class="notice-wrap give-clearfix"><span class="spinner is-active"></span><div class="give-progress"><div></div></div></div>');
-				self.el.progress_main_container.removeClass('give-hidden');
+				$self.el.progress_container.find('.notice-wrap').remove();
+				$self.el.progress_container.append('<div class="notice-wrap give-clearfix"><span class="spinner is-active"></span><div class="give-progress"><div></div></div></div>');
+				$self.el.progress_main_container.removeClass('give-hidden');
 
-				resume_update_step = parseInt(self.el.heading.data('resume-update'));
-				if (resume_update_step) {
-					step = resume_update_step;
-				}
+				$.ajax({
+					type: 'POST',
+					url: ajaxurl,
+					data: {
+						action: 'give_run_db_updates',
+						run_db_update: 1
+					},
+					dataType: 'json',
+					success: function (response) {
 
-				// Start the process from first step of first update.
-				self.process_step(step, 1, self);
+					}
+				});
+
+				window.setTimeout(Give_Updates.get_db_updates_info, 500, $self );
+
 				return false;
 			});
 		},
 
-		process_step: function (step, update, self) {
+		get_db_updates_info: function( $self ){
+			$.ajax({
+				type: 'POST',
+				url: ajaxurl,
+				data: {
+					action: 'give_db_updates_info',
+				},
+				dataType: 'json',
+				success: function (response) {
+					// We need to get the actual in progress form, not all forms on the page.
+					var notice_wrap = Give_Selector_Cache.get('.notice-wrap', $self.el.progress_container, true);
+
+					if (-1 !== $.inArray('success', Object.keys(response))) {
+						if (response.success) {
+							if ($self.el.update_progress_counter.length) {
+								$self.el.update_progress_counter.text('100%');
+							}
+
+							// Update steps info.
+							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
+								$self.el.heading.html('<strong>' + response.data.heading + '</strong>');
+							}
+
+							$self.el.update_link.closest('p').remove();
+							notice_wrap.html('<div class="notice notice-success is-dismissible"><p>' + response.data.message + '</p><button type="button" class="notice-dismiss"></button></div>');
+
+						} else {
+							// Update steps info.
+							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
+								$self.el.heading.html('<strong>' + response.data.heading + '</strong>');
+							}
+
+							notice_wrap.html('<div class="notice notice-error"><p>' + response.data.message + '</p></div>');
+
+							setTimeout(function () {
+								$self.el.update_link.removeClass('active').show();
+								$self.el.progress_main_container.addClass('give-hidden');
+							}, 1000);
+						}
+					} else {
+						if (response && -1 !== $.inArray('percentage', Object.keys(response.data))) {
+							if ($self.el.update_progress_counter.length) {
+								$self.el.update_progress_counter.text(response.data.total_percentage + '%');
+							}
+
+							// Update steps info.
+							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
+								$self.el.heading.html('<strong>' + response.data.heading + '</strong>');
+							}
+
+							// Update progress.
+							$('.give-progress div', '#give-db-updates').animate({
+								width: response.data.percentage + '%',
+							}, 50, function () {
+								// Animation complete.
+							});
+
+							window.setTimeout(Give_Updates.get_db_updates_info, 1000, $self );
+						} else {
+							notice_wrap.html('<div class="notice notice-error"><p>' + give_vars.updates.ajax_error + '</p></div>');
+
+							setTimeout(function () {
+								$self.el.update_link.removeClass('active').show();
+								$self.el.progress_main_container.addClass('give-hidden');
+							}, 1000);
+						}
+					}
+				}
+			});
+		},
+
+		process_step: function (step, update, $self) {
 
 			give_setting_edit = true;
 
@@ -1138,29 +1223,29 @@ var give_setting_edit = false;
 					give_setting_edit = false;
 
 					// We need to get the actual in progress form, not all forms on the page.
-					var notice_wrap = Give_Selector_Cache.get('.notice-wrap', self.el.progress_container, true);
+					var notice_wrap = Give_Selector_Cache.get('.notice-wrap', $self.el.progress_container, true);
 
 					if (-1 !== $.inArray('success', Object.keys(response))) {
 						if (response.success) {
 							// Update steps info.
 							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
-								self.el.heading.html('<strong>' + response.data.heading + '</strong>');
+								$self.el.heading.html('<strong>' + response.data.heading + '</strong>');
 							}
 
-							self.el.update_link.closest('p').remove();
+							$self.el.update_link.closest('p').remove();
 							notice_wrap.html('<div class="notice notice-success is-dismissible"><p>' + response.data.message + '</p><button type="button" class="notice-dismiss"></button></div>');
 
 						} else {
 							// Update steps info.
 							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
-								self.el.heading.html('<strong>' + response.data.heading + '</strong>');
+								$self.el.heading.html('<strong>' + response.data.heading + '</strong>');
 							}
 
 							notice_wrap.html('<div class="notice notice-error"><p>' + response.data.message + '</p></div>');
 
 							setTimeout(function () {
-								self.el.update_link.removeClass('active').show();
-								self.el.progress_main_container.addClass('give-hidden');
+								$self.el.update_link.removeClass('active').show();
+								$self.el.progress_main_container.addClass('give-hidden');
 							}, 5000);
 						}
 					} else {
@@ -1174,16 +1259,16 @@ var give_setting_edit = false;
 
 							// Update steps info.
 							if (-1 !== $.inArray('heading', Object.keys(response.data))) {
-								self.el.heading.html('<strong>' + response.data.heading.replace('{update_count}', self.el.heading.data('update-count')) + '</strong>');
+								$self.el.heading.html('<strong>' + response.data.heading.replace('{update_count}', $self.el.heading.data('update-count')) + '</strong>');
 							}
 
-							self.process_step(parseInt(response.data.step), response.data.update, self);
+							$self.process_step(parseInt(response.data.step), response.data.update, $self);
 						} else {
 							notice_wrap.html('<div class="notice notice-error"><p>' + give_vars.updates.ajax_error + '</p></div>');
 
 							setTimeout(function () {
-								self.el.update_link.removeClass('active').show();
-								self.el.progress_main_container.addClass('give-hidden');
+								$self.el.update_link.removeClass('active').show();
+								$self.el.progress_main_container.addClass('give-hidden');
 							}, 5000);
 						}
 					}
@@ -2603,19 +2688,19 @@ var give_setting_edit = false;
 			});
 		}
 
-		var $give_money_fields = $('input.give-money-field, input.give-price-field'),
-			thousand_separator = give_vars.thousands_separator,
-			decimal_separator = give_vars.decimal_separator,
+		var $poststuff               = $( '#poststuff' ),
+			thousand_separator       = give_vars.thousands_separator,
+			decimal_separator        = give_vars.decimal_separator,
 			thousand_separator_count = '',
-			alphabet_count = '',
-			price_string = '',
+			alphabet_count           = '',
+			price_string             = '',
 
 			// Thousand separation limit in price depends upon decimal separator symbol.
 			// If thousand separator is equal to decimal separator then price does not have more then 1 thousand separator otherwise limit is zero.
 			thousand_separator_limit = ( decimal_separator === thousand_separator ? 1 : 0 );
 
 		// Check & show message on keyup event.
-		$('#poststuff').on('keyup', 'input.give-money-field, input.give-price-field', function () {
+		$poststuff.on('keyup', 'input.give-money-field, input.give-price-field', function () {
 			var tootltip_setting = {
 				label: give_vars.price_format_guide.trim()
 			};
@@ -2638,7 +2723,7 @@ var give_setting_edit = false;
 		});
 
 		// Format price sting of input field on focusout.
-		$('#poststuff').on('focusout', 'input.give-money-field, input.give-price-field', function () {
+		$poststuff.on('focusout', 'input.give-money-field, input.give-price-field', function () {
 			price_string = give_unformat_currency($(this).val(), false);
 
 			// Back out.
@@ -2661,6 +2746,13 @@ var give_setting_edit = false;
 
 			// Update format price string in input field.
 			$(this).val(price_string);
+		});
+
+		// Set default value to 1 even if user inputs empty or negative number of donations.
+		$poststuff.on( 'focusout', '#_give_number_of_donation_goal', function() {
+			if ( 1 > $( this ).val() ) {
+				$( this ).val( 1 );
+			}
 		});
 
 		/**
@@ -2733,22 +2825,22 @@ jQuery(window).resize(function () {
  * Render responsive tabs
  */
 function give_render_responsive_tabs() {
-	var $setting_page_form = jQuery('.give-settings-page'),
-		$main_tab_nav = jQuery('h2.give-nav-tab-wrapper'),
+	var $setting_page_form      = jQuery( '.give-settings-page' ),
+		$main_tab_nav           = jQuery( 'h2.give-nav-tab-wrapper' ),
 		setting_page_form_width = $setting_page_form.width(),
-		$sub_tab_nav_wrapper = jQuery('.give-sub-nav-tab-wrapper'),
-		$sub_tab_nav = jQuery('nav', $sub_tab_nav_wrapper),
-		$setting_tab_links = jQuery('h2.give-nav-tab-wrapper>a:not(give-not-tab)'),
-		$show_tabs = [],
-		$hide_tabs = [],
-		tab_width = 0;
+		$sub_tab_nav_wrapper    = jQuery( '.give-sub-nav-tab-wrapper' ),
+		$sub_tab_nav            = jQuery( 'nav', $sub_tab_nav_wrapper ),
+		$setting_tab_links      = jQuery( 'div.give-nav-tab-wrapper > a:not(give-not-tab)' ),
+		$show_tabs              = [],
+		$hide_tabs              = [],
+		tab_width               = 0;
 
-	if (600 < jQuery(window).outerWidth()) {
+	if ( 600 < jQuery( window ).outerWidth() ) {
 		tab_width = 200;
 	}
 
 	// Bailout.
-	if (!$setting_page_form.length) {
+	if ( ! $setting_page_form.length ) {
 		return false;
 	}
 
@@ -2759,78 +2851,82 @@ function give_render_responsive_tabs() {
 	});
 
 	// Show all tab if anyone hidden to calculate correct tab width.
-	$setting_tab_links.removeClass('give-hidden');
+	$setting_tab_links.removeClass( 'give-hidden' );
 
 	var refactor_tabs = new Promise(
-		function (resolve, reject) {
-			// Collect tabs to show or hide.
-			jQuery.each($setting_tab_links, function (index, $tab_link) {
-				$tab_link = jQuery($tab_link);
-				tab_width = tab_width + parseInt($tab_link.outerWidth());
+		function( resolve, reject ) {
 
-				if (tab_width < setting_page_form_width) {
-					$show_tabs.push($tab_link);
+			// Collect tabs to show or hide.
+			jQuery.each( $setting_tab_links, function( index, $tab_link ) {
+				$tab_link = jQuery( $tab_link );
+				tab_width = tab_width + parseInt( $tab_link.outerWidth() );
+
+				if ( tab_width < setting_page_form_width ) {
+					$show_tabs.push( $tab_link );
 				} else {
-					$hide_tabs.push($tab_link);
+					$hide_tabs.push( $tab_link );
 				}
 			});
 
-			resolve(true);
+			resolve( true );
 		}
 	);
 
-	refactor_tabs.then(function (is_refactor_tabs) {
+	refactor_tabs.then( function( is_refactor_tabs ) {
+
 		// Remove current tab from sub menu and add this to main menu if exist and get last tab from main menu and add this to sub menu.
-		if ($hide_tabs.length && ( -1 != window.location.search.indexOf('&tab=') )) {
+		if ( $hide_tabs.length && ( -1 !== window.location.search.indexOf( '&tab=' ) ) ) {
 			var $current_tab_nav = {},
-				query_params = get_url_params();
+				query_params     = get_url_params();
 
-			$hide_tabs = $hide_tabs.filter(function ($tab_link) {
-				var is_current_nav_item = ( -1 != parseInt($tab_link.attr('href').indexOf('&tab=' + query_params['tab'])) );
+			$hide_tabs = $hide_tabs.filter( function( $tab_link ) {
+				var is_current_nav_item = ( -1 !== parseInt( $tab_link.attr( 'href' ).indexOf( '&tab=' + query_params['tab'] ) ) );
 
-				if (is_current_nav_item) {
+				if ( is_current_nav_item ) {
 					$current_tab_nav = $tab_link;
 				}
 
-				return ( !is_current_nav_item );
+				return ( ! is_current_nav_item );
 			});
 
-			if ($current_tab_nav.length) {
-				$hide_tabs.unshift($show_tabs.pop());
-				$show_tabs.push($current_tab_nav);
+			if ( $current_tab_nav.length ) {
+				$hide_tabs.unshift( $show_tabs.pop() );
+				$show_tabs.push( $current_tab_nav );
 			}
 		}
 
-		var show_tabs = new Promise(function (resolve, reject) {
-			// Show main menu tabs.
-			if ($show_tabs.length) {
-				jQuery.each($show_tabs, function (index, $tab_link) {
-					$tab_link = jQuery($tab_link);
+		var show_tabs = new Promise( function( resolve, reject ) {
 
-					if ($tab_link.hasClass('give-hidden')) {
-						$tab_link.removeClass('give-hidden');
+			// Show main menu tabs.
+			if ( $show_tabs.length ) {
+				jQuery.each( $show_tabs, function( index, $tab_link ) {
+					$tab_link = jQuery( $tab_link );
+
+					if ( $tab_link.hasClass( 'give-hidden' ) ) {
+						$tab_link.removeClass( 'give-hidden' );
 					}
 				});
 			}
 
-			resolve(true);
+			resolve( true );
 		});
 
-		show_tabs.then(function (is_show_tabs) {
-			// Hide sub menu tabs.
-			if ($hide_tabs.length) {
-				$sub_tab_nav.html('');
+		show_tabs.then( function( is_show_tabs ) {
 
-				jQuery.each($hide_tabs, function (index, $tab_link) {
-					$tab_link = jQuery($tab_link);
-					if (!$tab_link.hasClass('nav-tab-active')) {
-						$tab_link.addClass('give-hidden');
+			// Hide sub menu tabs.
+			if ( $hide_tabs.length ) {
+				$sub_tab_nav.html( '' );
+
+				jQuery.each( $hide_tabs, function( index, $tab_link ) {
+					$tab_link = jQuery( $tab_link );
+					if ( ! $tab_link.hasClass( 'nav-tab-active' ) ) {
+						$tab_link.addClass( 'give-hidden' );
 					}
-					$tab_link.clone().removeClass().appendTo($sub_tab_nav);
+					$tab_link.clone().removeClass().appendTo( $sub_tab_nav );
 				});
 
-				if (!jQuery('.give-sub-nav-tab-wrapper', $main_tab_nav).length) {
-					$main_tab_nav.append($sub_tab_nav_wrapper);
+				if ( ! jQuery( '.give-sub-nav-tab-wrapper', $main_tab_nav ).length ) {
+					$main_tab_nav.append( $sub_tab_nav_wrapper );
 				}
 
 				$sub_tab_nav_wrapper.show();

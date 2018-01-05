@@ -20,7 +20,7 @@ if ( empty( $payment ) ) {
 $donation_id  = $payment->ID;
 $form_id      = give_get_payment_meta( $donation_id, '_give_payment_form_id', true );
 $meta         = give_get_payment_meta( $donation_id );
-$donation     = give_get_payment_form_title( $meta );
+$donation     = give_get_donation_form_title( $donation_id );
 $user         = give_get_payment_meta_user_info( $donation_id );
 $email        = give_get_payment_user_email( $donation_id );
 $status       = $payment->post_status;

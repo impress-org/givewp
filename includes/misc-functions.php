@@ -298,13 +298,15 @@ function give_payment_gateway_item_title( $payment_data ) {
  * @return string
  */
 function give_payment_gateway_donation_summary( $donation_data, $name_and_email = true, $length = 255 ) {
-	$form_id = isset( $donation_data['post_data']['give-form-id'] ) ? $donation_data['post_data']['give-form-id'] : '';
+
+	$form_id  = isset( $donation_data['post_data']['give-form-id'] ) ? $donation_data['post_data']['give-form-id'] : '';
+	$price_id = isset( $donation_data['post_data']['give-price-id'] ) ? $donation_data['post_data']['give-price-id'] : '';
 
 	// Form title.
 	$summary = ( ! empty( $donation_data['post_data']['give-form-title'] ) ? $donation_data['post_data']['give-form-title'] : ( ! empty( $form_id ) ? wp_sprintf( __( 'Donation Form ID: %d', 'give' ), $form_id ) : __( 'Untitled donation form', 'give' ) ) );
 
 	// Form multilevel if applicable.
-	if ( isset( $donation_data['post_data']['give-price-id'] ) ) {
+	if ( ! empty( $price_id ) && 'custom' !== $price_id ) {
 		$summary .= ': ' . give_get_price_option_name( $form_id, $donation_data['post_data']['give-price-id'] );
 	}
 
@@ -1082,6 +1084,10 @@ function give_is_add_new_form_page() {
 /**
  * Get Form/Payment meta.
  *
+ * Note: This function will help you to get meta for payment and form.
+ *       If you want to get meta for donor then use get_meta of Give_Donor and
+ *       If you want to get meta for log then use get_meta of Give_Logging->logmeta_db
+ *
  * @since 1.8.8
  *
  * @param int    $id
@@ -1395,7 +1401,7 @@ function give_array_insert_after( $key, array &$array, $new_key, $new_value ) {
 function give_list_pluck( $list, $field, $index_key = null ) {
 
 	if ( ! $index_key ) {
-		/*
+		/**
 		 * This is simple. Could at some point wrap array_column()
 		 * if we knew we had an array of arrays.
 		 */

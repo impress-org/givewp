@@ -54,6 +54,29 @@ add_action( 'wp_ajax_give_load_gateway', 'give_load_ajax_gateway' );
 add_action( 'wp_ajax_nopriv_give_load_gateway', 'give_load_ajax_gateway' );
 
 /**
+ * Create wp nonce using Ajax call.
+ * 
+ * Use give_donation_form_nonce() js fn to create nonce.
+ *
+ * @since 2.0
+ *
+ * @return void
+ */
+function give_donation_form_nonce() {
+	if ( isset( $_POST['give_form_id'] ) ) {
+
+		// Get donation form id.
+		$form_id = is_numeric( $_POST['give_form_id'] ) ? absint( $_POST['give_form_id'] ) : 0;
+
+		// Send nonce json data.
+		wp_send_json_success( wp_create_nonce( "donation_form_nonce_{$form_id}" ) );
+	}
+}
+
+add_action( 'wp_ajax_give_donation_form_nonce', 'give_donation_form_nonce' );
+add_action( 'wp_ajax_nopriv_give_donation_form_nonce', 'give_donation_form_nonce' );
+
+/**
  * Sets an error within the donation form if no gateways are enabled.
  *
  * @since 1.0

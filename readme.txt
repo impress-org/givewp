@@ -208,6 +208,26 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
+= 1.8.19: December 20th, 2017  =
+* Fix: There was a edge case bug released where a donor viewing a donation receipt in the browser could not due to the necessary columns not being created on install
+
+= 1.8.18: December 19th, 2017  =
+* New: There is now a new line item in Tools > System Info that displays whether upgrades have completed or not. [#2452](https://github.com/WordImpress/Give/issues/2452)
+* New: You can now view donations based on the gateway that used for the donation. For instance, if you want to view all donations given via Stripe or PayPal you can view them all on the donations listing screen. See details: [#2397](https://github.com/WordImpress/Give/issues/2397)
+* New: The "Donation Completed" and additional pages required plugin now display helpful text within the WP-Admin page listing screen. [#2353](https://github.com/WordImpress/Give/issues/2353)
+* Fix: Donations made on "Set Donation" enabled forms that were give with a custom amount now properly display that it was a custom amount within the donations list screen. [#2401](https://github.com/WordImpress/Give/issues/2401)
+* Fix: The Donations Importer was incorrectly marking donations as duplicates. [#2420](https://github.com/WordImpress/Give/issues/2420)
+* Fix: With Give activated, purchasing and creating an account with WooCommerce displays the admin menu bar and provides subscriber role access to wp-admin. Give now no longer affects this with Woo purchases. [#2539](https://github.com/WordImpress/Give/issues/2539)
+* Fix: We removed the "Billing Address" fieldset from the [give_profile_editor] shortcode in preparation for 2.0 which also resolved an issue with required fields preventing an admin from updating their password. [#2407](https://github.com/WordImpress/Give/issues/2407)
+* Fix: Plain text emails didn't properly support hyperlinks. Now they output in a much better way. See details: [#2346](https://github.com/WordImpress/Give/issues/2346)
+* Fix: If using "," for decimal separator and "." for thousands separator the custom amount minimum would incorrectly calculate. [#2526](https://github.com/WordImpress/Give/issues/2526)
+* Fix: Resolved various minor PHP notices. [#2451](https://github.com/WordImpress/Give/issues/2451), [#2493](https://github.com/WordImpress/Give/issues/2493)
+* Fix: The export PDF report was not outputting multi-level donation form amounts correctly. [#2523](https://github.com/WordImpress/Give/issues/2523)
+* Fix: Resolved a minor UI/UX bug with the data per-form recalculate tool. [#2475](https://github.com/WordImpress/Give/issues/2475)
+* Tweak: Improved the SQL query for getting donations by ID function. This is part of our continued effor to ensure Give is as optimized and fast as possible. [#2443](https://github.com/WordImpress/Give/issues/2443)
+* Tweak: The view receipt in browser link has been updated to utilize the donation receipt page rather than a blank page for compatibility reasons. [#2483](https://github.com/WordImpress/Give/issues/2483)
+* Tweak: Cleaned up Give "Worker" capabilities in upgrade routine. [#2476](https://github.com/WordImpress/Give/issues/2476)
+
 = 1.8.17: December 7th, 2017  =
 * New: Now you can export and import your settings configurations under Donations > Tools. [#2009](https://github.com/WordImpress/Give/issues/2009)
 * New: Introduced bulk actions for the donor listing screen. [#2086](https://github.com/WordImpress/Give/issues/2086), [#2243](https://github.com/WordImpress/Give/issues/2243)

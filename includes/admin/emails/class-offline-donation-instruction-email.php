@@ -40,8 +40,8 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 
 			$this->load( array(
 				'id'                           => 'offline-donation-instruction',
-				'label'                        => __( 'Offline Donation Instruction', 'give' ),
-				'description'                  => __( 'Offline Donation Instruction will be sent to recipient(s) when offline donation received.', 'give' ),
+				'label'                        => __( 'Offline Donation Instructions', 'give' ),
+				'description'                  => __( 'Sent to the donor when they submit an offline donation.', 'give' ),
 				'notification_status'          => give_is_gateway_active( 'offline' ) ? 'enabled' : 'disabled',
 				'form_metabox_setting'         => true,
 				'notification_status_editable' => false,
@@ -247,6 +247,30 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 				$update_options["{$this->config['id']}_notification"] = $notification_status;
 				update_option( $option_name, $update_options );
 			}
+		}
+
+
+		/**
+		 * Register email settings to form metabox.
+		 *
+		 * @since  2.0
+		 * @access public
+		 *
+		 * @param array $settings
+		 * @param int   $form_id
+		 *
+		 * @return array
+		 */
+		public function add_metabox_setting_field( $settings, $form_id ) {
+			if ( in_array( 'offline', array_keys( give_get_enabled_payment_gateways($form_id) ) ) ) {
+				$settings[] = array(
+					'id'     => $this->config['id'],
+					'title'  => $this->config['label'],
+					'fields' => $this->get_setting_fields( $form_id ),
+				);
+			}
+
+			return $settings;
 		}
 	}
 

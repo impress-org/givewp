@@ -1,11 +1,17 @@
 # Change Log
 
-## [Unreleased](https://github.com/WordImpress/Give/tree/HEAD)
+## [1.18.18](https://github.com/WordImpress/Give/tree/1.18.18) (2017-12-20)
+[Full Changelog](https://github.com/WordImpress/Give/compare/1.8.17...1.18.18)
 
-[Full Changelog](https://github.com/WordImpress/Give/compare/1.8.17...HEAD)
+**Implemented enhancements:**
+
+- \[Give 2.0\] Show emails status in system report [\#2550](https://github.com/WordImpress/Give/issues/2550)
+- \[Give 2.0\] Merge Revamped Email Access Functionality of 1.8.17 [\#2504](https://github.com/WordImpress/Give/issues/2504)
 
 **Fixed bugs:**
 
+- Bug with shortcode inserter, creating new pages/posts and the enter key [\#2545](https://github.com/WordImpress/Give/issues/2545)
+- \[Give 2.0\] PHP Warning: Division by zero display when set Number of Donations in Donation Goal [\#2534](https://github.com/WordImpress/Give/issues/2534)
 - Minimum amount incorrect with changed decimal and thousands separators. [\#2526](https://github.com/WordImpress/Give/issues/2526)
 - Give PDF Report not output variable price. [\#2523](https://github.com/WordImpress/Give/issues/2523)
 - \[Give 2.0\] Emails sent twice when sent via Send Test Email under Settings \> Emails [\#2510](https://github.com/WordImpress/Give/issues/2510)
@@ -19,11 +25,15 @@
 - \[Give 2.0\] Donor's information removed from donation after upgrading database [\#2464](https://github.com/WordImpress/Give/issues/2464)
 - Invalid Argument Supplied when no Donation Levels [\#2451](https://github.com/WordImpress/Give/issues/2451)
 - IMPORTER: Donations are being inaccurately marked as duplicates [\#2420](https://github.com/WordImpress/Give/issues/2420)
+- Donor Profile Editor shortcode improvement [\#2407](https://github.com/WordImpress/Give/issues/2407)
 - Donations should be easily identified for form with Set Donation Method [\#2401](https://github.com/WordImpress/Give/issues/2401)
 - Plain text email template doesn't support links [\#2346](https://github.com/WordImpress/Give/issues/2346)
 
 **Closed issues:**
 
+- With Give activated, Purchasing and creating an account with WooCommerce forces the customer login after purchase [\#2539](https://github.com/WordImpress/Give/issues/2539)
+- Hide Offline Donation Email Notification When Offline Donation is disabled [\#2538](https://github.com/WordImpress/Give/issues/2538)
+- Country with no base state defined returns false instead of array\(\) [\#2528](https://github.com/WordImpress/Give/issues/2528)
 - \[Give 2.0\] Preview Email field description is wrong. [\#2518](https://github.com/WordImpress/Give/issues/2518)
 - \[Give 2.0\] Notice in meta\_query backward compatibility [\#2511](https://github.com/WordImpress/Give/issues/2511)
 - Add custom icon to our Add-ons for the WordPress Update screen [\#2509](https://github.com/WordImpress/Give/issues/2509)
@@ -32,6 +42,7 @@
 - \[Give 1.8.18\] PHP Notice on donation details page in back-end. [\#2496](https://github.com/WordImpress/Give/issues/2496)
 -  \[Give 2.0\] Clicking Email Notification Tab under New Donation Form goes blank [\#2489](https://github.com/WordImpress/Give/issues/2489)
 - Clean Up of Legacy Code for View it in browser link under Donation Receipt Email [\#2483](https://github.com/WordImpress/Give/issues/2483)
+- Give Worker still has Capabilities it Shouldn't [\#2476](https://github.com/WordImpress/Give/issues/2476)
 - Add a line to System Info to indicate whether the database updates have been done or not [\#2452](https://github.com/WordImpress/Give/issues/2452)
 - Improve sql query for give\_get\_purchase\_id\_by\_key fn [\#2443](https://github.com/WordImpress/Give/issues/2443)
 - Add give\_ignore\_user\_abort fn [\#2442](https://github.com/WordImpress/Give/issues/2442)
@@ -42,6 +53,18 @@
 
 **Merged pull requests:**
 
+- Release/1.8.18 [\#2551](https://github.com/WordImpress/Give/pull/2551) ([DevinWalker](https://github.com/DevinWalker))
+- MinorFix/2542 [\#2549](https://github.com/WordImpress/Give/pull/2549) ([mehul0810](https://github.com/mehul0810))
+- MinorFix/2545 [\#2548](https://github.com/WordImpress/Give/pull/2548) ([mehul0810](https://github.com/mehul0810))
+- Issue/2545 [\#2547](https://github.com/WordImpress/Give/pull/2547) ([mehul0810](https://github.com/mehul0810))
+- Issue/2539 [\#2546](https://github.com/WordImpress/Give/pull/2546) ([DevinWalker](https://github.com/DevinWalker))
+- issue/2476 - Give Worker Role Cleanup [\#2544](https://github.com/WordImpress/Give/pull/2544) ([DevinWalker](https://github.com/DevinWalker))
+- Filter and action add [\#2542](https://github.com/WordImpress/Give/pull/2542) ([raftaar1191](https://github.com/raftaar1191))
+- Minorfix/2407 [\#2540](https://github.com/WordImpress/Give/pull/2540) ([mehul0810](https://github.com/mehul0810))
+- MinorFix/2346 [\#2537](https://github.com/WordImpress/Give/pull/2537) ([mehul0810](https://github.com/mehul0810))
+- Issue/2534 [\#2536](https://github.com/WordImpress/Give/pull/2536) ([mehul0810](https://github.com/mehul0810))
+- Issue/2504 [\#2535](https://github.com/WordImpress/Give/pull/2535) ([mehul0810](https://github.com/mehul0810))
+- Minor Fix - Failing Unit Tests [\#2532](https://github.com/WordImpress/Give/pull/2532) ([mehul0810](https://github.com/mehul0810))
 - Issue/2483 - Remove legacy in browser receipt code [\#2527](https://github.com/WordImpress/Give/pull/2527) ([DevinWalker](https://github.com/DevinWalker))
 - Hide first multi-level repeatable row's delete button [\#2525](https://github.com/WordImpress/Give/pull/2525) ([DevinWalker](https://github.com/DevinWalker))
 - Fix: Give PDF Report not output variable price. \#2523 [\#2524](https://github.com/WordImpress/Give/pull/2524) ([jaydeeprami](https://github.com/jaydeeprami))

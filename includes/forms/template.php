@@ -619,6 +619,8 @@ add_action( 'give_after_donation_levels', 'give_display_checkout_button', 10, 2 
  *
  * @param  int $form_id The form ID.
  *
+ * @see For Pattern Attribute: https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/Form_validation
+ *
  * @return void
  */
 function give_user_info_fields( $form_id ) {
@@ -1858,6 +1860,9 @@ function __give_form_add_donation_hidden_field( $form_id, $args, $form ) {
 	<input type="hidden" name="give-form-minimum"
 		   value="<?php echo give_format_amount( give_get_form_minimum_price( $form_id ), array( 'sanitize' => false ) ); ?>"/>
 	<?php
+
+	// WP nonce field.
+	wp_nonce_field( "donation_form_nonce_{$form_id}", '_wpnonce', false );
 
 	// Price ID hidden field for variable (multi-level) donation forms.
 	if ( give_has_variable_prices( $form_id ) ) {

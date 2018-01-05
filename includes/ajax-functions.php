@@ -254,6 +254,7 @@ function give_ajax_get_states_field() {
 	$response = array(
 		'success'        => true,
 		'states_found'   => $states_found,
+		'states_label'   => $label,
 		'show_field'     => $show_field,
 		'states_require' => $states_require,
 		'data'           => $data,

@@ -964,6 +964,12 @@ class Give_API {
 				$donors['donors'][ $donor_count ]['stats']['total_donations'] = $donor_obj->purchase_count;
 				$donors['donors'][ $donor_count ]['stats']['total_spent']     = $donor_obj->purchase_value;
 
+				/** @var $donor \Give_Donor */
+				$donor = new Give_Donor( $donor_obj->id );
+
+				// Get donor's addresses.
+				$donors['donors'][ $donor_count ]['address'] = $donor->address;
+
 				$donor_count ++;
 
 			}
@@ -1640,6 +1646,7 @@ class Give_API {
 		);
 
 		$log_meta = array(
+			'api_query'  => http_build_query( $query ),
 			'request_ip' => give_get_ip(),
 			'user'       => $this->user_id,
 			'key'        => isset( $wp_query->query_vars['key'] ) ? $wp_query->query_vars['key'] : null,

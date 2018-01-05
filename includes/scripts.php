@@ -35,7 +35,7 @@ function give_load_scripts() {
 	// Localize / PHP to AJAX vars.
 	$localize_give_vars = apply_filters( 'give_global_script_vars', array(
 		'ajaxurl'             => give_get_ajax_url(),
-		'checkout_nonce'      => wp_create_nonce( 'give_checkout_nonce' ),
+		'checkout_nonce'      => wp_create_nonce( 'give_checkout_nonce' ), // Do not use this nonce. Its deprecated.
 		'currency'            => give_get_currency(),
 		'currency_sign'       => give_currency_filter( '' ),
 		'currency_pos'        => give_get_currency_position(),

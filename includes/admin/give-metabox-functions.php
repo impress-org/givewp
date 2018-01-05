@@ -50,6 +50,7 @@ function give_get_field_callback( $field ) {
 		case 'text_medium':
 		case 'text-small' :
 		case 'text_small' :
+		case 'number' :
 			$func_name = "{$func_name_prefix}_text_input";
 			break;
 

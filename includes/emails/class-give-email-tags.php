@@ -899,10 +899,14 @@ function give_email_tag_donation( $tag_args ) {
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
 			$payment             = new Give_Payment( $tag_args['payment_id'] );
-			$payment_meta        = $payment->payment_meta;
 			$level_title         = give_has_variable_prices( $payment->form_id );
 			$separator           = $level_title ? '-' : '';
-			$donation_form_title = strip_tags( give_check_variable( give_get_payment_form_title( $payment_meta, false, $separator ), 'empty', '' ) );
+			$donation_form_title = strip_tags( give_check_variable( give_get_donation_form_title(
+				$payment,
+				array(
+					'separator' => $separator,
+				)
+			), 'empty', '' ) );
 			break;
 	}
 
@@ -1213,21 +1217,31 @@ function give_email_tag_email_access_link( $tag_args ) {
 			array(
 				'give_nl' => $verify_key,
 			),
-			get_permalink( give_get_option( 'history_page' ) )
+			give_get_history_page_uri()
 		);
+
+		// Add Payment Key to email access url, if it exists.
+		if ( ! empty( $_GET['payment_key'] ) ) {
+			$access_url = add_query_arg(
+				array(
+					'payment_key' => give_clean( $_GET['payment_key'] ),
+				),
+				$access_url
+			);
+		}
 
 		if ( empty( $tag_args['email_content_type'] ) || 'text/html' === $tag_args['email_content_type'] ) {
 			$email_access_link = sprintf(
 				'<a href="%1$s" target="_blank">%2$s</a>',
 				esc_url( $access_url ),
-				__( 'Access Donation Details &raquo;', 'give' )
+				__( 'View your donation history &raquo;', 'give' )
 			);
 
 		} else {
 
 			$email_access_link = sprintf(
 				'%1$s: %2$s',
-				__( 'Access Donation Details', 'give' ),
+				__( 'View your donation history', 'give' ),
 				esc_url( $access_url )
 			);
 		}

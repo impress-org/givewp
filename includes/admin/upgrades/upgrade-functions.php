@@ -88,7 +88,9 @@ add_action( 'admin_init', 'give_do_automatic_upgrades' );
 add_action( 'give_upgrades', 'give_do_automatic_upgrades' );
 
 /**
- * Display Upgrade Notices
+ * Display Upgrade Notices.
+ *
+ * IMPORTANT: ALSO UPDATE INSTALL.PHP WITH THE ID OF THE UPGRADE ROUTINE SO IT DOES NOT AFFECT NEW INSTALLS.
  *
  * @since 1.0
  * @since 1.8.12 Update new update process code.
@@ -181,6 +183,13 @@ function give_show_upgrade_notices( $give_updates ) {
 		'id'       => 'v1818_assign_custom_amount_set_donation',
 		'version'  => '1.8.18',
 		'callback' => 'give_v1818_assign_custom_amount_set_donation',
+	) );
+
+	// v1.8.18 Cleanup the Give Worker Role Caps.
+	$give_updates->register( array(
+		'id'       => 'v1818_give_worker_role_cleanup',
+		'version'  => '1.8.18',
+		'callback' => 'give_v1818_give_worker_role_cleanup',
 	) );
 
 	// v2.0.0 Upgrades
@@ -1365,12 +1374,12 @@ function give_v1817_update_donation_iranian_currency_code() {
 			'status'         => 'any',
 			'order'          => 'ASC',
 			'post_type'      => array( 'give_payment' ),
-			'posts_per_page' => 20,
+			'posts_per_page' => 100,
 		)
 	);
 
 	if ( $payments->have_posts() ) {
-		$give_updates->set_percentage( $payments->found_posts, ( $give_updates->step * 20 ) );
+		$give_updates->set_percentage( $payments->found_posts, ( $give_updates->step * 100 ) );
 
 		while ( $payments->have_posts() ) {
 			$payments->the_post();
@@ -1403,17 +1412,6 @@ function give_v1817_upgrades() {
 		$give_settings['currency'] = 'IRR';
 		update_option( 'give_settings', $give_settings );
 	}
-}
-
-/**
- * Automatic Upgrade for release 1.8.18.
- *
- * @since 1.8.18
- */
-function give_v1818_upgrades() {
-
-	// Remove email_access_installed from give_settings.
-	give_delete_option( 'email_access_installed' );
 }
 
 /**
@@ -1463,7 +1461,8 @@ function give_v1817_process_cleanup_user_roles() {
 
 }
 
-/** Upgrade Routine - Clean up of User Roles for more flexibility.
+/**
+ * Upgrade Routine - Clean up of User Roles for more flexibility.
  *
  * @since 1.8.17
  */
@@ -1481,6 +1480,17 @@ function give_v1817_cleanup_user_roles() {
 	$roles->add_caps();
 
 	give_set_upgrade_complete( 'v1817_cleanup_user_roles' );
+}
+
+/**
+ * Automatic Upgrade for release 1.8.18.
+ *
+ * @since 1.8.18
+ */
+function give_v1818_upgrades() {
+
+	// Remove email_access_installed from give_settings.
+	give_delete_option( 'email_access_installed' );
 }
 
 /**
@@ -1503,7 +1513,7 @@ function give_v1818_assign_custom_amount_set_donation() {
 	);
 
 	if ( $donations->have_posts() ) {
-		$give_updates->set_percentage( $donations->found_posts, $give_updates->step * 20 );
+		$give_updates->set_percentage( $donations->found_posts, $give_updates->step * 100 );
 
 		while ( $donations->have_posts() ) {
 			$donations->the_post();
@@ -1532,6 +1542,54 @@ function give_v1818_assign_custom_amount_set_donation() {
 		// Update Ran Successfully.
 		give_set_upgrade_complete( 'v1818_assign_custom_amount_set_donation' );
 	}
+}
+
+/**
+ * Upgrade Routine - Removed Give Worker caps.
+ *
+ * See: https://github.com/WordImpress/Give/issues/2476
+ *
+ * @since 1.8.18
+ */
+function give_v1818_give_worker_role_cleanup(){
+
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
+
+	global $wp_roles;
+
+	if( ! ( $wp_roles instanceof  WP_Roles ) ) {
+		return;
+	}
+
+	// Remove Capabilities to user roles as required.
+	$remove_caps = array(
+		'give_worker' => array(
+			'delete_give_payments',
+			'delete_others_give_payments',
+			'delete_private_give_payments',
+			'delete_published_give_payments',
+			'edit_others_give_payments',
+			'edit_private_give_payments',
+			'edit_published_give_payments',
+			'read_private_give_payments',
+		),
+	);
+
+	foreach ( $remove_caps as $role => $caps ) {
+		foreach( $caps as $cap ) {
+			$wp_roles->remove_cap( $role, $cap );
+		}
+	}
+
+	$give_updates->percentage = 100;
+
+	// Create Give plugin roles.
+	$roles = new Give_Roles();
+	$roles->add_roles();
+	$roles->add_caps();
+
+	give_set_upgrade_complete( 'v1818_give_worker_role_cleanup' );
 }
 
 /**
@@ -1719,6 +1777,11 @@ function give_v20_logs_upgrades_callback() {
 		while ( $forms->have_posts() ) {
 			$forms->the_post();
 			global $post;
+
+			if( $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}give_logs WHERE ID=%d", $post->ID ) ) ) {
+				continue;
+			}
+
 			$term      = get_the_terms( $post->ID, 'give_log_type' );
 			$term      = ! is_wp_error( $term ) && ! empty( $term ) ? $term[0] : array();
 			$term_name = ! empty( $term ) ? $term->slug : '';
@@ -1886,11 +1949,10 @@ function give_v20_upgrades_donor_name() {
 	/* @var Give_Updates $give_updates */
 	$give_updates = Give_Updates::get_instance();
 
-	$args = array(
-		'offset' => ( 1 === $give_updates->step ) ? 0 : $give_updates->step * 100,
-	);
-
-	$donors = Give()->donors->get_donors( $args );
+	$donors = Give()->donors->get_donors( array(
+		'paged'  => $give_updates->step,
+		'number' => 100,
+	) );
 
 	if ( $donors ) {
 		$give_updates->set_percentage( count( $donors ), $give_updates->step * 100 );
@@ -1947,7 +2009,7 @@ function give_v20_upgrades_user_address() {
 	$user_query = new WP_User_Query(
 		array(
 			'number' => 100,
-			'offset' => ( 1 === $give_updates->step ) ? 0 : $give_updates->step * 100,
+			'paged'  => $give_updates->step,
 		)
 	);
 

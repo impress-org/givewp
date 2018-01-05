@@ -1016,6 +1016,9 @@ ASIDE
     #give-metabox-form-data .give_options_panel .give-repeatable-field-section .give-row.ui-sortable-helper {
       border-bottom: 0; }
 
+#_give_donation_levels_field .give-row:nth-of-type(2) .give-remove {
+  display: none !important; }
+
 #give-metabox-form-data .give-metabox-tabs {
   margin: 0;
   max-width: 170px;
@@ -2605,7 +2608,7 @@ input.give-price-field {
     top: 0;
     visibility: hidden; }
   .give_forms_page_give-donors #donor-address-wrapper .all-address .address {
-    min-height: 108px;
+    min-height: 146px;
     border: 1px solid #dad9d9;
     padding: 9px;
     border-radius: 5px;
@@ -2841,7 +2844,8 @@ div.sc-shortcode {
   height: 15px;
   width: 95%;
   border-radius: 4px;
-  overflow: hidden; }
+  overflow: hidden;
+  background-color: whitesmoke; }
   .give-progress > div {
     height: 100%;
     width: 0; }
