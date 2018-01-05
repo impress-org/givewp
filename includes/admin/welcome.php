@@ -175,7 +175,7 @@ class Give_Welcome {
             <div class="feature-section clearfix introduction">
 
                 <div class="video feature-section-item">
-                    <img src="<?php echo GIVE_PLUGIN_URL . '/assets/images/give-logo-photo-mashup.png' ?>"
+                    <img src="<?php echo GIVE_PLUGIN_URL . 'assets/dist/images/give-logo-photo-mashup.png' ?>"
                          alt="<?php esc_attr_e( 'Give', 'give' ); ?>">
                 </div>
 
@@ -212,7 +212,7 @@ class Give_Welcome {
                 </div>
 
                 <div class="content  feature-section-item last-feature">
-                    <img src="<?php echo GIVE_PLUGIN_URL . '/assets/images/admin/give-form-mockup.png' ?>"
+                    <img src="<?php echo GIVE_PLUGIN_URL . '/assets/dist/images/admin/give-form-mockup.png' ?>"
                          alt="<?php esc_attr_e( 'A Give donation form', 'give' ); ?>">
                 </div>
 
@@ -517,7 +517,7 @@ class Give_Welcome {
 	 */
 	public function get_welcome_header() {
 		// Badge for welcome page
-		$badge_url = GIVE_PLUGIN_URL . 'assets/images/give-badge.png';
+		$badge_url = GIVE_PLUGIN_URL . 'assets/dist/images/give-badge.png';
 		?>
         <h1 class="welcome-h1"><?php echo get_admin_page_title(); ?></h1>
 		<?php $this->social_media_elements(); ?>

@@ -77,7 +77,7 @@ class GIVE_CLI_COMMAND {
 	 * @subcommand    logo
 	 */
 	public function ascii( $args, $assoc_args ) {
-		WP_CLI::log( file_get_contents( GIVE_PLUGIN_DIR . 'assets/images/give-ascii-logo.txt' ) );
+		WP_CLI::log( file_get_contents( GIVE_PLUGIN_DIR . 'assets/dist/images/give-ascii-logo.txt' ) );
 	}
 
 

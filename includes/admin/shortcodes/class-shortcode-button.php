@@ -161,7 +161,7 @@ final class Give_Shortcode_Button {
 
 				// check current WP version
 				$img = ( version_compare( get_bloginfo( 'version' ), '3.5', '<' ) )
-					? '<img src="' . GIVE_PLUGIN_URL . 'assets/images/give-media.png" />'
+					? '<img src="' . GIVE_PLUGIN_URL . 'assets/dist/images/give-media.png" />'
 					: '<span class="wp-media-buttons-icon" id="give-media-button" style="background-image: url(' . give_svg_icons( 'give_grey' ) . ');"></span>';
 
 				reset( $shortcodes );
