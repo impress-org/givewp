@@ -169,4 +169,25 @@ class Give_Background_Updater extends WP_Background_Process {
 		delete_option( 'give_doing_upgrade' );
 		add_option( 'give_show_db_upgrade_complete_notice', 1, '', 'no' );
 	}
+
+	/**
+	 * Get memory limit
+	 *
+	 * @return int
+	 */
+	protected function get_memory_limit() {
+		if ( function_exists( 'ini_get' ) ) {
+			$memory_limit = ini_get( 'memory_limit' );
+		} else {
+			// Sensible default.
+			$memory_limit = '128M';
+		}
+
+		if ( ! $memory_limit || '-1' === $memory_limit ) {
+			// Unlimited, set to 32GB.
+			$memory_limit = '32000M';
+		}
+
+		return intval( $memory_limit ) * 1024 * 1024;
+	}
 }
