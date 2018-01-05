@@ -6,6 +6,7 @@ const inProduction = ('production' === process.env.NODE_ENV);
 const BrowserSyncPlugin = require( 'browser-sync-webpack-plugin' );
 const ImageminPlugin = require( 'imagemin-webpack-plugin' ).default;
 const CleanWebpackPlugin = require( 'clean-webpack-plugin' );
+const WebpackRTLPlugin = require('webpack-rtl-plugin');
 
 // Webpack config.
 const config = {
@@ -39,6 +40,11 @@ const config = {
 				test: require.resolve( 'accounting' ),
 				loader: 'expose-loader?accounting'
 			},
+			// Create RTL styles.
+			{
+				test: /\.css$/,
+				loader: ExtractTextPlugin.extract('style-loader'),
+			},
 			// SASS to CSS.
 			{
 				test: /\.scss$/,
@@ -64,7 +70,7 @@ const config = {
 			},
 			// Font files.
 			{
-				test: /\.(ttf|otf|eot|woff(2)?)(\?[a-z0-9]+)?$/,
+				test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
 				use: [
 					{
 						loader: 'file-loader',
@@ -97,6 +103,9 @@ const config = {
 		new CleanWebpackPlugin( [ 'assets/dist' ] ),
 
 		new ExtractTextPlugin( (inProduction ? 'css/[name].min.css' : 'css/[name].css') ),
+
+		// Create RTL css.
+		new WebpackRTLPlugin(),
 
 		// Copy images and SVGs
 		new CopyWebpackPlugin( [ { from: 'assets/src/images', to: 'images' }, ] ),
