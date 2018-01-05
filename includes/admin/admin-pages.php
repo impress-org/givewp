@@ -122,13 +122,9 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 
 	global $pagenow, $typenow;
 
-	$found     = false;
-	$post_type = isset( $_GET['post_type'] ) ? strtolower( $_GET['post_type'] ) : false;
-	$action    = isset( $_GET['action'] ) ? strtolower( $_GET['action'] ) : false;
-	$taxonomy  = isset( $_GET['taxonomy'] ) ? strtolower( $_GET['taxonomy'] ) : false;
-	$page      = isset( $_GET['page'] ) ? strtolower( $_GET['page'] ) : false;
-	$view      = isset( $_GET['view'] ) ? strtolower( $_GET['view'] ) : false;
-	$tab       = isset( $_GET['tab'] ) ? strtolower( $_GET['tab'] ) : false;
+	// Get params.
+	$get_query_args = isset( $_GET ) ? $_GET : array();
+	$is_admin       = false;
 
 	switch ( $passed_page ) {
 		case 'give_forms':
@@ -247,6 +243,14 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 						$found = true;
 					}
 					break;
+	$query_vars = wp_parse_args( $get_query_args, array(
+		'post_type' => false,
+		'action'    => false,
+		'taxonomy'  => false,
+		'page'      => false,
+		'view'      => false,
+		'tab'       => false,
+	) );
 			}
 			break;
 		case 'settings':
