@@ -184,24 +184,17 @@ function give_get_preview_email_header() {
 	//Start constructing HTML output.
 	$transaction_header = '<div style="margin:0;padding:10px 0;width:100%;background-color:#FFF;border-bottom:1px solid #eee; text-align:center;">';
 
-	//Inline JS function for switching donations.
-	$request_url = $_SERVER['REQUEST_URI'];
-
 	// Remove payment id query param if set from request url.
-	if ( $payment_id ) {
-		$request_url_data = wp_parse_url( $_SERVER['REQUEST_URI'] );
-		$query            = $request_url_data['query'];
-		$query            = str_replace( "&preview_id={$payment_id}", '', $query );
+	$request_url_data = wp_parse_url( $_SERVER['REQUEST_URI'] );
+	$query            = $request_url_data['query'];
+	$query            = remove_query_arg( array( 'preview_id' ), $query );
 
-		$request_url = home_url( '/?' . str_replace( '', '', $query ) );
-	}
-
+	$request_url = home_url( '/?' . str_replace( '', '', $query ) );
 
 	$transaction_header .= '<script>
 				 function change_preview(){
 				  var transactions = document.getElementById("give_preview_email_payment_id");
 			        var selected_trans = transactions.options[transactions.selectedIndex];
-				        console.log(selected_trans);
 				        if (selected_trans){
 				            var url_string = "' . $request_url . '&preview_id=" + selected_trans.value;
 				                window.location = url_string;
