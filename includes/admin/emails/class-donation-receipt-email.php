@@ -40,7 +40,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			$this->load( array(
 				'id'                   => 'donation-receipt',
 				'label'                => __( 'Donation Receipt', 'give' ),
-				'description'          => __( 'Donation Receipt Notification will be sent to donor when new donation received.', 'give' ),
+				'description'          => __( 'Sent to the donor when their donation completes or a pending donation is marked as complete.', 'give' ),
 				'notification_status'  => 'enabled',
 				'form_metabox_setting' => true,
 				'recipient_group_name' => __( 'Donor', 'give' ),
@@ -297,7 +297,7 @@ if ( ! class_exists( 'Give_Donation_Receipt_Email' ) ) :
 			$this->payment = new Give_Payment( $purchase_id );
 
 			if ( ! current_user_can( 'edit_give_payments', $this->payment->ID ) ) {
-				wp_die( esc_html__( 'You do not have permission to edit payments.', 'give' ), esc_html__( 'Error', 'give' ), array(
+				wp_die( esc_html__( 'You do not have permission to edit donations.', 'give' ), esc_html__( 'Error', 'give' ), array(
 					'response' => 403,
 				) );
 			}

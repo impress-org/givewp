@@ -33,8 +33,7 @@
  * Give is a tribute to the spirit and philosophy of Open Source. We at WordImpress gladly embrace the Open Source philosophy both
  * in how Give itself was developed, and how we hope to see others build more from our code base.
  *
- * Give would not have been possible without the tireless efforts of WordPress and the surrounding Open Source projects and their talented developers. Thank you all for your
- * contribution to WordPress.
+ * Give would not have been possible without the tireless efforts of WordPress and the surrounding Open Source projects and their talented developers. Thank you all for your contribution to WordPress.
  *
  * - The WordImpress Team
  */
@@ -318,7 +317,6 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->notices         = new Give_Notices();
 			$this->payment_meta    = new Give_DB_Payment_Meta();
 			$this->logs            = new Give_Logging();
-			$this->log_meta        = new Give_DB_Log_Meta();
 			$this->form_meta       = new Give_DB_Form_Meta();
 			$this->async_process   = new Give_Async_Process();
 			$this->assets          = new \Give\Includes\Assets();
@@ -326,7 +324,7 @@ if ( ! class_exists( 'Give' ) ) :
 			/**
 			 * Fire the action after Give core loads.
 			 *
-			 * @param class Give class instance.
+			 * @param Give class instance.
 			 *
 			 * @since 1.8.7
 			 */

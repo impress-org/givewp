@@ -119,7 +119,6 @@ class Give_Tooltips {
 
 		// Set classes.
 		$args['attributes']['class'] = ! empty( $args['attributes']['class'] ) ? $args['attributes']['class'] : '';
-		$args['attributes']['class'] = 'give-tooltip';
 		$args['attributes']['class'] .= " {$tooltip_pos[ $args['position'] ]}";
 		$args['attributes']['class'] .= ! empty( $args['status'] ) ? " {$tooltip_status[ $args['status'] ]}" : '';
 		$args['attributes']['class'] .= ! empty( $args['size'] ) ? " {$tooltip_size[ $args['size'] ]}" : '';

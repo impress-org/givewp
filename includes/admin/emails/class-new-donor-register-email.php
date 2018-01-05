@@ -33,8 +33,8 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 		public function init() {
 			$this->load( array(
 				'id'                    => 'new-donor-register',
-				'label'                 => __( 'New Donor Register', 'give' ),
-				'description'           => __( 'New Donor Register Notification will be sent to recipient(s) when new donor registered.', 'give' ),
+				'label'                 => __( 'New Donor Registration', 'give' ),
+				'description'           => __( 'Sent to designated recipient(s) when a new donor registers on the site.', 'give' ),
 				'has_recipient_field'   => true,
 				'notification_status'   => 'enabled',
 				'has_preview_header'    => true,
@@ -75,7 +75,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 		function get_default_email_message() {
 			$message = esc_attr__( 'New user registration on your site {sitename}:', 'give' ) . "\r\n\r\n";
 			$message .= esc_attr__( 'Username: {username}', 'give' ) . "\r\n\r\n";
-			$message .= esc_attr__( 'E-mail: {user_email}', 'give' ) . "\r\n";
+			$message .= esc_attr__( 'Email: {user_email}', 'give' ) . "\r\n";
 
 			/**
 			 * Filter the default email message
