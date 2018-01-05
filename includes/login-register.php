@@ -27,8 +27,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string Login form
  */
 function give_login_form( $login_redirect = '', $logout_redirect = '' ) {
+
 	if ( empty( $login_redirect ) ) {
-		$login_redirect = add_query_arg( 'give-login-success', 'true', give_get_current_page_url() );
+		$login_redirect = add_query_arg( 'give-login-success', 'true', give_get_history_page_uri() );
 	}
 
 	if ( empty( $logout_redirect ) ) {
@@ -391,13 +392,11 @@ function give_email_access_login() {
 
 				return true;
 			}
-
 		} else {
 
 			give_set_error( 'give-no-donations', __( 'We were unable to find any donations associated with the email address provided. Please try again using another email.', 'give' ) );
 
-		}  // End if().
-
+		}
 	} // End if().
 
 }
