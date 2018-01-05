@@ -730,9 +730,9 @@ var give_setting_edit = false;
 		 *
 		 * @since 1.8.14
 		 */
-		changeAlert: function() {
+		changeAlert: function () {
 
-			$( window ).bind( 'beforeunload', function( e ) {
+			$( window ).bind( 'beforeunload', function ( e ) {
 
 				var confirmationMessage = give_vars.setting_not_save_message;
 
@@ -966,7 +966,6 @@ var give_setting_edit = false;
 
 					submitButton.addClass('button-disabled');
 					$( 'form.give-export-form select' ).attr( 'disabled', true ).trigger("chosen:updated");
-
 					$(this).find('.notice-wrap').remove();
 					$(this).append('<div class="notice-wrap give-clearfix"><span class="spinner is-active"></span><div class="give-progress"><div></div></div></div>');
 
