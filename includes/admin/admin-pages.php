@@ -111,6 +111,7 @@ add_action( 'admin_menu', 'give_add_options_links', 10 );
  *  starting on `admin_menu` hook.
  *
  * @since 1.0
+ * @since 2.1 Simplified function.
  *
  * @param string $passed_page Optional. Main page's slug
  * @param string $passed_view Optional. Page view ( ex: `edit` or `delete` )
