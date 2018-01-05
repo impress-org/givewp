@@ -965,6 +965,8 @@ var give_setting_edit = false;
 					var data = $(this).serialize();
 
 					submitButton.addClass('button-disabled');
+					$( 'form.give-export-form select' ).attr( 'disabled', true ).trigger("chosen:updated");
+
 					$(this).find('.notice-wrap').remove();
 					$(this).append('<div class="notice-wrap give-clearfix"><span class="spinner is-active"></span><div class="give-progress"><div></div></div></div>');
 
@@ -1011,6 +1013,7 @@ var give_setting_edit = false;
 						var export_form = $('.give-export-form').find('.give-progress').parent().parent();
 						var notice_wrap = export_form.find('.notice-wrap');
 						export_form.find('.button-disabled').removeClass('button-disabled');
+						$( 'form.give-export-form select' ).attr( 'disabled', false ).trigger("chosen:updated");
 						if (response.error) {
 							var error_message = response.message;
 							notice_wrap.html('<div class="updated error"><p>' + error_message + '</p></div>');
