@@ -159,6 +159,49 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 				'give-payment-history',
 			);
 
+			if ( in_array( $pagenow, $give_edit_pages, 1 ) ) {
+				switch ( $passed_view ) {
+					case 'donors':
+					case 'gateways':
+					case 'export':
+					case 'logs':
+					case 'general':
+					case 'emails':
+					case 'display':
+					case 'licenses':
+					case 'api':
+					case 'advanced':
+					case 'system_info':
+					case 'addons':
+					case 'payments':
+					case 'overview':
+					case 'reports':
+					case 'notes':
+						$is_admin = (bool) ( in_array( $query_vars['page'], $setting_page_slugs, 1 ) && in_array( $passed_view, $expected_view, 1 ) );
+						break;
+					case 'list-table':
+					case 'new':
+						$is_admin = (bool) ( ( 'edit' !== $query_vars['action'] && in_array( $query_vars['taxonomy'], $taxonomy_page_slugs, 1 ) )
+							|| ( in_array( $query_vars['page'], array( 'give-payment-history', 'give-reports' ), 1 ) && false === $query_vars['view'] )
+						);
+						break;
+					case 'edit':
+						$is_admin = (bool) ( 'edit' === $query_vars['action'] || 'give-payment-history' === $query_vars['page'] && 'view-payment-details' === $query_vars['view'] );
+						break;
+					case 'earnings':
+						$is_admin = ( bool) ( in_array( $query_vars['view'], array( 'earnings', '-1', false ), 1 ) );
+						break;
+					default:
+						if (
+							in_array( $pagenow, $give_edit_pages, 1 )
+							|| ( 'give_forms' === $typenow || 'give_forms' === $query_vars['post_type'] )
+							|| in_array( $query_vars['page'], $setting_page_slugs, 1 )
+							|| in_array( $query_vars['taxonomy'], $taxonomy_page_slugs, 1 )
+						) {
+							$is_admin = true;
+						}
+						break;
+				}
 			}
 		}
 	} else {
