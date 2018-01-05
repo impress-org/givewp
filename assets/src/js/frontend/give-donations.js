@@ -1,6 +1,6 @@
 import accounting from 'accounting';
 
-let Give = 'undefined' !== typeof Give ? Give : {};
+let Give = {};
 
 /**
  *  This API is under development.

@@ -313,7 +313,7 @@ class Give_Welcome {
                 </div>
 
                 <div class="content feature-section-item last-feature">
-                    <img src="<?php echo GIVE_PLUGIN_URL; ?>assets/images/admin/getting-started-add-new-form.png">
+                    <img src="<?php echo GIVE_PLUGIN_URL; ?>assets/dist/images/admin/getting-started-add-new-form.png">
                 </div>
 
             </div>
@@ -322,7 +322,7 @@ class Give_Welcome {
             <div class="feature-section clearfix">
 
                 <div class="content feature-section-item multi-level-gif">
-                    <img src="<?php echo GIVE_PLUGIN_URL; ?>assets/images/admin/getting-started-new-form-multi-level.gif">
+                    <img src="<?php echo GIVE_PLUGIN_URL; ?>assets/dist/images/admin/getting-started-new-form-multi-level.gif">
                 </div>
 
                 <div class="content feature-section-item last-feature">
@@ -345,7 +345,7 @@ class Give_Welcome {
                 </div>
 
                 <div class="content feature-section-item last-feature">
-                    <img src="<?php echo GIVE_PLUGIN_URL; ?>assets/images/admin/getting-started-add-content.png">
+                    <img src="<?php echo GIVE_PLUGIN_URL; ?>assets/dist/images/admin/getting-started-add-content.png">
                 </div>
 
             </div>
@@ -354,7 +354,7 @@ class Give_Welcome {
             <div class="feature-section clearfix">
 
                 <div class="content feature-section-item display-options">
-                    <img src="<?php echo GIVE_PLUGIN_URL; ?>assets/images/admin/getting-started-display-options.png">
+                    <img src="<?php echo GIVE_PLUGIN_URL; ?>assets/dist/images/admin/getting-started-display-options.png">
                 </div>
 
                 <div class="content feature-section-item last-feature">

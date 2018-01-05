@@ -137,7 +137,6 @@ var give_setting_edit = false;
 
 		} );
 
-		console.log($give_chosen_containers);
 		// Initiate chosen.
 		$give_chosen_containers.chosen( {
 			inherit_select_classes: true,

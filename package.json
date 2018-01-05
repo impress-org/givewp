@@ -29,6 +29,7 @@
     "browser-sync": "^2.23.2",
     "browser-sync-webpack-plugin": "^1.2.0",
     "clean-webpack-plugin": "^0.1.17",
+    "copy-webpack-plugin": "latest",
     "css-loader": "^0.28.7",
     "cssnano": "^3.10.0",
     "eslint": "^4.8.0",

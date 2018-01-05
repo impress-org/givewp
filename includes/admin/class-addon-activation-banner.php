@@ -119,7 +119,7 @@ class Give_Addon_Activation_Banner {
 
 			<div class="updated give-addon-alert give-notice" style="display: none">
 
-				<img src="<?php echo GIVE_PLUGIN_URL; ?>assets/images/svg/give-icon-full-circle.svg" class="give-logo"/>
+				<img src="<?php echo GIVE_PLUGIN_URL; ?>assets/dist/images/give-icon-full-circle.svg" class="give-logo"/>
 
 				<div class="give-alert-message">
 					<h3><?php

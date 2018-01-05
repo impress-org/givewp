@@ -1,4 +1,5 @@
 const webpack = require( 'webpack' );
+const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
 const path = require( 'path' );
 const ExtractTextPlugin = require( 'extract-text-webpack-plugin' );
 const inProduction = ('production' === process.env.NODE_ENV);
@@ -76,7 +77,7 @@ const config = {
 			},
 			// Image files.
 			{
-				test: /\.(png|jpg|gif)$/,
+				test: /\.(png|jpe?g|gif|svg)$/,
 				use: [
 					{
 						loader: 'file-loader',
@@ -91,9 +92,20 @@ const config = {
 	},
 	// Plugins. Gotta have em'.
 	plugins: [
+
 		new ExtractTextPlugin( (inProduction ? 'css/[name].min.css' : 'css/[name].css') ),
+
+		// Copy admin images and SVGs
+		new CopyWebpackPlugin( [
+			{ from: 'assets/src/images/admin', to: 'images/admin' },
+		] ),
+
 		new CleanWebpackPlugin( [ 'assets/dist' ] ),
+
+		// Minify images.
 		new ImageminPlugin( { test: /\.(jpe?g|png|gif|svg)$/i } ),
+
+		// Setup browser sync. Note: don't use ".local" TLD as it will be very slow. We recommending using ".test"
 		new BrowserSyncPlugin( {
 			files: [
 				'**/*.php'
@@ -101,7 +113,7 @@ const config = {
 			host: 'localhost',
 			port: 3000,
 			proxy: 'give.test' // This is the proxy you should be using. If not ... (specify... wp-config?)
-		} ),
+		} )
 	]
 };
 
