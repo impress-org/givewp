@@ -575,7 +575,7 @@ var give_setting_edit = false;
 			this.main_setting_update_notice();
 			this.verify_settings();
 			this.saveButtonTriggered();
-			this.changeSettingsUnload();
+			this.changeAlert();
 			this.detectSettingsChange();
 		},
 
@@ -730,19 +730,17 @@ var give_setting_edit = false;
 		 *
 		 * @since 1.8.14
 		 */
-		changeSettingsUnload: function() {
-			if ( $( '.give-settings-setting-page' ).length > 0 ) {
+		changeAlert: function() {
 
-				$( window ).bind( 'beforeunload', function( e ) {
+			$( window ).bind( 'beforeunload', function( e ) {
 
-					var confirmationMessage = give_vars.setting_not_save_message;
+				var confirmationMessage = give_vars.setting_not_save_message;
 
-					if ( give_setting_edit ) {
-						( e || window.event ).returnValue = confirmationMessage; //Gecko + IE.
-						return confirmationMessage;                              //Webkit, Safari, Chrome.
-					}
-				});
-			}
+				if ( give_setting_edit ) {
+					( e || window.event ).returnValue = confirmationMessage; //Gecko + IE.
+					return confirmationMessage;                              //Webkit, Safari, Chrome.
+				}
+			});
 		},
 
 		/**
