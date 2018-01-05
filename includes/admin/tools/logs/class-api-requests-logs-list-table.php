@@ -144,7 +144,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 			echo sprintf(
 				'<p><strong>%1$s</strong></p><div>%2$s</div>',
 				__( 'API Request:', 'give' ),
-				Give()->log_meta->get_meta( $item['ID'], '_give_log_api_query', true )
+				Give()->logs->logmeta_db->get_meta( $item['ID'], '_give_log_api_query', true )
 			);
 
 			// Print Log Content, if not empty.
@@ -160,14 +160,14 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 			echo sprintf(
 				'<p><strong>%1$s</strong></p><div>%2$s</div>',
 				__( 'API User:', 'give' ),
-				Give()->log_meta->get_meta( $item['ID'], '_give_log_user', true )
+				Give()->logs->logmeta_db->get_meta( $item['ID'], '_give_log_user', true )
 			);
 
 			// Print the logged key used by API.
 			echo sprintf(
 				'<p><strong>%1$s</strong></p><div>%2$s</div>',
 				__( 'API Key:', 'give' ),
-				Give()->log_meta->get_meta( $item['ID'], '_give_log_key', true )
+				Give()->logs->logmeta_db->get_meta( $item['ID'], '_give_log_key', true )
 			);
 
 			// Print the API Request Date.
@@ -344,7 +344,7 @@ class Give_API_Request_Log_Table extends WP_List_Table {
 
 				$logs_data[] = array(
 					'ID'          => $log->ID,
-					'ip'          => Give()->log_meta->get_meta( $log->ID, '_give_log_request_ip', true ),
+					'ip'          => Give()->logs->logmeta_db->get_meta( $log->ID, '_give_log_request_ip', true ),
 					'date'        => $log->log_date,
 					'log_content' => $log->log_content,
 					'log_date'    => $log->log_date,
