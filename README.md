@@ -45,5 +45,17 @@ Support requests in issues on this repository will be closed on sight.
 
 To get started developing on the Give platform you will need to perform the following steps:
 
+1. Ensure that you have `SCRIPT_DEBUG` enabled within your wp-config.php file. Here's a good example of wp-config.php for debugging:
+    ```
+     // Enable WP_DEBUG mode
+    define( 'WP_DEBUG', true );
+    
+    // Enable Debug logging to the /wp-content/debug.log file
+    define( 'WP_DEBUG_LOG', true );
+   
+    // Use dev versions of core JS and CSS files (only needed if you are modifying these core files)
+    define( 'SCRIPT_DEBUG', true );
+    ```
+2. 
 
 

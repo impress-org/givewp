@@ -1,15 +1,7 @@
 <?php
-/**
- * Defines the Assets class
- *
- * @package Give\Includes
- * @since   2.1.0
- */
-
-namespace Give\Includes;
 
 /**
- * Loads the plugin's assets.
+ * Loads the plugin's scripts and styles.
  *
  * Registers and enqueues plugin styles and scripts. Asset versions are based
  * on the current plugin version.
@@ -19,7 +11,7 @@ namespace Give\Includes;
  *
  * @since 2.1.0
  */
-class Assets {
+class Give_Scripts {
 
 	/**
 	 * Suffix used when loading minified assets.
@@ -55,17 +47,17 @@ class Assets {
 	 */
 	public function __construct() {
 		$this->suffix         = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-		$this->direction      = ( is_rtl() ) ? '-rtl' : '';
-		$this->scripts_footer = ( give_is_setting_enabled( give_get_option( 'scripts_footer' ) ) ) ? true : false;
-		$this->register();
+		$this->direction      = ( is_rtl() || isset( $_GET['d'] ) && 'rtl' === $_GET['d'] ) ? '.rtl' : '';
+		$this->scripts_footer = give_is_setting_enabled( give_get_option( 'scripts_footer' ) ) ? true : false;
+		$this->init();
 	}
 
 	/**
-	 * Registers assets via WordPress hooks.
+	 * Fires off hooks to register assets in WordPress.
 	 *
 	 * @since 2.1.0
 	 */
-	public function register() {
+	public function init() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_styles' ) );
@@ -74,6 +66,8 @@ class Assets {
 		if ( is_admin() ) {
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_styles' ) );
+			add_action( 'admin_head', array( $this, 'global_admin_head' ) );
+
 		} else {
 			add_action( 'wp_enqueue_scripts', array( $this, 'public_enqueue_styles' ) );
 			add_action( 'wp_enqueue_scripts', array( $this, 'public_enqueue_scripts' ) );
@@ -88,10 +82,11 @@ class Assets {
 	public function register_styles() {
 
 		// WP-admin.
-		wp_register_style( 'give-admin-styles', GIVE_PLUGIN_URL . 'assets/dist/css/admin' . $this->suffix . '.css', array(), GIVE_VERSION );
+		wp_register_style( 'give-admin-styles', GIVE_PLUGIN_URL . 'assets/dist/css/admin' . $this->suffix . $this->direction . '.css', array(), GIVE_VERSION );
 
 		// Frontend.
 		wp_register_style( 'give-styles', $this->get_frontend_stylesheet_uri(), array(), GIVE_VERSION, 'all' );
+
 	}
 
 	/**
@@ -102,7 +97,12 @@ class Assets {
 	public function register_scripts() {
 
 		// WP-Admin.
-		wp_register_script( 'give-admin-scripts', GIVE_PLUGIN_URL . 'assets/dist/js/admin' . $this->suffix . '.js', array( 'jquery', 'jquery-ui-datepicker', 'wp-color-picker', 'jquery-query'  ), GIVE_VERSION );
+		wp_register_script( 'give-admin-scripts', GIVE_PLUGIN_URL . 'assets/dist/js/admin' . $this->suffix . '.js', array(
+			'jquery',
+			'jquery-ui-datepicker',
+			'wp-color-picker',
+			'jquery-query',
+		), GIVE_VERSION );
 
 		// Frontend.
 		wp_register_script( 'give', GIVE_PLUGIN_URL . 'assets/dist/js/give' . $this->suffix . '.js', array( 'jquery' ), GIVE_VERSION, $this->scripts_footer );
@@ -122,16 +122,13 @@ class Assets {
 			return;
 		}
 
-
 		// Give enqueues.
 		wp_enqueue_style( 'give-admin-styles' );
 		wp_enqueue_style( 'give-admin-bar-notification' );
 
-
 		// WP Core enqueues.
 		wp_enqueue_style( 'wp-color-picker' );
-		wp_enqueue_style( 'thickbox' ); //@TODO remove once we have modal API.
-
+		wp_enqueue_style( 'thickbox' ); // @TODO remove once we have modal API.
 
 	}
 
@@ -149,9 +146,6 @@ class Assets {
 			return;
 		}
 
-		global $post;
-		$give_options = give_get_settings();
-
 		// WP Scripts.
 		wp_enqueue_script( 'wp-color-picker' );
 		wp_enqueue_script( 'jquery-ui-datepicker' );
@@ -159,6 +153,19 @@ class Assets {
 
 		// Give admin scripts.
 		wp_enqueue_script( 'give-admin-scripts' );
+
+		// Localize admin scripts
+		$this->admin_localize_scripts();
+
+	}
+
+	/**
+	 * Localize admin scripts.
+	 */
+	public function admin_localize_scripts() {
+
+		global $post;
+		$give_options = give_get_settings();
 
 		// Price Separators.
 		$thousand_separator = give_get_price_thousand_separator();
@@ -241,9 +248,34 @@ class Assets {
 			'core_settings_import'              => 'give_core_settings_import',
 			'setting_not_save_message'          => __( 'Changes you made may not be saved.', 'give' ),
 		) );
-
 	}
 
+	/**
+	 * Global admin head.
+	 */
+	public function global_admin_head() {
+		?>
+		<style type="text/css" media="screen">
+			@font-face {
+				font-family: 'give-icomoon';
+				src: url('<?php echo GIVE_PLUGIN_URL . 'assets/dist/fonts/icomoon.eot?ngjl88'; ?>');
+				src: url('<?php echo GIVE_PLUGIN_URL . 'assets/dist/fonts/icomoon.eot?#iefixngjl88'?>') format('embedded-opentype'),
+				url('<?php echo GIVE_PLUGIN_URL . 'assets/dist/fonts/icomoon.woff?ngjl88'; ?>') format('woff'),
+				url('<?php echo GIVE_PLUGIN_URL . 'assets/dist/fonts/icomoon.svg?ngjl88#icomoon'; ?>') format('svg');
+				font-weight: normal;
+				font-style: normal;
+			}
+			.dashicons-give:before, #adminmenu div.wp-menu-image.dashicons-give:before {
+				font-family: 'give-icomoon';
+				font-size: 18px;
+				width: 18px;
+				height: 18px;
+				content: "\e800";
+			}
+		</style>
+		<?php
+
+	}
 
 	/**
 	 * Enqueues public styles.
@@ -261,10 +293,16 @@ class Assets {
 	 * @since 2.1.0
 	 */
 	public function public_enqueue_scripts() {
-
 		wp_enqueue_script( 'give' );
 
-		// Localize / PHP to AJAX vars.
+		$this->public_localize_scripts();
+	}
+
+	/**
+	 * Localize / PHP to AJAX vars.
+	 */
+	public function public_localize_scripts() {
+
 		$localize_give_vars = apply_filters( 'give_global_script_vars', array(
 			'ajaxurl'                    => give_get_ajax_url(),
 			'checkout_nonce'             => wp_create_nonce( 'give_checkout_nonce' ), // Do not use this nonce. Its deprecated.
@@ -327,20 +365,16 @@ class Assets {
 	 */
 	public function get_frontend_stylesheet_uri() {
 
-		// Use minified libraries if SCRIPT_DEBUG is turned off.
-		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-		// LTR or RTL files.
-		$direction     = ( is_rtl() ) ? '-rtl' : '';
-		$file          = 'give' . $direction . $suffix . '.css';
+		$file          = 'give' . $this->suffix . $this->direction . '.css';
 		$templates_dir = give_get_theme_template_dir_name();
+
 		// Directory paths to CSS files to support checking via file_exists().
 		$child_theme_style_sheet    = trailingslashit( get_stylesheet_directory() ) . $templates_dir . $file;
-		$child_theme_style_sheet_2  = trailingslashit( get_stylesheet_directory() ) . $templates_dir . 'give' . $direction . '.css';
+		$child_theme_style_sheet_2  = trailingslashit( get_stylesheet_directory() ) . $templates_dir . 'give' . $this->direction . '.css';
 		$parent_theme_style_sheet   = trailingslashit( get_template_directory() ) . $templates_dir . $file;
-		$parent_theme_style_sheet_2 = trailingslashit( get_template_directory() ) . $templates_dir . 'give' . $direction . '.css';
+		$parent_theme_style_sheet_2 = trailingslashit( get_template_directory() ) . $templates_dir . 'give' . $this->direction . '.css';
 		$give_plugin_style_sheet    = trailingslashit( GIVE_PLUGIN_DIR ) . 'assets/dist/css/' . $file;
-
-		$uri = false;
+		$uri                        = false;
 
 		/**
 		 * Locate the Give stylesheet:
@@ -352,13 +386,13 @@ class Assets {
 		 */
 		if ( file_exists( $child_theme_style_sheet ) || ( ! empty( $suffix ) && ( $nonmin = file_exists( $child_theme_style_sheet_2 ) ) ) ) {
 			if ( ! empty( $nonmin ) ) {
-				$uri = trailingslashit( get_stylesheet_directory_uri() ) . $templates_dir . 'give' . $direction . '.css';
+				$uri = trailingslashit( get_stylesheet_directory_uri() ) . $templates_dir . 'give' . $this->direction . '.css';
 			} else {
 				$uri = trailingslashit( get_stylesheet_directory_uri() ) . $templates_dir . $file;
 			}
 		} elseif ( file_exists( $parent_theme_style_sheet ) || ( ! empty( $suffix ) && ( $nonmin = file_exists( $parent_theme_style_sheet_2 ) ) ) ) {
 			if ( ! empty( $nonmin ) ) {
-				$uri = trailingslashit( get_template_directory_uri() ) . $templates_dir . 'give' . $direction . '.css';
+				$uri = trailingslashit( get_template_directory_uri() ) . $templates_dir . 'give' . $this->direction . '.css';
 			} else {
 				$uri = trailingslashit( get_template_directory_uri() ) . $templates_dir . $file;
 			}

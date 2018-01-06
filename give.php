@@ -33,7 +33,8 @@
  * Give is a tribute to the spirit and philosophy of Open Source. We at WordImpress gladly embrace the Open Source philosophy both
  * in how Give itself was developed, and how we hope to see others build more from our code base.
  *
- * Give would not have been possible without the tireless efforts of WordPress and the surrounding Open Source projects and their talented developers. Thank you all for your contribution to WordPress.
+ * Give would not have been possible without the tireless efforts of WordPress and the surrounding Open Source projects and their talented developers. Thank you all for your
+ * contribution to WordPress.
  *
  * - The WordImpress Team
  */
@@ -223,11 +224,11 @@ if ( ! class_exists( 'Give' ) ) :
 		public $async_process;
 
 		/**
-		 * Give assets object.
+		 * Give scripts Object.
 		 *
-		 * @var    \Give\Includes\Assets
+		 * @var Give_Scripts
 		 */
-		public $assets;
+		public $scripts;
 
 		/**
 		 * Main Give Instance
@@ -262,13 +263,12 @@ if ( ! class_exists( 'Give' ) ) :
 
 			// Bailout: Need minimum php version to load plugin.
 			if ( function_exists( 'phpversion' ) && version_compare( GIVE_REQUIRED_PHP_VERSION, phpversion(), '>' ) ) {
-				add_action( 'admin_notices', array( $this, 'minmum_phpversion_notice' ) );
+				add_action( 'admin_notices', array( $this, 'minimum_phpversion_notice' ) );
 
 				return;
 			}
 
 			$this->setup_constants();
-
 			$this->includes();
 			$this->init_hooks();
 
@@ -319,7 +319,7 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->logs            = new Give_Logging();
 			$this->form_meta       = new Give_DB_Form_Meta();
 			$this->async_process   = new Give_Async_Process();
-			$this->assets          = new \Give\Includes\Assets();
+			$this->scripts         = new Give_Scripts();
 
 			/**
 			 * Fire the action after Give core loads.
@@ -436,7 +436,6 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/give-metabox-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-cache.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/post-types.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/class-assets.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/ajax-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/actions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/filters.php';
@@ -445,6 +444,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-notices.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-translation.php';
 
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-scripts.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-roles.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-template-loader.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donate-form.php';
@@ -591,12 +591,12 @@ if ( ! class_exists( 'Give' ) ) :
 
 
 		/**
-		 *  Show minimu phpversion notice
+		 *  Show minimum PHP version notice.
 		 *
 		 * @since  1.8.12
 		 * @access public
 		 */
-		public function minmum_phpversion_notice() {
+		public function minimum_phpversion_notice() {
 			// Bailout.
 			if ( ! is_admin() ) {
 				return;
