@@ -45,7 +45,27 @@ Support requests in issues on this repository will be closed on sight.
 
 To get started developing on the Give platform you will need to perform the following steps:
 
-1. Ensure that you have `SCRIPT_DEBUG` enabled within your wp-config.php file. Here's a good example of wp-config.php for debugging:
+1. Create a new WordPress site at `give.test`.
+
+2. `cd` into your local plugins directory: `/path/to/wp-content/plugins/`
+
+3. Clone the repository from GitHub: `https://github.com/WordImpress/Give.git`
+
+4. Run composer to set up dependancies: `composer install`
+
+5. Install npm packages: `npm install`
+
+6. Activate the plugin in WordPress
+
+### NPM Commands
+
+* `npm run watch` - Live reloads JS and SASS files. Typically you'll run this command before you start development. 
+* `npm run dev` - Runs a one time build for development. No production files are created.
+* `npm run production` - Builds the minified production files for release.
+
+### Development Notes
+
+* Ensure that you have `SCRIPT_DEBUG` enabled within your wp-config.php file. Here's a good example of wp-config.php for debugging:
     ```
      // Enable WP_DEBUG mode
     define( 'WP_DEBUG', true );
@@ -56,6 +76,4 @@ To get started developing on the Give platform you will need to perform the foll
     // Use dev versions of core JS and CSS files (only needed if you are modifying these core files)
     define( 'SCRIPT_DEBUG', true );
     ```
-2. 
-
 
