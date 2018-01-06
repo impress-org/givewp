@@ -1,5 +1,6 @@
 // Plugins
 import 'chosen-js';
+import 'accounting';
 
 // Give plugins.
 import '../plugins/give-ajaxify-fields';
