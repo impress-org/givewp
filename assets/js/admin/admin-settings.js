@@ -67,17 +67,23 @@ jQuery(document).ready(function ($) {
 	 */
 	$( 'a.give-repeat-setting-field' ).on( 'click', function(e){
 		e.preventDefault();
-		var parent = $(this).parents('td'),
-			$first_setting_field_group = $( 'p:first-child', parent ),
+		var $parent = $(this).parents('td'),
+			$first_setting_field_group = $( 'p:first-child', $parent ),
 			$new_setting_field_group = $first_setting_field_group.clone(),
-			setting_field_count = $( 'p', parent ).not('.give-field-description').length;
+			setting_field_count = $( 'p', $parent ).not('.give-field-description').length,
+			fieldID = $(this).data('id') + '_' + (++setting_field_count),
+			$prev_field = $(this).prev();
 
-		// Set id and value for setting field.
-		$( 'input', $new_setting_field_group ).attr( 'id', $(this).data('id') + '_' + (++setting_field_count) );
-		$( 'input', $new_setting_field_group ).val( '' );
+		// Create new field only if previous is non empty.
+		if( $( 'input', $prev_field ).val() ) {
+			// Add setting field html to dom.
+			$(this).before( $new_setting_field_group );
+			$prev_field = $(this).prev();
 
-		// Add setting field html to dom.
-		$(this).before( $new_setting_field_group );
+			// Set id and value for setting field.
+			$( 'input', $prev_field ).attr( 'id', fieldID );
+			$( 'input', $prev_field ).val( '' );
+		}
 
 		return false;
 	});
