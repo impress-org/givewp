@@ -321,6 +321,20 @@ class Give_Updates {
 			return;
 		}
 
+		// Show notice if ajax is not working.
+		if ( ! give_test_ajax_works() ) {
+			Give()->notices->register_notice(
+				array(
+					'id'          => 'give_db_upgrade_ajax_inaccessible',
+					'type'        => 'error',
+					'description' => __( 'Give needs to upgrade the database but cannot because AJAX is not functioning properly. Please contact your host and ask them to ensure admin-ajax.php is accessible.', 'give' ),
+					'show'        => true,
+				)
+			);
+
+			return;
+		}
+
 		// Show db upgrade completed notice.
 		if ( ! empty( $_GET['give-db-update-completed'] ) ) {
 			Give()->notices->register_notice( array(
