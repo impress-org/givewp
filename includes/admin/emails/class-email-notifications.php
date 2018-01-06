@@ -213,12 +213,13 @@ class Give_Email_Notifications {
 			$email_message = $email->preview_email_template_tags( $email->get_email_message( $form_id ) );
 
 			// Set email template.
-			Give()->emails->html    = true;
 			Give()->emails->__set( 'template', $email->get_email_template( $form_id ) );
 
 			if ( 'text/plain' === $email->config['content_type'] ) {
-				// Give()->emails->__set( 'html', false );
 				Give()->emails->__set( 'template', 'none' );
+				Give()->emails->html = false;
+			} else {
+				Give()->emails->html = true;
 			}
 
 			if ( $email_message = Give()->emails->build_email( $email_message ) ) {
