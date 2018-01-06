@@ -45,19 +45,23 @@ Support requests in issues on this repository will be closed on sight.
 
 To get started developing on the Give platform you will need to perform the following steps:
 
-1. Create a new WordPress site at `give.test`.
+1. Create a new WordPress site with `give.test` as the URL. We recommend [Local](https://local.getflywheel.com/) for easily creating development environements.
 
 2. `cd` into your local plugins directory: `/path/to/wp-content/plugins/`
 
-3. Clone the repository from GitHub: `https://github.com/WordImpress/Give.git`
+3. Clone this repository from GitHub into your plugins directory: `https://github.com/WordImpress/Give.git`
 
 4. Run composer to set up dependancies: `composer install`
 
-5. Install npm packages: `npm install`
+5. Run npm install to get the necessary packages: `npm install`
 
-6. Activate the plugin in WordPress
+6. Activate the plugin in WordPress.
+
+That's it. You're now ready to start development.
 
 ### NPM Commands
+
+Give relies on several npm commands to get your started:
 
 * `npm run watch` - Live reloads JS and SASS files. Typically you'll run this command before you start development. 
 * `npm run dev` - Runs a one time build for development. No production files are created.
