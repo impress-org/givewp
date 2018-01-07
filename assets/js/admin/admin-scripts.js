@@ -2789,7 +2789,7 @@ var give_setting_edit = false;
 
 			// Get setting fields.
 			if ($(this).closest('.give_options_panel').length) {
-				$setting_fields = $(this).closest('.give_options_panel').find('.give-field-wrap:not(.give_email_api_notification_status_setting)');
+				$setting_fields = $(this).closest('.give_options_panel').children('.give-field-wrap:not(.give_email_api_notification_status_setting), .give-repeatable-field-section' );
 			} else if ($(this).closest('table').length) {
 				$setting_fields = $(this).closest('table').find('tr:not(.give_email_api_notification_status_setting)');
 			}
