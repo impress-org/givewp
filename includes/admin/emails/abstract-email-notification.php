@@ -200,6 +200,15 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 				);
 			}
 
+			if( $this->config['has_recipient_field'] ) {
+				add_action(
+						"give_save__give_{$this->config['id']}_recipients",
+						array( $this, 'validate_form_recipient_field_value' ),
+						10,
+						3
+				);
+			}
+
 			/**
 			 * Filter the default email subject.
 			 *
@@ -339,7 +348,11 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 */
 		public function get_recipient( $form_id = null ) {
 			if ( empty( $this->recipient_email ) && $this->config['has_recipient_field'] ) {
-				$this->recipient_email = Give_Email_Notification_Util::get_value( $this, Give_Email_Setting_Field::get_prefix( $this, $form_id ) . 'recipient', $form_id );
+				$this->recipient_email = Give_Email_Notification_Util::get_value(
+						$this,
+						Give_Email_Setting_Field::get_prefix( $this, $form_id ) . 'recipient',
+						$form_id
+				);
 
 
 				/**
@@ -834,6 +847,37 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @since 2.0
 		 */
 		public function setup_email_data() {
+		}
+
+
+		/**
+		 * Validate email form setting
+		 *
+		 * Note: internal use only
+		 *
+		 * @since  2.0
+		 * @access public
+		 *
+		 * @param $form_meta_key
+		 * @param $form_meta_value
+		 * @param $post_id
+		 *
+		 */
+		public function validate_form_recipient_field_value( $form_meta_key, $form_meta_value, $post_id ) {
+			$form_meta_value = array_filter( $form_meta_value, function ( $value ) {
+				return ! empty( $value['email'] );
+			} );
+
+			// Set default recipient.
+			if ( empty( $form_meta_value ) ) {
+				$form_meta_value = array(
+					array(
+						'email' => get_bloginfo( 'admin_email' )
+					),
+				);
+
+				give_update_meta( $post_id, $form_meta_key, $form_meta_value );
+			}
 		}
 	}
 
