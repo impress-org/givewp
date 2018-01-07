@@ -307,7 +307,7 @@ class Give_Email_Setting_Field {
 				'type'    => 'group',
 				'options' => array(
 					'add_button'    => __( 'Add Email', 'give' ),
-					'header_title'  => __( 'Email Recipients', 'give' ),
+					'header_title'  => __( 'Email Recipient', 'give' ),
 					'remove_button' => '<span class="dashicons dashicons-no"></span>',
 				),
 				'fields'  => array(
