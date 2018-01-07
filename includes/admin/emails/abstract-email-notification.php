@@ -309,11 +309,13 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 */
 		public function add_metabox_setting_field( $settings, $form_id ) {
 
-			$settings[] = array(
-				'id'     => $this->config['id'],
-				'title'  => $this->config['label'],
-				'fields' => $this->get_setting_fields( $form_id ),
-			);
+			if( Give_Email_Notification_Util::is_email_notification_active( $this ) ) {
+				$settings[] = array(
+					'id'     => $this->config['id'],
+					'title'  => $this->config['label'],
+					'fields' => $this->get_setting_fields( $form_id ),
+				);
+			}
 
 			return $settings;
 		}
