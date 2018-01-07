@@ -289,7 +289,7 @@ class Give_Email_Setting_Field {
 		$recipient =  array(
 			'id'               => self::get_prefix( $email, $form_id ) . 'recipient',
 			'name'             => esc_html__( 'Email Recipients', 'give' ),
-			'desc'             => __( 'Enter the email address(es) that should receive a notification for each new donation.', 'give' ),
+			'desc'             => __( 'Enter the email address(es) that should receive a notification.', 'give' ),
 			'type'             => 'email',
 			'default'          => get_bloginfo( 'admin_email' ),
 			'repeat'           => true,
@@ -300,7 +300,7 @@ class Give_Email_Setting_Field {
 			$recipient['name']    = __( 'Email', 'give' );
 			$recipient['default'] = '';
 			$recipient['id']      = 'email';
-			$recipient['desc']    = __( 'Enter the email address that should receive a notification for each new donation.', 'give' );
+			$recipient['desc']    = __( 'Enter the email address that should receive a notification.', 'give' );
 
 			$recipient = array(
 				'id'      => self::get_prefix( $email, $form_id ) . 'recipient',
