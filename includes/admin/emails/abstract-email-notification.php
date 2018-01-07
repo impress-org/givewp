@@ -864,9 +864,21 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 *
 		 */
 		public function validate_form_recipient_field_value( $form_meta_key, $form_meta_value, $post_id ) {
+			// Get valid emails.
 			$new_form_meta_value = array_filter( $form_meta_value, function ( $value ) {
 				return ! empty( $value['email'] ) && is_email( $value['email'] );
 			} );
+
+			// Remove duplicate emails from array.
+			$email_arr = array();
+			foreach ( $new_form_meta_value as $index => $email ) {
+				if( in_array( $email['email'], $email_arr  ) ) {
+					unset( $new_form_meta_value[$index] );
+					continue;
+				}
+
+				$email_arr[] = $email['email'];
+			}
 
 			$update = false;
 
