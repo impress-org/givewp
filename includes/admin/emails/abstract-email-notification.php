@@ -202,7 +202,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 
 			if( $this->config['has_recipient_field'] ) {
 				add_action(
-						"give_save__give_{$this->config['id']}_recipients",
+						"give_save__give_{$this->config['id']}_recipient",
 						array( $this, 'validate_form_recipient_field_value' ),
 						10,
 						3
@@ -864,18 +864,30 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 *
 		 */
 		public function validate_form_recipient_field_value( $form_meta_key, $form_meta_value, $post_id ) {
-			$form_meta_value = array_filter( $form_meta_value, function ( $value ) {
-				return ! empty( $value['email'] );
+			$new_form_meta_value = array_filter( $form_meta_value, function ( $value ) {
+				return ! empty( $value['email'] ) && is_email( $value['email'] );
 			} );
 
-			// Set default recipient.
-			if ( empty( $form_meta_value ) ) {
+			$update = false;
+
+			if ( empty( $new_form_meta_value ) ) {
+				// Set default recipient.
 				$form_meta_value = array(
 					array(
 						'email' => get_bloginfo( 'admin_email' )
 					),
 				);
 
+				$update = true;
+
+			} elseif ( count( $new_form_meta_value ) !== count( $form_meta_value ) ) {
+				// Filter recipient emails.
+				$form_meta_value = $new_form_meta_value;
+
+				$update = true;
+			}
+
+			if( $update ) {
 				give_update_meta( $post_id, $form_meta_key, $form_meta_value );
 			}
 		}
