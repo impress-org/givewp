@@ -381,7 +381,7 @@ class Give_Email_Notifications {
 		$email_type = give_get_current_setting_section();
 
 		if ( ! empty( $_POST["{$email_type}_recipient"] ) ) {
-			$_POST["{$email_type}_recipient"] = array_filter( $_POST["{$email_type}_recipient"] );
+			$_POST["{$email_type}_recipient"] = array_unique( array_filter( $_POST["{$email_type}_recipient"] ) );
 		}
 	}
 }
