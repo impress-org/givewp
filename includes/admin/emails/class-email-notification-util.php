@@ -262,9 +262,21 @@ class Give_Email_Notification_Util {
 
 		if (
 			! empty( $form_id )
-			&& give_is_setting_enabled( give_get_meta( $form_id, Give_Email_Setting_Field::get_prefix( $email, $form_id ) . 'notification', true, 'global' ) )
+			&& give_is_setting_enabled(
+				give_get_meta(
+					$form_id,
+					Give_Email_Setting_Field::get_prefix( $email, $form_id ) . 'notification',
+					true,
+					'global'
+				)
+			)
 		) {
 			$option_value = get_post_meta( $form_id, $option_name, true );
+
+			// Get only email field value from recipients setting.
+			if( Give_Email_Setting_Field::get_prefix( $email, $form_id ) . 'recipient' === $option_name ) {
+				$option_value = wp_list_pluck( $option_value, 'email' );
+			}
 		}
 
 		$option_value = empty( $option_value ) ? $default : $option_value;
