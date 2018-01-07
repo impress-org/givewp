@@ -296,7 +296,7 @@ class Give_Email_Setting_Field {
 			'repeat_btn_title' => esc_html__( 'Add Recipient', 'give' ),
 		);
 
-		if ( $form_id ) {
+		if ( $form_id || give_is_add_new_form_page() ) {
 			$recipient['name']    = __( 'Email', 'give' );
 			$recipient['default'] = '';
 			$recipient['id']      = 'email';
