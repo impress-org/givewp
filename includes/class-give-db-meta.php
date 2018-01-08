@@ -298,7 +298,7 @@ class Give_DB_Meta extends Give_DB {
 					break;
 
 				case 'posts_where':
-					$clause = str_replace( array( 'mt2.post_id'), array( "mt2.{$this->meta_type}_id" ), $clause );
+					$clause = str_replace( array( 'mt2.post_id', 'mt1.post_id' ), array( "mt2.{$this->meta_type}_id", "mt1.{$this->meta_type}_id" ), $clause );
 					break;
 			}
 		}
