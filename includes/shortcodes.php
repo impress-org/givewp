@@ -489,3 +489,86 @@ function give_process_profile_editor_updates( $data ) {
 }
 
 add_action( 'give_edit_user_profile', 'give_process_profile_editor_updates' );
+
+
+/**
+ * Give totals Shortcode.
+ *
+ * Shows a donation total.
+ *
+ * @since  2.0.1
+ *
+ * @param  array $atts Shortcode attributes.
+ *
+ * @return string
+ */
+function give_totals_shortcode( $atts ) {
+	$total = get_option( 'give_earnings_total', false );
+
+	$atts = shortcode_atts( array(
+		'total_goal'   => '0',
+		'ids'          => 0, // integer|array
+		'cats'         => 0, // integer|array
+		'tags'         => 0, // integer|array
+		'message'      => 'Hey! We\'ve raised %1$s of the %2$s we are trying to raise for this campaign!',
+		'link'         => '', // URL
+		'link_text'    => 'Donate Now', // string,
+		'progress_bar' => true, // boolean
+	), $atts, 'give_totals' );
+
+	// Total Goal.
+	$total_goal = $atts['total_goal'];
+
+	// Build query based on cat, tag and Form ids.
+	if ( ! empty( $atts['cats'] ) || ! empty( $atts['tags'] ) || ! empty( $atts['ids'] ) ) {
+
+		$form_ids = array();
+		if ( ! empty( $atts['ids'] ) ) {
+			$form_ids = array_filter( array_map( 'trim', explode( ',', $atts['ids'] ) ) );
+		}
+
+		$form_args = array(
+			'post_type'      => 'give_forms',
+			'post_status'    => 'publish',
+			'post__in'       => $form_ids,
+			'posts_per_page' => - 1,
+			'fields'         => 'ids',
+			'tax_query'      => array(
+				'relation' => 'AND',
+			),
+		);
+
+		if ( ! empty( $atts['cats'] ) ) {
+			$cats = array_filter( array_map( 'trim', explode( ',', $atts['cats'] ) ) );
+			$form_args['tax_query'][] = array(
+				'taxonomy' => 'give_forms_category',
+				'terms'    => $cats,
+			);
+		}
+
+		if ( ! empty( $atts['tags'] ) ) {
+			$tags = array_filter( array_map( 'trim', explode( ',', $atts['tags'] ) ) );
+			$form_args['tax_query'][] = array(
+				'taxonomy' => 'give_forms_tag',
+				'terms'    => $tags,
+			);
+		}
+
+		$forms = new WP_Query( $form_args );
+
+		if ( isset( $forms->posts ) ){
+			$total = 0;
+			foreach ( $forms->posts as $post ) {
+				$total += give_get_meta( $post, '_give_form_earnings', true );
+			}
+		}
+
+	}
+
+	$message = sprintf( esc_html( $atts['message'] ), give_currency_filter( give_format_amount( $total, array( 'sanitize' => false ) ) ), give_currency_filter( give_format_amount( $total_goal, array( 'sanitize' => false ) ) ) );
+
+	return $message;
+
+}
+
+add_shortcode( 'give_totals', 'give_totals_shortcode' );
