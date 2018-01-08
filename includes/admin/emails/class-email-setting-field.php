@@ -286,15 +286,37 @@ class Give_Email_Setting_Field {
 	 * @return array
 	 */
 	public static function get_recipient_setting_field( Give_Email_Notification $email, $form_id = null ) {
-		return array(
+		$recipient =  array(
 			'id'               => self::get_prefix( $email, $form_id ) . 'recipient',
 			'name'             => esc_html__( 'Email Recipients', 'give' ),
-			'desc'             => __( 'Enter the email address(es) that should receive a notification for each new donation.', 'give' ),
+			'desc'             => __( 'Enter the email address(es) that should receive a notification.', 'give' ),
 			'type'             => 'email',
 			'default'          => get_bloginfo( 'admin_email' ),
 			'repeat'           => true,
 			'repeat_btn_title' => esc_html__( 'Add Recipient', 'give' ),
 		);
+
+		if ( $form_id || give_is_add_new_form_page() ) {
+			$recipient['name']    = __( 'Email', 'give' );
+			$recipient['default'] = '';
+			$recipient['id']      = 'email';
+			$recipient['desc']    = __( 'Enter the email address that should receive a notification.', 'give' );
+
+			$recipient = array(
+				'id'      => self::get_prefix( $email, $form_id ) . 'recipient',
+				'type'    => 'group',
+				'options' => array(
+					'add_button'    => __( 'Add Email', 'give' ),
+					'header_title'  => __( 'Email Recipient', 'give' ),
+					'remove_button' => '<span class="dashicons dashicons-no"></span>',
+				),
+				'fields'  => array(
+					$recipient,
+				),
+			);
+		}
+
+		return $recipient;
 	}
 
 	/**

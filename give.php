@@ -281,7 +281,7 @@ if ( ! class_exists( 'Give' ) ) :
 		 * @since  1.8.9
 		 */
 		private function init_hooks() {
-			register_activation_hook( __FILE__, 'give_install' );
+			register_activation_hook( GIVE_PLUGIN_FILE, 'give_install' );
 			add_action( 'plugins_loaded', array( $this, 'init' ), 0 );
 		}
 
