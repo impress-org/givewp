@@ -155,7 +155,8 @@ function give_donor_tabs() {
  * @return void
  */
 function give_donors_list() {
-	include dirname( __FILE__ ) . '/class-donor-table.php';
+
+	include GIVE_PLUGIN_DIR . 'includes/admin/donors/class-donor-table.php';
 
 	$donors_table = new Give_Donor_List_Table();
 	$donors_table->prepare_items();
