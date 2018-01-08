@@ -274,7 +274,7 @@ if ( ! class_exists( 'Give' ) ) :
 		 * @since  1.8.9
 		 */
 		private function init_hooks() {
-			register_activation_hook( __FILE__, 'give_install' );
+			register_activation_hook( GIVE_PLUGIN_FILE, 'give_install' );
 			add_action( 'plugins_loaded', array( $this, 'init' ), 0 );
 		}
 
@@ -368,24 +368,24 @@ if ( ! class_exists( 'Give' ) ) :
 				define( 'GIVE_VERSION', '2.0.0' );
 			}
 
+			// Plugin Root File
+			if ( ! defined( 'GIVE_PLUGIN_FILE' ) ) {
+				define( 'GIVE_PLUGIN_FILE', __FILE__ );
+			}
+
 			// Plugin Folder Path
 			if ( ! defined( 'GIVE_PLUGIN_DIR' ) ) {
-				define( 'GIVE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+				define( 'GIVE_PLUGIN_DIR', plugin_dir_path( GIVE_PLUGIN_FILE ) );
 			}
 
 			// Plugin Folder URL
 			if ( ! defined( 'GIVE_PLUGIN_URL' ) ) {
-				define( 'GIVE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+				define( 'GIVE_PLUGIN_URL', plugin_dir_url( GIVE_PLUGIN_FILE ) );
 			}
 
 			// Plugin Basename aka: "give/give.php"
 			if ( ! defined( 'GIVE_PLUGIN_BASENAME' ) ) {
-				define( 'GIVE_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
-			}
-
-			// Plugin Root File
-			if ( ! defined( 'GIVE_PLUGIN_FILE' ) ) {
-				define( 'GIVE_PLUGIN_FILE', __FILE__ );
+				define( 'GIVE_PLUGIN_BASENAME', plugin_basename( GIVE_PLUGIN_FILE ) );
 			}
 
 			// Make sure CAL_GREGORIAN is defined
