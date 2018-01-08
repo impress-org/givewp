@@ -153,7 +153,10 @@ class Give_Updates {
 
 		if ( is_admin() ) {
 			add_action( 'admin_init', array( $this, '__change_donations_label' ), 9999 );
-			add_action( 'admin_menu', array( $this, '__register_menu' ), 9999 );
+
+			if( give_test_ajax_works() ) {
+				add_action( 'admin_menu', array( $this, '__register_menu' ), 9999 );
+			}
 		}
 	}
 
@@ -318,6 +321,20 @@ class Give_Updates {
 
 		// Bailout.
 		if ( isset( $_GET['page'] ) && 'give-updates' === $_GET['page'] ) {
+			return;
+		}
+
+		// Show notice if ajax is not working.
+		if ( ! give_test_ajax_works() ) {
+			Give()->notices->register_notice(
+				array(
+					'id'          => 'give_db_upgrade_ajax_inaccessible',
+					'type'        => 'error',
+					'description' => __( 'Give needs to upgrade the database but cannot because AJAX is not functioning properly. Please contact your host and ask them to ensure admin-ajax.php is accessible.', 'give' ),
+					'show'        => true,
+				)
+			);
+
 			return;
 		}
 
