@@ -510,10 +510,10 @@ function give_totals_shortcode( $atts ) {
 		'ids'          => 0, // integer|array
 		'cats'         => 0, // integer|array
 		'tags'         => 0, // integer|array
-		'message'      => 'Hey! We\'ve raised %1$s of the %2$s we are trying to raise for this campaign!',
+		'message'      => __( 'Hey! We\'ve raised %1$s of the %2$s we are trying to raise for this campaign!', 'give' ),
 		'link'         => '', // URL
-		'link_text'    => 'Donate Now', // string,
-		'progress_bar' => true, // boolean
+		'link_text'    => __( 'Donate Now', 'give' ), // string,
+		'progress_bar' => false, // boolean
 	), $atts, 'give_totals' );
 
 	// Total Goal.
@@ -539,7 +539,7 @@ function give_totals_shortcode( $atts ) {
 		);
 
 		if ( ! empty( $atts['cats'] ) ) {
-			$cats = array_filter( array_map( 'trim', explode( ',', $atts['cats'] ) ) );
+			$cats                     = array_filter( array_map( 'trim', explode( ',', $atts['cats'] ) ) );
 			$form_args['tax_query'][] = array(
 				'taxonomy' => 'give_forms_category',
 				'terms'    => $cats,
@@ -547,7 +547,7 @@ function give_totals_shortcode( $atts ) {
 		}
 
 		if ( ! empty( $atts['tags'] ) ) {
-			$tags = array_filter( array_map( 'trim', explode( ',', $atts['tags'] ) ) );
+			$tags                     = array_filter( array_map( 'trim', explode( ',', $atts['tags'] ) ) );
 			$form_args['tax_query'][] = array(
 				'taxonomy' => 'give_forms_tag',
 				'terms'    => $tags,
@@ -556,7 +556,7 @@ function give_totals_shortcode( $atts ) {
 
 		$forms = new WP_Query( $form_args );
 
-		if ( isset( $forms->posts ) ){
+		if ( isset( $forms->posts ) ) {
 			$total = 0;
 			foreach ( $forms->posts as $post ) {
 				$total += give_get_meta( $post, '_give_form_earnings', true );
@@ -565,9 +565,31 @@ function give_totals_shortcode( $atts ) {
 
 	}
 
-	$message = sprintf( esc_html( $atts['message'] ), give_currency_filter( give_format_amount( $total, array( 'sanitize' => false ) ) ), give_currency_filter( give_format_amount( $total_goal, array( 'sanitize' => false ) ) ) );
+	// Append link with text.
+	$donate_link = '';
+	if ( ! empty( $atts['link'] ) ) {
+		$donate_link = sprintf( ' <a href="%1$s">%2$s</a>', esc_url( $atts['link'] ), esc_html( $atts['link_text'] ) );
+	}
 
-	return $message;
+	$message = sprintf( esc_html( $atts['message'] ),
+			give_currency_filter(
+				give_format_amount( apply_filters( 'give_total_output', $total, $atts ),
+					array( 'sanitize' => false )
+				)
+			),
+			give_currency_filter(
+				give_format_amount( $total_goal,
+					array( 'sanitize' => true )
+				)
+			) ) . $donate_link;
+
+
+	/**
+	 * Update Give total shortcode output.
+	 *
+	 * @since 2.0.1
+	 */
+	return apply_filters( 'give_totals_shortcode_output', $message, $atts );
 
 }
 
