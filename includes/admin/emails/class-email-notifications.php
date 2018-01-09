@@ -76,6 +76,7 @@ class Give_Email_Notifications {
 		add_filter( 'give_metabox_form_data_settings', array( $this, 'add_metabox_setting_fields' ), 10, 2 );
 		add_action( 'init', array( $this, 'preview_email' ) );
 		add_action( 'init', array( $this, 'send_preview_email' ) );
+		add_action( 'init', array( $this, 'validate_settings' ) );
 
 		/* @var Give_Email_Notification $email */
 		foreach ( $this->get_email_notifications() as $email ) {
@@ -342,6 +343,10 @@ class Give_Email_Notifications {
 				break;
 			}
 		}
+
+		// Remove the test email query arg.
+		wp_redirect( remove_query_arg( 'give_action' ) );
+		exit;
 	}
 
 
@@ -353,6 +358,31 @@ class Give_Email_Notifications {
 	 */
 	public function load() {
 		add_action( 'init', array( $this, 'init' ), -1 );
+	}
+
+
+	/**
+	 * Verify email setting before saving
+	 *
+	 * @since  2.0
+	 * @access public
+	 */
+	public function validate_settings() {
+		// Bailout.
+		if (
+			! Give_Admin_Settings::is_saving_settings() ||
+			'emails' !== give_get_current_setting_tab() ||
+			! isset( $_GET['section'] )
+		) {
+			return;
+		}
+
+		// Get email type.
+		$email_type = give_get_current_setting_section();
+
+		if ( ! empty( $_POST["{$email_type}_recipient"] ) ) {
+			$_POST["{$email_type}_recipient"] = array_unique( array_filter( $_POST["{$email_type}_recipient"] ) );
+		}
 	}
 }
 

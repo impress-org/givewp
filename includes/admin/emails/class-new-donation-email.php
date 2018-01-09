@@ -42,7 +42,7 @@ if ( ! class_exists( 'Give_New_Donation_Email' ) ) :
 			$this->load( array(
 				'id'                    => 'new-donation',
 				'label'                 => __( 'New Donation', 'give' ),
-				'description'           => __( 'Donation Notification will be sent to recipient(s) when new donation received except offline donation.', 'give' ),
+				'description'           => __( 'Sent to designated recipient(s) when a new donation is received or a pending donation is marked as complete.', 'give' ),
 				'has_recipient_field'   => true,
 				'notification_status'   => 'enabled',
 				'form_metabox_setting'  => true,

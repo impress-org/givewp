@@ -964,6 +964,12 @@ class Give_API {
 				$donors['donors'][ $donor_count ]['stats']['total_donations'] = $donor_obj->purchase_count;
 				$donors['donors'][ $donor_count ]['stats']['total_spent']     = $donor_obj->purchase_value;
 
+				/** @var $donor \Give_Donor */
+				$donor = new Give_Donor( $donor_obj->id );
+
+				// Get donor's addresses.
+				$donors['donors'][ $donor_count ]['address'] = $donor->address;
+
 				$donor_count ++;
 
 			}
@@ -1528,6 +1534,7 @@ class Give_API {
 				$donations['donations'][ $i ]['lname']          = $last_name;
 				$donations['donations'][ $i ]['email']          = $payment->email;
 				$donations['donations'][ $i ]['date']           = $payment->date;
+				$donations['donations'][ $i ]['payment_meta']   = array();
 
 				$form_id  = isset( $payment_meta['form_id'] ) ? $payment_meta['form_id'] : $payment_meta;
 				$price    = isset( $payment_meta['form_id'] ) ? give_get_form_price( $payment_meta['form_id'] ) : false;
@@ -1547,26 +1554,28 @@ class Give_API {
 					}
 				}
 
-				// Add custom meta to API
-				foreach ( $payment_meta as $meta_key => $meta_value ) {
+				if( ! empty( $payment_meta ) ) {
+					// Add custom meta to API
+					foreach ( $payment_meta as $meta_key => $meta_value ) {
 
-					$exceptions = array(
-						'form_title',
-						'form_id',
-						'price_id',
-						'user_info',
-						'key',
-						'email',
-						'date',
-					);
+						$exceptions = array(
+							'form_title',
+							'form_id',
+							'price_id',
+							'user_info',
+							'key',
+							'email',
+							'date',
+						);
 
-					// Don't clutter up results with dupes
-					if ( in_array( $meta_key, $exceptions ) ) {
-						continue;
+						// Don't clutter up results with dupes
+						if ( in_array( $meta_key, $exceptions ) ) {
+							continue;
+						}
+
+						$donations['donations'][ $i ]['payment_meta'][ $meta_key ] = $meta_value;
+
 					}
-
-					$donations['donations'][ $i ]['payment_meta'][ $meta_key ] = $meta_value;
-
 				}
 
 				$i ++;

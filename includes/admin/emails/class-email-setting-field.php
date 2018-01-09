@@ -182,9 +182,11 @@ class Give_Email_Setting_Field {
 			$default_value = 'global';
 		}
 
+		$description = isset($_GET['page']) && 'give-settings' === $_GET['page'] ? __('Choose whether you want this email enabled or not.', 'give') : sprintf( __( 'Global Options are set <a href="%s">in Give settings</a>. You may override them for this form here.', 'give' ), admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails' ) );
+
 		return array(
 			'name'          => esc_html__( 'Notification', 'give' ),
-			'desc'          => esc_html__( 'Choose option if you want to send email notification or not.', 'give' ),
+			'desc'          => $description,
 			'id'            => self::get_prefix( $email, $form_id ) . 'notification',
 			'type'          => 'radio_inline',
 			'default'       => $default_value,
@@ -208,7 +210,7 @@ class Give_Email_Setting_Field {
 		return array(
 			'id'      => self::get_prefix( $email, $form_id ) . 'email_subject',
 			'name'    => esc_html__( 'Email Subject', 'give' ),
-			'desc'    => esc_html__( 'Enter the subject line for email.', 'give' ),
+			'desc'    => esc_html__( 'Enter the email subject line.', 'give' ),
 			'default' => $email->config['default_email_subject'],
 			'type'    => 'text',
 		);
@@ -230,7 +232,7 @@ class Give_Email_Setting_Field {
 
 		if ( $email_tag_list = $email->get_allowed_email_tags( true ) ) {
 			$desc = sprintf(
-				esc_html__( 'Enter the email that is sent to users after completing a successful donation. HTML is accepted. Available template tags: %s', 'give' ),
+				esc_html__( 'The email that is sent to users after completing a successful donation. HTML is accepted. Available template tags: %s', 'give' ),
 				$email_tag_list
 			);
 
@@ -260,7 +262,7 @@ class Give_Email_Setting_Field {
 		return array(
 			'id'      => self::get_prefix( $email, $form_id ) . 'email_content_type',
 			'name'    => esc_html__( 'Email Content Type', 'give' ),
-			'desc'    => __( 'Choose email content type.', 'give' ),
+			'desc'    => __( 'Choose email type.', 'give' ),
 			'type'    => 'select',
 			'options' => array(
 				'text/html'  => Give_Email_Notification_Util::get_formatted_email_type( 'text/html' ),
@@ -284,15 +286,37 @@ class Give_Email_Setting_Field {
 	 * @return array
 	 */
 	public static function get_recipient_setting_field( Give_Email_Notification $email, $form_id = null ) {
-		return array(
+		$recipient =  array(
 			'id'               => self::get_prefix( $email, $form_id ) . 'recipient',
 			'name'             => esc_html__( 'Email Recipients', 'give' ),
-			'desc'             => __( 'Enter the email address(es) that should receive a notification anytime a donation is made.', 'give' ),
+			'desc'             => __( 'Enter the email address(es) that should receive a notification.', 'give' ),
 			'type'             => 'email',
 			'default'          => get_bloginfo( 'admin_email' ),
 			'repeat'           => true,
 			'repeat_btn_title' => esc_html__( 'Add Recipient', 'give' ),
 		);
+
+		if ( $form_id || give_is_add_new_form_page() ) {
+			$recipient['name']    = __( 'Email', 'give' );
+			$recipient['default'] = '';
+			$recipient['id']      = 'email';
+			$recipient['desc']    = __( 'Enter the email address that should receive a notification.', 'give' );
+
+			$recipient = array(
+				'id'      => self::get_prefix( $email, $form_id ) . 'recipient',
+				'type'    => 'group',
+				'options' => array(
+					'add_button'    => __( 'Add Email', 'give' ),
+					'header_title'  => __( 'Email Recipient', 'give' ),
+					'remove_button' => '<span class="dashicons dashicons-no"></span>',
+				),
+				'fields'  => array(
+					$recipient,
+				),
+			);
+		}
+
+		return $recipient;
 	}
 
 	/**

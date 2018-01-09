@@ -575,7 +575,7 @@ var give_setting_edit = false;
 			this.main_setting_update_notice();
 			this.verify_settings();
 			this.saveButtonTriggered();
-			this.changeSettingsUnload();
+			this.changeAlert();
 			this.detectSettingsChange();
 		},
 
@@ -730,19 +730,17 @@ var give_setting_edit = false;
 		 *
 		 * @since 1.8.14
 		 */
-		changeSettingsUnload: function() {
-			if ( $( '.give-settings-setting-page' ).length > 0 ) {
+		changeAlert: function () {
 
-				$( window ).bind( 'beforeunload', function( e ) {
+			$( window ).bind( 'beforeunload', function ( e ) {
 
-					var confirmationMessage = give_vars.setting_not_save_message;
+				var confirmationMessage = give_vars.setting_not_save_message;
 
-					if ( give_setting_edit ) {
-						( e || window.event ).returnValue = confirmationMessage; //Gecko + IE.
-						return confirmationMessage;                              //Webkit, Safari, Chrome.
-					}
-				});
-			}
+				if ( give_setting_edit ) {
+					( e || window.event ).returnValue = confirmationMessage; //Gecko + IE.
+					return confirmationMessage;                              //Webkit, Safari, Chrome.
+				}
+			});
 		},
 
 		/**
@@ -967,6 +965,7 @@ var give_setting_edit = false;
 					var data = $(this).serialize();
 
 					submitButton.addClass('button-disabled');
+					$( 'form.give-export-form select' ).attr( 'disabled', true ).trigger("chosen:updated");
 					$(this).find('.notice-wrap').remove();
 					$(this).append('<div class="notice-wrap give-clearfix"><span class="spinner is-active"></span><div class="give-progress"><div></div></div></div>');
 
@@ -1013,6 +1012,7 @@ var give_setting_edit = false;
 						var export_form = $('.give-export-form').find('.give-progress').parent().parent();
 						var notice_wrap = export_form.find('.notice-wrap');
 						export_form.find('.button-disabled').removeClass('button-disabled');
+						$( 'form.give-export-form select' ).attr( 'disabled', false ).trigger("chosen:updated");
 						if (response.error) {
 							var error_message = response.message;
 							notice_wrap.html('<div class="updated error"><p>' + error_message + '</p></div>');
@@ -2789,7 +2789,7 @@ var give_setting_edit = false;
 
 			// Get setting fields.
 			if ($(this).closest('.give_options_panel').length) {
-				$setting_fields = $(this).closest('.give_options_panel').find('.give-field-wrap:not(.give_email_api_notification_status_setting)');
+				$setting_fields = $(this).closest('.give_options_panel').children('.give-field-wrap:not(.give_email_api_notification_status_setting), .give-repeatable-field-section' );
 			} else if ($(this).closest('table').length) {
 				$setting_fields = $(this).closest('table').find('tr:not(.give_email_api_notification_status_setting)');
 			}

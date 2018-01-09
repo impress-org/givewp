@@ -171,7 +171,7 @@ class Give_Email_Notification_Util {
 		$notification_status = empty( $form_id )
 			? give_is_setting_enabled( $notification_status )
 			: give_is_setting_enabled( give_get_option( "{$email->config['id']}_notification", $email->config['notification_status'] ) ) && give_is_setting_enabled( $notification_status, array( 'enabled', 'global' ) );
-			// To check if email notification active or not on per form basis, email notification must be globally active other it will consider as disable.
+			// To check if email notification is active or not on a per-form basis, email notification must be globally active—otherwise it will be considered disabled.
 
 		return $notification_status;
 	}
@@ -262,9 +262,21 @@ class Give_Email_Notification_Util {
 
 		if (
 			! empty( $form_id )
-			&& give_is_setting_enabled( give_get_meta( $form_id, Give_Email_Setting_Field::get_prefix( $email, $form_id ) . 'notification', true, 'global' ) )
+			&& give_is_setting_enabled(
+				give_get_meta(
+					$form_id,
+					Give_Email_Setting_Field::get_prefix( $email, $form_id ) . 'notification',
+					true,
+					'global'
+				)
+			)
 		) {
 			$option_value = get_post_meta( $form_id, $option_name, true );
+
+			// Get only email field value from recipients setting.
+			if( Give_Email_Setting_Field::get_prefix( $email, $form_id ) . 'recipient' === $option_name ) {
+				$option_value = wp_list_pluck( $option_value, 'email' );
+			}
 		}
 
 		$option_value = empty( $option_value ) ? $default : $option_value;
