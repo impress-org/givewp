@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_test_ajax_works() {
 	// Handle ajax.
-	if( wp_doing_ajax() ) {
+	if( wp_doing_ajax() && 'give_test_ajax' === give_clean( $_POST['action'] ) ) {
 		wp_die( 0, 200 );
 	}
 
