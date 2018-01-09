@@ -18,6 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Check if AJAX works as expected
+ * Note: Do not use this function before init hook.
  *
  * @since  1.0
  *
