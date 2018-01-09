@@ -121,23 +121,35 @@ add_action( 'admin_menu', 'give_add_options_links', 10 );
 function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 	global $pagenow, $typenow;
 
-	$get_query_args = isset( $_GET ) ? $_GET : array();
+	$get_query_args = isset( $_GET ) ? array_map( 'give_clean', $_GET ) : array();
 	$is_admin       = false;
 	$query_vars     = wp_parse_args( $get_query_args, array_fill_keys( array( 'post_type', 'action', 'taxonomy', 'page', 'view', 'tab' ), false ) );
 
-	if ( 'give_forms' === $typenow || 'give_forms' === $query_vars['post_type'] ) {
+	// If post type or type is give_forms.
+	if ( ( 'give_forms' === $typenow || 'give_forms' === $query_vars['post_type'] )
+	     && in_array( $passed_page, array( 'give_forms', 'categories', 'tags', 'payments', 'reports', 'settings', 'addons', 'donors' ), true )
+	) {
+		if ( 'edit.php' === $pagenow && 'give_forms' !== $passed_page ) {
 
-		if ( 'edit.php' === $pagenow ) {
 			switch ( $passed_page ) {
 				case 'reports':
 					$has_view = array_intersect( array( $passed_view, $query_vars['view'] ), array( 'earnings', 'gateways', 'export', 'logs', 'donors', 'customers' ) );
 
 					if ( ! empty( $has_view ) ) {
-						if ( $passed_view !== $query_vars['view'] && 'donors' === $passed_view && 'customers' === $query_vars['view'] ) {
+						if (
+							$passed_view !== $query_vars['view']
+							&& 'donors' === $passed_view
+							&& 'customers' === $query_vars['view']
+						) {
 							$is_admin = true;
-
-						} else if ( $passed_view === $query_vars['view'] && 'give-reports' === $query_vars['page'] ) {
-							if ( 'earnings' === $passed_view && in_array( $query_vars['view'], array( 'earnings', '-1', false ), true ) ) {
+						} else if (
+							$passed_view === $query_vars['view']
+							&& 'give-reports' === $query_vars['page']
+						) {
+							if (
+								'earnings' === $passed_view
+								&& in_array( $query_vars['view'], array( 'earnings', '-1', false ), true )
+							) {
 								$is_admin = true;
 							}
 						}
@@ -146,7 +158,7 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 					}
 					break;
 				case 'settings':
-					$has_view = array_intersect( array( $passed_view, $query_vars['tab'] ), array( 'general', 'gateways', 'emails', 'display', 'licenses', 'api', 'advanced', 'system_info' ) );
+					$has_view  = array_intersect( array( $passed_view, $query_vars['tab'] ), array( 'general', 'gateways', 'emails', 'display', 'licenses', 'api', 'advanced', 'system_info' ) );
 
 					if ( 'give-settings' === $query_vars['page'] ) {
 						if (
@@ -164,81 +176,83 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 					$has_view = array_intersect( array( $passed_view, $query_vars['view'] ), array( 'list-table', 'overview', 'notes' ) );
 
 					if ( 'give-donors' === $query_vars['page'] && ! empty( $has_view ) ) {
-						if ( ( 'list-table' === $passed_view && false === $query_vars['view'] ) || $passed_view === $query_vars['view'] ) {
+						if (
+							'list-table' === $passed_view
+							&& false === $query_vars['view']
+							|| $passed_view === $query_vars['view']
+						) {
 							$is_admin = true;
 						}
 					}
 					break;
 				case 'addons':
-					$is_admin = (bool) 'give-addons' === $query_vars['page'];
+					$is_admin = (bool) ( 'give-addons' === $query_vars['page'] );
 					break;
 				case 'payments' :
 					if ( 'give-payment-history' == $query_vars['page'] ) {
-						if ( ( ( 'list-table' === $passed_view || empty( $passed_view ) )
-						       && false === $query_vars['view']
-						     ) || ( 'edit' === $passed_view && 'view-payment-details' === $query_vars['view'] ) ) {
+						if ( ( 'list-table' === $passed_view || empty( $passed_view ) )
+						     && false === $query_vars['view']
+						     || (
+							     'edit' === $passed_view
+							     && 'view-payment-details' === $query_vars['view']
+						     )
+						) {
 							$is_admin = true;
 						}
 					}
 					break;
-				case  'give_forms':
-					if ( 'list-table' === $passed_view
-					     || empty( $passed_view )
-					        && (
-						        'give_forms' === $query_vars['post_type']
-						        || (
-							        'post-new.php' === $pagenow
-							        && 'give_forms' === $query_vars['post_type']
-						        )
-					        )
+			}
+		} else if (
+			in_array( $pagenow, array( 'post-new.php', 'edit-tags.php', 'post.php' ), true )
+			|| (
+				'give_forms' === $passed_page
+				&& 'edit.php' === $pagenow
+			)
+		) {
+			switch ( $passed_page ) {
+				case 'categories':
+				case 'tags':
+					if (
+						in_array( $query_vars['taxonomy'], array( 'give_forms_category', 'give_forms_tag' ), true )
+						&& 'edit-tags.php' === $pagenow
+					) {
+						switch ( $passed_view ) {
+							case 'list-table':
+							case 'new':
+								$is_admin = (bool) ( 'edit' !== $query_vars['action'] );
+								break;
+							case 'edit':
+								$is_admin = (bool) ( 'edit' === $query_vars['action'] );
+								break;
+							default:
+								$is_admin = (bool) ( empty( $passed_view ) && 'edit-tags.php' === $pagenow );
+						}
+					}
+					break;
+				case 'give_forms':
+					if (
+						'edit' === $passed_view
+						&& 'post.php' === $pagenow
+					) {
+						$is_admin = true;
+					} else if (
+						in_array( $passed_view, array( 'list-table', 'new' ), 1 )
+						&& 'post-new.php' === $pagenow
+					) {
+						$is_admin = true;
+					} else if (
+						'give_forms' === $query_vars['post_type']
+						|| (
+							'post-new.php' === $pagenow
+							&& 'give_forms' === $query_vars['post_type']
+						)
 					) {
 						$is_admin = true;
 					}
 					break;
 			}
-
-		} else if ( in_array( $pagenow, array( 'post-new.php', 'edit-tags.php', 'post.php' ), true ) ) {
-			switch ( $passed_page ) {
-				case 'categories':
-				case 'tags':
-					if ( in_array( $query_vars['taxonomy'], array( 'give_forms_category', 'give_forms_tag' ), true ) && 'edit-tags.php' === $pagenow ) {
-						$is_admin = (bool) (
-							(
-								( 'list-table' === $passed_view || 'new' === $passed_view )
-								&& 'edit' !== $query_vars['action']
-							)
-							|| (
-								'edit' === $passed_view
-								&& 'edit' === $query_vars['action']
-							)
-							|| (
-								empty( $passed_view )
-								&& 'edit-tags.php' === $pagenow
-							)
-						);
-					}
-					break;
-				case 'give_forms':
-					switch ( $passed_view ) {
-						case 'edit':
-							if ( 'post.php' === $pagenow ) {
-								$is_admin = true;
-							}
-							break;
-						case  'new':
-							if ( 'post-new.php' === $pagenow ) {
-								$is_admin = true;
-							}
-							break;
-						default:
-							if ( 'post-new.php' === $pagenow && 'give_forms' === $query_vars['post_type'] ) {
-								$is_admin = true;
-							}
-					}
-					break;
-			}
 		}
-	} else if ( ! in_array( $passed_page, array( 'give_forms', 'categories', 'tags', 'payments', 'reports', 'settings', 'addons', 'donors' ) ) ) {
+	} else {
 		global $give_payments_page, $give_settings_page, $give_reports_page, $give_system_info_page, $give_add_ons_page, $give_settings_export, $give_donors_page, $give_tools_page;
 		$admin_pages = apply_filters( 'give_admin_pages', array(
 			$give_payments_page,
@@ -257,7 +271,6 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 
 	return (bool) apply_filters( 'give_is_admin_page', $is_admin, $query_vars['page'], $query_vars['view'], $passed_page, $passed_view );
 }
-
 
 /**
  * Add setting tab to give-settings page
