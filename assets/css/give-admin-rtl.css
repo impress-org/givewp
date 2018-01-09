@@ -1565,6 +1565,15 @@ table.give-table td.row-title p {
 .give-settings-page .give-forminp p:first-child .give-remove-setting-field {
   display: none; }
 
+.give-settings-page .export-options-table tr.give-import-option:nth-child(odd) {
+  background: #f4f3f3; }
+  .give-settings-page .export-options-table tr.give-import-option:nth-child(odd) th {
+    vertical-align: middle; }
+
+.give-settings-page .export-options-table .give-import-dropdown:nth-child(2),
+.give-settings-page .export-options-table tr.give-import-option th:first-child {
+  width: 250px; }
+
 .give-setting-tab-header {
   clear: both;
   overflow: hidden;
