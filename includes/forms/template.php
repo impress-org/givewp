@@ -1624,7 +1624,12 @@ function give_show_goal_progress( $form_id, $args ) {
 	ob_start();
 	give_get_template( 'shortcode-goal', array( 'form_id' => $form_id, 'args' => $args ) );
 
-	echo apply_filters( 'give_goal_output', ob_get_clean() );
+	/**
+	 * Filter progress bar output
+	 *
+	 * @since 2.0
+	 */
+	echo apply_filters( 'give_goal_output', ob_get_clean(), $form_id, $args );
 
 	return true;
 }
