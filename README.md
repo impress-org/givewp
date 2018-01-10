@@ -55,7 +55,7 @@ That's it. You're now ready to start development.
 
 Give relies on several npm commands to get your started:
 
-* `npm run watch` - Live reloads JS and SASS files. Typically you'll run this command before you start development. 
+* `npm run watch` - Live reloads JS and SASS files. Typically you'll run this command before you start development. It's necessary to build the JS/CSS however if you're working strictly within PHP it may not be necessary to run. 
 * `npm run dev` - Runs a one time build for development. No production files are created.
 * `npm run production` - Builds the minified production files for release.
 
@@ -72,4 +72,5 @@ Give relies on several npm commands to get your started:
     // Use dev versions of core JS and CSS files (only needed if you are modifying these core files)
     define( 'SCRIPT_DEBUG', true );
     ```
-
+* Commit the `package.lock` file. Read more about why [here](https://docs.npmjs.com/files/package-lock.json). 
+* Your editor should recognize the `.eslintrc` and `.editorconfig` files within the Repo's root directory. Please only submit PRs following those coding style rulesets. 
