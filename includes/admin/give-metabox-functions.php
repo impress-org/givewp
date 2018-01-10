@@ -634,7 +634,7 @@ function give_media( $field ) {
 	global $thepostid, $post;
 
 	$thepostid    = empty( $thepostid ) ? $post->ID : $thepostid;
-	$button_label = esc_html__( sprintf( 'Add or Upload %s', ( 'file' === $field['type'] ? 'File' : 'Image' ) ), 'give' );
+	$button_label = sprintf( __( 'Add or Upload %s', 'give' ), ( 'file' === $field['type'] ? __( 'File', 'give' ) : __( 'Image', 'give' ) ) );
 
 	$field['style']               = isset( $field['style'] ) ? $field['style'] : '';
 	$field['wrapper_class']       = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
