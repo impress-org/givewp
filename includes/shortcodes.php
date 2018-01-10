@@ -510,14 +510,14 @@ function give_total_shortcode( $atts ) {
 		'ids'          => 0, // integer|array
 		'cats'         => 0, // integer|array
 		'tags'         => 0, // integer|array
-		'message'      => __( 'Hey! We\'ve raised %1$s of the %2$s we are trying to raise for this campaign!', 'give' ),
+		'message'      => __( 'Hey! We\'ve raised {total} of the {total_goal} we are trying to raise for this campaign!', 'give' ),
 		'link'         => '', // URL
 		'link_text'    => __( 'Donate Now', 'give' ), // string,
 		'progress_bar' => false, // boolean
 	), $atts, 'give_totals' );
 
 	// Total Goal.
-	$total_goal = $atts['total_goal'];
+	$total_goal = give_maybe_sanitize_amount( $atts['total_goal'] );
 
 	// Build query based on cat, tag and Form ids.
 	if ( ! empty( $atts['cats'] ) || ! empty( $atts['tags'] ) || ! empty( $atts['ids'] ) ) {
@@ -571,25 +571,36 @@ function give_total_shortcode( $atts ) {
 		$donate_link = sprintf( ' <a href="%1$s">%2$s</a>', esc_url( $atts['link'] ), esc_html( $atts['link_text'] ) );
 	}
 
-	$message = sprintf( esc_html( $atts['message'] ),
-			give_currency_filter(
-				give_format_amount( apply_filters( 'give_total_output', $total, $atts ),
-					array( 'sanitize' => false )
-				)
-			),
-			give_currency_filter(
-				give_format_amount( $total_goal,
-					array( 'sanitize' => true )
-				)
-			) ) . $donate_link;
+	// Show Progress Bar if progress_bar set true.
+	$show_progress_bar = isset( $atts['progress_bar'] ) ? filter_var( $atts['progress_bar'], FILTER_VALIDATE_BOOLEAN ) : false;
+	if ( $show_progress_bar ) {
+		give_show_goal_total_progress( $total, $total_goal );
+	}
 
+	// Replace {total} in message.
+	$message = str_replace( '{total}', give_currency_filter(
+		give_format_amount( apply_filters( 'give_total_output', $total, $atts ),
+			array( 'sanitize' => false )
+		)
+	), esc_html( $atts['message'] ) );
+
+	// Replace {total_goal} in message.
+	$message = str_replace( '{total_goal}', give_currency_filter(
+		give_format_amount( $total_goal,
+			array( 'sanitize' => true )
+		)
+	), $message );
 
 	/**
 	 * Update Give total shortcode output.
 	 *
 	 * @since 2.0.1
 	 */
-	return apply_filters( 'give_total_shortcode_output', $message, $atts );
+	$message =  apply_filters( 'give_total_shortcode_message', $message, $atts );
+
+	$message = sprintf( $message ) . $donate_link;
+
+	return $message;
 
 }
 
