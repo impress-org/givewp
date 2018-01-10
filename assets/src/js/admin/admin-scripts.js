@@ -2980,20 +2980,12 @@ function give_on_core_settings_import_start() {
 }
 
 /**
- * Run when user click on upload CSV.
- *
- * @since 1.8.13
- */
-function give_on_donation_import_start() {
-	give_on_donation_import_ajax();
-}
-
-/**
  * Upload CSV ajax
  *
  * @since 1.8.13
  */
 function give_on_donation_import_ajax() {
+
 	var $form = jQuery( 'form.tools-setting-page-import' );
 
 	/**

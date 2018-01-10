@@ -284,7 +284,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						if ( array_key_exists( $key, $report_html ) && ! empty( $value ) ) {
 							?>
 							<p>
-								<?php echo esc_html( wp_sprintf( $report_html[ $key ][0], $value, _n( $report_html[ $key ][1], $report_html[ $key ][2], $value, 'give' ) ) ); ?>
+								<?php esc_html_e( wp_sprintf( $report_html[ $key ][0], $value, _n( $report_html[ $key ][1], $report_html[ $key ][2], $value, 'give' ) ) ); ?>
 							</p>
 							<?php
 						}
@@ -363,9 +363,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			</tr>
 
 			<script type="text/javascript">
-				jQuery(document).ready(function () {
-					give_on_donation_import_start();
-				});
+				window.load = give_on_donation_import_ajax();
 			</script>
 			<?php
 		}

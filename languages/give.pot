@@ -5998,7 +5998,7 @@ msgstr ""
 msgid "Remove setting field"
 msgstr ""
 
-#: includes/admin/class-admin-settings.php:653, includes/admin/give-metabox-functions.php:637, includes/admin/tools/import/class-give-import-donations.php:287
+#: includes/admin/class-admin-settings.php:653, includes/admin/tools/import/class-give-import-donations.php:287
 msgstr ""
 
 #: includes/admin/class-admin-settings.php:827, includes/admin/give-metabox-functions.php:729
@@ -6750,6 +6750,10 @@ msgstr ""
 
 #: includes/admin/EDD_SL_Plugin_Updater.php:396
 msgid "You do not have permission to install plugin updates"
+msgstr ""
+
+#: includes/admin/give-metabox-functions.php:637
+msgid "Add or Upload %s"
 msgstr ""
 
 #: includes/admin/give-metabox-functions.php:697
