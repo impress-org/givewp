@@ -5,7 +5,7 @@ Welcome to the GiveWP GitHub repository. This is the code source and the center 
  
 ## Getting Started 
 
-The following is if you're looking to actively use the plugin on your WordPress site.
+The following is if you're looking to actively use the plugin on your WordPress site. If you're looking to contribute or actively develop on Give then skip ahead to the "Local Development" section below.
 
 ### Minimum Requirements
 
@@ -41,7 +41,7 @@ Our community forum on wp.org which is available for all WooCommerce users.
 Support requests in issues on this repository will be closed on sight.
 
 
-## Beginning Development 
+## Local Development 
 
 To get started developing on the Give platform you will need to perform the following steps:
 
