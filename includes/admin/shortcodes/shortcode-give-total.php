@@ -1,6 +1,6 @@
 <?php
 /**
- * The [give_totals] Shortcode Generator class
+ * The [give_total] Shortcode Generator class
  *
  * @package     Give/Admin/Shortcodes
  * @copyright   Copyright (c) 2016, WordImpress
@@ -14,9 +14,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class Give_Shortcode_Give_Totals
+ * Class Give_Shortcode_Total
  */
-class Give_Shortcode_Give_Totals extends Give_Shortcode_Generator {
+class Give_Shortcode_Total extends Give_Shortcode_Generator {
 
 	/**
 	 * Class constructor
@@ -26,7 +26,7 @@ class Give_Shortcode_Give_Totals extends Give_Shortcode_Generator {
 		$this->shortcode['title'] = __( 'Give Total', 'give' );
 		$this->shortcode['label'] = __( 'Give Total', 'give' );
 
-		parent::__construct( 'give_totals' );
+		parent::__construct( 'give_total' );
 	}
 
 	/**
@@ -111,4 +111,4 @@ class Give_Shortcode_Give_Totals extends Give_Shortcode_Generator {
 	}
 }
 
-new Give_Shortcode_Give_Totals;
+new Give_Shortcode_Total;

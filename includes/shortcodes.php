@@ -492,7 +492,7 @@ add_action( 'give_edit_user_profile', 'give_process_profile_editor_updates' );
 
 
 /**
- * Give totals Shortcode.
+ * Give total Shortcode.
  *
  * Shows a donation total.
  *
@@ -502,11 +502,11 @@ add_action( 'give_edit_user_profile', 'give_process_profile_editor_updates' );
  *
  * @return string
  */
-function give_totals_shortcode( $atts ) {
+function give_total_shortcode( $atts ) {
 	$total = get_option( 'give_earnings_total', false );
 
 	$atts = shortcode_atts( array(
-		'total_goal'   => '0',
+		'total_goal'   => 0, // integer
 		'ids'          => 0, // integer|array
 		'cats'         => 0, // integer|array
 		'tags'         => 0, // integer|array
@@ -589,8 +589,8 @@ function give_totals_shortcode( $atts ) {
 	 *
 	 * @since 2.0.1
 	 */
-	return apply_filters( 'give_totals_shortcode_output', $message, $atts );
+	return apply_filters( 'give_total_shortcode_output', $message, $atts );
 
 }
 
-add_shortcode( 'give_totals', 'give_totals_shortcode' );
+add_shortcode( 'give_total', 'give_total_shortcode' );
