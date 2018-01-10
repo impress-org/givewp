@@ -74,3 +74,4 @@ Give relies on several npm commands to get you started:
     ```
 * Commit the `package.lock` file. Read more about why [here](https://docs.npmjs.com/files/package-lock.json). 
 * Your editor should recognize the `.eslintrc` and `.editorconfig` files within the Repo's root directory. Please only submit PRs following those coding style rulesets. 
+* Read [CONTRIBUTING.md](https://github.com/WordImpress/Give/blob/master/CONTRIBUTING.md) - it contains more about contributing to GiveWP.
