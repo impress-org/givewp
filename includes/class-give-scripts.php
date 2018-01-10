@@ -150,6 +150,7 @@ class Give_Scripts {
 		wp_enqueue_script( 'wp-color-picker' );
 		wp_enqueue_script( 'jquery-ui-datepicker' );
 		wp_enqueue_script( 'thickbox' );
+		wp_enqueue_media();
 
 		// Give admin scripts.
 		wp_enqueue_script( 'give-admin-scripts' );
