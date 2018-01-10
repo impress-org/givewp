@@ -6,7 +6,8 @@ const inProduction = ('production' === process.env.NODE_ENV);
 const BrowserSyncPlugin = require( 'browser-sync-webpack-plugin' );
 const ImageminPlugin = require( 'imagemin-webpack-plugin' ).default;
 const CleanWebpackPlugin = require( 'clean-webpack-plugin' );
-const WebpackRTLPlugin = require('webpack-rtl-plugin');
+const WebpackRTLPlugin = require( 'webpack-rtl-plugin' );
+const wpPot = require( 'wp-pot' );
 
 // Webpack config.
 const config = {
@@ -43,7 +44,7 @@ const config = {
 			// Create RTL styles.
 			{
 				test: /\.css$/,
-				loader: ExtractTextPlugin.extract('style-loader'),
+				loader: ExtractTextPlugin.extract( 'style-loader' ),
 			},
 			// SASS to CSS.
 			{
@@ -128,8 +129,21 @@ const config = {
 
 // inProd?
 if ( inProduction ) {
-	config.plugins.push( new webpack.optimize.UglifyJsPlugin( { sourceMap: true } ) ); // Uglify JS.
-	config.plugins.push( new webpack.LoaderOptionsPlugin( { minimize: true } ) ); // Minify CSS.
+
+	// POT file.
+	wpPot( {
+		package: 'Give',
+		domain: 'give',
+		destFile: 'languages/give.pot',
+		relativeTo: './',
+		bugReport: 'https://github.com/WordImpress/Give/issues/new',
+		team: 'WordImpress <info@wordimpress.com>'
+	} );
+
+	// Uglify JS.
+	config.plugins.push( new webpack.optimize.UglifyJsPlugin( { sourceMap: true } ) );
+	// Minify CSS.
+	config.plugins.push( new webpack.LoaderOptionsPlugin( { minimize: true } ) );
 }
 
 module.exports = config;
