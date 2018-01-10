@@ -69,7 +69,7 @@ Give relies on several npm commands to get your started:
     // Enable Debug logging to the /wp-content/debug.log file
     define( 'WP_DEBUG_LOG', true );
    
-    // Use dev versions of core JS and CSS files (only needed if you are modifying these core files)
+    // Loads unminified core files
     define( 'SCRIPT_DEBUG', true );
     ```
 * Commit the `package.lock` file. Read more about why [here](https://docs.npmjs.com/files/package-lock.json). 
