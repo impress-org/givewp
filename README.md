@@ -5,7 +5,7 @@ Welcome to the GiveWP GitHub repository. This is the code source and the center 
  
 ## Getting Started 
 
-The following is if you're looking to actively use the plugin on your WordPress site. If you're looking to contribute or actively develop on Give then skip ahead to the "Local Development" section below.
+If you're looking to contribute or actively develop on Give then skip ahead to the [Local Development](https://github.com/WordImpress/Give/tree/issue/339#local-development) section below. The following is if you're looking to actively use the plugin on your WordPress site.
 
 ### Minimum Requirements
 
@@ -26,26 +26,18 @@ In the search field type "Give" and click Search Plugins. Once you have found th
 
 The manual installation method involves downloading our donation plugin and uploading it to your server via your favorite FTP application. The WordPress codex contains [instructions on how to do this here](https://codex.wordpress.org/Managing_Plugins#Manual_Plugin_Installation).
 
-### Updating
-
-Automatic updates should work like a charm; as always though, ensure you backup your site just in case.
 
 ### Support
-This repository is not suitable for support. Please don't use GitHub issue for support requests. To get support please use the following channels:
+This repository is not suitable for support. Please don't use GitHub issues for support requests. To get support please use the following channels:
 
-* WP.org Support Forums - for all Give users
-* GiveWP.com Priority Support - exclusively for customers
-
-The WooCommerce premium support portal for customers who have purchased themes or extensions.
-Our community forum on wp.org which is available for all WooCommerce users.
-Support requests in issues on this repository will be closed on sight.
-
+* [WP.org Support Forums](https://wordpress.org/support/plugin/give) - for all users
+* [GiveWP.com Priority Support](https://givewp.com/priority-support/) - exclusively for customers
 
 ## Local Development 
 
 To get started developing on the Give platform you will need to perform the following steps:
 
-1. Create a new WordPress site with `give.test` as the URL. We recommend [Local](https://local.getflywheel.com/) for easily creating development environements.
+1. Create a new WordPress site with `give.test` as the URL
 
 2. `cd` into your local plugins directory: `/path/to/wp-content/plugins/`
 
@@ -53,9 +45,9 @@ To get started developing on the Give platform you will need to perform the foll
 
 4. Run composer to set up dependancies: `composer install`
 
-5. Run npm install to get the necessary packages: `npm install`
+5. Run npm install to get the necessary npm packages: `npm install`
 
-6. Activate the plugin in WordPress.
+6. Activate the plugin in WordPress
 
 That's it. You're now ready to start development.
 
