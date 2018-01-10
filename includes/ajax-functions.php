@@ -18,6 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Check if AJAX works as expected
+ * Note: Do not use this function before init hook.
  *
  * @since  1.0
  *
@@ -25,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_test_ajax_works() {
 	// Handle ajax.
-	if( wp_doing_ajax() ) {
+	if( doing_action( 'wp_ajax_nopriv_give_test_ajax' ) ) {
 		wp_die( 0, 200 );
 	}
 

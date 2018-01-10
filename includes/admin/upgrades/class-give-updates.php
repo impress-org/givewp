@@ -153,10 +153,7 @@ class Give_Updates {
 
 		if ( is_admin() ) {
 			add_action( 'admin_init', array( $this, '__change_donations_label' ), 9999 );
-
-			if( give_test_ajax_works() ) {
-				add_action( 'admin_menu', array( $this, '__register_menu' ), 9999 );
-			}
+			add_action( 'admin_menu', array( $this, '__register_menu' ), 9999 );
 		}
 	}
 
@@ -238,6 +235,10 @@ class Give_Updates {
 	 * @access public
 	 */
 	public function __register_menu() {
+		// Bailout.
+		if( ! give_test_ajax_works() ) {
+			return;
+		}
 
 		// Load plugin updates.
 		$this->__register_plugin_addon_updates();
