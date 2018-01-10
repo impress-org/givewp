@@ -45,8 +45,5 @@ cache
 node_modules
 assets/dist/
 
-# Ignore package-lock.json in favor of yarn.lock
-package-lock.json
-
 # Composer
 vendor
