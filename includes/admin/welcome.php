@@ -644,7 +644,7 @@ class Give_Welcome {
 	public function welcome() {
 
 		// Bail if no activation redirect
-		if ( ! Give_Cache::get( '_give_activation_redirect', true ) ) {
+		if ( ! Give_Cache::get( '_give_activation_redirect', true ) || wp_doing_ajax() ) {
 			return;
 		}
 

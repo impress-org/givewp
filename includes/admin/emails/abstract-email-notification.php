@@ -151,7 +151,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 
 			// Non notification status editable notice.
 			$this->config['notices']['non-notification-status-editable'] = empty( $this->config['notices']['non-notification-status-editable'] )
-				? __( 'This notification is required based on plugin settings.', 'give' )
+				? __( 'You can not edit notification status from here.', 'give' )
 				: $this->config['notices']['non-notification-status-editable'];
 
 			/**
