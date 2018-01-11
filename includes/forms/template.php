@@ -962,7 +962,7 @@ function give_default_cc_address_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'card_address_2', $form_id ) ) : ?>
 					<span class="give-required-indicator">*</span>
 				<?php endif; ?>
-				<?php echo Give()->tooltips->render_help( __( '(optional) The suite, apt no, PO box, etc, associated with your billing address.', 'give' ) ); ?>
+				<?php echo Give()->tooltips->render_help( __( '(optional) The suite, apartment number, post office box (etc) associated with your billing address.', 'give' ) ); ?>
 			</label>
 
 			<input
@@ -1032,7 +1032,7 @@ function give_default_cc_address_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'card_zip', $form_id ) ) : ?>
 					<span class="give-required-indicator">*</span>
 				<?php endif; ?>
-				<?php echo Give()->tooltips->render_help( __( 'The zip or postal code for your billing address.', 'give' ) ); ?>
+				<?php echo Give()->tooltips->render_help( __( 'The ZIP Code or postal code for your billing address.', 'give' ) ); ?>
 			</label>
 
 			<input
@@ -1127,7 +1127,7 @@ function give_get_register_fields( $form_id ) {
 					}
 					?>
 					<?php _e( 'Create an account', 'give' ); ?>
-					<?php echo Give()->tooltips->render_help( __( 'Create an account for donor to manage donations from one dashboard.', 'give' ) ); ?>
+					<?php echo Give()->tooltips->render_help( __( 'Create an account on the site to see and manage donation history.', 'give' ) ); ?>
 				</label>
 			</div>
 
@@ -1624,7 +1624,12 @@ function give_show_goal_progress( $form_id, $args ) {
 	ob_start();
 	give_get_template( 'shortcode-goal', array( 'form_id' => $form_id, 'args' => $args ) );
 
-	echo apply_filters( 'give_goal_output', ob_get_clean() );
+	/**
+	 * Filter progress bar output
+	 *
+	 * @since 2.0
+	 */
+	echo apply_filters( 'give_goal_output', ob_get_clean(), $form_id, $args );
 
 	return true;
 }
