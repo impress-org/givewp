@@ -93,7 +93,18 @@ class Give_Email_Notification_Util {
 	 * @return bool
 	 */
 	public static function is_notification_status_editable( Give_Email_Notification $email ) {
-		return $email->config['notification_status_editable'];
+		$user_can_edit = $email->config['notification_status_editable'];
+		
+		if( is_array( $email->config['notification_status_editable'] ) ){
+			$is_list_view = Give_Admin_Settings::is_setting_page('emails' ) && ! isset( $_GET['section'] );
+			
+			if( $is_list_view && isset( $email->config['notification_status_editable']['list_mode'] ) ) {
+				$user_can_edit = $email->config['notification_status_editable']['list_mode'];
+				error_log( print_r( 'pass1', true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
+			}
+		}
+
+		return (bool) $user_can_edit;
 	}
 
 	/**
