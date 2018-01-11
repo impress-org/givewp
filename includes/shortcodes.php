@@ -570,13 +570,7 @@ function give_totals_shortcode( $atts ) {
 	// Append link with text.
 	$donate_link = '';
 	if ( ! empty( $atts['link'] ) ) {
-		$donate_link = sprintf( ' <a href="%1$s">%2$s</a>', esc_url( $atts['link'] ), esc_html( $atts['link_text'] ) );
-	}
-
-	// Show Progress Bar if progress_bar set true.
-	$show_progress_bar = isset( $atts['progress_bar'] ) ? filter_var( $atts['progress_bar'], FILTER_VALIDATE_BOOLEAN ) : false;
-	if ( $show_progress_bar ) {
-		give_show_goal_totals_progress( $total, $total_goal );
+		$donate_link = sprintf( ' <a class="give-totals-text-link" href="%1$s">%2$s</a>', esc_url( $atts['link'] ), esc_html( $atts['link_text'] ) );
 	}
 
 	// Replace {total} in message.
@@ -600,9 +594,22 @@ function give_totals_shortcode( $atts ) {
 	 */
 	$message = apply_filters( 'give_totals_shortcode_message', $message, $atts );
 
-	$message = sprintf( $message ) . $donate_link;
+	ob_start();
+	?>
+	<div class="give-totals-shortcode-wrap">
+		<?php
+		// Show Progress Bar if progress_bar set true.
+		$show_progress_bar = isset( $atts['progress_bar'] ) ? filter_var( $atts['progress_bar'], FILTER_VALIDATE_BOOLEAN ) : false;
+		if ( $show_progress_bar ) {
+			give_show_goal_totals_progress( $total, $total_goal );
+		}
 
-	return $message;
+		echo sprintf( $message ) . $donate_link;
+		?>
+	</div>
+	<?php
+	$give_totals_output = ob_get_clean();
+	return $give_totals_output;
 
 }
 
