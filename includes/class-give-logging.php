@@ -71,12 +71,12 @@ class Give_Logging {
 		// Backward compatibility.
 		if ( ! give_has_upgrade_completed( 'v20_logs_upgrades' ) ) {
 			// Create the log post type
-			add_action( 'init', array( $this, 'register_post_type' ), 1 );
+			add_action( 'init', array( $this, 'register_post_type' ), -2 );
 
 			// Create types taxonomy and default types
-			add_action( 'init', array( $this, 'register_taxonomy' ), 1 );
+			add_action( 'init', array( $this, 'register_taxonomy' ), -2 );
 		}
-	}
+		}
 
 
 	/**
