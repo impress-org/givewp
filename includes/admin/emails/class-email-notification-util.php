@@ -94,7 +94,8 @@ class Give_Email_Notification_Util {
 	 */
 	public static function is_notification_status_editable( Give_Email_Notification $email ) {
 		$user_can_edit = $email->config['notification_status_editable'];
-		
+
+		// array type value is experimental can be remove in future.
 		if( is_array( $email->config['notification_status_editable'] ) ){
 			$is_list_view = Give_Admin_Settings::is_setting_page('emails' ) && ! isset( $_GET['section'] );
 			
