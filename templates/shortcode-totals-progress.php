@@ -9,7 +9,7 @@ if ( empty( $total_goal ) ) {
 }
 
 // Set Give total progress bar color.
-$color = apply_filters( 'give_total_progress_color', '#2bc253' );
+$color = apply_filters( 'give_totals_progress_color', '#2bc253' );
 
 // Give total.
 $total = ! empty( $total ) ? $total : 0;
@@ -23,7 +23,7 @@ $progress = round( ( $total / $total_goal ) * 100, 2 );
 
 // Set progress to 100 percentage if total > total_goal
 $progress = $total >= $total_goal ? 100 : $progress;
-$progress = apply_filters( 'give_goal_total_funded_percentage_output', $progress, $total, $total_goal );
+$progress = apply_filters( 'give_goal_totals_funded_percentage_output', $progress, $total, $total_goal );
 
 ?>
 <div class="give-goal-progress">

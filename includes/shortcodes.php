@@ -492,7 +492,7 @@ add_action( 'give_edit_user_profile', 'give_process_profile_editor_updates' );
 
 
 /**
- * Give total Shortcode.
+ * Give totals Shortcode.
  *
  * Shows a donation total.
  *
@@ -502,15 +502,17 @@ add_action( 'give_edit_user_profile', 'give_process_profile_editor_updates' );
  *
  * @return string
  */
-function give_total_shortcode( $atts ) {
+function give_totals_shortcode( $atts ) {
 	$total = get_option( 'give_earnings_total', false );
+
+	$message = apply_filters( 'give_totals_message', __( 'Hey! We\'ve raised {total} of the {total_goal} we are trying to raise for this campaign!', 'give' ) );
 
 	$atts = shortcode_atts( array(
 		'total_goal'   => 0, // integer
 		'ids'          => 0, // integer|array
 		'cats'         => 0, // integer|array
 		'tags'         => 0, // integer|array
-		'message'      => __( 'Hey! We\'ve raised {total} of the {total_goal} we are trying to raise for this campaign!', 'give' ),
+		'message'      => $message,
 		'link'         => '', // URL
 		'link_text'    => __( 'Donate Now', 'give' ), // string,
 		'progress_bar' => false, // boolean
@@ -574,12 +576,12 @@ function give_total_shortcode( $atts ) {
 	// Show Progress Bar if progress_bar set true.
 	$show_progress_bar = isset( $atts['progress_bar'] ) ? filter_var( $atts['progress_bar'], FILTER_VALIDATE_BOOLEAN ) : false;
 	if ( $show_progress_bar ) {
-		give_show_goal_total_progress( $total, $total_goal );
+		give_show_goal_totals_progress( $total, $total_goal );
 	}
 
 	// Replace {total} in message.
 	$message = str_replace( '{total}', give_currency_filter(
-		give_format_amount( apply_filters( 'give_total_output', $total, $atts ),
+		give_format_amount( apply_filters( 'give_totals_output', $total, $atts ),
 			array( 'sanitize' => false )
 		)
 	), esc_html( $atts['message'] ) );
@@ -592,11 +594,11 @@ function give_total_shortcode( $atts ) {
 	), $message );
 
 	/**
-	 * Update Give total shortcode output.
+	 * Update Give totals shortcode output.
 	 *
 	 * @since 2.0.1
 	 */
-	$message =  apply_filters( 'give_total_shortcode_message', $message, $atts );
+	$message = apply_filters( 'give_totals_shortcode_message', $message, $atts );
 
 	$message = sprintf( $message ) . $donate_link;
 
@@ -604,4 +606,4 @@ function give_total_shortcode( $atts ) {
 
 }
 
-add_shortcode( 'give_total', 'give_total_shortcode' );
+add_shortcode( 'give_totals', 'give_totals_shortcode' );
