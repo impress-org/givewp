@@ -229,16 +229,31 @@ class Give_Updates {
 	}
 
 	/**
+	 * Set the activation Redirect variable on Plugin activation for first time.
+	 *
+	 * @since 2.0
+	 *
+	 * @param bool $works ajax is Work in sites or not.
+	 */
+	public function give_reset_activation_redirect( $works ) {
+		// Add the transient to redirect.
+		Give_Cache::set( '_give_activation_redirect', true, 30, true );
+	}
+
+	/**
 	 * Register updates menu
 	 *
 	 * @since  1.8.12
 	 * @access public
 	 */
 	public function __register_menu() {
+
 		// Bailout.
-		if( ! give_test_ajax_works() ) {
+		add_action( 'give_test_ajax_works', array( $this, 'give_reset_activation_redirect' ) );
+		if ( ! give_test_ajax_works() ) {
 			return;
 		}
+		remove_action( 'give_test_ajax_works', array( $this, 'give_reset_activation_redirect' ) );
 
 		// Load plugin updates.
 		$this->__register_plugin_addon_updates();
