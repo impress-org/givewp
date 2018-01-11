@@ -100,7 +100,6 @@ class Give_Email_Notification_Util {
 			
 			if( $is_list_view && isset( $email->config['notification_status_editable']['list_mode'] ) ) {
 				$user_can_edit = $email->config['notification_status_editable']['list_mode'];
-				error_log( print_r( 'pass1', true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
 			}
 		}
 
