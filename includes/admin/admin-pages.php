@@ -121,116 +121,66 @@ add_action( 'admin_menu', 'give_add_options_links', 10 );
 function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 	global $pagenow, $typenow;
 
-	$found          = false;
-	$get_query_args = isset( $_GET ) ? array_map( 'give_clean', $_GET ) : array();
+	$found          = true;
+	$get_query_args = isset( $_GET ) ? array_map( 'strtolower', $_GET ) : array();
 
 	// Set default argument, if not passed.
-	$query_args = wp_parse_args( $get_query_args, array_fill_keys( array( 'post_type', 'action', 'taxonomy', 'page', 'view', 'tab' ), false ) );
+	$query_args   = wp_parse_args( $get_query_args, array_fill_keys( array( 'post_type', 'action', 'taxonomy', 'page', 'view', 'tab' ), false ) );
+	$is_edit_page = (bool) ( 'edit.php' !== $pagenow );
 
-	// Page expected to pass.
-	$expected_pages = array( 'give_forms', 'categories', 'tags', 'payments', 'reports', 'settings', 'addons', 'donors' );
+	switch ( $passed_page ) {
+		case 'categories':
+		case 'tags':
+			$has_view = in_array( $passed_view, array( 'list-table', 'edit', 'new' ), true );
 
-	// If post type or type is give_forms.
-	if (
-		( 'give_forms' === $typenow || 'give_forms' === $query_args['post_type'] )
-		|| in_array( $passed_page, $expected_pages, true )
-	) {
-
-		if (
-			'edit.php' === $pagenow
-			&& 'give_forms' !== $passed_page
-		) {
-
-			switch ( $passed_page ) {
-				// Give Donors page.
-				case 'donors':
-					$has_view = array_intersect( array( $passed_view, $query_args['view'] ), array( 'list-table', 'overview', 'notes' ) );
-					if ( 'give-donors' === $query_args['page'] && ! empty( $has_view ) ) {
-						if ( 'list-table' === $passed_view && false === $query_args['view'] || $passed_view === $query_args['view'] ) {
-							$found = true;
-						}
-					}
-					break;
-				// Give Donations page.
-				case 'payments' :
-					if ( 'give-payment-history' == $query_args['page'] ) {
-						if ( ( 'list-table' === $passed_view || empty( $passed_view ) )
-						     && false === $query_args['view']
-						     || (
-							     'edit' === $passed_view
-							     && 'view-payment-details' === $query_args['view']
-						     )
-						) {
-							$found = true;
-						}
-					}
-					break;
+			if ( ! in_array( $query_args['taxonomy'], array( 'give_forms_category', 'give_forms_tag' ), true )
+			     && 'edit-tags.php' !== $pagenow
+			     && ( ( in_array( $passed_view, array( 'list-table', 'new' ), true )
+			            && 'edit' === $query_args['action'] ||
+			            ( 'edit' !== $passed_view && 'edit' !== $query_args['action'] )
+			            && ! $has_view
+			          ) || $has_view
+			     )
+			) {
+				$found = false;
 			}
-		} else if ( in_array( $pagenow, array( 'post-new.php', 'edit-tags.php', 'post.php' ), true ) || ( 'give_forms' === $passed_page && 'edit.php' === $pagenow ) ) {
+			break;
+		// Give Donation form page.
+		case 'give_forms':
+			$has_view = in_array( $passed_view, array( 'new', 'list-table', 'edit' ), true );
 
-			switch ( $passed_page ) {
-				// Category or tags page.
-				case 'categories':
-				case 'tags':
-					if (
-						in_array( $query_args['taxonomy'], array( 'give_forms_category', 'give_forms_tag' ), true )
-						&& 'edit-tags.php' === $pagenow
-					) {
-						switch ( $passed_view ) {
-							case 'list-table':
-							case 'new':
-								$found = (bool) ( 'edit' !== $query_args['action'] );
-								break;
-							case 'edit':
-								$found = (bool) ( 'edit' === $query_args['action'] );
-								break;
-							default:
-								$found = (bool) (
-									empty( $passed_view )
-									&& 'edit-tags.php' === $pagenow
-								);
-						}
-					}
-					break;
-				// Give Donation form page.
-				case 'give_forms':
-					switch ( $passed_view ) {
-						case 'new':
-						case 'list-table':
-							$found = (bool) ( 'post-new.php' === $pagenow );
-							break;
-						case 'edit':
-							$found = (bool) ( 'post.php' === $pagenow );
-							break;
-						default:
-							$found = (bool) (
-								'give_forms' === $query_args['post_type']
-								|| (
-									'post-new.php' === $pagenow
-									&& 'give_forms' === $query_args['post_type']
-								)
-							);
-					}
-					break;
+			if ( 'give_forms' !== $typenow
+			     && ( ( 'list-table' !== $passed_view && $is_edit_page ) &&
+			          ( 'edit' !== $passed_view && 'post.php' !== $pagenow ) &&
+			          ( 'new' !== $passed_view && 'post-new.php' !== $pagenow ) )
+			     || ( ! $has_view && ( 'post-new.php' !== $pagenow && 'give_forms' !== $query_args['post_type'] ) )
+			) {
+				$found = false;
 			}
-		}
-	}
+			break;
+		// Give Donors page.
+		case 'donors':
+			$has_view = array_intersect( array( $passed_view, $query_args['view'] ), array( 'list-table', 'overview', 'notes' ) );
 
-	if ( ! in_array( $passed_page, $expected_pages, true ) ) {
-		global $give_payments_page, $give_settings_page, $give_reports_page, $give_system_info_page, $give_add_ons_page, $give_settings_export, $give_donors_page, $give_tools_page;
-		$admin_pages = apply_filters( 'give_admin_pages', array(
-			$give_payments_page,
-			$give_settings_page,
-			$give_reports_page,
-			$give_system_info_page,
-			$give_add_ons_page,
-			$give_settings_export,
-			$give_donors_page,
-			$give_tools_page,
-			'widgets.php',
-		) );
-
-		$found = (bool) ( 'give_forms' == $typenow || in_array( $pagenow, array_merge( $admin_pages, array( 'index.php', 'post-new.php', 'post.php' ) ), true ) );
+			if ( ( 'give-donors' !== $query_args['page'] || $is_edit_page ) &&
+			     ( ( $passed_view !== $query_args['view'] || ! empty( $has_view ) )
+			       || ( 'list-table' !== $passed_view && false !== $query_args['view'] )
+			     )
+			) {
+				$found = false;
+			}
+			break;
+		// Give Donations page.
+		case 'payments' :
+			if ( ( 'give-payment-history' !== $query_args['page'] || $is_edit_page ) &&
+			     ( ( ( 'list-table' !== $passed_view && false !== $query_args['view'] ) ||
+			         ( 'edit' !== $passed_view && 'view-payment-details' !== $query_args['view'] ) ) ||
+			       ! in_array( $passed_view, array( 'list-table', 'edit' ), true )
+			     )
+			) {
+				$found = false;
+			}
+			break;
 		case 'reports':
 		case 'settings':
 		case 'addons':
