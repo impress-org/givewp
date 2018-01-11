@@ -195,8 +195,22 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 				$found = false;
 			}
 			break;
-	}
+		default:
+			global $give_payments_page, $give_settings_page, $give_reports_page, $give_system_info_page, $give_add_ons_page, $give_settings_export, $give_donors_page, $give_tools_page;
+			$admin_pages = apply_filters( 'give_admin_pages', array(
+				$give_payments_page,
+				$give_settings_page,
+				$give_reports_page,
+				$give_system_info_page,
+				$give_add_ons_page,
+				$give_settings_export,
+				$give_donors_page,
+				$give_tools_page,
+				'widgets.php',
+			) );
 
+			$found = ( 'give_forms' === $typenow || in_array( $pagenow, array_merge( $admin_pages, array( 'index.php', 'post-new.php', 'post.php' ) ), true ) ) ? true : false;
+	}
 	return (bool) apply_filters( 'give_is_admin_page', $found, $query_args['page'], $query_args['view'], $passed_page, $passed_view );
 }
 
