@@ -93,6 +93,15 @@ function give_test_ajax_works() {
 		Give_Cache::set( '_give_ajax_works', '1', DAY_IN_SECONDS, true );
 	}
 
+	/**
+	 * Fire just before return the value if ajax work or not.
+	 *
+	 * @since 2.0
+	 *
+	 * @param bool $works Ajax is working or not in sites.
+	 */
+	do_action( 'give_test_ajax_works', $works );
+
 	return $works;
 }
 
