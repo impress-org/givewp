@@ -125,21 +125,20 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 	$get_query_args = isset( $_GET ) ? array_map( 'strtolower', $_GET ) : array();
 
 	// Set default argument, if not passed.
-	$query_args   = wp_parse_args( $get_query_args, array_fill_keys( array( 'post_type', 'action', 'taxonomy', 'page', 'view', 'tab' ), false ) );
-	$is_edit_page = (bool) ( 'edit.php' !== $pagenow );
+	$query_args = wp_parse_args( $get_query_args, array_fill_keys( array( 'post_type', 'action', 'taxonomy', 'page', 'view', 'tab' ), false ) );
 
 	switch ( $passed_page ) {
 		case 'categories':
 		case 'tags':
 			$has_view = in_array( $passed_view, array( 'list-table', 'edit', 'new' ), true );
 
-			if ( ! in_array( $query_args['taxonomy'], array( 'give_forms_category', 'give_forms_tag' ), true )
-			     && 'edit-tags.php' !== $pagenow
-			     && ( ( in_array( $passed_view, array( 'list-table', 'new' ), true )
-			            && 'edit' === $query_args['action'] ||
-			            ( 'edit' !== $passed_view && 'edit' !== $query_args['action'] )
-			            && ! $has_view
-			          ) || $has_view
+			if ( ! in_array( $query_args['taxonomy'], array( 'give_forms_category', 'give_forms_tag' ), true ) && 'edit-tags.php' !== $pagenow
+			     && ( $has_view ||
+			          (
+				          ( in_array( $passed_view, array( 'list-table', 'new' ), true ) && 'edit' === $query_args['action'] ) ||
+				          ( 'edit' !== $passed_view && 'edit' !== $query_args['action'] )
+				          && ! $has_view
+			          )
 			     )
 			) {
 				$found = false;
@@ -150,7 +149,7 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 			$has_view = in_array( $passed_view, array( 'new', 'list-table', 'edit' ), true );
 
 			if ( 'give_forms' !== $typenow
-			     && ( ( 'list-table' !== $passed_view && $is_edit_page ) &&
+			     && ( ( 'list-table' !== $passed_view && 'edit.php' !== $pagenow  ) &&
 			          ( 'edit' !== $passed_view && 'post.php' !== $pagenow ) &&
 			          ( 'new' !== $passed_view && 'post-new.php' !== $pagenow ) )
 			     || ( ! $has_view && ( 'post-new.php' !== $pagenow && 'give_forms' !== $query_args['post_type'] ) )
@@ -162,9 +161,10 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 		case 'donors':
 			$has_view = array_intersect( array( $passed_view, $query_args['view'] ), array( 'list-table', 'overview', 'notes' ) );
 
-			if ( ( 'give-donors' !== $query_args['page'] || $is_edit_page ) &&
-			     ( ( $passed_view !== $query_args['view'] || ! empty( $has_view ) )
-			       || ( 'list-table' !== $passed_view && false !== $query_args['view'] )
+			if (
+				( 'give-donors' !== $query_args['page'] || 'edit.php' !== $pagenow )
+			     && ( ( $passed_view !== $query_args['view'] || ! empty( $has_view ) ) ||
+			          ( false !== $query_args['view'] && 'list-table' !== $passed_view )
 			     )
 			) {
 				$found = false;
@@ -172,10 +172,12 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 			break;
 		// Give Donations page.
 		case 'payments' :
-			if ( ( 'give-payment-history' !== $query_args['page'] || $is_edit_page ) &&
-			     ( ( ( 'list-table' !== $passed_view && false !== $query_args['view'] ) ||
-			         ( 'edit' !== $passed_view && 'view-payment-details' !== $query_args['view'] ) ) ||
-			       ! in_array( $passed_view, array( 'list-table', 'edit' ), true )
+			if ( ( 'give-payment-history' !== $query_args['page'] || 'edit.php' !== $pagenow )
+			     && ( ! in_array( $passed_view, array( 'list-table', 'edit' ), true ) ||
+			          (
+				          ( 'list-table' !== $passed_view && false !== $query_args['view'] ) ||
+				          ( 'edit' !== $passed_view && 'view-payment-details' !== $query_args['view'] )
+			          )
 			     )
 			) {
 				$found = false;
@@ -189,7 +191,7 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 			$give_setting_page = in_array( $query_args['page'], array( 'give-reports', 'give-settings', 'give-addons' ), true );
 
 			// Check if it's Give Setting page or not.
-			if ( ( $is_edit_page || ! $give_setting_page )
+			if ( ( 'edit.php' !== $pagenow || ! $give_setting_page )
 			     && ! Give_Admin_Settings::is_setting_page( $current_tab )
 			) {
 				$found = false;
