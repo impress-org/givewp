@@ -142,38 +142,6 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 		) {
 
 			switch ( $passed_page ) {
-				// Give reports page.
-				case 'reports':
-					$has_view = array_intersect( array( $passed_view, $query_args['view'] ), array( 'earnings', 'gateways', 'export', 'logs', 'donors', 'customers' ) );
-
-					// Check if passed view page is available or not.
-					if ( ! empty( $has_view ) ) {
-
-						// Check for customers or donor page.
-						if ( 'donors' === $passed_view && 'customers' === $query_args['view'] ) {
-							$found = true;
-
-						} else if ( $passed_view === $query_args['view'] && 'give-reports' === $query_args['page'] ) {
-							// If we are on earning report page.
-							if ( 'earnings' === $passed_view && in_array( $query_args['view'], array( 'earnings', '-1', false ), true ) ) {
-								$found = true;
-							}
-						}
-					} else if ( 'give-reports' === $query_args['page'] || empty( $has_view ) ) {
-						$found = true;
-					}
-					break;
-				// Give setting page.
-				case 'settings':
-					$has_view  = array_intersect( array( $passed_view, $query_args['tab'] ), array( 'general', 'gateways', 'emails', 'display', 'licenses', 'api', 'advanced', 'system_info' ) );
-
-					if ( 'give-settings' === $query_args['page'] ) {
-						$found = (bool) (
-							( $passed_view === $query_args['tab'] && ! empty( $has_view ) && 'general' !== $query_args['tab'] )
-							|| ( 'general' === $query_args['tab'] || false === $query_args['tab'] ) // If general tab or has no tab.
-						);
-					}
-					break;
 				// Give Donors page.
 				case 'donors':
 					$has_view = array_intersect( array( $passed_view, $query_args['view'] ), array( 'list-table', 'overview', 'notes' ) );
@@ -182,10 +150,6 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 							$found = true;
 						}
 					}
-					break;
-				// Give Add-on page.
-				case 'addons':
-					$found = (bool) ( 'give-addons' === $query_args['page'] );
 					break;
 				// Give Donations page.
 				case 'payments' :
@@ -267,6 +231,20 @@ function give_is_admin_page( $passed_page = '', $passed_view = '' ) {
 		) );
 
 		$found = (bool) ( 'give_forms' == $typenow || in_array( $pagenow, array_merge( $admin_pages, array( 'index.php', 'post-new.php', 'post.php' ) ), true ) );
+		case 'reports':
+		case 'settings':
+		case 'addons':
+			// Get current tab.
+			$current_tab       = empty( $passed_view ) ? $query_args['tab'] : $passed_view;
+			$give_setting_page = in_array( $query_args['page'], array( 'give-reports', 'give-settings', 'give-addons' ), true );
+
+			// Check if it's Give Setting page or not.
+			if ( ( $is_edit_page || ! $give_setting_page )
+			     && ! Give_Admin_Settings::is_setting_page( $current_tab )
+			) {
+				$found = false;
+			}
+			break;
 	}
 
 	return (bool) apply_filters( 'give_is_admin_page', $found, $query_args['page'], $query_args['view'], $passed_page, $passed_view );
