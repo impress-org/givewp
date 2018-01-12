@@ -515,7 +515,7 @@ function give_totals_shortcode( $atts ) {
 		'message'      => $message,
 		'link'         => '', // URL
 		'link_text'    => __( 'Donate Now', 'give' ), // string,
-		'progress_bar' => false, // boolean
+		'progress_bar' => true, // boolean
 	), $atts, 'give_totals' );
 
 	// Total Goal.
@@ -599,7 +599,7 @@ function give_totals_shortcode( $atts ) {
 	<div class="give-totals-shortcode-wrap">
 		<?php
 		// Show Progress Bar if progress_bar set true.
-		$show_progress_bar = isset( $atts['progress_bar'] ) ? filter_var( $atts['progress_bar'], FILTER_VALIDATE_BOOLEAN ) : false;
+		$show_progress_bar = isset( $atts['progress_bar'] ) ? filter_var( $atts['progress_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
 		if ( $show_progress_bar ) {
 			give_show_goal_totals_progress( $total, $total_goal );
 		}
