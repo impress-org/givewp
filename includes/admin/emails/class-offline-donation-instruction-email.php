@@ -44,7 +44,7 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 				'description'                  => __( 'Sent to the donor when they submit an offline donation.', 'give' ),
 				'notification_status'          => give_is_gateway_active( 'offline' ) ? 'enabled' : 'disabled',
 				'form_metabox_setting'         => true,
-				'notification_status_editable' => false,
+				//'notification_status_editable' => false,
 				'preview_email_tag_values'     => array(
 					'payment_method' => esc_html__( 'Offline', 'give' ),
 				),
