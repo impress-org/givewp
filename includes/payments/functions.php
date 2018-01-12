@@ -1850,6 +1850,8 @@ function give_get_price_id( $form_id, $price ) {
 	/**
 	 * Filter the price id
 	 *
+	 * @since 2.0
+	 *
 	 * @param string $price_id
 	 * @param int    $form_id
 	 */
