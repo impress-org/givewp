@@ -1896,7 +1896,7 @@ var give_setting_edit = false;
 
 			$tab_links.on( 'click', function( e ) {
 				e.preventDefault();
-				$this = $( this );
+				let $this = $( this );
 				self.activate_tab( $this );
 				self.update_query( $this );
 			} );
