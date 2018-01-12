@@ -1847,7 +1847,13 @@ function give_get_price_id( $form_id, $price ) {
 	// Price ID must be numeric or string.
 	$price_id = ! is_numeric( $price_id ) && ! is_string( $price_id ) ? 0 : $price_id;
 
-	return $price_id;
+	/**
+	 * Filter the price id
+	 *
+	 * @param string $price_id
+	 * @param int    $form_id
+	 */
+	return apply_filters( 'give_get_price_id', $price_id, $form_id );
 }
 
 /**
@@ -1947,6 +1953,14 @@ function give_get_payment_meta_price_id( $payment_meta ) {
 		$price_id = give_get_price_id( $payment_meta['give_form_id'], $payment_meta['price'] );
 	}
 
-	return apply_filters( 'give_get_payment_meta_price_id', $price_id );
+	/**
+	 * Filter the price id
+	 *
+	 * @since 1.8.6
+	 *
+	 * @param string $price_id
+	 * @param array  $payment_meta
+	 */
+	return apply_filters( 'give_get_payment_meta_price_id', $price_id, $payment_meta );
 
 }
