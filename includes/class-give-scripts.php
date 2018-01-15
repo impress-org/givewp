@@ -85,8 +85,9 @@ class Give_Scripts {
 		wp_register_style( 'give-admin-styles', GIVE_PLUGIN_URL . 'assets/dist/css/admin' . $this->suffix . $this->direction . '.css', array(), GIVE_VERSION );
 
 		// Frontend.
-		wp_register_style( 'give-styles', $this->get_frontend_stylesheet_uri(), array(), GIVE_VERSION, 'all' );
-
+		if ( give_is_setting_enabled( give_get_option( 'css' ) ) ) {
+			wp_register_style( 'give-styles', $this->get_frontend_stylesheet_uri(), array(), GIVE_VERSION, 'all' );
+		}
 	}
 
 	/**
@@ -266,6 +267,7 @@ class Give_Scripts {
 				font-weight: normal;
 				font-style: normal;
 			}
+
 			.dashicons-give:before, #adminmenu div.wp-menu-image.dashicons-give:before {
 				font-family: 'give-icomoon';
 				font-size: 18px;
