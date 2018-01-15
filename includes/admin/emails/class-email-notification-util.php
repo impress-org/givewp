@@ -93,10 +93,9 @@ class Give_Email_Notification_Util {
 	 * @return bool
 	 */
 	public static function is_notification_status_editable( Give_Email_Notification $email ) {
-		// $user_can_edit = $email->config['notification_status_editable'];
-		// return (bool) $user_can_edit;
+		$user_can_edit = $email->config['notification_status_editable'];
 
-		return true;
+		return (bool) $user_can_edit;
 	}
 
 	/**
