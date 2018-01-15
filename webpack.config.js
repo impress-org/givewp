@@ -70,7 +70,7 @@ const config = {
 						loader: 'sass-loader',
 						options: {
 							sourceMap: true,
-							outputStyle: 'production' === process.env.NODE_ENV ? 'compressed' : 'nested'
+							outputStyle: ( inProduction ? 'compressed' : 'nested' )
 						}
 					} ]
 				})
