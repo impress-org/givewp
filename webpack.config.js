@@ -2,7 +2,7 @@ const webpack = require( 'webpack' );
 const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
 const path = require( 'path' );
 const ExtractTextPlugin = require( 'extract-text-webpack-plugin' );
-const inProduction = ('production' === process.env.NODE_ENV);
+const inProduction = ( 'production' === process.env.NODE_ENV );
 const BrowserSyncPlugin = require( 'browser-sync-webpack-plugin' );
 const ImageminPlugin = require( 'imagemin-webpack-plugin' ).default;
 const CleanWebpackPlugin = require( 'clean-webpack-plugin' );
@@ -13,43 +13,49 @@ const wpPot = require( 'wp-pot' );
 const config = {
 	entry: {
 		'admin': [ './assets/src/js/admin/admin.js', './assets/src/css/admin/give-admin.scss' ],
-		'give': [ './assets/src/js/frontend/give.js', './assets/src/css/frontend/give-frontend.scss' ],
+		'give': [ './assets/src/js/frontend/give.js', './assets/src/css/frontend/give-frontend.scss' ]
 	},
+
 	// Tell webpack where to output.
 	output: {
 		path: path.resolve( __dirname, './assets/dist/' ),
-		filename: (inProduction ? 'js/[name].min.js' : 'js/[name].js')
+		filename: ( inProduction ? 'js/[name].min.js' : 'js/[name].js' )
 	},
+
 	// Ensure modules like magnific know jQuery is external (loaded via WP).
 	externals: {
 		$: 'jQuery',
-		jquery: 'jQuery',
+		jquery: 'jQuery'
 	},
 	devtool: 'source-map',
 	module: {
 		rules: [
+
 			// Use Babel to compile JS.
 			{
 				test: /\.js$/,
 				exclude: /node_modules/,
 				loaders: [
-					'babel-loader',
+					'babel-loader'
 				]
 			},
+
 			// Expose accounting.js for plugin usage.
 			{
 				test: require.resolve( 'accounting' ),
 				loader: 'expose-loader?accounting'
 			},
+
 			// Create RTL styles.
 			{
 				test: /\.css$/,
-				loader: ExtractTextPlugin.extract( 'style-loader' ),
+				loader: ExtractTextPlugin.extract( 'style-loader' )
 			},
+
 			// SASS to CSS.
 			{
 				test: /\.scss$/,
-				use: ExtractTextPlugin.extract( {
+				use: ExtractTextPlugin.extract({
 					use: [ {
 						loader: 'css-loader',
 						options: {
@@ -59,7 +65,7 @@ const config = {
 						loader: 'postcss-loader',
 						options: {
 							sourceMap: true
-						},
+						}
 					}, {
 						loader: 'sass-loader',
 						options: {
@@ -67,8 +73,9 @@ const config = {
 							outputStyle: 'production' === process.env.NODE_ENV ? 'compressed' : 'nested'
 						}
 					} ]
-				} )
+				})
 			},
+
 			// Font files.
 			{
 				test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
@@ -82,6 +89,7 @@ const config = {
 					}
 				]
 			},
+
 			// Image files.
 			{
 				test: /\.(png|jpe?g|gif|svg)$/,
@@ -97,33 +105,34 @@ const config = {
 			}
 		]
 	},
+
 	// Plugins. Gotta have em'.
 	plugins: [
 
 		// Removes the "dist" folder before building.
-		new CleanWebpackPlugin( [ 'assets/dist' ] ),
+		new CleanWebpackPlugin([ 'assets/dist' ]),
 
-		new ExtractTextPlugin( (inProduction ? 'css/[name].min.css' : 'css/[name].css') ),
+		new ExtractTextPlugin( ( inProduction ? 'css/[name].min.css' : 'css/[name].css' ) ),
 
 		// Create RTL css.
 		new WebpackRTLPlugin(),
 
 		// Copy images and SVGs
-		new CopyWebpackPlugin( [ { from: 'assets/src/images', to: 'images' }, ] ),
+		new CopyWebpackPlugin([ { from: 'assets/src/images', to: 'images' } ]),
 
 		// Minify images.
 		// Must go after CopyWebpackPlugin above: https://github.com/Klathmon/imagemin-webpack-plugin#example-usage
-		new ImageminPlugin( { test: /\.(jpe?g|png|gif|svg)$/i } ),
+		new ImageminPlugin({ test: /\.(jpe?g|png|gif|svg)$/i }),
 
 		// Setup browser sync. Note: don't use ".local" TLD as it will be very slow. We recommending using ".test".
-		new BrowserSyncPlugin( {
+		new BrowserSyncPlugin({
 			files: [
 				'**/*.php'
 			],
 			host: 'localhost',
 			port: 3000,
 			proxy: 'give.test'
-		} )
+		})
 	]
 };
 
@@ -131,19 +140,20 @@ const config = {
 if ( inProduction ) {
 
 	// POT file.
-	wpPot( {
+	wpPot({
 		package: 'Give',
 		domain: 'give',
 		destFile: 'languages/give.pot',
 		relativeTo: './',
 		bugReport: 'https://github.com/WordImpress/Give/issues/new',
 		team: 'WordImpress <info@wordimpress.com>'
-	} );
+	});
 
 	// Uglify JS.
-	config.plugins.push( new webpack.optimize.UglifyJsPlugin( { sourceMap: true } ) );
+	config.plugins.push( new webpack.optimize.UglifyJsPlugin({ sourceMap: true }) );
+
 	// Minify CSS.
-	config.plugins.push( new webpack.LoaderOptionsPlugin( { minimize: true } ) );
+	config.plugins.push( new webpack.LoaderOptionsPlugin({ minimize: true }) );
 }
 
 module.exports = config;
