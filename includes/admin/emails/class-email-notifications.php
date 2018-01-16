@@ -129,7 +129,6 @@ class Give_Email_Notifications {
 					'options'     => array(
 						'global'   => __( 'Global Options' ),
 						'enabled'  => __( 'Customize', 'give' ),
-						'disabled' => __( 'Disabled', 'give' ),
 					),
 				),
 				array(
