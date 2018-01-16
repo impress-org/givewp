@@ -14,15 +14,6 @@
 class Give_Scripts {
 
 	/**
-	 * Suffix used when loading minified assets.
-	 *
-	 * @since  2.1.0
-	 * @var    string
-	 * @access private
-	 */
-	private $suffix;
-
-	/**
 	 * Whether RTL or not.
 	 *
 	 * @since  2.1.0
@@ -46,7 +37,6 @@ class Give_Scripts {
 	 * @since 2.1.0
 	 */
 	public function __construct() {
-		$this->suffix         = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 		$this->direction      = ( is_rtl() || isset( $_GET['d'] ) && 'rtl' === $_GET['d'] ) ? '.rtl' : '';
 		$this->scripts_footer = give_is_setting_enabled( give_get_option( 'scripts_footer' ) ) ? true : false;
 		$this->init();
@@ -58,6 +48,7 @@ class Give_Scripts {
 	 * @since 2.1.0
 	 */
 	public function init() {
+
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_styles' ) );
@@ -82,7 +73,7 @@ class Give_Scripts {
 	public function register_styles() {
 
 		// WP-admin.
-		wp_register_style( 'give-admin-styles', GIVE_PLUGIN_URL . 'assets/dist/css/admin' . $this->suffix . $this->direction . '.css', array(), GIVE_VERSION );
+		wp_register_style( 'give-admin-styles', GIVE_PLUGIN_URL . 'assets/dist/css/admin' . $this->direction . '.css', array(), GIVE_VERSION );
 
 		// Frontend.
 		if ( give_is_setting_enabled( give_get_option( 'css' ) ) ) {
@@ -98,7 +89,7 @@ class Give_Scripts {
 	public function register_scripts() {
 
 		// WP-Admin.
-		wp_register_script( 'give-admin-scripts', GIVE_PLUGIN_URL . 'assets/dist/js/admin' . $this->suffix . '.js', array(
+		wp_register_script( 'give-admin-scripts', GIVE_PLUGIN_URL . 'assets/dist/js/admin.js', array(
 			'jquery',
 			'jquery-ui-datepicker',
 			'wp-color-picker',
@@ -106,7 +97,7 @@ class Give_Scripts {
 		), GIVE_VERSION );
 
 		// Frontend.
-		wp_register_script( 'give', GIVE_PLUGIN_URL . 'assets/dist/js/give' . $this->suffix . '.js', array( 'jquery' ), GIVE_VERSION, $this->scripts_footer );
+		wp_register_script( 'give', GIVE_PLUGIN_URL . 'assets/dist/js/give.js', array( 'jquery' ), GIVE_VERSION, $this->scripts_footer );
 	}
 
 	/**
@@ -368,7 +359,7 @@ class Give_Scripts {
 	 */
 	public function get_frontend_stylesheet_uri() {
 
-		$file          = 'give' . $this->suffix . $this->direction . '.css';
+		$file          = 'give' . $this->direction . '.css';
 		$templates_dir = give_get_theme_template_dir_name();
 
 		// Directory paths to CSS files to support checking via file_exists().

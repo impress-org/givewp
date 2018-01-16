@@ -1,29 +1,16 @@
 <?php
+
 /**
  * @group scripts
  */
 class Tests_Scripts extends Give_Unit_Test_Case {
-	
+
 	public function setUp() {
 		parent::setUp();
 	}
 
 	public function tearDown() {
 		parent::tearDown();
-	}
-	
-	/**
-	 * Test if all the file hooks are working.
-	 *
-	 * @since 1.0
-	 */
-	public function test_file_hooks() {
-
-		$this->assertNotFalse( has_action( 'wp_enqueue_scripts', 'give_load_scripts' ) );
-		$this->assertNotFalse( has_action( 'wp_enqueue_scripts', 'give_register_styles' ) );
-		$this->assertNotFalse( has_action( 'admin_enqueue_scripts', 'give_load_admin_scripts' ) );
-		$this->assertNotFalse( has_action( 'admin_head', 'give_admin_icon' ) );
-
 	}
 
 	/**
@@ -33,28 +20,19 @@ class Tests_Scripts extends Give_Unit_Test_Case {
 
 		// Prepare test
 		$this->go_to( '/' );
-		give_load_scripts();
-
-		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
-
-			$this->assertTrue( wp_script_is( 'give-cc-validator', 'enqueued' ) );
-			$this->assertTrue( wp_script_is( 'give-float-labels', 'enqueued' ) );
-			$this->assertTrue( wp_script_is( 'give-blockui', 'enqueued' ) );
-			$this->assertTrue( wp_script_is( 'give-accounting', 'enqueued' ) );
-			$this->assertTrue( wp_script_is( 'give-magnific', 'enqueued' ) );
-			$this->assertTrue( wp_script_is( 'give-checkout-global', 'enqueued' ) );
-			$this->assertTrue( wp_script_is( 'give-scripts', 'enqueued' ) );
-			$this->assertTrue( wp_script_is( 'give-ajax', 'enqueued' ) );
-
-		} else {
-			$this->assertTrue( wp_script_is( 'give', 'enqueued' ) );
-		}
-
+		Give()->scripts->init();
+		global $wp_scripts;
+		foreach( $wp_scripts->queue as $handle ) :
+			echo '<pre>';
+			var_dump($handle);
+			echo '</pre>';
+		endforeach;
+		$this->assertTrue( wp_script_is( 'give', 'enqueued' ) );
 
 	}
 
 	/**
-	 * Test that the give_register_styles() function will bail when the 'disable_css'
+	 * Test that the give_register_styles() function will bail when the 'css'
 	 * option is set to true.
 	 *
 	 * @since 1.0
@@ -62,14 +40,14 @@ class Tests_Scripts extends Give_Unit_Test_Case {
 	public function test_register_styles_bail_option() {
 
 		// Prepare test
-		$origin_disable_css = give_get_option( 'disable_css', false );
-		give_update_option( 'disable_css', true );
+		$origin_disable_css = give_get_option( 'css', false );
+		give_update_option( 'css', true );
 
 		// Assert
-		$this->assertNull( give_register_styles() );
+		$this->assertNull( Give()->scripts->register_styles() );
 
 		// Reset to origin
-		give_update_option( 'disable_css', $origin_disable_css );
+		give_update_option( 'css', $origin_disable_css );
 
 	}
 
@@ -80,8 +58,8 @@ class Tests_Scripts extends Give_Unit_Test_Case {
 	 */
 	public function test_register_styles() {
 
-		give_update_option( 'disable_css', false );
-		give_register_styles();
+		give_update_option( 'css', false );
+		Give()->scripts->register_styles();
 
 		// Assert
 		$this->assertTrue( wp_style_is( 'give-styles', 'enqueued' ) );
@@ -104,7 +82,7 @@ class Tests_Scripts extends Give_Unit_Test_Case {
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php';
 
 		// Assert
-		$this->assertNull( give_load_admin_scripts( 'dashboard' ) );
+		$this->assertNull( Give()->scripts->admin_enqueue_scripts( 'dashboard' ) );
 
 		// Reset to origin
 		$current_screen = $origin_screen;
@@ -134,7 +112,7 @@ class Tests_Scripts extends Give_Unit_Test_Case {
 		$this->assertTrue( wp_script_is( 'thickbox', 'enqueued' ) );
 
 		//Forms CPT Script
-		if ( $this->go_to( get_admin_url('edit.php?post_type=give_forms') ) ) {
+		if ( $this->go_to( get_admin_url( 'edit.php?post_type=give_forms' ) ) ) {
 			$this->assertTrue( wp_script_is( 'give-admin-forms-scripts', 'enqueued' ) );
 		}
 		$this->go_to( '/' );
