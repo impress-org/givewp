@@ -45,7 +45,7 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 				'notices' => array(
 					'non-notification-status-editable' => sprintf(
 						'%1$s <a href="%2$s" target="_blank">%3$s</a>',
-						__( 'This notification is automatically enabled or disabled on depending custom setting.', 'give' ),
+						__( 'This notification is automatically toggled based on its parent setting setting.', 'give' ),
 						esc_url( admin_url('edit.php?post_type=give_forms&page=give-settings&tab=general&section=access-control') ),
 						__( 'Edit Setting', 'give' )
 					)
