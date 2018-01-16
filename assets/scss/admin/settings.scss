@@ -301,6 +301,34 @@ p.give-field-description, .cmb2-metabox-description {
 	margin: 0 0 0 2px;
 	float: none;
   }
+
+  // Row hover effect
+  tr {
+
+	.row-title, .give-icon {
+	  position:relative;
+	  top: 6px;
+	  transition-timing-function: ease-in;
+	  transition: 0.25s;
+	  transform: translateY(130%);
+	}
+
+	.row-actions {
+	  opacity: 0;
+	}
+
+	&:hover {
+	  .row-title, .give-icon {
+		top: 0;
+		transition-timing-function: ease-out;
+	  }
+	  .row-actions {
+		transition: 0.25s;
+		opacity:1;
+	  }
+	}
+
+  }
 }
 
 //--------------------------------------------------------------
