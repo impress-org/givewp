@@ -624,11 +624,6 @@ $give_updates = Give_Updates::get_instance();
 			</td>
 		</tr>
 		<tr>
-			<td data-export-label="Admin Email Notifications"><?php _e( 'Admin Email Notifications', 'give' ); ?>:</td>
-			<td class="help"><?php echo Give()->tooltips->render_help( __( 'Whether admin email notification enabled or not.', 'give' ) ); ?></td>
-			<td><?php echo 'enabled' === give_get_option( 'admin_notices' ) ? __( 'Enabled', 'give' ) : __( 'Disabled', 'give' ); ?></td>
-		</tr>
-		<tr>
 			<td data-export-label="Donor Email Access"><?php _e( 'Donor Email Access', 'give' ); ?>:</td>
 			<td class="help"><?php echo Give()->tooltips->render_help( __( 'Whether donors can access their donation history using only email.', 'give' ) ); ?></td>
 			<td><?php echo 'enabled' === give_get_option( 'email_access' ) ? __( 'Enabled', 'give' ) : __( 'Disabled', 'give' ); ?></td>

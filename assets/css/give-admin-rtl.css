@@ -1669,6 +1669,56 @@ p.give-field-description, .cmb2-metabox-description {
   .give-email-tags-wrap .give_price_tag {
     display: none; }
 
+.give-settings-email-settings-section .tablenav {
+  display: none; }
+
+.give-settings-email-settings-section .give-setting-tab-header-emails {
+  margin: 0 0 20px; }
+  .give-settings-email-settings-section .give-setting-tab-header-emails hr {
+    display: none; }
+
+.give-settings-email-settings-section .tablenav.bottom + .give-setting-tab-header-emails {
+  margin: 20px 0; }
+  .give-settings-email-settings-section .tablenav.bottom + .give-setting-tab-header-emails hr {
+    display: block; }
+
+.giveemailnotifications .check-column {
+  padding: 13px 20px 0 10px !important; }
+
+.giveemailnotifications td.check-column input {
+  display: none; }
+
+.giveemailnotifications th.check-column .give-email-notification-status {
+  color: white;
+  cursor: pointer; }
+  .giveemailnotifications th.check-column .give-email-notification-status[data-edit="1"] i.dashicons {
+    border-radius: 1em;
+    padding: 2px; }
+
+.giveemailnotifications th.check-column .give-email-notification-enabled .dashicons-yes,
+.giveemailnotifications th.check-column .give-email-notification-disabled:hover .dashicons-no-alt {
+  background: #46b450; }
+
+.giveemailnotifications th.check-column .give-email-notification-enabled .dashicons-lock {
+  color: #46b450; }
+
+.giveemailnotifications th.check-column .give-email-notification-disabled .dashicons-no-alt,
+.giveemailnotifications th.check-column .give-email-notification-enabled:hover .dashicons-yes {
+  background: #bbbbbb; }
+
+.giveemailnotifications th.check-column .give-email-notification-disabled .dashicons-lock {
+  color: #bbbbbb; }
+
+.giveemailnotifications th.check-column .dashicons-no-alt:hover:before {
+  content: "\f147" !important; }
+
+.giveemailnotifications th.check-column .dashicons-yes:hover:before {
+  content: "\f335" !important; }
+
+.giveemailnotifications .spinner.is-active {
+  margin: 0 2px 0 0;
+  float: none; }
+
 #system-info-textarea {
   width: 800px;
   height: 600px;
@@ -1804,43 +1854,6 @@ a.give-delete {
   font-style: italic;
   margin: 0;
   padding-top: .5em; }
-
-.giveemailnotifications .check-column {
-  padding: 13px 20px 0 10px !important; }
-
-.giveemailnotifications td.check-column input {
-  display: none; }
-
-.giveemailnotifications th.check-column .give-email-notification-status {
-  color: white;
-  cursor: pointer; }
-  .giveemailnotifications th.check-column .give-email-notification-status[data-edit="1"] i.dashicons {
-    border-radius: 1em;
-    padding: 2px; }
-
-.giveemailnotifications th.check-column .give-email-notification-enabled .dashicons-yes,
-.giveemailnotifications th.check-column .give-email-notification-disabled:hover .dashicons-no-alt {
-  background: #46b450; }
-
-.giveemailnotifications th.check-column .give-email-notification-enabled .dashicons-lock {
-  color: #46b450; }
-
-.giveemailnotifications th.check-column .give-email-notification-disabled .dashicons-no-alt,
-.giveemailnotifications th.check-column .give-email-notification-enabled:hover .dashicons-yes {
-  background: #bbbbbb; }
-
-.giveemailnotifications th.check-column .give-email-notification-disabled .dashicons-lock {
-  color: #bbbbbb; }
-
-.giveemailnotifications th.check-column .dashicons-no-alt:hover:before {
-  content: "\f147" !important; }
-
-.giveemailnotifications th.check-column .dashicons-yes:hover:before {
-  content: "\f335" !important; }
-
-.giveemailnotifications .spinner.is-active {
-  margin: 0 2px 0 0;
-  float: none; }
 
 h2.give-nav-tab-wrapper {
   overflow: hidden;

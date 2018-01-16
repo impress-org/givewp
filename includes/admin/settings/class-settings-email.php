@@ -52,7 +52,6 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
 
 						// Section 1: Email Notification Listing.
 						array(
-							'title'      => __( 'Email Notifications', 'give' ),
 							'desc'       => __( 'Email notifications sent from Give are listed below. Click on an email to configure it.', 'give' ),
 							'type'       => 'title',
 							'id'         => 'give_email_notification_settings',
