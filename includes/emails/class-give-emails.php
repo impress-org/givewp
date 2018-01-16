@@ -304,7 +304,23 @@ class Give_Emails {
 		do_action( 'give_email_footer', $this );
 
 		$body    = ob_get_clean();
+
+		// Email tag.
 		$message = str_replace( '{email}', $message, $body );
+
+		// Email logo tag.
+		$header_img = give_get_meta( $this->form_id, '_give_email_logo', true );
+		$header_img = $this->form_id ? $header_img : give_get_option( 'email_logo', '' );
+
+		if ( ! empty( $header_img ) ) {
+			$header_img = sprintf(
+				'<div id="template_header_image"><p style="margin-top:0;"><img style="max-width:450px;" src="%1$s" alt="%2$s" /></p></div>',
+				esc_url( $header_img ),
+				get_bloginfo( 'name' )
+			);
+		}
+
+		$message    = str_replace( '{email_logo}', $header_img, $message );
 
 		return apply_filters( 'give_email_message', $message, $this );
 	}
