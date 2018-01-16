@@ -183,6 +183,19 @@ jQuery.noConflict();
 				$('._give_offline_donation_email_field').hide();
 			}
 		}).change();
+
+		//Email options.
+		var  email_options = $('._give_email_options_field input:radio');
+		email_options.on('change', function () {
+			// Get checked radio button value.
+			var email_options_val = $('._give_email_options_field input:radio:checked').val();
+
+			if ( email_options_val === 'enabled') {
+				$('#email_notification_options .give-field-wrap:not(._give_email_options_field)').show();
+			} else {
+				$('#email_notification_options .give-field-wrap:not(._give_email_options_field)').hide();
+			}
+		}).change();
 	};
 
 	//Handle Repeatable Row ID
