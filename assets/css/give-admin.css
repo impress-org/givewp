@@ -1719,24 +1719,6 @@ p.give-field-description, .cmb2-metabox-description {
   margin: 0 0 0 2px;
   float: none; }
 
-.giveemailnotifications tr .row-title, .giveemailnotifications tr .give-icon {
-  position: relative;
-  top: 6px;
-  transition-timing-function: ease-in;
-  transition: 0.25s;
-  transform: translateY(130%); }
-
-.giveemailnotifications tr .row-actions {
-  opacity: 0; }
-
-.giveemailnotifications tr:hover .row-title, .giveemailnotifications tr:hover .give-icon {
-  top: 0;
-  transition-timing-function: ease-out; }
-
-.giveemailnotifications tr:hover .row-actions {
-  transition: 0.25s;
-  opacity: 1; }
-
 #system-info-textarea {
   width: 800px;
   height: 600px;
