@@ -375,13 +375,13 @@ a.give-delete {
   }
 
   .give-license-field {
-	background: #FFF url('../images/close.png') no-repeat;
+	background: #FFF url('../../images/close.png') no-repeat;
 	background-position: 98.5% center;
 	background-size: 18px;
   }
 
   .give-license-active, .give-license-active:focus {
-	background-image: url('../images/tick.png');
+	background-image: url('../../images/tick.png');
 	background-color: #FFF;
 	background-repeat: no-repeat;
 	background-position: 98.5% center;
