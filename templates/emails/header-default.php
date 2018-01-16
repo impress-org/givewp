@@ -63,7 +63,8 @@ $header_content_h1  = "
 	font-weight: 500;
 	line-height: 1.2;
 ";
-$header_img         = give_get_option( 'email_logo', '' );
+$header_img         = give_get_meta( $this->form_id,'_give_email_logo', true );
+$header_img         = ! empty( $header_img ) ?  $header_img : give_get_option( 'email_logo', '' );
 ?>
 <!DOCTYPE html>
 <html>
