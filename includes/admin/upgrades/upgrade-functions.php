@@ -1107,7 +1107,10 @@ function give_v20_upgrades_email_setting() {
 				$notification_status = give_get_option( $old_setting, 'enabled' );
 
 				give_update_option( $new_setting, $notification_status );
-				give_delete_option( $old_setting );
+
+				// @todo: Delete this option later ( version > 2.0 ), We need this for per form email addon.
+				// give_delete_option( $old_setting );
+
 				break;
 
 			// @todo: Delete this option later ( version > 2.0 ) because we need this for backward compatibility give_get_admin_notice_emails.
