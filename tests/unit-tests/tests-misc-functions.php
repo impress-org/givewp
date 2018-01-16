@@ -159,4 +159,43 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 		$this->assertEquals( 'Test Donation Form', $title );
 
 	}
+
+	/**
+	 * Check if current page/url is give's admin page or not.
+	 *
+	 * @since  2.1
+	 * @access public
+	 *
+	 * @cover give_is_admin_page
+	 */
+	public function test_give_is_admin_page() {
+		require_once GIVE_PLUGIN_DIR . 'includes/admin/admin-pages.php';
+
+		$GLOBALS['typenow'] = 'give_forms';
+		$GLOBALS['pagenow'] = 'edit.php';
+
+		// Donation form page, it should return true.
+		$this->go_to( admin_url( 'edit.php?post_type=give_forms' ) );
+		$this->assertTrue( give_is_admin_page() );
+
+		// Setting pages.
+		$this->go_to( admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=gateways' ) );
+		$this->assertTrue( give_is_admin_page() );
+
+		// Taxonomies page.
+		$GLOBALS['pagenow'] = 'edit-tags.php';
+
+		$this->go_to( admin_url( 'edit-tags.php?taxonomy=give_forms_category&post_type=give_forms' ) );
+		$this->assertTrue( give_is_admin_page() );
+
+		unset( $GLOBALS['typenow'] );
+
+		// Check plugin page.
+		$GLOBALS['pagenow'] = 'plugins.php';
+		$this->assertFalse( give_is_admin_page() );
+
+		// Check admin-ajax.
+		$GLOBALS['pagenow'] = 'admin-ajax.php';
+		$this->assertFalse( give_is_admin_page() );
+	}
 }
