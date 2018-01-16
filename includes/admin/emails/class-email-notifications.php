@@ -119,6 +119,53 @@ class Give_Email_Notifications {
 		$settings['email_notification_options'] = array(
 			'id'         => 'email_notification_options',
 			'title'      => __( 'Email Notification', 'give' ),
+			'fields'     => array(
+				array(
+					'name'        => __( 'Email Options', 'give' ),
+					'description' => __( '', 'give' ),
+					'id'          => '_give_email_options',
+					'type'        => 'radio_inline',
+					'default'     => 'global',
+					'options'     => array(
+						'global'   => __( 'Global Options' ),
+						'enabled'  => __( 'Customize', 'give' ),
+					),
+				),
+				array(
+					'id'      => '_give_email_template',
+					'name'    => esc_html__( 'Email Template', 'give' ),
+					'desc'    => esc_html__( 'Choose your template from the available registered template types.', 'give' ),
+					'type'    => 'select',
+					'default' => 'default',
+					'options' => give_get_email_templates(),
+				),
+				array(
+					'id'   => '_give_email_logo',
+					'name' => esc_html__( 'Logo', 'give' ),
+					'desc' => esc_html__( 'Upload or choose a logo to be displayed at the top of the donation receipt emails. Displayed on HTML emails only.', 'give' ),
+					'type' => 'file',
+				),
+				array(
+					'id'      => '_give_from_name',
+					'name'    => esc_html__( 'From Name', 'give' ),
+					'desc'    => esc_html__( 'The name which appears in the "From" field in all Give donation emails.', 'give' ),
+					'default' => get_bloginfo( 'name' ),
+					'type'    => 'text',
+				),
+				array(
+					'id'      => '_give_from_email',
+					'name'    => esc_html__( 'From Email', 'give' ),
+					'desc'    => esc_html__( 'Email address from which all Give emails are sent from. This will act as the "from" and "reply-to" email address.', 'give' ),
+					'default' => get_bloginfo( 'admin_email' ),
+					'type'    => 'text',
+				),
+				array(
+					'name'  => 'email_notification_docs',
+					'type'  => 'docs_link',
+					'url'   => 'http://docs.givewp.com/email-notification',
+					'title' => __( 'Email Notification', 'give' ),
+				),
+			),
 
 			/**
 			 * Filter the email notification settings.
