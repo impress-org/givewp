@@ -428,6 +428,7 @@ function give_donation_form_validate_gateway() {
  *
  * @access      private
  * @since       1.3.6
+ * @since       2.1 Added support for give maximum amount.
  *
  * @param string $amount_range Which amount needs to verify? minimum or maximum.
  *

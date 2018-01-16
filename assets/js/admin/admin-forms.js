@@ -106,10 +106,10 @@ jQuery.noConflict();
 		custom_amount_option.on('change', function () {
 			var custom_amount_option_val = $('._give_custom_amount_field input:radio:checked').val();
 			if (custom_amount_option_val === 'disabled') {
-				$('._give_custom_amount_minimum_field').hide();
+				$('._give_range_slider._give_custom_amount_field').hide();
 				$('._give_custom_amount_text_field').hide();
 			} else {
-				$('._give_custom_amount_minimum_field').show();
+				$('._give_range_slider._give_custom_amount_field').show();
 				$('._give_custom_amount_text_field').show();
 			}
 		}).change();

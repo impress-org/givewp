@@ -153,7 +153,7 @@ class Give_MetaBox_Form_Data {
 					array(
 						'name'          => __( 'Minimum Amount', 'give' ),
 						'description'   => __( 'Set minimum and maximum amount limit.', 'give' ),
-						'id'            => $prefix . 'custom_amount_minimum',
+						'id'            => $prefix . 'custom_amount',
 						'type'          => 'range_slider',
 						'wrapper_class' => 'give-hidden',
 						'data_type'     => 'price',
@@ -836,6 +836,13 @@ class Give_MetaBox_Form_Data {
 								$form_meta_value = wp_kses_post( $_POST[ $form_meta_key ] );
 								break;
 
+							case 'range_slider' :
+								/**
+								 * @todo Save range slider values in separate fields.
+								 */
+
+
+								break;
 							case 'group':
 								$form_meta_value = array();
 

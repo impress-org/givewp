@@ -328,9 +328,14 @@ function give_range_slider( $field ) {
 		),
 	);
 
+	if ( empty( $default_options['value'] ) ) {
+		$default_options['value']['min_value'] = 0.00;
+		$default_options['value']['max_value'] = 99999.99;
+	}
+
 	$field_options = wp_parse_args( $field, $default_options );
 	?>
-	<p class="give-field-wrap <?php echo esc_attr( $field_options['id'] ); ?>_field <?php echo esc_attr( $field_options['wrapper_class'] ); ?>">
+	<p class="give-field-wrap <?php echo esc_attr( $field_options['id'] ); ?>_field <?php echo esc_attr( $field_options['wrapper_class'] ); ?> _give_range_slider">
 	<label for="<?php echo give_get_field_name( $field_options ); ?>"><?php echo wp_kses_post( $field_options['name'] ); ?></label>
 	<span class="give_range_slider_display">
 		<span class="give_range_slider_label">
@@ -339,6 +344,7 @@ function give_range_slider( $field ) {
 		<?php
 
 		foreach ( $field_options['value'] as $amount_range => $amount_value ) {
+
 			switch ( $field_options['data_type'] ) {
 				case 'price' :
 					$currency_position = give_get_option( 'currency_position', 'before' );
@@ -913,6 +919,7 @@ function give_email_preview_buttons( $field ) {
  * Note: Use only for single post, page or custom post type.
  *
  * @since  1.8
+ * @since  2.1 Added support for range_slider.
  *
  * @param  array $field
  * @param  int   $postid
@@ -924,8 +931,17 @@ function give_get_field_value( $field, $postid ) {
 		return $field['attributes']['value'];
 	}
 
-	// Get value from db.
-	$field_value = give_get_meta( $postid, $field['id'], true );
+	// If field is range slider.
+	if ( 'range_slider' === $field['type'] ) {
+
+		$field_value = array(
+			'min_value' => give_get_meta( $postid, $field['id'] . '_minimum', true ),
+			'max_value' => give_get_meta( $postid, $field['id'] . '_maximum', true ),
+		);
+	} else {
+		// Get value from db.
+		$field_value = give_get_meta( $postid, $field['id'], true );
+	}
 
 	/**
 	 * Filter the field value before apply default value.
