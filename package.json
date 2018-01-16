@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "cross-env webpack",
     "production": "cross-env NODE_ENV=production webpack",
+    "build": "npm run production",
     "watch": "cross-env webpack --watch",
     "lint": "npm run lint:js & npm run lint:scss",
     "lint:js": "eslint assets/src/**/*.js",
