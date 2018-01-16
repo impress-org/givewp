@@ -57,6 +57,7 @@ class Give_Scripts {
 		if ( is_admin() ) {
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_styles' ) );
+			add_action( 'enqueue_block_editor_assets', array( $this, 'gutenberg_admin_scripts' ) );
 			add_action( 'admin_head', array( $this, 'global_admin_head' ) );
 
 		} else {
@@ -395,6 +396,22 @@ class Give_Scripts {
 		}
 
 		return apply_filters( 'give_get_stylesheet_uri', $uri );
+
+	}
+
+	/**
+	 * Gutenberg admin scripts.
+	 */
+	public function gutenberg_admin_scripts() {
+
+		// Enqueue the bundled block JS file
+		wp_enqueue_script(
+			'give-blocks-js',
+			GIVE_PLUGIN_URL . 'assets/dist/js/gutenberg.js',
+			[ 'wp-i18n', 'wp-element', 'wp-blocks', 'wp-components', 'wp-api' ],
+			GIVE_VERSION
+		);
+
 
 	}
 
