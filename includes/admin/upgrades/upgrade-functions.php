@@ -1104,7 +1104,7 @@ function give_v20_upgrades_email_setting() {
 
 		switch ( $old_setting ) {
 			case 'admin_notices':
-				$notification_status = give_get_option( $old_setting, 'disabled' );
+				$notification_status = give_get_option( $old_setting, 'enabled' );
 
 				give_update_option( $new_setting, $notification_status );
 				give_delete_option( $old_setting );
