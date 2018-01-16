@@ -1823,7 +1823,7 @@ a.give-delete {
 .giveemailnotifications th.check-column .give-email-notification-disabled:hover .dashicons-no-alt {
   background: #46b450; }
 
-.giveemailnotifications th.check-column .give-email-notification-enabled .dashicons-unlock {
+.giveemailnotifications th.check-column .give-email-notification-enabled .dashicons-lock {
   color: #46b450; }
 
 .giveemailnotifications th.check-column .give-email-notification-disabled .dashicons-no-alt,
