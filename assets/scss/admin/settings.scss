@@ -71,6 +71,19 @@
 	.give-forminp p:first-child .give-remove-setting-field {
 		display: none;
 	}
+
+	.export-options-table {
+		tr.give-import-option:nth-child(odd) {
+			background: #f4f3f3;
+			th {
+				vertical-align: middle;
+			}
+		}
+		.give-import-dropdown:nth-child(2),
+		tr.give-import-option th:first-child{
+			width: 250px;
+		}
+	}
 }
 
 .give-setting-tab-header {

@@ -742,7 +742,8 @@ div.cmb-type-levels-repeater-header + div.cmb-repeat-group-wrap {
 .give-money-symbol-after {
   margin-left: -5px; }
 
-.give_options_panel input[type="text"] {
+.give_options_panel input[type="text"],
+.give_options_panel input[type="email"] {
   padding: 5px;
   width: 100%; }
 

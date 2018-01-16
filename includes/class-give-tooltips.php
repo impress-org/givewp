@@ -191,8 +191,9 @@ class Give_Tooltips {
 			$args = array( 'label' => $args );
 		}
 
-		$args['tag_content'] = '<i class="give-icon give-icon-question"></i>';
-		$tooltip_markup      = $this->render_span( $args );
+		$args['tag_content']         = '<i class="give-icon give-icon-question"></i>';
+		$args['attributes']['class'] = 'give-tooltip';
+		$tooltip_markup              = $this->render_span( $args );
 
 		return $tooltip_markup;
 	}

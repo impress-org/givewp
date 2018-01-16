@@ -41,10 +41,10 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 			$this->load( array(
 				'id'                           => 'new-offline-donation',
 				'label'                        => __( 'New Offline Donation', 'give' ),
-				'description'                  => __( 'Donation Notification will be sent to admin when new offline donation received.', 'give' ),
+				'description'                  => __( 'Sent to designated recipient(s) for a new (pending) offline donation.', 'give' ),
 				'has_recipient_field'          => true,
 				'notification_status'          => give_is_gateway_active( 'offline' ) ? 'enabled' : 'disabled',
-				'notification_status_editable' => false,
+				//'notification_status_editable' => false,
 				'preview_email_tags_values'    => array(
 					'payment_method' => esc_html__( 'Offline', 'give' ),
 				),

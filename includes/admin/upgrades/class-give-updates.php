@@ -235,6 +235,10 @@ class Give_Updates {
 	 * @access public
 	 */
 	public function __register_menu() {
+		// Bailout.
+		if( ! give_test_ajax_works() ) {
+			return;
+		}
 
 		// Load plugin updates.
 		$this->__register_plugin_addon_updates();
@@ -318,6 +322,20 @@ class Give_Updates {
 
 		// Bailout.
 		if ( isset( $_GET['page'] ) && 'give-updates' === $_GET['page'] ) {
+			return;
+		}
+
+		// Show notice if ajax is not working.
+		if ( ! give_test_ajax_works() ) {
+			Give()->notices->register_notice(
+				array(
+					'id'          => 'give_db_upgrade_ajax_inaccessible',
+					'type'        => 'error',
+					'description' => __( 'Give needs to upgrade the database but cannot because AJAX is not functioning properly. Please contact your host and ask them to ensure admin-ajax.php is accessible.', 'give' ),
+					'show'        => true,
+				)
+			);
+
 			return;
 		}
 

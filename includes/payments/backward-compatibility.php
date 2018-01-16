@@ -702,4 +702,5 @@ function __give_20_bc_flush_cache( $check, $object_id ) {
 	return $check;
 }
 
-add_action( 'update_postmeta', '__give_20_bc_flush_cache', 9999, 2 );
+add_action( 'update_post_metadata', '__give_20_bc_flush_cache', 9999, 2 );
+add_action( 'add_post_metadata', '__give_20_bc_flush_cache', 9999, 2 );

@@ -120,7 +120,7 @@ function give_form_shortcode( $atts ) {
 	$atts['show_title'] = filter_var( $atts['show_title'], FILTER_VALIDATE_BOOLEAN );
 	$atts['show_goal']  = filter_var( $atts['show_goal'], FILTER_VALIDATE_BOOLEAN );
 
-	//get the Give Form
+	// get the Give Form
 	ob_start();
 	give_get_donation_form( $atts );
 	$final_output = ob_get_clean();
@@ -148,21 +148,20 @@ function give_goal_shortcode( $atts ) {
 		'show_bar'  => true,
 	), $atts, 'give_goal' );
 
-
-	//get the Give Form.
+	// get the Give Form.
 	ob_start();
 
-	//Sanity check 1: ensure there is an ID Provided.
+	// Sanity check 1: ensure there is an ID Provided.
 	if ( empty( $atts['id'] ) ) {
 		Give()->notices->print_frontend_notice( __( 'The shortcode is missing Donation Form ID attribute.', 'give' ), true );
 	}
 
-	//Sanity check 2: Check the form even has Goals enabled.
+	// Sanity check 2: Check the form even has Goals enabled.
 	if ( ! give_is_setting_enabled( give_get_meta( $atts['id'], '_give_goal_option', true ) ) ) {
 
 		Give()->notices->print_frontend_notice( __( 'The form does not have Goals enabled.', 'give' ), true );
 	} else {
-		//Passed all sanity checks: output Goal.
+		// Passed all sanity checks: output Goal.
 		give_show_goal_progress( $atts['id'], $atts );
 	}
 
@@ -189,10 +188,10 @@ add_shortcode( 'give_goal', 'give_goal_shortcode' );
  * @return string
  */
 function give_login_form_shortcode( $atts ) {
+
 	$atts = shortcode_atts( array(
 		// Add backward compatibility for redirect attribute.
 		'redirect' => '',
-
 		'login-redirect'  => '',
 		'logout-redirect' => '',
 	), $atts, 'give_login' );
@@ -255,10 +254,10 @@ function give_receipt_shortcode( $atts ) {
 		'status_notice'  => true,
 	), $atts, 'give_receipt' );
 
-	//set $session var
+	// set $session var
 	$session = give_get_purchase_session();
 
-	//set payment key var
+	// set payment key var
 	if ( isset( $_GET['payment_key'] ) ) {
 		$payment_key = urldecode( $_GET['payment_key'] );
 	} elseif ( $session ) {
@@ -357,7 +356,7 @@ function give_profile_editor_shortcode( $atts ) {
 
 	// Restrict access to donor profile, if donor and user are disconnected.
 	$is_donor_disconnected = get_user_meta( get_current_user_id(), '_give_is_donor_disconnected', true );
-	if( is_user_logged_in() && $is_donor_disconnected ) {
+	if ( is_user_logged_in() && $is_donor_disconnected ) {
 		Give()->notices->print_frontend_notice( __( 'Your Donor and User profile are no longer connected. Please contact the site administrator.', 'give' ), true, 'error' );
 		return false;
 	}
@@ -431,7 +430,6 @@ function give_process_profile_editor_updates( $data ) {
 		give_set_error( 'empty_first_name', __( 'Please enter your first name.', 'give' ) );
 	}
 
-
 	// Make sure to validate passwords for existing Donors.
 	give_validate_user_password( $password, $confirm_password );
 
@@ -447,12 +445,11 @@ function give_process_profile_editor_updates( $data ) {
 		// Make sure the new email doesn't belong to another user
 		if ( email_exists( $email ) ) {
 			give_set_error( 'user_email_exists', __( 'The email you entered belongs to another user. Please use another.', 'give' ) );
-		} elseif ( Give()->donors->get_donor_by( 'email', $email ) ){
+		} elseif ( Give()->donors->get_donor_by( 'email', $email ) ) {
 			// Make sure the new email doesn't belong to another user
 			give_set_error( 'donor_email_exists', __( 'The email you entered belongs to another donor. Please use another.', 'give' ) );
 		}
 	}
-
 
 	// Check for errors.
 	$errors = give_get_errors();
@@ -464,10 +461,11 @@ function give_process_profile_editor_updates( $data ) {
 	}
 
 	// Update Donor First Name and Last Name.
-	Give()->donors->update( $donor->id, array( 'name' => trim( "{$first_name} {$last_name}" ) ) );
+	Give()->donors->update( $donor->id, array(
+		'name' => trim( "{$first_name} {$last_name}" ),
+	) );
 	Give()->donor_meta->update_meta( $donor->id, '_give_donor_first_name', $first_name );
 	Give()->donor_meta->update_meta( $donor->id, '_give_donor_last_name', $last_name );
-
 
 	// Update the user.
 	$updated = wp_update_user( $userdata );

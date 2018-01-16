@@ -791,8 +791,7 @@ table#give_donation_receipt span.donation-level-text-wrap {
 [id*="give-form"].give-fl-form.give-fl-style-give select.give-fl-select,
 [id*="give-form"].give-fl-form.give-fl-style-give textarea.give-fl-textarea {
   line-height: inherit;
-  padding: 12px;
-  background-color: #fff; }
+  padding: 12px; }
 
 [id*="give-form"].give-fl-form.give-fl-style-give select.give-fl-select {
   line-height: inherit; }
@@ -1407,9 +1406,9 @@ CC Validation
   background-repeat: no-repeat;
   background-position: right 10px top 50%;
   background-size: 16px; }
-  #give_purchase_form_wrap input.give-input.card-number.valid.give-fl-input:not(.card-cvc):not(.card-expiry),
-  #give_purchase_form_wrap input.give-input.card-cvc.valid.give-fl-input:not(.card-cvc):not(.card-expiry),
-  #give_purchase_form_wrap input.give-input.card-expiry.valid.give-fl-input:not(.card-cvc):not(.card-expiry) {
+  #give_purchase_form_wrap input.give-input.card-number.valid.fl-input:not(.card-cvc):not(.card-expiry),
+  #give_purchase_form_wrap input.give-input.card-cvc.valid.fl-input:not(.card-cvc):not(.card-expiry),
+  #give_purchase_form_wrap input.give-input.card-expiry.valid.fl-input:not(.card-cvc):not(.card-expiry) {
     background-position: right 55px top 50%; }
 
 #give_purchase_form_wrap span.card-type {
@@ -1420,7 +1419,7 @@ CC Validation
   height: 26px;
   background-size: 37px 26px !important; }
 
-#give_purchase_form_wrap .give-fl-wrap span.card-type {
+#give_purchase_form_wrap .fl-wrap span.card-type {
   top: calc(0.5em + 6px);
   right: 11px; }
 
