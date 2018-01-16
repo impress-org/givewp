@@ -976,10 +976,10 @@ class Give_MetaBox_Form_Data {
 		$meta_keys = array();
 
 		foreach ( $this->settings as $setting ) {
+			$meta_key = $this->get_fields_id( $setting );
+
 			if ( $this->has_sub_tab( $setting ) ) {
-				$meta_key = $this->get_sub_fields_id( $setting );
-			} else {
-				$meta_key = $this->get_fields_id( $setting );
+				$meta_key = array_merge( $meta_key, $this->get_sub_fields_id( $setting ) );
 			}
 
 			$meta_keys = array_merge( $meta_keys, $meta_key );
