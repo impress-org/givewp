@@ -49,7 +49,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			'has_recipient_field'               => false,
 			'recipient_group_name'              => '',
 			'notification_status'               => 'disabled',
-			//'notification_status_editable'      => true,
+			'notification_status_editable'      => true,
 			'notices'                           => array(),
 			'content_type_editable'             => true,
 			'has_preview'                       => true,

@@ -44,12 +44,20 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 				'description'                  => __( 'Sent to the donor when they submit an offline donation.', 'give' ),
 				'notification_status'          => give_is_gateway_active( 'offline' ) ? 'enabled' : 'disabled',
 				'form_metabox_setting'         => true,
-				//'notification_status_editable' => false,
+				'notification_status_editable' => false,
 				'preview_email_tag_values'     => array(
 					'payment_method' => esc_html__( 'Offline', 'give' ),
 				),
 				'default_email_subject'        => esc_attr__( '{donation} - Offline Donation Instructions', 'give' ),
 				'default_email_message'        => give_get_default_offline_donation_email_content(),
+				'notices' => array(
+					'non-notification-status-editable' => sprintf(
+						'%1$s <a href="%2$s" target="_blank">%3$s</a>',
+						__( 'This notification is automatically enabled or disabled on depending custom setting.', 'give' ),
+						esc_url( admin_url('edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=offline-donations') ),
+						__( 'Edit Setting', 'give' )
+					)
+				),
 			) );
 
 			add_action( 'give_insert_payment', array( $this, 'setup_email_notification' ) );

@@ -37,11 +37,19 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 				'description'                  => __( 'Sent when donors request access to their donation history using only their email as verification. (See Settings > General > Access Control)', 'give' ),
 				'notification_status'          => give_get_option( 'email_access', 'disabled' ),
 				'form_metabox_setting'         => false,
-				//'notification_status_editable' => false,
+				'notification_status_editable' => false,
 				'email_tag_context'            => 'donor',
 				'recipient_group_name'         => __( 'Donor', 'give' ),
 				'default_email_subject'        => sprintf( __( 'Please confirm your email for %s', 'give' ), get_bloginfo( 'url' ) ),
 				'default_email_message'        => $this->get_default_email_message(),
+				'notices' => array(
+					'non-notification-status-editable' => sprintf(
+						'%1$s <a href="%2$s" target="_blank">%3$s</a>',
+						__( 'This notification is automatically enabled or disabled on depending custom setting.', 'give' ),
+						esc_url( admin_url('edit.php?post_type=give_forms&page=give-settings&tab=general&section=access-control') ),
+						__( 'Edit Setting', 'give' )
+					)
+				),
 			) );
 
 			add_filter( "give_{$this->config['id']}_email_notification", array( $this, 'setup_email_notification' ), 10, 2 );
