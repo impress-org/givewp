@@ -154,6 +154,20 @@ class Give_Email_Notification_Util {
 		return $email->config['show_on_emails_setting_page'];
 	}
 
+	/**
+	 * Check if we can use form email options.
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param Give_Email_Notification $email
+	 * @param int $form_id
+	 *
+	 * @return bool
+	 */
+	public static function can_use_form_email_options( Give_Email_Notification $email, $form_id = null ){
+		return give_is_setting_enabled( give_get_meta( $form_id, '_give_email_options', true ) );
+	}
 
 	/**
 	 * Check email active or not.
