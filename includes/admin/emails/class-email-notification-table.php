@@ -147,9 +147,7 @@ class Give_Email_Notification_Table extends WP_List_Table {
 		);
 
 		if ( ! $user_can_edit_status ) {
-			$icon_classes         = Give_Email_Notification_Util::is_email_notification_active( $email )
-				? 'dashicons dashicons-unlock'
-				: 'dashicons dashicons-lock';
+			$icon_classes         = 'dashicons dashicons-lock';
 
 			$attributes['data-notice'] = esc_attr( $email->config['notices']['non-notification-status-editable'] );
 		}
