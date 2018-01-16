@@ -147,18 +147,18 @@ class Give_Email_Notification_Table extends WP_List_Table {
 		);
 
 		if ( ! $user_can_edit_status ) {
-			$html = Give()->tooltips->render_span( array(
-				'label'       => $email->config['notices']['non-notification-status-editable'],
-				'tag_content' => sprintf( '<i class="%s"></i></span></span><span class="spinner"></span>', $icon_classes ),
-				'attributes'  => $attributes,
-			) );
-		} else {
-			$html = sprintf(
-				'<span %1$s><i class="%2$s"></i></span></span><span class="spinner"></span>',
-				give_get_attribute_str( $attributes ),
-				$icon_classes
-			);
+			$icon_classes         = Give_Email_Notification_Util::is_email_notification_active( $email )
+				? 'dashicons dashicons-unlock'
+				: 'dashicons dashicons-lock';
+
+			$attributes['data-notice'] = esc_attr( $email->config['notices']['non-notification-status-editable'] );
 		}
+
+		$html = sprintf(
+			'<span %1$s><i class="%2$s"></i></span></span><span class="spinner"></span>',
+			give_get_attribute_str( $attributes ),
+			$icon_classes
+		);
 
 		return $html;
 	}
