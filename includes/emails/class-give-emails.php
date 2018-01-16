@@ -240,13 +240,14 @@ class Give_Emails {
 		if ( false === $this->html ) {
 
 			// Added Replacement check to simply behaviour of anchor tags.
-			$pattern     = '/<a.+?href\=(?:["|\'])(.+?)(?:["|\']).*?>(.+?)<\/a>/i';
-			$message     = preg_replace_callback(
+			$pattern = '/<a.+?href\=(?:["|\'])(.+?)(?:["|\']).*?>(.+?)<\/a>/i';
+			$message = preg_replace_callback(
 				$pattern,
-				function( $return ) {
+				function ( $return ) {
 					if ( $return[1] !== $return[2] ) {
 						return "{$return[2]} ( {$return[1]} )";
 					}
+
 					return trailingslashit( $return[1] );
 				},
 				$message
