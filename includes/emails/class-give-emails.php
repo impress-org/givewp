@@ -89,6 +89,13 @@ class Give_Emails {
 	public $tag_args = array();
 
 	/**
+	 * Form ID
+	 *
+	 * @since  1.0
+	 */
+	public $form_id = 0;
+
+	/**
 	 * Get things going.
 	 *
 	 * @since 1.0
