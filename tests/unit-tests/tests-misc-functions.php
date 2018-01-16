@@ -188,13 +188,15 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 		$this->go_to( admin_url( 'edit-tags.php?taxonomy=give_forms_category&post_type=give_forms' ) );
 		$this->assertTrue( give_is_admin_page() );
 
+		// Non-Give pages will not have this variable so, Unset.
 		unset( $GLOBALS['typenow'] );
 
-		// Check plugin page.
+		// WP Plugin page.
 		$GLOBALS['pagenow'] = 'plugins.php';
-		$this->assertFalse( give_is_admin_page() );
+		$this->assertFalse( give_is_admin_page() ); // False.
+		$this->assertFalse( give_is_admin_page( 'give_forms' ) ); // False.
 
-		// Check admin-ajax.
+		// Admin-ajax.
 		$GLOBALS['pagenow'] = 'admin-ajax.php';
 		$this->assertFalse( give_is_admin_page() );
 	}
