@@ -518,11 +518,14 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @return string
 		 */
 		public function get_email_template( $form_id ) {
-			$content_type = Give_Email_Notification_Util::get_value(
+			$email_template = give_get_meta( $form_id, '_give_email_template', true );
+			$email_template = Give_Email_Notification_Util::get_value(
 				$this,
 				Give_Email_Setting_Field::get_prefix( $this, $form_id ) .'email_template',
 				$form_id,
-				$this->config['email_template']
+				! empty( $email_template ) && Give_Email_Notification_Util::can_use_form_email_options( $this, $form_id ) ?
+					$email_template :
+					$this->config['email_template']
 			);
 
 			/**
@@ -532,7 +535,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 */
 			return apply_filters(
 				"give_{$this->config['id']}_get_email_template",
-				$content_type,
+				$email_template,
 				$this,
 				$form_id
 			);
@@ -667,6 +670,12 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 				$message = strip_tags( $message );
 			}
 
+			if ( Give_Email_Notification_Util::can_use_form_email_options( $this, $form_id ) ) {
+				Give()->emails->form_id      = $form_id;
+				Give()->emails->from_name    = give_get_meta( $form_id, '_give_from_name', true );
+				Give()->emails->from_address = give_get_meta( $form_id, '_give_from_email', true );
+			}
+
 			return Give()->emails->send( $this->get_preview_email_recipient( $form_id ), $subject, $message, $attachments );
 		}
 
@@ -733,6 +742,12 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 				Give()->emails->__set( 'html', false );
 				Give()->emails->__set( 'template', 'none' );
 				$message = strip_tags( $message );
+			}
+
+			if ( Give_Email_Notification_Util::can_use_form_email_options( $this, $form_id ) ) {
+				Give()->emails->form_id      = $form_id;
+				Give()->emails->from_name    = give_get_meta( $form_id, '_give_from_name', true );
+				Give()->emails->from_address = give_get_meta( $form_id, '_give_from_email', true );
 			}
 
 			// Send email.

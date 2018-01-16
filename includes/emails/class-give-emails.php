@@ -89,6 +89,13 @@ class Give_Emails {
 	public $tag_args = array();
 
 	/**
+	 * Form ID
+	 *
+	 * @since  1.0
+	 */
+	public $form_id = 0;
+
+	/**
 	 * Get things going.
 	 *
 	 * @since 1.0
@@ -233,13 +240,14 @@ class Give_Emails {
 		if ( false === $this->html ) {
 
 			// Added Replacement check to simply behaviour of anchor tags.
-			$pattern     = '/<a.+?href\=(?:["|\'])(.+?)(?:["|\']).*?>(.+?)<\/a>/i';
-			$message     = preg_replace_callback(
+			$pattern = '/<a.+?href\=(?:["|\'])(.+?)(?:["|\']).*?>(.+?)<\/a>/i';
+			$message = preg_replace_callback(
 				$pattern,
-				function( $return ) {
+				function ( $return ) {
 					if ( $return[1] !== $return[2] ) {
 						return "{$return[2]} ( {$return[1]} )";
 					}
+
 					return trailingslashit( $return[1] );
 				},
 				$message
@@ -297,7 +305,23 @@ class Give_Emails {
 		do_action( 'give_email_footer', $this );
 
 		$body    = ob_get_clean();
+
+		// Email tag.
 		$message = str_replace( '{email}', $message, $body );
+
+		// Email logo tag.
+		$header_img = give_get_meta( $this->form_id, '_give_email_logo', true );
+		$header_img = $this->form_id ? $header_img : give_get_option( 'email_logo', '' );
+
+		if ( ! empty( $header_img ) ) {
+			$header_img = sprintf(
+				'<div id="template_header_image"><p style="margin-top:0;"><img style="max-width:450px;" src="%1$s" alt="%2$s" /></p></div>',
+				esc_url( $header_img ),
+				get_bloginfo( 'name' )
+			);
+		}
+
+		$message    = str_replace( '{email_logo}', $header_img, $message );
 
 		return apply_filters( 'give_email_message', $message, $this );
 	}
@@ -372,8 +396,11 @@ class Give_Emails {
 		remove_filter( 'wp_mail_from_name', array( $this, 'get_from_name' ) );
 		remove_filter( 'wp_mail_content_type', array( $this, 'get_content_type' ) );
 
-		// Reset heading to an empty string
+		// Reset email related params.
 		$this->heading = '';
+		$this->from_name = '';
+		$this->from_address = '';
+		$this->form_id = 0;
 	}
 
 	/**
