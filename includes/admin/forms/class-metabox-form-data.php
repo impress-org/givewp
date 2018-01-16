@@ -689,34 +689,32 @@ class Give_MetaBox_Form_Data {
 				</ul>
 
 				<?php foreach ( $this->settings as $setting ) : ?>
-					<?php if ( ! $this->has_sub_tab( $setting ) ) : ?>
-						<?php do_action( "give_before_{$setting['id']}_settings" ); ?>
-						<?php
-						// Determine if current panel is active.
-						$is_active = $active_tab === $setting['id'] ? true : false;
-						?>
-						<div id="<?php echo $setting['id']; ?>" class="panel give_options_panel<?php echo( $is_active ? ' active' : '' ); ?>">
-							<?php if ( ! empty( $setting['fields'] ) ) : ?>
-								<?php foreach ( $setting['fields'] as $field ) : ?>
-									<?php give_render_field( $field ); ?>
-								<?php endforeach; ?>
-							<?php endif; ?>
-						</div>
+					<?php do_action( "give_before_{$setting['id']}_settings" ); ?>
+					<?php
+					// Determine if current panel is active.
+					$is_active = $active_tab === $setting['id'] ? true : false;
+					?>
+					<div id="<?php echo $setting['id']; ?>" class="panel give_options_panel<?php echo( $is_active ? ' active' : '' ); ?>">
+						<?php if ( ! empty( $setting['fields'] ) ) : ?>
+							<?php foreach ( $setting['fields'] as $field ) : ?>
+								<?php give_render_field( $field ); ?>
+							<?php endforeach; ?>
+						<?php endif; ?>
+					</div>
+					<?php do_action( "give_after_{$setting['id']}_settings" ); ?>
 
-						<?php do_action( "give_after_{$setting['id']}_settings" ); ?>
-					<?php else : ?>
-						<?php if ( $this->has_sub_tab( $setting ) ) : ?>
-							<?php if ( ! empty( $setting['sub-fields'] ) ) : ?>
-								<?php foreach ( $setting['sub-fields'] as $index => $sub_fields ) : ?>
-									<div id="<?php echo $sub_fields['id']; ?>" class="panel give_options_panel give-hidden">
-										<?php if ( ! empty( $sub_fields['fields'] ) ) : ?>
-											<?php foreach ( $sub_fields['fields'] as $sub_field ) : ?>
-												<?php give_render_field( $sub_field ); ?>
-											<?php endforeach; ?>
-										<?php endif; ?>
-									</div>
-								<?php endforeach; ?>
-							<?php endif; ?>
+
+					<?php if ( $this->has_sub_tab( $setting ) ) : ?>
+						<?php if ( ! empty( $setting['sub-fields'] ) ) : ?>
+							<?php foreach ( $setting['sub-fields'] as $index => $sub_fields ) : ?>
+								<div id="<?php echo $sub_fields['id']; ?>" class="panel give_options_panel give-hidden">
+									<?php if ( ! empty( $sub_fields['fields'] ) ) : ?>
+										<?php foreach ( $sub_fields['fields'] as $sub_field ) : ?>
+											<?php give_render_field( $sub_field ); ?>
+										<?php endforeach; ?>
+									<?php endif; ?>
+								</div>
+							<?php endforeach; ?>
 						<?php endif; ?>
 					<?php endif; ?>
 				<?php endforeach; ?>
