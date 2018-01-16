@@ -445,7 +445,7 @@ a.give-delete {
 			color: white;
 			cursor: pointer;
 
-			i.dashicons {
+			&[data-edit="1"] i.dashicons {
 				border-radius: 1em;
 				padding: 2px;
 			}
@@ -456,9 +456,17 @@ a.give-delete {
 			background: #46b450;
 		}
 
+		.give-email-notification-enabled .dashicons-unlock{
+			color: #46b450;
+		}
+
 		.give-email-notification-disabled .dashicons-no-alt,
 		.give-email-notification-enabled:hover .dashicons-yes {
 			background: #bbbbbb;
+		}
+
+		.give-email-notification-disabled .dashicons-lock{
+			color: #bbbbbb;
 		}
 
 		.dashicons-no-alt:hover:before {
@@ -467,10 +475,6 @@ a.give-delete {
 
 		.dashicons-yes:hover:before {
 			content: "\f335" !important;
-		}
-
-		.give-email-notification-status[data-edit="0"] {
-			cursor: not-allowed;
 		}
 	}
 

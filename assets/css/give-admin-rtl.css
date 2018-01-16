@@ -1565,6 +1565,15 @@ table.give-table td.row-title p {
 .give-settings-page .give-forminp p:first-child .give-remove-setting-field {
   display: none; }
 
+.give-settings-page .export-options-table tr.give-import-option:nth-child(odd) {
+  background: #f4f3f3; }
+  .give-settings-page .export-options-table tr.give-import-option:nth-child(odd) th {
+    vertical-align: middle; }
+
+.give-settings-page .export-options-table .give-import-dropdown:nth-child(2),
+.give-settings-page .export-options-table tr.give-import-option th:first-child {
+  width: 250px; }
+
 .give-setting-tab-header {
   clear: both;
   overflow: hidden;
@@ -1805,7 +1814,7 @@ a.give-delete {
 .giveemailnotifications th.check-column .give-email-notification-status {
   color: white;
   cursor: pointer; }
-  .giveemailnotifications th.check-column .give-email-notification-status i.dashicons {
+  .giveemailnotifications th.check-column .give-email-notification-status[data-edit="1"] i.dashicons {
     border-radius: 1em;
     padding: 2px; }
 
@@ -1813,18 +1822,21 @@ a.give-delete {
 .giveemailnotifications th.check-column .give-email-notification-disabled:hover .dashicons-no-alt {
   background: #46b450; }
 
+.giveemailnotifications th.check-column .give-email-notification-enabled .dashicons-unlock {
+  color: #46b450; }
+
 .giveemailnotifications th.check-column .give-email-notification-disabled .dashicons-no-alt,
 .giveemailnotifications th.check-column .give-email-notification-enabled:hover .dashicons-yes {
   background: #bbbbbb; }
+
+.giveemailnotifications th.check-column .give-email-notification-disabled .dashicons-lock {
+  color: #bbbbbb; }
 
 .giveemailnotifications th.check-column .dashicons-no-alt:hover:before {
   content: "\f147" !important; }
 
 .giveemailnotifications th.check-column .dashicons-yes:hover:before {
   content: "\f335" !important; }
-
-.giveemailnotifications th.check-column .give-email-notification-status[data-edit="0"] {
-  cursor: not-allowed; }
 
 .giveemailnotifications .spinner.is-active {
   margin: 0 2px 0 0;
