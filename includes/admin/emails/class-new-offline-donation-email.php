@@ -50,6 +50,14 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 				),
 				'default_email_subject'        => $this->get_default_email_subject(),
 				'default_email_message'        => $this->get_default_email_message(),
+				'notices' => array(
+					'non-notification-status-editable' => sprintf(
+						'%1$s <a href="%2$s" target="_blank">%3$s</a>',
+						__( 'This notification automatically enable or disable on basis of plugin setting.', 'give' ),
+						esc_url( admin_url('edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=offline-donations') ),
+						__( 'Edit Setting', 'give' )
+					)
+				),
 			) );
 
 			add_action( 'give_insert_payment', array( $this, 'setup_email_notification' ) );

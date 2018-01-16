@@ -42,6 +42,14 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 				'recipient_group_name'         => __( 'Donor', 'give' ),
 				'default_email_subject'        => sprintf( __( 'Please confirm your email for %s', 'give' ), get_bloginfo( 'url' ) ),
 				'default_email_message'        => $this->get_default_email_message(),
+				'notices' => array(
+					'non-notification-status-editable' => sprintf(
+						'%1$s <a href="%2$s" target="_blank">%3$s</a>',
+						__( 'This notification automatically enable or disable on basis of plugin setting.', 'give' ),
+						esc_url( admin_url('edit.php?post_type=give_forms&page=give-settings&tab=general&section=access-control') ),
+						__( 'Edit Setting', 'give' )
+					)
+				),
 			) );
 
 			add_filter( "give_{$this->config['id']}_email_notification", array( $this, 'setup_email_notification' ), 10, 2 );
