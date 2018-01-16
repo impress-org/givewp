@@ -104,6 +104,15 @@ jQuery(document).ready(function ($) {
 
 		// Bailout if admin can not edit notification status setting.
 		if( ! parseInt( $this.data('edit') ) ) {
+			// Remove all notice.
+			$('div.give-email-notification-status-notice').remove();
+
+			// Add notice.
+			$('hr.wp-header-end').after('<div class="updated error give-email-notification-status-notice"><p>' + $(this).closest('.give-email-notification-status').data('notice') + '</p></div>');
+
+			// Scroll to notice.
+			$('html, body').animate({scrollTop:$('div.give-email-notification-status-notice').position().top}, 'slow');
+
 			return false;
 		}
 
