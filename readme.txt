@@ -223,7 +223,6 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 * Fix: Sorting by donation statuses wasn't returning the expected results in wp-admin. [#2400](https://github.com/WordImpress/Give/issues/2400)
 * Fix: Donors are now required to actually add content into the First Name field and not just use a space character to pass the validation. [#2562](https://github.com/WordImpress/Give/issues/2562)
 
-
 = 1.8.19: December 20th, 2017  =
 * Fix: There was a edge case bug released where a donor viewing a donation receipt in the browser could not due to the necessary columns not being created on install
 
