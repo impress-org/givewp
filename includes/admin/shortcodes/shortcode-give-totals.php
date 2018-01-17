@@ -37,19 +37,28 @@ class Give_Shortcode_Totals extends Give_Shortcode_Generator {
 	 */
 	public function define_fields() {
 
-		$categories       = get_terms( 'give_forms_category', apply_filters( 'give_forms_category_dropdown', array() ) );
 		$category_options = array();
-		foreach ( $categories as $category ) {
-			$category_options[ absint( $category->term_id ) ] = esc_html( $category->name );
+		$categories = get_terms( 'give_forms_category', apply_filters( 'give_forms_category_dropdown', array() ) );
+		if ( give_is_setting_enabled( give_get_option( 'categories' ) ) && ! is_wp_error( $categories ) ) {
+			foreach ( $categories as $category ) {
+				$category_options[ absint( $category->term_id ) ] = esc_html( $category->name );
+			}
 		}
 
-		$tags        = get_terms( 'give_forms_tag', apply_filters( 'give_forms_tag_dropdown', array() ) );
 		$tag_options = array();
-		foreach ( $tags as $tag ) {
-			$tag_options[ absint( $tag->term_id ) ] = esc_html( $tag->name );
+		$tags = get_terms( 'give_forms_tag', apply_filters( 'give_forms_tag_dropdown', array() ) );
+		if ( give_is_setting_enabled( give_get_option( 'tags' ) ) && ! is_wp_error( $tags ) ) {
+			$tags = get_terms( 'give_forms_tag', apply_filters( 'give_forms_tag_dropdown', array() ) );
+			foreach ( $tags as $tag ) {
+				$tag_options[ absint( $tag->term_id ) ] = esc_html( $tag->name );
+			}
 		}
 
 		return array(
+			array(
+				'type' => 'container',
+				'html' => sprintf( '<p class="give-totals-shortcode-container-message">%s</p>', __( 'This shortcode shows the total amount raised towards a custom goal for one or several forms regardless of whether they have goals enabled or not.', 'give' ) ),
+			),
 			array(
 				'type' => 'container',
 				'html' => sprintf( '<p class="strong margin-top">%s</p>', esc_html__( 'Optional settings', 'give' ) ),
@@ -83,6 +92,16 @@ class Give_Shortcode_Totals extends Give_Shortcode_Generator {
 				'name'    => 'total_goal',
 				'label'   => esc_attr__( 'Total Goal:', 'give' ),
 				'tooltip' => esc_attr__( 'Enter the total goal amount.', 'give' ),
+			),
+			array(
+				'type'      => 'textbox',
+				'name'      => 'message',
+				'label'     => esc_attr__( 'Message:', 'give' ),
+				'tooltip'   => esc_attr__( 'Enter the message.', 'give' ),
+				'value'     => __( 'Hey! We\'ve raised {total} of the {total_goal} we are trying to raise for this campaign!', 'give' ),
+				'multiline' => true,
+				'minWidth'  => 300,
+				'minHeight' => 60,
 			),
 			array(
 				'type'    => 'textbox',
