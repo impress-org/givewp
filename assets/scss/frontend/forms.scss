@@ -282,6 +282,7 @@ form.give-form {
 	}
 	.give-disabled, [disabled] {
 		cursor: not-allowed;
+		opacity: 0.5;
 	}
 }
 
