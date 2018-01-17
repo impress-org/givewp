@@ -72,11 +72,13 @@ class Give_Logging {
 		if ( ! give_has_upgrade_completed( 'v20_logs_upgrades' ) ) {
 			// Create the log post type
 			add_action( 'init', array( $this, 'register_post_type' ), -2 );
+		}
 
-			// Create types taxonomy and default types
-			add_action( 'init', array( $this, 'register_taxonomy' ), -2 );
-		}
-		}
+		// Create types taxonomy and default types
+		// @todo: remove this taxonomy, some addon use this taxonomy with there custom log post type for example: recurring
+		// Do not use this taxonomy with your log type because we will remove it in future releases.
+		add_action( 'init', array( $this, 'register_taxonomy' ), -2 );
+	}
 
 
 	/**
