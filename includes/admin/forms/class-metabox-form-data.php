@@ -153,7 +153,7 @@ class Give_MetaBox_Form_Data {
 					array(
 						'name'          => __( 'Minimum Amount', 'give' ),
 						'description'   => __( 'Set minimum and maximum amount limit.', 'give' ),
-						'id'            => $prefix . 'custom_amount',
+						'id'            => $prefix . 'custom_amount_range',
 						'type'          => 'range_slider',
 						'wrapper_class' => 'give-hidden',
 						'data_type'     => 'price',
@@ -163,6 +163,8 @@ class Give_MetaBox_Form_Data {
 						),
 						'options'       => array(
 							'display_label' => __( 'Donation Limits: ', 'give' ),
+							'minimum'       => 1.00,
+							'maximum'       => 999999.99,
 						),
 					),
 					array(
@@ -837,12 +839,9 @@ class Give_MetaBox_Form_Data {
 								break;
 
 							case 'range_slider' :
-								/**
-								 * @todo Save range slider values in separate fields.
-								 */
-
-
+								$form_meta_value = $_POST[ $form_meta_key ];
 								break;
+
 							case 'group':
 								$form_meta_value = array();
 

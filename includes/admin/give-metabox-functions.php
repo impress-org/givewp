@@ -325,17 +325,25 @@ function give_range_slider( $field ) {
 		'after_field'   => '',
 		'options'       => array(
 			'display_label' => '',
+			'minimum'       => 1.00,
+			'maximum'       => 999999.99,
 		),
 	);
 
-	if ( empty( $default_options['value'] ) ) {
-		$default_options['value']['min_value'] = 0.00;
-		$default_options['value']['max_value'] = 99999.99;
-	}
-
+	// Set default field options.
 	$field_options = wp_parse_args( $field, $default_options );
+
+	// Get default minimum value, if empty.
+	$field_options['value']['minimum'] = ! empty( $field_options['value']['minimum'] )
+		? $field_options['value']['minimum']
+		: $field_options['options']['minimum'];
+
+	// Get default maximum value, if empty.
+	$field_options['value']['maximum'] = ! empty( $field_options['value']['maximum'] )
+		? $field_options['value']['maximum']
+		: $field_options['options']['maximum'];
 	?>
-	<p class="give-field-wrap <?php echo esc_attr( $field_options['id'] ); ?>_field <?php echo esc_attr( $field_options['wrapper_class'] ); ?> _give_range_slider">
+	<p class="give-field-wrap <?php echo esc_attr( $field_options['id'] ); ?>_field <?php echo esc_attr( $field_options['wrapper_class'] ); ?>">
 	<label for="<?php echo give_get_field_name( $field_options ); ?>"><?php echo wp_kses_post( $field_options['name'] ); ?></label>
 	<span class="give_range_slider_display">
 		<span class="give_range_slider_label">
@@ -348,7 +356,7 @@ function give_range_slider( $field ) {
 			switch ( $field_options['data_type'] ) {
 				case 'price' :
 					$currency_position = give_get_option( 'currency_position', 'before' );
-					$tooltip_label     = 'min_value' === $amount_range ? __( 'Minimum amount', 'give' ) : __( 'Maximum amount', 'give' );
+					$tooltip_label     = 'minimum' === $amount_range ? __( 'Minimum amount', 'give' ) : __( 'Maximum amount', 'give' );
 
 					$tooltip_html = array(
 						'before' => Give()->tooltips->render_span( array(
@@ -361,31 +369,35 @@ function give_range_slider( $field ) {
 						) ),
 					);
 
-					// Sanitize amount.
-					$field_options['value'][ $amount_range ] = ! empty( $amount_value ) ? give_format_amount( give_maybe_sanitize_amount( $amount_value ), array( 'sanitize' => false ) )
-						: $amount_value;
-					$field_options['before_field']           = ! empty( $field_options['before_field'] ) ? $field_options['before_field'] : 'before' === $currency_position ?
-						$tooltip_html['before'] : '';
-					$field_options['after_field']            = ! empty( $field_options['after_field'] ) ? $field_options['after_field'] : 'after' === $currency_position ?
-						$tooltip_html['after'] : '';
+					$field_options['before_field'] = ! empty( $field_options['before_field'] )
+						? $field_options['before_field']
+						: ( 'before' === $currency_position ? $tooltip_html['before'] : '' );
+
+					$field_options['after_field'] = ! empty( $field_options['after_field'] )
+						? $field_options['after_field']
+						: ( 'after' === $currency_position ? $tooltip_html['after'] : '' );
+
+					$field_options['attributes']['class']    .= ' give-text_small';
+					$field_options['value'][ $amount_range ] = give_maybe_sanitize_amount( $amount_value );
 					break;
 				case 'decimal' :
-					$field_options['attributes']['class']    .= ' give_input_decimal';
-					$field_options['value'][ $amount_range ] = ! empty( $amount_value ) ? give_format_decimal( give_maybe_sanitize_amount( $amount_value ), false, false ) : $amount_value;
+					$field_options['attributes']['class']    .= ' give_input_decimal give-text_small';
+					$field_options['value'][ $amount_range ] = $amount_value;
 					break;
 
 				default :
 					break;
 			}
+
 			echo $field_options['before_field'];
 			?>
 			<input
 					name="<?php echo give_get_field_name( $field_options ); ?>[<?php echo esc_attr( $amount_range ); ?>]"
 					type="text"
-					id="<?php echo $field_options['id'];?> _give_range_slider_<?php echo $amount_range;?>"
+					id="<?php echo $field_options['id']; ?> _give_range_slider_<?php echo $amount_range; ?>"
 					data-range_type="<?php echo esc_attr( $amount_range ); ?>"
-					value="<?php echo esc_attr( $amount_value ); ?>"
-					placeholder="<?php echo 'min_value' === $amount_range ? 1.00 : 99999.99 ;?>"
+					value="<?php echo esc_attr( $field_options['value'][ $amount_range ] ); ?>"
+					placeholder="<?php echo $field_options['options'][ $amount_range ]; ?>"
 				<?php echo give_get_custom_attributes( $field_options ); ?>
 			/>
 			<?php
