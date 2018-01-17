@@ -1152,8 +1152,7 @@ form.give-form {
   #give-recurring-form [disabled],
   form.give-form .give-disabled,
   form.give-form [disabled] {
-    cursor: not-allowed;
-    opacity: 0.5; }
+    cursor: not-allowed; }
 
 /*---------------------------------
 Form Price & Amount
