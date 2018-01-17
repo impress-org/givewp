@@ -34,7 +34,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 			$this->load( array(
 				'id'                    => 'new-donor-register',
 				'label'                 => __( 'New User Registration', 'give' ),
-				'description'           => __( 'Sent to designated recipient(s) when a new user registers on the site.', 'give' ),
+				'description'           => __( 'Sent to designated recipient(s) when a new user registers on the site via a donation form.', 'give' ),
 				'has_recipient_field'   => true,
 				'notification_status'   => 'enabled',
 				'has_preview_header'    => true,
