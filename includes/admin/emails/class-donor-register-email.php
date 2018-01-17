@@ -33,8 +33,8 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 		public function init() {
 			$this->load( array(
 				'id'                    => 'donor-register',
-				'label'                 => __( 'Donor Register', 'give' ),
-				'description'           => __( 'Sent to the donor when they register for an account on the site.', 'give' ),
+				'label'                 => __( 'User Register Information', 'give' ),
+				'description'           => __( 'Sent to the user when they register for an account on the site.', 'give' ),
 				'notification_status'   => 'enabled',
 				'email_tag_contex'      => 'donor',
 				'form_metabox_setting'  => false,
