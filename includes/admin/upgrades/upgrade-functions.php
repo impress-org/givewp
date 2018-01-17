@@ -1906,6 +1906,11 @@ function give_v20_move_metadata_into_new_table_callback() {
 
 			if ( ! empty( $meta_data ) ) {
 				foreach ( $meta_data as $index => $data ) {
+					// Check for duplicate meta values.
+					if( $result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . ( 'give_forms' === $post->post_type ? $wpdb->formmeta : $wpdb->paymentmeta ) .  " WHERE meta_id=%d", $data['meta_id'] ), ARRAY_A ) ) {
+						continue;
+					}
+					
 					switch ( $post->post_type ) {
 						case 'give_forms':
 							$data['form_id'] = $data['post_id'];
