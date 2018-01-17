@@ -133,7 +133,6 @@ add_action( 'give_logs_view_gateway_errors', 'give_logs_view_gateway_errors' );
  *
  * @since 1.0
  * @uses  Give_API_Request_Log_Table::prepare_items()
- * @uses  Give_API_Request_Log_Table::search_box()
  * @uses  Give_API_Request_Log_Table::display()
  * @return void
  */
@@ -142,38 +141,30 @@ function give_logs_view_api_requests() {
 
 	$logs_table = new Give_API_Request_Log_Table();
 	$logs_table->prepare_items();
+
+	/**
+	 * Fires before displaying API requests logs.
+	 *
+	 * @since 1.0
+	 */
+	do_action( 'give_logs_api_requests_top' );
+
+	$logs_table->search_box( esc_html__( 'Search', 'give' ), 'give-api-requests' );
+	$logs_table->display();
 	?>
-	<div class="wrap">
+	<input type="hidden" name="post_type" value="give_forms"/>
+	<input type="hidden" name="page" value="give-tools"/>
+	<input type="hidden" name="tab" value="logs"/>
+	<input type="hidden" name="section" value="api_requests"/>
 
-		<?php
-		/**
-		 * Fires before displaying API requests logs.
-		 *
-		 * @since 1.0
-		 */
-		do_action( 'give_logs_api_requests_top' );
-
-		$logs_table->search_box( esc_html__( 'Search', 'give' ), 'give-api-requests' );
-		$logs_table->display();
-		?>
-		<input type="hidden" name="post_type" value="give_forms"/>
-		<input type="hidden" name="page" value="give-tools"/>
-		<input type="hidden" name="tab" value="logs"/>
-		<input type="hidden" name="section" value="api_requests"/>
-
-		<?php
-		/**
-		 * Fires after displaying API requests logs.
-		 *
-		 * @since 1.0
-		 */
-		do_action( 'give_logs_api_requests_bottom' );
-		?>
-
-	</div>
 	<?php
+	/**
+	 * Fires after displaying API requests logs.
+	 *
+	 * @since 1.0
+	 */
+	do_action( 'give_logs_api_requests_bottom' );
 }
-
 add_action( 'give_logs_view_api_requests', 'give_logs_view_api_requests' );
 
 /**

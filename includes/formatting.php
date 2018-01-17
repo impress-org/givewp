@@ -658,28 +658,68 @@ function give_let_to_num( $size ) {
  * @since 1.8
  *
  * @param        $nonce
- * @param int   $action
- * @param array $wp_die_args
+ * @param int    $action
+ * @param array  $wp_die_args
+ *
+ * @return bool
  */
 function give_validate_nonce( $nonce, $action = - 1, $wp_die_args = array() ) {
 
-	$default_wp_die_args = array(
-		'message' => esc_html__( 'Nonce verification has failed.', 'give' ),
-		'title'   => esc_html__( 'Error', 'give' ),
-		'args'    => array(
-			'response' => 403,
-		),
-	);
+	// Verify nonce.
+	$verify_nonce = wp_verify_nonce( $nonce, $action );
 
-	$wp_die_args = wp_parse_args( $wp_die_args, $default_wp_die_args );
+	// On ajax request send nonce verification status.
+	if ( wp_doing_ajax() ) {
+		return $verify_nonce;
+	}
 
-	if ( ! wp_verify_nonce( $nonce, $action ) ) {
+	if ( ! $verify_nonce ) {
+		$wp_die_args = wp_parse_args(
+			$wp_die_args,
+			array(
+				'message' => __( 'Nonce verification has failed.', 'give' ),
+				'title'   => __( 'Error', 'give' ),
+				'args'    => array(
+					'response' => 403,
+				)
+			)
+		);
+
 		wp_die(
 			$wp_die_args['message'],
 			$wp_die_args['title'],
 			$wp_die_args['args']
 		);
 	}
+
+	return true;
+}
+
+/**
+ * Verify nonce while processing donation form.
+ *
+ * @since 2.0
+ *
+ * @param string $nonce Pass nonce value.
+ *
+ * @return bool
+ */
+function give_verify_donation_form_nonce( $nonce = '' ) {
+	// Get nonce key from donation.
+	$nonce   = empty( $nonce ) ? give_clean( $_POST['_wpnonce'] ) : $nonce;
+	$form_id = isset( $_POST['give-form-id'] ) ? absint( $_POST['give-form-id'] ) : 0;
+
+	// Form nonce action.
+	$nonce_action = "donation_form_nonce_{$form_id}";
+
+	// Nonce validation.
+	$verify_nonce = give_validate_nonce( $nonce, $nonce_action );
+
+	if ( ! $verify_nonce ) {
+		give_set_error( 'donation_form_nonce', __( 'Nonce verification has failed.', 'give' ) );
+	}
+
+	return $verify_nonce;
 }
 
 /**
@@ -690,29 +730,50 @@ function give_validate_nonce( $nonce, $action = - 1, $wp_die_args = array() ) {
  * @since 1.8
  *
  * @param                   $variable
- * @param                   string (optional) $conditional , default value: isset
- * @param                   bool   (optional) $default , default value: false
+ * @param string (optional) $conditional    default value: isset
+ * @param bool (optional)   $default        default value: false
+ * @param string (optional) $array_key_name default value: false
  *
  * @return mixed
  */
-function give_check_variable( $variable, $conditional = '', $default = false ) {
+function give_check_variable( $variable, $conditional = '', $default = false, $array_key_name = '' ) {
+	// Get value from array if array key non empty.
+	if( empty( $array_key_name ) ) {
+		switch ( $conditional ) {
+			case 'isset_empty':
+				$variable = ( isset( $variable ) && ! empty( $variable ) ) ? $variable : $default;
+				break;
 
-	switch ( $conditional ) {
-		case 'isset_empty':
-			$variable = ( isset( $variable ) && ! empty( $variable ) ) ? $variable : $default;
-			break;
+			case 'empty':
+				$variable = ! empty( $variable ) ? $variable : $default;
+				break;
 
-		case 'empty':
-			$variable = ! empty( $variable ) ? $variable : $default;
-			break;
+			case 'null':
+				$variable = ! is_null( $variable ) ? $variable : $default;
+				break;
 
-		case 'null':
-			$variable = ! is_null( $variable ) ? $variable : $default;
-			break;
+			default:
+				$variable = isset( $variable ) ? $variable : $default;
+		}
+	} else {
+		$isset = array_key_exists( $array_key_name, $variable );
 
-		default:
-			$variable = isset( $variable ) ? $variable : $default;
+		switch ( $conditional ) {
+			case 'isset_empty':
+				$variable = ( $isset && ! empty( $variable[ $array_key_name ] ) ) ? $variable[ $array_key_name ] : $default;
+				break;
 
+			case 'empty':
+				$variable = ! empty( $variable[ $array_key_name ] ) ? $variable[ $array_key_name ] : $default;
+				break;
+
+			case 'null':
+				$variable = $isset && ! is_null( $variable[ $array_key_name ] ) ? $variable[ $array_key_name ] : $default;
+				break;
+
+			default:
+				$variable = $isset && isset( $variable[ $array_key_name ] ) ? $variable[ $array_key_name ] : $default;
+		}
 	}
 
 	return $variable;

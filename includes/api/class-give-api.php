@@ -169,6 +169,32 @@ class Give_API {
 	}
 
 	/**
+	 * There are certain responsibility of this function:
+	 *  1. handle backward compatibility for deprecated functions
+	 *
+	 * @since 2.0
+	 *
+	 * @param $name
+	 * @param $arguments
+	 *
+	 * @return mixed
+	 */
+	public function __call( $name, $arguments ) {
+		$deprecated_function_arr = array(
+			'get_customers',
+		);
+
+		if ( in_array( $name, $deprecated_function_arr, true ) ) {
+			switch ( $name ) {
+				case 'get_customers':
+					$args = ! empty( $arguments[0] ) ? $arguments[0] : array();
+
+					return $this->get_donors( $args );
+			}
+		}
+	}
+
+	/**
 	 * Registers a new rewrite endpoint for accessing the API
 	 *
 	 * @access public
@@ -938,6 +964,12 @@ class Give_API {
 				$donors['donors'][ $donor_count ]['stats']['total_donations'] = $donor_obj->purchase_count;
 				$donors['donors'][ $donor_count ]['stats']['total_spent']     = $donor_obj->purchase_value;
 
+				/** @var $donor \Give_Donor */
+				$donor = new Give_Donor( $donor_obj->id );
+
+				// Get donor's addresses.
+				$donors['donors'][ $donor_count ]['address'] = $donor->address;
+
 				$donor_count ++;
 
 			}
@@ -1409,7 +1441,7 @@ class Give_API {
 		} elseif ( isset( $wp_query->query_vars['email'] ) ) {
 			$args  = array(
 				'fields'     => 'ids',
-				'meta_key'   => '_give_payment_user_email',
+				'meta_key'   => '_give_payment_donor_email',
 				'meta_value' => $wp_query->query_vars['email'],
 				'number'     => $this->per_page(),
 				'page'       => $this->get_paged(),
@@ -1502,6 +1534,7 @@ class Give_API {
 				$donations['donations'][ $i ]['lname']          = $last_name;
 				$donations['donations'][ $i ]['email']          = $payment->email;
 				$donations['donations'][ $i ]['date']           = $payment->date;
+				$donations['donations'][ $i ]['payment_meta']   = array();
 
 				$form_id  = isset( $payment_meta['form_id'] ) ? $payment_meta['form_id'] : $payment_meta;
 				$price    = isset( $payment_meta['form_id'] ) ? give_get_form_price( $payment_meta['form_id'] ) : false;
@@ -1521,26 +1554,28 @@ class Give_API {
 					}
 				}
 
-				// Add custom meta to API
-				foreach ( $payment_meta as $meta_key => $meta_value ) {
+				if( ! empty( $payment_meta ) ) {
+					// Add custom meta to API
+					foreach ( $payment_meta as $meta_key => $meta_value ) {
 
-					$exceptions = array(
-						'form_title',
-						'form_id',
-						'price_id',
-						'user_info',
-						'key',
-						'email',
-						'date',
-					);
+						$exceptions = array(
+							'form_title',
+							'form_id',
+							'price_id',
+							'user_info',
+							'key',
+							'email',
+							'date',
+						);
 
-					// Don't clutter up results with dupes
-					if ( in_array( $meta_key, $exceptions ) ) {
-						continue;
+						// Don't clutter up results with dupes
+						if ( in_array( $meta_key, $exceptions ) ) {
+							continue;
+						}
+
+						$donations['donations'][ $i ]['payment_meta'][ $meta_key ] = $meta_value;
+
 					}
-
-					$donations['donations'][ $i ]['payment_meta'][ $meta_key ] = $meta_value;
-
 				}
 
 				$i ++;
@@ -1575,7 +1610,6 @@ class Give_API {
 	 * @access private
 	 * @since  1.1
 	 *
-	 * @global Give_Logging $give_logs
 	 * @global WP_Query     $wp_query
 	 *
 	 * @param array         $data
@@ -1586,11 +1620,6 @@ class Give_API {
 		if ( ! $this->log_requests ) {
 			return;
 		}
-
-		/**
-		 * @var Give_Logging $give_logs
-		 */
-		global $give_logs;
 
 		/**
 		 * @var WP_Query $wp_query
@@ -1620,6 +1649,7 @@ class Give_API {
 		);
 
 		$log_meta = array(
+			'api_query'  => http_build_query( $query ),
 			'request_ip' => give_get_ip(),
 			'user'       => $this->user_id,
 			'key'        => isset( $wp_query->query_vars['key'] ) ? $wp_query->query_vars['key'] : null,
@@ -1628,7 +1658,7 @@ class Give_API {
 			'version'    => $this->get_queried_version(),
 		);
 
-		$give_logs->insert_log( $log_data, $log_meta );
+		Give()->logs->insert_log( $log_data, $log_meta );
 	}
 
 

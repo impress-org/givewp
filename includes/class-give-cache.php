@@ -20,10 +20,19 @@ class Give_Cache {
 	 * Instance.
 	 *
 	 * @since  1.8.7
-	 * @access static
-	 * @var
+	 * @access private
+	 * @var Give_Cache
 	 */
 	static private $instance;
+
+	/**
+	 * Flag to check if caching enabled or not.
+	 *
+	 * @since  2.0
+	 * @access private
+	 * @var
+	 */
+	private $is_cache;
 
 	/**
 	 * Singleton pattern.
@@ -57,9 +66,19 @@ class Give_Cache {
 	 * @since  1.8.7
 	 * @access public
 	 */
-	public function setup_hooks() {
+	public function setup() {
+		// Currently enable cache only for backend.
+		self::$instance->is_cache = give_is_setting_enabled( give_get_option( 'cache', 'enabled' ) ) && is_admin();
+
 		// weekly delete all expired cache.
 		Give_Cron::add_weekly_event( array( $this, 'delete_all_expired' ) );
+
+		add_action( 'save_post_give_forms', array( $this, 'delete_form_related_cache' ) );
+		add_action( 'save_post_give_payment', array( $this, 'delete_payment_related_cache' ) );
+		add_action( 'give_deleted_give-donors_cache', array( $this, 'delete_donor_related_cache' ), 10, 3 );
+		add_action( 'give_deleted_give-donations_cache', array( $this, 'delete_donations_related_cache' ), 10, 3 );
+
+		add_action( 'give_save_settings_give_settings', array( $this, 'flush_cache' ) );
 	}
 
 	/**
@@ -69,19 +88,30 @@ class Give_Cache {
 	 *
 	 * @param  string $action     Cache key prefix.
 	 * @param  array  $query_args (optional) Query array.
+	 * @param  bool   $is_prefix
 	 *
 	 * @return string
 	 */
+	public static function get_key( $action, $query_args = null, $is_prefix = true ) {
+		// Bailout.
+		if ( empty( $action ) ) {
+			return new WP_Error( 'give_invalid_cache_key_action', __( 'Do not pass empty action to generate cache key.', 'give' ) );
+		}
 
-	public static function get_key( $action, $query_args = null ) {
-		$cache_key = "give_cache_{$action}";
+		// Set cache key.
+		$cache_key = $is_prefix ? "give_cache_{$action}" : $action;
 
 		// Bailout.
 		if ( ! empty( $query_args ) ) {
 			$cache_key = "{$cache_key}_" . substr( md5( serialize( $query_args ) ), 0, 15 );
 		}
 
-		return $cache_key;
+		/**
+		 * Filter the cache key name.
+		 *
+		 * @since 2.0
+		 */
+		return apply_filters( 'give_get_cache_key', $cache_key, $action, $query_args );
 	}
 
 	/**
@@ -95,7 +125,6 @@ class Give_Cache {
 	 *
 	 * @return mixed
 	 */
-
 	public static function get( $cache_key, $custom_key = false, $query_args = array() ) {
 		if ( ! self::is_valid_cache_key( $cache_key ) ) {
 			if ( ! $custom_key ) {
@@ -137,7 +166,6 @@ class Give_Cache {
 	 *
 	 * @return mixed
 	 */
-
 	public static function set( $cache_key, $data, $expiration = null, $custom_key = false, $query_args = array() ) {
 		if ( ! self::is_valid_cache_key( $cache_key ) ) {
 			if ( ! $custom_key ) {
@@ -162,15 +190,16 @@ class Give_Cache {
 	/**
 	 * Delete cache.
 	 *
+	 * Note: only for internal use
+	 *
 	 * @since  1.8.7
 	 *
 	 * @param  string|array $cache_keys
 	 *
 	 * @return bool|WP_Error
 	 */
-
 	public static function delete( $cache_keys ) {
-		$result = true;
+		$result       = true;
 		$invalid_keys = array();
 
 		if ( ! empty( $cache_keys ) ) {
@@ -179,18 +208,18 @@ class Give_Cache {
 			foreach ( $cache_keys as $cache_key ) {
 				if ( ! self::is_valid_cache_key( $cache_key ) ) {
 					$invalid_keys[] = $cache_key;
-					$result = false;
+					$result         = false;
 				}
 
 				delete_option( $cache_key );
 			}
 		}
 
-		if( ! $result ) {
+		if ( ! $result ) {
 			$result = new WP_Error(
 				'give_invalid_cache_key',
-					__( 'Cache key format should be give_cache_*', 'give' ),
-					$invalid_keys
+				__( 'Cache key format should be give_cache_*', 'give' ),
+				$invalid_keys
 			);
 		}
 
@@ -200,11 +229,13 @@ class Give_Cache {
 	/**
 	 * Delete all logging cache.
 	 *
+	 * Note: only for internal use
+	 *
 	 * @since  1.8.7
 	 * @access public
 	 * @global wpdb $wpdb
 	 *
-	 * @param bool $force If set to true then all cached values will be delete instead of only expired
+	 * @param bool  $force If set to true then all cached values will be delete instead of only expired
 	 *
 	 * @return bool
 	 */
@@ -252,6 +283,8 @@ class Give_Cache {
 
 	/**
 	 * Get list of options like.
+	 *
+	 * Note: only for internal use
 	 *
 	 * @since  1.8.7
 	 * @access public
@@ -312,14 +345,374 @@ class Give_Cache {
 	 *
 	 * @param $cache_key
 	 *
-	 * @return bool|int
+	 * @return bool
 	 */
 	public static function is_valid_cache_key( $cache_key ) {
-		return ( false !== strpos( $cache_key, 'give_cache_' ) );
+		$is_valid = ( false !== strpos( $cache_key, 'give_cache_' ) );
+
+
+		/**
+		 * Filter the flag which tell about cache key valid or not
+		 *
+		 * @since 2.0
+		 */
+		return apply_filters( 'give_is_valid_cache_key', $is_valid, $cache_key );
+	}
+
+
+	/**
+	 * Get cache from group
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param int    $id
+	 * @param string $group
+	 *
+	 * @return mixed
+	 */
+	public static function get_group( $id, $group = '' ) {
+		$cached_data = null;
+
+		// Bailout.
+		if ( self::$instance->is_cache && ! empty( $id ) ) {
+			$group = self::$instance->filter_group_name( $group );
+
+			$cached_data = wp_cache_get( $id, $group );
+			$cached_data = false !== $cached_data ? $cached_data : null;
+		}
+
+		return $cached_data;
+	}
+
+	/**
+	 * Cache small chunks inside group
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param int    $id
+	 * @param mixed  $data
+	 * @param string $group
+	 * @param int    $expire
+	 *
+	 * @return bool
+	 */
+	public static function set_group( $id, $data, $group = '', $expire = 0 ) {
+		$status = false;
+
+		// Bailout.
+		if ( ! self::$instance->is_cache || empty( $id ) ) {
+			return $status;
+		}
+
+		$group = self::$instance->filter_group_name( $group );
+
+		$status = wp_cache_set( $id, $data, $group, $expire );
+
+		return $status;
+	}
+
+	/**
+	 * Cache small db query chunks inside group
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param int   $id
+	 * @param mixed $data
+	 *
+	 * @return bool
+	 */
+	public static function set_db_query( $id, $data ) {
+		$status = false;
+
+		// Bailout.
+		if ( ! self::$instance->is_cache || empty( $id ) ) {
+			return $status;
+		}
+
+		return self::set_group( $id, $data, 'give-db-queries', 0 );
+	}
+
+	/**
+	 * Get cache from group
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param int $id
+	 *
+	 * @return mixed
+	 */
+	public static function get_db_query( $id ) {
+		return self::get_group( $id, 'give-db-queries' );
+	}
+
+	/**
+	 * Delete group cache
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param int|array $ids
+	 * @param string    $group
+	 * @param int       $expire
+	 *
+	 * @return bool
+	 */
+	public static function delete_group( $ids, $group = '', $expire = 0 ) {
+		$status = false;
+
+		// Bailout.
+		if ( ! self::$instance->is_cache || empty( $ids ) ) {
+			return $status;
+		}
+
+		$group = self::$instance->filter_group_name( $group );
+
+		// Delete single or multiple cache items from cache.
+		if ( ! is_array( $ids ) ) {
+			$status = wp_cache_delete( $ids, $group, $expire );
+			self::$instance->get_incrementer( true );
+
+			/**
+			 * Fire action when cache deleted for specific id.
+			 *
+			 * @since 2.0
+			 *
+			 * @param string $ids
+			 * @param string $group
+			 * @param int    $expire
+			 */
+			do_action( "give_deleted_{$group}_cache", $ids, $group, $expire, $status );
+
+		} else {
+			foreach ( $ids as $id ) {
+				$status = wp_cache_delete( $id, $group, $expire );
+				self::$instance->get_incrementer( true );
+
+				/**
+				 * Fire action when cache deleted for specific id .
+				 *
+				 * @since 2.0
+				 *
+				 * @param string $ids
+				 * @param string $group
+				 * @param int    $expire
+				 */
+				do_action( "give_deleted_{$group}_cache", $id, $group, $expire, $status );
+			}
+		}
+
+		return $status;
+	}
+
+
+	/**
+	 * Delete form related cache
+	 * Note: only use for internal purpose.
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param int $form_id
+	 */
+	public function delete_form_related_cache( $form_id ) {
+		// If this is just a revision, don't send the email.
+		if ( wp_is_post_revision( $form_id ) ) {
+			return;
+		}
+
+		$donation_query = new Give_Payments_Query(
+			array(
+				'number'     => - 1,
+				'give_forms' => $form_id,
+			)
+		);
+
+		$donations = $donation_query->get_payments();
+
+		if ( ! empty( $donations ) ) {
+			/* @var Give_Payment $donation */
+			foreach ( $donations as $donation ) {
+				wp_cache_delete( $donation->ID, 'give-donations' );
+				wp_cache_delete( $donation->donor_id, 'give-donors' );
+			}
+		}
+
+		self::$instance->get_incrementer( true );
+	}
+
+	/**
+	 * Delete payment related cache
+	 * Note: only use for internal purpose.
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param int $donation_id
+	 */
+	public function delete_payment_related_cache( $donation_id ) {
+		// If this is just a revision, don't send the email.
+		if ( wp_is_post_revision( $donation_id ) ) {
+			return;
+		}
+
+		/* @var Give_Payment $donation */
+		$donation = new Give_Payment( $donation_id );
+
+		if ( $donation && $donation->donor_id ) {
+			wp_cache_delete( $donation->donor_id, 'give-donors' );
+		}
+
+		wp_cache_delete( $donation->ID, 'give-donations' );
+
+		self::$instance->get_incrementer( true );
+	}
+
+	/**
+	 * Delete donor related cache
+	 * Note: only use for internal purpose.
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param string $id
+	 * @param string $group
+	 * @param int    $expire
+	 */
+	public function delete_donor_related_cache( $id, $group, $expire ) {
+		$donor        = new Give_Donor( $id );
+		$donation_ids = array_map( 'trim', (array) explode( ',', trim( $donor->payment_ids ) ) );
+
+		if ( ! empty( $donation_ids ) ) {
+			foreach ( $donation_ids as $donation ) {
+				wp_cache_delete( $donation, 'give-donations' );
+			}
+		}
+
+		self::$instance->get_incrementer( true );
+	}
+
+	/**
+	 * Delete donations related cache
+	 * Note: only use for internal purpose.
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param string $id
+	 * @param string $group
+	 * @param int    $expire
+	 */
+	public function delete_donations_related_cache( $id, $group, $expire ) {
+		/* @var Give_Payment $donation */
+		$donation = new Give_Payment( $id );
+
+		if ( $donation && $donation->donor_id ) {
+			wp_cache_delete( $donation->donor_id, 'give-donors' );
+		}
+
+		self::$instance->get_incrementer( true );
+	}
+
+
+	/**
+	 * Get unique incrementer.
+	 *
+	 * @see    https://core.trac.wordpress.org/ticket/4476
+	 * @see    https://www.tollmanz.com/invalidation-schemes/
+	 *
+	 * @since  2.0
+	 * @access private
+	 *
+	 * @param bool   $refresh
+	 * @param string $incrementer_key
+	 *
+	 * @return string
+	 */
+	private function get_incrementer( $refresh = false, $incrementer_key = 'give-cahce-incrementer-db-queries' ) {
+		$incrementer_value = wp_cache_get( $incrementer_key );
+
+		if ( false === $incrementer_value || true === $refresh ) {
+			$incrementer_value = microtime( true );
+			wp_cache_set( $incrementer_key, $incrementer_value );
+		}
+
+		return $incrementer_value;
+	}
+
+
+	/**
+	 * Flush cache on cache setting enable/disable
+	 * Note: only for internal use
+	 *
+	 * @since  2.0
+	 * @access public
+	 */
+	public function flush_cache() {
+		if (
+			Give_Admin_Settings::is_saving_settings() &&
+			isset( $_POST['cache'] ) &&
+			give_is_setting_enabled( give_clean( $_POST['cache'] ) )
+		) {
+			$this->get_incrementer( true );
+			$this->get_incrementer( true, 'give-cahce-incrementer' );
+		}
+	}
+
+
+	/**
+	 * Filter the group name
+	 *
+	 * @since  2.0
+	 * @access private
+	 *
+	 * @param $group
+	 *
+	 * @return mixed
+	 */
+	private function filter_group_name( $group ) {
+		if ( ! empty( $group ) ) {
+			$incrementer = self::$instance->get_incrementer( false, 'give-cahce-incrementer' );
+
+			if ( 'give-db-queries' === $group ) {
+				$incrementer = self::$instance->get_incrementer();
+			}
+
+			$group = "{$group}_{$incrementer}";
+		}
+
+		/**
+		 * Filter the group name
+		 *
+		 * @since 2.0
+		 */
+		return $group;
+	}
+
+
+	/**
+	 * Disable cache.
+	 *
+	 * @since  2.0
+	 * @access public
+	 */
+	public static function disable() {
+		self::get_instance()->is_cache = false;
+	}
+
+	/**
+	 * Enable cache.
+	 *
+	 * @since  2.0
+	 * @access public
+	 */
+	public static function enable() {
+		self::get_instance()->is_cache = true;
 	}
 }
 
 // Initialize
-Give_Cache::get_instance()->setup_hooks();
-
-// @todo implement this with all possible cache
+Give_Cache::get_instance()->setup();

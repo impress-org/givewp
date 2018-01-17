@@ -23,8 +23,8 @@ global $wpdb, $wp_roles;
 if ( give_is_setting_enabled( give_get_option( 'uninstall_on_delete' ) ) ) {
 
 	// Delete All the Custom Post Types.
-	$give_taxonomies = array( 'form_category', 'form_tag', 'give_log_type' );
-	$give_post_types = array( 'give_forms', 'give_payment', 'give_log' );
+	$give_taxonomies = array( 'form_category', 'form_tag' );
+	$give_post_types = array( 'give_forms', 'give_payment' );
 	foreach ( $give_post_types as $post_type ) {
 
 		$give_taxonomies = array_merge( $give_taxonomies, get_object_taxonomies( $post_type ) );
@@ -80,8 +80,13 @@ if ( give_is_setting_enabled( give_get_option( 'uninstall_on_delete' ) ) ) {
 
 	// Remove all database tables.
 	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_donors' );
+	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_donormeta' );
 	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_customers' );
 	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_customermeta' );
+	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_paymentmeta' );
+	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_formmeta' );
+	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_logs' );
+	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'give_logmeta' );
 
 	// Cleanup Cron Events.
 	wp_clear_scheduled_hook( 'give_daily_scheduled_events' );

@@ -19,11 +19,29 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Handles the donation form process.
  *
- * @access      private
- * @since       1.0
- * @return      false|null
+ * @access private
+ * @since  1.0
+ *
+ * @return mixed
  */
 function give_process_donation_form() {
+	$is_ajax = isset( $_POST['give_ajax'] );
+
+	// Verify donation form nonce.
+	if(  ! give_verify_donation_form_nonce() ) {
+		if( $is_ajax ) {
+			/**
+			 * Fires when AJAX sends back errors from the donation form.
+			 *
+			 * @since 1.0
+			 */
+			do_action( 'give_ajax_donation_errors' );
+			
+			give_die();
+		} else{
+			give_send_back_to_checkout();
+		}
+	}
 
 	/**
 	 * Fires before processing the donation form.
@@ -46,8 +64,6 @@ function give_process_donation_form() {
 	 * @param array $_POST Array of variables passed via the HTTP POST.
 	 */
 	do_action( 'give_checkout_error_checks', $valid_data, $_POST );
-
-	$is_ajax = isset( $_POST['give_ajax'] );
 
 	// Process the login form.
 	if ( isset( $_POST['give_login_submit'] ) ) {
@@ -159,7 +175,6 @@ function give_process_donation_form() {
 	// Send info to the gateway for payment processing.
 	give_send_to_gateway( $donation_data['gateway'], $donation_data );
 	give_die();
-
 }
 
 add_action( 'give_purchase', 'give_process_donation_form' );
@@ -299,21 +314,10 @@ function give_donation_form_validate_fields() {
 		give_donation_form_validate_agree_to_terms();
 	}
 
-	// Stop processing donor registration, if donor registration is optional and donor can do guest checkout.
-	// If registration form username field is empty that means donor does want to registration instead wants guest checkout.
-	if (
-		! give_logged_in_only( $form_id )
-		&& isset( $_POST['give-purchase-var'] )
-		&& $_POST['give-purchase-var'] == 'needs-to-register'
-		&& empty( $_POST['give_user_login'] )
-	) {
-		unset( $_POST['give-purchase-var'] );
-	}
-
 	if ( is_user_logged_in() ) {
 		// Collect logged in user data.
 		$valid_data['logged_in_user'] = give_donation_form_validate_logged_in_user();
-	} elseif ( isset( $_POST['give-purchase-var'] ) && $_POST['give-purchase-var'] == 'needs-to-register' ) {
+	} elseif ( isset( $_POST['give-purchase-var'] ) && $_POST['give-purchase-var'] == 'needs-to-register' && ! empty( $_POST['give_create_account'] ) ) {
 		// Set new user registration as required.
 		$valid_data['need_new_user'] = true;
 		// Validate new user data.
@@ -575,12 +579,8 @@ function give_donation_form_validate_logged_in_user() {
 		// Get the logged in user data.
 		$user_data = get_userdata( $user_ID );
 
-		// Loop through required fields and show error messages.
-		foreach ( give_get_required_fields( $form_id ) as $field_name => $value ) {
-			if ( in_array( $value, give_get_required_fields( $form_id ) ) && empty( $_POST[ $field_name ] ) ) {
-				give_set_error( $value['error_id'], $value['error_message'] );
-			}
-		}
+		// Validate Required Form Fields.
+		give_validate_required_form_fields( $form_id );
 
 		// Verify data.
 		if ( $user_data ) {
@@ -613,6 +613,9 @@ function give_donation_form_validate_logged_in_user() {
  * @return      array
  */
 function give_donation_form_validate_new_user() {
+
+	$auto_generated_password = wp_generate_password();
+
 	// Default user data.
 	$default_user_data = array(
 		'give-form-id'           => '',
@@ -621,8 +624,8 @@ function give_donation_form_validate_new_user() {
 		'user_last'              => '',
 		'give_user_login'        => false,
 		'give_email'             => false,
-		'give_user_pass'         => false,
-		'give_user_pass_confirm' => false,
+		'give_user_pass'         => $auto_generated_password,
+		'give_user_pass_confirm' => $auto_generated_password,
 	);
 
 	// Get user data.
@@ -640,30 +643,20 @@ function give_donation_form_validate_new_user() {
 
 		// Get last name.
 		'user_last'  => $user_data['give_last'],
+
+		// Get Password.
+		'user_pass'  => $user_data['give_user_pass'],
 	);
 
-	// Loop through required fields and show error messages.
-	foreach ( give_get_required_fields( $form_id ) as $field_name => $value ) {
-		if ( in_array( $value, give_get_required_fields( $form_id ) ) && empty( $_POST[ $field_name ] ) ) {
-			give_set_error( $value['error_id'], $value['error_message'] );
-		}
-	}
+	// Validate Required Form Fields.
+	give_validate_required_form_fields( $form_id );
 
-	// Check if we have an username to register.
-	if ( give_validate_username( $user_data['give_user_login'] ) ) {
-		$registering_new_user          = true;
-		$valid_user_data['user_login'] = $user_data['give_user_login'];
-	}
+	// Set Email as Username.
+	$valid_user_data['user_login'] = $user_data['give_email'];
 
 	// Check if we have an email to verify.
 	if ( give_validate_user_email( $user_data['give_email'], $registering_new_user ) ) {
 		$valid_user_data['user_email'] = $user_data['give_email'];
-	}
-
-	// Check password.
-	if ( give_validate_user_password( $user_data['give_user_pass'], $user_data['give_user_pass_confirm'], $registering_new_user ) ) {
-		// All is good to go.
-		$valid_user_data['user_pass'] = $user_data['give_user_pass'];
 	}
 
 	return $valid_user_data;
@@ -755,11 +748,6 @@ function give_donation_form_validate_guest_user() {
 		'user_id' => 0,
 	);
 
-	// Show error message if user must be logged in.
-	if ( give_logged_in_only( $form_id ) ) {
-		give_set_error( 'logged_in_only', __( 'You must be logged in to donate.', 'give' ) );
-	}
-
 	// Get the guest email.
 	$guest_email = isset( $_POST['give_email'] ) ? $_POST['give_email'] : false;
 
@@ -784,12 +772,8 @@ function give_donation_form_validate_guest_user() {
 		give_set_error( 'email_empty', __( 'Enter an email.', 'give' ) );
 	}
 
-	// Loop through required fields and show error messages.
-	foreach ( give_get_required_fields( $form_id ) as $field_name => $value ) {
-		if ( in_array( $value, give_get_required_fields( $form_id ) ) && empty( $_POST[ $field_name ] ) ) {
-			give_set_error( $value['error_id'], $value['error_message'] );
-		}
-	}
+	// Validate Required Form Fields.
+	give_validate_required_form_fields( $form_id );
 
 	return $valid_user_data;
 }
@@ -939,11 +923,6 @@ function give_get_donation_form_user( $valid_data = array() ) {
 	if ( empty( $user['address']['country'] ) ) {
 		$user['address'] = false;
 	} // End if().
-
-	if ( ! empty( $user['user_id'] ) && $user['user_id'] > 0 && ! empty( $user['address'] ) ) {
-		// Store the address in the user's meta so the donation form can be pre-populated with it on return donation.
-		update_user_meta( $user['user_id'], '_give_user_address', $user['address'] );
-	}
 
 	// Return valid user.
 	return $user;
@@ -1256,3 +1235,25 @@ function give_validate_donation_amount( $valid_data, $data ) {
 }
 
 add_action( 'give_checkout_error_checks', 'give_validate_donation_amount', 10, 2 );
+
+/**
+ * Validate Required Form Fields.
+ *
+ * @param int $form_id Form ID.
+ *
+ * @since 2.0
+ */
+function give_validate_required_form_fields( $form_id ) {
+
+	// Loop through required fields and show error messages.
+	foreach ( give_get_required_fields( $form_id ) as $field_name => $value ) {
+
+		// Clean Up Data of the input fields.
+		$field_value = give_clean( $_POST[ $field_name ] );
+
+		// Check whether the required field is empty, then show the error message.
+		if ( in_array( $value, give_get_required_fields( $form_id ) ) && empty( $field_value ) ) {
+			give_set_error( $value['error_id'], $value['error_message'] );
+		}
+	}
+}

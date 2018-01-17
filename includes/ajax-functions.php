@@ -18,12 +18,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Check if AJAX works as expected
+ * Note: Do not use this function before init hook.
  *
  * @since  1.0
  *
  * @return bool True if AJAX works, false otherwise
  */
 function give_test_ajax_works() {
+	// Handle ajax.
+	if( doing_action( 'wp_ajax_nopriv_give_test_ajax' ) ) {
+		wp_die( 0, 200 );
+	}
 
 	// Check if the Airplane Mode plugin is installed.
 	if ( class_exists( 'Airplane_Mode_Core' ) ) {
@@ -91,15 +96,18 @@ function give_test_ajax_works() {
 	return $works;
 }
 
+add_action( 'wp_ajax_nopriv_give_test_ajax', 'give_test_ajax_works' );
 
 /**
  * Get AJAX URL
  *
  * @since  1.0
  *
+ * @param array $query
+ *
  * @return string
  */
-function give_get_ajax_url() {
+function give_get_ajax_url( $query = array() ) {
 	$scheme = defined( 'FORCE_SSL_ADMIN' ) && FORCE_SSL_ADMIN ? 'https' : 'admin';
 
 	$current_url = give_get_current_page_url();
@@ -107,6 +115,10 @@ function give_get_ajax_url() {
 
 	if ( preg_match( '/^https/', $current_url ) && ! preg_match( '/^https/', $ajax_url ) ) {
 		$ajax_url = preg_replace( '/^http/', 'https', $ajax_url );
+	}
+
+	if( ! empty( $query ) ) {
+		$ajax_url = add_query_arg( $query, $ajax_url );
 	}
 
 	return apply_filters( 'give_ajax_url', $ajax_url );
@@ -254,8 +266,8 @@ function give_ajax_get_states_field() {
 	$response = array(
 		'success'        => true,
 		'states_found'   => $states_found,
-		'show_field'     => $show_field,
 		'states_label'   => $label,
+		'show_field'     => $show_field,
 		'states_require' => $states_require,
 		'data'           => $data,
 		'default_state'  => $default_state,
@@ -327,7 +339,7 @@ function give_ajax_donor_search() {
 	if ( ! current_user_can( 'view_give_reports' ) ) {
 		$donors = array();
 	} else {
-		$donors = $wpdb->get_results( "SELECT id,name,email FROM {$wpdb->prefix}give_customers WHERE `name` LIKE '%$search%' OR `email` LIKE '%$search%' LIMIT 50" );
+		$donors = $wpdb->get_results( "SELECT id,name,email FROM $wpdb->donors WHERE `name` LIKE '%$search%' OR `email` LIKE '%$search%' LIMIT 50" );
 	}
 
 	if ( $donors ) {

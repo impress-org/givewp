@@ -140,29 +140,12 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 							)
 						),
 						array(
-							'name'    => __( 'Offline Donation Email Instructions Subject', 'give' ),
-							'desc'    => __( 'Enter the subject line for the donation receipt email.', 'give' ),
-							'id'      => 'offline_donation_subject',
-							'default' => esc_attr__( '{donation} - Offline Donation Instructions', 'give' ),
-							'type'    => 'text'
+							'name'  => esc_html__( 'Offline Donations Settings Docs Link', 'give' ),
+							'id'    => 'offline_gateway_settings_docs_link',
+							'url'   => esc_url( 'http://docs.givewp.com/offlinegateway' ),
+							'title' => __( 'Offline Gateway Settings', 'give' ),
+							'type'  => 'give_docs_link',
 						),
-						array(
-							'name'    => __( 'Offline Donation Email Instructions', 'give' ),
-							'desc'    => __( 'Enter the instructions you want emailed to the donor after they have submitted the donation form. Most likely this would include important information like mailing address and who to make the check out to.', 'give' ) . ' ' . __( 'Available template tags:', 'give' ) . give_get_emails_tags_list(),
-							'id'      => 'global_offline_donation_email',
-							'default' => give_get_default_offline_donation_email_content(),
-							'type'    => 'wysiwyg',
-							'options' => array(
-								'textarea_rows' => 6,
-							)
-						),
-                        array(
-                            'name'  => __( 'Offline Donations Settings Docs Link', 'give' ),
-                            'id'    => 'offline_gateway_settings_docs_link',
-                            'url'   => esc_url( 'http://docs.givewp.com/settings-gateway-offline-donations' ),
-                            'title' => __( 'Offline Gateway Settings', 'give' ),
-                            'type'  => 'give_docs_link',
-                        ),
 						array(
 							'type' => 'sectionend',
 							'id'   => 'give_title_gateway_settings_3',

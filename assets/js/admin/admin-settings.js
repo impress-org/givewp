@@ -61,4 +61,91 @@ jQuery(document).ready(function ($) {
 		// Update select html.
 		$default_gateway.html(active_payment_option_html);
 	});
+
+	/**
+	 * Repeater setting field event.
+	 */
+	$( 'a.give-repeat-setting-field' ).on( 'click', function(e){
+		e.preventDefault();
+		var $parent = $(this).parents('td'),
+			$first_setting_field_group = $( 'p:first-child', $parent ),
+			$new_setting_field_group = $first_setting_field_group.clone(),
+			setting_field_count = $( 'p', $parent ).not('.give-field-description').length,
+			fieldID = $(this).data('id') + '_' + (++setting_field_count),
+			$prev_field = $(this).prev();
+
+		// Create new field only if previous is non empty.
+		if( $( 'input', $prev_field ).val() ) {
+			// Add setting field html to dom.
+			$(this).before( $new_setting_field_group );
+			$prev_field = $(this).prev();
+
+			// Set id and value for setting field.
+			$( 'input', $prev_field ).attr( 'id', fieldID );
+			$( 'input', $prev_field ).val( '' );
+		}
+
+		return false;
+	});
+
+	$( '.give-settings-page' ).on( 'click', 'span.give-remove-setting-field', function(e){
+		$(this).parents('p').remove();
+	});
+
+	/**
+	 * Enabled & disable email notification event.
+	 */
+	$( '.give-email-notification-status', 'table.giveemailnotifications' ).on( 'click', function(){
+		var $this = $(this),
+			$icon_container = $('i', $this),
+			$loader = $(this).next(),
+			set_notification_status = $(this).hasClass( 'give-email-notification-enabled' ) ? 'disabled' : 'enabled',
+			notification_id = $(this).data('id');
+
+		// Bailout if admin can not edit notification status setting.
+		if( ! parseInt( $this.data('edit') ) ) {
+			// Remove all notice.
+			$('div.give-email-notification-status-notice').remove();
+
+			// Add notice.
+			$('hr.wp-header-end').after('<div class="updated error give-email-notification-status-notice"><p>' + $(this).closest('.give-email-notification-status').data('notice') + '</p></div>');
+
+			// Scroll to notice.
+			$('html, body').animate({scrollTop:$('div.give-email-notification-status-notice').position().top}, 'slow');
+
+			return false;
+		}
+
+		$.ajax({
+			url: ajaxurl,
+			method: 'POST',
+			data: {
+				action: 'give_set_notification_status',
+				status: set_notification_status,
+				notification_id: notification_id
+			},
+			beforeSend: function(){
+				$this.hide();
+				$loader.addClass('is-active');
+			},
+			success: function(res) {
+				if( res.success ) {
+					$this.removeClass( 'give-email-notification-' + $this.data('status') );
+					$this.addClass( 'give-email-notification-' + set_notification_status );
+					$this.data( 'status', set_notification_status );
+
+					if( 'enabled' === set_notification_status ) {
+						$icon_container.removeClass('dashicons-no-alt');
+						$icon_container.addClass('dashicons-yes');
+					} else{
+						$icon_container.removeClass('dashicons-yes');
+						$icon_container.addClass('dashicons-no-alt');
+					}
+
+					$loader.removeClass('is-active');
+					$this.show();
+				}
+			}
+		});
+	});
 });

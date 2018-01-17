@@ -47,7 +47,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 		parent::__construct( array(
 			'singular' => give_get_forms_label_singular(),    // Singular name of the listed records.
 			'plural'   => give_get_forms_label_plural(),        // Plural name of the listed records.
-			'ajax'     => false                        // Does this table support ajax?.
+			'ajax'     => false,// Does this table support ajax?.
 		) );
 	}
 
@@ -57,7 +57,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 * @access public
 	 * @since  1.0
 	 *
-	 * @param array  $item Contains all the data of the log item.
+	 * @param array  $item        Contains all the data of the log item.
 	 * @param string $column_name The name of the column.
 	 *
 	 * @return string Column Name.
@@ -72,7 +72,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 			case 'gateway' :
 				return empty( $item['gateway'] ) ? esc_html__( 'n/a', 'give' ) : $item['gateway'];
 			case 'error' :
-				return get_the_title( $item['ID'] ) ? get_the_title( $item['ID'] ) : esc_html__( 'Payment Error', 'give' );
+				return esc_html( $item['log_title'] );
 			default:
 				return $item[ $column_name ];
 		}
@@ -88,27 +88,35 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 *
 	 * @return void
 	 */
-	public function column_message( $item ) { ?>
-		<a href="#TB_inline?width=640&amp;inlineId=log-message-<?php echo $item['ID']; ?>" class="thickbox give-error-log-details-link button button-small" data-tooltip="<?php esc_attr_e( 'View Log Message', 'give' ); ?>"><span class="dashicons dashicons-visibility"></span></a>
+	public function column_message( $item ) {
+		?>
+		<?php
+		echo Give()->tooltips->render_link( array(
+			'label'       => __( 'View Log Message', 'give' ),
+			'tag_content' => '<span class="dashicons dashicons-visibility"></span>',
+			'link'        => "#TB_inline?width=640&amp;inlineId=log-message-{$item['ID']}",
+			'attributes'  => array(
+				'class' => 'thickbox give-error-log-details-link button button-small',
+			),
+		) );
+		?>
 		<div id="log-message-<?php echo $item['ID']; ?>" style="display:none;">
 			<?php
 
-			$log_message = get_post_field( 'post_content', $item['ID'] );
-
-			$serialized = strpos( $log_message, '{"' );
+			$serialized = strpos( $item['log_content'], '{"' );
 
 			// Check to see if the log message contains serialized information
 			if ( $serialized !== false ) {
-				$length = strlen( $log_message ) - $serialized;
-				$intro  = substr( $log_message, 0, - $length );
-				$data   = substr( $log_message, $serialized, strlen( $log_message ) - 1 );
+				$length = strlen( $item['log_content'] ) - $serialized;
+				$intro  = substr( $item['log_content'], 0, - $length );
+				$data   = substr( $item['log_content'], $serialized, strlen( $item['log_content'] ) - 1 );
 
 				echo wpautop( $intro );
 				echo wpautop( '<strong>' . esc_html__( 'Log data:', 'give' ) . '</strong>' );
 				echo '<div style="word-wrap: break-word;">' . wpautop( $data ) . '</div>';
 			} else {
 				// No serialized data found
-				echo wpautop( $log_message );
+				echo wpautop( $item['log_content'] );
 			}
 			?>
 		</div>
@@ -129,7 +137,7 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 			'gateway'    => esc_html__( 'Gateway', 'give' ),
 			'payment_id' => esc_html__( 'Donation ID', 'give' ),
 			'date'       => esc_html__( 'Date', 'give' ),
-			'message'    => esc_html__( 'Details', 'give' )
+			'message'    => esc_html__( 'Details', 'give' ),
 		);
 
 		return $columns;
@@ -166,9 +174,6 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 * @return array $logs_data Array of all the Log entries.
 	 */
 	public function get_logs() {
-
-		$give_logs = new Give_Logging();
-
 		// Prevent the queries from getting cached.
 		// Without this there are occasional memory issues for some installs.
 		wp_suspend_cache_addition( true );
@@ -181,18 +186,20 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 			'posts_per_page' => $this->per_page,
 		);
 
-		$logs = $give_logs->get_connected_logs( $log_query );
+		$logs = Give()->logs->get_connected_logs( $log_query );
 
 		if ( $logs ) {
 			foreach ( $logs as $log ) {
 
 				$logs_data[] = array(
-					'ID'         => $log->ID,
-					'ID_label'   => '<span class=\'give-item-label give-item-label-gray\'>' . $log->ID . '</span>',
-					'payment_id' => $log->post_parent,
-					'error'      => 'error',
-					'gateway'    => give_get_payment_gateway( $log->post_parent ),
-					'date'       => $log->post_date
+					'ID'          => $log->ID,
+					'ID_label'    => '<span class=\'give-item-label give-item-label-gray\'>' . $log->ID . '</span>',
+					'payment_id'  => $log->log_parent,
+					'error'       => 'error',
+					'gateway'     => give_get_payment_gateway( $log->log_parent ),
+					'date'        => $log->log_date,
+					'log_content' => $log->log_content,
+					'log_title'   => $log->log_title,
 				);
 			}
 		}
@@ -206,9 +213,9 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 * Display the table navigation above or below the table even when no items in the logs,
 	 * so nav doesn't disappear.
 	 *
-	 * @see: https://github.com/WordImpress/Give/issues/564
+	 * @see    : https://github.com/WordImpress/Give/issues/564
 	 *
-	 * @since 1.4.1
+	 * @since  1.4.1
 	 * @access protected
 	 *
 	 * @param string $which
@@ -248,13 +255,12 @@ class Give_Gateway_Error_Log_Table extends WP_List_Table {
 	 */
 	public function prepare_items() {
 
-		$give_logs             = new Give_logging();
 		$columns               = $this->get_columns();
 		$hidden                = array(); // No hidden columns
 		$sortable              = $this->get_sortable_columns();
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 		$this->items           = $this->get_logs();
-		$total_items           = $give_logs->get_log_count( 0, 'gateway_error' );
+		$total_items           = Give()->logs->get_log_count( 0, 'gateway_error' );
 
 		$this->set_pagination_args( array(
 				'total_items' => $total_items,

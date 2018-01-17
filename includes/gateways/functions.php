@@ -94,16 +94,18 @@ function give_is_gateway_active( $gateway ) {
  */
 function give_get_default_gateway( $form_id ) {
 
-	$give_options = give_get_settings();
-	$default      = isset( $give_options['default_gateway'] ) && give_is_gateway_active( $give_options['default_gateway'] ) ? $give_options['default_gateway'] : 'paypal';
-	$form_default = give_get_meta( $form_id, '_give_default_gateway', true );
+	$enabled_gateways = array_keys( give_get_enabled_payment_gateways() );
+	$default_gateway  = give_get_option('default_gateway');
+	$default          = ! empty( $default_gateway ) && give_is_gateway_active( $default_gateway ) ? $default_gateway : $enabled_gateways[0];
+	$form_default     = give_get_meta( $form_id, '_give_default_gateway', true );
 
 	// Single Form settings varies compared to the Global default settings.
-	if ( ! empty( $form_default ) &&
-		 $form_id !== null &&
-		 $default !== $form_default &&
-		 $form_default !== 'global' &&
-		 give_is_gateway_active( $form_default )
+	if (
+		! empty( $form_default ) &&
+		$form_id !== null &&
+		$default !== $form_default &&
+		'global' !== $form_default &&
+		give_is_gateway_active( $form_default )
 	) {
 		$default = $form_default;
 	}
@@ -239,6 +241,25 @@ function give_get_chosen_gateway( $form_id ) {
 }
 
 /**
+ * Record a log entry
+ *
+ * A wrapper function for the Give_Logging class add() method.
+ *
+ * @since  1.0
+ * @since  2.0 Use global logs object
+ *
+ * @param  string $title   Log title. Default is empty.
+ * @param  string $message Log message. Default is empty.
+ * @param  int    $parent  Parent log. Default is 0.
+ * @param  string $type    Log type. Default is null.
+ *
+ * @return int             ID of the new log entry.
+ */
+function give_record_log( $title = '', $message = '', $parent = 0, $type = null ) {
+	return Give()->logs->add( $title, $message, $parent, $type );
+}
+
+/**
  * Record a gateway error.
  *
  * A simple wrapper function for give_record_log().
@@ -253,6 +274,8 @@ function give_get_chosen_gateway( $form_id ) {
  * @return int ID of the new log entry
  */
 function give_record_gateway_error( $title = '', $message = '', $parent = 0 ) {
+	$title = empty( $title ) ? esc_html__( 'Payment Error', 'give' ) : $title;
+
 	return give_record_log( $title, $message, $parent, 'gateway_error' );
 }
 

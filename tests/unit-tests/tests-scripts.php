@@ -40,7 +40,6 @@ class Tests_Scripts extends Give_Unit_Test_Case {
 			$this->assertTrue( wp_script_is( 'give-cc-validator', 'enqueued' ) );
 			$this->assertTrue( wp_script_is( 'give-float-labels', 'enqueued' ) );
 			$this->assertTrue( wp_script_is( 'give-blockui', 'enqueued' ) );
-			$this->assertTrue( wp_script_is( 'give-qtip', 'enqueued' ) );
 			$this->assertTrue( wp_script_is( 'give-accounting', 'enqueued' ) );
 			$this->assertTrue( wp_script_is( 'give-magnific', 'enqueued' ) );
 			$this->assertTrue( wp_script_is( 'give-checkout-global', 'enqueued' ) );

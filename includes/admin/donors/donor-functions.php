@@ -87,6 +87,7 @@ add_filter( 'give_donor_tabs', 'give_register_delete_donor_tab', PHP_INT_MAX, 1 
 
 /**
  * Connect and Reconnect Donor with User profile.
+ * @todo $address is unnecessary param because we are store address to user.
  *
  * @param object $donor      Donor Object.
  * @param array  $donor_data Donor Post Variables.
@@ -116,18 +117,9 @@ function give_connect_user_donor_profile( $donor, $donor_data, $address ) {
 
 	if ( $donor->update( $donor_data ) ) {
 
-		if ( ! empty( $donor->user_id ) && $donor->user_id > 0 ) {
-			update_user_meta( $donor->user_id, '_give_user_address', $address );
-		}
-
-		// Update some donation meta if we need to.
-		$payments_array = explode( ',', $donor->payment_ids );
-
-		if ( $donor->user_id !== $previous_user_id ) {
-			foreach ( $payments_array as $payment_id ) {
-				give_update_payment_meta( $payment_id, '_give_payment_user_id', $donor->user_id );
-			}
-		}
+		// Create and Update Donor First Name and Last Name in Meta Fields.
+		$donor->update_meta( '_give_donor_first_name', $donor_data['first_name'] );
+		$donor->update_meta( '_give_donor_last_name', $donor_data['last_name'] );
 
 		// Fetch disconnected user id, if exists.
 		$disconnected_user_id = $donor->get_meta( '_give_disconnected_user_id', true );

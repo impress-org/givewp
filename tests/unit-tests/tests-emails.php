@@ -20,8 +20,8 @@ class Tests_Emails extends Give_Unit_Test_Case {
 	 */
 	public function setUp() {
 		parent::setUp();
-		$this->_tags = new Give_Email_Template_Tags();
-		$this->_payment_id  = Give_Helper_Payment::create_simple_payment();
+		$this->_tags       = new Give_Email_Template_Tags();
+		$this->_payment_id = Give_Helper_Payment::create_simple_payment();
 	}
 
 	/**
@@ -31,15 +31,52 @@ class Tests_Emails extends Give_Unit_Test_Case {
 		parent::tearDown();
 	}
 
+
 	/**
 	 * Test that each of the actions are added and each hooked in with the right priority
 	 */
 	public function test_email_actions() {
 		global $wp_filter;
-		$this->assertarrayHasKey( 'give_admin_email_notice', $wp_filter['give_admin_donation_email'][10] );
-		$this->assertarrayHasKey( 'give_trigger_donation_receipt', $wp_filter['give_complete_donation'][999] );
-		$this->assertarrayHasKey( 'give_resend_donation_receipt', $wp_filter['give_email_links'][10] );
-		$this->assertarrayHasKey( 'give_send_test_email', $wp_filter['give_send_test_email'][10] );
+
+		$email_functions = array(
+			array(
+				'hook'     => 'give_admin_donation_email',
+				'callback' => 'give_admin_email_notice',
+			),
+			array(
+				'hook'     => 'give_complete_donation',
+				'callback' => 'give_trigger_donation_receipt',
+				'priority' => 999,
+			),
+			array(
+				'hook'     => 'give_email_links',
+				'callback' => 'resend_donation_receipt',
+			),
+			array(
+				'hook'     => 'init',
+				'callback' => 'send_preview_email',
+			),
+			array(
+				'hook'     => 'init',
+				'callback' => 'preview_email',
+			),
+		);
+
+		foreach ( $email_functions as $email_function ) {
+			$priority = ! empty( $email_function['priority'] ) ? $email_function['priority'] : 10;
+			$add_filters = array_keys( $wp_filter[$email_function['hook']][$priority] );
+			
+			foreach ( $add_filters as $index =>  $filter ) {
+				if( false === strpos( $filter ,  $email_function['callback'] ) ) {
+					unset( $add_filters[$index] );
+				}
+			}
+
+			$add_filters = array_values( $add_filters );
+
+			$this->assertTrue( ! empty( $add_filters ) );
+			$this->assertTrue( false !== strpos( $add_filters[0], $email_function['callback'] ) );
+		}
 	}
 
 	/**

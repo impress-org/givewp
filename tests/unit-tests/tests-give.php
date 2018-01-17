@@ -53,6 +53,7 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-template-loader.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-donate-form.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-db.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-db-meta.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-db-donor-meta.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-db-donors.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-donor.php' );
@@ -75,6 +76,7 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/price-functions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/process-donation.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/login-register.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-tooltips.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/user-functions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/payments/functions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/payments/actions.php' );
@@ -195,7 +197,6 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/plugins/_settings.scss' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/plugins/float-labels.scss' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/plugins/magnific-popup.scss' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/plugins/qtip.scss' );
 
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/fonts/icomoon.eot' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/fonts/icomoon.svg' );
@@ -232,8 +233,6 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.flot.orderBars.min.js' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.flot.time.js' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.flot.time.min.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.qtip.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.qtip.min.js' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.payment.js' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.payment.min.js' );
 

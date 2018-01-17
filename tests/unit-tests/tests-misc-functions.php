@@ -78,30 +78,46 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 	 * @since         1.8.8
 	 * @access        public
 	 *
+	 * @param int $form_or_donation_id
+	 *
 	 * @cover         give_get_meta
 	 * @cover         give_update_meta
 	 * @cover         give_delete_meta
+	 *
+	 * @dataProvider  give_meta_helpers_provider
 	 */
-	public function test_give_meta_helpers() {
-		$payment = Give_Helper_Payment::create_simple_payment();
-
-		$value = give_get_meta( $payment, 'testing_meta', true, 'TEST1' );
+	public function test_give_meta_helpers( $form_or_donation_id ) {
+		$value = give_get_meta( $form_or_donation_id, 'testing_meta', true, 'TEST1' );
 		$this->assertEquals( 'TEST1', $value );
 
-		$status = give_update_meta( $payment, 'testing_meta', 'TEST' );
+		$status = give_update_meta( $form_or_donation_id, 'testing_meta', 'TEST' );
 		$this->assertEquals( true, (bool) $status );
 
-		$status = give_update_meta( $payment, 'testing_meta', 'TEST' );
+		$status = give_update_meta( $form_or_donation_id, 'testing_meta', 'TEST' );
 		$this->assertEquals( false, (bool) $status );
 
-		$value = give_get_meta( $payment, 'testing_meta', true );
+		$value = give_get_meta( $form_or_donation_id, 'testing_meta', true );
 		$this->assertEquals( 'TEST', $value );
 
-		$status = give_delete_meta( $payment, 'testing_meta', 'TEST2' );
+		$status = give_delete_meta( $form_or_donation_id, 'testing_meta', 'TEST2' );
 		$this->assertEquals( false, $status );
 
-		$status = give_delete_meta( $payment, 'testing_meta' );
+		$status = give_delete_meta( $form_or_donation_id, 'testing_meta' );
 		$this->assertEquals( true, $status );
+	}
+	
+	
+	/**
+	 * Data provider for test_give_meta_helpers
+	 *
+	 * @since 2.0
+	 * @access private
+	 */
+	public function give_meta_helpers_provider(){
+		return array(
+			array( Give_Helper_Payment::create_simple_payment() ),
+			array( Give_Helper_Form::create_simple_form()->id ),
+		);
 	}
 
 	/**

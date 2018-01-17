@@ -78,8 +78,11 @@ class Tests_Deprecated_Classes extends Give_Unit_Test_Case {
 
 		/** Generate some donations */
 		$this->_user_id = $this->factory->user->create( array(
-			'role' => 'administrator',
+			'role'       => 'administrator',
+			'first_name' => 'Admin',
+			'last_name'  => 'User',
 		) );
+
 		$user           = get_userdata( $this->_user_id );
 
 		$user_info = array(

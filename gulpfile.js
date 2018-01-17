@@ -39,7 +39,7 @@ var source_paths = {
         './assets/js/plugins/jquery.blockUI.min.js',
         './assets/js/plugins/jquery.magnific-popup.min.js',
         './assets/js/plugins/jquery.payment.min.js',
-        './assets/js/plugins/jquery.qtip.min.js',
+        './assets/js/plugins/give-hint.css.min.js',
         './assets/js/frontend/*.min.js' //Frontend scripts need to be loaded last
     ]
 };
@@ -225,12 +225,12 @@ gulp.task('default', function () {
 
     var overrides = {
         "chosen": {main: ['chosen.jquery.js']},
-        "float-labels.js": {main: ['src/float-labels.js', 'src/float-labels.scss']},
+        "float-labels.js": {main: ['src/float-labels.js' ]},
         "Flot": {main: ['jquery.flot.js', 'jquery.flot.time.js', 'jquery.flot.resize.js']},
         "flot.orderbars": {main: ['js/jquery.flot.orderBars.js']},
         "jquery": {ignore: true},
         "magnific-popup": {main: ['dist/jquery.magnific-popup.js', 'src/css/*.scss']},
-        "qtip2": {main: ['jquery.qtip.js', 'jquery.qtip.css'], dependencies: null}
+        "hintcss": {main: ['src/hint.scss']}
     };
 
     // run bower install
@@ -251,8 +251,6 @@ gulp.task('default', function () {
                             path.extname = '.scss';
                             if (path.basename === 'main') {
                                 path.basename = 'magnific-popup';
-                            } else if (path.basename === 'jquery.qtip') {
-                                path.basename = 'qtip';
                             }
                         }))
                         .pipe(gulp.dest('assets/scss/plugins/'))

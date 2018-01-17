@@ -364,7 +364,6 @@ function give_field_is_required( $field = '', $form_id ) {
  * Stores log information for a donation.
  *
  * @since 1.0
- * @global            $give_logs     Give_Logging
  *
  * @param int         $give_form_id  Give Form ID.
  * @param int         $payment_id    Payment ID.
@@ -374,21 +373,19 @@ function give_field_is_required( $field = '', $form_id ) {
  * @return void
  */
 function give_record_donation_in_log( $give_form_id = 0, $payment_id, $price_id = false, $donation_date = null ) {
-	global $give_logs;
-
 	$log_data = array(
-		'post_parent'   => $give_form_id,
-		'log_type'      => 'sale',
-		'post_date'     => isset( $donation_date ) ? $donation_date : null,
-		'post_date_gmt' => isset( $donation_date ) ? $donation_date : null,
+		'log_parent'   => $payment_id,
+		'log_type'     => 'sale',
+		'log_date'     => isset( $donation_date ) ? $donation_date : null,
+		'log_date_gmt' => isset( $donation_date ) ? $donation_date : null,
 	);
 
 	$log_meta = array(
-		'payment_id' => $payment_id,
-		'price_id'   => (int) $price_id,
+		'form_id'  => $give_form_id,
+		'price_id' => (int) $price_id,
 	);
 
-	$give_logs->insert_log( $log_data, $log_meta );
+	Give()->logs->insert_log( $log_data, $log_meta );
 }
 
 
@@ -559,7 +556,7 @@ function give_get_average_monthly_form_earnings( $form_id = 0 ) {
  * @param int  $form_id      ID of the donation form.
  * @param int  $price_id     ID of the price option.
  * @param int  $payment_id   payment ID for use in filters ( optional ).
- * @param bool $use_fallback Outputsz the level amount if no level text is provided.
+ * @param bool $use_fallback Outputs the level amount if no level text is provided.
  *
  * @return string $price_name Name of the price option
  */
@@ -574,7 +571,7 @@ function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 
 
 	foreach ( $prices as $price ) {
 
-		if ( intval( $price['_give_id']['level_id'] ) == intval( $price_id ) ) {
+		if ( intval( $price['_give_id']['level_id'] ) === intval( $price_id ) ) {
 
 			$price_text     = isset( $price['_give_text'] ) ? $price['_give_text'] : '';
 			$price_fallback = $use_fallback ?
@@ -584,8 +581,7 @@ function give_get_price_option_name( $form_id = 0, $price_id = 0, $payment_id = 
 						array( 'sanitize' => false )
 					),
 					array( 'decode_currency' => true )
-				) :
-				'';
+				) : '';
 			$price_name     = ! empty( $price_text ) ? $price_text : $price_fallback;
 
 		}
@@ -873,6 +869,25 @@ function give_get_form_goal( $form_id = 0 ) {
 }
 
 /**
+ * Returns the goal format of a form
+ *
+ * @since 2.0
+ *
+ * @param int $form_id ID number of the form to retrieve a goal for
+ *
+ * @return mixed string|int Goal of the form
+ */
+function give_get_form_goal_format( $form_id = 0 ) {
+
+	if ( empty( $form_id ) ) {
+		return false;
+	}
+
+	return give_get_meta( $form_id, '_give_goal_format', true );
+
+}
+
+/**
  * Display/Return a formatted goal for a donation form
  *
  * @since 1.0
@@ -888,10 +903,20 @@ function give_goal( $form_id = 0, $echo = true ) {
 		$form_id = get_the_ID();
 	}
 
-	$goal = give_get_form_goal( $form_id );
+	$goal        = give_get_form_goal( $form_id );
+	$goal_format = give_get_form_goal_format($form_id);
 
-	$goal           = apply_filters( 'give_form_goal', give_maybe_sanitize_amount( $goal ), $form_id );
-	$formatted_goal = '<span class="give_price" id="give_price_' . $form_id . '">' . $goal . '</span>';
+	if ( 'donation' === $goal_format ) {
+		$goal = "{$goal} donations";
+	} else {
+		$goal = apply_filters( 'give_form_goal', give_maybe_sanitize_amount( $goal ), $form_id );
+	}
+
+	$formatted_goal = sprintf(
+		'<span class="give_price" id="give_price_%1$s">%2$s</span>',
+		$form_id,
+		$goal
+	);
 	$formatted_goal = apply_filters( 'give_form_price_after_html', $formatted_goal, $form_id, $goal );
 
 	if ( $echo ) {
@@ -960,7 +985,7 @@ function _give_get_prefill_form_field_values( $form_id ) {
 
 	if ( is_user_logged_in() ) :
 		$donor_data    = get_userdata( get_current_user_id() );
-		$donor_address = get_user_meta( get_current_user_id(), '_give_user_address', true );
+		$donor_address = give_get_donor_address( get_current_user_id() );
 
 		$logged_in_donor_info = array(
 			// First name.
@@ -973,22 +998,22 @@ function _give_get_prefill_form_field_values( $form_id ) {
 			'give_email'      => $donor_data->user_email,
 
 			// Street address 1.
-			'card_address'    => ( ! empty( $donor_address['line1'] ) ? $donor_address['line1'] : '' ),
+			'card_address'    => $donor_address['line1'],
 
 			// Street address 2.
-			'card_address_2'  => ( ! empty( $donor_address['line2'] ) ? $donor_address['line2'] : '' ),
+			'card_address_2'  => $donor_address['line2'],
 
 			// Country.
-			'billing_country' => ( ! empty( $donor_address['country'] ) ? $donor_address['country'] : '' ),
+			'billing_country' => $donor_address['country'],
 
 			// State.
-			'card_state'      => ( ! empty( $donor_address['state'] ) ? $donor_address['state'] : '' ),
+			'card_state'      => $donor_address['state'],
 
 			// City.
-			'card_city'       => ( ! empty( $donor_address['city'] ) ? $donor_address['city'] : '' ),
+			'card_city'       => $donor_address['city'],
 
 			// Zipcode
-			'card_zip'        => ( ! empty( $donor_address['zip'] ) ? $donor_address['zip'] : '' ),
+			'card_zip'        => $donor_address['zip'],
 		);
 	endif;
 

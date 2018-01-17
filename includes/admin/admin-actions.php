@@ -198,7 +198,6 @@ function _give_register_admin_notices() {
 					) );
 					break;
 			}
-
 		}
 	}
 
@@ -601,7 +600,7 @@ function give_donation_import_callback() {
 
 	$percentage              = ( 100 / ( $total_ajax + 1 ) ) * $current;
 	$json_data['percentage'] = $percentage;
-	
+
 	$json_data = apply_filters( 'give_import_ajax_responces', $json_data, $fields );
 	wp_die( json_encode( $json_data ) );
 }
@@ -628,7 +627,7 @@ function give_core_settings_import_callback() {
 	 *
 	 * @access public
 	 *
-	 * @since 1.8.17
+	 * @since  1.8.17
 	 *
 	 * @param array $fields
 	 *
@@ -656,12 +655,12 @@ function give_core_settings_import_callback() {
 		 *
 		 * @access public
 		 *
-		 * @since 1.8.17
+		 * @since  1.8.17
 		 *
-		 * @param array $json_to_array Setting that are being going to get imported
-		 * @param array $type Type of Import
+		 * @param array $json_to_array     Setting that are being going to get imported
+		 * @param array $type              Type of Import
 		 * @param array $host_give_options Setting old setting that used to be in the options table.
-		 * @param array $fields Data that is being send from the ajax
+		 * @param array $fields            Data that is being send from the ajax
 		 *
 		 * @return array $json_to_array Setting that are being going to get imported
 		 */
@@ -679,7 +678,7 @@ function give_core_settings_import_callback() {
 	 *
 	 * @access public
 	 *
-	 * @since 1.8.17
+	 * @since  1.8.17
 	 *
 	 * @return array $url
 	 */
@@ -707,6 +706,75 @@ function give_blank_slate() {
 add_action( 'current_screen', 'give_blank_slate' );
 
 /**
+ * Validate Fields of User Profile
+ *
+ * @param object   $errors Object of WP Errors.
+ * @param int|bool $update True or False.
+ * @param object   $user   WP User Data.
+ *
+ * @since 2.0
+ *
+ * @return mixed
+ */
+function give_validate_user_profile( $errors, $update, $user ) {
+
+	if ( ! empty( $_POST['action'] ) && ( 'adduser' === $_POST['action'] || 'createuser' === $_POST['action'] ) ) {
+		return;
+	}
+
+	if ( ! empty( $user->ID ) ) {
+		$donor = Give()->donors->get_donor_by( 'user_id', $user->ID );
+
+		if ( $donor ) {
+			// If Donor is attached with User, then validate first name.
+			if ( empty( $_POST['first_name'] ) ) {
+				$errors->add(
+					'empty_first_name',
+					sprintf(
+						'<strong>%1$s:</strong> %2$s',
+						__( 'ERROR', 'give' ),
+						__( 'Please enter your first name.', 'give' )
+					)
+				);
+			}
+		}
+	}
+
+}
+
+add_action( 'user_profile_update_errors', 'give_validate_user_profile', 10, 3 );
+
+/**
+ * Show Donor Information on User Profile Page.
+ *
+ * @param object $user User Object.
+ *
+ * @since 2.0
+ */
+function give_donor_information_profile_fields( $user ) {
+	$donor = Give()->donors->get_donor_by( 'user_id', $user->ID );
+
+	// Display Donor Information, only if donor is attached with User.
+	if ( ! empty( $donor->user_id ) ) {
+		?>
+		<table class="form-table">
+			<tbody>
+			<tr>
+				<th scope="row"><?php _e( 'Donor', 'give' ); ?></th>
+				<td>
+					<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ); ?>">
+						<?php _e( 'View Donor Information', 'give' ); ?>
+					</a>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+		<?php
+	}
+}
+
+add_action( 'personal_options', 'give_donor_information_profile_fields' );
+/**
  * Get Array of WP User Roles.
  *
  * @since 1.8.13
@@ -723,3 +791,291 @@ function give_get_user_roles() {
 
 	return $user_roles;
 }
+
+
+/**
+ * Ajax handle for donor address.
+ *
+ * @since 2.0
+ *
+ * @return string
+ */
+function __give_ajax_donor_manage_addresses() {
+	// Bailout.
+	if (
+		empty( $_POST['form'] ) ||
+		empty( $_POST['donorID'] )
+	) {
+		wp_send_json_error( array( 'error' => 1 ) );
+	}
+
+	$post                  = give_clean( wp_parse_args( $_POST ) );
+	$donorID               = absint( $post['donorID'] );
+	$form_data             = give_clean( wp_parse_args( $post['form'] ) );
+	$is_multi_address_type = ( 'billing' === $form_data['address-id'] || false !== strpos( $form_data['address-id'], '_' ) );
+	$address_type          = false !== strpos( $form_data['address-id'], '_' ) ?
+		array_shift( explode( '_', $form_data['address-id'] ) ) :
+		$form_data['address-id'];
+	$address_id            = false !== strpos( $form_data['address-id'], '_' ) ?
+		array_pop( explode( '_', $form_data['address-id'] ) ) :
+		null;
+	$response_data         = array(
+		'action' => $form_data['address-action'],
+		'id'     => $form_data['address-id'],
+	);
+
+	// Security check.
+	if ( ! wp_verify_nonce( $form_data['_wpnonce'], 'give-manage-donor-addresses' ) ) {
+		wp_send_json_error( array(
+				'error'     => 1,
+				'error_msg' => wp_sprintf(
+					'<div class="notice notice-error"><p>%s</p></div>',
+					__( 'Error: Security issue.', 'give' )
+				)
+			)
+		);
+	}
+
+	$donor = new Give_Donor( $donorID );
+
+	// Verify donor.
+	if ( ! $donor->id ) {
+		wp_send_json_error( array( 'error' => 3 ) );
+	}
+
+	// Unset all data except address.
+	unset(
+		$form_data['_wpnonce'],
+		$form_data['address-action'],
+		$form_data['address-id']
+	);
+
+	// Process action.
+	switch ( $response_data['action'] ) {
+
+		case 'add':
+			if ( ! $donor->add_address( "{$address_type}[]", $form_data ) ) {
+				wp_send_json_error( array(
+						'error'     => 1,
+						'error_msg' => wp_sprintf(
+							'<div class="notice notice-error"><p>%s</p></div>',
+							__( 'Error: Unable to save the address. Please check if address already exist.', 'give' )
+						)
+					)
+				);
+			}
+
+			$total_addresses = count( $donor->address[ $address_type ] );
+
+			$address_index = $is_multi_address_type ?
+				$total_addresses - 1 :
+				$address_type;
+
+			$address_id = $is_multi_address_type ?
+				end( array_keys( $donor->address[ $address_type ] ) ) :
+				$address_type;
+
+			$response_data['address_html'] = __give_get_format_address(
+				end( $donor->address['billing'] ),
+				array(
+					// We can add only billing address from donor screen.
+					'type'  => 'billing',
+					'id'    => $address_id,
+					'index' => ++ $address_index,
+				)
+			);
+			$response_data['success_msg']  = wp_sprintf(
+				'<div class="notice updated"><p>%s</p></div>',
+				__( 'Successfully added a new address to the donor.', 'give' )
+			);
+
+			if ( $is_multi_address_type ) {
+				$response_data['id'] = "{$response_data['id']}_{$address_index}";
+			}
+
+			break;
+
+		case 'remove':
+			if ( ! $donor->remove_address( $response_data['id'] ) ) {
+				wp_send_json_error( array(
+						'error'     => 2,
+						'error_msg' => wp_sprintf(
+							'<div class="notice notice-error"><p>%s</p></div>',
+							__( 'Error: Unable to delete address.', 'give' )
+						)
+					)
+				);
+			}
+
+			$response_data['success_msg'] = wp_sprintf(
+				'<div class="notice updated"><p>%s</p></div>',
+				__( 'Successfully removed a address of donor.', 'give' )
+			);
+
+			break;
+
+		case 'update':
+			if ( ! $donor->update_address( $response_data['id'], $form_data ) ) {
+				wp_send_json_error( array(
+						'error'     => 3,
+						'error_msg' => wp_sprintf(
+							'<div class="notice notice-error"><p>%s</p></div>',
+							__( 'Error: Unable to update address. Please check if address already exist.', 'give' )
+						)
+					)
+				);
+			}
+
+			$response_data['address_html'] = __give_get_format_address(
+				$is_multi_address_type ?
+					$donor->address[ $address_type ][ $address_id ] :
+					$donor->address[ $address_type ],
+				array(
+					'type'  => $address_type,
+					'id'    => $address_id,
+					'index' => $address_id,
+				)
+			);
+			$response_data['success_msg']  = wp_sprintf(
+				'<div class="notice updated"><p>%s</p></div>',
+				__( 'Successfully updated a address of donor', 'give' )
+			);
+
+			break;
+	}
+
+	wp_send_json_success( $response_data );
+}
+
+add_action( 'wp_ajax_donor_manage_addresses', '__give_ajax_donor_manage_addresses' );
+
+/**
+ * Admin donor billing address label
+ *
+ * @since 2.0
+ *
+ * @param string $address_label
+ *
+ * @return string
+ */
+function __give_donor_billing_address_label( $address_label ) {
+	$address_label = __( 'Billing Address', 'give' );
+
+	return $address_label;
+}
+
+add_action( 'give_donor_billing_address_label', '__give_donor_billing_address_label' );
+
+/**
+ * Admin donor personal address label
+ *
+ * @since 2.0
+ *
+ * @param string $address_label
+ *
+ * @return string
+ */
+function __give_donor_personal_address_label( $address_label ) {
+	$address_label = __( 'Personal Address', 'give' );
+
+	return $address_label;
+}
+
+add_action( 'give_donor_personal_address_label', '__give_donor_personal_address_label' );
+
+/**
+ * Update Donor Information when User Profile is updated from admin.
+ * Note: for internal use only.
+ *
+ * @param int $user_id
+ *
+ * @access public
+ * @since  2.0
+ *
+ * @return bool
+ */
+function give_update_donor_name_on_user_update( $user_id = 0 ) {
+
+	if ( current_user_can( 'edit_user', $user_id ) ) {
+
+		$donor = new Give_Donor( $user_id, true );
+
+		// Bailout, if donor doesn't exists.
+		if ( ! $donor ) {
+			return false;
+		}
+
+		// Get User First name and Last name.
+		$first_name = ( $_POST['first_name'] ) ? give_clean( $_POST['first_name'] ) : get_user_meta( $user_id, 'first_name', true );
+		$last_name  = ( $_POST['last_name'] ) ? give_clean( $_POST['last_name'] ) : get_user_meta( $user_id, 'last_name', true );
+		$full_name  = strip_tags( wp_unslash( trim( "{$first_name} {$last_name}" ) ) );
+
+		// Assign User First name and Last name to Donor.
+		Give()->donors->update( $donor->id, array( 'name' => $full_name ) );
+		Give()->donor_meta->update_meta( $donor->id, '_give_donor_first_name', $first_name );
+		Give()->donor_meta->update_meta( $donor->id, '_give_donor_last_name', $last_name );
+
+	}
+}
+
+add_action( 'edit_user_profile_update', 'give_update_donor_name_on_user_update', 10 );
+add_action( 'personal_options_update', 'give_update_donor_name_on_user_update', 10 );
+
+
+/**
+ * Updates the email address of a donor record when the email on a user is updated
+ * Note: for internal use only.
+ *
+ * @since  1.4.3
+ * @access public
+ *
+ * @param  int          $user_id       User ID.
+ * @param  WP_User|bool $old_user_data User data.
+ *
+ * @return bool
+ */
+function give_update_donor_email_on_user_update( $user_id = 0, $old_user_data = false ) {
+
+	$donor = new Give_Donor( $user_id, true );
+
+	if ( ! $donor ) {
+		return false;
+	}
+
+	$user = get_userdata( $user_id );
+
+	if ( ! empty( $user ) && $user->user_email !== $donor->email ) {
+
+		$success = Give()->donors->update( $donor->id, array( 'email' => $user->user_email ) );
+
+		if ( $success ) {
+			// Update some payment meta if we need to
+			$payments_array = explode( ',', $donor->payment_ids );
+
+			if ( ! empty( $payments_array ) ) {
+
+				foreach ( $payments_array as $payment_id ) {
+
+					give_update_payment_meta( $payment_id, 'email', $user->user_email );
+
+				}
+
+			}
+
+			/**
+			 * Fires after updating donor email on user update.
+			 *
+			 * @since 1.4.3
+			 *
+			 * @param  WP_User    $user  WordPress User object.
+			 * @param  Give_Donor $donor Give donor object.
+			 */
+			do_action( 'give_update_donor_email_on_user_update', $user, $donor );
+
+		}
+
+	}
+
+}
+
+add_action( 'profile_update', 'give_update_donor_email_on_user_update', 10, 2 );

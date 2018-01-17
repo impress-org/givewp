@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since  1.0
  *
- * @param  int $payment_id The ID number of the payment.
+ * @param  int    $payment_id The ID number of the payment.
  * @param  string $new_status The status of the payment, probably "publish".
  * @param  string $old_status The status of the payment prior to being marked as "complete", probably "pending".
  *
@@ -70,8 +70,8 @@ function give_complete_purchase( $payment_id, $new_status, $old_status ) {
 		 *
 		 * @since 1.0
 		 *
-		 * @param int $form_id The ID number of the form.
-		 * @param int $payment_id The ID number of the payment.
+		 * @param int   $form_id      The ID number of the form.
+		 * @param int   $payment_id   The ID number of the payment.
 		 * @param array $payment_meta The payment meta.
 		 */
 		do_action( 'give_complete_form_donation', $form_id, $payment_id, $payment_meta );
@@ -119,7 +119,7 @@ add_action( 'give_update_payment_status', 'give_complete_purchase', 100, 3 );
  *
  * @since  1.0
  *
- * @param  int $payment_id The ID number of the payment.
+ * @param  int    $payment_id The ID number of the payment.
  * @param  string $new_status The status of the payment, probably "publish".
  * @param  string $old_status The status of the payment prior to being marked as "complete", probably "pending".
  *
@@ -254,7 +254,177 @@ function give_refresh_thismonth_stat_transients( $payment_ID ) {
 
 add_action( 'save_post_give_payment', 'give_refresh_thismonth_stat_transients' );
 
-/*
+
+/**
+ * Add support to get all payment meta.
+ * Note: only use for internal purpose
+ *
+ * @since 2.0
+ *
+ * @param $check
+ * @param $object_id
+ * @param $meta_key
+ * @param $single
+ *
+ * @return array
+ */
+function give_bc_v20_get_payment_meta( $check, $object_id, $meta_key, $single ) {
+	// Bailout.
+	if (
+		'give_payment' !== get_post_type( $object_id ) ||
+		'_give_payment_meta' !== $meta_key ||
+		! give_has_upgrade_completed( 'v20_upgrades_payment_metadata' )
+	) {
+		return $check;
+	}
+
+	$cache_key = "_give_payment_meta_{$object_id}";
+
+	// Get already calculate payment meta from cache.
+	$payment_meta = Give_Cache::get_db_query( $cache_key );
+
+	if ( is_null( $payment_meta ) ) {
+		// Remove filter.
+		remove_filter( 'get_post_metadata', 'give_bc_v20_get_payment_meta', 999 );
+
+		$donation = new Give_Payment( $object_id );
+
+		// Get all payment meta.
+		$payment_meta = give_get_meta( $object_id );
+
+		// Set default value to array.
+		if ( empty( $payment_meta ) ) {
+			return $check;
+		}
+
+		// Convert all meta key value to string instead of array
+		array_walk( $payment_meta, function ( &$meta, $key ) {
+			$meta = current( $meta );
+		} );
+
+		/**
+		 * Add backward compatibility to old meta keys.
+		 */
+		// Donation key.
+		$payment_meta['key'] = ! empty( $payment_meta['_give_payment_purchase_key'] ) ? $payment_meta['_give_payment_purchase_key'] : '';
+
+		// Donation form.
+		$payment_meta['form_title'] = ! empty( $payment_meta['_give_payment_form_title'] ) ? $payment_meta['_give_payment_form_title'] : '';
+
+		// Donor email.
+		$payment_meta['email'] = ! empty( $payment_meta['_give_payment_donor_email'] ) ? $payment_meta['_give_payment_donor_email'] : '';
+		$payment_meta['email'] = ! empty( $payment_meta['email'] ) ?
+			$payment_meta['email'] :
+			Give()->donors->get_column( 'email', $donation->donor_id );
+
+		// Form id.
+		$payment_meta['form_id'] = ! empty( $payment_meta['_give_payment_form_id'] ) ? $payment_meta['_give_payment_form_id'] : '';
+
+		// Price id.
+		$payment_meta['price_id'] = ! empty( $payment_meta['_give_payment_price_id'] ) ? $payment_meta['_give_payment_price_id'] : '';
+
+		// Date.
+		$payment_meta['date'] = ! empty( $payment_meta['_give_payment_date'] ) ? $payment_meta['_give_payment_date'] : '';
+		$payment_meta['date'] = ! empty( $payment_meta['date'] ) ?
+			$payment_meta['date'] :
+			get_post_field( 'post_date', $object_id );
+
+
+		// Currency.
+		$payment_meta['currency'] = ! empty( $payment_meta['_give_payment_currency'] ) ? $payment_meta['_give_payment_currency'] : '';
+
+		// Decode donor data.
+		$donor_id = ! empty( $payment_meta['_give_payment_donor_id'] ) ? $payment_meta['_give_payment_donor_id'] : 0;
+		$donor    = new Give_Donor( $donor_id );
+
+		// Donor first name.
+		$donor_data['first_name'] = ! empty( $payment_meta['_give_donor_billing_first_name'] ) ? $payment_meta['_give_donor_billing_first_name'] : '';
+		$donor_data['first_name'] = ! empty( $donor_data['first_name'] ) ?
+			$donor_data['first_name'] :
+			$donor->get_first_name();
+
+		// Donor last name.
+		$donor_data['last_name'] = ! empty( $payment_meta['_give_donor_billing_last_name'] ) ? $payment_meta['_give_donor_billing_last_name'] : '';
+		$donor_data['last_name'] = ! empty( $donor_data['last_name'] ) ?
+			$donor_data['last_name'] :
+			$donor->get_last_name();
+
+		// Donor email.
+		$donor_data['email'] = $payment_meta['email'];
+
+		// User ID.
+		$donor_data['id'] = $donation->user_id;
+
+		$donor_data['address'] = false;
+
+		// Address1.
+		$address1 = ! empty( $payment_meta['_give_payment_billing_address1'] ) ? $payment_meta['_give_payment_billing_address1'] : '';
+		if ( $address1 ) {
+			$donor_data['address']['line1'] = $address1;
+		}
+
+		// Address2.
+		$address2 = ! empty( $payment_meta['_give_payment_billing_address2'] ) ? $payment_meta['_give_payment_billing_address2'] : '';
+		if ( $address2 ) {
+			$donor_data['address']['line2'] = $address2;
+		}
+
+		// City.
+		$city = ! empty( $payment_meta['_give_payment_billing_city'] ) ? $payment_meta['_give_payment_billing_city'] : '';
+		if ( $city ) {
+			$donor_data['address']['city'] = $city;
+		}
+
+		// Zip.
+		$zip = ! empty( $payment_meta['_give_payment_billing_zip'] ) ? $payment_meta['_give_payment_billing_zip'] : '';
+		if ( $zip ) {
+			$donor_data['address']['zip'] = $zip;
+		}
+
+		// State.
+		$state = ! empty( $payment_meta['_give_payment_billing_state'] ) ? $payment_meta['_give_payment_billing_state'] : '';
+		if ( $state ) {
+			$donor_data['address']['state'] = $state;
+		}
+
+		// Country.
+		$country = ! empty( $payment_meta['_give_payment_billing_country'] ) ? $payment_meta['_give_payment_billing_country'] : '';
+		if ( $country ) {
+			$donor_data['address']['country'] = $country;
+		}
+
+		$payment_meta['user_info'] = $donor_data;
+
+		// Add filter
+		add_filter( 'get_post_metadata', 'give_bc_v20_get_payment_meta', 999, 4 );
+
+		// Set custom meta key into payment meta.
+		if ( ! empty( $payment_meta['_give_payment_meta'] ) ) {
+			$payment_meta = array_merge( maybe_unserialize( $payment_meta['_give_payment_meta'] ), $payment_meta );
+		}
+
+		// Set cache.
+		Give_Cache::set_db_query( $cache_key, $payment_meta );
+	}
+
+	if ( $single ) {
+		/**
+		 * Filter the payment meta
+		 * Add custom meta key to payment meta
+		 *
+		 * @since 2.0
+		 */
+		$new_payment_meta[0] = apply_filters( 'give_get_payment_meta', $payment_meta, $object_id, $meta_key );
+
+		$payment_meta = $new_payment_meta;
+	}
+
+	return $payment_meta;
+}
+
+add_filter( 'get_post_metadata', 'give_bc_v20_get_payment_meta', 999, 4 );
+
+/**
  * Add meta in payment that store page id and page url.
  *
  * Will add/update when user add click on the checkout page.
@@ -262,10 +432,11 @@ add_action( 'save_post_give_payment', 'give_refresh_thismonth_stat_transients' )
  *
  * @since 1.8.13
  *
- * @param {integer} $payment_id Payment id for which the meta value should be updated.
+ * @param int $payment_id Payment id for which the meta value should be updated.
  */
 function give_payment_save_page_data( $payment_id ) {
 	$page_url = ( ! empty( $_REQUEST['give-current-url'] ) ? esc_url( $_REQUEST['give-current-url'] ) : false );
+
 	// Check $page_url is not empty.
 	if ( $page_url ) {
 		update_post_meta( $payment_id, '_give_current_url', $page_url );

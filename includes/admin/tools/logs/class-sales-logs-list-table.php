@@ -74,28 +74,51 @@ class Give_Sales_Log_Table extends WP_List_Table {
 				$form_title = empty( $form_title ) ? sprintf( __( 'Untitled (#%s)', 'give' ), $item[ $column_name ] ) : $form_title;
 				return '<a href="' . esc_url( add_query_arg( 'form', $item[ $column_name ] ) ) . '" >' . esc_html( $form_title ). '</a>';
 
-			case 'donor_id' :
-				return sprintf(
-					'<a href="%s">%s</a>',
-					admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&donor=' . absint( $item['donor_id'] ) ),
-					$item['donor_name']
-				);
-
 			case 'amount' :
-				return give_currency_filter( give_format_amount( $item['amount'], array( 'sanitize' => false, 'donation_id' => $item['payment_id'] ) ), give_get_payment_currency_code( $item['payment_id'] ) );
+				$value = give_currency_filter( give_format_amount( $item['amount'], array( 'sanitize' => false, 'donation_id' => $item['payment_id'] ) ), array( 'currency_code' => give_get_payment_currency_code( $item['payment_id'] ) ) );
+				$value .= sprintf( '<br><small>%1$s %2$s</small>', __( 'via', 'give' ), give_get_gateway_admin_label( $payment->gateway ) );
+
+				return $value;
 
 			case 'status' :
 
 				$value = '<div class="give-donation-status status-' . sanitize_title( give_get_payment_status( $payment, true ) ) . '"><span class="give-donation-status-icon"></span> ' . give_get_payment_status( $payment, true ) . '</div>';
 
 				if ( $payment->mode == 'test' ) {
-					$value .= ' <span class="give-item-label give-item-label-orange give-test-mode-transactions-label" data-tooltip="' . esc_attr__( 'This donation was made in test mode.', 'give' ) . '">' . __( 'Test', 'give' ) . '</span>';
+					$value .= Give()->tooltips->render_span( array(
+						'label'       => __( 'This donation was made in test mode.', 'give' ),
+						'tag_content' => __( 'Test', 'give' ),
+						'attributes'  => array(
+							'class' => 'give-item-label give-item-label-orange give-test-mode-transactions-label',
+						),
+					) );
 				}
 
 				return $value;
 
-			case 'payment_id' :
-				return '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . $item['payment_id'] ) . '">' . give_get_payment_number( $item['payment_id'] ) . '</a>';
+			case 'donation' :
+				$value = Give()->tooltips->render_link( array(
+					'label'       => sprintf( esc_attr__( 'View Donation #%s', 'give' ), $payment->ID ),
+					'tag_content' => "#$payment->ID",
+					'link'        => esc_url( add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details' ) ) ),
+				) );
+
+				if ( ! empty( $item['donor_id'] ) ) {
+					$value .= sprintf(
+						'&nbsp;%1$s&nbsp;<a href="%2$s">%3$s</a><br>',
+						esc_html__( 'by', 'give' ),
+						admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&donor=' . $item['donor_id'] ),
+						$item['donor_name']
+					);
+				} else {
+					$value .= sprintf(
+						'&nbsp;%1$s&nbsp;%2$s<br>',
+						esc_html__( 'by', 'give' ),
+						__( 'No donor attached', 'give' )
+					);;
+				}
+
+				return $value;
 
 			default:
 				return $item[ $column_name ];
@@ -111,13 +134,12 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'ID'         => __( 'Log ID', 'give' ),
-			'donor_id'   => __( 'Donor', 'give' ),
-			'form'       => __( 'Form', 'give' ),
-			'amount'     => __( 'Donation Amount', 'give' ),
-			'status'     => __( 'Status', 'give' ),
-			'payment_id' => __( 'Donation ID', 'give' ),
-			'date'       => __( 'Date', 'give' ),
+			'ID'       => __( 'Log ID', 'give' ),
+			'donation' => __( 'Donation', 'give' ),
+			'form'     => __( 'Form', 'give' ),
+			'status'   => __( 'Status', 'give' ),
+			'amount'   => __( 'Donation Amount', 'give' ),
+			'date'     => __( 'Date', 'give' ),
 		);
 
 		return $columns;
@@ -181,16 +203,15 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 * @param string $which
 	 */
 	protected function display_tablenav( $which ) {
-
-		if ( 'top' === $which ) {
-			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
-		}
 		?>
 		<div class="tablenav <?php echo esc_attr( $which ); ?>">
 
-			<div class="alignleft actions bulkactions">
-				<?php $this->bulk_actions( $which ); ?>
-			</div>
+			<?php if ( 'top' === $which ) : ?>
+				<div class="alignleft actions bulkactions">
+					<?php $this->bulk_actions( $which ); ?>
+				</div>
+			<?php endif; ?>
+
 			<?php
 			$this->extra_tablenav( $which );
 			$this->pagination( $which );
@@ -214,6 +235,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 */
 	public function get_meta_query() {
 		$user = $this->get_filtered_user();
+		$give_form = $this->get_filtered_give_form();
 
 		$meta_query = array();
 
@@ -222,6 +244,13 @@ class Give_Sales_Log_Table extends WP_List_Table {
 			$meta_query[] = array(
 				'key'   => '_give_log_user_id',
 				'value' => $user,
+			);
+		}
+
+		if ( $give_form ) {
+			$meta_query[] = array(
+				'key'   => '_give_log_form_id',
+				'value' => $give_form,
 			);
 		}
 
@@ -280,6 +309,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
+	 * @param string $which
 	 * @return void
 	 */
 	function bulk_actions( $which = '' ) {
@@ -294,27 +324,12 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 * @return void
 	 */
 	public function give_forms_filter() {
-		$give_forms = get_posts( array(
-			'post_type'              => 'give_forms',
-			'post_status'            => 'any',
-			'posts_per_page'         => - 1,
-			'orderby'                => 'title',
-			'order'                  => 'ASC',
-			'fields'                 => 'ids',
-			'update_post_meta_cache' => false,
-			'update_post_term_cache' => false,
+		echo Give()->html->forms_dropdown( array(
+			'selected' => $this->get_filtered_give_form(),
+			'name'   => 'form',
+			'id'     => 'give-log-form-filter',
+			'chosen' => true,
 		) );
-
-		if ( $give_forms ) {
-			echo '<select name="form" id="give-log-form-filter">';
-			echo '<option value="0">' . __( 'All', 'give' ) . '</option>';
-			foreach ( $give_forms as $form ) {
-				$form_title = get_the_title( $form );
-				$form_title = empty( $form_title ) ? sprintf( __( 'Untitled (#%s)', 'give' ), $form ) : $form_title;
-				echo '<option value="' . $form . '"' . selected( $form, $this->get_filtered_give_form() ) . '>' . esc_html( $form_title ) . '</option>';
-			}
-			echo '</select>';
-		}
 	}
 
 	/**
@@ -322,58 +337,32 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @global object $give_logs Give Logs Object
+	 *
 	 * @return array $logs_data Array of all the Log entires
 	 */
 	public function get_logs() {
-		/** @var Give_Logging $give_logs */
-		global $give_logs;
-
 		$logs_data = array();
-		$paged     = $this->get_paged();
-		$give_form = empty( $_GET['s'] ) ? $this->get_filtered_give_form() : null;
-		$user      = $this->get_filtered_user();
+		$log_query = $this->get_query_params();
+		$logs = Give()->logs->get_connected_logs( $log_query );
 
-		$log_query = array(
-			'post_parent'    => $give_form,
-			'log_type'       => 'sale',
-			'paged'          => $paged,
-			'meta_query'     => $this->get_meta_query(),
-			'posts_per_page' => $this->per_page,
-		);
+		if ( $logs ) {
+			foreach ( $logs as $log ) {
+				/* @var Give_payment $payment */
+				$payment = new Give_Payment( $log->log_parent );
 
-		$cache_key = Give_Cache::get_key( 'get_logs', $log_query );
+				// Make sure this payment hasn't been deleted
+				if ( get_post( $payment->ID ) ) :
+					$logs_data[] = array(
+						'ID'         => '<span class="give-item-label give-item-label-gray">' . $log->ID . '</span>',
+						'payment_id' => $payment->ID,
+						'form'       => $payment->form_id,
+						'amount'     => $payment->total,
+						'donor_id'    => $payment->customer_id,
+						'donor_name' => trim( "{$payment->first_name} $payment->last_name" ),
+						'date'       => $payment->date,
+					);
 
-		// Return result from cache if exist.
-		if ( ! ( $logs_data = Give_Cache::get( $cache_key ) ) ) {
-			$logs = $give_logs->get_connected_logs( $log_query );
-
-			if ( $logs ) {
-				foreach ( $logs as $log ) {
-					$payment_id = give_get_meta( $log->ID, '_give_log_payment_id', true );
-
-					// Make sure this payment hasn't been deleted.
-					if ( get_post( $payment_id ) ) :
-						$user_info      = give_get_payment_meta_user_info( $payment_id );
-						$payment_amount = give_donation_amount( $payment_id );
-
-						$logs_data[] = array(
-							'ID'         => '<span class="give-item-label give-item-label-gray">' . $log->ID . '</span>',
-							'payment_id' => $payment_id,
-							'form'       => $log->post_parent,
-							'amount'     => $payment_amount,
-							'donor_id'   => give_get_payment_donor_id( $payment_id ),
-							'donor_name' => trim( "{$user_info['first_name']} {$user_info['last_name']}" ),
-							'date'       => get_post_field( 'post_date', $payment_id ),
-						);
-
-					endif;
-				}
-
-				// Cache results.
-				if ( ! empty( $logs_data ) ) {
-					Give_Cache::set( $cache_key, $logs_data );
-				}
+				endif;
 			}
 		}
 
@@ -385,25 +374,22 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
-	 * @global object $give_logs Give Logs Object
 	 * @uses   Give_Sales_Log_Table::get_columns()
 	 * @uses   WP_List_Table::get_sortable_columns()
 	 * @uses   Give_Sales_Log_Table::get_pagenum()
 	 * @uses   Give_Sales_Log_Table::get_logs()
 	 * @uses   Give_Sales_Log_Table::get_log_count()
+	 *
 	 * @return void
 	 */
 	public function prepare_items() {
-		/** @var Give_Logging $give_logs */
-		global $give_logs;
-
 		$columns               = $this->get_columns();
 		$hidden                = array();
 		$sortable              = $this->get_sortable_columns();
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 		$current_page          = $this->get_pagenum();
 		$this->items           = $this->get_logs();
-		$total_items           = $give_logs->get_log_count( $this->get_filtered_give_form(), 'sale', $this->get_meta_query() );
+		$total_items           = Give()->logs->get_log_count( 0, 'sale', $this->get_meta_query() );
 
 		$this->set_pagination_args( array(
 				'total_items' => $total_items,
@@ -411,5 +397,28 @@ class Give_Sales_Log_Table extends WP_List_Table {
 				'total_pages' => ceil( $total_items / $this->per_page ),
 			)
 		);
+	}
+
+
+	/**
+	 * Get log query param.
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @return array
+	 */
+	public function get_query_params() {
+		$paged     = $this->get_paged();
+		$user      = $this->get_filtered_user();
+
+		$log_query = array(
+			'log_type'   => 'sale',
+			'paged'      => $paged,
+			'meta_query' => $this->get_meta_query(),
+			'number'     => $this->per_page,
+		);
+
+		return $log_query;
 	}
 }

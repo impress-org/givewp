@@ -14,7 +14,7 @@ if ( is_user_logged_in() ):
 	$first_name   = get_user_meta( $user_id, 'first_name', true );
 	$last_name    = get_user_meta( $user_id, 'last_name', true );
 	$display_name = $current_user->display_name;
-	$address      = give_get_donor_address( $user_id );
+	$address      = give_get_donor_address( $user_id, array( 'address_type' => 'personal' ) );
 
 	if ( isset( $_GET['updated'] ) && $_GET['updated'] == true && ! give_get_errors() ): ?>
 		<p class="give_success">

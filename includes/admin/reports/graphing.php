@@ -22,7 +22,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_reports_graph() {
 	// Retrieve the queried dates.
-	$dates = give_get_report_dates();
+	$donation_stats = new Give_Payment_Stats();
+	$dates          = give_get_report_dates();
 
 	// Determine graph options.
 	switch ( $dates['range'] ) :
@@ -54,42 +55,45 @@ function give_reports_graph() {
 	$earnings_data = array();
 	$sales_data    = array();
 
-	if ( $dates['range'] == 'today' || $dates['range'] == 'yesterday' ) {
+	if ( 'today' === $dates['range'] || 'yesterday' === $dates['range'] ) {
+
 		// Hour by hour.
 		$hour  = 0;
 		$month = date( 'n', current_time( 'timestamp' ) );
 		while ( $hour <= 23 ) :
 
-			$sales    = give_get_sales_by_date( $dates['day'], $month, $dates['year'], $hour );
-			$earnings = give_get_earnings_by_date( $dates['day'], $month, $dates['year'], $hour );
+			$start_date = mktime( $hour, 0, 0, $month, $dates['day'], $dates['year'] );
+			$end_date   = mktime( $hour, 59, 59, $month, $dates['day'], $dates['year'] );
+			$sales      = $donation_stats->get_sales( 0, $start_date, $end_date );
+			$earnings   = $donation_stats->get_earnings( 0, $start_date, $end_date );
 
-			$sales_totals += $sales;
+			$sales_totals    += $sales;
 			$earnings_totals += $earnings;
 
-			$date            = mktime( $hour, 0, 0, $month, $dates['day'], $dates['year'] ) * 1000;
-
-			$sales_data[]    = array( $date, $sales );
-			$earnings_data[] = array( $date, $earnings );
+			$sales_data[]    = array( $start_date * 1000, $sales );
+			$earnings_data[] = array( $start_date * 1000, $earnings );
 
 			$hour ++;
 		endwhile;
 
-	} elseif ( $dates['range'] == 'this_week' || $dates['range'] == 'last_week' ) {
+	} elseif ( 'this_week' === $dates['range'] || 'last_week' === $dates['range'] ) {
 
 		// Day by day.
 		$day     = $dates['day'];
 		$day_end = $dates['day_end'];
 		$month   = $dates['m_start'];
 		while ( $day <= $day_end ) :
-			$sales = give_get_sales_by_date( $day, $month, $dates['year'] );
-			$sales_totals += $sales;
 
-			$earnings = give_get_earnings_by_date( $day, $month, $dates['year'] );
+			$start_date = mktime( 0, 0, 0, $month, $day, $dates['year'] );
+			$end_date   = mktime( 23, 59, 59, $month, $day, $dates['year'] );
+			$sales      = $donation_stats->get_sales( 0, $start_date, $end_date );
+			$earnings   = $donation_stats->get_earnings( 0, $start_date, $end_date );
+
+			$sales_totals    += $sales;
 			$earnings_totals += $earnings;
 
-			$date            = mktime( 0, 0, 0, $month, $day, $dates['year'] ) * 1000;
-			$sales_data[]    = array( $date, $sales );
-			$earnings_data[] = array( $date, $earnings );
+			$sales_data[]    = array( $start_date * 1000, $sales );
+			$earnings_data[] = array( $start_date * 1000, $earnings );
 			$day ++;
 		endwhile;
 
@@ -98,13 +102,13 @@ function give_reports_graph() {
 		$y = $dates['year'];
 		while ( $y <= $dates['year_end'] ) :
 
-			if ( $dates['year'] == $dates['year_end'] ) {
+			if ( $dates['year'] === $dates['year_end'] ) {
 				$month_start = $dates['m_start'];
 				$month_end   = $dates['m_end'];
-			} elseif ( $y == $dates['year'] ) {
+			} elseif ( $y === $dates['year'] ) {
 				$month_start = $dates['m_start'];
 				$month_end   = 12;
-			} elseif ( $y == $dates['year_end'] ) {
+			} elseif ( $y === $dates['year_end'] ) {
 				$month_start = 1;
 				$month_end   = $dates['m_end'];
 			} else {
@@ -117,7 +121,7 @@ function give_reports_graph() {
 
 				if ( $day_by_day ) {
 
-					if ( $i == $month_end ) {
+					if ( $i === $month_end ) {
 
 						$num_of_days = $dates['day_end'];
 
@@ -131,40 +135,34 @@ function give_reports_graph() {
 
 					while ( $d <= $num_of_days ) :
 
-						$sales = give_get_sales_by_date( $d, $i, $y );
-						$sales_totals += $sales;
+						$start_date = mktime( 0, 0, 0, $i, $d, $y );
+						$end_date   = mktime( 23, 59, 59, $i, $d, $y );
+						$sales      = $donation_stats->get_sales( 0, $start_date, $end_date );
+						$earnings   = $donation_stats->get_earnings( 0, $start_date, $end_date );
 
-						$earnings = give_get_earnings_by_date( $d, $i, $y );
+						$sales_totals    += $sales;
 						$earnings_totals += $earnings;
 
-						$date            = mktime( 0, 0, 0, $i, $d, $y ) * 1000;
-						$sales_data[]    = array( $date, $sales );
-						$earnings_data[] = array( $date, $earnings );
+						$sales_data[]    = array( $start_date * 1000, $sales );
+						$earnings_data[] = array( $start_date * 1000, $earnings );
+
 						$d ++;
 
 					endwhile;
 
 				} else {
 
-					$sales = give_get_sales_by_date( null, $i, $y );
-					$sales_totals += $sales;
+					// This Quarter, Last Quarter, This Year, Last Year.
+					$start_date = mktime( 0, 0, 0, $i, 1, $y );
+					$end_date   = mktime( 23, 59, 59, $i + 1, 0, $y );
+					$sales      = $donation_stats->get_sales( 0, $start_date, $end_date );
+					$earnings   = $donation_stats->get_earnings( 0, $start_date, $end_date );
 
-					$earnings = give_get_earnings_by_date( null, $i, $y );
+					$sales_totals    += $sales;
 					$earnings_totals += $earnings;
 
-					if ( $i == $month_end ) {
-
-						$num_of_days = cal_days_in_month( CAL_GREGORIAN, $i, $y );
-
-					} else {
-
-						$num_of_days = 1;
-
-					}
-
-					$date            = mktime( 0, 0, 0, $i, $num_of_days, $y ) * 1000;
-					$sales_data[]    = array( $date, $sales );
-					$earnings_data[] = array( $date, $earnings );
+					$sales_data[]    = array( $start_date * 1000, $sales );
+					$earnings_data[] = array( $start_date * 1000, $earnings );
 
 				}
 
@@ -213,7 +211,7 @@ function give_reports_graph() {
 					<th scope="row"><strong><?php _e( 'Total donations for period:', 'give' ); ?><strong></th>
 					<td><?php echo $sales_totals; ?></td>
 				</tr>
-				<?php if ( 'this_month' == $dates['range'] ) : ?>
+				<?php if ( 'this_month' === $dates['range'] ) : ?>
 					<tr>
 						<th scope="row"><strong><?php _e( 'Estimated monthly income:', 'give' ); ?></strong></th>
 						<td><?php echo give_currency_filter( give_format_amount( $estimated['earnings'], array( 'sanitize' => false ) ) ); ?></td>
@@ -703,71 +701,67 @@ function give_get_report_dates() {
 			break;
 
 		case 'this_quarter' :
-			$month_now = date( 'n', $current_time );
+			$month_now     = date( 'n', $current_time );
+			$dates['year'] = date( 'Y', $current_time );
 
 			if ( $month_now <= 3 ) {
 
 				$dates['m_start'] = 1;
 				$dates['m_end']   = 4;
-				$dates['year']    = date( 'Y', $current_time );
 
 			} else if ( $month_now <= 6 ) {
 
 				$dates['m_start'] = 4;
 				$dates['m_end']   = 7;
-				$dates['year']    = date( 'Y', $current_time );
 
 			} else if ( $month_now <= 9 ) {
 
 				$dates['m_start'] = 7;
 				$dates['m_end']   = 10;
-				$dates['year']    = date( 'Y', $current_time );
 
 			} else {
 
 				$dates['m_start']  = 10;
 				$dates['m_end']    = 1;
-				$dates['year']     = date( 'Y', $current_time );
 				$dates['year_end'] = date( 'Y', $current_time ) + 1;
 
 			}
 			break;
 
 		case 'last_quarter' :
-			$month_now = date( 'n' );
+			$month_now         = date( 'n', $current_time );
+			$dates['year']     = date( 'Y', $current_time );
+			$dates['year_end'] = date( 'Y', $current_time );
 
 			if ( $month_now <= 3 ) {
 
-				$dates['m_start']  = 10;
-				$dates['m_end']    = 12;
-				$dates['year']     = date( 'Y', $current_time ) - 1; // Previous year
-				$dates['year_end'] = date( 'Y', $current_time ) - 1; // Previous year
+				$dates['m_start'] = 10;
+				$dates['m_end']   = 1;
+				$dates['year']    = date( 'Y', $current_time ) - 1; // Previous year.
 
 			} else if ( $month_now <= 6 ) {
 
 				$dates['m_start'] = 1;
-				$dates['m_end']   = 3;
-				$dates['year']    = date( 'Y', $current_time );
+				$dates['m_end']   = 4;
 
 			} else if ( $month_now <= 9 ) {
 
 				$dates['m_start'] = 4;
-				$dates['m_end']   = 6;
-				$dates['year']    = date( 'Y', $current_time );
+				$dates['m_end']   = 7;
 
 			} else {
 
 				$dates['m_start'] = 7;
-				$dates['m_end']   = 9;
-				$dates['year']    = date( 'Y', $current_time );
+				$dates['m_end']   = 10;
 
 			}
 			break;
 
 		case 'this_year' :
-			$dates['m_start'] = 1;
-			$dates['m_end']   = 12;
-			$dates['year']    = date( 'Y', $current_time );
+			$dates['m_start']  = 1;
+			$dates['m_end']    = 12;
+			$dates['year']     = date( 'Y', $current_time );
+			$dates['year_end'] = date( 'Y', $current_time );
 			break;
 
 		case 'last_year' :
@@ -818,14 +812,15 @@ function give_reports_refresh_button() {
 		'give-message' => 'refreshed-reports'
 	) ), 'give-refresh-reports' );
 
-	echo '<a href="'
-	     . esc_url_raw( $url )
-	     . '" data-tooltip="'. __( 'Clicking this will clear the reports cache.', 'give' )
-	     . '" data-tooltip-my-position="right center"  data-tooltip-target-position="left center" class="button alignright give-admin-button give-tooltip">'
-	     . '<span class="give-admin-button-icon give-admin-button-icon-update"></span>'
-	     . __( 'Refresh Report Data', 'give' )
-	     . '</a>';
-
+	echo Give()->tooltips->render_link( array(
+		'label'       => esc_attr__( 'Clicking this will clear the reports cache.', 'give' ),
+		'tag_content' => '<span class="give-admin-button-icon give-admin-button-icon-update"></span>' . esc_html__( 'Refresh Report Data', 'give' ),
+		'link'        => $url,
+		'position'    => 'left',
+		'attributes'  => array(
+			'class' => 'button alignright give-admin-button'
+		)
+	) );
 }
 
 add_action( 'give_reports_graph_additional_stats', 'give_reports_refresh_button' );

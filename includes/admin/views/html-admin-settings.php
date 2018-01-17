@@ -31,8 +31,16 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 	 */
 	$form_open_tag  = apply_filters( self::$setting_filter_prefix . '_open_form', '<form method="' . $form_method . '" id="give-mainform" action="" enctype="multipart/form-data">' );
 	$form_close_tag = apply_filters( self::$setting_filter_prefix . '_close_form', '</form>' );
+
+	$wrapper_class = implode( ' ',
+		array(
+			self::$setting_filter_prefix . '-setting-page',
+			self::$setting_filter_prefix . '-' . give_get_current_setting_section() . '-section',
+			self::$setting_filter_prefix . '-' . give_get_current_setting_tab() . '-tab',
+		)
+	);
 	?>
-	<div class="wrap give-settings-page <?php echo self::$setting_filter_prefix . '-setting-page'; ?>">
+	<div class="wrap give-settings-page <?php echo $wrapper_class; ?>">
 		<?php
 		echo $form_open_tag;
 
@@ -70,11 +78,11 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 			 */
 			do_action( self::$setting_filter_prefix . '_tabs' );
 			?>
-		</div>
-		<div class="give-sub-nav-tab-wrapper">
-			<a href="#" id="give-show-sub-nav" class="nav-tab give-not-tab" title="<?php _e( 'View remaining setting tabs', 'give' ); ?>"><span class="dashicons dashicons-arrow-down-alt2"></span></span>
-			</a>
-			<nav class="give-sub-nav-tab give-hidden"></nav>
+			<div class="give-sub-nav-tab-wrapper">
+				<a href="#" id="give-show-sub-nav" class="nav-tab give-not-tab" title="<?php _e( 'View remaining setting tabs', 'give' ); ?>"><span class="dashicons dashicons-arrow-down-alt2"></span></span>
+				</a>
+				<nav class="give-sub-nav-tab give-hidden"></nav>
+			</div>
 		</div>
 		<?php
 

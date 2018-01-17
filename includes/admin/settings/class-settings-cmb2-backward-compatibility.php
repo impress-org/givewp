@@ -230,7 +230,7 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			// We need untranslated settings for backward compatibility.
 			add_filter( 'gettext', array( $this, 'en_translation' ), 10, 2 );
 			$en_setting_fields = $this->prev_settings->give_settings( $this->current_tab );
-			remove_filter( 'gettext', array( $this, 'en_translation' ), 10, 2 );
+			remove_filter( 'gettext', array( $this, 'en_translation' ), 10 );
 			
 			if ( ! empty( $setting_fields ) && ! empty( $setting_fields['fields'] ) ) {
 
@@ -269,6 +269,13 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 				$sections = array_merge( $sections, $new_sections );
 			}
 
+			// Remove section tab conditionally.
+			switch ( give_get_current_setting_tab() ) {
+				case 'emails':
+					// unset( $sections['donation-receipt'] );
+					unset( $sections['new-donation-notification'] );
+			}
+
 			// Output.
 			return $sections;
 		}
@@ -292,16 +299,17 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 			if ( ! empty( $settings ) ) {
 				// Bailout: If setting array contain first element of type title then it means it is already created with new setting api (skip this section ).
 				if ( isset( $settings[0]['type'] ) && 'title' == $settings[0]['type'] ) {
-					foreach ( $settings as $setting ) {
-						$new_setting_fields[] = $setting;
-
-						// We need setting only till first section end.
+					$last_sectionend_pos = 0;
+					foreach ( $settings as $index => $setting ) {
+						// We need setting till last section end.
 						if ( 'sectionend' === $setting['type'] ) {
-							break;
+							$last_sectionend_pos = ++ $index;
 						}
 					}
 
-					return $new_setting_fields;
+					$settings = array_slice( $settings, 0, $last_sectionend_pos );
+
+					return $settings;
 				}
 
 				// Store title field id.
@@ -540,8 +548,7 @@ if ( ! class_exists( 'Give_CMB2_Settings_Loader' ) ) :
 					<tr valign="top">
 						<?php if ( ! empty( $field['name'] ) && ! in_array( $field['name'], array( '&nbsp;' ) ) ) : ?>
 							<th scope="row" class="titledesc">
-								<label
-										for="<?php echo esc_attr( $field['name'] ); ?>"><?php echo $field['title']; ?></label>
+								<label for="<?php echo esc_attr( $field['name'] ); ?>"><?php echo $field['title']; ?></label>
 							</th>
 							<?php $colspan = ''; ?>
 						<?php endif; ?>

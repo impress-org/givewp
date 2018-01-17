@@ -212,6 +212,15 @@ class Give_Payments_Query extends Give_Stats {
 	 * @return array
 	 */
 	public function get_payments() {
+		$cache_key      = Give_Cache::get_key( 'give_payment_query', $this->args, false );
+		$this->payments = Give_Cache::get_db_query( $cache_key );
+
+		// Return cached result.
+		if ( ! is_null( $this->payments ) ) {
+			return $this->payments;
+		}
+
+
 		// Modify the query/query arguments before we retrieve payments.
 		$this->set_filters();
 
@@ -240,12 +249,14 @@ class Give_Payments_Query extends Give_Stats {
 			wp_reset_postdata();
 		}
 
+		Give_Cache::set_db_query( $cache_key, $this->payments );
+
 		// Remove query filters after we retrieve payments.
 		$this->unset_filters();
 
 		return $this->payments;
 	}
-
+	
 	/**
 	 * Get payments by group
 	 *
@@ -333,6 +344,9 @@ class Give_Payments_Query extends Give_Stats {
 			if ( $is_end_date && ! is_wp_error( $this->end_date ) ) {
 				$date_query['before'] = date( 'Y-m-d H:i:s', $this->end_date );
 			}
+
+			// Include Start Date and End Date while querying.
+			$date_query['inclusive'] = true;
 
 			$this->__set( 'date_query', $date_query );
 
@@ -490,9 +504,9 @@ class Give_Payments_Query extends Give_Stats {
 		}
 
 		if ( is_numeric( $this->args['user'] ) ) {
-			$user_key = '_give_payment_user_id';
+			$user_key = '_give_payment_donor_id';
 		} else {
-			$user_key = '_give_payment_user_email';
+			$user_key = '_give_payment_donor_email';
 		}
 
 		$this->__set(
@@ -515,12 +529,12 @@ class Give_Payments_Query extends Give_Stats {
 			return;
 		}
 
-		$this->__set(
-			'meta_query', array(
-				'key'   => '_give_payment_customer_id',
-				'value' => (int) $this->args['donor'],
-			)
-		);
+		$donor_meta_type = Give()->donor_meta->meta_type;
+
+		$this->__set( 'meta_query', array(
+			'key'   => "_give_payment_{$donor_meta_type}_id",
+			'value' => (int) $this->args['donor'],
+		) );
 	}
 
 	/**
@@ -561,7 +575,7 @@ class Give_Payments_Query extends Give_Stats {
 
 		} elseif ( $is_email || strlen( $search ) == 32 ) {
 
-			$key         = $is_email ? '_give_payment_user_email' : '_give_payment_purchase_key';
+			$key         = $is_email ? '_give_payment_donor_email' : '_give_payment_purchase_key';
 			$search_meta = array(
 				'key'     => $key,
 				'value'   => $search,
@@ -574,7 +588,7 @@ class Give_Payments_Query extends Give_Stats {
 		} elseif ( $is_user ) {
 
 			$search_meta = array(
-				'key'   => '_give_payment_user_id',
+				'key'   => '_give_payment_donor_id',
 				'value' => trim( str_replace( 'user:', '', strtolower( $search ) ) ),
 			);
 
@@ -697,12 +711,11 @@ class Give_Payments_Query extends Give_Stats {
 		}
 
 		$this->__set(
-			'meta_query', array(
-				array(
-					'key'     => '_give_payment_form_id',
-					'value'   => $this->args['give_forms'],
-					'compare' => $compare,
-				),
+			'meta_query',
+			array(
+				'key'     => '_give_payment_form_id',
+				'value'   => $this->args['give_forms'],
+				'compare' => $compare,
 			)
 		);
 

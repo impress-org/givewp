@@ -580,7 +580,11 @@ class Give_Donate_Form {
 
 		if ( ! isset( $this->goal ) ) {
 
-			$this->goal = give_get_meta( $this->ID, '_give_set_goal', true );
+			if ( 'donation' === give_get_form_goal_format( $this->ID ) ) {
+				$this->goal = give_get_meta( $this->ID, '_give_number_of_donation_goal', true );
+			} else {
+				$this->goal = give_get_meta( $this->ID, '_give_set_goal', true );
+			}
 
 			if ( ! $this->goal ) {
 				$this->goal = 0;
@@ -1070,6 +1074,8 @@ class Give_Donate_Form {
 	 */
 	public function is_close_donation_form() {
 
+		$goal_format = give_get_form_goal_format( $this->ID );
+
 		/**
 		 * Filter the close form result.
 		 *
@@ -1078,9 +1084,9 @@ class Give_Donate_Form {
 		$is_close_form = apply_filters(
 			'give_is_close_donation_form',
 			(
-			give_is_setting_enabled( give_get_meta( $this->ID, '_give_goal_option', true ) ) )
-			&& give_is_setting_enabled( give_get_meta( $this->ID, '_give_close_form_when_goal_achieved', true ) )
-			&& ( $this->get_goal() <= $this->get_earnings()
+				give_is_setting_enabled( give_get_meta( $this->ID, '_give_goal_option', true ) ) &&
+				give_is_setting_enabled( give_get_meta( $this->ID, '_give_close_form_when_goal_achieved', true ) ) &&
+				( 'donation' === $goal_format ? $this->get_goal() <= $this->get_sales() : $this->get_goal() <= $this->get_earnings() )
 			),
 			$this->ID
 		);
@@ -1104,27 +1110,13 @@ class Give_Donate_Form {
 		/* @var WPDB $wpdb */
 		global $wpdb;
 
+		// Bailout.
 		if ( empty( $meta_key ) ) {
 			return false;
 		}
 
-		// Make sure if it needs to be serialized, we do
-		$meta_value = maybe_serialize( $meta_value );
-
-		if ( is_numeric( $meta_value ) ) {
-			$value_type = is_float( $meta_value ) ? '%f' : '%d';
-		} else {
-			$value_type = "'%s'";
-		}
-
-		$sql = $wpdb->prepare( "UPDATE $wpdb->postmeta SET meta_value = $value_type WHERE post_id = $this->ID AND meta_key = '%s'", $meta_value, $meta_key );
-
-		if ( $wpdb->query( $sql ) ) {
-
-			clean_post_cache( $this->ID );
-
+		if ( give_update_meta( $this->ID, $meta_key, $meta_value  ) ) {
 			return true;
-
 		}
 
 		return false;

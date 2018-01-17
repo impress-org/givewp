@@ -14,6 +14,94 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+
+/**
+ * Get formatted address
+ *
+ * @since 2.0
+ *
+ * @param array $address
+ * @param array $address_args
+ *
+ * @return string
+ */
+function __give_get_format_address( $address, $address_args = array() ) {
+	$address_html = '';
+	$address_args = wp_parse_args(
+		$address_args,
+		array(
+			'type'            => '',
+			'id'              => null,
+			'index'           => null,
+			'default_address' => false,
+		)
+	);
+
+	$address_id = $address_args['type'];
+
+	// Bailout.
+	if ( empty( $address ) || ! is_array( $address ) ) {
+		return $address_html;
+	}
+
+	// Address html.
+	$address_html = '';
+	$address_html .= sprintf(
+		'<span data-address-type="line1">%1$s</span>%2$s',
+		$address['line1'],
+		( ! empty( $address['line2'] ) ? '<br>' : '' )
+	);
+	$address_html .= sprintf(
+		'<span data-address-type="line2">%1$s</span>%2$s',
+		$address['line2'],
+		( ! empty( $address['city'] ) ? '<br>' : '' )
+	);
+	$address_html .= sprintf(
+		'<span data-address-type="city">%1$s</span><span data-address-type="state">%2$s</span><span data-address-type="zip">%3$s</span>%4$s',
+		$address['city'],
+		( ! empty( $address['state'] ) ? ", {$address['state']}" : '' ),
+		( ! empty( $address['zip'] ) ? " {$address['zip']}" : '' ),
+		( ! empty( $address['country'] ) ? '<br>' : '' )
+	);
+	$address_html .= sprintf(
+		'<span data-address-type="country">%s</span><br>',
+		$address['country']
+	);
+
+	// Address action.
+	$address_html .= sprintf(
+		'<br><a href="#" class="js-edit">%1$s</a> | <a href="#" class="js-remove">%2$s</a>',
+		__( 'Edit', 'give' ),
+		__( 'Remove', 'give' )
+	);
+
+	/**
+	 * Filter the address label
+	 *
+	 * @since 2.0
+	 */
+	$address_label = apply_filters( "give_donor_{$address_args['type']}_address_label", ucfirst( $address_args['type'] ), $address_args );
+
+	// Set unique id and index for multi type address.
+	if ( isset( $address_args['index'] ) ) {
+		$address_label = "{$address_label} #{$address_args['index']}";
+	}
+
+	if ( isset( $address_args['id'] ) ) {
+		$address_id = "{$address_id}_{$address_args['id']}";
+	}
+
+	// Add address wrapper.
+	$address_html = sprintf(
+		'<div class="give-grid-col-4"><div data-address-id="%s" class="address"><span class="alignright address-number-label">%s</span>%s</div></div>',
+		$address_id,
+		$address_label,
+		$address_html
+	);
+
+	return $address_html;
+}
+
 /**
  * Donors Page.
  *
@@ -67,7 +155,8 @@ function give_donor_tabs() {
  * @return void
  */
 function give_donors_list() {
-	include dirname( __FILE__ ) . '/class-donor-table.php';
+
+	include GIVE_PLUGIN_DIR . 'includes/admin/donors/class-donor-table.php';
 
 	$donors_table = new Give_Donor_List_Table();
 	$donors_table->prepare_items();
@@ -92,9 +181,9 @@ function give_donors_list() {
 		</form>
 		<form id="give-donors-filter" method="get">
 			<?php $donors_table->display(); ?>
-			<input type="hidden" name="post_type" value="give_forms" />
-			<input type="hidden" name="page" value="give-donors" />
-			<input type="hidden" name="view" value="donors" />
+			<input type="hidden" name="post_type" value="give_forms"/>
+			<input type="hidden" name="page" value="give-donors"/>
+			<input type="hidden" name="view" value="donors"/>
 		</form>
 		<?php
 		/**
@@ -139,7 +228,7 @@ function give_render_donor_view( $view, $callbacks ) {
 	$donor             = new Give_Donor( $donor_id );
 
 	// Reconnect User with Donor profile.
-	if( $reconnect_user_id ) {
+	if ( $reconnect_user_id ) {
 		give_connect_user_donor_profile( $donor, array( 'user_id' => $reconnect_user_id ), array() );
 	}
 
@@ -170,14 +259,14 @@ function give_render_donor_view( $view, $callbacks ) {
 		</h1>
 
 		<hr class="wp-header-end">
-		
+
 		<?php if ( $donor && $render ) : ?>
 
 			<h2 class="nav-tab-wrapper">
 				<?php
 				foreach ( $donor_tabs as $key => $tab ) :
 					$active = $key === $view ? true : false;
-					$class = $active ? 'nav-tab nav-tab-active' : 'nav-tab';
+					$class  = $active ? 'nav-tab nav-tab-active' : 'nav-tab';
 					printf(
 						'<a href="%1$s" class="%2$s"><span class="dashicons %3$s"></span>%4$s</a>' . "\n",
 						esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=' . $key . '&id=' . $donor->id ) ),
@@ -212,7 +301,7 @@ function give_render_donor_view( $view, $callbacks ) {
  */
 function give_donor_view( $donor ) {
 
-	$donor_edit_role   = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
+	$donor_edit_role = apply_filters( 'give_edit_donors_role', 'edit_give_payments' );
 
 	/**
 	 * Fires in donor profile screen, above the donor card.
@@ -222,11 +311,18 @@ function give_donor_view( $donor ) {
 	 * @param object $donor The donor object being displayed.
 	 */
 	do_action( 'give_donor_card_top', $donor );
+
+	// Set Read only to the fields which needs to be locked.
+	$read_only = '';
+	if ( $donor->user_id ) {
+		$read_only = 'readonly="readonly"';
+	}
 	?>
 
 	<div id="donor-summary" class="info-wrapper donor-section postbox">
 
-		<form id="edit-donor-info" method="post" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ); ?>">
+		<form id="edit-donor-info" method="post"
+		      action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ); ?>">
 
 			<div class="donor-info">
 
@@ -238,15 +334,36 @@ function give_donor_view( $donor ) {
 
 					<div id="donor-name-wrap" class="left">
 						<span class="donor-id">#<?php echo $donor->id; ?></span>
-						<span class="donor-name info-item edit-item"><input size="15" data-key="name" name="customerinfo[name]" type="text" value="<?php echo esc_attr( $donor->name ); ?>" placeholder="<?php _e( 'Donor Name', 'give' ); ?>" /></span>
-						<span class="donor-name info-item editable"><span data-key="name"><?php echo $donor->name; ?></span></span>
+						<span class="donor-name info-item edit-item">
+							<input <?php echo $read_only; ?> size="15" data-key="first_name"
+							                                 name="customerinfo[first_name]" type="text"
+							                                 value="<?php esc_attr_e( $donor->get_first_name() ); ?>"
+							                                 placeholder="<?php _e( 'First Name', 'give' ); ?>"/>
+							<?php if ( $donor->user_id ) : ?>
+								<a href="#" class="give-lock-block">
+									<i class="give-icon give-icon-locked"></i>
+								</a>
+							<?php endif; ?>
+							<input <?php echo $read_only; ?> size="15" data-key="last_name"
+							                                 name="customerinfo[last_name]" type="text"
+							                                 value="<?php esc_attr_e( $donor->get_last_name() ); ?>"
+							                                 placeholder="<?php _e( 'Last Name', 'give' ); ?>"/>
+							<?php if ( $donor->user_id ) : ?>
+								<a href="#" class="give-lock-block">
+									<i class="give-icon give-icon-locked"></i>
+								</a>
+							<?php endif; ?>
+						</span>
+						<span class="donor-name info-item editable"><span
+									data-key="name"><?php echo $donor->name; ?></span></span>
 					</div>
 					<p class="donor-since info-item">
 						<?php _e( 'Donor since', 'give' ); ?>
 						<?php echo date_i18n( give_date_format(), strtotime( $donor->date_created ) ) ?>
 					</p>
 					<?php if ( current_user_can( $donor_edit_role ) ) : ?>
-						<a href="#" id="edit-donor" class="button info-item editable donor-edit-link"><?php _e( 'Edit Donor', 'give' ); ?></a>
+						<a href="#" id="edit-donor"
+						   class="button info-item editable donor-edit-link"><?php _e( 'Edit Donor', 'give' ); ?></a>
 					<?php endif; ?>
 				</div>
 				<!-- /donor-bio-header -->
@@ -258,133 +375,56 @@ function give_donor_view( $donor ) {
 						<tr class="alternate">
 							<th scope="col"><label for="tablecell"><?php _e( 'User:', 'give' ); ?></label></th>
 							<td>
-								<span class="donor-user-id info-item edit-item">
-									<?php
-
-									$user_id   = $donor->user_id > 0 ? $donor->user_id : '';
-
-									$data_atts = array(
-										'key'     => 'user_login',
-										'search-type' => 'user',
-									);
-									$user_args = array(
-										'name'  => 'customerinfo[user_id]',
-										'class' => 'give-user-dropdown',
-										'data'  => $data_atts,
-									);
-
-									if ( ! empty( $user_id ) ) {
-										$userdata           = get_userdata( $user_id );
-										$user_args['selected'] = $user_id;
-									}
-
-									echo Give()->html->ajax_user_search( $user_args );
-									?>
-								</span>
-
-								<span class="donor-user-id info-item editable">
-									<?php if ( ! empty( $userdata ) ) { ?>
-										<span data-key="user_id">#<?php echo $donor->user_id . ' - ' . $userdata->display_name; ?></span>
-									<?php } else { ?>
-										<span data-key="user_id"><?php _e( 'None', 'give' ); ?></span>
-									<?php } ?>
-									<?php if ( current_user_can( $donor_edit_role ) && intval( $donor->user_id ) > 0 ) { ?>
-										<span class="disconnect-user">
- 											-
- 											<a id="disconnect-donor" href="#disconnect" aria-label="<?php _e( 'Disconnects the current user ID from this donor record.', 'give' ); ?>">
- 												<?php _e( 'Disconnect User', 'give' ); ?>
-											</a>
- 										</span>
-										<span class="view-user-profile">
- 											|
- 											<a id="view-user-profile" href="<?php echo 'user-edit.php?user_id=' . $donor->user_id; ?>" aria-label="<?php _e( 'View User Profile of current user ID.', 'give' ); ?>">
- 												<?php _e( 'View User Profile', 'give' ); ?>
-											</a>
- 										</span>
-									<?php } ?>
-								</span>
-							</td>
-						</tr>
-						<?php if ( isset( $donor->user_id ) && $donor->user_id > 0 ) : ?>
-
-							<tr>
-								<th scope="col"><?php _e( 'Address:', 'give' ); ?></th>
-								<td class="row-title">
-
-									<div class="donor-address-wrapper">
-
+									<span class="donor-user-id info-item edit-item">
 										<?php
-										$address  = get_user_meta( $donor->user_id, '_give_user_address', true );
-										$defaults = array(
-											'line1'   => '',
-											'line2'   => '',
-											'city'    => '',
-											'state'   => '',
-											'country' => '',
-											'zip'     => '',
+
+										$user_id = $donor->user_id > 0 ? $donor->user_id : '';
+
+										$data_atts = array(
+											'key'         => 'user_login',
+											'search-type' => 'user',
+										);
+										$user_args = array(
+											'name'  => 'customerinfo[user_id]',
+											'class' => 'give-user-dropdown',
+											'data'  => $data_atts,
 										);
 
-										$address = wp_parse_args( $address, $defaults );
+										if ( ! empty( $user_id ) ) {
+											$userdata              = get_userdata( $user_id );
+											$user_args['selected'] = $user_id;
+										}
+
+										echo Give()->html->ajax_user_search( $user_args );
 										?>
+									</span>
 
-										<?php if ( ! empty( $address ) ) { ?>
-											<span class="donor-address info-item editable">
-												<span class="info-item" data-key="line1"><?php echo $address['line1']; ?></span>
-												<span class="info-item" data-key="line2"><?php echo $address['line2']; ?></span>
-												<span class="info-item" data-key="city"><?php echo $address['city']; ?></span>
-												<span class="info-item" data-key="state"><?php echo $address['state']; ?></span>
-												<span class="info-item" data-key="country"><?php echo $address['country']; ?></span>
-												<span class="info-item" data-key="zip"><?php echo $address['zip']; ?></span>
-											</span>
-										<?php }
+								<span class="donor-user-id info-item editable">
+										<?php if ( ! empty( $userdata ) ) : ?>
+											<span data-key="user_id">#<?php echo $donor->user_id . ' - ' . $userdata->display_name; ?></span>
+										<?php else: ?>
+											<span data-key="user_id"><?php _e( 'None', 'give' ); ?></span>
+										<?php endif; ?>
+									<?php if ( current_user_can( $donor_edit_role ) && intval( $donor->user_id ) > 0 ):
 
-										// For country.
-										$selected_country = $address['country'];
-										$countries = give_get_country_list();
+										echo sprintf(
+											'- <span class="disconnect-user">
+				                                            <a id="disconnect-donor" href="#disconnect" aria-label="%1$s">%2$s</a>
+				                                       </span>
+				                                       | <span class="view-user-profile">
+ 											                <a id="view-user-profile" href="%3$s" aria-label="%4$s">%5$s</a>
+ 										               </span>',
+											__( 'Disconnects the current user ID from this donor record.', 'give' ),
+											__( 'Disconnect User', 'give' ),
+											'user-edit.php?user_id=' . $donor->user_id,
+											__( 'View User Profile of current user ID.', 'give' ),
+											__( 'View User Profile', 'give' )
+										);
 
-										// For State.
-										$selected_state = give_get_state();
-										$states         = give_get_states( $selected_country );
-										$selected_state = ( isset( $address['state'] ) ? $address['state'] : $selected_state );
-
-										// Get the country list that does not have any states init.
-										$no_states_country = give_no_states_country_list();
-										?>
-										<span class="donor-address info-item edit-item">
-											<select data-key="country" name="customerinfo[country]" id="billing_country" class="billing_country give-select edit-item">
-												<?php
-												foreach ( $countries as $country_code => $country ) {
-													echo '<option value="' . esc_attr( $country_code ) . '"' . selected( $country_code, $selected_country, false ) . '>' . $country . '</option>';
-												}
-												?>
-											</select>
-											<input class="info-item" type="text" data-key="line1" name="customerinfo[line1]" placeholder="<?php _e( 'Address 1', 'give' ); ?>" value="<?php echo $address['line1']; ?>" />
-											<input class="info-item" type="text" data-key="line2" name="customerinfo[line2]" placeholder="<?php _e( 'Address 2', 'give' ); ?>" value="<?php echo $address['line2']; ?>" />
-											<input class="info-item" type="text" data-key="city" name="customerinfo[city]" placeholder="<?php _e( 'City', 'give' ); ?>" value="<?php echo $address['city']; ?>" />
-											<?php
-											if ( ! empty( $states ) ) {
-												?>
-												<select data-key="state" name="customerinfo[state]" id="card_state" class="card_state give-select info-item">
-													<?php
-													foreach ( $states as $state_code => $state ) {
-														echo '<option value="' . $state_code . '"' . selected( $state_code, $selected_state, false ) . '>' . $state . '</option>';
-													}
-													?>
-												</select>
-												<?php
-											} else {
-												?>
-												<input type="text" size="6" data-key="state" name="customerinfo[state]" id="card_state" class="card_state give-input info-item <?php echo ( ! empty( $selected_country ) && array_key_exists( $selected_country, $no_states_country ) ? 'give-hidden' : '' ); ?>" placeholder="<?php _e( 'State / Province / County', 'give' ); ?>" />
-												<?php
-											}
-											?>
-											<input class="info-item" type="text" data-key="zip" name="customerinfo[zip]" placeholder="<?php _e( 'Zip / Postal Code', 'give' ); ?>" value="<?php echo $address['zip']; ?>" />
-										</span>
-
-									</div>
-								</td>
-							</tr>
-						<?php endif; ?>
+										endif; ?>
+									</span>
+							</td>
+						</tr>
 						</tbody>
 					</table>
 
@@ -393,10 +433,11 @@ function give_donor_view( $donor ) {
 			</div>
 
 			<span id="donor-edit-actions" class="edit-item">
-				<input type="hidden" data-key="id" name="customerinfo[id]" value="<?php echo $donor->id; ?>" />
+				<input type="hidden" data-key="id" name="customerinfo[id]" value="<?php echo $donor->id; ?>"/>
 				<?php wp_nonce_field( 'edit-donor', '_wpnonce', false, true ); ?>
-				<input type="hidden" name="give_action" value="edit-donor" />
-				<input type="submit" id="give-edit-donor-save" class="button-secondary" value="<?php _e( 'Update Donor', 'give' ); ?>" />
+				<input type="hidden" name="give_action" value="edit-donor"/>
+				<input type="submit" id="give-edit-donor-save" class="button-secondary"
+				       value="<?php _e( 'Update Donor', 'give' ); ?>"/>
 				<a id="give-edit-donor-cancel" href="" class="delete"><?php _e( 'Cancel', 'give' ); ?></a>
 			</span>
 
@@ -410,7 +451,7 @@ function give_donor_view( $donor ) {
 	 *
 	 * @since 1.0
 	 *
-	 * @param object $donor The donor object being displayed.
+	 * @param Give_Donor $donor The donor object being displayed.
 	 */
 	do_action( 'give_donor_before_stats', $donor );
 	?>
@@ -448,11 +489,197 @@ function give_donor_view( $donor ) {
 
 	<?php
 	/**
+	 * Fires in donor profile screen, above the address list.
+	 *
+	 * @since 1.8.14
+	 *
+	 * @param Give_Donor $donor The donor object being displayed.
+	 */
+	do_action( 'give_donor_before_address', $donor );
+	?>
+
+	<div id="donor-address-wrapper" class="donor-section clear">
+		<h3><?php _e( 'Addresses', 'give' ); ?></h3>
+
+		<div class="postbox">
+			<div class="give-spinner-wrapper">
+				<span class="give-spinner spinner aligncenter"></span>
+			</div>
+			<div class="inside">
+				<div class="all-address">
+					<div class="give-grid-row">
+						<?php
+						if ( ! empty( $donor->address ) ) :
+							// Default address always will be at zero array index.
+							$is_set_as_default = null;
+
+							foreach ( $donor->address as $address_type => $addresses ) {
+
+								switch ( true ) {
+									case is_array( end( $addresses ) ):
+										$index = 1;
+										foreach ( $addresses as $id => $address ) {
+											echo __give_get_format_address(
+												$address,
+												array(
+													'type'  => $address_type,
+													'id'    => $id,
+													'index' => $index,
+												)
+											);
+
+											$index ++;
+										}
+										break;
+
+									case is_string( end( $addresses ) ):
+										echo __give_get_format_address(
+											$addresses,
+											array(
+												'type' => $address_type,
+											)
+										);
+										break;
+								}
+							}
+						endif;
+						?>
+					</div>
+					<span class="give-no-address-message<?php if ( ! empty( $donor->address ) ) {
+						echo ' give-hidden';
+					} ?>">
+						<?php _e( 'This donor does not have any addresses saved.', 'give' ); ?>
+					</span>
+					<button class="button add-new-address">
+						<?php _e( 'Add Address', 'give' ); ?>
+					</button>
+				</div>
+
+				<div class="address-form add-new-address-form-hidden">
+					<form action="" method="post">
+						<table class="widefat striped">
+							<tbody>
+							<tr>
+								<th class="col">
+									<label class="country"><?php esc_html_e( 'Country:', 'give' ); ?></label>
+								</th>
+								<td>
+									<?php
+									echo Give()->html->select( array(
+										'options'          => give_get_country_list(),
+										'name'             => 'country',
+										'selected'         => give_get_option( 'base_country' ),
+										'show_option_all'  => false,
+										'show_option_none' => false,
+										'chosen'           => true,
+										'placeholder'      => esc_attr__( 'Select a country', 'give' ),
+										'data'             => array( 'search-type' => 'no_ajax' ),
+									) );
+									?>
+								</td>
+							</tr>
+							<tr>
+								<th class="col">
+									<label for="line1"><?php esc_html_e( 'Address 1:', 'give' ); ?></label>
+								</th>
+								<td>
+									<input id="line1" name="line1" type="text" class="medium-text"/>
+								</td>
+							</tr>
+							<tr>
+								<th class="col">
+									<label for="line2"><?php esc_html_e( 'Address 2:', 'give' ); ?></label>
+								</th>
+								<td>
+									<input id="line2" type="text" name="line2" value="" class="medium-text"/>
+
+								</td>
+							</tr>
+							<tr>
+								<th class="col">
+									<label for="city"><?php esc_html_e( 'City:', 'give' ); ?></label>
+								</th>
+								<td>
+									<input id="city" type="text" name="city" value="" class="medium-text"/>
+								</td>
+							</tr>
+							<?php
+							$no_states_country = give_no_states_country_list();
+							$base_country      = give_get_option( 'base_country' );
+							if ( ! array_key_exists( $base_country, $no_states_country ) ) {
+								?>
+								<tr class="give-field-wrap">
+									<th class="col">
+										<label for="state"><?php esc_html_e( 'State / Province / County:', 'give' ); ?></label>
+									</th>
+									<td>
+										<?php
+										$states     = give_get_states( $base_country );
+										$state_args = array(
+											'name'  => 'state',
+											'class' => 'regular-text',
+										);
+
+										if ( empty( $states ) ) {
+
+											// Show Text field, if empty states.
+											$state_args = wp_parse_args( $state_args, array(
+												'value' => give_get_option( 'base_state' ),
+											) );
+											echo Give()->html->text( $state_args );
+										} else {
+
+											// Show Chosen DropDown, if states are not empty.
+											$state_args = wp_parse_args( $state_args, array(
+												'options'          => $states,
+												'selected'         => give_get_option( 'base_state' ),
+												'show_option_all'  => false,
+												'show_option_none' => false,
+												'chosen'           => true,
+												'placeholder'      => __( 'Select a state', 'give' ),
+												'data'             => array( 'search-type' => 'no_ajax' ),
+											) );
+											echo Give()->html->select( $state_args );
+										}
+										?>
+									</td>
+								</tr>
+								<?php
+							}
+							?>
+							<tr>
+								<th class="col">
+									<label for="zip"><?php esc_html_e( 'Zip / Postal Code:', 'give' ); ?></label>
+								</th>
+								<td>
+									<input id="zip" type="text" name="zip" value="" class="medium-text"/>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<?php wp_nonce_field( 'give-manage-donor-addresses', '_wpnonce', false ); ?>
+									<input type="hidden" name="address-action" value="add">
+									<input type="hidden" name="address-id" value="">
+									<input type="submit" class="button button-primary js-save"
+									       value="<?php _e( 'Save', 'give' ); ?>">&nbsp;&nbsp;<button
+											class="button js-cancel"><?php _e( 'Cancel', 'give' ); ?></button>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<?php
+	/**
 	 * Fires in donor profile screen, above the tables wrapper.
 	 *
 	 * @since 1.0
 	 *
-	 * @param object $donor The donor object being displayed.
+	 * @param Give_Donor $donor The donor object being displayed.
 	 */
 	do_action( 'give_donor_before_tables_wrapper', $donor );
 	?>
@@ -496,11 +723,11 @@ function give_donor_view( $donor ) {
 								<?php
 								$base_url    = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id );
 								$promote_url = wp_nonce_url( add_query_arg( array(
-									'email' => rawurlencode( $email ),
+									'email'       => rawurlencode( $email ),
 									'give_action' => 'set_donor_primary_email',
 								), $base_url ), 'give-set-donor-primary-email' );
 								$remove_url  = wp_nonce_url( add_query_arg( array(
-									'email' => rawurlencode( $email ),
+									'email'       => rawurlencode( $email ),
 									'give_action' => 'remove_donor_email',
 								), $base_url ), 'give-remove-donor-email' );
 								?>
@@ -515,18 +742,24 @@ function give_donor_view( $donor ) {
 				<tr class="add-donor-email-row">
 					<td colspan="2" class="add-donor-email-td">
 						<div class="add-donor-email-wrapper">
-							<input type="hidden" name="donor-id" value="<?php echo $donor->id; ?>" />
+							<input type="hidden" name="donor-id" value="<?php echo $donor->id; ?>"/>
 							<?php wp_nonce_field( 'give_add_donor_email', 'add_email_nonce', false, true ); ?>
-							<input type="email" name="additional-email" value="" placeholder="<?php _e( 'Email Address', 'give' ); ?>" />&nbsp;
-							<input type="checkbox" name="make-additional-primary" value="1" id="make-additional-primary" />&nbsp;<label for="make-additional-primary"><?php _e( 'Make Primary', 'give' ); ?></label>
-							<button class="button-secondary give-add-donor-email" id="add-donor-email"><?php _e( 'Add Email', 'give' ); ?></button>
+							<input type="email" name="additional-email" value=""
+							       placeholder="<?php _e( 'Email Address', 'give' ); ?>"/>&nbsp;
+							<input type="checkbox" name="make-additional-primary" value="1"
+							       id="make-additional-primary"/>&nbsp;<label
+									for="make-additional-primary"><?php _e( 'Make Primary', 'give' ); ?></label>
+							<button class="button-secondary give-add-donor-email"
+							        id="add-donor-email"><?php _e( 'Add Email', 'give' ); ?></button>
 							<span class="spinner"></span>
 						</div>
 						<div class="notice-wrap"></div>
 					</td>
 				</tr>
 			<?php } else { ?>
-				<tr><td colspan="2"><?php _e( 'No Emails Found', 'give' ); ?></td></tr>
+				<tr>
+					<td colspan="2"><?php _e( 'No Emails Found', 'give' ); ?></td>
+				</tr>
 			<?php }// End if().
 			?>
 			</tbody>
@@ -580,8 +813,8 @@ function give_donor_view( $donor ) {
 							 *
 							 * @since 1.0
 							 *
-							 * @param object $donor The donor object being displayed.
-							 * @param object $payment  The payment object being displayed.
+							 * @param object $donor   The donor object being displayed.
+							 * @param object $payment The payment object being displayed.
 							 */
 							do_action( 'give_donor_recent_purchases_actions', $donor, $payment );
 							?>
@@ -673,11 +906,11 @@ function give_donor_view( $donor ) {
  */
 function give_donor_notes_view( $donor ) {
 
-	$paged          = isset( $_GET['paged'] ) && is_numeric( $_GET['paged'] ) ? $_GET['paged'] : 1;
-	$paged          = absint( $paged );
-	$note_count     = $donor->get_notes_count();
-	$per_page       = apply_filters( 'give_donor_notes_per_page', 20 );
-	$total_pages    = ceil( $note_count / $per_page );
+	$paged       = isset( $_GET['paged'] ) && is_numeric( $_GET['paged'] ) ? $_GET['paged'] : 1;
+	$paged       = absint( $paged );
+	$note_count  = $donor->get_notes_count();
+	$per_page    = apply_filters( 'give_donor_notes_per_page', 20 );
+	$total_pages = ceil( $note_count / $per_page );
 	$donor_notes = $donor->get_notes( $per_page, $paged );
 	?>
 
@@ -689,13 +922,14 @@ function give_donor_notes_view( $donor ) {
 
 		<?php if ( 1 == $paged ) : ?>
 			<div style="display: block; margin-bottom: 55px;">
-				<form id="give-add-donor-note" method="post" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=notes&id=' . $donor->id ); ?>">
+				<form id="give-add-donor-note" method="post"
+				      action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=notes&id=' . $donor->id ); ?>">
 					<textarea id="donor-note" name="donor_note" class="donor-note-input" rows="10"></textarea>
-					<br />
-					<input type="hidden" id="donor-id" name="customer_id" value="<?php echo $donor->id; ?>" />
-					<input type="hidden" name="give_action" value="add-donor-note" />
+					<br/>
+					<input type="hidden" id="donor-id" name="customer_id" value="<?php echo $donor->id; ?>"/>
+					<input type="hidden" name="give_action" value="add-donor-note"/>
 					<?php wp_nonce_field( 'add-donor-note', 'add_donor_note_nonce', true, true ); ?>
-					<input id="add-donor-note" class="right button-primary" type="submit" value="Add Note" />
+					<input id="add-donor-note" class="right button-primary" type="submit" value="Add Note"/>
 				</form>
 			</div>
 		<?php endif; ?>
@@ -760,7 +994,8 @@ function give_donor_delete_view( $donor ) {
 
 	<div class="info-wrapper donor-section">
 
-		<form id="delete-donor" method="post" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $donor->id ); ?>">
+		<form id="delete-donor" method="post"
+		      action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $donor->id ); ?>">
 
 			<div class="donor-notes-header">
 				<?php echo get_avatar( $donor->email, 30 ); ?> <span><?php echo $donor->name; ?></span>
@@ -802,11 +1037,14 @@ function give_donor_delete_view( $donor ) {
 				</span>
 
 				<span id="donor-edit-actions">
-					<input type="hidden" name="customer_id" value="<?php echo $donor->id; ?>" />
+					<input type="hidden" name="customer_id" value="<?php echo $donor->id; ?>"/>
 					<?php wp_nonce_field( 'delete-donor', '_wpnonce', false, true ); ?>
-					<input type="hidden" name="give_action" value="delete-donor" />
-					<input type="submit" disabled="disabled" id="give-delete-donor" class="button-primary" value="<?php _e( 'Delete Donor', 'give' ); ?>" />
-					<a id="give-delete-donor-cancel" href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ); ?>" class="delete"><?php _e( 'Cancel', 'give' ); ?></a>
+					<input type="hidden" name="give_action" value="delete-donor"/>
+					<input type="submit" disabled="disabled" id="give-delete-donor" class="button-primary"
+					       value="<?php _e( 'Delete Donor', 'give' ); ?>"/>
+					<a id="give-delete-donor-cancel"
+					   href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ); ?>"
+					   class="delete"><?php _e( 'Cancel', 'give' ); ?></a>
 				</span>
 
 			</div>

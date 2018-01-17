@@ -29,9 +29,6 @@ $template_container = "
 	border-radius:3px !important;
 	padding: 20px;
 ";
-$template_image     = "
-	max-width:450px;
-";
 $template_header    = "
 	color: #00000;
 	border-top-left-radius:3px !important;
@@ -63,47 +60,41 @@ $header_content_h1  = "
 	font-weight: 500;
 	line-height: 1.2;
 ";
-$header_img         = give_get_option( 'email_logo', '' );
 ?>
 <!DOCTYPE html>
 <html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title><?php echo get_bloginfo( 'name' ); ?></title>
-</head>
-<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" style="<?php echo $body; ?>">
-<div style="<?php echo $wrapper; ?>">
-	<table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%">
-		<tr>
-			<td align="center" valign="top">
-				<?php
-				if ( ! empty( $header_img ) ) : ?>
-					<div id="template_header_image">
-						<?php echo '<p style="margin-top:0;"><img style="' . $template_image . '" src="' . esc_url( $header_img ) . '" alt="' . get_bloginfo( 'name' ) . '" /></p>'; ?>
-					</div>
-				<?php endif; ?>
-				<table border="0" cellpadding="0" cellspacing="0" width="600" id="template_container" style="<?php echo $template_container; ?>">
-					<tr>
-						<td align="center" valign="top">
-							<!-- Header -->
-							<table border="0" cellpadding="0" cellspacing="0" width="600" id="template_header" style="<?php echo $template_header; ?>" bgcolor="#ffffff">
-								<tr>
-									<td>
-										<h1 style="<?php echo $header_content_h1; ?>"><?php echo Give()->emails->get_heading(); ?></h1>
-									</td>
-								</tr>
-							</table>
-							<!-- End Header -->
-						</td>
-					</tr>
-					<tr>
-						<td align="center" valign="top">
-							<!-- Body -->
-							<table border="0" cellpadding="0" cellspacing="0" width="600" id="template_body">
-								<tr>
-									<td valign="top" style="<?php echo $body_content; ?>">
-										<!-- Content -->
-										<table border="0" cellpadding="20" cellspacing="0" width="100%">
-											<tr>
-												<td valign="top">
-													<div style="<?php echo $body_content_inner; ?>">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<title><?php echo get_bloginfo( 'name' ); ?></title>
+	</head>
+	<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" style="<?php echo $body; ?>">
+		<div style="<?php echo $wrapper; ?>">
+			<table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%">
+				<tr>
+					<td align="center" valign="top">
+						{email_logo}
+						<table border="0" cellpadding="0" cellspacing="0" width="600" id="template_container" style="<?php echo $template_container; ?>">
+							<tr>
+								<td align="center" valign="top">
+									<!-- Header -->
+									<table border="0" cellpadding="0" cellspacing="0" width="600" id="template_header" style="<?php echo $template_header; ?>" bgcolor="#ffffff">
+										<tr>
+											<td>
+												<h1 style="<?php echo $header_content_h1; ?>"><?php echo Give()->emails->get_heading(); ?></h1>
+											</td>
+										</tr>
+									</table>
+									<!-- End Header -->
+								</td>
+							</tr>
+							<tr>
+								<td align="center" valign="top">
+									<!-- Body -->
+									<table border="0" cellpadding="0" cellspacing="0" width="600" id="template_body">
+										<tr>
+											<td valign="top" style="<?php echo $body_content; ?>">
+												<!-- Content -->
+												<table border="0" cellpadding="20" cellspacing="0" width="100%">
+													<tr>
+														<td valign="top">
+															<div style="<?php echo $body_content_inner; ?>">

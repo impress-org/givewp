@@ -35,7 +35,7 @@ function give_load_scripts() {
 	// Localize / PHP to AJAX vars.
 	$localize_give_vars = apply_filters( 'give_global_script_vars', array(
 		'ajaxurl'             => give_get_ajax_url(),
-		'checkout_nonce'      => wp_create_nonce( 'give_checkout_nonce' ),
+		'checkout_nonce'      => wp_create_nonce( 'give_checkout_nonce' ), // Do not use this nonce. Its deprecated.
 		'currency'            => give_get_currency(),
 		'currency_sign'       => give_currency_filter( '' ),
 		'currency_pos'        => give_get_currency_position(),
@@ -96,9 +96,6 @@ function give_load_scripts() {
 		wp_register_script( 'give-blockui', $js_plugins . 'jquery.blockUI' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, $scripts_footer );
 		wp_enqueue_script( 'give-blockui' );
 
-		wp_register_script( 'give-qtip', $js_plugins . 'jquery.qtip' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, $scripts_footer );
-		wp_enqueue_script( 'give-qtip' );
-
 		wp_register_script( 'give-accounting', $js_plugins . 'accounting' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, $scripts_footer );
 		wp_enqueue_script( 'give-accounting' );
 
@@ -107,6 +104,9 @@ function give_load_scripts() {
 
 		wp_register_script( 'give-checkout-global', $js_dir . 'give-donations' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, $scripts_footer );
 		wp_enqueue_script( 'give-checkout-global' );
+
+		wp_register_script( 'give-hint.css', $js_plugins . 'give-hint.css' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
+		wp_enqueue_script( 'give-hint.css' );
 
 		// General scripts.
 		wp_register_script( 'give-scripts', $js_dir . 'give' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, $scripts_footer );
@@ -265,6 +265,9 @@ function give_load_admin_scripts( $hook ) {
 	wp_register_script( 'give-selector-cache', $js_plugins . 'selector-cache' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
 	wp_enqueue_script( 'give-selector-cache' );
 
+	wp_register_script( 'give-ajaxify-fields', $js_plugins . 'give-ajaxify-fields' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
+	wp_enqueue_script( 'give-ajaxify-fields' );
+
 	wp_register_script( 'jquery-chosen', $js_plugins . 'chosen.jquery' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION );
 	wp_enqueue_script( 'jquery-chosen' );
 
@@ -281,11 +284,11 @@ function give_load_admin_scripts( $hook ) {
 	wp_register_script( 'jquery-flot', $js_plugins . 'jquery.flot' . $suffix . '.js' );
 	wp_enqueue_script( 'jquery-flot' );
 
-	wp_register_script( 'give-qtip', $js_plugins . 'jquery.qtip' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
-	wp_enqueue_script( 'give-qtip' );
-
 	wp_register_script( 'give-repeatable-fields', $js_plugins . 'repeatable-fields' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
 	wp_enqueue_script( 'give-repeatable-fields' );
+
+	wp_register_script( 'give-hint.css', $js_plugins . 'give-hint.css' . $suffix . '.js', array( 'jquery' ), GIVE_VERSION, false );
+	wp_enqueue_script( 'give-hint.css' );
 
 	// Forms CPT Script.
 	if ( $post_type === 'give_forms' ) {
@@ -328,13 +331,14 @@ function give_load_admin_scripts( $hook ) {
 		'delete_import_donor'               => __( 'Are you sure you want to delete all the imported donors? This process will also delete imported donations as well.', 'give' ),
 		'price_format_guide'                => sprintf( __( 'Please enter amount in monetary decimal ( %1$s ) format without thousand separator ( %2$s ) .', 'give' ), $decimal_separator, $thousand_separator ),
 		/* translators : %s: Donation form options metabox */
-		'confirm_before_remove_row_text'    => __( 'Do you want to delete this level?', 'give' ),
+		'confirm_before_remove_row_text'    => __( 'Do you want to delete this item?', 'give' ),
 		'matched_success_failure_page'      => __( 'You cannot set the success and failed pages to the same page', 'give' ),
 		'dismiss_notice_text'               => __( 'Dismiss this notice.', 'give' ),
 		'search_placeholder'                => __( 'Type to search all forms', 'give' ),
 		'search_placeholder_donor'          => __( 'Type to search all donors', 'give' ),
 		'search_placeholder_country'        => __( 'Type to search all countries', 'give' ),
 		'search_placeholder_state'          => __( 'Type to search all states/provinces', 'give' ),
+		'unlock_donor_fields'            => __( 'To edit first name and last name, please go to user profile of the donor.', 'give' ),
 		'remove_from_bulk_delete'           => __( 'Remove from Bulk Delete', 'give' ),
 		'donors_bulk_action'                => array(
 			'no_donor_selected'  => __( 'You must choose at least one or more donors to delete.', 'give' ),
@@ -357,7 +361,10 @@ function give_load_admin_scripts( $hook ) {
 				'multiple' => __( 'Are you sure you want to set status of {payment_count} donations to {status}?', 'give' ),
 			),
 		),
-		'metabox_fields'                    => array(
+		'updates' => array(
+			'ajax_error' => __( 'Please reload this page and try again', 'give' )
+		),
+		'metabox_fields' => array(
 			'media' => array(
 				'button_title' => __( 'Choose Image', 'give' ),
 			),
