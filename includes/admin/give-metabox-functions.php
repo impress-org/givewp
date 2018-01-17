@@ -323,11 +323,17 @@ function give_range_slider( $field ) {
 		'data_type'     => 'decimal',
 		'before_field'  => '',
 		'after_field'   => '',
-		'options'       => array(
+	);
+
+	// Field options.
+	$field['options'] = ! empty( $field['options'] ) ? $field['options'] : array();
+
+	// Default field option arguments.
+	$field['options'] = wp_parse_args( $field['options'], array(
 			'display_label' => '',
 			'minimum'       => 1.00,
 			'maximum'       => 999999.99,
-		),
+		)
 	);
 
 	// Set default field options.
@@ -346,10 +352,15 @@ function give_range_slider( $field ) {
 	<p class="give-field-wrap <?php echo esc_attr( $field_options['id'] ); ?>_field <?php echo esc_attr( $field_options['wrapper_class'] ); ?>">
 	<label for="<?php echo give_get_field_name( $field_options ); ?>"><?php echo wp_kses_post( $field_options['name'] ); ?></label>
 	<span class="give_range_slider_display">
-		<span class="give_range_slider_label">
-			<?php echo esc_html( $field_options['options']['display_label'] ); ?>
-		</span>
 		<?php
+
+		if ( ! empty( $field_options['options']['display_label'] ) ) {
+			?>
+			<span class="give_range_slider_label">
+				<?php echo esc_html( $field_options['options']['display_label'] ); ?>
+			</span>
+			<?php
+		}
 
 		foreach ( $field_options['value'] as $amount_range => $amount_value ) {
 
@@ -369,11 +380,11 @@ function give_range_slider( $field ) {
 						) ),
 					);
 
-					$field_options['before_field'] = ! empty( $field_options['before_field'] )
+					$before_html = ! empty( $field_options['before_field'] )
 						? $field_options['before_field']
 						: ( 'before' === $currency_position ? $tooltip_html['before'] : '' );
 
-					$field_options['after_field'] = ! empty( $field_options['after_field'] )
+					$after_html = ! empty( $field_options['after_field'] )
 						? $field_options['after_field']
 						: ( 'after' === $currency_position ? $tooltip_html['after'] : '' );
 
@@ -384,12 +395,9 @@ function give_range_slider( $field ) {
 					$field_options['attributes']['class']    .= ' give_input_decimal give-text_small';
 					$field_options['value'][ $amount_range ] = $amount_value;
 					break;
-
-				default :
-					break;
 			}
 
-			echo $field_options['before_field'];
+			echo isset( $before_html ) ? $before_html : '';
 			?>
 			<input
 					name="<?php echo give_get_field_name( $field_options ); ?>[<?php echo esc_attr( $amount_range ); ?>]"
@@ -401,14 +409,14 @@ function give_range_slider( $field ) {
 				<?php echo give_get_custom_attributes( $field_options ); ?>
 			/>
 			<?php
-			echo $field_options['after_field'];
+			echo isset( $after_html ) ? $after_html : '';
 		}
 		?>
 	</span>
 		<span
 				id="<?php echo esc_attr( $field_options['id'] ); ?>"
 				style="display: block; <?php echo esc_attr( $field_options['style'] ); ?>"
-				class="<?php echo apply_filters( 'give_range_slider_field_classes', 'give-range_slider_field' ); ?>"
+				class="<?php echo apply_filters( "give_range_slider_{$field['id']}_classes", "give-range_slider_field" ); ?>"
 		></span>
 		<?php echo give_get_field_description( $field_options ); ?>
 	</p>
