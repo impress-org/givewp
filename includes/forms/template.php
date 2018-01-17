@@ -1118,15 +1118,12 @@ function give_get_register_fields( $form_id ) {
 					if ( ! give_is_setting_enabled( $is_guest_checkout ) ) {
 						echo Give()->tooltips->render(
 							array(
-								'tag_content' => sprintf(
-									'<input type="checkbox" name="give_create_account" id="%s" class="give-input" checked disabled /><input type="hidden" name="give_create_account" value="on" />',
-									$id
-								),
+								'tag_content' => '<input type="checkbox" name="give_create_account" value="on" id="give-create-account-" class="give-input give-disabled" checked />',
 								'label'       => __( 'Registration is required to donate.', 'give' ),
 							) );
 					} else {
 						?>
-						<input type="checkbox" name="give_create_account" id="<?php echo $id; ?>" class="give-input"/>
+						<input type="checkbox" name="give_create_account" value="on" id="give-create-account-<?php echo $form_id; ?>" class="give-input" />
 						<?php
 					}
 					?>
