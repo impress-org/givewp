@@ -2522,7 +2522,8 @@ var give_setting_edit = false;
 						$compare_with = $field_parent.find( '[data-range_type="' + $ranges.slice( $ranges.indexOf( $type ) - 1 )[ 0 ] + '"]' ).val();
 
 					// Check if value is not more or less than to compare field.
-					if ( 'minimum' === $type
+					if (
+						'minimum' === $type
 						&& $current_value > $compare_with
 					) {
 						$( this ).val( $compare_with ); // Set same as maximum amount field.
@@ -2534,7 +2535,6 @@ var give_setting_edit = false;
 						}
 					}
 
-					console.log(  give_vars.give_donation_amounts.maximum);
 					// Update min and max range slider value.
 					$field_parent.find( '.give-range_slider_field' ).slider( 'values', ( 'minimum' === $type ? 0 : 1 ), $( this ).val() );
 				} );
