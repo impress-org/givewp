@@ -540,7 +540,12 @@ class Give_Donate_Form {
 
 		if ( ! isset( $this->minimum_price ) ) {
 
-			$this->minimum_price = give_get_meta( $this->ID, '_give_custom_amount_minimum', true );
+			$this->minimum_price = give_get_meta( $this->ID, '_give_custom_amount_range_minimum', true );
+
+			// Give backward < 2.1
+			if ( empty( $this->minimum_price ) ) {
+				$this->minimum_price = give_get_meta( $this->ID, '_give_custom_amount_minimum', true );
+			}
 
 			if ( ! $this->is_custom_price_mode() ) {
 				$this->minimum_price = 0;
@@ -562,7 +567,7 @@ class Give_Donate_Form {
 	public function get_maximum_price() {
 
 		if ( ! isset( $this->maximum_price ) ) {
-			$this->maximum_price = give_get_meta( $this->ID, '_give_custom_amount_maximum', true );
+			$this->maximum_price = give_get_meta( $this->ID, '_give_custom_amount_range_maximum', true );
 
 			if ( ! $this->is_custom_price_mode() ) {
 				$this->maximum_price = 999999.99;

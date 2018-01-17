@@ -890,8 +890,19 @@ class Give_MetaBox_Form_Data {
 							$post_id
 						);
 
-						// Save data.
-						give_update_meta( $post_id, $form_meta_key, $form_meta_value );
+						// Range slider.
+						if ( 'range_slider' === $setting_field['type'] ) {
+
+							// Sanitize amount for db.
+							$form_meta_value = array_map( 'give_sanitize_amount_for_db', $form_meta_value );
+
+							// Store it to form meta.
+							give_update_meta( $post_id, $form_meta_key . '_minimum', $form_meta_value['minimum'] );
+							give_update_meta( $post_id, $form_meta_key . '_maximum', $form_meta_value['maximum'] );
+						} else {
+							// Save data.
+							give_update_meta( $post_id, $form_meta_key, $form_meta_value );
+						}
 
 						// Fire after saving form meta key.
 						do_action( "give_save_{$form_meta_key}", $form_meta_key, $form_meta_value, $post_id, $post );

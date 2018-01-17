@@ -43,6 +43,7 @@ function give_load_scripts() {
 		'decimal_separator'   => give_get_price_decimal_separator(),
 		'no_gateway'          => __( 'Please select a payment method.', 'give' ),
 		'bad_minimum'         => __( 'The minimum custom donation amount for this form is', 'give' ),
+		'bad_maximum'         => __( 'The maximum custom donation amount for this form is', 'give' ),
 		'general_loading'     => __( 'Loading...', 'give' ),
 		'purchase_loading'    => __( 'Please Wait...', 'give' ),
 		'number_decimals'     => give_get_price_decimals(),

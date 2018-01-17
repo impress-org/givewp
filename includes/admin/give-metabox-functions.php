@@ -946,9 +946,17 @@ function give_get_field_value( $field, $postid ) {
 	// If field is range slider.
 	if ( 'range_slider' === $field['type'] ) {
 
+		// Get minimum value.
+		$minimum = give_get_meta( $postid, $field['id'] . '_minimum', true );
+
+		// Give < 2.1
+		if ( '_give_custom_amount_range' === $field['id'] && empty( $minimum ) ) {
+			$minimum = give_get_meta( $postid, '_give_custom_amount_minimum', true );
+		}
+
 		$field_value = array(
-			'min_value' => give_get_meta( $postid, $field['id'] . '_minimum', true ),
-			'max_value' => give_get_meta( $postid, $field['id'] . '_maximum', true ),
+			'minimum' => $minimum,
+			'maximum' => give_get_meta( $postid, $field['id'] . '_maximum', true ),
 		);
 	} else {
 		// Get value from db.
