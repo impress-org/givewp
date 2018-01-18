@@ -117,6 +117,9 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 					break;
 
 				case 'currency-settings' :
+					$current_position_before = __( 'Before - %s&#x200e;10', 'give' );
+					$current_position_after  = __( 'After - 10%s&#x200f;', 'give' );
+
 					$settings = array(
 						// Section 2: Currency
 						array(
@@ -139,17 +142,21 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'default' => 'USD',
 						),
 						array(
-							'name'    => __( 'Currency Position', 'give' ),
-							'desc'    => __( 'The position of the currency symbol.', 'give' ),
-							'id'      => 'currency_position',
-							'type'    => 'select',
-							'options' => array(
+							'name'       => __( 'Currency Position', 'give' ),
+							'desc'       => __( 'The position of the currency symbol.', 'give' ),
+							'id'         => 'currency_position',
+							'type'       => 'select',
+							'options'    => array(
 								/* translators: %s: currency symbol */
-								'before' => sprintf( __( 'Before - %s&#x200e;10', 'give' ), give_currency_symbol( give_get_currency() ) ),
+								'before' => sprintf( $current_position_before, give_currency_symbol( give_get_currency() ) ),
 								/* translators: %s: currency symbol */
-								'after'  => sprintf( __( 'After - 10%s&#x200f;', 'give' ), give_currency_symbol( give_get_currency() ) ),
+								'after'  => sprintf( __( $current_position_after, 'give' ), give_currency_symbol( give_get_currency() ) ),
 							),
-							'default' => 'before',
+							'default'    => 'before',
+							'attributes' => array(
+								'before' => sprintf( $current_position_before, '{currency_pos}' ),
+								'after' => sprintf( $current_position_after, '{currency_pos}' ),
+							),
 						),
 						array(
 							'name'    => __( 'Thousands Separator', 'give' ),
