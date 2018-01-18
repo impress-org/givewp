@@ -212,6 +212,8 @@ class Give_Updates {
 			return;
 		}
 
+		$is_update = ( $this->is_doing_updates() && ! self::$background_updater->is_paused_process() );
+
 		foreach ( $menu as $index => $menu_item ) {
 			if ( 'edit.php?post_type=give_forms' !== $menu_item[2] ) {
 				continue;
@@ -220,10 +222,10 @@ class Give_Updates {
 			$menu[ $index ][0] = sprintf(
 				'%1$s <span class="update-plugins"><span class="plugin-count give-update-progress-count">%2$s%3$s</span></span>',
 				__( 'Donations', 'give' ),
-				$this->is_doing_updates() ?
+				$is_update ?
 					$this->get_db_update_processing_percentage() :
 					$this->get_total_update_count(),
-				$this->is_doing_updates() ? '%' : ''
+				$is_update ? '%' : ''
 			);
 
 			break;
@@ -263,17 +265,20 @@ class Give_Updates {
 			return;
 		}
 
+		$is_update = ( $this->is_doing_updates() && ! self::$background_updater->is_paused_process() );
+
 		// Upgrades
 		add_submenu_page(
 			'edit.php?post_type=give_forms',
 			esc_html__( 'Give Updates', 'give' ),
 			sprintf(
-				'%1$s <span class="update-plugins"><span class="plugin-count give-update-progress-count">%2$s%3$s</span></span>',
+				'%1$s <span class="update-plugins"%2$s><span class="plugin-count give-update-progress-count">%3$s%4$s</span></span>',
 				__( 'Updates', 'give' ),
-				$this->is_doing_updates() ?
+				isset( $_GET['give-pause-db-upgrades'] ) ? ' style="display:none;"' : '',
+				$is_update ?
 					$this->get_db_update_processing_percentage() :
 					$this->get_total_update_count(),
-				$this->is_doing_updates() ? '%' : ''
+				$is_update ? '%' : ''
 			),
 			'manage_give_settings',
 			'give-updates',
