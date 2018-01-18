@@ -1665,7 +1665,7 @@ function give_show_goal_totals_progress( $total, $total_goal ) {
 	return true;
 }
 
-add_action( 'give_pre_form', 'give_show_goal_total_progress', 10, 2 );
+add_action( 'give_pre_form', 'give_show_goal_totals_progress', 10, 2 );
 
 /**
  * Get form content position.
