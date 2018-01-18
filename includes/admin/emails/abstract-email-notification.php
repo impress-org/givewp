@@ -151,7 +151,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 
 			// Non notification status editable notice.
 			$this->config['notices']['non-notification-status-editable'] = empty( $this->config['notices']['non-notification-status-editable'] )
-				? __( 'This notification is required based on plugin settings.', 'give' )
+				? __( 'You can not edit notification status from here.', 'give' )
 				: $this->config['notices']['non-notification-status-editable'];
 
 			/**
@@ -197,6 +197,15 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 					array( $this, 'add_metabox_setting_field' ),
 					10,
 					2
+				);
+			}
+
+			if( $this->config['has_recipient_field'] ) {
+				add_action(
+						"give_save__give_{$this->config['id']}_recipient",
+						array( $this, 'validate_form_recipient_field_value' ),
+						10,
+						3
 				);
 			}
 
@@ -300,11 +309,13 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 */
 		public function add_metabox_setting_field( $settings, $form_id ) {
 
-			$settings[] = array(
-				'id'     => $this->config['id'],
-				'title'  => $this->config['label'],
-				'fields' => $this->get_setting_fields( $form_id ),
-			);
+			if( Give_Email_Notification_Util::is_email_notification_active( $this ) ) {
+				$settings[] = array(
+					'id'     => $this->config['id'],
+					'title'  => $this->config['label'],
+					'fields' => $this->get_setting_fields( $form_id ),
+				);
+			}
 
 			return $settings;
 		}
@@ -339,7 +350,11 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 */
 		public function get_recipient( $form_id = null ) {
 			if ( empty( $this->recipient_email ) && $this->config['has_recipient_field'] ) {
-				$this->recipient_email = Give_Email_Notification_Util::get_value( $this, Give_Email_Setting_Field::get_prefix( $this, $form_id ) . 'recipient', $form_id );
+				$this->recipient_email = Give_Email_Notification_Util::get_value(
+						$this,
+						Give_Email_Setting_Field::get_prefix( $this, $form_id ) . 'recipient',
+						$form_id
+				);
 
 
 				/**
@@ -503,11 +518,14 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @return string
 		 */
 		public function get_email_template( $form_id ) {
-			$content_type = Give_Email_Notification_Util::get_value(
+			$email_template = give_get_meta( $form_id, '_give_email_template', true );
+			$email_template = Give_Email_Notification_Util::get_value(
 				$this,
 				Give_Email_Setting_Field::get_prefix( $this, $form_id ) .'email_template',
 				$form_id,
-				$this->config['email_template']
+				! empty( $email_template ) && Give_Email_Notification_Util::can_use_form_email_options( $this, $form_id ) ?
+					$email_template :
+					$this->config['email_template']
 			);
 
 			/**
@@ -517,7 +535,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 			 */
 			return apply_filters(
 				"give_{$this->config['id']}_get_email_template",
-				$content_type,
+				$email_template,
 				$this,
 				$form_id
 			);
@@ -652,6 +670,12 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 				$message = strip_tags( $message );
 			}
 
+			if ( Give_Email_Notification_Util::can_use_form_email_options( $this, $form_id ) ) {
+				Give()->emails->form_id      = $form_id;
+				Give()->emails->from_name    = give_get_meta( $form_id, '_give_from_name', true );
+				Give()->emails->from_address = give_get_meta( $form_id, '_give_from_email', true );
+			}
+
 			return Give()->emails->send( $this->get_preview_email_recipient( $form_id ), $subject, $message, $attachments );
 		}
 
@@ -718,6 +742,12 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 				Give()->emails->__set( 'html', false );
 				Give()->emails->__set( 'template', 'none' );
 				$message = strip_tags( $message );
+			}
+
+			if ( Give_Email_Notification_Util::can_use_form_email_options( $this, $form_id ) ) {
+				Give()->emails->form_id      = $form_id;
+				Give()->emails->from_name    = give_get_meta( $form_id, '_give_from_name', true );
+				Give()->emails->from_address = give_get_meta( $form_id, '_give_from_email', true );
 			}
 
 			// Send email.
@@ -834,6 +864,61 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		 * @since 2.0
 		 */
 		public function setup_email_data() {
+		}
+
+
+		/**
+		 * Validate email form setting
+		 *
+		 * Note: internal use only
+		 *
+		 * @since  2.0
+		 * @access public
+		 *
+		 * @param $form_meta_key
+		 * @param $form_meta_value
+		 * @param $post_id
+		 *
+		 */
+		public function validate_form_recipient_field_value( $form_meta_key, $form_meta_value, $post_id ) {
+			// Get valid emails.
+			$new_form_meta_value = array_filter( $form_meta_value, function ( $value ) {
+				return ! empty( $value['email'] ) && is_email( $value['email'] );
+			} );
+
+			// Remove duplicate emails from array.
+			$email_arr = array();
+			foreach ( $new_form_meta_value as $index => $email ) {
+				if( in_array( $email['email'], $email_arr  ) ) {
+					unset( $new_form_meta_value[$index] );
+					continue;
+				}
+
+				$email_arr[] = $email['email'];
+			}
+
+			$update = false;
+
+			if ( empty( $new_form_meta_value ) ) {
+				// Set default recipient.
+				$form_meta_value = array(
+					array(
+						'email' => get_bloginfo( 'admin_email' )
+					),
+				);
+
+				$update = true;
+
+			} elseif ( count( $new_form_meta_value ) !== count( $form_meta_value ) ) {
+				// Filter recipient emails.
+				$form_meta_value = $new_form_meta_value;
+
+				$update = true;
+			}
+
+			if( $update ) {
+				give_update_meta( $post_id, $form_meta_key, $form_meta_value );
+			}
 		}
 	}
 

@@ -962,7 +962,7 @@ function give_default_cc_address_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'card_address_2', $form_id ) ) : ?>
 					<span class="give-required-indicator">*</span>
 				<?php endif; ?>
-				<?php echo Give()->tooltips->render_help( __( '(optional) The suite, apt no, PO box, etc, associated with your billing address.', 'give' ) ); ?>
+				<?php echo Give()->tooltips->render_help( __( '(optional) The suite, apartment number, post office box (etc) associated with your billing address.', 'give' ) ); ?>
 			</label>
 
 			<input
@@ -1032,7 +1032,7 @@ function give_default_cc_address_fields( $form_id ) {
 				<?php if ( give_field_is_required( 'card_zip', $form_id ) ) : ?>
 					<span class="give-required-indicator">*</span>
 				<?php endif; ?>
-				<?php echo Give()->tooltips->render_help( __( 'The zip or postal code for your billing address.', 'give' ) ); ?>
+				<?php echo Give()->tooltips->render_help( __( 'The ZIP Code or postal code for your billing address.', 'give' ) ); ?>
 			</label>
 
 			<input
@@ -1113,21 +1113,25 @@ function give_get_register_fields( $form_id ) {
 				<label for="give-create-account-<?php echo $form_id; ?>">
 					<?php
 					// Add attributes to checkbox, if Guest Checkout is disabled.
-					$is_guest_checkout = give_get_meta( $form_id,'_give_logged_in_only', true );
-					if( ! give_is_setting_enabled( $is_guest_checkout ) ) {
+					$is_guest_checkout = give_get_meta( $form_id, '_give_logged_in_only', true );
+					$id                = 'give-create-account-' . $form_id;
+					if ( ! give_is_setting_enabled( $is_guest_checkout ) ) {
 						echo Give()->tooltips->render(
 							array(
-								'tag_content' => '<input type="checkbox" name="give_create_account" id="give-create-account-" class="give-input" checked disabled /><input type="hidden" name="give_create_account" value="on" />',
-								'label' => __( 'Registration is required to donate.', 'give' ),
+								'tag_content' => sprintf(
+									'<input type="checkbox" name="give_create_account" value="on" id="%s" class="give-input give-disabled" checked />',
+									$id
+								),
+								'label'       => __( 'Registration is required to donate.', 'give' ),
 							) );
 					} else {
 						?>
-						<input type="checkbox" name="give_create_account" id="give-create-account-<?php echo $form_id; ?>" class="give-input" />
+						<input type="checkbox" name="give_create_account" value="on" id="<?php echo $id; ?>" class="give-input" />
 						<?php
 					}
 					?>
 					<?php _e( 'Create an account', 'give' ); ?>
-					<?php echo Give()->tooltips->render_help( __( 'Create an account for donor to manage donations from one dashboard.', 'give' ) ); ?>
+					<?php echo Give()->tooltips->render_help( __( 'Create an account on the site to see and manage donation history.', 'give' ) ); ?>
 				</label>
 			</div>
 
@@ -1624,7 +1628,12 @@ function give_show_goal_progress( $form_id, $args ) {
 	ob_start();
 	give_get_template( 'shortcode-goal', array( 'form_id' => $form_id, 'args' => $args ) );
 
-	echo apply_filters( 'give_goal_output', ob_get_clean() );
+	/**
+	 * Filter progress bar output
+	 *
+	 * @since 2.0
+	 */
+	echo apply_filters( 'give_goal_output', ob_get_clean(), $form_id, $args );
 
 	return true;
 }

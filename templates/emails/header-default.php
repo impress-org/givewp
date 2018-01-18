@@ -29,9 +29,6 @@ $template_container = "
 	border-radius:3px !important;
 	padding: 20px;
 ";
-$template_image     = "
-	max-width:450px;
-";
 $template_header    = "
 	color: #00000;
 	border-top-left-radius:3px !important;
@@ -63,7 +60,6 @@ $header_content_h1  = "
 	font-weight: 500;
 	line-height: 1.2;
 ";
-$header_img         = give_get_option( 'email_logo', '' );
 ?>
 <!DOCTYPE html>
 <html>
@@ -76,12 +72,7 @@ $header_img         = give_get_option( 'email_logo', '' );
 			<table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%">
 				<tr>
 					<td align="center" valign="top">
-						<?php
-						if ( ! empty( $header_img ) ) : ?>
-							<div id="template_header_image">
-								<?php echo '<p style="margin-top:0;"><img style="' . $template_image . '" src="' . esc_url( $header_img ) . '" alt="' . get_bloginfo( 'name' ) . '" /></p>'; ?>
-							</div>
-						<?php endif; ?>
+						{email_logo}
 						<table border="0" cellpadding="0" cellspacing="0" width="600" id="template_container" style="<?php echo $template_container; ?>">
 							<tr>
 								<td align="center" valign="top">

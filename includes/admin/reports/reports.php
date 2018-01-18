@@ -222,7 +222,7 @@ function give_reports_forms_table() {
 		return;
 	}
 
-	include( dirname( __FILE__ ) . '/class-form-reports-table.php' );
+	include GIVE_PLUGIN_DIR . 'includes/admin/reports/class-form-reports-table.php';
 
 	$give_table = new Give_Form_Reports_Table();
 	$give_table->prepare_items();
@@ -267,7 +267,7 @@ add_action( 'give_reports_view_forms', 'give_reports_form_details' );
  * @return void
  */
 function give_reports_gateways_table() {
-	include( dirname( __FILE__ ) . '/class-gateways-reports-table.php' );
+	include GIVE_PLUGIN_DIR . 'includes/admin/reports/class-gateways-reports-table.php';
 
 	$give_table = new Give_Gateway_Reports_Table();
 	$give_table->prepare_items();

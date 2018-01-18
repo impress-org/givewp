@@ -31,8 +31,16 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 	 */
 	$form_open_tag  = apply_filters( self::$setting_filter_prefix . '_open_form', '<form method="' . $form_method . '" id="give-mainform" action="" enctype="multipart/form-data">' );
 	$form_close_tag = apply_filters( self::$setting_filter_prefix . '_close_form', '</form>' );
+
+	$wrapper_class = implode( ' ',
+		array(
+			self::$setting_filter_prefix . '-setting-page',
+			self::$setting_filter_prefix . '-' . give_get_current_setting_section() . '-section',
+			self::$setting_filter_prefix . '-' . give_get_current_setting_tab() . '-tab',
+		)
+	);
 	?>
-	<div class="wrap give-settings-page <?php echo self::$setting_filter_prefix . '-setting-page'; ?>">
+	<div class="wrap give-settings-page <?php echo $wrapper_class; ?>">
 		<?php
 		echo $form_open_tag;
 

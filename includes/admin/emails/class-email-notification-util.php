@@ -93,7 +93,9 @@ class Give_Email_Notification_Util {
 	 * @return bool
 	 */
 	public static function is_notification_status_editable( Give_Email_Notification $email ) {
-		return $email->config['notification_status_editable'];
+		$user_can_edit = $email->config['notification_status_editable'];
+
+		return (bool) $user_can_edit;
 	}
 
 	/**
@@ -152,6 +154,20 @@ class Give_Email_Notification_Util {
 		return $email->config['show_on_emails_setting_page'];
 	}
 
+	/**
+	 * Check if we can use form email options.
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param Give_Email_Notification $email
+	 * @param int $form_id
+	 *
+	 * @return bool
+	 */
+	public static function can_use_form_email_options( Give_Email_Notification $email, $form_id = null ){
+		return give_is_setting_enabled( give_get_meta( $form_id, '_give_email_options', true ) );
+	}
 
 	/**
 	 * Check email active or not.
@@ -262,9 +278,21 @@ class Give_Email_Notification_Util {
 
 		if (
 			! empty( $form_id )
-			&& give_is_setting_enabled( give_get_meta( $form_id, Give_Email_Setting_Field::get_prefix( $email, $form_id ) . 'notification', true, 'global' ) )
+			&& give_is_setting_enabled(
+				give_get_meta(
+					$form_id,
+					Give_Email_Setting_Field::get_prefix( $email, $form_id ) . 'notification',
+					true,
+					'global'
+				)
+			)
 		) {
 			$option_value = get_post_meta( $form_id, $option_name, true );
+
+			// Get only email field value from recipients setting.
+			if( Give_Email_Setting_Field::get_prefix( $email, $form_id ) . 'recipient' === $option_name ) {
+				$option_value = wp_list_pluck( $option_value, 'email' );
+			}
 		}
 
 		$option_value = empty( $option_value ) ? $default : $option_value;

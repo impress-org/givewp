@@ -50,6 +50,14 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 				),
 				'default_email_subject'        => esc_attr__( '{donation} - Offline Donation Instructions', 'give' ),
 				'default_email_message'        => give_get_default_offline_donation_email_content(),
+				'notices' => array(
+					'non-notification-status-editable' => sprintf(
+						'%1$s <a href="%2$s">%3$s &raquo;</a>',
+						__( 'This notification is automatically toggled based on whether the gateway is enabled or not.', 'give' ),
+						esc_url( admin_url('edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=offline-donations') ),
+						__( 'Edit Setting', 'give' )
+					)
+				),
 			) );
 
 			add_action( 'give_insert_payment', array( $this, 'setup_email_notification' ) );

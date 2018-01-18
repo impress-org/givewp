@@ -1019,6 +1019,33 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		public static function is_saving_settings() {
 			return self::verify_nonce();
 		}
+
+		/**
+		 * Verify setting page
+		 *
+		 * @since  2.0
+		 * @access public
+		 *
+		 * @param string $tab
+		 * @param string $section
+		 *
+		 * @return bool
+		 */
+		public static function is_setting_page( $tab = '', $section = '' ) {
+			$is_setting_page = false;
+
+			// Check fo setting tab.
+			if ( ! empty( $tab ) ) {
+				$is_setting_page = ( $tab === give_get_current_setting_tab() );
+			}
+
+			// Check fo setting section.
+			if ( ! empty( $section ) ) {
+				$is_setting_page = ( $section === give_get_current_setting_section() );
+			}
+
+			return $is_setting_page;
+		}
 	}
 
 endif;
