@@ -195,7 +195,6 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						),
 					);
 
-					error_log( print_r( $settings, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
 					break;
 
 				case 'general-settings':
