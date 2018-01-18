@@ -1,6 +1,6 @@
 <?php
 /**
- * This template is used to display the progress of [give_total]
+ * This template is used to display the progress of [give_totals]
  */
 
 // Bail out if total goal is empty.
