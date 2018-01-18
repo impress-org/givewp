@@ -115,15 +115,15 @@ class Give_Background_Updater extends WP_Background_Process {
 			$resume_update['update_info']['id'] !== $update['id'] &&
 			! give_has_upgrade_completed( $resume_update['update_info']['id'] )
 		) {
-			$batch = (array) $this->get_all_batch();
+			$batch = Give_Updates::$background_updater->get_all_batch();
+			$batch_data_count = count( $batch->data );
 
-			if ( 1 === count( $batch ) ) {
+			if ( ! empty( $batch ) &&  1 === $batch_data_count ) {
 				if ( ! empty( $update['depend'] ) ) {
 
 					$give_updates   = Give_Updates::get_instance();
 					$all_updates    = $give_updates->get_updates( 'database', 'all' );
 					$all_update_ids = wp_list_pluck( $all_updates, 'id' );
-					$new_batch      = array();
 
 					foreach ( $update['depend'] as $depend ) {
 						if ( give_has_upgrade_completed( $depend ) ) {
@@ -131,20 +131,19 @@ class Give_Background_Updater extends WP_Background_Process {
 						}
 
 						if ( in_array( $depend, $all_update_ids ) ) {
-							$new_batch[] = $all_updates[ array_search( $depend, $all_update_ids ) ];
+							array_unshift( $batch->data, $all_updates[ array_search( $depend, $all_update_ids ) ] );
 						}
 					}
 
-					if ( ! empty( $new_batch ) ) {
-						$batch = $this->get_all_batch();
-						$batch->data[] = $new_batch;
-
-						update_option( $batch->key, $batch->date );
+					if( $batch_data_count !== count( $batch->data ) ) {
+						update_option( $batch->key, $batch->data );
 						$this->dispatch();
+
 						wp_die();
 					}
 				}
 			}
+
 
 			return $update;
 		}
@@ -155,12 +154,15 @@ class Give_Background_Updater extends WP_Background_Process {
 		$give_updates->update         = absint( $resume_update['update'] );
 		$is_parent_update_completed   = $give_updates->is_parent_updates_completed( $update );
 
+
 		// Skip update if dependency update does not complete yet.
 		if ( empty( $is_parent_update_completed ) ) {
 			// @todo: set error when you have only one update with invalid dependency
 			if ( ! is_null( $is_parent_update_completed ) ) {
 				return $update;
 			}
+
+			error_log( print_r( 'exit 1', true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
 
 			return false;
 		}
