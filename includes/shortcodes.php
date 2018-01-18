@@ -561,7 +561,9 @@ function give_totals_shortcode( $atts ) {
 		if ( isset( $forms->posts ) ) {
 			$total = 0;
 			foreach ( $forms->posts as $post ) {
-				$total += give_get_meta( $post, '_give_form_earnings', true );
+				$form_earning = give_get_meta( $post, '_give_form_earnings', true );
+				$form_earning = ! empty( $form_earning ) ? $form_earning : 0;
+				$total        += $form_earning;
 			}
 		}
 
