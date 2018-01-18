@@ -563,7 +563,16 @@ function give_totals_shortcode( $atts ) {
 			foreach ( $forms->posts as $post ) {
 				$form_earning = give_get_meta( $post, '_give_form_earnings', true );
 				$form_earning = ! empty( $form_earning ) ? $form_earning : 0;
-				$total        += $form_earning;
+
+				/**
+				 * Update Form earnings.
+				 *
+				 * @since 2.0.1
+				 *
+				 * @param int    $post         Form ID.
+				 * @param string $form_earning Total earning of Form.
+				 */
+				$total += apply_filters( 'give_totals_form_earning', $form_earning, $post );
 			}
 		}
 
@@ -577,7 +586,7 @@ function give_totals_shortcode( $atts ) {
 
 	// Replace {total} in message.
 	$message = str_replace( '{total}', give_currency_filter(
-		give_format_amount( apply_filters( 'give_totals_output', $total, $atts ),
+		give_format_amount( $total,
 			array( 'sanitize' => false )
 		)
 	), esc_html( $atts['message'] ) );
@@ -593,6 +602,9 @@ function give_totals_shortcode( $atts ) {
 	 * Update Give totals shortcode output.
 	 *
 	 * @since 2.0.1
+	 *
+	 * @param string $message Shortcode Message.
+	 * @param array  $atts    ShortCode attributes.
 	 */
 	$message = apply_filters( 'give_totals_shortcode_message', $message, $atts );
 
@@ -611,7 +623,15 @@ function give_totals_shortcode( $atts ) {
 	</div>
 	<?php
 	$give_totals_output = ob_get_clean();
-	return $give_totals_output;
+
+	/**
+	 * Give Totals Shortcode output.
+	 *
+	 * @since 2.0.1
+	 *
+	 * @param string $give_totals_output
+	 */
+	return apply_filters( 'give_totals_shortcode_output', $give_totals_output );
 
 }
 
