@@ -75,12 +75,12 @@ jQuery(document).ready(function ($) {
 			currency_sign = give_vars.currency_sign;
 		}
 
-		var before_text = $( give_settings_position ).attr( 'before' );
+		var before_text = $( give_settings_position ).data( 'before-template' );
 		before_text = before_text.replace( '{currency_pos}', currency_sign );
 		$( give_settings_position + ' option[value="before"]' ).text( before_text );
 
 
-		var after_text = $( give_settings_position ).attr( 'after' );
+		var after_text = $( give_settings_position ).data( 'after-template' );
 		after_text = after_text.replace( '{currency_pos}', currency_sign );
 		$( give_settings_position + ' option[value="after"]' ).text( after_text );
 

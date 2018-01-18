@@ -154,8 +154,8 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							),
 							'default'    => 'before',
 							'attributes' => array(
-								'before' => sprintf( $current_position_before, '{currency_pos}' ),
-								'after' => sprintf( $current_position_after, '{currency_pos}' ),
+								'data-before-template' => sprintf( $current_position_before, '{currency_pos}' ),
+								'data-after-template' => sprintf( $current_position_after, '{currency_pos}' ),
 							),
 						),
 						array(
@@ -194,6 +194,8 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'id'   => 'give_title_general_settings_2',
 						),
 					);
+
+					error_log( print_r( $settings, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
 					break;
 
 				case 'general-settings':
