@@ -36,13 +36,23 @@ class Give_Background_Updater extends WP_Background_Process {
 	}
 
 	/**
+	 * Get all batch.
+	 *
+	 * @since 2.0.1
+	 * @return stdClass
+	 */
+	public function get_all_batch(){
+		return parent::get_batch();
+	}
+
+	/**
 	 * Handle cron healthcheck
 	 *
 	 * Restart the background process if not already running
 	 * and data exists in the queue.
 	 */
 	public function handle_cron_healthcheck() {
-		if ( $this->is_process_running() ) {
+		if ( $this->is_process_running() || $this->is_paused_process()  ) {
 			// Background process already running.
 			return;
 		}
@@ -61,7 +71,7 @@ class Give_Background_Updater extends WP_Background_Process {
 	 * Schedule fallback event.
 	 */
 	protected function schedule_event() {
-		if ( ! wp_next_scheduled( $this->cron_hook_identifier ) ) {
+		if ( ! wp_next_scheduled( $this->cron_hook_identifier ) && ! $this->is_paused_process() ) {
 			wp_schedule_event( time() + 10, $this->cron_interval_identifier, $this->cron_hook_identifier );
 		}
 	}
@@ -79,6 +89,11 @@ class Give_Background_Updater extends WP_Background_Process {
 	 * @return mixed
 	 */
 	protected function task( $update ) {
+		// Pause upgrade immediately if admin pausing upgrades.
+		if( $this->is_paused_process() ) {
+			wp_die();
+		}
+
 		if ( empty( $update ) ) {
 			return false;
 		}
@@ -163,6 +178,10 @@ class Give_Background_Updater extends WP_Background_Process {
 	 * performed, or, call parent::complete().
 	 */
 	protected function complete() {
+		if( $this->is_paused_process() ) {
+			return false;
+		}
+
 		parent::complete();
 
 		delete_option( 'give_db_update_count' );
@@ -189,5 +208,61 @@ class Give_Background_Updater extends WP_Background_Process {
 		}
 
 		return intval( $memory_limit ) * 1024 * 1024;
+	}
+
+	/**
+	 * Maybe process queue
+	 *
+	 * Checks whether data exists within the queue and that
+	 * the process is not already running.
+	 */
+	public function maybe_handle() {
+		// Don't lock up other requests while processing
+		session_write_close();
+
+		if ( $this->is_process_running() || $this->is_paused_process() ) {
+			// Background process already running.
+			wp_die();
+		}
+
+		if ( $this->is_queue_empty() ) {
+			// No data to process.
+			wp_die();
+		}
+
+		check_ajax_referer( $this->identifier, 'nonce' );
+
+		$this->handle();
+
+		wp_die();
+	}
+
+
+	/**
+	 * Check if backgound upgrade paused or not.
+	 *
+	 * @since 2.0
+	 * @access public
+	 * @return bool
+	 */
+	public function is_paused_process(){
+		// Not using get_option because i am facing some caching releated issue.
+		global $wpdb;
+
+		$options = $wpdb->get_results( "SELECT * FROM $wpdb->options WHERE option_name='give_paused_batches' LIMIT 1" );
+
+		return ! empty( $options );
+	}
+
+
+	/**
+	 * Get identifier
+	 *
+	 * @since  2.0
+	 * @access public
+	 * @return mixed|string
+	 */
+	public function get_identifier() {
+		return $this->identifier;
 	}
 }

@@ -76,9 +76,25 @@ $give_updates = Give_Updates::get_instance();
 								</div>
 							</div>
 
-							<?php if( ! $is_doing_updates ) : ?>
+							<?php if ( ! $is_doing_updates ) : ?>
 								<div class="give-run-database-update"></div>
 							<?php endif; ?>
+
+							<?php if ( Give_Updates::$background_updater->is_paused_process() ) : ?>
+								<button id="give-restart-upgrades" class="button button-primary" data-redirect-url="<?php echo esc_url( admin_url( '/edit.php?post_type=give_forms&page=give-updates&give-restart-db-upgrades=1' ) ); ?>"><?php _e( 'Restart Upgrades', 'give' ); ?></button>
+							<?php else: ?>
+								<button id="give-pause-upgrades" class="button button-primary" data-redirect-url="<?php echo esc_url( admin_url( '/edit.php?post_type=give_forms&page=give-updates&give-pause-db-upgrades=1' ) ); ?>"><?php _e( 'Pause Upgrades', 'give' ); ?></button>
+							<?php endif; ?>
+
+							<script type="text/javascript">
+								jQuery('#give-pause-upgrades, #give-restart-upgrades').click('click', function (e) {
+									e.preventDefault();
+
+									if (window.confirm('<?php echo esc_js( __( 'Do you want to stop update now?', 'give' ) ); ?>')) {
+										window.location.assign(jQuery(this).data('redirect-url'));
+									}
+								});
+							</script>
 						</div>
 						<!-- .inside -->
 					</div><!-- .postbox -->

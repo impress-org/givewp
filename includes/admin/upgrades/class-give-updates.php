@@ -20,10 +20,10 @@ class Give_Updates {
 	 * Instance.
 	 *
 	 * @since
-	 * @access static
+	 * @access public
 	 * @var Give_Background_Updater
 	 */
-	static private $background_updater;
+	static public $background_updater;
 
 	/**
 	 * Updates
@@ -149,6 +149,8 @@ class Give_Updates {
 		add_action( 'wp_ajax_give_db_updates_info', array( $this, '__give_db_updates_info' ) );
 		add_action( 'wp_ajax_give_run_db_updates', array( $this, '__give_start_updating' ) );
 		add_action( 'admin_init', array( $this, '__redirect_admin' ) );
+		add_action( 'admin_init', array( $this, '__pause_db_update' ), -1 );
+		add_action( 'admin_init', array( $this, '__restart_db_update' ), -1 );
 		add_action( 'admin_notices', array( $this, '__show_notice' ) );
 
 		if ( is_admin() ) {
@@ -303,6 +305,70 @@ class Give_Updates {
 
 
 	/**
+	 * Pause db upgrade
+	 *
+	 * @since  2.0.1
+	 * @access public
+	 *
+	 * @return bool
+	 */
+	public function __pause_db_update() {
+		// Bailout.
+		if (
+			wp_doing_ajax() ||
+			! isset( $_GET['page'] ) ||
+			'give-updates' !== $_GET['page'] ||
+			! isset( $_GET['give-pause-db-upgrades'] ) ||
+			self::$background_updater->is_paused_process()
+		) {
+			return false;
+		}
+
+		$batch = self::$background_updater->get_all_batch();
+
+		if ( ! empty( $batch ) ) {
+			update_option( 'give_paused_batches', $batch,  'no' );
+			delete_option( $batch->key );
+			delete_site_transient( self::$background_updater->get_identifier() . '_process_lock' );
+		}
+
+		return true;
+	}
+
+	/**
+	 * Restart db upgrade
+	 *
+	 * @since  2.0.1
+	 * @access public
+	 *
+	 * @return bool
+	 */
+	public function __restart_db_update() {
+		// Bailout.
+		if (
+			wp_doing_ajax() ||
+			! isset( $_GET['page'] ) ||
+			'give-updates' !== $_GET['page'] ||
+			! isset( $_GET['give-restart-db-upgrades'] ) ||
+			! self::$background_updater->is_paused_process()
+		) {
+			return false;
+		}
+
+		$batch = get_option( 'give_paused_batches' );
+
+		if ( ! empty( $batch ) ) {
+			update_option( $batch->key, $batch->data );
+			delete_option( 'give_paused_batches' );
+
+			self::$background_updater->dispatch();
+		}
+
+		return true;
+	}
+
+
+	/**
 	 * Show update related notices
 	 *
 	 * @since  2.0
@@ -310,7 +376,7 @@ class Give_Updates {
 	 */
 	public function __show_notice() {
 		// Bailout.
-		if ( ! current_user_can( 'manage_give_settings' ) || $this->is_doing_updates() ) {
+		if ( ! current_user_can( 'manage_give_settings' ) ) {
 			return;
 		}
 
@@ -322,6 +388,41 @@ class Give_Updates {
 
 		// Bailout.
 		if ( isset( $_GET['page'] ) && 'give-updates' === $_GET['page'] ) {
+			return;
+		}
+
+		// Show notice if upgrade paused.
+		if ( self::$background_updater->is_paused_process() ) {
+			ob_start();
+			?>
+			<p>
+				<strong><?php _e( 'Database Update', 'give' ); ?></strong>
+				&nbsp;&#8211;&nbsp;<?php _e( 'GiveWP needs to update your database to the latest version. The following process will make updates to your site\'s database. Please create a complete backup before proceeding.', 'give' ); ?>
+			</p>
+			<p class="submit">
+				<a href="<?php echo esc_url( add_query_arg( array( 'give-restart-db-upgrades' => 1 ), admin_url( 'edit.php?post_type=give_forms&page=give-updates' ) ) ); ?>" class="button button-primary give-restart-updater-btn">
+					<?php _e( 'Restart the updater', 'give' ); ?>
+				</a>
+			</p>
+			<script type="text/javascript">
+				jQuery('.give-restart-updater-btn').click('click', function () {
+					return window.confirm('<?php echo esc_js( __( 'It is strongly recommended that you backup your database before proceeding. Do you want to run the update now?', 'give' ) ); ?>'); // jshint ignore:line
+				});
+			</script>
+			<?php
+			$desc_html = ob_get_clean();
+
+
+			Give()->notices->register_notice( array(
+				'id'          => 'give_upgrade_db',
+				'type'        => 'error',
+				'dismissible' => false,
+				'description' => $desc_html,
+			) );
+		}
+
+		// Bailout if doing upgrades.
+		if( $this->is_doing_updates() ) {
 			return;
 		}
 
@@ -362,7 +463,7 @@ class Give_Updates {
 			</p>
 			<p class="submit">
 				<a href="<?php echo esc_url( add_query_arg( array( 'give-run-db-update' => 1 ), admin_url( 'edit.php?post_type=give_forms&page=give-updates' ) ) ); ?>" class="button button-primary give-run-update-now">
-					<?php _e( 'Run the updater', 'woocommerce' ); ?>
+					<?php _e( 'Run the updater', 'give' ); ?>
 				</a>
 			</p>
 			<script type="text/javascript">
