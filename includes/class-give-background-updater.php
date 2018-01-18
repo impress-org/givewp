@@ -35,6 +35,18 @@ class Give_Background_Updater extends WP_Background_Process {
 		parent::dispatch();
 	}
 
+
+	/**
+	 * Get all batches.
+	 *
+	 * @since  2.0
+	 * @access public
+	 * @return stdClass
+	 */
+	public function get_all_batch() {
+		return parent::get_batch();
+	}
+
 	/**
 	 * Handle cron healthcheck
 	 *
@@ -99,10 +111,41 @@ class Give_Background_Updater extends WP_Background_Process {
 		);
 
 		// Continuously skip update if previous update does not complete yet.
-		if(
+		if (
 			$resume_update['update_info']['id'] !== $update['id'] &&
 			! give_has_upgrade_completed( $resume_update['update_info']['id'] )
 		) {
+			$batch = (array) $this->get_all_batch();
+
+			if ( 1 === count( $batch ) ) {
+				if ( ! empty( $update['depend'] ) ) {
+
+					$give_updates   = Give_Updates::get_instance();
+					$all_updates    = $give_updates->get_updates( 'database', 'all' );
+					$all_update_ids = wp_list_pluck( $all_updates, 'id' );
+					$new_batch      = array();
+
+					foreach ( $update['depend'] as $depend ) {
+						if ( give_has_upgrade_completed( $depend ) ) {
+							continue;
+						}
+
+						if ( in_array( $depend, $all_update_ids ) ) {
+							$new_batch[] = $all_updates[ array_search( $depend, $all_update_ids ) ];
+						}
+					}
+
+					if ( ! empty( $new_batch ) ) {
+						$batch = $this->get_all_batch();
+						$batch->data[] = $new_batch;
+
+						update_option( $batch->key, $batch->date );
+						$this->dispatch();
+						wp_die();
+					}
+				}
+			}
+
 			return $update;
 		}
 
