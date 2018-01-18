@@ -1086,7 +1086,10 @@ var give_setting_edit = false;
 
 			if( $self.el.main_container.data('resume-update') ) {
 				$self.el.update_link.addClass('active').hide().removeClass('give-hidden');
-				window.setTimeout(Give_Updates.get_db_updates_info, 1000, $self );
+
+				if( ! $('#give-restart-upgrades').length ) {
+					window.setTimeout(Give_Updates.get_db_updates_info, 1000, $self );
+				}
 			}
 
 			// Bailout.
