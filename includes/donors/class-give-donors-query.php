@@ -189,7 +189,7 @@ class Give_Donors_Query {
 		global $wpdb;
 
 		if ( $this->args['number'] < 1 ) {
-			$this->args['number'] = 999999999999;
+			$this->args['number'] = 99999999999;
 		}
 
 		$where = $this->get_where_query();
