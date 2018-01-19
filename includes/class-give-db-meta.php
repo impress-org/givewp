@@ -285,7 +285,7 @@ class Give_DB_Meta extends Give_DB {
 									continue;
 								}
 
-								preg_match( '/' . $wpdb->prefix . 'give_paymentmeta AS (.*) ON/', $clause_part, $alias_table_name );
+								preg_match( '/' . $wpdb->prefix . 'give_' . $this->meta_type . 'meta AS (.*) ON/', $clause_part, $alias_table_name );
 
 								if( isset( $alias_table_name[1] ) ) {
 									$clause[$key] = str_replace( "{$alias_table_name[1]}.post_id", "{$alias_table_name[1]}.{$this->meta_type}_id", $clause_part );
