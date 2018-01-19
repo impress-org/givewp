@@ -48,16 +48,6 @@ class Give_Background_Updater extends WP_Background_Process {
 	}
 
 	/**
-	 * Get all batch.
-	 *
-	 * @since 2.0.1
-	 * @return stdClass
-	 */
-	public function get_all_batch(){
-		return parent::get_batch();
-	}
-
-	/**
 	 * Handle cron healthcheck
 	 *
 	 * Restart the background process if not already running
