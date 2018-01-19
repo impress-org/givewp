@@ -581,14 +581,14 @@ class Give_Updates {
 			return true;
 		}
 
+		// Check if dependency is valid or not.
+		if ( ! $this->has_valid_dependency( $update ) ) {
+			return null;
+		}
+
 		$is_dependency_completed = true;
 
 		foreach ( $update['depend'] as $depend ) {
-			// Check if dependency is valid or not.
-			if ( ! $this->has_valid_dependency( $update ) ) {
-				$is_dependency_completed = null;
-				break;
-			}
 
 			if ( ! give_has_upgrade_completed( $depend ) ) {
 				$is_dependency_completed = false;
