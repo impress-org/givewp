@@ -335,6 +335,13 @@ class Give_Updates {
 			update_option( 'give_paused_batches', $batch,  'no' );
 			delete_option( $batch->key );
 			delete_site_transient( self::$background_updater->get_identifier() . '_process_lock' );
+
+			/**
+			 * Fire action when pause db updates
+			 *
+			 * @since 2.0.1
+			 */
+			do_action( 'give_pause_db_upgrade', $this );
 		}
 
 		return true;
@@ -365,6 +372,12 @@ class Give_Updates {
 		if ( ! empty( $batch ) ) {
 			update_option( $batch->key, $batch->data );
 			delete_option( 'give_paused_batches' );
+
+			/** Fire action when restart db updates
+			 *
+			 * @since 2.0.1
+			 */
+			do_action( 'give_restart_db_upgrade', $this );
 
 			self::$background_updater->dispatch();
 		}
