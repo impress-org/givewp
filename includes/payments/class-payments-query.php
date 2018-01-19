@@ -844,7 +844,7 @@ class Give_Payments_Query extends Give_Stats {
 		$sql = $wpdb->prepare(
 			"SELECT {$fields} FROM {$wpdb->posts} LIMIT %d,%d;",
 			absint( $this->args['offset'] ),
-			( empty( $this->args['nopaging'] ) ? absint( $this->args['posts_per_page'] ) : 999999999999999 )
+			( empty( $this->args['nopaging'] ) ? absint( $this->args['posts_per_page'] ) : 99999999999 )
 		);
 
 		// $where, $orderby and order already prepared query they can generate notice if you re prepare them in above.
