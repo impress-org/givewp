@@ -58,7 +58,13 @@ function give_payment_history_page() {
 		<form id="give-payments-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ); ?>">
 			<input type="hidden" name="post_type" value="give_forms" />
 			<input type="hidden" name="page" value="give-payment-history" />
-			<?php $payments_table->display() ?>
+			<?php
+			if ( ! empty( $_GET['donor'] ) ) {
+				echo sprintf( '<input type="hidden" name="donor" value="%s"/>', absint( $_GET['donor'] ) );
+			}
+
+			$payments_table->display();
+			?>
 		</form>
 
 		<?php
