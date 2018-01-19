@@ -734,10 +734,15 @@ final class Give_Payment {
 			 *
 			 * @since 2.0.1
 			 */
-			$custom_payment_meta = array_diff( $this->payment_meta, $payment_data );
+			$custom_payment_meta = array_diff(
+				array_map( 'maybe_serialize', $this->payment_meta ),
+				array_map( 'maybe_serialize', $payment_data )
+			);
+
 			if( ! empty( $custom_payment_meta ) ) {
 				give_doing_it_wrong( '_give_payment_meta', __( 'This custom meta key deprecated. We are not using this meta key for storing payment meta but your custom meta data will be store because we added backward compatibility. Please change your logic because in future we can remove it.', 'give' ), '2.0.0' );
-				$this->update_meta( '_give_payment_meta', $custom_payment_meta );
+
+				$this->update_meta( '_give_payment_meta', array_map( 'maybe_unserialize', $custom_payment_meta ) );
 			}
 
 			$this->new = true;
