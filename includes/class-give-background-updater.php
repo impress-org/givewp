@@ -162,8 +162,6 @@ class Give_Background_Updater extends WP_Background_Process {
 				return $update;
 			}
 
-			error_log( print_r( 'exit 1', true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-
 			return false;
 		}
 
