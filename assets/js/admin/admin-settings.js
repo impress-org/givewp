@@ -63,6 +63,30 @@ jQuery(document).ready(function ($) {
 	});
 
 	/**
+	 * Change currency position symbol on changing the currency
+	 */
+	var give_settings_currency = '#give-mainform #currency';
+	var give_settings_position = '#give-mainform #currency_position';
+	$( 'body' ).on( 'change', give_settings_currency, function () {
+		var currency_text = $( give_settings_currency + ' option:selected' ).text(),
+			currency_sign = currency_text.split( '(' ).pop().split( ')' ).shift();
+
+		if ( '' === currency_sign ) {
+			currency_sign = give_vars.currency_sign;
+		}
+
+		var before_text = $( give_settings_position ).data( 'before-template' );
+		before_text = before_text.replace( '{currency_pos}', currency_sign );
+		$( give_settings_position + ' option[value="before"]' ).text( before_text );
+
+
+		var after_text = $( give_settings_position ).data( 'after-template' );
+		after_text = after_text.replace( '{currency_pos}', currency_sign );
+		$( give_settings_position + ' option[value="after"]' ).text( after_text );
+
+	} );
+
+	/**
 	 * Repeater setting field event.
 	 */
 	$( 'a.give-repeat-setting-field' ).on( 'click', function(e){
