@@ -120,36 +120,6 @@ class Give_Background_Updater extends WP_Background_Process {
 			$resume_update['update_info']['id'] !== $update['id'] &&
 			! give_has_upgrade_completed( $resume_update['update_info']['id'] )
 		) {
-			$batch = Give_Updates::$background_updater->get_all_batch();
-			$batch_data_count = count( $batch->data );
-
-			if ( ! empty( $batch ) &&  1 === $batch_data_count ) {
-				if ( ! empty( $update['depend'] ) ) {
-
-					$give_updates   = Give_Updates::get_instance();
-					$all_updates    = $give_updates->get_updates( 'database', 'all' );
-					$all_update_ids = wp_list_pluck( $all_updates, 'id' );
-
-					foreach ( $update['depend'] as $depend ) {
-						if ( give_has_upgrade_completed( $depend ) ) {
-							continue;
-						}
-
-						if ( in_array( $depend, $all_update_ids ) ) {
-							array_unshift( $batch->data, $all_updates[ array_search( $depend, $all_update_ids ) ] );
-						}
-					}
-
-					if( $batch_data_count !== count( $batch->data ) ) {
-						update_option( $batch->key, $batch->data );
-						$this->dispatch();
-
-						wp_die();
-					}
-				}
-			}
-
-
 			return $update;
 		}
 

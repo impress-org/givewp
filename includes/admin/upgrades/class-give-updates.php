@@ -152,6 +152,7 @@ class Give_Updates {
 		add_action( 'admin_init', array( $this, '__pause_db_update' ), -1 );
 		add_action( 'admin_init', array( $this, '__restart_db_update' ), -1 );
 		add_action( 'admin_notices', array( $this, '__show_notice' ) );
+		add_action( 'give_restart_db_upgrade', array( $this, '__health_background_update' ) );
 
 		if ( is_admin() ) {
 			add_action( 'admin_init', array( $this, '__change_donations_label' ), 9999 );
@@ -383,6 +384,45 @@ class Give_Updates {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Health check for updates.
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param Give_Updates $give_updates
+	 */
+	public function __health_background_update( $give_updates ) {
+		$batch            = Give_Updates::$background_updater->get_all_batch();
+		$batch_data_count = count( $batch->data );
+		$all_updates      = $give_updates->get_updates( 'database', 'all' );
+		$all_update_ids = wp_list_pluck( $all_updates, 'id' );
+		$all_batch_update_ids = ! empty( $batch ) ? wp_list_pluck( $batch->data, 'id' ) : array();
+
+		if ( ! empty( $batch ) ) {
+
+			foreach ( $batch->data as $update ) {
+				if ( ! empty( $update['depend'] ) ) {
+
+					foreach ( $update['depend'] as $depend ) {
+						if ( give_has_upgrade_completed( $depend ) ) {
+							continue;
+						}
+
+						if ( in_array( $depend, $all_update_ids ) && ! in_array( $depend, $all_batch_update_ids ) ) {
+							array_unshift( $batch->data, $all_updates[ array_search( $depend, $all_update_ids ) ] );
+						}else{
+						}
+					}
+				}
+			}
+
+			if ( $batch_data_count !== count( $batch->data ) ) {
+				update_option( $batch->key, $batch->data );
+			}
+		}
 	}
 
 
