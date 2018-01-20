@@ -400,18 +400,30 @@ class Give_Updates {
 		$all_updates      = $give_updates->get_updates( 'database', 'all' );
 		$all_update_ids = wp_list_pluck( $all_updates, 'id' );
 		$all_batch_update_ids = ! empty( $batch ) ? wp_list_pluck( $batch->data, 'id' ) : array();
+		$log_file = WP_CONTENT_DIR . '/debug_give_restart_upgrades.log';
+
+		error_log( print_r( '---- Upgrade Restart Log -----', true ) . "\n", 3, $log_file );
 
 		if ( ! empty( $batch ) ) {
 
-			foreach ( $batch->data as $update ) {
+			foreach ( $batch->data as $index => $update ) {
+				error_log( print_r( $update, true ) . "\n", 3, $log_file );
+
+				if( ! is_callable( $update['callback'] ) ) {
+					error_log( print_r( 'Removing missing callback update', true ) . "\n", 3, $log_file );
+					unset( $batch->data[$index] );
+				}
+
 				if ( ! empty( $update['depend'] ) ) {
 
 					foreach ( $update['depend'] as $depend ) {
 						if ( give_has_upgrade_completed( $depend ) ) {
+							error_log( print_r( 'Completed update: ' . $depend, true ) . "\n", 3, $log_file );
 							continue;
 						}
 
 						if ( in_array( $depend, $all_update_ids ) && ! in_array( $depend, $all_batch_update_ids ) ) {
+							error_log( print_r( 'Adding missing update: ' . $depend, true ) . "\n", 3, $log_file );
 							array_unshift( $batch->data, $all_updates[ array_search( $depend, $all_update_ids ) ] );
 						}
 					}
@@ -419,9 +431,13 @@ class Give_Updates {
 			}
 
 			if ( $batch_data_count !== count( $batch->data ) ) {
+				error_log( print_r( 'Updating batch.', true ) . "\n", 3, $log_file );
+				error_log( print_r( $batch, true ) . "\n", 3, $log_file );
 				update_option( $batch->key, $batch->data );
 			}
 		}
+
+		error_log( print_r( '---- Upgrade Restart Log -----', true ) . "\n", 3, $log_file );
 	}
 
 
