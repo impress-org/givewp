@@ -337,6 +337,8 @@ class Give_Updates {
 			delete_option( $batch->key );
 			delete_site_transient( self::$background_updater->get_identifier() . '_process_lock' );
 
+			Give()->logs->add( 'Update Pause', print_r( $batch, true ), 0, 'update' );
+
 			/**
 			 * Fire action when pause db updates
 			 *
@@ -374,6 +376,9 @@ class Give_Updates {
 			update_option( $batch->key, $batch->data );
 			delete_option( 'give_paused_batches' );
 
+			Give()->logs->add( 'Update Restart', print_r( $batch, true ), 0, 'update' );
+
+
 			/** Fire action when restart db updates
 			 *
 			 * @since 2.0.1
@@ -395,35 +400,33 @@ class Give_Updates {
 	 * @param Give_Updates $give_updates
 	 */
 	public function __health_background_update( $give_updates ) {
-		$batch            = Give_Updates::$background_updater->get_all_batch();
-		$batch_data_count = count( $batch->data );
-		$all_updates      = $give_updates->get_updates( 'database', 'all' );
-		$all_update_ids = wp_list_pluck( $all_updates, 'id' );
+		$batch                = Give_Updates::$background_updater->get_all_batch();
+		$batch_data_count     = count( $batch->data );
+		$all_updates          = $give_updates->get_updates( 'database', 'all' );
+		$all_update_ids       = wp_list_pluck( $all_updates, 'id' );
 		$all_batch_update_ids = ! empty( $batch ) ? wp_list_pluck( $batch->data, 'id' ) : array();
-		$log_file = WP_CONTENT_DIR . '/debug_give_restart_upgrades.log';
-
-		error_log( print_r( '---- Upgrade Restart Log -----', true ) . "\n", 3, $log_file );
+		$log_data             = '';
 
 		if ( ! empty( $batch ) ) {
 
 			foreach ( $batch->data as $index => $update ) {
-				error_log( print_r( $update, true ) . "\n", 3, $log_file );
+				$log_data = print_r( $update, true ) . "\n";
 
-				if( ! is_callable( $update['callback'] ) ) {
-					error_log( print_r( 'Removing missing callback update', true ) . "\n", 3, $log_file );
-					unset( $batch->data[$index] );
+				if ( ! is_callable( $update['callback'] ) ) {
+					$log_data .= 'Removing missing callback update' . "\n";
+					unset( $batch->data[ $index ] );
 				}
 
 				if ( ! empty( $update['depend'] ) ) {
 
 					foreach ( $update['depend'] as $depend ) {
 						if ( give_has_upgrade_completed( $depend ) ) {
-							error_log( print_r( 'Completed update: ' . $depend, true ) . "\n", 3, $log_file );
+							$log_data .= 'Completed update: ' . "{$depend}\n";
 							continue;
 						}
 
 						if ( in_array( $depend, $all_update_ids ) && ! in_array( $depend, $all_batch_update_ids ) ) {
-							error_log( print_r( 'Adding missing update: ' . $depend, true ) . "\n", 3, $log_file );
+							$log_data .= 'Adding missing update: ' . "{$depend}\n";
 							array_unshift( $batch->data, $all_updates[ array_search( $depend, $all_update_ids ) ] );
 						}
 					}
@@ -431,13 +434,14 @@ class Give_Updates {
 			}
 
 			if ( $batch_data_count !== count( $batch->data ) ) {
-				error_log( print_r( 'Updating batch.', true ) . "\n", 3, $log_file );
-				error_log( print_r( $batch, true ) . "\n", 3, $log_file );
+				$log_data .= 'Updating batch' . "\n";
+				$log_data .= print_r( $batch, true );
+
 				update_option( $batch->key, $batch->data );
+
+				Give()->logs->add( 'Update Health Check', $log_data, 0, 'update' );
 			}
 		}
-
-		error_log( print_r( '---- Upgrade Restart Log -----', true ) . "\n", 3, $log_file );
 	}
 
 
