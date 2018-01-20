@@ -413,7 +413,6 @@ class Give_Updates {
 
 						if ( in_array( $depend, $all_update_ids ) && ! in_array( $depend, $all_batch_update_ids ) ) {
 							array_unshift( $batch->data, $all_updates[ array_search( $depend, $all_update_ids ) ] );
-						}else{
 						}
 					}
 				}
