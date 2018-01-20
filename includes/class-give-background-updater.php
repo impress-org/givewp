@@ -35,6 +35,18 @@ class Give_Background_Updater extends WP_Background_Process {
 		parent::dispatch();
 	}
 
+
+	/**
+	 * Get all batches.
+	 *
+	 * @since  2.0
+	 * @access public
+	 * @return stdClass
+	 */
+	public function get_all_batch() {
+		return parent::get_batch();
+	}
+
 	/**
 	 * Get all batch.
 	 *
@@ -114,10 +126,40 @@ class Give_Background_Updater extends WP_Background_Process {
 		);
 
 		// Continuously skip update if previous update does not complete yet.
-		if(
+		if (
 			$resume_update['update_info']['id'] !== $update['id'] &&
 			! give_has_upgrade_completed( $resume_update['update_info']['id'] )
 		) {
+			$batch = Give_Updates::$background_updater->get_all_batch();
+			$batch_data_count = count( $batch->data );
+
+			if ( ! empty( $batch ) &&  1 === $batch_data_count ) {
+				if ( ! empty( $update['depend'] ) ) {
+
+					$give_updates   = Give_Updates::get_instance();
+					$all_updates    = $give_updates->get_updates( 'database', 'all' );
+					$all_update_ids = wp_list_pluck( $all_updates, 'id' );
+
+					foreach ( $update['depend'] as $depend ) {
+						if ( give_has_upgrade_completed( $depend ) ) {
+							continue;
+						}
+
+						if ( in_array( $depend, $all_update_ids ) ) {
+							array_unshift( $batch->data, $all_updates[ array_search( $depend, $all_update_ids ) ] );
+						}
+					}
+
+					if( $batch_data_count !== count( $batch->data ) ) {
+						update_option( $batch->key, $batch->data );
+						$this->dispatch();
+
+						wp_die();
+					}
+				}
+			}
+
+
 			return $update;
 		}
 
@@ -126,6 +168,7 @@ class Give_Background_Updater extends WP_Background_Process {
 		$give_updates->step           = absint( $resume_update['step'] );
 		$give_updates->update         = absint( $resume_update['update'] );
 		$is_parent_update_completed   = $give_updates->is_parent_updates_completed( $update );
+
 
 		// Skip update if dependency update does not complete yet.
 		if ( empty( $is_parent_update_completed ) ) {

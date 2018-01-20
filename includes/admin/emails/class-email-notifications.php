@@ -118,7 +118,8 @@ class Give_Email_Notifications {
 		// Email notification setting.
 		$settings['email_notification_options'] = array(
 			'id'         => 'email_notification_options',
-			'title'      => __( 'Email Notification', 'give' ),
+			'title'      => __( 'Email Notifications', 'give' ),
+			'icon-html' => '<span class="dashicons dashicons-email-alt"></span>',
 			'fields'     => array(
 				array(
 					'name'        => __( 'Email Options', 'give' ),

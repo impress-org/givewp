@@ -70,7 +70,7 @@ class Tests_Give_Donors_Query extends Give_Unit_Test_Case {
 			),
 			array(
 				array( 'number' => - 1 ),
-				'SELECT wptests_give_donors.* FROM wptests_give_donors WHERE 1=1 ORDER BY wptests_give_donors.id+0 DESC LIMIT 0,999999999999;',
+				'SELECT wptests_give_donors.* FROM wptests_give_donors WHERE 1=1 ORDER BY wptests_give_donors.id+0 DESC LIMIT 0,99999999999;',
 			),
 
 			/**
