@@ -61,9 +61,8 @@ function give_process_donation_form() {
 	 * @since 1.0
 	 *
 	 * @param bool|array $valid_data Validate fields.
-	 * @param array $_POST Array of variables passed via the HTTP POST.
 	 */
-	do_action( 'give_checkout_error_checks', $valid_data, $_POST );
+	do_action( 'give_checkout_error_checks', $valid_data );
 
 	// Process the login form.
 	if ( isset( $_POST['give_login_submit'] ) ) {
