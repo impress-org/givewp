@@ -450,3 +450,43 @@ function give_payment_save_page_data( $payment_id ) {
 
 // Fire when payment is save.
 add_action( 'give_insert_payment', 'give_payment_save_page_data' );
+
+/**
+ * Add/Update goal closed meta when donation form is update.
+ *
+ * @since 2.0.2
+ *
+ * @param $form_id
+ */
+function give_update_goal_closed_meta( $form_id ) {
+	$form = new Give_Donate_Form( $form_id );
+	// Check if donation from is closed or not
+	if ( $form->is_close_donation_form() ) {
+		give_update_meta( $form_id, '_give_form_is_closed', 1 );
+	} else {
+		give_update_meta( $form_id, '_give_form_is_closed', 0 );
+	}
+}
+
+add_action( 'give_post_process_give_forms_meta', 'give_update_goal_closed_meta', 10, 1 );
+
+/**
+ * Add/Update Donation Goal is complete or not meta value in give from meta
+ *
+ * @since 2.0.2
+ *
+ * @param $payment_id
+ */
+function give_update_goal_closed_meta_on_donation_complete( $payment_id ) {
+	// Get form id from payment meta
+	$form_id = give_get_meta( $payment_id, '_give_payment_form_id', true );
+
+	// if no form id is found then return.
+	if ( empty( $form_id ) ) {
+		return;
+	}
+
+	give_update_goal_closed_meta( $form_id );
+}
+
+add_action( 'give_complete_donation', 'give_update_goal_closed_meta_on_donation_complete', 10, 1 );
