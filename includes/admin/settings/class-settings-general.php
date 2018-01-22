@@ -117,8 +117,8 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 					break;
 
 				case 'currency-settings' :
-					$current_position_before = __( 'Before - %s&#x200e;10', 'give' );
-					$current_position_after  = __( 'After - 10%s&#x200f;', 'give' );
+					$currency_position_before = __( 'Before - %s&#x200e;10', 'give' );
+					$currency_position_after  = __( 'After - 10%s&#x200f;', 'give' );
 
 					$settings = array(
 						// Section 2: Currency
@@ -148,14 +148,14 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'type'       => 'select',
 							'options'    => array(
 								/* translators: %s: currency symbol */
-								'before' => sprintf( $current_position_before, give_currency_symbol( give_get_currency() ) ),
+								'before' => sprintf( $currency_position_before, give_currency_symbol( give_get_currency() ) ),
 								/* translators: %s: currency symbol */
-								'after'  => sprintf( __( $current_position_after, 'give' ), give_currency_symbol( give_get_currency() ) ),
+								'after'  => sprintf( $currency_position_after, give_currency_symbol( give_get_currency() ) ),
 							),
 							'default'    => 'before',
 							'attributes' => array(
-								'data-before-template' => sprintf( $current_position_before, '{currency_pos}' ),
-								'data-after-template' => sprintf( $current_position_after, '{currency_pos}' ),
+								'data-before-template' => sprintf( $currency_position_before, '{currency_pos}' ),
+								'data-after-template' => sprintf( $currency_position_after, '{currency_pos}' ),
 							),
 						),
 						array(
