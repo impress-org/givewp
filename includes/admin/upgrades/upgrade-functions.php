@@ -268,6 +268,35 @@ function give_show_upgrade_notices( $give_updates ) {
 			),
 		)
 	);
+
+	// v2.0.0 Upgrades
+	$give_updates->register(
+		array(
+			'id'       => 'v201_create_tables',
+			'version'  => '2.0.1',
+			'callback' => 'give_v201_create_tables_callback',
+		)
+	);
+
+	// Run v2.0.0 Upgrades again in 2.0.1
+	$give_updates->register(
+		array(
+			'id'       => 'v201_move_metadata_into_new_table',
+			'version'  => '2.0.1',
+			'callback' => 'give_v201_move_metadata_into_new_table_callback',
+			'depend'   => array( 'v20_upgrades_payment_metadata', 'v20_upgrades_form_metadata', 'v201_create_tables' ),
+		)
+	);
+
+	// Run v2.0.0 Upgrades again in 2.0.1
+	$give_updates->register(
+		array(
+			'id'       => 'v201_logs_upgrades',
+			'version'  => '2.0.1',
+			'callback' => 'give_v201_logs_upgrades_callback',
+
+		)
+	);
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
@@ -2109,4 +2138,196 @@ function give_v20_rename_donor_tables_callback() {
 	// Re initiate donor classes.
 	Give()->donors     = new Give_DB_Donors();
 	Give()->donor_meta = new Give_DB_Donor_Meta();
+}
+
+
+/**
+ * Create missing meta tables.
+ *
+ * @since  2.0.1
+ * @global wpdb $wpdb
+ * @return void
+ */
+function give_v201_create_tables_callback(){
+	global $wpdb;
+
+	if ( ! $wpdb->query( $wpdb->prepare( "SHOW TABLES LIKE %s", "{$wpdb->prefix}give_paymentmeta" ) ) ) {
+		Give()->payment_meta->create_table();
+	}
+
+	if ( ! $wpdb->query( $wpdb->prepare( "SHOW TABLES LIKE %s", "{$wpdb->prefix}give_formmeta" ) ) ) {
+		Give()->form_meta->create_table();
+	}
+
+	if ( ! $wpdb->query( $wpdb->prepare( "SHOW TABLES LIKE %s", "{$wpdb->prefix}give_logs" ) ) ) {
+		Give()->logs->log_db->create_table();
+	}
+
+	if ( ! $wpdb->query( $wpdb->prepare( "SHOW TABLES LIKE %s", "{$wpdb->prefix}give_logmeta" ) ) ) {
+		Give()->logs->logmeta_db->create_table();
+	}
+
+	give_set_upgrade_complete('v201_create_tables' );
+}
+
+/**
+ * Move payment and form metadata to new table
+ *
+ * @since  2.0.1
+ * @return void
+ */
+function give_v201_move_metadata_into_new_table_callback() {
+	global $wpdb;
+	$give_updates = Give_Updates::get_instance();
+
+	// form query
+	$payments = new WP_Query( array(
+			'paged'          => $give_updates->step,
+			'status'         => 'any',
+			'order'          => 'ASC',
+			'post_type'      => array( 'give_forms', 'give_payment' ),
+			'posts_per_page' => 100,
+		)
+	);
+
+	if ( $payments->have_posts() ) {
+		$give_updates->set_percentage( $payments->found_posts, $give_updates->step * 100 );
+
+		while ( $payments->have_posts() ) {
+			$payments->the_post();
+			global $post;
+
+			$meta_data = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT * FROM $wpdb->postmeta where post_id=%d",
+					get_the_ID()
+				),
+				ARRAY_A
+			);
+
+			if ( ! empty( $meta_data ) ) {
+				foreach ( $meta_data as $index => $data ) {
+					// Check for duplicate meta values.
+					if( $result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . ( 'give_forms' === $post->post_type ? $wpdb->formmeta : $wpdb->paymentmeta ) .  " WHERE meta_id=%d", $data['meta_id'] ), ARRAY_A ) ) {
+						continue;
+					}
+
+					switch ( $post->post_type ) {
+						case 'give_forms':
+							$data['form_id'] = $data['post_id'];
+							unset( $data['post_id'] );
+
+							Give()->form_meta->insert( $data );
+							// @todo: delete form meta from post meta table after releases 2.0.
+							/*delete_post_meta( get_the_ID(), $data['meta_key'] );*/
+
+							break;
+
+						case 'give_payment':
+							$data['payment_id'] = $data['post_id'];
+							unset( $data['post_id'] );
+
+							Give()->payment_meta->insert( $data );
+
+							// @todo: delete donation meta from post meta table after releases 2.0.
+							/*delete_post_meta( get_the_ID(), $data['meta_key'] );*/
+
+							break;
+					}
+				}
+			}
+
+		}// End while().
+
+		wp_reset_postdata();
+	} else {
+		// No more forms found, finish up.
+		give_set_upgrade_complete( 'v201_move_metadata_into_new_table' );
+	}
+
+}
+
+/**
+ * Move data to new log table.
+ *
+ * @since  2.0.1
+ * @return void
+ */
+function give_v201_logs_upgrades_callback() {
+	global $wpdb;
+	$give_updates = Give_Updates::get_instance();
+
+	// form query
+	$forms = new WP_Query( array(
+			'paged'          => $give_updates->step,
+			'order'          => 'DESC',
+			'post_type'      => 'give_log',
+			'post_status'    => 'any',
+			'posts_per_page' => 100,
+		)
+	);
+
+	if ( $forms->have_posts() ) {
+		$give_updates->set_percentage( $forms->found_posts, $give_updates->step * 100 );
+
+		while ( $forms->have_posts() ) {
+			$forms->the_post();
+			global $post;
+
+			if( $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}give_logs WHERE ID=%d", $post->ID ) ) ) {
+				continue;
+			}
+
+			$term      = get_the_terms( $post->ID, 'give_log_type' );
+			$term      = ! is_wp_error( $term ) && ! empty( $term ) ? $term[0] : array();
+			$term_name = ! empty( $term ) ? $term->slug : '';
+
+			$log_data = array(
+				'ID'           => $post->ID,
+				'log_title'    => $post->post_title,
+				'log_content'  => $post->post_content,
+				'log_parent'   => 0,
+				'log_type'     => $term_name,
+				'log_date'     => $post->post_date,
+				'log_date_gmt' => $post->post_date_gmt,
+			);
+			$log_meta = array();
+
+			if ( $old_log_meta = get_post_meta( $post->ID ) ) {
+				foreach ( $old_log_meta as $meta_key => $meta_value ) {
+					switch ( $meta_key ) {
+						case '_give_log_payment_id':
+							$log_data['log_parent']        = current( $meta_value );
+							$log_meta['_give_log_form_id'] = $post->post_parent;
+							break;
+
+						default:
+							$log_meta[ $meta_key ] = current( $meta_value );
+					}
+				}
+			}
+
+			if ( 'api_request' === $term_name ) {
+				$log_meta['_give_log_api_query'] = $post->post_excerpt;
+			}
+
+			$wpdb->insert( "{$wpdb->prefix}give_logs", $log_data );
+
+			if ( ! empty( $log_meta ) ) {
+				foreach ( $log_meta as $meta_key => $meta_value ) {
+					Give()->logs->logmeta_db->update_meta( $post->ID, $meta_key, $meta_value );
+				}
+			}
+
+			$logIDs[] = $post->ID;
+		}// End while().
+
+		wp_reset_postdata();
+	} else {
+		// Delete log cache.
+		Give()->logs->delete_cache();
+
+		// No more forms found, finish up.
+		give_set_upgrade_complete( 'v201_logs_upgrades' );
+	}
 }
