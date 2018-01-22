@@ -413,7 +413,7 @@ class Give_Updates {
 				$log_data = print_r( $update, true ) . "\n";
 
 				if ( ! is_callable( $update['callback'] ) ) {
-					$log_data .= 'Removing missing callback update' . "\n";
+					$log_data .= 'Removing missing callback update: ' . "{$update['id']}\n";
 					unset( $batch->data[ $index ] );
 				}
 
@@ -432,15 +432,33 @@ class Give_Updates {
 					}
 				}
 			}
+		}
+		
+		if( $new_updates = $this->get_updates( 'database', 'new' ) ){
+			$all_batch_update_ids = ! empty( $batch ) ? wp_list_pluck( $batch->data, 'id' ) : array();
 
-			if ( $batch_data_count !== count( $batch->data ) ) {
-				$log_data .= 'Updating batch' . "\n";
-				$log_data .= print_r( $batch, true );
-
-				update_option( $batch->key, $batch->data );
-
-				Give()->logs->add( 'Update Health Check', $log_data, 0, 'update' );
+			foreach ( $new_updates as $index => $new_update ) {
+				if( give_has_upgrade_completed( $new_update['id'] ) || in_array( $new_update['id'], $all_batch_update_ids ) ) {
+					unset( $new_updates[$index] );
+				}
 			}
+
+			if( ! empty( $new_updates ) ) {
+				$log_data .= 'Adding new update: ' . "\n";
+				$log_data .= print_r( $new_updates, true ) . "\n";
+
+				$batch->data = array_merge( $batch->data, $new_updates );
+				update_option( 'give_db_update_count',  ( absint( get_option( 'give_db_update_count' ) ) + count( $new_updates ) ) );
+			}
+		}
+
+		if ( $batch_data_count !== count( $batch->data ) ) {
+			$log_data .= 'Updating batch' . "\n";
+			$log_data .= print_r( $batch, true );
+
+			update_option( $batch->key, $batch->data );
+
+			Give()->logs->add( 'Update Health Check', $log_data, 0, 'update' );
 		}
 	}
 
