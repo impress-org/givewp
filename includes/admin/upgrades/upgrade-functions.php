@@ -77,6 +77,10 @@ function give_do_automatic_upgrades() {
 		case version_compare( $give_version, '2.0', '<' ) :
 			give_v20_upgrades();
 			$did_upgrade = true;
+
+		case version_compare( $give_version, '2.0.1', '<' ) :
+			Give_Updates::get_instance()->__health_background_update( Give_Updates::get_instance() );
+			$did_upgrade = true;
 	}
 
 	if ( $did_upgrade ) {
