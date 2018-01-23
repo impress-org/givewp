@@ -336,6 +336,7 @@ class Give_Updates {
 			update_option( 'give_paused_batches', $batch,  'no' );
 			delete_option( $batch->key );
 			delete_site_transient( self::$background_updater->get_identifier() . '_process_lock' );
+			wp_clear_scheduled_hook( self::$background_updater->get_cron_identifier() );
 
 			Give()->logs->add( 'Update Pause', print_r( $batch, true ), 0, 'update' );
 

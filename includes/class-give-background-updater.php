@@ -268,4 +268,15 @@ class Give_Background_Updater extends WP_Background_Process {
 	public function get_identifier() {
 		return $this->identifier;
 	}
+
+	/**
+	 * Get cron identifier
+	 *
+	 * @since  2.0
+	 * @access public
+	 * @return mixed|string
+	 */
+	public function get_cron_identifier() {
+		return $this->cron_hook_identifier;
+	}
 }
