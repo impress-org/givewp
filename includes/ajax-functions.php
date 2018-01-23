@@ -87,12 +87,6 @@ function give_test_ajax_works() {
 		if ( ! isset( $ajax['body'] ) || 0 !== (int) $ajax['body'] ) {
 			$works = false;
 		}
-
-		// Keep admin-ajax.php working under proxy/privacy mode.
-		// @todo Create a notice to show whether user is in proxy mode or not via notice or system info.
-		if ( 401 === (int) $ajax['response']['code'] ) {
-			$works = true;
-		}
 	}
 
 	if ( $works ) {
