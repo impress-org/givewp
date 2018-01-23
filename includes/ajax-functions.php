@@ -25,12 +25,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return bool True if AJAX works, false otherwise
  */
 function give_test_ajax_works() {
-
-//	$response = wp_remote_get(
-//		'http://give20.test/wp-admin/admin-ajax.php?action=give_test_ajax'
-//
-//	);
-//	echo "<pre>"; print_r($response);echo "</pre>";
 	// Handle ajax.
 	if( doing_action( 'wp_ajax_nopriv_give_test_ajax' ) ) {
 		wp_die( 0, 200 );
