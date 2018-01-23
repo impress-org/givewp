@@ -25,6 +25,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return bool True if AJAX works, false otherwise
  */
 function give_test_ajax_works() {
+
+//	$response = wp_remote_get(
+//		'http://give20.test/wp-admin/admin-ajax.php?action=give_test_ajax'
+//
+//	);
+//	echo "<pre>"; print_r($response);echo "</pre>";
 	// Handle ajax.
 	if( doing_action( 'wp_ajax_nopriv_give_test_ajax' ) ) {
 		wp_die( 0, 200 );
@@ -86,6 +92,12 @@ function give_test_ajax_works() {
 
 		if ( ! isset( $ajax['body'] ) || 0 !== (int) $ajax['body'] ) {
 			$works = false;
+		}
+
+		// Keep admin-ajax.php working under proxy/privacy mode.
+		// @todo Create a notice to show whether user is in proxy mode or not via notice or system info.
+		if ( 401 === (int) $ajax['response']['code'] ) {
+			$works = true;
 		}
 	}
 
