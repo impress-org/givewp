@@ -285,7 +285,7 @@ function give_show_upgrade_notices( $give_updates ) {
 			'id'       => 'v201_move_metadata_into_new_table',
 			'version'  => '2.0.1',
 			'callback' => 'give_v201_move_metadata_into_new_table_callback',
-			'depend'   => array( 'v20_upgrades_payment_metadata', 'v20_upgrades_form_metadata', 'v201_create_tables' ),
+			'depend'   => 'v201_create_tables',
 		)
 	);
 
