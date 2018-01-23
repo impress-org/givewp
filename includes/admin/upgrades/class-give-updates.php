@@ -401,6 +401,10 @@ class Give_Updates {
 	 * @param Give_Updates $give_updates
 	 */
 	public function __health_background_update( $give_updates ) {
+		if( ! $this->is_doing_updates() ) {
+			return;
+		}
+
 		$batch                = Give_Updates::$background_updater->get_all_batch();
 		$batch_data_count     = count( $batch->data );
 		$all_updates          = $give_updates->get_updates( 'database', 'all' );
