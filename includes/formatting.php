@@ -731,7 +731,7 @@ function give_verify_donation_form_nonce( $nonce = '' ) {
  *
  * @param                   $variable
  * @param string (optional) $conditional    default value: isset
- * @param bool (optional)   $default        default value: false
+ * @param mixed (optional)  $default        default value: false
  * @param string (optional) $array_key_name default value: false
  *
  * @return mixed
