@@ -786,7 +786,6 @@ class Give_Updates {
 
 		// Check if dependency is valid or not.
 		if ( ! $this->has_valid_dependency( $update ) ) {
-			error_log( print_r( 'exit 2', true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
 			return null;
 		}
 
