@@ -21,6 +21,12 @@ jQuery( function( $ ) {
 	// Set custom validation message.
 	give_change_html5_form_field_validation_message();
 
+	// Disable button if it have give-disabled class init.
+	doc.on( 'click touchend', '.give-disabled', function ( e ) {
+		e.preventDefault();
+		return false;
+	} );
+
 	doc.on( 'give_gateway_loaded', function( ev, response, form_id ) {
 		// Trigger float-labels
 		give_fl_trigger();

@@ -289,7 +289,7 @@ class Give_DB_Logs extends Give_DB {
 		$this->validate_params( $args );
 
 		if ( $args['number'] < 1 ) {
-			$args['number'] = 999999999999;
+			$args['number'] = 99999999999;
 		}
 
 		// Where clause for primary table.

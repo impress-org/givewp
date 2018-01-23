@@ -76,10 +76,9 @@ $give_updates = Give_Updates::get_instance();
 								</div>
 							</div>
 
-							<div class="give-run-database-update">
-								<div class="notice-wrap give-clearfix">
-								</div>
-							</div>
+							<?php if( ! $is_doing_updates ) : ?>
+								<div class="give-run-database-update"></div>
+							<?php endif; ?>
 						</div>
 						<!-- .inside -->
 					</div><!-- .postbox -->

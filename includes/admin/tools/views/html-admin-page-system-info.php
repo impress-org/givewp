@@ -137,6 +137,11 @@ $give_updates = Give_Updates::get_instance();
 			</tr>
 		<?php endif;?>
 		<tr>
+			<td data-export-label="Table Prefix Length"><?php _e( 'Table Prefix', 'give' ); ?>:</td>
+			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The table prefix used in your WordPress database.', 'give' ) ); ?></td>
+			<td><?php echo esc_html( $wpdb->prefix ); ?></td>
+		</tr>
+		<tr>
 			<td data-export-label="Table Prefix Length"><?php _e( 'Table Prefix Length', 'give' ); ?>:</td>
 			<td class="help"><?php echo Give()->tooltips->render_help( __( 'The length of the table prefix used in your WordPress database.', 'give' ) ); ?></td>
 			<td><?php echo esc_html( strlen( $wpdb->prefix ) ); ?></td>

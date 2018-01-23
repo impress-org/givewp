@@ -847,8 +847,8 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 * @since  1.8.14
 		 * @access public
 		 *
-		 * @param int|bool $csv       ID of the CSV files.
-		 * @param string   $match_url ID of the CSV files.
+		 * @param mixed  $csv       ID of the CSV files.
+		 * @param string $match_url ID of the CSV files.
 		 *
 		 * @return bool $has_error CSV is valid or not.
 		 */
