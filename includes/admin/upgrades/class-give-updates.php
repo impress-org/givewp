@@ -696,7 +696,7 @@ class Give_Updates {
 		$update_info   = get_option( 'give_doing_upgrade' );
 		$response_type = '';
 
-		if ( empty( $update_info ) && ! $this->get_pending_db_update_count() ) {
+		if ( empty( $update_info ) ) {
 			$update_info   = array(
 				'message'    => __( 'Give database updates completed successfully. Thank you for updating to the latest version!', 'give' ),
 				'heading'    => __( 'Updates Completed.', 'give' ),
