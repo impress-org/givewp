@@ -105,7 +105,7 @@ class Give_API {
 	/**
 	 * All versions of the API
 	 *
-	 * @var string
+	 * @var array
 	 * @access protected
 	 * @since  1.1
 	 */

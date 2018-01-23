@@ -54,7 +54,7 @@ class Give_Blank_Slate {
 	 * The content of the blank slate panel.
 	 *
 	 * @since  1.8.13
-	 * @var bool
+	 * @var array
 	 * @access private
 	 */
 	private $content = array();
