@@ -146,8 +146,8 @@ class Give_Donor {
 	/**
 	 * Give_Donor constructor.
 	 *
-	 * @param bool $_id_or_email
-	 * @param bool $by_user_id
+	 * @param int|bool $_id_or_email
+	 * @param bool     $by_user_id
 	 */
 	public function __construct( $_id_or_email = false, $by_user_id = false ) {
 
