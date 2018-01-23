@@ -80,7 +80,7 @@ if ( ! class_exists( 'Give' ) ) :
 		 * @since  1.0
 		 * @access public
 		 *
-		 * @var    Give_Plugin_Settings object
+		 * @var    Give_Admin_Settings object
 		 */
 		public $give_settings;
 
