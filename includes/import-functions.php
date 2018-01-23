@@ -207,9 +207,9 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
  * @return bool|false|WP_User
  */
 function give_import_get_user_from_csv( $data, $import_setting = array() ) {
-	$report      = give_import_donation_report();
-	$donor_data  = false;
-	$customer_id = false;
+	$report     = give_import_donation_report();
+	$donor_data = false;
+	$donor_id   = false;
 
 	// check if donor id is not empty
 	if ( ! empty( $data['donor_id'] ) ) {
@@ -289,17 +289,17 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
 
 				// This action was added to remove the login when using the give register function.
 				add_filter( 'give_log_user_in_on_register', 'give_log_user_in_on_register_callback', 11 );
-				$customer_id = give_register_and_login_new_user( $donor_args );
+				$donor_id = give_register_and_login_new_user( $donor_args );
 				remove_filter( 'give_log_user_in_on_register', 'give_log_user_in_on_register_callback', 11 );
 
-				update_user_meta( $customer_id, '_give_payment_import', true );
-				$donor_data = new Give_Donor( $customer_id, true );
+				update_user_meta( $donor_id, '_give_payment_import', true );
+				$donor_data = new Give_Donor( $donor_id, true );
 			} else {
-				$customer_id = ( ! empty( $donor_data->ID ) ? $donor_data->ID : false );
+				$donor_id = ( ! empty( $donor_data->ID ) ? $donor_data->ID : false );
 			}
 
-			if ( ! empty( $customer_id ) || ( isset( $import_setting['create_user'] ) && 0 === absint( $import_setting['create_user'] ) ) ) {
-				$donor_data = new Give_Donor( $customer_id, true );
+			if ( ! empty( $donor_id ) || ( isset( $import_setting['create_user'] ) && 0 === absint( $import_setting['create_user'] ) ) ) {
+				$donor_data = new Give_Donor( $donor_id, true );
 
 				if ( empty( $donor_data->id ) ) {
 
@@ -313,8 +313,8 @@ function give_import_get_user_from_csv( $data, $import_setting = array() ) {
 						'email' => $data['email'],
 					);
 
-					if ( ! empty( $customer_id ) ) {
-						$donor_args['user_id'] = $customer_id;
+					if ( ! empty( $donor_id ) ) {
+						$donor_args['user_id'] = $donor_id;
 					}
 
 					$donor_data->create( $donor_args );
@@ -544,7 +544,7 @@ function give_log_user_in_on_register_callback( $value ) {
 function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array(), $import_setting = array() ) {
 	$data                          = array_combine( $raw_key, $row_data );
 	$price_id                      = false;
-	$customer_id                   = 0;
+	$donor_id                      = 0;
 	$import_setting['create_user'] = ( isset( $import_setting['create_user'] ) ? $import_setting['create_user'] : 1 );
 
 	$data = (array) apply_filters( 'give_save_import_donation_to_db', $data );
@@ -555,9 +555,9 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 	$donor_data = give_import_get_user_from_csv( $data, $import_setting );
 	if ( ! empty( $donor_data->id ) ) {
 		if ( ! empty( $donor_data->user_id ) ) {
-			$customer_id = $donor_data->user_id;
+			$donor_id = $donor_data->user_id;
 		} elseif ( ! empty( $data['user_id'] ) ) {
-			$customer_id = $data['user_id'];
+			$donor_id = $data['user_id'];
 		}
 	} else {
 		return false;
@@ -588,10 +588,10 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 		'status'          => ( ! empty( $data['post_status'] ) ? $data['post_status'] : 'publish' ),
 		'currency'        => give_get_currency(),
 		'user_info'       => array(
-			'id'         => $customer_id,
+			'id'         => $donor_id,
 			'email'      => ( ! empty( $data['email'] ) ? $data['email'] : ( isset( $donor_data->email ) ? $donor_data->email : false ) ),
-			'first_name' => ( ! empty( $data['first_name'] ) ? $data['first_name'] : ( ! empty( $customer_id ) && ( $first_name = get_user_meta( $customer_id, 'first_name', true ) ) ? $first_name : $donor_data->name ) ),
-			'last_name'  => ( ! empty( $data['last_name'] ) ? $data['last_name'] : ( ! empty( $customer_id ) && ( $last_name = get_user_meta( $customer_id, 'last_name', true ) ) ? $last_name : $donor_data->name ) ),
+			'first_name' => ( ! empty( $data['first_name'] ) ? $data['first_name'] : ( ! empty( $donor_id ) && ( $first_name = get_user_meta( $donor_id, 'first_name', true ) ) ? $first_name : $donor_data->name ) ),
+			'last_name'  => ( ! empty( $data['last_name'] ) ? $data['last_name'] : ( ! empty( $donor_id ) && ( $last_name = get_user_meta( $donor_id, 'last_name', true ) ) ? $last_name : $donor_data->name ) ),
 			'address'    => $address,
 		),
 		'gateway'         => ( ! empty( $data['gateway'] ) && 'offline' != strtolower( $data['gateway'] ) ? strtolower( $data['gateway'] ) : 'manual' ),
