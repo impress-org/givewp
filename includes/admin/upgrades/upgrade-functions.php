@@ -79,7 +79,7 @@ function give_do_automatic_upgrades() {
 			$did_upgrade = true;
 
 		case version_compare( $give_version, '2.0.1', '<' ) :
-			give_v201_create_tables_callback();
+			give_v201_create_tables();
 			Give_Updates::get_instance()->__health_background_update( Give_Updates::get_instance() );
 			$did_upgrade = true;
 	}
@@ -267,15 +267,6 @@ function give_show_upgrade_notices( $give_updates ) {
 				'v20_upgrades_user_address',
 				'v20_upgrades_donor_name'
 			),
-		)
-	);
-
-	// v2.0.0 Upgrades
-	$give_updates->register(
-		array(
-			'id'       => 'v201_create_tables',
-			'version'  => '2.0.1',
-			'callback' => 'give_v201_create_tables_callback',
 		)
 	);
 
@@ -2149,7 +2140,7 @@ function give_v20_rename_donor_tables_callback() {
  * @global wpdb $wpdb
  * @return void
  */
-function give_v201_create_tables_callback(){
+function give_v201_create_tables(){
 	global $wpdb;
 
 	if ( ! $wpdb->query( $wpdb->prepare( "SHOW TABLES LIKE %s", "{$wpdb->prefix}give_paymentmeta" ) ) ) {
@@ -2167,8 +2158,6 @@ function give_v201_create_tables_callback(){
 	if ( ! $wpdb->query( $wpdb->prepare( "SHOW TABLES LIKE %s", "{$wpdb->prefix}give_logmeta" ) ) ) {
 		Give()->logs->logmeta_db->create_table();
 	}
-
-	give_set_upgrade_complete('v201_create_tables' );
 }
 
 /**
