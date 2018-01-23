@@ -58,10 +58,15 @@ $give_updates = Give_Updates::get_instance();
 									<?php endif; ?>
 
 									<script type="text/javascript">
-										jQuery('#give-pause-upgrades, #give-restart-upgrades').click('click', function (e) {
+										jQuery('#give-pause-upgrades').click('click', function (e) {
 											e.preventDefault();
-
-											if (window.confirm('<?php echo esc_js( __( 'Do you want to stop the update now?', 'give' ) ); ?>')) {
+											if (window.confirm('<?php echo esc_js( __( 'Do you want to stop the update process now?', 'give' ) ); ?>')) {
+												window.location.assign(jQuery(this).data('redirect-url'));
+											}
+										});
+										jQuery('#give-restart-upgrades').click('click', function (e) {
+											e.preventDefault();
+											if (window.confirm('<?php echo esc_js( __( 'Do you want to restart the update process?', 'give' ) ); ?>')) {
 												window.location.assign(jQuery(this).data('redirect-url'));
 											}
 										});
