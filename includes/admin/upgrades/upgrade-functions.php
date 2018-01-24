@@ -2202,7 +2202,7 @@ function give_v201_upgrades_payment_metadata_callback() {
 			'post_type'      => 'give_payment',
 			'posts_per_page' => 100,
 			'date_query' => array(
-				'before'    => array(
+				'after'    => array(
 					'year'  => 2018,
 					'month' => 1,
 					'day'   => 8,
