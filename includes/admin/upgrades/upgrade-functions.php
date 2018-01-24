@@ -2505,8 +2505,6 @@ function give_v201_add_missing_donors_callback(){
 			/**
 			 * Fix donor name and address
 			 */
-			$donor = new Give_Donor( $donor_id );
-
 			$address = $wpdb->get_var(
 				$wpdb->prepare(
 					"
@@ -2518,6 +2516,8 @@ function give_v201_add_missing_donors_callback(){
 					'_give_user_address'
 				)
 			);
+
+			$donor = new Give_Donor( $donor_id );
 
 			if ( ! empty( $address ) ) {
 				$address = maybe_unserialize( $address );
