@@ -36,6 +36,7 @@ function give_set_settings_with_disable_prefix( $old_settings, $settings ) {
 
 	// Get old setting names.
 	$old_settings_names   = array_flip( give_v18_renamed_core_settings() );
+	$update_setting = false;
 
 	foreach ( $settings as $key => $value ) {
 
