@@ -61,8 +61,9 @@ function give_process_donation_form() {
 	 * @since 1.0
 	 *
 	 * @param bool|array $valid_data Validate fields.
+	 * @param array $deprecated Deprecated Since 2.0.2. Use $_POST instead.
 	 */
-	do_action( 'give_checkout_error_checks', $valid_data );
+	do_action( 'give_checkout_error_checks', $valid_data, $deprecated = $_POST );
 
 	// Process the login form.
 	if ( isset( $_POST['give_login_submit'] ) ) {
