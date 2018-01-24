@@ -297,10 +297,6 @@ class Give_Cache {
 	public static function get_options_like( $option_name, $fields = false ) {
 		global $wpdb;
 
-		if ( empty( $option_name ) ) {
-			return array();
-		}
-
 		$field_names = $fields ? 'option_name, option_value' : 'option_name';
 
 		if ( $fields ) {
