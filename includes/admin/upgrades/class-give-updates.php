@@ -465,8 +465,8 @@ class Give_Updates {
 
 			// Reset update info.
 			$doing_upgrade_args                     = get_option( 'give_doing_upgrade' );
-			$doing_upgrade_args['update']           = $give_updates->update;
-			$doing_upgrade_args['heading']          = sprintf( 'Update %s of %s', $give_updates->update, get_option( 'give_db_update_count' ) );
+			// $doing_upgrade_args['update']           = $give_updates->update;
+			$doing_upgrade_args['heading']          = sprintf( 'Update %s of %s', $doing_upgrade_args['update'], get_option( 'give_db_update_count' ) );
 			$doing_upgrade_args['total_percentage'] = $this->get_db_update_processing_percentage();
 			update_option( 'give_doing_upgrade', $doing_upgrade_args );
 
