@@ -77,35 +77,6 @@ class Give_DB_Payment_Meta extends Give_DB_Meta {
 	}
 
 	/**
-	 * Create the table
-	 *
-	 * @access public
-	 * @since  2.0
-	 *
-	 * @return void
-	 */
-	public function create_table() {
-		global $wpdb;
-
-		$charset_collate = $wpdb->get_charset_collate();
-
-		$sql = "CREATE TABLE {$this->table_name} (
-			meta_id bigint(20) NOT NULL AUTO_INCREMENT,
-			payment_id bigint(20) NOT NULL,
-			meta_key varchar(255) DEFAULT NULL,
-			meta_value longtext,
-			PRIMARY KEY  (meta_id),
-			KEY payment_id (payment_id),
-			KEY meta_key (meta_key({$this->min_index_length}))
-			) {$charset_collate};";
-
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-		dbDelta( $sql );
-
-		update_option( $this->table_name . '_db_version', $this->version );
-	}
-
-	/**
 	 * check if custom meta table enabled or not.
 	 *
 	 * @since  2.0
