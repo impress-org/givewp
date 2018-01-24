@@ -32,34 +32,36 @@ function give_set_settings_with_disable_prefix( $old_settings, $settings ) {
 		return;
 	}
 
-	$new_setting_temp = $settings;
-
 	// Get old setting names.
-	$old_settings_names   = array_flip( give_v18_renamed_core_settings() );
+	$old_settings   = array_flip( give_v18_renamed_core_settings() );
+	$update_setting = false;
 
 	foreach ( $settings as $key => $value ) {
 
 		// Check 1. Check if new option is really updated or not.
 		// Check 2. Continue if key is not renamed.
-		if ( ! isset( $old_settings_names[ $key ] ) ) {
+		if ( ! isset( $old_settings[ $key ] ) ) {
 			continue;
 		}
 
 		// Set old setting.
-		$settings[ $old_settings_names[ $key ] ] = 'on';
+		$settings[ $old_settings[ $key ] ] = 'on';
 
 		// Do not need to set old setting if new setting is not set.
 		if (
-			( give_is_setting_enabled( $value ) && ( false !== strpos( $old_settings_names[ $key ], 'disable_' ) ) )
-			|| ( ! give_is_setting_enabled( $value ) && ( false !== strpos( $old_settings_names[ $key ], 'enable_' ) ) )
+			( give_is_setting_enabled( $value ) && ( false !== strpos( $old_settings[ $key ], 'disable_' ) ) )
+			|| ( ! give_is_setting_enabled( $value ) && ( false !== strpos( $old_settings[ $key ], 'enable_' ) ) )
 
 		) {
-			unset( $settings[ $old_settings_names[ $key ] ] );
+			unset( $settings[ $old_settings[ $key ] ] );
 		}
+
+		// Tell bot to update setting.
+		$update_setting = true;
 	}
 
 	// Update setting if any old setting set.
-	if ( array_diff( $new_setting_temp, $settings ) ) {
+	if ( $update_setting ) {
 		update_option( 'give_settings', $settings );
 	}
 }
