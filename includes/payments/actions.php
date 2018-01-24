@@ -452,7 +452,7 @@ function give_payment_save_page_data( $payment_id ) {
 add_action( 'give_insert_payment', 'give_payment_save_page_data' );
 
 /**
- * Add/Update goal closed meta when donation form is update.
+ * Add/Update goal closed meta when donation form is updated.
  *
  * @since 2.0.2
  *
