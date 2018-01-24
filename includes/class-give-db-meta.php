@@ -494,7 +494,7 @@ class Give_DB_Meta extends Give_DB {
 			meta_key varchar(255) DEFAULT NULL,
 			meta_value longtext,
 			PRIMARY KEY  (meta_id),
-			KEY payment_id (payment_id),
+			KEY {$this->meta_type}_id ({$this->meta_type}_id),
 			KEY meta_key (meta_key({$this->min_index_length}))
 			) {$charset_collate};";
 
