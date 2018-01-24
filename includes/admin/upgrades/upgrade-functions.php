@@ -274,12 +274,23 @@ function give_show_upgrade_notices( $give_updates ) {
 		)
 	);
 
+
+	// v2.0.1 Upgrades
+	$give_updates->register(
+		array(
+			'id'       => 'v201_upgrades_payment_metadata',
+			'version'  => '2.0.1',
+			'callback' => 'give_v201_upgrades_payment_metadata_callback',
+		)
+	);
+
 	// Run v2.0.0 Upgrades again in 2.0.1
 	$give_updates->register(
 		array(
 			'id'       => 'v201_move_metadata_into_new_table',
 			'version'  => '2.0.1',
 			'callback' => 'give_v201_move_metadata_into_new_table_callback',
+			'depend'   => array( 'v201_upgrades_payment_metadata' ),
 		)
 	);
 
@@ -2160,6 +2171,106 @@ function give_v201_create_tables(){
 
 	if ( ! $wpdb->query( $wpdb->prepare( "SHOW TABLES LIKE %s", "{$wpdb->prefix}give_logmeta" ) ) ) {
 		Give()->logs->logmeta_db->create_table();
+	}
+}
+
+/**
+ * Upgrade payment metadata for new metabox settings.
+ *
+ * @since  2.0.1
+ * @global wpdb $wpdb
+ * @return void
+ */
+function give_v201_upgrades_payment_metadata_callback() {
+	global $wpdb;
+	$give_updates = Give_Updates::get_instance();
+
+	// form query
+	$forms = new WP_Query( array(
+			'paged'          => $give_updates->step,
+			'status'         => 'any',
+			'order'          => 'ASC',
+			'post_type'      => 'give_payment',
+			'posts_per_page' => 100,
+			'date_query' => array(
+				'before'    => array(
+					'year'  => 2018,
+					'month' => 1,
+					'day'   => 8,
+				),
+				'inclusive' => true,
+			)
+		)
+	);
+
+	if ( $forms->have_posts() ) {
+		$give_updates->set_percentage( $forms->found_posts, ( $give_updates->step * 100 ) );
+
+		while ( $forms->have_posts() ) {
+			$forms->the_post();
+			global $post;
+
+			// Do not add new meta keys if already refactored.
+			if ( $wpdb->get_var( $wpdb->prepare( "SELECT meta_id FROM $wpdb->postmeta WHERE post_id=%d AND meta_key=%s", $post->ID, '_give_payment_donor_id' ) ) ) {
+				continue;
+			}
+
+
+			// Split _give_payment_meta meta.
+			// @todo Remove _give_payment_meta after releases 2.0
+			$payment_meta = give_get_meta( $post->ID, '_give_payment_meta', true );
+
+			if ( ! empty( $payment_meta ) ) {
+				_give_20_bc_split_and_save_give_payment_meta( $post->ID, $payment_meta );
+			}
+
+			$deprecated_meta_keys = array(
+				'_give_payment_customer_id' => '_give_payment_donor_id',
+				'_give_payment_user_email'  => '_give_payment_donor_email',
+				'_give_payment_user_ip'     => '_give_payment_donor_ip',
+			);
+
+			foreach ( $deprecated_meta_keys as $old_meta_key => $new_meta_key ) {
+				// Do not add new meta key if already exist.
+				if ( $wpdb->get_var( $wpdb->prepare( "SELECT meta_id FROM $wpdb->postmeta WHERE post_id=%d AND meta_key=%s", $post->ID, $new_meta_key ) ) ) {
+					continue;
+				}
+
+				$wpdb->insert(
+					$wpdb->postmeta,
+					array(
+						'post_id' => $post->ID,
+						'meta_key' => $new_meta_key,
+						'meta_value' => give_get_meta( $post->ID, $old_meta_key, true )
+					)
+				);
+			}
+
+			// Bailout
+			if ( $donor_id = give_get_meta( $post->ID, '_give_payment_donor_id', true ) ) {
+				/* @var Give_Donor $donor */
+				$donor = new Give_Donor( $donor_id );
+
+				$address['line1']   = give_get_meta( $post->ID, '_give_donor_billing_address1', true, '' );
+				$address['line2']   = give_get_meta( $post->ID, '_give_donor_billing_address2', true, '' );
+				$address['city']    = give_get_meta( $post->ID, '_give_donor_billing_city', true, '' );
+				$address['state']   = give_get_meta( $post->ID, '_give_donor_billing_state', true, '' );
+				$address['zip']     = give_get_meta( $post->ID, '_give_donor_billing_zip', true, '' );
+				$address['country'] = give_get_meta( $post->ID, '_give_donor_billing_country', true, '' );
+
+				// Save address.
+				$donor->add_address( 'billing[]', $address );
+			}
+
+		}// End while().
+
+		wp_reset_postdata();
+	} else {
+		// @todo Delete user id meta after releases 2.0
+		// $wpdb->get_var( $wpdb->prepare( "DELETE FROM $wpdb->postmeta WHERE meta_key=%s", '_give_payment_user_id' ) );
+
+		// No more forms found, finish up.
+		give_set_upgrade_complete( 'v201_upgrades_payment_metadata' );
 	}
 }
 
