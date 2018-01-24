@@ -632,7 +632,7 @@ class Give_Cache {
 	 *
 	 * @return string
 	 */
-	private function get_incrementer( $refresh = false, $incrementer_key = 'give-cahce-incrementer-db-queries' ) {
+	private function get_incrementer( $refresh = false, $incrementer_key = 'give-cache-incrementer-db-queries' ) {
 		$incrementer_value = wp_cache_get( $incrementer_key );
 
 		if ( false === $incrementer_value || true === $refresh ) {
@@ -658,7 +658,7 @@ class Give_Cache {
 			give_is_setting_enabled( give_clean( $_POST['cache'] ) )
 		) {
 			$this->get_incrementer( true );
-			$this->get_incrementer( true, 'give-cahce-incrementer' );
+			$this->get_incrementer( true, 'give-cache-incrementer' );
 		}
 	}
 
@@ -675,7 +675,7 @@ class Give_Cache {
 	 */
 	private function filter_group_name( $group ) {
 		if ( ! empty( $group ) ) {
-			$incrementer = self::$instance->get_incrementer( false, 'give-cahce-incrementer' );
+			$incrementer = self::$instance->get_incrementer( false, 'give-cache-incrementer' );
 
 			if ( 'give-db-queries' === $group ) {
 				$incrementer = self::$instance->get_incrementer();
