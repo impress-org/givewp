@@ -2445,6 +2445,13 @@ function give_v201_logs_upgrades_callback() {
 	}
 }
 
+
+/**
+ * Add missing donor.
+ *
+ * @since  2.0.1
+ * @return void
+ */
 function give_v201_add_missing_donors_callback(){
 	global $wpdb;
 
