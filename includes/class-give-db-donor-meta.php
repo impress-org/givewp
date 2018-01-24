@@ -108,8 +108,9 @@ class Give_DB_Donor_Meta extends Give_DB_Meta {
 	 * @return void
 	 */
 	public function create_table() {
+		global $wpdb;
 
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		$charset_collate = $wpdb->get_charset_collate();
 
 		$sql = "CREATE TABLE {$this->table_name} (
 			meta_id bigint(20) NOT NULL AUTO_INCREMENT,
@@ -118,9 +119,10 @@ class Give_DB_Donor_Meta extends Give_DB_Meta {
 			meta_value longtext,
 			PRIMARY KEY  (meta_id),
 			KEY donor_id (donor_id),
-			KEY meta_key (meta_key)
-			) CHARACTER SET utf8 COLLATE utf8_general_ci;";
+			KEY meta_key (meta_key({$this->min_index_length}))
+			) {$charset_collate};";
 
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		dbDelta( $sql );
 
 		update_option( $this->table_name . '_db_version', $this->version );
