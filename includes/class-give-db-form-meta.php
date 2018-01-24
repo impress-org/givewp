@@ -96,7 +96,7 @@ class Give_DB_Form_Meta extends Give_DB_Meta {
 			meta_value longtext,
 			PRIMARY KEY  (meta_id),
 			KEY form_id (form_id),
-			KEY meta_key (meta_key)
+			KEY meta_key (meta_key({$this->min_index_length}))
 			) {$charset_collate};";
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
