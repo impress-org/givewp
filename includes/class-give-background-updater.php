@@ -191,7 +191,7 @@ class Give_Background_Updater extends WP_Background_Process {
 		delete_option( 'give_doing_upgrade' );
 		add_option( 'give_show_db_upgrade_complete_notice', 1, '', 'no' );
 
-		Give_Cache::get_instance()->get_incrementer( true );
+		Give_Cache::get_instance()->flush_cache();
 	}
 
 	/**
