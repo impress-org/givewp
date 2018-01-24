@@ -83,6 +83,7 @@ function give_do_automatic_upgrades() {
 			if( ! doing_action( 'give_upgrades' ) ) {
 				give_v201_create_tables();
 				Give_Updates::get_instance()->__health_background_update( Give_Updates::get_instance() );
+				Give_Updates::$background_updater->dispatch();
 			}
 
 			$did_upgrade = true;
