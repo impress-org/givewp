@@ -2455,103 +2455,105 @@ function give_v201_logs_upgrades_callback() {
 function give_v201_add_missing_donors_callback(){
 	global $wpdb;
 
-	$customers  = wp_list_pluck( $wpdb->get_results( "SELECT id FROM {$wpdb->prefix}give_customers" ), 'id' );
-	$donors     = wp_list_pluck( $wpdb->get_results( "SELECT id FROM {$wpdb->prefix}give_donors" ), 'id' );
-	$donor_data = array();
+	if ( $wpdb->query( $wpdb->prepare( "SHOW TABLES LIKE %s", "{$wpdb->prefix}give_customers" ) ) ) {
+		$customers  = wp_list_pluck( $wpdb->get_results( "SELECT id FROM {$wpdb->prefix}give_customers" ), 'id' );
+		$donors     = wp_list_pluck( $wpdb->get_results( "SELECT id FROM {$wpdb->prefix}give_donors" ), 'id' );
+		$donor_data = array();
 
-	if ( $missing_donors = array_diff( $customers, $donors ) ) {
-		foreach ( $missing_donors as $donor_id ) {
-			$donor_data[] = array(
-				'info' => $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}give_customers WHERE id=%d", $donor_id ) ),
-				'meta' => $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}give_customermeta WHERE customer_id=%d", $donor_id ) ),
+		if ( $missing_donors = array_diff( $customers, $donors ) ) {
+			foreach ( $missing_donors as $donor_id ) {
+				$donor_data[] = array(
+					'info' => $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}give_customers WHERE id=%d", $donor_id ) ),
+					'meta' => $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}give_customermeta WHERE customer_id=%d", $donor_id ) ),
 
-			);
+				);
+			}
 		}
-	}
 
-	if( ! empty( $donor_data ) ) {
-		$donor_table_name = Give()->donors->table_name;
-		$donor_meta_table_name = Give()->donor_meta->table_name;
+		if( ! empty( $donor_data ) ) {
+			$donor_table_name = Give()->donors->table_name;
+			$donor_meta_table_name = Give()->donor_meta->table_name;
 
-		Give()->donors->table_name = "{$wpdb->prefix}give_donors";
-		Give()->donor_meta->table_name = "{$wpdb->prefix}give_donormeta";
+			Give()->donors->table_name = "{$wpdb->prefix}give_donors";
+			Give()->donor_meta->table_name = "{$wpdb->prefix}give_donormeta";
 
-		foreach ( $donor_data as $donor ) {
-			$donor['info'][0] = (array) $donor['info'][0];
+			foreach ( $donor_data as $donor ) {
+				$donor['info'][0] = (array) $donor['info'][0];
 
-			// Prevent duplicate meta id issue.
-			if( $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}give_donors WHERE id=%d", $donor['info'][0]['id'] ) ) ){
-				continue;
-			}
-
-			$donor_id = Give()->donors->add( $donor['info'][0] );
-
-			if( ! empty( $donor['meta'] ) ) {
-				foreach ( $donor['meta'] as $donor_meta ) {
-					$donor_meta = (array) $donor_meta;
-
-					// Prevent duplicate meta id issue.
-					if( $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}give_donormeta WHERE meta_id=%d", $donor_meta['meta_id'] ) ) ){
-						unset( $donor_meta['meta_id'] );
-					}
-
-					$donor_meta['donor_id'] = $donor_meta['customer_id'];
-					unset( $donor_meta['customer_id'] );
-
-					Give()->donor_meta->insert( $donor_meta );
+				// Prevent duplicate meta id issue.
+				if( $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}give_donors WHERE id=%d", $donor['info'][0]['id'] ) ) ){
+					continue;
 				}
-			}
 
-			/**
-			 * Fix donor name and address
-			 */
-			$address = $wpdb->get_var(
-				$wpdb->prepare(
-					"
+				$donor_id = Give()->donors->add( $donor['info'][0] );
+
+				if( ! empty( $donor['meta'] ) ) {
+					foreach ( $donor['meta'] as $donor_meta ) {
+						$donor_meta = (array) $donor_meta;
+
+						// Prevent duplicate meta id issue.
+						if( $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}give_donormeta WHERE meta_id=%d", $donor_meta['meta_id'] ) ) ){
+							unset( $donor_meta['meta_id'] );
+						}
+
+						$donor_meta['donor_id'] = $donor_meta['customer_id'];
+						unset( $donor_meta['customer_id'] );
+
+						Give()->donor_meta->insert( $donor_meta );
+					}
+				}
+
+				/**
+				 * Fix donor name and address
+				 */
+				$address = $wpdb->get_var(
+					$wpdb->prepare(
+						"
 					SELECT meta_value FROM {$wpdb->usermeta}
 					WHERE user_id=%s
 					AND meta_key=%s
 					",
-					$donor['info'][0]['user_id'],
-					'_give_user_address'
-				)
-			);
+						$donor['info'][0]['user_id'],
+						'_give_user_address'
+					)
+				);
 
-			$donor = new Give_Donor( $donor_id );
+				$donor = new Give_Donor( $donor_id );
 
-			if ( ! empty( $address ) ) {
-				$address = maybe_unserialize( $address );
-				$donor->add_address( 'personal', $address );
-				$donor->add_address( 'billing[]', $address );
-			}
-
-			$donor_name       = explode( ' ', $donor->name, 2 );
-			$donor_first_name = Give()->donor_meta->get_meta( $donor->id, '_give_donor_first_name' );
-			$donor_last_name  = Give()->donor_meta->get_meta( $donor->id, '_give_donor_last_name' );
-
-			// If first name meta of donor is not created, then create it.
-			if ( ! $donor_first_name && isset( $donor_name[0] ) ) {
-				Give()->donor_meta->add_meta( $donor->id, '_give_donor_first_name', $donor_name[0] );
-			}
-
-			// If last name meta of donor is not created, then create it.
-			if ( ! $donor_last_name && isset( $donor_name[1] ) ) {
-				Give()->donor_meta->add_meta( $donor->id, '_give_donor_last_name', $donor_name[1] );
-			}
-
-			// If Donor is connected with WP User then update user meta.
-			if ( $donor->user_id ) {
-				if ( isset( $donor_name[0] ) ) {
-					update_user_meta( $donor->user_id, 'first_name', $donor_name[0] );
+				if ( ! empty( $address ) ) {
+					$address = maybe_unserialize( $address );
+					$donor->add_address( 'personal', $address );
+					$donor->add_address( 'billing[]', $address );
 				}
-				if ( isset( $donor_name[1] ) ) {
-					update_user_meta( $donor->user_id, 'last_name', $donor_name[1] );
+
+				$donor_name       = explode( ' ', $donor->name, 2 );
+				$donor_first_name = Give()->donor_meta->get_meta( $donor->id, '_give_donor_first_name' );
+				$donor_last_name  = Give()->donor_meta->get_meta( $donor->id, '_give_donor_last_name' );
+
+				// If first name meta of donor is not created, then create it.
+				if ( ! $donor_first_name && isset( $donor_name[0] ) ) {
+					Give()->donor_meta->add_meta( $donor->id, '_give_donor_first_name', $donor_name[0] );
+				}
+
+				// If last name meta of donor is not created, then create it.
+				if ( ! $donor_last_name && isset( $donor_name[1] ) ) {
+					Give()->donor_meta->add_meta( $donor->id, '_give_donor_last_name', $donor_name[1] );
+				}
+
+				// If Donor is connected with WP User then update user meta.
+				if ( $donor->user_id ) {
+					if ( isset( $donor_name[0] ) ) {
+						update_user_meta( $donor->user_id, 'first_name', $donor_name[0] );
+					}
+					if ( isset( $donor_name[1] ) ) {
+						update_user_meta( $donor->user_id, 'last_name', $donor_name[1] );
+					}
 				}
 			}
+
+			Give()->donors->table_name = $donor_table_name;
+			Give()->donor_meta->table_name = $donor_meta_table_name;
 		}
-
-		Give()->donors->table_name = $donor_table_name;
-		Give()->donor_meta->table_name = $donor_meta_table_name;
 	}
 
 	Give_Updates::get_instance()->percentage = 100;
