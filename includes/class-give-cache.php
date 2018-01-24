@@ -632,7 +632,7 @@ class Give_Cache {
 	 *
 	 * @return string
 	 */
-	public function get_incrementer( $refresh = false, $incrementer_key = 'give-cache-incrementer-db-queries' ) {
+	private function get_incrementer( $refresh = false, $incrementer_key = 'give-cache-incrementer-db-queries' ) {
 		$incrementer_value = wp_cache_get( $incrementer_key );
 
 		if ( false === $incrementer_value || true === $refresh ) {
