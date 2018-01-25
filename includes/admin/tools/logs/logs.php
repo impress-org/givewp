@@ -82,6 +82,49 @@ function give_logs_view_sales() {
 
 add_action( 'give_logs_view_sales', 'give_logs_view_sales' );
 
+/**
+ * Update Logs
+ *
+ * @since 2.0.1
+ *
+ * @return void
+ */
+function give_logs_view_updates() {
+	include( GIVE_PLUGIN_DIR . 'includes/admin/tools/logs/class-update-logs-list-table.php' );
+
+	$logs_table = new Give_Update_Log_Table();
+	$logs_table->prepare_items();
+	?>
+	<div class="wrap">
+
+		<?php
+		/**
+		 * Fires before displaying Payment Error logs.
+		 *
+		 * @since 2.0.1
+		 */
+		do_action( 'give_logs_update_top' );
+
+		$logs_table->display(); ?>
+		<input type="hidden" name="post_type" value="give_forms"/>
+		<input type="hidden" name="page" value="give-tools"/>
+		<input type="hidden" name="tab" value="logs"/>
+		<input type="hidden" name="section" value="update"/>
+
+		<?php
+		/**
+		 * Fires after displaying update logs.
+		 *
+		 * @since 2.0.1
+		 */
+		do_action( 'give_logs_update_bottom' );
+		?>
+
+	</div>
+	<?php
+}
+
+add_action( 'give_logs_view_updates', 'give_logs_view_updates' );
 
 /**
  * Gateway Error Logs
