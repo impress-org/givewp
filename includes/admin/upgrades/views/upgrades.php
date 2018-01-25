@@ -40,7 +40,8 @@ $give_updates = Give_Updates::get_instance();
 						<div class="inside">
 							<div class="panel-content">
 								<p class="give-update-button">
-									<?php echo sprintf(
+									<span class="give-doing-update-text-p" <?php echo Give_Updates::$background_updater->is_paused_process() ? 'style="display:none;"' : '';  ?>>
+										<?php echo sprintf(
 										__( '%1$s <a href="%2$s" class="%3$s">%4$s</a>', 'give' ),
 										$is_doing_updates ?
 											__( 'Give is currently updating the database in the background.', 'give' ) :
@@ -50,6 +51,35 @@ $give_updates = Give_Updates::get_instance();
 										__( 'Update now', 'give' )
 									);
 									?>
+									</span>
+									<span class="give-update-paused-text-p" <?php echo ! Give_Updates::$background_updater->is_paused_process()  ? 'style="display:none;"' : '';  ?>>
+										<?php _e('The updates have been paused.', 'give'); ?>
+									</span>
+
+									<?php if ( Give_Updates::$background_updater->is_paused_process() ) : ?>
+										<button id="give-restart-upgrades" class="button button-primary alignright" data-redirect-url="<?php echo esc_url( admin_url( '/edit.php?post_type=give_forms&page=give-updates&give-restart-db-upgrades=1' ) ); ?>"><?php _e( 'Restart Upgrades', 'give' ); ?></button>
+									<?php elseif( $give_updates->is_doing_updates() ): ?>
+										<button id="give-pause-upgrades" class="button button-primary alignright" data-redirect-url="<?php echo esc_url( admin_url( '/edit.php?post_type=give_forms&page=give-updates&give-pause-db-upgrades=1' ) ); ?>"><?php _e( 'Pause Upgrades', 'give' ); ?></button>
+									<?php endif; ?>
+
+									<script type="text/javascript">
+										jQuery('#give-pause-upgrades').click('click', function (e) {
+											e.preventDefault();
+											jQuery('.give-doing-update-text-p').hide();
+											jQuery('.give-update-paused-text-p').show();
+											if (window.confirm('<?php echo esc_js( __( 'Do you want to stop the update process now?', 'give' ) ); ?>')) {
+												window.location.assign(jQuery(this).data('redirect-url'));
+											}
+										});
+										jQuery('#give-restart-upgrades').click('click', function (e) {
+											e.preventDefault();
+											jQuery('.give-doing-update-text-p').show();
+											jQuery('.give-update-paused-text-p').hide();
+											if (window.confirm('<?php echo esc_js( __( 'Do you want to restart the update process?', 'give' ) ); ?>')) {
+												window.location.assign(jQuery(this).data('redirect-url'));
+											}
+										});
+									</script>
 								</p>
 							</div>
 							<div class="progress-container<?php echo $is_doing_updates ? '' : ' give-hidden'; ?>">
@@ -65,9 +95,13 @@ $give_updates = Give_Updates::get_instance();
 									</strong>
 								</p>
 								<div class="progress-content">
-									<?php if ( $is_doing_updates ) : ?>
+									<?php if ( $is_doing_updates  ) : ?>
 										<div class="notice-wrap give-clearfix">
-											<span class="spinner is-active"></span>
+
+											<?php if ( ! Give_Updates::$background_updater->is_paused_process() ) :  ?>
+												<span class="spinner is-active"></span>
+											<?php endif; ?>
+
 											<div class="give-progress">
 												<div style="width: <?php echo $width ?>%;"></div>
 											</div>
@@ -76,7 +110,7 @@ $give_updates = Give_Updates::get_instance();
 								</div>
 							</div>
 
-							<?php if( ! $is_doing_updates ) : ?>
+							<?php if ( ! $is_doing_updates ) : ?>
 								<div class="give-run-database-update"></div>
 							<?php endif; ?>
 						</div>

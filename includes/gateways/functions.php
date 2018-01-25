@@ -285,7 +285,7 @@ function give_record_gateway_error( $title = '', $message = '', $parent = 0 ) {
  * @since 1.0
  *
  * @param string $gateway_id
- * @param string $status
+ * @param array|string $status
  *
  * @return int
  */

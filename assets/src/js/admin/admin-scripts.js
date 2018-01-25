@@ -2780,10 +2780,10 @@ var give_setting_edit = false;
 				$setting_fields = {};
 
 			// Get setting fields.
-			if ($(this).closest('.give_options_panel').length) {
-				$setting_fields = $(this).closest('.give_options_panel').children('.give-field-wrap:not(.give_email_api_notification_status_setting), .give-repeatable-field-section' );
-			} else if ($(this).closest('table').length) {
-				$setting_fields = $(this).closest('table').find('tr:not(.give_email_api_notification_status_setting)');
+			if ( $( this ).closest( '.give_options_panel' ).length ) {
+				$setting_fields = $( this ).closest( '.give_options_panel' ).children( '.give-field-wrap:not(.give_email_api_notification_status_setting), .give-repeatable-field-section' );
+			} else if ( $( this ).closest( 'table' ).length ) {
+				$setting_fields = $( this ).closest( 'table' ).find( 'tr:not(.give_email_api_notification_status_setting)' );
 			}
 
 			if ( - 1 === jQuery.inArray( value, [ 'enabled', 'disabled', 'global' ] ) ) {
@@ -2973,6 +2973,89 @@ function give_on_core_settings_import_start() {
 			window.location = response.url;
 		},
 		error: function() {
+			give_setting_edit = false;
+			alert( give_vars.error_message );
+		}
+	} );
+}
+
+/**
+ * Run when user click on upload CSV.
+ *
+ * @since 1.8.13
+ */
+function give_on_donation_import_start() {
+	give_on_donation_import_ajax();
+}
+
+/**
+ * Upload CSV ajax
+ *
+ * @since 1.8.13
+ */
+function give_on_donation_import_ajax() {
+	var $form = jQuery( 'form.tools-setting-page-import' );
+
+	/**
+	 * Do not allow user to reload the page
+	 *
+	 * @since 1.8.14
+	 */
+	give_setting_edit = true;
+
+	var progress = $form.find( '.give-progress' );
+
+	var total_ajax = jQuery( progress ).data( 'total_ajax' ),
+		current = jQuery( progress ).data( 'current' ),
+		start = jQuery( progress ).data( 'start' ),
+		end = jQuery( progress ).data( 'end' ),
+		next = jQuery( progress ).data( 'next' ),
+		total = jQuery( progress ).data( 'total' ),
+		per_page = jQuery( progress ).data( 'per_page' );
+
+	jQuery.ajax( {
+		type: 'POST',
+		url: ajaxurl,
+		data: {
+			action: give_vars.give_donation_import,
+			total_ajax: total_ajax,
+			current: current,
+			start: start,
+			end: end,
+			next: next,
+			total: total,
+			per_page: per_page,
+			fields: $form.serialize()
+		},
+		dataType: 'json',
+		success: function( response ) {
+			jQuery( progress ).data( 'current', response.current );
+			jQuery( progress ).find( 'div' ).width( response.percentage + '%' );
+
+			if ( response.next == true ) {
+				jQuery( progress ).data( 'start', response.start );
+				jQuery( progress ).data( 'end', response.end );
+
+				if ( response.last == true ) {
+					jQuery( progress ).data( 'next', false );
+				}
+				give_on_donation_import_ajax();
+			} else {
+				/**
+				 * Now user is allow to reload the page.
+				 *
+				 * @since 1.8.14
+				 */
+				give_setting_edit = false;
+				window.location = response.url;
+			}
+		},
+		error: function() {
+			/**
+			 * Now user is allow to reload the page.
+			 *
+			 * @since 1.8.14
+			 */
 			give_setting_edit = false;
 			alert( give_vars.error_message );
 		}
