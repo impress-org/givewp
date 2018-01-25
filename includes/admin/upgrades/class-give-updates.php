@@ -539,7 +539,7 @@ class Give_Updates {
 				array(
 					'id'          => 'give_db_upgrade_ajax_inaccessible',
 					'type'        => 'error',
-					'description' => sprintf( '%1$s <a href="%2$s">%3$s</a>', __( 'Give needs to upgrade the database but cannot because AJAX does not appear accessible. This could be because your website is password protected, in maintenance mode, or has a specific hosting configuration or plugin active that is preventing access.', 'give' ), 'https://givewp.com/documentation/core/frequent-troubleshooting-issues/admin-ajax-blocked/', __( 'Read More', 'give' ) . ' &raquo;' ),
+					'description' => sprintf( '%1$s <a href="%2$s">%3$s</a>', __( 'Give needs to upgrade the database but cannot because AJAX does not appear accessible. This could be because your website is password protected, in maintenance mode, or has a specific hosting configuration or plugin active that is preventing access.', 'give' ), 'http://docs.givewp.com/admin-ajax-error', __( 'Read More', 'give' ) . ' &raquo;' ),
 					'show'        => true,
 				)
 			);
