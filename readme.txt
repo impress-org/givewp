@@ -208,6 +208,14 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
+= 2.0.1: January 17th, 2018  =
+* New: Added the database table prefix to the system info settings. [#2678](https://github.com/WordImpress/Give/issues/2678)
+* UI/UX: Added an email icon to the per form emails tab. [#2680](https://github.com/WordImpress/Give/issues/2680)
+* Fix: If an issue with an upgrade progress happens there is now a pause and restart functionality built in. It is not recommended that you actually use the pause feature inless you're absolutely positive there was an issue with the update. [#2676](https://github.com/WordImpress/Give/issues/2676), [#2971](https://github.com/WordImpress/Give/issues/2671)
+* Fix: The {billing_address} tag was displaying blank on PDF receipts. [#2707](https://github.com/WordImpress/Give/issues/2707)
+* Fix: Updating the Currency Position resulted to a confusing user experience unless you saved it. [#2667](https://github.com/WordImpress/Give/issues/2667)
+* For additional information on 2.0.1 and post reflection on the Give 2.0 release please visit: [Give 2.0.1 checklist](https://github.com/WordImpress/Give/issues/2695), [Give 2.0 Release Reflection])http://docs.givewp.com/2-0-release-reflection)
+
 = 2.0.0: January 17th, 2018  =
 * New: We have refactored how Give stores data so it's much more scalable now. This means implementing custom tables and our own database schema. We've worked hard to ensure the upgrade routine works without an issue but be sure to make a backup just in case. [How to Prepare Your WordPress Site for Give 2.0](https://givewp.com/prepare-for-give-2-0/), [#1132](https://github.com/WordImpress/Give/issues/1132), [#1148](https://github.com/WordImpress/Give/issues/1148)
 * New: The email system within Give has been revamped so it's easier to toggle on or off and customize the various notifications all via one interface. [#1346](https://github.com/WordImpress/Give/issues/1346)
