@@ -23,9 +23,20 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_is_test_mode() {
 
-	$ret = give_is_setting_enabled( give_get_option( 'test_mode' ) );
+	$test_mode = '';
+	$form      = new Give_Donate_Form( get_the_ID() );
 
-	return (bool) apply_filters( 'give_is_test_mode', $ret );
+	// Get Test Mode Setting Per Form, if Form ID is valid, otherwise use global settings.
+	if ( $form->ID > 0 ) {
+		$test_mode = give_get_meta( $form->ID, '_give_test_mode', true );
+	}
+
+	// Use Global setting, if form setting is set to global or empty.
+	if ( 'global' === $test_mode || '' === $test_mode ) {
+		$test_mode = give_get_option( 'test_mode' );
+	}
+
+	return (bool) apply_filters( 'give_is_test_mode', give_is_setting_enabled( $test_mode ) );
 
 }
 
