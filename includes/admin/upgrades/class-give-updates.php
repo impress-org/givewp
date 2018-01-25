@@ -504,7 +504,7 @@ class Give_Updates {
 			?>
 			<p>
 				<strong><?php _e( 'Database Update', 'give' ); ?></strong>
-				&nbsp;&#8211;&nbsp;<?php _e( 'GiveWP needs to update your database to the latest version. The following process will make updates to your site\'s database. Please create a complete backup before proceeding.', 'give' ); ?>
+				&nbsp;&#8211;&nbsp;<?php _e( 'GiveWP needs to update your database to the latest version. The following process will make updates to your site\'s database. Please create a backup before proceeding.', 'give' ); ?>
 			</p>
 			<p class="submit">
 				<a href="<?php echo esc_url( add_query_arg( array( 'give-restart-db-upgrades' => 1 ), admin_url( 'edit.php?post_type=give_forms&page=give-updates' ) ) ); ?>" class="button button-primary give-restart-updater-btn">
