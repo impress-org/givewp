@@ -438,7 +438,7 @@ class Give_Updates {
 				}
 			}
 		}
-		
+
 		if( $new_updates = $this->get_updates( 'database', 'new' ) ){
 			$all_batch_update_ids = ! empty( $batch ) ? wp_list_pluck( $batch->data, 'id' ) : array();
 
@@ -539,7 +539,7 @@ class Give_Updates {
 				array(
 					'id'          => 'give_db_upgrade_ajax_inaccessible',
 					'type'        => 'error',
-					'description' => __( 'Give needs to upgrade the database but cannot because AJAX is not functioning properly. Please contact your host and ask them to ensure admin-ajax.php is accessible.', 'give' ),
+					'description' => sprintf( '%1$s <a href="%2$s">%3$s</a>', __( 'Give needs to upgrade the database but cannot because AJAX does not appear accessible. This could be because your website is password protected, in maintenance mode, or has a specific hosting configuration or plugin active that is preventing access.', 'give' ), 'https://givewp.com/documentation/core/frequent-troubleshooting-issues/admin-ajax-blocked/', __( 'Read More', 'give' ) . ' &raquo;' ),
 					'show'        => true,
 				)
 			);
