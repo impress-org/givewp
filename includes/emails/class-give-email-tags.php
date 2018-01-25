@@ -692,29 +692,15 @@ function give_email_tag_billing_address( $tag_args ) {
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
-			$user_info    = give_get_payment_meta_user_info( $tag_args['payment_id'] );
-			$user_address = give_check_variable(
-				$user_info,
-				'isset',
-				array(
-					'line1'   => '',
-					'line2'   => '',
-					'city'    => '',
-					'country' => '',
-					'state'   => '',
-					'zip'     => '',
-				),
-				'address'
-			);
+			$donation   = new Give_Payment( $tag_args['payment_id'] );
+			$address = $donation->address['line1'] . "\n";
 
-			$address = $user_address['line1'] . "\n";
-
-			if ( ! empty( $user_address['line2'] ) ) {
-				$address .= $user_address['line2'] . "\n";
+			if ( ! empty( $donation->address['line2'] ) ) {
+				$address .= $donation->address['line2'] . "\n";
 			}
 
-			$address .= $user_address['city'] . ' ' . $user_address['zip'] . ' ' . $user_address['state'] . "\n";
-			$address .= $user_address['country'];
+			$address .= $donation->address['city'] . ' ' . $donation->address['zip'] . ' ' . $donation->address['state'] . "\n";
+			$address .= $donation->address['country'];
 			break;
 	}
 

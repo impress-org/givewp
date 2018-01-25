@@ -34,6 +34,16 @@ abstract class Give_DB {
 	public $table_name;
 
 	/**
+	 * Set Minimum Index Length
+	 *
+	 * @since  2.0.1
+	 * @access public
+	 *
+	 * @var int
+	 */
+	public $min_index_length = 191;
+
+	/**
 	 * The version of our database table
 	 *
 	 * @since  1.0
