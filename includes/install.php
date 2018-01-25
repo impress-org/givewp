@@ -141,7 +141,11 @@ function give_run_install() {
 			'v20_rename_donor_tables',
 			'v20_upgrades_donor_name',
 			'v20_upgrades_user_address',
-			'v20_upgrades_payment_metadata'
+			'v20_upgrades_payment_metadata',
+			'v201_upgrades_payment_metadata',
+			'v201_add_missing_donors',
+			'v201_move_metadata_into_new_table',
+			'v201_logs_upgrades'
 		);
 
 		foreach ( $upgrade_routines as $upgrade ) {
