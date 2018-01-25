@@ -40,7 +40,8 @@ $give_updates = Give_Updates::get_instance();
 						<div class="inside">
 							<div class="panel-content">
 								<p class="give-update-button">
-									<?php echo sprintf(
+									<span class="give-doing-update-text-p" <?php echo isset($_GET['give-pause-db-upgrades']) ? 'style="display:none;"' : '';  ?>>
+										<?php echo sprintf(
 										__( '%1$s <a href="%2$s" class="%3$s">%4$s</a>', 'give' ),
 										$is_doing_updates ?
 											__( 'Give is currently updating the database in the background.', 'give' ) :
@@ -50,6 +51,10 @@ $give_updates = Give_Updates::get_instance();
 										__( 'Update now', 'give' )
 									);
 									?>
+									</span>
+									<span class="give-update-paused-text-p" <?php echo ! isset($_GET['give-pause-db-upgrades'])  ? 'style="display:none;"' : '';  ?>>
+										<?php _e('The updates have been paused.', 'give'); ?>
+									</span>
 
 									<?php if ( Give_Updates::$background_updater->is_paused_process() ) : ?>
 										<button id="give-restart-upgrades" class="button button-primary alignright" data-redirect-url="<?php echo esc_url( admin_url( '/edit.php?post_type=give_forms&page=give-updates&give-restart-db-upgrades=1' ) ); ?>"><?php _e( 'Restart Upgrades', 'give' ); ?></button>
@@ -60,12 +65,16 @@ $give_updates = Give_Updates::get_instance();
 									<script type="text/javascript">
 										jQuery('#give-pause-upgrades').click('click', function (e) {
 											e.preventDefault();
+											jQuery('.give-doing-update-text-p').hide();
+											jQuery('.give-update-paused-text-p').show();
 											if (window.confirm('<?php echo esc_js( __( 'Do you want to stop the update process now?', 'give' ) ); ?>')) {
 												window.location.assign(jQuery(this).data('redirect-url'));
 											}
 										});
 										jQuery('#give-restart-upgrades').click('click', function (e) {
 											e.preventDefault();
+											jQuery('.give-doing-update-text-p').show();
+											jQuery('.give-update-paused-text-p').hide();
 											if (window.confirm('<?php echo esc_js( __( 'Do you want to restart the update process?', 'give' ) ); ?>')) {
 												window.location.assign(jQuery(this).data('redirect-url'));
 											}
