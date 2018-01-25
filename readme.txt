@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, wp donati
 Requires at least: 4.8
 Tested up to: 4.9
 Requires PHP: 5.3
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -207,6 +207,17 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.0.1: January 17th, 2018  =
+* This update requires a number of health checks for the 2.0.0 release. For a post reflection on the Give 2.0.0 release and additional developer information on the 2.0.1 release please read the [Give 2.0.1 checklist](https://github.com/WordImpress/Give/issues/2695) as well as [Give 2.0 Release Reflection])http://docs.givewp.com/2-0-release-reflection).
+* New: Added the database table prefix to the system info settings. [#2678](https://github.com/WordImpress/Give/issues/2678)
+* UI/UX: Added an email icon to the per form emails tab. [#2680](https://github.com/WordImpress/Give/issues/2680)
+* UI/UX: Revised field descriptions for the donations importer. [#2688](https://github.com/WordImpress/Give/issues/2688)
+* Fix: If an issue with an upgrade progress happens there is now a pause and restart functionality built in. It is not recommended that you actually use the pause feature inless you're absolutely positive there was an issue with the update. [#2676](https://github.com/WordImpress/Give/issues/2676), [#2971](https://github.com/WordImpress/Give/issues/2671)
+* Fix: The {billing_address} tag was displaying blank on PDF receipts. [#2707](https://github.com/WordImpress/Give/issues/2707)
+* Fix: Updating the Currency Position resulted to a confusing user experience unless you saved it. [#2667](https://github.com/WordImpress/Give/issues/2667)
+* Fix: View all donations link on the donation forms list screen wasn't properly redirecting to the filtered results. [#2683](https://github.com/WordImpress/Give/issues/2683)
+* Fix: MySQL error aftering updating Email Preview on Windows 64-bit OS. There was also a database error on the donations list page in the backend on Windows 64-bit OS. [#2677](https://github.com/WordImpress/Give/issues/2677), [#2677](https://github.com/WordImpress/Give/issues/2677)
 
 = 2.0.0: January 17th, 2018  =
 * New: We have refactored how Give stores data so it's much more scalable now. This means implementing custom tables and our own database schema. We've worked hard to ensure the upgrade routine works without an issue but be sure to make a backup just in case. [How to Prepare Your WordPress Site for Give 2.0](https://givewp.com/prepare-for-give-2-0/), [#1132](https://github.com/WordImpress/Give/issues/1132), [#1148](https://github.com/WordImpress/Give/issues/1148)
