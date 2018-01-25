@@ -142,6 +142,7 @@ class Give_Logging {
 			'sale',
 			'gateway_error',
 			'api_request',
+			'update',
 		);
 
 		return apply_filters( 'give_log_types', $terms );

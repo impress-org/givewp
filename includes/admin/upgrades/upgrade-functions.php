@@ -77,6 +77,16 @@ function give_do_automatic_upgrades() {
 		case version_compare( $give_version, '2.0', '<' ) :
 			give_v20_upgrades();
 			$did_upgrade = true;
+
+		case version_compare( $give_version, '2.0.1', '<' ) :
+			// Do nothing on fresh install.
+			if( ! doing_action( 'give_upgrades' ) ) {
+				give_v201_create_tables();
+				Give_Updates::get_instance()->__health_background_update( Give_Updates::get_instance() );
+				Give_Updates::$background_updater->dispatch();
+			}
+
+			$did_upgrade = true;
 	}
 
 	if ( $did_upgrade ) {
@@ -262,6 +272,45 @@ function give_show_upgrade_notices( $give_updates ) {
 				'v20_upgrades_user_address',
 				'v20_upgrades_donor_name'
 			),
+		)
+	);
+
+
+	// v2.0.1 Upgrades
+	$give_updates->register(
+		array(
+			'id'       => 'v201_upgrades_payment_metadata',
+			'version'  => '2.0.1',
+			'callback' => 'give_v201_upgrades_payment_metadata_callback',
+		)
+	);
+
+	// v2.0.1 Upgrades
+	$give_updates->register(
+		array(
+			'id'       => 'v201_add_missing_donors',
+			'version'  => '2.0.1',
+			'callback' => 'give_v201_add_missing_donors_callback',
+		)
+	);
+
+	// Run v2.0.0 Upgrades again in 2.0.1
+	$give_updates->register(
+		array(
+			'id'       => 'v201_move_metadata_into_new_table',
+			'version'  => '2.0.1',
+			'callback' => 'give_v201_move_metadata_into_new_table_callback',
+			'depend'   => array( 'v201_upgrades_payment_metadata', 'v201_add_missing_donors' ),
+		)
+	);
+
+	// Run v2.0.0 Upgrades again in 2.0.1
+	$give_updates->register(
+		array(
+			'id'       => 'v201_logs_upgrades',
+			'version'  => '2.0.1',
+			'callback' => 'give_v201_logs_upgrades_callback',
+
 		)
 	);
 }
@@ -2105,4 +2154,409 @@ function give_v20_rename_donor_tables_callback() {
 	// Re initiate donor classes.
 	Give()->donors     = new Give_DB_Donors();
 	Give()->donor_meta = new Give_DB_Donor_Meta();
+}
+
+
+/**
+ * Create missing meta tables.
+ *
+ * @since  2.0.1
+ * @global wpdb $wpdb
+ * @return void
+ */
+function give_v201_create_tables(){
+	global $wpdb;
+
+	if ( ! $wpdb->query( $wpdb->prepare( "SHOW TABLES LIKE %s", "{$wpdb->prefix}give_paymentmeta" ) ) ) {
+		Give()->payment_meta->create_table();
+	}
+
+	if ( ! $wpdb->query( $wpdb->prepare( "SHOW TABLES LIKE %s", "{$wpdb->prefix}give_formmeta" ) ) ) {
+		Give()->form_meta->create_table();
+	}
+
+	if ( ! $wpdb->query( $wpdb->prepare( "SHOW TABLES LIKE %s", "{$wpdb->prefix}give_logs" ) ) ) {
+		Give()->logs->log_db->create_table();
+	}
+
+	if ( ! $wpdb->query( $wpdb->prepare( "SHOW TABLES LIKE %s", "{$wpdb->prefix}give_logmeta" ) ) ) {
+		Give()->logs->logmeta_db->create_table();
+	}
+}
+
+/**
+ * Upgrade payment metadata for new metabox settings.
+ *
+ * @since  2.0.1
+ * @global wpdb $wpdb
+ * @return void
+ */
+function give_v201_upgrades_payment_metadata_callback() {
+	global $wpdb;
+	$give_updates = Give_Updates::get_instance();
+
+	// form query
+	$forms = new WP_Query( array(
+			'paged'          => $give_updates->step,
+			'status'         => 'any',
+			'order'          => 'ASC',
+			'post_type'      => 'give_payment',
+			'posts_per_page' => 100,
+			'date_query' => array(
+				'after'    => array(
+					'year'  => 2018,
+					'month' => 1,
+					'day'   => 8,
+				),
+				'inclusive' => true,
+			)
+		)
+	);
+
+	if ( $forms->have_posts() ) {
+		$give_updates->set_percentage( $forms->found_posts, ( $give_updates->step * 100 ) );
+
+		while ( $forms->have_posts() ) {
+			$forms->the_post();
+			global $post;
+
+			// Do not add new meta keys if already refactored.
+			if ( $wpdb->get_var( $wpdb->prepare( "SELECT meta_id FROM $wpdb->postmeta WHERE post_id=%d AND meta_key=%s", $post->ID, '_give_payment_donor_id' ) ) ) {
+				continue;
+			}
+
+
+			// Split _give_payment_meta meta.
+			// @todo Remove _give_payment_meta after releases 2.0
+			$payment_meta = give_get_meta( $post->ID, '_give_payment_meta', true );
+
+			if ( ! empty( $payment_meta ) ) {
+				_give_20_bc_split_and_save_give_payment_meta( $post->ID, $payment_meta );
+			}
+
+			$deprecated_meta_keys = array(
+				'_give_payment_customer_id' => '_give_payment_donor_id',
+				'_give_payment_user_email'  => '_give_payment_donor_email',
+				'_give_payment_user_ip'     => '_give_payment_donor_ip',
+			);
+
+			foreach ( $deprecated_meta_keys as $old_meta_key => $new_meta_key ) {
+				// Do not add new meta key if already exist.
+				if ( $wpdb->get_var( $wpdb->prepare( "SELECT meta_id FROM $wpdb->postmeta WHERE post_id=%d AND meta_key=%s", $post->ID, $new_meta_key ) ) ) {
+					continue;
+				}
+
+				$wpdb->insert(
+					$wpdb->postmeta,
+					array(
+						'post_id' => $post->ID,
+						'meta_key' => $new_meta_key,
+						'meta_value' => give_get_meta( $post->ID, $old_meta_key, true )
+					)
+				);
+			}
+
+			// Bailout
+			if ( $donor_id = give_get_meta( $post->ID, '_give_payment_donor_id', true ) ) {
+				/* @var Give_Donor $donor */
+				$donor = new Give_Donor( $donor_id );
+
+				$address['line1']   = give_get_meta( $post->ID, '_give_donor_billing_address1', true, '' );
+				$address['line2']   = give_get_meta( $post->ID, '_give_donor_billing_address2', true, '' );
+				$address['city']    = give_get_meta( $post->ID, '_give_donor_billing_city', true, '' );
+				$address['state']   = give_get_meta( $post->ID, '_give_donor_billing_state', true, '' );
+				$address['zip']     = give_get_meta( $post->ID, '_give_donor_billing_zip', true, '' );
+				$address['country'] = give_get_meta( $post->ID, '_give_donor_billing_country', true, '' );
+
+				// Save address.
+				$donor->add_address( 'billing[]', $address );
+			}
+
+		}// End while().
+
+		wp_reset_postdata();
+	} else {
+		// @todo Delete user id meta after releases 2.0
+		// $wpdb->get_var( $wpdb->prepare( "DELETE FROM $wpdb->postmeta WHERE meta_key=%s", '_give_payment_user_id' ) );
+
+		// No more forms found, finish up.
+		give_set_upgrade_complete( 'v201_upgrades_payment_metadata' );
+	}
+}
+
+/**
+ * Move payment and form metadata to new table
+ *
+ * @since  2.0.1
+ * @return void
+ */
+function give_v201_move_metadata_into_new_table_callback() {
+	global $wpdb;
+	$give_updates = Give_Updates::get_instance();
+
+	// form query
+	$payments = new WP_Query( array(
+			'paged'          => $give_updates->step,
+			'status'         => 'any',
+			'order'          => 'ASC',
+			'post_type'      => array( 'give_forms', 'give_payment' ),
+			'posts_per_page' => 100,
+		)
+	);
+
+	if ( $payments->have_posts() ) {
+		$give_updates->set_percentage( $payments->found_posts, $give_updates->step * 100 );
+
+		while ( $payments->have_posts() ) {
+			$payments->the_post();
+			global $post;
+
+			$meta_data = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT * FROM $wpdb->postmeta where post_id=%d",
+					get_the_ID()
+				),
+				ARRAY_A
+			);
+
+			if ( ! empty( $meta_data ) ) {
+				foreach ( $meta_data as $index => $data ) {
+					// Check for duplicate meta values.
+					if( $result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . ( 'give_forms' === $post->post_type ? $wpdb->formmeta : $wpdb->paymentmeta ) .  " WHERE meta_id=%d", $data['meta_id'] ), ARRAY_A ) ) {
+						continue;
+					}
+
+					switch ( $post->post_type ) {
+						case 'give_forms':
+							$data['form_id'] = $data['post_id'];
+							unset( $data['post_id'] );
+
+							Give()->form_meta->insert( $data );
+							// @todo: delete form meta from post meta table after releases 2.0.
+							/*delete_post_meta( get_the_ID(), $data['meta_key'] );*/
+
+							break;
+
+						case 'give_payment':
+							$data['payment_id'] = $data['post_id'];
+							unset( $data['post_id'] );
+
+							Give()->payment_meta->insert( $data );
+
+							// @todo: delete donation meta from post meta table after releases 2.0.
+							/*delete_post_meta( get_the_ID(), $data['meta_key'] );*/
+
+							break;
+					}
+				}
+			}
+
+		}// End while().
+
+		wp_reset_postdata();
+	} else {
+		// No more forms found, finish up.
+		give_set_upgrade_complete( 'v201_move_metadata_into_new_table' );
+	}
+
+}
+
+/**
+ * Move data to new log table.
+ *
+ * @since  2.0.1
+ * @return void
+ */
+function give_v201_logs_upgrades_callback() {
+	global $wpdb;
+	$give_updates = Give_Updates::get_instance();
+
+	// form query
+	$forms = new WP_Query( array(
+			'paged'          => $give_updates->step,
+			'order'          => 'DESC',
+			'post_type'      => 'give_log',
+			'post_status'    => 'any',
+			'posts_per_page' => 100,
+		)
+	);
+
+	if ( $forms->have_posts() ) {
+		$give_updates->set_percentage( $forms->found_posts, $give_updates->step * 100 );
+
+		while ( $forms->have_posts() ) {
+			$forms->the_post();
+			global $post;
+
+			if( $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}give_logs WHERE ID=%d", $post->ID ) ) ) {
+				continue;
+			}
+
+			$term      = get_the_terms( $post->ID, 'give_log_type' );
+			$term      = ! is_wp_error( $term ) && ! empty( $term ) ? $term[0] : array();
+			$term_name = ! empty( $term ) ? $term->slug : '';
+
+			$log_data = array(
+				'ID'           => $post->ID,
+				'log_title'    => $post->post_title,
+				'log_content'  => $post->post_content,
+				'log_parent'   => 0,
+				'log_type'     => $term_name,
+				'log_date'     => $post->post_date,
+				'log_date_gmt' => $post->post_date_gmt,
+			);
+			$log_meta = array();
+
+			if ( $old_log_meta = get_post_meta( $post->ID ) ) {
+				foreach ( $old_log_meta as $meta_key => $meta_value ) {
+					switch ( $meta_key ) {
+						case '_give_log_payment_id':
+							$log_data['log_parent']        = current( $meta_value );
+							$log_meta['_give_log_form_id'] = $post->post_parent;
+							break;
+
+						default:
+							$log_meta[ $meta_key ] = current( $meta_value );
+					}
+				}
+			}
+
+			if ( 'api_request' === $term_name ) {
+				$log_meta['_give_log_api_query'] = $post->post_excerpt;
+			}
+
+			$wpdb->insert( "{$wpdb->prefix}give_logs", $log_data );
+
+			if ( ! empty( $log_meta ) ) {
+				foreach ( $log_meta as $meta_key => $meta_value ) {
+					Give()->logs->logmeta_db->update_meta( $post->ID, $meta_key, $meta_value );
+				}
+			}
+
+			$logIDs[] = $post->ID;
+		}// End while().
+
+		wp_reset_postdata();
+	} else {
+		// Delete log cache.
+		Give()->logs->delete_cache();
+
+		// No more forms found, finish up.
+		give_set_upgrade_complete( 'v201_logs_upgrades' );
+	}
+}
+
+
+/**
+ * Add missing donor.
+ *
+ * @since  2.0.1
+ * @return void
+ */
+function give_v201_add_missing_donors_callback(){
+	global $wpdb;
+
+	if ( $wpdb->query( $wpdb->prepare( "SHOW TABLES LIKE %s", "{$wpdb->prefix}give_customers" ) ) ) {
+		$customers  = wp_list_pluck( $wpdb->get_results( "SELECT id FROM {$wpdb->prefix}give_customers" ), 'id' );
+		$donors     = wp_list_pluck( $wpdb->get_results( "SELECT id FROM {$wpdb->prefix}give_donors" ), 'id' );
+		$donor_data = array();
+
+		if ( $missing_donors = array_diff( $customers, $donors ) ) {
+			foreach ( $missing_donors as $donor_id ) {
+				$donor_data[] = array(
+					'info' => $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}give_customers WHERE id=%d", $donor_id ) ),
+					'meta' => $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}give_customermeta WHERE customer_id=%d", $donor_id ) ),
+
+				);
+			}
+		}
+
+		if( ! empty( $donor_data ) ) {
+			$donor_table_name = Give()->donors->table_name;
+			$donor_meta_table_name = Give()->donor_meta->table_name;
+
+			Give()->donors->table_name = "{$wpdb->prefix}give_donors";
+			Give()->donor_meta->table_name = "{$wpdb->prefix}give_donormeta";
+
+			foreach ( $donor_data as $donor ) {
+				$donor['info'][0] = (array) $donor['info'][0];
+
+				// Prevent duplicate meta id issue.
+				if( $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}give_donors WHERE id=%d", $donor['info'][0]['id'] ) ) ){
+					continue;
+				}
+
+				$donor_id = Give()->donors->add( $donor['info'][0] );
+
+				if( ! empty( $donor['meta'] ) ) {
+					foreach ( $donor['meta'] as $donor_meta ) {
+						$donor_meta = (array) $donor_meta;
+
+						// Prevent duplicate meta id issue.
+						if( $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}give_donormeta WHERE meta_id=%d", $donor_meta['meta_id'] ) ) ){
+							unset( $donor_meta['meta_id'] );
+						}
+
+						$donor_meta['donor_id'] = $donor_meta['customer_id'];
+						unset( $donor_meta['customer_id'] );
+
+						Give()->donor_meta->insert( $donor_meta );
+					}
+				}
+
+				/**
+				 * Fix donor name and address
+				 */
+				$address = $wpdb->get_var(
+					$wpdb->prepare(
+						"
+					SELECT meta_value FROM {$wpdb->usermeta}
+					WHERE user_id=%s
+					AND meta_key=%s
+					",
+						$donor['info'][0]['user_id'],
+						'_give_user_address'
+					)
+				);
+
+				$donor = new Give_Donor( $donor_id );
+
+				if ( ! empty( $address ) ) {
+					$address = maybe_unserialize( $address );
+					$donor->add_address( 'personal', $address );
+					$donor->add_address( 'billing[]', $address );
+				}
+
+				$donor_name       = explode( ' ', $donor->name, 2 );
+				$donor_first_name = Give()->donor_meta->get_meta( $donor->id, '_give_donor_first_name' );
+				$donor_last_name  = Give()->donor_meta->get_meta( $donor->id, '_give_donor_last_name' );
+
+				// If first name meta of donor is not created, then create it.
+				if ( ! $donor_first_name && isset( $donor_name[0] ) ) {
+					Give()->donor_meta->add_meta( $donor->id, '_give_donor_first_name', $donor_name[0] );
+				}
+
+				// If last name meta of donor is not created, then create it.
+				if ( ! $donor_last_name && isset( $donor_name[1] ) ) {
+					Give()->donor_meta->add_meta( $donor->id, '_give_donor_last_name', $donor_name[1] );
+				}
+
+				// If Donor is connected with WP User then update user meta.
+				if ( $donor->user_id ) {
+					if ( isset( $donor_name[0] ) ) {
+						update_user_meta( $donor->user_id, 'first_name', $donor_name[0] );
+					}
+					if ( isset( $donor_name[1] ) ) {
+						update_user_meta( $donor->user_id, 'last_name', $donor_name[1] );
+					}
+				}
+			}
+
+			Give()->donors->table_name = $donor_table_name;
+			Give()->donor_meta->table_name = $donor_meta_table_name;
+		}
+	}
+
+	Give_Updates::get_instance()->percentage = 100;
+	give_set_upgrade_complete('v201_add_missing_donors' );
 }

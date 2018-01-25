@@ -100,33 +100,6 @@ class Give_DB_Donor_Meta extends Give_DB_Meta {
 	}
 
 	/**
-	 * Create the table
-	 *
-	 * @access public
-	 * @since  1.6
-	 *
-	 * @return void
-	 */
-	public function create_table() {
-
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-
-		$sql = "CREATE TABLE {$this->table_name} (
-			meta_id bigint(20) NOT NULL AUTO_INCREMENT,
-			donor_id bigint(20) NOT NULL,
-			meta_key varchar(255) DEFAULT NULL,
-			meta_value longtext,
-			PRIMARY KEY  (meta_id),
-			KEY donor_id (donor_id),
-			KEY meta_key (meta_key)
-			) CHARACTER SET utf8 COLLATE utf8_general_ci;";
-
-		dbDelta( $sql );
-
-		update_option( $this->table_name . '_db_version', $this->version );
-	}
-
-	/**
 	 * Add backward compatibility for old table name
 	 *
 	 * @since  2.0

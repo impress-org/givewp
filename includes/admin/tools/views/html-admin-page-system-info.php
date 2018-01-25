@@ -460,7 +460,13 @@ $give_updates = Give_Updates::get_instance();
 				$pending_updates = $give_updates->get_total_new_db_update_count();
 				$total_updates   = $give_updates->get_total_db_update_count();
 
-				if( $pending_updates === $total_updates ) {
+				if( Give_Updates::$background_updater->is_paused_process() ) {
+					// When all the db updates are pending.
+					$updates_text = sprintf(
+						__( '%1$s updates still need to run. (Paused) ', 'give' ),
+						count( $give_updates->get_updates('database', 'new' ) )
+					);
+				} elseif( $pending_updates === $total_updates ) {
 
 					// When all the db updates are pending.
 					$updates_text = sprintf(
