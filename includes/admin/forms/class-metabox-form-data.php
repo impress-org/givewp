@@ -526,6 +526,29 @@ class Give_MetaBox_Form_Data {
 					$post_id
 				),
 			) ),
+			'form_test_mode' => apply_filters( 'give_form_test_mode', array(
+					'id'        => 'form_test_mode',
+					'title'     => __( 'Test Mode', 'give' ),
+					'icon-html' => '<span class="give-icon give-icon-generic"></span>',
+					'fields'    => apply_filters( 'give_form_test_mode_metabox_fields', array(
+							// Test Mode Options.
+							array(
+								'name'        => __( 'Enable Test Mode', 'give' ),
+								'description' => __( 'Do you want to enable test mode for this form?', 'give' ),
+								'id'          => $prefix . 'test_mode',
+								'type'        => 'radio_inline',
+								'options'     => apply_filters( 'give_form_test_mode_select', array(
+										'global'   => __( 'Global Option', 'give' ),
+										'enabled'  => __( 'Enable', 'give' ),
+										'disabled' => __( 'Disable', 'give' ),
+									)
+								),
+								'default'     => 'global',
+							),
+						)
+					),
+				)
+			),
 		);
 
 		/**
