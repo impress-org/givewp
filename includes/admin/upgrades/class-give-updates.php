@@ -513,7 +513,7 @@ class Give_Updates {
 			</p>
 			<script type="text/javascript">
 				jQuery('.give-restart-updater-btn').click('click', function () {
-					return window.confirm('<?php echo esc_js( __( 'It is strongly recommended that you backup your database before proceeding. Do you want to run the update now?', 'give' ) ); ?>'); // jshint ignore:line
+					return window.confirm('<?php echo esc_js( __( 'It is recommended that you backup your database before proceeding. Do you want to run the update now?', 'give' ) ); ?>'); // jshint ignore:line
 				});
 			</script>
 			<?php
@@ -575,7 +575,7 @@ class Give_Updates {
 			</p>
 			<script type="text/javascript">
 				jQuery('.give-run-update-now').click('click', function () {
-					return window.confirm('<?php echo esc_js( __( 'It is strongly recommended that you backup your database before proceeding. Do you want to run the update now?', 'give' ) ); ?>'); // jshint ignore:line
+					return window.confirm('<?php echo esc_js( __( 'It is recommended that you backup your database before proceeding. Do you want to run the update now?', 'give' ) ); ?>'); // jshint ignore:line
 				});
 			</script>
 			<?php
