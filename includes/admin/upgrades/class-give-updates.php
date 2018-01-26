@@ -413,6 +413,11 @@ class Give_Updates {
 		$log_data             = '';
 		$doing_upgrade_args   = get_option( 'give_doing_upgrade' );
 
+		if( ! empty( $doing_upgrade_args ) ) {
+			$log_data .= 'Doing update:' . "\n";
+			$log_data .= print_r( $doing_upgrade_args, true ) . "\n";
+		}
+
 		if ( ! empty( $batch->data ) ) {
 
 			foreach ( $batch->data as $index => $update ) {
