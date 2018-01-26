@@ -38,8 +38,8 @@
     "css-loader": "^0.28.7",
     "cssnano": "^3.10.0",
     "eslint": "^4.8.0",
-    "eslint-config-wordpress": "^2.0.0",
     "extract-text-webpack-plugin": "^3.0.0",
+    "eslint-config-wordpress": "^2.0.0",
     "expose-loader": "latest",
     "cross-env": "3.2.4",
     "file-loader": "^1.1.4",
@@ -56,14 +56,20 @@
   "dependencies": {
     "accounting": "latest",
     "chosen-js": "latest",
+    "eslint-config-wordpress": "^2.0.0",
     "float-labels.js": "latest",
     "flot": "^0.8.0-alpha",
     "hint.css": "^2.5.0",
     "jquery.payment": "latest",
+    "lodash": "^4.17.4",
     "magnific-popup": "latest",
     "query-string": "^5.0.0",
     "script-loader": "^0.7.2",
     "uiblocker": "latest",
     "jquery-chosen": "latest"
+  },
+  "engines": {
+    "node": "8.9.1",
+    "npm": "5.5.1"
   }
 }
