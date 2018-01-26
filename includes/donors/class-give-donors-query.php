@@ -51,7 +51,7 @@ class Give_Donors_Query {
 	 * @since  1.8.14
 	 * @access public
 	 *
-	 * @var    array
+	 * @var    string
 	 */
 	public $table_name = '';
 
@@ -61,7 +61,7 @@ class Give_Donors_Query {
 	 * @since  1.8.14
 	 * @access public
 	 *
-	 * @var    array
+	 * @var    string
 	 */
 	public $meta_table_name = '';
 
@@ -71,7 +71,7 @@ class Give_Donors_Query {
 	 * @since  1.8.14
 	 * @access public
 	 *
-	 * @var    array
+	 * @var    string
 	 */
 	public $meta_type = '';
 
