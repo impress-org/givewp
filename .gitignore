@@ -11,3 +11,6 @@
 # Unit tests
 /tmp
 /tests/bin/tmp
+
+# Gutenberg Build
+includes/blocks/**/build

@@ -1030,16 +1030,16 @@ class Give_Donate_Form {
 
 	}
 
-	/**
-	 * Determine if the donation is free or if the given price ID is free
-	 *
-	 * @since  1.0
-	 * @access public
-	 *
-	 * @param  int $price_id Price ID. Default is false.
-	 *
-	 * @return bool
-	 */
+    /**
+     * Determine if the donation is free or if the given price ID is free
+     *
+     * @since  1.0
+     * @access public
+     *
+     * @param bool $price_id Price ID. Default is false.
+     *
+     * @return bool
+     */
 	public function is_free( $price_id = false ) {
 
 		$is_free          = false;

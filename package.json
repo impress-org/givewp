@@ -2,8 +2,17 @@
   "name": "give",
   "private": true,
   "devDependencies": {
+    "autoprefixer": "^7.2.1",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "cross-env": "^5.1.1",
     "del": "^2.0.1",
     "eslint": "^4.12.1",
+    "extract-text-webpack-plugin": "^3.0.2",
     "fs-extra": "^1.0.0",
     "gulp": "^3.9.1",
     "gulp-bower": "0.0.13",
@@ -22,9 +31,24 @@
     "gulp-uglify": "~1.5.3",
     "gulp-watch": "~4.3.5",
     "gulp-wp-pot": "^1.2.2",
-    "main-bower-files": "^2.11.1"
+    "main-bower-files": "^2.11.1",
+    "node-sass": "^4.7.2",
+    "orchestrator": "^0.3.7",
+    "postcss-loader": "^2.0.9",
+    "raw-loader": "^0.5.1",
+    "sass-loader": "^6.0.6",
+    "webpack": "^3.10.0"
   },
   "dependencies": {
-    "eslint-config-wordpress": "^2.0.0"
+    "eslint-config-wordpress": "^2.0.0",
+    "lodash": "^4.17.4"
+  },
+  "engines": {
+    "node": "8.9.1",
+    "npm": "5.5.1"
+  },
+  "scripts": {
+    "build": "cross-env BABEL_ENV=default NODE_ENV=production webpack",
+    "dev": "cross-env BABEL_ENV=default webpack --watch"
   }
 }
