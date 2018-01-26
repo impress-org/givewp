@@ -1495,7 +1495,7 @@ function give_hook_callback( $args ) {
  *
  * @since  1.8
  *
- * @param  string $value
+ * @param  mixed  $value
  * @param  string $compare_with
  *
  * @return bool
