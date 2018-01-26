@@ -409,10 +409,10 @@ class Give_Updates {
 		$batch_data_count     = count( $batch->data );
 		$all_updates          = $give_updates->get_updates( 'database', 'all' );
 		$all_update_ids       = wp_list_pluck( $all_updates, 'id' );
-		$all_batch_update_ids = ! empty( $batch ) ? wp_list_pluck( $batch->data, 'id' ) : array();
+		$all_batch_update_ids = ! empty( $batch->data ) ? wp_list_pluck( $batch->data, 'id' ) : array();
 		$log_data             = '';
 
-		if ( ! empty( $batch ) ) {
+		if ( ! empty( $batch->data ) ) {
 
 			foreach ( $batch->data as $index => $update ) {
 				$log_data = print_r( $update, true ) . "\n";
@@ -440,7 +440,7 @@ class Give_Updates {
 		}
 
 		if( $new_updates = $this->get_updates( 'database', 'new' ) ){
-			$all_batch_update_ids = ! empty( $batch ) ? wp_list_pluck( $batch->data, 'id' ) : array();
+			$all_batch_update_ids = ! empty( $batch->data ) ? wp_list_pluck( $batch->data, 'id' ) : array();
 
 			foreach ( $new_updates as $index => $new_update ) {
 				if( give_has_upgrade_completed( $new_update['id'] ) || in_array( $new_update['id'], $all_batch_update_ids ) ) {
@@ -452,7 +452,7 @@ class Give_Updates {
 				$log_data .= 'Adding new update: ' . "\n";
 				$log_data .= print_r( $new_updates, true ) . "\n";
 
-				$batch->data = array_merge( $batch->data, $new_updates );
+				$batch->data = array_merge( (array) $batch->data, $new_updates );
 				update_option( 'give_db_update_count',  ( absint( get_option( 'give_db_update_count' ) ) + count( $new_updates ) ) );
 			}
 		}
