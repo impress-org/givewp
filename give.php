@@ -313,6 +313,8 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->form_meta          = new Give_DB_Form_Meta();
 			$this->async_process      = new Give_Async_Process();
 
+			$this->donation_form_block = new Give_Donation_Form_Block();
+
 			/**
 			 * Fire the action after Give core loads.
 			 *
@@ -499,6 +501,11 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/donors/backward-compatibility.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/class-give-updates.php';
+
+            /**
+             * Blocks
+             */
+            require_once GIVE_PLUGIN_DIR . 'includes/blocks/donation-form/class-give-donation-form-block.php';
 
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				require_once GIVE_PLUGIN_DIR . 'includes/class-give-cli-commands.php';
