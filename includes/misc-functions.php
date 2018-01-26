@@ -1624,7 +1624,7 @@ function give_get_wp_upload_dir() {
  *
  * @param string $file_name filename of the json file that is being uploaded
  *
- * @return string/bool $file_contents File content
+ * @return string|bool $file_contents File content
  */
 function give_get_core_settings_json( $file_name ) {
 	$upload_dir = give_get_wp_upload_dir();
