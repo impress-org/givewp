@@ -401,7 +401,7 @@ class Give_Updates {
 	 * @param Give_Updates $give_updates
 	 */
 	public function __health_background_update( $give_updates ) {
-		if( ! $this->is_doing_updates() ) {
+		if ( ! $this->is_doing_updates() ) {
 			return;
 		}
 
@@ -411,6 +411,7 @@ class Give_Updates {
 		$all_update_ids       = wp_list_pluck( $all_updates, 'id' );
 		$all_batch_update_ids = ! empty( $batch->data ) ? wp_list_pluck( $batch->data, 'id' ) : array();
 		$log_data             = '';
+		$doing_upgrade_args   = get_option( 'give_doing_upgrade' );
 
 		if ( ! empty( $batch->data ) ) {
 
@@ -439,21 +440,21 @@ class Give_Updates {
 			}
 		}
 
-		if( $new_updates = $this->get_updates( 'database', 'new' ) ){
+		if ( $new_updates = $this->get_updates( 'database', 'new' ) ) {
 			$all_batch_update_ids = ! empty( $batch->data ) ? wp_list_pluck( $batch->data, 'id' ) : array();
 
 			foreach ( $new_updates as $index => $new_update ) {
-				if( give_has_upgrade_completed( $new_update['id'] ) || in_array( $new_update['id'], $all_batch_update_ids ) ) {
-					unset( $new_updates[$index] );
+				if ( give_has_upgrade_completed( $new_update['id'] ) || in_array( $new_update['id'], $all_batch_update_ids ) ) {
+					unset( $new_updates[ $index ] );
 				}
 			}
 
-			if( ! empty( $new_updates ) ) {
+			if ( ! empty( $new_updates ) ) {
 				$log_data .= 'Adding new update: ' . "\n";
 				$log_data .= print_r( $new_updates, true ) . "\n";
 
 				$batch->data = array_merge( (array) $batch->data, $new_updates );
-				update_option( 'give_db_update_count',  ( absint( get_option( 'give_db_update_count' ) ) + count( $new_updates ) ) );
+				update_option( 'give_db_update_count', ( absint( get_option( 'give_db_update_count' ) ) + count( $new_updates ) ) );
 			}
 		}
 
@@ -461,14 +462,28 @@ class Give_Updates {
 			$log_data .= 'Updating batch' . "\n";
 			$log_data .= print_r( $batch, true );
 
-			update_option( $batch->key, $batch->data );
-
-			// Reset update info.
-			$doing_upgrade_args                     = get_option( 'give_doing_upgrade' );
-			// $doing_upgrade_args['update']           = $give_updates->update;
 			$doing_upgrade_args['heading']          = sprintf( 'Update %s of %s', $doing_upgrade_args['update'], get_option( 'give_db_update_count' ) );
 			$doing_upgrade_args['total_percentage'] = $this->get_db_update_processing_percentage();
 			update_option( 'give_doing_upgrade', $doing_upgrade_args );
+
+			if ( ! empty( $batch->key ) ) {
+				update_option( $batch->key, $batch->data );
+			} else {
+
+				update_option( 'give_db_update_count', count( $batch->data ) );
+
+				$doing_upgrade_args['update']  = $give_updates->update;
+				$doing_upgrade_args['heading'] = sprintf( 'Update %s of %s', $doing_upgrade_args['update'], count( $batch->data ) );
+
+				update_option( 'give_doing_upgrade', $doing_upgrade_args );
+
+				foreach ( $batch->data as $data ) {
+					Give_Updates::$background_updater->push_to_queue( $data );
+				}
+
+				Give_Updates::$background_updater->save();
+			}
+
 
 			Give()->logs->add( 'Update Health Check', $log_data, 0, 'update' );
 		}
