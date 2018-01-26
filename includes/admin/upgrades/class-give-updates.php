@@ -478,7 +478,7 @@ class Give_Updates {
 				update_option( 'give_db_update_count', count( $batch->data ) );
 
 				$doing_upgrade_args['update']  = $give_updates->update;
-				$doing_upgrade_args['heading'] = sprintf( 'Update %s of %s', $doing_upgrade_args['update'], count( $batch->data ) );
+				$doing_upgrade_args['heading'] = sprintf( 'Update %s of %s', 1, count( $batch->data ) );
 
 				update_option( 'give_doing_upgrade', $doing_upgrade_args );
 
