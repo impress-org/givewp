@@ -92,7 +92,8 @@ class Give_Donation_Form_Block {
 	 * Block render callback
 	 *
 	 * @param array $attributes Block parameters.
-	 *  @access public
+	 * @access public
+	 * @return string;
 	 */
 	public function render_donation_form( $attributes ) {
 

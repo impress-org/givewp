@@ -6,7 +6,8 @@ import './style.scss';
 const { __ } = wp.i18n;
 const {
     registerBlockType,
-    InspectorControls
+    InspectorControls,
+    BlockDescription
 } = wp.blocks;
 const {
     ToggleControl,
@@ -79,12 +80,18 @@ export default registerBlockType( 'give/donation-form', {
         };
 
         const getFormOptions = () => {
-            return attributes.forms.map( ( form ) => {
+
+            let formOptions = attributes.forms.map( ( form ) => {
                 return {
                     value: form.info.id,
                     label: form.info.title
                 }
             });
+
+            // Default option
+            formOptions.unshift( { value: '-1', label: 'Select a Donation Form...' } );
+
+            return formOptions;
         };
 
         const setFormIdTo = id => {
@@ -122,7 +129,9 @@ export default registerBlockType( 'give/donation-form', {
 
         const inspectorControls = (
             <InspectorControls key="inspector">
-                <h3>{ __( 'Donation Form Settings' ) }</h3>
+                <BlockDescription>
+                    <p>{ __( 'The Give Donation Form block insert an existing donation form into the page. Each form\'s presentation can be customized below.' ) }</p>
+                </BlockDescription>
                 <PanelBody title={ __( 'Presentation' ) }>
                     <SelectControl
                         label={ __( 'Format' ) }
