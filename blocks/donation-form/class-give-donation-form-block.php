@@ -43,7 +43,7 @@ class Give_Donation_Form_Block {
 					'render_callback' => array( $this, 'render_donation_form' ),
 					'attributes'      => array(
 						'id'                  => array(
-							'type' => 'string',
+							'type' => 'number',
 						),
 						'displayStyle'        => array(
 							'type' => 'string',
