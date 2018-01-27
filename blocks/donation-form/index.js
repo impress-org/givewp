@@ -12,9 +12,13 @@ const {
 const {
     ToggleControl,
     SelectControl,
-    TextControl
+    TextControl,
 } = InspectorControls;
-const { PanelBody } = wp.components;
+const {
+    PanelBody,
+    Button
+} = wp.components;
+const { decodeEntities } = wp.utils;
 
 import './style.scss';
 
@@ -66,6 +70,12 @@ export default registerBlockType( 'give/donation-form', {
         const contentPosition = [
             { value: 'above', label: 'Above' },
             { value: 'below', label: 'Below' }
+        ];
+
+        const formContentPlacement = [
+            { 'above': 'give_pre_form' },
+            { 'below': 'give_post_form' },
+            { 'none': '' },
         ];
 
         const loadFormData = id => {
@@ -217,8 +227,86 @@ export default registerBlockType( 'give/donation-form', {
         return (
             <div>
                 { !! props.focus && inspectorControls }
-                <div id={ `give-form-${attributes.id}`}>
-                    <h2 class="give-form-title">{attributes.form.title}</h2>
+                <div id={ `give-form-${ attributes.id }` }>
+                    <form action="" className={ `give-form give-form-${ attributes.id } give-form-type-multi`}>
+                        {
+                            attributes.showTitle && (
+                                <h2 class="give-form-title">{ attributes.form.title }</h2>
+                            )
+                        }
+
+                        {
+                            'above' === attributes.showContent && (
+                                <div id={ `give-form-content-${ attributes.id }` }
+                                     className={ `give-form-content-wrap ${ formContentPlacement[attributes.showContent] }-content` }
+                                     dangerouslySetInnerHTML={ { __html: attributes.form.content } }
+                                />
+                            )
+                        }
+
+                        <div id="give_purchase_form_wrap">
+                            <fieldset id="give_checkout_user_info">
+                                <legend>{ __( 'Personal Info', 'give' ) }</legend>
+                                <p id="give-first-name-wrap" className="form-row form-row-first form-row-responsive">
+                                    <label className="give-label" for="give-first">
+                                        { __( 'First Name', 'give' ) }
+                                    </label>
+                                    <TextControl
+                                        className="give-input required"
+                                        type="text"
+                                        name="give_first"
+                                        placeholder={ __( 'First Name', 'give' ) }
+                                        id="give-first"
+                                    />
+                                </p>
+                                <p id="give-last-name-wrap" className="form-row form-row-last form-row-responsive">
+                                    <label className="give-label" for="give-last">
+                                        { __( 'Last Name', 'give' ) }
+                                    </label>
+                                    <TextControl
+                                        className="give-input"
+                                        type="text"
+                                        name="give_last"
+                                        id="give-last"
+                                        placeholder={ __( 'Last Name', 'give' ) }
+                                    />
+                                </p>
+                                <p id="give-email-wrap" className="form-row form-row-wide">
+                                    <label className="give-label" for="give-email">
+                                        { __( 'Email Address', 'give' ) }
+                                    </label>
+                                    <TextControl
+                                        className="give-input required"
+                                        type="email"
+                                        name="give_email"
+                                        placeholder={ __( 'Email Address', 'give' ) }
+                                        id="give-email"
+                                    />
+                                </p>
+                            </fieldset>
+                            <fieldset id="give_purchase_submit">
+                                <div className="give-submit-button-wrap give-clearfix">
+                                    <p id="give-final-total-wrap" class="form-wrap ">
+		                                <span className="give-donation-total-label">
+                                            { __( 'Donation Total:', 'give' ) }
+		                                </span>
+                                        <span
+                                            className="give-final-total-amount"
+                                            data-total={ attributes.form.format_amount }
+                                            dangerouslySetInnerHTML={ { __html: attributes.form.final_amount } }
+                                        />
+                                    </p>
+                                    <Button
+                                        type="button"
+                                        className="give-submit give-btn"
+                                        id="give-purchase-button"
+                                        name="give-purchase" >
+                                        { __('Donate Now', 'give' ) }
+                                    </Button>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </form>
                 </div>
             </div>
         );

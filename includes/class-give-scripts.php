@@ -412,6 +412,9 @@ class Give_Scripts {
 			GIVE_VERSION
 		);
 
+		// Enqueue public styles
+		wp_enqueue_style( 'give-styles' );
+
 		// Enqueue the bundled block css file
 		wp_enqueue_style(
 			'give-blocks-css',

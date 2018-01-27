@@ -144,10 +144,14 @@ class Give_Donation_Form_Block {
 
 		$form_id = $parameters['id'];
 		$form    = get_post( $form_id );
+		$total   = give_get_default_form_amount( $form_id );
 
 		// Response data array
 		$response = array(
-			'title' => $form->post_title,
+			'title'         => $form->post_title,
+			'content'       => wpautop( give_get_meta( $form_id, '_give_form_content', true ) ),
+			'format_amount' => give_format_amount( $total, array( 'sanitize' => false ) ),
+			'final_amount'  => give_currency_filter( give_format_amount( $total, array( 'sanitize' => false ) ), array( 'currency_code' => give_get_currency( $form_id ) ) ),
 		);
 
 		return $response;
