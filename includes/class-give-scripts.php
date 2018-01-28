@@ -408,10 +408,20 @@ class Give_Scripts {
 		wp_enqueue_script(
 			'give-blocks-js',
 			GIVE_PLUGIN_URL . 'assets/dist/js/gutenberg.js',
-			[ 'wp-i18n', 'wp-element', 'wp-blocks', 'wp-components', 'wp-api' ],
+			array( 'wp-i18n', 'wp-element', 'wp-blocks', 'wp-components', 'wp-api' ),
 			GIVE_VERSION
 		);
 
+		// Enqueue public styles
+		wp_enqueue_style( 'give-styles' );
+
+		// Enqueue the bundled block css file
+		wp_enqueue_style(
+			'give-blocks-css',
+			GIVE_PLUGIN_URL . 'assets/dist/css/gutenberg.css',
+			array( 'wp-blocks' ),
+			GIVE_VERSION
+		);
 
 	}
 
