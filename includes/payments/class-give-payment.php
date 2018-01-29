@@ -1242,29 +1242,8 @@ final class Give_Payment {
 			$all_payment_statuses  = give_get_payment_statuses();
 			$this->status_nicename = array_key_exists( $status, $all_payment_statuses ) ? $all_payment_statuses[ $status ] : ucfirst( $status );
 
-			$this->process_status( $status );
-
 			// Process any specific status functions.
-//			switch ( $status ) {
-//				case 'refunded':
-//					$this->process_refund();
-//					break;
-//				case 'failed':
-//					$this->process_failure();
-//					break;
-//				case 'pending':
-//					$this->process_pending();
-//					break;
-//				case 'cancelled':
-//					$this->process_cancelled();
-//					break;
-//				case 'revoked':
-//					$this->process_revoked();
-//					break;
-//				case 'abandoned':
-//					$this->process_abandoned();
-//					break;
-//			}
+			$this->process_status( $status );
 
 			/**
 			 * Fires after changing payment status.
