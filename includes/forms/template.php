@@ -1809,7 +1809,11 @@ add_filter( 'the_content', 'give_filter_success_page_content' );
 function give_test_mode_frontend_warning( $form_id ) {
 
 	if ( give_is_test_mode( $form_id ) ) {
-		echo '<div class="give_error give_warning" id="give_error_test_mode"><p><strong>' . esc_html__( 'Notice:', 'give' ) . '</strong> ' . esc_html__( 'Test mode is enabled. While in test mode no live donations are processed.', 'give' ) . '</p></div>';
+		echo sprintf(
+			'<div class="give_error give_warning" id="give_error_test_mode"><p><strong>%1$s</strong>%2$s</p></div>',
+			__( 'Notice:', 'give' ),
+			__( 'Test mode is enabled. While in test mode no live donations are processed.', 'give' )
+		);
 	}
 }
 
