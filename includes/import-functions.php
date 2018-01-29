@@ -572,6 +572,9 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 	}
 
 
+	$status = give_import_donation_get_status( $data );
+
+
 	$address = array(
 		'line1'   => ( ! empty( $data['line1'] ) ? give_clean( $data['line1'] ) : '' ),
 		'line2'   => ( ! empty( $data['line1'] ) ? give_clean( $data['line2'] ) : '' ),
@@ -585,7 +588,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 	$payment_data = array(
 		'donor_id'        => $donor_data->id,
 		'price'           => $data['amount'],
-		'status'          => ( ! empty( $data['post_status'] ) ? $data['post_status'] : 'publish' ),
+		'status'          => $status,
 		'currency'        => give_get_currency(),
 		'user_info'       => array(
 			'id'         => $donor_id,
@@ -657,6 +660,42 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 	give_import_donation_report_update( $report );
 
 	return true;
+}
+
+/**
+ * Get Donation form status
+ *
+ * @since 2.0.2
+ *
+ * @param array $data donation data that is goingt o get imported
+ *
+ * @return string $status Donation status.
+ */
+function give_import_donation_get_status( $data ) {
+	if ( empty( $data['post_status'] ) ) {
+		return 'publish';
+	}
+
+	$status = 'publish';
+
+	$donation_status = trim( $data['post_status'] );
+	$donation_status_key      = strtolower( preg_replace( '/\s+/', '', $donation_status ) );
+
+	foreach ( give_get_payment_statuses() as $key => $value ) {
+		$match = false;
+		if ( $key === $donation_status_key ) {
+			$match = true;
+		} else if ( stristr( $donation_status, $value ) ) {
+			$match = true;
+		}
+
+		if ( ! empty( $match ) ) {
+			$status = $key;
+			break;
+		}
+	}
+
+	return $status;
 }
 
 /**
