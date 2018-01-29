@@ -1360,11 +1360,6 @@ final class Give_Payment {
 	private function process_status( $status ) {
 		$process = true;
 
-		// Fix - Helps the filter of refunded status to work as it is earlier.
-		if ( 'refunded' === $status ) {
-			$status = 'refund';
-		}
-
 		// Bailout, if changed from completed to preapproval/processing.
 		// Bailout, if current status = previous status or status is publish.
 		if (
