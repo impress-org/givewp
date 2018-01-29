@@ -65,6 +65,7 @@ export default registerBlockType( 'give/donation-form', {
 				html: '',
 				error: false,
 				fetching: false,
+				isButtonTitleUpdated: false,
 			};
 		}
 
@@ -144,7 +145,6 @@ export default registerBlockType( 'give/donation-form', {
 				currentAttributes.showTitle !== prevAttributes.showTitle ||
 				currentAttributes.showGoal !== prevAttributes.showGoal ||
 				currentAttributes.displayStyle !== prevAttributes.displayStyle ||
-				currentAttributes.continueButtonTitle !== prevAttributes.continueButtonTitle ||
 				currentAttributes.contentDisplay !== prevAttributes.contentDisplay ||
 				currentAttributes.showContent !== prevAttributes.showContent
 			) {
@@ -156,7 +156,7 @@ export default registerBlockType( 'give/donation-form', {
 		render() {
 			const props = this.props;
 			const attributes = props.attributes;
-			const { html, fetching } = this.state;
+			const { html, fetching, isButtonTitleUpdated } = this.state;
 
 			const displayStyles = [
 				{ value: 'onpage', label: 'Full Form' },
@@ -194,6 +194,9 @@ export default registerBlockType( 'give/donation-form', {
 
 			const setContinueButtonTitle = buttonTitle => {
 				props.setAttributes( { continueButtonTitle: buttonTitle } );
+				if ( ! isButtonTitleUpdated ) {
+					this.setState( { isButtonTitleUpdated: true } );
+				}
 			};
 
 			const toggleShowTitle = () => {
@@ -219,6 +222,13 @@ export default registerBlockType( 'give/donation-form', {
 				props.setAttributes( { showContent: position } );
 			};
 
+			const updateContinueButtonTitle = () => {
+				if ( isButtonTitleUpdated ) {
+					this.doServerSideRender();
+					this.setState( { isButtonTitleUpdated: false } );
+				}
+			};
+
 			const inspectorControls = (
 				<InspectorControls key="inspector">
 					<BlockDescription>
@@ -237,6 +247,7 @@ export default registerBlockType( 'give/donation-form', {
 									label={ __( 'Continue Button Title' ) }
 									value={ attributes.continueButtonTitle }
 									onChange={ setContinueButtonTitle }
+									onBlur={ updateContinueButtonTitle }
 								/>
 							)
 						}
