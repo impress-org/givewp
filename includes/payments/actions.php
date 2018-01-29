@@ -492,6 +492,7 @@ function give_update_goal_closed_meta_on_donation_update( $payment_id ) {
 
 add_action( 'give_complete_donation', 'give_update_goal_closed_meta_on_donation_update', 10, 1 );
 add_action( 'give_payment_delete', 'give_update_goal_closed_meta_on_donation_update', 10, 1 );
+add_action( 'give_updated_edited_donation', 'give_update_goal_closed_meta_on_donation_update', 10, 1 );
 
 /**
  * Update Form Goal close meta if Donation status is update.
