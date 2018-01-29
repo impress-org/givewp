@@ -1,5 +1,167 @@
 # Change Log
 
+## [2.0.1](https://github.com/WordImpress/Give/tree/2.0.1) (2018-01-25)
+[Full Changelog](https://github.com/WordImpress/Give/compare/2.0.0...2.0.1)
+
+**Fixed bugs:**
+
+- {billing\_address} showing up blank on PDF Receipts [\#2707](https://github.com/WordImpress/Give/issues/2707)
+- Resolve failing unit tests in 2.0.1 [\#2702](https://github.com/WordImpress/Give/issues/2702)
+- View all donation of donor link is not working [\#2683](https://github.com/WordImpress/Give/issues/2683)
+- \[Give 2.0\] MySQL error after updating on Email Preview [\#2677](https://github.com/WordImpress/Give/issues/2677)
+- Custom Payment meta not being stored in 2.0+ [\#2675](https://github.com/WordImpress/Give/issues/2675)
+- Fix stalled upgrade process [\#2671](https://github.com/WordImpress/Give/issues/2671)
+- Database error on donations list page in backend in Windows 64-bit OS. [\#2533](https://github.com/WordImpress/Give/issues/2533)
+- Getting Notice in donation-history Page [\#2326](https://github.com/WordImpress/Give/issues/2326)
+
+**Closed issues:**
+
+- Don't use price fallback for amounts because often it's confusing and redundant [\#2700](https://github.com/WordImpress/Give/issues/2700)
+- Remove unwanted code [\#2698](https://github.com/WordImpress/Give/issues/2698)
+- Add setting in Form Terms and Condition that it should be checked by default or not [\#2685](https://github.com/WordImpress/Give/issues/2685)
+- Removing the Message when give Add-on is activating in the plugin section with Ajax [\#2681](https://github.com/WordImpress/Give/issues/2681)
+- \[Give 2.0\] New user notification emails missing headings [\#2670](https://github.com/WordImpress/Give/issues/2670)
+- Add a filter/option for separate email templates for donor receipts and admin notifications [\#1493](https://github.com/WordImpress/Give/issues/1493)
+- Upgrade Process Stalled at 0% under Privacy Mode [\#2697](https://github.com/WordImpress/Give/issues/2697)
+- Update PopUp message for Restart and Pause button of upgrade routine [\#2696](https://github.com/WordImpress/Give/issues/2696)
+- Give 2.0.1 Testing Checklist [\#2695](https://github.com/WordImpress/Give/issues/2695)
+- Add clarity to the Settings Importer inline docs [\#2688](https://github.com/WordImpress/Give/issues/2688)
+- Add icon for per form emails tab and update tab title [\#2680](https://github.com/WordImpress/Give/issues/2680)
+- Add table prefix in system report [\#2678](https://github.com/WordImpress/Give/issues/2678)
+- Add pause and restart feature to background update [\#2676](https://github.com/WordImpress/Give/issues/2676)
+- Currency Position dosn't update when you change Currency \(you have to save\) [\#2667](https://github.com/WordImpress/Give/issues/2667)
+
+**Merged pull requests:**
+
+- Fix - Displays Upgrade Notice on Fresh Installs [\#2714](https://github.com/WordImpress/Give/pull/2714) ([mehul0810](https://github.com/mehul0810))
+- Release/2.0.1 [\#2712](https://github.com/WordImpress/Give/pull/2712) ([DevinWalker](https://github.com/DevinWalker))
+- Issue \#2692 - Fix Table Creation Issue when utf8mb4 [\#2705](https://github.com/WordImpress/Give/pull/2705) ([mehul0810](https://github.com/mehul0810))
+- Issue/2700 - Don't use fallback in give\_get\_price\_option\_name\(\) to simplify UX [\#2701](https://github.com/WordImpress/Give/pull/2701) ([DevinWalker](https://github.com/DevinWalker))
+- Phpdoc cleanup to help with Scrutinizer in \#675 [\#2694](https://github.com/WordImpress/Give/pull/2694) ([tw2113](https://github.com/tw2113))
+- rename "customer\_id" variables to a better fit of "donor\_id" [\#2693](https://github.com/WordImpress/Give/pull/2693) ([tw2113](https://github.com/tw2113))
+- Remove variable that is globally accessible \#2663 [\#2690](https://github.com/WordImpress/Give/pull/2690) ([raftaar1191](https://github.com/raftaar1191))
+- Issue \#2688 — Add clarity to settings Importer docs [\#2689](https://github.com/WordImpress/Give/pull/2689) ([Benunc](https://github.com/Benunc))
+- Issue/2677|2533 - MySQL error after updating on Email Preview [\#2679](https://github.com/WordImpress/Give/pull/2679) ([emgk](https://github.com/emgk))
+- issues \#2667 On currency change the currency place text symbol \#2667 [\#2674](https://github.com/WordImpress/Give/pull/2674) ([raftaar1191](https://github.com/raftaar1191))
+
+## [2.0.0](https://github.com/WordImpress/Give/tree/2.0.0) (2018-01-17)
+[Full Changelog](https://github.com/WordImpress/Give/compare/1.8.19...2.0.0)
+
+**Implemented enhancements:**
+
+- Hard to map a field to correct column on large screen.  [\#2507](https://github.com/WordImpress/Give/issues/2507)
+
+**Fixed bugs:**
+
+- Remove unwanted hidden fields from Donation Process Page [\#2664](https://github.com/WordImpress/Give/issues/2664)
+- ID not define proper when guess donation is disable [\#2661](https://github.com/WordImpress/Give/issues/2661)
+- \[Give 2.0\] Show 'Undefined' while Run Background Process. [\#2654](https://github.com/WordImpress/Give/issues/2654)
+- Not redirecting to Welcome page on Plugin Activation 2.0 [\#2650](https://github.com/WordImpress/Give/issues/2650)
+- Quick Enable/Disable of new Email API not working properly [\#2649](https://github.com/WordImpress/Give/issues/2649)
+- Getting PHP Notice at the Time of activating the plugin on a fresh Sites [\#2637](https://github.com/WordImpress/Give/issues/2637)
+- \[Give 2.0\] Adding additional parameter with ID returns error in /donations/ endpoint [\#2633](https://github.com/WordImpress/Give/issues/2633)
+- \[Give 2.0\] Email recipient setting missing from form settings for email notification [\#2628](https://github.com/WordImpress/Give/issues/2628)
+- \[give\_login\] not redirecting properly [\#2622](https://github.com/WordImpress/Give/issues/2622)
+- \[Give 2.0\] Recipients shows blank space when add blank value in Add recipients [\#2619](https://github.com/WordImpress/Give/issues/2619)
+- \[Give 2.0\] Upgrade routine stuck at 0% [\#2610](https://github.com/WordImpress/Give/issues/2610)
+- \[Give 2.0\] Donation Goal - Number of donations option does not work as intended always [\#2607](https://github.com/WordImpress/Give/issues/2607)
+- \[Give 2.0\] Email send on page refresh [\#2606](https://github.com/WordImpress/Give/issues/2606)
+- \[Give 2.0\] preview\_id and user\_id repeated in query string when preview email [\#2596](https://github.com/WordImpress/Give/issues/2596)
+- \[Give 2.0\] API Requests Logs are not working properly [\#2592](https://github.com/WordImpress/Give/issues/2592)
+- \[Give 2.0\] PHP log notices [\#2584](https://github.com/WordImpress/Give/issues/2584)
+- \[Give 2.0\] WordPress Default Admin Email Goes Blank [\#2581](https://github.com/WordImpress/Give/issues/2581)
+- Default payment method is not selected by default if we deactivate any default payment gateway add-on. [\#2570](https://github.com/WordImpress/Give/issues/2570)
+- \[Give 2.0\] Renewals Display Incorrect Level on Donations Listing Screen [\#2567](https://github.com/WordImpress/Give/issues/2567)
+- \[Give 2.0\] Timeouts on Donations Listing Page with Caching Disabled [\#2566](https://github.com/WordImpress/Give/issues/2566)
+- \[Give 2.0\] Billing address State/County Placeholder  value ''undefined' [\#2565](https://github.com/WordImpress/Give/issues/2565)
+- Donations get processed with Empty First Name [\#2562](https://github.com/WordImpress/Give/issues/2562)
+- \[Give 2.0\] Give\_Payments\_Query\(\) and 'meta\_key' arg [\#2561](https://github.com/WordImpress/Give/issues/2561)
+- \[Give 2.0\] Upgrade WP Db Error [\#2560](https://github.com/WordImpress/Give/issues/2560)
+- Income Reports not showing Total Income with any filter [\#2472](https://github.com/WordImpress/Give/issues/2472)
+- Active floated label inputs inherit background color of container [\#2155](https://github.com/WordImpress/Give/issues/2155)
+- Address fields are not being passed to the API [\#1112](https://github.com/WordImpress/Give/issues/1112)
+
+**Closed issues:**
+
+- Add email option to form setting also [\#2659](https://github.com/WordImpress/Give/issues/2659)
+- \[Give 2.0\] Enabling/Disabling the "Email access" email should be restricted by the Email Access setting [\#2658](https://github.com/WordImpress/Give/issues/2658)
+- More inline doc fixes [\#2647](https://github.com/WordImpress/Give/issues/2647)
+- \[Give 2.0\] Donations are not processing with latest code [\#2635](https://github.com/WordImpress/Give/issues/2635)
+- \[Give 2.0\] Incorrect message displayed when removing email recipient [\#2634](https://github.com/WordImpress/Give/issues/2634)
+- Constants need to be obeyed [\#2631](https://github.com/WordImpress/Give/issues/2631)
+- \[Give 2.0\] Uncaught TypeError when switch payment gateway in front-end. [\#2630](https://github.com/WordImpress/Give/issues/2630)
+- \[Give 2.0\] Inline Documentation is confusing on the emails settings. [\#2626](https://github.com/WordImpress/Give/issues/2626)
+- \[Give 2.0\] Snippet Library Snippet causing fatal error on 2.0 [\#2625](https://github.com/WordImpress/Give/issues/2625)
+- \[Give 2.0\] Grammar and clarity needed for new email settings in-app docs. [\#2620](https://github.com/WordImpress/Give/issues/2620)
+- New donations logs are not display if user does not update the DB in 2.0 [\#2618](https://github.com/WordImpress/Give/issues/2618)
+- \[Give 2.0\] Exporting PDF of Donations and Income gives TCPDF error [\#2614](https://github.com/WordImpress/Give/issues/2614)
+- \[Give 2.0\] ToolTips affected the donation listing view [\#2612](https://github.com/WordImpress/Give/issues/2612)
+- Transaction ID is displayed as Donation ID under Donations Detail Page [\#2604](https://github.com/WordImpress/Give/issues/2604)
+- images not showing in pdf and email receipts [\#2601](https://github.com/WordImpress/Give/issues/2601)
+- \[Give 2.0\] Separator between the links on donor detail page is missing [\#2599](https://github.com/WordImpress/Give/issues/2599)
+- \[Give 2.0\] give\_get\_meta and related meta functions should support all the custom tables [\#2593](https://github.com/WordImpress/Give/issues/2593)
+- \[Give 2.0\] Settings Tabs are not responsive. [\#2588](https://github.com/WordImpress/Give/issues/2588)
+- Menu issues in Donation form single page of dashboard in Email notification section  [\#2587](https://github.com/WordImpress/Give/issues/2587)
+- Admin should able to restart the upgrade if it's get fail  [\#2585](https://github.com/WordImpress/Give/issues/2585)
+- Goal Column under Donation Forms Listing is showing incorrect amount  [\#2582](https://github.com/WordImpress/Give/issues/2582)
+- Disable Payment Gateway Settings when Payment Gateways are disabled. [\#2576](https://github.com/WordImpress/Give/issues/2576)
+- Donation form should have nonce verification. [\#2568](https://github.com/WordImpress/Give/issues/2568)
+- Getting PHP notices when passing meta query in Give\_Payments\_Query [\#2556](https://github.com/WordImpress/Give/issues/2556)
+- Run Database upgrade in background. [\#2531](https://github.com/WordImpress/Give/issues/2531)
+- Simplify give\_is\_admin\_page conditional [\#1091](https://github.com/WordImpress/Give/issues/1091)
+
+**Merged pull requests:**
+
+- Issues 2661 new [\#2669](https://github.com/WordImpress/Give/pull/2669) ([raftaar1191](https://github.com/raftaar1191))
+- Release/2.0 [\#2668](https://github.com/WordImpress/Give/pull/2668) ([DevinWalker](https://github.com/DevinWalker))
+- Add class give-disable which return false and add some css  and run g… [\#2665](https://github.com/WordImpress/Give/pull/2665) ([raftaar1191](https://github.com/raftaar1191))
+- Fix element id name \#2661 [\#2662](https://github.com/WordImpress/Give/pull/2662) ([raftaar1191](https://github.com/raftaar1191))
+- \[Feature\] \#2659: Add email options to form setting [\#2660](https://github.com/WordImpress/Give/pull/2660) ([ravinderk](https://github.com/ravinderk))
+- grammar/clarity cleanup. [\#2648](https://github.com/WordImpress/Give/pull/2648) ([Benunc](https://github.com/Benunc))
+- Issue \#2507 Fix Hard to map a field to correct column on large screen [\#2645](https://github.com/WordImpress/Give/pull/2645) ([akashsonic](https://github.com/akashsonic))
+- Issue/1091 Fix Simplify give\_is\_admin\_page conditional [\#2639](https://github.com/WordImpress/Give/pull/2639) ([emgk](https://github.com/emgk))
+- Issue/2635 [\#2636](https://github.com/WordImpress/Give/pull/2636) ([mehul0810](https://github.com/mehul0810))
+- Issue/2631 [\#2632](https://github.com/WordImpress/Give/pull/2632) ([mehul0810](https://github.com/mehul0810))
+- Issues/2619 [\#2629](https://github.com/WordImpress/Give/pull/2629) ([ravinderk](https://github.com/ravinderk))
+- Issues/2610 [\#2627](https://github.com/WordImpress/Give/pull/2627) ([ravinderk](https://github.com/ravinderk))
+- Issues 2069 [\#2624](https://github.com/WordImpress/Give/pull/2624) ([raftaar1191](https://github.com/raftaar1191))
+- Properly allow `login-redirect` attribute to override variable \#2622 [\#2623](https://github.com/WordImpress/Give/pull/2623) ([DevinWalker](https://github.com/DevinWalker))
+- Grammar and clarity for the inline docs for the new email API settings. [\#2621](https://github.com/WordImpress/Give/pull/2621) ([Benunc](https://github.com/Benunc))
+- Issue/2614 [\#2616](https://github.com/WordImpress/Give/pull/2616) ([mehul0810](https://github.com/mehul0810))
+- issue/2610 [\#2615](https://github.com/WordImpress/Give/pull/2615) ([ravinderk](https://github.com/ravinderk))
+- Issue/2612 [\#2613](https://github.com/WordImpress/Give/pull/2613) ([mehul0810](https://github.com/mehul0810))
+- Fix: Issue \#2606 [\#2609](https://github.com/WordImpress/Give/pull/2609) ([jaydeeprami](https://github.com/jaydeeprami))
+- Issue/2607 [\#2608](https://github.com/WordImpress/Give/pull/2608) ([mehul0810](https://github.com/mehul0810))
+- issue/1112 [\#2603](https://github.com/WordImpress/Give/pull/2603) ([emgk](https://github.com/emgk))
+- Issue/2599 [\#2600](https://github.com/WordImpress/Give/pull/2600) ([mehul0810](https://github.com/mehul0810))
+- Fix: preview\_id and user\_id repeated in query string when preview email \#2596 [\#2598](https://github.com/WordImpress/Give/pull/2598) ([jaydeeprami](https://github.com/jaydeeprami))
+- Issue/2155 [\#2597](https://github.com/WordImpress/Give/pull/2597) ([emgk](https://github.com/emgk))
+- Issue/2592 [\#2594](https://github.com/WordImpress/Give/pull/2594) ([mehul0810](https://github.com/mehul0810))
+- \#2581  \[Give 2.0\] WordPress Default Admin Email Goes Blank [\#2590](https://github.com/WordImpress/Give/pull/2590) ([akashsonic](https://github.com/akashsonic))
+- Issue/2588 [\#2589](https://github.com/WordImpress/Give/pull/2589) ([mehul0810](https://github.com/mehul0810))
+- Issue/2582 [\#2583](https://github.com/WordImpress/Give/pull/2583) ([mehul0810](https://github.com/mehul0810))
+- Issue/2568 [\#2573](https://github.com/WordImpress/Give/pull/2573) ([emgk](https://github.com/emgk))
+- Issue/2570 [\#2571](https://github.com/WordImpress/Give/pull/2571) ([mehul0810](https://github.com/mehul0810))
+- Issue/2567 [\#2569](https://github.com/WordImpress/Give/pull/2569) ([mehul0810](https://github.com/mehul0810))
+- Issue/2562 [\#2564](https://github.com/WordImpress/Give/pull/2564) ([mehul0810](https://github.com/mehul0810))
+- Issues/2561 [\#2563](https://github.com/WordImpress/Give/pull/2563) ([ravinderk](https://github.com/ravinderk))
+- Add variable check \#2556 [\#2557](https://github.com/WordImpress/Give/pull/2557) ([raftaar1191](https://github.com/raftaar1191))
+- Issues/2531 [\#2541](https://github.com/WordImpress/Give/pull/2541) ([ravinderk](https://github.com/ravinderk))
+- Issue/2472 [\#2529](https://github.com/WordImpress/Give/pull/2529) ([mehul0810](https://github.com/mehul0810))
+
+## [1.8.19](https://github.com/WordImpress/Give/tree/1.8.19) (2017-12-21)
+[Full Changelog](https://github.com/WordImpress/Give/compare/1.18.18...1.8.19)
+
+**Fixed bugs:**
+
+- \[Give 1.8.18\] Getting Database error when verify the email. [\#2554](https://github.com/WordImpress/Give/issues/2554)
+
+**Merged pull requests:**
+
+- Give recurring issues 424 [\#2559](https://github.com/WordImpress/Give/pull/2559) ([raftaar1191](https://github.com/raftaar1191))
+- Release/1.8.19 [\#2558](https://github.com/WordImpress/Give/pull/2558) ([DevinWalker](https://github.com/DevinWalker))
+- Issue/2554 [\#2555](https://github.com/WordImpress/Give/pull/2555) ([mehul0810](https://github.com/mehul0810))
+
 ## [1.18.18](https://github.com/WordImpress/Give/tree/1.18.18) (2017-12-20)
 [Full Changelog](https://github.com/WordImpress/Give/compare/1.8.17...1.18.18)
 
@@ -498,7 +660,6 @@
 **Implemented enhancements:**
 
 - Link log to payment instead of form [\#1227](https://github.com/WordImpress/Give/issues/1227)
-- Link the donation \# for period to the log for easy user viewing of actual donations for specified period [\#774](https://github.com/WordImpress/Give/issues/774)
 - Store page ID and URL the donor used to make a donation for future reporting [\#1996](https://github.com/WordImpress/Give/issues/1996)
 - When updating a donation form the user should be returned to the last active tab [\#1968](https://github.com/WordImpress/Give/issues/1968)
 - Show Pre-Approved payment status even if stripe addon disable [\#1957](https://github.com/WordImpress/Give/issues/1957)
@@ -529,6 +690,7 @@
 - Fix error notice during PHPUnit test [\#1833](https://github.com/WordImpress/Give/issues/1833)
 - Refactor log [\#1796](https://github.com/WordImpress/Give/issues/1796)
 - Clarify structure of payment meta [\#1132](https://github.com/WordImpress/Give/issues/1132)
+- Link the donation \# for period to the log for easy user viewing of actual donations for specified period [\#774](https://github.com/WordImpress/Give/issues/774)
 - The "Import Donations" should only display on listing page not on donation details [\#2052](https://github.com/WordImpress/Give/issues/2052)
 - Suggest move banner, makes UI confusing [\#1997](https://github.com/WordImpress/Give/issues/1997)
 - Donation Success and error pages shouldn't be displayed on search results [\#1984](https://github.com/WordImpress/Give/issues/1984)
@@ -1602,7 +1764,6 @@
 - Change the "Completed Donations" language on the Donor Profile tab of the Donor admin page [\#1134](https://github.com/WordImpress/Give/issues/1134)
 - Widget UI [\#1086](https://github.com/WordImpress/Give/issues/1086)
 - Add a dedication functionality [\#176](https://github.com/WordImpress/Give/issues/176)
-- Frontend List of Donors with Gravatars & Opt-in/out [\#17](https://github.com/WordImpress/Give/issues/17)
 - Make the email access message filterable. [\#1147](https://github.com/WordImpress/Give/issues/1147)
 
 **Merged pull requests:**

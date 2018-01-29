@@ -347,20 +347,20 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 			<tr valign="top">
 				<th colspan="2">
 					<h2 id="give-import-title"><?php esc_html_e( 'Import Core Settings from a JSON file', 'give' ) ?></h2>
-					<p class="give-field-description"><?php esc_html_e( 'This tool allows you to merge or replace settings data to your give settings via a JSON file.', 'give' ) ?></p>
+					<p class="give-field-description"><?php esc_html_e( 'This tool allows you to import Give settings from another Give installation. Settings imported contain data from Give core as well as any of our Premium Add-ons.', 'give' ) ?></p>
 				</th>
 			</tr>
 
 			<tr valign="top">
 				<th scope="row" class="titledesc">
-					<label for="json">Choose a json file:</label>
+					<label for="json"><?php esc_html_e( 'Choose a JSON file:', 'give' ) ?></label>
 				</th>
 				<td class="give-forminp">
 					<div class="give-field-wrap">
 						<label for="json">
 							<input type="file" name="json" class="give-upload-json-file" value="<?php echo $json; ?>"
 							       accept=".json">
-							<p class="give-field-description">The file must be a JSON file type only.</p>
+							<p class="give-field-description"><?php esc_html_e( 'The file type must be JSON.', 'give' )?></p>
 						</label>
 					</div>
 				</td>
@@ -370,7 +370,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 				array(
 					'id'          => 'type',
 					'name'        => __( 'Merge Type:', 'give' ),
-					'description' => __( 'Import the Setting from the JSON and then merge or replace with the current settings', 'give' ),
+					'description' => __( 'Select "Merge" to retain existing settings, or "Replace" to overwrite with the settings from the JSON file', 'give' ),
 					'default'     => $type,
 					'type'        => 'radio_inline',
 					'options'     => array(

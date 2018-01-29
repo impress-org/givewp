@@ -265,42 +265,57 @@ class Give_DB_Meta extends Give_DB {
 	 * @return string
 	 */
 	public function __rename_meta_table_name_in_query( $clause, $wp_query ) {
-		global $wpdb;
-
 		// Add new table to sql query.
 		if ( $this->is_post_type_query( $wp_query ) && ! empty( $wp_query->meta_query->queries ) ) {
-			$clause = str_replace( "{$wpdb->postmeta}.post_id", "{$this->table_name}.{$this->meta_type}_id", $clause );
-			$clause = str_replace( $wpdb->postmeta, $this->table_name, $clause );
+			$clause = $this->__rename_meta_table_name( $clause, current_filter() );
+		}
 
-			switch( current_filter() ) {
-				case 'posts_join':
-					$joins = array( 'INNER JOIN', 'LEFT JOIN' );
+		return $clause;
+	}
 
-					foreach ( $joins as $join ) {
-						if( false !== strpos( $clause, $join ) ) {
-							$clause = explode( $join, $clause );
 
-							foreach ( $clause as $key => $clause_part ) {
-								if( empty( $clause_part ) ) {
-									continue;
-								}
+	/**
+	 * Rename query clauses for new meta table
+	 *
+	 * @param $clause
+	 * @param $filter
+	 *
+	 * @return mixed
+	 */
+	public function __rename_meta_table_name( $clause, $filter ){
+		global $wpdb;
 
-								preg_match( '/' . $wpdb->prefix . 'give_paymentmeta AS (.*) ON/', $clause_part, $alias_table_name );
+		$clause = str_replace( "{$wpdb->postmeta}.post_id", "{$this->table_name}.{$this->meta_type}_id", $clause );
+		$clause = str_replace( $wpdb->postmeta, $this->table_name, $clause );
 
-								if( isset( $alias_table_name[1] ) ) {
-									$clause[$key] = str_replace( "{$alias_table_name[1]}.post_id", "{$alias_table_name[1]}.{$this->meta_type}_id", $clause_part );
-								}
+		switch( $filter ) {
+			case 'posts_join':
+				$joins = array( 'INNER JOIN', 'LEFT JOIN' );
+
+				foreach ( $joins as $join ) {
+					if( false !== strpos( $clause, $join ) ) {
+						$clause = explode( $join, $clause );
+
+						foreach ( $clause as $key => $clause_part ) {
+							if( empty( $clause_part ) ) {
+								continue;
 							}
 
-							$clause = implode( "{$join} ", $clause );
-						}
-					}
-					break;
+							preg_match( '/' . $wpdb->prefix . 'give_' . $this->meta_type . 'meta AS (.*) ON/', $clause_part, $alias_table_name );
 
-				case 'posts_where':
-					$clause = str_replace( array( 'mt2.post_id', 'mt1.post_id' ), array( "mt2.{$this->meta_type}_id", "mt1.{$this->meta_type}_id" ), $clause );
-					break;
-			}
+							if( isset( $alias_table_name[1] ) ) {
+								$clause[$key] = str_replace( "{$alias_table_name[1]}.post_id", "{$alias_table_name[1]}.{$this->meta_type}_id", $clause_part );
+							}
+						}
+
+						$clause = implode( "{$join} ", $clause );
+					}
+				}
+				break;
+
+			case 'posts_where':
+				$clause = str_replace( array( 'mt2.post_id', 'mt1.post_id' ), array( "mt2.{$this->meta_type}_id", "mt1.{$this->meta_type}_id" ), $clause );
+				break;
 		}
 
 		return $clause;
@@ -460,5 +475,32 @@ class Give_DB_Meta extends Give_DB {
 
 				return $this->delete_meta( $id, $meta_key, $meta_value, $delete_all );
 		}
+	}
+
+	/**
+	 * Create Meta Tables.
+	 *
+	 * @since  2.0.1
+	 * @access public
+	 */
+	public function create_table() {
+		global $wpdb;
+
+		$charset_collate = $wpdb->get_charset_collate();
+
+		$sql = "CREATE TABLE {$this->table_name} (
+			meta_id bigint(20) NOT NULL AUTO_INCREMENT,
+			{$this->meta_type}_id bigint(20) NOT NULL,
+			meta_key varchar(255) DEFAULT NULL,
+			meta_value longtext,
+			PRIMARY KEY  (meta_id),
+			KEY {$this->meta_type}_id ({$this->meta_type}_id),
+			KEY meta_key (meta_key({$this->min_index_length}))
+			) {$charset_collate};";
+
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		dbDelta( $sql );
+
+		update_option( $this->table_name . '_db_version', $this->version );
 	}
 }

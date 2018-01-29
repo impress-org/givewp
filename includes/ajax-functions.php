@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_test_ajax_works() {
 	// Handle ajax.
-	if( doing_action( 'wp_ajax_nopriv_give_test_ajax' ) ) {
+	if ( doing_action( 'wp_ajax_nopriv_give_test_ajax' ) ) {
 		wp_die( 0, 200 );
 	}
 
@@ -93,7 +93,7 @@ function give_test_ajax_works() {
 		Give_Cache::set( '_give_ajax_works', '1', DAY_IN_SECONDS, true );
 	}
 
-	return $works;
+	return apply_filters( 'give_test_ajax_works', $works );
 }
 
 add_action( 'wp_ajax_nopriv_give_test_ajax', 'give_test_ajax_works' );
@@ -117,7 +117,7 @@ function give_get_ajax_url( $query = array() ) {
 		$ajax_url = preg_replace( '/^http/', 'https', $ajax_url );
 	}
 
-	if( ! empty( $query ) ) {
+	if ( ! empty( $query ) ) {
 		$ajax_url = add_query_arg( $query, $ajax_url );
 	}
 
@@ -436,7 +436,7 @@ function give_check_for_form_price_variations() {
 	$form_id = intval( $_POST['form_id'] );
 	$form    = get_post( $form_id );
 
-	if ( 'give_forms' != $form->post_type ) {
+	if ( 'give_forms' !== $form->post_type ) {
 		die( '-2' );
 	}
 
@@ -486,7 +486,7 @@ function give_check_for_form_price_variations_html() {
 	}
 
 	$form = get_post( $form_id );
-	if ( ! empty( $form->post_type ) && 'give_forms' != $form->post_type ) {
+	if ( ! empty( $form->post_type ) && 'give_forms' !== $form->post_type ) {
 		wp_die();
 	}
 
