@@ -1360,12 +1360,19 @@ final class Give_Payment {
 	private function process_status( $status ) {
 		$process = true;
 
-		// Bailout, if changed from completed to preapproval/processing.
-		if ( 'preapproval' === $status || 'processing' === $status ) {
-			return;
+		// Fix - Helps the filter of refunded status to work as it is earlier.
+		if ( 'refunded' === $status ) {
+			$status = 'refund';
 		}
 
-		if ( 'publish' !== $this->old_status || $status !== $this->status ) {
+		// Bailout, if changed from completed to preapproval/processing.
+		// Bailout, if current status = previous status or status is publish.
+		if (
+			'preapproval' === $status ||
+			'processing' === $status ||
+			'publish' !== $this->old_status ||
+			$status !== $this->status
+		) {
 			$process = false;
 		}
 
@@ -1385,11 +1392,11 @@ final class Give_Payment {
 		 */
 		do_action( "give_pre_{$status}_payment", $this );
 
-		$decrease_earnings       = apply_filters( "give_decrease_store_earnings_on_{$status}", true, $this );
-		$decrease_customer_value = apply_filters( "give_decrease_customer_value_on_{$status}", true, $this );
-		$decrease_purchase_count = apply_filters( "give_decrease_customer_purchase_count_on_{$status}", true, $this );
+		$decrease_earnings       = apply_filters( "give_decrease_earnings_on_{$status}", true, $this );
+		$decrease_donor_value    = apply_filters( "give_decrease_donor_value_on_{$status}", true, $this );
+		$decrease_donation_count = apply_filters( "give_decrease_donors_donation_count_on_{$status}", true, $this );
 
-		$this->maybe_alter_stats( $decrease_earnings, $decrease_customer_value, $decrease_purchase_count );
+		$this->maybe_alter_stats( $decrease_earnings, $decrease_donor_value, $decrease_donation_count );
 		$this->delete_sales_logs();
 
 		// @todo: Refresh only range related stat cache
