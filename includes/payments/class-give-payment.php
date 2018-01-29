@@ -606,7 +606,7 @@ final class Give_Payment {
 	public function update_payment_setup( $payment_id ) {
 		// Delete cache.
 		Give_Cache::delete_group( $this->ID,'give-donations' );
-		
+
 		$this->setup_payment( $payment_id );
 	}
 
@@ -1242,27 +1242,29 @@ final class Give_Payment {
 			$all_payment_statuses  = give_get_payment_statuses();
 			$this->status_nicename = array_key_exists( $status, $all_payment_statuses ) ? $all_payment_statuses[ $status ] : ucfirst( $status );
 
+			$this->process_status( $status );
+
 			// Process any specific status functions.
-			switch ( $status ) {
-				case 'refunded':
-					$this->process_refund();
-					break;
-				case 'failed':
-					$this->process_failure();
-					break;
-				case 'pending':
-					$this->process_pending();
-					break;
-				case 'cancelled':
-					$this->process_cancelled();
-					break;
-				case 'revoked':
-					$this->process_revoked();
-					break;
-				case 'abandoned':
-					$this->process_abandoned();
-					break;
-			}
+//			switch ( $status ) {
+//				case 'refunded':
+//					$this->process_refund();
+//					break;
+//				case 'failed':
+//					$this->process_failure();
+//					break;
+//				case 'pending':
+//					$this->process_pending();
+//					break;
+//				case 'cancelled':
+//					$this->process_cancelled();
+//					break;
+//				case 'revoked':
+//					$this->process_revoked();
+//					break;
+//				case 'abandoned':
+//					$this->process_abandoned();
+//					break;
+//			}
 
 			/**
 			 * Fires after changing payment status.
@@ -1364,6 +1366,59 @@ final class Give_Payment {
 		$meta_value = apply_filters( "give_update_payment_meta_{$meta_key}", $meta_value, $this->ID );
 
 		return give_update_meta( $this->ID, $meta_key, $meta_value, $prev_value );
+	}
+
+	/**
+	 * Process Donation Status.
+	 *
+	 * @param string $status Donation Status.
+	 *
+	 * @since  2.0.2
+	 * @access private
+	 *
+	 * @return void
+	 */
+	private function process_status( $status ) {
+		$process = true;
+
+		if ( 'publish' !== $this->old_status || $status !== $this->status ) {
+			$process = false;
+		}
+
+		// Allow extensions to filter for their own payment types, Example: Recurring Payments.
+		$process = apply_filters( "give_should_process_{$status}", $process, $this );
+
+		if ( false === $process ) {
+			return;
+		}
+
+		/**
+		 * Fires before processing donation status.
+		 *
+		 * @param Give_Payment $this Payment object.
+		 *
+		 * @since 1.5
+		 */
+		do_action( "give_pre_{$status}_payment", $this );
+
+		$decrease_earnings       = apply_filters( "give_decrease_store_earnings_on_{$status}", true, $this );
+		$decrease_customer_value = apply_filters( "give_decrease_customer_value_on_{$status}", true, $this );
+		$decrease_purchase_count = apply_filters( "give_decrease_customer_purchase_count_on_{$status}", true, $this );
+
+		$this->maybe_alter_stats( $decrease_earnings, $decrease_customer_value, $decrease_purchase_count );
+		$this->delete_sales_logs();
+
+		// @todo: Refresh only range related stat cache
+		give_delete_donation_stats();
+
+		/**
+		 * Fires after processing donation status.
+		 *
+		 * @param Give_Payment $this Payment object.
+		 *
+		 * @since 1.5
+		 */
+		do_action( "give_post_{$status}_payment", $this );
 	}
 
 	/**
