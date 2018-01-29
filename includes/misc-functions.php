@@ -17,21 +17,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Is Test Mode Enabled.
  *
+ * @param int $form_id Donation Form ID.
+ *
  * @since 1.0
  *
  * @return bool $ret True if return mode is enabled, false otherwise
  */
-function give_is_test_mode() {
+function give_is_test_mode( $form_id = null ) {
 
 	$test_mode = '';
-	$form      = new Give_Donate_Form( get_the_ID() );
 
-	// Get Test Mode Setting Per Form, if Form ID is valid, otherwise use global settings.
-	if ( $form->ID > 0 ) {
-		$test_mode = give_get_meta( $form->ID, '_give_test_mode', true );
+	// Test Mode - Per Form Option.
+	if ( null !== $form_id ) {
+
+		// Verify that the form id passed is valid.
+		$form = new Give_Donate_Form( absint( $form_id ) );
+
+		// Get Test Mode Setting Per Form, if Form ID is valid.
+		if ( $form->ID > 0 ) {
+			$test_mode = give_get_meta( $form->ID, '_give_test_mode', true );
+		}
 	}
 
-	// Use Global setting, if form setting is set to global or empty.
+	// Set Global Settings, if not per form settings enabled.
 	if ( 'global' === $test_mode || '' === $test_mode ) {
 		$test_mode = give_get_option( 'test_mode' );
 	}
