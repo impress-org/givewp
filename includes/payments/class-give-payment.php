@@ -1360,6 +1360,11 @@ final class Give_Payment {
 	private function process_status( $status ) {
 		$process = true;
 
+		// Bailout, if changed from completed to preapproval/processing.
+		if ( 'preapproval' === $status || 'processing' === $status ) {
+			return;
+		}
+
 		if ( 'publish' !== $this->old_status || $status !== $this->status ) {
 			$process = false;
 		}
