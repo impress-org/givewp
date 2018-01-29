@@ -25,16 +25,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_is_test_mode( $form_id = 0 ) {
 
-	$test_mode = '';
+	// Test Mode - Global Option.
+	$test_mode = give_get_option( 'test_mode' );
 
 	// Test Mode - Per Form Option.
 	if ( $form_id > 0 ) {
-		$test_mode = give_get_meta( absint( $form_id ), '_give_test_mode', true );
-	}
-
-	// Set Global Settings, if Per Form settings not enabled.
-	if ( 'global' === $test_mode || '' === $test_mode ) {
-		$test_mode = give_get_option( 'test_mode' );
+		$test_mode = give_get_meta( absint( $form_id ), '_give_test_mode', true, $test_mode );
 	}
 
 	return (bool) apply_filters( 'give_is_test_mode', give_is_setting_enabled( $test_mode ) );
