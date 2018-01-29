@@ -1085,8 +1085,8 @@ function give_is_add_new_form_page() {
  * Get Form/Payment meta.
  *
  * Note: This function will help you to get meta for payment and form.
- *       If you want to get meta for donor then use get_meta of Give_Donor and
- *       If you want to get meta for log then use get_meta of Give_Logging->logmeta_db
+ *       If you want to get meta for donors then use get_meta of Give_Donor and
+ *       If you want to get meta for logs then use get_meta of Give_Logging->logmeta_db.
  *
  * @since 1.8.8
  *
@@ -1624,7 +1624,7 @@ function give_get_wp_upload_dir() {
  *
  * @param string $file_name filename of the json file that is being uploaded
  *
- * @return string/bool $file_contents File content
+ * @return string|bool $file_contents File content
  */
 function give_get_core_settings_json( $file_name ) {
 	$upload_dir = give_get_wp_upload_dir();

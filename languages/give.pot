@@ -314,7 +314,7 @@ msgstr ""
 msgid "Donation Failed Page"
 msgstr ""
 
-#: includes/admin/admin-pages.php:511, includes/admin/class-give-settings.php:230, includes/admin/settings/class-settings-general.php:236, includes/admin/tools/views/html-admin-page-system-info.php:552
+#: includes/admin/admin-pages.php:511, includes/admin/class-give-settings.php:230, includes/admin/settings/class-settings-general.php:244, includes/admin/tools/views/html-admin-page-system-info.php:563
 msgid "Donation History Page"
 msgstr ""
 
@@ -458,7 +458,7 @@ msgstr ""
 msgid "When your first donation arrives, the donor will appear here."
 msgstr ""
 
-#: includes/admin/class-give-settings.php:94, includes/admin/settings/class-settings-general.php:30, includes/admin/settings/class-settings-general.php:308
+#: includes/admin/class-give-settings.php:94, includes/admin/settings/class-settings-general.php:30, includes/admin/settings/class-settings-general.php:316
 msgid "General"
 msgstr ""
 
@@ -494,67 +494,67 @@ msgstr ""
 msgid "Save Settings"
 msgstr ""
 
-#: includes/admin/class-give-settings.php:199, includes/admin/class-give-settings.php:203, includes/admin/settings/class-settings-general.php:209
+#: includes/admin/class-give-settings.php:199, includes/admin/class-give-settings.php:203, includes/admin/settings/class-settings-general.php:217
 msgid "General Settings"
 msgstr ""
 
-#: includes/admin/class-give-settings.php:209, includes/admin/settings/class-settings-general.php:215, includes/admin/tools/views/html-admin-page-system-info.php:542
+#: includes/admin/class-give-settings.php:209, includes/admin/settings/class-settings-general.php:223, includes/admin/tools/views/html-admin-page-system-info.php:553
 msgid "Success Page"
 msgstr ""
 
-#: includes/admin/class-give-settings.php:211, includes/admin/settings/class-settings-general.php:217
+#: includes/admin/class-give-settings.php:211, includes/admin/settings/class-settings-general.php:225
 msgid "The page donors are sent to after completing their donations. The %s shortcode should be on this page."
 msgstr ""
 
-#: includes/admin/class-give-settings.php:220, includes/admin/settings/class-settings-general.php:226
+#: includes/admin/class-give-settings.php:220, includes/admin/settings/class-settings-general.php:234
 msgid "Failed Donation Page"
 msgstr ""
 
-#: includes/admin/class-give-settings.php:221, includes/admin/settings/class-settings-general.php:227
+#: includes/admin/class-give-settings.php:221, includes/admin/settings/class-settings-general.php:235
 msgid "The page donors are sent to if their donation is cancelled or fails."
 msgstr ""
 
-#: includes/admin/class-give-settings.php:232, includes/admin/settings/class-settings-general.php:238
+#: includes/admin/class-give-settings.php:232, includes/admin/settings/class-settings-general.php:246
 msgid "The page showing a complete donation history for the current user. The %s shortcode should be on this page."
 msgstr ""
 
-#: includes/admin/class-give-settings.php:241, includes/admin/settings/class-settings-general.php:247
+#: includes/admin/class-give-settings.php:241, includes/admin/settings/class-settings-general.php:255
 msgid "Base Country"
 msgstr ""
 
-#: includes/admin/class-give-settings.php:242, includes/admin/settings/class-settings-general.php:248
+#: includes/admin/class-give-settings.php:242, includes/admin/settings/class-settings-general.php:256
 msgid "The country your site operates from."
 msgstr ""
 
-#: includes/admin/class-give-settings.php:248, includes/admin/settings/class-settings-general.php:127, includes/admin/settings/class-settings-general.php:182
+#: includes/admin/class-give-settings.php:248, includes/admin/settings/class-settings-general.php:130, includes/admin/settings/class-settings-general.php:189
 msgid "Currency Settings"
 msgstr ""
 
-#: includes/admin/class-give-settings.php:254, includes/admin/settings/class-settings-general.php:133, includes/admin/settings/class-settings-general.php:309
+#: includes/admin/class-give-settings.php:254, includes/admin/settings/class-settings-general.php:136, includes/admin/settings/class-settings-general.php:317
 msgid "Currency"
 msgstr ""
 
-#: includes/admin/class-give-settings.php:255, includes/admin/settings/class-settings-general.php:134
+#: includes/admin/class-give-settings.php:255, includes/admin/settings/class-settings-general.php:137
 msgid "The donation currency. Note that some payment gateways have currency restrictions."
 msgstr ""
 
-#: includes/admin/class-give-settings.php:262, includes/admin/settings/class-settings-general.php:142, includes/admin/tools/views/html-admin-page-system-info.php:527
+#: includes/admin/class-give-settings.php:262, includes/admin/settings/class-settings-general.php:145, includes/admin/tools/views/html-admin-page-system-info.php:538
 msgid "Currency Position"
 msgstr ""
 
-#: includes/admin/class-give-settings.php:263, includes/admin/settings/class-settings-general.php:143
+#: includes/admin/class-give-settings.php:263, includes/admin/settings/class-settings-general.php:146
 msgid "The position of the currency symbol."
 msgstr ""
 
-#: includes/admin/class-give-settings.php:268, includes/admin/settings/class-settings-general.php:148
+#: includes/admin/class-give-settings.php:268, includes/admin/settings/class-settings-general.php:120
 msgid "Before - %s&#x200e;10"
 msgstr ""
 
-#: includes/admin/class-give-settings.php:270, includes/admin/settings/class-settings-general.php:150
+#: includes/admin/class-give-settings.php:270, includes/admin/settings/class-settings-general.php:121
 msgid "After - 10%s&#x200f;"
 msgstr ""
 
-#: includes/admin/class-give-settings.php:275, includes/admin/settings/class-settings-general.php:155, includes/admin/tools/views/html-admin-page-system-info.php:537
+#: includes/admin/class-give-settings.php:275, includes/admin/settings/class-settings-general.php:162, includes/admin/tools/views/html-admin-page-system-info.php:548
 msgid "Thousands Separator"
 msgstr ""
 
@@ -562,19 +562,19 @@ msgstr ""
 msgid "The symbol (usually , or .) to separate thousands."
 msgstr ""
 
-#: includes/admin/class-give-settings.php:283, includes/admin/settings/class-settings-general.php:163, includes/admin/tools/views/html-admin-page-system-info.php:532
+#: includes/admin/class-give-settings.php:283, includes/admin/settings/class-settings-general.php:170, includes/admin/tools/views/html-admin-page-system-info.php:543
 msgid "Decimal Separator"
 msgstr ""
 
-#: includes/admin/class-give-settings.php:284, includes/admin/settings/class-settings-general.php:164
+#: includes/admin/class-give-settings.php:284, includes/admin/settings/class-settings-general.php:171
 msgid "The symbol (usually , or .) to separate decimal points."
 msgstr ""
 
-#: includes/admin/class-give-settings.php:290, includes/admin/settings/class-settings-general.php:171
+#: includes/admin/class-give-settings.php:290, includes/admin/settings/class-settings-general.php:178
 msgid "Number of Decimals"
 msgstr ""
 
-#: includes/admin/class-give-settings.php:291, includes/admin/settings/class-settings-general.php:172
+#: includes/admin/class-give-settings.php:291, includes/admin/settings/class-settings-general.php:179
 msgid "The number of decimal points displayed in amounts."
 msgstr ""
 
@@ -582,7 +582,7 @@ msgstr ""
 msgid "Gateways Settings"
 msgstr ""
 
-#: includes/admin/class-give-settings.php:315, includes/admin/settings/class-settings-gateways.php:164, includes/admin/tools/views/html-admin-page-system-info.php:517, includes/import-functions.php:423
+#: includes/admin/class-give-settings.php:315, includes/admin/settings/class-settings-gateways.php:164, includes/admin/tools/views/html-admin-page-system-info.php:528, includes/import-functions.php:423
 msgid "Test Mode"
 msgstr ""
 
@@ -794,7 +794,7 @@ msgstr ""
 msgid "Email Settings"
 msgstr ""
 
-#: includes/admin/class-give-settings.php:533, includes/admin/emails/class-email-notifications.php:136, includes/admin/settings/class-settings-email.php:76
+#: includes/admin/class-give-settings.php:533, includes/admin/emails/class-email-notifications.php:137, includes/admin/settings/class-settings-email.php:76
 msgid "Email Template"
 msgstr ""
 
@@ -802,15 +802,15 @@ msgstr ""
 msgid "Choose a template. Click \"Save Changes\" then \"Preview Donation Receipt\" to see the new template."
 msgstr ""
 
-#: includes/admin/class-give-settings.php:540, includes/admin/emails/class-email-notifications.php:144, includes/admin/settings/class-settings-email.php:83
+#: includes/admin/class-give-settings.php:540, includes/admin/emails/class-email-notifications.php:145, includes/admin/settings/class-settings-email.php:83
 msgid "Logo"
 msgstr ""
 
-#: includes/admin/class-give-settings.php:541, includes/admin/emails/class-email-notifications.php:145, includes/admin/settings/class-settings-email.php:84
+#: includes/admin/class-give-settings.php:541, includes/admin/emails/class-email-notifications.php:146, includes/admin/settings/class-settings-email.php:84
 msgid "Upload or choose a logo to be displayed at the top of the donation receipt emails. Displayed on HTML emails only."
 msgstr ""
 
-#: includes/admin/class-give-settings.php:546, includes/admin/emails/class-email-notifications.php:150, includes/admin/settings/class-settings-email.php:89
+#: includes/admin/class-give-settings.php:546, includes/admin/emails/class-email-notifications.php:151, includes/admin/settings/class-settings-email.php:89
 msgid "From Name"
 msgstr ""
 
@@ -818,7 +818,7 @@ msgstr ""
 msgid "The name that appears in the \"From\" field in donation receipt emails."
 msgstr ""
 
-#: includes/admin/class-give-settings.php:553, includes/admin/emails/class-email-notifications.php:157, includes/admin/settings/class-settings-email.php:96
+#: includes/admin/class-give-settings.php:553, includes/admin/emails/class-email-notifications.php:158, includes/admin/settings/class-settings-email.php:96
 msgid "From Email"
 msgstr ""
 
@@ -890,7 +890,7 @@ msgstr ""
 msgid "Advanced Options"
 msgstr ""
 
-#: includes/admin/class-give-settings.php:645, includes/admin/settings/class-settings-general.php:109, includes/admin/settings/class-settings-general.php:310
+#: includes/admin/class-give-settings.php:645, includes/admin/settings/class-settings-general.php:109, includes/admin/settings/class-settings-general.php:318
 msgid "Access Control"
 msgstr ""
 
@@ -1137,7 +1137,7 @@ msgstr[1] ""
 msgid "Unnamed Donor"
 msgstr ""
 
-#: includes/admin/donors/class-donor-table.php:193, includes/admin/forms/dashboard-columns.php:35, includes/admin/reports/class-donor-reports-table.php:215, includes/admin/tools/export/class-batch-export-forms.php:46, includes/admin/tools/views/html-admin-page-exports.php:200, includes/admin/tools/views/html-admin-page-system-info.php:903, includes/import-functions.php:385
+#: includes/admin/donors/class-donor-table.php:193, includes/admin/forms/dashboard-columns.php:35, includes/admin/reports/class-donor-reports-table.php:215, includes/admin/tools/export/class-batch-export-forms.php:46, includes/admin/tools/views/html-admin-page-exports.php:200, includes/admin/tools/views/html-admin-page-system-info.php:914, includes/import-functions.php:385
 msgid "Name"
 msgstr ""
 
@@ -1145,7 +1145,7 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: includes/admin/donors/class-donor-table.php:195, includes/admin/forms/dashboard-columns.php:40, includes/admin/reports/class-donor-reports-table.php:217, includes/admin/reports/class-form-reports-table.php:121, includes/admin/reports/graphing.php:180, includes/admin/reports/graphing.php:427, includes/admin/tools/class-settings-logs.php:93, includes/admin/tools/export/class-batch-export-forms.php:56, includes/admin/tools/export/class-export-earnings.php:61, includes/admin/tools/export/pdf-reports.php:304, includes/admin/tools/import/class-give-import-donations.php:492, includes/admin/upgrades/class-give-updates.php:220, includes/deprecated/deprecated-functions.php:68, includes/post-types.php:66, includes/post-types.php:120
+#: includes/admin/donors/class-donor-table.php:195, includes/admin/forms/dashboard-columns.php:40, includes/admin/reports/class-donor-reports-table.php:217, includes/admin/reports/class-form-reports-table.php:121, includes/admin/reports/graphing.php:180, includes/admin/reports/graphing.php:427, includes/admin/tools/class-settings-logs.php:93, includes/admin/tools/export/class-batch-export-forms.php:56, includes/admin/tools/export/class-export-earnings.php:61, includes/admin/tools/export/pdf-reports.php:304, includes/admin/tools/import/class-give-import-donations.php:492, includes/admin/upgrades/class-give-updates.php:225, includes/deprecated/deprecated-functions.php:68, includes/post-types.php:66, includes/post-types.php:120
 msgid "Donations"
 msgstr ""
 
@@ -1201,7 +1201,7 @@ msgstr ""
 msgid "You do not have permission to edit this donor."
 msgstr ""
 
-#: includes/admin/donors/donor-actions.php:31, includes/admin/donors/donor-actions.php:45, includes/admin/donors/donor-actions.php:144, includes/admin/donors/donor-actions.php:158, includes/admin/donors/donor-actions.php:226, includes/admin/donors/donor-actions.php:241, includes/admin/donors/donor-actions.php:325, includes/admin/donors/donor-actions.php:339, includes/admin/donors/donor-actions.php:418, includes/admin/donors/donor-actions.php:514, includes/admin/donors/donor-actions.php:561, includes/admin/donors/donor-actions.php:599, includes/admin/donors/donor-actions.php:615, includes/admin/EDD_SL_Plugin_Updater.php:396, includes/admin/emails/class-donation-receipt-email.php:300, includes/admin/forms/dashboard-columns.php:244, includes/admin/payments/actions.php:31, includes/admin/payments/actions.php:85, includes/admin/payments/actions.php:98, includes/admin/payments/actions.php:333, includes/admin/payments/actions.php:353, includes/admin/payments/actions.php:386, includes/admin/payments/actions.php:408, includes/admin/payments/view-payment-details.php:19, includes/admin/payments/view-payment-details.php:32, includes/admin/payments/view-payment-details.php:42, includes/admin/reports/reports.php:143, includes/admin/tools/data/class-give-tools-delete-import-donors.php:257, includes/admin/tools/data/class-give-tools-delete-test-donors.php:228, includes/admin/tools/data/class-give-tools-delete-test-transactions.php:120, includes/admin/tools/data/class-give-tools-recount-all-stats.php:239, includes/admin/tools/data/class-give-tools-recount-donor-stats.php:195, includes/admin/tools/data/class-give-tools-recount-form-stats.php:182, includes/admin/tools/data/class-give-tools-recount-income.php:156, includes/admin/tools/data/class-give-tools-recount-single-donor-stats.php:151, includes/admin/tools/data/class-give-tools-reset-stats.php:189, includes/admin/tools/export/class-batch-export.php:145, includes/admin/tools/export/class-core-settings-export.php:68, includes/admin/tools/export/class-export.php:173, includes/admin/tools/export/export-actions.php:26, includes/admin/tools/export/pdf-reports.php:31, includes/admin/tools/export/pdf-reports.php:35, includes/admin/tools/export/pdf-reports.php:39, includes/admin/tools/logs/class-api-requests-logs-list-table.php:154, includes/admin/tools/logs/class-gateway-error-logs-list-table.php:136, includes/admin/upgrades/upgrade-functions.php:282, includes/admin/upgrades/upgrade-functions.php:320, includes/api/class-give-api.php:1821, includes/api/class-give-api.php:1827, includes/api/class-give-api.php:1842, includes/api/class-give-api.php:1847, includes/class-give-license-handler.php:832, includes/class-notices.php:576, includes/formatting.php:681, includes/forms/functions.php:319, includes/gateways/manual.php:38
+#: includes/admin/donors/donor-actions.php:31, includes/admin/donors/donor-actions.php:45, includes/admin/donors/donor-actions.php:144, includes/admin/donors/donor-actions.php:158, includes/admin/donors/donor-actions.php:226, includes/admin/donors/donor-actions.php:241, includes/admin/donors/donor-actions.php:325, includes/admin/donors/donor-actions.php:339, includes/admin/donors/donor-actions.php:418, includes/admin/donors/donor-actions.php:514, includes/admin/donors/donor-actions.php:561, includes/admin/donors/donor-actions.php:599, includes/admin/donors/donor-actions.php:615, includes/admin/EDD_SL_Plugin_Updater.php:396, includes/admin/emails/class-donation-receipt-email.php:300, includes/admin/forms/dashboard-columns.php:244, includes/admin/payments/actions.php:31, includes/admin/payments/actions.php:85, includes/admin/payments/actions.php:98, includes/admin/payments/actions.php:333, includes/admin/payments/actions.php:353, includes/admin/payments/actions.php:386, includes/admin/payments/actions.php:408, includes/admin/payments/view-payment-details.php:19, includes/admin/payments/view-payment-details.php:32, includes/admin/payments/view-payment-details.php:42, includes/admin/reports/reports.php:143, includes/admin/tools/data/class-give-tools-delete-import-donors.php:257, includes/admin/tools/data/class-give-tools-delete-test-donors.php:228, includes/admin/tools/data/class-give-tools-delete-test-transactions.php:120, includes/admin/tools/data/class-give-tools-recount-all-stats.php:239, includes/admin/tools/data/class-give-tools-recount-donor-stats.php:195, includes/admin/tools/data/class-give-tools-recount-form-stats.php:182, includes/admin/tools/data/class-give-tools-recount-income.php:156, includes/admin/tools/data/class-give-tools-recount-single-donor-stats.php:151, includes/admin/tools/data/class-give-tools-reset-stats.php:189, includes/admin/tools/export/class-batch-export.php:145, includes/admin/tools/export/class-core-settings-export.php:68, includes/admin/tools/export/class-export.php:173, includes/admin/tools/export/export-actions.php:26, includes/admin/tools/export/pdf-reports.php:31, includes/admin/tools/export/pdf-reports.php:35, includes/admin/tools/export/pdf-reports.php:39, includes/admin/tools/logs/class-api-requests-logs-list-table.php:154, includes/admin/tools/logs/class-gateway-error-logs-list-table.php:136, includes/admin/upgrades/upgrade-functions.php:331, includes/admin/upgrades/upgrade-functions.php:369, includes/api/class-give-api.php:1821, includes/api/class-give-api.php:1827, includes/api/class-give-api.php:1842, includes/api/class-give-api.php:1847, includes/class-give-license-handler.php:832, includes/class-notices.php:576, includes/formatting.php:681, includes/forms/functions.php:319, includes/gateways/manual.php:38
 msgid "Error"
 msgstr ""
 
@@ -1459,7 +1459,7 @@ msgstr ""
 msgid "Amount"
 msgstr ""
 
-#: includes/admin/donors/donors.php:781, includes/admin/forms/dashboard-columns.php:43, includes/admin/payments/class-payments-table.php:390, includes/admin/tools/export/class-batch-export-payments.php:59, includes/admin/tools/export/class-export-earnings.php:60, includes/admin/tools/export/class-export.php:69, includes/admin/tools/logs/class-api-requests-logs-list-table.php:96, includes/admin/tools/logs/class-gateway-error-logs-list-table.php:139, includes/admin/tools/logs/class-sales-logs-list-table.php:142, includes/import-functions.php:380, templates/history-donations.php:51, templates/shortcode-receipt.php:44
+#: includes/admin/donors/donors.php:781, includes/admin/forms/dashboard-columns.php:43, includes/admin/payments/class-payments-table.php:390, includes/admin/tools/export/class-batch-export-payments.php:59, includes/admin/tools/export/class-export-earnings.php:60, includes/admin/tools/export/class-export.php:69, includes/admin/tools/logs/class-api-requests-logs-list-table.php:96, includes/admin/tools/logs/class-gateway-error-logs-list-table.php:139, includes/admin/tools/logs/class-sales-logs-list-table.php:142, includes/admin/tools/logs/class-update-logs-list-table.php:80, includes/import-functions.php:380, templates/history-donations.php:51, templates/shortcode-receipt.php:44
 msgid "Date"
 msgstr ""
 
@@ -1539,7 +1539,7 @@ msgstr ""
 msgid "Download Receipt"
 msgstr ""
 
-#: includes/admin/emails/abstract-email-notification.php:845, includes/emails/class-give-email-tags.php:1237
+#: includes/admin/emails/abstract-email-notification.php:845, includes/emails/class-give-email-tags.php:1223
 msgid "View your donation history &raquo;"
 msgstr ""
 
@@ -1552,7 +1552,7 @@ msgid "You do not have permission to edit donations."
 msgstr ""
 
 #: includes/admin/emails/class-donor-register-email.php:36
-msgid "Donor Register"
+msgid "User Registration Information"
 msgstr ""
 
 #: includes/admin/emails/class-donor-register-email.php:37
@@ -1579,15 +1579,19 @@ msgstr ""
 msgid "Click Here to Login &raquo;"
 msgstr ""
 
-#: includes/admin/emails/class-donor-register-email.php:140, includes/admin/emails/class-new-donor-register-email.php:136
+#: includes/admin/emails/class-donor-register-email.php:101, includes/admin/emails/class-new-donor-register-email.php:36, includes/admin/emails/class-new-donor-register-email.php:98
+msgid "New User Registration"
+msgstr ""
+
+#: includes/admin/emails/class-donor-register-email.php:150, includes/admin/emails/class-new-donor-register-email.php:147
 msgid "No donor(s) found."
 msgstr ""
 
-#: includes/admin/emails/class-donor-register-email.php:144, includes/admin/emails/class-new-donor-register-email.php:140
+#: includes/admin/emails/class-donor-register-email.php:154, includes/admin/emails/class-new-donor-register-email.php:151
 msgid "- Select a donor -"
 msgstr ""
 
-#: includes/admin/emails/class-donor-register-email.php:178, includes/admin/emails/class-new-donor-register-email.php:190
+#: includes/admin/emails/class-donor-register-email.php:188, includes/admin/emails/class-new-donor-register-email.php:201
 msgid "Preview email with a donor:"
 msgstr ""
 
@@ -1655,39 +1659,43 @@ msgstr ""
 msgid "Plain"
 msgstr ""
 
-#: includes/admin/emails/class-email-notifications.php:121, includes/admin/emails/class-email-notifications.php:166
-msgid "Email Notification"
-msgstr ""
-
-#: includes/admin/emails/class-email-notifications.php:124
-msgid "Email Options"
+#: includes/admin/emails/class-email-notifications.php:121
+msgid "Email Notifications"
 msgstr ""
 
 #: includes/admin/emails/class-email-notifications.php:125
+msgid "Email Options"
+msgstr ""
+
+#: includes/admin/emails/class-email-notifications.php:126
 msgid ""
 msgstr ""
 
-#: includes/admin/emails/class-email-notifications.php:131, includes/admin/emails/class-email-setting-field.php:178, includes/admin/forms/class-metabox-form-data.php:494, includes/gateways/offline-donations.php:309
+#: includes/admin/emails/class-email-notifications.php:132, includes/admin/emails/class-email-setting-field.php:178, includes/admin/forms/class-metabox-form-data.php:494, includes/gateways/offline-donations.php:309
 msgid "Customize"
 msgstr ""
 
-#: includes/admin/emails/class-email-notifications.php:137, includes/admin/settings/class-settings-email.php:77
+#: includes/admin/emails/class-email-notifications.php:138, includes/admin/settings/class-settings-email.php:77
 msgid "Choose your template from the available registered template types."
 msgstr ""
 
-#: includes/admin/emails/class-email-notifications.php:151, includes/admin/settings/class-settings-email.php:90
+#: includes/admin/emails/class-email-notifications.php:152, includes/admin/settings/class-settings-email.php:90
 msgid "The name which appears in the \"From\" field in all Give donation emails."
 msgstr ""
 
-#: includes/admin/emails/class-email-notifications.php:158, includes/admin/settings/class-settings-email.php:97
+#: includes/admin/emails/class-email-notifications.php:159, includes/admin/settings/class-settings-email.php:97
 msgid "Email address from which all Give emails are sent from. This will act as the \"from\" and \"reply-to\" email address."
 msgstr ""
 
-#: includes/admin/emails/class-email-setting-field.php:168, includes/admin/forms/class-metabox-form-data.php:149, includes/admin/forms/class-metabox-form-data.php:284, includes/admin/forms/class-metabox-form-data.php:309, includes/admin/forms/class-metabox-form-data.php:342, includes/admin/forms/class-metabox-form-data.php:400, includes/admin/forms/class-metabox-form-data.php:440, includes/admin/settings/class-settings-advanced.php:83, includes/admin/settings/class-settings-advanced.php:105, includes/admin/settings/class-settings-advanced.php:138, includes/admin/settings/class-settings-display.php:62, includes/admin/settings/class-settings-display.php:79, includes/admin/settings/class-settings-display.php:96, includes/admin/settings/class-settings-display.php:127, includes/admin/settings/class-settings-display.php:143, includes/admin/settings/class-settings-display.php:154, includes/admin/settings/class-settings-display.php:165, includes/admin/settings/class-settings-display.php:184, includes/admin/settings/class-settings-display.php:215, includes/admin/settings/class-settings-display.php:226, includes/admin/settings/class-settings-display.php:257, includes/admin/settings/class-settings-gateways.php:85, includes/admin/settings/class-settings-gateways.php:96, includes/admin/settings/class-settings-gateways.php:128, includes/admin/settings/class-settings-gateways.php:170, includes/admin/settings/class-settings-general.php:86, includes/admin/tools/import/class-give-import-donations.php:763, includes/admin/tools/import/class-give-import-donations.php:774, includes/admin/tools/import/class-give-import-donations.php:785, includes/admin/tools/views/html-admin-page-system-info.php:447, includes/admin/tools/views/html-admin-page-system-info.php:482, includes/admin/tools/views/html-admin-page-system-info.php:519, includes/admin/tools/views/html-admin-page-system-info.php:597, includes/admin/tools/views/html-admin-page-system-info.php:629, includes/admin/tools/views/html-admin-page-system-info.php:644, includes/admin/tools/views/html-admin-page-system-info.php:649, includes/admin/tools/views/html-admin-page-system-info.php:670, includes/admin/tools/views/html-admin-page-system-info.php:675, includes/gateways/offline-donations.php:322
+#: includes/admin/emails/class-email-notifications.php:167
+msgid "Email Notification"
+msgstr ""
+
+#: includes/admin/emails/class-email-setting-field.php:168, includes/admin/forms/class-metabox-form-data.php:149, includes/admin/forms/class-metabox-form-data.php:284, includes/admin/forms/class-metabox-form-data.php:309, includes/admin/forms/class-metabox-form-data.php:342, includes/admin/forms/class-metabox-form-data.php:400, includes/admin/forms/class-metabox-form-data.php:440, includes/admin/settings/class-settings-advanced.php:83, includes/admin/settings/class-settings-advanced.php:105, includes/admin/settings/class-settings-advanced.php:138, includes/admin/settings/class-settings-display.php:62, includes/admin/settings/class-settings-display.php:79, includes/admin/settings/class-settings-display.php:96, includes/admin/settings/class-settings-display.php:127, includes/admin/settings/class-settings-display.php:143, includes/admin/settings/class-settings-display.php:154, includes/admin/settings/class-settings-display.php:165, includes/admin/settings/class-settings-display.php:184, includes/admin/settings/class-settings-display.php:215, includes/admin/settings/class-settings-display.php:226, includes/admin/settings/class-settings-display.php:257, includes/admin/settings/class-settings-gateways.php:85, includes/admin/settings/class-settings-gateways.php:96, includes/admin/settings/class-settings-gateways.php:128, includes/admin/settings/class-settings-gateways.php:170, includes/admin/settings/class-settings-general.php:86, includes/admin/tools/import/class-give-import-donations.php:763, includes/admin/tools/import/class-give-import-donations.php:774, includes/admin/tools/import/class-give-import-donations.php:785, includes/admin/tools/views/html-admin-page-system-info.php:452, includes/admin/tools/views/html-admin-page-system-info.php:493, includes/admin/tools/views/html-admin-page-system-info.php:530, includes/admin/tools/views/html-admin-page-system-info.php:608, includes/admin/tools/views/html-admin-page-system-info.php:640, includes/admin/tools/views/html-admin-page-system-info.php:655, includes/admin/tools/views/html-admin-page-system-info.php:660, includes/admin/tools/views/html-admin-page-system-info.php:681, includes/admin/tools/views/html-admin-page-system-info.php:686, includes/gateways/offline-donations.php:322
 msgid "Enabled"
 msgstr ""
 
-#: includes/admin/emails/class-email-setting-field.php:169, includes/admin/emails/class-email-setting-field.php:179, includes/admin/forms/class-metabox-form-data.php:150, includes/admin/forms/class-metabox-form-data.php:285, includes/admin/forms/class-metabox-form-data.php:310, includes/admin/forms/class-metabox-form-data.php:343, includes/admin/forms/class-metabox-form-data.php:401, includes/admin/forms/class-metabox-form-data.php:441, includes/admin/settings/class-settings-advanced.php:84, includes/admin/settings/class-settings-advanced.php:106, includes/admin/settings/class-settings-advanced.php:139, includes/admin/settings/class-settings-display.php:63, includes/admin/settings/class-settings-display.php:80, includes/admin/settings/class-settings-display.php:97, includes/admin/settings/class-settings-display.php:128, includes/admin/settings/class-settings-display.php:144, includes/admin/settings/class-settings-display.php:155, includes/admin/settings/class-settings-display.php:166, includes/admin/settings/class-settings-display.php:185, includes/admin/settings/class-settings-display.php:216, includes/admin/settings/class-settings-display.php:227, includes/admin/settings/class-settings-display.php:258, includes/admin/settings/class-settings-gateways.php:86, includes/admin/settings/class-settings-gateways.php:97, includes/admin/settings/class-settings-gateways.php:129, includes/admin/settings/class-settings-gateways.php:171, includes/admin/settings/class-settings-general.php:87, includes/admin/tools/import/class-give-import-donations.php:764, includes/admin/tools/import/class-give-import-donations.php:775, includes/admin/tools/import/class-give-import-donations.php:786, includes/admin/tools/views/html-admin-page-system-info.php:447, includes/admin/tools/views/html-admin-page-system-info.php:482, includes/admin/tools/views/html-admin-page-system-info.php:519, includes/admin/tools/views/html-admin-page-system-info.php:597, includes/admin/tools/views/html-admin-page-system-info.php:629, includes/admin/tools/views/html-admin-page-system-info.php:644, includes/admin/tools/views/html-admin-page-system-info.php:649, includes/admin/tools/views/html-admin-page-system-info.php:670, includes/admin/tools/views/html-admin-page-system-info.php:675, includes/gateways/offline-donations.php:323
+#: includes/admin/emails/class-email-setting-field.php:169, includes/admin/emails/class-email-setting-field.php:179, includes/admin/forms/class-metabox-form-data.php:150, includes/admin/forms/class-metabox-form-data.php:285, includes/admin/forms/class-metabox-form-data.php:310, includes/admin/forms/class-metabox-form-data.php:343, includes/admin/forms/class-metabox-form-data.php:401, includes/admin/forms/class-metabox-form-data.php:441, includes/admin/settings/class-settings-advanced.php:84, includes/admin/settings/class-settings-advanced.php:106, includes/admin/settings/class-settings-advanced.php:139, includes/admin/settings/class-settings-display.php:63, includes/admin/settings/class-settings-display.php:80, includes/admin/settings/class-settings-display.php:97, includes/admin/settings/class-settings-display.php:128, includes/admin/settings/class-settings-display.php:144, includes/admin/settings/class-settings-display.php:155, includes/admin/settings/class-settings-display.php:166, includes/admin/settings/class-settings-display.php:185, includes/admin/settings/class-settings-display.php:216, includes/admin/settings/class-settings-display.php:227, includes/admin/settings/class-settings-display.php:258, includes/admin/settings/class-settings-gateways.php:86, includes/admin/settings/class-settings-gateways.php:97, includes/admin/settings/class-settings-gateways.php:129, includes/admin/settings/class-settings-gateways.php:171, includes/admin/settings/class-settings-general.php:87, includes/admin/tools/import/class-give-import-donations.php:764, includes/admin/tools/import/class-give-import-donations.php:775, includes/admin/tools/import/class-give-import-donations.php:786, includes/admin/tools/views/html-admin-page-system-info.php:452, includes/admin/tools/views/html-admin-page-system-info.php:493, includes/admin/tools/views/html-admin-page-system-info.php:530, includes/admin/tools/views/html-admin-page-system-info.php:608, includes/admin/tools/views/html-admin-page-system-info.php:640, includes/admin/tools/views/html-admin-page-system-info.php:655, includes/admin/tools/views/html-admin-page-system-info.php:660, includes/admin/tools/views/html-admin-page-system-info.php:681, includes/admin/tools/views/html-admin-page-system-info.php:686, includes/gateways/offline-donations.php:323
 msgid "Disabled"
 msgstr ""
 
@@ -1771,12 +1779,8 @@ msgstr ""
 msgid "New Donation!"
 msgstr ""
 
-#: includes/admin/emails/class-new-donor-register-email.php:36
-msgid "New Donor Registration"
-msgstr ""
-
 #: includes/admin/emails/class-new-donor-register-email.php:37
-msgid "Sent to designated recipient(s) when a new donor registers on the site."
+msgid "Sent to designated recipient(s) when a new user registers on the site via a donation form."
 msgstr ""
 
 #: includes/admin/emails/class-new-donor-register-email.php:45
@@ -2231,7 +2235,7 @@ msgstr ""
 msgid "Error creating new donor."
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:164, includes/admin/tools/logs/logs.php:152
+#: includes/admin/payments/class-payments-table.php:164, includes/admin/tools/logs/logs.php:195
 msgid "Search"
 msgstr ""
 
@@ -2243,7 +2247,7 @@ msgstr ""
 msgid "End Date"
 msgstr ""
 
-#: includes/admin/payments/class-payments-table.php:210, includes/admin/tools/logs/logs.php:200
+#: includes/admin/payments/class-payments-table.php:210, includes/admin/tools/logs/logs.php:243
 msgid "Apply"
 msgstr ""
 
@@ -2419,7 +2423,7 @@ msgstr ""
 msgid "Donation %s"
 msgstr ""
 
-#: includes/admin/payments/view-payment-details.php:70, includes/admin/tools/views/html-admin-page-system-info.php:572, includes/gateways/functions.php:31, includes/gateways/functions.php:32, includes/gateways/functions.php:132, includes/gateways/functions.php:153
+#: includes/admin/payments/view-payment-details.php:70, includes/admin/tools/views/html-admin-page-system-info.php:583, includes/gateways/functions.php:31, includes/gateways/functions.php:32, includes/gateways/functions.php:132, includes/gateways/functions.php:153
 msgid "Test Donation"
 msgstr ""
 
@@ -2927,7 +2931,7 @@ msgstr ""
 msgid "This option will enable the billing details section for PayPal Standard which requires the donor's address to complete the donation. These fields are not required by PayPal to process the transaction, but you may have a need to collect the data."
 msgstr ""
 
-#: includes/admin/settings/class-settings-gateways.php:90, includes/admin/tools/views/html-admin-page-system-info.php:595
+#: includes/admin/settings/class-settings-gateways.php:90, includes/admin/tools/views/html-admin-page-system-info.php:606
 msgid "PayPal IPN Verification"
 msgstr ""
 
@@ -2975,27 +2979,27 @@ msgstr ""
 msgid "Access Control Docs Link"
 msgstr ""
 
-#: includes/admin/settings/class-settings-general.php:156
+#: includes/admin/settings/class-settings-general.php:163
 msgid "The symbol (typically , or .) to separate thousands."
 msgstr ""
 
-#: includes/admin/settings/class-settings-general.php:179
+#: includes/admin/settings/class-settings-general.php:186
 msgid "Currency Options Docs Link"
 msgstr ""
 
-#: includes/admin/settings/class-settings-general.php:260
+#: includes/admin/settings/class-settings-general.php:268
 msgid "Base State/Province"
 msgstr ""
 
-#: includes/admin/settings/class-settings-general.php:261
+#: includes/admin/settings/class-settings-general.php:269
 msgid "The state/province your site operates from."
 msgstr ""
 
-#: includes/admin/settings/class-settings-general.php:267
+#: includes/admin/settings/class-settings-general.php:275
 msgid "General Options Docs Link"
 msgstr ""
 
-#: includes/admin/settings/class-settings-general.php:270
+#: includes/admin/settings/class-settings-general.php:278
 msgid "General Options"
 msgstr ""
 
@@ -3201,6 +3205,10 @@ msgstr ""
 
 #: includes/admin/tools/class-settings-logs.php:95, includes/deprecated/deprecated-functions.php:70
 msgid "API Requests"
+msgstr ""
+
+#: includes/admin/tools/class-settings-logs.php:96, includes/admin/upgrades/class-give-updates.php:259, includes/admin/upgrades/class-give-updates.php:277
+msgid "Updates"
 msgstr ""
 
 #: includes/admin/tools/data/class-give-tools-delete-import-donors.php:257
@@ -3508,7 +3516,15 @@ msgid "Import Core Settings from a JSON file"
 msgstr ""
 
 #: includes/admin/tools/import/class-give-import-core-settings.php:350
-msgid "This tool allows you to merge or replace settings data to your give settings via a JSON file."
+msgid "This tool allows you to import Give settings from another Give installation. Settings imported contain data from Give core as well as any of our Premium Add-ons."
+msgstr ""
+
+#: includes/admin/tools/import/class-give-import-core-settings.php:356
+msgid "Choose a JSON file:"
+msgstr ""
+
+#: includes/admin/tools/import/class-give-import-core-settings.php:363
+msgid "The file type must be JSON."
 msgstr ""
 
 #: includes/admin/tools/import/class-give-import-core-settings.php:372
@@ -3516,7 +3532,7 @@ msgid "Merge Type:"
 msgstr ""
 
 #: includes/admin/tools/import/class-give-import-core-settings.php:373
-msgid "Import the Setting from the JSON and then merge or replace with the current settings"
+msgid "Select \"Merge\" to retain existing settings, or \"Replace\" to overwrite with the settings from the JSON file"
 msgstr ""
 
 #: includes/admin/tools/import/class-give-import-core-settings.php:377
@@ -3713,7 +3729,7 @@ msgstr ""
 msgid "Please upload or provide a valid CSV file."
 msgstr ""
 
-#: includes/admin/tools/logs/class-api-requests-logs-list-table.php:94, includes/admin/tools/logs/class-gateway-error-logs-list-table.php:135, includes/admin/tools/logs/class-sales-logs-list-table.php:137
+#: includes/admin/tools/logs/class-api-requests-logs-list-table.php:94, includes/admin/tools/logs/class-gateway-error-logs-list-table.php:135, includes/admin/tools/logs/class-sales-logs-list-table.php:137, includes/admin/tools/logs/class-update-logs-list-table.php:79
 msgid "Log ID"
 msgstr ""
 
@@ -3763,6 +3779,14 @@ msgstr ""
 
 #: includes/admin/tools/logs/class-sales-logs-list-table.php:141, includes/import-functions.php:375
 msgid "Donation Amount"
+msgstr ""
+
+#: includes/admin/tools/logs/class-update-logs-list-table.php:81
+msgid "Process Details"
+msgstr ""
+
+#: includes/admin/tools/logs/class-update-logs-list-table.php:124
+msgid "View Update Log"
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-data.php:24
@@ -4082,623 +4106,647 @@ msgid "The page set to display your posts."
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:140
-msgid "Table Prefix Length"
+msgid "Table Prefix"
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:141
-msgid "The length of the table prefix used in your WordPress database."
+msgid "The table prefix used in your WordPress database."
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:145
-msgid "Table Prefix Status"
+msgid "Table Prefix Length"
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:146
-msgid "The status of the table prefix used in your WordPress database."
+msgid "The length of the table prefix used in your WordPress database."
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:150
-msgid "Admin AJAX"
+msgid "Table Prefix Status"
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:151
-msgid "Whether Admin AJAX is accessible."
-msgstr ""
-
-#: includes/admin/tools/views/html-admin-page-system-info.php:152
-msgid "Accessible"
-msgstr ""
-
-#: includes/admin/tools/views/html-admin-page-system-info.php:152
-msgid "Inaccessible"
+msgid "The status of the table prefix used in your WordPress database."
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:155
-msgid "Registered Post Statuses"
+msgid "Admin AJAX"
 msgstr ""
 
 #: includes/admin/tools/views/html-admin-page-system-info.php:156
+msgid "Whether Admin AJAX is accessible."
+msgstr ""
+
+#: includes/admin/tools/views/html-admin-page-system-info.php:157
+msgid "Accessible"
+msgstr ""
+
+#: includes/admin/tools/views/html-admin-page-system-info.php:157
+msgid "Inaccessible"
+msgstr ""
+
+#: includes/admin/tools/views/html-admin-page-system-info.php:160
+msgid "Registered Post Statuses"
+msgstr ""
+
+#: includes/admin/tools/views/html-admin-page-system-info.php:161
 msgid "A list of all registered post statuses."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:165
+#: includes/admin/tools/views/html-admin-page-system-info.php:170
 msgid "Server Environment"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:170
+#: includes/admin/tools/views/html-admin-page-system-info.php:175
 msgid "Hosting Provider"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:171
+#: includes/admin/tools/views/html-admin-page-system-info.php:176
 msgid "The hosting provider for this WordPress installation."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:172
+#: includes/admin/tools/views/html-admin-page-system-info.php:177
 msgid "Unknown"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:175
+#: includes/admin/tools/views/html-admin-page-system-info.php:180
 msgid "TLS Connection"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:176
+#: includes/admin/tools/views/html-admin-page-system-info.php:181
 msgid "Most payment gateway APIs only support connections using the TLS 1.2 security protocol."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:183
+#: includes/admin/tools/views/html-admin-page-system-info.php:188
 msgid "Connection uses %s"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:189
+#: includes/admin/tools/views/html-admin-page-system-info.php:194
 msgid "TLS Rating"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:190
+#: includes/admin/tools/views/html-admin-page-system-info.php:195
 msgid "The server's connection as rated by https://www.howsmyssl.com/"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:200
+#: includes/admin/tools/views/html-admin-page-system-info.php:205
 msgid "Server Info"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:201
+#: includes/admin/tools/views/html-admin-page-system-info.php:206
 msgid "Information about the web server that is currently hosting your site."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:205
+#: includes/admin/tools/views/html-admin-page-system-info.php:210
 msgid "PHP Version"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:206
+#: includes/admin/tools/views/html-admin-page-system-info.php:211
 msgid "The version of PHP installed on your hosting server."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:214
+#: includes/admin/tools/views/html-admin-page-system-info.php:219
 msgid "%s - We recommend a minimum PHP version of 5.6. See: %s"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:214
+#: includes/admin/tools/views/html-admin-page-system-info.php:219
 msgid "PHP Requirements in Give"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:219
+#: includes/admin/tools/views/html-admin-page-system-info.php:224
 msgid "Couldn't determine PHP version because phpversion() doesn't exist."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:225
+#: includes/admin/tools/views/html-admin-page-system-info.php:230
 msgid "PHP Post Max Size"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:226
+#: includes/admin/tools/views/html-admin-page-system-info.php:231
 msgid "The largest filesize that can be contained in one post."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:230
+#: includes/admin/tools/views/html-admin-page-system-info.php:235
 msgid "PHP Time Limit"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:231
+#: includes/admin/tools/views/html-admin-page-system-info.php:236
 msgid "The amount of time (in seconds) that your site will spend on a single operation before timing out (to avoid server lockups)."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:235
+#: includes/admin/tools/views/html-admin-page-system-info.php:240
 msgid "PHP Max Input Vars"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:236
+#: includes/admin/tools/views/html-admin-page-system-info.php:241
 msgid "The maximum number of variables your server can use for a single function to avoid overloads."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:240
+#: includes/admin/tools/views/html-admin-page-system-info.php:245
 msgid "PHP Max Upload Size"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:241
+#: includes/admin/tools/views/html-admin-page-system-info.php:246
 msgid "The largest filesize that can be uploaded to your WordPress installation."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:245
+#: includes/admin/tools/views/html-admin-page-system-info.php:250
 msgid "cURL Version"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:246
+#: includes/admin/tools/views/html-admin-page-system-info.php:251
 msgid "The version of cURL installed on your server."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:253
+#: includes/admin/tools/views/html-admin-page-system-info.php:258
 msgid "%s - We recommend a minimum cURL version of 7.40."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:264
+#: includes/admin/tools/views/html-admin-page-system-info.php:269
 msgid "SUHOSIN Installed"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:265
+#: includes/admin/tools/views/html-admin-page-system-info.php:270
 msgid "Suhosin is an advanced protection system for PHP installations. It was designed to protect your servers on the one hand against a number of well known problems in PHP applications and on the other hand against potential unknown vulnerabilities within these applications or the PHP core itself. If enabled on your server, Suhosin may need to be configured to increase its data submission limits."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:278
+#: includes/admin/tools/views/html-admin-page-system-info.php:283
 msgid "MySQL Version"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:279
+#: includes/admin/tools/views/html-admin-page-system-info.php:284
 msgid "The version of MySQL installed on your hosting server."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:285
+#: includes/admin/tools/views/html-admin-page-system-info.php:290
 msgid "%s - We recommend a minimum MySQL version of 5.6. See: %s"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:285
+#: includes/admin/tools/views/html-admin-page-system-info.php:290
 msgid "WordPress Requirements"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:294
+#: includes/admin/tools/views/html-admin-page-system-info.php:299
 msgid "Default Timezone is UTC"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:295
+#: includes/admin/tools/views/html-admin-page-system-info.php:300
 msgid "The default timezone for your server."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:299
+#: includes/admin/tools/views/html-admin-page-system-info.php:304
 msgid "Default timezone is %s - it should be UTC"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:310
+#: includes/admin/tools/views/html-admin-page-system-info.php:315
 msgid "Payment gateways can use cURL to communicate with remote servers to authorize payments, other plugins may also use it when communicating with remote services."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:316
+#: includes/admin/tools/views/html-admin-page-system-info.php:321
 msgid "Your server does not have fsockopen or cURL enabled - PayPal IPN and other scripts which communicate with other servers will not work. Contact your hosting provider."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:321
+#: includes/admin/tools/views/html-admin-page-system-info.php:326
 msgid "Some webservices like shipping use SOAP to get information from remote servers, for example, live shipping quotes from FedEx require SOAP to be installed."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:327
+#: includes/admin/tools/views/html-admin-page-system-info.php:332
 msgid "Your server does not have the %s class enabled - some gateway plugins which use SOAP may not work as expected."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:332
+#: includes/admin/tools/views/html-admin-page-system-info.php:337
 msgid "HTML/Multipart emails use DOMDocument to generate inline CSS in templates."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:338
+#: includes/admin/tools/views/html-admin-page-system-info.php:343
 msgid "Your server does not have the %s class enabled - HTML/Multipart emails, and also some extensions, will not work without DOMDocument."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:343
+#: includes/admin/tools/views/html-admin-page-system-info.php:348
 msgid "gzip is used for file compression and decompression."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:349
+#: includes/admin/tools/views/html-admin-page-system-info.php:354
 msgid "Your server does not support the %s function - this is used for file compression and decompression."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:355
+#: includes/admin/tools/views/html-admin-page-system-info.php:360
 msgid "GD Graphics Library is used for dynamically manipulating images."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:360
+#: includes/admin/tools/views/html-admin-page-system-info.php:365
 msgid "Multibyte String (mbstring) is used to convert character encoding, like for emails or converting characters to lowercase."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:366
+#: includes/admin/tools/views/html-admin-page-system-info.php:371
 msgid "Your server does not support the %s functions - this is required for better character encoding. Some fallbacks will be used instead for it."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:370
+#: includes/admin/tools/views/html-admin-page-system-info.php:375
 msgid "Remote Post"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:371
+#: includes/admin/tools/views/html-admin-page-system-info.php:376
 msgid "PayPal uses this method of communicating when sending back transaction information."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:385
+#: includes/admin/tools/views/html-admin-page-system-info.php:390
 msgid "wp_remote_post() failed. PayPal IPN won't work with your server. Contact your hosting provider."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:387, includes/admin/tools/views/html-admin-page-system-info.php:405
+#: includes/admin/tools/views/html-admin-page-system-info.php:392, includes/admin/tools/views/html-admin-page-system-info.php:410
 msgid "Error: %s"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:389, includes/admin/tools/views/html-admin-page-system-info.php:407
+#: includes/admin/tools/views/html-admin-page-system-info.php:394, includes/admin/tools/views/html-admin-page-system-info.php:412
 msgid "Status code: %s"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:395
+#: includes/admin/tools/views/html-admin-page-system-info.php:400
 msgid "Remote Get"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:396
+#: includes/admin/tools/views/html-admin-page-system-info.php:401
 msgid "Give plugins may use this method of communication when checking for plugin updates."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:403
+#: includes/admin/tools/views/html-admin-page-system-info.php:408
 msgid "wp_remote_get() failed. The Give plugin updater won't work with your server. Contact your hosting provider."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:435
+#: includes/admin/tools/views/html-admin-page-system-info.php:440
 msgid "Give Configuration"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:440
+#: includes/admin/tools/views/html-admin-page-system-info.php:445
 msgid "Give Version"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:441
+#: includes/admin/tools/views/html-admin-page-system-info.php:446
 msgid "The version of Give installed on your site."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:445, includes/admin/tools/views/html-admin-page-system-info.php:480
+#: includes/admin/tools/views/html-admin-page-system-info.php:450, includes/admin/tools/views/html-admin-page-system-info.php:491
 msgid "Give Cache"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:446, includes/admin/tools/views/html-admin-page-system-info.php:481
+#: includes/admin/tools/views/html-admin-page-system-info.php:451, includes/admin/tools/views/html-admin-page-system-info.php:492
 msgid "Whether cache is enabled in Give settings."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:450, includes/admin/upgrades/views/upgrades.php:39
+#: includes/admin/tools/views/html-admin-page-system-info.php:455, includes/admin/upgrades/views/upgrades.php:39
 msgid "Database Updates"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:451
+#: includes/admin/tools/views/html-admin-page-system-info.php:456
 msgid "This will show the number of pending database updates."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:454
+#: includes/admin/tools/views/html-admin-page-system-info.php:459
 msgid "All DB Updates Completed."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:462
+#: includes/admin/tools/views/html-admin-page-system-info.php:466
+msgid "%1$s updates still need to run. (Paused) "
+msgstr ""
+
+#: includes/admin/tools/views/html-admin-page-system-info.php:473
 msgid "%1$s updates still need to run."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:469
+#: includes/admin/tools/views/html-admin-page-system-info.php:480
 msgid "%1$s of %2$s updates still need to run."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:485
+#: includes/admin/tools/views/html-admin-page-system-info.php:496
 msgid "Give Emails"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:486
+#: includes/admin/tools/views/html-admin-page-system-info.php:497
 msgid "Whether emails is enabled in Give settings."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:512
+#: includes/admin/tools/views/html-admin-page-system-info.php:523
 msgid "Upgraded From"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:513
+#: includes/admin/tools/views/html-admin-page-system-info.php:524
 msgid "The version of Give installed prior to the last update."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:518
+#: includes/admin/tools/views/html-admin-page-system-info.php:529
 msgid "Whether Test Mode is enabled in Give settings."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:522
+#: includes/admin/tools/views/html-admin-page-system-info.php:533
 msgid "Currency Code"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:523
+#: includes/admin/tools/views/html-admin-page-system-info.php:534
 msgid "The currency code selected in Give settings."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:528
+#: includes/admin/tools/views/html-admin-page-system-info.php:539
 msgid "The currency position selected in Give settings."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:529
+#: includes/admin/tools/views/html-admin-page-system-info.php:540
 msgid "Before"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:529
+#: includes/admin/tools/views/html-admin-page-system-info.php:540
 msgid "After"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:533
+#: includes/admin/tools/views/html-admin-page-system-info.php:544
 msgid "The decimal separator defined in Give settings."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:538
+#: includes/admin/tools/views/html-admin-page-system-info.php:549
 msgid "The thousands separator defined in Give settings."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:543
+#: includes/admin/tools/views/html-admin-page-system-info.php:554
 msgid "The page where donors land following a successful transaction."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:547
+#: includes/admin/tools/views/html-admin-page-system-info.php:558
 msgid "Failure Page"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:548
+#: includes/admin/tools/views/html-admin-page-system-info.php:559
 msgid "The page where donors land following a failed transaction."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:553
+#: includes/admin/tools/views/html-admin-page-system-info.php:564
 msgid "The page where past donations are listed."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:557
+#: includes/admin/tools/views/html-admin-page-system-info.php:568
 msgid "Give Forms Slug"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:558
+#: includes/admin/tools/views/html-admin-page-system-info.php:569
 msgid "The slug used for Give donation forms."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:585
+#: includes/admin/tools/views/html-admin-page-system-info.php:596
 msgid "Enabled Payment Gateways"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:586
+#: includes/admin/tools/views/html-admin-page-system-info.php:597
 msgid "All payment gateways enabled in Give settings."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:590
+#: includes/admin/tools/views/html-admin-page-system-info.php:601
 msgid "Default Payment Gateway"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:591
+#: includes/admin/tools/views/html-admin-page-system-info.php:602
 msgid "The default payment gateway selected in Give settings."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:596
+#: includes/admin/tools/views/html-admin-page-system-info.php:607
 msgid "Whether admins requires verification of IPN notifications with PayPal."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:600
+#: includes/admin/tools/views/html-admin-page-system-info.php:611
 msgid "PayPal IPN Notifications"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:601
+#: includes/admin/tools/views/html-admin-page-system-info.php:612
 msgid "Displays whether when last PayPal IPN is received with which donation or transaction."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:611
+#: includes/admin/tools/views/html-admin-page-system-info.php:622
 msgid "IPN received for <a href=\"%s\">#%s</a> ( <a href=\"%s\" target=\"_blank\">%s</a> ) on %s at %s. Status %s"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:627
+#: includes/admin/tools/views/html-admin-page-system-info.php:638
 msgid "Donor Email Access"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:628
+#: includes/admin/tools/views/html-admin-page-system-info.php:639
 msgid "Whether donors can access their donation history using only email."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:637
+#: includes/admin/tools/views/html-admin-page-system-info.php:648
 msgid "Session Configuration"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:642
+#: includes/admin/tools/views/html-admin-page-system-info.php:653
 msgid "Give Use Sessions"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:643
+#: includes/admin/tools/views/html-admin-page-system-info.php:654
 msgid "Whether PHP sessions are enforced, enabled, or disabled."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:644
+#: includes/admin/tools/views/html-admin-page-system-info.php:655
 msgid "Enforced"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:647
+#: includes/admin/tools/views/html-admin-page-system-info.php:658
 msgid "Session"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:648
+#: includes/admin/tools/views/html-admin-page-system-info.php:659
 msgid "Whether a PHP session is currently set."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:653
+#: includes/admin/tools/views/html-admin-page-system-info.php:664
 msgid "Session Name"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:654
+#: includes/admin/tools/views/html-admin-page-system-info.php:665
 msgid "The name of the current PHP session."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:658
+#: includes/admin/tools/views/html-admin-page-system-info.php:669
 msgid "Cookie Path"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:659
+#: includes/admin/tools/views/html-admin-page-system-info.php:670
 msgid "The cookie path of the current PHP session."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:663
+#: includes/admin/tools/views/html-admin-page-system-info.php:674
 msgid "Save Path"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:664
+#: includes/admin/tools/views/html-admin-page-system-info.php:675
 msgid "The save path of the current PHP session."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:668
+#: includes/admin/tools/views/html-admin-page-system-info.php:679
 msgid "Use Cookies"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:669
+#: includes/admin/tools/views/html-admin-page-system-info.php:680
 msgid "Whether the current PHP session is set to use cookies."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:673
+#: includes/admin/tools/views/html-admin-page-system-info.php:684
 msgid "Use Only Cookies"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:674
+#: includes/admin/tools/views/html-admin-page-system-info.php:685
 msgid "Whether the current PHP session is set to use only cookies."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:684
+#: includes/admin/tools/views/html-admin-page-system-info.php:695
 msgid "Active Give Add-ons"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:702, includes/admin/tools/views/html-admin-page-system-info.php:767, includes/admin/tools/views/html-admin-page-system-info.php:814, includes/admin/tools/views/html-admin-page-system-info.php:862, includes/admin/upgrades/views/plugins-update-section.php:22
+#: includes/admin/tools/views/html-admin-page-system-info.php:713, includes/admin/tools/views/html-admin-page-system-info.php:778, includes/admin/tools/views/html-admin-page-system-info.php:825, includes/admin/tools/views/html-admin-page-system-info.php:873, includes/admin/upgrades/views/plugins-update-section.php:22
 msgid "Visit plugin homepage"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:712, includes/admin/tools/views/html-admin-page-system-info.php:777, includes/admin/tools/views/html-admin-page-system-info.php:824, includes/admin/upgrades/views/plugins-update-section.php:33
+#: includes/admin/tools/views/html-admin-page-system-info.php:723, includes/admin/tools/views/html-admin-page-system-info.php:788, includes/admin/tools/views/html-admin-page-system-info.php:835, includes/admin/upgrades/views/plugins-update-section.php:33
 msgid "Visit author homepage"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:723, includes/admin/upgrades/views/plugins-update-section.php:42
+#: includes/admin/tools/views/html-admin-page-system-info.php:734, includes/admin/upgrades/views/plugins-update-section.php:42
 msgid "Licensed"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:725, includes/admin/upgrades/views/plugins-update-section.php:42
+#: includes/admin/tools/views/html-admin-page-system-info.php:736, includes/admin/upgrades/views/plugins-update-section.php:42
 msgid "Unlicensed"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:729, includes/admin/tools/views/html-admin-page-system-info.php:785, includes/admin/tools/views/html-admin-page-system-info.php:832, includes/admin/tools/views/html-admin-page-system-info.php:881, includes/admin/upgrades/views/plugins-update-section.php:46
+#: includes/admin/tools/views/html-admin-page-system-info.php:740, includes/admin/tools/views/html-admin-page-system-info.php:796, includes/admin/tools/views/html-admin-page-system-info.php:843, includes/admin/tools/views/html-admin-page-system-info.php:892, includes/admin/upgrades/views/plugins-update-section.php:46
 msgctxt "by author"
 msgid "by %s"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:744
+#: includes/admin/tools/views/html-admin-page-system-info.php:755
 msgid "Other Active Plugins"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:796
+#: includes/admin/tools/views/html-admin-page-system-info.php:807
 msgid "Inactive Plugins"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:847
+#: includes/admin/tools/views/html-admin-page-system-info.php:858
 msgid "Active MU Plugins"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:894
+#: includes/admin/tools/views/html-admin-page-system-info.php:905
 msgid "Theme"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:904
+#: includes/admin/tools/views/html-admin-page-system-info.php:915
 msgid "The name of the current active theme."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:908
+#: includes/admin/tools/views/html-admin-page-system-info.php:919
 msgid "Version"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:909
+#: includes/admin/tools/views/html-admin-page-system-info.php:920
 msgid "The installed version of the current active theme."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:913
+#: includes/admin/tools/views/html-admin-page-system-info.php:924
 msgid "Author URL"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:914
+#: includes/admin/tools/views/html-admin-page-system-info.php:925
 msgid "The theme developer's URL."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:918
+#: includes/admin/tools/views/html-admin-page-system-info.php:929
 msgid "Child Theme"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:919
+#: includes/admin/tools/views/html-admin-page-system-info.php:930
 msgid "Whether the current theme is a child theme."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:921, includes/class-give-cli-commands.php:138, includes/forms/widget.php:181
+#: includes/admin/tools/views/html-admin-page-system-info.php:932, includes/class-give-cli-commands.php:138, includes/forms/widget.php:181
 msgid "Yes"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:921, includes/class-give-cli-commands.php:138, includes/forms/widget.php:182
+#: includes/admin/tools/views/html-admin-page-system-info.php:932, includes/class-give-cli-commands.php:138, includes/forms/widget.php:182
 msgid "No"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:921
+#: includes/admin/tools/views/html-admin-page-system-info.php:932
 msgid "If you're modifying Give on a parent theme you didn't build personally, then we recommend using a child theme. See: <a href=\"%s\" target=\"_blank\">How to Create a Child Theme</a>"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:929
+#: includes/admin/tools/views/html-admin-page-system-info.php:940
 msgid "Parent Theme Name"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:930
+#: includes/admin/tools/views/html-admin-page-system-info.php:941
 msgid "The name of the parent theme."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:934
+#: includes/admin/tools/views/html-admin-page-system-info.php:945
 msgid "Parent Theme Version"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:935
+#: includes/admin/tools/views/html-admin-page-system-info.php:946
 msgid "The installed version of the parent theme."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:939
+#: includes/admin/tools/views/html-admin-page-system-info.php:950
 msgid "Parent Theme Author URL"
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-system-info.php:940
+#: includes/admin/tools/views/html-admin-page-system-info.php:951
 msgid "The parent theme developers URL."
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:253
+#: includes/admin/upgrades/class-give-updates.php:258
 msgid "Give Updates Complete"
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:254, includes/admin/upgrades/class-give-updates.php:270
-msgid "Updates"
-msgstr ""
-
-#: includes/admin/upgrades/class-give-updates.php:267
+#: includes/admin/upgrades/class-give-updates.php:274
 msgid "Give Updates"
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:334
-msgid "Give needs to upgrade the database but cannot because AJAX is not functioning properly. Please contact your host and ask them to ensure admin-ajax.php is accessible."
-msgstr ""
-
-#: includes/admin/upgrades/class-give-updates.php:347, includes/admin/upgrades/class-give-updates.php:498
-msgid "Give database updates completed successfully. Thank you for updating to the latest version!"
-msgstr ""
-
-#: includes/admin/upgrades/class-give-updates.php:360
+#: includes/admin/upgrades/class-give-updates.php:506, includes/admin/upgrades/class-give-updates.php:568
 msgid "Database Update"
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:361
+#: includes/admin/upgrades/class-give-updates.php:507
+msgid "GiveWP needs to update your database to the latest version. The following process will make updates to your site's database. Please create a backup before proceeding."
+msgstr ""
+
+#: includes/admin/upgrades/class-give-updates.php:511
+msgid "Restart the updater"
+msgstr ""
+
+#: includes/admin/upgrades/class-give-updates.php:516, includes/admin/upgrades/class-give-updates.php:578
+msgid "It is recommended that you backup your database before proceeding. Do you want to run the update now?"
+msgstr ""
+
+#: includes/admin/upgrades/class-give-updates.php:542
+msgid "Give needs to upgrade the database but cannot because AJAX does not appear accessible. This could be because your website is password protected, in maintenance mode, or has a specific hosting configuration or plugin active that is preventing access."
+msgstr ""
+
+#: includes/admin/upgrades/class-give-updates.php:542
+msgid "Read More"
+msgstr ""
+
+#: includes/admin/upgrades/class-give-updates.php:555, includes/admin/upgrades/class-give-updates.php:706
+msgid "Give database updates completed successfully. Thank you for updating to the latest version!"
+msgstr ""
+
+#: includes/admin/upgrades/class-give-updates.php:569
 msgid "GiveWP needs to update your database to the latest version. The following process will make updates to your site's database. Please create a complete backup before proceeding."
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:370
-msgid "It is strongly recommended that you backup your database before proceeding. Do you want to run the update now?"
+#: includes/admin/upgrades/class-give-updates.php:573
+msgid "Run the updater"
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:499
+#: includes/admin/upgrades/class-give-updates.php:707
 msgid "Updates Completed."
 msgstr ""
 
-#: includes/admin/upgrades/upgrade-functions.php:282, includes/admin/upgrades/upgrade-functions.php:320
+#: includes/admin/upgrades/upgrade-functions.php:331, includes/admin/upgrades/upgrade-functions.php:369
 msgid "You do not have permission to do Give upgrades."
 msgstr ""
 
@@ -4722,47 +4770,67 @@ msgstr ""
 msgid "Give regularly receives new features, bug fixes, and enhancements. It is important to always stay up-to-date with latest version of Give core and its add-ons.  Please create a backup of your site before updating. To update add-ons be sure your <a href=\"%1$s\">license keys</a> are activated."
 msgstr ""
 
-#: includes/admin/upgrades/views/upgrades.php:44
+#: includes/admin/upgrades/views/upgrades.php:45
 msgid "%1$s <a href=\"%2$s\" class=\"%3$s\">%4$s</a>"
 msgstr ""
 
-#: includes/admin/upgrades/views/upgrades.php:46
+#: includes/admin/upgrades/views/upgrades.php:47
 msgid "Give is currently updating the database in the background."
 msgstr ""
 
-#: includes/admin/upgrades/views/upgrades.php:47
+#: includes/admin/upgrades/views/upgrades.php:48
 msgid "Give needs to update the database."
 msgstr ""
 
-#: includes/admin/upgrades/views/upgrades.php:50
+#: includes/admin/upgrades/views/upgrades.php:51
 msgid "Update now"
 msgstr ""
 
+#: includes/admin/upgrades/views/upgrades.php:56
+msgid "The updates have been paused."
+msgstr ""
+
 #: includes/admin/upgrades/views/upgrades.php:60
+msgid "Restart Upgrades"
+msgstr ""
+
+#: includes/admin/upgrades/views/upgrades.php:62
+msgid "Pause Upgrades"
+msgstr ""
+
+#: includes/admin/upgrades/views/upgrades.php:70
+msgid "Do you want to stop the update process now?"
+msgstr ""
+
+#: includes/admin/upgrades/views/upgrades.php:78
+msgid "Do you want to restart the update process?"
+msgstr ""
+
+#: includes/admin/upgrades/views/upgrades.php:90
 msgid "Update %s of %s"
 msgstr ""
 
-#: includes/admin/upgrades/views/upgrades.php:97
+#: includes/admin/upgrades/views/upgrades.php:131
 msgid "Add-on Updates"
 msgstr ""
 
-#: includes/admin/upgrades/views/upgrades.php:100
+#: includes/admin/upgrades/views/upgrades.php:134
 msgid "There %1$s %2$s Give %3$s that %4$s to be updated. <a href=\"%5$s\">Update now</a>"
 msgstr ""
 
-#: includes/admin/upgrades/views/upgrades.php:100
+#: includes/admin/upgrades/views/upgrades.php:134
 msgid "is"
 msgid_plural "are"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/upgrades/views/upgrades.php:100
+#: includes/admin/upgrades/views/upgrades.php:134
 msgid "add-on"
 msgid_plural "add-ons"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/upgrades/views/upgrades.php:100
+#: includes/admin/upgrades/views/upgrades.php:134
 msgid "needs"
 msgid_plural "need"
 msgstr[0] ""
@@ -9638,19 +9706,19 @@ msgstr ""
 msgid "The reset password link for user."
 msgstr ""
 
-#: includes/emails/class-give-email-tags.php:1104
+#: includes/emails/class-give-email-tags.php:1090
 msgid "View it in your browser &raquo;"
 msgstr ""
 
-#: includes/emails/class-give-email-tags.php:1244
+#: includes/emails/class-give-email-tags.php:1230
 msgid "View your donation history"
 msgstr ""
 
-#: includes/emails/class-give-email-tags.php:1337
+#: includes/emails/class-give-email-tags.php:1323
 msgid "Reset your password &raquo;"
 msgstr ""
 
-#: includes/emails/class-give-email-tags.php:1342
+#: includes/emails/class-give-email-tags.php:1328
 msgid "Reset your password"
 msgstr ""
 
@@ -10392,6 +10460,10 @@ msgstr ""
 
 #: includes/payments/actions.php:136
 msgid "Status changed from %1$s to %2$s."
+msgstr ""
+
+#: includes/payments/class-give-payment.php:743
+msgid "This custom meta key deprecated. We are not using this meta key for storing payment meta but your custom meta data will be store because we added backward compatibility. Please change your logic because in future we can remove it."
 msgstr ""
 
 #: includes/payments/functions.php:529

@@ -57,7 +57,7 @@ if ( ! class_exists( 'Give_Settings_Logs' ) ) :
 					'table_html' => false,
 				),
 				array(
-					'id'   => 'api',
+					'id'   => 'logs',
 					'name' => __( 'Log', 'give' ),
 					'type' => 'logs',
 
@@ -93,6 +93,7 @@ if ( ! class_exists( 'Give_Settings_Logs' ) ) :
 				'sales'          => __( 'Donations', 'give' ),
 				'gateway_errors' => __( 'Payment Errors', 'give' ),
 				'api_requests'   => __( 'API Requests', 'give' ),
+				'updates'   => __( 'Updates', 'give' ),
 			);
 
 			$sections = apply_filters( 'give_log_views', $sections );
