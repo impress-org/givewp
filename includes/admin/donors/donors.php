@@ -252,7 +252,7 @@ function give_render_donor_view( $view, $callbacks ) {
 			<?php
 			printf(
 			/* translators: %s: donor first name */
-				esc_html__( 'Edit User %s', 'give' ),
+				__( 'Edit User %s', 'give' ),
 				$donor->get_first_name()
 			);
 			?>
