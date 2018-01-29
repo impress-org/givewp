@@ -436,7 +436,7 @@ function give_check_for_form_price_variations() {
 	$form_id = intval( $_POST['form_id'] );
 	$form    = get_post( $form_id );
 
-	if ( 'give_forms' != $form->post_type ) {
+	if ( 'give_forms' !== $form->post_type ) {
 		die( '-2' );
 	}
 
@@ -486,7 +486,7 @@ function give_check_for_form_price_variations_html() {
 	}
 
 	$form = get_post( $form_id );
-	if ( ! empty( $form->post_type ) && 'give_forms' != $form->post_type ) {
+	if ( ! empty( $form->post_type ) && 'give_forms' !== $form->post_type ) {
 		wp_die();
 	}
 
