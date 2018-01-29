@@ -477,16 +477,19 @@ add_action( 'give_post_process_give_forms_meta', 'give_update_goal_closed_meta',
  *
  * @param $payment_id
  */
-function give_update_goal_closed_meta_on_donation_complete( $payment_id ) {
+function give_update_goal_closed_meta_on_donation_update( $payment_id ) {
 	// Get form id from payment meta
 	$form_id = give_get_meta( $payment_id, '_give_payment_form_id', true );
 
 	// if no form id is found then return.
 	if ( empty( $form_id ) ) {
 		return;
+
 	}
 
 	give_update_goal_closed_meta( $form_id );
 }
 
-add_action( 'give_complete_donation', 'give_update_goal_closed_meta_on_donation_complete', 10, 1 );
+add_action( 'give_complete_donation', 'give_update_goal_closed_meta_on_donation_update', 10, 1 );
+add_action( 'give_payments_table_do_bulk_action', 'give_update_goal_closed_meta_on_donation_update', 10, 1 );
+add_action( 'give_payment_delete', 'give_update_goal_closed_meta_on_donation_update', 10, 1 );
