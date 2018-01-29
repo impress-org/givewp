@@ -109,7 +109,7 @@ class Give_Donation_Form_Block {
 		$parameters[] = 'show_goal="' . var_export( $attributes['showGoal'], 1 ) . '"';
 		$parameters[] = 'show_content="' . $attributes['showContent'] . '"';
 		$parameters[] = 'display_style="' . $attributes['displayStyle'] . '"';
-		'reveal' === $attributes['displayStyle'] && // show continue button if display_style is "reveal"
+		'reveal' === $attributes['displayStyle'] && ! empty( $attributes['continueButtonTitle'] ) && // show continue button if display_style is "reveal"
 		$parameters[] = 'continue_button_title="' . trim( $attributes['continueButtonTitle'] ) . '"';
 
 		return do_shortcode( '[give_form ' . join( ' ', $parameters ) . ' ]' );
@@ -143,15 +143,20 @@ class Give_Donation_Form_Block {
 		}
 
 		$form_id = $parameters['id'];
-		$form    = get_post( $form_id );
-		$total   = give_get_default_form_amount( $form_id );
+
+		$parameters = array();
+
+		$parameters[] = 'id="' . $form_id . '"';
+		$parameters[] = 'show_title="' . sanitize_text_field( $_GET['show_title'] ) . '"';
+		$parameters[] = 'show_goal="' . sanitize_text_field( $_GET['show_title'] ) . '"';
+		$parameters[] = 'show_content="' . sanitize_text_field( $_GET['show_content'] ) . '"';
+		$parameters[] = 'display_style="' . sanitize_text_field( $_GET['display_style'] ) . '"';
+		'reveal' === $_GET['display_style'] && ! empty( $_GET['continue_button_title'] ) &&
+		$parameters[] = 'continue_button_title="' . sanitize_text_field( $_GET['continue_button_title'] ) . '"';
 
 		// Response data array
 		$response = array(
-			'title'         => $form->post_title,
-			'content'       => wpautop( give_get_meta( $form_id, '_give_form_content', true ) ),
-			'format_amount' => give_format_amount( $total, array( 'sanitize' => false ) ),
-			'final_amount'  => give_currency_filter( give_format_amount( $total, array( 'sanitize' => false ) ), array( 'currency_code' => give_get_currency( $form_id ) ) ),
+			'html' => do_shortcode( '[give_form ' . join( ' ', $parameters ) . ' ]' ),
 		);
 
 		return $response;
