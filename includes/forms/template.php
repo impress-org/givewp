@@ -1802,16 +1802,18 @@ add_filter( 'the_content', 'give_filter_success_page_content' );
  *
  * Displays a notice on the frontend for donation forms.
  *
+ * @param int $form_id Donation Form ID.
+ *
  * @since 1.1
  */
-function give_test_mode_frontend_warning() {
+function give_test_mode_frontend_warning( $form_id ) {
 
-	if ( give_is_test_mode() ) {
+	if ( give_is_test_mode( $form_id ) ) {
 		echo '<div class="give_error give_warning" id="give_error_test_mode"><p><strong>' . esc_html__( 'Notice:', 'give' ) . '</strong> ' . esc_html__( 'Test mode is enabled. While in test mode no live donations are processed.', 'give' ) . '</p></div>';
 	}
 }
 
-add_action( 'give_pre_form', 'give_test_mode_frontend_warning', 10 );
+add_action( 'give_pre_form', 'give_test_mode_frontend_warning', 10, 1 );
 
 /**
  * Members-only Form.
