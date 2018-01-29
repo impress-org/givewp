@@ -251,9 +251,11 @@ function give_render_donor_view( $view, $callbacks ) {
 		<h1 class="wp-heading-inline">
 			<?php
 			printf(
-			/* translators: %s: donor number */
-				esc_html__( 'Donor %s', 'give' ),
-				$donor_id
+			/* translators: %s: donor first name */
+				__( 'Edit Donor #%s: %s %s', 'give' ),
+				$donor->id,
+				$donor->get_first_name(),
+				$donor->get_last_name()
 			);
 			?>
 		</h1>
