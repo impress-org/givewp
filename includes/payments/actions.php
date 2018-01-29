@@ -358,37 +358,37 @@ function give_bc_v20_get_payment_meta( $check, $object_id, $meta_key, $single ) 
 		$donor_data['address'] = false;
 
 		// Address1.
-		$address1 = ! empty( $payment_meta['_give_payment_billing_address1'] ) ? $payment_meta['_give_payment_billing_address1'] : '';
+		$address1 = ! empty( $payment_meta['_give_donor_billing_address1'] ) ? $payment_meta['_give_donor_billing_address1'] : '';
 		if ( $address1 ) {
 			$donor_data['address']['line1'] = $address1;
 		}
 
 		// Address2.
-		$address2 = ! empty( $payment_meta['_give_payment_billing_address2'] ) ? $payment_meta['_give_payment_billing_address2'] : '';
+		$address2 = ! empty( $payment_meta['_give_donor_billing_address2'] ) ? $payment_meta['_give_donor_billing_address2'] : '';
 		if ( $address2 ) {
 			$donor_data['address']['line2'] = $address2;
 		}
 
 		// City.
-		$city = ! empty( $payment_meta['_give_payment_billing_city'] ) ? $payment_meta['_give_payment_billing_city'] : '';
+		$city = ! empty( $payment_meta['_give_donor_billing_city'] ) ? $payment_meta['_give_donor_billing_city'] : '';
 		if ( $city ) {
 			$donor_data['address']['city'] = $city;
 		}
 
 		// Zip.
-		$zip = ! empty( $payment_meta['_give_payment_billing_zip'] ) ? $payment_meta['_give_payment_billing_zip'] : '';
+		$zip = ! empty( $payment_meta['_give_donor_billing_zip'] ) ? $payment_meta['_give_donor_billing_zip'] : '';
 		if ( $zip ) {
 			$donor_data['address']['zip'] = $zip;
 		}
 
 		// State.
-		$state = ! empty( $payment_meta['_give_payment_billing_state'] ) ? $payment_meta['_give_payment_billing_state'] : '';
+		$state = ! empty( $payment_meta['_give_donor_billing_state'] ) ? $payment_meta['_give_donor_billing_state'] : '';
 		if ( $state ) {
 			$donor_data['address']['state'] = $state;
 		}
 
 		// Country.
-		$country = ! empty( $payment_meta['_give_payment_billing_country'] ) ? $payment_meta['_give_payment_billing_country'] : '';
+		$country = ! empty( $payment_meta['_give_donor_billing_country'] ) ? $payment_meta['_give_donor_billing_country'] : '';
 		if ( $country ) {
 			$donor_data['address']['country'] = $country;
 		}
