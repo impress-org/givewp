@@ -491,5 +491,20 @@ function give_update_goal_closed_meta_on_donation_update( $payment_id ) {
 }
 
 add_action( 'give_complete_donation', 'give_update_goal_closed_meta_on_donation_update', 10, 1 );
-add_action( 'give_payments_table_do_bulk_action', 'give_update_goal_closed_meta_on_donation_update', 10, 1 );
 add_action( 'give_payment_delete', 'give_update_goal_closed_meta_on_donation_update', 10, 1 );
+
+/**
+ * Update Form Goal close meta if Donation status is update.
+ *
+ * @since 2.0.2
+ *
+ * @param $payment_id
+ * @param $action
+ */
+function give_bulk_action_update_form_gola_meta( $payment_id, $action ) {
+	if ( ! in_array( $action, array( 'delete', 'resend-receipt' ) ) ) {
+		give_update_goal_closed_meta_on_donation_update( $payment_id );
+	}
+}
+
+add_action( 'give_payments_table_do_bulk_action', 'give_bulk_action_update_form_gola_meta', 10, 2 );
