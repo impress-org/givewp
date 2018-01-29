@@ -119,7 +119,7 @@ class Give_Donor {
 	 * @since  1.0
 	 * @access public
 	 *
-	 * @var    string
+	 * @var    array
 	 */
 	public $notes;
 
