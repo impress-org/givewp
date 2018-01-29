@@ -43,6 +43,7 @@ function give_load_scripts() {
 		'decimal_separator'   => give_get_price_decimal_separator(),
 		'no_gateway'          => __( 'Please select a payment method.', 'give' ),
 		'bad_minimum'         => __( 'The minimum custom donation amount for this form is', 'give' ),
+		'bad_maximum'         => __( 'The maximum custom donation amount for this form is', 'give' ),
 		'general_loading'     => __( 'Loading...', 'give' ),
 		'purchase_loading'    => __( 'Please Wait...', 'give' ),
 		'number_decimals'     => give_get_price_decimals(),
@@ -253,6 +254,8 @@ function give_load_admin_scripts( $hook ) {
 	// CSS.
 	wp_register_style( 'jquery-ui-css', $css_dir . 'jquery-ui-fresh' . $suffix . '.css' );
 	wp_enqueue_style( 'jquery-ui-css' );
+	wp_register_style( 'jquery-ui-slider', $css_dir . 'jquery.ui.slider' . $suffix . '.css' );
+	wp_enqueue_style( 'jquery-ui-slider' );
 	wp_register_style( 'give-admin', $css_dir . 'give-admin' . $direction . $suffix . '.css', array(), GIVE_VERSION );
 	wp_enqueue_style( 'give-admin' );
 	wp_register_style( 'jquery-chosen', $css_dir . 'chosen' . $suffix . '.css', array(), GIVE_VERSION );
@@ -321,6 +324,7 @@ function give_load_admin_scripts( $hook ) {
 		'disconnect_user'                   => __( 'Are you sure you want to disconnect the user from this donor?', 'give' ),
 		'one_option'                        => __( 'Choose a form', 'give' ),
 		'one_or_more_option'                => __( 'Choose one or more forms', 'give' ),
+		'currency'                          => give_get_currency(),
 		'currency_sign'                     => give_currency_filter( '' ),
 		'currency_pos'                      => isset( $give_options['currency_position'] ) ? $give_options['currency_position'] : 'before',
 		'currency_decimals'                 => give_get_price_decimals(),
@@ -382,6 +386,10 @@ function give_load_admin_scripts( $hook ) {
 		'give_donation_import'              => 'give_donation_import',
 		'core_settings_import'              => 'give_core_settings_import',
 		'setting_not_save_message'          => __( 'Changes you made may not be saved.', 'give' ),
+		'give_donation_amounts'             => array(
+			'minimum' => apply_filters( 'give_donation_minimum_limit', 1 ),
+			'maximum' => apply_filters( 'give_donation_maximum_limit', 999999.99 ),
+		),
 	) );
 
 	if ( function_exists( 'wp_enqueue_media' ) && version_compare( get_bloginfo( 'version' ), '3.5', '>=' ) ) {

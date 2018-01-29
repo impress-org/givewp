@@ -383,7 +383,7 @@ function give_donation_form_validate_gateway() {
 			give_set_error( 'invalid_donation_amount', __( 'Please insert a valid donation amount.', 'give' ) );
 
 		} // End if().
-		elseif ( ! give_verify_minimum_price() ) {
+		elseif ( ! give_verify_minimum_price( 'minimum' ) ) {
 			// translators: %s: minimum donation amount.
 			give_set_error(
 				'invalid_donation_minimum',
@@ -391,6 +391,18 @@ function give_donation_form_validate_gateway() {
 				/* translators: %s: minimum donation amount */
 					__( 'This form has a minimum donation amount of %s.', 'give' ),
 					give_currency_filter( give_format_amount( give_get_form_minimum_price( $form_id ), array( 'sanitize' => false ) ) )
+				)
+			);
+
+		} // End if().
+		elseif ( ! give_verify_minimum_price( 'maximum' ) ) {
+			// translators: %s: Maximum donation amount.
+			give_set_error(
+				'invalid_donation_maximum',
+				sprintf(
+				/* translators: %s: Maximum donation amount */
+					__( 'This form has a maximum donation amount of %s.', 'give' ),
+					give_currency_filter( give_format_amount( give_get_form_maximum_price( $form_id ), array( 'sanitize' => false ) ) )
 				)
 			);
 
@@ -412,13 +424,17 @@ function give_donation_form_validate_gateway() {
 }
 
 /**
- * Donation Form Validate Minimum Donation Amount
+ * Donation Form Validate Minimum or Maximum Donation Amount
  *
  * @access      private
  * @since       1.3.6
+ * @since       2.1 Added support for give maximum amount.
+ *
+ * @param string $amount_range Which amount needs to verify? minimum or maximum.
+ *
  * @return      bool
  */
-function give_verify_minimum_price() {
+function give_verify_minimum_price( $amount_range = 'minimum' ) {
 
 	$amount          = give_maybe_sanitize_amount( $_REQUEST['give-amount'] );
 	$form_id         = isset( $_REQUEST['give-form-id'] ) ? $_REQUEST['give-form-id'] : 0;
@@ -434,8 +450,17 @@ function give_verify_minimum_price() {
 		}
 	}
 
-	if ( give_get_form_minimum_price( $form_id ) > $amount ) {
-		return false;
+	switch ( $amount_range ) {
+		case 'minimum' :
+			if ( give_get_form_minimum_price( $form_id ) > $amount ) {
+				return false;
+			}
+			break;
+		case 'maximum' :
+			if ( give_get_form_maximum_price( $form_id ) < $amount ) {
+				return false;
+			}
+			break;
 	}
 
 	return true;
