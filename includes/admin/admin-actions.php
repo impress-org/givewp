@@ -450,9 +450,16 @@ add_action( 'admin_notices', '_give_register_admin_notices', - 1 );
  * @return bool
  */
 function _give_show_test_mode_notice_in_admin_bar( $wp_admin_bar ) {
+
+	$form_id = 0;
+	if ( ! empty( $_GET['post'] ) ) {
+		$form = new Give_Donate_Form( give_clean( $_GET['post'] ) );
+		$form_id = $form->ID;
+	}
+
 	$is_test_mode = ! empty( $_POST['test_mode'] ) ?
 		give_is_setting_enabled( $_POST['test_mode'] ) :
-		give_is_test_mode();
+		give_is_test_mode( $form_id );
 
 	if (
 		! current_user_can( 'view_give_reports' ) ||
