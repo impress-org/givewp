@@ -1085,8 +1085,8 @@ function give_is_add_new_form_page() {
  * Get Form/Payment meta.
  *
  * Note: This function will help you to get meta for payment and form.
- *       If you want to get meta for donor then use get_meta of Give_Donor and
- *       If you want to get meta for log then use get_meta of Give_Logging->logmeta_db
+ *       If you want to get meta for donors then use get_meta of Give_Donor and
+ *       If you want to get meta for logs then use get_meta of Give_Logging->logmeta_db.
  *
  * @since 1.8.8
  *

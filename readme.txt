@@ -208,8 +208,8 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
-= 2.0.1: January 17th, 2018  =
-* This update requires a number of health checks for the 2.0.0 release. For a post reflection on the Give 2.0.0 release and additional developer information on the 2.0.1 release please read the [Give 2.0.1 checklist](https://github.com/WordImpress/Give/issues/2695) as well as [Give 2.0 Release Reflection])http://docs.givewp.com/2-0-release-reflection).
+= 2.0.1: January 25th, 2018  =
+* This update requires a number of health checks for the 2.0.0 release. For a post reflection on the Give 2.0.0 release and additional developer information on the 2.0.1 release please read the [Give 2.0.1 checklist](https://github.com/WordImpress/Give/issues/2695) as well as [Give 2.0 Release Reflection](http://docs.givewp.com/2-0-release-reflection).
 * New: Added the database table prefix to the system info settings. [#2678](https://github.com/WordImpress/Give/issues/2678)
 * UI/UX: Added an email icon to the per form emails tab. [#2680](https://github.com/WordImpress/Give/issues/2680)
 * UI/UX: Revised field descriptions for the donations importer. [#2688](https://github.com/WordImpress/Give/issues/2688)
