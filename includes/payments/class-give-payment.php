@@ -1259,6 +1259,9 @@ final class Give_Payment {
 				case 'revoked':
 					$this->process_revoked();
 					break;
+				case 'abandoned':
+					$this->process_abandoned();
+					break;
 			}
 
 			/**
@@ -1425,6 +1428,43 @@ final class Give_Payment {
 	 */
 	private function process_failure() {
 
+	}
+
+	/**
+	 * Process when a payment is set to abandoned
+	 *
+	 * @since  2.0.2
+	 * @access private
+	 *
+	 * @return void
+	 */
+	private function process_abandoned() {
+		$process_abandoned = true;
+
+		// If the payment was not in publish or revoked status, don't decrement stats as they were never incremented.
+		if ( 'publish' !== $this->old_status || 'pending' !== $this->status ) {
+			$process_abandoned = false;
+		}
+
+		// Allow extensions to filter for their own payment types, Example: Recurring Payments.
+		$process_abandoned = apply_filters( 'give_should_process_pending', $process_abandoned, $this );
+
+		if ( false === $process_abandoned ) {
+			return;
+		}
+
+		$decrease_earnings       = apply_filters( 'give_decrease_earnings_on_abandoned', true, $this );
+		$decrease_donor_value    = apply_filters( 'give_decrease_donor_value_on_abandoned', true, $this );
+		$decrease_donation_count = apply_filters( 'give_decrease_donors_donation_count_on_abandoned', true, $this );
+
+		$this->maybe_alter_stats( $decrease_earnings, $decrease_donor_value, $decrease_donation_count );
+		$this->delete_sales_logs();
+
+		$this->completed_date = false;
+		$this->update_meta( '_give_completed_date', '' );
+
+		// @todo: Refresh only range related stat cache
+		give_delete_donation_stats();
 	}
 
 	/**
