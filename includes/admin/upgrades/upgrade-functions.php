@@ -89,13 +89,6 @@ function give_do_automatic_upgrades() {
 			$did_upgrade = true;
 
 		case version_compare( $give_version, '2.0.2', '<' ) :
-			// Do nothing on fresh install.
-			if( ! doing_action( 'give_upgrades' ) ) {
-				give_v201_create_tables();
-				Give_Updates::get_instance()->__health_background_update( Give_Updates::get_instance() );
-				Give_Updates::$background_updater->dispatch();
-			}
-
 			// Remove 2.0.1 update to rerun on 2.0.2
 			$completed_upgrades = give_get_completed_upgrades();
 			$v201_updates = array(
@@ -112,6 +105,13 @@ function give_do_automatic_upgrades() {
 			}
 
 			update_option( 'give_completed_upgrades', $completed_upgrades );
+
+			// Do nothing on fresh install.
+			if( ! doing_action( 'give_upgrades' ) ) {
+				give_v201_create_tables();
+				Give_Updates::get_instance()->__health_background_update( Give_Updates::get_instance() );
+				Give_Updates::$background_updater->dispatch();
+			}
 
 			$did_upgrade = true;
 	}
