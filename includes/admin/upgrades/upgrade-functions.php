@@ -79,7 +79,33 @@ function give_do_automatic_upgrades() {
 			$did_upgrade = true;
 
 		case version_compare( $give_version, '2.0.1', '<' ) :
+			// Do nothing on fresh install.
+			if( ! doing_action( 'give_upgrades' ) ) {
+				give_v201_create_tables();
+				Give_Updates::get_instance()->__health_background_update( Give_Updates::get_instance() );
+				Give_Updates::$background_updater->dispatch();
+			}
+
+			$did_upgrade = true;
+
 		case version_compare( $give_version, '2.0.2', '<' ) :
+			// Remove 2.0.1 update to rerun on 2.0.2
+			$completed_upgrades = give_get_completed_upgrades();
+			$v201_updates = array(
+				'v201_upgrades_payment_metadata',
+				'v201_add_missing_donors',
+				'v201_move_metadata_into_new_table',
+				'v201_logs_upgrades'
+			);
+
+			foreach ( $v201_updates as $v201_update ) {
+				if( in_array( $v201_update, $completed_upgrades ) ) {
+					unset( $completed_upgrades[ array_search( $v201_update, $completed_upgrades )] );
+				}
+			}
+
+			update_option( 'give_completed_upgrades', $completed_upgrades );
+
 			// Do nothing on fresh install.
 			if( ! doing_action( 'give_upgrades' ) ) {
 				give_v201_create_tables();
