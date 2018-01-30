@@ -148,7 +148,7 @@ class Give_Donation_Form_Block {
 
 		$parameters[] = 'id="' . $form_id . '"';
 		$parameters[] = 'show_title="' . sanitize_text_field( $_GET['show_title'] ) . '"';
-		$parameters[] = 'show_goal="' . sanitize_text_field( $_GET['show_title'] ) . '"';
+		$parameters[] = 'show_goal="' . sanitize_text_field( $_GET['show_goal'] ) . '"';
 		$parameters[] = 'show_content="' . sanitize_text_field( $_GET['show_content'] ) . '"';
 		$parameters[] = 'display_style="' . sanitize_text_field( $_GET['display_style'] ) . '"';
 		'reveal' === $_GET['display_style'] && ! empty( $_GET['continue_button_title'] ) &&
