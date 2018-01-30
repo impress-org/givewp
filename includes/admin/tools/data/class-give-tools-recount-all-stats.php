@@ -73,8 +73,8 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 	/**
 	 * Constructor.
 	 */
-	public function __construct() {
-		parent::__construct();
+	public function __construct( $_step = 1 ) {
+		parent::__construct( $_step );
 
 		$this->is_writable = true;
 	}
