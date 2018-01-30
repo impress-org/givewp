@@ -24,9 +24,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return      void
 */
 function give_payment_history_page() {
-
-	$give_payment = get_post_type_object( 'give_payment' );
-
 	if ( isset( $_GET['view'] ) && 'view-payment-details' == $_GET['view'] ) {
 		require_once GIVE_PLUGIN_DIR . 'includes/admin/payments/view-payment-details.php';
 	} else {
