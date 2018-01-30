@@ -496,7 +496,7 @@ add_action( 'give_edit_user_profile', 'give_process_profile_editor_updates' );
  *
  * Shows a donation total.
  *
- * @since  2.0.1
+ * @since  2.1
  *
  * @param  array $atts Shortcode attributes.
  *
@@ -567,7 +567,7 @@ function give_totals_shortcode( $atts ) {
 				/**
 				 * Update Form earnings.
 				 *
-				 * @since 2.0.1
+				 * @since 2.1
 				 *
 				 * @param int    $post         Form ID.
 				 * @param string $form_earning Total earning of Form.
@@ -601,7 +601,7 @@ function give_totals_shortcode( $atts ) {
 	/**
 	 * Update Give totals shortcode output.
 	 *
-	 * @since 2.0.1
+	 * @since 2.1
 	 *
 	 * @param string $message Shortcode Message.
 	 * @param array  $atts    ShortCode attributes.
@@ -627,7 +627,7 @@ function give_totals_shortcode( $atts ) {
 	/**
 	 * Give Totals Shortcode output.
 	 *
-	 * @since 2.0.1
+	 * @since 2.1
 	 *
 	 * @param string $give_totals_output
 	 */

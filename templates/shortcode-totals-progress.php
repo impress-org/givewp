@@ -17,7 +17,7 @@ $total = ! empty( $total ) ? $total : 0;
 /**
  * Filter the goal progress output
  *
- * @since 2.0.1
+ * @since 2.1
  */
 $progress = round( ( $total / $total_goal ) * 100, 2 );
 

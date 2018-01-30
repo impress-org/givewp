@@ -5,7 +5,7 @@
  * @package     Give/Admin/Shortcodes
  * @copyright   Copyright (c) 2016, WordImpress
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @since       2.0.1
+ * @since       2.1
  */
 
 // Exit if accessed directly.
@@ -32,7 +32,7 @@ class Give_Shortcode_Totals extends Give_Shortcode_Generator {
 	/**
 	 * Define the shortcode attribute fields
 	 *
-	 * @since 2.0.1
+	 * @since 2.1
 	 * @return array
 	 */
 	public function define_fields() {
@@ -76,7 +76,7 @@ class Give_Shortcode_Totals extends Give_Shortcode_Generator {
 					/**
 					 * Change Give Totals Shortcode message which display on top.
 					 *
-					 * @since 2.0.1
+					 * @since 2.1
 					 */
 					apply_filters( 'give_totals_shortcode_container_message', __( 'This shortcode shows the total amount raised towards a custom goal for one or several forms regardless of whether they have goals enabled or not.', 'give' ) )
 				),

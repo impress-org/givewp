@@ -1643,7 +1643,7 @@ add_action( 'give_pre_form', 'give_show_goal_progress', 10, 2 );
 /**
  * Show Give Totals Progress.
  *
- * @since  2.0.1
+ * @since  2.1
  *
  * @param  int $total      Total amount based on shortcode parameter.
  * @param  int $total_goal Total Goal amount passed by Admin.
