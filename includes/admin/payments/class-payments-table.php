@@ -201,15 +201,10 @@ class Give_Payment_History_Table extends WP_List_Table {
 			 */
 			do_action( 'give_payment_table_advanced_filters' );
 
-
-			if ( ! empty( $status ) ) {
-				echo sprintf( '<input type="hidden" name="status" value="%s"/>', esc_attr( $status ) );
-			}
-
-			if ( ! empty( $donor ) ) {
-				echo sprintf( '<input type="hidden" name="donor" value="%s"/>', absint( $donor ) );
-			}
 			?>
+
+			<input type="hidden" name="status" value="<?php echo $status; ?>"/>
+			<input type="hidden" name="donor" value="<?php echo $donor; ?>"/>
 
 			<div class="give-filter">
 				<?php submit_button( __( 'Apply', 'give' ), 'secondary', '', false ); ?>
