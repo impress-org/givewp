@@ -188,7 +188,7 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 				// Add the donation id in side the array.
 				$donation_ids[] = $post->ID;
 
-				$donor_id = (int) get_post_meta( $post->ID, '_give_payment_customer_id', true );
+				$donor_id = (int) give_get_meta( $post->ID, '_give_payment_customer_id', true );
 				if ( ! empty( $donor_id ) ) {
 					$donor = new Give_Donor( $donor_id );
 					if ( ! empty( $donor->id ) ) {
@@ -344,7 +344,7 @@ class Give_Tools_Import_Donors extends Give_Batch_Export {
 			$form_ids = (array) $this->get_option( $this->form_key );
 
 			foreach ( $donation_ids as $item ) {
-				$form_ids[] = get_post_meta( $item, '_give_payment_form_id', true );
+				$form_ids[] = give_get_meta( $item, '_give_payment_form_id', true );
 
 				// Delete the main payment.
 				give_delete_donation( absint( $item ) );
