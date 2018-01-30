@@ -94,7 +94,15 @@ jQuery( function( $ ) {
 
 	doc.on( 'change', '#give_profile_billing_address_wrap #give_address_country', update_profile_state_field );
 
-} );
+	// Reset Form Fields on clicking back button of browser.
+	window.addEventListener( 'pageshow', function( event ) {
+		var historyTraversal = event.persisted || ( typeof 'undefined' !== window.performance && 2 === window.performance.navigation.type );
+
+		if ( historyTraversal ) {
+			$( 'body' ).find( 'form.give-form' )[0].reset();
+		}
+	});
+});
 
 /**
  * Open form modal
