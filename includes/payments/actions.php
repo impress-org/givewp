@@ -453,59 +453,37 @@ add_action( 'give_insert_payment', 'give_payment_save_page_data' );
 
 /**
  * Add/Update goal closed meta when donation form is updated.
+ * Note: only internal use
  *
  * @since 2.0.2
  *
  * @param $form_id
  */
-function give_update_goal_closed_meta( $form_id ) {
+function __give_update_goal_closed_meta_on_form_update( $form_id ) {
 	$form = new Give_Donate_Form( $form_id );
-	// Check if donation from is closed or not
-	if ( $form->is_close_donation_form() ) {
-		give_update_meta( $form_id, '_give_form_is_closed', 1 );
-	} else {
-		give_update_meta( $form_id, '_give_form_is_closed', 0 );
-	}
+
+	$form->set_goal_closed_meta();
 }
 
-add_action( 'give_post_process_give_forms_meta', 'give_update_goal_closed_meta', 10, 1 );
+add_action( 'give_post_process_give_forms_meta', '__give_update_goal_closed_meta_on_form_update', 10, 1 );
+
 
 /**
  * Add/Update Donation Goal is complete or not meta value in give from meta
+ * Note: only internal use
  *
  * @since 2.0.2
  *
  * @param $payment_id
  */
-function give_update_goal_closed_meta_on_donation_update( $payment_id ) {
-	// Get form id from payment meta
-	$form_id = give_get_meta( $payment_id, '_give_payment_form_id', true );
-
+function __give_update_goal_closed_meta_on_donation_update( $payment_id ) {
 	// if no form id is found then return.
-	if ( empty( $form_id ) ) {
+	if ( ! ( $form_id = give_get_meta( $payment_id, '_give_payment_form_id', true ) ) ) {
 		return;
-
 	}
 
-	give_update_goal_closed_meta( $form_id );
+	$form = new Give_Donate_Form( $form_id );
+	$form->set_goal_closed_meta();
 }
 
-add_action( 'give_complete_donation', 'give_update_goal_closed_meta_on_donation_update', 10, 1 );
-add_action( 'give_payment_delete', 'give_update_goal_closed_meta_on_donation_update', 10, 1 );
-add_action( 'give_updated_edited_donation', 'give_update_goal_closed_meta_on_donation_update', 10, 1 );
-
-/**
- * Update Form Goal close meta if Donation status is update.
- *
- * @since 2.0.2
- *
- * @param $payment_id
- * @param $action
- */
-function give_bulk_action_update_form_gola_meta( $payment_id, $action ) {
-	if ( ! in_array( $action, array( 'delete', 'resend-receipt' ) ) ) {
-		give_update_goal_closed_meta_on_donation_update( $payment_id );
-	}
-}
-
-add_action( 'give_payments_table_do_bulk_action', 'give_bulk_action_update_form_gola_meta', 10, 2 );
+add_action( 'give_update_payment_status', '__give_update_goal_closed_meta_on_donation_update', 10, 1 );
