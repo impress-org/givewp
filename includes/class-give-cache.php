@@ -68,7 +68,7 @@ class Give_Cache {
 	 */
 	public function setup() {
 		// Currently enable cache only for backend.
-		self::$instance->is_cache = ( defined( GIVE_CACHE ) ? GIVE_CACHE : give_is_setting_enabled( give_get_option( 'cache', 'enabled' ) ) ) && is_admin();
+		self::$instance->is_cache = ( defined( 'GIVE_CACHE' ) ? GIVE_CACHE : give_is_setting_enabled( give_get_option( 'cache', 'enabled' ) ) ) && is_admin();
 
 		// weekly delete all expired cache.
 		Give_Cron::add_weekly_event( array( $this, 'delete_all_expired' ) );
