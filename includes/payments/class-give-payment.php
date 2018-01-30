@@ -1408,6 +1408,216 @@ final class Give_Payment {
 	}
 
 	/**
+	 * When a payment is set to a status of 'refunded' process the necessary actions to reduce stats
+	 *
+	 * @since  1.5
+	 * @access private
+	 *
+	 * @return void
+	 */
+	private function process_refund() {
+		$process_refund = true;
+
+		// If the payment was not in publish or revoked status, don't decrement stats as they were never incremented.
+		if ( 'publish' != $this->old_status || 'refunded' != $this->status ) {
+			$process_refund = false;
+		}
+
+		// Allow extensions to filter for their own payment types, Example: Recurring Payments.
+		$process_refund = apply_filters( 'give_should_process_refund', $process_refund, $this );
+
+		if ( false === $process_refund ) {
+			return;
+		}
+
+		/**
+		 * Fires before refunding payment.
+		 *
+		 * @since 1.5
+		 *
+		 * @param Give_Payment $this Payment object.
+		 */
+		do_action( 'give_pre_refund_payment', $this );
+
+		$decrease_earnings       = apply_filters( 'give_decrease_store_earnings_on_refund', true, $this );
+		$decrease_customer_value = apply_filters( 'give_decrease_customer_value_on_refund', true, $this );
+		$decrease_purchase_count = apply_filters( 'give_decrease_customer_purchase_count_on_refund', true, $this );
+
+		$this->maybe_alter_stats( $decrease_earnings, $decrease_customer_value, $decrease_purchase_count );
+		$this->delete_sales_logs();
+
+		// @todo: Refresh only range related stat cache
+		give_delete_donation_stats();
+
+		/**
+		 * Fires after refunding payment.
+		 *
+		 * @since 1.5
+		 *
+		 * @param Give_Payment $this Payment object.
+		 */
+		do_action( 'give_post_refund_payment', $this );
+	}
+
+	/**
+	 * Process when a payment is set to failed
+	 *
+	 * @since  1.5
+	 * @access private
+	 *
+	 * @return void
+	 */
+	private function process_failure() {
+
+	}
+
+	/**
+	 * Process when a payment is set to abandoned
+	 *
+	 * @since  2.0.2
+	 * @access private
+	 *
+	 * @return void
+	 */
+	private function process_abandoned() {
+		$process_abandoned = true;
+
+		// If the payment was not in publish or revoked status, don't decrement stats as they were never incremented.
+		if ( 'publish' !== $this->old_status || 'pending' !== $this->status ) {
+			$process_abandoned = false;
+		}
+
+		// Allow extensions to filter for their own payment types, Example: Recurring Payments.
+		$process_abandoned = apply_filters( 'give_should_process_pending', $process_abandoned, $this );
+
+		if ( false === $process_abandoned ) {
+			return;
+		}
+
+		$decrease_earnings       = apply_filters( 'give_decrease_earnings_on_abandoned', true, $this );
+		$decrease_donor_value    = apply_filters( 'give_decrease_donor_value_on_abandoned', true, $this );
+		$decrease_donation_count = apply_filters( 'give_decrease_donors_donation_count_on_abandoned', true, $this );
+
+		$this->maybe_alter_stats( $decrease_earnings, $decrease_donor_value, $decrease_donation_count );
+		$this->delete_sales_logs();
+
+		$this->completed_date = false;
+		$this->update_meta( '_give_completed_date', '' );
+
+		// @todo: Refresh only range related stat cache
+		give_delete_donation_stats();
+	}
+
+	/**
+	 * Process when a payment moves to pending
+	 *
+	 * @since  1.5
+	 * @access private
+	 *
+	 * @return void
+	 */
+	private function process_pending() {
+		$process_pending = true;
+
+		// If the payment was not in publish or revoked status, don't decrement stats as they were never incremented.
+		if ( 'publish' != $this->old_status || 'pending' != $this->status ) {
+			$process_pending = false;
+		}
+
+		// Allow extensions to filter for their own payment types, Example: Recurring Payments.
+		$process_pending = apply_filters( 'give_should_process_pending', $process_pending, $this );
+
+		if ( false === $process_pending ) {
+			return;
+		}
+
+		$decrease_earnings       = apply_filters( 'give_decrease_earnings_on_pending', true, $this );
+		$decrease_donor_value    = apply_filters( 'give_decrease_donor_value_on_pending', true, $this );
+		$decrease_donation_count = apply_filters( 'give_decrease_donors_donation_count_on_pending', true, $this );
+
+		$this->maybe_alter_stats( $decrease_earnings, $decrease_donor_value, $decrease_donation_count );
+		$this->delete_sales_logs();
+
+		$this->completed_date = false;
+		$this->update_meta( '_give_completed_date', '' );
+
+		// @todo: Refresh only range related stat cache
+		give_delete_donation_stats();
+	}
+
+	/**
+	 * Process when a payment moves to cancelled.
+	 *
+	 * @since  1.5
+	 * @access private
+	 *
+	 * @return void
+	 */
+	private function process_cancelled() {
+		$process_cancelled = true;
+
+		// If the payment was not in publish or revoked status, don't decrement stats as they were never incremented.
+		if ( 'publish' != $this->old_status || 'cancelled' != $this->status ) {
+			$process_cancelled = false;
+		}
+
+		// Allow extensions to filter for their own payment types, Example: Recurring Payments.
+		$process_cancelled = apply_filters( 'give_should_process_cancelled', $process_cancelled, $this );
+
+		if ( false === $process_cancelled ) {
+			return;
+		}
+
+		$decrease_earnings       = apply_filters( 'give_decrease_earnings_on_cancelled', true, $this );
+		$decrease_donor_value    = apply_filters( 'give_decrease_donor_value_on_cancelled', true, $this );
+		$decrease_donation_count = apply_filters( 'give_decrease_donors_donation_count_on_cancelled', true, $this );
+
+		$this->maybe_alter_stats( $decrease_earnings, $decrease_donor_value, $decrease_donation_count );
+		$this->delete_sales_logs();
+
+		$this->completed_date = false;
+		$this->update_meta( '_give_completed_date', '' );
+
+		// @todo: Refresh only range related stat cache
+		give_delete_donation_stats();
+	}
+
+	/**
+	 * Process when a payment moves to revoked.
+	 *
+	 * @since  1.5
+	 * @return void
+	 */
+	private function process_revoked() {
+		$process_revoked = true;
+
+		// If the payment was not in publish, don't decrement stats as they were never incremented.
+		if ( 'publish' != $this->old_status || 'revoked' != $this->status ) {
+			$process_revoked = false;
+		}
+
+		// Allow extensions to filter for their own payment types, Example: Recurring Payments.
+		$process_revoked = apply_filters( 'give_should_process_revoked', $process_revoked, $this );
+
+		if ( false === $process_revoked ) {
+			return;
+		}
+
+		$decrease_earnings       = apply_filters( 'give_decrease_earnings_on_revoked', true, $this );
+		$decrease_donor_value    = apply_filters( 'give_decrease_donor_value_on_revoked', true, $this );
+		$decrease_donation_count = apply_filters( 'give_decrease_donors_donation_count_on_revoked', true, $this );
+
+		$this->maybe_alter_stats( $decrease_earnings, $decrease_donor_value, $decrease_donation_count );
+		$this->delete_sales_logs();
+
+		$this->completed_date = false;
+		$this->update_meta( '_give_completed_date', '' );
+
+		// @todo: Refresh only range related stat cache
+		give_delete_donation_stats();
+	}
+
+	/**
 	 * Used during the process of moving to refunded or pending, to decrement stats
 	 *
 	 * @since  1.5
