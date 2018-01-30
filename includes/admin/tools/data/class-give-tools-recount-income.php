@@ -43,6 +43,16 @@ class Give_Tools_Recount_Income extends Give_Batch_Export {
 	 */
 	public $per_step = 100;
 
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		parent::__construct();
+
+		$this->is_writable = true;
+	}
+
 	/**
 	 * Get the Export Data
 	 *

@@ -51,6 +51,15 @@ class Give_Tools_Recount_Form_Stats extends Give_Batch_Export {
 	protected $form_id = null;
 
 	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		parent::__construct();
+
+		$this->is_writable = true;
+	}
+
+	/**
 	 * Get the Export Data
 	 *
 	 * @access public

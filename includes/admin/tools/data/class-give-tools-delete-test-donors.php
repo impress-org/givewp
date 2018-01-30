@@ -96,6 +96,15 @@ class Give_Tools_Delete_Donors extends Give_Batch_Export {
 	public $donor_ids = array();
 
 	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		parent::__construct();
+
+		$this->is_writable = true;
+	}
+
+	/**
 	 * Get the Export Data
 	 *
 	 * @access public

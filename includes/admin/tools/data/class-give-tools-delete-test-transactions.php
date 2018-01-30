@@ -44,6 +44,15 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 	public $per_step = 30;
 
 	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		parent::__construct();
+
+		$this->is_writable = true;
+	}
+
+	/**
 	 * Get the Export Data
 	 *
 	 * @access public
