@@ -767,6 +767,11 @@ input.give-text_medium {
   display: block;
   overflow: hidden; }
 
+.give-field-wrap span.give_range_slider_display {
+  font-size: 13px;
+  padding-bottom: 12px;
+  display: inline-block; }
+
 @media only screen and (min-width: 851px) {
   #_give_donation_levels_repeat > .cmb-repeatable-grouping .cmb-field-list > .cmb-row {
     float: left;
