@@ -79,6 +79,7 @@ function give_do_automatic_upgrades() {
 			$did_upgrade = true;
 
 		case version_compare( $give_version, '2.0.1', '<' ) :
+		case version_compare( $give_version, '2.0.2', '<' ) :
 			// Do nothing on fresh install.
 			if( ! doing_action( 'give_upgrades' ) ) {
 				give_v201_create_tables();
