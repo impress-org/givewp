@@ -1106,10 +1106,6 @@ class Give_Donate_Form {
 	 * @return bool                            The result of the update query.
 	 */
 	private function update_meta( $meta_key = '', $meta_value = '' ) {
-
-		/* @var WPDB $wpdb */
-		global $wpdb;
-
 		// Bailout.
 		if ( empty( $meta_key ) ) {
 			return false;
