@@ -1122,4 +1122,19 @@ class Give_Donate_Form {
 		return false;
 	}
 
+	/**
+	 * Add/Update goal closed meta when donation form is updated.
+	 *
+	 * @since 2.0.2
+	 */
+	public function set_goal_closed_meta() {
+
+		// Check if donation from is closed or not
+		if ( $this->is_close_donation_form() ) {
+			$this->update_meta( '_give_form_is_closed', 1 );
+		} else {
+			$this->update_meta( '_give_form_is_closed', 0 );
+		}
+	}
+
 }
