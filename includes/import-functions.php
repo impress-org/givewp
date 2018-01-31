@@ -98,17 +98,18 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 	if ( ! empty( $form ) && $form->get_ID() ) {
 
 		$price_option = 'set';
+		$form_level = strtolower( preg_replace('/\s+/', '', $data['form_level'] ) );
 
 		if ( ! empty( $data['form_level'] ) && 'custom' != (string) strtolower( $data['form_level'] ) ) {
 			$prices     = (array) $form->get_prices();
 			$price_text = array();
 			foreach ( $prices as $key => $price ) {
 				if ( isset( $price['_give_id']['level_id'] ) ) {
-					$price_text[ $price['_give_id']['level_id'] ] = ( ! empty( $price['_give_text'] ) ? $price['_give_text'] : '' );
+					$price_text[ $price['_give_id']['level_id'] ] = ( ! empty( $price['_give_text'] ) ? strtolower( preg_replace('/\s+/', '', $price['_give_text'] ) ) : '' );
 				}
 			}
 
-			if ( ! in_array( $data['form_level'], $price_text ) ) {
+			if ( ! in_array( $form_level, $price_text ) ) {
 
 				// For generating unquiet level id.
 				$count     = 1;
@@ -128,7 +129,7 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 					),
 				);
 
-				$price_text[ $new_level ] = $data['form_level'];
+				$price_text[ $new_level ] = strtolower( preg_replace('/\s+/', '', $data['form_level'] ) );
 
 				if ( ! empty( $prices ) && is_array( $prices ) && ! empty( $prices[0] ) ) {
 					$prices = wp_parse_args( $multi_level_donations, $prices );
@@ -149,7 +150,7 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 				// Set the first $price of the $prices as defalut.
 				$prices[0]['_give_default'] = 'default';
 			}
-			$form->price_id = array_search( $data['form_level'], $price_text );
+			$form->price_id = array_search( $form_level, $price_text );
 
 			$donation_levels_amounts = wp_list_pluck( $prices, '_give_amount' );
 			$min_amount              = min( $donation_levels_amounts );
