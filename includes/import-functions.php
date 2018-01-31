@@ -167,7 +167,7 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 		}
 
 		$defaults = array(
-			'_give_set_price'    => give_sanitize_amount_for_db( $data['amount'] ),
+			'_give_set_price' => give_sanitize_amount_for_db( $data['amount'] ),
 		);
 
 		// If new form is created.
@@ -183,7 +183,7 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 				'_give_product_type'       => 'default',
 				'_give_default_gateway'    => 'global',
 				'_give_show_register_form' => 'both',
-				'_give_price_option' => $price_option,
+				'_give_price_option'       => $price_option,
 			);
 			$defaults = wp_parse_args( $defaults, $new_form );
 		}
