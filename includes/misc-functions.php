@@ -1085,8 +1085,8 @@ function give_is_add_new_form_page() {
  * Get Form/Payment meta.
  *
  * Note: This function will help you to get meta for payment and form.
- *       If you want to get meta for donor then use get_meta of Give_Donor and
- *       If you want to get meta for log then use get_meta of Give_Logging->logmeta_db
+ *       If you want to get meta for donors then use get_meta of Give_Donor and
+ *       If you want to get meta for logs then use get_meta of Give_Logging->logmeta_db.
  *
  * @since 1.8.8
  *
@@ -1712,4 +1712,38 @@ function give_ignore_user_abort(){
 	if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
 		set_time_limit( 0 );
 	}
+}
+
+/**
+ * Get post type count.
+ *
+ * @since 2.0.2
+ *
+ * @param string $post_type
+ * @param array  $args
+ *
+ * @return int
+ */
+function give_get_total_post_type_count( $post_type = '', $args = array() ){
+	global $wpdb;
+	$where = '';
+
+	if( ! $post_type ) {
+		return 0;
+	}
+
+	// Bulit where query
+	if( ! empty( $post_type ) ) {
+		$where.=' WHERE';
+
+		if( is_array( $post_type ) ) {
+			$where .= " post_type='" . implode( "' OR post_type='", $post_type ) . "'";
+		}else{
+			$where .= " post_type='{$post_type}'";
+		}
+	}
+
+	$result = $wpdb->get_var("SELECT count(ID) FROM {$wpdb->posts}{$where}");
+
+	return absint( $result );
 }

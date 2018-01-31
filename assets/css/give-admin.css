@@ -2948,6 +2948,9 @@ div.sc-shortcode {
 body.give_forms_page_give-updates .give-run-update-containt .give-run-update-button {
   margin-right: 10px; }
 
+#give-plugin-updates .panel-content table tr {
+  display: block; }
+
 /**
  * Give Blank Slate
  *

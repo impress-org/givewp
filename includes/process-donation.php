@@ -61,9 +61,9 @@ function give_process_donation_form() {
 	 * @since 1.0
 	 *
 	 * @param bool|array $valid_data Validate fields.
-	 * @param array $_POST Array of variables passed via the HTTP POST.
+	 * @param array $deprecated Deprecated Since 2.0.2. Use $_POST instead.
 	 */
-	do_action( 'give_checkout_error_checks', $valid_data, $_POST );
+	do_action( 'give_checkout_error_checks', $valid_data, $deprecated = $_POST );
 
 	// Process the login form.
 	if ( isset( $_POST['give_login_submit'] ) ) {
@@ -181,18 +181,16 @@ add_action( 'give_purchase', 'give_process_donation_form' );
 add_action( 'wp_ajax_give_process_donation', 'give_process_donation_form' );
 add_action( 'wp_ajax_nopriv_give_process_donation', 'give_process_donation_form' );
 
-
 /**
  * Verify that when a logged in user makes a donation that the email address used doesn't belong to a different customer.
  *
  * @since  1.7
  *
  * @param  array $valid_data Validated data submitted for the donation.
- * @param  array $post Additional $_POST data submitted
  *
  * @return void
  */
-function give_check_logged_in_user_for_existing_email( $valid_data, $post ) {
+function give_check_logged_in_user_for_existing_email( $valid_data ) {
 
 	// Verify that the email address belongs to this customer.
 	if ( is_user_logged_in() ) {
@@ -214,7 +212,7 @@ function give_check_logged_in_user_for_existing_email( $valid_data, $post ) {
 	}
 }
 
-add_action( 'give_checkout_error_checks', 'give_check_logged_in_user_for_existing_email', 10, 2 );
+add_action( 'give_checkout_error_checks', 'give_check_logged_in_user_for_existing_email', 10, 1 );
 
 /**
  * Process the checkout login form
@@ -1166,18 +1164,18 @@ function give_donation_form_validate_cc_zip( $zip = 0, $country_code = '' ) {
 	return apply_filters( 'give_is_zip_valid', $ret, $zip, $country_code );
 }
 
-
 /**
  * Validate donation amount and auto set correct donation level id on basis of amount.
  *
  * Note: If amount does not match to donation level amount then level id will be auto select to first match level id on basis of amount.
  *
  * @param array $valid_data List of Valid Data.
- * @param array $data       List of Posted Data.
  *
  * @return bool
  */
-function give_validate_donation_amount( $valid_data, $data ) {
+function give_validate_donation_amount( $valid_data ) {
+	$data = $_POST;
+
 	/* @var Give_Donate_Form $form */
 	$form = new Give_Donate_Form( $data['give-form-id'] );
 
@@ -1234,7 +1232,7 @@ function give_validate_donation_amount( $valid_data, $data ) {
 	return ( $donation_level_matched ? true : false );
 }
 
-add_action( 'give_checkout_error_checks', 'give_validate_donation_amount', 10, 2 );
+add_action( 'give_checkout_error_checks', 'give_validate_donation_amount', 10, 1 );
 
 /**
  * Validate Required Form Fields.

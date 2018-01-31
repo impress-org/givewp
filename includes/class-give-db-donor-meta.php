@@ -92,7 +92,7 @@ class Give_DB_Donor_Meta extends Give_DB_Meta {
 	 */
 	public function delete_all_meta( $donor_id = 0 ) {
 		global $wpdb;
-		$status = $wpdb->delete( $this->table_name, array( 'customer_id' => $donor_id ), array( '%d' ) );
+		$status = $wpdb->delete( $this->table_name, array( 'donor_id' => $donor_id ), array( '%d' ) );
 
 		if( $status ) {
 			Give_Cache::delete_group( $donor_id, 'give-donors' );

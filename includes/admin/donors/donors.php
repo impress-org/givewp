@@ -251,9 +251,11 @@ function give_render_donor_view( $view, $callbacks ) {
 		<h1 class="wp-heading-inline">
 			<?php
 			printf(
-			/* translators: %s: donor number */
-				esc_html__( 'Donor %s', 'give' ),
-				$donor_id
+			/* translators: %s: donor first name */
+				__( 'Edit Donor #%s: %s %s', 'give' ),
+				$donor->id,
+				$donor->get_first_name(),
+				$donor->get_last_name()
 			);
 			?>
 		</h1>
@@ -459,7 +461,7 @@ function give_donor_view( $donor ) {
 	<div id="donor-stats-wrapper" class="donor-section postbox clear">
 		<ul>
 			<li>
-				<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&status=publish&donor=' . absint( $donor->id ) ); ?>">
+				<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&donor=' . absint( $donor->id ) ); ?>">
 					<span class="dashicons dashicons-heart"></span>
 					<?php
 					// Completed Donations.

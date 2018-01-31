@@ -96,16 +96,20 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 	}
 
 	if ( ! empty( $form ) && $form->get_ID() ) {
-		if ( ! empty( $data['form_level'] ) && 'custom' != (string) strtolower( $data['form_level'] ) ) {
+
+		$price_option = 'set';
+		$form_level = strtolower( preg_replace('/\s+/', '', $data['form_level'] ) );
+
+		if ( ! empty( $data['form_level'] ) && 'custom' != $form_level ) {
 			$prices     = (array) $form->get_prices();
 			$price_text = array();
 			foreach ( $prices as $key => $price ) {
 				if ( isset( $price['_give_id']['level_id'] ) ) {
-					$price_text[ $price['_give_id']['level_id'] ] = ( ! empty( $price['_give_text'] ) ? $price['_give_text'] : '' );
+					$price_text[ $price['_give_id']['level_id'] ] = ( ! empty( $price['_give_text'] ) ? strtolower( preg_replace('/\s+/', '', $price['_give_text'] ) ) : '' );
 				}
 			}
 
-			if ( ! in_array( $data['form_level'], $price_text ) ) {
+			if ( ! in_array( $form_level, $price_text ) ) {
 
 				// For generating unquiet level id.
 				$count     = 1;
@@ -125,7 +129,7 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 					),
 				);
 
-				$price_text[ $new_level ] = $data['form_level'];
+				$price_text[ $new_level ] = strtolower( preg_replace('/\s+/', '', $data['form_level'] ) );
 
 				if ( ! empty( $prices ) && is_array( $prices ) && ! empty( $prices[0] ) ) {
 					$prices = wp_parse_args( $multi_level_donations, $prices );
@@ -146,7 +150,7 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 				// Set the first $price of the $prices as defalut.
 				$prices[0]['_give_default'] = 'default';
 			}
-			$form->price_id = array_search( $data['form_level'], $price_text );
+			$form->price_id = array_search( $form_level, $price_text );
 
 			$donation_levels_amounts = wp_list_pluck( $prices, '_give_amount' );
 			$min_amount              = min( $donation_levels_amounts );
@@ -155,16 +159,16 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 			$meta = array(
 				'_give_levels_minimum_amount' => $min_amount,
 				'_give_levels_maximum_amount' => $max_amount,
-				'_give_price_option'          => 'multi',
 				'_give_donation_levels'       => array_values( $prices ),
 			);
+
+			$price_option = 'multi';
 		} else {
 			$form->price_id = 'custom';
 		}
 
 		$defaults = array(
-			'_give_set_price'    => give_sanitize_amount_for_db( $data['amount'] ),
-			'_give_price_option' => 'set',
+			'_give_set_price' => give_sanitize_amount_for_db( $data['amount'] ),
 		);
 
 		// If new form is created.
@@ -180,6 +184,7 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 				'_give_product_type'       => 'default',
 				'_give_default_gateway'    => 'global',
 				'_give_show_register_form' => 'both',
+				'_give_price_option'       => $price_option,
 			);
 			$defaults = wp_parse_args( $defaults, $new_form );
 		}
@@ -572,6 +577,9 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 	}
 
 
+	$status = give_import_donation_get_status( $data );
+
+
 	$address = array(
 		'line1'   => ( ! empty( $data['line1'] ) ? give_clean( $data['line1'] ) : '' ),
 		'line2'   => ( ! empty( $data['line1'] ) ? give_clean( $data['line2'] ) : '' ),
@@ -585,7 +593,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 	$payment_data = array(
 		'donor_id'        => $donor_data->id,
 		'price'           => $data['amount'],
-		'status'          => ( ! empty( $data['post_status'] ) ? $data['post_status'] : 'publish' ),
+		'status'          => $status,
 		'currency'        => give_get_currency(),
 		'user_info'       => array(
 			'id'         => $donor_id,
@@ -657,6 +665,42 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 	give_import_donation_report_update( $report );
 
 	return true;
+}
+
+/**
+ * Get Donation form status
+ *
+ * @since 2.0.2
+ *
+ * @param array $data donation data that is goingt o get imported
+ *
+ * @return string $status Donation status.
+ */
+function give_import_donation_get_status( $data ) {
+	if ( empty( $data['post_status'] ) ) {
+		return 'publish';
+	}
+
+	$status = 'publish';
+
+	$donation_status = trim( $data['post_status'] );
+	$donation_status_key      = strtolower( preg_replace( '/\s+/', '', $donation_status ) );
+
+	foreach ( give_get_payment_statuses() as $key => $value ) {
+		$match = false;
+		if ( $key === $donation_status_key ) {
+			$match = true;
+		} else if ( stristr( $donation_status, $value ) ) {
+			$match = true;
+		}
+
+		if ( ! empty( $match ) ) {
+			$status = $key;
+			break;
+		}
+	}
+
+	return $status;
 }
 
 /**
