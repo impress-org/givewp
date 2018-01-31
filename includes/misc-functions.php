@@ -1713,3 +1713,28 @@ function give_ignore_user_abort(){
 		set_time_limit( 0 );
 	}
 }
+
+/**
+ * Get post type count.
+ *
+ * @since 2.0.2
+ *
+ * @param string $post_type
+ * @param array  $args
+ *
+ * @return int
+ */
+function give_get_total_post_type_count( $post_type = '', $args = array() ){
+	global $wpdb;
+
+	if( ! $post_type ) {
+		return 0;
+	}
+
+	$result = $wpdb->get_var($wpdb->prepare(
+		"SELECT count(ID) FROM $wpdb->posts WHERE post_type=%s",
+		$post_type
+	));
+
+	return absint( $result );
+}
