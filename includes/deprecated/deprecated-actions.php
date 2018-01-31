@@ -92,6 +92,8 @@ function give_deprecated_actions() {
 		'give_pre_complete_donation'               => 'give_pre_complete_purchase',
 		'give_profile_editor_after_email'          => 'give_profile_editor_address',
 		'give_profile_editor_after_email'          => 'give_profile_editor_after_address',
+		'give_pre_refunded_payment'                => 'give_pre_refund_payment',
+		'give_post_refunded_payment'               => 'give_post_refund_payment',
 	);
 
 	return $give_deprecated_actions;

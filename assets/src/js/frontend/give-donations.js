@@ -486,7 +486,7 @@ Give.form = {
 						} );
 
 						// Set level to custom.
-						if ( - 1 === price_id && this.getMinimumAmount( $form ) <= current_amount ) {
+						if ( - 1 === price_id && (this.getMinimumAmount( $form ) <= current_amount && (this.getMaximumAmount( $form ) >= current_amount) && this.getMinimumAmount( $form ) <= current_amount) ) {
 							price_id = 'custom';
 						}
 					} else {
@@ -509,6 +509,21 @@ Give.form = {
 		getMinimumAmount: function( $form ) {
 			return Give.fn.unFormatCurrency(
 				$form.find( 'input[name="give-form-minimum"]' ).val(),
+				Give.form.fn.getInfo( 'decimal_separator', $form )
+			);
+		},
+
+		/**
+		 * Get form maximum amount
+		 *
+		 * @since 2.1
+		 * @param {object} $form
+		 *
+		 * @return {string}
+		 */
+		getMaximumAmount: function( $form ) {
+			return Give.fn.unFormatCurrency(
+				$form.find( 'input[name="give-form-maximum"]' ).val(),
 				Give.form.fn.getInfo( 'decimal_separator', $form )
 			);
 		},
@@ -745,11 +760,12 @@ Give.form = {
 		 */
 		isValidDonationAmount: function( $form ) {
 			var min_amount = this.getMinimumAmount( $form ),
+				max_amount = this.getMaximumAmount( $form ),
 				amount = this.getAmount( $form ),
 				price_id = this.getPriceID( $form, true );
 
 			return (
-				((- 1 < amount) && (amount >= min_amount)) ||
+				((- 1 < amount) && amount >= min_amount && amount <= max_amount) ||
 				(- 1 !== price_id)
 			);
 		},
@@ -809,6 +825,13 @@ Give.notice = {
 						'</div>'
 					);
 					break;
+				case 'bad_maximum':
+					$notice = jQuery(
+						'<div class="give_error give-invalid-maximum give-hidden">' +
+						this.getNotice( notice_code, $container ) +
+						'</div>'
+					);
+					break;
 			}
 
 			// Return html if container did not find.
@@ -834,20 +857,30 @@ Give.notice = {
 				return null;
 			}
 
-			var notice = '';
+			var notice = notice_msg = formatted_amount = '';
 
-			switch ( error_code ) {
-				case 'bad_minimum':
-					if ( $form.length ) {
-						notice = Give.fn.getGlobalVar( 'bad_minimum' ) +
-							' ' +
-							Give.fn.formatCurrency(
-								Give.form.fn.getMinimumAmount( $form ),
-								{ symbol: Give.form.fn.getInfo( 'currency_symbol', $form ) },
-								$form
-							);
-					}
-					break;
+			if ( $form.length ) {
+				switch ( error_code ) {
+					case 'bad_minimum':
+						notice_msg = Give.fn.getGlobalVar( 'bad_minimum' );
+						formatted_amount = Give.form.fn.getMinimumAmount( $form );
+						break;
+					case 'bad_maximum':
+						notice_msg = Give.fn.getGlobalVar( 'bad_minimum' );
+						formatted_amount = Give.form.fn.getMaximumAmount( $form );
+						break;
+				}
+			}
+
+			if ( $form.length && '' !== notice_msg ) {
+				notice = notice_msg + ' ' + Give.fn.formatCurrency(
+					formatted_amount,
+					{
+						symbol: Give.form.fn.getInfo( 'currency_symbol', $form ),
+						position: Give.form.fn.getInfo( 'currency_position', $form )
+					},
+					$form
+				);
 			}
 
 			return notice;
@@ -1045,6 +1078,7 @@ jQuery( function( $ ) {
 			this_value = ('undefined' !== typeof donation_amount) ? donation_amount : $( this ).val(),
 			decimal_separator = Give.form.fn.getInfo( 'decimal_separator', parent_form ),
 			value_min = Give.form.fn.getMinimumAmount( parent_form ),
+			value_max = Give.form.fn.getMaximumAmount( parent_form ),
 			value_now = (this_value === 0) ? value_min : Give.fn.unFormatCurrency( this_value, decimal_separator ),
 			formatted_total = Give.form.fn.formatAmount( value_now, parent_form, {} );
 
@@ -1063,11 +1097,21 @@ jQuery( function( $ ) {
 
 			//Disable submit
 			Give.form.fn.disable( parent_form, true );
-			var invalid_minimum = parent_form.find( '.give-invalid-minimum' );
+			var invalid_minimum = parent_form.find( '.give-invalid-minimum' ),
+				invalid_maximum = parent_form.find( '.give-invalid-maximum' );
 
 			//If no error present, create it, insert, slide down (show)
-			if ( invalid_minimum.length === 0 ) {
+			if ( invalid_minimum.length === 0 && value_now < value_min ) {
 				Give.notice.fn.renderNotice( 'bad_minimum', parent_form );
+			} else {
+				invalid_minimum.slideUp( 300, function() { $( this ).remove(); } );
+			}
+
+			// For maximum custom amount error.
+			if ( invalid_maximum.length === 0 && value_now > value_max ) {
+				Give.notice.fn.renderNotice( 'bad_maximum', parent_form );
+			} else {
+				invalid_maximum.slideUp( 300, function() { $( this ).remove(); } );
 			}
 
 		} else {
@@ -1076,7 +1120,7 @@ jQuery( function( $ ) {
 			$( this ).removeClass( 'give-invalid-amount' );
 
 			// Minimum amount met - slide up error & remove it from DOM.
-			parent_form.find( '.give-invalid-minimum' ).slideUp( 300, function() {
+			parent_form.find( '.give-invalid-minimum,.give-invalid-maximum' ).slideUp( 300, function() {
 				$( this ).remove();
 			} );
 

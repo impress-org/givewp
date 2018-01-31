@@ -71,6 +71,15 @@ class Give_Tools_Recount_All_Stats extends Give_Batch_Export {
 	public $done = false;
 
 	/**
+	 * Constructor.
+	 */
+	public function __construct( $_step = 1 ) {
+		parent::__construct( $_step );
+
+		$this->is_writable = true;
+	}
+
+	/**
 	 * Get the recount all stats data
 	 *
 	 * @access public

@@ -68,7 +68,7 @@ class Give_Cache {
 	 */
 	public function setup() {
 		// Currently enable cache only for backend.
-		self::$instance->is_cache = give_is_setting_enabled( give_get_option( 'cache', 'enabled' ) ) && is_admin();
+		self::$instance->is_cache = ( defined( 'GIVE_CACHE' ) ? GIVE_CACHE : give_is_setting_enabled( give_get_option( 'cache', 'enabled' ) ) ) && is_admin();
 
 		// weekly delete all expired cache.
 		Give_Cron::add_weekly_event( array( $this, 'delete_all_expired' ) );
@@ -532,8 +532,8 @@ class Give_Cache {
 		if ( ! empty( $donations ) ) {
 			/* @var Give_Payment $donation */
 			foreach ( $donations as $donation ) {
-				wp_cache_delete( $donation->ID, 'give-donations' );
-				wp_cache_delete( $donation->donor_id, 'give-donors' );
+				wp_cache_delete( $donation->ID, $this->filter_group_name( 'give-donations' ) );
+				wp_cache_delete( $donation->donor_id, $this->filter_group_name( 'give-donors' ) );
 			}
 		}
 
@@ -559,10 +559,10 @@ class Give_Cache {
 		$donation = new Give_Payment( $donation_id );
 
 		if ( $donation && $donation->donor_id ) {
-			wp_cache_delete( $donation->donor_id, 'give-donors' );
+			wp_cache_delete( $donation->donor_id, $this->filter_group_name( 'give-donors' ) );
 		}
 
-		wp_cache_delete( $donation->ID, 'give-donations' );
+		wp_cache_delete( $donation->ID, $this->filter_group_name( 'give-donations' ) );
 
 		self::$instance->get_incrementer( true );
 	}
@@ -584,7 +584,7 @@ class Give_Cache {
 
 		if ( ! empty( $donation_ids ) ) {
 			foreach ( $donation_ids as $donation ) {
-				wp_cache_delete( $donation, 'give-donations' );
+				wp_cache_delete( $donation, $this->filter_group_name( 'give-donations' ) );
 			}
 		}
 
@@ -607,7 +607,7 @@ class Give_Cache {
 		$donation = new Give_Payment( $id );
 
 		if ( $donation && $donation->donor_id ) {
-			wp_cache_delete( $donation->donor_id, 'give-donors' );
+			wp_cache_delete( $donation->donor_id, $this->filter_group_name( 'give-donors' ) );
 		}
 
 		self::$instance->get_incrementer( true );
