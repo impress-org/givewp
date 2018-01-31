@@ -1713,3 +1713,37 @@ function give_ignore_user_abort(){
 		set_time_limit( 0 );
 	}
 }
+
+/**
+ * Get post type count.
+ *
+ * @since 2.0.2
+ *
+ * @param string $post_type
+ * @param array  $args
+ *
+ * @return int
+ */
+function give_get_total_post_type_count( $post_type = '', $args = array() ){
+	global $wpdb;
+	$where = '';
+
+	if( ! $post_type ) {
+		return 0;
+	}
+
+	// Bulit where query
+	if( ! empty( $post_type ) ) {
+		$where.=' WHERE';
+
+		if( is_array( $post_type ) ) {
+			$where .= " post_type='" . implode( "' OR post_type='", $post_type ) . "'";
+		}else{
+			$where .= " post_type='{$post_type}'";
+		}
+	}
+
+	$result = $wpdb->get_var("SELECT count(ID) FROM {$wpdb->posts}{$where}");
+
+	return absint( $result );
+}

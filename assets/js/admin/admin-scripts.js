@@ -2736,25 +2736,6 @@ var give_setting_edit = false;
 			$('.give_user_search_results span').html('');
 		});
 
-		// This function uses for adding qtip to money/price field.
-		function give_add_qtip($fields) {
-
-			// Add qtip to all existing money input fields.
-			$fields.each(function () {
-				$(this).qtip({
-					style: 'qtip-dark qtip-tipsy',
-					content: {
-						text: give_vars.price_format_guide.trim()
-					},
-					show: '',
-					position: {
-						my: 'bottom center',
-						at: 'top center'
-					}
-				});
-			});
-		}
-
 		var $poststuff               = $( '#poststuff' ),
 			thousand_separator       = give_vars.thousands_separator,
 			decimal_separator        = give_vars.decimal_separator,
