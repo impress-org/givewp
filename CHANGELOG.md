@@ -1,5 +1,58 @@
 # Change Log
 
+## [2.0.2](https://github.com/WordImpress/Give/tree/2.0.2) (2018-01-31)
+[Full Changelog](https://github.com/WordImpress/Give/compare/2.0.1...2.0.2)
+
+**Implemented enhancements:**
+
+- Add `Give\_Cache` option to disable cache from wp-config.php [\#2735](https://github.com/WordImpress/Give/issues/2735)
+
+**Fixed bugs:**
+
+- WP\_Query being modified in upgrade routine by Polylang plugin causing issues [\#2747](https://github.com/WordImpress/Give/issues/2747)
+- Getting unexpected error message while using tools [\#2744](https://github.com/WordImpress/Give/issues/2744)
+- Use dynamic cache group name while deleting cache [\#2743](https://github.com/WordImpress/Give/issues/2743)
+- Prevent importer modifying existing form settings [\#2737](https://github.com/WordImpress/Give/issues/2737)
+- Shortcode generator issue with inserting Donation Form goal [\#2728](https://github.com/WordImpress/Give/issues/2728)
+- Import doesn't import Donations or Donors in version 2.0.1 [\#2725](https://github.com/WordImpress/Give/issues/2725)
+- Form sales does not update when change donation status {complete} --\> {abandon} [\#2708](https://github.com/WordImpress/Give/issues/2708)
+- Quick Enable/Disable of new Email API not working properly [\#2649](https://github.com/WordImpress/Give/issues/2649)
+- When viewing donations filtered by donor performing bulk actions causes to lose filter [\#2334](https://github.com/WordImpress/Give/issues/2334)
+- The donation form should reset when go back from the donation confirmation page. [\#2091](https://github.com/WordImpress/Give/issues/2091)
+
+**Closed issues:**
+
+- Styling issue for addon list on update page [\#2706](https://github.com/WordImpress/Give/issues/2706)
+- Remove licences tab if there is no add-on activated   [\#2375](https://github.com/WordImpress/Give/issues/2375)
+- Improve donor detail page heading [\#2286](https://github.com/WordImpress/Give/issues/2286)
+- Minimum and maximum donation amount slider [\#1920](https://github.com/WordImpress/Give/issues/1920)
+- Clarify language on the Login fields. [\#2745](https://github.com/WordImpress/Give/issues/2745)
+- Consider having ajax issue admin notice link open in new tab/window [\#2727](https://github.com/WordImpress/Give/issues/2727)
+- Deprecating the second $\_POST parameter [\#2663](https://github.com/WordImpress/Give/issues/2663)
+
+**Merged pull requests:**
+
+- Release/2.0.2 [\#2753](https://github.com/WordImpress/Give/pull/2753) ([DevinWalker](https://github.com/DevinWalker))
+- Do not update meta when form is already being created \#2737 [\#2752](https://github.com/WordImpress/Give/pull/2752) ([raftaar1191](https://github.com/raftaar1191))
+- Revert "Add/Update Donation goal meta on donation form update or when donating \#2250" [\#2750](https://github.com/WordImpress/Give/pull/2750) ([ravinderk](https://github.com/ravinderk))
+- Issues 2744 [\#2749](https://github.com/WordImpress/Give/pull/2749) ([raftaar1191](https://github.com/raftaar1191))
+- clarify language on login form [\#2746](https://github.com/WordImpress/Give/pull/2746) ([Benunc](https://github.com/Benunc))
+- Issue \#2091 - Reset Form Fields on clicking browser back button [\#2742](https://github.com/WordImpress/Give/pull/2742) ([mehul0810](https://github.com/mehul0810))
+- Donation form preview fixes \#2456 [\#2741](https://github.com/WordImpress/Give/pull/2741) ([PareshRadadiya](https://github.com/PareshRadadiya))
+- Issue \#2708 - Form Sales and Amount doesn't update on donation status change [\#2736](https://github.com/WordImpress/Give/pull/2736) ([mehul0810](https://github.com/mehul0810))
+- Fix Status issues when importing donation \#2725 [\#2733](https://github.com/WordImpress/Give/pull/2733) ([raftaar1191](https://github.com/raftaar1191))
+- Change dashboard donor single page title [\#2732](https://github.com/WordImpress/Give/pull/2732) ([raftaar1191](https://github.com/raftaar1191))
+- Improve React / JSX linting and Form Preview [\#2731](https://github.com/WordImpress/Give/pull/2731) ([PareshRadadiya](https://github.com/PareshRadadiya))
+- Issue/2728 - Resolve query issue with Donation Form Goal option in shortcode builder [\#2729](https://github.com/WordImpress/Give/pull/2729) ([DevinWalker](https://github.com/DevinWalker))
+- Made PR \#2724 compatible with feature/gutenberg-donation-form-block/ branch [\#2726](https://github.com/WordImpress/Give/pull/2726) ([PareshRadadiya](https://github.com/PareshRadadiya))
+- Fix changelog [\#2723](https://github.com/WordImpress/Give/pull/2723) ([mathetos](https://github.com/mathetos))
+- update and clean up more phpdoc params [\#2722](https://github.com/WordImpress/Give/pull/2722) ([tw2113](https://github.com/tw2113))
+- Fix style issues in Admin plugin update page \#2706 [\#2713](https://github.com/WordImpress/Give/pull/2713) ([raftaar1191](https://github.com/raftaar1191))
+- Add/Update Donation goal meta on donation form update or when donating \#2250 [\#2691](https://github.com/WordImpress/Give/pull/2691) ([raftaar1191](https://github.com/raftaar1191))
+- Remove Parameter the unwanted parameter \#2663 [\#2687](https://github.com/WordImpress/Give/pull/2687) ([raftaar1191](https://github.com/raftaar1191))
+- Add Donor filter that was getting lost when changing the donation status \#2334 [\#2686](https://github.com/WordImpress/Give/pull/2686) ([raftaar1191](https://github.com/raftaar1191))
+- Issue/1920 - Minimum and maximum donation amount slider [\#2666](https://github.com/WordImpress/Give/pull/2666) ([emgk](https://github.com/emgk))
+
 ## [2.0.1](https://github.com/WordImpress/Give/tree/2.0.1) (2018-01-25)
 [Full Changelog](https://github.com/WordImpress/Give/compare/2.0.0...2.0.1)
 
@@ -57,7 +110,6 @@
 - ID not define proper when guess donation is disable [\#2661](https://github.com/WordImpress/Give/issues/2661)
 - \[Give 2.0\] Show 'Undefined' while Run Background Process. [\#2654](https://github.com/WordImpress/Give/issues/2654)
 - Not redirecting to Welcome page on Plugin Activation 2.0 [\#2650](https://github.com/WordImpress/Give/issues/2650)
-- Quick Enable/Disable of new Email API not working properly [\#2649](https://github.com/WordImpress/Give/issues/2649)
 - Getting PHP Notice at the Time of activating the plugin on a fresh Sites [\#2637](https://github.com/WordImpress/Give/issues/2637)
 - \[Give 2.0\] Adding additional parameter with ID returns error in /donations/ endpoint [\#2633](https://github.com/WordImpress/Give/issues/2633)
 - \[Give 2.0\] Email recipient setting missing from form settings for email notification [\#2628](https://github.com/WordImpress/Give/issues/2628)

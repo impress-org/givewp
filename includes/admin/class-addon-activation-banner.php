@@ -119,7 +119,7 @@ class Give_Addon_Activation_Banner {
 
 			<div class="updated give-addon-alert give-notice" style="display: none">
 
-				<img src="<?php echo GIVE_PLUGIN_URL; ?>assets/images/svg/give-icon-full-circle.svg" class="give-logo"/>
+				<img src="<?php echo GIVE_PLUGIN_URL; ?>assets/dist/images/give-icon-full-circle.svg" class="give-logo" />
 
 				<div class="give-alert-message">
 					<h3><?php
@@ -134,7 +134,7 @@ class Give_Addon_Activation_Banner {
 					//The Dismiss Button.
 					$nag_admin_dismiss_url = 'plugins.php?' . $this->nag_meta_key . '=0';
 					echo admin_url( $nag_admin_dismiss_url ); ?>" class="dismiss"><span
-							class="dashicons dashicons-dismiss"></span></a>
+								class="dashicons dashicons-dismiss"></span></a>
 
 					<div class="alert-actions">
 
@@ -173,14 +173,14 @@ class Give_Addon_Activation_Banner {
 			<?php
 
 			$notice_html = ob_get_clean();
-			
-			
+
+
 			// Register notice.
 			Give()->notices->register_notice( array(
-				'id'          => 'give_' . sanitize_title( $this->banner_details['name'] ) . '_notice',
-				'type'        => 'updated',
+				'id'               => 'give_' . sanitize_title( $this->banner_details['name'] ) . '_notice',
+				'type'             => 'updated',
 				'description_html' => $notice_html,
-				'show'        => true,
+				'show'             => true,
 			) );
 		}
 	}
@@ -189,10 +189,10 @@ class Give_Addon_Activation_Banner {
 	/**
 	 * Add activation banner css.
 	 *
-	 * @since 1.8.16
+	 * @since  1.8.16
 	 * @access private
 	 */
-	private function print_css(){
+	private function print_css() {
 		?>
 		<style>
 			div.give-addon-alert.updated {
@@ -354,12 +354,12 @@ class Give_Addon_Activation_Banner {
 					}
 				}
 			} elseif ( WP_DEBUG ) {
-				throw new Exception( __( "File path must be added within the {$this->banner_details['name']} add-on in the banner details.", 'give' ) );
+				throw new Exception( sprintf( __( 'File path must be added within the %s add-on in the banner details.', 'give' ), $this->banner_details['name'] ) );
 			}
 
 			// Check plugin path calculated by addon file path.
 			if ( empty( $file_name ) && WP_DEBUG ) {
-				throw new Exception( __( "Empty add-on plugin path for {$this->banner_details['name']} add-on.", 'give' ) );
+				throw new Exception( sprintf( __( 'Empty add-on plugin path for %s add-on.', 'give' ), $this->banner_details['name'] ) );
 			}
 
 		} catch ( Exception $e ) {
