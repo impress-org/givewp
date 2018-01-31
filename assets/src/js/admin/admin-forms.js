@@ -103,10 +103,10 @@ jQuery.noConflict();
 		custom_amount_option.on( 'change', function() {
 			var custom_amount_option_val = $( '._give_custom_amount_field input:radio:checked' ).val();
 			if ( custom_amount_option_val === 'disabled' ) {
-				$( '._give_custom_amount_minimum_field' ).hide();
+				$( '._give_custom_amount_range_field ' ).hide();
 				$( '._give_custom_amount_text_field' ).hide();
 			} else {
-				$( '._give_custom_amount_minimum_field' ).show();
+				$( '._give_custom_amount_range_field ' ).show();
 				$( '._give_custom_amount_text_field' ).show();
 			}
 		} ).change();
@@ -179,20 +179,20 @@ jQuery.noConflict();
 				$( '._give_offline_donation_subject_field' ).hide();
 				$( '._give_offline_donation_email_field' ).hide();
 			}
-		}).change();
+		} ).change();
 
 		//Email options.
-		var  email_options = $('._give_email_options_field input:radio');
-		email_options.on('change', function () {
+		var email_options = $( '._give_email_options_field input:radio' );
+		email_options.on( 'change', function() {
 			// Get checked radio button value.
-			var email_options_val = $('._give_email_options_field input:radio:checked').val();
+			var email_options_val = $( '._give_email_options_field input:radio:checked' ).val();
 
-			if ( email_options_val === 'enabled') {
-				$('#email_notification_options .give-field-wrap:not(._give_email_options_field)').show();
+			if ( email_options_val === 'enabled' ) {
+				$( '#email_notification_options .give-field-wrap:not(._give_email_options_field)' ).show();
 			} else {
-				$('#email_notification_options .give-field-wrap:not(._give_email_options_field)').hide();
+				$( '#email_notification_options .give-field-wrap:not(._give_email_options_field)' ).hide();
 			}
-		}).change();
+		} ).change();
 	};
 
 	//Handle Repeatable Row ID

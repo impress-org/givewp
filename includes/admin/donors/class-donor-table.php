@@ -119,7 +119,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 			case 'num_donations' :
 				$value = sprintf(
 					'<a href="%s">%s</a>',
-					admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&status=publish&donor=' . absint( $donor['id'] ) ),
+					admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&donor=' . absint( $donor['id'] ) ),
 					esc_html( $donor['num_donations'] )
 				);
 				break;

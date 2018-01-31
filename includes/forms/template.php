@@ -1214,12 +1214,13 @@ function give_get_login_fields( $form_id ) {
 		</legend>
 		<?php if ( $show_register_form == 'both' ) { ?>
 			<p class="give-new-account-link">
-				<?php _e( 'Need to create an account?', 'give' ); ?>&nbsp;
+				<?php _e( 'Don\'t have an account?', 'give' ); ?>&nbsp;
 				<a href="<?php echo remove_query_arg( 'login' ); ?>" class="give-checkout-register-cancel"
 				   data-action="give_checkout_register">
-					<?php _e( 'Register', 'give' );
-					if ( ! give_logged_in_only( $form_id ) ) {
-						echo ' ' . __( 'and donate as a guest &raquo;', 'give' );
+					<?php if ( give_logged_in_only( $form_id ) ) {
+					    _e( 'Register as a part of your donation &raquo;', 'give' );
+                    } else {
+						 _e( 'Register or donate as a guest &raquo;', 'give' );
 					} ?>
 				</a>
 			</p>
@@ -1868,6 +1869,8 @@ function __give_form_add_donation_hidden_field( $form_id, $args, $form ) {
 	<input type="hidden" name="give-form-url" value="<?php echo htmlspecialchars( give_get_current_page_url() ); ?>"/>
 	<input type="hidden" name="give-form-minimum"
 		   value="<?php echo give_format_amount( give_get_form_minimum_price( $form_id ), array( 'sanitize' => false ) ); ?>"/>
+	<input type="hidden" name="give-form-maximum"
+	       value="<?php echo give_format_amount( give_get_form_maximum_price( $form_id ), array( 'sanitize' => false ) ); ?>"/>
 	<?php
 
 	// WP nonce field.

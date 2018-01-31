@@ -190,7 +190,7 @@ class Give_Scripts {
 			'delete_import_donor'               => __( 'Are you sure you want to delete all the imported donors? This process will also delete imported donations as well.', 'give' ),
 			'price_format_guide'                => sprintf( __( 'Please enter amount in monetary decimal ( %1$s ) format without thousand separator ( %2$s ) .', 'give' ), $decimal_separator, $thousand_separator ),
 			/* translators : %s: Donation form options metabox */
-			'confirm_before_remove_row_text'    => __( 'Do you want to delete this level?', 'give' ),
+			'confirm_before_remove_row_text'    => __( 'Do you want to delete this item?', 'give' ),
 			'matched_success_failure_page'      => __( 'You cannot set the success and failed pages to the same page', 'give' ),
 			'dismiss_notice_text'               => __( 'Dismiss this notice.', 'give' ),
 			'search_placeholder'                => __( 'Type to search all forms', 'give' ),
@@ -241,6 +241,10 @@ class Give_Scripts {
 			'give_donation_import'              => 'give_donation_import',
 			'core_settings_import'              => 'give_core_settings_import',
 			'setting_not_save_message'          => __( 'Changes you made may not be saved.', 'give' ),
+			'give_donation_amounts'             => array(
+				'minimum' => apply_filters( 'give_donation_minimum_limit', 1 ),
+				'maximum' => apply_filters( 'give_donation_maximum_limit', 999999.99 ),
+			),
 		) );
 	}
 
@@ -308,6 +312,7 @@ class Give_Scripts {
 			'decimal_separator'          => give_get_price_decimal_separator(),
 			'no_gateway'                 => __( 'Please select a payment method.', 'give' ),
 			'bad_minimum'                => __( 'The minimum custom donation amount for this form is', 'give' ),
+			'bad_maximum'                => __( 'The maximum custom donation amount for this form is', 'give' ),
 			'general_loading'            => __( 'Loading...', 'give' ),
 			'purchase_loading'           => __( 'Please Wait...', 'give' ),
 			'number_decimals'            => give_get_price_decimals(),
