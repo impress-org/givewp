@@ -2611,7 +2611,8 @@ function give_v202_add_form_goal_meta_callback() {
 	$give_updates = Give_Updates::get_instance();
 
 	// form query
-	$forms = new WP_Query( array(
+	$forms = get_posts(
+		array(
 			'paged'          => $give_updates->step,
 			'status'         => 'any',
 			'order'          => 'ASC',
@@ -2620,17 +2621,13 @@ function give_v202_add_form_goal_meta_callback() {
 		)
 	);
 
-	if ( $forms->have_posts() ) {
-		$give_updates->set_percentage( $forms->found_posts, ( $give_updates->step * 20 ) );
+	if ( ! empty( $forms ) ) {
+		$give_updates->set_percentage( give_get_total_post_type_count( 'give_forms' ), ( $give_updates->step * 20 ) );
 
-		while ( $forms->have_posts() ) {
-			$forms->the_post();
-
-			$form_id = get_the_ID();
-			$form    = new Give_Donate_Form( $form_id );
+		foreach ( $forms as $form ) {
+			$form = new Give_Donate_Form( $form->ID );
 			$form->set_goal_closed_meta();
-
-		}// End while().
+		}
 
 		wp_reset_postdata();
 
