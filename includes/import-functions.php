@@ -96,6 +96,9 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 	}
 
 	if ( ! empty( $form ) && $form->get_ID() ) {
+
+		$price_option = 'set';
+
 		if ( ! empty( $data['form_level'] ) && 'custom' != (string) strtolower( $data['form_level'] ) ) {
 			$prices     = (array) $form->get_prices();
 			$price_text = array();
@@ -155,16 +158,16 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 			$meta = array(
 				'_give_levels_minimum_amount' => $min_amount,
 				'_give_levels_maximum_amount' => $max_amount,
-				'_give_price_option'          => 'multi',
 				'_give_donation_levels'       => array_values( $prices ),
 			);
+
+			$price_option = 'multi';
 		} else {
 			$form->price_id = 'custom';
 		}
 
 		$defaults = array(
 			'_give_set_price'    => give_sanitize_amount_for_db( $data['amount'] ),
-			'_give_price_option' => 'set',
 		);
 
 		// If new form is created.
@@ -180,6 +183,7 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 				'_give_product_type'       => 'default',
 				'_give_default_gateway'    => 'global',
 				'_give_show_register_form' => 'both',
+				'_give_price_option' => $price_option,
 			);
 			$defaults = wp_parse_args( $defaults, $new_form );
 		}
