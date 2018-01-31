@@ -100,7 +100,7 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 		$price_option = 'set';
 		$form_level = strtolower( preg_replace('/\s+/', '', $data['form_level'] ) );
 
-		if ( ! empty( $data['form_level'] ) && 'custom' != (string) strtolower( $data['form_level'] ) ) {
+		if ( ! empty( $data['form_level'] ) && 'custom' != $form_level ) {
 			$prices     = (array) $form->get_prices();
 			$price_text = array();
 			foreach ( $prices as $key => $price ) {
