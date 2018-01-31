@@ -2221,6 +2221,7 @@ function give_v201_create_tables(){
 function give_v201_upgrades_payment_metadata_callback() {
 	global $wpdb, $post;
 	$give_updates = Give_Updates::get_instance();
+	give_v201_create_tables();
 
 	$payments = $wpdb->get_col(
 		"
@@ -2316,6 +2317,7 @@ function give_v201_upgrades_payment_metadata_callback() {
 function give_v201_move_metadata_into_new_table_callback() {
 	global $wpdb, $post;
 	$give_updates = Give_Updates::get_instance();
+	give_v201_create_tables();
 
 	$payments = $wpdb->get_col(
 		"
@@ -2394,6 +2396,7 @@ function give_v201_move_metadata_into_new_table_callback() {
 function give_v201_logs_upgrades_callback() {
 	global $wpdb, $post;
 	$give_updates = Give_Updates::get_instance();
+	give_v201_create_tables();
 
 	$logs = $wpdb->get_col(
 		"
@@ -2480,6 +2483,7 @@ function give_v201_logs_upgrades_callback() {
  */
 function give_v201_add_missing_donors_callback(){
 	global $wpdb;
+	give_v201_create_tables();
 
 	if ( $wpdb->query( $wpdb->prepare( "SHOW TABLES LIKE %s", "{$wpdb->prefix}give_customers" ) ) ) {
 		$customers  = wp_list_pluck( $wpdb->get_results( "SELECT id FROM {$wpdb->prefix}give_customers" ), 'id' );
