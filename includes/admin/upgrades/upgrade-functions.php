@@ -2219,33 +2219,29 @@ function give_v201_create_tables(){
  * @return void
  */
 function give_v201_upgrades_payment_metadata_callback() {
-	global $wpdb;
+	global $wpdb, $post;
 	$give_updates = Give_Updates::get_instance();
 
-	// form query
-	$forms = new WP_Query( array(
-			'paged'          => $give_updates->step,
-			'status'         => 'any',
-			'order'          => 'ASC',
-			'post_type'      => 'give_payment',
-			'posts_per_page' => 100,
-			'date_query' => array(
-				'after'    => array(
-					'year'  => 2018,
-					'month' => 1,
-					'day'   => 8,
-				),
-				'inclusive' => true,
+	$payments = $wpdb->get_col(
+		"
+			SELECT ID FROM $wpdb->posts
+			WHERE 1=1
+			AND ( 
+  				$wpdb->posts.post_date >= '2018-01-08 00:00:00'
 			)
-		)
+			AND $wpdb->posts.post_type = 'give_payment'
+			AND {$wpdb->posts}.post_status IN ('" . implode( "','", array_keys( give_get_payment_statuses() ) ) . "')
+			ORDER BY $wpdb->posts.post_date ASC 
+			LIMIT 100
+			OFFSET " . ( 1 === $give_updates->step ? 0 : ( $give_updates->step * 100 ) )
 	);
 
-	if ( $forms->have_posts() ) {
-		$give_updates->set_percentage( $forms->found_posts, ( $give_updates->step * 100 ) );
+	if ( ! empty( $payments ) ) {
+		$give_updates->set_percentage( give_get_total_post_type_count( 'give_payment' ), ( $give_updates->step * 100 ) );
 
-		while ( $forms->have_posts() ) {
-			$forms->the_post();
-			global $post;
+		foreach ( $payments as $payment_id ) {
+			$post = get_post( $payment_id );
+			setup_postdata( $post );
 
 			// Do not add new meta keys if already refactored.
 			if ( $wpdb->get_var( $wpdb->prepare( "SELECT meta_id FROM $wpdb->postmeta WHERE post_id=%d AND meta_key=%s", $post->ID, '_give_payment_donor_id' ) ) ) {
@@ -2318,25 +2314,26 @@ function give_v201_upgrades_payment_metadata_callback() {
  * @return void
  */
 function give_v201_move_metadata_into_new_table_callback() {
-	global $wpdb;
+	global $wpdb, $post;
 	$give_updates = Give_Updates::get_instance();
 
-	// form query
-	$payments = new WP_Query( array(
-			'paged'          => $give_updates->step,
-			'status'         => 'any',
-			'order'          => 'ASC',
-			'post_type'      => array( 'give_forms', 'give_payment' ),
-			'posts_per_page' => 100,
-		)
+	$payments = $wpdb->get_col(
+		"
+			SELECT ID FROM $wpdb->posts 
+			WHERE 1=1
+			AND ( $wpdb->posts.post_type = 'give_payment' OR $wpdb->posts.post_type = 'give_forms' )
+			AND {$wpdb->posts}.post_status IN ('" . implode( "','", array_keys( give_get_payment_statuses() ) ) . "')
+			ORDER BY $wpdb->posts.post_date ASC 
+			LIMIT 100
+			OFFSET " . ( 1 === $give_updates->step ? 0 : ( $give_updates->step * 100 ) )
 	);
 
-	if ( $payments->have_posts() ) {
-		$give_updates->set_percentage( $payments->found_posts, $give_updates->step * 100 );
+	if ( ! empty( $payments ) ) {
+		$give_updates->set_percentage( give_get_total_post_type_count( array( 'give_forms', 'give_payment' ) ), $give_updates->step * 100 );
 
-		while ( $payments->have_posts() ) {
-			$payments->the_post();
-			global $post;
+		foreach ( $payments as $payment_id ) {
+			$post = get_post( $payment_id );
+			setup_postdata( $post );
 
 			$meta_data = $wpdb->get_results(
 				$wpdb->prepare(
@@ -2395,25 +2392,26 @@ function give_v201_move_metadata_into_new_table_callback() {
  * @return void
  */
 function give_v201_logs_upgrades_callback() {
-	global $wpdb;
+	global $wpdb, $post;
 	$give_updates = Give_Updates::get_instance();
 
-	// form query
-	$forms = new WP_Query( array(
-			'paged'          => $give_updates->step,
-			'order'          => 'DESC',
-			'post_type'      => 'give_log',
-			'post_status'    => 'any',
-			'posts_per_page' => 100,
-		)
+	$logs = $wpdb->get_col(
+		"
+			SELECT ID FROM $wpdb->posts 
+			WHERE 1=1
+			AND $wpdb->posts.post_type = 'give_log'
+			AND {$wpdb->posts}.post_status IN ('" . implode( "','", array_keys( give_get_payment_statuses() ) ) . "')
+			ORDER BY $wpdb->posts.post_date ASC 
+			LIMIT 100
+			OFFSET " . ( 1 === $give_updates->step ? 0 : ( $give_updates->step * 100 ) )
 	);
 
-	if ( $forms->have_posts() ) {
-		$give_updates->set_percentage( $forms->found_posts, $give_updates->step * 100 );
+	if ( ! empty( $logs ) ) {
+		$give_updates->set_percentage( give_get_total_post_type_count( 'give_log' ), $give_updates->step * 100 );
 
-		while ( $forms->have_posts() ) {
-			$forms->the_post();
-			global $post;
+		foreach ( $logs as $log_id ) {
+			$post = get_post( $log_id );
+			setup_postdata( $post );
 
 			if( $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}give_logs WHERE ID=%d", $post->ID ) ) ) {
 				continue;
