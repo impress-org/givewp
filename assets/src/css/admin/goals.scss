@@ -1,19 +1,28 @@
-.give-progress-bar {
-  height: 8px;
-  position: relative;
-  background: #EEE;
-  border-radius: 25px;
-  overflow: hidden;
+.widefat th.column-goal {
+  text-align: right;
+}
 
-  > span {
-	display: block;
-	height: 100%;
-	border-top-right-radius: 8px;
-	border-bottom-right-radius: 8px;
-	border-top-left-radius: 20px;
-	border-bottom-left-radius: 20px;
-	background-color: rgb(43, 194, 83);
+td.column-goal {
+  text-align: right;
+
+  .give-progress-bar {
+	height: 8px;
 	position: relative;
+	background: #EEE;
+	border-radius: 25px;
 	overflow: hidden;
+
+	> span {
+	  display: block;
+	  height: 100%;
+	  border-top-right-radius: 8px;
+	  border-bottom-right-radius: 8px;
+	  border-top-left-radius: 20px;
+	  border-bottom-left-radius: 20px;
+	  background-color: rgb(43, 194, 83);
+	  position: relative;
+	  overflow: hidden;
+	}
   }
 }
+
