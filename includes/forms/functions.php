@@ -946,7 +946,7 @@ function give_goal_progress_stats( $form ) {
 	$total_goal = apply_filters( 'give_goal_amount_target_output', round( give_maybe_sanitize_amount( $form->goal ) ), $form->ID, $form );
 
 
-	$actual = 'donation' !== $goal_format ? $income : $sales;
+	$actual   = 'donation' !== $goal_format ? $income : $sales;
 	$progress = round( ( $actual / $total_goal ) * 100, 2 );
 
 	/**
@@ -970,12 +970,12 @@ function give_goal_progress_stats( $form ) {
 		$total_goal = give_currency_filter( $total_goal );
 	}
 
-	return array(
+	return apply_filters( 'give_goal_progress_stats', array(
 		'progress' => $progress,
 		'actual'   => $actual,
 		'goal'     => $total_goal,
 		'format'   => $goal_format,
-	);
+	) );
 
 }
 
