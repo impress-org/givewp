@@ -86,7 +86,24 @@ function give_render_form_columns( $column_name, $post_id ) {
 				break;
 			case 'goal':
 				if ( give_is_setting_enabled( give_get_meta( $post_id, '_give_goal_option', true ) ) ) {
-					echo give_goal( $post_id, false );
+
+					$goal_stats = give_goal_progress_stats( $post_id );
+
+					$html = '';
+					$html .= sprintf(
+						( 'percentage' !== $goal_stats['format'] ) ?
+							'<div class="give-goal-text"><span>%1$s</span> %2$s <a href="%3$s">%4$s</a></div>' :
+							'<div class="give-goal-text"><a href="%3$s">%1$s</a></div>',
+						$goal_stats['actual'],
+						( 'percentage' !== $goal_stats['format'] ) ? __( 'of', 'give' ) : '',
+						esc_url( admin_url( "post.php?post={$post_id}&action=edit&give_tab=donation_goal_options" ) ),
+						$goal_stats['goal']
+					);
+					$html .= '<div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' . esc_attr( $goal_stats['progress'] ) . '">';
+					$html .= '<span style="width:' . esc_attr( $goal_stats['progress'] ) . '%;"></span>';
+					$html .= '</div>';
+
+					echo $html;
 				} else {
 					esc_html_e( 'No Goal Set', 'give' );
 				}
