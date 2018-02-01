@@ -46,7 +46,7 @@ class Tests_Give extends Give_Unit_Test_Case {
 
 		/** Check Includes Exist */
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/post-types.php' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/scripts.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-scripts.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/ajax-functions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/actions.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/class-give-roles.php' );
@@ -160,81 +160,10 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-profile-editor.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-receipt.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-register.php' );
+		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-totals.php' );
 
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/upgrades/class-give-updates.php' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrade-functions.php' );
-
-		/** Check Assets Exist */
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/css/chosen.css' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/css/chosen.min.css' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/css/chosen-sprite.png' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/css/give-admin.css' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/css/give-admin.css.map' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/css/give-admin.min.css' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/css/jquery-ui-fresh.css' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/css/jquery-ui-fresh.min.css' );
-
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/admin/addons.scss' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/admin/dashboard.scss' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/admin/donors.scss' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/admin/forms.scss' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/admin/give-admin.scss' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/admin/logs.scss' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/admin/payment-history.scss' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/admin/reports.scss' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/admin/settings.scss' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/admin/welcome.scss' );
-
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/frontend/_mixins.scss' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/frontend/_variables.scss' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/frontend/fonts.scss' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/frontend/forms.scss' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/frontend/give-frontend.scss' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/frontend/layouts.scss' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/frontend/progress-bar.scss' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/frontend/receipt.scss' );
-
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/plugins/_settings.scss' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/plugins/float-labels.scss' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/scss/plugins/magnific-popup.scss' );
-
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/fonts/icomoon.eot' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/fonts/icomoon.svg' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/fonts/icomoon.woff' );
-
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/admin/admin-forms.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/admin/admin-forms.min.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/admin/admin-scripts.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/admin/admin-scripts.min.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/admin/admin-widgets.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/admin/admin-widgets.min.js' );
-
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/frontend/give.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/frontend/give.min.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/frontend/give.all.min.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/frontend/give-ajax.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/frontend/give-ajax.min.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/frontend/give-donations.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/frontend/give-donations.min.js' );
-
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/chosen.jquery.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/chosen.jquery.min.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/float-labels.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/float-labels.min.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.magnific-popup.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.magnific-popup.min.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.blockUI.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.blockUI.min.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.payment.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.payment.min.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.flot.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.flot.min.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.flot.orderBars.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.flot.orderBars.min.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.flot.time.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.flot.time.min.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.payment.js' );
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/js/plugins/jquery.payment.min.js' );
 
 	}
 }

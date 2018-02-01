@@ -1,0 +1,40 @@
+// Chosen style overrides
+
+.chosen-container-single {
+
+  .chosen-single {
+	background: #FFF;
+	height: 30px;
+	line-height: 30px;
+	border: 1px solid #DDD;
+	box-shadow: none;
+
+	span {
+	  font-size: 14px;
+	}
+
+  }
+
+  // Reposition dropdown arrow because of large size above.
+  &.chosen-with-drop .chosen-single div b, .chosen-single div b {
+	background-position-y: 4px;
+  }
+}
+
+.chosen-container-active.chosen-with-drop .chosen-single {
+  background: #FFF;
+}
+
+.chosen-container .chosen-results li.highlighted {
+  background: #3875d7;
+  color: #fff;
+}
+
+.chosen-container-multi .chosen-choices {
+  border: 1px solid #aaa;
+  background-image: none;
+}
+
+.chosen-container-multi .chosen-choices li.search-choice {
+  background-image: none;
+}

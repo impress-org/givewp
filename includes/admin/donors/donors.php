@@ -461,7 +461,7 @@ function give_donor_view( $donor ) {
 	<div id="donor-stats-wrapper" class="donor-section postbox clear">
 		<ul>
 			<li>
-				<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&status=publish&donor=' . absint( $donor->id ) ); ?>">
+				<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&donor=' . absint( $donor->id ) ); ?>">
 					<span class="dashicons dashicons-heart"></span>
 					<?php
 					// Completed Donations.

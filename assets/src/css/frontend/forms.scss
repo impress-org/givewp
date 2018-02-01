@@ -1,0 +1,824 @@
+/**
+ * Give Frontend Forms SCSS
+ *
+ * @package     Give
+ * @subpackage  SCSS/Frontend
+ * @copyright   Copyright (c) 2016, WordImpress
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+*/
+
+/*------------------------------------
+Layout
+--------------------------------------*/
+.give-clearfix {
+	@include clearfix();
+}
+
+[id*='give-form'] {
+
+	.give-hidden {
+		display: none;
+	}
+
+	fieldset {
+		border: none;
+		padding: 0;
+		margin: 0;
+		border: 0;
+	}
+
+	.give-form-title {
+		padding: 0;
+		margin: 0 0 15px;
+	}
+
+	div#give-sidebar-left {
+		width: 38%;
+		float: left;
+	}
+
+	div.images {
+		margin: 0 0 15px;
+
+		img {
+			display: block;
+			width: 100%;
+			height: auto;
+			box-shadow: none;
+		}
+	}
+
+	.give-custom-amount-text {
+		clear: both;
+	}
+
+	div.summary {
+		width: 58%;
+		float: right;
+
+		&.give-full-width {
+			width: 100%;
+			float: none;
+		}
+	}
+
+	.give_form select.give-select.required {
+		color: #000;
+	}
+
+	div.give-form-content-wrap {
+		margin: 0 0 20px;
+	}
+
+	div.give-form-content-wrap.give_post_form-content {
+		margin: 20px 0 0 0;
+	}
+
+	&.give-display-reveal, &.give-display-modal {
+		.give-btn {
+			margin: 0 0 15px;
+		}
+		#give-payment-mode-select, #give_purchase_form_wrap {
+			display: none;
+		}
+	}
+
+	.cc-address {
+		margin-bottom: 15px;
+	}
+}
+
+/*------------------------------------
+Single Forms
+--------------------------------------*/
+
+.single-give_forms {
+
+	&.et_right_sidebar #main-content .container:before {
+		display: none; //hide Divi sidebar sep on single give forms
+	}
+
+	.give_forms {
+		@include clearfix;
+	}
+
+}
+
+/*------------------------------------
+Gravatar List
+--------------------------------------*/
+#give-purchase-gravatars {
+
+	.give-gravatars-title {
+		margin: 0 0 15px;
+	}
+
+	.give-purchase-gravatars-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+
+		li {
+			list-style-type: none;
+			display: inline-block;
+			margin: 0 5px 0 0;
+			padding: 0;
+		}
+
+	}
+}
+
+/*------------------------------------
+Base Form Styles
+--------------------------------------*/
+
+form[id*='give-form'],
+#give-recurring-form,
+form.give-form {
+	margin: 0 0 25px;
+	padding: 0;
+
+	.give-hidden {
+		display: none;
+	}
+
+	.give-tooltip {
+		margin: 0 3px;
+		padding: 0;
+		font-size: 14px;
+		@include easing-transition();
+		color: transparentize($dark, 0.5);
+
+		&:hover {
+			color: $dark;
+		}
+	}
+
+	h3.give-section-break,
+	h4.give-section-break,
+	legend {
+		font-size: 1.15em;
+		font-weight: bold;
+		margin: 10px 0 15px;
+		padding: 0 0 5px;
+		border-bottom: 1px solid rgba(0, 0, 0, .1);
+		width: 100%;
+
+		span.sub-text {
+			font-style: italic;
+			font-weight: normal;
+		}
+	}
+
+	//Form Layout
+	.form-row {
+		@include clearfix();
+		@include box-sizing(border-box);
+		margin: 0 0 15px;
+		overflow: visible;
+		padding: 0;
+
+		// Prevent some themes from removing margin on last-child.
+		&:last-child {
+			margin-bottom: 15px;
+		}
+
+		label {
+			display: block;
+			margin: 0 0 5px;
+			position: relative;
+			line-height: 1.7;
+
+			&.checkbox {
+				display: inline;
+			}
+
+		}
+
+		select, textarea, input[type="text"], input[type="tel"], input[type="email"], input[type="password"], input[type="url"] {
+			@include box-sizing(border-box);
+			width: 100%;
+			border-radius: 0;
+			outline: none;
+			color: $dark;
+			background-color: #FDFDFD;
+			border: 1px solid $borders;
+			margin: 0;
+			padding: .5em;
+
+			&:focus {
+				background-color: #fff;
+			}
+			&.required {
+				color: $dark;
+			}
+
+		}
+
+	}
+
+	.form-row-first,
+	.form-row-last {
+		float: left;
+		width: 48.5%;
+	}
+
+	.form-row-last {
+		float: right;
+	}
+
+	.form-row-wide {
+		@include clearfix();
+		clear: both;
+	}
+
+	.form-row-two-thirds {
+		float: left;
+		width: 65.75%;
+
+		&.form-row-first {
+			margin-left: 0;
+		}
+	}
+
+	.form-row-one-third {
+		float: left;
+		width: 31.25%;
+		margin-left: 3%;
+
+		&.form-row-first {
+			margin-left: 0;
+		}
+	}
+
+	.form-row-responsive {
+		// Full-width on small viewports.
+		@media (max-width: 480px) {
+			margin-left: 0;
+			margin-right: 0;
+			width: 100%;
+		}
+	}
+
+	.give-error,
+	.give-required-indicator {
+		color: $red;
+	}
+
+	.card-expiration {
+		> select {
+			width: 44%;
+			margin: 0;
+		}
+		> span.exp-divider {
+			display: inline;
+			text-align: center;
+		}
+
+		select.card-expiry-year {
+			float: right;
+		}
+
+	}
+	.give-disabled, [disabled] {
+		cursor: not-allowed;
+	}
+}
+
+/*---------------------------------
+Form Price & Amount
+-----------------------------------*/
+
+form[id*='give-form'] {
+
+	.give-donation-amount {
+		margin: 0 0 15px;
+
+		.give-currency-symbol {
+			@include give-currency();
+			float: left;
+
+			&.give-currency-position-before {
+				border-left: 1px solid $borders;
+				border-right: none;
+			}
+			&.give-currency-position-after {
+				border-left: none;
+				border-right: 1px solid $borders;
+			}
+
+		}
+
+		#give-amount,
+		#give-amount-text {
+			@include give-input();
+			min-width: 125px;
+			float: left;
+
+			&.invalid-amount {
+				border: 1px solid red;
+			}
+
+		}
+
+		input.give-amount-top {
+			width: 125px;
+		}
+
+		span.give-final-total-amount {
+			@include give-input();
+			cursor: not-allowed;
+			background: #FFF;
+			float: left;
+		}
+
+	}
+
+	#give_terms_agreement {
+
+		legend {
+			display: none;
+		}
+
+		label {
+			display: inline-block;
+		}
+
+	}
+
+	#give-final-total-wrap {
+		margin: 10px 0 25px;
+		padding: 0;
+		@include clearfix();
+
+		.give-donation-total-label {
+			@include give-currency();
+			float: left;
+			border: 1px solid $borders;
+
+			@media (max-width: 480px) {
+				display: block;
+				float: none;
+			}
+		}
+
+		.give-final-total-amount {
+			font-size: $font-size-medium;
+			@include give-input();
+			border-left: none;
+			float: left;
+
+			@media (max-width: 480px) {
+				border: 1px solid $borders;
+				border-top: 0;
+				display: block;
+				float: none;
+			}
+		}
+
+	}
+
+}
+
+.give-display-button-only > *:not(form) {
+	display: none !important;
+}
+
+.give-display-button-only form > *:not(.give-btn-modal) {
+	display: none !important;
+}
+
+/*---------------------------------
+Radio Lists
+-----------------------------------*/
+form[id*='give-form'] {
+	input[type="radio"] {
+		margin: 0 .5em 0 0;
+	}
+
+	#give-donation-level-radio-list {
+		//this is the radio list for the various user set donation levels
+		margin: 0 0 15px;
+		padding: 0;
+		list-style: none;
+		clear: both;
+
+		> li {
+			list-style-type: none;
+			list-style-image: none;
+			margin: 0;
+			padding: 0;
+
+			label {
+				cursor: pointer;
+				display: inline-block;
+				margin: 0;
+			}
+
+			input[type="radio"] {
+				margin: 0 .5em 0 0;
+				outline: none;
+				width: auto;
+			}
+		}
+	}
+
+	#give-gateway-radio-list {
+		//this is the radio list for to select a gateway
+		@include clearfix();
+		margin: 0 0 15px;
+		padding: 0;
+		list-style: none;
+
+		> li {
+			list-style-type: none;
+			list-style-image: none;
+			margin: 0;
+			padding: 0;
+
+			@media (min-width: 480px) {
+				display: inline-block;
+				margin-right: 15px;
+				margin-left: 0;
+			}
+
+			label.give-gateway-option {
+				cursor: pointer;
+				display: inline;
+				margin: 0;
+			}
+
+			input[type="radio"] {
+				margin: 0 .25em 0 0;
+				outline: none;
+				width: auto;
+				display: inline;
+			}
+
+		}
+
+	}
+}
+
+/*---------------------------------
+Checkboxes
+-----------------------------------*/
+form[id*='give-form'] {
+	input[type="checkbox"] {
+		margin: 0 .25em 0 0;
+	}
+}
+
+/*---------------------------------
+Donation Level: Dropdown/Select
+-----------------------------------*/
+form[id*='give-form'] {
+	select.give-select-level {
+		outline: none;
+		border-radius: 0;
+		min-width: 155px;
+		border: 1px solid $borders;
+		margin: 0 0 15px;
+		display: block;
+		clear: both;
+		color: $dark;
+		background-color: #FDFDFD;
+		padding: .5em;
+		max-width: 100%;
+	}
+}
+
+/*---------------------------------
+Buttons
+-----------------------------------*/
+
+#give-donation-level-button-wrap {
+	@include clearfix();
+	margin: 0 0 15px;
+	padding: 0;
+	clear: both;
+	list-style: none;
+
+	> li {
+		list-style-type: none;
+		list-style-image: none;
+		float: left;
+		margin: 0 5px 5px 0;
+	}
+
+}
+
+.give_terms_links {
+	float: right;
+}
+
+/*---------------------------------
+CC Validation
+-----------------------------------*/
+
+[id*='give_secure_site_wrapper'] {
+	padding: 4px 4px 15px 0;
+	font-size: 16px;
+	line-height: 20px;
+	//Secure padlock (SSL/HTTPS)
+	span.padlock {
+		@include iconstyle();
+		@extend .give-icon-locked;
+		font-size: 16px;
+		line-height: 20px;
+
+		:before {
+			display: inline-block;
+		}
+	}
+}
+
+#give_purchase_form_wrap {
+	input.give-input.card-number.valid,
+	input.give-input.card-cvc.valid,
+	input.give-input.card-expiry.valid {
+		background-image: url('../../images/tick.png');
+		background-repeat: no-repeat;
+		background-position: right 10px top 50%;
+		background-size: 16px;
+		&.fl-input:not(.card-cvc):not(.card-expiry) {
+			background-position: right 55px top 50%;
+		}
+	}
+
+	span.card-type {
+		position: absolute;
+		top: -2px;
+		right: 0;
+		width: 37px;
+		height: 26px;
+		background-size: 37px 26px !important;
+	}
+
+	.fl-wrap {
+		span.card-type {
+			top: calc(0.5em + #{fl(base-padding)});
+			right: 11px;
+		}
+	}
+
+	span.card-type.off {
+		display: none;
+	}
+	span.card-type.visa {
+		background: url('../../images/visa.png') no-repeat;
+	}
+	span.card-type.mastercard {
+		background: url('../../images/mastercard.png') no-repeat;
+	}
+	span.card-type.discover {
+		background: url('../../images/discover.png') no-repeat;
+	}
+	span.card-type.amex {
+		background: url('../../images/amex.png') no-repeat;
+	}
+	span.card-type.maestro {
+		background: url('../../images/maestro.png') no-repeat;
+	}
+	span.card-type.dinersclub {
+		background: url('../../images/diners-club.png') no-repeat;
+	}
+	span.card-type.jcb {
+		background: url('../../images/jcb.png') no-repeat;
+	}
+	span.card-type.dankort {
+		background: url('../../images/dankort.png') no-repeat;
+	}
+	span.card-type.unionpay {
+		background: url('../../images/unionpay.png') no-repeat;
+	}
+}
+
+/*---------------------------------
+Loading Animation
+-----------------------------------*/
+
+/* Loading Elipsis */
+@-webkit-keyframes opacity {
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+@-moz-keyframes opacity {
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+form[id*='give-form'] {
+	p.give-loading-text,
+	span.give-loading-text {
+		display: none;
+		float: right;
+		height: 16px;
+		width: 16px;
+		margin: 0;
+		padding: 0;
+		font-style: italic;
+		line-height: 20px;
+		font-size: 16px;
+		font-weight: normal;
+	}
+
+	.give-loading-animation {
+		@include iconstyle();
+		float: left;
+		height: 16px;
+		width: 16px;
+		line-height: 1;
+		font-size: 16px;
+		margin: 0 5px 0 0;
+		background-size: 20px 20px;
+		background-repeat: no-repeat;
+		background-color: transparent;
+		@extend .give-icon-spinner2;
+		@extend .fa-spin;
+	}
+
+	.give-payment-mode-label
+	.give-loading-text {
+		float: right;
+	}
+}
+
+/*---------------------------------
+User Login
+-----------------------------------*/
+
+/*
+ * User Login within Donation Form
+ * (visible when Form Display > Login is enabled)
+ */
+[id*='give-form'] {
+	.give-login-account-wrap {
+		margin: 0 0 15px;
+		position: relative;
+
+		.give-login-message {
+			text-align: right;
+			margin: 0;
+			padding: 0;
+		}
+
+		.give-loading-text {
+			position: absolute;
+			right: 0;
+			top: .25em;
+		}
+	}
+
+	fieldset[id^="give-login-fields"] {
+		margin: 0 0 15px;
+	}
+
+	.give-new-account-link {
+		margin: 0 0 15px;
+		padding: 0;
+	}
+
+	.give_login_forgot_password {
+		float: right;
+	}
+}
+
+[id^='give-user-login-submit'],
+.give-submit-button-wrap {
+
+	input.give-cancel-login {
+		margin-left: 5px;
+	}
+
+	span.give-loading-animation {
+		margin: 0 0 0 .5em;
+		display: none;
+	}
+	.give-submit {
+		float: left;
+	}
+}
+
+/* Login Shortcode Form */
+#give-login-form,
+#give-register-form {
+	legend, div.give-login {
+		line-height: 2;
+		margin-bottom: 15px;
+	}
+
+	label {
+		min-width: 100px;
+		display: inline-block;
+	}
+}
+
+/*---------------------------------
+Modal - Magnific Popup
+-----------------------------------*/
+
+//Show/Hide elements in Magnific Popup
+div.give-form-wrap.mfp-hide {
+	display: block !important;
+}
+
+div.mfp-content {
+	//Basic Styles
+	fieldset {
+		p, ol, ul {
+			margin-bottom: 1.2em;
+			line-height: 1.4;
+		}
+	}
+
+}
+
+/*---------------------------------
+Basic Button Style
+-----------------------------------*/
+
+.give-btn {
+	background: $light-gray;
+	border: 1px solid $borders;
+	color: $dark;
+	padding: 8px 10px;
+	cursor: pointer;
+	line-height: 1.2em;
+	font-size: 1em;
+
+	&:hover {
+		background: #dbdbdb;
+	}
+
+}
+
+/*---------------------------------
+Profile Editor Form
+-----------------------------------*/
+#give_profile_editor_form {
+	legend {
+		width: auto;
+		padding: 0 5px 5px 5px;
+		border-bottom: 0;
+	}
+}
+
+/*---------------------------------
+Email Access Form
+-----------------------------------*/
+
+form#give-email-access-form {
+	div.g-recaptcha, input#give-email {
+		margin: 0 0 15px;
+	}
+	input#give-email {
+		width: 305px;
+	}
+}
+
+/*---------------------------------
+Responsiveness
+-----------------------------------*/
+@media (max-width: 768px) {
+	// Multi-column layout for single forms.
+	[id*='give-form'] {
+		div.images, div.summary {
+			width: 100%;
+			float: none;
+		}
+
+		div#give-sidebar-left {
+			width: 100%;
+			float: none;
+		}
+	}
+}
+
+/*---------------------------------
+Section Breaks
+-----------------------------------*/
+
+// Headings are commonly styled by themes, so we need to be extra-specific.
+.give-form-wrap .give-form h3.give-section-break,
+.give-form-wrap .give-form h4.give-section-break {
+	margin: 10px 0 0;
+}
+
+/*---------------------------------
+Form validation style
+-----------------------------------*/
+.give-do-validate {
+	input.error {
+		border-color: red !important;
+	}
+}
