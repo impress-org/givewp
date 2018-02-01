@@ -367,6 +367,7 @@ function give_get_default_settings() {
 		'donation_receipt'                            => give_get_default_donation_receipt_email(),
 
 		'donor_default_user_role'                     => 'give_donor',
+		'test_mode_per_form'                          => 'disabled',
 
 	);
 
