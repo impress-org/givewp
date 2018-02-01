@@ -62,6 +62,9 @@ class Give_MetaBox_Form_Data {
 		// Add offline donations options.
 		add_filter( 'give_metabox_form_data_settings', array( $this, 'add_offline_donations_setting_tab' ), 0, 1 );
 
+		// Add Test Mode Per Form Options.
+		add_filter( 'give_metabox_form_data_settings', array( $this, 'add_test_mode_setting_tab' ), 0, 1 );
+
 		// Maintain active tab query parameter after save.
 		add_filter( 'redirect_post_location', array( $this, 'maintain_active_tab' ), 10, 2 );
 	}
@@ -1162,7 +1165,7 @@ class Give_MetaBox_Form_Data {
 							array(
 								'name'        => __( 'Test Mode', 'give' ),
 								'description' => __( 'Do you want to enable test mode for this form?', 'give' ),
-								'id'          => $prefix . 'test_mode',
+								'id'          => '_give_test_mode',
 								'type'        => 'radio_inline',
 								'options'     => apply_filters( 'give_form_test_mode_select', array(
 										'global'   => __( 'Global Option', 'give' ),
