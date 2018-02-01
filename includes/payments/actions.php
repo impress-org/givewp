@@ -455,7 +455,7 @@ add_action( 'give_insert_payment', 'give_payment_save_page_data' );
  * Add/Update goal closed meta when donation form is updated.
  * Note: only internal use
  *
- * @since 2.0.2
+ * @since 2.0.3
  *
  * @param $form_id
  */
@@ -469,7 +469,7 @@ add_action( 'give_post_process_give_forms_meta', '__give_update_goal_closed_meta
  * Add/Update Donation Goal is complete or not meta value in give from meta
  * Note: only internal use
  *
- * @since 2.0.2
+ * @since 2.0.3
  *
  * @param $payment_id
  */

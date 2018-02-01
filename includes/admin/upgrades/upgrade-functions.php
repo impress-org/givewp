@@ -341,12 +341,12 @@ function give_show_upgrade_notices( $give_updates ) {
 		)
 	);
 
-	// v2.0.2 Upgrades
+	// v2.0.3 Upgrades
 	$give_updates->register(
 		array(
-			'id'       => 'v202_add_form_goal_meta',
-			'version'  => '2.0.2',
-			'callback' => 'give_v202_add_form_goal_meta_callback',
+			'id'       => 'v203_add_form_goal_meta',
+			'version'  => '2.0.3',
+			'callback' => 'give_v203_add_form_goal_meta_callback',
 			'depend'   => array(
 				'v20_upgrades_form_metadata',
 			),
@@ -2605,9 +2605,9 @@ function give_v201_add_missing_donors_callback(){
 /**
  * Update Goal Meta when Donation form is closed.
  *
- * @since 2.0.2
+ * @since 2.0.3
  */
-function give_v202_add_form_goal_meta_callback() {
+function give_v203_add_form_goal_meta_callback() {
 	/* @var Give_Updates $give_updates */
 	$give_updates = Give_Updates::get_instance();
 	// form query
@@ -2629,6 +2629,6 @@ function give_v202_add_form_goal_meta_callback() {
 		wp_reset_postdata();
 	} else {
 		// No more forms found, finish up.
-		give_set_upgrade_complete( 'v202_add_form_goal_meta' );
+		give_set_upgrade_complete( 'v203_add_form_goal_meta' );
 	}
 }

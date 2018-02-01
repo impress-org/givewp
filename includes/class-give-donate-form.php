@@ -1125,7 +1125,7 @@ class Give_Donate_Form {
 	/**
 	 * Add/Update goal closed meta when donation form is updated.
 	 *
-	 * @since 2.0.2
+	 * @since 2.0.3
 	 */
 	public function set_goal_closed_meta() {
 		// Check if donation from is closed or not
