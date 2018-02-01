@@ -29,7 +29,7 @@ function give_is_test_mode( $form_id = 0 ) {
 	$test_mode = give_get_option( 'test_mode' );
 
 	// Test Mode - Per Form Option.
-	if ( $form_id > 0 ) {
+	if ( $form_id > 0 && give_is_setting_enabled( give_get_option( 'test_mode_per_form', 'disabled' ) ) ) {
 		$test_mode = give_get_meta( absint( $form_id ), '_give_test_mode', true, $test_mode );
 	}
 
