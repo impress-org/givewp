@@ -33,7 +33,8 @@
  * Give is a tribute to the spirit and philosophy of Open Source. We at WordImpress gladly embrace the Open Source philosophy both
  * in how Give itself was developed, and how we hope to see others build more from our code base.
  *
- * Give would not have been possible without the tireless efforts of WordPress and the surrounding Open Source projects and their talented developers. Thank you all for your contribution to WordPress.
+ * Give would not have been possible without the tireless efforts of WordPress and the surrounding Open Source projects and their talented developers. Thank you all for your
+ * contribution to WordPress.
  *
  * - The WordImpress Team
  */
@@ -223,6 +224,13 @@ if ( ! class_exists( 'Give' ) ) :
 		public $async_process;
 
 		/**
+		 * Give scripts Object.
+		 *
+		 * @var Give_Scripts
+		 */
+		public $scripts;
+
+		/**
 		 * Main Give Instance
 		 *
 		 * Ensures that only one instance of Give exists in memory at any one
@@ -255,13 +263,12 @@ if ( ! class_exists( 'Give' ) ) :
 
 			// Bailout: Need minimum php version to load plugin.
 			if ( function_exists( 'phpversion' ) && version_compare( GIVE_REQUIRED_PHP_VERSION, phpversion(), '>' ) ) {
-				add_action( 'admin_notices', array( $this, 'minmum_phpversion_notice' ) );
+				add_action( 'admin_notices', array( $this, 'minimum_phpversion_notice' ) );
 
 				return;
 			}
 
 			$this->setup_constants();
-
 			$this->includes();
 			$this->init_hooks();
 
@@ -295,28 +302,29 @@ if ( ! class_exists( 'Give' ) ) :
 			// Set up localization.
 			$this->load_textdomain();
 
-			$this->roles              = new Give_Roles();
-			$this->api                = new Give_API();
-			$this->give_settings      = new Give_Admin_Settings();
-			$this->session            = new Give_Session();
-			$this->html               = new Give_HTML_Elements();
-			$this->emails             = new Give_Emails();
-			$this->email_tags         = new Give_Email_Template_Tags();
-			$this->donors             = new Give_DB_Donors();
-			$this->donor_meta         = new Give_DB_Donor_Meta();
-			$this->template_loader    = new Give_Template_Loader();
-			$this->email_access       = new Give_Email_Access();
-			$this->tooltips           = new Give_Tooltips();
-			$this->notices            = new Give_Notices();
-			$this->payment_meta       = new Give_DB_Payment_Meta();
-			$this->logs               = new Give_Logging();
-			$this->form_meta          = new Give_DB_Form_Meta();
-			$this->async_process      = new Give_Async_Process();
+			$this->roles           = new Give_Roles();
+			$this->api             = new Give_API();
+			$this->give_settings   = new Give_Admin_Settings();
+			$this->session         = new Give_Session();
+			$this->html            = new Give_HTML_Elements();
+			$this->emails          = new Give_Emails();
+			$this->email_tags      = new Give_Email_Template_Tags();
+			$this->donors          = new Give_DB_Donors();
+			$this->donor_meta      = new Give_DB_Donor_Meta();
+			$this->template_loader = new Give_Template_Loader();
+			$this->email_access    = new Give_Email_Access();
+			$this->tooltips        = new Give_Tooltips();
+			$this->notices         = new Give_Notices();
+			$this->payment_meta    = new Give_DB_Payment_Meta();
+			$this->logs            = new Give_Logging();
+			$this->form_meta       = new Give_DB_Form_Meta();
+			$this->async_process   = new Give_Async_Process();
+			$this->scripts         = new Give_Scripts();
 
 			/**
 			 * Fire the action after Give core loads.
 			 *
-			 * @param Give Instance of Give Class
+			 * @param Give class instance.
 			 *
 			 * @since 1.8.7
 			 */
@@ -428,7 +436,6 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/give-metabox-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-cache.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/post-types.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/scripts.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/ajax-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/actions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/filters.php';
@@ -437,6 +444,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-notices.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-translation.php';
 
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-scripts.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-roles.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-template-loader.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-donate-form.php';
@@ -551,6 +559,7 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-profile-editor.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-donation-history.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-receipt.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-totals.php';
 			}// End if().
 
 			require_once GIVE_PLUGIN_DIR . 'includes/install.php';
@@ -583,12 +592,12 @@ if ( ! class_exists( 'Give' ) ) :
 
 
 		/**
-		 *  Show minimu phpversion notice
+		 *  Show minimum PHP version notice.
 		 *
 		 * @since  1.8.12
 		 * @access public
 		 */
-		public function minmum_phpversion_notice() {
+		public function minimum_phpversion_notice() {
 			// Bailout.
 			if ( ! is_admin() ) {
 				return;

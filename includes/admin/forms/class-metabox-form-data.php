@@ -152,15 +152,20 @@ class Give_MetaBox_Form_Data {
 					),
 					array(
 						'name'          => __( 'Minimum Amount', 'give' ),
-						'description'   => __( 'Enter the minimum custom donation amount.', 'give' ),
-						'id'            => $prefix . 'custom_amount_minimum',
-						'type'          => 'text_small',
+						'description'   => __( 'Set minimum and maximum amount limit.', 'give' ),
+						'id'            => $prefix . 'custom_amount_range',
+						'type'          => 'range_slider',
+						'wrapper_class' => 'give-hidden',
 						'data_type'     => 'price',
 						'attributes'    => array(
 							'placeholder' => $price_placeholder,
 							'class'       => 'give-money-field',
 						),
-						'wrapper_class' => 'give-hidden',
+						'options'       => array(
+							'display_label' => __( 'Donation Limits: ', 'give' ),
+							'minimum'       => 1.00,
+							'maximum'       => 999999.99,
+						),
 					),
 					array(
 						'name'          => __( 'Custom Amount Text', 'give' ),
@@ -831,6 +836,10 @@ class Give_MetaBox_Form_Data {
 								$form_meta_value = wp_kses_post( $_POST[ $form_meta_key ] );
 								break;
 
+							case 'range_slider' :
+								$form_meta_value = $_POST[ $form_meta_key ];
+								break;
+
 							case 'group':
 								$form_meta_value = array();
 
@@ -879,8 +888,19 @@ class Give_MetaBox_Form_Data {
 							$post_id
 						);
 
-						// Save data.
-						give_update_meta( $post_id, $form_meta_key, $form_meta_value );
+						// Range slider.
+						if ( 'range_slider' === $setting_field['type'] ) {
+
+							// Sanitize amount for db.
+							$form_meta_value = array_map( 'give_sanitize_amount_for_db', $form_meta_value );
+
+							// Store it to form meta.
+							give_update_meta( $post_id, $form_meta_key . '_minimum', $form_meta_value['minimum'] );
+							give_update_meta( $post_id, $form_meta_key . '_maximum', $form_meta_value['maximum'] );
+						} else {
+							// Save data.
+							give_update_meta( $post_id, $form_meta_key, $form_meta_value );
+						}
 
 						// Fire after saving form meta key.
 						do_action( "give_save_{$form_meta_key}", $form_meta_key, $form_meta_value, $post_id, $post );

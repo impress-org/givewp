@@ -57,7 +57,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 * @access private
 		 */
 		private function __construct() {
-			self::$per_page  = ! empty( $_GET['per_page'] ) ? absint( $_GET['per_page'] ) : self::$per_page;
+			self::$per_page = ! empty( $_GET['per_page'] ) ? absint( $_GET['per_page'] ) : self::$per_page;
 		}
 
 		/**
@@ -144,8 +144,8 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		public function submit() {
 			wp_nonce_field( 'give-save-settings', '_give-save-settings' );
 			?>
-			<input type="hidden" class="import-step" id="import-step" name="step" value="<?php echo $this->get_step(); ?>"/>
-			<input type="hidden" class="importer-type" value="<?php echo $this->importer_type; ?>"/>
+			<input type="hidden" class="import-step" id="import-step" name="step" value="<?php echo $this->get_step(); ?>" />
+			<input type="hidden" class="importer-type" value="<?php echo $this->importer_type; ?>" />
 			<?php
 		}
 
@@ -163,38 +163,38 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			<section>
 				<table class="widefat export-options-table give-table <?php echo "step-{$step}"; ?>" id="<?php echo "step-{$step}"; ?>">
 					<tbody>
-						<?php
-						switch ( $this->get_step() ) {
-							case 1:
-								$this->render_media_csv();
-								break;
+					<?php
+					switch ( $this->get_step() ) {
+						case 1:
+							$this->render_media_csv();
+							break;
 
-							case 2:
-								$this->render_dropdown();
-								break;
+						case 2:
+							$this->render_dropdown();
+							break;
 
-							case 3:
-								$this->start_import();
-								break;
+						case 3:
+							$this->start_import();
+							break;
 
-							case 4:
-								$this->import_success();
-						}
+						case 4:
+							$this->import_success();
+					}
 
-						if ( false === $this->check_for_dropdown_or_import() ) {
-							?>
-							<tr valign="top">
-								<th></th>
-								<th>
-									<input type="submit"
-										   class="button button-primary button-large button-secondary <?php echo "step-{$step}"; ?>"
-										   id="recount-stats-submit"
-										   value="<?php esc_attr_e( 'Submit', 'give' ); ?>"/>
-								</th>
-							</tr>
-							<?php
-						}
+					if ( false === $this->check_for_dropdown_or_import() ) {
 						?>
+						<tr valign="top">
+							<th></th>
+							<th>
+								<input type="submit"
+								       class="button button-primary button-large button-secondary <?php echo "step-{$step}"; ?>"
+								       id="recount-stats-submit"
+								       value="<?php esc_attr_e( 'Submit', 'give' ); ?>" />
+							</th>
+						</tr>
+						<?php
+					}
+					?>
 					</tbody>
 				</table>
 			</section>
@@ -214,7 +214,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 				wp_delete_attachment( $csv, true );
 			}
 
-			$report      = give_import_donation_report();
+			$report = give_import_donation_report();
 
 			$report_html = array(
 				'duplicate_donor'    => array(
@@ -284,7 +284,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						if ( array_key_exists( $key, $report_html ) && ! empty( $value ) ) {
 							?>
 							<p>
-								<?php echo esc_html( wp_sprintf( $report_html[ $key ][0], $value, _n( $report_html[ $key ][1], $report_html[ $key ][2], $value, 'give' ) ) ); ?>
+								<?php esc_html_e( wp_sprintf( $report_html[ $key ][0], $value, _n( $report_html[ $key ][1], $report_html[ $key ][2], $value, 'give' ) ) ); ?>
 							</p>
 							<?php
 						}
@@ -336,36 +336,106 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 				<th colspan="2">
 					<span class="spinner is-active"></span>
 					<div class="give-progress"
-						 data-current="1"
-						 data-total_ajax="<?php echo $total_ajax; ?>"
-						 data-start="<?php echo $index_start; ?>"
-						 data-end="<?php echo $index_end; ?>"
-						 data-next="<?php echo $next; ?>"
-						 data-total="<?php echo $total; ?>"
-						 data-per_page="<?php echo self::$per_page; ?>">
+					     data-current="1"
+					     data-total_ajax="<?php echo $total_ajax; ?>"
+					     data-start="<?php echo $index_start; ?>"
+					     data-end="<?php echo $index_end; ?>"
+					     data-next="<?php echo $next; ?>"
+					     data-total="<?php echo $total; ?>"
+					     data-per_page="<?php echo self::$per_page; ?>">
 
 						<div style="width: <?php echo $current_percentage; ?>%"></div>
 					</div>
 					<input type="hidden" value="3" name="step">
 					<input type="hidden" value='<?php echo maybe_serialize( $_REQUEST['mapto'] ); ?>' name="mapto"
-						   class="mapto">
+					       class="mapto">
 					<input type="hidden" value="<?php echo $_REQUEST['csv']; ?>" name="csv" class="csv">
 					<input type="hidden" value="<?php echo $_REQUEST['mode']; ?>" name="mode" class="mode">
 					<input type="hidden" value="<?php echo $_REQUEST['create_user']; ?>" name="create_user"
-						   class="create_user">
+					       class="create_user">
 					<input type="hidden" value="<?php echo $_REQUEST['delete_csv']; ?>" name="delete_csv"
-						   class="delete_csv">
+					       class="delete_csv">
 					<input type="hidden" value="<?php echo $delimiter; ?>" name="delimiter">
 					<input type="hidden" value='<?php echo maybe_serialize( self::get_importer( $csv, 0, $delimiter ) ); ?>'
-						   name="main_key"
-						   class="main_key">
+					       name="main_key"
+					       class="main_key">
 				</th>
 			</tr>
 
 			<script type="text/javascript">
-				jQuery(document).ready(function () {
-					give_on_donation_import_start();
-				});
+				jQuery.noConflict();
+				(function( $ ) {
+					$( function() {
+
+						var $form = jQuery( 'form.tools-setting-page-import' );
+
+						/**
+						 * Do not allow user to reload the page
+						 *
+						 * @since 1.8.14
+						 */
+						give_setting_edit = true;
+
+						var progress = $form.find( '.give-progress' );
+
+						var total_ajax = jQuery( progress ).data( 'total_ajax' ),
+							current = jQuery( progress ).data( 'current' ),
+							start = jQuery( progress ).data( 'start' ),
+							end = jQuery( progress ).data( 'end' ),
+							next = jQuery( progress ).data( 'next' ),
+							total = jQuery( progress ).data( 'total' ),
+							per_page = jQuery( progress ).data( 'per_page' );
+
+						jQuery.ajax( {
+							type: 'POST',
+							url: ajaxurl,
+							data: {
+								action: give_vars.give_donation_import,
+								total_ajax: total_ajax,
+								current: current,
+								start: start,
+								end: end,
+								next: next,
+								total: total,
+								per_page: per_page,
+								fields: $form.serialize()
+							},
+							dataType: 'json',
+							success: function( response ) {
+								jQuery( progress ).data( 'current', response.current );
+								jQuery( progress ).find( 'div' ).width( response.percentage + '%' );
+
+								if ( response.next == true ) {
+									jQuery( progress ).data( 'start', response.start );
+									jQuery( progress ).data( 'end', response.end );
+
+									if ( response.last == true ) {
+										jQuery( progress ).data( 'next', false );
+									}
+									give_on_donation_import_ajax();
+								} else {
+									/**
+									 * Now user is allow to reload the page.
+									 *
+									 * @since 1.8.14
+									 */
+									give_setting_edit = false;
+									window.location = response.url;
+								}
+							},
+							error: function() {
+								/**
+								 * Now user is allow to reload the page.
+								 *
+								 * @since 1.8.14
+								 */
+								give_setting_edit = false;
+								alert( give_vars.error_message );
+							}
+						} );
+
+					} );
+				})( jQuery );
 			</script>
 			<?php
 		}
@@ -414,7 +484,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 				$url = give_import_page_url();
 				?>
 				<script type="text/javascript">
-					window.location = "<?php echo $url; ?>"
+									window.location = "<?php echo $url; ?>";
 				</script>
 				<?php
 			} else {
@@ -432,8 +502,8 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 				</tr>
 
 				<?php
-				$raw_key   = $this->get_importer( $csv, 0, $delimiter );
-				$mapto     = (array) ( isset( $_REQUEST['mapto'] ) ? $_REQUEST['mapto'] : array() );
+				$raw_key = $this->get_importer( $csv, 0, $delimiter );
+				$mapto   = (array) ( isset( $_REQUEST['mapto'] ) ? $_REQUEST['mapto'] : array() );
 
 				foreach ( $raw_key as $index => $value ) {
 					?>
@@ -458,7 +528,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		 */
 		public function selected( $option_value, $value ) {
 			$option_value = strtolower( $option_value );
-			$value = strtolower( $value );
+			$value        = strtolower( $value );
 
 			$selected = '';
 			if ( stristr( $value, $option_value ) ) {
@@ -473,12 +543,12 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		/**
 		 * Print the columns from the CSV.
 		 *
-		 * @since 1.8.14
+		 * @since  1.8.14
 		 * @access private
 		 *
-		 * @param string  $index
-		 * @param bool  $value
-		 * @param array $mapto
+		 * @param string $index
+		 * @param bool   $value
+		 * @param array  $mapto
 		 *
 		 * @return void
 		 */
@@ -535,7 +605,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		public function get_dropdown_option_html( $options, $current_mapto, $value = false ) {
 			foreach ( $options as $option => $option_value ) {
 				$option_value_texts = (array) $option_value;
-				$option_text = $option_value_texts[0];
+				$option_text        = $option_value_texts[0];
 
 				$checked = ( ( $current_mapto === $option ) ? 'selected' : false );
 				if ( empty( $checked ) ) {
@@ -834,7 +904,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 					) ) );
 					?>
 					<script type="text/javascript">
-						window.location = "<?php echo $url; ?>"
+											window.location = "<?php echo $url; ?>";
 					</script>
 					<?php
 				}

@@ -650,7 +650,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					case 'file' :
 					case 'media' :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
-						$button_label = esc_html__( sprintf( 'Add or Upload %s', ( 'file' === $value['type'] ? 'File' : 'Image' ) ), 'give' );
+						$button_label = sprintf( __( 'Add or Upload %s', 'give' ), ( 'file' === $value['type'] ? __( 'File', 'give' ) : __( 'Image', 'give' ) ) );
 						$fvalue       = empty( $value['fvalue'] ) ? 'url' : $value['fvalue'];
 
 						$allow_media_preview_tags = array( 'jpg', 'jpeg', 'png', 'gif', 'ico' );
