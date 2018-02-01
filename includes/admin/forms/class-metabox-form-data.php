@@ -531,29 +531,6 @@ class Give_MetaBox_Form_Data {
 					$post_id
 				),
 			) ),
-			'form_test_mode' => apply_filters( 'give_form_test_mode', array(
-					'id'        => 'form_test_mode',
-					'title'     => __( 'Test Mode', 'give' ),
-					'icon-html' => '<span class="dashicons dashicons-update"></span>',
-					'fields'    => apply_filters( 'give_form_test_mode_metabox_fields', array(
-							// Test Mode Options.
-							array(
-								'name'        => __( 'Test Mode', 'give' ),
-								'description' => __( 'Do you want to enable test mode for this form?', 'give' ),
-								'id'          => $prefix . 'test_mode',
-								'type'        => 'radio_inline',
-								'options'     => apply_filters( 'give_form_test_mode_select', array(
-										'global'   => __( 'Global Option', 'give' ),
-										'enabled'  => __( 'Enable', 'give' ),
-										'disabled' => __( 'Disable', 'give' ),
-									)
-								),
-								'default'     => 'global',
-							),
-						)
-					),
-				)
-			),
 		);
 
 		/**
@@ -1165,6 +1142,44 @@ class Give_MetaBox_Form_Data {
 		return $settings;
 	}
 
+	/**
+	 * Add test mode setting tab to donation form options metabox.
+	 *
+	 * @param array $settings List of form settings.
+	 *
+	 * @since 2.1
+	 *
+	 * @return mixed
+	 */
+	function add_test_mode_setting_tab( $settings ) {
+		if ( give_is_setting_enabled( give_get_option( 'test_mode_per_form', 'disabled' ) ) ) {
+			$settings['form_test_mode'] = apply_filters( 'give_form_test_mode', array(
+					'id'        => 'form_test_mode',
+					'title'     => __( 'Test Mode', 'give' ),
+					'icon-html' => '<span class="dashicons dashicons-update"></span>',
+					'fields'    => apply_filters( 'give_form_test_mode_metabox_fields', array(
+							// Test Mode Options.
+							array(
+								'name'        => __( 'Test Mode', 'give' ),
+								'description' => __( 'Do you want to enable test mode for this form?', 'give' ),
+								'id'          => $prefix . 'test_mode',
+								'type'        => 'radio_inline',
+								'options'     => apply_filters( 'give_form_test_mode_select', array(
+										'global'   => __( 'Global Option', 'give' ),
+										'enabled'  => __( 'Enable', 'give' ),
+										'disabled' => __( 'Disable', 'give' ),
+									)
+								),
+								'default'     => 'global',
+							),
+						)
+					),
+				)
+			);
+		}
+
+		return $settings;
+	}
 
 	/**
 	 * Sanitize form meta values before saving.
