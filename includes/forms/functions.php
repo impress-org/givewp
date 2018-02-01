@@ -925,21 +925,21 @@ function give_goal_progress_stats( $form ) {
 	$goal_format = give_get_form_goal_format( $form->ID );
 
 	/**
-	 * Filter the form income
+	 * Filter the form sales.
 	 *
-	 * @since 1.8.8
+	 * @since 2.1
 	 */
 	$sales = apply_filters( 'give_goal_sales_raised_output', $form->sales, $form->ID, $form );
 
 	/**
-	 * Filter the form income
+	 * Filter the form income.
 	 *
 	 * @since 1.8.8
 	 */
 	$income = apply_filters( 'give_goal_amount_raised_output', $form->earnings, $form->ID, $form );
 
 	/**
-	 * Filter the form
+	 * Filter the form.
 	 *
 	 * @since 1.8.8
 	 */
@@ -960,6 +960,7 @@ function give_goal_progress_stats( $form ) {
 		'progress' => $progress,
 		'actual'   => $actual,
 		'goal'     => round( $total_goal ),
+		'format'   => $goal_format,
 	);
 
 }
