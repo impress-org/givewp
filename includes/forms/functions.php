@@ -890,6 +890,63 @@ function give_get_form_goal_format( $form_id = 0 ) {
 /**
  * Display/Return a formatted goal for a donation form
  *
+ * @param int|Give_Donate_Form $form Form ID or Form Object.
+ *
+ * @since 2.1
+ *
+ * @return array
+ */
+function give_goal_progress_stats( $form ) {
+
+	if ( ! $form instanceof Give_Donate_Form ) {
+		$form = new Give_Donate_Form( $form );
+	}
+
+	$goal_format = give_get_form_goal_format( $form->ID );
+
+	/**
+	 * Filter the form income
+	 *
+	 * @since 1.8.8
+	 */
+	$sales = apply_filters( 'give_goal_sales_raised_output', $form->sales, $form->ID, $form );
+
+	/**
+	 * Filter the form income
+	 *
+	 * @since 1.8.8
+	 */
+	$income = apply_filters( 'give_goal_amount_raised_output', $form->earnings, $form->ID, $form );
+
+	/**
+	 * Filter the form
+	 *
+	 * @since 1.8.8
+	 */
+	$total_goal = apply_filters( 'give_goal_amount_target_output', give_maybe_sanitize_amount( $form->goal ), $form->ID, $form );
+
+
+	$actual = 'donation' !== $goal_format ? $income : $sales;
+	$progress = round( ( $actual / $total_goal ) * 100, 2 );
+
+	/**
+	 * Filter the goal progress output
+	 *
+	 * @since 1.8.8
+	 */
+	$progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progress, $form->ID, $form );
+
+	return array(
+		'progress' => $progress,
+		'actual'   => $actual,
+		'goal'     => round( $total_goal ),
+	);
+
+}
+
+/**
+ * Display/Return a formatted goal for a donation form
+ *
  * @since 1.0
  *
  * @param int  $form_id ID of the form price to show
