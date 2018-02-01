@@ -107,6 +107,17 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							),
 						),
 						array(
+							'name'    => __( 'Test Mode Per Form', 'give' ),
+							'desc'    => __( 'Enable/Disable test mode settings per form.', 'give' ),
+							'id'      => 'test_mode_per_form',
+							'type'    => 'radio_inline',
+							'default' => 'disabled',
+							'options' => array(
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							),
+						),
+						array(
 							'name'  => __( 'Advanced Settings Docs Link', 'give' ),
 							'id'    => 'advanced_settings_docs_link',
 							'url'   => esc_url( 'http://docs.givewp.com/settings-advanced' ),
