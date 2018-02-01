@@ -122,6 +122,9 @@ class Tests_Donate_Form_Class extends Give_Unit_Test_Case {
 	 */
 	public function test_get_form_wrap_classes( $display_styles, $expected, $test_mode ) {
 
+		// Enable Test Mode Per Form
+		give_update_option( 'test_mode_per_form', 'enabled' );
+
 		// Default value of closed form expected value.
 		$closed_form_expected = 'give-form-wrap give-form-closed give-test-mode';
 
