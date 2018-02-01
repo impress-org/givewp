@@ -19,16 +19,3 @@ td.column-goal {
 	}
   }
 }
-
-/***************************/
-/****** Media Screens ******/
-/***************************/
-@media only screen and (min-width: 783px) {
-  th.column-goal {
-	float: right;
-  }
-
-  td.column-goal {
-	text-align: right;
-  }
-}
