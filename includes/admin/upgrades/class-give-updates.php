@@ -691,7 +691,10 @@ class Give_Updates {
 
 		// Reset counter.
 		$this->step = $this->percentage = 0;
-		++ $this->update;
+
+		$this->update = ( $this->get_total_db_update_count() > $this->update ) ?
+			( $this->update + 1 ) :
+			$this->update;
 	}
 
 
