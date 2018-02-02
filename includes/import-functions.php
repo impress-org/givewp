@@ -609,7 +609,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 		'purchase_key'    => strtolower( md5( uniqid() ) ),
 		'user_email'      => $data['email'],
 		'post_date'       => ( ! empty( $data['post_date'] ) ? mysql2date( 'Y-m-d H:i:s', $data['post_date'] ) : current_time( 'mysql' ) ),
-		'mode'            => ( ! empty( $data['mode'] ) ? ( 'true' == (string) $data['mode'] || 'TRUE' == (string) $data['mode'] ? 'test' : 'live' ) : ( isset( $import_setting['mode'] ) ? ( true == (bool) $import_setting['mode'] ? 'test' : 'live' ) : ( give_is_test_mode() ? 'test' : 'live' ) ) ),
+		'mode'            => ( ! empty( $data['mode'] ) ? ( 'true' == (string) $data['mode'] || 'TRUE' == (string) $data['mode'] ? 'test' : 'live' ) : ( isset( $import_setting['mode'] ) ? ( true == (bool) $import_setting['mode'] ? 'test' : 'live' ) : ( give_is_test_mode( $form->get_ID() ) ? 'test' : 'live' ) ) ),
 	);
 
 	$payment_data = apply_filters( 'give_import_before_import_payment', $payment_data, $data, $donor_data, $form );

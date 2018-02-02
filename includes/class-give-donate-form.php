@@ -846,6 +846,10 @@ class Give_Donate_Form {
 			}
 		}
 
+		// Add test mode class to form wrap, when Test Mode is enabled.
+		if ( give_is_test_mode( $this->ID ) ) {
+			$custom_class[] = 'give-test-mode';
+		}
 
 		/**
 		 * Filter the donation form classes.

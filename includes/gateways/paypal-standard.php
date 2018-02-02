@@ -401,11 +401,12 @@ function give_process_paypal_refund( $data, $payment_id = 0 ) {
  *
  * @since 1.0
  *
+ * @param int  $form_id   Donation Form ID.
  * @param bool $ssl_check Is SSL?
  *
  * @return string
  */
-function give_get_paypal_redirect( $ssl_check = false ) {
+function give_get_paypal_redirect( $form_id = 0, $ssl_check = false ) {
 
 	if ( is_ssl() || ! $ssl_check ) {
 		$protocol = 'https://';
@@ -414,7 +415,7 @@ function give_get_paypal_redirect( $ssl_check = false ) {
 	}
 
 	// Check the current payment mode
-	if ( give_is_test_mode() ) {
+	if ( give_is_test_mode( $form_id ) ) {
 		// Test mode
 		$paypal_uri = $protocol . 'www.sandbox.paypal.com/cgi-bin/webscr';
 	} else {
@@ -597,7 +598,7 @@ function give_build_paypal_url( $payment_id, $payment_data ) {
 	), get_permalink( give_get_option( 'success_page' ) ) );
 
 	// Get the PayPal redirect uri.
-	$paypal_redirect = trailingslashit( give_get_paypal_redirect() ) . '?';
+	$paypal_redirect = trailingslashit( give_get_paypal_redirect( $payment_data['post_data']['give-form-id'] ) ) . '?';
 
 	// Item name.
 	$item_name = give_payment_gateway_item_title( $payment_data );

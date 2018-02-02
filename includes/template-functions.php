@@ -277,11 +277,6 @@ function give_add_body_classes( $class ) {
 		$classes[] = 'give-page';
 	}
 
-	if ( give_is_test_mode() ) {
-		$classes[] = 'give-test-mode';
-		$classes[] = 'give-page';
-	}
-
 	// Theme-specific Classes used to prevent conflicts via CSS
 	/* @var WP_Theme $current_theme */
 	$current_theme = wp_get_theme();

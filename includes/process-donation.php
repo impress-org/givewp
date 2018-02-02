@@ -376,7 +376,7 @@ function give_donation_form_validate_gateway() {
 		$gateway = sanitize_text_field( $_REQUEST['give-gateway'] );
 
 		// Is amount being donated in LIVE mode 0.00? If so, error:
-		if ( $amount == 0 && ! give_is_test_mode() ) {
+		if ( $amount == 0 && ! give_is_test_mode( $form_id ) ) {
 
 			give_set_error( 'invalid_donation_amount', __( 'Please insert a valid donation amount.', 'give' ) );
 
@@ -405,7 +405,7 @@ function give_donation_form_validate_gateway() {
 			);
 
 		} //Is this test mode zero donation? Let it through but set to manual gateway.
-		elseif ( $amount == 0 && give_is_test_mode() ) {
+		elseif ( $amount == 0 && give_is_test_mode( $form_id ) ) {
 
 			$gateway = 'manual';
 

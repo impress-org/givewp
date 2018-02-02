@@ -17,15 +17,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Is Test Mode Enabled.
  *
+ * @param int $form_id Donation Form ID.
+ *
  * @since 1.0
  *
  * @return bool $ret True if return mode is enabled, false otherwise
  */
-function give_is_test_mode() {
+function give_is_test_mode( $form_id = 0 ) {
 
-	$ret = give_is_setting_enabled( give_get_option( 'test_mode' ) );
+	// Test Mode - Global Option.
+	$test_mode = give_get_option( 'test_mode' );
 
-	return (bool) apply_filters( 'give_is_test_mode', $ret );
+	// Test Mode - Per Form Option.
+	if ( $form_id > 0 && give_is_setting_enabled( give_get_option( 'test_mode_per_form', 'disabled' ) ) ) {
+		$test_mode = give_get_meta( absint( $form_id ), '_give_test_mode', true, $test_mode );
+	}
+
+	return (bool) apply_filters( 'give_is_test_mode', give_is_setting_enabled( $test_mode ) );
 
 }
 

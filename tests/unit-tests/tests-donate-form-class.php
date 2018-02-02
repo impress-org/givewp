@@ -120,7 +120,22 @@ class Tests_Donate_Form_Class extends Give_Unit_Test_Case {
 	 *
 	 * @dataProvider get_form_wrap_classes_provider
 	 */
-	public function test_get_form_wrap_classes( $display_styles, $expected ) {
+	public function test_get_form_wrap_classes( $display_styles, $expected, $test_mode ) {
+
+		// Enable Test Mode Per Form
+		give_update_option( 'test_mode_per_form', 'enabled' );
+
+		// Default value of closed form expected value.
+		$closed_form_expected = 'give-form-wrap give-form-closed give-test-mode';
+
+		// Set Parameters for test mode disabled case.
+		if ( 'disabled' === $test_mode ) {
+
+			// Disable Test Mode for form.
+			give_update_meta( $this->_simple_form->ID, '_give_test_mode', 'disabled' );
+			$closed_form_expected = 'give-form-wrap give-form-closed';
+		}
+
 		// Disable goal.
 		give_update_meta( $this->_simple_form->ID, '_give_goal_option', 'disabled' );
 
@@ -147,7 +162,9 @@ class Tests_Donate_Form_Class extends Give_Unit_Test_Case {
 		give_update_meta( $this->_simple_form->ID, '_give_set_goal', '30.00' );
 		give_update_meta( $this->_simple_form->ID, '_give_close_form_when_goal_achieved', 'enabled' );
 
-		$this->assertSame( 'give-form-wrap give-form-closed', $simple_form->get_form_wrap_classes( array() ) );
+
+		$this->assertSame( $closed_form_expected, $simple_form->get_form_wrap_classes( array() ) );
+
 	}
 
 
@@ -159,10 +176,14 @@ class Tests_Donate_Form_Class extends Give_Unit_Test_Case {
 	 */
 	public function get_form_wrap_classes_provider() {
 		return array(
-			array( 'onpage', 'give-form-wrap give-display-onpage' ),
-			array( 'modal', 'give-form-wrap give-display-modal' ),
-			array( 'reveal', 'give-form-wrap give-display-reveal' ),
-			array( 'button', 'give-form-wrap give-display-button give-display-button-only' ),
+			array( 'onpage', 'give-form-wrap give-display-onpage give-test-mode', 'enabled' ),
+			array( 'modal', 'give-form-wrap give-display-modal give-test-mode', 'enabled' ),
+			array( 'reveal', 'give-form-wrap give-display-reveal give-test-mode', 'enabled' ),
+			array( 'button', 'give-form-wrap give-display-button give-display-button-only give-test-mode', 'enabled' ),
+			array( 'onpage', 'give-form-wrap give-display-onpage', 'disabled' ),
+			array( 'modal', 'give-form-wrap give-display-modal', 'disabled' ),
+			array( 'reveal', 'give-form-wrap give-display-reveal', 'disabled' ),
+			array( 'button', 'give-form-wrap give-display-button give-display-button-only', 'disabled' ),
 		);
 	}
 }
