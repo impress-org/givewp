@@ -112,6 +112,7 @@ class Give_Background_Updater extends WP_Background_Process {
 				'update'      => 1,
 				'heading'     => sprintf( 'Update %s of {update_count}', 1 ),
 				'percentage'  => $give_updates->percentage,
+				'total_percentage' => 0
 			)
 		);
 
