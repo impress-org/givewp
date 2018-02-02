@@ -555,9 +555,6 @@ class Give_Updates {
 			endif;
 			$desc_html = ob_get_clean();
 
-
-
-
 			Give()->notices->register_notice( array(
 				'id'          => 'give_upgrade_db',
 				'type'        => 'error',

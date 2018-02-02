@@ -107,12 +107,12 @@ class Give_Background_Updater extends WP_Background_Process {
 
 			// Default update.
 			array(
-				'update_info' => $update,
-				'step'        => 1,
-				'update'      => 1,
-				'heading'     => sprintf( 'Update %s of {update_count}', 1 ),
-				'percentage'  => $give_updates->percentage,
-				'total_percentage' => 0
+				'update_info'      => $update,
+				'step'             => 1,
+				'update'           => 1,
+				'heading'          => sprintf( 'Update %s of {update_count}', 1 ),
+				'percentage'       => $give_updates->percentage,
+				'total_percentage' => 0,
 			)
 		);
 
@@ -145,8 +145,8 @@ class Give_Background_Updater extends WP_Background_Process {
 		// 1. Running update number greater then total update count
 		// 2. Processing percentage greater then 100%
 		if( ( 100 < $resume_update['total_percentage'] ) || ( $give_updates->get_total_db_update_count() < $resume_update['update'] ) ) {
-			update_option( 'give_upgrade_error', 1 );
 			$give_updates->__pause_db_update(true);
+			update_option( 'give_upgrade_error', 1 );
 
 			wp_die();
 		}
@@ -192,13 +192,13 @@ class Give_Background_Updater extends WP_Background_Process {
 	 * performed, or, call parent::complete().
 	 */
 	protected function complete() {
-		if( $this->is_paused_process() ) {
+		if ( $this->is_paused_process() ) {
 			return false;
 		}
 
 		parent::complete();
 
-		delete_option('give_upgrade_error');
+		delete_option( 'give_upgrade_error' );
 		delete_option( 'give_db_update_count' );
 		delete_option( 'give_doing_upgrade' );
 		add_option( 'give_show_db_upgrade_complete_notice', 1, '', 'no' );
@@ -206,7 +206,7 @@ class Give_Background_Updater extends WP_Background_Process {
 		// Flush cache.
 		Give_Cache::get_instance()->flush_cache();
 
-		if( $cache_keys = Give_Cache::get_options_like('') ) {
+		if ( $cache_keys = Give_Cache::get_options_like( '' ) ) {
 			Give_Cache::delete( $cache_keys );
 		}
 	}
