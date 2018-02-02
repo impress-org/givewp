@@ -527,23 +527,34 @@ class Give_Updates {
 		// Show notice if upgrade paused.
 		if ( self::$background_updater->is_paused_process() ) {
 			ob_start();
-			?>
-			<p>
+
+			if ( ! get_option( 'give_upgrade_error' ) ):
+				?>
 				<strong><?php _e( 'Database Update', 'give' ); ?></strong>
 				&nbsp;&#8211;&nbsp;<?php _e( 'GiveWP needs to update your database to the latest version. The following process will make updates to your site\'s database. Please create a backup before proceeding.', 'give' ); ?>
-			</p>
-			<p class="submit">
+				<br>
+				<br>
 				<a href="<?php echo esc_url( add_query_arg( array( 'give-restart-db-upgrades' => 1 ), admin_url( 'edit.php?post_type=give_forms&page=give-updates' ) ) ); ?>" class="button button-primary give-restart-updater-btn">
 					<?php _e( 'Restart the updater', 'give' ); ?>
 				</a>
-			</p>
-			<script type="text/javascript">
-				jQuery('.give-restart-updater-btn').click('click', function () {
-					return window.confirm('<?php echo esc_js( __( 'It is recommended that you backup your database before proceeding. Do you want to run the update now?', 'give' ) ); ?>'); // jshint ignore:line
-				});
-			</script>
+				<script type="text/javascript">
+					jQuery('.give-restart-updater-btn').click('click', function () {
+						return window.confirm('<?php echo esc_js( __( 'It is recommended that you backup your database before proceeding. Do you want to run the update now?', 'give' ) ); ?>'); // jshint ignore:line
+					});
+				</script>
+			<?php else: ?>
+				<strong><?php _e( 'Database Update', 'give' ); ?></strong>
+				&nbsp;&#8211;&nbsp;<?php echo sprintf(
+					'%s <a href="%s" target="_blank">%s</a>.',
+					__( 'Database updates stop automatically because some unexpected issue occur during upgrade. Please contact', 'give' ),
+					esc_url( 'https://givewp.com/support/' ),
+					__( 'GiveWP support', 'give' )
+				); ?>
 			<?php
+			endif;
 			$desc_html = ob_get_clean();
+
+
 
 
 			Give()->notices->register_notice( array(
