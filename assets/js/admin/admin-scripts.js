@@ -1077,7 +1077,7 @@ var give_setting_edit = false;
 			var $self = this, step = 1, resume_update_step = 0;
 
 			$self.el.main_container = Give_Selector_Cache.get('#give-db-updates');
-			$self.el.update_link = Give_Selector_Cache.get('.give-update-button a', $self.el.main_container);
+			$self.el.update_link = Give_Selector_Cache.get('.give-update-now', $self.el.main_container);
 			$self.el.run_upload_container = Give_Selector_Cache.get('.give-run-database-update', $self.el.progress_main_container);
 			$self.el.progress_main_container = Give_Selector_Cache.get('.progress-container', $self.el.main_container);
 			$self.el.heading = Give_Selector_Cache.get('.update-message', $self.el.progress_main_container);
