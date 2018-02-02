@@ -316,16 +316,22 @@ class Give_Updates {
 	 * @since  2.0.1
 	 * @access public
 	 *
+	 * @param bool $force
+	 *
 	 * @return bool
 	 */
-	public function __pause_db_update() {
+	public function __pause_db_update( $force = false ) {
 		// Bailout.
 		if (
-			wp_doing_ajax() ||
-			! isset( $_GET['page'] ) ||
-			'give-updates' !== $_GET['page'] ||
-			! isset( $_GET['give-pause-db-upgrades'] ) ||
-			self::$background_updater->is_paused_process()
+			! $force &&
+			(
+				wp_doing_ajax() ||
+				! isset( $_GET['page'] ) ||
+				'give-updates' !== $_GET['page'] ||
+				! isset( $_GET['give-pause-db-upgrades'] ) ||
+				self::$background_updater->is_paused_process()
+			)
+
 		) {
 			return false;
 		}
