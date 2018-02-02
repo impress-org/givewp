@@ -141,6 +141,18 @@ class Give_Background_Updater extends WP_Background_Process {
 			return false;
 		}
 
+		$resume_update['total_percentage'] = 101;
+		
+		// Pause upgrade immediately if found following:
+		// 1. Running update number greater then total update count
+		// 2. Processing percentage greater then 100%
+		if( ( 100 < $resume_update['total_percentage'] ) || ( $give_updates->get_total_db_update_count() < $resume_update['update'] ) ) {
+			update_option( 'give_upgrade_error', 1 );
+			$give_updates->__pause_db_update(true);
+
+			wp_die();
+		}
+
 		// Disable cache.
 		Give_Cache::disable();
 
