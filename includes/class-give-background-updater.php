@@ -145,7 +145,11 @@ class Give_Background_Updater extends WP_Background_Process {
 		// Pause upgrade immediately if found following:
 		// 1. Running update number greater then total update count
 		// 2. Processing percentage greater then 100%
-		if( ( 101 < $resume_update['total_percentage'] ) || ( $give_updates->get_total_db_update_count() < $resume_update['update'] ) ) {
+		if( (
+			101 < $resume_update['total_percentage'] ) ||
+		    ( $give_updates->get_total_db_update_count() < $resume_update['update'] ) ||
+		    ! in_array( $resume_update['update_info']['id'], $give_updates->get_update_ids() )
+		) {
 			if( ! $this->is_paused_process() ){
 				$give_updates->__pause_db_update(true);
 			}
