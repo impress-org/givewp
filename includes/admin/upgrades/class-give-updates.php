@@ -339,6 +339,7 @@ class Give_Updates {
 		$batch = self::$background_updater->get_all_batch();
 
 		if ( ! empty( $batch ) ) {
+			delete_option('give_upgrade_error');
 			update_option( 'give_paused_batches', $batch,  'no' );
 			delete_option( $batch->key );
 			delete_site_transient( self::$background_updater->get_identifier() . '_process_lock' );

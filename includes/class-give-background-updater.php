@@ -140,8 +140,6 @@ class Give_Background_Updater extends WP_Background_Process {
 
 			return false;
 		}
-
-		$resume_update['total_percentage'] = 101;
 		
 		// Pause upgrade immediately if found following:
 		// 1. Running update number greater then total update count
@@ -200,6 +198,7 @@ class Give_Background_Updater extends WP_Background_Process {
 
 		parent::complete();
 
+		delete_option('give_upgrade_error');
 		delete_option( 'give_db_update_count' );
 		delete_option( 'give_doing_upgrade' );
 		add_option( 'give_show_db_upgrade_complete_notice', 1, '', 'no' );
