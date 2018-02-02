@@ -1034,6 +1034,21 @@ class Give_Updates {
 			) :
 			0;
 	}
+
+
+	/**
+	 * Get all update ids.
+	 *
+	 * @since 2.0.3
+	 *
+	 * @return array
+	 */
+	public function get_update_ids() {
+		$all_updates    = $this->get_updates( 'database', 'all' );
+		$all_update_ids = wp_list_pluck( $all_updates, 'id' );
+
+		return $all_update_ids;
+	}
 }
 
 Give_Updates::get_instance()->setup();
