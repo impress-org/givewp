@@ -1542,7 +1542,7 @@ class Give_Donor {
 	 *
 	 * @return  string
 	 */
-	public function get_first_name( $user_firstname ) {
+	public function get_first_name( $user_firstname = false ) {
 		$first_name = $this->get_meta( '_give_donor_first_name' );
 		if ( ! $first_name ) {
 			$first_name = $this->split_donor_name( $this->id )->first_name;
