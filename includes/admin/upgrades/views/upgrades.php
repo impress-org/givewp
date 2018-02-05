@@ -42,7 +42,7 @@ $give_updates = Give_Updates::get_instance();
 								<p class="give-update-button">
 									<span class="give-doing-update-text-p" <?php echo Give_Updates::$background_updater->is_paused_process() ? 'style="display:none;"' : '';  ?>>
 										<?php echo sprintf(
-										__( '%1$s <a href="%2$s" class="%3$s">%4$s</a>', 'give' ),
+										__( '%1$s <a href="%2$s" class="give-update-now %3$s">%4$s</a>', 'give' ),
 										$is_doing_updates ?
 											__( 'Give is currently updating the database in the background.', 'give' ) :
 											__( 'Give needs to update the database.', 'give' ),
@@ -53,7 +53,17 @@ $give_updates = Give_Updates::get_instance();
 									?>
 									</span>
 									<span class="give-update-paused-text-p" <?php echo ! Give_Updates::$background_updater->is_paused_process()  ? 'style="display:none;"' : '';  ?>>
-										<?php _e('The updates have been paused.', 'give'); ?>
+										<?php if ( get_option( 'give_upgrade_error' ) ) : ?>
+											&nbsp;<?php echo sprintf(
+												'%s <a href="%s" target="_blank">%s</a>.',
+												__( 'Database updates stop automatically because some unexpected issue occur during upgrade. Please contact', 'give' ),
+												esc_url( 'https://givewp.com/support/' ),
+												__( 'GiveWP support', 'give' )
+											); ?>
+										<?php else: ?>
+											<?php _e( 'The updates have been paused.', 'give' ); ?>
+
+										<?php endif; ?>
 									</span>
 
 									<?php if ( Give_Updates::$background_updater->is_paused_process() ) : ?>
