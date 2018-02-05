@@ -79,6 +79,41 @@
 		margin: -8px -22px 11px;
 		padding: 12px 22px;
 	}
+
+	table.step-2 {
+
+		h2#give-import-title {
+			font-size: small;
+			font-weight: inherit;
+		}
+
+		.give-import-donation-required-fields-title {
+			font-size: 18px;
+			font-weight: 600;
+			margin: 0px;
+		}
+
+		.give-import-donation-required-fields {
+			white-space:nowrap;
+			overflow:hidden;
+
+			li {
+				display:inline-block;
+				margin: 0 10% 0 0;
+
+				span.give-import-donation-required-symbol {
+					border-radius: 1em;
+					padding: 2px;
+					background: #46b450;
+					color: white;
+				}
+
+				span.dashicons-no-alt {
+					background: #bbbbbb;
+				}
+			}
+		}
+	}
 }
 
 .give-import-core-settings {

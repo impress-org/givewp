@@ -429,7 +429,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						<p class="give-field-description"><?php _e( 'These fields are required for the imort to submitted' ); ?></p>
 
 						<ul class="give-import-donation-required-fields">
-							<li class="give-import-donation-required-email">
+							<li class="give-import-donation-required-email" title="Please configure all required fields to start the import process.">
 								<span class="give-import-donation-required-symbol dashicons dashicons-no-alt"></span>
 								<span class="give-import-donation-required-text">
 									<?php
@@ -438,7 +438,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 								</span>
 							</li>
 
-							<li class="give-import-donation-required-first">
+							<li class="give-import-donation-required-first" title="Please configure all required fields to start the import process.">
 								<span class="give-import-donation-required-symbol dashicons dashicons-no-alt"></span>
 								<span class="give-import-donation-required-text">
 									<?php
@@ -447,7 +447,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 								</span>
 							</li>
 
-							<li class="give-import-donation-required-amount">
+							<li class="give-import-donation-required-amount" title="Please configure all required fields to start the import process.">
 								<span class="give-import-donation-required-symbol dashicons dashicons-no-alt"></span>
 								<span class="give-import-donation-required-text">
 									<?php
@@ -456,7 +456,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 								</span>
 							</li>
 
-							<li class="give-import-donation-required-form">
+							<li class="give-import-donation-required-form" title="Please configure all required fields to start the import process.">
 								<span class="give-import-donation-required-symbol dashicons dashicons-no-alt"></span>
 								<span class="give-import-donation-required-text">
 									<?php
