@@ -2605,4 +2605,13 @@ function give_v203_upgrades(){
 
 	// Do not auto load option.
 	$wpdb->update( $wpdb->options, array( 'autoload' => 'no' ), array( 'option_name' => 'give_completed_upgrades' ) );
+
+	// Remove from cache.
+	$alloptions = wp_load_alloptions();
+
+	if( isset( $alloptions['give_completed_upgrades'] ) ) {
+		unset( $alloptions['give_completed_upgrades'] );
+		wp_cache_set( 'alloptions', $alloptions, 'options' );
+	}
+
 }
