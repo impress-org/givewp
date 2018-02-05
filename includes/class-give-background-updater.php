@@ -100,6 +100,9 @@ class Give_Background_Updater extends WP_Background_Process {
 			return false;
 		}
 
+		// Delete cache.
+		$this->flush_task_cache();
+
 		/* @var  Give_Updates $give_updates */
 		$give_updates  = Give_Updates::get_instance();
 		$resume_update = get_option(
@@ -276,12 +279,10 @@ class Give_Background_Updater extends WP_Background_Process {
 	 * @return bool
 	 */
 	public function is_paused_process(){
-		// Not using get_option because i am facing some caching releated issue.
-		global $wpdb;
+		// Delete cache.
+		wp_cache_delete( 'give_paused_batches', 'options' );
 
-		$options = $wpdb->get_results( "SELECT * FROM $wpdb->options WHERE option_name='give_paused_batches' LIMIT 1" );
-
-		return ! empty( $options );
+		return ! empty( get_option('give_paused_batches') );
 	}
 
 
@@ -305,5 +306,29 @@ class Give_Background_Updater extends WP_Background_Process {
 	 */
 	public function get_cron_identifier() {
 		return $this->cron_hook_identifier;
+	}
+
+
+	/**
+	 * Flush background update related cache to prevent task to go to stalled state.
+	 *
+	 * @since 2.0.3
+	 */
+	private function flush_task_cache() {
+
+		$options = array(
+			'give_completed_upgrades',
+			'give_doing_upgrade',
+			'give_paused_batches',
+			'give_upgrade_error',
+			'give_db_update_count',
+			'give_doing_upgrade',
+			'give_show_db_upgrade_complete_notice',
+		);
+
+
+		foreach ( $options as $option ) {
+			wp_cache_delete( $option, 'options' );
+		}
 	}
 }

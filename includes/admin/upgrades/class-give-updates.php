@@ -339,6 +339,10 @@ class Give_Updates {
 		$batch = self::$background_updater->get_all_batch();
 
 		if ( ! empty( $batch ) ) {
+			// Delete cache if any.
+			wp_cache_delete( 'give_upgrade_error', 'options' );
+			wp_cache_delete( 'give_paused_batches', 'options' );
+
 			delete_option('give_upgrade_error');
 			update_option( 'give_paused_batches', $batch,  'no' );
 			delete_option( $batch->key );
@@ -378,10 +382,13 @@ class Give_Updates {
 			return false;
 		}
 
+		wp_cache_delete( 'give_paused_batches', 'options' );
 		$batch = get_option( 'give_paused_batches' );
 
 		if ( ! empty( $batch ) ) {
+			wp_cache_delete( $batch->key, 'options' );
 			update_option( $batch->key, $batch->data );
+
 			delete_option( 'give_paused_batches' );
 
 			Give()->logs->add( 'Update Restart', print_r( $batch, true ), 0, 'update' );
@@ -411,6 +418,8 @@ class Give_Updates {
 		if ( ! $this->is_doing_updates() ) {
 			return;
 		}
+
+		wp_cache_delete( 'give_paused_batches', 'options' );
 
 		$batch                = Give_Updates::$background_updater->get_all_batch();
 		$batch_data_count     = count( $batch->data );
@@ -479,6 +488,7 @@ class Give_Updates {
 			update_option( 'give_doing_upgrade', $doing_upgrade_args );
 
 			if ( ! empty( $batch->key ) ) {
+				wp_cache_delete( $batch->key, 'options' );
 				update_option( $batch->key, $batch->data );
 			} else {
 
