@@ -165,11 +165,25 @@ class Give_Background_Updater extends WP_Background_Process {
 		// Disable cache.
 		Give_Cache::disable();
 
-		// Run update.
-		if ( is_array( $update['callback'] ) ) {
-			$update['callback'][0]->$update['callback'][1]();
-		} else {
-			$update['callback']();
+		try{
+			// Run update.
+			if ( is_array( $update['callback'] ) ) {
+				$update['callback'][0]->$update['callback'][1]();
+			} else {
+				$update['callback']();
+			}
+		} catch ( Exception $e ){
+
+			if( ! $this->is_paused_process() ){
+				$give_updates->__pause_db_update(true);
+			}
+
+			$log_data = 'Update Task' . "\n";
+			$log_data .= print_r( $resume_update, true ) . "\n\n";
+			$log_data .= "Error\n {$e->getMessage()}";
+
+			Give()->logs->add( 'Update Error', $log_data, 0, 'update' );
+			update_option( 'give_upgrade_error', 1 );
 		}
 
 		// Set update info.
