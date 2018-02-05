@@ -920,6 +920,7 @@ class Give_Updates {
 		switch ( $status ) {
 			case 'new':
 				// Remove already completed updates.
+				wp_cache_delete( 'give_completed_upgrades', 'options' );
 				$completed_updates = give_get_completed_upgrades();
 
 				if ( ! empty( $completed_updates ) ) {
