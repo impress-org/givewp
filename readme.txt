@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, wp donati
 Requires at least: 4.8
 Tested up to: 4.9
 Requires PHP: 5.3
-Stable tag: 2.0.1
+Stable tag: 2.0.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -125,7 +125,7 @@ Give version 1.8 is a major update. Please make sure you make a backup of your d
 
 = Minimum Requirements =
 
-* WordPress 4.2 or greater
+* WordPress 4.8 or greater
 * PHP version 5.3 or greater
 * MySQL version 5.0.15 or greater
 * Some payment gateways require fsockopen support (for IPN access)
@@ -208,8 +208,17 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
+= 2.0.2: January 31st, 2018  =
+* This update includes additional health checks for the 2.0.0 release. We've switched from using WP_Query to move data to direct SQL queries to prevent query manipulation by other plugins and themes.
+* New: The donation form now resets when you go back from the donation confirmation page. [#2091](https://github.com/WordImpress/Give/issues/2091)
+* Fix: WP_Query being modified in upgrade routine by the Polylang plugin. [#2747](https://github.com/WordImpress/Give/issues/2747)
+* Fix: Data tools have been upgraded to be compatible with 2.0+. [#2744](https://github.com/WordImpress/Give/issues/2744)
+* Fix: Prevent importer from modifying existing form settings. [#2737](https://github.com/WordImpress/Give/issues/2737)
+* Fix: Donation form donation counts were not getting properly updated when a payment goes from complete to abandoned donation status. [#2708](https://github.com/WordImpress/Give/issues/2708)
+* Tweak: Deprecated the second $_POST parameter within the give_checkout_error_checks action. [#2663](https://github.com/WordImpress/Give/issues/2663)
+
 = 2.0.1: January 25th, 2018  =
-* This update requires a number of health checks for the 2.0.0 release. For a post reflection on the Give 2.0.0 release and additional developer information on the 2.0.1 release please read the [Give 2.0.1 checklist](https://github.com/WordImpress/Give/issues/2695) as well as [Give 2.0 Release Reflection](http://docs.givewp.com/2-0-release-reflection).
+* This update includes a number of health checks for the 2.0.0 release. For a post reflection on the Give 2.0.0 release and additional developer information on the 2.0.1 release please read the [Give 2.0.1 checklist](https://github.com/WordImpress/Give/issues/2695) as well as [Give 2.0 Release Reflection](http://docs.givewp.com/2-0-release-reflection).
 * New: Added the database table prefix to the system info settings. [#2678](https://github.com/WordImpress/Give/issues/2678)
 * UI/UX: Added an email icon to the per form emails tab. [#2680](https://github.com/WordImpress/Give/issues/2680)
 * UI/UX: Revised field descriptions for the donations importer. [#2688](https://github.com/WordImpress/Give/issues/2688)
