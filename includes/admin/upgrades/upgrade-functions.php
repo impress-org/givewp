@@ -114,6 +114,10 @@ function give_do_automatic_upgrades() {
 			}
 
 			$did_upgrade = true;
+
+		case version_compare( $give_version, '2.0.3', '<' ) :
+			give_v203_upgrades();
+			$did_upgrade = true;
 	}
 
 	if ( $did_upgrade ) {
@@ -2588,4 +2592,17 @@ function give_v201_add_missing_donors_callback(){
 
 	Give_Updates::get_instance()->percentage = 100;
 	give_set_upgrade_complete('v201_add_missing_donors' );
+}
+
+
+/**
+ * Version 2.0.3 automatic updates
+ *
+ * @since 2.0.3
+ */
+function give_v203_upgrades(){
+	global $wpdb;
+
+	// Do not auto load option.
+	$wpdb->update( $wpdb->options, array( 'autoload' => 'no' ), array( 'option_name' => 'give_completed_upgrades' ) );
 }
