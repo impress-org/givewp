@@ -1537,12 +1537,19 @@ class Give_Donor {
 	 * Retrieves first name of donor with backward compatibility
 	 *
 	 * @since   2.0
+	 *
+	 * @param int/bool $user_firstname get user first name if the donor first name is empty.
+	 *
 	 * @return  string
 	 */
-	public function get_first_name() {
-		$first_name = $this->get_meta( '_give_donor_first_name');
-		if( ! $first_name ) {
+	public function get_first_name( $user_firstname ) {
+		$first_name = $this->get_meta( '_give_donor_first_name' );
+		if ( ! $first_name ) {
 			$first_name = $this->split_donor_name( $this->id )->first_name;
+		}
+
+		if ( ! empty( $user_firstname ) && empty( $first_name ) ) {
+			$first_name = get_user_meta( $user_firstname, 'first_name', true );
 		}
 
 		return $first_name;
@@ -1552,15 +1559,22 @@ class Give_Donor {
 	 * Retrieves last name of donor with backward compatibility
 	 *
 	 * @since   2.0
+	 *
+	 * @param int/bool $user_lastname get user last name if the donor first name is empty.
+	 *
 	 * @return  string
 	 */
-	public function get_last_name() {
-		$first_name = $this->get_meta( '_give_donor_first_name');
-		$last_name = $this->get_meta( '_give_donor_last_name');
+	public function get_last_name( $user_lastname = false ) {
+		$first_name = $this->get_meta( '_give_donor_first_name' );
+		$last_name  = $this->get_meta( '_give_donor_last_name' );
 
 		// This condition will prevent unnecessary splitting of donor name to fetch last name.
-		if( ! $first_name && ! $last_name ) {
+		if ( ! $first_name && ! $last_name ) {
 			$last_name = $this->split_donor_name( $this->id )->last_name;
+		}
+
+		if ( ! empty( $user_lastname ) && empty( $last_name ) ) {
+			$last_name = get_user_meta( $user_lastname, 'first_name', true );
 		}
 
 		return ( $last_name ) ? $last_name : '';

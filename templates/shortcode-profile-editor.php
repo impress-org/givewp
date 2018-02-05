@@ -11,8 +11,12 @@ $current_user     = wp_get_current_user();
 
 if ( is_user_logged_in() ):
 	$user_id = get_current_user_id();
-	$first_name   = get_user_meta( $user_id, 'first_name', true );
-	$last_name    = get_user_meta( $user_id, 'last_name', true );
+
+	$donor = new Give_Donor( $user_id, true );
+
+	$first_name   = $donor->get_first_name( $user_id );
+	$last_name    = $donor->get_last_name( $user_id );
+
 	$display_name = $current_user->display_name;
 	$address      = give_get_donor_address( $user_id, array( 'address_type' => 'personal' ) );
 
