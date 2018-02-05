@@ -1,3 +1,4 @@
+import FloatLabels from 'float-labels.js';
 
 jQuery( function( $ ) {
 
