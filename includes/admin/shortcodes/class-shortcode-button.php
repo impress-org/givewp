@@ -37,7 +37,7 @@ final class Give_Shortcode_Button {
 			add_filter( 'mce_external_plugins', array( $this, 'mce_external_plugins' ), 15 );
 
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_assets' ) );
-//			add_action( 'admin_enqueue_scripts', array( $this, 'admin_localize_scripts' ), 13 );
+			add_action( 'admin_enqueue_scripts', array( $this, 'admin_localize_scripts' ), 13 );
 			add_action( 'media_buttons', array( $this, 'shortcode_button' ) );
 		}
 
