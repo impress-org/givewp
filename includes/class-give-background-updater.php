@@ -296,7 +296,9 @@ class Give_Background_Updater extends WP_Background_Process {
 		// Delete cache.
 		wp_cache_delete( 'give_paused_batches', 'options' );
 
-		return ! empty( get_option('give_paused_batches') );
+		$paused_batches = get_option('give_paused_batches');
+
+		return ! empty( $paused_batches );
 	}
 
 
