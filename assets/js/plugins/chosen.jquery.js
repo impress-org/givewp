@@ -572,7 +572,7 @@
     };
 
     AbstractChosen.prototype.get_single_html = function() {
-      return "<a class=\"chosen-single chosen-default\">\n  <span>" + this.default_text + "</span>\n  <div><b></b></div>\n</a>\n<div class=\"chosen-drop\">\n  <div class=\"chosen-search\">\n    <input class=\"chosen-search-input\" type=\"text\" autocomplete=\"off\" />\n  </div>\n  <ul class=\"chosen-results\"></ul>\n</div>";
+      return "<a class=\"chosen-single chosen-default\">\n  <input class=\"chosen-search-input\" type=\"text\" autocomplete=\"off\" />\n  <span>" + this.default_text + "</span>\n  <div><b></b></div>\n</a>\n<div class=\"chosen-drop\">\n  <div class=\"chosen-search\">\n  </div>\n  <ul class=\"chosen-results\"></ul>\n</div>";
     };
 
     AbstractChosen.prototype.get_multi_html = function() {
@@ -929,7 +929,7 @@
       this.results_data = SelectParser.select_to_array(this.form_field);
       if (this.is_multiple) {
         this.search_choices.find("li.search-choice").remove();
-      } else if (!this.is_multiple) {
+      } else {
         this.single_set_selected_text();
         if (this.disable_search || this.form_field.options.length <= this.disable_search_threshold) {
           this.search_field[0].readOnly = true;
@@ -981,6 +981,9 @@
         });
         return false;
       }
+      if (!this.is_multiple) {
+        this.search_container.append(this.search_field);
+      }
       this.container.addClass("chosen-with-drop");
       this.results_showing = true;
       this.search_field.focus();
@@ -998,6 +1001,10 @@
     Chosen.prototype.results_hide = function() {
       if (this.results_showing) {
         this.result_clear_highlight();
+        if (!this.is_multiple) {
+          this.selected_item.prepend(this.search_field);
+          this.search_field.focus();
+        }
         this.container.removeClass("chosen-with-drop");
         this.form_field_jq.trigger("chosen:hiding_dropdown", {
           chosen: this
