@@ -919,9 +919,21 @@ class Give_Updates {
 
 		switch ( $status ) {
 			case 'new':
-				// Remove already completed updates.
+				// Remove cache if exist.
+				if( !  wp_cache_delete( 'give_completed_upgrades', 'options' ) ){
+					$alloptions = wp_load_alloptions();
+
+					if( isset( $alloptions['give_completed_upgrades'] ) ) {
+						unset( $alloptions['give_completed_upgrades'] );
+						wp_cache_set( 'alloptions', $alloptions, 'options' );
+					}
+
+				};
+
+				// Get fresh value.
 				$completed_updates = give_get_completed_upgrades();
 
+				// Remove already completed updates.
 				if ( ! empty( $completed_updates ) ) {
 					foreach ( $updates as $index => $update ) {
 						if ( in_array( $update['id'], $completed_updates ) ) {
