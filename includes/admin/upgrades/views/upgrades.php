@@ -56,11 +56,11 @@ $give_updates = Give_Updates::get_instance();
 										<?php if ( get_option( 'give_upgrade_error' ) ) : ?>
 											&nbsp;<?php echo sprintf(
 												'%s <a href="%s" target="_blank">%s</a>.',
-												__( 'Database updates stop automatically because some unexpected issue occur during upgrade. Please contact', 'give' ),
+												__( 'An upexpected issue occurred during the database update which caused it to stop automatically. Please contact support for assistance.', 'give' ),
 												esc_url( 'https://givewp.com/support/' ),
 												__( 'GiveWP support', 'give' )
 											); ?>
-										<?php else: ?>
+										<?php else : ?>
 											<?php _e( 'The updates have been paused.', 'give' ); ?>
 
 										<?php endif; ?>

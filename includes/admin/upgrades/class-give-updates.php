@@ -539,8 +539,8 @@ class Give_Updates {
 		if ( self::$background_updater->is_paused_process() ) {
 			ob_start();
 
-			if ( ! get_option( 'give_upgrade_error' ) ):
-				?>
+			$upgrade_error = get_option( 'give_upgrade_error' );
+			if ( ! $upgrade_error ) : ?>
 				<strong><?php _e( 'Database Update', 'give' ); ?></strong>
 				&nbsp;&#8211;&nbsp;<?php _e( 'GiveWP needs to update your database to the latest version. The following process will make updates to your site\'s database. Please create a backup before proceeding.', 'give' ); ?>
 				<br>
@@ -557,9 +557,9 @@ class Give_Updates {
 				<strong><?php _e( 'Database Update', 'give' ); ?></strong>
 				&nbsp;&#8211;&nbsp;<?php echo sprintf(
 					'%s <a href="%s" target="_blank">%s</a>.',
-					__( 'Database updates stop automatically because some unexpected issue occur during upgrade. Please contact', 'give' ),
+					__( 'An upexpected issue occurred during the database update which caused it to stop automatically. Please contact support for assistance.', 'give' ),
 					esc_url( 'https://givewp.com/support/' ),
-					__( 'GiveWP support', 'give' )
+					__( 'GiveWP Support', 'give' )
 				); ?>
 			<?php
 			endif;
@@ -625,8 +625,7 @@ class Give_Updates {
 			</script>
 			<?php
 			$desc_html = ob_get_clean();
-
-
+			
 			Give()->notices->register_notice( array(
 				'id'          => 'give_upgrade_db',
 				'type'        => 'updated',
