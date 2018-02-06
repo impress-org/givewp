@@ -338,24 +338,35 @@ class Give_Updates {
 
 		$batch = self::$background_updater->get_all_batch();
 
-		if ( ! empty( $batch ) ) {
-			Give_Background_Updater::flush_cache();
-
-			delete_option('give_upgrade_error');
-			update_option( 'give_paused_batches', $batch,  'no' );
-			delete_option( $batch->key );
-			delete_site_transient( self::$background_updater->get_identifier() . '_process_lock' );
-			wp_clear_scheduled_hook( self::$background_updater->get_cron_identifier() );
-
-			Give()->logs->add( 'Update Pause', print_r( $batch, true ), 0, 'update' );
-
-			/**
-			 * Fire action when pause db updates
-			 *
-			 * @since 2.0.1
-			 */
-			do_action( 'give_pause_db_upgrade', $this );
+		// Bailout: if batch is empty
+		if( empty( $batch ) ) {
+			return false;
 		}
+
+		// Remove cache.
+		Give_Background_Updater::flush_cache();
+
+		// Do not stop background process immediately if task running.
+		if( ! $force && self::$background_updater->is_process_running()  ) {
+			update_option( 'give_pause_upgrade', 1 );
+
+			return true;
+		}
+
+		delete_option('give_upgrade_error');
+		update_option( 'give_paused_batches', $batch,  'no' );
+		delete_option( $batch->key );
+		delete_site_transient( self::$background_updater->get_identifier() . '_process_lock' );
+		wp_clear_scheduled_hook( self::$background_updater->get_cron_identifier() );
+
+		Give()->logs->add( 'Update Pause', print_r( $batch, true ), 0, 'update' );
+
+		/**
+		 * Fire action when pause db updates
+		 *
+		 * @since 2.0.1
+		 */
+		do_action( 'give_pause_db_upgrade', $this );
 
 		return true;
 	}

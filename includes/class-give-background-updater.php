@@ -48,6 +48,46 @@ class Give_Background_Updater extends WP_Background_Process {
 	}
 
 	/**
+	 * Lock process
+	 *
+	 * Lock the process so that multiple instances can't run simultaneously.
+	 * Override if applicable, but the duration should be greater than that
+	 * defined in the time_exceeded() method.
+	 *
+	 *
+	 * @since 2.0.3
+	 */
+	protected function lock_process() {
+		// Check if admin want to pause upgrade.
+		if( get_option('give_pause_upgrade') ) {
+			self::flush_cache();
+
+			delete_option( 'give_paused_batches' );
+
+			Give_Updates::get_instance()->__pause_db_update( true );
+
+			delete_option('give_pause_upgrade');
+
+			/**
+			 * Fire action when pause db updates
+			 *
+			 * @since 2.0.1
+			 */
+			do_action( 'give_pause_db_upgrade', Give_Updates::get_instance() );
+
+			wp_die();
+		}
+
+
+		$this->start_time = time(); // Set start time of current process.
+
+		$lock_duration = ( property_exists( $this, 'queue_lock_time' ) ) ? $this->queue_lock_time : 60; // 1 minute
+		$lock_duration = apply_filters( $this->identifier . '_queue_lock_time', $lock_duration );
+
+		set_site_transient( $this->identifier . '_process_lock', microtime(), $lock_duration );
+	}
+
+	/**
 	 * Handle cron healthcheck
 	 *
 	 * Restart the background process if not already running
