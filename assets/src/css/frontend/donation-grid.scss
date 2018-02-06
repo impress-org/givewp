@@ -1,0 +1,110 @@
+@mixin mobile {
+	@media screen and ( max-width: 480px ) {
+		@content;
+	}
+}
+
+@mixin tablet {
+	@media screen and ( max-width: 786px ) {
+		@content;
+	}
+}
+
+@mixin tabel-to-desktop {
+	@media screen and ( min-width: 787px ) and ( max-width: 1024px ) {
+		@content;
+	}
+}
+
+.give-donation-grid-container {
+	display: flex;
+	flex-flow: row wrap;
+
+	.give-donation-grid-item {
+		display: flex;
+		margin-bottom: .5rem;
+	    padding: 0 .25rem;
+
+		.box {
+			display: flex;
+			flex-flow: column;
+		    padding: .5rem;
+			width: 100%;
+		    border: 1px solid #ccc;
+
+		    img {
+	    	    height: 200px;
+			    object-fit: cover;
+		    }
+		}
+
+		.donation-grid-title {
+			margin: 1.5rem 0 .25rem 0;
+			font-size: 1.15rem;
+			font-weight: bold;
+		}
+
+		.raised {
+			margin-bottom: 4px;
+			font-size: 0.8rem;
+			color: #999;
+		}
+
+		.donor-grid-excerpt {
+			margin-bottom: 1.5rem;
+			font-size: .90rem;
+		}
+
+		.grid-donate-now {
+			margin: auto auto .5rem auto;
+			padding: .5rem;
+			max-width: 80%;
+			background-color: #68bb6c;
+			color: #fff;
+			font-weight: bold;
+			text-align: center;
+			text-decoration: none;
+			text-transform: uppercase;
+		}
+	}
+	
+	.give-grid-col-1 {
+		width: 100%;
+	}
+
+	.give-grid-col-2 {
+		width: 50%;
+
+		@include mobile {
+			width: 100%;
+		}
+	}
+
+	.give-grid-col-3 {
+		width: calc( 100% / 3 );
+
+		@include tablet {
+			width: 50%;
+		}
+
+		@include mobile {
+			width: 100%;
+		}
+	}
+
+	.give-grid-col-4 {
+		width: 25%;
+
+		@include tabel-to-desktop {
+			width: calc( 100% / 3 );
+		}
+
+		@include tablet {
+			width: 50%;
+		}
+
+		@include mobile {
+			width: 100%;
+		}
+	}
+}

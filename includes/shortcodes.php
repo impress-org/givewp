@@ -636,3 +636,58 @@ function give_totals_shortcode( $atts ) {
 }
 
 add_shortcode( 'give_totals', 'give_totals_shortcode' );
+
+function give_donation_grid_shortcode( $atts ) {
+	$atts = shortcode_atts( array(
+		'columns'             => '4',
+		'show_goal'           => false,
+		'show_excerpt'        => false,
+		'show_featured_image' => false,
+	), $atts );
+
+	$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+
+	$current_donations = array(
+		'post_type'      => 'give_forms',
+		'post_status'    => 'publish',
+		'posts_per_page' => 10,
+		'paged'          => $paged,
+	);
+
+	// Get give settings.
+	$give_settings = get_option( 'give_settings' );
+
+	$current_donations_query = new WP_Query( $current_donations );
+
+	printf( '<div class="give-donation-grid-container">' );
+
+	if ( $current_donations_query->have_posts() ) {
+		while( $current_donations_query->have_posts() ) {
+			$current_donations_query->the_post();
+
+			include GIVE_PLUGIN_DIR . 'templates/shortcode-donation-grid.php';
+
+		}
+	}
+
+	printf( '</div>' );
+
+	$paginate_args = array(
+		'current'            => max( 1, get_query_var('paged') ),
+		'total'              => $current_donations_query->max_num_pages,
+		'show_all'           => false,
+		'end_size'           => 1,
+		'mid_size'           => 2,
+		'prev_next'          => true,
+		'prev_text'          => __('« Previous'),
+		'next_text'          => __('Next »'),
+		'type'               => 'plain',
+		'add_args'           => false,
+	);
+
+	printf( paginate_links( $paginate_args ) );
+
+	wp_reset_postdata();
+}
+
+add_shortcode( 'donation_grid', 'give_donation_grid_shortcode' );
