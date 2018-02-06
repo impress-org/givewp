@@ -555,7 +555,7 @@ class Give_Updates {
 				<strong><?php _e( 'Database Update', 'give' ); ?></strong>
 				&nbsp;&#8211;&nbsp;<?php echo sprintf(
 					'%s <a href="%s" target="_blank">%s</a>.',
-					__( 'An upexpected issue occurred during the database update which caused it to stop automatically. Please contact support for assistance.', 'give' ),
+					__( 'An unexpected issue occurred during the database update which caused it to stop automatically. Please contact support for assistance.', 'give' ),
 					esc_url( 'https://givewp.com/support/' ),
 					__( 'GiveWP Support', 'give' )
 				); ?>
@@ -746,7 +746,20 @@ class Give_Updates {
 		$update_info   = get_option( 'give_doing_upgrade' );
 		$response_type = '';
 
-		if ( empty( $update_info ) ) {
+		if ( self::$background_updater->is_paused_process() ) {
+			$update_info = array(
+				'message'    => __( 'The updates have been paused.', 'give' ),
+				'heading'    => __( '', 'give' ),
+				'percentage' => 0,
+			);
+
+			if ( get_option( 'give_upgrade_error' ) ) {
+				$update_info['message'] = __( 'An unexpected issue occurred during the database update which caused it to stop automatically. Please contact support for assistance.', 'give' );
+			}
+
+			$response_type = 'error';
+
+		} elseif ( empty( $update_info ) ) {
 			$update_info   = array(
 				'message'    => __( 'Give database updates completed successfully. Thank you for updating to the latest version!', 'give' ),
 				'heading'    => __( 'Updates Completed.', 'give' ),

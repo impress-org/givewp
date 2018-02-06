@@ -1170,12 +1170,15 @@ var give_setting_edit = false;
 								$self.el.heading.html('<strong>' + response.data.heading + '</strong>');
 							}
 
-							notice_wrap.html('<div class="notice notice-error"><p>' + response.data.message + '</p></div>');
-
-							setTimeout(function () {
-								$self.el.update_link.removeClass('active').show();
-								$self.el.progress_main_container.addClass('give-hidden');
-							}, 1000);
+							if( response.data.message ) {
+								$self.el.update_link.closest('p').remove();
+								notice_wrap.html('<div class="notice notice-error is-dismissible"><p>' + response.data.message + '</p><button type="button" class="notice-dismiss"></button></div>');
+							} else{
+								setTimeout(function () {
+									$self.el.update_link.removeClass('active').show();
+									$self.el.progress_main_container.addClass('give-hidden');
+								}, 1000);
+							}
 						}
 					} else {
 						if (response && -1 !== $.inArray('percentage', Object.keys(response.data))) {

@@ -54,12 +54,7 @@ $give_updates = Give_Updates::get_instance();
 									</span>
 									<span class="give-update-paused-text-p" <?php echo ! Give_Updates::$background_updater->is_paused_process()  ? 'style="display:none;"' : '';  ?>>
 										<?php if ( get_option( 'give_upgrade_error' ) ) : ?>
-											&nbsp;<?php echo sprintf(
-												'%s <a href="%s" target="_blank">%s</a>.',
-												__( 'An upexpected issue occurred during the database update which caused it to stop automatically. Please contact support for assistance.', 'give' ),
-												esc_url( 'https://givewp.com/support/' ),
-												__( 'GiveWP support', 'give' )
-											); ?>
+											&nbsp;<?php _e( 'An unexpected issue occurred during the database update which caused it to stop automatically. Please contact support for assistance.', 'give' ); ?>
 										<?php else : ?>
 											<?php _e( 'The updates have been paused.', 'give' ); ?>
 
