@@ -184,6 +184,8 @@ class Give_Background_Updater extends WP_Background_Process {
 
 			Give()->logs->add( 'Update Error', $log_data, 0, 'update' );
 			update_option( 'give_upgrade_error', 1 );
+
+			wp_die();
 		}
 
 		// Set update info.
