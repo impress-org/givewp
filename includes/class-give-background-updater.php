@@ -387,6 +387,7 @@ class Give_Background_Updater extends WP_Background_Process {
 			'give_upgrade_error',
 			'give_db_update_count',
 			'give_doing_upgrade',
+			'give_pause_upgrade',
 			'give_show_db_upgrade_complete_notice',
 		);
 
