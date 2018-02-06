@@ -159,6 +159,12 @@ class Give_Background_Updater extends WP_Background_Process {
 
 			update_option( 'give_upgrade_error', 1 );
 
+			$log_data = 'Update Task' . "\n";
+			$log_data .= "Total update count: {$give_updates->get_total_db_update_count()}\n";
+			$log_data .= "Update IDs: {$give_updates->get_update_ids()}";
+
+			Give()->logs->add( 'Update Error', $log_data, 0, 'update' );
+
 			wp_die();
 		}
 
