@@ -48,6 +48,18 @@ class Give_Background_Updater extends WP_Background_Process {
 	}
 
 	/**
+	 * Is queue empty
+	 *
+	 * @since 2.0.3
+	 *
+	 * @return bool
+	 */
+	public function has_queue() {
+		return ( ! parent::is_queue_empty() );
+	}
+
+
+	/**
 	 * Lock process
 	 *
 	 * Lock the process so that multiple instances can't run simultaneously.
