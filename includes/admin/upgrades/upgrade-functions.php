@@ -340,6 +340,18 @@ function give_show_upgrade_notices( $give_updates ) {
 
 		)
 	);
+
+	// v2.0.3 Upgrades
+	$give_updates->register(
+		array(
+			'id'       => 'v203_add_form_goal_meta',
+			'version'  => '2.0.3',
+			'callback' => 'give_v203_add_form_goal_meta_callback',
+			'depend'   => array(
+				'v20_upgrades_form_metadata',
+			),
+		)
+	);
 }
 
 add_action( 'give_register_updates', 'give_show_upgrade_notices' );
@@ -2588,4 +2600,35 @@ function give_v201_add_missing_donors_callback(){
 
 	Give_Updates::get_instance()->percentage = 100;
 	give_set_upgrade_complete('v201_add_missing_donors' );
+}
+
+/**
+ * Update Goal Meta when Donation form is closed.
+ *
+ * @since 2.0.3
+ */
+function give_v203_add_form_goal_meta_callback() {
+	/* @var Give_Updates $give_updates */
+	$give_updates = Give_Updates::get_instance();
+	// form query
+	$forms = get_posts(
+		array(
+			'paged'          => $give_updates->step,
+			'status'         => 'any',
+			'order'          => 'ASC',
+			'post_type'      => 'give_forms',
+			'posts_per_page' => 20,
+		)
+	);
+	if ( ! empty( $forms ) ) {
+		$give_updates->set_percentage( give_get_total_post_type_count( 'give_forms' ), ( $give_updates->step * 20 ) );
+		foreach ( $forms as $form ) {
+			$form = new Give_Donate_Form( $form->ID );
+			$form->set_goal_closed_meta();
+		}
+		wp_reset_postdata();
+	} else {
+		// No more forms found, finish up.
+		give_set_upgrade_complete( 'v203_add_form_goal_meta' );
+	}
 }
