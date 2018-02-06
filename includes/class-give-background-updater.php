@@ -101,7 +101,7 @@ class Give_Background_Updater extends WP_Background_Process {
 		}
 
 		// Delete cache.
-		$this->flush_task_cache();
+		self::flush_cache();
 
 		/* @var  Give_Updates $give_updates */
 		$give_updates  = Give_Updates::get_instance();
@@ -338,7 +338,7 @@ class Give_Background_Updater extends WP_Background_Process {
 	 *
 	 * @since 2.0.3
 	 */
-	private function flush_task_cache() {
+	public static function flush_cache() {
 
 		$options = array(
 			'give_completed_upgrades',
