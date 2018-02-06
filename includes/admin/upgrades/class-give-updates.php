@@ -420,6 +420,7 @@ class Give_Updates {
 		}
 
 		wp_cache_delete( 'give_paused_batches', 'options' );
+		wp_cache_delete( 'give_db_update_count', 'options' );
 
 		$batch                = Give_Updates::$background_updater->get_all_batch();
 		$batch_data_count     = count( $batch->data );
