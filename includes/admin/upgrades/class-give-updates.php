@@ -347,6 +347,7 @@ class Give_Updates {
 		Give_Background_Updater::flush_cache();
 
 		// Do not stop background process immediately if task running.
+		// @see Give_Background_Updater::lock_process
 		if( ! $force && self::$background_updater->is_process_running()  ) {
 			update_option( 'give_pause_upgrade', 1 );
 
