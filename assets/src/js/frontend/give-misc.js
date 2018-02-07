@@ -1,4 +1,4 @@
-
+import FloatLabels from 'float-labels.js';
 jQuery( function( $ ) {
 
 	var doc = $( document );
@@ -8,6 +8,17 @@ jQuery( function( $ ) {
 
 	// Set custom validation message.
 	give_change_html5_form_field_validation_message();
+
+	// Donation grid shortcode popup.
+	$( '.grid-donate-now-modal-button' ).magnificPopup( {
+		removalDelay: 500, //delay removal by X to allow out-animation
+		callbacks   : {
+		beforeOpen  : function() {
+		       this.st.mainClass = this.st.el.attr('data-effect');
+			}
+		},
+		midClick: true
+	});
 
 	// Disable button if it have give-disabled class init.
 	doc.on( 'click touchend', '.give-disabled', function ( e ) {

@@ -643,6 +643,7 @@ function give_donation_grid_shortcode( $atts ) {
 		'show_goal'           => false,
 		'show_excerpt'        => false,
 		'show_featured_image' => false,
+		'display_type'        => 'redirect',
 	), $atts );
 
 	$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
@@ -655,8 +656,9 @@ function give_donation_grid_shortcode( $atts ) {
 	);
 
 	// Get give settings.
-	$give_settings = get_option( 'give_settings' );
+	$give_settings = give_get_settings();
 
+	// Query to output donation forms.
 	$current_donations_query = new WP_Query( $current_donations );
 
 	printf( '<div class="give-donation-grid-container">' );
@@ -665,7 +667,8 @@ function give_donation_grid_shortcode( $atts ) {
 		while( $current_donations_query->have_posts() ) {
 			$current_donations_query->the_post();
 
-			include GIVE_PLUGIN_DIR . 'templates/shortcode-donation-grid.php';
+			// Give/templates/shortcode-donation-grid.php
+			give_get_template( 'shortcode-donation-grid', array( $give_settings, $atts ) );
 
 		}
 	}
