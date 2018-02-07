@@ -489,3 +489,150 @@ function give_process_profile_editor_updates( $data ) {
 }
 
 add_action( 'give_edit_user_profile', 'give_process_profile_editor_updates' );
+
+
+/**
+ * Give totals Shortcode.
+ *
+ * Shows a donation total.
+ *
+ * @since  2.1
+ *
+ * @param  array $atts Shortcode attributes.
+ *
+ * @return string
+ */
+function give_totals_shortcode( $atts ) {
+	$total = get_option( 'give_earnings_total', false );
+
+	$message = apply_filters( 'give_totals_message', __( 'Hey! We\'ve raised {total} of the {total_goal} we are trying to raise for this campaign!', 'give' ) );
+
+	$atts = shortcode_atts( array(
+		'total_goal'   => 0, // integer
+		'ids'          => 0, // integer|array
+		'cats'         => 0, // integer|array
+		'tags'         => 0, // integer|array
+		'message'      => $message,
+		'link'         => '', // URL
+		'link_text'    => __( 'Donate Now', 'give' ), // string,
+		'progress_bar' => true, // boolean
+	), $atts, 'give_totals' );
+
+	// Total Goal.
+	$total_goal = give_maybe_sanitize_amount( $atts['total_goal'] );
+
+	// Build query based on cat, tag and Form ids.
+	if ( ! empty( $atts['cats'] ) || ! empty( $atts['tags'] ) || ! empty( $atts['ids'] ) ) {
+
+		$form_ids = array();
+		if ( ! empty( $atts['ids'] ) ) {
+			$form_ids = array_filter( array_map( 'trim', explode( ',', $atts['ids'] ) ) );
+		}
+
+		$form_args = array(
+			'post_type'      => 'give_forms',
+			'post_status'    => 'publish',
+			'post__in'       => $form_ids,
+			'posts_per_page' => - 1,
+			'fields'         => 'ids',
+			'tax_query'      => array(
+				'relation' => 'AND',
+			),
+		);
+
+		if ( ! empty( $atts['cats'] ) ) {
+			$cats                     = array_filter( array_map( 'trim', explode( ',', $atts['cats'] ) ) );
+			$form_args['tax_query'][] = array(
+				'taxonomy' => 'give_forms_category',
+				'terms'    => $cats,
+			);
+		}
+
+		if ( ! empty( $atts['tags'] ) ) {
+			$tags                     = array_filter( array_map( 'trim', explode( ',', $atts['tags'] ) ) );
+			$form_args['tax_query'][] = array(
+				'taxonomy' => 'give_forms_tag',
+				'terms'    => $tags,
+			);
+		}
+
+		$forms = new WP_Query( $form_args );
+
+		if ( isset( $forms->posts ) ) {
+			$total = 0;
+			foreach ( $forms->posts as $post ) {
+				$form_earning = give_get_meta( $post, '_give_form_earnings', true );
+				$form_earning = ! empty( $form_earning ) ? $form_earning : 0;
+
+				/**
+				 * Update Form earnings.
+				 *
+				 * @since 2.1
+				 *
+				 * @param int    $post         Form ID.
+				 * @param string $form_earning Total earning of Form.
+				 */
+				$total += apply_filters( 'give_totals_form_earning', $form_earning, $post );
+			}
+		}
+
+	}
+
+	// Append link with text.
+	$donate_link = '';
+	if ( ! empty( $atts['link'] ) ) {
+		$donate_link = sprintf( ' <a class="give-totals-text-link" href="%1$s">%2$s</a>', esc_url( $atts['link'] ), esc_html( $atts['link_text'] ) );
+	}
+
+	// Replace {total} in message.
+	$message = str_replace( '{total}', give_currency_filter(
+		give_format_amount( $total,
+			array( 'sanitize' => false )
+		)
+	), esc_html( $atts['message'] ) );
+
+	// Replace {total_goal} in message.
+	$message = str_replace( '{total_goal}', give_currency_filter(
+		give_format_amount( $total_goal,
+			array( 'sanitize' => true )
+		)
+	), $message );
+
+	/**
+	 * Update Give totals shortcode output.
+	 *
+	 * @since 2.1
+	 *
+	 * @param string $message Shortcode Message.
+	 * @param array  $atts    ShortCode attributes.
+	 */
+	$message = apply_filters( 'give_totals_shortcode_message', $message, $atts );
+
+	ob_start();
+	?>
+	<div class="give-totals-shortcode-wrap">
+		<?php
+		// Show Progress Bar if progress_bar set true.
+		$show_progress_bar = isset( $atts['progress_bar'] ) ? filter_var( $atts['progress_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
+		if ( $show_progress_bar ) {
+			give_show_goal_totals_progress( $total, $total_goal );
+		}
+
+		echo sprintf( $message ) . $donate_link;
+		?>
+	</div>
+	<?php
+	$give_totals_output = ob_get_clean();
+
+	/**
+	 * Give Totals Shortcode output.
+	 *
+	 * @since 2.1
+	 *
+	 * @param string $give_totals_output
+	 */
+	return apply_filters( 'give_totals_shortcode_output', $give_totals_output );
+
+}
+
+add_shortcode( 'give_totals', 'give_totals_shortcode' );

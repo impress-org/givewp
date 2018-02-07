@@ -1641,6 +1641,32 @@ function give_show_goal_progress( $form_id, $args ) {
 
 add_action( 'give_pre_form', 'give_show_goal_progress', 10, 2 );
 
+/**
+ * Show Give Totals Progress.
+ *
+ * @since  2.1
+ *
+ * @param  int $total      Total amount based on shortcode parameter.
+ * @param  int $total_goal Total Goal amount passed by Admin.
+ *
+ * @return mixed
+ */
+function give_show_goal_totals_progress( $total, $total_goal ) {
+
+	// Bail out if total goal is set as an array.
+	if ( isset( $total_goal ) && is_array( $total_goal ) ) {
+		return false;
+	}
+
+	ob_start();
+	give_get_template( 'shortcode-totals-progress', array( 'total' => $total, 'total_goal' => $total_goal ) );
+
+	echo apply_filters( 'give_total_progress_output', ob_get_clean() );
+
+	return true;
+}
+
+add_action( 'give_pre_form', 'give_show_goal_totals_progress', 10, 2 );
 
 /**
  * Get form content position.

@@ -17,6 +17,13 @@
   display: inline-block;
 }
 
+#give_donor_export {
+	#give_donor_export_form_chosen {
+		display: block;
+		margin: 5px 0 1px 0;
+	}
+}
+
 .column-status {
   .give-donation-status, .give-test-mode-transactions-label {
     display: inline-block;

@@ -252,13 +252,13 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 					<h2>
 						<?php
 						if ( $success ) {
-							echo sprintf(
-								__( 'Import complete! %s donations processed', 'give' ),
+							printf(
+								_n( 'Import complete! %s donation processed', 'Import complete! %s donations processed', $total, 'give' ),
 								"<strong>{$total}</strong>"
 							);
 						} else {
-							echo sprintf(
-								__( 'Failed to import %s donations', 'give' ),
+							printf(
+								_n( 'Failed to import %s donation', 'Failed to import %s donations', $total, 'give' ),
 								"<strong>{$total}</strong>"
 							);
 						}

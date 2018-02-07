@@ -910,6 +910,78 @@ function give_get_form_goal_format( $form_id = 0 ) {
 /**
  * Display/Return a formatted goal for a donation form
  *
+ * @param int|Give_Donate_Form $form Form ID or Form Object.
+ *
+ * @since 2.1
+ *
+ * @return array
+ */
+function give_goal_progress_stats( $form ) {
+
+	if ( ! $form instanceof Give_Donate_Form ) {
+		$form = new Give_Donate_Form( $form );
+	}
+
+	$goal_format = give_get_form_goal_format( $form->ID );
+
+	/**
+	 * Filter the form sales.
+	 *
+	 * @since 2.1
+	 */
+	$sales = apply_filters( 'give_goal_sales_raised_output', $form->sales, $form->ID, $form );
+
+	/**
+	 * Filter the form income.
+	 *
+	 * @since 1.8.8
+	 */
+	$income = apply_filters( 'give_goal_amount_raised_output', $form->earnings, $form->ID, $form );
+
+	/**
+	 * Filter the form.
+	 *
+	 * @since 1.8.8
+	 */
+	$total_goal = apply_filters( 'give_goal_amount_target_output', round( give_maybe_sanitize_amount( $form->goal ) ), $form->ID, $form );
+
+
+	$actual   = 'donation' !== $goal_format ? $income : $sales;
+	$progress = round( ( $actual / $total_goal ) * 100, 2 );
+
+	/**
+	 * Filter the goal progress output
+	 *
+	 * @since 1.8.8
+	 */
+	$progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progress, $form->ID, $form );
+
+	// Define Actual Goal based on the goal format.
+	if ( 'percentage' === $goal_format ) {
+		$actual = "{$actual}%";
+	} else if ( 'amount' === $goal_format ) {
+		$actual = give_currency_filter( give_format_amount( $actual ) );
+	}
+
+	// Define Total Goal based on the goal format.
+	if ( 'percentage' === $goal_format ) {
+		$total_goal = '';
+	} else if ( 'amount' === $goal_format ) {
+		$total_goal = give_currency_filter( give_format_amount( $total_goal ) );
+	}
+
+	return apply_filters( 'give_goal_progress_stats', array(
+		'progress' => $progress,
+		'actual'   => $actual,
+		'goal'     => $total_goal,
+		'format'   => $goal_format,
+	) );
+
+}
+
+/**
+ * Display/Return a formatted goal for a donation form
+ *
  * @since 1.0
  *
  * @param int  $form_id ID of the form price to show

@@ -218,8 +218,9 @@ function give_mark_abandoned_donations() {
 		 */
 		$skip_payment_gateways = apply_filters( 'give_mark_abandoned_donation_gateways', array( 'offline' ) );
 
+		/* @var Give_Payment $payment */
 		foreach ( $payments as $payment ) {
-			$gateway = give_get_payment_gateway( $payment );
+			$gateway = give_get_payment_gateway( $payment->ID );
 
 			// Skip payment gateways.
 			if ( in_array( $gateway, $skip_payment_gateways ) ) {
