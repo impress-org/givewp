@@ -664,10 +664,10 @@ function give_donation_grid_shortcode( $atts ) {
 	printf( '<div class="give-donation-grid-container">' );
 
 	if ( $current_donations_query->have_posts() ) {
-		while( $current_donations_query->have_posts() ) {
+		while ( $current_donations_query->have_posts() ) {
 			$current_donations_query->the_post();
 
-			// Give/templates/shortcode-donation-grid.php
+			// Give/templates/shortcode-donation-grid.php.
 			give_get_template( 'shortcode-donation-grid', array( $give_settings, $atts ) );
 
 		}
@@ -676,21 +676,21 @@ function give_donation_grid_shortcode( $atts ) {
 	printf( '</div>' );
 
 	$paginate_args = array(
-		'current'            => max( 1, get_query_var('paged') ),
-		'total'              => $current_donations_query->max_num_pages,
-		'show_all'           => false,
-		'end_size'           => 1,
-		'mid_size'           => 2,
-		'prev_next'          => true,
-		'prev_text'          => __('« Previous'),
-		'next_text'          => __('Next »'),
-		'type'               => 'plain',
-		'add_args'           => false,
+		'current'   => max( 1, get_query_var( 'paged' ) ),
+		'total'     => $current_donations_query->max_num_pages,
+		'show_all'  => false,
+		'end_size'  => 1,
+		'mid_size'  => 2,
+		'prev_next' => true,
+		'prev_text' => __( 'Previous', 'give' ),
+		'next_text' => __( 'Next', 'give' ),
+		'type'      => 'plain',
+		'add_args'  => false,
 	);
 
-	printf( paginate_links( $paginate_args ) );
+	printf( paginate_links( $paginate_args ) ); // XSS ok.
 
 	wp_reset_postdata();
 }
 
-add_shortcode( 'donation_grid', 'give_donation_grid_shortcode' );
+add_shortcode( 'give_donation_form_grid', 'give_donation_grid_shortcode' );
