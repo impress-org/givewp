@@ -189,7 +189,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 									<input type="submit"
 									       class=" button button-primary button-large button-secondary <?php echo "step-{$step}"; ?>"
 									       id="recount-stats-submit"
-									       disabled
+									       <?php echo ( 2 === $step ) ? 'disabled' : ''; ?>
 									       value="<?php esc_attr_e( 'Submit', 'give' ); ?>"/>
 								</th>
 							</tr>
