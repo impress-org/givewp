@@ -426,7 +426,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 
 						<p class="give-import-donation-required-fields-title"><?php _e( 'Required Fields' ); ?></p>
 
-						<p class="give-field-description"><?php _e( 'These fields are required for the imort to submitted' ); ?></p>
+						<p class="give-field-description"><?php _e( 'These fields are required for the import to submitted' ); ?></p>
 
 						<ul class="give-import-donation-required-fields">
 							<li class="give-import-donation-required-email" title="Please configure all required fields to start the import process.">

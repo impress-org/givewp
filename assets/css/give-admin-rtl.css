@@ -3072,6 +3072,7 @@ body.give_forms_page_give-updates .give-run-update-containt .give-run-update-but
     margin: 0 0 0 10%; }
     .give-tools-setting-page-import table.step-2 .give-import-donation-required-fields li span.give-import-donation-required-symbol {
       border-radius: 1em;
+      vertical-align: middle;
       padding: 2px;
       background: #46b450;
       color: white; }
