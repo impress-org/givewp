@@ -325,7 +325,9 @@ function give_email_access_login() {
 
 	$recaptcha_key    = give_get_option( 'recaptcha_key' );
 	$recaptcha_secret = give_get_option( 'recaptcha_secret' );
-	$enable_recaptcha = ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ? true : false;
+	$enable_recaptcha = give_get_option( 'enable_recaptcha' );
+
+	$enable_recaptcha = ( 'on' === $enable_recaptcha ) && ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ? true : false;
 	$access_token     = ! empty( $_GET['payment_key'] ) ? $_GET['payment_key'] : '';
 
 	// Use reCAPTCHA.
