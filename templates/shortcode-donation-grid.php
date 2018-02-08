@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$form_ID       = get_the_ID(); // Form ID.
+$form_id       = get_the_ID(); // Form ID.
 $give_settings = $args[0]; // Give settings.
 $atts          = $args[1]; // Shortcode attributes.
 ?>
@@ -27,9 +27,9 @@ $atts          = $args[1]; // Shortcode attributes.
 		the_title( '<span class="donation-grid-title">', '</span>' );
 
 		// The progess bar for goal.
-		if ( 'enabled' === get_post_meta( $form_ID, '_give_goal_option', true ) && 'true' === $atts['show_goal'] ) {
+		if ( 'enabled' === get_post_meta( $form_id, '_give_goal_option', true ) && 'true' === $atts['show_goal'] ) {
 			echo '<div class="grid-item-progress">';
-			give_show_goal_progress( $form_ID );
+			give_show_goal_progress( $form_id );
 			echo '</div>';
 		}
 
@@ -44,7 +44,7 @@ $atts          = $args[1]; // Shortcode attributes.
 			// 'Donate Now' button if the 'display_type' attribute is set to 'redirect'
 			printf( '<a class="grid-donate-now" href="%1$s">%2$s</a>', get_the_permalink(), apply_filters( 'donation_grid_donate_now', esc_html__( 'Donate Now', 'grid' ) ) );
 
-		} elseif( 'modal' === $atts['display_type'] ) {
+		} elseif ( 'modal' === $atts['display_type'] ) {
 
 			// 'Donate Now' button if the 'display_type' attribute is set to 'modal'
 			printf( '<a class="grid-donate-now grid-donate-now-modal-button" data-effect="mfp-zoom-out" href="#popup-form-%1$s">%2$s</a>', get_the_ID(), apply_filters( 'donation_grid_donate_now', esc_html__( 'Donate Now', 'grid' ) ) );
@@ -53,7 +53,6 @@ $atts          = $args[1]; // Shortcode attributes.
 			printf( '<div id="popup-form-%1$s" class="give-donation-grid-item-form mfp-with-anim mfp-hide">', get_the_ID() );
 			give_get_donation_form( get_the_ID() );
 			printf( '</div>' );
-
 		}
 		?>
 		

@@ -67,6 +67,7 @@ if ( 'donation' === $goal_format ) {
 	$progress = $income >= $goal ? 100 : $progress;
 }
 ?>
+
 <div class="give-goal-progress">
 	<?php if ( ! empty( $show_text ) ) : ?>
 		<div class="raised">
@@ -127,9 +128,9 @@ if ( 'donation' === $goal_format ) {
 
 
 	<?php if ( ! empty( $show_bar ) ) : ?>
-		<div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+		<div class="give-progress-bar <?php echo esc_attr( apply_filters( 'add_give_goal_progress_class', $class_goal ) ); ?>" role="progressbar" aria-valuemin="0" aria-valuemax="100"
 		     aria-valuenow="<?php echo esc_attr( $progress ); ?>">
-			<span style="width: <?php echo esc_attr( $progress ); ?>%;<?php if ( ! empty( $color ) ) {
+			<span class="<?php echo esc_attr( apply_filters( 'add_give_goal_progress_bar_class', $class_bar ) ); ?>" style="width: <?php echo esc_attr( $progress ); ?>%;<?php if ( ! empty( $color ) ) {
 				echo 'background-color:' . $color;
 			} ?>"></span>
 		</div><!-- /.give-progress-bar -->

@@ -661,6 +661,9 @@ function give_donation_grid_shortcode( $atts ) {
 	// Query to output donation forms.
 	$current_donations_query = new WP_Query( $current_donations );
 
+	add_filter( 'add_give_goal_progress_class', 'add_give_goal_progress_class', 10, 1 );
+	add_filter( 'add_give_goal_progress_bar_class', 'add_give_goal_progress_bar_class', 10, 1 );
+
 	printf( '<div class="give-donation-grid-container">' );
 
 	if ( $current_donations_query->have_posts() ) {
@@ -674,6 +677,9 @@ function give_donation_grid_shortcode( $atts ) {
 	}
 
 	printf( '</div>' );
+
+	remove_filter( 'add_give_goal_progress_class', 'add_give_goal_progress_class' );
+	remove_filter( 'add_give_goal_progress_bar_class', 'add_give_goal_progress_bar_class' );
 
 	$paginate_args = array(
 		'current'   => max( 1, get_query_var( 'paged' ) ),
