@@ -11,13 +11,13 @@ jQuery( function( $ ) {
 
 	// Donation grid shortcode popup.
 	$( '.grid-donate-now-modal-button' ).magnificPopup( {
-		removalDelay: 500, //delay removal by X to allow out-animation
-		callbacks   : {
-		beforeOpen  : function() {
-		       this.st.mainClass = this.st.el.attr('data-effect');
-			}
-		},
-		midClick: true
+		type: 'inline',
+		fixedContentPos: true,
+		fixedBgPos: true,
+		closeBtnInside: true,
+		midClick: true,
+		removalDelay: 300,
+		mainClass: 'my-mfp-slide-bottom',
 	});
 
 	// Disable button if it have give-disabled class init.

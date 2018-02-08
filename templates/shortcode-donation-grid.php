@@ -50,7 +50,7 @@ $atts          = $args[1]; // Shortcode attributes.
 			printf( '<a class="grid-donate-now grid-donate-now-modal-button" data-effect="mfp-zoom-out" href="#popup-form-%1$s">%2$s</a>', get_the_ID(), apply_filters( 'donation_grid_donate_now', esc_html__( 'Donate Now', 'grid' ) ) );
 
 			// The modal window.
-			printf( '<div id="popup-form-%1$s" class="give-donation-grid-item-form mfp-with-anim mfp-hide">', get_the_ID() );
+			printf( '<div id="popup-form-%1$s" class="give-donation-grid-item-form zoom-anim-dialog mfp-hide">', get_the_ID() );
 			give_get_donation_form( get_the_ID() );
 			printf( '</div>' );
 		}
