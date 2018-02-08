@@ -983,16 +983,20 @@ function give_show_login_register_option( $form_id ) {
 function _give_get_prefill_form_field_values( $form_id ) {
 	$logged_in_donor_info = array();
 
-	if ( is_user_logged_in() ) :
-		$donor_data    = get_userdata( get_current_user_id() );
-		$donor_address = give_get_donor_address( get_current_user_id() );
+	if ( is_user_logged_in() ) {
+
+		$user_id = get_current_user_id();
+
+		$donor         = new Give_Donor( $user_id, true );
+		$donor_data    = get_userdata( $user_id );
+		$donor_address = give_get_donor_address( $user_id );
 
 		$logged_in_donor_info = array(
 			// First name.
-			'give_first'      => $donor_data->first_name,
+			'give_first'      => $donor->get_first_name( $user_id ),
 
 			// Last name.
-			'give_last'       => $donor_data->last_name,
+			'give_last'       => $donor->get_last_name( $user_id ),
 
 			// Email.
 			'give_email'      => $donor_data->user_email,
@@ -1015,7 +1019,7 @@ function _give_get_prefill_form_field_values( $form_id ) {
 			// Zipcode
 			'card_zip'        => $donor_address['zip'],
 		);
-	endif;
+	}
 
 	// Bailout: Auto fill form field values only form form which donor is donating.
 	if (
