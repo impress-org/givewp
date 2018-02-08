@@ -619,7 +619,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	function get_payment_status( $payment ) {
 		$value = sprintf(
 			'<div class="give-donation-status status-%1$s"><span class="give-donation-status-icon"></span>&nbsp;%2$s</div>',
-			sanitize_title( $payment->status ),
+			$payment->status,
 			give_get_payment_status( $payment, true )
 		);
 
