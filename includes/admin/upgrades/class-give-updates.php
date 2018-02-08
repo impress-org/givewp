@@ -339,7 +339,7 @@ class Give_Updates {
 
 		delete_option('give_upgrade_error');
 
-		$this->__health_background_update( $this, true );
+		$this->__health_background_update( $this );
 		$batch = self::$background_updater->get_all_batch();
 
 		// Bailout: if batch is empty
@@ -426,10 +426,9 @@ class Give_Updates {
 	 * @access public
 	 *
 	 * @param Give_Updates $give_updates
-	 * @param bool         $force
 	 */
-	public function __health_background_update( $give_updates, $force = false ) {
-		if ( ! $this->is_doing_updates() && ! $force ) {
+	public function __health_background_update( $give_updates ) {
+		if ( ! $this->is_doing_updates() ) {
 			return;
 		}
 
@@ -501,7 +500,7 @@ class Give_Updates {
 			self::$background_updater->delete($batch->key);
 
 			if( self::$background_updater->has_queue() ) {
-				$this->__health_background_update( $this, true );
+				$this->__health_background_update( $this );
 			} else{
 				self::$background_updater->complete();
 			}
