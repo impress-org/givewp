@@ -499,7 +499,12 @@ class Give_Updates {
 		if( empty( $batch->data ) ) {
 			// Complete batch if do not have any data to process.
 			self::$background_updater->delete($batch->key);
-			self::$background_updater->complete();
+
+			if( self::$background_updater->has_queue() ) {
+				$this->__health_background_update( $this, true );
+			} else{
+				self::$background_updater->complete();
+			}
 
 		}elseif ( $batch_data_count !== count( $batch->data ) ) {
 
