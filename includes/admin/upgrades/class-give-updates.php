@@ -452,6 +452,9 @@ class Give_Updates {
 				if ( ! is_callable( $update['callback'] ) ) {
 					$log_data .= 'Removing missing callback update: ' . "{$update['id']}\n";
 					unset( $batch->data[ $index ] );
+				}elseif ( give_has_upgrade_completed( $update['id'] ) ) {
+					$log_data .= 'Removing already completed update: ' . "{$update['id']}\n";
+					unset( $batch->data[ $index ] );
 				}
 
 				if ( ! empty( $update['depend'] ) ) {
