@@ -337,10 +337,13 @@ class Give_Updates {
 			return false;
 		}
 
+		delete_option('give_upgrade_error');
+
+		$this->__health_background_update( $this, true );
 		$batch = self::$background_updater->get_all_batch();
 
 		// Bailout: if batch is empty
-		if( empty( $batch ) ) {
+		if( empty( $batch->data ) ) {
 			return false;
 		}
 
@@ -355,7 +358,6 @@ class Give_Updates {
 			return true;
 		}
 
-		delete_option('give_upgrade_error');
 		update_option( 'give_paused_batches', $batch,  'no' );
 		delete_option( $batch->key );
 		delete_site_transient( self::$background_updater->get_identifier() . '_process_lock' );
@@ -424,9 +426,10 @@ class Give_Updates {
 	 * @access public
 	 *
 	 * @param Give_Updates $give_updates
+	 * @param bool         $force
 	 */
-	public function __health_background_update( $give_updates ) {
-		if ( ! $this->is_doing_updates() ) {
+	public function __health_background_update( $give_updates, $force = false ) {
+		if ( ! $this->is_doing_updates() && ! $force ) {
 			return;
 		}
 
@@ -493,7 +496,13 @@ class Give_Updates {
 			}
 		}
 
-		if ( $batch_data_count !== count( $batch->data ) ) {
+		if( empty( $batch->data ) ) {
+			// Complete batch if do not have any data to process.
+			self::$background_updater->delete($batch->key);
+			self::$background_updater->complete();
+
+		}elseif ( $batch_data_count !== count( $batch->data ) ) {
+
 			$log_data .= 'Updating batch' . "\n";
 			$log_data .= print_r( $batch, true );
 

@@ -277,7 +277,7 @@ class Give_Background_Updater extends WP_Background_Process {
 	 * Override if applicable, but ensure that the below actions are
 	 * performed, or, call parent::complete().
 	 */
-	protected function complete() {
+	public function complete() {
 		if ( $this->is_paused_process() ) {
 			return false;
 		}
