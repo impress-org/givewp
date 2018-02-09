@@ -1781,8 +1781,9 @@ function give_get_donation_form_title( $donation, $args = array() ) {
 		}
 
 		$form_title_html = $form_title;
+		$donation_option  = give_get_meta( $form_id, '_give_price_option', true );
 
-		if ( 'custom' === $price_id ) {
+		if ( 'custom' === $price_id && 'set' !== $donation_option ) {
 			$custom_amount_text = give_get_meta( $form_id, '_give_custom_amount_text', true );
 			$level_label        = ! empty( $custom_amount_text ) ? $custom_amount_text : __( 'Custom Amount', 'give' );
 		} elseif ( give_has_variable_prices( $form_id ) ) {
