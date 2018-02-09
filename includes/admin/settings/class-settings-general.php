@@ -91,8 +91,12 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'name'    => __( 'Enable reCAPTCHA', 'give' ),
 							'desc'    => __( 'Would you like to enable the reCAPTCHA feature?', 'give' ),
 							'id'      => 'enable_recaptcha',
-							'type'    => 'checkbox',
+							'type'    => 'radio_inline',
 							'default' => 'disabled',
+							'options' => array(
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							),
 						),
 						array(
 							'id'      => 'recaptcha_key',
