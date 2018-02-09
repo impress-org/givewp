@@ -1781,11 +1781,17 @@ function give_get_donation_form_title( $donation, $args = array() ) {
 		}
 
 		$form_title_html = $form_title;
-		$donation_option  = give_get_meta( $form_id, '_give_price_option', true );
 
-		if ( 'custom' === $price_id && 'set' !== $donation_option ) {
+		if ( 'custom' === $price_id ) {
+
 			$custom_amount_text = give_get_meta( $form_id, '_give_custom_amount_text', true );
 			$level_label        = ! empty( $custom_amount_text ) ? $custom_amount_text : __( 'Custom Amount', 'give' );
+
+			// Show custom amount level only in backend otherwise hide it.
+			if( 'set' === give_get_meta( $form_id, '_give_price_option', true ) && ! is_admin()  ) {
+				$level_label = '';
+			}
+
 		} elseif ( give_has_variable_prices( $form_id ) ) {
 			$level_label = give_get_price_option_name( $form_id, $price_id, $donation->ID, false );
 		}
