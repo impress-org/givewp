@@ -621,12 +621,9 @@ var give_setting_edit = false;
 				if ( 'enabled' === fieldValue ) {
 					$( '#recaptcha_key' ).parents( 'tr' ).show();
 					$( '#recaptcha_secret' ).parents( 'tr' ).show();
-					$( '#enable_recaptcha' ).parents( 'tr' ).show();
-					
 				} else {
 					$( '#recaptcha_key' ).parents( 'tr' ).hide();
 					$( '#recaptcha_secret' ).parents( 'tr' ).hide();
-					$( '#enable_recaptcha' ).parents( 'tr' ).hide();
 				}
 			}).change();
 
