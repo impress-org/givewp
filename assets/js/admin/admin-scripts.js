@@ -619,8 +619,12 @@ var give_setting_edit = false;
 			emailAccess.on( 'change', function() {
 				var fieldValue = $( 'input[name="email_access"]:checked', '.give-setting-tab-body-general' ).val();
 				if ( 'enabled' === fieldValue ) {
+					$( '#recaptcha_key' ).parents( 'tr' ).show();
+					$( '#recaptcha_secret' ).parents( 'tr' ).show();
 					$( 'input[name="enable_recaptcha"]' ).parents( 'tr' ).show();
 				} else {
+					$( '#recaptcha_key' ).parents( 'tr' ).hide();
+					$( '#recaptcha_secret' ).parents( 'tr' ).hide();
 					$( 'input[name="enable_recaptcha"]' ).parents( 'tr' ).hide();
 				}
 			}).change();
