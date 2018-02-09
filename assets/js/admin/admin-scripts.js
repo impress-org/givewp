@@ -637,6 +637,23 @@ var give_setting_edit = false;
 			}).change();
 
 			/**
+			 * Email reCAPTCHA
+			 */
+			var recaptcha = $( 'input[name="enable_recaptcha"]', '.give-setting-tab-body-general' );
+			recaptcha.on( 'change', function() {
+				var fieldValueEmail = $( 'input[name="email_access"]:checked', '.give-setting-tab-body-general' ).val();
+				var fieldValueRecaptcha = $( 'input[name="enable_recaptcha"]:checked', '.give-setting-tab-body-general' ).val();
+
+				if ( 'enabled' === fieldValueEmail && 'enabled' === fieldValueRecaptcha ) {
+					$( '#recaptcha_key' ).parents( 'tr' ).show();
+					$( '#recaptcha_secret' ).parents( 'tr' ).show();
+				} else {
+					$( '#recaptcha_key' ).parents( 'tr' ).hide();
+					$( '#recaptcha_secret' ).parents( 'tr' ).hide();
+				}
+			}).change();
+
+			/**
 			 * Form featured image
 			 */
 			var form_featured_image = $('input[name="form_featured_img"]', '.give-setting-tab-body-display');
