@@ -617,8 +617,34 @@ var give_setting_edit = false;
 			 */
 			var emailAccess = $( 'input[name="email_access"]', '.give-setting-tab-body-general' );
 			emailAccess.on( 'change', function() {
-				var fieldValue = $( 'input[name="email_access"]:checked', '.give-setting-tab-body-general' ).val();
-				if ( 'enabled' === fieldValue ) {
+				var fieldValueEmail = $( 'input[name="email_access"]:checked', '.give-setting-tab-body-general' ).val();
+				var fieldValueRecaptcha = $( 'input[name="enable_recaptcha"]:checked', '.give-setting-tab-body-general' ).val();
+				if ( 'enabled' === fieldValueEmail ) {
+					$( 'input[name="enable_recaptcha"]' ).parents( 'tr' ).show();
+
+					if ( 'enabled' === fieldValueRecaptcha ) {
+						$( '#recaptcha_key' ).parents( 'tr' ).show();
+						$( '#recaptcha_secret' ).parents( 'tr' ).show();
+					} else {
+						$( '#recaptcha_key' ).parents( 'tr' ).hide();
+						$( '#recaptcha_secret' ).parents( 'tr' ).hide();
+					}				
+				} else {
+					$( '#recaptcha_key' ).parents( 'tr' ).hide();
+					$( '#recaptcha_secret' ).parents( 'tr' ).hide();
+					$( 'input[name="enable_recaptcha"]' ).parents( 'tr' ).hide();
+				}
+			}).change();
+
+			/**
+			 * Email reCAPTCHA
+			 */
+			var recaptcha = $( 'input[name="enable_recaptcha"]', '.give-setting-tab-body-general' );
+			recaptcha.on( 'change', function() {
+				var fieldValueEmail = $( 'input[name="email_access"]:checked', '.give-setting-tab-body-general' ).val();
+				var fieldValueRecaptcha = $( 'input[name="enable_recaptcha"]:checked', '.give-setting-tab-body-general' ).val();
+
+				if ( 'enabled' === fieldValueEmail && 'enabled' === fieldValueRecaptcha ) {
 					$( '#recaptcha_key' ).parents( 'tr' ).show();
 					$( '#recaptcha_secret' ).parents( 'tr' ).show();
 				} else {

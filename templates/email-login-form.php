@@ -15,7 +15,8 @@ if ( $give_access_form_outputted ) {
 
 $recaptcha_key    = give_get_option( 'recaptcha_key' );
 $recaptcha_secret = give_get_option( 'recaptcha_secret' );
-$enable_recaptcha = ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ? true : false;
+
+$enable_recaptcha = ( give_is_setting_enabled( give_get_option( 'enable_recaptcha' ) ) ) && ! empty( $recaptcha_key ) && ! empty( $recaptcha_secret ) ? true : false;
 
 // Email already sent?
 if ( isset( $_POST['email-access-sent'] ) ) {
