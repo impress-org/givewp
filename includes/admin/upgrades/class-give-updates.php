@@ -149,8 +149,8 @@ class Give_Updates {
 		add_action( 'wp_ajax_give_db_updates_info', array( $this, '__give_db_updates_info' ) );
 		add_action( 'wp_ajax_give_run_db_updates', array( $this, '__give_start_updating' ) );
 		add_action( 'admin_init', array( $this, '__redirect_admin' ) );
-		add_action( 'admin_init', array( $this, '__pause_db_update' ), -1 );
-		add_action( 'admin_init', array( $this, '__restart_db_update' ), -1 );
+		add_action( 'admin_init', array( $this, '__pause_db_update' ), - 1 );
+		add_action( 'admin_init', array( $this, '__restart_db_update' ), - 1 );
 		add_action( 'admin_notices', array( $this, '__show_notice' ) );
 		add_action( 'give_restart_db_upgrade', array( $this, '__health_background_update' ) );
 
@@ -241,7 +241,7 @@ class Give_Updates {
 	 */
 	public function __register_menu() {
 		// Bailout.
-		if( ! give_test_ajax_works() ) {
+		if ( ! give_test_ajax_works() ) {
 			return;
 		}
 
@@ -337,13 +337,13 @@ class Give_Updates {
 			return false;
 		}
 
-		delete_option('give_upgrade_error');
+		delete_option( 'give_upgrade_error' );
 
 		$this->__health_background_update( $this );
 		$batch = self::$background_updater->get_all_batch();
 
 		// Bailout: if batch is empty
-		if( empty( $batch->data ) ) {
+		if ( empty( $batch->data ) ) {
 			return false;
 		}
 
@@ -352,13 +352,13 @@ class Give_Updates {
 
 		// Do not stop background process immediately if task running.
 		// @see Give_Background_Updater::lock_process
-		if( ! $force && self::$background_updater->is_process_running()  ) {
+		if ( ! $force && self::$background_updater->is_process_running() ) {
 			update_option( 'give_pause_upgrade', 1 );
 
 			return true;
 		}
 
-		update_option( 'give_paused_batches', $batch,  'no' );
+		update_option( 'give_paused_batches', $batch, 'no' );
 		delete_option( $batch->key );
 		delete_site_transient( self::$background_updater->get_identifier() . '_process_lock' );
 		wp_clear_scheduled_hook( self::$background_updater->get_cron_identifier() );
@@ -442,11 +442,14 @@ class Give_Updates {
 		$log_data             = '';
 		$doing_upgrade_args   = get_option( 'give_doing_upgrade' );
 
-		if( ! empty( $doing_upgrade_args ) ) {
+		if ( ! empty( $doing_upgrade_args ) ) {
 			$log_data .= 'Doing update:' . "\n";
 			$log_data .= print_r( $doing_upgrade_args, true ) . "\n";
 		}
 
+		/**
+		 * Add remove upgrade from batch
+		 */
 		if ( ! empty( $batch->data ) ) {
 
 			foreach ( $batch->data as $index => $update ) {
@@ -455,7 +458,7 @@ class Give_Updates {
 				if ( ! is_callable( $update['callback'] ) ) {
 					$log_data .= 'Removing missing callback update: ' . "{$update['id']}\n";
 					unset( $batch->data[ $index ] );
-				}elseif ( give_has_upgrade_completed( $update['id'] ) ) {
+				} elseif ( give_has_upgrade_completed( $update['id'] ) ) {
 					$log_data .= 'Removing already completed update: ' . "{$update['id']}\n";
 					unset( $batch->data[ $index ] );
 				}
@@ -477,6 +480,9 @@ class Give_Updates {
 			}
 		}
 
+		/**
+		 * Add new upgrade to batch
+		 */
 		if ( $new_updates = $this->get_updates( 'database', 'new' ) ) {
 			$all_batch_update_ids = ! empty( $batch->data ) ? wp_list_pluck( $batch->data, 'id' ) : array();
 
@@ -495,17 +501,20 @@ class Give_Updates {
 			}
 		}
 
-		if( empty( $batch->data ) ) {
+		/**
+		 * Fix batch
+		 */
+		if ( empty( $batch->data ) ) {
 			// Complete batch if do not have any data to process.
-			self::$background_updater->delete($batch->key);
+			self::$background_updater->delete( $batch->key );
 
-			if( self::$background_updater->has_queue() ) {
+			if ( self::$background_updater->has_queue() ) {
 				$this->__health_background_update( $this );
-			} else{
+			} else {
 				self::$background_updater->complete();
 			}
 
-		}elseif ( $batch_data_count !== count( $batch->data ) ) {
+		} elseif ( $batch_data_count !== count( $batch->data ) ) {
 
 			$log_data .= 'Updating batch' . "\n";
 			$log_data .= print_r( $batch, true );
@@ -532,10 +541,34 @@ class Give_Updates {
 
 				Give_Updates::$background_updater->save();
 			}
-
-
-			Give()->logs->add( 'Update Health Check', $log_data, 0, 'update' );
 		}
+
+
+		/**
+		 * Fix give_doing_upgrade option
+		 */
+		$update_option = false;
+		$fresh_new_db_count = $this->get_total_new_db_update_count( true );
+		if ( $fresh_new_db_count < $doing_upgrade_args['update'] ) {
+			update_option( 'give_db_update_count', $fresh_new_db_count );
+			$doing_upgrade_args['update']  = 1;
+			$doing_upgrade_args['heading'] = sprintf( 'Update %s of %s', 1, $fresh_new_db_count );
+			$update_option                 = true;
+		}
+
+		if ( 101 < $doing_upgrade_args['total_percentage'] ) {
+			$doing_upgrade_args['total_percentage'] = $this->get_db_update_processing_percentage( true );
+			$update_option                          = true;
+		}
+
+		if ( $update_option ) {
+			update_option( 'give_doing_upgrade', $doing_upgrade_args );
+
+			$log_data .= 'Updated doing update:' . "\n";
+			$log_data .= print_r( $doing_upgrade_args, true ) . "\n";
+		}
+
+		Give()->logs->add( 'Update Health Check', $log_data, 0, 'update' );
 	}
 
 
@@ -596,7 +629,7 @@ class Give_Updates {
 		}
 
 		// Bailout if doing upgrades.
-		if( $this->is_doing_updates() ) {
+		if ( $this->is_doing_updates() ) {
 			return;
 		}
 
@@ -647,7 +680,7 @@ class Give_Updates {
 			</script>
 			<?php
 			$desc_html = ob_get_clean();
-			
+
 			Give()->notices->register_notice( array(
 				'id'          => 'give_upgrade_db',
 				'type'        => 'updated',
@@ -698,12 +731,12 @@ class Give_Updates {
 		add_option( 'give_db_update_count', count( $updates ), '', 'no' );
 
 		add_option( 'give_doing_upgrade', array(
-			'update_info' => $updates[0],
-			'step'        => 1,
-			'update'      => 1,
-			'heading'     => sprintf( 'Update %s of %s', 1, count( $updates ) ),
-			'percentage'  => 0,
-			'total_percentage'  => 0,
+			'update_info'      => $updates[0],
+			'step'             => 1,
+			'update'           => 1,
+			'heading'          => sprintf( 'Update %s of %s', 1, count( $updates ) ),
+			'percentage'       => 0,
+			'total_percentage' => 0,
 		), '', 'no' );
 
 		self::$background_updater->save()->dispatch();
@@ -1028,12 +1061,16 @@ class Give_Updates {
 	 * @since  2.0
 	 * @access public
 	 *
+	 * @param bool $refresh
+	 *
 	 * @return int
 	 */
-	public function get_total_new_db_update_count() {
-		return $this->is_doing_updates() ?
+	public function get_total_new_db_update_count( $refresh = false ) {
+		$update_count = $this->is_doing_updates() && ! $refresh ?
 			get_option( 'give_db_update_count' ) :
 			$this->get_pending_db_update_count();
+
+		return $update_count;
 	}
 
 	/**
@@ -1042,14 +1079,19 @@ class Give_Updates {
 	 * @since  2.0
 	 * @access public
 	 *
+	 * @param bool $refresh
+	 *
 	 * @return int
 	 */
-	public function get_running_db_update() {
-		$current_update = get_option( 'give_doing_upgrade' );
+	public function get_running_db_update( $refresh = false ) {
+		$current_update = 1;
 
-		return $this->is_doing_updates() ?
-			$current_update['update'] :
-			1;
+		if ( $this->is_doing_updates() && ! $refresh ) {
+			$current_update = get_option( 'give_doing_upgrade' );
+			$current_update = $current_update['update'];
+		}
+
+		return $current_update;
 	}
 
 	/**
@@ -1057,16 +1099,19 @@ class Give_Updates {
 	 *
 	 * @since  2.0
 	 * @access public
+	 *
+	 * @param bool $refresh
+	 *
 	 * @return float|int
 	 */
-	public function get_db_update_processing_percentage() {
+	public function get_db_update_processing_percentage( $refresh = false ) {
 		// Bailout.
-		if ( ! $this->get_total_new_db_update_count() ) {
+		if ( ! $this->get_total_new_db_update_count( $refresh ) ) {
 			return 0;
 		}
 
 		$resume_update            = get_option( 'give_doing_upgrade' );
-		$update_count_percentages = ( ( $this->get_running_db_update() - 1 ) / $this->get_total_new_db_update_count() ) * 100;
+		$update_count_percentages = ( ( $this->get_running_db_update( $refresh ) - 1 ) / $this->get_total_new_db_update_count( $refresh ) ) * 100;
 		$update_percentage_share  = ( 1 / $this->get_total_new_db_update_count() ) * 100;
 		$upgrade_percentage       = ( ( $resume_update['percentage'] * $update_percentage_share ) / 100 );
 
