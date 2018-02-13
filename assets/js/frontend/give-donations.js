@@ -84,7 +84,8 @@ Give = {
 				var decimal_amount = '',
 					result,
 					amount,
-					decimal_index  = actual_price.indexOf('.');
+					decimal_index  = actual_price.indexOf('.'),
+					first_iteration = true;
 
 				if ((-1 !== decimal_index) && args.precision) {
 					decimal_amount = Number(actual_price.substr(parseInt(decimal_index)))
@@ -102,17 +103,30 @@ Give = {
 				}
 
 				// Extract last 3 from amount
-				result = actual_price.substr(-3);
+				if ( parseInt( actual_price ) == actual_price ) {
+					result = actual_price.substr(-3);
+				} else {
+					result = actual_price.substr(-2);
+				}
+
 				amount = actual_price.substr(0, parseInt(actual_price.length) - 3);
 
-				// Apply digits 2 by 2
-				while (amount.length > 0) {
-					result = amount.substr(-2) + args.thousand + result;
-					amount = amount.substr(0, parseInt(amount.length) - 2);
+				if ( parseInt( actual_price ) == actual_price ) {
+					// Apply digits 2 by 2
+					while (amount.length > 0) {
+						result = amount.substr(-2) + args.thousand + result;
+						amount = amount.substr(0, parseInt(amount.length) - 2);
+					}
+				} else {
+					while (amount.length > 0) {
+						result = amount.substr(-3) + ( ( first_iteration ) ? args.decimal : args.thousand ) + result;
+						amount = amount.substr(0, parseInt(amount.length) - 3);
+						first_iteration = false;
+					}
 				}
 
 				if (decimal_amount.length) {
-					result = result + ( '.' === decimal_amount ? '' : decimal_amount );
+					result = result + ( ( '.' === decimal_amount ) ? '' : decimal_amount );
 				}
 
 				price = result;
