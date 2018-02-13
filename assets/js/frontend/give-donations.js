@@ -129,7 +129,7 @@ Give = {
 					args.format = "%v%s";
 				}
 
-				// price = accounting.formatMoney(price, args);
+				price = accounting.formatMoney(price, args);
 			}
 
 			return price;
