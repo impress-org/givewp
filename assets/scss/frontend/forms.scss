@@ -16,6 +16,12 @@ Layout
 
 [id*='give-form'] {
 
+	select,
+	input,
+	textarea {
+		height: auto;
+	}
+
 	.give-hidden {
 		display: none;
 	}
