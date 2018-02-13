@@ -79,8 +79,11 @@ Give = {
 			args.precision = parseInt(args.precision);
 
 			if ( 'INR' === args.currency ) {
-				// parse a value from any formatted number/currency string.
-				var price = accounting.unformat( price, '.' ).toString(),
+				// Parse a value from any formatted number/currency string.
+				var actual_amount = accounting.unformat( price, '.' ).toString(),
+
+				    // Update amount to precision.
+				    price = ( Number( actual_amount ) ).toFixed( args.precision ),
 
 				    // Split into decimal and fractional part.
 				    decimal_and_fraction = price.toString().split( '.' ),
