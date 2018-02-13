@@ -52,7 +52,7 @@ Give = {
 			// Global currency setting.
 			var format_args = {
 				symbol: '',
-				decimal: parseInt(give_global_vars.decimal_separator),
+				decimal: give_global_vars.decimal_separator,
 				thousand: give_global_vars.thousands_separator,
 				precision: give_global_vars.number_decimals,
 				currency: give_global_vars.currency
@@ -92,7 +92,6 @@ Give = {
 						.toString()
 						.substr(1);
 					actual_price   = actual_price.substr(0, parseInt(decimal_index));
-
 					if (!decimal_amount.length) {
 						decimal_amount = '.0000000000'.substr(0, (parseInt(decimal_index) + 1));
 					} else if ((args.precision + 1) > decimal_amount.length) {
@@ -113,11 +112,10 @@ Give = {
 				}
 
 				if (decimal_amount.length) {
-					result = result + decimal_amount;
+					result = result + ( '.' === decimal_amount ? '' : decimal_amount );
 				}
 
 				price = result;
-
 				if (undefined !== args.symbol && args.symbol.length) {
 					if ('after' === args.position) {
 						price = price + args.symbol;
@@ -131,7 +129,7 @@ Give = {
 					args.format = "%v%s";
 				}
 
-				price = accounting.formatMoney(price, args);
+				// price = accounting.formatMoney(price, args);
 			}
 
 			return price;
