@@ -95,7 +95,7 @@ Give = {
 				    remaining_decimal_digits = decimal_and_fraction[0].substring( 0, decimal_and_fraction[0].length - 3 ),
 				    output = '';
 
-				if ( '' != remaining_decimal_digits ) {
+				if ( '' !== remaining_decimal_digits ) {
 					last_three_decimal_digits = args.thousand + last_three_decimal_digits;
 				}
 
