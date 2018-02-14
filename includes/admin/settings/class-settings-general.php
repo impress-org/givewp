@@ -88,6 +88,17 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							),
 						),
 						array(
+							'name'    => __( 'Enable reCAPTCHA', 'give' ),
+							'desc'    => __( 'Would you like to enable the reCAPTCHA feature?', 'give' ),
+							'id'      => 'enable_recaptcha',
+							'type'    => 'radio_inline',
+							'default' => 'disabled',
+							'options' => array(
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+							),
+						),
+						array(
 							'id'      => 'recaptcha_key',
 							'name'    => __( 'reCAPTCHA Site Key', 'give' ),
 							/* translators: %s: https://www.google.com/recaptcha/ */

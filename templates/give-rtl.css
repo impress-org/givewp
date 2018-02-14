@@ -844,6 +844,11 @@ Layout
   .give-clearfix:after {
     clear: both; }
 
+[id*='give-form'] select,
+[id*='give-form'] input,
+[id*='give-form'] textarea {
+  height: auto; }
+
 [id*='give-form'] .give-hidden {
   display: none; }
 

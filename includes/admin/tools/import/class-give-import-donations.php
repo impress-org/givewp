@@ -187,9 +187,10 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 								<th></th>
 								<th>
 									<input type="submit"
-										   class="button button-primary button-large button-secondary <?php echo "step-{$step}"; ?>"
-										   id="recount-stats-submit"
-										   value="<?php esc_attr_e( 'Submit', 'give' ); ?>"/>
+									       class=" button button-primary button-large button-secondary <?php echo "step-{$step}"; ?>"
+									       id="recount-stats-submit"
+									       <?php echo ( 2 === $step ) ? 'disabled' : ''; ?>
+									       value="<?php esc_attr_e( 'Submit', 'give' ); ?>"/>
 								</th>
 							</tr>
 							<?php
@@ -422,6 +423,49 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 				<tr valign="top" class="give-import-dropdown">
 					<th colspan="2">
 						<h2 id="give-import-title"><?php esc_html_e( 'Map CSV fields to donations', 'give' ) ?></h2>
+
+						<p class="give-import-donation-required-fields-title"><?php _e( 'Required Fields' ); ?></p>
+
+						<p class="give-field-description"><?php _e( 'These fields are required for the import to submitted' ); ?></p>
+
+						<ul class="give-import-donation-required-fields">
+							<li class="give-import-donation-required-email" title="Please configure all required fields to start the import process.">
+								<span class="give-import-donation-required-symbol dashicons dashicons-no-alt"></span>
+								<span class="give-import-donation-required-text">
+									<?php
+									_e( 'Email Access', 'give' );
+									?>
+								</span>
+							</li>
+
+							<li class="give-import-donation-required-first" title="Please configure all required fields to start the import process.">
+								<span class="give-import-donation-required-symbol dashicons dashicons-no-alt"></span>
+								<span class="give-import-donation-required-text">
+									<?php
+									_e( 'First Name', 'give' );
+									?>
+								</span>
+							</li>
+
+							<li class="give-import-donation-required-amount" title="Please configure all required fields to start the import process.">
+								<span class="give-import-donation-required-symbol dashicons dashicons-no-alt"></span>
+								<span class="give-import-donation-required-text">
+									<?php
+									_e( 'Donation Amount', 'give' );
+									?>
+								</span>
+							</li>
+
+							<li class="give-import-donation-required-form" title="Please configure all required fields to start the import process.">
+								<span class="give-import-donation-required-symbol dashicons dashicons-no-alt"></span>
+								<span class="give-import-donation-required-text">
+									<?php
+									_e( 'Form Title or ID', 'give' );
+									?>
+								</span>
+							</li>
+						</ul>
+
 						<p class="give-field-description"><?php esc_html_e( 'Select fields from your CSV file to map against donations fields or to ignore during import.', 'give' ) ?></p>
 					</th>
 				</tr>
