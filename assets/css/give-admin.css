@@ -1599,7 +1599,9 @@ table.give-table td.row-title p {
 .form-table td.give-radio-inline fieldset li > label {
   margin: 5px 0 0 !important; }
 
-p.give-field-description, .cmb2-metabox-description {
+p.give-field-description,
+div.give-field-description,
+.cmb2-metabox-description {
   color: #aaaaaa;
   font-style: italic;
   font-size: 13px !important; }
