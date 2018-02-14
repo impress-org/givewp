@@ -80,22 +80,21 @@ Give = {
 
 			if ( 'INR' === args.currency ) {
 				// Parse a value from any formatted number/currency string.
-				var actual_amount = accounting.unformat( price, '.' ).toString(),
+				var actual_amount = accounting.unformat(price, '.').toString();
 
-				    // Update amount to precision.
-				    price = ( Number( actual_amount ) ).toFixed( args.precision ),
+				// Update amount to precision.
+				price = (Number(actual_amount)).toFixed(args.precision);
 
-				    // Split into decimal and fractional part.
-				    decimal_and_fraction = price.toString().split( '.' ),
+				// Split into decimal and fractional part.
+				var decimal_and_fraction      = price.toString().split('.'),
 
-				    // Extract last 3 digits of the decimal part.
-				    last_three_decimal_digits = decimal_and_fraction[0].substring( decimal_and_fraction[0].length - 3 ),
+					// Extract last 3 digits of the decimal part.
+					last_three_decimal_digits = decimal_and_fraction[0].substring(decimal_and_fraction[0].length - 3),
 
-				    // The remaining digits of the decimal part.
-				    remaining_decimal_digits = decimal_and_fraction[0].substring( 0, decimal_and_fraction[0].length - 3 ),
-				    output = '';
+					// The remaining digits of the decimal part.
+					remaining_decimal_digits  = decimal_and_fraction[0].substring(0, decimal_and_fraction[0].length - 3);
 
-				if ( '' !== remaining_decimal_digits ) {
+				if ('' !== remaining_decimal_digits) {
 					last_three_decimal_digits = args.thousand + last_three_decimal_digits;
 				}
 
