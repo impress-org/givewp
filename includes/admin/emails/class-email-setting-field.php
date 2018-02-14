@@ -237,7 +237,7 @@ class Give_Email_Setting_Field {
 				__( 'Available template tags', 'give' ),
 				$email_tag_list,
 				sprintf(
-					'<br><a href="%1$s">%2$s</a> %3$s',
+					'<br><a href="%1$s" target="_blank">%2$s</a> %3$s',
 					esc_url('http://docs.givewp.com/meta-email-tags'),
 					__( 'See our documentation', 'give' ),
 					__( 'for examples of how to use custom meta email tags to output additional donor or donation information in your Give emails.', 'give' )
