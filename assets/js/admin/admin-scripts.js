@@ -1103,7 +1103,7 @@ var give_setting_edit = false;
 			var $self = this, step = 1, resume_update_step = 0;
 
 			$self.el.main_container = Give_Selector_Cache.get('#give-db-updates');
-			$self.el.update_link = Give_Selector_Cache.get('.give-update-button a', $self.el.main_container);
+			$self.el.update_link = Give_Selector_Cache.get('.give-update-now', $self.el.main_container);
 			$self.el.run_upload_container = Give_Selector_Cache.get('.give-run-database-update', $self.el.progress_main_container);
 			$self.el.progress_main_container = Give_Selector_Cache.get('.progress-container', $self.el.main_container);
 			$self.el.heading = Give_Selector_Cache.get('.update-message', $self.el.progress_main_container);
@@ -1196,12 +1196,15 @@ var give_setting_edit = false;
 								$self.el.heading.html('<strong>' + response.data.heading + '</strong>');
 							}
 
-							notice_wrap.html('<div class="notice notice-error"><p>' + response.data.message + '</p></div>');
-
-							setTimeout(function () {
-								$self.el.update_link.removeClass('active').show();
-								$self.el.progress_main_container.addClass('give-hidden');
-							}, 1000);
+							if( response.data.message ) {
+								$self.el.update_link.closest('p').remove();
+								notice_wrap.html('<div class="notice notice-error is-dismissible"><p>' + response.data.message + '</p><button type="button" class="notice-dismiss"></button></div>');
+							} else{
+								setTimeout(function () {
+									$self.el.update_link.removeClass('active').show();
+									$self.el.progress_main_container.addClass('give-hidden');
+								}, 1000);
+							}
 						}
 					} else {
 						if (response && -1 !== $.inArray('percentage', Object.keys(response.data))) {
