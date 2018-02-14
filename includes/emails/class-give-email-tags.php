@@ -1471,9 +1471,6 @@ function __give_render_metadata_email_tag( $content, $tag_args ) {
 			}
 		}
 
-		error_log( print_r( $search, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-		error_log( print_r( $replace, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-
 		if ( ! empty( $search ) && ! empty( $replace ) ) {
 			$content = str_replace( $search, $replace, $content );
 		}
