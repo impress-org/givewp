@@ -1380,6 +1380,9 @@ function give_get_reset_password_url( $user_id ) {
  * This function helps to render meta data with from dynamic meta data email tag.
  * Note: meta data email tag must be in given format {meta_*}
  *
+ * @since 2.0.3
+ * @see https://github.com/WordImpress/Give/issues/2801#issuecomment-365136602
+ *
  * @param $content
  * @param $tag_args
  *
