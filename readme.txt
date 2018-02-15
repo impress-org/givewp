@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 4.9
 Requires PHP: 5.3
-Stable tag: 2.0.3
+Stable tag: 2.0.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -207,6 +207,8 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.0.4:  =
 
 = 2.0.3: February 14th, 2018  =
 * This release contains additional health checks for sites still experiencing 2.0+ update issues. There are no additional upgrades needed to perform if you have already updated successfully within this release.
