@@ -617,8 +617,34 @@ var give_setting_edit = false;
 			 */
 			var emailAccess = $( 'input[name="email_access"]', '.give-setting-tab-body-general' );
 			emailAccess.on( 'change', function() {
-				var fieldValue = $( 'input[name="email_access"]:checked', '.give-setting-tab-body-general' ).val();
-				if ( 'enabled' === fieldValue ) {
+				var fieldValueEmail = $( 'input[name="email_access"]:checked', '.give-setting-tab-body-general' ).val();
+				var fieldValueRecaptcha = $( 'input[name="enable_recaptcha"]:checked', '.give-setting-tab-body-general' ).val();
+				if ( 'enabled' === fieldValueEmail ) {
+					$( 'input[name="enable_recaptcha"]' ).parents( 'tr' ).show();
+
+					if ( 'enabled' === fieldValueRecaptcha ) {
+						$( '#recaptcha_key' ).parents( 'tr' ).show();
+						$( '#recaptcha_secret' ).parents( 'tr' ).show();
+					} else {
+						$( '#recaptcha_key' ).parents( 'tr' ).hide();
+						$( '#recaptcha_secret' ).parents( 'tr' ).hide();
+					}
+				} else {
+					$( '#recaptcha_key' ).parents( 'tr' ).hide();
+					$( '#recaptcha_secret' ).parents( 'tr' ).hide();
+					$( 'input[name="enable_recaptcha"]' ).parents( 'tr' ).hide();
+				}
+			} ).change();
+
+			/**
+			 * Email reCAPTCHA
+			 */
+			var recaptcha = $( 'input[name="enable_recaptcha"]', '.give-setting-tab-body-general' );
+			recaptcha.on( 'change', function() {
+				var fieldValueEmail = $( 'input[name="email_access"]:checked', '.give-setting-tab-body-general' ).val();
+				var fieldValueRecaptcha = $( 'input[name="enable_recaptcha"]:checked', '.give-setting-tab-body-general' ).val();
+
+				if ( 'enabled' === fieldValueEmail && 'enabled' === fieldValueRecaptcha ) {
 					$( '#recaptcha_key' ).parents( 'tr' ).show();
 					$( '#recaptcha_secret' ).parents( 'tr' ).show();
 				} else {
@@ -965,6 +991,7 @@ var give_setting_edit = false;
 					var data = $( this ).serialize();
 
 					submitButton.addClass( 'button-disabled' );
+					$( 'form.give-export-form select' ).attr( 'disabled', true ).trigger( 'chosen:updated' );
 					$( this ).find( '.notice-wrap' ).remove();
 					$( this ).append( '<div class="notice-wrap give-clearfix"><span class="spinner is-active"></span><div class="give-progress"><div></div></div></div>' );
 
@@ -1011,6 +1038,7 @@ var give_setting_edit = false;
 						var export_form = $( '.give-export-form' ).find( '.give-progress' ).parent().parent();
 						var notice_wrap = export_form.find( '.notice-wrap' );
 						export_form.find( '.button-disabled' ).removeClass( 'button-disabled' );
+						$( 'form.give-export-form select' ).attr( 'disabled', false ).trigger( 'chosen:updated' );
 						if ( response.error ) {
 							var error_message = response.message;
 							notice_wrap.html( '<div class="updated error"><p>' + error_message + '</p></div>' );
@@ -1075,7 +1103,7 @@ var give_setting_edit = false;
 			var $self = this, step = 1, resume_update_step = 0;
 
 			$self.el.main_container = Give_Selector_Cache.get( '#give-db-updates' );
-			$self.el.update_link = Give_Selector_Cache.get( '.give-update-button a', $self.el.main_container );
+			$self.el.update_link = Give_Selector_Cache.get( '.give-update-now', $self.el.main_container );
 			$self.el.run_upload_container = Give_Selector_Cache.get( '.give-run-database-update', $self.el.progress_main_container );
 			$self.el.progress_main_container = Give_Selector_Cache.get( '.progress-container', $self.el.main_container );
 			$self.el.heading = Give_Selector_Cache.get( '.update-message', $self.el.progress_main_container );
@@ -1168,12 +1196,15 @@ var give_setting_edit = false;
 								$self.el.heading.html( '<strong>' + response.data.heading + '</strong>' );
 							}
 
-							notice_wrap.html( '<div class="notice notice-error"><p>' + response.data.message + '</p></div>' );
-
-							setTimeout( function() {
-								$self.el.update_link.removeClass( 'active' ).show();
-								$self.el.progress_main_container.addClass( 'give-hidden' );
-							}, 1000 );
+							if ( response.data.message ) {
+								$self.el.update_link.closest( 'p' ).remove();
+								notice_wrap.html( '<div class="notice notice-error is-dismissible"><p>' + response.data.message + '</p><button type="button" class="notice-dismiss"></button></div>' );
+							} else {
+								setTimeout( function() {
+									$self.el.update_link.removeClass( 'active' ).show();
+									$self.el.progress_main_container.addClass( 'give-hidden' );
+								}, 1000 );
+							}
 						}
 					} else {
 						if ( response && - 1 !== $.inArray( 'percentage', Object.keys( response.data ) ) ) {
@@ -2661,6 +2692,7 @@ var give_setting_edit = false;
 		enable_admin_datepicker();
 		handle_status_change();
 		setup_chosen_give_selects();
+		give_import_donation_onload();
 		$.giveAjaxifyFields( { type: 'country_state', debug: true } );
 		GiveListDonation.init();
 		Give_Edit_Donation.init();
@@ -3106,4 +3138,79 @@ function give_on_donation_import_ajax() {
 			alert( give_vars.error_message );
 		}
 	} );
+}
+
+/**
+ * Give Import donation run on load once page is load completed.
+ */
+function give_import_donation_onload() {
+	window.onload = function() {
+		give_import_donation_required_fields_check();
+		give_import_donation_on_drop_down_change();
+	};
+}
+
+/**
+ * Give import donation on change of drop down and update the required fields.
+ */
+function give_import_donation_on_drop_down_change() {
+	var fields = document.querySelector( '.give-tools-setting-page-import table.step-2 tbody select' );
+	if ( fields !== 'undefined' && fields !== null ) {
+		jQuery( '.give-tools-setting-page-import table.step-2 tbody' ).on( 'change', 'select', function() {
+			give_import_donation_required_fields_check();
+		} );
+	}
+}
+
+/**
+ * Give Import Donations check required fields
+ */
+function give_import_donation_required_fields_check() {
+	var required_fields = document.querySelector( '.give-tools-setting-page-import table.step-2 .give-import-donation-required-fields' );
+	if ( required_fields !== 'undefined' && required_fields !== null ) {
+		var submit = true,
+			email = false,
+			first_name = false,
+			amount = false,
+			form = false;
+
+		document.querySelectorAll( '.give-import-donation-required-fields li' ).forEach( function( value ) {
+			value.querySelector( '.dashicons' ).classList.remove( 'dashicons-yes' );
+			value.querySelector( '.dashicons' ).classList.add( 'dashicons-no-alt' );
+		} );
+
+		var select_fields = Array.from( document.querySelectorAll( 'table.step-2 tbody select' ) ).map( function( field ) {
+			return field.value;
+		} );
+
+		if ( select_fields.includes( 'email' ) ) {
+			email = true;
+			document.querySelector( '.give-import-donation-required-email .dashicons' ).classList.remove( 'dashicons-no-alt' );
+			document.querySelector( '.give-import-donation-required-email .dashicons' ).classList.add( 'dashicons-yes' );
+		}
+
+		if ( select_fields.includes( 'first_name' ) ) {
+			first_name = true;
+			document.querySelector( '.give-import-donation-required-first .dashicons' ).classList.remove( 'dashicons-no-alt' );
+			document.querySelector( '.give-import-donation-required-first .dashicons' ).classList.add( 'dashicons-yes' );
+		}
+
+		if ( select_fields.includes( 'amount' ) ) {
+			amount = true;
+			document.querySelector( '.give-import-donation-required-amount .dashicons' ).classList.remove( 'dashicons-no-alt' );
+			document.querySelector( '.give-import-donation-required-amount .dashicons' ).classList.add( 'dashicons-yes' );
+		}
+
+		if ( select_fields.includes( 'form_id' ) || select_fields.includes( 'form_title' ) ) {
+			form = true;
+			document.querySelector( '.give-import-donation-required-form .dashicons' ).classList.remove( 'dashicons-no-alt' );
+			document.querySelector( '.give-import-donation-required-form .dashicons' ).classList.add( 'dashicons-yes' );
+		}
+
+		if ( email && first_name && amount && form ) {
+			submit = false;
+		}
+
+		document.getElementById( 'recount-stats-submit' ).disabled = submit;
+	}
 }

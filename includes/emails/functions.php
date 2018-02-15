@@ -35,7 +35,7 @@ function give_email_donation_receipt( $payment_id, $admin_notice = true ) {
 	do_action( 'give_donation-receipt_email_notification', $payment_id );
 
 	// If admin notifications are on, send the admin notice.
-	if ( $admin_notice && ! give_admin_notices_disabled( $payment_id ) ) {
+	if ( $admin_notice && give_is_setting_enabled( Give_Email_Notification::get_instance('new-donation' )->get_notification_status() ) ) {
 		/**
 		 * Fires in the donation email receipt.
 		 *

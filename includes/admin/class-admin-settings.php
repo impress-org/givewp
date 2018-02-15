@@ -860,7 +860,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			$value           = ( isset( $value[ $description_key ] ) && ! empty( $value[ $description_key ] ) ) ? $value[ $description_key ] : '';
 
 			if ( ! empty( $value ) ) {
-				$description = '<p class="give-field-description">' . wp_kses_post( $value ) . '</p>';
+				$description = '<div class="give-field-description">' . wp_kses_post( $value ) . '</div>';
 			}
 
 			return $description;

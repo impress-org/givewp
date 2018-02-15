@@ -48,6 +48,58 @@ class Give_Background_Updater extends WP_Background_Process {
 	}
 
 	/**
+	 * Is queue empty
+	 *
+	 * @since 2.0.3
+	 *
+	 * @return bool
+	 */
+	public function has_queue() {
+		return ( ! parent::is_queue_empty() );
+	}
+
+
+	/**
+	 * Lock process
+	 *
+	 * Lock the process so that multiple instances can't run simultaneously.
+	 * Override if applicable, but the duration should be greater than that
+	 * defined in the time_exceeded() method.
+	 *
+	 *
+	 * @since 2.0.3
+	 */
+	protected function lock_process() {
+		// Check if admin want to pause upgrade.
+		if( get_option('give_pause_upgrade') ) {
+			self::flush_cache();
+
+			delete_option( 'give_paused_batches' );
+
+			Give_Updates::get_instance()->__pause_db_update( true );
+
+			delete_option('give_pause_upgrade');
+
+			/**
+			 * Fire action when pause db updates
+			 *
+			 * @since 2.0.1
+			 */
+			do_action( 'give_pause_db_upgrade', Give_Updates::get_instance() );
+
+			wp_die();
+		}
+
+
+		$this->start_time = time(); // Set start time of current process.
+
+		$lock_duration = ( property_exists( $this, 'queue_lock_time' ) ) ? $this->queue_lock_time : 60; // 1 minute
+		$lock_duration = apply_filters( $this->identifier . '_queue_lock_time', $lock_duration );
+
+		set_site_transient( $this->identifier . '_process_lock', microtime(), $lock_duration );
+	}
+
+	/**
 	 * Handle cron healthcheck
 	 *
 	 * Restart the background process if not already running
@@ -100,6 +152,9 @@ class Give_Background_Updater extends WP_Background_Process {
 			return false;
 		}
 
+		// Delete cache.
+		self::flush_cache();
+
 		/* @var  Give_Updates $give_updates */
 		$give_updates  = Give_Updates::get_instance();
 		$resume_update = get_option(
@@ -107,11 +162,12 @@ class Give_Background_Updater extends WP_Background_Process {
 
 			// Default update.
 			array(
-				'update_info' => $update,
-				'step'        => 1,
-				'update'      => 1,
-				'heading'     => sprintf( 'Update %s of {update_count}', 1 ),
-				'percentage'  => $give_updates->percentage,
+				'update_info'      => $update,
+				'step'             => 1,
+				'update'           => 1,
+				'heading'          => sprintf( 'Update %s of {update_count}', 1 ),
+				'percentage'       => $give_updates->percentage,
+				'total_percentage' => 0,
 			)
 		);
 
@@ -140,14 +196,55 @@ class Give_Background_Updater extends WP_Background_Process {
 			return false;
 		}
 
+
+		// Pause upgrade immediately if found following:
+		// 1. Running update number greater then total update count
+		// 2. Processing percentage greater then 100%
+		if( (
+			101 < $resume_update['total_percentage'] ) ||
+		    ( $give_updates->get_total_db_update_count() < $resume_update['update'] ) ||
+		    ! in_array( $resume_update['update_info']['id'], $give_updates->get_update_ids() )
+		) {
+			if( ! $this->is_paused_process() ){
+				$give_updates->__pause_db_update(true);
+			}
+
+			update_option( 'give_upgrade_error', 1 );
+
+			$log_data = 'Update Task' . "\n";
+			$log_data .= "Total update count: {$give_updates->get_total_db_update_count()}\n";
+			$log_data .= 'Update IDs: ' . print_r( $give_updates->get_update_ids() , true );
+			$log_data .= 'Update: ' . print_r( $resume_update , true );
+
+			Give()->logs->add( 'Update Error', $log_data, 0, 'update' );
+
+			wp_die();
+		}
+
 		// Disable cache.
 		Give_Cache::disable();
 
-		// Run update.
-		if ( is_array( $update['callback'] ) ) {
-			$update['callback'][0]->$update['callback'][1]();
-		} else {
-			$update['callback']();
+		try{
+			// Run update.
+			if ( is_array( $update['callback'] ) ) {
+				$update['callback'][0]->$update['callback'][1]();
+			} else {
+				$update['callback']();
+			}
+		} catch ( Exception $e ){
+
+			if( ! $this->is_paused_process() ){
+				$give_updates->__pause_db_update(true);
+			}
+
+			$log_data = 'Update Task' . "\n";
+			$log_data .= print_r( $resume_update, true ) . "\n\n";
+			$log_data .= "Error\n {$e->getMessage()}";
+
+			Give()->logs->add( 'Update Error', $log_data, 0, 'update' );
+			update_option( 'give_upgrade_error', 1 );
+
+			wp_die();
 		}
 
 		// Set update info.
@@ -180,13 +277,15 @@ class Give_Background_Updater extends WP_Background_Process {
 	 * Override if applicable, but ensure that the below actions are
 	 * performed, or, call parent::complete().
 	 */
-	protected function complete() {
-		if( $this->is_paused_process() ) {
+	public function complete() {
+		if ( $this->is_paused_process() ) {
 			return false;
 		}
 
 		parent::complete();
 
+		delete_option( 'give_pause_upgrade' );
+		delete_option( 'give_upgrade_error' );
 		delete_option( 'give_db_update_count' );
 		delete_option( 'give_doing_upgrade' );
 		add_option( 'give_show_db_upgrade_complete_notice', 1, '', 'no' );
@@ -194,7 +293,7 @@ class Give_Background_Updater extends WP_Background_Process {
 		// Flush cache.
 		Give_Cache::get_instance()->flush_cache();
 
-		if( $cache_keys = Give_Cache::get_options_like('') ) {
+		if ( $cache_keys = Give_Cache::get_options_like( '' ) ) {
 			Give_Cache::delete( $cache_keys );
 		}
 	}
@@ -256,12 +355,12 @@ class Give_Background_Updater extends WP_Background_Process {
 	 * @return bool
 	 */
 	public function is_paused_process(){
-		// Not using get_option because i am facing some caching releated issue.
-		global $wpdb;
+		// Delete cache.
+		wp_cache_delete( 'give_paused_batches', 'options' );
 
-		$options = $wpdb->get_results( "SELECT * FROM $wpdb->options WHERE option_name='give_paused_batches' LIMIT 1" );
+		$paused_batches = get_option('give_paused_batches');
 
-		return ! empty( $options );
+		return ! empty( $paused_batches );
 	}
 
 
@@ -285,5 +384,30 @@ class Give_Background_Updater extends WP_Background_Process {
 	 */
 	public function get_cron_identifier() {
 		return $this->cron_hook_identifier;
+	}
+
+
+	/**
+	 * Flush background update related cache to prevent task to go to stalled state.
+	 *
+	 * @since 2.0.3
+	 */
+	public static function flush_cache() {
+
+		$options = array(
+			'give_completed_upgrades',
+			'give_doing_upgrade',
+			'give_paused_batches',
+			'give_upgrade_error',
+			'give_db_update_count',
+			'give_doing_upgrade',
+			'give_pause_upgrade',
+			'give_show_db_upgrade_complete_notice',
+		);
+
+
+		foreach ( $options as $option ) {
+			wp_cache_delete( $option, 'options' );
+		}
 	}
 }

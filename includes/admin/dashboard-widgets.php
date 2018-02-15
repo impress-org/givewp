@@ -46,13 +46,13 @@ function give_dashboard_sales_widget() {
 	<div class="give-dashboard-widget">
 
 		<div class="give-dashboard-today give-clearfix">
-			<h3 class="give-dashboard-date-today"><?php echo date( _x( 'F j, Y', 'dashboard widget', 'give' ) ); ?></h3>
+			<h3 class="give-dashboard-date-today"><?php echo date_i18n( _x( 'F j, Y', 'dashboard widget', 'give' ) ); ?></h3>
 
 			<p class="give-dashboard-happy-day"><?php
 				printf(
 				/* translators: %s: day of the week */
 					__( 'Happy %s!', 'give' ),
-					date( 'l', current_time( 'timestamp' ) )
+					date_i18n( 'l', current_time( 'timestamp' ) )
 				);
 			?></p>
 
