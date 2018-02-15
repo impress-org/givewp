@@ -1124,6 +1124,12 @@ ASIDE
   border: 1px solid #ddd; }
 
 /*-------------------------------------
+Chosen Overrides
+-------------------------------------*/
+.chosen-container-single a.chosen-single {
+  background: #FFF !important; }
+
+/*-------------------------------------
 Doc Links
 -------------------------------------*/
 .give-docs-link {

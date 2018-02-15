@@ -794,6 +794,17 @@ table#give_donation_receipt span.donation-level-text-wrap {
   padding: 12px;
   background-color: #FFF; }
 
+[id*="give-form"].give-fl-form.give-fl-style-give input.give-fl-input[type="text"],
+[id*="give-form"].give-fl-form.give-fl-style-give input.give-fl-input[type="email"],
+[id*="give-form"].give-fl-form.give-fl-style-give input.give-fl-input[type="password"],
+[id*="give-form"].give-fl-form.give-fl-style-give input.give-fl-input[type="search"],
+[id*="give-form"].give-fl-form.give-fl-style-give input.give-fl-input[type="email"],
+[id*="give-form"].give-fl-form.give-fl-style-give input.give-fl-input[type="tel"],
+[id*="give-form"].give-fl-form.give-fl-style-give input.give-fl-input[type="url"],
+[id*="give-form"].give-fl-form.give-fl-style-give input.give-fl-input[type="number"] {
+  height: auto;
+  min-height: 50px; }
+
 [id*="give-form"].give-fl-form.give-fl-style-give select.give-fl-select {
   line-height: inherit; }
 
@@ -843,11 +854,6 @@ Layout
     display: table; }
   .give-clearfix:after {
     clear: both; }
-
-[id*='give-form'] select,
-[id*='give-form'] input,
-[id*='give-form'] textarea {
-  height: auto; }
 
 [id*='give-form'] .give-hidden {
   display: none; }
