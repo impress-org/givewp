@@ -1,4 +1,4 @@
-const giveFormOptions = {}
+const giveFormOptions = {};
 
 giveFormOptions.displayStyles = [
 	{ value: 'onpage', label: 'Full Form' },

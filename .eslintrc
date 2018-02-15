@@ -21,7 +21,8 @@
     "wp": true,
     "wpApiSettings": true,
     "window": true,
-    "document": true
+		"document": true,
+		"give_blocks_vars": true
   },
   "plugins": ["react"],
   "settings": {

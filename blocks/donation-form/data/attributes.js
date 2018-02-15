@@ -27,6 +27,6 @@ const blockAttributes = {
 		type: 'string',
 		default: 'none',
 	},
-}
+};
 
 export default blockAttributes;

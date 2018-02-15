@@ -9,7 +9,7 @@
     "build": "npm run production",
     "watch": "cross-env webpack --watch",
     "lint": "npm run lint:js & npm run lint:scss",
-    "lint:js": "eslint assets/src/**/*.js",
+    "lint:js": "eslint assets/src/**/*.js blocks/**/*.js",
     "lint:scss": "stylelint assets/src/**/*.scss"
   },
   "repository": {
