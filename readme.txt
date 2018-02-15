@@ -219,10 +219,7 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 * Tweak: Added helper give_get_locate_template function to improve custom template location loading. [#2577](https://github.com/WordImpress/Give/issues/2577)
 * Tweak: Removed deprecated email files. [#2802](https://github.com/WordImpress/Give/issues/2802)
 * Tweak: We have added a minimum height to floating label fields for improved theme compatiblity. [#2340](https://github.com/WordImpress/Give/issues/2340)
-
 * UI: Improved heading within the Donor details screen in wp-admin so it now displays the donor's name. [#2286](https://github.com/WordImpress/Give/issues/2286)
-* UI: Improved the interface for the Donations Importer to display more clearly which fields are required to import donations. [#2354](https://github.com/WordImpress/Give/issues/2354)
-* UI: Improved the interface for the Donations Importer to display more clearly which fields are required to import donations. [#2354](https://github.com/WordImpress/Give/issues/2354)
 * UI: Improved the interface for the Donations Importer to display more clearly which fields are required to import donations. [#2354](https://github.com/WordImpress/Give/issues/2354)
 
 = 2.0.2: January 31st, 2018  =
