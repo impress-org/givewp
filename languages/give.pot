@@ -1667,7 +1667,7 @@ msgstr ""
 msgid "Email Options"
 msgstr ""
 
-#: includes/admin/emails/class-email-notifications.php:126, includes/admin/upgrades/class-give-updates.php:809
+#: includes/admin/emails/class-email-notifications.php:126, includes/admin/upgrades/class-give-updates.php:808
 msgid ""
 msgstr ""
 
@@ -4734,51 +4734,51 @@ msgstr ""
 msgid "Give Updates"
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:604, includes/admin/upgrades/class-give-updates.php:617, includes/admin/upgrades/class-give-updates.php:668
+#: includes/admin/upgrades/class-give-updates.php:603, includes/admin/upgrades/class-give-updates.php:616, includes/admin/upgrades/class-give-updates.php:667
 msgid "Database Update"
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:605
+#: includes/admin/upgrades/class-give-updates.php:604
 msgid "GiveWP needs to update your database to the latest version. The following process will make updates to your site's database. Please create a backup before proceeding."
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:609
+#: includes/admin/upgrades/class-give-updates.php:608
 msgid "Restart the updater"
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:613, includes/admin/upgrades/class-give-updates.php:678
+#: includes/admin/upgrades/class-give-updates.php:612, includes/admin/upgrades/class-give-updates.php:677
 msgid "It is recommended that you backup your database before proceeding. Do you want to run the update now?"
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:618, includes/admin/upgrades/class-give-updates.php:814, includes/admin/upgrades/views/upgrades.php:57
+#: includes/admin/upgrades/class-give-updates.php:617, includes/admin/upgrades/class-give-updates.php:813, includes/admin/upgrades/views/upgrades.php:57
 msgid "An unexpected issue occurred during the database update which caused it to stop automatically. Please contact support for assistance."
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:642
+#: includes/admin/upgrades/class-give-updates.php:641
 msgid "Give needs to upgrade the database but cannot because AJAX does not appear accessible. This could be because your website is password protected, in maintenance mode, or has a specific hosting configuration or plugin active that is preventing access."
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:642
+#: includes/admin/upgrades/class-give-updates.php:641
 msgid "Read More"
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:655, includes/admin/upgrades/class-give-updates.php:821
+#: includes/admin/upgrades/class-give-updates.php:654, includes/admin/upgrades/class-give-updates.php:820
 msgid "Give database updates completed successfully. Thank you for updating to the latest version!"
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:669
+#: includes/admin/upgrades/class-give-updates.php:668
 msgid "GiveWP needs to update your database to the latest version. The following process will make updates to your site's database. Please create a complete backup before proceeding."
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:673
+#: includes/admin/upgrades/class-give-updates.php:672
 msgid "Run the updater"
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:808, includes/admin/upgrades/views/upgrades.php:59
+#: includes/admin/upgrades/class-give-updates.php:807, includes/admin/upgrades/views/upgrades.php:59
 msgid "The updates have been paused."
 msgstr ""
 
-#: includes/admin/upgrades/class-give-updates.php:822
+#: includes/admin/upgrades/class-give-updates.php:821
 msgid "Updates Completed."
 msgstr ""
 
