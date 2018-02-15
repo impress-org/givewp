@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, wp donati
 Requires at least: 4.8
 Tested up to: 4.9
 Requires PHP: 5.3
-Stable tag: 2.0.2
+Stable tag: 2.0.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -207,6 +207,20 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.0.3: February 14th, 2018  =
+* This release contains additional health checks for sites still experiencing 2.0+ update issues. There are no additional upgrades needed to perform if you have already updated successfully within this release.
+* New: Added a dynamanic email template tag that allows you to output any meta field within your emails by using. [#2801](https://github.com/WordImpress/Give/issues/2801)
+* Fix: Now all your donation forms are now displayed within the shortcode builder. Previously only the most recent 30 would display. [#2259](https://github.com/WordImpress/Give/issues/2259)
+* Fix: The frontend profile editor shortcode now outputs proper messages according to the content the user updated. [#2553](https://github.com/WordImpress/Give/issues/2553)
+* Fix: The dashboard widget was not using the proper date function for translation thus the day of the week and month would always be in english. [#2811](https://github.com/WordImpress/Give/issues/2811)
+* Fix: Properly display the donation payment status icon on translated sites. [#2785](https://github.com/WordImpress/Give/issues/2785)
+* Tweak: Removed the custom amount leabel from the set donation {donation} email tag. [#2653](https://github.com/WordImpress/Give/issues/2653)
+* Tweak: Added helper give_get_locate_template function to improve custom template location loading. [#2577](https://github.com/WordImpress/Give/issues/2577)
+* Tweak: Removed deprecated email files. [#2802](https://github.com/WordImpress/Give/issues/2802)
+* Tweak: We have added a minimum height to floating label fields for improved theme compatiblity. [#2340](https://github.com/WordImpress/Give/issues/2340)
+* UI: Improved heading within the Donor details screen in wp-admin so it now displays the donor's name. [#2286](https://github.com/WordImpress/Give/issues/2286)
+* UI: Improved the interface for the Donations Importer to display more clearly which fields are required to import donations. [#2354](https://github.com/WordImpress/Give/issues/2354)
 
 = 2.0.2: January 31st, 2018  =
 * This update includes additional health checks for the 2.0.0 release. We've switched from using WP_Query to move data to direct SQL queries to prevent query manipulation by other plugins and themes.

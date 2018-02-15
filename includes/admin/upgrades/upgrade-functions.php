@@ -114,6 +114,10 @@ function give_do_automatic_upgrades() {
 			}
 
 			$did_upgrade = true;
+
+		case version_compare( $give_version, '2.0.3', '<' ) :
+			give_v203_upgrades();
+			$did_upgrade = true;
 	}
 
 	if ( $did_upgrade ) {
@@ -391,14 +395,6 @@ function give_v132_upgrade_give_payment_customer_id() {
 
 	/* @var Give_Updates $give_updates */
 	$give_updates = Give_Updates::get_instance();
-
-	if ( ! current_user_can( 'manage_give_settings' ) ) {
-		wp_die( esc_html__( 'You do not have permission to do Give upgrades.', 'give' ), esc_html__( 'Error', 'give' ), array(
-			'response' => 403,
-		) );
-	}
-
-	give_ignore_user_abort();
 
 	// UPDATE DB METAKEYS.
 	$sql   = "UPDATE $wpdb->postmeta SET meta_key = '_give_payment_customer_id' WHERE meta_key = '_give_payment_donor_id'";
@@ -2588,4 +2584,26 @@ function give_v201_add_missing_donors_callback(){
 
 	Give_Updates::get_instance()->percentage = 100;
 	give_set_upgrade_complete('v201_add_missing_donors' );
+}
+
+
+/**
+ * Version 2.0.3 automatic updates
+ *
+ * @since 2.0.3
+ */
+function give_v203_upgrades(){
+	global $wpdb;
+
+	// Do not auto load option.
+	$wpdb->update( $wpdb->options, array( 'autoload' => 'no' ), array( 'option_name' => 'give_completed_upgrades' ) );
+
+	// Remove from cache.
+	$all_options = wp_load_alloptions();
+
+	if( isset( $all_options['give_completed_upgrades'] ) ) {
+		unset( $all_options['give_completed_upgrades'] );
+		wp_cache_set( 'alloptions', $all_options, 'options' );
+	}
+
 }

@@ -283,9 +283,10 @@ abstract class Give_Shortcode_Generator {
 
 		$args = array(
 			'post_type'      => 'post',
+			'post_status'    => 'publish',
 			'orderby'        => 'title',
 			'order'          => 'ASC',
-			'posts_per_page' => 30,
+			'posts_per_page' => 500,
 		);
 
 		$args    = wp_parse_args( (array) $field['query_args'], $args );

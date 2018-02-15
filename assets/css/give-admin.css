@@ -1124,6 +1124,12 @@ ASIDE
   border: 1px solid #ddd; }
 
 /*-------------------------------------
+Chosen Overrides
+-------------------------------------*/
+.chosen-container-single a.chosen-single {
+  background: #FFF !important; }
+
+/*-------------------------------------
 Doc Links
 -------------------------------------*/
 .give-docs-link {
@@ -1599,7 +1605,9 @@ table.give-table td.row-title p {
 .form-table td.give-radio-inline fieldset li > label {
   margin: 5px 0 0 !important; }
 
-p.give-field-description, .cmb2-metabox-description {
+p.give-field-description,
+div.give-field-description,
+.cmb2-metabox-description {
   color: #aaaaaa;
   font-style: italic;
   font-size: 13px !important; }
@@ -3055,6 +3063,30 @@ body.give_forms_page_give-updates .give-run-update-containt .give-run-update-but
   font-weight: 600;
   margin: -8px -22px 11px;
   padding: 12px 22px; }
+
+.give-tools-setting-page-import table.step-2 h2#give-import-title {
+  font-size: small;
+  font-weight: inherit; }
+
+.give-tools-setting-page-import table.step-2 .give-import-donation-required-fields-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0px; }
+
+.give-tools-setting-page-import table.step-2 .give-import-donation-required-fields {
+  white-space: nowrap;
+  overflow: hidden; }
+  .give-tools-setting-page-import table.step-2 .give-import-donation-required-fields li {
+    display: inline-block;
+    margin: 0 10% 0 0; }
+    .give-tools-setting-page-import table.step-2 .give-import-donation-required-fields li span.give-import-donation-required-symbol {
+      border-radius: 1em;
+      vertical-align: middle;
+      padding: 2px;
+      background: #46b450;
+      color: white; }
+    .give-tools-setting-page-import table.step-2 .give-import-donation-required-fields li span.dashicons-no-alt {
+      background: #bbbbbb; }
 
 .give-import-core-settings .give-progress-steps li {
   width: 33.33%; }

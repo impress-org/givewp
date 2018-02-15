@@ -232,8 +232,16 @@ class Give_Email_Setting_Field {
 
 		if ( $email_tag_list = $email->get_allowed_email_tags( true ) ) {
 			$desc = sprintf(
-				esc_html__( 'The email that is sent to users after completing a successful donation. HTML is accepted. Available template tags: %s', 'give' ),
-				$email_tag_list
+				'%1$s <br> %2$s: %3$s %4$s',
+				__( 'The email that is sent to users after completing a successful donation. HTML is accepted.', 'give' ),
+				__( 'Available template tags', 'give' ),
+				$email_tag_list,
+				sprintf(
+					'<br><a href="%1$s" target="_blank">%2$s</a> %3$s',
+					esc_url('http://docs.givewp.com/meta-email-tags'),
+					__( 'See our documentation', 'give' ),
+					__( 'for examples of how to use custom meta email tags to output additional donor or donation information in your Give emails.', 'give' )
+				)
 			);
 
 		}
