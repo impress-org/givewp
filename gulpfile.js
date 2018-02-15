@@ -165,7 +165,19 @@ gulp.task('textdomain', function () {
         ],
 		correct_domain: true
     };
-    gulp.src('**/*.php')
+    gulp.src(
+            [
+                '**/*.php',                   // Include all files
+                '!language/**',               // Exclude language/
+                '!includes/libraries/**',     // Exclude libraries/
+                '!node_modules/**',           // Exclude node_modules/
+                '!tests/**',                  // Exclude tests/
+                '!vendor/**',                 // Exclude vendor/
+                '!assets/**',                 // Exclude assets/
+                '!bower/**',                  // Exclude bower/
+                '!.github/**'                 // Exclude .github/
+            ]
+        )
         .pipe(checktextdomain(options))
         .pipe(notify({
             message: 'Textdomain task complete!',
