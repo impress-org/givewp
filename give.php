@@ -33,8 +33,7 @@
  * Give is a tribute to the spirit and philosophy of Open Source. We at WordImpress gladly embrace the Open Source philosophy both
  * in how Give itself was developed, and how we hope to see others build more from our code base.
  *
- * Give would not have been possible without the tireless efforts of WordPress and the surrounding Open Source projects and their talented developers. Thank you all for your
- * contribution to WordPress.
+ * Give would not have been possible without the tireless efforts of WordPress and the surrounding Open Source projects and their talented developers. Thank you all for your contribution to WordPress.
  *
  * - The WordImpress Team
  */

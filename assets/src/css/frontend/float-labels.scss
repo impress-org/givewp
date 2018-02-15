@@ -1,4 +1,5 @@
 #{fl(parent)}.#{fl(prefix)}form.#{fl(prefix)}style-give {
+
   input.#{fl(prefix)}input,
   select.#{fl(prefix)}select,
   textarea.#{fl(prefix)}textarea {
@@ -6,9 +7,23 @@
 	padding: 12px;
 	background-color: #FFF;
   }
+
+  input.#{fl(prefix)}input[type="text"],
+  input.#{fl(prefix)}input[type="email"],
+  input.#{fl(prefix)}input[type="password"],
+  input.#{fl(prefix)}input[type="search"],
+  input.#{fl(prefix)}input[type="email"],
+  input.#{fl(prefix)}input[type="tel"],
+  input.#{fl(prefix)}input[type="url"],
+  input.#{fl(prefix)}input[type="number"] {
+	height: auto;
+	min-height: 50px;
+  }
+
   select.#{fl(prefix)}select {
 	line-height: inherit;
   }
+
   .#{fl(prefix)}is-active input.#{fl(prefix)}input,
   .#{fl(prefix)}is-active select.#{fl(prefix)}select,
   .#{fl(prefix)}is-active textarea.#{fl(prefix)}textarea {

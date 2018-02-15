@@ -1605,7 +1605,7 @@ function give_get_donation_form_submit_button( $form_id ) {
 	?>
 	<div class="give-submit-button-wrap give-clearfix">
 		<input type="submit" class="give-submit give-btn" id="give-purchase-button" name="give-purchase"
-			   value="<?php echo $display_label; ?>"/>
+			   value="<?php echo $display_label; ?>" data-before-validation-label="<?php echo $display_label; ?>" />
 		<span class="give-loading-animation"></span>
 	</div>
 	<?php

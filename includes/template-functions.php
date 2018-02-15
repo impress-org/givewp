@@ -49,9 +49,9 @@ function give_get_template( $template_name, $args = array(), $template_path = ''
 		extract( $args );
 	}
 
-	$template_names = array( $template_name . '.php' );
+	$template_names = "{$template_name}.php";
 
-	$located = give_locate_template( $template_names, $template_path, $default_path );
+	$located = give_get_locate_template( $template_names, $template_path, $default_path );
 
 	if ( ! file_exists( $located ) ) {
 		/* translators: %s: the template */
@@ -187,6 +187,54 @@ function give_locate_template( $template_names, $load = false, $require_once = t
 	}
 
 	return $located;
+}
+
+/**
+ * Locate a template and return the path for inclusion.
+ *
+ * This is the load order:
+ *
+ *        yourtheme        /    $template_path    /    $template_name
+ *        yourtheme        /    $template_name
+ *        $default_path    /    $template_name
+ *
+ * @since  2.0.3
+ * @access public
+ *
+ * @param string $template_name
+ * @param string $template_path (default: '')
+ * @param string $default_path  (default: '')
+ *
+ * @return string
+ */
+function give_get_locate_template( $template_name, $template_path = '', $default_path = '' ) {
+	if ( ! $template_path ) {
+		$template_path = give_get_theme_template_dir_name() . '/';
+	}
+
+	if ( ! $default_path ) {
+		$default_path = GIVE_PLUGIN_DIR . 'templates/';
+	}
+
+	// Look within passed path within the theme - this is priority.
+	$template = locate_template(
+		array(
+			trailingslashit( $template_path ) . $template_name,
+			$template_name,
+		)
+	);
+
+	// Get default template/
+	if ( ! $template ) {
+		$template = $default_path . $template_name;
+	}
+
+	/**
+	 * Filter the template
+	 *
+	 * @since 2.0.3
+	 */
+	return apply_filters( 'give_get_locate_template', $template, $template_name, $template_path );
 }
 
 /**
