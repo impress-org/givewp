@@ -4,21 +4,16 @@
 const { __ } = wp.i18n;
 const {	BlockControls } = wp.blocks;
 const {
-		IconButton,
-		Toolbar
+	IconButton,
+	Toolbar,
 } = wp.components;
-const { Component } = wp.element;
 
-/**
- * Create BlockControls Wrapper Component
-*/
 const Controls = ( props ) => {
-
 	return (
 		<BlockControls key="toolbar">
 			<Toolbar>
 				<IconButton
-					icon='image-rotate'
+					icon="image-rotate"
 					label={ __( 'Change Form' ) }
 					onClick={ () => props.onChangeForm( 'changeForm' ) }
 					tooltip="Select different donation form to display">
@@ -26,7 +21,7 @@ const Controls = ( props ) => {
 				</IconButton>
 			</Toolbar>
 		</BlockControls>
-	)
+	);
 };
 
 export default Controls;

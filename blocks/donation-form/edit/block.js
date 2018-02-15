@@ -1,20 +1,18 @@
 /**
  * Block dependencies
  */
-import giveFromOptions from '../data/options';
-import Inspector from '../edit/inspector'
-import Controls from '../edit/controls'
+import Inspector from '../edit/inspector';
+import Controls from '../edit/controls';
 import GiveBlankSlate from '../../components/blank-slate/index';
 
- /**
+/**
  * Internal dependencies
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blocks;
 const { SelectControl } = InspectorControls;
 const {
-	Spinner,
-	Button
+	Button,
 } = wp.components;
 const { Component } = wp.element;
 
@@ -33,16 +31,16 @@ class GiveForm extends Component {
 	doServerSideRender() {
 		const attributes = this.props.attributes;
 		const parameters = [
-			`show_title=${attributes.showTitle.toString()}`,
-			`show_goal=${attributes.showGoal.toString()}`,
-			`show_content=${attributes.showContent.toString()}`,
-			`display_style=${attributes.displayStyle}`,
+			`show_title=${ attributes.showTitle.toString() }`,
+			`show_goal=${ attributes.showGoal.toString() }`,
+			`show_content=${ attributes.showContent.toString() }`,
+			`display_style=${ attributes.displayStyle }`,
 		];
 		if ( 'reveal' === attributes.displayStyle ) {
-			parameters.push( `continue_button_title=${attributes.continueButtonTitle}` );
+			parameters.push( `continue_button_title=${ attributes.continueButtonTitle }` );
 		}
 		this.setState( { error: false, fetching: true } );
-		window.fetch( `${wpApiSettings.schema.url}/wp-json/give-api/v1/form/${attributes.id}/?${parameters.join( '&' ) }` ).then(
+		window.fetch( `${ wpApiSettings.schema.url }/wp-json/give-api/v1/form/${ attributes.id }/?${ parameters.join( '&' ) }` ).then(
 			( response ) => {
 				response.json().then( ( obj ) => {
 					if ( this.unmounting ) {
@@ -63,15 +61,14 @@ class GiveForm extends Component {
 	}
 
 	getFormsFromServer() {
-
 		this.setState( { error: false } );
 
 		// Fetch from API if key exist
-		if (window.give_blocks_vars.key !== null) {
-			window.fetch( `${wpApiSettings.schema.url}/give-api/forms/?key=${window.give_blocks_vars.key}&token=${window.give_blocks_vars.token}` ).then(
+		if ( window.give_blocks_vars.key !== null ) {
+			window.fetch( `${ wpApiSettings.schema.url }/give-api/forms/?key=${ window.give_blocks_vars.key }&token=${ window.give_blocks_vars.token }` ).then(
 				( response ) => {
 					response.json().then( ( obj ) => {
-						if (this.unmounting) {
+						if ( this.unmounting ) {
 							return;
 						}
 
@@ -92,7 +89,7 @@ class GiveForm extends Component {
 
 	componentDidMount() {
 		if ( this.props.attributes.id ) {
-			this.setState({ fetching: true } );
+			this.setState( { fetching: true } );
 			this.doServerSideRender();
 		} else {
 			this.getFormsFromServer();
@@ -116,7 +113,7 @@ class GiveForm extends Component {
 			currentAttributes.contentDisplay !== prevAttributes.contentDisplay ||
 			currentAttributes.showContent !== prevAttributes.showContent
 		) {
-			this.setState({ fetching: true } );
+			this.setState( { fetching: true } );
 			this.doServerSideRender();
 		}
 	}
@@ -126,14 +123,11 @@ class GiveForm extends Component {
 		const attributes = props.attributes;
 		const { html, fetching, isButtonTitleUpdated } = this.state;
 
-		/**
-		 * Events
-		 */
 		const getFormOptions = () => {
 			const formOptions = attributes.forms.map( ( form ) => {
 				return {
 					value: form.info.id,
-					label: form.info.title === '' ? `${form.info.id}: No form title` : form.info.title,
+					label: form.info.title === '' ? `${ form.info.id }: No form title` : form.info.title,
 				};
 			} );
 
@@ -143,7 +137,7 @@ class GiveForm extends Component {
 			return formOptions;
 		};
 
-		const onChangeForm = value => {
+		const onChangeForm = () => {
 			props.setAttributes( { id: 0 } );
 			this.getFormsFromServer();
 		};
@@ -157,27 +151,27 @@ class GiveForm extends Component {
 		};
 
 		const setContinueButtonTitle = buttonTitle => {
-			props.setAttributes({ continueButtonTitle: buttonTitle } );
-			if ( !isButtonTitleUpdated ) {
+			props.setAttributes( { continueButtonTitle: buttonTitle } );
+			if ( ! isButtonTitleUpdated ) {
 				this.setState( { isButtonTitleUpdated: true } );
 			}
 		};
 
 		const toggleShowTitle = () => {
-			props.setAttributes( { showTitle: !attributes.showTitle } );
+			props.setAttributes( { showTitle: ! attributes.showTitle } );
 		};
 
 		const toggleShowGoal = () => {
-			props.setAttributes( { showGoal: !attributes.showGoal } );
+			props.setAttributes( { showGoal: ! attributes.showGoal } );
 		};
 
 		const toggleContentDisplay = () => {
-			props.setAttributes( { contentDisplay: !attributes.contentDisplay } );
+			props.setAttributes( { contentDisplay: ! attributes.contentDisplay } );
 
 			// Set form Content Display Position
-			if ( !attributes.contentDisplay ) {
+			if ( ! attributes.contentDisplay ) {
 				props.setAttributes( { showContent: 'above' } ); // true && above
-			} else if ( !!attributes.contentDisplay ) {
+			} else if ( !! attributes.contentDisplay ) {
 				props.setAttributes( { showContent: 'none' } ); // false && none
 			}
 		};
@@ -193,51 +187,45 @@ class GiveForm extends Component {
 			}
 		};
 
-		/* No API Key generated*/
 		if ( give_blocks_vars.key === null ) {
+			/* No API Key generated*/
 			return (
-				<GiveBlankSlate title={__("No API key found.")}
-					description={ __( "The first step towards using new blocks based experience is to generate API key ." ) }
+				<GiveBlankSlate title={ __( 'No API key found.' ) }
+					description={ __( 'The first step towards using new blocks based experience is to generate API key .' ) }
 					helpLink>
-					<Button isPrimary isLarge href={`${wpApiSettings.schema.url}/wp-admin/edit.php?post_type=give_forms&page=give-tools&tab=api`}> {__("Generate API Key")} </Button>
+					<Button isPrimary isLarge href={ `${ wpApiSettings.schema.url }/wp-admin/edit.php?post_type=give_forms&page=give-tools&tab=api` }> { __( 'Generate API Key' ) } </Button>
 				</GiveBlankSlate>
 			);
-		}
-
-		/* Fetching Data */
-		else if ( ( !attributes.id && !attributes.forms ) || fetching )  {
+		} else if ( ( ! attributes.id && ! attributes.forms ) || fetching ) {
+			/* Fetching Data */
 			return (
-				<GiveBlankSlate title={ __( "Loading..." ) } isLoader />
+				<GiveBlankSlate title={ __( 'Loading...' ) } isLoader />
 			);
-		}
-
-		/* No form created */
-		else if (!attributes.id && attributes.forms.length === 0) {
+		} else if ( ! attributes.id && attributes.forms.length === 0 ) {
+			/* No form created */
 			return (
-				<GiveBlankSlate title={ __( "No donation forms found." ) }
-								description={ __( "The first step towards accepting online donations is to create a form." ) }
-								helpLink>
+				<GiveBlankSlate title={ __( 'No donation forms found.' ) }
+					description={ __( 'The first step towards accepting online donations is to create a form.' ) }
+					helpLink>
 					<Button isPrimary
-							isLarge
-							href={`${wpApiSettings.schema.url}/wp-admin/post-new.php?post_type=give_forms` }>
-							{ __( "Create Donation Form" ) }
+						isLarge
+						href={ `${ wpApiSettings.schema.url }/wp-admin/post-new.php?post_type=give_forms` }>
+						{ __( 'Create Donation Form' ) }
 					</Button>
 				</GiveBlankSlate>
 			);
-		}
-
-		/* No for selected */
-		else if ( !attributes.id ) {
+		} else if ( ! attributes.id ) {
+			/* No for selected */
 			return (
-				<GiveBlankSlate title={ __( "Give Donation form" ) }>
+				<GiveBlankSlate title={ __( 'Give Donation form' ) }>
 					<SelectControl
 						options={ getFormOptions() }
 						onChange={ setFormIdTo }
 					/>
 
 					<Button isPrimary
-							isLarge href={`${wpApiSettings.schema.url}/wp-admin/post-new.php?post_type=give_forms`}>
-							{ __( "Add new form" ) }
+						isLarge href={ `${ wpApiSettings.schema.url }/wp-admin/post-new.php?post_type=give_forms` }>
+						{ __( 'Add new form' ) }
 					</Button>
 				</GiveBlankSlate>
 			);
@@ -245,24 +233,24 @@ class GiveForm extends Component {
 
 		return (
 			<div id="donation-form-preview-block">
-				{ !!props.focus &&
+				{ !! props.focus &&
 					<Inspector { ... {
-										setDisplayStyleTo,
-										setContinueButtonTitle,
-										updateContinueButtonTitle,
-										toggleShowTitle,
-										toggleShowGoal,
-										toggleContentDisplay,
-										setShowContentPosition,
-										...props }
-										} />
+						setDisplayStyleTo,
+						setContinueButtonTitle,
+						updateContinueButtonTitle,
+						toggleShowTitle,
+						toggleShowGoal,
+						toggleContentDisplay,
+						setShowContentPosition,
+						...props }
+						} />
 				}
 
-				{ !!props.focus &&
+				{ !! props.focus &&
 					<Controls { ... {
-										onChangeForm,
-										...props
-									} } />
+						onChangeForm,
+						...props,
+					} } />
 
 				}
 				<div dangerouslySetInnerHTML={ { __html: html } }>
