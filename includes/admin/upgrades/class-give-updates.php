@@ -329,8 +329,7 @@ class Give_Updates {
 				! isset( $_GET['page'] ) ||
 				'give-updates' !== $_GET['page'] ||
 				! isset( $_GET['give-pause-db-upgrades'] ) ||
-				self::$background_updater->is_paused_process() ||
-				! self::$background_updater->has_queue()
+				self::$background_updater->is_paused_process()
 			)
 
 		) {
