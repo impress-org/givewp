@@ -444,28 +444,30 @@ abstract class Give_DB {
 	/**
 	 * Handle switch blog on multi-site
 	 *
-	 * @since 2.0.4
+	 * @since  2.0.4
 	 *
 	 * @access public
 	 *
 	 * @param $new_blog_id
 	 * @param $prev_blog_id
 	 */
-	public function handle_switch_blog( $new_blog_id, $prev_blog_id ){
+	public function handle_switch_blog( $new_blog_id, $prev_blog_id ) {
 		global $wpdb;
 
 		// Bailout.
-		if( $new_blog_id === $prev_blog_id ) return;
+		if ( $new_blog_id === $prev_blog_id ) {
+			return;
+		}
 
 
 		$this->table_name = str_replace(
-			1 != $prev_blog_id ? "{$wpdb->base_prefix}{$prev_blog_id}_" : $wpdb->base_prefix,
-			1 != $new_blog_id ? "{$wpdb->base_prefix}{$new_blog_id}_" : $wpdb->base_prefix,
+			1 != $prev_blog_id ? $wpdb->get_blog_prefix( $prev_blog_id ) : $wpdb->base_prefix,
+			1 != $new_blog_id ? $wpdb->get_blog_prefix( $new_blog_id ) : $wpdb->base_prefix,
 			$this->table_name
 		);
 
-		if( $this instanceof Give_DB_Meta ) {
-			$wpdb->{ $this->get_meta_type() . 'meta' } = $this->table_name;
+		if ( $this instanceof Give_DB_Meta ) {
+			$wpdb->{$this->get_meta_type() . 'meta'} = $this->table_name;
 		}
 
 	}
