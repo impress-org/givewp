@@ -510,6 +510,9 @@ class Give_Updates {
 			if ( self::$background_updater->has_queue() ) {
 				$this->__health_background_update( $this );
 			} else {
+				delete_site_transient( self::$background_updater->get_identifier() . '_process_lock' );
+				wp_clear_scheduled_hook( self::$background_updater->get_cron_identifier() );
+
 				self::$background_updater->complete();
 			}
 
