@@ -74,6 +74,8 @@ class Give_DB_Meta extends Give_DB {
 	 * @since 2.0
 	 */
 	function __construct() {
+		parent::__construct();
+
 		// Bailout.
 		if ( empty( $this->supports ) || ! $this->is_custom_meta_table_active() ) {
 			return;
