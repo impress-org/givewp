@@ -503,4 +503,17 @@ class Give_DB_Meta extends Give_DB {
 
 		update_option( $this->table_name . '_db_version', $this->version );
 	}
+
+
+	/**
+	 * Get meta type
+	 *
+	 * @since 2.0.4
+	 * @access public
+	 *
+	 * @return string
+	 */
+	public function get_meta_type(){
+		return $this->meta_type;
+	}
 }
