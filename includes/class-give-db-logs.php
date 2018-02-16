@@ -42,6 +42,7 @@ class Give_DB_Logs extends Give_DB {
 		// Install table.
 		$this->register_table();
 
+		parent::__construct();
 	}
 
 	/**
