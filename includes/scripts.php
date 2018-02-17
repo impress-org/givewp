@@ -255,8 +255,6 @@ function give_load_admin_scripts( $hook ) {
 	wp_enqueue_style( 'jquery-ui-css' );
 	wp_register_style( 'give-admin', $css_dir . 'give-admin' . $direction . $suffix . '.css', array(), GIVE_VERSION );
 	wp_enqueue_style( 'give-admin' );
-	wp_register_style( 'jquery-chosen', $css_dir . 'chosen' . $suffix . '.css', array(), GIVE_VERSION );
-	wp_enqueue_style( 'jquery-chosen' );
 	wp_enqueue_style( 'thickbox' );
 	wp_enqueue_style( 'wp-color-picker' );
 
