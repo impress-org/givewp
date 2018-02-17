@@ -5,7 +5,7 @@
     "Flot": "flot#~0.8.3",
     "accounting.js": "latest",
     "blockUI": "blockui#*",
-    "chosen": "master",
+    "chosen": "latest",
     "float-labels.js": "latest",
     "flot.orderbars": "*",
     "jquery.payment": "latest",
