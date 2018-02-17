@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 4.9
 Requires PHP: 5.3
-Stable tag: 2.0.3
+Stable tag: 2.0.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -207,6 +207,11 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.0.4: February 16th, 2018  =
+* Fix: 2.0.3 broke those pretty chosen dropdown selects, but this version brings them back to life! This bug only affected wp-admin dropdowns using the "Chosen" select field which allows you to search user lists and forms. [#2787](https://github.com/WordImpress/Give/issues/2787)
+* Fix: Resolve bug within Give_Payment_Query affecting WP multisite installs. On multisite, custom post type (form, donation log, and donor ) meta query is not working if using the switch_to_blog function. This has now been resolved. [#2815](https://github.com/WordImpress/Give/issues/2815)
+* Fix: Removed usage of the .load() jQuery method causing conflicts on some installs and now using .on() properly. [#2818](https://github.com/WordImpress/Give/issues/2818)
 
 = 2.0.3: February 14th, 2018  =
 * This release contains additional health checks for sites still experiencing 2.0+ update issues. There are no additional upgrades needed to perform if you have already updated successfully within this release.

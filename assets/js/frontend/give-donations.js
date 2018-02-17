@@ -1161,7 +1161,7 @@ jQuery(function ($) {
 	});
 });
 
-jQuery(window).load(function () {
+jQuery(window).on('load', function () {
 
 	/**
 	 * Validate cc fields on change
