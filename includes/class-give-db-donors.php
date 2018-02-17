@@ -47,6 +47,7 @@ class Give_DB_Donors extends Give_DB {
 			$this->register_table();
 		}
 
+		parent::__construct();
 	}
 
 	/**
