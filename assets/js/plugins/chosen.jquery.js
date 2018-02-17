@@ -929,7 +929,7 @@
       this.results_data = SelectParser.select_to_array(this.form_field);
       if (this.is_multiple) {
         this.search_choices.find("li.search-choice").remove();
-      } else {
+      } else if (!this.is_multiple) {
         this.single_set_selected_text();
         if (this.disable_search || this.form_field.options.length <= this.disable_search_threshold) {
           this.search_field[0].readOnly = true;
