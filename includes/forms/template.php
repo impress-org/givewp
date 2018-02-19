@@ -1538,6 +1538,14 @@ function give_checkout_final_total( $form_id ) {
 	}
 	?>
 	<p id="give-final-total-wrap" class="form-wrap ">
+		<?php 
+		/**
+		 * Fires before the donation total label
+		 * 
+		 * @since 2.0.5
+		 */
+		do_action( 'give_donation_final_total_label_before', $form_id ); 
+		?>
 		<span class="give-donation-total-label">
 			<?php echo apply_filters( 'give_donation_total_label', esc_html__( 'Donation Total:', 'give' ) ); ?>
 		</span>
@@ -1545,6 +1553,14 @@ function give_checkout_final_total( $form_id ) {
 			  data-total="<?php echo give_format_amount( $total, array( 'sanitize' => false ) ); ?>">
 			<?php echo give_currency_filter( give_format_amount( $total, array( 'sanitize' => false ) ), array( 'currency_code' => give_get_currency( $form_id ) ) ); ?>
 		</span>
+		<?php 
+		/**
+		 * Fires after the donation final total label
+		 * 
+		 * @since 2.0.5
+		 */
+		do_action( 'give_donation_final_total_label_after', $form_id ); 
+		?>
 	</p>
 	<?php
 }
