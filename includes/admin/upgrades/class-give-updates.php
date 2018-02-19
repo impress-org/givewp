@@ -542,9 +542,15 @@ class Give_Updates {
 
 		update_option( 'give_db_update_count', $fresh_new_db_count );
 
-		$doing_upgrade_args['update']  = 1;
-		$doing_upgrade_args['heading'] = sprintf( 'Update %s of %s', 1, $fresh_new_db_count );
+		$doing_upgrade_args['update']           = 1;
+		$doing_upgrade_args['heading']          = sprintf( 'Update %s of %s', 1, $fresh_new_db_count );
 		$doing_upgrade_args['total_percentage'] = $this->get_db_update_processing_percentage( true );
+
+		// Remove already completed update from info.
+		if ( give_has_upgrade_completed( $doing_upgrade_args['update_info']['id'] ) ) {
+			$doing_upgrade_args['update_info'] = current( array_values( $batch->data  ) );
+			$doing_upgrade_args['step']        = 1;
+		}
 
 		update_option( 'give_doing_upgrade', $doing_upgrade_args );
 
