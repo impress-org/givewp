@@ -124,7 +124,6 @@ class Tests_Scripts extends Give_Unit_Test_Case {
 
 		$this->assertTrue( wp_style_is( 'jquery-ui-css', 'enqueued' ) );
 		$this->assertTrue( wp_style_is( 'give-admin', 'enqueued' ) );
-		$this->assertTrue( wp_style_is( 'jquery-chosen', 'enqueued' ) );
 		$this->assertTrue( wp_style_is( 'thickbox', 'enqueued' ) );
 
 		$this->assertTrue( wp_script_is( 'jquery-chosen', 'enqueued' ) );

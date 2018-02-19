@@ -165,7 +165,6 @@ class Tests_Give extends Give_Unit_Test_Case {
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'includes/admin/upgrades/upgrade-functions.php' );
 
 		/** Check Assets Exist */
-		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/css/chosen.css' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/css/chosen.min.css' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/css/chosen-sprite.png' );
 		$this->assertFileExists( GIVE_PLUGIN_DIR . 'assets/css/give-admin.css' );

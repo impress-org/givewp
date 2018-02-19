@@ -72,6 +72,9 @@ abstract class Give_DB {
 	 * @access public
 	 */
 	public function __construct() {
+		if( is_multisite() ) {
+			add_action( 'switch_blog', array( $this, 'handle_switch_blog' ), 10, 2 );
+		}
 	}
 
 	/**
@@ -435,6 +438,37 @@ abstract class Give_DB {
 		}
 
 		return absint( $id );
+
+	}
+
+	/**
+	 * Handle switch blog on multi-site
+	 *
+	 * @since  2.0.4
+	 *
+	 * @access public
+	 *
+	 * @param $new_blog_id
+	 * @param $prev_blog_id
+	 */
+	public function handle_switch_blog( $new_blog_id, $prev_blog_id ) {
+		global $wpdb;
+
+		// Bailout.
+		if ( $new_blog_id === $prev_blog_id ) {
+			return;
+		}
+
+
+		$this->table_name = str_replace(
+			1 != $prev_blog_id ? $wpdb->get_blog_prefix( $prev_blog_id ) : $wpdb->base_prefix,
+			1 != $new_blog_id ? $wpdb->get_blog_prefix( $new_blog_id ) : $wpdb->base_prefix,
+			$this->table_name
+		);
+
+		if ( $this instanceof Give_DB_Meta ) {
+			$wpdb->{$this->get_meta_type() . 'meta'} = $this->table_name;
+		}
 
 	}
 }
