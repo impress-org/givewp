@@ -548,7 +548,7 @@ class Give_Updates {
 
 		// Remove already completed update from info.
 		if ( give_has_upgrade_completed( $doing_upgrade_args['update_info']['id'] ) ) {
-			$doing_upgrade_args['update_info'] = current( array_values( $batch->data  ) );
+			$doing_upgrade_args['update_info'] = current( array_values( $batch->data ) );
 			$doing_upgrade_args['step']        = 1;
 		}
 
