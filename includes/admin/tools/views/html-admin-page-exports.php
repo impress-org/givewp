@@ -267,6 +267,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 						</td>
 						<td>
 							<form method="post">
+								<p class="settings-excludes-title"><?php echo __( 'Checked options from the list will not be exported', 'give' ); ?></p>
+								<ul class="settings-excludes-list">
+								<?php
+								$export_excludes = apply_filters( 'settings_export_excludes', array() );
+
+								if ( ! empty( $export_excludes ) ) {
+									foreach ( $export_excludes as $option_key => $option_label ) {
+									?>
+									<li>
+										<label for="settings_export_excludes[<?php echo $option_key?>]">
+											<input
+												type="checkbox"
+												name="settings_export_excludes[<?php echo $option_key?>]"
+												id="settings_export_excludes[<?php echo $option_key?>]"><?php echo esc_html( $option_label ); ?>
+										</label>
+									</li>
+									<?php
+									}
+								}
+								?>
+								</ul>
 								<input type="hidden" name="give-action" value="core_settings_export"/>
 								<input type="submit" value="<?php esc_attr_e( 'Export JSON', 'give' ); ?>" class="button-secondary"/>
 							</form>
