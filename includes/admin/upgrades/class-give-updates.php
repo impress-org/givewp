@@ -1127,6 +1127,22 @@ class Give_Updates {
 
 		return $all_update_ids;
 	}
+
+	/**
+	 * Get offset count
+	 *
+	 * @since  2.0.5
+	 * @access public
+	 *
+	 * @param int $process_item_count
+	 *
+	 * @return float|int
+	 */
+	public function get_offset( $process_item_count ) {
+		return ( 1 === $this->step ) ?
+			0 :
+			( $this->step - 1 ) * $process_item_count;
+	}
 }
 
 Give_Updates::get_instance()->setup();
