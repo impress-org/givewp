@@ -149,8 +149,8 @@ class Give_Updates {
 		add_action( 'wp_ajax_give_db_updates_info', array( $this, '__give_db_updates_info' ) );
 		add_action( 'wp_ajax_give_run_db_updates', array( $this, '__give_start_updating' ) );
 		add_action( 'admin_init', array( $this, '__redirect_admin' ) );
-		add_action( 'admin_init', array( $this, '__pause_db_update' ), -1 );
-		add_action( 'admin_init', array( $this, '__restart_db_update' ), -1 );
+		add_action( 'admin_init', array( $this, '__pause_db_update' ), - 1 );
+		add_action( 'admin_init', array( $this, '__restart_db_update' ), - 1 );
 		add_action( 'admin_notices', array( $this, '__show_notice' ) );
 		add_action( 'give_restart_db_upgrade', array( $this, '__health_background_update' ) );
 
@@ -241,7 +241,7 @@ class Give_Updates {
 	 */
 	public function __register_menu() {
 		// Bailout.
-		if( ! give_test_ajax_works() ) {
+		if ( ! give_test_ajax_works() ) {
 			return;
 		}
 
@@ -316,37 +316,60 @@ class Give_Updates {
 	 * @since  2.0.1
 	 * @access public
 	 *
+	 * @param bool $force
+	 *
 	 * @return bool
 	 */
-	public function __pause_db_update() {
+	public function __pause_db_update( $force = false ) {
 		// Bailout.
 		if (
-			wp_doing_ajax() ||
-			! isset( $_GET['page'] ) ||
-			'give-updates' !== $_GET['page'] ||
-			! isset( $_GET['give-pause-db-upgrades'] ) ||
-			self::$background_updater->is_paused_process()
+			! $force &&
+			(
+				wp_doing_ajax() ||
+				! isset( $_GET['page'] ) ||
+				'give-updates' !== $_GET['page'] ||
+				! isset( $_GET['give-pause-db-upgrades'] ) ||
+				self::$background_updater->is_paused_process()
+			)
+
 		) {
 			return false;
 		}
 
+		delete_option( 'give_upgrade_error' );
+
+		$this->__health_background_update( $this );
 		$batch = self::$background_updater->get_all_batch();
 
-		if ( ! empty( $batch ) ) {
-			update_option( 'give_paused_batches', $batch,  'no' );
-			delete_option( $batch->key );
-			delete_site_transient( self::$background_updater->get_identifier() . '_process_lock' );
-			wp_clear_scheduled_hook( self::$background_updater->get_cron_identifier() );
-
-			Give()->logs->add( 'Update Pause', print_r( $batch, true ), 0, 'update' );
-
-			/**
-			 * Fire action when pause db updates
-			 *
-			 * @since 2.0.1
-			 */
-			do_action( 'give_pause_db_upgrade', $this );
+		// Bailout: if batch is empty
+		if ( empty( $batch->data ) ) {
+			return false;
 		}
+
+		// Remove cache.
+		Give_Background_Updater::flush_cache();
+
+		// Do not stop background process immediately if task running.
+		// @see Give_Background_Updater::lock_process
+		if ( ! $force && self::$background_updater->is_process_running() ) {
+			update_option( 'give_pause_upgrade', 1 );
+
+			return true;
+		}
+
+		update_option( 'give_paused_batches', $batch, 'no' );
+		delete_option( $batch->key );
+		delete_site_transient( self::$background_updater->get_identifier() . '_process_lock' );
+		wp_clear_scheduled_hook( self::$background_updater->get_cron_identifier() );
+
+		Give()->logs->add( 'Update Pause', print_r( $batch, true ), 0, 'update' );
+
+		/**
+		 * Fire action when pause db updates
+		 *
+		 * @since 2.0.1
+		 */
+		do_action( 'give_pause_db_upgrade', $this );
 
 		return true;
 	}
@@ -371,10 +394,13 @@ class Give_Updates {
 			return false;
 		}
 
+		Give_Background_Updater::flush_cache();
 		$batch = get_option( 'give_paused_batches' );
 
 		if ( ! empty( $batch ) ) {
+			wp_cache_delete( $batch->key, 'options' );
 			update_option( $batch->key, $batch->data );
+
 			delete_option( 'give_paused_batches' );
 
 			Give()->logs->add( 'Update Restart', print_r( $batch, true ), 0, 'update' );
@@ -405,6 +431,8 @@ class Give_Updates {
 			return;
 		}
 
+		Give_Background_Updater::flush_cache();
+
 		$batch                = Give_Updates::$background_updater->get_all_batch();
 		$batch_data_count     = count( $batch->data );
 		$all_updates          = $give_updates->get_updates( 'database', 'all' );
@@ -413,11 +441,14 @@ class Give_Updates {
 		$log_data             = '';
 		$doing_upgrade_args   = get_option( 'give_doing_upgrade' );
 
-		if( ! empty( $doing_upgrade_args ) ) {
+		if ( ! empty( $doing_upgrade_args ) ) {
 			$log_data .= 'Doing update:' . "\n";
 			$log_data .= print_r( $doing_upgrade_args, true ) . "\n";
 		}
 
+		/**
+		 * Add remove upgrade from batch
+		 */
 		if ( ! empty( $batch->data ) ) {
 
 			foreach ( $batch->data as $index => $update ) {
@@ -425,6 +456,9 @@ class Give_Updates {
 
 				if ( ! is_callable( $update['callback'] ) ) {
 					$log_data .= 'Removing missing callback update: ' . "{$update['id']}\n";
+					unset( $batch->data[ $index ] );
+				} elseif ( give_has_upgrade_completed( $update['id'] ) ) {
+					$log_data .= 'Removing already completed update: ' . "{$update['id']}\n";
 					unset( $batch->data[ $index ] );
 				}
 
@@ -445,6 +479,9 @@ class Give_Updates {
 			}
 		}
 
+		/**
+		 * Add new upgrade to batch
+		 */
 		if ( $new_updates = $this->get_updates( 'database', 'new' ) ) {
 			$all_batch_update_ids = ! empty( $batch->data ) ? wp_list_pluck( $batch->data, 'id' ) : array();
 
@@ -463,7 +500,21 @@ class Give_Updates {
 			}
 		}
 
-		if ( $batch_data_count !== count( $batch->data ) ) {
+		/**
+		 * Fix batch
+		 */
+		if ( empty( $batch->data ) ) {
+			// Complete batch if do not have any data to process.
+			self::$background_updater->delete( $batch->key );
+
+			if ( self::$background_updater->has_queue() ) {
+				$this->__health_background_update( $this );
+			} else {
+				self::$background_updater->complete();
+			}
+
+		} elseif ( $batch_data_count !== count( $batch->data ) ) {
+
 			$log_data .= 'Updating batch' . "\n";
 			$log_data .= print_r( $batch, true );
 
@@ -472,6 +523,7 @@ class Give_Updates {
 			update_option( 'give_doing_upgrade', $doing_upgrade_args );
 
 			if ( ! empty( $batch->key ) ) {
+				wp_cache_delete( $batch->key, 'options' );
 				update_option( $batch->key, $batch->data );
 			} else {
 
@@ -488,10 +540,34 @@ class Give_Updates {
 
 				Give_Updates::$background_updater->save();
 			}
-
-
-			Give()->logs->add( 'Update Health Check', $log_data, 0, 'update' );
 		}
+
+
+		/**
+		 * Fix give_doing_upgrade option
+		 */
+		$update_option = false;
+		$fresh_new_db_count = $this->get_total_new_db_update_count( true );
+		if ( $fresh_new_db_count < $doing_upgrade_args['update'] ) {
+			update_option( 'give_db_update_count', $fresh_new_db_count );
+			$doing_upgrade_args['update']  = 1;
+			$doing_upgrade_args['heading'] = sprintf( 'Update %s of %s', 1, $fresh_new_db_count );
+			$update_option                 = true;
+		}
+
+		if ( 101 < $doing_upgrade_args['total_percentage'] ) {
+			$doing_upgrade_args['total_percentage'] = $this->get_db_update_processing_percentage( true );
+			$update_option                          = true;
+		}
+
+		if ( $update_option ) {
+			update_option( 'give_doing_upgrade', $doing_upgrade_args );
+
+			$log_data .= 'Updated doing update:' . "\n";
+			$log_data .= print_r( $doing_upgrade_args, true ) . "\n";
+		}
+
+		Give()->logs->add( 'Update Health Check', $log_data, 0, 'update' );
 	}
 
 
@@ -521,24 +597,27 @@ class Give_Updates {
 		// Show notice if upgrade paused.
 		if ( self::$background_updater->is_paused_process() ) {
 			ob_start();
-			?>
-			<p>
+
+			$upgrade_error = get_option( 'give_upgrade_error' );
+			if ( ! $upgrade_error ) : ?>
 				<strong><?php _e( 'Database Update', 'give' ); ?></strong>
 				&nbsp;&#8211;&nbsp;<?php _e( 'GiveWP needs to update your database to the latest version. The following process will make updates to your site\'s database. Please create a backup before proceeding.', 'give' ); ?>
-			</p>
-			<p class="submit">
+				<br>
+				<br>
 				<a href="<?php echo esc_url( add_query_arg( array( 'give-restart-db-upgrades' => 1 ), admin_url( 'edit.php?post_type=give_forms&page=give-updates' ) ) ); ?>" class="button button-primary give-restart-updater-btn">
 					<?php _e( 'Restart the updater', 'give' ); ?>
 				</a>
-			</p>
-			<script type="text/javascript">
-				jQuery('.give-restart-updater-btn').click('click', function () {
-					return window.confirm('<?php echo esc_js( __( 'It is recommended that you backup your database before proceeding. Do you want to run the update now?', 'give' ) ); ?>'); // jshint ignore:line
-				});
-			</script>
+				<script type="text/javascript">
+					jQuery('.give-restart-updater-btn').click('click', function () {
+						return window.confirm('<?php echo esc_js( __( 'It is recommended that you backup your database before proceeding. Do you want to run the update now?', 'give' ) ); ?>'); // jshint ignore:line
+					});
+				</script>
+			<?php else: ?>
+				<strong><?php _e( 'Database Update', 'give' ); ?></strong>
+				&nbsp;&#8211;&nbsp;<?php _e( 'An unexpected issue occurred during the database update which caused it to stop automatically. Please contact support for assistance.', 'give' ); ?>
 			<?php
+			endif;
 			$desc_html = ob_get_clean();
-
 
 			Give()->notices->register_notice( array(
 				'id'          => 'give_upgrade_db',
@@ -549,7 +628,7 @@ class Give_Updates {
 		}
 
 		// Bailout if doing upgrades.
-		if( $this->is_doing_updates() ) {
+		if ( $this->is_doing_updates() ) {
 			return;
 		}
 
@@ -601,7 +680,6 @@ class Give_Updates {
 			<?php
 			$desc_html = ob_get_clean();
 
-
 			Give()->notices->register_notice( array(
 				'id'          => 'give_upgrade_db',
 				'type'        => 'updated',
@@ -652,12 +730,12 @@ class Give_Updates {
 		add_option( 'give_db_update_count', count( $updates ), '', 'no' );
 
 		add_option( 'give_doing_upgrade', array(
-			'update_info' => $updates[0],
-			'step'        => 1,
-			'update'      => 1,
-			'heading'     => sprintf( 'Update %s of %s', 1, count( $updates ) ),
-			'percentage'  => 0,
-			'total_percentage'  => 0,
+			'update_info'      => $updates[0],
+			'step'             => 1,
+			'update'           => 1,
+			'heading'          => sprintf( 'Update %s of %s', 1, count( $updates ) ),
+			'percentage'       => 0,
+			'total_percentage' => 0,
 		), '', 'no' );
 
 		self::$background_updater->save()->dispatch();
@@ -676,7 +754,10 @@ class Give_Updates {
 
 		// Reset counter.
 		$this->step = $this->percentage = 0;
-		++ $this->update;
+
+		$this->update = ( $this->get_total_db_update_count() > $this->update ) ?
+			( $this->update + 1 ) :
+			$this->update;
 	}
 
 
@@ -721,7 +802,20 @@ class Give_Updates {
 		$update_info   = get_option( 'give_doing_upgrade' );
 		$response_type = '';
 
-		if ( empty( $update_info ) ) {
+		if ( self::$background_updater->is_paused_process() ) {
+			$update_info = array(
+				'message'    => __( 'The updates have been paused.', 'give' ),
+				'heading'    => __( '', 'give' ),
+				'percentage' => 0,
+			);
+
+			if ( get_option( 'give_upgrade_error' ) ) {
+				$update_info['message'] = __( 'An unexpected issue occurred during the database update which caused it to stop automatically. Please contact support for assistance.', 'give' );
+			}
+
+			$response_type = 'error';
+
+		} elseif ( empty( $update_info ) ) {
 			$update_info   = array(
 				'message'    => __( 'Give database updates completed successfully. Thank you for updating to the latest version!', 'give' ),
 				'heading'    => __( 'Updates Completed.', 'give' ),
@@ -892,6 +986,7 @@ class Give_Updates {
 		switch ( $status ) {
 			case 'new':
 				// Remove already completed updates.
+				wp_cache_delete( 'give_completed_upgrades', 'options' );
 				$completed_updates = give_get_completed_upgrades();
 
 				if ( ! empty( $completed_updates ) ) {
@@ -965,12 +1060,16 @@ class Give_Updates {
 	 * @since  2.0
 	 * @access public
 	 *
+	 * @param bool $refresh
+	 *
 	 * @return int
 	 */
-	public function get_total_new_db_update_count() {
-		return $this->is_doing_updates() ?
+	public function get_total_new_db_update_count( $refresh = false ) {
+		$update_count = $this->is_doing_updates() && ! $refresh ?
 			get_option( 'give_db_update_count' ) :
 			$this->get_pending_db_update_count();
+
+		return $update_count;
 	}
 
 	/**
@@ -979,14 +1078,19 @@ class Give_Updates {
 	 * @since  2.0
 	 * @access public
 	 *
+	 * @param bool $refresh
+	 *
 	 * @return int
 	 */
-	public function get_running_db_update() {
-		$current_update = get_option( 'give_doing_upgrade' );
+	public function get_running_db_update( $refresh = false ) {
+		$current_update = 1;
 
-		return $this->is_doing_updates() ?
-			$current_update['update'] :
-			1;
+		if ( $this->is_doing_updates() && ! $refresh ) {
+			$current_update = get_option( 'give_doing_upgrade' );
+			$current_update = $current_update['update'];
+		}
+
+		return $current_update;
 	}
 
 	/**
@@ -994,16 +1098,19 @@ class Give_Updates {
 	 *
 	 * @since  2.0
 	 * @access public
+	 *
+	 * @param bool $refresh
+	 *
 	 * @return float|int
 	 */
-	public function get_db_update_processing_percentage() {
+	public function get_db_update_processing_percentage( $refresh = false ) {
 		// Bailout.
-		if ( ! $this->get_total_new_db_update_count() ) {
+		if ( ! $this->get_total_new_db_update_count( $refresh ) ) {
 			return 0;
 		}
 
 		$resume_update            = get_option( 'give_doing_upgrade' );
-		$update_count_percentages = ( ( $this->get_running_db_update() - 1 ) / $this->get_total_new_db_update_count() ) * 100;
+		$update_count_percentages = ( ( $this->get_running_db_update( $refresh ) - 1 ) / $this->get_total_new_db_update_count( $refresh ) ) * 100;
 		$update_percentage_share  = ( 1 / $this->get_total_new_db_update_count() ) * 100;
 		$upgrade_percentage       = ( ( $resume_update['percentage'] * $update_percentage_share ) / 100 );
 
@@ -1015,6 +1122,21 @@ class Give_Updates {
 				round( $final_percentage, 2 )
 			) :
 			0;
+	}
+
+
+	/**
+	 * Get all update ids.
+	 *
+	 * @since 2.0.3
+	 *
+	 * @return array
+	 */
+	public function get_update_ids() {
+		$all_updates    = $this->get_updates( 'database', 'all' );
+		$all_update_ids = wp_list_pluck( $all_updates, 'id' );
+
+		return $all_update_ids;
 	}
 }
 

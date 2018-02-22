@@ -9,17 +9,24 @@
  */
 $current_user     = wp_get_current_user();
 
-if ( is_user_logged_in() ):
-	$user_id = get_current_user_id();
+if ( is_user_logged_in() ) :
+	$user_id      = get_current_user_id();
 	$first_name   = get_user_meta( $user_id, 'first_name', true );
 	$last_name    = get_user_meta( $user_id, 'last_name', true );
 	$display_name = $current_user->display_name;
 	$address      = give_get_donor_address( $user_id, array( 'address_type' => 'personal' ) );
 
-	if ( isset( $_GET['updated'] ) && $_GET['updated'] == true && ! give_get_errors() ): ?>
-		<p class="give_success">
-			<strong><?php esc_html_e( 'Success:', 'give' ); ?></strong> <?php esc_html_e( 'Your profile has been updated.', 'give' ); ?>
-		</p>
+	if ( isset( $_GET['updated'] ) && 'true' === $_GET['updated'] && ! give_get_errors() ) :
+		if ( isset( $_GET['update_code'] ) ) :?>
+				<?php
+				switch ( $_GET['update_code'] ) {
+					case '1':
+						printf( '<p class="give_success"><strong>%1$s</strong> %2$s</p>', esc_html__( 'Success:', 'give' ), esc_html__( 'Your profile has been updated.', 'give' ) );
+						break;
+				}
+				?>
+			</p>
+		<?php endif; ?>
 	<?php endif; ?>
 
 	<?php Give()->notices->render_frontend_notices( 0 ); ?>
@@ -182,7 +189,28 @@ if ( is_user_logged_in() ):
 	?>
 
 	<?php
-else:
-	_e( 'You need to login to edit your profile.', 'give' );
-	echo give_login_form();
+else :
+	if ( isset( $_GET['updated'] ) && 'true' === $_GET['updated'] && ! give_get_errors() ) {
+		if ( isset( $_GET['update_code'] ) ) {
+			switch ( $_GET['update_code'] ) {
+				case '2':
+					printf( '<p class="give_success"><strong>%1$s</strong> %2$s</p>', esc_html__( 'Success:', 'give' ), esc_html__( 'Your profile and password has been updated.', 'give' ) );
+					_e( 'Login with your new credentials.', 'give' );
+					echo give_login_form();
+					break;
+
+				case '3':
+					printf( '<p class="give_success"><strong>%1$s</strong> %2$s</p>', esc_html__( 'Success:', 'give' ), esc_html__( 'Your password has been updated.', 'give' ) );
+					_e( 'Login with your new credentials.', 'give' );
+					echo give_login_form();
+					break;
+
+				default:
+					break;
+			}
+		}
+	} else {
+		_e( 'You need to login to edit your profile.', 'give' );
+		echo give_login_form();
+	}
 endif;

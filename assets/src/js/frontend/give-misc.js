@@ -1,4 +1,5 @@
 import FloatLabels from 'float-labels.js';
+
 jQuery( function( $ ) {
 
 	var doc = $( document );

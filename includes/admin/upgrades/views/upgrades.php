@@ -42,7 +42,7 @@ $give_updates = Give_Updates::get_instance();
 								<p class="give-update-button">
 									<span class="give-doing-update-text-p" <?php echo Give_Updates::$background_updater->is_paused_process() ? 'style="display:none;"' : '';  ?>>
 										<?php echo sprintf(
-										__( '%1$s <a href="%2$s" class="%3$s">%4$s</a>', 'give' ),
+										__( '%1$s <a href="%2$s" class="give-update-now %3$s">%4$s</a>', 'give' ),
 										$is_doing_updates ?
 											__( 'Give is currently updating the database in the background.', 'give' ) :
 											__( 'Give needs to update the database.', 'give' ),
@@ -53,13 +53,22 @@ $give_updates = Give_Updates::get_instance();
 									?>
 									</span>
 									<span class="give-update-paused-text-p" <?php echo ! Give_Updates::$background_updater->is_paused_process()  ? 'style="display:none;"' : '';  ?>>
-										<?php _e('The updates have been paused.', 'give'); ?>
+										<?php if ( get_option( 'give_upgrade_error' ) ) : ?>
+											&nbsp;<?php _e( 'An unexpected issue occurred during the database update which caused it to stop automatically. Please contact support for assistance.', 'give' ); ?>
+										<?php else : ?>
+											<?php _e( 'The updates have been paused.', 'give' ); ?>
+
+										<?php endif; ?>
 									</span>
 
 									<?php if ( Give_Updates::$background_updater->is_paused_process() ) : ?>
-										<button id="give-restart-upgrades" class="button button-primary alignright" data-redirect-url="<?php echo esc_url( admin_url( '/edit.php?post_type=give_forms&page=give-updates&give-restart-db-upgrades=1' ) ); ?>"><?php _e( 'Restart Upgrades', 'give' ); ?></button>
+										<?php  $is_disabled = isset( $_GET['give-restart-db-upgrades'] ) ? ' disabled' : ''; ?>
+										<button id="give-restart-upgrades" class="button button-primary alignright" data-redirect-url="<?php echo esc_url( admin_url( '/edit.php?post_type=give_forms&page=give-updates&give-restart-db-upgrades=1' ) ); ?>"<?php echo $is_disabled; ?>><?php _e( 'Restart Upgrades', 'give' ); ?></button>
 									<?php elseif( $give_updates->is_doing_updates() ): ?>
-										<button id="give-pause-upgrades" class="button button-primary alignright" data-redirect-url="<?php echo esc_url( admin_url( '/edit.php?post_type=give_forms&page=give-updates&give-pause-db-upgrades=1' ) ); ?>"><?php _e( 'Pause Upgrades', 'give' ); ?></button>
+										<?php  $is_disabled = isset( $_GET['give-pause-db-upgrades'] ) ? ' disabled' : ''; ?>
+										<button id="give-pause-upgrades" class="button button-primary alignright" data-redirect-url="<?php echo esc_url( admin_url( '/edit.php?post_type=give_forms&page=give-updates&give-pause-db-upgrades=1' ) ); ?>"<?php echo $is_disabled; ?>>
+											<?php _e( 'Pause Upgrades', 'give' ); ?>
+										</button>
 									<?php endif; ?>
 
 									<script type="text/javascript">

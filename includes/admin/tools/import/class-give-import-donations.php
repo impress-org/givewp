@@ -144,8 +144,9 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		public function submit() {
 			wp_nonce_field( 'give-save-settings', '_give-save-settings' );
 			?>
-			<input type="hidden" class="import-step" id="import-step" name="step" value="<?php echo $this->get_step(); ?>" />
-			<input type="hidden" class="importer-type" value="<?php echo $this->importer_type; ?>" />
+			<input type="hidden" class="import-step" id="import-step" name="step"
+			       value="<?php echo $this->get_step(); ?>"/>
+			<input type="hidden" class="importer-type" value="<?php echo $this->importer_type; ?>"/>
 			<?php
 		}
 
@@ -161,7 +162,8 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			$this->render_progress();
 			?>
 			<section>
-				<table class="widefat export-options-table give-table <?php echo "step-{$step}"; ?>" id="<?php echo "step-{$step}"; ?>">
+				<table class="widefat export-options-table give-table <?php echo "step-{$step}"; ?>"
+				       id="<?php echo "step-{$step}"; ?>">
 					<tbody>
 					<?php
 					switch ( $this->get_step() ) {
@@ -180,16 +182,16 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						case 4:
 							$this->import_success();
 					}
-
 					if ( false === $this->check_for_dropdown_or_import() ) {
 						?>
 						<tr valign="top">
 							<th></th>
 							<th>
 								<input type="submit"
-								       class="button button-primary button-large button-secondary <?php echo "step-{$step}"; ?>"
+								       class=" button button-primary button-large button-secondary <?php echo "step-{$step}"; ?>"
 								       id="recount-stats-submit"
-								       value="<?php esc_attr_e( 'Submit', 'give' ); ?>" />
+									<?php echo ( 2 === $step ) ? 'disabled' : ''; ?>
+									   value="<?php esc_attr_e( 'Submit', 'give' ); ?>"/>
 							</th>
 						</tr>
 						<?php
@@ -252,13 +254,13 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 					<h2>
 						<?php
 						if ( $success ) {
-							echo sprintf(
-								__( 'Import complete! %s donations processed', 'give' ),
+							printf(
+								_n( 'Import complete! %s donation processed', 'Import complete! %s donations processed', $total, 'give' ),
 								"<strong>{$total}</strong>"
 							);
 						} else {
-							echo sprintf(
-								__( 'Failed to import %s donations', 'give' ),
+							printf(
+								_n( 'Failed to import %s donation', 'Failed to import %s donations', $total, 'give' ),
 								"<strong>{$total}</strong>"
 							);
 						}
@@ -292,7 +294,8 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 					?>
 
 					<p>
-						<a class="button button-large button-secondary" href="<?php echo add_query_arg( $query_arg, admin_url( 'edit.php' ) ); ?>"><?php echo $text; ?></a>
+						<a class="button button-large button-secondary"
+						   href="<?php echo add_query_arg( $query_arg, admin_url( 'edit.php' ) ); ?>"><?php echo $text; ?></a>
 					</p>
 				</th>
 			</tr>
@@ -356,7 +359,8 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 					<input type="hidden" value="<?php echo $_REQUEST['delete_csv']; ?>" name="delete_csv"
 					       class="delete_csv">
 					<input type="hidden" value="<?php echo $delimiter; ?>" name="delimiter">
-					<input type="hidden" value='<?php echo maybe_serialize( self::get_importer( $csv, 0, $delimiter ) ); ?>'
+					<input type="hidden"
+					       value='<?php echo maybe_serialize( self::get_importer( $csv, 0, $delimiter ) ); ?>'
 					       name="main_key"
 					       class="main_key">
 				</th>
@@ -364,10 +368,10 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 
 			<script type="text/javascript">
 				jQuery.noConflict();
-				(function( $ ) {
-					$( function() {
+				(function ($) {
+					$(function () {
 
-						var $form = jQuery( 'form.tools-setting-page-import' );
+						var $form = jQuery('form.tools-setting-page-import');
 
 						/**
 						 * Do not allow user to reload the page
@@ -376,17 +380,17 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						 */
 						give_setting_edit = true;
 
-						var progress = $form.find( '.give-progress' );
+						var progress = $form.find('.give-progress');
 
-						var total_ajax = jQuery( progress ).data( 'total_ajax' ),
-							current = jQuery( progress ).data( 'current' ),
-							start = jQuery( progress ).data( 'start' ),
-							end = jQuery( progress ).data( 'end' ),
-							next = jQuery( progress ).data( 'next' ),
-							total = jQuery( progress ).data( 'total' ),
-							per_page = jQuery( progress ).data( 'per_page' );
+						var total_ajax = jQuery(progress).data('total_ajax'),
+							current = jQuery(progress).data('current'),
+							start = jQuery(progress).data('start'),
+							end = jQuery(progress).data('end'),
+							next = jQuery(progress).data('next'),
+							total = jQuery(progress).data('total'),
+							per_page = jQuery(progress).data('per_page');
 
-						jQuery.ajax( {
+						jQuery.ajax({
 							type: 'POST',
 							url: ajaxurl,
 							data: {
@@ -401,16 +405,16 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 								fields: $form.serialize()
 							},
 							dataType: 'json',
-							success: function( response ) {
-								jQuery( progress ).data( 'current', response.current );
-								jQuery( progress ).find( 'div' ).width( response.percentage + '%' );
+							success: function (response) {
+								jQuery(progress).data('current', response.current);
+								jQuery(progress).find('div').width(response.percentage + '%');
 
-								if ( response.next == true ) {
-									jQuery( progress ).data( 'start', response.start );
-									jQuery( progress ).data( 'end', response.end );
+								if (response.next == true) {
+									jQuery(progress).data('start', response.start);
+									jQuery(progress).data('end', response.end);
 
-									if ( response.last == true ) {
-										jQuery( progress ).data( 'next', false );
+									if (response.last == true) {
+										jQuery(progress).data('next', false);
 									}
 									give_on_donation_import_ajax();
 								} else {
@@ -423,19 +427,19 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 									window.location = response.url;
 								}
 							},
-							error: function() {
+							error: function () {
 								/**
 								 * Now user is allow to reload the page.
 								 *
 								 * @since 1.8.14
 								 */
 								give_setting_edit = false;
-								alert( give_vars.error_message );
+								alert(give_vars.error_message);
 							}
-						} );
+						});
 
-					} );
-				})( jQuery );
+					});
+				})(jQuery);
 			</script>
 			<?php
 		}
@@ -484,7 +488,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 				$url = give_import_page_url();
 				?>
 				<script type="text/javascript">
-									window.location = "<?php echo $url; ?>";
+					window.location = "<?php echo $url; ?>";
 				</script>
 				<?php
 			} else {
@@ -492,6 +496,53 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 				<tr valign="top" class="give-import-dropdown">
 					<th colspan="2">
 						<h2 id="give-import-title"><?php esc_html_e( 'Map CSV fields to donations', 'give' ) ?></h2>
+
+						<p class="give-import-donation-required-fields-title"><?php _e( 'Required Fields' ); ?></p>
+
+						<p class="give-field-description"><?php _e( 'These fields are required for the import to submitted' ); ?></p>
+
+						<ul class="give-import-donation-required-fields">
+							<li class="give-import-donation-required-email"
+							    title="Please configure all required fields to start the import process.">
+								<span class="give-import-donation-required-symbol dashicons dashicons-no-alt"></span>
+								<span class="give-import-donation-required-text">
+									<?php
+									_e( 'Email Access', 'give' );
+									?>
+								</span>
+							</li>
+
+							<li class="give-import-donation-required-first"
+							    title="Please configure all required fields to start the import process.">
+								<span class="give-import-donation-required-symbol dashicons dashicons-no-alt"></span>
+								<span class="give-import-donation-required-text">
+									<?php
+									_e( 'First Name', 'give' );
+									?>
+								</span>
+							</li>
+
+							<li class="give-import-donation-required-amount"
+							    title="Please configure all required fields to start the import process.">
+								<span class="give-import-donation-required-symbol dashicons dashicons-no-alt"></span>
+								<span class="give-import-donation-required-text">
+									<?php
+									_e( 'Donation Amount', 'give' );
+									?>
+								</span>
+							</li>
+
+							<li class="give-import-donation-required-form"
+							    title="Please configure all required fields to start the import process.">
+								<span class="give-import-donation-required-symbol dashicons dashicons-no-alt"></span>
+								<span class="give-import-donation-required-text">
+									<?php
+									_e( 'Form Title or ID', 'give' );
+									?>
+								</span>
+							</li>
+						</ul>
+
 						<p class="give-field-description"><?php esc_html_e( 'Select fields from your CSV file to map against donations fields or to ignore during import.', 'give' ) ?></p>
 					</th>
 				</tr>
@@ -904,7 +955,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 					) ) );
 					?>
 					<script type="text/javascript">
-											window.location = "<?php echo $url; ?>";
+						window.location = "<?php echo $url; ?>";
 					</script>
 					<?php
 				}

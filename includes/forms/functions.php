@@ -960,14 +960,14 @@ function give_goal_progress_stats( $form ) {
 	if ( 'percentage' === $goal_format ) {
 		$actual = "{$actual}%";
 	} else if ( 'amount' === $goal_format ) {
-		$actual = give_currency_filter( $actual );
+		$actual = give_currency_filter( give_format_amount( $actual ) );
 	}
 
 	// Define Total Goal based on the goal format.
 	if ( 'percentage' === $goal_format ) {
 		$total_goal = '';
 	} else if ( 'amount' === $goal_format ) {
-		$total_goal = give_currency_filter( $total_goal );
+		$total_goal = give_currency_filter( give_format_amount( $total_goal ) );
 	}
 
 	return apply_filters( 'give_goal_progress_stats', array(
