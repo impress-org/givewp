@@ -278,7 +278,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 									<li>
 										<label for="settings_export_excludes[<?php echo $option_key?>]">
 											<input
-												type="checkbox"
+												type="checkbox" checked
 												name="settings_export_excludes[<?php echo $option_key?>]"
 												id="settings_export_excludes[<?php echo $option_key?>]"><?php echo esc_html( $option_label ); ?>
 										</label>
