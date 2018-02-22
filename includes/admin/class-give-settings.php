@@ -1003,7 +1003,14 @@ function give_enabled_gateways_callback( $field_arr, $saved_values = array() ) {
 		echo '<li>';
 		printf( '<span class="give-drag-handle"><span class="dashicons dashicons-menu"></span></span>' );
 		printf( '<span class="admin-label">%s</span>', esc_html( $option['admin_label'] ) );
-		printf( '<input class="checkout-label" type="text" id="%1$s[%2$s-label]" name="%1$s[%2$s-label]" value="%3$s" placeholder="%4$s"/>', esc_attr( $id ), esc_attr( $key ), esc_html( $saved_values[ $key . '-label' ] ), esc_html( $option['checkout_label'] ) );
+
+		if ( empty( $saved_values[ $key . '-label' ] ) ) {
+			$label = '';
+		} else {
+			$label = $saved_values[ $key . '-label' ];
+		}
+
+		printf( '<input class="checkout-label" type="text" id="%1$s[%2$s-label]" name="%1$s[%2$s-label]" value="%3$s" placeholder="%4$s"/>', esc_attr( $id ), esc_attr( $key ), esc_html( $label ), esc_html( $option['checkout_label'] ) );
 		printf( '<input class="gateways-checkbox" name="%1$s[%2$s]" id="%1$s[%2$s]" type="checkbox" value="1" %3$s data-payment-gateway="%4$s"/>', esc_attr( $id ), esc_attr( $key ), checked( '1', $enabled, false ), esc_html( $option['admin_label'] ) );
 		echo '</li>';
 
