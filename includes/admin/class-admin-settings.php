@@ -705,20 +705,6 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						</tr><?php
 						break;
 
-					// Custom: System setting field.
-					case 'system_info' :
-						?>
-					<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
-						<th scope="row" class="titledesc">
-							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
-						</th>
-						<td class="give-forminp">
-							<?php give_system_info_callback(); ?>
-							<?php echo $description; ?>
-						</td>
-						</tr><?php
-						break;
-
 					// Custom: Default gateways setting field.
 					case 'default_gateway' :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
