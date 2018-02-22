@@ -182,12 +182,20 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 							'id'   => 'gateways',
 							'type' => 'enabled_gateways'
 						),
+
+						/**
+						 * "Enabled Gateways" setting field contains gateways label setting but when you save gateway settings then label will not save
+						 *  because they are not registered setting API because code will not recognize them.
+						 *
+						 * This setting will not render on admin setting screen but help internal code to recognize "gateways_label"  setting and add them to give setting when save.
+						 */
 						array(
 							'name' => __( 'Gateways Label', 'give' ),
 							'desc' => '',
 							'id'   => 'gateways_label',
 							'type' => 'gateways_label_hidden'
 						),
+
 						array(
 							'name' => __( 'Default Gateway', 'give' ),
 							'desc' => __( 'The gateway that will be selected by default.', 'give' ),
