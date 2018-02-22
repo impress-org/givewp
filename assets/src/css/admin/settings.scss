@@ -197,8 +197,8 @@ div.give-field-description,
 
 	.gateway-enabled-settings-title {
 		display: grid;
-		grid-template-columns: .5fr 2fr 5fr 1.5fr;
-		grid-gap: 20px; 	
+		grid-template-columns: .5fr 2fr 5fr .5fr .5fr;
+		grid-gap: 20px;
 		border-bottom: 1px solid #e5e5e5;
 		padding: 1rem;
 		font-weight: 600;
@@ -217,7 +217,7 @@ div.give-field-description,
 .give-payment-gatways-list li.ui-sortable-handle {
 
 	display: grid;
-	grid-template-columns: .5fr 2fr 5fr 1.5fr;
+	grid-template-columns: .5fr 2fr 5fr .5fr .5fr;
 	align-items: center;
 	grid-gap: 20px;
 	margin: 15px 0;

@@ -185,7 +185,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 
 						/**
 						 * "Enabled Gateways" setting field contains gateways label setting but when you save gateway settings then label will not save
-						 *  because they are not registered setting API because code will not recognize them.
+						 *  because this is not registered setting API and code will not recognize them.
 						 *
 						 * This setting will not render on admin setting screen but help internal code to recognize "gateways_label"  setting and add them to give setting when save.
 						 */
@@ -196,12 +196,19 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 							'type' => 'gateways_label_hidden'
 						),
 
+						/**
+						 * "Enabled Gateways" setting field contains default gateway setting but when you save gateway settings then this setting will not save
+						 *  because this is not registered setting API and code will not recognize them.
+						 *
+						 * This setting will not render on admin setting screen but help internal code to recognize "default_gateway"  setting and add them to give setting when save.
+						 */
 						array(
 							'name' => __( 'Default Gateway', 'give' ),
 							'desc' => __( 'The gateway that will be selected by default.', 'give' ),
 							'id'   => 'default_gateway',
-							'type' => 'default_gateway'
+							'type' => 'default_gateway_hidden'
 						),
+
 						array(
 							'name'  => __( 'Gateways Docs Link', 'give' ),
 							'id'    => 'gateway_settings_docs_link',
@@ -263,9 +270,10 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 		 * @param $settings
 		 */
 		public function render_enabled_gateways( $field, $settings ) {
-			$id             = $field['id'];
-			$gateways       = give_get_ordered_payment_gateways( give_get_payment_gateways() );
-			$gateways_label = give_get_option( 'gateways_label', array() );
+			$id              = $field['id'];
+			$gateways        = give_get_ordered_payment_gateways( give_get_payment_gateways() );
+			$gateways_label  = give_get_option( 'gateways_label', array() );
+			$default_gateway = give_get_option( 'default_gateway', current( array_keys( $gateways ) ) );
 
 			ob_start();
 
@@ -277,10 +285,12 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 						<span></span>
 						<span>%1$s</span>
 						<span>%2$s</span>
-						<span class="justify-end">%3$s</span>
+						<span>%3$s</span>
+						<span class="justify-end">%4$s</span>
 						',
 				__( 'Gateway', 'give' ),
 				__( 'Label', 'give' ),
+				__( 'Default', 'give' ),
 				__( 'Enabled', 'give' )
 			);
 			echo '</div>';
@@ -307,6 +317,13 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 					esc_attr( $key ),
 					esc_html( $label ),
 					esc_html( $option['checkout_label'] )
+				);
+
+				printf(
+					'<input type="radio" name="%1$s" value="%2$s" %3$s>',
+					'default_gateway',
+					$key,
+					checked( $key, $default_gateway, false )
 				);
 
 				printf(
