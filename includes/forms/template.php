@@ -1361,9 +1361,9 @@ function give_payment_mode_select( $form_id ) {
 				/**
 				 * Loop through the active payment gateways.
 				 */
-				$selected_gateway  = give_get_chosen_gateway( $form_id );
-				$give_settings = give_get_settings();
-				$gateway_settings = $give_settings['gateways'];
+				$selected_gateway = give_get_chosen_gateway( $form_id );
+				$give_settings    = give_get_settings();
+				$gateways_label   = $give_settings['gateways_label'];
 
 				foreach ( $gateways as $gateway_id => $gateway ) :
 					//Determine the default gateway.
@@ -1375,10 +1375,9 @@ function give_payment_mode_select( $form_id ) {
 							   value="<?php echo esc_attr( $gateway_id ); ?>"<?php echo $checked; ?>>
 
 						<?php
-						if ( empty( $gateway_settings[ $gateway_id . '-label' ] ) ) {
-							$label = $gateway['checkout_label'];
-						} else {
-							$label = $gateway_settings[ $gateway_id . '-label' ];
+						$label = $gateway['checkout_label'];
+						if ( ! empty( $gateways_label[ $gateway_id  ] ) ) {
+							$label = $gateways_label[ $gateway_id ];
 						}
 						?>
 						<label for="give-gateway-<?php echo esc_attr( $gateway_id ) . '-' . $form_id; ?>"

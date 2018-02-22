@@ -32,6 +32,11 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 			$this->default_tab = 'gateways-settings';
 
 			parent::__construct();
+
+			// Do not use main form for this tab.
+			if ( give_get_current_setting_tab() === $this->id ) {
+				add_action( 'give_admin_field_enabled_gateways', array( $this, 'render_enabled_gateways' ), 10, 2 );
+			}
 		}
 
 		/**
@@ -97,13 +102,13 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 								'disabled' => __( 'Disabled', 'give' ),
 							)
 						),
-                        array(
-                            'name'  => __( 'PayPal Standard Gateway Settings Docs Link', 'give' ),
-                            'id'    => 'paypal_standard_gateway_settings_docs_link',
-                            'url'   => esc_url( 'http://docs.givewp.com/settings-gateway-paypal-standard' ),
-                            'title' => __( 'PayPal Standard Gateway Settings', 'give' ),
-                            'type'  => 'give_docs_link',
-                        ),
+						array(
+							'name'  => __( 'PayPal Standard Gateway Settings Docs Link', 'give' ),
+							'id'    => 'paypal_standard_gateway_settings_docs_link',
+							'url'   => esc_url( 'http://docs.givewp.com/settings-gateway-paypal-standard' ),
+							'title' => __( 'PayPal Standard Gateway Settings', 'give' ),
+							'type'  => 'give_docs_link',
+						),
 						array(
 							'type' => 'sectionend',
 							'id'   => 'give_title_gateway_settings_2',
@@ -178,18 +183,24 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 							'type' => 'enabled_gateways'
 						),
 						array(
+							'name' => __( 'Gateways Label', 'give' ),
+							'desc' => '',
+							'id'   => 'gateways_label',
+							'type' => 'gateways_label_hidden'
+						),
+						array(
 							'name' => __( 'Default Gateway', 'give' ),
 							'desc' => __( 'The gateway that will be selected by default.', 'give' ),
 							'id'   => 'default_gateway',
 							'type' => 'default_gateway'
 						),
-                        array(
-                            'name'  => __( 'Gateways Docs Link', 'give' ),
-                            'id'    => 'gateway_settings_docs_link',
-                            'url'   => esc_url( 'http://docs.givewp.com/settings-gateways' ),
-                            'title' => __( 'Gateway Settings', 'give' ),
-                            'type'  => 'give_docs_link',
-                        ),
+						array(
+							'name'  => __( 'Gateways Docs Link', 'give' ),
+							'id'    => 'gateway_settings_docs_link',
+							'url'   => esc_url( 'http://docs.givewp.com/settings-gateways' ),
+							'title' => __( 'Gateway Settings', 'give' ),
+							'type'  => 'give_docs_link',
+						),
 						array(
 							'id'   => 'give_title_gateway_settings_1',
 							'type' => 'sectionend'
@@ -231,6 +242,83 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );
+		}
+
+
+		/**
+		 * Render enabled gateways
+		 *
+		 * @since  2.0.5
+		 * @access public
+		 *
+		 * @param $field
+		 * @param $settings
+		 */
+		public function render_enabled_gateways( $field, $settings ) {
+			$id             = $field['id'];
+			$gateways       = give_get_ordered_payment_gateways( give_get_payment_gateways() );
+			$gateways_label = give_get_option( 'gateways_label', array() );
+
+			ob_start();
+
+			echo '<div class="gateway-enabled-wrap">';
+
+			echo '<div class="gateway-enabled-settings-title">';
+			printf(
+				'
+						<span></span>
+						<span>%1$s</span>
+						<span>%2$s</span>
+						<span class="justify-end">%3$s</span>
+						',
+				__( 'Gateway', 'give' ),
+				__( 'Label', 'give' ),
+				__( 'Enabled', 'give' )
+			);
+			echo '</div>';
+
+			echo '<ul class="give-checklist-fields give-payment-gatways-list">';
+			foreach ( $gateways as $key => $option ) :
+				$enabled = null;
+				if ( is_array( $settings ) && array_key_exists( $key, $settings ) ) {
+					$enabled = '1';
+				}
+
+				echo '<li>';
+				printf( '<span class="give-drag-handle"><span class="dashicons dashicons-menu"></span></span>' );
+				printf( '<span class="admin-label">%s</span>', esc_html( $option['admin_label'] ) );
+
+				$label = '';
+				if ( ! empty( $gateways_label[ $key ] ) ) {
+					$label = $gateways_label[ $key ];
+				}
+
+				printf(
+					'<input class="checkout-label" type="text" id="%1$s[%2$s]" name="%1$s[%2$s]" value="%3$s" placeholder="%4$s"/>',
+					'gateways_label',
+					esc_attr( $key ),
+					esc_html( $label ),
+					esc_html( $option['checkout_label'] )
+				);
+
+				printf(
+					'<input class="gateways-checkbox" name="%1$s[%2$s]" id="%1$s[%2$s]" type="checkbox" value="1" %3$s data-payment-gateway="%4$s"/>',
+					esc_attr( $id ),
+					esc_attr( $key ),
+					checked( '1', $enabled, false ),
+					esc_html( $option['admin_label'] )
+				);
+				echo '</li>';
+			endforeach;
+			echo '</ul>';
+
+			echo '</div>'; // end gateway-enabled-wrap.
+
+			printf(
+				'<tr><th>%1$s</th><td>%2$s</td></tr>',
+				$field['title'],
+				ob_get_clean()
+			);
 		}
 	}
 
