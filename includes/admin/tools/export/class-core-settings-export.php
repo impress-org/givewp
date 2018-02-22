@@ -54,7 +54,18 @@ class Give_Core_Settings_Export extends Give_Export {
 	 * @since 1.8.17
 	 */
 	public function json_core_settings_export() {
-		echo wp_json_encode( get_option( 'give_settings' ) );
+		$settings_excludes = $_POST['settings_export_excludes'];
+		$give_settings     = get_option( 'give_settings' );
+
+		if ( is_array( $settings_excludes ) && ! empty( $settings_excludes ) ) {
+			foreach ( $settings_excludes as $key => $value ) {
+				if ( 'on' === $value ) {
+					unset( $give_settings[ $key ] );
+				}
+			}
+		}
+
+		echo wp_json_encode( $give_settings );
 	}
 
 	/**
