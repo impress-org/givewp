@@ -270,6 +270,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 								<p class="settings-excludes-title"><?php echo __( 'Checked options from the list will not be exported', 'give' ); ?></p>
 								<ul class="settings-excludes-list">
 								<?php
+
+								/**
+								 * Fire the filter to exclude fields from exporting.
+								 *
+								 * @since 2.0.5
+								 */
 								$export_excludes = apply_filters( 'settings_export_excludes', array() );
 
 								if ( ! empty( $export_excludes ) ) {
