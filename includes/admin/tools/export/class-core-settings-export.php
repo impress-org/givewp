@@ -54,12 +54,12 @@ class Give_Core_Settings_Export extends Give_Export {
 	 * @since 1.8.17
 	 */
 	public function json_core_settings_export() {
-		$settings_excludes = $_POST['settings_export_excludes'];
+		$settings_excludes = give_clean( $_POST['settings_export_excludes'] );
 		$give_settings     = get_option( 'give_settings' );
 
 		if ( is_array( $settings_excludes ) && ! empty( $settings_excludes ) ) {
 			foreach ( $settings_excludes as $key => $value ) {
-				if ( 'on' === $value ) {
+				if ( give_is_setting_enabled( $value ) ) {
 					unset( $give_settings[ $key ] );
 				}
 			}
