@@ -132,6 +132,14 @@ Give = {
 		 * @returns {number}
 		 */
 		unFormatCurrency: function (price, decimal_separator) {
+			price = price.replace(/[^0-9\.-]+/g,"");
+
+			if( 0 === price.indexOf('.') ) {
+				price = price.substr(1);
+			}else if( ( price.length -1 ) === price.indexOf('.') ){
+				price = price.slice(0, -1);
+			}
+
 			return Math.abs(parseFloat(accounting.unformat(price, decimal_separator)));
 		},
 
