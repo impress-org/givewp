@@ -190,7 +190,64 @@ div.give-field-description,
 //--------------------------------------------------------------
 // Payment Gateways
 //--------------------------------------------------------------
+
+.gateway-enabled-wrap {
+	background-color: #f7f7f7;
+	border: 1px solid #e5e5e5;
+
+	.gateway-enabled-settings-title {
+		display: grid;
+		grid-template-columns: .5fr 2.5fr 5fr 1fr 1fr;
+		grid-gap: 20px;
+		border-bottom: 1px solid #e5e5e5;
+		padding: 1rem;
+		font-weight: 600;
+	}
+
+	.ui-sortable-placeholder {
+		visibility: visible !important;
+		border: 2px dashed #e5e5e5;
+		transition: all 0.2s ease;
+	}
+
+	.ui-sortable-helper {
+		background-color: #fafafa;
+		box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.25);
+		border: 1px solid #e5e5e5;
+		padding: .5rem .5rem !important;
+	}
+}
+
+.give-payment-gatways-list {
+	margin: 0;
+	padding: 1rem;
+}
+
 .give-payment-gatways-list li.ui-sortable-handle {
+
+	display: grid;
+	grid-template-columns: .5fr 2.5fr 5fr 1fr 1fr;
+	align-items: center;
+	grid-gap: 20px;
+	margin: 0;
+	padding: .5rem 0;
+
+	&:first-child {
+		padding-top: 0;
+	}
+
+	&:last-child {
+		padding-bottom: 0;
+	}
+
+	.checkout-label {
+		padding: .5rem .75rem;
+	}
+
+	.gateways-checkbox,
+	.gateways-radio {
+		justify-self: center;
+	}
 
   span.give-drag-handle {
 	padding: 3px 4px 0 0;
