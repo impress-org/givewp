@@ -486,11 +486,10 @@ function give_output_levels( $form_id ) {
 	$display_style      = give_get_meta( $form_id, '_give_display_style', true );
 	$custom_amount      = give_get_meta( $form_id, '_give_custom_amount', true );
 	$custom_amount_text = give_get_meta( $form_id, '_give_custom_amount_text', true );
-	$minimum_amount     = give_get_meta( $form_id, '_give_custom_amount_minimum', true, 'custom' );
 
-	if ( 'custom' !== $minimum_amount ) {
-		$minimum_amount = give_format_amount( $minimum_amount, array( 'sanitize' => false ) );
-	}
+	$minimum_amount     = give_get_meta( $form_id, '_give_custom_amount_minimum', true, '1.00' );
+	$minimum_amount = give_format_amount( $minimum_amount, array( 'sanitize' => false ) );
+
 
 	if ( empty( $custom_amount_text ) ) {
 		$custom_amount_text = esc_html__( 'Give a Custom Amount', 'give' );
