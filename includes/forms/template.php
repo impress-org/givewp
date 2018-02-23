@@ -486,6 +486,11 @@ function give_output_levels( $form_id ) {
 	$display_style      = give_get_meta( $form_id, '_give_display_style', true );
 	$custom_amount      = give_get_meta( $form_id, '_give_custom_amount', true );
 	$custom_amount_text = give_get_meta( $form_id, '_give_custom_amount_text', true );
+
+	$minimum_amount     = give_get_meta( $form_id, '_give_custom_amount_minimum', true, '1.00' );
+	$minimum_amount = give_format_amount( $minimum_amount, array( 'sanitize' => false ) );
+
+
 	if ( empty( $custom_amount_text ) ) {
 		$custom_amount_text = esc_html__( 'Give a Custom Amount', 'give' );
 	}
@@ -512,7 +517,7 @@ function give_output_levels( $form_id ) {
 			//Custom Amount.
 			if ( give_is_setting_enabled( $custom_amount ) && ! empty( $custom_amount_text ) ) {
 				$output .= '<li>';
-				$output .= '<button type="button" data-price-id="custom" class="give-donation-level-btn give-btn give-btn-level-custom" value="custom">';
+				$output .= '<button type="button" data-price-id="custom" class="give-donation-level-btn give-btn give-btn-level-custom" value="' . $minimum_amount . '">';
 				$output .= $custom_amount_text;
 				$output .= '</button>';
 				$output .= '</li>';
@@ -540,7 +545,7 @@ function give_output_levels( $form_id ) {
 			//Custom Amount.
 			if ( give_is_setting_enabled( $custom_amount ) && ! empty( $custom_amount_text ) ) {
 				$output .= '<li>';
-				$output .= '<input type="radio" data-price-id="custom" class="give-radio-input give-radio-input-level give-radio-level-custom" name="give-radio-donation-level" id="give-radio-level-custom" value="custom">';
+				$output .= '<input type="radio" data-price-id="custom" class="give-radio-input give-radio-input-level give-radio-level-custom" name="give-radio-donation-level" id="give-radio-level-custom" value="' . $minimum_amount . '">';
 				$output .= '<label for="give-radio-level-custom">' . $custom_amount_text . '</label>';
 				$output .= '</li>';
 			}
@@ -567,7 +572,7 @@ function give_output_levels( $form_id ) {
 
 			//Custom Amount.
 			if ( give_is_setting_enabled( $custom_amount ) && ! empty( $custom_amount_text ) ) {
-				$output .= '<option data-price-id="custom" class="give-donation-level-custom" value="custom">' . $custom_amount_text . '</option>';
+				$output .= '<option data-price-id="custom" class="give-donation-level-custom" value="' . $minimum_amount . '">' . $custom_amount_text . '</option>';
 			}
 
 			$output .= '</select>';
