@@ -286,7 +286,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 						<span>%1$s</span>
 						<span>%2$s</span>
 						<span>%3$s</span>
-						<span class="justify-end">%4$s</span>
+						<span>%4$s</span>
 						',
 				__( 'Gateway', 'give' ),
 				__( 'Label', 'give' ),
@@ -320,7 +320,7 @@ if ( ! class_exists( 'Give_Settings_Gateways' ) ) :
 				);
 
 				printf(
-					'<input type="radio" name="%1$s" value="%2$s" %3$s>',
+					'<input class="gateways-radio" type="radio" name="%1$s" value="%2$s" %3$s>',
 					'default_gateway',
 					$key,
 					checked( $key, $default_gateway, false )

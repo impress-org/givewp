@@ -197,15 +197,24 @@ div.give-field-description,
 
 	.gateway-enabled-settings-title {
 		display: grid;
-		grid-template-columns: .5fr 2fr 5fr .5fr .5fr;
+		grid-template-columns: .5fr 2.5fr 5fr 1fr 1fr;
 		grid-gap: 20px;
 		border-bottom: 1px solid #e5e5e5;
 		padding: 1rem;
 		font-weight: 600;
 	}
 
-	.justify-end {
-		justify-self: end;
+	.ui-sortable-placeholder {
+		visibility: visible !important;
+		border: 2px dashed #e5e5e5;
+		transition: all 0.2s ease;
+	}
+
+	.ui-sortable-helper {
+		background-color: #fafafa;
+		box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.25);
+		border: 1px solid #e5e5e5;
+		padding: .5rem .5rem !important;
 	}
 }
 
@@ -217,25 +226,27 @@ div.give-field-description,
 .give-payment-gatways-list li.ui-sortable-handle {
 
 	display: grid;
-	grid-template-columns: .5fr 2fr 5fr .5fr .5fr;
+	grid-template-columns: .5fr 2.5fr 5fr 1fr 1fr;
 	align-items: center;
 	grid-gap: 20px;
-	margin: 15px 0;
+	margin: 0;
+	padding: .5rem 0;
 
 	&:first-child {
-		margin-top: 0;
+		padding-top: 0;
 	}
 
 	&:last-child {
-		margin-bottom: 0;
+		padding-bottom: 0;
 	}
 
 	.checkout-label {
 		padding: .5rem .75rem;
 	}
 
-	.gateways-checkbox {
-		justify-self: end;
+	.gateways-checkbox,
+	.gateways-radio {
+		justify-self: center;
 	}
 
   span.give-drag-handle {
