@@ -910,7 +910,8 @@ function give_get_form_goal_format( $form_id = 0 ) {
 /**
  * Display/Return a formatted goal for a donation form
  *
- * @param int|Give_Donate_Form $form Form ID or Form Object.
+ * @param int|Give_Donate_Form  $form       Form ID or Form Object.
+ * @param bool|Give_Donate_Form $raw_values True to return stats without currency values.
  *
  * @since 2.1
  *
