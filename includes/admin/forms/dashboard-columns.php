@@ -87,9 +87,9 @@ function give_render_form_columns( $column_name, $post_id ) {
 			case 'goal':
 				if ( give_is_setting_enabled( give_get_meta( $post_id, '_give_goal_option', true ) ) ) {
 
-					$goal_stats = give_goal_progress_stats( $post_id );
-
+					$goal_stats = give_goal_progress_stats( $post_id, true );
 					$html = '';
+
 					$html .= sprintf(
 						( 'percentage' !== $goal_stats['format'] ) ?
 							'<div class="give-goal-text"><span>%1$s</span> %2$s <a href="%3$s">%4$s</a></div>' :
@@ -99,9 +99,14 @@ function give_render_form_columns( $column_name, $post_id ) {
 						esc_url( admin_url( "post.php?post={$post_id}&action=edit&give_tab=donation_goal_options" ) ),
 						$goal_stats['goal']
 					);
-					$html .= '<div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' . esc_attr( $goal_stats['progress'] ) . '">';
-					$html .= '<span style="width:' . esc_attr( $goal_stats['progress'] ) . '%;"></span>';
-					$html .= '</div>';
+
+					if ( $goal_stats['raw_actual'] >= $goal_stats['raw_goal'] ) {
+						$html .= '<span class="goal-achieved">' .__( 'Goal achieved', 'give' ) . '</span>';
+					} else {
+						$html .= '<div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' . esc_attr( $goal_stats['progress'] ) . '">';
+						$html .= '<span style="width:' . esc_attr( $goal_stats['progress'] ) . '%;"></span>';
+						$html .= '</div>';
+					}
 
 					echo $html;
 				} else {

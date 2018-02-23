@@ -916,7 +916,9 @@ function give_get_form_goal_format( $form_id = 0 ) {
  *
  * @return array
  */
-function give_goal_progress_stats( $form ) {
+function give_goal_progress_stats( $form, $raw_values = false ) {
+
+	$stats_array = array();
 
 	if ( ! $form instanceof Give_Donate_Form ) {
 		$form = new Give_Donate_Form( $form );
@@ -949,6 +951,11 @@ function give_goal_progress_stats( $form ) {
 	$actual   = 'donation' !== $goal_format ? $income : $sales;
 	$progress = round( ( $actual / $total_goal ) * 100, 2 );
 
+	if ( $raw_values ) {
+		$stats_array['raw_actual'] = $actual;
+		$stats_array['raw_goal']   = $total_goal;
+	}
+
 	/**
 	 * Filter the goal progress output
 	 *
@@ -970,12 +977,12 @@ function give_goal_progress_stats( $form ) {
 		$total_goal = give_currency_filter( give_format_amount( $total_goal ) );
 	}
 
-	return apply_filters( 'give_goal_progress_stats', array(
-		'progress' => $progress,
-		'actual'   => $actual,
-		'goal'     => $total_goal,
-		'format'   => $goal_format,
-	) );
+	$stats_array['progress'] = $progress;
+	$stats_array['actual']   = $actual;
+	$stats_array['goal']     = $total_goal;
+	$stats_array['format']   = $goal_format;
+
+	return apply_filters( 'give_goal_progress_stats', $stats_array );
 
 }
 
