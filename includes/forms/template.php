@@ -1363,7 +1363,9 @@ function give_payment_mode_select( $form_id ) {
 				 */
 				$selected_gateway = give_get_chosen_gateway( $form_id );
 				$give_settings    = give_get_settings();
-				$gateways_label   = $give_settings['gateways_label'];
+				$gateways_label   = array_key_exists( 'gateways_label', $give_settings ) ?
+					$give_settings['gateways_label'] :
+					array();
 
 				foreach ( $gateways as $gateway_id => $gateway ) :
 					//Determine the default gateway.
