@@ -275,7 +275,11 @@ if ( ! class_exists( 'Give' ) ) :
 		 */
 		private function init_hooks() {
 			register_activation_hook( GIVE_PLUGIN_FILE, 'give_install' );
+
 			add_action( 'plugins_loaded', array( $this, 'init' ), 0 );
+
+			// Set up localization on init Hook.
+			add_action( 'init', array( $this, 'load_textdomain' ), 0 );
 		}
 
 		/**
@@ -291,9 +295,6 @@ if ( ! class_exists( 'Give' ) ) :
 			 * @since 1.8.9
 			 */
 			do_action( 'before_give_init' );
-
-			// Set up localization.
-			$this->load_textdomain();
 
 			$this->roles              = new Give_Roles();
 			$this->api                = new Give_API();
