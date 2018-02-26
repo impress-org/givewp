@@ -911,13 +911,12 @@ function give_get_form_goal_format( $form_id = 0 ) {
  * Display/Return a formatted goal for a donation form
  *
  * @param int|Give_Donate_Form  $form       Form ID or Form Object.
- * @param bool|Give_Donate_Form $raw_values True to return stats without currency values.
  *
  * @since 2.1
  *
  * @return array
  */
-function give_goal_progress_stats( $form, $raw_values = false ) {
+function give_goal_progress_stats( $form ) {
 
 	$stats_array = array();
 
@@ -952,10 +951,10 @@ function give_goal_progress_stats( $form, $raw_values = false ) {
 	$actual   = 'donation' !== $goal_format ? $income : $sales;
 	$progress = round( ( $actual / $total_goal ) * 100, 2 );
 
-	if ( $raw_values ) {
-		$stats_array['raw_actual'] = $actual;
-		$stats_array['raw_goal']   = $total_goal;
-	}
+	$stats_array = array(
+		'raw_actual' => $actual,
+		'raw_goal'   => $total_goal
+	);
 
 	/**
 	 * Filter the goal progress output
@@ -978,11 +977,21 @@ function give_goal_progress_stats( $form, $raw_values = false ) {
 		$total_goal = give_currency_filter( give_format_amount( $total_goal ) );
 	}
 
-	$stats_array['progress'] = $progress;
-	$stats_array['actual']   = $actual;
-	$stats_array['goal']     = $total_goal;
-	$stats_array['format']   = $goal_format;
+	$stats_array = array_merge(
+		array(
+			'progress' => $progress,
+			'actual'   => $actual,
+			'goal'     => $total_goal,
+			'format'   => $goal_format,
+		),
+		$stats_array
+	);
 
+	/**
+	 * Filter the goal stats
+	 *
+	 * @since 2.1
+	 */
 	return apply_filters( 'give_goal_progress_stats', $stats_array );
 
 }

@@ -87,7 +87,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 			case 'goal':
 				if ( give_is_setting_enabled( give_get_meta( $post_id, '_give_goal_option', true ) ) ) {
 
-					$goal_stats = give_goal_progress_stats( $post_id, true );
+					$goal_stats = give_goal_progress_stats( $post_id );
 					$html = '';
 
 					$html .= sprintf(
