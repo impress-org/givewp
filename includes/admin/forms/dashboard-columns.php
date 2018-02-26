@@ -81,7 +81,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 					echo give_price_range( $post_id );
 				} else {
 					echo give_price( $post_id, false );
-					echo '<input type="hidden" class="formprice-' . $post_id . '" value="' . give_get_form_price( $post_id ) . '" />';
+					printf( '<input type="hidden" class="formprice-%1$s" value="%2$s" />', esc_attr( $post_id ), esc_attr( give_get_form_price( $post_id ) ) );
 				}
 				break;
 			case 'goal':
@@ -101,10 +101,10 @@ function give_render_form_columns( $column_name, $post_id ) {
 					);
 
 					if ( $goal_stats['raw_actual'] >= $goal_stats['raw_goal'] ) {
-						$html .= '<span class="goal-achieved">' .__( 'Goal achieved', 'give' ) . '</span>';
+						$html .= sprintf( '<span class="goal-achieved">%s</span>', __( 'Goal achieved', 'give' ) );
 					} else {
-						$html .= '<div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' . esc_attr( $goal_stats['progress'] ) . '">';
-						$html .= '<span style="width:' . esc_attr( $goal_stats['progress'] ) . '%;"></span>';
+						$html .= sprintf( '<div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="%s">', esc_attr( $goal_stats['progress'] ) );
+						$html .= sprintf( '<span style="width:%s%%;"></span>', esc_attr( $goal_stats['progress'] ) );
 						$html .= '</div>';
 					}
 
@@ -113,28 +113,37 @@ function give_render_form_columns( $column_name, $post_id ) {
 					esc_html_e( 'No Goal Set', 'give' );
 				}
 
-				echo '<input type="hidden" class="formgoal-' . $post_id . '" value="' . give_get_form_goal( $post_id ) . '" />';
+				printf(
+					'<input type="hidden" class="formgoal-%1$s" value="%2$s" />',
+					esc_attr( $post_id ),
+					give_get_form_goal( $post_id )
+				);
+
 				break;
 			case 'donations':
 				if ( current_user_can( 'view_give_form_stats', $post_id ) ) {
-					echo '<a href="' . esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&form_id=' . $post_id ) ) . '">';
-					echo give_get_form_sales_stats( $post_id );
-					echo '</a>';
+					printf(
+						'<a href="%1$s">%2$s</a>',
+						esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&form_id=' . $post_id ) ),
+						give_get_form_sales_stats( $post_id )
+					);
 				} else {
 					echo '-';
 				}
 				break;
 			case 'earnings':
 				if ( current_user_can( 'view_give_form_stats', $post_id ) ) {
-					echo '<a href="' . esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=forms&form-id=' . $post_id ) ) . '">';
-					echo give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ), array( 'sanitize' => false ) ) );
-					echo '</a>';
+					printf(
+						'<a href="%1$s">%2$s</a>',
+						esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-reports&tab=forms&form-id=' . $post_id ) ),
+						give_currency_filter( give_format_amount( give_get_form_earnings_stats( $post_id ), array( 'sanitize' => false ) ) )
+					);
 				} else {
 					echo '-';
 				}
 				break;
 			case 'shortcode':
-				echo '<input onclick="this.setSelectionRange(0, this.value.length)" type="text" class="shortcode-input" readonly="" value="[give_form id=&#34;' . absint( $post_id ) . '&#34;]">';
+				printf( '<input onclick="this.setSelectionRange(0, this.value.length)" type="text" class="shortcode-input" readonly="" value="[give_form id=&#34;%s&#34;]"', absint( $post_id ) );
 				break;
 		}// End switch().
 	}// End if().
