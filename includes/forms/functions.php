@@ -918,8 +918,6 @@ function give_get_form_goal_format( $form_id = 0 ) {
  */
 function give_goal_progress_stats( $form ) {
 
-	$stats_array = array();
-
 	if ( ! $form instanceof Give_Donate_Form ) {
 		$form = new Give_Donate_Form( $form );
 	}

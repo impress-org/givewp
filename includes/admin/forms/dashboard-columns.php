@@ -87,14 +87,15 @@ function give_render_form_columns( $column_name, $post_id ) {
 			case 'goal':
 				if ( give_is_setting_enabled( give_get_meta( $post_id, '_give_goal_option', true ) ) ) {
 
-					$goal_stats = give_goal_progress_stats( $post_id );
-					$html = '';
+					$goal_stats       = give_goal_progress_stats( $post_id );
+					$percent_complete = round( ( $goal_stats['raw_actual'] / $goal_stats['raw_goal'] ), 3 ) * 100;
+					$html             = '';
 
 					$html .= sprintf(
 						( 'percentage' !== $goal_stats['format'] ) ?
 							'<div class="give-goal-text"><span>%1$s</span> %2$s <a href="%3$s">%4$s</a></div>' :
 							'<div class="give-goal-text"><a href="%3$s">%1$s</a></div>',
-						$goal_stats['actual'],
+						( 'percentage' !== $goal_stats['format'] ) ? $goal_stats['actual'] : $percent_complete . '%',
 						( 'percentage' !== $goal_stats['format'] ) ? __( 'of', 'give' ) : '',
 						esc_url( admin_url( "post.php?post={$post_id}&action=edit&give_tab=donation_goal_options" ) ),
 						$goal_stats['goal']
