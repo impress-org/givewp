@@ -115,3 +115,91 @@ function give_get_admin_page_menu_title() {
 
 	return $title;
 }
+
+/**
+ * Create new menu in plugin section that include all the add-on
+ *
+ * @since 2.1.0
+ *
+ * @param $plugin_menu
+ *
+ * @return mixed
+ */
+function give_filter_addons_do_filter_addons( $plugin_menu ) {
+	global $plugins;
+
+	foreach ( $plugins['all'] as $plugin_slug => $plugin_data ) {
+
+		if ( false !== strpos( $plugin_data['Name'], 'Give' ) && false !== strpos( strtolower( $plugin_data['AuthorName'] ), 'wordimpress' ) ) {
+			$plugins['give'][ $plugin_slug ]           = $plugins['all'][ $plugin_slug ];
+			$plugins['give'][ $plugin_slug ]['plugin'] = $plugin_slug;
+			// replicate the next step
+			if ( current_user_can( 'update_plugins' ) ) {
+				$current = get_site_transient( 'update_plugins' );
+				if ( isset( $current->response[ $plugin_slug ] ) ) {
+					$plugins['give'][ $plugin_slug ]['update'] = true;
+				}
+			}
+
+		}
+	}
+
+	return $plugin_menu;
+
+}
+
+add_filter( 'show_advanced_plugins', 'give_filter_addons_do_filter_addons' );
+
+/**
+ * Make the Give Menu as an default menu and update the Menu Name
+ *
+ * @since 2.1.0
+ *
+ * @param $views
+ *
+ * @return mixed
+ */
+function give_filter_addons_filter_addons( $views ) {
+
+	global $status, $plugins;
+
+	if ( ! empty( $plugins['give'] ) ) {
+		$class = "";
+
+		if ( $status == 'give' ) {
+			$class = 'current';
+		}
+
+		$views['give'] = sprintf(
+			'<a class="%s" href="plugins.php?plugin_status=give"> %s <span class="count">(%s) </span></a>',
+			$class,
+			__( 'Give', 'give' ),
+			count( $plugins['give'] )
+		);
+	}
+
+	return $views;
+}
+
+add_filter( 'views_plugins', 'give_filter_addons_filter_addons' );
+
+/**
+ * Set the Give as the Main menu when admin click on the Give Menu in Plugin section.
+ *
+ * @since 2.1.0
+ *
+ * @param $plugins
+ *
+ * @return mixed
+ */
+function give_prepare_filter_addons( $plugins ) {
+	global $status;
+
+	if ( isset( $_REQUEST['plugin_status'] ) && $_REQUEST['plugin_status'] === 'give' ) {
+		$status = 'give';
+	}
+
+	return $plugins;
+}
+
+add_filter( 'all_plugins', 'give_prepare_filter_addons' );
