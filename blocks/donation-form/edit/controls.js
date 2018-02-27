@@ -20,6 +20,17 @@ const Controls = ( props ) => {
 					&nbsp; Change Form
 				</IconButton>
 			</Toolbar>
+
+			<Toolbar>
+				<IconButton
+					icon="edit"
+					label={ __( 'Edit Form' ) }
+					href={ `${ wpApiSettings.schema.url }/wp-admin/post.php?post=${ props.attributes.id }&action=edit` }
+					target="_blank"
+					tooltip="Edit donation form">
+					&nbsp; Edit Form
+				</IconButton>
+			</Toolbar>
 		</BlockControls>
 	);
 };
