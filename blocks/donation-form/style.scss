@@ -5,3 +5,139 @@
 .float-right {
 	float: right ;
 }
+
+.placeholder-container-animation h1 {
+	color: red;
+}
+
+
+
+
+
+.timeline-item {
+	background: #fff;
+}
+
+@keyframes placeHolderShimmer{
+	0%{
+		background-position: -468px 0
+	}
+	100%{
+		background-position: 468px 0
+	}
+}
+
+.animated-background {
+	animation-duration: 2s;
+	animation-fill-mode: forwards;
+	animation-iteration-count: infinite;
+	animation-name: placeHolderShimmer;
+	animation-timing-function: linear;
+	background: #f6f7f8;
+	background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
+	background-size: 100% 100%;
+	position: relative;
+}
+
+.opaque {
+	background-color: #fff;
+}
+
+.partial-mask {
+	display: flex;
+}
+
+.full-mask-high {
+	background: #fff;
+	height: 15px;
+}
+
+.full-mask-mid {
+	background: #fff;
+	height: 8px;
+}
+
+.full-mask-low {
+	background: #fff;
+	height: 5px;
+}
+
+.layer-1 {
+	height: 30px;
+
+	.mask-1 {
+		width: calc(100% / 4);
+	}
+
+	.mask-2 {
+		width: calc(100% / 2);
+	}
+
+	.mask-3 {
+		width: calc(100% / 4);
+	}
+}
+
+.layer-2 {
+	height: 10px;
+
+	.mask-1 {
+		width: calc(100% / 3);
+	}
+
+	.mask-2 {
+		width: calc(100% / 3);
+	}
+
+	.mask-3 {
+		width: calc(100% / 3);
+	}
+}
+
+.layer-3 {
+	height: 5px;
+
+	.mask-2 {
+		width: 100%;
+	}
+}
+
+.layer-4 {
+	height: 5px;
+
+	.mask-1 {
+		width: calc(100% / 3);
+	}
+
+	.mask-2 {
+		width: calc(100% / 3);
+	}
+
+	.mask-3 {
+		width: calc(100% / 3);
+	}
+}
+
+.layer-5 {
+	height: 20px;
+
+	.mask-1 {
+		width: 34.5%;
+	}
+
+	.mask-2 {
+		width: 15%;
+	}
+
+	.mask-3 {
+		width: 2%;
+	}
+
+	.mask-4 {
+		width: 15%;
+	}
+
+	.mask-5 {
+		width: 34.5%;
+	}
+}

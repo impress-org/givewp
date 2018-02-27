@@ -2,6 +2,7 @@
 * Block dependencies
 */
 import GiveHelpLink from '../help-link/index';
+import PlaceholderContainerAnimation from '../container-placeholder-animation/index';
 
 /**
 * Internal dependencies
@@ -18,21 +19,22 @@ const GiveBlankSlate = ( props ) => {
 		helpLink,
 	} = props;
 
-	const giveLoader = '/wp-content/plugins/Give/assets/dist/images/give-loader.svg';
-	const giveLogo = '/wp-content/plugins/Give/assets/dist/images/give-icon-full-circle.svg';
+	const block_loading = (
+		<PlaceholderContainerAnimation />
+	);
 
-	return (
-		<div className="give-blank-slate">
-			{ ! noIcon && (
-				<img className="give-blank-slate__image"
-					src={ `${ wpApiSettings.schema.url }${ !! isLoader ? giveLoader : giveLogo }` }
-					alt={ __( 'Give Icon' ) } />
-			) }
-
+	const block_loaded = (
+		<div className="block-loaded">
 			{ !! title && ( <h2 className="give-blank-slate__heading">{ title }</h2> ) }
 			{ !! description && ( <p className="give-blank-slate__message">{ description }</p> ) }
 			{ children }
 			{ ( !! helpLink && <GiveHelpLink /> ) }
+		</div>
+	);
+
+	return (
+		<div className="give-blank-slate">
+			{ !! isLoader ? block_loading : block_loaded }
 		</div>
 	);
 };
