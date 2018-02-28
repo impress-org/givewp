@@ -10,7 +10,9 @@
 	color: red;
 }
 
-
+.gutenberg__editor .give-blank-slate__image {
+	max-width: 96px;
+}
 
 
 
@@ -38,106 +40,133 @@
 	background-size: 100% 100%;
 	position: relative;
 }
-
-.opaque {
-	background-color: #fff;
+.container {
+	margin: 0 auto;
+	width: 650px;
+	background-color: #eee;
+	border:1px solid #eee;
 }
 
-.partial-mask {
+.layer {
 	display: flex;
+
+	&.h1 {
+		height: 28px;
+	}
+	
+	&.h2 {
+		height: 22px;
+	}
+	
+	&.inline-radios {
+		height: 12px;
+	}
+	
+	&.label {
+		height: 8px;
+	}
 }
 
-.full-mask-high {
-	background: #fff;
-	height: 15px;
+.layer-item {
+	&.opaque {
+		background: #fff;	
+	}
 }
 
-.full-mask-mid {
-	background: #fff;
-	height: 8px;
+.layer-gap {
+	background-color: #fff;
+
+	&.large {
+		height: 40px;
+	}
+	
+	&.medium {
+		height: 20px;
+	}
+	
+	&.small {
+		height: 10px;
+	}
 }
 
-.full-mask-low {
-	background: #fff;
-	height: 5px;
-}
+// Specifics
 
+// Layer-1
 .layer-1 {
-	height: 30px;
-
-	.mask-1 {
-		width: calc(100% / 4);
+	.layer-item:nth-child(odd) {
+		width: 45%
 	}
-
-	.mask-2 {
-		width: calc(100% / 2);
-	}
-
-	.mask-3 {
-		width: calc(100% / 4);
+	
+	.layer-item:nth-child(even) {
+		width: 55%;
 	}
 }
 
-.layer-2 {
-	height: 10px;
 
-	.mask-1 {
-		width: calc(100% / 3);
-	}
-
-	.mask-2 {
-		width: calc(100% / 3);
-	}
-
-	.mask-3 {
-		width: calc(100% / 3);
-	}
-}
-
-.layer-3 {
-	height: 5px;
-
-	.mask-2 {
-		width: 100%;
-	}
-}
-
+//  Layer-4
 .layer-4 {
-	height: 5px;
-
-	.mask-1 {
-		width: calc(100% / 3);
+	.layer-item:nth-child(1) {
+		width: 30%;
 	}
-
-	.mask-2 {
-		width: calc(100% / 3);
+	
+	.layer-item:nth-child(2) {
+		width: 10%;
 	}
-
-	.mask-3 {
-		width: calc(100% / 3);
+	
+	.layer-item:nth-child(3) {
+		width: 20%;
+	}
+	
+	.layer-item:nth-child(4) {
+		width: 30%;
+	}
+	
+	.layer-item:nth-child(5) {
+		width: 10%;
 	}
 }
 
+//  Layer-5
 .layer-5 {
-	height: 20px;
-
-	.mask-1 {
-		width: 34.5%;
+	.layer-item:nth-child(1) {
+		width: 40%;
 	}
-
-	.mask-2 {
+	
+	.layer-item:nth-child(2) {
+		width: 5%;
+	}
+	
+	.layer-item:nth-child(3) {
 		width: 15%;
 	}
-
-	.mask-3 {
-		width: 2%;
+	
+	.layer-item:nth-child(4) {
+		width: 40%;
 	}
+}
 
-	.mask-4 {
-		width: 15%;
+//  Layer-6
+.layer-6 {
+	.layer-item:nth-child(odd) {
+		width: 30%;
 	}
+	
+	.layer-item:nth-child(even) {
+		width: 70%;
+	}
+}
 
-	.mask-5 {
-		width: 34.5%;
+//  Layer-8
+.layer-8 {
+	.layer-item:nth-child(1) {
+		width: 40%;
+	}
+	
+	.layer-item:nth-child(2) {
+		width: 20%;
+	}
+	
+	.layer-item:nth-child(3) {
+		width: 40%;
 	}
 }

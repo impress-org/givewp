@@ -4,55 +4,47 @@ const PlaceholderContainerAnimation = () => {
 			<div class="timeline-wrapper">
 				<div class="timeline-item">
 					<div class="animated-background">
-						<div class="partial-mask layer-1">
-							<div class="mask-1 opaque"></div>
-							<div class="mask-2"></div>
-							<div class="mask-3 opaque"></div>
+
+						<div class="layer label layer-4">
+							<div class="layer-item"></div>
+							<div class="layer-item opaque"></div>
+							<div class="layer-item opaque"></div>
+							<div class="layer-item"></div>
+							<div class="layer-item opaque"></div>
+						</div>
+						<div class="layer-gap small"></div>
+
+
+						<div class="layer h2 layer-5">
+							<div class="layer-item"></div>
+							<div class="layer-item opaque"></div>
+							<div class="layer-item opaque"></div>
+							<div class="layer-item"></div>
+							<div class="layer-item opaque"></div>
+						</div>
+						<div class="layer-gap medium"></div>
+
+
+						<div class="layer label layer-6">
+							<div class="layer-item"></div>
+							<div class="layer-item opaque"></div>
+						</div>
+						<div class="layer-gap small"></div>
+
+
+						<div class="layer h2 layer-7">
+							<div class="layer-item"></div>
+							<div class="layer-item opaque"></div>
 						</div>
 
-						<div class="full-mask-high"></div>
-						<div class="full-mask-high"></div>
-						<div class="full-mask-mid"></div>
+						<div class="layer-gap medium"></div>
+						<div class="layer-gap medium"></div>
 
-						<div class="partial-mask layer-2">
-							<div class="mask-1"></div>
-							<div class="mask-2 opaque"></div>
-							<div class="mask-3 opaque"></div>
-						</div>
 
-						<div class="full-mask-high"></div>
-
-						<div class="partial-mask layer-3">
-							<div class="mask-1"></div>
-							<div class="mask-2"></div>
-							<div class="mask-3"></div>
-						</div>
-
-						<div class="full-mask-low"></div>
-
-						<div class="partial-mask layer-3">
-							<div class="mask-1"></div>
-							<div class="mask-2"></div>
-							<div class="mask-3"></div>
-						</div>
-
-						<div class="full-mask-low"></div>
-
-						<div class="partial-mask layer-4">
-							<div class="mask-1"></div>
-							<div class="mask-2"></div>
-							<div class="mask-3 opaque"></div>
-						</div>
-
-						<div class="full-mask-high"></div>
-						<div class="full-mask-mid"></div>
-
-						<div class="partial-mask layer-5">
-							<div class="mask-1 opaque"></div>
-							<div class="mask-2"></div>
-							<div class="mask-3 opaque"></div>
-							<div class="mask-4"></div>
-							<div class="mask-5 opaque"></div>
+						<div class="layer h1 layer-8">
+							<div class="layer-item opaque"></div>
+							<div class="layer-item"></div>
+							<div class="layer-item opaque"></div>
 						</div>
 					</div>
 				 </div>

@@ -19,6 +19,8 @@ const GiveBlankSlate = ( props ) => {
 		helpLink,
 	} = props;
 
+	const giveLogo = '/wp-content/plugins/Give/assets/dist/images/give-icon-full-circle.svg';
+
 	const block_loading = (
 		<PlaceholderContainerAnimation />
 	);
@@ -34,6 +36,11 @@ const GiveBlankSlate = ( props ) => {
 
 	return (
 		<div className="give-blank-slate">
+			{ ! noIcon && (
+			<img className="give-blank-slate__image"
+				src={ `${ wpApiSettings.schema.url }${ giveLogo }` }
+				alt={ __( 'Give Icon' ) } />
+			) }
 			{ !! isLoader ? block_loading : block_loaded }
 		</div>
 	);
