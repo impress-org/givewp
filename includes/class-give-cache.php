@@ -102,7 +102,10 @@ class Give_Cache {
 			give_get_option( 'history_page' ),
 		) );
 
-		if( is_page( $page_ids ) | is_singular( 'give_forms' ) ) {
+		if(
+				is_page( $page_ids )
+				|| is_singular( 'give_forms' )
+		) {
 			self::set_nocache_constants();
 			nocache_headers();
 		}
