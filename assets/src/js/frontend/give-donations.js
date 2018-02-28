@@ -135,6 +135,18 @@ export default Give = {
 		 * @returns {number}
 		 */
 		unFormatCurrency: function( price, decimal_separator ) {
+			if ( 'string' === typeof price ) {
+				var regex = ',' === decimal_separator.trim() ? /[^0-9\,-]+/g : /[^0-9\.-]+/g;
+
+				price = price.replace( regex, '' );
+
+				if ( 0 === price.indexOf( decimal_separator ) ) {
+					price = price.substr( 1 );
+				} else if ( (price.length - 1) === price.indexOf( decimal_separator ) ) {
+					price = price.slice( 0, - 1 );
+				}
+			}
+
 			return Math.abs( parseFloat( accounting.unformat( price, decimal_separator ) ) );
 		},
 
