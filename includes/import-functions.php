@@ -95,12 +95,12 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 		$form = new Give_Donate_Form( $form->ID );
 	}
 
-	if ( ! empty( $form ) && $form->get_ID() ) {
+	if ( ! empty( $form ) && $form->get_ID() && ! empty( $data['form_level'] ) ) {
 
 		$price_option = 'set';
-		$form_level = strtolower( preg_replace('/\s+/', '', $data['form_level'] ) );
+		$form_level   = strtolower( preg_replace('/\s+/', '', $data['form_level'] ) );
 
-		if ( ! empty( $data['form_level'] ) && 'custom' != $form_level ) {
+		if ( 'custom' !== $form_level ) {
 			$prices     = (array) $form->get_prices();
 			$price_text = array();
 			foreach ( $prices as $key => $price ) {
@@ -147,7 +147,7 @@ function give_import_get_form_data_from_csv( $data, $import_setting = array() ) 
 					}
 				}
 
-				// Set the first $price of the $prices as defalut.
+				// Set the first $price of the $prices as default.
 				$prices[0]['_give_default'] = 'default';
 			}
 			$form->price_id = array_search( $form_level, $price_text );
