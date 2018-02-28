@@ -132,7 +132,7 @@ $give_updates = Give_Updates::get_instance();
 		<?php $plugin_updates = $give_updates->get_total_plugin_update_count(); ?>
 		<?php if ( ! empty( $plugin_updates ) ) : ?>
 			<?php $plugin_update_url = add_query_arg( array(
-				's' => 'Give',
+				'plugin_status' => 'give',
 			), admin_url( '/plugins.php' ) ); ?>
 			<div id="give-plugin-updates">
 				<div class="postbox-container">
