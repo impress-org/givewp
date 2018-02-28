@@ -134,7 +134,7 @@ class Give_Cache {
 	 * @access public
 	 * @credit WooCommerce
 	 */
-	public function notices() {
+	public function __notices() {
 		if ( ! function_exists( 'w3tc_pgcache_flush' ) || ! function_exists( 'w3_instance' ) ) {
 			return;
 		}
@@ -146,7 +146,7 @@ class Give_Cache {
 		if ( $enabled && ! in_array( 'give', $settings, true ) ) {
 			?>
 			<div class="error">
-				<p><?php echo wp_kses_post( sprintf( __( 'In order for <strong>database caching</strong> to work with Give you must add %1$s to the "Ignored Query Strings" option in <a href="%2$s">W3 Total Cache settings</a>.', 'woocommerce' ), '<code>give</code>', esc_url( admin_url( 'admin.php?page=w3tc_dbcache' ) ) ) ); ?></p>
+				<p><?php echo wp_kses_post( sprintf( __( 'In order for <strong>database caching</strong> to work with Give you must add %1$s to the "Ignored Query Strings" option in <a href="%2$s">W3 Total Cache settings</a>.', 'give' ), '<code>give</code>', esc_url( admin_url( 'admin.php?page=w3tc_dbcache' ) ) ) ); ?></p>
 			</div>
 			<?php
 		}
