@@ -670,6 +670,8 @@ class Give_Cache {
 	 * @return mixed
 	 */
 	private function filter_group_name( $group ) {
+		$group = "{$group}_" . get_current_blog_id();
+
 		if ( ! empty( $group ) ) {
 			$incrementer = self::$instance->get_incrementer( false, 'give-cache-incrementer' );
 
