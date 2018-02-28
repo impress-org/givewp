@@ -208,6 +208,13 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 
 == Changelog ==
 
+= 2.0.5: February 27th, 2018  =
+* Fix: The dashboard widget was displaying incorrect stat for donations raised "This Year". It was showing all time rather than the current year. [#2847](https://github.com/WordImpress/Give/issues/2847)
+* Fix: Resolved conflict with W3 Total Cache causing new donations to not be saved correctly when certain database caching configurations are in place. [#2780](https://github.com/WordImpress/Give/issues/2780)
+* Fix: Resolved conflict with Polylang translation plugin that caused the base language to appear within the donation form when switching gateways. [#2784](https://github.com/WordImpress/Give/issues/2784)
+* Fix: The unformat currency JS function wasn't correctly unformatting the Danish krone currency. [#2838](https://github.com/WordImpress/Give/issues/2838)
+* Fix: WP's media uploader would upload to the incorrect directory when Give is active under certain environment settings.[#2830](https://github.com/WordImpress/Give/issues/2830)
+
 = 2.0.4: February 16th, 2018  =
 * Fix: 2.0.3 broke those pretty chosen dropdown selects, but this version brings them back to life! This bug only affected wp-admin dropdowns using the "Chosen" select field which allows you to search user lists and forms. [#2787](https://github.com/WordImpress/Give/issues/2787)
 * Fix: Resolve bug within Give_Payment_Query affecting WP multisite installs. On multisite, custom post type (form, donation log, and donor ) meta query is not working if using the switch_to_blog function. This has now been resolved. [#2815](https://github.com/WordImpress/Give/issues/2815)
