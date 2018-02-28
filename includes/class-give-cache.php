@@ -134,7 +134,7 @@ class Give_Cache {
 	 * @access public
 	 * @credit WooCommerce
 	 */
-	public function notices() {
+	public function __notices() {
 		if ( ! function_exists( 'w3tc_pgcache_flush' ) || ! function_exists( 'w3_instance' ) ) {
 			return;
 		}
