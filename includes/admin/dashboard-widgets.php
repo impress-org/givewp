@@ -101,7 +101,7 @@ function give_dashboard_sales_widget() {
 					<p class="give-dashboard-stat-total-label"><?php _e( 'Last Month', 'give' ); ?></p>
 				</td>
 				<td>
-					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( give_get_total_earnings(), array( 'sanitize' => false ) ) ) ?></p>
+					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_year' ), array( 'sanitize' => false ) ) ) ?></p>
 
 					<p class="give-dashboard-stat-total-label"><?php _e( 'This Year', 'give' ); ?></p>
 				</td>
