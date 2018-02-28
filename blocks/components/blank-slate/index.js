@@ -2,6 +2,7 @@
 * Block dependencies
 */
 import GiveHelpLink from '../help-link/index';
+import './style.scss';
 
 /**
 * Internal dependencies

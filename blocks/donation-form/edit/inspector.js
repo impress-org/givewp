@@ -14,7 +14,7 @@ const {
 	ToggleControl,
 	SelectControl,
 	TextControl,
-} = InspectorControls;
+} = wp.components;
 const { PanelBody } = wp.components;
 
 const Inspector = ( props ) => {

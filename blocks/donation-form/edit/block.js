@@ -9,10 +9,9 @@ import GiveBlankSlate from '../../components/blank-slate/index';
  * Internal dependencies
  */
 const { __ } = wp.i18n;
-const { InspectorControls } = wp.blocks;
-const { SelectControl } = InspectorControls;
 const {
 	Button,
+	SelectControl,
 } = wp.components;
 const { Component } = wp.element;
 
@@ -190,50 +189,58 @@ class GiveForm extends Component {
 		if ( give_blocks_vars.key === null ) {
 			/* No API Key generated*/
 			return (
-				<GiveBlankSlate title={ __( 'No API key found.' ) }
-					description={ __( 'The first step towards using new blocks based experience is to generate API key .' ) }
-					helpLink>
-					<Button isPrimary isLarge href={ `${ wpApiSettings.schema.url }/wp-admin/edit.php?post_type=give_forms&page=give-tools&tab=api` }> { __( 'Generate API Key' ) } </Button>
-				</GiveBlankSlate>
+				<div className={ props.className }>
+					<GiveBlankSlate title={ __( 'No API key found.' ) }
+						description={ __( 'The first step towards using new blocks based experience is to generate API key .' ) }
+						helpLink>
+						<Button isPrimary isLarge href={ `${ wpApiSettings.schema.url }/wp-admin/edit.php?post_type=give_forms&page=give-tools&tab=api` }> { __( 'Generate API Key' ) } </Button>
+					</GiveBlankSlate>
+				</div>
 			);
 		} else if ( ( ! attributes.id && ! attributes.forms ) || fetching ) {
 			/* Fetching Data */
 			return (
-				<GiveBlankSlate title={ __( 'Loading...' ) } isLoader />
+				<div className={ props.className }>
+					<GiveBlankSlate title={ __( 'Loading...' ) } isLoader />
+				</div>
 			);
 		} else if ( ! attributes.id && attributes.forms.length === 0 ) {
 			/* No form created */
 			return (
-				<GiveBlankSlate title={ __( 'No donation forms found.' ) }
-					description={ __( 'The first step towards accepting online donations is to create a form.' ) }
-					helpLink>
-					<Button isPrimary
-						isLarge
-						href={ `${ wpApiSettings.schema.url }/wp-admin/post-new.php?post_type=give_forms` }>
-						{ __( 'Create Donation Form' ) }
-					</Button>
-				</GiveBlankSlate>
+				<div className={ props.className }>
+					<GiveBlankSlate title={ __( 'No donation forms found.' ) }
+						description={ __( 'The first step towards accepting online donations is to create a form.' ) }
+						helpLink>
+						<Button isPrimary
+							isLarge
+							href={ `${ wpApiSettings.schema.url }/wp-admin/post-new.php?post_type=give_forms` }>
+							{ __( 'Create Donation Form' ) }
+						</Button>
+					</GiveBlankSlate>
+				</div>
 			);
 		} else if ( ! attributes.id ) {
 			/* No for selected */
 			return (
-				<GiveBlankSlate title={ __( 'Give Donation form' ) }>
-					<SelectControl
-						options={ getFormOptions() }
-						onChange={ setFormIdTo }
-					/>
+				<div className={ props.className }>
+					<GiveBlankSlate title={ __( 'Give Donation form' ) }>
+						<SelectControl
+							options={ getFormOptions() }
+							onChange={ setFormIdTo }
+						/>
 
-					<Button isPrimary
-						isLarge href={ `${ wpApiSettings.schema.url }/wp-admin/post-new.php?post_type=give_forms` }>
-						{ __( 'Add new form' ) }
-					</Button>
-				</GiveBlankSlate>
+						<Button isPrimary
+							isLarge href={ `${ wpApiSettings.schema.url }/wp-admin/post-new.php?post_type=give_forms` }>
+							{ __( 'Add new form' ) }
+						</Button>
+					</GiveBlankSlate>
+				</div>
 			);
 		}
 
 		return (
-			<div id="donation-form-preview-block">
-				{ !! props.focus &&
+			<div id="donation-form-preview-block" className={ props.className }>
+				{ !! props.isSelected &&
 					<Inspector { ... {
 						setDisplayStyleTo,
 						setContinueButtonTitle,
@@ -246,7 +253,7 @@ class GiveForm extends Component {
 						} />
 				}
 
-				{ !! props.focus &&
+				{ !! props.isSelected &&
 					<Controls { ... {
 						onChangeForm,
 						...props,
