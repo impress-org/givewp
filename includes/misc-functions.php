@@ -1747,3 +1747,18 @@ function give_get_total_post_type_count( $post_type = '', $args = array() ){
 
 	return absint( $result );
 }
+
+/**
+ * Define a constant if it is not already defined.
+ *
+ * @since 2.0.5
+ * @param string $name  Constant name.
+ * @param string $value Value.
+ *
+ * @credit WooCommerce
+ */
+function give_maybe_define_constant( $name, $value ) {
+	if ( ! defined( $name ) ) {
+		define( $name, $value );
+	}
+}
