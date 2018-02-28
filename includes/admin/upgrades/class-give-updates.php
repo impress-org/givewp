@@ -521,21 +521,10 @@ class Give_Updates {
 			$log_data .= 'Updating batch' . "\n";
 			$log_data .= print_r( $batch, true );
 
-			$doing_upgrade_args['heading']          = sprintf( 'Update %s of %s', $doing_upgrade_args['update'], get_option( 'give_db_update_count' ) );
-			$doing_upgrade_args['total_percentage'] = $this->get_db_update_processing_percentage();
-			update_option( 'give_doing_upgrade', $doing_upgrade_args );
-
 			if ( ! empty( $batch->key ) ) {
 				wp_cache_delete( $batch->key, 'options' );
 				update_option( $batch->key, $batch->data );
 			} else {
-
-				update_option( 'give_db_update_count', count( $batch->data ) );
-
-				$doing_upgrade_args['update']  = $give_updates->update;
-				$doing_upgrade_args['heading'] = sprintf( 'Update %s of %s', 1, count( $batch->data ) );
-
-				update_option( 'give_doing_upgrade', $doing_upgrade_args );
 
 				foreach ( $batch->data as $data ) {
 					Give_Updates::$background_updater->push_to_queue( $data );
@@ -549,27 +538,24 @@ class Give_Updates {
 		/**
 		 * Fix give_doing_upgrade option
 		 */
-		$update_option = false;
 		$fresh_new_db_count = $this->get_total_new_db_update_count( true );
-		if ( $fresh_new_db_count < $doing_upgrade_args['update'] ) {
-			update_option( 'give_db_update_count', $fresh_new_db_count );
-			$doing_upgrade_args['update']  = 1;
-			$doing_upgrade_args['heading'] = sprintf( 'Update %s of %s', 1, $fresh_new_db_count );
-			$update_option                 = true;
+
+		update_option( 'give_db_update_count', $fresh_new_db_count );
+
+		$doing_upgrade_args['update']           = 1;
+		$doing_upgrade_args['heading']          = sprintf( 'Update %s of %s', 1, $fresh_new_db_count );
+		$doing_upgrade_args['total_percentage'] = $this->get_db_update_processing_percentage( true );
+
+		// Remove already completed update from info.
+		if ( give_has_upgrade_completed( $doing_upgrade_args['update_info']['id'] ) ) {
+			$doing_upgrade_args['update_info'] = current( array_values( $batch->data ) );
+			$doing_upgrade_args['step']        = 1;
 		}
 
-		if ( 101 < $doing_upgrade_args['total_percentage'] ) {
-			$doing_upgrade_args['total_percentage'] = $this->get_db_update_processing_percentage( true );
-			$update_option                          = true;
-		}
+		update_option( 'give_doing_upgrade', $doing_upgrade_args );
 
-		if ( $update_option ) {
-			update_option( 'give_doing_upgrade', $doing_upgrade_args );
-
-			$log_data .= 'Updated doing update:' . "\n";
-			$log_data .= print_r( $doing_upgrade_args, true ) . "\n";
-		}
-
+		$log_data .= 'Updated doing update:' . "\n";
+		$log_data .= print_r( $doing_upgrade_args, true ) . "\n";
 		Give()->logs->add( 'Update Health Check', $log_data, 0, 'update' );
 	}
 
@@ -1140,6 +1126,22 @@ class Give_Updates {
 		$all_update_ids = wp_list_pluck( $all_updates, 'id' );
 
 		return $all_update_ids;
+	}
+
+	/**
+	 * Get offset count
+	 *
+	 * @since  2.0.5
+	 * @access public
+	 *
+	 * @param int $process_item_count
+	 *
+	 * @return float|int
+	 */
+	public function get_offset( $process_item_count ) {
+		return ( 1 === $this->step ) ?
+			0 :
+			( $this->step - 1 ) * $process_item_count;
 	}
 }
 

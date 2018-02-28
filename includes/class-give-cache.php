@@ -79,6 +79,80 @@ class Give_Cache {
 		add_action( 'give_deleted_give-donations_cache', array( $this, 'delete_donations_related_cache' ), 10, 3 );
 
 		add_action( 'give_save_settings_give_settings', array( $this, 'flush_cache' ) );
+
+		add_action( 'wp', array( __CLASS__,  'prevent_caching' ) );
+		add_action( 'admin_notices', array( $this, '__notices' ) );
+	}
+
+	/**
+	 * Prevent caching on certain pages
+	 *
+	 * @since  2.0.5
+	 * @access public
+	 * @credit WooCommerce
+	 */
+	public static function prevent_caching() {
+		if ( ! is_blog_installed() ) {
+			return;
+		}
+
+		$page_ids = array_filter( array(
+			give_get_option( 'success_page' ),
+			give_get_option( 'failure_page' ),
+			give_get_option( 'history_page' ),
+		) );
+
+		if (
+			is_page( $page_ids )
+			|| is_singular( 'give_forms' )
+		) {
+			self::set_nocache_constants();
+			nocache_headers();
+		}
+	}
+
+	/**
+	 * Set constants to prevent caching by some plugins.
+	 *
+	 * @since  2.0.5
+	 * @access public
+	 * @credit WooCommerce
+	 *
+	 * @param  mixed $return Value to return. Previously hooked into a filter.
+	 *
+	 * @return mixed
+	 */
+	public static function set_nocache_constants( $return = true ) {
+		give_maybe_define_constant( 'DONOTCACHEPAGE', true );
+		give_maybe_define_constant( 'DONOTCACHEOBJECT', true );
+		give_maybe_define_constant( 'DONOTCACHEDB', true );
+
+		return $return;
+	}
+
+	/**
+	 * Notices function.
+	 *
+	 * @since  2.0.5
+	 * @access public
+	 * @credit WooCommerce
+	 */
+	public function __notices() {
+		if ( ! function_exists( 'w3tc_pgcache_flush' ) || ! function_exists( 'w3_instance' ) ) {
+			return;
+		}
+
+		$config   = w3_instance( 'W3_Config' );
+		$enabled  = $config->get_integer( 'dbcache.enabled' );
+		$settings = array_map( 'trim', $config->get_array( 'dbcache.reject.sql' ) );
+
+		if ( $enabled && ! in_array( 'give', $settings, true ) ) {
+			?>
+			<div class="error">
+				<p><?php echo wp_kses_post( sprintf( __( 'In order for <strong>database caching</strong> to work with Give you must add %1$s to the "Ignored Query Strings" option in <a href="%2$s">W3 Total Cache settings</a>.', 'give' ), '<code>give</code>', esc_url( admin_url( 'admin.php?page=w3tc_dbcache' ) ) ) ); ?></p>
+			</div>
+			<?php
+		}
 	}
 
 	/**
@@ -670,6 +744,8 @@ class Give_Cache {
 	 * @return mixed
 	 */
 	private function filter_group_name( $group ) {
+		$group = "{$group}_" . get_current_blog_id();
+
 		if ( ! empty( $group ) ) {
 			$incrementer = self::$instance->get_incrementer( false, 'give-cache-incrementer' );
 
