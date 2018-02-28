@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 4.9
 Requires PHP: 5.3
-Stable tag: 2.0.5
+Stable tag: 2.0.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
