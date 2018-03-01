@@ -12,6 +12,7 @@ const { __ } = wp.i18n;
 const {
 	Button,
 	SelectControl,
+	withAPIData,
 } = wp.components;
 const { Component } = wp.element;
 
@@ -59,39 +60,10 @@ class GiveForm extends Component {
 		);
 	}
 
-	getFormsFromServer() {
-		this.setState( { error: false } );
-
-		// Fetch from API if key exist
-		if ( window.give_blocks_vars.key !== null ) {
-			window.fetch( `${ wpApiSettings.schema.url }/give-api/forms/?key=${ window.give_blocks_vars.key }&token=${ window.give_blocks_vars.token }` ).then(
-				( response ) => {
-					response.json().then( ( obj ) => {
-						if ( this.unmounting ) {
-							return;
-						}
-
-						const { forms } = obj;
-
-						if ( forms ) {
-							this.props.setAttributes( { forms: forms } );
-						} else {
-							this.setState( { error: true } );
-						}
-					} );
-				}
-			);
-		} else {
-			this.setState( { fetching: false } );
-		}
-	}
-
 	componentDidMount() {
 		if ( this.props.attributes.id ) {
 			this.setState( { fetching: true } );
 			this.doServerSideRender();
-		} else {
-			this.getFormsFromServer();
 		}
 	}
 
@@ -123,10 +95,10 @@ class GiveForm extends Component {
 		const { html, fetching, isButtonTitleUpdated } = this.state;
 
 		const getFormOptions = () => {
-			const formOptions = attributes.forms.map( ( form ) => {
+			const formOptions = props.forms.data.map( ( form ) => {
 				return {
-					value: form.info.id,
-					label: form.info.title === '' ? `${ form.info.id }: No form title` : form.info.title,
+					value: form.id,
+					label: form.title.rendered === '' ? `${ form.id }: No form title` : form.title.rendered,
 				};
 			} );
 
@@ -138,7 +110,6 @@ class GiveForm extends Component {
 
 		const onChangeForm = () => {
 			props.setAttributes( { id: 0 } );
-			this.getFormsFromServer();
 		};
 
 		const setFormIdTo = id => {
@@ -186,25 +157,14 @@ class GiveForm extends Component {
 			}
 		};
 
-		if ( give_blocks_vars.key === null ) {
-			/* No API Key generated*/
-			return (
-				<div className={ props.className }>
-					<GiveBlankSlate title={ __( 'No API key found.' ) }
-						description={ __( 'The first step towards using new blocks based experience is to generate API key .' ) }
-						helpLink>
-						<Button isPrimary isLarge href={ `${ wpApiSettings.schema.url }/wp-admin/edit.php?post_type=give_forms&page=give-tools&tab=api` }> { __( 'Generate API Key' ) } </Button>
-					</GiveBlankSlate>
-				</div>
-			);
-		} else if ( ( ! attributes.id && ! attributes.forms ) || fetching ) {
+		if ( ( ! attributes.id && ! props.forms.data ) || fetching ) {
 			/* Fetching Data */
 			return (
 				<div className={ props.className }>
 					<GiveBlankSlate title={ __( 'Loading...' ) } isLoader />
 				</div>
 			);
-		} else if ( ! attributes.id && attributes.forms.length === 0 ) {
+		} else if ( ! attributes.id && props.forms.data.length === 0 ) {
 			/* No form created */
 			return (
 				<div className={ props.className }>
@@ -267,4 +227,8 @@ class GiveForm extends Component {
 	}
 }
 
-export default GiveForm;
+export default withAPIData( ( ) => {
+	return {
+		forms: '/wp/v2/give_forms',
+	};
+} )( GiveForm );
