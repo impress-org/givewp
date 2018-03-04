@@ -33,7 +33,7 @@ const GiveBlankSlate = ( props ) => {
 			{ !! title && ( <h2 className="give-blank-slate__heading">{ title }</h2> ) }
 			{ !! description && ( <p className="give-blank-slate__message">{ description }</p> ) }
 			{ children }
-			{ ( !! helpLink && <GiveHelpLink /> ) }
+			{ !! helpLink && ( <GiveHelpLink /> ) }
 		</div>
 	);
 };

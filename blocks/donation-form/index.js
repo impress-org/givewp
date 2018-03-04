@@ -12,6 +12,10 @@ import GiveForm from './edit/block';
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
 
+/**
+ * Register Block
+*/
+
 export default registerBlockType( 'give/donation-form', {
 
 	title: __( 'Give Form' ),
@@ -28,7 +32,7 @@ export default registerBlockType( 'give/donation-form', {
 	edit: GiveForm,
 
 	save: () => {
-		// Frontend generated via shortcode (Server side rendering)
+		// Server side rendering via shortcode
 		return null;
 	},
 } );

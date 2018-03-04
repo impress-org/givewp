@@ -1,3 +1,7 @@
+/**
+ * Block Attributes
+*/
+
 const blockAttributes = {
 	id: {
 		type: 'number',
