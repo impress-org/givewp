@@ -31,6 +31,7 @@
     }
   },
   "rules": {
+		"linebreak-style": 0,
     "array-bracket-spacing": ["error", "always"],
     "brace-style": ["error", "1tbs"],
     "camelcase": ["error", { "properties": "never" }],

@@ -1,3 +1,7 @@
+/**
+ * Inline JSX SVG
+*/
+
 const giveLogo = <svg id="Layer_1" width="20px" height="20px" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink"
 	viewBox="100 0 404 400">
 	<g id="Layer_2">

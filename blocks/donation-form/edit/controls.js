@@ -8,16 +8,25 @@ const {
 	Toolbar,
 } = wp.components;
 
+/**
+ * Render Block Controls
+*/
+
 const Controls = ( props ) => {
+	// Event(s)
+	const onChangeForm = () => {
+		props.setAttributes( { id: 0 } );
+	};
+
 	return (
 		<BlockControls key="toolbar">
 			<Toolbar>
 				<IconButton
 					icon="image-rotate"
 					label={ __( 'Change Form' ) }
-					onClick={ () => props.onChangeForm( 'changeForm' ) }
-					tooltip="Select different donation form to display">
-					&nbsp; Change Form
+					onClick={ onChangeForm }
+					tooltip={ __( 'Select different donation form to display' ) }>
+					&nbsp; { __( 'Change Form' ) }
 				</IconButton>
 			</Toolbar>
 
@@ -27,8 +36,8 @@ const Controls = ( props ) => {
 					label={ __( 'Edit Form' ) }
 					href={ `${ wpApiSettings.schema.url }/wp-admin/post.php?post=${ props.attributes.id }&action=edit` }
 					target="_blank"
-					tooltip="Edit donation form">
-					&nbsp; Edit Form
+					tooltip={ __( 'Edit donation form' ) }>
+					&nbsp; { __( 'Edit Form' ) }
 				</IconButton>
 			</Toolbar>
 		</BlockControls>
