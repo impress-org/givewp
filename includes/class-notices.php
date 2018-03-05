@@ -607,6 +607,7 @@ class Give_Notices {
 		 */
 		$default_notice_args = array(
 			'dismissible'      => true,
+			'dismiss_type'     => 'auto',
 			'dismiss_interval' => 5000,
 		);
 
@@ -619,18 +620,41 @@ class Give_Notices {
 		 */
 		$notice_args = apply_filters( 'give_frontend_notice_args', $notice_args );
 
-		// Note: we will remove give_errors class in future.
-		$error = sprintf(
-			'<div class="give_notices give_errors" id="give_error_%1$s">
-				<p class="give_error give_notice give_%1$s" data-dismissible="%2$s" data-dismiss-interval="%3$d">
-					%4$s
-				</p>
-			</div>',
-			$notice_type,
-			give_clean( $notice_args['dismissible'] ),
-			absint( $notice_args['dismiss_interval'] ),
-			$message
-		);
+		switch ( $notice_args['dismiss_type'] ) {
+			case 'auto':
+				// Note: we will remove give_errors class in future.
+				$error = sprintf(
+					'<div class="give_notices give_errors" id="give_error_%1$s">
+						<p class="give_error give_notice give_%1$s" data-dismissible="%2$s" data-dismiss-interval="%3$d">
+							%4$s
+						</p>
+					</div>',
+					$notice_type,
+					give_clean( $notice_args['dismissible'] ),
+					absint( $notice_args['dismiss_interval'] ),
+					$message
+				);
+				break;
+
+			case 'manual':
+				$error = sprintf(
+					'<div class="give_notices give_errors" id="give_error_%1$s">
+						<p class="give_error give_notice give_%1$s" data-dismiss-type="%2$s">
+							%3$s
+						</p>
+						<button type="button" class="notice-dismiss give-notice-close"></button>
+					</div>',
+					$notice_type,
+					give_clean( $notice_args['dismiss_type'] ),
+					$message
+				);
+				break;
+
+			default:
+				break;
+		}
+
+		wp_enqueue_style( 'dashicons' );
 
 		if ( ! $echo ) {
 			return $error;
