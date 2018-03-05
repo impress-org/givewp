@@ -1822,7 +1822,7 @@ function give_get_donation_form_title( $donation, $args = array() ) {
  * Retrieves the Price ID when provided a proper form ID and price (donation) total
  *
  * @param int    $form_id Form ID.
- * @param string $price   Price ID.
+ * @param string $price   Donation Amount.
  *
  * @return string $price_id
  */
