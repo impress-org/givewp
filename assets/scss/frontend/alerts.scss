@@ -7,8 +7,9 @@ Notices, Warnings & Errors
 
 .notice-dismiss {
   position: absolute;
-  top: 0;
+  top: 50%;
   right: 0;
+  transform: translate(0, -50%);
   border: none;
   margin: 0;
   padding: 5px;
