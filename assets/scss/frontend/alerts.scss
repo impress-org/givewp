@@ -1,6 +1,45 @@
 /*---------------------------------
 Notices, Warnings & Errors
 -----------------------------------*/
+.give_notices {
+  position: relative;
+}
+
+.notice-dismiss {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translate(0, -50%);
+  border: none;
+  margin: 0;
+  padding: 5px;
+  background: 0 0;
+  color: #72777c;
+  cursor: pointer;
+  max-width: 28px;
+
+  &:before {
+    background: 0 0;
+    color: #72777c;
+    content: "\f153";
+    display: block;
+    font: 400 16px/20px dashicons;
+    speak: none;
+    height: 20px;
+    text-align: center;
+    width: 20px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0);
+
+    &:before {
+      color: #dc3232;
+    }
+  }
+}
+
 .give_error, .give_success {
   position: relative;
   margin: 15px 0;
