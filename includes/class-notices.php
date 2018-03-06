@@ -642,11 +642,12 @@ class Give_Notices {
 						<p class="give_error give_notice give_%1$s" data-dismiss-type="%2$s">
 							%3$s
 						</p>
-						<button type="button" class="notice-dismiss give-notice-close"></button>
+						<img class="notice-dismiss give-notice-close" src="%4$s" />
 					</div>',
 					$notice_type,
 					give_clean( $notice_args['dismiss_type'] ),
-					$message
+					$message,
+					esc_url( GIVE_PLUGIN_URL . 'assets/images/svg/close.svg' )
 				);
 				break;
 
