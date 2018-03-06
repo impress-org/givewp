@@ -613,6 +613,9 @@ class Give_Notices {
 
 		$notice_args = wp_parse_args( $notice_args, $default_notice_args );
 
+		// Notice dismissible must be true for dismiss type.
+		$notice_args['dismiss_type'] = ! $notice_args['dismissible'] ? '' : $notice_args['dismiss_type'];
+
 		/**
 		 * Filter to modify Frontend notice args before notices is display.
 		 *
@@ -620,42 +623,30 @@ class Give_Notices {
 		 */
 		$notice_args = apply_filters( 'give_frontend_notice_args', $notice_args );
 
-		switch ( $notice_args['dismiss_type'] ) {
-			case 'auto':
-				// Note: we will remove give_errors class in future.
-				$error = sprintf(
-					'<div class="give_notices give_errors" id="give_error_%1$s">
-						<p class="give_error give_notice give_%1$s" data-dismissible="%2$s" data-dismiss-interval="%3$d">
-							%4$s
+		$close_icon = 'manual' === $notice_args['dismiss_type'] ?
+			sprintf(
+				'<img class="notice-dismiss give-notice-close" src="%s" />',
+				esc_url( GIVE_PLUGIN_URL . 'assets/images/svg/close.svg' )
+
+			) :
+			'';
+
+		// Note: we will remove give_errors class in future.
+		$error = sprintf(
+			'<div class="give_notices give_errors" id="give_error_%1$s">
+						<p class="give_error give_notice give_%1$s" data-dismissible="%2$s" data-dismiss-interval="%3$d" data-dismiss-type="%4$s">
+							%5$s
 						</p>
+						%6$s
 					</div>',
-					$notice_type,
-					give_clean( $notice_args['dismissible'] ),
-					absint( $notice_args['dismiss_interval'] ),
-					$message
-				);
-				break;
+			$notice_type,
+			give_clean( $notice_args['dismissible'] ),
+			absint( $notice_args['dismiss_interval'] ),
+			give_clean( $notice_args['dismiss_type'] ),
+			$message,
+			$close_icon
 
-			case 'manual':
-				$error = sprintf(
-					'<div class="give_notices give_errors" id="give_error_%1$s">
-						<p class="give_error give_notice give_%1$s" data-dismiss-type="%2$s">
-							%3$s
-						</p>
-						<img class="notice-dismiss give-notice-close" src="%4$s" />
-					</div>',
-					$notice_type,
-					give_clean( $notice_args['dismiss_type'] ),
-					$message,
-					esc_url( GIVE_PLUGIN_URL . 'assets/images/svg/close.svg' )
-				);
-				break;
-
-			default:
-				break;
-		}
-
-		wp_enqueue_style( 'dashicons' );
+		);
 
 		if ( ! $echo ) {
 			return $error;

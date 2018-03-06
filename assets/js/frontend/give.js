@@ -77,7 +77,7 @@ jQuery( function( $ ) {
 	} );
 
 	// Auto hide frontend notices.
-	var give_notices = jQuery( '.give_notice[data-dismissible="1"]' );
+	var give_notices = jQuery( '.give_notice[data-dismiss-type="auto"]' );
 	if ( give_notices.length ) {
 		give_notices.each( function( index, $notice ) {
 			$notice = $( $notice );
@@ -95,6 +95,7 @@ jQuery( function( $ ) {
 	// Button to close notices on front-end.
 	const give_notice_close = jQuery( '.give-notice-close' );
 	give_notice_close.on( 'click', function() {
+		$(this).hide();
 		const notice_container = $(this).closest( '.give_notices' );
 		notice_container.slideUp();
 	});
