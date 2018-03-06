@@ -2532,6 +2532,9 @@ var give_setting_edit = false;
 
 		// Fire event: Row added.
 		$parent.trigger('repeater_field_new_row_added', [container, new_row]);
+
+		// Set focus to the focus field on the newly added level.
+		$('.give-money-field').focus();
 	};
 
 	/**

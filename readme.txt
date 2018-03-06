@@ -5,7 +5,7 @@ Tags: donation, donations, donation plugin, wordpress donation plugin, givewp, g
 Requires at least: 4.8
 Tested up to: 4.9
 Requires PHP: 5.3
-Stable tag: 2.0.5
+Stable tag: 2.0.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -207,6 +207,11 @@ Use Give for donations, and let WooCommerce or WP eCommerce or the like handle y
 11. Give has a dedicated support team to help answer any questions you may have and help you through stumbling blocks.
 
 == Changelog ==
+
+= 2.0.6: March 7th, 2018  =
+* New: Notices and warnings on the frontend can now be dismissed if the notice has been configured to be manually or auto-dismissed. Previously all frotnend notices were static, meaning they weren't able to be removed automatically or by the user. [#2869](https://github.com/WordImpress/Give/issues/2869), [#2853](https://github.com/WordImpress/Give/issues/2853)
+* Tweak: When you add a new donation level in the donation form creation screen the amount field will be auto-focused. This provides the admin a faster interface for adding levels. [#2866](https://github.com/WordImpress/Give/issues/2866)
+* Fix: Due to a bug released in 2.0.5 changing levels multiple times would result in a JS error preventing from the amount to be subsequently updated. This bug has been fixed and it's suggested you update immediately if you're on 2.0.5. [#2861](https://github.com/WordImpress/Give/issues/2861), [#2860](https://github.com/WordImpress/Give/issues/2860)
 
 = 2.0.5: February 27th, 2018  =
 * Fix: The dashboard widget was displaying incorrect stat for donations raised "This Year". It was showing all time rather than the current year. [#2847](https://github.com/WordImpress/Give/issues/2847)
