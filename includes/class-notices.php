@@ -606,7 +606,7 @@ class Give_Notices {
 		 * @since 1.8.14
 		 */
 		$default_notice_args = array(
-			'dismissible'      => true,
+			'dismissible'      => false,
 			'dismiss_type'     => 'auto',
 			'dismiss_interval' => 5000,
 		);
