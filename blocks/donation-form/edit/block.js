@@ -101,7 +101,7 @@ class GiveForm extends Component {
 			parameters.push( `continue_button_title=${ attributes.continueButtonTitle }` );
 		}
 		this.setState( { error: false, fetching: true } );
-		window.fetch( `${ wpApiSettings.schema.url }/wp-json/give-api/v1/form/${ attributes.id }/?${ parameters.join( '&' ) }` ).then(
+		window.fetch( `${ wpApiSettings.root }give-api/v1/form/${ attributes.id }/?${ parameters.join( '&' ) }` ).then(
 			( response ) => {
 				response.json().then( ( obj ) => {
 					if ( this.unmounting ) {
