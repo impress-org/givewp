@@ -42,6 +42,7 @@ class GiveForm extends Component {
 	 * @memberof GiveForm
 	 */
 	componentDidMount() {
+		// @todo: check form status before rendering.
 		if ( this.props.attributes.id ) {
 			this.setState( { fetching: true } );
 			this.doServerSideRender();
