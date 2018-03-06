@@ -3985,11 +3985,11 @@ msgstr ""
 msgid "Download an export of Give's settings and import it in a new WordPress installation."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-exports.php:270
-msgid "Checked options from the list will not be exported"
+#: includes/admin/tools/views/html-admin-page-exports.php:274
+msgid "Checked options from the list will not be exported."
 msgstr ""
 
-#: includes/admin/tools/views/html-admin-page-exports.php:292
+#: includes/admin/tools/views/html-admin-page-exports.php:289
 msgid "Export JSON"
 msgstr ""
 
