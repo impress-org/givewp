@@ -4,12 +4,17 @@
 
 @keyframes placeHolderShimmer {
 	0% {
-		background-position: -468px 0
+		background-position: 0 0
 	}
 
 	100% {
-		background-position: 468px 0
+		background-position: 520px 0
 	}
+}
+
+.placeholder-container-animation {
+	max-width: 650px;
+	margin: 0 auto;
 }
 
 .animated-background {
@@ -20,7 +25,7 @@
 	animation-timing-function: linear;
 	background: #f6f7f8;
 	background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
-	background-size: 100% 100%;
+	background-size: 520px 100%;
 	position: relative;
 }
 
