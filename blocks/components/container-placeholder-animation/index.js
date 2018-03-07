@@ -1,3 +1,5 @@
+import './style.scss';
+
 const PlaceholderContainerAnimation = () => {
 	return (
 		<div className="placeholder-container-animation">
