@@ -3,50 +3,50 @@ import './style.scss';
 const PlaceholderContainerAnimation = () => {
 	return (
 		<div className="placeholder-container-animation">
-			<div class="timeline-wrapper">
-				<div class="timeline-item">
-					<div class="animated-background">
+			<div className="timeline-wrapper">
+				<div className="timeline-item">
+					<div className="animated-background">
 
-						<div class="layer label layer-4">
-							<div class="layer-item"></div>
-							<div class="layer-item opaque"></div>
-							<div class="layer-item opaque"></div>
-							<div class="layer-item"></div>
-							<div class="layer-item opaque"></div>
+						<div className="layer label layer-4">
+							<div className="layer-item"></div>
+							<div className="layer-item opaque"></div>
+							<div className="layer-item opaque"></div>
+							<div className="layer-item"></div>
+							<div className="layer-item opaque"></div>
 						</div>
-						<div class="layer-gap small"></div>
+						<div className="layer-gap small"></div>
 
 
-						<div class="layer h2 layer-5">
-							<div class="layer-item"></div>
-							<div class="layer-item opaque"></div>
-							<div class="layer-item opaque"></div>
-							<div class="layer-item"></div>
-							<div class="layer-item opaque"></div>
+						<div className="layer h2 layer-5">
+							<div className="layer-item"></div>
+							<div className="layer-item opaque"></div>
+							<div className="layer-item opaque"></div>
+							<div className="layer-item"></div>
+							<div className="layer-item opaque"></div>
 						</div>
-						<div class="layer-gap medium"></div>
+						<div className="layer-gap medium"></div>
 
 
-						<div class="layer label layer-6">
-							<div class="layer-item"></div>
-							<div class="layer-item opaque"></div>
+						<div className="layer label layer-6">
+							<div className="layer-item"></div>
+							<div className="layer-item opaque"></div>
 						</div>
-						<div class="layer-gap small"></div>
+						<div className="layer-gap small"></div>
 
 
-						<div class="layer h2 layer-7">
-							<div class="layer-item"></div>
-							<div class="layer-item opaque"></div>
+						<div className="layer h2 layer-7">
+							<div className="layer-item"></div>
+							<div className="layer-item opaque"></div>
 						</div>
 
-						<div class="layer-gap medium"></div>
-						<div class="layer-gap medium"></div>
+						<div className="layer-gap medium"></div>
+						<div className="layer-gap medium"></div>
 
 
-						<div class="layer h1 layer-8">
-							<div class="layer-item opaque"></div>
-							<div class="layer-item"></div>
-							<div class="layer-item opaque"></div>
+						<div className="layer h1 layer-8">
+							<div className="layer-item opaque"></div>
+							<div className="layer-item"></div>
+							<div className="layer-item opaque"></div>
 						</div>
 					</div>
 				 </div>
