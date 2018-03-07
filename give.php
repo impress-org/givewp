@@ -230,7 +230,7 @@ if ( ! class_exists( 'Give' ) ) :
 		public $scripts;
 
 		/**
-		 * Give scripts Object.
+		 * Give_Donation_Form_Block Object.
 		 *
 		 * @var Give_Donation_Form_Block
 		 */
