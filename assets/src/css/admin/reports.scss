@@ -204,6 +204,16 @@ body.give_forms_page_give-reports table.export-options-table {
 
 }
 
+.settings-excludes-list {
+  max-height: 120px;
+  overflow: auto;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+}
+
+.settings-excludes-list li {
+  margin: 3px 0;
+}
 //---------------------------------------------------------
 //Recount Stats Form
 //---------------------------------------------------------

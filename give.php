@@ -230,6 +230,13 @@ if ( ! class_exists( 'Give' ) ) :
 		public $scripts;
 
 		/**
+		 * Give scripts Object.
+		 *
+		 * @var Give_Donation_Form_Block
+		 */
+		public $donation_form_block;
+
+		/**
 		 * Main Give Instance
 		 *
 		 * Ensures that only one instance of Give exists in memory at any one
@@ -282,6 +289,9 @@ if ( ! class_exists( 'Give' ) ) :
 		private function init_hooks() {
 			register_activation_hook( GIVE_PLUGIN_FILE, 'give_install' );
 			add_action( 'plugins_loaded', array( $this, 'init' ), 0 );
+
+			// Set up localization on init Hook.
+			add_action( 'init', array( $this, 'load_textdomain' ), 0 );
 		}
 
 		/**
@@ -319,6 +329,8 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->form_meta       = new Give_DB_Form_Meta();
 			$this->async_process   = new Give_Async_Process();
 			$this->scripts         = new Give_Scripts();
+
+			$this->donation_form_block = Give_Donation_Form_Block::get_instance();
 
 			/**
 			 * Fire the action after Give core loads.
@@ -506,6 +518,11 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/donors/backward-compatibility.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/class-give-updates.php';
+
+			/**
+			 * Blocks
+			 */
+			require_once GIVE_PLUGIN_DIR . 'blocks/donation-form/class-give-donation-form-block.php';
 
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				require_once GIVE_PLUGIN_DIR . 'includes/class-give-cli-commands.php';

@@ -55,7 +55,7 @@ jQuery(document).ready(function ($) {
 				active_payment_option_html += ' selected="selected"';
 			}
 
-			active_payment_option_html += '>' + item.next('label').text() + '</option>';
+			active_payment_option_html += '>' + item.data('payment-gateway') + '</option>';
 		});
 
 		// Update select html.
