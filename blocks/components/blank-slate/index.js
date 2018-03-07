@@ -19,6 +19,7 @@ const GiveBlankSlate = ( props ) => {
 		helpLink,
 	} = props;
 
+	// @todo: do not hard code wp content url that can be configure.
 	const giveLoader = '/wp-content/plugins/Give/assets/dist/images/give-loader.svg';
 	const giveLogo = '/wp-content/plugins/Give/assets/dist/images/give-icon-full-circle.svg';
 
