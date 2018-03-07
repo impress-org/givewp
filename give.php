@@ -230,6 +230,13 @@ if ( ! class_exists( 'Give' ) ) :
 		public $scripts;
 
 		/**
+		 * Give scripts Object.
+		 *
+		 * @var Give_Donation_Form_Block
+		 */
+		public $donation_form_block;
+
+		/**
 		 * Main Give Instance
 		 *
 		 * Ensures that only one instance of Give exists in memory at any one
@@ -323,7 +330,7 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->async_process   = new Give_Async_Process();
 			$this->scripts         = new Give_Scripts();
 
-			$this->donation_form_block = new Give_Donation_Form_Block();
+			$this->donation_form_block = Give_Donation_Form_Block::get_instance();
 
 			/**
 			 * Fire the action after Give core loads.
