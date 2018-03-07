@@ -486,6 +486,7 @@ function give_output_levels( $form_id ) {
 	$display_style      = give_get_meta( $form_id, '_give_display_style', true );
 	$custom_amount      = give_get_meta( $form_id, '_give_custom_amount', true );
 	$custom_amount_text = give_get_meta( $form_id, '_give_custom_amount_text', true );
+
 	if ( empty( $custom_amount_text ) ) {
 		$custom_amount_text = esc_html__( 'Give a Custom Amount', 'give' );
 	}
@@ -1361,7 +1362,11 @@ function give_payment_mode_select( $form_id ) {
 				/**
 				 * Loop through the active payment gateways.
 				 */
-				$selected_gateway  = give_get_chosen_gateway( $form_id );
+				$selected_gateway = give_get_chosen_gateway( $form_id );
+				$give_settings    = give_get_settings();
+				$gateways_label   = array_key_exists( 'gateways_label', $give_settings ) ?
+					$give_settings['gateways_label'] :
+					array();
 
 				foreach ( $gateways as $gateway_id => $gateway ) :
 					//Determine the default gateway.
@@ -1371,9 +1376,16 @@ function give_payment_mode_select( $form_id ) {
 						<input type="radio" name="payment-mode" class="give-gateway"
 							   id="give-gateway-<?php echo esc_attr( $gateway_id ) . '-' . $form_id; ?>"
 							   value="<?php echo esc_attr( $gateway_id ); ?>"<?php echo $checked; ?>>
+
+						<?php
+						$label = $gateway['checkout_label'];
+						if ( ! empty( $gateways_label[ $gateway_id  ] ) ) {
+							$label = $gateways_label[ $gateway_id ];
+						}
+						?>
 						<label for="give-gateway-<?php echo esc_attr( $gateway_id ) . '-' . $form_id; ?>"
 							   class="give-gateway-option"
-							   id="give-gateway-option-<?php echo esc_attr( $gateway_id ); ?>"> <?php echo esc_html( $gateway['checkout_label'] ); ?></label>
+							   id="give-gateway-option-<?php echo esc_attr( $gateway_id ); ?>"> <?php echo esc_html( $label ); ?></label>
 					</li>
 					<?php
 				endforeach;
@@ -1538,6 +1550,14 @@ function give_checkout_final_total( $form_id ) {
 	}
 	?>
 	<p id="give-final-total-wrap" class="form-wrap ">
+		<?php 
+		/**
+		 * Fires before the donation total label
+		 * 
+		 * @since 2.0.5
+		 */
+		do_action( 'give_donation_final_total_label_before', $form_id ); 
+		?>
 		<span class="give-donation-total-label">
 			<?php echo apply_filters( 'give_donation_total_label', esc_html__( 'Donation Total:', 'give' ) ); ?>
 		</span>
@@ -1545,6 +1565,14 @@ function give_checkout_final_total( $form_id ) {
 			  data-total="<?php echo give_format_amount( $total, array( 'sanitize' => false ) ); ?>">
 			<?php echo give_currency_filter( give_format_amount( $total, array( 'sanitize' => false ) ), array( 'currency_code' => give_get_currency( $form_id ) ) ); ?>
 		</span>
+		<?php 
+		/**
+		 * Fires after the donation final total label
+		 * 
+		 * @since 2.0.5
+		 */
+		do_action( 'give_donation_final_total_label_after', $form_id ); 
+		?>
 	</p>
 	<?php
 }

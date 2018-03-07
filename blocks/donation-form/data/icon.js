@@ -1,7 +1,11 @@
+/**
+ * Inline JSX SVG
+*/
+
 const giveLogo = <svg id="Layer_1" width="20px" height="20px" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink"
 	viewBox="100 0 404 400">
 	<g id="Layer_2">
-		<circle fill="#66BB6A" cx="300" cy="200" r="200" />
+		<circle fill="#555d66" cx="300" cy="200" r="200" />
 		<defs>
 			<circle id="SVGID_1_" cx="300" cy="200" r="200" />
 		</defs>

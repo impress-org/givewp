@@ -35,9 +35,7 @@ class Give_Donation_Form_Block {
 
 		add_action( 'rest_api_init', array( $this, 'register_rest_api' ) );
 
-		if ( is_admin() ) {
-			add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_editor_assets' ) );
-		} else {
+		if ( !is_admin() ) {
 			if ( function_exists( 'register_block_type' ) ) {
 				register_block_type( 'give/donation-form', array(
 					'render_callback' => array( $this, 'render_donation_form' ),
@@ -67,25 +65,6 @@ class Give_Donation_Form_Block {
 				) );
 			}
 		}
-	}
-
-	/**
-	 * Load editor scripts
-	 *
-	 * Enqueue required scripts and styles for editor block
-	 *
-	 * @access public
-	 * @return void
-	 */
-	public function enqueue_block_editor_assets() {
-		global $current_user;
-
-		// Localize vars from PHP.
-		wp_localize_script( 'give-blocks-js', 'give_blocks_vars', array(
-			'key'   => Give()->api->get_user_public_key( $current_user->ID ),
-			'token' => Give()->api->get_token( $current_user->ID ),
-		));
-
 	}
 
 	/**

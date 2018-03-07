@@ -3,6 +3,7 @@
 */
 import GiveHelpLink from '../help-link/index';
 import PlaceholderContainerAnimation from '../container-placeholder-animation/index';
+import './style.scss';
 
 /**
 * Internal dependencies
@@ -19,6 +20,9 @@ const GiveBlankSlate = ( props ) => {
 		helpLink,
 	} = props;
 
+
+	// @todo: do not hard code wp content url that can be configure.
+	const giveLoader = '/wp-content/plugins/Give/assets/dist/images/give-loader.svg';
 	const giveLogo = '/wp-content/plugins/Give/assets/dist/images/give-icon-full-circle.svg';
 
 	const block_loading = (
@@ -30,7 +34,7 @@ const GiveBlankSlate = ( props ) => {
 			{ !! title && ( <h2 className="give-blank-slate__heading">{ title }</h2> ) }
 			{ !! description && ( <p className="give-blank-slate__message">{ description }</p> ) }
 			{ children }
-			{ ( !! helpLink && <GiveHelpLink /> ) }
+			{ !! helpLink && ( <GiveHelpLink /> ) }
 		</div>
 	);
 
