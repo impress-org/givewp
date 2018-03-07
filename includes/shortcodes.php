@@ -691,6 +691,17 @@ function give_totals_shortcode( $atts ) {
 
 add_shortcode( 'give_totals', 'give_totals_shortcode' );
 
+
+/**
+ * Donation Grid Shortcode
+ *
+ * Displays a donation forms list in grid layout.
+ *
+ * @since  2.1
+ *
+ * @param array $atts
+ * @return string|bool
+ */
 function give_donation_grid_shortcode( $atts ) {
 	$atts = shortcode_atts( array(
 		'columns'             => '4',
