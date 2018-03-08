@@ -75,7 +75,7 @@ class Give_API_V2 {
 	 * Initialize API
 	 *
 	 * @since  2.1
-	 * @Access private
+	 * @access private
 	 */
 	private function init() {
 		// Setup hooks.
