@@ -80,6 +80,8 @@ class Give_API_V2 {
 	private function init() {
 		// Setup hooks.
 		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'localize_script' ), 999 );
+		add_action( 'admin_enqueue_scripts', array( $this, 'localize_script' ), 999 );
 	}
 
 
@@ -94,6 +96,24 @@ class Give_API_V2 {
 			'methods'  => 'GET',
 			'callback' => array( $this, 'get_forms_data' ),
 		) );
+	}
+
+	/**
+	 * Add api localize data
+	 *
+	 * @since  2.1
+	 * @access public
+	 */
+	public function localize_script() {
+		if ( is_admin() ) {
+			wp_localize_script( 'give-admin-scripts', 'giveApiSettings', array(
+				'root' => esc_url_raw( Give_API_V2::get_rest_api() ),
+			) );
+		} else {
+			wp_localize_script( 'give', 'giveApiSettings', array(
+				'root' => esc_url_raw( Give_API_V2::get_rest_api() ),
+			) );
+		}
 	}
 
 	/**
@@ -123,6 +143,22 @@ class Give_API_V2 {
 		);
 
 		return $response;
+	}
+
+	/**
+	 * Get api reset url
+	 *
+	 * @since  2.1
+	 * @access public
+	 *
+	 * @param int    $blog_id Optional. Blog ID. Default of null returns URL for current blog.
+	 * @param string $path    Optional. REST route. Default '/'.
+	 * @param string $scheme  Optional. Sanitization scheme. Default 'rest'.
+	 *
+	 * @return string Full URL to the endpoint.
+	 */
+	public static function get_rest_api( $blog_id = null, $path = '/', $scheme = 'rest' ) {
+		return trailingslashit( get_rest_url( $blog_id, $path, $scheme ) . self::$instance->rest_base );
 	}
 }
 
