@@ -87,6 +87,7 @@ class Give_API_V2 {
 
 	/**
 	 * Register API routes
+	 * @todo: prevent cross domain api request
 	 *
 	 * @since  2.1
 	 * @access private
