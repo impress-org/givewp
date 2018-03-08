@@ -68,9 +68,6 @@ class Give_Donation_Form_Block {
 	 */
 	private function init() {
 
-		// Setup hooks.
-		add_action( 'rest_api_init', array( $this, 'register_rest_api' ) );
-
 		// Register block.
 		register_block_type( 'give/donation-form', array(
 			'render_callback' => array( $this, 'render_donation_form' ),
@@ -124,47 +121,5 @@ class Give_Donation_Form_Block {
 		$parameters['continue_button_title'] = trim( $attributes['continueButtonTitle'] );
 
 		return give_form_shortcode( $parameters );
-	}
-
-	/**
-	 * Register rest route to fetch form data
-	 * @TODO   : This is a temporary solution. Next step would be to find a solution that is limited to the editor.
-	 * @access public
-	 * @return void
-	 */
-	public function register_rest_api() {
-		register_rest_route( 'give-api/v1', '/form/(?P<id>\d+)', array(
-			'methods'  => 'GET',
-			'callback' => array( $this, 'get_forms_data' ),
-		) );
-	}
-
-	/**
-	 * Rest fetch form data callback
-	 *
-	 * @param WP_REST_Request $request
-	 *
-	 * @access public
-	 * @return array|mixed|object
-	 */
-	public function get_forms_data( $request ) {
-		$parameters = $request->get_params();
-
-		// Bailout
-		if ( ! isset( $parameters['id'] ) || empty( $parameters['id'] ) ) {
-			return array( 'error' => 'no_parameter_given' );
-		}
-
-		if ( ! ( $html = give_form_shortcode( $parameters ) ) ) {
-			// @todo: add notice here for form which do not has publish status.
-			$html = '';
-		}
-
-		// Response data array
-		$response = array(
-			'html' => $html,
-		);
-
-		return $response;
 	}
 }
