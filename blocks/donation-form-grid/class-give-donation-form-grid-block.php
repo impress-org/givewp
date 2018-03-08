@@ -1,6 +1,6 @@
 <?php
 /**
- * Give Donation Form Block Class
+ * Give Donation Grid Block Class
  *
  * @package     Give
  * @subpackage  Classes/Blocks
@@ -15,19 +15,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Give_Donation_Form_Block Class.
+ * Give_Donation_form_Grid_Block Class.
  *
  * This class handles donation forms block.
  *
  * @since 2.0.2
  */
-class Give_Donation_Form_Block {
+class Give_Donation_form_Grid_Block {
 	/**
 	 * Instance.
 	 *
 	 * @since
 	 * @access private
-	 * @var Give_Donation_Form_Block
+	 * @var Give_Donation_form_Grid_Block
 	 */
 	static private $instance;
 
@@ -46,7 +46,7 @@ class Give_Donation_Form_Block {
 	 *
 	 * @since
 	 * @access public
-	 * @return Give_Donation_Form_Block
+	 * @return Give_Donation_form_Grid_Block
 	 */
 	public static function get_instance() {
 		if ( null === static::$instance ) {
@@ -61,7 +61,7 @@ class Give_Donation_Form_Block {
 	/**
 	 * Class Constructor
 	 *
-	 * Set up the Give Donation Form Block class.
+	 * Set up the Give Donation Grid Block class.
 	 *
 	 * @since  2.0.2
 	 * @access private
@@ -73,34 +73,33 @@ class Give_Donation_Form_Block {
 	/**
 	 * Register block
 	 *
-	 * @since  2.1
+	 *
 	 * @access public
 	 */
 	public function register_block() {
 		// Register block.
-		register_block_type( 'give/donation-form', array(
-			'render_callback' => array( $this, 'render_donation_form' ),
+		register_block_type( 'give/donation-form-grid', array(
+			'render_callback' => array( $this, 'render_block' ),
 			'attributes'      => array(
-				'id'                  => array(
-					'type' => 'number',
-				),
-				'displayStyle'        => array(
-					'type' => 'string',
-				),
-				'continueButtonTitle' => array(
-					'type' => 'string',
-				),
-				'showTitle'           => array(
-					'type'    => 'boolean',
-					'default' => false,
-				),
-				'showGoal'            => array(
-					'type'    => 'boolean',
-					'default' => false,
-				),
-				'showContent'         => array(
+				'columns'           => array(
 					'type'    => 'string',
-					'default' => 'none',
+					'default' => '4',
+				),
+				'showExcerpt'       => array(
+					'type'    => 'boolean',
+					'default' => false,
+				),
+				'showGoal'          => array(
+					'type'    => 'boolean',
+					'default' => false,
+				),
+				'showFeaturedImage' => array(
+					'type'    => 'boolean',
+					'default' => false,
+				),
+				'displayType'       => array(
+					'type'    => 'string',
+					'default' => 'redirect',
 				),
 			),
 		) );
@@ -114,23 +113,20 @@ class Give_Donation_Form_Block {
 	 * @access public
 	 * @return string;
 	 */
-	public function render_donation_form( $attributes ) {
-		// Bailout.
-		if ( empty( $attributes['id'] ) ) {
-			return '';
-		}
+	public function render_block( $attributes ) {
+		$parameters = array(
+			'columns'             => absint( $attributes['columns'] ),
+			'show_goal'           => $attributes['showGoal'],
+			'show_excerpt'        => $attributes['showExcerpt'],
+			'show_featured_image' => $attributes['showFeaturedImage'],
+			'display_type'        => $attributes['displayType'],
+		);
 
-		$parameters = array();
+		ob_start();
+		give_donation_grid_shortcode( $parameters );
 
-		$parameters['id']                    = $attributes['id'];
-		$parameters['show_title']            = $attributes['showTitle'];
-		$parameters['show_goal']             = $attributes['showGoal'];
-		$parameters['show_content']          = $attributes['showContent'];
-		$parameters['display_style']         = $attributes['displayStyle'];
-		$parameters['continue_button_title'] = trim( $attributes['continueButtonTitle'] );
-
-		return give_form_shortcode( $parameters );
+		return ob_get_clean();
 	}
 }
 
-Give_Donation_Form_Block::get_instance();
+Give_Donation_form_Grid_Block::get_instance();
