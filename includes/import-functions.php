@@ -380,6 +380,10 @@ function give_import_donations_options() {
 			__( 'Donation Amount', 'give' ),
 			__( 'Amount', 'give' )
 		),
+		'currency'      => array(
+			__( 'Donation Currencies', 'give' ),
+			__( 'Currencies', 'give' )
+		),
 		'post_date'   => array(
 			__( 'Donation Date', 'give' ),
 			__( 'Date', 'give' ),
@@ -597,7 +601,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 		'donor_id'        => $donor_data->id,
 		'price'           => $data['amount'],
 		'status'          => $status,
-		'currency'        => give_get_currency(),
+		'currency'        => ! empty( $data['currency'] ) && array_key_exists( $data['currency'], give_get_currencies_list() ) ? $data['currency'] : give_get_currency(),
 		'user_info'       => array(
 			'id'         => $donor_id,
 			'email'      => ( ! empty( $data['email'] ) ? $data['email'] : ( isset( $donor_data->email ) ? $donor_data->email : false ) ),
