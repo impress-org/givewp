@@ -155,8 +155,8 @@ class GiveForm extends Component {
 				blockUI = <FormSelect {... {...props}} />;
 			}
 		} else {
-			if( ! html){
-				blockUI = <EditForm formId={attributes.id}/>;
+			if( ! html ){
+				blockUI = fetching ?  <GiveBlankSlate title={__('Loading...')} isLoader/> : <EditForm formId={attributes.id} {... {...props}}/>;
 			} else{
 				blockUI = <FormPreview
 					html={html}
