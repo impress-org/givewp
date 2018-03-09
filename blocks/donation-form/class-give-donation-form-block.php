@@ -61,12 +61,22 @@ class Give_Donation_Form_Block {
 	/**
 	 * Class Constructor
 	 *
-	 * Set up the Give Donation Form Block class.
+	 * Set up the Give Donation Grid Block class.
 	 *
 	 * @since  2.0.2
 	 * @access private
 	 */
 	private function init() {
+		add_action( 'init', array( $this, 'register_block' ), 999 );
+	}
+
+	/**
+	 * Register block
+	 *
+	 *
+	 * @access public
+	 */
+	private function register_block() {
 		// Register block.
 		register_block_type( 'give/donation-form', array(
 			'render_callback' => array( $this, 'render_donation_form' ),

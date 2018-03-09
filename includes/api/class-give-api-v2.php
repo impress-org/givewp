@@ -138,14 +138,9 @@ class Give_API_V2 {
 			return array( 'error' => 'no_parameter_given' );
 		}
 
-		if ( ! ( $html = give_form_shortcode( $parameters ) ) ) {
-			// @todo: add notice here for form which do not has publish status.
-			$html = '';
-		}
-
 		// Response data array
 		$response = array(
-			'html' => $html,
+			'html' => give_form_shortcode( $parameters ),
 		);
 
 		return $response;
@@ -162,17 +157,7 @@ class Give_API_V2 {
 	public function get_donation_grid( $request ) {
 		$parameters = $request->get_params();
 
-		ob_start();
-		give_donation_grid_shortcode( $parameters );
-		$html = ob_get_clean();
-
-
-		if ( ! ( $html ) ) {
-			// @todo: add notice here for form which do not has publish status.
-			$html = '';
-		}
-
-		return array( 'html' => $html );
+		return array( 'html' => give_donation_grid_shortcode( $parameters ) );
 	}
 
 	/**
