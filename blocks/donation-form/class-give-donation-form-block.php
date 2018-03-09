@@ -73,10 +73,12 @@ class Give_Donation_Form_Block {
 	/**
 	 * Register block
 	 *
+	 * @since  2.1
+	 * @access public
 	 *
 	 * @access public
 	 */
-	private function register_block() {
+	public function register_block() {
 		// Register block.
 		register_block_type( 'give/donation-form', array(
 			'render_callback' => array( $this, 'render_donation_form' ),
