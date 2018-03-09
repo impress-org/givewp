@@ -433,7 +433,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 								<span class="give-import-donation-required-symbol dashicons dashicons-no-alt"></span>
 								<span class="give-import-donation-required-text">
 									<?php
-									_e( 'Email Access', 'give' );
+									_e( 'Email Address', 'give' );
 									?>
 								</span>
 							</li>
