@@ -25,8 +25,6 @@ class GiveSelectControl extends Component{
 		const {label, help, instanceId, options = [], name, ...props } = this.props;
 		const id = `give-inspector-select-control-${ instanceId }`;
 
-		console.log(this.props);
-
 		/* eslint-disable jsx-a11y/no-onchange */
 		return ! isEmpty( options ) && (
 			<BaseControl label={ label } id={ id } help={ help }>

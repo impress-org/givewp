@@ -21,8 +21,6 @@ class GiveToggleControl extends Component {
 		const { label, checked, help, instanceId, name } = this.props;
 		const id = `give-inspector-toggle-control-${ instanceId }`;
 
-		console.log(this.props);
-
 		let describedBy;
 		if ( help ) {
 			describedBy = id + '__help';

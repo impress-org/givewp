@@ -23,7 +23,7 @@ const Controls = ( props ) => {
 				{ /* Change Form */ }
 				<div className="control-button change-form" onClick={ onChangeForm } >
 					<div>
-						<span class="dashicons dashicons-image-rotate"></span><span>{ __( 'Change Form' ) }</span>
+						<span className="dashicons dashicons-image-rotate"></span><span>{ __( 'Change Form' ) }</span>
 					</div>
 				</div>
 
@@ -35,7 +35,7 @@ const Controls = ( props ) => {
 					tooltip={ __( 'Edit donation form' ) }
 				>
 					<div>
-						<span class="dashicons dashicons-edit"></span><span>{ __( 'Edit Form' ) }</span>
+						<span className="dashicons dashicons-edit"></span><span>{ __( 'Edit Form' ) }</span>
 					</div>
 				</a>
 
