@@ -2,6 +2,7 @@
  * Block dependencies
  */
 import GiveBlankSlate from '../../components/blank-slate/index';
+import NoForms from '../../components/no-form/index';
 import FormGridPreview from './components/preview';
 
 /**
@@ -120,9 +121,8 @@ class GiveDonationFormGrid extends Component {
 	 * @memberof GiveDonationFormGrid
 	 */
 	render() {
-		const props            = this.props;
-		const attributes       = props.attributes;
-		const {html, fetching} = this.state;
+		const props            = this.props,
+			  {html, fetching} = this.state;
 
 		// Render block UI
 		let blockUI;
@@ -130,7 +130,7 @@ class GiveDonationFormGrid extends Component {
 		if (fetching) {
 			blockUI = <GiveBlankSlate title={__('Loading...')} isLoader/>;
 		} else if (!html.length) {
-			blockUI = 'no form';
+			blockUI = <NoForms />;
 		} else {
 			blockUI = <FormGridPreview
 				html={html}

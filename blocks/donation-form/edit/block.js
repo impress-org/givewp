@@ -2,7 +2,8 @@
  * Block dependencies
  */
 import GiveBlankSlate from '../../components/blank-slate/index';
-import NoForms from './form/none';
+import NoForms from '../../components/no-form/index';
+import EditForm from '../../components/edit-form/index';
 import FormPreview from './form/preview';
 import FormSelect from './form/select';
 
@@ -42,7 +43,6 @@ class GiveForm extends Component {
 	 * @memberof GiveForm
 	 */
 	componentDidMount() {
-		// @todo: check form status before rendering.
 		if ( this.props.attributes.id ) {
 			this.setState( { fetching: true } );
 			this.doServerSideRender();
@@ -146,19 +146,25 @@ class GiveForm extends Component {
 		// Render block UI
 		let blockUI;
 
-		if ( ( ! attributes.id && ! props.forms.data ) || fetching ) {
-			blockUI = <GiveBlankSlate title={ __( 'Loading...' ) } isLoader />;
-		} else if ( ! attributes.id && props.forms.data.length === 0 ) {
-			blockUI = <NoForms />;
-		} else if ( ! attributes.id ) {
-			blockUI =	<FormSelect { ... { ...props } } />;
+		if (!attributes.id) {
+			if (!props.forms.data || fetching) {
+				blockUI = <GiveBlankSlate title={__('Loading...')} isLoader/>;
+			} else if (props.forms.data.length === 0) {
+				blockUI = <NoForms/>;
+			} else {
+				blockUI = <FormSelect {... {...props}} />;
+			}
 		} else {
-			blockUI = <FormPreview
-				html={ html }
-				isButtonTitleUpdated={ isButtonTitleUpdated }
-				updateButtonTitle={ this.updateButtonTitle }
-				doServerSideRender={ this.doServerSideRender }
-				{ ... { ...props } } />;
+			if( ! html){
+				blockUI = <EditForm formId={attributes.id}/>;
+			} else{
+				blockUI = <FormPreview
+					html={html}
+					isButtonTitleUpdated={isButtonTitleUpdated}
+					updateButtonTitle={this.updateButtonTitle}
+					doServerSideRender={this.doServerSideRender}
+					{... {...props}} />;
+			}
 		}
 
 		return ( <div className={ props.className } key="GiveBlockUI">{ blockUI }</div> );
