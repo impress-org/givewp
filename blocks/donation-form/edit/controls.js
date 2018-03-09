@@ -12,6 +12,7 @@ import './scss/controls.scss';
 const Controls = ( props ) => {
 	// Event(s)
 	const onChangeForm = () => {
+		props.setAttributes( { prevId: props.attributes.id } );
 		props.setAttributes( { id: 0 } );
 	};
 

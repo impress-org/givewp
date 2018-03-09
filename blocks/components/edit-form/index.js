@@ -22,7 +22,7 @@ class EditForm extends Component {
 	}
 
 	changeForm() {
-		console.log(this.props);
+		this.props.setAttributes({prevId: this.props.attributes.id});
 		this.props.setAttributes({id: 0});
 	}
 
