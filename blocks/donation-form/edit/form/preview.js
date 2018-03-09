@@ -5,17 +5,24 @@ import Inspector from '../inspector';
 import Controls from '../controls';
 
 /**
+ * Internal dependencies
+ */
+const { Component } = wp.element;
+
+/**
  * Render Form Preview
  */
 
-const FormPreview = ( props ) => {
-	return (
-		<div id="donation-form-preview-block">
-			{ !! props.isSelected && ( <Inspector { ... { ...props } } /> ) }
-			<Controls { ... { ...props } } />
-			<div dangerouslySetInnerHTML={ { __html: props.html } }></div>
-		</div>
-	);
+class FormPreview extends Component {
+	render(){
+		return (
+			<div id="donation-form-preview-block">
+				{ !! this.props.isSelected && <Inspector { ... { ...this.props } } /> }
+				{ !! this.props.isSelected && <Controls { ... { ...this.props } } /> }
+				<div dangerouslySetInnerHTML={ { __html: this.props.html } }></div>
+			</div>
+		);
+	}
 };
 
 export default FormPreview;

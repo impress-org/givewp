@@ -79,7 +79,7 @@
 		transition: transform 0.3s ease, opacity 0.3s ease;
 	}
 
-	&:hover .give-form-wrap {
+	&.isSelected:hover .give-form-wrap {
 		transition: transform 0.3s ease, opacity 0.3s ease;
 		transform: scale(0.85);
 		opacity: 0.3;

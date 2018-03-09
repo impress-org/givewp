@@ -167,7 +167,11 @@ class GiveForm extends Component {
 			}
 		}
 
-		return ( <div className={ props.className } key="GiveBlockUI">{ blockUI }</div> );
+		return (
+			<div className={  !! props.isSelected ?  `${props.className} isSelected` : props.className  } key="GiveBlockUI">
+				{ blockUI }
+			</div>
+		);
 	}
 }
 
