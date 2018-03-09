@@ -12,7 +12,7 @@ const FormPreview = ( props ) => {
 	return (
 		<div id="donation-form-preview-block">
 			{ !! props.isSelected && ( <Inspector { ... { ...props } } /> ) }
-			{ !! props.isSelected && ( <Controls { ... { ...props } } /> ) }
+			<Controls { ... { ...props } } />
 			<div dangerouslySetInnerHTML={ { __html: props.html } }></div>
 		</div>
 	);
