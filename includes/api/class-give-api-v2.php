@@ -87,7 +87,7 @@ class Give_API_V2 {
 
 	/**
 	 * Register API routes
-	 * @todo: prevent cross domain api request
+	 * @todo   : prevent cross domain api request
 	 *
 	 * @since  2.1
 	 * @access private
@@ -96,6 +96,11 @@ class Give_API_V2 {
 		register_rest_route( $this->rest_base, '/form/(?P<id>\d+)', array(
 			'methods'  => 'GET',
 			'callback' => array( $this, 'get_forms_data' ),
+		) );
+
+		register_rest_route( $this->rest_base, '/form-grid', array(
+			'methods'  => 'GET',
+			'callback' => array( $this, 'get_donation_grid' ),
 		) );
 	}
 
@@ -144,6 +149,30 @@ class Give_API_V2 {
 		);
 
 		return $response;
+	}
+
+	/**
+	 * Rest fetch form data callback
+	 *
+	 * @param WP_REST_Request $request
+	 *
+	 * @access public
+	 * @return array|mixed|object
+	 */
+	public function get_donation_grid( $request ) {
+		$parameters = $request->get_params();
+
+		ob_start();
+		give_donation_grid_shortcode( $parameters );
+		$html = ob_get_clean();
+
+
+		if ( ! ( $html ) ) {
+			// @todo: add notice here for form which do not has publish status.
+			$html = '';
+		}
+
+		return array( 'html' => $html );
 	}
 
 	/**

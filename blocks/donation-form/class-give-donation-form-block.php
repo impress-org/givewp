@@ -67,7 +67,6 @@ class Give_Donation_Form_Block {
 	 * @access private
 	 */
 	private function init() {
-
 		// Register block.
 		register_block_type( 'give/donation-form', array(
 			'render_callback' => array( $this, 'render_donation_form' ),
@@ -123,3 +122,5 @@ class Give_Donation_Form_Block {
 		return give_form_shortcode( $parameters );
 	}
 }
+
+Give_Donation_Form_Block::get_instance();

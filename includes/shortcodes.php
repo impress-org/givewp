@@ -690,3 +690,78 @@ function give_totals_shortcode( $atts ) {
 }
 
 add_shortcode( 'give_totals', 'give_totals_shortcode' );
+
+
+/**
+ * Donation Grid Shortcode
+ *
+ * Displays a donation forms list in grid layout.
+ *
+ * @since  2.1
+ *
+ * @param array $atts
+ * @return string|bool
+ */
+function give_donation_grid_shortcode( $atts ) {
+	$atts = shortcode_atts( array(
+		'columns'             => '4',
+		'show_goal'           => false,
+		'show_excerpt'        => false,
+		'show_featured_image' => false,
+		'display_type'        => 'redirect',
+	), $atts );
+
+	$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+
+	$current_donations = array(
+		'post_type'      => 'give_forms',
+		'post_status'    => 'publish',
+		'posts_per_page' => 10,
+		'paged'          => $paged,
+	);
+
+	// Get give settings.
+	$give_settings = give_get_settings();
+
+	// Query to output donation forms.
+	$current_donations_query = new WP_Query( $current_donations );
+
+	add_filter( 'add_give_goal_progress_class', 'add_give_goal_progress_class', 10, 1 );
+	add_filter( 'add_give_goal_progress_bar_class', 'add_give_goal_progress_bar_class', 10, 1 );
+
+	printf( '<div class="give-donation-grid-container">' );
+
+	if ( $current_donations_query->have_posts() ) {
+		while ( $current_donations_query->have_posts() ) {
+			$current_donations_query->the_post();
+
+			// Give/templates/shortcode-donation-grid.php.
+			give_get_template( 'shortcode-donation-grid', array( $give_settings, $atts ) );
+
+		}
+	}
+
+	printf( '</div>' );
+
+	remove_filter( 'add_give_goal_progress_class', 'add_give_goal_progress_class' );
+	remove_filter( 'add_give_goal_progress_bar_class', 'add_give_goal_progress_bar_class' );
+
+	$paginate_args = array(
+		'current'   => max( 1, get_query_var( 'paged' ) ),
+		'total'     => $current_donations_query->max_num_pages,
+		'show_all'  => false,
+		'end_size'  => 1,
+		'mid_size'  => 2,
+		'prev_next' => true,
+		'prev_text' => __( 'Previous', 'give' ),
+		'next_text' => __( 'Next', 'give' ),
+		'type'      => 'plain',
+		'add_args'  => false,
+	);
+
+	printf( paginate_links( $paginate_args ) ); // XSS ok.
+
+	wp_reset_postdata();
+}
+
+add_shortcode( 'give_donation_form_grid', 'give_donation_grid_shortcode' );

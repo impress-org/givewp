@@ -1984,3 +1984,33 @@ function __give_form_add_currency_settings( $form_html_tags, $form ) {
 }
 
 add_filter( 'give_form_html_tags', '__give_form_add_currency_settings', 0, 2 );
+
+/**
+ * Adds classes to progress bar container.
+ *
+ * @since 2.1
+ *
+ * @param string $class_goal
+ *
+ * @return string
+ */
+function add_give_goal_progress_class( $class_goal ) {
+	$class_goal = 'progress progress-striped active';
+
+	return $class_goal;
+}
+
+/**
+ * Adds classes to progress bar span tag.
+ *
+ * @since 2.1
+ *
+ * @param string $class_bar
+ *
+ * @return string
+ */
+function add_give_goal_progress_bar_class( $class_bar ) {
+	$class_bar = 'bar';
+
+	return $class_bar;
+}
