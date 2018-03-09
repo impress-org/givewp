@@ -36,8 +36,6 @@ class Inspector extends Component{
 	}
 
 	render(){
-		console.log(this.props.attributes);
-
 		return (
 			<InspectorControls key="inspector">
 				<PanelBody title={ __( 'Settings' ) }>
