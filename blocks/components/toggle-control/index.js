@@ -12,7 +12,9 @@ class GiveToggleControl extends Component {
 	}
 
 	onChange( event ) {
-		this.props.onChange(event);
+		if ( this.props.onChange ) {
+			this.props.onChange(event);
+		}
 	}
 
 	render() {

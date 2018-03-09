@@ -13,7 +13,9 @@ class GiveSelectControl extends Component{
 	}
 
 	onChangeValue(event){
-		this.props.onChange(event);
+		if ( this.props.onChange ) {
+			this.props.onChange(event);
+		}
 	}
 
 
