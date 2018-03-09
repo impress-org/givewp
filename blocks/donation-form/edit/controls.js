@@ -3,15 +3,12 @@
 */
 const { __ } = wp.i18n;
 const {	BlockControls } = wp.blocks;
-const {
-	IconButton,
-	Toolbar,
-} = wp.components;
+import './scss/controls.scss';
+
 
 /**
  * Render Block Controls
 */
-
 const Controls = ( props ) => {
 	// Event(s)
 	const onChangeForm = () => {
@@ -19,28 +16,31 @@ const Controls = ( props ) => {
 	};
 
 	return (
-		<BlockControls key="toolbar">
-			<Toolbar>
-				<IconButton
-					icon="image-rotate"
-					label={ __( 'Change Form' ) }
-					onClick={ onChangeForm }
-					tooltip={ __( 'Select different donation form to display' ) }>
-					&nbsp; { __( 'Change Form' ) }
-				</IconButton>
-			</Toolbar>
+		<div className="give-block-controls">
 
-			<Toolbar>
-				<IconButton
-					icon="edit"
-					label={ __( 'Edit Form' ) }
+			<div className="control-popup">
+
+				{ /* Change Form */ }
+				<div className="control-button change-form" onClick={ onChangeForm } >
+					<div>
+						<span class="dashicons dashicons-image-rotate"></span><span>{ __( 'Change Form' ) }</span>
+					</div>
+				</div>
+
+				{ /* Edit Form */ }
+				<a
+					className="control-button edit-form"
 					href={ `${ wpApiSettings.schema.url }/wp-admin/post.php?post=${ props.attributes.id }&action=edit` }
 					target="_blank"
-					tooltip={ __( 'Edit donation form' ) }>
-					&nbsp; { __( 'Edit Form' ) }
-				</IconButton>
-			</Toolbar>
-		</BlockControls>
+					tooltip={ __( 'Edit donation form' ) }
+				>
+					<div>
+						<span class="dashicons dashicons-edit"></span><span>{ __( 'Edit Form' ) }</span>
+					</div>
+				</a>
+
+			</div>
+		</div>
 	);
 };
 
