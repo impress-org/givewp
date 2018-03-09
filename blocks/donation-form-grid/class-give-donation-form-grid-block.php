@@ -67,7 +67,7 @@ class Give_Donation_form_Grid_Block {
 	 * @access private
 	 */
 	private function init() {
-		add_action( 'init', array( $this, 'register_block' ) );
+		add_action( 'init', array( $this, 'register_block' ), 999 );
 	}
 
 	/**
@@ -122,10 +122,7 @@ class Give_Donation_form_Grid_Block {
 			'display_type'        => $attributes['displayType'],
 		);
 
-		ob_start();
-		give_donation_grid_shortcode( $parameters );
-
-		return ob_get_clean();
+		return give_donation_grid_shortcode( $parameters );
 	}
 }
 
