@@ -514,8 +514,10 @@ if ( ! class_exists( 'Give' ) ) :
 			/**
 			 * Blocks
 			 */
-			require_once GIVE_PLUGIN_DIR . 'blocks/donation-form/class-give-donation-form-block.php';
-			require_once GIVE_PLUGIN_DIR . 'blocks/donation-form-grid/class-give-donation-form-grid-block.php';
+			if ( function_exists( 'register_block_type' ) ) {
+				require_once GIVE_PLUGIN_DIR . 'blocks/donation-form/class-give-donation-form-block.php';
+				require_once GIVE_PLUGIN_DIR . 'blocks/donation-form-grid/class-give-donation-form-grid-block.php';
+			}
 
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				require_once GIVE_PLUGIN_DIR . 'includes/class-give-cli-commands.php';
