@@ -442,11 +442,11 @@ function give_process_profile_editor_updates( $data ) {
 		give_set_error( 'email_not_valid', __( 'The email you entered is not valid. Please use another', 'give' ) );
 
 	} elseif ( $email != $old_user_data->user_email ) {
-		// Make sure the new email doesn't belong to another user
+		// Make sure the new email doesn't belong to another user.
 		if ( email_exists( $email ) ) {
 			give_set_error( 'user_email_exists', __( 'The email you entered belongs to another user. Please use another.', 'give' ) );
 		} elseif ( Give()->donors->get_donor_by( 'email', $email ) ) {
-			// Make sure the new email doesn't belong to another user
+			// Make sure the new email doesn't belong to another user.
 			give_set_error( 'donor_email_exists', __( 'The email you entered belongs to another donor. Please use another.', 'give' ) );
 		}
 	}
@@ -467,6 +467,45 @@ function give_process_profile_editor_updates( $data ) {
 	Give()->donor_meta->update_meta( $donor->id, '_give_donor_first_name', $first_name );
 	Give()->donor_meta->update_meta( $donor->id, '_give_donor_last_name', $last_name );
 
+	$current_user = wp_get_current_user();
+
+	// Compares new values with old values to detect change in values.
+	$email_update        = ( $email !== $current_user->user_email ) ? true : false;
+	$display_name_update = ( $display_name !== $current_user->display_name ) ? true : false;
+	$first_name_update   = ( $first_name !== $current_user->first_name ) ? true : false;
+	$last_name_update    = ( $last_name !== $current_user->last_name ) ? true : false;
+	$update_code         = 0;
+
+	/**
+	 * True if update is done in display name, first name, last name or email.
+	 *
+	 * @var boolean
+	 */
+	$profile_update  = ( $email_update || $display_name_update || $first_name_update || $last_name_update );
+
+	/**
+	 * True if password fields are filled.
+	 *
+	 * @var boolean
+	 */
+	$password_update = ( ! empty( $password ) && ! empty( $confirm_password ) );
+
+	if ( $profile_update ) {
+
+		// If only profile fields are updated.
+		$update_code = '1';
+
+		if ( $password_update ) {
+
+			// If profile fields AND password both are updated.
+			$update_code = '2';
+		}
+	} elseif ( $password_update ) {
+
+		// If only password is updated.
+		$update_code = '3';
+	}
+
 	// Update the user.
 	$updated = wp_update_user( $userdata );
 
@@ -481,7 +520,22 @@ function give_process_profile_editor_updates( $data ) {
 		 * @param array $userdata User info, including ID, first name, last name, display name and email.
 		 */
 		do_action( 'give_user_profile_updated', $user_id, $userdata );
-		wp_redirect( add_query_arg( 'updated', 'true', $data['give_redirect'] ) );
+
+		$profile_edit_redirect_args = array(
+			'updated'     => 'true',
+			'update_code' => $update_code,
+		);
+
+		/**
+		 * Update codes '2' and '3' indicate a password change.
+		 * If the password is changed, then logout and redirect to the same page.
+		 */
+		if ( '2' === $update_code || '3' === $update_code ) {
+			wp_logout( wp_redirect( add_query_arg( $profile_edit_redirect_args, $data['give_redirect'] ) ) );
+		} else {
+			wp_redirect( add_query_arg( $profile_edit_redirect_args, $data['give_redirect'] ) );
+		}
+
 		give_die();
 	}
 
@@ -636,3 +690,82 @@ function give_totals_shortcode( $atts ) {
 }
 
 add_shortcode( 'give_totals', 'give_totals_shortcode' );
+
+
+/**
+ * Donation Grid Shortcode
+ *
+ * Displays a donation forms list in grid layout.
+ *
+ * @since  2.1
+ *
+ * @param array $atts
+ * @return string|bool
+ */
+function give_donation_grid_shortcode( $atts ) {
+	$atts = shortcode_atts( array(
+		'columns'             => '4',
+		'show_goal'           => false,
+		'show_excerpt'        => false,
+		'show_featured_image' => false,
+		'display_type'        => 'redirect',
+	), $atts );
+
+	$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+
+	$current_donations = array(
+		'post_type'      => 'give_forms',
+		'post_status'    => 'publish',
+		'posts_per_page' => 10,
+		'paged'          => $paged,
+	);
+
+	// Get give settings.
+	$give_settings = give_get_settings();
+
+	// Query to output donation forms.
+	$current_donations_query = new WP_Query( $current_donations );
+
+	if ( $current_donations_query->have_posts() ) {
+		ob_start();
+
+		add_filter( 'add_give_goal_progress_class', 'add_give_goal_progress_class', 10, 1 );
+		add_filter( 'add_give_goal_progress_bar_class', 'add_give_goal_progress_bar_class', 10, 1 );
+
+		printf( '<div class="give-donation-grid-container">' );
+
+		while ( $current_donations_query->have_posts() ) {
+			$current_donations_query->the_post();
+
+			// Give/templates/shortcode-donation-grid.php.
+			give_get_template( 'shortcode-donation-grid', array( $give_settings, $atts ) );
+
+		}
+
+		wp_reset_postdata();
+
+		printf( '</div>' );
+
+		remove_filter( 'add_give_goal_progress_class', 'add_give_goal_progress_class' );
+		remove_filter( 'add_give_goal_progress_bar_class', 'add_give_goal_progress_bar_class' );
+
+		$paginate_args = array(
+			'current'   => max( 1, get_query_var( 'paged' ) ),
+			'total'     => $current_donations_query->max_num_pages,
+			'show_all'  => false,
+			'end_size'  => 1,
+			'mid_size'  => 2,
+			'prev_next' => true,
+			'prev_text' => __( 'Previous', 'give' ),
+			'next_text' => __( 'Next', 'give' ),
+			'type'      => 'plain',
+			'add_args'  => false,
+		);
+
+		printf( paginate_links( $paginate_args ) ); // XSS ok.
+
+		return ob_get_clean();
+	}
+}
+
+add_shortcode( 'give_donation_form_grid', 'give_donation_grid_shortcode' );

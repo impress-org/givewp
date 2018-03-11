@@ -1374,3 +1374,110 @@ function give_get_reset_password_url( $user_id ) {
 
 	return $reset_password_url;
 }
+
+
+/**
+ * This function helps to render meta data with from dynamic meta data email tag.
+ * Note: meta data email tag must be in given format {meta_*}
+ *
+ * @since 2.0.3
+ * @see https://github.com/WordImpress/Give/issues/2801#issuecomment-365136602
+ *
+ * @param $content
+ * @param $tag_args
+ *
+ * @return mixed
+ */
+function __give_render_metadata_email_tag( $content, $tag_args ) {
+	preg_match_all( "/{meta_([A-z0-9\-\_\ ]+)}/s", $content, $matches );
+
+	if ( ! empty( $matches[0] ) ) {
+		$search = $replace = array();
+		foreach ( $matches[0] as $index => $meta_tag ) {
+			if ( in_array( $meta_tag, $search ) ) {
+				continue;
+			}
+
+			$search[] = $meta_tag;
+
+			$meta_tag     = str_replace( array( '{', 'meta_', '}' ), '', $meta_tag );
+			$meta_tag_arr = array_map( 'trim', explode( ' ', $meta_tag, 2 ) );
+			$meta_tag     = current( $meta_tag_arr );
+
+			$meta_tag  = str_replace( array( '{', 'meta_', '}' ), '', $meta_tag );
+			$type      = current( explode( '_', $meta_tag, 2 ) );
+			$meta_name = preg_replace( "/^{$type}_/", '', $meta_tag );
+
+			switch ( $type ) {
+				case 'donation':
+
+					//Bailout.
+					if ( ! isset( $tag_args['payment_id'] ) ) {
+						$replace[] = '';
+						continue;
+					}
+
+					$meta_data = give_get_meta( absint( $tag_args['payment_id'] ), $meta_name, true, '' );
+
+					if ( ! isset( $meta_tag_arr[1] ) || ! is_array( $meta_data ) ) {
+						$replace[] = $meta_data;
+					} elseif ( in_array( $meta_tag_arr[1], array_keys( $meta_data ) ) ) {
+						$replace[] = $meta_data[ $meta_tag_arr[1] ];
+					}
+
+					break;
+
+				case 'form':
+					$form_id = isset( $tag_args['form_id'] ) ? absint( $tag_args['form_id'] ) : 0;
+
+					// Bailout.
+					if ( ! $form_id && isset( $tag_args['payment_id'] ) ) {
+						$form_id = give_get_payment_form_id( $tag_args['payment_id'] );
+					}
+
+					$meta_data = give_get_meta( $form_id, $meta_name, true, '' );
+					if ( ! isset( $meta_tag_arr[1] ) || ! is_array( $meta_data ) ) {
+						$replace[] = $meta_data;
+					} elseif ( in_array( $meta_tag_arr[1], array_keys( $meta_data ) ) ) {
+						$replace[] = $meta_data[ $meta_tag_arr[1] ];
+					}
+					break;
+
+				case 'donor':
+					$donor_id = isset( $tag_args['donor_id'] ) ? absint( $tag_args['donor_id'] ) : 0;
+
+					// Bailout.
+					if ( ! $donor_id ) {
+						if ( isset( $tag_args['payment_id'] ) ) {
+							$donor_id = give_get_payment_donor_id( $tag_args['payment_id'] );
+						} elseif ( isset( $tag_args['user_id'] ) ) {
+							$donor    = new Give_Donor( $tag_args['user_id'], true );
+							$donor_id = $donor->ID;
+						}
+					}
+
+					$donor     = new Give_Donor( $donor_id );
+					$meta_data = $donor->get_meta( $meta_name );
+					if ( ! isset( $meta_tag_arr[1] ) || ! is_array( $meta_data ) ) {
+						$replace[] = $meta_data;
+					} elseif ( in_array( $meta_tag_arr[1], array_keys(  $meta_data ) ) ) {
+						$replace[] = $meta_data[ $meta_tag_arr[1] ];
+					}
+
+					break;
+
+				default:
+					$replace[] = end( $search );
+			}
+		}
+
+		if ( ! empty( $search ) && ! empty( $replace ) ) {
+			$content = str_replace( $search, $replace, $content );
+		}
+	}
+
+
+	return $content;
+}
+
+add_filter( 'give_email_template_tags', '__give_render_metadata_email_tag', 10, 2 );

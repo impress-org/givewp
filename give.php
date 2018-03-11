@@ -33,8 +33,7 @@
  * Give is a tribute to the spirit and philosophy of Open Source. We at WordImpress gladly embrace the Open Source philosophy both
  * in how Give itself was developed, and how we hope to see others build more from our code base.
  *
- * Give would not have been possible without the tireless efforts of WordPress and the surrounding Open Source projects and their talented developers. Thank you all for your
- * contribution to WordPress.
+ * Give would not have been possible without the tireless efforts of WordPress and the surrounding Open Source projects and their talented developers. Thank you all for your contribution to WordPress.
  *
  * - The WordImpress Team
  */
@@ -283,6 +282,9 @@ if ( ! class_exists( 'Give' ) ) :
 		private function init_hooks() {
 			register_activation_hook( GIVE_PLUGIN_FILE, 'give_install' );
 			add_action( 'plugins_loaded', array( $this, 'init' ), 0 );
+
+			// Set up localization on init Hook.
+			add_action( 'init', array( $this, 'load_textdomain' ), 0 );
 		}
 
 		/**
@@ -320,8 +322,6 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->form_meta       = new Give_DB_Form_Meta();
 			$this->async_process   = new Give_Async_Process();
 			$this->scripts         = new Give_Scripts();
-
-			$this->donation_form_block = new Give_Donation_Form_Block();
 
 			/**
 			 * Fire the action after Give core loads.
@@ -442,6 +442,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/actions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/filters.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/api/class-give-api.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/api/class-give-api-v2.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-tooltips.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-notices.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-translation.php';
@@ -514,6 +515,7 @@ if ( ! class_exists( 'Give' ) ) :
 			 * Blocks
 			 */
 			require_once GIVE_PLUGIN_DIR . 'blocks/donation-form/class-give-donation-form-block.php';
+			require_once GIVE_PLUGIN_DIR . 'blocks/donation-form-grid/class-give-donation-form-grid-block.php';
 
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				require_once GIVE_PLUGIN_DIR . 'includes/class-give-cli-commands.php';
@@ -564,6 +566,7 @@ if ( ! class_exists( 'Give' ) ) :
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-login.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-register.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-profile-editor.php';
+				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-donation-grid.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-donation-history.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-receipt.php';
 				require_once GIVE_PLUGIN_DIR . 'includes/admin/shortcodes/shortcode-give-totals.php';

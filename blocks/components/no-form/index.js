@@ -1,7 +1,7 @@
 /**
  * Block dependencies
  */
-import GiveBlankSlate from '../../../components/blank-slate/index';
+import GiveBlankSlate from '../blank-slate/index';
 
 /**
  * Internal dependencies

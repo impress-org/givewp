@@ -1239,7 +1239,7 @@ function give_set_upgrade_complete( $upgrade_action = '' ) {
 	 */
 	do_action( 'give_set_upgrade_completed', $upgrade_action, $completed_upgrades );
 
-	return update_option( 'give_completed_upgrades', $completed_upgrades );
+	return update_option( 'give_completed_upgrades', $completed_upgrades, 'no' );
 }
 
 /**
@@ -1746,4 +1746,19 @@ function give_get_total_post_type_count( $post_type = '', $args = array() ){
 	$result = $wpdb->get_var("SELECT count(ID) FROM {$wpdb->posts}{$where}");
 
 	return absint( $result );
+}
+
+/**
+ * Define a constant if it is not already defined.
+ *
+ * @since 2.0.5
+ * @param string $name  Constant name.
+ * @param string $value Value.
+ *
+ * @credit WooCommerce
+ */
+function give_maybe_define_constant( $name, $value ) {
+	if ( ! defined( $name ) ) {
+		define( $name, $value );
+	}
 }

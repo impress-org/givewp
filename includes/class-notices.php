@@ -57,7 +57,7 @@ class Give_Notices {
 		add_action( 'give_dismiss_notices', array( $this, 'dismiss_notices' ) );
 
 		add_action( 'give_frontend_notices', array( $this, 'render_frontend_notices' ), 999 );
-		add_action( 'give_donation_form_before_personal_info', array( $this, 'render_frontend_notices' ) );
+		add_action( 'give_pre_form', array( $this, 'render_frontend_notices' ), 11 );
 		add_action( 'give_ajax_donation_errors', array( $this, 'render_frontend_notices' ) );
 
 		/**

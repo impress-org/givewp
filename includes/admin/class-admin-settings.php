@@ -705,20 +705,6 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						</tr><?php
 						break;
 
-					// Custom: System setting field.
-					case 'system_info' :
-						?>
-					<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
-						<th scope="row" class="titledesc">
-							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
-						</th>
-						<td class="give-forminp">
-							<?php give_system_info_callback(); ?>
-							<?php echo $description; ?>
-						</td>
-						</tr><?php
-						break;
-
 					// Custom: Default gateways setting field.
 					case 'default_gateway' :
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
@@ -729,21 +715,6 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						</th>
 						<td class="give-forminp">
 							<?php give_default_gateway_callback( $value, $option_value ); ?>
-							<?php echo $description; ?>
-						</td>
-						</tr><?php
-						break;
-
-					// Custom: Enable gateways setting field.
-					case 'enabled_gateways' :
-						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
-						?>
-					<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
-						<th scope="row" class="titledesc">
-							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
-						</th>
-						<td class="give-forminp">
-							<?php give_enabled_gateways_callback( $value, $option_value ); ?>
 							<?php echo $description; ?>
 						</td>
 						</tr><?php
@@ -860,7 +831,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			$value           = ( isset( $value[ $description_key ] ) && ! empty( $value[ $description_key ] ) ) ? $value[ $description_key ] : '';
 
 			if ( ! empty( $value ) ) {
-				$description = '<p class="give-field-description">' . wp_kses_post( $value ) . '</p>';
+				$description = '<div class="give-field-description">' . wp_kses_post( $value ) . '</div>';
 			}
 
 			return $description;

@@ -46,13 +46,13 @@ function give_dashboard_sales_widget() {
 	<div class="give-dashboard-widget">
 
 		<div class="give-dashboard-today give-clearfix">
-			<h3 class="give-dashboard-date-today"><?php echo date( _x( 'F j, Y', 'dashboard widget', 'give' ) ); ?></h3>
+			<h3 class="give-dashboard-date-today"><?php echo date_i18n( _x( 'F j, Y', 'dashboard widget', 'give' ) ); ?></h3>
 
 			<p class="give-dashboard-happy-day"><?php
 				printf(
 				/* translators: %s: day of the week */
 					__( 'Happy %s!', 'give' ),
-					date( 'l', current_time( 'timestamp' ) )
+					date_i18n( 'l', current_time( 'timestamp' ) )
 				);
 			?></p>
 
@@ -101,7 +101,7 @@ function give_dashboard_sales_widget() {
 					<p class="give-dashboard-stat-total-label"><?php _e( 'Last Month', 'give' ); ?></p>
 				</td>
 				<td>
-					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( give_get_total_earnings(), array( 'sanitize' => false ) ) ) ?></p>
+					<p class="give-dashboard-stat-total"><?php echo give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_year' ), array( 'sanitize' => false ) ) ) ?></p>
 
 					<p class="give-dashboard-stat-total-label"><?php _e( 'This Year', 'give' ); ?></p>
 				</td>
