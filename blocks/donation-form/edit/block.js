@@ -5,7 +5,7 @@ import GiveBlankSlate from '../../components/blank-slate/index';
 import NoForms from '../../components/no-form/index';
 import EditForm from '../../components/edit-form/index';
 import FormPreview from './form/preview';
-import FormSelect from './form/select';
+import FormSelect from '../../components/form-select/index';
 
 /**
  * Internal dependencies

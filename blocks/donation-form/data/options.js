@@ -22,7 +22,4 @@ giveFormOptions.contentPosition = [
 	{ value: 'below', label: __( 'Below' ) },
 ];
 
-// Default Palceholder For Form select
-giveFormOptions.default = { value: '0', label: __( '-- Select Form --' ) };
-
 export default giveFormOptions;
