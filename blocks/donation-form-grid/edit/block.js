@@ -1,16 +1,20 @@
 /**
  * Block dependencies
  */
+import isEmpty from 'lodash.isempty';
+import pickBy from 'lodash.pickby';
+import isUndefined from 'lodash.isundefined';
 import GiveBlankSlate from '../../components/blank-slate/index';
 import NoForms from '../../components/no-form/index';
 import FormGridPreview from './components/preview';
+import {stringify} from 'querystringify';
 
 /**
  * Internal dependencies
  */
-const {__}          = wp.i18n;
-const {withAPIData} = wp.components;
-const {Component}   = wp.element;
+const {__}          = wp.i18n,
+	  {withAPIData} = wp.components,
+	  {Component}   = wp.element;
 
 /**
  * Render Block UI For Editor
@@ -21,97 +25,6 @@ const {Component}   = wp.element;
 class GiveDonationFormGrid extends Component {
 	constructor(props) {
 		super(...props);
-		this.doServerSideRender = this.doServerSideRender.bind(this);
-		this.state              = {
-			html: '',
-			error: false,
-			fetching: false,
-		};
-	}
-
-	/************************
-	 * Component Lifecycle
-	 ************************/
-
-	/**
-	 * If form id found render preview
-	 *
-	 * @memberof GiveDonationFormGrid
-	 */
-	componentDidMount() {
-		this.doServerSideRender();
-	}
-
-	/**
-	 * can't abort the fetch promise, so let it know we will unmount
-	 *
-	 * @memberof GiveDonationFormGrid
-	 */
-	componentWillUnmount() {
-		this.unmounting = true;
-	}
-
-	/**
-	 * Re-render preview if attribute(s) have changed
-	 *
-	 * @param {any} prevProps component previous props
-	 * @memberof GiveDonationFormGrid
-	 */
-	componentDidUpdate(prevProps) {
-		const currentAttributes = this.props.attributes;
-		const prevAttributes    = prevProps.attributes;
-
-		if (
-			currentAttributes.columns !== prevAttributes.columns ||
-			currentAttributes.showExcerpt !== prevAttributes.showExcerpt ||
-			currentAttributes.showGoal !== prevAttributes.showGoal ||
-			currentAttributes.showFeaturedImage !== prevAttributes.showFeaturedImage ||
-			currentAttributes.displayType !== prevAttributes.displayType
-		) {
-			this.setState({fetching: true});
-			this.doServerSideRender();
-		}
-	}
-
-	/*********************
-	 * Component Render
-	 **********************/
-
-	/**
-	 * Render and get form preview from server
-	 *
-	 * @memberof GiveDonationFormGrid
-	 */
-	doServerSideRender() {
-		const attributes = this.props.attributes;
-		const parameters = [
-			`columns=${ attributes.columns.toString() }`,
-			`show_goal=${ attributes.showGoal.toString() }`,
-			`show_excerpt=${ attributes.showExcerpt.toString() }`,
-			`show_featured_image=${ attributes.showFeaturedImage }`,
-			`display_type=${ attributes.displayType }`,
-		];
-
-		this.setState({error: false, fetching: true});
-		window.fetch(`${ giveApiSettings.root }form-grid/?${ parameters.join('&') }`).then(
-			(response) => {
-				response.json().then((obj) => {
-					if (this.unmounting) {
-						return;
-					}
-
-					const {html} = obj;
-
-					if (html) {
-						this.setState({html});
-					} else {
-						this.setState({error: true});
-					}
-
-					this.setState({fetching: false});
-				});
-			}
-		);
 	}
 
 	/**
@@ -121,20 +34,20 @@ class GiveDonationFormGrid extends Component {
 	 * @memberof GiveDonationFormGrid
 	 */
 	render() {
-		const props            = this.props,
-			  {html, fetching} = this.state;
+		const props         = this.props,
+			  {latestForms} = props,
+			  hasForms      = !isUndefined(latestForms.data) && !isEmpty(latestForms.data);
 
 		// Render block UI
 		let blockUI;
 
-		if (fetching) {
+		if (latestForms.isLoading) {
 			blockUI = <GiveBlankSlate title={__('Loading...')} isLoader/>;
-		} else if (!html.length) {
-			blockUI = <NoForms />;
+		} else if (!hasForms) {
+			blockUI = <NoForms/>;
 		} else {
 			blockUI = <FormGridPreview
-				html={html}
-				doServerSideRender={this.doServerSideRender}
+				html={latestForms.data}
 				{... {...props}} />;
 		}
 
@@ -145,8 +58,18 @@ class GiveDonationFormGrid extends Component {
 /**
  * Export component attaching withAPIdata
  */
-export default withAPIData(() => {
+export default withAPIData((props) => {
+	const {columns, showGoal, showExcerpt, showFeaturedImage, displayType} = props.attributes;
+	const parameters                                                       = stringify(pickBy({
+			columns: columns,
+			show_goal: showGoal,
+			show_excerpt: showExcerpt,
+			show_featured_image: showFeaturedImage,
+			display_type: displayType
+		}, value => !isUndefined(value)
+	));
+
 	return {
-		forms: '/give-api/v2/form-grid',
+		latestForms: `/give-api/v2/form-grid/?${ parameters }`,
 	};
 })(GiveDonationFormGrid);
