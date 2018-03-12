@@ -46,7 +46,7 @@ To get started developing on the Give platform you will need to perform the foll
 
 4. Run composer to set up dependancies: `composer install`. After composer finishes installing all its dependencies, it will automatically fire `npm install` and get the necessary npm packages.
 
-6. Activate the plugin in WordPress
+5. Activate the plugin in WordPress
 
 That's it. You're now ready to start development.
 
