@@ -23,7 +23,7 @@
   "scripts": {
     "post-install-cmd": [
       "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs",
-      "npm install"
+      "npm start"
     ],
     "post-update-cmd": [
       "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs"
