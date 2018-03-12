@@ -22,7 +22,7 @@ const FormSelect = (props) => {
 			(form) => {
 				return {
 					value: form.id,
-					label: form.title.rendered === '' ? `${ form.id } : No form title` : form.title.rendered,
+					label: form.title.rendered === '' ? `${ form.id } : ${__( 'No form title' ) }` : form.title.rendered,
 				};
 			}
 		);
