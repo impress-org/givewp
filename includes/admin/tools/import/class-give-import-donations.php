@@ -848,13 +848,21 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			}
 			$per_page = isset( $_POST['per_page'] ) ? absint( $_POST['per_page'] ) : self::$per_page;
 
+			$sample_file_text = sprintf( 'Download the sample file <a href="%s">here</a>.', esc_url( GIVE_PLUGIN_URL . 'sample-data/sample-data.csv' ) );
+
+			$csv_description = sprintf(
+				'%1$s %2$s',
+				__( 'The file must be a Comma Seperated Version (CSV) file type only.', 'give' ),
+				$sample_file_text
+			);
+
 			$settings = array(
 				array(
 					'id'          => 'csv',
 					'name'        => __( 'Choose a CSV file:', 'give' ),
 					'type'        => 'file',
 					'attributes'  => array( 'editing' => 'false', 'library' => 'text' ),
-					'description' => __( 'The file must be a Comma Seperated Version (CSV) file type only.', 'give' ),
+					'description' => $csv_description,
 					'fvalue'      => 'url',
 					'default'     => $csv,
 				),
