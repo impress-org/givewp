@@ -62,13 +62,14 @@
     "float-labels.js": "latest",
     "flot": "^0.8.0-alpha",
     "hint.css": "^2.5.0",
+    "jquery-chosen": "latest",
     "jquery.payment": "latest",
     "lodash": "^4.17.4",
     "magnific-popup": "latest",
+    "npm": "^5.7.1",
     "query-string": "^5.0.0",
     "script-loader": "^0.7.2",
-    "uiblocker": "latest",
-    "jquery-chosen": "latest"
+    "uiblocker": "latest"
   },
   "engines": {
     "node": "8.9.1",

@@ -1,36 +1,60 @@
-## Issue Overview
-<!-- This is a brief overview of the issue. --->
+## User Story
+<!-- Required. -->
+As a `<type of user>`, I want `<some goal>` so that `<some reason>`.
 
-## Expected Behavior
-<!-- If you're describing a bug, tell us what should happen -->
-<!-- If you're suggesting a change/improvement, tell us how it should work -->
+<!-- Expand on the story if necessary. -->
 
 ## Current Behavior
-<!-- If describing a bug, tell us what happens instead of the expected behavior -->
-<!-- If suggesting a change/improvement, explain the difference from current behavior -->
+<!-- Required. Include any warnings or errors in the browser or console. -->
+I currently...
+
+## Expected Behavior
+<!-- Required. -->
+I expect to...
 
 ## Possible Solution
-<!-- Not obligatory, but suggest a fix/reason for the bug, -->
-<!-- or ideas how to implement the addition or change -->
+<!-- Optional. Delete if not applicable. -->
 
-## Steps to Reproduce (for bugs)
-<!-- Provide a link to a live example, or an unambiguous set of steps to -->
-<!-- reproduce this bug. Include code to reproduce, if relevant -->
+## Steps to Reproduce
+<!-- Required for bugs. Delete if not applicable. -->
 1.
 2.
 3.
-4.
 
-## Related Issues and/or PRs
-<!-- List related issues or PRs against other branches:  -->
+## Visuals
+<!-- Optional. Delete if not applicable. -->
+<!-- Include screenshots, mockups, or video to clarify the goal. -->
 
-## Todos
-- [ ] Tests
-- [ ] Documentation
+## Related
+<!-- Optional. Delete if not applicable. -->
+<!-- List related issues, pull requests, or relevant links.  -->
+- 
+- 
+- 
 
-## WordPress Environment
+## Tasks
+<!-- Required. Additional tasks can be added later. -->
+- [ ] Enter at least one task to be completed in the [imperative mood](https://chris.beams.io/posts/git-commit/#imperative).
+
+## Environment
+<!-- Required for bugs. Delete if not applicable. -->
 <details>
-```
-Copy and paste the system Info report from **Donations > Tools > System Info** in WordPress admin here.
-```
+    <summary>WordPress System Info</summary>
+    <!-- Paste system info from Donations > Tools > System Info in WP admin. -->
+</details>
+
+<details>
+    <summary>Operating System</summary>
+    <ul>
+        <li>Platform: Mac OS X | Microsoft Windows | Linux | Android | iOS</li>
+        <li>Version: x.x.x</li>
+    </ul>
+</details>
+
+<details>
+    <summary>Browser</summary>
+    <ul>
+        <li>Name: Chrome | Firefox | Safari | IE | Edge</li>
+        <li>Version: x.x.x</li>
+    </ul>
 </details>

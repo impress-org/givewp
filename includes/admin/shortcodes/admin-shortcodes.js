@@ -134,8 +134,6 @@ var scForm = {
 				},
 				onopen: function() {
 					// Conditional fields.
-					console.log( response );
-
 					render_continue_button_title_field();
 				}
 			};
