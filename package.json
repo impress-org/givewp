@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "npm install && npm run watch",
     "dev": "cross-env webpack",
     "production": "cross-env NODE_ENV=production webpack",
     "watch": "cross-env webpack --watch",
