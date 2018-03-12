@@ -50,7 +50,7 @@ const FormSelect = (props) => {
 			/>
 
 			<Button isPrimary
-					isLarge href = {`${ wpApiSettings.schema.url } / wp - admin / post - new.php() ? post_type = give_forms`}>
+					isLarge href = {`${ wpApiSettings.schema.url }/wp-admin/post-new.php?post_type=give_forms`}>
 				{__( 'Add new form' )}
 			</ Button> & nbsp; & nbsp;
 
