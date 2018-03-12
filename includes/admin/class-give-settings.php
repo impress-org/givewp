@@ -979,7 +979,7 @@ function give_settings_array_insert( $array, $position, $insert ) {
  * @return void
  */
 function give_enabled_gateways_callback( $field_arr, $saved_values = array() ) {
-
+	$saved_values = __give_validate_active_gateways($saved_values);
 	$id       = $field_arr['id'];
 	$gateways = give_get_ordered_payment_gateways( give_get_payment_gateways() );
 
