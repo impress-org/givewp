@@ -511,11 +511,7 @@ if ( ! class_exists( 'Give' ) ) :
 
 			require_once GIVE_PLUGIN_DIR . 'includes/admin/upgrades/class-give-updates.php';
 
-			/**
-			 * Blocks
-			 */
-			require_once GIVE_PLUGIN_DIR . 'blocks/donation-form/class-give-donation-form-block.php';
-			require_once GIVE_PLUGIN_DIR . 'blocks/donation-form-grid/class-give-donation-form-grid-block.php';
+			require_once GIVE_PLUGIN_DIR . 'blocks/load.php';
 
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				require_once GIVE_PLUGIN_DIR . 'includes/class-give-cli-commands.php';

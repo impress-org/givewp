@@ -77,6 +77,11 @@ class Give_Donation_form_Grid_Block {
 	 * @access public
 	 */
 	public function register_block() {
+		// Bailout.
+		if( ! function_exists('register_block_type' ) ) {
+			return;
+		}
+
 		// Register block.
 		register_block_type( 'give/donation-form-grid', array(
 			'render_callback' => array( $this, 'render_block' ),
