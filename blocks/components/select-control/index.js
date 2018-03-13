@@ -9,10 +9,10 @@ class GiveSelectControl extends Component{
 	constructor(props){
 		super(props);
 
-		this.onChangeValue = this.onChangeValue.bind( this );
+		this.onChangeHandler = this.onChangeHandler.bind( this );
 	}
 
-	onChangeValue(event){
+	onChangeHandler(event){
 		if ( this.props.onChange ) {
 			this.props.onChange(event);
 		}
@@ -32,7 +32,7 @@ class GiveSelectControl extends Component{
 					id={ id }
 					name={ name }
 					className="blocks-select-control__input"
-					onChange={ this.onChangeValue }
+					onChange={ this.onChangeHandler }
 					aria-describedby={ !! help ? id + '__help' : undefined }
 					{...props}
 				>

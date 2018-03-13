@@ -1,6 +1,7 @@
 /**
  * Block dependencies
  */
+import GiveTextControl from '../../components/text-control/index';
 import GiveToggleControl from '../../components/toggle-control/index';
 import GiveSelectControl from '../../components/select-control/index';
 import giveFormOptions from '../data/options';
@@ -22,17 +23,28 @@ class Inspector extends Component {
 	constructor(props){
 		super(props);
 
+		this.state = {
+			continueButtonTitle: this.props.attributes.continueButtonTitle
+		};
+
 		this.saveSetting = this.saveSetting.bind(this);
+		this.saveState = this.saveState.bind(this);
 	}
 
 	saveSetting(event) {
 		const name = event.target.name;
+
+		console.log(name);
 
 		this.props.setAttributes(
 			'checkbox' === event.target.type ?
 				{ [name]: ! this.props.attributes[name] } :
 				{ [name]: event.target.value }
 		);
+	}
+
+	saveState( event ){
+		this.setState({ [event.target.name] : event.target.value });
 	}
 
 	render(){
@@ -47,20 +59,16 @@ class Inspector extends Component {
 						onChange={ this.saveSetting } />
 					{
 						'reveal' === this.props.attributes.displayStyle && (
-							<TextControl
+							<GiveTextControl
+								name='continueButtonTitle'
 								label={ __( 'Continue Button Title' ) }
-								value={ this.props.attributes.continueButtonTitle }
-								onChange={ this.saveSetting }
-								onBlur={ updateContinueButtonTitle } />
+								value={ this.state.continueButtonTitle }
+								onChange={ this.saveState }
+								onBlur={ this.saveSetting } />
 						)
 					}
 				</PanelBody>
 				<PanelBody title={ __( 'Settings' ) }>
-					<GiveToggleControl
-						label={ __( 'Title' ) }
-						name='showTitle'
-						checked={ !! this.props.attributes.showTitle }
-						onChange={ this.saveSetting } />
 					<GiveToggleControl
 						label={ __( 'Goal' ) }
 						name='showGoal'

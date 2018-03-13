@@ -1,11 +1,15 @@
 /**
  * Block dependencies
  */
+import isEmpty from 'lodash.isempty';
+import pickBy from 'lodash.pickby';
+import isUndefined from 'lodash.isundefined';
 import GiveBlankSlate from '../../components/blank-slate/index';
 import NoForms from '../../components/no-form/index';
 import EditForm from '../../components/edit-form/index';
 import FormPreview from './form/preview';
 import FormSelect from '../../components/form-select/index';
+import {stringify} from "querystringify";
 
 /**
  * Internal dependencies
@@ -21,115 +25,8 @@ const { Component } = wp.element;
  * @extends {Component}
  */
 class GiveForm extends Component {
-	constructor() {
-		super( ...arguments );
-		this.doServerSideRender = this.doServerSideRender.bind( this );
-		this.updateButtonTitle = this.updateButtonTitle.bind( this );
-		this.state = {
-			html: '',
-			error: false,
-			fetching: false,
-			isButtonTitleUpdated: false,
-		};
-	}
-
-	/************************
-	 * Component Lifecycle
-	 ************************/
-
-	/**
-	 * If form id found render preview
-	 *
-	 * @memberof GiveForm
-	 */
-	componentDidMount() {
-		if ( this.props.attributes.id ) {
-			this.setState( { fetching: true } );
-			this.doServerSideRender();
-		}
-	}
-
-	/**
-	 * can't abort the fetch promise, so let it know we will unmount
-	 *
-	 * @memberof GiveForm
-	 */
-	componentWillUnmount() {
-		this.unmounting = true;
-	}
-
-	/**
-	 * Re-render preview if attribute(s) have changed
-	 *
-	 * @param {any} prevProps component previous props
-	 * @memberof GiveForm
-	 */
-	componentDidUpdate( prevProps ) {
-		const currentAttributes = this.props.attributes;
-		const prevAttributes = prevProps.attributes;
-
-		if (
-			currentAttributes.id !== prevAttributes.id ||
-			currentAttributes.showTitle !== prevAttributes.showTitle ||
-			currentAttributes.showGoal !== prevAttributes.showGoal ||
-			currentAttributes.displayStyle !== prevAttributes.displayStyle ||
-			currentAttributes.contentDisplay !== prevAttributes.contentDisplay ||
-			currentAttributes.showContent !== prevAttributes.showContent
-		) {
-			this.setState( { fetching: true } );
-			this.doServerSideRender();
-		}
-	}
-
-	/*********************
-	 * Component Render
-	**********************/
-
-	/**
-	 * Render and get form preview from server
-	 *
-	 * @memberof GiveForm
-	 */
-	doServerSideRender() {
-		const attributes = this.props.attributes;
-		const parameters = [
-			`show_title=${ attributes.showTitle.toString() }`,
-			`show_goal=${ attributes.showGoal.toString() }`,
-			`show_content=${ attributes.showContent.toString() }`,
-			`display_style=${ attributes.displayStyle }`,
-		];
-		if ( 'reveal' === attributes.displayStyle ) {
-			parameters.push( `continue_button_title=${ attributes.continueButtonTitle }` );
-		}
-		this.setState( { error: false, fetching: true } );
-		window.fetch( `${ giveApiSettings.root }form/${ attributes.id }/?${ parameters.join( '&' ) }` ).then(
-			( response ) => {
-				response.json().then( ( obj ) => {
-					if ( this.unmounting ) {
-						return;
-					}
-
-					const { html } = obj;
-
-					if ( html ) {
-						this.setState( { html } );
-					} else {
-						this.setState( { error: true } );
-					}
-					this.setState( { fetching: false } );
-				} );
-			}
-		);
-	}
-
-	/**
-	 * Update state whether form button text is updated or not
-	 *
-	 * @param {any} status true/false
-	 * @memberof GiveForm
-	 */
-	updateButtonTitle( status ) {
-		this.setState( { isButtonTitleUpdated: status } );
+	constructor(props) {
+		super( ...props );
 	}
 
 	/**
@@ -139,37 +36,36 @@ class GiveForm extends Component {
 	 * @memberof GiveForm
 	 */
 	render() {
-		const props = this.props;
-		const attributes = props.attributes;
-		const { html, fetching, isButtonTitleUpdated } = this.state;
+		const props       = this.props,
+			  attributes  = props.attributes,
+			  {isLoading} = props.form;
 
 		// Render block UI
 		let blockUI;
 
 		if (!attributes.id) {
-			if (!props.forms.data || fetching) {
-				blockUI = <GiveBlankSlate title={__('Loading...')} isLoader/>;
-			} else if (props.forms.data.length === 0) {
+			if (isLoading || isUndefined(props.form.data)) {
+				blockUI = <GiveBlankSlate title={__('Loading...')} isLoader={true}/>;
+			} else if (isEmpty(props.form.data)) {
 				blockUI = <NoForms/>;
 			} else {
 				blockUI = <FormSelect {... {...props}} />;
 			}
 		} else {
-			if( ! html ){
-				blockUI = fetching ?  <GiveBlankSlate title={__('Loading...')} isLoader/> : <EditForm formId={attributes.id} {... {...props}}/>;
-			} else{
+			if (isEmpty(props.form.data)) {
+				blockUI = isLoading ?
+					<GiveBlankSlate title={__('Loading...')} isLoader={true}/> :
+					<EditForm formId={attributes.id} {... {...props}}/>;
+			} else {
 				blockUI = <FormPreview
-					html={html}
-					isButtonTitleUpdated={isButtonTitleUpdated}
-					updateButtonTitle={this.updateButtonTitle}
-					doServerSideRender={this.doServerSideRender}
+					html={props.form.data}
 					{... {...props}} />;
 			}
 		}
 
 		return (
-			<div className={  !! props.isSelected ?  `${props.className} isSelected` : props.className  } key="GiveBlockUI">
-				{ blockUI }
+			<div className={!!props.isSelected ? `${props.className} isSelected` : props.className} key="GiveBlockUI">
+				{blockUI}
 			</div>
 		);
 	}
@@ -177,9 +73,25 @@ class GiveForm extends Component {
 
 /**
  * Export component attaching withAPIdata
-*/
-export default withAPIData( ( ) => {
+ */
+export default withAPIData((props) => {
+	const {showTitle, showGoal, showContent, displayStyle, continueButtonTitle, id } = props.attributes;
+
+	let parameters = {
+		show_title: showTitle,
+		show_goal: showGoal,
+		show_content: showContent,
+		display_style: displayStyle
+	};
+
+	if ('reveal' === displayStyle) {
+		parameters.continue_button_title = continueButtonTitle;
+	}
+
+	parameters = stringify(pickBy(parameters, value => !isUndefined(value)));
+
 	return {
+		form: `/${giveApiSettings.rest_base}/form/${ id }/?${ parameters }`,
 		forms: '/wp/v2/give_forms',
 	};
-} )( GiveForm );
+})(GiveForm);
