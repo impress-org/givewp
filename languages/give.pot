@@ -19,31 +19,31 @@ msgstr ""
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#: give.php:616
+#: give.php:612
 msgid "Your site could be faster and more secure with a newer PHP version."
 msgstr ""
 
-#: give.php:617
+#: give.php:613
 msgid "Hey, we've noticed that you're running an outdated version of PHP. PHP is the programming language that WordPress and Give are built on. The version that is currently used for your site is no longer supported. Newer versions of PHP are both faster and more secure. In fact, your version of PHP no longer receives security updates, which is why we're sending you this notice."
 msgstr ""
 
-#: give.php:618
+#: give.php:614
 msgid "Hosts have the ability to update your PHP version, but sometimes they don't dare to do that because they're afraid they'll break your site."
 msgstr ""
 
-#: give.php:619
+#: give.php:615
 msgid "To which version should I update?"
 msgstr ""
 
-#: give.php:620
+#: give.php:616
 msgid "You should update your PHP version to either 5.6 or to 7.0 or 7.1. On a normal WordPress site, switching to PHP 5.6 should never cause issues. We would however actually recommend you switch to PHP7. There are some plugins that are not ready for PHP7 though, so do some testing first. PHP7 is much faster than PHP 5.6. It's also the only PHP version still in active development and therefore the better option for your site in the long run."
 msgstr ""
 
-#: give.php:621
+#: give.php:617
 msgid "Can't update? Ask your host!"
 msgstr ""
 
-#: give.php:622
+#: give.php:618
 msgid "If you cannot upgrade your PHP version yourself, you can send an email to your host. If they don't want to upgrade your PHP version, we would suggest you switch hosts. Have a look at one of the recommended %1$sWordPress hosting partners%2$s."
 msgstr ""
 
@@ -5675,7 +5675,7 @@ msgstr ""
 msgid "The email you entered belongs to another donor. Please use another."
 msgstr ""
 
-#: includes/shortcodes.php:562, includes/admin/shortcodes/shortcode-give-totals.php:111
+#: includes/shortcodes.php:562, includes/admin/shortcodes/shortcode-give-totals.php:105
 msgid "Hey! We've raised {total} of the {total_goal} we are trying to raise for this campaign!"
 msgstr ""
 
@@ -5683,11 +5683,11 @@ msgstr ""
 msgid "Donate Now"
 msgstr ""
 
-#: includes/shortcodes.php:756
+#: includes/shortcodes.php:759
 msgid "Previous"
 msgstr ""
 
-#: includes/shortcodes.php:757
+#: includes/shortcodes.php:760
 msgid "Next"
 msgstr ""
 
@@ -7642,11 +7642,11 @@ msgstr ""
 msgid "This option will enable the billing details section for this form's offline donation payment gateway. The fieldset will appear above the offline donation instructions."
 msgstr ""
 
-#: includes/gateways/offline-donations.php:322, includes/admin/emails/class-email-setting-field.php:168, includes/admin/forms/class-metabox-form-data.php:149, includes/admin/forms/class-metabox-form-data.php:289, includes/admin/forms/class-metabox-form-data.php:314, includes/admin/forms/class-metabox-form-data.php:347, includes/admin/forms/class-metabox-form-data.php:405, includes/admin/forms/class-metabox-form-data.php:445, includes/admin/settings/class-settings-advanced.php:83, includes/admin/settings/class-settings-advanced.php:105, includes/admin/settings/class-settings-advanced.php:138, includes/admin/settings/class-settings-display.php:62, includes/admin/settings/class-settings-display.php:79, includes/admin/settings/class-settings-display.php:96, includes/admin/settings/class-settings-display.php:127, includes/admin/settings/class-settings-display.php:143, includes/admin/settings/class-settings-display.php:154, includes/admin/settings/class-settings-display.php:165, includes/admin/settings/class-settings-display.php:184, includes/admin/settings/class-settings-display.php:215, includes/admin/settings/class-settings-display.php:226, includes/admin/settings/class-settings-display.php:257, includes/admin/settings/class-settings-gateways.php:90, includes/admin/settings/class-settings-gateways.php:101, includes/admin/settings/class-settings-gateways.php:133, includes/admin/settings/class-settings-gateways.php:175, includes/admin/settings/class-settings-gateways.php:294, includes/admin/settings/class-settings-general.php:86, includes/admin/settings/class-settings-general.php:97, includes/admin/tools/import/class-give-import-donations.php:884, includes/admin/tools/import/class-give-import-donations.php:895, includes/admin/tools/import/class-give-import-donations.php:906, includes/admin/tools/views/html-admin-page-system-info.php:452, includes/admin/tools/views/html-admin-page-system-info.php:493, includes/admin/tools/views/html-admin-page-system-info.php:530, includes/admin/tools/views/html-admin-page-system-info.php:608, includes/admin/tools/views/html-admin-page-system-info.php:640, includes/admin/tools/views/html-admin-page-system-info.php:655, includes/admin/tools/views/html-admin-page-system-info.php:660, includes/admin/tools/views/html-admin-page-system-info.php:681, includes/admin/tools/views/html-admin-page-system-info.php:686
+#: includes/gateways/offline-donations.php:322, includes/admin/emails/class-email-setting-field.php:168, includes/admin/forms/class-metabox-form-data.php:149, includes/admin/forms/class-metabox-form-data.php:289, includes/admin/forms/class-metabox-form-data.php:314, includes/admin/forms/class-metabox-form-data.php:347, includes/admin/forms/class-metabox-form-data.php:405, includes/admin/forms/class-metabox-form-data.php:445, includes/admin/settings/class-settings-advanced.php:83, includes/admin/settings/class-settings-advanced.php:105, includes/admin/settings/class-settings-advanced.php:138, includes/admin/settings/class-settings-display.php:62, includes/admin/settings/class-settings-display.php:79, includes/admin/settings/class-settings-display.php:96, includes/admin/settings/class-settings-display.php:127, includes/admin/settings/class-settings-display.php:143, includes/admin/settings/class-settings-display.php:154, includes/admin/settings/class-settings-display.php:165, includes/admin/settings/class-settings-display.php:184, includes/admin/settings/class-settings-display.php:215, includes/admin/settings/class-settings-display.php:226, includes/admin/settings/class-settings-display.php:257, includes/admin/settings/class-settings-gateways.php:90, includes/admin/settings/class-settings-gateways.php:101, includes/admin/settings/class-settings-gateways.php:133, includes/admin/settings/class-settings-gateways.php:175, includes/admin/settings/class-settings-gateways.php:294, includes/admin/settings/class-settings-general.php:86, includes/admin/settings/class-settings-general.php:97, includes/admin/tools/import/class-give-import-donations.php:892, includes/admin/tools/import/class-give-import-donations.php:903, includes/admin/tools/import/class-give-import-donations.php:914, includes/admin/tools/views/html-admin-page-system-info.php:452, includes/admin/tools/views/html-admin-page-system-info.php:493, includes/admin/tools/views/html-admin-page-system-info.php:530, includes/admin/tools/views/html-admin-page-system-info.php:608, includes/admin/tools/views/html-admin-page-system-info.php:640, includes/admin/tools/views/html-admin-page-system-info.php:655, includes/admin/tools/views/html-admin-page-system-info.php:660, includes/admin/tools/views/html-admin-page-system-info.php:681, includes/admin/tools/views/html-admin-page-system-info.php:686
 msgid "Enabled"
 msgstr ""
 
-#: includes/gateways/offline-donations.php:323, includes/admin/emails/class-email-setting-field.php:169, includes/admin/emails/class-email-setting-field.php:179, includes/admin/forms/class-metabox-form-data.php:150, includes/admin/forms/class-metabox-form-data.php:290, includes/admin/forms/class-metabox-form-data.php:315, includes/admin/forms/class-metabox-form-data.php:348, includes/admin/forms/class-metabox-form-data.php:406, includes/admin/forms/class-metabox-form-data.php:446, includes/admin/settings/class-settings-advanced.php:84, includes/admin/settings/class-settings-advanced.php:106, includes/admin/settings/class-settings-advanced.php:139, includes/admin/settings/class-settings-display.php:63, includes/admin/settings/class-settings-display.php:80, includes/admin/settings/class-settings-display.php:97, includes/admin/settings/class-settings-display.php:128, includes/admin/settings/class-settings-display.php:144, includes/admin/settings/class-settings-display.php:155, includes/admin/settings/class-settings-display.php:166, includes/admin/settings/class-settings-display.php:185, includes/admin/settings/class-settings-display.php:216, includes/admin/settings/class-settings-display.php:227, includes/admin/settings/class-settings-display.php:258, includes/admin/settings/class-settings-gateways.php:91, includes/admin/settings/class-settings-gateways.php:102, includes/admin/settings/class-settings-gateways.php:134, includes/admin/settings/class-settings-gateways.php:176, includes/admin/settings/class-settings-general.php:87, includes/admin/settings/class-settings-general.php:98, includes/admin/tools/import/class-give-import-donations.php:885, includes/admin/tools/import/class-give-import-donations.php:896, includes/admin/tools/import/class-give-import-donations.php:907, includes/admin/tools/views/html-admin-page-system-info.php:452, includes/admin/tools/views/html-admin-page-system-info.php:493, includes/admin/tools/views/html-admin-page-system-info.php:530, includes/admin/tools/views/html-admin-page-system-info.php:608, includes/admin/tools/views/html-admin-page-system-info.php:640, includes/admin/tools/views/html-admin-page-system-info.php:655, includes/admin/tools/views/html-admin-page-system-info.php:660, includes/admin/tools/views/html-admin-page-system-info.php:681, includes/admin/tools/views/html-admin-page-system-info.php:686
+#: includes/gateways/offline-donations.php:323, includes/admin/emails/class-email-setting-field.php:169, includes/admin/emails/class-email-setting-field.php:179, includes/admin/forms/class-metabox-form-data.php:150, includes/admin/forms/class-metabox-form-data.php:290, includes/admin/forms/class-metabox-form-data.php:315, includes/admin/forms/class-metabox-form-data.php:348, includes/admin/forms/class-metabox-form-data.php:406, includes/admin/forms/class-metabox-form-data.php:446, includes/admin/settings/class-settings-advanced.php:84, includes/admin/settings/class-settings-advanced.php:106, includes/admin/settings/class-settings-advanced.php:139, includes/admin/settings/class-settings-display.php:63, includes/admin/settings/class-settings-display.php:80, includes/admin/settings/class-settings-display.php:97, includes/admin/settings/class-settings-display.php:128, includes/admin/settings/class-settings-display.php:144, includes/admin/settings/class-settings-display.php:155, includes/admin/settings/class-settings-display.php:166, includes/admin/settings/class-settings-display.php:185, includes/admin/settings/class-settings-display.php:216, includes/admin/settings/class-settings-display.php:227, includes/admin/settings/class-settings-display.php:258, includes/admin/settings/class-settings-gateways.php:91, includes/admin/settings/class-settings-gateways.php:102, includes/admin/settings/class-settings-gateways.php:134, includes/admin/settings/class-settings-gateways.php:176, includes/admin/settings/class-settings-general.php:87, includes/admin/settings/class-settings-general.php:98, includes/admin/tools/import/class-give-import-donations.php:893, includes/admin/tools/import/class-give-import-donations.php:904, includes/admin/tools/import/class-give-import-donations.php:915, includes/admin/tools/views/html-admin-page-system-info.php:452, includes/admin/tools/views/html-admin-page-system-info.php:493, includes/admin/tools/views/html-admin-page-system-info.php:530, includes/admin/tools/views/html-admin-page-system-info.php:608, includes/admin/tools/views/html-admin-page-system-info.php:640, includes/admin/tools/views/html-admin-page-system-info.php:655, includes/admin/tools/views/html-admin-page-system-info.php:660, includes/admin/tools/views/html-admin-page-system-info.php:681, includes/admin/tools/views/html-admin-page-system-info.php:686
 msgid "Disabled"
 msgstr ""
 
@@ -9102,7 +9102,7 @@ msgstr ""
 msgid "Report Type"
 msgstr ""
 
-#: includes/admin/reports/reports.php:200, includes/admin/shortcodes/shortcode-give-donation-grid.php:62, includes/admin/shortcodes/shortcode-give-donation-grid.php:72, includes/admin/shortcodes/shortcode-give-donation-grid.php:82, includes/admin/shortcodes/shortcode-give-form.php:70, includes/admin/shortcodes/shortcode-give-form.php:80, includes/admin/shortcodes/shortcode-give-goal.php:71, includes/admin/shortcodes/shortcode-give-goal.php:81, includes/admin/shortcodes/shortcode-give-receipt.php:50, includes/admin/shortcodes/shortcode-give-receipt.php:59, includes/admin/shortcodes/shortcode-give-receipt.php:68, includes/admin/shortcodes/shortcode-give-receipt.php:77, includes/admin/shortcodes/shortcode-give-receipt.php:86, includes/admin/shortcodes/shortcode-give-receipt.php:95, includes/admin/shortcodes/shortcode-give-totals.php:135
+#: includes/admin/reports/reports.php:200, includes/admin/shortcodes/shortcode-give-donation-grid.php:62, includes/admin/shortcodes/shortcode-give-donation-grid.php:72, includes/admin/shortcodes/shortcode-give-donation-grid.php:82, includes/admin/shortcodes/shortcode-give-form.php:70, includes/admin/shortcodes/shortcode-give-form.php:80, includes/admin/shortcodes/shortcode-give-goal.php:71, includes/admin/shortcodes/shortcode-give-goal.php:81, includes/admin/shortcodes/shortcode-give-receipt.php:50, includes/admin/shortcodes/shortcode-give-receipt.php:59, includes/admin/shortcodes/shortcode-give-receipt.php:68, includes/admin/shortcodes/shortcode-give-receipt.php:77, includes/admin/shortcodes/shortcode-give-receipt.php:86, includes/admin/shortcodes/shortcode-give-receipt.php:95, includes/admin/shortcodes/shortcode-give-totals.php:129
 msgid "Show"
 msgstr ""
 
@@ -9446,7 +9446,7 @@ msgstr ""
 msgid "Donation Grid"
 msgstr ""
 
-#: includes/admin/shortcodes/shortcode-give-donation-grid.php:42, includes/admin/shortcodes/shortcode-give-form.php:62, includes/admin/shortcodes/shortcode-give-goal.php:63, includes/admin/shortcodes/shortcode-give-receipt.php:43, includes/admin/shortcodes/shortcode-give-totals.php:86
+#: includes/admin/shortcodes/shortcode-give-donation-grid.php:42, includes/admin/shortcodes/shortcode-give-form.php:62, includes/admin/shortcodes/shortcode-give-goal.php:63, includes/admin/shortcodes/shortcode-give-receipt.php:43
 msgid "Optional settings"
 msgstr ""
 
@@ -9482,7 +9482,7 @@ msgstr ""
 msgid "Do you want to display the goal's progress bar?"
 msgstr ""
 
-#: includes/admin/shortcodes/shortcode-give-donation-grid.php:63, includes/admin/shortcodes/shortcode-give-donation-grid.php:73, includes/admin/shortcodes/shortcode-give-donation-grid.php:83, includes/admin/shortcodes/shortcode-give-form.php:71, includes/admin/shortcodes/shortcode-give-form.php:81, includes/admin/shortcodes/shortcode-give-goal.php:72, includes/admin/shortcodes/shortcode-give-goal.php:82, includes/admin/shortcodes/shortcode-give-receipt.php:51, includes/admin/shortcodes/shortcode-give-receipt.php:60, includes/admin/shortcodes/shortcode-give-receipt.php:69, includes/admin/shortcodes/shortcode-give-receipt.php:78, includes/admin/shortcodes/shortcode-give-receipt.php:87, includes/admin/shortcodes/shortcode-give-receipt.php:96, includes/admin/shortcodes/shortcode-give-totals.php:136
+#: includes/admin/shortcodes/shortcode-give-donation-grid.php:63, includes/admin/shortcodes/shortcode-give-donation-grid.php:73, includes/admin/shortcodes/shortcode-give-donation-grid.php:83, includes/admin/shortcodes/shortcode-give-form.php:71, includes/admin/shortcodes/shortcode-give-form.php:81, includes/admin/shortcodes/shortcode-give-goal.php:72, includes/admin/shortcodes/shortcode-give-goal.php:82, includes/admin/shortcodes/shortcode-give-receipt.php:51, includes/admin/shortcodes/shortcode-give-receipt.php:60, includes/admin/shortcodes/shortcode-give-receipt.php:69, includes/admin/shortcodes/shortcode-give-receipt.php:78, includes/admin/shortcodes/shortcode-give-receipt.php:87, includes/admin/shortcodes/shortcode-give-receipt.php:96, includes/admin/shortcodes/shortcode-give-totals.php:130
 msgid "Hide"
 msgstr ""
 
@@ -9518,7 +9518,7 @@ msgstr ""
 msgid "<a href=\"%s\">Create</a> a new Donation Form."
 msgstr ""
 
-#: includes/admin/shortcodes/shortcode-give-form.php:53, includes/admin/shortcodes/shortcode-give-form.php:54, includes/admin/shortcodes/shortcode-give-goal.php:54, includes/admin/shortcodes/shortcode-give-goal.php:55, includes/admin/shortcodes/shortcode-give-totals.php:95, includes/admin/shortcodes/shortcode-give-totals.php:96
+#: includes/admin/shortcodes/shortcode-give-form.php:53, includes/admin/shortcodes/shortcode-give-form.php:54, includes/admin/shortcodes/shortcode-give-goal.php:54, includes/admin/shortcodes/shortcode-give-goal.php:55, includes/admin/shortcodes/shortcode-give-totals.php:89, includes/admin/shortcodes/shortcode-give-totals.php:90
 msgid "Select a Donation Form"
 msgstr ""
 
@@ -9578,7 +9578,7 @@ msgstr ""
 msgid "This text displays the amount of income raised compared to the goal."
 msgstr ""
 
-#: includes/admin/shortcodes/shortcode-give-goal.php:78, includes/admin/shortcodes/shortcode-give-totals.php:132
+#: includes/admin/shortcodes/shortcode-give-goal.php:78, includes/admin/shortcodes/shortcode-give-totals.php:126
 msgid "Show Progress Bar:"
 msgstr ""
 
@@ -9658,51 +9658,55 @@ msgstr ""
 msgid "Select a Donation Form Tag"
 msgstr ""
 
-#: includes/admin/shortcodes/shortcode-give-totals.php:81
+#: includes/admin/shortcodes/shortcode-give-totals.php:75
 msgid "This shortcode shows the total amount raised towards a custom goal for one or several forms regardless of whether they have goals enabled or not."
 msgstr ""
 
-#: includes/admin/shortcodes/shortcode-give-totals.php:94
+#: includes/admin/shortcodes/shortcode-give-totals.php:80
+msgid "Shortcode Configuration"
+msgstr ""
+
+#: includes/admin/shortcodes/shortcode-give-totals.php:88
 msgid "Select a Donation Form:"
 msgstr ""
 
-#: includes/admin/shortcodes/shortcode-give-totals.php:103
+#: includes/admin/shortcodes/shortcode-give-totals.php:97
 msgid "Total Goal:"
 msgstr ""
 
-#: includes/admin/shortcodes/shortcode-give-totals.php:104
+#: includes/admin/shortcodes/shortcode-give-totals.php:98
 msgid "Enter the total goal amount."
 msgstr ""
 
-#: includes/admin/shortcodes/shortcode-give-totals.php:109
+#: includes/admin/shortcodes/shortcode-give-totals.php:103
 msgid "Message:"
 msgstr ""
 
-#: includes/admin/shortcodes/shortcode-give-totals.php:110
+#: includes/admin/shortcodes/shortcode-give-totals.php:104
 msgid "Enter the message."
 msgstr ""
 
-#: includes/admin/shortcodes/shortcode-give-totals.php:119
+#: includes/admin/shortcodes/shortcode-give-totals.php:113
 msgid "Link:"
 msgstr ""
 
-#: includes/admin/shortcodes/shortcode-give-totals.php:120
+#: includes/admin/shortcodes/shortcode-give-totals.php:114
 msgid "Enter a link of campaign."
 msgstr ""
 
-#: includes/admin/shortcodes/shortcode-give-totals.php:125
+#: includes/admin/shortcodes/shortcode-give-totals.php:119
 msgid "Link Text:"
 msgstr ""
 
-#: includes/admin/shortcodes/shortcode-give-totals.php:126
+#: includes/admin/shortcodes/shortcode-give-totals.php:120
 msgid "Enter a text for the Link."
 msgstr ""
 
-#: includes/admin/shortcodes/shortcode-give-totals.php:127
+#: includes/admin/shortcodes/shortcode-give-totals.php:121
 msgid "Donate!"
 msgstr ""
 
-#: includes/admin/shortcodes/shortcode-give-totals.php:133
+#: includes/admin/shortcodes/shortcode-give-totals.php:127
 msgid "Choose Option to show Progress Bar or not with a message."
 msgstr ""
 
@@ -10194,63 +10198,63 @@ msgstr ""
 msgid "This tool allows you to import or add donation data to your give form(s) via a CSV file."
 msgstr ""
 
-#: includes/admin/tools/import/class-give-import-donations.php:854
-msgid "Choose a CSV file:"
-msgstr ""
-
-#: includes/admin/tools/import/class-give-import-donations.php:857
+#: includes/admin/tools/import/class-give-import-donations.php:855
 msgid "The file must be a Comma Seperated Version (CSV) file type only."
 msgstr ""
 
-#: includes/admin/tools/import/class-give-import-donations.php:868
+#: includes/admin/tools/import/class-give-import-donations.php:862
+msgid "Choose a CSV file:"
+msgstr ""
+
+#: includes/admin/tools/import/class-give-import-donations.php:876
 msgid "CSV Delimiter:"
 msgstr ""
 
-#: includes/admin/tools/import/class-give-import-donations.php:869
+#: includes/admin/tools/import/class-give-import-donations.php:877
 msgid "In case your CSV file supports a different type of separator (or delimiter) -- like a tab or space -- you can set that here."
 msgstr ""
 
-#: includes/admin/tools/import/class-give-import-donations.php:873
+#: includes/admin/tools/import/class-give-import-donations.php:881
 msgid "Comma"
 msgstr ""
 
-#: includes/admin/tools/import/class-give-import-donations.php:874
+#: includes/admin/tools/import/class-give-import-donations.php:882
 msgid "Tab"
 msgstr ""
 
-#: includes/admin/tools/import/class-give-import-donations.php:879
+#: includes/admin/tools/import/class-give-import-donations.php:887
 msgid "Test Mode:"
 msgstr ""
 
-#: includes/admin/tools/import/class-give-import-donations.php:880
+#: includes/admin/tools/import/class-give-import-donations.php:888
 msgid "Test mode allows you to preview what this import would look like without making any actual changes to your site or your database."
 msgstr ""
 
-#: includes/admin/tools/import/class-give-import-donations.php:890
+#: includes/admin/tools/import/class-give-import-donations.php:898
 msgid "Create WP users for new donors:"
 msgstr ""
 
-#: includes/admin/tools/import/class-give-import-donations.php:891
+#: includes/admin/tools/import/class-give-import-donations.php:899
 msgid "The importer can create WordPress user accounts based on the names and email addresses of the donations in your CSV file. Enable this option if you'd like the importer to do that."
 msgstr ""
 
-#: includes/admin/tools/import/class-give-import-donations.php:901
+#: includes/admin/tools/import/class-give-import-donations.php:909
 msgid "Delete CSV after import:"
 msgstr ""
 
-#: includes/admin/tools/import/class-give-import-donations.php:902
+#: includes/admin/tools/import/class-give-import-donations.php:910
 msgid "Your CSV file will be uploaded via the WordPress Media Library. It's a good idea to delete it after the import is finished so that your sensitive data is not accessible on the web. Disable this only if you plan to delete the file manually later."
 msgstr ""
 
-#: includes/admin/tools/import/class-give-import-donations.php:912
+#: includes/admin/tools/import/class-give-import-donations.php:920
 msgid "Process Rows Per Batch:"
 msgstr ""
 
-#: includes/admin/tools/import/class-give-import-donations.php:914
+#: includes/admin/tools/import/class-give-import-donations.php:922
 msgid "Determine how many rows you would like to import per cycle."
 msgstr ""
 
-#: includes/admin/tools/import/class-give-import-donations.php:990, includes/admin/tools/import/class-give-import-donations.php:994
+#: includes/admin/tools/import/class-give-import-donations.php:998, includes/admin/tools/import/class-give-import-donations.php:1002
 msgid "Please upload or provide a valid CSV file."
 msgstr ""
 
