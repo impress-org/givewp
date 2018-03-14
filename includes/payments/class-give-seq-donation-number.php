@@ -239,17 +239,30 @@ class Give_Seq_Donation_Number {
 
 
 	/**
-	 * Get a donation id on basis of donation number or serial code.
+	 * Get a donation number on basis donation id or donation object
 	 *
-	 * @since  2.11.0
+	 * @since  2.1.0
 	 * @access public
 	 *
-	 * @param string $donation_number_or_serial_code
+	 * @param int|Give_Payment $donation
 	 *
 	 * @return int
 	 */
-	public function get_donation_number( $donation_number_or_serial_code ) {
-		return 0;
+	public function get_donation_number( $donation ) {
+		global $wpdb;
+
+		$donation = $donation instanceof Give_Payment ? $donation : new Give_Payment( $donation );
+		$donation_id = $donation->ID;
+
+		return $wpdb->get_var(
+			$wpdb->get_prepare( "
+				SELECT meta_value
+				FROM $wpdb->paymentmeta
+				WHERE meta_key=%s
+				AND payment_id=%d
+			", $this->meta_key, $donation_id
+			)
+		);
 	}
 }
 
