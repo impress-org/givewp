@@ -808,7 +808,7 @@ function give_check_import_donation_duplicate( $payment_data, $data, $form, $don
 					'compare' => '=',
 				),
 				array(
-					'key'     => '_give_payment_customer_id',
+					'key'     => '_give_payment_donor_id',
 					'value'   => $donor_data->id,
 					'compare' => '=',
 				),
