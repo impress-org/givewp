@@ -203,7 +203,7 @@ class Give_Seq_Donation_Number {
 
 
 	/**
-	 * Search for a donation with donation number or serial code
+	 * Get donation id with donation number or serial code
 	 *
 	 * @since  2.1.0
 	 * @access public
@@ -212,8 +212,29 @@ class Give_Seq_Donation_Number {
 	 *
 	 * @return int
 	 */
-	public function find_donation_by_donation_number( $donation_number_or_serial_code ) {
-		return 0;
+	public function get_donation_id( $donation_number_or_serial_code ) {
+		global $wpdb;
+
+		$is_donation_number = is_numeric( $donation_number_or_serial_code );
+
+		if ( $is_donation_number ) {
+			$query = $wpdb->get_prepare( "
+				SELECT payment_id
+				FROM $wpdb->paymentmeta
+				WHERE meta_key=%s
+				AND meta_value=%d
+			", $this->meta_key, $donation_number_or_serial_code
+			);
+		} else {
+			$query = $wpdb->get_prepare( "
+				SELECT payment_id
+				FROM $wpdb->posts
+				WHERE post_title=%s
+			", $donation_number_or_serial_code
+			);
+		}
+
+		return $wpdb->get_var( $query );
 	}
 
 
