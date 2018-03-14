@@ -45,14 +45,14 @@ const FormSelect = (props) => {
 	return (
 		<GiveBlankSlate title = {__( 'Give Donation form' )}>
 			<SelectControl
-				options        = {getFormOptions()}
-				onChange       = {setFormIdTo}
+				options = {getFormOptions()}
+				onChange = {setFormIdTo}
 			/>
 
 			<Button isPrimary
 					isLarge href = {`${ wpApiSettings.schema.url }/wp-admin/post-new.php?post_type=give_forms`}>
 				{__( 'Add New Form' )}
-			</ Button> &nbsp; &nbsp;
+			</ Button>&nbsp;&nbsp;
 
 			{
 				props.attributes.prevId &&

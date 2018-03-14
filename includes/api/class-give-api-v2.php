@@ -93,7 +93,7 @@ class Give_API_V2 {
 	 * @access private
 	 */
 	public function register_routes() {
-		register_rest_route( $this->rest_base, '/form/(?P<id>\d+)', array(
+		register_rest_route( $this->rest_base, '/form/(?P<id>[\d]+)', array(
 			'methods'  => 'GET',
 			'callback' => array( $this, 'get_forms_data' ),
 		) );
@@ -111,14 +111,15 @@ class Give_API_V2 {
 	 * @access public
 	 */
 	public function localize_script() {
+		$data = array(
+			'root' => esc_url_raw( Give_API_V2::get_rest_api() ),
+			'rest_base' => $this->rest_base
+		);
+
 		if ( is_admin() ) {
-			wp_localize_script( 'give-admin-scripts', 'giveApiSettings', array(
-				'root' => esc_url_raw( Give_API_V2::get_rest_api() ),
-			) );
+			wp_localize_script( 'give-admin-scripts', 'giveApiSettings', $data );
 		} else {
-			wp_localize_script( 'give', 'giveApiSettings', array(
-				'root' => esc_url_raw( Give_API_V2::get_rest_api() ),
-			) );
+			wp_localize_script( 'give', 'giveApiSettings', $data );
 		}
 	}
 
@@ -138,12 +139,7 @@ class Give_API_V2 {
 			return array( 'error' => 'no_parameter_given' );
 		}
 
-		// Response data array
-		$response = array(
-			'html' => give_form_shortcode( $parameters ),
-		);
-
-		return $response;
+		return give_form_shortcode( $parameters );
 	}
 
 	/**

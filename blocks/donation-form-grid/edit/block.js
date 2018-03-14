@@ -36,14 +36,14 @@ class GiveDonationFormGrid extends Component {
 	render() {
 		const props         = this.props,
 			  {latestForms} = props,
-			  hasForms      = !isUndefined(latestForms.data) && !isEmpty(latestForms.data);
+			  {isLoading}   = latestForms;
 
 		// Render block UI
 		let blockUI;
 
-		if (latestForms.isLoading) {
-			blockUI = <GiveBlankSlate title={__('Loading...')} isLoader/>;
-		} else if (!hasForms) {
+		if (isLoading || isUndefined(latestForms.data)) {
+			blockUI = <GiveBlankSlate title={__('Loading...')} isLoader={true}/>;
+		} else if (isEmpty(latestForms.data)) {
 			blockUI = <NoForms/>;
 		} else {
 			blockUI = <FormGridPreview
@@ -60,7 +60,8 @@ class GiveDonationFormGrid extends Component {
  */
 export default withAPIData((props) => {
 	const {columns, showGoal, showExcerpt, showFeaturedImage, displayType} = props.attributes;
-	const parameters                                                       = stringify(pickBy({
+
+	const parameters = stringify(pickBy({
 			columns: columns,
 			show_goal: showGoal,
 			show_excerpt: showExcerpt,
@@ -70,6 +71,6 @@ export default withAPIData((props) => {
 	));
 
 	return {
-		latestForms: `/give-api/v2/form-grid/?${ parameters }`,
+		latestForms: `/${giveApiSettings.rest_base}/form-grid/?${ parameters }`,
 	};
 })(GiveDonationFormGrid);
