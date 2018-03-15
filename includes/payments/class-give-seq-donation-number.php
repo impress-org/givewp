@@ -56,7 +56,9 @@ class Give_Seq_Donation_Number {
 	 * @since 2.1.0
 	 */
 	public function init() {
-		add_action( 'wp_insert_post', array( $this, '__save_donation_title' ), 10, 3 );
+		if ( give_is_setting_enabled( give_get_option( 'sequential_donation', 'disabled' ) ) ) {
+			add_action( 'wp_insert_post', array( $this, '__save_donation_title' ), 10, 3 );
+		}
 	}
 
 	/**
