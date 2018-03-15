@@ -59,7 +59,7 @@ $payment_mode   = $payment->mode;
 
 	<h1 id="transaction-details-heading" class="wp-heading-inline">
 	<?php
-		$serial_code = Give()->seq_donation_number->get_serial_code( $payment, false );
+		$serial_code = Give()->seq_donation_number->get_serial_code( $payment, array( 'default' => false ) );
 		$serial_code = ! empty( $serial_code ) ? "{$serial_code} ({$number})" : $number;
 		printf(
 			/* translators: %s: donation number */
