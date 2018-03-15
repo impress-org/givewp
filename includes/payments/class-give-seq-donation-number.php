@@ -6,14 +6,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Give_Seq_Donation_Number {
 	/**
-	 * Donation number meta key name
-	 *
-	 * @since 2.1.0
-	 * @var string
-	 */
-	private $meta_key = '_give_donation_number';
-
-	/**
 	 * Instance.
 	 *
 	 * @since  2.1.0
@@ -79,7 +71,9 @@ class Give_Seq_Donation_Number {
 			return;
 		}
 
-		$serial_code = $this->__set_number_padding( $this->get_next_serial_code() );
+		$serial_number = $this->set_donation_number( $donation_id );
+
+		$serial_code = $this->__set_number_padding( $serial_number );
 
 		// Add prefix.
 		if ( $prefix = give_get_option( 'sequential-donation_number_prefix', '' ) ) {
@@ -108,8 +102,6 @@ class Give_Seq_Donation_Number {
 		} catch ( Exception $e ) {
 			error_log( "Give caught exception: {$e->getMessage()}" );
 		}
-
-		$this->set_donation_number( $donation_id );
 	}
 
 	/**
@@ -120,10 +112,12 @@ class Give_Seq_Donation_Number {
 	 *
 	 * @param int $donation_id
 	 *
-	 * @return boolean|int
+	 * @return int
 	 */
 	public function set_donation_number( $donation_id ) {
-		return give_update_meta( $donation_id, $this->meta_key, $this->get_next() );
+		return Give()->sequential_donation_db->insert( array(
+			'payment_id' => $donation_id
+		) );
 	}
 
 	/**
@@ -145,55 +139,6 @@ class Give_Seq_Donation_Number {
 		}
 
 		return $serial_code;
-	}
-
-
-	/**
-	 * Get next donation number
-	 *
-	 * @since  2.1.0
-	 * @access public
-	 * @return string
-	 */
-	public function get_next() {
-		$max_donation_number = $this->get_max_donation_number();
-
-		return ++ $max_donation_number;
-	}
-
-	/**
-	 * get donation number serial code
-	 *
-	 * @since  2.1.0
-	 * @access public
-	 * @return string
-	 */
-	public function get_next_serial_code() {
-		$max_donation_number = $this->get_max_donation_number();
-		$donation_number     = ++ $max_donation_number;
-
-		return $donation_number;
-	}
-
-
-	/**
-	 * Get max donation number.
-	 *
-	 * @since  2.1.0
-	 * @access public
-	 *
-	 * @return string
-	 */
-	public function get_max_donation_number() {
-		global $wpdb;
-
-		$max_donatiion_number = $wpdb->get_var(
-			$wpdb->prepare( "
-			SELECT MAX(meta_value) FROM $wpdb->paymentmeta WHERE meta_key=%s
-			", $this->meta_key )
-		);
-
-		return empty( $max_donatiion_number ) ? 0 : $max_donatiion_number;
 	}
 
 	/**
@@ -226,7 +171,7 @@ class Give_Seq_Donation_Number {
 
 		$serial_code = $args['default'] ? $donation->ID : '';
 
-		if ( $donation_number = give_get_meta( $donation->ID, $this->meta_key, true ) ) {
+		if ( $donation_number = $this->get_serial_number( $donation->ID ) ) {
 			$serial_code = get_the_title( $donation->ID );
 		}
 
@@ -238,6 +183,20 @@ class Give_Seq_Donation_Number {
 		 * @since 2.1.0
 		 */
 		return apply_filters( 'give_get_donation_serial_code', $serial_code, $donation, $args, $donation_number );
+	}
+
+	/**
+	 * Get serial number
+	 *
+	 * @since  2.1.0
+	 * @access public
+	 *
+	 * @param int $donation_id
+	 *
+	 * @return string
+	 */
+	public function get_serial_number( $donation_id ) {
+		return Give()->sequential_donation_db->get_column_by( 'id', 'payment_id', $donation_id );
 	}
 
 
