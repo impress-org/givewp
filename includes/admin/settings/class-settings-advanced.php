@@ -107,6 +107,17 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							),
 						),
 						array(
+							'name'    => __( 'Sequential Donation', 'give' ),
+							'id'      => 'sequential_donation',
+							'desc'    => __( 'This allows you to set continous serial number to donations.', 'give' ),
+							'type'    => 'radio_inline',
+							'default' => 'disabled',
+							'options' => array(
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' )
+							)
+						),
+						array(
 							'name'  => __( 'Advanced Settings Docs Link', 'give' ),
 							'id'    => 'advanced_settings_docs_link',
 							'url'   => esc_url( 'http://docs.givewp.com/settings-advanced' ),
@@ -126,7 +137,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 			 *
 			 * @since 2.0
 			 */
-			if( apply_filters( 'give_settings_advanced_show_cache_setting', false ) ) {
+			if ( apply_filters( 'give_settings_advanced_show_cache_setting', false ) ) {
 				array_splice( $settings, 1, 0, array(
 					array(
 						'name'    => __( 'Cache', 'give' ),
