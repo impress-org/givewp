@@ -587,3 +587,38 @@ function give_confirm_email_for_donation_access() {
 }
 
 add_action( 'wp_ajax_nopriv_give_confirm_email_for_donations_access', 'give_confirm_email_for_donation_access' );
+
+/**
+ * Queries page by title and returns page ID and title in JSON format.
+ *
+ * @since 2.1
+ *
+ * @return json
+ */
+function give_ajax_pages_search() {
+
+	$data = [];
+	$args = array(
+		'post_type' => 'page',
+		's'         => $_GET['s'],
+	);
+
+	$query = new WP_Query( $args );
+
+	// Query posts by title.
+	if ( $query->have_posts() ) {
+		while( $query->have_posts() ) {
+			$query->the_post();
+
+			$data[] = array(
+				'id' => get_the_ID(),
+				'name' => get_the_title(),
+			);
+		}
+	}
+
+	echo wp_json_encode( $data );
+	give_die();
+}
+
+add_action( 'wp_ajax_give_pages_search', 'give_ajax_pages_search' );

@@ -116,6 +116,9 @@ var give_setting_edit = false;
 
 		// Add loader with each input field.
 		$give_chosen_containers.on( 'chosen:ready', function() {
+
+			$('#success_page, #failure_page, #success_page, #history_page').attr('data-search-type', 'pages');
+
 			$( this ).next( '.chosen-container' )
 				.find( 'input.chosen-search-input' )
 				.after( '<span class="spinner"></span>' );
@@ -179,7 +182,6 @@ var give_setting_edit = false;
 				if ( 'no_ajax' === select.data( 'search-type' ) ) {
 					return;
 				}
-
 				search_type = 'give_' + select.data( 'search-type' ) + '_search';
 			}
 
