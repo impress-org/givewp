@@ -206,62 +206,9 @@ class Give_Seq_Donation_Number {
 	 * @since  2.1.0
 	 * @access public
 	 *
-	 * @param string $donation_number_or_serial_code
-	 *
-	 * @return int
+	 * @param string $donation_number_or_serial_code\
 	 */
-	public function get_donation_id( $donation_number_or_serial_code ) {
-		global $wpdb;
-
-		$is_donation_number = is_numeric( $donation_number_or_serial_code );
-
-		if ( $is_donation_number ) {
-			$query = $wpdb->get_prepare( "
-				SELECT payment_id
-				FROM $wpdb->paymentmeta
-				WHERE meta_key=%s
-				AND meta_value=%d
-			", $this->meta_key, $donation_number_or_serial_code
-			);
-		} else {
-			$query = $wpdb->get_prepare( "
-				SELECT payment_id
-				FROM $wpdb->posts
-				WHERE post_title=%s
-			", $donation_number_or_serial_code
-			);
-		}
-
-		return $wpdb->get_var( $query );
-	}
-
-
-	/**
-	 * Get a donation number on basis donation id or donation object
-	 *
-	 * @since  2.1.0
-	 * @access public
-	 *
-	 * @param int|Give_Payment $donation
-	 *
-	 * @return int
-	 */
-	public function get_donation_number( $donation ) {
-		global $wpdb;
-
-		$donation    = $donation instanceof Give_Payment ? $donation : new Give_Payment( $donation );
-		$donation_id = $donation->ID;
-
-		return $wpdb->get_var(
-			$wpdb->get_prepare( "
-				SELECT meta_value
-				FROM $wpdb->paymentmeta
-				WHERE meta_key=%s
-				AND payment_id=%d
-			", $this->meta_key, $donation_id
-			)
-		);
-	}
+	public function get_donation_id( $donation_number_or_serial_code ) {}
 }
 
 // @todo: add post_title support in Give_Payment
