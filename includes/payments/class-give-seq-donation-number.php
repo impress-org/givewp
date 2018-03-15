@@ -161,32 +161,41 @@ class Give_Seq_Donation_Number {
 	 * @access public
 	 *
 	 * @param int|Give_Payment $donation
-	 * @param boolean          $with_hash
+	 * @param array            $args
 	 *
 	 * @return string
 	 */
-	public function get_serial_code( $donation, $with_hash = true ) {
-		$serial_code = '';
+	public function get_serial_code( $donation, $args = array() ) {
 		$donation    = $donation instanceof Give_Payment ? $donation : new Give_Payment( $donation );
 
 		// Bailout.
 		if ( empty( $donation->ID ) ) {
-			return $serial_code;
+			return null;
 		}
 
-		$donation_number = give_get_meta( $donation->ID, $this->meta_key, true );
+		// Set default params.
+		$args = wp_parse_args(
+			$args,
+			array(
+				'with_hash' => true,
+				'default'   => true
+			)
+		);
 
-		if ( ! empty( $donation_number ) ) {
+		$serial_code = $args['default'] ? $donation->ID : '';
+
+		if ( $donation_number = give_get_meta( $donation->ID, $this->meta_key, true ) ) {
 			$serial_code = get_the_title( $donation->ID );
-			$serial_code = $with_hash ? "#{$serial_code}" : $serial_code;
 		}
+
+		$serial_code = $args['with_hash'] ? "#{$serial_code}" : $serial_code;
 
 		/**
 		 * Filter the donation serial code
 		 *
 		 * @since 2.1.0
 		 */
-		return apply_filters( 'give_get_donation_serial_code', $serial_code, $donation, $with_hash );
+		return apply_filters( 'give_get_donation_serial_code', $serial_code, $donation, $args, $donation_number );
 	}
 
 	/**
@@ -253,7 +262,7 @@ class Give_Seq_Donation_Number {
 	public function get_donation_number( $donation ) {
 		global $wpdb;
 
-		$donation = $donation instanceof Give_Payment ? $donation : new Give_Payment( $donation );
+		$donation    = $donation instanceof Give_Payment ? $donation : new Give_Payment( $donation );
 		$donation_id = $donation->ID;
 
 		return $wpdb->get_var(
