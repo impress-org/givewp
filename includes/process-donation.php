@@ -615,6 +615,8 @@ function give_donation_form_validate_logged_in_user() {
 				'user_last'  => isset( $_POST['give_last'] ) && ! empty( $_POST['give_last'] ) ? sanitize_text_field( $_POST['give_last'] ) : $user_data->last_name,
 			);
 
+			give_donation_form_validate_name_fields();
+
 			if ( ! is_email( $valid_user_data['user_email'] ) ) {
 				give_set_error( 'email_invalid', esc_html__( 'Invalid email.', 'give' ) );
 			}
@@ -655,6 +657,8 @@ function give_donation_form_validate_new_user() {
 	$user_data            = wp_parse_args( give_clean( $_POST ), $default_user_data );
 	$registering_new_user = false;
 	$form_id              = absint( $user_data['give-form-id'] );
+
+	give_donation_form_validate_name_fields();
 
 	// Start an empty array to collect valid user data.
 	$valid_user_data = array(
@@ -770,6 +774,8 @@ function give_donation_form_validate_guest_user() {
 		// Set a default id for guests.
 		'user_id' => 0,
 	);
+
+	give_donation_form_validate_name_fields();
 
 	// Get the guest email.
 	$guest_email = isset( $_POST['give_email'] ) ? $_POST['give_email'] : false;
@@ -1278,5 +1284,20 @@ function give_validate_required_form_fields( $form_id ) {
 		if ( in_array( $value, give_get_required_fields( $form_id ) ) && empty( $field_value ) ) {
 			give_set_error( $value['error_id'], $value['error_message'] );
 		}
+	}
+}
+
+/**
+ * Validates and checks if name fields don't contain email addresses.
+ *
+ * @since 2.1
+ * @return void
+ */
+function give_donation_form_validate_name_fields() {
+	$is_first_name = is_email( $_POST['give_first'] ) ? true : false;
+	$is_last_name  = is_email( $_POST['give_last'] ) ? true : false;
+
+	if ( $is_first_name || $is_last_name ) {
+		give_set_error( 'invalid_name', esc_html__( '<First Name | Last Name> cannot contain email address.', 'give' ) );
 	}
 }
