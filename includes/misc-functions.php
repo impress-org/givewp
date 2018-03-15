@@ -1762,3 +1762,46 @@ function give_maybe_define_constant( $name, $value ) {
 		define( $name, $value );
 	}
 }
+
+/**
+ * Decode time short tage in string
+ *
+ * @since 2.1.0
+ *
+ * @param string $string
+ * @param int    $timestamp
+ *
+ * @return string
+ */
+function give_time_do_tags( $string, $timestamp = 0 ) {
+	$current_time = ! empty( $timestamp ) ? $timestamp : current_time( 'timestamp' );
+
+	$string = str_replace(
+		array(
+			'{D}',
+			'{DD}',
+			'{M}',
+			'{MM}',
+			'{YY}',
+			'{YYYY}',
+			'{H}',
+			'{HH}',
+			'{N}',
+			'{S}'
+		),
+		array(
+			date( 'j', $current_time ),
+			date( 'd', $current_time ),
+			date( 'n', $current_time ),
+			date( 'm', $current_time ),
+			date( 'Y', $current_time ),
+			date( 'Y', $current_time ),
+			date( 'G', $current_time ),
+			date( 'H', $current_time ),
+			date( 's', $current_time )
+		),
+		$string
+	);
+
+	return $string;
+}
