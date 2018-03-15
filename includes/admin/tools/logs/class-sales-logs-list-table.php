@@ -66,6 +66,7 @@ class Give_Sales_Log_Table extends WP_List_Table {
 	 */
 	public function column_default( $item, $column_name ) {
 
+		/* @var Give_Payment $payment */
 		$payment = give_get_payment_by( 'id', $item['payment_id'] );
 
 		switch ( $column_name ) {
@@ -98,8 +99,8 @@ class Give_Sales_Log_Table extends WP_List_Table {
 
 			case 'donation' :
 				$value = Give()->tooltips->render_link( array(
-					'label'       => sprintf( esc_attr__( 'View Donation #%s', 'give' ), $payment->ID ),
-					'tag_content' => "#$payment->ID",
+					'label'       => __( 'View Donation', 'give' ),
+					'tag_content' => Give()->seq_donation_number->get_serial_code( $payment, array( 'with_hash' => true ) ),
 					'link'        => esc_url( add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details' ) ) ),
 				) );
 
