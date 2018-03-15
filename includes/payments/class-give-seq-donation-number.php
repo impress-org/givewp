@@ -56,7 +56,7 @@ class Give_Seq_Donation_Number {
 	 * @since 2.1.0
 	 */
 	public function init() {
-		if ( give_is_setting_enabled( give_get_option( 'sequential_donation', 'disabled' ) ) ) {
+		if ( give_is_setting_enabled( give_get_option( 'sequential-donation_status', 'disabled' ) ) ) {
 			add_action( 'wp_insert_post', array( $this, '__save_donation_title' ), 10, 3 );
 		}
 	}
@@ -79,7 +79,19 @@ class Give_Seq_Donation_Number {
 			return;
 		}
 
-		$serial_code = $this->get_next_serial_code();
+		$serial_code = $this->__set_number_padding( $this->get_next_serial_code() );
+
+		// Add prefix.
+		if ( $prefix = give_get_option( 'sequential-donation_number_prefix', '' ) ) {
+			$serial_code = $prefix . $serial_code;
+		}
+
+		// Add suffix.
+		if ( $suffix = give_get_option( 'sequential-donation_number_suffix', '' ) ) {
+			$serial_code = $serial_code . $suffix;
+		}
+
+		$serial_code = give_time_do_tags( $serial_code );
 
 		try {
 			/* @var WP_Error $wp_error */
@@ -98,6 +110,41 @@ class Give_Seq_Donation_Number {
 		}
 
 		$this->set_donation_number( $donation_id );
+	}
+
+	/**
+	 * Set donation number
+	 *
+	 * @since  2.1.0
+	 * @access public
+	 *
+	 * @param int $donation_id
+	 *
+	 * @return boolean|int
+	 */
+	public function set_donation_number( $donation_id ) {
+		return give_update_meta( $donation_id, $this->meta_key, $this->get_next() );
+	}
+
+	/**
+	 * Set number padding in serial code.
+	 *
+	 * @since
+	 * @access private
+	 *
+	 * @param $serial_code
+	 *
+	 * @return string
+	 */
+	private function __set_number_padding( $serial_code ) {
+		if ( $number_padding = give_get_option( 'sequential-donation_number_padding', 0 ) ) {
+			$current_str_length = strlen( $serial_code );
+			$serial_code        = $number_padding > $current_str_length ?
+				substr( '0000000000', 0, $number_padding - $current_str_length ) . $serial_code :
+				$serial_code;
+		}
+
+		return $serial_code;
 	}
 
 
@@ -125,12 +172,7 @@ class Give_Seq_Donation_Number {
 		$max_donation_number = $this->get_max_donation_number();
 		$donation_number     = ++ $max_donation_number;
 
-		/**
-		 * Filter the donation serial code
-		 *
-		 * @since 2.1.0
-		 */
-		return apply_filters( 'give_get_next_donation_serial_code', $donation_number );
+		return $donation_number;
 	}
 
 
@@ -196,20 +238,6 @@ class Give_Seq_Donation_Number {
 		 * @since 2.1.0
 		 */
 		return apply_filters( 'give_get_donation_serial_code', $serial_code, $donation, $args, $donation_number );
-	}
-
-	/**
-	 * Set donation number
-	 *
-	 * @since  2.1.0
-	 * @access public
-	 *
-	 * @param int $donation_id
-	 *
-	 * @return boolean|int
-	 */
-	public function set_donation_number( $donation_id ) {
-		return give_update_meta( $donation_id, $this->meta_key, $this->get_next() );
 	}
 
 
