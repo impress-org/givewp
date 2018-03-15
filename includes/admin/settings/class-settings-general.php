@@ -166,7 +166,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'default'    => 'before',
 							'attributes' => array(
 								'data-before-template' => sprintf( $currency_position_before, '{currency_pos}' ),
-								'data-after-template' => sprintf( $currency_position_after, '{currency_pos}' ),
+								'data-after-template'  => sprintf( $currency_position_after, '{currency_pos}' ),
 							),
 						),
 						array(
@@ -295,6 +295,52 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						),
 					);
 					break;
+
+				case 'sequential-donation':
+					$settings = array(
+						// Section 4: Sequential donation
+
+						array(
+							'id'   => 'give_title_general_settings_4',
+							'type' => 'title'
+						),
+						array(
+							'name'    => __( 'Sequential Donation', 'give' ),
+							'id'      => "{$current_section}_status",
+							'desc'    => '',
+							'type'    => 'radio_inline',
+							'default' => 'disabled',
+							'options' => array(
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' )
+							)
+						),
+						array(
+							'name' => __( 'Sequential Starting Number', 'give' ),
+							'id'   => "{$current_section}_number",
+							'type' => 'text'
+						),
+						array(
+							'name' => __( 'Sequential Number Prefix', 'give' ),
+							'id'   => "{$current_section}_number_prefix",
+							'type' => 'text'
+						),
+						array(
+							'name' => __( 'Sequential Number Suffix', 'give' ),
+							'id'   => "{$current_section}_number_suffix",
+							'type' => 'text'
+						),
+						array(
+							'name'    => __( 'Number Padding', 'give' ),
+							'id'      => "{$current_section}_number_padding",
+							'type'    => 'text',
+							'default' => '0',
+						),
+						array(
+							'id'   => 'give_title_general_settings_4',
+							'type' => 'sectionend'
+						)
+					);
 			}
 
 			/**
@@ -324,9 +370,10 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 		 */
 		public function get_sections() {
 			$sections = array(
-				'general-settings'  => __( 'General', 'give' ),
-				'currency-settings' => __( 'Currency', 'give' ),
-				'access-control'    => __( 'Access Control', 'give' ),
+				'general-settings'    => __( 'General', 'give' ),
+				'currency-settings'   => __( 'Currency', 'give' ),
+				'access-control'      => __( 'Access Control', 'give' ),
+				'sequential-donation' => __( 'Sequential Donation', 'give' ),
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );
