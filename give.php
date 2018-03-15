@@ -25,15 +25,17 @@
  *
  * A Tribute to Open Source:
  *
- * "Open source software is software that can be freely used, changed, and shared (in modified or unmodified form) by anyone. Open
- * source software is made by many people, and distributed under licenses that comply with the Open Source Definition."
+ * "Open source software is software that can be freely used, changed, and shared (in modified or unmodified form) by
+ * anyone. Open source software is made by many people, and distributed under licenses that comply with the Open Source
+ * Definition."
  *
  * -- The Open Source Initiative
  *
- * Give is a tribute to the spirit and philosophy of Open Source. We at WordImpress gladly embrace the Open Source philosophy both
- * in how Give itself was developed, and how we hope to see others build more from our code base.
+ * Give is a tribute to the spirit and philosophy of Open Source. We at WordImpress gladly embrace the Open Source
+ * philosophy both in how Give itself was developed, and how we hope to see others build more from our code base.
  *
- * Give would not have been possible without the tireless efforts of WordPress and the surrounding Open Source projects and their talented developers. Thank you all for your contribution to WordPress.
+ * Give would not have been possible without the tireless efforts of WordPress and the surrounding Open Source projects
+ * and their talented developers. Thank you all for your contribution to WordPress.
  *
  * - The WordImpress Team
  */
@@ -145,6 +147,16 @@ if ( ! class_exists( 'Give' ) ) :
 		 * @var    Give_DB_Donor_Meta object
 		 */
 		public $donor_meta;
+
+		/**
+		 * Give Sequential Donation DB Object
+		 *
+		 * @since  2.1.0
+		 * @access public
+		 *
+		 * @var    Give_DB_Sequential_Donations object
+		 */
+		public $sequential_donation_db;
 
 		/**
 		 * Give API Object
@@ -311,25 +323,26 @@ if ( ! class_exists( 'Give' ) ) :
 			// Set up localization.
 			$this->load_textdomain();
 
-			$this->roles               = new Give_Roles();
-			$this->api                 = new Give_API();
-			$this->give_settings       = new Give_Admin_Settings();
-			$this->session             = new Give_Session();
-			$this->html                = new Give_HTML_Elements();
-			$this->emails              = new Give_Emails();
-			$this->email_tags          = new Give_Email_Template_Tags();
-			$this->donors              = new Give_DB_Donors();
-			$this->donor_meta          = new Give_DB_Donor_Meta();
-			$this->template_loader     = new Give_Template_Loader();
-			$this->email_access        = new Give_Email_Access();
-			$this->tooltips            = new Give_Tooltips();
-			$this->notices             = new Give_Notices();
-			$this->payment_meta        = new Give_DB_Payment_Meta();
-			$this->logs                = new Give_Logging();
-			$this->form_meta           = new Give_DB_Form_Meta();
-			$this->async_process       = new Give_Async_Process();
-			$this->scripts             = new Give_Scripts();
-			$this->seq_donation_number = Give_Seq_Donation_Number::get_instance();
+			$this->roles                  = new Give_Roles();
+			$this->api                    = new Give_API();
+			$this->give_settings          = new Give_Admin_Settings();
+			$this->session                = new Give_Session();
+			$this->html                   = new Give_HTML_Elements();
+			$this->emails                 = new Give_Emails();
+			$this->email_tags             = new Give_Email_Template_Tags();
+			$this->donors                 = new Give_DB_Donors();
+			$this->donor_meta             = new Give_DB_Donor_Meta();
+			$this->template_loader        = new Give_Template_Loader();
+			$this->email_access           = new Give_Email_Access();
+			$this->tooltips               = new Give_Tooltips();
+			$this->notices                = new Give_Notices();
+			$this->payment_meta           = new Give_DB_Payment_Meta();
+			$this->logs                   = new Give_Logging();
+			$this->form_meta              = new Give_DB_Form_Meta();
+			$this->sequential_donation_db = new Give_DB_Sequential_Donations();
+			$this->async_process          = new Give_Async_Process();
+			$this->scripts                = new Give_Scripts();
+			$this->seq_donation_number    = Give_Seq_Donation_Number::get_instance();
 
 			/**
 			 * Fire the action after Give core loads.
@@ -471,6 +484,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-email-access.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-payment-meta.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-form-meta.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-sequential-donations.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/country-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/template-functions.php';
