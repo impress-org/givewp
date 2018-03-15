@@ -286,7 +286,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						),
 					);
 					break;
-				case 'form-settings':
+				case 'form-display':
 					$settings = array(
 						array(
 							'id'   => 'give_title_display_settings_5',
@@ -295,7 +295,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						array(
 							'name'    => __( 'Company Donations', 'give' ),
 							'desc'    => __( 'Do you want a Company field to appear after First Name and Last Name?', 'give' ),
-							'id'      => 'company_donation',
+							'id'      => 'company_field',
 							'type'    => 'radio_inline',
 							'default' => 'disabled',
 							'options' => array(
@@ -343,7 +343,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 				'post-types'          => __( 'Post Types', 'give' ),
 				'taxonomies'          => __( 'Taxonomies', 'give' ),
 				'term-and-conditions' => __( 'Terms and Conditions', 'give' ),
-				'form-settings' => __( 'Forms', 'give' ),
+				'form-display' => __( 'Form Display', 'give' ),
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );
