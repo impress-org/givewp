@@ -82,6 +82,12 @@ $give_receipt_args['donation_receipt']['payment_method'] = array(
 	'display' => $give_receipt_args['payment_method'],
 );
 
+$give_receipt_args['donation_receipt']['serial_number'] = array(
+	'name'    => __( 'Serial Number', 'give' ),
+	'value'   => Give()->seq_donation_number->get_serial_code( $donation_id ),
+	'display' => $give_receipt_args['serial_number'],
+);
+
 /**
  * Extend Give Donation Receipt
  *

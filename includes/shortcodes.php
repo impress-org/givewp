@@ -252,6 +252,7 @@ function give_receipt_shortcode( $atts ) {
 		'payment_id'     => true,
 		'payment_status' => false,
 		'status_notice'  => true,
+		'serial_number'  => false
 	), $atts, 'give_receipt' );
 
 	// set $session var
