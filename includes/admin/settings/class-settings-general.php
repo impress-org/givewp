@@ -235,6 +235,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							/* translators: %s: [give_receipt] */
 							'desc'    => sprintf( __( 'The page donors are sent to after completing their donations. The %s shortcode should be on this page.', 'give' ), '<code>[give_receipt]</code>' ),
 							'id'      => 'success_page',
+							'class'   => 'give-select-chosen',
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
 								'post_type'   => 'page',
@@ -244,6 +245,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						array(
 							'name'    => __( 'Failed Donation Page', 'give' ),
 							'desc'    => __( 'The page donors are sent to if their donation is cancelled or fails.', 'give' ),
+							'class' => 'give-select-chosen',
 							'id'      => 'failure_page',
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
@@ -256,6 +258,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							/* translators: %s: [donation_history] */
 							'desc'    => sprintf( __( 'The page showing a complete donation history for the current user. The %s shortcode should be on this page.', 'give' ), '<code>[donation_history]</code>' ),
 							'id'      => 'history_page',
+							'class'   => 'give-select-chosen',
 							'type'    => 'select',
 							'options' => give_cmb2_get_post_options( array(
 								'post_type'   => 'page',
