@@ -477,7 +477,6 @@ class Give_Payment_History_Table extends WP_List_Table {
 				break;
 
 			case 'amount':
-				$amount = ! empty( $payment->total ) ? $payment->total : 0;
 				$value  = give_donation_amount( $payment, true );
 				$value .= sprintf( '<br><small>%1$s %2$s</small>', __( 'via', 'give' ), give_get_gateway_admin_label( $payment->gateway ) );
 				break;
