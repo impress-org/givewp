@@ -521,6 +521,13 @@ function give_get_required_fields( $form_id ) {
 		}
 	}
 
+	if ( give_is_company_donation_enabled( $form_id ) ) {
+		$required_fields['give_company'] = array(
+			'error_id'      => 'invalid_company',
+			'error_message' => __( 'Please enter Company Name.', 'give' ),
+		);
+	}
+
 	/**
 	 * Filters the donation form required field.
 	 *
