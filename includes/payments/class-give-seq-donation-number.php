@@ -130,7 +130,7 @@ class Give_Seq_Donation_Number {
 		 *
 		 * @since 2.1.0
 		 */
-		return apply_filters( 'give_get_donation_serial_code', "PW-{$donation_number}" );
+		return apply_filters( 'give_get_next_donation_serial_code', $donation_number );
 	}
 
 
