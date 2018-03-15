@@ -44,9 +44,11 @@ To get started developing on the Give platform you will need to perform the foll
 
 3. Clone this repository from GitHub into your plugins directory: `https://github.com/WordImpress/Give.git`
 
-4. Run composer to set up dependancies: `composer install`. After composer finishes installing all its dependencies, it will automatically fire `npm install` and get the necessary npm packages.
+4. Run composer to set up dependancies: `composer install`
 
-5. Activate the plugin in WordPress
+5. Run npm install to get the necessary npm packages: `npm install`
+
+6. Activate the plugin in WordPress
 
 That's it. You're now ready to start development.
 
