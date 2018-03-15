@@ -286,6 +286,30 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 						),
 					);
 					break;
+				case 'form-settings':
+					$settings = array(
+						array(
+							'id'   => 'give_title_display_settings_5',
+							'type' => 'title',
+						),
+						array(
+							'name'    => __( 'Company Donations', 'give' ),
+							'desc'    => __( 'Do you want a Company field to appear after First Name and Last Name?', 'give' ),
+							'id'      => 'company_donation',
+							'type'    => 'radio_inline',
+							'default' => 'disabled',
+							'options' => array(
+								'disabled' => __( 'Disabled', 'give' ),
+								'required' => __( 'Required', 'give' ),
+								'optional' => __( 'Optional', 'give' ),
+							),
+						),
+						array(
+							'id'   => 'give_title_display_settings_5',
+							'type' => 'sectionend',
+						),
+					);
+					break;
 			}
 
 			/**
@@ -319,6 +343,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 				'post-types'          => __( 'Post Types', 'give' ),
 				'taxonomies'          => __( 'Taxonomies', 'give' ),
 				'term-and-conditions' => __( 'Terms and Conditions', 'give' ),
+				'form-settings' => __( 'Forms', 'give' ),
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );
