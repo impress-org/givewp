@@ -166,7 +166,7 @@ class Give_Seq_Donation_Number {
 	 * @return string
 	 */
 	public function get_serial_code( $donation, $args = array() ) {
-		$donation    = $donation instanceof Give_Payment ? $donation : new Give_Payment( $donation );
+		$donation = $donation instanceof Give_Payment ? $donation : new Give_Payment( $donation );
 
 		// Bailout.
 		if ( empty( $donation->ID ) ) {
@@ -177,7 +177,7 @@ class Give_Seq_Donation_Number {
 		$args = wp_parse_args(
 			$args,
 			array(
-				'with_hash' => true,
+				'with_hash' => false,
 				'default'   => true
 			)
 		);
