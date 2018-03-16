@@ -333,31 +333,3 @@ function give_update_log_form_id( $args ) {
 }
 
 add_action( 'give_update_log_form_id', 'give_update_log_form_id' );
-
-/**
- * Add meta in payment that store Company Name.
- *
- * Will add/update when user add click on the checkout page.
- * The status of the donation doest not matter as it get change when user had made the payment successfully.
- *
- * @since 2.0.7
- *
- * @param int $payment_id Payment id for which the meta value should be updated.
- */
-function give_donation_save_company_name( $payment_id ) {
-	$give_company = ( ! empty( $_REQUEST['give_company_name'] ) ? give_clean( $_REQUEST['give_company_name'] ) : false );
-
-	// Check $page_url is not empty.
-	if ( $give_company ) {
-		give_update_meta( $payment_id, '_give_donation_company', $give_company );
-
-		$donor_id = (int) give_get_meta( $payment_id, '_give_payment_donor_id', true );
-		if ( ! empty( $donor_id ) ) {
-			$donor = new Give_Donor( $donor_id );
-			$donor->update_meta( '_give_donor_company', $give_company );
-		}
-	}
-}
-
-// Fire when payment is save.
-add_action( 'give_insert_payment', 'give_donation_save_company_name' );
