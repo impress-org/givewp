@@ -593,7 +593,7 @@ add_action( 'wp_ajax_nopriv_give_confirm_email_for_donations_access', 'give_conf
  *
  * @since 2.1
  *
- * @return json
+ * @return string
  */
 function give_ajax_pages_search() {
 
@@ -617,8 +617,7 @@ function give_ajax_pages_search() {
 		}
 	}
 
-	echo wp_json_encode( $data );
-	give_die();
+	wp_send_json( $data );
 }
 
 add_action( 'wp_ajax_give_pages_search', 'give_ajax_pages_search' );
