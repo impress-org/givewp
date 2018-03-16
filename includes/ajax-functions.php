@@ -600,18 +600,18 @@ function give_ajax_pages_search() {
 	$data = [];
 	$args = array(
 		'post_type' => 'page',
-		's'         => $_GET['s'],
+		's'         => give_clean( $_GET['s'] ),
 	);
 
 	$query = new WP_Query( $args );
 
 	// Query posts by title.
 	if ( $query->have_posts() ) {
-		while( $query->have_posts() ) {
+		while ( $query->have_posts() ) {
 			$query->the_post();
 
 			$data[] = array(
-				'id' => get_the_ID(),
+				'id'   => get_the_ID(),
 				'name' => get_the_title(),
 			);
 		}
