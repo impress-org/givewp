@@ -160,16 +160,19 @@ class Give_Addon_Activation_Banner {
 	}
 
 	/**
-	 * Check if current page is plugin page or not.
+	 * Setup user id to option
 	 *
 	 * @since  1.8
 	 * @access private
-	 * @return bool
 	 */
-	private function is_plugin_page() {
-		$screen = get_current_screen();
+	private function add_addon_activate_meta() {
+		$user_id                  = get_option( $this->activate_by_meta_key );
+		$this->plugin_activate_by = (int) $user_id;
 
-		return ( $screen->parent_file === 'plugins.php' );
+		if ( ! $user_id ) {
+			add_option( $this->activate_by_meta_key, $this->user_id, '', 'no' );
+			$this->plugin_activate_by = (int) $this->user_id;
+		}
 	}
 
 	/**
@@ -287,6 +290,22 @@ class Give_Addon_Activation_Banner {
 		}
 	}
 
+	/**
+	 * Get the notice dismiss meta key.
+	 *
+	 * @since 2.0.7
+	 */
+	public function get_notice_dismiss_meta_key() {
+		global $give_addons;
+
+		// Get the notice meta key.
+		$notice_meta_key = ( 1 === count( $give_addons ) )
+			? $this->nag_meta_key
+			: 'give_addon_activation_ignore_all';
+
+		// Return meta key.
+		return $notice_meta_key;
+	}
 
 	/**
 	 * Add activation banner css.
@@ -367,6 +386,70 @@ class Give_Addon_Activation_Banner {
 		<?php
 	}
 
+	/**
+	 * Render single banner activation
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array  $banner_arr Banner options.
+	 * @param string $meta_key   Pass meta key.
+	 */
+	private function render_single_addon_banner( $banner_arr, $meta_key = '' ) {
+		// Get the add-on details.
+		$plugin_data = get_plugin_data( $banner_arr['file'] );
+		?>
+		<img src="<?php echo GIVE_PLUGIN_URL; ?>assets/images/svg/give-icon-full-circle.svg" class="give-logo" />
+		<div class="give-alert-message">
+			<h3>
+				<?php
+				printf(
+				/* translators: %s: Add-on name */
+					esc_html__( "New Give Add-on Activated: %s", 'give' ),
+					'<span>' . $banner_arr['name'] . '</span>'
+				);
+				?>
+			</h3>
+			<?php
+			$meta_key              = empty( $meta_key ) ? $this->nag_meta_key : $meta_key;
+			$nag_admin_dismiss_url = admin_url( 'plugins.php?' . $meta_key . '=0' );
+			?>
+			<a href="<?php echo $nag_admin_dismiss_url; ?>" class="dismiss">
+				<span class="dashicons dashicons-dismiss"></span>
+			</a>
+			<div class="alert-actions">
+				<?php //Point them to your settings page.
+				if ( ! empty( $plugin_data['Description'] ) ) {
+					?><span class="give-addon-description"><em><?php echo strip_tags( $plugin_data['Description'] ); ?></em></span><br />
+					<?php
+				}
+				if ( isset( $banner_arr['settings_url'] ) ) { ?>
+					<a href="<?php echo $banner_arr['settings_url']; ?>"><span class="dashicons dashicons-admin-settings"></span>
+						<?php esc_html_e( 'Go to Settings', 'give' ); ?>
+					</a>
+					<?php
+				}
+				// Show them how to configure the Addon.
+				if ( isset( $banner_arr['documentation_url'] ) ) { ?>
+					<a href="<?php echo $banner_arr['documentation_url'] ?>" target="_blank">
+						<span class="dashicons dashicons-media-text"></span><?php
+						printf(
+						/* translators: %s: Add-on name */
+							esc_html__( 'Documentation: %s Add-on', 'give' ),
+							$banner_arr['name']
+						);
+						?></a>
+				<?php } ?>
+				<?php
+				//Let them signup for plugin updates
+				if ( isset( $banner_arr['support_url'] ) ) { ?>
+					<a href="<?php echo $banner_arr['support_url'] ?>" target="_blank">
+						<span class="dashicons dashicons-sos"></span><?php esc_html_e( 'Get Support', 'give' ); ?>
+					</a>
+				<?php } ?>
+			</div>
+		</div>
+		<?php
+	}
 
 	/**
 	 * Ignore Nag.
@@ -377,37 +460,26 @@ class Give_Addon_Activation_Banner {
 	 * @access public
 	 */
 	public function give_addon_notice_ignore() {
+		global $give_addons;
+
+		// Get the notice meta key.
+		$notice_meta_key = ( 1 === count( $give_addons ) )
+			? $this->nag_meta_key
+			: 'give_addon_activation_ignore_all';
 
 		/**
 		 * If user clicks to ignore the notice, add that to their user meta the banner then checks whether this tag exists already or not.
 		 * See here: http://codex.wordpress.org/Function_Reference/add_user_meta
 		 */
-		if ( isset( $_GET[ $this->nag_meta_key ] ) && '0' == $_GET[ $this->nag_meta_key ] ) {
+		if ( isset( $_GET[ $notice_meta_key ] ) && '0' === $_GET[ $notice_meta_key ] ) {
 
 			//Get the global user
 			$current_user = wp_get_current_user();
 			$user_id      = $current_user->ID;
 
-			add_user_meta( $user_id, $this->nag_meta_key, 'true', true );
+			add_user_meta( $user_id, $notice_meta_key, 'true', true );
 		}
 	}
-
-	/**
-	 * Setup user id to option
-	 *
-	 * @since  1.8
-	 * @access private
-	 */
-	private function add_addon_activate_meta() {
-		$user_id                  = get_option( $this->activate_by_meta_key );
-		$this->plugin_activate_by = (int) $user_id;
-
-		if ( ! $user_id ) {
-			add_option( $this->activate_by_meta_key, $this->user_id, '', 'no' );
-			$this->plugin_activate_by = (int) $this->user_id;
-		}
-	}
-
 
 	/**
 	 * Delete user id from option if plugin deactivated.
