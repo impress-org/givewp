@@ -63,8 +63,11 @@ class Give_Addon_Activation_Banner {
 			$this->add_addon_activate_meta();
 		}
 
-		// Store user id who activate plugin.
-		$this->add_addon_activate_meta();
+		// Check if notice callback is already hacked.
+		if ( ! $this->is_banner_notice_hooked() ) {
+			// If multiple add-on are activated then show activation banner in tab view.
+			add_action( 'admin_notices', array( $this, 'addon_activation_banner_notices' ), 10 );
+		}
 	}
 
 	/**
@@ -154,95 +157,117 @@ class Give_Addon_Activation_Banner {
 		return ( $screen->parent_file === 'plugins.php' );
 	}
 
+	/**
+	 * Check if the addon_activation_banner_notices function has already been hooked to admin_notice.
+	 *
+	 * @since 2.0.7
+	 *
+	 * @return bool
+	 */
+	public function is_banner_notice_hooked() {
+		global $wp_filter;
+		$notice_already_hooked = false;
+
+		if ( isset( $wp_filter['admin_notices']->callbacks[10] ) ) {
+
+			// Get all of the hooks.
+			$admin_notice_callbacks = array_keys( $wp_filter['admin_notices']->callbacks[10] );
+
+			foreach ( $admin_notice_callbacks as $key ) {
+				//If the key is found in your string, set $found to true
+				if ( false !== strpos( $key, "addon_activation_banner_notices" ) ) {
+					$notice_already_hooked = true;
+				}
+			}
+		}
+
+		return $notice_already_hooked;
+	}
 
 	/**
-	 * Give Addon Activation Banner
+	 * Get the add-on banner notices.
 	 *
-	 * @since  1.0
-	 * @access public
+	 * @since 2.0.7
 	 */
-	public function give_addon_activation_admin_notice() {
+	public function addon_activation_banner_notices() {
+		global $pagenow, $give_addons;
 
 		// Bailout.
-		if ( ! $this->is_plugin_page() || $this->user_id !== $this->plugin_activate_by ) {
+		if ( 'plugins.php' !== $pagenow || $this->user_id !== $this->plugin_activate_by ) {
 			return;
 		}
 
-		// If the user hasn't already dismissed the alert, output activation banner.
-		if ( ! get_user_meta( $this->user_id, $this->nag_meta_key ) ) {
+		// If only one add-on activated.
+		$is_single = 1 === count( $give_addons ) ? true : false;
 
-			$this->print_css();
+		// If the user hasn't already dismissed the alert, output activation banner.
+		if ( ! get_user_meta( $this->user_id, $this->get_notice_dismiss_meta_key() ) ) {
+			ob_start();
 
 			// Output inline styles here because there's no reason
 			// to enqueued them after the alert is dismissed.
-
+			$this->print_css_js();
 			ob_start();
 			?>
+			<div class="<?php echo ( false === $is_single ) ? 'give-alert-tab-wrapper' : ''; ?> updated give-addon-alert give-notice">
+				<?php
+				// If multiple add-on are activated.
+				if ( false === $is_single ) {
+					?>
+					<div class="give-vertical-tab">
+						<ul class="give-alert-addon-list">
+							<?php
+							$is_first = true;
+							foreach ( $give_addons as $banner ) {
+								?>
+								<li class="give-tab-list <?php echo ( true === $is_first ) ? ' active' : ''; ?>"
+								    id="give-addon-<?php echo esc_html( basename( $banner['file'], '.php' ) ); ?>">
+									<a href="#"><?php echo esc_html( $banner['name'] ); ?></a>
+								</li>
+								<?php
+								$is_first = false;
+							}
+							$is_first = true;
+							?>
+						</ul>
+						<div class="give-right-side-block">
+							<?php
+							foreach ( $give_addons as $banner ) {
+								?>
+								<div
+										class="give-tab-details <?php echo ( true === $is_first ) ? ' active' : ''; ?> "
+										id="give-addon-<?php echo esc_html( basename( $banner['file'], '.php' ) ); ?>"
+								>
+									<?php
+									// Get the notice meta key.
+									$meta_key = ( 1 === count( $give_addons ) )
+										? $this->nag_meta_key
+										: 'give_addon_activation_ignore_all';
 
-			<div class="updated give-addon-alert give-notice" style="display: none">
-
-				<img src="<?php echo GIVE_PLUGIN_URL; ?>assets/images/svg/give-icon-full-circle.svg" class="give-logo"/>
-
-				<div class="give-alert-message">
-					<h3><?php
-						printf(
-						/* translators: %s: Add-on name */
-							esc_html__( "Thank you for installing Give's %s Add-on!", 'give' ),
-							'<span>' . $this->banner_details['name'] . '</span>'
-						);
-						?></h3>
-
-					<a href="<?php
-					//The Dismiss Button.
-					$nag_admin_dismiss_url = 'plugins.php?' . $this->nag_meta_key . '=0';
-					echo admin_url( $nag_admin_dismiss_url ); ?>" class="dismiss"><span
-							class="dashicons dashicons-dismiss"></span></a>
-
-					<div class="alert-actions">
-
-						<?php //Point them to your settings page.
-						if ( isset( $this->banner_details['settings_url'] ) ) { ?>
-							<a href="<?php echo $this->banner_details['settings_url']; ?>">
-								<span class="dashicons dashicons-admin-settings"></span><?php esc_html_e( 'Go to Settings', 'give' ); ?>
-							</a>
-						<?php } ?>
-
-						<?php
-						// Show them how to configure the Addon.
-						if ( isset( $this->banner_details['documentation_url'] ) ) { ?>
-							<a href="<?php echo $this->banner_details['documentation_url'] ?>" target="_blank">
-								<span class="dashicons dashicons-media-text"></span><?php
-								printf(
-								/* translators: %s: Add-on name */
-									esc_html__( 'Documentation: %s Add-on', 'give' ),
-									$this->banner_details['name']
-								);
-								?></a>
-						<?php } ?>
-						<?php
-						//Let them signup for plugin updates
-						if ( isset( $this->banner_details['support_url'] ) ) { ?>
-
-							<a href="<?php echo $this->banner_details['support_url'] ?>" target="_blank">
-								<span class="dashicons dashicons-sos"></span><?php esc_html_e( 'Get Support', 'give' ); ?>
-							</a>
-
-						<?php } ?>
-
+									$this->render_single_addon_banner( $banner, $meta_key );
+									?>
+								</div>
+								<?php
+								$is_first = false;
+							}
+							?>
+						</div>
 					</div>
-				</div>
+					<?php
+				} else {
+					$this->render_single_addon_banner( $give_addons[0] );
+				}
+				?>
 			</div>
 			<?php
-
 			$notice_html = ob_get_clean();
-			
-			
+
 			// Register notice.
 			Give()->notices->register_notice( array(
-				'id'          => 'give_' . sanitize_title( $this->banner_details['name'] ) . '_notice',
-				'type'        => 'updated',
+				'id'               => 'give_add_on_activation_notice',
+				'type'             => 'updated',
 				'description_html' => $notice_html,
-				'show'        => true,
+				'show'             => true,
 			) );
 		}
 	}
