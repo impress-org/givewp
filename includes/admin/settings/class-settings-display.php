@@ -343,7 +343,7 @@ if ( ! class_exists( 'Give_Settings_Display' ) ) :
 				'post-types'          => __( 'Post Types', 'give' ),
 				'taxonomies'          => __( 'Taxonomies', 'give' ),
 				'term-and-conditions' => __( 'Terms and Conditions', 'give' ),
-				'form-display' => __( 'Form Display', 'give' ),
+				'form-display'        => __( 'Form Display', 'give' ),
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );
