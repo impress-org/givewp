@@ -104,7 +104,7 @@ class Give_Addon_Activation_Banner {
 	 *
 	 * @since 2.0.7
 	 *
-	 * @param array $plugin_file Plugin filename.
+	 * @param string $plugin_file Plugin filename.
 	 */
 	public function give_addon_activation( $plugin_file ) {
 		if ( strpos( $plugin_file, 'Give-' ) !== false ) {
