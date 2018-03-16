@@ -427,6 +427,25 @@ function give_donor_view( $donor ) {
 									</span>
 							</td>
 						</tr>
+
+						<?php
+						$donor_company = $donor->get_meta( '_give_donor_company', true );
+
+						if ( ! empty( $donor_company ) ) {
+							?>
+							<tr class="alternate">
+								<th scope="col">
+									<label for="tablecell"><?php _e( 'Company Donations:', 'give' ); ?></label>
+								</th>
+								<td>
+									<?php
+									echo $donor_company;
+									?>
+								</td>
+							</tr>
+							<?php
+						}
+						?>
 						</tbody>
 					</table>
 
