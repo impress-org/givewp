@@ -216,7 +216,7 @@ class Give_Addon_Activation_Banner {
 		}
 
 		// If only one add-on activated.
-		$is_single = 1 === count( $give_addons ) ? true : false;
+		$is_single = 1 === count( $give_addons );
 
 		// If the user hasn't already dismissed the alert, output activation banner.
 		if ( ! get_user_meta( $this->user_id, $this->get_notice_dismiss_meta_key() ) ) {
