@@ -179,7 +179,6 @@ var give_setting_edit = false;
 				if ( 'no_ajax' === select.data( 'search-type' ) ) {
 					return;
 				}
-
 				search_type = 'give_' + select.data( 'search-type' ) + '_search';
 			}
 
