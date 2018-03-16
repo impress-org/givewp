@@ -957,8 +957,9 @@ function give_email_tag_form_title( $tag_args ) {
 
 /**
  * Email template tag: {company_name}
- *
  * Output the donation form company name filed.
+ *
+ * @since 2.0.7
  *
  * @param array $tag_args
  *

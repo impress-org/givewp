@@ -1047,11 +1047,11 @@ function _give_get_prefill_form_field_values( $form_id ) {
  */
 function give_donation_form_company_fields( $form_id ) {
 	if ( give_is_company_donation_show( $form_id ) ) {
-		$give_company = give_field_is_required( 'give_company', $form_id );
+		$give_company = give_field_is_required( 'give_company_name', $form_id );
 		?>
 		<p id="give-company-wrap" class="form-row form-row-wide">
 			<label class="give-label" for="give-company">
-				<?php _e( 'Company Donations', 'give' ); ?>
+				<?php _e( 'Company Name', 'give' ); ?>
 				<?php if ( $give_company ) { ?>
 					<span class="give-required-indicator">*</span>
 				<?php } ?>
@@ -1061,8 +1061,8 @@ function give_donation_form_company_fields( $form_id ) {
 			<input
 				class="give-input required"
 				type="text"
-				name="give_company"
-				placeholder="<?php _e( 'Company Donations', 'give' ); ?>"
+				name="give_company_name"
+				placeholder="<?php _e( 'Company Name', 'give' ); ?>"
 				id="give-company"
 				value=""
 				<?php echo( $give_company ? ' required aria-required="true" ' : '' ); ?>

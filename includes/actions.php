@@ -345,7 +345,7 @@ add_action( 'give_update_log_form_id', 'give_update_log_form_id' );
  * @param int $payment_id Payment id for which the meta value should be updated.
  */
 function give_donation_save_company_name( $payment_id ) {
-	$give_company = ( ! empty( $_REQUEST['give_company'] ) ? give_clean( $_REQUEST['give_company'] ) : false );
+	$give_company = ( ! empty( $_REQUEST['give_company_name'] ) ? give_clean( $_REQUEST['give_company_name'] ) : false );
 
 	// Check $page_url is not empty.
 	if ( $give_company ) {
