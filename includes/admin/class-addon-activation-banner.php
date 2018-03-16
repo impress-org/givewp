@@ -308,42 +308,41 @@ class Give_Addon_Activation_Banner {
 	}
 
 	/**
-	 * Add activation banner css.
+	 * Add activation banner css and js .
 	 *
-	 * @since 1.8.16
+	 * @since  1.8.16
+	 * @since  2.0.7 Added JS code for multiple add-on.
 	 * @access private
 	 */
-	private function print_css(){
+	private function print_css_js() {
 		?>
 		<style>
 			div.give-addon-alert.updated {
 				padding: 20px;
 				position: relative;
 				border-color: #66BB6A;
+				min-height: 85px;
 			}
 
 			div.give-alert-message {
-				margin-left: 70px;
+				margin-left: 108px;
 			}
 
 			div.give-addon-alert img.give-logo {
-				max-width: 50px;
+				max-width: 85px;
 				float: left;
 			}
 
 			div.give-addon-alert h3 {
 				margin: -5px 0 10px;
 				font-size: 22px;
-				font-weight: 300;
+				font-weight: 400;
 				line-height: 30px;
 			}
 
 			div.give-addon-alert h3 span {
 				font-weight: 700;
 				color: #66BB6A;
-			}
-
-			div.give-addon-alert .alert-actions {
 			}
 
 			div.give-addon-alert a {
@@ -369,6 +368,18 @@ class Give_Addon_Activation_Banner {
 
 			div.give-addon-alert .dismiss {
 				position: absolute;
+				right: 0px;
+				height: 99%;
+				top: 23%;
+				margin-top: -10px;
+				outline: none;
+				box-shadow: none;
+				text-decoration: none;
+				color: #AAA;
+			}
+
+			div.give-addon-alert .dismiss {
+				position: absolute;
 				right: 20px;
 				height: 100%;
 				top: 50%;
@@ -379,8 +390,129 @@ class Give_Addon_Activation_Banner {
 				color: #AAA;
 			}
 
+			.give-alert-tab-wrapper .dismiss {
+				right: 0px !important;
+				height: 99% !important;
+				top: 23% !important;
+			}
+
 			div.give-addon-alert .dismiss:hover {
 				color: #333;
+			}
+
+			ul.give-alert-addon-list {
+				min-width: 220px;
+				display: inline-block;
+				float: left;
+				max-width: 250px;
+				padding: 0;
+				margin: 0;
+			}
+
+			.give-addon-alert .give-addon-description {
+				padding: 1px;
+				display: inline-block;
+				color: #777;
+				margin-bottom: 12px;
+			}
+
+			.give-alert-tab-wrapper .give-right-side-block {
+				width: calc(100% - 250px);
+				display: inline-block;
+				float: left;
+				background: #fff;
+				height: 100%;
+				position: relative;
+			}
+
+			.give-vertical-tab {
+				width: 100%;
+			}
+
+			ul.give-alert-addon-list li {
+				display: block;
+				border: 1px solid #d1d1d18f;
+				border-width: 1px 0px 0px 0px;
+				margin: 0;
+			}
+
+			ul.give-alert-addon-list li a {
+				display: block;
+				font-weight: bold;
+				color: #a3a3a3;
+				text-transform: capitalize;
+				text-decoration: none;
+				padding: 15px 10px 15px;
+				box-shadow: inset -6px 0px 18px 0px rgba(204, 204, 204, 0.36);
+				-moz-box-shadow: inset -6px 0px 18px 0px rgba(204, 204, 204, 0.36);
+				-webkit-box-shadow: inset -6px 0px 18px 0px rgba(204, 204, 204, 0.36);
+				-ms-box-shadow: inset -6px 0px 18px 0px rgba(204, 204, 204, 0.36);
+				-o-box-shadow: inset -6px 0px 18px 0px rgba(204, 204, 204, 0.36);
+			}
+
+			ul.give-alert-addon-list li.give-tab-list.active a {
+				color: #5f6c74;
+				box-shadow: none;
+			}
+
+			.updated.give-addon-alert.give-notice.give-alert-tab-wrapper {
+				display: inline-block;
+				width: 100%;
+			}
+
+			.give-tab-details {
+				display: none;
+				min-height: 100px;
+				position: absolute;
+				top: 0;
+				left: 0;
+				padding: 20px 20px 20px 40px;
+			}
+
+			.give-tab-details.active {
+				display: block;
+				z-index: 1;
+				position: relative;
+			}
+
+			.give-alert-tab-wrapper.give-addon-alert img.give-logo {
+				max-width: 80px;
+			}
+
+			.give-alert-tab-wrapper .give-alert-message {
+				margin-left: 100px;
+				padding-top: 10px;
+			}
+
+			ul.give-alert-addon-list li.give-tab-list.active {
+				background: #fff;
+			}
+
+			ul.give-alert-addon-list li.give-tab-list:last-child {
+				border-bottom: 0px solid #ccc;
+			}
+
+			ul.give-alert-addon-list li.give-tab-list:first-child {
+				border-top: 0 none;
+			}
+
+			.give-alert-tab-wrapper {
+				padding: 0 !important;
+			}
+
+			/** Responsiveness */
+			@media screen and (max-width: 767px) {
+				.give-alert-tab-wrapper .give-tab-details {
+					padding: 20px 40px 20px 20px;
+				}
+
+				.give-alert-tab-wrapper .give-right-side-block {
+					width: 100%;
+				}
+
+				.give-alert-tab-wrapper ul.give-alert-addon-list {
+					min-width: 100%;
+				}
 			}
 		</style>
 		<?php
