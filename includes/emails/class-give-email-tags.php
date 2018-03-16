@@ -409,6 +409,12 @@ function give_setup_email_tags() {
 			'context'     => 'donor',
 		),
 		array(
+			'tag'         => 'company_name',
+			'description' => esc_html__( 'The Company name.', 'give' ),
+			'function'    => 'give_email_tag_company_name',
+			'context'     => 'donation',
+		),
+		array(
 			'tag'         => 'user_email',
 			'description' => esc_html__( 'The donor\'s email address.', 'give' ),
 			'function'    => 'give_email_tag_user_email',
@@ -945,6 +951,42 @@ function give_email_tag_form_title( $tag_args ) {
 	return apply_filters(
 		'give_email_tag_form_title',
 		$donation_form_title,
+		$tag_args
+	);
+}
+
+/**
+ * Email template tag: {company_name}
+ *
+ * Output the donation form company name filed.
+ *
+ * @param array $tag_args
+ *
+ * @return string $company_name
+ */
+function give_email_tag_company_name( $tag_args ) {
+	$company_name = '';
+
+	// Backward compatibility.
+	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
+
+	switch ( true ) {
+		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
+			$company_name = give_get_payment_meta( $tag_args['payment_id'], '_give_donation_company', true );
+			break;
+	}
+
+	/**
+	 * Filter the {company_name} email template tag output.
+	 *
+	 * @since 2.0
+	 *
+	 * @param string $company_name
+	 * @param array $tag_args
+	 */
+	return apply_filters(
+		'give_email_tag_company_name',
+		$company_name,
 		$tag_args
 	);
 }
