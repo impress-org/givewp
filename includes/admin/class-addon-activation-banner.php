@@ -515,6 +515,25 @@ class Give_Addon_Activation_Banner {
 				}
 			}
 		</style>
+
+		<!-- Start of the Give Add-on tab JS -->
+		<script type="text/javascript">
+					jQuery( document ).ready( function( $ ) {
+						$( '.give-alert-tab-wrapper' ).on( 'click', '.give-tab-list', function() {
+							var clicked_tab = $( this ).attr( 'id' ),
+								addon_tab_wrapper = $( this ).closest( '.give-alert-tab-wrapper' );
+
+							// Remove 'active' class from all tab list.
+							$( '.give-alert-addon-list li' ).removeClass( 'active' );
+							// Add active class to the selected tab.
+							$( this ).addClass( 'active' );
+							// Remove 'active' class from the details.
+							addon_tab_wrapper.find( '.give-tab-details' ).removeClass( 'active' );
+							addon_tab_wrapper.find( '.give-right-side-block .give-tab-details#' + clicked_tab ).addClass( 'active' );
+						} );
+					} );
+		</script>
+		<!-- End of the Give Add-on tab JS -->
 		<?php
 	}
 
