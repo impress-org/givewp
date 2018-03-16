@@ -2881,6 +2881,17 @@ var give_setting_edit = false;
 
 		// Render setting tab.
 		give_render_responsive_tabs();
+
+		$('.give-confirm').on('click', function () {
+			if ( $(this).hasClass('dashicons-lock') && window.confirm($(this).data('message'))) {
+				if ($(this).closest('.give-forminp').length) {
+					$(this).addClass('dashicons-unlock');
+					$(this).removeClass('dashicons-lock');
+					$(this).prev().removeAttr('readonly');
+				}
+				$(this).trigger('givePostConfrim');
+			}
+		});
 	} );
 })( jQuery );
 

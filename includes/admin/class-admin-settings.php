@@ -318,14 +318,15 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 
 			// Field Default values.
 			$defaults = array(
-				'id'               => '',
-				'class'            => '',
-				'css'              => '',
-				'default'          => '',
-				'desc'             => '',
-				'table_html'       => true,
-				'repeat'           => false,
-				'repeat_btn_title' => __( 'Add Field', 'give' ),
+				'id'                  => '',
+				'class'               => '',
+				'css'                 => '',
+				'default'             => '',
+				'desc'                => '',
+				'table_html'          => true,
+				'repeat'              => false,
+				'confirm_before_save' => false,
+				'repeat_btn_title'    => __( 'Add Field', 'give' ),
 			);
 
 			foreach ( $options as $value ) {
@@ -463,14 +464,18 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 									<a href="#" data-id="<?php echo $value['id']; ?>" class="give-repeat-setting-field button-secondary"><?php echo $value['repeat_btn_title']; ?></a>
 								<?php else : ?>
 									<input
-											name="<?php echo esc_attr( $value['id'] ); ?>"
-											id="<?php echo esc_attr( $value['id'] ); ?>"
-											type="<?php echo esc_attr( $type ); ?>"
-											style="<?php echo esc_attr( $value['css'] ); ?>"
-											value="<?php echo esc_attr( $option_value ); ?>"
-											class="give-input-field<?php echo( empty( $value['class'] ) ? '' : ' ' . esc_attr( $value['class'] ) ); ?>"
+										name="<?php echo esc_attr( $value['id'] ); ?>"
+										id="<?php echo esc_attr( $value['id'] ); ?>"
+										type="<?php echo esc_attr( $type ); ?>"
+										style="<?php echo esc_attr( $value['css'] ); ?>"
+										value="<?php echo esc_attr( $option_value ); ?>"
+										class="give-input-field<?php echo( empty( $value['class'] ) ? '' : ' ' . esc_attr( $value['class'] ) ); ?>"
 										<?php echo implode( ' ', $custom_attributes ); ?>
+										<?php echo $value['confirm_before_save'] ? 'readonly' : ''; ?>
 									/>
+									<?php if ( $value['confirm_before_save'] ): ?>
+										<span class="give-confirm dashicons dashicons-lock" data-message="<?php echo __( 'Do you want to change this setting?', 'give' ); ?>"></span>
+									<?php endif; ?>
 								<?php endif; ?>
 								<?php echo $description; ?>
 							</td>

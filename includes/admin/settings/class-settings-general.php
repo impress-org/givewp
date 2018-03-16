@@ -321,9 +321,10 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'type' => 'text'
 						),
 						array(
-							'name' => __( 'Sequential Number Prefix', 'give' ),
-							'id'   => "{$current_section}_number_prefix",
-							'type' => 'text'
+							'name'                => __( 'Sequential Number Prefix', 'give' ),
+							'id'                  => "{$current_section}_number_prefix",
+							'type'                => 'text',
+							'confirm_before_save' => true
 						),
 						array(
 							'name' => __( 'Sequential Number Suffix', 'give' ),
