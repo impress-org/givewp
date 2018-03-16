@@ -94,6 +94,52 @@ class Give_Addon_Activation_Banner {
 		}
 	}
 
+	/**
+	 * Get plugin file name.
+	 *
+	 * @since   1.8
+	 * @access  private
+	 * @return mixed
+	 */
+	private function get_plugin_file_name() {
+		$active_plugins = get_option( 'active_plugins' );
+		$file_name      = '';
+
+		try {
+
+			// Check addon file path.
+			if ( ! empty( $this->banner_details['file'] ) ) {
+				$file_name = '';
+				if ( $file_path = explode( '/plugins/', $this->banner_details['file'] ) ) {
+					$file_path = array_pop( $file_path );
+					$file_name = current( explode( '/', $file_path ) );
+				}
+
+				if ( empty( $file_name ) ) {
+					return false;
+				}
+
+				foreach ( $active_plugins as $plugin ) {
+					if ( false !== strpos( $plugin, $file_name ) ) {
+						$file_name = $plugin;
+						break;
+					}
+				}
+			} elseif ( WP_DEBUG ) {
+				throw new Exception( __( "File path must be added within the {$this->banner_details['name']} add-on in the banner details.", 'give' ) );
+			}
+
+			// Check plugin path calculated by addon file path.
+			if ( empty( $file_name ) && WP_DEBUG ) {
+				throw new Exception( __( "Empty add-on plugin path for {$this->banner_details['name']} add-on.", 'give' ) );
+			}
+
+		} catch ( Exception $e ) {
+			echo $e->getMessage();
+		}
+
+		return $file_name;
+	}
 
 	/**
 	 * Check if current page is plugin page or not.
@@ -336,53 +382,4 @@ class Give_Addon_Activation_Banner {
 			delete_option( $this->activate_by_meta_key );
 		}
 	}
-
-
-	/**
-	 * Get plugin file name.
-	 *
-	 * @since   1.8
-	 * @access  private
-	 * @return mixed
-	 */
-	private function get_plugin_file_name() {
-		$active_plugins = get_option( 'active_plugins' );
-		$file_name      = '';
-
-		try {
-
-			// Check addon file path.
-			if ( ! empty( $this->banner_details['file'] ) ) {
-				$file_name = '';
-				if ( $file_path = explode( '/plugins/', $this->banner_details['file'] ) ) {
-					$file_path = array_pop( $file_path );
-					$file_name = current( explode( '/', $file_path ) );
-				}
-
-				if ( empty( $file_name ) ) {
-					return false;
-				}
-
-				foreach ( $active_plugins as $plugin ) {
-					if ( false !== strpos( $plugin, $file_name ) ) {
-						$file_name = $plugin;
-						break;
-					}
-				}
-			} elseif ( WP_DEBUG ) {
-				throw new Exception( __( "File path must be added within the {$this->banner_details['name']} add-on in the banner details.", 'give' ) );
-			}
-
-			// Check plugin path calculated by addon file path.
-			if ( empty( $file_name ) && WP_DEBUG ) {
-				throw new Exception( __( "Empty add-on plugin path for {$this->banner_details['name']} add-on.", 'give' ) );
-			}
-
-		} catch ( Exception $e ) {
-			echo $e->getMessage();
-		}
-
-		return $file_name;
-	}
-
 }
