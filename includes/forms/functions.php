@@ -1073,4 +1073,4 @@ function give_donation_form_company_fields( $form_id ) {
 	}
 }
 
-add_action( 'give_donation_form_before_email', 'give_donation_form_company_fields', 10, 1 );
+add_action( 'give_donation_form_before_email', 'give_donation_form_company_fields', 0, 1 );
