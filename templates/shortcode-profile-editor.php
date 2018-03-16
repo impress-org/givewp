@@ -10,11 +10,15 @@
 $current_user     = wp_get_current_user();
 
 if ( is_user_logged_in() ) :
-	$user_id      = get_current_user_id();
+	$user_id = get_current_user_id();
 	$first_name   = get_user_meta( $user_id, 'first_name', true );
+	$last_name    = get_user_meta( $user_id, 'last_name', true );
 	$last_name    = get_user_meta( $user_id, 'last_name', true );
 	$display_name = $current_user->display_name;
 	$address      = give_get_donor_address( $user_id, array( 'address_type' => 'personal' ) );
+
+	$donor        = new Give_Donor( $user_id, true );
+	$company_name = $donor->get_meta( '_give_donor_company', true );
 
 	if ( isset( $_GET['updated'] ) && 'true' === $_GET['updated'] && ! give_get_errors() ) :
 		if ( isset( $_GET['update_code'] ) ) :?>
@@ -61,6 +65,17 @@ if ( is_user_logged_in() ) :
 				<label for="give_last_name"><?php _e( 'Last Name', 'give' ); ?></label>
 				<input name="give_last_name" id="give_last_name" class="text give-input" type="text" value="<?php echo esc_attr( $last_name ); ?>"/>
 			</p>
+
+			<?php
+			if ( ! empty( $company_name ) ) {
+				?>
+				<p id="give_profile_company_name_wrap" class="form-row form-row-wide">
+					<label for="give_company_name"><?php _e( 'Company Name', 'give' ); ?></label>
+					<input name="give_company_name" id="give_company_name" class="text give-input" type="text" value="<?php echo esc_attr( $company_name ); ?>"/>
+				</p>
+				<?php
+			}
+			?>
 
 			<p id="give_profile_display_name_wrap" class="form-row form-row-first form-row-responsive">
 				<label for="give_display_name"><?php _e( 'Display Name', 'give' ); ?></label>

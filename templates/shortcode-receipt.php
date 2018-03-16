@@ -25,6 +25,7 @@ $user         = give_get_payment_meta_user_info( $donation_id );
 $email        = give_get_payment_user_email( $donation_id );
 $status       = $payment->post_status;
 $status_label = give_get_payment_status( $payment, true );
+$company_name      = give_get_payment_meta( $donation_id, '_give_donation_company', true );
 
 /**
  * Generate Donation Receipt Arguments.
@@ -39,6 +40,23 @@ $give_receipt_args['donation_receipt']['donor'] = array(
 	'value'   => $user['first_name'] . ' ' . $user['last_name'],
 	'display' => $give_receipt_args['donor'],
 );
+
+/**
+ * Show Company name on Donation receipt Page
+ *
+ * @since 2.0.7
+ *
+ * @param bool show/hide company name in donation receipt page.
+ *
+ * @return bool show/hide company name in donation receipt page.
+ */
+if ( ! empty( $company_name ) && apply_filters( 'give_show_company_name_receipt_page', false )) {
+	$give_receipt_args['donation_receipt']['company'] = array(
+		'name'    => __( 'Company Donation', 'give' ),
+		'value'   => esc_attr( $company_name ),
+		'display' => $give_receipt_args['donor'],
+	);
+}
 
 $give_receipt_args['donation_receipt']['date'] = array(
 	'name'    => __( 'Date', 'give' ),
