@@ -4,7 +4,6 @@
  *
  * @author  WordImpress
  * @version 1.0
- * https://github.com/WordImpress/plugin-activation-banner-demo
  */
 
 // Exit if accessed directly.
@@ -12,8 +11,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+global $give_addons;
+
 /**
  * Class Give_Addon_Activation_Banner
+ *
+ * @since  2.0.7 Added pleasing interface when multiple add-ons are activated.
  */
 class Give_Addon_Activation_Banner {
 
@@ -33,19 +36,32 @@ class Give_Addon_Activation_Banner {
 	 *                               }
 	 */
 	function __construct( $_banner_details ) {
-		$current_user = wp_get_current_user();
+		global $give_addons;
 
-		$this->plugin_activate_by   = 0;
-		$this->banner_details       = $_banner_details;
-		$this->test_mode            = ( $this->banner_details['testing'] == 'true' ) ? true : false;
-		$this->nag_meta_key         = 'give_addon_activation_ignore_' . sanitize_title( $this->banner_details['name'] );
-		$this->activate_by_meta_key = 'give_addon_' . sanitize_title( $this->banner_details['name'] ) . '_active_by_user';
+		// Append add-on information to the global variable.
+		$give_addons[] = $_banner_details;
+
+		// Get the currenct user.
+		$current_user = wp_get_current_user();
 
 		//Get current user
 		$this->user_id = $current_user->ID;
 
-		// Set up hooks.
-		$this->init();
+		// Only if single add-on activated.
+		if ( 1 === count( $give_addons ) ) {
+
+			$this->plugin_activate_by   = 0;
+			$this->banner_details       = $_banner_details;
+			$this->test_mode            = ( $this->banner_details['testing'] == 'true' ) ? true : false;
+			$this->nag_meta_key         = 'give_addon_activation_ignore_' . sanitize_title( $this->banner_details['name'] );
+			$this->activate_by_meta_key = 'give_addon_' . sanitize_title( $this->banner_details['name'] ) . '_active_by_user';
+
+			// Set up hooks.
+			$this->init();
+
+			// Store user id who activate plugin.
+			$this->add_addon_activate_meta();
+		}
 
 		// Store user id who activate plugin.
 		$this->add_addon_activate_meta();
