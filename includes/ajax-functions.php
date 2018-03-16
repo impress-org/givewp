@@ -591,6 +591,8 @@ add_action( 'wp_ajax_nopriv_give_confirm_email_for_donations_access', 'give_conf
 /**
  * Queries page by title and returns page ID and title in JSON format.
  *
+ * Note: this function in for internal use.
+ *
  * @since 2.1
  *
  * @return string
