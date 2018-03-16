@@ -68,6 +68,9 @@ class Give_Addon_Activation_Banner {
 			// If multiple add-on are activated then show activation banner in tab view.
 			add_action( 'admin_notices', array( $this, 'addon_activation_banner_notices' ), 10 );
 		}
+
+		// Remove the flag of the dimissed notice when any Give's add-on activated.
+		add_action( 'activate_plugin', array( $this, 'give_addon_activation' ), 10, 1 );
 	}
 
 	/**
@@ -87,13 +90,25 @@ class Give_Addon_Activation_Banner {
 
 		//Get the current page to add the notice to
 		add_action( 'current_screen', array( $this, 'give_addon_notice_ignore' ) );
-		add_action( 'admin_notices', array( $this, 'give_addon_activation_admin_notice' ) );
 
 		// File path of addon must be included in banner detail other addon activate meta will not delete.
 		$file_name = $this->get_plugin_file_name();
 
 		if ( ! empty( $file_name ) ) {
 			add_action( 'deactivate_' . $file_name, array( $this, 'remove_addon_activate_meta' ) );
+		}
+	}
+
+	/**
+	 * Delete meta from the user meta table when any Give's Add-on activated.
+	 *
+	 * @since 2.0.7
+	 *
+	 * @param array $plugin_file Plugin filename.
+	 */
+	public function give_addon_activation( $plugin_file ) {
+		if ( strpos( $plugin_file, 'Give-' ) !== false ) {
+			delete_user_meta( $this->user_id, 'give_addon_activation_ignore_all' );
 		}
 	}
 
