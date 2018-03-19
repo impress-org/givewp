@@ -159,7 +159,7 @@ const GiveModal = ( function( $ ) {
 					reference.callback.content = $( this.content );
 
 					let fields = '<div class="appended-controls">';
-					fields += reference.root.filter.apply( 'filter_notice_fields', '<button class="button button-primary popup-close-button">Ok</button>' );
+					fields += reference.root.filter.apply( 'filter_notice_fields', '<button class="give-button give-button-primary popup-close-button">Ok</button>' );
 					fields += '</div>';
 					reference.callback.content.append( fields );
 				},
@@ -196,3 +196,8 @@ const GiveModal = ( function( $ ) {
 
 	return GiveModal;
 })( jQuery );
+
+jQuery(document).ready( function() {
+	var r = new GiveModal( '#test-popup' ).passive().error();
+	r.popup();
+})
