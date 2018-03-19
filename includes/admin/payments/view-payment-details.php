@@ -42,8 +42,10 @@ if ( empty( $payment_exists ) ) {
 	wp_die( __( 'The specified ID does not belong to a donation. Please try again.', 'give' ), __( 'Error', 'give' ), array( 'response' => 400 ) );
 }
 
-$number         = $payment->number;
-$payment_meta   = $payment->get_meta();
+$number       = $payment->number;
+$payment_meta = $payment->get_meta();
+
+$company_name   = ! empty( $payment_meta['_give_donation_company'] ) ? esc_attr( $payment_meta['_give_donation_company'] ) : false;
 $transaction_id = esc_attr( $payment->transaction_id );
 $user_id        = $payment->user_id;
 $donor_id       = $payment->customer_id;
@@ -442,6 +444,17 @@ $payment_mode   = $payment->mode;
 												<strong><?php esc_html_e( 'Total Donation:', 'give' ); ?></strong><br>
 												<?php echo give_donation_amount( $payment, true ); ?>
 											</p>
+
+											<?php
+											if ( ! empty( $company_name ) ) {
+												?>
+												<p>
+													<strong><?php esc_html_e( 'Company Name:', 'give' ); ?></strong><br>
+													<?php echo $company_name; ?>
+												</p>
+												<?php
+											}
+											?>
 											<p>
 												<?php
 												/**
