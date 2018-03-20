@@ -1762,7 +1762,7 @@ function give_maybe_define_constant( $name, $value ) {
 }
 
 /**
- * Check if Company Donations show or not for form.
+ * Check if Company field enabled or not for form or globally.
  *
  * @since 2.0.7
  *

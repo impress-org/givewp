@@ -410,7 +410,7 @@ function give_setup_email_tags() {
 		),
 		array(
 			'tag'         => 'company_name',
-			'description' => esc_html__( 'The Company name.', 'give' ),
+			'description' => esc_html__( 'Company name.', 'give' ),
 			'function'    => 'give_email_tag_company_name',
 			'context'     => 'donation',
 		),
