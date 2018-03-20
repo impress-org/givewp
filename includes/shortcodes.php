@@ -397,7 +397,7 @@ function give_process_profile_editor_updates( $data ) {
 	$old_user_data = get_userdata( $user_id );
 
 	/* @var Give_Donor $donor */
-	$donor = new Give_Donor( $user_id, true );
+	$donor            = new Give_Donor( $user_id, true );
 	$old_company_name = $donor->get_company_name();
 
 	$display_name     = isset( $data['give_display_name'] ) ? sanitize_text_field( $data['give_display_name'] ) : $old_user_data->display_name;
