@@ -753,8 +753,7 @@ final class Give_Payment {
 
 				$donor_id = absint( $donor->id );
 				if ( ! empty( $donor_id ) ) {
-					$donor = new Give_Donor( $donor_id );
-					$donor->update_meta( '_give_donor_company', $give_company );
+					Give()->donor_meta->update_meta( $donor_id, '_give_donor_company', $give_company );
 				}
 			}
 
