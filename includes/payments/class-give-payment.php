@@ -745,7 +745,7 @@ final class Give_Payment {
 				$this->update_meta( '_give_payment_meta', array_map( 'maybe_unserialize', $custom_payment_meta ) );
 			}
 
-			$give_company = ( ! empty( $_REQUEST['give_company_name'] ) ? give_clean( $_REQUEST['give_company_name'] ) : false );
+			$give_company = ( ! empty( $_REQUEST['give_company_name'] ) ? give_clean( $_REQUEST['give_company_name'] ) : '' );
 
 			// Check $page_url is not empty.
 			if ( $give_company ) {
