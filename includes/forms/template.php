@@ -676,7 +676,7 @@ function give_user_info_fields( $form_id ) {
 			/>
 		</p>
 
-		<?php if ( give_is_company_donation_show( $form_id ) ) : ?>
+		<?php if ( give_is_company_field_enabled( $form_id ) ) : ?>
 			<?php $give_company = give_field_is_required( 'give_company_name', $form_id ); ?>
 			<p id="give-company-wrap" class="form-row form-row-wide">
 				<label class="give-label" for="give-company">

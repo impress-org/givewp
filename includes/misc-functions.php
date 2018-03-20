@@ -1762,32 +1762,6 @@ function give_maybe_define_constant( $name, $value ) {
 }
 
 /**
- * Check if Company Donations enabled or not for form.
- *
- * @since 2.0.7
- *
- * @param $form_id
- *
- * @return bool
- */
-function give_is_company_donation_enabled( $form_id ) {
-	$form_option = give_get_meta( $form_id, '_give_company_field', true );
-
-	if (
-		give_is_setting_enabled( $form_option, array( 'global', 'required' ) )
-		&& give_is_setting_enabled( give_get_option( 'company_field' ), array( 'required' ) )
-	) {
-		return true;
-
-	} elseif ( give_is_setting_enabled( $form_option, array( 'required' ) ) ) {
-		return true;
-
-	} else {
-		return false;
-	}
-}
-
-/**
  * Check if Company Donations show or not for form.
  *
  * @since 2.0.7
@@ -1796,15 +1770,18 @@ function give_is_company_donation_enabled( $form_id ) {
  *
  * @return bool
  */
-function give_is_company_donation_show( $form_id ) {
-	$form_val           = give_get_meta( $form_id, '_give_company_field', true );
+function give_is_company_field_enabled( $form_id ) {
+	$form_setting_val           = give_get_meta( $form_id, '_give_company_field', true );
 	$global_setting_val = give_get_option( 'company_field' );
 
-	if (
-		give_is_setting_enabled( $form_val, array( 'global', 'required', 'optional' ) )
-		&& give_is_setting_enabled( $global_setting_val, array( 'required', 'optional' ) )
-	) {
-		return true;
+	if ( ! empty( $form_setting_val ) ) {
+		if( give_is_setting_enabled( $form_setting_val, array( 'required', 'optional' ) ) ) {
+			return true;
+		} elseif ( 'global' === $form_setting_val && give_is_setting_enabled( $global_setting_val, array( 'required', 'optional' ) ) ) {
+			return true;
+		} else{
+			return false;
+		}
 
 	} elseif ( give_is_setting_enabled( $global_setting_val, array( 'required', 'optional' ) ) ) {
 		return true;
