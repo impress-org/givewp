@@ -223,7 +223,7 @@ class Give_Addon_Activation_Banner {
 								$is_first = true;
 								foreach ( $give_addons as $banner ) {
 									?>
-									<li class="give-tab-list <?php echo ( true === $is_first ) ? ' active' : ''; ?>"
+									<li class="give-tab-list<?php echo ( true === $is_first ) ? ' active' : ''; ?>"
 									    id="give-addon-<?php echo esc_html( basename( $banner['file'], '.php' ) ); ?>">
 										<a href="#"><?php echo esc_html( $banner['name'] ); ?></a>
 									</li>
@@ -567,6 +567,7 @@ class Give_Addon_Activation_Banner {
 							var li = $( 'li.give-tab-list' );
 							li.last().clone().prependTo( 'ul.give-alert-addon-list' );
 							li.last().removeAttr( 'id' ).find( 'a' ).addClass( 'inactivate' ).html( '&nbsp;' );
+							$('.give-tab-list:first').trigger('click');
 						}
 					} );
 		</script>
@@ -611,9 +612,7 @@ class Give_Addon_Activation_Banner {
 					<?php
 				}
 				if ( isset( $banner_arr['settings_url'] ) ) { ?>
-					<a href="<?php echo $banner_arr['settings_url']; ?>"><span class="dashicons dashicons-admin-settings"></span>
-						<?php esc_html_e( 'Go to Settings', 'give' ); ?>
-					</a>
+					<a href="<?php echo $banner_arr['settings_url']; ?>"><span class="dashicons dashicons-admin-settings"></span><?php esc_html_e( 'Go to Settings', 'give' ); ?></a>
 					<?php
 				}
 				// Show them how to configure the Addon.
