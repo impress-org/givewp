@@ -688,7 +688,7 @@ function give_user_info_fields( $form_id ) {
 				</label>
 
 				<input
-					class="give-input required"
+					class="give-input<?php echo( $give_company ? ' required' : '' ); ?>"
 					type="text"
 					name="give_company_name"
 					placeholder="<?php _e( 'Company Name', 'give' ); ?>"
