@@ -45,7 +45,7 @@ if ( empty( $payment_exists ) ) {
 $number       = $payment->number;
 $payment_meta = $payment->get_meta();
 
-$company_name   = ! empty( $payment_meta['_give_donation_company'] ) ? esc_attr( $payment_meta['_give_donation_company'] ) : false;
+$company_name   = ! empty( $payment_meta['_give_donation_company'] ) ? esc_attr( $payment_meta['_give_donation_company'] ) : '';
 $transaction_id = esc_attr( $payment->transaction_id );
 $user_id        = $payment->user_id;
 $donor_id       = $payment->customer_id;
@@ -445,16 +445,6 @@ $payment_mode   = $payment->mode;
 												<?php echo give_donation_amount( $payment, true ); ?>
 											</p>
 
-											<?php
-											if ( ! empty( $company_name ) ) {
-												?>
-												<p>
-													<strong><?php esc_html_e( 'Company Name:', 'give' ); ?></strong><br>
-													<?php echo $company_name; ?>
-												</p>
-												<?php
-											}
-											?>
 											<p>
 												<?php
 												/**
@@ -615,6 +605,17 @@ $payment_mode   = $payment->mode;
 												<em><?php _e( 'Click "Save Donation" to create new donor.', 'give' ); ?></em>
 											</p>
 										</div>
+									</div>
+
+									<div class="column-container">
+										<?php if ( ! empty( $company_name ) ) : ?>
+											<div class="column">
+												<p>
+													<strong><?php esc_html_e( 'Company Name:', 'give' ); ?></strong><br>
+													<?php echo $company_name; ?>
+												</p>
+											</div>
+										<?php endif; ?>
 									</div>
 
 									<?php

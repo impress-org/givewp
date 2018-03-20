@@ -251,6 +251,7 @@ function give_receipt_shortcode( $atts ) {
 		'payment_method' => true,
 		'payment_id'     => true,
 		'payment_status' => false,
+		'company_name'   => false,
 		'status_notice'  => true,
 	), $atts, 'give_receipt' );
 

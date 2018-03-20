@@ -745,7 +745,7 @@ final class Give_Payment {
 				$this->update_meta( '_give_payment_meta', array_map( 'maybe_unserialize', $custom_payment_meta ) );
 			}
 
-			$give_company = ( ! empty( $_REQUEST['give_company_name'] ) ? give_clean( $_REQUEST['give_company_name'] ) : false );
+			$give_company = ( ! empty( $_REQUEST['give_company_name'] ) ? give_clean( $_REQUEST['give_company_name'] ) : '' );
 
 			// Check $page_url is not empty.
 			if ( $give_company ) {
@@ -753,8 +753,7 @@ final class Give_Payment {
 
 				$donor_id = absint( $donor->id );
 				if ( ! empty( $donor_id ) ) {
-					$donor = new Give_Donor( $donor_id );
-					$donor->update_meta( '_give_donor_company', $give_company );
+					Give()->donor_meta->update_meta( $donor_id, '_give_donor_company', $give_company );
 				}
 			}
 
