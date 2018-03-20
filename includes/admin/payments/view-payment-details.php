@@ -445,16 +445,13 @@ $payment_mode   = $payment->mode;
 												<?php echo give_donation_amount( $payment, true ); ?>
 											</p>
 
-											<?php
-											if ( ! empty( $company_name ) ) {
-												?>
+											<?php if ( ! empty( $company_name ) ) : ?>
 												<p>
 													<strong><?php esc_html_e( 'Company Name:', 'give' ); ?></strong><br>
 													<?php echo $company_name; ?>
 												</p>
-												<?php
-											}
-											?>
+											<?php endif; ?>
+
 											<p>
 												<?php
 												/**

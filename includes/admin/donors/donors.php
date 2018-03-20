@@ -437,11 +437,7 @@ function give_donor_view( $donor ) {
 								<th scope="col">
 									<label for="tablecell"><?php _e( 'Company Donations:', 'give' ); ?></label>
 								</th>
-								<td>
-									<?php
-									echo $donor_company;
-									?>
-								</td>
+								<td><?php echo $donor_company; ?></td>
 							</tr>
 							<?php
 						}
