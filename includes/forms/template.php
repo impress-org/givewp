@@ -693,7 +693,7 @@ function give_user_info_fields( $form_id ) {
 					name="give_company_name"
 					placeholder="<?php _e( 'Company Name', 'give' ); ?>"
 					id="give-company"
-					value=""
+					value="<?php echo isset( $give_user_info['company_name'] ) ? $give_user_info['company_name'] : ''; ?>"
 					<?php echo( $give_company ? ' required aria-required="true" ' : '' ); ?>
 				/>
 
