@@ -113,11 +113,11 @@ const GiveModal = ( function( $ ) {
 	 *
 	 * @param string id         ID of the button.
 	 * @param string buttonType Type of the button: primary|secondary.
-	 * @param string textNode   Button Text.
+	 * @param string textNode   Button Text. 
 	 */
 	GiveModal.prototype.appendButton = function( id, buttonType, textNode ) {
 		this.filter.add( 'filter_notice_fields', val => { return `${ val } <button id="${ id }" class="give-button give-button-${ buttonType }">${ textNode }</button>` } );
-
+		
 		return this;
 	}
 
@@ -126,11 +126,11 @@ const GiveModal = ( function( $ ) {
 	 *
 	 * @param string id         ID of the button.
 	 * @param string buttonType Type of the button: primary|secondary.
-	 * @param string textNode   Button Text.
+	 * @param string textNode   Button Text. 
 	 */
 	GiveModal.prototype.addButton = function( id, buttonType, textNode ) {
 		this.filter.add( 'filter_notice_fields', val => { return `<button id="${ id }" class="give-button give-button-${ buttonType }">${ textNode }</button>` } );
-
+		
 		return this;
 	}
 
