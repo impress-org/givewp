@@ -445,13 +445,6 @@ $payment_mode   = $payment->mode;
 												<?php echo give_donation_amount( $payment, true ); ?>
 											</p>
 
-											<?php if ( ! empty( $company_name ) ) : ?>
-												<p>
-													<strong><?php esc_html_e( 'Company Name:', 'give' ); ?></strong><br>
-													<?php echo $company_name; ?>
-												</p>
-											<?php endif; ?>
-
 											<p>
 												<?php
 												/**
@@ -612,6 +605,17 @@ $payment_mode   = $payment->mode;
 												<em><?php _e( 'Click "Save Donation" to create new donor.', 'give' ); ?></em>
 											</p>
 										</div>
+									</div>
+
+									<div class="column-container">
+										<?php if ( ! empty( $company_name ) ) : ?>
+											<div class="column">
+												<p>
+													<strong><?php esc_html_e( 'Company Name:', 'give' ); ?></strong><br>
+													<?php echo $company_name; ?>
+												</p>
+											</div>
+										<?php endif; ?>
 									</div>
 
 									<?php
