@@ -115,6 +115,17 @@ class Give_Seq_Donation_Number {
 	 * @return int
 	 */
 	public function set_donation_number( $donation_id ) {
+		// Customize sequential donation number starting point if needed.
+		if (
+			get_option( '_give_reset_sequential_number' ) &&
+			( $number = give_get_option( 'sequential-donation_number', 0 ) )
+		) {
+			Give()->sequential_donation_db->insert( array(
+				'id'         => $number,
+				'payment_id' => $donation_id
+			) );
+		}
+
 		return Give()->sequential_donation_db->insert( array(
 			'payment_id' => $donation_id
 		) );
@@ -213,3 +224,4 @@ class Give_Seq_Donation_Number {
 
 // @todo: add post_title support in Give_Payment
 // @todo: resolve caching issue: donation listing is not updating when updating donation
+// @todo: test custom sequential donation number.
