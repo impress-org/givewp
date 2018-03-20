@@ -50,13 +50,11 @@ $give_receipt_args['donation_receipt']['donor'] = array(
  *
  * @return bool show/hide company name in donation receipt page.
  */
-if ( ! empty( $company_name ) && apply_filters( 'give_show_company_name_receipt_page', true ) ) {
-	$give_receipt_args['donation_receipt']['company'] = array(
-		'name'    => __( 'Company Donation', 'give' ),
-		'value'   => esc_attr( $company_name ),
-		'display' => $give_receipt_args['donor'],
-	);
-}
+$give_receipt_args['donation_receipt']['company_name'] = array(
+	'name'    => __( 'Company Name', 'give' ),
+	'value'   => esc_attr( $company_name ),
+	'display' => $give_receipt_args['company_name'],
+);
 
 $give_receipt_args['donation_receipt']['date'] = array(
 	'name'    => __( 'Date', 'give' ),
