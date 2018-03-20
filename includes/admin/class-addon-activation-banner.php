@@ -376,7 +376,7 @@ class Give_Addon_Activation_Banner {
 				color: #AAA;
 			}
 
-			.give-alert-tab-wrapper .dismiss {
+			div.give-alert-tab-wrapper .dismiss {
 				right: 0px !important;
 				height: 99% !important;
 				top: 23% !important;
@@ -395,14 +395,14 @@ class Give_Addon_Activation_Banner {
 				margin: 0;
 			}
 
-			.give-addon-alert .give-addon-description {
+			div.give-addon-alert .give-addon-description {
 				padding: 1px;
 				display: inline-block;
 				color: #777;
 				margin-bottom: 12px;
 			}
 
-			.give-alert-tab-wrapper .give-right-side-block {
+			div.give-alert-tab-wrapper .give-right-side-block {
 				width: calc(100% - 250px);
 				display: inline-block;
 				float: left;
@@ -411,7 +411,7 @@ class Give_Addon_Activation_Banner {
 				position: relative;
 			}
 
-			.give-vertical-tab {
+			div.give-vertical-tab {
 				width: 100%;
 			}
 
@@ -445,12 +445,12 @@ class Give_Addon_Activation_Banner {
 				box-shadow: none;
 			}
 
-			.updated.give-addon-alert.give-notice.give-alert-tab-wrapper {
+			div.updated.give-addon-alert.give-notice.give-alert-tab-wrapper {
 				display: inline-block;
 				width: 100%;
 			}
 
-			.give-tab-details {
+			.give-alert-tab-wrapper .give-tab-details {
 				display: none;
 				min-height: 100px;
 				position: absolute;
@@ -459,7 +459,7 @@ class Give_Addon_Activation_Banner {
 				padding: 20px 20px 20px 40px;
 			}
 
-			.give-tab-details.active {
+			.give-alert-tab-wrapper .give-tab-details.active {
 				display: block;
 				z-index: 1;
 				position: relative;
