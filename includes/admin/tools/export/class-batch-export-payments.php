@@ -61,7 +61,7 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 			'status'    => __( 'Status', 'give' )
 		);
 
-		if ( ! give_get_option( 'enable_sequential' ) ) {
+		if ( ! give_is_setting_enabled( give_get_option( 'sequential-donation_status', 'disabled' ) ) ) {
 			unset( $cols['seq_id'] );
 		}
 
@@ -152,7 +152,7 @@ class Give_Batch_Payments_Export extends Give_Batch_Export {
 
 				$data[] = array(
 					'id'        => $payment->ID,
-					'seq_id'    => give_get_payment_number( $payment->ID ),
+					'seq_id'    => Give()->seq_donation_number->get_serial_code( $payment->ID ),
 					'email'     => $payment_meta['email'],
 					'first'     => $user_info['first_name'],
 					'last'      => $user_info['last_name'],
