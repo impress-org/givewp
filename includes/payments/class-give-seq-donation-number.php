@@ -157,7 +157,7 @@ class Give_Seq_Donation_Number {
 
 		// Bailout.
 		if ( empty( $donation->ID ) ) {
-			return null;
+			return '';
 		}
 
 		// Set default params.
