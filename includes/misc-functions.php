@@ -1797,15 +1797,16 @@ function give_is_company_donation_enabled( $form_id ) {
  * @return bool
  */
 function give_is_company_donation_show( $form_id ) {
-	$form_option = give_get_meta( $form_id, '_give_company_field', true );
+	$form_val           = give_get_meta( $form_id, '_give_company_field', true );
+	$global_setting_val = give_get_option( 'company_field' );
 
 	if (
-		give_is_setting_enabled( $form_option, array( 'global', 'required', 'optional' ) )
-		&& give_is_setting_enabled( give_get_option( 'company_field' ), array( 'required', 'optional' ) )
+		give_is_setting_enabled( $form_val, array( 'global', 'required', 'optional' ) )
+		&& give_is_setting_enabled( $global_setting_val, array( 'required', 'optional' ) )
 	) {
 		return true;
 
-	} elseif ( give_is_setting_enabled( $form_option, array( 'required', 'optional' ) ) ) {
+	} elseif ( give_is_setting_enabled( $global_setting_val, array( 'required', 'optional' ) ) ) {
 		return true;
 
 	} else {
