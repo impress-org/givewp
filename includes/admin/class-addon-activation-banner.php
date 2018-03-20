@@ -217,21 +217,23 @@ class Give_Addon_Activation_Banner {
 				if ( false === $is_single ) {
 					?>
 					<div class="give-vertical-tab">
-						<ul class="give-alert-addon-list">
-							<?php
-							$is_first = true;
-							foreach ( $give_addons as $banner ) {
-								?>
-								<li class="give-tab-list <?php echo ( true === $is_first ) ? ' active' : ''; ?>"
-								    id="give-addon-<?php echo esc_html( basename( $banner['file'], '.php' ) ); ?>">
-									<a href="#"><?php echo esc_html( $banner['name'] ); ?></a>
-								</li>
+						<div class="give-addon-tab-list">
+							<ul class="give-alert-addon-list">
 								<?php
-								$is_first = false;
-							}
-							$is_first = true;
-							?>
-						</ul>
+								$is_first = true;
+								foreach ( $give_addons as $banner ) {
+									?>
+									<li class="give-tab-list <?php echo ( true === $is_first ) ? ' active' : ''; ?>"
+									    id="give-addon-<?php echo esc_html( basename( $banner['file'], '.php' ) ); ?>">
+										<a href="#"><?php echo esc_html( $banner['name'] ); ?></a>
+									</li>
+									<?php
+									$is_first = false;
+								}
+								$is_first = true;
+								?>
+							</ul>
+						</div>
 						<div class="give-right-side-block">
 							<?php
 							foreach ( $give_addons as $banner ) {
@@ -420,6 +422,10 @@ class Give_Addon_Activation_Banner {
 				margin: 0;
 			}
 
+			ul.give-alert-addon-list li a.inactivate {
+				cursor: default;
+			}
+
 			ul.give-alert-addon-list li a {
 				display: block;
 				font-weight: bold;
@@ -484,6 +490,24 @@ class Give_Addon_Activation_Banner {
 				padding: 0 !important;
 			}
 
+			ul.give-alert-addon-list {
+				max-height: 195px;
+				overflow: hidden;
+			}
+
+			ul.give-alert-addon-list::-webkit-scrollbar {
+				height: 10px;
+				width: 10px;
+				border-radius: 4px;
+				transition: all 0.3s ease;
+				background: rgba(158, 158, 158, 0.15);
+			}
+
+			ul.give-alert-addon-list::-webkit-scrollbar-thumb {
+				background: #939395;
+				border-radius: 4px;
+			}
+
 			/** Responsiveness */
 			@media screen and (max-width: 767px) {
 				.give-alert-tab-wrapper .give-tab-details {
@@ -503,10 +527,13 @@ class Give_Addon_Activation_Banner {
 		<!-- Start of the Give Add-on tab JS -->
 		<script type="text/javascript">
 					jQuery( document ).ready( function( $ ) {
-						$( '.give-alert-tab-wrapper' ).on( 'click', '.give-tab-list', function( e ) {
-							e.preventDefault();
+						$( '.give-alert-tab-wrapper' ).on( 'click', '.give-tab-list', function() {
+							if ( $( this ).find( 'a' ).hasClass( 'inactivate' ) ) {
+								return false;
+							}
 
-							var clicked_tab = $( this ).attr( 'id' ),
+							var
+								clicked_tab = $( this ).attr( 'id' ),
 								addon_tab_wrapper = $( this ).closest( '.give-alert-tab-wrapper' );
 
 							// Remove 'active' class from all tab list.
@@ -519,6 +546,28 @@ class Give_Addon_Activation_Banner {
 
 							return false;
 						} );
+
+						var add_on_tabs = $( '.give-alert-addon-list' );
+
+						add_on_tabs
+							.mouseout( function() {
+								$( this ).css( 'overflow', 'hidden' );
+							} )
+							.mouseover( function() {
+								$( this ).css( 'overflow', 'auto' );
+							} );
+
+						// Prevent default click event of the add-on.
+						add_on_tabs.find( 'li a' ).on( 'click', function( e ) {
+							e.preventDefault();
+						} );
+
+						// If total length of the add-on is 2.
+						if ( 2 === add_on_tabs.find( 'li' ).length ) {
+							var li = $( 'li.give-tab-list' );
+							li.last().clone().prependTo( 'ul.give-alert-addon-list' );
+							li.last().removeAttr( 'id' ).find( 'a' ).addClass( 'inactivate' ).html( '&nbsp;' );
+						}
 					} );
 		</script>
 		<!-- End of the Give Add-on tab JS -->
