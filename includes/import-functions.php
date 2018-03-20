@@ -380,6 +380,10 @@ function give_import_donations_options() {
 			__( 'Donation Amount', 'give' ),
 			__( 'Amount', 'give' )
 		),
+		'currency'      => array(
+			__( 'Donation Currencies', 'give' ),
+			__( 'Currencies', 'give' )
+		),
 		'post_date'   => array(
 			__( 'Donation Date', 'give' ),
 			__( 'Date', 'give' ),
@@ -407,9 +411,11 @@ function give_import_donations_options() {
 		),
 		'country'     => __( 'Country', 'give' ),
 		'zip'         => array(
-			__( 'Zip', 'give' ),
 			__( 'Zip Code', 'give' ),
+			__( 'Zip', 'give' ),
+			__( 'zipcode', 'give' ),
 			__( 'Postal Code', 'give' ),
+			__( 'Postal', 'give' ),
 		),
 		'email'       => array(
 			__( 'Donor Email', 'give' ),
@@ -578,15 +584,16 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 
 
 	$status = give_import_donation_get_status( $data );
-
+	$country = ( ! empty( $data['country'] ) ? ( ( $country_code = array_search( $data['country'], give_get_country_list() ) ) ? $country_code : $data['country'] ) : '' );
+	$state   = ( ! empty( $data['state'] ) ? ( ( $state_code = array_search( $data['state'], give_get_states( $country ) ) ) ? $state_code : $data['state'] ) : '' );
 
 	$address = array(
 		'line1'   => ( ! empty( $data['line1'] ) ? give_clean( $data['line1'] ) : '' ),
-		'line2'   => ( ! empty( $data['line1'] ) ? give_clean( $data['line2'] ) : '' ),
-		'city'    => ( ! empty( $data['line1'] ) ? give_clean( $data['city'] ) : '' ),
+		'line2'   => ( ! empty( $data['line2'] ) ? give_clean( $data['line2'] ) : '' ),
+		'city'    => ( ! empty( $data['city'] ) ? give_clean( $data['city'] ) : '' ),
 		'zip'     => ( ! empty( $data['zip'] ) ? give_clean( $data['zip'] ) : '' ),
-		'state'   => ( ! empty( $data['state'] ) ? give_clean( $data['state'] ) : '' ),
-		'country' => ( ! empty( $data['country'] ) ? ( ( $country_code = array_search( $data['country'], give_get_country_list() ) ) ? $country_code : $data['country'] ) : '' ),
+		'state'   => $state,
+		'country' => $country,
 	);
 
 	//Create payment_data array
@@ -594,7 +601,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 		'donor_id'        => $donor_data->id,
 		'price'           => $data['amount'],
 		'status'          => $status,
-		'currency'        => give_get_currency(),
+		'currency'        => ! empty( $data['currency'] ) && array_key_exists( $data['currency'], give_get_currencies_list() ) ? $data['currency'] : give_get_currency(),
 		'user_info'       => array(
 			'id'         => $donor_id,
 			'email'      => ( ! empty( $data['email'] ) ? $data['email'] : ( isset( $donor_data->email ) ? $donor_data->email : false ) ),
@@ -801,7 +808,7 @@ function give_check_import_donation_duplicate( $payment_data, $data, $form, $don
 					'compare' => '=',
 				),
 				array(
-					'key'     => '_give_payment_customer_id',
+					'key'     => '_give_payment_donor_id',
 					'value'   => $donor_data->id,
 					'compare' => '=',
 				),

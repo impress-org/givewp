@@ -79,7 +79,7 @@ const config = {
 
 			// Font files.
 			{
-				test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+				test: /\.(ttf|otf|eot|woff(2)?)(\?[a-z0-9]+)?$/,
 				use: [
 					{
 						loader: 'file-loader',

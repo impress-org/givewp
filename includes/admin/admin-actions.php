@@ -536,6 +536,10 @@ add_action( 'give_payments_page_top', 'give_import_page_link_callback', 11 );
  * @return json $json_data
  */
 function give_donation_import_callback() {
+
+	// Disable Give cache
+	Give_Cache::get_instance()->disable();
+
 	$import_setting = array();
 	$fields         = isset( $_POST['fields'] ) ? $_POST['fields'] : null;
 
@@ -627,6 +631,9 @@ function give_donation_import_callback() {
 
 	$percentage              = ( 100 / ( $total_ajax + 1 ) ) * $current;
 	$json_data['percentage'] = $percentage;
+
+	// Enable Give cache
+	Give_Cache::get_instance()->enable();
 
 	$json_data = apply_filters( 'give_import_ajax_responces', $json_data, $fields );
 	wp_die( json_encode( $json_data ) );
