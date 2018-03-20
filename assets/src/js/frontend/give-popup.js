@@ -5,11 +5,19 @@ const GiveModal = ( function( $ ) {
 	 */
 	function GiveModal( selector ) {
 
-		// Configuration object for modal popup.
-		this.config = {};
 
 		// class or ID of the element.
 		this.selector = selector;
+
+		// Configuration object for modal popup.
+		this.config = {
+			mainClass: null,
+			items: {
+				src: this.selector,
+				type: 'inline',
+			},
+			popupType: null,
+		};
 
 		/**
 		 * Object that holds the means of creating
@@ -61,6 +69,7 @@ const GiveModal = ( function( $ ) {
 	 */
 	GiveModal.prototype.error = function() {
 		this.config.mainClass = this.config.mainClass || 'give-error-popup';
+		this.config.popupType = 'Error';
 
 		return this;
 	}
@@ -71,6 +80,7 @@ const GiveModal = ( function( $ ) {
 	 */
 	GiveModal.prototype.warning = function() {
 		this.config.mainClass = this.config.mainClass || 'give-warning-popup';
+		this.config.popupType = 'Warning';
 
 		return this;
 	}
@@ -81,6 +91,7 @@ const GiveModal = ( function( $ ) {
 	 */
 	GiveModal.prototype.notice = function() {
 		this.config.mainClass = this.config.mainClass || 'give-notice-popup';
+		this.config.popupType = 'Notice';
 
 		return this;
 	}
@@ -91,42 +102,52 @@ const GiveModal = ( function( $ ) {
 	 */
 	GiveModal.prototype.success = function() {
 		this.config.mainClass = this.config.mainClass || 'give-success-popup';
+		this.config.popupType = 'Success';
 
 		return this;
 	}
 
 
 	/**
-	 * Passive modals are the ones that popup
-	 * implicity without user input.
+	 * Appends new buttons after 'OK' button.
 	 *
-	 * Example, a modal that pops up after an
-	 * AJAX call or after a failed upload.
+	 * @param string id         ID of the button.
+	 * @param string buttonType Type of the button: primary|secondary.
+	 * @param string textNode   Button Text.
 	 */
-	GiveModal.prototype.passive = function() {
+	GiveModal.prototype.appendButton = function( id, buttonType, textNode ) {
+		this.filter.add( 'filter_notice_fields', val => { return `${ val } <button id="${ id }" class="give-button give-button-${ buttonType }">${ textNode }</button>` } );
 
-		this.config.popupType = 'passive';
-		this.config.items     = {
-			src: this.selector,
-			type: 'inline'
-		};
+		return this;
+	}
+
+	/**
+	 * Replaces the 'OK' button with a custom button.
+	 *
+	 * @param string id         ID of the button.
+	 * @param string buttonType Type of the button: primary|secondary.
+	 * @param string textNode   Button Text.
+	 */
+	GiveModal.prototype.addButton = function( id, buttonType, textNode ) {
+		this.filter.add( 'filter_notice_fields', val => { return `<button id="${ id }" class="give-button give-button-${ buttonType }">${ textNode }</button>` } );
 
 		return this;
 	}
 
 
 	/**
-	 * Active modals are the ones that popup
-	 * explicity after a user input.
-	 *
-	 * Example, a modal that pops up after a
-	 * user clicks on a button or a link.
+	 * Closes the popup.
 	 */
-	GiveModal.prototype.active = function() {
+	GiveModal.prototype.close = function() {
+		$.magnificPopup.close();
+	}
 
-		this.config.popupType = 'active';
-		this.config.type      = 'inline';
 
+	/**
+	 * Add custom popup content.
+	 */
+	GiveModal.prototype.customContent = function( content ) {
+		this.config.items.src = `<div class="white-popup">${ content }</div>`;
 		return this;
 	}
 
@@ -134,9 +155,8 @@ const GiveModal = ( function( $ ) {
 	/**
 	 * Give's Notice Popup
 	 *
-	 * @param object extraConfig Extar configuration parameters for Give's popup. 
 	 */
-	GiveModal.prototype.popup = function( extraConfig = { behaviour: 'passive' } ) {
+	GiveModal.prototype.popup = function() {
 
 		// reference.root is a pointer to an instance of GiveModal.
 		const reference = {
@@ -158,9 +178,15 @@ const GiveModal = ( function( $ ) {
 					reference.callback = this;
 					reference.callback.content = $( this.content );
 
-					let fields = '<div class="appended-controls">';
-					fields += reference.root.filter.apply( 'filter_notice_fields', '<button class="give-button give-button-primary popup-close-button">Ok</button>' );
+					null !== reference.root.config.popupType && reference.callback.content.prepend( `<div class="give-popup-notice-type">${ reference.root.config.popupType }</div>` );
+
+					let fields = '<div class="give-appended-controls">';
+					fields += '<div class="give-popup-buttons-wrap">';
+					fields += reference.root.filter.apply( 'filter_notice_fields', '<button class="give-button give-button-secondary popup-close-button">Close</button>' );
 					fields += '</div>';
+					fields += '</div>';
+
+					// Appends the control buttons after the popup content.
 					reference.callback.content.append( fields );
 				},
 
@@ -169,35 +195,25 @@ const GiveModal = ( function( $ ) {
 				 * Callback fires after closing the popup.
 				 */
 				close: function() {
-					reference.callback.content.find( '.appended-controls' ).remove();
+					reference.callback.content.find( '.give-appended-controls' ).remove();
 				},
 			}
 		});
 
 
-		switch ( this.config.popupType ) {
-			case 'passive':
-				$.magnificPopup.open( this.config );
-				break;
+		// Open the popup.
+		$.magnificPopup.open( this.config );
 
-			case 'active':
-				$( this.selector ).magnificPopup( this.config );
-				break;
-		}
 
 		/**
 		 * Event handler to close the popup after
 		 * clicking the close button.
 		 */
 		this.doc.on( 'click', '.popup-close-button', function() {
-			$.magnificPopup.close();
+			reference.root.close();
 		})
 	}
 
 	return GiveModal;
-})( jQuery );
 
-jQuery(document).ready( function() {
-	var r = new GiveModal( '#test-popup' ).passive().error();
-	r.popup();
-})
+})( jQuery );

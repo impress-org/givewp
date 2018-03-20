@@ -113,3 +113,145 @@
   }
 
 }
+
+// GiveModal styles
+.white-popup {
+	position: relative;
+	background: #FFF;
+	padding: 20px;
+	width: auto;
+	max-width: 500px;
+	margin: 20px auto;
+}
+
+/**
+ * Give notice type
+ */
+
+.give-popup-notice-type {
+	font-size: 1rem;
+	font-weight: bold;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	margin-bottom: 1rem;
+}
+
+.give-error-popup {
+	.give-popup-notice-type {
+		color: #DC3232;
+	}	
+}
+
+.give-warning-popup {
+	.give-popup-notice-type {
+		color: #F56E28;
+	}
+}
+
+.give-notice-popup {
+	.give-popup-notice-type {
+		color: #00A0D2;
+	}
+}
+
+.give-success-popup {
+	.give-popup-notice-type {
+		color: #46B450;
+	}
+}
+
+/* =========================== */
+
+.give-appended-controls {
+	margin-top: 1rem;
+
+	&::after {
+		display: block;
+		content: '';
+		clear: both;
+	}
+}
+
+.give-popup-buttons-wrap {
+	float: right;
+}
+
+.give-button,
+.give-button-primary,
+.give-button-secondary {
+	display: inline-block;
+	text-decoration: none;
+	font-size: 13px;
+	line-height: 26px;
+	height: 28px;
+	margin: 0;
+	padding: 0 10px 1px;
+	cursor: pointer;
+	border-width: 1px;
+	border-style: solid;
+	-webkit-appearance: none;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	white-space: nowrap;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.give-button,
+.give-button-secondary {
+	color: #555;
+	border-color: #cccccc;
+	background: #f7f7f7;
+	vertical-align: top;
+}
+
+p .give-button {
+	vertical-align: baseline;
+}
+
+.give-button:hover,
+.give-button-secondary:hover,
+.give-button:focus,
+.give-button-secondary:focus {
+	background: #fafafa;
+	border-color: #999;
+	color: #222;
+}
+
+.give-button:focus,
+.give-button-secondary:focus {
+	-webkit-box-shadow: 1px 1px 1px rgba(0,0,0,.2);
+	box-shadow: 1px 1px 1px rgba(0,0,0,.2);
+}
+
+.give-button:active,
+.give-button-secondary:active {
+	background: #eee;
+	border-color: #999;
+	color: #333;
+}
+
+.give-button-primary {
+	background: #68bb6c;
+	border-color: #3a823e;
+	color: #fff;
+	text-decoration: none;
+}
+
+.give-button-primary:hover,
+.give-button-primary:focus {
+	background: #79c37d;
+	color: #fff;
+}
+
+.give-button-primary:focus {
+	border-color: #79c37d;
+}
+
+.give-button-primary:active {
+	background: #79c37d;
+	border-color: #005684;
+	color: rgba(255,255,255,0.95);
+	vertical-align: top;
+}
