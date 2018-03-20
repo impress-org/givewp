@@ -398,10 +398,12 @@ function give_process_profile_editor_updates( $data ) {
 
 	/* @var Give_Donor $donor */
 	$donor = new Give_Donor( $user_id, true );
+	$old_company_name = $donor->get_company_name();
 
 	$display_name     = isset( $data['give_display_name'] ) ? sanitize_text_field( $data['give_display_name'] ) : $old_user_data->display_name;
 	$first_name       = isset( $data['give_first_name'] ) ? sanitize_text_field( $data['give_first_name'] ) : $old_user_data->first_name;
 	$last_name        = isset( $data['give_last_name'] ) ? sanitize_text_field( $data['give_last_name'] ) : $old_user_data->last_name;
+	$company_name     = isset( $data['give_company_name'] ) ? sanitize_text_field( $data['give_company_name'] ) : $old_company_name;
 	$email            = isset( $data['give_email'] ) ? sanitize_email( $data['give_email'] ) : $old_user_data->user_email;
 	$password         = ! empty( $data['give_new_user_pass1'] ) ? $data['give_new_user_pass1'] : '';
 	$confirm_password = ! empty( $data['give_new_user_pass2'] ) ? $data['give_new_user_pass2'] : '';
@@ -413,6 +415,7 @@ function give_process_profile_editor_updates( $data ) {
 		'display_name' => $display_name,
 		'user_email'   => $email,
 		'user_pass'    => $password,
+		'company_name' => $company_name,
 	);
 
 	/**
@@ -467,6 +470,7 @@ function give_process_profile_editor_updates( $data ) {
 	) );
 	Give()->donor_meta->update_meta( $donor->id, '_give_donor_first_name', $first_name );
 	Give()->donor_meta->update_meta( $donor->id, '_give_donor_last_name', $last_name );
+	Give()->donor_meta->update_meta( $donor->id, '_give_donor_company', $company_name );
 
 	$current_user = wp_get_current_user();
 
@@ -475,6 +479,7 @@ function give_process_profile_editor_updates( $data ) {
 	$display_name_update = ( $display_name !== $current_user->display_name ) ? true : false;
 	$first_name_update   = ( $first_name !== $current_user->first_name ) ? true : false;
 	$last_name_update    = ( $last_name !== $current_user->last_name ) ? true : false;
+	$company_name_update = ( $company_name !== $old_company_name ) ? true : false;
 	$update_code         = 0;
 
 	/**
@@ -482,7 +487,7 @@ function give_process_profile_editor_updates( $data ) {
 	 *
 	 * @var boolean
 	 */
-	$profile_update  = ( $email_update || $display_name_update || $first_name_update || $last_name_update );
+	$profile_update = ( $email_update || $display_name_update || $first_name_update || $last_name_update || $company_name_update );
 
 	/**
 	 * True if password fields are filled.
