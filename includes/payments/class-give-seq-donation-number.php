@@ -201,12 +201,16 @@ class Give_Seq_Donation_Number {
 	 * @since  2.1.0
 	 * @access public
 	 *
-	 * @param int $donation_id
+	 * @param int $donation_id_or_serial_code
 	 *
 	 * @return string
 	 */
-	public function get_serial_number( $donation_id ) {
-		return Give()->sequential_donation_db->get_column_by( 'id', 'payment_id', $donation_id );
+	public function get_serial_number( $donation_id_or_serial_code ) {
+		if( is_numeric( $donation_id_or_serial_code ) ) {
+			return Give()->sequential_donation_db->get_column_by( 'id', 'payment_id', $donation_id_or_serial_code );
+		}
+
+		return $this->get_serial_number( $this->get_donation_id( $donation_id_or_serial_code ) );
 	}
 
 
