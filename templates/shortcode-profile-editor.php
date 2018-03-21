@@ -70,17 +70,13 @@ if ( is_user_logged_in() ) :
 				       value="<?php echo esc_attr( $last_name ); ?>"/>
 			</p>
 
-			<?php
-			if ( ! empty( $company_name ) ) {
-				?>
+			<?php if ( ! empty( $company_name ) ) : ?>
 				<p id="give_profile_company_name_wrap" class="form-row form-row-wide">
 					<label for="give_company_name"><?php _e( 'Company Name', 'give' ); ?></label>
 					<input name="give_company_name" id="give_company_name" class="text give-input" type="text"
 					       value="<?php echo esc_attr( $company_name ); ?>"/>
 				</p>
-				<?php
-			}
-			?>
+			<?php endif; ?>
 
 			<p id="give_profile_display_name_wrap" class="form-row form-row-first form-row-responsive">
 				<label for="give_display_name"><?php _e( 'Display Name', 'give' ); ?></label>
