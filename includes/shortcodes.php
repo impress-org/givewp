@@ -403,7 +403,7 @@ function give_process_profile_editor_updates( $data ) {
 	$display_name     = isset( $data['give_display_name'] ) ? sanitize_text_field( $data['give_display_name'] ) : $old_user_data->display_name;
 	$first_name       = isset( $data['give_first_name'] ) ? sanitize_text_field( $data['give_first_name'] ) : $old_user_data->first_name;
 	$last_name        = isset( $data['give_last_name'] ) ? sanitize_text_field( $data['give_last_name'] ) : $old_user_data->last_name;
-	$company_name     = isset( $data['give_company_name'] ) ? sanitize_text_field( $data['give_company_name'] ) : $old_company_name;
+	$company_name     = ! empty( $data['give_company_name'] ) ? sanitize_text_field( $data['give_company_name'] ) : $old_company_name;
 	$email            = isset( $data['give_email'] ) ? sanitize_email( $data['give_email'] ) : $old_user_data->user_email;
 	$password         = ! empty( $data['give_new_user_pass1'] ) ? $data['give_new_user_pass1'] : '';
 	$confirm_password = ! empty( $data['give_new_user_pass2'] ) ? $data['give_new_user_pass2'] : '';
