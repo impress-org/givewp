@@ -393,6 +393,8 @@ class Give_Addon_Activation_Banner {
 				max-width: 250px;
 				padding: 0;
 				margin: 0;
+				max-height: 146px;
+				overflow: hidden;
 			}
 
 			div.give-addon-alert .give-addon-description {
@@ -487,11 +489,6 @@ class Give_Addon_Activation_Banner {
 
 			.give-alert-tab-wrapper {
 				padding: 0 !important;
-			}
-
-			ul.give-alert-addon-list {
-				max-height: 195px;
-				overflow: hidden;
 			}
 
 			ul.give-alert-addon-list::-webkit-scrollbar {
