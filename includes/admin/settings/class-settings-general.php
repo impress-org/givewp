@@ -305,37 +305,41 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'type' => 'title'
 						),
 						array(
-							'name'    => __( 'Sequential Donation', 'give' ),
-							'id'      => "{$current_section}_status",
-							'desc'    => '',
-							'type'    => 'radio_inline',
-							'default' => 'disabled',
-							'options' => array(
+							'name'                => __( 'Sequential Donation', 'give' ),
+							'id'                  => "{$current_section}_status",
+							'desc'                => '',
+							'type'                => 'radio_inline',
+							'default'             => 'disabled',
+							'confirm_before_edit' => 'forced',
+							'options'             => array(
 								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' )
 							)
 						),
 						array(
-							'name' => __( 'Sequential Starting Number', 'give' ),
-							'id'   => "{$current_section}_number",
-							'type' => 'text'
+							'name'                => __( 'Sequential Starting Number', 'give' ),
+							'id'                  => "{$current_section}_number",
+							'type'                => 'text',
+							'confirm_before_edit' => 'forced',
 						),
 						array(
 							'name'                => __( 'Sequential Number Prefix', 'give' ),
 							'id'                  => "{$current_section}_number_prefix",
 							'type'                => 'text',
-							'confirm_before_save' => true
+							'confirm_before_edit' => true
 						),
 						array(
-							'name' => __( 'Sequential Number Suffix', 'give' ),
-							'id'   => "{$current_section}_number_suffix",
-							'type' => 'text'
+							'name'                => __( 'Sequential Number Suffix', 'give' ),
+							'id'                  => "{$current_section}_number_suffix",
+							'type'                => 'text',
+							'confirm_before_edit' => true
 						),
 						array(
-							'name'    => __( 'Number Padding', 'give' ),
-							'id'      => "{$current_section}_number_padding",
-							'type'    => 'text',
-							'default' => '0',
+							'name'                => __( 'Number Padding', 'give' ),
+							'id'                  => "{$current_section}_number_padding",
+							'type'                => 'text',
+							'default'             => '0',
+							'confirm_before_edit' => 'forced'
 						),
 						array(
 							'id'   => 'give_title_general_settings_4',

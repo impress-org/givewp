@@ -2883,13 +2883,21 @@ var give_setting_edit = false;
 		give_render_responsive_tabs();
 
 		$('.give-confirm').on('click', function () {
-			if ( $(this).hasClass('dashicons-lock') && window.confirm($(this).data('message'))) {
-				if ($(this).closest('.give-forminp').length) {
+			if ($(this).hasClass('dashicons-lock') && window.confirm($(this).data('message'))) {
+				var $parent = $(this).closest('.give-forminp');
+
+				if ($parent.length) {
 					$(this).addClass('dashicons-unlock');
 					$(this).removeClass('dashicons-lock');
-					$(this).prev().removeAttr('readonly');
+
+					if( $(this).closest('.give-forminp-radio_inline').length || $(this).closest('.give-forminp-radio').length  ){
+						$parent.find('input[type="radio"]').each(function(){
+							$(this).removeAttr( 'disabled' );
+						});
+					} else{
+						$(this).prev().removeAttr('readonly');
+					}
 				}
-				$(this).trigger('givePostConfrim');
 			}
 		});
 	} );
