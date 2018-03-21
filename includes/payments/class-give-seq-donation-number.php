@@ -139,19 +139,16 @@ class Give_Seq_Donation_Number {
 	 * @since
 	 * @access private
 	 *
-	 * @param $serial_code
+	 * @param $serial_number
 	 *
 	 * @return string
 	 */
-	private function __set_number_padding( $serial_code ) {
+	private function __set_number_padding( $serial_number ) {
 		if ( $number_padding = give_get_option( 'sequential-donation_number_padding', 0 ) ) {
-			$current_str_length = strlen( $serial_code );
-			$serial_code        = $number_padding > $current_str_length ?
-				substr( '0000000000', 0, $number_padding - $current_str_length ) . $serial_code :
-				$serial_code;
+			$serial_number = str_pad( $serial_number, $number_padding, '0', STR_PAD_LEFT );
 		}
 
-		return $serial_code;
+		return $serial_number;
 	}
 
 	/**
