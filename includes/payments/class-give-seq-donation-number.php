@@ -120,7 +120,9 @@ class Give_Seq_Donation_Number {
 			get_option( '_give_reset_sequential_number' ) &&
 			( $number = give_get_option( 'sequential-donation_number', 0 ) )
 		) {
-			Give()->sequential_donation_db->insert( array(
+			delete_option( '_give_reset_sequential_number' );
+
+			return Give()->sequential_donation_db->insert( array(
 				'id'         => $number,
 				'payment_id' => $donation_id
 			) );
@@ -225,3 +227,4 @@ class Give_Seq_Donation_Number {
 // @todo: add post_title support in Give_Payment
 // @todo: resolve caching issue: donation listing is not updating when updating donation
 // @todo: test custom sequential donation number.
+// @todo update logic for __set_number_padding
