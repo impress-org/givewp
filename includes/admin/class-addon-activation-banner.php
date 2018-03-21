@@ -41,7 +41,7 @@ class Give_Addon_Activation_Banner {
 		// Append add-on information to the global variable.
 		$give_addons[] = $_banner_details;
 
-		// Get the currenct user.
+		// Get the current user.
 		$current_user = wp_get_current_user();
 
 		//Get current user
@@ -59,7 +59,7 @@ class Give_Addon_Activation_Banner {
 			// Set up hooks.
 			$this->init();
 
-			// Store user id who activate plugin.
+			// Store user id who activated plugin.
 			$this->add_addon_activate_meta();
 		}
 
@@ -80,12 +80,12 @@ class Give_Addon_Activation_Banner {
 	 */
 	public function init() {
 
-		//Testing?
+		// Testing?
 		if ( $this->test_mode ) {
 			delete_user_meta( $this->user_id, $this->nag_meta_key );
 		}
 
-		//Get the current page to add the notice to
+		// Get the current page to add the notice to
 		add_action( 'current_screen', array( $this, 'give_addon_notice_ignore' ) );
 
 		// File path of addon must be included in banner detail other addon activate meta will not delete.
@@ -253,12 +253,9 @@ class Give_Addon_Activation_Banner {
                         </div>
                         <div class="give-right-side-block">
 							<?php
-							foreach ( $addon_to_display as $banner ) {
-								?>
-                                <div
-                                        class="give-tab-details <?php echo ( true === $is_first ) ? ' active' : ''; ?> "
-                                        id="give-addon-<?php echo esc_html( basename( $banner['file'], '.php' ) ); ?>"
-                                >
+							foreach ( $addon_to_display as $banner ) { ?>
+                                <div class="give-tab-details <?php echo ( true === $is_first ) ? ' active' : ''; ?> "
+                                     id="give-addon-<?php echo esc_html( basename( $banner['file'], '.php' ) ); ?>">
 									<?php
 									// Get the notice meta key.
 									$meta_key = ( 1 === count( $addon_to_display ) )
