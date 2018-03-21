@@ -216,9 +216,32 @@ class Give_Seq_Donation_Number {
 	 * @since  2.1.0
 	 * @access public
 	 *
-	 * @param string $donation_number_or_serial_code\
+	 * @param string $donation_number_or_serial_code
+	 *
+	 * @return string
 	 */
-	public function get_donation_id( $donation_number_or_serial_code ) {}
+	public function get_donation_id( $donation_number_or_serial_code ) {
+		global $wpdb;
+
+		if ( is_numeric( $donation_number_or_serial_code ) ) {
+			return Give()->sequential_donation_db->get_column_by(
+				'payment_id',
+				'id',
+				$donation_number_or_serial_code
+			);
+		}
+
+		return $wpdb->get_var(
+			$wpdb->prepare(
+				"
+				SELECT ID
+				FROM $wpdb->posts
+				WHERE post_title=%s
+				",
+				$donation_number_or_serial_code
+			)
+		);
+	}
 }
 
 // @todo: resolve caching issue: donation listing is not updating when updating donation
