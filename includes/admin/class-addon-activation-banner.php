@@ -196,11 +196,28 @@ class Give_Addon_Activation_Banner {
 
 		// Bailout.
 		if ( 'plugins.php' !== $pagenow || $this->user_id !== $this->plugin_activate_by ) {
-			return;
+			return false;
+		}
+
+		// Store the add-ons of which activation banner should be shown.
+		$addon_to_display = array();
+
+		// Go through each of the give add-on.
+		foreach ( $give_addons as $addon ) {
+			$add_on_state = get_user_meta( $this->user_id, 'give_addon_activation_ignore_' . sanitize_title( $addon['name'] ), true );
+
+			// If add-on were never dismissed.
+			if ( 'true' !== $add_on_state ) {
+				$addon_to_display[] = $addon;
+			}
+		}
+
+		if ( empty( $addon_to_display ) ) {
+			return false;
 		}
 
 		// If only one add-on activated.
-		$is_single = 1 === count( $give_addons );
+		$is_single = 1 === count( $addon_to_display );
 
 		// If the user hasn't already dismissed the alert, output activation banner.
 		if ( ! get_user_meta( $this->user_id, $this->get_notice_dismiss_meta_key() ) ) {
@@ -221,7 +238,7 @@ class Give_Addon_Activation_Banner {
 							<ul class="give-alert-addon-list">
 								<?php
 								$is_first = true;
-								foreach ( $give_addons as $banner ) {
+								foreach ( $addon_to_display as $banner ) {
 									?>
 									<li class="give-tab-list<?php echo ( true === $is_first ) ? ' active' : ''; ?>"
 									    id="give-addon-<?php echo esc_html( basename( $banner['file'], '.php' ) ); ?>">
@@ -236,7 +253,7 @@ class Give_Addon_Activation_Banner {
 						</div>
 						<div class="give-right-side-block">
 							<?php
-							foreach ( $give_addons as $banner ) {
+							foreach ( $addon_to_display as $banner ) {
 								?>
 								<div
 										class="give-tab-details <?php echo ( true === $is_first ) ? ' active' : ''; ?> "
@@ -244,7 +261,7 @@ class Give_Addon_Activation_Banner {
 								>
 									<?php
 									// Get the notice meta key.
-									$meta_key = ( 1 === count( $give_addons ) )
+									$meta_key = ( 1 === count( $addon_to_display ) )
 										? $this->nag_meta_key
 										: 'give_addon_activation_ignore_all';
 
@@ -259,7 +276,7 @@ class Give_Addon_Activation_Banner {
 					</div>
 					<?php
 				} else {
-					$this->render_single_addon_banner( $give_addons[0] );
+					$this->render_single_addon_banner( $addon_to_display[0] );
 				}
 				?>
 			</div>
@@ -563,7 +580,7 @@ class Give_Addon_Activation_Banner {
 							var li = $( 'li.give-tab-list' );
 							li.last().clone().prependTo( 'ul.give-alert-addon-list' );
 							li.last().removeAttr( 'id' ).find( 'a' ).addClass( 'inactivate' ).html( '&nbsp;' );
-							$('.give-tab-list:first').trigger('click');
+							$( '.give-tab-list:first' ).trigger( 'click' );
 						}
 					} );
 		</script>
@@ -594,7 +611,7 @@ class Give_Addon_Activation_Banner {
 		}
 
 		// Get the add-on details.
-		$plugin_data = get_plugin_data( $plugin_file);
+		$plugin_data = get_plugin_data( $plugin_file );
 		?>
 		<img src="<?php echo GIVE_PLUGIN_URL; ?>assets/images/svg/give-icon-full-circle.svg" class="give-logo" />
 		<div class="give-alert-message">
@@ -621,7 +638,8 @@ class Give_Addon_Activation_Banner {
 					<?php
 				}
 				if ( isset( $banner_arr['settings_url'] ) ) { ?>
-					<a href="<?php echo $banner_arr['settings_url']; ?>"><span class="dashicons dashicons-admin-settings"></span><?php esc_html_e( 'Go to Settings', 'give' ); ?></a>
+					<a href="<?php echo $banner_arr['settings_url']; ?>"><span class="dashicons dashicons-admin-settings"></span><?php esc_html_e( 'Go to Settings', 'give' ); ?>
+					</a>
 					<?php
 				}
 				// Show them how to configure the Addon.
@@ -673,6 +691,12 @@ class Give_Addon_Activation_Banner {
 			$current_user = wp_get_current_user();
 			$user_id      = $current_user->ID;
 
+			if ( 'give_addon_activation_ignore_all' === $notice_meta_key ) {
+				foreach ( $give_addons as $give_addon ) {
+					$meta_key = 'give_addon_activation_ignore_' . sanitize_title( $give_addon['name'] );
+					add_user_meta( $user_id, $meta_key, 'true', true );
+				}
+			}
 			add_user_meta( $user_id, $notice_meta_key, 'true', true );
 		}
 	}
