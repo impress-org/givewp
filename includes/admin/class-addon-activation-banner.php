@@ -430,7 +430,6 @@ class Give_Addon_Activation_Banner {
 				display: block;
 				font-weight: bold;
 				color: #a3a3a3;
-				text-transform: capitalize;
 				text-decoration: none;
 				padding: 15px 10px 15px;
 				box-shadow: inset -6px 0px 18px 0px rgba(204, 204, 204, 0.36);
