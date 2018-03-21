@@ -31,6 +31,10 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 
 			$this->default_tab = 'general-settings';
 
+			if( $this->id === give_get_current_setting_tab() ) {
+				add_action( 'give_save_settings_give_settings', array( $this, '__give_change_donation_stating_number' ), 10, 3 );
+			}
+
 			parent::__construct();
 		}
 
@@ -382,6 +386,31 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );
+		}
+
+
+		/**
+		 * Set flag to reset sequestion donation number starting point when "Sequential Starting Number" value changes
+		 *
+		 * @since  2.1
+		 * @access public
+		 *
+		 * @param $update_options
+		 * @param $option_name
+		 * @param $old_options
+		 *
+		 * @return bool
+		 */
+		public function __give_change_donation_stating_number( $update_options, $option_name, $old_options ) {
+			if ( ! isset( $_POST['sequential-donation_number'] ) ) {
+				return false;
+			}
+
+			if ( $update_options['sequential-donation_number'] !== $old_options['sequential-donation_number'] ) {
+				update_option( '_give_reset_sequential_number', 1 );
+			}
+
+			return true;
 		}
 	}
 
