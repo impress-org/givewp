@@ -1060,29 +1060,30 @@ function give_get_payment_number( $payment_id = 0 ) {
 /**
  * Formats the payment number with the prefix and postfix
  *
- * @param int $number The payment number to format.
+ * @param int   $number The payment number to format.
  *
  * @since 1.3
  *
+ * @param int   $number
+ * @param array $args
+ *
  * @return string      The formatted payment number.
  */
-function give_format_payment_number( $number ) {
+function give_format_payment_number( $number, $args = array() ) {
+	$formatted_number = Give()->seq_donation_number->get_serial_code( absint( $number ), $args );
 
-	if ( ! give_get_option( 'enable_sequential' ) ) {
-		return $number;
-	}
-
-	if ( ! is_numeric( $number ) ) {
-		return $number;
-	}
-
-	$prefix  = give_get_option( 'sequential_prefix' );
-	$number  = absint( $number );
-	$postfix = give_get_option( 'sequential_postfix' );
-
-	$formatted_number = $prefix . $number . $postfix;
-
-	return apply_filters( 'give_format_payment_number', $formatted_number, $prefix, $number, $postfix );
+	/**
+	 * Filter the donation serial code.
+	 *
+	 * @since 1.3
+	 */
+	return apply_filters(
+		'give_format_payment_number',
+		$formatted_number,
+		give_get_option( 'sequential-donation_number_prefix', '' ),
+		$number,
+		give_get_option( 'sequential-donation_number_sufix', '' )
+	);
 }
 
 /**
