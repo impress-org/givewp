@@ -1,89 +1,256 @@
+/**
+ * Popup root
+ */
 .white-popup {
 	position: relative;
-	background: #FFF;
-	padding: 20px;
+	background: #fff;
+	font-family: Arial, Baskerville, monospace;
+	font-size: 16px;
 	width: auto;
 	max-width: 500px;
 	margin: 20px auto;
+	margin-top: 60px;
+	border-top: 5px solid rgba(0, 0, 0, 0);
+	line-height: 1.5;
+	box-shadow: 0px 15px 10px -5px rgba(0, 0, 0, .15);
+
+	& > * {
+		padding: 1.25rem 1.75rem;
+	}
+
+	h2 {
+		font-size: 1.35em;
+		margin-top: 0;
+	}
 }
 
-.give-button,
-.give-button-primary,
-.give-button-secondary {
+/**
+ * Give notice type
+ */
+.give-error-popup {
+	.white-popup {
+		border-top-color: #dc3232;
+	}
+}
+
+.give-warning-popup {
+	.white-popup {
+		border-top-color: #ffb900;
+	}
+}
+
+.give-notice-popup {
+	.white-popup {
+		border-top-color: #00a0d2;
+	}
+}
+
+.give-success-popup {
+	.white-popup {
+		border-top-color: #46b450;
+	}
+}
+
+/**
+ * Popup buttons wrap
+ */
+.give-appended-controls {
+	background-color: #fbfbfb;
+	margin-top: .5rem;
+	border-top: 1px solid #d7d7d7;
+
+	&::after {
+		display: block;
+		content: '';
+		clear: both;
+	}
+}
+
+/**
+ * Popup buttons container
+ */
+.give-popup-buttons-wrap {
+	float: right;
+}
+
+/**
+ * Popup buttons styling
+ */
+.give-button {
 	display: inline-block;
-	text-decoration: none;
-	font-size: 13px;
-	line-height: 26px;
-	height: 28px;
-	margin: 0;
-	padding: 0 10px 1px;
+	height: 30px;
+	line-height: 28px;
+	padding: 0 12px 2px;
 	cursor: pointer;
 	border-width: 1px;
 	border-style: solid;
 	-webkit-appearance: none;
-	-webkit-border-radius: 3px;
 	border-radius: 3px;
 	white-space: nowrap;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	margin-top: 1rem;
-}
+	margin-left: .5rem;
+	font-weight: normal;
+	font-size: 0.9em;
 
-.give-button,
-.give-button-secondary {
-	color: #555;
-	border-color: #cccccc;
-	background: #f7f7f7;
-	vertical-align: top;
-}
-
-p .give-button {
-	vertical-align: baseline;
-}
-
-.give-button:hover,
-.give-button-secondary:hover,
-.give-button:focus,
-.give-button-secondary:focus {
-	background: #fafafa;
-	border-color: #999;
-	color: #222;
-}
-
-.give-button:focus,
-.give-button-secondary:focus {
-	-webkit-box-shadow: 1px 1px 1px rgba(0,0,0,.2);
-	box-shadow: 1px 1px 1px rgba(0,0,0,.2);
-}
-
-.give-button:active,
-.give-button-secondary:active {
-	background: #eee;
-	border-color: #999;
-	color: #333;
+	&:active {
+		transform: translateY(1px);
+	}
 }
 
 .give-button-primary {
-	background: #68bb6c;
-	border-color: #3a823e;
+	background: #0085ba;
+	border-color: #0073aa #006799 #006799;
+	box-shadow: 0 1px 0 #006799;
 	color: #fff;
 	text-decoration: none;
+	text-shadow: 0 -1px 1px #006799, 1px 0 1px #006799, 0 1px 1px #006799, -1px 0 1px #006799;
+	outline: 0;
+
+	&:hover {
+		background: #008ec2;
+		border-color: #006799;
+		color: #fff;
+	}
+
+	&:active {
+		background: #0073aa;
+		border-color: #006799;
+		box-shadow: inset 0 2px 0 #006799;
+		vertical-align: top;
+	}
+
+	&:focus {
+		background: #0073aa;
+		border-color: #006799;
+		color: #fff;
+		box-shadow: 0 1px 0 #0073aa, 0 0 2px 1px #33b3db;
+	}
 }
 
-.give-button-primary:hover,
-.give-button-primary:focus {
-	background: #79c37d;
-	color: #fff;
-}
-
-.give-button-primary:focus {
-	border-color: #79c37d;
-}
-
-.give-button-primary:active {
-	background: #79c37d;
-	border-color: #005684;
-	color: rgba(255,255,255,0.95);
+.give-button-secondary {
+	color: #555;
+	border-color: #ccc;
+	background: #f7f7f7;
+	box-shadow: 0 1px 0 #ccc;
 	vertical-align: top;
+
+	&:hover {
+		background: #fafafa;
+		border-color: #999;
+		color: #23282d;
+	}
+
+	&:active {
+		background: #eee;
+		border-color: #999;
+		box-shadow: inset 0 2px 5px -3px rgba(0,0,0,.5);
+	}
+
+	&:focus {
+		background: #eee;
+	}
+}
+
+/**
+ * Magnific Popup animation
+ */
+.my-mfp-zoom-in .zoom-animation {
+	opacity: 0;
+
+	-webkit-transition: all 0.2s ease-in-out;
+	-moz-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;
+	-webkit-transform: scale(0.8);
+	-moz-transform: scale(0.8);
+	-ms-transform: scale(0.8);
+	-o-transform: scale(0.8);
+	transform: scale(0.8);
+}
+
+.my-mfp-zoom-in.mfp-ready .zoom-animation {
+	opacity: 1;
+
+	-webkit-transform: scale(1);
+	-moz-transform: scale(1);
+	-ms-transform: scale(1);
+	-o-transform: scale(1);
+	transform: scale(1);
+}
+
+.my-mfp-zoom-in.mfp-removing .zoom-animation {
+	-webkit-transform: scale(0.8);
+	-moz-transform: scale(0.8);
+	-ms-transform: scale(0.8);
+	-o-transform: scale(0.8);
+	transform: scale(0.8);
+	opacity: 0;
+}
+
+.my-mfp-zoom-in.mfp-bg {
+	opacity: 0;
+	-webkit-transition: opacity 0.3s ease-out;
+	-moz-transition: opacity 0.3s ease-out;
+	-o-transition: opacity 0.3s ease-out;
+	transition: opacity 0.3s ease-out;
+}
+
+.my-mfp-zoom-in.mfp-ready.mfp-bg {
+	opacity: 0.8;
+}
+
+.my-mfp-zoom-in.mfp-removing.mfp-bg {
+	opacity: 0;
+}
+
+/**
+ * Fade-move animation for second dialog
+ */
+.popup-fade-slide .zoom-animation {
+	opacity: 0;
+	-webkit-transition: all 0.2s ease-out;
+	-moz-transition: all 0.2s ease-out;
+	-o-transition: all 0.2s ease-out;
+	transition: all 0.2s ease-out;
+
+	-webkit-transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
+	-moz-transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
+	-ms-transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
+	-o-transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
+	transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
+
+}
+
+.popup-fade-slide.mfp-ready .zoom-animation {
+	opacity: 1;
+	-webkit-transform: translateY(0) perspective( 600px ) rotateX( 0 );
+	-moz-transform: translateY(0) perspective( 600px ) rotateX( 0 );
+	-ms-transform: translateY(0) perspective( 600px ) rotateX( 0 );
+	-o-transform: translateY(0) perspective( 600px ) rotateX( 0 );
+	transform: translateY(0) perspective( 600px ) rotateX( 0 );
+}
+
+.popup-fade-slide.mfp-removing .zoom-animation {
+	opacity: 0;
+	-webkit-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg );
+	-moz-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg );
+	-ms-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg );
+	-o-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg );
+	transform: translateY(-10px) perspective( 600px ) rotateX( 10deg );
+}
+
+.popup-fade-slide.mfp-bg {
+	opacity: 0;
+	-webkit-transition: opacity 0.3s ease-out;
+	-moz-transition: opacity 0.3s ease-out;
+	-o-transition: opacity 0.3s ease-out;
+	transition: opacity 0.3s ease-out;
+}
+
+.popup-fade-slide.mfp-ready.mfp-bg {
+	opacity: 0.8;
+}
+
+.popup-fade-slide.mfp-removing.mfp-bg {
+	opacity: 0;
 }
