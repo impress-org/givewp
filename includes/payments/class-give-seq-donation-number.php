@@ -221,7 +221,6 @@ class Give_Seq_Donation_Number {
 	public function get_donation_id( $donation_number_or_serial_code ) {}
 }
 
-// @todo: add post_title support in Give_Payment
 // @todo: resolve caching issue: donation listing is not updating when updating donation
 // @todo: test custom sequential donation number.
 // @todo update logic for __set_number_padding
