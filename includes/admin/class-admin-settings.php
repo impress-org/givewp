@@ -1002,7 +1002,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				 *
 				 * @since 1.8
 				 */
-				do_action( "give_save_settings_{$option_name}", $update_options, $option_name );
+				do_action( "give_save_settings_{$option_name}", $update_options, $option_name, $old_options );
 			}
 
 			return true;
