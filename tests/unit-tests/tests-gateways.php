@@ -111,6 +111,9 @@ class Test_Gateways extends Give_Unit_Test_Case {
 
 	/**
 	 * Test give_no_gateway_error.
+	 *
+	 * @since 2.0.7 gateway setting can be empty array but if fetch it via give function than default payment gateways will return,
+	 *              check this add_filter( 'give_get_option_gateways', '__give_validate_active_gateways', 10, 1 );
 	 */
 	public function test_no_gateway_error() {
 
@@ -120,10 +123,10 @@ class Test_Gateways extends Give_Unit_Test_Case {
 
 		give_no_gateway_error();
 
-		$errors = give_get_errors();
+		$errors = (array) give_get_errors();
 
-		$this->assertArrayHasKey( 'no_gateways', $errors );
-		$this->assertEquals( 'You must enable a payment gateway to use Give.', $errors['no_gateways'] );
+		$this->assertArrayNotHasKey( 'no_gateways', $errors );
+		// $this->assertEquals( 'You must enable a payment gateway to use Give.', $errors['no_gateways'] );
 
 		//Change back to default.
 		update_option( 'give_settings', $give_options );

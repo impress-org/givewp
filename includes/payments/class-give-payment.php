@@ -960,15 +960,20 @@ final class Give_Payment {
 				if ( $total_change < 0 ) {
 
 					$total_change = - ( $total_change );
+
 					// Decrease the donor's donation stats.
 					$donor->decrease_value( $total_change );
 					give_decrease_total_earnings( $total_change );
+
+					$donor->decrease_donation_count();
 
 				} elseif ( $total_change > 0 ) {
 
 					// Increase the donor's donation stats.
 					$donor->increase_value( $total_change );
 					give_increase_total_earnings( $total_change );
+
+					$donor->increase_purchase_count();
 
 				}
 			}

@@ -221,3 +221,41 @@ function give_format_price_for_right_to_left_supported_currency( $formatted_amou
 }
 
 add_filter( 'give_currency_filter', 'give_format_price_for_right_to_left_supported_currency', 10, 3 );
+
+/**
+ * Validate active gateway value before returning result.
+ *
+ * @since 2.0.7
+ *
+ * @param $value
+ *
+ * @return array
+ */
+function __give_validate_active_gateways( $value ) {
+	$gateways = array_keys( give_get_payment_gateways() );
+	$active_gateways = is_array( $value ) ? array_keys( $value ) : array();
+
+	// Remove deactivated payment gateways.
+	if( ! empty( $active_gateways ) ) {
+		foreach ( $active_gateways as $index => $gateway_id ) {
+			if( ! in_array( $gateway_id, $gateways ) ) {
+				unset( $value[$gateway_id] );
+			}
+		}
+	}
+
+	if ( empty( $value ) ) {
+		/**
+		 * Filter the default active gateway
+		 *
+		 * @since 2.0.7
+		 */
+		$value = apply_filters( 'give_default_active_gateways', array(
+			'manual' => 1,
+		) );
+	}
+
+	return $value;
+}
+
+add_filter( 'give_get_option_gateways', '__give_validate_active_gateways', 10, 1 );

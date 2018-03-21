@@ -517,20 +517,29 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 					// Select boxes.
 					case 'select' :
 					case 'multiselect' :
-
 						$option_value = self::get_option( $option_name, $value['id'], $value['default'] );
 
+						/**
+						 * insert page in option if missing.
+						 *
+						 * check success_page setting in general settings.
+						 */
+						if(
+							false !== strpos( $value['class'], 'give-select-chosen' ) &&
+							in_array( 'data-search-type', array_keys( $value['attributes' ] ) ) &&
+							'pages' == $value['attributes' ]['data-search-type'] &&
+							! in_array( $option_value, array_keys( $value['options'] ) )
+						) {
+							$value['options'][$option_value] = get_the_title( $option_value );
+						}
 						?>
 						<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : '' ?>>
 							<th scope="row" class="titledesc">
-								<label
-									for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo self::get_field_title( $value ); ?></label>
 							</th>
 							<td class="give-forminp give-forminp-<?php echo sanitize_title( $value['type'] ) ?>">
 								<select
-									name="<?php echo esc_attr( $value['id'] ); ?><?php if ( $value['type'] == 'multiselect' ) {
-										echo '[]';
-									} ?>"
+									name="<?php echo esc_attr( $value['id'] ); ?><?php if ( $value['type'] == 'multiselect' ) echo '[]'; ?>"
 									id="<?php echo esc_attr( $value['id'] ); ?>"
 									style="<?php echo esc_attr( $value['css'] ); ?>"
 									class="<?php echo esc_attr( $value['class'] ); ?>"
