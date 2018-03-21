@@ -222,4 +222,3 @@ class Give_Seq_Donation_Number {
 }
 
 // @todo: resolve caching issue: donation listing is not updating when updating donation
-// @todo: test custom sequential donation number.
