@@ -2028,4 +2028,17 @@ final class Give_Payment {
 	private function get_number() {
 		return apply_filters( 'give_payment_number', $this->number, $this->ID, $this );
 	}
+
+	/**
+	 * Get serial code
+	 *
+	 * @since 2.1
+	 *
+	 * @param array $args
+	 *
+	 * @return string
+	 */
+	public function get_serial_code( $args = array() ) {
+		return Give()->seq_donation_number->get_serial_code( $this, $args );
+	}
 }
