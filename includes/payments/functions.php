@@ -1080,9 +1080,9 @@ function give_format_payment_number( $number, $args = array() ) {
 	return apply_filters(
 		'give_format_payment_number',
 		$formatted_number,
-		give_get_option( 'sequential-donation_number_prefix', '' ),
+		give_get_option( 'sequential-donation_number_prefix', '' ), // Backward compatibility. Can be remove in future.
 		$number,
-		give_get_option( 'sequential-donation_number_sufix', '' )
+		give_get_option( 'sequential-donation_number_sufix', '' ) // Backward compatibility. Can be remove in future.
 	);
 }
 
