@@ -1821,20 +1821,7 @@ final class Give_Payment {
 	 * @return int|string Integer by default, or string if sequential order numbers is enabled.
 	 */
 	private function setup_payment_number() {
-		$number = $this->ID;
-
-		if ( give_get_option( 'enable_sequential' ) ) {
-
-			$number = $this->get_meta( '_give_payment_number', true );
-
-			if ( ! $number ) {
-
-				$number = $this->ID;
-
-			}
-		}
-
-		return $number;
+		return $this->get_serial_code();
 	}
 
 	/**
