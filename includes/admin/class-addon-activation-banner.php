@@ -583,8 +583,21 @@ class Give_Addon_Activation_Banner {
 	 * @param string $meta_key   Pass meta key.
 	 */
 	private function render_single_addon_banner( $banner_arr, $meta_key = '' ) {
+		// Get all give add-on.
+		$give_addons = give_get_plugins();
+
+		// Plugin main file.
+		$plugin_file = $banner_arr['file'];
+
+		// Get the plugin main file.
+		foreach ( $give_addons as $main_file => $addon ) {
+			if ( isset( $banner_arr['name'] ) && strpos( $addon['Name'], $banner_arr['name'] ) !== false ) {
+				$plugin_file = WP_PLUGIN_DIR . '/' . $main_file;
+			}
+		}
+
 		// Get the add-on details.
-		$plugin_data = get_plugin_data( $banner_arr['file'] );
+		$plugin_data = get_plugin_data( $plugin_file);
 		?>
 		<img src="<?php echo GIVE_PLUGIN_URL; ?>assets/images/svg/give-icon-full-circle.svg" class="give-logo" />
 		<div class="give-alert-message">
