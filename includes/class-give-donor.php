@@ -1534,53 +1534,6 @@ class Give_Donor {
 	}
 
 	/**
-	 * Returns the saved address for a donor
-	 *
-	 * @since  2.0.7
-	 *
-	 * @param  array $args
-	 *
-	 * @return array The donor's address, if any
-	 */
-	public function get_donor_address( $args = array() ) {
-		$address         = array();
-		$args            = wp_parse_args(
-			$args,
-			array(
-				'address_type' => 'billing'
-			)
-		);
-		$default_address = array(
-			'line1'   => '',
-			'line2'   => '',
-			'city'    => '',
-			'state'   => '',
-			'country' => '',
-			'zip'     => '',
-		);
-
-		if (
-			! $this->id ||
-			empty( $this->address ) ||
-			! array_key_exists( $args['address_type'], $this->address )
-		) {
-			return $default_address;
-		}
-
-		switch ( true ) {
-			case is_string( end( $this->address[ $args['address_type'] ] ) ) :
-				$address = wp_parse_args( $this->address[ $args['address_type'] ], $default_address );
-				break;
-
-			case is_array( end( $this->address[ $args['address_type'] ] ) ) :
-				$address = wp_parse_args( array_shift( $this->address[ $args['address_type'] ] ), $default_address );
-				break;
-		}
-
-		return $address;
-	}
-
-	/**
 	 * Retrieves first name of donor with backward compatibility
 	 *
 	 * @since   2.0
