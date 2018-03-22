@@ -312,7 +312,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 					);
 					break;
 
-				case 'sequential-donation':
+				case 'sequential-ordering':
 					$settings = array(
 						// Section 4: Sequential donation
 
@@ -321,11 +321,11 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'type' => 'title'
 						),
 						array(
-							'name'                => __( 'Sequential Donation', 'give' ),
+							'name'                => __( 'Sequential Ordering', 'give' ),
 							'id'                  => "{$current_section}_status",
 							'desc'                => '',
 							'type'                => 'radio_inline',
-							'default'             => 'disabled',
+							'default'             => 'enabled',
 							'confirm_before_edit' => 'forced',
 							'confirmation_msg'    => __( 'Change in this setting can affect you sequential donation numbering. Do you still want to edit this setting?', 'give' ),
 							'options'             => array(
@@ -334,24 +334,24 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							)
 						),
 						array(
-							'name'                => __( 'Sequential Starting Number', 'give' ),
+							'name'                => __( 'Starting Number', 'give' ),
 							'id'                  => "{$current_section}_number",
 							'type'                => 'text',
 							'confirm_before_edit' => 'forced',
 							'confirmation_msg'    => __( 'Change in this setting can affect you sequential donation numbering. Do you still want to edit this setting?', 'give' ),
 						),
 						array(
-							'name'                => __( 'Sequential Number Prefix', 'give' ),
+							'name'                => __( 'Number Prefix', 'give' ),
 							'id'                  => "{$current_section}_number_prefix",
 							'type'                => 'text',
-							'confirm_before_edit' => true,
+							'confirm_before_edit' => 'forced',
 							'confirmation_msg'    => __( 'Change in this setting can affect you sequential donation numbering. Do you still want to edit this setting?', 'give' ),
 						),
 						array(
-							'name'                => __( 'Sequential Number Suffix', 'give' ),
+							'name'                => __( 'Number Suffix', 'give' ),
 							'id'                  => "{$current_section}_number_suffix",
 							'type'                => 'text',
-							'confirm_before_edit' => true,
+							'confirm_before_edit' => 'forced',
 							'confirmation_msg'    => __( 'Change in this setting can affect you sequential donation numbering. Do you still want to edit this setting?', 'give' ),
 						),
 						array(
@@ -399,7 +399,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 				'general-settings'    => __( 'General', 'give' ),
 				'currency-settings'   => __( 'Currency', 'give' ),
 				'access-control'      => __( 'Access Control', 'give' ),
-				'sequential-donation' => __( 'Sequential Donation', 'give' ),
+				'sequential-ordering' => __( 'Sequential Ordering', 'give' ),
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );
@@ -419,11 +419,11 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 		 * @return bool
 		 */
 		public function __give_change_donation_stating_number( $update_options, $option_name, $old_options ) {
-			if ( ! isset( $_POST['sequential-donation_number'] ) ) {
+			if ( ! isset( $_POST['sequential-ordering_number'] ) ) {
 				return false;
 			}
 
-			if ( $update_options['sequential-donation_number'] !== $old_options['sequential-donation_number'] ) {
+			if ( $update_options['sequential-ordering_number'] !== $old_options['sequential-ordering_number'] ) {
 				update_option( '_give_reset_sequential_number', 1 );
 			}
 

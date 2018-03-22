@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class Give_Seq_Donation_Number {
+class Give_Sequential_Donation_Number {
 	/**
 	 * Instance.
 	 *
@@ -29,7 +29,7 @@ class Give_Seq_Donation_Number {
 	 *
 	 * @since  2.1.0
 	 * @access static
-	 * @return Give_Seq_Donation_Number
+	 * @return Give_Sequential_Donation_Number
 	 */
 	public static function get_instance() {
 		if ( null === static::$instance ) {
@@ -48,7 +48,7 @@ class Give_Seq_Donation_Number {
 	 * @since 2.1.0
 	 */
 	public function init() {
-		if ( give_is_setting_enabled( give_get_option( 'sequential-donation_status', 'disabled' ) ) ) {
+		if ( give_is_setting_enabled( give_get_option( 'sequential-ordering_status', 'enabled' ) ) ) {
 			add_action( 'wp_insert_post', array( $this, '__save_donation_title' ), 10, 3 );
 			add_action( 'after_delete_post', array( $this, '__remove_serial_number' ), 10, 1 );
 		}
@@ -78,12 +78,12 @@ class Give_Seq_Donation_Number {
 		$serial_code = $this->__set_number_padding( $serial_number );
 
 		// Add prefix.
-		if ( $prefix = give_get_option( 'sequential-donation_number_prefix', '' ) ) {
+		if ( $prefix = give_get_option( 'sequential-ordering_number_prefix', '' ) ) {
 			$serial_code = $prefix . $serial_code;
 		}
 
 		// Add suffix.
-		if ( $suffix = give_get_option( 'sequential-donation_number_suffix', '' ) ) {
+		if ( $suffix = give_get_option( 'sequential-ordering_number_suffix', '' ) ) {
 			$serial_code = $serial_code . $suffix;
 		}
 
@@ -121,7 +121,7 @@ class Give_Seq_Donation_Number {
 		// Customize sequential donation number starting point if needed.
 		if (
 			get_option( '_give_reset_sequential_number' ) &&
-			( $number = give_get_option( 'sequential-donation_number', 0 ) )
+			( $number = give_get_option( 'sequential-ordering_number', 0 ) )
 		) {
 			delete_option( '_give_reset_sequential_number' );
 
@@ -141,8 +141,9 @@ class Give_Seq_Donation_Number {
 	 * Remove sequential donation data
 	 * Note: only internal use.
 	 *
-	 * @since 2.1.0
+	 * @since  2.1.0
 	 * @access public
+	 *
 	 * @param $donation_id
 	 *
 	 * @return bool
@@ -162,7 +163,7 @@ class Give_Seq_Donation_Number {
 	 * @return string
 	 */
 	private function __set_number_padding( $serial_number ) {
-		if ( $number_padding = give_get_option( 'sequential-donation_number_padding', 0 ) ) {
+		if ( $number_padding = give_get_option( 'sequential-ordering_number_padding', 0 ) ) {
 			$serial_number = str_pad( $serial_number, $number_padding, '0', STR_PAD_LEFT );
 		}
 

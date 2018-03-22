@@ -304,8 +304,8 @@ class Tests_Payments extends Give_Unit_Test_Case {
 		/**
 		 * Case 2: enable sequential donation with prefix and suffix
 		 */
-		give_update_option( 'sequential-donation_number_prefix', 'Give-' );
-		give_update_option( 'sequential-donation_number_suffix', '-WP' );
+		give_update_option( 'sequential-ordering_number_prefix', 'Give-' );
+		give_update_option( 'sequential-ordering_number_suffix', '-WP' );
 
 		$payment_id = Give_Helper_Payment::create_simple_payment();
 
@@ -316,14 +316,14 @@ class Tests_Payments extends Give_Unit_Test_Case {
 		$this->assertEquals( 'Give-2-WP', $payment->number );
 
 		// Reset option.
-		give_update_option( 'sequential-donation_number_prefix', '' );
-		give_update_option( 'sequential-donation_number_suffix', '' );
+		give_update_option( 'sequential-ordering_number_prefix', '' );
+		give_update_option( 'sequential-ordering_number_suffix', '' );
 
 		/**
 		 * Case 3: enable sequential donation with prefix and suffix with date tag
 		 */
-		give_update_option( 'sequential-donation_number_prefix', 'Give-' );
-		give_update_option( 'sequential-donation_number_suffix', '-WP-{YYYY}-{MM}-{DD}' );
+		give_update_option( 'sequential-ordering_number_prefix', 'Give-' );
+		give_update_option( 'sequential-ordering_number_suffix', '-WP-{YYYY}-{MM}-{DD}' );
 
 		$payment_id = Give_Helper_Payment::create_simple_payment();
 
@@ -338,16 +338,16 @@ class Tests_Payments extends Give_Unit_Test_Case {
 		);
 
 		// Reset option.
-		give_update_option( 'sequential-donation_number_prefix', '' );
-		give_update_option( 'sequential-donation_number_suffix', '' );
+		give_update_option( 'sequential-ordering_number_prefix', '' );
+		give_update_option( 'sequential-ordering_number_suffix', '' );
 
 		/**
 		 * Case 3: enable sequential donation with prefix, suffix and custom starting number
 		 */
-		give_update_option( 'sequential-donation_number_prefix', 'Give-' );
-		give_update_option( 'sequential-donation_number_suffix', '-WP' );
+		give_update_option( 'sequential-ordering_number_prefix', 'Give-' );
+		give_update_option( 'sequential-ordering_number_suffix', '-WP' );
 		update_option( '_give_reset_sequential_number', 1 );
-		give_update_option( 'sequential-donation_number', 400 );
+		give_update_option( 'sequential-ordering_number', 400 );
 
 		$payment_id = Give_Helper_Payment::create_simple_payment();
 
@@ -358,9 +358,9 @@ class Tests_Payments extends Give_Unit_Test_Case {
 		$this->assertEquals( 'Give-400-WP', $payment->number );
 
 		// Reset option.
-		give_update_option( 'sequential-donation_number_prefix', '' );
-		give_update_option( 'sequential-donation_number_suffix', '' );
-		give_update_option( 'sequential-donation_number', 400 );
+		give_update_option( 'sequential-ordering_number_prefix', '' );
+		give_update_option( 'sequential-ordering_number_suffix', '' );
+		give_update_option( 'sequential-ordering_number', 400 );
 
 
 		/**

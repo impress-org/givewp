@@ -154,7 +154,7 @@ if ( ! class_exists( 'Give' ) ) :
 		 * @since  2.1.0
 		 * @access public
 		 *
-		 * @var    Give_DB_Sequential_Donations object
+		 * @var    Give_DB_Sequential_Ordering object
 		 */
 		public $sequential_donation_db;
 
@@ -244,7 +244,7 @@ if ( ! class_exists( 'Give' ) ) :
 		/**
 		 * Give_Seq_Donation_Number Object.
 		 *
-		 * @var Give_Seq_Donation_Number
+		 * @var Give_Sequential_Donation_Number
 		 */
 		public $seq_donation_number;
 
@@ -339,10 +339,10 @@ if ( ! class_exists( 'Give' ) ) :
 			$this->payment_meta           = new Give_DB_Payment_Meta();
 			$this->logs                   = new Give_Logging();
 			$this->form_meta              = new Give_DB_Form_Meta();
-			$this->sequential_donation_db = new Give_DB_Sequential_Donations();
+			$this->sequential_donation_db = new Give_DB_Sequential_Ordering();
 			$this->async_process          = new Give_Async_Process();
 			$this->scripts                = new Give_Scripts();
-			$this->seq_donation_number    = Give_Seq_Donation_Number::get_instance();
+			$this->seq_donation_number    = Give_Sequential_Donation_Number::get_instance();
 
 			/**
 			 * Fire the action after Give core loads.
@@ -484,7 +484,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-email-access.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-payment-meta.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-form-meta.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-sequential-donations.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/class-give-db-sequential-ordering.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/country-functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/template-functions.php';
@@ -513,7 +513,7 @@ if ( ! class_exists( 'Give' ) ) :
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/class-payment-stats.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/class-payments-query.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/payments/class-give-payment.php';
-			require_once GIVE_PLUGIN_DIR . 'includes/payments/class-give-seq-donation-number.php';
+			require_once GIVE_PLUGIN_DIR . 'includes/payments/class-give-sequential-donation-number.php';
 
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/functions.php';
 			require_once GIVE_PLUGIN_DIR . 'includes/gateways/actions.php';

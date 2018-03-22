@@ -3,7 +3,7 @@
  * Sequential Donation DB
  *
  * @package     Give
- * @subpackage  Classes/Give_DB_Sequential_Donations
+ * @subpackage  Classes/Give_DB_Sequential_Ordering
  * @copyright   Copyright (c) 2018, WordImpress
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  * @since       2.1.0
@@ -15,16 +15,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Give_DB_Sequential_Donations Class
+ * Give_DB_Sequential_Ordering Class
  *
  * This class is for interacting with the sequential donation database table.
  *
  * @since 2.1.0
  */
-class Give_DB_Sequential_Donations extends Give_DB {
+class Give_DB_Sequential_Ordering extends Give_DB {
 
 	/**
-	 * Give_DB_Sequential_Donations constructor.
+	 * Give_DB_Sequential_Ordering constructor.
 	 *
 	 * Set up the Give DB Donor class.
 	 *
@@ -35,7 +35,7 @@ class Give_DB_Sequential_Donations extends Give_DB {
 		/* @var WPDB $wpdb */
 		global $wpdb;
 
-		$this->table_name  = $wpdb->prefix . 'give_sequential_donations';
+		$this->table_name  = $wpdb->prefix . 'give_sequential_ordering';
 		$this->primary_key = 'id';
 		$this->version     = '1.0';
 
