@@ -55,6 +55,7 @@ class Give_Seq_Donation_Number {
 
 	/**
 	 * Set serialize donation number as donation title.
+	 * Note: only for internal use
 	 *
 	 * @since  2.1.0
 	 * @access public
@@ -71,7 +72,7 @@ class Give_Seq_Donation_Number {
 			return;
 		}
 
-		$serial_number = $this->set_donation_number( $donation_id );
+		$serial_number = $this->__set_donation_number( $donation_id );
 
 		$serial_code = $this->__set_number_padding( $serial_number );
 
@@ -106,6 +107,7 @@ class Give_Seq_Donation_Number {
 
 	/**
 	 * Set donation number
+	 * Note: only for internal use
 	 *
 	 * @since  2.1.0
 	 * @access public
@@ -114,7 +116,7 @@ class Give_Seq_Donation_Number {
 	 *
 	 * @return int
 	 */
-	public function set_donation_number( $donation_id ) {
+	public function __set_donation_number( $donation_id ) {
 		// Customize sequential donation number starting point if needed.
 		if (
 			get_option( '_give_reset_sequential_number' ) &&
