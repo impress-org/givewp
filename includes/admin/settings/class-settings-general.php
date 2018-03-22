@@ -327,6 +327,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'type'                => 'radio_inline',
 							'default'             => 'disabled',
 							'confirm_before_edit' => 'forced',
+							'confirmation_msg'    => __( 'Change in this setting can affect you sequential donation numbering. Do you still want to edit this setting?', 'give' ),
 							'options'             => array(
 								'enabled'  => __( 'Enabled', 'give' ),
 								'disabled' => __( 'Disabled', 'give' )
@@ -337,25 +338,29 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'id'                  => "{$current_section}_number",
 							'type'                => 'text',
 							'confirm_before_edit' => 'forced',
+							'confirmation_msg'    => __( 'Change in this setting can affect you sequential donation numbering. Do you still want to edit this setting?', 'give' ),
 						),
 						array(
 							'name'                => __( 'Sequential Number Prefix', 'give' ),
 							'id'                  => "{$current_section}_number_prefix",
 							'type'                => 'text',
-							'confirm_before_edit' => true
+							'confirm_before_edit' => true,
+							'confirmation_msg'    => __( 'Change in this setting can affect you sequential donation numbering. Do you still want to edit this setting?', 'give' ),
 						),
 						array(
 							'name'                => __( 'Sequential Number Suffix', 'give' ),
 							'id'                  => "{$current_section}_number_suffix",
 							'type'                => 'text',
-							'confirm_before_edit' => true
+							'confirm_before_edit' => true,
+							'confirmation_msg'    => __( 'Change in this setting can affect you sequential donation numbering. Do you still want to edit this setting?', 'give' ),
 						),
 						array(
 							'name'                => __( 'Number Padding', 'give' ),
 							'id'                  => "{$current_section}_number_padding",
 							'type'                => 'text',
 							'default'             => '0',
-							'confirm_before_edit' => 'forced'
+							'confirm_before_edit' => 'forced',
+							'confirmation_msg'    => __( 'Change in this setting can affect you sequential donation numbering. Do you still want to edit this setting?', 'give' ),
 						),
 						array(
 							'id'   => 'give_title_general_settings_4',
