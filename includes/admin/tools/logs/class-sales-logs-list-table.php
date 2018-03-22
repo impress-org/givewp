@@ -98,9 +98,10 @@ class Give_Sales_Log_Table extends WP_List_Table {
 				return $value;
 
 			case 'donation' :
+				$serial_code = Give()->seq_donation_number->get_serial_code( $payment, array( 'with_hash' => true ) );
 				$value = Give()->tooltips->render_link( array(
-					'label'       => __( 'View Donation', 'give' ),
-					'tag_content' => Give()->seq_donation_number->get_serial_code( $payment, array( 'with_hash' => true ) ),
+					'label'       => sprintf( __( 'View Donation %s', 'give' ), $serial_code ),
+					'tag_content' => $serial_code,
 					'link'        => esc_url( add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details' ) ) ),
 				) );
 

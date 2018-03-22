@@ -457,7 +457,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 				$serial_code = Give()->seq_donation_number->get_serial_code( $payment, array( 'with_hash' => true ) );
 				if ( current_user_can( 'view_give_payments' ) ) {
 					$value = Give()->tooltips->render_link( array(
-						'label'       => sprintf( __( 'View Donation #%s', 'give' ), $payment->ID ),
+						'label'       => sprintf( __( 'View Donation %s', 'give' ), $serial_code ),
 						'tag_content' => $serial_code,
 						'link'        => $single_donation_url,
 					) );
