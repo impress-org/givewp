@@ -61,14 +61,14 @@ class Give_Seq_Donation_Number {
 	 * @access public
 	 *
 	 * @param int     $donation_id
-	 * @param WP_Post $donation_post_data
+	 * @param WP_Post $post
 	 * @param bool    $existing_donation_updated
 	 *
 	 * @return void
 	 */
-	public function __save_donation_title( $donation_id, $donation_post_data, $existing_donation_updated ) {
+	public function __save_donation_title( $donation_id, $post, $existing_donation_updated ) {
 		// Bailout
-		if ( $existing_donation_updated ) {
+		if ( $existing_donation_updated || 'give_payment' !== $post->post_type ) {
 			return;
 		}
 
@@ -208,7 +208,7 @@ class Give_Seq_Donation_Number {
 	 * @return string
 	 */
 	public function get_serial_number( $donation_id_or_serial_code ) {
-		if( is_numeric( $donation_id_or_serial_code ) ) {
+		if ( is_numeric( $donation_id_or_serial_code ) ) {
 			return Give()->sequential_donation_db->get_column_by( 'id', 'payment_id', $donation_id_or_serial_code );
 		}
 
