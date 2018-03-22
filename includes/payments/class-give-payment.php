@@ -913,6 +913,9 @@ final class Give_Payment {
 						break;
 
 					case 'number':
+						// @todo: remove unused meta data.
+						// Core is using post_title to store donation serial code ( fi enabled ) instead this meta key.
+						// Do not use this meta key in your logic, can be remove in future
 						$this->update_meta( '_give_payment_number', $this->number );
 						break;
 
