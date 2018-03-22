@@ -1776,7 +1776,7 @@ function give_maybe_define_constant( $name, $value ) {
 function give_time_do_tags( $string, $timestamp = 0 ) {
 	$current_time = ! empty( $timestamp ) ? $timestamp : current_time( 'timestamp' );
 
-	$string = str_replace(
+	$formatted_string = str_replace(
 		array(
 			'{D}',
 			'{DD}',
@@ -1803,5 +1803,10 @@ function give_time_do_tags( $string, $timestamp = 0 ) {
 		$string
 	);
 
-	return $string;
+	/**
+	 * Filter the parsed string.
+	 *
+	 * @since 2.1.0
+	 */
+	return apply_filters( 'give_time_do_tags', $formatted_string, $string, $timestamp );
 }
