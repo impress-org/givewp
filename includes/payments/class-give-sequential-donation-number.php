@@ -28,7 +28,7 @@ class Give_Sequential_Donation_Number {
 	 * Get instance.
 	 *
 	 * @since  2.1.0
-	 * @access static
+	 * @access public
 	 * @return Give_Sequential_Donation_Number
 	 */
 	public static function get_instance() {
