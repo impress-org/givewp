@@ -13,8 +13,8 @@ $give_settings = $args[0]; // Give settings.
 $atts          = $args[1]; // Shortcode attributes.
 ?>
 
-<div class="give-donation-grid-item give-grid-col-<?php echo esc_attr( $atts['columns'] ); ?>">
-	<div class="box">
+<div class="give-grid__item">
+	<div class="give-card">
 		<?php
 		// The featured image.
 		if (
@@ -22,15 +22,15 @@ $atts          = $args[1]; // Shortcode attributes.
 			has_post_thumbnail() &&
 			'true' == $atts['show_featured_image']
 		) {
-			printf( '<div class="donation-grid-featured-image">' );
+			printf( '<div class="give-card__media">' );
 			the_post_thumbnail();
 			printf( '</div>' );
 		}
 
-		// The Form title.
-		the_title( '<span class="donation-grid-title">', '</span>' );
+		// The card heading.
+		the_title( '<h3 class="give-card__heading">', '</h3>' );
 
-		// The progess bar for goal.
+		// The goal progess bar.
 		if (
 			give_is_setting_enabled( get_post_meta( $form_id, '_give_goal_option', true ) ) &&
 			'true' == $atts['show_goal']
@@ -45,7 +45,7 @@ $atts          = $args[1]; // Shortcode attributes.
 			give_is_setting_enabled( $give_settings['forms_excerpt'] ) &&
 			'true' == $atts['show_excerpt']
 		) {
-			printf( '<div class="donor-grid-excerpt">%s</div>', get_the_excerpt() );
+			printf( '<div class="give-card__description">%s</div>', get_the_excerpt() );
 		}
 
 		// The 'Donate Now' button.
