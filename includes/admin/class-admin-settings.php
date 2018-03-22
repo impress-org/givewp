@@ -480,7 +480,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 								/>
 								<?php if ( self::can_lock_field( $value, $option_value ) ): ?>
 									<span class="give-confirm dashicons dashicons-lock"
-									      data-message="<?php echo __( 'Do you want to change this setting?', 'give' ); ?>"></span>
+									      data-message="<?php echo $value['confirmation_msg']; ?>"></span>
 								<?php endif; ?>
 							<?php endif; ?>
 							<?php echo $description; ?>
