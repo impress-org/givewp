@@ -623,7 +623,7 @@ function give_get_purchase_summary( $purchase_data, $email = true ) {
 /**
  * Retrieves the emails for which admin notifications are sent to (these can be changed in the Give Settings).
  *
- * @since 1.0
+ * @since      1.0
  * @deprecated 2.0
  *
  * @return mixed
@@ -641,7 +641,7 @@ function give_get_admin_notice_emails() {
 /**
  * Checks whether admin donation notices are disabled
  *
- * @since 1.0
+ * @since      1.0
  * @deprecated 2.0
  *
  * @param int $payment_id
@@ -651,7 +651,7 @@ function give_get_admin_notice_emails() {
 function give_admin_notices_disabled( $payment_id = 0 ) {
 	return apply_filters(
 		'give_admin_notices_disabled',
-		! give_is_setting_enabled( Give_Email_Notification::get_instance('new-donation' )->get_notification_status() ),
+		! give_is_setting_enabled( Give_Email_Notification::get_instance( 'new-donation' )->get_notification_status() ),
 		$payment_id
 	);
 }
@@ -784,9 +784,9 @@ function give_decrease_earnings( $form_id = 0, $amount ) {
 /**
  * Retrieve the donation ID based on the key
  *
- * @param string  $key  the key to search for.
+ * @param string $key the key to search for.
  *
- * @since 1.0
+ * @since      1.0
  * @deprecated 1.8.18
  *
  * @return int $purchase Donation ID.
@@ -815,7 +815,7 @@ function give_get_payment_form_title( $meta, $only_level = false, $separator = '
 	);
 
 	$donation = '';
-	if( is_array( $meta ) && ! empty( $meta['key'] ) ) {
+	if ( is_array( $meta ) && ! empty( $meta['key'] ) ) {
 		$donation = give_get_payment_by( 'key', $meta['key'] );
 	}
 
@@ -832,7 +832,7 @@ function give_get_payment_form_title( $meta, $only_level = false, $separator = '
  *
  * This is used when inserting a new payment
  *
- * @since 1.0
+ * @since      1.0
  * @deprecated 2.1
  *
  * @return string $number The next available payment number.
@@ -891,4 +891,65 @@ function give_get_next_payment_number() {
 	}
 
 	return apply_filters( 'give_get_next_payment_number', $number );
+}
+
+/**
+ * Given a given a number, remove the pre/postfix
+ *
+ * @param string $number The formatted Current Number to increment.
+ *
+ * @since      1.3
+ * @deprecated 2.1.0
+ *
+ * @return string The new Payment number without prefix and postfix.
+ */
+function give_remove_payment_prefix_postfix( $number ) {
+
+	$prefix  = give_get_option( 'sequential_prefix' );
+	$postfix = give_get_option( 'sequential_postfix' );
+
+	// Remove prefix.
+	$number = preg_replace( '/' . $prefix . '/', '', $number, 1 );
+
+	// Remove the postfix.
+	$length      = strlen( $number );
+	$postfix_pos = strrpos( $number, $postfix );
+	if ( false !== $postfix_pos ) {
+		$number = substr_replace( $number, '', $postfix_pos, $length );
+	}
+
+	// Ensure it's a whole number.
+	$number = intval( $number );
+
+	return apply_filters( 'give_remove_payment_prefix_postfix', $number, $prefix, $postfix );
+
+}
+
+/**
+ * Formats the payment number with the prefix and postfix
+ *
+ * @param int $number The payment number to format.
+ *
+ * @since      1.3
+ * @deprecated 2.1.0
+ *
+ * @return string      The formatted payment number.
+ */
+function give_format_payment_number( $number ) {
+
+	if ( ! give_get_option( 'enable_sequential' ) ) {
+		return $number;
+	}
+
+	if ( ! is_numeric( $number ) ) {
+		return $number;
+	}
+
+	$prefix  = give_get_option( 'sequential_prefix' );
+	$number  = absint( $number );
+	$postfix = give_get_option( 'sequential_postfix' );
+
+	$formatted_number = $prefix . $number . $postfix;
+
+	return apply_filters( 'give_format_payment_number', $formatted_number, $prefix, $number, $postfix );
 }

@@ -1050,63 +1050,6 @@ function give_get_payment_number( $payment_id = 0 ) {
 	return $payment->number;
 }
 
-/**
- * Formats the payment number with the prefix and postfix
- *
- * @since 1.3
- *
- * @param int   $number
- * @param array $args
- *
- * @return string      The formatted payment number.
- */
-function give_format_payment_number( $number, $args = array() ) {
-	$formatted_number = Give()->seq_donation_number->get_serial_code( absint( $number ), $args );
-
-	/**
-	 * Filter the donation serial code.
-	 *
-	 * @since 1.3
-	 */
-	return apply_filters(
-		'give_format_payment_number',
-		$formatted_number,
-		give_get_option( 'sequential-donation_number_prefix', '' ), // Backward compatibility. Can be remove in future.
-		$number,
-		give_get_option( 'sequential-donation_number_sufix', '' ) // Backward compatibility. Can be remove in future.
-	);
-}
-
-/**
- * Given a given a number, remove the pre/postfix
- *
- * @param string $number The formatted Current Number to increment.
- *
- * @since 1.3
- *
- * @return string The new Payment number without prefix and postfix.
- */
-function give_remove_payment_prefix_postfix( $number ) {
-
-	$prefix  = give_get_option( 'sequential_prefix' );
-	$postfix = give_get_option( 'sequential_postfix' );
-
-	// Remove prefix.
-	$number = preg_replace( '/' . $prefix . '/', '', $number, 1 );
-
-	// Remove the postfix.
-	$length      = strlen( $number );
-	$postfix_pos = strrpos( $number, $postfix );
-	if ( false !== $postfix_pos ) {
-		$number = substr_replace( $number, '', $postfix_pos, $length );
-	}
-
-	// Ensure it's a whole number.
-	$number = intval( $number );
-
-	return apply_filters( 'give_remove_payment_prefix_postfix', $number, $prefix, $postfix );
-
-}
 
 /**
  * Get Donation Amount
