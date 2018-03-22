@@ -242,7 +242,7 @@ if ( ! class_exists( 'Give' ) ) :
 		public $scripts;
 
 		/**
-		 * Giv_Seq_Donation_Number Object.
+		 * Give_Seq_Donation_Number Object.
 		 *
 		 * @var Give_Seq_Donation_Number
 		 */
