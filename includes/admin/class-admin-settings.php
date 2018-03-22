@@ -525,6 +525,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 						 * check success_page setting in general settings.
 						 */
 						if(
+							isset( $value['attributes' ] ) &&
 							false !== strpos( $value['class'], 'give-select-chosen' ) &&
 							in_array( 'data-search-type', array_keys( $value['attributes' ] ) ) &&
 							'pages' == $value['attributes' ]['data-search-type'] &&
