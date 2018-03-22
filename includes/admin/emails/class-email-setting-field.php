@@ -282,7 +282,7 @@ class Give_Email_Setting_Field {
 	 * Get recipient setting field.
 	 *
 	 * @since  2.0
-	 * @access static
+	 * @access public
 	 * @todo   check this field in form metabox setting after form api merge.
 	 *
 	 * @param Give_Email_Notification $email
