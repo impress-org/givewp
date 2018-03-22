@@ -88,6 +88,20 @@ class Give_DB_Sequential_Donations extends Give_DB {
 		global $wpdb;
 		$charset_collate = $wpdb->get_charset_collate();
 
+		// Calculate auto increment number.
+		$payment_ID = $wpdb->get_var(
+			$wpdb->prepare(
+				"
+				SELECT ID
+				FROM $wpdb->posts
+				WHERE post_type=%s
+				ORDER By ID desc
+				LIMIT 1
+				",
+				'give_payment'
+			)
+		);
+
 		$sql = "CREATE TABLE {$this->table_name} (
         id bigint(20) NOT NULL AUTO_INCREMENT,
         payment_id bigint(20) NOT NULL,
@@ -96,6 +110,11 @@ class Give_DB_Sequential_Donations extends Give_DB {
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		dbDelta( $sql );
+
+		if( ! empty( $payment_ID ) ) {
+			$payment_ID = $payment_ID + 1;
+			$wpdb->query("ALTER TABLE {$this->table_name} AUTO_INCREMENT={$payment_ID};");
+		}
 
 		update_option( $this->table_name . '_db_version', $this->version );
 	}
