@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Give_DB_Sequential_Donations Class
  *
- * This class is for interacting with the log database table.
+ * This class is for interacting with the sequential donation database table.
  *
  * @since 2.1.0
  */
