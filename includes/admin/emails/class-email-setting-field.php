@@ -27,6 +27,8 @@ class Give_Email_Setting_Field {
 		// Recipient field.
 		if ( Give_Email_Notification_Util::has_recipient_field( $email ) ) {
 			$setting_fields[] = self::get_recipient_setting_field( $email, $form_id );
+		} else {
+			$setting_fields[] = self::get_disable_recipient_setting_field( $email, $form_id );
 		}
 
 
@@ -323,6 +325,35 @@ class Give_Email_Setting_Field {
 				),
 			);
 		}
+
+		return $recipient;
+	}
+
+	/**
+	 * Get recipient setting field that is disable.
+	 *
+	 * @since  2.0.7
+	 *
+	 * @access static
+	 * @todo check this field in form metabox setting after form api merge.
+	 *
+	 * @param Give_Email_Notification $email
+	 * @param int $form_id
+	 *
+	 * @return array
+	 */
+	public static function get_disable_recipient_setting_field( Give_Email_Notification $email, $form_id = null ) {
+		$recipient = array(
+			'id'         => self::get_prefix( $email, $form_id ) . 'disable_recipient',
+			'name'       => esc_html__( 'Email Recipients', 'give' ),
+			'desc'       => esc_html__( 'This email is sent to the Donor and the recipients cannot be customized.', 'give' ),
+			'default'    => '{donor_email}',
+			'value'      => '{donor_email}',
+			'type'       => 'text',
+			'attributes' => array(
+				'disabled' => true,
+			),
+		);
 
 		return $recipient;
 	}
