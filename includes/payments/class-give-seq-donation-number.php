@@ -50,6 +50,7 @@ class Give_Seq_Donation_Number {
 	public function init() {
 		if ( give_is_setting_enabled( give_get_option( 'sequential-donation_status', 'disabled' ) ) ) {
 			add_action( 'wp_insert_post', array( $this, '__save_donation_title' ), 10, 3 );
+			add_action( 'after_delete_post', array( $this, '__remove_serial_number' ), 10, 1 );
 		}
 	}
 
@@ -133,6 +134,21 @@ class Give_Seq_Donation_Number {
 		return Give()->sequential_donation_db->insert( array(
 			'payment_id' => $donation_id
 		) );
+	}
+
+
+	/**
+	 * Remove sequential donation data
+	 * Note: only internal use.
+	 *
+	 * @since 2.1.0
+	 * @access public
+	 * @param $donation_id
+	 *
+	 * @return bool
+	 */
+	public function __remove_serial_number( $donation_id ) {
+		return Give()->sequential_donation_db->delete( $this->get_serial_number( $donation_id ) );
 	}
 
 	/**
