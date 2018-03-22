@@ -323,7 +323,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						array(
 							'name'                => __( 'Sequential Ordering', 'give' ),
 							'id'                  => "{$current_section}_status",
-							'desc'                => '',
+							'desc'                => __( 'Would you like to enable the sequential ordering feature?', 'give' ),
 							'type'                => 'radio_inline',
 							'default'             => 'enabled',
 							'confirm_before_edit' => 'forced',
@@ -361,6 +361,13 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 							'default'             => '0',
 							'confirm_before_edit' => 'forced',
 							'confirmation_msg'    => __( 'Change in this setting can affect you sequential donation numbering. Do you still want to edit this setting?', 'give' ),
+						),
+						array(
+							'name'  => __( 'Sequential Ordering Docs Link', 'give' ),
+							'id'    => "{$current_section}_doc link",
+							'url'   => esc_url( 'http://docs.givewp.com/settings-sequential-ordering' ),
+							'title' => __( 'Sequential Ordering', 'give' ),
+							'type'  => 'give_docs_link',
 						),
 						array(
 							'id'   => 'give_title_general_settings_4',
