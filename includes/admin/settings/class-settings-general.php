@@ -336,7 +336,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						array(
 							'name'                => __( 'Starting Number', 'give' ),
 							'id'                  => "{$current_section}_number",
-							'type'                => 'text',
+							'type'                => 'number',
 							'confirm_before_edit' => 'forced',
 							'confirmation_msg'    => __( 'Change in this setting can affect you sequential donation numbering. Do you still want to edit this setting?', 'give' ),
 						),
@@ -357,7 +357,7 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						array(
 							'name'                => __( 'Number Padding', 'give' ),
 							'id'                  => "{$current_section}_number_padding",
-							'type'                => 'text',
+							'type'                => 'number',
 							'default'             => '0',
 							'confirm_before_edit' => 'forced',
 							'confirmation_msg'    => __( 'Change in this setting can affect you sequential donation numbering. Do you still want to edit this setting?', 'give' ),
