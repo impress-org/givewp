@@ -533,6 +533,7 @@ $payment_mode   = $payment->mode;
 													);
 												}
 												?>
+												<span>(<a href="#new" class="give-payment-new-donor"><?php _e( 'Create New Donor', 'give' ); ?></a>)</span>
 											</p>
 											<p>
 												<strong><?php _e( 'Donor Since:', 'give' ); ?></strong><br>
@@ -572,7 +573,12 @@ $payment_mode   = $payment->mode;
 												?>
 											</p>
 											<p>
-												<a href="#new" class="give-payment-new-donor"><?php _e( 'Create New Donor', 'give' ); ?></a>
+												<?php if ( ! empty( $company_name ) ) {
+													?>
+													<strong><?php esc_html_e( 'Company Name:', 'give' ); ?></strong><br>
+													<?php
+													echo $company_name;
+												} ?>
 											</p>
 										</div>
 									</div>
@@ -606,18 +612,6 @@ $payment_mode   = $payment->mode;
 											</p>
 										</div>
 									</div>
-
-									<div class="column-container">
-										<?php if ( ! empty( $company_name ) ) : ?>
-											<div class="column">
-												<p>
-													<strong><?php esc_html_e( 'Company Name:', 'give' ); ?></strong><br>
-													<?php echo $company_name; ?>
-												</p>
-											</div>
-										<?php endif; ?>
-									</div>
-
 									<?php
 									/**
 									 * Fires on the donation details page, in the donor-details metabox.
