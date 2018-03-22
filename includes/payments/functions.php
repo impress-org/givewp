@@ -189,13 +189,6 @@ function give_insert_payment( $payment_data = array() ) {
 		$payment->date = $payment_data['post_date'];
 	}
 
-	// Handle sequential payments.
-	if ( give_get_option( 'enable_sequential' ) ) {
-		$number          = give_get_next_payment_number();
-		$payment->number = give_format_payment_number( $number );
-		update_option( 'give_last_payment_number', $number );
-	}
-
 	// Save payment.
 	$payment->save();
 
