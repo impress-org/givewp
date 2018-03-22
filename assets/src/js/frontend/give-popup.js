@@ -21,6 +21,8 @@
  * # Chain the `addButton()` to add more buttons to the popup
  */
 
+import 'magnific-popup';
+
 const GiveModal = ( function( $ ) {
 
 	/**
@@ -270,3 +272,5 @@ const GiveModal = ( function( $ ) {
 	return GiveModal;
 
 })( jQuery );
+
+export default GiveModal;
