@@ -732,7 +732,7 @@ function give_donation_grid_shortcode( $atts ) {
 		add_filter( 'add_give_goal_progress_class', 'add_give_goal_progress_class', 10, 1 );
 		add_filter( 'add_give_goal_progress_bar_class', 'add_give_goal_progress_bar_class', 10, 1 );
 
-		printf( '<div class="give-donation-grid-container">' );
+		echo '<div class="give-grid give-grid--' . esc_attr( $atts['columns'] ) . '">';
 
 		while ( $current_donations_query->have_posts() ) {
 			$current_donations_query->the_post();
@@ -744,7 +744,7 @@ function give_donation_grid_shortcode( $atts ) {
 
 		wp_reset_postdata();
 
-		printf( '</div>' );
+		echo '</div>';
 
 		remove_filter( 'add_give_goal_progress_class', 'add_give_goal_progress_class' );
 		remove_filter( 'add_give_goal_progress_bar_class', 'add_give_goal_progress_bar_class' );
