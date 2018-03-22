@@ -4,7 +4,6 @@
  *
  * @author  WordImpress
  * @version 1.0
- * https://github.com/WordImpress/plugin-activation-banner-demo
  */
 
 // Exit if accessed directly.
@@ -12,8 +11,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+global $give_addons;
+
 /**
  * Class Give_Addon_Activation_Banner
+ *
+ * @since  2.0.7 Added pleasing interface when multiple add-ons are activated.
  */
 class Give_Addon_Activation_Banner {
 
@@ -33,22 +36,38 @@ class Give_Addon_Activation_Banner {
 	 *                               }
 	 */
 	function __construct( $_banner_details ) {
-		$current_user = wp_get_current_user();
+		global $give_addons;
 
-		$this->plugin_activate_by   = 0;
-		$this->banner_details       = $_banner_details;
-		$this->test_mode            = ( $this->banner_details['testing'] == 'true' ) ? true : false;
-		$this->nag_meta_key         = 'give_addon_activation_ignore_' . sanitize_title( $this->banner_details['name'] );
-		$this->activate_by_meta_key = 'give_addon_' . sanitize_title( $this->banner_details['name'] ) . '_active_by_user';
+		// Append add-on information to the global variable.
+		$give_addons[] = $_banner_details;
+
+		// Get the current user.
+		$current_user = wp_get_current_user();
 
 		//Get current user
 		$this->user_id = $current_user->ID;
 
-		// Set up hooks.
-		$this->init();
+		// Only if single add-on activated.
+		if ( 1 === count( $give_addons ) ) {
 
-		// Store user id who activate plugin.
-		$this->add_addon_activate_meta();
+			$this->plugin_activate_by   = 0;
+			$this->banner_details       = $_banner_details;
+			$this->test_mode            = ( $this->banner_details['testing'] == 'true' ) ? true : false;
+			$this->nag_meta_key         = 'give_addon_activation_ignore_' . sanitize_title( $this->banner_details['name'] );
+			$this->activate_by_meta_key = 'give_addon_' . sanitize_title( $this->banner_details['name'] ) . '_active_by_user';
+
+			// Set up hooks.
+			$this->init();
+
+			// Store user id who activated plugin.
+			$this->add_addon_activate_meta();
+		}
+
+		// Check if notice callback is already hooked.
+		if ( ! $this->is_banner_notice_hooked() ) {
+			// If multiple add-on are activated then show activation banner in tab view.
+			add_action( 'admin_notices', array( $this, 'addon_activation_banner_notices' ), 10 );
+		}
 	}
 
 	/**
@@ -61,14 +80,13 @@ class Give_Addon_Activation_Banner {
 	 */
 	public function init() {
 
-		//Testing?
+		// Testing?
 		if ( $this->test_mode ) {
 			delete_user_meta( $this->user_id, $this->nag_meta_key );
 		}
 
-		//Get the current page to add the notice to
+		// Get the current page to add the notice to
 		add_action( 'current_screen', array( $this, 'give_addon_notice_ignore' ) );
-		add_action( 'admin_notices', array( $this, 'give_addon_activation_admin_notice' ) );
 
 		// File path of addon must be included in banner detail other addon activate meta will not delete.
 		$file_name = $this->get_plugin_file_name();
@@ -77,250 +95,6 @@ class Give_Addon_Activation_Banner {
 			add_action( 'deactivate_' . $file_name, array( $this, 'remove_addon_activate_meta' ) );
 		}
 	}
-
-
-	/**
-	 * Check if current page is plugin page or not.
-	 *
-	 * @since  1.8
-	 * @access private
-	 * @return bool
-	 */
-	private function is_plugin_page() {
-		$screen = get_current_screen();
-
-		return ( $screen->parent_file === 'plugins.php' );
-	}
-
-
-	/**
-	 * Give Addon Activation Banner
-	 *
-	 * @since  1.0
-	 * @access public
-	 */
-	public function give_addon_activation_admin_notice() {
-
-		// Bailout.
-		if ( ! $this->is_plugin_page() || $this->user_id !== $this->plugin_activate_by ) {
-			return;
-		}
-
-		// If the user hasn't already dismissed the alert, output activation banner.
-		if ( ! get_user_meta( $this->user_id, $this->nag_meta_key ) ) {
-
-			$this->print_css();
-
-			// Output inline styles here because there's no reason
-			// to enqueued them after the alert is dismissed.
-
-			ob_start();
-			?>
-
-			<div class="updated give-addon-alert give-notice" style="display: none">
-
-				<img src="<?php echo GIVE_PLUGIN_URL; ?>assets/images/svg/give-icon-full-circle.svg" class="give-logo"/>
-
-				<div class="give-alert-message">
-					<h3><?php
-						printf(
-						/* translators: %s: Add-on name */
-							esc_html__( "Thank you for installing Give's %s Add-on!", 'give' ),
-							'<span>' . $this->banner_details['name'] . '</span>'
-						);
-						?></h3>
-
-					<a href="<?php
-					//The Dismiss Button.
-					$nag_admin_dismiss_url = 'plugins.php?' . $this->nag_meta_key . '=0';
-					echo admin_url( $nag_admin_dismiss_url ); ?>" class="dismiss"><span
-							class="dashicons dashicons-dismiss"></span></a>
-
-					<div class="alert-actions">
-
-						<?php //Point them to your settings page.
-						if ( isset( $this->banner_details['settings_url'] ) ) { ?>
-							<a href="<?php echo $this->banner_details['settings_url']; ?>">
-								<span class="dashicons dashicons-admin-settings"></span><?php esc_html_e( 'Go to Settings', 'give' ); ?>
-							</a>
-						<?php } ?>
-
-						<?php
-						// Show them how to configure the Addon.
-						if ( isset( $this->banner_details['documentation_url'] ) ) { ?>
-							<a href="<?php echo $this->banner_details['documentation_url'] ?>" target="_blank">
-								<span class="dashicons dashicons-media-text"></span><?php
-								printf(
-								/* translators: %s: Add-on name */
-									esc_html__( 'Documentation: %s Add-on', 'give' ),
-									$this->banner_details['name']
-								);
-								?></a>
-						<?php } ?>
-						<?php
-						//Let them signup for plugin updates
-						if ( isset( $this->banner_details['support_url'] ) ) { ?>
-
-							<a href="<?php echo $this->banner_details['support_url'] ?>" target="_blank">
-								<span class="dashicons dashicons-sos"></span><?php esc_html_e( 'Get Support', 'give' ); ?>
-							</a>
-
-						<?php } ?>
-
-					</div>
-				</div>
-			</div>
-			<?php
-
-			$notice_html = ob_get_clean();
-			
-			
-			// Register notice.
-			Give()->notices->register_notice( array(
-				'id'          => 'give_' . sanitize_title( $this->banner_details['name'] ) . '_notice',
-				'type'        => 'updated',
-				'description_html' => $notice_html,
-				'show'        => true,
-			) );
-		}
-	}
-
-
-	/**
-	 * Add activation banner css.
-	 *
-	 * @since 1.8.16
-	 * @access private
-	 */
-	private function print_css(){
-		?>
-		<style>
-			div.give-addon-alert.updated {
-				padding: 20px;
-				position: relative;
-				border-color: #66BB6A;
-			}
-
-			div.give-alert-message {
-				margin-left: 70px;
-			}
-
-			div.give-addon-alert img.give-logo {
-				max-width: 50px;
-				float: left;
-			}
-
-			div.give-addon-alert h3 {
-				margin: -5px 0 10px;
-				font-size: 22px;
-				font-weight: 300;
-				line-height: 30px;
-			}
-
-			div.give-addon-alert h3 span {
-				font-weight: 700;
-				color: #66BB6A;
-			}
-
-			div.give-addon-alert .alert-actions {
-			}
-
-			div.give-addon-alert a {
-				color: #66BB6A;
-			}
-
-			div.give-addon-alert .alert-actions a {
-				margin-right: 2em;
-			}
-
-			div.give-addon-alert .alert-actions a {
-				text-decoration: underline;
-			}
-
-			div.give-addon-alert .alert-actions a:hover {
-				color: #555555;
-			}
-
-			div.give-addon-alert .alert-actions a span {
-				text-decoration: none;
-				margin-right: 5px;
-			}
-
-			div.give-addon-alert .dismiss {
-				position: absolute;
-				right: 20px;
-				height: 100%;
-				top: 50%;
-				margin-top: -10px;
-				outline: none;
-				box-shadow: none;
-				text-decoration: none;
-				color: #AAA;
-			}
-
-			div.give-addon-alert .dismiss:hover {
-				color: #333;
-			}
-		</style>
-		<?php
-	}
-
-
-	/**
-	 * Ignore Nag.
-	 *
-	 * This is the action that allows the user to dismiss the banner it basically sets a tag to their user meta data
-	 *
-	 * @since  1.0
-	 * @access public
-	 */
-	public function give_addon_notice_ignore() {
-
-		/**
-		 * If user clicks to ignore the notice, add that to their user meta the banner then checks whether this tag exists already or not.
-		 * See here: http://codex.wordpress.org/Function_Reference/add_user_meta
-		 */
-		if ( isset( $_GET[ $this->nag_meta_key ] ) && '0' == $_GET[ $this->nag_meta_key ] ) {
-
-			//Get the global user
-			$current_user = wp_get_current_user();
-			$user_id      = $current_user->ID;
-
-			add_user_meta( $user_id, $this->nag_meta_key, 'true', true );
-		}
-	}
-
-	/**
-	 * Setup user id to option
-	 *
-	 * @since  1.8
-	 * @access private
-	 */
-	private function add_addon_activate_meta() {
-		$user_id                  = get_option( $this->activate_by_meta_key );
-		$this->plugin_activate_by = (int) $user_id;
-
-		if ( ! $user_id ) {
-			add_option( $this->activate_by_meta_key, $this->user_id, '', 'no' );
-			$this->plugin_activate_by = (int) $this->user_id;
-		}
-	}
-
-
-	/**
-	 * Delete user id from option if plugin deactivated.
-	 *
-	 * @since  1.8
-	 * @access public
-	 */
-	public function remove_addon_activate_meta() {
-		$user_id = get_option( $this->activate_by_meta_key );
-
-		if ( $user_id ) {
-			delete_option( $this->activate_by_meta_key );
-		}
-	}
-
 
 	/**
 	 * Get plugin file name.
@@ -369,4 +143,574 @@ class Give_Addon_Activation_Banner {
 		return $file_name;
 	}
 
+	/**
+	 * Setup user id to option
+	 *
+	 * @since  1.8
+	 * @access private
+	 */
+	private function add_addon_activate_meta() {
+		$user_id                  = get_option( $this->activate_by_meta_key );
+		$this->plugin_activate_by = (int) $user_id;
+
+		if ( ! $user_id ) {
+			add_option( $this->activate_by_meta_key, $this->user_id, '', 'no' );
+			$this->plugin_activate_by = (int) $this->user_id;
+		}
+	}
+
+	/**
+	 * Check if the addon_activation_banner_notices function has already been hooked to admin_notice.
+	 *
+	 * @since 2.0.7
+	 *
+	 * @return bool
+	 */
+	public function is_banner_notice_hooked() {
+		global $wp_filter;
+		$notice_already_hooked = false;
+
+		if ( isset( $wp_filter['admin_notices']->callbacks[10] ) ) {
+
+			// Get all of the hooks.
+			$admin_notice_callbacks = array_keys( $wp_filter['admin_notices']->callbacks[10] );
+
+			foreach ( $admin_notice_callbacks as $key ) {
+				//If the key is found in your string, set $found to true
+				if ( false !== strpos( $key, 'addon_activation_banner_notices' ) ) {
+					$notice_already_hooked = true;
+				}
+			}
+		}
+
+		return $notice_already_hooked;
+	}
+
+	/**
+	 * Get the add-on banner notices.
+	 *
+	 * @since 2.0.7
+	 */
+	public function addon_activation_banner_notices() {
+		global $pagenow, $give_addons;
+
+		// Bailout.
+		if ( 'plugins.php' !== $pagenow || $this->user_id !== $this->plugin_activate_by ) {
+			return false;
+		}
+
+		// Store the add-ons of which activation banner should be shown.
+		$addon_to_display = array();
+
+		// Go through each of the give add-on.
+		foreach ( $give_addons as $addon ) {
+			$add_on_state = get_user_meta( $this->user_id, 'give_addon_activation_ignore_' . sanitize_title( $addon['name'] ), true );
+
+			// If add-on were never dismissed.
+			if ( 'true' !== $add_on_state ) {
+				$addon_to_display[] = $addon;
+			}
+		}
+
+		if ( empty( $addon_to_display ) ) {
+			return false;
+		}
+
+		// If only one add-on activated.
+		$is_single = 1 === count( $addon_to_display );
+
+		// If the user hasn't already dismissed the alert, output activation banner.
+		if ( ! get_user_meta( $this->user_id, $this->get_notice_dismiss_meta_key() ) ) {
+			ob_start();
+
+			// Output inline styles here because there's no reason
+			// to enqueued them after the alert is dismissed.
+			$this->print_css_js();
+			ob_start();
+			?>
+            <div class="<?php echo ( false === $is_single ) ? 'give-alert-tab-wrapper' : ''; ?> updated give-addon-alert give-notice">
+				<?php
+				// If multiple add-on are activated.
+				if ( false === $is_single ) {
+					?>
+                    <div class="give-vertical-tab">
+                        <div class="give-addon-tab-list">
+                            <ul class="give-alert-addon-list">
+								<?php
+								$is_first = true;
+								foreach ( $addon_to_display as $banner ) {
+									?>
+                                    <li class="give-tab-list<?php echo ( true === $is_first ) ? ' active' : ''; ?>"
+                                        id="give-addon-<?php echo esc_html( basename( $banner['file'], '.php' ) ); ?>">
+                                        <a href="#"><?php echo esc_html( $banner['name'] ); ?></a>
+                                    </li>
+									<?php
+									$is_first = false;
+								}
+								$is_first = true;
+								?>
+                            </ul>
+                        </div>
+                        <div class="give-right-side-block">
+							<?php
+							foreach ( $addon_to_display as $banner ) { ?>
+                                <div class="give-tab-details <?php echo ( true === $is_first ) ? ' active' : ''; ?> "
+                                     id="give-addon-<?php echo esc_html( basename( $banner['file'], '.php' ) ); ?>">
+									<?php
+									// Get the notice meta key.
+									$meta_key = ( 1 === count( $addon_to_display ) )
+										? $this->nag_meta_key
+										: 'give_addon_activation_ignore_all';
+
+									$this->render_single_addon_banner( $banner, $meta_key );
+									?>
+                                </div>
+								<?php
+								$is_first = false;
+							}
+							?>
+                        </div>
+                    </div>
+					<?php
+				} else {
+					$this->render_single_addon_banner( $addon_to_display[0] );
+				}
+				?>
+            </div>
+			<?php
+			$notice_html = ob_get_clean();
+
+			// Register notice.
+			Give()->notices->register_notice( array(
+				'id'               => 'give_add_on_activation_notice',
+				'type'             => 'updated',
+				'description_html' => $notice_html,
+				'show'             => true,
+			) );
+		}
+	}
+
+	/**
+	 * Get the notice dismiss meta key.
+	 *
+	 * @since 2.0.7
+	 */
+	public function get_notice_dismiss_meta_key() {
+		global $give_addons;
+
+		// Get the notice meta key.
+		$notice_meta_key = ( 1 === count( $give_addons ) )
+			? $this->nag_meta_key
+			: 'give_addon_activation_ignore_all';
+
+		// Return meta key.
+		return $notice_meta_key;
+	}
+
+	/**
+	 * Add activation banner css and js .
+	 *
+	 * @since  1.8.16
+	 * @since  2.0.7 Added JS code for multiple add-on.
+	 * @access private
+	 */
+	private function print_css_js() {
+		?>
+        <style>
+            div.give-addon-alert.updated {
+                padding: 20px;
+                position: relative;
+                border-color: #66BB6A;
+                min-height: 85px;
+            }
+
+            div.give-alert-message {
+                margin-left: 108px;
+            }
+
+            div.give-addon-alert img.give-logo {
+                max-width: 85px;
+                float: left;
+            }
+
+            div.give-addon-alert h3 {
+                margin: -5px 0 10px;
+                font-size: 22px;
+                font-weight: 400;
+                line-height: 30px;
+            }
+
+            div.give-addon-alert h3 span {
+                font-weight: 700;
+                color: #66BB6A;
+            }
+
+            div.give-addon-alert a {
+                color: #66BB6A;
+            }
+
+            div.give-addon-alert .alert-actions a {
+                margin-right: 2em;
+            }
+
+            div.give-addon-alert .alert-actions a {
+                text-decoration: underline;
+            }
+
+            div.give-addon-alert .alert-actions a:hover {
+                color: #555555;
+            }
+
+            div.give-addon-alert .alert-actions a span {
+                text-decoration: none;
+                margin-right: 5px;
+            }
+
+            div.give-addon-alert .dismiss {
+                position: absolute;
+                right: 0px;
+                height: 99%;
+                top: 23%;
+                margin-top: -10px;
+                outline: none;
+                box-shadow: none;
+                text-decoration: none;
+                color: #AAA;
+            }
+
+            div.give-addon-alert .dismiss {
+                position: absolute;
+                right: 20px;
+                height: 100%;
+                top: 50%;
+                margin-top: -10px;
+                outline: none;
+                box-shadow: none;
+                text-decoration: none;
+                color: #AAA;
+            }
+
+            div.give-alert-tab-wrapper .dismiss {
+                right: 0px !important;
+                height: 99% !important;
+                top: 23% !important;
+            }
+
+            div.give-addon-alert .dismiss:hover {
+                color: #333;
+            }
+
+            ul.give-alert-addon-list {
+                min-width: 220px;
+                display: inline-block;
+                float: left;
+                max-width: 250px;
+                padding: 0;
+                margin: 0;
+                max-height: 146px;
+                overflow: hidden;
+            }
+
+            div.give-addon-alert .give-addon-description {
+                padding: 1px;
+                display: inline-block;
+                color: #777;
+                margin-bottom: 12px;
+            }
+
+            div.give-alert-tab-wrapper .give-right-side-block {
+                width: calc(100% - 250px);
+                display: inline-block;
+                float: left;
+                background: #fff;
+                height: 100%;
+                position: relative;
+            }
+
+            div.give-vertical-tab {
+                width: 100%;
+            }
+
+            ul.give-alert-addon-list li {
+                display: block;
+                border: 1px solid #d1d1d18f;
+                border-width: 1px 0px 0px 0px;
+                margin: 0;
+            }
+
+            ul.give-alert-addon-list li a.inactivate {
+                cursor: default;
+            }
+
+            ul.give-alert-addon-list li a {
+                display: block;
+                font-weight: bold;
+                color: #a3a3a3;
+                text-decoration: none;
+                padding: 15px 10px 15px;
+                box-shadow: inset -6px 0px 18px 0px rgba(204, 204, 204, 0.36);
+                -moz-box-shadow: inset -6px 0px 18px 0px rgba(204, 204, 204, 0.36);
+                -webkit-box-shadow: inset -6px 0px 18px 0px rgba(204, 204, 204, 0.36);
+                -ms-box-shadow: inset -6px 0px 18px 0px rgba(204, 204, 204, 0.36);
+                -o-box-shadow: inset -6px 0px 18px 0px rgba(204, 204, 204, 0.36);
+            }
+
+            ul.give-alert-addon-list li.give-tab-list.active a {
+                color: #5f6c74;
+                box-shadow: none;
+            }
+
+            div.updated.give-addon-alert.give-notice.give-alert-tab-wrapper {
+                display: inline-block;
+                width: 100%;
+            }
+
+            .give-alert-tab-wrapper .give-tab-details {
+                display: none;
+                min-height: 100px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                padding: 20px 20px 20px 40px;
+            }
+
+            .give-alert-tab-wrapper .give-tab-details.active {
+                display: block;
+                z-index: 1;
+                position: relative;
+            }
+
+            .give-alert-tab-wrapper.give-addon-alert img.give-logo {
+                max-width: 80px;
+            }
+
+            .give-alert-tab-wrapper .give-alert-message {
+                margin-left: 100px;
+                padding-top: 10px;
+            }
+
+            ul.give-alert-addon-list li.give-tab-list.active {
+                background: #fff;
+            }
+
+            ul.give-alert-addon-list li.give-tab-list:last-child {
+                border-bottom: 0px solid #ccc;
+            }
+
+            ul.give-alert-addon-list li.give-tab-list:first-child {
+                border-top: 0 none;
+            }
+
+            .give-alert-tab-wrapper {
+                padding: 0 !important;
+            }
+
+            ul.give-alert-addon-list::-webkit-scrollbar {
+                height: 10px;
+                width: 10px;
+                border-radius: 4px;
+                transition: all 0.3s ease;
+                background: rgba(158, 158, 158, 0.15);
+            }
+
+            ul.give-alert-addon-list::-webkit-scrollbar-thumb {
+                background: #939395;
+                border-radius: 4px;
+            }
+
+            /** Responsiveness */
+            @media screen and (max-width: 767px) {
+                .give-alert-tab-wrapper .give-tab-details {
+                    padding: 20px 40px 20px 20px;
+                }
+
+                .give-alert-tab-wrapper .give-right-side-block {
+                    width: 100%;
+                }
+
+                .give-alert-tab-wrapper ul.give-alert-addon-list {
+                    min-width: 100%;
+                }
+            }
+        </style>
+
+        <!-- Start of the Give Add-on tab JS -->
+        <script type="text/javascript">
+			jQuery(document).ready(function ($) {
+				$('.give-alert-tab-wrapper').on('click', '.give-tab-list', function () {
+					if ($(this).find('a').hasClass('inactivate')) {
+						return false;
+					}
+
+					var
+						clicked_tab = $(this).attr('id'),
+						addon_tab_wrapper = $(this).closest('.give-alert-tab-wrapper');
+
+					// Remove 'active' class from all tab list.
+					$('.give-alert-addon-list li').removeClass('active');
+					// Add active class to the selected tab.
+					$(this).addClass('active');
+					// Remove 'active' class from the details.
+					addon_tab_wrapper.find('.give-tab-details').removeClass('active');
+					addon_tab_wrapper.find('.give-right-side-block .give-tab-details#' + clicked_tab).addClass('active');
+
+					return false;
+				});
+
+				var add_on_tabs = $('.give-alert-addon-list');
+
+				add_on_tabs
+					.mouseout(function () {
+						$(this).css('overflow', 'hidden');
+					})
+					.mouseover(function () {
+						$(this).css('overflow', 'auto');
+					});
+
+				// Prevent default click event of the add-on.
+				add_on_tabs.find('li a').on('click', function (e) {
+					e.preventDefault();
+				});
+
+				// If total length of the add-on is 2.
+				if (2 === add_on_tabs.find('li').length) {
+					var li = $('li.give-tab-list');
+					li.last().clone().prependTo('ul.give-alert-addon-list');
+					li.last().removeAttr('id').find('a').addClass('inactivate').html('&nbsp;');
+					$('.give-tab-list:first').trigger('click');
+				}
+			});
+        </script>
+        <!-- End of the Give Add-on tab JS -->
+		<?php
+	}
+
+	/**
+	 * Render single banner activation
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $banner_arr Banner options.
+	 * @param string $meta_key Pass meta key.
+	 */
+	private function render_single_addon_banner( $banner_arr, $meta_key = '' ) {
+		// Get all give add-on.
+		$give_addons = give_get_plugins();
+
+		// Plugin main file.
+		$plugin_file = $banner_arr['file'];
+
+		// Get the plugin main file.
+		foreach ( $give_addons as $main_file => $addon ) {
+			if ( isset( $banner_arr['name'] ) && strpos( $addon['Name'], $banner_arr['name'] ) !== false ) {
+				$plugin_file = WP_PLUGIN_DIR . '/' . $main_file;
+			}
+		}
+
+		// Get the add-on details.
+		$plugin_data = get_plugin_data( $plugin_file );
+		?>
+        <img src="<?php echo GIVE_PLUGIN_URL; ?>assets/images/svg/give-icon-full-circle.svg" class="give-logo"/>
+        <div class="give-alert-message">
+            <h3>
+				<?php
+				printf(
+				/* translators: %s: Add-on name */
+					esc_html__( "New Give Add-on Activated: %s", 'give' ),
+					'<span>' . $banner_arr['name'] . '</span>'
+				);
+				?>
+            </h3>
+			<?php
+			$meta_key              = empty( $meta_key ) ? $this->nag_meta_key : $meta_key;
+			$nag_admin_dismiss_url = admin_url( 'plugins.php?' . $meta_key . '=0' );
+			?>
+            <a href="<?php echo $nag_admin_dismiss_url; ?>" class="dismiss">
+                <span class="dashicons dashicons-dismiss"></span>
+            </a>
+            <div class="alert-actions">
+				<?php //Point them to your settings page.
+				if ( ! empty( $plugin_data['Description'] ) ) {
+					?><span class="give-addon-description">
+                    <em><?php echo strip_tags( $plugin_data['Description'] ); ?></em></span><br/>
+					<?php
+				}
+				if ( isset( $banner_arr['settings_url'] ) ) { ?>
+                    <a href="<?php echo $banner_arr['settings_url']; ?>"><span
+                                class="dashicons dashicons-admin-settings"></span><?php esc_html_e( 'Go to Settings', 'give' ); ?>
+                    </a>
+					<?php
+				}
+				// Show them how to configure the Addon.
+				if ( isset( $banner_arr['documentation_url'] ) ) { ?>
+                    <a href="<?php echo $banner_arr['documentation_url'] ?>" target="_blank">
+                        <span class="dashicons dashicons-media-text"></span><?php
+						printf(
+						/* translators: %s: Add-on name */
+							esc_html__( 'Documentation: %s Add-on', 'give' ),
+							$banner_arr['name']
+						);
+						?></a>
+				<?php } ?>
+				<?php
+				//Let them signup for plugin updates
+				if ( isset( $banner_arr['support_url'] ) ) { ?>
+                    <a href="<?php echo $banner_arr['support_url'] ?>" target="_blank">
+                        <span class="dashicons dashicons-sos"></span><?php esc_html_e( 'Get Support', 'give' ); ?>
+                    </a>
+				<?php } ?>
+            </div>
+        </div>
+		<?php
+	}
+
+	/**
+	 * Ignore Nag.
+	 *
+	 * This is the action that allows the user to dismiss the banner it basically sets a tag to their user meta data
+	 *
+	 * @since  1.0
+	 * @access public
+	 */
+	public function give_addon_notice_ignore() {
+		global $give_addons;
+
+		// Get the notice meta key.
+		$notice_meta_key = ( 1 === count( $give_addons ) )
+			? $this->nag_meta_key
+			: 'give_addon_activation_ignore_all';
+
+		/**
+		 * If user clicks to ignore the notice, add that to their user meta the banner then checks whether this tag exists already or not.
+		 * See here: http://codex.wordpress.org/Function_Reference/add_user_meta
+		 */
+		if ( isset( $_GET[ $notice_meta_key ] ) && '0' === $_GET[ $notice_meta_key ] ) {
+
+			//Get the global user
+			$current_user = wp_get_current_user();
+			$user_id      = $current_user->ID;
+
+			if ( 'give_addon_activation_ignore_all' === $notice_meta_key ) {
+				foreach ( $give_addons as $give_addon ) {
+					$meta_key = 'give_addon_activation_ignore_' . sanitize_title( $give_addon['name'] );
+					add_user_meta( $user_id, $meta_key, 'true', true );
+				}
+			}
+			add_user_meta( $user_id, $notice_meta_key, 'true', true );
+		}
+	}
+
+	/**
+	 * Delete user id from option if plugin deactivated.
+	 *
+	 * @since  1.8
+	 * @access public
+	 */
+	public function remove_addon_activate_meta() {
+		$user_id = get_option( $this->activate_by_meta_key );
+
+		if ( $user_id ) {
+			delete_option( $this->activate_by_meta_key );
+		}
+	}
 }
