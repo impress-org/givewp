@@ -18,9 +18,9 @@ $atts          = $args[1]; // Shortcode attributes.
 		<?php
 		// The featured image.
 		if (
-			give_is_setting_enabled( $give_settings['form_featured_img'] ) &&
-			has_post_thumbnail() &&
-			'true' == $atts['show_featured_image']
+			give_is_setting_enabled( $give_settings['form_featured_img'] )
+			&& has_post_thumbnail()
+			&& 'true' == $atts['show_featured_image']
 		) {
 			printf( '<div class="give-card__media">' );
 			the_post_thumbnail();
@@ -32,8 +32,8 @@ $atts          = $args[1]; // Shortcode attributes.
 
 		// The goal progess bar.
 		if (
-			give_is_setting_enabled( get_post_meta( $form_id, '_give_goal_option', true ) ) &&
-			'true' == $atts['show_goal']
+			give_is_setting_enabled( get_post_meta( $form_id, '_give_goal_option', true ) )
+			&& 'true' == $atts['show_goal']
 		) {
 			echo '<div class="grid-item-progress">';
 			give_show_goal_progress( $form_id );
@@ -42,8 +42,8 @@ $atts          = $args[1]; // Shortcode attributes.
 
 		// The excerpt.
 		if (
-			give_is_setting_enabled( $give_settings['forms_excerpt'] ) &&
-			'true' == $atts['show_excerpt']
+			give_is_setting_enabled( $give_settings['forms_excerpt'] )
+			&& 'true' == $atts['show_excerpt']
 		) {
 			printf( '<div class="give-card__description">%s</div>', get_the_excerpt() );
 		}
