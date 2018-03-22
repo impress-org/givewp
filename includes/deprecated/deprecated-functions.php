@@ -826,3 +826,69 @@ function give_get_payment_form_title( $meta, $only_level = false, $separator = '
 
 	return give_get_donation_form_title( $donation, $args );
 }
+
+/**
+ * Gets the next available order number
+ *
+ * This is used when inserting a new payment
+ *
+ * @since 1.0
+ * @deprecated 2.1
+ *
+ * @return string $number The next available payment number.
+ */
+function give_get_next_payment_number() {
+
+	if ( ! give_get_option( 'enable_sequential' ) ) {
+		return false;
+	}
+
+	$number           = get_option( 'give_last_payment_number' );
+	$start            = give_get_option( 'sequential_start', 1 );
+	$increment_number = true;
+
+	if ( false !== $number ) {
+
+		if ( empty( $number ) ) {
+
+			$number           = $start;
+			$increment_number = false;
+
+		}
+	} else {
+
+		// This case handles the first addition of the new option, as well as if it get's deleted for any reason.
+		$payments     = new Give_Payments_Query( array(
+			'number'  => 1,
+			'order'   => 'DESC',
+			'orderby' => 'ID',
+			'output'  => 'posts',
+			'fields'  => 'ids',
+		) );
+		$last_payment = $payments->get_payments();
+
+		if ( ! empty( $last_payment ) ) {
+
+			$number = give_get_payment_number( $last_payment[0] );
+
+		}
+
+		if ( ! empty( $number ) && $number !== (int) $last_payment[0] ) {
+
+			$number = give_remove_payment_prefix_postfix( $number );
+
+		} else {
+
+			$number           = $start;
+			$increment_number = false;
+		}
+	}// End if().
+
+	$increment_number = apply_filters( 'give_increment_payment_number', $increment_number, $number );
+
+	if ( $increment_number ) {
+		$number ++;
+	}
+
+	return apply_filters( 'give_get_next_payment_number', $number );
+}
