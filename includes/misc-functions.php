@@ -1764,7 +1764,7 @@ function give_maybe_define_constant( $name, $value ) {
 }
 
 /**
- * Decode time short tage in string
+ * Decode time short tag in string
  *
  * @since 2.1.0
  *
