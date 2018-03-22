@@ -1060,8 +1060,6 @@ function give_get_payment_number( $payment_id = 0 ) {
 /**
  * Formats the payment number with the prefix and postfix
  *
- * @param int   $number The payment number to format.
- *
  * @since 1.3
  *
  * @param int   $number
