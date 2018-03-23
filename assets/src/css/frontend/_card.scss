@@ -29,15 +29,18 @@
 	}
 
 	&__media {
-		&--pad {
-			padding: 1.5rem 1.5rem 0;
-		}
-
 		img {
 			border-radius: 0;
 			box-shadow: none;
 			display: block;
+			height: auto;
 			margin: 0;
+			width: 100%;
+
+			@supports (object-fit: cover) {
+				height: 14rem;
+				object-fit: cover;
+			}
 		}
 	}
 
