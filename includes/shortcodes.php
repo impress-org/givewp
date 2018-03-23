@@ -705,9 +705,9 @@ add_shortcode( 'give_totals', 'give_totals_shortcode' );
 function give_donation_grid_shortcode( $atts ) {
 	$atts = shortcode_atts( array(
 		'columns'             => '4',
-		'show_goal'           => false,
-		'show_excerpt'        => false,
-		'show_featured_image' => false,
+		'show_goal'           => true,
+		'show_excerpt'        => true,
+		'show_featured_image' => true,
 		'display_type'        => 'redirect',
 	), $atts );
 
