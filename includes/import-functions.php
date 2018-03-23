@@ -668,8 +668,9 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 			}
 
 			// Insert Company Name.
-			if ( ! empty( $import_setting['company_name'] ) ) {
-				update_post_meta( $payment, '_give_donation_company', $import_setting['company_name'] );
+			if ( ! empty( $data['company_name'] ) ) {
+				update_post_meta( $payment, '_give_donation_company', $data['company_name'] );
+				$donor_data->update_meta( '_give_donor_company', $data['company_name'] );
 			}
 
 			// Insert Notes.
