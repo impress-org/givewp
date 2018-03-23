@@ -31,8 +31,10 @@ $atts          = $args[1]; // Shortcode attributes.
 
 		<div class="give-card__body">
 			<?php
-			// Display the card heading.
-			the_title( '<h3 class="give-card__title">', '</h3>' );
+			// Maybe display the form title.
+			if ( true == $atts['show_title'] ) {
+				the_title( '<h3 class="give-card__title">', '</h3>' );
+			}
 
 			// Maybe display the form excerpt.
 			if (
