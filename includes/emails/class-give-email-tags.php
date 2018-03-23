@@ -380,12 +380,6 @@ function give_setup_email_tags() {
 			'function'    => 'give_email_tag_receipt_link_url',
 			'context'     => 'donation',
 		),
-		array(
-			'tag'         => 'serial_number',
-			'description' => esc_html__( 'The unique ID number for this donation id.', 'give' ),
-			'function'    => 'give_email_tag_serial_number',
-			'context'     => 'donation',
-		),
 
 		/* Donation Form */
 		array(
@@ -839,40 +833,6 @@ function give_email_tag_payment_id( $tag_args ) {
 	 */
 	return apply_filters( 'give_email_tag_payment_id', $payment_id, $tag_args );
 }
-
-/**
- * Email template tag: {serial_number}
- *
- * The unique ID number for the donation.
- *
- * @since 2.1.0
- * @param array $tag_args
- *
- * @return int payment_id
- */
-function give_email_tag_serial_number( $tag_args ){
-	$serial_number = '';
-
-	// Backward compatibility.
-	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
-
-	switch ( true ) {
-		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
-			$serial_number = give()->seq_donation_number->get_serial_code( $tag_args['payment_id'] );
-			break;
-	}
-
-	/**
-	 * Filter the {payment_id} email template tag output.
-	 *
-	 * @since 2.0
-	 *
-	 * @param string $payment_id
-	 * @param array  $tag_args
-	 */
-	return apply_filters( 'give_email_tag_payment_id', $serial_number, $tag_args );
-}
-
 
 /**
  * Email template tag: {receipt_id}
