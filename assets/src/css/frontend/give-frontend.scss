@@ -24,3 +24,7 @@
 @import 'theme-compatibility';
 @import 'donation-history';
 @import 'donation-grid';
+.give-wrap {
+	@import 'grid';
+	@import 'card';
+}
