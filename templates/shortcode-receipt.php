@@ -17,14 +17,15 @@ if ( empty( $payment ) ) {
 	return;
 }
 
-$donation_id  = $payment->ID;
-$form_id      = give_get_payment_meta( $donation_id, '_give_payment_form_id', true );
-$meta         = give_get_payment_meta( $donation_id );
-$donation     = give_get_donation_form_title( $donation_id );
-$user         = give_get_payment_meta_user_info( $donation_id );
-$email        = give_get_payment_user_email( $donation_id );
-$status       = $payment->post_status;
-$status_label = give_get_payment_status( $payment, true );
+$donation_id     = $payment->ID;
+$donation_number = Give()->seq_donation_number->get_serial_code( $payment->ID );
+$form_id         = give_get_payment_meta( $donation_id, '_give_payment_form_id', true );
+$meta            = give_get_payment_meta( $donation_id );
+$donation        = give_get_donation_form_title( $donation_id );
+$user            = give_get_payment_meta_user_info( $donation_id );
+$email           = give_get_payment_user_email( $donation_id );
+$status          = $payment->post_status;
+$status_label    = give_get_payment_status( $payment, true );
 
 /**
  * Generate Donation Receipt Arguments.
@@ -66,7 +67,7 @@ $give_receipt_args['donation_receipt']['donation_status'] = array(
 
 $give_receipt_args['donation_receipt']['donation_id'] = array(
 	'name'    => __( 'Donation ID', 'give' ),
-	'value'   => $donation_id,
+	'value'   => $donation_number,
 	'display' => $give_receipt_args['payment_id'],
 );
 
@@ -80,12 +81,6 @@ $give_receipt_args['donation_receipt']['payment_method'] = array(
 	'name'    => __( 'Payment Method', 'give' ),
 	'value'   => give_get_gateway_checkout_label( give_get_payment_gateway( $donation_id ) ),
 	'display' => $give_receipt_args['payment_method'],
-);
-
-$give_receipt_args['donation_receipt']['serial_number'] = array(
-	'name'    => __( 'Serial Number', 'give' ),
-	'value'   => Give()->seq_donation_number->get_serial_code( $donation_id ),
-	'display' => $give_receipt_args['serial_number'],
 );
 
 /**
