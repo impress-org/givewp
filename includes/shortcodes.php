@@ -705,6 +705,7 @@ add_shortcode( 'give_totals', 'give_totals_shortcode' );
 function give_form_grid_shortcode( $atts ) {
 	$atts = shortcode_atts( array(
 		'forms_per_page'      => 12,
+		'paged'               => true,
 		'ids'                 => 0,
 		'cats'                => 0,
 		'tags'                => 0,
@@ -719,17 +720,20 @@ function give_form_grid_shortcode( $atts ) {
 	// Get give settings.
 	$give_settings = give_get_settings();
 
-	// Query to output donation forms.
-	$current_donations_query = new WP_Query(
-		array(
-			'post_type'      => 'give_forms',
-			'post_status'    => 'publish',
-			'posts_per_page' => 12,
-			'paged'          => get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1,
-		)
+	$form_query_args = array(
+		'post_type'      => 'give_forms',
+		'post_status'    => 'publish',
+		'posts_per_page' => $atts['forms_per_page'],
 	);
 
-	if ( $current_donations_query->have_posts() ) {
+	if ( true == $atts['paged'] ) {
+		$form_query_args['paged'] = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
+	}
+
+	// Query to output donation forms.
+	$form_query = new WP_Query( $form_query_args );
+
+	if ( $form_query->have_posts() ) {
 		ob_start();
 
 		add_filter( 'add_give_goal_progress_class', 'add_give_goal_progress_class', 10, 1 );
@@ -738,8 +742,8 @@ function give_form_grid_shortcode( $atts ) {
 		echo '<div class="give-wrap">';
 			echo '<div class="give-grid give-grid--' . esc_attr( $atts['columns'] ) . '">';
 
-			while ( $current_donations_query->have_posts() ) {
-				$current_donations_query->the_post();
+			while ( $form_query->have_posts() ) {
+				$form_query->the_post();
 
 				// Give/templates/shortcode-donation-grid.php.
 				give_get_template( 'shortcode-donation-grid', array( $give_settings, $atts ) );
@@ -754,20 +758,22 @@ function give_form_grid_shortcode( $atts ) {
 		remove_filter( 'add_give_goal_progress_class', 'add_give_goal_progress_class' );
 		remove_filter( 'add_give_goal_progress_bar_class', 'add_give_goal_progress_bar_class' );
 
-		$paginate_args = array(
-			'current'   => max( 1, get_query_var( 'paged' ) ),
-			'total'     => $current_donations_query->max_num_pages,
-			'show_all'  => false,
-			'end_size'  => 1,
-			'mid_size'  => 2,
-			'prev_next' => true,
-			'prev_text' => __( 'Previous', 'give' ),
-			'next_text' => __( 'Next', 'give' ),
-			'type'      => 'plain',
-			'add_args'  => false,
-		);
+		if ( true == $atts['paged'] ) {
+			$paginate_args = array(
+				'current'   => max( 1, get_query_var( 'paged' ) ),
+				'total'     => $form_query->max_num_pages,
+				'show_all'  => false,
+				'end_size'  => 1,
+				'mid_size'  => 2,
+				'prev_next' => true,
+				'prev_text' => __( 'Previous', 'give' ),
+				'next_text' => __( 'Next', 'give' ),
+				'type'      => 'plain',
+				'add_args'  => false,
+			);
 
-		printf( paginate_links( $paginate_args ) ); // XSS ok.
+			printf( paginate_links( $paginate_args ) ); // XSS ok.
+		}
 
 		return ob_get_clean();
 	}
