@@ -398,8 +398,9 @@ function give_import_donations_options() {
 			__( 'Last Name', 'give' ),
 		),
 		'company_name'   => array(
-			__( 'Donor Company Name', 'give' ),
 			__( 'Company Name', 'give' ),
+			__( 'Donor Company Name', 'give' ),
+			__( 'Donor Company', 'give' ),
 			__( 'Company', 'give' ),
 		),
 		'line1'       => array(
