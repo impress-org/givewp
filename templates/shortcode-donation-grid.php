@@ -15,13 +15,13 @@ $atts          = $args[1]; // Shortcode attributes.
 
 <div class="give-grid__item">
 	<?php
-	// Print the opening anchor tag based on display type.
-	if ( 'redirect' == $atts['display_type'] ) {
+	// Print the opening anchor tag based on display style.
+	if ( 'redirect' == $atts['display_style'] ) {
 		printf(
 			'<a class="give-card" href="%1$s">',
 			esc_attr( get_the_permalink() )
 		);
-	} elseif ( 'modal' == $atts['display_type'] ) {
+	} elseif ( 'modal' == $atts['display_style'] ) {
 		printf(
 			'<a class="give-card js-give-grid-modal-launcher" data-effect="mfp-zoom-out" href="#popup-form-%1$s">',
 			get_the_ID()
@@ -66,7 +66,7 @@ $atts          = $args[1]; // Shortcode attributes.
 			}
 
 			// If modal, print form in hidden container until it is time to be revealed.
-			if ( 'modal' == $atts['display_type'] ) {
+			if ( 'modal' == $atts['display_style'] ) {
 				printf(
 					'<div id="popup-form-%1$s" class="give-donation-grid-item-form zoom-anim-dialog mfp-hide">',
 					get_the_ID()

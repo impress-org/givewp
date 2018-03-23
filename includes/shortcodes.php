@@ -693,38 +693,41 @@ add_shortcode( 'give_totals', 'give_totals_shortcode' );
 
 
 /**
- * Donation Grid Shortcode
+ * Form Grid Shortcode
  *
- * Displays a donation forms list in grid layout.
+ * Displays donation forms in a grid layout.
  *
- * @since  2.1
+ * @since  2.1.0
  *
  * @param array $atts
  * @return string|bool
  */
-function give_donation_grid_shortcode( $atts ) {
+function give_form_grid_shortcode( $atts ) {
 	$atts = shortcode_atts( array(
+		'forms_per_page'      => 12,
+		'ids'                 => 0,
+		'cats'                => 0,
+		'tags'                => 0,
 		'columns'             => 'best-fit',
+		'show_title'          => true,
 		'show_goal'           => true,
 		'show_excerpt'        => true,
 		'show_featured_image' => true,
-		'display_type'        => 'redirect',
+		'display_style'       => 'redirect',
 	), $atts );
-
-	$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
-
-	$current_donations = array(
-		'post_type'      => 'give_forms',
-		'post_status'    => 'publish',
-		'posts_per_page' => 12,
-		'paged'          => $paged,
-	);
 
 	// Get give settings.
 	$give_settings = give_get_settings();
 
 	// Query to output donation forms.
-	$current_donations_query = new WP_Query( $current_donations );
+	$current_donations_query = new WP_Query(
+		array(
+			'post_type'      => 'give_forms',
+			'post_status'    => 'publish',
+			'posts_per_page' => 12,
+			'paged'          => get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1,
+		)
+	);
 
 	if ( $current_donations_query->have_posts() ) {
 		ob_start();
@@ -770,4 +773,4 @@ function give_donation_grid_shortcode( $atts ) {
 	}
 }
 
-add_shortcode( 'give_donation_form_grid', 'give_donation_grid_shortcode' );
+add_shortcode( 'give_form_grid', 'give_form_grid_shortcode' );
