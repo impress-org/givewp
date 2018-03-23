@@ -732,18 +732,20 @@ function give_donation_grid_shortcode( $atts ) {
 		add_filter( 'add_give_goal_progress_class', 'add_give_goal_progress_class', 10, 1 );
 		add_filter( 'add_give_goal_progress_bar_class', 'add_give_goal_progress_bar_class', 10, 1 );
 
-		echo '<div class="give-grid give-grid--' . esc_attr( $atts['columns'] ) . '">';
+		echo '<div class="give-wrap">';
+			echo '<div class="give-grid give-grid--' . esc_attr( $atts['columns'] ) . '">';
 
-		while ( $current_donations_query->have_posts() ) {
-			$current_donations_query->the_post();
+			while ( $current_donations_query->have_posts() ) {
+				$current_donations_query->the_post();
 
-			// Give/templates/shortcode-donation-grid.php.
-			give_get_template( 'shortcode-donation-grid', array( $give_settings, $atts ) );
+				// Give/templates/shortcode-donation-grid.php.
+				give_get_template( 'shortcode-donation-grid', array( $give_settings, $atts ) );
 
-		}
+			}
 
-		wp_reset_postdata();
+			wp_reset_postdata();
 
+			echo '</div>';
 		echo '</div>';
 
 		remove_filter( 'add_give_goal_progress_class', 'add_give_goal_progress_class' );
