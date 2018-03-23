@@ -703,6 +703,9 @@ add_shortcode( 'give_totals', 'give_totals_shortcode' );
  * @return string|bool
  */
 function give_form_grid_shortcode( $atts ) {
+	$form_ids = array();
+	$give_settings = give_get_settings();
+
 	$atts = shortcode_atts( array(
 		'forms_per_page'      => 12,
 		'paged'               => true,
@@ -717,21 +720,44 @@ function give_form_grid_shortcode( $atts ) {
 		'display_style'       => 'redirect',
 	), $atts );
 
-	// Get give settings.
-	$give_settings = give_get_settings();
-
-	$form_query_args = array(
+	$form_args = array(
 		'post_type'      => 'give_forms',
 		'post_status'    => 'publish',
 		'posts_per_page' => $atts['forms_per_page'],
 	);
 
+	// Maybe add pagination.
 	if ( true == $atts['paged'] ) {
-		$form_query_args['paged'] = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
+		$form_args['paged'] = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
+	}
+
+	// Maybe filter forms by IDs.
+	if ( ! empty( $atts['ids'] ) ) {
+		$form_args['post__in'] = array_filter( array_map( 'trim', explode( ',', $atts['ids'] ) ) );
+	}
+
+	// Maybe filter by form category.
+	if ( ! empty( $atts['cats'] ) ) {
+		$cats      = array_filter( array_map( 'trim', explode( ',', $atts['cats'] ) ) );
+		$tax_query = array(
+			'taxonomy' => 'give_forms_category',
+			'terms'    => $cats,
+		);
+		$form_args['tax_query'][] = $tax_query;
+	}
+
+	// Maybe filter by form tag.
+	if ( ! empty( $atts['tags'] ) ) {
+		$tags      = array_filter( array_map( 'trim', explode( ',', $atts['tags'] ) ) );
+		$tax_query = array(
+			'taxonomy' => 'give_forms_tag',
+			'terms'    => $tags,
+		);
+		$form_args['tax_query'][] = $tax_query;
 	}
 
 	// Query to output donation forms.
-	$form_query = new WP_Query( $form_query_args );
+	$form_query = new WP_Query( $form_args );
 
 	if ( $form_query->have_posts() ) {
 		ob_start();
