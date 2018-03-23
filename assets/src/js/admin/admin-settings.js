@@ -131,6 +131,9 @@ jQuery(document).ready(function ($) {
 		});
 	});
 
+	/**
+	 * Ajax call to clear Give's cache.
+	 */
 	$( '#give-clear-cache' ).on( 'click', function() {
 		$.ajax({
 			url: ajaxurl,
