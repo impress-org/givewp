@@ -724,6 +724,9 @@ function give_form_grid_shortcode( $atts ) {
 		'post_type'      => 'give_forms',
 		'post_status'    => 'publish',
 		'posts_per_page' => $atts['forms_per_page'],
+		'tax_query'      => array(
+			'relation' => 'AND',
+		),
 	);
 
 	// Maybe add pagination.
