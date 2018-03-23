@@ -358,6 +358,8 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	 * @cover give_email_tag_payment_id
 	 */
 	function test_give_email_tag_payment_id() {
+		give_update_option( 'sequential-ordering_status', 'disabled' );
+
 		/*
 		 * Case 1: Payment ID from payment.
 		 */
@@ -375,6 +377,8 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$this->assertEquals( 'GIVE-1 [Pending]', $actual_payment_id );
 
 		remove_filter( 'give_email_tag_payment_id', array( $this, 'give_payment_id' ), 10 );
+
+		give_update_option( 'sequential-ordering_status', 'enabled' );
 	}
 
 	/**

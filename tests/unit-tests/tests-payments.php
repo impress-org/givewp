@@ -295,11 +295,8 @@ class Tests_Payments extends Give_Unit_Test_Case {
 		 */
 		$payment_id = Give_Helper_Payment::create_simple_payment();
 
-		// Manually set sequential donation number because by default sequential donation is disabled and hook was not loading on plugin loading.
-		Give()->seq_donation_number->__save_donation_title( $payment_id, get_post( $payment_id ), false );
-
 		$payment = new Give_Payment( $payment_id );
-		$this->assertEquals( 1, $payment->number );
+		$this->assertEquals( Give()->seq_donation_number->get_serial_number( $payment_id ), $payment->number );
 
 		/**
 		 * Case 2: enable sequential donation with prefix and suffix
@@ -309,11 +306,8 @@ class Tests_Payments extends Give_Unit_Test_Case {
 
 		$payment_id = Give_Helper_Payment::create_simple_payment();
 
-		// Manually set sequential donation number because by default sequential donation is disabled and hook was not loading on plugin loading.
-		Give()->seq_donation_number->__save_donation_title( $payment_id, get_post( $payment_id ), false );
-
 		$payment = new Give_Payment( $payment_id );
-		$this->assertEquals( 'Give-2-WP', $payment->number );
+		$this->assertEquals( Give()->seq_donation_number->get_serial_code( $payment_id ), $payment->number );
 
 		// Reset option.
 		give_update_option( 'sequential-ordering_number_prefix', '' );
@@ -327,13 +321,10 @@ class Tests_Payments extends Give_Unit_Test_Case {
 
 		$payment_id = Give_Helper_Payment::create_simple_payment();
 
-		// Manually set sequential donation number because by default sequential donation is disabled and hook was not loading on plugin loading.
-		Give()->seq_donation_number->__save_donation_title( $payment_id, get_post( $payment_id ), false );
-
 		$payment      = new Give_Payment( $payment_id );
 		$current_time = current_time( 'timestamp' );
 		$this->assertEquals(
-			'Give-3-WP-' . date( 'Y', $current_time ) . '-' . date( 'm', $current_time ) . '-' . date( 'd', $current_time ),
+			'Give-' . Give()->seq_donation_number->get_serial_number( $payment_id ) . '-WP-' . date( 'Y', $current_time ) . '-' . date( 'm', $current_time ) . '-' . date( 'd', $current_time ),
 			$payment->number
 		);
 
@@ -351,11 +342,8 @@ class Tests_Payments extends Give_Unit_Test_Case {
 
 		$payment_id = Give_Helper_Payment::create_simple_payment();
 
-		// Manually set sequential donation number because by default sequential donation is disabled and hook was not loading on plugin loading.
-		Give()->seq_donation_number->__save_donation_title( $payment_id, get_post( $payment_id ), false );
-
 		$payment = new Give_Payment( $payment_id );
-		$this->assertEquals( 'Give-400-WP', $payment->number );
+		$this->assertEquals( Give()->seq_donation_number->get_serial_code( $payment_id ), $payment->number );
 
 		// Reset option.
 		give_update_option( 'sequential-ordering_number_prefix', '' );
@@ -366,10 +354,14 @@ class Tests_Payments extends Give_Unit_Test_Case {
 		/**
 		 * Case 2: disable sequential donation.
 		 */
+		give_update_option( 'sequential-ordering_status', 'disabled' );
+
 		// Now disable sequential and ensure values come back as expected
 		$payment_id = Give_Helper_Payment::create_simple_payment();
 		$payment    = new Give_Payment( $payment_id );
 		$this->assertEquals( $payment_id, $payment->number );
+
+		give_update_option( 'sequential-ordering_status', 'enabled' );
 	}
 
 	/**
