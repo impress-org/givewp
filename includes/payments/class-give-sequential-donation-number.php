@@ -270,4 +270,28 @@ class Give_Sequential_Donation_Number {
 			)
 		);
 	}
+
+	/**
+	 * Get maximum donation number
+	 *
+	 * @since  2.1.0
+	 * @access public
+	 *
+	 * @return int
+	 */
+	public function get_max_number() {
+		global $wpdb;
+		$table_name = Give()->sequential_donation_db->table_name;
+
+		return absint(
+			$wpdb->get_var(
+				"
+				SELECT ID
+				FROM {$table_name}
+				ORDER BY id DESC 
+				LIMIT 1
+				"
+			)
+		);
+	}
 }
