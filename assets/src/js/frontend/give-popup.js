@@ -209,6 +209,10 @@ const GiveModal = ( function( $ ) {
 		};
 
 
+		// Set default value of mainClass if it is empty.
+		this.config.mainClass = this.config.mainClass || 'popup-fade-slide';
+
+
 		// Configuration object for 'notice' Magnific Popup.
 		$.extend( this.config, {
 			showCloseBtn: false,

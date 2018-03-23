@@ -7,6 +7,8 @@
  * @license:     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
+import GiveModal from '../frontend/give-popup';
+
 jQuery.noConflict();
 
 // Provided access to global level.
@@ -1349,6 +1351,11 @@ var give_setting_edit = false;
 	};
 
 	/**
+	 * Custom Alert Box.
+	 */
+	let alertBox = new GiveModal().addFilter( 'cancel_text_node', text => 'Ok' );
+
+	/**
 	 * Donor management screen JS
 	 */
 	var GiveDonor = {
@@ -1368,7 +1375,11 @@ var give_setting_edit = false;
 
 		unlockDonorFields: function( e ) {
 			$( 'body' ).on( 'click', '.give-lock-block', function( e ) {
-				alert( give_vars.unlock_donor_fields );
+				alertBox
+					.customContent({
+						content: give_vars.unlock_donor_fields
+					})
+					.popup()
 				e.preventDefault();
 			} );
 		},
@@ -1858,13 +1869,21 @@ var give_setting_edit = false;
 
 			// If there is no bulk action selected then show an alert message.
 			if ( '-1' === currentAction ) {
-				alert( selectBulkActionNotice );
+				alertBox
+					.customContent({
+						content: selectBulkActionNotice
+					})
+					.popup()
 				return false;
 			}
 
 			// If there is no donor selected then show an alert.
 			if ( ! parseInt( donors ) ) {
-				alert( confirmActionNotice );
+				alertBox
+					.customContent({
+						content: confirmActionNotice
+					})
+					.popup()
 				return false;
 			}
 
@@ -2664,7 +2683,11 @@ var give_setting_edit = false;
 
 						// Check if admin selected any donations or not.
 						if ( ! parseInt( $payments ) ) {
-							alert( confirmActionNotice );
+							alertBox
+								.customContent({
+									content: confirmActionNotice
+								})
+								.popup()
 							return false;
 						}
 
