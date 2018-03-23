@@ -69,13 +69,15 @@ class Give_Sequential_Donation_Number {
 	 */
 	public function __save_donation_title( $donation_id, $post, $existing_donation_updated ) {
 		// Bailout
-		if ( $existing_donation_updated || 'give_payment' !== $post->post_type ) {
+		if (
+			$existing_donation_updated
+			|| 'give_payment' !== $post->post_type
+		) {
 			return;
 		}
 
 		$serial_number = $this->__set_donation_number( $donation_id );
-
-		$serial_code = $this->__set_number_padding( $serial_number );
+		$serial_code   = $this->__set_number_padding( $serial_number );
 
 		// Add prefix.
 		if ( $prefix = give_get_option( 'sequential-ordering_number_prefix', '' ) ) {
@@ -94,7 +96,7 @@ class Give_Sequential_Donation_Number {
 			$wp_error = wp_update_post(
 				array(
 					'ID'         => $donation_id,
-					'post_title' => $serial_code
+					'post_title' => trim( $serial_code )
 				)
 			);
 
@@ -185,8 +187,11 @@ class Give_Sequential_Donation_Number {
 		$donation = $donation instanceof Give_Payment ? $donation : new Give_Payment( $donation );
 
 		// Bailout.
-		if ( empty( $donation->ID ) ) {
-			return '';
+		if (
+			empty( $donation->ID )
+			|| ! give_is_setting_enabled( give_get_option( 'sequential-ordering_status', 'enabled' ) )
+		) {
+			return $donation->ID;
 		}
 
 		// Set default params.
