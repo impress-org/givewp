@@ -29,19 +29,6 @@ $atts          = $args[1]; // Shortcode attributes.
 	}
 	?>
 
-		<?php
-		// Maybe display the featured image.
-		if (
-			give_is_setting_enabled( $give_settings['form_featured_img'] )
-			&& has_post_thumbnail()
-			&& 'true' == $atts['show_featured_image']
-		) {
-			printf( '<div class="give-card__media">' );
-				the_post_thumbnail();
-			printf( '</div>' );
-		}
-		?>
-
 		<div class="give-card__body">
 			<?php
 			// Display the card heading.
@@ -76,5 +63,18 @@ $atts          = $args[1]; // Shortcode attributes.
 			}
 			?>
 		</div>
+
+		<?php
+		// Maybe display the featured image.
+		if (
+			give_is_setting_enabled( $give_settings['form_featured_img'] )
+			&& has_post_thumbnail()
+			&& 'true' == $atts['show_featured_image']
+		) {
+			printf( '<div class="give-card__media">' );
+				the_post_thumbnail();
+			printf( '</div>' );
+		}
+		?>
 	</a>
 </div>
