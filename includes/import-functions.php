@@ -397,6 +397,11 @@ function give_import_donations_options() {
 			__( 'Donor Last Name', 'give' ),
 			__( 'Last Name', 'give' ),
 		),
+		'company_name'   => array(
+			__( 'Donor Company Name', 'give' ),
+			__( 'Company Name', 'give' ),
+			__( 'Company', 'give' ),
+		),
 		'line1'       => array(
 			__( 'Address 1', 'give' ),
 			__( 'Address', 'give' ),
@@ -619,6 +624,18 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 		'mode'            => ( ! empty( $data['mode'] ) ? ( 'true' == (string) $data['mode'] || 'TRUE' == (string) $data['mode'] ? 'test' : 'live' ) : ( isset( $import_setting['mode'] ) ? ( true == (bool) $import_setting['mode'] ? 'test' : 'live' ) : ( give_is_test_mode() ? 'test' : 'live' ) ) ),
 	);
 
+	/**
+	 * Filter to modify payment Data before getting imported.
+	 *
+	 * @since 2.0.7
+	 *
+	 * @param array $payment_data payment data
+	 * @param array $payment_data donation data
+	 * @param array $donor_data donor data
+	 * @param object $donor_data form object
+	 *
+	 * @return array $payment_data payment data
+	 */
 	$payment_data = apply_filters( 'give_import_before_import_payment', $payment_data, $data, $donor_data, $form );
 
 	// Get the report
@@ -650,6 +667,11 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 				update_post_meta( $payment, '_give_payment_import_id', $import_setting['csv'] );
 			}
 
+			// Insert Company Name.
+			if ( ! empty( $import_setting['company_name'] ) ) {
+				update_post_meta( $payment, '_give_donation_company', $import_setting['company_name'] );
+			}
+
 			// Insert Notes.
 			if ( ! empty( $data['notes'] ) ) {
 				give_insert_payment_note( $payment, $data['notes'] );
@@ -666,6 +688,19 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = array
 		} else {
 			$report['failed_donation'] = ( ! empty( $report['failed_donation'] ) ? ( absint( $report['failed_donation'] ) + 1 ) : 1 );
 		}
+
+		/**
+		 * Fire after payment is imported and payment meta is also being imported.
+		 *
+		 * @since 2.0.7
+		 *
+		 * @param int $payment payment id
+		 * @param array $payment_data payment data
+		 * @param array $payment_data donation data
+		 * @param array $donor_data donor data
+		 * @param object $donor_data form object
+		 */
+		do_action( 'give_import_after_import_payment', $payment, $payment_data, $data, $donor_data, $form );
 	}
 
 	// update the report
