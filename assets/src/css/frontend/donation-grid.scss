@@ -135,29 +135,29 @@
 // 	}
 // }
 
-// .give-donation-grid-item-form {
-// 	position: relative;
-// 	margin: 0 auto;
-// 	max-width: 550px;
-// 	background-color: #fff;
-// 	padding: 1rem;
-// 	height: 85vh;
-// 	overflow-y: auto;
+.give-donation-grid-item-form {
+	position: relative;
+	margin: 0 auto;
+	max-width: 550px;
+	background-color: #fff;
+	padding: 1rem;
+	height: 85vh;
+	overflow-y: auto;
 
-// 	#give-payment-mode-select,
-// 	#give_purchase_form_wrap {
-// 		display: block !important;
-// 	}
+	#give-payment-mode-select,
+	#give_purchase_form_wrap {
+		display: block !important;
+	}
 
-// 	.give-btn-reveal,
-// 	.give-btn-modal {
-// 		display: none !important;
-// 	}
+	.give-btn-reveal,
+	.give-btn-modal {
+		display: none !important;
+	}
 
-// 	.mfp-close:hover {
-// 		background-color: rgba(0, 0, 0, 0);
-// 	}
-// }
+	.mfp-close:hover {
+		background-color: rgba(0, 0, 0, 0);
+	}
+}
 
 // .progress {
 // 	overflow: hidden;
