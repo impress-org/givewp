@@ -361,7 +361,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		give_update_option( 'sequential-ordering_status', 'disabled' );
 
 		/*
-		 * Case 1: Payment ID from payment.
+		 * Case 1: Payment ID from payment without sequential feature.
 		 */
 		$expected_payment_id = Give_Helper_Payment::create_simple_payment();
 		$actual_payment_id   = give_email_tag_payment_id( array( 'payment_id' => $expected_payment_id ) );
@@ -369,7 +369,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		$this->assertEquals( $expected_payment_id, $actual_payment_id );
 
 		/*
-		 * Case 2: Payment ID with filter
+		 * Case 2: Payment ID with filter and without sequential feature.
 		 */
 		add_filter( 'give_email_tag_payment_id', array( $this, 'give_payment_id' ), 10, 2 );
 
@@ -379,6 +379,15 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		remove_filter( 'give_email_tag_payment_id', array( $this, 'give_payment_id' ), 10 );
 
 		give_update_option( 'sequential-ordering_status', 'enabled' );
+
+
+		/*
+		 * Case 3: Payment ID from payment.
+		 */
+		$expected_payment_id = Give_Helper_Payment::create_simple_payment();
+		$actual_payment_id   = give_email_tag_payment_id( array( 'payment_id' => $expected_payment_id ) );
+
+		$this->assertEquals( Give()->seq_donation_number->get_serial_code($expected_payment_id), $actual_payment_id );
 	}
 
 	/**
