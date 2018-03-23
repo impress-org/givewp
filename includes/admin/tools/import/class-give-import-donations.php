@@ -507,7 +507,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 								<span class="give-import-donation-required-symbol dashicons dashicons-no-alt"></span>
 								<span class="give-import-donation-required-text">
 									<?php
-									_e( 'Email Access', 'give' );
+									_e( 'Email Address', 'give' );
 									?>
 								</span>
 							</li>
@@ -584,7 +584,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 			$selected = '';
 			if ( stristr( $value, $option_value ) ) {
 				$selected = 'selected';
-			} elseif ( strrpos( $value, '_' ) && stristr( $option_value, __( 'Import as Meta', 'give' ) ) ) {
+			} elseif ( strrpos( $value, 'give_' ) && stristr( $option_value, __( 'Import as Meta', 'give' ) ) ) {
 				$selected = 'selected';
 			}
 

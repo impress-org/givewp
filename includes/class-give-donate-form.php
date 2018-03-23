@@ -606,6 +606,37 @@ class Give_Donate_Form {
 	}
 
 	/**
+	 * Get donation form level info
+	 *
+	 * @since  2.0.6
+	 * @access public
+	 *
+	 * @param $price_id
+	 *
+	 * @return array|null
+	 */
+	public function get_level_info( $price_id ) {
+		$level_info = array();
+
+		// Bailout.
+		if ( 'multi' !== $this->get_type() ) {
+			return null;
+		} elseif ( ! ( $levels = $this->get_prices() ) ) {
+			return $level_info;
+		}
+
+		foreach ( $levels as $level ) {
+			if( $price_id === $level['_give_id']['level_id'] ) {
+				$level_info = $level;
+				break;
+			}
+		}
+
+		return $level_info;
+	}
+
+
+	/**
 	 * Retrieve the goal
 	 *
 	 * @since  1.0
