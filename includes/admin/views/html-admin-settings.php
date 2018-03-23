@@ -112,6 +112,14 @@ if ( ! empty( $tabs ) && array_key_exists( give_get_current_setting_tab(), $tabs
 			<div class="give-submit-wrap">
 				<?php wp_nonce_field( 'give-save-settings', '_give-save-settings' ); ?>
 				<input name="save" class="button-primary give-save-button" type="submit" value="<?php _e( 'Save changes', 'give' ); ?>"/>
+
+				<?php
+				$tab = give_clean( $_GET['tab'] );
+
+				if ( 'advanced' === $tab ) : 
+				?>
+				<button type="button" id="give-clear-cache" class="button button-secondary"><?php echo esc_html__( 'Give clear cache', 'give' ) ?></button>
+				<?php endif; ?>
 			</div>
 		<?php endif; ?>
 		<?php echo $form_close_tag; ?>
