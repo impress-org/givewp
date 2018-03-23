@@ -17,15 +17,15 @@
 	position: relative;
 	width: 100%;
 	top: 0;
-	transition: all 0.1s ease-out;
+	transition: all 0.2s ease-out;
 
 	&:hover,
 	&:focus,
 	&:active,
 	&:visited {
 		border-color: #ccc;
-		box-shadow: 0 3px 5px rgba( 0, 0, 0, 0.2 );
-		top: -3px;
+		box-shadow: 0 4px 12px rgba( 0, 0, 0, 0.16 );
+		top: -4px;
 	}
 
 	&__media {
