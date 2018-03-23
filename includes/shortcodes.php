@@ -704,7 +704,7 @@ add_shortcode( 'give_totals', 'give_totals_shortcode' );
  */
 function give_donation_grid_shortcode( $atts ) {
 	$atts = shortcode_atts( array(
-		'columns'             => '4',
+		'columns'             => 'best-fit',
 		'show_goal'           => true,
 		'show_excerpt'        => true,
 		'show_featured_image' => true,
@@ -716,7 +716,7 @@ function give_donation_grid_shortcode( $atts ) {
 	$current_donations = array(
 		'post_type'      => 'give_forms',
 		'post_status'    => 'publish',
-		'posts_per_page' => 10,
+		'posts_per_page' => 12,
 		'paged'          => $paged,
 	);
 
