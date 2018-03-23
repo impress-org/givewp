@@ -130,4 +130,21 @@ jQuery(document).ready(function ($) {
 			}
 		});
 	});
+
+	$( '#give-clear-cache' ).on( 'click', function() {
+		$.ajax({
+			url: ajaxurl,
+			type: 'GET',
+			data: {
+				action: 'give_cache_flush'
+			}
+		})
+		.done( function( response ) {
+			if ( response.success ) {
+				alert( 'Cache flushed successfully.' );
+			} else {
+				alert( 'An error occured while flushing the cache.' );
+			}
+		})
+	});
 });
