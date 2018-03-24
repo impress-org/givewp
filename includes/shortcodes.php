@@ -788,7 +788,7 @@ function give_form_grid_shortcode( $atts ) {
 		remove_filter( 'add_give_goal_progress_class', 'add_give_goal_progress_class' );
 		remove_filter( 'add_give_goal_progress_bar_class', 'add_give_goal_progress_bar_class' );
 
-		if ( true == $atts['paged'] ) {
+		if ( "false" !== $atts['paged'] ) {
 			$paginate_args = array(
 				'current'   => max( 1, get_query_var( 'paged' ) ),
 				'total'     => $form_query->max_num_pages,
