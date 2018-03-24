@@ -8,9 +8,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$form_id       = get_the_ID(); // Form ID.
-$give_settings = $args[0]; // Give settings.
-$atts          = $args[1]; // Shortcode attributes.
+$form_id          = get_the_ID(); // Form ID.
+$give_settings    = $args[0]; // Give settings.
+$atts             = $args[1]; // Shortcode attributes.
+$raw_content      = ''; // Raw form content.
+$stripped_content = ''; // Form content stripped of HTML tags and shortcodes.
+$excerpt          = ''; // Trimmed form excerpt ready for display.
 ?>
 
 <div class="give-grid__item">
@@ -24,9 +27,8 @@ $atts          = $args[1]; // Shortcode attributes.
 		);
 	} elseif ( 'modal' == $atts['display_style'] ) {
 		printf(
-			'<a id="give-card-%1$s" class="give-card js-give-grid-modal-launcher" data-effect="mfp-zoom-out" href="#popup-form-%2$s">',
-			esc_attr( $form_id ),
-			esc_attr( get_the_permalink() )
+			'<a id="give-card-%1$s" class="give-card js-give-grid-modal-launcher" data-effect="mfp-zoom-out" href="#give-modal-form-%1$s">',
+			esc_attr( $form_id )
 		);
 	}
 	?>
@@ -39,11 +41,32 @@ $atts          = $args[1]; // Shortcode attributes.
 			}
 
 			// Maybe display the form excerpt.
-			if (
-				give_is_setting_enabled( $give_settings['forms_excerpt'] )
-				&& 'true' == $atts['show_excerpt']
-			) {
-				printf( '<p class="give-card__text">%s</p>', get_the_excerpt() );
+			if ( 'true' == $atts['show_excerpt'] ) {
+				if ( has_excerpt( $form_id ) ) {
+					// Get excerpt from the form post's excerpt field.
+					$raw_content      = get_the_excerpt( $form_id );
+					$stripped_content = wp_strip_all_tags(
+						strip_shortcodes( $raw_content )
+					);
+				} else {
+					// Get content from the form post's content field.
+					$raw_content = give_get_meta( $form_id, '_give_form_content', true );
+
+					if ( ! empty( $raw_content ) ) {
+						$stripped_content = wp_strip_all_tags(
+							strip_shortcodes( $raw_content )
+						);
+					}
+				}
+
+				// Maybe truncate excerpt.
+				if ( 0 < $atts['excerpt_length'] ) {
+					$excerpt = wp_trim_words( $stripped_content, $atts['excerpt_length'] );
+				} else {
+					$excerpt = $stripped_content;
+				}
+
+				printf( '<p class="give-card__text">%s</p>', $excerpt );
 			}
 
 			// Maybe display the goal progess bar.
@@ -53,16 +76,6 @@ $atts          = $args[1]; // Shortcode attributes.
 			) {
 				echo '<div class="give-card__progress">';
 					give_show_goal_progress( $form_id );
-				echo '</div>';
-			}
-
-			// If modal, print form in hidden container until it is time to be revealed.
-			if ( 'modal' == $atts['display_style'] ) {
-				printf(
-					'<div id="popup-form-%1$s" class="give-donation-grid-item-form zoom-anim-dialog mfp-hide">',
-					$form_id
-				);
-				give_get_donation_form( $form_id );
 				echo '</div>';
 			}
 			?>
@@ -81,4 +94,15 @@ $atts          = $args[1]; // Shortcode attributes.
 		}
 		?>
 	</a>
+	<?php
+	// If modal, print form in hidden container until it is time to be revealed.
+	if ( 'modal' == $atts['display_style'] ) {
+		printf(
+			'<div id="give-modal-form-%1$s" class="give-donation-grid-item-form zoom-anim-dialog mfp-hide">',
+			$form_id
+		);
+		give_get_donation_form( $form_id );
+		echo '</div>';
+	}
+	?>
 </div>

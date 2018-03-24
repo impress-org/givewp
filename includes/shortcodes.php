@@ -717,6 +717,7 @@ function give_form_grid_shortcode( $atts ) {
 		'show_goal'           => true,
 		'show_excerpt'        => true,
 		'show_featured_image' => true,
+		'excerpt_length'      => 16,
 		'display_style'       => 'redirect',
 	), $atts );
 
