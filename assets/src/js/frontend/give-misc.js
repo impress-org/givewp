@@ -11,7 +11,7 @@ jQuery( function( $ ) {
 	give_change_html5_form_field_validation_message();
 
 	// Donation grid shortcode popup.
-	$( '.grid-donate-now-modal-button' ).magnificPopup( {
+	$( '.js-give-grid-modal-launcher' ).magnificPopup( {
 		type: 'inline',
 		fixedContentPos: true,
 		fixedBgPos: true,
