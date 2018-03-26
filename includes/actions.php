@@ -333,5 +333,3 @@ function give_update_log_form_id( $args ) {
 }
 
 add_action( 'give_update_log_form_id', 'give_update_log_form_id' );
-
-

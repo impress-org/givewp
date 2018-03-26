@@ -1003,7 +1003,6 @@ function give_get_plugins() {
 	return $plugins;
 }
 
-
 /**
  * Check if terms enabled or not for form.
  *
@@ -1029,7 +1028,6 @@ function give_is_terms_enabled( $form_id ) {
 		return false;
 	}
 }
-
 
 /**
  * Delete donation stats cache.
@@ -1760,5 +1758,84 @@ function give_get_total_post_type_count( $post_type = '', $args = array() ){
 function give_maybe_define_constant( $name, $value ) {
 	if ( ! defined( $name ) ) {
 		define( $name, $value );
+	}
+}
+
+/**
+ * Decode time short tag in string
+ *
+ * @since 2.1.0
+ *
+ * @param string $string
+ * @param int    $timestamp
+ *
+ * @return string
+ */
+function give_time_do_tags( $string, $timestamp = 0 ) {
+	$current_time = ! empty( $timestamp ) ? $timestamp : current_time( 'timestamp' );
+
+	$formatted_string = str_replace(
+		array(
+			'{D}',
+			'{DD}',
+			'{M}',
+			'{MM}',
+			'{YY}',
+			'{YYYY}',
+			'{H}',
+			'{HH}',
+			'{N}',
+			'{S}'
+		),
+		array(
+			date( 'j', $current_time ),
+			date( 'd', $current_time ),
+			date( 'n', $current_time ),
+			date( 'm', $current_time ),
+			date( 'Y', $current_time ),
+			date( 'Y', $current_time ),
+			date( 'G', $current_time ),
+			date( 'H', $current_time ),
+			date( 's', $current_time )
+		),
+		$string
+	);
+
+	/**
+	 * Filter the parsed string.
+	 *
+	 * @since 2.1.0
+	 */
+	return apply_filters( 'give_time_do_tags', $formatted_string, $string, $timestamp );
+}
+
+
+/**
+ * Check if Company field enabled or not for form or globally.
+ *
+ * @since 2.0.7
+ *
+ * @param $form_id
+ *
+ * @return bool
+ */
+function give_is_company_field_enabled( $form_id ) {
+	$form_setting_val           = give_get_meta( $form_id, '_give_company_field', true );
+	$global_setting_val = give_get_option( 'company_field' );
+
+	if ( ! empty( $form_setting_val ) ) {
+		if( give_is_setting_enabled( $form_setting_val, array( 'required', 'optional' ) ) ) {
+			return true;
+		} elseif ( 'global' === $form_setting_val && give_is_setting_enabled( $global_setting_val, array( 'required', 'optional' ) ) ) {
+			return true;
+		} else{
+			return false;
+		}
+
+	} elseif ( give_is_setting_enabled( $global_setting_val, array( 'required', 'optional' ) ) ) {
+		return true;
+
+	} else {
+		return false;
 	}
 }

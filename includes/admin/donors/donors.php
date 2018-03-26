@@ -427,6 +427,21 @@ function give_donor_view( $donor ) {
 									</span>
 							</td>
 						</tr>
+
+						<?php
+						$donor_company = $donor->get_meta( '_give_donor_company', true );
+
+						if ( ! empty( $donor_company ) ) {
+							?>
+							<tr class="alternate">
+								<th scope="col">
+									<label for="tablecell"><?php _e( 'Company Name:', 'give' ); ?></label>
+								</th>
+								<td><?php echo $donor_company; ?></td>
+							</tr>
+							<?php
+						}
+						?>
 						</tbody>
 					</table>
 
@@ -789,7 +804,7 @@ function give_donor_view( $donor ) {
 			<?php if ( ! empty( $payments ) ) { ?>
 				<?php foreach ( $payments as $payment ) : ?>
 					<tr>
-						<td><?php echo $payment->ID; ?></td>
+						<td><?php echo Give()->seq_donation_number->get_serial_code( $payment->ID ); ?></td>
 						<td><?php echo give_donation_amount( $payment->ID, array( 'currency' => true, 'amount' => true, 'type' => 'donor' ) ); ?></td>
 						<td><?php echo date_i18n( give_date_format(), strtotime( $payment->post_date ) ); ?></td>
 						<td><?php echo give_get_payment_status( $payment, true ); ?></td>

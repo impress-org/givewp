@@ -280,6 +280,20 @@ class Give_MetaBox_Form_Data {
 							'type' => 'default_gateway',
 						),
 						array(
+							'name'    => __( 'Company Donations', 'give' ),
+							'desc'    => __( 'Do you want a Company field to appear after First Name and Last Name?', 'give' ),
+							'id'      => $prefix . 'company_field',
+							'type'    => 'radio_inline',
+							'default' => 'global',
+							'options' => array(
+								'global' => __( 'Global Option', 'give' ),
+								'required' => __( 'Required', 'give' ),
+								'optional' => __( 'Optional', 'give' ),
+								'disabled' => __( 'Disabled', 'give' ),
+
+							),
+						),
+						array(
 							'name'    => __( 'Guest Donations', 'give' ),
 							'desc'    => __( 'Do you want to allow non-logged-in users to make donations?', 'give' ),
 							'id'      => $prefix . 'logged_in_only',

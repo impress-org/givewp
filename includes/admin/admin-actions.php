@@ -1119,3 +1119,23 @@ function give_update_donor_email_on_user_update( $user_id = 0, $old_user_data = 
 }
 
 add_action( 'profile_update', 'give_update_donor_email_on_user_update', 10, 2 );
+
+
+/**
+ * Flushes Give's cache.
+ */
+function give_cache_flush() {
+	$result = Give_Cache::flush_cache();
+
+	if ( $result ) {
+		wp_send_json_success( array(
+			'message' => __( 'Cache flushed successfully.', 'give' ),
+		));
+	} else {
+		wp_send_json_error( array(
+			'message' => __( 'An error occured while flushing the cache.', 'give' ),
+		));
+	}
+}
+
+add_action( 'wp_ajax_give_cache_flush', 'give_cache_flush', 10, 0 );

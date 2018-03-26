@@ -78,7 +78,7 @@ class Give_Cache {
 		add_action( 'give_deleted_give-donors_cache', array( $this, 'delete_donor_related_cache' ), 10, 3 );
 		add_action( 'give_deleted_give-donations_cache', array( $this, 'delete_donations_related_cache' ), 10, 3 );
 
-		add_action( 'give_save_settings_give_settings', array( $this, 'flush_cache' ) );
+		add_action( 'give_save_settings_give_settings', array( __CLASS__, 'flush_cache' ) );
 
 		add_action( 'wp', array( __CLASS__,  'prevent_caching' ) );
 		add_action( 'admin_notices', array( $this, '__notices' ) );
@@ -543,7 +543,7 @@ class Give_Cache {
 
 		// Delete single or multiple cache items from cache.
 		if ( ! is_array( $ids ) ) {
-			$status = wp_cache_delete( $ids, $group, $expire );
+			$status = wp_cache_delete( $ids, $group );
 			self::$instance->get_incrementer( true );
 
 			/**
@@ -559,7 +559,7 @@ class Give_Cache {
 
 		} else {
 			foreach ( $ids as $id ) {
-				$status = wp_cache_delete( $id, $group, $expire );
+				$status = wp_cache_delete( $id, $group );
 				self::$instance->get_incrementer( true );
 
 				/**
@@ -721,15 +721,21 @@ class Give_Cache {
 	 * @since  2.0
 	 * @access public
 	 */
-	public function flush_cache() {
+	public static function flush_cache() {
 		if (
-			Give_Admin_Settings::is_saving_settings() &&
-			isset( $_POST['cache'] ) &&
-			give_is_setting_enabled( give_clean( $_POST['cache'] ) )
+			( Give_Admin_Settings::is_saving_settings()
+		       && isset( $_POST['cache'] )
+		       && give_is_setting_enabled( give_clean( $_POST['cache'] ) )
+		     )
+			|| ( wp_doing_ajax() && 'give_cache_flush' === give_clean( $_GET['action'] ) )
 		) {
-			$this->get_incrementer( true );
-			$this->get_incrementer( true, 'give-cache-incrementer' );
+			self::$instance->get_incrementer( true );
+			self::$instance->get_incrementer( true, 'give-cache-incrementer' );
+
+			return true;
 		}
+
+		return false;
 	}
 
 
@@ -749,7 +755,7 @@ class Give_Cache {
 		if ( ! empty( $group ) ) {
 			$incrementer = self::$instance->get_incrementer( false, 'give-cache-incrementer' );
 
-			if ( 'give-db-queries' === $group ) {
+			if ( false !== strpos( $group, 'give-db-queries' ) ) {
 				$incrementer = self::$instance->get_incrementer();
 			}
 

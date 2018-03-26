@@ -130,4 +130,24 @@ jQuery(document).ready(function ($) {
 			}
 		});
 	});
+
+	/**
+	 * Ajax call to clear Give's cache.
+	 */
+	$( '#give-clear-cache' ).on( 'click', function() {
+		$.ajax({
+			url: ajaxurl,
+			type: 'GET',
+			data: {
+				action: 'give_cache_flush'
+			}
+		})
+		.done( function( response ) {
+			if ( response.success ) {
+				alert( response.data.message );
+			} else {
+				alert( response.data.message );
+			}
+		})
+	});
 });
