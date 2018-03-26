@@ -23,10 +23,10 @@ class Give_Shortcode_Donation_Grid extends Give_Shortcode_Generator {
 	 */
 	public function __construct() {
 
-		$this->shortcode['title'] = esc_html__( 'Donation Grid', 'give' );
-		$this->shortcode['label'] = esc_html__( 'Donation Grid', 'give' );
+		$this->shortcode['title'] = esc_html__( 'Donation Form Grid', 'give' );
+		$this->shortcode['label'] = esc_html__( 'Donation Form Grid', 'give' );
 
-		parent::__construct( 'give_donation_form_grid' );
+		parent::__construct( 'give_form_grid' );
 	}
 
 	/**
