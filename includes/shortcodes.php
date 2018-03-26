@@ -812,8 +812,8 @@ function give_form_grid_shortcode( $atts ) {
 			while ( $form_query->have_posts() ) {
 				$form_query->the_post();
 
-				// Give/templates/shortcode-donation-grid.php.
-				give_get_template( 'shortcode-donation-grid', array( $give_settings, $atts ) );
+				// Give/templates/shortcode-form-grid.php.
+				give_get_template( 'shortcode-form-grid', array( $give_settings, $atts ) );
 
 			}
 
