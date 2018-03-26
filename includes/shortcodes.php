@@ -711,6 +711,8 @@ add_shortcode( 'give_totals', 'give_totals_shortcode' );
  *     @type bool   $show_goal           Whether to display form goal. Default 'true'.
  *     @type bool   $show_excerpt        Whether to display form excerpt. Default 'true'.
  *     @type bool   $show_featured_image Whether to display featured image. Default 'true'.
+ *     @type string $image_size          Featured image size. Default 'medium'. Accepts WordPress image sizes.
+ *     @type string $image_height        Featured image height. Default 'auto'. Accepts valid CSS heights.
  *     @type int    $excerpt_length      Number of words before excerpt is truncated. Default '16'.
  *     @type string $display_style       How the form is displayed, either in new page or modal popup.
  *                                       Default 'redirect'. Accepts 'redirect', 'modal'.
@@ -732,6 +734,8 @@ function give_form_grid_shortcode( $atts ) {
 		'show_goal'           => true,
 		'show_excerpt'        => true,
 		'show_featured_image' => true,
+		'image_size'          => 'medium',
+		'image_height'        => 'auto',
 		'excerpt_length'      => 16,
 		'display_style'       => 'redirect',
 	), $atts );

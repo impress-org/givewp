@@ -36,13 +36,9 @@
 			display: block;
 			height: auto;
 			margin: 0;
+			object-fit: cover;
 			order: 1;
 			width: 100%;
-
-			@supports (object-fit: cover) {
-				height: 14rem;
-				object-fit: cover;
-			}
 		}
 	}
 

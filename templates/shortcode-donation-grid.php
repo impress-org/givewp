@@ -88,9 +88,23 @@ $excerpt          = ''; // Trimmed form excerpt ready for display.
 			&& has_post_thumbnail()
 			&& true === $atts['show_featured_image']
 		) {
-			printf( '<div class="give-card__media">' );
-				the_post_thumbnail();
-			printf( '</div>' );
+			/*
+			 * Filters the image size used in card layouts.
+			 *
+			 * @param string The image size.
+			 * @param array  Form grid attributes.
+			 */
+			$image_size = apply_filters( 'give_form_grid_image_size', $atts['image_size'], $atts );
+			$image_attr = '';
+
+			echo '<div class="give-card__media">';
+				if ( 'auto' !== $atts['image_height'] ) {
+					$image_attr = array(
+						'style' => 'height: ' . $atts['image_height'],
+					);
+				}
+				the_post_thumbnail( $image_size, $image_attr );
+			echo '</div>';
 		}
 		?>
 	</a>
