@@ -610,7 +610,7 @@ class Give_Addon_Activation_Banner {
 		// Get the add-on details.
 		$plugin_data = get_plugin_data( $plugin_file );
 		?>
-        <img src="<?php echo GIVE_PLUGIN_URL; ?>assets/images/svg/give-icon-full-circle.svg" class="give-logo"/>
+        <img src="<?php echo GIVE_PLUGIN_URL; ?>assets/dist/images/give-icon-full-circle.svg" class="give-logo"/>
         <div class="give-alert-message">
             <h3>
 				<?php
