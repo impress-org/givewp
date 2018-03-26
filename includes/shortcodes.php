@@ -693,14 +693,29 @@ add_shortcode( 'give_totals', 'give_totals_shortcode' );
 
 
 /**
- * Form Grid Shortcode
- *
  * Displays donation forms in a grid layout.
  *
  * @since  2.1.0
  *
- * @param array $atts
- * @return string|bool
+ * @param array $atts {
+ *     Optional. Attributes of the form grid shortcode.
+ *
+ *     @type int    $forms_per_page      Number of forms per page. Default '12'.
+ *     @type bool   $paged               Whether to paginate forms. Default 'true'.
+ *     @type string $ids                 A comma-separated list of form IDs to display. Default empty.
+ *     @type string $cats                A comma-separated list of form categories to display. Default empty.
+ *     @type string $tags                A comma-separated list of form tags to display. Default empty.
+ *     @type string $columns             Maximum columns to display. Default 'best-fit'.
+ *                                       Accepts 'best-fit', '1', '2', '3', '4'.
+ *     @type bool   $show_title          Whether to display form title. Default 'true'.
+ *     @type bool   $show_goal           Whether to display form goal. Default 'true'.
+ *     @type bool   $show_excerpt        Whether to display form excerpt. Default 'true'.
+ *     @type bool   $show_featured_image Whether to display featured image. Default 'true'.
+ *     @type int    $excerpt_length      Number of words before excerpt is truncated. Default '16'.
+ *     @type string $display_style       How the form is displayed, either in new page or modal popup.
+ *                                       Default 'redirect'. Accepts 'redirect', 'modal'.
+ * }
+ * @return string|bool The markup of the form grid or false.
  */
 function give_form_grid_shortcode( $atts ) {
 	$form_ids = array();
