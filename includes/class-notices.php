@@ -626,7 +626,7 @@ class Give_Notices {
 		$close_icon = 'manual' === $notice_args['dismiss_type'] ?
 			sprintf(
 				'<img class="notice-dismiss give-notice-close" src="%s" />',
-				esc_url( GIVE_PLUGIN_URL . 'assets/images/svg/close.svg' )
+				esc_url( GIVE_PLUGIN_URL . 'assets/dist/images/close.svg' )
 
 			) :
 			'';
