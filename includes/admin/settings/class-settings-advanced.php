@@ -107,6 +107,12 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 							),
 						),
 						array(
+							'name' => __( 'Give Clear Cache', 'give' ),
+							'id' => 'give-clear-cache',
+							'text' => __( 'Flush', 'give' ),
+							'type' => 'give_ajax_button'
+						),
+						array(
 							'name'  => __( 'Advanced Settings Docs Link', 'give' ),
 							'id'    => 'advanced_settings_docs_link',
 							'url'   => esc_url( 'http://docs.givewp.com/settings-advanced' ),
