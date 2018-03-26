@@ -709,9 +709,9 @@ function give_form_grid_shortcode( $atts ) {
 	$atts = shortcode_atts( array(
 		'forms_per_page'      => 12,
 		'paged'               => true,
-		'ids'                 => 0,
-		'cats'                => 0,
-		'tags'                => 0,
+		'ids'                 => '',
+		'cats'                => '',
+		'tags'                => '',
 		'columns'             => 'best-fit',
 		'show_title'          => true,
 		'show_goal'           => true,
@@ -721,6 +721,24 @@ function give_form_grid_shortcode( $atts ) {
 		'display_style'       => 'redirect',
 	), $atts );
 
+	// Validate integer attributes.
+	$atts['forms_per_page'] = intval( $atts['forms_per_page'] );
+	$atts['excerpt_length'] = intval( $atts['excerpt_length'] );
+
+	// Validate boolean attributes.
+	$boolean_attributes = array(
+		'paged',
+		'show_title',
+		'show_goal',
+		'show_excerpt',
+		'show_featured_image',
+	);
+
+	foreach ( $boolean_attributes as $att ) {
+		$atts[ $att ] = filter_var( $atts[ $att ], FILTER_VALIDATE_BOOLEAN );
+	}
+
+	// Set default form query args.
 	$form_args = array(
 		'post_type'      => 'give_forms',
 		'post_status'    => 'publish',
@@ -731,7 +749,7 @@ function give_form_grid_shortcode( $atts ) {
 	);
 
 	// Maybe add pagination.
-	if ( true == $atts['paged'] ) {
+	if ( true === $atts['paged'] ) {
 		$form_args['paged'] = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
 	}
 
@@ -787,7 +805,7 @@ function give_form_grid_shortcode( $atts ) {
 			remove_filter( 'add_give_goal_progress_class', 'add_give_goal_progress_class' );
 			remove_filter( 'add_give_goal_progress_bar_class', 'add_give_goal_progress_bar_class' );
 
-			if ( "false" !== $atts['paged'] ) {
+			if ( false !== $atts['paged'] ) {
 				$paginate_args = array(
 					'current'   => max( 1, get_query_var( 'paged' ) ),
 					'total'     => $form_query->max_num_pages,
