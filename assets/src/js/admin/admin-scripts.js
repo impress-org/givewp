@@ -696,6 +696,20 @@ var give_setting_edit = false;
 					$('#admin_notice_emails').parents('tr').hide();
 				}
 			}).change();
+
+			/**
+			 * Toggle sequential ordering settings
+			 */
+			var sequential_ordering = $('input[name="sequential-ordering_status"]', '.give-setting-tab-body-general');
+			sequential_ordering.on('change', function () {
+				var field_value = $('input[name="sequential-ordering_status"]:checked', '.give-setting-tab-body-general').val(),
+					$parent = $(this).closest('table');
+				if ('enabled' === field_value) {
+					$('input', $parent).not( 'input[name="sequential-ordering_status"]' ).parents('tr').show();
+				} else {
+					$('input', $parent).not( 'input[name="sequential-ordering_status"]' ).parents('tr').hide();
+				}
+			}).change();
 		},
 
 		main_setting_update_notice: function () {
@@ -2886,8 +2900,27 @@ var give_setting_edit = false;
 
 		// Render setting tab.
 		give_render_responsive_tabs();
-	});
-})(jQuery);
+
+		$('.give-confirm').on('click', function () {
+			if ($(this).hasClass('dashicons-lock') && window.confirm($(this).data('message'))) {
+				var $parent = $(this).closest('.give-forminp');
+
+				if ($parent.length) {
+					$(this).addClass('dashicons-unlock');
+					$(this).removeClass('dashicons-lock');
+
+					if( $(this).closest('.give-forminp-radio_inline').length || $(this).closest('.give-forminp-radio').length  ){
+						$parent.find('input[type="radio"]').each(function(){
+							$(this).removeAttr( 'disabled' );
+						});
+					} else{
+						$(this).prev().removeAttr('readonly');
+					}
+				}
+			}
+		});
+	} );
+})( jQuery );
 
 /**
  * Responsive js.

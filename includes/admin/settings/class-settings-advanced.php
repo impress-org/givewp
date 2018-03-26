@@ -126,7 +126,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
 			 *
 			 * @since 2.0
 			 */
-			if( apply_filters( 'give_settings_advanced_show_cache_setting', false ) ) {
+			if ( apply_filters( 'give_settings_advanced_show_cache_setting', false ) ) {
 				array_splice( $settings, 1, 0, array(
 					array(
 						'name'    => __( 'Cache', 'give' ),

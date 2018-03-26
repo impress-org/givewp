@@ -623,7 +623,7 @@ function give_get_purchase_summary( $purchase_data, $email = true ) {
 /**
  * Retrieves the emails for which admin notifications are sent to (these can be changed in the Give Settings).
  *
- * @since 1.0
+ * @since      1.0
  * @deprecated 2.0
  *
  * @return mixed
@@ -641,7 +641,7 @@ function give_get_admin_notice_emails() {
 /**
  * Checks whether admin donation notices are disabled
  *
- * @since 1.0
+ * @since      1.0
  * @deprecated 2.0
  *
  * @param int $payment_id
@@ -651,7 +651,7 @@ function give_get_admin_notice_emails() {
 function give_admin_notices_disabled( $payment_id = 0 ) {
 	return apply_filters(
 		'give_admin_notices_disabled',
-		! give_is_setting_enabled( Give_Email_Notification::get_instance('new-donation' )->get_notification_status() ),
+		! give_is_setting_enabled( Give_Email_Notification::get_instance( 'new-donation' )->get_notification_status() ),
 		$payment_id
 	);
 }
@@ -784,9 +784,9 @@ function give_decrease_earnings( $form_id = 0, $amount ) {
 /**
  * Retrieve the donation ID based on the key
  *
- * @param string  $key  the key to search for.
+ * @param string $key the key to search for.
  *
- * @since 1.0
+ * @since      1.0
  * @deprecated 1.8.18
  *
  * @return int $purchase Donation ID.
@@ -815,7 +815,7 @@ function give_get_payment_form_title( $meta, $only_level = false, $separator = '
 	);
 
 	$donation = '';
-	if( is_array( $meta ) && ! empty( $meta['key'] ) ) {
+	if ( is_array( $meta ) && ! empty( $meta['key'] ) ) {
 		$donation = give_get_payment_by( 'key', $meta['key'] );
 	}
 

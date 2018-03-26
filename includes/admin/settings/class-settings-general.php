@@ -31,6 +31,10 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 
 			$this->default_tab = 'general-settings';
 
+			if( $this->id === give_get_current_setting_tab() ) {
+				add_action( 'give_save_settings_give_settings', array( $this, '__give_change_donation_stating_number' ), 10, 3 );
+			}
+
 			parent::__construct();
 		}
 
@@ -307,6 +311,70 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 						),
 					);
 					break;
+
+				case 'sequential-ordering':
+					$settings = array(
+
+						// Section 4: Sequential Ordering
+
+						array(
+							'id'   => 'give_title_general_settings_4',
+							'type' => 'title'
+						),
+						array(
+							'name'                => __( 'Sequential Ordering', 'give' ),
+							'id'                  => "{$current_section}_status",
+							'desc'                => __( 'Would you like to enable the sequential ordering feature?', 'give' ),
+							'type'                => 'radio_inline',
+							'default'             => 'enabled',
+							'confirm_before_edit' => 'forced',
+							'confirmation_msg'    => __( 'Toggling seqential ordering will affect new all new donation numbering. Do you still want to edit this setting?', 'give' ),
+							'options'             => array(
+								'enabled'  => __( 'Enabled', 'give' ),
+								'disabled' => __( 'Disabled', 'give' )
+							)
+						),
+						array(
+							'name'                => __( 'Starting Number', 'give' ),
+							'id'                  => "{$current_section}_number",
+							'type'                => 'number',
+							'confirm_before_edit' => 'forced',
+							'confirmation_msg'    => __( 'Changing this setting can affect existing donation numbering. Do you still want to edit this setting?', 'give' ),
+						),
+						array(
+							'name'                => __( 'Number Prefix', 'give' ),
+							'id'                  => "{$current_section}_number_prefix",
+							'type'                => 'text',
+							'confirm_before_edit' => 'forced',
+							'confirmation_msg'    => __( 'Changing this setting can affect existing donation numbering. Do you still want to edit this setting?', 'give' ),
+						),
+						array(
+							'name'                => __( 'Number Suffix', 'give' ),
+							'id'                  => "{$current_section}_number_suffix",
+							'type'                => 'text',
+							'confirm_before_edit' => 'forced',
+							'confirmation_msg'    => __( 'Changing this setting can affect existing donation numbering. Do you still want to edit this setting?', 'give' ),
+						),
+						array(
+							'name'                => __( 'Number Padding', 'give' ),
+							'id'                  => "{$current_section}_number_padding",
+							'type'                => 'number',
+							'default'             => '0',
+							'confirm_before_edit' => 'forced',
+							'confirmation_msg'    => __( 'Changing this setting can affect existing donation numbering. Do you still want to edit this setting?', 'give' ),
+						),
+						array(
+							'name'  => __( 'Sequential Ordering Docs Link', 'give' ),
+							'id'    => "{$current_section}_doc link",
+							'url'   => esc_url( 'http://docs.givewp.com/settings-sequential-ordering' ),
+							'title' => __( 'Sequential Ordering', 'give' ),
+							'type'  => 'give_docs_link',
+						),
+						array(
+							'id'   => 'give_title_general_settings_4',
+							'type' => 'sectionend'
+						)
+					);
 			}
 
 			/**
@@ -336,12 +404,40 @@ if ( ! class_exists( 'Give_Settings_General' ) ) :
 		 */
 		public function get_sections() {
 			$sections = array(
-				'general-settings'  => __( 'General', 'give' ),
-				'currency-settings' => __( 'Currency', 'give' ),
-				'access-control'    => __( 'Access Control', 'give' ),
+				'general-settings'    => __( 'General', 'give' ),
+				'currency-settings'   => __( 'Currency', 'give' ),
+				'access-control'      => __( 'Access Control', 'give' ),
+				'sequential-ordering' => __( 'Sequential Ordering', 'give' ),
 			);
 
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );
+		}
+
+
+		/**
+		 * Set flag to reset sequestion donation number starting point when "Sequential Starting Number" value changes
+		 *
+		 * @since  2.1
+		 * @access public
+		 *
+		 * @param $update_options
+		 * @param $option_name
+		 * @param $old_options
+		 *
+		 * @return bool
+		 */
+		public function __give_change_donation_stating_number( $update_options, $option_name, $old_options ) {
+			if ( ! isset( $_POST['sequential-ordering_number'] ) ) {
+				return false;
+			}
+
+			if ( Give()->seq_donation_number->get_max_number() >= $update_options['sequential-ordering_number'] ) {
+				give_update_option( 'sequential-ordering_number', $old_options['sequential-ordering_number'] );
+			} elseif ( $update_options['sequential-ordering_number'] !== $old_options['sequential-ordering_number'] ) {
+				update_option( '_give_reset_sequential_number', 1 );
+			}
+
+			return true;
 		}
 	}
 

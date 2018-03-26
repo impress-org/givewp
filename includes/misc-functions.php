@@ -1762,6 +1762,55 @@ function give_maybe_define_constant( $name, $value ) {
 }
 
 /**
+ * Decode time short tag in string
+ *
+ * @since 2.1.0
+ *
+ * @param string $string
+ * @param int    $timestamp
+ *
+ * @return string
+ */
+function give_time_do_tags( $string, $timestamp = 0 ) {
+	$current_time = ! empty( $timestamp ) ? $timestamp : current_time( 'timestamp' );
+
+	$formatted_string = str_replace(
+		array(
+			'{D}',
+			'{DD}',
+			'{M}',
+			'{MM}',
+			'{YY}',
+			'{YYYY}',
+			'{H}',
+			'{HH}',
+			'{N}',
+			'{S}'
+		),
+		array(
+			date( 'j', $current_time ),
+			date( 'd', $current_time ),
+			date( 'n', $current_time ),
+			date( 'm', $current_time ),
+			date( 'Y', $current_time ),
+			date( 'Y', $current_time ),
+			date( 'G', $current_time ),
+			date( 'H', $current_time ),
+			date( 's', $current_time )
+		),
+		$string
+	);
+
+	/**
+	 * Filter the parsed string.
+	 *
+	 * @since 2.1.0
+	 */
+	return apply_filters( 'give_time_do_tags', $formatted_string, $string, $timestamp );
+}
+
+
+/**
  * Check if Company field enabled or not for form or globally.
  *
  * @since 2.0.7
