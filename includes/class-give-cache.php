@@ -78,7 +78,7 @@ class Give_Cache {
 		add_action( 'give_deleted_give-donors_cache', array( $this, 'delete_donor_related_cache' ), 10, 3 );
 		add_action( 'give_deleted_give-donations_cache', array( $this, 'delete_donations_related_cache' ), 10, 3 );
 
-		add_action( 'give_save_settings_give_settings', array( $this, 'flush_cache' ) );
+		add_action( 'give_save_settings_give_settings', array( __CLASS__, 'flush_cache' ) );
 
 		add_action( 'wp', array( __CLASS__,  'prevent_caching' ) );
 		add_action( 'admin_notices', array( $this, '__notices' ) );
@@ -721,13 +721,16 @@ class Give_Cache {
 	 * @since  2.0
 	 * @access public
 	 */
-	public function flush_cache() {
-		if ( ( Give_Admin_Settings::is_saving_settings()
-			&& isset( $_POST['cache'] )
-			&& give_is_setting_enabled( give_clean( $_POST['cache'] ) )
-		) || ( wp_doing_ajax() && give_clean( $_POST['flush_cache'] ) ) ) {
-			$this->get_incrementer( true );
-			$this->get_incrementer( true, 'give-cache-incrementer' );
+	public static function flush_cache() {
+		if (
+			( Give_Admin_Settings::is_saving_settings()
+		       && isset( $_POST['cache'] )
+		       && give_is_setting_enabled( give_clean( $_POST['cache'] ) )
+		     )
+			|| ( wp_doing_ajax() && 'give_cache_flush' === give_clean( $_GET['action'] ) )
+		) {
+			self::$instance->get_incrementer( true );
+			self::$instance->get_incrementer( true, 'give-cache-incrementer' );
 
 			return true;
 		}
