@@ -1353,7 +1353,7 @@ var give_setting_edit = false;
 	/**
 	 * Custom Alert Box.
 	 */
-	let alertBox = new GiveModal().addFilter( 'cancel_text_node', text => 'Ok' );
+	let alertBox = new GiveModal();
 
 	/**
 	 * Donor management screen JS
@@ -1379,6 +1379,7 @@ var give_setting_edit = false;
 					.customContent({
 						content: give_vars.unlock_donor_fields
 					})
+					.addFilter( 'cancel_text_node', text => 'Ok' )
 					.popup()
 				e.preventDefault();
 			});
@@ -1874,6 +1875,7 @@ var give_setting_edit = false;
 					.customContent({
 						content: selectBulkActionNotice
 					})
+					.addFilter( 'cancel_text_node', text => 'Ok' )
 					.popup()
 				return false;
 			}
@@ -1884,6 +1886,7 @@ var give_setting_edit = false;
 					.customContent({
 						content: confirmActionNotice
 					})
+					.addFilter( 'cancel_text_node', text => 'Ok' )
 					.popup()
 				return false;
 			}
@@ -2693,6 +2696,7 @@ var give_setting_edit = false;
 								.customContent({
 									content: confirmActionNotice
 								})
+								.addFilter( 'cancel_text_node', text => 'Ok' )
 								.popup()
 							return false;
 						}
